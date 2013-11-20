@@ -162,14 +162,14 @@ $textname = 'UserNameTmp';
 $idname = 'UserIDTmp';
 $users = makeArrayFromCSV($sUsers);
 
-$delallbut = we_button::create_button(
+$delallbut = we_html_button::create_button(
 		"delete_all", "javascript:delUser(-1)", true, -1, -1, "", "", (count($users)) ? false : true);
 
 //javascript:opener.getUser('browse_users','top.weEditorFrameController.getActiveDocumentReference()._propsDlg[\\'" . $_REQUEST['we_cmd'][0] . "\\'].document.forms[0].elements[\\'UserIDTmp\\'].value','top.weEditorFrameController.getActiveDocumentReference()._propsDlg[\\'" . $_REQUEST['we_cmd'][0] . "\\'].document.forms[0].elements[\\'UserNameTmp\\'].value','','','opener.top.weEditorFrameController.getActiveDocumentReference()._propsDlg[\\'" . $_REQUEST['we_cmd'][0] . "\\'].addUserToField()','','',1);
 $wecmdenc1 = we_cmd_enc("top.weEditorFrameController.getActiveDocumentReference()._propsDlg['" . $_REQUEST['we_cmd'][0] . "'].document.forms[0].elements['UserIDTmp'].value");
 $wecmdenc2 = we_cmd_enc("top.weEditorFrameController.getActiveDocumentReference()._propsDlg['" . $_REQUEST['we_cmd'][0] . "'].document.forms[0].elements['UserNameTmp'].value");
 $wecmdenc5 = we_cmd_enc("opener.top.weEditorFrameController.getActiveDocumentReference()._propsDlg['" . $_REQUEST['we_cmd'][0] . "'].addUserToField();");
-$addbut = we_button::create_button(
+$addbut = we_html_button::create_button(
 		"add", "javascript:opener.getUser('browse_users','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $wecmdenc5 . "','','',1);");
 
 $content = '<table border="0" cellpadding="0" cellspacing="0" width="300">
@@ -179,7 +179,7 @@ if(!empty($users)){
 	$db = new DB_WE();
 	foreach($users as $user){
 		$foo = getHash("SELECT ID,Path,Icon FROM " . USER_TABLE . " WHERE ID=" . intval($user), $db);
-		$content .= '<tr><td><img src="' . ICON_DIR . $foo["Icon"] . '" width="16" height="18" /></td><td class="defaultfont">' . $foo["Path"] . '</td><td>' . we_button::create_button(
+		$content .= '<tr><td><img src="' . ICON_DIR . $foo["Icon"] . '" width="16" height="18" /></td><td class="defaultfont">' . $foo["Path"] . '</td><td>' . we_html_button::create_button(
 				"image:btn_function_trash", "javascript:delUser('" . $user . "');") . '</td></tr>';
 	}
 } else{
@@ -194,7 +194,7 @@ $sUsrContent = '<table border="0" cellpadding="0" cellspacing="0" width="300"><t
 		"name" => "UserNameTmp", "value" => ""
 	)) . we_html_element::htmlHidden(array(
 		"name" => "UserIDTmp", "value" => ""
-	)) . '</td></tr><tr><td align="right">' . we_html_tools::getPixel(2, 8) . we_html_element::htmlBr() . we_button::create_button_table(
+	)) . '</td></tr><tr><td align="right">' . we_html_tools::getPixel(2, 8) . we_html_element::htmlBr() . we_html_button::create_button_table(
 		array(
 			$delallbut, $addbut
 	)) . '</td></tr></table>';
@@ -295,10 +295,10 @@ $parts = array(
 	)
 );
 
-$save_button = we_button::create_button("save", "javascript:save();", false, -1, -1);
-$preview_button = we_button::create_button("preview", "javascript:preview();", false, -1, -1);
-$cancel_button = we_button::create_button("close", "javascript:exit_close();");
-$buttons = we_button::position_yes_no_cancel($save_button, $preview_button, $cancel_button);
+$save_button = we_html_button::create_button("save", "javascript:save();", false, -1, -1);
+$preview_button = we_html_button::create_button("preview", "javascript:preview();", false, -1, -1);
+$cancel_button = we_html_button::create_button("close", "javascript:exit_close();");
+$buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button, $cancel_button);
 
 $sTblWidget = we_html_multiIconBox::getHTML(
 		"mfdProps", "100%", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[last_modified]'), "", 390);
@@ -308,7 +308,7 @@ print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 			we_html_tools::getHtmlInnerHead(g_l('cockpit', '[last_modified]')) . STYLESHEET . we_html_element::cssElement(
 				"select{border:#AAAAAA solid 1px}") . we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
 			we_html_element::jsElement(
-				$jsPrefs . $jsCode . we_button::create_state_changer(false))) . we_html_element::htmlBody(
+				$jsPrefs . $jsCode . we_html_button::create_state_changer(false))) . we_html_element::htmlBody(
 			array(
 			"class" => "weDialogBody", "onload" => "init();"
 			), we_html_element::htmlForm("", $sTblWidget)));

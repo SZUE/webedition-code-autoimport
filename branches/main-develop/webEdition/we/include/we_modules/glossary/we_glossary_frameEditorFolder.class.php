@@ -76,7 +76,7 @@ class we_glossary_frameEditorFolder extends we_glossary_frameEditor{
 			$query = "SELECT count(1) as items FROM " . GLOSSARY_TABLE . " WHERE Language = '" . $GLOBALS['DB_WE']->escape($language) . "' AND Type = '" . $key . "'";
 			$items = f($query, "items", $GLOBALS['DB_WE']);
 
-			$button = we_button::create_button("new_glossary_" . $key, "javascript:top.opener.top.we_cmd('new_glossary_" . $key . "', '" . $_REQUEST['cmdid'] . "');", true, -1, -1, "", "", !permissionhandler::hasPerm("NEW_GLOSSARY"));
+			$button = we_html_button::create_button("new_glossary_" . $key, "javascript:top.opener.top.we_cmd('new_glossary_" . $key . "', '" . $_REQUEST['cmdid'] . "');", true, -1, -1, "", "", !permissionhandler::hasPerm("NEW_GLOSSARY"));
 
 			$content = '<table width="550" border="0" cellpadding="0" cellspacing="0" class="defaultfont">
 						<tr>

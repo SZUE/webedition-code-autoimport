@@ -1227,7 +1227,7 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 
 	function formGroupData(){
 		$_attr = array('border' => 0, 'cellpadding' => 2, 'cellspacing' => 0);
-		$js = we_button::create_state_changer();
+		$js = we_html_button::create_state_changer();
 
 		$_tableObj = new we_html_table($_attr, 5, 1);
 
@@ -1249,7 +1249,7 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 		$yuiSuggest->setSelector('Dirselector');
 		$yuiSuggest->setTable(USER_TABLE);
 		$yuiSuggest->setWidth(450);
-		$yuiSuggest->setSelectButton(we_button::create_button('select', "javascript:we_cmd('browse_users','document.we_form." . $this->Name . "_ParentID.value','document.we_form." . $this->Name . "_ParentID_Text.value','group',document.we_form." . $this->Name . "_ParentID.value);"));
+		$yuiSuggest->setSelectButton(we_html_button::create_button('select', "javascript:we_cmd('browse_users','document.we_form." . $this->Name . "_ParentID.value','document.we_form." . $this->Name . "_ParentID_Text.value','group',document.we_form." . $this->Name . "_ParentID.value);"));
 
 		$weAcSelector = $yuiSuggest->getHTML();
 
@@ -1267,7 +1267,7 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 			}
 		}
 
-		$content.='</select><br/>' . we_html_tools::getPixel(5, 10) . '<br>' . we_button::create_button("edit", "javascript:we_cmd('display_user',document.we_form." . $this->Name . "_Users.value)", true, -1, -1, "", "", true, false);
+		$content.='</select><br/>' . we_html_tools::getPixel(5, 10) . '<br>' . we_html_button::create_button("edit", "javascript:we_cmd('display_user',document.we_form." . $this->Name . "_Users.value)", true, -1, -1, "", "", true, false);
 
 		$parts = array(
 			array(
@@ -1351,7 +1351,7 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 		$yuiSuggest->setSelector('Dirselector');
 		$yuiSuggest->setTable(USER_TABLE);
 		$yuiSuggest->setWidth(403);
-		$yuiSuggest->setSelectButton(we_button::create_button('select', "javascript:we_cmd('browse_users','document.we_form." . $this->Name . "_ParentID.value','document.we_form." . $this->Name . "_ParentID_Text.value','group',document.we_form." . $this->Name . "_ParentID.value);"));
+		$yuiSuggest->setSelectButton(we_html_button::create_button('select', "javascript:we_cmd('browse_users','document.we_form." . $this->Name . "_ParentID.value','document.we_form." . $this->Name . "_ParentID_Text.value','group',document.we_form." . $this->Name . "_ParentID.value);"));
 
 		$_tableObj->setCol(0, 0, null, $_username);
 		$_tableObj->setCol(0, 1, null, we_html_tools::htmlFormElementTable($_password, g_l('modules_users', '[password]')));
@@ -1472,11 +1472,11 @@ function toggleRebuildPerm(disabledOnly) {';
 			}
 		}
 
-		$button_uncheckall = we_button::create_button('uncheckall', 'javascript:' . $uncheckjs);
-		$button_checkall = we_button::create_button('checkall', 'javascript:' . $checkjs);
+		$button_uncheckall = we_html_button::create_button('uncheckall', 'javascript:' . $uncheckjs);
+		$button_checkall = we_html_button::create_button('checkall', 'javascript:' . $checkjs);
 		$parts[] = array(
 			'headline' => '',
-			'html' => we_button::create_button_table(array($button_uncheckall, $button_checkall)),
+			'html' => we_html_button::create_button_table(array($button_uncheckall, $button_checkall)),
 			'space' => 0
 		);
 
@@ -1672,13 +1672,13 @@ function delElement(elvalues,elem) {
 
 				switch($k){
 					case (defined('NEWSLETTER_TABLE') ? NEWSLETTER_TABLE : 'NEWSLETTER_TABLE'):
-						$button = we_button::create_button('select', "javascript:we_cmd('openNewsletterDirselector',document.forms[0]." . $obj_names . "_" . $key . ".value,'document.we_form." . $obj_names . "_" . $key . ".value','document.we_form." . $obj_names . "_" . $key . "_Text.value','opener.top.content.editor.edbody.setValues(" . $setValue . ")','" . session_id() . "','" . (isset($_REQUEST["rootDirID"]) ? $_REQUEST["rootDirID"] : "") . "' )");
+						$button = we_html_button::create_button('select', "javascript:we_cmd('openNewsletterDirselector',document.forms[0]." . $obj_names . "_" . $key . ".value,'document.we_form." . $obj_names . "_" . $key . ".value','document.we_form." . $obj_names . "_" . $key . "_Text.value','opener.top.content.editor.edbody.setValues(" . $setValue . ")','" . session_id() . "','" . (isset($_REQUEST["rootDirID"]) ? $_REQUEST["rootDirID"] : "") . "' )");
 						break;
 					case NAVIGATION_TABLE:
-						$button = we_button::create_button('select', "javascript:we_cmd('openNavigationDirselector',document.forms[0]." . $obj_names . "_" . $key . ".value,'document.we_form." . $obj_names . "_" . $key . ".value','document.we_form." . $obj_names . "_" . $key . "_Text.value','opener.top.content.editor.edbody.setValues(" . $setValue . ")','" . session_id() . "','" . (isset($_REQUEST["rootDirID"]) ? $_REQUEST["rootDirID"] : "") . "' )");
+						$button = we_html_button::create_button('select', "javascript:we_cmd('openNavigationDirselector',document.forms[0]." . $obj_names . "_" . $key . ".value,'document.we_form." . $obj_names . "_" . $key . ".value','document.we_form." . $obj_names . "_" . $key . "_Text.value','opener.top.content.editor.edbody.setValues(" . $setValue . ")','" . session_id() . "','" . (isset($_REQUEST["rootDirID"]) ? $_REQUEST["rootDirID"] : "") . "' )");
 						break;
 					default:
-						$button = we_button::create_button('select', "javascript:we_cmd('openDirselector',document.forms[0]." . $obj_names . "_" . $key . ".value,'" . $k . "','document.we_form." . $obj_names . "_" . $key . ".value','document.we_form." . $obj_names . "_" . $key . "_Text.value','opener.top.content.editor.edbody.setValues(" . $setValue . ")','" . session_id() . "','" . (isset($_REQUEST["rootDirID"]) ? $_REQUEST["rootDirID"] : "") . "' )");
+						$button = we_html_button::create_button('select', "javascript:we_cmd('openDirselector',document.forms[0]." . $obj_names . "_" . $key . ".value,'" . $k . "','document.we_form." . $obj_names . "_" . $key . ".value','document.we_form." . $obj_names . "_" . $key . "_Text.value','opener.top.content.editor.edbody.setValues(" . $setValue . ")','" . session_id() . "','" . (isset($_REQUEST["rootDirID"]) ? $_REQUEST["rootDirID"] : "") . "' )");
 				}
 
 				$yuiSuggest = & weSuggest::getInstance();
@@ -1698,7 +1698,7 @@ function delElement(elvalues,elem) {
 
 				$content1.='
 <tr><td colspan="2">' . $weAcSelector . '</td>
-	<td><div style="position:relative; top:-1px">' . we_button::create_button("image:btn_function_trash", "javascript:fillValues(document.we_form." . $obj_values . ",'" . $obj_names . "');fillDef(document.we_form." . $obj_def_values . ",document.we_form." . $obj_values . ",'" . $obj_def_names . "','" . $obj_names . "');delElement(document.we_form." . $obj_values . "," . $key . ");delElement(document.we_form." . $obj_def_values . "," . $key . ");switchPage(2);", true) . '</td></div>' .
+	<td><div style="position:relative; top:-1px">' . we_html_button::create_button("image:btn_function_trash", "javascript:fillValues(document.we_form." . $obj_values . ",'" . $obj_names . "');fillDef(document.we_form." . $obj_def_values . ",document.we_form." . $obj_values . ",'" . $obj_def_names . "','" . $obj_names . "');delElement(document.we_form." . $obj_values . "," . $key . ");delElement(document.we_form." . $obj_def_values . "," . $key . ");switchPage(2);", true) . '</td></div>' .
 					($k == FILE_TABLE ?
 						'<td class="defaultfont">' . we_html_forms::checkbox(1, $default, $obj_def_names . "_$key", g_l('modules_users', "[make_def_ws]"), true, "defaultfont", 'top.content.setHot();fillDef(document.we_form.' . $obj_def_values . ',document.we_form.' . $obj_values . ',\'' . $obj_def_names . '\',\'' . $obj_names . '\');') . '</td>' :
 						'<td>' . we_html_tools::getPixel(5, 5) . '</td>') . '
@@ -1711,7 +1711,7 @@ function delElement(elvalues,elem) {
 		<td>' . we_html_tools::getPixel(40, 3) . '</td>
 		<td>' . we_html_tools::getPixel(90, 3) . '</td>
 	</tr>
-	<tr><td colspan="4">' . we_button::create_button("image:btn_function_plus", "javascript:top.content.setHot();fillValues(document.we_form." . $obj_values . ",'" . $obj_names . "');fillDef(document.we_form." . $obj_def_values . ",document.we_form." . $obj_values . ",'" . $obj_def_names . "','" . $obj_names . "');addElement(document.we_form." . $obj_values . ");addElement(document.we_form." . $obj_def_values . ");", true) . '</td></tr>
+	<tr><td colspan="4">' . we_html_button::create_button("image:btn_function_plus", "javascript:top.content.setHot();fillValues(document.we_form." . $obj_values . ",'" . $obj_names . "');fillDef(document.we_form." . $obj_def_values . ",document.we_form." . $obj_values . ",'" . $obj_def_names . "','" . $obj_names . "');addElement(document.we_form." . $obj_values . ");addElement(document.we_form." . $obj_def_values . ");", true) . '</td></tr>
 </table>';
 
 			$parts[] = array(
@@ -1959,7 +1959,7 @@ function show_seem_chooser(val) {
 		$_start_weapp->selectOption($this->Preferences['seem_start_weapp']);
 		$weAPPSelector = $_start_weapp->getHtml();
 
-		$_seem_weapp_chooser = we_button::create_button_table(array($weAPPSelector), 10, array('id' => 'seem_start_weapp', 'style' => 'display:none'));
+		$_seem_weapp_chooser = we_html_button::create_button_table(array($weAPPSelector), 10, array('id' => 'seem_start_weapp', 'style' => 'display:none'));
 
 
 		// Build SEEM select start document chooser
@@ -1972,10 +1972,10 @@ function show_seem_chooser(val) {
 		$yuiSuggest->setResult('seem_start_document', $_document_id);
 		$yuiSuggest->setSelector('Docselector');
 		$yuiSuggest->setWidth(191);
-		$yuiSuggest->setSelectButton(we_button::create_button('select', 'javascript:select_seem_start()', true, 100, 22, '', '', false, false), 10);
+		$yuiSuggest->setSelectButton(we_html_button::create_button('select', 'javascript:select_seem_start()', true, 100, 22, '', '', false, false), 10);
 		$yuiSuggest->setContainerWidth(299);
 
-		$_seem_document_chooser = we_button::create_button_table(array($yuiSuggest->getHTML()), 0, array('id' => 'seem_start_document', 'style' => 'display:none'));
+		$_seem_document_chooser = we_html_button::create_button_table(array($yuiSuggest->getHTML()), 0, array('id' => 'seem_start_document', 'style' => 'display:none'));
 
 		// Build SEEM select start object chooser
 		$yuiSuggest->setAcId('Obj');
@@ -1989,10 +1989,10 @@ function show_seem_chooser(val) {
 			$yuiSuggest->setTable(OBJECT_FILES_TABLE);
 		}
 		$yuiSuggest->setWidth(191);
-		$yuiSuggest->setSelectButton(we_button::create_button('select', 'javascript:select_seem_start()', true, 100, 22, '', '', false, false), 10);
+		$yuiSuggest->setSelectButton(we_html_button::create_button('select', 'javascript:select_seem_start()', true, 100, 22, '', '', false, false), 10);
 		$yuiSuggest->setContainerWidth(299);
 
-		$_seem_object_chooser = we_button::create_button_table(array($yuiSuggest->getHTML()), 10, array('id' => 'seem_start_object', 'style' => 'display:none'));
+		$_seem_object_chooser = we_html_button::create_button_table(array($yuiSuggest->getHTML()), 10, array('id' => 'seem_start_object', 'style' => 'display:none'));
 
 		// Build final HTML code
 		$_seem_html = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 2, 1);
@@ -2085,7 +2085,7 @@ function show_seem_chooser(val) {
 		$_window_current_dimension_table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 1, 2);
 
 		$_window_current_dimension_table->setCol(0, 0, null, we_html_tools::getPixel(90, 1));
-		$_window_current_dimension_table->setCol(0, 1, null, we_button::create_button("apply_current_dimension", "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = " . (we_base_browserDetect::isIE() ? "top.opener.top.document.body.clientWidth" : "top.opener.top.window.outerWidth") . ";document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = " . (we_base_browserDetect::isIE() ? "top.opener.top.document.body.clientHeight;" : "top.opener.top.window.outerHeight;"), true, 210));
+		$_window_current_dimension_table->setCol(0, 1, null, we_html_button::create_button("apply_current_dimension", "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = " . (we_base_browserDetect::isIE() ? "top.opener.top.document.body.clientWidth" : "top.opener.top.window.outerWidth") . ";document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = " . (we_base_browserDetect::isIE() ? "top.opener.top.document.body.clientHeight;" : "top.opener.top.window.outerHeight;"), true, 210));
 
 		// Build final HTML code
 		$_window_html = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 5, 1);
@@ -2101,8 +2101,8 @@ function show_seem_chooser(val) {
 		// Create predefined window dimension buttons
 		$_window_predefined_table = new we_html_table(array("border" => 0, "align" => "right", "cellpadding" => 1, "cellspacing" => 0), 3, 1);
 
-		$_window_predefined_table->setCol(0, 0, null, we_button::create_button_table(array(we_button::create_button("res_800", "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = '800';document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = '600';", true), we_button::create_button("res_1024", "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = '1024';document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = '768';", true))));
-		$_window_predefined_table->setCol(2, 0, null, we_button::create_button_table(array(we_button::create_button("res_1280", "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = '1280';document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = '960';", true), we_button::create_button("res_1600", "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = '1600';document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = '1200';", true))));
+		$_window_predefined_table->setCol(0, 0, null, we_html_button::create_button_table(array(we_html_button::create_button("res_800", "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = '800';document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = '600';", true), we_html_button::create_button("res_1024", "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = '1024';document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = '768';", true))));
+		$_window_predefined_table->setCol(2, 0, null, we_html_button::create_button_table(array(we_html_button::create_button("res_1280", "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = '1280';document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = '960';", true), we_html_button::create_button("res_1600", "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = '1600';document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = '1200';", true))));
 
 		$_window_predefined_table->setCol(1, 0, null, we_html_tools::getPixel(1, 10));
 
@@ -2215,7 +2215,7 @@ function show_seem_chooser(val) {
 		$yuiSuggest->setSelector('Docselector');
 		$yuiSuggest->setTable(USER_TABLE);
 		$yuiSuggest->setWidth(200);
-		$yuiSuggest->setSelectButton(we_button::create_button('select', "javascript:we_cmd('browse_users','document.we_form." . $this->Name . "_Alias.value','document.we_form." . $this->Name . "_Alias_Text.value','noalias',document.we_form." . $this->Name . "_Alias.value)"));
+		$yuiSuggest->setSelectButton(we_html_button::create_button('select', "javascript:we_cmd('browse_users','document.we_form." . $this->Name . "_Alias.value','document.we_form." . $this->Name . "_Alias_Text.value','noalias',document.we_form." . $this->Name . "_Alias.value)"));
 
 		$weAcSelectorName = $yuiSuggest->getHTML();
 
@@ -2228,7 +2228,7 @@ function show_seem_chooser(val) {
 		$yuiSuggest->setSelector("Dirselector");
 		$yuiSuggest->setTable(USER_TABLE);
 		$yuiSuggest->setWidth(200);
-		$yuiSuggest->setSelectButton(we_button::create_button("select", "javascript:we_cmd('browse_users','document.we_form." . $this->Name . "_ParentID.value','document.we_form." . $this->Name . "_ParentID_Text.value','group',document.we_form." . $this->Name . "_ParentID.value)"));
+		$yuiSuggest->setSelectButton(we_html_button::create_button("select", "javascript:we_cmd('browse_users','document.we_form." . $this->Name . "_ParentID.value','document.we_form." . $this->Name . "_ParentID_Text.value','group',document.we_form." . $this->Name . "_ParentID.value)"));
 
 		$weAcSelectorGroup = $yuiSuggest->getHTML();
 

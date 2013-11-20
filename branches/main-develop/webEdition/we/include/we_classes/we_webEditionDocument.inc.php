@@ -278,7 +278,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$textname'].value");
 		$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd('reload_editpage');");
 
-		$button = we_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','text/weTmpl',1)");
+		$button = we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','text/weTmpl',1)");
 		$yuiSuggest->setAcId('Template');
 		$yuiSuggest->setContentType('folder,text/weTmpl');
 		$yuiSuggest->setInput($textname, $path);
@@ -316,7 +316,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			}
 			$pop = (permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ?
 					'<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $path . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' .
-					we_button::create_button('edit', 'javascript:goTemplate(' . $myid . ')') .
+					we_html_button::create_button('edit', 'javascript:goTemplate(' . $myid . ')') .
 					'</td></tr></table>' :
 					$path);
 
@@ -365,7 +365,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			$TID = $this->TemplateID;
 		}
 
-		$openButton = (permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ? we_button::create_button('edit', 'javascript:goTemplate(document.we_form.elements[\'' . $fieldname . '\'].options[document.we_form.elements[\'' . $fieldname . '\'].selectedIndex].value)') : '');
+		$openButton = (permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ? we_html_button::create_button('edit', 'javascript:goTemplate(document.we_form.elements[\'' . $fieldname . '\'].options[document.we_form.elements[\'' . $fieldname . '\'].selectedIndex].value)') : '');
 
 		if(!empty($tlist)){
 			$foo = array();

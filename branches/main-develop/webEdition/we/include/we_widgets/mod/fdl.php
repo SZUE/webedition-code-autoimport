@@ -55,7 +55,7 @@ if(($maxRows = f('SELECT COUNT(DISTINCT f.Username) AS a ' . $queryFailedLogins,
 			$webUserID = $db->f('UID');
 			$buttonJSFunction = 'YAHOO.util.Connect.asyncRequest( "GET", "' . WEBEDITION_DIR . 'rpc/rpc.php?cmd=ResetFailedCustomerLogins&cns=customer&custid=' . $webUserID . '", ajaxCallbackResetLogins );';
 
-			$failedLoginsTable->setCol($i, 3, array("class" => "middlefont", "align" => "right"), ((intval($db->f('numberFailedLogins')) >= SECURITY_LIMIT_CUSTOMER_NAME && $webUserID) ? we_button::create_button("reset", "javascript:" . $buttonJSFunction) : we_html_tools::getPixel(10, 1)));
+			$failedLoginsTable->setCol($i, 3, array("class" => "middlefont", "align" => "right"), ((intval($db->f('numberFailedLogins')) >= SECURITY_LIMIT_CUSTOMER_NAME && $webUserID) ? we_html_button::create_button("reset", "javascript:" . $buttonJSFunction) : we_html_tools::getPixel(10, 1)));
 			$i++;
 		}
 		//$cur+=1000;

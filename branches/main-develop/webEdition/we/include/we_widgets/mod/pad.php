@@ -175,10 +175,10 @@ $oTblPrio->setCol(
 )));
 
 // Edit note buttons
-$delete_button = we_button::create_button("delete", "javascript:deleteNote();", false, -1, -1, "", "", true, false);
-$cancel_button = we_button::create_button("cancel", "javascript:cancelNote();", false, -1, -1);
-$save_button = we_button::create_button("save", "javascript:saveNote();");
-$buttons = we_button::position_yes_no_cancel($delete_button, $cancel_button, $save_button);
+$delete_button = we_html_button::create_button("delete", "javascript:deleteNote();", false, -1, -1, "", "", true, false);
+$cancel_button = we_html_button::create_button("cancel", "javascript:cancelNote();", false, -1, -1);
+$save_button = we_html_button::create_button("save", "javascript:saveNote();");
+$buttons = we_html_button::position_yes_no_cancel($delete_button, $cancel_button, $save_button);
 
 // Edit note dialog
 $oTblProps = new we_html_table(array(
@@ -227,7 +227,7 @@ $oTblBtnProps = new we_html_table(array(
 	), 1, 1);
 $oTblBtnProps->setCol(0, 0, array(
 	"align" => "right"
-	), we_button::create_button("image:btn_add_note", "javascript:displayNote();", false, -1, -1));
+	), we_html_button::create_button("image:btn_add_note", "javascript:displayNote();", false, -1, -1));
 
 // Table with the note list
 $oPad = new we_html_table(
@@ -304,7 +304,7 @@ print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 			)) . we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
 			we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
 			we_html_element::jsScript(JS_DIR . "jscalendar/calendar-setup.js") .
-			we_button::create_state_changer() . we_html_element::jsElement(
+			we_html_button::create_state_changer() . we_html_element::jsElement(
 				(($_REQUEST['we_cmd'][6] == "pad/pad") ? "
 			var _sObjId='" . $_sObjId . "';
 			var _sCls_=parent.gel(_sObjId+'_cls').value;

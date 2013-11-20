@@ -348,15 +348,15 @@ class blaettern{
 
 		return '<table cellpadding="0" cellspacing="0" border="0"><tr><td>' .
 			($actPage > 0 ?
-				we_button::create_button("back", $url . '&actPage=' . ($actPage - 1)) :
-				we_button::create_button("back", "#", false, 100, 22, "", "", true)) .
+				we_html_button::create_button("back", $url . '&actPage=' . ($actPage - 1)) :
+				we_html_button::create_button("back", "#", false, 100, 22, "", "", true)) .
 			'</td><td>' . we_html_tools::getPixel(23, 1) . "</td><td class='defaultfont'><b>" . (($anz) ? $offset + 1 : 0) . "-" .
 			(($anz - $offset) < $nrOfPage ?
 				$anz : $offset + $nrOfPage) .
 			"&nbsp;&nbsp;" . g_l('global', "[from]") . "&nbsp;&nbsp;" . $anz . "</b></td><td>" . we_html_tools::getPixel(23, 1) . '</td><td>' .
 			(($offset + $nrOfPage) < $anz ?
-				we_button::create_button("next", $url . '&actPage=' . ($actPage + 1)) :
-				we_button::create_button("next", "#", false, 100, 22, "", "", true)) .
+				we_html_button::create_button("next", $url . '&actPage=' . ($actPage + 1)) :
+				we_html_button::create_button("next", "#", false, 100, 22, "", "", true)) .
 			"</td></tr></table>";
 	}
 

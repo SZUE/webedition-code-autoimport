@@ -188,12 +188,12 @@ document.write ("<" + "script type=\"text/javascript\" src=\"' . $getscript . '?
 ';
 		}
 		$content .= '</table>' . (($ok) ? "" : '<p class="defaultfont">*' . g_l('modules_banner', '[required]')) . '</p>';
-		$cancel_button = we_button::create_button("cancel", "javascript:top.close();");
-		$ok_button = we_button::create_button("ok", "form:submit:we_form");
-		$back_button = we_button::create_button("back", "javascript:history.back();");
-		$close_button = we_button::create_button("close", "javascript:top.close();");
+		$cancel_button = we_html_button::create_button("cancel", "javascript:top.close();");
+		$ok_button = we_html_button::create_button("ok", "form:submit:we_form");
+		$back_button = we_html_button::create_button("back", "javascript:history.back();");
+		$close_button = we_html_button::create_button("close", "javascript:top.close();");
 
-		$buttons = $ok ? we_button::position_yes_no_cancel($close_button, null, $back_button) : we_button::position_yes_no_cancel($ok_button, null, $cancel_button);
+		$buttons = $ok ? we_html_button::position_yes_no_cancel($close_button, null, $back_button) : we_html_button::position_yes_no_cancel($ok_button, null, $cancel_button);
 
 		print we_html_tools::htmlDialogLayout($content, $ok ? g_l('modules_banner', '[bannercode_copy]') : g_l('modules_banner', '[bannercode_ext]'), $buttons);
 		?>

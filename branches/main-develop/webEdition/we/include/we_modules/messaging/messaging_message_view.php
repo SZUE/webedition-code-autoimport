@@ -77,7 +77,7 @@ print STYLESHEET;
 			),
 			array("headline" => g_l('modules_messaging', '[status]'),
 				"html" => '<table border="0" cellpadding="0" cellspacing="0"><tr><td class="defaultfont">' . $messaging->selected_message['hdrs']['status'] . '%</td><td>' . we_html_tools::getPixel(20, 2) .
-				(($messaging->selected_message['hdrs']['status'] < 100) ? '<td>' . we_button::create_button(
+				(($messaging->selected_message['hdrs']['status'] < 100) ? '<td>' . we_html_button::create_button(
 						"percent100", "javascript:todo_markdone()") . '</td>' : '') . '</tr></table>',
 				"noline" => 1,
 				"space" => 140

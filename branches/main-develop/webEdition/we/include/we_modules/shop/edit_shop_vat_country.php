@@ -180,8 +180,8 @@ print '</head>
 ';
 
 print we_html_multiIconBox::getHTML(
-		'weShopCountryVat', "100%", $parts, 30, we_button::position_yes_no_cancel(
-			we_button::create_button('save', 'javascript:we_cmd(\'save\');'), '', we_button::create_button('cancel', 'javascript:we_cmd(\'close\');')
+		'weShopCountryVat', "100%", $parts, 30, we_html_button::position_yes_no_cancel(
+			we_html_button::create_button('save', 'javascript:we_cmd(\'save\');'), '', we_html_button::create_button('cancel', 'javascript:we_cmd(\'close\');')
 		), -1, '', '', false, g_l('modules_shop', '[vat_country][box_headline]'), '', 741
 );
 

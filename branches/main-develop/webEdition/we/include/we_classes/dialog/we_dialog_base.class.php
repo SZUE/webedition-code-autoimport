@@ -175,19 +175,19 @@ class we_dialog_base{
 	}
 
 	function getNextBut(){
-		return we_button::create_button('next', "javascript:document.forms['0'].submit();");
+		return we_html_button::create_button('next', "javascript:document.forms['0'].submit();");
 	}
 
 	function getOkBut(){
-		return we_button::create_button('ok', 'javascript:weDoOk();');
+		return we_html_button::create_button('ok', 'javascript:weDoOk();');
 	}
 
 	function getCancelBut(){
-		return we_button::create_button('cancel', 'javascript:top.close();');
+		return we_html_button::create_button('cancel', 'javascript:top.close();');
 	}
 
 	function getbackBut(){
-		return ($this->pageNr > 1) ? we_button::create_button('back', 'javascript:history.back();') . we_html_tools::getPixel(10, 2) : '';
+		return ($this->pageNr > 1) ? we_html_button::create_button('back', 'javascript:history.back();') . we_html_tools::getPixel(10, 2) : '';
 	}
 
 	function getDialogHTML(){
@@ -207,13 +207,13 @@ class we_dialog_base{
 
 	function getDialogButtons(){
 		if($this->pageNr == $this->numPages && $this->JsOnly == false){
-			$okBut = ($this->getBackBut() != '') ? we_button::create_button_table(array($this->getBackBut(), we_button::create_button('ok', 'form:we_form'))) : we_button::create_button('ok', 'form:we_form');
+			$okBut = ($this->getBackBut() != '') ? we_html_button::create_button_table(array($this->getBackBut(), we_html_button::create_button('ok', 'form:we_form'))) : we_html_button::create_button('ok', 'form:we_form');
 		} else if($this->pageNr < $this->numPages){
-			$okBut = (($this->getBackBut() != '') && ($this->getNextBut()) != '') ? we_button::create_button_table(array($this->getBackBut(), $this->getNextBut())) : (($this->getBackBut() == '') ? $this->getNextBut() : $this->getBackBut());
+			$okBut = (($this->getBackBut() != '') && ($this->getNextBut()) != '') ? we_html_button::create_button_table(array($this->getBackBut(), $this->getNextBut())) : (($this->getBackBut() == '') ? $this->getNextBut() : $this->getBackBut());
 		} else{
-			$okBut = (($this->getBackBut() != '') && ($this->getOkBut()) != '') ? we_button::create_button_table(array($this->getBackBut(), $this->getOkBut())) : (($this->getBackBut() == '') ? $this->getOkBut() : $this->getBackBut());
+			$okBut = (($this->getBackBut() != '') && ($this->getOkBut()) != '') ? we_html_button::create_button_table(array($this->getBackBut(), $this->getOkBut())) : (($this->getBackBut() == '') ? $this->getOkBut() : $this->getBackBut());
 		}
-		return we_button::position_yes_no_cancel($okBut, '', $this->getCancelBut());
+		return we_html_button::position_yes_no_cancel($okBut, '', $this->getCancelBut());
 	}
 
 	function getFormHTML(){

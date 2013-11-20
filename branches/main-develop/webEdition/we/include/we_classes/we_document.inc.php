@@ -260,18 +260,18 @@ class we_document extends we_root{
 	}
 
 	function formCategory(){
-		$delallbut = we_button::create_button('delete_all', "javascript:we_cmd('delete_all_cats')", true, -1, -1, '', '', $this->Category ? false : true);
-		$addbut = we_button::create_button('add', "javascript:we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','opener.setScrollTo();fillIDs();opener.top.we_cmd(\\'add_cat\\',top.allIDs);')");
-		$cats = new MultiDirChooser(508, $this->Category, 'delete_cat', we_button::create_button_table(array($delallbut, $addbut)), '', 'Icon,Path', CATEGORY_TABLE);
+		$delallbut = we_html_button::create_button('delete_all', "javascript:we_cmd('delete_all_cats')", true, -1, -1, '', '', $this->Category ? false : true);
+		$addbut = we_html_button::create_button('add', "javascript:we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','opener.setScrollTo();fillIDs();opener.top.we_cmd(\\'add_cat\\',top.allIDs);')");
+		$cats = new MultiDirChooser(508, $this->Category, 'delete_cat', we_html_button::create_button_table(array($delallbut, $addbut)), '', 'Icon,Path', CATEGORY_TABLE);
 		$cats->extraDelFn = 'setScrollTo();';
 		return $cats->get();
 	}
 
 	function formNavigation(){
-		$delallbut = we_button::create_button('delete_all', "javascript:if(confirm('" . g_l('navigation', '[dellall_question]') . "')) we_cmd('delete_all_navi')", true, -1, -1, "", "", (permissionhandler::hasPerm('EDIT_NAVIGATION') && $this->NavigationItems) ? false : true);
-		$addbut = we_button::create_button('add', "javascript:we_cmd('module_navigation_edit_navi',0)", true, 100, 22, '', '', (permissionhandler::hasPerm('EDIT_NAVIGATION') && $this->ID && $this->Published) ? false : true, false);
+		$delallbut = we_html_button::create_button('delete_all', "javascript:if(confirm('" . g_l('navigation', '[dellall_question]') . "')) we_cmd('delete_all_navi')", true, -1, -1, "", "", (permissionhandler::hasPerm('EDIT_NAVIGATION') && $this->NavigationItems) ? false : true);
+		$addbut = we_html_button::create_button('add', "javascript:we_cmd('module_navigation_edit_navi',0)", true, 100, 22, '', '', (permissionhandler::hasPerm('EDIT_NAVIGATION') && $this->ID && $this->Published) ? false : true, false);
 
-		$navis = new MultiFileChooser(508, $this->NavigationItems, 'delete_navi', we_button::create_button_table(array($delallbut, $addbut)), "module_navigation_edit_navi", "Icon,Path", NAVIGATION_TABLE);
+		$navis = new MultiFileChooser(508, $this->NavigationItems, 'delete_navi', we_html_button::create_button_table(array($delallbut, $addbut)), "module_navigation_edit_navi", "Icon,Path", NAVIGATION_TABLE);
 		$navis->extraDelFn = 'setScrollTo();';
 		$NoDelNavis = makeArrayFromCSV($this->NavigationItems);
 		foreach($NoDelNavis as $_path){
@@ -292,7 +292,7 @@ class we_document extends we_root{
 			$navis->CanDelete = false;
 		}
 
-		return we_button::create_state_changer() . $navis->get();
+		return we_html_button::create_state_changer() . $navis->get();
 	}
 
 	function addCat($id){

@@ -863,10 +863,10 @@ function msg_start() {
 			we_html_tools::getPixel(10, 1)
 		);
 
-		$buttons = we_button::create_button_table(array(
-				we_button::create_button("search", "javascript:doSearch();"),
-				we_button::create_button("advanced", "javascript:launchAdvanced()", true),
-				we_button::create_button("reset_search", "javascript:clearSearch();")), 10);
+		$buttons = we_html_button::create_button_table(array(
+				we_html_button::create_button("search", "javascript:doSearch();"),
+				we_html_button::create_button("advanced", "javascript:launchAdvanced()", true),
+				we_html_button::create_button("reset_search", "javascript:clearSearch();")), 10);
 
 		$table->setCol(0, 1, array('class' => 'defaultfont'), $buttons);
 		$form = we_html_element::htmlForm(

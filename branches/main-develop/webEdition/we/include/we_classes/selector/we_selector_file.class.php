@@ -603,9 +603,9 @@ function selectIt(){
 		</select>
 		</td>
 		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
-		<td width="40">' . we_button::create_button("root_dir", "javascript:if(rootDirButsState){top.setRootDir();}", false, 40, 22, "", "", ($this->dir == 0), false) . '</td>
+		<td width="40">' . we_html_button::create_button("root_dir", "javascript:if(rootDirButsState){top.setRootDir();}", false, 40, 22, "", "", ($this->dir == 0), false) . '</td>
 		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
-		<td width="40">' . we_button::create_button("image:btn_fs_back", "javascript:top.goBackDir();", false, 40, 22, "", "", ($this->dir == 0), false) . '</td>' .
+		<td width="40">' . we_html_button::create_button("image:btn_fs_back", "javascript:top.goBackDir();", false, 40, 22, "", "", ($this->dir == 0), false) . '</td>' .
 			$this->printHeaderTableExtraCols() .
 			'<td width="10">' . we_html_tools::getPixel(10, 29) . '</td></tr>' .
 			$this->printHeaderTableSpaceRow() . '
@@ -636,7 +636,7 @@ function selectIt(){
 	}
 
 	function printHeaderJS(){
-		return we_button::create_state_changer(false) . '
+		return we_html_button::create_state_changer(false) . '
 function disableRootDirButs(){
 	root_dir_enabled = switch_button_state("root_dir", "root_dir_enabled", "disabled");
 	btn_fs_back_enabled = switch_button_state("btn_fs_back", "back_enabled", "disabled", "image");
@@ -740,9 +740,9 @@ function press_ok_button() {
 	}
 
 	function printFooterTable(){
-		$cancel_button = we_button::create_button("cancel", "javascript:top.exit_close();");
-		$yes_button = we_button::create_button("ok", "javascript:press_ok_button();");
-		$buttons = we_button::position_yes_no_cancel($yes_button, null, $cancel_button);
+		$cancel_button = we_html_button::create_button("cancel", "javascript:top.exit_close();");
+		$yes_button = we_html_button::create_button("ok", "javascript:press_ok_button();");
+		$buttons = we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button);
 		return '
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
 	<tr>

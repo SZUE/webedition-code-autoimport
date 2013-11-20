@@ -137,7 +137,7 @@ class we_docTypes extends we_class{
 	}
 
 	function formCategory(){
-		$addbut = we_button::create_button("add", "javascript:we_cmd('openCatselector', '', '" . CATEGORY_TABLE . "', '', '', 'fillIDs();opener.we_cmd(\\'dt_add_cat\\', top.allIDs);')", false, 92, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
+		$addbut = we_html_button::create_button("add", "javascript:we_cmd('openCatselector', '', '" . CATEGORY_TABLE . "', '', '', 'fillIDs();opener.we_cmd(\\'dt_add_cat\\', top.allIDs);')", false, 92, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
 
 		$cats = new MultiDirChooser(521, $this->Category, "dt_delete_cat", $addbut, "", "Icon,Path", CATEGORY_TABLE);
 		return we_html_tools::htmlFormElementTable($cats->get(), g_l('weClass', "[category]"));
@@ -186,7 +186,7 @@ class we_docTypes extends we_class{
 
 	function formDocTypeTemplates(){
 		$wecmdenc3 = we_cmd_enc("fillIDs();opener.we_cmd('add_dt_template', top.allIDs);");
-		$addbut = we_button::create_button("add", "javascript:we_cmd('openDocselector', '', '" . TEMPLATES_TABLE . "','','','" . $wecmdenc3 . "', '', '', 'text/weTmpl', 1,1)");
+		$addbut = we_html_button::create_button("add", "javascript:we_cmd('openDocselector', '', '" . TEMPLATES_TABLE . "','','','" . $wecmdenc3 . "', '', '', 'text/weTmpl', 1,1)");
 		$templ = new MultiDirChooser(521, $this->Templates, "delete_dt_template", $addbut, "", "Icon,Path", TEMPLATES_TABLE);
 		return $templ->get();
 	}
@@ -261,7 +261,7 @@ class we_docTypes extends we_class{
 		//javascript:we_cmd('openDirselector', document.forms['we_form'].elements['" . $idname . "'].value, '" . FILE_TABLE . "', 'document.forms[\\'we_form\\'].elements[\\'" . $idname . "\\'].value', 'document.forms[\\'we_form\\'].elements[\\'" . $textname  . "\\'].value', '', '" . session_id() . "')
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['" . $idname . "'].value");
 		$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['" . $textname . "'].value");
-		$button = we_button::create_button("select", "javascript:we_cmd('openDirselector', document.forms['we_form'].elements['" . $idname . "'].value, '" . FILE_TABLE . "', '" . $wecmdenc1 . "', '" . $wecmdenc2 . "', '', '" . session_id() . "')");
+		$button = we_html_button::create_button("select", "javascript:we_cmd('openDirselector', document.forms['we_form'].elements['" . $idname . "'].value, '" . FILE_TABLE . "', '" . $wecmdenc1 . "', '" . $wecmdenc2 . "', '', '" . session_id() . "')");
 		$yuiSuggest->setAcId("Path");
 		$yuiSuggest->setContentType("folder");
 		$yuiSuggest->setInput($textname, $this->ParentPath);
@@ -345,11 +345,11 @@ function switchExt(){
 	}
 
 	function formNewDocType(){
-		return we_button::create_button('new_doctype', "javascript:we_cmd('newDocType')");
+		return we_html_button::create_button('new_doctype', "javascript:we_cmd('newDocType')");
 	}
 
 	function formDeleteDocType(){
-		return we_button::create_button('delete_doctype', "javascript:we_cmd('deleteDocType', '" . $this->ID . "')");
+		return we_html_button::create_button('delete_doctype', "javascript:we_cmd('deleteDocType', '" . $this->ID . "')");
 	}
 
 	/**

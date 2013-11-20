@@ -37,7 +37,7 @@ $_body = "";
 
 $_head = STYLESHEET_BUTTONS_ONLY . SCRIPT_BUTTONS_ONLY;
 
-$_backbutton = we_button::create_button("back", "javascript:top.weNavigationHistory.navigateBack();");
+$_backbutton = we_html_button::create_button("back", "javascript:top.weNavigationHistory.navigateBack();");
 
 
 

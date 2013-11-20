@@ -34,6 +34,6 @@ $content = '<table cellpadding="0" cellspacing="0" border="0">
 ?>
 </head>
 <body class="weDialogBody">
-	<?php print we_html_tools::htmlDialogLayout($content, g_l('help', '[help_not_available_title]'), we_button::create_button("close", "javascript:self.close();")); ?>
+	<?php print we_html_tools::htmlDialogLayout($content, g_l('help', '[help_not_available_title]'), we_html_button::create_button("close", "javascript:self.close();")); ?>
 </body>
 </html>

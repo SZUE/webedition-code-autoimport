@@ -69,8 +69,8 @@ echo we_html_tools::htmlTop(g_l('backup', "[view_log]")) .
 <body class="weDialogBody" style="overflow:hidden;" onLoad="self.focus();">
 	<div id="info" style="display: block;">
 		<?php
-		$buttons = we_button::position_yes_no_cancel(
-				we_button::create_button("close", "javascript:self.close()"), '', ''
+		$buttons = we_html_button::position_yes_no_cancel(
+				we_html_button::create_button("close", "javascript:self.close()"), '', ''
 		);
 
 		print we_html_multiIconBox::getJS();

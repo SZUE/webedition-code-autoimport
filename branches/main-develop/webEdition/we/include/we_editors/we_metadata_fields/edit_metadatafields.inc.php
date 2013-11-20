@@ -84,7 +84,7 @@ function checkMetaFieldName(inpElem, nr) {
 END_OF_SCRIPT;
 
 	return we_html_element::jsElement($_javascript) .
-		we_html_element::htmlDiv(array('class' => 'weDialogButtonsBody', 'style' => 'height:100%;'), we_button::position_yes_no_cancel(we_button::create_button("ok", "javascript:we_save();"), "", we_button::create_button("cancel", "javascript:" . "top.close()"), 10, '', '', 0));
+		we_html_element::htmlDiv(array('class' => 'weDialogButtonsBody', 'style' => 'height:100%;'), we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "javascript:we_save();"), "", we_html_button::create_button("cancel", "javascript:" . "top.close()"), 10, '', '', 0));
 }
 
 /**
@@ -185,7 +185,7 @@ function build_dialog($selected_setting = 'ui'){
 <tr id="metadataRow_' . $key . '">
 	<td width="210" style="padding-right:5px;">' . we_html_tools::htmlTextInput('metadataTag[' . $key . ']', 24, $value['tag'], 255, "", "text", 205) . '</td>
 	<td width="200">' . we_html_tools::htmlSelect('metadataType[' . $key . ']', $_metadata_types, 1, $value['type'], false, 'class="defaultfont" ') . '</td>
-	<td align="right" width="30">' . we_button::create_button("image:btn_function_trash", "javascript:delRow(" . $_i . ")") . '</td>
+	<td align="right" width="30">' . we_html_button::create_button("image:btn_function_trash", "javascript:delRow(" . $_i . ")") . '</td>
 </tr>
 <tr id="metadataRow2_' . $key . '">
 	<td style="padding-bottom:10px;padding-right:5px;">
@@ -238,7 +238,7 @@ function build_dialog($selected_setting = 'ui'){
 					cell = document.createElement("TD");
 					cell.width="30";
 					cell.align="right"
-					cell.innerHTML=\'' . we_button::create_button("image:btn_function_trash", "javascript:delRow('+newID+')") . '\';
+					cell.innerHTML=\'' . we_html_button::create_button("image:btn_function_trash", "javascript:delRow('+newID+')") . '\';
 					newRow.appendChild(cell);
 
 					elem.appendChild(newRow);
@@ -292,7 +292,7 @@ function build_dialog($selected_setting = 'ui'){
 
 			$_metadata = new we_html_table(array('border' => 1, 'cellpadding' => 0, 'cellspacing' => 2, 'width' => 440, 'height' => 50), 4, 3);
 
-			$_content = $_hint . '<div style="height:20px"></div>' . $_metadataTable . we_button::create_button('image:btn_function_plus', 'javascript:addRow()');
+			$_content = $_hint . '<div style="height:20px"></div>' . $_metadataTable . we_html_button::create_button('image:btn_function_plus', 'javascript:addRow()');
 
 			$_contentFinal = array(
 				array('headline' => '', 'html' => $_content, 'space' => 0)

@@ -40,7 +40,7 @@ $refreshButton = "";
 
 if(!isset($_REQUEST["SEEM_edit_include"]) || $_REQUEST["SEEM_edit_include"] == "false"){
 
-	$refreshButton = we_button::create_button("refresh", "javascript:top.weNavigationHistory.navigateReload();");
+	$refreshButton = we_html_button::create_button("refresh", "javascript:top.weNavigationHistory.navigateReload();");
 }
 
 //	spaceholder

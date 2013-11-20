@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$createNl = we_button::create_button("new_newsletter", "javascript:top.opener.top.we_cmd('new_newsletter');", true, -1, -1, "", "", !permissionhandler::hasPerm("NEW_NEWSLETTER"));
-$createNg = we_button::create_button("new_newsletter_group", "javascript:top.opener.top.we_cmd('new_newsletter_group');", true, -1, -1, "", "", !permissionhandler::hasPerm("NEW_NEWSLETTER"));
+$createNl = we_html_button::create_button("new_newsletter", "javascript:top.opener.top.we_cmd('new_newsletter');", true, -1, -1, "", "", !permissionhandler::hasPerm("NEW_NEWSLETTER"));
+$createNg = we_html_button::create_button("new_newsletter_group", "javascript:top.opener.top.we_cmd('new_newsletter_group');", true, -1, -1, "", "", !permissionhandler::hasPerm("NEW_NEWSLETTER"));
 $content = $createNl . we_html_tools::getPixel(2, 14) . $createNg . we_html_tools::getPixel(2, 14);
 $modimage = "newsletter.gif";

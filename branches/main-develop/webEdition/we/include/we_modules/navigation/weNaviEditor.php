@@ -93,7 +93,7 @@ $_parts = array(
 	)
 );
 
-$_js = we_button::create_state_changer(false) . '
+$_js = we_html_button::create_state_changer(false) . '
 function save() {
 	var dir = document.we_form.ParentID;
 	' . $_cmd . '
@@ -146,8 +146,8 @@ var callback = {
 function queryEntries(id) {
 	ajaxObj.startRequest(id);
 }';
-$buttonsBottom = '<div style="float:right">' . we_button::position_yes_no_cancel(
-		we_button::create_button('save', 'javascript:save();', true, 100, 22, '', '', ($_id ? false : true), false), null, we_button::create_button('close', 'javascript:self.close();')) . '</div>';
+$buttonsBottom = '<div style="float:right">' . we_html_button::position_yes_no_cancel(
+		we_html_button::create_button('save', 'javascript:save();', true, 100, 22, '', '', ($_id ? false : true), false), null, we_html_button::create_button('close', 'javascript:self.close();')) . '</div>';
 
 $_body = we_html_element::htmlBody(
 		array(

@@ -101,11 +101,11 @@ if(z != 0){
 
 		if($_REQUEST['we_cmd'][0]){
 			$buttons =
-				we_button::position_yes_no_cancel(we_button::create_button("ok", "javascript:setColor();"), "", we_button::create_button("cancel", "javascript:window.close()")
+				we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "javascript:setColor();"), "", we_html_button::create_button("cancel", "javascript:window.close()")
 			);
 		} else{
 			$buttons =
-				we_button::position_yes_no_cancel(we_button::create_button("ok", "form:submit:we_form"), "", we_button::create_button("cancel", "javascript:window.close()")
+				we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "form:submit:we_form"), "", we_html_button::create_button("cancel", "javascript:window.close()")
 			);
 		}
 		$table = '<table border="0" cellpadding="0" cellspacing="0">

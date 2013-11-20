@@ -1087,17 +1087,17 @@ class we_object extends we_document{
 					$content .= '<tr><td>' . $this->htmlTextInput("we_" . $this->Name . "_input[" . $name . "defaultkey" . $f . "]", 40, $this->getElement($name . "defaultkey" . $f, "dat"), 255, 'onChange="_EditorFrame.setEditorIsHot(true);"', "text", 105) .
 						'</td><td>' . $this->htmlTextInput("we_" . $this->Name . "_input[" . $name . "defaultvalue" . $f . "]", 40, $this->getElement($name . "defaultvalue" . $f, "dat"), 255, 'onChange="_EditorFrame.setEditorIsHot(true);"', "text", 105);
 
-					$upbut = we_button::create_button("image:btn_direction_up", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('up_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($identifier) . "','" . $name . "','" . ($f) . "')");
-					$upbutDis = we_button::create_button("image:btn_direction_up", "#", true, -1, -1, "", "", true);
-					$downbut = we_button::create_button("image:btn_direction_down", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('down_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($identifier) . "','" . $name . "','" . ($f) . "')");
-					$downbutDis = we_button::create_button("image:btn_direction_down", "#", true, -1, -1, "", "", true);
+					$upbut = we_html_button::create_button("image:btn_direction_up", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('up_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($identifier) . "','" . $name . "','" . ($f) . "')");
+					$upbutDis = we_html_button::create_button("image:btn_direction_up", "#", true, -1, -1, "", "", true);
+					$downbut = we_html_button::create_button("image:btn_direction_down", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('down_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($identifier) . "','" . $name . "','" . ($f) . "')");
+					$downbutDis = we_html_button::create_button("image:btn_direction_down", "#", true, -1, -1, "", "", true);
 
 					$plusAmount = $this->htmlSelect("amount_insert_meta_at_class_" . $name . $f, $addArray);
-					$plusbut = we_button::create_button("image:btn_add_listelement", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('insert_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($identifier) . "','" . $name . "','" . ($f) . "')");
-					$trashbut = we_button::create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('delete_meta_class','" . $GLOBALS['we_transaction'] . "','" . ($identifier) . "','" . $name . "','" . ($f) . "')");
+					$plusbut = we_html_button::create_button("image:btn_add_listelement", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('insert_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($identifier) . "','" . $name . "','" . ($f) . "')");
+					$trashbut = we_html_button::create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('delete_meta_class','" . $GLOBALS['we_transaction'] . "','" . ($identifier) . "','" . $name . "','" . ($f) . "')");
 
 					$content .= "</td><td>" .
-						we_button::create_button_table(array($plusAmount,
+						we_html_button::create_button_table(array($plusAmount,
 							$plusbut,
 							(($f > 0) ? $upbut : $upbutDis ),
 							(($f < ($this->elements[$name . "count"]["dat"])) ? $downbut : $downbutDis),
@@ -1279,14 +1279,14 @@ class we_object extends we_document{
 		$content = parent::getLinkContent($link, $this->ParentID, $this->Path, $GLOBALS['DB_WE'], $img);
 
 		$startTag = $this->getLinkStartTag($link, $attribs, $this->ParentID, $this->Path, $GLOBALS['DB_WE'], $img);
-		$editbut = we_button::create_button("edit", "javascript:we_cmd('edit_link_at_class','" . $n . "','','" . $i . "');");
-		$delbut = we_button::create_button("image:btn_function_trash", "javascript:setScrollTo();we_cmd('delete_link_at_class','" . $GLOBALS['we_transaction'] . "','" . $i . "','" . $n . "')");
+		$editbut = we_html_button::create_button("edit", "javascript:we_cmd('edit_link_at_class','" . $n . "','','" . $i . "');");
+		$delbut = we_html_button::create_button("image:btn_function_trash", "javascript:setScrollTo();we_cmd('delete_link_at_class','" . $GLOBALS['we_transaction'] . "','" . $i . "','" . $n . "')");
 		if(!$content){
 			$content = g_l('global', "[new_link]");
 		}
 		return "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">
 					<tr><td class=\"defaultfont\">" . ($startTag ? $startTag : '') . $content . "</a></td>
-						<td width=\"5\"></td><td>" . we_button::create_button_table(array($editbut, $delbut), 5) . "</td>
+						<td width=\"5\"></td><td>" . we_html_button::create_button_table(array($editbut, $delbut), 5) . "</td>
 					</tr>
 					</table>";
 	}
@@ -1309,8 +1309,8 @@ class we_object extends we_document{
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
 		$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$textname'].value");
 		$wecmdenc3 = we_cmd_enc("top.opener._EditorFrame.setEditorIsHot(true);");
-		$button = we_button::create_button("select", "javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$rootDir','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")");
-		$delbutton = we_button::create_button("image:btn_function_trash", "javascript:document.forms['we_form'].elements['$idname'].value='';document.forms['we_form'].elements['$textname'].value=''");
+		$button = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$rootDir','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")");
+		$delbutton = we_html_button::create_button("image:btn_function_trash", "javascript:document.forms['we_form'].elements['$idname'].value='';document.forms['we_form'].elements['$textname'].value=''");
 		/*
 		  DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch erzeugt das
 		  $yuiSuggest =& weSuggest::getInstance();
@@ -1351,20 +1351,20 @@ class we_object extends we_document{
 		$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$textname'].value");
 		$wecmdenc3 = we_cmd_enc("top.opener._EditorFrame.setEditorIsHot(true);");
 
-		$selectObject = we_button::create_button("select", "javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$rootDir','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")");
+		$selectObject = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$rootDir','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")");
 
-		$upbut = we_button::create_button("image:btn_direction_up", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('up_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($i) . "','" . $name . "','" . ($f) . "')", true, 21, 22);
-		$upbutDis = we_button::create_button("image:btn_direction_up", "#", true, 21, 22, "", "", true);
-		$downbut = we_button::create_button("image:btn_direction_down", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('down_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($i) . "','" . $name . "','" . ($f) . "')", true, 21, 22);
-		$downbutDis = we_button::create_button("image:btn_direction_down", "#", true, 21, 22, "", "", true);
+		$upbut = we_html_button::create_button("image:btn_direction_up", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('up_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($i) . "','" . $name . "','" . ($f) . "')", true, 21, 22);
+		$upbutDis = we_html_button::create_button("image:btn_direction_up", "#", true, 21, 22, "", "", true);
+		$downbut = we_html_button::create_button("image:btn_direction_down", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('down_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($i) . "','" . $name . "','" . ($f) . "')", true, 21, 22);
+		$downbutDis = we_html_button::create_button("image:btn_direction_down", "#", true, 21, 22, "", "", true);
 
-		$plusbut = we_button::create_button("image:btn_add_listelement", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('insert_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($i) . "','" . $name . "','" . ($f) . "')", true, 40, 22);
-		$plusbutDis = we_button::create_button("image:btn_add_listelement", "#", true, 21, 22, "", "", true);
-		$trashbut = we_button::create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('delete_meta_class','" . $GLOBALS['we_transaction'] . "','" . ($i) . "','" . $name . "','" . ($f) . "')", true, 27, 22);
-		$trashbutDis = we_button::create_button("image:btn_function_trash", "#", true, 27, 22, "", "", true);
+		$plusbut = we_html_button::create_button("image:btn_add_listelement", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('insert_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($i) . "','" . $name . "','" . ($f) . "')", true, 40, 22);
+		$plusbutDis = we_html_button::create_button("image:btn_add_listelement", "#", true, 21, 22, "", "", true);
+		$trashbut = we_html_button::create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('delete_meta_class','" . $GLOBALS['we_transaction'] . "','" . ($i) . "','" . $name . "','" . ($f) . "')", true, 27, 22);
+		$trashbutDis = we_html_button::create_button("image:btn_function_trash", "#", true, 27, 22, "", "", true);
 		return '<tr>' .
 			'<td>' . $this->htmlTextInput($textname, 30, $path, 255, 'onChange="_EditorFrame.setEditorIsHot(true);" readonly ', "text", 146) . '</td>' .
-			'<td>' . we_button::create_button_table(
+			'<td>' . we_html_button::create_button_table(
 				array(
 				$selectObject,
 				$this->htmlHidden($idname, $myid),
@@ -1378,7 +1378,7 @@ class we_object extends we_document{
 	}
 
 	function dhtmledit($name, $i = 0){
-		return we_button::create_button("attributes", "javascript:we_cmd('editObjectTextArea','" . $i . "','" . $name . "','" . $GLOBALS["we_transaction"] . "');") .
+		return we_html_button::create_button("attributes", "javascript:we_cmd('editObjectTextArea','" . $i . "','" . $name . "','" . $GLOBALS["we_transaction"] . "');") .
 			$this->getWysiwygArea($name);
 	}
 
@@ -1438,18 +1438,18 @@ class we_object extends we_document{
 		} else {
 			for($i = 1; $i < (count($users) - 1); $i++){
 				$foo = getHash('SELECT Path,Icon FROM ' . USER_TABLE . ' WHERE ID=' . intval($users[$i]), $this->DB_WE);
-				$content .= '<tr><td>' . (empty($foo) ? '' : '<img src="' . ICON_DIR . $foo["Icon"] . '" width="16" height="18" />') . '</td><td class="defaultfont">' . (empty($foo) ? 'Unknown' : $foo["Path"]) . '</td><td>' . we_button::create_button("image:btn_function_trash", "javascript:we_cmd('del_user_from_field','" . $GLOBALS['we_transaction'] . "','" . $nr . "'," . $users[$i] . ",'" . $name . "');") . '</td></tr>';
+				$content .= '<tr><td>' . (empty($foo) ? '' : '<img src="' . ICON_DIR . $foo["Icon"] . '" width="16" height="18" />') . '</td><td class="defaultfont">' . (empty($foo) ? 'Unknown' : $foo["Path"]) . '</td><td>' . we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('del_user_from_field','" . $GLOBALS['we_transaction'] . "','" . $nr . "'," . $users[$i] . ",'" . $name . "');") . '</td></tr>';
 			}
 		}
 		$content .= '<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(324, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr></table>';
 
 		$textname = "we_" . $this->Name . "_input[" . $name . "usertext]";
 		$idname = "we_" . $this->Name . "_input[" . $name . "userid]";
-		$delallbut = we_button::create_button("delete_all", "javascript:we_cmd('del_all_users','" . $GLOBALS['we_transaction'] . "','$nr','$name')", true, -1, -1, "", "", count($users) ? false : true);
-		$addbut = $this->htmlHidden($idname, "0") . $this->htmlHidden($textname, "") . we_button::create_button("add", "javascript:we_cmd('browse_users','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','',document.forms['we_form'].elements['" . $idname . "'].value,'fillIDs();opener.we_cmd(\\'add_user_to_field\\',\\'" . $GLOBALS['we_transaction'] . "\\',\\'" . $nr . "\\', top.allIDs,\\'" . $name . "\\')','','',1)");
+		$delallbut = we_html_button::create_button("delete_all", "javascript:we_cmd('del_all_users','" . $GLOBALS['we_transaction'] . "','$nr','$name')", true, -1, -1, "", "", count($users) ? false : true);
+		$addbut = $this->htmlHidden($idname, "0") . $this->htmlHidden($textname, "") . we_html_button::create_button("add", "javascript:we_cmd('browse_users','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','',document.forms['we_form'].elements['" . $idname . "'].value,'fillIDs();opener.we_cmd(\\'add_user_to_field\\',\\'" . $GLOBALS['we_transaction'] . "\\',\\'" . $nr . "\\', top.allIDs,\\'" . $name . "\\')','','',1)");
 
 		return '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' .
-			'<div style="width:388px;" class="multichooser">' . $content . '</div></td></tr><tr><td align="right">' . we_html_tools::getPixel(2, 4) . we_button::create_button_table(array($delallbut, $addbut)) . '</td></tr></table>';
+			'<div style="width:388px;" class="multichooser">' . $content . '</div></td></tr><tr><td align="right">' . we_html_tools::getPixel(2, 4) . we_html_button::create_button_table(array($delallbut, $addbut)) . '</td></tr></table>';
 	}
 
 	function formUsers($canChange = true){
@@ -1467,24 +1467,24 @@ class we_object extends we_document{
 				$content .= '<tr><td>' . (empty($foo) ? '' : '<img src="' . ICON_DIR . $foo["Icon"] . '" width="16" height="18" />') . '</td><td class="defaultfont">' . (empty($foo) ? 'Unknown' : $foo["Path"]) . '</td><td>' .
 					($canChange ?
 						$this->htmlHidden('we_users_read_only[' . $users[$i] . ']', (isset($usersReadOnly[$users[$i]]) && $usersReadOnly[$users[$i]]) ? $usersReadOnly[$users[$i]] : "" ) . '<input type="checkbox" value="1" name="wetmp_users_read_only[' . $users[$i] . ']"' . ( (isset($usersReadOnly[$users[$i]]) && $usersReadOnly[$users[$i]] ) ? ' checked' : '') . ' OnClick="this.form.elements[\'we_users_read_only[' . $users[$i] . ']\'].value=(this.checked ? 1 : 0);_EditorFrame.setEditorIsHot(true);" />' :
-						'<img src="' . TREE_IMAGE_DIR . ($usersReadOnly[$users[$i]] ? 'check1_disabled.gif' : 'check0_disabled.gif') . '" />') . '</td><td class="defaultfont">' . g_l('weClass', "[readOnly]") . '</td><td>' . ($canChange ? we_button::create_button("image:btn_function_trash", "javascript:we_cmd('del_user','" . $users[$i] . "');_EditorFrame.setEditorIsHot(true);") : "") . '</td></tr>';
+						'<img src="' . TREE_IMAGE_DIR . ($usersReadOnly[$users[$i]] ? 'check1_disabled.gif' : 'check0_disabled.gif') . '" />') . '</td><td class="defaultfont">' . g_l('weClass', "[readOnly]") . '</td><td>' . ($canChange ? we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('del_user','" . $users[$i] . "');_EditorFrame.setEditorIsHot(true);") : "") . '</td></tr>';
 			}
 		}
 		$content .= '<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(333, 2) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(80, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr></table>';
 
 		$textname = 'userNameTmp';
 		$idname = 'userIDTmp';
-		$delallbut = we_button::create_button("delete_all", "javascript:we_cmd('del_all_users','')", true, -1, -1, "", "", $this->Users ? false : true);
+		$delallbut = we_html_button::create_button("delete_all", "javascript:we_cmd('del_all_users','')", true, -1, -1, "", "", $this->Users ? false : true);
 		//javascript:we_cmd('browse_users','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','',document.forms[0].elements['$idname'].value,'fillIDs();opener.we_cmd(\\'add_user\\',top.allIDs)','','',1)
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
 		$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$textname'].value");
 		$wecmdenc5 = we_cmd_enc("fillIDs();opener.we_cmd('add_user',top.allIDs)");
 		$addbut = $canChange ?
-			$this->htmlHidden($idname, "") . $this->htmlHidden($textname, "") . we_button::create_button("add", "javascript:we_cmd('browse_users','" . $wecmdenc1 . "','" . $wecmdenc2 . "','',document.forms[0].elements['$idname'].value,'" . $wecmdenc5 . "','','',1)") : '';
+			$this->htmlHidden($idname, "") . $this->htmlHidden($textname, "") . we_html_button::create_button("add", "javascript:we_cmd('browse_users','" . $wecmdenc1 . "','" . $wecmdenc2 . "','',document.forms[0].elements['$idname'].value,'" . $wecmdenc5 . "','','',1)") : '';
 
 		$content = '<table border="0" cellpadding="0" cellspacing="0">
 <tr><td><div style="width:506px;" class="multichooser">' . $content . '</div></td></tr>' .
-			($canChange ? '<tr><td align="right">' . we_html_tools::getPixel(2, 6) . '<br>' . we_button::create_button_table(array($delallbut, $addbut)) . '</td></tr>' : "") . '</table>';
+			($canChange ? '<tr><td align="right">' . we_html_tools::getPixel(2, 6) . '<br>' . we_html_button::create_button_table(array($delallbut, $addbut)) . '</td></tr>' : "") . '</table>';
 
 		return we_html_tools::htmlFormElementTable($content, g_l('weClass', "[otherowners]"), "left", "defaultfont");
 	}
@@ -1556,9 +1556,9 @@ class we_object extends we_document{
 		$wecmdenc3 = we_cmd_enc("opener.top.we_cmd('reload_entry_at_class','" . $GLOBALS['we_transaction'] . "','" . $i . "');opener._EditorFrame.setEditorIsHot(true);");
 
 		$content = '<input type=hidden name="' . $fname . '" value="' . $defaultname . '" />' .
-			we_button::create_button_table(array(
-				we_button::create_button("edit", "javascript:we_cmd('openDocselector','" . $id . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "',0,'image/*')"),
-				we_button::create_button("image:btn_function_trash", "javascript:we_cmd('remove_image_at_class','" . $GLOBALS['we_transaction'] . "','" . $i . "','" . $name . "')")
+			we_html_button::create_button_table(array(
+				we_html_button::create_button("edit", "javascript:we_cmd('openDocselector','" . $id . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "',0,'image/*')"),
+				we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('remove_image_at_class','" . $GLOBALS['we_transaction'] . "','" . $i . "','" . $name . "')")
 				)
 			) .
 			'<br>' . $img->getHtml();
@@ -1594,9 +1594,9 @@ class we_object extends we_document{
 		$wecmdenc3 = we_cmd_enc("opener.top.we_cmd('reload_entry_at_class','" . $GLOBALS['we_transaction'] . "','" . $i . "');opener._EditorFrame.setEditorIsHot(true);");
 
 		return '<input type=hidden name="' . $fname . '" value="' . $defaultname . '" />' .
-			we_button::create_button_table(array(
-				we_button::create_button("edit", "javascript:we_cmd('openDocselector','" . $id . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "',0,'application/x-shockwave-flash')"),
-				we_button::create_button("image:btn_function_trash", "javascript:we_cmd('remove_image_at_class','" . $GLOBALS['we_transaction'] . "','" . $i . "','" . $name . "')")
+			we_html_button::create_button_table(array(
+				we_html_button::create_button("edit", "javascript:we_cmd('openDocselector','" . $id . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "',0,'application/x-shockwave-flash')"),
+				we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('remove_image_at_class','" . $GLOBALS['we_transaction'] . "','" . $i . "','" . $name . "')")
 				)
 			) .
 			'<br>' . $img->getHtml();
@@ -1617,9 +1617,9 @@ class we_object extends we_document{
 		$wecmdenc3 = we_cmd_enc("opener.top.we_cmd('reload_entry_at_class','" . $GLOBALS['we_transaction'] . "','" . $i . "');opener._EditorFrame.setEditorIsHot(true);");
 
 		return '<input type=hidden name="' . $fname . '" value="' . $defaultname . '" />' .
-			we_button::create_button_table(array(
-				we_button::create_button("edit", "javascript:we_cmd('openDocselector','" . $id . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "',0,'video/quicktime')"),
-				we_button::create_button("image:btn_function_trash", "javascript:we_cmd('remove_image_at_class','" . $GLOBALS['we_transaction'] . "','" . $i . "','" . $name . "')")
+			we_html_button::create_button_table(array(
+				we_html_button::create_button("edit", "javascript:we_cmd('openDocselector','" . $id . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "',0,'video/quicktime')"),
+				we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('remove_image_at_class','" . $GLOBALS['we_transaction'] . "','" . $i . "','" . $name . "')")
 				)
 			) .
 			'<br>' . $img->getHtml();
@@ -1635,9 +1635,9 @@ class we_object extends we_document{
 		$wecmdenc3 = we_cmd_enc("opener.top.we_cmd('reload_entry_at_class','" . $GLOBALS['we_transaction'] . "','" . $i . "');opener._EditorFrame.setEditorIsHot(true);");
 
 		return '<input type=hidden name="' . $fname . '" value="' . $defaultname . '" />' .
-			we_button::create_button_table(array(
-				we_button::create_button("select", "javascript:we_cmd('openDocselector','" . $id . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "',0,'application/*')"),
-				we_button::create_button("image:btn_function_trash", "javascript:we_cmd('remove_image_at_class','" . $GLOBALS['we_transaction'] . "','" . $i . "','" . $name . "');")
+			we_html_button::create_button_table(array(
+				we_html_button::create_button("select", "javascript:we_cmd('openDocselector','" . $id . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "',0,'application/*')"),
+				we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('remove_image_at_class','" . $GLOBALS['we_transaction'] . "','" . $i . "','" . $name . "');")
 				)
 			) .
 			'<br>' . $other->getHtml();
@@ -1827,7 +1827,7 @@ class we_object extends we_document{
 		$this->DefaultWorkspaces = makeCSVFromArray($_newDefaultArr, true);
 
 		$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);fillIDs();opener.we_cmd('add_workspace',top.allIDs);");
-		$button = we_button::create_button("add", "javascript:we_cmd('openDirselector','','" . FILE_TABLE . "','','','" . $wecmdenc3 . "','','','',1)");
+		$button = we_html_button::create_button("add", "javascript:we_cmd('openDirselector','','" . FILE_TABLE . "','','','" . $wecmdenc3 . "','','','',1)");
 
 		$addbut = $button;
 
@@ -1852,7 +1852,7 @@ class we_object extends we_document{
 		require_once(WE_INCLUDES_PATH . 'we_tools/MultiDirChooser.inc.php');
 		$wecmdenc3 = we_cmd_enc("fillIDs();opener.we_cmd('add_css', top.allIDs);");
 
-		$addbut = we_button::create_button("add", "javascript:we_cmd('openDocselector', '', '" . FILE_TABLE . "','','','" . $wecmdenc3 . "','','','text/css', 1,1)");
+		$addbut = we_html_button::create_button("add", "javascript:we_cmd('openDocselector', '', '" . FILE_TABLE . "','','','" . $wecmdenc3 . "','','','text/css', 1,1)");
 		$css = new MultiDirChooser(510, $this->CSS, "del_css", $addbut, "", "Icon,Path", FILE_TABLE);
 		return $css->get();
 	}
@@ -1864,7 +1864,7 @@ class we_object extends we_document{
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
 		$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd('copyDocument',currentID);");
 
-		$but = we_button::create_button("select", "javascript:we_cmd('openDocselector',document.forms[0].elements['$idname'].value,'" . $this->Table . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "','" . $rootDIrID . "','" . $this->ContentType . "');");
+		$but = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.forms[0].elements['$idname'].value,'" . $this->Table . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "','" . $rootDIrID . "','" . $this->ContentType . "');");
 		return $this->htmlHidden($idname, $this->CopyID) . $but;
 	}
 
@@ -2324,7 +2324,7 @@ class we_object extends we_document{
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$idname'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$textname'].value");
 		$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.pathOfDocumentChanged();" . str_replace('\\', '', $cmd));
-		$button = we_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$rootDirID')");
+		$button = we_html_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$rootDirID')");
 		return we_html_tools::htmlFormElementTable($this->htmlTextInput($textname, 30, $path, "", ' readonly', "text", $width, 0), "", "left", "defaultfont", $this->htmlHidden($idname, $pathID), we_html_tools::getPixel(20, 4), $button);
 	}
 

@@ -107,13 +107,13 @@ while(false !== ($entry = $_dir->read())){
 		$table->setCol($_i, 0, array('valign' => 'top'), we_html_forms::radiobutton($_name, (($spellcheckerConf['default'] == $_name) ? true : false), 'default', '', true, 'defaultfont', 'document.we_form.enable_' . $_name . '.value=1;document.we_form._enable_' . $_name . '.checked=true;'));
 		$table->setCol($_i, 1, array('valign' => 'top', 'class' => 'defaultfont'), $_name);
 		$table->setCol($_i, 2, array('valign' => 'top', 'align' => 'right'), we_html_forms::checkboxWithHidden(in_array($_name, $spellcheckerConf['active']), 'enable_' . $_name, '', false, 'defaultfont', ''));
-		$table->setCol($_i, 3, array('valign' => 'top', 'align' => 'right'), we_button::create_button('image:btn_function_reload', 'javascript: updateDict("' . $_name . '");'));
-		$table->setCol($_i, 4, array('valign' => 'top', 'align' => 'right'), we_button::create_button('image:btn_function_trash', 'javascript: deleteDict("' . $_name . '");'));
+		$table->setCol($_i, 3, array('valign' => 'top', 'align' => 'right'), we_html_button::create_button('image:btn_function_reload', 'javascript: updateDict("' . $_name . '");'));
+		$table->setCol($_i, 4, array('valign' => 'top', 'align' => 'right'), we_html_button::create_button('image:btn_function_trash', 'javascript: deleteDict("' . $_name . '");'));
 	}
 }
 $_dir->close();
 
-$_button = we_button::create_button("close", "javascript:self.close();");
+$_button = we_html_button::create_button("close", "javascript:self.close();");
 $tabsBody = $we_tabs->getHTML() . we_html_element::jsElement('if(!activ_tab) activ_tab = 1; document.getElementById("tab_"+activ_tab).className="tabActive";');
 
 $_tab_1 =
@@ -127,7 +127,7 @@ $_tab_1 =
 			<div id="appletPanel"></div>
 		</div>
 
-		<div id="addButt">' . we_button::create_button_table(array(we_button::create_button("save", "javascript:document.we_form.submit()"), we_button::create_button("add", "javascript:showDictSelector();"))) . '</div>
+		<div id="addButt">' . we_html_button::create_button_table(array(we_html_button::create_button("save", "javascript:document.we_form.submit()"), we_html_button::create_button("add", "javascript:showDictSelector();"))) . '</div>
 	</div>
 	 ', '', '');
 
@@ -135,7 +135,7 @@ $_tab_1 =
 $_tab_2 =
 	we_html_tools::htmlDialogLayout('
 					<textarea class="defaultfont" name="defaultDict" style="width: 400px; padding:5px;height: 320px; border: 1px solid #AFB0AF;margin-bottom: 5px;background-color:white ! important;">' . (file_exists(WE_SPELLCHECKER_MODULE_PATH . 'dict/default.inc.php') ? ((filesize(WE_SPELLCHECKER_MODULE_PATH . 'dict/default.inc.php') > 0) ? we_base_file::load(WE_SPELLCHECKER_MODULE_PATH . 'dict/default.inc.php') : '') : '') . '</textarea>
-					<div>' . we_button::create_button("save", "javascript:document.we_form.submit()") . '</div>
+					<div>' . we_html_button::create_button("save", "javascript:document.we_form.submit()") . '</div>
 	</form>
 	 ', '', '');
 

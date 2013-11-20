@@ -160,7 +160,7 @@ function we_tag_input($attribs, $content){
 	<tr>
 			<td class="weEditmodeStyle"><input onchange="_EditorFrame.setEditorIsHot(true);" class="wetextinput" type="text" name="we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" value="' . $val . '"' . ($attr ? ' '.$attr : '') . ' /></td>
 			<td class="weEditmodeStyle">' . we_html_tools::getPixel(6, 4) . '</td>
-			<td class="weEditmodeStyle">' . we_button::create_button(
+			<td class="weEditmodeStyle">' . we_html_button::create_button(
 							'image:spellcheck', 'javascript:we_cmd("spellcheck","we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']")') . '</td>
 	</tr>
 </table>';

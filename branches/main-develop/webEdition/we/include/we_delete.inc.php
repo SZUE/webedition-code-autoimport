@@ -490,8 +490,8 @@ if((defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE . "_cache") ||
 }
 $content = '<span class="middlefont">' . $delete_text . '</span>';
 
-$_buttons = we_button::position_yes_no_cancel(
-		we_button::create_button("ok", "javascript:if(confirm('" . $delete_confirm . "')) we_cmd('do_delete','','$table')"), "", we_button::create_button("quit_delete", "javascript:we_cmd('exit_delete','','$table')"), 10, "left");
+$_buttons = we_html_button::position_yes_no_cancel(
+		we_html_button::create_button("ok", "javascript:if(confirm('" . $delete_confirm . "')) we_cmd('do_delete','','$table')"), "", we_html_button::create_button("quit_delete", "javascript:we_cmd('exit_delete','','$table')"), 10, "left");
 
 $form = '<form name="we_form" method="post">' . we_html_tools::hidden('sel', '') . '</form>';
 

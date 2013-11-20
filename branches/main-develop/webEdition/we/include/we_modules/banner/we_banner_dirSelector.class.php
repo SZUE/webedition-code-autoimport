@@ -48,9 +48,9 @@ class we_banner_dirSelector extends we_selector_directory{
 	}
 
 	function printFooterTable(){
-		$cancel_button = we_button::create_button("cancel", "javascript:top.exit_close();");
-		$yes_button = we_button::create_button("ok", "javascript:press_ok_button();");
-		$buttons = we_button::position_yes_no_cancel($yes_button, null, $cancel_button);
+		$cancel_button = we_html_button::create_button("cancel", "javascript:top.exit_close();");
+		$yes_button = we_html_button::create_button("ok", "javascript:press_ok_button();");
+		$buttons = we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button);
 		return '
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
 	<tr>
@@ -88,7 +88,7 @@ class we_banner_dirSelector extends we_selector_directory{
 		$makefolderState = permissionhandler::hasPerm("NEW_BANNER");
 		return '<td width="10">' . we_html_tools::getPixel(10, 10) . '</td><td width="40">' .
 			we_html_element::jsElement('makefolderState=' . $makefolderState . ';') .
-			we_button::create_button("image:btn_new_bannergroup", "javascript:if(makefolderState==1){top.drawNewFolder();}", true, -1, 22, "", "", $makefolderState ? false : true) .
+			we_html_button::create_button("image:btn_new_bannergroup", "javascript:if(makefolderState==1){top.drawNewFolder();}", true, -1, 22, "", "", $makefolderState ? false : true) .
 			'</td>';
 	}
 

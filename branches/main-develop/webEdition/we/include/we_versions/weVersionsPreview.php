@@ -75,7 +75,7 @@ if(!($isObj OR $isTempl)){
 }
 
 //close button
-$_button = we_button::create_button("close", "javascript:self.close();");
+$_button = we_html_button::create_button("close", "javascript:self.close();");
 
 $we_tabs = new we_tabs();
 

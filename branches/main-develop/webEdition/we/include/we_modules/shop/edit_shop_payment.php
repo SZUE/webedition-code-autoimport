@@ -222,7 +222,7 @@ $_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(2
 
 $Parts[] = array("html" => $_htmlTable->getHtml());
 
-$_buttons = we_button::position_yes_no_cancel(we_button::create_button("save", "javascript:document.we_form.submit();"), "", we_button::create_button("cancel", "javascript:self.close();")
+$_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("save", "javascript:document.we_form.submit();"), "", we_html_button::create_button("cancel", "javascript:self.close();")
 );
 
 $frame = we_html_multiIconBox::getHTML('', '100%', $Parts, 30, $_buttons, -1, '', '', false, g_l('modules_shop', '[paymentP]'), '', '', 'hidden');

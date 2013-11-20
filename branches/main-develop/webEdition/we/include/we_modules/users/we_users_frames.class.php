@@ -347,10 +347,10 @@ self.focus();';
 		$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "style" => 'width:100%;margin-top:10px;'), 1, 1);
 		$table->setCol(0, 0, array("nowrap" => null, "class" => "small"), we_html_element::jsElement($this->View->getJSSubmitFunction("cmd", "post")) .
 			$hiddens .
-			we_button::create_button_table(
+			we_html_button::create_button_table(
 				array(
 					we_html_tools::htmlTextInput("keyword", 10, "", "", "", "text", "150px"),
-					we_button::create_button("image:btn_function_search", "javascript:top.content.we_cmd('search',document.we_form_treefooter.keyword.value);")
+					we_html_button::create_button("image:btn_function_search", "javascript:top.content.we_cmd('search',document.we_form_treefooter.keyword.value);")
 				)
 			)
 		);

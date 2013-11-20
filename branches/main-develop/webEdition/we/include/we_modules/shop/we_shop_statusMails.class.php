@@ -327,10 +327,10 @@ class we_shop_statusMails{
 		$EMailhandler = '<table cellpadding="0" cellspacing="0" border="0" width="99%" class="defaultfont"><tr><td class="defaultfont">' . g_l('modules_shop', '[statusmails][EMail]') . ': </td>';
 		if($_REQUEST["Mail" . $was] != $datetimeform && $_REQUEST["Mail" . $was] != ''){
 			$EMailhandler .= '<td class="defaultfont" width="150">' . $_REQUEST["Mail" . $was] . '</td>';
-			$but = we_button::create_button("image:/mail_resend", "javascript:check=confirm('" . g_l('modules_shop', '[statusmails][resent]') . "'); if (check){SendMail('" . $was . "');}");
+			$but = we_html_button::create_button("image:/mail_resend", "javascript:check=confirm('" . g_l('modules_shop', '[statusmails][resent]') . "'); if (check){SendMail('" . $was . "');}");
 		} else {
 			$EMailhandler .= '<td class="defaultfont" width="150">&nbsp;</td>';
-			$but = we_button::create_button("image:/mail_send", "javascript:SendMail('" . $was . "')");
+			$but = we_html_button::create_button("image:/mail_send", "javascript:SendMail('" . $was . "')");
 		}
 		$EMailhandler .= '<td class="defaultfont">' . ($dateSet != $dateform ? $but : we_html_tools::getPixel(30, 15)) . '</td></tr></table>';
 

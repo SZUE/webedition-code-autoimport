@@ -167,13 +167,13 @@ class we_export_frames extends weModuleFrames{
 		$table2 = new we_html_table(array('style' => 'margin-top:10px;', "border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 210), 1, 5);
 		$table2->setRow(0, array("valign" => "middle"));
 		$table2->setCol(0, $col++, array("nowrap" => null), we_html_tools::getPixel(5, 5));
-		$table2->setCol(0, $col++, array("nowrap" => null), we_button::create_button("save", "javascript:we_save()")
+		$table2->setCol(0, $col++, array("nowrap" => null), we_html_button::create_button("save", "javascript:we_save()")
 		);
 
 		$table2->setCol(0, $col++, array("nowrap" => null), we_html_tools::getPixel(5, 5));
 
 		if($this->View->export->IsFolder == 0){
-			$table2->setCol(0, $col++, array("nowrap" => null), we_button::create_button("export", "javascript:top.content.we_cmd('start_export')", true, 100, 22, '', '', !permissionhandler::hasPerm("MAKE_EXPORT"))
+			$table2->setCol(0, $col++, array("nowrap" => null), we_html_button::create_button("export", "javascript:top.content.we_cmd('start_export')", true, 100, 22, '', '', !permissionhandler::hasPerm("MAKE_EXPORT"))
 			);
 		}
 
@@ -429,7 +429,7 @@ function closeAllType(){
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['ParentPath'].value");
 		$wecmdenc3 = we_cmd_enc("top.hot=1;");
 
-		$button = we_button::create_button('select', "javascript:top.content.setHot();we_cmd('openExportDirselector',document.we_form.elements['ParentID'].value,'" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "')");
+		$button = we_html_button::create_button('select', "javascript:top.content.setHot();we_cmd('openExportDirselector',document.we_form.elements['ParentID'].value,'" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "')");
 
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId("PathGroup");
@@ -785,7 +785,7 @@ function closeAllType(){
 		');
 
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$IDName'].value");
-		$button = we_button::create_button("select", "javascript:top.content.setHot();formFileChooser('browse_server','" . $wecmdenc1 . "','$filter',document.we_form.elements['$IDName'].value);");
+		$button = we_html_button::create_button("select", "javascript:top.content.setHot();formFileChooser('browse_server','" . $wecmdenc1 . "','$filter',document.we_form.elements['$IDName'].value);");
 
 		return $js . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 42, $IDValue, "", ' readonly onChange="' . $this->topFrame . '.hot=1;"', "text", $width, 0), "", "left", "defaultfont", "", we_html_tools::getPixel(20, 4), permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
 	}
@@ -797,7 +797,7 @@ function closeAllType(){
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$IDName'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$Pathname'].value");
 		$wecmdenc3 = we_cmd_enc(str_replace('\\', '', $cmd));
-		$button = we_button::create_button("select", "javascript:top.content.setHot();we_cmd('openDirselector',document.we_form.elements['$IDName'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$rootDirID')");
+		$button = we_html_button::create_button("select", "javascript:top.content.setHot();we_cmd('openDirselector',document.we_form.elements['$IDName'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$rootDirID')");
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId('SelPath');
 		$yuiSuggest->setContentType('folder');
@@ -850,10 +850,10 @@ function closeAllType(){
 			we_html_element::htmlHidden(array("name" => "cat", "value" => (isset($_REQUEST["cat"]) ? $_REQUEST["cat"] : "")));
 
 
-		$delallbut = we_button::create_button("delete_all", "javascript:top.content.setHot(); we_cmd('del_all_cats')", true, -1, -1, "", "", (isset($this->View->export->Categorys) ? false : true));
-		$addbut = we_button::create_button("add", "javascript:top.content.setHot(); we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','fillIDs();opener." . $this->editorBodyFrame . ".we_cmd(\\'add_cat\\',top.allIDs);')");
+		$delallbut = we_html_button::create_button("delete_all", "javascript:top.content.setHot(); we_cmd('del_all_cats')", true, -1, -1, "", "", (isset($this->View->export->Categorys) ? false : true));
+		$addbut = we_html_button::create_button("add", "javascript:top.content.setHot(); we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','fillIDs();opener." . $this->editorBodyFrame . ".we_cmd(\\'add_cat\\',top.allIDs);')");
 
-		$cats = new MultiDirChooser($this->_width_size, $this->View->export->Categorys, "del_cat", we_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", CATEGORY_TABLE);
+		$cats = new MultiDirChooser($this->_width_size, $this->View->export->Categorys, "del_cat", we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", CATEGORY_TABLE);
 
 		if(!permissionhandler::hasPerm("EDIT_KATEGORIE")){
 			$cats->isEditable = false;

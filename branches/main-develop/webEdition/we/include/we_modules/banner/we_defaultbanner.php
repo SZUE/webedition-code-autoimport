@@ -45,7 +45,7 @@ function formBannerChooser($width = "", $table = BANNER_TABLE, $idvalue, $idname
 	$wecmdenc1 = we_cmd_enc("document.we_form.elements['$idname'].value");
 	$wecmdenc2 = we_cmd_enc("document.we_form.elements['$textname'].value");
 	$wecmdenc3 = we_cmd_enc(str_replace('\\', '', $cmd));
-	$button = we_button::create_button('select', "javascript:we_cmd('openBannerSelector',document.we_form.elements['$idname'].value,'" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "')");
+	$button = we_html_button::create_button('select', "javascript:we_cmd('openBannerSelector',document.we_form.elements['$idname'].value,'" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "')");
 
 	$yuiSuggest->setAcId("Path");
 	$yuiSuggest->setContentType("folder");
@@ -115,9 +115,9 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 		<?php
 		$DefaultBannerID = f("SELECT pref_value FROM " . BANNER_PREFS_TABLE . " WHERE pref_name='DefaultBannerID'", "pref_value", $DB_WE);
 		$content = formBannerChooser(300, BANNER_TABLE, $DefaultBannerID, "DefaultBannerID", "");
-		$yes_button = we_button::create_button("save", "javascript:we_save();");
-		$cancel_button = we_button::create_button("cancel", "javascript:top.close();");
-		$buttons = we_button::position_yes_no_cancel($yes_button, null, $cancel_button);
+		$yes_button = we_html_button::create_button("save", "javascript:we_save();");
+		$cancel_button = we_html_button::create_button("cancel", "javascript:top.close();");
+		$buttons = we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button);
 
 		print we_html_tools::htmlDialogLayout($content, g_l('modules_banner', '[defaultbanner]'), $buttons, "100%", 30, "175");
 		?>

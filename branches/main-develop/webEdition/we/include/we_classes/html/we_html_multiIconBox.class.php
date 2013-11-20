@@ -51,7 +51,7 @@ abstract class we_html_multiIconBox{
 			$out.=(isset($c['class']) ? '<div class="' . $c['class'] . '">' : '');
 
 			if($i == $foldAtNr && $foldAtNr < count($content)){ // only if the folded items contain stuff.
-				$out .= we_button::create_button_table(array(
+				$out .= we_html_button::create_button_table(array(
 						we_html_multiIconBox::_getButton($uniqname, ($delegate ? $delegate : "" ) . ";weToggleBox('$uniqname','" . addslashes($foldDown) . "','" . addslashes($foldRight) . "')", ($displayAtStartup ? "down" : "right"), g_l('global', "[openCloseBox]")),
 						'<span style="cursor: pointer;" class="defaultfont" id="text_' . $uniqname . '" onClick="' . ($delegate ? $delegate : "" ) . ';weToggleBox(\'' . $uniqname . '\',\'' . addslashes($foldDown) . '\',\'' . addslashes($foldRight) . '\');">' . ($displayAtStartup ? $foldDown : $foldRight) . '</span>'
 						), 10, array('style' => 'margin-left:' . $marginLeft . 'px;')

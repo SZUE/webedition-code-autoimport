@@ -28,7 +28,7 @@
  *
  * Provides functions for creating webEdition buttons.
  */
-abstract class we_button{
+abstract class we_html_button{
 
 	const HEIGHT = 22;
 	const WIDTH = 100;

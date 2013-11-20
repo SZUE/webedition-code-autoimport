@@ -672,7 +672,7 @@ class copyFolderFrag extends taskFragment{
 	}
 
 	function finish(){
-		$cancelButton = we_button::create_button('cancel', 'javascript:top.close()');
+		$cancelButton = we_html_button::create_button('cancel', 'javascript:top.close()');
 
 		if(isset($_SESSION['weS']['WE_CREATE_DOCTYPE'])){
 			unset($_SESSION['weS']['WE_CREATE_DOCTYPE']);
@@ -738,7 +738,7 @@ function fsubmit(e) {
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$textname'].value");
 		$wecmdenc3 = we_cmd_enc("opener.document.we_form.CreateTemplate.checked=true;");
 		$yuiSuggest->setSelectButton(
-			we_button::create_button(
+			we_html_button::create_button(
 				"select", "javascript:we_cmd('openDirselector',document.we_form.elements['$idname'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "')", true, 100, 22, "", "", true, false));
 
 		return $yuiSuggest->getHTML();
@@ -746,7 +746,7 @@ function fsubmit(e) {
 
 	function formCreateCategoryChooser(){
 
-		$addbut = we_button::create_button(
+		$addbut = we_html_button::create_button(
 				"add", "javascript:we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);')");
 		$del_but = addslashes(
 			we_html_element::htmlImg(
@@ -800,9 +800,9 @@ function fsubmit(e) {
 		$table->setCol(
 			4, 0, array(
 			'colspan' => 2, 'align' => 'right'
-			), we_button::create_button_table(
+			), we_html_button::create_button_table(
 				array(
-					we_button::create_button("delete_all", "javascript:removeAllCats()"), $addbut
+					we_html_button::create_button("delete_all", "javascript:removeAllCats()"), $addbut
 		)));
 
 		return $table->getHtml() . $js;

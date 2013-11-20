@@ -543,7 +543,7 @@ function we_cmd() {
 					<input type="hidden" name="' . $field . '" id="hidden_Calendar_' . $field . '" value="' . (($_REQUEST[$field] == $dateform) ? '-' : $_REQUEST[$field]) . '" />
 				</td>
 				<td height="25">' . we_html_tools::getPixel(10, 15) . '</td>
-				<td width="102" valign="top" height="25">' . we_button::create_button("image:date_picker", "javascript:", null, null, null, null, null, null, false, 'button_Calendar_' . $field) . '</td>
+				<td width="102" valign="top" height="25">' . we_html_button::create_button("image:date_picker", "javascript:", null, null, null, null, null, null, false, 'button_Calendar_' . $field) . '</td>
 				<td width="300" height="25"  class="defaultfont">' . $EMailhandler . '</td>
 			</tr>';
 				}
@@ -662,7 +662,7 @@ function we_cmd() {
 			<td class="shopContentfontR">' . we_util_Strings::formatNumber($articlePrice) . $waehr . '</td>' .
 					($calcVat ? '<td></td><td class="shopContentfontR small">(' . "<a href=\"javascript:var vat = prompt('" . g_l('modules_shop', '[keinezahl]') . "','" . $articleVat . "'); if(vat != null ){if(vat.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . ";}else{document.location='" . $_SERVER['SCRIPT_NAME'] . "?pnt=edbody&bid=" . $_REQUEST["bid"] . "&article=$tblOrdersId[$i]&vat=' + vat; } }\">" . we_util_Strings::formatNumber($articleVat) . "</a>" . '%)</td>' : '') . '
 			<td>' . $pixelImg . '</td>
-			<td>' . we_button::create_button('image:btn_function_trash', "javascript:check=confirm('" . g_l('modules_shop', '[jsloeschen]') . "'); if (check){document.location.href='" . $_SERVER['SCRIPT_NAME'] . "?pnt=edbody&bid=" . $_REQUEST["bid"] . "&deleteaarticle=" . $tblOrdersId[$i] . "';}", true, 100, 22, "", "", !permissionhandler::hasPerm("DELETE_SHOP_ARTICLE")) . '</td>
+			<td>' . we_html_button::create_button('image:btn_function_trash', "javascript:check=confirm('" . g_l('modules_shop', '[jsloeschen]') . "'); if (check){document.location.href='" . $_SERVER['SCRIPT_NAME'] . "?pnt=edbody&bid=" . $_REQUEST["bid"] . "&deleteaarticle=" . $tblOrdersId[$i] . "';}", true, 100, 22, "", "", !permissionhandler::hasPerm("DELETE_SHOP_ARTICLE")) . '</td>
 		</tr>';
 				// if this article has custom fields or is a variant - we show them in a extra rows
 				// add variant.
@@ -871,16 +871,16 @@ function we_cmd() {
 						<td>' . $pixelImg . '</td>
 						<td class="defaultfont" valign="top">' . nl2br($value) . '</td>
 						<td>' . $pixelImg . '</td>
-						<td valign="top">' . we_button::create_button('image:btn_edit_edit', "javascript:we_cmd('edit_shop_cart_custom_field','" . $key . "');") . '</td>
+						<td valign="top">' . we_html_button::create_button('image:btn_edit_edit', "javascript:we_cmd('edit_shop_cart_custom_field','" . $key . "');") . '</td>
 						<td>' . $pixelImg . '</td>
-						<td valign="top">' . we_button::create_button('image:btn_function_trash', "javascript:check=confirm('" . sprintf(g_l('modules_shop', '[edit_order][js_delete_cart_field]'), $key) . "'); if (check) { document.location.href='" . $_SERVER['SCRIPT_NAME'] . "?pnt=edbody&we_cmd[0]=delete_shop_cart_custom_field&bid=" . $_REQUEST["bid"] . "&cartfieldname=" . $key . "'; }") . '</td>
+						<td valign="top">' . we_html_button::create_button('image:btn_function_trash', "javascript:check=confirm('" . sprintf(g_l('modules_shop', '[edit_order][js_delete_cart_field]'), $key) . "'); if (check) { document.location.href='" . $_SERVER['SCRIPT_NAME'] . "?pnt=edbody&we_cmd[0]=delete_shop_cart_custom_field&bid=" . $_REQUEST["bid"] . "&cartfieldname=" . $key . "'; }") . '</td>
 					</tr>
 					<tr>
 						<td height="10"></td>
 					</tr>';
 			}
 			$customCartFieldsTable .= '<tr>
-						<td>' . we_button::create_button('image:btn_function_plus', "javascript:we_cmd('edit_shop_cart_custom_field');") . '</td>
+						<td>' . we_html_button::create_button('image:btn_function_plus', "javascript:we_cmd('edit_shop_cart_custom_field');") . '</td>
 					</tr>
 					</table>';
 
@@ -1144,8 +1144,8 @@ function submitForm() {
 					$shopArticles = array();
 
 					$saveBut = '';
-					$cancelBut = we_button::create_button('cancel', 'javascript:window.close();');
-					$searchBut = we_button::create_button('search', 'javascript:searchArticles();');
+					$cancelBut = we_html_button::create_button('cancel', 'javascript:window.close();');
+					$searchBut = we_html_button::create_button('search', 'javascript:searchArticles();');
 
 					// first get all shop documents
 					$this->db->query('SELECT ' . CONTENT_TABLE . '.dat AS shopTitle, ' . LINK_TABLE . '.DID AS documentId FROM ' . CONTENT_TABLE . ', ' . LINK_TABLE . ', ' . FILE_TABLE .
@@ -1196,12 +1196,12 @@ function submitForm() {
 					$end_entry = (($page * $MAX_PER_PAGE + $MAX_PER_PAGE < $AMOUNT_ARTICLES) ? ($page * $MAX_PER_PAGE + $MAX_PER_PAGE) : $AMOUNT_ARTICLES );
 
 					$backBut = ($start_entry - $MAX_PER_PAGE > 0 ?
-							we_button::create_button('back', 'javascript:switchEntriesPage(' . ($page - 1) . ');') :
-							we_button::create_button('back', '#', true, 100, 22, '', '', true));
+							we_html_button::create_button('back', 'javascript:switchEntriesPage(' . ($page - 1) . ');') :
+							we_html_button::create_button('back', '#', true, 100, 22, '', '', true));
 
 					$nextBut = (($end_entry) < $AMOUNT_ARTICLES ?
-							we_button::create_button('next', 'javascript:switchEntriesPage(' . ($page + 1) . ');') :
-							we_button::create_button('next', '#', true, 100, 22, '', '', true));
+							we_html_button::create_button('next', 'javascript:switchEntriesPage(' . ($page + 1) . ');') :
+							we_html_button::create_button('next', '#', true, 100, 22, '', '', true));
 
 
 					$shopArticlesSelect = $shopArticlesParts[$page];
@@ -1270,7 +1270,7 @@ function submitForm() {
 					}
 
 					if(isset($_REQUEST['add_article']) && $_REQUEST['add_article'] != '0'){
-						$saveBut = we_button::create_button('save', "javascript:document.we_form.submit();window.close();");
+						$saveBut = we_html_button::create_button('save', "javascript:document.we_form.submit();window.close();");
 						list($id, $type) = explode('_', $_REQUEST['add_article']);
 
 						$variantOptions = array(
@@ -1334,7 +1334,7 @@ function submitForm() {
 					}
 
 
-					print we_html_multiIconBox::getHTML('', '100%', $parts, 30, we_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[add_article][title]')) .
+					print we_html_multiIconBox::getHTML('', '100%', $parts, 30, we_html_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[add_article][title]')) .
 						'</form>
 		</body>
 		</html>';
@@ -1399,8 +1399,8 @@ function submitForm() {
 		<form name="we_form">
 		<input type="hidden" name="bid" value="' . $_REQUEST['bid'] . '" />
 		<input type="hidden" name="we_cmd[0]" value="save_shop_cart_custom_field" />';
-					$saveBut = we_button::create_button('save', 'javascript:we_submit();');
-					$cancelBut = we_button::create_button('cancel', 'javascript:self.close();');
+					$saveBut = we_html_button::create_button('save', 'javascript:we_submit();');
+					$cancelBut = we_html_button::create_button('cancel', 'javascript:self.close();');
 
 
 					$val = '';
@@ -1432,7 +1432,7 @@ function submitForm() {
 						)
 					);
 
-					print we_html_multiIconBox::getHTML('', '100%', $parts, 30, we_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[add_shop_field]'));
+					print we_html_multiIconBox::getHTML('', '100%', $parts, 30, we_html_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[add_shop_field]'));
 					unset($saveBut);
 					unset($cancelBut);
 					unset($parts);
@@ -1480,8 +1480,8 @@ function submitForm() {
 
 					unset($shopVat);
 					unset($shopVats);
-					$saveBut = we_button::create_button('save', 'javascript:document.we_form.submit();self.close();');
-					$cancelBut = we_button::create_button('cancel', 'javascript:self.close();');
+					$saveBut = we_html_button::create_button('save', 'javascript:document.we_form.submit();self.close();');
+					$cancelBut = we_html_button::create_button('cancel', 'javascript:self.close();');
 
 					$strSerialOrder = $this->getFieldFromOrder($_REQUEST['bid'], 'strSerialOrder');
 
@@ -1526,7 +1526,7 @@ function submitForm() {
 						<form name="we_form" target="edbody">' .
 						we_html_tools::hidden('bid', $_REQUEST['bid']) .
 						we_html_tools::hidden("we_cmd[]", 'save_shipping_cost') .
-						we_html_multiIconBox::getHTML('', '100%', $parts, 30, we_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[edit_shipping_cost][title]')) .
+						we_html_multiIconBox::getHTML('', '100%', $parts, 30, we_html_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[edit_shipping_cost][title]')) .
 						'</form></body></html>';
 					exit;
 					break;
@@ -1558,8 +1558,8 @@ function submitForm() {
 					break;
 
 				case 'edit_order_customer'; // edit data of the saved customer.
-					$saveBut = we_button::create_button('save', 'javascript:document.we_form.submit();self.close();');
-					$cancelBut = we_button::create_button('cancel', 'javascript:self.close();');
+					$saveBut = we_html_button::create_button('save', 'javascript:document.we_form.submit();self.close();');
+					$cancelBut = we_html_button::create_button('cancel', 'javascript:self.close();');
 					if(!Zend_Locale::hasCache()){
 						Zend_Locale::setCache(getWEZendCache());
 					}
@@ -1674,7 +1674,7 @@ function submitForm() {
 						<form name="we_form" target="edbody">' .
 						we_html_tools::hidden('bid', $_REQUEST['bid']) .
 						we_html_tools::hidden('we_cmd[]', 'save_order_customer') .
-						we_html_multiIconBox::getHTML('', '100%', $parts, 30, we_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[preferences][customerdata]'), '', 560) .
+						we_html_multiIconBox::getHTML('', '100%', $parts, 30, we_html_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[preferences][customerdata]'), '', 560) .
 						'</form>
 						</body>
 						</html>';

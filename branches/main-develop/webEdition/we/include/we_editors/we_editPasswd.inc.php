@@ -38,8 +38,8 @@ function getContent(){
 							<tr><td>' . we_html_tools::getPixel(2, 5) . '</td></tr>
 							<tr><td class="defaultfont">' . g_l('global', '[newPass2]') . '</td></tr>
 							<tr><td>' . we_html_tools::htmlTextInput('newpasswd2', 20, '', 32, '', 'password', 200) . '</td></tr>
-						</table>', g_l('global', '[changePass]'), we_button::position_yes_no_cancel(
-				we_button::create_button('save', 'javascript:document.forms[0].submit();'), null, we_button::create_button('cancel', 'javascript:top.close();'))
+						</table>', g_l('global', '[changePass]'), we_html_button::position_yes_no_cancel(
+				we_html_button::create_button('save', 'javascript:document.forms[0].submit();'), null, we_html_button::create_button('cancel', 'javascript:top.close();'))
 		) .
 		'	<input type="hidden" name="cmd" value="ok" />
 		</form>';

@@ -53,7 +53,7 @@ class we_selector_delete extends we_selector_multiple{
 	}
 
 	function printFooterJS(){
-		return we_button::create_state_changer() . we_html_element::jsElement('
+		return we_html_button::create_state_changer() . we_html_element::jsElement('
 function disableDelBut(){
 	delete_enabled = switch_button_state("delete", "delete_enabled", "disabled");
 }
@@ -237,10 +237,10 @@ top.close();');
 		if($this->values["Text"] == "/"){
 			$this->values["Text"] = "";
 		}
-		$okBut = we_button::create_button("delete", "javascript:if(document.we_form.fname.value==''){top.exit_close();}else{top.deleteEntry();}", true, 100, 22, "", "", true, false);
+		$okBut = we_html_button::create_button("delete", "javascript:if(document.we_form.fname.value==''){top.exit_close();}else{top.deleteEntry();}", true, 100, 22, "", "", true, false);
 
-		$cancelbut = we_button::create_button("cancel", "javascript:top.exit_close();");
-		$buttons = ($okBut ? we_button::position_yes_no_cancel($okBut, null, $cancelbut) : $cancelbut);
+		$cancelbut = we_html_button::create_button("cancel", "javascript:top.exit_close();");
+		$buttons = ($okBut ? we_html_button::position_yes_no_cancel($okBut, null, $cancelbut) : $cancelbut);
 
 		return '
 <table border="0" cellpadding="0" cellspacing="0" width="100%">

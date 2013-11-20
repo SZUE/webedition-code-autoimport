@@ -106,11 +106,11 @@ window.close();');
 				false //frontendEdit
 			);
 
-			$cancelBut = we_button::create_button('cancel', 'javascript:top.close()');
-			$okBut = we_button::create_button('ok', 'javascript:weWysiwygSetHiddenText();document.we_form.submit();');
+			$cancelBut = we_html_button::create_button('cancel', 'javascript:top.close()');
+			$okBut = we_html_button::create_button('ok', 'javascript:weWysiwygSetHiddenText();document.we_form.submit();');
 
 			echo we_wysiwyg::getHeaderHTML() . $e->getHTML() .
-			'<div style="height:8px"></div>' . we_button::position_yes_no_cancel($okBut, $cancelBut);
+			'<div style="height:8px"></div>' . we_html_button::position_yes_no_cancel($okBut, $cancelBut);
 			?>
 		</form>
 	<?php } ?>

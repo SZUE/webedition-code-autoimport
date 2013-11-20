@@ -99,19 +99,19 @@ class we_dialog_acronym extends we_dialog_base{
 	}
 
 	function getDialogButtons(){
-		$trashbut = we_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['we_dialog_args[title]'].value='';weDoOk();");
+		$trashbut = we_html_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['we_dialog_args[title]'].value='';weDoOk();");
 
 		$buttons = array();
 		$buttons[] = $trashbut;
 
 		if(defined("GLOSSARY_TABLE") && permissionhandler::hasPerm("NEW_GLOSSARY") && !$this->noInternals){
-			$glossarybut = we_button::create_button("to_glossary", "javascript:weSaveToGlossaryFn();", true, 100);
+			$glossarybut = we_html_button::create_button("to_glossary", "javascript:weSaveToGlossaryFn();", true, 100);
 			$buttons[] = $glossarybut;
 		}
 
 		$buttons[] = parent::getDialogButtons();
 
-		return we_button::create_button_table($buttons);
+		return we_html_button::create_button_table($buttons);
 	}
 
 }

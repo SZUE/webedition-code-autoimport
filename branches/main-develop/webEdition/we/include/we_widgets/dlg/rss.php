@@ -376,9 +376,9 @@ $oTblSctRss = we_html_tools::htmlFormElementTable($oSctRss->getHTML(), g_l('cock
 $oRemTopFeeds = we_html_tools::htmlAlertAttentionBox(g_l('cockpit', '[rss_edit_rem]'), we_html_tools::TYPE_INFO, 380);
 $oIptNewTitle = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('ipt_newTitle', 55, "", 255, "", "text", 380, 0), g_l('cockpit', '[title]'), "left", "defaultfont");
 $oIptNewUri = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('ipt_newUri', 55, "", 255, "", "text", 380, 0), g_l('cockpit', '[url]'), "left", "defaultfont");
-$btnAddTopRssFeed = we_button::create_button("add", "javascript:handleTopRssFeed('add');", false, -1, -1, "", "", false, false);
-$btnOverwriteTopRssFeed = we_button::create_button("overwrite", "javascript:handleTopRssFeed('overwrite');", false, -1, -1, "", "", false, false);
-$btnDeleteTopRssFeed = we_button::create_button("delete", "javascript:handleTopRssFeed('delete');", false, -1, -1, "", "", false, false);
+$btnAddTopRssFeed = we_html_button::create_button("add", "javascript:handleTopRssFeed('add');", false, -1, -1, "", "", false, false);
+$btnOverwriteTopRssFeed = we_html_button::create_button("overwrite", "javascript:handleTopRssFeed('overwrite');", false, -1, -1, "", "", false, false);
+$btnDeleteTopRssFeed = we_html_button::create_button("delete", "javascript:handleTopRssFeed('delete');", false, -1, -1, "", "", false, false);
 
 $oBtnNewFeed = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 1, 5);
 $oBtnNewFeed->setCol(0, 0, null, $btnAddTopRssFeed);
@@ -507,10 +507,10 @@ $parts = array(
 	)
 );
 
-$save_button = we_button::create_button('save', 'javascript:save();', false, -1, -1);
-$preview_button = we_button::create_button('preview', 'javascript:preview();', false, -1, -1);
-$cancel_button = we_button::create_button('close', 'javascript:exit_close();');
-$buttons = we_button::position_yes_no_cancel($save_button, $preview_button, $cancel_button);
+$save_button = we_html_button::create_button('save', 'javascript:save();', false, -1, -1);
+$preview_button = we_html_button::create_button('preview', 'javascript:preview();', false, -1, -1);
+$cancel_button = we_html_button::create_button('close', 'javascript:exit_close();');
+$buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button, $cancel_button);
 
 $sTblWidget = we_html_multiIconBox::getHTML('rssProps', '100%', $parts, 30, $buttons, -1, '', '', '', g_l('cockpit', '[rss_feed]'), '', 439);
 
@@ -521,7 +521,7 @@ print we_html_element::htmlDocType() .
 			STYLESHEET .
 			we_html_element::cssElement('select{border:#AAAAAA solid 1px}') .
 			we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
-			we_html_element::jsElement($jsPrefs . $jsCode . we_button::create_state_changer(false))
+			we_html_element::jsElement($jsPrefs . $jsCode . we_html_button::create_state_changer(false))
 		) .
 		we_html_element::htmlBody(
 			array('class' => 'weDialogBody', 'onload' => 'init();'), we_html_element::htmlForm("", $sTblWidget)

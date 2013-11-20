@@ -423,7 +423,7 @@ class we_import_site{
 				break;
 			}
 		}
-		$date_help_button = we_button::create_button("image:btn_help", "javascript:showDateHelp();", true . -1, 22);
+		$date_help_button = we_html_button::create_button("image:btn_help", "javascript:showDateHelp();", true . -1, 22);
 		$dateformatvals = array(
 			"unix" => g_l('import', '[uts]'),
 			"gmt" => g_l('import', '[gts]'),
@@ -462,9 +462,9 @@ class we_import_site{
 					<input type="hidden" name="we_cmd[0]" value="siteImportSaveWePageSettings" />
 					<input type="hidden" name="ok" value="1" />' . we_html_multiIconBox::getJS();
 
-		$okbutton = we_button::create_button("ok", "javascript:if(checkForm()){document.we_form.submit();}");
-		$cancelbutton = we_button::create_button("cancel", "javascript:self.close()");
-		$buttons = we_button::position_yes_no_cancel($okbutton, null, $cancelbutton);
+		$okbutton = we_html_button::create_button("ok", "javascript:if(checkForm()){document.we_form.submit();}");
+		$cancelbutton = we_html_button::create_button("cancel", "javascript:self.close()");
+		$buttons = we_html_button::position_yes_no_cancel($okbutton, null, $cancelbutton);
 		$bodyhtml .= we_html_multiIconBox::getHTML(
 				"", "100%", $parts, 30, $buttons, -1, "", "", false, g_l('siteimport', "[importSettingsWePages]"));
 		$bodyhtml .= '</form></body>';
@@ -584,7 +584,7 @@ class we_import_site{
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$textname'].value");
 		$wecmdenc3 = we_cmd_enc("opener.displayTable();");
 
-		$button = we_button::create_button(
+		$button = we_html_button::create_button(
 				"select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','text/weTmpl',1)");
 
 		$foo = we_html_tools::htmlTextInput($textname, 30, $path, "", ' readonly', "text", 320, 0);
@@ -600,7 +600,7 @@ class we_import_site{
 	private function _getContentHTML(){
 		// Suorce Directory
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['from'].value");
-		$_from_button = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button(
+		$_from_button = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button(
 				"select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "','folder',document.we_form.elements['from'].value)") : "";
 
 		$_input = we_html_tools::htmlTextInput("from", 30, $this->from, "", "readonly", "text", 300);
@@ -611,7 +611,7 @@ class we_import_site{
 		// Destination Directory
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['to'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['toPath'].value");
-		$_to_button = we_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['to'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','0')");
+		$_to_button = we_html_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['to'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','0')");
 
 		//$_hidden = we_html_tools::hidden("to",$this->to);
 		//$_input = we_html_tools::htmlTextInput("toPath",30,id_to_path($this->to),"",'readonly="readonly"',"text",300);
@@ -651,7 +651,7 @@ class we_import_site{
 		$_htaccess = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_HTACCESS") ? $this->text : false, "htacsess", g_l('siteimport', "[importHTACCESS]"), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_HTACCESS"));
 		$_others = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_SONSTIGE") ? $this->other : false, "other", g_l('siteimport', "[importOther]"), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_SONSTIGE"));
 
-		$_wePagesOptionButton = we_button::create_button("preferences", "javascript:we_cmd('siteImportCreateWePageSettings')", true, 150, 22, "", "", false, true, "", true);
+		$_wePagesOptionButton = we_html_button::create_button("preferences", "javascript:we_cmd('siteImportCreateWePageSettings')", true, 150, 22, "", "", false, true, "", true);
 		// Depth
 		$_select = we_html_tools::htmlSelect(
 				"depth", array(
@@ -902,7 +902,7 @@ class we_import_site{
 			'style' => 'overflow:hidden;'
 		);
 
-		$cancelButton = we_button::create_button("cancel", "javascript:top.close()", true, 100, 22, "", "", false, false);
+		$cancelButton = we_html_button::create_button("cancel", "javascript:top.close()", true, 100, 22, "", "", false, false);
 
 		$js = we_html_element::jsElement("
 		function back() {
@@ -939,10 +939,10 @@ class we_import_site{
 			}
 		}");
 
-		$prevButton = we_button::create_button("back", "javascript:back();", true, 100, 22, "", "", false, false);
-		$nextButton = we_button::create_button("next", "javascript:next();", true, 100, 22, "", "", false, false);
+		$prevButton = we_html_button::create_button("back", "javascript:back();", true, 100, 22, "", "", false, false);
+		$nextButton = we_html_button::create_button("next", "javascript:next();", true, 100, 22, "", "", false, false);
 
-		$prevNextButtons = we_button::create_button_table(array($prevButton, $nextButton));
+		$prevNextButtons = we_html_button::create_button_table(array($prevButton, $nextButton));
 
 		$pb = new we_progressBar(0);
 		$pb->setStudLen(200);
@@ -958,7 +958,7 @@ class we_import_site{
 		$table->setCol(0, 0, null, '<div id="progressBarDiv" style="display:none;">' . $pb->getHTML() . '</div>');
 		$table->setCol(0, 1, array(
 			"align" => "right"
-			), we_button::position_yes_no_cancel($prevNextButtons, null, $cancelButton, 10, '', array(), 10));
+			), we_html_button::position_yes_no_cancel($prevNextButtons, null, $cancelButton, 10, '', array(), 10));
 		$content = $table->getHtml();
 		$body = we_html_element::htmlBody($bodyAttribs, $content);
 		return $this->_getHtmlPage($body, $js);
@@ -1062,7 +1062,7 @@ class we_import_site{
 		$idname = 'templateParentID';
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
 		$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$textname'].value");
-		$button = we_button::create_button(
+		$button = we_html_button::create_button(
 				"select", "javascript:we_cmd('openDirselector',document.forms['we_form'].elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "')");
 
 		$yuiSuggest = & weSuggest::getInstance();

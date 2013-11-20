@@ -73,9 +73,9 @@ if(isset($_FILES['we_uploadFile'])){
 $maxsize = getUploadMaxFilesize(false);
 
 
-$yes_button = we_button::create_button("upload", "javascript:if(!document.forms['we_form'].elements['we_uploadFile'].value) { " . we_message_reporting::getShowMessageCall(g_l('fileselector', "[edit_file_nok]"), we_message_reporting::WE_MESSAGE_ERROR) . "} else document.forms['we_form'].submit();");
-$cancel_button = we_button::create_button("cancel", "javascript:self.close();");
-$buttons = we_button::position_yes_no_cancel($yes_button, null, $cancel_button);
+$yes_button = we_html_button::create_button("upload", "javascript:if(!document.forms['we_form'].elements['we_uploadFile'].value) { " . we_message_reporting::getShowMessageCall(g_l('fileselector', "[edit_file_nok]"), we_message_reporting::WE_MESSAGE_ERROR) . "} else document.forms['we_form'].submit();");
+$cancel_button = we_html_button::create_button("cancel", "javascript:self.close();");
+$buttons = we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button);
 
 $content = '<table border="0" cellpadding="0" cellspacing="0">' .
 	($maxsize ? ('<tr><td>' . we_html_tools::htmlAlertAttentionBox(

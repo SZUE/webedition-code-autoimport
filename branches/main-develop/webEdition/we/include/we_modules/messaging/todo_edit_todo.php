@@ -166,7 +166,7 @@ $compose->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"])
 							<textarea cols="68" rows="10" name="mn_body" style="width:624px"></textarea></td>
 					</tr>
 				</table>';
-	$buttons = we_button::position_yes_no_cancel(we_button::create_button("ok", "javascript:do_send()"), "", we_button::create_button("cancel", "javascript:top.window.close()")
+	$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "javascript:do_send()"), "", we_html_button::create_button("cancel", "javascript:top.window.close()")
 	);
 	echo we_html_tools::htmlDialogLayout($tbl, "<div style='padding:6px'>" . $heading . "</div>", $buttons, 100, 24);
 	?>

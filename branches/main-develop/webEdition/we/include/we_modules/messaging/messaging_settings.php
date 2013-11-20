@@ -82,7 +82,7 @@ print STYLESHEET;
 </tr>
 </table>';
 
-		$_buttons = we_button::position_yes_no_cancel(we_button::create_button("save", "javascript:save()"), "", we_button::create_button("cancel", "javascript:window.close();")
+		$_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("save", "javascript:save()"), "", we_html_button::create_button("cancel", "javascript:window.close();")
 			)
 		;
 

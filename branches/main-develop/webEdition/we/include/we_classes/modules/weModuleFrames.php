@@ -253,7 +253,7 @@ class weModuleFrames{
 		$table2 = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0, 'style' => 'width:300px;margin-top:10px;'), 1, 2);
 		$table2->setRow(0, array('valign' => 'middle'));
 		$table2->setCol(0, 0, array('nowrap' => null), we_html_tools::getPixel(5, 5));
-		$table2->setCol(0, 1, array('nowrap' => null), we_button::create_button('save', 'javascript:we_save()'));
+		$table2->setCol(0, 1, array('nowrap' => null), we_html_button::create_button('save', 'javascript:we_save()'));
 
 		$body = we_html_element::htmlBody(array('bgcolor' => 'white', 'background' => IMAGE_DIR . 'edit/editfooterback.gif', 'marginwidth' => 0, 'marginheight' => 0, 'leftmargin' => 0, 'topmargin' => 0), $table2->getHtml());
 

@@ -444,7 +444,7 @@ top.content.hloaded=1;
 		$table2 = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0, 'width' => 300), 1, 3);
 		//$table2->setRow(0, array('valign' => 'middle'));
 		$table2->setCol(0, 0, array('nowrap' => null), we_html_tools::getPixel(15, 5));
-		$table2->setCol(0, 1, array('nowrap' => null), we_button::create_button('save', 'javascript:we_save()'));
+		$table2->setCol(0, 1, array('nowrap' => null), we_html_button::create_button('save', 'javascript:we_save()'));
 		$table2->setCol(0, 2, array('nowrap' => null, 'class' => 'defaultfont'), $this->View->getStatusHTML());
 
 		$body = we_html_element::htmlBody(array(

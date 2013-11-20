@@ -269,10 +269,10 @@ EO_SCRIPT;
 
 		$_script .= $name . '.showVariant(0);';
 
-		$_addbut = we_button::create_button("add", "javascript:we_cmd('openSelector','','" . CUSTOMER_TABLE . "','','','fillIDs();opener.addToMultiEdit(opener." . $name . ", top.allPaths);opener.wecf_hot();','','','',1)");
+		$_addbut = we_html_button::create_button("add", "javascript:we_cmd('openSelector','','" . CUSTOMER_TABLE . "','','','fillIDs();opener.addToMultiEdit(opener." . $name . ", top.allPaths);opener.wecf_hot();','','','',1)");
 
-		$_buttonTable = we_button::create_button_table(array(
-				we_button::create_button("delete_all", "javascript:removeFromMultiEdit(" . $name . ")"),
+		$_buttonTable = we_html_button::create_button_table(array(
+				we_html_button::create_button("delete_all", "javascript:removeFromMultiEdit(" . $name . ")"),
 				$_addbut
 				)
 		);
@@ -359,11 +359,11 @@ EO_SCRIPT;
 				'</td>
 					<td style="padding-top: ' . ($_value['logic'] == 'OR' ? "10px;border-top:1px solid grey" : "4px;border-top:0") . ';padding-bottom:' .
 				((isset($_filter[$_key + 1]) && $_filter[$_key + 1]['logic'] == 'OR') ? '10px' : '0px') . ';">' .
-				we_button::create_button("image:btn_function_plus", "javascript:addRow($_i)", true, 25) .
+				we_html_button::create_button("image:btn_function_plus", "javascript:addRow($_i)", true, 25) .
 				'</td>
 					<td style="padding-left:5px;padding-top: ' . ($_value['logic'] == "OR" ? "10px;border-top:1px solid grey" : "4px;border-top:0") . ';padding-bottom:' .
 				((isset($_filter[$_key + 1]) && $_filter[$_key + 1]['logic'] == 'OR') ? '10px' : '0px') . ';">' .
-				(($_i == 0) ? we_html_tools::getPixel(25, 1) : we_button::create_button("image:btn_function_trash", "javascript:delRow($_i)", true, 25)) .
+				(($_i == 0) ? we_html_tools::getPixel(25, 1) : we_html_button::create_button("image:btn_function_trash", "javascript:delRow($_i)", true, 25)) .
 				'</td>
 				</tr>';
 			$_i++;
@@ -492,10 +492,10 @@ EO_SCRIPT;
 	    				_cell.firstChild.name = "filterValue_"+i;
 
 	    				_cell = _row.cells[4];  // plus
-	    				_cell.innerHTML =\'' . we_button::create_button("image:btn_function_plus", "javascript:addRow('+i+')", true, 25) . '\';
+	    				_cell.innerHTML =\'' . we_html_button::create_button("image:btn_function_plus", "javascript:addRow('+i+')", true, 25) . '\';
 
 	    				_cell = _row.cells[5];  // trash
-	    				_cell.innerHTML = (i==0) ? \'' . we_html_tools::getPixel(25, 1) . '\' : \'' . we_button::create_button("image:btn_function_trash", "javascript:delRow('+i+')", true, 25) . '\';
+	    				_cell.innerHTML = (i==0) ? \'' . we_html_tools::getPixel(25, 1) . '\' : \'' . we_html_button::create_button("image:btn_function_trash", "javascript:delRow('+i+')", true, 25) . '\';
 
 						if (i > 0) {
 							_cell = _row.cells[0]
@@ -519,7 +519,7 @@ EO_SCRIPT;
 		');
 
 
-		return $js . $_filterTable . '<div style="height:5px;"></div>' . we_button::create_button("image:btn_function_plus", "javascript:addRow()");
+		return $js . $_filterTable . '<div style="height:5px;"></div>' . we_html_button::create_button("image:btn_function_plus", "javascript:addRow()");
 	}
 
 	/* #########################################################################################

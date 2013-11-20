@@ -830,7 +830,7 @@ class we_search_view extends we_tool_view{
 
         cell = document.createElement("TD");
         cell.setAttribute("id", "td_delButton["+rows+"]");
-        cell.innerHTML=\'' . we_button::create_button(
+        cell.innerHTML=\'' . we_html_button::create_button(
 					"image:btn_function_trash", "javascript:delRow('+rows+')") . '\';
         newRow.appendChild(cell);
 
@@ -892,7 +892,7 @@ class we_search_view extends we_tool_view{
 
         cell = document.createElement("TD");
         cell.setAttribute("id", "td_delButton["+rowNr+"]");
-        cell.innerHTML=\'' . we_button::create_button(
+        cell.innerHTML=\'' . we_html_button::create_button(
 					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
         row.appendChild(cell);
         document.getElementById("searchAdvSearch["+rowNr+"]").value = setValue;
@@ -924,7 +924,7 @@ class we_search_view extends we_tool_view{
 
      cell = document.createElement("TD");
         cell.setAttribute("id", "td_delButton["+rowNr+"]");
-        cell.innerHTML=\'' . we_button::create_button(
+        cell.innerHTML=\'' . we_html_button::create_button(
 					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
         row.appendChild(cell);
     }
@@ -954,7 +954,7 @@ class we_search_view extends we_tool_view{
 
      cell = document.createElement("TD");
         cell.setAttribute("id", "td_delButton["+rowNr+"]");
-        cell.innerHTML=\'' . we_button::create_button(
+        cell.innerHTML=\'' . we_html_button::create_button(
 					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
         row.appendChild(cell);
     }
@@ -996,7 +996,7 @@ class we_search_view extends we_tool_view{
 
      cell = document.createElement("TD");
         cell.setAttribute("id", "td_delButton["+rowNr+"]");
-        cell.innerHTML=\'' . we_button::create_button(
+        cell.innerHTML=\'' . we_html_button::create_button(
 					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
         row.appendChild(cell);
     }
@@ -1021,7 +1021,7 @@ class we_search_view extends we_tool_view{
 
      cell = document.createElement("TD");
         cell.setAttribute("id", "td_delButton["+rowNr+"]");
-        cell.innerHTML=\'' . we_button::create_button(
+        cell.innerHTML=\'' . we_html_button::create_button(
 					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
         row.appendChild(cell);
 
@@ -1047,7 +1047,7 @@ class we_search_view extends we_tool_view{
 
      cell = document.createElement("TD");
         cell.setAttribute("id", "td_delButton["+rowNr+"]");
-        cell.innerHTML=\'' . we_button::create_button(
+        cell.innerHTML=\'' . we_html_button::create_button(
 					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
         row.appendChild(cell);
 
@@ -1073,7 +1073,7 @@ class we_search_view extends we_tool_view{
 
      cell = document.createElement("TD");
         cell.setAttribute("id", "td_delButton["+rowNr+"]");
-        cell.innerHTML=\'' . we_button::create_button(
+        cell.innerHTML=\'' . we_html_button::create_button(
 					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
         row.appendChild(cell);
 
@@ -1116,7 +1116,7 @@ class we_search_view extends we_tool_view{
 
      cell = document.createElement("TD");
         cell.setAttribute("id", "td_delButton["+rowNr+"]");
-        cell.innerHTML=\'' . we_button::create_button(
+        cell.innerHTML=\'' . we_html_button::create_button(
 					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
         row.appendChild(cell);
 
@@ -1142,7 +1142,7 @@ class we_search_view extends we_tool_view{
 
      cell = document.createElement("TD");
         cell.setAttribute("id", "td_delButton["+rowNr+"]");
-        cell.innerHTML=\'' . we_button::create_button(
+        cell.innerHTML=\'' . we_html_button::create_button(
 					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
         row.appendChild(cell);
     }
@@ -1168,7 +1168,7 @@ class we_search_view extends we_tool_view{
 
      cell = document.createElement("TD");
         cell.setAttribute("id", "td_delButton["+rowNr+"]");
-        cell.innerHTML=\'' . we_button::create_button(
+        cell.innerHTML=\'' . we_html_button::create_button(
 					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
         row.appendChild(cell);
 
@@ -1195,7 +1195,7 @@ class we_search_view extends we_tool_view{
 
         cell = document.createElement("TD");
         cell.setAttribute("id", "td_delButton["+rowNr+"]");
-        cell.innerHTML=\'' . we_button::create_button(
+        cell.innerHTML=\'' . we_html_button::create_button(
 					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
         row.appendChild(cell);
 
@@ -1442,10 +1442,10 @@ class we_search_view extends we_tool_view{
 
 		$out = '<table cellpadding="0" cellspacing="0" border="0"><tr><td>';
 		if($searchstart){
-			$out .= we_button::create_button("back", "javascript:back(" . $anzahl . ");");
+			$out .= we_html_button::create_button("back", "javascript:back(" . $anzahl . ");");
 		} else {
 
-			$out .= we_button::create_button("back", "", true, 100, 22, "", "", true);
+			$out .= we_html_button::create_button("back", "", true, 100, 22, "", "", true);
 		}
 
 		$out .= '</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td class="defaultfont"><b>' . (($we_search_anzahl) ? $searchstart + 1 : 0) . '-';
@@ -1461,10 +1461,10 @@ class we_search_view extends we_tool_view{
 
 		if(($searchstart + $anzahl) < $we_search_anzahl){
 			//bt_back
-			$out .= we_button::create_button("next", "javascript:next(" . $anzahl . ");");
+			$out .= we_html_button::create_button("next", "javascript:next(" . $anzahl . ");");
 		} else {
 
-			$out .= we_button::create_button("next", "", true, 100, 22, "", "", true);
+			$out .= we_html_button::create_button("next", "", true, 100, 22, "", "", true);
 		}
 		$out .= '</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>';
 
@@ -1539,7 +1539,7 @@ class we_search_view extends we_tool_view{
 		}
 		$_table->setCol(2, 1, array(
 			'align' => 'right'
-			), we_button::create_button("search", "javascript:search(true);"));
+			), we_html_button::create_button("search", "javascript:search(true);"));
 
 		return $_table->getHtml();
 	}
@@ -1688,7 +1688,7 @@ class we_search_view extends we_tool_view{
 
 		$_table->setCol(1, 2, array(
 			'align' => 'right'
-			), we_button::create_button("search", "javascript:search(true);"));
+			), we_html_button::create_button("search", "javascript:search(true);"));
 
 		return $_table->getHtml();
 	}
@@ -2323,7 +2323,7 @@ class we_search_view extends we_tool_view{
 							$ID = $DB_WE->f('ID');
 							$active = $DB_WE->f('active');
 						}
-						$previewButton = we_button::create_button("preview", "javascript:previewVersion('" . $ID . "');");
+						$previewButton = we_html_button::create_button("preview", "javascript:previewVersion('" . $ID . "');");
 
 						$fileExists = f("SELECT ID FROM " . escape_sql_query($_result[$f]["docTable"]) . " WHERE ID=" . intval($_result[$f]["docID"]), "ID", $DB_WE);
 
@@ -2539,11 +2539,11 @@ class we_search_view extends we_tool_view{
    <td style="width:400px;">' . $thisObj->getNextPrev(
 				$foundItems, $whichSearch) . '</td>
    <td style="width:35px;">
-   ' . we_button::create_button(
+   ' . we_html_button::create_button(
 				"image:iconview", "javascript:setView(1);", true, "", "", "", "", false) . '
    </td>
    <td>
-   ' . we_button::create_button(
+   ' . we_html_button::create_button(
 				"image:listview", "javascript:setView(0);", true, "", "", "", "", false) . '
    </td>
    </tr>
@@ -2564,12 +2564,12 @@ class we_search_view extends we_tool_view{
 		$publishButton = "";
 		$publishButtonCheckboxAll = "";
 		if(permissionhandler::hasPerm('RESET_VERSIONS') && $whichSearch == "AdvSearch"){
-			$resetButton = we_button::create_button("reset", "javascript:resetVersions();", true, 100, 22, "", "");
+			$resetButton = we_html_button::create_button("reset", "javascript:resetVersions();", true, 100, 22, "", "");
 			;
 		}
 		if(permissionhandler::hasPerm('PUBLISH') && ($whichSearch == "AdvSearch" || $whichSearch == "DocSearch")){
 			$publishButtonCheckboxAll = we_html_forms::checkbox(1, 0, "publish_all_" . $whichSearch, "", false, "middlefont", "checkAllPubChecks('" . $whichSearch . "')");
-			$publishButton = we_button::create_button("publish", "javascript:publishDocs('" . $whichSearch . "');", true, 100, 22, "", "");
+			$publishButton = we_html_button::create_button("publish", "javascript:publishDocs('" . $whichSearch . "');", true, 100, 22, "", "");
 		}
 
 		return '<table border="0" cellpadding="0" cellspacing="0" style="margin-top:10px;">
@@ -2699,7 +2699,7 @@ class we_search_view extends we_tool_view{
 		$this->Model->locationAdvSearch = $r3;
 
 		for($i = 0; $i < $this->searchclass->height; $i++){
-			$button = we_button::create_button(
+			$button = we_html_button::create_button(
 					"image:btn_function_trash", "javascript:delRow(" . $i . ");", true, "", "", "", "", false);
 
 			$locationDisabled = "";
@@ -2753,7 +2753,7 @@ class we_search_view extends we_tool_view{
 					$wecmdenc2 = we_cmd_enc("document.we_form.elements['searchAdvSearch[" . $i . "]'].value");
 					$wecmdenc3 = '';
 					$_cmd = "javascript:we_cmd('openDirselector',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "','$_rootDirID','','')";
-					$_button = we_button::create_button('select', $_cmd, true, 70, 22, '', '', false);
+					$_button = we_html_button::create_button('select', $_cmd, true, 70, 22, '', '', false);
 					$selector = we_html_tools::htmlFormElementTable(
 							we_html_tools::htmlTextInput(
 								'searchAdvSearch[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(
@@ -2772,7 +2772,7 @@ class we_search_view extends we_tool_view{
 					$wecmdenc2 = we_cmd_enc("document.we_form.elements['searchAdvSearch[" . $i . "]'].value");
 					$wecmdenc3 = '';
 					$_cmd = "javascript:we_cmd('openDocselector',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "','$_rootDirID','','text/weTmpl')";
-					$_button = we_button::create_button('select', $_cmd, true, 70, 22, '', '', false);
+					$_button = we_html_button::create_button('select', $_cmd, true, 70, 22, '', '', false);
 					$selector = we_html_tools::htmlFormElementTable(
 							we_html_tools::htmlTextInput(
 								'searchAdvSearch[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(
@@ -2788,7 +2788,7 @@ class we_search_view extends we_tool_view{
 					$_rootDirID = 0;
 
 					$_cmd = "javascript:we_cmd('openCatselector',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . CATEGORY_TABLE . "','document.we_form.elements[\\'searchAdvSearchParentID[" . $i . "]\\'].value','document.we_form.elements[\\'searchAdvSearch[" . $i . "]\\'].value','','" . session_id() . "','$_rootDirID','','')";
-					$_button = we_button::create_button('select', $_cmd, true, 70, 22, '', '', false);
+					$_button = we_html_button::create_button('select', $_cmd, true, 70, 22, '', '', false);
 					$selector = we_html_tools::htmlFormElementTable(
 							we_html_tools::htmlTextInput(
 								'searchAdvSearch[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(
@@ -2817,7 +2817,7 @@ class we_search_view extends we_tool_view{
 		$out .= '</tbody></table>' .
 			'<table>
      <tr>
-      <td>' . we_button::create_button(
+      <td>' . we_html_button::create_button(
 				"add", "javascript:newinputAdvSearch();") . '</td>
       <td>' . we_html_tools::getPixel(10, 10) . '</td>
       <td colspan="7" align="right"></td>
@@ -2830,7 +2830,7 @@ class we_search_view extends we_tool_view{
 	}
 
 	function getDateSelector($_label, $_name, $_btn, $value){
-		$btnDatePicker = we_button::create_button(
+		$btnDatePicker = we_html_button::create_button(
 				"image:date_picker", "javascript:", null, null, null, null, null, null, false, $_btn);
 		$oSelector = new we_html_table(array(
 			"cellpadding" => 0,
@@ -3108,7 +3108,7 @@ class we_search_view extends we_tool_view{
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$folderID'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$folderPath'].value");
 		$yuiSuggest->setSelectButton(
-			we_button::create_button(
+			we_html_button::create_button(
 				"select", "javascript:we_cmd('openDirselector',document.we_form.elements['$folderID'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "')"));
 
 		return

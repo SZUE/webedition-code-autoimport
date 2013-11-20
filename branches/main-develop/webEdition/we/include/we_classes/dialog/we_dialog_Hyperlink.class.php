@@ -38,14 +38,14 @@ class we_dialog_Hyperlink extends we_dialog_base{
 
 	function getDialogButtons(){
 		if($this->pageNr == $this->numPages && $this->JsOnly == false){
-			$okBut = ($this->getBackBut() != "") ? we_button::create_button_table(array($this->getBackBut(), we_button::create_button("ok", "javascript:weCheckAcFields()"))) : we_button::create_button("ok", "javascript:weCheckAcFields()");
+			$okBut = ($this->getBackBut() != "") ? we_html_button::create_button_table(array($this->getBackBut(), we_html_button::create_button("ok", "javascript:weCheckAcFields()"))) : we_html_button::create_button("ok", "javascript:weCheckAcFields()");
 		} else if($this->pageNr < $this->numPages){
-			$okBut = (($this->getBackBut() != "") && ($this->getNextBut()) != "") ? we_button::create_button_table(array($this->getBackBut(), $this->getNextBut())) : (($this->getBackBut() == "") ? $this->getNextBut() : $this->getBackBut());
+			$okBut = (($this->getBackBut() != "") && ($this->getNextBut()) != "") ? we_html_button::create_button_table(array($this->getBackBut(), $this->getNextBut())) : (($this->getBackBut() == "") ? $this->getNextBut() : $this->getBackBut());
 		} else{
-			$okBut = (($this->getBackBut() != "") && ($this->getOkBut()) != "") ? we_button::create_button_table(array($this->getBackBut(), $this->getOkBut())) : (($this->getBackBut() == "") ? $this->getOkBut() : $this->getBackBut());
+			$okBut = (($this->getBackBut() != "") && ($this->getOkBut()) != "") ? we_html_button::create_button_table(array($this->getBackBut(), $this->getOkBut())) : (($this->getBackBut() == "") ? $this->getOkBut() : $this->getBackBut());
 		}
 
-		return we_button::position_yes_no_cancel($okBut, '', we_button::create_button('cancel', "javascript:top.close();"));
+		return we_html_button::position_yes_no_cancel($okBut, '', we_html_button::create_button('cancel', "javascript:top.close();"));
 	}
 
 	function initByHref($href, $target = "", $class = "", $param = "", $anchor = "", $lang = "", $hreflang = "", $title = "", $accesskey = "", $tabindex = "", $rel = "", $rev = ""){
@@ -315,7 +315,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 
 			// EXTERNAL LINK
 			$wecmdenc1 = we_cmd_enc("document.we_form.elements['we_dialog_args[extHref]'].value");
-			$_external_select_button = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button("select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', '', document.we_form.elements['we_dialog_args[extHref]'].value, '')") : "";
+			$_external_select_button = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button("select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', '', document.we_form.elements['we_dialog_args[extHref]'].value, '')") : "";
 
 			$_external_link = "<div style='margin-top:1px'>" . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extHref]", 30, $extHref ? $extHref : we_base_link::EMPTY_EXT, '', 'onchange="if(this.value==\'\'){
 					this.value=\'http://\';
@@ -333,7 +333,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			// INTERNAL LINK
 			$wecmdenc1 = we_cmd_enc("document.we_form.elements['we_dialog_args[fileID]'].value");
 			$wecmdenc2 = we_cmd_enc("document.we_form.elements['we_dialog_args[fileHref]'].value");
-			$_internal_select_button = we_button::create_button("select", "javascript:we_cmd('openDocselector', document.we_form.elements['we_dialog_args[fileID]'].value, '" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','',0, '', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
+			$_internal_select_button = we_html_button::create_button("select", "javascript:we_cmd('openDocselector', document.we_form.elements['we_dialog_args[fileID]'].value, '" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','',0, '', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 
 			$yuiSuggest->setAcId("Path");
 			$yuiSuggest->setContentType("folder,text/webedition,image/*,text/js,text/css,text/html,application/*,video/quicktime");
@@ -356,7 +356,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 				$wecmdenc1 = we_cmd_enc("document.we_form.elements['we_dialog_args[objID]'].value");
 				$wecmdenc2 = we_cmd_enc("document.we_form.elements['we_dialog_args[objHref]'].value");
 				$wecmdenc3 = we_cmd_enc("top.opener._EditorFrame.setEditorIsHot(true);");
-				$_object_select_button = we_button::create_button("select", "javascript:we_cmd('openDocselector', document.we_form.elements['we_dialog_args[objID]'].value, '" . OBJECT_FILES_TABLE . "', '" . $wecmdenc1 . "','" . $wecmdenc2 . "', '', '', '', 'objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");", false, 100, 22, "", "", !permissionhandler::hasPerm("CAN_SEE_OBJECTFILES"));
+				$_object_select_button = we_html_button::create_button("select", "javascript:we_cmd('openDocselector', document.we_form.elements['we_dialog_args[objID]'].value, '" . OBJECT_FILES_TABLE . "', '" . $wecmdenc1 . "','" . $wecmdenc2 . "', '', '', '', 'objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");", false, 100, 22, "", "", !permissionhandler::hasPerm("CAN_SEE_OBJECTFILES"));
 
 				$yuiSuggest->setAcId("Obj");
 				$yuiSuggest->setContentType("folder,objectFile");

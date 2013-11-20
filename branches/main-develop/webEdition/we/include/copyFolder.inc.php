@@ -115,8 +115,8 @@ if(isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3]){
 		}
 		');
 
-	$yes_button = we_button::create_button("ok", "form:we_form");
-	$cancel_button = we_button::create_button("cancel", "javascript:self.close();");
+	$yes_button = we_html_button::create_button("ok", "form:we_form");
+	$cancel_button = we_html_button::create_button("cancel", "javascript:self.close();");
 
 	$pb = new we_progressBar(0);
 	$pb->setStudLen(270);
@@ -124,7 +124,7 @@ if(isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3]){
 	$pbHTML = $pb->getHTML() . $pb->getJSCode();
 
 	$buttons = '<table border="0" cellpadding="0" cellspacing="0" width="300"><tr><td align="left" id="pbTd" style="display:none;">' . $pbHTML . '</td><td align="right">' .
-		we_button::position_yes_no_cancel($yes_button, null, $cancel_button) .
+		we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button) .
 		'</td></tr></table>';
 	$hidden =
 		we_html_element::htmlHidden(array("name" => "we_cmd[0]", "value" => $_REQUEST['we_cmd'][0])) .

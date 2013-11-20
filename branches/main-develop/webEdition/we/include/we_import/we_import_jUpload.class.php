@@ -109,19 +109,19 @@ class we_import_jUpload{
 		foreach($buttons as $button){
 			switch($button){
 				case 'add':
-					$_buttons[] = we_button::create_button("add", "javascript:if(document.JUpload.jsIsReady()) document.JUpload.jsClickAdd();");
+					$_buttons[] = we_html_button::create_button("add", "javascript:if(document.JUpload.jsIsReady()) document.JUpload.jsClickAdd();");
 					break;
 				case 'remove':
-					$_buttons[] = we_button::create_button("delete", "javascript:if(document.JUpload.jsIsReady()) document.JUpload.jsClickRemove();");
+					$_buttons[] = we_html_button::create_button("delete", "javascript:if(document.JUpload.jsIsReady()) document.JUpload.jsClickRemove();");
 					break;
 				case 'upload':
-					$_buttons[] = we_button::create_button("upload", "javascript:if(document.JUpload.jsIsReady()) document.JUpload.jsClickUpload();");
+					$_buttons[] = we_html_button::create_button("upload", "javascript:if(document.JUpload.jsIsReady()) document.JUpload.jsClickUpload();");
 					break;
 			}
 		}
 
 		return ($order == 'h' ?
-				we_button::create_button_table($_buttons, $space) :
+				we_html_button::create_button_table($_buttons, $space) :
 				'<div style="margin-bottom: ' . $space . 'px;">' . implode('</div><div style="margin-bottom: ' . $space . 'px;">', $_buttons) . '</div>'
 			);
 	}

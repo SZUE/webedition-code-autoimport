@@ -49,7 +49,7 @@ foreach($we_doc->schedArr as $i => $sched){
 }
 $parts[] = array(
 	'headline' => '',
-	'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_schedule', '[descriptiontext]'), we_html_tools::TYPE_INFO, 700) . '<br><br>' . we_button::create_button('image:btn_add_schedule', "javascript:we_cmd('add_schedule')"),
+	'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_schedule', '[descriptiontext]'), we_html_tools::TYPE_INFO, 700) . '<br><br>' . we_html_button::create_button('image:btn_add_schedule', "javascript:we_cmd('add_schedule')"),
 	'space' => 0
 );
 print we_html_multiIconBox::getJS() .

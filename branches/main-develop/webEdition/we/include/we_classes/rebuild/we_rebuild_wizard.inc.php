@@ -72,17 +72,17 @@ abstract class we_rebuild_wizard{
 				  nextBut.style.display = "";
 				}');
 
-		$cancelButton = we_button::create_button("cancel", "javascript:top.close();");
-		$refreshButton = we_button::create_button("refresh", "javascript:parent.wizcmd.location.reload();", true, -1, -1, "", "", false, false);
+		$cancelButton = we_html_button::create_button("cancel", "javascript:top.close();");
+		$refreshButton = we_html_button::create_button("refresh", "javascript:parent.wizcmd.location.reload();", true, -1, -1, "", "", false, false);
 
 		$nextbutdisabled = !(permissionhandler::hasPerm("REBUILD_ALL") || permissionhandler::hasPerm("REBUILD_FILTERD") || permissionhandler::hasPerm("REBUILD_OBJECTS") || permissionhandler::hasPerm("REBUILD_INDEX") || permissionhandler::hasPerm("REBUILD_THUMBS") || permissionhandler::hasPerm("REBUILD_META"));
 
 		if($dc){
-			$buttons = we_button::create_button_table(array($refreshButton, $cancelButton), 10);
+			$buttons = we_html_button::create_button_table(array($refreshButton, $cancelButton), 10);
 			$pb = we_html_tools::htmlDialogLayout($pb, g_l('rebuild', "[rebuild]"), $buttons);
 		} else{
-			$prevButton = we_button::create_button("back", "javascript:parent.wizbody.handle_event('previous');", true, -1, -1, "", "", true, false);
-			$nextButton = we_button::create_button("next", "javascript:parent.wizbody.handle_event('next');", true, -1, -1, "", "", $nextbutdisabled, false);
+			$prevButton = we_html_button::create_button("back", "javascript:parent.wizbody.handle_event('previous');", true, -1, -1, "", "", true, false);
+			$nextButton = we_html_button::create_button("next", "javascript:parent.wizbody.handle_event('next');", true, -1, -1, "", "", $nextbutdisabled, false);
 
 			$content2 = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 1, 4);
 			$content2->setCol(0, 0, array("id" => "prev", "style" => "display:table-cell; padding-left:10px;", "align" => "right"), $prevButton);
@@ -100,7 +100,7 @@ abstract class we_rebuild_wizard{
 				we_html_element::htmlHead(
 					we_html_tools::getHtmlInnerHead(g_l('rebuild', "[rebuild]")) .
 					STYLESHEET .
-					($dc ? '' : we_button::create_state_changer()) . $js) .
+					($dc ? '' : we_html_button::create_state_changer()) . $js) .
 				we_html_element::htmlBody(array('style'=>'overflow:hidden',"class" => ($dc ? "weDialogBody" : "weDialogButtonsBody")), ($dc ? $pb : $content->getHtml())
 				)
 		);
@@ -409,9 +409,9 @@ abstract class we_rebuild_wizard{
 	 */
 	static function formCategory($categories, $catAnd){
 		$catAndCheck = we_html_forms::checkbox(1, $catAnd, "catAnd", g_l('rebuild', "[catAnd]"), false, "defaultfont", "document.we_form.btype[2].checked=true;");
-		$delallbut = we_button::create_button("delete_all", "javascript:document.we_form.btype[2].checked=true;we_cmd('del_all_cats')");
-		$addbut = we_button::create_button("add", "javascript:document.we_form.btype[2].checked=true;we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_cat\\',top.allIDs);')", false, 100, 22);
-		$butTable = we_button::create_button_table(array($delallbut, $addbut));
+		$delallbut = we_html_button::create_button("delete_all", "javascript:document.we_form.btype[2].checked=true;we_cmd('del_all_cats')");
+		$addbut = we_html_button::create_button("add", "javascript:document.we_form.btype[2].checked=true;we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_cat\\',top.allIDs);')", false, 100, 22);
+		$butTable = we_html_button::create_button_table(array($delallbut, $addbut));
 		$upperTable = '<table border="0" cellpadding="0" cellspacing="0" width="495"><tr><td align="left">' . $catAndCheck . '</td><td align="right">' . $butTable . '</td></tr></table>';
 
 		$cats = new MultiDirChooser(495, $categories, "del_cat", $upperTable, '', 'Icon,Path', CATEGORY_TABLE);
@@ -445,11 +445,11 @@ abstract class we_rebuild_wizard{
 	 * @param boolean $thumnailpage if it should displayed in the thumbnails page or on an other page
 	 */
 	static function formFolders($folders, $thumnailpage = false, $width = "495"){
-		$delallbut = we_button::create_button("delete_all", "javascript:" . ($thumnailpage ? "" : "document.we_form.btype[2].checked=true;") . "we_cmd('del_all_folders')");
+		$delallbut = we_html_button::create_button("delete_all", "javascript:" . ($thumnailpage ? "" : "document.we_form.btype[2].checked=true;") . "we_cmd('del_all_folders')");
 		$wecmdenc3 = we_cmd_enc("fillIDs();opener.we_cmd('add_folder',top.allIDs);");
-		$addbut = we_button::create_button("add", "javascript:" . ($thumnailpage ? "" : "document.we_form.btype[2].checked=true;") . "we_cmd('openDirselector','','" . FILE_TABLE . "','','','" . $wecmdenc3 . "','','','',1)");
+		$addbut = we_html_button::create_button("add", "javascript:" . ($thumnailpage ? "" : "document.we_form.btype[2].checked=true;") . "we_cmd('openDirselector','','" . FILE_TABLE . "','','','" . $wecmdenc3 . "','','','',1)");
 
-		$dirs = new MultiDirChooser($width, $folders, "del_folder", we_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", FILE_TABLE);
+		$dirs = new MultiDirChooser($width, $folders, "del_folder", we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", FILE_TABLE);
 
 		return ($thumnailpage ? g_l('rebuild', "[thumbdirs]") : g_l('rebuild', "[dirs]")) . "<br>" . we_html_tools::getPixel(1, 3) . "<br>" . $dirs->get();
 	}
@@ -480,8 +480,8 @@ abstract class we_rebuild_wizard{
 			we_html_tools::htmlAlertAttentionBox(g_l('rebuild', "[expl_rebuild_metadata]"), we_html_tools::TYPE_INFO, 520) .
 			'<div class="defaultfont" style="margin:10px 0 5px 0;">' . g_l('rebuild', "[metadata]") . ':</div>' . "\n";
 
-		$selAllBut = we_button::create_button("selectAll", "javascript:we_cmd('select_all_fields');");
-		$deselAllBut = we_button::create_button("deselectAll", "javascript:we_cmd('deselect_all_fields');");
+		$selAllBut = we_html_button::create_button("selectAll", "javascript:we_cmd('select_all_fields');");
+		$deselAllBut = we_html_button::create_button("deselectAll", "javascript:we_cmd('deselect_all_fields');");
 
 		foreach($metaDataFields as $md){
 			if($md['importFrom']){
@@ -490,7 +490,7 @@ abstract class we_rebuild_wizard{
 			}
 		}
 
-		$_html .= we_button::create_button_table(
+		$_html .= we_html_button::create_button_table(
 				array(
 				$selAllBut,
 				$deselAllBut

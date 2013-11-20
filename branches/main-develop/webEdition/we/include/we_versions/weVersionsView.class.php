@@ -468,7 +468,7 @@ function newinput() {
 
 			cell = document.createElement("TD");
 			cell.setAttribute("id", "td_delButton["+rows+"]");
-			cell.innerHTML=\'' . we_button::create_button(
+			cell.innerHTML=\'' . we_html_button::create_button(
 					"image:btn_function_trash", "javascript:delRow('+rows+')") . '\';
 			newRow.appendChild(cell);
 
@@ -516,7 +516,7 @@ function changeit(value, rowNr){
 
 		cell = document.createElement("TD");
 		cell.setAttribute("id", "td_delButton["+rowNr+"]");
-		cell.innerHTML=\'' . we_button::create_button('image:btn_function_trash', "javascript:delRow('+rowNr+')") . '\';
+		cell.innerHTML=\'' . we_html_button::create_button('image:btn_function_trash', "javascript:delRow('+rowNr+')") . '\';
 		row.appendChild(cell);
 		}else if(value=="timestamp") {
 		row.removeChild(locationTD);
@@ -555,7 +555,7 @@ function changeit(value, rowNr){
 
 	cell = document.createElement("TD");
 	cell.setAttribute("id", "td_delButton["+rowNr+"]");
-	cell.innerHTML = \'' . we_button::create_button('image:btn_function_trash', "javascript:delRow('+rowNr+')") . '\';
+	cell.innerHTML = \'' . we_html_button::create_button('image:btn_function_trash', "javascript:delRow('+rowNr+')") . '\';
 		row.appendChild(cell);
 	}else if(value=="modifierID") {
 		if (locationTD!=null) {
@@ -578,7 +578,7 @@ function changeit(value, rowNr){
 
 		cell = document.createElement("TD");
 		cell.setAttribute("id", "td_delButton["+rowNr+"]");
-		cell.innerHTML=\'' . we_button::create_button(
+		cell.innerHTML=\'' . we_html_button::create_button(
 					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
 		row.appendChild(cell);
 	}else if(value=="status") {
@@ -602,7 +602,7 @@ function changeit(value, rowNr){
 
 		cell = document.createElement("TD");
 		cell.setAttribute("id", "td_delButton["+rowNr+"]");
-		cell.innerHTML=\'' . we_button::create_button(
+		cell.innerHTML=\'' . we_html_button::create_button(
 					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
 		row.appendChild(cell);
 	}
@@ -644,7 +644,7 @@ function delRow(id) {
 <tr>
 	<td class="weDocListSearchHeadline">' . g_l('versions', '[weSearch]') . '</td>
 	<td>' . we_html_tools::getPixel(10, 2) . '</td>
-	<td>' . we_html_tools::getPixel(40, 2) . we_button::create_button("image:btn_direction_right", "javascript:switchSearch(1)", false) . '</td>
+	<td>' . we_html_tools::getPixel(40, 2) . we_html_button::create_button("image:btn_direction_right", "javascript:switchSearch(1)", false) . '</td>
 	<td width="100%">' . we_html_tools::getPixel(10, 2) . '</td>
 </tr>
 </table>
@@ -652,7 +652,7 @@ function delRow(id) {
 <tr>
 	<td class="weDocListSearchHeadline">' . g_l('versions', '[weSearch]') . '</td>
 	<td>' . we_html_tools::getPixel(10, 2) . '</td>
-	<td>' . we_html_tools::getPixel(40, 2) . we_button::create_button("image:btn_direction_down", "javascript:switchSearch(0)", false) . '</td>
+	<td>' . we_html_tools::getPixel(40, 2) . we_html_button::create_button("image:btn_direction_down", "javascript:switchSearch(0)", false) . '</td>
 	<td width="100%">' . we_html_tools::getPixel(10, 2) . '</td>
 </tr>
 </table>
@@ -686,7 +686,7 @@ function delRow(id) {
 
 		for($i = 0; $i < $this->searchclass->height; $i++){
 
-			$button = we_button::create_button("image:btn_function_trash", "javascript:delRow(" . $i . ");", true, "", "", "", "", false);
+			$button = we_html_button::create_button("image:btn_function_trash", "javascript:delRow(" . $i . ");", true, "", "", "", "", false);
 
 			$search = we_html_tools::htmlSelect(
 					"search[" . $i . "]", $this->searchclass->getModFields(), 1, (isset($this->searchclass->search) && is_array($this->searchclass->search) && isset(
@@ -740,9 +740,9 @@ function delRow(id) {
 		<td colspan="4">' . we_html_tools::getPixel(20, 10) . '</td>
 	</tr>
 	<tr>
-		<td width="215">' . we_button::create_button("add", "javascript:newinput();") . '</td>
+		<td width="215">' . we_html_button::create_button("add", "javascript:newinput();") . '</td>
 		<td width="155"></td>
-		<td width="188" align="right">' . we_button::create_button("search", "javascript:search(true);") . '</td>
+		<td width="188" align="right">' . we_html_button::create_button("search", "javascript:search(true);") . '</td>
 		<td></td>
 	</tr>
 	</table>
@@ -839,8 +839,8 @@ function delRow(id) {
 
 		$out = '<table cellpadding="0" cellspacing="0" border="0"><tr><td id="zurueck">' .
 			($searchstart ?
-				we_button::create_button("back", "javascript:back(" . $anzahl . ");") :
-				we_button::create_button("back", "", true, 100, 22, "", "", true)) .
+				we_html_button::create_button("back", "javascript:back(" . $anzahl . ");") :
+				we_html_button::create_button("back", "", true, 100, 22, "", "", true)) .
 			'</td><td>' . we_html_tools::getPixel(10, 2) . '</td>
 				<td class="defaultfont"><b>' . (($we_search_anzahl) ? $searchstart + 1 : 0) . '-' .
 			(($we_search_anzahl - $searchstart) < $anzahl ?
@@ -848,8 +848,8 @@ function delRow(id) {
 				$searchstart + $anzahl) .
 			' ' . g_l('global', "[from]") . ' ' . $we_search_anzahl . '</b></td><td>' . we_html_tools::getPixel(10, 2) . '</td><td id="weiter">' .
 			(($searchstart + $anzahl) < $we_search_anzahl ?
-				we_button::create_button("next", "javascript:next(" . $anzahl . ");") : //bt_back
-				we_button::create_button("next", "", true, 100, 22, "", "", true)) .
+				we_html_button::create_button("next", "javascript:next(" . $anzahl . ");") : //bt_back
+				we_html_button::create_button("next", "", true, 100, 22, "", "", true)) .
 			'</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>';
 
 		$pages = array();
@@ -941,8 +941,8 @@ function delRow(id) {
 					($fromImport != '' ? $fromImport : '') .
 					($resetFromVersion != '' ? $resetFromVersion : '')),
 				array("dat" => (permissionhandler::hasPerm("ADMINISTRATOR")) ? we_html_forms::checkbox($_versions[$f]["ID"], 0, "deleteVersion", "", false, "defaultfont", "") : ""),
-				array("dat" => "<span class='printShow'>" . we_button::create_button("reset", "javascript:resetVersion('" . $_versions[$f]["ID"] . "','" . $_versions[$f]["documentID"] . "','" . $_versions[$f]["version"] . "','" . $_versions[$f]["documentTable"] . "');", true, 100, 22, "", "", $disabledReset) . "</span>"),
-				array("dat" => "<span class='printShow'>" . we_button::create_button("preview", "javascript:previewVersion('" . $_versions[$f]["ID"] . "');") . "</span>" . we_html_tools::getPixel(1, 1)),
+				array("dat" => "<span class='printShow'>" . we_html_button::create_button("reset", "javascript:resetVersion('" . $_versions[$f]["ID"] . "','" . $_versions[$f]["documentID"] . "','" . $_versions[$f]["version"] . "','" . $_versions[$f]["documentTable"] . "');", true, 100, 22, "", "", $disabledReset) . "</span>"),
+				array("dat" => "<span class='printShow'>" . we_html_button::create_button("preview", "javascript:previewVersion('" . $_versions[$f]["ID"] . "');") . "</span>" . we_html_tools::getPixel(1, 1)),
 				array("dat" => "<span class='printShow'>" .
 					(($_versions[$f]["ContentType"] == "text/webedition" || $_versions[$f]["ContentType"] == "text/html" || $_versions[$f]["ContentType"] == "objectFile") ?
 						we_html_forms::checkbox($_versions[$f]["ID"], 0, "publishVersion_" . $_versions[$f]["ID"], g_l('versions', '[publishIfReset]'), false, "middlefont", "") :
@@ -964,7 +964,7 @@ function delRow(id) {
 			array("dat" => '<a href="javascript:setOrder(\'modifierID\');">' . g_l('versions', '[user]') . '</a> <span id="modifierID" >' . $this->getSortImage('modifierID') . '</span>'),
 			array("dat" => '<a href="javascript:setOrder(\'timestamp\');">' . g_l('versions', '[modTime]') . '</a> <span id="timestamp" >' . $this->getSortImage('timestamp') . '</span>'),
 			array("dat" => g_l('versions', '[modifications]')),
-			array("dat" => (permissionhandler::hasPerm("ADMINISTRATOR") ? '<div style="margin:0px 0px 5px 0px;" id="deleteButton">' . we_button::create_button(
+			array("dat" => (permissionhandler::hasPerm("ADMINISTRATOR") ? '<div style="margin:0px 0px 5px 0px;" id="deleteButton">' . we_html_button::create_button(
 						"image:btn_function_trash", "javascript:deleteVers();") . '</div>' : '') .
 				we_html_forms::checkbox(1, 0, "deleteAllVersions", g_l('versions', '[mark]'), false, "middlefont", "checkAll();")),
 			array("dat" => we_html_tools::getPixel(1, 1)),

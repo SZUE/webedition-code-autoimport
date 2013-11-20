@@ -231,7 +231,7 @@ function uploadFinished() {
 		$path = id_to_path($store_id);
 		$wecmdenc1 = we_cmd_enc('document.we_startform.importToID.value');
 		$wecmdenc2 = we_cmd_enc('document.we_startform.egal.value');
-		$button = we_button::create_button('select', "javascript:we_cmd('openDirselector',document.we_startform.importToID.value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','0')");
+		$button = we_html_button::create_button('select', "javascript:we_cmd('openDirselector',document.we_startform.importToID.value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','0')");
 
 		$yuiSuggest->setAcId('Dir');
 		$yuiSuggest->setContentType('folder');
@@ -524,13 +524,13 @@ function uploadFinished() {
 			}
 		}
 
-		$cancelButton = we_button::create_button("cancel", "javascript:top.close()");
-		$closeButton = we_button::create_button("close", "javascript:top.close()");
+		$cancelButton = we_html_button::create_button("cancel", "javascript:top.close()");
+		$closeButton = we_html_button::create_button("close", "javascript:top.close()");
 
 		$progressbar = '';
 		$formnum = (isset($_REQUEST["weFormNum"]) ? $_REQUEST["weFormNum"] : 0);
 		$formcount = (isset($_REQUEST["weFormCount"]) ? $_REQUEST["weFormCount"] : 0);
-		$js = we_button::create_state_changer(false) . '
+		$js = we_html_button::create_state_changer(false) . '
 
 var weFormNum = ' . $formnum . ';
 var weFormCount = ' . $formcount . ';
@@ -633,9 +633,9 @@ function next() {
 
 		$js = we_html_element::jsElement($js);
 
-		$prevButton = we_button::create_button("back", "javascript:back();", true, -1, -1, "", "", false);
-		$prevButton2 = we_button::create_button("back", "javascript:back();", true, -1, -1, "", "", false, false);
-		$nextButton = we_button::create_button("next", "javascript:next();", true, -1, -1, "", "", $this->step > 0, false);
+		$prevButton = we_html_button::create_button("back", "javascript:back();", true, -1, -1, "", "", false);
+		$prevButton2 = we_html_button::create_button("back", "javascript:back();", true, -1, -1, "", "", false, false);
+		$nextButton = we_html_button::create_button("next", "javascript:next();", true, -1, -1, "", "", $this->step > 0, false);
 
 		$prog = ($formcount == 0) ? 0 : (($this->step == 0) ? 0 : ((int) ((100 / $formcount) * ($formnum + 1))));
 		$pb = new we_progressBar($prog);
@@ -644,7 +644,7 @@ function next() {
 		$progressbar = '<span id="progressbar"' . (($this->step == 0) ? 'style="display:none' : '') . '">' . $pb->getHTML() . '</span>';
 		$js .= $pb->getJSCode();
 
-		$prevNextButtons = $prevButton ? we_button::create_button_table(array($prevButton, $nextButton)) : null;
+		$prevNextButtons = $prevButton ? we_html_button::create_button_table(array($prevButton, $nextButton)) : null;
 
 		$table = new we_html_table(array(
 			"border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => "100%"
@@ -654,17 +654,17 @@ function next() {
 			"align" => "right"
 			), we_html_element::htmlDiv(array(
 				'id' => 'normButton'
-				), we_button::position_yes_no_cancel($prevNextButtons, null, $cancelButton, 10, '', array(), 10)) .
+				), we_html_button::position_yes_no_cancel($prevNextButtons, null, $cancelButton, 10, '', array(), 10)) .
 			we_html_element::htmlDiv(
 				array(
 				'id' => 'juButton', 'style' => 'display:none;'
-				), we_button::position_yes_no_cancel($prevButton2, null, $closeButton, 10, '', array(), 10)));
+				), we_html_button::position_yes_no_cancel($prevButton2, null, $closeButton, 10, '', array(), 10)));
 
 		if($this->step == 3){
 			$table->setCol(0, 0, null, '');
 			$table->setCol(0, 1, array("align" => "right"), we_html_element::htmlDiv(array(
 					'id' => 'normButton'
-					), we_button::position_yes_no_cancel($prevButton2, null, $closeButton, 10, '', array(), 10)));
+					), we_html_button::position_yes_no_cancel($prevButton2, null, $closeButton, 10, '', array(), 10)));
 		}
 
 		$content = $table->getHtml();
@@ -853,7 +853,7 @@ function next() {
 	function getHTMLCategory(){
 		$_width_size = 300;
 
-		$addbut = we_button::create_button(
+		$addbut = we_html_button::create_button(
 				"add", "javascript:we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);')");
 		$del_but = addslashes(
 			we_html_element::htmlImg(
@@ -903,9 +903,9 @@ categories_edit.setItem(0,(categories_edit.itemCount-1),"' . id_to_path($cat, CA
 		$table->setCol(
 			3, 0, array(
 			'colspan' => 2, 'align' => 'right'
-			), we_button::create_button_table(
+			), we_html_button::create_button_table(
 				array(
-					we_button::create_button("delete_all", "javascript:removeAllCats()"), $addbut
+					we_html_button::create_button("delete_all", "javascript:removeAllCats()"), $addbut
 		)));
 
 		return $table->getHtml() . $js . we_html_element::jsElement('

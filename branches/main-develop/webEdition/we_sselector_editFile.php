@@ -48,8 +48,8 @@ if(isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] == "save"){
 	}
 }
 
-$buttons = we_button::position_yes_no_cancel(
-		we_button::create_button("save", "javascript:document.forms[0].submit();"), null, we_button::create_button("cancel", "javascript:self.close();")
+$buttons = we_html_button::position_yes_no_cancel(
+		we_html_button::create_button("save", "javascript:document.forms[0].submit();"), null, we_html_button::create_button("cancel", "javascript:self.close();")
 );
 $content = '<textarea name="editFile" id="editFile" style="width:540px;height:380px;overflow: auto;">' . oldHtmlspecialchars($we_fileData) . '</textarea>';
 ?>

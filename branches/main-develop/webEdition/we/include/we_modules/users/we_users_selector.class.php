@@ -186,9 +186,9 @@ function selectFile(id){
 	}
 
 	function printFooterTable(){
-		$cancel_button = we_button::create_button("cancel", "javascript:top.exit_close();");
-		$yes_button = we_button::create_button("ok", "javascript:press_ok_button();");
-		$buttons = we_button::position_yes_no_cancel($yes_button, null, $cancel_button);
+		$cancel_button = we_html_button::create_button("cancel", "javascript:top.exit_close();");
+		$yes_button = we_html_button::create_button("ok", "javascript:press_ok_button();");
+		$buttons = we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button);
 		return '
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
 	<tr>

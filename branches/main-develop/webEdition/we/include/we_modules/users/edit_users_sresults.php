@@ -90,14 +90,14 @@ if($DB_WE->num_rows()){
 	$_select.='</select>';
 }
 
-$_buttons = we_button::position_yes_no_cancel(
-		we_button::create_button("edit", "javascript:opener.top.content.we_cmd('check_user_display',document.we_form.search_results.value); if(document.we_form.search_results.value){top.close()}"), null, we_button::create_button("cancel", "javascript:self.close();")
+$_buttons = we_html_button::position_yes_no_cancel(
+		we_html_button::create_button("edit", "javascript:opener.top.content.we_cmd('check_user_display',document.we_form.search_results.value); if(document.we_form.search_results.value){top.close()}"), null, we_html_button::create_button("cancel", "javascript:self.close();")
 );
 
 
 
 $_content = we_html_tools::htmlFormElementTable(
-		we_html_tools::htmlTextInput('kwd', 24, $_kwd, "", "", "text", 485), g_l('modules_users', "[search_for]"), "left", "defaultfont", we_html_tools::getPixel(10, 1), we_button::create_button("image:btn_function_search", "javascript:document.we_form.submit();")
+		we_html_tools::htmlTextInput('kwd', 24, $_kwd, "", "", "text", 485), g_l('modules_users', "[search_for]"), "left", "defaultfont", we_html_tools::getPixel(10, 1), we_html_button::create_button("image:btn_function_search", "javascript:document.we_form.submit();")
 	) . '<div style="height:20px;"></div>' .
 	we_html_tools::htmlFormElementTable(
 		$_select, g_l('modules_users', "[search_result]")

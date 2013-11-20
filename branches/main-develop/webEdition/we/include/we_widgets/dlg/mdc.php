@@ -71,13 +71,13 @@ function getHTMLDirSelector($_selType){
 	$wecmdenc1 = we_cmd_enc("document.we_form.elements['FolderID'].value");
 	$wecmdenc2 = we_cmd_enc("document.we_form.elements['FolderPath'].value");
 	$wecmdenc3 = '';
-	$_button_doc = we_button::create_button(
+	$_button_doc = we_html_button::create_button(
 			"select", "javascript:we_cmd('openDirselector',document.we_form.elements['FolderID'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "','$rootDirID')");
 	//javascript:we_cmd('openDirselector',document.we_form.elements['FolderID'].value,'" . OBJECT_FILES_TABLE . "','document.we_form.elements[\\'FolderID\\'].value','document.we_form.elements[\\'FolderPath\\'].value','','" . session_id() . "','$rootDirID')
 	$wecmdenc1 = we_cmd_enc("document.we_form.elements['FolderID'].value");
 	$wecmdenc2 = we_cmd_enc("document.we_form.elements['FolderPath'].value");
 	$wecmdenc3 = '';
-	$_button_obj = defined('OBJECT_TABLE') ? we_button::create_button(
+	$_button_obj = defined('OBJECT_TABLE') ? we_html_button::create_button(
 			"select", "javascript:we_cmd('openDirselector',document.we_form.elements['FolderID'].value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "','$rootDirID')") : '';
 
 	$_buttons = '<div id="docFolder" style="display: ' . (!$_selType ? "inline" : "none") . '">' . $_button_doc . "</div>" . '<div id="objFolder" style="display: ' . ($_selType ? "inline" : "none") . '">' . $_button_obj . "</div>";
@@ -128,7 +128,7 @@ if($ac){
 }
 
 function getHTMLCategory(){
-	$addbut = we_button::create_button(
+	$addbut = we_html_button::create_button(
 			"add", "javascript:we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
 	$del_but = addslashes(
 		we_html_element::htmlImg(
@@ -188,9 +188,9 @@ function getHTMLCategory(){
 	$table->setCol(
 		4, 0, array(
 		'colspan' => 2, 'align' => 'right'
-		), we_button::create_button_table(
+		), we_html_button::create_button_table(
 			array(
-				we_button::create_button('delete_all', 'javascript:removeAllCats()'), $addbut
+				we_html_button::create_button('delete_all', 'javascript:removeAllCats()'), $addbut
 	)));
 
 	return $table->getHtml() . $js . we_html_element::jsElement(
@@ -426,10 +426,10 @@ $parts[] = array(
 	"headline" => "", "html" => $oSelCls->getHTML(), "space" => 0
 );
 
-$save_button = we_button::create_button("save", "javascript:save();", false, -1, -1);
-$preview_button = we_button::create_button("preview", "javascript:preview();", false, -1, -1);
-$cancel_button = we_button::create_button("close", "javascript:exit_close();");
-$buttons = we_button::position_yes_no_cancel($save_button, $preview_button, $cancel_button);
+$save_button = we_html_button::create_button("save", "javascript:save();", false, -1, -1);
+$preview_button = we_html_button::create_button("preview", "javascript:preview();", false, -1, -1);
+$cancel_button = we_html_button::create_button("close", "javascript:exit_close();");
+$buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button, $cancel_button);
 
 $sTblWidget = we_html_multiIconBox::getHTML(
 		"mdcProps", "100%", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[my_documents]'));

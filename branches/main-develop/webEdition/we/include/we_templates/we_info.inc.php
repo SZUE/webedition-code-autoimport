@@ -159,7 +159,7 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 		"cellspacing" => 0,
 		"width" => $_middlePart), 1, 3);
 
-	$loginButton = '<button type="submit" style="border: none; background-color: transparent; margin: 0px; padding: 0px;">' . we_button::create_button("login", "javascript:document.loginForm.submit();") . '</button>';
+	$loginButton = '<button type="submit" style="border: none; background-color: transparent; margin: 0px; padding: 0px;">' . we_html_button::create_button("login", "javascript:document.loginForm.submit();") . '</button>';
 	if(!WE_SEEM){ //	deactivate See-Mode
 		if(WE_LOGIN_WEWINDOW){
 			$_modetable->setCol(0, 0, array(), '');
@@ -254,7 +254,7 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 	$_table->setCol($_actRow, 0, array("width" => $_space), we_html_tools::getPixel($_space, 5));
 	$_table->setCol($_actRow, 1, array("width" => $_middlePart,
 		"class" => "small",
-		"align" => "right"), we_button::create_button("back_to_login", WEBEDITION_DIR . "index.php?r=$r"));
+		"align" => "right"), we_html_button::create_button("back_to_login", WEBEDITION_DIR . "index.php?r=$r"));
 	$_table->setCol($_actRow++, 2, array("width" => $_space), we_html_tools::getPixel($_space, 1));
 
 	//	12th row

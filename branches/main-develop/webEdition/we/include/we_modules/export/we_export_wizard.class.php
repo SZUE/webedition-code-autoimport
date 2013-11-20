@@ -955,64 +955,64 @@ function setState(a) {
 		}
 		switch($step){
 			case 0:
-				$buttons = we_button::position_yes_no_cancel(
-						we_button::create_button_table(array(
-							we_button::create_button("back", "", false, 100, 22, "", "", true),
-							we_button::create_button("next", "javascript:" . $this->bodyFrame . ".document.we_form.submit();"))), we_button::create_button("cancel", "javascript:top.close();")
+				$buttons = we_html_button::position_yes_no_cancel(
+						we_html_button::create_button_table(array(
+							we_html_button::create_button("back", "", false, 100, 22, "", "", true),
+							we_html_button::create_button("next", "javascript:" . $this->bodyFrame . ".document.we_form.submit();"))), we_html_button::create_button("cancel", "javascript:top.close();")
 				);
 				break;
 			case 1:
-				$buttons = we_button::position_yes_no_cancel(
-						we_button::create_button_table(array(
-							we_button::create_button("back", "javascript:" . $this->bodyFrame . ".document.we_form.step.value=0;" . $this->bodyFrame . ".document.we_form.submit();"),
-							we_button::create_button("next", "javascript:" . $this->bodyFrame . ".we_submit();"))), we_button::create_button("cancel", "javascript:top.close();")
+				$buttons = we_html_button::position_yes_no_cancel(
+						we_html_button::create_button_table(array(
+							we_html_button::create_button("back", "javascript:" . $this->bodyFrame . ".document.we_form.step.value=0;" . $this->bodyFrame . ".document.we_form.submit();"),
+							we_html_button::create_button("next", "javascript:" . $this->bodyFrame . ".we_submit();"))), we_html_button::create_button("cancel", "javascript:top.close();")
 				);
 				break;
 			case 2:
-				$buttons = we_button::position_yes_no_cancel(
-						we_button::create_button_table(array(
-							we_button::create_button("back", "javascript:" . $this->bodyFrame . ".document.we_form.step.value=1;" . $this->bodyFrame . ".document.we_form.submit();"),
-							we_button::create_button("next", "javascript:" . $this->bodyFrame . ".document.we_form.step.value=" . ($this->exportVars["selection"] == "auto" ? "7" : "3") . ";" . $this->bodyFrame . ".document.we_form.submit();"))), we_button::create_button("cancel", "javascript:top.close();")
+				$buttons = we_html_button::position_yes_no_cancel(
+						we_html_button::create_button_table(array(
+							we_html_button::create_button("back", "javascript:" . $this->bodyFrame . ".document.we_form.step.value=1;" . $this->bodyFrame . ".document.we_form.submit();"),
+							we_html_button::create_button("next", "javascript:" . $this->bodyFrame . ".document.we_form.step.value=" . ($this->exportVars["selection"] == "auto" ? "7" : "3") . ";" . $this->bodyFrame . ".document.we_form.submit();"))), we_html_button::create_button("cancel", "javascript:top.close();")
 				);
 				break;
 			case 3:
-				$buttons = we_button::position_yes_no_cancel(
-						we_button::create_button_table(array(
-							we_button::create_button("back", "javascript:" . $this->bodyFrame . ".document.we_form.step.value=2;" . $this->bodyFrame . ".we_submit();"),
-							we_button::create_button("next", "javascript:" . $this->bodyFrame . ".document.we_form.step.value=7;" . $this->bodyFrame . ".we_submit();"))), we_button::create_button("cancel", "javascript:top.close();")
+				$buttons = we_html_button::position_yes_no_cancel(
+						we_html_button::create_button_table(array(
+							we_html_button::create_button("back", "javascript:" . $this->bodyFrame . ".document.we_form.step.value=2;" . $this->bodyFrame . ".we_submit();"),
+							we_html_button::create_button("next", "javascript:" . $this->bodyFrame . ".document.we_form.step.value=7;" . $this->bodyFrame . ".we_submit();"))), we_html_button::create_button("cancel", "javascript:top.close();")
 				);
 				break;
 			case 4:
-				$buttons = we_button::position_yes_no_cancel(
-						we_button::create_button_table(array(
-							we_button::create_button("back", "javascript:" . $this->bodyFrame . ".document.we_form.target='body';" . $this->bodyFrame . ".document.we_form.pnt.value='body';" . $this->bodyFrame . ".document.we_form.step.value=" . ($this->exportVars["selection"] == "auto" ? "2" : "3") . ";" . $this->bodyFrame . ".document.we_form.submit();"),
-							we_button::create_button("next", "javascript:" . $this->bodyFrame . ".document.we_form.submit();"))), we_button::create_button("cancel", "javascript:top.close();")
+				$buttons = we_html_button::position_yes_no_cancel(
+						we_html_button::create_button_table(array(
+							we_html_button::create_button("back", "javascript:" . $this->bodyFrame . ".document.we_form.target='body';" . $this->bodyFrame . ".document.we_form.pnt.value='body';" . $this->bodyFrame . ".document.we_form.step.value=" . ($this->exportVars["selection"] == "auto" ? "2" : "3") . ";" . $this->bodyFrame . ".document.we_form.submit();"),
+							we_html_button::create_button("next", "javascript:" . $this->bodyFrame . ".document.we_form.submit();"))), we_html_button::create_button("cancel", "javascript:top.close();")
 				);
 				break;
 			case 7:
-				$buttons = we_button::position_yes_no_cancel(
-						we_button::create_button_table(array(
-							we_button::create_button("back", "javascript:" . $this->bodyFrame . ".document.we_form.target='body';" . $this->bodyFrame . ".document.we_form.pnt.value='body';" . $this->bodyFrame . ".document.we_form.step.value=" . ($this->exportVars["selection"] == "auto" ? "2" : "3") . ";" . $this->bodyFrame . ".document.we_form.submit();"),
-							we_button::create_button("next", "javascript:" . $this->bodyFrame . ".document.we_form.target='load';;" . $this->bodyFrame . ".document.we_form.pnt.value='load';" . $this->bodyFrame . ".document.we_form.submit();"))), we_button::create_button("cancel", "javascript:top.close();")
+				$buttons = we_html_button::position_yes_no_cancel(
+						we_html_button::create_button_table(array(
+							we_html_button::create_button("back", "javascript:" . $this->bodyFrame . ".document.we_form.target='body';" . $this->bodyFrame . ".document.we_form.pnt.value='body';" . $this->bodyFrame . ".document.we_form.step.value=" . ($this->exportVars["selection"] == "auto" ? "2" : "3") . ";" . $this->bodyFrame . ".document.we_form.submit();"),
+							we_html_button::create_button("next", "javascript:" . $this->bodyFrame . ".document.we_form.target='load';;" . $this->bodyFrame . ".document.we_form.pnt.value='load';" . $this->bodyFrame . ".document.we_form.submit();"))), we_html_button::create_button("cancel", "javascript:top.close();")
 				);
 				break;
 			case 10:
 			case 99:
 				if($step == 10 || ($step == 99 && !$show_controls)){
-					$buttons = we_button::create_button("close", "javascript:top.close();");
+					$buttons = we_html_button::create_button("close", "javascript:top.close();");
 				} else if($step == 99 && $show_controls){
-					$buttons = we_button::position_yes_no_cancel(
-							we_button::create_button_table(array(
-								we_button::create_button("back", "javascript:" . $this->bodyFrame . ".location='" . $this->frameset . "?pnt=body&step=0';" . $this->footerFrame . ".location='" . $this->frameset . "?pnt=footer&step=0';"),
-								we_button::create_button("next", "", false, 100, 22, "", "", true))), we_button::create_button("cancel", "javascript:top.close();")
+					$buttons = we_html_button::position_yes_no_cancel(
+							we_html_button::create_button_table(array(
+								we_html_button::create_button("back", "javascript:" . $this->bodyFrame . ".location='" . $this->frameset . "?pnt=body&step=0';" . $this->footerFrame . ".location='" . $this->frameset . "?pnt=footer&step=0';"),
+								we_html_button::create_button("next", "", false, 100, 22, "", "", true))), we_html_button::create_button("cancel", "javascript:top.close();")
 					);
 				}
 				break;
 			default:
-				$buttons = we_button::position_yes_no_cancel(
-						we_button::create_button_table(array(
-							we_button::create_button("back", "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "?pnt=load&cmd=back&step=" . $step . "';"),
-							we_button::create_button("next", "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "?pnt=load&cmd=next&step=" . $step . "';"))), we_button::create_button("cancel", "javascript:top.close();")
+				$buttons = we_html_button::position_yes_no_cancel(
+						we_html_button::create_button_table(array(
+							we_html_button::create_button("back", "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "?pnt=load&cmd=back&step=" . $step . "';"),
+							we_html_button::create_button("next", "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "?pnt=load&cmd=next&step=" . $step . "';"))), we_html_button::create_button("cancel", "javascript:top.close();")
 				);
 		}
 
@@ -1430,7 +1430,7 @@ function setState(a) {
 		//javascript:formFileChooser('browse_server','document.we_form.elements[\\'$IDName\\'].value','$filter',document.we_form.elements['$IDName'].value);
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$IDName'].value");
 		$wecmdenc4 = '';
-		$button = we_button::create_button("select", "javascript:formFileChooser('browse_server','" . $wecmdenc1 . "','$filter',document.we_form.elements['$IDName'].value);");
+		$button = we_html_button::create_button("select", "javascript:formFileChooser('browse_server','" . $wecmdenc1 . "','$filter',document.we_form.elements['$IDName'].value);");
 
 		return $js . we_html_tools::htmlFormElementTable(we_html_tools::getPixel(5, 5) . we_html_tools::htmlTextInput($IDName, 42, $IDValue, "", ' readonly', "text", $width, 0), "", "left", "defaultfont", "", we_html_tools::getPixel(20, 4), permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
 	}
@@ -1457,7 +1457,7 @@ function setState(a) {
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$IDName'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$Pathname'].value");
 		$wecmdenc3 = we_cmd_enc(str_replace('\\', '', $cmd));
-		$button = we_button::create_button("select", "javascript:formDirChooser('openDirselector',document.we_form.elements['$IDName'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$rootDirID')");
+		$button = we_html_button::create_button("select", "javascript:formDirChooser('openDirselector',document.we_form.elements['$IDName'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$rootDirID')");
 		return $js . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, "", ' readonly', "text", $width, 0), "", "left", "defaultfont", we_html_element::htmlHidden(array("name" => $IDName, "value" => $IDValue)), we_html_tools::getPixel(20, 4), $button);
 	}
 
@@ -1568,9 +1568,9 @@ function setState(a) {
 			we_html_element::htmlHidden(array("name" => "cat", "value" => (isset($_REQUEST["cat"]) ? $_REQUEST["cat"] : "")));
 
 
-		$delallbut = we_button::create_button("delete_all", "javascript:we_cmd('del_all_cats')", true, -1, -1, "", "", (isset($this->exportVars["categories"]) ? false : true));
-		$addbut = we_button::create_button("add", "javascript:we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','fillIDs();opener." . $this->bodyFrame . ".we_cmd(\\'add_cat\\',top.allIDs);')");
-		$cats = new MultiDirChooser(350, $this->exportVars["categories"], "del_cat", we_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", CATEGORY_TABLE);
+		$delallbut = we_html_button::create_button("delete_all", "javascript:we_cmd('del_all_cats')", true, -1, -1, "", "", (isset($this->exportVars["categories"]) ? false : true));
+		$addbut = we_html_button::create_button("add", "javascript:we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','fillIDs();opener." . $this->bodyFrame . ".we_cmd(\\'add_cat\\',top.allIDs);')");
+		$cats = new MultiDirChooser(350, $this->exportVars["categories"], "del_cat", we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", CATEGORY_TABLE);
 
 		if(!permissionhandler::hasPerm("EDIT_KATEGORIE")){
 			$cats->isEditable = false;
@@ -1590,7 +1590,7 @@ function setState(a) {
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$IDName'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$Pathname'].value");
 		$wecmdenc3 = we_cmd_enc(str_replace('\\', '', $cmd));
-		$button = we_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['$IDName'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$rootDirID')");
+		$button = we_html_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['$IDName'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$rootDirID')");
 
 		$yuiSuggest->setAcId("Dir");
 		$yuiSuggest->setContentType("folder");

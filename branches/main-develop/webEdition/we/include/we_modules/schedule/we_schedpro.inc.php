@@ -202,9 +202,9 @@ function checkFooter(){
 				$extraheadl = g_l('modules_schedule', "[doctype]");
 				break;
 			case self::CATEGORY:
-				$delallbut = we_button::create_button("delete_all", "javascript:we_cmd('delete_all_schedcats'," . $this->nr . ")");
-				$addbut = we_button::create_button("add", "javascript:we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','opener.setScrollTo();opener.top.we_cmd(\\'add_schedcat\\',top.currentID," . $this->nr . ");')");
-				$cats = new MultiDirChooser(450, $this->CategoryIDs, "delete_schedcat", we_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", CATEGORY_TABLE, "defaultfont", $this->nr);
+				$delallbut = we_html_button::create_button("delete_all", "javascript:we_cmd('delete_all_schedcats'," . $this->nr . ")");
+				$addbut = we_html_button::create_button("add", "javascript:we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','opener.setScrollTo();opener.top.we_cmd(\\'add_schedcat\\',top.currentID," . $this->nr . ");')");
+				$cats = new MultiDirChooser(450, $this->CategoryIDs, "delete_schedcat", we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", CATEGORY_TABLE, "defaultfont", $this->nr);
 				$cats->extraDelFn = 'setScrollTo();';
 				if(!permissionhandler::hasPerm("EDIT_KATEGORIE")){
 					$cats->isEditable = false;
@@ -230,7 +230,7 @@ function checkFooter(){
 				$wecmdenc1 = we_cmd_enc('document.we_form.elements[\'' . $idname . '\'].value');
 				$wecmdenc2 = we_cmd_enc('document.we_form.elements[\'' . $textname . '\'].value');
 				$wecmdenc3 = we_cmd_enc('top.opener._EditorFrame.setEditorIsHot(true);');
-				$button = we_button::create_button('select', 'javascript:we_cmd(\'openDirselector\',document.we_form.elements[\'' . $idname . '\'].value,\'' . $GLOBALS['we_doc']->Table . '\',\'' . $wecmdenc1 . '\',\'' . $wecmdenc2 . '\',\'' . $wecmdenc3 . '\',\'' . session_id() . '\',\'' . $_rootDirID . '\')');
+				$button = we_html_button::create_button('select', 'javascript:we_cmd(\'openDirselector\',document.we_form.elements[\'' . $idname . '\'].value,\'' . $GLOBALS['we_doc']->Table . '\',\'' . $wecmdenc1 . '\',\'' . $wecmdenc2 . '\',\'' . $wecmdenc3 . '\',\'' . session_id() . '\',\'' . $_rootDirID . '\')');
 
 				$yuiSuggest = & weSuggest::getInstance();
 				$yuiSuggest->setAcId('WsDir');
@@ -265,7 +265,7 @@ function checkFooter(){
 		<td class="defaultfont"><table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $taskpopup . '</td><td class="defaultfont">&nbsp;&nbsp;</td><td>' . we_html_forms::checkbox(1, $this->active, $checknname, g_l('modules_schedule', "[active]")
 				, false, "defaultfont", "this.form.elements['we_schedule_active_" . $this->nr . "'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true);checkFooter();") .
 			'<input type="hidden" class="we_schedule_active" name="we_schedule_active_' . $this->nr . '" value="' . $this->active . '" /></td></tr></table></td>
-		<td>' . we_button::create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('del_schedule','" . $this->nr . "')") . '</td>
+		<td>' . we_html_button::create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('del_schedule','" . $this->nr . "')") . '</td>
 	</tr>' . $this->getSpacerRowHTML();
 		if($extracont){
 			$table .= '

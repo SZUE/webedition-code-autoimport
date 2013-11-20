@@ -69,7 +69,7 @@ print STYLESHEET . we_html_element::jsElement('
 							' . $res['msg'] . '</td>
 					</tr>
 				</table>';
-	echo we_html_tools::htmlDialogLayout($tbl, $heading, we_button::create_button("ok", "javascript:top.window.close()"), "100%", 30, "", "hidden");
+	echo we_html_tools::htmlDialogLayout($tbl, $heading, we_html_button::create_button("ok", "javascript:top.window.close()"), "100%", 30, "", "hidden");
 	?>
 </body>
 

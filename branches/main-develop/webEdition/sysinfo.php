@@ -276,8 +276,8 @@ $_types = array(
 	g_l('sysinfo', '[we_max_upload_size]') => 'bytes'
 );
 
-$buttons = we_button::position_yes_no_cancel(
-				we_button::create_button("close", "javascript:self.close()"), '', ''
+$buttons = we_html_button::position_yes_no_cancel(
+				we_html_button::create_button("close", "javascript:self.close()"), '', ''
 );
 
 

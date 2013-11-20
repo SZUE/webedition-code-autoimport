@@ -226,8 +226,8 @@ $code = '<fieldset>
 	'</fieldset>' . $typeAttribCode . ' ' . $attributesCode . ' ' .
 	$defaultValueCode;
 
-$_buttons = we_button::position_yes_no_cancel(
-		we_button::create_button('ok', "javascript:we_cmd('saveTag');"), null, we_button::create_button('cancel', "javascript:self.close();")
+$_buttons = we_html_button::position_yes_no_cancel(
+		we_html_button::create_button('ok', "javascript:we_cmd('saveTag');"), null, we_html_button::create_button('cancel', "javascript:self.close();")
 );
 ?>
 <div id="divTagName">

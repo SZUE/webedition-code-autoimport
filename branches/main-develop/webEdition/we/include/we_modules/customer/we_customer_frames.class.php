@@ -308,7 +308,7 @@ function populateDate_' . $field . '(){
 	</tr>
 	<tr>
 		<td class="weEditmodeStyle" colspan="2" align="center">' .
-					we_button::create_button_table(array(we_button::create_button('image:btn_select_image', "javascript:we_cmd('openDocselector', '" . $imgId . "', '" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "', '', 'image/*', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true), we_button::create_button('image:btn_function_trash', "javascript:document.we_form.elements['$field'].value='';refreshForm();", true)), 5) .
+					we_html_button::create_button_table(array(we_html_button::create_button('image:btn_select_image', "javascript:we_cmd('openDocselector', '" . $imgId . "', '" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "', '', 'image/*', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true), we_html_button::create_button('image:btn_function_trash', "javascript:document.we_form.elements['$field'].value='';refreshForm();", true)), 5) .
 					'</td>
 	</tr>
 </table>';
@@ -494,7 +494,7 @@ var ajaxCallbackResetLogins = {
 failure: function(o) {
 
 }}') .
-									we_button::create_button('reset', 'javascript:' . $tmp);
+									we_html_button::create_button('reset', 'javascript:' . $tmp);
 								$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('class' => 'defaultgray'), $but)));
 								break;
 							default:
@@ -559,7 +559,7 @@ failure: function(o) {
 						'<tr><td>&nbsp;</td> <td><b>' . g_l('modules_customer', '[ID]') . '</b></td><td><b>' . g_l('modules_customer', '[filename]') . '</b></td><td><b>' . g_l('modules_customer', '[Aenderungsdatum]') . '</b></td>';
 					while($DB_WE->next_record()){
 						$objectStr.='<tr>
-	<td>' . we_button::create_button('image:btn_edit_edit', "javascript: if(top.opener.top.doClickDirect){top.opener.top.doClickDirect(" . $DB_WE->f('ID') . ",'" . $DB_WE->f('ContentType') . "','" . OBJECT_FILES_TABLE . "'); }") . '</td>
+	<td>' . we_html_button::create_button('image:btn_edit_edit', "javascript: if(top.opener.top.doClickDirect){top.opener.top.doClickDirect(" . $DB_WE->f('ID') . ",'" . $DB_WE->f('ContentType') . "','" . OBJECT_FILES_TABLE . "'); }") . '</td>
 	<td>' . $DB_WE->f('ID') . '</td>
 	<td title="' . $DB_WE->f('Path') . '">' . $DB_WE->f('Text') . '</td>
 	<td class="' . ($DB_WE->f('Published') ? ($DB_WE->f('ModDate') > $DB_WE->f('Published') ? 'changeddefaultfont' : 'defaultfont') : 'npdefaultfont') . '">' . date('d.m.Y H:i', $DB_WE->f('ModDate')) . '</td>
@@ -593,7 +593,7 @@ failure: function(o) {
 							LINK_TABLE . ".DocumentTable='" . FILE_TABLE . "' AND " . FILE_TABLE . '.ID=' . $DB_WE->f('ID'), 'Inhalt', $db_we2);
 
 						$documentStr.='<tr>' .
-							'<td>' . we_button::create_button('image:btn_edit_edit', "javascript: if(top.opener.top.doClickDirect){top.opener.top.doClickDirect(" . $DB_WE->f('ID') . ",'" . $DB_WE->f('ContentType') . "','" . FILE_TABLE . "'); }") . '</td>' .
+							'<td>' . we_html_button::create_button('image:btn_edit_edit', "javascript: if(top.opener.top.doClickDirect){top.opener.top.doClickDirect(" . $DB_WE->f('ID') . ",'" . $DB_WE->f('ContentType') . "','" . FILE_TABLE . "'); }") . '</td>' .
 							'<td>' . $DB_WE->f('ID') . '</td>' .
 							'<td title="' . $DB_WE->f('Path') . '">' . $DB_WE->f('Text') . '</td>' .
 							'<td class="' .
@@ -659,10 +659,10 @@ failure: function(o) {
 		$table = new we_html_table(array('style' => 'margin-top:10px', "border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => '100%'), 1, 1);
 		$table->setCol(0, 0, array("nowrap" => null, "class" => "small"), we_html_element::jsElement($this->View->getJSSubmitFunction("cmd", "post")) .
 			$hiddens .
-			we_button::create_button_table(
+			we_html_button::create_button_table(
 				array(
 					we_html_tools::htmlTextInput("keyword", 10, '', '', '', "text", "150px"),
-					we_button::create_button("image:btn_function_search", "javascript:submitForm('cmd', '', '', 'we_form_treefooter')")
+					we_html_button::create_button("image:btn_function_search", "javascript:submitForm('cmd', '', '', 'we_form_treefooter')")
 				)
 			)
 		);
@@ -683,18 +683,18 @@ failure: function(o) {
 		$hiddens = we_html_element::htmlHidden(array("name" => "field", "value" => ''));
 
 		$buttons_table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 12, 1);
-		$buttons_table->setCol(0, 0, array(), we_button::create_button("add", "javascript:we_cmd('open_add_field')"));
+		$buttons_table->setCol(0, 0, array(), we_html_button::create_button("add", "javascript:we_cmd('open_add_field')"));
 		$buttons_table->setCol(1, 0, array(), we_html_tools::getPixel(1, 5));
-		$buttons_table->setCol(2, 0, array(), we_button::create_button("edit", "javascript:we_cmd('open_edit_field')"));
+		$buttons_table->setCol(2, 0, array(), we_html_button::create_button("edit", "javascript:we_cmd('open_edit_field')"));
 		$buttons_table->setCol(3, 0, array(), we_html_tools::getPixel(1, 5));
-		$buttons_table->setCol(4, 0, array(), we_button::create_button("delete", "javascript:we_cmd('delete_field')"));
+		$buttons_table->setCol(4, 0, array(), we_html_button::create_button("delete", "javascript:we_cmd('delete_field')"));
 		$buttons_table->setCol(5, 0, array(), we_html_tools::getPixel(1, 15));
-		$buttons_table->setCol(6, 0, array(), we_button::create_button("image:btn_direction_up", "javascript:we_cmd('move_field_up')"));
+		$buttons_table->setCol(6, 0, array(), we_html_button::create_button("image:btn_direction_up", "javascript:we_cmd('move_field_up')"));
 		$buttons_table->setCol(7, 0, array(), we_html_tools::getPixel(1, 5));
-		$buttons_table->setCol(8, 0, array(), we_button::create_button("image:btn_direction_down", "javascript:we_cmd('move_field_down')"));
+		$buttons_table->setCol(8, 0, array(), we_html_button::create_button("image:btn_direction_down", "javascript:we_cmd('move_field_down')"));
 		$buttons_table->setCol(9, 0, array("class" => "defaultgray"), g_l('modules_customer', '[sort_edit_fields_explain]'));
 		$buttons_table->setCol(10, 0, array(), we_html_tools::getPixel(1, 5));
-		$buttons_table->setCol(10, 0, array(), we_button::create_button("reset", "javascript:we_cmd('reset_edit_order')"));
+		$buttons_table->setCol(10, 0, array(), we_html_button::create_button("reset", "javascript:we_cmd('reset_edit_order')"));
 		$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 500), 5, 5);
 
 		$table->setCol(0, 0, array("class" => "defaultgray"), g_l('modules_customer', '[branch]'));
@@ -704,7 +704,7 @@ failure: function(o) {
 		$table->setCol(1, 1, array(), we_html_tools::getPixel(10, 10));
 		$table->setCol(1, 2, array(), $select->getHtml());
 		$table->setCol(1, 3, array(), we_html_tools::getPixel(10, 10));
-		$table->setCol(1, 4, array(), we_button::create_button("image:btn_edit_edit", "javascript:we_cmd('open_edit_branch')"));
+		$table->setCol(1, 4, array(), we_html_button::create_button("image:btn_edit_edit", "javascript:we_cmd('open_edit_branch')"));
 
 		$table->setCol(2, 0, array(), we_html_tools::getPixel(10, 10));
 
@@ -719,7 +719,7 @@ failure: function(o) {
 					we_html_element::jsElement($this->View->getJSAdmin()) .
 					we_html_element::htmlForm(array("name" => "we_form"), we_html_element::htmlHidden(array("name" => "cmd", "value" => "switchBranch")) .
 						we_html_element::htmlHidden(array("name" => "pnt", "value" => "customer_admin")) .
-						we_html_tools::htmlDialogLayout($table->getHtml(), g_l('modules_customer', '[field_admin]'), we_button::create_button("close", "javascript:self.close()"))
+						we_html_tools::htmlDialogLayout($table->getHtml(), g_l('modules_customer', '[field_admin]'), we_html_button::create_button("close", "javascript:self.close()"))
 					)
 				)
 		);
@@ -735,7 +735,7 @@ failure: function(o) {
 			we_html_element::htmlHidden(array("name" => "art", "value" => "$mode")) .
 			($type == "field" ? we_html_element::htmlHidden(array("name" => "field", "value" => "$field")) : '');
 
-		$cancel = we_button::create_button("cancel", "javascript:self.close();");
+		$cancel = we_html_button::create_button("cancel", "javascript:self.close();");
 
 		if($type == "branch"){
 			$hiddens.=we_html_element::htmlHidden(array("name" => "pnt", "value" => "branch_editor"));
@@ -743,7 +743,7 @@ failure: function(o) {
 			$edit->setCol(0, 0, array("valign" => "middle", "class" => "defaultgray"), g_l('modules_customer', '[field_name]'));
 			$edit->setCol(0, 1, array("valign" => "middle", "class" => "defaultfont"), we_html_tools::htmlTextInput("name", 26, $branch, '', ''));
 
-			$save = we_button::create_button("save", "javascript:we_cmd('save_branch')");
+			$save = we_html_button::create_button("save", "javascript:we_cmd('save_branch')");
 		} else {
 			$field_props = $this->View->getFieldProperties($field);
 
@@ -769,7 +769,7 @@ failure: function(o) {
 			$edit->setCol(3, 0, array("valign" => "middle", "class" => "defaultgray"), g_l('modules_customer', '[field_default]'));
 			$edit->setCol(3, 1, array("valign" => "middle", "class" => "defaultfont"), we_html_tools::htmlTextInput("field_default", 26, (isset($field_props["default"]) ? $field_props["default"] : ''), '', ''));
 
-			$save = we_button::create_button("save", "javascript:we_cmd('save_field')");
+			$save = we_html_button::create_button("save", "javascript:we_cmd('save_field')");
 		}
 
 		return $this->getHTMLDocument(
@@ -780,7 +780,7 @@ failure: function(o) {
 							$type == "branch" ?
 								(g_l('modules_customer', '[edit_branche]')) :
 								($mode == "edit" ? g_l('modules_customer', '[edit_field]') : g_l('modules_customer', '[add_field]'))
-							), we_button::position_yes_no_cancel($save, null, $cancel)
+							), we_html_button::position_yes_no_cancel($save, null, $cancel)
 						)
 					)
 				)
@@ -838,7 +838,7 @@ failure: function(o) {
 			we_html_element::htmlHidden(array('name' => 'search', 'value' => 1)) .
 			we_html_element::htmlHidden(array('name' => 'mode', 'value' => $mode));
 
-		$search_but = we_button::create_button('image:btn_function_search', "javascript:we_cmd('search')");
+		$search_but = we_html_button::create_button('image:btn_function_search', "javascript:we_cmd('search')");
 
 		$search = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0, 'width' => 550, 'height' => 50), 4, 3);
 		$search->setRow(0, array('valign' => 'top'));
@@ -852,10 +852,10 @@ failure: function(o) {
 			$search->setCol(1, 0, array(), we_html_tools::htmlTextInput('keyword', 80, (isset($_REQUEST['keyword']) ? $_REQUEST['keyword'] : ''), '', 'onchange=""', 'text', '550px')
 			);
 
-			$sw = we_button::create_button('image:btn_direction_right', "javascript:we_cmd('switchToAdvance')");
+			$sw = we_html_button::create_button('image:btn_direction_right', "javascript:we_cmd('switchToAdvance')");
 
 			$search->setCol(2, 0, array(), we_html_tools::getPixel(5, 5));
-			$search->setCol(3, 0, array('align' => 'right', 'colspan' => $colspan), we_button::create_button_table(
+			$search->setCol(3, 0, array('align' => 'right', 'colspan' => $colspan), we_html_button::create_button_table(
 					array(
 						we_html_element::htmlDiv(array('class' => 'defaultfont'), g_l('modules_customer', '[advanced_search]')),
 						$sw,
@@ -939,7 +939,7 @@ failure: function(o) {
 	}") .
 					we_html_element::htmlForm(array('name' => 'we_form'), $hiddens .
 						we_html_tools::htmlDialogLayout(
-							$table->getHtml(), g_l('modules_customer', '[search]'), we_button::position_yes_no_cancel(null, we_button::create_button("close", "javascript:self.close();")), "100%", 30, 558
+							$table->getHtml(), g_l('modules_customer', '[search]'), we_html_button::position_yes_no_cancel(null, we_html_button::create_button("close", "javascript:self.close();")), "100%", 30, 558
 						)
 					) .
 					((isset($_REQUEST['mode']) && $_REQUEST['mode']) ? we_html_element::jsElement("setTimeout('lookForDateFields()', 1);") : '')
@@ -997,14 +997,14 @@ failure: function(o) {
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array('class' => 'defaultfont'), $default_saveRegisteredUser_register->getHtml() . '&quot;/>');
 
-		$close = we_button::create_button("close", "javascript:self.close();");
-		$save = we_button::create_button("save", "javascript:we_cmd('save_settings')");
+		$close = we_html_button::create_button("close", "javascript:self.close();");
+		$save = we_html_button::create_button("save", "javascript:we_cmd('save_settings')");
 
 		$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form"), we_html_tools::htmlDialogLayout(
 						we_html_element::htmlHidden(array("name" => "pnt", "value" => "settings")) .
 						we_html_element::htmlHidden(array("name" => "cmd", "value" => '')) .
 						$table->getHtml() .
-						we_html_tools::getPixel(5, 10), g_l('modules_customer', '[settings]'), we_button::position_yes_no_cancel($save, $close)
+						we_html_tools::getPixel(5, 10), g_l('modules_customer', '[settings]'), we_html_button::position_yes_no_cancel($save, $close)
 					)
 				)
 				. ($closeflag ? we_html_element::jsElement('top.close();') : '')

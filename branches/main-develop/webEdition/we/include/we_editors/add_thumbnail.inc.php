@@ -92,7 +92,7 @@ function we_cmd(){
 			}
 			eval(\'parent.we_cmd(\'+args+\')\');
 	}
-}') . we_button::create_state_changer();
+}') . we_html_button::create_state_changer();
 
 	print we_html_element::jsScript(JS_DIR . 'windows.js');
 
@@ -125,7 +125,7 @@ function we_cmd(){
 		}
 	}
 
-	$editbut = we_button::create_button("edit_all_thumbs", "javascript:we_cmd('editThumbs','top.opener.location = top.opener.location;');", false);
+	$editbut = we_html_button::create_button("edit_all_thumbs", "javascript:we_cmd('editThumbs','top.opener.location = top.opener.location;');", false);
 
 	$_thumbs[] = array("headline" => "", "html" => $_thumbnails->getHtml() . '<p align="right">' . $editbut . '</p>', "space" => 0);
 
@@ -134,10 +134,10 @@ function we_cmd(){
 
 	$_thumbs[] = array("headline" => "", "html" => $iframe, "space" => 0);
 
-	$addbut = we_button::create_button("add", "javascript:add_thumbnails();", false, -1, -1, "", "", !$_enabled_buttons, false);
-	$cancelbut = we_button::create_button("cancel", "javascript:top.close();");
+	$addbut = we_html_button::create_button("add", "javascript:add_thumbnails();", false, -1, -1, "", "", !$_enabled_buttons, false);
+	$cancelbut = we_html_button::create_button("cancel", "javascript:top.close();");
 
-	$buttons = we_button::position_yes_no_cancel($addbut, null, $cancelbut);
+	$buttons = we_html_button::position_yes_no_cancel($addbut, null, $cancelbut);
 
 	$dialog = we_html_multiIconBox::getHTML("", "100%", $_thumbs, 30, $buttons, -1, "", "", false, g_l('weClass', "[thumbnails]"));
 	print we_html_element::htmlBody(array("class" => "weDialogBody", "style" => "overflow: hidden;", "onload" => "top.focus();"), $dialog) . "</html>";

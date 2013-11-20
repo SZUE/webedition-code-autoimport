@@ -703,9 +703,9 @@ abstract class we_html_tools{
 	 * @return string
 	 */
 	static function htmlYesNoCancelDialog($text = '', $img = '', $yes = '', $no = '', $cancel = '', $yesHandler = '', $noHandler = '', $cancelHandler = '', $script = ''){
-		$cancelButton = (empty($cancel) ? '' : we_button::create_button('cancel', 'javascript:' . $cancelHandler));
-		$noButton = (empty($no) ? '' : we_button::create_button('no', 'javascript:' . $noHandler));
-		$yesButton = (empty($yes) ? '' : we_button::create_button('yes', 'javascript:' . $yesHandler) );
+		$cancelButton = (empty($cancel) ? '' : we_html_button::create_button('cancel', 'javascript:' . $cancelHandler));
+		$noButton = (empty($no) ? '' : we_html_button::create_button('no', 'javascript:' . $noHandler));
+		$yesButton = (empty($yes) ? '' : we_html_button::create_button('yes', 'javascript:' . $yesHandler) );
 
 
 		$content = new we_html_table(array(
@@ -729,7 +729,7 @@ abstract class we_html_tools{
 
 		return self::htmlDialogLayout(
 				(empty($script) ? '' : we_html_element::jsElement($script)) . $content->getHtml()
-				, '', we_button::position_yes_no_cancel($yesButton, $noButton, $cancelButton), '99%', 0);
+				, '', we_html_button::position_yes_no_cancel($yesButton, $noButton, $cancelButton), '99%', 0);
 	}
 
 	static function groupArray(array $arr, $sort = true, $len = 1){

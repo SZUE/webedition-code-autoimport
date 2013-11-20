@@ -201,7 +201,7 @@ $_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(2
 
 
 
-$_buttons = we_button::position_yes_no_cancel(we_button::create_button('save', 'javascript:document.we_form.submit();'), '', we_button::create_button('cancel', 'javascript:self.close();'));
+$_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button('save', 'javascript:document.we_form.submit();'), '', we_html_button::create_button('cancel', 'javascript:self.close();'));
 
 $frame = we_html_tools::htmlDialogLayout($_htmlTable->getHtml(), g_l('modules_shop', '[pref]'), $_buttons);
 

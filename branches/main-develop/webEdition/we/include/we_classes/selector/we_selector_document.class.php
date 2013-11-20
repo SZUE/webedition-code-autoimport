@@ -368,8 +368,8 @@ function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 				'<td width="10">' . we_html_tools::getPixel(10, 10) . '</td><td width="40">' .
 				we_html_element::jsElement('newFileState=' . $newFileState . ';') .
 				($this->filter == "image/*" || $this->filter == "video/quicktime" || $this->filter == "application/x-shockwave-flash" ?
-					we_button::create_button("image:" . $this->ctb[$this->filter], "javascript:top.newFile();", true, -1, 22, "", "", !$newFileState, false) :
-					we_button::create_button("image:btn_add_file", "javascript:top.newFile();", true, -1, 22, "", "", !$newFileState, false)) .
+					we_html_button::create_button("image:" . $this->ctb[$this->filter], "javascript:top.newFile();", true, -1, 22, "", "", !$newFileState, false) :
+					we_html_button::create_button("image:btn_add_file", "javascript:top.newFile();", true, -1, 22, "", "", !$newFileState, false)) .
 				'</td>' : '');
 	}
 
@@ -475,7 +475,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 	</tr>
 	<tr><td colspan="5">' . we_html_tools::getPixel(5, 5) . '</td></tr>';
 		}
-		$buttons = we_button::position_yes_no_cancel(we_button::create_button("ok", "javascript:press_ok_button();"), null, we_button::create_button("cancel", "javascript:top.exit_close();"));
+		$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "javascript:press_ok_button();"), null, we_html_button::create_button("cancel", "javascript:top.exit_close();"));
 
 		$seval = $this->values["Text"] == "/" ? "" : $this->values["Text"];
 		$ret.= '

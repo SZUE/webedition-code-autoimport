@@ -808,30 +808,30 @@ class we_banner_view extends we_banner_base{
 	}
 
 	function formFiles(){
-		$delallbut = we_button::create_button("delete_all", "javascript:top.content.setHot(); we_cmd('del_all_files')");
+		$delallbut = we_html_button::create_button("delete_all", "javascript:top.content.setHot(); we_cmd('del_all_files')");
 		$wecmdenc3 = we_cmd_enc("fillIDs();opener.we_cmd('add_file',top.allIDs);");
-		$addbut = we_button::create_button("add", "javascript:top.content.setHot(); we_cmd('openDocselector','','" . FILE_TABLE . "','','','" . $wecmdenc3 . "','','','text/webedition','',1)");
+		$addbut = we_html_button::create_button("add", "javascript:top.content.setHot(); we_cmd('openDocselector','','" . FILE_TABLE . "','','','" . $wecmdenc3 . "','','','text/webedition','',1)");
 
-		$dirs = new MultiDirChooser(495, $this->banner->FileIDs, "del_file", we_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", FILE_TABLE);
+		$dirs = new MultiDirChooser(495, $this->banner->FileIDs, "del_file", we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", FILE_TABLE);
 
 		return $dirs->get();
 	}
 
 	function formFolders(){
-		$delallbut = we_button::create_button("delete_all", "javascript:top.content.setHot();we_cmd('del_all_folders')");
+		$delallbut = we_html_button::create_button("delete_all", "javascript:top.content.setHot();we_cmd('del_all_folders')");
 		$wecmdenc3 = we_cmd_enc("fillIDs();opener.we_cmd('add_folder',top.allIDs);");
-		$addbut = we_button::create_button("add", "javascript:top.content.setHot();we_cmd('openDirselector','','" . FILE_TABLE . "','','','" . $wecmdenc3 . "','','','',1)");
+		$addbut = we_html_button::create_button("add", "javascript:top.content.setHot();we_cmd('openDirselector','','" . FILE_TABLE . "','','','" . $wecmdenc3 . "','','','',1)");
 
-		$dirs = new MultiDirChooser(495, $this->banner->FolderIDs, "del_folder", we_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", FILE_TABLE);
+		$dirs = new MultiDirChooser(495, $this->banner->FolderIDs, "del_folder", we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", FILE_TABLE);
 
 		return $dirs->get();
 	}
 
 	function formCategories(){
-		$delallbut = we_button::create_button("delete_all", "javascript:top.content.setHot();we_cmd('del_all_cats')");
-		$addbut = we_button::create_button("add", "javascript:top.content.setHot();we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','fillIDs();opener.we_cmd(\'add_cat\',top.allIDs);')");
+		$delallbut = we_html_button::create_button("delete_all", "javascript:top.content.setHot();we_cmd('del_all_cats')");
+		$addbut = we_html_button::create_button("add", "javascript:top.content.setHot();we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','fillIDs();opener.we_cmd(\'add_cat\',top.allIDs);')");
 
-		$cats = new MultiDirChooser(495, $this->banner->CategoryIDs, "del_cat", we_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", CATEGORY_TABLE);
+		$cats = new MultiDirChooser(495, $this->banner->CategoryIDs, "del_cat", we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", CATEGORY_TABLE);
 
 		return $cats->get();
 	}
@@ -905,7 +905,7 @@ class we_banner_view extends we_banner_base{
 		}
 
 		$table = we_html_tools::htmlDialogBorder3(650, 0, $rows, $headline, $class);
-		$delbut = we_button::create_button("delete", "javascript:top.content.setHot();we_cmd('delete_stat')");
+		$delbut = we_html_button::create_button("delete", "javascript:top.content.setHot();we_cmd('delete_stat')");
 
 		return $content . we_html_tools::getPixel(2, 10) . $table . we_html_tools::getPixel(2, 10) . "<br>" . $delbut;
 	}
@@ -969,9 +969,9 @@ class we_banner_view extends we_banner_base{
 	}
 
 	function formCustomer(){
-		$delallbut = we_button::create_button("delete_all", "javascript:top.content.setHot();we_cmd('del_all_customers')");
-		$addbut = we_button::create_button("add", "javascript:top.content.setHot();we_cmd('openSelector','','" . CUSTOMER_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_customer\\',top.allIDs);','','','',1)");
-		$obj = new MultiDirChooser(508, $this->banner->Customers, "del_customer", we_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", CUSTOMER_TABLE);
+		$delallbut = we_html_button::create_button("delete_all", "javascript:top.content.setHot();we_cmd('del_all_customers')");
+		$addbut = we_html_button::create_button("add", "javascript:top.content.setHot();we_cmd('openSelector','','" . CUSTOMER_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_customer\\',top.allIDs);','','','',1)");
+		$obj = new MultiDirChooser(508, $this->banner->Customers, "del_customer", we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", CUSTOMER_TABLE);
 		return $obj->get();
 	}
 
@@ -995,7 +995,7 @@ class we_banner_view extends we_banner_base{
 
 		return $this->htmlHidden($IDName, 0) .
 			$this->htmlHidden($Pathname, "") .
-			we_button::create_button("select", "javascript:top.content.setHot();we_cmd('openSelector',document.we_form.elements['$IDName'].value,'" . BANNER_TABLE . "','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','opener.we_cmd(\\'copy_banner\\');','" . session_id() . "','$rootDirID')");
+			we_html_button::create_button("select", "javascript:top.content.setHot();we_cmd('openSelector',document.we_form.elements['$IDName'].value,'" . BANNER_TABLE . "','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','opener.we_cmd(\\'copy_banner\\');','" . session_id() . "','$rootDirID')");
 	}
 
 	/* creates the DocumentChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
@@ -1007,7 +1007,7 @@ class we_banner_view extends we_banner_base{
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$IDName'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$Pathname'].value");
 		$wecmdenc3 = we_cmd_enc(str_replace('\\', '', $cmd));
-		$button = we_button::create_button("select", "javascript:top.content.setHot();we_cmd('openDocselector',((document.we_form.elements['$IDName'].value != 0) ? document.we_form.elements['$IDName'].value : ''),'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0,'image/*')");
+		$button = we_html_button::create_button("select", "javascript:top.content.setHot();we_cmd('openDocselector',((document.we_form.elements['$IDName'].value != 0) ? document.we_form.elements['$IDName'].value : ''),'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0,'image/*')");
 
 		$yuiSuggest->setAcId("Image");
 		$yuiSuggest->setLabel($title);
@@ -1030,7 +1030,7 @@ class we_banner_view extends we_banner_base{
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$idname'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$textname'].value");
 		$wecmdenc3 = we_cmd_enc(str_replace('\\', '', $cmd));
-		$button = we_button::create_button("select", "javascript:top.content.setHot();we_cmd('openBannerDirselector',document.we_form.elements['$idname'].value,'" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "')");
+		$button = we_html_button::create_button("select", "javascript:top.content.setHot();we_cmd('openBannerDirselector',document.we_form.elements['$idname'].value,'" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "')");
 
 		$yuiSuggest->setAcId($acID);
 		$yuiSuggest->setLabel($title);
@@ -1101,7 +1101,7 @@ class we_banner_view extends we_banner_base{
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$idname'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$Pathname'].value");
 		$wecmdenc3 = we_cmd_enc(str_replace('\\', '', $cmd));
-		$button = we_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0,'')");
+		$button = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0,'')");
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId("InternalURL");
 		$yuiSuggest->setContentType("folder,text/xml,text/webedition,image/*,text/html,application/*,application/x-shockwave-flash,video/quicktime");

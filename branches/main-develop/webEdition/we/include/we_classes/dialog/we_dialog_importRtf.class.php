@@ -59,7 +59,7 @@ function importFile(){
 	}
 
 	function getNextBut(){
-		return we_button::create_button("next", "javascript:importFile();");
+		return we_html_button::create_button("next", "javascript:importFile();");
 	}
 
 	function getHTML(){

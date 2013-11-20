@@ -53,7 +53,7 @@ class we_glossary_frameEditorDictionary extends we_glossary_frameEditor{
 	}
 
 	function Footer(&$weGlossaryFrames){
-		$_we_button = we_button::create_button("save", "javascript:top.opener.top.we_cmd('save_dictionary')", true, 100, 22, '', '', (!permissionhandler::hasPerm('NEW_GLOSSARY') && !permissionhandler::hasPerm('EDIT_GLOSSARY')));
+		$_we_button = we_html_button::create_button("save", "javascript:top.opener.top.we_cmd('save_dictionary')", true, 100, 22, '', '', (!permissionhandler::hasPerm('NEW_GLOSSARY') && !permissionhandler::hasPerm('EDIT_GLOSSARY')));
 
 		$table2 = new we_html_table(array(
 			'border' => 0,

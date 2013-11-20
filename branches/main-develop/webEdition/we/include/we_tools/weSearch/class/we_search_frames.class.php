@@ -234,9 +234,9 @@ class we_search_frames extends we_tool_frames{
 	}
 
 	function getHTMLEditorFooter(){
-		$_but_table = we_button::create_button_table(
+		$_but_table = we_html_button::create_button_table(
 				array(
-				we_button::create_button(
+				we_html_button::create_button(
 					'save', 'javascript:we_save();', true, 100, 22, '', '', (!permissionhandler::hasPerm('EDIT_NAVIGATION')))
 				), 10, array(
 				'style' => 'margin-left: 15px;margin-top:10px;'

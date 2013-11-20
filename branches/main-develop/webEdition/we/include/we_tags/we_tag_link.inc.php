@@ -88,10 +88,10 @@ function we_tag_link($attribs, $content){
 
 		$startTag = $GLOBALS['we_doc']->getLinkStartTag($link, $attribs, $GLOBALS['WE_MAIN_DOC']->ParentID, $GLOBALS['WE_MAIN_DOC']->Path, $GLOBALS['DB_WE'], $img);
 
-		$editbut = we_button::create_button('image:btn_edit_link', "javascript:setScrollTo(); we_cmd('edit_link', '" . $name . "')", true);
-		$delbut = we_button::create_button('image:btn_function_trash', "javascript:setScrollTo(); we_cmd('delete_link', '" . $name . "')", true);
+		$editbut = we_html_button::create_button('image:btn_edit_link', "javascript:setScrollTo(); we_cmd('edit_link', '" . $name . "')", true);
+		$delbut = we_html_button::create_button('image:btn_function_trash', "javascript:setScrollTo(); we_cmd('delete_link', '" . $name . "')", true);
 
-		return we_button::create_button_table(
+		return we_html_button::create_button_table(
 				array(
 				($startTag ? $startTag : '') . ($content ? $content : $text) . ($startTag ? '</a>' : ''), $editbut, $delbut
 				), 5);

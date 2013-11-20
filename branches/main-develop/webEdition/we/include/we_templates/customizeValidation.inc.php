@@ -153,9 +153,9 @@ print STYLESHEET;
 	$_table = '<table>
     <tr><td>' . we_html_tools::htmlSelect('validationService', $selectArr, 5, (isset($selectedService) ? $selectedService->getName() : ''), false, array('onchange' => 'we_cmd(\'customValidationService\',\'selectService\');'), "value", 320) . '</td>
         <td>' . we_html_tools::getPixel(10, 2) . '</td>
-        <td valign="top">' . we_button::create_button('new_service', 'javascript:we_cmd(\'customValidationService\',\'newService\');')
+        <td valign="top">' . we_html_button::create_button('new_service', 'javascript:we_cmd(\'customValidationService\',\'newService\');')
 		. '<div style="height:10px;"></div>'
-		. we_button::create_button('delete', 'javascript:we_cmd(\'customValidationService\',\'deleteService\');', true, 100, 22, '', '', (empty($services))) . '
+		. we_html_button::create_button('delete', 'javascript:we_cmd(\'customValidationService\',\'deleteService\');', true, 100, 22, '', '', (empty($services))) . '
         </td>
     </tr>
     </table>' .
@@ -179,7 +179,7 @@ print STYLESHEET;
 		$parts[] = array('headline' => g_l('validation', '[active]'), 'html' => we_html_tools::htmlSelect('active', array(0 => 'false', 1 => 'true'), 1, $selectedService->active) . '<br /><span class="small">' . g_l('validation', '[desc][active]') . '</span>', 'space' => 150);
 	}
 
-	print '<form name="we_form" onsubmit="return false;">' . we_html_multiIconBox::getHTML('weDocValidation', '100%', $parts, 30, we_button::position_yes_no_cancel(we_button::create_button('save', 'javascript:we_cmd(\'customValidationService\',\'saveService\');', true, 100, 22, '', '', (empty($services))), we_button::create_button('cancel', 'javascript:we_cmd(\'close\');')), -1, '', '', false, g_l('validation', '[adjust_service]'))
+	print '<form name="we_form" onsubmit="return false;">' . we_html_multiIconBox::getHTML('weDocValidation', '100%', $parts, 30, we_html_button::position_yes_no_cancel(we_html_button::create_button('save', 'javascript:we_cmd(\'customValidationService\',\'saveService\');', true, 100, 22, '', '', (empty($services))), we_html_button::create_button('cancel', 'javascript:we_cmd(\'close\');')), -1, '', '', false, g_l('validation', '[adjust_service]'))
 		. '</form>' .
 		'</body></html>';
 

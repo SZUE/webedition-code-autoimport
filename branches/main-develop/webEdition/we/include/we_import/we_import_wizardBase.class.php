@@ -253,24 +253,24 @@ top.wizcmd.we_import(1,-2' . ((isset($_REQUEST['type']) && $_REQUEST['type'] == 
 			);
 		}
 
-		$cancelButton = we_button::create_button("cancel", "javascript:parent.wizbody.handle_event('cancel');", false, -1, -1, '', '', false, false);
-		$prevButton = we_button::create_button("back", "javascript:parent.wizbody.handle_event('previous');", true, -1, -1, "", "", true, false);
-		$nextButton = we_button::create_button("next", "javascript:parent.wizbody.handle_event('next');", true, -1, -1, "", "", false, false);
-		$closeButton = we_button::create_button("close", "javascript:parent.wizbody.handle_event('cancel');", true, -1, -1, "", "", false, false);
+		$cancelButton = we_html_button::create_button("cancel", "javascript:parent.wizbody.handle_event('cancel');", false, -1, -1, '', '', false, false);
+		$prevButton = we_html_button::create_button("back", "javascript:parent.wizbody.handle_event('previous');", true, -1, -1, "", "", true, false);
+		$nextButton = we_html_button::create_button("next", "javascript:parent.wizbody.handle_event('next');", true, -1, -1, "", "", false, false);
+		$closeButton = we_html_button::create_button("close", "javascript:parent.wizbody.handle_event('cancel');", true, -1, -1, "", "", false, false);
 
-		$prevNextButtons = $prevButton ? we_button::create_button_table(array($prevButton, $nextButton)) : null;
+		$prevNextButtons = $prevButton ? we_html_button::create_button_table(array($prevButton, $nextButton)) : null;
 
 		$content = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => "100%"), 1, 2);
 		$content->setCol(0, 0, null, $pb);
 		$content->setCol(0, 1, array("align" => "right"), '
-<div id="standardDiv">' . we_button::position_yes_no_cancel($prevNextButtons, null, $cancelButton, 10, "", array(), 10) . '</div>
+<div id="standardDiv">' . we_html_button::position_yes_no_cancel($prevNextButtons, null, $cancelButton, 10, "", array(), 10) . '</div>
 <div id="closeDiv" style="display:none;">' . $closeButton . '</div>'
 		);
 
 		print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(
 					STYLESHEET .
-					we_button::create_state_changer()) .
+					we_html_button::create_state_changer()) .
 				we_html_element::htmlBody(array(
 					"class" => "weDialogButtonsBody",
 					"onload" => "top.wizbody.set_button_state();",

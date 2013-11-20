@@ -75,7 +75,7 @@ class weTagData_selectorAttribute extends weTagDataAttribute{
 					'class' => 'wetextinput'
 		));
 		$wecmdenc1 = we_cmd_enc("document.getElementById('" . $this->getIdName() . "').value");
-		$button = we_button::create_button(
+		$button = we_html_button::create_button(
 				"select", "javascript:we_cmd('" . $weCmd . "', document.getElementById('" . $this->getIdName() . "').value, '" . $this->Table . "','" . ($this->useName ? '' : $wecmdenc1) . "','" . ($this->useName ? $wecmdenc1 : '') . "', '', '" . session_id() . "', '', '" . $this->Selectable . "')");
 
 		return '<table class="attribute"><tr>

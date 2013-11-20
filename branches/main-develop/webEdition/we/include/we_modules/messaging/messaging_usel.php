@@ -280,7 +280,7 @@ if(isset($_REQUEST['maxsel'])){
         <td rowspan="3"><select name="usel_addrbook" size="7" style="width:210px" multiple>
             </select>
         </td>
-        <td valign="bottom">' . we_button::create_button("image:btn_direction_left", "javascript:add_toaddr()") . '</td>
+        <td valign="bottom">' . we_html_button::create_button("image:btn_direction_left", "javascript:add_toaddr()") . '</td>
         <td rowspan="3"><select name="usel_currentsel" size="7" style="width:210px" multiple>
             </select>
         </td>
@@ -289,22 +289,22 @@ if(isset($_REQUEST['maxsel'])){
 	<td>' . we_html_tools::getPixel(22, 1) . '</td>
       </tr>
       <tr>
-	<td valign="top">' . we_button::create_button("image:btn_direction_right", "javascript:add_addr2sel()") . '</td>
+	<td valign="top">' . we_html_button::create_button("image:btn_direction_right", "javascript:add_addr2sel()") . '</td>
       </tr>
       <tr>
-	<td>' . we_button::create_button("delete", "javascript:rm_addrbook_entry();") . '</td>
+	<td>' . we_html_button::create_button("delete", "javascript:rm_addrbook_entry();") . '</td>
 	<td></td>
-	<td>' . we_button::create_button("delete", "javascript:rm_sel_user();") . '</td>
+	<td>' . we_html_button::create_button("delete", "javascript:rm_sel_user();") . '</td>
       </tr>
       <tr>
 	<td colspan="3">' . we_html_tools::getPixel(1, 15) . '<td>
       </tr>
       <tr>
-	<td>' . we_button::create_button("save_address", "javascript:save_addrbook();") . '<td>
-	<td colspan="2">' . we_button::create_button("select_user", "javascript:browse_users_window();") . '<td>
+	<td>' . we_html_button::create_button("save_address", "javascript:save_addrbook();") . '<td>
+	<td colspan="2">' . we_html_button::create_button("select_user", "javascript:browse_users_window();") . '<td>
       </tr>
     </table>';
-		echo we_html_tools::htmlDialogLayout($tbl, g_l('modules_messaging', '[sel_rcpts]'), we_button::position_yes_no_cancel(we_button::create_button("ok", "javascript:ok()"), "", we_button::create_button("cancel", "javascript:window.close();")));
+		echo we_html_tools::htmlDialogLayout($tbl, g_l('modules_messaging', '[sel_rcpts]'), we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "javascript:ok()"), "", we_html_button::create_button("cancel", "javascript:window.close();")));
 		?>
 	</form>
 	<form action="<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_usel.php" method="post" name="addrbook_data">

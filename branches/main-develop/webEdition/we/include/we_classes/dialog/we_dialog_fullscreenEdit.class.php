@@ -100,11 +100,11 @@ self.focus();');
 	}
 
 	function getOkBut(){
-		return we_button::create_button("ok", "javascript:top.opener.tinyMCECallRegisterDialog({},'unregisterDialog');weDoOk();");
+		return we_html_button::create_button("ok", "javascript:top.opener.tinyMCECallRegisterDialog({},'unregisterDialog');weDoOk();");
 	}
 
 	function getCancelBut(){
-		return we_button::create_button("cancel", "javascript:top.opener.tinyMCECallRegisterDialog({},'unregisterDialog');top.close();");
+		return we_html_button::create_button("cancel", "javascript:top.opener.tinyMCECallRegisterDialog({},'unregisterDialog');top.close();");
 	}
 
 	function getBodyTagHTML(){
