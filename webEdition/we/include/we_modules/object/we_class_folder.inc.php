@@ -480,8 +480,7 @@ class we_class_folder extends we_folder{
 				}
 
 				$javascriptAll .= "var flo=document.we_form.elements['weg" . $this->searchclass->f("ID") . "'].checked=true;";
-				$content[$f] =
-					array(
+				$content[$f] = array(
 						array(
 							"height" => 35,
 							"align" => "center",
@@ -517,52 +516,52 @@ class we_class_folder extends we_folder{
 							} else {
 								$obj = "&nbsp;";
 							}
-							$content[$f][$i + 5]["dat"] = $obj;
+							$content[$f][$i + 5]['dat'] = $obj;
 							break;
 						case we_objectFile::TYPE_MULTIOBJECT:
-							$temp = unserialize($this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"]));
+							$temp = unserialize($this->searchclass->f($type[$i + 5] . '_' . $head[$i + 5]['dat']));
 							if(is_array($temp['objects']) && !empty($temp['objects'])){
 								$objects = $temp['objects'];
 								$class = $temp['class'];
-								$content[$f][$i + 5]["dat"] = "";
-								foreach($objects as $idx => $id){
-									$content[$f][$i + 5]["dat"] .= '<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $id . ',\'objectFile\');" style="text-decoration:none" class="defaultfont" title="' . f("SELECT OF_Path FROM " . OBJECT_X_TABLE . $class . " WHERE OF_ID='" . $id . "'", "OF_Path", $DB_WE) . '">' . shortenPath(f("SELECT OF_Path FROM " . OBJECT_X_TABLE . $class . " WHERE OF_ID='" . $id . "'", "OF_Path", $DB_WE), $we_obectPathLength) . ".</a><br />"; //
+								$content[$f][$i + 5]['dat'] = '';
+								foreach($objects as $id){
+									$content[$f][$i + 5]['dat'] .= '<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $id . ',\'objectFile\');" style="text-decoration:none" class="defaultfont" title="' . f("SELECT OF_Path FROM " . OBJECT_X_TABLE . $class . " WHERE OF_ID='" . $id . "'", "OF_Path", $DB_WE) . '">' . shortenPath(f('SELECT OF_Path FROM ' . OBJECT_X_TABLE . $class . ' WHERE OF_ID=' . intval($id), 'OF_Path', $DB_WE), $we_obectPathLength) . '.</a><br />'; //
 								}
 							} else {
-								$content[$f][$i + 5]["dat"] = "-";
+								$content[$f][$i + 5]['dat'] = '-';
 							}
 							break;
-						case "checkbox":
-							$text = $this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"]);
-							$content[$f][$i + 5]["dat"] = ($text == "1" ? g_l('global', "[yes]") : g_l('global', "[no]") );
+						case 'checkbox':
+							$text = $this->searchclass->f($type[$i + 5] . '_' . $head[$i + 5]['dat']);
+							$content[$f][$i + 5]['dat'] = ($text == '1' ? g_l('global', '[yes]') : g_l('global', '[no]') );
 							break;
-						case "meta":
-							if($this->searchclass->f($type[$i + 5] . '_' . $head[$i + 5]["dat"]) != '' && isset($DefaultValues[$type[$i + 5] . '_' . $head[$i + 5]["dat"]]["meta"][$this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"])])){
-								$text = $DefaultValues[$type[$i + 5] . '_' . $head[$i + 5]["dat"]]["meta"][$this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"])];
+						case 'meta':
+							if($this->searchclass->f($type[$i + 5] . '_' . $head[$i + 5]['dat']) != '' && isset($DefaultValues[$type[$i + 5] . '_' . $head[$i + 5]["dat"]]["meta"][$this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"])])){
+								$text = $DefaultValues[$type[$i + 5] . '_' . $head[$i + 5]['dat']]['meta'][$this->searchclass->f($type[$i + 5] . '_' . $head[$i + 5]["dat"])];
 								$content[$f][$i + 5]["dat"] = (strlen($text) > $strlen) ? substr($text, 0, $strlen) . " ..." : $text;
 							} else {
 								$content[$f][$i + 5]["dat"] = '&nbsp;';
 							}
 							break;
 						case 'link':
-							$text = $this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"]);
+							$text = $this->searchclass->f($type[$i + 5] . '_' . $head[$i + 5]['dat']);
 							//FIXME: this is not php compliant getFieldByVal is a dynamic method - and must be
 							$content[$f][$i + 5]["dat"] = we_document::getFieldByVal($text, "link");
 							break;
 						case 'href':
-							$text = $this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"]);
+							$text = $this->searchclass->f($type[$i + 5] . '_' . $head[$i + 5]['dat']);
 							$hrefArr = $text ? unserialize($text) : array();
-							if(!is_array($hrefArr))
+							if(!is_array($hrefArr)){
 								$hrefArr = array();
-
+							}
 							//FIXME: this is not php compliant getHrefByArray is a dynamic method - and must be
 							$content[$f][$i + 5]["dat"] = we_document::getHrefByArray($hrefArr);
 							//$text = $DefaultValues[$type[$i+3]."_".$head[$i+3]["dat"]]["meta"][$this->searchclass->f($type[$i+3]."_".$head[$i+3]["dat"])];
 							//$content[$f][$i+3]["dat"] = "TEST";
 							break;
 						default:
-							$text = strip_tags($this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"]));
-							$content[$f][$i + 5]["dat"] = (strlen($text) > $strlen) ? substr($text, 0, $strlen) . " ..." : $text;
+							$text = strip_tags($this->searchclass->f($type[$i + 5] . '_' . $head[$i + 5]['dat']));
+							$content[$f][$i + 5]['dat'] = (strlen($text) > $strlen) ? substr($text, 0, $strlen) . ' ...' : $text;
 							break;
 					}
 				}
@@ -652,13 +651,12 @@ class we_class_folder extends we_folder{
 	<td>' . we_html_tools::getPixel(10, 2) . '</td>
 	<td>' . $this->searchclass->getLocationDate("objlocation[" . $i . "]", (isset($this->searchclass->objlocation[$i]) ? $this->searchclass->objlocation[$i] : '')) . '</td>
 	<td>' . we_html_tools::getPixel(10, 2) . '</td>
-	<td>
-		' . we_html_tools::htmlTextInput('objsearch[' . $i . '][year]', 4, (isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]['year']) ? $this->searchclass->objsearch[$i]['year'] : date("Y")), 4) . ' -
-		' . we_html_tools::htmlSelect('objsearch[' . $i . '][month]', $month, 1, (isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]['month']) ? $this->searchclass->objsearch[$i]['month'] : date("m"))) . ' -
-		' . we_html_tools::htmlSelect('objsearch[' . $i . '][day]', $day, 1, (isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]['day']) ? $this->searchclass->objsearch[$i]['day'] : date("d"))) . ' &nbsp;
-		' . we_html_tools::htmlSelect('objsearch[' . $i . '][hour]', $hour, 1, (isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]['hour']) ? $this->searchclass->objsearch[$i]['hour'] : date("H"))) . ' :
-		' . we_html_tools::htmlSelect('objsearch[' . $i . '][minute]', $minute, 1, (isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]['minute']) ? $this->searchclass->objsearch[$i]['minute'] : date("i"))) . '
-	</td>
+	<td>' . we_html_tools::htmlTextInput('objsearch[' . $i . '][year]', 4, (isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]['year']) ? $this->searchclass->objsearch[$i]['year'] : date("Y")), 4) . ' - ' .
+					we_html_tools::htmlSelect('objsearch[' . $i . '][month]', $month, 1, (isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]['month']) ? $this->searchclass->objsearch[$i]['month'] : date("m"))) . ' - ' .
+					we_html_tools::htmlSelect('objsearch[' . $i . '][day]', $day, 1, (isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]['day']) ? $this->searchclass->objsearch[$i]['day'] : date("d"))) . ' &nbsp;' .
+					we_html_tools::htmlSelect('objsearch[' . $i . '][hour]', $hour, 1, (isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]['hour']) ? $this->searchclass->objsearch[$i]['hour'] : date("H"))) . ' : ' .
+					we_html_tools::htmlSelect('objsearch[' . $i . '][minute]', $minute, 1, (isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]['minute']) ? $this->searchclass->objsearch[$i]['minute'] : date("i"))) .
+					'</td>
 	<td>' . we_html_tools::getPixel(10, 2) . '</td>
 	<td align="right">' . $button . '</td>
 </tr>';
@@ -680,7 +678,7 @@ class we_class_folder extends we_folder{
 
 		$out .= '
 <tr>
-	<td colspan="9"><br></td>
+	<td colspan="9"><br/></td>
 </tr>
 <tr>
 	<td colspan="2"></td>
