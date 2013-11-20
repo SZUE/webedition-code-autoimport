@@ -67,11 +67,8 @@ class XML_SplitFile extends we_xml_parser{
 	 * @param      string $file
 	 * @see        we_xml_parser::getFile()
 	 */
-	function __construct($file = ""){
-		if(!empty($file)){
-			// Read and try to parse the given file.
-			$this->getFile($file);
-		}
+	function __construct($file = ''){
+		parent::__construct($file);
 	}
 
 	/**
@@ -106,11 +103,10 @@ class XML_SplitFile extends we_xml_parser{
 			if($this->hasChildNodes($node)){
 				$desc++;
 				if((!$start || ($desc >= $start)) && (!$end || ($desc <= $end))){
-					$xml = "";
 					// Add the XML declaration.
-					$xml .= "<?xml version=\"1.0\" " . ($this->mainXmlEncoding ? "encoding=\"" . $this->mainXmlEncoding . "\"" : "sandalone=\"yes\"") . "?>\n";
-					// Add the XML data containing all nodes till to the given depth.
-					$xml .= $this->exportAsXML($node, $dpth);
+					$xml = '<?xml version="1.0" ' . ($this->mainXmlEncoding ? 'encoding="' . $this->mainXmlEncoding . '"' : 'standalone="yes"') . "?>\n" .
+						// Add the XML data containing all nodes till to the given depth.
+						$this->exportAsXML($node, $dpth);
 					// Write the XML data to a file.
 					$this->exportToFile($xml);
 				}
@@ -127,15 +123,12 @@ class XML_SplitFile extends we_xml_parser{
 	 * @return     string The returned string contains the XML data
 	 */
 	function exportAsXML($node, $dpth, $lvl = 1){
-		$xml = "";
 		// Calculate the indentation.
-		$indent = "";
-		for($i = 0; $i < (($lvl - 1) * $this->indent); $i++)
-			$indent .= " ";
+		$indent = str_repeat(' ', ($lvl * $this->indent));
 
 		// Add the start tag of the new root element.
 		$root = $this->nodes[$node];
-		$xml .= $indent . "<" . $root["name"] . $this->getAttributeString($root) . ">\n";
+		$xml = $indent . '<' . $root['name'] . $this->getAttributeString($root) . ">\n";
 
 		// Run through the child nodes.
 		foreach($this->nodes[$node]["children"] as $tagname => $id){
@@ -145,19 +138,20 @@ class XML_SplitFile extends we_xml_parser{
 
 				// Leave out the child nodes which will be processed in the
 				// next call of this method.
-				$absoluteXPath = $node . "/" . $tagname . "[" . $sibl . "]";
+				$absoluteXPath = $node . '/' . $tagname . '[' . $sibl . ']';
 
 				$sibling = $this->nodes[$absoluteXPath];
 				if(!$this->hasChildNodes($absoluteXPath)){
 
 					// Add the additional indentation.
-					for($i = 0; $i < $this->indent; $i++)
-						$xml .= " ";
+					for($i = 0; $i < $this->indent; $i++){
+						$xml .= ' ';
+					}
 					// Add the start tag of the element.
-					$xml .= "<" . $tagname . $this->getAttributeString($sibling);
+					$xml .= '<' . $tagname . $this->getAttributeString($sibling);
 					$hasText = $this->hasCdata($absoluteXPath);
 					if($hasText){
-						$xml .= ">";
+						$xml .= '>';
 						// Add the character data and insert it within a CDATA
 						// section if necessary.
 						$hasSection = $this->hasCdataSection($absoluteXPath);
@@ -166,7 +160,7 @@ class XML_SplitFile extends we_xml_parser{
 
 						// Add the end tag of the element.
 						if($hasText){
-							$xml .= "</" . $tagname . ">\n";
+							$xml .= '</' . $tagname . ">\n";
 						}
 					} else {
 						// Auto-close the tag.
@@ -178,7 +172,7 @@ class XML_SplitFile extends we_xml_parser{
 			}
 		}
 		// Add the end tag of the new root element.
-		$xml .= $indent . "</" . $root["name"] . ">";
+		$xml .= $indent . '</' . $root["name"] . '>';
 
 		return $xml;
 	}
@@ -194,10 +188,10 @@ class XML_SplitFile extends we_xml_parser{
 	 */
 	function exportToFile($data){
 		// The current file.
-		$file = "temp_" . $this->fileId . ".xml";
+		$file = 'temp_' . $this->fileId . '.xml';
 
 		// Open the file.
-		$hFile = fopen($this->path . "/" . $file, "wb");
+		$hFile = fopen($this->path . '/' . $file, 'wb');
 
 		// Check if the file was opened correctly.
 		if(!$hFile){
@@ -226,26 +220,6 @@ class XML_SplitFile extends we_xml_parser{
 	}
 
 	/**
-	 * Returns a unique code with the given length.
-	 *
-	 * @deprecated Use getUniqueId() instead
-	 * @param      integer $len
-	 * @return     string The returned string contains alphanumeric code
-	 */
-	function getUniqueString($len = 8){
-		$str = "";
-		$set = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" .
-			"abcdefghijklmnopqrstuvwxyz" .
-			"0123456789";
-		// Seed with microseconds since last 'whole' second.
-		srand((double) microtime() * 1234567);
-		for($i = 0; $i < $len; $i++){
-			$str .= substr($set, (rand() % (strlen($set))), 1);
-		}
-		return $str;
-	}
-
-	/**
 	 * Returns a random hex code consisting of 32 characters.
 	 *
 	 * @return     string The returned string contains hexadecimal code
@@ -263,7 +237,7 @@ class XML_SplitFile extends we_xml_parser{
 	 * @return     string
 	 */
 	function replaceEntities($text){
-		return str_replace(array("<", ">", "&nbsp;"), array("&lt;", "&gt;", "&amp;nbsp;"), $text);
+		return strtr($text, array('<' => '&lt;', '>' => '&gt;', '&nbsp;' => '&amp;nbsp;'));
 	}
 
 }
