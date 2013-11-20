@@ -822,10 +822,11 @@ class we_document extends we_root{
 	}
 
 	function i_filenameDouble(){
-		return f('SELECT ID FROM ' . escape_sql_query($this->Table) . " WHERE ParentID=" . intval($this->ParentID) . " AND Filename='" . escape_sql_query($this->Filename) . "' AND Extension='" . escape_sql_query($this->Extension) . "' AND ID != " . intval($this->ID), "ID", $this->DB_WE);
+		return f('SELECT ID FROM ' . escape_sql_query($this->Table) . ' WHERE ParentID=' . intval($this->ParentID) . " AND Filename='" . escape_sql_query($this->Filename) . "' AND Extension='" . escape_sql_query($this->Extension) . "' AND ID != " . intval($this->ID), "ID", $this->DB_WE);
 	}
 
 //FIXME: parameter $attribt should be: array $attribs=array()
+	//FIXME: check if we can rid of this function, since it causes problems every change of tags since it also uses the given attribs array!
 	public function getFieldByVal($val, $type, $attribs = '', $pathOnly = false, $parentID = 0, $path = '', $db = '', $classID = '', $fn = 'this'){
 		$attribs = is_array($attribs) ? $attribs : array();
 		if(isset($attribs['_name_orig'])){
@@ -1008,7 +1009,6 @@ class we_document extends we_root{
 					$dt->setTimeZone(new DateTimeZone(@date_default_timezone_get())); //Bug #6335
 					return $dt->format(correctDateFormat($format, $dt));
 				}
-				return $zwdate;
 			case 'select':
 				if(defined('OBJECT_TABLE')){
 					if(strlen($val) == 0){

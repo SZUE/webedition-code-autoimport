@@ -93,7 +93,7 @@ function keyDialogListener(_successor) {
 
 
 		// does function closeOnEscape exist!!
-		if (typeof(top.closeOnEscape) == "function" && evt.keyCode == "27") {	// ESCAPE
+		if (typeof (top.closeOnEscape) == "function" && evt.keyCode == "27") {	// ESCAPE
 
 			if (top.closeOnEscape()) {
 				this.cancelEvent(evt);
@@ -103,7 +103,7 @@ function keyDialogListener(_successor) {
 		}
 
 		// does function applyOnEnter exist?
-		if (typeof(top.applyOnEnter) == "function" && evt.keyCode == "13") {	// ENTER
+		if (typeof (top.applyOnEnter) == "function" && evt.keyCode == "13") {	// ENTER
 			if (top.applyOnEnter(evt)) {
 				this.cancelEvent(evt);
 				return true;
@@ -112,7 +112,8 @@ function keyDialogListener(_successor) {
 
 		return this.next(evt);
 	}
-};
+}
+;
 keyDialogListener.prototype = new keyBoardListener();
 
 /**
@@ -131,7 +132,7 @@ function keyDialogSaveListener(_successor) {
 	this.dealEvent = function(evt) {
 
 		if (evt["ctrlKey"]) {
-			if (typeof(top.saveOnKeyBoard) == "function" && evt["keyCode"] == 83) { // S (Save)
+			if (typeof (top.saveOnKeyBoard) == "function" && evt["keyCode"] == 83) { // S (Save)
 				if (top.saveOnKeyBoard()) {
 					this.cancelEvent(evt);
 					return true;
@@ -181,20 +182,20 @@ function keyEditorListener(_successor) {
 						self.focus(); // focus, to avoid a too late onchange of editor
 						this.cancelEvent(evt);
 						_activeEditorFrame.setEditorPublishWhenSave(true);
-						if (typeof(_activeEditorFrame.getEditorFrameWindow().frames[3].we_save_document) == "function") {
+						if (typeof (_activeEditorFrame.getEditorFrameWindow().frames[3].we_save_document) == "function") {
 							_activeEditorFrame.getEditorFrameWindow().frames[3].we_save_document();
 						}
 					} else {// S (Save)
 						self.focus();  // focus, to avoid a too late onchange of editor
 						this.cancelEvent(evt);
 						_activeEditorFrame.setEditorPublishWhenSave(false);
-						if (typeof(_activeEditorFrame.getEditorFrameWindow().frames[3].we_save_document) == "function") {
+						if (typeof (_activeEditorFrame.getEditorFrameWindow().frames[3].we_save_document) == "function") {
 							_activeEditorFrame.getEditorFrameWindow().frames[3].we_save_document();
 						}
 					}
 					return true;
 
-				case 90://Strg-z 
+				case 90://Strg-z
 					return true;
 				case 87:
 				case 115: // W, F4 (closing a tab)
@@ -237,7 +238,7 @@ function keyModuleListener(_successor) {
 				if (top.content &&
 								top.content.editor &&
 								top.content.editor.edfooter &&
-								typeof(top.content.editor.edfooter.we_save) == "function") {
+								typeof (top.content.editor.edfooter.we_save) == "function") {
 					this.cancelEvent(evt);
 					top.content.editor.edfooter.we_save();
 					return true;
@@ -271,7 +272,7 @@ function keyToolListener(_successor) {
 								top.content.resize &&
 								top.content.resize.editor &&
 								top.content.resize.editor.edfooter &&
-								typeof(top.content.resize.editor.edfooter.we_save) == "function") {
+								typeof (top.content.resize.editor.edfooter.we_save) == "function") {
 					this.cancelEvent(evt);
 					top.content.resize.editor.edfooter.we_save();
 					return true;
@@ -340,7 +341,7 @@ function keyReloadListener(_successor) {
 			if (evt["ctrlKey"] || evt["metaKey"]) {
 
 				if ((evt["keyCode"] == 82) || // R Reload
-								(evt["keyCode"] == 90))//Z Back
+								(evt["ctrlKey"] && evt["keyCode"] == 90))//Z Back
 				{
 					this.cancelEvent(evt);
 					return true;
@@ -376,13 +377,13 @@ function dealWithKeyboardShortCut(evt) {
 					|| evt["keyCode"] == 116		// F5 - works only in FF
 
 					|| (// ctrl-key for windows, meta-key for mac
-					(evt["ctrlKey"] || evt["metaKey"])
+									(evt["ctrlKey"] || evt["metaKey"])
 
-					&& (evt["keyCode"] != 17 // don't forward only CTRL
-					&& evt["keyCode"] != 67 //Strg-C
-					&& evt["keyCode"] != 86 //Strg-V
-					)
-					)
+									&& (evt["keyCode"] != 17 // don't forward only CTRL
+													&& evt["keyCode"] != 67 //Strg-C
+													&& evt["keyCode"] != 86 //Strg-V
+													)
+									)
 					) {
 		//console.log('deal'+evt['keyCode'])
 		return keyListener.dealEvent(evt);
