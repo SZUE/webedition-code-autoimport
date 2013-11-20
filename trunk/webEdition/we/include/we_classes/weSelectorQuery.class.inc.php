@@ -172,7 +172,7 @@ class weSelectorQuery{
 					$where .= $i == (count($types) - 1) ? ')' : '';
 				}
 			}
-		} else{
+		} else {
 			$isFolder = 1;
 		}
 
@@ -183,11 +183,15 @@ class weSelectorQuery{
 
 		if(!empty($this->condition)){
 			foreach($this->condition as $val){
-				$where .= ' ' . $val['queryOperator'] . " " . $val['field'] . $val['conditionOperator'] . "'" . $this->db->escape($val['value']) . "'";
+				$where .= ' ' . $val['queryOperator'] . ' ' . $val['field'] . $val['conditionOperator'] . '"' . $this->db->escape($val['value']) . '"';
 			}
 		}
+		if(defined('NAVIGATION_TABLE') && $table == NAVIGATION_TABLE){
+			$where.=weNavigation::getWSQuery();
+		}
+		//FIXME: what about other workspacequeries?!
 
-		$this->db->query('SELECT ' . implode(", ", $this->fields) . ' FROM ' . $this->db->escape($table) . ' WHERE ' . $where . ' ORDER BY ' . ($isFolder ? 'isFolder DESC, Path' : 'Path') . ' ASC ' . ($limit ? ' LIMIT ' . $limit : ''));
+		$this->db->query('SELECT ' . implode(', ', $this->fields) . ' FROM ' . $this->db->escape($table) . ' WHERE ' . $where . ' ORDER BY ' . ($isFolder ? 'isFolder DESC, Path' : 'Path') . ' ASC ' . ($limit ? ' LIMIT ' . $limit : ''));
 	}
 
 	/**
@@ -281,7 +285,7 @@ class weSelectorQuery{
 	function getResult(){
 		$i = 0;
 		$result = array();
-		while($this->db->next_record()) {
+		while($this->db->next_record()){
 			foreach($this->fields as $val){
 				$result[$i][$val] = htmlspecialchars_decode($this->db->f($val));
 			}
@@ -353,7 +357,7 @@ class weSelectorQuery{
 			if($wsQuery){
 				$userExtraSQL .= ' AND (' . substr($wsQuery, 0, strlen($wsQuery) - 3) . ')';
 			}
-		} else{
+		} else {
 			if($table != USER_TABLE){
 				$userExtraSQL.=' OR RestrictOwners=0 ';
 			}
