@@ -1203,7 +1203,7 @@ class weVersions{
 							we_util_File::saveFile($_SERVER['DOCUMENT_ROOT'] . $binaryPath, gzencode(file_get_contents($siteFile), 9));
 						}
 					}
-					$usepath=$_SERVER['DOCUMENT_ROOT'].$binaryPath;
+					$usepath = $_SERVER['DOCUMENT_ROOT'] . $binaryPath;
 					if(file_exists($usepath) && is_file($usepath)){
 						$this->Filehash = sha1_file($usepath);
 					}
@@ -1261,9 +1261,12 @@ class weVersions{
 									if($lastEntryField == ""){
 										$lastEntryField = array();
 									} else {
-										$lastEntryField = unserialize((substr_compare($lastEntryField, 'a%3A', 0, 4) == 0 ?
-												html_entity_decode(urldecode($lastEntryField), ENT_QUOTES) : gzuncompress($lastEntryField))
-										);
+										$lastEntryField = $lastEntryField ?
+											unserialize(
+												(substr_compare($lastEntryField, 'a%3A', 0, 4) == 0 ?
+													html_entity_decode(urldecode($lastEntryField), ENT_QUOTES) :
+													gzuncompress($lastEntryField))
+											) : '';
 									}
 									switch($val){
 										case "documentElements":
