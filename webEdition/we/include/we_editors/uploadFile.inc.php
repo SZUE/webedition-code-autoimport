@@ -24,13 +24,11 @@
 we_html_tools::protect();
 
 // init document
-$we_alerttext = '';
-$allowedContentTypes = '';
+$we_alerttext = $allowedContentTypes = '';
 $error = false;
 
 $maxsize = getUploadMaxFilesize(false);
 $we_maxfilesize_text = sprintf(g_l('newFile', '[max_possible_size]'), weFile::getHumanFileSize($maxsize, weFile::SZ_MB));
-
 
 we_html_tools::htmlTop(g_l('newFile', "[import_File_from_hd_title]"));
 
@@ -66,6 +64,7 @@ if(!isset($_SESSION['weS']['we_data'][$we_transaction])){
 
 		$foo = explode('/', $_FILES["we_File"]["type"]);
 		$we_doc->setElement('data', $we_File, $foo[0]);
+
 		if($we_doc->ContentType == 'image/*' && !$we_doc->isSvg() && !in_array(we_image_edit::detect_image_type($we_File), we_image_edit::$GDIMAGE_TYPE)){
 			$we_alerttext = g_l('alert', '[wrong_file][' . $we_doc->ContentType . ']');
 		} else {

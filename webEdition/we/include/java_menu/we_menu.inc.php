@@ -48,7 +48,7 @@ $we_menu = array(
 		'text' => g_l('javaMenu_global', '[empty_page]'),
 		'parent' => 1010100,
 		'cmd' => 'new_webEditionPage',
-		'perm' => 'NO_DOCTYPE || NEW_WEBEDITIONSITE || ADMINISTRATOR',
+		'perm' => 'NO_DOCTYPE || ADMINISTRATOR',
 	)
 );
 
