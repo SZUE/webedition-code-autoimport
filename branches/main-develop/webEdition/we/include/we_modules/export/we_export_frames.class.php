@@ -44,7 +44,7 @@ class we_export_frames extends weModuleFrames{
 	}
 
 	function getHTMLDocumentHeader($what = '', $mode = ''){
-		if(!($what == "cmd" || $what == "load")){
+		if($what != "cmd" && $what != "load" && !isset($_GET["exportfile"])){
 			return parent::getHTMLDocumentHeader();
 		}
 	}
@@ -562,10 +562,8 @@ function closeAllType(){
 
 
 
-						$_progress_update = '';
 						if(!$xmlExIm->prepare){
-							$_progress_update =
-								we_html_element::jsElement('
+							$_progress_update = we_html_element::jsElement('
 										if (' . $this->editorBodyFrame . '.addLog) ' . $this->editorBodyFrame . '.addLog("' . addslashes(we_html_tools::getPixel(10, 10)) . we_html_element::htmlB(g_l('export', '[start_export]') . ' - ' . date("d.m.Y H:i:s")) . '<br><br>");
 										if (' . $this->editorBodyFrame . '.addLog) ' . $this->editorBodyFrame . '.addLog("' . addslashes(we_html_tools::getPixel(20, 5)) . we_html_element::htmlB(g_l('export', '[prepare]')) . '<br>");
 										if (' . $this->topFrame . '.editor.edfooter.doProgress) ' . $this->topFrame . '.editor.edfooter.doProgress(0);
@@ -586,8 +584,7 @@ function closeAllType(){
 							$percent = ($all != 0 ? (($xmlExIm->RefTable->current / $all) * 100) : 0);
 							$percent = ($percent < 0 ? 0 : ($percent > 100 ? 100 : $percent));
 
-							$_progress_update =
-								we_html_element::jsElement('
+							$_progress_update = we_html_element::jsElement('
 									if (' . $this->topFrame . '.editor.edfooter.doProgress) ' . $this->topFrame . '.editor.edfooter.doProgress("' . $percent . '");
 									if(' . $this->topFrame . '.editor.edfooter.setProgressText) ' . $this->topFrame . '.editor.edfooter.setProgressText("current_description","' . g_l('export', '[prepare]') . '");
 							');

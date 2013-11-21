@@ -591,7 +591,7 @@ abstract class we_rebuild{
 		}
 	}
 
-	static function getTemplAndDocIDsOfTemplate($id, $staticOnly = true, $publishedOnly = false, $PublishedAndTemp = false){
+	static function getTemplAndDocIDsOfTemplate($id, $staticOnly = true, $publishedOnly = false, $PublishedAndTemp = false, $useLockTbl = false){
 		if(!$id){
 			return 0;
 		}
@@ -603,12 +603,6 @@ abstract class we_rebuild{
 
 		self::getTemplatesOfTemplate($id, $returnIDs['templateIDs']);
 
-// first we need to check if template is included within other templates
-//$GLOBALS['DB_WE']->query("SELECT ID FROM ".TEMPLATES_TABLE." WHERE MasterTemplateID=".intval($id)." OR IncludedTemplates LIKE '%,".intval($id).",%'");
-//while ($GLOBALS['DB_WE']->next_record()) {
-//	array_push($returnIDs["templateIDs"], $GLOBALS['DB_WE']->f("ID"));
-//}
-
 		$id = intval($id);
 
 // Bug Fix 6615
@@ -616,6 +610,10 @@ abstract class we_rebuild{
 		$tmpArray[] = $id;
 		$tmp = implode(',', array_filter($tmpArray));
 		unset($tmpArray);
+		if($useLockTbl){
+			$GLOBALS['DB_WE']->query('SELECT ID FROM ' . LOCK_TABLE . ' WHERE tbl="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND ID IN (' . $tmp . ')');
+			$returnIDs['templateIDs'] = $GLOBALS['DB_WE']->getAll(true);
+		}
 		$where = ' (' .
 			($PublishedAndTemp ? 'temp_template_id IN (' . $tmp . ') OR ' : '') .
 			' TemplateID IN (' . $tmp . ')' .
@@ -623,11 +621,9 @@ abstract class we_rebuild{
 			($staticOnly ? ' AND IsDynamic=0' : '') .
 			($publishedOnly ? ' AND Published>0' : '');
 
-		$GLOBALS['DB_WE']->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE ' . $where);
+		$GLOBALS['DB_WE']->query('SELECT f.ID FROM ' . FILE_TABLE . ' f ' . ($useLockTbl ? 'INNER JOIN ' . LOCK_TABLE . ' l ON f.ID=l.ID AND l.tbl="' . stripTblPrefix(FILE_TABLE) . '"' : '') . ' WHERE ' . $where);
 
-		while($GLOBALS['DB_WE']->next_record()){
-			$returnIDs['documentIDs'][] = $GLOBALS['DB_WE']->f('ID');
-		}
+		$returnIDs['documentIDs'] = $GLOBALS['DB_WE']->getAll(true);
 		return $returnIDs;
 	}
 

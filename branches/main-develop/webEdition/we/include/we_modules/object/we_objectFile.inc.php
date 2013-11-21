@@ -2249,7 +2249,6 @@ class we_objectFile extends we_document{
 		foreach($this->elements as $n => $elem){
 			if(isset($elem["type"]) && $elem["type"] == self::TYPE_TEXT){
 				if(isset($dv["text_$n"]["xml"]) && $dv["text_$n"]["xml"] == "on"){
-//$elem["dat"] = we_xhtmlConverter::correct_HTML_source($elem["dat"],true);
 					$this->elements[$n] = $elem;
 				}
 			}

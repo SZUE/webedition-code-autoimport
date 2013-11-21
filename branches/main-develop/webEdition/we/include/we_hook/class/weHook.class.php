@@ -72,9 +72,7 @@ class weHook{
 	 * return string
 	 */
 	function findHookFile(){
-		$hookFile = '';
-
-		if($this->appName != ''){
+		if($this->appName){
 			$filename = 'weCustomHook_' . $this->appName . '_' . $this->action . '.inc.php';
 			// look in app folder
 			$hookFile = WE_APPS_PATH . $this->appName . '/hook/custom_hooks/' . $filename;

@@ -934,7 +934,7 @@ function delRow(id) {
 
 			$content[] = array(
 				array("dat" => '<nobr>' . $vers . '</nobr>'),
-				array("dat" => '<nobr>' . shortenPath($user, 15) . '</nobr>'),
+				array("dat" => '<nobr>' . shortenPath($user, 30) . '</nobr>'),
 				array("dat" => '<nobr>' . ($_versions[$f]["timestamp"] ? date("d.m.y - H:i:s", $_versions[$f]["timestamp"]) : "-") . ' </nobr>'),
 				array("dat" => (($modificationText != '') ? $modificationText : '') .
 					($fromScheduler != '' ? $fromScheduler : '') .
@@ -1044,7 +1044,7 @@ function delRow(id) {
 <tr>
 	<td valign="top" style="width:15px;border-bottom:1px solid #AFB0AF;">' . we_html_tools::getPixel(15, 1) . '</td>
 	<td valign="top" style="width:110px;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[0]["dat"] . we_html_tools::getPixel(110, 1) . '</td>
-	<td valign="top" style="width:110px;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[1]["dat"] . we_html_tools::getPixel(110, 1) . '</td>
+	<td valign="top" style="width:15em;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[1]["dat"] . we_html_tools::getPixel(110, 1) . '</td>
 	<td valign="top" style="width:120px;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[2]["dat"] . we_html_tools::getPixel(120, 1) . '</td>
 	<td valign="top" style="width:120px;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[4]["dat"] . we_html_tools::getPixel(120, 1) . '</td>
 	<td valign="top" style="width:auto;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[3]["dat"] . '</td>
@@ -1078,7 +1078,7 @@ function delRow(id) {
 		$anz = count($content) - 1;
 		return '<td valign="top" style="width:15px;">' . we_html_tools::getPixel(1, 1) . '</td>
 <td valign="top" style="width:110px;height:30px;" class="middlefont">' . ((isset($content[0]["dat"]) && $content[0]["dat"]) ? $content[0]["dat"] : "&nbsp;") . '</td>
-<td valign="top" style="width:110px;" class="middlefont">' . ((isset($content[1]["dat"]) && $content[1]["dat"]) ? $content[1]["dat"] : "&nbsp;") . '</td>
+<td valign="top" style="width:15em;" class="middlefont">' . ((isset($content[1]["dat"]) && $content[1]["dat"]) ? $content[1]["dat"] : "&nbsp;") . '</td>
 <td valign="top" style="width:120px;" class="middlefont">' . ((isset($content[2]["dat"]) && $content[2]["dat"]) ? $content[2]["dat"] : "&nbsp;") . '</td>
 <td valign="top" style="width:120px;" class="middlefont">' . ((isset($content[4]["dat"]) && $content[4]["dat"]) ? $content[4]["dat"] : "&nbsp;") . '</td>
 <td valign="top" rowspan="2" style="line-height:20px;width:auto;border-bottom:1px solid #D1D1D1;" class="middlefont">' . ((isset($content[3]["dat"]) && $content[3]["dat"]) ? $content[3]["dat"] : "&nbsp;") . '</td>

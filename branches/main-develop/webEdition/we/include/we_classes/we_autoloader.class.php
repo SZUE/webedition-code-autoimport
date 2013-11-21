@@ -140,7 +140,6 @@ abstract class we_autoloader{
 			'we_webEditionDocument' => 'we_webEditionDocument.inc.php',
 			'we_widget' => 'we_widget.inc.php',
 			'we_wysiwyg' => 'we_wysiwyg.class.php',
-			'we_xhtmlConverter' => 'helpers/we_xhtmlConverter.inc.php',//FIXME: remove?
 			'weXMLComposer' => 'weXMLComposer.class.php',
 			'XML_Export' => 'xml_export.inc.php',
 			'XML_Import' => 'xml_import.inc.php',
