@@ -12,6 +12,7 @@ $l_versions=array(
 	'ExtraTemplates'=>'Lisäsivupohjat',
 	'ExtraWorkspacesSelected'=>'Lisätyötilojen Valinta',
 	'ExtraWorkspaces'=>'Lisätyötilat',
+	'Filehash'=>'Checksum of file',
 	'Filename'=>'Tiedostonimi',
 	'InGlossar'=>'Ei sallittu automaattisessa sanaston korvauksessa',
 	'IsClassFolder'=>'Luokkahakemisto',

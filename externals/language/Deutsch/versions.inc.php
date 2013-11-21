@@ -12,6 +12,7 @@ $l_versions=array(
 	'ExtraTemplates'=>'Zusätzliche Vorlagen',
 	'ExtraWorkspacesSelected'=>'Zusätzliche Arbeitsbereiche Auswahl',
 	'ExtraWorkspaces'=>'Zusätzliche Arbeitsbereiche',
+	'Filehash'=>'Prüfsumme der Datei',
 	'Filename'=>'Dateiname',
 	'InGlossar'=>'Bei Glossarersetzung nicht berücksichtigen',
 	'IsClassFolder'=>'Klassenverzeichnis',

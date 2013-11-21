@@ -12,6 +12,7 @@ $l_versions=array(
 	'ExtraTemplates'=>'Additional templates',
 	'ExtraWorkspacesSelected'=>'Additional workspaces Selection',
 	'ExtraWorkspaces'=>'Additional workspaces',
+	'Filehash'=>'Checksum of file',
 	'Filename'=>'Filename',
 	'InGlossar'=>'Not allowed for automatic glossary replacement',
 	'IsClassFolder'=>'Classfolder',
