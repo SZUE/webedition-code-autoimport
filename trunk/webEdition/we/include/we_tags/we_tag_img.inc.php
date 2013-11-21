@@ -82,7 +82,6 @@ function we_tag_img($attribs){
 		$title = $GLOBALS['we_doc']->getElement($titleField);
 		$tagAttribs['alt'] = $alt ? $alt : $tagAttribs['alt'];
 		$tagAttribs['title'] = $title ? $title : $tagAttribs['title'];
-		t_e($tagAttribs);
 		if($showThumb){
 			$thumb = $GLOBALS['we_doc']->getElement($thumbField);
 			$thumbattr = $thumb;
