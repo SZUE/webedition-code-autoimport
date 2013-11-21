@@ -343,6 +343,8 @@ function keyReloadListener(_successor) {
 				if ((evt["keyCode"] == 82) || // R Reload
 								(evt["ctrlKey"] && evt["keyCode"] == 90))//Z Back
 				{
+					console.log('event canceled');
+					console.log(evt);
 					this.cancelEvent(evt);
 					return true;
 				}
