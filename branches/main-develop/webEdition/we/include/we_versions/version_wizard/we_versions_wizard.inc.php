@@ -925,7 +925,7 @@ set_button_state(false);';
 			$out .= '
 <tr class="defaultfont">
 	<td align="center">' . $k . '</td>
-	<td align="center">' . shortenPath($v['Path'], 55) . '</td>
+	<td align="center">' . we_util_Strings::shortenPath($v['Path'], 55) . '</td>
 	<td align="center">' . $v['ContentType'] . '</td>
 </tr>';
 		}
@@ -1052,7 +1052,7 @@ set_button_state(false);';
 		foreach($docIds as $k => $v){
 			$out .= '<tr class="defaultfont">
 				<td align="center">' . $k . '</td>
-				<td align="center">' . shortenPath($v['Path'], 55) . '</td>
+				<td align="center">' . we_util_Strings::shortenPath($v['Path'], 55) . '</td>
 				<td align="center">' . $v['ContentType'] . '</td>
 			</tr>';
 		}

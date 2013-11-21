@@ -41,7 +41,7 @@ class we_import_siteFrag extends taskFragment{
 	function doTask(){
 		$path = substr($this->data["path"], strlen($_SERVER['DOCUMENT_ROOT']));
 		$progress = intval((100 / count($this->alldata)) * $this->currentTask);
-		$progressText = shortenPath($path, 30);
+		$progressText = we_util_Strings::shortenPath($path, 30);
 
 		if($this->data["contentType"] == "post/process"){
 			we_import_site::postprocessFile($this->data["path"], $this->data["sourceDir"], $this->data["destDirID"]);

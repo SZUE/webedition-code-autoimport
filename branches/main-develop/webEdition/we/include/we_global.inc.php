@@ -277,23 +277,6 @@ function getHTTP($server, $url, $port = '', $username = '', $password = ''){
 	}
 }
 
-/* function std_numberformat($content){
-  if(preg_match('#.*,[0-9]*$#', $content)){
-  // Deutsche Schreibweise
-  $umschreib = preg_replace('#(.*),([0-9]*)$#', '\1.\2', $content);
-  $pos = strrpos($content, ',');
-  $vor = str_replace('.', '', substr($umschreib, 0, $pos));
-  return $vor . substr($umschreib, $pos, strlen($umschreib) - $pos);
-  } elseif(preg_match('#.*\.[0-9]*$#', $content)){
-  // Englische Schreibweise
-  $pos = strrpos($content, '.');
-  $vor = substr($content, 0, $pos);
-  $vor = str_replace(',', '', str_replace('.', '', $vor));
-  return $vor . substr($content, $pos, strlen($content) - $pos);
-  }
-  return str_replace(',', '', str_replace('.', '', $content));
-  } */
-
 /**
  *
  * @param type $id
@@ -515,22 +498,6 @@ function makeCSVFromArray($arr, $prePostKomma = false, $sep = ','){
 	return ($replaceKomma ?
 			str_replace('###komma###', '\\' . $sep, $out) :
 			$out);
-}
-
-function shortenPath($path, $len){
-	if(strlen($path) <= $len || strlen($path) < 10){
-		return $path;
-	}
-	$l = ($len / 2) - 2;
-	return substr($path, 0, $l) . '&helip;' . substr($path, $l * -1);
-}
-
-function shortenPathSpace($path, $len){
-	if(strlen($path) <= $len || strlen($path) < 10){
-		return $path;
-	}
-	$l = $len;
-	return substr($path, 0, $l) . ' ' . shortenPathSpace(substr($path, $l), $len);
 }
 
 function in_parentID($id, $pid, $table = FILE_TABLE, $db = ''){

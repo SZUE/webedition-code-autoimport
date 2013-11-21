@@ -28,6 +28,7 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 abstract class we_util_Strings{
+
 	const PRECISION = 2;
 
 	/**
@@ -87,7 +88,7 @@ abstract class we_util_Strings{
 		}
 		if($csv == "" && $csv != "0"){
 			$foo = array();
-		} else{
+		} else {
 			$foo = explode(",", $csv);
 			for($i = 0; $i < count($foo); $i++){
 				$foo[$i] = str_replace("###komma###", ",", $foo[$i]);
@@ -124,6 +125,14 @@ abstract class we_util_Strings{
 		return substr($path, 0, $l) . '&hellip;' . substr($path, $l * -1);
 	}
 
+	static function shortenPathSpace($path, $len){
+		if(strlen($path) <= $len || strlen($path) < 10){
+			return $path;
+		}
+		$l = $len;
+		return substr($path, 0, $l) . ' ' . self::shortenPathSpace(substr($path, $l), $len);
+	}
+
 	/**
 	 * Returns a formatted string
 	 *
@@ -131,7 +140,7 @@ abstract class we_util_Strings{
 	 * @param string format
 	 * @return string
 	 */
-	static	function formatNumber($number, $format='', $precision = self::PRECISION){
+	static function formatNumber($number, $format = '', $precision = self::PRECISION){
 		switch($format){
 			case 'german':
 			case 'deutsch':
@@ -146,7 +155,6 @@ abstract class we_util_Strings{
 		}
 	}
 
-
 	/**
 	 * splits a version (string) to a number.
 	 *
@@ -160,21 +168,21 @@ abstract class we_util_Strings{
 				if(strlen($version) == 3){
 					$numberStr = '0.0' . substr($version, 2, 1);
 					$number = (float) $numberStr;
-				} else{
+				} else {
 					$numberStr = '0.' . substr($version, 2, 2);
 					$number = (float) $numberStr;
 				}
-			} else{
+			} else {
 				$count = 2;
 				$numberStr = str_replace('.', '', $version, $count);
 				$number = (float) $numberStr;
 			}
-		} else{
+		} else {
 			$count = 3;
 			if(substr($version, 0, 1) == "6"){
 				$numberStr = str_replace('.', '', $version, $count);
 				$number = (float) $numberStr;
-			} else{
+			} else {
 				$numberStr = str_replace('.', '', $version, $count);
 				$number = (float) $numberStr;
 			}
@@ -200,27 +208,27 @@ abstract class we_util_Strings{
 				if($number < 0.1){
 					$mynumber = str_replace('.0', '.', $mynumber);
 					$version = $mynumber;
-				} else{
+				} else {
 					$version = $mynumber;
 				}
-			} else{
+			} else {
 				$intnumber = floor($number);
 				$decimal = $number - $intnumber;
 				$mynumber = "$intnumber";
 				for($i = 0; $i < strlen($mynumber) - 1; $i++){
 					if($i = 2 && isset($mynumber[3])){
 						$numbers[] = $mynumber[2] . $numbers[] = $mynumber[3];
-					} else{
+					} else {
 						$numbers[] = $mynumber[$i];
 					}
 				}
 				if($decimal != 0){
 					$version = implode('.', $numbers) . $decimal;
-				} else{
+				} else {
 					$version = implode('.', $numbers);
 				}
 			}
-		} else{
+		} else {
 			if($number > 6999){
 				$intnumber = floor($number);
 				$decimal = $number - $intnumber;
@@ -228,16 +236,16 @@ abstract class we_util_Strings{
 				for($i = 0; $i < strlen($mynumber) - 1; $i++){
 					if($i = 2 && isset($mynumber[3])){
 						$numbers[] = $mynumber[2] . $numbers[] = $mynumber[3];
-					} else{
+					} else {
 						$numbers[] = $mynumber[$i];
 					}
 				}
 				if($decimal != 0){
 					$version = implode('.', $numbers) . $decimal;
-				} else{
+				} else {
 					$version = implode('.', $numbers);
 				}
-			} else{
+			} else {
 				for($i = 0; $i < 4; $i++){
 					$numbers[] = $number[$i];
 				}
@@ -259,7 +267,7 @@ abstract class we_util_Strings{
 			$out .= print_r($val, $where);
 			$out .= "</pre>";
 			return $out;
-		} else{
+		} else {
 			print "<pre>";
 			print_r($val, $where);
 			print "</pre>";

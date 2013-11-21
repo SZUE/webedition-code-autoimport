@@ -92,7 +92,7 @@ class we_customer_copyWeDocumentFilterFrag extends taskFragment{
 		$_targetDoc->documentCustomerFilter->saveForModel($_targetDoc);
 		$_targetDoc->rewriteNavigation();
 
-		print we_html_element::jsElement("parent.setProgressText('copyWeDocumentCustomerFilterText', '" . shortenPath($_targetDoc->Path, 55) . "');
+		print we_html_element::jsElement("parent.setProgressText('copyWeDocumentCustomerFilterText', '" . we_util_Strings::shortenPath($_targetDoc->Path, 55) . "');
 			parent.setProgress(" . number_format(( ( $this->currentTask ) / $this->numberOfTasks) * 100, 0) . ");");
 	}
 

@@ -162,7 +162,7 @@ if(isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3]){
 		'<body class="weDialogBody">' . $js .
 		'<form onsubmit="return fsubmit(this)" name="we_form" target="pbUpdateFrame" method="get">' .
 		we_html_tools::htmlDialogLayout(
-			$content, g_l('copyFolder', "[headline]") . ": " . shortenPath(
+			$content, g_l('copyFolder', "[headline]") . ": " . we_util_Strings::shortenPath(
 				id_to_path($_REQUEST['we_cmd'][1], $_REQUEST['we_cmd'][4]), 46), $buttons
 		) .
 		'</form>' .

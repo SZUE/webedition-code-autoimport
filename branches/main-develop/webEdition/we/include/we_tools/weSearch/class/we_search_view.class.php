@@ -221,8 +221,7 @@ class we_search_view extends we_tool_view{
 						$this->Model->updateChildPaths($oldpath);
 
 						if($newone){
-							$js =
-								$this->topFrame . '.makeNewEntry(\'' . $this->Model->Icon . '\',\'' . $this->Model->ID . '\',\'' . $this->Model->ParentID . '\',\'' . addslashes(
+							$js = $this->topFrame . '.makeNewEntry(\'' . $this->Model->Icon . '\',\'' . $this->Model->ID . '\',\'' . $this->Model->ParentID . '\',\'' . addslashes(
 									$this->Model->Text) . '\',0,\'' . ($this->Model->IsFolder ? 'folder' : 'item') . '\',\'' . SUCHE_TABLE . '\',0,0);';
 						} else {
 							$js = $this->topFrame . '.updateEntry(\'' . $this->Model->ID . '\',\'' . $this->Model->Text . '\',\'' . $this->Model->ParentID . '\',0,0,\'' . ($this->Model->IsFolder ? 'folder' : 'item') . '\',\'' . SUCHE_TABLE . '\',0,0);';
@@ -2422,15 +2421,14 @@ class we_search_view extends we_tool_view{
 						$templateID = $_result[$f]["temp_template_id"];
 					}
 					$templateText = g_l('searchtool', "[no_template]");
-					if($templateID != ""){
-						$sql = "SELECT ID, Text FROM " . TEMPLATES_TABLE . " WHERE ID = " . intval($templateID);
-						$DB_WE->query($sql);
+					if($templateID){
+						$DB_WE->query('SELECT ID, Text FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($templateID));
 						while($DB_WE->next_record()){
-							$templateText = shortenPath($DB_WE->f('Text'), 20) . " (ID=" . $DB_WE->f('ID') . ")";
+							$templateText = we_util_Strings::shortenPath($DB_WE->f('Text'), 20) . ' (ID=' . $DB_WE->f('ID') . ')';
 						}
 					}
 				} else {
-					$templateText = "";
+					$templateText = '';
 				}
 
 				$_defined_fields = we_metadata_metaData::getDefinedMetaDataFields();
@@ -2446,27 +2444,29 @@ class we_search_view extends we_tool_view{
 						$DB_WE->query("SELECT a.ID, c.Dat FROM (" . FILE_TABLE . " a LEFT JOIN " . LINK_TABLE . " b ON (a.ID=b.DID)) LEFT JOIN " . CONTENT_TABLE . " c ON (b.CID=c.ID) WHERE b.DID=" . intval($_result[$f]["docID"]) . " AND b.Name='" . escape_sql_query($_tagName) . "' AND b.DocumentTable='" . FILE_TABLE . "'");
 						$metafields[$_tagName] = "";
 						while($DB_WE->next_record()){
-							$metafields[$_tagName] = shortenPath($DB_WE->f('Dat'), 45);
+							$metafields[$_tagName] = we_util_Strings::shortenPath($DB_WE->f('Dat'), 45);
 						}
 					}
 				}
 
-				$content[$f][1]["dat"] = shortenPath($_result[$f]["SiteTitle"], 17);
-				$content[$f][2]["dat"] = '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none;color:' . $fontColor . ';" class="middlefont" title="' . $_result[$f]["Text"] . '"><u>' . shortenPath($_result[$f]["Text"], 20) . '</u></a>';
-				$content[$f][3]["dat"] = '<nobr>' . ($_result[$f]["CreationDate"] ? date(g_l('searchtool', "[date_format]"), $_result[$f]["CreationDate"]) : "-") . '</nobr>';
-				$content[$f][4]["dat"] = '<nobr>' . ($_result[$f]["ModDate"] ? date(g_l('searchtool', "[date_format]"), $_result[$f]["ModDate"]) : "-") . '</nobr>';
-				$content[$f][5]["dat"] = '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none;" class="middlefont" title="' . $_result[$f]["Text"] . '">' . $imageViewPopup . '</a>';
-				$content[$f][6]["dat"] = $filesize;
-				$content[$f][7]["dat"] = $imagesize[0] . " x " . $imagesize[1];
-				$content[$f][8]["dat"] = shortenPath(g_l('contentTypes', '[' . $_result[$f]['ContentType'] . ']'), 22);
-				$content[$f][9]["dat"] = '<span style="color:' . $fontColor . ';">' . shortenPath($_result[$f]["Text"], 30) . '</span>';
-				$content[$f][10]["dat"] = shortenPath($_result[$f]["SiteTitle"], 45);
-				$content[$f][11]["dat"] = shortenPath($_result[$f]["Description"], 100);
-				$content[$f][12]["dat"] = $_result[$f]['ContentType'];
-				$content[$f][13]["dat"] = shortenPath($creator, 22);
-				$content[$f][14]["dat"] = $templateText;
-				$content[$f][15]["dat"] = $metafields;
-				$content[$f][16]["dat"] = $_result[$f]["docID"];
+				$content[$f] = array(
+					1 => array("dat" => we_util_Strings::shortenPath($_result[$f]["SiteTitle"], 17)),
+					2 => array("dat" => '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none;color:' . $fontColor . ';" class="middlefont" title="' . $_result[$f]["Text"] . '"><u>' . we_util_Strings::shortenPath($_result[$f]["Text"], 20) . '</u></a>'),
+					3 => array("dat" => '<nobr>' . ($_result[$f]["CreationDate"] ? date(g_l('searchtool', "[date_format]"), $_result[$f]["CreationDate"]) : "-") . '</nobr>'),
+					4 => array("dat" => '<nobr>' . ($_result[$f]["ModDate"] ? date(g_l('searchtool', "[date_format]"), $_result[$f]["ModDate"]) : "-") . '</nobr>'),
+					5 => array("dat" => '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none;" class="middlefont" title="' . $_result[$f]["Text"] . '">' . $imageViewPopup . '</a>'),
+					6 => array("dat" => $filesize),
+					7 => array("dat" => $imagesize[0] . " x " . $imagesize[1]),
+					8 => array("dat" => we_util_Strings::shortenPath(g_l('contentTypes', '[' . $_result[$f]['ContentType'] . ']'), 22)),
+					9 => array("dat" => '<span style="color:' . $fontColor . ';">' . we_util_Strings::shortenPath($_result[$f]["Text"], 30) . '</span>'),
+					10 => array("dat" => we_util_Strings::shortenPath($_result[$f]["SiteTitle"], 45)),
+					11 => array("dat" => we_util_Strings::shortenPath($_result[$f]["Description"], 100)),
+					12 => array("dat" => $_result[$f]['ContentType']),
+					13 => array("dat" => we_util_Strings::shortenPath($creator, 22)),
+					14 => array("dat" => $templateText),
+					15 => array("dat" => $metafields),
+					16 => array("dat" => $_result[$f]["docID"]),
+				);
 			}
 		}
 
@@ -2986,7 +2986,7 @@ class we_search_view extends we_tool_view{
 			if($content[$n][11]["dat"] != ""){
 				$outDivs .= '<table cellpadding="0" cellspacing="0" border="0" style="font-size:10px;"><tr><td valign="top">' . g_l('searchtool', "[beschreibung]") . ':</td><td>' . we_html_tools::getPixel(
 						15, 5) . '</td><td>' .
-					shortenPath($content[$n][11]["dat"], 150) .
+					we_util_Strings::shortenPath($content[$n][11]["dat"], 150) .
 					'</td></tr></table>';
 			}
 			$outDivs .= '</div>
@@ -3003,7 +3003,7 @@ class we_search_view extends we_tool_view{
 						<div style="padding:10px 0px 10px 15px;">
 						<table style="font-size:10px;" border="0" cellspacing="0" cellpadding="3">';
 				foreach($content[$n][15]["dat"] as $k => $v){
-					$outDivs .= '<tr><td>' . shortenPath($k, 90) . ':' . '</td><td>' . shortenPath($v, 90) . '</td></tr>';
+					$outDivs .= '<tr><td>' . we_util_Strings::shortenPath($k, 90) . ':' . '</td><td>' . we_util_Strings::shortenPath($v, 90) . '</td></tr>';
 				}
 				$outDivs .= '</table>
 					</div>

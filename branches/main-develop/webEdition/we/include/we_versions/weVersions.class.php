@@ -1980,7 +1980,7 @@ class weVersions{
 							if($fieldValueText != ''){
 								$fieldValueText .= '<br/>';
 							}
-							$fieldValueText .= shortenPathSpace(id_to_path($k, FILE_TABLE), $pathLength);
+							$fieldValueText .= we_util_Strings::shortenPathSpace(id_to_path($k, FILE_TABLE), $pathLength);
 						}
 					}
 				}
@@ -1994,7 +1994,7 @@ class weVersions{
 							if($fieldValueText != ""){
 								$fieldValueText .= "<br/>";
 							}
-							$fieldValueText .= shortenPathSpace(id_to_path($k, FILE_TABLE), $pathLength);
+							$fieldValueText .= we_util_Strings::shortenPathSpace(id_to_path($k, FILE_TABLE), $pathLength);
 						}
 					}
 				}
@@ -2008,7 +2008,7 @@ class weVersions{
 							if(!empty($fieldValueText)){
 								$fieldValueText .= '<br/>';
 							}
-							$fieldValueText .= shortenPathSpace(id_to_path($k, FILE_TABLE), $pathLength);
+							$fieldValueText .= we_util_Strings::shortenPathSpace(id_to_path($k, FILE_TABLE), $pathLength);
 						}
 					}
 				}
@@ -2022,7 +2022,7 @@ class weVersions{
 							if(!empty($fieldValueText)){
 								$fieldValueText .= '<br/>';
 							}
-							$fieldValueText .= shortenPathSpace(id_to_path($k, FILE_TABLE), $pathLength);
+							$fieldValueText .= we_util_Strings::shortenPathSpace(id_to_path($k, FILE_TABLE), $pathLength);
 						}
 					}
 				}
@@ -2036,7 +2036,7 @@ class weVersions{
 							if(!empty($fieldValueText)){
 								$fieldValueText .= '<br/>';
 							}
-							$fieldValueText .= shortenPathSpace(id_to_path($k, FILE_TABLE), $pathLength);
+							$fieldValueText .= we_util_Strings::shortenPathSpace(id_to_path($k, FILE_TABLE), $pathLength);
 						}
 					}
 				}
@@ -2055,7 +2055,7 @@ class weVersions{
 						if($fieldValueText != ""){
 							$fieldValueText .= "<br/>";
 						}
-						$fieldValueText .= shortenPathSpace(id_to_path($key, CATEGORY_TABLE), $pathLength);
+						$fieldValueText .= we_util_Strings::shortenPathSpace(id_to_path($key, CATEGORY_TABLE), $pathLength);
 					}
 				}
 				return $fieldValueText;
@@ -2067,7 +2067,7 @@ class weVersions{
 						if($fieldValueText != ""){
 							$fieldValueText .= "<br/>";
 						}
-						$fieldValueText .= shortenPathSpace(id_to_path($key, USER_TABLE), $pathLength);
+						$fieldValueText .= we_util_Strings::shortenPathSpace(id_to_path($key, USER_TABLE), $pathLength);
 					}
 				}
 				return $fieldValueText;
@@ -2082,7 +2082,7 @@ class weVersions{
 							$fieldValueText .= "<br/>";
 						}
 						$stat = ($val == 1) ? g_l('versions', '[activ]') : g_l('versions', '[notactiv]');
-						$fieldValueText .= shortenPathSpace(id_to_path($key, USER_TABLE), $pathLength) . ": " . $stat;
+						$fieldValueText .= we_util_Strings::shortenPathSpace(id_to_path($key, USER_TABLE), $pathLength) . ": " . $stat;
 					}
 				}
 				return $fieldValueText;
@@ -2169,7 +2169,7 @@ class weVersions{
 						if($fieldValueText != ''){
 							$fieldValueText .= '<br/>';
 						}
-						$fieldValueText .= shortenPathSpace(id_to_path($key, CATEGORY_TABLE), $pathLength);
+						$fieldValueText .= we_util_Strings::shortenPathSpace(id_to_path($key, CATEGORY_TABLE), $pathLength);
 					}
 				}
 				return $fieldValueText;
@@ -2179,9 +2179,9 @@ class weVersions{
 			case '_accessControlOnTemplate':
 				return ($v == 1) ? g_l('versions', '[yes]') : g_l('versions', '[no]');
 			case '_errorDocNoLogin':
-				return shortenPathSpace(id_to_path($v, FILE_TABLE), $pathLength);
+				return we_util_Strings::shortenPathSpace(id_to_path($v, FILE_TABLE), $pathLength);
 			case '_errorDocNoAccess':
-				return shortenPathSpace(id_to_path($v, FILE_TABLE), $pathLength);
+				return we_util_Strings::shortenPathSpace(id_to_path($v, FILE_TABLE), $pathLength);
 			case '_mode':
 				switch($v){
 					case 0:
@@ -2202,7 +2202,7 @@ class weVersions{
 						if($fieldValueText != ''){
 							$fieldValueText .= '<br/>';
 						}
-						$fieldValueText .= shortenPathSpace(id_to_path($key, CUSTOMER_TABLE), $pathLength);
+						$fieldValueText .= we_util_Strings::shortenPathSpace(id_to_path($key, CUSTOMER_TABLE), $pathLength);
 					}
 				}
 				return $fieldValueText;
@@ -2213,7 +2213,7 @@ class weVersions{
 						if($fieldValueText != ""){
 							$fieldValueText .= "<br/>";
 						}
-						$fieldValueText .= shortenPathSpace(id_to_path($key, CUSTOMER_TABLE), $pathLength);
+						$fieldValueText .= we_util_Strings::shortenPathSpace(id_to_path($key, CUSTOMER_TABLE), $pathLength);
 					}
 				}
 				return $fieldValueText;
@@ -2224,7 +2224,7 @@ class weVersions{
 						if($fieldValueText != ''){
 							$fieldValueText .= '<br/>';
 						}
-						$fieldValueText .= shortenPathSpace(id_to_path($key, CUSTOMER_TABLE), $pathLength);
+						$fieldValueText .= we_util_Strings::shortenPathSpace(id_to_path($key, CUSTOMER_TABLE), $pathLength);
 					}
 				}
 				return $fieldValueText;

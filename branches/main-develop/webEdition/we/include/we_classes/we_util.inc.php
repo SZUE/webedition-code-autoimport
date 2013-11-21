@@ -163,4 +163,5 @@ abstract class we_util{
 		return ($_result > 0 ? self::number2System($_result, $chars, $str) : $str);
 	}
 
+
 }
