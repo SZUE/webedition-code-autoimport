@@ -44,7 +44,7 @@ class weExportFrames extends weModuleFrames{
 	}
 
 	function getHTMLDocumentHeader($what = '', $mode = ''){
-		if(!($what == "cmd" || $what == "load")){
+		if($what != "cmd" && $what != "load" && !isset($_GET["exportfile"])){
 			parent::getHTMLDocumentHeader();
 		}
 	}
@@ -310,7 +310,7 @@ class weExportFrames extends weModuleFrames{
 
 		$docTypes = array();
 		$q = getDoctypeQuery($this->db);
-		$this->db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE .' '. $q);
+		$this->db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . $q);
 		while($this->db->next_record()){
 			$docTypes[$this->db->f("ID")] = $this->db->f("DocType");
 		}
@@ -577,8 +577,7 @@ class weExportFrames extends weModuleFrames{
 
 						$_progress_update = '';
 						if(!$xmlExIm->prepare){
-							$_progress_update =
-								we_html_element::jsElement('
+							$_progress_update = we_html_element::jsElement('
 										if (' . $this->editorBodyFrame . '.addLog) ' . $this->editorBodyFrame . '.addLog("' . addslashes(we_html_tools::getPixel(10, 10)) . we_html_element::htmlB(g_l('export', '[start_export]') . ' - ' . date("d.m.Y H:i:s")) . '<br><br>");
 										if (' . $this->editorBodyFrame . '.addLog) ' . $this->editorBodyFrame . '.addLog("' . addslashes(we_html_tools::getPixel(20, 5)) . we_html_element::htmlB(g_l('export', '[prepare]')) . '<br>");
 										if (' . $this->topFrame . '.editor.edfooter.doProgress) ' . $this->topFrame . '.editor.edfooter.doProgress(0);
@@ -599,8 +598,7 @@ class weExportFrames extends weModuleFrames{
 							$percent = ($all != 0 ? (($xmlExIm->RefTable->current / $all) * 100) : 0);
 							$percent = ($percent < 0 ? 0 : ($percent > 100 ? 100 : $percent));
 
-							$_progress_update =
-								we_html_element::jsElement('
+							$_progress_update = we_html_element::jsElement('
 									if (' . $this->topFrame . '.editor.edfooter.doProgress) ' . $this->topFrame . '.editor.edfooter.doProgress("' . $percent . '");
 									if(' . $this->topFrame . '.editor.edfooter.setProgressText) ' . $this->topFrame . '.editor.edfooter.setProgressText("current_description","' . g_l('export', '[prepare]') . '");
 							');
