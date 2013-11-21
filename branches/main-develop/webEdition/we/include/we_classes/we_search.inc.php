@@ -149,10 +149,10 @@ class we_search{
 	}
 
 	function countitems($where = '', $table = ''){
-		$this->table = ($table ? : ($this->table ? : ''));
+		$this->table = ($table ? $table : ($this->table ? $this->table : ''));
 
 		if(!empty($this->table)){
-			$this->where = ($where ? : ($this->where ? : '1'));
+			$this->where = ($where ? $where : ($this->where ? $this->where : '1'));
 			return f('SELECT COUNT(1) as Count FROM ' . $this->db->escape($this->table) . ' WHERE ' . $this->where, 'Count', $this->db);
 		} else {
 			return -1;
@@ -161,7 +161,7 @@ class we_search{
 
 	function searchquery($where = '', $get = '*', $table = '', $order = '', $limit = ''){
 
-		$this->table = ($table ? : ($this->table? : ''));
+		$this->table = ($table ? $table : ($this->table? : ''));
 
 		if(!empty($this->table)){
 			$this->where = (empty($where)) ? ((empty($this->where)) ? '' : ' WHERE ' . $this->where) : ' WHERE ' . $where;
@@ -171,7 +171,7 @@ class we_search{
 
 			$this->limit = ' ' . $this->searchstart . ',' . $this->anzahl . ' ';
 
-			$this->limit = ' LIMIT ' . ($limit ? : $this->limit);
+			$this->limit = ' LIMIT ' . ($limit ? $limit : $this->limit);
 
 			$this->db->query('SELECT ' . rtrim($this->get, ',') . ' FROM ' . $this->db->escape($this->table) . ' ' . $this->where . ' ' . $order . ' ' . $this->limit);
 		} else {
@@ -180,8 +180,8 @@ class we_search{
 	}
 
 	function setlimit($anzahl = '', $searchstart = ''){
-		$this->anzahl = ($anzahl ? : ($this->anzahl ? : $this->defaultanzahl));
-		$this->searchstart = ($searchstart ? : ($this->searchstart ? : '0'));
+		$this->anzahl = ($anzahl ? $anzahl : ($this->anzahl ? $this->anzahl : $this->defaultanzahl));
+		$this->searchstart = ($searchstart ? $searchstart : ($this->searchstart ? $this->searchstart : '0'));
 
 		$this->limit = ' ' . $this->searchstart . ',' . $this->anzahl . ' ';
 

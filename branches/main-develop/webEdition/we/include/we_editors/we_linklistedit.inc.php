@@ -230,7 +230,7 @@ if(isset($_REQUEST['ok']) && $_REQUEST['ok']){
 			$type = we_base_link::TYPE_MAIL;
 		} else {
 			$type = $ll->getType($nr);
-			$type = $type ? : we_base_link::TYPE_INT;
+			$type = $type ? $type : we_base_link::TYPE_INT;
 			$emaillink = '';
 		}
 		$anchor = $ll->getAnchor($nr);
@@ -364,7 +364,7 @@ echo $yuiSuggest->getYuiCssFiles() .
 	function applyOnEnter(evt) {
 
 		_elemName = "target";
-		if (typeof(evt["srcElement"]) != "undefined") { // IE
+		if (typeof (evt["srcElement"]) != "undefined") { // IE
 			_elemName = "srcElement";
 		}
 
@@ -513,7 +513,7 @@ if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_
 	<?php
 }
 ?>
-	//-->
+//-->
 </script>
 
 <?php print STYLESHEET; ?>

@@ -129,7 +129,7 @@ class we_selector_file{
 		if($folderID == $ID){
 			return true;
 		}
-		$db = ($db ? : new DB_WE());
+		$db = ($db ? $db : new DB_WE());
 		$pid = f('SELECT ParentID FROM ' . $db->escape($this->table) . ' WHERE ID=' . intval($ID), 'ParentID', $db);
 		if($pid == $folderID){
 			return true;
@@ -469,7 +469,7 @@ function queryString(what,id,o){
 				d.writeln('</table></body>');
 				d.close();
 			}
-			//-->
+		//-->
 		</script>
 		<?php
 	}

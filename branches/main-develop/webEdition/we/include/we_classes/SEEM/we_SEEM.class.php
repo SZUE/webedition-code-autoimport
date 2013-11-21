@@ -394,7 +394,7 @@ abstract class we_SEEM{
 			}
 		}
 
-		return ($newArray ? : false);
+		return ($newArray ? $newArray : false);
 	}
 
 	/**
@@ -621,7 +621,7 @@ abstract class we_SEEM{
 	 */
 	static function getDocIDbyPath($docPath, $tbl = "", $db = ''){
 		//FIXME: does this work for SEO Url's???
-		$db = ($db ? : new DB_WE());
+		$db = ($db ? $db : new DB_WE());
 		$docPath = $db->escape(trim($docPath));
 		if(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES && $docPath[strlen($docPath) - 1] == '/'){
 			$indexFileNames = array_map('trim', explode(',', $db->escape(NAVIGATION_DIRECTORYINDEX_NAMES)));
@@ -645,15 +645,17 @@ abstract class we_SEEM{
 			if(preg_match('/ seem="(.*)"/', $oldArray[0][$i])){
 				//  This link is a SEEM Link, this is handled seperately - so it will be removed
 			} else {
-				$newArray[0][$j] = $oldArray[0][$i];
-				$newArray[1][$j] = $oldArray[1][$i];
-				$newArray[2][$j] = $oldArray[2][$i];
-				$newArray[3][$j] = $oldArray[3][$i];
-				$newArray[4][$j] = $oldArray[4][$i];
+				$newArray = array(
+					array($j => $oldArray[0][$i]),
+					array($j => $oldArray[1][$i]),
+					array($j => $oldArray[2][$i]),
+					array($j => $oldArray[3][$i]),
+					array($j => $oldArray[4][$i]),
+				);
 				$j++;
 			}
 		}
-		return ($newArray ? : false);
+		return ($newArray ? $newArray : false);
 	}
 
 	/**
@@ -680,7 +682,7 @@ abstract class we_SEEM{
 			}
 		}
 
-		return ($newArray ? : false);
+		return ($newArray ? $newArray : false);
 	}
 
 	/**
@@ -986,7 +988,7 @@ abstract class we_SEEM{
 	 * @desc Looks for the ContentType of the document with the given id and returns it
 	 */
 	static function getDocContentTypeByID($id, $db = ''){
-		return f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'ContentType', ($db ? : new DB_WE()));
+		return f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'ContentType', ($db ? $db : new DB_WE()));
 	}
 
 	/**

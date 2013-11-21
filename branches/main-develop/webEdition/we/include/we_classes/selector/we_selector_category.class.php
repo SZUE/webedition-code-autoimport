@@ -271,7 +271,7 @@ if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles
 				d.writeln('</body>');
 				d.close();
 			}
-			//-->
+		//-->
 		</script>
 		<?php
 	}
@@ -629,7 +629,7 @@ function setDir(id){
 	}
 
 	function renameChildrenPath($id, $db = ''){
-		$db = $db ? : new DB_WE();
+		$db = $db ? $db : new DB_WE();
 		$db->query('SELECT ID,IsFolder FROM ' . CATEGORY_TABLE . ' WHERE ParentID=' . intval($id));
 		$updates = $db->getAllFirst(false);
 		foreach($updates as $curId => $IsFolder){

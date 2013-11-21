@@ -121,7 +121,7 @@ $feldnamen = explode('|', f('SELECT strFelder from ' . ANZEIGE_PREFS_TABLE . ' W
 $waehr = "&nbsp;" . oldHtmlspecialchars($feldnamen[0]);
 $numberformat = $feldnamen[2];
 $classid = (isset($feldnamen[3]) ? $feldnamen[3] : '');
-$defaultVat = $feldnamen[1] ? : 0;
+$defaultVat = $feldnamen[1] ? $feldnamen[1] : 0;
 
 if(!isset($nrOfPage)){
 

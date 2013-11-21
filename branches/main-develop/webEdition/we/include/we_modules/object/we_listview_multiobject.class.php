@@ -246,7 +246,7 @@ class we_listview_multiobject extends listviewBase{
 	}
 
 	function fillMatrix(&$matrix, $classID, $db = ''){
-		$db = $db ? : new DB_WE();
+		$db = $db ? $db : new DB_WE();
 		$table = OBJECT_X_TABLE . $classID;
 		$joinWhere = array();
 		$tableInfo = we_objectFile::getSortedTableInfo($classID, true, $db);

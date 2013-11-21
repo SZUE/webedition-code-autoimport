@@ -55,9 +55,9 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 		$aDatTblPref = getPref('cockpit_dat'); // array as saved in the prefs
 		$aTrf = getPref('cockpit_rss');
 		$aDat = (!empty($aDatTblPref)) ? @unserialize($aDatTblPref) : $aCfgProps; //
-		$aDat = $aDat ? : $aCfgProps;
+		$aDat = $aDat ? $aDat : $aCfgProps;
 		$aTrf = empty($aTrf) ? array_pop($aDat) : @unserialize($aTrf);
-		$aTrf = $aTrf ? : $aTopRssFeeds;
+		$aTrf = $aTrf ? $aTrf : $aTopRssFeeds;
 		if(count($aDat) > $iLayoutCols){
 			while(count($aDat) > $iLayoutCols){
 				$aDelCol = array_pop($aDat);
@@ -203,12 +203,12 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 				for (var i = 0; i < _iLayoutCols; i++) {
 					var asoc = getColumnAsoc('c_' + (i + 1));
 					var asoc_len = asoc.length;
-					if ((typeof(dat[i]) == 'undefined' && !!asoc_len) || (typeof(dat[i]) != 'undefined' && asoc_len != dat[i].length)) {
+					if ((typeof (dat[i]) == 'undefined' && !!asoc_len) || (typeof (dat[i]) != 'undefined' && asoc_len != dat[i].length)) {
 						return true;
 					}
 					for (var k = 0; k < asoc_len; k++) {
 						for (var j = 0; j < ix_len; j++) {
-							if (typeof(dat[i][k][ix[j]]) == 'undefined' || asoc[k][ix[j]] != dat[i][k][ix[j]]) {
+							if (typeof (dat[i][k][ix[j]]) == 'undefined' || asoc[k][ix[j]] != dat[i][k][ix[j]]) {
 								return true;
 							}
 						}
@@ -401,7 +401,7 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 			var el_label = gel(id + '_lbl');
 			var w = parseInt(el_label.style.width);
 			var suspensionPts = '';
-			if (typeof(prefix) == 'undefined' || typeof(postfix) == 'undefined') {
+			if (typeof (prefix) == 'undefined' || typeof (postfix) == 'undefined') {
 				label = getLabel(id);
 			} else {
 				label = strip_tags(prefix + postfix);
@@ -627,10 +627,10 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 		}
 
 		function implode(arr, delimeter, enclosure) {
-			if (typeof(delimeter) == 'undefined') {
+			if (typeof (delimeter) == 'undefined') {
 				delimeter = ',';
 			}
-			if (typeof(enclosure) == 'undefined') {
+			if (typeof (enclosure) == 'undefined') {
 				enclosure = "'";
 			}
 			var out = '';
@@ -772,7 +772,7 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 
 		var ajaxCallback = {
 			success: function(o) {
-				if (typeof(o.responseText) !== undefined && o.responseText !== '') {
+				if (typeof (o.responseText) !== undefined && o.responseText !== '') {
 					var weResponse = false;
 					try {
 						eval(o.responseText);
@@ -952,7 +952,7 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 
 			new jsWindow(url, 'browse_users', -1, -1, 500, 300, true, false, true);
 		}
-		//-->
+	//-->
 	</script>
 	</head>
 	<?php

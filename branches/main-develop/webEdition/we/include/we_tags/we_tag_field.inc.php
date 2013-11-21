@@ -186,12 +186,12 @@ function we_tag_field($attribs){
 					$out = $t[5];
 					break;
 			}
-			$href = ($href ? : $t[1]);
+			$href = ($href ? $href : $t[1]);
 			break;
 		case 'link' :
 			if(is_object($GLOBALS['lv'])){
 				$out = $GLOBALS['we_doc']->getFieldByVal($GLOBALS['lv']->f($name), 'link', $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview');
-				$href = ($href ? : $out);
+				$href = ($href ? $href : $out);
 				break;
 			}
 		case 'img' :
@@ -576,7 +576,7 @@ function we_tag_field($attribs){
 					if($showlink){
 						$tail = ($tid && get_class($GLOBALS['lv']) == 'we_listview_object' ? '&amp;we_objectTID=' . $tid : '');
 
-						if((get_class($GLOBALS['we_doc'])== 'we_objectFile') && ($GLOBALS['we_doc']->InWebEdition)){
+						if((get_class($GLOBALS['we_doc']) == 'we_objectFile') && ($GLOBALS['we_doc']->InWebEdition)){
 							$_linkAttribs['href'] = $GLOBALS['lv']->f('wedoc_lastPath') . $tail;
 						} else {
 							$path_parts = pathinfo($GLOBALS['lv']->f('WE_PATH'));

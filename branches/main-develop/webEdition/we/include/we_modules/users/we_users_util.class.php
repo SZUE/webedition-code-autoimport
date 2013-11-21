@@ -90,7 +90,7 @@ abstract class we_users_util{
 	}
 
 	static function isUserInGroup($uid, $groupID, $db = ''){
-		$db = $db ? : new DB_WE();
+		$db = $db ? $db : new DB_WE();
 		$pid = f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($uid), "ParentID", $db);
 		if($pid == $groupID){
 			return true;
@@ -138,7 +138,7 @@ abstract class we_users_util{
 	}
 
 	static function getAliases($id, $db = ''){
-		$foo = f('SELECT GROUP_CONCAT(ID) AS IDS FROM ' . USER_TABLE . ' WHERE Alias=' . intval($id), 'IDS', ($db ? : new DB_WE()));
+		$foo = f('SELECT GROUP_CONCAT(ID) AS IDS FROM ' . USER_TABLE . ' WHERE Alias=' . intval($id), 'IDS', ($db ? $db : new DB_WE()));
 		return $foo ? explode(',', $foo) : array();
 	}
 
@@ -235,7 +235,7 @@ abstract class we_users_util{
 	}
 
 	public static function getAllowedClasses($db = ''){
-		$db = ($db ? : new DB_WE());
+		$db = ($db ? $db : new DB_WE());
 		$out = array();
 		if(!defined('OBJECT_FILES_TABLE')){
 			return '';

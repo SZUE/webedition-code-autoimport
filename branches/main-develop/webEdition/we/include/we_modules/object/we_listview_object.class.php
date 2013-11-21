@@ -102,8 +102,7 @@ class we_listview_object extends listviewBase{
 
 		$this->we_predefinedSQL = $we_predefinedSQL;
 
-		$this->Path =
-			($this->docID ?
+		$this->Path = ($this->docID ?
 				id_to_path($this->docID, FILE_TABLE, $this->DB_WE) :
 				($this->triggerID && show_SeoLinks() ?
 					id_to_path($this->triggerID, FILE_TABLE, $this->DB_WE) :
@@ -225,7 +224,7 @@ class we_listview_object extends listviewBase{
 	}
 
 	function fillMatrix(&$matrix, $classID, $db = ''){
-		$db = ($db ? : new DB_WE());
+		$db = ($db ? $db : new DB_WE());
 		$table = OBJECT_X_TABLE . $classID;
 		$joinWhere = array();
 		$regs = array();
@@ -260,7 +259,7 @@ class we_listview_object extends listviewBase{
 	}
 
 	static function encodeEregString(array $match){
-		$in=$match[1];
+		$in = $match[1];
 		$out = '';
 		for($i = 0; $i < strlen($in); $i++){
 			$out .= '&' . ord(substr($in, $i, 1)) . ';';

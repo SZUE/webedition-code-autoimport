@@ -335,7 +335,7 @@ class we_shop_frames extends weModuleFrames{
 			print "  menuDaten.add(new urlEntry('" . we_base_ContentTypes::LINK_ICON . "'," . $this->db->f("IntOrderID") . "," . $this->db->f("mdate") . ",'" . $this->db->f("IntOrderID") . ". " . g_l('modules_shop', '[bestellung]') . " " . $this->db->f("orddate") . "','shop','" . SHOP_TABLE . "','" . (($this->db->f("DateShipping") > 0) ? 0 : 1) . "','" . $style . "'));\n";
 			if($this->db->f('DateShipping') <= 0){
 				if(isset(${'l' . $this->db->f('mdate')})){
-					${'l' . $this->db->f('mdate')}++;
+					${'l' . $this->db->f('mdate')} ++;
 				} else {
 					${'l' . $this->db->f('mdate')} = 1;
 				}
@@ -344,13 +344,13 @@ class we_shop_frames extends weModuleFrames{
 
 			//FIXME: remove eval
 			if(isset(${'v' . $this->db->f('mdate')})){
-				${'v' . $this->db->f('mdate')}++;
+				${'v' . $this->db->f('mdate')} ++;
 			} else {
 				${'v' . $this->db->f('mdate')} = 1;
 			}
 		}
 
-		$year = ($_REQUEST['year']) ? : date('Y');
+		$year = ($_REQUEST['year'] ? $_REQUEST['year'] : date('Y'));
 //unset($_SESSION['year']);
 		for($f = 12; $f > 0; $f--){
 			$r = (isset(${'v' . $f . $year}) ? ${'v' . $f . $year} : '');
@@ -367,7 +367,7 @@ class we_shop_frames extends weModuleFrames{
 				drawEintraege();
 			}
 			self.focus();
-			//-->
+		//-->
 		</script>
 		<?php
 	}

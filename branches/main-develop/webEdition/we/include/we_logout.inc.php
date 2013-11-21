@@ -31,7 +31,7 @@ $DB_WE->query('DELETE FROM ' . LOCK_TABLE . ' WHERE UserID=' . intval($_SESSION[
 //TODO: update to time if still locked files open
 $DB_WE->query('UPDATE ' . USER_TABLE . ' SET Ping=0 WHERE ID=' . intval($_SESSION['user']['ID']));
 
-cleanTempFiles(true);
+we_base_file::cleanTempFiles(true);
 
 //	getJSCommand
 $_path = (isset($_SESSION['weS']['SEEM']['startId'])? // logout from webEdition opened with tag:linkToSuperEasyEditMode

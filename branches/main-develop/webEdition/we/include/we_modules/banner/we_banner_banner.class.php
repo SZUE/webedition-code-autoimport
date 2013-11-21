@@ -355,7 +355,7 @@ class we_banner_banner extends we_banner_base{
 	}
 
 	public static function customerOwnsBanner($customerID, $bannerID, $db = ''){
-		$db = ($db ? : new DB_WE());
+		$db = ($db ? $db : new DB_WE());
 		$res = getHash('SELECT Customers,ParentID FROM ' . BANNER_TABLE . ' WHERE ID=' . intval($bannerID), $db);
 		if(strstr($res["Customers"], "," . $customerID . ",") != false){
 			return true;

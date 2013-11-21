@@ -156,7 +156,7 @@ class weTableItem extends weModelBase{
 		foreach($this as $key => &$val){
 			if($this->doConvertCharset($key)){
 				$mydata = $val;
-				if(isSerialized($mydata)){ //mainly for tblcontent, where serialized data is mixed with others, but stored in backup as binary
+				if(weXMLImport::isSerialized($mydata)){ //mainly for tblcontent, where serialized data is mixed with others, but stored in backup as binary
 					$mydataUS = unserialize($mydata);
 					if(is_array($mydataUS)){
 						foreach($mydataUS as &$ad){

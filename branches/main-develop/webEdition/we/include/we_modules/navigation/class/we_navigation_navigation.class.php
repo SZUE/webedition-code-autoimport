@@ -485,7 +485,7 @@ class we_navigation_navigation extends weModelBase{
 			$_navigation->LinkID = $_item['id'];
 			$_navigation->Ordn = isset($_items[$_k]) ? $_items[$_k]['ordn'] : $_k;
 			$_navigation->Depended = 1;
-			$_navigation->Text = $_item['field'] ? : $_item['text'];
+			$_navigation->Text = $_item['field'] ? $_item['field'] : $_item['text'];
 			$_navigation->IconID = $this->IconID;
 
 			$_navigation->Url = $this->Url;
@@ -581,9 +581,9 @@ class we_navigation_navigation extends weModelBase{
 						$_items[] = array(
 							'id' => $_nav->ID . '_' . $_dyn['id'],
 							//'text'=>str_replace('&amp;','&',!empty($_dyn['field']) ? $_dyn['field'] : $_dyn['text']),
-							'name' => $_dyn['field'] ? : $_dyn['text'],
-							'text' => $_dyn['field'] ? : $_dyn['text'],
-							'display' => $_dyn['display'] ? : '',
+							'name' => $_dyn['field'] ? $_dyn['field'] : $_dyn['text'],
+							'text' => $_dyn['field'] ? $_dyn['field'] : $_dyn['text'],
+							'display' => $_dyn['display'] ? $_dyn['display'] : '',
 							'docid' => $_dyn['id'],
 							'table' => (($_nav->SelectionType == self::STPYE_CLASS || $_nav->SelectionType == self::STPYE_OBJLINK) ? OBJECT_FILES_TABLE : FILE_TABLE),
 							'href' => $_href,
@@ -601,7 +601,7 @@ class we_navigation_navigation extends weModelBase{
 
 						if($rules){
 							$_items[(count($_items) - 1)]['currentRule'] = we_navigation_rule::getWeNavigationRule(
-									'defined_' . ($_dyn['field'] ? : $_dyn['text']), $_nav->ID, $_nav->SelectionType, $_nav->FolderID, $_nav->DocTypeID, $_nav->ClassID, $_nav->CategoryIDs, $_nav->WorkspaceID, $_href, false);
+									'defined_' . ($_dyn['field'] ? $_dyn['field'] : $_dyn['text']), $_nav->ID, $_nav->SelectionType, $_nav->FolderID, $_nav->DocTypeID, $_nav->ClassID, $_nav->CategoryIDs, $_nav->WorkspaceID, $_href, false);
 						}
 					}
 				}

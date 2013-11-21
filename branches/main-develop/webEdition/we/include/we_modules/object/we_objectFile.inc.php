@@ -241,7 +241,7 @@ class we_objectFile extends we_document{
 	}
 
 	private static function getObjectRootPathOfObjectWorkspace($classDir, $classId, $db = ''){
-		$db = ($db ? : new DB_WE());
+		$db = ($db ? $db : new DB_WE());
 		$classDir = rtrim($classDir, '/');
 		$rootId = $classId;
 		$cnt = 1;
@@ -706,7 +706,7 @@ class we_objectFile extends we_document{
 		if(!$tableID){
 			return array();
 		}
-		$db = ($db ? : new DB_WE());
+		$db = ($db ? $db : new DB_WE());
 
 		$tableInfo = $db->metadata(OBJECT_X_TABLE . $tableID);
 		$tableInfo2 = array();
@@ -1655,7 +1655,7 @@ class we_objectFile extends we_document{
 
 		$values = getHashArrayFromCSV($this->getPossibleWorkspaces($ws), '', $this->DB_WE);
 		foreach($values as $id => $val){
-			if(!weFileExists($id))
+			if(!we_base_file::isWeFile($id))
 				unset($values[$id]);
 		}
 //    remove not existing workspaces and templates
@@ -1666,7 +1666,7 @@ class we_objectFile extends we_document{
 		$newTmpls = array();
 //$newDefaultArr = array();
 		foreach($arr as $nr => $id){
-			if(weFileExists($id)){
+			if(we_base_file::isWeFile($id)){
 				$newArr[] = $id;
 				$newTmpls[] = (isset($tmpls[$nr]) ? $tmpls[$nr] : '');
 			}
@@ -1678,7 +1678,7 @@ class we_objectFile extends we_document{
 		$arr = makeArrayFromCSV($this->ExtraWorkspaces);
 		$newArr = array();
 		foreach($arr as $nr => $id){
-			if(weFileExists($id))
+			if(we_base_file::isWeFile($id))
 				$newArr[] = $id;
 		}
 		$this->ExtraWorkspaces = makeCSVFromArray($newArr, true);
@@ -1785,13 +1785,13 @@ class we_objectFile extends we_document{
 // values bekommen aller workspaces, welche hinzugef�gt werden d�rfen.
 		$values = getHashArrayFromCSV($this->getPossibleWorkspaces($ws, true), '', $this->DB_WE);
 		foreach($values as $id => $val){
-			if(!weFileExists($id))
+			if(!we_base_file::isWeFile($id))
 				unset($values[$id]);
 		}
 
 		$arr = makeArrayFromCSV($this->ExtraWorkspaces);
 		foreach($arr as $id){
-			if(isset($values[$id]) || (!weFileExists($id)))
+			if(isset($values[$id]) || (!we_base_file::isWeFile($id)))
 				unset($values[$id]);
 		}
 

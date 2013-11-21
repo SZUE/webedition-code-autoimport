@@ -188,8 +188,7 @@ class we_voting_frames extends weModuleFrames{
 		$js = we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js?' . time()) .
 			we_html_element::jsScript(JS_DIR . 'utils/multi_editMulti.js?' . time());
 
-		$variant_js =
-			' function callAnswerLimit() {
+		$variant_js = ' function callAnswerLimit() {
 				' . we_message_reporting::getShowMessageCall(g_l('modules_voting', '[answer_limit]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 			}
 
@@ -816,7 +815,7 @@ class we_voting_frames extends weModuleFrames{
 		$yuiSuggest->setInput('ParentPath', $path, 'onchange=top.content.setHot();');
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(true);
-		$yuiSuggest->setResult('ParentID', ($this->View->voting->ParentID ? : 0));
+		$yuiSuggest->setResult('ParentID', ($this->View->voting->ParentID ? $this->View->voting->ParentID : 0));
 		$yuiSuggest->setSelector("Dirselector");
 		$yuiSuggest->setTable(VOTING_TABLE);
 		$yuiSuggest->setWidth($width);
@@ -1382,4 +1381,3 @@ class we_voting_frames extends weModuleFrames{
 	}
 
 }
-

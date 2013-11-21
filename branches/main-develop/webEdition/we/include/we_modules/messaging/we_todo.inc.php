@@ -109,13 +109,13 @@ class we_todo extends we_messaging_proto{
 	/* Methods dealing with USER_TABLE and other userstuff */
 
 	function userid_to_username($id, $db = ''){
-		$db = $db ? : new DB_WE();
+		$db = $db ? $db : new DB_WE();
 		$user = f('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($id), 'username', $db);
 		return $user ? $user : g_l('modules_messaging', '[userid_not_found]');
 	}
 
 	function username_to_userid($username, $db = ''){
-		$db = $db ? : new DB_WE();
+		$db = $db ? $db : new DB_WE();
 		$id = f('SELECT ID FROM ' . USER_TABLE . ' WHERE username="' . $db->escape($username) . '"', 'ID', $db);
 		return $id ? $id : -1;
 	}

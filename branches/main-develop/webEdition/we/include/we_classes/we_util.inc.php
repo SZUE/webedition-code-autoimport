@@ -121,7 +121,7 @@ abstract class we_util{
 		$outArray = array(
 			$folderID
 		);
-		$db = ($db ? : new DB_WE());
+		$db = ($db ? $db : new DB_WE());
 		$db->query('SELECT ID FROM ' . $table . ' WHERE ParentID=' . intval($folderID) . ' AND IsFolder=1');
 		$new = array();
 		while($db->next_record()){
@@ -162,6 +162,5 @@ abstract class we_util{
 //	2. Deal with remaining result
 		return ($_result > 0 ? self::number2System($_result, $chars, $str) : $str);
 	}
-
 
 }

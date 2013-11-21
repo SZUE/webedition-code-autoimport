@@ -161,7 +161,7 @@ if(is_dir(WEBEDITION_PATH . 'we/cache')){
 	we_util_File::deleteLocalFolder(WEBEDITION_PATH . 'we/cache', true);
 }
 
-cleanTempFiles(true);
+we_base_file::cleanTempFiles(true);
 cleanWEZendCache();
 we_navigation_cache::clean();
 we_updater::fixInconsistentTables();

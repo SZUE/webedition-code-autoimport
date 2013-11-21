@@ -2052,7 +2052,7 @@ self.close();');
 							$path = "";
 						}
 						if($block->LinkID && $path)
-							$content .= ($block->LinkID > 0) && weFileExists($block->LinkID) ? we_getDocumentByID($block->LinkID, $path) : 'No such File';
+							$content .= ($block->LinkID > 0) && we_base_file::isWeFile($block->LinkID) ? we_getDocumentByID($block->LinkID, $path) : 'No such File';
 						break;
 					case we_newsletter_block::DOCUMENT_FIELD:
 						if($block->LinkID){

@@ -80,7 +80,7 @@ function makeAlertDelFolderNotEmpty($folders){
 function deleteFolder($id, $table, $path = '', $delR = true, $DB_WE = ''){
 	$isTemplateFolder = ($table == TEMPLATES_TABLE);
 
-	$DB_WE = ($DB_WE ? : new DB_WE());
+	$DB_WE = ($DB_WE ? $DB_WE : new DB_WE());
 	$path = $path ? $path : f('SELECT Path FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), 'Path', $DB_WE);
 
 	if($delR){ // recursive delete
@@ -133,7 +133,7 @@ function deleteFolder($id, $table, $path = '', $delR = true, $DB_WE = ''){
 }
 
 function deleteFile($id, $table, $path = '', $contentType = '', $DB_WE = ''){
-	$DB_WE = $DB_WE ? : new DB_WE();
+	$DB_WE = $DB_WE ? $DB_WE : new DB_WE();
 
 	$isTemplateFile = ($table == TEMPLATES_TABLE);
 
@@ -230,7 +230,7 @@ function deleteThumbsByThumbID($id){
 
 function deleteEntry($id, $table, $delR = true, $skipHook = 0, $DB_WE = ''){
 
-	$DB_WE = ($DB_WE ? : new DB_WE());
+	$DB_WE = ($DB_WE ? $DB_WE : new DB_WE());
 	if(defined('WORKFLOW_TABLE') && ($table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE))){
 		if(we_workflow_utility::inWorkflow($id, $table)){
 			we_workflow_utility::removeDocFromWorkflow($id, $table, $_SESSION['user']['ID'], g_l('modules_workflow', '[doc_deleted]'));

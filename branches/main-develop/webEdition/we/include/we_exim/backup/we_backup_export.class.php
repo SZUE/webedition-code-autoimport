@@ -30,7 +30,7 @@ abstract class we_backup_export{
 			return false;
 		}
 		static $_db = 0;
-		$_db = $_db ? : new DB_WE();
+		$_db = $_db ? $_db : new DB_WE();
 
 		if($offset == 0){
 
@@ -85,7 +85,7 @@ abstract class we_backup_export{
 			'table' => $_def_table
 		);
 
-		while($_db->next_record()) {
+		while($_db->next_record()){
 			$_keyvalue = array();
 			foreach($_keys as $_key){
 				$_keyvalue[$_key] = $_db->f($_key);

@@ -43,16 +43,13 @@ function we_getModuleNameByContentType($ctype){
   return f('SELECT GROUP_CONCAT(ID) AS IDs FROM ' . OBJECT_FILES_TABLE . ' WHERE Published > 0 AND Workspaces != ""', 'IDs', $db);
   } */
 
-function correctUml($in){
-	return str_replace(array('ä', 'ö', 'ü', 'Ä', 'Ö', 'Ü', 'ß'), array('ae', 'oe', 'ue', 'Ae', 'Oe', 'Ue', 'ss'), $in);
+function weFileExists($id, $table = FILE_TABLE, we_database_base $db = NULL){
+	t_e('deprecated', __FUNCTION__);
+	return we_base_file::isWeFile($id, $table, $db);
 }
 
-function weFileExists($id, $table = FILE_TABLE, $db = ''){
-	$id = intval($id);
-	if($id == 0){
-		return true;
-	}
-	return (f('SELECT 1 AS a FROM ' . $table . ' WHERE ID=' . $id, 'a', ($db ? : new DB_WE())) === '1');
+function correctUml($in){
+	return str_replace(array('ä', 'ö', 'ü', 'Ä', 'Ö', 'Ü', 'ß'), array('ae', 'oe', 'ue', 'Ae', 'Oe', 'Ue', 'ss'), $in);
 }
 
 function makePIDTail($pid, $cid, $db = '', $table = FILE_TABLE){
@@ -60,7 +57,7 @@ function makePIDTail($pid, $cid, $db = '', $table = FILE_TABLE){
 		return '1';
 	}
 
-	$db = $db ? : new DB_WE();
+	$db = $db ? $db : new DB_WE();
 	$parentIDs = array();
 	$pid = intval($pid);
 	$parentIDs[] = $pid;
@@ -94,7 +91,7 @@ function we_getCatsFromIDs($catIDs, $tokken = ',', $showpath = false, $db = '', 
 	if(!$catIDs){
 		return $asArray ? array() : '';
 	}
-	$db = ($db ? : new DB_WE());
+	$db = ($db ? $db : new DB_WE());
 //$foo = makeArrayFromCSV($catIDs);
 	$cats = array();
 	$field = $catfield ? $catfield : ($showpath ? 'Path' : 'Category');
@@ -284,7 +281,7 @@ function getHTTP($server, $url, $port = '', $username = '', $password = ''){
  * @return bool true on success, or if not in DB
  */
 function deleteContentFromDB($id, $table, $DB_WE = ''){
-	$DB_WE = $DB_WE ? : new DB_WE();
+	$DB_WE = $DB_WE ? $DB_WE : new DB_WE();
 
 	if(f('SELECT 1 AS cnt FROM ' . LINK_TABLE . ' WHERE DID=' . intval($id) . ' AND DocumentTable="' . $DB_WE->escape(stripTblPrefix($table)) . '" LIMIT 1', 'cnt', $DB_WE) != 1){
 		return true;
@@ -308,81 +305,8 @@ function addTblPrefix($table){
 	return TBL_PREFIX . $table;
 }
 
-function cleanTempFiles($cleanSessFiles = false){
-	$db2 = new DB_WE();
-	$GLOBALS['DB_WE']->query('SELECT Date,Path FROM ' . CLEAN_UP_TABLE . ' WHERE Date <= ' . (time() - 300));
-	while($GLOBALS['DB_WE']->next_record()){
-		$p = $GLOBALS['DB_WE']->f('Path');
-		if(file_exists($p)){
-			we_util_File::deleteLocalFile($GLOBALS['DB_WE']->f('Path'));
-		}
-		$db2->query('DELETE FROM ' . CLEAN_UP_TABLE . ' WHERE DATE=' . intval($GLOBALS['DB_WE']->f('Date')) . ' AND Path="' . $GLOBALS['DB_WE']->f('Path') . '"');
-	}
-	if($cleanSessFiles){
-		$seesID = session_id();
-		$GLOBALS['DB_WE']->query('SELECT Date,Path FROM ' . CLEAN_UP_TABLE . " WHERE Path LIKE '%" . $GLOBALS['DB_WE']->escape($seesID) . "%'");
-		while($GLOBALS['DB_WE']->next_record()){
-			$p = $GLOBALS['DB_WE']->f('Path');
-			if(file_exists($p)){
-				we_util_File::deleteLocalFile($GLOBALS['DB_WE']->f('Path'));
-			}
-			$db2->query('DELETE FROM ' . CLEAN_UP_TABLE . " WHERE Path LIKE '%" . $GLOBALS['DB_WE']->escape($seesID) . "%'");
-		}
-	}
-	$d = dir(TEMP_PATH);
-	while(false !== ($entry = $d->read())){
-		if($entry != '.' && $entry != '..'){
-			$foo = TEMP_PATH . '/' . $entry;
-			if(filemtime($foo) <= (time() - 300)){
-				if(is_dir($foo)){
-					we_util_File::deleteLocalFolder($foo, 1);
-				} elseif(file_exists($foo)){
-					we_util_File::deleteLocalFile($foo);
-				}
-			}
-		}
-	}
-	$d->close();
-	$dstr = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/';
-	if(we_util_File::checkAndMakeFolder($dstr)){
-		$d = dir($dstr);
-		while(false !== ($entry = $d->read())){
-			if($entry != '.' && $entry != '..'){
-				$foo = $dstr . $entry;
-				if(filemtime($foo) <= (time() - 300)){
-					if(is_dir($foo)){
-						we_util_File::deleteLocalFolder($foo, 1);
-					} elseif(file_exists($foo) && is_writable($foo)){
-						we_util_File::deleteLocalFile($foo);
-					}
-				}
-			}
-		}
-		$d->close();
-	}
-
-// when a fragment task was stopped by the user, the tmp file will not be deleted! So we have to clean up
-	$d = dir(rtrim(WE_FRAGMENT_PATH, '/'));
-	while(false !== ($entry = $d->read())){
-		if($entry != '.' && $entry != '..'){
-			$foo = WE_FRAGMENT_PATH . $entry;
-			if(filemtime($foo) <= (time() - 3600 * 24)){
-				if(is_dir($foo)){
-					we_util_File::deleteLocalFolder($foo, true);
-				} elseif(file_exists($foo)){
-					we_util_File::deleteLocalFile($foo);
-				}
-			}
-		}
-	}
-	$d->close();
-}
-
 function ObjectUsedByObjectFile($id){
-	if(!$id){
-		return false;
-	}
-	return f('SELECT 1 AS cnt FROM ' . OBJECT_FILES_TABLE . ' WHERE TableID=' . intval($id) . ' LIMIT 0,1', 'cnt', $GLOBALS['DB_WE']) == 1;
+	return ($id ? f('SELECT 1 AS cnt FROM ' . OBJECT_FILES_TABLE . ' WHERE TableID=' . intval($id) . ' LIMIT 0,1', 'cnt', $GLOBALS['DB_WE']) == 1 : false);
 }
 
 //FIXME: remove this & decide where to use old version of htmlspecialchars
@@ -454,11 +378,12 @@ function we_make_attribs($attribs, $doNotUse = ''){
 }
 
 function we_hasPerm($perm){
+	t_e('deprecated', 'call of ' . __FUNCTION__);
 	return permissionhandler::hasPerm($perm);
 }
 
 function we_getParentIDs($table, $id, &$ids, $db = ''){
-	$db = $db ? : new DB_WE();
+	$db = $db ? $db : new DB_WE();
 	while(($pid = f('SELECT ParentID FROM ' . $table . ' WHERE ID=' . intval($id), 'ParentID', $db)) > 0){
 		$id = $pid; // #5836
 		$ids[] = $id;
@@ -507,7 +432,7 @@ function in_parentID($id, $pid, $table = FILE_TABLE, $db = ''){
 	if(intval($pid) == 0 || $id == $pid || ($id == '' && $id != '0')){
 		return true;
 	}
-	$db = $db ? : new DB_WE();
+	$db = $db ? $db : new DB_WE();
 
 	$found = array();
 	$p = intval($id);
@@ -527,7 +452,7 @@ function in_workspace($IDs, $wsIDs, $table = FILE_TABLE, $db = '', $objcheck = f
 	if(empty($wsIDs) || empty($IDs)){
 		return true;
 	}
-	$db = ($db ? : new DB_WE());
+	$db = ($db ? $db : new DB_WE());
 
 	if(!is_array($IDs)){
 		$IDs = makeArrayFromCSV($IDs);
@@ -556,7 +481,7 @@ function path_to_id($path, $table = FILE_TABLE, $db = ''){
 	if($path == '/'){
 		return 0;
 	}
-	$db = ($db ? : new DB_WE());
+	$db = ($db ? $db : new DB_WE());
 	return intval(f('SELECT DISTINCT ID FROM ' . $db->escape($table) . ' WHERE Path="' . $db->escape($path) . '" LIMIT 1', 'ID', $db));
 }
 
@@ -588,7 +513,7 @@ function id_to_path($IDs, $table = FILE_TABLE, $db = '', $prePostKomma = false, 
 		return '/';
 	}
 
-	$db = $db ? : new DB_WE();
+	$db = $db ? $db : new DB_WE();
 
 	if(!is_array($IDs)){
 		$IDs = makeArrayFromCSV($IDs);
@@ -619,7 +544,7 @@ function getHashArrayFromCSV($csv, $firstEntry, $db = ''){
 	if(!$csv){
 		return array();
 	}
-	$db = $db ? : new DB_WE();
+	$db = $db ? $db : new DB_WE();
 	$IDArr = makeArrayFromCSV($csv);
 	$out = $firstEntry ? array(
 		'0' => $firstEntry
@@ -633,7 +558,7 @@ function getHashArrayFromCSV($csv, $firstEntry, $db = ''){
 }
 
 function getPathsFromTable($table = FILE_TABLE, $db = '', $type = FILE_ONLY, $wsIDs = '', $order = 'Path', $limitCSV = '', $first = ''){
-	$db = ($db ? : new DB_WE());
+	$db = ($db ? $db : new DB_WE());
 	$limitCSV = trim($limitCSV, ',');
 	$query = array();
 	if($wsIDs){
@@ -710,7 +635,7 @@ function get_ws($table = FILE_TABLE, $prePostKomma = false){
 }
 
 function we_readParents($id, &$parentlist, $tab, $match = 'ContentType', $matchvalue = 'folder', $db = ''){
-	$db = $db ? : new DB_WE();
+	$db = $db ? $db : new DB_WE();
 	$pid = f('SELECT ParentID FROM ' . $db->escape($tab) . ' WHERE ID=' . intval($id), 'ParentID', $db);
 	if($pid !== ''){
 		if($pid == 0){
@@ -726,7 +651,7 @@ function we_readParents($id, &$parentlist, $tab, $match = 'ContentType', $matchv
 }
 
 function we_readChilds($pid, &$childlist, $tab, $folderOnly = true, $where = '', $match = 'ContentType', $matchvalue = 'folder', $db = ''){
-	$db = $db ? : new DB_WE();
+	$db = $db ? $db : new DB_WE();
 	$db->query('SELECT ID,' . $db->escape($match) . ' FROM ' . $db->escape($tab) . ' WHERE ' . ($folderOnly ? ' IsFolder=1 AND ' : '') . 'ParentID=' . intval($pid) . ' ' . $where);
 	$todo = array();
 	while($db->next_record()){
@@ -1028,7 +953,7 @@ function getUploadMaxFilesize($mysql = false, $db = ''){
 }
 
 function getMaxAllowedPacket($db = ''){
-	return f('SHOW VARIABLES LIKE "max_allowed_packet"', 'Value', ($db ? : new DB_WE()));
+	return f('SHOW VARIABLES LIKE "max_allowed_packet"', 'Value', ($db ? $db : new DB_WE()));
 }
 
 function we_convertIniSizes($in){
@@ -1042,10 +967,10 @@ function we_convertIniSizes($in){
 	return intval($in);
 }
 
-function we_getDocumentByID($id, $includepath = '', $we_getDocumentByIDdb = '', &$charset = ''){
-	$we_getDocumentByIDdb = $we_getDocumentByIDdb ? : new DB_WE();
+function we_getDocumentByID($id, $includepath = '', $db = '', &$charset = ''){
+	$db = $db ? $db : new DB_WE();
 // look what document it is and get the className
-	$clNm = f('SELECT ClassName FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'ClassName', $we_getDocumentByIDdb);
+	$clNm = f('SELECT ClassName FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'ClassName', $db);
 
 // init Document
 	if(isset($GLOBALS['we_doc'])){
@@ -1302,37 +1227,6 @@ function removeAttribs($attribs, $remove = array()){
 }
 
 /**
- * @return array
- * @param array $atts
- * @param array $ignore
- * @desc Removes all empty values from assoc array without the in $ignore given
- */
-function removeEmptyAttribs($atts, $ignore = array()){
-	foreach($atts as $k => $v){
-		if($v == '' && !in_array($k, $ignore)){
-			unset($atts[$k]);
-		}
-	}
-	return $atts;
-}
-
-/**
- * @return array
- * @param array $atts
- * @param array $ignore
- * @desc only uses the attribs given in the array use
- */
-function useAttribs($atts, $use = array()){
-	$keys = array_keys($atts);
-	foreach($keys as $k){
-		if(!in_array($k, $use)){
-			unset($atts[$k]);
-		}
-	}
-	return $atts;
-}
-
-/**
  * This function works in very same way as the standard array_splice function
  * except the second parametar is the array index and not just offset
  * The functions modifies the array that has been passed by reference as the first function parametar
@@ -1349,8 +1243,9 @@ function new_array_splice(&$a, $start, $len = 1){
 	$k = array_search($start, $ks);
 	if($k !== false){
 		$ks = array_splice($ks, $k, $len);
-		foreach($ks as $k)
+		foreach($ks as $k){
 			unset($a[$k]);
+		}
 	}
 }
 
@@ -1406,11 +1301,6 @@ function we_isHttps(){
 //check if number is positive
 function pos_number($val){
 	return abs($val) == $val && $val > 0;
-}
-
-//FIXME: move/remove
-function isSerialized($str){
-	return ($str == serialize(false) || @unserialize($str) !== false);
 }
 
 function getVarArray($arr, $string){
@@ -1570,7 +1460,7 @@ function we_templatePreContent(){
 }
 
 function we_templatePostContent(){
-	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'] && (--$GLOBALS['we_templatePreContent']) == 0){
+	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'] && ( --$GLOBALS['we_templatePreContent']) == 0){
 		$yuiSuggest = &weSuggest::getInstance();
 		//FIXME: check this new field to determine if all data has been transmitted
 		print $yuiSuggest->getYuiCode() . '<input type="hidden" name="we_complete_request" value="1"/></form>' .
@@ -1678,4 +1568,3 @@ function update_mem_limit($newLimit){
 		@ini_set('memory_limit', $newLimit . 'M');
 	}
 }
-

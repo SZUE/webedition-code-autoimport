@@ -163,7 +163,7 @@ function we_tag_sendMail($attribs, $content){
 					session_start();
 				}
 				$_SESSION['WE_SendMail'] = true;
-				$codes = ($id > 0) && weFileExists($id, FILE_TABLE, $GLOBALS['DB_WE']) ? we_getDocumentByID($id) : '';
+				$codes = ($id > 0) && we_base_file::isWeFile($id, FILE_TABLE, $GLOBALS['DB_WE']) ? we_getDocumentByID($id) : '';
 				unset($_SESSION['WE_SendMail']);
 				if(!$codes){
 					t_e('Document to send via we:sendMail is empty ID: ' . $id);

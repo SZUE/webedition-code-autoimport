@@ -404,6 +404,37 @@ function attributFehltError($attribs, $attrs, $tag, $canBeEmpty = false){
 	return '';
 }
 
+/**
+ * @return array
+ * @param array $atts
+ * @param array $ignore
+ * @desc Removes all empty values from assoc array without the in $ignore given
+ */
+function removeEmptyAttribs($atts, $ignore = array()){
+	foreach($atts as $k => $v){
+		if($v == '' && !in_array($k, $ignore)){
+			unset($atts[$k]);
+		}
+	}
+	return $atts;
+}
+
+/**
+ * @return array
+ * @param array $atts
+ * @param array $ignore
+ * @desc only uses the attribs given in the array use
+ */
+function useAttribs($atts, $use = array()){
+	$keys = array_keys($atts);
+	foreach($keys as $k){
+		if(!in_array($k, $use)){
+			unset($atts[$k]);
+		}
+	}
+	return $atts;
+}
+
 function we_getInputRadioField($name, $value, $itsValue, $atts){
 	//  This function replaced fnc: we_getRadioField
 	$atts['type'] = 'radio';

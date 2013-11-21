@@ -125,7 +125,7 @@ class we_navigation_items{
 					'id' => $_dyn['id'],
 					'text' => isset($_dyn['field']) && !empty($_dyn['field']) ? $_dyn['field'] : $_dyn['text'],
 					'display' => isset($_dyn['display']) && !empty($_dyn['display']) ? $_dyn['display'] : '',
-					'name' => $_dyn['field'] ? : (isset($_dyn['name']) && !empty($_dyn['name']) ? $_dyn['name'] : $_dyn['text']),
+					'name' => $_dyn['field'] ? $_dyn['field'] : (isset($_dyn['name']) && !empty($_dyn['name']) ? $_dyn['name'] : $_dyn['text']),
 					'docid' => $_dyn['id'],
 					'table' => (($_nav->SelectionType == we_navigation_navigation::STPYE_CLASS || $_nav->SelectionType == we_navigation_navigation::STPYE_OBJLINK) ? OBJECT_FILES_TABLE : FILE_TABLE),
 					'href' => $_href,
@@ -142,7 +142,7 @@ class we_navigation_items{
 
 				if($rules){
 					$_items[(count($_items) - 1)]['currentRule'] = we_navigation_rule::getWeNavigationRule(
-							'defined_' . ($_dyn['field']? : $_dyn['text']), $_nav->ID, $_nav->SelectionType, $_nav->FolderID, $_nav->DocTypeID, $_nav->ClassID, $_nav->CategoryIDs, $_nav->WorkspaceID, $_href, false);
+							'defined_' . ($_dyn['field'] ? $_dyn['field'] : $_dyn['text']), $_nav->ID, $_nav->SelectionType, $_nav->FolderID, $_nav->DocTypeID, $_nav->ClassID, $_nav->CategoryIDs, $_nav->WorkspaceID, $_href, false);
 				}
 			}
 		}

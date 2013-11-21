@@ -50,7 +50,7 @@ if(!isset($SEEM_edit_include) || !$SEEM_edit_include){
 //	check session
 we_html_tools::protect(null, WEBEDITION_DIR . 'index.php');
 
-cleanTempFiles();
+we_base_file::cleanTempFiles();
 /* $sn = SERVER_NAME;
 
   if(strstr($sn, '@')) {
@@ -405,7 +405,7 @@ if(defined('MESSAGING_SYSTEM')){
 	}
 
 	function we_sbmtFrm(target, url, source) {
-		if (typeof(source) === "undefined") {
+		if (typeof (source) === "undefined") {
 			source = top.weEditorFrameController.getVisibleEditorFrame();
 		}
 		return submit_we_form(source, target, url);
@@ -990,7 +990,7 @@ if(!empty($_jsincludes)){
 					_sendToFrame.focus();
 				}
 				// if visible frame equals to editpage content and there is already content loaded
-				if (_isEditpageContent && typeof(_visibleEditorFrame.weIsTextEditor) !== "undefined" && _currentEditorRootFrame.frames[2].location !== "about:blank") {
+				if (_isEditpageContent && typeof (_visibleEditorFrame.weIsTextEditor) !== "undefined" && _currentEditorRootFrame.frames[2].location !== "about:blank") {
 					// tell the backend the right edit page nr and break (don't send the form)
 					//YAHOO.util.Connect.setForm(_sendFromFrame.document.we_form);
 					YAHOO.util.Connect.asyncRequest('POST', "<?php echo WEBEDITION_DIR; ?>rpc/rpc.php", setPageNrCallback, 'protocol=json&cmd=SetPageNr&transaction=' + _we_activeTransaction + "&editPageNr=" + arguments[1]);
@@ -1318,7 +1318,7 @@ if(defined("WE_MESSAGING_MODULE_DIR")){
 				}
 				break;
 			case "eplugin_exit_doc" :
-				if (typeof(top.plugin) !== "undefined" && typeof(top.plugin.document.WePlugin) !== "undefined") {
+				if (typeof (top.plugin) !== "undefined" && typeof (top.plugin.document.WePlugin) !== "undefined") {
 					if (top.plugin.isInEditor(arguments[1])) {
 						return confirm("<?php echo g_l('alert', '[eplugin_exit_doc]'); ?>");
 					}
@@ -1326,7 +1326,7 @@ if(defined("WE_MESSAGING_MODULE_DIR")){
 				return true;
 				break;
 			case "editor_plugin_doc_count":
-				if (typeof(top.plugin.document.WePlugin) !== "undefined") {
+				if (typeof (top.plugin.document.WePlugin) !== "undefined") {
 					return top.plugin.getDocCount();
 				}
 				return 0;
@@ -1436,7 +1436,7 @@ if($_table_to_load){
 pWebEdition_JSFunctions();
 ?>
 	var cockpitFrame;
-	//-->
+//-->
 </script>
 <?php
 we_main_header::pCSS();

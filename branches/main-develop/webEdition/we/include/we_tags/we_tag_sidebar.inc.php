@@ -49,8 +49,8 @@ function we_tag_sidebar($attribs, $content){
 
 		$attribs['href'] = "javascript:top.weSidebar.open('" . $id . "', " . $width . ",'" . $params . "');";
 	} else {
-		$file = ($file ? : $url);
-		if(empty($file)){
+		$file = ($file ? $file : $url);
+		if(!$file){
 			return '';
 		}
 		$attribs['href'] = "javascript:top.weSidebar.load('" . $file . "');top.weSidebar.resize(" . $width . ",'" . $params . "');";

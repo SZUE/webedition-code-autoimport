@@ -297,7 +297,7 @@ class we_customer_customer extends weModelBase{
 	}
 
 	static function customerNameExist($name, $db = ''){
-		$db = $db ? : new DB_WE();
+		$db = $db ? $db : new DB_WE();
 		return (f('SELECT 1 AS a FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $db->escape($name) . '"', 'a', $db) == '1');
 	}
 
@@ -335,7 +335,7 @@ class we_customer_customer extends weModelBase{
 				$useSalt = 0;
 				$pwd = we_users_user::makeSaltedPassword($useSalt, '', $pass, 8);
 				return ($useSalt != we_users_user::SALT_CRYPT ?
-								$pass : $pwd);
+						$pass : $pwd);
 		}
 	}
 

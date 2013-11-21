@@ -93,7 +93,7 @@ class we_shop_view{
 
 		$mod = isset($_REQUEST['mod']) ? $_REQUEST['mod'] : '';
 		$modData = weModuleInfo::getModuleData($mod);
-		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' .$modData['text'] : '';
+		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 
 		$out = '
 var hot = 0;
@@ -328,7 +328,7 @@ function we_cmd() {
 		$numberformat = $feldnamen[2];
 		$classid = (isset($feldnamen[3]) ? $feldnamen[3] : '');
 		$classIds = makeArrayFromCSV($classid);
-		$mwst = ($feldnamen[1] ? : '');
+		$mwst = ($feldnamen[1] ? $feldnamen[1] : '');
 		$notInc = 'tblTemplates';
 
 		$da = '%d.%m.%Y';
@@ -941,23 +941,23 @@ function we_cmd() {
 							break;
 						case "edit_customer":
 							top.document.location = '<?php print WE_MODULES_DIR; ?>show_frameset.php?mod=customer&sid=<?php print $_REQUEST['cid']; ?>';
-							break;
-						case "add_new_article":
-							var wind = new jsWindow(url + "&bid=<?php echo $_REQUEST['bid']; ?>", "add_new_article", -1, -1, 650, 600, true, false, true, false);
-							break;
-					}
-				}
+											break;
+										case "add_new_article":
+											var wind = new jsWindow(url + "&bid=<?php echo $_REQUEST['bid']; ?>", "add_new_article", -1, -1, 650, 600, true, false, true, false);
+											break;
+									}
+								}
 
-				function neuerartikel() {
-					we_cmd("add_new_article");
-				}
+								function neuerartikel() {
+									we_cmd("add_new_article");
+								}
 
-				function deleteorder() {
-					top.content.editor.location = "<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_frameset.php?pnt=edbody&deletethisorder=1&bid=<?php echo $_REQUEST["bid"]; ?>";
-					top.content.deleteEntry(<?php echo $_REQUEST["bid"]; ?>);
-				}
+								function deleteorder() {
+									top.content.editor.location = "<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_frameset.php?pnt=edbody&deletethisorder=1&bid=<?php echo $_REQUEST["bid"]; ?>";
+											top.content.deleteEntry(<?php echo $_REQUEST["bid"]; ?>);
+										}
 
-				hot = 1;
+										hot = 1;
 			<?php
 			if(isset($alertMessage)){
 				print we_message_reporting::getShowMessageCall($alertMessage, $alertType);

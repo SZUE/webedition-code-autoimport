@@ -443,7 +443,7 @@ class weXMLImport extends weXMLExIm{
 		return $object;
 	}
 
-	function isSerialized($str){
+	public static function isSerialized($str){
 		return ($str == serialize(false) || @unserialize($str) !== false);
 	}
 
@@ -454,7 +454,7 @@ class weXMLImport extends weXMLExIm{
 				if($value == $this->options['xml_encoding']){
 					return $this->options['target_encoding'];
 				}
-				if($this->isSerialized($value)){
+				if(self::isSerialized($value)){
 					$usv = unserialize($value);
 					if(is_array($usv)){
 						foreach($usv as &$av){

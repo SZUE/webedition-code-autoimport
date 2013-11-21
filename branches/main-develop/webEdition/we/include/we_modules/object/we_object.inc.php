@@ -738,13 +738,13 @@ class we_object extends we_document{
 			if($identpos == $pos){
 				unset($sort[$ident]);
 			} elseif($identpos > $pos){
-				$sort[$ident]--;
+				$sort[$ident] --;
 			}
 		}
 		$this->elements["Sortgesamt"]["dat"] = count($sort);
 		### end move elements ####
 
-		$this->setElement("we_sort", ($sort ? : array()));
+		$this->setElement("we_sort", ($sort ? $sort : array()));
 	}
 
 	function downMetaAtClass($name, $i){
@@ -850,7 +850,7 @@ class we_object extends we_document{
 
 		$content .= '</td></tr>' .
 			'<tr><td class="weMultiIconBoxHeadlineThin" valign="top">' . g_l('global', "[description]") . '</td><td>' .
-			$this->htmlTextArea("we_" . $this->Name . "_input[" . $name . "editdescription]", 3, 40, $this->getElement($name . "editdescription"), array('onchange'=>'_EditorFrame.setEditorIsHot(true)','style'=>'width: 388px;')) .
+			$this->htmlTextArea("we_" . $this->Name . "_input[" . $name . "editdescription]", 3, 40, $this->getElement($name . "editdescription"), array('onchange' => '_EditorFrame.setEditorIsHot(true)', 'style' => 'width: 388px;')) .
 			'</td></tr>' .
 			//type
 			'<tr><td  width="100" class="weMultiIconBoxHeadlineThin"  valign="top">' . g_l('modules_object', '[type]') . '</td>
@@ -1813,7 +1813,7 @@ class we_object extends we_document{
 
 		//    check if workspace exists - correct templates if neccessary !!
 		for($i = 0; $i < count($arr); $i++){
-			if(weFileExists($arr[$i])){
+			if(we_base_file::isWeFile($arr[$i])){
 				$newArr[] = $arr[$i];
 				if(in_array($arr[$i], $_defaultArr)){
 					$_newDefaultArr[] = $arr[$i];
@@ -2188,7 +2188,7 @@ class we_object extends we_document{
 				}
 			}
 		}
-		return ($doubleNames ? : false);
+		return ($doubleNames ? $doubleNames : false);
 	}
 
 	protected function i_writeDocument(){

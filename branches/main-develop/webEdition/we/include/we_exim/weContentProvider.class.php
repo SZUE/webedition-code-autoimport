@@ -88,7 +88,7 @@ class weContentProvider{
 			default:
 				switch($we_ContentType){
 					case 'folder':
-						$we_Table = $table ? : FILE_TABLE;
+						$we_Table = $table ? $table : FILE_TABLE;
 						break;
 					case 'text/weTmpl':
 						$we_Table = TEMPLATES_TABLE;

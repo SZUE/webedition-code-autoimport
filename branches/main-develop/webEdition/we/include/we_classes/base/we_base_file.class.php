@@ -392,7 +392,7 @@ abstract class we_base_file{
 			return false;
 		}
 
-		$zfile = ($destination ? : $file) . '.' . self::getZExtension($compression);
+		$zfile = ($destination ? $destination : $file) . '.' . self::getZExtension($compression);
 
 		if(self::isCompressed($file)){
 			if($remove){
@@ -539,6 +539,84 @@ abstract class we_base_file{
 				}
 				return $_size;
 		}
+	}
+
+	public static function isWeFile($id, $table = FILE_TABLE, we_database_base $db = NULL){
+		$id = intval($id);
+		if($id == 0){
+			return true;
+		}
+		return (f('SELECT 1 AS a FROM ' . $table . ' WHERE ID=' . $id, 'a', ($db ? $db : new DB_WE())) === '1');
+	}
+
+	public static function cleanTempFiles($cleanSessFiles = false){
+		$db2 = new DB_WE();
+		$GLOBALS['DB_WE']->query('SELECT Date,Path FROM ' . CLEAN_UP_TABLE . ' WHERE Date <= ' . (time() - 300));
+		while($GLOBALS['DB_WE']->next_record()){
+			$p = $GLOBALS['DB_WE']->f('Path');
+			if(file_exists($p)){
+				we_util_File::deleteLocalFile($GLOBALS['DB_WE']->f('Path'));
+			}
+			$db2->query('DELETE FROM ' . CLEAN_UP_TABLE . ' WHERE DATE=' . intval($GLOBALS['DB_WE']->f('Date')) . ' AND Path="' . $GLOBALS['DB_WE']->f('Path') . '"');
+		}
+		if($cleanSessFiles){
+			$seesID = session_id();
+			$GLOBALS['DB_WE']->query('SELECT Date,Path FROM ' . CLEAN_UP_TABLE . " WHERE Path LIKE '%" . $GLOBALS['DB_WE']->escape($seesID) . "%'");
+			while($GLOBALS['DB_WE']->next_record()){
+				$p = $GLOBALS['DB_WE']->f('Path');
+				if(file_exists($p)){
+					we_util_File::deleteLocalFile($GLOBALS['DB_WE']->f('Path'));
+				}
+				$db2->query('DELETE FROM ' . CLEAN_UP_TABLE . " WHERE Path LIKE '%" . $GLOBALS['DB_WE']->escape($seesID) . "%'");
+			}
+		}
+		$d = dir(TEMP_PATH);
+		while(false !== ($entry = $d->read())){
+			if($entry != '.' && $entry != '..'){
+				$foo = TEMP_PATH . '/' . $entry;
+				if(filemtime($foo) <= (time() - 300)){
+					if(is_dir($foo)){
+						we_util_File::deleteLocalFolder($foo, 1);
+					} elseif(file_exists($foo)){
+						we_util_File::deleteLocalFile($foo);
+					}
+				}
+			}
+		}
+		$d->close();
+		$dstr = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/';
+		if(we_util_File::checkAndMakeFolder($dstr)){
+			$d = dir($dstr);
+			while(false !== ($entry = $d->read())){
+				if($entry != '.' && $entry != '..'){
+					$foo = $dstr . $entry;
+					if(filemtime($foo) <= (time() - 300)){
+						if(is_dir($foo)){
+							we_util_File::deleteLocalFolder($foo, 1);
+						} elseif(file_exists($foo) && is_writable($foo)){
+							we_util_File::deleteLocalFile($foo);
+						}
+					}
+				}
+			}
+			$d->close();
+		}
+
+// when a fragment task was stopped by the user, the tmp file will not be deleted! So we have to clean up
+		$d = dir(rtrim(WE_FRAGMENT_PATH, '/'));
+		while(false !== ($entry = $d->read())){
+			if($entry != '.' && $entry != '..'){
+				$foo = WE_FRAGMENT_PATH . $entry;
+				if(filemtime($foo) <= (time() - 3600 * 24)){
+					if(is_dir($foo)){
+						we_util_File::deleteLocalFolder($foo, true);
+					} elseif(file_exists($foo)){
+						we_util_File::deleteLocalFile($foo);
+					}
+				}
+			}
+		}
+		$d->close();
 	}
 
 }

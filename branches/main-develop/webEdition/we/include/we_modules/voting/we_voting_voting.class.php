@@ -28,6 +28,7 @@
  *
  */
 class we_voting_voting extends weModelBase{
+
 //voting status codes
 
 	const SUCCESS = 1;
@@ -171,7 +172,7 @@ class we_voting_voting extends weModelBase{
 			}
 		}
 
-		$this->ParentID = $this->ParentID ? : 0;
+		$this->ParentID = $this->ParentID ? $this->ParentID : 0;
 		if(isset($_SESSION['user']['ID']) && ($this->RestrictOwners && empty($this->Owners) || !in_array($_SESSION['user']['ID'], $this->Owners)))
 			$this->Owners[] = $_SESSION['user']['ID'];
 
@@ -428,12 +429,12 @@ class we_voting_voting extends weModelBase{
 		foreach($answers as &$answer){
 			if(is_numeric($answer) && $answer < $countanswers){
 				if($answer > -1 && $answer < count($this->Scores)){
-					$this->Scores[$answer]++;
+					$this->Scores[$answer] ++;
 				}
 			} else {
 				$answertext = $answer;
 				$answer = $countanswers - 1;
-				$this->Scores[$answer]++;
+				$this->Scores[$answer] ++;
 			}
 			if($this->AllowSuccessors){
 				$mySuccessorID = stripslashes($this->QASetAdditions[$this->defVersion]['successorID'][$answer]);

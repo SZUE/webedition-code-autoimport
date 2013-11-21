@@ -154,7 +154,7 @@ abstract class we_navigation_dynList{
 			$_ids[] = array(
 				'id' => $_fieldset->Record['OF_ID'],
 				'text' => $_fieldset->Record['OF_Text'],
-				'field' => we_navigation_navigation::encodeSpecChars($_fieldset->Record[$field] ? : '')
+				'field' => we_navigation_navigation::encodeSpecChars($_fieldset->Record[$field] ? $_fieldset->Record[$field] : '')
 			);
 		}
 
@@ -216,7 +216,7 @@ abstract class we_navigation_dynList{
 		$_all = makeArrayFromCSV($_obj->getPossibleWorkspaces(false));
 		$_ret = array();
 		foreach($_values as $_k => $_id){
-			if(!weFileExists($_id) || !in_array($_id, $_all)){
+			if(!we_base_file::isWeFile($_id) || !in_array($_id, $_all)){
 				unset($_values[$_k]);
 			} else {
 				$_ret[$_id] = id_to_path($_id);
@@ -233,7 +233,7 @@ abstract class we_navigation_dynList{
 
 		$_ret = array();
 		foreach($_values as $_k => $_id){
-			if(!weFileExists($_id)){
+			if(!we_base_file::isWeFile($_id)){
 				unset($_values[$_k]);
 			} else {
 				$_ret[$_id] = id_to_path($_id);

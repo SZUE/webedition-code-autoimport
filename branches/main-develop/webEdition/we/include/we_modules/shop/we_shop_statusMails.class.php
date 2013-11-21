@@ -245,7 +245,7 @@ class we_shop_statusMails{
 
 		$docID = intval($docID);
 
-		if($docID && weFileExists($docID)){
+		if($docID && we_base_file::isWeFile($docID)){
 			$_SESSION['WE_SendMail'] = true;
 			$_REQUEST['we_orderid'] = $order;
 			$_REQUEST['we_userlanguage'] = $UserLang;

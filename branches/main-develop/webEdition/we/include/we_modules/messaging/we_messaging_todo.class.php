@@ -109,7 +109,7 @@ class we_messaging_todo extends we_messaging_proto{
 	/* Methods dealing with USER_TABLE and other userstuff */
 
 	function username_to_userid($username, $db = ''){
-		$db = $db ? : new DB_WE();
+		$db = $db ? $db : new DB_WE();
 		$id = f('SELECT ID FROM ' . USER_TABLE . ' WHERE username="' . $db->escape($username) . '"', 'ID', $db);
 		return $id ? $id : -1;
 	}
@@ -407,8 +407,8 @@ class we_messaging_todo extends we_messaging_proto{
 					'Properties' => we_messaging_proto::TODO_PROP_NONE,
 					'MessageText' => $data['body'],
 					'seenStatus' => 0,
-					'Priority' => $data['priority'] ? : 'NULL',
-					'Content_Type' => $data['Content_Type'] ? : 'NULL'
+					'Priority' => $data['priority'] ? $data['priority'] : 'NULL',
+					'Content_Type' => $data['Content_Type'] ? $data['Content_Type'] : 'NULL'
 			)));
 
 			$results['id'] = $this->DB_WE->getInsertId();
@@ -471,8 +471,7 @@ class we_messaging_todo extends we_messaging_proto{
 				$seen_ids[] = $this->DB_WE->f('ID');
 			}
 
-			$this->selected_set[] =
-				array('ID' => $i++,
+			$this->selected_set[] = array('ID' => $i++,
 					'hdrs' => array('Deadline' => $this->DB_WE->f('headerDeadline'),
 						'Subject' => $this->DB_WE->f('headerSubject'),
 						'Creator' => $this->DB_WE->f('username'),
