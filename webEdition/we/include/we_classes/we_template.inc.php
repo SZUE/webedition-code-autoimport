@@ -35,6 +35,7 @@ class we_template extends we_document{
 	const TemplateHead = '<?php we_templateHead();?>';
 	const TemplatePreContent = '<?php we_templatePreContent();?>';
 	const TemplatePostContent = '<?php we_templatePostContent();?>';
+	const NO_TEMPLATE_INC = 'we_noTmpl.inc.php';
 
 	/* Constructor */
 
@@ -630,10 +631,10 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 		if(!$this->doUpdateCode){
 			return true;
 		}
-		static $cnt=0;
+		static $cnt = 0;
 		static $recursiveTemplates;
-		if($cnt==0){
-			$recursiveTemplates= array();
+		if($cnt == 0){
+			$recursiveTemplates = array();
 		}
 		if(empty($recursiveTemplates)){
 			$recursiveTemplates[] = $this->ID;
