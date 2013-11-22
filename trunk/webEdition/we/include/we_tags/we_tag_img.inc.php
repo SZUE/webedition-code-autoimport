@@ -80,8 +80,8 @@ function we_tag_img($attribs){
 		isset($GLOBALS['we_doc']->elements[$altField])){ // if no other image is selected.
 		$alt = $GLOBALS['we_doc']->getElement($altField);
 		$title = $GLOBALS['we_doc']->getElement($titleField);
-		$tagAttribs['alt'] = $alt ? $alt : $tagAttribs['alt'];
-		$tagAttribs['title'] = $title ? $title : $tagAttribs['title'];
+		$tagAttribs['alt'] = $alt ? $alt : (isset($tagAttribs['alt']) ? $tagAttribs['alt'] : '');
+		$tagAttribs['title'] = $title ? $title : (isset($tagAttribs['title']) ? $tagAttribs['title'] : '');
 		if($showThumb){
 			$thumb = $GLOBALS['we_doc']->getElement($thumbField);
 			$thumbattr = $thumb;
@@ -90,8 +90,8 @@ function we_tag_img($attribs){
 	} elseif(isset($GLOBALS['we_doc'])){
 		$alt = $GLOBALS['we_doc']->getElement($altField);
 		$title = $GLOBALS['we_doc']->getElement($titleField);
-		$tagAttribs['alt'] = $alt ? $alt : $tagAttribs['alt'];
-		$tagAttribs['title'] = $title ? $title : $tagAttribs['title'];
+		$tagAttribs['alt'] = $alt ? $alt : (isset($tagAttribs['alt']) ? $tagAttribs['alt'] : '');
+		$tagAttribs['title'] = $title ? $title : (isset($tagAttribs['title']) ? $tagAttribs['title'] : '');
 		if($showThumb){
 			$thumbattr = $GLOBALS['we_doc']->getElement($thumbField);
 			$tagAttribs['thumbnail'] = $thumbattr;
