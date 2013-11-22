@@ -112,7 +112,7 @@ function we_tag_img($attribs){
 		$tagAttribs['style'] = 'width:64px;height:64px;border-style:none;';
 		$tagAttribs['alt'] = 'no-img';
 		$out = getHtmlTag('img', $tagAttribs);
-		unset($tagAttribs['alt']);
+		$tagAttribs['alt'] = $tagAttribs['title'] = '';
 	} else {
 		$out = ''; //no_image war noch in der Vorscha sichtbar
 	}
