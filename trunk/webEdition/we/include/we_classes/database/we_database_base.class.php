@@ -542,7 +542,7 @@ abstract class we_database_base{
 	static function arraySetter(array $arr, $imp = ','){
 		$ret = array();
 		foreach($arr as $key => $val){
-			$escape = !(is_int($val) || is_float($val)||is_bool($val));
+			$escape = !(is_int($val) || is_float($val) || is_bool($val));
 			if(is_array($val) && $val['sqlFunction'] == 1){
 				$val = $val['val'];
 				$escape = false;
@@ -550,7 +550,7 @@ abstract class we_database_base{
 				t_e('warning', 'data error: db-field cannot contain objects / arrays', 'Key: ' . $key, $arr);
 			}
 
-			$val=(is_bool($val)?intval($val):$val);
+			$val = (is_bool($val) ? intval($val) : $val);
 
 			//FIXME: remove this code after 6.3.9!!
 			if($escape){
@@ -564,7 +564,7 @@ abstract class we_database_base{
 					case 'CURTIME()':
 					case 'NULL':
 						$escape = false;
-						t_e('deprecated','deprecated db call detected');
+						t_e('deprecated', 'deprecated db call detected');
 				}
 			}
 			$ret[] = '`' . $key . '`=' . ($escape ? '"' . escape_sql_query($val) . '"' : $val);
