@@ -1190,18 +1190,15 @@ class weVersions{
 					$versionName = $document['ID'] . '_' . $document['Table'] . '_' . $vers . $document['Extension'];
 					$binaryPath = VERSION_DIR . $versionName . '.gz';
 
-					if($document["IsDynamic"]){
+					if($document['IsDynamic']){
 						$this->writePreviewDynFile($document['ID'], $siteFile, $_SERVER['DOCUMENT_ROOT'] . $binaryPath, $documentObj);
-					} elseif(file_exists($siteFile) && $document["Extension"] == ".php" && ($document["ContentType"] == 'text/webedition' || $document["ContentType"] == 'text/html')){
-
+					} elseif(file_exists($siteFile) && $document['Extension'] == '.php' && ($document['ContentType'] == 'text/webedition' || $document['ContentType'] == 'text/html')){
 						we_util_File::saveFile($_SERVER['DOCUMENT_ROOT'] . $binaryPath, gzencode(file_get_contents($siteFile), 9));
+					} elseif(isset($document['TemplatePath']) && $document['TemplatePath'] && substr($document['TemplatePath'], -18) != '/' . we_template::NO_TEMPLATE_INC && $document['ContentType'] == 'text/webedition'){
+						$includeTemplate = preg_replace('/.tmpl$/i', '.php', $document['TemplatePath']);
+						$this->writePreviewDynFile($document['ID'], $includeTemplate, $_SERVER['DOCUMENT_ROOT'] . $binaryPath, $documentObj);
 					} else {
-						if(isset($document['TemplatePath']) && $document['TemplatePath'] != "" && substr($document['TemplatePath'], -18) != "/we_noTmpl.inc.php" && $document['ContentType'] == "text/webedition"){
-							$includeTemplate = preg_replace('/.tmpl$/i', '.php', $document['TemplatePath']);
-							$this->writePreviewDynFile($document['ID'], $includeTemplate, $_SERVER['DOCUMENT_ROOT'] . $binaryPath, $documentObj);
-						} else {
-							we_util_File::saveFile($_SERVER['DOCUMENT_ROOT'] . $binaryPath, gzencode(file_get_contents($siteFile), 9));
-						}
+						we_util_File::saveFile($_SERVER['DOCUMENT_ROOT'] . $binaryPath, gzencode(file_get_contents($siteFile), 9));
 					}
 					$usepath = $_SERVER['DOCUMENT_ROOT'] . $binaryPath;
 					if(file_exists($usepath) && is_file($usepath)){
@@ -1211,142 +1208,131 @@ class weVersions{
 				$this->binaryPath = $binaryPath;
 				$entry = $binaryPath;
 				break;
-			case "modifications":
-
+			case 'modifications':
 				$modifications = array();
 
 				/* get fields which can be changed */
 				$fields = $this->getFieldsFromTable(VERSIONS_TABLE);
 
-				foreach($fields as $key => $val){
-					if(isset($this->modFields[$val])){
+				$vals = getHash('SELECT ' . implode(',', $fields) . ' FROM ' . VERSIONS_TABLE . ' WHERE version <' . intval($this->version) . " AND status != 'deleted' AND documentID=" . intval($document["ID"]) . " AND documentTable='" . $db->escape($document["Table"]) . "' ORDER BY version DESC LIMIT 1");
+				foreach($fields as $val){
+					if(isset($this->modFields[$val]) && isset($vals[$val])){
+						$lastEntryField = isset($vals[$val]) ? $vals[$val] : '';
 
-						$query = "SELECT " . $val . " FROM " . VERSIONS_TABLE . " WHERE version <" . intval($this->version) . " AND status != 'deleted' AND documentID=" . intval($document["ID"]) . " AND documentTable='" . $db->escape($document["Table"]) . "' ORDER BY version DESC LIMIT 1";
-						$db->query($query);
-						if($db->next_record()){
-							$lastEntryField = $db->f("" . $val);
+						if($val == "Text" && $document["ContentType"] != "objectFile"){
+							$val = "";
 						}
 
-						if(isset($lastEntryField)){
-
-							if($val == "Text" && $document["ContentType"] != "objectFile"){
-								$val = "";
+						if(isset($document[$val])){
+							switch($val){
+								case 'DocType':
+								case 'IsSearchable':
+								case 'WebUserID':
+								case 'TemplateID':
+									if(!$document[$val]){
+										$document[$val] = 0;
+									}
+									break;
 							}
 
-							if(isset($document[$val])){
-								if($document[$val] == ""){
-									switch($val){
-										case 'DocType':
-										case 'IsSearchable':
-										case 'WebUserID':
-										case 'TemplateID':
-											$document[$val] = 0;
-											break;
-									}
-								}
-								//if($lastEntryField!="" && $document[$val]!="") {
-								if($document[$val] != $lastEntryField){
-									$modifications[] = $val;
-								}
-								//}
-								elseif(($lastEntryField == "" && $document[$val] == "") || ($lastEntryField == $document[$val])){
-									// do nothing
-								} else {
-									$modifications[] = $val;
-								}
+							if($document[$val] != $lastEntryField){
+								$modifications[] = $val;
+							} elseif(($lastEntryField == '' && $document[$val] == '') || ($lastEntryField == $document[$val])){
+								// do nothing
 							} else {
-								if($val == "documentElements" || $val == "documentScheduler" || $val == "documentCustomFilter"){
-									$newData = array();
-									$diff = array();
-									if($lastEntryField == ""){
-										$lastEntryField = array();
-									} else {
-										$lastEntryField = $lastEntryField ?
-											unserialize(
-												(substr_compare($lastEntryField, 'a%3A', 0, 4) == 0 ?
-													html_entity_decode(urldecode($lastEntryField), ENT_QUOTES) :
-													gzuncompress($lastEntryField))
-											) : '';
-									}
-									switch($val){
-										case "documentElements":
-											//TODO: imi: check if we need next-level information from nested arrays
-											if(!empty($document["elements"])){
-												$newData = $document["elements"];
-												foreach($newData as $k => $vl){
-													if(isset($lastEntryField[$k]) && is_array($lastEntryField[$k]) && is_array($vl)){
-														if(isset($vl['dat'])){
-															$vl['dat'] = is_array($vl['dat']) ? serialize($vl['dat']) : $vl['dat'];
-														}
-														if(isset($lastEntryField[$k]['dat'])){
-															$lastEntryField[$k]['dat'] = is_array($lastEntryField[$k]['dat']) ? serialize($lastEntryField[$k]['dat']) : $lastEntryField[$k]['dat'];
-														}
-														$_diff = array_diff_assoc($vl, $lastEntryField[$k]);
-														if(!empty($_diff) && isset($_diff['dat'])){
-															$diff[] = $_diff;
-														}
-													}
-												}
-											}
-											break;
-										case "documentScheduler":
-											//TODO: imi: check if count() is ok (do we allways have two arrays?)
-											if(count($document["schedArr"]) != count($lastEntryField)){
-												$diff['schedArr'] = true;
-											} elseif(!empty($document["schedArr"])){
-												$newData = $document["schedArr"];
-												foreach($newData as $k => $vl){
-													if(isset($lastEntryField[$k]) && is_array($lastEntryField[$k]) && is_array($vl)){
-														$_tmpArr1 = array();
-														$_tmpArr2 = array();
-														foreach($vl as $_k => $_v){
-															$_tmpArr1[$_k] = is_array($_v) ? serialize($_v) : $_v;
-														}
-														foreach($lastEntryField[$k] as $_k => $_v){
-															$_tmpArr2[$_k] = is_array($_v) ? serialize($_v) : $_v;
-														}
-														$_diff = array_diff_assoc($_tmpArr1, $_tmpArr2);
-														if(!empty($_diff)){
-															$diff = $_diff;
-														}
-													}
-												}
-											}
-											break;
-										case "documentCustomFilter":
-											//TODO: imi: check if we need both foreach
-											if(isset($document["documentCustomerFilter"]) && is_array($document["documentCustomerFilter"]) && is_array($lastEntryField)){
-												$_tmpArr1 = array();
-												$_tmpArr2 = array();
-												foreach($document["documentCustomerFilter"] as $_k => $_v){
-													$_tmpArr1[$_k] = is_array($_v) ? serialize($_v) : $_v;
-												}
-												foreach($lastEntryField as $_k => $_v){
-													$_tmpArr2[$_k] = is_array($_v) ? serialize($_v) : $_v;
-												}
-												$_diff = array_diff_assoc($_tmpArr1, $_tmpArr2);
-												if(!empty($_diff)){
-													$diff['documentCustomerFilter'] = $_diff;
-												}
-											}
-
-											break;
-									}
-
-									if(!empty($diff)){
-										$modifications[] = $val;
-									}
+								$modifications[] = $val;
+							}
+						} else {
+							if($val == 'documentElements' || $val == 'documentScheduler' || $val == 'documentCustomFilter'){
+								$newData = array();
+								$diff = array();
+								if(!$lastEntryField){
+									$lastEntryField = array();
+								} else {
+									$lastEntryField = unserialize(
+										(substr_compare($lastEntryField, 'a%3A', 0, 4) == 0 ?
+											html_entity_decode(urldecode($lastEntryField), ENT_QUOTES) :
+											gzuncompress($lastEntryField))
+									);
 								}
-								/* if($document["ContentType"]=="application/x-shockwave-flash" || $document["ContentType"]=="application/*"
-								  || $document["ContentType"]=="video/quicktime" || $document["ContentType"]=="image/*") {
-								  if($val=="binaryPath" && $this->binaryPath!="" && $lastEntryField!=$this->binaryPath) {
-								  //$modifications[] = $val;
-								  }
-								  } */
+								switch($val){
+									case 'documentElements':
+										//TODO: imi: check if we need next-level information from nested arrays
+										if(!empty($document["elements"])){
+											$newData = $document["elements"];
+											foreach($newData as $k => $vl){
+												if(isset($lastEntryField[$k]) && is_array($lastEntryField[$k]) && is_array($vl)){
+													if(isset($vl['dat'])){
+														$vl['dat'] = is_array($vl['dat']) ? serialize($vl['dat']) : $vl['dat'];
+													}
+													if(isset($lastEntryField[$k]['dat'])){
+														$lastEntryField[$k]['dat'] = is_array($lastEntryField[$k]['dat']) ? serialize($lastEntryField[$k]['dat']) : $lastEntryField[$k]['dat'];
+													}
+													$_diff = array_diff_assoc($vl, $lastEntryField[$k]);
+													if(!empty($_diff) && isset($_diff['dat'])){
+														$diff[] = $_diff;
+													}
+												}
+											}
+										}
+										break;
+									case 'documentScheduler':
+										//TODO: imi: check if count() is ok (do we allways have two arrays?)
+										if(count($document["schedArr"]) != count($lastEntryField)){
+											$diff['schedArr'] = true;
+										} elseif(!empty($document["schedArr"])){
+											$newData = $document["schedArr"];
+											foreach($newData as $k => $vl){
+												if(isset($lastEntryField[$k]) && is_array($lastEntryField[$k]) && is_array($vl)){
+													$_tmpArr1 = array();
+													$_tmpArr2 = array();
+													foreach($vl as $_k => $_v){
+														$_tmpArr1[$_k] = is_array($_v) ? serialize($_v) : $_v;
+													}
+													foreach($lastEntryField[$k] as $_k => $_v){
+														$_tmpArr2[$_k] = is_array($_v) ? serialize($_v) : $_v;
+													}
+													$_diff = array_diff_assoc($_tmpArr1, $_tmpArr2);
+													if(!empty($_diff)){
+														$diff = $_diff;
+													}
+												}
+											}
+										}
+										break;
+									case 'documentCustomFilter':
+										//TODO: imi: check if we need both foreach
+										if(isset($document["documentCustomerFilter"]) && is_array($document["documentCustomerFilter"]) && is_array($lastEntryField)){
+											$_tmpArr1 = array();
+											$_tmpArr2 = array();
+											foreach($document["documentCustomerFilter"] as $_k => $_v){
+												$_tmpArr1[$_k] = is_array($_v) ? serialize($_v) : $_v;
+											}
+											foreach($lastEntryField as $_k => $_v){
+												$_tmpArr2[$_k] = is_array($_v) ? serialize($_v) : $_v;
+											}
+											$_diff = array_diff_assoc($_tmpArr1, $_tmpArr2);
+											if(!empty($_diff)){
+												$diff['documentCustomerFilter'] = $_diff;
+											}
+										}
 
-								if($val == "status" && $lastEntryField != $this->status){
+										break;
+								}
+
+								if(!empty($diff)){
 									$modifications[] = $val;
 								}
+							}
+							/* if($document["ContentType"]=="application/x-shockwave-flash" || $document["ContentType"]=="application/*"
+							  || $document["ContentType"]=="video/quicktime" || $document["ContentType"]=="image/*") {
+							  if($val=="binaryPath" && $this->binaryPath!="" && $lastEntryField!=$this->binaryPath) {
+							  //$modifications[] = $val;
+							  }
+							  } */
+
+							if($val == 'status' && $lastEntryField != $this->status){
+								$modifications[] = $val;
 							}
 						}
 					}
@@ -1354,38 +1340,34 @@ class weVersions{
 
 				$modConstants = $this->getConstantsOfMod($modifications);
 
-				if($modConstants != ""){
-					$entry = $modConstants;
-				} else {
-					$entry = "";
-				}
+				$entry = ($modConstants ? $modConstants : '');
 				break;
-			case "modifierID":
-				$modifierID = (isset($_SESSION["user"]["ID"])) ? $_SESSION["user"]["ID"] : '';
+			case 'modifierID':
+				$modifierID = (isset($_SESSION['user']['ID'])) ? $_SESSION['user']['ID'] : '';
 				$entry = $modifierID;
 				break;
-			case "IP":
+			case 'IP':
 				$ip = $_SERVER['REMOTE_ADDR'];
 				$entry = $ip;
 				break;
-			case "Browser":
+			case 'Browser':
 				$browser = $_SERVER['HTTP_USER_AGENT'];
 				$entry = $browser;
 				break;
-			case "active":
+			case 'active':
 				$entry = 1;
 				break;
-			case "fromScheduler":
+			case 'fromScheduler':
 				$entry = $this->IsScheduler();
 				break;
-			case "fromImport":
+			case 'fromImport':
 				$entry = (isset($_SESSION['weS']['versions']['fromImport']) && $_SESSION['weS']['versions']['fromImport']) ? 1 : 0;
 				break;
-			case "resetFromVersion":
-				$entry = (isset($document["resetFromVersion"]) && $document["resetFromVersion"] != "") ? $document["resetFromVersion"] : 0;
+			case 'resetFromVersion':
+				$entry = (isset($document['resetFromVersion']) && $document['resetFromVersion'] != '') ? $document['resetFromVersion'] : 0;
 				break;
 			default:
-				$entry = "";
+				$entry = '';
 		}
 
 		return $entry;
