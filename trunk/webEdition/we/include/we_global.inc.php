@@ -636,7 +636,7 @@ function shortenPath($path, $len){
 		return $path;
 	}
 	$l = ($len / 2) - 2;
-	return substr($path, 0, $l) . '&helip;' . substr($path, $l * -1);
+	return substr($path, 0, $l) . '...' . substr($path, $l * -1);
 }
 
 function shortenPathSpace($path, $len){
