@@ -1190,18 +1190,16 @@ class weVersions{
 					$versionName = $document['ID'] . '_' . $document['Table'] . '_' . $vers . $document['Extension'];
 					$binaryPath = VERSION_DIR . $versionName . '.gz';
 
-					if($document["IsDynamic"]){
+					if($document['IsDynamic']){
 						$this->writePreviewDynFile($document['ID'], $siteFile, $_SERVER['DOCUMENT_ROOT'] . $binaryPath, $documentObj);
-					} elseif(file_exists($siteFile) && $document["Extension"] == ".php" && ($document["ContentType"] == 'text/webedition' || $document["ContentType"] == 'text/html')){
+					} elseif(file_exists($siteFile) && $document['Extension'] == '.php' && ($document['ContentType'] == 'text/webedition' || $document['ContentType'] == 'text/html')){
 
 						we_util_File::saveFile($_SERVER['DOCUMENT_ROOT'] . $binaryPath, gzencode(file_get_contents($siteFile), 9));
-					} else {
-						if(isset($document['TemplatePath']) && $document['TemplatePath'] != "" && substr($document['TemplatePath'], -18) != "/we_noTmpl.inc.php" && $document['ContentType'] == "text/webedition"){
+					} elseif(isset($document['TemplatePath']) && $document['TemplatePath'] && substr($document['TemplatePath'], -18) != '/' . we_template::NO_TEMPLATE_INC && $document['ContentType'] == 'text/webedition'){
 							$includeTemplate = preg_replace('/.tmpl$/i', '.php', $document['TemplatePath']);
 							$this->writePreviewDynFile($document['ID'], $includeTemplate, $_SERVER['DOCUMENT_ROOT'] . $binaryPath, $documentObj);
 						} else {
 							we_util_File::saveFile($_SERVER['DOCUMENT_ROOT'] . $binaryPath, gzencode(file_get_contents($siteFile), 9));
-						}
 					}
 					$usepath = $_SERVER['DOCUMENT_ROOT'] . $binaryPath;
 					if(file_exists($usepath) && is_file($usepath)){
@@ -1211,62 +1209,55 @@ class weVersions{
 				$this->binaryPath = $binaryPath;
 				$entry = $binaryPath;
 				break;
-			case "modifications":
+			case 'modifications':
 
 				$modifications = array();
 
 				/* get fields which can be changed */
 				$fields = $this->getFieldsFromTable(VERSIONS_TABLE);
 
-				foreach($fields as $key => $val){
-					if(isset($this->modFields[$val])){
-
-						$query = "SELECT " . $val . " FROM " . VERSIONS_TABLE . " WHERE version <" . intval($this->version) . " AND status != 'deleted' AND documentID=" . intval($document["ID"]) . " AND documentTable='" . $db->escape($document["Table"]) . "' ORDER BY version DESC LIMIT 1";
-						$db->query($query);
-						if($db->next_record()){
-							$lastEntryField = $db->f("" . $val);
-						}
-
-						if(isset($lastEntryField)){
+				$vals = getHash('SELECT ' . implode(',', $fields) . ' FROM ' . VERSIONS_TABLE . ' WHERE version <' . intval($this->version) . " AND status != 'deleted' AND documentID=" . intval($document["ID"]) . " AND documentTable='" . $db->escape($document["Table"]) . "' ORDER BY version DESC LIMIT 1");
+				foreach($fields as $val){
+					if(isset($this->modFields[$val]) && isset($vals[$val])){
+						$lastEntryField = isset($vals[$val]) ? $vals[$val] : '';
 
 							if($val == "Text" && $document["ContentType"] != "objectFile"){
 								$val = "";
 							}
 
 							if(isset($document[$val])){
-								if($document[$val] == ""){
 									switch($val){
 										case 'DocType':
 										case 'IsSearchable':
 										case 'WebUserID':
 										case 'TemplateID':
+									if(!$document[$val]){
 											$document[$val] = 0;
+									}
 											break;
 									}
-								}
-								//if($lastEntryField!="" && $document[$val]!="") {
 								if($document[$val] != $lastEntryField){
 									$modifications[] = $val;
-								}
-								//}
-								elseif(($lastEntryField == "" && $document[$val] == "") || ($lastEntryField == $document[$val])){
+							} elseif(($lastEntryField == '' && $document[$val] == '') || ($lastEntryField == $document[$val])){
 									// do nothing
 								} else {
 									$modifications[] = $val;
 								}
 							} else {
-								if($val == "documentElements" || $val == "documentScheduler" || $val == "documentCustomFilter"){
+							if($val == 'documentElements' || $val == 'documentScheduler' || $val == 'documentCustomFilter'){
 									$newData = array();
 									$diff = array();
-									if($lastEntryField == ""){
+								if(!$lastEntryField){
 										$lastEntryField = array();
 									} else {
-										$lastEntryField = unserialize((substr_compare($lastEntryField, 'a%3A', 0, 4) == 0 ?
-												html_entity_decode(urldecode($lastEntryField), ENT_QUOTES) : gzuncompress($lastEntryField))
+									$lastEntryField = unserialize(
+										(substr_compare($lastEntryField, 'a%3A', 0, 4) == 0 ?
+											html_entity_decode(urldecode($lastEntryField), ENT_QUOTES) :
+											gzuncompress($lastEntryField))
 										);
 									}
 									switch($val){
-										case "documentElements":
+									case 'documentElements':
 											//TODO: imi: check if we need next-level information from nested arrays
 											if(!empty($document["elements"])){
 												$newData = $document["elements"];
@@ -1286,7 +1277,7 @@ class weVersions{
 												}
 											}
 											break;
-										case "documentScheduler":
+									case 'documentScheduler':
 											//TODO: imi: check if count() is ok (do we allways have two arrays?)
 											if(count($document["schedArr"]) != count($lastEntryField)){
 												$diff['schedArr'] = true;
@@ -1310,7 +1301,7 @@ class weVersions{
 												}
 											}
 											break;
-										case "documentCustomFilter":
+									case 'documentCustomFilter':
 											//TODO: imi: check if we need both foreach
 											if(isset($document["documentCustomerFilter"]) && is_array($document["documentCustomerFilter"]) && is_array($lastEntryField)){
 												$_tmpArr1 = array();
@@ -1341,48 +1332,43 @@ class weVersions{
 								  }
 								  } */
 
-								if($val == "status" && $lastEntryField != $this->status){
+							if($val == 'status' && $lastEntryField != $this->status){
 									$modifications[] = $val;
 								}
 							}
 						}
 					}
-				}
 
 				$modConstants = $this->getConstantsOfMod($modifications);
 
-				if($modConstants != ""){
-					$entry = $modConstants;
-				} else {
-					$entry = "";
-				}
+				$entry = ($modConstants ? $modConstants : '');
 				break;
-			case "modifierID":
-				$modifierID = (isset($_SESSION["user"]["ID"])) ? $_SESSION["user"]["ID"] : '';
+			case 'modifierID':
+				$modifierID = (isset($_SESSION['user']['ID'])) ? $_SESSION['user']['ID'] : '';
 				$entry = $modifierID;
 				break;
-			case "IP":
+			case 'IP':
 				$ip = $_SERVER['REMOTE_ADDR'];
 				$entry = $ip;
 				break;
-			case "Browser":
+			case 'Browser':
 				$browser = $_SERVER['HTTP_USER_AGENT'];
 				$entry = $browser;
 				break;
-			case "active":
+			case 'active':
 				$entry = 1;
 				break;
-			case "fromScheduler":
+			case 'fromScheduler':
 				$entry = $this->IsScheduler();
 				break;
-			case "fromImport":
+			case 'fromImport':
 				$entry = (isset($_SESSION['weS']['versions']['fromImport']) && $_SESSION['weS']['versions']['fromImport']) ? 1 : 0;
 				break;
-			case "resetFromVersion":
-				$entry = (isset($document["resetFromVersion"]) && $document["resetFromVersion"] != "") ? $document["resetFromVersion"] : 0;
+			case 'resetFromVersion':
+				$entry = (isset($document['resetFromVersion']) && $document['resetFromVersion'] != '') ? $document['resetFromVersion'] : 0;
 				break;
 			default:
-				$entry = "";
+				$entry = '';
 		}
 
 		return $entry;

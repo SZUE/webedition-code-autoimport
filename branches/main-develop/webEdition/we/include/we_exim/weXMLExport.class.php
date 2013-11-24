@@ -28,7 +28,7 @@ class weXMLExport extends weXMLExIm{
 	var $prepare = true;
 
 	function __construct(){
-		$this->RefTable = new RefTable();
+		parent::__construct();
 	}
 
 	function setRefTable(&$rTable){
@@ -110,7 +110,7 @@ class weXMLExport extends weXMLExIm{
 				$selTempl = array_unique($this->getIDs($selTempl, TEMPLATES_TABLE, false));
 				$selObjs = defined("OBJECT_FILES_TABLE") ? array_unique($this->getIDs($selObjs, OBJECT_FILES_TABLE, false)) : "";
 				$selClasses = defined("OBJECT_FILES_TABLE") ? array_unique($this->getIDs($selClasses, OBJECT_TABLE, false)) : "";
-			} else{
+			} else {
 				switch($art){
 					case "docs":
 						$selDocs = $this->getIDs($selDocs, FILE_TABLE);
@@ -125,7 +125,7 @@ class weXMLExport extends weXMLExIm{
 			if($dir != 0){
 				$workspace = id_to_path($dir, FILE_TABLE, $this->db);
 				$ws_where = ' AND (' . FILE_TABLE . ".Path LIKE '" . $this->db->escape($workspace) . "/%' OR " . FILE_TABLE . ".Path='" . $this->db->escape($workspace) . "')";
-			} else{
+			} else {
 				$ws_where = '';
 			}
 
@@ -188,7 +188,7 @@ class weXMLExport extends weXMLExIm{
 					$wsQuery .=' OR ';
 				}
 				$wsQuery .= " Path LIKE '" . $db->escape($path) . "/%' OR " . weXMLExIm::getQueryParents($path);
-				while($path != "/" && $path) {
+				while($path != "/" && $path){
 					$parentpaths[] = $path;
 					$path = dirname($path);
 				}
@@ -220,7 +220,7 @@ class weXMLExport extends weXMLExIm{
 					if($with_dirs){
 						$tmp[] = $v;
 					}
-				} else{
+				} else {
 					$tmp[] = $v;
 				}
 			}

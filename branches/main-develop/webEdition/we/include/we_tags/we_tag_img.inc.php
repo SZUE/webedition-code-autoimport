@@ -50,9 +50,6 @@ function we_tag_img($attribs){
 	if(f('SELECT 1 AS a FROM ' . FILE_TABLE . ' WHERE ContentType="image/*" AND ID=' . intval($id), 'a', $GLOBALS['DB_WE']) !== '1'){
 		$id = 0;
 	}
-	// images can now have custom attribs
-	$alt = '';
-	$title = '';
 
 	$altField = $name . we_imageDocument::ALT_FIELD;
 	$titleField = $name . we_imageDocument::TITLE_FIELD;
@@ -67,8 +64,8 @@ function we_tag_img($attribs){
 		$img = new we_imageDocument();
 		$img->initByID($id);
 
-		$alt = weTag_getAttribute('alt', $attribs, $img->getElement('alt'));
-		$title = weTag_getAttribute('title', $attribs, $img->getElement('title'));
+		$tagAttribs['alt'] = weTag_getAttribute('alt', $attribs, $img->getElement('alt'));
+		$tagAttribs['title'] = weTag_getAttribute('title', $attribs, $img->getElement('title'));
 		if($showThumb){
 			$thumb = $img->getElement($thumbname);
 		}
@@ -83,16 +80,18 @@ function we_tag_img($attribs){
 		isset($GLOBALS['we_doc']->elements[$altField])){ // if no other image is selected.
 		$alt = $GLOBALS['we_doc']->getElement($altField);
 		$title = $GLOBALS['we_doc']->getElement($titleField);
+		$tagAttribs['alt'] = $alt ? $alt : (isset($tagAttribs['alt']) ? $tagAttribs['alt'] : '');
+		$tagAttribs['title'] = $title ? $title : (isset($tagAttribs['title']) ? $tagAttribs['title'] : '');
 		if($showThumb){
 			$thumb = $GLOBALS['we_doc']->getElement($thumbField);
 			$thumbattr = $thumb;
 			$tagAttribs['thumbnail'] = $thumbattr;
 		}
 	} elseif(isset($GLOBALS['we_doc'])){
-		$altattr = $GLOBALS['we_doc']->getElement($altField);
-		$titleattr = $GLOBALS['we_doc']->getElement($titleField);
-		$tagAttribs['alt'] = ($altattr ? $altattr : '');
-		$tagAttribs['title'] = ($titleattr ? $titleattr : '');
+		$alt = $GLOBALS['we_doc']->getElement($altField);
+		$title = $GLOBALS['we_doc']->getElement($titleField);
+		$tagAttribs['alt'] = $alt ? $alt : (isset($tagAttribs['alt']) ? $tagAttribs['alt'] : '');
+		$tagAttribs['title'] = $title ? $title : (isset($tagAttribs['title']) ? $tagAttribs['title'] : '');
 		if($showThumb){
 			$thumbattr = $GLOBALS['we_doc']->getElement($thumbField);
 			$tagAttribs['thumbnail'] = $thumbattr;
@@ -113,6 +112,7 @@ function we_tag_img($attribs){
 		$tagAttribs['style'] = 'width:64px;height:64px;border-style:none;';
 		$tagAttribs['alt'] = 'no-img';
 		$out = getHtmlTag('img', $tagAttribs);
+		$tagAttribs['alt'] = $tagAttribs['title'] = '';
 	} else {
 		$out = ''; //no_image war noch in der Vorscha sichtbar
 	}
@@ -139,7 +139,7 @@ function we_tag_img($attribs){
 			<table class="weEditTable padding0 spacing0 border0">
 				<tr>
 					<td class="weEditmodeStyle" style="color: black; font-size: 12px; font-family: ' . g_l('css', '[font_family]') . ';">' . g_l('weClass', "[alt_kurz]") . ':&nbsp;</td>
-					<td class="weEditmodeStyle">' . we_html_tools::htmlTextInput($altname, 16, $alt, '', 'onchange="_EditorFrame.setEditorIsHot(true);"') . '</td>
+					<td class="weEditmodeStyle">' . we_html_tools::htmlTextInput($altname, 16, $tagAttribs['alt'], '', 'onchange="_EditorFrame.setEditorIsHot(true);"') . '</td>
 				</tr>
 				<tr>
 					<td class="weEditmodeStyle"></td>
@@ -147,7 +147,7 @@ function we_tag_img($attribs){
 				</tr>
 				<tr>
 					<td class="weEditmodeStyle" style="color: black; font-size: 12px; font-family: ' . g_l('css', '[font_family]') . ";\">" . g_l('weClass', "[Title]") . ':&nbsp;</td>
-					<td class="weEditmodeStyle">' . we_html_tools::htmlTextInput($titlename, 16, $title, '', 'onchange="_EditorFrame.setEditorIsHot(true);"') . '</td>
+					<td class="weEditmodeStyle">' . we_html_tools::htmlTextInput($titlename, 16, $tagAttribs['title'], '', 'onchange="_EditorFrame.setEditorIsHot(true);"') . '</td>
 				</tr>
 			</table>
 		</td>
@@ -199,4 +199,3 @@ function we_tag_img($attribs){
 	}
 	return $out;
 }
-

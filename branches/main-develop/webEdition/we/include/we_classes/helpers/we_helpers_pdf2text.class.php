@@ -101,6 +101,7 @@ class we_helpers_pdf2text{
 		$data .= fread($file, self::INFO_PORTION);
 		fclose($file);
 		$match = array();
+		$info = '';
 		if(preg_match('#trailer[\r\n ]*<<(.*)>>#s', $data, $match)){
 			preg_match_all('#/(\w+)[ \r\n]{0,2}(\d+ \d+) R[\r\n]*#s', $match[1], $match, PREG_SET_ORDER);
 
@@ -117,7 +118,7 @@ class we_helpers_pdf2text{
 					break;
 				}
 			}
-			$info = $this->data[$info];
+			$info = isset($this->data[$info]) ? $this->data[$info] : '';
 			$this->data = array();
 			if(!is_array($info)){
 				return array();

@@ -33,50 +33,50 @@ class weXMLExIm{
 	//var $recover_mode=0; // 0 -	save all to selected folder; 1 - save with given path
 
 	var $options = array(
-		"handle_paths" => 0,
-		"handle_def_templates" => 0,
-		"handle_doctypes" => 0,
-		"handle_categorys" => 0,
-		"handle_def_classes" => 0,
-		"handle_binarys" => 0,
-		"update_mode" => 0,
-		"handle_document_includes" => 0,
-		"handle_document_linked" => 0,
-		"handle_object_includes" => 0,
-		"handle_object_embeds" => 0,
-		"handle_class_defs" => 0,
-		"export_depth" => 1,
-		"handle_documents" => 0,
-		"handle_templates" => 0,
-		"handle_classes" => 0,
-		"handle_objects" => 0,
-		"handle_content" => 0,
-		"handle_table" => 0,
-		"handle_tableitems" => 0,
-		"handle_binarys" => 0,
-		"handle_doc_paths" => 0,
-		"handle_templ_paths" => 0,
-		"document_path" => "",
-		"template_path" => "",
-		"handle_collision" => "",
-		"restore_doc_path" => 1,
-		"restore_tpl_path" => 1,
-		"handle_owners" => 0,
-		"owners_overwrite" => 0,
-		"owners_overwrite_id" => 0,
-		"handle_navigation" => 0,
-		"navigation_path" => 0,
-		"handle_thumbnails" => 0,
-		"change_encoding" => 0,
-		"xml_encoding" => '',
-		"target_encoding" => '',
-		"rebuild" => 1
+		'handle_paths' => 0,
+		'handle_def_templates' => 0,
+		'handle_doctypes' => 0,
+		'handle_categorys' => 0,
+		'handle_def_classes' => 0,
+		'handle_binarys' => 0,
+		'update_mode' => 0,
+		'handle_document_includes' => 0,
+		'handle_document_linked' => 0,
+		'handle_object_includes' => 0,
+		'handle_object_embeds' => 0,
+		'handle_class_defs' => 0,
+		'export_depth' => 1,
+		'handle_documents' => 0,
+		'handle_templates' => 0,
+		'handle_classes' => 0,
+		'handle_objects' => 0,
+		'handle_content' => 0,
+		'handle_table' => 0,
+		'handle_tableitems' => 0,
+		'handle_binarys' => 0,
+		'handle_doc_paths' => 0,
+		'handle_templ_paths' => 0,
+		'document_path' => '',
+		'template_path' => '',
+		'handle_collision' => '',
+		'restore_doc_path' => 1,
+		'restore_tpl_path' => 1,
+		'handle_owners' => 0,
+		'owners_overwrite' => 0,
+		'owners_overwrite_id' => 0,
+		'handle_navigation' => 0,
+		'navigation_path' => 0,
+		'handle_thumbnails' => 0,
+		'change_encoding' => 0,
+		'xml_encoding' => '',
+		'target_encoding' => '',
+		'rebuild' => 1
 	);
 	var $xmlBrowser;
 
-	function __construct($file = ""){
+	function __construct($file = ''){
 		$this->RefTable = new RefTable();
-		if($file != ""){
+		if($file){
 			$this->loadPerserves($file);
 		}
 
@@ -244,9 +244,8 @@ class weXMLExIm{
 	}
 
 	static function getHeader($encoding = '', $type = ''){
-		if($encoding == ''){
-			$encoding = $GLOBALS['WE_BACKENDCHARSET'];
-		}
+		$encoding= ($encoding?$encoding:$GLOBALS['WE_BACKENDCHARSET']);
+		
 		return '<?xml version="1.0" encoding="' . $encoding . '" standalone="yes"?>' . "\n" .
 			we_backup_backup::weXmlExImHead . ' version="' . WE_VERSION . '" type="' . $type . '" xmlns:we="we-namespace">' . "\n";
 	}

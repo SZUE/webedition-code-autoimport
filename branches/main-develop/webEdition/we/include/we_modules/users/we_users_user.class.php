@@ -738,7 +738,7 @@ _multiEditorreload = true;";
 							$_SESSION['prefs']['seem_start_type'] = 'weapp';
 							break;
 						default:
-							$_SESSION['prefs']['seem_start_file'] = $_REQUEST['seem_start_document'];
+							$_SESSION['prefs']['seem_start_file'] = isset($_REQUEST['seem_start_document']) ? $_REQUEST['seem_start_document'] : 0;
 							$_SESSION['prefs']['seem_start_type'] = 'document';
 							break;
 					}

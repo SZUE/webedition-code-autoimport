@@ -30,7 +30,7 @@ class we_import_updater extends weXMLExIm{
 	var $debug = false;
 
 	function __construct(){
-		$this->RefTable = new RefTable();
+		parent::__construct();
 	}
 
 	function updateObject(&$object){

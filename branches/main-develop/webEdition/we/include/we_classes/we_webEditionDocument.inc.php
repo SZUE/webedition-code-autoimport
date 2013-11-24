@@ -479,7 +479,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	private function setTemplatePath(){
 		$this->TemplatePath = $this->TemplateID ?
 			TEMPLATES_PATH . f('SELECT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($this->TemplateID), 'Path', $this->DB_WE) :
-			WE_INCLUDES_PATH . 'we_templates/we_noTmpl.inc.php';
+			WE_INCLUDES_PATH . 'we_templates/' . we_template::NO_TEMPLATE_INC;
 	}
 
 	function setTemplateID($templID){

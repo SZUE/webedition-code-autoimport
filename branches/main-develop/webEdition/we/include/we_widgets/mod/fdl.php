@@ -43,32 +43,31 @@ if(($maxRows = f('SELECT COUNT(DISTINCT f.Username) AS a ' . $queryFailedLogins,
 
 	$cur = 0;
 //	while($maxRows > $cur){
-		$db->query('SELECT f.Username, count(f.isValid) AS numberFailedLogins,c.ID AS UID' . $queryFailedLogins . ' GROUP BY f.Username LIMIT ' . $cur . ',100');
-		$i = 1;
-		while($db->next_record()){
-			$prio = intval($db->f('numberFailedLogins')) < SECURITY_LIMIT_CUSTOMER_NAME ? 'prio_low.gif' : 'prio_high.gif';
-			$failedLoginsTable->addRow();
-			$failedLoginsTable->setCol($i, 0, array("class" => "middlefont", "align" => "center"), we_html_element::htmlImg(array("src" => IMAGE_DIR . "pd/" . $prio . "", "width" => 13, "height" => 14)));
-			$failedLoginsTable->setCol($i, 1, array("class" => "middlefont", "align" => "left"), $db->f('Username') . we_html_tools::getPixel(10, 1));
-			$failedLoginsTable->setCol($i, 2, array("class" => "middlefont", "align" => "left"), intval($db->f('numberFailedLogins')) . ' / ' . SECURITY_LIMIT_CUSTOMER_NAME . ' ' . sprintf(g_l('cockpit', '[kv_failedLogins][logins]'), SECURITY_LIMIT_CUSTOMER_NAME_HOURS) . we_html_tools::getPixel(10, 1));
+	$db->query('SELECT f.Username, count(f.isValid) AS numberFailedLogins,c.ID AS UID' . $queryFailedLogins . ' GROUP BY f.Username LIMIT ' . $cur . ',100');
+	$i = 1;
+	while($db->next_record()){
+		$webUserID = $db->f('UID');
+		$prio = (intval($db->f('numberFailedLogins')) >= SECURITY_LIMIT_CUSTOMER_NAME) || !$webUserID ? 'prio_high.gif' : 'prio_low.gif';
+		$failedLoginsTable->addRow();
+		$failedLoginsTable->setCol($i, 0, array("class" => "middlefont", "align" => "center"), we_html_element::htmlImg(array("src" => IMAGE_DIR . "pd/" . $prio . "", "width" => 13, "height" => 14)));
+		$failedLoginsTable->setCol($i, 1, array("class" => "middlefont", "align" => "left"), $db->f('Username') . we_html_tools::getPixel(10, 1));
+		$failedLoginsTable->setCol($i, 2, array("class" => "middlefont", "align" => "left"), intval($db->f('numberFailedLogins')) . ' / ' . SECURITY_LIMIT_CUSTOMER_NAME . ' ' . sprintf(g_l('cockpit', '[kv_failedLogins][logins]'), SECURITY_LIMIT_CUSTOMER_NAME_HOURS) . we_html_tools::getPixel(10, 1));
 
-			$webUserID = $db->f('UID');
-			$buttonJSFunction = 'YAHOO.util.Connect.asyncRequest( "GET", "' . WEBEDITION_DIR . 'rpc/rpc.php?cmd=ResetFailedCustomerLogins&cns=customer&custid=' . $webUserID . '", ajaxCallbackResetLogins );';
-
-			$failedLoginsTable->setCol($i, 3, array("class" => "middlefont", "align" => "right"), ((intval($db->f('numberFailedLogins')) >= SECURITY_LIMIT_CUSTOMER_NAME && $webUserID) ? we_html_button::create_button("reset", "javascript:" . $buttonJSFunction) : we_html_tools::getPixel(10, 1)));
-			$i++;
-		}
-		//$cur+=1000;
+		$buttonJSFunction = 'YAHOO.util.Connect.asyncRequest( "GET", "' . WEBEDITION_DIR . 'rpc/rpc.php?cmd=ResetFailedCustomerLogins&cns=customer&custid=' . $webUserID . '", ajaxCallbackResetLogins );';
+		$failedLoginsTable->setCol($i, 3, array("class" => "middlefont", "align" => "right"), ((intval($db->f('numberFailedLogins')) >= SECURITY_LIMIT_CUSTOMER_NAME&& $webUserID) ? we_html_button::create_button("reset", "javascript:" . $buttonJSFunction) : we_html_tools::getPixel(10, 1)));
+		$i++;
+	}
+	//$cur+=1000;
 	//}
 } else {
 	$maxRows = 0;
 	$failedLoginsTable->addRow();
-	$failedLoginsTable->setCol(1, 0, array("class" => "middlefont", "colspan" => "4", "align" => "left", "style" => "color:green;"), we_html_element::htmlB(g_l("cockpit","[kv_failedLogins][noFailedLogins]")));
+	$failedLoginsTable->setCol(1, 0, array("class" => "middlefont", "colspan" => "4", "align" => "left", "style" => "color:green;"), we_html_element::htmlB(g_l("cockpit", "[kv_failedLogins][noFailedLogins]")));
 }
 
-$failedLoginHTML = we_html_element::jsScript(JS_DIR . "libs/yui/yahoo-min.js").
-	we_html_element::jsScript(JS_DIR . "libs/yui/event-min.js").
-	we_html_element::jsScript(JS_DIR . "libs/yui/connection-min.js").
+$failedLoginHTML = we_html_element::jsScript(JS_DIR . "libs/yui/yahoo-min.js") .
+	we_html_element::jsScript(JS_DIR . "libs/yui/event-min.js") .
+	we_html_element::jsScript(JS_DIR . "libs/yui/connection-min.js") .
 	we_html_element::jsElement('var ajaxCallbackResetLogins = {
 													success: function(o) {
 														if(typeof(o.responseText) != undefined && o.responseText != "") {
@@ -87,5 +86,5 @@ $failedLoginHTML = we_html_element::jsScript(JS_DIR . "libs/yui/yahoo-min.js").
 													},
 													failure: function(o) {
 
-													}}').
+													}}') .
 	$failedLoginsTable->getHtml();

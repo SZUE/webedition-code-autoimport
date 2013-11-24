@@ -35,6 +35,7 @@ class we_template extends we_document{
 	const TemplateHead = '<?php we_templateHead();?>';
 	const TemplatePreContent = '<?php we_templatePreContent();?>';
 	const TemplatePostContent = '<?php we_templatePostContent();?>';
+	const NO_TEMPLATE_INC = 'we_noTmpl.inc.php';
 
 	/* Constructor */
 
