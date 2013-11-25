@@ -81,6 +81,7 @@ $sDisplayOpt = $aCols[3];
 $bMfdBy = $sDisplayOpt{0};
 $bDateLastMfd = $sDisplayOpt{1};
 $aUsers = makeArrayFromCSV($aCols[4]);
+$db = $GLOBALS['DB_WE'];
 
 foreach($aUsers as $uid){
 	$_users_where[] = '"' . basename(id_to_path($uid, USER_TABLE)) . '"';
@@ -93,7 +94,7 @@ if(defined("FILE_TABLE") && $bTypeDoc && we_hasPerm('CAN_SEE_DOCUMENTS')){
 	$doctable[] = '"' . stripTblPrefix(FILE_TABLE) . '"';
 	$paths = array();
 	foreach(makeArrayFromCSV(get_ws(FILE_TABLE)) as $id){
-		$paths[] = 'Path LIKE ("' . $db->escape(id_to_path($id, $table)) . '%")';
+		$paths[] = 'Path LIKE ("' . $db->escape(id_to_path($id, FILE_TABLE)) . '%")';
 	}
 	$workspace[FILE_TABLE] = implode(' OR ', $paths);
 }
@@ -101,7 +102,7 @@ if(defined("OBJECT_FILES_TABLE") && $bTypeObj && we_hasPerm('CAN_SEE_OBJECTFILES
 	$doctable[] = '"' . stripTblPrefix(OBJECT_FILES_TABLE) . '"';
 	$paths = array();
 	foreach(makeArrayFromCSV(get_ws(OBJECT_FILES_TABLE)) as $id){
-		$paths[] = 'Path LIKE ("' . $db->escape(id_to_path($id, $table)) . '%")';
+		$paths[] = 'Path LIKE ("' . $db->escape(id_to_path($id, OBJECT_FILES_TABLE)) . '%")';
 	}
 	$workspace[OBJECT_FILES_TABLE] = implode(' OR ', $paths);
 }
@@ -121,7 +122,6 @@ if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 }
 $where = ($where ? ' WHERE ' . implode(' AND ', $where) : '');
 
-$db = $GLOBALS['DB_WE'];
 $order = $tables = $data = array();
 $db->query('SELECT DID,UserName,DocumentTable,MAX(ModDate) AS m,!ISNULL(l.ID) AS isOpen FROM ' . HISTORY_TABLE . ' LEFT JOIN ' . LOCK_TABLE . ' l ON l.ID=DID AND l.tbl=DocumentTable AND l.UserID!=' . $_SESSION['user']['ID'] . ' ' . $where . ' GROUP BY DID,DocumentTable  ORDER BY m DESC LIMIT 0,' . ($iMaxItems + 30));
 while($db->next_record(MYSQL_ASSOC)){
