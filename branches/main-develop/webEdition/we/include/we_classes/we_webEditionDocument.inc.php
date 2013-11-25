@@ -50,7 +50,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			$this->EditPageNrs[] = WE_EDITPAGE_VARIANTS;
 		}
 
-		if(defined('CUSTOMER_TABLE') && (we_hasPerm('CAN_EDIT_CUSTOMERFILTER') || we_hasPerm('CAN_CHANGE_DOCS_CUSTOMER'))){
+		if(defined('CUSTOMER_TABLE') && (permissionhandler::hasPerm('CAN_EDIT_CUSTOMERFILTER') || permissionhandler::hasPerm('CAN_CHANGE_DOCS_CUSTOMER'))){
 			$this->EditPageNrs[] = WE_EDITPAGE_WEBUSER;
 		}
 

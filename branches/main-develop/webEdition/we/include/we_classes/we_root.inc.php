@@ -386,12 +386,12 @@ abstract class we_root extends we_class{
 		$canChange = ((!$this->ID) || we_users_util::isUserInUsers($_SESSION['user']['ID'], $GLOBALS['we_doc']->CreatorID));
 
 		return '<table style="border-spacing: 0px;border-style:none;" cellpadding="0">
-<tr><td class="defaultfont">' . $this->formCreator($canChange && we_hasPerm('CHANGE_DOCUMENT_OWNER'), 388) . '</td></tr>
+<tr><td class="defaultfont">' . $this->formCreator($canChange && permissionhandler::hasPerm('CHANGE_DOCUMENT_OWNER'), 388) . '</td></tr>
 <tr><td>' . we_html_tools::getPixel(2, 20) . '</td></tr>
-<tr><td>' . $this->formRestrictOwners($canChange && we_hasPerm('CHANGE_DOCUMENT_PERMISSION')) . '</td></tr>' .
+<tr><td>' . $this->formRestrictOwners($canChange && permissionhandler::hasPerm('CHANGE_DOCUMENT_PERMISSION')) . '</td></tr>' .
 			($this->RestrictOwners ?
 				'<tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>
-<tr><td>' . $this->formOwners($canChange && we_hasPerm('CHANGE_DOCUMENT_PERMISSION')) . '</td></tr>' : '') .
+<tr><td>' . $this->formOwners($canChange && permissionhandler::hasPerm('CHANGE_DOCUMENT_PERMISSION')) . '</td></tr>' : '') .
 			'</table>';
 	}
 

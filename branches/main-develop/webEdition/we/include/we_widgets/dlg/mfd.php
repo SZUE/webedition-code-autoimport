@@ -210,16 +210,16 @@ if($sType{0} == "0" && $sType{1} == "0" && $sType{2} == "0" && $sType{3} == "0")
 }
 
 $oChbxDocs = (permissionhandler::hasPerm('CAN_SEE_DOCUMENTS') ?
-				we_html_forms::checkbox($value = 0, $checked = $sType{0}, $name = "chbx_type", $text = g_l('cockpit', '[documents]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined('FILE_TABLE') && we_hasPerm("CAN_SEE_DOCUMENTS")), $description = "", $type = 0, $width = 0) :
+				we_html_forms::checkbox($value = 0, $checked = $sType{0}, $name = "chbx_type", $text = g_l('cockpit', '[documents]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined('FILE_TABLE') && permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")), $description = "", $type = 0, $width = 0) :
 				'');
 $oChbxTmpl = (permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE ?
-				we_html_forms::checkbox($value = 0, $checked = $sType{1}, $name = "chbx_type", $text = g_l('cockpit', '[templates]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined("TEMPLATES_TABLE") && we_hasPerm('CAN_SEE_TEMPLATES')), $description = "", $type = 0, $width = 0) :
+				we_html_forms::checkbox($value = 0, $checked = $sType{1}, $name = "chbx_type", $text = g_l('cockpit', '[templates]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined("TEMPLATES_TABLE") && permissionhandler::hasPerm('CAN_SEE_TEMPLATES')), $description = "", $type = 0, $width = 0) :
 				'');
 $oChbxObjs = (permissionhandler::hasPerm('CAN_SEE_OBJECTS') ?
-				we_html_forms::checkbox($value = 0, $checked = $sType{2}, $name = "chbx_type", $text = g_l('cockpit', '[objects]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined("OBJECT_FILES_TABLE") && we_hasPerm('CAN_SEE_OBJECTFILES')), $description = "", $type = 0, $width = 0) :
+				we_html_forms::checkbox($value = 0, $checked = $sType{2}, $name = "chbx_type", $text = g_l('cockpit', '[objects]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined("OBJECT_FILES_TABLE") && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES')), $description = "", $type = 0, $width = 0) :
 				'');
 $oChbxCls = (permissionhandler::hasPerm('CAN_SEE_CLASSES') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE ?
-				we_html_forms::checkbox($value = 0, $checked = $sType{3}, $name = "chbx_type", $text = g_l('cockpit', '[classes]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined("OBJECT_TABLE") && we_hasPerm('CAN_SEE_OBJECTS')), $description = "", $type = 0, $width = 0) :
+				we_html_forms::checkbox($value = 0, $checked = $sType{3}, $name = "chbx_type", $text = g_l('cockpit', '[classes]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined("OBJECT_TABLE") && permissionhandler::hasPerm('CAN_SEE_OBJECTS')), $description = "", $type = 0, $width = 0) :
 				'');
 
 $oDbTableType = new we_html_table(array(

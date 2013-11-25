@@ -54,7 +54,7 @@ class we_binaryDocument extends we_document{
 		parent::__construct();
 		array_push($this->persistent_slots, 'html', 'DocChanged');
 		array_push($this->EditPageNrs, WE_EDITPAGE_PROPERTIES, WE_EDITPAGE_INFO, WE_EDITPAGE_CONTENT, WE_EDITPAGE_VERSIONS);
-		if(defined('CUSTOMER_TABLE') && (we_hasPerm('CAN_EDIT_CUSTOMERFILTER') || we_hasPerm('CAN_CHANGE_DOCS_CUSTOMER'))){
+		if(defined('CUSTOMER_TABLE') && (permissionhandler::hasPerm('CAN_EDIT_CUSTOMERFILTER') || permissionhandler::hasPerm('CAN_CHANGE_DOCS_CUSTOMER'))){
 			$this->EditPageNrs[] = WE_EDITPAGE_WEBUSER;
 		}
 		$this->LoadBinaryContent = $LoadBinaryContent;

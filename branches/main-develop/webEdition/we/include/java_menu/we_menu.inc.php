@@ -562,7 +562,7 @@ $we_menu = array(
 		'parent' => 2020000,
 		'cmd' => 'new_widget_fdl',
 		'perm' => 'EDIT_CUSTOMER || NEW_CUSTOMER',
-		'enabled' => we_hasPerm('CAN_SEE_QUICKSTART'),
+		'enabled' => permissionhandler::hasPerm('CAN_SEE_QUICKSTART'),
 		'hide'=>!defined('CUSTOMER_TABLE'),
 	),
 	array(// Cockpit > new Widget > pageLogger

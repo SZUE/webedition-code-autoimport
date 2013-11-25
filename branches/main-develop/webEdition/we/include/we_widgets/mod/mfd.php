@@ -31,10 +31,10 @@ if(!isset($aCols) || count($aCols) < 5){
 }
 $sTypeBinary = $aCols[0];
 $pos = 0;
-$bTypeDoc = we_hasPerm('CAN_SEE_DOCUMENTS') && ((bool) $sTypeBinary{$pos++});
-$bTypeTpl = we_hasPerm('CAN_SEE_TEMPLATES') && ((bool) $sTypeBinary{$pos++});
-$bTypeObj = we_hasPerm('CAN_SEE_OBJECTS') && ((bool) $sTypeBinary{$pos++});
-$bTypeCls = we_hasPerm('CAN_SEE_CLASSES') && ((bool) $sTypeBinary{$pos++});
+$bTypeDoc = permissionhandler::hasPerm('CAN_SEE_DOCUMENTS') && ((bool) $sTypeBinary{$pos++});
+$bTypeTpl = permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && ((bool) $sTypeBinary{$pos++});
+$bTypeObj = permissionhandler::hasPerm('CAN_SEE_OBJECTS') && ((bool) $sTypeBinary{$pos++});
+$bTypeCls = permissionhandler::hasPerm('CAN_SEE_CLASSES') && ((bool) $sTypeBinary{$pos++});
 
 $iDate = intval($aCols[1]);
 
@@ -130,7 +130,7 @@ while($db->next_record(MYSQL_ASSOC)){
 $queries = array();
 foreach($tables as $ctable => $ids){
 	$table = addTblPrefix($ctable);
-	$paths = ((!we_hasPerm('ADMINISTRATOR') || ($table != TEMPLATES_TABLE && (defined('OBJECT_TABLE') ? ($table != OBJECT_TABLE) : true))) && isset($workspace[$table]) ?
+	$paths = ((!permissionhandler::hasPerm('ADMINISTRATOR') || ($table != TEMPLATES_TABLE && (defined('OBJECT_TABLE') ? ($table != OBJECT_TABLE) : true))) && isset($workspace[$table]) ?
 					$workspace[$table] : '');
 
 	$queries[] = '(SELECT ID,Path,Icon,Text,ContentType,ModDate,CreatorID,Owners,RestrictOwners,"' . $ctable . '" AS ctable FROM ' . $db->escape($table) . ' WHERE ID IN(' . implode(',', $ids) . ')' . ($paths ? (' AND (' . $paths . ')') : '') . ')';

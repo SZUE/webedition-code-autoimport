@@ -118,7 +118,7 @@ class we_glossary_cache{
 	function write(){
 		$DB_WE = new DB_WE();
 
-		$DB_WE->query('SELECT Text, Type, Language, Title, Attributes, LENGTH(Text) as Length FROM ' . GLOSSARY_TABLE . ' WHERE Language = "' . $DB_WE->escape($this->language) . '" AND Published > 0 ORDER BY Length DESC');
+		$DB_WE->query('SELECT Text, Type, Language, Title, Attributes, LENGTH(Text) as Length,Fullword FROM ' . GLOSSARY_TABLE . ' WHERE Language="' . $DB_WE->escape($this->language) . '" AND Published>0 ORDER BY Length DESC');
 		$Items = array();
 
 		while($DB_WE->next_record()){
@@ -127,7 +127,9 @@ class we_glossary_cache{
 			$Title = $DB_WE->f('Title');
 			$Attributes = @unserialize($DB_WE->f('Attributes'));
 
-			$temp = array();
+			$temp = array(
+				'Fullword' => $DB_WE->f('Fullword')
+			);
 
 			if($GLOBALS['WE_BACKENDCHARSET'] == 'UTF-8' && isset($GLOBALS['we_doc']->elements['Charset']['dat']) && $GLOBALS['we_doc']->elements['Charset']['dat'] != 'UTF-8'){
 				$Text = utf8_decode($Text);
@@ -142,13 +144,12 @@ class we_glossary_cache{
 				$temp['title'] = trim($Title);
 			}
 
+
 			// Language
 			if(isset($Attributes['lang']) && trim($Attributes['lang']) != ""){
 				$temp['lang'] = trim($Attributes['lang']);
 				$temp['xml:lang'] = trim($Attributes['lang']);
 			}
-
-			$attributes = '';
 
 			// Language
 			if($Type == we_glossary_glossary::TYPE_LINK){
@@ -282,14 +283,10 @@ class we_glossary_cache{
 					$temp['onclick'] = 'var we_winOpts = \'\';';
 
 					// popup_width
-					$width = (isset($Attributes['popup_width']) && trim($Attributes['popup_width']) != '' ?
-							trim($Attributes['popup_width']) :
-							100);
+					$width = (isset($Attributes['popup_width']) && trim($Attributes['popup_width']) != '' ? trim($Attributes['popup_width']) : 100);
 
 					// popup_height
-					$height = (isset($Attributes['popup_height']) && trim($Attributes['popup_height']) != '' ?
-							trim($Attributes['popup_height']) :
-							100);
+					$height = (isset($Attributes['popup_height']) && trim($Attributes['popup_height']) != '' ? trim($Attributes['popup_height']) : 100);
 
 
 					// popup_center
@@ -324,21 +321,21 @@ if (window.screen) {
 
 					// popup_width
 					$temp['onclick'] .=strtr("we_winOpts += (we_winOpts ? ',' : '')+'width=" . $width . "';" .
-						// popup_height
-						"we_winOpts += (we_winOpts ? ',' : '')+'height=" . $height . "';" .
-						// popup_status
-						"we_winOpts += (we_winOpts ? ',' : '')+'status=" . (isset($Attributes['popup_status']) && $Attributes['popup_status'] == 1 ? 'yes' : 'no') . "';" .
-						// popup_scrollbars
-						"we_winOpts += (we_winOpts ? ',' : '')+'scrollbars=" . (isset($Attributes['popup_scrollbars']) && $Attributes['popup_scrollbars'] == 1 ? 'yes' : 'no') . "';" .
-						// popup_menubar
-						"we_winOpts += (we_winOpts ? ',' : '')+'menubar=" . (isset($Attributes['popup_menubar']) && $Attributes['popup_menubar'] == 1 ? 'yes' : 'no') . "';" .
-						// popup_resizable
-						"we_winOpts += (we_winOpts ? ',' : '')+'resizable=" . (isset($Attributes['popup_resizable']) && $Attributes['popup_resizable'] == 1 ? 'yes' : 'no') . "';" .
-						// popup_location
-						"we_winOpts += (we_winOpts ? ',' : '')+'location=" . (isset($Attributes['popup_location']) && $Attributes['popup_location'] == 1 ? 'yes' : 'no') . "';" .
-						// popup_toolbar
-						"we_winOpts += (we_winOpts ? ',' : '')+'toolbar=" . (isset($Attributes['popup_toolbar']) && $Attributes['popup_toolbar'] == 1 ? 'yes' : 'no') . "';" .
-						"var we_win = window.open('" . $temp['href'] . "','we_test',we_winOpts);", array('\'' => '@@@we@@@'));
+							// popup_height
+							"we_winOpts += (we_winOpts ? ',' : '')+'height=" . $height . "';" .
+							// popup_status
+							"we_winOpts += (we_winOpts ? ',' : '')+'status=" . (isset($Attributes['popup_status']) && $Attributes['popup_status'] == 1 ? 'yes' : 'no') . "';" .
+							// popup_scrollbars
+							"we_winOpts += (we_winOpts ? ',' : '')+'scrollbars=" . (isset($Attributes['popup_scrollbars']) && $Attributes['popup_scrollbars'] == 1 ? 'yes' : 'no') . "';" .
+							// popup_menubar
+							"we_winOpts += (we_winOpts ? ',' : '')+'menubar=" . (isset($Attributes['popup_menubar']) && $Attributes['popup_menubar'] == 1 ? 'yes' : 'no') . "';" .
+							// popup_resizable
+							"we_winOpts += (we_winOpts ? ',' : '')+'resizable=" . (isset($Attributes['popup_resizable']) && $Attributes['popup_resizable'] == 1 ? 'yes' : 'no') . "';" .
+							// popup_location
+							"we_winOpts += (we_winOpts ? ',' : '')+'location=" . (isset($Attributes['popup_location']) && $Attributes['popup_location'] == 1 ? 'yes' : 'no') . "';" .
+							// popup_toolbar
+							"we_winOpts += (we_winOpts ? ',' : '')+'toolbar=" . (isset($Attributes['popup_toolbar']) && $Attributes['popup_toolbar'] == 1 ? 'yes' : 'no') . "';" .
+							"var we_win = window.open('" . $temp['href'] . "','we_test',we_winOpts);", array('\'' => '@@@we@@@'));
 
 					$temp['href'] = '#';
 				}
@@ -356,7 +353,6 @@ if (window.screen) {
 		);
 
 		foreach($Items as $Text => $Value){
-
 			$prefix = '';
 			$postfix = '';
 			foreach($Value as $Type => $AttributeList){
@@ -382,6 +378,9 @@ if (window.screen) {
 				if($Tag != ''){
 					$prefix .= '<' . $Tag;
 				}
+				$full = $AttributeList['Fullword'];
+				unset($AttributeList['Fullword']);
+
 				if($Type != we_glossary_glossary::TYPE_TEXTREPLACE){
 					foreach($AttributeList as $Attribute => $Val){
 						$prefix .= ($Attribute == 'attribute' ? $Val : ' ' . $Attribute . '="' . $Val . '"');
@@ -395,7 +394,11 @@ if (window.screen) {
 				}
 			}
 			//make sure we found a whole word!
-			$content[$Type]['-(^|\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~])(' . preg_quote($Text, '-') . ')(\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~]|$)-'] = '${1}' . $prefix . '${2}' . $postfix . '${3}';
+			if($full){
+				$content[$Type]['-(^|\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~])(' . preg_quote($Text, '-') . ')(\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~]|$)-'] = '${1}' . $prefix . '${2}' . $postfix . '${3}';
+			} else {
+				$content[$Type]['-(' . preg_quote($Text, '-') . ')-'] = $prefix . '${2}' . $postfix;
+			}
 		}
 
 		$cacheFilename = self::cacheIdToFilename($this->_cacheId);

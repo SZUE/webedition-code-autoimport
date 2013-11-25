@@ -148,6 +148,9 @@ class we_glossary_glossary extends weModelBase{
 	 */
 	var $ModifierID = 0;
 
+	/** determines if the whole word is replaced */
+	public $Fullword = 1;
+
 	/**
 	 * internal list with al serialized fields in the database
 	 *
@@ -156,8 +159,6 @@ class we_glossary_glossary extends weModelBase{
 	var $_Serialized = array();
 
 	/**
-	 * PHP 4 Constructor
-	 *
 	 * @param integer $glossaryID
 	 * @return we_glossary_glossary
 	 * @desc Could load a glossary item if $GlossaryId is not 0
@@ -197,16 +198,15 @@ class we_glossary_glossary extends weModelBase{
 	}
 
 	function getEntries($Language, $Mode = 'all', $Type = 'all'){
-		$Query = "SELECT Type, Text, Title, Attributes FROM " . GLOSSARY_TABLE . " WHERE Language = '" . $GLOBALS['DB_WE']->escape($Language) . "' ";
-		if($Type != 'all'){
-			$Query .= "AND Type = '" . $GLOBALS['DB_WE']->escape($Type) . "' ";
-		}
+		$Query = 'SELECT Type,Text,Title,Attributes FROM ' . GLOSSARY_TABLE . " WHERE Language='" . $GLOBALS['DB_WE']->escape($Language) . "' " .
+				($Type != 'all' ? "AND Type='" . $GLOBALS['DB_WE']->escape($Type) . "' " : '');
+
 		switch($Mode){
 			case 'published':
-				$Query .= 'AND Published > 0 ';
+				$Query .= 'AND Published>0 ';
 				break;
 			case 'unpublished':
-				$Query .= 'AND Published = 0 ';
+				$Query .= 'AND Published=0 ';
 				break;
 		}
 
@@ -232,11 +232,8 @@ class we_glossary_glossary extends weModelBase{
 	}
 
 	function publishItem($Language, $Text){
-		$Query = 'UPDATE ' . GLOSSARY_TABLE . ' SET Published = UNIX_TIMESTAMP()'
-			. " WHERE Language = '" . $GLOBALS['DB_WE']->escape($Language) . "' "
-			. " AND Text = '" . $GLOBALS['DB_WE']->escape($Text) . "' ";
-
-		return $GLOBALS['DB_WE']->query($Query);
+		return $GLOBALS['DB_WE']->query('UPDATE ' . GLOSSARY_TABLE . ' SET Published=UNIX_TIMESTAMP()'
+						. " WHERE Language='" . $GLOBALS['DB_WE']->escape($Language) . "' AND Text='" . $GLOBALS['DB_WE']->escape($Text) . "'");
 	}
 
 	/**
@@ -352,13 +349,7 @@ class we_glossary_glossary extends weModelBase{
 	function pathExists($Path){
 		$table = $this->db->escape($this->table);
 		$Path = $this->db->escape($Path);
-		$query = 'SELECT 1 AS a FROM ' . $table . " WHERE Path Like Binary '" . $Path . "'";
-		if($this->ID != 0){
-			$query .= ' AND ID != ' . intval($this->ID);
-		}
-		$query.=' LIMIT 0,1';
-
-		return (f($query, 'a', $this->db) == 1);
+		return (f('SELECT 1 AS a FROM ' . $table . " WHERE Path Like Binary '" . $Path . "'" . ($this->ID ? ' AND ID != ' . intval($this->ID) : '') . ' LIMIT 1', 'a', $this->db) == 1);
 	}
 
 	function getIDByPath($Path){
@@ -379,7 +370,7 @@ class we_glossary_glossary extends weModelBase{
 	function escapeChars($Text){
 		$Text = quotemeta($Text); // escape . \ + * ? [ ^ ] ( $ )
 
-		$escape = array('�', '{', '&', '/', '\'', '"', '�', '%');
+		$escape = array('{', '&', '/', '\'', '"', '%');
 
 		foreach($escape as $k){
 			$before = $k;
@@ -402,7 +393,7 @@ class we_glossary_glossary extends weModelBase{
 		$Name = $this->db->escape($Name);
 		$value = (in_array($Name, $this->_Serialized) ? unserialize($this->$Name) : $this->$Name);
 
-		$this->db->query('UPDATE ' . $table . ' SET ' . $Name . " = '" . $this->db->escape($value) . "' WHERE ID=" . intval($this->ID));
+		$this->db->query('UPDATE ' . $table . ' SET ' . $Name . "='" . $this->db->escape($value) . "' WHERE ID=" . intval($this->ID));
 
 		return $this->db->affected_rows();
 	}

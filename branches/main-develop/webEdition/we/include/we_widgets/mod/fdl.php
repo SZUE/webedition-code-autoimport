@@ -24,7 +24,7 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-if(!(defined('CUSTOMER_TABLE') && we_hasPerm('CAN_SEE_CUSTOMER'))){
+if(!(defined('CUSTOMER_TABLE') && permissionhandler::hasPerm('CAN_SEE_CUSTOMER'))){
 	return;
 }
 $db = $GLOBALS['DB_WE'];

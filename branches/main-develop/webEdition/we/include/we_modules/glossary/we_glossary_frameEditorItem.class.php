@@ -27,34 +27,22 @@ class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 	function Header(&$weGlossaryFrames){
 
 		$we_tabs = new we_tabs();
+		$we_tabs->addTab(new we_tab("#", g_l('modules_glossary', '[property]'), we_tab::ACTIVE, "setTab('1');"));
 
 		switch($weGlossaryFrames->View->Glossary->Type){
 			case we_glossary_glossary::TYPE_ABBREVATION:
-				$we_tabs->addTab(new we_tab("#", g_l('modules_glossary', '[property]'), we_tab::ACTIVE, "setTab('1');"));
-
 				$title = g_l('modules_glossary', '[abbreviation]');
 				break;
-
 			case we_glossary_glossary::TYPE_ACRONYM:
-				$we_tabs->addTab(new we_tab("#", g_l('modules_glossary', '[property]'), we_tab::ACTIVE, "setTab('1');"));
-
 				$title = g_l('modules_glossary', '[acronym]');
 				break;
-
 			case we_glossary_glossary::TYPE_FOREIGNWORD:
-				$we_tabs->addTab(new we_tab("#", g_l('modules_glossary', '[property]'), we_tab::ACTIVE, "setTab('1');"));
-
 				$title = g_l('modules_glossary', '[foreignword]');
 				break;
-
 			case we_glossary_glossary::TYPE_LINK:
-				$we_tabs->addTab(new we_tab("#", g_l('modules_glossary', '[property]'), we_tab::ACTIVE, "setTab('1');"));
-
 				$title = g_l('modules_glossary', '[link]');
 				break;
 			case we_glossary_glossary::TYPE_TEXTREPLACE:
-				$we_tabs->addTab(new we_tab("#", g_l('modules_glossary', '[property]'), we_tab::ACTIVE, "setTab('1');"));
-
 				$title = g_l('modules_glossary', '[textreplacement]');
 				break;
 		}
@@ -68,158 +56,135 @@ class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 		$tabNr = isset($_REQUEST["tabnr"]) ? (($weGlossaryFrames->View->Glossary->IsFolder && $_REQUEST["tabnr"] != 1) ? 1 : $_REQUEST["tabnr"]) : 1;
 
 		$out = we_html_element::jsElement('
-				var table = "' . GLOSSARY_TABLE . '";
+var table = "' . GLOSSARY_TABLE . '";
 
-				function toggle(id){
-					var elem = document.getElementById(id);
-					if(elem.style.display == "none") elem.style.display = "block";
-					else elem.style.display = "none";
-				}
+function toggle(id){
+	var elem = document.getElementById(id);
+	if(elem.style.display == "none") elem.style.display = "block";
+	else elem.style.display = "none";
+}
 
-				function setVisible(id,visible){
-					var elem = document.getElementById(id);
-					if(visible==true) elem.style.display = "block";
-					else elem.style.display = "none";
-				}
+function setVisible(id,visible){
+	var elem = document.getElementById(id);
+	if(visible==true) elem.style.display = "block";
+	else elem.style.display = "none";
+}
 
-				function showType(type) {
-					document.getElementById("type_abbreviation").style.display = "none";
-					document.getElementById("type_acronym").style.display = "none";
-					document.getElementById("type_foreignword").style.display = "none";
-					document.getElementById("type_link").style.display = "none";
-					document.getElementById("type_textreplacement").style.display = "none";
-					document.getElementById("type_" + type).style.display = "block";
-					document.we_form.cmd.value = "edit_" + type;
-					if(type == "link") {
-						document.getElementById("btn_direction_weMultibox_table").style.display = "block";
-						document.getElementById("text_weMultibox").style.display = "block";
-						document.getElementById("div_weMultibox_2").style.display = "block";
-						document.getElementById("div_weMultibox_3").style.display = "block";
-						document.getElementById("div_weMultibox_4").style.display = "block";
-						document.getElementById("div_weMultibox_5").style.display = "block";
-						document.getElementById("div_weMultibox_6").style.display = "block";
-						document.getElementById("div_weMultibox_7").style.display = "block";
-						showLinkMode("intern");
-					} else {
-						document.getElementById("btn_direction_weMultibox_table").style.display = "none";
-						document.getElementById("text_weMultibox").style.display = "none";
-						document.getElementById("div_weMultibox_2").style.display = "none";
-						document.getElementById("div_weMultibox_3").style.display = "none";
-						document.getElementById("div_weMultibox_4").style.display = "none";
-						document.getElementById("div_weMultibox_5").style.display = "none";
-						document.getElementById("div_weMultibox_6").style.display = "none";
-						document.getElementById("div_weMultibox_7").style.display = "none";
-					}
-				}
+function showType(type) {
+	document.getElementById("type_abbreviation").style.display = "none";
+	document.getElementById("type_acronym").style.display = "none";
+	document.getElementById("type_foreignword").style.display = "none";
+	document.getElementById("type_link").style.display = "none";
+	document.getElementById("type_textreplacement").style.display = "none";
+	document.getElementById("type_" + type).style.display = "block";
+	document.we_form.cmd.value = "edit_" + type;
+	if(type == "link") {
+		document.getElementById("btn_direction_weMultibox_table").style.display = "block";
+		document.getElementById("text_weMultibox").style.display = "block";
+		document.getElementById("div_weMultibox_2").style.display = "block";
+		document.getElementById("div_weMultibox_3").style.display = "block";
+		document.getElementById("div_weMultibox_4").style.display = "block";
+		document.getElementById("div_weMultibox_5").style.display = "block";
+		document.getElementById("div_weMultibox_6").style.display = "block";
+		document.getElementById("div_weMultibox_7").style.display = "block";
+		showLinkMode("intern");
+	} else {
+		document.getElementById("btn_direction_weMultibox_table").style.display = "none";
+		document.getElementById("text_weMultibox").style.display = "none";
+		document.getElementById("div_weMultibox_2").style.display = "none";
+		document.getElementById("div_weMultibox_3").style.display = "none";
+		document.getElementById("div_weMultibox_4").style.display = "none";
+		document.getElementById("div_weMultibox_5").style.display = "none";
+		document.getElementById("div_weMultibox_6").style.display = "none";
+		document.getElementById("div_weMultibox_7").style.display = "none";
+	}
+}
 
-				function showLinkMode(mode) {
-					document.getElementById("mode_intern").style.display = "none";
-					document.getElementById("mode_extern").style.display = "none";
-					document.getElementById("mode_object").style.display = "none";
-					document.getElementById("mode_category").style.display = "none";
-					document.getElementById("mode_" + mode).style.display = "block";
-					if(mode == "category") {
-						showLinkModeCategory("intern");
-					}
-				}
+function showLinkMode(mode) {
+	document.getElementById("mode_intern").style.display = "none";
+	document.getElementById("mode_extern").style.display = "none";
+	document.getElementById("mode_object").style.display = "none";
+	document.getElementById("mode_category").style.display = "none";
+	document.getElementById("mode_" + mode).style.display = "block";
+	if(mode == "category") {
+		showLinkModeCategory("intern");
+	}
+}
 
-				function showLinkModeCategory(mode) {
-					document.getElementById("mode_category_intern").style.display = "none";
-					document.getElementById("mode_category_extern").style.display = "none";
-					document.getElementById("mode_category_" + mode).style.display = "block";
-				}
+function showLinkModeCategory(mode) {
+	document.getElementById("mode_category_intern").style.display = "none";
+	document.getElementById("mode_category_extern").style.display = "none";
+	document.getElementById("mode_category_" + mode).style.display = "block";
+}
 
-				function setHot() {
-					//' . $weGlossaryFrames->topFrame . '.editor.edheader.document.getElementById("mark").style.display = "inline";
-					top.hot=1;
-				}
+function setHot() {
+	//' . $weGlossaryFrames->topFrame . '.editor.edheader.document.getElementById("mark").style.display = "inline";
+	top.hot=1;
+}
 
-				function setDisplay(id, display) {
-					document.getElementById(id).style.display = display;
-				}
+function setDisplay(id, display) {
+	document.getElementById(id).style.display = display;
+}
 
-				function doUnload() {
-					if (!!jsWindow_count) {
-						for (i = 0; i < jsWindow_count; i++) {
-							eval("jsWindow" + i + "Object.close()");
-						}
-					}
-				}
+function doUnload() {
+	if (!!jsWindow_count) {
+		for (i = 0; i < jsWindow_count; i++) {
+			eval("jsWindow" + i + "Object.close()");
+		}
+	}
+}
 
-				function we_cmd() {
-					var args = "";
-					var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-					switch (arguments[0]) {
-						case "populateWorkspaces":
-							document.we_form.cmd.value=arguments[0];
-							document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
-							document.we_form.pnt.value="cmd";
-							submitForm("cmd");
-							break;
-						case "openDocselector":
-							new jsWindow(url,"we_docselector",-1,-1,' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ',true,true,true,true);
-							break;
-						case "openSelector":
-							new jsWindow(url,"we_selector",-1,-1,' . we_selector_file::WINDOW_SELECTOR_WIDTH . ',' . we_selector_file::WINDOW_SELECTOR_HEIGHT . ',true,true,true,true);
-							break;
-						case "openDirselector":
-							new jsWindow(url,"we_selector",-1,-1,' . we_selector_file::WINDOW_DIRSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DIRSELECTOR_HEIGHT . ',true,true,true,true);
-							break;
-						case "openCatselector":
-							new jsWindow(url,"we_catselector",-1,-1,' . we_selector_file::WINDOW_CATSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_CATSELECTOR_HEIGHT . ',true,true,true,true);
-							break;
-						default:
-							for (var i = 0; i < arguments.length; i++) {
-								args += "arguments["+i+"]" + ((i < (arguments.length-1)) ? "," : "");
-							}
-							eval("' . $this->topFrame . '.we_cmd("+args+")");
-					}
-				}
+function we_cmd() {
+	var args = "";
+	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	switch (arguments[0]) {
+		case "populateWorkspaces":
+			document.we_form.cmd.value=arguments[0];
+			document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
+			document.we_form.pnt.value="cmd";
+			submitForm("cmd");
+			break;
+		case "openDocselector":
+			new jsWindow(url,"we_docselector",-1,-1,' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ',true,true,true,true);
+			break;
+		case "openSelector":
+			new jsWindow(url,"we_selector",-1,-1,' . we_selector_file::WINDOW_SELECTOR_WIDTH . ',' . we_selector_file::WINDOW_SELECTOR_HEIGHT . ',true,true,true,true);
+			break;
+		case "openDirselector":
+			new jsWindow(url,"we_selector",-1,-1,' . we_selector_file::WINDOW_DIRSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DIRSELECTOR_HEIGHT . ',true,true,true,true);
+			break;
+		case "openCatselector":
+			new jsWindow(url,"we_catselector",-1,-1,' . we_selector_file::WINDOW_CATSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_CATSELECTOR_HEIGHT . ',true,true,true,true);
+			break;
+		default:
+			for (var i = 0; i < arguments.length; i++) {
+				args += "arguments["+i+"]" + ((i < (arguments.length-1)) ? "," : "");
+			}
+			eval("' . $this->topFrame . '.we_cmd("+args+")");
+	}
+}
 
-				function submitForm() {
+function submitForm() {
+	var f = self.document.we_form;
 
-					var f = self.document.we_form;
-
-					if (arguments[0]) {
-						f.target = arguments[0];
-					} else {
-						f.target = "edbody";
-					}
-
-					if (arguments[1]) {
-						f.action = arguments[1];
-					} else {
-						f.action = "' . $weGlossaryFrames->frameset . '";
-					}
-
-					if (arguments[2]) {
-						f.method = arguments[2];
-					} else {
-						f.method = "post";
-					}
-
-					f.submit();
-				}
-
-				' . $weGlossaryFrames->topFrame . '.editor.edheader.location="' . $weGlossaryFrames->frameset . '?pnt=edheader";'
-				. $weGlossaryFrames->topFrame . '.editor.edfooter.location="' . $weGlossaryFrames->frameset . '?pnt=edfooter"')
-			. we_html_multiIconBox::getJs();
+	f.target = (arguments[0]?arguments[0]:"edbody");
+	f.action = (arguments[1]?arguments[1]:"' . $weGlossaryFrames->frameset . '");
+	f.method = (arguments[2]?arguments[2]:"post");
+	f.submit();
+}' .
+						$weGlossaryFrames->topFrame . '.editor.edheader.location="' . $weGlossaryFrames->frameset . '?pnt=edheader";' .
+						$weGlossaryFrames->topFrame . '.editor.edfooter.location="' . $weGlossaryFrames->frameset . '?pnt=edfooter"') .
+				we_html_multiIconBox::getJs();
 
 
 		$out .= we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')), we_html_multiIconBox::getHTML('weMultibox', "100%", we_glossary_frameEditorItem::getHTMLTabProperties($weGlossaryFrames), 30, '', 2, g_l('modules_glossary', '[show_extended_linkoptions]'), g_l('modules_glossary', '[hide_extended_linkoptions]'), false));
 
-		$js = '
-				showType("' . $weGlossaryFrames->View->Glossary->Type . '");
-			';
+		$js = 'showType("' . $weGlossaryFrames->View->Glossary->Type . '");';
 		if($weGlossaryFrames->View->Glossary->Type == "link"){
-			$js .= '
-				showLinkMode("' . ($weGlossaryFrames->View->Glossary->getAttribute('mode') != "" ? $weGlossaryFrames->View->Glossary->getAttribute('mode') : "intern") . '");
-				';
+			$js .= 'showLinkMode("' . ($weGlossaryFrames->View->Glossary->getAttribute('mode') != "" ? $weGlossaryFrames->View->Glossary->getAttribute('mode') : "intern") . '");';
 		}
 		if($weGlossaryFrames->View->Glossary->getAttribute('mode') == "category"){
-			$js .= '
-				showLinkModeCategory("' . ($weGlossaryFrames->View->Glossary->getAttribute('modeCategory') != "" ? $weGlossaryFrames->View->Glossary->getAttribute('modeCategory') : "intern") . '");
-				';
+			$js .= 'showLinkModeCategory("' . ($weGlossaryFrames->View->Glossary->getAttribute('modeCategory') != "" ? $weGlossaryFrames->View->Glossary->getAttribute('modeCategory') : "intern") . '");';
 		}
 
 		$out .= we_html_element::jsElement($js);
@@ -242,7 +207,7 @@ class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 			'cellpadding' => 0,
 			'cellspacing' => 0,
 			'style' => 'margin-top:10px',
-			), 1, 6);
+				), 1, 6);
 		$table2->setRow(0, array("valign" => "middle"));
 		if($ShowUnpublish){
 			$table2->setCol(0, $col++, array("nowrap" => null), we_html_tools::getPixel(10, 20));
@@ -257,19 +222,16 @@ class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 		$table2->setCol(0, $col++, array("nowrap" => null), we_html_tools::getPixel(10, 20));
 		$table2->setCol(0, $col++, array("nowrap" => null), $NewEntry);
 
-		$js = "if(top.makeNewEntry==1) {\n"
-			. "	document.getElementById('makeNewEntry').checked = true;\n"
-			. "}"
-			. "if(top.publishWhenSave==1 && document.getElementById('publishWhenSave')) {\n"
-			. "	document.getElementById('publishWhenSave').checked = true;\n"
-			. "}";
-		$js = we_html_element::jsElement(
-				$js .
-				"function we_save() {
-					top.content.we_cmd('save_glossary');
-
-				}
-				");
+		$js = we_html_element::jsElement('
+if(top.makeNewEntry==1) {
+	document.getElementById("makeNewEntry").checked = true;
+}
+if(top.publishWhenSave==1 && document.getElementById("publishWhenSave")) {
+	document.getElementById("publishWhenSave").checked = true;
+}
+function we_save() {
+	top.content.we_cmd("save_glossary");
+}');
 
 		$form = we_html_element::htmlForm(array(), $table2->getHtml() . $js);
 
@@ -277,9 +239,6 @@ class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 	}
 
 	function getHTMLTabProperties(&$weGlossaryFrames){
-
-		$parts = array();
-
 		$_types = array(
 			we_glossary_glossary::TYPE_ACRONYM => g_l('modules_glossary', '[acronym]'),
 			we_glossary_glossary::TYPE_ABBREVATION => g_l('modules_glossary', '[abbreviation]'),
@@ -289,354 +248,181 @@ class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 		);
 
 		$hidden = we_html_element::htmlHidden(array('name' => 'newone', 'value' => ($weGlossaryFrames->View->Glossary->ID == 0 ? 1 : 0)))
-			. we_html_element::htmlHidden(array('name' => 'Published', 'id' => 'Published', 'value' => $weGlossaryFrames->View->Glossary->ID == 0 ? 1 : ($weGlossaryFrames->View->Glossary->Published > 0 ? 1 : 0)));
+				. we_html_element::htmlHidden(array('name' => 'Published', 'id' => 'Published', 'value' => $weGlossaryFrames->View->Glossary->ID == 0 ? 1 : ($weGlossaryFrames->View->Glossary->Published > 0 ? 1 : 0)));
 
-		$_languages = $GLOBALS['weFrontendLanguages'];
-		$_languages = getWeFrontendLanguagesForBackend();
 
 		$language = ($weGlossaryFrames->View->Glossary->Language != "" ? $weGlossaryFrames->View->Glossary->Language : $GLOBALS['weDefaultFrontendLanguage']);
 
 		$content = $hidden . '<table border="0" cellpadding="0" cellspacing="0">
-					<tr>
-						<td class="defaultfont">' . g_l('modules_glossary', '[folder]') . '</td>
-					</tr>
-					<tr>
-						<td>
-							' . we_html_tools::htmlSelect("Language", $_languages, 1, $language, false, " onchange=\"top.content.setHot();\"", "value", 520) . '</td>
-					</tr>
-					<tr>
-						<td>
-							' . we_html_tools::getPixel(2, 4) . '</td>
-					</tr>
-					<tr>
-						<td class="defaultfont">' . g_l('modules_glossary', '[type]') . '</td>
-					</tr>
-					<tr>
-						<td>
-							' . we_html_tools::htmlSelect("Type", $_types, 1, $weGlossaryFrames->View->Glossary->Type, false, " onchange=\"top.content.setHot();showType(this.value);\"", "value", 520) . '</td>
-					</tr>
-				</table>';
-
-		$item = array(
-			"headline" => g_l('modules_glossary', '[path]'),
-			"html" => $content,
-			"space" => 120
+	<tr><td class="defaultfont">' . g_l('modules_glossary', '[folder]') . '</td></tr>
+	<tr><td>' . we_html_tools::htmlSelect("Language", getWeFrontendLanguagesForBackend(), 1, $language, false, " onchange=\"top.content.setHot();\"", "value", 520) . '</td></tr>
+	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+	<tr><td class="defaultfont">' . g_l('modules_glossary', '[type]') . '</td></tr>
+	<tr><td>' . we_html_tools::htmlSelect("Type", $_types, 1, $weGlossaryFrames->View->Glossary->Type, false, " onchange=\"top.content.setHot();showType(this.value);\"", "value", 520) . '</td></tr>
+	<tr><td class="defaultfont">' .
+				we_html_forms::checkboxWithHidden((bool) $weGlossaryFrames->View->Glossary->Fullword, 'Fullword', g_l('modules_glossary', '[Fullword]'), false, 'defaultfont', 'top.content.setHot();') . '</td></tr>
+</table>';
+		$parts = array(
+			array(
+				"headline" => g_l('modules_glossary', '[path]'),
+				"html" => $content,
+				"space" => 120
+			),
+			array(
+				"headline" => g_l('modules_glossary', '[selection]'),
+				"html" => self::getHTMLAbbreviation($weGlossaryFrames) .
+				self::getHTMLAcronym($weGlossaryFrames) .
+				self::getHTMLForeignWord($weGlossaryFrames) .
+				self::getHTMLLink($weGlossaryFrames) .
+				self::getHTMLTextReplacement($weGlossaryFrames),
+				"space" => 120,
+				'noline' => 1,
+			)
 		);
-		$parts[] = $item;
 
-
-		$html = self::getHTMLAbbreviation($weGlossaryFrames) .
-			self::getHTMLAcronym($weGlossaryFrames) .
-			self::getHTMLForeignWord($weGlossaryFrames) .
-			self::getHTMLLink($weGlossaryFrames) .
-			self::getHTMLTextReplacement($weGlossaryFrames);
-
-		$item = array(
-			"headline" => g_l('modules_glossary', '[selection]'),
-			"html" => $html,
-			"space" => 120,
-			'noline' => 1,
-		);
-		$parts[] = $item;
-
-		$items = self::getHTMLLinkAttributes($weGlossaryFrames);
-		$parts = array_merge($parts, $items);
+		$parts = array_merge($parts, self::getHTMLLinkAttributes($weGlossaryFrames));
 
 		return $parts;
 	}
 
 	function getHTMLAbbreviation(&$weGlossaryFrames){
-
-		$text = g_l('modules_glossary', '[abbreviation]');
-		$title = g_l('modules_glossary', '[announced_word]');
-		$language = g_l('modules_glossary', '[language]');
-
-		$_text = "";
-		$_title = "";
-		$_language = "";
-
 		if($weGlossaryFrames->View->Glossary->Type == we_glossary_glossary::TYPE_ABBREVATION){
 			$_text = html_entity_decode($weGlossaryFrames->View->Glossary->Text);
 			$_title = html_entity_decode($weGlossaryFrames->View->Glossary->Title);
 			$_language = $weGlossaryFrames->View->Glossary->getAttribute('lang');
+		} else {
+			$_text = $_title = $_language = "";
 		}
 
-		$pre = '<div id="type_abbreviation" style="display: block;">';
-		$post = '</div>';
 
-		$content = '<table border="0" cellpadding="0" cellspacing="0">
-					<tr>
-						<td class="defaultfont">' . $text . '</td>
-					</tr>
-					<tr>
-						<td>
-							' . we_html_tools::htmlTextInput("abbreviation[Text]", 24, $_text, 255, 'onChange="setHot();"', "text", 520) . '</td>
-					</tr>
-					<tr>
-						<td>
-							' . we_html_tools::getPixel(2, 4) . '</td>
-					</tr>
-					<tr>
-						<td class="defaultfont">' . $title . '</td>
-					</tr>
-					<tr>
-						<td>
-							' . we_html_tools::htmlTextInput("abbreviation[Title]", 24, $_title, 255, 'onChange="setHot();"', "text", 520) . '</td>
-					</tr>
-					<tr>
-						<td>
-							' . we_html_tools::getPixel(2, 4) . '</td>
-					</tr>
-					<tr>
-						<td>
-							' . self::getLangField("abbreviation[Attributes][lang]", $_language, $language, 520) . '</td>
-					</tr>
-				</table>
-				</div>';
-
-		return $pre . $content . $post;
+		return '<div id="type_abbreviation" style="display: block;">'
+				. '<table border="0" cellpadding="0" cellspacing="0">
+	<tr><td class="defaultfont">' . $text . '</td></tr>
+	<tr><td>' . we_html_tools::htmlTextInput("abbreviation[Text]", 24, g_l('modules_glossary', '[abbreviation]'), 255, 'onchange="setHot();"', "text", 520) . '</td></tr>
+	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+	<tr><td class="defaultfont">' . $title . '</td></tr>
+	<tr><td>' . we_html_tools::htmlTextInput("abbreviation[Title]", 24, g_l('modules_glossary', '[announced_word]'), 255, 'onchange="setHot();"', "text", 520) . '</td></tr>
+	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+	<tr><td>' . self::getLangField("abbreviation[Attributes][lang]", $_language, g_l('modules_glossary', '[language]'), 520) . '</td></tr>
+</table>
+</div>';
 	}
 
 	function getHTMLAcronym(&$weGlossaryFrames){
-
-		$text = g_l('modules_glossary', '[acronym]');
-		$title = g_l('modules_glossary', '[announced_word]');
-		$language = g_l('modules_glossary', '[language]');
-
-		$_text = "";
-		$_title = "";
-		$_language = "";
-
 		if($weGlossaryFrames->View->Glossary->Type == we_glossary_glossary::TYPE_ACRONYM){
 			$_text = html_entity_decode($weGlossaryFrames->View->Glossary->Text);
 			$_title = html_entity_decode($weGlossaryFrames->View->Glossary->Title);
 			$_language = $weGlossaryFrames->View->Glossary->getAttribute('lang');
+		} else {
+			$_text = $_title = $_language = "";
 		}
 
-		$pre = '<div id="type_acronym" style="display: none;">';
-		$post = '</div>';
-
-		$content = '<table border="0" cellpadding="0" cellspacing="0">
-					<tr>
-						<td class="defaultfont">' . $text . '</td>
-					</tr>
-					<tr>
-						<td>
-							' . we_html_tools::htmlTextInput("acronym[Text]", 24, $_text, 255, 'onChange="setHot();"', "text", 520) . '</td>
-					</tr>
-					<tr>
-						<td>
-							' . we_html_tools::getPixel(2, 4) . '</td>
-					</tr>
-					<tr>
-						<td class="defaultfont">' . $title . '</td>
-					</tr>
-					<tr>
-						<td>
-							' . we_html_tools::htmlTextInput("acronym[Title]", 24, $_title, 255, 'onChange="setHot();"', "text", 520) . '</td>
-					</tr>
-					<tr>
-						<td>
-							' . we_html_tools::getPixel(2, 4) . '</td>
-					</tr>
-					<tr>
-						<td>
-							' . self::getLangField("acronym[Attributes][lang]", $_language, $language, 520) . '</td>
-					</tr>
-				</table>';
-
-		return $pre . $content . $post;
+		return '<div id="type_acronym" style="display: none;">
+<table border="0" cellpadding="0" cellspacing="0">
+	<tr><td class="defaultfont">' . g_l('modules_glossary', '[acronym]') . '</td></tr>
+	<tr><td>' . we_html_tools::htmlTextInput("acronym[Text]", 24, $_text, 255, 'onchange="setHot();"', "text", 520) . '</td></tr>
+	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+	<tr><td class="defaultfont">' . g_l('modules_glossary', '[announced_word]') . '</td></tr>
+	<tr><td>' . we_html_tools::htmlTextInput("acronym[Title]", 24, $_title, 255, 'onchange="setHot();"', "text", 520) . '</td></tr>
+	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+	<tr><td>' . self::getLangField("acronym[Attributes][lang]", $_language, g_l('modules_glossary', '[language]'), 520) . '</td></tr>
+</table>
+</div>';
 	}
 
 	function getHTMLForeignWord(&$weGlossaryFrames){
-
-		$text = g_l('modules_glossary', '[foreignword]');
-		$language = g_l('modules_glossary', '[language]');
-
-		$_text = "";
-		$_language = "";
-
 		if($weGlossaryFrames->View->Glossary->Type == we_glossary_glossary::TYPE_FOREIGNWORD){
 			$_text = html_entity_decode($weGlossaryFrames->View->Glossary->Text);
 			$_language = $weGlossaryFrames->View->Glossary->getAttribute('lang');
+		} else {
+			$_text = $_language = "";
 		}
 
-		$pre = '<div id="type_foreignword" style="display: none;">';
-		$post = '</div>';
-
-		$content = '<table border="0" cellpadding="0" cellspacing="0">
-					<tr>
-						<td class="defaultfont">' . $text . '</td>
-					</tr>
-					<tr>
-						<td>
-							' . we_html_tools::htmlTextInput("foreignword[Text]", 24, $_text, 255, 'onChange="setHot();"', "text", 520) . '</td>
-					</tr>
-					<tr>
-						<td>
-							' . we_html_tools::getPixel(2, 4) . '</td>
-					</tr>
-					<tr>
-						<td>
-							' . self::getLangField("foreignword[Attributes][lang]", $_language, $language, 520) . '</td>
-					</tr>
-				</table>';
-
-		return $pre . $content . $post;
+		return '<div id="type_foreignword" style="display: none;"><table border="0" cellpadding="0" cellspacing="0">
+	<tr><td class="defaultfont">' . g_l('modules_glossary', '[foreignword]') . '</td></tr>
+	<tr><td>' . we_html_tools::htmlTextInput("foreignword[Text]", 24, $_text, 255, 'onchange="setHot();"', "text", 520) . '</td></tr>
+	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+	<tr><td>' . self::getLangField("foreignword[Attributes][lang]", $_language, g_l('modules_glossary', '[language]'), 520) . '</td></tr>
+</table></div>';
 	}
 
 	function getHTMLTextReplacement(&$weGlossaryFrames){
-
-		$text = g_l('modules_glossary', '[textreplacement]');
-		$language = g_l('modules_glossary', '[language]');
-		$_title = html_entity_decode($weGlossaryFrames->View->Glossary->Title, null, $GLOBALS["WE_BACKENDCHARSET"]);
-
-		$_text = "";
-		$_language = "";
-
 		if($weGlossaryFrames->View->Glossary->Type == we_glossary_glossary::TYPE_TEXTREPLACE){
 			$_text = html_entity_decode($weGlossaryFrames->View->Glossary->Text, null, $GLOBALS["WE_BACKENDCHARSET"]);
 			$_title = html_entity_decode($weGlossaryFrames->View->Glossary->Title, null, $GLOBALS["WE_BACKENDCHARSET"]);
+		} else {
+			$_title = $_text = "";
 		}
 
-		$pre = '<div id="type_textreplacement" style="display: none;">';
-		$post = '</div>';
-
-		$content = '<table border="0" cellpadding="0" cellspacing="0">
-					<tr>
-						<td class="defaultfont">' . $text . '</td>
-					</tr>
-					<tr>
-						<td>
-							' . we_html_tools::htmlTextInput("textreplacement[Text]", 24, $_text, 255, 'onChange="setHot();"', "text", 520) . '</td>
-					</tr>
-					<tr>
-						<td>
-							' . we_html_tools::getPixel(2, 4) . '</td>
-					</tr>
-					<tr>
-						<td class="defaultfont">' . g_l('modules_glossary', '[textreplacement_Text]') . '</td>
-					</tr>
-					<tr>
-						<td>
-							' . we_html_tools::htmlTextInput("textreplacement[Title]", 24, $_title, 255, 'onChange="setHot();"', "text", 520) . '</td>
-					</tr>
-				</table>';
-
-		return $pre . $content . $post;
+		return '<div id="type_textreplacement" style="display: none;"><table border="0" cellpadding="0" cellspacing="0">
+<tr><td class="defaultfont">' . g_l('modules_glossary', '[textreplacement]') . '</td></tr>
+<tr><td>' . we_html_tools::htmlTextInput("textreplacement[Text]", 24, $_text, 255, 'onchange="setHot();"', "text", 520) . '</td></tr>
+<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+<tr><td class="defaultfont">' . g_l('modules_glossary', '[textreplacement_Text]') . '</td></tr>
+<tr><td>' . we_html_tools::htmlTextInput("textreplacement[Title]", 24, $_title, 255, 'onchange="setHot();"', "text", 520) . '</td></tr>
+</table></div>';
 	}
 
 	function getHTMLLink(&$weGlossaryFrames){
-
-		$text = g_l('modules_glossary', '[link]');
-
-		$_text = "";
-		$_mode = "";
-
 		if($weGlossaryFrames->View->Glossary->Type == we_glossary_glossary::TYPE_LINK){
 			$_text = html_entity_decode($weGlossaryFrames->View->Glossary->Text);
 			$_mode = $weGlossaryFrames->View->Glossary->getAttribute('mode');
+		} else {
+			$_text = $_mode = "";
 		}
 
-		$_modes = array(
-			'intern' => g_l('modules_glossary', '[link_intern]'),
-			'extern' => g_l('modules_glossary', '[link_extern]'),
-			'object' => g_l('modules_glossary', '[link_object]'),
-			'category' => g_l('modules_glossary', '[link_category]'),
-		);
-
-		$pre = '<div id="type_link" style="display: none;">';
-		$post = '</div>';
-
-		$content = '<table border="0" cellpadding="0" cellspacing="0">
-					<tr>
-						<td class="defaultfont">' . $text . '</td>
-					</tr>
-					<tr>
-						<td>
-							' . we_html_tools::htmlTextInput("link[Text]", 24, $_text, 255, 'onChange="setHot();"', "text", 520) . '</td>
-					</tr>
-					<tr>
-						<td>
-							' . we_html_tools::getPixel(2, 4) . '</td>
-					</tr>
-					<tr>
-						<td>
-							' . we_html_tools::htmlSelect("link[Attributes][mode]", $_modes, 1, $_mode, false, " onchange=\"setHot();showLinkMode(this.value);\"", "value", 520) . '</td>
-					</tr>
-					<tr>
-						<td>
-							' . we_html_tools::getPixel(2, 4) . '</td>
-					</tr>
-				</table>';
-
-		$content .= self::getHTMLIntern($weGlossaryFrames);
-		$content .= self::getHTMLExtern($weGlossaryFrames);
-		$content .= self::getHTMLObject($weGlossaryFrames);
-		$content .= self::getHTMLCategory($weGlossaryFrames);
-
-		return $pre . $content . $post;
+		return
+				'<div id="type_link" style="display: none;">
+<table border="0" cellpadding="0" cellspacing="0">
+	<tr><td class="defaultfont">' . g_l('modules_glossary', '[link]') . '</td></tr>
+	<tr><td>' . we_html_tools::htmlTextInput("link[Text]", 24, $_text, 255, 'onchange="setHot();"', "text", 520) . '</td></tr>
+	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+	<tr><td>' . we_html_tools::htmlSelect("link[Attributes][mode]", array(
+					'intern' => g_l('modules_glossary', '[link_intern]'),
+					'extern' => g_l('modules_glossary', '[link_extern]'),
+					'object' => g_l('modules_glossary', '[link_object]'),
+					'category' => g_l('modules_glossary', '[link_category]'),
+						), 1, $_mode, false, " onchange=\"setHot();showLinkMode(this.value);\"", "value", 520) . '</td></tr>
+	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+</table>' .
+				self::getHTMLIntern($weGlossaryFrames) .
+				self::getHTMLExtern($weGlossaryFrames) .
+				self::getHTMLObject($weGlossaryFrames) .
+				self::getHTMLCategory($weGlossaryFrames) .
+				'</div>';
 	}
 
 	function getHTMLIntern(&$weGlossaryFrames){
-
-		$parameter = g_l('modules_glossary', '[parameter]');
-
-
 		$_rootDirID = 0;
 		//javascript:we_cmd('openDocselector',document.we_form.elements['link[Attributes][InternLinkID]'].value,'".FILE_TABLE."','document.we_form.elements[\\'link[Attributes][InternLinkID]\\'].value','document.we_form.elements[\\'link[Attributes][InternLinkPath]\\'].value','','".session_id()."','$_rootDirID')
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['link[Attributes][InternLinkID]'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['link[Attributes][InternLinkPath]'].value");
-		$wecmdenc3 = '';
 		$_cmd = "javascript:we_cmd('openDocselector',document.we_form.elements['link[Attributes][InternLinkID]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "','$_rootDirID')";
 		$_button = we_html_button::create_button('select', $_cmd, true, 100, 22, '', '', false);
 
-		$_linkPath = "";
-		$_linkID = "";
-		$_internParameter = "";
 		if($weGlossaryFrames->View->Glossary->Type == "link" && $weGlossaryFrames->View->Glossary->getAttribute('mode') == "intern"){
 			//$_linkPath = $weGlossaryFrames->View->Glossary->getAttribute('InternLinkPath');
 			$_linkID = $weGlossaryFrames->View->Glossary->getAttribute('InternLinkID');
 			$_linkPath = id_to_path($_linkID);
 			$weGlossaryFrames->View->Glossary->setAttribute('InternLinkPath', $_linkPath);
 			$_internParameter = $weGlossaryFrames->View->Glossary->getAttribute('InternParameter');
+		} else {
+			$_linkPath = $_linkID = $_internParameter = "";
 		}
 
-		$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][InternLinkPath]', 58, $_linkPath, '', 'onchange="setHot();" readonly', 'text', 400, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(array('name' => 'link[Attributes][InternLinkID]', "value" => $_linkID)), we_html_tools::getPixel(20, 4), $_button
-		);
+		$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][InternLinkPath]', 58, $_linkPath, '', 'onchange="setHot();" readonly', 'text', 400, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(array('name' => 'link[Attributes][InternLinkID]', "value" => $_linkID)), we_html_tools::getPixel(20, 4), $_button);
 
-		$pre = '<div id="mode_intern" style="display: none;">';
-		$post = '</div>';
-
-		$content = '<table border="0" cellpadding="0" cellspacing="0">
-					<tr>
-						<td>
-							' . we_html_tools::getPixel(2, 4) . '</td>
-					</tr>
-					<tr>
-						<td>
-							' . $selector . '</td>
-					</tr>
-					<tr>
-						<td>
-							' . we_html_tools::getPixel(2, 4) . '</td>
-					</tr>
-					<tr>
-						<td class="defaultfont">' . $parameter . '</td>
-					</tr>
-					<tr>
-						<td>
-							' . we_html_tools::htmlTextInput('link[Attributes][InternParameter]', 58, $_internParameter, '', 'onchange="setHot();"', 'text', 520, 0) . '</td>
-					</tr>
-				</table>';
-
-		return $pre . $content . $post;
+		return '<div id="mode_intern" style="display: none;">'
+				. '<table border="0" cellpadding="0" cellspacing="0">
+	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+	<tr><td>' . $selector . '</td></tr>
+	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+	<tr><td class="defaultfont">' . g_l('modules_glossary', '[parameter]') . '</td></tr>
+	<tr><td>' . we_html_tools::htmlTextInput('link[Attributes][InternParameter]', 58, $_internParameter, '', 'onchange="setHot();"', 'text', 520, 0) . '</td></tr>
+</table></div>';
 	}
 
 	function getHTMLExtern(&$weGlossaryFrames){
-
-		$parameter = g_l('modules_glossary', '[parameter]');
-
 		if($weGlossaryFrames->View->Glossary->Type == we_glossary_glossary::TYPE_LINK && $weGlossaryFrames->View->Glossary->getAttribute('mode') == "extern"){
 			$_url = $weGlossaryFrames->View->Glossary->getAttribute('ExternUrl');
 			$_parameter = $weGlossaryFrames->View->Glossary->getAttribute('ExternParameter');
@@ -650,28 +436,21 @@ class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 		<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
 		<tr><td>' . we_html_tools::htmlTextInput('link[Attributes][ExternUrl]', 58, $_url, '', 'onchange="setHot();"', 'text', 520) . '</td></tr>
 		<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
-		<tr><td class="defaultfont">' . $parameter . '</td></tr>
+		<tr><td class="defaultfont">' . g_l('modules_glossary', '[parameter]') . '</td></tr>
 		<tr><td>' . we_html_tools::htmlTextInput('link[Attributes][ExternParameter]', 58, $_parameter, '', 'onchange="setHot();"', 'text', 520, 0) . '</td></tr>
 	</table>
 </div>';
 	}
 
 	function getHTMLObject(&$weGlossaryFrames){
-		$workspace = g_l('modules_glossary', '[workspace]');
-		$parameter = g_l('modules_glossary', '[parameter]');
-
 		if($weGlossaryFrames->View->Glossary->Type == we_glossary_glossary::TYPE_LINK && $weGlossaryFrames->View->Glossary->getAttribute('mode') == "object"){
 			$_linkPath = $weGlossaryFrames->View->Glossary->getAttribute('ObjectLinkPath');
 			$_linkID = $weGlossaryFrames->View->Glossary->getAttribute('ObjectLinkID');
 			$_workspaceID = $weGlossaryFrames->View->Glossary->getAttribute('ObjectWorkspaceID');
 			$_parameter = $weGlossaryFrames->View->Glossary->getAttribute('ObjectParameter');
 		} else {
-			$_linkPath = "";
-			$_linkID = "";
-			$_workspaceID = "";
-			$_parameter = "";
+			$_linkPath = $_linkID = $_workspaceID = $_parameter = "";
 		}
-
 
 		$_rootDirID = 0;
 		//javascript:we_cmd('openDocselector',document.we_form.elements['link[Attributes][ObjectLinkID]'].value,'".OBJECT_FILES_TABLE."','document.we_form.elements[\\'link[Attributes][ObjectLinkID]\\'].value','document.we_form.elements[\\'link[Attributes][ObjectLinkPath]\\'].value','opener.we_cmd(\\'populateWorkspaces\\');','".session_id()."','$_rootDirID','objectFile',".(permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1)."
@@ -681,9 +460,7 @@ class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 		$_cmd = defined('OBJECT_TABLE') ? "javascript:we_cmd('openDocselector',document.we_form.elements['link[Attributes][ObjectLinkID]'].value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$_rootDirID','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")" : '';
 		$_button = we_html_button::create_button('select', $_cmd, true, 100, 22, '', '', false);
 
-		$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][ObjectLinkPath]', 58, $_linkPath, '', 'onchange="setHot();" readonly', 'text', 400, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(array('name' => 'link[Attributes][ObjectLinkID]', "value" => $_linkID)), we_html_tools::getPixel(20, 4), $_button
-		);
-
+		$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][ObjectLinkPath]', 58, $_linkPath, '', 'onchange="setHot();" readonly', 'text', 400, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(array('name' => 'link[Attributes][ObjectLinkID]', "value" => $_linkID)), we_html_tools::getPixel(20, 4), $_button);
 
 		$_wsid = ($this->View->Glossary->getAttribute('ObjectLinkID') != '' ? we_navigation_dynList::getWorkspacesForObject($this->View->Glossary->getAttribute('ObjectLinkID')) : array());
 
@@ -695,36 +472,18 @@ class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 	</table>
 	<div id="ObjectWorkspaceID" style="display: block;">
 		<table border="0" cellpadding="0" cellspacing="0">
-			<tr><td class="defaultfont">' . $workspace . '</td></tr>
+			<tr><td class="defaultfont">' . g_l('modules_glossary', '[workspace]') . '</td></tr>
 			<tr><td>' . we_html_tools::htmlSelect('link[Attributes][ObjectWorkspaceID]', $_wsid, 0, $_workspaceID, false, 'style="width: ' . 520 . 'px; border: #AAAAAA solid 1px;" onChange="setHot();"', 'value') . '</td></tr>
 		</table>
 	</div>
 	<table border="0" cellpadding="0" cellspacing="0">
 		<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
-		<tr><td class="defaultfont">' . $parameter . '</td></tr>
+		<tr><td class="defaultfont">' . g_l('modules_glossary', '[parameter]') . '</td></tr>
 		<tr><td>' . we_html_tools::htmlTextInput('link[Attributes][ObjectParameter]', 58, $_parameter, '', 'onchange="setHot();"', 'text', 520, 0) . '</td></tr>
 	</table></div>';
 	}
 
 	function getHTMLCategory(&$weGlossaryFrames){
-
-		$mode = g_l('modules_glossary', '[link_selection]');
-		$catParameter = g_l('modules_glossary', '[parameter_name]');
-		$parameter = g_l('modules_glossary', '[parameter]');
-
-		$_modes = array(
-			'intern' => g_l('modules_glossary', '[link_intern]'),
-			'extern' => g_l('modules_glossary', '[link_extern]'),
-		);
-
-		$_linkPath = "/";
-		$_linkID = 0;
-		$_internLinkPath = "";
-		$_internLinkID = "";
-		$_modeCategory = 0;
-		$_url = "http://";
-		$_catParameter = "";
-		$_parameter = "";
 		if($weGlossaryFrames->View->Glossary->Type == we_glossary_glossary::TYPE_LINK && $weGlossaryFrames->View->Glossary->getAttribute('mode') == "category"){
 			$_linkPath = $weGlossaryFrames->View->Glossary->getAttribute('CategoryLinkPath');
 			$_linkID = $weGlossaryFrames->View->Glossary->getAttribute('CategoryLinkID');
@@ -734,6 +493,15 @@ class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 			$_url = $weGlossaryFrames->View->Glossary->getAttribute('CategoryUrl');
 			$_catParameter = $weGlossaryFrames->View->Glossary->getAttribute('CategoryCatParameter');
 			$_parameter = $weGlossaryFrames->View->Glossary->getAttribute('CategoryParameter');
+		} else {
+			$_linkPath = "/";
+			$_linkID = 0;
+			$_internLinkPath = "";
+			$_internLinkID = "";
+			$_modeCategory = 0;
+			$_url = "http://";
+			$_catParameter = "";
+			$_parameter = "";
 		}
 
 
@@ -765,8 +533,11 @@ class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 		<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
 		<tr><td>' . $selector1 . '</td></tr>
 		<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
-		<tr><td class="defaultfont">' . $mode . '</td></tr>
-		<tr><td>' . we_html_tools::htmlSelect("link[Attributes][modeCategory]", $_modes, 1, $_modeCategory, false, " onchange=\"setHot();showLinkModeCategory(this.value);\"", "value", 520) . '</td></tr>
+		<tr><td class="defaultfont">' . g_l('modules_glossary', '[link_selection]') . '</td></tr>
+		<tr><td>' . we_html_tools::htmlSelect("link[Attributes][modeCategory]", array(
+					'intern' => g_l('modules_glossary', '[link_intern]'),
+					'extern' => g_l('modules_glossary', '[link_extern]'),
+						), 1, $_modeCategory, false, " onchange=\"setHot();showLinkModeCategory(this.value);\"", "value", 520) . '</td></tr>
 		<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
 	</table>
 	<div id="mode_category_intern" style="display: none;">
@@ -781,10 +552,10 @@ class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 	</div>
 	<table border="0" cellpadding="0" cellspacing="0">
 		<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
-		<tr><td class="defaultfont">' . $catParameter . '</td></tr>
+		<tr><td class="defaultfont">' . g_l('modules_glossary', '[parameter_name]') . '</td></tr>
 		<tr><td>' . we_html_tools::htmlTextInput('link[Attributes][CategoryCatParameter]', 58, $_catParameter, '', 'onchange="setHot();"', 'text', 520) . '</td></tr>
 		<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
-		<tr><td class="defaultfont">' . $parameter . '</td></tr>
+		<tr><td class="defaultfont">' . g_l('modules_glossary', '[parameter]') . '</td></tr>
 		<tr><td>' . we_html_tools::htmlTextInput('link[Attributes][CategoryParameter]', 58, $_parameter, '', 'onchange="setHot();"', 'text', 520, 0) . '</td></tr>
 	</table></div>';
 	}
@@ -853,32 +624,22 @@ class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 	}
 
 	function getHTMLLinkAttributes(&$weGlossaryFrames){
-
-
-		$_parts = array();
-
-		$_parts[] = array(
-			'headline' => '',
-			'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_glossary', '[linkprops_desc]'), we_html_tools::TYPE_INFO, 520),
-			'space' => 120,
-			'noline' => 1
+		$_parts = array(
+			array(
+				'headline' => '',
+				'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_glossary', '[linkprops_desc]'), we_html_tools::TYPE_INFO, 520),
+				'space' => 120,
+				'noline' => 1
+			)
 		);
 
-		$_title = we_html_tools::htmlFormElementTable(
-				we_html_tools::htmlTextInput('link[Title]', 30, $weGlossaryFrames->View->Glossary->Title, '', 'onchange="setHot();"', 'text', 520), g_l('modules_glossary', '[title]')
-		);
+		$_title = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Title]', 30, $weGlossaryFrames->View->Glossary->Title, '', 'onchange="setHot();"', 'text', 520), g_l('modules_glossary', '[title]'));
 
-		$_anchor = we_html_tools::htmlFormElementTable(
-				we_html_tools::htmlTextInput('link[Attributes][anchor]', 30, $weGlossaryFrames->View->Glossary->getAttribute('anchor'), '', 'onchange="setHot();"', 'text', 520), g_l('modules_glossary', '[anchor]')
-		);
+		$_anchor = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][anchor]', 30, $weGlossaryFrames->View->Glossary->getAttribute('anchor'), '', 'onchange="setHot();"', 'text', 520), g_l('modules_glossary', '[anchor]'));
 
-		$_target = we_html_tools::htmlFormElementTable(
-				we_html_tools::targetBox('link[Attributes][target]', 30, (520 - 100), '', $weGlossaryFrames->View->Glossary->getAttribute('target'), '"setHot();"', 'text', 100), g_l('modules_glossary', '[target]')
-		);
+		$_target = we_html_tools::htmlFormElementTable(we_html_tools::targetBox('link[Attributes][target]', 30, (520 - 100), '', $weGlossaryFrames->View->Glossary->getAttribute('target'), '"setHot();"', 'text', 100), g_l('modules_glossary', '[target]'));
 
-		$_link = we_html_tools::htmlFormElementTable(
-				we_html_tools::htmlTextInput('link[Attributes][attribute]', 30, $weGlossaryFrames->View->Glossary->getAttribute('attribute'), '', 'onchange="setHot();"', 'text', 520), g_l('modules_glossary', '[link_attribute]')
-		);
+		$_link = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][attribute]', 30, $weGlossaryFrames->View->Glossary->getAttribute('attribute'), '', 'onchange="setHot();"', 'text', 520), g_l('modules_glossary', '[link_attribute]'));
 
 		$_parts[] = array(
 			'headline' => g_l('modules_glossary', '[attributes]'),
@@ -898,13 +659,9 @@ class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 			'noline' => 1
 		);
 
-		$_accesskey = we_html_tools::htmlFormElementTable(
-				we_html_tools::htmlTextInput('link[Attributes][accesskey]', 30, $weGlossaryFrames->View->Glossary->getAttribute('accesskey'), '', 'onchange="setHot();"', 'text', 520), g_l('modules_glossary', '[accesskey]')
-		);
+		$_accesskey = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][accesskey]', 30, $weGlossaryFrames->View->Glossary->getAttribute('accesskey'), '', 'onchange="setHot();"', 'text', 520), g_l('modules_glossary', '[accesskey]'));
 
-		$_tabindex = we_html_tools::htmlFormElementTable(
-				we_html_tools::htmlTextInput('link[Attributes][tabindex]', 30, $weGlossaryFrames->View->Glossary->getAttribute('tabindex'), '', 'onchange="setHot();"', 'text', 520), g_l('modules_glossary', '[tabindex]')
-		);
+		$_tabindex = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][tabindex]', 30, $weGlossaryFrames->View->Glossary->getAttribute('tabindex'), '', 'onchange="setHot();"', 'text', 520), g_l('modules_glossary', '[tabindex]'));
 
 		$_parts[] = array(
 			'headline' => g_l('modules_glossary', '[keyboard]'),
@@ -927,43 +684,23 @@ class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 
 		$_popup = new we_html_table(array('cellpadding' => 5, 'cellspacing' => 0), 4, 4);
 
-		$_popup->setCol(0, 0, array('colspan' => 2), we_html_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_open'), 'link[Attributes][popup_open]', g_l('modules_glossary', '[popup_open]'))
-		);
-		$_popup->setCol(0, 2, array('colspan' => 2), we_html_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_center'), 'link[Attributes][popup_center]', g_l('modules_glossary', '[popup_center]'))
-		);
+		$_popup->setCol(0, 0, array('colspan' => 2), we_html_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_open'), 'link[Attributes][popup_open]', g_l('modules_glossary', '[popup_open]')));
+		$_popup->setCol(0, 2, array('colspan' => 2), we_html_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_center'), 'link[Attributes][popup_center]', g_l('modules_glossary', '[popup_center]')));
 
-		$_popup->setCol(1, 0, array(), we_html_tools::htmlFormElementTable(
-				we_html_tools::htmlTextInput('link[Attributes][popup_xposition]', 5, $weGlossaryFrames->View->Glossary->getAttribute('popup_xposition'), '', 'onchange="setHot();"', 'text', $_input_width), g_l('modules_glossary', '[popup_x]')
-			)
-		);
-		$_popup->setCol(1, 1, array(), we_html_tools::htmlFormElementTable(
-				we_html_tools::htmlTextInput('link[Attributes][popup_yposition]', 5, $weGlossaryFrames->View->Glossary->getAttribute('popup_yposition'), '', 'onchange="setHot();"', 'text', $_input_width), g_l('modules_glossary', '[popup_y]')
-			)
-		);
-		$_popup->setCol(1, 2, array(), we_html_tools::htmlFormElementTable(
-				we_html_tools::htmlTextInput('link[Attributes][popup_width]', 5, $weGlossaryFrames->View->Glossary->getAttribute('popup_width'), '', 'onchange="setHot();"', 'text', $_input_width), g_l('modules_glossary', '[popup_width]')
-			)
-		);
+		$_popup->setCol(1, 0, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][popup_xposition]', 5, $weGlossaryFrames->View->Glossary->getAttribute('popup_xposition'), '', 'onchange="setHot();"', 'text', $_input_width), g_l('modules_glossary', '[popup_x]')));
+		$_popup->setCol(1, 1, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][popup_yposition]', 5, $weGlossaryFrames->View->Glossary->getAttribute('popup_yposition'), '', 'onchange="setHot();"', 'text', $_input_width), g_l('modules_glossary', '[popup_y]')));
+		$_popup->setCol(1, 2, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][popup_width]', 5, $weGlossaryFrames->View->Glossary->getAttribute('popup_width'), '', 'onchange="setHot();"', 'text', $_input_width), g_l('modules_glossary', '[popup_width]')));
 
-		$_popup->setCol(1, 3, array(), we_html_tools::htmlFormElementTable(
-				we_html_tools::htmlTextInput('link[Attributes][popup_height]', 5, $weGlossaryFrames->View->Glossary->getAttribute('popup_height'), '', 'onchange="setHot();"', 'text', $_input_width), g_l('modules_glossary', '[popup_height]')
-			)
-		);
+		$_popup->setCol(1, 3, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][popup_height]', 5, $weGlossaryFrames->View->Glossary->getAttribute('popup_height'), '', 'onchange="setHot();"', 'text', $_input_width), g_l('modules_glossary', '[popup_height]')));
 
 
-		$_popup->setCol(2, 0, array(), we_html_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_status'), 'link[Attributes][popup_status]', g_l('modules_glossary', '[popup_status]'))
-		);
-		$_popup->setCol(2, 1, array(), we_html_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_scrollbars'), 'link[Attributes][popup_scrollbars]', g_l('modules_glossary', '[popup_scrollbars]'))
-		);
-		$_popup->setCol(2, 2, array(), we_html_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_menubar'), 'link[Attributes][popup_menubar]', g_l('modules_glossary', '[popup_menubar]'))
-		);
+		$_popup->setCol(2, 0, array(), we_html_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_status'), 'link[Attributes][popup_status]', g_l('modules_glossary', '[popup_status]')));
+		$_popup->setCol(2, 1, array(), we_html_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_scrollbars'), 'link[Attributes][popup_scrollbars]', g_l('modules_glossary', '[popup_scrollbars]')));
+		$_popup->setCol(2, 2, array(), we_html_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_menubar'), 'link[Attributes][popup_menubar]', g_l('modules_glossary', '[popup_menubar]')));
 
-		$_popup->setCol(3, 0, array(), we_html_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_resizable'), 'link[Attributes][popup_resizable]', g_l('modules_glossary', '[popup_resizable]'))
-		);
-		$_popup->setCol(3, 1, array(), we_html_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_location'), 'link[Attributes][popup_location]', g_l('modules_glossary', '[popup_location]'))
-		);
-		$_popup->setCol(3, 2, array(), we_html_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_toolbar'), 'link[Attributes][popup_toolbar]', g_l('modules_glossary', '[popup_toolbar]'))
-		);
+		$_popup->setCol(3, 0, array(), we_html_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_resizable'), 'link[Attributes][popup_resizable]', g_l('modules_glossary', '[popup_resizable]')));
+		$_popup->setCol(3, 1, array(), we_html_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_location'), 'link[Attributes][popup_location]', g_l('modules_glossary', '[popup_location]')));
+		$_popup->setCol(3, 2, array(), we_html_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_toolbar'), 'link[Attributes][popup_toolbar]', g_l('modules_glossary', '[popup_toolbar]')));
 
 
 		$_parts[] = array(

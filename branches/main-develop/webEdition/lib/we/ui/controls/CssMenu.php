@@ -61,7 +61,7 @@ class we_ui_controls_CssMenu extends we_ui_abstract_AbstractElement{
 
 	protected function _renderHTML(){
 		return $this->getJS() . $this->getHTMLMenu(false);
-		
+
 	}
 
 	function getJS(){
@@ -109,10 +109,10 @@ class we_ui_controls_CssMenu extends we_ui_abstract_AbstractElement{
 		if(!$showAltMenu){
 			$i = 0;
 			foreach($this->entries as $id => $m){
-				if(we_hasPerm('ADMINISTRATOR')){
+				if(permissionhandler::hasPerm('ADMINISTRATOR')){
 					$m['enabled'] = 1;
 				}
-				if(!we_hasPerm('ADMINISTRATOR') && (isset($m["perm"]) && $m["perm"]) != ""){
+				if(!permissionhandler::hasPerm('ADMINISTRATOR') && (isset($m["perm"]) && $m["perm"]) != ""){
 					$set = array();
 					$or = explode("||", $m["perm"]);
 					foreach($or as $k => $v){
