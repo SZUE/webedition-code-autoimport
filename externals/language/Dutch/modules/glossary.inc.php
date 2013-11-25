@@ -1,6 +1,7 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_modules_glossary=array(
+	'Fullword'=>'Replace only the whole word',
 	'abbreviation'=>'Afkorting',
 	'abbreviation_description'=>'Een afkorting is een kortere vorm van een woord. Specifieker, een afkorting bestaat uit een letter of een groep letters die uit een woord gehaald zijn en getoond worden om een woord af te korten. Bijvoorbeeld, het woord "Omschrijving" kan afgekort worden als "afschr."',
 	'accesskey'=>'Toegangsknop',
