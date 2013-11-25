@@ -121,11 +121,11 @@ function save(){
 			refresh(false);
 		}
 		" . we_message_reporting::getShowMessageCall(
-		g_l('cockpit', '[prefs_saved_successfully]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
+				g_l('cockpit', '[prefs_saved_successfully]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
 		self.close();
 	} else {
 		" . we_message_reporting::getShowMessageCall(
-		g_l('cockpit', '[no_type_selected]'), we_message_reporting::WE_MESSAGE_ERROR) . "
+				g_l('cockpit', '[no_type_selected]'), we_message_reporting::WE_MESSAGE_ERROR) . "
 	}
 }
 
@@ -143,7 +143,7 @@ function preview(){
 		refresh(true);
 	} else {
 		" . we_message_reporting::getShowMessageCall(
-		g_l('cockpit', '[no_type_selected]'), we_message_reporting::WE_MESSAGE_ERROR) . "
+				g_l('cockpit', '[no_type_selected]'), we_message_reporting::WE_MESSAGE_ERROR) . "
 	}
 }
 
@@ -163,14 +163,14 @@ $idname = 'UserIDTmp';
 $users = makeArrayFromCSV($sUsers);
 
 $delallbut = we_button::create_button(
-		"delete_all", "javascript:delUser(-1)", true, -1, -1, "", "", (count($users)) ? false : true);
+				"delete_all", "javascript:delUser(-1)", true, -1, -1, "", "", (count($users)) ? false : true);
 
 //javascript:opener.getUser('browse_users','top.weEditorFrameController.getActiveDocumentReference()._propsDlg[\\'" . $_REQUEST['we_cmd'][0] . "\\'].document.forms[0].elements[\\'UserIDTmp\\'].value','top.weEditorFrameController.getActiveDocumentReference()._propsDlg[\\'" . $_REQUEST['we_cmd'][0] . "\\'].document.forms[0].elements[\\'UserNameTmp\\'].value','','','opener.top.weEditorFrameController.getActiveDocumentReference()._propsDlg[\\'" . $_REQUEST['we_cmd'][0] . "\\'].addUserToField()','','',1);
 $wecmdenc1 = we_cmd_enc("top.weEditorFrameController.getActiveDocumentReference()._propsDlg['" . $_REQUEST['we_cmd'][0] . "'].document.forms[0].elements['UserIDTmp'].value");
 $wecmdenc2 = we_cmd_enc("top.weEditorFrameController.getActiveDocumentReference()._propsDlg['" . $_REQUEST['we_cmd'][0] . "'].document.forms[0].elements['UserNameTmp'].value");
 $wecmdenc5 = we_cmd_enc("opener.top.weEditorFrameController.getActiveDocumentReference()._propsDlg['" . $_REQUEST['we_cmd'][0] . "'].addUserToField();");
 $addbut = we_button::create_button(
-		"add", "javascript:opener.getUser('browse_users','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $wecmdenc5 . "','','',1);");
+				"add", "javascript:opener.getUser('browse_users','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $wecmdenc5 . "','','',1);");
 
 $content = '<table border="0" cellpadding="0" cellspacing="0" width="300">
 <tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(254, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>';
@@ -180,69 +180,57 @@ if(!empty($users)){
 	foreach($users as $user){
 		$foo = getHash("SELECT ID,Path,Icon FROM " . USER_TABLE . " WHERE ID=" . intval($user), $db);
 		$content .= '<tr><td><img src="' . ICON_DIR . $foo["Icon"] . '" width="16" height="18" /></td><td class="defaultfont">' . $foo["Path"] . '</td><td>' . we_button::create_button(
-				"image:btn_function_trash", "javascript:delUser('" . $user . "');") . '</td></tr>';
+						"image:btn_function_trash", "javascript:delUser('" . $user . "');") . '</td></tr>';
 	}
-} else{
+} else {
 	$content .= '<tr><td><img src="' . ICON_DIR . "user.gif" . '" width="16" height="18" /></td><td class="defaultfont">' . g_l('cockpit', '[all_users]') . '</td><td></td><td></td></tr>';
 }
 $content .= '<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(254, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr></table>';
 
 $sUsrContent = '<table border="0" cellpadding="0" cellspacing="0" width="300"><tr><td>' . we_html_element::htmlDiv(
-		array(
-		"class" => "multichooser"
-		), $content) . we_html_element::htmlHidden(array(
-		"name" => "UserNameTmp", "value" => ""
-	)) . we_html_element::htmlHidden(array(
-		"name" => "UserIDTmp", "value" => ""
-	)) . '</td></tr><tr><td align="right">' . we_html_tools::getPixel(2, 8) . we_html_element::htmlBr() . we_button::create_button_table(
-		array(
-			$delallbut, $addbut
-	)) . '</td></tr></table>';
+				array(
+			"class" => "multichooser"
+				), $content) . we_html_element::htmlHidden(array(
+			"name" => "UserNameTmp", "value" => ""
+		)) . we_html_element::htmlHidden(array(
+			"name" => "UserIDTmp", "value" => ""
+		)) . '</td></tr><tr><td align="right">' . we_html_tools::getPixel(2, 8) . we_html_element::htmlBr() . we_button::create_button_table(
+				array(
+					$delallbut, $addbut
+		)) . '</td></tr></table>';
 
 $oShowUser = we_html_tools::htmlFormElementTable($sUsrContent, g_l('cockpit', '[following_users]'), "left", "defaultfont");
 
 // Typ block
-while(strlen($sType) < 4) {
+while(strlen($sType) < 4){
 	$sType .= "0";
 }
 if($sType{0} == "0" && $sType{1} == "0" && $sType{2} == "0" && $sType{3} == "0"){
 	$sType = "1111";
 }
-if(we_hasPerm('CAN_SEE_DOCUMENTS')){
-	$oChbxDocs = we_forms::checkbox(
-			$value = 0, $checked = $sType{0}, $name = "chbx_type", $text = g_l('cockpit', '[documents]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined('FILE_TABLE') && we_hasPerm("CAN_SEE_DOCUMENTS")), $description = "", $type = 0, $width = 0);
-} else{
-	$oChbxDocs = "";
-}
-if(we_hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
-	$oChbxTmpl = we_forms::checkbox(
-			$value = 0, $checked = $sType{1}, $name = "chbx_type", $text = g_l('cockpit', '[templates]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined("TEMPLATES_TABLE") && we_hasPerm('CAN_SEE_TEMPLATES')), $description = "", $type = 0, $width = 0);
-} else{
-	$oChbxTmpl = "";
-}
-if(we_hasPerm('CAN_SEE_OBJECTS')){
-	$oChbxObjs = we_forms::checkbox(
-			$value = 0, $checked = $sType{2}, $name = "chbx_type", $text = g_l('cockpit', '[objects]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined("OBJECT_FILES_TABLE") && we_hasPerm('CAN_SEE_OBJECTFILES')), $description = "", $type = 0, $width = 0);
-} else{
-	$oChbxObjs = "";
-}
-if(we_hasPerm('CAN_SEE_CLASSES') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
-	$oChbxCls = we_forms::checkbox(
-			$value = 0, $checked = $sType{3}, $name = "chbx_type", $text = g_l('cockpit', '[classes]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined("OBJECT_TABLE") && we_hasPerm('CAN_SEE_OBJECTS')), $description = "", $type = 0, $width = 0);
-} else{
-	$oChbxCls = "";
-}
+$oChbxDocs = (we_hasPerm('CAN_SEE_DOCUMENTS') ?
+				we_forms::checkbox($value = 0, $checked = $sType{0}, $name = "chbx_type", $text = g_l('cockpit', '[documents]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined('FILE_TABLE') && we_hasPerm("CAN_SEE_DOCUMENTS")), $description = "", $type = 0, $width = 0) :
+				'');
+$oChbxTmpl = (we_hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE ?
+				we_forms::checkbox($value = 0, $checked = $sType{1}, $name = "chbx_type", $text = g_l('cockpit', '[templates]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined("TEMPLATES_TABLE") && we_hasPerm('CAN_SEE_TEMPLATES')), $description = "", $type = 0, $width = 0) :
+				'');
+$oChbxObjs = (we_hasPerm('CAN_SEE_OBJECTS') ?
+				we_forms::checkbox($value = 0, $checked = $sType{2}, $name = "chbx_type", $text = g_l('cockpit', '[objects]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined("OBJECT_FILES_TABLE") && we_hasPerm('CAN_SEE_OBJECTFILES')), $description = "", $type = 0, $width = 0) :
+				'');
+$oChbxCls = (we_hasPerm('CAN_SEE_CLASSES') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE ?
+				we_forms::checkbox($value = 0, $checked = $sType{3}, $name = "chbx_type", $text = g_l('cockpit', '[classes]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined("OBJECT_TABLE") && we_hasPerm('CAN_SEE_OBJECTS')), $description = "", $type = 0, $width = 0) :
+				'');
 
 $oDbTableType = new we_html_table(array(
 	"border" => 0, "cellpadding" => 0, "cellspacing" => 0
-	), 1, 3);
+		), 1, 3);
 $oDbTableType->setCol(0, 0, null, $oChbxDocs . $oChbxTmpl);
 $oDbTableType->setCol(0, 1, null, we_html_tools::getPixel(10, 1));
 $oDbTableType->setCol(0, 2, null, $oChbxObjs . $oChbxCls);
 
 $oSctDate = new we_html_select(array(
 	"name" => "sct_date", "size" => 1, "class" => "defaultfont", "onChange" => ""
-	));
+		));
 $aLangDate = array(
 	g_l('cockpit', '[all]'),
 	g_l('cockpit', '[today]'),
@@ -269,30 +257,20 @@ $oSctNumEntries->selectOption($iAmountEntries);
 
 $oSelMaxEntries = new we_html_table(array(
 	"height" => "100%", "border" => 0, "cellpadding" => 0, "cellspacing" => 0
-	), 1, 3);
+		), 1, 3);
 $oSelMaxEntries->setCol(0, 0, array(
 	"valign" => "middle", "class" => "defaultfont"
-	), g_l('cockpit', '[max_amount_entries]'));
+		), g_l('cockpit', '[max_amount_entries]'));
 $oSelMaxEntries->setCol(0, 1, null, we_html_tools::getPixel(5, 1));
-$oSelMaxEntries->setCol(0, 2, array(
-	"valign" => "middle"
-	), $oSctNumEntries->getHTML());
+$oSelMaxEntries->setCol(0, 2, array("valign" => "middle"), $oSctNumEntries->getHTML());
 
 $show = $oSelMaxEntries->getHTML() . we_html_tools::getPixel(1, 5) . $oChbxShowMfdBy . $oChbxShowDate . we_html_tools::getPixel(1, 5) . we_html_element::htmlBr() . $oShowUser;
 
 $parts = array(
-	array(
-		"headline" => g_l('cockpit', '[type]'), "html" => $oDbTableType->getHTML(), "space" => 80
-	),
-	array(
-		"headline" => g_l('cockpit', '[date]'), "html" => $oSctDate->getHTML(), "space" => 80
-	),
-	array(
-		"headline" => g_l('cockpit', '[display]'), "html" => $show, "space" => 80
-	),
-	array(
-		"headline" => "", "html" => $oSelCls->getHTML(), "space" => 0
-	)
+	array("headline" => g_l('cockpit', '[type]'), "html" => $oDbTableType->getHTML(), "space" => 80),
+	array("headline" => g_l('cockpit', '[date]'), "html" => $oSctDate->getHTML(), "space" => 80),
+	array("headline" => g_l('cockpit', '[display]'), "html" => $show, "space" => 80),
+	array("headline" => "", "html" => $oSelCls->getHTML(), "space" => 0)
 );
 
 $save_button = we_button::create_button("save", "javascript:save();", false, -1, -1);
@@ -301,14 +279,14 @@ $cancel_button = we_button::create_button("close", "javascript:exit_close();");
 $buttons = we_button::position_yes_no_cancel($save_button, $preview_button, $cancel_button);
 
 $sTblWidget = we_multiIconBox::getHTML(
-		"mfdProps", "100%", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[last_modified]'), "", 390);
+				"mfdProps", "100%", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[last_modified]'), "", 390);
 
 print we_html_element::htmlDocType() . we_html_element::htmlHtml(
-		we_html_element::htmlHead(
-			we_html_tools::getHtmlInnerHead(g_l('cockpit', '[last_modified]')) . STYLESHEET . we_html_element::cssElement(
-				"select{border:#AAAAAA solid 1px}") . we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
-			we_html_element::jsElement(
-				$jsPrefs . $jsCode . we_button::create_state_changer(false))) . we_html_element::htmlBody(
-			array(
-			"class" => "weDialogBody", "onload" => "init();"
-			), we_html_element::htmlForm("", $sTblWidget)));
+				we_html_element::htmlHead(
+						we_html_tools::getHtmlInnerHead(g_l('cockpit', '[last_modified]')) . STYLESHEET . we_html_element::cssElement(
+								"select{border:#AAAAAA solid 1px}") . we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
+						we_html_element::jsElement(
+								$jsPrefs . $jsCode . we_button::create_state_changer(false))) . we_html_element::htmlBody(
+						array(
+					"class" => "weDialogBody", "onload" => "init();"
+						), we_html_element::htmlForm("", $sTblWidget)));
