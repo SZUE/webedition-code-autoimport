@@ -38,7 +38,7 @@ $bTypeCls = we_hasPerm('CAN_SEE_CLASSES') && ((bool) $sTypeBinary{$pos++});
 
 $iDate = intval($aCols[1]);
 
-$doctable = $where = $_users_where = $_ws = array();
+$doctable = $where = $_users_where = $workspace = array();
 
 
 switch($iDate){
@@ -91,11 +91,19 @@ if($aUsers){
 
 if(defined("FILE_TABLE") && $bTypeDoc && we_hasPerm('CAN_SEE_DOCUMENTS')){
 	$doctable[] = '"' . stripTblPrefix(FILE_TABLE) . '"';
-	$_ws[FILE_TABLE] = get_ws(FILE_TABLE);
+	$paths = array();
+	foreach(makeArrayFromCSV(get_ws(FILE_TABLE)) as $id){
+		$paths[] = 'Path LIKE ("' . $db->escape(id_to_path($id, $table)) . '%")';
+	}
+	$workspace[FILE_TABLE] = implode(' OR ', $paths);
 }
 if(defined("OBJECT_FILES_TABLE") && $bTypeObj && we_hasPerm('CAN_SEE_OBJECTFILES')){
 	$doctable[] = '"' . stripTblPrefix(OBJECT_FILES_TABLE) . '"';
-	$_ws[OBJECT_FILES_TABLE] = get_ws(OBJECT_FILES_TABLE);
+	$paths = array();
+	foreach(makeArrayFromCSV(get_ws(OBJECT_FILES_TABLE)) as $id){
+		$paths[] = 'Path LIKE ("' . $db->escape(id_to_path($id, $table)) . '%")';
+	}
+	$workspace[OBJECT_FILES_TABLE] = implode(' OR ', $paths);
 }
 if(defined("TEMPLATES_TABLE") && $bTypeTpl && we_hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
 	$doctable[] = '"' . stripTblPrefix(TEMPLATES_TABLE) . '"';
@@ -114,60 +122,48 @@ if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 $where = ($where ? ' WHERE ' . implode(' AND ', $where) : '');
 
 $lastModified = '<table cellspacing="0" cellpadding="0" border="0">';
-$_count = 10;
-$i = $j = $k = 0;
-$_db = new DB_WE();
-while($j < $iMaxItems){
-	$GLOBALS['DB_WE']->query('SELECT DID,UserName,DocumentTable,MAX(ModDate) AS m FROM ' . HISTORY_TABLE . $where . ' GROUP BY DID,DocumentTable  ORDER BY m DESC LIMIT ' . ($k++ * $_count) . ' , ' . ($_count));
-	$num_rows = $GLOBALS['DB_WE']->num_rows();
-	if($num_rows == 0){
-		break;
-	}
-	while($GLOBALS['DB_WE']->next_record()){
-		$_table = TBL_PREFIX . $GLOBALS['DB_WE']->f('DocumentTable');
-		$_paths = array();
-		$_bool_ot = (defined('OBJECT_TABLE')) ? (($_table != OBJECT_TABLE) ? true : false) : true;
-		if(!we_hasPerm('ADMINISTRATOR') || ($_table != TEMPLATES_TABLE && $_bool_ot)){
-			if(isset($_ws[$_table])){
-				$_wsa = makeArrayFromCSV($_ws[$_table]);
-				foreach($_wsa as $_id){
-					$_paths[] = 'Path LIKE ("' . $GLOBALS['DB_WE']->escape(id_to_path($_id, $_table)) . '%")';
-				}
-			}
-		}
-		$_hash = getHash('SELECT ID,Path,Icon,Text,ContentType,ModDate,CreatorID,Owners,RestrictOwners FROM ' . $GLOBALS['DB_WE']->escape($_table) . ' WHERE ID = ' . $GLOBALS['DB_WE']->f('DID') . (!empty($_paths) ? (' AND (' . implode(' OR ', $_paths) . ')') : '') . ' ORDER BY ModDate LIMIT 1', $_db);
-		if(!empty($_hash)){
-			$_show = true;
-			$_bool_oft = (defined('OBJECT_FILES_TABLE')) ? (($_table == OBJECT_FILES_TABLE) ? true : false) : true;
+$count = $iMaxItems;
+$j = 0;
+$db = $GLOBALS['DB_WE'];
+$order = $tables = $data = array();
+$db->query('SELECT DID,UserName,DocumentTable,MAX(ModDate) AS m,!ISNULL(l.ID) AS isOpen FROM ' . HISTORY_TABLE . ' LEFT JOIN ' . LOCK_TABLE . ' l ON l.ID=DID AND l.tbl=DocumentTable AND l.UserID!=' . $_SESSION['user']['ID'] . ' ' . $where . ' GROUP BY DID,DocumentTable  ORDER BY m DESC LIMIT 0,' . ($iMaxItems + 30));
+while($db->next_record(MYSQL_ASSOC)){
+	$order[] = array($db->f('DocumentTable'), $db->f('DID'));
+	$tables[$db->f('DocumentTable')][] = $db->f('DID');
+	$data[$db->f('DocumentTable')][$db->f('DID')] = array($db->getRecord());
+}
+foreach($tables as $ctable => $ids){
+	$table = addTblPrefix($ctable);
+	$paths = ((!we_hasPerm('ADMINISTRATOR') || ($table != TEMPLATES_TABLE && (defined('OBJECT_TABLE') ? ($table != OBJECT_TABLE) : true))) && isset($workspace[$table]) ?
+			$workspace[$table] : '');
 
-			if($_table == FILE_TABLE || $_bool_oft){
-				$_show = we_history::userHasPerms($_hash['CreatorID'], $_hash['Owners'], $_hash['RestrictOwners']);
-			}
-			if($_show){
-				$user = f('SELECT UserName FROM ' . HISTORY_TABLE . ' WHERE DID=' . $GLOBALS['DB_WE']->f('DID') . ' AND DocumentTable="' . $GLOBALS['DB_WE']->f('DocumentTable') . '" AND ModDate="' . $GLOBALS['DB_WE']->f('m') . '" LIMIT 1', 'UserName', $_db);
-				if($i + 1 <= $iMaxItems){
-					++$i;
-					++$j;
-					$isOpen = f('SELECT 1 AS a FROM ' . LOCK_TABLE . ' WHERE ID=' . $GLOBALS['DB_WE']->f('DID') . ' AND tbl="' . $GLOBALS['DB_WE']->f('DocumentTable') . '" AND UserID!=' . $_SESSION['user']['ID'], 'a', $_db);
-					$lastModified .= '<tr><td width="20" height="20" valign="middle" nowrap><img src="' . ICON_DIR . $_hash['Icon'] . '" />' . we_html_tools::getPixel(4, 1) . '</td>' .
-						'<td valign="middle" class="middlefont" ' . ($isOpen ? 'style="color:red;"' : '') . '>' .
-						($isOpen ? '' : '<a href="javascript:top.weEditorFrameController.openDocument(\'' . $_table . '\',\'' . $_hash['ID'] . '\',\'' . $_hash['ContentType'] . '\');" title="' . $_hash['Path'] . '" style="color:#000000;text-decoration:none;">') . $_hash['Path'] . ($isOpen ? '' : '</a>') . '</td>';
-					if($bMfdBy){
-						$lastModified .= '<td>' . we_html_tools::getPixel(5, 1) . '</td><td class="middlefont" nowrap>' . $user . (($bDateLastMfd) ? ',' : '') . '</td>';
-					}
-					if($bDateLastMfd){
-						$lastModified .= '<td>' . we_html_tools::getPixel(5, 1) . '</td><td class="middlefont" nowrap>' . date(g_l('date', '[format][default]'), $_hash['ModDate']) . '</td>';
-					}
-					$lastModified .= '</tr>';
-				} else {
-					break;
-				}
-			} else {
-				$j++;
-			}
-		} else {
-			break;
+	$db->query('SELECT ID,Path,Icon,Text,ContentType,ModDate,CreatorID,Owners,RestrictOwners FROM ' . $db->escape($table) . ' WHERE ID IN(' . implode(',', $ids) . ')' . ($paths ? (' AND (' . $paths . ')') : ''));
+	while($db->next_record(MYSQL_ASSOC)){
+		$data[$ctable][$db->f('ID')][] = $db->getRecord();
+	}
+}
+$max = count($order);
+for($i = 0; $j < $iMaxItems && $i < $max; ++$i){
+	list($ctable, $id) = $order[$i];
+	if(isset($data[$ctable][$id][1])){
+		list($hist, $file) = $data[$ctable][$id];
+		$table = addTblPrefix($ctable);
+
+		$show = ($table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && ($table == OBJECT_FILES_TABLE)) ?
+				we_history::userHasPerms($file['CreatorID'], $file['Owners'], $file['RestrictOwners']) :
+				true);
+
+		if($show){
+			$isOpen = $hist['isOpen'];
+			$lastModified .= '<tr><td width="20" height="20" valign="middle" nowrap><img src="' . ICON_DIR . $file['Icon'] . '" />' . we_html_tools::getPixel(4, 1) . '</td>' .
+				'<td valign="middle" class="middlefont" ' . ($isOpen ? 'style="color:red;"' : '') . '>' .
+				($isOpen ? '' : '<a href="javascript:top.weEditorFrameController.openDocument(\'' . $table . '\',\'' . $file['ID'] . '\',\'' . $file['ContentType'] . '\');" title="' . $file['Path'] . '" style="color:#000000;text-decoration:none;">') . $file['Path'] . ($isOpen ? '' : '</a>') . '</td>' .
+				($bMfdBy ? '<td>' . we_html_tools::getPixel(5, 1) . '</td><td class="middlefont" nowrap>' . $hist['UserName'] . (($bDateLastMfd) ? ',' : '') . '</td>' : '') .
+				($bDateLastMfd ? '<td>' . we_html_tools::getPixel(5, 1) . '</td><td class="middlefont" nowrap>' . date(g_l('date', '[format][default]'), $file['ModDate']) . '</td>' : '') .
+				'</tr>';
 		}
+
+		$j++;
 	}
 }
 
