@@ -117,13 +117,10 @@ if($doctable){
 }
 
 if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
-	$where[] = " ContentType!='folder' ";
+	$where[] = ' ContentType!="folder" ';
 }
 $where = ($where ? ' WHERE ' . implode(' AND ', $where) : '');
 
-$lastModified = '<table cellspacing="0" cellpadding="0" border="0">';
-$count = $iMaxItems;
-$j = 0;
 $db = $GLOBALS['DB_WE'];
 $order = $tables = $data = array();
 $db->query('SELECT DID,UserName,DocumentTable,MAX(ModDate) AS m,!ISNULL(l.ID) AS isOpen FROM ' . HISTORY_TABLE . ' LEFT JOIN ' . LOCK_TABLE . ' l ON l.ID=DID AND l.tbl=DocumentTable AND l.UserID!=' . $_SESSION['user']['ID'] . ' ' . $where . ' GROUP BY DID,DocumentTable  ORDER BY m DESC LIMIT 0,' . ($iMaxItems + 30));
@@ -142,8 +139,9 @@ foreach($tables as $ctable => $ids){
 		$data[$ctable][$db->f('ID')][] = $db->getRecord();
 	}
 }
-$max = count($order);
-for($i = 0; $j < $iMaxItems && $i < $max; ++$i){
+
+$lastModified = '<table cellspacing="0" cellpadding="0" border="0">';
+for($count = count($order), $j = 0, $i = 0; $j < $iMaxItems && $i < $count; ++$i){
 	list($ctable, $id) = $order[$i];
 	if(isset($data[$ctable][$id][1])){
 		list($hist, $file) = $data[$ctable][$id];
@@ -161,9 +159,9 @@ for($i = 0; $j < $iMaxItems && $i < $max; ++$i){
 				($bMfdBy ? '<td>' . we_html_tools::getPixel(5, 1) . '</td><td class="middlefont" nowrap>' . $hist['UserName'] . (($bDateLastMfd) ? ',' : '') . '</td>' : '') .
 				($bDateLastMfd ? '<td>' . we_html_tools::getPixel(5, 1) . '</td><td class="middlefont" nowrap>' . date(g_l('date', '[format][default]'), $file['ModDate']) . '</td>' : '') .
 				'</tr>';
-		}
 
-		$j++;
+			$j++;
+		}
 	}
 }
 
