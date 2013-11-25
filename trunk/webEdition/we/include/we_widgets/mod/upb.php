@@ -42,7 +42,7 @@ if($bTypeDoc && $bTypeObj){
 	if($bTypeDoc && defined("FILE_TABLE")){
 		$tbls[] = FILE_TABLE;
 	}
-	if($bTypeObj && defined("OBJECT_FILES_TABLE")){
+	if($bTypeObj && defined("OBJECT_FILES_TABLE")&&we_hasPerm("CAN_SEE_OBJECTFILES")){
 		$tbls[] = OBJECT_FILES_TABLE;
 	}
 }
