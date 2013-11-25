@@ -44,8 +44,9 @@ abstract class we_workflow_utility{
 		$doc = we_workflow_document::createNew($docID, $type, $workflowID, $userID, $desc);
 		if(isset($doc->ID)){
 			$doc->save();
-			if(isset($doc->steps[0]))
+			if(isset($doc->steps[0])){
 				$doc->steps[0]->start($desc);
+			}
 			//insert into document history
 			$doc->Log->logDocumentEvent($doc->ID, $userID, we_workflow_log::TYPE_DOC_INSERTED, $desc);
 			$doc->save();
@@ -91,13 +92,14 @@ abstract class we_workflow_utility{
 	public static function removeDocFromWorkflow($docID, $table, $userID, $desc){
 		$desc = nl2br($desc);
 		$doc = self::getWorkflowDocument($docID, $table);
-		if(isset($doc->ID))
+		if(isset($doc->ID)){
 			if($doc->finishWorkflow(1, $userID)){
 				$doc->save();
 				//insert into document history
 				$doc->Log->logDocumentEvent($doc->ID, $userID, we_workflow_log::TYPE_DOC_REMOVED, $desc);
 				return true;
 			}
+		}
 		return false;
 	}
 
@@ -174,7 +176,7 @@ abstract class we_workflow_utility{
 		}
 		$i = $doc->findLastActiveStep();
 		return (($i <= 0) || ($i < count($doc->steps) - 1) || ($doc->steps[$i]->findNumOfFinishedTasks() < count($doc->steps[$i]->tasks)) ?
-				false : true);
+						false : true);
 	}
 
 	/**
@@ -185,8 +187,9 @@ abstract class we_workflow_utility{
 		$doc = self::getWorkflowDocument($docID, $table);
 		if(isset($doc->ID)){
 			$i = $doc->findLastActiveStep();
-			if($i < 0)
+			if($i < 0){
 				return false;
+			}
 			$j = $doc->steps[$i]->findTaskByUser($userID);
 			if($j > -1){
 				return ($doc->steps[$i]->tasks[$j]->Status == we_workflow_documentTask::STATUS_UNKNOWN ? true : false);
@@ -210,7 +213,7 @@ abstract class we_workflow_utility{
 				return false;
 			}
 			$wStep = new we_workflow_step($doc->steps[$i]->workflowStepID);
-			foreach($wStep->tasks as $k => $v){
+			foreach($wStep->tasks as $v){
 				if($v->userID == $userID && $v->Edit){
 					return true;
 				}
@@ -253,7 +256,7 @@ abstract class we_workflow_utility{
 	private static function getWorkflowDocsFromWorkspace($table, $ws){
 		$wids = self::getAllWorkflowDocs($table);
 		$ids = array();
-
+		$db = new DB_WE();
 		foreach($wids as $id){
 			if(!in_array($id, $ids)){
 				if(is_array($ws) && !empty($ws)){
@@ -271,9 +274,7 @@ abstract class we_workflow_utility{
 
 	static function findLastActiveStep($docID, $table){
 		$doc = self::getWorkflowDocument($docID, $table);
-		if(!isset($doc->ID))
-			return false;
-		return $doc->findLastActiveStep();
+		return (!isset($doc->ID) ? false : $doc->findLastActiveStep());
 	}
 
 	static function getNumberOfSteps($docID, $table){
@@ -302,21 +303,20 @@ abstract class we_workflow_utility{
 			$userID = $userID ? $userID : $workflowDocument->userID;
 			$_SESSION['user']['ID'] = $userID;
 			if(!self::isWorkflowFinished($workflowDocument->document->ID, $workflowDocument->document->Table)){
-				$next = false;
 				$workflowStep = new we_workflow_step($db->f('stepID'));
-				$next = $workflowStep->timeAction == 1 ? true : false;
-				if($next){
+				if($workflowStep->timeAction == 1){
+					$ret.='(ID: ' . $workflowDocument->ID . ') ';
 					if($workflowDocument->findLastActiveStep() >= count($workflowDocument->steps) - 1){
 						if($workflowDocument->workflow->LastStepAutoPublish){
 							$workflowDocument->autopublish($userID, g_l('modules_workflow', '[auto_published]'), true);
-							$ret.="(ID: " . $workflowDocument->ID . ") " . g_l('modules_workflow', '[auto_published]') . "\n";
+							$ret.= g_l('modules_workflow', '[auto_published]') . "\n";
 						} else {
 							$workflowDocument->decline($userID, g_l('modules_workflow', '[auto_declined]'), true);
-							$ret.="(ID: " . $workflowDocument->ID . ") " . g_l('modules_workflow', '[auto_declined]') . "\n";
+							$ret.=g_l('modules_workflow', '[auto_declined]') . "\n";
 						}
 					} else {
 						$workflowDocument->approve($userID, g_l('modules_workflow', '[auto_approved]'), true);
-						$ret.="(ID: " . $workflowDocument->ID . ") " . g_l('modules_workflow', '[auto_approved]') . "\n";
+						$ret.= g_l('modules_workflow', '[auto_approved]') . "\n";
 					}
 				}
 				$workflowDocument->save();

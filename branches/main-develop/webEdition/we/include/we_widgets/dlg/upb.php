@@ -25,7 +25,6 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 include_once (WE_INCLUDES_PATH . 'we_widgets/dlg/prefs.inc.php');
 we_html_tools::protect();
-$parts = array();
 $jsCode = "
 var _oCsv_;
 var _sInitCsv_;
@@ -62,7 +61,7 @@ if(defined("FILE_TABLE") && defined("OBJECT_FILES_TABLE") && permissionhandler::
 		sBinary+=(oChbx[i].checked)?'1':'0';
 	}
 ";
-} else{
+} else {
 	$jsCode .= "
 	sBinary+=(oChbx.checked)?'10':'00';
 ";
@@ -80,7 +79,7 @@ function save(){
 	}
 	previewPrefs();
 	" . we_message_reporting::getShowMessageCall(
-		g_l('cockpit', '[prefs_saved_successfully]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
+				g_l('cockpit', '[prefs_saved_successfully]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
 	self.close();
 }
 
@@ -101,22 +100,22 @@ function exit_close(){
 }
 ";
 
-$oChbxDocs = we_html_forms::checkbox(
-		$value = 0, $checked = true, $name = "chbx_type", $text = g_l('cockpit', '[documents]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
-$oChbxObjs = we_html_forms::checkbox(
-		$value = 0, $checked = true, $name = "chbx_type", $text = g_l('cockpit', '[objects]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
-$dbTableType = "<table><tr>";
-if(defined("FILE_TABLE"))
-	$dbTableType .= "<td>" . $oChbxDocs . "</td><td>" . we_html_tools::getPixel(10, 1) . "</td>";
-if(defined("OBJECT_FILES_TABLE") && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES"))
-	$dbTableType .= "<td>" . $oChbxObjs . "</td>";
-$dbTableType .= "</tr></table>";
+$oChbxDocs = we_html_forms::checkbox(0, true, "chbx_type", g_l('cockpit', '[documents]'), true, "defaultfont", "", false, "", 0, 0);
+$oChbxObjs = we_html_forms::checkbox(0, true, "chbx_type", g_l('cockpit', '[objects]'), true, "defaultfont", "", false, "", 0, 0);
 
-$parts[] = array(
-	"headline" => g_l('cockpit', '[type]'), "html" => $dbTableType, "space" => 80
-);
-$parts[] = array(
-	"headline" => "", "html" => $oSelCls->getHTML(), "space" => 0
+$dbTableType = "<table><tr>".
+
+(defined("FILE_TABLE") ? "<td>" . $oChbxDocs . "</td><td>" . we_html_tools::getPixel(10, 1) . "</td>" : '') .
+		(defined("OBJECT_FILES_TABLE") && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES") ? "<td>" . $oChbxObjs . "</td>" : '') .
+		"</tr></table>";
+
+$parts = array(
+	array(
+		"headline" => g_l('cockpit', '[type]'), "html" => $dbTableType, "space" => 80
+	),
+	array(
+		"headline" => "", "html" => $oSelCls->getHTML(), "space" => 0
+	),
 );
 
 $save_button = we_html_button::create_button("save", "javascript:save();", false, -1, -1);
@@ -124,14 +123,14 @@ $preview_button = we_html_button::create_button("preview", "javascript:preview()
 $cancel_button = we_html_button::create_button("close", "javascript:exit_close();");
 $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button, $cancel_button);
 
-$sTblWidget = we_html_multiIconBox::getHTML(
-		"mfdProps", "100%", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[unpublished]'));
+$sTblWidget = we_html_multiIconBox::getHTML("mfdProps", "100%", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[unpublished]'));
 
 print we_html_element::htmlDocType() . we_html_element::htmlHtml(
-		we_html_element::htmlHead(
-			we_html_tools::getHtmlInnerHead(g_l('cockpit', '[unpublished]')) . STYLESHEET . we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
-			we_html_element::jsElement(
-				$jsPrefs . $jsCode . we_html_button::create_state_changer(false))) . we_html_element::htmlBody(
-			array(
-			"class" => "weDialogBody", "onload" => "init();"
-			), we_html_element::htmlForm("", $sTblWidget)));
+				we_html_element::htmlHead(
+						we_html_tools::getHtmlInnerHead(g_l('cockpit', '[unpublished]')) . STYLESHEET . we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
+						we_html_element::jsElement(
+								$jsPrefs . $jsCode . we_html_button::create_state_changer(false))) .
+ we_html_element::htmlBody(
+						array(
+					"class" => "weDialogBody", "onload" => "init();"
+						), we_html_element::htmlForm("", $sTblWidget)));

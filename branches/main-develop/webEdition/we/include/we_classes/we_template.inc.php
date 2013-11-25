@@ -258,7 +258,7 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 					$tmp = explode("\r", $code);
 				}
 				$errCode = "\n";
-				for($ln = $error['line'] - 2; $ln <= $error['line'] + 2; $ln++){
+				for($ln = max(0,$error['line'] - 2); $ln <= $error['line'] + 2 && isset($tmp[$ln]); $ln++){
 					$errCode.=$ln . ': ' . $tmp[$ln] . "\n";
 				}
 
