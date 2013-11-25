@@ -498,7 +498,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 
 function we_unsubscribeNL($db, $customer, $_customerFieldPrefs, $abos, $paths){
 	$GLOBALS['WE_REMOVENEWSLETTER_STATUS'] = weNewsletterBase::STATUS_SUCCESS;
-	$unsubscribe_mail = preg_replace("|[\r\n,]|", '', trim($_REQUEST['we_unsubscribe_email__']));
+	$unsubscribe_mail = strtolower(preg_replace("|[\r\n,]|", '', trim($_REQUEST['we_unsubscribe_email__'])));
 	$GLOBALS['WE_NEWSLETTER_EMAIL'] = $unsubscribe_mail;
 	if(!we_check_email($unsubscribe_mail)){
 		$GLOBALS['WE_REMOVENEWSLETTER_STATUS'] = weNewsletterBase::STATUS_EMAIL_INVALID; // E-Mail ungueltig
@@ -507,7 +507,7 @@ function we_unsubscribeNL($db, $customer, $_customerFieldPrefs, $abos, $paths){
 
 	$emailExists = false;
 
-	$db->query('DELETE FROM ' . NEWSLETTER_CONFIRM_TABLE . " WHERE subscribe_mail ='" . $db->escape($unsubscribe_mail) . "'");
+	$db->query('DELETE FROM ' . NEWSLETTER_CONFIRM_TABLE . ' WHERE subscribe_mail ="' . $db->escape($unsubscribe_mail) . '"');
 
 	if($customer){
 		$__db = new DB_WE();
@@ -515,14 +515,14 @@ function we_unsubscribeNL($db, $customer, $_customerFieldPrefs, $abos, $paths){
 		$__customerFields = f('SELECT Value FROM ' . CUSTOMER_ADMIN_TABLE . ' WHERE Name="FieldAdds"', 'Value', $__db);
 		$__customerFields = $__customerFields ? unserialize($__customerFields) : '';
 
-		$__where = ' WHERE ' . $_customerFieldPrefs['customer_email_field'] . '="' . $__db->escape($unsubscribe_mail) . '"';
 		$tmp = array();
 		foreach($abos as $abo){
 			$tmp[] = '"' . $__db->escape($abo) . '"';
 		}
-		$__db->query('SELECT ' . implode(',', $tmp) . ' FROM ' . CUSTOMER_TABLE . $__where);
+		$where = ' WHERE ' . $_customerFieldPrefs['customer_email_field'] . '="' . $__db->escape($unsubscribe_mail) . '"';
+		$__db->query('SELECT ' . implode(',', $tmp) . ' FROM ' . CUSTOMER_TABLE . $where);
 		unset($tmp);
-		$__update = array();
+		$update = array();
 		if($__db->next_record()){
 			foreach($abos as $abo){
 				$fieldDefault = (isset($__customerFields[$abo]['default']) ? $__customerFields[$abo]['default'] : '');
@@ -531,7 +531,7 @@ function we_unsubscribeNL($db, $customer, $_customerFieldPrefs, $abos, $paths){
 
 				$dbAbo = $__db->f($abo);
 				if(!empty($dbAbo) || $dbAbo != $aboNeg){
-					$__update[$abo] = $aboNeg;
+					$update[$abo] = $aboNeg;
 					$emailExists = true;
 				}
 			}
@@ -542,7 +542,7 @@ function we_unsubscribeNL($db, $customer, $_customerFieldPrefs, $abos, $paths){
 				);
 				$hook = new weHook('customer_preSave', '', array('customer' => &$fields, 'from' => 'tag', 'type' => 'modify', 'tagname' => 'addDelNewsletterEmail', 'isSubscribe' => 0, 'isUnsubscribe' => 1));
 				$ret = $hook->executeHook();
-				$__db->query('UPDATE ' . CUSTOMER_TABLE . ' SET ' . we_database_base::arraySetter(array_merge($__update, $fields)) . ' ' . $__where);
+				$__db->query('UPDATE ' . CUSTOMER_TABLE . ' SET ' . we_database_base::arraySetter(array_merge($update, $fields)) . ' ' . $where);
 			}
 		}
 	} else {
@@ -550,7 +550,7 @@ function we_unsubscribeNL($db, $customer, $_customerFieldPrefs, $abos, $paths){
 		foreach($paths as $path){
 			$path = ($_SERVER['DOCUMENT_ROOT'] . '/' . ltrim($path, '/'));
 
-			if(!@file_exists(dirname($path))){
+			if(!file_exists(dirname($path))){
 				t_e('file ' . $path . ' doesn\'t exist');
 				$GLOBALS['WE_WRITENEWSLETTER_STATUS'] = weNewsletterBase::STATUS_ERROR; // FATAL ERROR
 				$GLOBALS['WE_REMOVENEWSLETTER_STATUS'] = weNewsletterBase::STATUS_ERROR; // FATAL ERROR
@@ -569,7 +569,7 @@ function we_unsubscribeNL($db, $customer, $_customerFieldPrefs, $abos, $paths){
 			}
 
 			$fileChanged = false;
-			$regex = '|' . preg_quote($unsubscribe_mail, '|i') . ',|';
+			$regex = '|' . preg_quote($unsubscribe_mail, '|') . ',|i';
 			foreach($file as $i => $line){
 				if(preg_match($regex, $line)){
 					$emailExists = true;

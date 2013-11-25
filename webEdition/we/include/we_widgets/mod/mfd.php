@@ -155,7 +155,7 @@ while($db->next_record(MYSQL_ASSOC) && $j < $iMaxItems){
 		$isOpen = $hist['isOpen'];
 		$lastModified .= '<tr><td width="20" height="20" valign="middle" nowrap><img src="' . ICON_DIR . $file['Icon'] . '" />' . we_html_tools::getPixel(4, 1) . '</td>' .
 				'<td valign="middle" class="middlefont" ' . ($isOpen ? 'style="color:red;"' : '') . '>' .
-				($isOpen ? '' : '<a href="javascript:top.weEditorFrameController.openDocument(\'' . $table . '\',\'' . $file['ID'] . '\',\'' . $file['ContentType'] . '\');" title="' . $file['Path'] . '" style="color:#000000;text-decoration:none;">') . $file['Path'] . ($isOpen ? '' : '</a>') . '</td>' .
+				($isOpen ? '' : '<a href="javascript:top.weEditorFrameController.openDocument(\'' . $table . '\',' . $file['ID'] . ',\'' . $file['ContentType'] . '\');" title="' . $file['Path'] . '" style="color:#000000;text-decoration:none;">') . $file['Path'] . ($isOpen ? '' : '</a>') . '</td>' .
 				($bMfdBy ? '<td>' . we_html_tools::getPixel(5, 1) . '</td><td class="middlefont" nowrap>' . $hist['UserName'] . (($bDateLastMfd) ? ',' : '') . '</td>' : '') .
 				($bDateLastMfd ? '<td>' . we_html_tools::getPixel(5, 1) . '</td><td class="middlefont" nowrap>' . date(g_l('date', '[format][default]'), $file['ModDate']) . '</td>' : '') .
 				'</tr>';
