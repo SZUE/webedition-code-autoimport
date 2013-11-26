@@ -572,13 +572,6 @@ $we_menu = array(
 		'perm' => 'CAN_SEE_QUICKSTART',
 		'hide' => !(WE_TRACKER_DIR && file_exists($_SERVER['DOCUMENT_ROOT'] . WE_TRACKER_DIR . '/includes/showme.inc.php'))
 	),
-	array(// Cockpit > new Widget > Shop
-		'text' => g_l('javaMenu_global', '[shop_dashboard]'),
-		'parent' => 2020000,
-		'cmd' => 'new_widget_shp',
-		'perm' => 'CAN_SEE_QUICKSTART',
-		'hide' => !defined('SHOP_TABLE'),
-	),
 	array(// Cockpit > new Widget > default settings
 		'text' => g_l('javaMenu_global', '[default_settings]'),
 		'parent' => 2000000,
