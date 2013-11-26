@@ -168,7 +168,7 @@ we_updater::fixInconsistentTables();
 
 //clean Error-Log-Table
 $GLOBALS['DB_WE']->query('DELETE FROM ' . ERROR_LOG_TABLE . ' WHERE `Date` < DATE_SUB(NOW(), INTERVAL ' . ERROR_LOG_HOLDTIME . ' DAY)');
-$cnt = f('SELECT COUNT(1) AS a FROM ' . ERROR_LOG_TABLE, 'a', $GLOBALS['DB_WE']);
+$cnt = f('SELECT COUNT(1) FROM ' . ERROR_LOG_TABLE);
 
 if($cnt > ERROR_LOG_MAX_ITEM_COUNT){
 	$GLOBALS['DB_WE']->query('DELETE  FROM ' . ERROR_LOG_TABLE . ' WHERE 1 ORDER BY Date LIMIT ' . ($cnt - ERROR_LOG_MAX_ITEM_THRESH));
@@ -178,7 +178,7 @@ if($cnt > ERROR_LOG_MAX_ITEM_COUNT){
 //CHECK FOR FAILED LOGIN ATTEMPTS
 $GLOBALS['DB_WE']->query('DELETE FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblUser" AND LoginDate < DATE_SUB(NOW(), INTERVAL ' . LOGIN_FAILED_HOLDTIME . ' DAY)');
 
-$count = f('SELECT COUNT(1) AS count FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblUser" AND IP="' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '" AND LoginDate > DATE_SUB(NOW(), INTERVAL ' . intval(LOGIN_FAILED_TIME) . ' MINUTE)', 'count', $GLOBALS['DB_WE']);
+$count = f('SELECT COUNT(1) FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblUser" AND IP="' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '" AND LoginDate > DATE_SUB(NOW(), INTERVAL ' . intval(LOGIN_FAILED_TIME) . ' MINUTE)');
 
 if($count >= LOGIN_FAILED_NR){
 	we_html_tools::htmlTop('webEdition ');
@@ -229,7 +229,7 @@ function getError($reason, $cookie = false){
 	}
 
 	if($cookie && $_error_count == 0){
-		$_error .=++$_error_count . ' - ' . g_l('start', '[login_session_terminated]') . we_html_element::htmlBr();
+		$_error .= ++$_error_count . ' - ' . g_l('start', '[login_session_terminated]') . we_html_element::htmlBr();
 	}
 
 	$_error .= we_html_element::htmlBr() . g_l('start', ($_error_count == 1 ? '[solution_one]' : '[solution_more]'));
@@ -248,7 +248,7 @@ if(isset($_POST['checkLogin']) && empty($_COOKIE)){
 
 	printHeader($login, 400);
 	print we_html_element::htmlBody(array('style' => 'background-color:#FFFFFF;'), $_layout->getHtml()) . '</html>';
-} else if(!$GLOBALS['DB_WE']->isConnected() || $GLOBALS['DB_WE']->Error == 'No database selected'){
+} else if(!we_database_base::hasDB() || $GLOBALS['DB_WE']->Error == 'No database selected'){
 	$_layout = getError(g_l('start', '[no_db_connection]'));
 
 	printHeader($login, 503);
@@ -451,7 +451,7 @@ if(isset($_POST['checkLogin']) && empty($_COOKIE)){
 			we_log_loginFailed('tblUser', $_POST['username']);
 
 			//CHECK FOR FAILED LOGIN ATTEMPTS
-			$cnt = f('SELECT COUNT(1) AS count FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblUser" AND IP="' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '" AND LoginDate > DATE_SUB(NOW(), INTERVAL ' . intval(LOGIN_FAILED_TIME) . ' MINUTE)', 'count', $GLOBALS['DB_WE']);
+			$cnt = f('SELECT COUNT(1) FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblUser" AND IP="' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '" AND LoginDate > DATE_SUB(NOW(), INTERVAL ' . intval(LOGIN_FAILED_TIME) . ' MINUTE)');
 
 			$_body_javascript = ($cnt >= LOGIN_FAILED_NR ?
 					we_message_reporting::getShowMessageCall(sprintf(g_l('alert', "[3timesLoginError]"), LOGIN_FAILED_NR, LOGIN_FAILED_TIME), we_message_reporting::WE_MESSAGE_ERROR) :
