@@ -351,9 +351,10 @@ function log_error_message($type, $message, $file, $_line, $skipBT = false){
 		mail_error_message($type, 'Cannot log error! Database connection not known: ' . $message, $file, $line, $skipBT);
 		//die('Cannot log error! Database connection not known.');
 	}
+	return (isset($id)) ? $id : false;
 }
 
-function mail_error_message($type, $message, $file, $line, $skipBT = false){
+function mail_error_message($type, $message, $file, $line, $skipBT = false, $insertID = false){
 	$detailedError = $_caller = '-';
 	if($skipBT === false){
 		list($detailedError, $_caller, $file, $line) = getBacktrace(($type == E_SQL ? array('error_showDevice', 'trigger_error', 'error_handler', 'getBacktrace', 'mail_error_message') : array('error_showDevice', 'error_handler', 'getBacktrace', 'mail_error_message')));
@@ -365,7 +366,9 @@ function mail_error_message($type, $message, $file, $line, $skipBT = false){
 
 	// Build the error table
 	$_detailedError = "An error occurred while executing a script in webEdition.\n\n\n" .
-		// Domain
+		($insertID ?
+			getServerUrl() . WEBEDITION_DIR. '/errorlog.php?function=pos&ID=' . $insertID . "\n\n" : '') .
+// Domain
 		'webEdition address: ' . $_SERVER['SERVER_NAME'] . ",\n\n" .
 		'URI: ' . $_SERVER['REQUEST_URI'] . "\n" .
 		// Error type
@@ -401,12 +404,12 @@ function error_showDevice($type, $message, $file, $line, $skip = false){
 
 	// Log error?
 	if(!isset($GLOBALS['we']['errorhandler']) || $GLOBALS['we']['errorhandler']['log']){
-		log_error_message($type, $message, $file, $line, $skip);
+		$insertID = log_error_message($type, $message, $file, $line, $skip);
 	}
 
 	// Mail error?
 	if(isset($GLOBALS['we']['errorhandler']) && isset($GLOBALS['we']['errorhandler']['send']) && $GLOBALS['we']['errorhandler']['send']){
-		mail_error_message($type, $message, $file, $line, $skip);
+		mail_error_message($type, $message, $file, $line, $skip, isset($insertID) ? $insertID : false);
 	}
 }
 

@@ -22,6 +22,9 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect(array('ADMINISTRATOR'));
 
 function getInfoTable($_infoArr){
+	if(!$_infoArr){
+		return;
+	}
 	//recode data - this data might be different than the rest
 	foreach($_infoArr as &$tmp){
 		if(!mb_check_encoding($tmp, $GLOBALS['WE_BACKENDCHARSET'])){
@@ -177,6 +180,11 @@ if(isset($_REQUEST['function']) && $_REQUEST['function'] == 'delete'){
 		--$size;
 		--$pos;
 	}
+}
+
+if($size && !$cur){//nothing found, go to last element
+	$cur = getHash('SELECT * FROM `' . ERROR_LOG_TABLE . '` ORDER By ID DESC LIMIT 1');
+	$pos = $size;
 }
 
 $_parts = array(
