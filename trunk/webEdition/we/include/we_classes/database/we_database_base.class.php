@@ -174,8 +174,9 @@ abstract class we_database_base{
 	public function __construct(){
 		//make lazy connections, only the first one is executed instantly
 		if(!self::$linkCount){
-			self::$linkCount++;
-			$this->connect();
+			$this->_connect();
+			//make the first connection reuseable
+			$this->repool();
 		}
 		self::$conCount++;
 	}
@@ -184,9 +185,13 @@ abstract class we_database_base{
 	 * Fill connection pool
 	 */
 	public function __destruct(){
+		$this->free();
+	}
+
+	private function repool(){
 		if($this->Link_ID && $this->Database == DB_DATABASE){
-			$this->free();
 			self::$pool[] = $this->Link_ID;
+			$this->Link_ID = 0;
 		}
 	}
 
@@ -251,7 +256,7 @@ abstract class we_database_base{
 	 *
 	 * @return bool true, if the DB is connected
 	 */
-	function isConnected(){
+	protected function isConnected(){
 		return ($this->Link_ID) && $this->ping();
 	}
 
@@ -273,11 +278,16 @@ abstract class we_database_base{
 			$this->Error = '';
 			$this->Row = 0;
 		}
+# New query, discard previous result.
+		if($this->Query_ID){
+			$this->free();
+		}
 		/* No empty queries, please, since PHP4 chokes on them. */
 		if(!$this->isConnected() && !$this->_connect()){
 			return false;
 		}
 
+		$repool = false;
 // check for union This is the fastest check
 // if union is found in query, then take a closer look
 		if($allowUnion == false && stristr($Query_String, 'union')){
@@ -315,24 +325,22 @@ abstract class we_database_base{
 			}
 		}
 
-# New query, discard previous result.
-		if($this->Query_ID){
-			$this->free();
-		}
 		$this->Query_ID = $this->_query($Query_String, $unbuffered);
+		$this->Errno = $this->errno();
+		$this->Error = $this->error();
 
 		if(!$this->Query_ID && preg_match('/alter table|drop table/i', $Query_String)){
 			$this->_query('FLUSH TABLES');
-			$this->Query_ID = $this->_query($Query_String);
+			$repool = true;
 		} elseif(preg_match('/insert |update|replace /i', $Query_String)){
 // delete getHash DB Cache
 			getHash('', $this);
+			$repool = true;
 		}
 		if(preg_match('/^[[:space:]]*alter[[:space:]]*table[[:space:]]*(`?([[:alpha:]]|[[:punct:]])+`?)[[:space:]]*(add|change|modify|drop)/i', $Query_String, $matches)){
 			$this->_query('ANALYZE TABLE `' . $matches[1] . '`');
+			$repool = true;
 		}
-		$this->Errno = $this->errno();
-		$this->Error = $this->error();
 		$this->Row = 0;
 		if(self::$Trigger_cnt && (defined('ERROR_LOG_TABLE') && strpos($Query_String, ERROR_LOG_TABLE) === false || !defined('ERROR_LOG_TABLE'))){
 			--self::$Trigger_cnt;
@@ -347,7 +355,6 @@ abstract class we_database_base{
 				'explain' => array()
 			);
 			if(stripos($Query_String, 'select') !== FALSE){
-				$this->free();
 				$this->Query_ID = $this->_query('EXPLAIN ' . $Query_String);
 
 				while($this->next_record(MYSQL_ASSOC)){
@@ -356,7 +363,6 @@ abstract class we_database_base{
 					}
 					$tmp['explain'][] = implode(' | ', $this->Record);
 				}
-				$this->free();
 				$this->Row = 0;
 				$this->Query_ID = $this->_query($Query_String, $unbuffered);
 			}
@@ -385,6 +391,10 @@ abstract class we_database_base{
 			}
 		}
 
+		if($repool){
+			$this->repool();
+		}
+
 //(bool) entfernt um Kompatibilität mit alten weDevEdge Beispiel herzustellen
 		return $this->Query_ID;
 	}
@@ -393,6 +403,7 @@ abstract class we_database_base{
 
 	public function free(){
 		$this->_free();
+		$this->repool();
 		$this->Query_ID = 0;
 		$this->Record = array();
 	}
@@ -474,6 +485,9 @@ abstract class we_database_base{
 		$this->Error = $this->error();
 
 		$stat = is_array($this->Record);
+		if(!$stat){
+			$this->repool();
+		}
 		return $stat;
 	}
 
@@ -542,7 +556,7 @@ abstract class we_database_base{
 	static function arraySetter(array $arr, $imp = ','){
 		$ret = array();
 		foreach($arr as $key => $val){
-			$escape = !((is_numeric($val)&&$val{0}!='0') || is_bool($val));
+			$escape = !((is_numeric($val) && $val{0} != '0') || is_bool($val));
 			if(is_array($val) && $val['sqlFunction'] == 1){
 				$val = $val['val'];
 				$escape = false;
@@ -912,6 +926,10 @@ abstract class we_database_base{
 		$Charset = self::getCharset();
 		$Collation = self::getCollation();
 		return ($Charset != '' && $Collation != '' ? ' CHARACTER SET ' . $Charset . ' COLLATE ' . $Collation : '');
+	}
+
+	public static function hasDB(){
+		return self::$linkCount > 0;
 	}
 
 	public function t_e_query($cnt = 1){
