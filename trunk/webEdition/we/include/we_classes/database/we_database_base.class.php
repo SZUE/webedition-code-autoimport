@@ -542,7 +542,7 @@ abstract class we_database_base{
 	static function arraySetter(array $arr, $imp = ','){
 		$ret = array();
 		foreach($arr as $key => $val){
-			$escape = !(is_numeric($val) || is_bool($val));
+			$escape = !((is_numeric($val)&&$val{0}!='0') || is_bool($val));
 			if(is_array($val) && $val['sqlFunction'] == 1){
 				$val = $val['val'];
 				$escape = false;
