@@ -159,7 +159,7 @@ abstract class we_database_base{
 	/** get the no of rows that were affected by update/delete/replace
 	 * @return int count of rows
 	 */
-	abstract public function _affected_rows();
+	abstract protected function _affected_rows();
 
 	/** get Information about the used driver etc.
 	 * @return string containing all information
@@ -723,7 +723,7 @@ abstract class we_database_base{
 		return $this->Insert_ID;
 	}
 	
-	public function _affected_rows(){
+	public function affected_rows(){
 		return $this->Affected_Rows;
 	}
 
