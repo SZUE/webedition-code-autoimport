@@ -88,7 +88,7 @@ class DB_WE extends we_database_base{
 
 	/* public: evaluate the result (size, width) */
 
-	public function affected_rows(){
+	protected function _affected_rows(){
 		return @sqlsrv_rows_affected($this->Link_ID);
 	}
 
