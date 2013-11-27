@@ -337,7 +337,7 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 	function i_getDocument(){
 		$this->_updateCompleteCode();
 		/* remove unwanted/-needed start/stop parser tags (?><php) */
-		return preg_replace("/(;|{|})(\n| |\t)*\?>(\n|\t)*<\?php ?/si", "\\1\\2\n", $this->parseTemplate());
+		return preg_replace("/(;|{|})(\r|\n| |\t)*\?>(\r|\n|\t)*<\?php ?/si", "\\1\\2\n", $this->parseTemplate());
 	}
 
 	protected function i_writeSiteDir(){

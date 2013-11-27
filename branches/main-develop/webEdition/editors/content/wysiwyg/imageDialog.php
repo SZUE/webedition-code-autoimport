@@ -55,21 +55,22 @@ function weDoImgCmd($args){
 top.close();
 ');
 	} else{
+		$attribs = $_REQUEST['imgChangedCmd'] && !$_REQUEST['wasThumbnailChange'] ? $_REQUEST['we_dialog_args'] : $args;
 		return we_dialog_base::getTinyMceJS() .
 			we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/weimage/js/image_insert.js') .
 			'<form name="tiny_form">
-					<input type="hidden" name="src" value="' . $args["src"] . '">
-					<input type="hidden" name="width" value="' . $args["width"] . '">
-					<input type="hidden" name="height" value="' . $args["height"] . '">
-					<input type="hidden" name="hspace" value="' . $args["hspace"] . '">
-					<input type="hidden" name="vspace" value="' . $args["vspace"] . '">
-					<input type="hidden" name="border" value="' . $args["border"] . '">
-					<input type="hidden" name="alt" value="' . addslashes($args["alt"]) . '">
-					<input type="hidden" name="align" value="' . $args["align"] . '">
-					<input type="hidden" name="name" value="' . $args["name"] . '">
-					<input type="hidden" name="class" value="' . $args["class"] . '">
-					<input type="hidden" name="title" value="' . addslashes($args["title"]) . '">
-					<input type="hidden" name="longdesc" value="' . (intval($args["longdescid"]) ? $args["longdescsrc"] . '?id=' . intval($args["longdescid"]) : '') . '">
-				</form>';
+				<input type="hidden" name="src" value="' . $args["src"] . '">
+				<input type="hidden" name="width" value="' . $attribs["width"] . '">
+				<input type="hidden" name="height" value="' . $attribs["height"] . '">
+				<input type="hidden" name="hspace" value="' . $attribs["hspace"] . '">
+				<input type="hidden" name="vspace" value="' . $attribs["vspace"] . '">
+				<input type="hidden" name="border" value="' . $attribs["border"] . '">
+				<input type="hidden" name="alt" value="' . addslashes($attribs["alt"]) . '">
+				<input type="hidden" name="align" value="' . $attribs["align"] . '">
+				<input type="hidden" name="name" value="' . $attribs["name"] . '">
+				<input type="hidden" name="class" value="' . $attribs["class"] . '">
+				<input type="hidden" name="title" value="' . addslashes($attribs["title"]) . '">
+				<input type="hidden" name="longdesc" value="' . (intval($attribs["longdescid"]) ? $attribs["longdescsrc"] . '?id=' . intval($attribs["longdescid"]) : '') . '">
+			</form>';
 	}
 }

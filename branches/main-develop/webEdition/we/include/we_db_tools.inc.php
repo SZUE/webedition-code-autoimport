@@ -37,6 +37,7 @@ function getHash($query, we_database_base $DB_WE = NULL, $resultType = MYSQL_BOT
 		$DB_WE = $DB_WE ? $DB_WE : $GLOBALS['DB_WE'];
 		$DB_WE->query($query);
 		$cache[$hash] = ($DB_WE->next_record($resultType) ? $DB_WE->Record : array());
+		$DB_WE->free();
 	}
 	return $cache[$hash];
 }

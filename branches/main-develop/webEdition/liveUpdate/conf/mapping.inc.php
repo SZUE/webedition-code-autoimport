@@ -26,7 +26,6 @@
  * map needed variables for the program here, for example map version number
  */
 
-
 $LU_Variables = array(
 	// always needed variables
 	'clientVersion' => WE_VERSION,
@@ -44,7 +43,7 @@ $LU_Variables = array(
 	'clientServerSoftware' => $_SERVER["SERVER_SOFTWARE"],
 	'clientUid' => (defined('UID') ? UID : false),
 	'clientSyslng' => WE_LANGUAGE,
-	'clientLng' => $GLOBALS['WE_LANGUAGE'],
+	'clientLng' => $GLOBALS['WE_LANGUAGE'] . ($GLOBALS['WE_BACKENDCHARSET'] == 'UTF-8' ? '_UTF-8' : ''),
 	'clientExtension' => '.php',
 	'clientDomain' => urlencode($_SERVER['SERVER_NAME']),
 	'clientInstalledModules' => $GLOBALS['_we_active_integrated_modules'],

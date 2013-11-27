@@ -422,6 +422,11 @@ class we_dialog_image extends we_dialog_base{
 						try{
 							top.document.getElementById("selectThumbnail").style.display = "' . $this->getDisplayThumbsSel() . '";
 						} catch(err){console.log(top.document.getElementById("selectThumbnail"));}
+
+						var rh = ' . (intval($args["width"] * $args["height"]) ? ($this->args["width"] / $args["height"]) : "0") . ';
+						var rw = ' . (intval($args["width"] * $args["height"]) ? ($this->args["height"] / $args["width"]) : "0") . ';
+						if(typeof top.document.we_form["tinyMCEInitRatioH"] !== "undefined") top.document.we_form[["tinyMCEInitRatioH"]].value = rh;
+						if(typeof top.document.we_form["tinyMCEInitRatioW"] !== "undefined") top.document.we_form[["tinyMCEInitRatioW"]].value = rw;
 					';
 
 					print we_html_tools::getHtmlTop() . we_html_element::jsElement($js) . "</head></html>";
@@ -463,7 +468,7 @@ function imageChanged(wasThumbnailChange){
 }
 
 function checkWidthHeight(field){
-	var ratioCheckBox = document.getElementById("_we_dialog_args[ratio]");
+	var ratioCheckBox = document.getElementById("check_we_dialog_args[ratio]");
 	if(ratioCheckBox.checked){
 		if(field.value.indexOf("%") == -1){
 			ratiow = ratiow ? ratiow :

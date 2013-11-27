@@ -177,15 +177,8 @@ define('ERROR_LOG_MAX_ITEM_THRESH', 9800);
  */
 if(!isset($_SERVER['REQUEST_URI'])){
 	if(!isset($_SERVER['HTTP_REQUEST_URI'])){
-		if(isset($_SERVER['SCRIPT_NAME'])){
-			$_SERVER['HTTP_REQUEST_URI'] = $_SERVER['SCRIPT_NAME'];
-		} else {
-			$_SERVER['HTTP_REQUEST_URI'] = $_SERVER['PHP_SELF'];
-		}
-
-		if(isset($_SERVER['QUERY_STRING'])){
-			$_SERVER['HTTP_REQUEST_URI'] .= '?' . $_SERVER['QUERY_STRING'];
-		}
+		$_SERVER['HTTP_REQUEST_URI'] = (isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : $_SERVER['PHP_SELF']) .
+			(isset($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : '');
 	}
 }
 
