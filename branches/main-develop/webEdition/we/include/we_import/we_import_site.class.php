@@ -423,7 +423,7 @@ class we_import_site{
 				break;
 			}
 		}
-		$date_help_button = we_html_button::create_button("image:btn_help", "javascript:showDateHelp();", true . -1, 22);
+		$date_help_button = we_html_button::create_button("image:btn_help", "javascript:showDateHelp();", true , 0, 0);
 		$dateformatvals = array(
 			"unix" => g_l('import', '[uts]'),
 			"gmt" => g_l('import', '[gts]'),

@@ -59,7 +59,7 @@ abstract class we_versions_wizard{
 			we_html_element::jsElement('function showRefreshButton() {  prevBut = document.getElementById(\'prev\');  nextBut = document.getElementById(\'nextCell\');  refrBut = document.getElementById(\'refresh\');  prevBut.style.display = \'none\';  nextBut.style.display = \'none\';  refrBut.style.display = \'\';} function showPrevNextButton() {  prevBut = document.getElementById(\'prev\');  nextBut = document.getElementById(\'next\');  refrBut = document.getElementById(\'refresh\');  refrBut.style.display = \'none\';  prevBut.style.display = \'\';  nextBut.style.display = \'\';}');
 
 		$cancelButton = we_html_button::create_button("cancel", "javascript:top.close();");
-		$refreshButton = we_html_button::create_button("refresh", "javascript:parent.wizcmd.location.reload();", true, -1, -1, "", "", false, false);
+		$refreshButton = we_html_button::create_button("refresh", "javascript:parent.wizcmd.location.reload();", true, 0, 0, "", "", false, false);
 
 		$nextbutdisabled = !(permissionhandler::hasPerm("REBUILD_ALL") || permissionhandler::hasPerm("REBUILD_FILTERD") || permissionhandler::hasPerm(
 				"REBUILD_OBJECTS") || permissionhandler::hasPerm("REBUILD_INDEX") || permissionhandler::hasPerm("REBUILD_THUMBS") || permissionhandler::hasPerm(
@@ -71,8 +71,8 @@ abstract class we_versions_wizard{
 					), 10);
 			$pb = we_html_tools::htmlDialogLayout($pb, g_l('rebuild', "[rebuild]"), $buttons);
 		} else {
-			$prevButton = we_html_button::create_button("back", "javascript:parent.wizbody.handle_event('previous');", true, -1, -1, "", "", true, false);
-			$nextButton = we_html_button::create_button("next", "javascript:parent.wizbody.handle_event('next');", true, -1, -1, "", "", $nextbutdisabled, false);
+			$prevButton = we_html_button::create_button("back", "javascript:parent.wizbody.handle_event('previous');", true, 0, 0, "", "", true, false);
+			$nextButton = we_html_button::create_button("next", "javascript:parent.wizbody.handle_event('next');", true, 0, 0, "", "", $nextbutdisabled, false);
 
 			$content2 = new we_html_table(array(
 				"border" => 0, "cellpadding" => 0, "cellspacing" => 0
@@ -370,7 +370,7 @@ set_button_state(false);';
 			'space' => 0
 		);
 
-		$clearDate = we_html_button::create_button("reset", "javascript:document.getElementById('delete_date').value='';", true, -1, -1, "", "", "", false);
+		$clearDate = we_html_button::create_button("reset", "javascript:document.getElementById('delete_date').value='';", true, 0, 0, "", "", "", false);
 
 
 		$parts[] = array(
@@ -393,7 +393,7 @@ set_button_state(false);';
 			$jsCheckboxArgs .= 'args += "&ct[' . $k . ']="+escape(document.getElementById("version_delete_' . $k . '").checked);';
 		}
 
-		$nextButton = we_html_button::create_button("next", "javascript:parent.wizbody.handle_event(\"next\");", true, -1, -1, "", "", "", false);
+		$nextButton = we_html_button::create_button("next", "javascript:parent.wizbody.handle_event(\"next\");", true, 0, 0, "", "", "", false);
 
 		$js = '
 window.onload = function(){
@@ -633,7 +633,7 @@ set_button_state(false);';
 			$jsCheckboxArgs .= 'args += "&ct[' . $k . ']="+escape(document.getElementById("version_reset_' . $k . '").checked);';
 		}
 
-		$nextButton = we_html_button::create_button("next", "javascript:parent.wizbody.handle_event(\"next\");", true, -1, -1, "", "", "", false);
+		$nextButton = we_html_button::create_button("next", "javascript:parent.wizbody.handle_event(\"next\");", true, 0, 0, "", "", "", false);
 
 		$js = 'window.onload = function(){
 					top.focus();
@@ -1148,7 +1148,7 @@ set_button_state(false);';
 		//reset
 		$act = ($action == "delete" ? 0 : 1);
 
-		$nextButton = we_html_button::create_button("go", 'javascript:parent.wizbody.handle_event("next");', true, -1, -1, "", "", $disabled, false);
+		$nextButton = we_html_button::create_button("go", 'javascript:parent.wizbody.handle_event("next");', true, 0, 0, "", "", $disabled, false);
 		$publish = isset($_REQUEST['reset_doPublish']) && $_REQUEST['reset_doPublish'] ? 1 : 0;
 		$we_transaction = $GLOBALS['we_transaction'];
 		return '

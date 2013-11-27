@@ -1028,12 +1028,12 @@ class we_objectFile extends we_document{
 				$selectObject = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$rootDir','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")");
 
 				$upbut = we_html_button::create_button('image:btn_direction_up', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('up_meta_at_object','" . $GLOBALS['we_transaction'] . "','" . self::TYPE_MULTIOBJECT . '_' . $name . "','" . ($f) . "')");
-				$upbutDis = we_html_button::create_button('image:btn_direction_up', "#", true, -1, -1, "", "", true);
+				$upbutDis = we_html_button::create_button('image:btn_direction_up', "#", true, 0, 0, "", "", true);
 				$downbut = we_html_button::create_button('image:btn_direction_down', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('down_meta_at_object','" . $GLOBALS['we_transaction'] . "','" . self::TYPE_MULTIOBJECT . '_' . $name . "','" . ($f) . "')");
-				$downbutDis = we_html_button::create_button('image:btn_direction_down', "#", true, -1, -1, "", "", true);
+				$downbutDis = we_html_button::create_button('image:btn_direction_down', "#", true, 0, 0, "", "", true);
 
 				$plusbut = we_html_button::create_button('image:btn_add_listelement', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('insert_meta_at_object','" . $GLOBALS['we_transaction'] . "','" . self::TYPE_MULTIOBJECT . '_' . $name . "','" . ($f) . "')");
-				$plusbutDis = we_html_button::create_button('image:btn_add_listelement', "#", true, -1, -1, "", "", true);
+				$plusbutDis = we_html_button::create_button('image:btn_add_listelement', "#", true, 0, 0, "", "", true);
 				$trashbut = we_html_button::create_button('image:btn_function_trash', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('delete_meta_at_object','" . $GLOBALS['we_transaction'] . "','" . self::TYPE_MULTIOBJECT . '_' . $name . "','" . ($f) . "')");
 
 				$buttontable = we_html_button::create_button_table(

@@ -438,9 +438,9 @@ top.fsheader.selectIt();';
 			((!defined("OBJECT_TABLE")) || $this->table != OBJECT_TABLE ? '
 		</td>
 		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
-		<td width="40">' . we_html_button::create_button("root_dir", "javascript:if(rootDirButsState){top.setRootDir();}", true, -1, 22, "", "", $this->dir == intval($this->rootDirID), false) . '</td>
+		<td width="40">' . we_html_button::create_button("root_dir", "javascript:if(rootDirButsState){top.setRootDir();}", true, 0, 0, "", "", $this->dir == intval($this->rootDirID), false) . '</td>
 		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
-		<td width="40">' . we_html_button::create_button("image:btn_fs_back", "javascript:if(rootDirButsState){top.goBackDir();}", true, -1, 22, "", "", $this->dir == intval($this->rootDirID), false) . '</td>' .
+		<td width="40">' . we_html_button::create_button("image:btn_fs_back", "javascript:if(rootDirButsState){top.goBackDir();}", true, 0, 0, "", "", $this->dir == intval($this->rootDirID), false) . '</td>' .
 				$this->printHeaderTableExtraCols() :
 				''
 			) . '
@@ -475,7 +475,7 @@ top.fsheader.selectIt();';
 
 	function printHeaderTableExtraCols(){
 		return '<td width="10">' . we_html_tools::getPixel(10, 10) . '</td><td width="40">' .
-			we_html_button::create_button("image:btn_new_dir", "javascript:top.drawNewFolder();", true, -1, 22, '', '', !$this->userCanMakeNewDir(), false) .
+			we_html_button::create_button("image:btn_new_dir", "javascript:top.drawNewFolder();", true, 0, 0, '', '', !$this->userCanMakeNewDir(), false) .
 			'</td>';
 	}
 

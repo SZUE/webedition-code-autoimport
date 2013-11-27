@@ -1682,7 +1682,7 @@ class we_customer_EIWizard{
 			we_html_element::htmlHidden(array("name" => "cus", "value" => (isset($_REQUEST["cus"]) ? $_REQUEST["cus"] : "")));
 
 
-		$delallbut = we_html_button::create_button("delete_all", "javascript:selector_cmd('del_all_customers')", true, -1, -1, "", "", (isset($_REQUEST["customers"]) ? false : true));
+		$delallbut = we_html_button::create_button("delete_all", "javascript:selector_cmd('del_all_customers')", true, 0, 0, "", "", (isset($_REQUEST["customers"]) ? false : true));
 		$addbut = we_html_button::create_button("add", "javascript:selector_cmd('openSelector','','" . CUSTOMER_TABLE . "','','','fillIDs();opener." . $this->bodyFrame . ".selector_cmd(\\'add_customer\\',top.allIDs);')");
 		$custs = new MultiDirChooser(400, (isset($_REQUEST["customers"]) ? $_REQUEST["customers"] : ""), "del_customer", we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", CUSTOMER_TABLE);
 

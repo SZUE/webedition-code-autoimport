@@ -436,8 +436,8 @@ function we_cmd() {
 		$c = 0;
 		$iconBarTable = new we_html_table(array("border" => 0, "cellpadding" => 6, "cellspacing" => 0, "style" => "margin-left:8px"), 1, 4);
 
-		$iconBarTable->setCol(0, $c++, null, we_html_button::create_button("image:btn_shop_extArt", "javascript:top.opener.top.we_cmd('new_article')", true, -1, -1, "", "", !permissionhandler::hasPerm("NEW_USER")));
-		$iconBarTable->setCol(0, $c++, null, we_html_button::create_button("image:btn_shop_delOrd", "javascript:top.opener.top.we_cmd('delete_shop')", true, -1, -1, "", "", !permissionhandler::hasPerm("NEW_USER")));
+		$iconBarTable->setCol(0, $c++, null, we_html_button::create_button("image:btn_shop_extArt", "javascript:top.opener.top.we_cmd('new_article')", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")));
+		$iconBarTable->setCol(0, $c++, null, we_html_button::create_button("image:btn_shop_delOrd", "javascript:top.opener.top.we_cmd('delete_shop')", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")));
 
 		if($resultD > 0){
 			$iconBarTable->addCol();
@@ -447,8 +447,8 @@ function we_cmd() {
 			$iconBarTable->setCol(0, $c++, null, we_html_button::create_button("image:btn_shop_sum", "javascript:top.content.editor.location=' edit_shop_frameset.php?pnt=editor&top=1&typ=object&ViewClass=$classid '", true));
 		}
 
-		$iconBarTable->setCol(0, $c++, null, we_html_button::create_button("image:btn_shop_pref", "javascript:top.opener.top.we_cmd('pref_shop')", true, -1, -1, "", "", !permissionhandler::hasPerm("NEW_USER")));
-		$iconBarTable->setCol(0, $c++, null, we_html_button::create_button("image:btn_payment_val", "javascript:top.opener.top.we_cmd('payment_val')", true, -1, -1, "", "", !permissionhandler::hasPerm("NEW_USER")));
+		$iconBarTable->setCol(0, $c++, null, we_html_button::create_button("image:btn_shop_pref", "javascript:top.opener.top.we_cmd('pref_shop')", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")));
+		$iconBarTable->setCol(0, $c++, null, we_html_button::create_button("image:btn_payment_val", "javascript:top.opener.top.we_cmd('payment_val')", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")));
 
 		if($headline){
 			$iconBarTable->addCol();

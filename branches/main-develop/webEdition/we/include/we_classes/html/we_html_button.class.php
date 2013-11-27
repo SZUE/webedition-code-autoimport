@@ -57,7 +57,7 @@ abstract class we_html_button{
 	static function getButton($value, $id, $cmd = '', $width = self::WIDTH, $title = '', $disabled = false, $margin = '', $padding = '', $key = '', $float = '', $display = '', $important = true, $isFormButton = false, $cssInline = false){
 		return '<table  ' . ($title ? ' title="' . oldHtmlspecialchars($title) . '"' : '') .
 			' id="' . $id . '" class="weBtn' . ($disabled ? 'Disabled' : '') .
-			'"' . self::getInlineStyleByParam($width, '', $float, $margin, $padding, $display, '', $important) .
+			'"' . self::getInlineStyleByParam(($width ? $width : self::WIDTH), '', $float, $margin, $padding, $display, '', $important) .
 			' onmouseout="weButton.out(this);" onmousedown="weButton.down(this);" onmouseup="if(weButton.up(this)){' . oldHtmlspecialchars($cmd) . ';}">' .
 			'<tr><td class="weBtnLeft' . ($disabled ? 'Disabled' : '') . '" ></td>' .
 			'<td class="weBtnMiddle' . ($disabled ? 'Disabled' : '') . '">' . $value . '</td>' .
@@ -157,10 +157,10 @@ function switch_button_state(element, button, state, type) {
 		 * CHECK DEFAULTS
 		 */
 		// Check width
-		$width = ($width == -1 ? self::WIDTH : $width);
+		$width = ($width ? $width : self::WIDTH);
 
 		// Check height
-		$height = ($height == -1 ? self::HEIGHT : $height);
+		$height = ($height ? $height : self::HEIGHT);
 
 		/**
 		 * DEFINE THE NAME OF THE BUTTON

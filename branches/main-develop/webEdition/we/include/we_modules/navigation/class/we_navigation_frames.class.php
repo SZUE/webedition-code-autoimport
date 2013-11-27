@@ -406,11 +406,11 @@ function setTab(tab) {
 		$_cmd_obj = defined('OBJECT_TABLE') ? "javascript:we_cmd('openDocselector',document.we_form.elements['LinkID'].value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$rootDirID','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")" : '';
 
 		$_button_doc = we_html_button::create_button_table(array(
-					we_html_button::create_button('select', $_cmd_doc, true, -1, -1, '', '', false),
+					we_html_button::create_button('select', $_cmd_doc, true, 0, 0, '', '', false),
 					we_html_button::create_button(we_html_button::WE_IMAGE_BUTTON_IDENTIFY . 'function_view', 'javascript:openToEdit("' . FILE_TABLE . '",document.we_form.elements["LinkID"].value,"")', true, 100, 22, '', '', false)
 						), 2);
 		$_button_obj = we_html_button::create_button_table(array(
-					we_html_button::create_button('select', $_cmd_obj, true, -1, -1, '', '', false),
+					we_html_button::create_button('select', $_cmd_obj, true, 0, 0, '', '', false),
 					(defined('OBJECT_TABLE') ? we_html_button::create_button(we_html_button::WE_IMAGE_BUTTON_IDENTIFY . 'function_view', 'javascript:openToEdit("' . OBJECT_FILES_TABLE . '",document.we_form.elements["LinkID"].value,"")', true, 100, 22, '', '', false) : '')
 						), 2);
 
@@ -698,15 +698,15 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 		$_cmd_cat = "javascript:we_cmd('openCatselector',document.we_form.elements['LinkID'].value,'" . CATEGORY_TABLE . "','document.we_form.elements[\\'LinkID\\'].value','document.we_form.elements[\\'LinkPath\\'].value','opener." . $this->topFrame . ".we_cmd(\"populateText\");opener." . $this->topFrame . ".mark();','" . session_id() . "','$rootDirID')";
 
 		$_button_doc = we_html_button::create_button_table(array(
-					we_html_button::create_button('select', $_cmd_doc, true, -1, -1, '', '', $disabled),
+					we_html_button::create_button('select', $_cmd_doc, true, 0, 0, '', '', $disabled),
 					we_html_button::create_button(we_html_button::WE_IMAGE_BUTTON_IDENTIFY . 'function_view', 'javascript:openToEdit("' . FILE_TABLE . '",document.we_form.elements["LinkID"].value,"")', true, 100, 22, '', '', $disabled, false, '_navigation_doc')
 						), 2);
 
 		$_button_obj = we_html_button::create_button_table(array(
-					we_html_button::create_button('select', $_cmd_obj, true, -1, -1, '', '', $disabled),
+					we_html_button::create_button('select', $_cmd_obj, true, 0, 0, '', '', $disabled),
 					(defined('OBJECT_TABLE') ? we_html_button::create_button(we_html_button::WE_IMAGE_BUTTON_IDENTIFY . 'function_view', 'javascript:openToEdit("' . OBJECT_FILES_TABLE . '",document.we_form.elements["LinkID"].value,"")', true, 100, 22, '', '', $disabled, false, '_navigation_obj') : '')
 						), 2);
-		$_button_cat = we_html_button::create_button('select', $_cmd_cat, true, -1, -1, '', '', $disabled);
+		$_button_cat = we_html_button::create_button('select', $_cmd_cat, true, 0, 0, '', '', $disabled);
 
 		$_buttons = '<div id="docLink" style="display: ' . ($this->Model->SelectionType == we_navigation_navigation::STPYE_DOCLINK ? 'inline' : 'none') . '">' . $_button_doc . '</div><div id="objLink" style="display: ' . ($this->Model->SelectionType == we_navigation_navigation::STPYE_OBJLINK ? 'inline' : 'none') . '">' . $_button_obj . '</div><div id="catLink" style="display: ' . ($this->Model->SelectionType == we_navigation_navigation::STPYE_CATLINK ? 'inline' : 'none') . '">' . $_button_cat . '</div>';
 		$_path = ($this->Model->LinkID == 0 ?

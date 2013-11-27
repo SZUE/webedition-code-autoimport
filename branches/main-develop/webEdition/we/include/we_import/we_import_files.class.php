@@ -633,9 +633,9 @@ function next() {
 
 		$js = we_html_element::jsElement($js);
 
-		$prevButton = we_html_button::create_button("back", "javascript:back();", true, -1, -1, "", "", false);
-		$prevButton2 = we_html_button::create_button("back", "javascript:back();", true, -1, -1, "", "", false, false);
-		$nextButton = we_html_button::create_button("next", "javascript:next();", true, -1, -1, "", "", $this->step > 0, false);
+		$prevButton = we_html_button::create_button("back", "javascript:back();", true, 0, 0, "", "", false);
+		$prevButton2 = we_html_button::create_button("back", "javascript:back();", true, 0, 0, "", "", false, false);
+		$nextButton = we_html_button::create_button("next", "javascript:next();", true, 0, 0, "", "", $this->step > 0, false);
 
 		$prog = ($formcount == 0) ? 0 : (($this->step == 0) ? 0 : ((int) ((100 / $formcount) * ($formnum + 1))));
 		$pb = new we_progressBar($prog);

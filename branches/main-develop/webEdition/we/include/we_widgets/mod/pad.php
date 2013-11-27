@@ -175,8 +175,8 @@ $oTblPrio->setCol(
 )));
 
 // Edit note buttons
-$delete_button = we_html_button::create_button("delete", "javascript:deleteNote();", false, -1, -1, "", "", true, false);
-$cancel_button = we_html_button::create_button("cancel", "javascript:cancelNote();", false, -1, -1);
+$delete_button = we_html_button::create_button("delete", "javascript:deleteNote();", false, 0, 0, "", "", true, false);
+$cancel_button = we_html_button::create_button("cancel", "javascript:cancelNote();", false, 0, 0);
 $save_button = we_html_button::create_button("save", "javascript:saveNote();");
 $buttons = we_html_button::position_yes_no_cancel($delete_button, $cancel_button, $save_button);
 
@@ -227,7 +227,7 @@ $oTblBtnProps = new we_html_table(array(
 	), 1, 1);
 $oTblBtnProps->setCol(0, 0, array(
 	"align" => "right"
-	), we_html_button::create_button("image:btn_add_note", "javascript:displayNote();", false, -1, -1));
+	), we_html_button::create_button("image:btn_add_note", "javascript:displayNote();", false, 0, 0));
 
 // Table with the note list
 $oPad = new we_html_table(

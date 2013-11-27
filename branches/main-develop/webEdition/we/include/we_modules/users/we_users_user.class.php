@@ -1267,7 +1267,7 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 			}
 		}
 
-		$content.='</select><br/>' . we_html_tools::getPixel(5, 10) . '<br>' . we_html_button::create_button("edit", "javascript:we_cmd('display_user',document.we_form." . $this->Name . "_Users.value)", true, -1, -1, "", "", true, false);
+		$content.='</select><br/>' . we_html_tools::getPixel(5, 10) . '<br>' . we_html_button::create_button("edit", "javascript:we_cmd('display_user',document.we_form." . $this->Name . "_Users.value)", true, 0, 0, "", "", true, false);
 
 		$parts = array(
 			array(

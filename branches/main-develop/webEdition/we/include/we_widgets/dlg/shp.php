@@ -136,7 +136,7 @@ if(defined("WE_SHOP_MODULE_DIR") && permissionhandler::hasPerm("CAN_SEE_SHOP")){
 			$value = 0, $checked = $sType{2}, $name = "chbx_type", $text = g_l('cockpit','[shop_dashboard][revenue_order]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined("WE_SHOP_MODULE_DIR") && permissionhandler::hasPerm('CAN_SEE_SHOP')), $description = "", $type = 0, $width = 0);
 	$oChbxTarget = we_html_forms::checkbox(
 			$value = 0, $checked = $sType{3}, $name = "chbx_type", $text = g_l('cockpit','[shop_dashboard][revenue_target]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined("WE_SHOP_MODULE_DIR") && permissionhandler::hasPerm('CAN_SEE_SHOP')), $description = "", $type = 0, $width = 0);
-			
+
 	//$revenueTarget = we_forms::textinput($value = "",$name = "input_revenueTarget", $text = "Umsatzziel", $uniqid = true, $class = "defaultfont",$onClick = "", $disabled = !(defined("WE_SHOP_MODULE_DIR") && permissionhandler::hasPerm('CAN_SEE_SHOP'), $description = "", $type = 0, $width = 255);
 } else{
 	$oChbxOrders = "";
@@ -186,8 +186,8 @@ $parts = array(
 	)
 );
 
-$save_button = we_html_button::create_button("save", "javascript:save();", false, -1, -1);
-$preview_button = we_html_button::create_button("preview", "javascript:preview();", false, -1, -1);
+$save_button = we_html_button::create_button("save", "javascript:save();", false, 0, 0);
+$preview_button = we_html_button::create_button("preview", "javascript:preview();", false, 0, 0);
 $cancel_button = we_html_button::create_button("close", "javascript:exit_close();");
 $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button, $cancel_button);
 

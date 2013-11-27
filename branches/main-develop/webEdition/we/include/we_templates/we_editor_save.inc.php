@@ -39,13 +39,14 @@ if(isset($wasSaved) && $wasSaved){
 	// DOC was saved, mark open tabs to reload if necessary
 	// outsource this, if code gets too big
 	// was saved - not hot anymore
-	print "_EditorFrame.setEditorIsHot(false);";
+	?>
+	_EditorFrame.setEditorIsHot(false);
+	<?php
 
-
-	$_reloadJs = "";
+t_e($GLOBALS['we_doc']->ContentType);
 	switch($GLOBALS['we_doc']->ContentType){
 
-		case "text/weTmpl": // #538 reload documents based on this template
+		case 'text/weTmpl': // #538 reload documents based on this template
 
 			$_reloadDocsTempls = we_rebuild::getTemplAndDocIDsOfTemplate($GLOBALS['we_doc']->ID, false, false, true,true);
 
@@ -55,13 +56,10 @@ if(isset($wasSaved) && $wasSaved){
 			// reload all documents based on this template
 			if(!empty($_reload[FILE_TABLE]) || !empty($_reload[TEMPLATES_TABLE])){
 
-				$_reloadJs .= "
+				echo "
 var _reloadTabs = new Object();
 _reloadTabs['" . FILE_TABLE . "'] = '," . implode(",", $_reload[FILE_TABLE]) . ",';
 _reloadTabs['" . TEMPLATES_TABLE . "'] = '," . implode(",", $_reload[TEMPLATES_TABLE]) . ",';
-				";
-
-				$_reloadJs .= "
 var _usedEditors = top.weEditorFrameController.getEditorsInUse();
 
 for (frameId in _usedEditors) {
@@ -70,12 +68,10 @@ for (frameId in _usedEditors) {
 		_usedEditors[frameId].setEditorReloadNeeded(true);
 
  	}
-}
-				";
+}";
 			}
 			break;
 	}
-	print $_reloadJs;
 
 
 	if($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){

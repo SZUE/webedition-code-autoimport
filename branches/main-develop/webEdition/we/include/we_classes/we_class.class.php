@@ -201,7 +201,7 @@ abstract class we_class{
 	}
 
 	function htmlHidden($name, $value = ''){
-		return we_html_element::htmlHidden(array('name' => trim($name), value => oldHtmlspecialchars($value)));
+		return we_html_element::htmlHidden(array('name' => trim($name), 'value' => oldHtmlspecialchars($value)));
 	}
 
 	static function htmlTextArea($name, $rows = 10, $cols = 30, $value = '', array $attribs = array()){

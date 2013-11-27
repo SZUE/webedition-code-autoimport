@@ -368,8 +368,8 @@ function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 				'<td width="10">' . we_html_tools::getPixel(10, 10) . '</td><td width="40">' .
 				we_html_element::jsElement('newFileState=' . $newFileState . ';') .
 				($this->filter == "image/*" || $this->filter == "video/quicktime" || $this->filter == "application/x-shockwave-flash" ?
-					we_html_button::create_button("image:" . $this->ctb[$this->filter], "javascript:top.newFile();", true, -1, 22, "", "", !$newFileState, false) :
-					we_html_button::create_button("image:btn_add_file", "javascript:top.newFile();", true, -1, 22, "", "", !$newFileState, false)) .
+					we_html_button::create_button("image:" . $this->ctb[$this->filter], "javascript:top.newFile();", true, 0, 0, "", "", !$newFileState, false) :
+					we_html_button::create_button("image:btn_add_file", "javascript:top.newFile();", true, 0, 0, "", "", !$newFileState, false)) .
 				'</td>' : '');
 	}
 

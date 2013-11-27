@@ -45,7 +45,7 @@ function save(){
 	self.close();
 }
 
-function preview(){ 
+function preview(){
 	previewPrefs();
 	refresh();
 }
@@ -64,8 +64,8 @@ $parts = array(
 	)
 );
 
-$save_button = we_html_button::create_button("save", "javascript:save();", false, -1, -1);
-$preview_button = we_html_button::create_button("preview", "javascript:preview();", false, -1, -1);
+$save_button = we_html_button::create_button("save", "javascript:save();", false, 0, 0);
+$preview_button = we_html_button::create_button("preview", "javascript:preview();", false, 0, 0);
 $cancel_button = we_html_button::create_button("close", "javascript:exit_close();");
 $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button, $cancel_button);
 
