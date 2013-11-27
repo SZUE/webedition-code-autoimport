@@ -45,7 +45,7 @@ if(isset($wasSaved) && $wasSaved){
 	$_reloadJs = "";
 	switch($GLOBALS['we_doc']->ContentType){
 
-		case "text/weTmpl": // #538 reload documents based on this template
+		case 'text/weTmpl': // #538 reload documents based on this template
 
 			$_reloadDocsTempls = we_rebuild::getTemplAndDocIDsOfTemplate($GLOBALS['we_doc']->ID, false, false, true,true);
 
