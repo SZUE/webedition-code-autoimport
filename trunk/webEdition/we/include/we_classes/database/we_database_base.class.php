@@ -38,6 +38,7 @@ abstract class we_database_base{
 	/* query handles */
 	protected $Query_ID = 0;
 	private $Insert_ID = 0;
+	private $Affected_Rows = 0;
 	/*	 * true, if first query failed due to some server conditions */
 
 	/** result array */
@@ -158,7 +159,7 @@ abstract class we_database_base{
 	/** get the no of rows that were affected by update/delete/replace
 	 * @return int count of rows
 	 */
-	abstract public function affected_rows();
+	abstract public function _affected_rows();
 
 	/** get Information about the used driver etc.
 	 * @return string containing all information
@@ -327,6 +328,7 @@ abstract class we_database_base{
 		}
 
 		$this->Insert_ID=0;
+		$this->Affected_Rows=0;
 		$this->Query_ID = $this->_query($Query_String, $unbuffered);
 		$this->Errno = $this->errno();
 		$this->Error = $this->error();
@@ -336,6 +338,7 @@ abstract class we_database_base{
 			$repool = true;
 		} elseif(preg_match('/insert |update|replace /i', $Query_String)){
 			$this->Insert_ID=$this->_getInsertId();
+			$this->Affected_Rows=$this->_affected_rows();
 // delete getHash DB Cache
 			getHash('', $this);
 			$repool = true;
@@ -353,7 +356,7 @@ abstract class we_database_base{
 				'trigger' => self::$Trigger_cnt,
 				'errno' => $this->Errno,
 				'error' => $this->Error,
-				'affected' => $this->affected_rows(),
+				'affected' => $this->_affected_rows(),
 				'rows' => $this->num_rows(),
 				'explain' => array()
 			);
@@ -719,6 +722,11 @@ abstract class we_database_base{
 	public function getInsertId(){
 		return $this->Insert_ID;
 	}
+	
+	public function _affected_rows(){
+		return $this->Affected_Rows;
+	}
+
 
 	/** print the message and stop further execution
 	 * @param string $msg message to be printed
