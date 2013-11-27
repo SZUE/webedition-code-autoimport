@@ -139,16 +139,6 @@ class we_customer_settings{
 			'LastAccess' => g_l('modules_customer', '[LastAccess]'),
 			'ID' => 'ID',
 		);
-		// additional date function
-		$this->FunctionTable['FORMAT_DATETIME'] = 'DATE_FORMAT(%s,\'' . str_replace('%', '%%', g_l('weEditorInfo', '[mysql_date_format]')) . '\')';
-		$this->FunctionTable['FORMAT_DATE'] = 'DATE_FORMAT(%s,\'' . str_replace('%', '%%', g_l('weEditorInfo', '[mysql_date_only_format]')) . '\')';
-		$this->FunctionTable['FORMAT_TIME'] = 'DATE_FORMAT(%s,\'' . str_replace('%', '%%', g_l('weEditorInfo', '[mysql_time_only_format]')) . '\')';
-		$this->FunctionTable['HOUR'] = 'DATE_FORMAT(%s,\'%%H\')';
-
-		$this->TypeFunction['FORMAT_DATETIME'] = 'date';
-		$this->TypeFunction['FORMAT_DATE'] = 'date';
-		$this->TypeFunction['FORMAT_TIME'] = 'date';
-		$this->TypeFunction['HOUR'] = 'date';
 	}
 
 	function load($tryFromSession = true){
