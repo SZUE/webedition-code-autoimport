@@ -37,6 +37,7 @@ abstract class we_database_base{
 	protected $Link_ID = 0;
 	/* query handles */
 	protected $Query_ID = 0;
+	private $Insert_ID = 0;
 	/*	 * true, if first query failed due to some server conditions */
 
 	/** result array */
@@ -107,7 +108,7 @@ abstract class we_database_base{
 	/** get the last inserted ID
 	 * @return int last generated id of the insert-statement
 	 */
-	abstract function getInsertId();
+	abstract protected function _getInsertId();
 
 	/** get the no of rows in the resultset
 	 * @return int row count
@@ -325,6 +326,7 @@ abstract class we_database_base{
 			}
 		}
 
+		$this->Insert_ID=0;
 		$this->Query_ID = $this->_query($Query_String, $unbuffered);
 		$this->Errno = $this->errno();
 		$this->Error = $this->error();
@@ -333,6 +335,7 @@ abstract class we_database_base{
 			$this->_query('FLUSH TABLES');
 			$repool = true;
 		} elseif(preg_match('/insert |update|replace /i', $Query_String)){
+			$this->Insert_ID=$this->_getInsertId();
 // delete getHash DB Cache
 			getHash('', $this);
 			$repool = true;
@@ -566,12 +569,11 @@ abstract class we_database_base{
 
 			$val = (is_bool($val) ? intval($val) : $val);
 			//we must escape int-values since the value might be an enum element
-
 			//FIXME: remove this code after 6.3.9!!
 			if($escape){
 				switch($val){
 					case 0:
-					break;
+						break;
 					case 'NOW()':
 					case 'UNIX_TIMESTAMP()':
 					case 'CURDATE()':
@@ -581,7 +583,7 @@ abstract class we_database_base{
 					case 'CURTIME()':
 					case 'NULL':
 						$escape = false;
-						t_e('deprecated', 'deprecated db call detected',$key,$val,$arr);
+						t_e('deprecated', 'deprecated db call detected', $key, $val, $arr);
 				}
 			}
 			$ret[] = '`' . $key . '`=' . ($escape ? '"' . escape_sql_query($val) . '"' : $val);
@@ -712,6 +714,10 @@ abstract class we_database_base{
 	 */
 	public function getRecord(){
 		return $this->Record;
+	}
+
+	public function getInsertId(){
+		return $this->Insert_ID;
 	}
 
 	/** print the message and stop further execution

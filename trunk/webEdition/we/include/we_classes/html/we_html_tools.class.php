@@ -44,6 +44,7 @@ abstract class we_html_tools{
 		if(!$allow || !isset($_SESSION['user']) || !isset($_SESSION['user']['Username']) || $_SESSION['user']['Username'] == ''){
 			print self::htmlTop() .
 				we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[perms_no_permissions]'), we_message_reporting::WE_MESSAGE_ERROR) . 'top.close();') .
+				g_l('alert', '[perms_no_permissions]') .
 				'</body></html>';
 			exit();
 		}
@@ -407,8 +408,7 @@ abstract class we_html_tools{
 	}
 
 	static function getDateInput2($name, $time = '', $setHot = false, $format = '', $onchange = '', $class = 'weSelect', $xml = '', $minyear = '', $maxyear = '', $style = ''){
-		$_attsSelect = $_attsOption = $_attsHidden =
-			(empty($xml) ? array() : array('xml' => $xml));
+		$_attsSelect = $_attsOption = $_attsHidden = (empty($xml) ? array() : array('xml' => $xml));
 
 		if(!empty($class)){
 			$_attsSelect['class'] = $class;
