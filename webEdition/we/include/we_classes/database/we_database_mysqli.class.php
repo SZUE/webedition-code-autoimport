@@ -135,7 +135,7 @@ class DB_WE extends we_database_base{
 		return (is_object($this->Query_ID) ? $this->Query_ID->fetch_field_direct($no)->type : '');
 	}
 
-	public function _getInsertId(){
+	protected function _getInsertId(){
 		return $this->Link_ID->insert_id;
 	}
 
