@@ -1574,7 +1574,7 @@ class we_object extends we_document{
 					$this->elements["" . $name . "Thumb"]["dat"] :
 					'');
 
-			$content .= $this->htmlSelect("we_" . $this->Name . "_input[" . $name . "Thumb]", $thumbList, 1, $currentSelection, "", 'onchange="_EditorFrame.setEditorIsHot(true);" name="we_' . $this->Name . '_input[' . $name . 'Thumb]"', "value", 388);
+			$content .= $this->htmlSelect("we_" . $this->Name . "_input[" . $name . "Thumb]", $thumbList, 1, $currentSelection, "", array('onchange' => "_EditorFrame.setEditorIsHot(true);"), "value", 388);
 		}
 		return $content;
 	}

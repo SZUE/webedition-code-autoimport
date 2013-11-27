@@ -32,6 +32,7 @@ abstract class we_html_button{
 
 	const HEIGHT = 22;
 	const WIDTH = 100;
+	const AUTO_WIDTH = -1;
 	const WE_IMAGE_BUTTON_IDENTIFY = 'image:';
 	const WE_FORM_BUTTON_IDENTIFY = 'form:';
 	const WE_SUBMIT_BUTTON_IDENTIFY = 'submit:';
@@ -57,7 +58,7 @@ abstract class we_html_button{
 	static function getButton($value, $id, $cmd = '', $width = self::WIDTH, $title = '', $disabled = false, $margin = '', $padding = '', $key = '', $float = '', $display = '', $important = true, $isFormButton = false, $cssInline = false){
 		return '<table  ' . ($title ? ' title="' . oldHtmlspecialchars($title) . '"' : '') .
 			' id="' . $id . '" class="weBtn' . ($disabled ? 'Disabled' : '') .
-			'"' . self::getInlineStyleByParam(($width ? $width : self::WIDTH), '', $float, $margin, $padding, $display, '', $important) .
+			'"' . self::getInlineStyleByParam(($width ? $width : ($width == self::AUTO_WIDTH ? 0 : self::WIDTH)), '', $float, $margin, $padding, $display, '', $important) .
 			' onmouseout="weButton.out(this);" onmousedown="weButton.down(this);" onmouseup="if(weButton.up(this)){' . oldHtmlspecialchars($cmd) . ';}">' .
 			'<tr><td class="weBtnLeft' . ($disabled ? 'Disabled' : '') . '" ></td>' .
 			'<td class="weBtnMiddle' . ($disabled ? 'Disabled' : '') . '">' . $value . '</td>' .
@@ -183,7 +184,7 @@ function switch_button_state(element, button, state, type) {
 			}
 		} else {
 			//set width for image button if given width has not default value
-			$width = ($width == self::WIDTH ? 0 : $width);
+			$width = ($width == self::WIDTH ? self::AUTO_WIDTH : $width);
 		}
 
 		// Check if the button will be used in a form or not

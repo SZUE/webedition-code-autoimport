@@ -104,7 +104,7 @@ class DB_WE extends we_database_base{
 
 	/* public: evaluate the result (size, width) */
 
-	public function affected_rows(){
+	protected function _affected_rows(){
 		return @mysql_affected_rows($this->Link_ID);
 	}
 
@@ -142,7 +142,7 @@ class DB_WE extends we_database_base{
 		return @mysql_field_flags($this->Query_ID, $no);
 	}
 
-	public function getInsertId(){
+	protected function _getInsertId(){
 		return mysql_insert_id($this->Link_ID);
 	}
 

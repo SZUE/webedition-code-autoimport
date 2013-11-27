@@ -376,9 +376,9 @@ class we_webEditionDocument extends we_textContentDocument{
 				}
 			}
 			$tlist = $foo ? implode(',', $foo) : -1;
-			return $this->formSelect4('', $width, 'TemplateID', TEMPLATES_TABLE, 'ID', 'Path', g_l('weClass', '[template]'), ' WHERE ID IN (' . $tlist . ') AND IsFolder=0 ORDER BY Path', 1, $TID, false, "we_cmd('template_changed');_EditorFrame.setEditorIsHot(true);", '', 'left', 'defaultfont', '', $openButton, array(0, ''));
+			return $this->formSelect4('', $width, 'TemplateID', TEMPLATES_TABLE, 'ID', 'Path', g_l('weClass', '[template]'), ' WHERE ID IN (' . $tlist . ') AND IsFolder=0 ORDER BY Path', 1, $TID, false, "we_cmd('template_changed');_EditorFrame.setEditorIsHot(true);", array(), 'left', 'defaultfont', '', $openButton, array(0, ''));
 		}
-		return $this->formSelect2('', $width, 'TemplateID', TEMPLATES_TABLE, 'ID', 'Path', g_l('weClass', '[template]'), 'WHERE IsFolder=0 ORDER BY Path ', 1, $this->TemplateID, false, '_EditorFrame.setEditorIsHot(true);', '', 'left', 'defaultfont', '', $openButton);
+		return $this->formSelect2('', $width, 'TemplateID', TEMPLATES_TABLE, 'ID', 'Path', g_l('weClass', '[template]'), 'WHERE IsFolder=0 ORDER BY Path ', 1, $this->TemplateID, false, '_EditorFrame.setEditorIsHot(true);', array(), 'left', 'defaultfont', '', $openButton);
 	}
 
 	/**
@@ -469,7 +469,7 @@ class we_webEditionDocument extends we_textContentDocument{
 <tr><td>
 	<table style="border-spacing: 0px;border-style:none" cellpadding="0">
 		<tr><td colspan="2" class="defaultfont">' . g_l('weClass', "[Charset]") . '</td>
-		<tr><td>' . $this->htmlTextInput("dummi", 40, g_l('charset', "[error][no_charset_tag]"), "", " readonly disabled", "text", 254) . '</td><td>' . $this->htmlSelect("dummi2", array(g_l('charset', "[error][no_charset_available]")), 1, DEFAULT_CHARSET, false, "disabled ", "value", "254") . '</td></tr>
+		<tr><td>' . $this->htmlTextInput("dummi", 40, g_l('charset', "[error][no_charset_tag]"), "", " readonly disabled", "text", 254) . '</td><td>' . $this->htmlSelect("dummi2", array(g_l('charset', "[error][no_charset_available]")), 1, DEFAULT_CHARSET, false, array("disabled"=>'disabled'), "value", "254") . '</td></tr>
 	</table>
 </td></tr>';
 		}

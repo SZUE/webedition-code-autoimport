@@ -45,7 +45,9 @@ abstract class we_html_tools{
 			self::setHttpCode(401);
 			print self::htmlTop() .
 				we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[perms_no_permissions]'), we_message_reporting::WE_MESSAGE_ERROR) . ($redirect ? 'document.location = "' . $redirect . '"' : 'top.close();')) .
-				'</head><body></body></html>';
+				'</head><body>'.
+				g_l('alert', '[perms_no_permissions]') .
+				'</body></html>';
 			exit();
 		}
 	}

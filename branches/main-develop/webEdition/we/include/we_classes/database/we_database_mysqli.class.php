@@ -70,7 +70,7 @@ class DB_WE extends we_database_base{
 			false;
 	}
 
-	public function affected_rows(){
+	protected function _affected_rows(){
 		return $this->Link_ID->affected_rows;
 	}
 
@@ -135,7 +135,7 @@ class DB_WE extends we_database_base{
 		return (is_object($this->Query_ID) ? $this->Query_ID->fetch_field_direct($no)->type : '');
 	}
 
-	public function getInsertId(){
+	protected function _getInsertId(){
 		return $this->Link_ID->insert_id;
 	}
 

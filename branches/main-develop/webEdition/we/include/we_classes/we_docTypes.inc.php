@@ -129,10 +129,10 @@ class we_docTypes extends we_class{
 				$htmlzw.= $this->formDocTypes3($lang, $langkey, ($LDID ? $LDID : 0));
 				$langkeys[] = $langkey;
 			}
-			return we_html_tools::htmlFormElementTable($this->htmlSelect($inputName, $_languages, 1, $value, false, array('onchange'=>'dieWerte=\'' . implode(',', $langkeys) . '\'; disableLangDefault(\'we_' . $this->Name . '_LangDocType\',dieWerte,this.options[this.selectedIndex].value);'), "value", 521), g_l('weClass', '[language]'), "left", "defaultfont") .
+			return we_html_tools::htmlFormElementTable($this->htmlSelect($inputName, $_languages, 1, $value, false, array('onchange' => 'dieWerte=\'' . implode(',', $langkeys) . '\'; disableLangDefault(\'we_' . $this->Name . '_LangDocType\',dieWerte,this.options[this.selectedIndex].value);'), "value", 521), g_l('weClass', '[language]'), "left", "defaultfont") .
 				we_html_element::htmlBr() . we_html_tools::htmlFormElementTable($htmlzw, g_l('weClass', '[languageLinksDefaults]'), 'left', 'defaultfont');
 		} else {
-			return we_html_tools::htmlFormElementTable($this->htmlSelect($inputName, $_languages, 1, $value, false, "", "value", 521), g_l('weClass', '[language]'), "left", "defaultfont");
+			return we_html_tools::htmlFormElementTable($this->htmlSelect($inputName, $_languages, 1, $value, false, array(), "value", 521), g_l('weClass', '[language]'), "left", "defaultfont");
 		}
 	}
 
@@ -237,7 +237,7 @@ class we_docTypes extends we_class{
 			}
 			$vals[$v] = $t;
 		}
-		return $this->htmlSelect("DocTypes", $vals, 8, $this->ID, false, array('style'=>"width:328px", 'onchange'=>'we_cmd(\'change_docType\',this.options[this.selectedIndex].value)'));
+		return $this->htmlSelect("DocTypes", $vals, 8, $this->ID, false, array('style' => "width:328px", 'onchange' => 'we_cmd(\'change_docType\',this.options[this.selectedIndex].value)'));
 	}
 
 	function formDocTypes3($headline, $langkey, $derDT = 0){
@@ -249,7 +249,7 @@ class we_docTypes extends we_class{
 			$t = $this->DB_WE->f("DocType");
 			$vals[$v] = $t;
 		}
-		return we_html_tools::htmlFormElementTable($this->htmlSelect('we_' . $this->Name . "_LangDocType[" . $langkey . "]", $vals, 1, $derDT, false, ($langkey == $this->Language ? ' disabled="disabled" ' : '') . 'style="width:328px" onChange=""'), $headline, "left", "defaultfont");
+		return we_html_tools::htmlFormElementTable($this->htmlSelect('we_' . $this->Name . "_LangDocType[" . $langkey . "]", $vals, 1, $derDT, false, array(($langkey == $this->Language ? 'disabled' : null) => "disabled", 'width' => 328, 'onchange' => '')), $headline, "left", "defaultfont");
 	}
 
 	function formDirChooser($width = 100){
@@ -292,7 +292,7 @@ class we_docTypes extends we_class{
 		}
 		$tlist = array_filter(array_unique($tlist));
 		$sqlTeil = 'WHERE IsFolder=0 ' . ($tlist ? 'AND ID IN(' . implode(',', $tlist) . ')' : ' AND false' );
-		return $this->formSelect2('', $width, 'TemplateID', TEMPLATES_TABLE, 'ID', 'Path', g_l('weClass', '[standard_template]'), $sqlTeil, 1, $this->TemplateID, false, '', '', 'left', 'defaultfont', '', '', array(0, g_l('weClass', '[none]')));
+		return $this->formSelect2('', $width, 'TemplateID', TEMPLATES_TABLE, 'ID', 'Path', g_l('weClass', '[standard_template]'), $sqlTeil, 1, $this->TemplateID, false, '', array(), 'left', 'defaultfont', '', '', array(0, g_l('weClass', '[none]')));
 	}
 
 	// return DocumentType HTML
@@ -311,7 +311,7 @@ class we_docTypes extends we_class{
 				$selected, // selectedIndex
 				false, // multiply
 				$onChange, // on change part
-				'', // attribs
+				array(), // attribs
 				'left', // textalign
 				'defaultfont', // textclass
 				'', // pre code
@@ -341,7 +341,7 @@ function switchExt(){
 	}
 
 	function formSubDir($width = 100){
-		return we_html_tools::htmlFormElementTable($this->htmlSelect('we_' . $this->Name . '_SubDir', g_l('weClass', '[subdir]'), $size = 1, $this->SubDir, false, '', 'value', $width), g_l('weClass', '[subdirectory]'));
+		return we_html_tools::htmlFormElementTable($this->htmlSelect('we_' . $this->Name . '_SubDir', g_l('weClass', '[subdir]'), 1, $this->SubDir, false, array(), 'value', $width), g_l('weClass', '[subdirectory]'));
 	}
 
 	function formNewDocType(){

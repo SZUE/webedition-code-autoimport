@@ -25,13 +25,13 @@
 
 /** the parent class of storagable webEdition classes */
 abstract class we_class{
+
 	//constants for retrieving data from DB
 
 	const LOAD_MAID_DB = 0;
 	const LOAD_TEMP_DB = 1;
 	const LOAD_REVERT_DB = 2; //we_temporaryDocument::revert gibst nicht mehr siehe #5789
 	const LOAD_SCHEDULE_DB = 3;
-
 	//constants define where to write document (guess)
 	const SUB_DIR_NO = 0;
 	const SUB_DIR_YEAR = 1;
@@ -169,7 +169,7 @@ abstract class we_class{
 		return we_html_tools::htmlFormElementTable(self::htmlTextArea(($elementtype ? ('we_' . $this->Name . '_' . $elementtype . "[$name]") : ('we_' . $this->Name . '_' . $name)), $rows, $cols, $this->getElement($name), $attribs), $text, $textalign, $textclass);
 	}
 
-	function formSelect($elementtype, $name, $table, $val, $txt, $text, $sqlTail = '', $size = 1, $selectedIndex = '', $multiple = false, $attribs = '', $textalign = 'left', $textclass = 'defaultfont', $precode = '', $postcode = '', $firstEntry = ''){
+/*	function formSelect($elementtype, $name, $table, $val, $txt, $text, $sqlTail = '', $size = 1, $selectedIndex = '', $multiple = false, array $attribs = array(), $textalign = 'left', $textclass = 'defaultfont', $precode = '', $postcode = '', $firstEntry = ''){
 		$vals = array();
 		if($firstEntry){
 			$vals[$firstEntry[0]] = $firstEntry[1];
@@ -186,7 +186,7 @@ abstract class we_class{
 		}
 		$pop = $this->htmlSelect(($elementtype ? ('we_' . $this->Name . '_' . $elementtype . "[$name]") : ('we_' . $this->Name . '_' . $name)), $vals, $size, ($elementtype ? $this->getElement($name) : $ps), $multiple, $attribs);
 		return we_html_tools::htmlFormElementTable(($precode ? $precode : '') . $pop . ($postcode ? $postcode : ''), $text, $textalign, $textclass);
-	}
+	}*/
 
 	function formSelectFromArray($elementtype, $name, $vals, $text, $size = 1, $selectedIndex = '', $multiple = false, $attribs = '', $textalign = 'left', $textclass = 'defaultfont', $precode = '', $postcode = '', $firstEntry = ''){
 		if(!$elementtype){
@@ -215,15 +215,10 @@ abstract class we_class{
 				), ($value ? (oldHtmlspecialchars($value)) : ''));
 	}
 
-	function htmlSelect($name, $values, $size = 1, $selectedIndex = '', $multiple = false, $attribs = '', $compare = 'value', $width = 0){
-		if(is_array($values)){
-			reset($values);
-		} else {
-			$values = array();
-		}
+	function htmlSelect($name, array $values, $size = 1, $selectedIndex = '', $multiple = false, array $attribs = array(), $compare = 'value', $width = 0){
 		$optgroup = false;
-		$ret = '<select id="' . trim($name) . '" class="weSelect defaultfont" name="' . trim($name) . '" size="' . abs($size) . '"' . ($multiple ? ' multiple="multiple"' : '') . ($attribs ? " $attribs" : '') . ($width ? ' style="width: ' . $width . 'px"' : '') . '>';
 		$selIndex = explode(',', $selectedIndex);
+		$ret = '';
 		foreach($values as $value => $text){
 			if($text == we_html_tools::OPTGROUP){
 				if($optgroup){
@@ -236,8 +231,14 @@ abstract class we_class{
 
 			$ret .= '<option value="' . oldHtmlspecialchars($value) . '"' . (in_array((($compare == 'value') ? $value : $text), $selIndex) ? ' selected="selected"' : '') . '>' . $text . '</option>';
 		}
-		$ret .= '</select>';
-		return $ret;
+		return we_html_element::htmlSelect(array_merge($attribs, array(
+				'id' => trim($name),
+				'class' => "weSelect defaultfont",
+				'name' => trim($name),
+				'size' => abs($size),
+				($multiple ? 'multiple' : null) => 'multiple',
+				($width ? 'width' : null) => $width
+				)), $ret);
 	}
 
 	// this function doesn't split selectedIndex
@@ -274,7 +275,7 @@ abstract class we_class{
 		return $this->formInputField($type, $name, (g_l('weClass', '[' . $name . ']') !== false ? g_l('weClass', '[' . $name . ']') : $name) . $infotext, $size, $width, '', $attribs);
 	}
 
-	function formSelect2($elementtype, $width, $name, $table, $val, $txt, $text, $sqlTail = '', $size = 1, $selectedIndex = '', $multiple = false, $onChange = '', $attribs = '', $textalign = 'left', $textclass = 'defaultfont', $precode = '', $postcode = '', $firstEntry = '', $gap = 20){
+	function formSelect2($elementtype, $width, $name, $table, $val, $txt, $text, $sqlTail = '', $size = 1, $selectedIndex = '', $multiple = false, $onChange = '', array $attribs = array(), $textalign = 'left', $textclass = 'defaultfont', $precode = '', $postcode = '', $firstEntry = '', $gap = 20){
 		$vals = array();
 		if($firstEntry){
 			$vals[$firstEntry[0]] = $firstEntry[1];
@@ -292,9 +293,9 @@ abstract class we_class{
 		if(!$elementtype){
 			$ps = $this->$name;
 		}
-		$pop = $this->htmlSelect($myname . ($multiple ? 'Tmp' : ''), $vals, $size, ($elementtype ? $this->getElement($name) : $ps), $multiple, 'onchange="' .
-			$onChange . ($multiple ? ";var we_sel='';for(i=0;i<this.options.length;i++){if(this.options[i].selected){we_sel += (this.options[i].value + ',');};};if(we_sel){we_sel=we_sel.substring(0,we_sel.length-1)};this.form.elements['" . $myname . "'].value=we_sel;" : '') . '" ' .
-			$attribs, 'value', $width);
+		$pop = $this->htmlSelect($myname . ($multiple ? 'Tmp' : ''), $vals, $size, ($elementtype ? $this->getElement($name) : $ps), $multiple, array_merge(array(
+			'onchange' => $onChange . ($multiple ? ";var we_sel='';for(i=0;i<this.options.length;i++){if(this.options[i].selected){we_sel += (this.options[i].value + ',');};};if(we_sel){we_sel=we_sel.substring(0,we_sel.length-1)};this.form.elements['" . $myname . "'].value=we_sel;" : '')
+				), $attribs), 'value', $width);
 
 		if($precode || $postcode){
 			$pop = '<table border="0" cellpadding="0" cellspacing="0"><tr>' . ($precode ? ('<td>' . $precode . '</td><td>' . we_html_tools::getPixel($gap, 2) . '</td>') : '') . '<td>' . $pop . '</td>' . ($postcode ? ('<td>' . we_html_tools::getPixel($gap, 2) . '</td><td>' . $postcode . '</td>') : '') . '</tr></table>';
@@ -302,7 +303,7 @@ abstract class we_class{
 		return ($multiple ? $this->htmlHidden($myname, $selectedIndex) : '') . we_html_tools::htmlFormElementTable($pop, $text, $textalign, $textclass);
 	}
 
-	function formSelect4($elementtype, $width, $name, $table, $val, $txt, $text, $sqlTail = '', $size = 1, $selectedIndex = '', $multiple = false, $onChange = '', $attribs = '', $textalign = 'left', $textclass = 'defaultfont', $precode = '', $postcode = '', $firstEntry = '', $gap = 20){
+	function formSelect4($elementtype, $width, $name, $table, $val, $txt, $text, $sqlTail = '', $size = 1, $selectedIndex = '', $multiple = false, $onChange = '', array $attribs = array(), $textalign = 'left', $textclass = 'defaultfont', $precode = '', $postcode = '', $firstEntry = '', $gap = 20){
 		$vals = array();
 		if($firstEntry){
 			$vals[$firstEntry[0]] = $firstEntry[1];
@@ -319,7 +320,7 @@ abstract class we_class{
 		if(!$elementtype){
 			$ps = $this->$name;
 		}
-		$pop = $this->htmlSelect($myname, $vals, $size, $selectedIndex, $multiple, 'onchange="' . $onChange . '" ' . $attribs, 'value', $width);
+		$pop = $this->htmlSelect($myname, $vals, $size, $selectedIndex, $multiple, array_merge(array('onchange' => $onChange), $attribs), 'value', $width);
 		if($precode || $postcode){
 			$pop = '<table border="0" cellpadding="0" cellspacing="0"><tr>' . ($precode ? ('<td>' . $precode . '</td><td>' . we_html_tools::getPixel($gap, 2) . '</td>') : '') . '<td>' . $pop . '</td>' . ($postcode ? ('<td>' . we_html_tools::getPixel($gap, 2) . '</td><td>' . $postcode . '</td>') : '') . '</tr></table>';
 		}

@@ -123,7 +123,7 @@ abstract class we_util_File extends we_base_file{
 	 */
 	public static function checkWritePermissions($path, $mod = 0755){
 		if(!is_file($path) && !is_dir($path)){
-			t_e('warning', "target " . $path . " does not exist");
+			t_e('warning', 'target ' . $path . ' does not exist');
 			return false;
 		}
 		if(is_writable($path)){

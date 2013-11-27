@@ -71,6 +71,9 @@ for (frameId in _usedEditors) {
 }";
 			}
 			break;
+		case 'object':
+					$GLOBALS['DB_WE']->query('SELECT f.ID FROM ' . OBJECT_FILES_TABLE. ' f ' . ($useLockTbl ? 'INNER JOIN ' . LOCK_TABLE . ' l ON f.ID=l.ID AND l.tbl="' . stripTblPrefix(FILE_TABLE) . '"' : '') . ' WHERE ' . $where);
+
 	}
 
 
