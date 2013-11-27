@@ -581,7 +581,7 @@ abstract class we_database_base{
 					case 'CURTIME()':
 					case 'NULL':
 						$escape = false;
-						t_e('deprecated', 'deprecated db call detected');
+						t_e('deprecated', 'deprecated db call detected',$key,$val,$arr);
 				}
 			}
 			$ret[] = '`' . $key . '`=' . ($escape ? '"' . escape_sql_query($val) . '"' : $val);
