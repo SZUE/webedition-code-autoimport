@@ -123,7 +123,7 @@ class DB_WE extends we_database_base{
 		//return @mysql_field_flags($this->Query_ID, $no);
 	}
 
-	public function _getInsertId(){
+	protected function _getInsertId(){
 		//return mysql_insert_id($this->Link_ID);
 	}
 
