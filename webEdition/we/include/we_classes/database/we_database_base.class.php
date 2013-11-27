@@ -556,7 +556,7 @@ abstract class we_database_base{
 	static function arraySetter(array $arr, $imp = ','){
 		$ret = array();
 		foreach($arr as $key => $val){
-			$escape = !((is_numeric($val) && $val{0} != '0') || is_bool($val));
+			$escape = !(is_bool($val));
 			if(is_array($val) && $val['sqlFunction'] == 1){
 				$val = $val['val'];
 				$escape = false;
@@ -565,10 +565,13 @@ abstract class we_database_base{
 			}
 
 			$val = (is_bool($val) ? intval($val) : $val);
+			//we must escape int-values since the value might be an enum element
 
 			//FIXME: remove this code after 6.3.9!!
 			if($escape){
 				switch($val){
+					case 0:
+					break;
 					case 'NOW()':
 					case 'UNIX_TIMESTAMP()':
 					case 'CURDATE()':
