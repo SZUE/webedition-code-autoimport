@@ -42,8 +42,6 @@ $doctable = $where = $_users_where = $workspace = array();
 
 
 switch($iDate){
-	default:
-		break;
 	case 1 :
 		$where[] = 'ModDate >=CURDATE()';
 		break;
@@ -53,6 +51,7 @@ switch($iDate){
 	case 3 :
 		$where[] = 'ModDate >=(CURDATE()-INTERVAL 1 MONTH)';
 		break;
+	default:
 	case 4 :
 		$where[] = 'ModDate >=(CURDATE()-INTERVAL 1 YEAR)';
 		break;
@@ -75,7 +74,7 @@ switch($iNumItems){
 		$iMaxItems = 50;
 		break;
 	default :
-		$iMaxItems = $iNumItems;
+		$iMaxItems = min(200,$iNumItems);
 }
 $sDisplayOpt = $aCols[3];
 $bMfdBy = $sDisplayOpt{0};
