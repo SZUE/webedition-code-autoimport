@@ -104,7 +104,7 @@ while($DB_WE->next_record()){
 }
 $doctypeElement = we_html_tools::htmlFormElementTable(
 		we_html_tools::htmlSelect(
-			"DocTypeID", $docTypes, 1, 0, false, 'onChange="" style="width:420px; border: #AAAAAA solid 1px;"', 'value'), g_l('cockpit', "[doctype]"));
+			"DocTypeID", $docTypes, 1, 0, false, array('onChange'=>"", 'style'=>"width:420px; border: #AAAAAA solid 1px;"), 'value'), g_l('cockpit', "[doctype]"));
 
 $cls = new we_html_select(
 	array(
@@ -414,8 +414,8 @@ $divContent = we_html_element::htmlDiv(
 		), we_html_tools::htmlSelect(
 			"Selection", array(
 			"dynamic" => g_l('cockpit', "[dyn_selection]"), "static" => g_l('cockpit', '[stat_selection]')
-			), 1, ($_selection ? "static" : "dynamic"), false, 'style="width:420px;border:#AAAAAA solid 1px;" onChange="closeAllSelection();we_submit();"', 'value') . we_html_element::htmlBr() . we_html_tools::htmlSelect(
-			"headerSwitch", $captions, 1, (!$_selType ? FILE_TABLE : OBJECT_FILES_TABLE), false, 'style="width:420px;border:#AAAAAA solid 1px;margin-top:10px;" onChange="setHead(this.value);we_submit();"', 'value', 420) . $divStatic . $divDynamic . we_html_tools::getPixel(1, 5) . we_html_element::htmlBr() . we_html_tools::htmlFormElementTable(
+			), 1, ($_selection ? "static" : "dynamic"), false, array('style'=>"width:420px;border:#AAAAAA solid 1px;" ,'onChange'=>"closeAllSelection();we_submit();"), 'value') . we_html_element::htmlBr() . we_html_tools::htmlSelect(
+			"headerSwitch", $captions, 1, (!$_selType ? FILE_TABLE : OBJECT_FILES_TABLE), false, array('style'=>"width:420px;border:#AAAAAA solid 1px;margin-top:10px;",'onChange'=>"setHead(this.value);we_submit();"), 'value', 420) . $divStatic . $divDynamic . we_html_tools::getPixel(1, 5) . we_html_element::htmlBr() . we_html_tools::htmlFormElementTable(
 			we_html_tools::htmlTextInput(
 				$name = "title", $size = 55, $value = $_title, $maxlength = 255, $attribs = "", $type = "text", $width = 420, $height = 0), g_l('cockpit', '[title]'), "left", "defaultfont"));
 

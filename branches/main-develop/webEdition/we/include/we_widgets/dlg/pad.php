@@ -219,7 +219,7 @@ $parts[] = array(
 
 $oSctValid = we_html_tools::htmlSelect("sct_valid", array(
 		g_l('cockpit', '[always]'), g_l('cockpit', '[from_date]'), g_l('cockpit', '[period]')
-		), 1, g_l('cockpit', '[always]'), false, 'style="width:120px;" onChange=""', 'value', 120);
+		), 1, g_l('cockpit', '[always]'), false, array('style'=>"width:120px;" ,'onChange'=>""), 'value', 120);
 
 $parts[] = array(
 	"headline" => g_l('cockpit', '[default_validity]'), "html" => $oSctValid, "space" => 100
@@ -235,7 +235,7 @@ $_options = array(
 while($DB_WE->next_record()) {
 	$_options[$DB_WE->f('WidgetName')] = $DB_WE->f('WidgetName');
 }
-$oSctTitle = we_html_tools::htmlSelect("sct_title", array_unique($_options), 1, "", false, 'id="title" onChange=""', 'value');
+$oSctTitle = we_html_tools::htmlSelect("sct_title", array_unique($_options), 1, "", false, array('id'=>"title", 'onChange'=>""), 'value');
 $parts[] = array(
 	"headline" => g_l('cockpit', '[title]'), "html" => $oSctTitle, "space" => 100
 );

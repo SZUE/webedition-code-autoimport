@@ -78,7 +78,7 @@ return we_html_tools::htmlTop(g_l('navigation', '[menu_highlight_rules]')) . STY
 				'space' => 200,
 				'html' => weSuggest::getYuiJsFiles() . '<table border="0" cellpadding="0" cellspacing="0">
 										<tr><td>' . we_html_tools::htmlSelect(
-					'navigationRules', $_rules, 8, '', false, ' style="width: 275px;" onclick="we_cmd(\'edit_navigation_rule\', this.value)"') . '</td>
+					'navigationRules', $_rules, 8, '', false, array('style'=>"width: 275px;",'onclick'=>'we_cmd(\'edit_navigation_rule\', this.value)')) . '</td>
 											<td>' . we_html_tools::getPixel(10, 1) . '</td>
 											<td valign="top">
 												' . we_html_button::create_button(
@@ -130,7 +130,7 @@ return we_html_tools::htmlTop(g_l('navigation', '[menu_highlight_rules]')) . STY
 			'headline' => g_l('navigation', '[rules][rule_applies_for]'),
 			'space' => 200,
 			'html' => we_html_tools::htmlSelect(
-				'SelectionType', $selectionTypes, 1, 0, false, 'style="width: 275px;" onchange="switchType(this.value);"')
+				'SelectionType', $selectionTypes, 1, 0, false, array('style'=>"width: 275px;",'onchange'=>"switchType(this.value);"))
 		);
 
 // getDoctypes
@@ -171,7 +171,7 @@ return we_html_tools::htmlTop(g_l('navigation', '[menu_highlight_rules]')) . STY
 <tr id="trDoctypeID">
 	<td style="height: 40px;" class="weMultiIconBoxHeadline">' . g_l('navigation', '[rules][rule_doctype]') . '</td>
 	<td>' . we_html_tools::htmlSelect(
-				'DoctypeID', $docTypes, 1, 0, false, "style=\"width: 275px;\"") . '</td>
+				'DoctypeID', $docTypes, 1, 0, false, array("style"=>"width: 275px;")) . '</td>
 </tr>';
 
 		if(defined('OBJECT_TABLE')){
@@ -201,7 +201,7 @@ return we_html_tools::htmlTop(g_l('navigation', '[menu_highlight_rules]')) . STY
 <tr id="trWorkspaceID">
 	<td style="height: 40px;" class="weMultiIconBoxHeadline">' . g_l('navigation', '[rules][rule_workspace]') . '</td>
 	<td>' . we_html_tools::htmlSelect(
-					'WorkspaceID', array(), 1, '', false, 'style="width: 275px;"') . '</td>
+					'WorkspaceID', array(), 1, '', false, array('style'=>"width: 275px;")) . '</td>
 </tr>';
 		}
 		$formTable .= '

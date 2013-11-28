@@ -174,7 +174,7 @@ class we_workflow_view extends we_workflow_base{
 
 	function getWorkflowSelectHTML(){
 		$vals = we_workflow_workflow::getAllWorkflowsInfo();
-		return we_html_tools::htmlSelect('wid', $vals, 4, $this->workflowDef->ID, false, "onclick='we_cmd(\"edit_workflow\")'", "value", 200);
+		return we_html_tools::htmlSelect('wid', $vals, 4, $this->workflowDef->ID, false, array("onclick"=>"we_cmd(\"edit_workflow\")"), "value", 200);
 	}
 
 	function getWorkflowTypeHTML(){
@@ -436,7 +436,7 @@ class we_workflow_view extends we_workflow_base{
 			$t = $this->db->f('DocType');
 			$vals[$v] = $t;
 		}
-		$pop = we_html_tools::htmlSelect($this->uid . '_MYDocType[]', $vals, 6, $this->workflowDef->DocType, true, 'onChange="top.content.setHot();"', "value", $width, "defaultfont");
+		$pop = we_html_tools::htmlSelect($this->uid . '_MYDocType[]', $vals, 6, $this->workflowDef->DocType, true, array('onChange'=>"top.content.setHot();"), "value", $width, "defaultfont");
 
 		return we_html_tools::htmlFormElementTable($pop, g_l('modules_workflow', '[doctype]'));
 	}

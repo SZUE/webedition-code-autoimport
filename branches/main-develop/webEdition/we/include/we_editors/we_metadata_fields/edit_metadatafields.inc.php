@@ -184,7 +184,7 @@ function build_dialog($selected_setting = 'ui'){
 				$_adv_row .= '
 <tr id="metadataRow_' . $key . '">
 	<td width="210" style="padding-right:5px;">' . we_html_tools::htmlTextInput('metadataTag[' . $key . ']', 24, $value['tag'], 255, "", "text", 205) . '</td>
-	<td width="200">' . we_html_tools::htmlSelect('metadataType[' . $key . ']', $_metadata_types, 1, $value['type'], false, 'class="defaultfont" ') . '</td>
+	<td width="200">' . we_html_tools::htmlSelect('metadataType[' . $key . ']', $_metadata_types, 1, $value['type'], false, array('class'=>"defaultfont")) . '</td>
 	<td align="right" width="30">' . we_html_button::create_button("image:btn_function_trash", "javascript:delRow(" . $_i . ")") . '</td>
 </tr>
 <tr id="metadataRow2_' . $key . '">
@@ -193,7 +193,7 @@ function build_dialog($selected_setting = 'ui'){
 	</td>
 	<td colspan="2" style="padding-bottom:10px;">
 		<div class="small">' . oldHtmlspecialchars(g_l('metadata', "[fields]")) . '</div>' .
-					we_html_tools::htmlSelect('add_' . $key, $_metadata_fields, 1, "", false, 'class="defaultfont" style="width:100%" onchange="addFieldToInput(this,' . $key . ')"') . '
+					we_html_tools::htmlSelect('add_' . $key, $_metadata_fields, 1, "", false, array('class' => "defaultfont", 'style' => "width:100%", 'onchange' => "addFieldToInput(this,' . $key . ')")) . '
 	</td>
 </tr>';
 				$_i++;
@@ -215,8 +215,8 @@ function build_dialog($selected_setting = 'ui'){
 
 		var tagInp = "' . addslashes(we_html_tools::htmlTextInput('metadataTag[__we_new_id__]', 24, "", 255, "", "text", 210)) . '";
 		var importInp = "' . addslashes(we_html_tools::htmlTextInput('metadataImportFrom[__we_new_id__]', 24, "", 255, "", "text", 210)) . '";
-		var typeSel = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('metadataType[__we_new_id__]', $_metadata_types, 1, "textfield", false, 'class="defaultfont"'))) . '";
-		var fieldSel = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('metadataType[__we_new_id__]', $_metadata_fields, 1, "", false, 'class="defaultfont" style="width:100%"  onchange="addFieldToInput(this,__we_new_id__)"'))) . '";
+		var typeSel = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('metadataType[__we_new_id__]', $_metadata_types, 1, "textfield", false, array('class' => "defaultfont")))) . '";
+		var fieldSel = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('metadataType[__we_new_id__]', $_metadata_fields, 1, "", false, array('class' => "defaultfont", 'style' => "width:100%", 'onchange' => "addFieldToInput(this,__we_new_id__)")))) . '";
 
 		var elem = document.getElementById("metadataTable");
 		newID = (elem.rows.length-1) / 2;
@@ -323,7 +323,7 @@ function getMainDialog(){
 		if(isset($_REQUEST['metadatafields_name']) && (strpos($_REQUEST['metadatafields_name'], "'") !== false || strpos($_REQUEST['metadatafields_name'], ',') !== false)){
 			$save_javascript = we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[metadatafields_hochkomma]'), we_message_reporting::WE_MESSAGE_ERROR) .
 					'history.back()');
-		} else{
+		} else {
 			save_all_values();
 
 			$save_javascript = we_html_element::jsElement($save_javascript .
@@ -334,7 +334,7 @@ function getMainDialog(){
 		return
 			$save_javascript .
 			we_html_element::htmlDiv(array('class' => 'weDialogBody', 'style' => 'height:100%;width:100%'), build_dialog('saved'));
-	} else{
+	} else {
 		return
 			we_html_element::htmlForm(
 				array('name' => 'we_form', 'method' => 'post', 'action' => getServerUrl(true) . $_SERVER['REQUEST_URI']), we_html_element::htmlHidden(array('name' => 'save_metadatafields', 'value' => 'false')) . render_dialog())

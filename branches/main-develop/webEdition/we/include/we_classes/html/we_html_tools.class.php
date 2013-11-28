@@ -369,6 +369,9 @@ abstract class we_html_tools{
 		/* 		if(!is_numeric($w) && $h == 1){
 		  t_e('x');
 		  } */
+		if($w=='text'){
+			t_e('x');
+		}
 		return '<span style="display:inline-block;width:' . $w . (is_numeric($w) ? 'px' : '') . ';height:' . $h . (is_numeric($h) ? 'px' : '') . ';' . ($border ? 'border:' . $border . 'px solid black;' : '') . '"></span>';
 	}
 
@@ -760,7 +763,7 @@ abstract class we_html_tools{
 		return $attr;
 	}
 
-	static function htmlSelect($name, $values, $size = 1, $selectedIndex = '', $multiple = false, $attribs = array(), $compare = 'value', $width = 0, $cls = 'defaultfont', $oldHtmlspecialchars = true){
+	static function htmlSelect($name, $values, $size = 1, $selectedIndex = '', $multiple = false, array $attribs = array(), $compare = 'value', $width = 0, $cls = 'defaultfont', $oldHtmlspecialchars = true){
 		$ret = '';
 		$selIndex = makeArrayFromCSV($selectedIndex);
 		$optgroup = false;

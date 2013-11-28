@@ -364,8 +364,8 @@ function setTab(tab) {
 				we_html_tools::htmlSelect('Selection', array(
 					we_navigation_navigation::SELECTION_DYNAMIC => g_l('navigation', '[dyn_selection]'),
 					we_navigation_navigation::SELECTION_STATIC => g_l('navigation', '[stat_selection]')
-						), 1, $this->Model->Selection, false, 'onChange="closeAllSelection();toggle(this.value);setPresentation(this.value);setWorkspaces(\'\');' . $this->topFrame . '.mark();setCustomerFilter(this);onSelectionTypeChangeJS(\'' . we_navigation_navigation::STPYE_DOCTYPE . '\');"', 'value', $this->_width_size) . '<br />' . we_html_tools::htmlSelect(
-						'SelectionType', $_seltype, 1, $this->Model->SelectionType, false, 'onChange="closeAllType();clearFields();closeAllStats();toggle(this.value);setWorkspaces(this.value);onSelectionTypeChangeJS(this.value);setStaticSelection(this.value);' . $this->topFrame . '.mark();" style="width: ' . $this->_width_size . 'px; margin-top: 5px;"', 'value', $this->_width_size) .
+						), 1, $this->Model->Selection, false, array('onchange'=>"closeAllSelection();toggle(this.value);setPresentation(this.value);setWorkspaces(\'\');' . $this->topFrame . '.mark();setCustomerFilter(this);onSelectionTypeChangeJS(\'' . we_navigation_navigation::STPYE_DOCTYPE . '\');"), 'value', $this->_width_size) . '<br />' . we_html_tools::htmlSelect(
+						'SelectionType', $_seltype, 1, $this->Model->SelectionType, false, array('onChange'=>"closeAllType();clearFields();closeAllStats();toggle(this.value);setWorkspaces(this.value);onSelectionTypeChangeJS(this.value);setStaticSelection(this.value);' . $this->topFrame . '.mark();", 'style'=>'width: ' . $this->_width_size . 'px; margin-top: 5px;'), 'value', $this->_width_size) .
 				'<div id="dynamic" style="' . ($this->Model->Selection == we_navigation_navigation::SELECTION_DYNAMIC ? 'display: block;' : 'display: none;') . '">' .
 				$this->getHTMLDynamic() .
 				'</div>
@@ -460,7 +460,7 @@ function setTab(tab) {
    }}' . we_html_button::create_state_changer(false)) .
 				'<div style="display: block;">' .
 				we_html_tools::htmlSelect(
-						'FolderSelection', $_seltype, 1, $this->Model->FolderSelection, false, 'onChange="onFolderSelectionChangeJS(this.value);setFolderSelection(this.value);' . $this->topFrame . '.mark();" style="width: ' . $this->_width_size . 'px; margin-top: 5px;"', 'value', $this->_width_size) . '
+						'FolderSelection', $_seltype, 1, $this->Model->FolderSelection, false, array('onChange'=>"onFolderSelectionChangeJS(this.value);setFolderSelection(this.value);' . $this->topFrame . '.mark();", 'style'=>'width: ' . $this->_width_size . 'px; margin-top: 5px;'), 'value', $this->_width_size) . '
 
 		<div id="folderSelectionDiv" style="display: ' . ($this->Model->FolderSelection != we_navigation_navigation::STYPE_URLLINK ? 'block' : 'none') . ';margin-top: 5px;">' . $weAcSelector . '</div>
 
@@ -627,7 +627,7 @@ function setTab(tab) {
 		$_sortSelect = we_html_tools::htmlSelect(
 						"SortOrder", array(
 					"ASC" => g_l('navigation', '[ascending]'), "DESC" => g_l('navigation', '[descending]')
-						), 1, $_sortOrder, false, 'onchange="' . $this->topFrame . '.mark();"', "value", 120);
+						), 1, $_sortOrder, false, array('onchange'=> $this->topFrame . '.mark();'), "value", 120);
 
 		return we_html_element::jsElement('
 var classDirs = {' . implode(',', $classDirsJS) . '};
@@ -638,12 +638,12 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 	<div id="doctype" style="' . ($this->Model->SelectionType == we_navigation_navigation::STPYE_DOCTYPE ? 'display: block' : 'display: none') . '; width: ' . $this->_width_size . 'px;margin-top:5px;">' .
 				we_html_tools::htmlFormElementTable(
 						we_html_tools::htmlSelect(
-								'DocTypeID', $docTypes, 1, $this->Model->DocTypeID, false, 'onChange="clearFields();' . $this->topFrame . '.mark();"', 'value', $this->_width_size), g_l('navigation', '[doctype]')) . '
+								'DocTypeID', $docTypes, 1, $this->Model->DocTypeID, false, array('onChange'=>'clearFields();' . $this->topFrame . '.mark();'), 'value', $this->_width_size), g_l('navigation', '[doctype]')) . '
 	</div>
 	<div id="classname" style="' . ($this->Model->SelectionType == we_navigation_navigation::STPYE_CLASS ? 'display: block' : 'display: none') . '; width: ' . $this->_width_size . 'px;margin-top:5px;">' .
 				(defined('OBJECT_TABLE') ? we_html_tools::htmlFormElementTable(
 								we_html_tools::htmlSelect(
-										'ClassID', $classID2Name, 1, $this->Model->ClassID, false, 'onChange="clearFields();onSelectionClassChangeJS(this.value);"', 'value', $this->_width_size), g_l('navigation', '[class]')) . $this->getHTMLWorkspace('class', $_firstClass) : '') . '
+										'ClassID', $classID2Name, 1, $this->Model->ClassID, false, array('onChange'=>"clearFields();onSelectionClassChangeJS(this.value);"), 'value', $this->_width_size), g_l('navigation', '[class]')) . $this->getHTMLWorkspace('class', $_firstClass) : '') . '
 	</div>
 	<div id="fieldChooser" style="' . ($this->Model->SelectionType != we_navigation_navigation::STPYE_CATEGORY ? 'display: block' : 'display: none') . '; width: ' . $this->_width_size . 'px;margin-top: 5px;">' .
 				$this->getHTMLFieldChooser(g_l('navigation', '[title_field]'), 'TitleField', $this->Model->TitleField, 'putTitleField', $this->Model->SelectionType, ($this->Model->SelectionType == we_navigation_navigation::STPYE_CLASS ? $this->Model->ClassID : $this->Model->DocTypeID)) . '
@@ -771,11 +771,11 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 						'Selection', array(
 					we_navigation_navigation::SELECTION_NODYNAMIC => g_l('navigation', '[no_dyn_content]'),
 					we_navigation_navigation::SELECTION_DYNAMIC => g_l('navigation', '[dyn_content]')
-						), 1, $this->Model->Selection, false, 'style="width: ' . $this->_width_size . 'px;" onChange="toggle(\'dynamic\');setPresentation(\'dynamic\');setWorkspaces(\'\');' . $this->topFrame . '.mark();setCustomerFilter(this);onSelectionTypeChangeJS(\'' . we_navigation_navigation::STPYE_DOCTYPE . '\');"', 'value', $this->_width_size) . '
+						), 1, $this->Model->Selection, false, array('style'=>'width: ' . $this->_width_size . 'px;', 'onChange'=>'toggle(\'dynamic\');setPresentation(\'dynamic\');setWorkspaces(\'\');' . $this->topFrame . '.mark();setCustomerFilter(this);onSelectionTypeChangeJS(\'' . we_navigation_navigation::STPYE_DOCTYPE . '\');'), 'value', $this->_width_size) . '
 				</div>
 				<div id="dynamic" style="' . ($this->Model->Selection == we_navigation_navigation::SELECTION_DYNAMIC ? 'display: block;' : 'display: none;') . ';margin-top:5px">
 				' . we_html_tools::htmlSelect(
-						'SelectionType', $_seltype, 1, $this->Model->SelectionType, false, 'onChange="closeAllType();clearFields();toggle(this.value);setWorkspaces(this.value);onSelectionTypeChangeJS(this.value);setStaticSelection(this.value);' . $this->topFrame . '.mark();"', 'value', $this->_width_size) . $this->getHTMLDynamic() . '</div>
+						'SelectionType', $_seltype, 1, $this->Model->SelectionType, false, array('onChange'=>"closeAllType();clearFields();toggle(this.value);setWorkspaces(this.value);onSelectionTypeChangeJS(this.value);setStaticSelection(this.value);" . $this->topFrame . '.mark();'), 'value', $this->_width_size) . $this->getHTMLDynamic() . '</div>
 			</div>';
 
 		return array(
@@ -894,7 +894,7 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 		return array(
 			array(
 				'headline' => g_l('navigation', '[entries]'),
-				'html' => we_html_tools::htmlSelect('dynContent', $this->View->getItems($this->Model->ID), 20, '', false, 'style="width: ' . $this->_width_size . 'px; height: 200px;  margin: 0px 0px 5px 0px;"'),
+				'html' => we_html_tools::htmlSelect('dynContent', $this->View->getItems($this->Model->ID), 20, '', false, array('style'=>'width: ' . $this->_width_size . 'px; height: 200px;  margin: 0px 0px 5px 0px;')),
 				'space' => $this->_space_size,
 				'noline' => 0
 			),
@@ -1345,7 +1345,7 @@ function selectItem() {
 			array(
 				'headline' => '',
 				'html' => we_html_tools::htmlSelect(
-						'fields', $__fields, 20, '', ($_multi ? true : false), 'style="width: 300px; height: 200px; margin: 5px 0px 5px 0px;" onClick="setTimeout(\'selectItem();\',100);"'),
+						'fields', $__fields, 20, '', ($_multi ? true : false), array('style'=>"width: 300px; height: 200px; margin: 5px 0px 5px 0px;",'onClick'=>"setTimeout(\'selectItem();\',100);")),
 				'space' => 0
 			)
 		);
@@ -1483,7 +1483,7 @@ function selectItem() {
 
 			return '<div id="objLinkWorkspaceClass" style="display: ' . (($this->Model->Selection == we_navigation_navigation::SELECTION_DYNAMIC) ? 'block' : 'none') . ';margin-top: 5px;">' . we_html_tools::htmlFormElementTable(
 							we_html_tools::htmlSelect(
-									'WorkspaceIDClass', $_wsid, 1, $this->Model->WorkspaceID, false, 'style="width: ' . $this->_width_size . 'px;" onChange="' . $this->topFrame . '.mark();"', 'value'), g_l('navigation', '[workspace]')) . '</div>';
+									'WorkspaceIDClass', $_wsid, 1, $this->Model->WorkspaceID, false, array('style'=>'width: ' . $this->_width_size . 'px;', 'onChange'=>$this->topFrame . '.mark();'), 'value'), g_l('navigation', '[workspace]')) . '</div>';
 		} else {
 
 			if($field == 'WorkspaceID'){
@@ -1493,7 +1493,7 @@ function selectItem() {
 
 				return '<div id="objLinkWorkspace" style="display: ' . (($this->Model->SelectionType == we_navigation_navigation::STPYE_OBJLINK && ($this->Model->WorkspaceID > -1)) ? 'block' : 'none') . ';margin-top: 5px;">' . we_html_tools::htmlFormElementTable(
 								we_html_tools::htmlSelect(
-										'WorkspaceID', $_wsid, 1, $this->Model->WorkspaceID, false, 'style="width: ' . $this->_width_size . 'px;" onChange="' . $this->topFrame . '.mark();"', 'value'), g_l('navigation', '[workspace]')) . '</div>';
+										'WorkspaceID', $_wsid, 1, $this->Model->WorkspaceID, false, array('style'=>'width: ' . $this->_width_size . 'px;', 'onChange'=>$this->topFrame . '.mark();'), 'value'), g_l('navigation', '[workspace]')) . '</div>';
 			} else {
 				if($this->Model->FolderSelection == we_navigation_navigation::STPYE_OBJLINK && $this->Model->LinkID){
 					$_wsid = we_navigation_dynList::getWorkspacesForObject($this->Model->LinkID);
@@ -1501,7 +1501,7 @@ function selectItem() {
 
 				return '<div id="objLinkFolderWorkspace" style="display: ' . (($this->Model->FolderSelection == we_navigation_navigation::STPYE_OBJLINK && ($this->Model->FolderWsID > -1)) ? 'block' : 'none') . ';margin-top: 5px;">' . we_html_tools::htmlFormElementTable(
 								we_html_tools::htmlSelect(
-										'FolderWsID', $_wsid, 1, $this->Model->FolderWsID, false, 'style="width: ' . $this->_width_size . 'px;" onChange="' . $this->topFrame . '.mark();"', 'value'), g_l('navigation', '[workspace]')) . '</div>';
+										'FolderWsID', $_wsid, 1, $this->Model->FolderWsID, false, array('style'=>'width: ' . $this->_width_size . 'px;', 'onChange'=>$this->topFrame . '.mark();'), 'value'), g_l('navigation', '[workspace]')) . '</div>';
 			}
 		}
 	}
@@ -1540,7 +1540,7 @@ function ' . $prefix . 'setLinkSelection(value){
 								$prefix . 'LinkSelection', array(
 							'intern' => g_l('navigation', '[intern]'),
 							'extern' => g_l('navigation', '[extern]')
-								), 1, $this->Model->LinkSelection, false, 'style="width: ' . $this->_width_size . 'px;" onchange="' . $prefix . 'setLinkSelection(this.value);' . $this->topFrame . '.mark();"', 'value'), g_l('navigation', '[linkSelection]')) . '</div>
+								), 1, $this->Model->LinkSelection, false, array('style'=>'width: ' . $this->_width_size . 'px;', 'onchange'=>$prefix . 'setLinkSelection(this.value);' . $this->topFrame . '.mark();'), 'value'), g_l('navigation', '[linkSelection]')) . '</div>
 				<div id="' . $prefix . 'intern" style="display: ' . (($this->Model->LinkSelection == 'intern' && $this->Model->SelectionType != we_navigation_navigation::STYPE_URLLINK) ? 'block' : 'none') . ';margin-top: 5px;">
 				' . $weAcSelector . '
 				</div>
@@ -1567,7 +1567,7 @@ function ' . $prefix . 'setLinkSelection(value){
 		$table->setCol(0, 1, null, we_html_tools::getPixel(2, 10, 0));
 		$table->setCol(
 				0, 2, null, we_html_tools::htmlSelect(
-						"CharsetSelect", $charsets, 1, $value, false, "onblur='document.forms[0].elements[\"Charset\"].value=this.options[this.selectedIndex].value;' onchange='document.forms[0].elements[\"Charset\"].value=this.options[this.selectedIndex].value;document.we_form.submit();'", 'value', ($this->_width_size - 122), "defaultfont", false));
+						"CharsetSelect", $charsets, 1, $value, false, array("onblur"=>'document.forms[0].elements[\"Charset\"].value=this.options[this.selectedIndex].value;', 'onchange'=>'document.forms[0].elements["Charset"].value=this.options[this.selectedIndex].value;document.we_form.submit();'), 'value', ($this->_width_size - 122), "defaultfont", false));
 
 		return $table->getHtml();
 	}
@@ -1734,7 +1734,7 @@ function ' . $prefix . 'setLinkSelection(value){
 							'absmiddle' => 'Abd Middle',
 							'baseline' => 'Baseline',
 							'absbottom' => 'Abs Bottom'
-								), 1, $this->Model->getAttribute('icon_align'), false, 'style="width: ' . ($this->_width_size - 50) . 'px;"'), g_l('navigation', '[icon_align]')));
+								), 1, $this->Model->getAttribute('icon_align'), false, array('style'=>'width: ' . ($this->_width_size - 50) . 'px;')), g_l('navigation', '[icon_align]')));
 		$_img_props->setCol(2, 0, array(
 			'colspan' => 5
 				), we_html_tools::htmlFormElementTable(

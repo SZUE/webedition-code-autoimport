@@ -793,11 +793,11 @@ class we_search_view extends we_tool_view{
     var searchFields = "' . str_replace(
 					"\n", '\n', addslashes(
 						we_html_tools::htmlSelect(
-							'searchFieldsAdvSearch[__we_new_id__]', $this->searchclass->getFields("__we_new_id__", ""), 1, "", false, 'class="defaultfont" id="searchFieldsAdvSearch[__we_new_id__]" onChange="changeit(this.value, __we_new_id__);" '))) . '";
+							'searchFieldsAdvSearch[__we_new_id__]', $this->searchclass->getFields("__we_new_id__", ""), 1, "", false, array('class' => "defaultfont", 'id' => "searchFieldsAdvSearch[__we_new_id__]", 'onChange' => "changeit(this.value, __we_new_id__);")))) . '";
     var locationFields = "' . str_replace(
 					"\n", '\n', addslashes(
 						we_html_tools::htmlSelect(
-							'locationAdvSearch[__we_new_id__]', $this->searchclass->getLocation(), 1, "", false, 'class="defaultfont" id="locationAdvSearch[__we_new_id__]"  '))) . '";
+							'locationAdvSearch[__we_new_id__]', $this->searchclass->getLocation(), 1, "", false, array('class' => "defaultfont", 'id' => "locationAdvSearch[__we_new_id__]")))) . '";
     var search = "' . addslashes(
 					we_html_tools::htmlTextInput(
 						'searchAdvSearch[__we_new_id__]', 24, "", "", " class=\"wetextinput\" id=\"searchAdvSearch[__we_new_id__]\" ", "text", 170)) . '";
@@ -860,11 +860,11 @@ class we_search_view extends we_tool_view{
     var searchFields = "' . str_replace(
 					"\n", '\n', addslashes(
 						we_html_tools::htmlSelect(
-							'searchFieldsAdvSearch[__we_new_id__]', $this->searchclass->getFields("__we_new_id__", ""), 1, "", false, 'class="defaultfont" id="searchFieldsAdvSearch[__we_new_id__]" onChange="changeit(this.value, __we_new_id__);" '))) . '";
+							'searchFieldsAdvSearch[__we_new_id__]', $this->searchclass->getFields("__we_new_id__", ""), 1, "", false, array('class' => "defaultfont", 'id' => "searchFieldsAdvSearch[__we_new_id__]", 'onChange' => "changeit(this.value, __we_new_id__);")))) . '";
     var locationFields = "' . str_replace(
 					"\n", '\n', addslashes(
 						we_html_tools::htmlSelect(
-							'locationAdvSearch[__we_new_id__]', $this->searchclass->getLocation(), 1, "", false, 'class="defaultfont" id="locationAdvSearch[__we_new_id__]"  '))) . '";
+							'locationAdvSearch[__we_new_id__]', $this->searchclass->getLocation(), 1, "", false, array('class' => "defaultfont", 'id' => "locationAdvSearch[__we_new_id__]")))) . '";
     var search = "' . addslashes(
 					we_html_tools::htmlTextInput(
 						'searchAdvSearch[__we_new_id__]', 24, "", "", " class=\"wetextinput\" id=\"searchAdvSearch[__we_new_id__]\" ", "text", 170)) . '";
@@ -1011,7 +1011,7 @@ class we_search_view extends we_tool_view{
      search = "' . str_replace(
 					"\n", '\n', addslashes(
 						we_html_tools::htmlSelect(
-							'searchAdvSearch[__we_new_id__]', $this->searchclass->getDoctypes(), 1, "", false, 'class="defaultfont" style="width:170px;" id="searchAdvSearch[__we_new_id__]" '))) . '";
+							'searchAdvSearch[__we_new_id__]', $this->searchclass->getDoctypes(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "searchAdvSearch[__we_new_id__]")))) . '";
 
      var cell = document.createElement("TD");
         cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
@@ -1037,7 +1037,7 @@ class we_search_view extends we_tool_view{
      search = "' . str_replace(
 					"\n", '\n', addslashes(
 						we_html_tools::htmlSelect(
-							'searchAdvSearch[__we_new_id__]', $this->searchclass->getFieldsStatus(), 1, "", false, 'class="defaultfont" style="width:170px;" id="searchAdvSearch[__we_new_id__]" '))) . '";
+							'searchAdvSearch[__we_new_id__]', $this->searchclass->getFieldsStatus(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "searchAdvSearch[__we_new_id__]")))) . '";
 
      var cell = document.createElement("TD");
         cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
@@ -1063,7 +1063,7 @@ class we_search_view extends we_tool_view{
      search = "' . str_replace(
 					"\n", '\n', addslashes(
 						we_html_tools::htmlSelect(
-							'searchAdvSearch[__we_new_id__]', $this->searchclass->getFieldsSpeicherart(), 1, "", false, 'class="defaultfont" style="width:170px;" id="searchAdvSearch[__we_new_id__]" '))) . '";
+							'searchAdvSearch[__we_new_id__]', $this->searchclass->getFieldsSpeicherart(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "searchAdvSearch[__we_new_id__]")))) . '";
 
      var cell = document.createElement("TD");
         cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
@@ -1084,7 +1084,7 @@ class we_search_view extends we_tool_view{
      locationFields = "' . str_replace(
 					"\n", '\n', addslashes(
 						we_html_tools::htmlSelect(
-							'locationAdvSearch[__we_new_id__]', $this->searchclass->getLocation("date"), 1, "", false, 'class="defaultfont" id="locationAdvSearch[__we_new_id__]"  '))) . '";
+							'locationAdvSearch[__we_new_id__]', $this->searchclass->getLocation("date"), 1, "", false, array('class' => "defaultfont", 'id' => "locationAdvSearch[__we_new_id__]")))) . '";
 
      var cell = document.createElement("TD");
         cell.setAttribute("id", "td_locationAdvSearch["+rowNr+"]");
@@ -1132,7 +1132,7 @@ class we_search_view extends we_tool_view{
      search = "' . str_replace(
 					"\n", '\n', addslashes(
 						we_html_tools::htmlSelect(
-							'searchAdvSearch[__we_new_id__]', $this->searchclass->getModFields(), 1, "", false, 'class="defaultfont" style="width:170px;" id="searchAdvSearch[__we_new_id__]" '))) . '";
+							'searchAdvSearch[__we_new_id__]', $this->searchclass->getModFields(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "searchAdvSearch[__we_new_id__]")))) . '";
 
      var cell = document.createElement("TD");
         cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
@@ -1158,7 +1158,7 @@ class we_search_view extends we_tool_view{
      search = "' . str_replace(
 					"\n", '\n', addslashes(
 						we_html_tools::htmlSelect(
-							'searchAdvSearch[__we_new_id__]', $this->searchclass->getUsers(), 1, "", false, 'class="defaultfont" style="width:170px;" id="searchAdvSearch[__we_new_id__]" '))) . '";
+							'searchAdvSearch[__we_new_id__]', $this->searchclass->getUsers(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "searchAdvSearch[__we_new_id__]")))) . '";
 
      var cell = document.createElement("TD");
         cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
@@ -1475,7 +1475,7 @@ class we_search_view extends we_tool_view{
 		$page = ceil($searchstart / $anzahl) * $anzahl;
 
 		$select = we_html_tools::htmlSelect(
-				"page", $pages, 1, $page, false, "onChange=\"this.form.elements['searchstart" . $whichSearch . "'].value = this.value;search(false);\"");
+				"page", $pages, 1, $page, false, array("onChange" => "this.form.elements['searchstart" . $whichSearch . "'].value = this.value;search(false);"));
 		if(!isset($_REQUEST['we_cmd']['setInputSearchstart'])){
 			if(!defined("searchstart" . $whichSearch)){
 				define("searchstart" . $whichSearch, true);
@@ -2534,7 +2534,7 @@ class we_search_view extends we_tool_view{
    <td style="font-size:12px;width:125px;">' . g_l('searchtool', "[eintraege_pro_seite]") . ':</td>
    <td class="defaultgray" style="width:60px;">
    ' . we_html_tools::htmlSelect(
-				$anzahl, $values, 1, $_anzahl, "", 'onChange=\'this.form.elements["' . $searchstart . '"].value=0;search(false);\'') . '
+				$anzahl, $values, 1, $_anzahl, "", array('onChange' => 'this.form.elements["' . $searchstart . '"].value=0;search(false);')) . '
 	 </td>
    <td style="width:400px;">' . $thisObj->getNextPrev(
 				$foundItems, $whichSearch) . '</td>
@@ -2717,19 +2717,19 @@ class we_search_view extends we_tool_view{
 				if($this->Model->searchFieldsAdvSearch[$i] == "allModsIn"){
 					$searchInput = we_html_tools::htmlSelect(
 							"searchAdvSearch[" . $i . "]", $this->searchclass->getModFields(), 1, (isset($this->Model->searchAdvSearch) && is_array($this->Model->searchAdvSearch) && isset(
-								$this->Model->searchAdvSearch[$i]) ? $this->Model->searchAdvSearch[$i] : ""), false, 'class="defaultfont" style="width:170px;" id="searchAdvSearch[' . $i . ']" ');
+								$this->Model->searchAdvSearch[$i]) ? $this->Model->searchAdvSearch[$i] : ""), false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => 'searchAdvSearch[' . $i . ']'));
 				}
 
 				if($this->Model->searchFieldsAdvSearch[$i] == "Status"){
 					$searchInput = we_html_tools::htmlSelect(
 							"searchAdvSearch[" . $i . "]", $this->searchclass->getFieldsStatus(), 1, (isset($this->Model->searchAdvSearch) && is_array($this->Model->searchAdvSearch) && isset(
-								$this->Model->searchAdvSearch[$i]) ? $this->Model->searchAdvSearch[$i] : ""), false, 'class="defaultfont" style="width:170px;" id="searchAdvSearch[' . $i . ']" ');
+								$this->Model->searchAdvSearch[$i]) ? $this->Model->searchAdvSearch[$i] : ""), false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => 'searchAdvSearch[' . $i . ']'));
 				}
 
 				if($this->Model->searchFieldsAdvSearch[$i] == "Speicherart"){
 					$searchInput = we_html_tools::htmlSelect(
 							"searchAdvSearch[" . $i . "]", $this->searchclass->getFieldsSpeicherart(), 1, (isset($this->Model->searchAdvSearch) && is_array($this->Model->searchAdvSearch) && isset(
-								$this->Model->searchAdvSearch[$i]) ? $this->Model->searchAdvSearch[$i] : ""), false, 'class="defaultfont" style="width:170px;" id="searchAdvSearch[' . $i . ']" ');
+								$this->Model->searchAdvSearch[$i]) ? $this->Model->searchAdvSearch[$i] : ""), false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => 'searchAdvSearch[' . $i . ']'));
 				}
 
 				if($this->Model->searchFieldsAdvSearch[$i] == "Published" || $this->Model->searchFieldsAdvSearch[$i] == "CreationDate" || $this->Model->searchFieldsAdvSearch[$i] == "ModDate"){
@@ -2741,7 +2741,7 @@ class we_search_view extends we_tool_view{
 				if($this->Model->searchFieldsAdvSearch[$i] == "temp_doc_type"){
 					$searchInput = we_html_tools::htmlSelect(
 							"searchAdvSearch[" . $i . "]", $this->searchclass->getDocTypes(), 1, (isset($this->Model->searchAdvSearch) && is_array($this->Model->searchAdvSearch) && isset(
-								$this->Model->searchAdvSearch[$i]) ? $this->Model->searchAdvSearch[$i] : ""), false, 'class="defaultfont" style="width:170px;" id="searchAdvSearch[' . $i . ']" ');
+								$this->Model->searchAdvSearch[$i]) ? $this->Model->searchAdvSearch[$i] : ""), false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => 'searchAdvSearch[' . $i . ']'));
 				}
 
 				if($this->Model->searchFieldsAdvSearch[$i] == "ParentIDDoc" || $this->Model->searchFieldsAdvSearch[$i] == "ParentIDObj" || $this->Model->searchFieldsAdvSearch[$i] == "ParentIDTmpl"){
@@ -2804,10 +2804,10 @@ class we_search_view extends we_tool_view{
      <td>' . we_html_tools::hidden(
 					"hidden_searchFieldsAdvSearch[" . $i . "]", isset($this->Model->searchFieldsAdvSearch[$i]) ? $this->Model->searchFieldsAdvSearch[$i] : "") . we_html_tools::htmlSelect(
 					"searchFieldsAdvSearch[" . $i . "]", $this->searchclass->getFields($i, ""), 1, (isset($this->Model->searchFieldsAdvSearch) && is_array($this->Model->searchFieldsAdvSearch) && isset(
-						$this->Model->searchFieldsAdvSearch[$i]) ? $this->Model->searchFieldsAdvSearch[$i] : ""), false, 'class="defaultfont" id="searchFieldsAdvSearch[' . $i . ']" onChange="changeit(this.value, ' . $i . ');" ') . '</td>
+						$this->Model->searchFieldsAdvSearch[$i]) ? $this->Model->searchFieldsAdvSearch[$i] : ""), false, array('class'=>"defaultfont", 'id'=>'searchFieldsAdvSearch[' . $i . ']', 'onChange'=>'changeit(this.value, ' . $i . ');')) . '</td>
      <td id="td_locationAdvSearch[' . $i . ']">' . we_html_tools::htmlSelect(
 					"locationAdvSearch[" . $i . "]", $this->searchclass->getLocation($handle), 1, (isset($this->Model->locationAdvSearch) && is_array($this->Model->locationAdvSearch) && isset(
-						$this->Model->locationAdvSearch[$i]) ? $this->Model->locationAdvSearch[$i] : ""), false, 'class="defaultfont" ' . $locationDisabled . ' id="locationAdvSearch[' . $i . ']" ') . '</td>
+						$this->Model->locationAdvSearch[$i]) ? $this->Model->locationAdvSearch[$i] : ""), false, array('class'=>"defaultfont",$locationDisabled =>$locationDisabled,'id'=>'locationAdvSearch[' . $i . ']')) . '</td>
      <td id="td_searchAdvSearch[' . $i . ']">' . $searchInput . '</td>
      <td id="td_delButton[' . $i . ']">' . $button . '</td>
     </tr>
