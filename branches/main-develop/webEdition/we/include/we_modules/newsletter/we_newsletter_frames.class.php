@@ -1757,7 +1757,7 @@ self.focus();
 		$buttons_table->setCol(6, 0, array(), we_html_button::create_button("delete_all", "javascript:deleteallBlack()"));
 
 		$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 5, 3);
-		$table->setCol(0, 0, array("valign" => "middle"), we_html_tools::htmlSelect("blacklist_sel", $arr, 10, "", false, array('style'=>"width:388px'), "value", "600"));
+		$table->setCol(0, 0, array("valign" => "middle"), we_html_tools::htmlSelect("blacklist_sel", $arr, 10, "", false, array('style'=>"width:388px"), "value", "600"));
 		$table->setCol(0, 1, array("valign" => "middle"), we_html_tools::getPixel(10, 12));
 		$table->setCol(0, 2, array("valign" => "top"), $buttons_table->getHtml());
 

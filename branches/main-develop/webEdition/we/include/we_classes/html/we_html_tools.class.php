@@ -45,7 +45,7 @@ abstract class we_html_tools{
 			self::setHttpCode(401);
 			print self::htmlTop() .
 				we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[perms_no_permissions]'), we_message_reporting::WE_MESSAGE_ERROR) . ($redirect ? 'document.location = "' . $redirect . '"' : 'top.close();')) .
-				'</head><body>'.
+				'</head><body>' .
 				g_l('alert', '[perms_no_permissions]') .
 				'</body></html>';
 			exit();
@@ -369,8 +369,8 @@ abstract class we_html_tools{
 		/* 		if(!is_numeric($w) && $h == 1){
 		  t_e('x');
 		  } */
-		if($w=='text'){
-			t_e('x');
+		if($w === 'text'){
+			t_e('Pixel called with text attribute');
 		}
 		return '<span style="display:inline-block;width:' . $w . (is_numeric($w) ? 'px' : '') . ';height:' . $h . (is_numeric($h) ? 'px' : '') . ';' . ($border ? 'border:' . $border . 'px solid black;' : '') . '"></span>';
 	}

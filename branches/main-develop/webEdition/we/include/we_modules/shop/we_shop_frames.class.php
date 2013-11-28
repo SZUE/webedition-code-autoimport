@@ -350,7 +350,7 @@ class we_shop_frames extends weModuleFrames{
 			}
 		}
 
-		$year = ($_REQUEST['year'] ? $_REQUEST['year'] : date('Y'));
+		$year = (isset($_REQUEST['year']) ? $_REQUEST['year'] : date('Y'));
 //unset($_SESSION['year']);
 		for($f = 12; $f > 0; $f--){
 			$r = (isset(${'v' . $f . $year}) ? ${'v' . $f . $year} : '');

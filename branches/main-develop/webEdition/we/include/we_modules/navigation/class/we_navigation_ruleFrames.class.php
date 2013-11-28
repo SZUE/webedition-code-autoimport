@@ -49,12 +49,12 @@ class we_navigation_ruleFrames{
 	}
 
 	function getHTMLFrameset(){
-return we_html_tools::htmlTop(g_l('navigation', '[menu_highlight_rules]')) . STYLESHEET . '</head>' .
+		return we_html_tools::htmlTop(g_l('navigation', '[menu_highlight_rules]')) . STYLESHEET . '</head>' .
 			we_html_element::htmlBody(array('style' => 'background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;')
 				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
 					, we_html_element::htmlIFrame('content', $this->Frameset . '?pnt=content', 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden') .
 					we_html_element::htmlIFrame('cmdFrame', HTML_DIR . "white.html", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
-				)) .
+			)) .
 			'</html>';
 	}
 
@@ -78,7 +78,7 @@ return we_html_tools::htmlTop(g_l('navigation', '[menu_highlight_rules]')) . STY
 				'space' => 200,
 				'html' => weSuggest::getYuiJsFiles() . '<table border="0" cellpadding="0" cellspacing="0">
 										<tr><td>' . we_html_tools::htmlSelect(
-					'navigationRules', $_rules, 8, '', false, array('style'=>"width: 275px;",'onclick'=>'we_cmd(\'edit_navigation_rule\', this.value)')) . '</td>
+					'navigationRules', $_rules, 8, '', false, array('style' => "width: 275px;", 'onclick' => 'we_cmd(\'edit_navigation_rule\', this.value)')) . '</td>
 											<td>' . we_html_tools::getPixel(10, 1) . '</td>
 											<td valign="top">
 												' . we_html_button::create_button(
@@ -130,7 +130,7 @@ return we_html_tools::htmlTop(g_l('navigation', '[menu_highlight_rules]')) . STY
 			'headline' => g_l('navigation', '[rules][rule_applies_for]'),
 			'space' => 200,
 			'html' => we_html_tools::htmlSelect(
-				'SelectionType', $selectionTypes, 1, 0, false, array('style'=>"width: 275px;",'onchange'=>"switchType(this.value);"))
+				'SelectionType', $selectionTypes, 1, 0, false, array('style' => "width: 275px;", 'onchange' => "switchType(this.value);"))
 		);
 
 // getDoctypes
@@ -138,7 +138,7 @@ return we_html_tools::htmlTop(g_l('navigation', '[menu_highlight_rules]')) . STY
 			0 => g_l('navigation', '[no_entry]')
 		);
 		$this->db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . we_docTypes::getDoctypeQuery($this->db));
-		while($this->db->next_record()) {
+		while($this->db->next_record()){
 			$docTypes[$this->db->f('ID')] = $this->db->f('DocType');
 		}
 
@@ -157,8 +157,7 @@ return we_html_tools::htmlTop(g_l('navigation', '[menu_highlight_rules]')) . STY
 			we_html_button::create_button(
 				'select', "javascript:we_cmd('openDirselector', document.we_form.elements['FolderID'].value, '" . FILE_TABLE . "', '" . $wecmdenc1 . "', '" . $wecmdenc2 . "')"), 10);
 		$yuiSuggest->setTrashButton(
-			we_html_button::create_button(
-				"image:btn_function_trash", "javascript:document.we_form.elements['FolderID'].value = '';document.we_form.elements['FolderIDPath'].value = '';"), 10);
+			we_html_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['FolderID'].value = '';document.we_form.elements['FolderIDPath'].value = '';"));
 
 		$weAcSelector = $yuiSuggest->getHTML();
 
@@ -171,7 +170,7 @@ return we_html_tools::htmlTop(g_l('navigation', '[menu_highlight_rules]')) . STY
 <tr id="trDoctypeID">
 	<td style="height: 40px;" class="weMultiIconBoxHeadline">' . g_l('navigation', '[rules][rule_doctype]') . '</td>
 	<td>' . we_html_tools::htmlSelect(
-				'DoctypeID', $docTypes, 1, 0, false, array("style"=>"width: 275px;")) . '</td>
+				'DoctypeID', $docTypes, 1, 0, false, array("style" => "width: 275px;")) . '</td>
 </tr>';
 
 		if(defined('OBJECT_TABLE')){
@@ -201,7 +200,7 @@ return we_html_tools::htmlTop(g_l('navigation', '[menu_highlight_rules]')) . STY
 <tr id="trWorkspaceID">
 	<td style="height: 40px;" class="weMultiIconBoxHeadline">' . g_l('navigation', '[rules][rule_workspace]') . '</td>
 	<td>' . we_html_tools::htmlSelect(
-					'WorkspaceID', array(), 1, '', false, array('style'=>"width: 275px;")) . '</td>
+					'WorkspaceID', array(), 1, '', false, array('style' => "width: 275px;")) . '</td>
 </tr>';
 		}
 		$formTable .= '
@@ -355,7 +354,7 @@ function we_cmd(){
 					'src' => BUTTONS_DIR . 'btn_function_trash.gif',
 					'onclick' => 'javascript:#####placeHolder#####;',
 					'style' => 'cursor: pointer; width: 27px;'
-			)));
+		)));
 
 		$js = we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
 			we_html_element::jsElement('
@@ -368,15 +367,13 @@ function we_cmd(){
 		');
 
 		$table = new we_html_table(
-				array(
-					'id' => 'CategoriesBlock',
-					'style' => 'display: block;',
-					'cellpadding' => 0,
-					'cellspacing' => 0,
-					'border' => 0
-				),
-				3,
-				1);
+			array(
+			'id' => 'CategoriesBlock',
+			'style' => 'display: block;',
+			'cellpadding' => 0,
+			'cellspacing' => 0,
+			'border' => 0
+			), 3, 1);
 
 		$table->setColContent(
 			0, 0, we_html_element::htmlDiv(
@@ -384,7 +381,7 @@ function we_cmd(){
 					'id' => 'categories',
 					'class' => 'blockWrapper',
 					'style' => 'width: 380px; height: 80px; border: #AAAAAA solid 1px;'
-			)));
+		)));
 
 		$table->setColContent(1, 0, we_html_tools::getPixel(5, 5));
 
@@ -394,7 +391,7 @@ function we_cmd(){
 			), we_html_button::create_button_table(
 				array(
 					we_html_button::create_button("delete_all", "javascript:removeAllCats()"), $addbut
-			)));
+		)));
 
 		return $table->getHtml() . we_html_tools::hidden('CategoriesControl', 0) . we_html_tools::hidden('CategoriesCount', 0) . $js . we_html_element::jsElement('
 							function removeAllCats(){

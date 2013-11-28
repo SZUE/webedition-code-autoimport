@@ -903,15 +903,16 @@ function weInputInArray(arr, val) {
 		$resultField = we_html_tools::hidden($this->resultName, $this->resultValue, array('id' => $resultId));
 		$autoSuggest = '<div id="yuiAcLayer' . $this->acId . '" class="yuiAcLayer">' . $inputField . '<div id="yuiAcContainer' . $this->acId . '"></div></div>';
 
+
 		$html = we_html_tools::htmlFormElementTable(
 				array(
-				"text" => $resultField . $autoSuggest . ($this->selectButton ? we_html_tools::getPixel($selectButtonSpace, 4) : ''),
+				"text" => $resultField . $autoSuggest . ($this->selectButton ? we_html_tools::getPixel(intval($selectButtonSpace), 4) : ''),
 				"valign" => "top",
 				"style" => "height:10px"), $this->label, 'left', 'defaultfont', (
 				$this->selectButton ?
 					array("text" => "<div style=''>" . $this->selectButton . "</div>", "valign" => "top") :
 					''
-				), we_html_tools::getPixel($this->trashButtonSpace, 4), (
+				), we_html_tools::getPixel(intval($this->trashButtonSpace), 4), (
 				empty($this->trashButton) ?
 					'' :
 					array("text" => "<div style='margin-right:" . $this->trashButtonSpace . "px'>" . $this->trashButton . "</div>", "valign" => "top")
