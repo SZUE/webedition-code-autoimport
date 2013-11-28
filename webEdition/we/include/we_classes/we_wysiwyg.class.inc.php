@@ -283,7 +283,7 @@ function tinyMCECallRegisterDialog(win,action){
 }') .
 						we_html_element::jsElement('
 function weWysiwygSetHiddenTextSync(){
-	weWysiwygSetHiddenText(1);
+	weWysiwygSetHiddenText();
 	setTimeout(weWysiwygSetHiddenTextSync,500);
 }
 
