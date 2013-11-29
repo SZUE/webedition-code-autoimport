@@ -87,7 +87,7 @@ onunload=function() {
 		if(we_base_browserDetect::inst()->isMAC()){
 			$arr[] = WEBEDITION_DIR . 'css/menu/pro_drop_mac.css';
 		}
-		
+
 		return $arr;
 	}
 
@@ -122,7 +122,7 @@ top.weSidebar = weSidebar;
 
 	static function getMenuReloadCode($location = 'top.opener.'){
 		$menu = self::getMenu();
-		$menu = str_replace("\n", '"+"', addslashes($menu->getHTML(false)));
+		$menu = str_replace("\n", '"+"', addslashes($menu->getHTML()));
 		return $location . 'document.getElementById("nav").parentNode.innerHTML="' . $menu . '";';
 	}
 
@@ -182,7 +182,7 @@ top.weSidebar = weSidebar;
 			<div style="position:relative;border:0px;float:left;" >
 				<?php
 				if($jmenu){
-					print $jmenu->getCode(false);
+					print $jmenu->getCode();
 				}
 				?>
 			</div>

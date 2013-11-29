@@ -168,12 +168,7 @@ class we_tool_frames extends weModuleFrames{
 
 		$lang_arr = 'we_menu_' . $this->toolName;
 		$jmenu = new weJavaMenu($$lang_arr, $this->topFrame . '.cmd');
-
-		$menu = '';
-		ob_start();
-		$jmenu->printMenu('cmd');
-		$menu = ob_get_contents();
-		ob_end_clean();
+		$menu = $jmenu->getCode();
 
 		$table = new we_html_table(array("width" => "100%", "cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 2);
 		$table->setCol(0, 0, array("align" => "left", "valign" => "top"), $menu);
