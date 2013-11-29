@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-abstract class weFile {
+abstract class weFile{
 
 	const SZ_HUMAN = 0;
 	const SZ_BYTE = 1;
@@ -92,6 +92,35 @@ abstract class weFile {
 			}
 		}
 		return false;
+	}
+
+	static function loadLines($filename, $from, $to, $iscompressed = false){
+		if($filename == '' || self::hasURL($filename) || !is_readable($filename)){
+			return false;
+		}
+		$filename = realpath($filename);
+		/* if(strpos($filename, $_SERVER['DOCUMENT_ROOT']) === FALSE){
+		  t_e('warning', 'Acess outside document_root forbidden!', $filenam);
+		  return;
+		  } */
+
+		$prefix = $iscompressed ? self::getComPrefix('gzip') : 'f';
+		$open = $prefix . 'open';
+		$gets = $prefix . 'gets';
+		$close = $prefix . 'close';
+
+		$buffer = '';
+		$lines = array();
+		$line = 0;
+		if(($fp = $open($filename, 'rb'))){
+			while((($buffer = $gets($fp, 4096)) !== false) && ++$line < $to){
+				if($line >= $from){
+					$lines[$line] = $buffer;
+				}
+			}
+			$close($fp);
+		}
+		return $lines;
 	}
 
 	static function loadPart($filename, $offset = 0, $rsize = 8192, $iscompressed = false){
