@@ -174,7 +174,7 @@ if($size && $cur){
 		$lines = we_util_File::loadLines($_SERVER['DOCUMENT_ROOT'] . '/' . $file, max(1, $lineNo - 1), $lineNo + 5);
 		if($lines){
 			array_walk($lines, 'formatLine');
-			$cur['posData'] .=$file . ":\n" . implode('', $lines) . "\n" . '----------------------------------------------------------';
+			$cur['posData'] .=$file . ":\n" . implode('', $lines) . "\n----------------------------------------------------------\n";
 		}
 	}
 }

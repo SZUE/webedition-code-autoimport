@@ -356,7 +356,7 @@ function mail_error_message($type, $message, $file, $line, $skipBT = false, $ins
 	// Build the error table
 	$_detailedError = "An error occurred while executing a script in webEdition.\n\n\n" .
 		($insertID ?
-			getServerUrl() . WEBEDITION_DIR. '/errorlog.php?function=pos&ID=' . $insertID . "\n\n" : '') .
+			getServerUrl() . WEBEDITION_DIR. 'errorlog.php?function=pos&ID=' . $insertID . "\n\n" : '') .
 // Domain
 		'webEdition address: ' . $_SERVER['SERVER_NAME'] . ",\n\n" .
 		'URI: ' . $_SERVER['REQUEST_URI'] . "\n" .
