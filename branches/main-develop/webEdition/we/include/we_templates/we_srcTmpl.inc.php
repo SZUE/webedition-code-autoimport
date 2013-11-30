@@ -572,6 +572,7 @@ switch($_SESSION['prefs']['editorMode']){
 					break;
 				case 'text/js':
 					$parser_js[] = 'mode/javascript/javascript.js';
+					$parser_js[] = 'mode/sass/sass.js';
 					$parser_js[] = 'addon/fold/foldcode.js';
 					$parser_js[] = 'addon/edit/matchbrackets.js';
 					$parser_js[] = 'addon/hint/show-hint.js';
@@ -598,7 +599,7 @@ switch($_SESSION['prefs']['editorMode']){
 					$parser_js[] = 'mode/javascript/javascript.js';
 					$parser_js[] = 'mode/css/css.js';
 					$parser_js[] = 'mode/htmlmixed/htmlmixed.js';
-					$parser_js[] = 'mode/clike/clike.js';
+//					$parser_js[] = 'mode/clike/clike.js';
 					$parser_js[] = 'mode/php/php.js';
 					$parser_js[] = 'addon/edit/closetag.js';
 					$parser_js[] = 'addon/fold/foldcode.js';
