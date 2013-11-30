@@ -21,12 +21,12 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect(array('ADMINISTRATOR'));
 
-function getInfoTable($_infoArr){
-	if(!$_infoArr){
+function getInfoTable($infoArr){
+	if(!$infoArr){
 		return;
 	}
 	//recode data - this data might be different than the rest
-	foreach($_infoArr as &$tmp){
+	foreach($infoArr as &$tmp){
 		if(!mb_check_encoding($tmp, $GLOBALS['WE_BACKENDCHARSET'])){
 			$tmp = mb_convert_encoding($tmp, $GLOBALS['WE_BACKENDCHARSET'], 'UTF-8,ISO-8859-15,ISO-8859-1');
 		}
@@ -38,56 +38,26 @@ function getInfoTable($_infoArr){
 		}
 	}
 	$trans = array('Error type' => 'Type', 'Error message' => 'Text', 'Script name' => 'File', 'Line number' => 'Line', 'Backtrace' => 'Backtrace',
+		'Source code around' => 'posData',
 		'Request' => 'Request', 'Server' => 'Server', 'Session' => 'Session', 'Global' => 'Global');
-	return '
-			<table class="error" align="center">
+	$ret = '<table class="error" align="center">
   <colgroup>
   <col width="10%"/>
   <col width="90%" />
   </colgroup>
   <tr class="first">
-  	<td class="left">#' . $_infoArr['ID'] . '</td>
-    <td class="right">' . $_infoArr['Date'] . '</td>
-  </tr>' . '
-  <tr>
-    <td class="left">Error type:</td>
-    <td class="right">' . $_infoArr['Type'] . '</td>
-  </tr>
-  <tr>
-    <td class="left">Error message:</td>
-    <td ><pre>' . $_infoArr['Text'] . '</pre></td>
-  </tr>
-  <tr>
-    <td class="left">Script name:</td>
-    <td class="right">' . $_infoArr['File'] . '</td>
-  </tr>
-  <tr>
-    <td class="left">Line number:</td>
-    <td class="right">' . $_infoArr['Line'] . '</td>
-  </tr>
-  <tr>
-    <td class="left">Backtrace</td>
-    <td class="right"><pre>' . $_infoArr['Backtrace'] . '
-      </pre></td>
-  </tr>
-  <tr>
-    <td class="left">Request</td>
-    <td class="right"><pre>' . $_infoArr['Request'] . '</pre></td>
-  </tr>
-  <tr>
-    <td class="left">Server</td>
-    <td class="right"><pre>' . $_infoArr['Server'] . '</pre></td>
-  </tr>
-  <tr>
-    <td class="left">Session</td>
-    <td class="right"><pre>' . $_infoArr['Session'] . '
-      </pre></td>
-  </tr>
-  <tr>
-    <td class="left">Global</td>
-    <td class="right"><pre>' . $_infoArr['Global'] . '</pre></td>
-  </tr>
-</table>';
+  	<td class="left">#' . $infoArr['ID'] . '</td>
+    <td class="right">' . $infoArr['Date'] . '</td>
+  </tr>';
+	foreach($trans as $key => $val){
+		if(isset($infoArr[$val])){
+			$ret.= '<tr>
+    <td class="left">' . $key . ':</td>
+    <td class="right"><pre>' . $infoArr[$val] . '</pre></td>
+  </tr>';
+		}
+	}
+	return $ret . '</table>';
 }
 
 function getNavButtons($size, $pos, $id){
@@ -118,9 +88,12 @@ function getNavButtons($size, $pos, $id){
 		'</td></table>';
 }
 
+function formatLine(&$val, $key){
+	$val = $key . ': ' . $val;
+}
+
 $buttons = we_html_button::position_yes_no_cancel(
 		we_html_button::create_button("delete_all", $_SERVER['SCRIPT_NAME'] . "?deleteAll"), we_html_button::create_button("refresh", $_SERVER['SCRIPT_NAME']), we_html_button::create_button("close", "javascript:self.close()")
-
 );
 
 
@@ -187,6 +160,25 @@ if(isset($_REQUEST['function']) && $_REQUEST['function'] == 'delete'){
 if($size && !$cur){//nothing found, go to last element
 	$cur = getHash('SELECT * FROM `' . ERROR_LOG_TABLE . '` ORDER By ID DESC LIMIT 1');
 	$pos = $size;
+}
+
+if($size && $cur){
+	$cur['posData'] = '';
+	$matches = array();
+	preg_match_all('|#\d+ [^\]]*\[([^:\]]*):(\d+)|', $cur['Backtrace'], $matches);
+	$max = 8;
+	foreach($matches[1] as $i => $file){
+		if(!--$max){
+			break;
+		}
+		$lineNo = $matches[2][$i];
+
+		$lines = we_base_file::loadLines((strpos($file, $_SERVER['DOCUMENT_ROOT']) === 0 ? '':$_SERVER['DOCUMENT_ROOT'] . '/' ) . $file, max(1, $lineNo - 1), $lineNo + 5);
+		if($lines){
+			array_walk($lines, 'formatLine');
+			$cur['posData'] .=$file . ":\n" . implode('', $lines) . "\n----------------------------------------------------------\n";
+		}
+	}
 }
 
 $_parts = array(

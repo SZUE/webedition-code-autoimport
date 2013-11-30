@@ -158,9 +158,11 @@ function getBacktrace($skip){
 	$cnt = 0;
 	$found = false;
 	//error handler called directly caused by an error
-	foreach($_backtrace AS $no => $arr){
+	foreach($_backtrace as $no => $arr){
 		if($arr['function'] == 't_e'){
+			unset($_backtrace[$no-1]);
 			$found = true;
+
 			break;
 		}
 	}
@@ -354,7 +356,7 @@ function mail_error_message($type, $message, $file, $line, $skipBT = false, $ins
 	// Build the error table
 	$_detailedError = "An error occurred while executing a script in webEdition.\n\n\n" .
 		($insertID ?
-			getServerUrl() . WEBEDITION_DIR. '/errorlog.php?function=pos&ID=' . $insertID . "\n\n" : '') .
+			getServerUrl() . WEBEDITION_DIR. 'errorlog.php?function=pos&ID=' . $insertID . "\n\n" : '') .
 // Domain
 		'webEdition address: ' . $_SERVER['SERVER_NAME'] . ",\n\n" .
 		'URI: ' . $_SERVER['REQUEST_URI'] . "\n" .

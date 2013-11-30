@@ -46,7 +46,7 @@ abstract class we_html_tools{
 			print self::htmlTop() .
 				we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[perms_no_permissions]'), we_message_reporting::WE_MESSAGE_ERROR) . ($redirect ? 'document.location = "' . $redirect . '"' : 'top.close();')) .
 				'</head><body>' .
-				g_l('alert', '[perms_no_permissions]') .
+				str_replace('\n', '<br/>', g_l('alert', '[perms_no_permissions]')) .
 				'</body></html>';
 			exit();
 		}
