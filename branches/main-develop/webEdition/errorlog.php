@@ -92,6 +92,26 @@ function formatLine(&$val, $key){
 	$val = $key . ': ' . $val;
 }
 
+function getPosData($bt){
+	$ret = '';
+	$matches = array();
+	preg_match_all('|#\d+ [^\]]*\[([^:\]]*):(\d+)|', $bt, $matches);
+	$max = 8;
+	foreach($matches[1] as $i => $file){
+		if(!--$max){
+			break;
+		}
+		$lineNo = $matches[2][$i];
+
+		$lines = we_base_file::loadLines((strpos($file, $_SERVER['DOCUMENT_ROOT']) === 0 ? '' : $_SERVER['DOCUMENT_ROOT'] . '/' ) . $file, max(1, $lineNo - 1), $lineNo + 5);
+		if($lines){
+			array_walk($lines, 'formatLine');
+			$ret .=$file . ":\n" . implode('', $lines) . "\n----------------------------------------------------------\n";
+		}
+	}
+	return $ret;
+}
+
 $buttons = we_html_button::position_yes_no_cancel(
 		we_html_button::create_button("delete_all", $_SERVER['SCRIPT_NAME'] . "?deleteAll"), we_html_button::create_button("refresh", $_SERVER['SCRIPT_NAME']), we_html_button::create_button("close", "javascript:self.close()")
 );
@@ -121,9 +141,14 @@ switch(isset($_REQUEST['function']) ? $_REQUEST['function'] : 'last'){
 		header('Content-Disposition: attachment; filename=error.txt');
 		$cur = getHash('SELECT ID,Type,Function,File,Line,Text,Backtrace,Date FROM `' . ERROR_LOG_TABLE . '` WHERE ID=' . $id . ' ORDER By ID ASC LIMIT 1', $db, MYSQL_ASSOC);
 		$sep = "\n" . str_repeat('-', 80) . "\n";
-		foreach($cur as $key => $val){
-			echo $key . ': ' . $val . $sep;
+		if($cur){
+			$cur['Source-Code'] = getPosData($cur['Backtrace']);
 		}
+		$data = '';
+		foreach($cur as $key => $val){
+			$data.=$key . ': ' . $val . $sep;
+		}
+		echo str_replace($_SERVER['DOCUMENT_ROOT'], 'DOCUMENT_ROOT', $data);
 		//`Request` text NOT NULL,
 		exit();
 	case 'pos':
@@ -163,27 +188,14 @@ if($size && !$cur){//nothing found, go to last element
 }
 
 if($size && $cur){
-	$cur['posData'] = '';
-	$matches = array();
-	preg_match_all('|#\d+ [^\]]*\[([^:\]]*):(\d+)|', $cur['Backtrace'], $matches);
-	$max = 8;
-	foreach($matches[1] as $i => $file){
-		if(!--$max){
-			break;
-		}
-		$lineNo = $matches[2][$i];
-
-		$lines = we_base_file::loadLines((strpos($file, $_SERVER['DOCUMENT_ROOT']) === 0 ? '':$_SERVER['DOCUMENT_ROOT'] . '/' ) . $file, max(1, $lineNo - 1), $lineNo + 5);
-		if($lines){
-			array_walk($lines, 'formatLine');
-			$cur['posData'] .=$file . ":\n" . implode('', $lines) . "\n----------------------------------------------------------\n";
-		}
-	}
+	$cur['posData'] = getPosData($cur['Backtrace']);
 }
+
+$data = getInfoTable($cur);
 
 $_parts = array(
 	array(
-		'html' => ($size ? getInfoTable($cur) : g_l('global', '[no_entries]')),
+		'html' => ($size && $data ? $data : g_l('global', '[no_entries]')),
 		'space' => 10,
 	)
 );

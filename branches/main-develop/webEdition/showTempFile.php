@@ -23,13 +23,13 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
 $filename = $_SERVER['DOCUMENT_ROOT'] . $_REQUEST['file'];
-$mimetype = '';
 if(file_exists($filename)){
 	$isCompressed=we_base_file::isCompressed($filename);
 	if(function_exists('finfo_open')){
 		$finfo = finfo_open(FILEINFO_MIME_TYPE);
 		$mimetype = finfo_buffer($finfo,we_base_file::loadPart($filename, 0, 8192, $isCompressed));
-	} else{
+	} else {
+		$mimetype = '';
 		if(function_exists('getimagesizefromstring')){
 			$mysize = getimagesizefromstring(we_base_file::load($filename, 0, 8192, $isCompressed));
 			if(isset($mysize['mime'])){
@@ -37,13 +37,13 @@ if(file_exists($filename)){
 			}
 		}
 	}
-	if($mimetype && $mimetype!='text/plain'){ //let the browser decide
+	if($mimetype && $mimetype != 'text/plain'){ //let the browser decide
 		header('Content-Type: ' . $mimetype);
 	}
 
 	if($isCompressed){
 		readgzfile($filename);
-	}else{
+	} else {
 		readfile($filename);
 	}
 }

@@ -399,7 +399,6 @@ if(defined('MESSAGING_SYSTEM')){
 				}
 			}
 		} catch (e) {
-
 		}
 		return false;
 	}

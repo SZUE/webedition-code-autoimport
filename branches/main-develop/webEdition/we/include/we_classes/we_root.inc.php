@@ -696,12 +696,6 @@ abstract class we_root extends we_class{
 		return getServerUrl() . $this->getPath();
 	}
 
-	/* get the HTTP-Path of the Object */
-
-	function getHttpSitePath(){
-		return getServerUrl() . SITE_DIR . substr($this->getPath(), 1);
-	}
-
 	function editor(){
 
 	}

@@ -32,6 +32,8 @@ class we_imageDocument extends we_binaryDocument{
 	const TITLE_FIELD = '_img_custom_title';
 	const THUMB_FIELD = '_img_custom_thumb';
 
+	private static $imgCnt = 0;
+
 	/**
 	 * Comma separated value of IDs from THUMBNAILS_TABLE  This value is not stored in DB!!
 	 * @var string
@@ -49,6 +51,7 @@ class we_imageDocument extends we_binaryDocument{
 		$this->Icon = we_base_ContentTypes::IMAGE_ICON;
 		$this->ContentType = 'image/*';
 		array_push($this->EditPageNrs, WE_EDITPAGE_IMAGEEDIT, WE_EDITPAGE_THUMBNAILS);
+		self::$imgCnt++;
 		/* 		if(defined("CUSTOMER_TABLE")){
 		  array_push($this->EditPageNrs, WE_EDITPAGE_WEBUSER);
 		  } */
@@ -245,7 +248,7 @@ class we_imageDocument extends we_binaryDocument{
 		}
 
 		if(!$src_over){
-			$src_over = (we_isHttps() ? '' : BASE_IMG) . f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID = ' . intval($this->getElement('RollOverID')), 'Path', $this->DB_WE);
+			$src_over = (we_isHttps() ? '' : BASE_IMG) . f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->getElement('RollOverID')), 'Path', $this->DB_WE);
 		}
 
 		if(!$this->getElement('name')){
@@ -253,10 +256,10 @@ class we_imageDocument extends we_binaryDocument{
 		}
 
 		$js = '
-we' . $this->getElement('name') . 'Over = new Image();
-we' . $this->getElement('name') . 'Out = new Image();
-we' . $this->getElement('name') . 'Over.src = "' . $src_over . '";
-we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
+img' . self::$imgCnt . 'Over = new Image();
+img' . self::$imgCnt . 'Out = new Image();
+img' . self::$imgCnt . 'Over.src = "' . $src_over . '";
+img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 		return ($useScript ? we_html_element::jsElement($js) : $js);
 	}
 
@@ -264,15 +267,12 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 	 * @return array
 	 * @desc returns the rollover attribs as array
 	 */
-	function getRollOverAttribsArr(){
-		if($this->getElement('RollOverFlag')){
-			return array(
-				'onmouseover' => 'if (this.firstChild) { this.firstChild.src = we' . $this->getElement('name') . 'Over.src; }',
-				'onmouseout' => 'if (this.firstChild) { this.firstChild.src = we' . $this->getElement('name') . 'Out.src;}',
-			);
-		} else {
-			return array();
-		}
+	function getRollOverAttribsArr($child = true){
+		return $this->getElement('RollOverFlag') ? array(
+			'onmouseover' => ($child ? 'if(this.firstChild){ this.firstChild' : '{this') . '.src = img' . self::$imgCnt . 'Over.src; }',
+			'onmouseout' => ($child ? 'if(this.firstChild){ this.firstChild' : '{this') . '.src = img' . self::$imgCnt . 'Out.src;}',
+			) :
+			array();
 	}
 
 	/**
@@ -499,29 +499,26 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 				return $this->html;
 			}
 
-			if((isset($href) && $href) && (isset($inc_href) && $inc_href)){ //  use link with rollover
-				$_aAtts = array(
+			if((isset($href) && $href) && $inc_href){ //  use link with rollover
+				$aAtts = array(
 					'href' => $href,
 					'title' => $attribs['title'],
 				);
 
 				if($target){
-					$_aAtts['target'] = $target;
+					$aAtts['target'] = $target;
 				}
 				if(isset($attribs['xml'])){
-					$_aAtts['xml'] = $attribs['xml'];
+					$aAtts['xml'] = $attribs['xml'];
 				}
 
-				$ro_script = $this->getRollOverScript($src); //  has to be called first!
-				$_roAttribs = $this->getRollOverAttribsArr();
+				$aAtts = array_merge($aAtts, $this->getRollOverAttribsArr());
 
-				$_aAtts = array_merge($_aAtts, $_roAttribs);
-
-				$this->html = ( trim($ro_script) . getHtmlTag('a', $_aAtts, getHtmlTag('img', $attribs)) );
+				$this->html = ( trim($this->getRollOverScript($src)) . getHtmlTag('a', $aAtts, getHtmlTag('img', $attribs)) );
 			} else {
 				$this->html = (defined('WE_EDIT_IMAGE')) ?
 					we_image_crop::getJS() . we_image_crop::getCSS() . we_image_crop::getCrop($attribs) :
-					getHtmlTag('img', $attribs);
+					$this->getRollOverScript($src) . getHtmlTag('img', array_merge($attribs, $this->getRollOverAttribsArr(false)));
 			}
 		} else {
 			if($pathOnly){

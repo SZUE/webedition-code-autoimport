@@ -1351,7 +1351,8 @@ function weWysiwygSetHiddenText(arg) {
 								c.innerHTML = o.content;
 								var first = c.firstChild;
 
-								if(first && first.innerHTML == "&nbsp;" && first == c.lastChild){
+								if(first){
+									if(first.innerHTML == "&nbsp;" && first == c.lastChild){
 									c.innerHTML = "";
 								} ' . (!$this->removeFirstParagraph ? '' : 'else if(first.nodeName == "P"){
 									var useDiv = false, div = document.createElement("div"), attribs = ["style", "class", "dir"];
@@ -1368,6 +1369,7 @@ function weWysiwygSetHiddenText(arg) {
 									} else{
 										c.removeChild(first);
 										c.innerHTML = first.innerHTML + c.innerHTML;
+										}
 									}
 								}
 								') . '
