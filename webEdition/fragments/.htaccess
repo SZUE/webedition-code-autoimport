@@ -5,4 +5,3 @@
 	Order Allow,Deny
 	Deny from all
 </ifModule>
-

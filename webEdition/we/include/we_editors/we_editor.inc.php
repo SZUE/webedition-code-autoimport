@@ -313,27 +313,12 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 	  $we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
 	 */
 	$we_ext = ($we_doc->Extension == '.js' || $we_doc->Extension == '.css' || $we_doc->Extension == '.wml' || $we_doc->Extension == '.xml') ? '.html' : $we_doc->Extension;
-//FIXME: php temporary file?
-	$tempName = str_replace('\\', '/', dirname($we_doc->getSitePath()) . '/' . session_id() . $we_ext);
-	we_util_File::insertIntoCleanUp($tempName, time());
-	$cf = array();
-
-	$parent = str_replace('\\', '/', dirname($tempName));
-
-	while(!we_util_File::checkAndMakeFolder($parent)){
-		$cf[] = $parent;
-		$parent = str_replace('\\', '/', dirname($parent));
-	}
-
-// url of document !!
-	srand((double) microtime() * 1000000);
-	$r = rand();
-	$_url = str_replace('\\', '/', dirname($we_doc->getHttpSitePath()));
-
-	$contents = str_replace('<?xml', '<?php print \'<?xml\'; ?>', $contents);
+	$tempName = TEMP_DIR . weFile::getUniqueId() . $we_ext;
+	$fullName = $_SERVER['DOCUMENT_ROOT'] . $tempName;
+	we_util_File::insertIntoCleanUp($fullName, time());
 
 	ob_start();
-	eval('?>' . $contents);
+	eval('?>' . str_replace('<?xml', '<?php print \'<?xml\'; ?>', $contents));
 	$contents = ob_get_contents();
 	ob_end_clean();
 
@@ -346,20 +331,15 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 	}
 
 
-	we_util_File::saveFile($tempName, $contents);
+	we_util_File::saveFile($fullName, $contents);
 
 //  we need to add the parameters at the urls
 //  we_cmds are deleted.
 //  in which case??
 //	parastr isn't greater than 255 letters.
-	$parastr = we_SEEM::arrayToParameters($_REQUEST, '', array('we_cmd'));
-
-// When the url is too long, this will not work anymore - therefore we cut the string.
-// we don't need this anymore? check seeMode
-//    $_url = $_url . "/" . session_id() . $we_ext . "?r=" . $r . $parastr;
-//    $_url = strlen($_url) > 255 ? substr($_url,0,240) : $_url;
-
-	header('Location: ' . $_url . '/' . session_id() . $we_ext . '?r=' . $r);
+	//$parastr = we_SEEM::arrayToParameters($_REQUEST, '', array('we_cmd'));
+//	header('Location: ' . $_url . '/' . session_id() . $we_ext . '?r=' . $r);
+	header('Location: ' . WEBEDITION_DIR . 'showTempFile.php?file=' . $tempName);
 } else {
 	$we_JavaScript = '';
 	switch($_REQUEST['we_cmd'][0]){
