@@ -23,7 +23,6 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
 $filename = $_SERVER['DOCUMENT_ROOT'] . $_REQUEST['file'];
-t_e($filename);
 if(file_exists($filename)){
 	$isCompressed = weFile::isCompressed($filename);
 	if(function_exists('finfo_open')){
