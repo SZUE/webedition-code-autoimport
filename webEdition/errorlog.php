@@ -232,8 +232,10 @@ table.error td.right{
 }
 table.error td pre{
 	font-style:normal;
-}
-	 ');
+	tab-size:2;
+	-o-tab-size:2;
+	-moz-tab-size:2;
+}');
 ?>
 </head>
 
