@@ -711,7 +711,7 @@ if(!empty($_jsincludes)){
 				we_repl(top.weEditorFrameController.getActiveDocumentReference().frames[3], url, arguments[0]);
 				break;
 			case "rebuild":
-				new jsWindow(url, "rebuild", -1, -1, 609, 645, true, false, true);
+				new jsWindow(url, "rebuild", -1, 0, 609, 645, true, false, true);
 				break;
 			case "openPreferences":
 				new jsWindow(url, "preferences", -1, -1, 540, 670, true, true, true, true);
@@ -1302,7 +1302,7 @@ if(defined("WE_MESSAGING_MODULE_DIR")){
 				new jsWindow("<?php print WEBEDITION_DIR; ?>sysinfo.php", "we_sysinfo", -1, -1, 720, 660, true, false, true);
 				break;
 			case "showerrorlog":
-				new jsWindow("<?php print WEBEDITION_DIR; ?>errorlog.php", "we_errorlog", -1, -1, 720, 660, true, false, true);
+				new jsWindow("<?php print WEBEDITION_DIR; ?>errorlog.php", "we_errorlog", -1, -1, 920, 660, true, false, true);
 				break;
 			case "view_backuplog":
 				new jsWindow("<?php print WEBEDITION_DIR; ?>backuplog.php", "we_backuplog", -1, -1, 720, 660, true, false, true);
