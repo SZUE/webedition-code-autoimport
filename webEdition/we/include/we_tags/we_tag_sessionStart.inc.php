@@ -81,7 +81,10 @@ function we_tag_sessionStart($attribs){
 			}
 			//FIXME: make this a performance entry in prefs
 			if(/* (isset($GLOBALS['WE_LOGIN']) && $GLOBALS['WE_LOGIN'])&& */isset($_SESSION['webuser']['registered']) && isset($_SESSION['webuser']['ID']) && isset($_SESSION['webuser']['Username']) && $_SESSION['webuser']['registered'] && $_SESSION['webuser']['ID'] && $_SESSION['webuser']['Username'] != ''){
-				$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET LastAccess=UNIX_TIMESTAMP() WHERE ID=' . intval($_SESSION['webuser']['ID']));
+				if($_SESSION['webuser']['LastAccess']+60<time()){
+					$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET LastAccess=UNIX_TIMESTAMP() WHERE ID=' . intval($_SESSION['webuser']['ID']));
+					$_SESSION['webuser']['LastAccess']=time();
+				}
 			}
 		}
 		if($onlinemonitor && isset($_SESSION['webuser']['registered'])){
