@@ -657,7 +657,6 @@ switch($_SESSION['prefs']['editorMode']){
 					) . we_html_element::jsElement('
 var CMoptions = { //these are the CodeMirror options
 	mode: "' . $mode . '",
-	enterMode: "' . ($_SESSION['prefs']['editorAutoIndent'] ? 'indent' : 'keep') . '",
 	electricChars: false,
 	theme: "' . $_SESSION['prefs']['editorTheme'] . '",
 	lineNumbers: ' . ($_SESSION['prefs']['editorLinenumbers'] ? 'true' : 'false') . ',
@@ -677,8 +676,9 @@ var CMoptions = { //these are the CodeMirror options
 	extraKeys: {' . ($hasCompletion && $useCompletion ? '
 							  "Space": function(cm) { CodeMirror.weHint(cm, \' \'); },
 							  "\'<\'": function(cm) { CodeMirror.weHint(cm, \'<\'); },
-							  "Ctrl-Space": function(cm) { CodeMirror.weHint(cm, \'\'); }' : ''
-						) . '
+							  "Ctrl-Space": function(cm) { CodeMirror.weHint(cm, \'\'); },' : ''
+						) .
+	($_SESSION['prefs']['editorAutoIndent'] ? '' : '"Enter": false,') . '
 	}
 };' . ($hasCompletion && $useCompletion ? we_getCodeMirror2Tags(false, $mode == 'text/weTmpl') : '') . '
 window.orignalTemplateContent=document.getElementById("editarea").value.replace(/\r/g,""); //this is our reference of the original content to compare with current content
