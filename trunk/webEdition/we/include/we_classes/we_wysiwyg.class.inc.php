@@ -1351,26 +1351,27 @@ function weWysiwygSetHiddenText(arg) {
 								c.innerHTML = o.content;
 								var first = c.firstChild;
 
-								if(first && first.innerHTML == "&nbsp;" && first == c.lastChild){
-									c.innerHTML = "";
-								} ' . (!$this->removeFirstParagraph ? '' : 'else if(first.nodeName == "P"){
-									var useDiv = false, div = document.createElement("div"), attribs = ["style", "class", "dir"];
-									div.innerHTML = first.innerHTML;
+								if(first){
+									if(first.innerHTML == "&nbsp;" && first == c.lastChild){
+										c.innerHTML = "";
+									} ' . (!$this->removeFirstParagraph ? '' : 'else if(first.nodeName == "P"){
+										var useDiv = false, div = document.createElement("div"), attribs = ["style", "class", "dir"];
+										div.innerHTML = first.innerHTML;
 
-									for(var i=0;i<attribs.length;i++){
-										if(first.hasAttribute(attribs[i])){
-											div.setAttribute(attribs[i], first.getAttribute(attribs[i]));
-											useDiv = true;
+										for(var i=0;i<attribs.length;i++){
+											if(first.hasAttribute(attribs[i])){
+												div.setAttribute(attribs[i], first.getAttribute(attribs[i]));
+												useDiv = true;
+											}
 										}
-									}
-									if(useDiv){
-										c.replaceChild(div, first);
-									} else{
-										c.removeChild(first);
-										c.innerHTML = first.innerHTML + c.innerHTML;
-									}
+										if(useDiv){
+											c.replaceChild(div, first);
+										} else{
+											c.removeChild(first);
+											c.innerHTML = first.innerHTML + c.innerHTML;
+										}
+									}') . '
 								}
-								') . '
 								o.content = c.innerHTML;
 							});' .
 								($this->isFrontendEdit ? '' : '
