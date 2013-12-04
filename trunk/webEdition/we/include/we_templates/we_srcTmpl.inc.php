@@ -417,7 +417,7 @@ switch($_SESSION['prefs']['editorMode']){
 	}
 
 	function myReplace(text, replaceby, caseIns) {
-		if (!text || !replaceby) {
+		if (!text) {
 			return;
 		}
 		if (editor.getSelection() !== text) {
