@@ -1794,13 +1794,7 @@ class we_search_view extends we_tool_view{
 
 	function searchProperties($whichSearch){
 		$DB_WE = new DB_WE();
-		//$foundItems = 0;
-		$workspaces = array();
-		$_result = array();
-		$versionsFound = array();
-		$saveArrayIds = array();
-		$_tables = array();
-		$searchText = array();
+		$workspaces = $_result = $versionsFound = $saveArrayIds = $_tables = $searchText = array();
 		$_SESSION['weS']['weSearch']['foundItems' . $whichSearch] = 0;
 
 		if(isset($_REQUEST['we_cmd']['obj'])){
@@ -2019,7 +2013,6 @@ class we_search_view extends we_tool_view{
 							if($whichSearch == 'AdvSearch' && isset($searchText[$i])){
 								$searchString = ($GLOBALS['WE_BACKENDCHARSET'] == "UTF-8" ? utf8_encode($searchText[$i]) : $searchText[$i]);
 							} else {
-								//$searchString = $searchText[0]; Bug#4422
 								$searchString = ($GLOBALS['WE_BACKENDCHARSET'] == "UTF-8" ? utf8_encode($searchText[0]) : $searchText[0]);
 							}
 						}
@@ -2299,8 +2292,7 @@ class we_search_view extends we_tool_view{
 			$ext = isset($_result[$f]["Extension"]) ? $_result[$f]["Extension"] : "";
 			$Icon = we_base_ContentTypes::getIcon($_result[$f]["ContentType"], we_base_ContentTypes::LINK_ICON, $ext);
 
-			$foundInVersions = isset($_result[$f]["foundInVersions"]) ? makeArrayFromCSV(
-					$_result[$f]["foundInVersions"]) : "";
+			$foundInVersions = isset($_result[$f]["foundInVersions"]) ? makeArrayFromCSV($_result[$f]["foundInVersions"]) : "";
 
 			if($view == 0){
 
@@ -2341,27 +2333,26 @@ class we_search_view extends we_tool_view{
 							}
 						}
 
-						$content[$f][0]["version"][$k] = "";
-						$content[$f][1]["version"][$k] = "<span style='margin-left:5px;'>" . g_l('versions', '[version]') . " " . $version . "</span> <br/><span style='font-weight:100;color:red;margin-left:10px;'>" . $classNotExistsText . "</span>";
-						$content[$f][2]["version"][$k] = "<div style='margin-bottom:5px;margin-left:5px;float:left;'>" . we_html_forms::radiobutton(
-								$ID, 0, "resetVersion[" . $_result[$f]["ID"] . "_" . $_result[$f]["Table"] . "]", "", false, "defaultfont", "", $resetDisabled) . "</div><div style='float:left;margin-left:30px;'>" . $previewButton . "</div>";
-						$content[$f][3]["version"][$k] = "<span style='margin-left:5px;'>" . date("d.m.Y", $timestamp) . "</span>";
-						$content[$f][4]["version"][$k] = "";
-						$content[$f][5]["version"][$k] = "<div style='margin-left:5px;'>";
-						$content[$f][5]["version"][$k] .= ($_result[$f]["ContentType"] == "text/webedition" || $_result[$f]["ContentType"] == "text/html" || $_result[$f]["ContentType"] == "objectFile") ? we_html_forms::checkbox(
-								$ID, 0, "publishVersion_" . $ID, g_l('versions', '[publishIfReset]'), false, "middlefont", "") : "";
-						$content[$f][5]["version"][$k] .= "</div>";
+						$content[$f] = array(
+							array("version" => array($k => "")),
+							array("version" => array($k => "<span style='margin-left:5px;'>" . g_l('versions', '[version]') . " " . $version . "</span> <br/><span style='font-weight:100;color:red;margin-left:10px;'>" . $classNotExistsText . "</span>")),
+							array("version" => array($k => "<div style='margin-bottom:5px;margin-left:5px;float:left;'>" .
+									we_html_forms::radiobutton($ID, 0, "resetVersion[" . $_result[$f]["ID"] . "_" . $_result[$f]["Table"] . "]", "", false, "defaultfont", "", $resetDisabled) . "</div><div style='float:left;margin-left:30px;'>" . $previewButton . "</div>")),
+							array("version" => array($k => "<span style='margin-left:5px;'>" . date("d.m.Y", $timestamp) . "</span>")),
+							array("version" => array($k => "")),
+							array("version" => array($k => "<div style='margin-left:5px;'>" .
+									(($_result[$f]["ContentType"] == "text/webedition" || $_result[$f]["ContentType"] == "text/html" || $_result[$f]["ContentType"] == "objectFile") ? we_html_forms::checkbox(
+											$ID, 0, "publishVersion_" . $ID, g_l('versions', '[publishIfReset]'), false, "middlefont", "") : "") .
+									"</div>")),
+						);
 					}
 				}
-				$docExists = f("SELECT ID FROM " . escape_sql_query($_result[$f]["docTable"]) . " WHERE ID=" . intval($_result[$f]["docID"]), "ID", $DB_WE);
+				$docExists = f('SELECT ID FROM ' . escape_sql_query($_result[$f]["docTable"]) . ' WHERE ID=' . intval($_result[$f]["docID"]), 'ID', $DB_WE);
 
 				$publishCheckbox = (!$showPubCheckbox) ? (($_result[$f]["ContentType"] == "text/webedition" || $_result[$f]["ContentType"] == "text/html" || $_result[$f]["ContentType"] == "objectFile") && permissionhandler::hasPerm(
 						'PUBLISH') && $docExists != "") ? we_html_forms::checkbox(
 							$_result[$f]["docID"] . "_" . $_result[$f]["docTable"], 0, "publish_docs_" . $whichSearch, "", false, "middlefont", "") : we_html_tools::getPixel(20, 10)  : '';
 
-				//if (stripos($GLOBALS['WE_LANGUAGE'],'_UTF-8') !==false) { //was #4422
-				//	$_result[$f]["SiteTitle"] = utf8_encode($_result[$f]["SiteTitle"]);
-				//}
 
 				$content[$f] = array(
 					array("dat" => we_html_tools::getPixel(20, 1) . $publishCheckbox),
@@ -2395,22 +2386,16 @@ class we_search_view extends we_tool_view{
 							$imageViewPopup = "<img src='" . WEBEDITION_DIR . "thumbnail.php?id=" . $_result[$f]["docID"] . "&size=" . $bigSize . "&path=" . $_result[$f]["Path"] . "&extension=" . $_result[$f]["Extension"] . "' border='0' /></a>";
 						}
 					} else {
-						$imagesize = array(
-							0, 0
-						);
+						$imagesize = array(0, 0);
 						$thumbpath = IMAGE_DIR . 'icons/doclist/' . we_base_ContentTypes::IMAGE_ICON;
 						$imageView = "<img src='$thumbpath' border='0' />";
 						$imageViewPopup = "<img src='$thumbpath' border='0' />";
 					}
 				} else {
-					$imagesize = array(
-						0, 0
-					);
+					$imagesize = array(0, 0);
 					$imageView = '<img src="' . IMAGE_DIR . "icons/doclist/" . $Icon . '" border="0" width="64" height="64" />';
 					$imageViewPopup = '<img src="' . IMAGE_DIR . "icons/doclist/" . $Icon . '" border="0" width="64" height="64" />';
 				}
-
-				$content[$f][0]["dat"] = '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none" class="middlefont" title="' . $_result[$f]["Text"] . '">' . $imageView . '</a>';
 
 				$creator = $_result[$f]["CreatorID"] ? id_to_path($_result[$f]["CreatorID"], USER_TABLE, $DB_WE) : g_l('searchtool', "[nobody]");
 
@@ -2450,22 +2435,23 @@ class we_search_view extends we_tool_view{
 				}
 
 				$content[$f] = array(
-					1 => array("dat" => we_util_Strings::shortenPath($_result[$f]["SiteTitle"], 17)),
-					2 => array("dat" => '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none;color:' . $fontColor . ';" class="middlefont" title="' . $_result[$f]["Text"] . '"><u>' . we_util_Strings::shortenPath($_result[$f]["Text"], 20) . '</u></a>'),
-					3 => array("dat" => '<nobr>' . ($_result[$f]["CreationDate"] ? date(g_l('searchtool', "[date_format]"), $_result[$f]["CreationDate"]) : "-") . '</nobr>'),
-					4 => array("dat" => '<nobr>' . ($_result[$f]["ModDate"] ? date(g_l('searchtool', "[date_format]"), $_result[$f]["ModDate"]) : "-") . '</nobr>'),
-					5 => array("dat" => '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none;" class="middlefont" title="' . $_result[$f]["Text"] . '">' . $imageViewPopup . '</a>'),
-					6 => array("dat" => $filesize),
-					7 => array("dat" => $imagesize[0] . " x " . $imagesize[1]),
-					8 => array("dat" => we_util_Strings::shortenPath(g_l('contentTypes', '[' . $_result[$f]['ContentType'] . ']'), 22)),
-					9 => array("dat" => '<span style="color:' . $fontColor . ';">' . we_util_Strings::shortenPath($_result[$f]["Text"], 30) . '</span>'),
-					10 => array("dat" => we_util_Strings::shortenPath($_result[$f]["SiteTitle"], 45)),
-					11 => array("dat" => we_util_Strings::shortenPath($_result[$f]["Description"], 100)),
-					12 => array("dat" => $_result[$f]['ContentType']),
-					13 => array("dat" => we_util_Strings::shortenPath($creator, 22)),
-					14 => array("dat" => $templateText),
-					15 => array("dat" => $metafields),
-					16 => array("dat" => $_result[$f]["docID"]),
+					array("dat" => '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none" class="middlefont" title="' . $_result[$f]["Text"] . '">' . $imageView . '</a>'),
+					array("dat" => we_util_Strings::shortenPath($_result[$f]["SiteTitle"], 17)),
+					array("dat" => '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none;color:' . $fontColor . ';" class="middlefont" title="' . $_result[$f]["Text"] . '"><u>' . we_util_Strings::shortenPath($_result[$f]["Text"], 20) . '</u></a>'),
+					 array("dat" => '<nobr>' . ($_result[$f]["CreationDate"] ? date(g_l('searchtool', "[date_format]"), $_result[$f]["CreationDate"]) : "-") . '</nobr>'),
+					array("dat" => '<nobr>' . ($_result[$f]["ModDate"] ? date(g_l('searchtool', "[date_format]"), $_result[$f]["ModDate"]) : "-") . '</nobr>'),
+					array("dat" => '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none;" class="middlefont" title="' . $_result[$f]["Text"] . '">' . $imageViewPopup . '</a>'),
+					array("dat" => $filesize),
+					array("dat" => $imagesize[0] . " x " . $imagesize[1]),
+					array("dat" => we_util_Strings::shortenPath(g_l('contentTypes', '[' . $_result[$f]['ContentType'] . ']'), 22)),
+					array("dat" => '<span style="color:' . $fontColor . ';">' . we_util_Strings::shortenPath($_result[$f]["Text"], 30) . '</span>'),
+					array("dat" => we_util_Strings::shortenPath($_result[$f]["SiteTitle"], 45)),
+					array("dat" => we_util_Strings::shortenPath($_result[$f]["Description"], 100)),
+					 array("dat" => $_result[$f]['ContentType']),
+					array("dat" => we_util_Strings::shortenPath($creator, 22)),
+					array("dat" => $templateText),
+					array("dat" => $metafields),
+					array("dat" => $_result[$f]["docID"]),
 				);
 			}
 		}

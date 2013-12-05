@@ -665,7 +665,7 @@ class we_folder extends we_root{
 
 	/* for internal use */
 
-	function saveToServer(){
+	private function saveToServer(){
 		$isTemplFolder = false;
 		switch($this->Table){
 			case TEMPLATES_TABLE:
@@ -677,10 +677,10 @@ class we_folder extends we_root{
 				if(!we_util_File::createLocalFolder(($isTemplFolder ? TEMPLATES_PATH : $_SERVER['DOCUMENT_ROOT']), $path)){
 					return false;
 				}
-				if(!$isTemplFolder && !empty($this->urlMap)){
+				if(!$isTemplFolder && $this->urlMap){
 					we_base_file::makeSymbolicLink(WEBEDITION_PATH, $_SERVER['DOCUMENT_ROOT'] . $path . rtrim(WEBEDITION_DIR, '/'));
 
-					if(WE_THUMBNAIL_DIRECTORY != ''){
+					if(WE_THUMBNAIL_DIRECTORY){
 						we_base_file::makeSymbolicLink($_SERVER['DOCUMENT_ROOT'] . WE_THUMBNAIL_DIRECTORY, $_SERVER['DOCUMENT_ROOT'] . $path . WE_THUMBNAIL_DIRECTORY);
 					}
 				}
@@ -699,11 +699,7 @@ class we_folder extends we_root{
 	 */
 	function we_rewrite(){
 		if(parent::we_rewrite()){
-			if($this->Table == FILE_TABLE){
-				return $this->we_save(1);
-			} else {
-				return true;
-			}
+			return ($this->Table == FILE_TABLE ? $this->we_save(1) : true);
 		}
 		return false;
 	}

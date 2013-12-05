@@ -1114,10 +1114,7 @@ class we_document extends we_root{
 				$val = $this->getElement(isset($attribs['name']) ? $attribs['name'] : '');
 				if((isset($this->TableID) && $this->TableID) || (get_class($this) == 'we_objectFile')){
 					$hrefArr = $val ? unserialize($val) : array();
-					if(!is_array($hrefArr)){
-						return '';
-					}
-					return self::getHrefByArray($hrefArr);
+					return (is_array($hrefArr) ? self::getHrefByArray($hrefArr) : '');
 				}
 				break;
 			default:
@@ -1141,9 +1138,7 @@ class we_document extends we_root{
 		$db = $db ? $db : new_DB_WE();
 		$n = $attribs['name'];
 		$nint = $n . we_base_link::MAGIC_INT_LINK;
-		$int = $this->getValFromSrc($fn, $nint);
-		$int = ($int == '') ? 0 : $int;
-		if($int){
+		if($this->getValFromSrc($fn, $nint)){
 			$intID = $this->getValFromSrc($fn, $n . we_base_link::MAGIC_INT_LINK_ID);
 			return f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($intID), 'Path', $db);
 		} else {
@@ -1152,8 +1147,7 @@ class we_document extends we_root{
 	}
 
 	static function getHrefByArray($hrefArr){
-		$int = isset($hrefArr['int']) ? $hrefArr['int'] : false;
-		if($int){
+		if(isset($hrefArr['int']) && $hrefArr['int']){
 			$intID = isset($hrefArr['intID']) ? $hrefArr['intID'] : 0;
 			return $intID ? id_to_path($intID) : '';
 		} else {
@@ -1193,10 +1187,7 @@ class we_document extends we_root{
 				if($hidedirindex && show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 					$path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 				}
-				if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->InWebEdition){
-					return $path;
-				}
-				if(f('SELECT Published FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'Published', $db)){
+				if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->InWebEdition||f('SELECT Published FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'Published', $db)){
 					return $path;
 				}
 				$GLOBALS['we_link_not_published'] = 1;
@@ -1287,8 +1278,6 @@ class we_document extends we_root{
 			$img->initByID($img_attribs['img_id']);
 			$img->initByAttribs($img_attribs);
 
-			$rollOverScript = '';
-			$rollOverAttribsArr = array();
 
 			if($link['ctype'] == we_base_link::TYPE_INT){
 				//	set name of image dynamically
@@ -1297,6 +1286,9 @@ class we_document extends we_root{
 				}
 				$rollOverScript = $img->getRollOverScript();
 				$rollOverAttribsArr = $img->getRollOverAttribsArr();
+			} else {
+				$rollOverScript = '';
+				$rollOverAttribsArr = array();
 			}
 
 			// Link-Attribs
