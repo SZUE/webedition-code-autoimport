@@ -81,7 +81,7 @@ function getNavButtons($size, $pos, $id){
 		we_button::create_button_table(array(
 			we_button::create_button("next", $_SERVER['SCRIPT_NAME'] . '?function=next&ID=' . $id, true, we_button::WIDTH, we_button::HEIGHT, "", "", ($pos == $size)),
 			we_button::getButton("+" . $div, 'btn2', "window.location.href='" . $_SERVER['SCRIPT_NAME'] . '?function=nextX&ID=' . $id . '&step=' . $div . "';", we_button::WIDTH, '', ($pos + $div > $size)),
-			we_button::create_button("last", $_SERVER['SCRIPT_NAME'] . '?function=last', true, we_button::WIDTH, we_button::HEIGHT, "", "", ($pos == $size)),
+			we_button::create_button("last", $_SERVER['SCRIPT_NAME'] . '?function=last', true),
 			), 10) .
 		'</td></tr><tr><td colspan="3" align="center" class="defaultfont" width="120"><b>' . $pos . "&nbsp;" . g_l('global', '[from]') . ' ' . $size . '</b>' .
 		'</td></table>';
@@ -102,7 +102,7 @@ function getPosData($bt){
 		}
 		$lineNo = $matches[2][$i];
 
-		$lines = we_util_File::loadLines((strpos($file, $_SERVER['DOCUMENT_ROOT']) === 0 ||strpos($file, realpath(WEBEDITION_PATH))===0? '' : $_SERVER['DOCUMENT_ROOT'] . '/' ) . $file, max(1, $lineNo - 1), $lineNo + 5);
+		$lines = we_util_File::loadLines((strpos($file, $_SERVER['DOCUMENT_ROOT']) === 0 || strpos($file, realpath(WEBEDITION_PATH)) === 0 ? '' : $_SERVER['DOCUMENT_ROOT'] . '/' ) . $file, max(1, $lineNo - 1), $lineNo + 5);
 		if($lines){
 			array_walk($lines, 'formatLine');
 			$ret .=$file . ":\n" . implode('', $lines) . "\n----------------------------------------------------------\n";
@@ -243,7 +243,7 @@ table.error td pre{
 	<div id="info" style="display: block;">
 		<?php
 		print we_multiIconBox::getJS() .
-			we_html_element::htmlDiv(array('style' => 'position:absolute; top:0px; left:30px;right:30px;height:100px;'), getNavButtons($size, $pos, isset($cur['ID']) ? $cur['ID'] : 0)) .
+			we_html_element::htmlDiv(array('style' => 'position:absolute; top:0px; left:30px;right:30px;height:100px;'), $size && $data ? getNavButtons($size, $pos, isset($cur['ID']) ? $cur['ID'] : 0) : '') .
 			we_html_element::htmlDiv(array('style' => 'position:absolute;top:40px;bottom:0px;left:0px;right:0px;'), we_multiIconBox::getHTML('', 700, $_parts, 30, $buttons, -1, '', '', false, "", "", "", "auto"));
 		?>
 	</div>
