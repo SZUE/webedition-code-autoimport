@@ -27,8 +27,18 @@ we_html_tools::protect();
 if(is_numeric($_REQUEST["url"])){
 	srand((double) microtime() * 1000000);
 	$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published>0 AND ID=' . intval($_REQUEST["url"]), 'Path', $DB_WE);
-	$loc = getServerUrl() . ($path ? $path . '?r=' . rand() : WEBEDITION_DIR . 'notPublished.php');
-} else{
+	if($path){
+		$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE'], true);
+		if($urlReplace){
+			$http = preg_replace($urlReplace, array_keys($urlReplace), $path, -1, $cnt);
+			$loc = ($cnt ? 'http:' : getServerUrl()) . $http . '?r=' . rand();
+		} else {
+			$loc = getServerUrl() . $path . '?r=' . rand();
+		}
+	} else {
+		$loc = getServerUrl() . WEBEDITION_DIR . 'notPublished.php';
+	}
+} else {
 	$loc = filter_var($_REQUEST["url"], FILTER_VALIDATE_URL);
 }
 header('Location: ' . $loc);
