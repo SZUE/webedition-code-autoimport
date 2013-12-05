@@ -358,7 +358,11 @@ class we_selector_query{
 				$userExtraSQL .= ' AND (' . substr($wsQuery, 0, strlen($wsQuery) - 3) . ')';
 			}
 		} else {
-			if($table != USER_TABLE){
+			switch($table){
+				case (defined('NEWSLETTER_TABLE') ? NEWSLETTER_TABLE : 'NEWSLETTER_TABLE'):
+				case USER_TABLE:
+					break;
+				default:
 				$userExtraSQL.=' OR RestrictOwners=0 ';
 			}
 		}

@@ -397,7 +397,7 @@ function attributFehltError($attribs, $attrs, $tag, $canBeEmpty = false){
 			if(!isset($attribs[$attr])){
 				return parseError(sprintf(g_l('parser', '[attrib_missing2]'), $attr, $tag));
 			}
-		} elseif(!isset($attribs[$attr]) || $attribs[$attr] == ''){
+		} elseif(!isset($attribs[$attr]) || $attribs[$attr] === ''){
 			return parseError(sprintf(g_l('parser', '[attrib_missing]'), $attr, $tag));
 		}
 	}

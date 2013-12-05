@@ -73,7 +73,7 @@ switch($iNumItems){
 		$iMaxItems = 50;
 		break;
 	default :
-		$iMaxItems = min(200,$iNumItems);
+		$iMaxItems = min(200, $iNumItems);
 }
 $sDisplayOpt = $aCols[3];
 $bMfdBy = $sDisplayOpt{0};
@@ -130,7 +130,7 @@ $queries = array();
 foreach($tables as $ctable => $ids){
 	$table = addTblPrefix($ctable);
 	$paths = ((!permissionhandler::hasPerm('ADMINISTRATOR') || ($table != TEMPLATES_TABLE && (defined('OBJECT_TABLE') ? ($table != OBJECT_TABLE) : true))) && isset($workspace[$table]) ?
-					$workspace[$table] : '');
+			$workspace[$table] : '');
 
 	$queries[] = '(SELECT ID,Path,Icon,Text,ContentType,ModDate,CreatorID,Owners,RestrictOwners,"' . $ctable . '" AS ctable FROM ' . $db->escape($table) . ' WHERE ID IN(' . implode(',', $ids) . ')' . ($paths ? (' AND (' . $paths . ')') : '') . ')';
 }
@@ -139,27 +139,29 @@ $lastModified = '<table cellspacing="0" cellpadding="0" border="0">';
 
 $j = 0;
 
-$db->query(implode(' UNION ', $queries) . ' ORDER BY ModDate DESC', true);
-while($db->next_record(MYSQL_ASSOC) && $j < $iMaxItems){
-	$file = $db->getRecord();
-	$hist = $data[$db->f('ctable')][$db->f('ID')];
+if($queries){
+	$db->query(implode(' UNION ', $queries) . ' ORDER BY ModDate DESC', true);
+	while($db->next_record(MYSQL_ASSOC) && $j < $iMaxItems){
+		$file = $db->getRecord();
+		$hist = $data[$db->f('ctable')][$db->f('ID')];
 
-	$table = addTblPrefix($db->f('ctable'));
+		$table = addTblPrefix($db->f('ctable'));
 
-	$show = ($table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && ($table == OBJECT_FILES_TABLE)) ?
-					we_history::userHasPerms($file['CreatorID'], $file['Owners'], $file['RestrictOwners']) :
-					true);
+		$show = ($table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && ($table == OBJECT_FILES_TABLE)) ?
+				we_history::userHasPerms($file['CreatorID'], $file['Owners'], $file['RestrictOwners']) :
+				true);
 
-	if($show){
-		$isOpen = $hist['isOpen'];
-		$lastModified .= '<tr><td width="20" height="20" valign="middle" nowrap><img src="' . ICON_DIR . $file['Icon'] . '" />' . we_html_tools::getPixel(4, 1) . '</td>' .
+		if($show){
+			$isOpen = $hist['isOpen'];
+			$lastModified .= '<tr><td width="20" height="20" valign="middle" nowrap><img src="' . ICON_DIR . $file['Icon'] . '" />' . we_html_tools::getPixel(4, 1) . '</td>' .
 				'<td valign="middle" class="middlefont" ' . ($isOpen ? 'style="color:red;"' : '') . '>' .
 				($isOpen ? '' : '<a href="javascript:top.weEditorFrameController.openDocument(\'' . $table . '\',' . $file['ID'] . ',\'' . $file['ContentType'] . '\');" title="' . $file['Path'] . '" style="color:#000000;text-decoration:none;">') . $file['Path'] . ($isOpen ? '' : '</a>') . '</td>' .
 				($bMfdBy ? '<td>' . we_html_tools::getPixel(5, 1) . '</td><td class="middlefont" nowrap>' . $hist['UserName'] . (($bDateLastMfd) ? ',' : '') . '</td>' : '') .
 				($bDateLastMfd ? '<td>' . we_html_tools::getPixel(5, 1) . '</td><td class="middlefont" nowrap>' . date(g_l('date', '[format][default]'), $file['ModDate']) . '</td>' : '') .
 				'</tr>';
 
-		$j++;
+			$j++;
+		}
 	}
 }
 

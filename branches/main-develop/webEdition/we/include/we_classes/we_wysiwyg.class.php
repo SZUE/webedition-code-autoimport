@@ -1370,9 +1370,8 @@ function weWysiwygSetHiddenText(arg) {
 										c.removeChild(first);
 										c.innerHTML = first.innerHTML + c.innerHTML;
 										}
+									}') . '
 									}
-								}
-								') . '
 								o.content = c.innerHTML;
 							});' .
 								($this->isFrontendEdit ? '' : '
