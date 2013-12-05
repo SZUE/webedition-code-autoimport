@@ -696,7 +696,14 @@ abstract class we_root extends we_class{
 	/* get the HTTP-Path of the Object */
 
 	function getHttpPath(){
-		return getServerUrl() . $this->getPath();
+		$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE'], true);
+		$http = $this->getPath();
+		if($urlReplace){
+			$http = preg_replace($urlReplace, array_keys($urlReplace), $http, -1, $cnt);
+			return ($cnt ? 'http:' : getServerUrl()) . $http;
+		}
+
+		return $http;
 	}
 
 	function editor(){
