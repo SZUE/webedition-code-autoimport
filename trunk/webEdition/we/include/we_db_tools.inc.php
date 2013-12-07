@@ -26,7 +26,7 @@
 /**
   @param $query: SQL query; an empty query resets the cache
  */
-function getHash($query, we_database_base $DB_WE = NULL, $resultType = MYSQL_BOTH){
+function getHash($query = '', we_database_base $DB_WE = NULL, $resultType = MYSQL_BOTH){
 	static $cache = array();
 	if($query == ''){
 		$cache = array();

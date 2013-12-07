@@ -155,6 +155,8 @@ switch(isset($_REQUEST['function']) ? $_REQUEST['function'] : 'last'){
 		$pos = $size - f('SELECT COUNT(1) FROM `' . ERROR_LOG_TABLE . '` WHERE ID>=' . $id) + 1;
 		break;
 	case 'delete':
+		$db->query('DELETE FROM `' . ERROR_LOG_TABLE . '` WHERE ID=' . $id);
+		$size = f('SELECT COUNT(1) FROM `' . ERROR_LOG_TABLE . '`');
 	case 'next':
 		$cur = getHash('SELECT * FROM `' . ERROR_LOG_TABLE . '` WHERE ID>' . $id . ' ORDER By ID ASC LIMIT 1');
 		$pos = $size - f('SELECT COUNT(1) FROM `' . ERROR_LOG_TABLE . '` WHERE ID>' . $id) + 1;
@@ -171,14 +173,6 @@ switch(isset($_REQUEST['function']) ? $_REQUEST['function'] : 'last'){
 		$cur = getHash('SELECT * FROM `' . ERROR_LOG_TABLE . '` WHERE ID<=' . $id . ' ORDER By ID DESC LIMIT ' . $step . ',1');
 		$pos = f('SELECT COUNT(1) FROM `' . ERROR_LOG_TABLE . '` WHERE ID<=' . $cur['ID']);
 		break;
-}
-
-if(isset($_REQUEST['function']) && $_REQUEST['function'] == 'delete'){
-	$db->query('DELETE FROM `' . ERROR_LOG_TABLE . '` WHERE ID=' . $id);
-	if($db->affected_rows()){
-		--$size;
-		--$pos;
-	}
 }
 
 if($size && !$cur){//nothing found, go to last element
