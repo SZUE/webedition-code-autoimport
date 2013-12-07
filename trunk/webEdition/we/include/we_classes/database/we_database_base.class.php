@@ -336,7 +336,7 @@ abstract class we_database_base{
 		if(!$this->Query_ID && preg_match('/alter table|drop table/i', $Query_String)){
 			$this->_query('FLUSH TABLES');
 			$repool = true;
-		} elseif(preg_match('/insert |delete |update |replace /i', $Query_String)){
+		} elseif(preg_match('/insert\s|delete\s|update\s|replace\s/i', $Query_String)){
 			$this->Insert_ID = $this->_getInsertId();
 			$this->Affected_Rows = $this->_affected_rows();
 // delete getHash DB Cache
