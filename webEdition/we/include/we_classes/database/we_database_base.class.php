@@ -327,8 +327,8 @@ abstract class we_database_base{
 			}
 		}
 
-		$this->Insert_ID=0;
-		$this->Affected_Rows=0;
+		$this->Insert_ID = 0;
+		$this->Affected_Rows = 0;
 		$this->Query_ID = $this->_query($Query_String, $unbuffered);
 		$this->Errno = $this->errno();
 		$this->Error = $this->error();
@@ -336,11 +336,11 @@ abstract class we_database_base{
 		if(!$this->Query_ID && preg_match('/alter table|drop table/i', $Query_String)){
 			$this->_query('FLUSH TABLES');
 			$repool = true;
-		} elseif(preg_match('/insert |update|replace /i', $Query_String)){
-			$this->Insert_ID=$this->_getInsertId();
-			$this->Affected_Rows=$this->_affected_rows();
+		} elseif(preg_match('/insert |delete |update |replace /i', $Query_String)){
+			$this->Insert_ID = $this->_getInsertId();
+			$this->Affected_Rows = $this->_affected_rows();
 // delete getHash DB Cache
-			getHash('', $this);
+			getHash();
 			$repool = true;
 		}
 		if(preg_match('/^[[:space:]]*alter[[:space:]]*table[[:space:]]*(`?([[:alpha:]]|[[:punct:]])+`?)[[:space:]]*(add|change|modify|drop)/i', $Query_String, $matches)){
@@ -722,11 +722,10 @@ abstract class we_database_base{
 	public function getInsertId(){
 		return $this->Insert_ID;
 	}
-	
+
 	public function affected_rows(){
 		return $this->Affected_Rows;
 	}
-
 
 	/** print the message and stop further execution
 	 * @param string $msg message to be printed
