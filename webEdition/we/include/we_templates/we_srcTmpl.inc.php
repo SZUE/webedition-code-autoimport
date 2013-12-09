@@ -186,7 +186,7 @@ switch($_SESSION['prefs']['editorMode']){
 								hlLine = editor.addLineClass(cur, "background", "activeline");
 							}
 						});
-		<?php } else { //FIX for CM which doesn't display lines beyond 27 if this line is missing....  ?>
+		<?php } else { //FIX for CM which doesn't display lines beyond 27 if this line is missing....   ?>
 						hlLine = editor.addLineClass(0, "background", "");
 
 		<?php } ?>
@@ -498,10 +498,12 @@ switch($_SESSION['prefs']['editorMode']){
 				$allWeTags = weTagWizard::getExistingWeTags($css); //only load deprecated tags if css is requested
 				foreach($allWeTags as $tagName){
 					$weTag = weTagData::getTagData($tagName);
-					if($css){
-						$ret.='.cm-weTag_' . $tagName . ':hover:after {content: "' . str_replace('"', '\'', html_entity_decode($weTag->getDescription(), null, $GLOBALS['WE_BACKENDCHARSET'])) . '";}';
-					} else {
-						$allTags['we:' . $tagName] = array('we' => $weTag->getAttributesForCM());
+					if($weTag){
+						if($css){
+							$ret.='.cm-weTag_' . $tagName . ':hover:after {content: "' . str_replace('"', '\'', html_entity_decode($weTag->getDescription(), null, $GLOBALS['WE_BACKENDCHARSET'])) . '";}';
+						} else {
+							$allTags['we:' . $tagName] = array('we' => $weTag->getAttributesForCM());
+						}
 					}
 				}
 			}
@@ -678,7 +680,7 @@ var CMoptions = { //these are the CodeMirror options
 							  "\'<\'": function(cm) { CodeMirror.weHint(cm, \'<\'); },
 							  "Ctrl-Space": function(cm) { CodeMirror.weHint(cm, \'\'); },' : ''
 						) .
-	($_SESSION['prefs']['editorAutoIndent'] ? '' : '"Enter": false,') . '
+						($_SESSION['prefs']['editorAutoIndent'] ? '' : '"Enter": false,') . '
 	}
 };' . ($hasCompletion && $useCompletion ? we_getCodeMirror2Tags(false, $mode == 'text/weTmpl') : '') . '
 window.orignalTemplateContent=document.getElementById("editarea").value.replace(/\r/g,""); //this is our reference of the original content to compare with current content
