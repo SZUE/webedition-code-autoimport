@@ -2211,6 +2211,12 @@ HTS;
 		$we_flds = (isset($_REQUEST["we_flds"])) ? $_REQUEST["we_flds"] : array();
 		$attrs = (isset($_REQUEST["attrs"])) ? $_REQUEST["attrs"] : array();
 
+		$csvFile = $_SERVER['DOCUMENT_ROOT'] . $v["import_from"];
+		if(file_exists($csvFile) && is_readable($csvFile)){
+			$data = weFile::loadPart($csvFile);
+			$encoding = mb_detect_encoding($data, 'UTF-8,ISO-8859-1,ISO-8859-15');
+		}
+
 
 		$hdns = $this->getHdns("v", $v) .
 			(isset($_REQUEST["records"]) ? $this->getHdns("records", $_REQUEST["records"]) : "") .
@@ -2218,6 +2224,7 @@ HTS;
 			(isset($_REQUEST["attrs"]) ? $this->getHdns("attrs", $_REQUEST["attrs"]) : "") .
 			we_html_element::htmlHidden(array("name" => "v[startCSVImport]", "value" => (isset($v["startCSVImport"]) && $v["startCSVImport"] == 1) ? 1 : 0)) .
 			we_html_element::htmlHidden(array("name" => "v[cid]", "value" => -2)) .
+			we_html_element::htmlHidden(array("name" => "v[encoding]", "value" => $encoding)) .
 			we_html_element::htmlHidden(array("name" => "v[pfx_fn]", "value" => ((!isset($v["pfx_fn"])) ? 0 : $v["pfx_fn"]))) .
 			(isset($v["rdo_timestamp"]) ? we_html_element::htmlHidden(array("name" => "v[sTimeStamp]", "value" => $v["rdo_timestamp"])) : '');
 
@@ -2255,17 +2262,16 @@ function handle_event(evt) {
 }";
 
 		$db = new DB_WE();
-
 		$records = $dateFields = array();
 
 		if($v["import_type"] == "documents"){
 			$templateCode = f('SELECT ' . CONTENT_TABLE . '.Dat as Dat FROM ' . CONTENT_TABLE . ' LEFT JOIN ' . LINK_TABLE . ' ON ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID  WHERE ' .
-				LINK_TABLE . ".DocumentTable='" . stripTblPrefix(TEMPLATES_TABLE) . "' AND " . LINK_TABLE . '.DID=' . intval($v["we_TemplateID"]) . ' AND ' . LINK_TABLE . ".Name='completeData'", '', $db);
+				LINK_TABLE . ".DocumentTable='" . stripTblPrefix(TEMPLATES_TABLE) . "' AND " . LINK_TABLE . '.DID=' . intval($v['we_TemplateID']) . ' AND ' . LINK_TABLE . ".Name='completeData'", '', $db);
 			$tp = new we_tag_tagParser($templateCode);
 
 			$tags = $tp->getAllTags();
-
-			if(!empty($tags)){
+			if($tags){
+				$regs = array();
 				foreach($tags as $tag){
 					if(preg_match('|<we:([^> /]+)|i', $tag, $regs)){
 						$tagname = $regs[1];
@@ -2304,7 +2310,6 @@ function handle_event(evt) {
 			}
 		}
 
-		$csvFile = $_SERVER['DOCUMENT_ROOT'] . $v["import_from"];
 		if(file_exists($csvFile) && is_readable($csvFile)){
 			switch($v["csv_enclosed"]){
 				case "double_quote":
@@ -2320,11 +2325,10 @@ function handle_event(evt) {
 
 			$cp = new we_import_CSV;
 
-			$_data = weFile::loadPart($csvFile);
-
-			$cp->setData($_data);
+			$cp->setData($data);
 			$cp->setDelim($v["csv_seperator"]);
 			$cp->setEnclosure($encl);
+			$cp->setFromCharset($encoding);
 			$cp->parseCSV();
 			$num = count($cp->FieldNames);
 			$recs = array();
@@ -2348,7 +2352,7 @@ function handle_event(evt) {
 		foreach($records as $record){
 			$hdns .= we_html_element::htmlHidden(array("name" => "records[$i]", "value" => $record));
 			$sct_we_fields = new we_html_select(array(
-				"name" => 'we_flds['.$record.']',
+				"name" => 'we_flds[' . $record . ']',
 				"size" => 1,
 				"class" => "weSelect",
 				"onclick" => "",
