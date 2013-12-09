@@ -44,7 +44,7 @@ abstract class importFunctions{
 	 * @param boolean $IsSearchable
 	 * @desc imports a document into webedition
 	 */
-	static function importDocument($parentID, $templateID, $fields, $doctypeID, $categories, $filename, $isDynamic, $extension, $publish, $IsSearchable, $conflict = 'rename'){
+	static function importDocument($parentID, $templateID, $fields, $doctypeID, $categories, $filename, $isDynamic, $extension, $publish, $IsSearchable, $charset, $conflict = 'rename'){
 
 		// erzeugen eines neuen webEdition-Dokument-Objekts
 		$GLOBALS['we_doc'] = new we_webEditionDocument();
@@ -59,6 +59,9 @@ abstract class importFunctions{
 		$GLOBALS['we_doc']->Text = $GLOBALS['we_doc']->Filename . $GLOBALS['we_doc']->Extension;
 
 		$GLOBALS['we_doc']->setParentID($parentID);
+		if($charset){
+			$GLOBALS['we_doc']->setElement('Charset', $charset, 'dat');
+		}
 		$GLOBALS['we_doc']->Path = $GLOBALS['we_doc']->getParentPath() . (($GLOBALS['we_doc']->getParentPath() != "/") ? "/" : "") . $GLOBALS['we_doc']->Text;
 		// IF NAME OF OBJECT EXISTS, WE HAVE TO CREATE A NEW NAME
 		if(($file_id = f('SELECT ID FROM ' . FILE_TABLE . " WHERE Path='" . $GLOBALS['DB_WE']->escape($GLOBALS['we_doc']->Path) . "'", "ID", $GLOBALS['DB_WE']))){
@@ -112,7 +115,7 @@ abstract class importFunctions{
 	 * @param boolean $publish
 	 * @desc imports an object into webEdition
 	 */
-	static function importObject($classID, $fields, $categories, $filename, $publish, $issearchable, $parentID, $conflict = 'rename'){
+	static function importObject($classID, $fields, $categories, $filename, $publish, $issearchable, $parentID, $charset, $conflict = 'rename'){
 		// INIT OBJECT
 		$object = new we_objectFile();
 		$object->we_new();
@@ -124,6 +127,9 @@ abstract class importFunctions{
 			$object->Category = $categories;
 		}
 		$object->IsSearchable = $issearchable;
+		if($charset){
+			$object->Charset = $charset;
+		}
 		if($parentID){
 			$object->setParentID($parentID);
 		}

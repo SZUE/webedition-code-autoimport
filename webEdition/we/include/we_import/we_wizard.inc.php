@@ -677,11 +677,12 @@ top.wizbusy.setProgress(Math.floor(((" . $v['cid'] . "+1)/" . (int) (2 * $v["num
 								$encl = '';
 								break;
 						}
-						list($v["classID"]) = explode('_', $v["classID"]);
+						list($v["classID"]) = explode('_', $v['classID']);
 						$cp = new we_import_CSV;
 						$cp->setFile($v['uniquePath'] . '/temp_' . $v["cid"] . ".csv");
 						$cp->setDelim($v['csv_seperator']);
 						$cp->setEnclosure($encl);
+						$cp->setFromCharset($v['encoding']);
 						$cp->parseCSV();
 						$recs = array();
 						$names = array();
@@ -715,12 +716,14 @@ top.wizbusy.setProgress(Math.floor(((" . $v['cid'] . "+1)/" . (int) (2 * $v["num
 						switch($v['import_type']){
 							case 'documents':
 								$IsSearchable = $v["docType"] > 0 ? (isset($v['doc_search']) && $v['doc_search']) || f('SELECT IsSearchable FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($v["docType"]), 'IsSearchable', new DB_WE()) : $v['doc_search'];
-								if(!importFunctions::importDocument($v["store_to_id"], $v["we_TemplateID"], $fields, $v["docType"], $v["docCategories"], $rcd_name, $v["is_dynamic"], $v["we_Extension"], isset($v['doc_publish']) ? $v['doc_publish'] : true, $IsSearchable, $v['collision'])){
+								if(!importFunctions::importDocument($v["store_to_id"], $v["we_TemplateID"], $fields, $v["docType"], $v["docCategories"], $rcd_name, $v["is_dynamic"], $v["we_Extension"], isset($v['doc_publish']) ? $v['doc_publish'] : true, $IsSearchable, isset($v['encoding']) ? DEFAULT_CHARSET : '' //if charset is set, we know csv was converted to defaultcharset
+								,$v['collision'])){
 									t_e('warning', 'import of entry failed', $fields);
 								}
 								break;
 							case 'objects':
-								if(!importFunctions::importObject($v["classID"], $fields, $v["objCategories"], $rcd_name, isset($v['obj_publish']) ? $v['obj_publish'] : true, isset($v['obj_search']) ? $v['obj_search'] : true, isset($v['obj_path_id']) ? $v['obj_path_id'] : 0, $v['collision'])){
+								if(!importFunctions::importObject($v["classID"], $fields, $v["objCategories"], $rcd_name, isset($v['obj_publish']) ? $v['obj_publish'] : true, isset($v['obj_search']) ? $v['obj_search'] : true, isset($v['obj_path_id']) ? $v['obj_path_id'] : 0, isset($v['encoding']) ? DEFAULT_CHARSET : '' //if charset is set, we know csv was converted to defaultcharset
+										, $v['collision'])){
 									t_e('warning', 'import of entry failed', $fields);
 								}
 								break;

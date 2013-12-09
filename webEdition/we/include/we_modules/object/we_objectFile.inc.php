@@ -1378,7 +1378,7 @@ class we_objectFile extends we_document{
 	function getTextareaHTML($name, $attribs, $editable = true, $variant = false){
 		if($editable){
 			//	send charset which might be determined in template
-			$charset = (isset($this->Charset) ? $this->Charset : $GLOBALS['WE_BACKENDCHARSET']);
+			$charset = (isset($this->Charset) ? $this->Charset : DEFAULT_CHARSET);
 
 			$value = $this->getElement($name);
 			$attribs["width"] = isset($attribs["width"]) ? $attribs["width"] : 620;
