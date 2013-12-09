@@ -48,11 +48,11 @@ function correctUml($in){
 }
 
 function getAllowedClasses($db = ''){
-	$db = ($db ? $db : new DB_WE());
-	$out = array();
 	if(!defined('OBJECT_FILES_TABLE')){
 		return '';
 	}
+	$db = ($db ? $db : new DB_WE());
+	$out = array();
 	$ws = get_ws();
 	$ofWs = get_ws(OBJECT_FILES_TABLE);
 	$ofWsArray = makeArrayFromCSV(id_to_path($ofWs, OBJECT_FILES_TABLE));
@@ -1834,6 +1834,7 @@ function g_l($name, $specific, $omitErrors = false){
 			(isset($GLOBALS['we']['PageCharset']) ? $GLOBALS['we']['PageCharset'] : $GLOBALS['WE_BACKENDCHARSET']) :
 //front-end
 			(isset($GLOBALS['CHARSET']) && $GLOBALS['CHARSET'] ? $GLOBALS['CHARSET'] : DEFAULT_CHARSET) );
+//	return $name.$specific;
 //cache last accessed lang var
 	static $cache = array();
 //echo $name.$specific;

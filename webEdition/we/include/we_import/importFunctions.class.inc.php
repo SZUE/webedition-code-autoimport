@@ -44,7 +44,7 @@ abstract class importFunctions{
 	 * @param boolean $IsSearchable
 	 * @desc imports a document into webedition
 	 */
-	static function importDocument($parentID, $templateID, $fields, $doctypeID = 0, $categories = "", $filename = "", $isDynamic = true, $extension = ".php", $publish = true, $IsSearchable = true, $conflict = 'rename'){
+	static function importDocument($parentID, $templateID, $fields, $doctypeID, $categories, $filename, $isDynamic, $extension, $publish, $IsSearchable, $conflict = 'rename'){
 
 		// erzeugen eines neuen webEdition-Dokument-Objekts
 		$GLOBALS['we_doc'] = new we_webEditionDocument();
@@ -112,8 +112,7 @@ abstract class importFunctions{
 	 * @param boolean $publish
 	 * @desc imports an object into webEdition
 	 */
-	static function importObject($classID, $fields, $categories = "", $filename = "", $publish = true, $conflict = 'rename'){
-
+	static function importObject($classID, $fields, $categories, $filename, $publish, $issearchable, $parentID, $conflict = 'rename'){
 		// INIT OBJECT
 		$object = new we_objectFile();
 		$object->we_new();
@@ -124,6 +123,10 @@ abstract class importFunctions{
 		if($categories){
 			$object->Category = $categories;
 		}
+		$object->IsSearchable = $issearchable;
+		if($parentID){
+			$object->setParentID($parentID);
+		}
 
 		// IF WE HAVE TO GIVE THE OBJECT A NAME
 		if($filename || $filename == 0){
@@ -132,19 +135,19 @@ abstract class importFunctions{
 			$object->Text = $filename;
 			$object->Path = $object->getParentPath() . (($object->getParentPath() != "/") ? "/" : "") . $object->Text;
 			// IF NAME OF OBJECT EXISTS, WE HAVE TO CREATE A NEW NAME
-			if($file_id = f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='" . $GLOBALS['DB_WE']->escape($object->Path) . "'", "ID", $GLOBALS['DB_WE'])){
+			if(($file_id = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . " WHERE Path='" . $GLOBALS['DB_WE']->escape($object->Path) . "'"))){
 				$name_exists = true;
 				if($conflict == 'replace'){
 					$object->initByID($file_id, OBJECT_FILES_TABLE);
 				} else if($conflict == 'rename'){
 					$z = 0;
-					$footext = $object->Text . "_" . $z;
-					while(f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($footext) . "' AND ParentID=" . intval($object->ParentID), "ID", $GLOBALS['DB_WE'])){
+					$footext = $object->Text . '_' . $z;
+					while(f('SELECT ID FROM ' . OBJECT_FILES_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($footext) . "' AND ParentID=" . intval($object->ParentID))){
 						$z++;
-						$footext = $object->Text . "_" . $z;
+						$footext = $object->Text . '_' . $z;
 					}
 					$object->Text = $footext;
-					$object->Path = $object->getParentPath() . (($object->getParentPath() != "/") ? "/" : "") . $object->Text;
+					$object->Path = $object->getParentPath() . (($object->getParentPath() != '/') ? '/' : '') . $object->Text;
 				} else {
 					return true;
 				}
@@ -160,10 +163,9 @@ abstract class importFunctions{
 			return false;
 		}
 		// PUBLISH OR EXIT
-		return ($publish?
-			$object->we_publish():
-			true);
-
+		return ($publish ?
+				$object->we_publish() :
+				true);
 	}
 
 	/**

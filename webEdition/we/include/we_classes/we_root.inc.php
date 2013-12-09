@@ -268,7 +268,7 @@ abstract class we_root extends we_class{
 
 		$yuiSuggest->setAcId('Path', id_to_path(array($rootDirID), $table));
 		$yuiSuggest->setContentType('folder,class_folder');
-		$yuiSuggest->setInput($textname, $path, array('onBlur' => $_parentPathChangedBlur));
+		$yuiSuggest->setInput($textname, $path, array('onblur' => $_parentPathChangedBlur));
 		$yuiSuggest->setLabel(g_l('weClass', '[dir]'));
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(0);
