@@ -137,7 +137,7 @@ switch(isset($_REQUEST['function']) ? $_REQUEST['function'] : 'last'){
 		break;
 	case 'export':
 		header('Content-Type: text/plain');
-		header('Content-Disposition: attachment; filename=error.txt');
+		header('Content-Disposition: attachment; filename=error' . $id . '.txt');
 		$cur = getHash('SELECT ID,Type,Function,File,Line,Text,Backtrace,Date FROM `' . ERROR_LOG_TABLE . '` WHERE ID=' . $id . ' ORDER By ID ASC LIMIT 1', $db, MYSQL_ASSOC);
 		$sep = "\n" . str_repeat('-', 80) . "\n";
 		if($cur){
