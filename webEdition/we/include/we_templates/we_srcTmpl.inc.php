@@ -497,8 +497,7 @@ switch($_SESSION['prefs']['editorMode']){
 			if($weTags && ($css || $setting['WE'])){
 				$allWeTags = weTagWizard::getExistingWeTags($css); //only load deprecated tags if css is requested
 				foreach($allWeTags as $tagName){
-					$weTag = weTagData::getTagData($tagName);
-					if($weTag){
+					if(($weTag = weTagData::getTagData($tagName))){
 						if($css){
 							$ret.='.cm-weTag_' . $tagName . ':hover:after {content: "' . str_replace('"', '\'', html_entity_decode($weTag->getDescription(), null, $GLOBALS['WE_BACKENDCHARSET'])) . '";}';
 						} else {
