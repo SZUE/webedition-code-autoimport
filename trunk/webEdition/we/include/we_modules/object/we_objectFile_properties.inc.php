@@ -41,7 +41,7 @@ if($GLOBALS['we_doc']->EditPageNr != WE_EDITPAGE_WORKSPACE){
 			'noline' => true,
 			"icon" => "class.gif"
 		);
-	} else if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){ //	Link to class in normal mode
+	} elseif($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){ //	Link to class in normal mode
 		$_html = '<div class="weMultiIconBoxHeadline" style="margin-bottom:5px;"><a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_TABLE . '\',' . $GLOBALS['we_doc']->TableID . ',\'object\');">' . g_l('modules_object', '[class]') . '</a></div>' .
 			'<div style="margin-bottom:12px;">' . $GLOBALS['we_doc']->formClass() . '</div>';
 		$_html .= '<div class="weMultiIconBoxHeadline" style="margin-bottom:5px;">' . g_l('modules_object', '[class_id]') . '</div>' .
@@ -57,11 +57,11 @@ if($GLOBALS['we_doc']->EditPageNr != WE_EDITPAGE_WORKSPACE){
 		);
 	}
 
-	array_push($parts, array(
+	$parts[] = array(
 		"headline" => g_l('weClass', "[language]"),
 		"html" => $GLOBALS['we_doc']->formLanguage(),
 		"space" => 140,
-		"icon" => "lang.gif")
+		"icon" => "lang.gif"
 	);
 
 
@@ -95,37 +95,35 @@ if($GLOBALS['we_doc']->EditPageNr != WE_EDITPAGE_WORKSPACE){
 		"space" => 140,
 		"icon" => "charset.gif"
 	);
-} else {
+} elseif($GLOBALS['we_doc']->hasWorkspaces()){ //	Show workspaces
+	$parts[] = array(
+		"headline" => g_l('weClass', "[workspaces]"),
+		"html" => $GLOBALS['we_doc']->formWorkspaces(),
+		"space" => 140,
+		"noline" => 1,
+		"icon" => "workspace.gif"
+	);
+	$parts[] = array(
+		"headline" => g_l('weClass', "[extraWorkspaces]"),
+		"html" => $GLOBALS['we_doc']->formExtraWorkspaces(),
+		"space" => 140,
+		"forceRightHeadline" => 1
+	);
 
-	if($GLOBALS['we_doc']->hasWorkspaces()){ //	Show workspaces
-		$parts[] = array(
-			"headline" => g_l('weClass', "[workspaces]"),
-			"html" => $GLOBALS['we_doc']->formWorkspaces(),
-			"space" => 140,
-			"noline" => 1,
-			"icon" => "workspace.gif"
-		);
-		$parts[] = array(
-			"headline" => g_l('weClass', "[extraWorkspaces]"),
-			"html" => $GLOBALS['we_doc']->formExtraWorkspaces(),
-			"space" => 140,
-			"forceRightHeadline" => 1
-		);
+	$button = we_button::create_button("ws_from_class", "javascript:we_cmd('ws_from_class');_EditorFrame.setEditorIsHot(true);");
 
-		$button = we_button::create_button("ws_from_class", "javascript:we_cmd('ws_from_class');_EditorFrame.setEditorIsHot(true);");
-
-		$parts[] = array(
-			"headline" => "",
-			"html" => $button,
-			"space" => 140
-		);
-	} else { //	No workspaces defined
-		$parts[] = array(
-			"headline" => "",
-			"html" => g_l('modules_object', '[no_workspace_defined]'),
-			"space" => 0
-		);
-	}
+	$parts[] = array(
+		"headline" => "",
+		"html" => $button,
+		"space" => 140
+	);
+} else { //	No workspaces defined
+	$parts[] = array(
+		"headline" => "",
+		"html" => g_l('modules_object', '[no_workspace_defined]'),
+		"space" => 0
+	);
 }
-print we_multiIconBox::getJS();
-print we_multiIconBox::getHTML("weOjFileProp", "100%", $parts, 30);
+
+print we_multiIconBox::getJS() .
+	we_multiIconBox::getHTML("weOjFileProp", "100%", $parts, 30);

@@ -1823,9 +1823,12 @@ function we_cmd() {
 			url += '&';
 		}
 	}
-	function set_button_state() {
-				top.wizbusy.back_enabled = top.wizbusy.switch_button_state('back', 'back_enabled', 'enabled');
-				top.wizbusy.next_enabled = top.wizbusy.switch_button_state('next', 'next_enabled', 'enabled');
+	switch (arguments[0]) {
+		default:
+			for (var i=0; i < arguments.length; i++) {
+				args += 'arguments['+i+']' + ((i < (arguments.length-1))? ',' : '');
+			}
+			eval('parent.we_cmd('+args+')');
 	}
 	eval('parent.we_cmd('+args+')');
 }
@@ -1954,7 +1957,6 @@ HTS;
 
 		$storeToButton = we_button::create_button('select', "javascript:we_cmd('openDirselector',document.we_form.elements['v[store_to_path]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','0')");
 
-		$DB_WE->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ORDER By DocType');
 		$DTselect = new we_html_select(array(
 			'name' => 'v[docType]',
 			'size' => 1,
@@ -1968,6 +1970,7 @@ HTS;
 		$DTselect->insertOption($optid, -1, g_l('import', '[none]'));
 
 		$v['docType'] = isset($v['docType']) ? $v['docType'] : -1;
+		$DB_WE->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ORDER By DocType');
 		while($DB_WE->next_record()){
 			$optid++;
 			$DTselect->insertOption($optid, $DB_WE->f('ID'), $DB_WE->f('DocType'));
@@ -1979,7 +1982,6 @@ HTS;
 		$doctypeElement = we_html_tools::htmlFormElementTable($DTselect->getHTML(), g_l('import', "[doctype]"), "left", "defaultfont");
 
 		/*		 * * templateElement *************************************************** */
-		$table = TEMPLATES_TABLE;
 		$textname = "v[we_TemplateName]";
 		$idname = "v[we_TemplateID]";
 		$ueberschrift = (we_hasPerm("CAN_SEE_TEMPLATES") ?
@@ -1987,11 +1989,11 @@ HTS;
 				g_l('import', "[template]"));
 
 		$myid = (isset($v["we_TemplateID"])) ? $v["we_TemplateID"] : 0;
-		$path = f('SELECT Path FROM ' . $DB_WE->escape($table) . " WHERE ID=" . intval($myid), "Path", $DB_WE);
+		$path = f('SELECT Path FROM ' . $DB_WE->escape(TEMPLATES_TABLE) . " WHERE ID=" . intval($myid), "Path", $DB_WE);
 		$wecmdenc1 = we_cmd_enc("self.wizbody.document.forms['we_form'].elements['$idname'].value");
 		$wecmdenc2 = we_cmd_enc("self.wizbody.document.forms['we_form'].elements['$textname'].value");
 		$wecmdenc3 = we_cmd_enc("opener.top.we_cmd('reload_editpage');");
-		$button = we_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','text/weTmpl',1)");
+		$button = we_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','text/weTmpl',1)");
 
 		$yuiSuggest = & weSuggest::getInstance();
 
@@ -2019,14 +2021,6 @@ HTS;
 		} else {
 			$displayDocType = 'display:none';
 			$displayNoDocType = 'display:block';
-			/*
-			  $templateElement = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("v[we_TemplateName]", 30, (isset($v["we_TemplateName"])? $v["we_TemplateName"] : ""), "", " readonly", "text", 300, 0),
-			  g_l('import',"[template]"),
-			  "left",
-			  "defaultfont",
-			  we_html_element::htmlHidden(array("name" => $idname, "value" => $myid)),
-			  we_html_tools::getPixel(10,4),
-			  $button); */
 		}
 		$yuiSuggest->setAcId("TmplPath");
 		$yuiSuggest->setContentType("folder,text/weTmpl");
@@ -2043,12 +2037,9 @@ HTS;
 		$templateElement = "<div id='docTypeLayer' style='$displayDocType'>" . we_html_tools::htmlFormElementTable($TPLselect->getHTML(), g_l('import', '[template]'), "left", "defaultfont") . "</div>
 <div id='noDocTypeLayer' style='$displayNoDocType'>" . $yuiSuggest->getHTML() . "</div>";
 
-//		$input = we_html_tools::htmlTextInput("v[store_to_path]", 30, (isset($v["store_to_path"]) ? $v["store_to_path"] : "/"), "", "", "text", 300, 0, "", false);
-//		$storeTo = we_html_tools::htmlFormElementTable($input, g_l('import',"[import_dir]"), "left", "defaultfont", we_html_tools::getPixel(10, 1), $storeToButton, "", "", "", 0);
-
 		$yuiSuggest->setAcId("DirPath");
 		$yuiSuggest->setContentType("folder");
-		$yuiSuggest->setInput("v[store_to_path]", (isset($v["store_to_path"]) ? $v["store_to_path"] : "/"), array("onFocus" => "self.document.forms['we_form'].elements['v[import_type]'][0].checked=true;"));
+		$yuiSuggest->setInput("v[store_to_path]", (isset($v["store_to_path"]) ? $v["store_to_path"] : "/"), array("onfocus" => "self.document.forms['we_form'].elements['v[import_type]'][0].checked=true;"));
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(0);
 		$yuiSuggest->setResult("v[store_to_id]", (isset($v["store_to_id"]) ? $v["store_to_id"] : 0));
@@ -2059,6 +2050,11 @@ HTS;
 
 		$storeTo = $yuiSuggest->getHTML();
 
+		$seaPu = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 3);
+		$seaPu->setCol(0, 2, array(), we_forms::checkboxWithHidden(isset($v["doc_search"]) && $v["doc_search"], 'v[doc_search]', g_l('weClass', '[IsSearchable]'), false, 'defaultfont'));
+		$seaPu->setCol(0, 1, array("width" => 20), we_html_tools::getPixel(20, 1));
+		$seaPu->setCol(0, 0, array(), we_forms::checkboxWithHidden(isset($v["doc_publish"]) ? $v["doc_publish"] : true, 'v[doc_publish]', g_l('buttons_global', '[publish][value]'), false, 'defaultfont'));
+
 		$docCategories = $this->formCategory2("doc", isset($v["docCategories"]) ? $v["docCategories"] : "");
 		$docCats = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 2, 2);
 		$docCats->setCol(0, 0, array("valign" => "top", "class" => "defaultgray"), g_l('import', "[categories]"));
@@ -2067,82 +2063,129 @@ HTS;
 		$docCats->setCol(1, 1, array(), we_html_tools::getPixel(150, 1));
 
 		$radioDocs = we_forms::radiobutton("documents", ($v["import_type"] == "documents"), "v[import_type]", g_l('import', "[documents]"));
-//		$radioObjs = we_forms::radiobutton("objects", ($v["import_type"] == "objects"), "v[import_type]", g_l('import',"[objects]"), true, "defaultfont", "", (defined("OBJECT_TABLE"))? false : true);
 		$radioObjs = we_forms::radiobutton("objects", ($v["import_type"] == "objects"), "v[import_type]", g_l('import', "[objects]"), true, "defaultfont", "self.document.forms['we_form'].elements['v[store_to_path]'].value='/'; YAHOO.autocoml.setValidById(self.document.forms['we_form'].elements['v[store_to_path]'].id); if(!!self.document.forms['we_form'].elements['v[we_TemplateName]']) { self.document.forms['we_form'].elements['v[we_TemplateName]'].value=''; YAHOO.autocoml.setValidById(self.document.forms['we_form'].elements['v[we_TemplateName]'].id); }", (defined("OBJECT_TABLE") ? false : true));
 
-		$v["classID"] = isset($v["classID"]) ? $v["classID"] : -1;
-		$CLselect = new we_html_select(array(
-			"name" => "v[classID]",
-			"size" => 1,
-			"class" => "weSelect",
-			"onClick" => "self.document.forms['we_form'].elements['v[import_type]'][1].checked=true;",
-			"style" => "width: 150px")
-		);
 		$optid = 0;
-		$ac = makeCSVFromArray(getAllowedClasses($DB_WE));
-		if($ac){
-			$DB_WE->query('SELECT ID,Text FROM ' . OBJECT_TABLE . ' ' . ($ac ? ' WHERE ID IN(' . $ac . ') ' : '') . 'ORDER BY Text');
-			while($DB_WE->next_record()){
-				$optid++;
-				$CLselect->insertOption($optid, $DB_WE->f("ID"), $DB_WE->f("Text"));
-				if($DB_WE->f("ID") == $v["classID"])
-					$CLselect->selectOption($DB_WE->f("ID"));
+		if(defined("OBJECT_TABLE")){
+			$v["classID"] = isset($v["classID"]) ? $v["classID"] : -1;
+			$CLselect = new we_html_select(array(
+				'id' => 'classID',
+				"name" => "v[classID]",
+				"size" => 1,
+				"class" => "weSelect",
+				"onclick" => "self.document.forms['we_form'].elements['v[import_type]'][1].checked=true;",
+				'onchange' => "document.we_form.elements['v[obj_path]'].value='/'+document.we_form.elements['v[classID]'].selectedOptions[0].text;"
+				. "document.we_form.elements['v[obj_path_id]'].value=document.we_form.elements['v[classID]'].value.split('_')[1];",
+				"style" => "width: 150px")
+			);
+			$ac = makeCSVFromArray(getAllowedClasses($DB_WE));
+			if($ac){
+				$DB_WE->query('SELECT o.ID,o.Text,f.ID AS FID FROM ' . OBJECT_TABLE . ' o LEFT JOIN ' . OBJECT_FILES_TABLE . ' f ON o.Text=f.Text WHERE ' . ($ac ? '  o.ID IN(' . $ac . ') AND ' : '') . ' f.IsFolder=1 AND f.ParentID=0 ORDER BY o.Text');
+				while($DB_WE->next_record()){
+					if(!$optid){
+						$first = '/' . $DB_WE->f("Text");
+						$firstID = $DB_WE->f("FID");
+					}
+					$optid++;
+					$CLselect->insertOption($optid, $DB_WE->f("ID") . '_' . $DB_WE->f("FID"), $DB_WE->f("Text"));
+					if($DB_WE->f("ID") == $v["classID"]){
+						$CLselect->selectOption($DB_WE->f("ID"));
+					}
+				}
+			} else {
+				$CLselect->insertOption($optid, -1, g_l('import', "[none]"));
 			}
-		}else {
-			$CLselect->insertOption($optid, -1, g_l('import', "[none]"));
+
+			$objClass = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 2, 2);
+			$objClass->setCol(0, 0, array("valign" => "top", "class" => "defaultgray"), g_l('import', "[class]"));
+			$objClass->setCol(0, 1, array(), $CLselect->getHTML());
+			$objClass->setCol(1, 0, array(), we_html_tools::getPixel(130, 10));
+			$objClass->setCol(1, 1, array(), we_html_tools::getPixel(150, 10));
+
+
+			$wecmdenc1 = we_cmd_enc("self.wizbody.document.forms['we_form'].elements['v[obj_path_id]'].value");
+			$wecmdenc2 = we_cmd_enc("self.wizbody.document.forms['we_form'].elements['v[obj_path]'].value");
+
+			$objStoreToButton = we_button::create_button('select', "javascript:we_cmd('openDirselector',document.we_form.elements['v[obj_path]'].value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','',document.we_form.elements['v[classID]'].value.split('_')[1])");
+
+
+			$yuiSuggest->setAcId('ObjPath');
+			$yuiSuggest->setContentType("folder");
+			$yuiSuggest->setInput("v[obj_path]", (isset($v["obj_path"]) ? $v["obj_path"] : isset($first) ? $first : '/'), array("onfocus" => "self.document.forms['we_form'].elements['v[import_type]'][1].checked=true;"));
+			$yuiSuggest->setMaxResults(10);
+			$yuiSuggest->setMayBeEmpty(0);
+			$yuiSuggest->setResult("v[obj_path_id]", (isset($v["obj_path_id"]) ? $v["obj_path_id"] : (isset($firstID) ? $firstID : 0)));
+			$yuiSuggest->setSelector("Dirselector");
+			$yuiSuggest->setTable(OBJECT_FILES_TABLE);
+			$yuiSuggest->setWidth(300);
+			$yuiSuggest->setSelectButton($objStoreToButton, 10);
+			$yuiSuggest->setLabel(g_l('import', "[import_dir]"));
+
+			$objStoreTo = $yuiSuggest->getHTML();
+
+			$objSeaPu = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 3);
+			$objSeaPu->setCol(0, 2, array(), we_forms::checkboxWithHidden(isset($v["obj_search"]) && $v["obj_search"], 'v[obj_search]', g_l('weClass', '[IsSearchable]'), false, 'defaultfont'));
+			$objSeaPu->setCol(0, 1, array("width" => 20), we_html_tools::getPixel(20, 1));
+			$objSeaPu->setCol(0, 0, array(), we_forms::checkboxWithHidden(isset($v["obj_publish"]) ? $v["obj_publish"] : true, 'v[obj_publish]', g_l('buttons_global', '[publish][value]'), false, 'defaultfont'));
+
+			$objCategories = $this->formCategory2("obj", isset($v["objCategories"]) ? $v["objCategories"] : "");
+			$objCats = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 2, 2);
+			$objCats->setCol(0, 0, array("valign" => "top", "class" => "defaultgray"), g_l('import', "[categories]"));
+			$objCats->setCol(0, 1, array(), $objCategories);
+			$objCats->setCol(1, 0, array(), we_html_tools::getPixel(130, 1));
+			$objCats->setCol(1, 1, array(), we_html_tools::getPixel(150, 1));
+
+			$objects = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 4, 2);
+			$objects->setCol(0, 0, array("colspan" => 3), $radioObjs);
+			$objects->setCol(1, 0, array(), we_html_tools::getPixel(1, 10));
+			$objects->setCol(2, 0, array(), we_html_tools::getPixel(50, 1));
+			$objects->setCol(2, 1, array(), $objClass->getHTML());
+			$objects->setCol(3, 1, array(), $objCats->getHTML());
 		}
-
-		$objClass = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 2, 2);
-		$objClass->setCol(0, 0, array("valign" => "top", "class" => "defaultgray"), g_l('import', "[class]"));
-		$objClass->setCol(0, 1, array(), $CLselect->getHTML());
-		$objClass->setCol(1, 0, array(), we_html_tools::getPixel(130, 10));
-		$objClass->setCol(1, 1, array(), we_html_tools::getPixel(150, 10));
-
-		$objCategories = $this->formCategory2("obj", isset($v["objCategories"]) ? $v["objCategories"] : "");
-		$objCats = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 2, 2);
-		$objCats->setCol(0, 0, array("valign" => "top", "class" => "defaultgray"), g_l('import', "[categories]"));
-		$objCats->setCol(0, 1, array(), $objCategories);
-		$objCats->setCol(1, 0, array(), we_html_tools::getPixel(130, 1));
-		$objCats->setCol(1, 1, array(), we_html_tools::getPixel(150, 1));
-
-		$objects = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 4, 2);
-		$objects->setCol(0, 0, array("colspan" => 3), $radioObjs);
-		$objects->setCol(1, 0, array(), we_html_tools::getPixel(1, 10));
-		$objects->setCol(2, 0, array(), we_html_tools::getPixel(50, 1));
-		$objects->setCol(2, 1, array(), $objClass->getHTML());
-		$objects->setCol(3, 1, array(), $objCats->getHTML());
 
 		$specifyDoc = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 3);
 		$specifyDoc->setCol(0, 2, array("valign" => "bottom"), we_forms::checkbox(3, (isset($v["is_dynamic"]) ? $v["is_dynamic"] : 0), "chbxIsDynamic", g_l('import', "[isDynamic]"), true, "defaultfont", "this.form.elements['v[is_dynamic]'].value=this.checked? 1 : 0; switchExt();"));
 		$specifyDoc->setCol(0, 1, array("width" => 20), we_html_tools::getPixel(20, 1));
 		$specifyDoc->setCol(0, 0, array(), we_html_tools::htmlFormElementTable(we_html_tools::getExtensionPopup("v[we_Extension]", (isset($v["we_Extension"]) ? $v["we_Extension"] : ".html"), we_base_ContentTypes::inst()->getExtension("text/webedition"), "100"), g_l('import', "[extension]")));
 
-		$parts = array();
 		if((file_exists($_SERVER['DOCUMENT_ROOT'] . $v["import_from"]) && is_readable($_SERVER['DOCUMENT_ROOT'] . $v["import_from"]))){
-			$parts[] = array(
-				"headline" => (defined("OBJECT_TABLE")) ? $radioDocs : g_l('import', "[documents]"),
-				"html" => weSuggest::getYuiFiles() . $doctypeElement . we_html_tools::getPixel(1, 4) . $templateElement . we_html_tools::getPixel(1, 4) . $storeTo . $yuiSuggest->getYuiCode() . we_html_tools::getPixel(1, 4) . $specifyDoc->getHTML() . we_html_tools::getPixel(1, 4) .
-				we_html_tools::htmlFormElementTable($docCategories, g_l('import', "[categories]"), "left", "defaultfont"),
-				"space" => 120,
-				"noline" => 1
+			$parts = array(
+				array(
+					'headline' => (defined('OBJECT_TABLE')) ? $radioDocs : g_l('import', "[documents]"),
+					'html' => weSuggest::getYuiFiles() .
+					$doctypeElement . we_html_tools::getPixel(1, 4) .
+					$templateElement . we_html_tools::getPixel(1, 4) .
+					$storeTo . we_html_tools::getPixel(1, 4) .
+					$specifyDoc->getHTML() . we_html_tools::getPixel(1, 4) .
+					$seaPu->getHtml() . we_html_tools::getPixel(1, 4) .
+					we_html_tools::htmlFormElementTable($docCategories, g_l('import', "[categories]"), "left", "defaultfont") .
+					(defined("OBJECT_TABLE") ? '' : $yuiSuggest->getYuiCode()),
+					"space" => 120,
+					"noline" => 1
+				)
 			);
 			if(defined("OBJECT_TABLE")){
 				$parts[] = array(
 					"headline" => $radioObjs,
-					"html" => (defined("OBJECT_TABLE")) ? we_html_tools::htmlFormElementTable($CLselect->getHTML(), g_l('import', "[class]"), "left", "defaultfont") .
-						we_html_tools::getPixel(1, 4) .
-						we_html_tools::htmlFormElementTable($objCategories, g_l('import', "[categories]"), "left", "defaultfont") : "",
+					"html" => we_html_tools::htmlFormElementTable($CLselect->getHTML(), g_l('import', "[class]"), "left", "defaultfont") . we_html_tools::getPixel(1, 4) .
+					$objStoreTo . we_html_tools::getPixel(1, 4) .
+					$objSeaPu->getHtml() . we_html_tools::getPixel(1, 4) .
+					we_html_tools::htmlFormElementTable($objCategories, g_l('import', "[categories]"), "left", "defaultfont")
+					. $yuiSuggest->getYuiCode(),
 					"space" => 120,
 					"noline" => 1
 				);
 			}
 		} else {
 			if(!file_exists($_SERVER['DOCUMENT_ROOT'] . $v["import_from"])){
-				$parts[] = array("html" => we_html_tools::htmlAlertAttentionBox(g_l('import', "[file_exists]") . $_SERVER['DOCUMENT_ROOT'] . $v["import_from"], we_html_tools::TYPE_ALERT, 530), "space" => 0, "noline" => 1);
+				$parts = array(
+					array("html" => we_html_tools::htmlAlertAttentionBox(g_l('import', "[file_exists]") . $_SERVER['DOCUMENT_ROOT'] . $v["import_from"], we_html_tools::TYPE_ALERT, 530), "space" => 0, "noline" => 1));
 				$functions.='top.wizbusy.switch_button_state("next","next","disabled");';
 			} else if(!is_readable($_SERVER['DOCUMENT_ROOT'] . $v["import_from"])){
-				$parts[] = array("html" => we_html_tools::htmlAlertAttentionBox(g_l('import', "[file_readable]"), we_html_tools::TYPE_ALERT, 530), "space" => 0, "noline" => 1);
+				$parts = array(array("html" => we_html_tools::htmlAlertAttentionBox(g_l('import', "[file_readable]"), we_html_tools::TYPE_ALERT, 530), "space" => 0, "noline" => 1));
 				$functions.='top.wizbusy.switch_button_state("next","next","disabled");';
+			} else {
+				$parts = array();
 			}
 		}
 
@@ -2216,8 +2259,8 @@ function handle_event(evt) {
 		$records = $dateFields = array();
 
 		if($v["import_type"] == "documents"){
-			$templateCode = f("SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . CONTENT_TABLE . "," . LINK_TABLE . " WHERE " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " .
-				LINK_TABLE . ".DocumentTable='" . stripTblPrefix(TEMPLATES_TABLE) . "' AND " . LINK_TABLE . ".DID=" . intval($v["we_TemplateID"]) . " AND " . LINK_TABLE . ".Name='completeData'", "Dat", $db);
+			$templateCode = f('SELECT ' . CONTENT_TABLE . '.Dat as Dat FROM ' . CONTENT_TABLE . ' LEFT JOIN ' . LINK_TABLE . ' ON ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID  WHERE ' .
+				LINK_TABLE . ".DocumentTable='" . stripTblPrefix(TEMPLATES_TABLE) . "' AND " . LINK_TABLE . '.DID=' . intval($v["we_TemplateID"]) . ' AND ' . LINK_TABLE . ".Name='completeData'", '', $db);
 			$tp = new we_tag_tagParser($templateCode);
 
 			$tags = $tp->getAllTags();
@@ -2231,8 +2274,9 @@ function handle_event(evt) {
 							switch($tagname){
 								// tags with text content, links and hrefs
 								case "input":
-									if(in_array("date", we_tag_tagParser::makeArrayFromAttribs($tag)))
+									if(in_array("date", we_tag_tagParser::makeArrayFromAttribs($tag))){
 										$dateFields[] = $name;
+									}
 								case "textarea":
 								case "href":
 								case "link":
@@ -2248,7 +2292,8 @@ function handle_event(evt) {
 				$records[] = "Keywords";
 			}
 		} else {
-			$classFields = $this->getClassFields($v["classID"]);
+			list($class) = explode('_', $v["classID"]);
+			$classFields = $this->getClassFields($class);
 			foreach($classFields as $classField){
 				if($this->isTextField($classField["type"]) || $this->isNumericField($classField["type"]) || $this->isDateField($classField["type"])){
 					$records[] = $classField["name"];
@@ -2263,13 +2308,13 @@ function handle_event(evt) {
 		if(file_exists($csvFile) && is_readable($csvFile)){
 			switch($v["csv_enclosed"]){
 				case "double_quote":
-					$encl = "\"";
+					$encl = '"';
 					break;
 				case "single_quote":
 					$encl = "'";
 					break;
 				case "none":
-					$encl = "";
+					$encl = '';
 					break;
 			}
 
@@ -2291,7 +2336,7 @@ function handle_event(evt) {
 				if($v["csv_fieldnames"] && $recs[$i] != ""){
 					$val_nodes[$recs[$i]] = $recs[$i];
 				} else {
-					$val_nodes["f_" . $i] = g_l('import', "[record_field]") . ($i + 1);
+					$val_nodes['f_' . $i] = g_l('import', "[record_field]") . ($i + 1);
 				}
 			}
 		}
@@ -2299,18 +2344,17 @@ function handle_event(evt) {
 		$th = array(array("dat" => g_l('import', "[we_flds]")), array("dat" => g_l('import', "[rcd_flds]")));
 		$rows = array();
 
-		reset($records);
 		$i = 0;
 		foreach($records as $record){
 			$hdns .= we_html_element::htmlHidden(array("name" => "records[$i]", "value" => $record));
 			$sct_we_fields = new we_html_select(array(
-				"name" => "we_flds[$record]",
+				"name" => 'we_flds['.$record.']',
 				"size" => 1,
 				"class" => "weSelect",
-				"onClick" => "",
+				"onclick" => "",
 				"style" => "")
 			);
-			reset($val_nodes);
+
 			$sct_we_fields->addOption("", g_l('import', "[any]"));
 			foreach($val_nodes as $value => $text){
 				$b64_value = (!isset($v["startCSVImport"])) ? base64_encode($value) : $value;
@@ -2353,7 +2397,7 @@ function handle_event(evt) {
 			"name" => "v[rcd_pfx]",
 			"size" => 1,
 			"class" => "weSelect",
-			"onClick" => "self.document.forms['we_form'].elements['v[pfx_fn]'].value=1;self.document.forms['we_form'].elements['v[rdo_filename]'][1].checked=true;",
+			"onclick" => "self.document.forms['we_form'].elements['v[pfx_fn]'].value=1;self.document.forms['we_form'].elements['v[rdo_filename]'][1].checked=true;",
 			"style" => "width: 150px")
 		);
 

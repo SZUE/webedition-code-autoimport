@@ -677,6 +677,7 @@ top.wizbusy.setProgress(Math.floor(((" . $v['cid'] . "+1)/" . (int) (2 * $v["num
 								$encl = '';
 								break;
 						}
+						list($v["classID"]) = explode('_', $v["classID"]);
 						$cp = new we_import_CSV;
 						$cp->setFile($v['uniquePath'] . '/temp_' . $v["cid"] . ".csv");
 						$cp->setDelim($v['csv_seperator']);
@@ -713,11 +714,15 @@ top.wizbusy.setProgress(Math.floor(((" . $v['cid'] . "+1)/" . (int) (2 * $v["num
 						$rcd_name = ($v['pfx_fn'] == 1) ? $v['rcd_pfx'] : $v['asoc_prefix'];
 						switch($v['import_type']){
 							case 'documents':
-								$_isSelectable = f('SELECT IsSearchable FROM ' . DOC_TYPES_TABLE . ' WHERE ID = ' . intval($v["docType"]), 'IsSearchable', new DB_WE());
-								importFunctions::importDocument($v["store_to_id"], $v["we_TemplateID"], $fields, $v["docType"], $v["docCategories"], $rcd_name, $v["is_dynamic"], $v["we_Extension"], true, $_isSelectable, $v['collision']);
+								$IsSearchable = $v["docType"] > 0 ? (isset($v['doc_search']) && $v['doc_search']) || f('SELECT IsSearchable FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($v["docType"]), 'IsSearchable', new DB_WE()) : $v['doc_search'];
+								if(!importFunctions::importDocument($v["store_to_id"], $v["we_TemplateID"], $fields, $v["docType"], $v["docCategories"], $rcd_name, $v["is_dynamic"], $v["we_Extension"], isset($v['doc_publish']) ? $v['doc_publish'] : true, $IsSearchable, $v['collision'])){
+									t_e('warning', 'import of entry failed', $fields);
+								}
 								break;
 							case 'objects':
-								importFunctions::importObject($v["classID"], $fields, $v["objCategories"], $rcd_name, true, $v['collision']);
+								if(!importFunctions::importObject($v["classID"], $fields, $v["objCategories"], $rcd_name, isset($v['obj_publish']) ? $v['obj_publish'] : true, isset($v['obj_search']) ? $v['obj_search'] : true, isset($v['obj_path_id']) ? $v['obj_path_id'] : 0, $v['collision'])){
+									t_e('warning', 'import of entry failed', $fields);
+								}
 								break;
 						}
 					}
@@ -806,7 +811,7 @@ top.wizbusy.setProgress(Math.floor(((" . $v["cid"] . "+1)/" . $v["numFiles"] . "
 						}
 						function we_import(mode, cid) {
 							if(arguments[2]==1){
-								top.wizbody.location = '" . $this->path . "?pnt=wizbody&step=3&type=".importFunctions::TYPE_WE_XML."&noload=1';
+								top.wizbody.location = '" . $this->path . "?pnt=wizbody&step=3&type=" . importFunctions::TYPE_WE_XML . "&noload=1';
 							};
 							var we_form = self.document.forms['we_form'];
 							we_form.elements['v[mode]'].value = mode;
