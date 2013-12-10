@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once(WE_MESSAGING_MODULE_PATH . "we_msg_proto.inc.php");
 require_once(WE_MESSAGING_MODULE_PATH . "messaging_std.inc.php");
 
 /* messaging email send class */

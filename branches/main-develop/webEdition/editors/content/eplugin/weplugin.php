@@ -163,36 +163,40 @@ $applet = we_html_element::htmlApplet(array(
 		"height" => 10,
 		' width' => 100, //keep html attributes
 		' height' => 100,
-		), we_html_element::htmlParam(array("name" => "param_list", "value" => "lan_main_dialog_title,lan_alert_noeditor_title,lan_alert_noeditor_text,lan_select_text,lan_select_button,lan_start_button,lan_close_button,lan_clear_button,lan_list_label,lan_showall_label,lan_edit_button,lan_default_for,lan_editor_name,lan_path,lan_args,lan_contenttypes,lan_defaultfor_label,lan_del_button,lan_save_button,lan_autostart_label,lan_settings_dialog_title,lan_alert_nodefeditor_text,lan_del_question,lan_clear_question,lan_encoding,lan_add_button")) .
-		we_html_element::htmlParam(array("name" => "host", "value" => getServerUrl())) .
-		we_html_element::htmlParam(array("name" => "cmdentry", "value" => getServerUrl() . WEBEDITION_DIR . 'editors/content/eplugin/weplugin_cmd.php')) .
-		we_html_element::htmlParam(array("name" => "lan_main_dialog_title", "value" => g_l('eplugin', "[lan_main_dialog_title]"))) .
-		we_html_element::htmlParam(array("name" => "lan_settings_dialog_title", "value" => g_l('eplugin', "[lan_settings_dialog_title]"))) .
-		we_html_element::htmlParam(array("name" => "lan_alert_noeditor_title", "value" => g_l('eplugin', "[lan_alert_noeditor_title]"))) .
-		we_html_element::htmlParam(array("name" => "lan_alert_noeditor_text", "value" => g_l('eplugin', "[lan_alert_noeditor_text]"))) .
-		we_html_element::htmlParam(array("name" => "lan_select_text", "value" => g_l('eplugin', "[lan_select_text]"))) .
-		we_html_element::htmlParam(array("name" => "lan_select_button", "value" => g_l('eplugin', "[lan_select_button]"))) .
-		we_html_element::htmlParam(array("name" => "lan_start_button", "value" => g_l('eplugin', "[lan_start_button]"))) .
-		we_html_element::htmlParam(array("name" => "lan_close_button", "value" => g_l('eplugin', "[lan_close_button]"))) .
-		we_html_element::htmlParam(array("name" => "lan_clear_button", "value" => g_l('eplugin', "[lan_clear_button]"))) .
-		we_html_element::htmlParam(array("name" => "lan_list_label", "value" => g_l('eplugin', "[lan_list_label]"))) .
-		we_html_element::htmlParam(array("name" => "lan_showall_label", "value" => g_l('eplugin', "[lan_showall_label]"))) .
-		we_html_element::htmlParam(array("name" => "lan_edit_button", "value" => g_l('eplugin', "[lan_edit_button]"))) .
-		we_html_element::htmlParam(array("name" => "lan_default_for", "value" => g_l('eplugin', "[lan_default_for]"))) .
-		we_html_element::htmlParam(array("name" => "lan_editor_name", "value" => g_l('eplugin', "[lan_editor_name]"))) .
-		we_html_element::htmlParam(array("name" => "lan_path", "value" => g_l('eplugin', "[lan_path]"))) .
-		we_html_element::htmlParam(array("name" => "lan_args", "value" => g_l('eplugin', "[lan_args]"))) .
-		we_html_element::htmlParam(array("name" => "lan_contenttypes", "value" => g_l('eplugin', "[lan_contenttypes]"))) .
-		we_html_element::htmlParam(array("name" => "lan_defaultfor_label", "value" => g_l('eplugin', "[lan_defaultfor_label]"))) .
-		we_html_element::htmlParam(array("name" => "lan_del_button", "value" => g_l('eplugin', "[lan_del_button]"))) .
-		we_html_element::htmlParam(array("name" => "lan_save_button", "value" => g_l('eplugin', "[lan_save_button]"))) .
-		we_html_element::htmlParam(array("name" => "lan_editor_prop", "value" => g_l('eplugin', "[lan_editor_prop]"))) .
-		we_html_element::htmlParam(array("name" => "lan_autostart_label", "value" => g_l('eplugin', "[lan_autostart_label]"))) .
-		we_html_element::htmlParam(array("name" => "lan_alert_nodefeditor_text", "value" => g_l('eplugin', "[lan_alert_nodefeditor_text]"))) .
-		we_html_element::htmlParam(array("name" => "lan_del_question", "value" => g_l('eplugin', "[lan_del_question]"))) .
-		we_html_element::htmlParam(array("name" => "lan_clear_question", "value" => g_l('eplugin', "[lan_clear_question]"))) .
-		we_html_element::htmlParam(array("name" => "lan_encoding", "value" => g_l('eplugin', "[lan_encoding]"))) .
-		we_html_element::htmlParam(array("name" => "lan_add_button", "value" => g_l('eplugin', "[lan_add_button]")))
+		), '', array(
+		'permissions' => 'all-permissions',
+		"param_list" => "lan_main_dialog_title,lan_alert_noeditor_title,lan_alert_noeditor_text,lan_select_text,lan_select_button,lan_start_button,lan_close_button,lan_clear_button,lan_list_label,lan_showall_label,lan_edit_button,lan_default_for,lan_editor_name,lan_path,lan_args,lan_contenttypes,lan_defaultfor_label,lan_del_button,lan_save_button,lan_autostart_label,lan_settings_dialog_title,lan_alert_nodefeditor_text,lan_del_question,lan_clear_question,lan_encoding,lan_add_button",
+		"host" => getServerUrl(),
+		"cmdentry", "value" => getServerUrl() . WEBEDITION_DIR . 'editors/content/eplugin/weplugin_cmd.php',
+		"lan_main_dialog_title", "value" => g_l('eplugin', "[lan_main_dialog_title]"),
+		"lan_settings_dialog_title", "value" => g_l('eplugin', "[lan_settings_dialog_title]"),
+		"lan_alert_noeditor_title", "value" => g_l('eplugin', "[lan_alert_noeditor_title]"),
+		"lan_alert_noeditor_text", "value" => g_l('eplugin', "[lan_alert_noeditor_text]"),
+		"lan_select_text", "value" => g_l('eplugin', "[lan_select_text]"),
+		"lan_select_button", "value" => g_l('eplugin', "[lan_select_button]"),
+		"lan_start_button", "value" => g_l('eplugin', "[lan_start_button]"),
+		"lan_close_button", "value" => g_l('eplugin', "[lan_close_button]"),
+		"lan_clear_button", "value" => g_l('eplugin', "[lan_clear_button]"),
+		"lan_list_label", "value" => g_l('eplugin', "[lan_list_label]"),
+		"lan_showall_label", "value" => g_l('eplugin', "[lan_showall_label]"),
+		"lan_edit_button", "value" => g_l('eplugin', "[lan_edit_button]"),
+		"lan_default_for", "value" => g_l('eplugin', "[lan_default_for]"),
+		"lan_editor_name", "value" => g_l('eplugin', "[lan_editor_name]"),
+		"lan_path", "value" => g_l('eplugin', "[lan_path]"),
+		"lan_args", "value" => g_l('eplugin', "[lan_args]"),
+		"lan_contenttypes", "value" => g_l('eplugin', "[lan_contenttypes]"),
+		"lan_defaultfor_label", "value" => g_l('eplugin', "[lan_defaultfor_label]"),
+		"lan_del_button", "value" => g_l('eplugin', "[lan_del_button]"),
+		"lan_save_button", "value" => g_l('eplugin', "[lan_save_button]"),
+		"lan_editor_prop", "value" => g_l('eplugin', "[lan_editor_prop]"),
+		"lan_autostart_label", "value" => g_l('eplugin', "[lan_autostart_label]"),
+		"lan_alert_nodefeditor_text", "value" => g_l('eplugin', "[lan_alert_nodefeditor_text]"),
+		"lan_del_question", "value" => g_l('eplugin', "[lan_del_question]"),
+		"lan_clear_question", "value" => g_l('eplugin', "[lan_clear_question]"),
+		"lan_encoding", "value" => g_l('eplugin', "[lan_encoding]"),
+		"lan_add_button", "value" => g_l('eplugin', "[lan_add_button]"),
+		"lan_add_button", "value" => g_l('eplugin', "[lan_add_button]"),
+		)
 );
 
 $charset = '';
@@ -215,4 +219,4 @@ print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 			)
 			//.we_html_element::htmlInput(array("type"=>"button","onclick"=>"setFile('file');"))
 		)
-	);
+);

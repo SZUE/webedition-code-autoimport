@@ -667,11 +667,14 @@ abstract class we_SEEM{
 	 * @return   newArray        array - false if all links were removed or array of hyperlinks
 	 */
 	static function onlyUseHyperlinks($oldArray){
-
 		$newArray = array();
-
-		for($i = 0; $i < count($oldArray[2]); $i++){
-			if($oldArray[2][$i] && ($oldArray[2][$i]{0} == '#' || strpos($oldArray[2][$i], "javascript") === 0 && strpos($oldArray[2][$i], "javascript:history") === FALSE || strpos($oldArray[2][$i], we_base_link::TYPE_MAIL_PREFIX) === 0 || strpos($oldArray[2][$i], we_base_link::TYPE_INT_PREFIX) === 0 || strpos($oldArray[2][$i], we_base_link::TYPE_OBJ_PREFIX) === 0)){
+		foreach($oldArray[2] as $i => $cur){
+			if(
+				$cur &&
+				($cur{0} == '#' ||
+				strpos($cur, "javascript") === 0 && strpos($cur, "javascript:history") === FALSE || strpos($cur, we_base_link::TYPE_MAIL_PREFIX) === 0 ||
+				strpos($cur, we_base_link::TYPE_INT_PREFIX) === 0 ||
+				strpos($cur, we_base_link::TYPE_OBJ_PREFIX) === 0)){
 				//  this link must not be changed - so it will be removed
 			} else {
 				$newArray[0][] = $oldArray[0][$i];
