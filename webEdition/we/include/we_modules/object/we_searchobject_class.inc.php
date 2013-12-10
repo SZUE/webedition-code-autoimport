@@ -65,8 +65,8 @@ class objectsearch extends we_search{
 				$regs = explode('_', $tableInfo[$i]["name"], 2);
 				if(count($regs) == 2){
 					$opts .= '<option value="' . $tableInfo[$i]["name"] . '" '
-							. (($select == $tableInfo[$i]["name"]) ? "selected" : "") . '>'
-							. $regs[1] . '</option>';
+						. (($select == $tableInfo[$i]["name"]) ? "selected" : "") . '>'
+						. $regs[1] . '</option>';
 				}
 				$all .= $tableInfo[$i]["name"] . ",";
 			} else {
@@ -132,7 +132,7 @@ class objectsearch extends we_search{
 		$out = '<table border="0" cellpadding="0" cellspacing="0">';
 		for($i = 0; $i < count($exws); $i++){
 			if($exws[$i] != ""){
-				if(we_hasPerm("ADMINISTRATOR")){
+				if(permissionhandler::hasPerm("ADMINISTRATOR")){
 					$foo = true;
 				} else {
 					$foo = in_workspace($exws[$i], $userWSArray);
@@ -147,7 +147,7 @@ class objectsearch extends we_search{
 <tr>
 	<td>' . $checkbox . '</td>
 	<td>' . we_html_tools::getPixel(5, 2) . '</td>
-	<td class="middlefont">&nbsp;<a href="javascript:setWs(\'' . $p . '\',\'' . $exws[$i] . '\')" style="text-decoration:none" class="middlefont" title="' . $p . '">' . shortenPath($p, $we_extraWsLength) . '</a><td>
+	<td class="middlefont">&nbsp;<a href="javascript:setWs(\'' . $p . '\',\'' . $exws[$i] . '\')" style="text-decoration:none" class="middlefont" title="' . $p . '">' . we_util_Strings::shortenPath($p, $we_extraWsLength) . '</a><td>
 </tr>';
 			}
 		}
@@ -167,7 +167,7 @@ class objectsearch extends we_search{
 				$out .= '
 <tr>
 	<td class="middlefont">
-		&nbsp;<a href="javascript:setWs(\'' . $p . '\',\'' . $cur . '\')" style="text-decoration:none" class="middlefont" title="' . $p . '">' . shortenPath($p, $we_wsLength) . '</a><td>
+		&nbsp;<a href="javascript:setWs(\'' . $p . '\',\'' . $cur . '\')" style="text-decoration:none" class="middlefont" title="' . $p . '">' . we_util_Strings::shortenPath($p, $we_wsLength) . '</a><td>
 </tr>';
 			}
 		}

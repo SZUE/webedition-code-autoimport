@@ -51,7 +51,7 @@ class we_base_preferences{
 			),
 		);
 		foreach($GLOBALS['config_files'] as &$config){
-			$config['content'] = weFile::load($config['filename']);
+			$config['content'] = we_base_file::load($config['filename']);
 			$config['contentBak'] = $config['content'];
 		}
 		//finally add old session prefs
@@ -80,10 +80,10 @@ class we_base_preferences{
 		// Read the global configuration file
 		$_file_name = WE_INCLUDES_PATH . 'conf/we_conf_global.inc.php';
 		$_file_name_backup = $_file_name . '.bak';
-		$content = $oldContent = weFile::load($_file_name);
+		$content = $oldContent = we_base_file::load($_file_name);
 
 		if($file != '' && $file != $_file_name){
-			$content = weFile::load($file);
+			$content = we_base_file::load($file);
 			//leave settings in their current state
 			foreach($leave as $settingname){
 				$content = self::changeSourceCode('define', $content, $settingname, constant($settingname), true);
@@ -110,8 +110,8 @@ class we_base_preferences{
 		}
 		// Check if we need to rewrite the config file
 		if($content != $oldContent){
-			weFile::save($_file_name_backup, $oldContent);
-			weFile::save($_file_name, $content);
+			we_base_file::save($_file_name_backup, $oldContent);
+			we_base_file::save($_file_name, $content);
 		}
 	}
 
@@ -123,20 +123,20 @@ class we_base_preferences{
 
 		foreach($GLOBALS['config_files'] as $file){
 			if(isset($file['content']) && $file['content'] != $file['contentBak']){ //only save if anything changed
-				weFile::save($file['filename'] . '.bak', $file['contentBak']);
-				weFile::save($file['filename'], trim($file['content'], "\n "));
+				we_base_file::save($file['filename'] . '.bak', $file['contentBak']);
+				we_base_file::save($file['filename'], trim($file['content'], "\n "));
 			}
 		}
 
 		$tmp = array_diff_assoc($_SESSION['prefs'], $GLOBALS['config_files']['oldPrefs']);
 		if(!empty($tmp)){
-			we_user::writePrefs($_SESSION['prefs']['userID'], $GLOBALS['DB_WE']);
+			we_users_user::writePrefs($_SESSION['prefs']['userID'], $GLOBALS['DB_WE']);
 		}
 		unset($GLOBALS['config_files']);
 	}
 
 	static function userIsAllowed($setting){
-		if(we_hasPerm('ADMINISTRATOR')){
+		if(permissionhandler::hasPerm('ADMINISTRATOR')){
 			return true;
 		}
 		$configs = $GLOBALS['configs'];
@@ -144,11 +144,11 @@ class we_base_preferences{
 			if(isset($config[$setting])){
 				switch($name){
 					case 'global':
-						return (isset($config[$setting][2]) ? we_hasPerm($config[$setting][2]) : we_hasPerm('ADMINISTRATOR'));
+						return (isset($config[$setting][2]) ? permissionhandler::hasPerm($config[$setting][2]) : permissionhandler::hasPerm('ADMINISTRATOR'));
 					case 'user':
 						return true;
 					default:
-						return (isset($config[$setting][1]) ? we_hasPerm($config[$setting][1]) : we_hasPerm('ADMINISTRATOR'));
+						return (isset($config[$setting][1]) ? permissionhandler::hasPerm($config[$setting][1]) : permissionhandler::hasPerm('ADMINISTRATOR'));
 				}
 			}
 		}

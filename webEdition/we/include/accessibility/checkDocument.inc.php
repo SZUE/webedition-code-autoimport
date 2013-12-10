@@ -42,7 +42,7 @@ if(isset($_REQUEST['we_transaction'])){ //  initialise Document
 	$allowedHosts = array('validator.w3.org');
 
 	$GLOBALS['DB_WE']->query('SELECT host FROM ' . VALIDATION_SERVICES_TABLE);
-	while($GLOBALS['DB_WE']->next_record()) {
+	while($GLOBALS['DB_WE']->next_record()){
 		$allowedHosts[] = $GLOBALS['DB_WE']->f('host');
 	}
 
@@ -78,7 +78,7 @@ if(isset($_REQUEST['we_transaction'])){ //  initialise Document
 	//  check what should happen with document
 	if($_REQUEST['checkvia'] == 'fileupload'){ //  submit via fileupload
 		$http_request->addFileByContent($varname, $content, $contentType, $filename);
-	} else{ //  submit via onlinecheck - site must be available online
+	} else { //  submit via onlinecheck - site must be available online
 		// when it is a dynamic document, remove <?xml when short_open_tags are allowed.
 		if(ini_get("short_open_tag") == 1 && $GLOBALS['we_doc']->IsDynamic && $contentType == "text/html"){
 			$content = str_replace("<?xml", '<?php print "<?xml"; ?>', $content);
@@ -103,7 +103,7 @@ if(isset($_REQUEST['we_transaction'])){ //  initialise Document
 		if($http_response->getHttp_answer('code') == 200){
 			//  change base href -> css of included page is loaded correctly
 			print str_replace('<head>', '<head><base href="http://' . $host . '" />', $http_response->http_body);
-		} else{ //  no correct answer
+		} else { //  no correct answer
 			we_html_tools::htmlTop();
 			print STYLESHEET;
 			print '</head>
@@ -111,9 +111,9 @@ if(isset($_REQUEST['we_transaction'])){ //  initialise Document
 			print we_html_tools::htmlAlertAttentionBox(sprintf(g_l('validation', '[connection_problems]'), $http_response->getHttp_answer()), we_html_tools::TYPE_ALERT, 0, false);
 			print '</body></html>';
 		}
-	} else{
+	} else {
 		print $http_request->errno . ": " . $http_request->errstr . "<br>";
 	}
-} else{
+} else {
 	print ' &hellip; ';
 }

@@ -75,8 +75,8 @@ function we_tag_object($attribs){
 		$table = OBJECT_FILES_TABLE;
 
 		if($GLOBALS['we_editmode']){
-			$delbutton = we_button::create_button('image:btn_function_trash', "javascript:document.forms[0].elements['$idname'].value=0;document.forms[0].elements['$textname'].value='';_EditorFrame.setEditorIsHot(false);we_cmd('reload_editpage');");
-			$button = we_button::create_button('select', "javascript:we_cmd('openDocselector',document.forms[0].elements['$idname'].value,'$table','document.forms[\'we_form\'].elements[\'$idname\'].value','document.forms[\'we_form\'].elements[\'$textname\'].value','opener.we_cmd(\'reload_editpage\');opener._EditorFrame.setEditorIsHot(true);','" . session_id() . "','$rootDirID','objectFile'," . (we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")");
+			$delbutton = we_html_button::create_button('image:btn_function_trash', "javascript:document.forms[0].elements['$idname'].value=0;document.forms[0].elements['$textname'].value='';_EditorFrame.setEditorIsHot(false);we_cmd('reload_editpage');");
+			$button = we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.forms[0].elements['$idname'].value,'$table','document.forms[\'we_form\'].elements[\'$idname\'].value','document.forms[\'we_form\'].elements[\'$textname\'].value','opener.we_cmd(\'reload_editpage\');opener._EditorFrame.setEditorIsHot(true);','" . session_id() . "','$rootDirID','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")");
 			?>
 			<table class="weEditTable padding0 spacing0 border0">
 				<tr>
@@ -93,7 +93,7 @@ function we_tag_object($attribs){
 	} else {
 		$we_oid = $we_oid ? $we_oid : (isset($_REQUEST['we_oid']) ? intval($_REQUEST['we_oid']) : 0);
 	}
-	$GLOBALS['lv'] = new we_objecttag($classid, $we_oid, $triggerid, (empty($searchable) ? false : $searchable), $condition, $hidedirindex, $objectseourls);
+	$GLOBALS['lv'] = new we_objecttag($classid, $we_oid, $triggerid, ($searchable ? $searchable : false), $condition, $hidedirindex, $objectseourls);
 	if(is_array($GLOBALS['we_lv_array'])){
 		$GLOBALS['we_lv_array'][] = clone($GLOBALS['lv']);
 	}

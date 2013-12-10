@@ -29,14 +29,14 @@ $we_tabs = new we_tabs();
 
 $name = array();
 
-$_menuItems = weToolLookup::getAllTools(true, true);
+$_menuItems = we_tool_lookup::getAllTools(true, true);
 
 
 foreach($_menuItems as $_menuItem){
 	$text = $_menuItem["text"];
 	if($_menuItem["name"] == 'toolfactory'){
-		if(we_hasPerm($_menuItem['startpermission'])){
-			$we_tabs->addTab(new we_tab("#", $text, ( isset($_REQUEST['tool']) && $_REQUEST['tool'] == $_menuItem["name"] ? "TAB_ACTIVE" : "TAB_NORMAL"), "openTool('" . $_menuItem["name"] . "');", array("id" => $_menuItem["name"])));
+		if(permissionhandler::hasPerm($_menuItem['startpermission'])){
+			$we_tabs->addTab(new we_tab("#", $text, ( isset($_REQUEST['tool']) && $_REQUEST['tool'] == $_menuItem["name"] ? we_tab::ACTIVE : we_tab::NORMAL), "openTool('" . $_menuItem["name"] . "');", array("id" => $_menuItem["name"])));
 		}
 	}
 }
@@ -53,10 +53,10 @@ foreach($_menuItems as $_menuItem){
 		$we_tabs->heightPlus = -30;
 	} else if($_REQUEST["tool"] == "navigation"){
 		$we_tabs->heightPlus = -30;
-	} else{
+	} else {
 		if($text != g_l('searchtool', "[weSearch]") && $text != g_l('navigation', "[navigation]") && $_menuItem["name"] != 'toolfactory'){
-			if(we_hasPerm($_menuItem['startpermission'])){
-				$we_tabs->addTab(new we_tab("#", $text, ( isset($_REQUEST['tool']) && $_REQUEST['tool'] == $_menuItem["name"] ? "TAB_ACTIVE" : "TAB_NORMAL"), "openTool('" . $_menuItem["name"] . "');", array("id" => $_menuItem["name"])));
+			if(permissionhandler::hasPerm($_menuItem['startpermission'])){
+				$we_tabs->addTab(new we_tab("#", $text, ( isset($_REQUEST['tool']) && $_REQUEST['tool'] == $_menuItem["name"] ? we_tab::ACTIVE : we_tab::NORMAL), "openTool('" . $_menuItem["name"] . "');", array("id" => $_menuItem["name"])));
 			}
 		}
 	}
@@ -72,8 +72,8 @@ print $tab_header;
 <script type="text/javascript">
 	var current = "<?php echo $_REQUEST["tool"]; ?>";
 	function openTool(tool) {
-		if(top.content.hot =="1") {
-			if(confirm("<?php print g_l('alert', '[discard_changed_data]') ?>")) {
+		if (top.content.hot == "1") {
+			if (confirm("<?php print g_l('alert', '[discard_changed_data]') ?>")) {
 				top.content.hot = "0";
 				current = tool;
 				top.content.location.replace('tools_content.php?tool=' + tool);
@@ -92,11 +92,11 @@ print $tab_header;
 </head>
 <body style="background: #C8D8EC url(<?php print IMAGE_DIR; ?>backgrounds/header.gif);margin: 0px 0px 0px 0px;" link="black" alink="#1559b0" vlink="black" onload="setFrameSize()" onresize="setFrameSize()">
 	<div id="main" ><?php echo $we_tabs->getHTML(); ?></div>
-<?php
+	<?php
 //	print $tab_js;
-if(isset($_REQUEST["tab"])){
-	//print we_html_element::jsElement("tabCtrl.setActiveTab(".$_REQUEST["tab"].");");
-}
-?>
+	if(isset($_REQUEST["tab"])){
+		//print we_html_element::jsElement("tabCtrl.setActiveTab(".$_REQUEST["tab"].");");
+	}
+	?>
 </body>
 </html>

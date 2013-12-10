@@ -135,11 +135,11 @@ class XML_Export{
 		$DB_WE->query("SELECT * FROM " . LINK_TABLE . " WHERE " . LINK_TABLE . ".DocumentTable='" . $DB_WE->escape($table) . "' AND " . LINK_TABLE . ".DID=" . intval($id));
 		$metadata = $DB_WE->metadata(CONTENT_TABLE);
 
-		while($DB_WE->next_record()) {
+		while($DB_WE->next_record()){
 			$out[0] .= sprintf($content_format, $DB_WE->f("Name"), $DB_WE->f("Type"), $DB_WE->f("DocumentTable"));
 			$db_tmp->query("SELECT * FROM " . CONTENT_TABLE . " WHERE ID=" . intval($DB_WE->f("CID")));
 
-			while($db_tmp->next_record()) {
+			while($db_tmp->next_record()){
 				foreach($metadata as $field){
 					if($field["name"] == "Dat"){
 						$dat = $db_tmp->f($field["name"]);
@@ -153,7 +153,7 @@ class XML_Export{
 						}
 
 						$out[0] .= sprintf($attrib_format, $field["name"], $field["type"], $field["len"], $field["flags"], "<![CDATA[" . base64_encode($dat) . "]]>");
-					} else{
+					} else {
 						$out[0] .= sprintf($attrib_format, $field["name"], $field["type"], $field["len"], $field["flags"], $db_tmp->f($field["name"]));
 					}
 				}
@@ -172,7 +172,7 @@ class XML_Export{
 		$metadata = $DB_WE->metadata($table);
 		$DB_WE->query("SELECT * FROM " . $DB_WE->escape($table) . " WHERE ID=" . intval($id));
 
-		while($DB_WE->next_record()) {
+		while($DB_WE->next_record()){
 			foreach($metadata as $field){
 				$out .= sprintf($attrib_format, $field["name"], $field["type"], $field["len"], $field["flags"], $DB_WE->f($field["name"]));
 			}
@@ -198,14 +198,14 @@ class XML_Export{
 				$ids[] = intval(trim($cur));
 			}
 			$where .= 'ID IN(' . implode(',', $ids) . ')';
-		} else{
+		} else {
 			$where.= 'ID=' . intval(trim($pid));
 		}
 
 		$db_main = new DB_WE();
 		$db_main->query("SELECT ID FROM " . FILE_TABLE . " " . $where);
 
-		while($db_main->next_record()) {
+		while($db_main->next_record()){
 			$this->count++;
 
 			// document node
@@ -251,7 +251,7 @@ class XML_Export{
 			return false;
 		}
 
-		while($this->allow_entities) {
+		while($this->allow_entities){
 			for($i = 0; $i < count($base); $i++){
 				if(in_array($base[$i], $this->docs_exported)){
 					$e = array_splice($base, $i, 1);
@@ -303,10 +303,10 @@ class XML_Export{
 		$xml_out.= $arr[0];
 
 		// if allowed add nodes of linked documents or entities
-		while($this->allow_entities) {
+		while($this->allow_entities){
 			$entities = $this->update_entities($entities, $arr[1]);
 
-			while(count($entities) > 1) {
+			while(count($entities) > 1){
 				$nodes = $this->export_nodes($entities);
 				$xml_out.= $nodes[0];
 				continue 2;
@@ -316,7 +316,7 @@ class XML_Export{
 		$xml_out.= str_replace("<", "</", $root);
 
 		// write xml string to file
-		weFile::save($file, $xml_out, 'w');
+		we_base_file::save($file, $xml_out, 'w');
 	}
 
 }

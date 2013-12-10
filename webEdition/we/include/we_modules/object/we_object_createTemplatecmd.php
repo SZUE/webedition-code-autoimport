@@ -72,13 +72,13 @@ if($GLOBALS['we_doc']->i_filenameEmpty()){
 if(isset($we_responseText)){
 	echo we_html_element::jsElement(we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR));
 	require_once(WE_OBJECT_MODULE_PATH . 'we_object_createTemplate.inc.php');
-} else{
+} else {
 	if($GLOBALS['we_doc']->we_save()){
 		$we_responseText = sprintf(g_l('weEditor', '[' . $GLOBALS['we_doc']->ContentType . '][response_save_ok]'), $GLOBALS['we_doc']->Path);
 		echo we_html_element::jsElement(we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_NOTICE, false, true) . '
 opener.we_cmd("changeTempl_ob",' . $nr . ',' . $GLOBALS['we_doc']->ID . ');
 self.close();');
-	} else{
+	} else {
 		$we_responseText = sprintf(g_l('weEditor', '[' . $GLOBALS['we_doc']->ContentType . '][response_save_notok]'), $GLOBALS['we_doc']->Path);
 		echo we_html_element::jsElement(we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR));
 		require_once(WE_OBJECT_MODULE_PATH . 'we_object_createTemplate.inc.php');

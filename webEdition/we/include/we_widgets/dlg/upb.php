@@ -54,7 +54,7 @@ function getBinary(){
 	var oChbx=_fo.elements['chbx_type'];
 ";
 
-if(defined("FILE_TABLE") && defined("OBJECT_FILES_TABLE") && we_hasPerm("CAN_SEE_OBJECTFILES")){
+if(defined("FILE_TABLE") && defined("OBJECT_FILES_TABLE") && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")){
 	$jsCode .= "
 	var iChbxLen=oChbx.length;
 	for(var i=0;i<iChbxLen;i++){
@@ -79,7 +79,7 @@ function save(){
 	}
 	previewPrefs();
 	" . we_message_reporting::getShowMessageCall(
-				g_l('cockpit', '[prefs_saved_successfully]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
+		g_l('cockpit', '[prefs_saved_successfully]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
 	self.close();
 }
 
@@ -100,12 +100,13 @@ function exit_close(){
 }
 ";
 
-$oChbxDocs = we_forms::checkbox(0, true, "chbx_type", g_l('cockpit', '[documents]'), true, "defaultfont", "", false, "", 0, 0);
-$oChbxObjs = we_forms::checkbox(0, true, "chbx_type", g_l('cockpit', '[objects]'), true, "defaultfont", "", false, "", 0, 0);
-$dbTableType = "<table><tr>";
-$dbTableType .= (defined("FILE_TABLE") ? "<td>" . $oChbxDocs . "</td><td>" . we_html_tools::getPixel(10, 1) . "</td>" : '') .
-		(defined("OBJECT_FILES_TABLE") && we_hasPerm("CAN_SEE_OBJECTFILES") ? "<td>" . $oChbxObjs . "</td>" : '') .
-		"</tr></table>";
+$oChbxDocs = we_html_forms::checkbox(0, true, "chbx_type", g_l('cockpit', '[documents]'), true, "defaultfont", "", false, "", 0, 0);
+$oChbxObjs = we_html_forms::checkbox(0, true, "chbx_type", g_l('cockpit', '[objects]'), true, "defaultfont", "", false, "", 0, 0);
+
+$dbTableType = "<table><tr>" .
+	(defined("FILE_TABLE") ? "<td>" . $oChbxDocs . "</td><td>" . we_html_tools::getPixel(10, 1) . "</td>" : '') .
+	(defined("OBJECT_FILES_TABLE") && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES") ? "<td>" . $oChbxObjs . "</td>" : '') .
+	"</tr></table>";
 
 $parts = array(
 	array(
@@ -116,18 +117,19 @@ $parts = array(
 	),
 );
 
-$save_button = we_button::create_button("save", "javascript:save();", false, -1, -1);
-$preview_button = we_button::create_button("preview", "javascript:preview();", false, -1, -1);
-$cancel_button = we_button::create_button("close", "javascript:exit_close();");
-$buttons = we_button::position_yes_no_cancel($save_button, $preview_button, $cancel_button);
+$save_button = we_html_button::create_button("save", "javascript:save();", false, 0, 0);
+$preview_button = we_html_button::create_button("preview", "javascript:preview();", false, 0, 0);
+$cancel_button = we_html_button::create_button("close", "javascript:exit_close();");
+$buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button, $cancel_button);
 
-$sTblWidget = we_multiIconBox::getHTML("mfdProps", "100%", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[unpublished]'));
+$sTblWidget = we_html_multiIconBox::getHTML("mfdProps", "100%", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[unpublished]'));
 
 print we_html_element::htmlDocType() . we_html_element::htmlHtml(
-				we_html_element::htmlHead(
-						we_html_tools::getHtmlInnerHead(g_l('cockpit', '[unpublished]')) . STYLESHEET . we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
-						we_html_element::jsElement(
-								$jsPrefs . $jsCode . we_button::create_state_changer(false))) . we_html_element::htmlBody(
-						array(
-					"class" => "weDialogBody", "onload" => "init();"
-						), we_html_element::htmlForm("", $sTblWidget)));
+		we_html_element::htmlHead(
+			we_html_tools::getHtmlInnerHead(g_l('cockpit', '[unpublished]')) . STYLESHEET . we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
+			we_html_element::jsElement(
+				$jsPrefs . $jsCode . we_html_button::create_state_changer(false))) .
+		we_html_element::htmlBody(
+			array(
+			"class" => "weDialogBody", "onload" => "init();"
+			), we_html_element::htmlForm("", $sTblWidget)));

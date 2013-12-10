@@ -211,7 +211,7 @@ switch($_REQUEST['we_cmd'][0]){
 		$we_doc->convert('jpg', $_REQUEST['we_cmd'][1]);
 		break;
 	case 'doImage_crop':
-		$filename = TEMP_PATH . '/' . weFile::getUniqueId();
+		$filename = TEMP_PATH . '/' . we_base_file::getUniqueId();
 		copy($we_doc->getElement('data'), $filename);
 
 
@@ -327,7 +327,7 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 //
 
 	if(defined('GLOSSARY_TABLE') && ((isset($GLOBALS['we_editmode']) && !$GLOBALS['we_editmode']) || !isset($GLOBALS['we_editmode'])) && isset($we_doc->InGlossar) && $we_doc->InGlossar == 0){
-		$contents = weGlossaryReplace::replace($contents, $we_doc->Language);
+		$contents = we_glossary_replace::replace($contents, $we_doc->Language);
 	}
 
 
@@ -465,7 +465,7 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 						$we_JavaScript .= $_REQUEST['we_cmd'][6];
 					}
 				} else {
-					if((!we_hasPerm('NEW_SONSTIGE')) && $we_doc->ContentType == 'application/*' && in_array($we_doc->Extension, we_base_ContentTypes::inst()->getExtension('text/html'))){
+					if((!permissionhandler::hasPerm('NEW_SONSTIGE')) && $we_doc->ContentType == 'application/*' && in_array($we_doc->Extension, we_base_ContentTypes::inst()->getExtension('text/html'))){
 						$we_JavaScript = '';
 						$we_responseText = sprintf(g_l('weEditor', '[application/*][response_save_wrongExtension]'), $we_doc->Path, $we_doc->Extension);
 						$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
@@ -474,7 +474,7 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 						$wf_flag = false;
 						$wasNew = (intval($we_doc->ID) == 0) ? true : false;
 						$wasPubl = (isset($we_doc->Published) && $we_doc->Published) ? true : false;
-						if(!$_SESSION['perms']['ADMINISTRATOR'] && $we_doc->ContentType != 'object' && $we_doc->ContentType != 'objectFile' && !in_workspace($we_doc->ParentID, get_ws($we_doc->Table), $we_doc->Table)){
+						if(!permissionhandler::hasPerm('ADMINISTRATOR') && $we_doc->ContentType != 'object' && $we_doc->ContentType != 'objectFile' && !in_workspace($we_doc->ParentID, get_ws($we_doc->Table), $we_doc->Table)){
 							$we_responseText = g_l('alert', '[' . FILE_TABLE . '][not_im_ws]');
 							$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 							include(WE_INCLUDES_PATH . 'we_templates/we_editor_save.inc.php');
@@ -571,7 +571,7 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 							}
 
 							if(($we_doc->ContentType == 'text/webedition' || $we_doc->ContentType == 'objectFile') && $we_doc->canHaveVariants(true)){
-								weShopVariants::setVariantDataForModel($we_doc, true);
+								we_shop_variants::setVariantDataForModel($we_doc, true);
 							}
 						} else {
 							$we_JavaScript = '';
@@ -592,7 +592,7 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 						switch($_SESSION['weS']['we_mode']){
 							case we_base_constants::MODE_SEE:
 								$_showAlert = true; //	don't show confirm box in editor_save.inc
-								$_REQUEST['we_cmd'][5] = 'top.we_cmd("switch_edit_page","' . (we_hasPerm('CAN_SEE_PROPERTIES') ? WE_EDITPAGE_PROPERTIES : $we_doc->EditPageNr) . '","' . $we_transaction . '");';
+								$_REQUEST['we_cmd'][5] = 'top.we_cmd("switch_edit_page","' . (permissionhandler::hasPerm('CAN_SEE_PROPERTIES') ? WE_EDITPAGE_PROPERTIES : $we_doc->EditPageNr) . '","' . $we_transaction . '");';
 								break;
 							case we_base_constants::MODE_NORMAL:
 								$_REQUEST['we_cmd'][5] = 'top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");';
@@ -676,8 +676,8 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 
 // --> Start Glossary Replacement
 
-					$useGlossary = ((defined('GLOSSARY_TABLE') && (!isset($GLOBALS['WE_MAIN_DOC']) || $GLOBALS['WE_MAIN_DOC'] == $GLOBALS['we_doc'])) && (isset($we_doc->InGlossar) && $we_doc->InGlossar == 0) && weGlossaryReplace::useAutomatic());
-					echo ($useGlossary ? weGlossaryReplace::doReplace($tmpCntnt, $GLOBALS['we_doc']->Language) : $tmpCntnt);
+					$useGlossary = ((defined('GLOSSARY_TABLE') && (!isset($GLOBALS['WE_MAIN_DOC']) || $GLOBALS['WE_MAIN_DOC'] == $GLOBALS['we_doc'])) && (isset($we_doc->InGlossar) && $we_doc->InGlossar == 0) && we_glossary_replace::useAutomatic());
+					echo ($useGlossary ? we_glossary_replace::doReplace($tmpCntnt, $GLOBALS['we_doc']->Language) : $tmpCntnt);
 				} else {
 					print $contents;
 				}

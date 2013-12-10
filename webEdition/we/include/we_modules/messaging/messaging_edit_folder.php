@@ -26,7 +26,7 @@ if(!preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction'])){
 }
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-$messaging = new we_messaging($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
+$messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 $messaging->init($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 we_html_tools::htmlTop(g_l('modules_messaging', '[folder_settings]'));
@@ -44,16 +44,16 @@ if(isset($_REQUEST['mcmd']) && $_REQUEST['mcmd'] == 'save_folder_settings'){
 
 		$messaging->saveInSession($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 		?>
-			top.content.cmd.location = '<?php print WE_MESSAGING_MODULE_DIR; ?>edit_messaging_frameset.php?pnt=cmd&we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mcmd=save_folder_settings&name=<?php echo $_REQUEST['folder_name'] ?>&id=<?php echo $ID ?>&mode=<?php echo $_REQUEST['mode'] ?>&parent_id=<?php echo $_REQUEST['parent_folder'] ?>&type=<?php echo $_REQUEST['foldertypes'] ?>';
-			top.content.we_cmd('messaging_start_view','','<?php echo isset($_REQUEST['table']) ? $_REQUEST['table'] : "" ?>');
-			//-->
+					top.content.cmd.location = '<?php print WE_MESSAGING_MODULE_DIR; ?>edit_messaging_frameset.php?pnt=cmd&we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mcmd=save_folder_settings&name=<?php echo $_REQUEST['folder_name'] ?>&id=<?php echo $ID ?>&mode=<?php echo $_REQUEST['mode'] ?>&parent_id=<?php echo $_REQUEST['parent_folder'] ?>&type=<?php echo $_REQUEST['foldertypes'] ?>';
+						top.content.we_cmd('messaging_start_view', '', '<?php echo isset($_REQUEST['table']) ? $_REQUEST['table'] : "" ?>');
+		//-->
 		</script>
 		</head>
 		<body></body>
 		</html>
 		<?php
 		exit;
-	} else{
+	} else {
 		print we_message_reporting::getShowMessageCall($res[0], we_message_reporting::WE_MESSAGE_ERROR);
 	}
 }
@@ -106,7 +106,7 @@ print STYLESHEET;
 		if(isset($fooArray[strtolower($n)])){
 			$n = $fooArray[strtolower($n)];
 			$specialfolder = true;
-		} else{
+		} else {
 			$specialfolder = false;
 		}
 
@@ -125,7 +125,7 @@ print STYLESHEET;
 	</tr>
       </table>';
 
-		$_btn_tbl = we_button::position_yes_no_cancel(we_button::create_button("save", "javascript:save()"), "", we_button::create_button("cancel", "javascript:top.content.we_cmd('messaging_start_view','', '" . (isset($_REQUEST["table"]) ? $_REQUEST["table"] : "") . "')")
+		$_btn_tbl = we_html_button::position_yes_no_cancel(we_html_button::create_button("save", "javascript:save()"), "", we_html_button::create_button("cancel", "javascript:top.content.we_cmd('messaging_start_view','', '" . (isset($_REQUEST["table"]) ? $_REQUEST["table"] : "") . "')")
 			)
 		;
 		print we_html_tools::htmlDialogLayout($input_tbl, $heading, $_btn_tbl, "100%", 30, "", "none");

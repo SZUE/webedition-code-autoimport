@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition SDK
  *
@@ -10,7 +11,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -18,8 +19,6 @@
  * @package    we_net
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-
-
 /**
  * @see we_net_Http
  */
@@ -32,86 +31,76 @@ Zend_Loader::loadClass('we_net_LiveUpdate_Session');
 
 /**
  * class for liveUpdate actions
- * 
+ *
  * @category   we
  * @package    we_net
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  * @uses we_net_Http
  */
-class we_net_LiveUpdate
-{
-	
+class we_net_LiveUpdate{
+
 	/**
 	 * @var uri and path to the update server:
 	 */
 	private $_host = "";
 	private $_path = "";
 	private $_uri = "";
-	
 	private $_session = null;
-	
 	private $_request = null;
-	
-	public function __construct()
-	{
+
+	public function __construct(){
 		$this->_readConfig();
-		if(empty($this->_uri)) {
+		if(empty($this->_uri)){
 			return false;
 		}
 		$this->_session = new we_net_LiveUpdate_Session();
 		$this->_session->start();
 		$this->_request = new we_net_Http($this->_uri);
-		
 	}
-	
-	
-	private function _readConfig()
-	{
+
+	private function _readConfig(){
 		$this->_host = "http://update.ali.intra";
 		$this->_path = "/webEdition/liveUpdate.php";
-		$this->_uri = $this->_host.$this->_path;
+		$this->_uri = $this->_host . $this->_path;
 	}
-	
-	public function checkConnection()
-	{
-		
+
+	public function checkConnection(){
+
 		$this->_response = null;
 		$this->_response = $this->_request->get();
-		error_log(print_r($this->_response,true));
-		if($this->_request->status == "200") {
+		error_log(print_r($this->_response, true));
+		if($this->_request->status == "200"){
 			return true;
 		} else {
-			error_log("Connection check returned http status code \"".$this->_request->status." - ".$this->_request->statustext."\"");
+			error_log("Connection check returned http status code \"" . $this->_request->status . " - " . $this->_request->statustext . "\"");
 			return false;
 		}
 	}
-	
+
 	/**
 	 * sends a common http request to the update server
 	 * @return string response from the update server
 	 */
-	public function sendRequest($params = array())
-	{
-		if(!is_array($params)) {
+	public function sendRequest($params = array()){
+		if(!is_array($params)){
 			error_log("WARNING: the parameter array seems not to be a valid array so it won't be used for this request!");
 			$params = array();
 		}
 		$this->_response = null;
-		try {
+		try{
 			$this->_response = $this->_request->get($params);
-			error_log(print_r($this->_response,true));
+			error_log(print_r($this->_response, true));
 			return $this->_response->getBody();
-		} catch(we_net_Exception $e) {
+		} catch (we_net_Exception $e){
 			error_log("shit");
 		}
 	}
-	
+
 	/**
 	 * destroy the update server session
 	 */
-	public function close()
-	{
+	public function close(){
 		$this->_session->destroy();
 	}
-	
+
 }

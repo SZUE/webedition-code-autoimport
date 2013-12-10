@@ -9,7 +9,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -22,7 +22,7 @@
 
 /**
  * Class for handling we_ui_controls_Textarea Element
- * 
+ *
  * @category   we
  * @package    we_ui
  * @subpackage we_ui_controls
@@ -38,10 +38,10 @@ we_ui_controls_Textarea = new Object();
  *@param {boolean} disabled flag that indicates if text field is disabled or not
  *@return void
  */
-we_ui_controls_Textarea.setDisabled = function(idOrObject, disabled) 
+we_ui_controls_Textarea.setDisabled = function(idOrObject, disabled)
 {
 	var element = idOrObject;
-	if (typeof(element) != "object") {
+	if (typeof (element) != "object") {
 		element = document.getElementById(idOrObject);
 	}
 	element.disabled = disabled;
@@ -57,10 +57,10 @@ we_ui_controls_Textarea.setDisabled = function(idOrObject, disabled)
 we_ui_controls_Textarea.hide = function(idOrObject)
 {
 	var element = idOrObject;
-	if (typeof(element) != "object") {
+	if (typeof (element) != "object") {
 		element = document.getElementById(idOrObject);
 	}
-	if(element != null){
+	if (element != null) {
 		element.style.display = "none";
 	}
 }
@@ -75,10 +75,10 @@ we_ui_controls_Textarea.hide = function(idOrObject)
 we_ui_controls_Textarea.show = function(idOrObject)
 {
 	var element = idOrObject;
-	if (typeof(element) != "object") {
+	if (typeof (element) != "object") {
 		element = document.getElementById(idOrObject);
 	}
-	if(element != null){
+	if (element != null) {
 		element.style.display = "";
 	}
 }

@@ -191,7 +191,7 @@ class we_flashDocument extends we_binaryDocument{
 		<td>' . we_html_tools::getPixel(18, 2) . '</td>
 		<td>' . $this->formInputInfo2(155, "height", 10, "attrib", "onChange=\"_EditorFrame.setEditorIsHot(true);\"", "origheight") . '</td>
 		<td>' . we_html_tools::getPixel(18, 2) . '</td>
-		<td>' . $this->formSelectElement2(155, "scale", array("" => "", "showall" => g_l('global', '[showall]'), "noborder" => g_l('global', '[noborder]'), "exactfit" => g_l('global', '[exactfit]')), "attrib", 1, "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+		<td>' . $this->formSelectElement2(155, "scale", array("" => "", "showall" => g_l('global', '[showall]'), "noborder" => g_l('global', '[noborder]'), "exactfit" => g_l('global', '[exactfit]')), "attrib", 1, array('onChange' => '_EditorFrame.setEditorIsHot(true);')) . '</td>
 	</tr>
 	<tr valign="top">
 		<td colspan="5">' . we_html_tools::getPixel(2, 5) . '</td>
@@ -207,9 +207,9 @@ class we_flashDocument extends we_binaryDocument{
 		<td colspan="5">' . we_html_tools::getPixel(2, 5) . '</td>
 	</tr>
 	<tr valign="top">
-		<td>' . $this->formSelectElement2(155, "play", array("" => g_l('global', '[true]'), "false" => g_l('global', '[false]')), "attrib", 1, "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+		<td>' . $this->formSelectElement2(155, "play", array("" => g_l('global', '[true]'), "false" => g_l('global', '[false]')), "attrib", 1, array('onChange' => '_EditorFrame.setEditorIsHot(true);')) . '</td>
 		<td>' . we_html_tools::getPixel(18, 2) . '</td>
-		<td>' . $this->formSelectElement2(155, "quality", array("" => "", "low" => "low", "high" => "high", "autohigh" => "autohigh", "autolow" => "autolow", "best" => "best"), "attrib", 1, "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+		<td>' . $this->formSelectElement2(155, "quality", array("" => "", "low" => "low", "high" => "high", "autohigh" => "autohigh", "autolow" => "autolow", "best" => "best"), "attrib", 1, array('onchange' => '_EditorFrame.setEditorIsHot(true);')) . '</td>
 		<td>' . we_html_tools::getPixel(18, 2) . '</td>
 		<td>' . $this->formColor(155, "bgcolor", 25, "attrib") . '</td>
 	</tr>
@@ -217,17 +217,17 @@ class we_flashDocument extends we_binaryDocument{
 		<td colspan="5">' . we_html_tools::getPixel(2, 5) . '</td>
 	</tr>
 	<tr valign="top">
-		<td>' . $this->formSelectElement2(155, "align", array("" => "", "left" => g_l('global', '[left]'), "right" => g_l('global', '[right]'), "top" => g_l('global', '[top]'), "bottom" => g_l('global', '[bottom]')), "attrib", 1, "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+		<td>' . $this->formSelectElement2(155, "align", array("" => "", "left" => g_l('global', '[left]'), "right" => g_l('global', '[right]'), "top" => g_l('global', '[top]'), "bottom" => g_l('global', '[bottom]')), "attrib", 1, array('onchange' => '_EditorFrame.setEditorIsHot(true);')) . '</td>
 		<td>' . we_html_tools::getPixel(18, 2) . '</td>
-		<td>' . $this->formSelectElement2(155, "salign", array("" => "", "l" => g_l('global', '[left]'), "r" => g_l('global', '[right]'), "t" => g_l('global', '[top]'), "b" => g_l('global', '[bottom]'), "tl" => g_l('global', '[topleft]'), "tr" => g_l('global', '[topright]'), "bl" => g_l('global', '[bottomleft]'), "br" => g_l('global', '[bottomright]')), "attrib", 1, "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+		<td>' . $this->formSelectElement2(155, "salign", array("" => "", "l" => g_l('global', '[left]'), "r" => g_l('global', '[right]'), "t" => g_l('global', '[top]'), "b" => g_l('global', '[bottom]'), "tl" => g_l('global', '[topleft]'), "tr" => g_l('global', '[topright]'), "bl" => g_l('global', '[bottomleft]'), "br" => g_l('global', '[bottomright]')), "attrib", 1, array('onchange' => '_EditorFrame.setEditorIsHot(true);')) . '</td>
 		<td>' . we_html_tools::getPixel(18, 2) . '</td>
-		<td>' . $this->formSelectElement2(155, "loop", array("" => g_l('global', '[true]'), "false" => g_l('global', '[false]')), "attrib", 1, "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+		<td>' . $this->formSelectElement2(155, "loop", array("" => g_l('global', '[true]'), "false" => g_l('global', '[false]')), "attrib", 1, array('onchange' => '_EditorFrame.setEditorIsHot(true);')) . '</td>
 	</tr>
 	<tr valign="top">
 		<td colspan="5">' . we_html_tools::getPixel(2, 5) . '</td>
 	</tr>
 	<tr valign="top">
-		<td>' . $this->formSelectElement2(155, "wmode", array("" => "", "window" => "window", "opaque" => "opaque", "transparent" => "transparent"), "attrib", 1, "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+		<td>' . $this->formSelectElement2(155, "wmode", array("" => "", "window" => "window", "opaque" => "opaque", "transparent" => "transparent"), "attrib", 1, array('onchange' => '_EditorFrame.setEditorIsHot(true);')) . '</td>
 		<td>' . we_html_tools::getPixel(18, 2) . '</td>
 		<td></td>
 		<td>' . we_html_tools::getPixel(18, 2) . '</td>
@@ -417,10 +417,10 @@ class we_flashDocument extends we_binaryDocument{
 							$flashId = intval($GLOBALS[$key][$formname]->getElement($flashName));
 
 							// move document from upload location to tmp dir
-							$_SESSION[$_flashmovieDataId]["serverPath"] = TEMP_PATH . '/' . weFile::getUniqueId();
+							$_SESSION[$_flashmovieDataId]["serverPath"] = TEMP_PATH . '/' . we_base_file::getUniqueId();
 							move_uploaded_file($_FILES["we_ui_$formname"]["tmp_name"][$flashName], $_SESSION[$_flashmovieDataId]["serverPath"]);
 
-							$tmp_Filename = $flashName . "_" . weFile::getUniqueId() . "_" . preg_replace(
+							$tmp_Filename = $flashName . "_" . we_base_file::getUniqueId() . "_" . preg_replace(
 									'[^A-Za-z0-9._-]', '', $_FILES["we_ui_$formname"]["name"][$flashName]);
 
 							if($flashId){

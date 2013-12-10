@@ -19,8 +19,8 @@ way to fit your requirements.
 }
 
 .menuDiv {
-	background-color: #efefef; 
-	background-image: url(/webEdition/images/java_menu/background.gif); 
+	background-color: #efefef;
+	background-image: url(/webEdition/images/java_menu/background.gif);
 	background-repeat: repeat;
 	margin: 0px;
 }
@@ -219,18 +219,18 @@ way to fit your requirements.
 }
 
 #nav ul ul ul {
-     width: 350px !important;
-     max-height: 400px;
-     overflow: auto !important;
-     font-size: 12px;
- }
+	width: 350px !important;
+	max-height: 400px;
+	overflow: auto !important;
+	font-size: 12px;
+}
 
- #nav ul ul ul li {
-     white-space: nowrap;
-     clear: both;
-     width: 100% !important;
- }
- #nav ul ul ul li:hover, #nav ul ul ul li a:hover {
-     display: block;
-     white-space: nowrap;
- }
+#nav ul ul ul li {
+	white-space: nowrap;
+	clear: both;
+	width: 100% !important;
+}
+#nav ul ul ul li:hover, #nav ul ul ul li a:hover {
+	display: block;
+	white-space: nowrap;
+}

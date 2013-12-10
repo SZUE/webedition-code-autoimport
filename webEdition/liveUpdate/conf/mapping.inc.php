@@ -48,7 +48,7 @@ $LU_Variables = array(
 	'clientDomain' => urlencode($_SERVER['SERVER_NAME']),
 	'clientInstalledModules' => $GLOBALS['_we_active_integrated_modules'],
 	'clientInstalledLanguages' => liveUpdateFunctions::getInstalledLanguages(),
-	'clientInstalledAppMeta' => weToolLookup::getAllTools(true, false, true),
+	'clientInstalledAppMeta' => we_tool_lookup::getAllTools(true, false, true),
 	'clientInstalledAppTOC' => we_app_Common::readAppTOCasString(),
 	'clientUpdateUrl' => getServerUrl() . $_SERVER['SCRIPT_NAME'],
 	'clientContent' => false,
@@ -56,8 +56,8 @@ $LU_Variables = array(
 	'clientSessionName' => session_name(),
 	'clientSessionID' => session_id()
 );
-if(defined('WE_VERSION_SUPP') && WE_VERSION_SUPP!='release'){
-	$LU_Variables['testUpdate']=1;
+if(defined('WE_VERSION_SUPP') && WE_VERSION_SUPP != 'release'){
+	$LU_Variables['testUpdate'] = 1;
 }
 
 // These request variables listed here are NOT submitted to the server - fill it

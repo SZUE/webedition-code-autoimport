@@ -32,9 +32,8 @@ $text = '';
 $msg = intval($_REQUEST['msg']) - intval($_REQUEST['omsg']);
 $todo = intval($_REQUEST['todo']) - intval($_REQUEST['otodo']);
 
-$text =
-	($msg > 0 ? sprintf(g_l('modules_messaging', '[newHeaderMsg]'), '<a href="' . $msg_cmd . '">' . $msg, '</a>').'<br/>' : '') .
-	($todo > 0 ? sprintf(g_l('modules_messaging', '[newHeaderTodo]'), '<a href="' . $todo_cmd . '">' . $todo, '</a>').'<br/>' : '');
+$text = ($msg > 0 ? sprintf(g_l('modules_messaging', '[newHeaderMsg]'), '<a href="' . $msg_cmd . '">' . $msg, '</a>') . '<br/>' : '') .
+	($todo > 0 ? sprintf(g_l('modules_messaging', '[newHeaderTodo]'), '<a href="' . $todo_cmd . '">' . $todo, '</a>') . '<br/>' : '');
 $parts = array(
 	array(
 		"headline" => we_html_tools::htmlAlertAttentionBox($text, we_html_tools::TYPE_INFO, 500, false),
@@ -44,7 +43,7 @@ $parts = array(
 );
 
 $buttons = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0, "class" => "defaultfont", "align" => "right"), 1, 1);
-$buttons->setCol(0, 0, null, we_button::create_button("ok", "javascript:self.close();"));
+$buttons->setCol(0, 0, null, we_html_button::create_button("ok", "javascript:self.close();"));
 print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 		we_html_element::htmlHead(
 			//FIXME: missing title
@@ -52,7 +51,7 @@ print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 		) .
 		STYLESHEET .
 		we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlCenter(
-				we_multiIconBox::getHTML("", "100%", $parts, 30, $buttons->getHtml())
+				we_html_multiIconBox::getHTML("", "100%", $parts, 30, $buttons->getHtml())
 			)
 		)
-	);
+);

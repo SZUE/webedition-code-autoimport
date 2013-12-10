@@ -43,8 +43,8 @@ print STYLESHEET;
 			$parts[] = array("icon" => "attrib.gif", "headline" => g_l('weClass', "[attribs]"), "html" => $GLOBALS['we_doc']->formProperties(), "space" => 140);
 		}
 		$parts[] = array("icon" => "meta.gif", "headline" => g_l('weClass', "[metadata]"), "html" => $GLOBALS['we_doc']->formMetaInfos() . $GLOBALS['we_doc']->formMetaData(), "space" => 140);
-		print we_multiIconBox::getJS();
-		print we_multiIconBox::getHTML("weImgProp", "100%", $parts, 20);
+		print we_html_multiIconBox::getJS();
+		print we_html_multiIconBox::getHTML("weImgProp", "100%", $parts, 20);
 		?>
 	</form>
 </body>

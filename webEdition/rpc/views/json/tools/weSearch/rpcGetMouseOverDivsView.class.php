@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,15 +22,11 @@
  * @package    webEdition_rpc
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+class rpcGetMouseOverDivsView extends rpcView{
 
-
-class rpcGetMouseOverDivsView extends rpcView {
-
-
-	function getResponse($response) {
+	function getResponse($response){
 
 		return $response->getData("data");
-
 	}
 
 }

@@ -116,7 +116,7 @@ class we_app_Model extends we_core_AbstractModel{
 	public function textNotValid(){
 		if(stripos($this->Text, '/') === false){
 			return false;
-		} else{
+		} else {
 			return true;
 		}
 	}
@@ -180,7 +180,7 @@ class we_app_Model extends we_core_AbstractModel{
 		if($this->ID){
 			$count = 0;
 			$parentid = $this->ParentID;
-			while($parentid != 0) {
+			while($parentid != 0){
 				if($parentid == $this->ID){
 					return true;
 				}
@@ -191,7 +191,7 @@ class we_app_Model extends we_core_AbstractModel{
 				}
 			}
 			return false;
-		} else{
+		} else {
 			return false;
 		}
 	}
@@ -222,7 +222,7 @@ class we_app_Model extends we_core_AbstractModel{
 		$result = $db->fetchAssoc('SELECT Text,ParentID FROM ' . $this->_table . ' WHERE ' . $this->_primaryKey . ' = ?', $id);
 		$path = '/' . (isset($result[0]['Text']) ? $result[0]['Text'] : '') . $path;
 		$pid = isset($result[0]['ParentID']) ? intval($result[0]['ParentID']) : 0;
-		while($pid > 0) {
+		while($pid > 0){
 			$result = $db->fetchAssoc('SELECT Text,ParentID FROM ' . $this->_table . ' WHERE ' . $this->_primaryKey . ' = ?', $pid);
 			$path = '/' . $result[0]['Text'] . $path;
 			$pid = intval($result[0]['ParentID']);
@@ -268,7 +268,7 @@ class we_app_Model extends we_core_AbstractModel{
 		$db = we_io_DB::sharedAdapter();
 		$stmt = $db->query('SELECT ' . $this->_primaryKey . ' FROM ' . $this->_table . ' WHERE ParentID = ?', $this->{$this->_primaryKey});
 		$id = $stmt->fetchColumn(0);
-		while($id) {
+		while($id){
 			$class = get_class($this);
 			$child = new $class($id);
 			$child->delete();

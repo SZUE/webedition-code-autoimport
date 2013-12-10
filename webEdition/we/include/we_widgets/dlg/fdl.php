@@ -3,9 +3,9 @@
 /**
  * webEdition CMS
  *
- * $Rev: 5044 $
- * $Author: mokraemer $
- * $Date: 2012-11-01 17:59:55 +0100 (Thu, 01 Nov 2012) $
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -45,7 +45,7 @@ function save(){
 	self.close();
 }
 
-function preview(){ 
+function preview(){
 	previewPrefs();
 	refresh();
 }
@@ -64,18 +64,18 @@ $parts = array(
 	)
 );
 
-$save_button = we_button::create_button("save", "javascript:save();", false, -1, -1);
-$preview_button = we_button::create_button("preview", "javascript:preview();", false, -1, -1);
-$cancel_button = we_button::create_button("close", "javascript:exit_close();");
-$buttons = we_button::position_yes_no_cancel($save_button, $preview_button, $cancel_button);
+$save_button = we_html_button::create_button("save", "javascript:save();", false, 0, 0);
+$preview_button = we_html_button::create_button("preview", "javascript:preview();", false, 0, 0);
+$cancel_button = we_html_button::create_button("close", "javascript:exit_close();");
+$buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button, $cancel_button);
 
-$sTblWidget = we_multiIconBox::getHTML("rssProps", "100%", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[customer]'));
+$sTblWidget = we_html_multiIconBox::getHTML("rssProps", "100%", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[customer]'));
 
 print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 		we_html_element::htmlHead(
 			we_html_tools::getHtmlInnerHead(g_l('cockpit', '[customer]')) . STYLESHEET . we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
 			we_html_element::jsElement(
-				$jsPrefs . $jsCode . we_button::create_state_changer(false))) . we_html_element::htmlBody(
+				$jsPrefs . $jsCode . we_html_button::create_state_changer(false))) . we_html_element::htmlBody(
 			array(
 			"class" => "weDialogBody", "onload" => "init();"
 			), we_html_element::htmlForm("", $sTblWidget)));

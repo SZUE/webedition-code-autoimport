@@ -76,7 +76,7 @@ $image->setStyle(\'' . $style . '\', \'' . $stylecolor . '\', \'' . $stylenumber
 $image->setAngleRange(\'' . $angle . '\');
 Captcha::display($image, \'' . ((isset($bgcolor) && $transparent) ? 'gif' : $type) . '\');';
 
-	weFile::save($realPath, $php, 'w+');
+	we_base_file::save($realPath, $php, 'w+');
 
 	// clean attribs
 	$attribs = removeAttribs($attribs, array(

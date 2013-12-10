@@ -146,7 +146,7 @@ class CSV{
 		if($error_output){
 			$this->echoCSVError();
 		}
-		return ((!empty($this->CSVError)) ? false : true);
+		return empty($this->CSVError);
 	}
 
 	function array_merge_better($a1, $a2){
@@ -175,7 +175,7 @@ class CSV{
 		foreach($array as $key => $val){
 			$val.="$key = $val;\n";
 		}
-		weFile::save($filename, $val, 'w');
+		we_base_file::save($filename, $val, 'w');
 	}
 
 }

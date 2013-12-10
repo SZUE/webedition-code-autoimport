@@ -14,15 +14,15 @@ $textarea->setCols(50);
 $textarea->setRows(5);
 
 $textarea2 = new we_ui_controls_Textarea(
-		array(
-			'title' => 'This is the title of the textarea!',
-			'name' => 'textarea2',
-			'text' => 'Hallo...',
-			'disabled' => true,
-			'hidden' => false,
-			'width' => 300,
-			'height' => 300
-		)
+	array(
+	'title' => 'This is the title of the textarea!',
+	'name' => 'textarea2',
+	'text' => 'Hallo...',
+	'disabled' => true,
+	'hidden' => false,
+	'width' => 300,
+	'height' => 300
+	)
 );
 
 $htmlPage = we_ui_layout_HTMLPage::getInstance();

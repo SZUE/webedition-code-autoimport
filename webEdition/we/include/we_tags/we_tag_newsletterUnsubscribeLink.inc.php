@@ -30,12 +30,8 @@ function we_tag_newsletterUnsubscribeLink($attribs){
 	$plain = weTag_getAttribute("plain", $attribs, true, true);
 
 	$db = $GLOBALS['DB_WE'];
-	$settings = array();
-	$db->query('SELECT * FROM ' . NEWSLETTER_PREFS_TABLE . ' WHERE pref_name IN ("use_port","use_https_refer")');
-
-	while($db->next_record()) {
-		$settings[$db->f("pref_name")] = $db->f("pref_value");
-	}
+	$db->query('SELECT pref_name,pref_value FROM ' . NEWSLETTER_PREFS_TABLE . ' WHERE pref_name IN ("use_port","use_https_refer")');
+	$settings = $db->getAllFirst(false);
 
 	$port = (isset($settings["use_port"]) && $settings["use_port"]) ? ":" . $settings["use_port"] : '';
 	$protocol = (isset($settings["use_https_refer"]) && $settings["use_https_refer"]) ? 'https://' : 'http://';

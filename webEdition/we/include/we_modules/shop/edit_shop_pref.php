@@ -64,12 +64,12 @@ if(!empty($_REQUEST["format"])){ //	save data in arrays ..
 	// check if field exists
 	$DB_WE->query('REPLACE ' . ANZEIGE_PREFS_TABLE . ' SET strDateiname ="shop_CountryLanguage", strFelder = "' . $DB_WE->escape(serialize($CLFields)) . '"');
 	// Update Country Field in weShopVatRule
-	$weShopVatRule = weShopVatRule::getShopVatRule();
+	$weShopVatRule = we_shop_vatRule::getShopVatRule();
 	$weShopVatRule->stateField = $CLFields['stateField'];
 	$weShopVatRule->stateFieldIsISO = $CLFields['stateFieldIsISO'];
 	$weShopVatRule->save();
 	// Update Language Field in weShopStatusMails
-	$weShopStatusMails = weShopStatusMails::getShopStatusMails();
+	$weShopStatusMails = we_shop_statusMails::getShopStatusMails();
 	$weShopStatusMails->LanguageData['languageField'] = $CLFields['languageField'];
 	$weShopStatusMails->LanguageData['languageFieldIsISO'] = $CLFields['languageFieldIsISO'];
 	$weShopStatusMails->save();
@@ -175,25 +175,25 @@ if(($fields = @unserialize($_entry))){
 
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont', 'valign' => 'top'), g_l('modules_shop', '[preferences][customerFields]'));
 $_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
-$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('orderfields[]', $showFields, (count($showFields) > 5 ? 5 : count($showFields)), implode(',', $fields['customerFields']), true, '', 'value', 280));
+$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('orderfields[]', $showFields, (count($showFields) > 5 ? 5 : count($showFields)), implode(',', $fields['customerFields']), true, array(), 'value', 280));
 $_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 15));
 
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont', 'valign' => 'top'), g_l('modules_shop', '[preferences][orderCustomerFields]'));
 $_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
-$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('ordercustomerfields[]', $orderFields, (count($orderFields) > 5 ? 5 : count($orderFields)), implode(',', $fields['orderCustomerFields']), true, '', 'value', 280));
+$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('ordercustomerfields[]', $orderFields, (count($orderFields) > 5 ? 5 : count($orderFields)), implode(',', $fields['orderCustomerFields']), true, array(), 'value', 280));
 $_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 15));
 
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont', 'valign' => 'top'), g_l('modules_shop', '[preferences][CountryField]'));
 $_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
 
 $countrySelect = we_class::htmlSelect('stateField', $selectFields, 1, $CLFields['stateField']);
-$countrySelectISO = we_forms::checkboxWithHidden($CLFields['stateFieldIsISO'], 'stateFieldIsISO', g_l('modules_shop', '[preferences][ISO-Kodiert]'), false, "defaultfont");
+$countrySelectISO = we_html_forms::checkboxWithHidden($CLFields['stateFieldIsISO'], 'stateFieldIsISO', g_l('modules_shop', '[preferences][ISO-Kodiert]'), false, "defaultfont");
 $_htmlTable->setColContent($_row++, 2, $countrySelect . '<br/>' . $countrySelectISO);
 
 $_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 15));
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont', 'valign' => 'top'), g_l('modules_shop', '[preferences][LanguageField]'));
 $languageSelect = we_class::htmlSelect('languageField', $selectFields, 1, $CLFields['languageField']);
-$languageSelectISO = we_forms::checkboxWithHidden($CLFields['languageFieldIsISO'], 'languageFieldIsISO', g_l('modules_shop', '[preferences][ISO-Kodiert]'), false, "defaultfont");
+$languageSelectISO = we_html_forms::checkboxWithHidden($CLFields['languageFieldIsISO'], 'languageFieldIsISO', g_l('modules_shop', '[preferences][ISO-Kodiert]'), false, "defaultfont");
 $_htmlTable->setColContent($_row++, 2, $languageSelect . '<br/>' . $languageSelectISO);
 $_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
 
@@ -201,7 +201,7 @@ $_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(2
 
 
 
-$_buttons = we_button::position_yes_no_cancel(we_button::create_button('save', 'javascript:document.we_form.submit();'), '', we_button::create_button('cancel', 'javascript:self.close();'));
+$_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button('save', 'javascript:document.we_form.submit();'), '', we_html_button::create_button('cancel', 'javascript:self.close();'));
 
 $frame = we_html_tools::htmlDialogLayout($_htmlTable->getHtml(), g_l('modules_shop', '[pref]'), $_buttons);
 

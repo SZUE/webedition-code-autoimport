@@ -22,9 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-switch ($_REQUEST['we_cmd'][0]) {
+switch($_REQUEST['we_cmd'][0]){
 	case 'finish_workflow':
 		$INCLUDE = 'we_modules/workflow/we_finish_workflow.inc.php';
 		break;
@@ -37,8 +35,7 @@ switch ($_REQUEST['we_cmd'][0]) {
 
 	case 'edit_workflow':
 	case 'edit_workflow_ifthere':
-		$mod='workflow';
+		$mod = 'workflow';
 		$INCLUDE = 'we_modules/show_frameset.php';
 		break;
-
 }

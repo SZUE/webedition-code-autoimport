@@ -35,34 +35,33 @@ class we_textDocument extends we_document{
 
 	/* must be called from the editor-script. Returns a filename which has to be included from the global-Script */
 
-	function editor($baseHref = true){
-		$GLOBALS["we_baseHref"] = $baseHref ? getServerUrl(true) . $this->Path : '';
+	function editor(){
 
 		switch($this->EditPageNr){
 			case WE_EDITPAGE_PROPERTIES:
-				return "we_templates/we_editor_properties.inc.php";
+				return 'we_templates/we_editor_properties.inc.php';
 			case WE_EDITPAGE_INFO:
-				return "we_templates/we_editor_info.inc.php";
+				return 'we_templates/we_editor_info.inc.php';
 			case WE_EDITPAGE_CONTENT:
-				$GLOBALS["we_editmode"] = true;
-				return "we_templates/we_srcTmpl.inc.php";
+				$GLOBALS['we_editmode'] = true;
+				return 'we_templates/we_srcTmpl.inc.php';
 			case WE_EDITPAGE_PREVIEW:
-				if($GLOBALS["we_EDITOR"]){
-					$GLOBALS['we_file_to_delete_after_include'] = TEMP_PATH . '/' . weFile::getUniqueId() . $this->Extension;
-					we_util_File::saveFile($GLOBALS["we_file_to_delete_after_include"], $this->i_getDocument());
-					return $GLOBALS["we_file_to_delete_after_include"];
+				if($GLOBALS['we_EDITOR']){
+					$GLOBALS['we_file_to_delete_after_include'] = TEMP_PATH . '/' . we_base_file::getUniqueId() . $this->Extension;
+					we_util_File::saveFile($GLOBALS['we_file_to_delete_after_include'], $this->i_getDocument());
+					return $GLOBALS['we_file_to_delete_after_include'];
 				} else {
-					$GLOBALS["we_editmode"] = false;
+					$GLOBALS['we_editmode'] = false;
 					return 'we_templates/we_srcTmpl.inc.php';
 				}
 			case WE_EDITPAGE_VALIDATION:
-				return "we_templates/validateDocument.inc.php";
+				return 'we_templates/validateDocument.inc.php';
 			case WE_EDITPAGE_VERSIONS:
-				return "we_versions/we_editor_versions.inc.php";
+				return 'we_versions/we_editor_versions.inc.php';
 			default:
 				$this->EditPageNr = WE_EDITPAGE_PROPERTIES;
 				$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_PROPERTIES;
-				return "we_templates/we_editor_properties.inc.php";
+				return 'we_templates/we_editor_properties.inc.php';
 		}
 		return $this->TemplatePath;
 	}
@@ -141,7 +140,7 @@ class we_textDocument extends we_document{
 	}
 
 	function formParseFile(){
-		return we_forms::checkboxWithHidden((bool) $this->parseFile, 'we_' . $this->Name . '_parseFile', g_l('weClass', '[parseFile]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);');
+		return we_html_forms::checkboxWithHidden((bool) $this->parseFile, 'we_' . $this->Name . '_parseFile', g_l('weClass', '[parseFile]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);');
 	}
 
 }

@@ -9,27 +9,27 @@ $inp3 = new we_ui_controls_TextField(array('name' => 'test3', 'value' => 'defaul
 $inp4 = new we_ui_controls_TextField(array('name' => 'test4', 'value' => 'default4', 'width' => 100));
 
 $checkbox = new we_ui_controls_Checkbox(
-		array(
-			'value' => 1,
-			'checked' => true,
-			'name' => 'test',
-			'label' => 'Label 1',
-			'hidden' => false,
-			'disabled' => false,
-			'title' => 'Title of Label 1'
-		)
+	array(
+	'value' => 1,
+	'checked' => true,
+	'name' => 'test',
+	'label' => 'Label 1',
+	'hidden' => false,
+	'disabled' => false,
+	'title' => 'Title of Label 1'
+	)
 );
 
 $checkbox2 = new we_ui_controls_Checkbox(
-		array(
-			'value' => 1,
-			'checked' => false,
-			'name' => 'test2',
-			'label' => 'Label 2',
-			'hidden' => false,
-			'disabled' => true,
-			'title' => 'Title of Label 2'
-		)
+	array(
+	'value' => 1,
+	'checked' => false,
+	'name' => 'test2',
+	'label' => 'Label 2',
+	'hidden' => false,
+	'disabled' => true,
+	'title' => 'Title of Label 2'
+	)
 );
 
 

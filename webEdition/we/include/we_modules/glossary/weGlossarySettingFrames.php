@@ -23,13 +23,14 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class weGlossarySettingFrames{
+
 	private $Frameset;
 	var $Controller;
 	var $db;
 
 	function __construct(){
 		$this->Frameset = WE_MODULES_DIR . 'glossary/edit_glossary_settings_frameset.php';
-		$this->Controller = new weGlossarySettingControl();
+		$this->Controller = new we_glossary_settingControl();
 		$this->db = new DB_WE();
 	}
 
@@ -53,18 +54,18 @@ class weGlossarySettingFrames{
 				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
 					, we_html_element::htmlExIFrame('content', $this->getHTMLContent(), 'position:absolute;top:0px;bottom:1px;left:0px;right:0px;overflow: hidden;') .
 					we_html_element::htmlIFrame('cmdFrame', HTML_DIR . 'white.html', 'position:absolute;height:1px;bottom:0px;left:0px;right:0px;overflow: hidden;')
-				)) . '</html>';
+			)) . '</html>';
 	}
 
 	function getHTMLContent(){
-		$configFile = WE_GLOSSARY_MODULE_PATH . weGlossaryReplace::configFile;
+		$configFile = WE_GLOSSARY_MODULE_PATH . we_glossary_replace::configFile;
 		if(!file_exists($configFile) || !is_file($configFile)){
-			weGlossarySettingControl::saveSettings(true);
+			we_glossary_settingControl::saveSettings(true);
 		}
 		include($configFile);
 
 		// Automatic Replacement
-		$content = we_forms::checkboxWithHidden($GLOBALS['weGlossaryAutomaticReplacement'], 'GlossaryAutomaticReplacement', g_l('modules_glossary', '[enable_replacement]'));
+		$content = we_html_forms::checkboxWithHidden($GLOBALS['weGlossaryAutomaticReplacement'], 'GlossaryAutomaticReplacement', g_l('modules_glossary', '[enable_replacement]'));
 
 		$parts = array(
 			array(
@@ -77,8 +78,8 @@ class weGlossarySettingFrames{
 		return
 			'<form name="we_form" target="cmdFrame" action="' . $this->Frameset . '">
 	' . we_html_tools::hidden('cmd', 'save_glossary_setting') . '
-	' . we_multiIconBox::getHTML('GlossaryPreferences', "100%", $parts, 30, we_button::position_yes_no_cancel(
-					we_button::create_button('save', 'javascript:document.we_form.submit();'), null, we_button::create_button('close', 'javascript:top.window.close();')), -1, '', '', false, g_l('modules_glossary', '[menu_settings]')) . '
+	' . we_html_multiIconBox::getHTML('GlossaryPreferences', "100%", $parts, 30, we_html_button::position_yes_no_cancel(
+					we_html_button::create_button('save', 'javascript:document.we_form.submit();'), null, we_html_button::create_button('close', 'javascript:top.window.close();')), -1, '', '', false, g_l('modules_glossary', '[menu_settings]')) . '
 	</form>';
 	}
 

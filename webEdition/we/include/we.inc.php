@@ -59,12 +59,6 @@ require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_defines.inc
 //start autoloader!
 require_once ($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
 
-// Activate the webEdition error handler
-require_once (WE_INCLUDES_PATH . 'we_error_handler.inc.php');
-if(!defined('WE_ERROR_HANDLER_SET')){
-	we_error_handler();
-}
-
 require_once (WE_INCLUDES_PATH . 'we_global.inc.php');
 update_mem_limit(32);
 
@@ -80,8 +74,6 @@ include_once (WE_INCLUDES_PATH . 'conf/we_active_integrated_modules.inc.php');
 if(empty($GLOBALS['_we_active_integrated_modules']) || !in_array('users', $GLOBALS['_we_active_integrated_modules'])){
 	include_once (WE_INCLUDES_PATH . 'conf/we_active_integrated_modules.inc.php.default');
 }
-//make sure we always load users
-$GLOBALS['_we_active_integrated_modules'][] = 'users';
 //$GLOBALS['_we_active_integrated_modules'][] = 'navigation';//TODO: remove when navigation is completely implemented as a module
 
 foreach($GLOBALS['_we_active_integrated_modules'] as $active){
@@ -94,57 +86,39 @@ if(!isset($GLOBALS['DB_WE'])){
 	$GLOBALS['DB_WE'] = new DB_WE();
 }
 
-if(!defined('NO_SESS')){
+if(!defined('NO_SESS') && !isset($GLOBALS['FROM_WE_SHOW_DOC'])){
 	$GLOBALS['WE_BACKENDCHARSET'] = 'UTF-8'; //Bug 5771 schon in der Session wird ein vorläufiges Backendcharset benötigt
 	require_once (WE_INCLUDES_PATH . 'we_session.inc.php');
-	$_tooldefines = weToolLookup::getDefineInclude();
+	$_tooldefines = we_tool_lookup::getDefineInclude();
 	if(!empty($_tooldefines)){
 		foreach($_tooldefines as $_tooldefine){
 			@include_once ($_tooldefine);
 		}
 	}
-	//$_tooltagdirs = weToolLookup::getTagDirs();
 }
 
 if(defined('WE_WEBUSER_LANGUAGE')){
 	$GLOBALS['WE_LANGUAGE'] = WE_WEBUSER_LANGUAGE;
-} else{
+} else {
 	$sid = '';
 }
-//set new sessionID from dw-extension
-if((isset($_SESSION['user']['ID']) && isset($_REQUEST['weSessionId']) && $_REQUEST['weSessionId'] != '' && isset($_REQUEST['cns']) && $_REQUEST['cns'] == 'dw')){
-	$sid = htmlspecialchars(strip_tags($_REQUEST['weSessionId']));
-	session_id($sid);
-//	session_name(SESSION_NAME);
-	@session_start();
-}
-if(!session_id() && !isset($GLOBALS['FROM_WE_SHOW_DOC']) && !defined('NO_SESS')){
-//	session_name(SESSION_NAME);
-	@session_start();
-}
-if(isset($_SESSION['prefs']['Language']) && $_SESSION['prefs']['Language'] != ''){
-	if(is_dir(WE_INCLUDES_PATH . 'we_language/' . $_SESSION['prefs']['Language'])){
-		$GLOBALS['WE_LANGUAGE'] = $_SESSION['prefs']['Language'];
-	} else{ //  bugfix #4229
-		$GLOBALS['WE_LANGUAGE'] = WE_LANGUAGE;
-		$_SESSION['prefs']['Language'] = WE_LANGUAGE;
-	}
-} else{
+
+
+if(isset($_SESSION['prefs']['Language']) && !empty($_SESSION['prefs']['Language'])){
+	$GLOBALS['WE_LANGUAGE'] = (is_dir(WE_INCLUDES_PATH . 'we_language/' . $_SESSION['prefs']['Language']) ?
+			$_SESSION['prefs']['Language'] :
+			//  bugfix #4229
+			($_SESSION['prefs']['Language'] = WE_LANGUAGE));
+} else {
 	$GLOBALS['WE_LANGUAGE'] = WE_LANGUAGE;
 }
-$GLOBALS['WE_BACKENDCHARSET'] = (isset($_SESSION['prefs']['BackendCharset']) && $_SESSION['prefs']['BackendCharset'] != '' ?
-		$_SESSION['prefs']['BackendCharset'] : 'UTF-8');
-
-if(in_array('shop', $GLOBALS['_we_active_integrated_modules'])){
-	$MNEMONIC_EDITPAGES[WE_EDITPAGE_VARIANTS] = 'variants';
-}
-if(in_array('customer', $GLOBALS['_we_active_integrated_modules'])){
-	$MNEMONIC_EDITPAGES[WE_EDITPAGE_WEBUSER] = 'customer';
-}
-
 
 if(!isset($GLOBALS['WE_IS_DYN'])){ //only true on dynamic frontend pages
+	$GLOBALS['WE_BACKENDCHARSET'] = (isset($_SESSION['prefs']['BackendCharset']) && $_SESSION['prefs']['BackendCharset'] != '' ?
+			$_SESSION['prefs']['BackendCharset'] : 'UTF-8');
+
 	include_once (WE_INCLUDES_PATH . 'define_styles.inc.php');
+	//FIXME: remove
 	include_once (WE_INCLUDES_PATH . 'we_available_modules.inc.php');
 	//FIXME: needed by liveupdate, calls old protect directly remove in 6.4
 	require_once (WE_INCLUDES_PATH . 'we_perms.inc.php');
@@ -182,7 +156,7 @@ if(!isset($GLOBALS['WE_IS_DYN'])){ //only true on dynamic frontend pages
 			default:
 				$header = true;
 		}
-	} else{
+	} else {
 		$header = !((isset($GLOBALS['show_stylesheet']) && $GLOBALS['show_stylesheet']));
 	}
 

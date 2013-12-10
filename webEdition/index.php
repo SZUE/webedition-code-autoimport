@@ -30,7 +30,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf.in
 
 if(!file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf_language.inc.php')){
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_defines.inc.php');
-	require_once ($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
+	require_once (WE_LIB_PATH . 'we/core/autoload.php');
 	require_once(WE_INCLUDES_PATH . 'we_global.inc.php');
 	we_loadLanguageConfig();
 }
@@ -39,7 +39,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 //Check some critical PHP Setings #7243
 //FIXME: implement class sysinfo.class, for not analysing the same php settings twice (here and in sysinfo.php)
-if(isset($_SESSION['perms']['ADMINISTRATOR']) && $_SESSION['perms']['ADMINISTRATOR']){
+if(permissionhandler::hasPerm('ADMINISTRATOR')){
 	$suhosinMsg = (in_array('suhosin', get_loaded_extensions()) && !in_array(ini_get('suhosin.simulation'), array(1, 'on', 'yes', 'true', true))) ? 'suhosin=on\n' : '';
 
 	$maxInputMsg = !ini_get('max_input_vars') ? 'max_input_vars = 1000 (PHP default value)' :
@@ -161,9 +161,9 @@ if(is_dir(WEBEDITION_PATH . 'we/cache')){
 	we_util_File::deleteLocalFolder(WEBEDITION_PATH . 'we/cache', true);
 }
 
-cleanTempFiles(true);
+we_base_file::cleanTempFiles(true);
 cleanWEZendCache();
-weNavigationCache::clean();
+we_navigation_cache::clean();
 we_updater::fixInconsistentTables();
 
 //clean Error-Log-Table

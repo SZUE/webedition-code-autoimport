@@ -244,7 +244,7 @@ function we_tag_write($attribs){
 		}
 	}
 	if(isset($GLOBALS['WE_SESSION_START']) && $GLOBALS['WE_SESSION_START']){
-		unset($_SESSION['weS']['we_' . $type . '_session_' . $name]);//fix #8051
+		unset($_SESSION['weS']['we_' . $type . '_session_' . $name]); //fix #8051
 		$GLOBALS['we_' . $type . '_session_' . $name] = array();
 		//FIXME: There is no $GLOBALS['we_' . $type . '_session_' . $name]. Should it be $GLOBALS['weS']['we'...?
 	}

@@ -45,4 +45,3 @@ class rpcGetSnippetCodeCmd extends rpcCmd{
 	}
 
 }
-

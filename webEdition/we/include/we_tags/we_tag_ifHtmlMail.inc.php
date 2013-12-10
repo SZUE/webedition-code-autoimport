@@ -28,7 +28,7 @@ function we_tag_ifHtmlMail(){
 	}
 
 	if(isset($GLOBALS['WE_HTMLMAIL'])){
-		return (bool)($GLOBALS['WE_HTMLMAIL']);
+		return (bool) ($GLOBALS['WE_HTMLMAIL']);
 	}
 	return true;
 }

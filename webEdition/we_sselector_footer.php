@@ -31,36 +31,37 @@ print STYLESHEET;
 echo we_html_element::jsScript(JS_DIR . 'windows.js');
 ?>
 <script type="text/javascript"><!--
-	function addOption(txt,id){
-		var a=document.forms["we_form"].elements["filter"];
-		a.options[a.options.length]=new Option(txt,id);
-		a.selectedIndex=0;
+	function addOption(txt, id) {
+		var a = document.forms["we_form"].elements["filter"];
+		a.options[a.options.length] = new Option(txt, id);
+		a.selectedIndex = 0;
 
-  }
-  function editFile(){
-		if(!top.dirsel){
-      if((top.currentID!="")&&(document.forms["we_form"].elements["fname"].value!="")){
-				if(document.forms["we_form"].elements["fname"].value!=top.currentName) top.currentID=top.sitepath+top.rootDir+top.currentDir+"/"+document.forms["we_form"].elements["fname"].value;
-				url="we_sselector_editFile.php?id="+top.currentID;
-				new jsWindow(url,"we_fseditFile",-1,-1,600,500,true,false,true,true);
-      }
-      else {
+	}
+	function editFile() {
+		if (!top.dirsel) {
+			if ((top.currentID != "") && (document.forms["we_form"].elements["fname"].value != "")) {
+				if (document.forms["we_form"].elements["fname"].value != top.currentName)
+					top.currentID = top.sitepath + top.rootDir + top.currentDir + "/" + document.forms["we_form"].elements["fname"].value;
+				url = "we_sselector_editFile.php?id=" + top.currentID;
+				new jsWindow(url, "we_fseditFile", -1, -1, 600, 500, true, false, true, true);
+			}
+			else {
 <?php print we_message_reporting::getShowMessageCall(g_l('fileselector', "[edit_file_nok]"), we_message_reporting::WE_MESSAGE_ERROR); ?>
 			}
 		}
-		else{
+		else {
 <?php print we_message_reporting::getShowMessageCall(g_l('fileselector', "[edit_file_is_folder]"), we_message_reporting::WE_MESSAGE_ERROR); ?>
 		}
 	}
 
-	function doUnload(){
-		if(jsWindow_count) {
-			for(i=0;i<jsWindow_count;i++){
-				eval("jsWindow"+i+"Object.close()");
+	function doUnload() {
+		if (jsWindow_count) {
+			for (i = 0; i < jsWindow_count; i++) {
+				eval("jsWindow" + i + "Object.close()");
 			}
 		}
 	}
-	//-->
+//-->
 </script>
 </head>
 <body background="<?php print IMAGE_DIR ?>backgrounds/radient.gif" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px" onunload="doUnload();">
@@ -74,16 +75,16 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 			</tr>
 			<?php
 			if($_REQUEST["ret"] == 1){
-				$cancel_button = we_button::create_button("cancel", "javascript:top.close();");
-				$yes_button = we_button::create_button("ok", "javascript:top.exit_close();");
+				$cancel_button = we_html_button::create_button("cancel", "javascript:top.close();");
+				$yes_button = we_html_button::create_button("ok", "javascript:top.exit_close();");
 				$down_button = null;
-			} else{
-				$cancel_button = we_button::create_button("close", "javascript:top.exit_close();");
-				$yes_button = we_button::create_button("edit", "javascript:editFile();");
+			} else {
+				$cancel_button = we_html_button::create_button("close", "javascript:top.exit_close();");
+				$yes_button = we_html_button::create_button("edit", "javascript:editFile();");
 				//TODO: since .htaccess might be active, we have to call a php-script for download
 				$down_button = null; //we_button::create_button("download", "javascript:downloadFile();");
 			}
-			$buttons = we_button::position_yes_no_cancel($yes_button, $down_button, $cancel_button);
+			$buttons = we_html_button::position_yes_no_cancel($yes_button, $down_button, $cancel_button);
 			if($_REQUEST["filter"] == "all_Types"){
 				?>
 				<tr>
@@ -111,8 +112,8 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 				<td></td>
 				<td class="defaultfont">
 					<b><?php
-				print g_l('fileselector', "[name]");
-			?></b>
+						print g_l('fileselector', "[name]");
+						?></b>
 				</td>
 				<td></td>
 				<td class="defaultfont" align="left"><?php print we_html_tools::htmlTextInput("fname", 24, $_REQUEST["currentName"], "", "style=\"width:100%\" readonly=\"readonly\""); ?>

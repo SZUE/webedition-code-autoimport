@@ -34,7 +34,7 @@ $heading = 'ToDo Status-update ...';
 $deadline = mktime($_REQUEST['td_deadline_hour'], $_REQUEST['td_deadline_minute'], 0, $_REQUEST['td_deadline_month'], $_REQUEST['td_deadline_day'], $_REQUEST['td_deadline_year']);
 $arr = array('deadline' => $deadline);
 
-$messaging = new we_messaging($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
+$messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 $messaging->init($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 
@@ -69,7 +69,7 @@ print STYLESHEET . we_html_element::jsElement('
 							' . $res['msg'] . '</td>
 					</tr>
 				</table>';
-	echo we_html_tools::htmlDialogLayout($tbl, $heading, we_button::create_button("ok", "javascript:top.window.close()"), "100%", 30, "", "hidden");
+	echo we_html_tools::htmlDialogLayout($tbl, $heading, we_html_button::create_button("ok", "javascript:top.window.close()"), "100%", 30, "", "hidden");
 	?>
 </body>
 

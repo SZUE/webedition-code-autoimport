@@ -24,7 +24,7 @@
  */
 
 /**
- * class    we_listview_customer
+ * class    we_shop_listviewOrderitem
  * @desc    class for tag <we:listview type="banner">
  *
  */
@@ -125,8 +125,8 @@ class we_shop_listviewOrderitem extends listviewBase{
 								}
 						}
 						if(is_array($value)){
-							$val=$value;
-						}elseif(substr($value, 0, 2) == 'a:'){
+							$val = $value;
+						} elseif(substr($value, 0, 2) == 'a:'){
 							$val = @unserialize($value);
 						}
 						$this->DB_WE->Record[$key] = (isset($val) && is_array($val) ? $val : $value);

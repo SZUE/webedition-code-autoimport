@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition SDK
  *
@@ -19,7 +20,6 @@
  * @subpackage we_app_Installer
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-
 require_once (dirname(dirname(__FILE__)) . '/../../we/core/autoload.php');
 
 /**
@@ -35,13 +35,13 @@ Zend_Loader::loadClass('we_app_Installer');
  * @subpackage we_app_Installer
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_app_Installer_Local extends we_app_Installer
-{
+class we_app_Installer_Local extends we_app_Installer{
 
-	protected function _preInstall()
-	{
-		if(!$this->_prepareInstallationFiles($this->_source)) return false;
-		if(!$this->_validateInstallationFiles($this->_source)) return false;
+	protected function _preInstall(){
+		if(!$this->_prepareInstallationFiles($this->_source))
+			return false;
+		if(!$this->_validateInstallationFiles($this->_source))
+			return false;
 		return true;
 	}
 
@@ -50,19 +50,19 @@ class we_app_Installer_Local extends we_app_Installer
 	 * - remove installation files
 	 * - inserts application entry into application toc
 	 */
-	protected function _postInstall()
-	{
-		if(!we_app_Common::rebuildAppTOC($this->_appname)) return false;
+	protected function _postInstall(){
+		if(!we_app_Common::rebuildAppTOC($this->_appname))
+			return false;
 		//if(!we_app_Common::addAppToTOC($this->_appname)) return false;
-		if(!$this->_removeInstallationFiles()) return false;
+		if(!$this->_removeInstallationFiles())
+			return false;
 		return true;
 	}
 
 	/**
 	 * no update possible for local installations
 	 */
-	public function update()
-	{
+	public function update(){
 		return false;
 	}
 

@@ -44,27 +44,27 @@ function we_tag_search($attribs){
 		case 'textinput':
 			$atts = removeAttribs($attribs, array(
 				'type', 'onchange', 'name', 'cols', 'rows'
-				));
+			));
 			$atts = array_merge(
 				$atts, array(
 				'name' => 'we_lv_search_' . $name,
 				'type' => 'text',
 				'value' => $searchValue,
 				'xml' => $xml
-				));
+			));
 			return getHtmlTag('input', $atts) . getHtmlTag('input', $attsHidden);
 
 		case 'textarea':
 			$atts = removeAttribs(
 				$attribs, array(
 				'type', 'onchange', 'name', 'size', 'maxlength', 'value'
-				));
+			));
 			$atts = array_merge(
 				$atts, array(
 				'class' => 'defaultfont',
 				'name' => 'we_lv_search_' . $name,
 				'xml' => $xml
-				));
+			));
 
 			return getHtmlTag('textarea', $atts, $searchValue, true) . getHtmlTag('input', $attsHidden);
 	}

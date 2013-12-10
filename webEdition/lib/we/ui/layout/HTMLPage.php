@@ -34,6 +34,7 @@ Zend_Loader::loadClass('we_ui_abstract_AbstractElement');
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_ui_layout_HTMLPage extends we_ui_abstract_AbstractElement{
+
 	/**
 	 * title tag
 	 *
@@ -96,7 +97,6 @@ class we_ui_layout_HTMLPage extends we_ui_abstract_AbstractElement{
 	 * @var string
 	 */
 	protected $_bodyAttributes = array();
-
 	protected $_isTopFrame = false;
 
 	/**
@@ -123,7 +123,7 @@ class we_ui_layout_HTMLPage extends we_ui_abstract_AbstractElement{
 		$this->_appName = $controller->getParam('appName') ? $controller->getParam('appName') : '';
 		if($controller->getResponse()){
 			$controller->getResponse()->setHeader('Content-Type', 'text/html; charset=' . $charset, true);
-		} else{
+		} else {
 			we_html_tools::headerCtCharset('text/html', $charset);
 		}
 		parent::__construct();
@@ -212,7 +212,7 @@ class we_ui_layout_HTMLPage extends we_ui_abstract_AbstractElement{
 	 */
 	protected function _renderHTML(){
 
-		$this->addJSFile('/webEdition/js/attachKeyListener.js');
+		$this->addJSFile(JS_DIR . 'attachKeyListener.js');
 
 		$js = '';
 		// write in all frames except in top frame
@@ -258,8 +258,8 @@ var weCmdController = weCC();
 var weEventController = weEC();
 
 EOS;
-		} else{
-			
+		} else {
+
 			$this->addJSFile(LIB_DIR . 'we/core/CmdController.js');
 			$this->addJSFile(LIB_DIR . 'we/core/EventController.js');
 
@@ -283,8 +283,7 @@ var weCmdController = we_core_CmdController.getInstance();
 var weEventController = new we_core_EventController();
 EOS;
 		}
-		$html =
-			// add doctype tag if not empty
+		$html = // add doctype tag if not empty
 			($this->getDoctype() !== '' ? $this->getDoctype() . "\n" : '') .
 			// add <html> tag
 			'<html' . ($this->getLang() !== '' ? ' lang="' . $this->getLang() . '"' : '') . '>' .
@@ -320,7 +319,7 @@ EOS;
 			'</head>';
 		if($this->_framesetHTML !== ''){
 			$out = $html . $this->_framesetHTML . '</html>';
-		} else{
+		} else {
 			$out = $html . we_xml_Tags::createStartTag('body', $this->_bodyAttributes) . $this->getBodyHTML() . '</body></html>';
 		}
 		return $out;

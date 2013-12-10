@@ -28,7 +28,7 @@
  *
  * Provides functions for creating html tags used in forms.
  */
-class we_html_table extends we_baseCollection{
+class we_html_table extends we_html_baseCollection{
 
 	/**
 	 * Constructor of class we_html_table
@@ -64,9 +64,9 @@ class we_html_table extends we_baseCollection{
 			}
 		}
 		for($i = 0; $i < $rows_num; $i++){
-			$this->childs[] = new we_baseCollection("tr");
+			$this->childs[] = new we_html_baseCollection("tr");
 			for($j = 0; $j < $cols_num; $j++)
-				$this->childs[count($this->childs) - 1]->childs[] = new we_baseElement("td");
+				$this->childs[count($this->childs) - 1]->childs[] = new we_html_baseElement("td");
 		}
 	}
 
@@ -82,7 +82,7 @@ class we_html_table extends we_baseCollection{
 	function addCol($cols_num = 1){
 		for($i = 0; $i < $cols_num; $i++){
 			foreach($this->childs as $k => $v){
-				$this->childs[$k]->childs[] = new we_baseElement("td");
+				$this->childs[$k]->childs[] = new we_html_baseElement("td");
 			}
 		}
 	}
@@ -102,7 +102,7 @@ class we_html_table extends we_baseCollection{
 
 		if($cols_num){
 			if($cols_num > count($row->childs)){
-				$row->addChild(new we_baseElement("td"));
+				$row->addChild(new we_html_baseElement("td"));
 			} else if($cols_num < count($row->childs)){
 				$row->childs = array_splice($row->childs, ($cols_num - 1));
 			}

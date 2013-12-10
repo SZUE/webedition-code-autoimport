@@ -11,15 +11,15 @@ $inp->setWidth(100);
 $inp2 = new we_ui_controls_TextField(array('name' => 'test2', 'value' => 'default', 'width' => 100));
 
 $but = new we_ui_controls_Button(
-		array(
-			'title' => 'This is the title of the button!',
-			'text' => 'onClick / onMouseUp',
-			'onClick' => 'alert("Hello!");',
-			'type' => 'onClick',
-			'disabled' => false,
-			'hidden' => false,
-			'width' => 200
-		)
+	array(
+	'title' => 'This is the title of the button!',
+	'text' => 'onClick / onMouseUp',
+	'onClick' => 'alert("Hello!");',
+	'type' => 'onClick',
+	'disabled' => false,
+	'hidden' => false,
+	'width' => 200
+	)
 );
 
 $htmlPage = we_ui_layout_HTMLPage::getInstance();

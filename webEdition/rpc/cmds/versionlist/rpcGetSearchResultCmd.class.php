@@ -22,7 +22,7 @@
  * @package    webEdition_rpc
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcGetSearchResultCmd extends rpcCmd {
+class rpcGetSearchResultCmd extends rpcCmd{
 
 	function execute(){
 
@@ -48,4 +48,3 @@ class rpcGetSearchResultCmd extends rpcCmd {
 	}
 
 }
-

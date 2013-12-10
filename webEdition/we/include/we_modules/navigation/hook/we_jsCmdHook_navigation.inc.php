@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,8 +22,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include(WE_INCLUDES_PATH.'we_modules/navigation/conf/meta.conf.php');
-include(WE_INCLUDES_PATH.'we_modules/navigation/we_webEditionCmd_navigation.inc');
+include(WE_INCLUDES_PATH . 'we_modules/navigation/conf/meta.conf.php');
+include(WE_INCLUDES_PATH . 'we_modules/navigation/we_webEditionCmd_navigation.inc');
 
 /*
 case "edit_navigation":

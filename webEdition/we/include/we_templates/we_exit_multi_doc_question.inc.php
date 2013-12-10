@@ -147,7 +147,7 @@ print STYLESHEET;
 </head>
 
 <body class="weEditorBody" onload="setHotDocuments();" onBlur="self.focus();">
-<?php print we_html_tools::htmlYesNoCancelDialog($content, IMAGE_DIR . "alert.gif", true, false, true, $yesCmd, "", $cancelCmd); ?>
+	<?php print we_html_tools::htmlYesNoCancelDialog($content, IMAGE_DIR . "alert.gif", true, false, true, $yesCmd, "", $cancelCmd); ?>
 </body>
 
 </html>

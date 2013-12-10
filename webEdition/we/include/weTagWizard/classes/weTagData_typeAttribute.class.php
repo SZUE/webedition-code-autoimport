@@ -39,7 +39,7 @@ class weTagData_typeAttribute extends weTagDataAttribute{
 	 * @param array $options
 	 * @param boolean $required
 	 */
-	function __construct($name, $options = array(), $required = true, $module = '', $description='', $deprecated=false){
+	function __construct($name, $options = array(), $required = true, $module = '', $description = '', $deprecated = false){
 
 		parent::__construct($name, $required, $module, $description, $deprecated);
 		$this->Options = parent::getUseOptions($options);
@@ -69,7 +69,7 @@ class weTagData_typeAttribute extends weTagDataAttribute{
 
 			if($option->getName() == '-'){
 				$values[] = '';
-			} else{
+			} else {
 				$values[] = $option->getName();
 			}
 		}
@@ -77,12 +77,12 @@ class weTagData_typeAttribute extends weTagDataAttribute{
 		$js = "we_cmd('switch_type', this.value);";
 
 		$select = new we_html_select(
-				array(
-					'name' => $this->Name,
-					'id' => $this->getIdName(),
-					'onchange' => $js,
-					'class' => 'defaultfont selectinput'
-			));
+			array(
+			'name' => $this->Name,
+			'id' => $this->getIdName(),
+			'onchange' => $js,
+			'class' => 'defaultfont selectinput'
+		));
 		$select->addOptions(count($values), $keys, $values);
 
 		return '

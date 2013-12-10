@@ -23,7 +23,7 @@
  */
 header("Content-Type: text/javascript");
 require_once( $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_defines.inc.php');
-require_once ($_SERVER['DOCUMENT_ROOT'] . LIB_DIR.'we/core/autoload.php');
+require_once (WE_LIB_PATH.'we/core/autoload.php');
 
 
 $useSeeModeJS = array(

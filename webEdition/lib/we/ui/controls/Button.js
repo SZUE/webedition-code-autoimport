@@ -9,7 +9,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -22,7 +22,7 @@
 
 /**
  * Class for handling we_ui_controls_Button Element
- * 
+ *
  * @category   we
  * @package    we_ui
  * @subpackage we_ui_controls
@@ -37,59 +37,63 @@ we_ui_controls_Button = new Object();
  *@param {object|string} idOrObject id or reference of button element
  *@return void
  */
-we_ui_controls_Button.setDisabled = function(idOrObject, disabled) 
+we_ui_controls_Button.setDisabled = function(idOrObject, disabled)
 {
 	var element = idOrObject;
-	if (typeof(element) != "object") {
+	if (typeof (element) != "object") {
 		element = document.getElementById(idOrObject);
 	}
-	if(disabled) {
+	if (disabled) {
 		element.className = "we_ui_controls_Disabled_Button";
-		if(element.childNodes[0].className=="we_ui_controls_Clicked_Button_Left" || element.childNodes[0].className=="we_ui_controls_Button_Left") {
+		if (element.childNodes[0].className == "we_ui_controls_Clicked_Button_Left" || element.childNodes[0].className == "we_ui_controls_Button_Left") {
 			element.childNodes[0].className = "we_ui_controls_Disabled_Button_Left";
 			element.childNodes[1].className = "we_ui_controls_Disabled_Button_Middle";
 			element.childNodes[2].className = "we_ui_controls_Disabled_Button_Right";
 			var img = document.getElementById(element.id + "_img");
-			if(img != null && img.src.indexOf("Disabled.gif") == -1){
+			if (img != null && img.src.indexOf("Disabled.gif") == -1) {
 				img.src = img.src.replace(/\.gif/, "Disabled.gif");
 			}
 		}
-			
-		if(document.getElementById("input_"+element.id)) {
-			var input = document.getElementById("input_"+element.id);
+
+		if (document.getElementById("input_" + element.id)) {
+			var input = document.getElementById("input_" + element.id);
 			input.disabled = true;
 		}
-		if(document.getElementById("a_"+element.id)) {
-			var a = document.getElementById("a_"+element.id);
-			a.onclick = function(){return false;};
+		if (document.getElementById("a_" + element.id)) {
+			var a = document.getElementById("a_" + element.id);
+			a.onclick = function() {
+				return false;
+			};
 		}
-		if(document.getElementById("table_"+element.id)) {
-			var table = document.getElementById("table_"+element.id);
+		if (document.getElementById("table_" + element.id)) {
+			var table = document.getElementById("table_" + element.id);
 			table.className = "we_ui_controls_Disabled_Button_InnerTable";
 		}
-		
+
 	}
 	else {
 		element.className = "we_ui_controls_Button";
-		if(element.childNodes[0].className=="we_ui_controls_Clicked_Button_Left" || element.childNodes[0].className=="we_ui_controls_Disabled_Button_Left") {
+		if (element.childNodes[0].className == "we_ui_controls_Clicked_Button_Left" || element.childNodes[0].className == "we_ui_controls_Disabled_Button_Left") {
 			element.childNodes[0].className = "we_ui_controls_Button_Left";
 			element.childNodes[1].className = "we_ui_controls_Button_Middle";
 			element.childNodes[2].className = "we_ui_controls_Button_Right";
 			var img = document.getElementById(element.id + "_img");
-			if(img != null && img.src.indexOf("Disabled.gif") == -1){
+			if (img != null && img.src.indexOf("Disabled.gif") == -1) {
 				img.src = img.src.replace(/\Disabled.gif/, ".gif");
 			}
 		}
-		if(document.getElementById("input_"+element.id)) {
-			var input = document.getElementById("input_"+element.id);
+		if (document.getElementById("input_" + element.id)) {
+			var input = document.getElementById("input_" + element.id);
 			input.disabled = false;
 		}
-		if(document.getElementById("a_"+element.id)) {
-			var a = document.getElementById("a_"+element.id);
-			a.onclick = function(){return true;};
+		if (document.getElementById("a_" + element.id)) {
+			var a = document.getElementById("a_" + element.id);
+			a.onclick = function() {
+				return true;
+			};
 		}
-		if(document.getElementById("table_"+element.id)) {
-			var table = document.getElementById("table_"+element.id);
+		if (document.getElementById("table_" + element.id)) {
+			var table = document.getElementById("table_" + element.id);
 			table.className = "we_ui_controls_Button_InnerTable";
 		}
 	}
@@ -105,11 +109,11 @@ we_ui_controls_Button.setDisabled = function(idOrObject, disabled)
 we_ui_controls_Button.down = function(idOrObject)
 {
 	var element = idOrObject;
-	if (typeof(element) != "object") {
+	if (typeof (element) != "object") {
 		element = document.getElementById(idOrObject);
 	}
-	if(element.childNodes[0].className=="we_ui_controls_Clicked_Button_Left" || element.childNodes[0].className=="we_ui_controls_Button_Left") {
-		if (element.className != "we_ui_controls_Disabled_Button"){
+	if (element.childNodes[0].className == "we_ui_controls_Clicked_Button_Left" || element.childNodes[0].className == "we_ui_controls_Button_Left") {
+		if (element.className != "we_ui_controls_Disabled_Button") {
 			element.className = "we_ui_controls_Clicked_Button";
 			element.childNodes[0].className = "we_ui_controls_Clicked_Button_Left";
 			element.childNodes[1].className = "we_ui_controls_Clicked_Button_Middle";
@@ -128,10 +132,10 @@ we_ui_controls_Button.down = function(idOrObject)
 we_ui_controls_Button.out = function(idOrObject)
 {
 	var element = idOrObject;
-	if (typeof(element) != "object") {
+	if (typeof (element) != "object") {
 		element = document.getElementById(idOrObject);
 	}
-	if(element.childNodes[0].className=="we_ui_controls_Clicked_Button_Left" || element.childNodes[0].className=="we_ui_controls_Button_Left") {
+	if (element.childNodes[0].className == "we_ui_controls_Clicked_Button_Left" || element.childNodes[0].className == "we_ui_controls_Button_Left") {
 		if (element.className != "we_ui_controls_Disabled_Button" && element.className != "we_ui_controls_Button") {
 			element.className = "we_ui_controls_Button";
 			element.childNodes[0].className = "we_ui_controls_Button_Left";
@@ -151,7 +155,7 @@ we_ui_controls_Button.out = function(idOrObject)
 we_ui_controls_Button.up = function(idOrObject)
 {
 	var element = idOrObject;
-	if (typeof(element) != "object") {
+	if (typeof (element) != "object") {
 		element = document.getElementById(idOrObject);
 	}
 	if (element.className != "we_ui_controls_Disabled_Button") {
@@ -171,10 +175,10 @@ we_ui_controls_Button.up = function(idOrObject)
 we_ui_controls_Button.hide = function(idOrObject)
 {
 	var element = idOrObject;
-	if (typeof(element) != "object") {
+	if (typeof (element) != "object") {
 		element = document.getElementById(idOrObject);
 	}
-	if(element != null){
+	if (element != null) {
 		element.style.display = "none";
 	}
 }
@@ -189,10 +193,10 @@ we_ui_controls_Button.hide = function(idOrObject)
 we_ui_controls_Button.show = function(idOrObject)
 {
 	var element = idOrObject;
-	if (typeof(element) != "object") {
+	if (typeof (element) != "object") {
 		element = document.getElementById(idOrObject);
 	}
-	if(element != null){
+	if (element != null) {
 		element.style.display = "";
 	}
 }
@@ -204,13 +208,13 @@ we_ui_controls_Button.show = function(idOrObject)
  *@param {object|string} idOrObject id or reference of button element
  *@return boolean
  */
-we_ui_controls_Button.isDisabled = function(idOrObject) 
+we_ui_controls_Button.isDisabled = function(idOrObject)
 {
 	var element = idOrObject;
-	if (typeof(element) != "object") {
+	if (typeof (element) != "object") {
 		element = document.getElementById(idOrObject);
 	}
-	if(element != null && element.className == "we_ui_controls_Disabled_Button") {
+	if (element != null && element.className == "we_ui_controls_Disabled_Button") {
 		return true
 	} else {
 		return false;
@@ -224,7 +228,7 @@ we_ui_controls_Button.isDisabled = function(idOrObject)
  *@param {object|string} idOrObject id or reference of button element
  *@return boolean
  */
-we_ui_controls_Button.isEnabled = function(idOrObject) 
+we_ui_controls_Button.isEnabled = function(idOrObject)
 {
 	return !this.isDisabled(idOrObject);
 }
@@ -238,28 +242,28 @@ we_ui_controls_Button.isEnabled = function(idOrObject)
  *@param string positionID id of element within the button should be added
  *@return void
  */
-we_ui_controls_Button.addButton = function(buttonId, buttonHTML, positionID) 
+we_ui_controls_Button.addButton = function(buttonId, buttonHTML, positionID)
 {
 	var container = positionID;
-	if (typeof(container) != "object") {
+	if (typeof (container) != "object") {
 		container = document.getElementById(positionID);
 	}
-	if(container) {
+	if (container) {
 		var desc = "added__ButtonDiv__";
 		var count = 0;
-		if(container.hasChildNodes) {
+		if (container.hasChildNodes) {
 			var kids = container.childNodes;
-			for (i=0; i < kids.length; i++) {
-				if(kids[i].id && kids[i].id.substring(0,18) == desc) {
+			for (i = 0; i < kids.length; i++) {
+				if (kids[i].id && kids[i].id.substring(0, 18) == desc) {
 					count++;
 				}
 			}
 		}
-		var id = buttonId.replace(/__INDEX__/g, '');	
+		var id = buttonId.replace(/__INDEX__/g, '');
 		var mainDiv = document.createElement("DIV");
-		mainDiv.id = desc+id;
+		mainDiv.id = desc + id;
 		mainDiv.innerHTML = buttonHTML;
 		container.appendChild(mainDiv);
 	}
-	
+
 }

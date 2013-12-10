@@ -34,10 +34,10 @@ Zend_Loader::loadClass('we_ui_controls_Select');
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_ui_controls_SelectObjectclass extends we_ui_controls_Select{
+
 	/**
 	 * Default class name for Select
 	 */
-
 	const kSelectClass = 'we_ui_controls_Select';
 
 	/**
@@ -55,14 +55,13 @@ class we_ui_controls_SelectObjectclass extends we_ui_controls_Select{
 	 */
 	public function __construct($properties = null){
 		parent::__construct($properties);
-		include ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/conf/we_active_integrated_modules.inc.php");
-		if(in_array('object', $GLOBALS['_we_active_integrated_modules'])){
+		if(weModuleInfo::isActive('object')){
 			if(file_exists(WE_MODULES_PATH . "object/we_conf_object.inc.php")){
 				require_once (WE_MODULES_PATH . "object/we_conf_object.inc.php");
 				$db = new DB_WE();
 				$db->query("SELECT ID,Text FROM " . OBJECT_TABLE);
 				$this->addOption(0, '-');
-				while($db->next_record()) {
+				while($db->next_record()){
 					$this->addOption($db->f("ID"), $db->f("Text"));
 				}
 			}

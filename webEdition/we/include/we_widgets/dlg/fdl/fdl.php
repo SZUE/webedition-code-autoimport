@@ -3,9 +3,9 @@
 /**
  * webEdition CMS
  *
- * $Rev: 6749 $
- * $Author: mokraemer $
- * $Date: 2013-10-08 11:11:15 +0200 (Di, 08 Okt 2013) $
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -38,7 +38,7 @@ function init(){
 
 print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 		we_html_element::htmlHead(
-			we_html_tools::getHtmlInnerHead(g_l('cockpit', '[kv_failedLogins][headline]').  ' (' . $maxRows . ')') . STYLESHEET . we_html_element::jsElement(
+			we_html_tools::getHtmlInnerHead(g_l('cockpit', '[kv_failedLogins][headline]') . ' (' . $maxRows . ')') . STYLESHEET . we_html_element::jsElement(
 				$sJsCode)) . we_html_element::htmlBody(
 			array(
 			"marginwidth" => 15,

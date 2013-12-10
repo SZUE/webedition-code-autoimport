@@ -22,7 +22,7 @@
  * @package    webEdition_listview
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class metadatatag {
+class metadatatag{
 
 	private $DB_WE;
 	var $ClassName = __CLASS__;

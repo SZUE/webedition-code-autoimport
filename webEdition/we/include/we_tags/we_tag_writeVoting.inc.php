@@ -42,7 +42,7 @@ function we_tag_writeVoting($attribs){
 			if(!isset($_voting[$id]) || !is_array($_voting[$id])){
 				$_voting[$id] = array();
 			}
-			if (isset($_REQUEST[$value]) && $_REQUEST[$value]!='') {// Bug #6118: !empty geht hier nicht, da es die 0 nicht durch lässt
+			if(isset($_REQUEST[$value]) && $_REQUEST[$value] != ''){// Bug #6118: !empty geht hier nicht, da es die 0 nicht durch lässt
 				$_voting[$id][] = filterXss($_REQUEST[$value]);
 			}
 		}
@@ -63,41 +63,41 @@ function we_tag_writeVoting($attribs){
 
 	foreach($_voting as $id => $value){
 		if($writeto == 'voting'){
-			$voting = new weVoting($id);
+			$voting = new we_voting_voting($id);
 			if($voting->IsRequired && implode('', $value) == ''){
 
-				$GLOBALS['_we_voting_status'] = weVoting::ERROR;
+				$GLOBALS['_we_voting_status'] = we_voting_voting::ERROR;
 				if(isset($_SESSION['_we_voting_sessionID'])){
 					$votingsession = $_SESSION['_we_voting_sessionID'];
-				} else{
+				} else {
 					$votingsession = 0;
 				}
 				if($voting->Log)
-					$voting->logVoting(weVoting::ERROR, $votingsession, '', '', '');
+					$voting->logVoting(we_voting_voting::ERROR, $votingsession, '', '', '');
 				break;
 			}
 
 			$GLOBALS['_we_voting_status'] = $voting->vote($value, $addFields);
-			if($GLOBALS['_we_voting_status'] != weVoting::SUCCESS){
+			if($GLOBALS['_we_voting_status'] != we_voting_voting::SUCCESS){
 				break;
 			}
-		} else{
-			$voting = new weVoting($id);
+		} else {
+			$voting = new we_voting_voting($id);
 			if($voting->IsRequired && implode('', $value) == ''){
 
-				$GLOBALS['_we_voting_status'] = weVoting::ERROR;
+				$GLOBALS['_we_voting_status'] = we_voting_voting::ERROR;
 				if(isset($_SESSION['_we_voting_sessionID'])){
 					$votingsession = $_SESSION['_we_voting_sessionID'];
-				} else{
+				} else {
 					$votingsession = 0;
 				}
 				if($voting->Log)
-					$voting->logVoting(weVoting::ERROR, $votingsession, '', '', '');
+					$voting->logVoting(we_voting_voting::ERROR, $votingsession, '', '', '');
 				break;
 			}
 
 			$GLOBALS['_we_voting_status'] = $voting->setSuccessor($value);
-			if($GLOBALS['_we_voting_status'] != weVoting::SUCCESS){
+			if($GLOBALS['_we_voting_status'] != we_voting_voting::SUCCESS){
 				break;
 			}
 			$_SESSION['_we_voting_sessionData'][$id] = array('value' => $value, 'addFields' => $addFields);

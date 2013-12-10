@@ -61,7 +61,7 @@ $_applet_code = we_html_element::htmlApplet(array(
 if(isset($_REQUEST['we_dialog_args']['editname'])){
 	$_mode = $_REQUEST['we_dialog_args']['editname'] == 'tinyMce' ? 'tinyMce' : 'wysiwyg';
 	$_editname = $_REQUEST['we_dialog_args']['editname'];
-} else{
+} else {
 	if(isset($_REQUEST['editname'])){
 		$_editname = $_REQUEST['editname'];
 	}
@@ -144,7 +144,7 @@ if(isset($_REQUEST['we_dialog_args']['editname'])){
 			filter: alpha(opacity=80);
 		<?php } else if(we_base_browserDetect::isSafari()){ ?>
 			KhtmlOpacity: .8;
-		<?php } else{ ?>
+		<?php } else { ?>
 			opacity: .8;
 		<?php } ?>
 	}
@@ -185,7 +185,7 @@ if(isset($_REQUEST['we_dialog_args']['editname'])){
 <?php } else if($_mode == 'wysiwyg'){ ?>
 			editorObj = top.opener.weWysiwygObject_<?php print $_editname ?>;
 			var text = getTextFromWysiwyg();
-<?php } else{ ?>
+<?php } else { ?>
 			var elements = top.opener.document.getElementsByName("<?php print $_editname ?>");
 			if (elements[0]) {
 				editorObj = elements[0];
@@ -203,7 +203,7 @@ if(isset($_REQUEST['we_dialog_args']['editname'])){
 		var text = "";
 <?php if($_mode == 'wysiwyg'){ ?>
 			editorObj = top.opener.weWysiwygObject_<?php print $_editname ?>;
-<?php } else{ ?>
+<?php } else { ?>
 			var elements = top.opener.document.getElementsByName("<?php print $_editname ?>");
 			if (elements[0]) {
 				editorObj = elements[0];
@@ -257,7 +257,7 @@ if(isset($_REQUEST['we_dialog_args']['editname'])){
 			} else {
 				editorObj.setText(orginal);
 			}
-<?php } else{ ?>
+<?php } else { ?>
 			editorObj.value = orginal;
 <?php } ?>
 	}
@@ -449,7 +449,7 @@ if(isset($_REQUEST['we_dialog_args']['editname'])){
 	}
 
 <?php
-echo we_button::create_state_changer(false);
+echo we_html_button::create_state_changer(false);
 ?>
 
 </script>
@@ -469,25 +469,25 @@ echo we_button::create_state_changer(false);
 
 
 	$_buttonsleft = array(
-		we_button::create_button("ignore", "javascript:findNext();", true, 100, 22, '', '', true, false),
-		we_button::create_button("change", "javascript:changeWord();", true, 100, 22, '', '', true, false),
-		we_button::create_button("add", "javascript:add();", true, 100, 22, '', '', true, false),
-		we_button::create_button("check", "javascript:weButton.disable(\"check\");setTimeout(\"spellcheck();\",100);", true, 100, 22, '', '', true, false)
+		we_html_button::create_button("ignore", "javascript:findNext();", true, 100, 22, '', '', true, false),
+		we_html_button::create_button("change", "javascript:changeWord();", true, 100, 22, '', '', true, false),
+		we_html_button::create_button("add", "javascript:add();", true, 100, 22, '', '', true, false),
+		we_html_button::create_button("check", "javascript:weButton.disable(\"check\");setTimeout(\"spellcheck();\",100);", true, 100, 22, '', '', true, false)
 	);
 
 	$_applet = '<div id="appletPanel" style="position: absolute; left:0px; top:900px; display: block; border: 0px; width: 0px; height: 0px;"></div>';
 
 	$_buttons = array(
-		we_button::create_button("apply", "javascript:apply();self.close();"),
-		we_button::create_button("cancel", "javascript:self.close();")
+		we_html_button::create_button("apply", "javascript:apply();self.close();"),
+		we_html_button::create_button("cancel", "javascript:self.close();")
 	);
-	$_buttons_bottom = we_button::position_yes_no_cancel($_buttons[0], null, $_buttons[1]);
+	$_buttons_bottom = we_html_button::position_yes_no_cancel($_buttons[0], null, $_buttons[1]);
 
 	$_selectCode = '<select name="dictSelect" id="dictSelect" size="1" onchange="selectDict(this.value)">';
 
 	$_dir = dir(WE_SPELLCHECKER_MODULE_PATH . 'dict');
 	$_i = 0;
-	while(false !== ($entry = $_dir->read())) {
+	while(false !== ($entry = $_dir->read())){
 		if($entry != '.' && $entry != '..' && strpos($entry, '.zip') !== false){
 			$_name = str_replace('.zip', '', $entry);
 			if(in_array($_name, $spellcheckerConf['active'])){
@@ -531,7 +531,7 @@ echo we_button::create_state_changer(false);
 
 	<input name="' . ($_mode == 'wysiwyg' ? 'we_dialog_args[editname]' : 'editname') . '" value="' . $_editname . '" type="hidden" />
 	<div id="mainPanel">' .
-	we_multiIconBox::getHTML('', "100%", $_parts, 30, $_buttons_bottom, -1, '', '', false, g_l('modules_spellchecker', '[spellchecker]')) . '
+	we_html_multiIconBox::getHTML('', "100%", $_parts, 30, $_buttons_bottom, -1, '', '', false, g_l('modules_spellchecker', '[spellchecker]')) . '
 	</div>
 	</form>' .
 	$_applet .

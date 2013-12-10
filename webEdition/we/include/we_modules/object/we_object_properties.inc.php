@@ -55,7 +55,7 @@ if($we_doc->EditPageNr != WE_EDITPAGE_WORKSPACE){
 			'icon' => 'copy.gif'
 		)
 	);
-} else{
+} else {
 	$parts = array(
 		array(
 			'headline' => g_l('weClass', '[workspaces]'),
@@ -71,5 +71,5 @@ if($we_doc->EditPageNr != WE_EDITPAGE_WORKSPACE){
 		)
 	);
 }
-print we_multiIconBox::getJS() .
-	we_multiIconBox::getHTML('', '100%', $parts, 30, '', -1, '', '', false);
+print we_html_multiIconBox::getJS() .
+	we_html_multiIconBox::getHTML('', '100%', $parts, 30, '', -1, '', '', false);

@@ -39,7 +39,7 @@ abstract class we_SEEM{
 		if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
 			$vtabSrcDocs = "top.Vtabs.we_cmd('loadVTab','" . FILE_TABLE . "',0);top.we_cmd('exit_delete');";
 			if(defined("OBJECT_FILES_TABLE")){
-				$vtabSrcObjs = (we_hasPerm("CAN_SEE_OBJECTFILES") ?
+				$vtabSrcObjs = (permissionhandler::hasPerm("CAN_SEE_OBJECTFILES") ?
 						"top.Vtabs.we_cmd('loadVTab','" . OBJECT_FILES_TABLE . "',0);top.we_cmd('exit_delete');" :
 						"top.we_cmd('exit_delete');");
 			}
@@ -348,17 +348,17 @@ abstract class we_SEEM{
 					//  Edit an included document from webedition.
 					case "edit_image":
 						$handler = "if(top.edit_include){top.edit_include.close();}top.edit_include=window.open('" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=edit_include_document&we_cmd[1]=" . FILE_TABLE . "&we_cmd[2]=" . $SEEM_LinkArray[1][$i] . "&we_cmd[3]=image/*&we_cmd[4]=" . FILE_TABLE . "&we_cmd[5]=" . $SEEM_LinkArray[1][$i] . "&we_cmd[6]=" . $_REQUEST["we_transaction"] . "&we_cmd[7]='" . ",'_blank','width=800,height=600,status=yes');return true;";
-						$code = str_replace($SEEM_LinkArray[0][$i] . "</a>", we_button::create_button("image:btn_edit_image", "javascript:$handler", true), $code);
+						$code = str_replace($SEEM_LinkArray[0][$i] . "</a>", we_html_button::create_button("image:btn_edit_image", "javascript:$handler", true), $code);
 						break;
 					case "include" :
 						//  a new window is opened which stays as long, as the browser is closed, or the window is closed manually
 						$handler = "if(top.edit_include){top.edit_include.close();}top.edit_include=window.open('" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=edit_include_document&we_cmd[1]=" . FILE_TABLE . "&we_cmd[2]=" . $SEEM_LinkArray[1][$i] . "&we_cmd[3]=text/webedition&we_cmd[4]=" . FILE_TABLE . "&we_cmd[5]=" . $SEEM_LinkArray[1][$i] . "&we_cmd[6]=" . $_REQUEST["we_transaction"] . "&we_cmd[7]='" . ",'_blank','width=800,height=600,status=yes');return true;";
-						$code = str_replace($SEEM_LinkArray[0][$i] . "</a>", we_button::create_button("image:btn_edit_include", "javascript:$handler", true), $code);
+						$code = str_replace($SEEM_LinkArray[0][$i] . "</a>", we_html_button::create_button("image:btn_edit_include", "javascript:$handler", true), $code);
 						break;
 
 					case "object" :
 						$handler = "top.doClickDirect('" . $SEEM_LinkArray[1][$i] . "','objectFile','" . OBJECT_FILES_TABLE . "');";
-						$code = str_replace($SEEM_LinkArray[0][$i] . '</a>', we_button::create_button("image:btn_edit_object", "javascript:$handler", true) . "</a>", $code);
+						$code = str_replace($SEEM_LinkArray[0][$i] . '</a>', we_html_button::create_button("image:btn_edit_object", "javascript:$handler", true) . "</a>", $code);
 						break;
 
 					default :
@@ -394,7 +394,7 @@ abstract class we_SEEM{
 			}
 		}
 
-		return (empty($newArray) ? false : $newArray);
+		return ($newArray ? $newArray : false);
 	}
 
 	/**
@@ -645,15 +645,17 @@ abstract class we_SEEM{
 			if(preg_match('/ seem="(.*)"/', $oldArray[0][$i])){
 				//  This link is a SEEM Link, this is handled seperately - so it will be removed
 			} else {
-				$newArray[0][$j] = $oldArray[0][$i];
-				$newArray[1][$j] = $oldArray[1][$i];
-				$newArray[2][$j] = $oldArray[2][$i];
-				$newArray[3][$j] = $oldArray[3][$i];
-				$newArray[4][$j] = $oldArray[4][$i];
+				$newArray = array(
+					array($j => $oldArray[0][$i]),
+					array($j => $oldArray[1][$i]),
+					array($j => $oldArray[2][$i]),
+					array($j => $oldArray[3][$i]),
+					array($j => $oldArray[4][$i]),
+				);
 				$j++;
 			}
 		}
-		return (empty($newArray) ? false : $newArray);
+		return ($newArray ? $newArray : false);
 	}
 
 	/**
@@ -669,7 +671,7 @@ abstract class we_SEEM{
 		$newArray = array();
 
 		for($i = 0; $i < count($oldArray[2]); $i++){
-			if(substr($oldArray[2][$i], 0, 1) == '#' || strpos($oldArray[2][$i], "javascript") === 0 && strpos($oldArray[2][$i], "javascript:history") === FALSE || strpos($oldArray[2][$i], we_base_link::TYPE_MAIL_PREFIX) === 0 || strpos($oldArray[2][$i], we_base_link::TYPE_INT_PREFIX) === 0 || strpos($oldArray[2][$i], we_base_link::TYPE_OBJ_PREFIX) === 0){
+			if($oldArray[2][$i] && ($oldArray[2][$i]{0} == '#' || strpos($oldArray[2][$i], "javascript") === 0 && strpos($oldArray[2][$i], "javascript:history") === FALSE || strpos($oldArray[2][$i], we_base_link::TYPE_MAIL_PREFIX) === 0 || strpos($oldArray[2][$i], we_base_link::TYPE_INT_PREFIX) === 0 || strpos($oldArray[2][$i], we_base_link::TYPE_OBJ_PREFIX) === 0)){
 				//  this link must not be changed - so it will be removed
 			} else {
 				$newArray[0][] = $oldArray[0][$i];
@@ -680,7 +682,7 @@ abstract class we_SEEM{
 			}
 		}
 
-		return (empty($newArray)) ? false : $newArray;
+		return ($newArray ? $newArray : false);
 	}
 
 	/**

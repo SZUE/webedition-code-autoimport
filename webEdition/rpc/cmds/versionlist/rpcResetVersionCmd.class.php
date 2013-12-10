@@ -54,7 +54,7 @@ class rpcResetVersionCmd extends rpcCmd{
 
 			if(isset($_REQUEST["version"]) && $_REQUEST["version"] != 0){
 				$version = $_REQUEST["version"];
-			} else{
+			} else {
 				$version = f("SELECT version FROM " . VERSIONS_TABLE . " WHERE ID=" . intval($id), "version", $db);
 			}
 

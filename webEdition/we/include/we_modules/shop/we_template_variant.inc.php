@@ -33,7 +33,7 @@ require_oncerequire_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php
 print STYLESHEET;
 ?>
 </head>
-<body bgcolor="white" marginwidth="15" marginheight="15" leftmargin="15" topmargin="15" onUnload="doUnload()">
+<body bgcolor="white" marginwidth="15" marginheight="15" leftmargin="15" topmargin="15" onunload="doUnload()">
 	<form name="we_form" method="post" onsubmit="return false;"><?php
 		echo we_class::hiddenTrans();
 
@@ -51,7 +51,7 @@ print STYLESHEET;
 		foreach($fields as $ind => $field){
 			$element = $we_doc->getElement('variant_' . $field);
 			$content[$ind] = array(array(
-					'dat' => we_forms::checkboxWithHidden($element ? true : false, 'we_' . $we_doc->Name . "_variant[variant_$field]", $field, false, 'middlefont', '_EditorFrame.setEditorIsHot(true);')
+					'dat' => we_html_forms::checkboxWithHidden($element ? true : false, 'we_' . $we_doc->Name . "_variant[variant_$field]", $field, false, 'middlefont', '_EditorFrame.setEditorIsHot(true);')
 			));
 		}
 
@@ -70,7 +70,7 @@ print STYLESHEET;
 			)
 		);
 
-		print we_multiIconBox::getHTML("template_variant", "100%", $parts, 30, '', -1, '', '', false);
+		print we_html_multiIconBox::getHTML("template_variant", "100%", $parts, 30, '', -1, '', '', false);
 		?>
 	</form>
 </body>

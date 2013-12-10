@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
@@ -33,4 +33,4 @@ $weFrame = new weGlossarySettingFrames();
 $weFrame->Controller->processVariables();
 $weFrame->Controller->processCommands();
 
-$weFrame->getHTML($what);
+echo $weFrame->getHTML($what);

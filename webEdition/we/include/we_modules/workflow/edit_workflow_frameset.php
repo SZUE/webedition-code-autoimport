@@ -26,12 +26,12 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
-$what = (isset($_GET["pnt"]) ? $_GET["pnt"] : "frameset");
-$mode = (isset($_GET["art"]) ? $_GET["art"] : 0);
-$type = (isset($_GET["type"]) ? $_GET["type"] : 0);
+$what = (isset($_GET['pnt']) ? $_GET['pnt'] : 'frameset');
+$mode = (isset($_GET['art']) ? $_GET['art'] : 0);
+$type = (isset($_GET['type']) ? $_GET['type'] : 0);
 
-$weFrame = new weWorkflowFrames();
-$weFrame->getHTMLDocumentHeader();
+$weFrame = new we_workflow_frames();
+echo $weFrame->getHTMLDocumentHeader();
 $weFrame->View->processVariables();
 $weFrame->View->processCommands();
-$weFrame->getHTML($what, $mode, $type);
+echo $weFrame->getHTML($what, $mode, $type);

@@ -27,12 +27,12 @@ $parts = array();
 $_space_size = 120;
 
 
-if($we_doc->ClassName != 'we_imageDocument' && we_hasPerm('CAN_EDIT_CUSTOMERFILTER')){
+if($we_doc->ClassName != 'we_imageDocument' && permissionhandler::hasPerm('CAN_EDIT_CUSTOMERFILTER')){
 	$_filter = $we_doc->documentCustomerFilter;
 	if(!$_filter){
-		$_filter = weDocumentCustomerFilter::getEmptyDocumentCustomerFilter();
+		$_filter = we_customer_documentFilter::getEmptyDocumentCustomerFilter();
 	}
-	$_view = new weDocumentCustomerFilterView($_filter, '_EditorFrame.setEditorIsHot(true);', 520);
+	$_view = new we_customer_documentFilterView($_filter, '_EditorFrame.setEditorIsHot(true);', 520);
 
 	$parts[] = array(
 		'headline' => g_l('modules_customerFilter', '[customerFilter]'),
@@ -44,7 +44,7 @@ if($we_doc->ClassName != 'we_imageDocument' && we_hasPerm('CAN_EDIT_CUSTOMERFILT
 
 $parts[] = array(
 	'headline' => g_l('modules_customer', '[one_customer]'),
-	'html' => formWebuser(we_hasPerm("CAN_CHANGE_DOCS_CUSTOMER"), 434),
+	'html' => formWebuser(permissionhandler::hasPerm("CAN_CHANGE_DOCS_CUSTOMER"), 434),
 	'space' => $_space_size
 );
 
@@ -70,10 +70,10 @@ print we_html_element::jsScript(JS_DIR . 'windows.js') .
 		weSuggest::getYuiFiles() : '') .
 	'</head><body class="weEditorBody"><form name="we_form" onsubmit="return false">' .
 	we_class::hiddenTrans() .
-	($we_doc->ClassName != 'we_imageDocument' && we_hasPerm('CAN_EDIT_CUSTOMERFILTER') ?
+	($we_doc->ClassName != 'we_imageDocument' && permissionhandler::hasPerm('CAN_EDIT_CUSTOMERFILTER') ?
 		we_html_tools::hidden('we_edit_weDocumentCustomerFilter', 1) .
 		we_html_tools::hidden('weDocumentCustomerFilter_id', $_filter->getId()) : '') .
-	we_multiIconBox::getHTML('weDocProp', '100%', $parts, 20, '', -1, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]')) .
+	we_html_multiIconBox::getHTML('weDocProp', '100%', $parts, 20, '', -1, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]')) .
 	'</form>
 </body>
 </html>';
@@ -102,11 +102,11 @@ function formWebuser($canChange, $width = 388){
 	//$inputFeld=$GLOBALS['we_doc']->htmlTextInput($textname,24,$webuser,"",$attribs,"",$width);
 	//$idfield = $GLOBALS['we_doc']->htmlHidden($idname,$GLOBALS['we_doc']->WebUserID);
 
-	$button = we_button::create_button("select", "javascript:we_cmd('openSelector',document.we_form.elements['$idname'].value,'" . CUSTOMER_TABLE . "','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value')");
+	$button = we_html_button::create_button("select", "javascript:we_cmd('openSelector',document.we_form.elements['$idname'].value,'" . CUSTOMER_TABLE . "','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value')");
 
-	$_trashBut = we_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['$idname'].value=0;document.we_form.elements['$textname'].value='';_EditorFrame.setEditorIsHot(true);");
+	$_trashBut = we_html_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['$idname'].value=0;document.we_form.elements['$textname'].value='';_EditorFrame.setEditorIsHot(true);");
 	/*
-	  $out = $GLOBALS['we_doc']->htmlFormElementTable($inputFeld,
+	  $out = we_html_tools::htmlFormElementTable($inputFeld,
 	  g_l('modules_customer','[connected_with_customer]'),
 	  "left",
 	  "defaultfont",

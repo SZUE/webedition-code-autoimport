@@ -28,7 +28,7 @@ if(!preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction'])){
 	exit();
 }
 
-$messaging = new we_messaging($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
+$messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 $messaging->init($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 $messaging->get_mv_data($_REQUEST["id"]);
@@ -38,7 +38,7 @@ if(empty($messaging->selected_message)){
 	exit;
 }
 
-$format = new we_format('view', $messaging->selected_message);
+$format = new we_messaging_format('view', $messaging->selected_message);
 $format->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 
 we_html_tools::htmlTop();
@@ -56,8 +56,8 @@ print STYLESHEET;
 <script type="text/javascript"><!--
 	function todo_markdone() {
 		top.content.cmd.location = '<?php print WE_MESSAGING_MODULE_DIR; ?>edit_messaging_frameset.php?pnt=cmd&mcmd=todo_markdone&we_transaction=<?php echo $_REQUEST['we_transaction'] ?>';
-	}
-	//-->
+			}
+//-->
 </script>
 </head>
 <body class="weDialogBody">
@@ -77,7 +77,7 @@ print STYLESHEET;
 			),
 			array("headline" => g_l('modules_messaging', '[status]'),
 				"html" => '<table border="0" cellpadding="0" cellspacing="0"><tr><td class="defaultfont">' . $messaging->selected_message['hdrs']['status'] . '%</td><td>' . we_html_tools::getPixel(20, 2) .
-				(($messaging->selected_message['hdrs']['status'] < 100) ? '<td>' . we_button::create_button(
+				(($messaging->selected_message['hdrs']['status'] < 100) ? '<td>' . we_html_button::create_button(
 						"percent100", "javascript:todo_markdone()") . '</td>' : '') . '</tr></table>',
 				"noline" => 1,
 				"space" => 140
@@ -109,7 +109,7 @@ print STYLESHEET;
 				"space" => 0
 			);
 		}
-	} else{ //	Message
+	} else { //	Message
 		$parts = array(
 			array("headline" => g_l('modules_messaging', '[subject]'),
 				"html" => "<b>" . oldHtmlspecialchars($format->get_subject()) . "</b>",
@@ -142,8 +142,8 @@ print STYLESHEET;
 		);
 	}
 
-	print we_multiIconBox::getJS() .
-		we_multiIconBox::getHTML("weMessageView", "100%", $parts, 30, "", -1, "", "", false, (isset($messaging->selected_message['hdrs']['ClassName']) && $messaging->selected_message['hdrs']['ClassName'] == 'we_todo' ? g_l('modules_messaging', "[type_todo]") : g_l('modules_messaging', "[type_message]")));
+	print we_html_multiIconBox::getJS() .
+		we_html_multiIconBox::getHTML("weMessageView", "100%", $parts, 30, "", -1, "", "", false, (isset($messaging->selected_message['hdrs']['ClassName']) && $messaging->selected_message['hdrs']['ClassName'] == 'we_todo' ? g_l('modules_messaging', "[type_todo]") : g_l('modules_messaging', "[type_message]")));
 	?>
 </body>
 </html>

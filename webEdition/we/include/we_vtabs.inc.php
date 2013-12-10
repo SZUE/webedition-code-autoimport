@@ -50,25 +50,25 @@ $svg = array(
 $vtab = array(
 	'FILE_TABLE' => array(
 		'file' => 'we_language/' . $GLOBALS["WE_LANGUAGE"] . '/v-tabs/documents',
-		'show' => we_hasPerm('CAN_SEE_DOCUMENTS') || we_hasPerm('ADMINISTRATOR'),
+		'show' => permissionhandler::hasPerm('CAN_SEE_DOCUMENTS') || permissionhandler::hasPerm('ADMINISTRATOR'),
 		'size' => array(19, 83),
 		'desc' => g_l('global', '[documents]'),
 	),
 	'TEMPLATES_TABLE' => array(
 		'file' => 'we_language/' . $GLOBALS['WE_LANGUAGE'] . '/v-tabs/templates',
-		'show' => we_hasPerm('CAN_SEE_TEMPLATES'),
+		'show' => permissionhandler::hasPerm('CAN_SEE_TEMPLATES'),
 		'size' => array(19, 83),
 		'desc' => g_l('global', '[templates]'),
 	),
 	'OBJECT_FILES_TABLE' => array(
 		'file' => 'we_language/' . $GLOBALS["WE_LANGUAGE"] . '/v-tabs/objects',
-		'show' => defined('OBJECT_TABLE') && we_hasPerm('CAN_SEE_OBJECTFILES'),
+		'show' => defined('OBJECT_TABLE') && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES'),
 		'size' => array(19, 83),
 		'desc' => g_l('global', '[objects]'),
 	),
 	'OBJECT_TABLE' => array(
 		'file' => 'we_language/' . $GLOBALS["WE_LANGUAGE"] . '/v-tabs/classes',
-		'show' => defined('OBJECT_TABLE') && we_hasPerm("CAN_SEE_OBJECTS"),
+		'show' => defined('OBJECT_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTS"),
 		'size' => array(19, 83),
 		'desc' => g_l('javaMenu_object', '[classes]'),
 	)
@@ -118,8 +118,8 @@ foreach($vtab as $tab => $val){
 	$file = WE_INCLUDES_DIR . $val['file'];
 	$tmp[] = ($val['show'] ?
 			($useSvg ?
-				'new we_tab("#",\'' . str_replace(array('REPLACE', '#ID#', "\n"), array($val['desc'], ++$id, ''), $svg['normal']) . '\', \'' . str_replace(array('REPLACE', '#ID#', "\n"), array($val['desc'], ++$id, ''), $svg['active']) . '\', \'' . str_replace(array('REPLACE', '#ID#', "\n"), array($val['desc'], ++$id, ''), $svg['disabled']) . '\', ' . $val['size'][0] . ',' . $val['size'][1] . ' ,' . ($val['show'] ? 'TAB_NORMAL' : 'TAB_DISABLED') . ', "if(top.deleteMode){we_cmd(\'exit_delete\', \'' . constant($tab) . '\');};treeOut();we_cmd(\'loadVTab\', \'' . constant($tab) . '\' ,0);",true,' . $pos . ')' :
-				'new we_tab("#","' . $file . '_normal.gif", "' . $file . '_active.gif", "' . $file . '_disabled.gif", ' . $val['size'][0] . ',' . $val['size'][1] . ' ,' . ($val['show'] ? 'TAB_ACTIVE' : 'TAB_DISABLED') . ', "if(top.deleteMode){we_cmd(\'exit_delete\', \'' . constant($tab) . '\');};treeOut();we_cmd(\'loadVTab\', \'' . constant($tab) . '\' ,0);",false,' . $pos . ')') :
+				'new we_tab("#",\'' . str_replace(array('REPLACE', '#ID#', "\n"), array($val['desc'], ++$id, ''), $svg['normal']) . '\', \'' . str_replace(array('REPLACE', '#ID#', "\n"), array($val['desc'], ++$id, ''), $svg['active']) . '\', \'' . str_replace(array('REPLACE', '#ID#', "\n"), array($val['desc'], ++$id, ''), $svg['disabled']) . '\', ' . $val['size'][0] . ',' . $val['size'][1] . ' ,' . ($val['show'] ? we_tab::NORMAL : we_tab::DISABLED) . ', "if(top.deleteMode){we_cmd(\'exit_delete\', \'' . constant($tab) . '\');};treeOut();we_cmd(\'loadVTab\', \'' . constant($tab) . '\' ,0);",true,' . $pos . ')' :
+				'new we_tab("#","' . $file . '_normal.gif", "' . $file . '_active.gif", "' . $file . '_disabled.gif", ' . $val['size'][0] . ',' . $val['size'][1] . ' ,' . ($val['show'] ? we_tab::ACTIVE : we_tab::DISABLED) . ', "if(top.deleteMode){we_cmd(\'exit_delete\', \'' . constant($tab) . '\');};treeOut();we_cmd(\'loadVTab\', \'' . constant($tab) . '\' ,0);",false,' . $pos . ')') :
 			'null');
 	$pos++;
 }
@@ -163,11 +163,11 @@ echo implode(',', $tmp);
 			toggleTree();
 		}
 	}
-	//-->
+//-->
 </script>
 <div style="position:absolute;top:8px;left:5px;z-index:10;<?php echo $useSvg ? "border-left:1px solid #909090;border-bottom:1px solid #909090;" : "border-top:1px solid black;" ?>text-decoration:none ">
 	<script type="text/javascript"><!--
-		for (var i = 0; i < we_tabs.length; i++) {
+	for (var i = 0; i < we_tabs.length; i++) {
 			if (we_tabs[i] !== null) {
 				we_tabs[i].write();
 			}
@@ -195,7 +195,7 @@ if(isset($_REQUEST["table"]) && $_REQUEST["table"]){
 }
 ?>
 		setTab(defTab);
-		//-->
+//-->
 	</script>
 </div>
 <img id="incBaum" src="<?php echo BUTTONS_DIR ?>icons/function_plus.gif" width="9" height="12" style="position:absolute;bottom:53px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer;<?php echo ($_treewidth <= 100) ? 'bgcolor:grey;' : ''; ?>" onClick="incTree();">

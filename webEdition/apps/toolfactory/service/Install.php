@@ -32,10 +32,10 @@ class toolfactory_service_Install extends we_app_service_AbstractCmd{
 	public function getApplist(){
 		global $metaInfo;
 		$appName = Zend_Controller_Front::getInstance()->getParam('appName');
-		$_app_directory = dir($GLOBALS['__WE_APP_PATH__']);
-		$_app_directory_string = $GLOBALS['__WE_APP_PATH__'];
+		$_app_directory = dir(WE_APPS_PATH);
+		$_app_directory_string = WE_APPS_PATH;
 		$apparray = array();
-		while(false !== ($entry = $_app_directory->read())) {
+		while(false !== ($entry = $_app_directory->read())){
 			if($entry != "." && $entry != ".."){
 				$path_parts = pathinfo($entry);
 				if(isset($path_parts['extension']) && $path_parts['extension'] == 'tgz'){
@@ -51,7 +51,7 @@ class toolfactory_service_Install extends we_app_service_AbstractCmd{
 		if(is_dir($_SERVER['DOCUMENT_ROOT'] . '/appinstall')){
 			$_app_directory = dir($_SERVER['DOCUMENT_ROOT'] . '/appinstall');
 			$_app_directory_string = $_SERVER['DOCUMENT_ROOT'] . '/appinstall';
-			while(false !== ($entry = $_app_directory->read())) {
+			while(false !== ($entry = $_app_directory->read())){
 				if($entry != "." && $entry != ".."){
 					$path_parts = pathinfo($entry);
 					if(isset($path_parts['extension']) && $path_parts['extension'] == 'tgz'){

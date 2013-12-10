@@ -96,7 +96,6 @@ function array_cmp(&$arr1, &$arr2){
 	return 1;
 }
 
-
 /* in_array in PHP versions prior to 4.2.0 can not take an */
 /* array as needle */
 

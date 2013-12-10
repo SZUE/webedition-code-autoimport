@@ -85,12 +85,12 @@ $we_menu_banner = array(
 		'enabled' => 0,
 	),
 	/*
-	'003000' => array(
-		'text' => g_l('modules_banner', '[options]'),
-		'parent' => '000000',
-		'enabled' => 1,
-	),
-	*/
+	  '003000' => array(
+	  'text' => g_l('modules_banner', '[options]'),
+	  'parent' => '000000',
+	  'enabled' => 1,
+	  ),
+	 */
 	'004000' => array(
 		'text' => g_l('modules_banner', '[help]'),
 		'parent' => '000000',

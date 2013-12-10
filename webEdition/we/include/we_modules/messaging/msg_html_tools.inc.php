@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -22,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-
 /**
  * This function build the sort arrow for the messaging module.
  *
@@ -31,11 +31,10 @@
  *
  * @return         string
  */
-
-function sort_arrow($name, $href) {
+function sort_arrow($name, $href){
 	$_image_path = IMAGE_DIR . 'modules/messaging/' . $name . '.gif';
 
 	// Check if we have to create a form or href
-	return $href? '<a href="' . $href . '"><img src="' . $_image_path . '" border="0" alt="" /></a>' : 
+	return $href ? '<a href="' . $href . '"><img src="' . $_image_path . '" border="0" alt="" /></a>' :
 		'<input type="image" src="' . $_image_path . '" border="0" alt="" />';
 }

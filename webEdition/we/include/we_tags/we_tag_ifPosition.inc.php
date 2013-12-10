@@ -48,7 +48,7 @@ function _we_tag_ifPosition_op($_position, $_size, $operator, $position, $size){
 					case 'greater|equal':
 						return $position >= 1;
 				}
-			} else{
+			} else {
 				if($position == 1){
 					return true;
 				}
@@ -66,7 +66,7 @@ function _we_tag_ifPosition_op($_position, $_size, $operator, $position, $size){
 					case 'greater|equal':
 						return $position >= $size;
 				}
-			} else{
+			} else {
 				if($position == $size){
 					return true;
 				}
@@ -100,7 +100,7 @@ function _we_tag_ifPosition_op($_position, $_size, $operator, $position, $size){
 					case 'every':
 						return ($position % $_position == 0);
 				}
-			} else{
+			} else {
 				if($operator == 'every' && ($position % $_position == 0)){
 					return true;
 				} else if($position == $_position){

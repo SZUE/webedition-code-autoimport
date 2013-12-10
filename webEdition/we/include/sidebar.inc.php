@@ -24,5 +24,5 @@
  */
 we_html_tools::protect();
 
-$weFrame = new weSideBarFrames();
+$weFrame = new we_sidebar_frames();
 $weFrame->getHTMLContent();

@@ -42,9 +42,9 @@ function getHash($query = '', we_database_base $DB_WE = NULL, $resultType = MYSQ
 	return $cache[$hash];
 }
 
-function f($query, $field = '', we_database_base $DB_WE = NULL){
+function f($query, $field = '', we_database_base $DB_WE = NULL, $emptyValue = ''){
 	$h = getHash($query, ($DB_WE ? $DB_WE : $GLOBALS['DB_WE']), MYSQL_ASSOC);
-	return ($field === '' ? current($h) : (isset($h[$field]) ? $h[$field] : ''));
+	return ($field == '' ? current($h) : (isset($h[$field]) ? $h[$field] : $emptyValue));
 }
 
 function doUpdateQuery(we_database_base $DB_WE, $table, $hash, $where){

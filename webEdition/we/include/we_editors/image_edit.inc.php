@@ -33,13 +33,11 @@ $we_dt = isset($_SESSION['weS']['we_data'][$we_transaction]) ? $_SESSION['weS'][
 include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
 
-if(isset($we_doc->ClassName) && $we_doc->ClassName == "we_imageDocument"){
+if(get_class($we_doc) == "we_imageDocument"){
 
 	we_html_tools::htmlTop();
 
-	print we_html_element::jsScript(JS_DIR . 'we_showMessage.js') . '
-<script type="text/javascript"><!--
-
+	print we_html_element::jsScript(JS_DIR . 'we_showMessage.js') . we_html_element::jsElement('
 document.onkeyup = function(e) {
 	var e = (typeof(event) != "undefined") ? event : e;
 	if (e.keyCode == 13) {
@@ -49,22 +47,19 @@ document.onkeyup = function(e) {
 	}
 }
 
-' . "\nself.focus();\n";
+self.focus();');
 
 	switch($_REQUEST['we_cmd'][0]){
 		case "image_resize":
-			print we_getImageResizeDialogJS();
+			print we_html_element::jsElement(we_getImageResizeDialogJS());
 			break;
 		case "image_convertJPEG":
-			print we_getImageConvertDialogJS();
+			print we_html_element::jsElement(we_getImageConvertDialogJS());
 			break;
 		case "image_rotate":
-			print we_getImageRotateDialogJS();
+			print we_html_element::jsElement(we_getImageRotateDialogJS());
 			break;
 	}
-
-	print "//-->\n</script>\n";
-
 
 	print STYLESHEET . "</head>";
 
@@ -86,7 +81,7 @@ document.onkeyup = function(e) {
 	$_dialog = we_html_element::htmlForm(array("name" => "we_form"), $_dialog);
 
 	print we_html_element::htmlBody(array("class" => "weDialogBody"), $_dialog) . "</html>";
-} else{
+} else {
 	exit("ERROR: Couldn't initialize we_imageDocument object");
 }
 
@@ -252,10 +247,10 @@ function we_getImageResizeDialog(){
 
 	$_content = array();
 
-	$okbut = we_button::create_button("ok", "javascript:doOK();");
-	$cancelbut = we_button::create_button("cancel", "javascript:top.close();");
+	$okbut = we_html_button::create_button("ok", "javascript:doOK();");
+	$cancelbut = we_html_button::create_button("cancel", "javascript:top.close();");
 
-	$buttons = we_button::position_yes_no_cancel($okbut, null, $cancelbut);
+	$buttons = we_html_button::position_yes_no_cancel($okbut, null, $cancelbut);
 
 	$widthInput = we_html_tools::htmlTextInput("width", 10, $width, "", 'onkeypress="return IsDigit(event,this);" onkeyup="we_keep_ratio(this,this.form.widthSelect);"', "text", 60);
 	$heightInput = we_html_tools::htmlTextInput("height", 10, $height, "", 'onkeypress="return IsDigit(event,this);" onkeyup="we_keep_ratio(this,this.form.heightSelect);"', "text", 60);
@@ -263,7 +258,7 @@ function we_getImageResizeDialog(){
 	$widthSelect = '<select class="weSelect" size="1" name="widthSelect" onchange="we_switchPixelPercent(this.form.width,this);"><option value="pixel">' . g_l('weClass', "[pixel]") . '</option><option value="percent">' . g_l('weClass', "[percent]") . '</option></select>';
 	$heightSelect = '<select class="weSelect" size="1" name="heightSelect" onchange="we_switchPixelPercent(this.form.height,this);"><option value="pixel">' . g_l('weClass', "[pixel]") . '</option><option value="percent">' . g_l('weClass', "[percent]") . '</option></select>';
 
-	$ratio_checkbox = we_forms::checkbox(1, true, "ratio", g_l('thumbnails', "[ratio]"), false, "defaultfont", "if(this.checked){we_keep_ratio(this.form.width,this.form.widthSelect);}");
+	$ratio_checkbox = we_html_forms::checkbox(1, true, "ratio", g_l('thumbnails', "[ratio]"), false, "defaultfont", "if(this.checked){we_keep_ratio(this.form.width,this.form.widthSelect);}");
 
 	$_table = '<table border="0" cellpadding="2" cellspacing="0">
 	<tr>
@@ -284,34 +279,34 @@ function we_getImageResizeDialog(){
 			'<br><div class="defaultfont">' . g_l('weClass', "[quality]") . '</div>' . we_image_edit::qualitySelect("quality") :
 			'');
 	$_content[] = array("headline" => "", "html" => $_table, "space" => 0);
-	return we_multiIconBox::getHTML("", "100%", $_content, 30, $buttons, -1, "", "", false, g_l('weClass', "[resize]"));
+	return we_html_multiIconBox::getHTML("", "100%", $_content, 30, $buttons, -1, "", "", false, g_l('weClass', "[resize]"));
 }
 
 function we_getImageConvertDialog(){
 	$_content = array();
 
-	$okbut = we_button::create_button("ok", "javascript:doOK();");
-	$cancelbut = we_button::create_button("cancel", "javascript:top.close();");
-	$buttons = we_button::position_yes_no_cancel($okbut, null, $cancelbut);
-	$cancelbut = we_button::create_button("cancel", "javascript:top.close();");
+	$okbut = we_html_button::create_button("ok", "javascript:doOK();");
+	$cancelbut = we_html_button::create_button("cancel", "javascript:top.close();");
+	$buttons = we_html_button::position_yes_no_cancel($okbut, null, $cancelbut);
+	$cancelbut = we_html_button::create_button("cancel", "javascript:top.close();");
 	$_dialog = '<div class="defaultfont">' . g_l('weClass', "[quality]") . '</div>' . we_image_edit::qualitySelect("quality");
 	$_content[] = array("headline" => "", "html" => $_dialog, "space" => 0);
 
 
-	return we_multiIconBox::getHTML("", "100%", $_content, 30, $buttons, -1, "", "", false, g_l('weClass', "[convert]"));
+	return we_html_multiIconBox::getHTML("", "100%", $_content, 30, $buttons, -1, "", "", false, g_l('weClass', "[convert]"));
 }
 
 function we_getImageRotateDialog(){
 	$_content = array();
 
-	$okbut = we_button::create_button("ok", "javascript:doOK();");
-	$cancelbut = we_button::create_button("cancel", "javascript:top.close();");
+	$okbut = we_html_button::create_button("ok", "javascript:doOK();");
+	$cancelbut = we_html_button::create_button("cancel", "javascript:top.close();");
 
-	$buttons = we_button::position_yes_no_cancel($okbut, null, $cancelbut);
+	$buttons = we_html_button::position_yes_no_cancel($okbut, null, $cancelbut);
 
-	$_radio180 = we_forms::radiobutton(180, true, "degrees", g_l('weClass', "[rotate180]"));
-	$_radio90l = we_forms::radiobutton(90, false, "degrees", g_l('weClass', "[rotate90l]"));
-	$_radio90r = we_forms::radiobutton(270, false, "degrees", g_l('weClass', "[rotate90r]"));
+	$_radio180 = we_html_forms::radiobutton(180, true, "degrees", g_l('weClass', "[rotate180]"));
+	$_radio90l = we_html_forms::radiobutton(90, false, "degrees", g_l('weClass', "[rotate90l]"));
+	$_radio90r = we_html_forms::radiobutton(270, false, "degrees", g_l('weClass', "[rotate90r]"));
 
 	$_dialog = $_radio180 . $_radio90l . $_radio90r .
 		(($GLOBALS['we_doc']->getGDType() == "jpg") ?
@@ -321,5 +316,5 @@ function we_getImageRotateDialog(){
 	$_content[] = array("headline" => "", "html" => $_dialog, "space" => 0);
 
 
-	return we_multiIconBox::getHTML("", "100%", $_content, 30, $buttons, -1, "", "", false, g_l('weClass', "[rotate]"));
+	return we_html_multiIconBox::getHTML("", "100%", $_content, 30, $buttons, -1, "", "", false, g_l('weClass', "[rotate]"));
 }

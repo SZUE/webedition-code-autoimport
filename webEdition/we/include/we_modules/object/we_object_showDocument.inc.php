@@ -30,6 +30,7 @@ if(!defined('NO_SESS')){
 	define('NO_SESS', 1);
 }
 
+
 //leave this
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
@@ -177,24 +178,22 @@ if(isset($GLOBALS['we_obj']) && $GLOBALS['we_obj']->documentCustomerFilter && !i
 
 	// call session_start to init session, otherwise NO customer can exist
 	if(!isset($_SESSION)){
-		@session_start();
-		//FIXME: remove in 6.4; due to upgrade!
-		if(isset($_SESSION['we'])){
-			unset($_SESSION['we']);
-		}
+		session_start();
 	}
 
 	if(($_visitorHasAccess = $GLOBALS['we_obj']->documentCustomerFilter->accessForVisitor($GLOBALS['we_obj']))){
 
-		if(!($_visitorHasAccess == weDocumentCustomerFilter::ACCESS || $_visitorHasAccess == weDocumentCustomerFilter::CONTROLONTEMPLATE)){
+		if(!($_visitorHasAccess == we_customer_documentFilter::ACCESS || $_visitorHasAccess == we_customer_documentFilter::CONTROLONTEMPLATE)){
 
 			// user has NO ACCESS => show errordocument
 			$_errorDocId = $GLOBALS['we_obj']->documentCustomerFilter->getErrorDoc($_visitorHasAccess);
 
 			if(($_errorDocPath = id_to_path($_errorDocId, FILE_TABLE))){ // use given document instead !
-				@include($_SERVER['DOCUMENT_ROOT'] . $_errorDocPath);
-				unset($_errorDocPath);
-				unset($_errorDocId);
+				if($_errorDocId){
+					unset($_errorDocId);
+					@include($_SERVER['DOCUMENT_ROOT'] . $_errorDocPath);
+					unset($_errorDocPath);
+				}
 				return;
 			} else {
 				die('Customer has no access to this document');
@@ -251,7 +250,7 @@ if(isset($_SESSION['weS']['we_data'][$we_transaction]['0']['InWebEdition']) && $
 	//
 		$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE']);
 // --> Glossary Replacement
-	$useGlossary = ((defined('GLOSSARY_TABLE') && (!isset($GLOBALS['WE_MAIN_DOC']) || $GLOBALS['WE_MAIN_DOC'] == $GLOBALS['we_doc'])) && (isset($we_doc->InGlossar) && $we_doc->InGlossar == 0) && weGlossaryReplace::useAutomatic());
+	$useGlossary = ((defined('GLOSSARY_TABLE') && (!isset($GLOBALS['WE_MAIN_DOC']) || $GLOBALS['WE_MAIN_DOC'] == $GLOBALS['we_doc'])) && (isset($we_doc->InGlossar) && $we_doc->InGlossar == 0) && we_glossary_replace::useAutomatic());
 	$useBuffer = !empty($urlReplace) || $useGlossary;
 	if($useBuffer){
 		ob_start();
@@ -261,7 +260,7 @@ if(isset($_SESSION['weS']['we_data'][$we_transaction]['0']['InWebEdition']) && $
 		$content = ob_get_contents();
 		ob_end_clean();
 		if($useGlossary){
-			$content = weGlossaryReplace::doReplace($content, $GLOBALS['we_doc']->Language);
+			$content = we_glossary_replace::doReplace($content, $GLOBALS['we_doc']->Language);
 		}
 		if($urlReplace){
 			$content = preg_replace($urlReplace, array_keys($urlReplace), $content);

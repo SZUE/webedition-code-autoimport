@@ -28,5 +28,5 @@ we_html_tools::protect();
 
 $what = isset($_REQUEST['pnt']) ? $_REQUEST['pnt'] : 'frameset';
 
-$weFrame = new weSideBarFrames();
+$weFrame = new we_sidebar_frames();
 $weFrame->getHTML($what);

@@ -27,7 +27,7 @@ we_html_tools::protect();
 
 
 $_parts = array();
-if(we_hasPerm("BACKUPLOG")){
+if(permissionhandler::hasPerm("BACKUPLOG")){
 	$_parts[] = array(
 		'headline' => g_l('backup', "[view_log]"),
 		'html' => '',
@@ -39,7 +39,7 @@ if(we_hasPerm("BACKUPLOG")){
 			'html' => '<p>' . g_l('backup', "[view_log_not_found]") . '</p>',
 			'space' => 10
 		);
-	} else{
+	} else {
 		$log = file_get_contents($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'data/lastlog.php');
 		$_parts[] = array(
 			'headline' => '',
@@ -47,7 +47,7 @@ if(we_hasPerm("BACKUPLOG")){
 			'space' => 10
 		);
 	}
-} else{
+} else {
 	$_parts[] = array(
 		'headline' => '',
 		'html' => '<p>' . g_l('backup', "[view_log_no_perm]") . '</p>',
@@ -69,12 +69,12 @@ echo we_html_tools::htmlTop(g_l('backup', "[view_log]")) .
 <body class="weDialogBody" style="overflow:hidden;" onLoad="self.focus();">
 	<div id="info" style="display: block;">
 		<?php
-		$buttons = we_button::position_yes_no_cancel(
-				we_button::create_button("close", "javascript:self.close()"), '', ''
+		$buttons = we_html_button::position_yes_no_cancel(
+				we_html_button::create_button("close", "javascript:self.close()"), '', ''
 		);
 
-		print we_multiIconBox::getJS();
-		print we_multiIconBox::getHTML('', 500, $_parts, 30, $buttons, -1, '', '', false, "", "", 620, "auto");
+		print we_html_multiIconBox::getJS();
+		print we_html_multiIconBox::getHTML('', 500, $_parts, 30, $buttons, -1, '', '', false, "", "", 620, "auto");
 		?>
 	</div>
 

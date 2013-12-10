@@ -142,7 +142,7 @@ ini_set("display_errors", 1);
 error_reporting(E_ALL);
 
 //use we-error handler; ignore if logging is disabled!
-require_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_error_handler.inc.php");
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_error_handler.inc.php');
 if(!defined('WE_ERROR_SHOW')){
 	define('WE_ERROR_SHOW', 1);
 }
@@ -161,9 +161,9 @@ if(!isset($_SERVER['SERVER_NAME'])){
 	$_SERVER['SERVER_NAME'] = $SERVER_NAME;
 }
 
+// include needed libraries
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/PEAR.php");
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/Getopt.php");
 
 // Define exit codes for errors
 define('NO_ARGS', 10);
@@ -304,8 +304,6 @@ if(isset($options[1][0])){
 
 
 
-// include needed libraries
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 update_time_limit(0);
 update_mem_limit(128);
 
@@ -314,7 +312,7 @@ if($_backup_filename != $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . $_REQUEST['back
 	copy($_backup_filename, $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . $_REQUEST['backup_select']);
 }
 
-if(weBackupPreparer::prepareImport() === true){
+if(we_backup_preparer::prepareImport() === true){
 	if($_REQUEST['verbose']){
 		print "\nImporting from " . $_backup_filename . "...\n";
 	}
@@ -322,7 +320,7 @@ if(weBackupPreparer::prepareImport() === true){
 		if($_REQUEST['verbose']){
 			print '-';
 		}
-		weBackupImport::import($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['offset'], $_SESSION['weS']['weBackupVars']['backup_steps'], $_SESSION['weS']['weBackupVars']['options']['compress'], $_SESSION['weS']['weBackupVars']['encoding']);
+		we_backup_import::import($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['offset'], $_SESSION['weS']['weBackupVars']['backup_steps'], $_SESSION['weS']['weBackupVars']['options']['compress'], $_SESSION['weS']['weBackupVars']['encoding']);
 	}
 
 	if($_REQUEST['verbose']){
@@ -332,7 +330,7 @@ if(weBackupPreparer::prepareImport() === true){
 	$updater = new we_updater();
 	$updater->doUpdate();
 } else {
-	print weBackupPreparer::getErrorMessage();
+	print we_backup_preparer::getErrorMessage();
 }
 
 unset($_SESSION['weS']['weBackupVars']);

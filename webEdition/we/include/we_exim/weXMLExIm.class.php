@@ -207,7 +207,7 @@ class weXMLExIm{
 	function prepareExport($ids){
 
 		$this->RefTable = new RefTable();
-		$_preparer = new weExportPreparer($this->options, $this->RefTable);
+		$_preparer = new we_export_preparer($this->options, $this->RefTable);
 		$_preparer->prepareExport($ids);
 	}
 
@@ -244,18 +244,18 @@ class weXMLExIm{
 	}
 
 	static function getHeader($encoding = '', $type = ''){
-		$encoding= ($encoding?$encoding:$GLOBALS['WE_BACKENDCHARSET']);
-		
+		$encoding = ($encoding ? $encoding : $GLOBALS['WE_BACKENDCHARSET']);
+
 		return '<?xml version="1.0" encoding="' . $encoding . '" standalone="yes"?>' . "\n" .
-			weBackup::weXmlExImHead . ' version="' . WE_VERSION . '" type="' . $type . '" xmlns:we="we-namespace">' . "\n";
+			we_backup_backup::weXmlExImHead . ' version="' . WE_VERSION . '" type="' . $type . '" xmlns:we="we-namespace">' . "\n";
 	}
 
 	static function getFooter(){
-		return weBackup::weXmlExImFooter;
+		return we_backup_backup::weXmlExImFooter;
 	}
 
 	function isCompressed($file){
-		$part = weFile::loadPart($file, 0, 512);
+		$part = we_base_file::loadPart($file, 0, 512);
 		return (stripos($part, "<?xml version=") === false);
 	}
 
@@ -305,15 +305,15 @@ class weXMLExIm{
 					$path = dirname($path);
 				}
 			}
-		} else if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE && (!we_hasPerm("ADMINISTRATOR"))){
-			$ac = getAllowedClasses($db);
+		} else if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE && (!permissionhandler::hasPerm("ADMINISTRATOR"))){
+			$ac = we_users_util::getAllowedClasses($db);
 			foreach($ac as $cid){
 				$path = id_to_path($cid, OBJECT_TABLE);
 				$wsQuery [] = " Path LIKE '" . $db->escape($path) . "/%' OR Path='" . $db->escape($path) . "'";
 			}
 		}
 
-		return 'AND (1 ' . makeOwnersSql() . ( $wsQuery ? 'OR (' . implode(' OR ', $wsQuery) . ')' : '') . ')';
+		return 'AND (1 ' . we_users_util::makeOwnersSql() . ( $wsQuery ? 'OR (' . implode(' OR ', $wsQuery) . ')' : '') . ')';
 	}
 
 	function getSelectedItems($selection, $extype, $art, $type, $doctype, $classname, $categories, $dir, &$selDocs, &$selTempl, &$selObjs, &$selClasses){
@@ -402,4 +402,3 @@ class weXMLExIm{
 
 //FIXME: splitFile,exportChunk missing - called in Backup class
 }
-

@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weExportTree extends weMainTree{
+class we_export_tree extends weMainTree{
 
 	function getJSInfo(){
 		return '
@@ -232,16 +232,16 @@ class weExportTree extends weMainTree{
 
 		$captions = array();
 
-		if(we_hasPerm("CAN_SEE_DOCUMENTS")){
+		if(permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
 			$captions[FILE_TABLE] = g_l('export', "[documents]");
 		}
-		if(we_hasPerm("CAN_SEE_TEMPLATES")){
+		if(permissionhandler::hasPerm("CAN_SEE_TEMPLATES")){
 			$captions[TEMPLATES_TABLE] = g_l('export', "[templates]");
 		}
-		if(defined("OBJECT_FILES_TABLE") && we_hasPerm("CAN_SEE_OBJECTFILES")){
+		if(defined("OBJECT_FILES_TABLE") && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")){
 			$captions[OBJECT_FILES_TABLE] = g_l('export', "[objects]");
 		}
-		if(defined("OBJECT_TABLE") && we_hasPerm("CAN_SEE_OBJECTS")){
+		if(defined("OBJECT_TABLE") && permissionhandler::hasPerm("CAN_SEE_OBJECTS")){
 			$captions[OBJECT_TABLE] = g_l('export', "[classes]");
 		}
 

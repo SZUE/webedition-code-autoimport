@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 
 
@@ -37,15 +37,13 @@ $_body = "";
 
 $_head = STYLESHEET_BUTTONS_ONLY . SCRIPT_BUTTONS_ONLY;
 
-$_backbutton = we_button::create_button("back", "javascript:top.weNavigationHistory.navigateBack();");
+$_backbutton = we_html_button::create_button("back", "javascript:top.weNavigationHistory.navigateBack();");
 
 
 
 $_table = new we_html_table(array("cellpadding" => 0,
-		"cellspacing" => 0,
-		"border" => 0),
-		2,
-		2);
+	"cellspacing" => 0,
+	"border" => 0), 2, 2);
 $_table->setColContent(0, 0, we_html_tools::getPixel(20, 6));
 $_table->setColContent(1, 1, $_backbutton);
 

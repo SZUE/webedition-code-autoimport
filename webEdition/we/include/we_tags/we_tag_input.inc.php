@@ -57,7 +57,7 @@ function we_tag_input($attribs, $content){
 				$docAttr = weTag_getAttribute('doc', $attribs, 'self');
 				$doc = we_getDocForTag($docAttr);
 				$lang = $doc->Language;
-				$langcode = ($lang != '' ? substr($lang, 0, 2) : we_core_Local::weLangToLocale($GLOBALS["WE_LANGUAGE"]));
+				$langcode = ($lang != '' ? substr($lang, 0, 2) : we_core_Local::weLangToLocale($GLOBALS['WE_LANGUAGE']));
 
 				$orgVal = $GLOBALS['we_doc']->getElement($name);
 				if(!Zend_Locale::hasCache()){
@@ -82,15 +82,15 @@ function we_tag_input($attribs, $content){
 				$orgVal = $GLOBALS['we_doc']->getElement($name);
 				$content = '';
 				if(WE_COUNTRIES_DEFAULT != ''){
-					$content.='<option value="--" ' . ($orgVal == '--' ? ' selected="selected">' : '>') . WE_COUNTRIES_DEFAULT . '</option>' . "\n";
+					$content.='<option value="--" ' . ($orgVal == '--' ? ' selected="selected">' : '>') . WE_COUNTRIES_DEFAULT . '</option>';
 				}
 				foreach($topCountries as $countrykey => &$countryvalue){
-					$content.='<option value="' . $countrykey . '" ' . ($orgVal == $countrykey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue) . '</option>' . "\n";
+					$content.='<option value="' . $countrykey . '" ' . ($orgVal == $countrykey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue) . '</option>';
 				}
 				unset($countryvalue);
-				$content.='<option value="-" disabled="disabled">----</option>' . "\n";
+				$content.='<option value="-" disabled="disabled">----</option>';
 				foreach($shownCountries as $countrykey2 => &$countryvalue2){
-					$content.='<option value="' . $countrykey2 . '" ' . ($orgVal == $countrykey2 ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue2) . '</option>' . "\n";
+					$content.='<option value="' . $countrykey2 . '" ' . ($orgVal == $countrykey2 ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue2) . '</option>';
 				}
 				unset($countryvalue2);
 
@@ -124,7 +124,7 @@ function we_tag_input($attribs, $content){
 				$content = '';
 				$orgVal = $GLOBALS['we_doc']->getElement($name);
 				foreach($frontendLL as $langkey => &$langvalue){
-					$content.='<option value="' . $langkey . '" ' . ($orgVal == $langkey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($langvalue) . '</option>' . "\n";
+					$content.='<option value="' . $langkey . '" ' . ($orgVal == $langkey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($langvalue) . '</option>';
 				}
 				unset($langvalue);
 				return getHtmlTag('select', $newAtts, $content, true);
@@ -139,7 +139,7 @@ function we_tag_input($attribs, $content){
 						($reload ? 'setScrollTo();top.we_cmd(\'reload_editpage\');' : '');
 
 					$sel = '<select  class="defaultfont" name="we_choice_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" size="1" onchange="' . $onChange . ';this.selectedIndex=0;_EditorFrame.setEditorIsHot(true);"><option></option>' .
-						(!empty($vals) ? '<option>' . implode("</option>\n<option>", $vals) . "</option>\n" : '') .
+						(!empty($vals) ? '<option>' . implode('</option><option>', $vals) . '</option>' : '') .
 						'</select>';
 				}
 				$attr = we_make_attribs($attribs, 'name,value,type,onchange,mode,values,_name_orig');
@@ -158,9 +158,9 @@ function we_tag_input($attribs, $content){
 				if(defined('SPELLCHECKER') && $spellcheck == 'true'){
 					return '<table class="weEditTable padding0 spacing0 border0">
 	<tr>
-			<td class="weEditmodeStyle"><input onchange="_EditorFrame.setEditorIsHot(true);" class="wetextinput" type="text" name="we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" value="' . $val . '"' . ($attr ? " $attr" : "") . ' /></td>
+			<td class="weEditmodeStyle"><input onchange="_EditorFrame.setEditorIsHot(true);" class="wetextinput" type="text" name="we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" value="' . $val . '"' . ($attr ? ' ' . $attr : '') . ' /></td>
 			<td class="weEditmodeStyle">' . we_html_tools::getPixel(6, 4) . '</td>
-			<td class="weEditmodeStyle">' . we_button::create_button(
+			<td class="weEditmodeStyle">' . we_html_button::create_button(
 							'image:spellcheck', 'javascript:we_cmd("spellcheck","we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']")') . '</td>
 	</tr>
 </table>';

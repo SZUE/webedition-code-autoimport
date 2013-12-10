@@ -30,17 +30,15 @@ $_username = f("SELECT username FROM " . USER_TABLE . " WHERE ID=" . intval($_is
 
 
 $_messageTbl = new we_html_table(array("border" => 0,
-		"cellpadding" => 0,
-		"cellspacing" => 0),
-		2,
-		6);
+	"cellpadding" => 0,
+	"cellspacing" => 0), 2, 6);
 
 
 $refreshButton = "";
 
 if(!isset($_REQUEST["SEEM_edit_include"]) || $_REQUEST["SEEM_edit_include"] == "false"){
 
-	$refreshButton = we_button::create_button("refresh", "javascript:top.weNavigationHistory.navigateReload();");
+	$refreshButton = we_html_button::create_button("refresh", "javascript:top.weNavigationHistory.navigateReload();");
 }
 
 //	spaceholder

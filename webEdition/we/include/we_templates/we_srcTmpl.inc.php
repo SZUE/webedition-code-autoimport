@@ -186,7 +186,7 @@ switch($_SESSION['prefs']['editorMode']){
 								hlLine = editor.addLineClass(cur, "background", "activeline");
 							}
 						});
-		<?php } else { //FIX for CM which doesn't display lines beyond 27 if this line is missing....   ?>
+		<?php } else { //FIX for CM which doesn't display lines beyond 27 if this line is missing....     ?>
 						hlLine = editor.addLineClass(0, "background", "");
 
 		<?php } ?>
@@ -368,7 +368,7 @@ switch($_SESSION['prefs']['editorMode']){
 	}
 
 	function getCharset() {
-		return "<?php print !empty($we_doc->elements['Charset']['dat']) ? $we_doc->elements['Charset']['dat'] : $GLOBALS['WE_BACKENDCHARSET']; ?>";
+		return "<?php echo $we_doc->elements['Charset']['dat'] ? $we_doc->elements['Charset']['dat'] : $GLOBALS['WE_BACKENDCHARSET']; ?>";
 	}
 
 	// ############ CodeMirror Functions ################
@@ -432,7 +432,7 @@ switch($_SESSION['prefs']['editorMode']){
 //-->
 </script>
 </head>
-<body class="weEditorBody" style="overflow:hidden;" onLoad="setTimeout('initEditor()', 200);" onUnload="doUnload();
+<body class="weEditorBody" style="overflow:hidden;" onload="setTimeout('initEditor()', 200);" onunload="doUnload();
 		parent.editorScrollPosTop = getScrollPosTop();
 		parent.editorScrollPosLeft = getScrollPosLeft();" <?php
 //FIXME: no resize for IE!
@@ -571,6 +571,7 @@ switch($_SESSION['prefs']['editorMode']){
 					break;
 				case 'text/js':
 					$parser_js[] = 'mode/javascript/javascript.js';
+					$parser_js[] = 'mode/sass/sass.js';
 					$parser_js[] = 'addon/fold/foldcode.js';
 					$parser_js[] = 'addon/edit/matchbrackets.js';
 					$parser_js[] = 'addon/hint/show-hint.js';
@@ -597,7 +598,7 @@ switch($_SESSION['prefs']['editorMode']){
 					$parser_js[] = 'mode/javascript/javascript.js';
 					$parser_js[] = 'mode/css/css.js';
 					$parser_js[] = 'mode/htmlmixed/htmlmixed.js';
-					$parser_js[] = 'mode/clike/clike.js';
+//					$parser_js[] = 'mode/clike/clike.js';
 					$parser_js[] = 'mode/php/php.js';
 					$parser_js[] = 'addon/edit/closetag.js';
 					$parser_js[] = 'addon/fold/foldcode.js';
@@ -692,7 +693,7 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 
 		$code = $we_doc->getElement('data');
 
-		if($we_doc->ClassName == 'we_htmlDocument'){
+		if(get_class($we_doc) == 'we_htmlDocument'){
 			$code = $we_doc->getDocumentCode();
 		}
 
@@ -718,15 +719,15 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 	    <tr>
 <td align="left" class="defaultfont">' .
 			(substr($_SESSION['prefs']['editorMode'], 0, 10) == 'codemirror' ? '
-<input type="text" style="width: 10em;float:left;" id="query"/><div style="float:left;">' . we_button::create_button("search", 'javascript:search(document.getElementById("query").value,!document.getElementById("caseSens").checked);') . '</div>
-<input type="text" style="margin-left:2em;width: 10em;float:left;" id="replace"/><div style="float:left;">' . we_button::create_button("replace", 'javascript:myReplace(document.getElementById("query").value,document.getElementById("replace").value,!document.getElementById("caseSens").checked);') . '</div>' .
-				we_forms::checkbox(1, 0, 'caseSens', g_l('weClass', '[caseSensitive]'), false, "defaultfont", '', false, '', 0, 0, '', 'display:inline-block;margin-left:2em;') .
+<input type="text" style="width: 10em;float:left;" id="query"/><div style="float:left;">' . we_html_button::create_button("search", 'javascript:search(document.getElementById("query").value,!document.getElementById("caseSens").checked);') . '</div>
+<input type="text" style="margin-left:2em;width: 10em;float:left;" id="replace"/><div style="float:left;">' . we_html_button::create_button("replace", 'javascript:myReplace(document.getElementById("query").value,document.getElementById("replace").value,!document.getElementById("caseSens").checked);') . '</div>' .
+				we_html_forms::checkbox(1, 0, 'caseSens', g_l('weClass', '[caseSensitive]'), false, "defaultfont", '', false, '', 0, 0, '', 'display:inline-block;margin-left:2em;') .
 				'</div>' : ''
 			) . '
 					</td>
 					<td align="right" class="defaultfont">' .
-			($_useJavaEditor ? '' : we_forms::checkbox(1, ($_SESSION['weS']['we_wrapcheck'] == 1) || $_SESSION['prefs']['editorWrap'], 'we_wrapcheck_tmp', g_l('global', '[wrapcheck]'), false, "defaultfont", "we_cmd('wrap_on_off',this.checked)", false, '', 0, 0, '', 'display:inline-block;')) .
-			(substr($_SESSION['prefs']['editorMode'], 0, 10) == 'codemirror' ? '<div id="reindentButton" style="display:inline-block;margin-left:10px;margin-top:-3px;">' . we_button::create_button("reindent", 'javascript:reindent();') . '</div>' : '') .
+			($_useJavaEditor ? '' : we_html_forms::checkbox(1, ($_SESSION['weS']['we_wrapcheck'] == 1) || $_SESSION['prefs']['editorWrap'], 'we_wrapcheck_tmp', g_l('global', '[wrapcheck]'), false, "defaultfont", "we_cmd('wrap_on_off',this.checked)", false, '', 0, 0, '', 'display:inline-block;')) .
+			(substr($_SESSION['prefs']['editorMode'], 0, 10) == 'codemirror' ? '<div id="reindentButton" style="display:inline-block;margin-left:10px;margin-top:-3px;">' . we_html_button::create_button("reindent", 'javascript:reindent();') . '</div>' : '') .
 			'</td>	</tr>
         </table></td></tr></table>';
 		$znr = -1;
@@ -757,7 +758,7 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 				if($tagGroupName == 'custom'){
 					$groupselect .= '<option value="-1" disabled="disabled">----------</option>';
 				}
-				$groupselect .= '<option value="' . $tagGroupName . '"' . ($tagGroupName == $selectedGroup ? ' selected="selected"' : '') . '">' . (in_array($tagGroupName, $GLOBALS['_we_active_integrated_modules']) ? g_l('javaMenu_moduleInformation', '[' . $tagGroupName . '][text]') : g_l('weTagGroups', '[' . $tagGroupName . ']')) . '</option>';
+				$groupselect .= '<option value="' . $tagGroupName . '"' . ($tagGroupName == $selectedGroup ? ' selected="selected"' : '') . '">' . (weModuleInfo::isActive($tagGroupName) ? g_l('javaMenu_moduleInformation', '[' . $tagGroupName . '][text]') : g_l('weTagGroups', '[' . $tagGroupName . ']')) . '</option>';
 				if($tagGroupName == 'alltags'){
 					$groupselect .= '<option value="-1" disabled="disabled">----------</option>';
 				}
@@ -776,11 +777,11 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 			$tagselect .= '</select>';
 
 			// buttons
-			$editTagbut = we_button::create_button("image:btn_direction_right", "javascript:executeEditButton();", true, 100, 22, "", "", false, false, "_applyCode");
-			$selectallbut = we_button::create_button("selectAll", "javascript:document.getElementById(\"tag_edit_area\").focus(); document.getElementById(\"tag_edit_area\").select();");
-			$prependbut = we_button::create_button("prepend", 'javascript:insertAtStart(document.getElementById("tag_edit_area").value);');
-			$appendbut = we_button::create_button("append", 'javascript:insertAtEnd(document.getElementById("tag_edit_area").value);');
-			$addCursorPositionbut = we_button::create_button("addCursorPosition", 'javascript:addCursorPosition(document.getElementById("tag_edit_area").value);_EditorFrame.setEditorIsHot(true);');
+			$editTagbut = we_html_button::create_button("image:btn_direction_right", "javascript:executeEditButton();", true, 100, 22, "", "", false, false, "_applyCode");
+			$selectallbut = we_html_button::create_button("selectAll", "javascript:document.getElementById(\"tag_edit_area\").focus(); document.getElementById(\"tag_edit_area\").select();");
+			$prependbut = we_html_button::create_button("prepend", 'javascript:insertAtStart(document.getElementById("tag_edit_area").value);');
+			$appendbut = we_html_button::create_button("append", 'javascript:insertAtEnd(document.getElementById("tag_edit_area").value);');
+			$addCursorPositionbut = we_html_button::create_button("addCursorPosition", 'javascript:addCursorPosition(document.getElementById("tag_edit_area").value);_EditorFrame.setEditorIsHot(true);');
 
 			$tagWizardHtml = $CodeWizard->getJavascript() .
 				we_html_element::jsElement(
@@ -963,8 +964,8 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 			$wepos = weGetCookieVariable("but_weTMPLDocEdit");
 			$znr = 1;
 		}
-		print we_multiIconBox::getJS() .
-			'<div id="bodydiv"' . ($_SESSION['prefs']['editorMode'] == 'java' ? '' : 'style="display:none;"') . '>' . we_multiIconBox::getHTML("weTMPLDocEdit", "100%", $parts, 20, "", $znr, g_l('weClass', "[showTagwizard]"), g_l('weClass', "[hideTagwizard]"), ($wepos == "down"), "", 'toggleTagWizard();') . '</div>';
+		print we_html_multiIconBox::getJS() .
+			'<div id="bodydiv"' . ($_SESSION['prefs']['editorMode'] == 'java' ? '' : 'style="display:none;"') . '>' . we_html_multiIconBox::getHTML("weTMPLDocEdit", "100%", $parts, 20, "", $znr, g_l('weClass', "[showTagwizard]"), g_l('weClass', "[hideTagwizard]"), ($wepos == "down"), "", 'toggleTagWizard();') . '</div>';
 		?></body>
 
 <?php

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,8 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 //	marked to DELETE
 print __FILE__;
 print "<br>MARKED TO delete<br>$sdafkusdflksdhg";

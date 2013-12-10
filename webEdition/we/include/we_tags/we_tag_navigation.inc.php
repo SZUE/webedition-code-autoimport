@@ -27,17 +27,17 @@ function we_tag_navigation($attribs){
 	$id = weTag_getAttribute("id", $attribs, 0);
 	$name = weTag_getAttribute("navigationname", $attribs, "default");
 
-	$GLOBALS['we_navigation'][$name] = new weNavigationItems();
+	$GLOBALS['we_navigation'][$name] = new we_navigation_items();
 	if(isset($GLOBALS['initNavigationFromSession']) && $GLOBALS['initNavigationFromSession']){
 		$showRoot = ($parentid == -1);
 		$GLOBALS['we_navigation'][$name]->initByNavigationObject($showRoot);
-	} else{
+	} else {
 		$realId = ($id ? $id : ($parentid != -1 ? $parentid : 0));
 		$showRoot = ($id ? true : ($parentid == -1));
-		if(!$GLOBALS['we_navigation'][$name]->initFromCache($realId, $showRoot)){ 
+		if(!$GLOBALS['we_navigation'][$name]->initFromCache($realId, $showRoot)){
 			//make sure we use cache next time!
 			$GLOBALS['we_navigation'][$name]->initById($realId, false, $showRoot);
-			weNavigationCache::saveCacheNavigation($realId, $GLOBALS['we_navigation'][$name]);
+			we_navigation_cache::saveCacheNavigation($realId, $GLOBALS['we_navigation'][$name]);
 		}
 	}
 }

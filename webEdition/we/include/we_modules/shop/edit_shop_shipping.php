@@ -31,14 +31,14 @@ we_html_tools::htmlTop();
 
 print STYLESHEET;
 
-$weShippingControl = weShippingControl::getShippingControl();
+$weShippingControl = we_shop_shippingControl::getShippingControl();
 
 if(isset($_REQUEST['we_cmd'])){
 
 	switch($_REQUEST['we_cmd'][0]){
 
 		case 'newShipping':
-			$weShipping = weShippingControl::getNewEmptyShipping();
+			$weShipping = we_shop_shippingControl::getNewEmptyShipping();
 			break;
 
 		case 'editShipping':
@@ -223,7 +223,7 @@ $parts[] = array(
 );
 unset($selectFields);
 
-$shopVats = weShopVats::getAllShopVATs();
+$shopVats = we_shop_vats::getAllShopVATs();
 $selectFields = array();
 foreach($shopVats as $id => $shopVat){
 	$selectFields[$id] = $shopVat->text . ' (' . $shopVat->vat . '%)';
@@ -251,12 +251,12 @@ $parts[] = array(
 	'space' => 200,
 	'html' => '<table border="0" cellpadding="0" cellpsacing="0" class="defaultfont">
 	<tr>
-		<td>' . we_class::htmlSelect('editShipping', $selectFields, 4, (isset($_REQUEST['weShippingId']) ? $_REQUEST['weShippingId'] : ''), false, 'onchange="document.location=\'' . $_SERVER['SCRIPT_NAME'] . '?we_cmd[0]=editShipping&weShippingId=\' + this.options[this.selectedIndex].value;"', 'value', 200) . '</td>
+		<td>' . we_class::htmlSelect('editShipping', $selectFields, 4, (isset($_REQUEST['weShippingId']) ? $_REQUEST['weShippingId'] : ''), false, array('onchange' => 'document.location=\'' . $_SERVER['SCRIPT_NAME'] . '?we_cmd[0]=editShipping&weShippingId=\' + this.options[this.selectedIndex].value;'), 'value', 200) . '</td>
 		<td width="10"></td>
 		<td valign="top">'
-	. we_button::create_button("new_entry", 'javascript:we_cmd(\'newEntry\');') .
+	. we_html_button::create_button("new_entry", 'javascript:we_cmd(\'newEntry\');') .
 	'<div style="margin:5px;"></div>' .
-	we_button::create_button('delete', 'javascript:we_cmd(\'delete\')') .
+	we_html_button::create_button('delete', 'javascript:we_cmd(\'delete\')') .
 	'</td>
 	</tr>
 	</table>'
@@ -313,7 +313,7 @@ if(isset($weShipping)){ // show the shipping which must be edited
 	' . $tblPart . '
 		</tbody>
 	</table>
-	' . we_button::create_button('image:btn_function_plus', 'javascript:we_cmd(\'addShippingCostTableRow\',\'12\');'),
+	' . we_html_button::create_button('image:btn_function_plus', 'javascript:we_cmd(\'addShippingCostTableRow\',\'12\');'),
 		'noline' => 1
 	);
 	$parts[] = array(
@@ -324,9 +324,9 @@ if(isset($weShipping)){ // show the shipping which must be edited
 	);
 }
 
-print we_multiIconBox::getHTML(
-		'weShipping', "100%", $parts, 30, we_button::position_yes_no_cancel(
-			we_button::create_button('save', 'javascript:we_cmd(\'save\');'), '', we_button::create_button('close', 'javascript:we_cmd(\'close\');')
+print we_html_multiIconBox::getHTML(
+		'weShipping', "100%", $parts, 30, we_html_button::position_yes_no_cancel(
+			we_html_button::create_button('save', 'javascript:we_cmd(\'save\');'), '', we_html_button::create_button('close', 'javascript:we_cmd(\'close\');')
 		), -1, '', '', false, g_l('modules_shop', '[shipping][shipping_package]')
 );
 

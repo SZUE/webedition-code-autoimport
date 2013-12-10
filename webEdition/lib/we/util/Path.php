@@ -27,8 +27,7 @@
  * @package    we_util
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_util_Path
-{
+class we_util_Path{
 
 	/**
 	 * Converts a given id to a path
@@ -38,9 +37,8 @@ class we_util_Path
 	 * @param Zend_Db_Adapter $db  Zend db adapter object
 	 * @return string
 	 */
-	static function id2Path($id, $dbTable, $db = NULL)
-	{
-		if (is_null($db)) {
+	static function id2Path($id, $dbTable, $db = NULL){
+		if(is_null($db)){
 			$db = we_io_DB::sharedAdapter();
 		}
 		return $db->fetchOne('SELECT Path FROM ' . addslashes($dbTable) . ' WHERE ID = ?', $id);
@@ -54,9 +52,8 @@ class we_util_Path
 	 * @param Zend_Db_Adapter $db  Zend db adapter object
 	 * @return integer
 	 */
-	static function path2Id($path, $dbTable, $db = NULL)
-	{
-		if (is_null($db)) {
+	static function path2Id($path, $dbTable, $db = NULL){
+		if(is_null($db)){
 			$db = we_io_DB::sharedAdapter();
 		}
 		return abs($db->fetchOne('SELECT ID FROM ' . addslashes($dbTable) . ' WHERE Path = ?', $path));
@@ -70,9 +67,8 @@ class we_util_Path
 	 * @param Zend_Db_Adapter $db  Zend db adapter object
 	 * @return boolean
 	 */
-	static function pathExists($path, $dbTable, $db = NULL)
-	{
-		if (is_null($db)) {
+	static function pathExists($path, $dbTable, $db = NULL){
+		if(is_null($db)){
 			$db = we_io_DB::sharedAdapter();
 		}
 

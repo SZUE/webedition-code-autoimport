@@ -27,7 +27,7 @@ function we_tag_ifFemale(){
 		return true;
 	}
 	if(isset($GLOBALS['WE_SALUTATION']) && $GLOBALS['WE_SALUTATION']){
-		$femaleSalutation = f('SELECT pref_value FROM ' . NEWSLETTER_PREFS_TABLE . ' WHERE pref_name="' . weNewsletterBase::FEMALE_SALUTATION_FIELD . '"', 'pref_value', $GLOBALS['DB_WE']);
+		$femaleSalutation = f('SELECT pref_value FROM ' . NEWSLETTER_PREFS_TABLE . ' WHERE pref_name="' . we_newsletter_base::FEMALE_SALUTATION_FIELD . '"', 'pref_value', $GLOBALS['DB_WE']);
 		if($femaleSalutation == ''){
 			$femaleSalutation = g_l('modules_newsletter', '[default][female]');
 		}

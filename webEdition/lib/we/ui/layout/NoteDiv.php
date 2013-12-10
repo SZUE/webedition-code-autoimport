@@ -74,11 +74,11 @@ class we_ui_layout_NoteDiv extends we_ui_layout_Div{
 		$_style = "";
 
 		switch($this->type){
-			case "info":	// set info icon
+			case "info": // set info icon
 				$_iconpath = WE_THEMES_DIR . "/" . WE_THEME_NAME . "/we_ui_layout_NoteDiv/info_small.gif";
-				if(file_exists($GLOBALS['__WE_LIB_PATH__'] . $_iconpath)){
-					$_imagesize = getimagesize($GLOBALS['__WE_LIB_PATH__'] . $_iconpath);
-					$_style = array("background-image" => "url(" . $GLOBALS['__WE_LIB_URL__'] . $_iconpath . ")",
+				if(file_exists(WE_LIB_PATH . $_iconpath)){
+					$_imagesize = getimagesize(WE_LIB_PATH . $_iconpath);
+					$_style = array("background-image" => "url(" . LIB_DIR . $_iconpath . ")",
 						"padding-left" => ($_imagesize[0] + 10) . "px",
 						"height: " => ($_imagesize[1]) . "px");
 				}
@@ -86,9 +86,9 @@ class we_ui_layout_NoteDiv extends we_ui_layout_Div{
 			case "warning": // set warning / alert icon
 			case "alert":
 				$_iconpath = WE_THEMES_DIR . "/" . WE_THEME_NAME . "/we_ui_layout_NoteDiv/alert_small.gif";
-				if(file_exists($GLOBALS['__WE_LIB_PATH__'] . $_iconpath)){
-					$_imagesize = getimagesize($GLOBALS['__WE_LIB_PATH__'] . $_iconpath);
-					$_style = array("background-image" => "url(" . $GLOBALS['__WE_LIB_URL__'] . $_iconpath . ")",
+				if(file_exists(WE_LIB_PATH . $_iconpath)){
+					$_imagesize = getimagesize(WE_LIB_PATH . $_iconpath);
+					$_style = array("background-image" => "url(" . LIB_DIR . $_iconpath . ")",
 						"padding-left" => ($_imagesize[0] + 10) . "px",
 						"height" => ($_imagesize[1]) . "px",
 						"overflow" => "auto");
@@ -96,9 +96,9 @@ class we_ui_layout_NoteDiv extends we_ui_layout_Div{
 				break;
 			case "question": // set qestionmark icon
 				$_iconpath = WE_THEMES_DIR . "/" . WE_THEME_NAME . "/we_ui_layout_NoteDiv/question_small.gif";
-				if(file_exists($GLOBALS['__WE_LIB_PATH__'] . $_iconpath)){
-					$_imagesize = getimagesize($GLOBALS['__WE_LIB_PATH__'] . $_iconpath);
-					$_style = array("background-image" => "url(" . $GLOBALS['__WE_LIB_URL__'] . $_iconpath . ")",
+				if(file_exists(WE_LIB_PATH . $_iconpath)){
+					$_imagesize = getimagesize(WE_LIB_PATH . $_iconpath);
+					$_style = array("background-image" => "url(" . LIB_DIR . $_iconpath . ")",
 						"padding-left" => ($_imagesize[0] + 10) . "px",
 						"height" => ($_imagesize[1]) . "px",
 						"overflow2" => "auto");
@@ -133,7 +133,7 @@ class we_ui_layout_NoteDiv extends we_ui_layout_Div{
 	public function addText($text){
 		if($this->_divHTML .= nl2br($text)){
 			return true;
-		} else{
+		} else {
 			return false;
 		}
 	}

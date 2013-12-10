@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,15 +22,11 @@
  * @package    webEdition_rpc
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+class rpcGetSnippetCodeView extends rpcView{
 
-
-class rpcGetSnippetCodeView extends rpcView {
-
-
-	function getResponse($response) {
+	function getResponse($response){
 		header('Content-type: text/plain');
 		return $response->getData("data");
-
 	}
 
 }

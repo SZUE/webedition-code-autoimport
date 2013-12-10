@@ -69,7 +69,6 @@ class we_listview extends listviewBase{
 	 * @param string $categoryids
 	 * @return we_listview
 	 */
-
 	function __construct($name = 0, $rows = 999999999, $offset = 0, $order = '', $desc = false, $docType = '', $cats = '', $catOr = false, $casesensitive = false, $workspaceID = 0, $contentTypes = '', $cols = '', $searchable = true, $condition = '', $calendar = '', $datefield = '', $date = '', $weekstart = '', $categoryids = '', $customerFilterType = 'false', $subfolders = true, $customers = '', $id = '', $languages = '', $numorder = false, $hidedirindex = false, $triggerID = ""){
 		parent::__construct($name, $rows, $offset, $order, $desc, $cats, $catOr, $workspaceID, $cols, $calendar, $datefield, $date, $weekstart, $categoryids, $customerFilterType, $id);
 
@@ -109,7 +108,7 @@ class we_listview extends listviewBase{
 			}
 
 			$where_lang .= ' ) ';
-		} else{
+		} else {
 			$where_lang = '';
 		}
 
@@ -180,7 +179,7 @@ class we_listview extends listviewBase{
 			}
 		}
 		if($this->customerFilterType != 'false' && defined('CUSTOMER_FILTER_TABLE')){
-			$sql_tail .= weDocumentCustomerFilter::getConditionForListviewQuery($this);
+			$sql_tail .= we_customer_documentFilter::getConditionForListviewQuery($this);
 		}
 
 		if($this->customers && $this->customers !== '*'){
@@ -226,10 +225,10 @@ class we_listview extends listviewBase{
 					}
 					if($not){
 						$bedingungen3_sql[] = ' NOT (' . implode($klammer, ' OR ') . ')';
-					} else{
+					} else {
 						$bedingungen_sql[] = '(' . implode($klammer, ' OR ') . ')';
 					}
-				} else{
+				} else {
 					$klammer = array();
 					foreach($spalten as $v){
 						$klammer[] = sprintf("%s LIKE '%%%s%%'", $v, addslashes($v1));
@@ -254,14 +253,14 @@ class we_listview extends listviewBase{
 			$q = 'SELECT ' . FILE_TABLE . '.ID as ID, ' . FILE_TABLE . '.WebUserID as WebUserID,' . ($random ? 'RAND() as RANDOM ' : $ranking . ' AS ranking ') . $calendar_select . ' FROM ' .
 				FILE_TABLE . ' LEFT JOIN ' . LINK_TABLE . ' ON ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID LEFT JOIN ' . CONTENT_TABLE . ' ON ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID LEFT JOIN ' . INDEX_TABLE . ' ON ' . INDEX_TABLE . '.DID=' . FILE_TABLE . '.ID ' . $joinstring .
 				' WHERE ' . $orderwhereString . ($this->searchable ? ' ' . FILE_TABLE . '.IsSearchable=1' : 1) . ' ' . $where_lang . ' ' . $cond_where . ' ' . $ws_where . ' AND ' . FILE_TABLE . '.IsFolder=0 AND ' . FILE_TABLE . '.Published > 0 AND ' . LINK_TABLE . '.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND ' . $bedingung_sql . (($dt != "#NODOCTYPE#") ? (" AND " . FILE_TABLE . '.DocType=' . intval($dt)) : '') . ' ' . $sql_tail . $calendar_where . ' GROUP BY ID ' . $orderstring . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . abs($this->start) . ',' . abs($this->maxItemsPerPage)) : '');
-		} else{
+		} else {
 
 			if($this->workspaceID != ''){
 				$workspaces = makeArrayFromCSV($this->workspaceID);
 				$cond = array();
 				if(!$this->subfolders){ // all entries with given parentIds
 					$ws_where = ' AND (ParentID IN (' . implode(', ', $workspaces) . '))';
-				} else{ // beneath the workspaceids
+				} else { // beneath the workspaceids
 					foreach($workspaces as $id){
 						$workspace = id_to_path($id, FILE_TABLE, $this->DB_WE);
 						$cond[] = FILE_TABLE . '.Path LIKE "' . $this->DB_WE->escape($workspace) . '/%"';
@@ -281,7 +280,7 @@ class we_listview extends listviewBase{
 			$_idListArray = array();
 		}
 
-		while($this->DB_WE->next_record()) {
+		while($this->DB_WE->next_record()){
 			$this->IDs[] = $this->DB_WE->f('ID');
 			if($calendar != ''){
 				$this->calendar_struct['storage'][$this->DB_WE->f('ID')] = intval($this->DB_WE->f('Calendar'));
@@ -295,13 +294,13 @@ class we_listview extends listviewBase{
 				$_idListArray = array_unique($_idListArray);
 				$_idlist = implode(',', $_idListArray);
 				$this->DB_WE->query('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID IN(' . $_idlist . ')');
-				while($this->DB_WE->next_record()) {
+				while($this->DB_WE->next_record()){
 					$this->customerArray['cid_' . $this->DB_WE->f('ID')] = $this->DB_WE->getRecord();
 				}
 			}
 			unset($_idListArray);
 		}
-		$q = 'SELECT ' . FILE_TABLE . '.ID as ID, ' . FILE_TABLE . '.WebUserID as WebUserID' . ($random ? ',RAND() as RANDOM' : ($this->search ? ','.$ranking . ' AS ranking' : '')) . ' FROM ' .
+		$q = 'SELECT ' . FILE_TABLE . '.ID as ID, ' . FILE_TABLE . '.WebUserID as WebUserID' . ($random ? ',RAND() as RANDOM' : ($this->search ? ',' . $ranking . ' AS ranking' : '')) . ' FROM ' .
 			FILE_TABLE . ' LEFT JOIN ' . LINK_TABLE . ' ON ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID LEFT JOIN ' . CONTENT_TABLE . ' ON ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID' .
 			($this->search ? ' LEFT JOIN ' . INDEX_TABLE . ' ON ' . INDEX_TABLE . '.DID=' . FILE_TABLE . '.ID' : '') . $joinstring .
 			' WHERE ' . $orderwhereString . ($this->searchable ? ' ' . FILE_TABLE . '.IsSearchable=1' : '1') . ' ' . $where_lang . ' ' . $cond_where . ' ' . $ws_where . ' AND ' . FILE_TABLE . '.IsFolder=0 AND ' . FILE_TABLE . '.Published > 0 AND ' . LINK_TABLE . '.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"' .
@@ -329,7 +328,7 @@ class we_listview extends listviewBase{
 				$this->DB_WE->query('SELECT ' . CONTENT_TABLE . '.BDID as BDID, ' . CONTENT_TABLE . '.Dat as Dat, ' . LINK_TABLE . '.Name as Name FROM ' .
 					LINK_TABLE . ' LEFT JOIN ' . CONTENT_TABLE . ' ON ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID  WHERE ' . LINK_TABLE . '.DID=' . intval($id) . ' AND ' . LINK_TABLE . '.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
 				$this->Record = array();
-				while($this->DB_WE->next_record()) {
+				while($this->DB_WE->next_record()){
 					$tmp = ($this->DB_WE->f('BDID'));
 					$this->Record[$this->DB_WE->f('Name')] = $tmp ? $tmp : $this->DB_WE->f('Dat');
 				}
@@ -362,7 +361,7 @@ class we_listview extends listviewBase{
 			}
 
 			return true;
-		} else{
+		} else {
 			$this->stop_next_row = $this->shouldPrintEndTR();
 			if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
 				$this->Record = array();
@@ -399,10 +398,10 @@ class we_listview extends listviewBase{
 			if(in_array($elem, array_keys($logic))){
 				$c = count($logic[$current]);
 				$current = $elem;
-			} else{
+			} else {
 				if(isset($logic[$current][$c])){
 					$logic[$current][$c].=' ' . $arr[$i];
-				} else{
+				} else {
 					$logic[$current][$c] = $arr[$i];
 				}
 			}

@@ -76,7 +76,7 @@ class we_schedpro{
 		$months = '<table cellpadding="0" cellspacing="0" border="0"><tr>';
 
 		for($i = 1; $i <= 12; $i++){
-			$months .= '<td>' . we_forms::checkbox(1, $this->months[$i - 1], "check_we_schedule_month" . $i . "_" . $this->nr, g_l('date', '[month][short][' . ($i - 1) . ']'), false, "defaultfont", "this.form.elements['we_schedule_month" . $i . "_" . $this->nr . "'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true)") .
+			$months .= '<td>' . we_html_forms::checkbox(1, $this->months[$i - 1], "check_we_schedule_month" . $i . "_" . $this->nr, g_l('date', '[month][short][' . ($i - 1) . ']'), false, "defaultfont", "this.form.elements['we_schedule_month" . $i . "_" . $this->nr . "'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true)") .
 				'<input type="hidden" name="we_schedule_month' . $i . '_' . $this->nr . '" value="' . $this->months[$i - 1] . '" /></td>';
 		}
 
@@ -89,7 +89,7 @@ class we_schedpro{
 
 		for($i = 1; $i <= 36; $i++){
 			if($i <= 31){
-				$days .= '<td>' . we_forms::checkbox(1, $this->days[$i - 1], "check_we_schedule_day" . $i . "_" . $this->nr, sprintf('%02d', $i), false, "defaultfont", "this.form.elements['we_schedule_day" . $i . "_" . $this->nr . "'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true)") .
+				$days .= '<td>' . we_html_forms::checkbox(1, $this->days[$i - 1], "check_we_schedule_day" . $i . "_" . $this->nr, sprintf('%02d', $i), false, "defaultfont", "this.form.elements['we_schedule_day" . $i . "_" . $this->nr . "'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true)") .
 					'<input type="hidden" name="we_schedule_day' . $i . '_' . $this->nr . '" value="' . $this->days[$i - 1] . '" /></td><td class="defaultfont">&nbsp;</td>';
 			} else {
 				$days .= '<td colspan="3">';
@@ -110,7 +110,7 @@ class we_schedpro{
 		$wd = '<table cellpadding="0" cellspacing="0" border="0"><tr>';
 
 		for($i = 1; $i <= 7; $i++){
-			$wd .= '<td>' . we_forms::checkbox(1, $this->weekdays[$i - 1], "check_we_schedule_wday'.$i.'_'.$this->nr.'", g_l('date', '[day][short][' . ($i - 1) . ']'), false, "defaultfont", "this.form.elements['we_schedule_wday" . $i . "_" . $this->nr . "'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true)") .
+			$wd .= '<td>' . we_html_forms::checkbox(1, $this->weekdays[$i - 1], "check_we_schedule_wday'.$i.'_'.$this->nr.'", g_l('date', '[day][short][' . ($i - 1) . ']'), false, "defaultfont", "this.form.elements['we_schedule_wday" . $i . "_" . $this->nr . "'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true)") .
 				'<input type="hidden" name="we_schedule_wday' . $i . '_' . $this->nr . '" value="' . $this->weekdays[$i - 1] . '" /></td><td class="defaultfont">&nbsp;</td>';
 		}
 
@@ -166,7 +166,7 @@ function checkFooter(){
 		$taskpopup = '<select class="weSelect we_schedule_task" name="we_schedule_task_' . $this->nr . '" size="1" onchange="_EditorFrame.setEditorIsHot(true);checkFooter();if(self.we_hasExtraRow_' . $this->nr . ' || this.options[this.selectedIndex].value==' . self::DOCTYPE . ' || this.options[this.selectedIndex].value==' . self::CATEGORY . ' || this.options[this.selectedIndex].value==' . self::DIR . '){ setScrollTo();we_cmd(\'reload_editpage\');}">
 <option value="' . self::SCHEDULE_FROM . '"' . (($this->task == self::SCHEDULE_FROM) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::SCHEDULE_FROM . ']') . '</option>
 <option value="' . self::SCHEDULE_TO . '"' . (($this->task == self::SCHEDULE_TO) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::SCHEDULE_TO . ']') . '</option>';
-		if((we_hasPerm('DELETE_DOCUMENT') && (!$isobj)) || (we_hasPerm('DELETE_OBJECTFILE') && $isobj)){
+		if((permissionhandler::hasPerm('DELETE_DOCUMENT') && (!$isobj)) || (permissionhandler::hasPerm('DELETE_OBJECTFILE') && $isobj)){
 			$taskpopup .= '<option value="' . self::DELETE . '"' . (($this->task == self::DELETE) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::DELETE . ']') . '</option>';
 		}
 		if(!$isobj){
@@ -174,7 +174,7 @@ function checkFooter(){
 <option value="' . self::CALL . '"' . (($this->task == self::CALL) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::CALL . ']') . '</option>';
 		}
 		$taskpopup .= '<option value="' . self::CATEGORY . '"' . (($this->task == self::CATEGORY) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::CATEGORY . ']') . '</option>';
-		if((we_hasPerm('MOVE_DOCUMENT') && (!$isobj)) || (we_hasPerm("MOVE_OBJECTFILE") && $isobj)){
+		if((permissionhandler::hasPerm('MOVE_DOCUMENT') && (!$isobj)) || (permissionhandler::hasPerm("MOVE_OBJECTFILE") && $isobj)){
 			$taskpopup .= '<option value="' . self::DIR . '"' . (($this->task == self::DIR) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::DIR . ']') . '</option>';
 		}
 		$taskpopup .= '
@@ -188,7 +188,7 @@ function checkFooter(){
 		switch($this->task){
 			case self::DOCTYPE:
 				$db = new DB_WE();
-				$q = getDoctypeQuery($db);
+				$q = we_docTypes::getDoctypeQuery($db);
 				$db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . $q);
 				$doctypepop = '<select class="weSelect" name="we_schedule_doctype_' . $this->nr . '" size="1" onchange="_EditorFrame.setEditorIsHot(true)">';
 				while($db->next_record()){
@@ -196,17 +196,17 @@ function checkFooter(){
 				}
 				$doctypepop .= '</select>';
 				$checknname = md5(uniqid(__FUNCTION__, true));
-				$extracont = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $doctypepop . '</td><td class="defaultfont">&nbsp;&nbsp;</td><td>' . we_forms::checkbox(1, $this->doctypeAll, $checknname, g_l('modules_schedule', "[doctypeAll]")
+				$extracont = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $doctypepop . '</td><td class="defaultfont">&nbsp;&nbsp;</td><td>' . we_html_forms::checkbox(1, $this->doctypeAll, $checknname, g_l('modules_schedule', "[doctypeAll]")
 						, false, "defaultfont", "this.form.elements['we_schedule_doctypeAll_" . $this->nr . "'].value=this.checked?1:0;") .
 					'<input type="hidden" name="we_schedule_doctypeAll_' . $this->nr . '" value="' . $this->doctypeAll . '" /></td></tr></table>';
 				$extraheadl = g_l('modules_schedule', "[doctype]");
 				break;
 			case self::CATEGORY:
-				$delallbut = we_button::create_button("delete_all", "javascript:we_cmd('delete_all_schedcats'," . $this->nr . ")");
-				$addbut = we_button::create_button("add", "javascript:we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','opener.setScrollTo();opener.top.we_cmd(\\'add_schedcat\\',top.currentID," . $this->nr . ");')");
-				$cats = new MultiDirChooser(450, $this->CategoryIDs, "delete_schedcat", we_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", CATEGORY_TABLE, "defaultfont", $this->nr);
+				$delallbut = we_html_button::create_button("delete_all", "javascript:we_cmd('delete_all_schedcats'," . $this->nr . ")");
+				$addbut = we_html_button::create_button("add", "javascript:we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','opener.setScrollTo();opener.top.we_cmd(\\'add_schedcat\\',top.currentID," . $this->nr . ");')");
+				$cats = new MultiDirChooser(450, $this->CategoryIDs, "delete_schedcat", we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", CATEGORY_TABLE, "defaultfont", $this->nr);
 				$cats->extraDelFn = 'setScrollTo();';
-				if(!we_hasPerm("EDIT_KATEGORIE")){
+				if(!permissionhandler::hasPerm("EDIT_KATEGORIE")){
 					$cats->isEditable = false;
 				}
 				$extracont = $cats->get();
@@ -218,7 +218,7 @@ function checkFooter(){
 				$myid = $this->ParentID;
 				$path = id_to_path($this->ParentID, $GLOBALS['we_doc']->Table);
 
-				if($GLOBALS['we_doc']->ClassName == 'we_objectFile'){
+				if(get_class($GLOBALS['we_doc']) == 'we_objectFile'){
 					if($path == '/'){ //	impossible for documents
 						$path = $GLOBALS['we_doc']->RootDirPath;
 					}
@@ -230,7 +230,7 @@ function checkFooter(){
 				$wecmdenc1 = we_cmd_enc('document.we_form.elements[\'' . $idname . '\'].value');
 				$wecmdenc2 = we_cmd_enc('document.we_form.elements[\'' . $textname . '\'].value');
 				$wecmdenc3 = we_cmd_enc('top.opener._EditorFrame.setEditorIsHot(true);');
-				$button = we_button::create_button('select', 'javascript:we_cmd(\'openDirselector\',document.we_form.elements[\'' . $idname . '\'].value,\'' . $GLOBALS['we_doc']->Table . '\',\'' . $wecmdenc1 . '\',\'' . $wecmdenc2 . '\',\'' . $wecmdenc3 . '\',\'' . session_id() . '\',\'' . $_rootDirID . '\')');
+				$button = we_html_button::create_button('select', 'javascript:we_cmd(\'openDirselector\',document.we_form.elements[\'' . $idname . '\'].value,\'' . $GLOBALS['we_doc']->Table . '\',\'' . $wecmdenc1 . '\',\'' . $wecmdenc2 . '\',\'' . $wecmdenc3 . '\',\'' . session_id() . '\',\'' . $_rootDirID . '\')');
 
 				$yuiSuggest = & weSuggest::getInstance();
 				$yuiSuggest->setAcId('WsDir');
@@ -262,10 +262,10 @@ function checkFooter(){
 		$table = '<table cellpadding="0" cellspacing="0" border="0">
 	<tr valign="top">
 		<td class="defaultgray">' . g_l('modules_schedule', "[task][headline]") . ':</td>
-		<td class="defaultfont"><table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $taskpopup . '</td><td class="defaultfont">&nbsp;&nbsp;</td><td>' . we_forms::checkbox(1, $this->active, $checknname, g_l('modules_schedule', "[active]")
+		<td class="defaultfont"><table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $taskpopup . '</td><td class="defaultfont">&nbsp;&nbsp;</td><td>' . we_html_forms::checkbox(1, $this->active, $checknname, g_l('modules_schedule', "[active]")
 				, false, "defaultfont", "this.form.elements['we_schedule_active_" . $this->nr . "'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true);checkFooter();") .
 			'<input type="hidden" class="we_schedule_active" name="we_schedule_active_' . $this->nr . '" value="' . $this->active . '" /></td></tr></table></td>
-		<td>' . we_button::create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('del_schedule','" . $this->nr . "')") . '</td>
+		<td>' . we_html_button::create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('del_schedule','" . $this->nr . "')") . '</td>
 	</tr>' . $this->getSpacerRowHTML();
 		if($extracont){
 			$table .= '
@@ -475,7 +475,7 @@ function checkFooter(){
 			$GLOBALS['WE_MAIN_EDITMODE'] = $GLOBALS['we_editmode'] = false;
 		}
 
-		while((!$hasLock || $DB_WE->lock(array(SCHEDULE_TABLE, ERROR_LOG_TABLE))) && (--$maxSched != 0) && ($rec = getHash('SELECT * FROM ' . SCHEDULE_TABLE . ' WHERE Wann<=UNIX_TIMESTAMP() AND lockedUntil<NOW() AND Active=1 ORDER BY Wann LIMIT 1', $DB_WE))){
+		while((!$hasLock || $DB_WE->lock(array(SCHEDULE_TABLE, ERROR_LOG_TABLE))) && ( --$maxSched != 0) && ($rec = getHash('SELECT * FROM ' . SCHEDULE_TABLE . ' WHERE Wann<=UNIX_TIMESTAMP() AND lockedUntil<NOW() AND Active=1 ORDER BY Wann LIMIT 1', $DB_WE))){
 			$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET lockedUntil=lockedUntil+INTERVAL 1 minute WHERE DID=' . $rec['DID'] . ' AND Active=1 AND ClassName="' . $rec['ClassName'] . '" AND Type="' . $rec["Type"] . '" AND Was="' . $rec["Was"] . '" AND Wann=' . $rec['Wann']);
 			if($hasLock){
 				$DB_WE->unlock();

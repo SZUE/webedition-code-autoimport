@@ -50,7 +50,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsScrip
 	passed_dls = new Array();
 
 	function showContent(id) {
-		top.content.editor.edbody.msg_mfv.messaging_msg_view.location="<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_message_view.php?id=" + id + "&we_transaction=<?php echo $_REQUEST['we_transaction'] ?>";
+		top.content.editor.edbody.msg_mfv.messaging_msg_view.location = "<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_message_view.php?id=" + id + "&we_transaction=<?php echo $_REQUEST['we_transaction'] ?>";
 	}
 
 	function check(elem, groupSel) {
@@ -96,7 +96,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsScrip
 
 		parent.parent.last_entry_selected = id;
 
-		if (typeof(document.images["read_" + id]) != "undefined") {
+		if (typeof (document.images["read_" + id]) != "undefined") {
 			document.images["read_" + id].src = read_img.src;
 		}
 		highlight_TR(id, sel_color, sel_text_color);
@@ -107,20 +107,20 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsScrip
 
 		for (i = 0; i <= 3; i++) {
 			if (i == 0 || i == 2) {
-				if(document.getElementById("td_" + id + "_link_" + i)){
+				if (document.getElementById("td_" + id + "_link_" + i)) {
 					document.getElementById("td_" + id + "_link_" + i).style.color = text_color;
 				}
-				if(document.getElementById("td_" + id + "_" + i)){
+				if (document.getElementById("td_" + id + "_" + i)) {
 					document.getElementById("td_" + id + "_" + i).style.color = text_color;
 				}
 			} else {
 				if (i != 1 || (top.content.viewclass != "todo")) {
-					if(document.getElementById("td_" + id + "_" + i)){
+					if (document.getElementById("td_" + id + "_" + i)) {
 						document.getElementById("td_" + id + "_" + i).style.color = text_color;
 					}
 				}
 			}
-			if(document.getElementById("td_" + id + "_" + i)){
+			if (document.getElementById("td_" + id + "_" + i)) {
 				document.getElementById("td_" + id + "_" + i).style.backgroundColor = color;
 			}
 		}
@@ -144,66 +144,66 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsScrip
 		}
 	}
 
-	function newMessage(username){
-		new jsWindow('<?php echo WE_MESSAGING_MODULE_DIR; ?>messaging_newmessage.php?we_transaction=<?php echo $_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]; ?>&mode=u_'+escape(username),'messaging_new_message',-1,-1,670,530,true,false,true,false);
+	function newMessage(username) {
+		new jsWindow('<?php echo WE_MESSAGING_MODULE_DIR; ?>messaging_newmessage.php?we_transaction=<?php echo $_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]; ?>&mode=u_' + escape(username), 'messaging_new_message', -1, -1, 670, 530, true, false, true, false);
 	}
-	//-->
+//-->
 </script>
 
 </head>
 <body leftmargin="7" topmargin="5" marginwidth="7" marginheight="5" bgcolor="#ffffff">
-<?php
-$messaging = new we_messaging($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
-$messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
-$messaging->init($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
-?><table width="99%" cellpadding="0" cellspacing="0" border="0"><?php
-	$passed_dls = array();
-	foreach($messaging->selected_set as $key => $val){
-		echo '<tr onclick="check(\'' . $val['ID'] . '\')" style="cursor:pointer">
+	<?php
+	$messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
+	$messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
+	$messaging->init($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
+	?><table width="99%" cellpadding="0" cellspacing="0" border="0"><?php
+		$passed_dls = array();
+		foreach($messaging->selected_set as $key => $val){
+			echo '<tr onclick="check(\'' . $val['ID'] . '\')" style="cursor:pointer">
 		<td id="td_' . $val['ID'] . '_cb" width="18" align="left" class="defaultfont"></td>';
 
-		if($val['hdrs']['ClassName'] == 'we_todo'){
-			if($val['hdrs']['Deadline'] < time()){
-				$dl_passed = 1;
-				$passed_dls[] = $val['ID'];
-			} else{
-				$dl_passed = 0;
-			}
+			if($val['hdrs']['ClassName'] == 'we_todo'){
+				if($val['hdrs']['Deadline'] < time()){
+					$dl_passed = 1;
+					$passed_dls[] = $val['ID'];
+				} else {
+					$dl_passed = 0;
+				}
 
-			echo '<td id="td_' . $val['ID'] . '_0" width="200" align="left" class="defaultfont">' . oldHtmlspecialchars($val['hdrs']['Subject']) . '</td>
+				echo '<td id="td_' . $val['ID'] . '_0" width="200" align="left" class="defaultfont">' . oldHtmlspecialchars($val['hdrs']['Subject']) . '</td>
 			<td id="td_' . $val['ID'] . '_1" width="170" align="left" class="' . ($dl_passed == 0 ? 'defaultfont' : 'defaultfontred') . '">' . date(g_l('date', '[format][default]'), $val['hdrs']['Deadline']) . '</td>
 			<td id="td_' . $val['ID'] . '_2" width="140" align="left" class="defaultfont"><a id="td_' . $val['ID'] . '_link_2" href="javascript:check(\'' . $val['ID'] . '\')">' . $val['hdrs']['Priority'] . '</a></td>
 			<td id="td_' . $val['ID'] . '_3" width="40" align="left" class="defaultfont">' . $val['hdrs']['status'] . '%</td>
 			</tr>';
-		} else{
-			echo '
+			} else {
+				echo '
 				<td id="td_' . $val['ID'] . '_0" width="200" align="left" class="defaultfont">' . oldHtmlspecialchars($val['hdrs']['Subject']) . '</td>
 				<td id="td_' . $val['ID'] . '_1" width="170" align="left" class="defaultfont">' . date(g_l('date', '[format][default]'), $val['hdrs']['Date']) . '</td>
 				<td id="td_' . $val['ID'] . '_2" width="140" align="left" class="defaultfont">' . $val['hdrs']['From'] . '</td>
-				<td id="td_' . $val['ID'] . '_3" width="40" align="left" class="defaultfont"><img src="' . IMAGE_DIR . 'msg_' . ($val['hdrs']['seenStatus'] & we_msg_proto::STATUS_READ ? '' : 'un') . 'read.gif" border="0" width="16" height="18" name="read_' . $val['ID'] . '" /></td>
+				<td id="td_' . $val['ID'] . '_3" width="40" align="left" class="defaultfont"><img src="' . IMAGE_DIR . 'msg_' . ($val['hdrs']['seenStatus'] & we_messaging_proto::STATUS_READ ? '' : 'un') . 'read.gif" border="0" width="16" height="18" name="read_' . $val['ID'] . '" /></td>
 			</tr>';
+			}
+
+			echo '<tr><td>' . we_html_tools::getPixel(1, 3) . '</td><td>' . we_html_tools::getPixel(1, 3) . '</td><td>' . we_html_tools::getPixel(1, 3) . '</td><td>' . we_html_tools::getPixel(1, 3) . '</td></tr>';
+		}
+		?></table><?php
+		?>
+  <script type="text/javascript""><!--
+	var k;
+
+		if (NN4 == false) {
+			for (k = 0; k < parent.parent.entries_selected.length; k++) {
+				highlight_TR(parent.parent.entries_selected[k], sel_color, sel_text_color);
+			}
 		}
 
-		echo '<tr><td>' . we_html_tools::getPixel(1, 3) . '</td><td>' . we_html_tools::getPixel(1, 3) . '</td><td>' . we_html_tools::getPixel(1, 3) . '</td><td>' . we_html_tools::getPixel(1, 3) . '</td></tr>';
-	}
-?></table><?php
-?>
-  <script type="text/javascript""><!--
-					var k;
-
-					if (NN4 == false) {
-					for (k = 0; k < parent.parent.entries_selected.length; k++) {
-					highlight_TR(parent.parent.entries_selected[k], sel_color, sel_text_color);
-					}
-					}
-
-					if (parent.parent.entries_selected.length > 0)
-					showContent(parent.parent.entries_selected[parent.parent.entries_selected.length -1]);
+		if (parent.parent.entries_selected.length > 0)
+			showContent(parent.parent.entries_selected[parent.parent.entries_selected.length - 1]);
 
 <?php
 echo 'passed_dls = new Array(String(' . join('), String(', $passed_dls) . '));';
 ?>
 //-->
-</script>
+	</script>
 </body>
 </html>

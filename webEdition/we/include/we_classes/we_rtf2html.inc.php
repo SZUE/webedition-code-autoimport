@@ -53,14 +53,14 @@ class we_rtf2html{
 	var $bulletPara = false;
 
 	function __construct($fileName, $applyFontNames = true, $applyFontSize = true, $applyFontColor = true){
-		$tempName = TEMP_PATH . "/" . weFile::getUniqueId();
+		$tempName = TEMP_PATH . "/" . we_base_file::getUniqueId();
 		move_uploaded_file($fileName, $tempName);
 		$fileName = $tempName;
 		$this->fName = $fileName;
 		$this->applyNames = $applyFontNames;
 		$this->applySize = $applyFontSize;
 		$this->applyColor = $applyFontColor;
-		$this->fileContent = weFile::load($fileName);
+		$this->fileContent = we_base_file::load($fileName);
 
 		$this->initControlTable();
 		$this->colectInfo();
@@ -677,7 +677,7 @@ class we_rtf2html{
 				break;
 			case 99: if($para == "6"){
 					$this->pasteChars("�");
-			}
+				}
 				if($para == "c")
 					$this->pasteChars("�");
 				if($para == "f")

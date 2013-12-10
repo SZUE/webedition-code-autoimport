@@ -28,7 +28,7 @@ class rpcGetNaviItemsCmd extends rpcCmd{
 		$resp = new rpcResponse();
 
 		$_nid = addslashes(isset($_REQUEST['nid']) ? $_REQUEST['nid'] : '');
-		$_navi = new weNavigation($_nid);
+		$_navi = new we_navigation_navigation($_nid);
 
 		$_items = $_navi->getChilds();
 
@@ -43,4 +43,3 @@ class rpcGetNaviItemsCmd extends rpcCmd{
 	}
 
 }
-

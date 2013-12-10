@@ -413,7 +413,7 @@ var ajaxMaxResponseTime = 1500;
 var ajaxResponseStep = 100;
 var ajaxResponseCT = 0;
 var countMark = 0;
-var ajaxURL = "/webEdition/rpc/rpc.php";';
+var ajaxURL = "' . WEBEDITION_DIR . 'rpc/rpc.php";';
 		/* WORKSPACES */
 		$weFieldWS = 'var weWorkspacePathArray = new Array();';
 		/* AC-FIEDS BY ID */
@@ -1015,38 +1015,38 @@ function weInputInArray(arr, val) {
 
 {$this->addJS}
 ";
-/********************************************************
-var weShowDebug = true;
-var debugsizeW=145;
-var debugsizeH='100%';
-function debug(text){
-}
-function doDebugResizeW(){
-	if(debugsizeW<600) {
-		debugsize=600;
-		document.getElementById('DebugResizeW').innerHTML='&lt;';
-	} else {
-		debugsize=145;
-		document.getElementById('DebugResizeW').innerHTML='&gt;';
-	}
-	document.getElementById('damd').style.width=debugsize;
-}
-function doDebugResizeH(){
-	if(debugsizeH=='30px') {
-		debugsizeH='100%';
-		document.getElementById('DebugResizeH').innerHTML='A';
-	} else {
-		debugsizeH='30px';
-		document.getElementById('DebugResizeH').innerHTML='V';
-	}
-	document.getElementById('damd').style.height=debugsizeH;
-}
-//-->
-</script>
-<div style='display:none; position:absolute; top:0px; width:145px; height:100%; background:yellow; border: 1px solid red; color:red; z-index:10000' id='damd'>
-	<div align='center'><button onclick='document.getElementById(\"debug\").innerHTML=\"\"'>clear</button><button id='DebugResizeW' onclick='doDebugResizeW()'>&gt;</button><button id='DebugResizeH' onclick='doDebugResizeH()'>A</button></div><hr>
-	<div id='debug'></div>
-</div>*/
+		/*		 * ******************************************************
+		  var weShowDebug = true;
+		  var debugsizeW=145;
+		  var debugsizeH='100%';
+		  function debug(text){
+		  }
+		  function doDebugResizeW(){
+		  if(debugsizeW<600) {
+		  debugsize=600;
+		  document.getElementById('DebugResizeW').innerHTML='&lt;';
+		  } else {
+		  debugsize=145;
+		  document.getElementById('DebugResizeW').innerHTML='&gt;';
+		  }
+		  document.getElementById('damd').style.width=debugsize;
+		  }
+		  function doDebugResizeH(){
+		  if(debugsizeH=='30px') {
+		  debugsizeH='100%';
+		  document.getElementById('DebugResizeH').innerHTML='A';
+		  } else {
+		  debugsizeH='30px';
+		  document.getElementById('DebugResizeH').innerHTML='V';
+		  }
+		  document.getElementById('damd').style.height=debugsizeH;
+		  }
+		  //-->
+		  </script>
+		  <div style='display:none; position:absolute; top:0px; width:145px; height:100%; background:yellow; border: 1px solid red; color:red; z-index:10000' id='damd'>
+		  <div align='center'><button onclick='document.getElementById(\"debug\").innerHTML=\"\"'>clear</button><button id='DebugResizeW' onclick='doDebugResizeW()'>&gt;</button><button id='DebugResizeH' onclick='doDebugResizeH()'>A</button></div><hr>
+		  <div id='debug'></div>
+		  </div> */
 
 		return $out;
 	}
@@ -1073,7 +1073,7 @@ function doDebugResizeH(){
 			if($client->getBrowser() == we_ui_Client::kBrowserIE){
 				$width = $this->containerwidth[$i] - 4;
 				$overflow = 'overflow:hidden;';
-			} else{
+			} else {
 				$width = $this->containerwidth[$i] - 8;
 				$overflow = '';
 			}
@@ -1142,7 +1142,7 @@ function doDebugResizeH(){
 				padding:0px;
 				list-style:none;
 			}";
-		} else{
+		} else {
 			$out .= "$inputfields {
 				position:relative;
 				width:100%;
@@ -1342,7 +1342,7 @@ function doDebugResizeH(){
 	function setInputId($val = ''){
 		if($val == ''){
 			$this->inputId = "yuiAcInput" . $this->acId;
-		} else{
+		} else {
 			$this->inputId = $val;
 		}
 	}

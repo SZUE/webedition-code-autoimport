@@ -70,7 +70,7 @@ class XML_Import extends we_xml_parser{
 
 		if($this->nodeName($absoluteXPath) == "template"){
 			$this->current_table = TEMPLATES_TABLE;
-		}elseif($this->nodeName($absoluteXPath) == "document"){
+		} elseif($this->nodeName($absoluteXPath) == "document"){
 			$this->current_table = FILE_TABLE;
 		}
 

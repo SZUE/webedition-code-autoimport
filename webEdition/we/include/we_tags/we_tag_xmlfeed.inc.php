@@ -55,7 +55,7 @@ function we_tag_xmlfeed($attribs){
 			//timeout + last file exists
 			$GLOBALS['xmlfeeds'][$name]->loadCache($cache);
 		}
-	} else{
+	} else {
 		$GLOBALS['xmlfeeds'][$name]->loadCache($cache);
 	}
 }

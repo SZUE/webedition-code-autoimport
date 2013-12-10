@@ -36,7 +36,7 @@ if(we_workflow_utility::approve($we_doc->ID, $we_doc->Table, $_SESSION["user"]["
 	if($we_doc->i_publInScheduleTable()){
 		$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][autoschedule]'), date(g_l('date', '[format][default]'), $we_doc->From));
 		$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
-	} else{
+	} else {
 		if($we_doc->we_publish()){
 			$we_JavaScript = "_EditorFrame.setEditorDocumentId(" . $we_doc->ID . ");\n" . $we_doc->getUpdateTreeScript() . "\n";
 			$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_publish_ok]'), $we_doc->Path);
@@ -45,12 +45,12 @@ if(we_workflow_utility::approve($we_doc->ID, $we_doc->Table, $_SESSION["user"]["
 				$_REQUEST['we_cmd'][5] = 'top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");'; // wird in Templ eingef�gt
 			}
 			$we_JavaScript .= "opener.top.weEditorFrameController.getActiveDocumentReference().frames[3].location.reload();_EditorFrame.setEditorDocumentId(" . $we_doc->ID . ");\n" . $we_doc->getUpdateTreeScript() . "\n";
-		} else{
+		} else {
 			$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_publish_notok]'), $we_doc->Path);
 			$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 		}
 	}
-} else{
+} else {
 	$we_responseText = g_l('modules_workflow', '[' . stripTblPrefix($we_doc->Table) . '][pass_workflow_notok]');
 	$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 	//$we_responseText = '';

@@ -42,7 +42,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 
 	<?php print $GLOBALS['we_doc']->getUpdateTreeScript(true); ?>
 
-			_EditorFrame.getDocumentReference().frames[3].location.reload();
+		_EditorFrame.getDocumentReference().frames[3].location.reload();
 
 
 <?php } ?>
@@ -100,7 +100,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 				'<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->Published ? date(g_l('weEditorInfo', "[date_format]"), $GLOBALS['we_doc']->Published) : "-") . '</div>';
 
 			if($GLOBALS['we_doc']->Published && $GLOBALS['we_doc']->ModDate > $GLOBALS['we_doc']->Published){
-				$_html .= '<div style="margin-bottom:10px;">' . we_button::create_button('revert_published', 'javascript:revertToPublished();', true, 280) . '</div>';
+				$_html .= '<div style="margin-bottom:10px;">' . we_html_button::create_button('revert_published', 'javascript:revertToPublished();', true, 280) . '</div>';
 			}
 		}
 
@@ -124,9 +124,9 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 
 			$_html = '
 <div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', "[local_path]") . '</div>
-<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->ID == 0 || !$published ? '-' : '<span title="' . oldHtmlspecialchars($rp) . '">' . oldHtmlspecialchars(shortenPath($rp, 74)) . '</span>') . '</div>
+<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->ID == 0 || !$published ? '-' : '<span title="' . oldHtmlspecialchars($rp) . '">' . oldHtmlspecialchars(we_util_Strings::shortenPath($rp, 74)) . '</span>') . '</div>
 <div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', "[http_path]") . '</div>
-<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->ID == 0 || !$published ? '-' : ($showlink ? '<a href="' . $http . '" target="_blank" title="' . oldHtmlspecialchars($http) . '">' : '') . shortenPath($http, 74) . ($showlink ? '</a>' : '')) . '</div>';
+<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->ID == 0 || !$published ? '-' : ($showlink ? '<a href="' . $http . '" target="_blank" title="' . oldHtmlspecialchars($http) . '">' : '') . we_util_Strings::shortenPath($http, 74) . ($showlink ? '</a>' : '')) . '</div>';
 
 			$parts[] = array(
 				'headline' => '',
@@ -207,8 +207,8 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 		}
 	}
 
-	print we_multiIconBox::getJS() .
-		we_multiIconBox::getHTML('', '100%', $parts, 20, '', -1, '', '', false);
+	print we_html_multiIconBox::getJS() .
+		we_html_multiIconBox::getHTML('', '100%', $parts, 20, '', -1, '', '', false);
 	?>
 </body>
 </html>

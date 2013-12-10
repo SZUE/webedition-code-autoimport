@@ -39,7 +39,7 @@ $we_alerttext = "";
 
 if(isset($_FILES['we_uploadFile'])){
 	$overwrite = $_REQUEST["overwrite"];
-	$tempName = TEMP_PATH . "/" . weFile::getUniqueId();
+	$tempName = TEMP_PATH . "/" . we_base_file::getUniqueId();
 	move_uploaded_file($_FILES['we_uploadFile']["tmp_name"], $tempName);
 	if(file_exists($cpat . "/" . $_FILES['we_uploadFile']["name"])){
 		if($overwrite == "yes"){
@@ -73,17 +73,17 @@ if(isset($_FILES['we_uploadFile'])){
 $maxsize = getUploadMaxFilesize(false);
 
 
-$yes_button = we_button::create_button("upload", "javascript:if(!document.forms['we_form'].elements['we_uploadFile'].value) { " . we_message_reporting::getShowMessageCall(g_l('fileselector', "[edit_file_nok]"), we_message_reporting::WE_MESSAGE_ERROR) . "} else document.forms['we_form'].submit();");
-$cancel_button = we_button::create_button("cancel", "javascript:self.close();");
-$buttons = we_button::position_yes_no_cancel($yes_button, null, $cancel_button);
+$yes_button = we_html_button::create_button("upload", "javascript:if(!document.forms['we_form'].elements['we_uploadFile'].value) { " . we_message_reporting::getShowMessageCall(g_l('fileselector', "[edit_file_nok]"), we_message_reporting::WE_MESSAGE_ERROR) . "} else document.forms['we_form'].submit();");
+$cancel_button = we_html_button::create_button("cancel", "javascript:self.close();");
+$buttons = we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button);
 
 $content = '<table border="0" cellpadding="0" cellspacing="0">' .
 	($maxsize ? ('<tr><td>' . we_html_tools::htmlAlertAttentionBox(
-			sprintf(g_l('newFile', "[max_possible_size]"), weFile::getHumanFileSize($maxsize, weFile::SZ_MB)), we_html_tools::TYPE_ALERT, 390) . '</td></tr><tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>') : '') . '
+			sprintf(g_l('newFile', "[max_possible_size]"), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 390) . '</td></tr><tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>') : '') . '
 			<tr><td><input name="we_uploadFile" TYPE="file" size="35" /></td></tr><tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>
 			<tr><td class="defaultfont">' . g_l('newFile', '[caseFileExists]') . '</td></tr><tr><td>' .
-	we_forms::radiobutton("yes", true, "overwrite", g_l('newFile', '[overwriteFile]')) .
-	we_forms::radiobutton("no", false, "overwrite", g_l('newFile', '[renameFile]')) . '</td></tr></table>';
+	we_html_forms::radiobutton("yes", true, "overwrite", g_l('newFile', '[overwriteFile]')) .
+	we_html_forms::radiobutton("no", false, "overwrite", g_l('newFile', '[renameFile]')) . '</td></tr></table>';
 
 $content = we_html_tools::htmlDialogLayout($content, g_l('newFile', '[import_File_from_hd_title]'), $buttons);
 ?>
@@ -98,14 +98,14 @@ $content = we_html_tools::htmlDialogLayout($content, g_l('newFile', '[import_Fil
 	print we_message_reporting::getShowMessageCall($we_alerttext, we_message_reporting::WE_MESSAGE_ERROR);
 }
 ?>
-	//-->
+//-->
 </script>
 </head>
 <body class="weDialogBody" onLoad="self.focus();"><center>
-		<input type="hidden" name="pat" value="<?php print $_REQUEST["pat"]; ?>" />
-		<form method="post" enctype="multipart/form-data" name="we_form">
-			<?php print $content; ?>
-		</form>
-	</center>
+	<input type="hidden" name="pat" value="<?php print $_REQUEST["pat"]; ?>" />
+	<form method="post" enctype="multipart/form-data" name="we_form">
+		<?php print $content; ?>
+	</form>
+</center>
 </body>
 </html>

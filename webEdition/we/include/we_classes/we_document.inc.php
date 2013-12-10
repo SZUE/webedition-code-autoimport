@@ -177,29 +177,29 @@ class we_document extends we_root{
 <table border="0" cellpadding="0" cellspacing="0">
 	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
 	' . $_headline . '
-	<tr><td>' . $this->htmlSelect($inputName, $_languages, 1, $value, false, " onblur=\"_EditorFrame.setEditorIsHot(true);\" onchange=\"dieWerte='" . implode(',', $langkeys) . "';showhideLangLink('we_" . $this->Name . "_LanguageDocDiv',dieWerte,this.options[this.selectedIndex].value);_EditorFrame.setEditorIsHot(true);\"", "value", 508) . '</td></tr>
+	<tr><td>' . $this->htmlSelect($inputName, $_languages, 1, $value, false, array("onblur" => "_EditorFrame.setEditorIsHot(true);", 'onchange' => "dieWerte='" . implode(',', $langkeys) . "';showhideLangLink('we_" . $this->Name . "_LanguageDocDiv',dieWerte,this.options[this.selectedIndex].value);_EditorFrame.setEditorIsHot(true);"), "value", 508) . '</td></tr>
 	<tr><td>' . we_html_tools::getPixel(2, 20) . '</td></tr>
 	<tr><td class="defaultfont" align="left">' . g_l('weClass', '[languageLinks]') . '</td></tr>
 </table>
-<br/>' . $htmlzw; //.$this->htmlFormElementTable($htmlzw,g_l('weClass','[languageLinksDefaults]'),"left",	"defaultfont");	dieWerte=\''.implode(',',$langkeys).'\'; disableLangDefault(\'we_'.$this->Name.'_LangDocType\',dieWerte,this.options[this.selectedIndex].value);"
+<br/>' . $htmlzw; //.we_html_tools::htmlFormElementTable($htmlzw,g_l('weClass','[languageLinksDefaults]'),"left",	"defaultfont");	dieWerte=\''.implode(',',$langkeys).'\'; disableLangDefault(\'we_'.$this->Name.'_LangDocType\',dieWerte,this.options[this.selectedIndex].value);"
 		} else {
 			return '
 <table border="0" cellpadding="0" cellspacing="0">
 	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
 	' . $_headline . '
-	<tr><td>' . $this->htmlSelect($inputName, $_languages, 1, $value, false, " onblur=\"_EditorFrame.setEditorIsHot(true);\" onchange=\"_EditorFrame.setEditorIsHot(true);\"", "value", 508) . '</td></tr>
+	<tr><td>' . $this->htmlSelect($inputName, $_languages, 1, $value, false, array("onblur" => "_EditorFrame.setEditorIsHot(true);", 'onchange' => "_EditorFrame.setEditorIsHot(true);"), "value", 508) . '</td></tr>
 </table>';
 		}
 	}
 
 	function formInGlossar(){
 		return (we_getModuleNameByContentType('glossary') == 'glossary' ?
-				we_forms::checkboxWithHidden((bool) $this->InGlossar, 'we_' . $this->Name . '_InGlossar', g_l('weClass', '[InGlossar]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);') :
+				we_html_forms::checkboxWithHidden((bool) $this->InGlossar, 'we_' . $this->Name . '_InGlossar', g_l('weClass', '[InGlossar]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);') :
 				'');
 	}
 
 	function formIsSearchable(){
-		return we_forms::checkboxWithHidden((bool) $this->IsSearchable, 'we_' . $this->Name . '_IsSearchable', g_l('weClass', '[IsSearchable]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);');
+		return we_html_forms::checkboxWithHidden((bool) $this->IsSearchable, 'we_' . $this->Name . '_IsSearchable', g_l('weClass', '[IsSearchable]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);');
 	}
 
 	function formExtension2(){
@@ -220,7 +220,7 @@ class we_document extends we_root{
 		} else { //	bestehendes Dokument oder Dokument mit DocType
 			$selected = $this->Extension;
 		}
-		return $this->htmlFormElementTable(we_html_tools::getExtensionPopup('we_' . $this->Name . '_Extension', $selected, $this->Extensions, 100, 'onselect="_EditorFrame.setEditorIsHot(true);"', we_hasPerm('EDIT_DOCEXTENSION')), g_l('weClass', "[extension]"));
+		return we_html_tools::htmlFormElementTable(we_html_tools::getExtensionPopup('we_' . $this->Name . '_Extension', $selected, $this->Extensions, 100, 'onselect="_EditorFrame.setEditorIsHot(true);"', permissionhandler::hasPerm('EDIT_DOCEXTENSION')), g_l('weClass', "[extension]"));
 	}
 
 	function formPath(){
@@ -260,23 +260,23 @@ class we_document extends we_root{
 	}
 
 	function formCategory(){
-		$delallbut = we_button::create_button('delete_all', "javascript:we_cmd('delete_all_cats')", true, -1, -1, '', '', $this->Category ? false : true);
-		$addbut = we_button::create_button('add', "javascript:we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','opener.setScrollTo();fillIDs();opener.top.we_cmd(\\'add_cat\\',top.allIDs);')");
-		$cats = new MultiDirChooser(508, $this->Category, 'delete_cat', we_button::create_button_table(array($delallbut, $addbut)), '', 'Icon,Path', CATEGORY_TABLE);
+		$delallbut = we_html_button::create_button('delete_all', "javascript:we_cmd('delete_all_cats')", true, 0, 0, '', '', $this->Category ? false : true);
+		$addbut = we_html_button::create_button('add', "javascript:we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','opener.setScrollTo();fillIDs();opener.top.we_cmd(\\'add_cat\\',top.allIDs);')");
+		$cats = new MultiDirChooser(508, $this->Category, 'delete_cat', we_html_button::create_button_table(array($delallbut, $addbut)), '', 'Icon,Path', CATEGORY_TABLE);
 		$cats->extraDelFn = 'setScrollTo();';
 		return $cats->get();
 	}
 
 	function formNavigation(){
-		$delallbut = we_button::create_button('delete_all', "javascript:if(confirm('" . g_l('navigation', '[dellall_question]') . "')) we_cmd('delete_all_navi')", true, -1, -1, "", "", (we_hasPerm('EDIT_NAVIGATION') && $this->NavigationItems) ? false : true);
-		$addbut = we_button::create_button('add', "javascript:we_cmd('module_navigation_edit_navi',0)", true, 100, 22, '', '', (we_hasPerm('EDIT_NAVIGATION') && $this->ID && $this->Published) ? false : true, false);
+		$delallbut = we_html_button::create_button('delete_all', "javascript:if(confirm('" . g_l('navigation', '[dellall_question]') . "')) we_cmd('delete_all_navi')", true, 0, 0, "", "", (permissionhandler::hasPerm('EDIT_NAVIGATION') && $this->NavigationItems) ? false : true);
+		$addbut = we_html_button::create_button('add', "javascript:we_cmd('module_navigation_edit_navi',0)", true, 100, 22, '', '', (permissionhandler::hasPerm('EDIT_NAVIGATION') && $this->ID && $this->Published) ? false : true, false);
 
-		$navis = new MultiFileChooser(508, $this->NavigationItems, 'delete_navi', we_button::create_button_table(array($delallbut, $addbut)), "module_navigation_edit_navi", "Icon,Path", NAVIGATION_TABLE);
+		$navis = new MultiFileChooser(508, $this->NavigationItems, 'delete_navi', we_html_button::create_button_table(array($delallbut, $addbut)), "module_navigation_edit_navi", "Icon,Path", NAVIGATION_TABLE);
 		$navis->extraDelFn = 'setScrollTo();';
 		$NoDelNavis = makeArrayFromCSV($this->NavigationItems);
 		foreach($NoDelNavis as $_path){
 			$_id = path_to_id($_path, NAVIGATION_TABLE);
-			$_naviItem = new weNavigation($_id);
+			$_naviItem = new we_navigation_navigation($_id);
 			if(!$_naviItem->hasAnyChilds()){
 
 				if(in_array($_path, $NoDelNavis)){
@@ -287,12 +287,12 @@ class we_document extends we_root{
 		}
 		$navis->setDisabledDelItems(makeCSVFromArray($NoDelNavis), g_l('navigation', '[NoDeleteFromDocument]'));
 
-		if(!we_hasPerm('EDIT_NAVIGATION')){
+		if(!permissionhandler::hasPerm('EDIT_NAVIGATION')){
 			$navis->isEditable = false;
 			$navis->CanDelete = false;
 		}
 
-		return we_button::create_state_changer() . $navis->get();
+		return we_html_button::create_state_changer() . $navis->get();
 	}
 
 	function addCat($id){
@@ -338,7 +338,7 @@ class we_document extends we_root{
 				}
 			}
 
-			$_naviItem = new weNavigation($id);
+			$_naviItem = new we_navigation_navigation($id);
 			$_old_path = ($id ? $_naviItem->Path : '');
 
 			$_naviItem->Ordn = $_ord;
@@ -347,14 +347,14 @@ class we_document extends we_root{
 			$_naviItem->Text = $text;
 			$_naviItem->Path = $_new_path;
 			if(NAVIGATION_ENTRIES_FROM_DOCUMENT == 0){
-				$_naviItem->Selection = weNavigation::SELECTION_NODYNAMIC;
-				$_naviItem->SelectionType = weNavigation::STPYE_DOCTYPE;
+				$_naviItem->Selection = we_navigation_navigation::SELECTION_NODYNAMIC;
+				$_naviItem->SelectionType = we_navigation_navigation::STPYE_DOCTYPE;
 				$_naviItem->IsFolder = 1;
 				$charset = $_naviItem->findCharset($_naviItem->ParentID);
 				$_naviItem->Charset = ($charset != '' ? $charset : (DEFAULT_CHARSET ? DEFAULT_CHARSET : $GLOBALS['WE_BACKENDCHARSET']));
 			} else {
-				$_naviItem->Selection = weNavigation::SELECTION_STATIC;
-				$_naviItem->SelectionType = weNavigation::STPYE_DOCLINK;
+				$_naviItem->Selection = we_navigation_navigation::SELECTION_STATIC;
+				$_naviItem->SelectionType = we_navigation_navigation::STPYE_DOCLINK;
 			}
 
 			$_naviItem->save();
@@ -381,7 +381,7 @@ class we_document extends we_root{
 			$pos = getArrayKey($path, $navis);
 			if($pos != '' || $pos == '0'){
 				$_id = path_to_id($path, NAVIGATION_TABLE);
-				$_naviItem = new weNavigation($_id);
+				$_naviItem = new we_navigation_navigation($_id);
 				if(!$_naviItem->hasAnyChilds()){
 					$_naviItem->delete();
 					array_splice($navis, $pos, 1);
@@ -395,7 +395,7 @@ class we_document extends we_root{
 		$navis = makeArrayFromCSV($this->NavigationItems);
 		foreach($navis as $_path){
 			$_id = path_to_id($_path, NAVIGATION_TABLE);
-			$_naviItem = new weNavigation($_id);
+			$_naviItem = new we_navigation_navigation($_id);
 			if(!$_naviItem->hasAnyChilds()){
 				$_naviItem->delete();
 				if(in_array($_path, $navis)){
@@ -690,7 +690,7 @@ class we_document extends we_root{
 
 	function resaveWeDocumentCustomerFilter(){
 		if(isset($this->documentCustomerFilter) && $this->documentCustomerFilter){
-			weDocumentCustomerFilter::saveForModel($this);
+			we_customer_documentFilter::saveForModel($this);
 		}
 	}
 
@@ -706,7 +706,7 @@ class we_document extends we_root{
 	 * @see we_textContentDocument::we_load
 	 */
 	function initWeDocumentCustomerFilterFromDB(){
-		$this->documentCustomerFilter = weDocumentCustomerFilter::getFilterOfDocument($this);
+		$this->documentCustomerFilter = we_customer_documentFilter::getFilterOfDocument($this);
 	}
 
 	// reverse function to we_init_sessDat
@@ -736,7 +736,7 @@ class we_document extends we_root{
 
 
 		if(isset($_REQUEST['wecf_mode'])){
-			$this->documentCustomerFilter = weDocumentCustomerFilter::getCustomerFilterFromRequest($this);
+			$this->documentCustomerFilter = we_customer_documentFilter::getCustomerFilterFromRequest($this);
 		} else if(isset($sessDat[3])){ // init webUser from session
 			$this->documentCustomerFilter = unserialize($sessDat[3]);
 		}
@@ -853,7 +853,7 @@ class we_document extends we_root{
 				$altField = $img->Name . we_imageDocument::ALT_FIELD;
 				$titleField = $img->Name . we_imageDocument::TITLE_FIELD;
 
-				if(isset($GLOBALS['lv']) && isset($GLOBALS['lv']->ClassName) && $GLOBALS['lv']->ClassName == 'we_shop_listviewShopVariants'){
+				if(isset($GLOBALS['lv']) && get_class($GLOBALS['lv']) == 'we_shop_listviewShopVariants'){
 
 					$altField = (WE_SHOP_VARIANTS_PREFIX . $GLOBALS['lv']->Position . '_' . $altField);
 					$titleField = (WE_SHOP_VARIANTS_PREFIX . $GLOBALS['lv']->Position . '_' . $titleField);
@@ -1112,12 +1112,9 @@ class we_document extends we_root{
 				break;
 			case 'href':
 				$val = $this->getElement(isset($attribs['name']) ? $attribs['name'] : '');
-				if((isset($this->TableID) && $this->TableID) || ($this->ClassName == 'we_objectFile')){
+				if((isset($this->TableID) && $this->TableID) || (get_class($this) == 'we_objectFile')){
 					$hrefArr = $val ? unserialize($val) : array();
-					if(!is_array($hrefArr)){
-						return '';
-					}
-					return self::getHrefByArray($hrefArr);
+					return (is_array($hrefArr) ? self::getHrefByArray($hrefArr) : '');
 				}
 				break;
 			default:
@@ -1141,9 +1138,7 @@ class we_document extends we_root{
 		$db = $db ? $db : new_DB_WE();
 		$n = $attribs['name'];
 		$nint = $n . we_base_link::MAGIC_INT_LINK;
-		$int = $this->getValFromSrc($fn, $nint);
-		$int = ($int == '') ? 0 : $int;
-		if($int){
+		if($this->getValFromSrc($fn, $nint)){
 			$intID = $this->getValFromSrc($fn, $n . we_base_link::MAGIC_INT_LINK_ID);
 			return f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($intID), 'Path', $db);
 		} else {
@@ -1152,8 +1147,7 @@ class we_document extends we_root{
 	}
 
 	static function getHrefByArray($hrefArr){
-		$int = isset($hrefArr['int']) ? $hrefArr['int'] : false;
-		if($int){
+		if(isset($hrefArr['int']) && $hrefArr['int']){
 			$intID = isset($hrefArr['intID']) ? $hrefArr['intID'] : 0;
 			return $intID ? id_to_path($intID) : '';
 		} else {
@@ -1193,17 +1187,14 @@ class we_document extends we_root{
 				if($hidedirindex && show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 					$path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 				}
-				if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->InWebEdition){
-					return $path;
-				}
-				if(f('SELECT Published FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'Published', $db)){
+				if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->InWebEdition || f('SELECT Published FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'Published', $db)){
 					return $path;
 				}
 				$GLOBALS['we_link_not_published'] = 1;
 				return '';
 
 			case we_base_link::TYPE_OBJ:
-				return getHrefForObject($link['obj_id'], $parentID, $path, $db, $hidedirindex, $objectseourls);
+				return we_objectFile::getObjectHref($link['obj_id'], $parentID, $path, $db, $hidedirindex, $objectseourls);
 			default:
 				return ($link['href'] == we_base_link::EMPTY_EXT ? '' : $link['href']);
 		}
@@ -1287,8 +1278,6 @@ class we_document extends we_root{
 			$img->initByID($img_attribs['img_id']);
 			$img->initByAttribs($img_attribs);
 
-			$rollOverScript = '';
-			$rollOverAttribsArr = array();
 
 			if($link['ctype'] == we_base_link::TYPE_INT){
 				//	set name of image dynamically
@@ -1297,6 +1286,9 @@ class we_document extends we_root{
 				}
 				$rollOverScript = $img->getRollOverScript();
 				$rollOverAttribsArr = $img->getRollOverAttribsArr();
+			} else {
+				$rollOverScript = '';
+				$rollOverAttribsArr = array();
 			}
 
 			// Link-Attribs
@@ -1506,7 +1498,7 @@ class we_document extends we_root{
 	function formCharset($withHeadline = false){
 		$value = (isset($this->elements['Charset']['dat']) ? $this->elements['Charset']['dat'] : '');
 
-		$_charsetHandler = new charsetHandler();
+		$_charsetHandler = new we_base_charsetHandler();
 
 		$_charsets = $_charsetHandler->getCharsetsForTagWizzard();
 		$_charsets[''] = '';
@@ -1520,7 +1512,7 @@ class we_document extends we_root{
 
 		return '<table border="0" cellpadding="0" cellspacing="0">' .
 			($withHeadline ? '<tr><td class="defaultfont">' . g_l('weClass', '[Charset]') . '</td></tr>' : '') .
-			'<tr><td>' . $this->htmlTextInput($inputName, 24, $value) . '</td><td></td><td>' . $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $name . ']', $_charsets, 1, $value, false, "  onblur=\"_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;top.we_cmd('reload_editpage');\" onchange=\"_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;top.we_cmd('reload_editpage');\"", "value", 330) . '</td></tr>' .
+			'<tr><td>' . $this->htmlTextInput($inputName, 24, $value) . '</td><td></td><td>' . $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $name . ']', $_charsets, 1, $value, false, array("onblur" => "_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;top.we_cmd('reload_editpage');", "onchange" => "_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;top.we_cmd('reload_editpage');"), "value", 330) . '</td></tr>' .
 			'</table>';
 	}
 
@@ -1561,7 +1553,7 @@ class we_document extends we_root{
 	}
 
 	private function i_deleteNavigation(){
-		$this->DB_WE->query('DELETE FROM ' . NAVIGATION_TABLE . ' WHERE ' . weNavigation::getNavCondition($this->ID, $this->Table));
+		$this->DB_WE->query('DELETE FROM ' . NAVIGATION_TABLE . ' WHERE ' . we_navigation_navigation::getNavCondition($this->ID, $this->Table));
 		return true;
 	}
 
@@ -1577,17 +1569,20 @@ class we_document extends we_root{
 	}
 
 	protected function update_filehash(){
-		if($this->Table == TEMPLATES_TABLE || $this->Table == FILE_TABLE){
-			$this->wasUpdate = $this->ID > 0;
-			if($this->Table == TEMPLATES_TABLE){
-				$usepath = (strpos($this->Path, '.tmpl') === false ? TEMPLATES_PATH . $this->Path : TEMPLATES_PATH . substr_replace($this->Path, '.php', -5));
-			} else {
-				$usepath = $_SERVER['DOCUMENT_ROOT'] . $this->Path;
-			}
-			$this->Filehash = (file_exists($usepath) && is_file($usepath) ? sha1_file($usepath) : '');
-			$this->i_savePersistentSlotsToDB('Filehash,RebuildDate');
+		switch($this->Table){
+			default:
+				return;
+			case TEMPLATES_TABLE:
+			case FILE_TABLE:
 		}
+		$this->wasUpdate = $this->ID > 0;
+		$usepath = ($this->Table == TEMPLATES_TABLE ?
+				(strpos($this->Path, '.tmpl') === false ? TEMPLATES_PATH . $this->Path : TEMPLATES_PATH . substr_replace($this->Path, '.php', -5)) :
+				$_SERVER['DOCUMENT_ROOT'] . $this->Path
+			);
+
+		$this->Filehash = (file_exists($usepath) && is_file($usepath) ? sha1_file($usepath) : '');
+		$this->i_savePersistentSlotsToDB('Filehash,RebuildDate');
 	}
 
 }
-

@@ -269,7 +269,7 @@ if(!isset($_REQUEST["cmd"]) || (isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] != "
 		}
 	}
 	?>
-		//-->
+	//-->
 	</script>
 <?php } ?>
 </head>

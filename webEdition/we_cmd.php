@@ -32,8 +32,6 @@ include_once (WE_INCLUDES_PATH . 'conf/we_active_integrated_modules.inc.php');
 //start autoloader!
 require_once ($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
 
-//$GLOBALS['_we_active_integrated_modules'][] = 'navigation';//TODO: remove when navigation is completely implemented as a module
-
 $INCLUDE = '';
 //	In we.inc.php all names of the active modules have already been searched
 //	so we only have to use the array $GLOBALS['_we_active_integrated_modules']
@@ -62,14 +60,6 @@ if(!$INCLUDE){
 		case 'reset_home':
 		case 'mod_home':
 			$INCLUDE = 'we_modules/home.inc.php';
-			break;
-		case 'openFirstStepsWizardMasterTemplate':
-		case 'first_steps_wizard_master_template':
-			$INCLUDE = 'we_tools/first_steps_wizard/master.inc.php';
-			break;
-		case 'openFirstStepsWizardDetailTemplates':
-		case 'first_steps_wizard_detail_templates':
-			$INCLUDE = 'we_tools/first_steps_wizard/detail.inc.php';
 			break;
 		case 'loadSidebarDocument':
 			$INCLUDE = 'sidebar.inc.php';
@@ -285,7 +275,7 @@ if(!$INCLUDE){
 			$INCLUDE = 'we_import/we_wiz_frameset.php';
 			break;
 		case 'export' :
-			$INCLUDE = 'we_export/export_frameset.php';
+			$INCLUDE = WE_EXPORT_MODULE_DIR . 'export_frameset.php';
 			break;
 		case 'copyFolder':
 			$INCLUDE = 'copyFolder.inc.php';
@@ -322,7 +312,7 @@ if(!$INCLUDE){
 
 		default:
 			// search tools for command
-			$INCLUDE = weToolLookup::getPhpCmdInclude();
+			$INCLUDE = we_tool_lookup::getPhpCmdInclude();
 			if(isset($INCLUDE)){
 				break;
 			}
@@ -330,14 +320,15 @@ if(!$INCLUDE){
 			//	so we only have to use the array $_we_active_integrated_modules
 
 			$foo = false;
-			foreach($_we_available_modules as $m){
-				if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == 'edit_' . $m['name'] . '_ifthere' && (!in_array($m['name'], $GLOBALS['_we_active_integrated_modules']))){
-
-					$foo = true;
-					$_moduleName = $m['text_short'];
-					$INCLUDE = 'messageModuleNotActivated.inc.php';
-
-					break;
+			if(isset($_REQUEST['we_cmd'][0])){
+				$mods = weModuleInfo::getAllModules();
+				foreach($mods as $m){
+					if($_REQUEST['we_cmd'][0] == 'edit_' . $m['name'] . '_ifthere' && !weModuleInfo::isActive($m['name'])){
+						$foo = true;
+						$_moduleName = $m['text_short'];
+						$INCLUDE = 'messageModuleNotActivated.inc.php';
+						break;
+					}
 				}
 			}
 			if($foo == false){
@@ -364,7 +355,7 @@ if($INCLUDE){
 			define('NO_SESS', 1);
 		}
 		$path = WEBEDITION_PATH;
-	} else{
+	} else {
 		$path = WE_INCLUDES_PATH;
 	}
 	require($path . $INCLUDE);

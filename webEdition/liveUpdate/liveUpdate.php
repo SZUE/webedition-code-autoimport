@@ -65,10 +65,10 @@ if(isset($_REQUEST['update_cmd'])){
 
 			if($liveUpdateResponse->isError()){
 				print liveUpdateFrames::htmlConnectionSuccess($liveUpdateResponse->getField('Message'));
-			} else{
+			} else {
 				print liveUpdateFrames::htmlConnectionSuccess();
 			}
-		} else{
+		} else {
 			print liveUpdateFrames::htmlConnectionError();
 		}
 		exit();
@@ -86,7 +86,7 @@ if(isset($_REQUEST['update_cmd'])){
 		 */
 		print liveUpdateHttp::getServerSessionForm();
 		exit;
-	} else{
+	} else {
 		/*
 		 * $_REQUEST['liveUpdateSession'] exists => Session on server is up
 		 * prepare all needed variables to submit to the updateServer
@@ -115,13 +115,13 @@ if(isset($_REQUEST['update_cmd'])){
 		print ($liveUpdateResponse->initByHttpResponse($response) ?
 				$liveUpdateResponse->getOutput() :
 				liveUpdateFrames::htmlConnectionError());
-	} else{
+	} else {
 		/*
 		 * No response from the update-server. Error message
 		 */
 		print liveUpdateFrames::htmlConnectionError();
 	}
-} else{
+} else {
 	/*
 	 * No update_cmd exists, show normal frameset
 	 */

@@ -176,7 +176,7 @@ class HttpRequest{
 			$this->error = true;
 			$this->errno = 1;
 			$this->errstr = curl_error($_session);
-		} else{
+		} else {
 			$this->http_response = $_data;
 			$this->error = false;
 			curl_close($_session);
@@ -199,13 +199,13 @@ class HttpRequest{
 				if($socket){ //  connection etablished
 					fwrite($socket, $req);
 					$response = '';
-					while(!feof($socket)) {
+					while(!feof($socket)){
 						$response .= fgets($socket, 1024);
 					}
 					fclose($socket);
 
 					$this->http_response = $response;
-				} else{ //  something wrong happened
+				} else { //  something wrong happened
 					$this->error = true;
 					$this->errno = $errno;
 					$this->errstr = $errstr;
@@ -264,7 +264,7 @@ class HttpRequest{
 				//  add 2 more headers for this request
 				$this->http_headers['Content-Type'] = 'multipart/form-data; boundary=' . $boundary;
 				$this->http_headers['Content-Length'] = strlen($body);
-			} else{ //  method 'GET'
+			} else { //  method 'GET'
 				//  all variables are joined to the path
 				$tmp = array();
 				foreach($this->vars as $var){
@@ -272,7 +272,7 @@ class HttpRequest{
 				}
 				$path.=(!empty($tmp) ? '?' . implode('&', $tmp) : '');
 			}
-		} else{ //  no files or vars to submit
+		} else { //  no files or vars to submit
 		}
 
 		$this->http_body = $body;

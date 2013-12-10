@@ -278,4 +278,3 @@ class Console_Getopt{
 	}
 
 }
-

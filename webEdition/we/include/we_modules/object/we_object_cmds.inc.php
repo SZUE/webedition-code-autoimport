@@ -47,7 +47,7 @@ switch($_REQUEST['we_cmd'][0]){
 				$ews = "";
 			$check = 0;
 		}
-		else{
+		else {
 			$ews = ($foo ? $foo : ",") . $wsid . ",";
 			$check = 1;
 		}

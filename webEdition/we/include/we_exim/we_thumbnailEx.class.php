@@ -18,7 +18,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 class we_thumbnailEx extends weModelBase{
 
 	var $ClassName = __CLASS__;

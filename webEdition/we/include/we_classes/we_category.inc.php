@@ -43,12 +43,12 @@ class we_category extends weModelBase{
 		}
 
 		parent::save();
-		weNavigationCache::clean(true);
+		we_navigation_cache::clean(true);
 	}
 
 	function delete(){
 		$ret = parent::delete();
-		weNavigationCache::clean(true);
+		we_navigation_cache::clean(true);
 		return $ret;
 	}
 
@@ -63,11 +63,11 @@ class we_category extends weModelBase{
 		if($categoryids){
 			$idarray2 = array_unique(array_map('trim', explode(',', trim($categoryids, ','))));
 			$db->query('SELECT ID,IsFolder,Path FROM ' . CATEGORY_TABLE . ' WHERE ID IN(' . implode(',', $idarray2) . ')');
-			while($db->next_record()) {
+			while($db->next_record()){
 				if($db->f('IsFolder')){
 					//all folders need to be searched in deep
 					$catCSV.=',' . $db->f('Path');
-				} else{
+				} else {
 					$idarray[] = $db->f('ID');
 				}
 			}
@@ -80,13 +80,13 @@ class we_category extends weModelBase{
 				$isFolder = 0;
 				$tmp = array();
 				$db->query('SELECT ID, IsFolder FROM ' . CATEGORY_TABLE . ' WHERE Path LIKE "' . $db->escape($cat) . '/%" OR Path="' . $db->escape($cat) . '"');
-				while($db->next_record()) {
+				while($db->next_record()){
 					$tmp[] = $db->f('ID');
 					$isFolder|=$db->f('IsFolder');
 				}
 				if($isFolder){
 					$folders[] = $tmp;
-				} else{
+				} else {
 					$idarray = array_merge($idarray, $tmp);
 				}
 			}

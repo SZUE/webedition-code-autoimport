@@ -34,28 +34,28 @@ print STYLESHEET .
 </head>
 <body  class="weEditorBody" onload="checkFooter()" onunload="doUnload()">
 	<form name="we_form" onsubmit="return false"><?php
-echo we_class::hiddenTrans();
+		echo we_class::hiddenTrans();
 
-$parts = array();
+		$parts = array();
 
-foreach($we_doc->schedArr as $i => $sched){
-	$schedObj = new we_schedpro($sched, $i);
+		foreach($we_doc->schedArr as $i => $sched){
+			$schedObj = new we_schedpro($sched, $i);
 
-	$parts[] = array(
-		'headline' => '',
-		'html' => $schedObj->getHTML($GLOBALS['we_doc']->Table == (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE')),
-		'space' => 0
-	);
-}
-$parts[] = array(
-	'headline' => '',
-	'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_schedule', '[descriptiontext]'), we_html_tools::TYPE_INFO, 700) . '<br><br>' . we_button::create_button('image:btn_add_schedule', "javascript:we_cmd('add_schedule')"),
-	'space' => 0
-);
-print we_multiIconBox::getJS() .
-	we_schedpro::getMainJS($we_doc) .
-	we_multiIconBox::getHTML('', '100%', $parts, 20, '', -1, '', '', false);
-?>
+			$parts[] = array(
+				'headline' => '',
+				'html' => $schedObj->getHTML($GLOBALS['we_doc']->Table == (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE')),
+				'space' => 0
+			);
+		}
+		$parts[] = array(
+			'headline' => '',
+			'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_schedule', '[descriptiontext]'), we_html_tools::TYPE_INFO, 700) . '<br><br>' . we_html_button::create_button('image:btn_add_schedule', "javascript:we_cmd('add_schedule')"),
+			'space' => 0
+		);
+		print we_html_multiIconBox::getJS() .
+			we_schedpro::getMainJS($we_doc) .
+			we_html_multiIconBox::getHTML('', '100%', $parts, 20, '', -1, '', '', false);
+		?>
 	</form>
 </body>
 </html>

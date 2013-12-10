@@ -31,7 +31,7 @@
  * Description: Provides functions for creating html tags used in forms.
  */
 //FIXME:remove
-class we_html_frameset extends we_baseCollection{
+class we_html_frameset extends we_html_baseCollection{
 
 	/**
 	 * Constructor
@@ -41,7 +41,7 @@ class we_html_frameset extends we_baseCollection{
 	 *
 	 * @return		we_html_frameset
 	 */
-	function __construct($attribs=array(), $frames_num=0){
+	function __construct($attribs = array(), $frames_num = 0){
 		parent::__construct("frameset", true, $attribs);
 		for($i = 0; $i < $frames_num; $i++){
 			$this->addFrame();
@@ -57,8 +57,8 @@ class we_html_frameset extends we_baseCollection{
 	 *
 	 * @return		void
 	 */
-	function addFrame($attribs=array()){
-		$this->childs[] = new we_baseElement("frame", false, $attribs);
+	function addFrame($attribs = array()){
+		$this->childs[] = new we_html_baseElement("frame", false, $attribs);
 	}
 
 	/**
@@ -68,7 +68,7 @@ class we_html_frameset extends we_baseCollection{
 	 *
 	 * @return		void
 	 */
-	function addFrameset($attribs=array()){
+	function addFrameset($attribs = array()){
 		$this->childs[] = new self($attribs);
 	}
 
@@ -79,7 +79,7 @@ class we_html_frameset extends we_baseCollection{
 	 *
 	 * @return		void
 	 */
-	function setFrameAttributes($childid, $attribs=array()){
+	function setFrameAttributes($childid, $attribs = array()){
 
 		$frame = & $this->getChild($childid);
 		$frame->setAttributes($attribs);

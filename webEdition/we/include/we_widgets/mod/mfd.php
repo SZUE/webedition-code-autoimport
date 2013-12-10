@@ -31,15 +31,14 @@ if(!isset($aCols) || count($aCols) < 5){
 }
 $sTypeBinary = $aCols[0];
 $pos = 0;
-$bTypeDoc = we_hasPerm('CAN_SEE_DOCUMENTS') && ((bool) $sTypeBinary{$pos++});
-$bTypeTpl = we_hasPerm('CAN_SEE_TEMPLATES') && ((bool) $sTypeBinary{$pos++});
-$bTypeObj = we_hasPerm('CAN_SEE_OBJECTS') && ((bool) $sTypeBinary{$pos++});
-$bTypeCls = we_hasPerm('CAN_SEE_CLASSES') && ((bool) $sTypeBinary{$pos++});
+$bTypeDoc = permissionhandler::hasPerm('CAN_SEE_DOCUMENTS') && ((bool) $sTypeBinary{$pos++});
+$bTypeTpl = permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && ((bool) $sTypeBinary{$pos++});
+$bTypeObj = permissionhandler::hasPerm('CAN_SEE_OBJECTS') && ((bool) $sTypeBinary{$pos++});
+$bTypeCls = permissionhandler::hasPerm('CAN_SEE_CLASSES') && ((bool) $sTypeBinary{$pos++});
 
 $iDate = intval($aCols[1]);
 
 $doctable = $where = $_users_where = $workspace = array();
-
 
 switch($iDate){
 	case 1 :
@@ -89,7 +88,7 @@ if($aUsers){
 	$where[] = 'UserName IN (' . implode(',', $_users_where) . ')';
 }
 
-if(defined("FILE_TABLE") && $bTypeDoc && we_hasPerm('CAN_SEE_DOCUMENTS')){
+if(defined("FILE_TABLE") && $bTypeDoc && permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
 	$doctable[] = '"' . stripTblPrefix(FILE_TABLE) . '"';
 	$paths = array();
 	foreach(makeArrayFromCSV(get_ws(FILE_TABLE)) as $id){
@@ -97,7 +96,7 @@ if(defined("FILE_TABLE") && $bTypeDoc && we_hasPerm('CAN_SEE_DOCUMENTS')){
 	}
 	$workspace[FILE_TABLE] = implode(' OR ', $paths);
 }
-if(defined("OBJECT_FILES_TABLE") && $bTypeObj && we_hasPerm('CAN_SEE_OBJECTFILES')){
+if(defined("OBJECT_FILES_TABLE") && $bTypeObj && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES')){
 	$doctable[] = '"' . stripTblPrefix(OBJECT_FILES_TABLE) . '"';
 	$paths = array();
 	foreach(makeArrayFromCSV(get_ws(OBJECT_FILES_TABLE)) as $id){
@@ -105,10 +104,10 @@ if(defined("OBJECT_FILES_TABLE") && $bTypeObj && we_hasPerm('CAN_SEE_OBJECTFILES
 	}
 	$workspace[OBJECT_FILES_TABLE] = implode(' OR ', $paths);
 }
-if(defined("TEMPLATES_TABLE") && $bTypeTpl && we_hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
+if(defined("TEMPLATES_TABLE") && $bTypeTpl && permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
 	$doctable[] = '"' . stripTblPrefix(TEMPLATES_TABLE) . '"';
 }
-if(defined("OBJECT_TABLE") && $bTypeCls && we_hasPerm('CAN_SEE_OBJECTS') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
+if(defined("OBJECT_TABLE") && $bTypeCls && permissionhandler::hasPerm('CAN_SEE_OBJECTS') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
 	$doctable[] = '"' . stripTblPrefix(OBJECT_TABLE) . '"';
 }
 
@@ -130,13 +129,14 @@ while($db->next_record(MYSQL_ASSOC)){
 $queries = array();
 foreach($tables as $ctable => $ids){
 	$table = addTblPrefix($ctable);
-	$paths = ((!we_hasPerm('ADMINISTRATOR') || ($table != TEMPLATES_TABLE && (defined('OBJECT_TABLE') ? ($table != OBJECT_TABLE) : true))) && isset($workspace[$table]) ?
+	$paths = ((!permissionhandler::hasPerm('ADMINISTRATOR') || ($table != TEMPLATES_TABLE && (defined('OBJECT_TABLE') ? ($table != OBJECT_TABLE) : true))) && isset($workspace[$table]) ?
 			$workspace[$table] : '');
 
 	$queries[] = '(SELECT ID,Path,Icon,Text,ContentType,ModDate,CreatorID,Owners,RestrictOwners,"' . $ctable . '" AS ctable FROM ' . $db->escape($table) . ' WHERE ID IN(' . implode(',', $ids) . ')' . ($paths ? (' AND (' . $paths . ')') : '') . ')';
 }
 
 $lastModified = '<table cellspacing="0" cellpadding="0" border="0">';
+
 $j = 0;
 
 if($queries){

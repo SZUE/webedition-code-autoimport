@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_shop_dirSelector extends we_multiSelector{
+class we_shop_dirSelector extends we_selector_multiple{
 
 	function __construct($id, $JSIDName = "", $JSTextName = "", $JSCommand = "", $order = ""){
 		parent::__construct($id, BANNER_TABLE, $JSIDName, $JSTextName, $JSCommand, $order);
@@ -68,7 +68,7 @@ function doClick(id,ct){
 	function printFramesetJSsetDir(){
 		return we_html_element::jsElement('
 function setDir(id){
-	top.fscmd.location.replace(top.queryString(' . we_multiSelector::SETDIR . ',id));
+	top.fscmd.location.replace(top.queryString(' . we_selector_multiple::SETDIR . ',id));
 }');
 	}
 
@@ -84,24 +84,24 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
 	}
 
-	function printHTML($what = we_fileselector::FRAMESET){
+	function printHTML($what = we_selector_file::FRAMESET){
 		switch($what){
-			case we_fileselector::HEADER:
+			case we_selector_file::HEADER:
 				$this->printHeaderHTML();
 				break;
-			case we_fileselector::FOOTER:
+			case we_selector_file::FOOTER:
 				$this->printFooterHTML();
 				break;
-			case we_fileselector::BODY:
+			case we_selector_file::BODY:
 				$this->printBodyHTML();
 				break;
-			case we_fileselector::CMD:
+			case we_selector_file::CMD:
 				$this->printCmdHTML();
 				break;
-			case we_multiSelector::SETDIR:
+			case we_selector_multiple::SETDIR:
 				$this->printSetDirHTML();
 				break;
-			case we_fileselector::FRAMESET:
+			case we_selector_file::FRAMESET:
 			default:
 				$this->printFramesetHTML();
 		}

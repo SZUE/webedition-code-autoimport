@@ -34,6 +34,7 @@ Zend_Loader::loadClass('we_ui_layout_ButtonTable');
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_ui_layout_ButtonTableYesNo extends we_ui_layout_ButtonTable{
+
 	/**
 	 * Default class name for button
 	 */
@@ -142,7 +143,7 @@ class we_ui_layout_ButtonTableYesNo extends we_ui_layout_ButtonTable{
 				$this->addElement($yes_ok_button);
 				$this->nextColumn();
 			}
-		} else{
+		} else {
 			if(is_object($yes_ok_button)){
 				$this->addElement($yes_ok_button);
 				$this->nextColumn();

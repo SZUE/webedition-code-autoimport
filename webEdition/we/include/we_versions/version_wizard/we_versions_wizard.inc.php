@@ -58,21 +58,21 @@ abstract class we_versions_wizard{
 		$js = $WE_PB->getJSCode() .
 			we_html_element::jsElement('function showRefreshButton() {  prevBut = document.getElementById(\'prev\');  nextBut = document.getElementById(\'nextCell\');  refrBut = document.getElementById(\'refresh\');  prevBut.style.display = \'none\';  nextBut.style.display = \'none\';  refrBut.style.display = \'\';} function showPrevNextButton() {  prevBut = document.getElementById(\'prev\');  nextBut = document.getElementById(\'next\');  refrBut = document.getElementById(\'refresh\');  refrBut.style.display = \'none\';  prevBut.style.display = \'\';  nextBut.style.display = \'\';}');
 
-		$cancelButton = we_button::create_button("cancel", "javascript:top.close();");
-		$refreshButton = we_button::create_button("refresh", "javascript:parent.wizcmd.location.reload();", true, -1, -1, "", "", false, false);
+		$cancelButton = we_html_button::create_button("cancel", "javascript:top.close();");
+		$refreshButton = we_html_button::create_button("refresh", "javascript:parent.wizcmd.location.reload();", true, 0, 0, "", "", false, false);
 
-		$nextbutdisabled = !(we_hasPerm("REBUILD_ALL") || we_hasPerm("REBUILD_FILTERD") || we_hasPerm(
-				"REBUILD_OBJECTS") || we_hasPerm("REBUILD_INDEX") || we_hasPerm("REBUILD_THUMBS") || we_hasPerm(
+		$nextbutdisabled = !(permissionhandler::hasPerm("REBUILD_ALL") || permissionhandler::hasPerm("REBUILD_FILTERD") || permissionhandler::hasPerm(
+				"REBUILD_OBJECTS") || permissionhandler::hasPerm("REBUILD_INDEX") || permissionhandler::hasPerm("REBUILD_THUMBS") || permissionhandler::hasPerm(
 				"REBUILD_META"));
 
 		if($dc){
-			$buttons = we_button::create_button_table(array(
+			$buttons = we_html_button::create_button_table(array(
 					$refreshButton, $cancelButton
 					), 10);
 			$pb = we_html_tools::htmlDialogLayout($pb, g_l('rebuild', "[rebuild]"), $buttons);
 		} else {
-			$prevButton = we_button::create_button("back", "javascript:parent.wizbody.handle_event('previous');", true, -1, -1, "", "", true, false);
-			$nextButton = we_button::create_button("next", "javascript:parent.wizbody.handle_event('next');", true, -1, -1, "", "", $nextbutdisabled, false);
+			$prevButton = we_html_button::create_button("back", "javascript:parent.wizbody.handle_event('previous');", true, 0, 0, "", "", true, false);
+			$nextButton = we_html_button::create_button("next", "javascript:parent.wizbody.handle_event('next');", true, 0, 0, "", "", $nextbutdisabled, false);
 
 			$content2 = new we_html_table(array(
 				"border" => 0, "cellpadding" => 0, "cellspacing" => 0
@@ -114,7 +114,7 @@ abstract class we_versions_wizard{
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(
-					STYLESHEET . ($dc ? "" : we_button::create_state_changer()) . $js) . we_html_element::htmlBody(
+					STYLESHEET . ($dc ? "" : we_html_button::create_state_changer()) . $js) . we_html_element::htmlBody(
 					array("class" => ($dc ? "weDialogBody" : "weDialogButtonsBody"), 'style' => 'overflow:hidden'
 					), ($dc ? $pb : $content->getHtml())));
 	}
@@ -169,12 +169,12 @@ abstract class we_versions_wizard{
 		$parts = array(
 			array(
 				"headline" => "",
-				"html" => we_forms::radiobutton("delete_versions", ($type == self::DELETE_VERSIONS), "type", g_l('versions', '[delete_versions]'), true, "defaultfont", "", false, g_l('versions', '[txt_delete_versions]'), 0, 495),
+				"html" => we_html_forms::radiobutton("delete_versions", ($type == self::DELETE_VERSIONS), "type", g_l('versions', '[delete_versions]'), true, "defaultfont", "", false, g_l('versions', '[txt_delete_versions]'), 0, 495),
 				"space" => 0
 			),
 			array(
 				"headline" => "",
-				"html" => we_forms::radiobutton("reset_versions", ($type == self::RESET_VERSIONS), "type", g_l('versions', '[reset_versions]'), true, "defaultfont", "", false, g_l('versions', '[txt_reset_versions]'), 0, 495),
+				"html" => we_html_forms::radiobutton("reset_versions", ($type == self::RESET_VERSIONS), "type", g_l('versions', '[reset_versions]'), true, "defaultfont", "", false, g_l('versions', '[txt_reset_versions]'), 0, 495),
 				"space" => 0
 		));
 
@@ -242,7 +242,7 @@ set_button_state(false);';
 
 		return array(
 			$js,
-			we_multiIconBox::getHTML("", "100%", $parts, 40, "", -1, "", "", false, g_l('versions', '[versioning]')) .
+			we_html_multiIconBox::getHTML("", "100%", $parts, 40, "", -1, "", "", false, g_l('versions', '[versioning]')) .
 			$hiddenFields .
 			we_html_element::htmlHidden(array("name" => "fr", "value" => "body")) .
 			we_html_element::htmlHidden(array("name" => "we_cmd[0]", "value" => "versions_wizard")) .
@@ -284,10 +284,10 @@ set_button_state(false);';
 			$checked = isset($_REQUEST[$k]) ? $_REQUEST[$k] : 0;
 			if($k == "all"){
 				$jvs = "checkAll(this);";
-				$content .= we_forms::checkbox($val, $checked, $name, g_l('versions', '[versions_all]'), false, "defaultfont", $jvs) . "<br/>";
+				$content .= we_html_forms::checkbox($val, $checked, $name, g_l('versions', '[versions_all]'), false, "defaultfont", $jvs) . "<br/>";
 			} else {
 				$jvs = "checkAllRevert(this);";
-				$content .= we_forms::checkbox($val, $checked, $name, g_l('contentTypes', '[' . $txt . ']'), false, "defaultfont", $jvs) . "<br/>";
+				$content .= we_html_forms::checkbox($val, $checked, $name, g_l('contentTypes', '[' . $txt . ']'), false, "defaultfont", $jvs) . "<br/>";
 			}
 		}
 		$parts = array(
@@ -370,7 +370,7 @@ set_button_state(false);';
 			'space' => 0
 		);
 
-		$clearDate = we_button::create_button("reset", "javascript:document.getElementById('delete_date').value='';", true, -1, -1, "", "", "", false);
+		$clearDate = we_html_button::create_button("reset", "javascript:document.getElementById('delete_date').value='';", true, 0, 0, "", "", "", false);
 
 
 		$parts[] = array(
@@ -393,7 +393,7 @@ set_button_state(false);';
 			$jsCheckboxArgs .= 'args += "&ct[' . $k . ']="+escape(document.getElementById("version_delete_' . $k . '").checked);';
 		}
 
-		$nextButton = we_button::create_button("next", "javascript:parent.wizbody.handle_event(\"next\");", true, -1, -1, "", "", "", false);
+		$nextButton = we_html_button::create_button("next", "javascript:parent.wizbody.handle_event(\"next\");", true, 0, 0, "", "", "", false);
 
 		$js = '
 window.onload = function(){
@@ -484,7 +484,7 @@ set_button_state(false);';
 
 		return array(
 			$js,
-			we_multiIconBox::getHTML("", "100%", $parts, 40, "", -1, "", "", false, g_l('versions', '[delete_versions]') . " - " . g_l('versions', '[step]') . " 1 " . g_l('versions', '[of]') . " 2") .
+			we_html_multiIconBox::getHTML("", "100%", $parts, 40, "", -1, "", "", false, g_l('versions', '[delete_versions]') . " - " . g_l('versions', '[step]') . " 1 " . g_l('versions', '[of]') . " 2") .
 			we_html_element::htmlHidden(array("name" => "fr", "value" => "body")) .
 			we_html_element::htmlHidden(array("name" => "type", "value" => $type)) .
 			we_html_element::htmlHidden(array("name" => "we_cmd[0]", "value" => "versions_wizard")) .
@@ -512,15 +512,15 @@ set_button_state(false);';
 			$checked = isset($_REQUEST[$k]) ? $_REQUEST[$k] : 0;
 			if($k == "all"){
 				$jvs = "checkAll(this);";
-				$content .= we_forms::checkbox($val, $checked, $name, g_l('versions', '[versions_all]'), false, "defaultfont", $jvs) . "<br/>";
+				$content .= we_html_forms::checkbox($val, $checked, $name, g_l('versions', '[versions_all]'), false, "defaultfont", $jvs) . "<br/>";
 			} else {
 				$jvs = "checkAllRevert(this);";
-				$content .= we_forms::checkbox($val, $checked, $name, g_l('contentTypes', '[' . $txt . ']'), false, "defaultfont", $jvs) . "<br/>";
+				$content .= we_html_forms::checkbox($val, $checked, $name, g_l('contentTypes', '[' . $txt . ']'), false, "defaultfont", $jvs) . "<br/>";
 			}
 		}
 
 		$versions_reset_date = weVersionsSearch::getDateSelector("", "reset_date", "_1", $version_reset_date);
-		$doPublish = we_forms::checkbox($version_reset_doPublish, $version_reset_doPublish, "reset_doPublish", g_l('versions', '[publishIfReset]'), false, "defaultfont", "");
+		$doPublish = we_html_forms::checkbox($version_reset_doPublish, $version_reset_doPublish, "reset_doPublish", g_l('versions', '[publishIfReset]'), false, "defaultfont", "");
 
 
 		$parts = array(
@@ -608,7 +608,7 @@ set_button_state(false);';
 			'space' => 0
 		);
 
-		$clearDate = we_button::create_button(
+		$clearDate = we_html_button::create_button(
 				"reset", "javascript:document.getElementById('reset_date').value='';", true, -1, -1, "", "", "", false);
 
 		$parts[] = array(
@@ -633,7 +633,7 @@ set_button_state(false);';
 			$jsCheckboxArgs .= 'args += "&ct[' . $k . ']="+escape(document.getElementById("version_reset_' . $k . '").checked);';
 		}
 
-		$nextButton = we_button::create_button("next", "javascript:parent.wizbody.handle_event(\"next\");", true, -1, -1, "", "", "", false);
+		$nextButton = we_html_button::create_button("next", "javascript:parent.wizbody.handle_event(\"next\");", true, 0, 0, "", "", "", false);
 
 		$js = 'window.onload = function(){
 					top.focus();
@@ -735,7 +735,7 @@ set_button_state(false);';
 
 		return array(
 			$js,
-			we_multiIconBox::getHTML(
+			we_html_multiIconBox::getHTML(
 				"", "100%", $parts, 40, "", -1, "", "", false, g_l('versions', '[reset_versions]') . " - " . g_l('versions', '[step]') . " 1 " . g_l('versions', '[of]') . " 2") .
 			we_html_element::htmlHidden(array("name" => "fr", "value" => "body")) .
 			we_html_element::htmlHidden(array("name" => "type", "value" => $type)) .
@@ -853,7 +853,7 @@ set_button_state(false);';
 			$seconds = $version_delete['delete_seconds'];
 			$timestamp = mktime($hour, $minutes, $seconds, $month, $day, $year);
 
-			$timestampWhere = ' timestamp<' . $timestamp.' ';
+			$timestampWhere = ' timestamp<' . $timestamp . ' ';
 		}
 
 		$parts = array();
@@ -925,7 +925,7 @@ set_button_state(false);';
 			$out .= '
 <tr class="defaultfont">
 	<td align="center">' . $k . '</td>
-	<td align="center">' . shortenPath($v['Path'], 55) . '</td>
+	<td align="center">' . we_util_Strings::shortenPath($v['Path'], 55) . '</td>
 	<td align="center">' . $v['ContentType'] . '</td>
 </tr>';
 		}
@@ -947,7 +947,7 @@ set_button_state(false);';
 
 		return array(
 			self::getPage2Js(!empty($cont), 'delete'),
-			we_multiIconBox::getHTML("", "100%", $parts, 40, "", -1, "", "", false, g_l('versions', '[delete_versions]') . " - " . g_l('versions', '[step]') . " 2 " . g_l('versions', '[of]') . " 2") .
+			we_html_multiIconBox::getHTML("", "100%", $parts, 40, "", -1, "", "", false, g_l('versions', '[delete_versions]') . " - " . g_l('versions', '[step]') . " 2 " . g_l('versions', '[of]') . " 2") .
 			$hiddenFields .
 			we_html_element::htmlHidden(array("name" => "fr", "value" => "body")) .
 			we_html_element::htmlHidden(array("name" => "type", "value" => $type)) .
@@ -1052,7 +1052,7 @@ set_button_state(false);';
 		foreach($docIds as $k => $v){
 			$out .= '<tr class="defaultfont">
 				<td align="center">' . $k . '</td>
-				<td align="center">' . shortenPath($v['Path'], 55) . '</td>
+				<td align="center">' . we_util_Strings::shortenPath($v['Path'], 55) . '</td>
 				<td align="center">' . $v['ContentType'] . '</td>
 			</tr>';
 		}
@@ -1072,7 +1072,7 @@ set_button_state(false);';
 
 		return array(
 			self::getPage2Js(!empty($cont), "reset"),
-			we_multiIconBox::getHTML("", "100%", $parts, 40, "", -1, "", "", false, g_l('versions', '[reset_versions]') . " - " . g_l('versions', '[step]') . " 2 " . g_l('versions', '[of]') . " 2") .
+			we_html_multiIconBox::getHTML("", "100%", $parts, 40, "", -1, "", "", false, g_l('versions', '[reset_versions]') . " - " . g_l('versions', '[step]') . " 2 " . g_l('versions', '[of]') . " 2") .
 			$hiddenFields .
 			we_html_element::htmlHidden(array("name" => "fr", "value" => "body")) .
 			we_html_element::htmlHidden(array("name" => "type", "value" => $type)) .
@@ -1107,7 +1107,7 @@ set_button_state(false);';
 		$taskname = md5(session_id() . "_version_wizard");
 		$taskFilename = WE_FRAGMENT_PATH . $taskname;
 		if(file_exists($taskFilename)){
-			weFile::delete($taskFilename);
+			we_base_file::delete($taskFilename);
 		}
 
 		if(!empty($query)){
@@ -1148,7 +1148,7 @@ set_button_state(false);';
 		//reset
 		$act = ($action == "delete" ? 0 : 1);
 
-		$nextButton = we_button::create_button("go", 'javascript:parent.wizbody.handle_event("next");', true, -1, -1, "", "", $disabled, false);
+		$nextButton = we_html_button::create_button("go", 'javascript:parent.wizbody.handle_event("next");', true, 0, 0, "", "", $disabled, false);
 		$publish = isset($_REQUEST['reset_doPublish']) && $_REQUEST['reset_doPublish'] ? 1 : 0;
 		$we_transaction = $GLOBALS['we_transaction'];
 		return '
@@ -1277,8 +1277,7 @@ set_button_state(false);';
 		if(!count($contents)){
 			return '';
 		}
-		$headCal =
-			we_html_element::linkElement(
+		$headCal = we_html_element::linkElement(
 				array(
 					"rel" => "stylesheet",
 					"type" => "text/css",

@@ -103,7 +103,6 @@ function we_tag_include($attribs){
 	}
 
 	if(we_tag('ifEditmode')){
-
 		if($name && !($id || $path)){
 			$type = weTag_getAttribute('kind', $attribs);
 			$style = 'color: white;font-size:' . ((we_base_browserDetect::isMAC()) ? '11px' : ((we_base_browserDetect::isUNIX()) ? '13px' : '12px')) . ';font-family:' . g_l('css', '[font_family]') . ';';
@@ -120,7 +119,7 @@ function we_tag_include($attribs){
 			$db = $GLOBALS['DB_WE'];
 			$type = weTag_getAttribute('kind', $attribs);
 			$_name = weTag_getAttribute('_name_orig', $attribs);
-			$path = we_tag('href', array('name' => $_name, 'hidedirindex' => 'false', 'type' => $type, 'isInternal'=>1));
+			$path = we_tag('href', array('name' => $_name, 'hidedirindex' => 'false', 'type' => $type, 'isInternal' => 1));
 			$nint = $name . we_base_link::MAGIC_INT_LINK;
 			$int = ($GLOBALS['we_doc']->getElement($nint) == '') ? 0 : $GLOBALS['we_doc']->getElement($nint);
 			$intID = $GLOBALS['we_doc']->getElement($nint . 'ID');
@@ -162,11 +161,11 @@ function we_tag_include($attribs){
 			//check Customer-Filter on static documents
 			$id = intval($id ? $id : (isset($intID) ? $intID : 0));
 			if(defined('CUSTOMER_TABLE') && $id){
-				$filter = weDocumentCustomerFilter::getFilterByIdAndTable($id, FILE_TABLE);
+				$filter = we_customer_documentFilter::getFilterByIdAndTable($id, FILE_TABLE);
 
 				if(is_object($filter)){
 					$obj = (object) array('ID' => $id, 'ContentType' => $ct);
-					if($filter->accessForVisitor($obj, array(), true) != weDocumentCustomerFilter::ACCESS){
+					if($filter->accessForVisitor($obj, array(), true) != we_customer_documentFilter::ACCESS){
 						return '';
 					}
 				}

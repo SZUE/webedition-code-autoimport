@@ -22,7 +22,6 @@
  * @package    webEdition_toolfactory
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 //NOTE you are inside the constructor of weTagData.class.php
 
 $this->NeedsEndTag = false;

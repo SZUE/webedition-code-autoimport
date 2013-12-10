@@ -36,6 +36,7 @@ class we_app_HomePage extends we_ui_layout_HTMLPage{
 	 * class for the BoxHeader
 	 * @var string
 	 */
+
 	const kClassBoxHeader = 'we_app_HomePageBoxHeader';
 
 	/*

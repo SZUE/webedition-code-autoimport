@@ -65,7 +65,7 @@ function we_tag_sendMail($attribs, $content){
 							$we_recipient[] = $_REQUEST[$to[$l]];
 						}
 					}
-				} else{
+				} else {
 					if(we_check_email($to[$l])){
 						$we_recipient[] = $to[$l];
 					}
@@ -86,7 +86,7 @@ function we_tag_sendMail($attribs, $content){
 							$we_recipientCC[] = $_REQUEST[$toCC[$l]];
 						}
 					}
-				} else{
+				} else {
 					if(we_check_email($toCC[$l])){
 						$we_recipientCC[] = $toCC[$l];
 					}
@@ -105,7 +105,7 @@ function we_tag_sendMail($attribs, $content){
 							$we_recipientBCC[] = $_REQUEST[$toBCC[$l]];
 						}
 					}
-				} else{
+				} else {
 					if(we_check_email($toBCC[$l])){
 						$we_recipientBCC[] = $toBCC[$l];
 					}
@@ -130,7 +130,7 @@ function we_tag_sendMail($attribs, $content){
 					// check if ip is allready blocked
 					if(f('SELECT 1 AS a FROM ' . FORMMAIL_BLOCK_TABLE . " WHERE ip='" . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . "'", "a", $GLOBALS['DB_WE'])){
 						$_blocked = true;
-					} else{
+					} else {
 
 						// ip is not blocked, so see if we need to block it
 						$GLOBALS['DB_WE']->query('SELECT * FROM ' . FORMMAIL_LOG_TABLE . ' WHERE unixTime>(UNIX_TIMESTAMP()-' . intval(FORMMAIL_SPAN) . ") AND ip='" . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . "'");
@@ -158,12 +158,12 @@ function we_tag_sendMail($attribs, $content){
 					'</html>';
 
 				exit;
-			} else{
+			} else {
 				if(!isset($_SESSION)){
-					@session_start();
+					session_start();
 				}
 				$_SESSION['WE_SendMail'] = true;
-				$codes = ($id > 0) && weFileExists($id, FILE_TABLE, $GLOBALS['DB_WE']) ? we_getDocumentByID($id) : '';
+				$codes = ($id > 0) && we_base_file::isWeFile($id, FILE_TABLE, $GLOBALS['DB_WE']) ? we_getDocumentByID($id) : '';
 				unset($_SESSION['WE_SendMail']);
 				if(!$codes){
 					t_e('Document to send via we:sendMail is empty ID: ' . $id);
@@ -184,7 +184,7 @@ function we_tag_sendMail($attribs, $content){
 				$phpmail->setCharSet($charset);
 				if($mimetype != 'text/html'){
 					$phpmail->addTextPart(strip_tags(str_replace("&nbsp;", " ", str_replace("<br />", "\n", str_replace("<br>", "\n", $codes)))));
-				} else{
+				} else {
 					$phpmail->addHTMLPart($codes);
 				}
 				$phpmail->buildMessage();

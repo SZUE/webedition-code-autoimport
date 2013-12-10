@@ -35,7 +35,7 @@ function we_tag_ifRegisteredUserCanChange($attribs){
 
 	if(isset($GLOBALS['lv'])){
 		return ($protected ? $GLOBALS['lv']->f('wedoc_WebUserID') : $GLOBALS['lv']->f($userid)) == $_SESSION['webuser']['ID'];
-	} else{
+	} else {
 		return ($protected ? $GLOBALS['we_doc']->WebUserID : $GLOBALS['we_doc']->getElement($userid)) == $_SESSION['webuser']['ID'];
 	}
 }

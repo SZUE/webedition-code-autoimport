@@ -28,14 +28,14 @@ class MultiDirChooser2 extends MultiDirChooser{
 	var $catField = '';
 
 	function __construct($width = "", $ids = "", $cmd_del = "", $addbut = "", $ws = "", $fields = "Icon,Path", $table = FILE_TABLE, $css = "defaultfont", $thirdDelPar = "", $extraDelFn = ""){
-	parent::__construct($width, $ids, $cmd_del, $addbut, $ws, $fields, $table, $css, $thirdDelPar, $extraDelFn);
+		parent::__construct($width, $ids, $cmd_del, $addbut, $ws, $fields, $table, $css, $thirdDelPar, $extraDelFn);
 	}
 
 	function getLine($lineNr){
 		$_catFieldJS = "";
-	/*	if($this->catField){
-			$_ids = str_replace("," . $this->Record["ID"] . ",", ",", $this->ids);
-		}*/
+		/* 	if($this->catField){
+		  $_ids = str_replace("," . $this->Record["ID"] . ",", ",", $this->ids);
+		  } */
 		$_catFieldJS .= "deleteCategory('" . $this->rowPrefix . "'," . $this->Record["ID"] . "); ";
 		switch($lineNr){
 			case 0:
@@ -43,7 +43,7 @@ class MultiDirChooser2 extends MultiDirChooser{
 	<td><img src="' . ICON_DIR . $this->Record[$this->fieldsArr[0]] . '" width="16" height="18" /></td>
 	<td class="' . $this->css . '">' . $this->Record[$this->fieldsArr[1]] . '</td>
 	<td>' . ((($this->isEditable() && $this->cmd_del) || $this->CanDelete) ?
-						we_button::create_button("image:btn_function_trash", "javascript:if(typeof(_EditorFrame)!='undefined'){_EditorFrame.setEditorIsHot(true);}" . ($this->extraDelFn ? $this->extraDelFn : "") . "; " . $_catFieldJS, true, 26) :
+						we_html_button::create_button("image:btn_function_trash", "javascript:if(typeof(_EditorFrame)!='undefined'){_EditorFrame.setEditorIsHot(true);}" . ($this->extraDelFn ? $this->extraDelFn : "") . "; " . $_catFieldJS, true, 26) :
 						"") . '</td>
 </tr>';
 		}
@@ -57,7 +57,7 @@ class MultiDirChooser2 extends MultiDirChooser{
 	<td><img src="' . ICON_DIR . we_base_ContentTypes::FOLDER_ICON . '" width="16" height="18" /></td>
 	<td class="' . $this->css . '">/</td>
 	<td>' . ((($this->isEditable() && $this->cmd_del) || $this->CanDelete) ?
-						we_button::create_button("image:btn_function_trash", "javascript:if(typeof(_EditorFrame)!='undefined'){_EditorFrame.setEditorIsHot(true);}" . ($this->extraDelFn ? $this->extraDelFn : "") . ";we_cmd('" . $this->cmd_del . "','0');", true, 26) :
+						we_html_button::create_button("image:btn_function_trash", "javascript:if(typeof(_EditorFrame)!='undefined'){_EditorFrame.setEditorIsHot(true);}" . ($this->extraDelFn ? $this->extraDelFn : "") . ";we_cmd('" . $this->cmd_del . "','0');", true, 26) :
 						'') . '</td>
 </tr>';
 		}
@@ -70,7 +70,7 @@ class MultiDirChooser2 extends MultiDirChooser{
 		$idArr = makeArrayFromCSV($this->ids);
 
 		foreach($idArr as $id){
-			$this->Record=getHash('SELECT ID,' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ID =' . intval($id),$this->db);
+			$this->Record = getHash('SELECT ID,' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ID =' . intval($id), $this->db);
 			if(!empty($this->Record)){
 				for($i = 0; $i < $this->lines; $i++){
 					$out .= $this->getLine($i);

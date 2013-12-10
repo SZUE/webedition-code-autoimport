@@ -32,6 +32,6 @@
  */
 function we_tag_useShopVariant(){
 	if(isset($_REQUEST[WE_SHOP_VARIANT_REQUEST]) && !$GLOBALS['we_doc']->InWebEdition){
-		weShopVariants::useVariant($GLOBALS['we_doc'], filterXss($_REQUEST[WE_SHOP_VARIANT_REQUEST]));
+		we_shop_variants::useVariant($GLOBALS['we_doc'], filterXss($_REQUEST[WE_SHOP_VARIANT_REQUEST]));
 	}
 }

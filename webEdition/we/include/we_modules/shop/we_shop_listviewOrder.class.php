@@ -24,7 +24,7 @@
  */
 
 /**
- * class    we_listview_customer
+ * class    we_shop_listviewOrder
  * @desc    class for tag <we:listview type="banner">
  *
  */
@@ -96,7 +96,7 @@ class we_shop_listviewOrder extends listviewBase{
 				$this->order = 'Int' . $this->order;
 			}
 			$orderstring = " ORDER BY " . $this->order . " ";
-		} else{
+		} else {
 			$orderstring = '';
 		}
 
@@ -104,10 +104,10 @@ class we_shop_listviewOrder extends listviewBase{
 
 		$this->anz_all = f('SELECT COUNT(1) AS a FROM ' . SHOP_TABLE . $where, 'a', $this->DB_WE);
 		$format = array();
-		foreach(weShopStatusMails::$StatusFields as $field){
+		foreach(we_shop_statusMails::$StatusFields as $field){
 			$format[] = 'UNIX_TIMESTAMP(' . $field . ') AS ' . $field;
 		}
-		foreach(weShopStatusMails::$MailFields as $field){
+		foreach(we_shop_statusMails::$MailFields as $field){
 			$format[] = 'UNIX_TIMESTAMP(' . $field . ') AS ' . $field;
 		}
 
@@ -163,7 +163,7 @@ class we_shop_listviewOrder extends listviewBase{
 			$this->DB_WE->Record["we_wedoc_lastPath"] = $this->LastDocPath . "?we_orderid=" . $this->DB_WE->Record["OrderID"];
 			$this->count++;
 			return true;
-		} else{
+		} else {
 			$this->stop_next_row = $this->shouldPrintEndTR();
 			if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
 				$this->DB_WE->Record = array();

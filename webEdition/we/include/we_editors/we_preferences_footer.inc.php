@@ -27,9 +27,9 @@
 require_once(WE_INCLUDES_PATH . 'we_editors/we_preferences_config.inc.php');
 
 function getPreferencesFooterJS(){
-	$tmp='';
+	$tmp = '';
 	foreach(array_keys($GLOBALS['tabs']) as $key){
-		$tmp.="document.getElementById('content').contentDocument.getElementById('setting_".$key."').style.display = 'none';";
+		$tmp.="document.getElementById('content').contentDocument.getElementById('setting_" . $key . "').style.display = 'none';";
 	}
 	$_javascript = <<< END_OF_SCRIPT
 var countSaveTrys = 0;
@@ -63,9 +63,8 @@ END_OF_SCRIPT;
  * *************************************************************************** */
 
 function getPreferencesFooter(){
-	$okbut = we_button::create_button('save', 'javascript:we_save();');
-	$cancelbut = we_button::create_button('close', 'javascript:top.close()');
+	$okbut = we_html_button::create_button('save', 'javascript:we_save();');
+	$cancelbut = we_html_button::create_button('close', 'javascript:top.close()');
 
-	return we_html_element::htmlDiv(array('class' => 'weDialogButtonsBody', 'style' => 'height:100%;'), we_button::position_yes_no_cancel($okbut, '', $cancelbut, 10, '', '', 0));
-
+	return we_html_element::htmlDiv(array('class' => 'weDialogButtonsBody', 'style' => 'height:100%;'), we_html_button::position_yes_no_cancel($okbut, '', $cancelbut, 10, '', '', 0));
 }

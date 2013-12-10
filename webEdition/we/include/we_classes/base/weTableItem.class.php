@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-
 /**
  * Class weTableItem
  *
@@ -37,7 +36,7 @@ class weTableItem extends weModelBase{
 	function __construct($table){
 		if($GLOBALS['DB_WE']->isTabExist($table)){
 			parent::__construct($table);
-		} else{
+		} else {
 			$this->db = new DB_WE();
 			$this->table = $table;
 		}
@@ -57,7 +56,7 @@ class weTableItem extends weModelBase{
 		include(WE_INCLUDES_PATH . 'we_exim/backup/weTableKeys.inc.php');
 		if(in_array($table, array_keys($tableKeys))){
 			return $tableKeys[$table];
-		} else{
+		} else {
 			return array('ID');
 		}
 	}
@@ -82,7 +81,7 @@ class weTableItem extends weModelBase{
 			$tables[ANZEIGE_PREFS_TABLE] = array('strDateiname', 'strFelder');
 			$tables[SHOP_TABLE] = array('strSerial', 'strSerialOrder');
 		}
-		return (array_key_exists($this->table, $tables)&& in_array($was, $tables[$this->table]));
+		return (array_key_exists($this->table, $tables) && in_array($was, $tables[$this->table]));
 	}
 
 	function doCorrectExactCharsetString($was){
@@ -121,14 +120,14 @@ class weTableItem extends weModelBase{
 			$tables[VOTING_TABLE] = array('QASet', 'QASetAdditions', 'Scores', 'LogData');
 		}
 
-		return (array_key_exists($table, $tables)&& in_array($was, $tables[$table]));
+		return (array_key_exists($table, $tables) && in_array($was, $tables[$table]));
 	}
 
 	function doPrepareCorrectSerializedLenghtValues($was){
 		$tables = array();
 		$tables[CATEGORY_TABLE] = array('Catfields');
 		$table = $this->table;
-		return (array_key_exists($table, $tables)&&in_array($was, $tables[$table]));
+		return (array_key_exists($table, $tables) && in_array($was, $tables[$table]));
 	}
 
 	function doCorrectSerializedExactCharsetString($was){
@@ -137,7 +136,7 @@ class weTableItem extends weModelBase{
 			$tables[OBJECT_TABLE] = array('DefaultValues');
 		}
 
-		return (array_key_exists($this->table, $tables)&&in_array($was, $tables[$this->table]));
+		return (array_key_exists($this->table, $tables) && in_array($was, $tables[$this->table]));
 	}
 
 	static function convertSCharsetEncoding($fromC, $toC, $string){
@@ -157,7 +156,7 @@ class weTableItem extends weModelBase{
 		foreach($this as $key => &$val){
 			if($this->doConvertCharset($key)){
 				$mydata = $val;
-				if(isSerialized($mydata)){ //mainly for tblcontent, where serialized data is mixed with others, but stored in backup as binary
+				if(weXMLImport::isSerialized($mydata)){ //mainly for tblcontent, where serialized data is mixed with others, but stored in backup as binary
 					$mydataUS = unserialize($mydata);
 					if(is_array($mydataUS)){
 						foreach($mydataUS as &$ad){
@@ -169,13 +168,13 @@ class weTableItem extends weModelBase{
 											$addd = self::convertExactCharsetString($fromC, $toC, $addd);
 											$addd = self::convertCharsetString($fromC, $toC, $addd);
 										}
-									} else{
+									} else {
 										$add = self::convertSCharsetEncoding($fromC, $toC, $add);
 										$add = self::convertExactCharsetString($fromC, $toC, $add);
 										$add = self::convertCharsetString($fromC, $toC, $add);
 									}
 								}
-							} else{
+							} else {
 								$ad = self::convertSCharsetEncoding($fromC, $toC, $ad);
 								$ad = self::convertExactCharsetString($fromC, $toC, $ad);
 								$ad = self::convertCharsetString($fromC, $toC, $ad);
@@ -183,7 +182,7 @@ class weTableItem extends weModelBase{
 						}
 						$val = serialize($mydataUS);
 					}
-				} else{
+				} else {
 					$val = self::convertSCharsetEncoding($fromC, $toC, $mydata);
 					$val = self::convertExactCharsetString($fromC, $toC, $val);
 					$val = self::convertCharsetString($fromC, $toC, $val);
@@ -196,7 +195,7 @@ class weTableItem extends weModelBase{
 				if($this->doPrepareCorrectSerializedLenghtValues($key)){
 					$val = self::convertSCharsetEncoding($fromC, $toC, $val);
 				}
-				$val = correctSerDataISOtoUTF($val);
+				$val = self::correctSerDataISOtoUTF($val);
 			}
 
 			if($this->doCorrectSerializedExactCharsetString($key)){
@@ -220,6 +219,16 @@ class weTableItem extends weModelBase{
 
 	static function convertExactCharsetString($fromC, $toC, $string){
 		return ($string == $fromC ? $toC : $string);
+	}
+
+//FIXME: remove
+	static function serialize_fix_callback($match){
+		return 's:' . strlen($match[1]) . ':"' . $match[1] . '";';
+	}
+
+//FIXME: remove
+	static function correctSerDataISOtoUTF($serial_str){
+		return preg_replace_callback('|s:\d+:"(.*?)";|s', 'weTableItem::serialize_fix_callback', $serial_str);
 	}
 
 }

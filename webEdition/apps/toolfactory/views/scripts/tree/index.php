@@ -27,9 +27,9 @@ $appName = $controller->getParam('appName');
 
 $page = we_ui_layout_HTMLPage::getInstance();
 
-$page->addJSFile('/webEdition/js/windows.js');
-$page->addJSFile('/webEdition/js/we_showMessage.js');
-$page->addJSFile('/webEdition/js/images.js');
+$page->addJSFile(JS_DIR . 'windows.js');
+$page->addJSFile(JS_DIR . 'we_showMessage.js');
+$page->addJSFile(JS_DIR . 'images.js');
 
 $nodes = array();
 

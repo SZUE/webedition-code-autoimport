@@ -356,20 +356,20 @@ echo we_html_element::jsScript(JS_DIR . 'images.js') .
 		menuDaten.clear();
 
 <?php
-
-function readChilds($pid){
-	$db_temp = new DB_WE();
-	$db_temp->query("SELECT ID,username,ParentID,Type,Permissions FROM " . USER_TABLE . " WHERE  ParentID=" . intval($pid) . " ORDER BY username ASC");
-	while($db_temp->next_record()){
-		$GLOBALS['entries'][$db_temp->f("ID")]["username"] = $db_temp->f("username");
-		$GLOBALS['entries'][$db_temp->f("ID")]["ParentID"] = $db_temp->f("ParentID");
-		$GLOBALS['entries'][$db_temp->f("ID")]["Type"] = $db_temp->f("Type");
-		$GLOBALS['entries'][$db_temp->f("ID")]["Permissions"] = substr($db_temp->f("Permissions"), 0, 1);
-		if($db_temp->f("Type") == "1"){
-			readChilds($db_temp->f("ID"));
-		}
-	}
-}
+/* function readChilds($pid){
+  $db_temp = new DB_WE();
+  $db_temp->query('SELECT ID,username,ParentID,Type,Permissions FROM ' . USER_TABLE . ' WHERE  ParentID=' . intval($pid) . ' ORDER BY username ASC');
+  //FIXME: use ->getAllFirst(true); => this uses to many db connections
+  while($db_temp->next_record()){
+  $GLOBALS['entries'][$db_temp->f("ID")]["username"] = $db_temp->f("username");
+  $GLOBALS['entries'][$db_temp->f("ID")]["ParentID"] = $db_temp->f("ParentID");
+  $GLOBALS['entries'][$db_temp->f("ID")]["Type"] = $db_temp->f("Type");
+  $GLOBALS['entries'][$db_temp->f("ID")]["Permissions"] = substr($db_temp->f("Permissions"), 0, 1);
+  if($db_temp->f("Type") == "1"){
+  readChilds($db_temp->f("ID"));
+  }
+  }
+  } */
 
 $entries = array();
 $DB_WE->query("SELECT ID,ParentID,username,Permissions,Type FROM " . USER_TABLE . " ORDER BY username ASC");
@@ -426,7 +426,7 @@ while($DB_WE->next_record()){
 
 
 	self.focus();
-	//-->
+//-->
 </script>
 
 </head>
@@ -435,7 +435,7 @@ while($DB_WE->next_record()){
 echo we_html_element::htmlBody(array('style' => 'background-color:#bfbfbf;background-repeat:repeat;background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;')
 	, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
 		, we_html_element::htmlIFrame('messaging_usel_main', HTML_DIR . 'white.html', 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: auto;', 'border:0px;width:100%;height:100%;overflow: auto;') .
-		we_html_element::htmlDiv(array('style' => 'position:absolute;height:20px;bottom:0px;left:0px;right:0px;overflow: hidden;padding:10px;background-repeat:repeat;background-image: url(' . IMAGE_DIR . 'edit/editfooterback.gif);'), we_button::position_yes_no_cancel(we_button::create_button("ok", "javascript:do_selupdate();"), "", we_button::create_button("cancel", "javascript:close();")
+		we_html_element::htmlDiv(array('style' => 'position:absolute;height:20px;bottom:0px;left:0px;right:0px;overflow: hidden;padding:10px;background-repeat:repeat;background-image: url(' . IMAGE_DIR . 'edit/editfooterback.gif);'), we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "javascript:do_selupdate();"), "", we_html_button::create_button("cancel", "javascript:close();")
 		))
 ));
 ?>

@@ -26,7 +26,6 @@ $appName = Zend_Controller_Front::getInstance()->getParam('appName');
 $translate = we_core_Local::addTranslation('apps.xml');
 we_core_Local::addTranslation('default.xml', 'toolfactory');
 
-include_once($GLOBALS['__WE_BASE_PATH__'] . DIRECTORY_SEPARATOR . 'we' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'we_version.php');
 
 $activTab = isset($_REQUEST['activTab']) ? ($_REQUEST['activTab']) : 'idPropertyTab';
 
@@ -182,12 +181,12 @@ if(!empty($this->model->ID)){
 
 			if(!empty($this->model->appconfig->info->title->$lang)){
 				$title = $this->model->appconfig->info->title->$lang;
-			} else{
+			} else {
 				$title = $this->model->appconfig->info->title->de;
 			}
 			if(!empty($this->model->appconfig->info->description->$lang)){
 				$description = $this->model->appconfig->info->description->$lang;
-			} else{
+			} else {
 				$description = $this->model->appconfig->info->description->de;
 			}
 			$html = '<strong>' . $title . '</strong><br/>';
@@ -213,12 +212,12 @@ if(!empty($this->model->ID)){
 				if(!empty($cm->authors->author)){
 					if(is_object($cm->authors->author)){
 						$authornames = $cm->authors->author->toArray();
-					} else{
+					} else {
 						$authornames = $cm->authors->author;
 					}
 					if(!empty($cm->authorlinks->www) && is_object($cm->authorlinks->www)){
 						$authorlinks = $cm->authorlinks->www->toArray();
-					} else{
+					} else {
 						$authorlinks = $cm->authorlinks->www;
 					}
 					if(is_array($authornames)){
@@ -235,7 +234,7 @@ if(!empty($this->model->ID)){
 							$authorentry[] = $htmla;
 						}
 						$html = implode(', ', $authorentry);
-					} else{
+					} else {
 						$html = '';
 						if(isset($authorlinks) && !empty($authorlinks)){
 							$html .= '<a href="' . $authorlinks . '" target="_blank" >';
@@ -266,12 +265,12 @@ if(!empty($this->model->ID)){
 				if(!empty($cm->authors->author)){
 					if(is_array($cm->authors->author)){
 						$authornames = $cm->authors->author->toArray();
-					} else{
+					} else {
 						$authornames = $cm->authors->author;
 					}
 					if(!empty($cm->authorlinks->www) && is_array($cm->authorlinks->www)){
 						$authorlinks = $cm->authorlinks->www->toArray();
-					} else{
+					} else {
 						$authorlinks = $cm->authorlinks->www;
 					}
 					if(is_array($authornames)){
@@ -288,7 +287,7 @@ if(!empty($this->model->ID)){
 							$authorentry[] = $htmla;
 						}
 						$html .= implode(', ', $authorentry);
-					} else{
+					} else {
 						$html .= '';
 						if(isset($authorlinks) && !empty($authorlinks)){
 							$html .= '<a href="' . $authorlinks . '" target="_blank" >';
@@ -337,7 +336,7 @@ if(!empty($this->model->ID)){
 				$we_version = we_util_Strings::version2number(WE_VERSION, false);
 				if($we_version < $this->model->appconfig->dependencies->version){
 					$html .= $translate->_('MinWeVersion') . ': <strong><span style="color:red">' . we_util_Strings::number2version($this->model->appconfig->dependencies->version, false) . '</span></strong> ' . $translate->_('AktWeVersion') . ' <strong>' . WE_VERSION . '</strong>';
-				} else{
+				} else {
 					$html .= $translate->_('MinWeVersion') . ': <strong>' . we_util_Strings::number2version($this->model->appconfig->dependencies->version, false) . '</strong>';
 				}
 			}
@@ -346,28 +345,28 @@ if(!empty($this->model->ID)){
 			}
 			if($this->model->appconfig){
 				$html .= '<br/>' . $translate->_('The application manifest is available');
-			} else{
+			} else {
 				$html .= '<br/>' . $translate->_('The application manifest is not available');
 			}
 			if($this->model->appconfig->info->deactivatable == "true"){
 				$html .= '<br/>' . $translate->_('The application can be deactivated.');
-			} else{
+			} else {
 				$html .= '<br/>' . $translate->_('The application can not be deactivated!');
 			}
 			if($this->model->appconfig->info->deinstallable == "true"){
 				$html .= '<br/>' . $translate->_('The application is deletable.');
-			} else{
+			} else {
 				$html .= '<br/>' . $translate->_('The application can not be deleted!');
 			}
 			if($this->model->appconfig->info->updatable == "true"){
 				$html .= '<br/>' . $translate->_('The application can be updated.');
-			} else{
+			} else {
 				$html .= '<br/>' . $translate->_('The application can not be updated.');
 			}
 			$html .= '<br/>' . $translate->_('AppStatus') . ': <strong>';
 			if(!we_app_Common::isActive($this->model->classname)){
 				$html .= $translate->_('AppStatusDiabled') . '</strong>';
-			} else{
+			} else {
 				$html .= $translate->_('AppStatusActive') . '</strong>';
 			}
 			//$html .= we_util_Strings::p_r($this->model->appconfig,true);
@@ -389,7 +388,7 @@ if(!empty($this->model->ID)){
 				$html .= ' <a href="' . $this->model->appconfig->thirdparty->www . '" target="_blank">';
 				if(!empty($this->model->appconfig->thirdparty->name)){
 					$html .= $this->model->appconfig->thirdparty->name;
-				} else{
+				} else {
 					$html .= $this->model->appconfig->thirdparty->www;
 				}
 				$html .= '</a>';
@@ -404,7 +403,7 @@ if(!empty($this->model->ID)){
 				}
 				if(!empty($this->model->appconfig->thirdparty->license)){
 					$html .= $this->model->appconfig->thirdparty->license;
-				} else{
+				} else {
 					$html .= $this->model->appconfig->thirdparty->licenseurl;
 				}
 				if(!empty($this->model->appconfig->thirdparty->licenseurl)){

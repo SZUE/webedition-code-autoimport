@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition SDK
  *
@@ -19,7 +20,6 @@
  * @subpackage we_app_Installer
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-
 /**
  * @see we_io_DB
  */
@@ -37,25 +37,20 @@ include_once('Zend/Db.php');
  * @subpackage we_app_Installer
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-abstract class we_app_Installer_Common
-{
+abstract class we_app_Installer_Common{
 
-	public static function executeQuery($query = "")
-	{
-		if(empty($query)) {
+	public static function executeQuery($query = ""){
+		if(empty($query)){
 			return false;
 		}
 		$db = we_io_DB::getAdapter();
-		try {
+		try{
 			$result = $db->getConnection()->exec($query);
-		} catch (PDOException $e) {
-			error_log($e->getCode().": ".$e->getMessage()." in file ".$e->getFile());
+		} catch (PDOException $e){
+			error_log($e->getCode() . ": " . $e->getMessage() . " in file " . $e->getFile());
 			return false;
 		}
 		return true;
-
 	}
-
-
 
 }

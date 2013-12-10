@@ -539,4 +539,3 @@ class Image_Transform_Driver_GD extends Image_Transform{
 	}
 
 }
-

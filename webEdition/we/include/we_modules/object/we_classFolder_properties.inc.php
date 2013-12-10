@@ -66,7 +66,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 echo STYLESHEET .
  '</head>
-<body class="weEditorBody" onUnload="doUnload()">';
+<body class="weEditorBody" onunload="doUnload()">';
 
 
 $_parts = array(
@@ -74,6 +74,6 @@ $_parts = array(
 	array('html' => $we_doc->searchProperties())
 );
 
-echo we_multiIconBox::getHTML('', '100%', $_parts, 30, '', -1, '', '', false) . '
+echo we_html_multiIconBox::getHTML('', '100%', $_parts, 30, '', -1, '', '', false) . '
 </body>
 </html>';

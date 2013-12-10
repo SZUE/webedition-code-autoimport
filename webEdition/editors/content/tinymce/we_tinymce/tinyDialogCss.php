@@ -40,7 +40,7 @@ display:block;
 }
 
 .tabs{
-background: url("/webEdition/images/multiTabs/tabsBG_border.gif") repeat-x scroll 0 0 transparent;
+background: url("<?php echo IMAGE_DIR;?>multiTabs/tabsBG_border.gif") repeat-x scroll 0 0 transparent;
 display:block;
 border: none;
 height: 21px;
@@ -58,7 +58,7 @@ vertical-align: top;
 
 .tabs li {
 height: 21px;
-background-image: url("/webEdition/images/multiTabs/tabsBG_normal.gif");
+background-image: url("<?php echo IMAGE_DIR;?>multiTabs/tabsBG_normal.gif");
 background-repeat: repeat-x;
 border-right: 1px solid gray;
 cursor: pointer;
@@ -151,7 +151,7 @@ padding-bottom:10px;
 }
 
 .mceActionPanel #insert, .mceActionPanel #cancel, .mceActionPanel #apply, body .mceActionPanel #replaceBtn, .mceActionPanel #replaceAllBtn {
-background-image: url("/webEdition/images/button/btn_normal_middle.gif");
+background-image: url("<?php echo IMAGE_DIR;?>button/btn_normal_middle.gif");
 background-position: left top;
 height: 22px !important;
 color: black !important;
@@ -251,7 +251,7 @@ margin-left:6px;
 }
 
 body[role=application] .mceActionPanel{
-background-image: url("/webEdition/images/edit/editfooterback.gif");
+background-image: url("<?php echo IMAGE_DIR;?>edit/editfooterback.gif");
 height: 30px;
 position:absolute;
 bottom: 0;
@@ -291,7 +291,7 @@ margin-left:10px;
 }
 
 body.useWeFooter .mceActionPanel{
-background-image: url("/webEdition/images/edit/editfooterback.gif");
+background-image: url("<?php echo IMAGE_DIR;?>edit/editfooterback.gif");
 height: 30px;
 position:absolute;
 bottom: 0;

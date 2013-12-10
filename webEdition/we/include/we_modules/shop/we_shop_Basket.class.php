@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_shop_Basket {
+class we_shop_Basket{
 
 	//FIXME: this is set back to public due to some shop restrictions, see #6530, #6954
 	/**
@@ -199,7 +199,7 @@ class we_shop_Basket {
 				}
 
 				if($variant){
-					weShopVariants::useVariantForShop($Record, $variant);
+					we_shop_variants::useVariantForShop($Record, $variant);
 				}
 
 				$hash = getHash('SELECT * FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $DB_WE);
@@ -242,7 +242,7 @@ class we_shop_Basket {
 					$obj = new we_objectFile();
 					$obj->initByID($id, OBJECT_FILES_TABLE);
 
-					weShopVariants::useVariantForShopObject($Record, $variant, $obj);
+					we_shop_variants::useVariantForShopObject($Record, $variant, $obj);
 
 					// add variant to path ...
 					$Record['we_WE_PATH'] = $Record['we_WE_PATH'] . '&amp;' . WE_SHOP_VARIANT_REQUEST . '=' . $variant;

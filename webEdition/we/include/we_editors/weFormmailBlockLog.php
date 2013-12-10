@@ -25,7 +25,7 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
-if(we_hasPerm("administrator")){
+if(permissionhandler::hasPerm("administrator")){
 
 	if(isset($_REQUEST['clearlog']) && $_REQUEST['clearlog'] == 1){
 		$GLOBALS['DB_WE']->query('TRUNCATE ' . FORMMAIL_BLOCK_TABLE);
@@ -33,9 +33,9 @@ if(we_hasPerm("administrator")){
 		$GLOBALS['DB_WE']->query('DELETE FROM ' . FORMMAIL_BLOCK_TABLE . " WHERE id=" . intval($_REQUEST['clearEntry']));
 	}
 
-	$close = we_button::create_button("close", "javascript:self.close();");
-	$refresh = we_button::create_button("refresh", "javascript:location.reload();");
-	$deleteLogBut = we_button::create_button("clear_log", "javascript:clearLog()");
+	$close = we_html_button::create_button("close", "javascript:self.close();");
+	$refresh = we_html_button::create_button("refresh", "javascript:location.reload();");
+	$deleteLogBut = we_html_button::create_button("clear_log", "javascript:clearLog()");
 
 
 	$headline = array(
@@ -57,7 +57,7 @@ if(we_hasPerm("administrator")){
 	$num_rows = $GLOBALS['DB_WE']->num_rows();
 	if($num_rows > 0){
 		$ind = 0;
-		while($GLOBALS['DB_WE']->next_record()) {
+		while($GLOBALS['DB_WE']->next_record()){
 
 			$content[$ind] = array();
 			$content[$ind][0]['dat'] = $GLOBALS['DB_WE']->f("ip");
@@ -74,14 +74,14 @@ if(we_hasPerm("administrator")){
 
 		$nextprev = '<table style="margin-top: 10px;" border="0" cellpadding="0" cellspacing="0"><tr><td>' .
 			($start > 0 ?
-				we_button::create_button("back", $_SERVER['SCRIPT_NAME'] . "?start=" . ($start - $count)) : //bt_back
-				we_button::create_button("back", "", false, 100, 22, "", "", true)) .
+				we_html_button::create_button("back", $_SERVER['SCRIPT_NAME'] . "?start=" . ($start - $count)) : //bt_back
+				we_html_button::create_button("back", "", false, 100, 22, "", "", true)) .
 			we_html_tools::getPixel(23, 1) . "</td><td align='center' class='defaultfont' width='120'><b>" . ($start + 1) . "&nbsp;-&nbsp;" .
 			min($num_all, $start + $count) .
 			"&nbsp;" . g_l('global', "[from]") . " " . ($num_all) . "</b></td><td>" . we_html_tools::getPixel(23, 1) .
 			($next < $num_all ?
-				we_button::create_button("next", $_SERVER['SCRIPT_NAME'] . "?start=" . $next) : //bt_next
-				we_button::create_button("next", "", "", 100, 22, "", "", true)) .
+				we_html_button::create_button("next", $_SERVER['SCRIPT_NAME'] . "?start=" . $next) : //bt_next
+				we_html_button::create_button("next", "", "", 100, 22, "", "", true)) .
 			'</td></tr></table>';
 
 		$parts = array(
@@ -92,7 +92,7 @@ if(we_hasPerm("administrator")){
 				'noline' => 1
 			)
 		);
-	} else{
+	} else {
 		$parts[] = array(
 			'headline' => '',
 			'html' => we_html_element::htmlSpan(array('class' => 'middlefontgray'), g_l('prefs', '[log_is_empty]')) .
@@ -103,7 +103,7 @@ if(we_hasPerm("administrator")){
 		);
 	}
 
-	$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_multiIconBox::getHTML("show_log_data", "100%", $parts, 30, we_button::position_yes_no_cancel($refresh, $close, $deleteLogBut), -1, '', '', false, g_l('prefs', '[formmail_log]'), "", 558) .
+	$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_multiIconBox::getHTML("show_log_data", "100%", $parts, 30, we_html_button::position_yes_no_cancel($refresh, $close, $deleteLogBut), -1, '', '', false, g_l('prefs', '[formmail_log]'), "", 558) .
 			we_html_element::jsElement("self.focus();")
 	);
 

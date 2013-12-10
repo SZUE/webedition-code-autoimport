@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,11 +22,9 @@
  * @package    webEdition_rpc
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+class rpcHelloView extends rpcView{
 
-class rpcHelloView extends rpcView {
-
-
-	function getResponse($response) {
+	function getResponse($response){
 
 		$html = '
 			Hallo World!
@@ -33,4 +32,5 @@ class rpcHelloView extends rpcView {
 
 		return $html;
 	}
+
 }

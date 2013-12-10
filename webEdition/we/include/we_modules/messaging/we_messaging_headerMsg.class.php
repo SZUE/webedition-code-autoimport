@@ -30,7 +30,7 @@ class we_messaging_headerMsg{
 		if(is_object(self::$messaging)){
 			return;
 		}
-		self::$messaging = new we_messaging($_SESSION['weS']['we_data']["we_transaction"]);
+		self::$messaging = new we_messaging_messaging($_SESSION['weS']['we_data']["we_transaction"]);
 		self::$messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 		self::$messaging->add_msgobj('we_message', 1);
 		self::$messaging->add_msgobj('we_todo', 1);
@@ -60,15 +60,15 @@ class we_messaging_headerMsg{
 			function header_msg_update(newmsg_count, newtodo_count) {
 				var msgTD = document.getElementById("msgCount");
 				var todoTD = document.getElementById("todoCount");
-				var changed=(newmsg_count > msgTD.firstChild.innerHTML)||(newtodo_count > todoTD.firstChild.innerHTML);
-				var oldMsg=msgTD.firstChild.innerHTML;
-				var oldTodo=todoTD.firstChild.innerHTML;
-				msgTD.className = "middlefont" + ( (newmsg_count > 0) ? "red" : "" );
-				todoTD.className = "middlefont" + ( (newtodo_count > 0) ? "red" : "" );
+				var changed = (newmsg_count > msgTD.firstChild.innerHTML) || (newtodo_count > todoTD.firstChild.innerHTML);
+				var oldMsg = msgTD.firstChild.innerHTML;
+				var oldTodo = todoTD.firstChild.innerHTML;
+				msgTD.className = "middlefont" + ((newmsg_count > 0) ? "red" : "");
+				todoTD.className = "middlefont" + ((newtodo_count > 0) ? "red" : "");
 				msgTD.firstChild.innerHTML = newmsg_count;
 				todoTD.firstChild.innerHTML = newtodo_count;
-				if(changed){
-					new jsWindow("<?php echo WEBEDITION_DIR;?>newMsg.php?msg="+newmsg_count+"&todo="+newtodo_count+"&omsg="+oldMsg+"&otodo="+oldTodo,"we_delinfo",-1,-1,550,200,true,true,true);
+				if (changed) {
+					new jsWindow("<?php echo WEBEDITION_DIR; ?>newMsg.php?msg=" + newmsg_count + "&todo=" + newtodo_count + "&omsg=" + oldMsg + "&otodo=" + oldTodo, "we_delinfo", -1, -1, 550, 200, true, true, true);
 				}
 			}
 		<?php
@@ -77,12 +77,12 @@ class we_messaging_headerMsg{
 			$newtodo_count = self::$messaging->used_msgobjs['we_todo']->get_newmsg_count();
 			?>
 
-					if( top.weEditorFrameController && top.weEditorFrameController.getActiveDocumentReference() && top.weEditorFrameController.getActiveDocumentReference().quickstart && typeof(top.weEditorFrameController.getActiveDocumentReference().setMsgCount)=='function'&&typeof(top.weEditorFrameController.getActiveDocumentReference().setTaskCount)=='function'){
-						top.weEditorFrameController.getActiveDocumentReference().setMsgCount(<?php print abs($newmsg_count); ?>);
-						top.weEditorFrameController.getActiveDocumentReference().setTaskCount(<?php print abs($newtodo_count); ?>);
-					}
+				if (top.weEditorFrameController && top.weEditorFrameController.getActiveDocumentReference() && top.weEditorFrameController.getActiveDocumentReference().quickstart && typeof (top.weEditorFrameController.getActiveDocumentReference().setMsgCount) == 'function' && typeof (top.weEditorFrameController.getActiveDocumentReference().setTaskCount) == 'function') {
+					top.weEditorFrameController.getActiveDocumentReference().setMsgCount(<?php print abs($newmsg_count); ?>);
+					top.weEditorFrameController.getActiveDocumentReference().setTaskCount(<?php print abs($newtodo_count); ?>);
+				}
 		<?php } ?>
-			//-->
+		//-->
 		</script>
 		<?php
 	}
@@ -90,8 +90,8 @@ class we_messaging_headerMsg{
 	static function pbody(){
 		self::start();
 		//start with 0 to get popup with new count
-		$newmsg_count = 0;//self::$messaging->used_msgobjs['we_message']->get_newmsg_count();
-		$newtodo_count = 0;//self::$messaging->used_msgobjs['we_todo']->get_newmsg_count();
+		$newmsg_count = 0; //self::$messaging->used_msgobjs['we_message']->get_newmsg_count();
+		$newtodo_count = 0; //self::$messaging->used_msgobjs['we_todo']->get_newmsg_count();
 		$msg_cmd = "javascript:top.we_cmd('messaging_start', 'message');";
 		$todo_cmd = "javascript:top.we_cmd('messaging_start', 'todo');";
 		?>

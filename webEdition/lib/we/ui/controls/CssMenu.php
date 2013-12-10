@@ -3,9 +3,9 @@
 /**
  * webEdition CMS
  *
- * $Rev: 6489 $
- * $Author: mokraemer $
- * $Date: 2013-08-19 15:19:40 +0200 (Mo, 19 Aug 2013) $
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -22,8 +22,6 @@
  * @package    webEdition_javamenu
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
  * @see we_ui_abstract_AbstractElement
  */
@@ -61,7 +59,6 @@ class we_ui_controls_CssMenu extends we_ui_abstract_AbstractElement{
 
 	protected function _renderHTML(){
 		return $this->getJS() . $this->getHTMLMenu(false);
-		
 	}
 
 	function getJS(){
@@ -109,10 +106,10 @@ class we_ui_controls_CssMenu extends we_ui_abstract_AbstractElement{
 		if(!$showAltMenu){
 			$i = 0;
 			foreach($this->entries as $id => $m){
-				if(we_hasPerm('ADMINISTRATOR')){
+				if(permissionhandler::hasPerm('ADMINISTRATOR')){
 					$m['enabled'] = 1;
 				}
-				if(!we_hasPerm('ADMINISTRATOR') && (isset($m["perm"]) && $m["perm"]) != ""){
+				if(!permissionhandler::hasPerm('ADMINISTRATOR') && (isset($m["perm"]) && $m["perm"]) != ""){
 					$set = array();
 					$or = explode("||", $m["perm"]);
 					foreach($or as $k => $v){

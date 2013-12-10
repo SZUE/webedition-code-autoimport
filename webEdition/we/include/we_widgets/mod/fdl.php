@@ -3,9 +3,9 @@
 /**
  * webEdition CMS
  *
- * $Rev: 6489 $
- * $Author: mokraemer $
- * $Date: 2013-08-19 15:19:40 +0200 (Mon, 19 Aug 2013) $
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-if(!(defined('CUSTOMER_TABLE') && we_hasPerm('CAN_SEE_CUSTOMER'))){
+if(!(defined('CUSTOMER_TABLE') && permissionhandler::hasPerm('CAN_SEE_CUSTOMER'))){
 	return;
 }
 $db = $GLOBALS['DB_WE'];
@@ -54,7 +54,7 @@ if(($maxRows = f('SELECT COUNT(DISTINCT f.Username) AS a ' . $queryFailedLogins,
 		$failedLoginsTable->setCol($i, 2, array("class" => "middlefont", "align" => "left"), intval($db->f('numberFailedLogins')) . ' / ' . SECURITY_LIMIT_CUSTOMER_NAME . ' ' . sprintf(g_l('cockpit', '[kv_failedLogins][logins]'), SECURITY_LIMIT_CUSTOMER_NAME_HOURS) . we_html_tools::getPixel(10, 1));
 
 		$buttonJSFunction = 'YAHOO.util.Connect.asyncRequest( "GET", "' . WEBEDITION_DIR . 'rpc/rpc.php?cmd=ResetFailedCustomerLogins&cns=customer&custid=' . $webUserID . '", ajaxCallbackResetLogins );';
-		$failedLoginsTable->setCol($i, 3, array("class" => "middlefont", "align" => "right"), ((intval($db->f('numberFailedLogins')) >= SECURITY_LIMIT_CUSTOMER_NAME) && $webUserID ? we_button::create_button("reset", "javascript:" . $buttonJSFunction) : we_html_tools::getPixel(10, 1)));
+		$failedLoginsTable->setCol($i, 3, array("class" => "middlefont", "align" => "right"), ((intval($db->f('numberFailedLogins')) >= SECURITY_LIMIT_CUSTOMER_NAME && $webUserID) ? we_html_button::create_button("reset", "javascript:" . $buttonJSFunction) : we_html_tools::getPixel(10, 1)));
 		$i++;
 	}
 	//$cur+=1000;

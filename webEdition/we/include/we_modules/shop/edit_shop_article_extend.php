@@ -69,7 +69,7 @@ function getTitleLinkDoc($text, $orderKey){
 
 		if(isset($_REQUEST['orderDesc'])){
 			$arrow = ' <img src="' . IMAGE_DIR . 'arrow_sort_desc.gif" />';
-		} else{
+		} else {
 			$arrow = ' &darr; ';
 			$arrow = ' <img src="' . IMAGE_DIR . 'arrow_sort_asc.gif" />';
 		}
@@ -128,7 +128,7 @@ $notInc = "tblTemplates";
 
 if(isset($feldnamen[3])){
 	$fe = explode(",", $feldnamen[3]); //determine more than just one class-ID
-} else{
+} else {
 	$fe = array(0);
 }
 
@@ -203,7 +203,7 @@ if(isset($daten)){
 			$count_expression = "";
 			$from_expression = "";
 			$where_expression = "";
-		if(!empty($fe)){
+			if(!empty($fe)){
 				$fe_count = 0;
 
 				foreach($fe as $clId){
@@ -217,14 +217,14 @@ if(isset($daten)){
 					$where_expression .= OBJECT_X_TABLE . $clId . '.OF_ID !=0';
 					$fe_count++;
 				}
-			} else{
+			} else {
 				$classid = intval($classid);
 				$count_expression = 'COUNT(' . OBJECT_X_TABLE . $classid . '.OF_ID)';
 				$from_expression = OBJECT_X_TABLE . $classid;
 				$where_expression = OBJECT_X_TABLE . "$classid.OF_ID !=0";
 			}
 			$DB_WE->query('SELECT ' . $count_expression . ' AS dbEntries FROM ' . $from_expression . ' WHERE ' . $where_expression);
-			while($DB_WE->next_record()) { // Pager: determine the number of records;
+			while($DB_WE->next_record()){ // Pager: determine the number of records;
 				$entries += $DB_WE->f("dbEntries");
 			}
 			$active_page = !empty($_GET['page']) ? $_GET['page'] : 0; // Pager: determine the current page
@@ -258,7 +258,7 @@ if(isset($daten)){
 				// build the table
 				$orderRows = array();
 
-				while($DB_WE->next_record()) {
+				while($DB_WE->next_record()){
 					// for the articlelist, we need also all these article, so sve them in array
 					$orderRows[] = array(
 						'articleArray' => unserialize($DB_WE->f('strSerial')),
@@ -323,20 +323,20 @@ if(isset($daten)){
 				);
 
 
-				print we_multiIconBox::getHTML("revenues", "100%", $parts, 30, "", -1, "", "", false, sprintf(g_l('tabs', '[module][artList]'), $topInfo));
-			} else{ // if there is an empty result form the object table
+				print we_html_multiIconBox::getHTML("revenues", "100%", $parts, 30, "", -1, "", "", false, sprintf(g_l('tabs', '[module][artList]'), $topInfo));
+			} else { // if there is an empty result form the object table
 				$parts = array(
 					array(
 						'html' => '<table cellpadding="2" cellspacing="0" width="100%" border="0">' .
 						'<tr><td class="defaultfont">' . g_l('modules_shop', '[noRecordAlert]') . '</td></tr>' .
-						'<tr><td class="defaultfont">' . we_button::create_button("image:btn_shop_pref", "javascript:top.opener.top.we_cmd('pref_shop')", true, -1, -1, "", "", !we_hasPerm("NEW_USER")) . '</td></tr>' .
+						'<tr><td class="defaultfont">' . we_html_button::create_button("image:btn_shop_pref", "javascript:top.opener.top.we_cmd('pref_shop')", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")) . '</td></tr>' .
 						'</table>',
 						'space' => 0
 					)
 				);
 
 
-				print we_multiIconBox::getHTML("revenues", "100%", $parts, 30, "", -1, "", "", false, sprintf(g_l('tabs', '[module][artList]'), g_l('modules_shop', '[noRecord]')));
+				print we_html_multiIconBox::getHTML("revenues", "100%", $parts, 30, "", -1, "", "", false, sprintf(g_l('tabs', '[module][artList]'), g_l('modules_shop', '[noRecord]')));
 			}
 
 			/*			 * ******** END PROCESS THE OUTPUT IF OPTED FOR AN OBJECT *********** */
@@ -360,7 +360,7 @@ if(isset($daten)){
             FROM ' . $queryFrom . ' WHERE ' . $queryCondition . ' ORDER BY dd'); // get the shop-documents from DB;
 				// build the table
 				$orderRows = array();
-				while($DB_WE->next_record()) {
+				while($DB_WE->next_record()){
 					// for the articlelist, we need also all these article, so sve them in array
 					$orderRows[] = array(
 						'articleArray' => unserialize($DB_WE->f('strSerial')),
@@ -422,7 +422,7 @@ if(isset($daten)){
 					'space' => 0
 				);
 
-				print we_multiIconBox::getHTML("revenues", "100%", $parts, 30, "", -1, "", "", false, sprintf(g_l('tabs', '[module][artList]'), $topInfo));
+				print we_html_multiIconBox::getHTML("revenues", "100%", $parts, 30, "", -1, "", "", false, sprintf(g_l('tabs', '[module][artList]'), $topInfo));
 			}
 
 			/*			 * ******** END PROCESS THE OUTPUT IF OPTED FOR A DOCUMENT *********** */

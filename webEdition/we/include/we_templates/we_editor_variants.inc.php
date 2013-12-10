@@ -32,28 +32,28 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 print STYLESHEET;
 ?>
 </head>
-<body class="weEditorBody" onUnload="doUnload()">
+<body class="weEditorBody" onunload="doUnload()">
 	<form name="we_form" method="post" onsubmit="return false;"><?php
-echo we_class::hiddenTrans();
+		echo we_class::hiddenTrans();
 
-switch($we_doc->ContentType){
-	case 'text/webedition':
-		include(WE_MODULES_PATH . 'shop/we_editor_variants_webEditionDocument.inc.php');
-		break;
+		switch($we_doc->ContentType){
+			case 'text/webedition':
+				include(WE_MODULES_PATH . 'shop/we_editor_variants_webEditionDocument.inc.php');
+				break;
 
-	case 'objectFile':
-		include(WE_MODULES_PATH . 'shop/we_editor_variants_objectFile.inc.php');
-		break;
+			case 'objectFile':
+				include(WE_MODULES_PATH . 'shop/we_editor_variants_objectFile.inc.php');
+				break;
 
-	case 'text/weTmpl':
-		include(WE_MODULES_PATH . 'shop/we_template_variant.inc.php');
-		break;
+			case 'text/weTmpl':
+				include(WE_MODULES_PATH . 'shop/we_template_variant.inc.php');
+				break;
 
-	default:
-		print $we_doc->ContentType . ' not available (' . __FILE__ . ' ) ';
-		break;
-}
-?>
+			default:
+				print $we_doc->ContentType . ' not available (' . __FILE__ . ' ) ';
+				break;
+		}
+		?>
 	</form>
 </body>
 </html>

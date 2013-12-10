@@ -1,4 +1,5 @@
 <?php
+
 //NOTE you are inside the constructor of weTagData.class.php
 
 $this->NeedsEndTag = true;
@@ -6,7 +7,9 @@ $this->NeedsEndTag = true;
 //$this->Module = '';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-if(defined("FILE_TABLE")) { $this->Attributes[] = new weTagData_selectorAttribute('id',FILE_TABLE, weTagData_selectorAttribute::FOLDER, false, ''); }
+if(defined("FILE_TABLE")){
+	$this->Attributes[] = new weTagData_selectorAttribute('id', FILE_TABLE, weTagData_selectorAttribute::FOLDER, false, '');
+}
 $this->Attributes[] = new weTagData_textAttribute('index', false, '');
 $this->Attributes[] = new weTagData_textAttribute('field', false, '');
 $this->Attributes[] = new weTagData_textAttribute('dirfield', false, '');

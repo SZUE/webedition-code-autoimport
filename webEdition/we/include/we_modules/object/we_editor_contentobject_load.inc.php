@@ -40,8 +40,8 @@ $we_doc->we_initSessDat($we_dt);
 //	---> Setting the Content-Type
 //
 
-$charset = (isset($we_doc->elements['Charset']['dat']) && $we_doc->elements['Charset']['dat']? //	send charset which might be determined in template
-	$we_doc->elements['Charset']['dat']:DEFAULT_CHARSET);
+$charset = (isset($we_doc->elements['Charset']['dat']) && $we_doc->elements['Charset']['dat'] ? //	send charset which might be determined in template
+		$we_doc->elements['Charset']['dat'] : DEFAULT_CHARSET);
 
 we_html_tools::headerCtCharset('text/html', $charset);
 
@@ -80,7 +80,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 			if($id != false){
 				$after = array_pop(explode('_', $id));
 				$afterid = $id;
-			} else{
+			} else {
 				$after = false;
 				$afterid = false;
 			}
@@ -88,10 +88,10 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 			$uniqid = 'entry_' . $identifier;
 			$we_doc->addEntryToClass($identifier, $after);
 
-			$upbut = we_button::create_button('image:btn_direction_up', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('up_entry_at_class','" . $we_transaction . "','" . $uniqid . "');", true, 22, 22, "", "", false, false, "_" . $identifier);
-			$downbut = we_button::create_button('image:btn_direction_down', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('down_entry_at_class','" . $we_transaction . "','" . $uniqid . "');", true, 22, 22, "", "", false, false, "_" . $identifier);
-			$plusbut = we_button::create_button('image:btn_add_field', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('insert_entry_at_class','" . $we_transaction . "','" . $uniqid . "');");
-			$trashbut = we_button::create_button('image:btn_function_trash', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('delete_entry_at_class','" . $we_transaction . "','" . $uniqid . "');");
+			$upbut = we_html_button::create_button('image:btn_direction_up', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('up_entry_at_class','" . $we_transaction . "','" . $uniqid . "');", true, 22, 22, "", "", false, false, "_" . $identifier);
+			$downbut = we_html_button::create_button('image:btn_direction_down', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('down_entry_at_class','" . $we_transaction . "','" . $uniqid . "');", true, 22, 22, "", "", false, false, "_" . $identifier);
+			$plusbut = we_html_button::create_button('image:btn_add_field', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('insert_entry_at_class','" . $we_transaction . "','" . $uniqid . "');");
+			$trashbut = we_html_button::create_button('image:btn_function_trash', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('delete_entry_at_class','" . $we_transaction . "','" . $uniqid . "');");
 
 			$content = '<div id="' . $uniqid . '">
 				<a name="f' . $uniqid . '"></a>
@@ -102,7 +102,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 				'</table>
 				</td>
 				<td width="150" class = "defaultfont" valign="top">' .
-				we_button::create_button_table(
+				we_html_button::create_button_table(
 					array(
 					$plusbut,
 					$upbut,
@@ -112,7 +112,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 				'</td>
 				</tr>
 				</table>
-				<div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;">' . we_html_tools::getPixel(1, 1) . '</div>' . we_html_tools::getPixel(2, 10) .
+				<div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;"></div>' . we_html_tools::getPixel(2, 10) .
 				'</div>
 				</div>';
 
@@ -170,17 +170,17 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 					$we_doc->changeLink($_REQUEST['we_cmd'][3]);
 					break;
 				case 'change_multiobject_at_class':
-					while($we_doc->elements[$_REQUEST['we_cmd'][3] . 'count']['dat'] > 0) {
+					while($we_doc->elements[$_REQUEST['we_cmd'][3] . 'count']['dat'] > 0){
 						$we_doc->removeMetaFromClass($_REQUEST['we_cmd'][3], 0);
 					}
 					$we_doc->removeMetaFromClass($_REQUEST['we_cmd'][3], 0);
 					break;
 			}
 
-			$upbut = we_button::create_button('image:btn_direction_up', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('up_entry_at_class','" . $we_transaction . "','" . $uniqid . "');", true, 22, 22, "", "", false, false, "_" . $identifier);
-			$downbut = we_button::create_button('image:btn_direction_down', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('down_entry_at_class','" . $we_transaction . "','" . $uniqid . "');", true, 22, 22, "", "", false, false, "_" . $identifier);
-			$plusbut = we_button::create_button('image:btn_add_field', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('insert_entry_at_class','" . $we_transaction . "','" . $uniqid . "');");
-			$trashbut = we_button::create_button('image:btn_function_trash', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('delete_entry_at_class','" . $we_transaction . "','" . $uniqid . "');");
+			$upbut = we_html_button::create_button('image:btn_direction_up', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('up_entry_at_class','" . $we_transaction . "','" . $uniqid . "');", true, 22, 22, "", "", false, false, "_" . $identifier);
+			$downbut = we_html_button::create_button('image:btn_direction_down', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('down_entry_at_class','" . $we_transaction . "','" . $uniqid . "');", true, 22, 22, "", "", false, false, "_" . $identifier);
+			$plusbut = we_html_button::create_button('image:btn_add_field', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('insert_entry_at_class','" . $we_transaction . "','" . $uniqid . "');");
+			$trashbut = we_html_button::create_button('image:btn_function_trash', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('delete_entry_at_class','" . $we_transaction . "','" . $uniqid . "');");
 
 			$content = '<div id="' . $uniqid . '">
 				<a name="f' . $uniqid . '"></a>
@@ -192,7 +192,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 				'	</table>
 				</td>
 				<td width="150" class = "defaultfont" valign="top">' .
-				we_button::create_button_table(
+				we_html_button::create_button_table(
 					array(
 					$plusbut,
 					$upbut,
@@ -202,7 +202,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 				'</td>
 			</tr>
 			</table>
-			<div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;">' . we_html_tools::getPixel(1, 1) . '</div>' . we_html_tools::getPixel(2, 10) .
+			<div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;"></div>' . we_html_tools::getPixel(2, 10) .
 				'</div>
 				</div>';
 
@@ -249,7 +249,5 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 			break;
 	}
 	?>
-
 </body>
-
 </html>

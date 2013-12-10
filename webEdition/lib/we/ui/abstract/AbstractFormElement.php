@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition SDK
  *
@@ -10,7 +11,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -19,7 +20,6 @@
  * @subpackage we_ui_abstract
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-
 /**
  * @see we_ui_abstract_AbstractElement
  */
@@ -27,14 +27,13 @@ Zend_Loader::loadClass('we_ui_abstract_AbstractElement');
 
 /**
  * Base class for elements in html forms
- * 
+ *
  * @category   we
  * @package    we_ui
  * @subpackage we_ui_abstract
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-abstract class we_ui_abstract_AbstractFormElement extends we_ui_abstract_AbstractElement
-{
+abstract class we_ui_abstract_AbstractFormElement extends we_ui_abstract_AbstractElement{
 
 	/**
 	 * id attribute
@@ -48,19 +47,17 @@ abstract class we_ui_abstract_AbstractFormElement extends we_ui_abstract_Abstrac
 	 *
 	 * @return string
 	 */
-	public function getName()
-	{
+	public function getName(){
 		return $this->_name;
 	}
 
 	/**
 	 * Set name attribute
-	 * 
+	 *
 	 * @param string $name
 	 * @return void
 	 */
-	public function setName($name)
-	{
+	public function setName($name){
 		$this->_name = $name;
 	}
 

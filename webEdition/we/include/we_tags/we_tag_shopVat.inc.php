@@ -31,14 +31,14 @@ function we_tag_shopVat($attribs){
 	$id = weTag_getAttribute('id', $attribs);
 
 	if($id){
-		$shopVat = weShopVats::getShopVATById($id);
+		$shopVat = we_shop_vats::getShopVATById($id);
 		if($shopVat){
 			return $shopVat->vat;
 		}
 	}
 
 	// in webEdition - EditMode
-	$allVats = weShopVats::getAllShopVATs();
+	$allVats = we_shop_vats::getAllShopVATs();
 	$values = array();
 
 	$standardVal = '';

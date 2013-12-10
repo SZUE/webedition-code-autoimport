@@ -128,7 +128,7 @@ function _cutText($text, $l){
 		}
 	}
 
-	//-->
+//-->
 </script>
 
 </head>
@@ -304,7 +304,7 @@ var i = 0;
 				$filesize = file_exists($dir . '/' . $entry) ? filesize($dir . '/' . $entry) : 0;
 				$_size = "";
 				if(!$isfolder){
-					$_size = '<span' . ($indb ? ' style="color:#006699"' : '') . ' title="' . oldHtmlspecialchars($_size) . '">' . weFile::getHumanFileSize($filesize) . '</span>';
+					$_size = '<span' . ($indb ? ' style="color:#006699"' : '') . ' title="' . oldHtmlspecialchars($_size) . '">' . we_base_file::getHumanFileSize($filesize) . '</span>';
 				}
 				if(( isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "rename_folder") && ($entry == $_REQUEST["sid"]) && ($isfolder) && (!$indb)){
 					$_text_to_show = we_html_tools::htmlTextInput("txt", 20, $entry, "", 'onblur="setScrollTo();we_form.submit();" onkeypress="keypressed(event)"', "text", "100%");
@@ -348,21 +348,21 @@ var i = 0;
 		</table>
 		<?php if(( isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "new_folder") || (( isset($_REQUEST["nf"]) && ($_REQUEST["nf"] == "rename_folder" || $_REQUEST["nf"] == "rename_file")) && ($set_rename))){ ?>
 			<input type="hidden" name="cmd" value="<?php print $_REQUEST["nf"]; ?>" />
-	<?php if($_REQUEST["nf"] == "rename_folder" || $_REQUEST["nf"] == "rename_file"){ ?><input type="hidden" name="sid" value="<?php print $_REQUEST["sid"] ?>" />
+			<?php if($_REQUEST["nf"] == "rename_folder" || $_REQUEST["nf"] == "rename_file"){ ?><input type="hidden" name="sid" value="<?php print $_REQUEST["sid"] ?>" />
 				<input type="hidden" name="oldtxt" value="" /><?php } ?>
 			<input type="hidden" name="pat" value="<?php print isset($_REQUEST["pat"]) ? $_REQUEST["pat"] : ""  ?>" />
-<?php } ?>
+		<?php } ?>
 	</form>
 
-<?php if(( isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "new_folder") || (( isset($_REQUEST["nf"]) && ($_REQUEST["nf"] == "rename_folder" || $_REQUEST["nf"] == "rename_file")) && ($set_rename))){ ?>
+	<?php if(( isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "new_folder") || (( isset($_REQUEST["nf"]) && ($_REQUEST["nf"] == "rename_folder" || $_REQUEST["nf"] == "rename_file")) && ($set_rename))){ ?>
 		<script  type="text/javascript"><!--
 		document.forms["we_form"].elements["txt"].focus();
-		document.forms["we_form"].elements["txt"].select();
+			document.forms["we_form"].elements["txt"].select();
 	<?php if($_REQUEST["nf"] == "rename_folder" || $_REQUEST["nf"] == "rename_file"){ ?>
 				document.forms["we_form"].elements["oldtxt"].value = document.forms["we_form"].elements["txt"].value;
 	<?php } ?>
 			document.forms["we_form"].elements["pat"].value = top.currentDir;
-			//-->
+	//-->
 		</script>
 		<?php
 	}

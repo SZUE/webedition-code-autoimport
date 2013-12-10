@@ -75,6 +75,7 @@ class taskFragment{
 	 */
 	var $pause;
 	var $initdata = null;
+
 	/**
 	 * init Data.
 	 * @var        array
@@ -89,7 +90,7 @@ class taskFragment{
 	 * @param      int $pause
 	 * @param      array $initdata
 	 */
-	function __construct($name, $taskPerFragment, $pause=1, $bodyAttributes="", $initdata=""){
+	function __construct($name, $taskPerFragment, $pause = 1, $bodyAttributes = "", $initdata = ""){
 		$this->name = $name;
 		$this->taskPerFragment = $taskPerFragment;
 		$this->pause = $pause;
@@ -99,16 +100,16 @@ class taskFragment{
 		$filename = WE_FRAGMENT_PATH . $this->name;
 		$this->currentTask = isset($_GET["fr_" . $this->name . "_ct"]) ? $_GET["fr_" . $this->name . "_ct"] : 0;
 		if(file_exists($filename) && $this->currentTask){
-			$ser = weFile::load($filename);
+			$ser = we_base_file::load($filename);
 			if(!$ser){
 				exit("Could not read: " . $filename);
 			}
 			$this->alldata = unserialize($ser);
-		} else{
+		} else {
 			$this->taskPerFragment = $taskPerFragment;
 			$this->init();
 			$ser = serialize($this->alldata);
-			if(!weFile::save($filename,$ser)){
+			if(!we_base_file::save($filename, $ser)){
 				exit("Could not write: " . $filename);
 			}
 		}
@@ -123,7 +124,7 @@ class taskFragment{
 				unlink($filename);
 				$this->finish();
 				break;
-			} else{
+			} else {
 				$this->data = $this->alldata[$this->currentTask];
 				$this->doTask();
 			}
@@ -136,7 +137,7 @@ class taskFragment{
 	 *
 	 * @param      array $attributes
 	 */
-	function printBodyTag($attributes=""){
+	function printBodyTag($attributes = ""){
 		$nextTask = $this->currentTask + $this->taskPerFragment;
 		$attr = "";
 		if($attributes){
@@ -153,7 +154,7 @@ class taskFragment{
 					}
 					$tail .= "&" . rawurlencode($i) . "[" . rawurlencode($k) . "]=" . rawurlencode($av);
 				}
-			} else{
+			} else {
 				if($i != "fr_" . rawurlencode($this->name) . "_ct"){
 					if(get_magic_quotes_gpc() == 1){
 						$v = stripslashes($v);
@@ -170,7 +171,7 @@ class taskFragment{
 					}
 					$tail .= "&" . $i . "[" . rawurlencode($k) . "]=" . rawurlencode($av);
 				}
-			} else{
+			} else {
 				if($i != "fr_" . rawurlencode($this->name) . "_ct"){
 					if(get_magic_quotes_gpc() == 1){
 						$v = stripslashes($v);
@@ -209,7 +210,7 @@ class taskFragment{
 					}
 					$tail .= "&" . rawurlencode($i) . "[" . rawurlencode($k) . "]=" . rawurlencode($av);
 				}
-			} else{
+			} else {
 				if($i != "fr_" . rawurlencode($this->name) . "_ct"){
 					if(get_magic_quotes_gpc() == 1){
 						$v = stripslashes($v);
@@ -226,7 +227,7 @@ class taskFragment{
 					}
 					$tail .= "&" . $i . "[" . rawurlencode($k) . "]=" . rawurlencode($av);
 				}
-			} else{
+			} else {
 				if($i != "fr_" . rawurlencode($this->name) . "_ct"){
 					if(get_magic_quotes_gpc() == 1){
 						$v = stripslashes($v);
@@ -326,4 +327,3 @@ $fr = new myFrag("holeg",1,800,array("bgcolor"=>"silver"));
 
 
 */
-

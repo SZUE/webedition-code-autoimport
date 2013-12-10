@@ -8,7 +8,7 @@ we_core_Local::addTranslation('default.xml', '<?php print $TOOLNAME; ?>');
 $controller = Zend_Controller_Front::getInstance();
 $appName = $controller->getParam('appName');
 
-$_tool = weToolLookup::getToolProperties($appName);
+$_tool = we_tool_lookup::getToolProperties($appName);
 $we_menu_<?php print $TOOLNAME; ?>= array(
 	100 => array(
 		'text' => we_util_Strings::shortenPath($_tool['text'], 40),

@@ -26,7 +26,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
-$tools = weToolLookup::getAllTools(true, true);
+$tools = we_tool_lookup::getAllTools(true, true);
 
 $whiteList = array();
 foreach($tools as $k => $v){
@@ -40,7 +40,7 @@ if(!isset($_REQUEST['tool']) || $_REQUEST['tool'] == '' || !in_array($_REQUEST['
 }
 
 //check if bootstrap file exists of specific app
-if(file_exists(WEBEDITION_PATH. 'apps/' . $_REQUEST['tool'] . '/index.php')){
+if(file_exists(WEBEDITION_PATH . 'apps/' . $_REQUEST['tool'] . '/index.php')){
 
 	header('Location: ' . WEBEDITION_DIR . 'apps/' . $_REQUEST['tool'] . '/index.php/frameset/index' .
 		(isset($REQUEST['modelid']) ? '/modelId/' . intval($REQUEST['modelid']) : '') .

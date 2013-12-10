@@ -147,7 +147,7 @@ ini_set("display_errors", 1);
 error_reporting(E_ALL);
 
 //use we-error handler; ignore if logging is disabled!
-require_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_error_handler.inc.php");
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_error_handler.inc.php');
 if(!defined('WE_ERROR_SHOW')){
 	define('WE_ERROR_SHOW', 1);
 }
@@ -166,10 +166,9 @@ $_SESSION['user']['Username'] = 1;
 if(!isset($_SERVER['SERVER_NAME'])){
 	$_SERVER['SERVER_NAME'] = $SERVER_NAME;
 }
+// include needed libraries
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/PEAR.php");
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/Getopt.php");
 
 // Define exit codes for errors
 define('NO_ARGS', 10);
@@ -320,8 +319,6 @@ if(isset($options[1][0])){
 
 $_REQUEST['filename'] = basename($_backup_filename);
 
-// include needed libraries
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 update_time_limit(0);
 update_mem_limit(128);
 
@@ -329,7 +326,7 @@ if(!isset($_SESSION['weS']['weBackupVars']) || empty($_SESSION['weS']['weBackupV
 
 	$_SESSION['weS']['weBackupVars'] = array();
 
-	if(weBackupPreparer::prepareExport() === true){
+	if(we_backup_preparer::prepareExport() === true){
 
 		if($_REQUEST['verbose']){
 			print "\nExporting to " . $_backup_filename . "\n";
@@ -348,7 +345,7 @@ if(!isset($_SESSION['weS']['weBackupVars']) || empty($_SESSION['weS']['weBackupV
 						print "-";
 					}
 					if(!empty($file_to_export)){
-						weBackupUtil::exportFile($file_to_export, $fh);
+						we_backup_util::exportFile($file_to_export, $fh);
 					}
 				}
 				$_SESSION['weS']['weBackupVars']['close']($fh);
@@ -360,11 +357,11 @@ if(!isset($_SESSION['weS']['weBackupVars']) || empty($_SESSION['weS']['weBackupV
 		}
 		$_fh = $_SESSION['weS']['weBackupVars']['open']($_SESSION['weS']['weBackupVars']['backup_file'], 'ab');
 
-		while(($_SESSION['weS']['weBackupVars']['row_counter'] < $_SESSION['weS']['weBackupVars']['row_count']) || weBackupUtil::hasNextTable()){
+		while(($_SESSION['weS']['weBackupVars']['row_counter'] < $_SESSION['weS']['weBackupVars']['row_count']) || we_backup_util::hasNextTable()){
 			if($_REQUEST['verbose']){
 				print "-";
 			}
-			if(weBackupExport::export($_fh, $_SESSION['weS']['weBackupVars']['offset'], $_SESSION['weS']['weBackupVars']['row_counter'], $_SESSION['weS']['weBackupVars']['backup_steps'], $_SESSION['weS']['weBackupVars']['options']['backup_binary'], $_SESSION['weS']['weBackupVars']['backup_log']) === false){
+			if(we_backup_export::export($_fh, $_SESSION['weS']['weBackupVars']['offset'], $_SESSION['weS']['weBackupVars']['row_counter'], $_SESSION['weS']['weBackupVars']['backup_steps'], $_SESSION['weS']['weBackupVars']['options']['backup_binary'], $_SESSION['weS']['weBackupVars']['backup_log']) === false){
 				// force end
 				$_SESSION['weS']['weBackupVars']['row_counter'] = $_SESSION['weS']['weBackupVars']['row_count'];
 			}
@@ -375,17 +372,17 @@ if(!isset($_SESSION['weS']['weBackupVars']) || empty($_SESSION['weS']['weBackupV
 			$fh = $_SESSION['weS']['weBackupVars']['open']($_SESSION['weS']['weBackupVars']['backup_file'], 'ab');
 			if($fh){
 				$file_to_export = WE_INCLUDES_DIR . 'conf/we_conf_global.inc.php';
-				weBackupUtil::exportFile($file_to_export, $fh);
+				we_backup_util::exportFile($file_to_export, $fh);
 				$_SESSION['weS']['weBackupVars']['close']($fh);
 			}
 		}
-		weFile::save($_SESSION['weS']['weBackupVars']['backup_file'], weBackup::weXmlExImFooter, 'ab', $_SESSION['weS']['weBackupVars']['options']['compress']);
+		we_base_file::save($_SESSION['weS']['weBackupVars']['backup_file'], we_backup_backup::weXmlExImFooter, 'ab', $_SESSION['weS']['weBackupVars']['options']['compress']);
 
 		if(!empty($_SESSION['weS']['weBackupVars']['options']['compress'])){
 			if($_REQUEST['verbose']){
 				print "\nCompressing...\n";
 			}
-			$_SESSION['weS']['weBackupVars']['backup_file'] = weFile::compress($_SESSION['weS']['weBackupVars']['backup_file'], 'gzip');
+			$_SESSION['weS']['weBackupVars']['backup_file'] = we_base_file::compress($_SESSION['weS']['weBackupVars']['backup_file'], 'gzip');
 			$_SESSION['weS']['weBackupVars']['filename'] .= '.gz';
 			$_backup_filename .= '.gz';
 		}

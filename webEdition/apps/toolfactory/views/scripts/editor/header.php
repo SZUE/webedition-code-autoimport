@@ -29,20 +29,20 @@ $htmlPage = we_ui_layout_HTMLPage::getInstance();
 $propertiesTitle = $translate->_('Properties');
 
 $we_tabs = new we_ui_controls_Tabs(
+	array(
+	'contentFrame' => 'parent.edbody.',
+	'tabs' => array(
 		array(
-			'contentFrame' => 'parent.edbody.',
-			'tabs' => array(
-				array(
-					'id' => 'idPropertyTab',
-					'text' => $propertiesTitle,
-					'bottomline' => false,
-					'reload' => true,
-					'active' => true,
-					'title' => $propertiesTitle,
-					'hidden' => false
-				)
-			)
+			'id' => 'idPropertyTab',
+			'text' => $propertiesTitle,
+			'bottomline' => false,
+			'reload' => true,
+			'active' => true,
+			'title' => $propertiesTitle,
+			'hidden' => false
 		)
+	)
+	)
 );
 
 $htmlPage->addJSFile(LIB_DIR . 'we/app/js/EditorHeader.js');

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,15 +22,13 @@
  * @package    webEdition_rpc
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+class rpcLogoutView extends rpcView{
 
-class rpcLogoutView extends rpcView {
-
-
-	function getResponse($response) {
+	function getResponse($response){
 
 		$html = 'LOGOUT SUCCESSFUL';
 
 		return $html;
-
 	}
+
 }

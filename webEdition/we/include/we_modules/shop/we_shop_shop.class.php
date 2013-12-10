@@ -27,12 +27,6 @@ class we_shop_shop{
 	const DOCUMENT = 'w';
 	const OBJECT = 'o';
 
-//FIXME: is this classname really correct?!
-// $ClassName is used in we:listview_multiobject.class.php: if($GLOBALS["lv"]->ClassName == 'we_listview_shoppingCart')
-// This could be changed to: if(get_class($GLOBALS['lv']) == 'we_shop_shop')
-	//are you sure???
-
-	var $ClassName = 'we_listview_shoppingCart';
 	var $DB_WE;
 	var $IDs = array();
 	var $count = 0;

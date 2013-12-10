@@ -28,7 +28,7 @@ class weTagData_linkAttribute extends weTagDataAttribute{
 	 * @param string $name
 	 * @param boolean $required
 	 */
-	function __construct($name, $required = false, $module = '', $value='', $description='', $deprecated=false){
+	function __construct($name, $required = false, $module = '', $value = '', $description = '', $deprecated = false){
 
 		parent::__construct($name, $required, $module, $description, $deprecated);
 		$this->Value = $value;

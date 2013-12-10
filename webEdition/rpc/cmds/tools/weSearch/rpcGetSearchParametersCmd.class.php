@@ -43,11 +43,11 @@ class rpcGetSearchParametersCmd extends rpcCmd{
 		$_REQUEST['we_cmd']['obj'] = true;
 
 		if($pos == "top"){
-			$code = searchtoolView::getSearchParameterTop($foundItems, $whichsearch);
+			$code = we_search_view::getSearchParameterTop($foundItems, $whichsearch);
 		}
 		if($pos == "bottom"){
 			$_REQUEST['we_cmd']['setInputSearchstart'] = 1;
-			$code = searchtoolView::getSearchParameterBottom($foundItems, $whichsearch);
+			$code = we_search_view::getSearchParameterBottom($foundItems, $whichsearch);
 		}
 
 		$resp->setData("data", $code);
@@ -56,4 +56,3 @@ class rpcGetSearchParametersCmd extends rpcCmd{
 	}
 
 }
-

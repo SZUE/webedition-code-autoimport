@@ -38,20 +38,20 @@ function showWorkflowFooterForNormalMode(){
 	//	decline
 	$_footerTable->addCol(2);
 	$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
-	$_footerTable->setColContent(0, $_col++, we_button::create_button("decline", "javascript:decline_workflow();"));
+	$_footerTable->setColContent(0, $_col++, we_html_button::create_button("decline", "javascript:decline_workflow();"));
 
-	if(we_workflow_utility::isWorkflowFinished($we_doc->ID, $we_doc->Table) || ((1 + we_workflow_utility::findLastActiveStep($we_doc->ID, $we_doc->Table)) == count(we_workflow_utility::getNumberOfSteps($we_doc->ID, $we_doc->Table)) && we_hasPerm("PUBLISH"))){
-		$_publishbutton = we_button::create_button("publish", "javascript:finish_workflow();");
+	if(we_workflow_utility::isWorkflowFinished($we_doc->ID, $we_doc->Table) || ((1 + we_workflow_utility::findLastActiveStep($we_doc->ID, $we_doc->Table)) == count(we_workflow_utility::getNumberOfSteps($we_doc->ID, $we_doc->Table)) && permissionhandler::hasPerm("PUBLISH"))){
+		$_publishbutton = we_html_button::create_button("publish", "javascript:finish_workflow();");
 	} else {
 		$_footerTable->addCol(2);
 		$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
-		$_footerTable->setColContent(0, $_col++, we_button::create_button("forward", "javascript:pass_workflow();"));
+		$_footerTable->setColContent(0, $_col++, we_html_button::create_button("forward", "javascript:pass_workflow();"));
 	}
 
 	if(we_workflow_utility::canUserEditDoc($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"]) && $we_doc->userCanSave()){
 		$_footerTable->addCol(2);
 		$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
-		$_footerTable->setColContent(0, $_col++, we_button::create_button("save", "javascript:_EditorFrame.setEditorPublishWhenSave(false);we_save_document();"));
+		$_footerTable->setColContent(0, $_col++, we_html_button::create_button("save", "javascript:_EditorFrame.setEditorPublishWhenSave(false);we_save_document();"));
 	}
 
 	if($_publishbutton){
@@ -66,7 +66,7 @@ function showWorkflowFooterForNormalMode(){
 				if($showPubl){
 					$_footerTable->addCol(2);
 					$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
-					$_footerTable->setColContent(0, $_col++, we_button::create_button("publish", "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
+					$_footerTable->setColContent(0, $_col++, we_html_button::create_button("publish", "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
 				}
 			}
 		}
@@ -91,53 +91,53 @@ function showWorkflowFooterForSEEMMode(){
 		//	Edit-Button
 		$_footerTable->addCol(2);
 		$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
-		$_footerTable->setColContent(0, $_col++, we_button::create_button("edit", "javascript:parent.editHeader.we_cmd('switch_edit_page'," . WE_EDITPAGE_CONTENT . ",'" . $GLOBALS["we_transaction"] . "');"));
+		$_footerTable->setColContent(0, $_col++, we_html_button::create_button("edit", "javascript:parent.editHeader.we_cmd('switch_edit_page'," . WE_EDITPAGE_CONTENT . ",'" . $GLOBALS["we_transaction"] . "');"));
 
 		//	Decline Workflow
 		$_footerTable->addCol(2);
 		$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
-		$_footerTable->setColContent(0, $_col++, we_button::create_button("decline", "javascript:decline_workflow();"));
+		$_footerTable->setColContent(0, $_col++, we_html_button::create_button("decline", "javascript:decline_workflow();"));
 
 		$_footerTable->addCol(2);
 		$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
-		if(we_workflow_utility::isWorkflowFinished($we_doc->ID, $we_doc->Table) || ((1 + we_workflow_utility::findLastActiveStep($we_doc->ID, $we_doc->Table)) == count(we_workflow_utility::getNumberOfSteps($we_doc->ID, $we_doc->Table)) && we_hasPerm("PUBLISH"))){
-			$_footerTable->setColContent(0, $_col++, we_button::create_button("publish", "javascript:finish_workflow();"));
+		if(we_workflow_utility::isWorkflowFinished($we_doc->ID, $we_doc->Table) || ((1 + we_workflow_utility::findLastActiveStep($we_doc->ID, $we_doc->Table)) == count(we_workflow_utility::getNumberOfSteps($we_doc->ID, $we_doc->Table)) && permissionhandler::hasPerm("PUBLISH"))){
+			$_footerTable->setColContent(0, $_col++, we_html_button::create_button("publish", "javascript:finish_workflow();"));
 		} else {
-			$_footerTable->setColContent(0, $_col++, we_button::create_button("forward", "javascript:pass_workflow();"));
+			$_footerTable->setColContent(0, $_col++, we_html_button::create_button("forward", "javascript:pass_workflow();"));
 		}
 	} else if($we_doc->EditPageNr == WE_EDITPAGE_CONTENT){
 
 		//	Preview Button
 		$_footerTable->addCol(2);
 		$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
-		$_footerTable->setColContent(0, $_col++, we_button::create_button("preview", "javascript:parent.editHeader.we_cmd('switch_edit_page'," . WE_EDITPAGE_PREVIEW . ",'" . $GLOBALS["we_transaction"] . "');"));
+		$_footerTable->setColContent(0, $_col++, we_html_button::create_button("preview", "javascript:parent.editHeader.we_cmd('switch_edit_page'," . WE_EDITPAGE_PREVIEW . ",'" . $GLOBALS["we_transaction"] . "');"));
 
 		//	Propertie-button
 		$_footerTable->addCol(2);
 		$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
-		$_footerTable->setColContent(0, $_col++, we_button::create_button("properties", "javascript:parent.editHeader.we_cmd('switch_edit_page'," . WE_EDITPAGE_PROPERTIES . ",'" . $GLOBALS["we_transaction"] . "');"));
+		$_footerTable->setColContent(0, $_col++, we_html_button::create_button("properties", "javascript:parent.editHeader.we_cmd('switch_edit_page'," . WE_EDITPAGE_PROPERTIES . ",'" . $GLOBALS["we_transaction"] . "');"));
 
 		//	Decline Workflow
 		$_footerTable->addCol(2);
 		$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
-		$_footerTable->setColContent(0, $_col++, we_button::create_button("decline", "javascript:decline_workflow();"));
+		$_footerTable->setColContent(0, $_col++, we_html_button::create_button("decline", "javascript:decline_workflow();"));
 
 		$_footerTable->addCol(2);
 		$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
-		if(we_workflow_utility::isWorkflowFinished($we_doc->ID, $we_doc->Table) || ((1 + we_workflow_utility::findLastActiveStep($we_doc->ID, $we_doc->Table)) == count(we_workflow_utility::getNumberOfSteps($we_doc->ID, $we_doc->Table)) && we_hasPerm("PUBLISH"))){
-			$_footerTable->setColContent(0, $_col++, we_button::create_button("publish", "javascript:finish_workflow();"));
+		if(we_workflow_utility::isWorkflowFinished($we_doc->ID, $we_doc->Table) || ((1 + we_workflow_utility::findLastActiveStep($we_doc->ID, $we_doc->Table)) == count(we_workflow_utility::getNumberOfSteps($we_doc->ID, $we_doc->Table)) && permissionhandler::hasPerm("PUBLISH"))){
+			$_footerTable->setColContent(0, $_col++, we_html_button::create_button("publish", "javascript:finish_workflow();"));
 		} else {
-			$_footerTable->setColContent(0, $_col++, we_button::create_button("forward", "javascript:pass_workflow();"));
+			$_footerTable->setColContent(0, $_col++, we_html_button::create_button("forward", "javascript:pass_workflow();"));
 		}
 		if(we_workflow_utility::canUserEditDoc($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"]) && $we_doc->userCanSave()){
 			$_footerTable->addCol(2);
 			$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
-			$_footerTable->setColContent(0, $_col++, we_button::create_button("save", "javascript:_EditorFrame.setEditorPublishWhenSave(false);we_save_document();"));
+			$_footerTable->setColContent(0, $_col++, we_html_button::create_button("save", "javascript:_EditorFrame.setEditorPublishWhenSave(false);we_save_document();"));
 			if(!isset($we_doc->IsClassFolder) || !$we_doc->IsClassFolder){
 				if($showPubl){
 					$_footerTable->addCol(2);
 					$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
-					$_footerTable->setColContent(0, $_col++, we_button::create_button("publish", "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
+					$_footerTable->setColContent(0, $_col++, we_html_button::create_button("publish", "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
 				}
 			}
 		}
@@ -145,34 +145,34 @@ function showWorkflowFooterForSEEMMode(){
 
 		$_footerTable->addCol(2);
 		$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
-		$_footerTable->setColContent(0, $_col++, we_button::create_button("preview", "javascript:parent.editHeader.we_cmd('switch_edit_page'," . WE_EDITPAGE_PREVIEW . ",'" . $GLOBALS["we_transaction"] . "');"));
+		$_footerTable->setColContent(0, $_col++, we_html_button::create_button("preview", "javascript:parent.editHeader.we_cmd('switch_edit_page'," . WE_EDITPAGE_PREVIEW . ",'" . $GLOBALS["we_transaction"] . "');"));
 
 		$_footerTable->addCol(2);
 		$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
-		$_footerTable->setColContent(0, $_col++, we_button::create_button("preview", "javascript:parent.editHeader.we_cmd('switch_edit_page'," . WE_EDITPAGE_PREVIEW . ",'" . $GLOBALS["we_transaction"] . "');"));
+		$_footerTable->setColContent(0, $_col++, we_html_button::create_button("preview", "javascript:parent.editHeader.we_cmd('switch_edit_page'," . WE_EDITPAGE_PREVIEW . ",'" . $GLOBALS["we_transaction"] . "');"));
 
 		$_footerTable->addCol(2);
 		$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
-		$_footerTable->setColContent(0, $_col++, we_button::create_button("decline", "javascript:decline_workflow();"));
+		$_footerTable->setColContent(0, $_col++, we_html_button::create_button("decline", "javascript:decline_workflow();"));
 
 		$_footerTable->addCol(2);
 		$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
-		if(we_workflow_utility::isWorkflowFinished($we_doc->ID, $we_doc->Table) || ((1 + we_workflow_utility::findLastActiveStep($we_doc->ID, $we_doc->Table)) == count(we_workflow_utility::getNumberOfSteps($we_doc->ID, $we_doc->Table)) && we_hasPerm("PUBLISH"))){
-			$_footerTable->setColContent(0, $_col++, we_button::create_button("publish", "javascript:finish_workflow();"));
+		if(we_workflow_utility::isWorkflowFinished($we_doc->ID, $we_doc->Table) || ((1 + we_workflow_utility::findLastActiveStep($we_doc->ID, $we_doc->Table)) == count(we_workflow_utility::getNumberOfSteps($we_doc->ID, $we_doc->Table)) && permissionhandler::hasPerm("PUBLISH"))){
+			$_footerTable->setColContent(0, $_col++, we_html_button::create_button("publish", "javascript:finish_workflow();"));
 		} else {
-			$_footerTable->setColContent(0, $_col++, we_button::create_button("forward", "javascript:pass_workflow();"));
+			$_footerTable->setColContent(0, $_col++, we_html_button::create_button("forward", "javascript:pass_workflow();"));
 		}
 
 		if(we_workflow_utility::canUserEditDoc($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"]) && $we_doc->userCanSave()){
 			$_footerTable->addCol(2);
 			$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
-			$_footerTable->setColContent(0, $_col++, we_button::create_button("save", "javascript:_EditorFrame.setEditorPublishWhenSave(false);we_save_document();"));
+			$_footerTable->setColContent(0, $_col++, we_html_button::create_button("save", "javascript:_EditorFrame.setEditorPublishWhenSave(false);we_save_document();"));
 
 			if(!isset($we_doc->IsClassFolder) || !$we_doc->IsClassFolder){
 				if($showPubl){
 					$_footerTable->addCol(2);
 					$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
-					$_footerTable->setColContent(0, $_col++, we_button::create_button("publish", "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
+					$_footerTable->setColContent(0, $_col++, we_html_button::create_button("publish", "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
 				}
 			}
 		}
@@ -180,7 +180,7 @@ function showWorkflowFooterForSEEMMode(){
 	return $_footerTable->getHtml();
 }
 
-if(we_workflow_utility::isUserInWorkflow($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"]) || we_hasPerm("PUBLISH")){
+if(we_workflow_utility::isUserInWorkflow($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"]) || permissionhandler::hasPerm("PUBLISH")){
 
 	$_table = ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ?
 			showWorkflowFooterForNormalMode() :

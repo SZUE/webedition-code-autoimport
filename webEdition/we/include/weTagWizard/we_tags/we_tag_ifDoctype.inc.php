@@ -15,6 +15,6 @@ while($_db->next_record()){
 $this->Attributes[] = new weTagData_choiceAttribute('doctypes', $docTypes, false, true, '');
 
 $this->Attributes[] = new weTagData_selectAttribute('doc', array(new weTagDataOption('top'),
- new weTagDataOption('self'),
- new weTagDataOption('listview'),
-), false, '');
+	new weTagDataOption('self'),
+	new weTagDataOption('listview'),
+	), false, '');

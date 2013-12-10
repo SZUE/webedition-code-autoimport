@@ -15,13 +15,14 @@ $this->Attributes[] = new weTagData_selectAttribute('doc', array(
 	), false, '');
 $this->Attributes[] = new weTagData_selectAttribute('showpath', weTagData_selectAttribute::getTrueFalse(), false, '');
 $this->Attributes[] = new weTagData_textAttribute('rootdir', false, '');
-$this->Attributes[] = new weTagData_selectAttribute('field', array(new weTagDataOption('ID'),
+$this->Attributes[] = new weTagData_selectAttribute('field', array(
+	new weTagDataOption('ID'),
 	new weTagDataOption('Path'),
 	new weTagDataOption('Title'),
 	new weTagDataOption('Description'),
 	), false, '');
 $this->Attributes[] = new weTagData_textAttribute('onlyindir', false, '');
-if(defined("CATEGORY_TABLE")){
-	$this->Attributes[] = new weTagData_selectorAttribute('id', CATEGORY_TABLE, '', false, '');
-}
+$this->Attributes[] = (defined('CATEGORY_TABLE') ? new weTagData_selectorAttribute('id', CATEGORY_TABLE, '', false, '') : null);
 $this->Attributes[] = new weTagData_textAttribute('separator', false, '');
+$this->Attributes[] = new weTagData_textAttribute('name', false, '');
+$this->Attributes[] = new weTagData_selectAttribute('multiple', weTagData_selectAttribute::getTrueFalse(), false, '');

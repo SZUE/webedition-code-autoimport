@@ -40,7 +40,7 @@ function we_include_tag_file($name){
 	}
 
 	$toolinc = '';
-	if(weToolLookup::getToolTag($name, $toolinc, true)){
+	if(we_tool_lookup::getToolTag($name, $toolinc, true)){
 		require_once ($toolinc);
 		return true;
 	}
@@ -94,7 +94,7 @@ function we_tag($name, $attribs = array(), $content = ''){
 		}
 	}
 
-	if($edMerk && $user && (!$_SESSION['perms']['ADMINISTRATOR'])){
+	if($edMerk && $user && (!permissionhandler::hasPerm('ADMINISTRATOR'))){
 		if(!in_array($_SESSION['user']['Username'], makeArrayFromCSV($user))){
 			$GLOBALS['we_editmode'] = false;
 		}
@@ -402,6 +402,37 @@ function attributFehltError($attribs, $attrs, $tag, $canBeEmpty = false){
 		}
 	}
 	return '';
+}
+
+/**
+ * @return array
+ * @param array $atts
+ * @param array $ignore
+ * @desc Removes all empty values from assoc array without the in $ignore given
+ */
+function removeEmptyAttribs($atts, $ignore = array()){
+	foreach($atts as $k => $v){
+		if($v == '' && !in_array($k, $ignore)){
+			unset($atts[$k]);
+		}
+	}
+	return $atts;
+}
+
+/**
+ * @return array
+ * @param array $atts
+ * @param array $ignore
+ * @desc only uses the attribs given in the array use
+ */
+function useAttribs($atts, $use = array()){
+	$keys = array_keys($atts);
+	foreach($keys as $k){
+		if(!in_array($k, $use)){
+			unset($atts[$k]);
+		}
+	}
+	return $atts;
 }
 
 function we_getInputRadioField($name, $value, $itsValue, $atts){

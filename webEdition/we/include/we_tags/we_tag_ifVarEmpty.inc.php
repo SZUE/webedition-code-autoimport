@@ -69,7 +69,7 @@ function we_isVarNotEmpty($attribs){
 			if($doc){
 				if($property){
 					return isset($doc->$match_orig) ? $doc->$match_orig : '';
-				} else{
+				} else {
 					$name = $match;
 					switch($type){
 						case 'href' :

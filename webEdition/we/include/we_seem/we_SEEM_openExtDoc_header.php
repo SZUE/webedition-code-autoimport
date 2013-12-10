@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 //	Header for a none webEdition document opened with webEdition
@@ -35,10 +35,8 @@ $_errormsg = (strpos($_REQUEST["url"], $_webEditionSiteUrl) === 0 ?
 
 
 $_table = new we_html_table(array("cellpadding" => 0,
-		"cellspacing" => 0,
-		"border" => 0),
-		2,
-		4);
+	"cellspacing" => 0,
+	"border" => 0), 2, 4);
 
 $_table->setColContent(0, 0, we_html_tools::getPixel(20, 6));
 $_table->setColContent(1, 0, we_html_tools::getPixel(1, 1));

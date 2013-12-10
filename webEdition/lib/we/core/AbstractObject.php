@@ -19,7 +19,6 @@
  * @package    we_core
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 /**

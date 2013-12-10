@@ -35,12 +35,12 @@ $_id = (!empty($_path)) ? path_to_id($_path, NAVIGATION_TABLE) : 0;
 
 $_cmd = 'opener.we_cmd("add_navi",' . $_id . ',encodeURIComponent(document.we_form.Text.value),dir.options[dir.selectedIndex].value,document.we_form.Ordn.value);';
 
-$_navi = new weNavigation($_id);
+$_navi = new we_navigation_navigation($_id);
 
 $_wrkNavi = array();
 $_db = new DB_WE();
 
-if(we_hasPerm('ADMINISTRATOR')){
+if(permissionhandler::hasPerm('ADMINISTRATOR')){
 	$_dirs = array(
 		'0' => '/'
 	);
@@ -54,7 +54,7 @@ if($_id){
 	$_def = $_navi->ParentID;
 }
 
-$_db->query('SELECT * FROM ' . NAVIGATION_TABLE . ' WHERE IsFolder=1 ' . weNavigation::getWSQuery() . ' ORDER BY Path');
+$_db->query('SELECT * FROM ' . NAVIGATION_TABLE . ' WHERE IsFolder=1 ' . we_navigation_navigation::getWSQuery() . ' ORDER BY Path');
 while($_db->next_record()){
 	if($_def === null){
 		$_def = $_db->f('ID');
@@ -71,7 +71,7 @@ $_parts = array(
 	),
 	array(
 		'headline' => g_l('navigation', '[group]'),
-		'html' => we_html_tools::htmlSelect('ParentID', $_dirs, 1, $_navi->ParentID, false, (we_base_browserDetect::isIE() ? '' : 'style="width: ' . $_input_size . 'px;" ') . 'onchange="queryEntries(this.value)"'),
+		'html' => we_html_tools::htmlSelect('ParentID', $_dirs, 1, $_navi->ParentID, false, array((we_base_browserDetect::isIE() ? '' : 'style') => 'width: ' . $_input_size . 'px;', 'onchange' => "queryEntries(this.value)")),
 		'space' => $_space_size,
 		'noline' => 1
 	),
@@ -87,13 +87,13 @@ $_parts = array(
 			'OrdnTxt', 8, ($_navi->Ordn + 1), '', 'onchange="document.we_form.Ordn.value=(document.we_form.OrdnTxt.value-1);"', 'text', 117) . we_html_tools::getPixel(6, 5) . we_html_tools::htmlSelect(
 			'OrdnSelect', array(
 			'begin' => g_l('navigation', '[begin]'), 'end' => g_l('navigation', '[end]')
-			), 1, '', false, 'onchange="document.we_form.OrdnTxt.value=document.we_form.OrdnSelect.options[document.we_form.OrdnSelect.selectedIndex].text;document.we_form.Ordn.value=this.value;"', "value", 317),
+			), 1, '', false, array('onchange' => "document.we_form.OrdnTxt.value=document.we_form.OrdnSelect.options[document.we_form.OrdnSelect.selectedIndex].text;document.we_form.Ordn.value=this.value;"), "value", 317),
 		'space' => $_space_size,
 		'noline' => 1
 	)
 );
 
-$_js = we_button::create_state_changer(false) . '
+$_js = we_html_button::create_state_changer(false) . '
 function save() {
 	var dir = document.we_form.ParentID;
 	' . $_cmd . '
@@ -146,8 +146,8 @@ var callback = {
 function queryEntries(id) {
 	ajaxObj.startRequest(id);
 }';
-$buttonsBottom = '<div style="float:right">' . we_button::position_yes_no_cancel(
-		we_button::create_button('save', 'javascript:save();', true, 100, 22, '', '', ($_id ? false : true), false), null, we_button::create_button('close', 'javascript:self.close();')) . '</div>';
+$buttonsBottom = '<div style="float:right">' . we_html_button::position_yes_no_cancel(
+		we_html_button::create_button('save', 'javascript:save();', true, 100, 22, '', '', ($_id ? false : true), false), null, we_html_button::create_button('close', 'javascript:self.close();')) . '</div>';
 
 $_body = we_html_element::htmlBody(
 		array(
@@ -155,7 +155,7 @@ $_body = we_html_element::htmlBody(
 		), we_html_element::htmlForm(
 			array(
 			"name" => "we_form", "onsubmit" => "return false"
-			), we_multiIconBox::getHTML(
+			), we_html_multiIconBox::getHTML(
 				'', '100%', $_parts, 30, $buttonsBottom, -1, '', '', false, g_l('navigation', '[add_navigation]'), "", 311)));
 
 $_head = //FIXME: missing title

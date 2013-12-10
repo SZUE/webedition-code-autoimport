@@ -46,19 +46,7 @@ class we_util_Sys_Webedition extends we_util_Sys{
 	 */
 	public static function version(){
 		if(!defined("WE_VERSION")){
-			try{
-				include_once $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_version.php";
-			} catch (Exception $e){
-				/**
-				 * @see we_util_Sys_Exception
-				 */
-				throw new we_util_sys_Exception('Could not identify webEdition version because we_version.inc.php '
-				. 'is not available.');
-			}
-
-			if(!defined("WE_VERSION")){
-				return false;
-			}
+			return false;
 		}
 		return WE_VERSION;
 	}
@@ -90,34 +78,13 @@ class we_util_Sys_Webedition extends we_util_Sys{
 			return -1;
 		}
 
-		// all modules available for webEdition:
-		try{
-			include_once $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_available_modules.inc.php";
-		} catch (Exception $e){
-			/**
-			 * @see we_util_Sys_Exception
-			 */
-			throw new we_util_sys_Exception('could not read module information from we_available_modules.inc.php.');
-			return -1;
-		}
-		if(!in_array($property, $_we_available_modules)){
+		if(!weModuleInfo::isModuleInstalled($property)){
 			return -1;
 		}
 
 		// integrated modules (free of charge, can be deactivated in webEdition preferences):
 		// users, schedule, editor, banner, export, voting, spellchecker, glossary
-		try{
-			include_once(WE_INCLUDES_PATH . "conf/we_active_integrated_modules.inc.php");
-		} catch (Exception $e){
-			throw new we_util_sys_Exception('could not read module information from we_active_integrated_modules.inc.php.');
-			return -1;
-		}
-
-		if(in_array($property, $GLOBALS['_we_active_integrated_modules'])){
-			return 1;
-		} else {
-			return 0;
-		}
+		return (weModuleInfo::isActive($property) ? 1 : 0);
 	}
 
 	/**
@@ -146,16 +113,7 @@ class we_util_Sys_Webedition extends we_util_Sys{
 	 * @return array a list of all available webEdition modules or (bool)false, if an error occured
 	 */
 	public static function modulesAvailable(){
-		try{
-			include_once $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_available_modules.inc.php";
-		} catch (Exception $e){
-			/**
-			 * @see we_util_Sys_Exception
-			 */
-			throw new we_util_sys_Exception('could not read module information from we_available_modules.inc.php.');
-			return false;
-		}
-		return $_we_available_modules;
+		return weModuleInfo::getAllModules();
 	}
 
 	/**
@@ -168,7 +126,7 @@ class we_util_Sys_Webedition extends we_util_Sys{
 		if(empty($property)){
 			return false;
 		}
-		$tooldir = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/apps/" . $property;
+		$tooldir = WE_APPS_PATH . $property;
 		try{
 			if(is_dir($tooldir) && is_readable($tooldir)){
 				return true;

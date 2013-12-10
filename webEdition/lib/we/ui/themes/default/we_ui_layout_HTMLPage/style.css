@@ -9,7 +9,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -18,7 +18,7 @@
  * @subpackage we_ui_themes
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
- 
+
 body {
 	margin:0;
 	padding:0;
@@ -49,9 +49,9 @@ body, div, span, input, textarea, td, th, label, li {
 }
 
 .weEditorFooter {
-	background-image: url(edit_footer_background.gif);	
+	background-image: url(edit_footer_background.gif);
 }
 
 .weEditorHeader {
-	background-image: url(edit_header_background.gif);	
+	background-image: url(edit_header_background.gif);
 }

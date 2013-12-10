@@ -35,13 +35,13 @@ class we_makenewtemplate extends we_template{
 		//javascript:we_cmd('openDirselector',document.forms['we_form'].elements['$idname'].value,'$table','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','','".session_id()."')
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
 		$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$textname'].value");
-		$button = we_button::create_button("select", "javascript:we_cmd('openDirselector',document.forms['we_form'].elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "')");
-		return $this->htmlFormElementTable($this->htmlTextInput($textname, 30, $path, "", ' readonly', "text", $width, 0), g_l('weClass', "[dir]"), "left", "defaultfont", $this->htmlHidden($idname, 0), //$myid
+		$button = we_html_button::create_button("select", "javascript:we_cmd('openDirselector',document.forms['we_form'].elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "')");
+		return we_html_tools::htmlFormElementTable($this->htmlTextInput($textname, 30, $path, "", ' readonly', "text", $width, 0), g_l('weClass', "[dir]"), "left", "defaultfont", $this->htmlHidden($idname, 0), //$myid
 				we_html_tools::getPixel(20, 4), $button);
 	}
 
 	function formExtension2(){
-		return $this->htmlFormElementTable("<b class='defaultfont'>" . $this->Extension . "</b>", g_l('weClass', "[extension]"));
+		return we_html_tools::htmlFormElementTable("<b class='defaultfont'>" . $this->Extension . "</b>", g_l('weClass', "[extension]"));
 	}
 
 }
@@ -60,9 +60,9 @@ function getObjectTags($id, $isField = false){
 }
 
 function getMultiObjectTags($name){
-	if(isset($_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"][we_objectFile::TYPE_MULTIOBJECT. '_' . $name . "class"]["dat"])){
-		$id = $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"][we_objectFile::TYPE_MULTIOBJECT.'_' . $name . "class"]["dat"];
-	} else{
+	if(isset($_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"][we_objectFile::TYPE_MULTIOBJECT . '_' . $name . "class"]["dat"])){
+		$id = $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"][we_objectFile::TYPE_MULTIOBJECT . '_' . $name . "class"]["dat"];
+	} else {
 		return '';
 		$newfields = explode(',', $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"]["neuefelder"]["dat"]);
 		foreach($newfields as $tempname){
@@ -126,7 +126,7 @@ function getTmplTableRow($type, $name, $isField = false){
 		if($isField){
 			$open = '<we:ifFieldNotEmpty match="' . $name . '" type="' . $type . '">';
 			$close = "</we:ifFieldNotEmpty>";
-		} else{
+		} else {
 			$open = '<we:ifVarNotEmpty match="' . $name . '" type="' . $type . '">';
 			$close = "</we:ifVarNotEmpty>";
 		}
@@ -143,7 +143,7 @@ function getTmplTableRow($type, $name, $isField = false){
 		' . $close . '
 	</td>
 </tr>';
-	} else{
+	} else {
 		return '
 <tr>
 	<td width="100"><b>' . (($type != "object") ? $name : "") . '</b></td>
@@ -243,8 +243,8 @@ $content .= '
 //  used only in WE_OBJECT_MODULE_PATH/we_object_createTemplatecmd.php
 $_SESSION['weS']['content'] = $content;
 
-$buttons = we_button::position_yes_no_cancel(
-		we_button::create_button("save", "javascript:if(document.forms['we_form'].we_" . $tmpl->Name . "_Filename.value != ''){ document.forms['we_form'].action='" . WE_OBJECT_MODULE_DIR . "we_object_createTemplatecmd.php';document.forms['we_form'].submit();}else{ " . we_message_reporting::getShowMessageCall(g_l('alert', '[input_file_name]'), we_message_reporting::WE_MESSAGE_ERROR) . " }"), null, we_button::create_button("cancel", "javascript:self.close();")
+$buttons = we_html_button::position_yes_no_cancel(
+		we_html_button::create_button("save", "javascript:if(document.forms['we_form'].we_" . $tmpl->Name . "_Filename.value != ''){ document.forms['we_form'].action='" . WE_OBJECT_MODULE_DIR . "we_object_createTemplatecmd.php';document.forms['we_form'].submit();}else{ " . we_message_reporting::getShowMessageCall(g_l('alert', '[input_file_name]'), we_message_reporting::WE_MESSAGE_ERROR) . " }"), null, we_html_button::create_button("cancel", "javascript:self.close();")
 );
 
 

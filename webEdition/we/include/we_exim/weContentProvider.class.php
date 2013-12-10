@@ -48,11 +48,11 @@ class weContentProvider{
 				$we_doc->load($ID);
 				break;
 			case 'weNavigation':
-				$we_doc = new weNavigation();
+				$we_doc = new we_navigation_navigation();
 				$we_doc->we_load($ID);
 				break;
 			case 'weNavigationRule':
-				$we_doc = new weNavigationRule();
+				$we_doc = new we_navigation_rule();
 				$we_doc->we_load($ID);
 				break;
 			case 'weThumbnail':
@@ -74,7 +74,7 @@ class weContentProvider{
 				$we_doc->load($ID, false);
 				break;
 			case 'weVersion':
-				$we_doc = new weVersion();
+				$we_doc = new we_base_version();
 				$we_doc->load($ID, false);
 				break;
 			// fix for classes
@@ -88,7 +88,7 @@ class weContentProvider{
 			default:
 				switch($we_ContentType){
 					case 'folder':
-						$we_Table = empty($table) ? FILE_TABLE : $table;
+						$we_Table = $table ? $table : FILE_TABLE;
 						break;
 					case 'text/weTmpl':
 						$we_Table = TEMPLATES_TABLE;
@@ -281,12 +281,12 @@ class weContentProvider{
 				if(!file_exists($path)){
 					$path = $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $object->Path;
 				}
-				$data = weFile::loadPart($path, $offset, $rsize);
+				$data = we_base_file::loadPart($path, $offset, $rsize);
 				if(!empty($data)){
 					$fwrite($file, '<we:binary>' . $attribs .
 						weXMLComposer::we_xmlElement('SeqN', $object->SeqN) .
 						weXMLComposer::we_xmlElement('Data', self::encode($data), array(self::CODING_ATTRIBUTE => self::CODING_ENCODE)) .
-						'</we:binary>' . weBackup::backupMarker . "\n");
+						'</we:binary>' . we_backup_backup::backupMarker . "\n");
 					$offset+=$rsize;
 					$object->SeqN++;
 				}
@@ -325,13 +325,13 @@ class weContentProvider{
 				if($object->Path == ''){
 					break;
 				}
-				$data = weFile::loadPart($path, $offset, $rsize);
+				$data = we_base_file::loadPart($path, $offset, $rsize);
 
 				if(!empty($data)){
 					$fwrite($file, '<we:version>' . $attribs .
 						weXMLComposer::we_xmlElement('SeqN', $object->SeqN) .
 						weXMLComposer::we_xmlElement('Data', self::encode($data), array(self::CODING_ATTRIBUTE => self::CODING_ENCODE)) .
-						'</we:version>' . weBackup::backupMarker . "\n");
+						'</we:version>' . we_backup_backup::backupMarker . "\n");
 					$offset+=$rsize;
 					$object->SeqN++;
 				}

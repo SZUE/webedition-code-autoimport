@@ -26,15 +26,15 @@ we_html_tools::protect();
 $_REQUEST['we_transaction'] = (preg_match("/^([a-f0-9]){32}$/i", $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0);
 if(is_array($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']])){
 
-	$messaging = new we_messaging($_SESSION["user"]["ID"]);
-	$messaging = new we_messaging($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
+	$messaging = new we_messaging_messaging($_SESSION["user"]["ID"]);
+	$messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 	$messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 	$messaging->init($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 
 	$arr = array('rcpts_string' => $_REQUEST['rcpts_string'], 'subject' => $_REQUEST['mn_subject'], 'body' => $_REQUEST['mn_body']);
 
 	$res = $messaging->send($arr);
-} else{
+} else {
 	require_once(WE_MESSAGING_MODULE_PATH . "messaging_interfaces.inc.php");
 	$errs = array();
 	$rcpts = array(urldecode($_REQUEST['rcpts_string'])); /* user names */
@@ -92,13 +92,13 @@ if(!empty($res['ok'])){
 		$tbl .= '<tr>
                     <td class="defaultfont" valign="top">' . g_l('modules_messaging', '[occured_errs]') . ':</td>
                     <td class="defaultfont">
-                        <ul><li>'.implode('</li><li>',$res['err']).'</li></ul>
+                        <ul><li>' . implode('</li><li>', $res['err']) . '</li></ul>
                     </td>
                 </tr>';
 	}
 
 	$tbl .= '</table>';
-	echo we_html_tools::htmlDialogLayout($tbl, g_l('modules_messaging', '[message_send]') . '...', we_button::create_button("ok", "javascript:window.close()"), "100%", 20, "", "hidden");
+	echo we_html_tools::htmlDialogLayout($tbl, g_l('modules_messaging', '[message_send]') . '...', we_html_button::create_button("ok", "javascript:window.close()"), "100%", 20, "", "hidden");
 	?>
 </body>
 

@@ -96,7 +96,6 @@ $we_menu_navigation = array(
 	  'perm'=> '',
 	  'enabled'=> '1',
 	  ), */
-
 	2000 => array(
 		'text' => g_l('navigation', '[menu_options]'),
 		'parent' => 0,

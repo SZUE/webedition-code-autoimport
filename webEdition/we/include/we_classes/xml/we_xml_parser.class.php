@@ -392,8 +392,7 @@ class we_xml_parser{
 			$this->nodes[$context]['document-position'] = 0;
 		}
 
-		$this->nodes[$newPath]['document-position'] =
-			$this->nodes[$context]['document-position'] + 1;
+		$this->nodes[$newPath]['document-position'] = $this->nodes[$context]['document-position'] + 1;
 
 		// Save the information about the node.
 		$this->nodes[$newPath]['name'] = $nodeName;
@@ -411,8 +410,7 @@ class we_xml_parser{
 			$this->nodes[$context]['children'][$nodeName] = 1;
 		} else {
 			// Calculate the name.
-			$this->nodes[$context]['children'][$nodeName] =
-				$this->nodes[$context]['children'][$nodeName] + 1;
+			$this->nodes[$context]['children'][$nodeName] = $this->nodes[$context]['children'][$nodeName] + 1;
 		}
 
 		return $newPath;
@@ -458,7 +456,7 @@ class we_xml_parser{
 			$siblings = $this->nodes[$parent]['children'][$name];
 
 			// Decrease the number of children.
-			$this->nodes[$parent]['children'][$name]--;
+			$this->nodes[$parent]['children'][$name] --;
 			$counter = 1;
 
 			// Run through the siblings.
@@ -2507,7 +2505,7 @@ class we_xml_parser{
 	function getEncoding($file = '', $data = ''){
 
 		if(!empty($file)){
-			$data = weFile::loadPart($file, 0, 256);
+			$data = we_base_file::loadPart($file, 0, 256);
 		}
 
 		if(empty($data)){

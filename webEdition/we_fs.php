@@ -26,17 +26,8 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 $_SERVER['SCRIPT_NAME'] = WEBEDITION_DIR . 'we_fs.php';
 
-$fs = new we_multiSelector(
-		isset($id) ? $id : (isset($_REQUEST['id']) ? $_REQUEST['id'] : 0),
-		isset($table) ? $table : (isset($_REQUEST['table']) ? $_REQUEST['table'] : FILE_TABLE),
-		isset($JSIDName) ? $JSIDName : (isset($_REQUEST['JSIDName']) ? $_REQUEST['JSIDName'] : ''),
-		isset($JSTextName) ? $JSTextName : (isset($_REQUEST['JSTextName']) ? $_REQUEST['JSTextName'] : ''),
-		isset($JSCommand) ? $JSCommand : (isset($_REQUEST['JSCommand']) ? $_REQUEST['JSCommand'] : ''),
-		isset($order) ? $order : (isset($_REQUEST['order']) ? $_REQUEST['order'] : ''),
-		isset($sessionID) ? $sessionID : (isset($_REQUEST['sessionID']) ? $_REQUEST['sessionID'] : ''),
-		isset($rootDirID) ? $rootDirID : (isset($_REQUEST['rootDirID']) ? $_REQUEST['rootDirID'] : ''),
-		isset($multiple) ? $multiple : (isset($_REQUEST['multiple']) ? $_REQUEST['multiple'] : ''),
-		isset($filter) ? $filter : (isset($_REQUEST['filter']) ? $_REQUEST['filter'] : ''));
+$fs = new we_selector_multiple(
+	isset($id) ? $id : (isset($_REQUEST['id']) ? $_REQUEST['id'] : 0), isset($table) ? $table : (isset($_REQUEST['table']) ? $_REQUEST['table'] : FILE_TABLE), isset($JSIDName) ? $JSIDName : (isset($_REQUEST['JSIDName']) ? $_REQUEST['JSIDName'] : ''), isset($JSTextName) ? $JSTextName : (isset($_REQUEST['JSTextName']) ? $_REQUEST['JSTextName'] : ''), isset($JSCommand) ? $JSCommand : (isset($_REQUEST['JSCommand']) ? $_REQUEST['JSCommand'] : ''), isset($order) ? $order : (isset($_REQUEST['order']) ? $_REQUEST['order'] : ''), isset($sessionID) ? $sessionID : (isset($_REQUEST['sessionID']) ? $_REQUEST['sessionID'] : ''), isset($rootDirID) ? $rootDirID : (isset($_REQUEST['rootDirID']) ? $_REQUEST['rootDirID'] : ''), isset($multiple) ? $multiple : (isset($_REQUEST['multiple']) ? $_REQUEST['multiple'] : ''), isset($filter) ? $filter : (isset($_REQUEST['filter']) ? $_REQUEST['filter'] : ''));
 
-$fs->printHTML(isset($_REQUEST['what']) ? $_REQUEST['what'] : we_fileselector::FRAMESET);
+$fs->printHTML(isset($_REQUEST['what']) ? $_REQUEST['what'] : we_selector_file::FRAMESET);
 

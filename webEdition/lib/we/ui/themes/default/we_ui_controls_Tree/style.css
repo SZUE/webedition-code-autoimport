@@ -9,7 +9,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -18,7 +18,7 @@
  * @subpackage we_ui_themes
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
- 
+
 body {
 	margin: 0px 0 0 0px;
 	padding: 0px;
@@ -118,7 +118,7 @@ body {
 	background: url(../../../../../../images/busy2.gif) 0 0 no-repeat;
 }
 
-/* the style for the empty cells that are used for rendering the depth 
+/* the style for the empty cells that are used for rendering the depth
  * of the node */
 .ygtvdepthcell {
 	width: 16px;
@@ -132,7 +132,7 @@ body {
 }
 
 /* the style of the div around each node */
-.ygtvitem { 
+.ygtvitem {
 
 }
 .ygtvitem a, .ygtvitem a div, .ygtvitem a span {
@@ -141,12 +141,12 @@ body {
 	color: #000;
 	padding-top:1px;
 	font-size: 9px;
-	font-family: Verdana, Arial, Helvetica, sans-serif; 
+	font-family: Verdana, Arial, Helvetica, sans-serif;
 }
 
 /* the style of the div around each node's collection of children */
 .ygtvchildren {
-	
+
 }
 
 * html .ygtvchildren {

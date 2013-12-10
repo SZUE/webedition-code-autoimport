@@ -22,7 +22,7 @@
  * @package    webEdition_wysiwyg
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 $appendJS = "";
 
@@ -37,9 +37,9 @@ if(!(isset($_REQUEST['we_dialog_args']) &&
 $noInternals = $noInternals || !isset($_SESSION['user']) || !isset($_SESSION['user']['Username']) || $_SESSION['user']['Username'] == '';
 
 if(defined("GLOSSARY_TABLE") && isset($_REQUEST['weSaveToGlossary']) && $_REQUEST['weSaveToGlossary'] == 1 && !$noInternals){
-	$Glossary = new weGlossary();
+	$Glossary = new we_glossary_glossary();
 	$Glossary->Language = $_REQUEST['language'];
-	$Glossary->Type = weGlossary::TYPE_ACRONYM;
+	$Glossary->Type = we_glossary_glossary::TYPE_ACRONYM;
 	$Glossary->Text = trim($_REQUEST['text']);
 	$Glossary->Title = trim($_REQUEST['we_dialog_args']['title']);
 	$Glossary->Published = time();
@@ -57,7 +57,7 @@ if(defined("GLOSSARY_TABLE") && isset($_REQUEST['weSaveToGlossary']) && $_REQUES
 	} else{
 		$Glossary->save();
 
-		$Cache = new weGlossaryCache($_REQUEST['language']);
+		$Cache = new we_glossary_cache($_REQUEST['language']);
 		$Cache->write();
 		unset($Cache);
 
@@ -65,7 +65,7 @@ if(defined("GLOSSARY_TABLE") && isset($_REQUEST['weSaveToGlossary']) && $_REQUES
 	}
 }
 
-$dialog = new weAcronymDialog($noInternals);
+$dialog = new we_dialog_acronym($noInternals);
 $dialog->initByHttp();
 $dialog->registerOkJsFN("weDoAcronymJS");
 print $dialog->getHTML();

@@ -27,18 +27,8 @@ we_html_tools::protect();
 
 $_SERVER['SCRIPT_NAME'] = WEBEDITION_DIR . 'we_dirSelect.php';
 
-$fs = new we_dirSelector(
-		isset($id) ? $id : ( isset($_REQUEST["id"]) ? $_REQUEST["id"] : '' ),
-		isset($table) ? $table : ( isset($_REQUEST["table"]) ? $_REQUEST["table"] : FILE_TABLE ),
-		isset($JSIDName) ? $JSIDName : ( isset($_REQUEST["JSIDName"]) ? $_REQUEST["JSIDName"] : '' ),
-		isset($JSTextName) ? $JSTextName : ( isset($_REQUEST["JSTextName"]) ? $_REQUEST["JSTextName"] : '' ),
-		isset($JSCommand) ? $JSCommand : ( isset($_REQUEST["JSCommand"]) ? $_REQUEST["JSCommand"] : '' ),
-		isset($order) ? $order : ( isset($_REQUEST["order"]) ? $_REQUEST["order"] : '' ),
-		isset($sessionID) ? $sessionID : ( isset($_REQUEST["sessionID"]) ? $_REQUEST["sessionID"] : '' ),
-		isset($we_editDirID) ? $we_editDirID : ( isset($_REQUEST["we_editDirID"]) ? $_REQUEST["we_editDirID"] : '' ),
-		isset($we_FolderText) ? $we_FolderText : ( isset($_REQUEST["we_FolderText"]) ? $_REQUEST["we_FolderText"] : '' ),
-		isset($rootDirID) ? $rootDirID : ( isset($_REQUEST["rootDirID"]) ? $_REQUEST["rootDirID"] : '' ),
-		isset($multiple) ? $multiple : ( isset($_REQUEST["multiple"]) ? $_REQUEST["multiple"] : '' ));
+$fs = new we_selector_directory(
+	isset($id) ? $id : ( isset($_REQUEST["id"]) ? $_REQUEST["id"] : '' ), isset($table) ? $table : ( isset($_REQUEST["table"]) ? $_REQUEST["table"] : FILE_TABLE ), isset($JSIDName) ? $JSIDName : ( isset($_REQUEST["JSIDName"]) ? $_REQUEST["JSIDName"] : '' ), isset($JSTextName) ? $JSTextName : ( isset($_REQUEST["JSTextName"]) ? $_REQUEST["JSTextName"] : '' ), isset($JSCommand) ? $JSCommand : ( isset($_REQUEST["JSCommand"]) ? $_REQUEST["JSCommand"] : '' ), isset($order) ? $order : ( isset($_REQUEST["order"]) ? $_REQUEST["order"] : '' ), isset($sessionID) ? $sessionID : ( isset($_REQUEST["sessionID"]) ? $_REQUEST["sessionID"] : '' ), isset($we_editDirID) ? $we_editDirID : ( isset($_REQUEST["we_editDirID"]) ? $_REQUEST["we_editDirID"] : '' ), isset($we_FolderText) ? $we_FolderText : ( isset($_REQUEST["we_FolderText"]) ? $_REQUEST["we_FolderText"] : '' ), isset($rootDirID) ? $rootDirID : ( isset($_REQUEST["rootDirID"]) ? $_REQUEST["rootDirID"] : '' ), isset($multiple) ? $multiple : ( isset($_REQUEST["multiple"]) ? $_REQUEST["multiple"] : '' ));
 
-$fs->printHTML(isset($_REQUEST["what"]) ? $_REQUEST["what"] : we_fileselector::FRAMESET);
+$fs->printHTML(isset($_REQUEST["what"]) ? $_REQUEST["what"] : we_selector_file::FRAMESET);
 

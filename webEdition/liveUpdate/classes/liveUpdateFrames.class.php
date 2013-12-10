@@ -135,24 +135,24 @@ class liveUpdateFrames{
 
 	function processBeta(){
 		if(isset($_REQUEST['setTestUpdate'])){
-			$conf = weFile::load(LIVEUPDATE_DIR . 'conf/conf.inc.php');
+			$conf = we_base_file::load(LIVEUPDATE_DIR . 'conf/conf.inc.php');
 
 			if(strpos($conf, '$_REQUEST[\'testUpdate\']') !== false){
 				if($_REQUEST['setTestUpdate'] == 1){
 					if(strpos($conf, '$_REQUEST[\'testUpdate\'] = 0;') !== false){
 						$conf = str_replace('$_REQUEST[\'testUpdate\'] = 0;', '$_REQUEST[\'testUpdate\'] = 1;', $conf);
-						weFile::save(LIVEUPDATE_DIR . 'conf/conf.inc.php', $conf);
+						we_base_file::save(LIVEUPDATE_DIR . 'conf/conf.inc.php', $conf);
 					}
 				}
 				if($_REQUEST['setTestUpdate'] == 0){
 					if(strpos($conf, '$_REQUEST[\'testUpdate\'] = 1;') !== false){
 						$conf = str_replace('$_REQUEST[\'testUpdate\'] = 1;', '$_REQUEST[\'testUpdate\'] = 0;', $conf);
-						weFile::save(LIVEUPDATE_DIR . 'conf/conf.inc.php', $conf);
+						we_base_file::save(LIVEUPDATE_DIR . 'conf/conf.inc.php', $conf);
 					}
 				}
 			} else {
 				$conf.='$_REQUEST[\'testUpdate\'] = ' . $_REQUEST['setTestUpdate'] . ';';
-				weFile::save(LIVEUPDATE_DIR . 'conf/conf.inc.php', $conf);
+				we_base_file::save(LIVEUPDATE_DIR . 'conf/conf.inc.php', $conf);
 			}
 			$_REQUEST['testUpdate'] = $_REQUEST['setTestUpdate'];
 		}

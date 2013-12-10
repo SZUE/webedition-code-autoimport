@@ -59,11 +59,11 @@ function startNormalMode(){
 		<?php if(!(SIDEBAR_DISABLED == 1)){ ?>
 			<div style="position:absolute;top:0px;bottom:0px;right:0px;width:<?php echo $_sidebarwidth; ?>px;border-left:1px solid black;" id="sidebarDiv">
 				<?php
-				$weFrame = new weSideBarFrames();
+				$weFrame = new we_sidebar_frames();
 				$weFrame->getHTML('');
 				?>
 			</div>
-	<?php } ?>
+		<?php } ?>
 	</div>
 	<?php
 }
@@ -91,20 +91,20 @@ function startSEEMMode(){
 	?>
 	<div style="position:absolute;top:0px;bottom:0px;left:0px;right:0px;border: 0px;">
 		<div style="position:absolute;top:0px;bottom:0px;left:0px;display:none;border-right:1px solid black;" id="bframeDiv">
-	<?php include(WE_INCLUDES_PATH . 'baumFrame.inc.php'); ?>
+			<?php include(WE_INCLUDES_PATH . 'baumFrame.inc.php'); ?>
 		</div>
 		<div style="position:absolute;top:0px;bottom:0px;right:<?php echo $_sidebarwidth; ?>px;left:0px;border-left:1px solid black;overflow: hidden;" id="bm_content_frameDiv">
 			<iframe frameBorder="0" src="<?php print WEBEDITION_DIR; ?>multiContentFrame.php" name="bm_content_frame" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>
 		</div>
-			<?php if($_sidebarwidth > 0){ ?>
+		<?php if($_sidebarwidth > 0){ ?>
 			<div style="position:absolute;top:0px;bottom:0px;right:0px;width:<?php echo $_sidebarwidth; ?>px;border-left:1px solid black;" id="sidebarDiv">
 				<?php
-				$weFrame = new weSideBarFrames();
+				$weFrame = new we_sidebar_frames();
 				$weFrame->getHTML('');
 				?>
 
 			</div>
-	<?php } ?>
+		<?php } ?>
 	</div>
 	<?php
 }
@@ -129,7 +129,7 @@ function startSEEMMode(){
 
 
 
-	//-->
+//-->
 </script>
 </head>
 <?php

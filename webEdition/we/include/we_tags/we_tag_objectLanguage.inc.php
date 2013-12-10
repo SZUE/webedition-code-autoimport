@@ -26,7 +26,7 @@ function we_tag_objectLanguage($attribs){
 	$type = weTag_getAttribute("type", $attribs, "complete");
 	$case = weTag_getAttribute("case", $attribs, "unchanged");
 
-	$lang = (isset($GLOBALS['lv'])?		$GLOBALS['lv']->getDBf('OF_Language'):'');
+	$lang = (isset($GLOBALS['lv']) ? $GLOBALS['lv']->getDBf('OF_Language') : '');
 
 	switch($type){
 		case "language":

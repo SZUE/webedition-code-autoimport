@@ -51,7 +51,7 @@ function checkDeleteFolder($id, $table){
 
 	$DB_WE = $GLOBALS['DB_WE'];
 	$DB_WE->query('SELECT ID FROM ' . $DB_WE->escape($table) . ' WHERE ParentID=' . intval($id));
-	while($DB_WE->next_record()) {
+	while($DB_WE->next_record()){
 		if(!checkDeleteEntry($DB_WE->f('ID'), $table)){
 			return false;
 		}
@@ -86,7 +86,7 @@ function deleteFolder($id, $table, $path = '', $delR = true, $DB_WE = ''){
 	if($delR){ // recursive delete
 		$DB_WE->query('SELECT ID FROM ' . $DB_WE->escape($table) . ' WHERE ParentID=' . intval($id));
 		$toDeleteArray = array();
-		while($DB_WE->next_record()) {
+		while($DB_WE->next_record()){
 			$toDeleteArray[] = $DB_WE->f('ID');
 		}
 		foreach($toDeleteArray as $toDelete){
@@ -158,7 +158,7 @@ function deleteFile($id, $table, $path = '', $contentType = '', $DB_WE = ''){
 			$DB_WE->query('UPDATE ' . CONTENT_TABLE . ' SET BDID=0 WHERE BDID=' . intval($id));
 			$DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($id));
 
-			if(in_array('schedule', $GLOBALS['_we_active_integrated_modules'])){ //	Delete entries from schedule as well
+			if(weModuleInfo::isActive('schedule')){ //	Delete entries from schedule as well
 				$DB_WE->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($id) . ' AND ClassName !="we_objectFile"');
 			}
 
@@ -180,7 +180,7 @@ function deleteFile($id, $table, $path = '', $contentType = '', $DB_WE = ''){
 					if($DB_WE->isColExist(OBJECT_X_TABLE . $testclassID, we_object::QUERY_PREFIX . $tableID)){
 
 						//das loeschen in der DB wirkt sich nicht auf die Objekte aus, die noch nicht publiziert sind
-						$DB_WE->query('SELECT OF_ID FROM ' . OBJECT_X_TABLE . $testclassID . ' WHERE ' . we_object::QUERY_PREFIX. $tableID . '= ' . intval($id));
+						$DB_WE->query('SELECT OF_ID FROM ' . OBJECT_X_TABLE . $testclassID . ' WHERE ' . we_object::QUERY_PREFIX . $tableID . '= ' . intval($id));
 						$foos = $DB_WE->getAll(true);
 						foreach($foos as $affectedobjectsID){
 							$obj = new we_objectFile();
@@ -201,7 +201,7 @@ function deleteFile($id, $table, $path = '', $contentType = '', $DB_WE = ''){
 				$DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable = "tblObjectFile" AND DID = ' . intval($id));
 				$DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable = "tblObjectFile" AND LDID = ' . intval($id));
 			}
-			if(in_array('schedule', $GLOBALS['_we_active_integrated_modules'])){ //	Delete entries from schedule as well
+			if(weModuleInfo::isActive('schedule')){ //	Delete entries from schedule as well
 				$DB_WE->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($id) . ' AND ClassName="we_objectFile"');
 			}
 			break;
@@ -268,7 +268,7 @@ function deleteEntry($id, $table, $delR = true, $skipHook = 0, $DB_WE = ''){
 		if(!empty($row)){
 			if($row['IsFolder']){
 				deleteFolder($id, $table, $row['Path'], $delR, $DB_WE);
-			} else{
+			} else {
 				deleteFile($id, $table, $row['Path'], $row['ContentType'], $DB_WE);
 			}
 		}

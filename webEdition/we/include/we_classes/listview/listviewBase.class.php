@@ -134,7 +134,7 @@ abstract class listviewBase{
 	function next_record(){
 		// overwrite
 		if($this->calendar_struct['calendar'] != ''){
-			$this->calendar_struct['calendarCount']++;
+			$this->calendar_struct['calendarCount'] ++;
 			$this->calendar_struct['count'] = $this->count;
 			$this->calendar_struct['forceFetch'] = false;
 			$calendarCount = $this->calendar_struct['calendarCount'];

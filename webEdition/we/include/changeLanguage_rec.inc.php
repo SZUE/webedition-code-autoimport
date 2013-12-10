@@ -24,7 +24,7 @@
 we_html_tools::protect();
 $ok = false;
 
-if(we_hasPerm('ADMINISTRATOR')){
+if(permissionhandler::hasPerm('ADMINISTRATOR')){
 	$we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : 0);
 	// init document
 	$we_dt = $_SESSION['weS']['we_data'][$we_transaction];

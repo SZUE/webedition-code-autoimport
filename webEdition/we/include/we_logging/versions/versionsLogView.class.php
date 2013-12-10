@@ -241,7 +241,7 @@ class versionsLogView{
 			}
 
 			$out .= '</table></div>';
-		} else{
+		} else {
 			$out = '<div align="center" width="100%">' . g_l('logging', '[notfound]') . '</div>';
 		}
 
@@ -304,8 +304,8 @@ class versionsLogView{
 				$out .= '<tr id="' . $name . '" name="' . $name . '" style="display:' . $display . ';">
 					<td align="left">' . $m . '.</td><td align="left">' .
 					$v['documentID'] . '</td><td align="left">' .
-					shortenPath($v['Text'], 18) . '</td><td align="left">' .
-					shortenPath($v['Path'], 40) . '</td><td align="left">' .
+					we_util_Strings::shortenPath($v['Text'], 18) . '</td><td align="left">' .
+					we_util_Strings::shortenPath($v['Path'], 40) . '</td><td align="left">' .
 					$v['Version'] . '</td><td align="left">' .
 					$v['ContentType'] . '</td></tr>';
 			}

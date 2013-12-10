@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 we_html_tools::htmlTop();
@@ -38,12 +38,9 @@ $incDecTree = '
 	<img id="arrowImg" src="' . BUTTONS_DIR . 'icons/direction_' . ($_treewidth <= 30 ? 'right' : 'left') . '.gif" width="9" height="12" style="position:absolute;bottom:13px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer;" onClick="top.content.toggleTree();">
 ';
 
-print we_html_element::htmlBody(array('style' => 'background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px'),
-	we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;'),
-		we_html_element::htmlDiv(array('id' => 'lframeDiv','style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;width: ' . $_treewidth . 'px;'),
-			we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; width: ' . weTree::HiddenWidth . 'px; background-image: url(/webEdition/images/v-tabs/background.gif); background-repeat: repeat-y; border-top: 1px solid black;'), $incDecTree) .
-			we_html_element::htmlIFrame('messaging_tree', HTML_DIR . 'white.html', 'position: absolute; top: 0px; bottom: 0px; left: ' . weTree::HiddenWidth . 'px; right: 0px; border-top: 1px solid white;')
-		) .
-		we_html_element::htmlIFrame('right', WE_MESSAGING_MODULE_DIR . 'messaging_right.php?we_transaction=' . $_REQUEST['we_transaction'], 'position: absolute; top: 0px; bottom: 0px; left: ' . $_treewidth . 'px; right: 0px; width:auto; border-left: 1px solid black; overflow: hidden;')
-	)
+print we_html_element::htmlBody(array('style' => 'background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px'), we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;'), we_html_element::htmlDiv(array('id' => 'lframeDiv', 'style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;width: ' . $_treewidth . 'px;'), we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; width: ' . weTree::HiddenWidth . 'px; background-image: url(' . IMAGE_DIR . 'v-tabs/background.gif); background-repeat: repeat-y; border-top: 1px solid black;'), $incDecTree) .
+				we_html_element::htmlIFrame('messaging_tree', HTML_DIR . 'white.html', 'position: absolute; top: 0px; bottom: 0px; left: ' . weTree::HiddenWidth . 'px; right: 0px; border-top: 1px solid white;')
+			) .
+			we_html_element::htmlIFrame('right', WE_MESSAGING_MODULE_DIR . 'messaging_right.php?we_transaction=' . $_REQUEST['we_transaction'], 'position: absolute; top: 0px; bottom: 0px; left: ' . $_treewidth . 'px; right: 0px; width:auto; border-left: 1px solid black; overflow: hidden;')
+		)
 );

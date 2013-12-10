@@ -75,17 +75,17 @@ if(!($isObj OR $isTempl)){
 }
 
 //close button
-$_button = we_button::create_button("close", "javascript:self.close();");
+$_button = we_html_button::create_button("close", "javascript:self.close();");
 
 $we_tabs = new we_tabs();
 
-$we_tabs->addTab(new we_tab("#", g_l('versions', '[versionDiffs]'), '((activ_tab==1) ? TAB_ACTIVE : TAB_NORMAL)', "setTab('1');", array("id" => "tab_1")));
+$we_tabs->addTab(new we_tab("#", g_l('versions', '[versionDiffs]'), '((activ_tab==1) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('1');", array("id" => "tab_1")));
 
 if(!$isObj){
-	$we_tabs->addTab(new we_tab("#", g_l('versions', '[previewVersionNew]'), '((activ_tab==2) ? TAB_ACTIVE : TAB_NORMAL)', "setTab('2');", array("id" => "tab_2")));
+	$we_tabs->addTab(new we_tab("#", g_l('versions', '[previewVersionNew]'), '((activ_tab==2) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('2');", array("id" => "tab_2")));
 }
 if(!empty($oldDoc) && !$isObj){
-	$we_tabs->addTab(new we_tab("#", g_l('versions', '[previewVersionOld]'), '((activ_tab==3) ? TAB_ACTIVE : TAB_NORMAL)', "setTab('3');", array("id" => "tab_3")));
+	$we_tabs->addTab(new we_tab("#", g_l('versions', '[previewVersionOld]'), '((activ_tab==3) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('3');", array("id" => "tab_3")));
 }
 
 $js = $we_tabs->getHeader() . we_html_element::jsElement('
@@ -181,16 +181,12 @@ $versionOld = '';
 if(!empty($oldDoc)){
 	$versionOld = ' AND version!=' . intval($oldDoc['version']);
 }
-$versions = array();
-$_db->query('SELECT ID,version, timestamp FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($newDoc['documentID']) . " AND documentTable='" . $_db->escape($newDoc['documentTable']) . "' AND version!=" . intval($newDoc['version']) . ' ' . $versionOld . "  ORDER BY version ASC");
-while($_db->next_record()){
-	$versions[$_db->f("ID")]['version'] = $_db->f("version");
-	$versions[$_db->f("ID")]['timestamp'] = date("d.m.y - H:i:s", $_db->f("timestamp"));
-}
+$_db->query('SELECT ID,version, DATE_FORMAT(timestamp,"' . g_l('weEditorInfo', '[mysql_date_format]') . '") AS timestamp FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($newDoc['documentID']) . " AND documentTable='" . $_db->escape($newDoc['documentTable']) . "' AND version!=" . intval($newDoc['version']) . ' ' . $versionOld . "  ORDER BY version ASC");
+$versions = $_db->getAllFirst(true, MYSQLI_ASSOC);
 
-$_versions_time_days->addOption("", g_l('versions', '[pleaseChoose]'));
+$_versions_time_days->addOption('', g_l('versions', '[pleaseChoose]'));
 foreach($versions as $k => $v){
-	$txt = g_l('versions', '[version]') . " " . $v['version'] . " " . g_l('versions', '[from]') . " " . $v['timestamp'];
+	$txt = g_l('versions', '[version]') . ' ' . $v['version'] . " " . g_l('versions', '[from]') . ' ' . $v['timestamp'];
 	$_versions_time_days->addOption($k, $txt);
 }
 
@@ -611,7 +607,7 @@ print STYLESHEET;
 		//new jsWindow("<?php print WEBEDITION_DIR; ?>we/include/we_versions/weVersionsPreview.php?ID="+ID+"&newCompareID="+newID+"", "version_preview",-1,-1,1000,750,true,true,true,true);
 
 	}
-	//-->
+//-->
 </script>
 <?php print we_html_element::jsScript(JS_DIR . 'windows.js') . $js; ?>
 <style type="text/css" media="screen">

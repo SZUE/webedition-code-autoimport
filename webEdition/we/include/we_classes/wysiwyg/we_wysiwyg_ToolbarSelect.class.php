@@ -49,7 +49,7 @@ class we_wysiwyg_ToolbarSelect extends we_wysiwyg_ToolbarElement{
 				$out .= '<option value="' . oldHtmlspecialchars($val) . '">' . oldHtmlspecialchars($txt) . '</option>' . "\n";
 			}
 			$out .= '</select>';
-		} else{
+		} else {
 			$out = '<table id="' . $this->editor->ref . '_sel_' . $this->cmd . '"  onclick="if(' . $this->editor->ref . 'Obj.menus[\'' . $this->cmd . '\'].disabled==false){' . $this->editor->ref . 'Obj.showPopupmenu(\'' . $this->cmd . '\');}" class="tbButtonWysiwygDefaultStyle" width="' . $this->width . '" height="' . $this->height . '" cellpadding="0" cellspacing="0" border="0" title="' . ($this->title) . '" style="cursor:pointer;position: relative;">
 	<tr>
 		<td width="' . ($this->width - 20) . '" style="padding-left:10px;background-image: url(' . IMAGE_DIR . 'wysiwyg/menuback.gif);"  class="tbButtonWysiwygDefaultStyle"><input value="' . oldHtmlspecialchars($this->title) . '" type="text" name="' . $this->editor->ref . '_seli_' . $this->cmd . '" id="' . $this->editor->ref . '_seli_' . $this->cmd . '" readonly="readonly" style="cursor:pointer;height:16px;width:' . ($this->width - 30) . 'px;border:0px;background-color:transparent;color:black;font: 10px Verdana, Arial, Helvetica, sans-serif;" /></td>

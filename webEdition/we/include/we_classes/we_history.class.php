@@ -34,16 +34,7 @@ abstract class we_history{
 	const MAX = 5;
 
 	static function userHasPerms($creatorid, $owners, $restricted){
-		if($_SESSION['perms']['ADMINISTRATOR']){
-			return true;
-		}
-		if(!$restricted){
-			return true;
-		}
-		if(we_isOwner($owners) || we_isOwner($creatorid)){
-			return true;
-		}
-		return false;
+		return (permissionhandler::hasPerm('ADMINISTRATOR') || !$restricted || we_users_util::isOwner($owners) || we_users_util::isOwner($creatorid));
 	}
 
 	static function insertIntoHistory(&$object, $action = 'save'){
@@ -76,4 +67,3 @@ abstract class we_history{
 	}
 
 }
-

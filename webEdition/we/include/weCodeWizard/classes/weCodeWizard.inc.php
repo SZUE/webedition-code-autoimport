@@ -59,7 +59,7 @@ class weCodeWizard{
 		$SnippetDir = $this->SnippetPath . 'custom';
 		if(!is_dir($SnippetDir)){
 			return array();
-		} else{
+		} else {
 			return $this->_getSnippetsByDir('custom');
 		}
 	}
@@ -75,7 +75,7 @@ class weCodeWizard{
 
 		if(!is_dir($SnippetDir)){
 			return array();
-		} else{
+		} else {
 			return $this->_getSnippetsByDir('default');
 		}
 	}
@@ -91,7 +91,7 @@ class weCodeWizard{
 
 		$Depth++;
 		$_dir = dir($this->SnippetPath . $SnippetDir);
-		while(false !== ($_entry = $_dir->read())) {
+		while(false !== ($_entry = $_dir->read())){
 
 			// ignore files . and ..
 			if($_entry == "." || $_entry == ".."){

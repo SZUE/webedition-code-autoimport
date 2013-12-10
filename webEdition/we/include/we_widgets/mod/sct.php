@@ -28,10 +28,10 @@ we_html_tools::protect();
 $aCols = explode(';', isset($aProps) ? $aProps[3] : $_REQUEST['we_cmd'][0]);
 $_disableNew = true;
 $_cmdNew = "javascript:top.we_cmd('new','" . FILE_TABLE . "','','text/webedition');";
-if(we_hasPerm("NEW_WEBEDITIONSITE")){
-	if(we_hasPerm("NO_DOCTYPE")){
+if(permissionhandler::hasPerm("NEW_WEBEDITIONSITE")){
+	if(permissionhandler::hasPerm("NO_DOCTYPE")){
 		$_disableNew = false;
-	} else{
+	} else {
 		$q = "ORDER BY DocType";
 		$paths = array();
 		$ws = get_ws(FILE_TABLE);
@@ -46,21 +46,21 @@ if(we_hasPerm("NEW_WEBEDITIONSITE")){
 		if(!empty($paths)){
 			$q = 'WHERE (' . implode(' OR ', $paths) . ") OR ParentPath='' ORDER BY DocType";
 		}
-		$DB_WE->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' '.$q);
+		$DB_WE->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . $q);
 		if($DB_WE->next_record()){
 			$_disableNew = false;
 			$_cmdNew = "javascript:top.we_cmd('new','" . FILE_TABLE . "','','text/webedition','" . $DB_WE->f("ID") . "')";
-		} else{
+		} else {
 			$_disableNew = true;
 		}
 	}
-} else{
+} else {
 	$_disableNew = true;
 }
 
 $_disableObjects = false;
 if(defined("OBJECT_TABLE")){
-	$allClasses = getAllowedClasses();
+	$allClasses = we_users_util::getAllowedClasses();
 	if(empty($allClasses)){
 		$_disableObjects = true;
 	}
@@ -68,31 +68,31 @@ if(defined("OBJECT_TABLE")){
 
 $js = array();
 
-if(defined('FILE_TABLE') && we_hasPerm("CAN_SEE_DOCUMENTS")){
+if(defined('FILE_TABLE') && permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
 	$js["open_document"] = "top.we_cmd('open_document');";
 }
-if(defined('FILE_TABLE') && we_hasPerm("CAN_SEE_DOCUMENTS") && !$_disableNew){
+if(defined('FILE_TABLE') && permissionhandler::hasPerm("CAN_SEE_DOCUMENTS") && !$_disableNew){
 	$js["new_document"] = $_cmdNew;
 }
-if(defined('TEMPLATES_TABLE') && we_hasPerm("NEW_TEMPLATE") && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
+if(defined('TEMPLATES_TABLE') && permissionhandler::hasPerm("NEW_TEMPLATE") && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
 	$js["new_template"] = "top.we_cmd('new','" . TEMPLATES_TABLE . "','','text/weTmpl');";
 }
-if(we_hasPerm("NEW_DOC_FOLDER")){
+if(permissionhandler::hasPerm("NEW_DOC_FOLDER")){
 	$js["new_directory"] = "top.we_cmd('new','" . FILE_TABLE . "','','folder')";
 }
-if(defined('FILE_TABLE') && we_hasPerm("CAN_SEE_DOCUMENTS")){
+if(defined('FILE_TABLE') && permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
 	$js["unpublished_pages"] = "top.we_cmd('openUnpublishedPages');";
 }
-if(defined('OBJECT_FILES_TABLE') && we_hasPerm("CAN_SEE_OBJECTFILES") && !$_disableObjects){
+if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES") && !$_disableObjects){
 	$js["unpublished_objects"] = "top.we_cmd('openUnpublishedObjects');";
 }
-if(defined('OBJECT_FILES_TABLE') && we_hasPerm("NEW_OBJECTFILE") && !$_disableObjects){
+if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm("NEW_OBJECTFILE") && !$_disableObjects){
 	$js["new_object"] = "top.we_cmd('new_objectFile');";
 }
-if(defined('OBJECT_TABLE') && we_hasPerm("NEW_OBJECT") && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
+if(defined('OBJECT_TABLE') && permissionhandler::hasPerm("NEW_OBJECT") && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
 	$js["new_class"] = "top.we_cmd('new_object');";
 }
-if(we_hasPerm("EDIT_SETTINGS")){
+if(permissionhandler::hasPerm("EDIT_SETTINGS")){
 	$js["preferences"] = "top.we_cmd('openPreferences');";
 }
 
@@ -118,7 +118,7 @@ foreach($shortcuts as $sctCol){
 							"width" => 34,
 							"height" => 34,
 							"border" => 0
-					))) . '</td>';
+				))) . '</td>';
 			$sSctOut .= '<td width="5">' . we_html_tools::getPixel(5, 1) . '</td>';
 			$sSctOut .= '<td valign="middle">' . we_html_element::htmlA(
 					array(
@@ -135,8 +135,8 @@ foreach($shortcuts as $sctCol){
 }
 
 $sc = new we_html_table(array(
-		"width" => "100%", "border" => 0, "cellpadding" => 0, "cellspacing" => 0
-		), 1, 1);
+	"width" => "100%", "border" => 0, "cellpadding" => 0, "cellspacing" => 0
+	), 1, 1);
 $sc->setCol(0, 0, array(
 	"align" => "center", "valign" => "top"
 	), $sSctOut);

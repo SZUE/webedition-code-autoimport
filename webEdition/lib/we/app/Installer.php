@@ -137,7 +137,7 @@ class we_app_Installer{
 			$appname = @we_app_Common::getManifestElement($source . "conf/manifest.xml", "/info/name");
 			if(!is_readable($source . 'conf/manifest.xml') || !$appname){
 				$this->_instance = null;
-			} else{
+			} else {
 				// $source is an installation directory
 				// -> use we_app_Installer_Local
 				include_once($classdir . 'Local.php');
@@ -160,7 +160,7 @@ class we_app_Installer{
 				$this->_instance = new $classname();
 				error_log("using application class $classname");
 				$this->_instance->_appname = $appname;
-			} else{
+			} else {
 				$this->_instance = null;
 			}
 		} else if(!empty($installer) && in_array($installer, $validInstallerClasses)){
@@ -170,10 +170,10 @@ class we_app_Installer{
 				$classname = 'we_app_Installer_' . $installer;
 				$this->_instance = new $classname();
 				error_log("using custom class $classname");
-			} else{
+			} else {
 				$this->_instance = null;
 			}
-		} else{
+		} else {
 			// treat as an application name try to install from Server
 			// -> use we_app_Installer_Server
 			include_once($classdir . 'Server.php');
@@ -188,7 +188,7 @@ class we_app_Installer{
 			include_once($classdir . 'Dummy.php');
 			$this->_instance = new we_app_Installer_Dummy();
 			error_log("no appropriate installer class found or invalid source $source.");
-		} else{
+		} else {
 			if(empty($this->_instance->_appname)){
 				$this->_instance->_appname = $source;
 			}
@@ -213,7 +213,7 @@ class we_app_Installer{
 			return "";
 		} else if(stristr(get_class($this), "we_app_Installer_")){
 			return str_replace("we_app_Installer_", "", get_class($this));
-		} else{
+		} else {
 			return false;
 		}
 	}
@@ -225,7 +225,7 @@ class we_app_Installer{
 	public function getInstance(){
 		if(is_null($this->_instance)){
 			return false;
-		} else{
+		} else {
 			return $this->_instance;
 		}
 	}
@@ -334,7 +334,7 @@ class we_app_Installer{
 		$filename = we_app_Common::getConfigElement("applicationpath") . $this->_appname . '/conf/toc.xml';
 		if(!is_readable(we_app_Common::getConfigElement("applicationpath") . $this->_appname . '/conf/toc.xml')){
 			return false;
-		} else{
+		} else {
 			$this->_files = simplexml_load_file($filename);
 		}
 		if(!$this->_preUninstall()){
@@ -361,7 +361,7 @@ class we_app_Installer{
 		if(!$this->_postUninstall()){
 			return false;
 		}
-		if(!$this->_executeHook("postUninstall")||!$this->_removeAppConfig()||!we_app_Common::rebuildAppTOC($this->_appname)){
+		if(!$this->_executeHook("postUninstall") || !$this->_removeAppConfig() || !we_app_Common::rebuildAppTOC($this->_appname)){
 			return false;
 		}
 	}
@@ -429,11 +429,11 @@ class we_app_Installer{
 					return false;
 				}
 				return we_util_File::extract($this->_tmpDir . $fileinfo["basename"]);
-			} else{
+			} else {
 				error_log("unsupported installation medium.");
 				return false;
 			}
-		} else{
+		} else {
 			error_log("could not find installation archive " . $source);
 			return false;
 		}
@@ -456,13 +456,13 @@ class we_app_Installer{
 		if(!is_readable($this->_tmpDir . "conf/manifest.xml")){
 			error_log("no manifest file found in installation files");
 			return false;
-		} else{
+		} else {
 			//$this->_appname = we_app_Common::getManifestElement($this->_tmpDir."/conf/manifest.xml","/info/name");
 			if(empty($this->_appname)){
 				error_log("could not read application name from manifest. aborting installation.");
 				$this->_appname = "";
 				return false;
-			} else{
+			} else {
 				if(we_app_Common::isInstalled($this->_appname)){
 					error_log("application is $appname already installed.");
 					return false;
@@ -482,7 +482,7 @@ class we_app_Installer{
 		foreach($this->_files->file as $entry){
 			if(is_readable($this->_tmpDir . $entry->source)){
 				error_log($entry->source . " found.");
-			} else{
+			} else {
 				error_log("ERROR: " . (string) $entry->source . " found.");
 				$filesNotFound++;
 			}
@@ -491,7 +491,7 @@ class we_app_Installer{
 		foreach($this->_files->sql as $entry){
 			if(is_readable($this->_tmpDir . $entry->source)){
 				error_log($entry->source . " found.");
-			} else{
+			} else {
 				error_log("ERROR: " . (string) $entry->source . " NOT found.");
 				$filesNotFound++;
 			}
@@ -514,7 +514,7 @@ class we_app_Installer{
 			if(!isset($entry->destination) || empty($entry->destination)){
 				$filesNotInstallable[] = $entry->source;
 				error_log("no destination directory specified for file " . $entry->source);
-			} else{
+			} else {
 				$srcinfo = pathinfo($entry->source);
 				$destDir = we_util_File::addTrailingSlash($_SERVER['DOCUMENT_ROOT'] . $entry->destination . $srcinfo["dirname"]);
 				$destFile = $srcinfo["basename"];
@@ -523,7 +523,7 @@ class we_app_Installer{
 					error_log("copying file " . $this->_tmpDir . $entry->source . " to " . $destDir . $destFile);
 					if(we_util_File::copyFile($this->_tmpDir . $entry->source, $destDir . $destFile)){
 						error_log("successfully moved file " . $destDir . $destFile . " to " . $entry->source);
-					} else{
+					} else {
 						error_log("FAILED moving file " . $destDir . $destFile . " to " . $entry->source);
 						$filesNotInstallable[] = (string) $entry->source;
 					}
@@ -532,7 +532,7 @@ class we_app_Installer{
 		}
 		if(!empty($filesNotInstallable)){
 			error_log("the following files could not be installed: " . print_r($filesNotInstallable, true));
-		} else{
+		} else {
 			error_log("all files were installed successfully.");
 		}
 
@@ -544,7 +544,7 @@ class we_app_Installer{
 			if(!isset($entry->destination) || empty($entry->destination)){
 				$filesNotInstallable[] = $entry->source;
 				error_log("no destination directory specified for file " . $entry->source);
-			} else{
+			} else {
 				$srcinfo = pathinfo($entry->source);
 				$destDir = we_util_File::addTrailingSlash($entry->destination . $srcinfo["dirname"]);
 				$destFile = $srcinfo["basename"];
@@ -553,7 +553,7 @@ class we_app_Installer{
 					error_log("copying file " . $this->_tmpDir . $entry->source . " to " . $destDir . $destFile);
 					if(we_util_File::copyFile($this->_tmpDir . $entry->source, $destDir . $destFile)){
 						error_log("successfully moved file " . $destDir . $destFile . " to " . $entry->source);
-					} else{
+					} else {
 						error_log("FAILED moving file " . $destDir . $destFile . " to " . $entry->source);
 						$filesNotInstallable[] = (string) $entry->source;
 					}
@@ -562,7 +562,7 @@ class we_app_Installer{
 		}
 		if(!empty($filesNotInstallable)){
 			error_log("the following files could not be installed: " . print_r($filesNotInstallable, true));
-		} else{
+		} else {
 			error_log("all files were installed successfully.");
 		}
 
@@ -574,7 +574,7 @@ class we_app_Installer{
 		if(!@we_util_File::rmdirr(we_util_File::addTrailingSlash($this->_tmpDir))){
 			error_log("could not remove installation files from " . we_util_File::addTrailingSlash($this->_tmpDir));
 			return false;
-		} else{
+		} else {
 			error_log("installation files removed successfully.");
 			return true;
 		}
@@ -617,15 +617,15 @@ class we_app_Installer{
 				if(!$query = we_util_File::load($srcdir . $entry->source)){
 					error_log("ERROR: failed reading file " . $entry->source . ".");
 					$failedQueries[] = (string) $entry->source;
-				} else{
+				} else {
 					error_log("executing query " . $entry->source);
 					if(!we_app_Installer_Common::executeQuery($query)){
 						$failedQueries[] = (string) $entry->source;
-					} else{
+					} else {
 						error_log("... success.");
 					}
 				}
-			} else{
+			} else {
 				error_log("ERROR: " . $srcdir . $entry->source . " NOT found.");
 				$failedQueries[] = (string) $entry->source;
 			}
@@ -633,7 +633,7 @@ class we_app_Installer{
 
 		if(!empty($failedQueries)){
 			error_log("the following queries could not be executed: " . print_r($failedQueries, true));
-		} else{
+		} else {
 			error_log("all queries were executed successfully.");
 		}
 		return true;
@@ -657,7 +657,7 @@ class we_app_Installer{
 
 		if(!empty($filesNotRemovable)){
 			error_log("the following config files could not be removed: " . print_r($filesNotRemovable, true));
-		} else{
+		} else {
 			we_util_File::rmdirr(we_app_Common::getConfigElement("applicationpath") . $this->_appname . '/conf/', true);
 			error_log("all config files were removed successfully.");
 		}
@@ -721,7 +721,7 @@ class we_app_Installer{
 				if(!@unlink($applicationPath . $entry->source)){
 					error_log("ERROR: could not delete sql file $entry->source");
 					$applicationPath[] = $entry->source;
-				} else{
+				} else {
 					error_log("sql file $entry->source successfully deleted.");
 				}
 			}
@@ -735,7 +735,7 @@ class we_app_Installer{
 		}
 		if(!empty($filesNotRemovable)){
 			error_log("the following files could not be removed: " . print_r($filesNotRemovable, true));
-		} else{
+		} else {
 			error_log("all files were removed successfully.");
 		}
 		return true;

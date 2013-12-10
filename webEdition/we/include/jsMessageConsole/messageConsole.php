@@ -29,10 +29,10 @@ we_html_tools::htmlTop(g_l('messageConsole', '[headline]'));
 print STYLESHEET;
 
 
-$deleteAllButton = we_button::create_button("delete", "javascript:messageConsoleWindow.removeMessages();");
-$closeButton = we_button::create_button("close", "javascript:window.close();");
+$deleteAllButton = we_html_button::create_button("delete", "javascript:messageConsoleWindow.removeMessages();");
+$closeButton = we_html_button::create_button("close", "javascript:window.close();");
 
-$_buttons = we_button::position_yes_no_cancel($deleteAllButton, null, $closeButton);
+$_buttons = we_html_button::position_yes_no_cancel($deleteAllButton, null, $closeButton);
 ?>
 <style type="text/css">
 	#jsMessageUl {
