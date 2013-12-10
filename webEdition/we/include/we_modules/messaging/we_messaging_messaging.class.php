@@ -93,18 +93,10 @@ class we_messaging_messaging extends we_class{
 	}
 
 	function add_msgobj($objname, $recover = 0){
-
-		$inc_files = array("we_message" => WE_MESSAGING_MODULE_PATH . "we_message.inc.php",
-			"we_todo" => WE_MESSAGING_MODULE_PATH . "we_todo.inc.php",
-			"we_msg_email" => WE_MESSAGING_MODULE_PATH . "we_msg_email.inc.php");
-
 		if(in_array($objname, array_keys($this->send_msgobjs))){
 			return 0;
 		}
 
-		if(!isset($inc_files[$objname])){
-			return -1;
-		}
 		switch($objname){
 			case 'we_message':
 				$c = new we_messaging_message();
@@ -117,6 +109,7 @@ class we_messaging_messaging extends we_class{
 				break;
 			default:
 				t_e('error', 'unkown type', $objname);
+				return -1;
 		}
 
 		$c->set_login_data($this->userid, $this->username);
