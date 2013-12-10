@@ -39,13 +39,13 @@ function we_tag_condition($attribs){
 			if($GLOBALS['we_lv_conditionCount'] == 1){
 				$GLOBALS['we_lv_conditionName'] = $name;
 				$GLOBALS[$GLOBALS['we_lv_conditionName']] = '(';
-			} else{
+			} else {
 				$GLOBALS[$GLOBALS['we_lv_conditionName']] .= '(';
 			}
 			break;
 		case 'stop':
 			$GLOBALS[$GLOBALS['we_lv_conditionName']] .= ')';
-			$GLOBALS['we_lv_conditionCount']--;
+			$GLOBALS['we_lv_conditionCount'] --;
 			break;
 	}
 	return '';

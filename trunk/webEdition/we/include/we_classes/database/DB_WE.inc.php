@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,12 +22,11 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_db_tools.inc.php');
 
 // Database wrapper class of webEdition
-if (!defined('DB_CONNECT')){
-	define('DB_CONNECT','undefined in we_conf');
+if(!defined('DB_CONNECT')){
+	define('DB_CONNECT', 'undefined in we_conf');
 }
 switch(DB_CONNECT){
 	case 'connect':
@@ -36,11 +36,14 @@ switch(DB_CONNECT){
 	case 'mysqli_connect':
 	case 'mysqli_pconnect':
 		require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/database/we_database_mysqli.class.php');
-		if(!defined('MYSQL_BOTH')) define('MYSQL_BOTH',MYSQLI_BOTH);
-		if(!defined('MYSQL_ASSOC')) define('MYSQL_ASSOC',MYSQLI_ASSOC);
-		if(!defined('MYSQL_NUM')) define('MYSQL_NUM',MYSQLI_NUM);
+		if(!defined('MYSQL_BOTH'))
+			define('MYSQL_BOTH', MYSQLI_BOTH);
+		if(!defined('MYSQL_ASSOC'))
+			define('MYSQL_ASSOC', MYSQLI_ASSOC);
+		if(!defined('MYSQL_NUM'))
+			define('MYSQL_NUM', MYSQLI_NUM);
 		break;
 	default:
-		echo 'unknown DB connection type "'.DB_CONNECT."\"\n";
+		echo 'unknown DB connection type "' . DB_CONNECT . "\"\n";
 		die('unknown DB connection type');
 }

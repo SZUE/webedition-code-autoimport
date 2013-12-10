@@ -42,4 +42,3 @@ class weTagData_textAttribute extends weTagDataAttribute{
 	}
 
 }
-

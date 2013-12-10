@@ -3,9 +3,9 @@
 /**
  * webEdition CMS
  *
- * $Rev: 6749 $
- * $Author: mokraemer $
- * $Date: 2013-10-08 11:11:15 +0200 (Di, 08 Okt 2013) $
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -42,7 +42,6 @@ function init(){
 	_oCsv_=opener.gel(_sObjId+'_csv')
 	_sInitCsv_=_oCsv_.value;
 	_oSctDate=_fo.elements['sct_date'];
-	_oRevenueTarget = _fo.elements['revenueTarget'];
 	_fo.elements['revenueTarget'].value=_sInitNum;
 	initPrefs();
 	//alert('form: ' + _fo.name);
@@ -65,7 +64,7 @@ function getCsv(){
 
 function refresh(bRender){
 	if(bRender)_sLastPreviewCsv=getCsv();
-	opener.rpc(getBinary('type'),_oSctDate.selectedIndex,_oRevenueTarget.value,'','',_sObjId,_sShpInc);
+	opener.rpc(getBinary('type'),_oSctDate.selectedIndex,_sObjId,_sShpInc);
 }
 
 function save(){
@@ -106,7 +105,7 @@ function preview(){
 
 function exit_close(){
 	if(_bPrev&&_sInitCsv_!=_sLastPreviewCsv){
-		var aCsv=_sInitCsv_.split(';');//there are no aCsv[3],aCsv[4]: maybe set '' instead?
+		var aCsv=_sInitCsv_.split(';');
 		opener.rpc(aCsv[0],aCsv[1],aCsv[2],aCsv[3],aCsv[4],_sObjId,_sShpInc);
 	}
 	exitPrefs();
@@ -116,30 +115,30 @@ function exit_close(){
 ";
 
 // Typ block
-while(strlen($sType) < 4) {
+while(strlen($sType) < 4){
 	$sType .= "0";
 }
 if($sType{0} == "0" && $sType{1} == "0" && $sType{2} == "0" && $sType{3} == "0"){
 	$sType = "1111";
 }
 
-if(defined("CUSTOMER_TABLE") && we_hasPerm("CAN_SEE_CUSTOMER")){
-	$oChbxCustomer = we_forms::checkbox(
-			$value = 0, $checked = $sType{1}, $name = "chbx_type", $text = g_l('cockpit','[shop_dashboard][cnt_new_customer]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined("CUSTOMER_TABLE") && we_hasPerm('CAN_SEE_CUSTOMER')), $description = "", $type = 0, $width = 0);
-} else{
+if(defined("CUSTOMER_TABLE") && permissionhandler::hasPerm("CAN_SEE_CUSTOMER")){
+	$oChbxCustomer = we_html_forms::checkbox(
+			$value = 0, $checked = $sType{1}, $name = "chbx_type", $text = g_l('cockpit', '[shop_dashboard][cnt_new_customer]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined("CUSTOMER_TABLE") && permissionhandler::hasPerm('CAN_SEE_CUSTOMER')), $description = "", $type = 0, $width = 0);
+} else {
 	$oChbxCustomer = "";
 }
 
-if(defined("WE_SHOP_MODULE_DIR") && we_hasPerm("CAN_SEE_SHOP")){
-	$oChbxOrders = we_forms::checkbox(
-			$value = 0, $checked = $sType{0}, $name = "chbx_type", $text = g_l('cockpit','[shop_dashboard][cnt_order]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined('WE_SHOP_MODULE_DIR') && we_hasPerm("CAN_SEE_SHOP")), $description = "", $type = 0, $width = 0);
-	$oChbxAverageOrder = we_forms::checkbox(
-			$value = 0, $checked = $sType{2}, $name = "chbx_type", $text = g_l('cockpit','[shop_dashboard][revenue]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined("WE_SHOP_MODULE_DIR") && we_hasPerm('CAN_SEE_SHOP')), $description = "", $type = 0, $width = 0);
-	$oChbxTarget = we_forms::checkbox(
-			$value = 0, $checked = $sType{3}, $name = "chbx_type", $text = g_l('cockpit','[shop_dashboard][revenue_target]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined("WE_SHOP_MODULE_DIR") && we_hasPerm('CAN_SEE_SHOP')), $description = "", $type = 0, $width = 0);
-			
-	//$revenueTarget = we_forms::textinput($value = "",$name = "input_revenueTarget", $text = "Umsatzziel", $uniqid = true, $class = "defaultfont",$onClick = "", $disabled = !(defined("WE_SHOP_MODULE_DIR") && we_hasPerm('CAN_SEE_SHOP'), $description = "", $type = 0, $width = 255);
-} else{
+if(defined("WE_SHOP_MODULE_DIR") && permissionhandler::hasPerm("CAN_SEE_SHOP")){
+	$oChbxOrders = we_html_forms::checkbox(
+			$value = 0, $checked = $sType{0}, $name = "chbx_type", $text = g_l('cockpit', '[shop_dashboard][cnt_order]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined('WE_SHOP_MODULE_DIR') && permissionhandler::hasPerm("CAN_SEE_SHOP")), $description = "", $type = 0, $width = 0);
+	$oChbxAverageOrder = we_html_forms::checkbox(
+			$value = 0, $checked = $sType{2}, $name = "chbx_type", $text = g_l('cockpit', '[shop_dashboard][revenue_order]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined("WE_SHOP_MODULE_DIR") && permissionhandler::hasPerm('CAN_SEE_SHOP')), $description = "", $type = 0, $width = 0);
+	$oChbxTarget = we_html_forms::checkbox(
+			$value = 0, $checked = $sType{3}, $name = "chbx_type", $text = g_l('cockpit', '[shop_dashboard][revenue_target]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined("WE_SHOP_MODULE_DIR") && permissionhandler::hasPerm('CAN_SEE_SHOP')), $description = "", $type = 0, $width = 0);
+
+	//$revenueTarget = we_forms::textinput($value = "",$name = "input_revenueTarget", $text = "Umsatzziel", $uniqid = true, $class = "defaultfont",$onClick = "", $disabled = !(defined("WE_SHOP_MODULE_DIR") && permissionhandler::hasPerm('CAN_SEE_SHOP'), $description = "", $type = 0, $width = 255);
+} else {
 	$oChbxOrders = "";
 	$oChbxAverageOrder = "";
 	$oChbxTarget = "";
@@ -153,7 +152,7 @@ $oDbTableType->setCol(0, 1, null, we_html_tools::getPixel(10, 1));
 $oDbTableType->setCol(0, 2, null, $oChbxAverageOrder . $oChbxTarget);
 //$oDbTableType->setCol(0, 3, null, $revenueTarget);
 
-$divContent = we_html_element::htmlDiv(array("style" => "display:block;"),we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($name = "revenueTarget", $size = 55, $value = $sRevenueTarget, $maxlength = 255, $attribs = "", $type = "text", $width = 100, $height = 0)."&nbsp;&euro;", '', "left", "defaultfont"));
+$divContent = we_html_element::htmlDiv(array("style" => "display:block;"), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($name = "revenueTarget", $size = 55, $value = $sRevenueTarget, $maxlength = 255, $attribs = "", $type = "text", $width = 100, $height = 0) . "&nbsp;&euro;", '', "left", "defaultfont"));
 
 $oSctDate = new we_html_select(array(
 	"name" => "sct_date", "size" => 1, "class" => "defaultfont", "onChange" => ""
@@ -187,12 +186,12 @@ $parts = array(
 	)
 );
 
-$save_button = we_button::create_button("save", "javascript:save();", false, -1, -1);
-$preview_button = we_button::create_button("preview", "javascript:preview();", false, -1, -1);
-$cancel_button = we_button::create_button("close", "javascript:exit_close();");
-$buttons = we_button::position_yes_no_cancel($save_button, $preview_button, $cancel_button);
+$save_button = we_html_button::create_button("save", "javascript:save();", false, 0, 0);
+$preview_button = we_html_button::create_button("preview", "javascript:preview();", false, 0, 0);
+$cancel_button = we_html_button::create_button("close", "javascript:exit_close();");
+$buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button, $cancel_button);
 
-$sTblWidget = we_multiIconBox::getHTML(
+$sTblWidget = we_html_multiIconBox::getHTML(
 		"shpProps", "100%", $parts, 30, $buttons, -1, "", "", "", "Shop", "", 390);
 
 print we_html_element::htmlDocType() . we_html_element::htmlHtml(
@@ -200,7 +199,7 @@ print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 			we_html_tools::getHtmlInnerHead(g_l('cockpit', '[shop_dashboard][headline]')) . STYLESHEET . we_html_element::cssElement(
 				"select{border:#AAAAAA solid 1px}") . we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
 			we_html_element::jsElement(
-				$jsPrefs . $jsCode . we_button::create_state_changer(false))) . we_html_element::htmlBody(
+				$jsPrefs . $jsCode . we_html_button::create_state_changer(false))) . we_html_element::htmlBody(
 			array(
 			"class" => "weDialogBody", "onload" => "init();"
 			), we_html_element::htmlForm("", $sTblWidget)));

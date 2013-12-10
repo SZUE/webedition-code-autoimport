@@ -34,7 +34,7 @@ if(!(isset($_REQUEST['we_dialog_args']) &&
 }
 $noInternals = $noInternals || !isset($_SESSION['user']) || !isset($_SESSION['user']['Username']) || $_SESSION['user']['Username'] == '';
 
-$dialog = new weHyperlinkDialog('', '', 0, 0, $noInternals);
+$dialog = new we_dialog_Hyperlink('', '', 0, 0, $noInternals);
 $dialog->initByHttp();
 $dialog->registerCmdFn('weDoLinkCmd');
 print $dialog->getHTML();
@@ -81,7 +81,7 @@ top.close();
 			$args['class'] = $tmpClass;
 		}
 
-		return weDialog::getTinyMceJS() .
+		return we_dialog_base::getTinyMceJS() .
 			we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/welink/js/welink_insert.js') .
 			'<form name="tiny_form">
 			<input type="hidden" name="href" value="' . $href . '">

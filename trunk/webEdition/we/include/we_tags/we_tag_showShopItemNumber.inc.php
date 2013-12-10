@@ -65,7 +65,7 @@ function we_tag_showShopItemNumber($attribs){
 		$attr['xml'] = $xml;
 
 		$out = '';
-		while($start <= $stop) {
+		while($start <= $stop){
 			$out .= ($itemQuantity == $start ?
 					getHtmlTag('option', array('xml' => $xml, 'value' => $start, 'selected' => 'selected'), $start) :
 					getHtmlTag('option', array('xml' => $xml, 'value' => $start), $start));
@@ -77,7 +77,7 @@ function we_tag_showShopItemNumber($attribs){
 		$itemQuantity = ($floatquantities ? we_util_Strings::formatNumber($itemQuantity, $num_format, 2) : intval($itemQuantity));
 		$attr = array_merge($attr, array('type' => 'text', 'name' => 'shop_cart_id[' . $GLOBALS['lv']->ShoppingCartKey . ']', 'size' => 2, 'value' => $itemQuantity));
 		return getHtmlTag('input', $attr) . getHtmlTag('input', array('type' => 'hidden', 'name' => 't', 'value' => time()));
-	} else{
+	} else {
 		return ($floatquantities ? we_util_Strings::formatNumber($itemQuantity, $num_format, 2) : intval($itemQuantity));
 	}
 }

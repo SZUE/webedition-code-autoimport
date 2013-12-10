@@ -23,10 +23,11 @@ class we_updater{
 
 	static function replayUpdateDB(){
 		include_once(WEBEDITION_PATH . 'liveUpdate/conf/conf.inc.php');
+		include_once(WEBEDITION_PATH . 'liveUpdate/classes/liveUpdateFunctions.class.php');
 		$lf = new liveUpdateFunctions();
 		$GLOBALS['we']['errorhandler']['sql'] = false;
 		$d = dir(LIVEUPDATE_CLIENT_DOCUMENT_DIR . 'sqldumps');
-		while(false !== ($entry = $d->read())) {
+		while(false !== ($entry = $d->read())){
 			if(substr($entry, -4) == '.sql'){
 				$lf->executeQueriesInFiles(LIVEUPDATE_CLIENT_DOCUMENT_DIR . 'sqldumps/' . $entry);
 			}
@@ -46,7 +47,7 @@ class we_updater{
 
 		if(!empty($tables)){
 			$DB_WE->query('SELECT * FROM ' . TBL_PREFIX . 'tblOwner');
-			while($DB_WE->next_record()) {
+			while($DB_WE->next_record()){
 				$table = $DB_WE->f('DocumentTable');
 				if($table == TEMPLATES_TABLE || $table == FILE_TABLE){
 					$id = $DB_WE->f('fileID');
@@ -89,42 +90,42 @@ class we_updater{
 
 			$GLOBALS['DB_WE']->query('DELETE FROM ' . PREFS_TABLE . ' WHERE `key`=""');
 			foreach($queries as $q){
-				we_user::writePrefs($q['userID'], $GLOBALS['DB_WE'], $q);
+				we_users_user::writePrefs($q['userID'], $GLOBALS['DB_WE'], $q);
 			}
 		}
 	}
 
 	static function convertPerms(){
-/* don't use, this will damage new Permission entries
- * 		global $DB_WE;
-		$db_tmp = new DB_WE();
-		$DB_WE->query('SELECT ID,username,Permissions FROM ' . USER_TABLE . ' WHERE Permissions NOT LIKE "%ADMINISTRATOR%"');
-		while($DB_WE->next_record()) {
-			$perms_slot = array();
-			$pstr = $DB_WE->f("Permissions");
-			$perms_slot["ADMINISTRATOR"] = $pstr[0];
-			$perms_slot["PUBLISH"] = $pstr[1];
-			if(!empty($perms_slot)){
-				$db_tmp->query('UPDATE ' . USER_TABLE . " SET Permissions='" . $db_tmp->escape(serialize($perms_slot)) . "' WHERE ID=" . intval($DB_WE->f("ID")));
-			}
-		}*/
+		/* don't use, this will damage new Permission entries
+		 * 		global $DB_WE;
+		  $db_tmp = new DB_WE();
+		  $DB_WE->query('SELECT ID,username,Permissions FROM ' . USER_TABLE . ' WHERE Permissions NOT LIKE "%ADMINISTRATOR%"');
+		  while($DB_WE->next_record()){
+		  $perms_slot = array();
+		  $pstr = $DB_WE->f("Permissions");
+		  $perms_slot["ADMINISTRATOR"] = $pstr[0];
+		  $perms_slot["PUBLISH"] = $pstr[1];
+		  if(!empty($perms_slot)){
+		  $db_tmp->query('UPDATE ' . USER_TABLE . " SET Permissions='" . $db_tmp->escape(serialize($perms_slot)) . "' WHERE ID=" . intval($DB_WE->f("ID")));
+		  }
+		  } */
 	}
 
 	static function fix_path(){
 		$db = new DB_WE();
 		$db2 = new DB_WE();
 		$db->query('SELECT ID,username,ParentID,Path FROM ' . USER_TABLE);
-		while($db->next_record()) {
+		while($db->next_record()){
 			update_time_limit(30);
 			$id = $db->f('ID');
 			$pid = $db->f('ParentID');
 			$path = '/' . $db->f("username");
-			while($pid > 0) {
+			while($pid > 0){
 				$db2->query('SELECT username,ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($pid));
 				if($db2->next_record()){
 					$path = '/' . $db2->f("username") . $path;
 					$pid = $db2->f("ParentID");
-				} else{
+				} else {
 					$pid = 0;
 				}
 			}
@@ -136,9 +137,9 @@ class we_updater{
 
 	static function fix_icon(){
 		$db = new DB_WE();
-		$db->query('UPDATE ' . USER_TABLE . " SET Icon='user_alias.gif' WHERE Type=" . we_user::TYPE_ALIAS);
-		$db->query('UPDATE ' . USER_TABLE . " SET Icon='usergroup.gif' WHERE Type=" . we_user::TYPE_USER_GROUP);
-		$db->query('UPDATE ' . USER_TABLE . " SET Icon='user.gif' WHERE Type=" . we_user::TYPE_USER);
+		$db->query('UPDATE ' . USER_TABLE . " SET Icon='user_alias.gif' WHERE Type=" . we_users_user::TYPE_ALIAS);
+		$db->query('UPDATE ' . USER_TABLE . " SET Icon='usergroup.gif' WHERE Type=" . we_users_user::TYPE_USER_GROUP);
+		$db->query('UPDATE ' . USER_TABLE . " SET Icon='user.gif' WHERE Type=" . we_users_user::TYPE_USER);
 	}
 
 	static function fix_text(){
@@ -150,7 +151,7 @@ class we_updater{
 		global $DB_WE;
 		$DB_WE->query("SHOW COLUMNS FROM " . $DB_WE->escape($tab) . " LIKE '" . $DB_WE->escape($col) . "'");
 		$query = array();
-		while($DB_WE->next_record()) {
+		while($DB_WE->next_record()){
 			if($DB_WE->f('Key') == ''){
 				$query[] = 'ADD INDEX (' . $DB_WE->f('Field') . ')';
 			}
@@ -168,7 +169,7 @@ class we_updater{
 		self::fix_text();
 		self::fix_icon();
 
-		$DB_WE->query('UPDATE ' . USER_TABLE . " SET IsFolder=1 WHERE Type=" . we_user::TYPE_USER_GROUP);
+		$DB_WE->query('UPDATE ' . USER_TABLE . " SET IsFolder=1 WHERE Type=" . we_users_user::TYPE_USER_GROUP);
 
 		self::fix_icon();
 		$GLOBALS['DB_WE']->query('SELECT userID FROM ' . PREFS_TABLE . ' WHERE `key`="Language" AND (value NOT LIKE "%_UTF-8%" OR value!="") AND userID IN (SELECT userID FROM ' . PREFS_TABLE . ' WHERE `key`="BackendCharset" AND value="")');
@@ -194,7 +195,7 @@ class we_updater{
 		if(!empty($users)){
 			$GLOBALS['DB_WE']->query('UPDATE ' . PREFS_TABLE . ' SET value="Deutsch" WHERE `key`="Language" AND userID IN (' . implode(',', $users) . ')');
 		}
-		$_SESSION['prefs'] = we_user::readPrefs($_SESSION['user']['ID'], $GLOBALS['DB_WE']);
+		$_SESSION['prefs'] = we_users_user::readPrefs($_SESSION['user']['ID'], $GLOBALS['DB_WE']);
 
 
 		return true;
@@ -221,32 +222,32 @@ class we_updater{
 				}
 				if($GLOBALS['DB_WE']->isColExist($_table, 'OF_Url')){
 					$GLOBALS['DB_WE']->changeColType($_table, 'OF_Url', 'VARCHAR(255) NOT NULL');
-				} else{
+				} else {
 					$GLOBALS['DB_WE']->addCol($_table, 'OF_Url', 'VARCHAR(255) NOT NULL', '  AFTER OF_Path  ');
 				}
 				if($GLOBALS['DB_WE']->isColExist($_table, 'OF_TriggerID')){
 					$GLOBALS['DB_WE']->changeColType($_table, 'OF_TriggerID', 'BIGINT(20) NOT NULL DEFAULT 0');
-				} else{
+				} else {
 					$GLOBALS['DB_WE']->addCol($_table, 'OF_TriggerID', 'BIGINT(20) NOT NULL DEFAULT 0', '  AFTER OF_Url  ');
 				}
 				if($GLOBALS['DB_WE']->isColExist($_table, 'OF_IsSearchable')){
 					$GLOBALS['DB_WE']->changeColType($_table, 'OF_IsSearchable', 'TINYINT(1) DEFAULT 1');
-				} else{
+				} else {
 					$GLOBALS['DB_WE']->addCol($_table, 'OF_IsSearchable', 'TINYINT(1) DEFAULT 1', ' AFTER OF_Published ');
 				}
 				if($GLOBALS['DB_WE']->isColExist($_table, 'OF_Charset')){
 					$GLOBALS['DB_WE']->changeColType($_table, 'OF_Charset', 'VARCHAR(64) NOT NULL');
-				} else{
+				} else {
 					$GLOBALS['DB_WE']->addCol($_table, 'OF_Charset', 'VARCHAR(64) NOT NULL', ' AFTER OF_IsSearchable ');
 				}
 				if($GLOBALS['DB_WE']->isColExist($_table, 'OF_WebUserID')){
 					$GLOBALS['DB_WE']->changeColType($_table, 'OF_WebUserID', 'BIGINT(20) NOT NULL');
-				} else{
+				} else {
 					$GLOBALS['DB_WE']->addCol($_table, 'OF_WebUserID', 'BIGINT(20) NOT NULL', ' AFTER OF_Charset ');
 				}
 				if($GLOBALS['DB_WE']->isColExist($_table, 'OF_Language')){
 					$GLOBALS['DB_WE']->changeColType($_table, 'OF_Language', 'VARCHAR(5) DEFAULT NULL');
-				} else{
+				} else {
 					$GLOBALS['DB_WE']->addCol($_table, 'OF_Language', 'VARCHAR(5) DEFAULT NULL', ' AFTER OF_WebUserID ');
 				}
 				//add indices to all objects
@@ -320,7 +321,7 @@ class we_updater{
 
 				// copy links from doctypes (to doctypes) back to tblLangLink only if LDID and Locale are consistent with Language in tblFile
 				$db->query("INSERT IGNORE INTO " . LANGLINK_TABLE . " SELECT tmpLangLink.* FROM tmpLangLink, " . DOC_TYPES_TABLE . " WHERE tmpLangLink.LDID = " . DOC_TYPES_TABLE . ".ID AND tmpLangLink.Locale = " . DOC_TYPES_TABLE . ".Language AND tmpLangLink.DocumentTable = 'tblDocTypes' ORDER BY tmpLangLink.ID DESC");
-			} else{
+			} else {
 				t_e('no rights to create temp-table');
 			}
 		}
@@ -373,7 +374,7 @@ class we_updater{
 	static function updateGlossar(){
 		//FIXME: remove after 7.0
 		foreach($GLOBALS['weFrontendLanguages'] as $lang){
-			$cache = new weGlossaryCache($lang);
+			$cache = new we_glossary_cache($lang);
 			$cache->write();
 		}
 	}

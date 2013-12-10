@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,7 +22,6 @@
  * @package    webEdition_toolfactory
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 $translate = we_core_Local::addTranslation('apps.xml');
 
 $dialog = new we_ui_dialog_YesNoCancelDialog();

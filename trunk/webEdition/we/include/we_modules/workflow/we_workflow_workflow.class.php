@@ -158,11 +158,7 @@ class we_workflow_workflow extends we_workflow_base{
 		$db = new DB_WE();
 
 		$db->query('SELECT ID,Text FROM ' . WORKFLOW_TABLE . ' WHERE Status IN (' . $status . ') AND Type IN (' . $type . ') ORDER BY Text');
-		$wfs = array();
-		while($db->next_record()){
-			$wfs[$db->f('ID')] = $db->f('Text');
-		}
-		return $wfs;
+		return $db->getAllFirst(false);
 	}
 
 	/**
@@ -247,7 +243,7 @@ class we_workflow_workflow extends we_workflow_base{
 			$db->query('SELECT ID FROM ' . WORKFLOW_TABLE . ' WHERE DocType LIKE \'%,' . $doctype . ',%\' AND Type=' . self::DOCTYPE_CATEGORY . ' AND Status=' . self::STATE_ACTIVE);
 			while($db->next_record()){
 				if(isset($wfIDs[$db->f('ID')])){
-					$wfIDs[$db->f('ID')]++;
+					$wfIDs[$db->f('ID')] ++;
 				} else {
 					$wfIDs[$db->f('ID')] = 1;
 				}
@@ -267,7 +263,7 @@ class we_workflow_workflow extends we_workflow_base{
 				}
 				while($db->next_record()){
 					if(isset($wfIDs[$db->f('ID')])){
-						$wfIDs[$db->f('ID')]++;
+						$wfIDs[$db->f('ID')] ++;
 					} else {
 						$wfIDs[$db->f('ID')] = 1;
 					}
@@ -315,7 +311,7 @@ class we_workflow_workflow extends we_workflow_base{
 		$db->query('SELECT ID FROM ' . WORKFLOW_TABLE . ' WHERE Objects LIKE "%,' . $db->escape($object) . ',%" AND Type=' . self::OBJECT . ' AND Status=' . self::STATE_ACTIVE . $tail);
 		while($db->next_record()){
 			if(isset($wfIDs[$db->f('ID')])){
-				$wfIDs[$db->f('ID')]++;
+				$wfIDs[$db->f('ID')] ++;
 			} else {
 				$wfIDs[$db->f('ID')] = 1;
 			}
@@ -330,7 +326,7 @@ class we_workflow_workflow extends we_workflow_base{
 				$db->query('SELECT ID FROM ' . WORKFLOW_TABLE . ' WHERE Objects LIKE "%,' . $db->escape($object) . ',%" AND ObjCategories LIKE "%,' . $db->escape($v) . ',%" AND Type=' . self::OBJECT . ' AND Status=' . self::STATE_ACTIVE);
 				while($db->next_record()){
 					if(isset($wfIDs[$db->f('ID')])){
-						$wfIDs[$db->f('ID')]++;
+						$wfIDs[$db->f('ID')] ++;
 					} else {
 						$wfIDs[$db->f('ID')] = 1;
 					}

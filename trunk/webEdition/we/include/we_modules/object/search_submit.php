@@ -57,7 +57,7 @@ switch($_REQUEST['todo']){
 			$we_doc->searchclass->objsearch = '';
 			$we_doc->searchclass->objsearchField = '';
 			$we_doc->searchclass->objlocation = '';
-		} else{
+		} else {
 			$we_doc->searchclass->removeFilter($_REQUEST['position']);
 		}
 

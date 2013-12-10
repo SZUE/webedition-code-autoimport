@@ -37,7 +37,7 @@ class weXMLImport extends weXMLExIm{
 		$objects = array();
 		$GLOBALS['isNewImport'] = version_compare(weBackupPreparer::getWeVersion($chunk_file, false), '6.3.3.1', '>');
 
-		$data = weFile::load($chunk_file);
+		$data = we_base_file::load($chunk_file);
 		$this->xmlBrowser = new weXMLParser();
 		$this->xmlBrowser->parse($data, $this->options['xml_encoding']);
 		unset($data);
@@ -434,7 +434,7 @@ class weXMLImport extends weXMLExIm{
 		return $object;
 	}
 
-	function isSerialized($str){
+	public static function isSerialized($str){
 		return ($str == serialize(false) || @unserialize($str) !== false);
 	}
 
@@ -445,7 +445,7 @@ class weXMLImport extends weXMLExIm{
 				if($value == $this->options['xml_encoding']){
 					return $this->options['target_encoding'];
 				}
-				if($this->isSerialized($value)){
+				if(self::isSerialized($value)){
 					$usv = unserialize($value);
 					if(is_array($usv)){
 						foreach($usv as &$av){
@@ -556,12 +556,12 @@ class weXMLImport extends weXMLExIm{
 		}
 
 		$path = $tmppath;
-		$marker = weBackup::backupMarker;
+		$marker = we_backup_backup::backupMarker;
 		$marker2 = "<!--webackup -->"; //Bug 5089
 		$pattern = basename($filename) . "_%s";
 
-		$compress = (weFile::isCompressed($filename) ? "gzip" : "none");
-		$head = weFile::loadPart($filename, 0, 256, $compress == 'gzip');
+		$compress = (we_base_file::isCompressed($filename) ? "gzip" : "none");
+		$head = we_base_file::loadPart($filename, 0, 256, $compress == 'gzip');
 
 		$encoding = we_xml_parser::getEncoding('', $head);
 		$_SESSION['weS']['weXMLimportCharset'] = $encoding;
@@ -593,7 +593,7 @@ class weXMLImport extends weXMLExIm{
 					}
 				}
 
-				if($open_new && $line && trim($line) != weBackup::weXmlExImFooter){
+				if($open_new && $line && trim($line) != we_backup_backup::weXmlExImFooter){
 					$num++;
 					$filename_tmp = sprintf($path . $pattern, $num);
 					$fh_temp = fopen($filename_tmp, "wb");
@@ -607,7 +607,7 @@ class weXMLImport extends weXMLExIm{
 				}
 
 				if(isset($fh_temp) && $fh_temp){
-					if((substr($line, 0, 2) != "<?") && (substr($line, 0, 11) != weBackup::weXmlExImHead) && (substr($line, 0, 12) != weBackup::weXmlExImFooter)){
+					if((substr($line, 0, 2) != "<?") && (substr($line, 0, 11) != we_backup_backup::weXmlExImHead) && (substr($line, 0, 12) != we_backup_backup::weXmlExImFooter)){
 
 						$buff.=$line;
 						$write = false;
@@ -633,7 +633,7 @@ class weXMLImport extends weXMLExIm{
 							$buff = "";
 						}
 					} else {
-						if(((substr($line, 0, 2) == "<?") || (substr($line, 0, 11) == weBackup::weXmlExImHead)) && $num == 0){
+						if(((substr($line, 0, 2) == "<?") || (substr($line, 0, 11) == we_backup_backup::weXmlExImHead)) && $num == 0){
 							$header.=$line;
 							fwrite($fh_temp, $line);
 						}
@@ -645,7 +645,7 @@ class weXMLImport extends weXMLExIm{
 		} else {
 			return -1;
 		}
-		if($fh_temp && trim($line) != weBackup::weXmlExImFooter){
+		if($fh_temp && trim($line) != we_backup_backup::weXmlExImFooter){
 			if($buff){
 				@fwrite($fh_temp, $buff);
 			}

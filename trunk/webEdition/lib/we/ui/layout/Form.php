@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition SDK
  *
@@ -19,7 +20,6 @@
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-
 /**
  * @see we_ui_abstract_AbstractFormElement
  */
@@ -33,14 +33,13 @@ Zend_Loader::loadClass('we_ui_abstract_AbstractFormElement');
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_ui_layout_Form extends we_ui_abstract_AbstractFormElement
-{
-
+class we_ui_layout_Form extends we_ui_abstract_AbstractFormElement{
 	/*
 	 * method attribute of the form
 	 *
 	 * @var string
 	 */
+
 	protected $_method = 'post';
 
 	/*
@@ -56,7 +55,6 @@ class we_ui_layout_Form extends we_ui_abstract_AbstractFormElement
 	 * @var string
 	 */
 	protected $_action = '';
-
 	protected $_enctype = '';
 
 	/*
@@ -72,8 +70,7 @@ class we_ui_layout_Form extends we_ui_abstract_AbstractFormElement
 	 * @param we_ui_abstract_AbstractElement $elem
 	 * @return void
 	 */
-	public function addElement($elem)
-	{
+	public function addElement($elem){
 		$this->addCSSFiles($elem->getCSSFiles());
 		$this->addJSFiles($elem->getJSFiles());
 		$this->_formHTML .= $elem->getHTML();
@@ -85,8 +82,7 @@ class we_ui_layout_Form extends we_ui_abstract_AbstractFormElement
 	 * @param string $html
 	 * @return void
 	 */
-	public function addHTML($html)
-	{
+	public function addHTML($html){
 		$this->_formHTML .= $html;
 	}
 
@@ -95,8 +91,7 @@ class we_ui_layout_Form extends we_ui_abstract_AbstractFormElement
 	 *
 	 * @return string
 	 */
-	protected function _renderHTML()
-	{
+	protected function _renderHTML(){
 		$attribs = $this->_enctype == "" ? 'id,name,method,onSubmit,action' : 'id,name,method,onSubmit,action,enctype';
 		return '<form' . $this->_getNonBooleanAttribs($attribs) . '>' . $this->_formHTML . '</form>';
 	}
@@ -106,8 +101,7 @@ class we_ui_layout_Form extends we_ui_abstract_AbstractFormElement
 	 *
 	 * @return string
 	 */
-	public function getAction()
-	{
+	public function getAction(){
 		return $this->_action;
 	}
 
@@ -116,8 +110,7 @@ class we_ui_layout_Form extends we_ui_abstract_AbstractFormElement
 	 *
 	 * @return string
 	 */
-	public function getMethod()
-	{
+	public function getMethod(){
 		return $this->_method;
 	}
 
@@ -126,8 +119,7 @@ class we_ui_layout_Form extends we_ui_abstract_AbstractFormElement
 	 *
 	 * @return string
 	 */
-	public function getOnSubmit()
-	{
+	public function getOnSubmit(){
 		return $this->_onSubmit;
 	}
 
@@ -137,8 +129,7 @@ class we_ui_layout_Form extends we_ui_abstract_AbstractFormElement
 	 * @param string $action
 	 * @return void
 	 */
-	public function setAction($action)
-	{
+	public function setAction($action){
 		$this->_action = $action;
 	}
 
@@ -148,8 +139,7 @@ class we_ui_layout_Form extends we_ui_abstract_AbstractFormElement
 	 * @param string $method
 	 * @return void
 	 */
-	public function setMethod($method)
-	{
+	public function setMethod($method){
 		$this->_method = $method;
 	}
 
@@ -159,13 +149,11 @@ class we_ui_layout_Form extends we_ui_abstract_AbstractFormElement
 	 * @param string $onSubmit
 	 * @return void
 	 */
-	public function setOnSubmit($onSubmit)
-	{
+	public function setOnSubmit($onSubmit){
 		$this->_onSubmit = $onSubmit;
 	}
 
-	public function setEnctype($val)
-	{
+	public function setEnctype($val){
 		$this->_enctype = $val;
 	}
 
@@ -177,11 +165,10 @@ class we_ui_layout_Form extends we_ui_abstract_AbstractFormElement
 	 * @param string $attribs
 	 * @return void
 	 */
-	static function hidden($name, $value, $attribs = null)
-	{
+	static function hidden($name, $value, $attribs = null){
 		$attributs = "";
-		if (isset($attribs) && is_array($attribs)) {
-			foreach ($attribs as $key => $val) {
+		if(isset($attribs) && is_array($attribs)){
+			foreach($attribs as $key => $val){
 				$attributs .= $key . '="' . oldHtmlspecialchars($val) . '" ';
 			}
 		}

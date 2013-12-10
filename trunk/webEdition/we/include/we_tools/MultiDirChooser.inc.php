@@ -70,7 +70,7 @@ class MultiDirChooser{
 	<td><img src="' . ICON_DIR . $this->Record[$this->fieldsArr[0]] . '" width="16" height="18" /></td>
 	<td class="' . $this->css . '">' . $this->Record[$this->fieldsArr[1]] . '</td>
 	<td>' . ((($this->isEditable() && $this->cmd_del) || $this->CanDelete) ?
-						we_button::create_button('image:btn_function_trash', "javascript:if(typeof(_EditorFrame)!='undefined'){_EditorFrame.setEditorIsHot(true);}" . ($this->extraDelFn ? $this->extraDelFn : "") . ";we_cmd('" . $this->cmd_del . "','" . $this->Record["ID"] . "'" . (strlen($this->thirdDelPar) ? ",'" . $this->thirdDelPar . "'" : "") . ");") :
+						we_html_button::create_button('image:btn_function_trash', "javascript:if(typeof(_EditorFrame)!='undefined'){_EditorFrame.setEditorIsHot(true);}" . ($this->extraDelFn ? $this->extraDelFn : "") . ";we_cmd('" . $this->cmd_del . "','" . $this->Record["ID"] . "'" . (strlen($this->thirdDelPar) ? ",'" . $this->thirdDelPar . "'" : "") . ");") :
 						'') . '</td>
 </tr>';
 		}
@@ -83,7 +83,7 @@ class MultiDirChooser{
 	<td><img src="' . ICON_DIR . we_base_ContentTypes::FOLDER_ICON . '" width="16" height="18" /></td>
 	<td class="' . $this->css . '">/</td>
 	<td>' . ((($this->isEditable() && $this->cmd_del) || $this->CanDelete) ?
-						we_button::create_button("image:btn_function_trash", "javascript:if(typeof(_EditorFrame)!='undefined'){_EditorFrame.setEditorIsHot(true);}" . ($this->extraDelFn ? $this->extraDelFn : "") . ";we_cmd('" . $this->cmd_del . "','0');") :
+						we_html_button::create_button("image:btn_function_trash", "javascript:if(typeof(_EditorFrame)!='undefined'){_EditorFrame.setEditorIsHot(true);}" . ($this->extraDelFn ? $this->extraDelFn : "") . ";we_cmd('" . $this->cmd_del . "','0');") :
 						'') . '</td>
 </tr>';
 		}
@@ -92,15 +92,15 @@ class MultiDirChooser{
 	function isEditable(){
 		return $this->isEditable;
 
-		/*if($this->isEditable == false){
-			return false;
-		}
-		if($this->ws){
-			if(!in_workspace($this->Record["ID"], $this->ws, $this->table, $this->db)){
-				return false;
-			}
-		}
-		return true;*/
+		/* if($this->isEditable == false){
+		  return false;
+		  }
+		  if($this->ws){
+		  if(!in_workspace($this->Record["ID"], $this->ws, $this->table, $this->db)){
+		  return false;
+		  }
+		  }
+		  return true; */
 	}
 
 	function get(){
@@ -111,7 +111,7 @@ class MultiDirChooser{
 		$idArr = makeArrayFromCSV($this->ids);
 
 		foreach($idArr as $id){
-			$this->Record=  getHash('SELECT ID,' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($id),$this->db);
+			$this->Record = getHash('SELECT ID,' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($id), $this->db);
 			if(!empty($this->Record)){
 				for($i = 0; $i < $this->lines; $i++){
 					$out .= $this->getLine($i);

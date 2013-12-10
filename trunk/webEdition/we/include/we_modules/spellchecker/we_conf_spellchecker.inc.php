@@ -26,4 +26,3 @@ define('SPELLCHECKER', 1);
 
 define('WE_SPELLCHECKER_MODULE_DIR', WE_MODULES_DIR . 'spellchecker/');
 define('WE_SPELLCHECKER_MODULE_PATH', WE_MODULES_PATH . 'spellchecker/');
-

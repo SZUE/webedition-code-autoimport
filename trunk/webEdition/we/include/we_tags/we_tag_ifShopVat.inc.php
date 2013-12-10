@@ -35,7 +35,7 @@ function we_tag_ifShopVat($attribs){
 
 
 	if(!$vatId){
-		$shopVat = weShopVats::getStandardShopVat();
+		$shopVat = we_shop_vats::getStandardShopVat();
 		if($shopVat){
 			$vatId = $shopVat->id;
 		}

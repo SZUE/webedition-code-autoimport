@@ -101,12 +101,12 @@ class we_ui_layout_Table extends we_ui_abstract_AbstractElement{
 
 		if($column == -1){
 			$column = $this->_column;
-		} else{
+		} else {
 			$this->_column = $column;
 		}
 		if($row == -1){
 			$row = $this->_row;
-		} else{
+		} else {
 			$this->_row = $row;
 		}
 		if(!isset($this->_cellHTML[$row])){
@@ -114,7 +114,7 @@ class we_ui_layout_Table extends we_ui_abstract_AbstractElement{
 		}
 		if(!isset($this->_cellHTML[$row][$column])){
 			$this->_cellHTML[$row][$column] = $elem->getHTML();
-		} else{
+		} else {
 			$this->_cellHTML[$row][$column] .= $elem->getHTML();
 		}
 	}
@@ -133,12 +133,12 @@ class we_ui_layout_Table extends we_ui_abstract_AbstractElement{
 	public function addHTML($html, $column = -1, $row = -1){
 		if($column == -1){
 			$column = $this->_column;
-		} else{
+		} else {
 			$this->_column = $column;
 		}
 		if($row == -1){
 			$row = $this->_row;
-		} else{
+		} else {
 			$this->_row = $row;
 		}
 		if(!isset($this->_cellHTML[$row])){
@@ -146,7 +146,7 @@ class we_ui_layout_Table extends we_ui_abstract_AbstractElement{
 		}
 		if(!isset($this->_cellHTML[$row][$column])){
 			$this->_cellHTML[$row][$column] = $html;
-		} else{
+		} else {
 			$this->_cellHTML[$row][$column] .= $html;
 		}
 	}
@@ -165,12 +165,12 @@ class we_ui_layout_Table extends we_ui_abstract_AbstractElement{
 	public function setCellAttributes($attributes, $column = -1, $row = -1){
 		if($column == -1){
 			$column = $this->_column;
-		} else{
+		} else {
 			$this->_column = $column;
 		}
 		if($row == -1){
 			$row = $this->_row;
-		} else{
+		} else {
 			$this->_row = $row;
 		}
 		if(!isset($this->_cellAttributes[$row])){
@@ -178,7 +178,7 @@ class we_ui_layout_Table extends we_ui_abstract_AbstractElement{
 		}
 		if(!isset($this->_cellAttributes[$row][$column])){
 			$this->_cellAttributes[$row][$column] = $attributes;
-		} else{
+		} else {
 			$this->_cellAttributes[$row][$column] = array_merge($this->_cellAttributes[$row][$column], $attributes);
 		}
 	}
@@ -294,14 +294,14 @@ class we_ui_layout_Table extends we_ui_abstract_AbstractElement{
 							$attribs['valign'] = 'top';
 						}
 						$html .= we_xml_Tags::createStartTag('td', $attribs);
-					} else{
+					} else {
 						$html .= '<td valign="top">';
 					}
 					if(isset($this->_cellHTML[$row][$col])){
 						$html .= $this->_cellHTML[$row][$col];
 					}
 					$html .= '</td>';
-				} else{
+				} else {
 					$colspan--;
 				}
 			}

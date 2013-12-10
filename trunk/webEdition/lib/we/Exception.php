@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition SDK
  *
@@ -10,15 +11,13 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  * @category   we
  * @package   we
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
- */ 
-
-
+ */
 /**
  * @see Zend_Exception
  */
@@ -26,18 +25,19 @@ Zend_Loader::loadClass('Zend_Exception');
 
 /**
  * class for exceptions
- * 
+ *
  * @category   we
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_Exception extends Zend_Exception
-{
+class we_Exception extends Zend_Exception{
+
 	/**
 	 * write exception into errorlog
-	 * 
+	 *
 	 * @return void
 	 */
-	public function __construct() {
-		we_util_Log::errorLog("webEdition exception '".get_class($this)."' in ".$this->getFile().":".$this->getLine()."\nStack trace;\n".$this->getTraceAsString());
+	public function __construct(){
+		we_util_Log::errorLog("webEdition exception '" . get_class($this) . "' in " . $this->getFile() . ":" . $this->getLine() . "\nStack trace;\n" . $this->getTraceAsString());
 	}
+
 }

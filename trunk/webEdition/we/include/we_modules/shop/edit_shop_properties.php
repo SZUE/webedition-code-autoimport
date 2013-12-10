@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -26,5 +27,5 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 print STYLESHEET;
 
-$weView = new weShopView();
+$weView = new we_shop_view();
 $weView->getProperties();

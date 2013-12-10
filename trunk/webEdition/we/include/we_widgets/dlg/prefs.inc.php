@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 $jsPrefs = "
 var _sObjId='" . $_REQUEST['we_cmd'][0] . "';
 var _sCls_=opener.gel(_sObjId+'_cls').value;
@@ -58,25 +58,24 @@ function exitPrefs(){
 ";
 
 $oSctCls = new we_html_select(
-		array(
-
-				"name" => "sct_cls",
-				"size" => 1,
-				"class" => "defaultfont",
-				"style" => "width:120px;border:#AAAAAA solid 1px"
-		));
-$oSctCls->insertOption(0, "white", g_l('cockpit','[white]'));
-$oSctCls->insertOption(1, "lightCyan", g_l('cockpit','[lightcyan]'));
-$oSctCls->insertOption(2, "blue", g_l('cockpit','[blue]'));
-$oSctCls->insertOption(3, "green", g_l('cockpit','[green]'));
-$oSctCls->insertOption(4, "orange", g_l('cockpit','[orange]'));
-$oSctCls->insertOption(5, "yellow", g_l('cockpit','[yellow]'));
-$oSctCls->insertOption(6, "red", g_l('cockpit','[red]'));
+	array(
+	"name" => "sct_cls",
+	"size" => 1,
+	"class" => "defaultfont",
+	"style" => "width:120px;border:#AAAAAA solid 1px"
+	));
+$oSctCls->insertOption(0, "white", g_l('cockpit', '[white]'));
+$oSctCls->insertOption(1, "lightCyan", g_l('cockpit', '[lightcyan]'));
+$oSctCls->insertOption(2, "blue", g_l('cockpit', '[blue]'));
+$oSctCls->insertOption(3, "green", g_l('cockpit', '[green]'));
+$oSctCls->insertOption(4, "orange", g_l('cockpit', '[orange]'));
+$oSctCls->insertOption(5, "yellow", g_l('cockpit', '[yellow]'));
+$oSctCls->insertOption(6, "red", g_l('cockpit', '[red]'));
 
 $oSelCls = new we_html_table(array(
 	"cellpadding" => 0, "cellspacing" => 0, "border" => 0
-), 1, 2);
+	), 1, 2);
 $oSelCls->setCol(0, 0, array(
 	"width" => 130, "class" => "defaultfont"
-), g_l('cockpit','[bgcolor]'));
+	), g_l('cockpit', '[bgcolor]'));
 $oSelCls->setCol(0, 1, null, $oSctCls->getHTML());

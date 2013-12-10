@@ -65,7 +65,7 @@ class we_customer_CSVImport extends we_import_CSV{
 
 						if($field_input){
 							$field_input--;
-						} else{
+						} else {
 							$field_input++;
 						}
 					} else if($akt_char == "\n"){
@@ -90,7 +90,7 @@ class we_customer_CSVImport extends we_import_CSV{
 
 				if($head_complete){
 					$this->Fields[$akt_line][$akt_field] = iconv($this->FromCharset, $this->ToCharset . '//TRANSLIT', trim($akt_field_value));
-				} else{
+				} else {
 					$this->FieldNames[$akt_field] = iconv($this->FromCharset, $this->ToCharset . '//TRANSLIT', trim($akt_field_value));
 				}
 			}
@@ -100,7 +100,7 @@ class we_customer_CSVImport extends we_import_CSV{
 			}
 
 			$this->fetchCursor = 0;
-		} else{
+		} else {
 			$this->CSVError[] = 'CSV data empty.';
 			return FALSE;
 		}
@@ -111,7 +111,7 @@ class we_customer_CSVImport extends we_import_CSV{
 			$r = $this->Fields[$this->fetchCursor];
 			$this->fetchCursor++;
 			return $r;
-		} else{
+		} else {
 			$this->CSVError[] = 'No more data sets.';
 			return FALSE;
 		}

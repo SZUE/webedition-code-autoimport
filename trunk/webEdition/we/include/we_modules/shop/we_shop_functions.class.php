@@ -25,16 +25,16 @@
 class we_shop_functions{
 
 	static function getCustomersOrderList($customerId, $sameModul = true){
-		$weShopStatusMails = weShopStatusMails::getShopStatusMails();
+		$weShopStatusMails = we_shop_statusMails::getShopStatusMails();
 
 		// get orderdata of user here
 		$da = ( $GLOBALS['WE_LANGUAGE'] == 'Deutsch') ? '%d.%m.%Y' : '%m/%d/%Y';
 
 		$format = array();
-		foreach(weShopStatusMails::$StatusFields as $field){
+		foreach(we_shop_statusMails::$StatusFields as $field){
 			$format[] = 'DATE_FORMAT(' . $field . ',"' . $da . '") AS format' . $field;
 		}
-		$query = 'SELECT IntOrderID, ' . implode(',', weShopStatusMails::$StatusFields) . ', ' . implode(',', $format) . ' FROM ' . SHOP_TABLE . ' WHERE IntCustomerID=' . intval($customerId) . ' GROUP BY IntOrderId ORDER BY IntID DESC';
+		$query = 'SELECT IntOrderID, ' . implode(',', we_shop_statusMails::$StatusFields) . ', ' . implode(',', $format) . ' FROM ' . SHOP_TABLE . ' WHERE IntCustomerID=' . intval($customerId) . ' GROUP BY IntOrderId ORDER BY IntID DESC';
 
 		$GLOBALS['DB_WE']->query($query);
 
@@ -43,7 +43,7 @@ class we_shop_functions{
 			$orderStr .='<tr>
 			<td></td><td><b>' . g_l('modules_shop', '[orderList][order]') . '</b></td>';
 
-			foreach(weShopStatusMails::$StatusFields as $field){
+			foreach(we_shop_statusMails::$StatusFields as $field){
 				if(!$weShopStatusMails->FieldsHidden[$field]){
 					$orderStr .='<td><b>' . $weShopStatusMails->FieldsText[$field] . '</b></td>';
 				}
@@ -51,19 +51,19 @@ class we_shop_functions{
 
 			$orderStr .='</tr>';
 
-			while($GLOBALS['DB_WE']->next_record()) {
+			while($GLOBALS['DB_WE']->next_record()){
 
 				$orderStr .= '<tr>';
-				if(we_hasPerm("EDIT_SHOP_ORDER")){
+				if(permissionhandler::hasPerm("EDIT_SHOP_ORDER")){
 					$orderStr .= ($sameModul ?
-							('<td>' . we_button::create_button('image:btn_edit_edit', 'javascript:top.content.editor.location = \'' . WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php?pnt=editor&bid=' . $GLOBALS['DB_WE']->f('IntOrderID') . '\';') . '</td>') :
-							('<td>' . we_button::create_button('image:btn_edit_edit', 'javascript:top.document.location = \'' . WE_MODULES_DIR . 'show_frameset.php?mod=shop&bid=' . $GLOBALS['DB_WE']->f('IntOrderID') . '\';') . '</td>')
+							('<td>' . we_html_button::create_button('image:btn_edit_edit', 'javascript:top.content.editor.location = \'' . WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php?pnt=editor&bid=' . $GLOBALS['DB_WE']->f('IntOrderID') . '\';') . '</td>') :
+							('<td>' . we_html_button::create_button('image:btn_edit_edit', 'javascript:top.document.location = \'' . WE_MODULES_DIR . 'show_frameset.php?mod=shop&bid=' . $GLOBALS['DB_WE']->f('IntOrderID') . '\';') . '</td>')
 						);
-				} else{
+				} else {
 					$orderStr .='<td></td>';
 				}
 				$orderStr .= '<td>' . $GLOBALS['DB_WE']->f('IntOrderID') . '. ' . g_l('modules_shop', '[orderList][order]') . '</td>';
-				foreach(weShopStatusMails::$StatusFields as $field){
+				foreach(we_shop_statusMails::$StatusFields as $field){
 					if(!$weShopStatusMails->FieldsHidden[$field]){
 						$orderStr .='<td>' . ( $GLOBALS['DB_WE']->f($field) > 0 ? $GLOBALS['DB_WE']->f('format' . $field) : '-' ) . '</td>';
 					}
@@ -71,7 +71,7 @@ class we_shop_functions{
 
 				$orderStr .= '</tr>';
 			}
-		} else{
+		} else {
 			$orderStr .= '<tr><td>' . g_l('modules_shop', '[orderList][noOrders]') . '</td></tr>';
 		}
 		$orderStr .= '</table>';

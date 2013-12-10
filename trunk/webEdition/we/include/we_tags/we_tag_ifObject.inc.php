@@ -23,5 +23,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifObject(){
-	return (($GLOBALS['lv']->ClassName == 'we_listview_object') || ($GLOBALS['lv']->ClassName == 'we_search_listview' && $GLOBALS['lv']->f('OID')));
+	switch(isset($GLOBALS['lv']) ? get_class($GLOBALS['lv']) : ''){
+		case 'we_listview_object':
+			return true;
+		case 'we_search_listview':
+			return $GLOBALS['lv']->f('OID');
+		default:
+			return false;
+	}
 }

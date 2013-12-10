@@ -17,7 +17,7 @@
  * A copy is found in the textfile
  * webEdition/licenses/webEditionCMS/License.txt
  *
- * @category   webEdition 
+ * @category   webEdition
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
@@ -48,9 +48,9 @@ if(!isset($SEEM_edit_include) || !$SEEM_edit_include){
 
 
 //	check session
-we_html_tools::protect();
+we_html_tools::protect(null, WEBEDITION_DIR . 'index.php');
 
-cleanTempFiles();
+we_base_file::cleanTempFiles();
 /* $sn = SERVER_NAME;
 
   if(strstr($sn, '@')) {
@@ -110,13 +110,13 @@ include(JS_PATH . 'weJsStrings.inc.php');
 	var seeMode_edit_include = <?php print (isset($SEEM_edit_include) && $SEEM_edit_include) ? "true" : "false"; ?>; // in edit_include mode of seeMode
 
 	var wePerms = {
-		"ADMINISTRATOR": <?php echo we_hasPerm("ADMINISTRATOR")?1:0; ?>,
-		"DELETE_DOCUMENT": <?php echo we_hasPerm("DELETE_DOCUMENT")?1:0; ?>,
-		"DELETE_TEMPLATE": <?php echo we_hasPerm("DELETE_TEMPLATE")?1:0; ?>,
-		"DELETE_OBJECT": <?php echo we_hasPerm("DELETE_OBJECT")?1:0; ?>,
-		"DELETE_OBJECTFILE": <?php echo we_hasPerm("DELETE_OBJECTFILE")?1:0; ?>,
-		"DELETE_DOC_FOLDER": <?php echo we_hasPerm("DELETE_DOC_FOLDER")?1:0; ?>,
-		"DELETE_TEMP_FOLDER": <?php echo we_hasPerm("DELETE_TEMP_FOLDER")?1:0; ?>
+		"ADMINISTRATOR": <?php echo permissionhandler::hasPerm("ADMINISTRATOR") ? 1 : 0; ?>,
+		"DELETE_DOCUMENT": <?php echo permissionhandler::hasPerm("DELETE_DOCUMENT") ? 1 : 0; ?>,
+		"DELETE_TEMPLATE": <?php echo permissionhandler::hasPerm("DELETE_TEMPLATE") ? 1 : 0; ?>,
+		"DELETE_OBJECT": <?php echo permissionhandler::hasPerm("DELETE_OBJECT") ? 1 : 0; ?>,
+		"DELETE_OBJECTFILE": <?php echo permissionhandler::hasPerm("DELETE_OBJECTFILE") ? 1 : 0; ?>,
+		"DELETE_DOC_FOLDER": <?php echo permissionhandler::hasPerm("DELETE_DOC_FOLDER") ? 1 : 0; ?>,
+		"DELETE_TEMP_FOLDER": <?php echo permissionhandler::hasPerm("DELETE_TEMP_FOLDER") ? 1 : 0; ?>
 	};
 	/*##################### messaging function #####################*/
 
@@ -404,7 +404,7 @@ if(defined('MESSAGING_SYSTEM')){
 	}
 
 	function we_sbmtFrm(target, url, source) {
-		if (typeof(source) === "undefined") {
+		if (typeof (source) === "undefined") {
 			source = top.weEditorFrameController.getVisibleEditorFrame();
 		}
 		return submit_we_form(source, target, url);
@@ -461,18 +461,19 @@ if(defined('MESSAGING_SYSTEM')){
 
 foreach($GLOBALS['_we_active_integrated_modules'] as $mod){
 	if(file_exists(WE_MODULES_PATH . $mod . '/we_webEditionCmd_' . $mod . '.inc.php')){
-		@include_once(WE_MODULES_PATH . $mod . '/we_webEditionCmd_' . $mod . '.inc.php');
+		include_once(WE_MODULES_PATH . $mod . '/we_webEditionCmd_' . $mod . '.inc.php');
 	}
 }{ // deal with uninstalled modules
-	foreach($GLOBALS['_we_available_modules'] as $m){
+	$mods = weModuleInfo::getAllModules();
+	foreach($mods as $m){
 		echo 'case "edit_' . $m["name"] . '_ifthere":';
 	}
 	echo '
-						new jsWindow(url,"module_info",-1,-1,380,250,true,true,true);
-							break;';
+		new jsWindow(url,"module_info",-1,-1,380,250,true,true,true);
+		break;';
 }
 
-$_jsincludes = weToolLookup::getJsCmdInclude();
+$_jsincludes = we_tool_lookup::getJsCmdInclude();
 if(!empty($_jsincludes)){
 	foreach($_jsincludes as $_jsinclude){
 		include_once($_jsinclude);
@@ -496,7 +497,7 @@ if(!empty($_jsincludes)){
 				break;
 
 			case "openCatselector":
-				new jsWindow(url, "we_cateditor", -1, -1,<?php echo we_fileselector::WINDOW_CATSELECTOR_WIDTH . ',' . we_fileselector::WINDOW_CATSELECTOR_HEIGHT; ?>, true, true, true, true);
+				new jsWindow(url, "we_cateditor", -1, -1,<?php echo we_selector_file::WINDOW_CATSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_CATSELECTOR_HEIGHT; ?>, true, true, true, true);
 				break;
 
 			case "openSidebar":
@@ -527,18 +528,18 @@ if(!empty($_jsincludes)){
 
 				if (eTable === "") {
 					hasPerm = false;
-				} else if (<?php echo (we_hasPerm("ADMINISTRATOR") ? 'true' : 'false'); ?>) {
+				} else if (<?php echo (permissionhandler::hasPerm("ADMINISTRATOR") ? 'true' : 'false'); ?>) {
 					hasPerm = true;
 				} else if (isFolder) {
 					switch (eTable) {
 						case "<?php echo FILE_TABLE; ?>":
-							hasPerm = <?php echo (we_hasPerm('DELETE_DOC_FOLDER') ? 'true' : 'false'); ?>;
+							hasPerm = <?php echo (permissionhandler::hasPerm('DELETE_DOC_FOLDER') ? 'true' : 'false'); ?>;
 							break;
 						case "<?php echo TEMPLATES_TABLE; ?>":
-							hasPerm = <?php echo (we_hasPerm('DELETE_TEMP_FOLDER') ? 'true' : 'false'); ?>;
+							hasPerm = <?php echo (permissionhandler::hasPerm('DELETE_TEMP_FOLDER') ? 'true' : 'false'); ?>;
 							break;
 						case "<?php echo defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : -1; ?>":
-							hasPerm = <?php echo (we_hasPerm('DELETE_OBJECTFILE') ? 'true' : 'false'); ?>;
+							hasPerm = <?php echo (permissionhandler::hasPerm('DELETE_OBJECTFILE') ? 'true' : 'false'); ?>;
 							break;
 						default:
 							hasPerm = false;
@@ -546,19 +547,19 @@ if(!empty($_jsincludes)){
 				} else {
 					switch (eTable) {
 						case "<?php echo FILE_TABLE; ?>":
-							hasPerm = <?php echo (we_hasPerm('DELETE_DOCUMENT') ? 'true' : 'false'); ?>;
+							hasPerm = <?php echo (permissionhandler::hasPerm('DELETE_DOCUMENT') ? 'true' : 'false'); ?>;
 							break;
 						case "<?php echo TEMPLATES_TABLE; ?>":
-							hasPerm = <?php echo (we_hasPerm('DELETE_TEMPLATE') ? 'true' : 'false'); ?>;
+							hasPerm = <?php echo (permissionhandler::hasPerm('DELETE_TEMPLATE') ? 'true' : 'false'); ?>;
 							if (wePerms.DELETE_TEMPLATE) {
 								hasPerm = true;
 							}
 							break;
 						case "<?php echo defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : -1; ?>":
-							hasPerm = <?php echo (we_hasPerm('DELETE_OBJECTFILE') ? 'true' : 'false'); ?>;
+							hasPerm = <?php echo (permissionhandler::hasPerm('DELETE_OBJECTFILE') ? 'true' : 'false'); ?>;
 							break;
 						case "<?php echo defined('OBJECT_FILES_TABLE') ? OBJECT_TABLE : -2; ?>":
-							hasPerm = <?php echo (we_hasPerm('DELETE_OBJECT') ? 'true' : 'false'); ?>;
+							hasPerm = <?php echo (permissionhandler::hasPerm('DELETE_OBJECT') ? 'true' : 'false'); ?>;
 							break;
 						default:
 							hasPerm = false;
@@ -586,18 +587,18 @@ if(!empty($_jsincludes)){
 
 				if (eTable === "") {
 					hasPerm = false;
-				} else if (<?php echo (we_hasPerm("ADMINISTRATOR") ? 'true' : 'false'); ?>) {
+				} else if (<?php echo (permissionhandler::hasPerm("ADMINISTRATOR") ? 'true' : 'false'); ?>) {
 					hasPerm = true;
 				} else if (isFolder) {
 					switch (eTable) {
 						case "<?php echo FILE_TABLE; ?>":
-							hasPerm = <?php echo (we_hasPerm('DELETE_DOC_FOLDER') ? 'true' : 'false'); ?>;
+							hasPerm = <?php echo (permissionhandler::hasPerm('DELETE_DOC_FOLDER') ? 'true' : 'false'); ?>;
 							break;
 						case "<?php echo TEMPLATES_TABLE; ?>":
-							hasPerm = <?php echo (we_hasPerm('DELETE_TEMP_FOLDER') ? 'true' : 'false'); ?>;
+							hasPerm = <?php echo (permissionhandler::hasPerm('DELETE_TEMP_FOLDER') ? 'true' : 'false'); ?>;
 							break;
 						case "<?php echo defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : -1; ?>":
-							hasPerm = <?php echo (we_hasPerm('DELETE_OBJECTFILE') ? 'true' : 'false'); ?>;
+							hasPerm = <?php echo (permissionhandler::hasPerm('DELETE_OBJECTFILE') ? 'true' : 'false'); ?>;
 							break;
 						default:
 							hasPerm = false;
@@ -605,19 +606,19 @@ if(!empty($_jsincludes)){
 				} else {
 					switch (eTable) {
 						case "<?php echo FILE_TABLE; ?>":
-							hasPerm = <?php echo (we_hasPerm('DELETE_DOCUMENT') ? 'true' : 'false'); ?>;
+							hasPerm = <?php echo (permissionhandler::hasPerm('DELETE_DOCUMENT') ? 'true' : 'false'); ?>;
 							break;
 						case "<?php echo TEMPLATES_TABLE; ?>":
-							hasPerm = <?php echo (we_hasPerm('DELETE_TEMPLATE') ? 'true' : 'false'); ?>;
+							hasPerm = <?php echo (permissionhandler::hasPerm('DELETE_TEMPLATE') ? 'true' : 'false'); ?>;
 							if (wePerms.DELETE_TEMPLATE) {
 								hasPerm = true;
 							}
 							break;
 						case "<?php echo defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : -1; ?>":
-							hasPerm = <?php echo (we_hasPerm('DELETE_OBJECTFILE') ? 'true' : 'false'); ?>;
+							hasPerm = <?php echo (permissionhandler::hasPerm('DELETE_OBJECTFILE') ? 'true' : 'false'); ?>;
 							break;
 						case "<?php echo defined('OBJECT_FILES_TABLE') ? OBJECT_TABLE : -2; ?>":
-							hasPerm = <?php echo (we_hasPerm('DELETE_OBJECT') ? 'true' : 'false'); ?>;
+							hasPerm = <?php echo (permissionhandler::hasPerm('DELETE_OBJECT') ? 'true' : 'false'); ?>;
 							break;
 						default:
 							hasPerm = false;
@@ -652,12 +653,12 @@ if(!empty($_jsincludes)){
 			case "open_document":
 				we_cmd("load", "<?php print FILE_TABLE; ?>");
 				url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?we_cmd[0]=openDocselector&we_cmd[1]=&we_cmd[2]=<?php print FILE_TABLE; ?>&we_cmd[5]=<?php print rawurlencode("opener.top.weEditorFrameController.openDocument(table,currentID,currentType)"); ?>&we_cmd[9]=1";
-				new jsWindow(url, "we_dirChooser", -1, -1,<?php echo we_fileselector::WINDOW_DOCSELECTOR_WIDTH . "," . we_fileselector::WINDOW_DOCSELECTOR_HEIGHT; ?>, true, true, true, true);
+				new jsWindow(url, "we_dirChooser", -1, -1,<?php echo we_selector_file::WINDOW_DOCSELECTOR_WIDTH . "," . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT; ?>, true, true, true, true);
 				break;
 			case "open_template":
 				we_cmd("load", "<?php print TEMPLATES_TABLE; ?>");
 				url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?we_cmd[0]=openDocselector&we_cmd[8]=text/weTmpl&we_cmd[2]=<?php print TEMPLATES_TABLE; ?>&we_cmd[5]=<?php print rawurlencode("opener.top.weEditorFrameController.openDocument(table,currentID,currentType)"); ?>&we_cmd[9]=1";
-				new jsWindow(url, "we_dirChooser", -1, -1,<?php echo we_fileselector::WINDOW_DOCSELECTOR_WIDTH . "," . we_fileselector::WINDOW_DOCSELECTOR_HEIGHT; ?>, true, true, true, true);
+				new jsWindow(url, "we_dirChooser", -1, -1,<?php echo we_selector_file::WINDOW_DOCSELECTOR_WIDTH . "," . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT; ?>, true, true, true, true);
 				break;
 			case "change_passwd":
 				new jsWindow(url, "we_change_passwd", -1, -1, 250, 220, true, false, true, false);
@@ -824,13 +825,13 @@ if(!empty($_jsincludes)){
 				new jsWindow("http://www.webedition.org/de/webedition-cms/versionshistorie/webedition-6/", "help_changelog", -1, -1, 960, 700, true, true, true, true);
 				break;
 			case "openSelector":
-				new jsWindow(url, "we_fileselector", -1, -1,<?php echo we_fileselector::WINDOW_SELECTOR_WIDTH . ',' . we_fileselector::WINDOW_SELECTOR_HEIGHT; ?>, true, true, true, true);
+				new jsWindow(url, "we_fileselector", -1, -1,<?php echo we_selector_file::WINDOW_SELECTOR_WIDTH . ',' . we_selector_file::WINDOW_SELECTOR_HEIGHT; ?>, true, true, true, true);
 				break;
 			case "openDirselector":
-				new jsWindow(url, "we_fileselector", -1, -1,<?php echo we_fileselector::WINDOW_DIRSELECTOR_WIDTH . ',' . we_fileselector::WINDOW_DIRSELECTOR_HEIGHT; ?>, true, true, true, true);
+				new jsWindow(url, "we_fileselector", -1, -1,<?php echo we_selector_file::WINDOW_DIRSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DIRSELECTOR_HEIGHT; ?>, true, true, true, true);
 				break;
 			case "openDocselector":
-				new jsWindow(url, "we_fileselector", -1, -1,<?php echo we_fileselector::WINDOW_DOCSELECTOR_WIDTH . ',' . we_fileselector::WINDOW_DOCSELECTOR_HEIGHT; ?>, true, true, true, true);
+				new jsWindow(url, "we_fileselector", -1, -1,<?php echo we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT; ?>, true, true, true, true);
 				break;
 			case "setTab":
 				if (self.Vtabs && self.Vtabs.setTab && (typeof treeData !== "undefined")) {
@@ -988,7 +989,7 @@ if(!empty($_jsincludes)){
 					_sendToFrame.focus();
 				}
 				// if visible frame equals to editpage content and there is already content loaded
-				if (_isEditpageContent && typeof(_visibleEditorFrame.weIsTextEditor) !== "undefined" && _currentEditorRootFrame.frames[2].location !== "about:blank") {
+				if (_isEditpageContent && typeof (_visibleEditorFrame.weIsTextEditor) !== "undefined" && _currentEditorRootFrame.frames[2].location !== "about:blank") {
 					// tell the backend the right edit page nr and break (don't send the form)
 					//YAHOO.util.Connect.setForm(_sendFromFrame.document.we_form);
 					YAHOO.util.Connect.asyncRequest('POST', "<?php echo WEBEDITION_DIR; ?>rpc/rpc.php", setPageNrCallback, 'protocol=json&cmd=SetPageNr&transaction=' + _we_activeTransaction + "&editPageNr=" + arguments[1]);
@@ -1141,7 +1142,7 @@ if(!empty($_jsincludes)){
 				return new jsWindow(url, "exit_doc_question", -1, -1, 380, 130, true, false, true);
 				break;
 			case "openDelSelector":
-				new jsWindow(url, "we_del_selector", -1, -1,<?php echo we_fileselector::WINDOW_DELSELECTOR_WIDTH . ',' . we_fileselector::WINDOW_DELSELECTOR_HEIGHT; ?>, true, true, true, true);
+				new jsWindow(url, "we_del_selector", -1, -1,<?php echo we_selector_file::WINDOW_DELSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DELSELECTOR_HEIGHT; ?>, true, true, true, true);
 				break;
 			case "browse":
 				openBrowser();
@@ -1316,7 +1317,7 @@ if(defined("WE_MESSAGING_MODULE_DIR")){
 				}
 				break;
 			case "eplugin_exit_doc" :
-				if (typeof(top.plugin) !== "undefined" && typeof(top.plugin.document.WePlugin) !== "undefined") {
+				if (typeof (top.plugin) !== "undefined" && typeof (top.plugin.document.WePlugin) !== "undefined") {
 					if (top.plugin.isInEditor(arguments[1])) {
 						return confirm("<?php echo g_l('alert', '[eplugin_exit_doc]'); ?>");
 					}
@@ -1324,7 +1325,7 @@ if(defined("WE_MESSAGING_MODULE_DIR")){
 				return true;
 				break;
 			case "editor_plugin_doc_count":
-				if (typeof(top.plugin.document.WePlugin) !== "undefined") {
+				if (typeof (top.plugin.document.WePlugin) !== "undefined") {
 					return top.plugin.getDocCount();
 				}
 				return 0;
@@ -1404,13 +1405,13 @@ pWebEdition_JSwe_cmds();
 		self.TreeInfo = self.rframe;
 <?php
 $_table_to_load = "";
-if(we_hasPerm("CAN_SEE_DOCUMENTS")){
+if(permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
 	$_table_to_load = FILE_TABLE;
-} else if(we_hasPerm("CAN_SEE_TEMPLATES")){
+} else if(permissionhandler::hasPerm("CAN_SEE_TEMPLATES")){
 	$_table_to_load = TEMPLATES_TABLE;
-} else if(defined("OBJECT_FILES_TABLE") && we_hasPerm("CAN_SEE_OBJECTFILES")){
+} else if(defined("OBJECT_FILES_TABLE") && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")){
 	$_table_to_load = OBJECT_FILES_TABLE;
-} else if(defined("OBJECT_TABLE") && we_hasPerm("CAN_SEE_OBJECTS")){
+} else if(defined("OBJECT_TABLE") && permissionhandler::hasPerm("CAN_SEE_OBJECTS")){
 	$_table_to_load = OBJECT_TABLE;
 }
 
@@ -1434,7 +1435,7 @@ if($_table_to_load){
 pWebEdition_JSFunctions();
 ?>
 	var cockpitFrame;
-	//-->
+//-->
 </script>
 <?php
 we_main_header::pCSS();

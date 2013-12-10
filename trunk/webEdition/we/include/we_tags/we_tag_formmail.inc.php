@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,8 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function we_tag_formmail() {
+function we_tag_formmail(){
 	include($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we_formmail.php');
 	return '';
 }

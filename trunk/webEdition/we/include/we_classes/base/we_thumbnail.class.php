@@ -372,7 +372,7 @@ class we_thumbnail{
 	 * @param bool $realpath  if set to true, Document_ROOT will be appended before
 	 */
 	public static function getThumbDirectory($realpath = false){
-		$dir = '/' . ltrim(preg_replace('#^\.?(.*)$#', '\1', (WE_THUMBNAIL_DIRECTORY ? WE_THUMBNAIL_DIRECTORY : '/_thumbnails_')), '/');
+		$dir = '/' . ltrim(preg_replace('#^\.?(.*)$#', '\1', (WE_THUMBNAIL_DIRECTORY ? WE_THUMBNAIL_DIRECTORY : '_thumbnails_')), '/');
 		return ($realpath ? $_SERVER['DOCUMENT_ROOT'] : '') . $dir;
 	}
 
@@ -406,7 +406,7 @@ class we_thumbnail{
 	 * @public
 	 */
 	public function getOutputPath($withDocumentRoot = false, $unique = false){
-		return ($withDocumentRoot ? $_SERVER['DOCUMENT_ROOT'] : '') . $this->outputPath . ((!$withDocumentRoot && $unique )? '?t=' . ($this->exists() ? filemtime($_SERVER['DOCUMENT_ROOT'] . $this->outputPath) : time()):'');
+		return ($withDocumentRoot ? $_SERVER['DOCUMENT_ROOT'] : '') . $this->outputPath . ((!$withDocumentRoot && $unique ) ? '?t=' . ($this->exists() ? filemtime($_SERVER['DOCUMENT_ROOT'] . $this->outputPath) : time()) : '');
 	}
 
 	/**
@@ -593,7 +593,7 @@ class we_thumbnail{
 	 * @private
 	 */
 	private function getBinaryData(){
-		$this->imageData = weFile::load($_SERVER['DOCUMENT_ROOT'] . $this->imagePath);
+		$this->imageData = we_base_file::load($_SERVER['DOCUMENT_ROOT'] . $this->imagePath);
 	}
 
 	public static function deleteByThumbID($id){

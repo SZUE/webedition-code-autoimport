@@ -29,14 +29,14 @@
  *
  */
 //FIXME: is this class not ~ listview_object? why is this not the base class???
-class we_listview_multiobject extends listviewBase {
+class we_listview_multiobject extends listviewBase{
 
-	var $classID = ""; /* ID of a class */
-	var $objects = ""; /* Comma sepearated list of all objetcs to show in this listview */
+	var $classID = ''; /* ID of a class */
+	var $objects = ''; /* Comma sepearated list of all objetcs to show in this listview */
 	var $triggerID = 0; /* ID of a document which to use for displaying thr detail page */
-	var $condition = ""; /* condition string (like SQL) */
+	var $condition = ''; /* condition string (like SQL) */
 	var $ClassName = __CLASS__;
-	var $Path = ""; /* internal: Path of document which to use for displaying thr detail page */
+	var $Path = ''; /* internal: Path of document which to use for displaying thr detail page */
 	var $IDs = array();
 	var $searchable = true;
 	var $languages = ''; //string of Languages, separated by ,
@@ -72,7 +72,7 @@ class we_listview_multiobject extends listviewBase {
 		$data = 0;
 		if(isset($GLOBALS['we_lv_array']) && count($GLOBALS['we_lv_array']) > 1){
 			$parent_lv = $GLOBALS['we_lv_array'][(count($GLOBALS['we_lv_array']) - 1)];
-			($parent_lv->ClassName == 'we_shop_listviewOrderitem') ? $prefix = '' : $prefix = 'we_'; //Fix #7873
+			(get_class($parent_lv) == 'we_shop_listviewOrderitem') ? $prefix = '' : $prefix = 'we_'; //Fix #7873
 			if(isset($parent_lv->DB_WE->Record[$prefix . $name]) && $parent_lv->DB_WE->Record[$prefix . $name]){
 				$data = unserialize($parent_lv->DB_WE->Record[$prefix . $name]);
 			}
@@ -83,8 +83,8 @@ class we_listview_multiobject extends listviewBase {
 					$data = unserialize($obj->DB_WE->Record['we_' . $name]);
 				}
 			} else {
-				switch($GLOBALS["lv"]->ClassName){
-					case 'we_listview_shoppingCart':
+				switch(get_class($GLOBALS["lv"])){
+					case 'we_shop_shop':
 					case 'we_shop_listviewOrderitem':
 						if(isset($GLOBALS['lv']->Record[$name]) && $GLOBALS['lv']->Record[$name]){
 							$data = unserialize($GLOBALS['lv']->Record[$name]);
@@ -148,11 +148,10 @@ class we_listview_multiobject extends listviewBase {
 			$this->order .= ' DESC';
 		}
 
-		if($this->triggerID && show_SeoLinks()){
-			$this->Path = id_to_path($this->triggerID, FILE_TABLE, $this->DB_WE);
-		} else {
-			$this->Path = (isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Path : '');
-		}
+		$this->Path = ($this->triggerID && show_SeoLinks() ?
+				id_to_path($this->triggerID, FILE_TABLE, $this->DB_WE) :
+				(isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Path : ''));
+
 
 		// IMPORTANT for seeMode !!!! #5317
 		$this->LastDocPath = (isset($_SESSION['weS']['last_webEdition_document']) ? $_SESSION['weS']['last_webEdition_document']['Path'] : '');
@@ -173,7 +172,7 @@ class we_listview_multiobject extends listviewBase {
 		$cat_tail = ($this->cats || $this->categoryids ? we_category::getCatSQLTail($this->cats, $_obxTable, $this->catOr, $this->DB_WE, "OF_Category", true, $this->categoryids) : '');
 
 		$weDocumentCustomerFilter_tail = ($this->customerFilterType != 'false' && defined("CUSTOMER_FILTER_TABLE") ?
-				weDocumentCustomerFilter::getConditionForListviewQuery($this) :
+				we_customer_documentFilter::getConditionForListviewQuery($this) :
 				'');
 
 		if($sqlParts["tables"]){
@@ -283,7 +282,7 @@ class we_listview_multiobject extends listviewBase {
 		$descArr = array();
 		$ordertmp = array();
 
-		$cond = ' ' . preg_replace("/'([^']*)'/e", "we_listview_object::encodeEregString('\\1')", strtr($cond, array('&gt;' => '>', '&lt;' => '<'))) . ' ';
+		$cond = ' ' . preg_replace_callback("/'([^']*)'/", 'we_listview_object::encodeEregString', strtr($cond, array('&gt;' => '>', '&lt;' => '<'))) . ' ';
 
 		if($order && ($order != 'random()')){
 			$foo = makeArrayFromCSV($order);
@@ -332,7 +331,7 @@ class we_listview_multiobject extends listviewBase {
 			$cond = preg_replace("/([\!\=%&\(\*\+\.\/<>|~ ])$n([\!\=%&\)\*\+\.\/<>|~ ])/", '$1' . $p["table"] . '.`' . $p['type'] . '_' . $n . '`$2', $cond);
 		}
 
-		$cond = preg_replace("/'([^']*)'/e", "we_listview_object::decodeEregString('\\1')", $cond);
+		$cond = preg_replace_callback("/'([^']*)'/", 'we_listview_object::decodeEregString', $cond);
 
 		ksort($ordertmp);
 		$_tmporder = trim(str_ireplace('desc', '', $order));

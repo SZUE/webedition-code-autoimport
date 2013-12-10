@@ -25,8 +25,6 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
-@include_once('Text/Diff.php');
-
 function getInfoTable($_infoArr, $name){
 
 	$_table = new we_html_table(array("width" => 500, "style" => "width: 500px;", "spellspacing" => 2), 1, 2);
@@ -118,7 +116,7 @@ function parseValue($name, $value){
 }
 
 function convertToMb($value){
-	return weFile::getHumanFileSize($value, weFile::SZ_MB);
+	return we_base_file::getHumanFileSize($value, we_base_file::SZ_MB);
 }
 
 function getConnectionTypes(){
@@ -142,15 +140,15 @@ function getConnectionTypes(){
 }
 
 function getWarning($message, $value){
-	return '<div style="cursor:pointer; padding-right:20px; padding-left:8px; background:url(' . IMAGE_DIR . 'alert_tiny.gif) center right no-repeat;" title="' . $message . '">' . $value . '</div>';
+	return '<div style="min-height:20px; min-width: 20px;cursor:pointer; padding-right:20px; padding-left:8px; background:url(' . IMAGE_DIR . 'alert_tiny.gif) center right no-repeat;" title="' . $message . '">' . $value . '</div>';
 }
 
 function getInfo($message, $value){
-	return '<div style="cursor:pointer; padding-right:20px; padding-left:8px; background:url(' . IMAGE_DIR . 'info_tiny.gif) center right no-repeat;" title="' . $message . '">' . $value . '</div>';
+	return '<div style="min-height:20px; min-width: 20px;cursor:pointer; padding-right:20px; padding-left:8px; background:url(' . IMAGE_DIR . 'info_tiny.gif) center right no-repeat;" title="' . $message . '">' . $value . '</div>';
 }
 
-function getOK($message, $value){
-	return '<div style="cursor:pointer; padding-right:20px; padding-left:0px; background:url(' . IMAGE_DIR . 'valid.gif) center right no-repeat;" title="' . $message . '">' . $value . '</div>';
+function getOK($message = '', $value = ''){
+	return '<div style="min-height:20px; min-width: 20px; cursor:pointer; padding-right:20px; padding-left:0px; background:url(' . IMAGE_DIR . 'valid.gif) center right no-repeat;" title="' . $message . '">' . $value . '</div>';
 }
 
 $_install_dir = $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR;
@@ -217,7 +215,7 @@ if(in_array('suhosin', get_loaded_extensions())){
 }
 
 $lockTables = $GLOBALS['DB_WE']->hasLock();
-$allowTempTables = searchtoolsearch::checkRightTempTable() == '0';
+$allowTempTables = we_search_search::checkRightTempTable() == '0';
 
 $_info = array(
 	'webEdition' => array(
@@ -256,13 +254,14 @@ $_info = array(
 		'Info' => $GLOBALS['DB_WE']->getInfo(),
 	),
 	'System' => array(
-		g_l('sysinfo', '[connection_types]') => implode(", ", getConnectionTypes()),
-		g_l('sysinfo', '[mbstring]') => (is_callable("mb_get_info") ? g_l('sysinfo', '[available]') : "-"),
-		g_l('sysinfo', '[gdlib]') => (!empty($gdVersion) ? g_l('sysinfo', '[version]') . " " . $gdVersion : "-"),
-		g_l('sysinfo', '[exif]') => (is_callable("exif_imagetype") ? g_l('sysinfo', '[available]') : getWarning(g_l('sysinfo', "[exif warning]"), '-')),
-		g_l('sysinfo', '[pcre]') => ((defined("PCRE_VERSION")) ? ( (substr(PCRE_VERSION, 0, 1) < 7) ? getWarning(g_l('sysinfo', "[pcre warning]"), g_l('sysinfo', '[version]') . ' ' . PCRE_VERSION) : g_l('sysinfo', '[version]') . ' ' . PCRE_VERSION ) : getWarning(g_l('sysinfo', '[available]'), g_l('sysinfo', "[pcre_unkown]"))),
+		g_l('sysinfo', '[connection_types]') => implode(', ', getConnectionTypes()),
+		g_l('sysinfo', '[mbstring]') => (is_callable('mb_get_info') ? g_l('sysinfo', '[available]') : '-'),
+		g_l('sysinfo', '[gdlib]') => (!empty($gdVersion) ? g_l('sysinfo', '[version]') . ' ' . $gdVersion : '-'),
+		g_l('sysinfo', '[exif]') => (is_callable('exif_imagetype') ? g_l('sysinfo', '[available]') : getWarning(g_l('sysinfo', '[exif warning]'), '-')),
+		g_l('sysinfo', '[pcre]') => ((defined('PCRE_VERSION')) ? ( (substr(PCRE_VERSION, 0, 1) < 7) ? getWarning(g_l('sysinfo', '[pcre warning]'), g_l('sysinfo', '[version]') . ' ' . PCRE_VERSION) : g_l('sysinfo', '[version]') . ' ' . PCRE_VERSION ) : getWarning(g_l('sysinfo', '[available]'), g_l('sysinfo', "[pcre_unkown]"))),
 		g_l('sysinfo', '[sdk_db]') => $phpextensionsSDK_DB,
 		g_l('sysinfo', '[phpext]') => (!empty($phpextensionsMissing) ? getWarning(g_l('sysinfo', "[phpext warning2]"), g_l('sysinfo', "[phpext warning]") . implode(', ', $phpextensionsMissing)) : ($phpExtensionsDetectable ? g_l('sysinfo', '[available]') : g_l('sysinfo', '[detectable warning]')) ),
+		g_l('sysinfo', '[crypt]') => (function_exists('mcrypt_module_open') && ($res = mcrypt_module_open(MCRYPT_BLOWFISH, '', MCRYPT_MODE_OFB, '')) ? getOK() : getWarning(g_l('sysinfo', '[crypt_warning]')))
 	),
 	'Deprecated' => array(
 		'we:saveRegisteredUser register=' => (defined('CUSTOMER_TABLE') && f('SELECT Value FROM ' . CUSTOMER_ADMIN_TABLE . ' WHERE Name="default_saveRegisteredUser_register"', 'Value', $GLOBALS['DB_WE']) == 'true' ? getWarning('Deprecated', 'true') : getOk('', defined('CUSTOMER_TABLE') ? 'false' : '?')),
@@ -277,8 +276,8 @@ $_types = array(
 	g_l('sysinfo', '[we_max_upload_size]') => 'bytes'
 );
 
-$buttons = we_button::position_yes_no_cancel(
-		we_button::create_button("close", "javascript:self.close()"), '', ''
+$buttons = we_html_button::position_yes_no_cancel(
+		we_html_button::create_button("close", "javascript:self.close()"), '', ''
 );
 
 
@@ -314,7 +313,7 @@ we_html_tools::htmlTop(g_l('sysinfo', '[sysinfo]'));
 		document.getElementById("info").style.display = "block";
 		document.getElementById("more").style.display = "none";
 	}
-	//-->
+//-->
 </script>
 
 <?php
@@ -326,8 +325,8 @@ print STYLESHEET;
 <body class="weDialogBody" style="overflow:hidden;" onLoad="self.focus();">
 	<div id="info" style="display: block;">
 		<?php
-		print we_multiIconBox::getJS();
-		print we_multiIconBox::getHTML('', 700, $_parts, 30, $buttons, -1, '', '', false, "", "", 620, "auto");
+		print we_html_multiIconBox::getJS();
+		print we_html_multiIconBox::getHTML('', 700, $_parts, 30, $buttons, -1, '', '', false, "", "", 620, "auto");
 		?>
 	</div>
 	<div id="more" style="display:none;">
@@ -345,7 +344,7 @@ print STYLESHEET;
 			),
 		);
 
-		print we_multiIconBox::getHTML('', '100%', $_parts, 30, $buttons, -1, '', '', false);
+		print we_html_multiIconBox::getHTML('', '100%', $_parts, 30, $buttons, -1, '', '', false);
 		?>
 	</div>
 </body>

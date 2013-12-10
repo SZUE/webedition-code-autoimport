@@ -98,7 +98,7 @@ for($i = 0; $i <= 10; $i++){
 	if($_pLogCsv[$i]){
 		if($_gap){
 			$_pLogOut .= we_html_tools::getPixel(1, 8) . we_html_element::htmlBr();
-		} else{
+		} else {
 			$_gap = true;
 		}
 		if($i <= 8){
@@ -132,9 +132,9 @@ if($_isPrev){
 				), we_html_element::htmlDiv(array(
 					"id" => "plg"
 					), $_pLogOut)));
-} else{
+} else {
 	$_pLog = new we_html_table(array(
-			"width" => "100%", "border" => 0, "cellpadding" => 0, "cellspacing" => 0
-			), 1, 1);
+		"width" => "100%", "border" => 0, "cellpadding" => 0, "cellspacing" => 0
+		), 1, 1);
 	$_pLog->setCol(0, 0, null, $_pLogOut);
 }

@@ -147,8 +147,8 @@ class weXMLParser{
 				}
 
 				if(isset($_element_counter[$v['level']][$v['tag']])){
-					$_element_counter[$v['level']][$v['tag']]++;
-				} else{
+					$_element_counter[$v['level']][$v['tag']] ++;
+				} else {
 					$_element_counter[$v['level']][$v['tag']] = 1;
 				}
 
@@ -185,7 +185,7 @@ class weXMLParser{
 	function next(){
 		if($this->Handle < (count($this->Nodes) - 1)){
 			$this->Handle++;
-		} else{
+		} else {
 			return null;
 		}
 	}
@@ -195,7 +195,7 @@ class weXMLParser{
 		if(isset($this->Nodes[$this->Handle]['next'])){
 			$this->Handle = $this->Nodes[$this->Handle]['next'];
 			return true;
-		} else{
+		} else {
 			return false;
 		}
 	}
@@ -251,7 +251,7 @@ class weXMLParser{
 
 		$this->next();
 		$children[] = $this->Handle;
-		while($this->nextSibling()) {
+		while($this->nextSibling()){
 			$children[] = $this->Handle;
 		}
 

@@ -64,7 +64,7 @@ class copyFolderFrag extends taskFragment{
 
 			// make it twice to be sure that all linked IDs are correct
 			$db->query('SELECT ID,ParentID,Text,Path,IsFolder,ClassName,ContentType,Category FROM ' . FILE_TABLE . " WHERE (Path LIKE'" . $db->escape($fromPath) . "/%') AND ContentType != 'text/webedition' ORDER BY IsFolder DESC,Path");
-			while($db->next_record()) {
+			while($db->next_record()){
 				$db->Record["CopyToId"] = $toID;
 				$db->Record["CopyFromId"] = $fromID;
 				$db->Record["CopyFromPath"] = $fromPath;
@@ -79,7 +79,7 @@ class copyFolderFrag extends taskFragment{
 
 			for($num = 0; $num < 2; $num++){
 				$db->query("SELECT ID,ParentID,Text,TemplateID,Path,IsFolder,ClassName,ContentType,Category FROM " . FILE_TABLE . " WHERE (Path LIKE'" . $db->escape($fromPath) . "/%') AND ContentType = 'text/webedition' ORDER BY IsFolder DESC,Path");
-				while($db->next_record()) {
+				while($db->next_record()){
 
 					// check if the template exists
 					$TemplateExists = false;
@@ -100,7 +100,7 @@ class copyFolderFrag extends taskFragment{
 					$this->alldata[] = $db->Record;
 				}
 			}
-		} else{
+		} else {
 			if(defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE){
 				$_SESSION['weS']['WE_COPY_OBJECTS'] = true;
 				$fromPath = id_to_path($fromID, OBJECT_FILES_TABLE);
@@ -111,7 +111,7 @@ class copyFolderFrag extends taskFragment{
 				$this->alldata = array();
 
 				$db->query("SELECT ID,ParentID,Text,Path,IsFolder,ClassName,ContentType,Published FROM " . OBJECT_FILES_TABLE . " WHERE " . $qfolders . " (Path LIKE'" . $db->escape($fromPath) . "/%') ORDER BY IsFolder DESC,Path");
-				while($db->next_record()) {
+				while($db->next_record()){
 					$db->Record["CopyToId"] = $toID;
 					$db->Record["CopyFromId"] = $fromID;
 					$db->Record["CopyFromPath"] = $fromPath;
@@ -137,7 +137,7 @@ class copyFolderFrag extends taskFragment{
 				if($this->copyFile()){
 					if($this->data['IsWeFile'] && $this->data['num']){
 						$pbText = (sprintf(g_l('copyFolder', '[rewrite]'), basename($this->data['Path'])));
-					} else{
+					} else {
 						$pbText = (sprintf(
 								$this->data['IsFolder'] ? g_l('copyFolder', '[copyFolder]') : g_l('copyFolder', '[copyFile]'), basename($this->data['Path'])));
 					}
@@ -146,10 +146,10 @@ class copyFolderFrag extends taskFragment{
 								$this->alldata)) * (1 + $this->currentTask))) . ');parent.setProgressText("pbar1","' . addslashes(
 								$pbText) . '");');
 					flush();
-				} else{
+				} else {
 					exit('Error importing File: ' . $this->data['Path']);
 				}
-			} else{
+			} else {
 				if($this->copyObjects()){
 					$pbText = (sprintf(g_l('copyFolder', $this->data['IsFolder'] ? '[copyFolder]' : '[copyFile]'), basename($this->data["Path"])));
 					print we_html_element::jsElement(
@@ -157,7 +157,7 @@ class copyFolderFrag extends taskFragment{
 								$this->alldata)) * (1 + $this->currentTask))) . ');parent.setProgressText("pbar1","' . addslashes(
 								$pbText) . '");');
 					flush();
-				} else{
+				} else {
 					exit('Error importing Object: ' . $this->data['Path']);
 				}
 			}
@@ -181,7 +181,7 @@ class copyFolderFrag extends taskFragment{
 			if(!$GLOBALS['we_doc']->we_save()){
 				return false;
 			}
-		} else{
+		} else {
 			$GLOBALS['we_doc']->copyDoc($this->data['ID']);
 			$GLOBALS['we_doc']->Text = $this->data['Text'];
 			$GLOBALS['we_doc']->Path = $path;
@@ -197,7 +197,7 @@ class copyFolderFrag extends taskFragment{
 			if($ObjectExists && $this->data['OverwriteObjects'] == 'rename'){
 				$GLOBALS['we_doc']->Text = $GLOBALS['we_doc']->Text . '_copy';
 				$GLOBALS['we_doc']->Path = $GLOBALS['we_doc']->Path . '_copy';
-				while($this->CheckForSameObjectName($GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'])) {
+				while($this->CheckForSameObjectName($GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'])){
 					$GLOBALS['we_doc']->Text = $GLOBALS['we_doc']->Text . '_copy';
 					$GLOBALS['we_doc']->Path = $GLOBALS['we_doc']->Path . '_copy';
 				}
@@ -249,7 +249,7 @@ class copyFolderFrag extends taskFragment{
 			if(!$GLOBALS['we_doc']->we_save()){
 				return false;
 			}
-		} else{
+		} else {
 			$GLOBALS['we_doc']->initByID($this->data['ID']);
 			// if file  exists the file will overwritten, if not a new one (with no id) will be created
 			$GLOBALS['we_doc']->ID = f('SELECT ID FROM ' . FILE_TABLE . " WHERE Path='" . $GLOBALS['DB_WE']->escape($path) . "'", "ID", $GLOBALS['DB_WE']);
@@ -279,7 +279,7 @@ class copyFolderFrag extends taskFragment{
 
 					if($this->data['OverwriteCategories']){
 						$GLOBALS['we_doc']->Category = $this->data['newCategories'];
-					} else{
+					} else {
 						// remove duplicates
 						$old = explode(',', $GLOBALS['we_doc']->Category);
 						$tmp = explode(',', $this->data['newCategories']);
@@ -301,7 +301,7 @@ class copyFolderFrag extends taskFragment{
 							if(($file_id = f('SELECT ID FROM ' . DOC_TYPES_TABLE . " WHERE DocType='" . $GLOBALS['DB_WE']->escape($dt->DocType) . "'", "ID", $GLOBALS['DB_WE']))){
 								$z = 0;
 								$footext = $dt->DocType . '_' . $z;
-								while(f('SELECT ID FROM ' . DOC_TYPES_TABLE . " WHERE DocType='" . $GLOBALS['DB_WE']->escape($footext) . "'", 'ID', $GLOBALS['DB_WE'])) {
+								while(f('SELECT ID FROM ' . DOC_TYPES_TABLE . " WHERE DocType='" . $GLOBALS['DB_WE']->escape($footext) . "'", 'ID', $GLOBALS['DB_WE'])){
 									$z++;
 									$footext = $dt->DocType . '_' . $z;
 								}
@@ -320,7 +320,7 @@ class copyFolderFrag extends taskFragment{
 								foreach($templArray as $id){
 									if($id == $oldTemplateID){
 										$newTemplateIDs[] = $GLOBALS['we_doc']->TemplateID;
-									} else{
+									} else {
 										$newTemplateIDs[] = $id;
 									}
 								}
@@ -383,7 +383,7 @@ class copyFolderFrag extends taskFragment{
 			if(($file_id = f('SELECT ID FROM ' . TEMPLATES_TABLE . " WHERE Path='" . $GLOBALS['DB_WE']->escape($templ->Path) . "'", "ID", $GLOBALS['DB_WE']))){
 				$z = 0;
 				$footext = $templ->Filename . '_' . $z . $templ->Extension;
-				while(f('SELECT ID FROM ' . TEMPLATES_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($footext) . "' AND ParentID=" . intval($templ->ParentID), "ID", $GLOBALS['DB_WE'])) {
+				while(f('SELECT ID FROM ' . TEMPLATES_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($footext) . "' AND ParentID=" . intval($templ->ParentID), "ID", $GLOBALS['DB_WE'])){
 					$z++;
 					$footext = $templ->Filename . '_' . $z . $templ->Extension;
 				}
@@ -401,7 +401,7 @@ class copyFolderFrag extends taskFragment{
 				if($CreateMasterTemplate && $templ->MasterTemplateID > 0){
 					if(isset($_SESSION['weS']['WE_CREATE_TEMPLATE'][$templ->MasterTemplateID])){
 						$templ->MasterTemplateID = $_SESSION['weS']['WE_CREATE_TEMPLATE'][$templ->MasterTemplateID];
-					} else{
+					} else {
 						$createdMasterVars = $this->copyTemplate(
 							$templ->MasterTemplateID, $parentID, $CreateMasterTemplate, $CreateIncludedTemplate, $counter);
 						$templ->MasterTemplateID = $createdMasterVars['newID'];
@@ -416,7 +416,7 @@ class copyFolderFrag extends taskFragment{
 							if(isset($_SESSION['weS']['WE_CREATE_TEMPLATE'][trim($incTempl)])){
 								$templID = str_replace($incTempl, $_SESSION['weS']['WE_CREATE_TEMPLATE'][trim($incTempl)], $templ->IncludedTemplates);
 								$newTemplId = $_SESSION['weS']['WE_CREATE_TEMPLATE'][trim($incTempl)];
-							} else{
+							} else {
 								$createdIncVars = $this->copyTemplate(trim($incTempl), $parentID, $CreateMasterTemplate, $CreateIncludedTemplate, $counter);
 								$templID = str_replace($incTempl, $createdIncVars['newID'], $templ->IncludedTemplates);
 								$newTemplId = $createdIncVars['newID'];
@@ -540,7 +540,7 @@ class copyFolderFrag extends taskFragment{
 											$we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK_PATH]['dat'] = $pathTo;
 										}
 									}
-								} else{
+								} else {
 									if(isset($we_doc->elements[$regs[1]]['dat'])){
 										$path = $we_doc->elements[$regs[1]]['dat'];
 										if($this->mustChange($path)){
@@ -561,7 +561,7 @@ class copyFolderFrag extends taskFragment{
 									$we_doc->elements[$k]['dat'] = serialize($link);
 								}
 							}
-						} else{ // iis a normal  text field
+						} else { // iis a normal  text field
 							$this->parseInternalLinks($we_doc->elements[$k]['dat'], $DB_WE);
 							// :TODO: check for ="/Path ='Path and =Path
 							$we_doc->elements[$k]['dat'] = str_replace(
@@ -613,7 +613,7 @@ class copyFolderFrag extends taskFragment{
 			$nintID = $n . we_base_link::MAGIC_INT_LINK_ID;
 			$intID = $fn($nintID);
 			return f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($intID), 'Path', $db);
-		} else{
+		} else {
 			$extPath = $fn($n);
 			return $extPath;
 		}
@@ -638,7 +638,7 @@ class copyFolderFrag extends taskFragment{
 	}
 
 	function parseInternalLinks(&$text, $DB_WE){
-		if(preg_match_all('/(href|src)="'.we_base_link::TYPE_INT_PREFIX.'([^" ]+)/i', $text, $regs, PREG_SET_ORDER)){
+		if(preg_match_all('/(href|src)="' . we_base_link::TYPE_INT_PREFIX . '([^" ]+)/i', $text, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
 				$id = $reg[2];
 
@@ -647,7 +647,7 @@ class copyFolderFrag extends taskFragment{
 					$pathTo = $this->getNewPath($path);
 					$idTo = $this->getID($pathTo, $DB_WE);
 					$idTo = $idTo ? $idTo : '##WEPATH##' . $pathTo . ' ###WEPATH###';
-					$text = preg_replace('#(href|src)="'.we_base_link::TYPE_INT_PREFIX . $id . '#i', $reg[1] . '="'.we_base_link::TYPE_INT_PREFIX . $idTo, $text);
+					$text = preg_replace('#(href|src)="' . we_base_link::TYPE_INT_PREFIX . $id . '#i', $reg[1] . '="' . we_base_link::TYPE_INT_PREFIX . $idTo, $text);
 				}
 			}
 		}
@@ -672,7 +672,7 @@ class copyFolderFrag extends taskFragment{
 	}
 
 	function finish(){
-		$cancelButton = we_button::create_button('cancel', 'javascript:top.close()');
+		$cancelButton = we_html_button::create_button('cancel', 'javascript:top.close()');
 
 		if(isset($_SESSION['weS']['WE_CREATE_DOCTYPE'])){
 			unset($_SESSION['weS']['WE_CREATE_DOCTYPE']);
@@ -689,13 +689,13 @@ class copyFolderFrag extends taskFragment{
 			print we_html_element::jsElement(
 					'setTimeout(\'self.location = "' . WE_INCLUDES_DIR . 'copyFolder.inc.php?finish=1"\',100);');
 			#unset($_SESSION['weS']['WE_CREATE_TEMPLATE']);
-		} else{
+		} else {
 			$checkTable = (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 1);
 			if(!isset($_SESSION['weS']['WE_COPY_OBJECTS'])){
 				print we_html_element::jsElement(
 						'top.opener.top.we_cmd("load","' . FILE_TABLE . '");' . we_message_reporting::getShowMessageCall(
 							g_l('copyFolder', "[copy_success]"), we_message_reporting::WE_MESSAGE_NOTICE) . 'top.close();');
-			} else{
+			} else {
 				unset($_SESSION['weS']['WE_COPY_OBJECTS']);
 				print we_html_element::jsElement(
 						'top.opener.top.we_cmd("load","' . OBJECT_FILES_TABLE . '");' . we_message_reporting::getShowMessageCall(
@@ -738,7 +738,7 @@ function fsubmit(e) {
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$textname'].value");
 		$wecmdenc3 = we_cmd_enc("opener.document.we_form.CreateTemplate.checked=true;");
 		$yuiSuggest->setSelectButton(
-			we_button::create_button(
+			we_html_button::create_button(
 				"select", "javascript:we_cmd('openDirselector',document.we_form.elements['$idname'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "')", true, 100, 22, "", "", true, false));
 
 		return $yuiSuggest->getHTML();
@@ -746,7 +746,7 @@ function fsubmit(e) {
 
 	function formCreateCategoryChooser(){
 
-		$addbut = we_button::create_button(
+		$addbut = we_html_button::create_button(
 				"add", "javascript:we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);')");
 		$del_but = addslashes(
 			we_html_element::htmlImg(
@@ -781,7 +781,7 @@ function fsubmit(e) {
 		$table->setCol(
 			1, 1, array(
 			'class' => 'defaultfont'
-			), we_forms::checkbox(
+			), we_html_forms::checkbox(
 				1, 0, 'OverwriteCategories', g_l('copyFolder', "[overwrite_categories]"), false, "defaultfont", "toggleButton();"));
 		$table->setCol(
 			2, 0, array(
@@ -800,9 +800,9 @@ function fsubmit(e) {
 		$table->setCol(
 			4, 0, array(
 			'colspan' => 2, 'align' => 'right'
-			), we_button::create_button_table(
+			), we_html_button::create_button_table(
 				array(
-					we_button::create_button("delete_all", "javascript:removeAllCats()"), $addbut
+					we_html_button::create_button("delete_all", "javascript:removeAllCats()"), $addbut
 		)));
 
 		return $table->getHtml() . $js;

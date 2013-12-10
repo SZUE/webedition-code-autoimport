@@ -35,7 +35,7 @@ function we_ui_layout_HeadlineIconTable(idOrObject) {
 	 * @var object
 	 */
 	this.element = idOrObject;
-	if (typeof(this.element) != "object") {
+	if (typeof (this.element) != "object") {
 		this.element = document.getElementById(idOrObject);
 	}
 
@@ -61,8 +61,8 @@ function we_ui_layout_HeadlineIconTable(idOrObject) {
 	this.divs = new Array();
 	// setup divs
 	var divs = this.element.getElementsByTagName("DIV");
-	for(var i = 0; i<divs.length; i++){
-		if(divs[i].id.length > this.divPrefix.length && divs[i].id.substring(0,this.divPrefix.length) == this.divPrefix){
+	for (var i = 0; i < divs.length; i++) {
+		if (divs[i].id.length > this.divPrefix.length && divs[i].id.substring(0, this.divPrefix.length) == this.divPrefix) {
 			this.divs.push(divs[i]);
 		}
 	}
@@ -82,8 +82,8 @@ function we_ui_layout_HeadlineIconTable(idOrObject) {
 	 * @return integer
 	 */
 	this.getLastIndex = function() {
-		var div = this.divs[this.divs.length-1];
-		return parseInt(div.id.substring(this.divPrefix.length,div.id.length));
+		var div = this.divs[this.divs.length - 1];
+		return parseInt(div.id.substring(this.divPrefix.length, div.id.length));
 	}
 
 	/**
@@ -94,7 +94,7 @@ function we_ui_layout_HeadlineIconTable(idOrObject) {
 	 */
 	this.deleteRow = function(index) {
 		var div = document.getElementById(this.divPrefix + index);
-		var mainTD = document.getElementById("td_"+this.id);
+		var mainTD = document.getElementById("td_" + this.id);
 		mainTD.removeChild(div);
 	}
 
@@ -118,7 +118,7 @@ function we_ui_layout_HeadlineIconTable(idOrObject) {
 		mainDiv.id = this.divPrefix + i;
 		mainDiv.innerHTML = divInnerHTML;
 
-		var mainTD = document.getElementById("td_"+this.id);
+		var mainTD = document.getElementById("td_" + this.id);
 		mainTD.appendChild(mainDiv);
 
 		if (navigator.userAgent.indexOf('MSIE') != -1) {
@@ -128,7 +128,7 @@ function we_ui_layout_HeadlineIconTable(idOrObject) {
 		var lastDiv = document.createElement("DIV");
 		lastDiv.style.cssText = "margin:10px 0;clear:both;";
 		mainTD.appendChild(lastDiv);
-		if(insertRuleBefore && (lastNum != -1)){
+		if (insertRuleBefore && (lastNum != -1)) {
 			var rule = document.createElement("DIV");
 			rule.className = "we_ui_layout_HeadlineIconTable_Rule";
 			var preDIV = document.getElementById(this.divPrefix + i);

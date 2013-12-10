@@ -9,7 +9,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -22,7 +22,7 @@
 
 /**
  * Class for handling we_ui_controls_ACFileSelector Element
- * 
+ *
  * @category   we
  * @package    we_ui
  * @subpackage we_ui_controls
@@ -38,13 +38,13 @@ we_ui_controls_ACFileSelector = new Object();
  *@param {boolean} disabled flag that indicates if text field is disabled or not
  *@return void
  */
-we_ui_controls_ACFileSelector.setDisabled = function(idOrObject, disabled) 
+we_ui_controls_ACFileSelector.setDisabled = function(idOrObject, disabled)
 {
-	if (document.getElementById('yuiAcInput_'+idOrObject)) {
-		we_ui_controls_TextField.setDisabled('yuiAcInput_'+idOrObject, disabled);
+	if (document.getElementById('yuiAcInput_' + idOrObject)) {
+		we_ui_controls_TextField.setDisabled('yuiAcInput_' + idOrObject, disabled);
 	}
-	if (document.getElementById('yuiAcButton_'+idOrObject)) {
-		we_ui_controls_Button.setDisabled('yuiAcButton_'+idOrObject, disabled);
+	if (document.getElementById('yuiAcButton_' + idOrObject)) {
+		we_ui_controls_Button.setDisabled('yuiAcButton_' + idOrObject, disabled);
 	}
 }
 
@@ -54,25 +54,25 @@ we_ui_controls_ACFileSelector.setDisabled = function(idOrObject, disabled)
  *@static
  *@return void
  */
-we_ui_controls_ACFileSelector.openSelector = function() 
+we_ui_controls_ACFileSelector.openSelector = function()
 {
 	var args = "";
-	var url = "/webEdition/we_cmd.php?"; 
-	for(var i = 0; i < arguments.length; i++){ 
-		url += "we_cmd["+i+"]="+escape(arguments[i]); 
-		if(i < (arguments.length - 1)) { 
-			url += "&"; 
+	var url = "/webEdition/we_cmd.php?";
+	for (var i = 0; i < arguments.length; i++) {
+		url += "we_cmd[" + i + "]=" + escape(arguments[i]);
+		if (i < (arguments.length - 1)) {
+			url += "&";
 		}
 	}
 	switch (arguments[0]) {
 		case "openDocselector":
-			new jsWindow(url,"we_docselector",-1,-1,900,685,true,true,true,true);
+			new jsWindow(url, "we_docselector", -1, -1, 900, 685, true, true, true, true);
 			break;
 		case "openDirselector":
-			new jsWindow(url,"we_selector",-1,-1,900,600,true,true,true,true);
+			new jsWindow(url, "we_selector", -1, -1, 900, 600, true, true, true, true);
 			break;
 		case "browse_server":
-			new jsWindow(url,"browse_server",-1,-1,900,600,true,true,true,true);
+			new jsWindow(url, "browse_server", -1, -1, 900, 600, true, true, true, true);
 			break;
 	}
 }
@@ -83,23 +83,26 @@ we_ui_controls_ACFileSelector.openSelector = function()
  *@static
  *@return void
  */
-we_ui_controls_ACFileSelector.openToolSelector = function() 
+we_ui_controls_ACFileSelector.openToolSelector = function()
 {
 	var args = "";
-	var url = "/webEdition/we_cmd.php?"; 
-	for(var i = 0; i < arguments.length; i++){ 
-		url += "we_cmd["+i+"]="+escape(arguments[i]); 
-		if(i < (arguments.length - 1)) { 
-			url += "&"; 
+	var url = "/webEdition/we_cmd.php?";
+	for (var i = 0; i < arguments.length; i++) {
+		url += "we_cmd[" + i + "]=" + escape(arguments[i]);
+		if (i < (arguments.length - 1)) {
+			url += "&";
 		}
 	}
 	switch (arguments[0]) {
-		case "open"+arguments[5]+"Dirselector":
-			url = "/webEdition/apps/"+arguments[5]+"/we_"+arguments[5]+"DirSelect.php?";
-			for(var i = 0; i < arguments.length; i++){
-				url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }
+		case "open" + arguments[5] + "Dirselector":
+			url = "/webEdition/apps/" + arguments[5] + "/we_" + arguments[5] + "DirSelect.php?";
+			for (var i = 0; i < arguments.length; i++) {
+				url += "we_cmd[" + i + "]=" + escape(arguments[i]);
+				if (i < (arguments.length - 1)) {
+					url += "&";
+				}
 			}
-			new jsWindow(url,"we_"+arguments[5]+"_dirselector",-1,-1,600,400,true,true,true);
+			new jsWindow(url, "we_" + arguments[5] + "_dirselector", -1, -1, 600, 400, true, true, true);
 			break;
 	}
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,10 +22,9 @@
  * @package    webEdition_rpc
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+class rpcGetAllDocElementsView extends rpcView{
 
-class rpcGetAllDocElementsView extends rpcView {
-
-	function getResponse($response) {
+	function getResponse($response){
 
 
 		ob_start();
@@ -32,11 +32,11 @@ class rpcGetAllDocElementsView extends rpcView {
 		$out = ob_get_contents();
 		ob_end_clean();
 
-		$html =
-		'<pre>element:'  .
-		$out . '</pre>'
+		$html = '<pre>element:' .
+			$out . '</pre>'
 		;
 
 		return $html;
 	}
+
 }

@@ -28,9 +28,9 @@ $table = $_REQUEST['we_cmd'][2];
 
 $script = '';
 
-if(($table == TEMPLATES_TABLE && !we_hasPerm("MOVE_TEMPLATE")) ||
-	($table == FILE_TABLE && !we_hasPerm("MOVE_DOCUMENT")) ||
-	(defined("OBJECT_TABLE") && $table == OBJECT_TABLE && !we_hasPerm("MOVE_OBJECTFILES"))){
+if(($table == TEMPLATES_TABLE && !permissionhandler::hasPerm("MOVE_TEMPLATE")) ||
+	($table == FILE_TABLE && !permissionhandler::hasPerm("MOVE_DOCUMENT")) ||
+	(defined("OBJECT_TABLE") && $table == OBJECT_TABLE && !permissionhandler::hasPerm("MOVE_OBJECTFILES"))){
 	require_once (WE_USERS_MODULE_PATH . 'we_users_permmessage.inc.php');
 	exit();
 }
@@ -320,11 +320,11 @@ $yuiSuggest->setWidth(250);
 $yuiSuggest->setContainerWidth(360);
 $wecmdenc1 = we_cmd_enc('top.rframe.treeheader.document.we_form.elements.' . $idname . '.value');
 $wecmdenc2 = we_cmd_enc('top.rframe.treeheader.document.we_form.elements.' . $textname . '.value');
-$yuiSuggest->setSelectButton(we_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "',0)"), 10);
+$yuiSuggest->setSelectButton(we_html_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "',0)"), 10);
 
 $weAcSelector = $yuiSuggest->getHTML();
 
-$_buttons = we_button::position_yes_no_cancel(we_button::create_button("ok", "javascript:press_ok_move();"), "", we_button::create_button("quit_move", "javascript:we_cmd('exit_move','','$table')"), 10, "left");
+$_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "javascript:press_ok_move();"), "", we_html_button::create_button("quit_move", "javascript:we_cmd('exit_move','','$table')"), 10, "left");
 
 
 print

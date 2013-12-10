@@ -25,7 +25,6 @@
  * Taken from poppler sources
  *
  */
-
 $nameToUnicodeTab = array(
 	'!' => 0x0021,
 	'#' => 0x0023,

@@ -22,8 +22,6 @@
  * @package    webEdition_update
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
-
 class liveUpdateResponse{
 
 	var $Type;
@@ -83,7 +81,9 @@ class liveUpdateResponse{
 			case 'executePatches':
 				return liveUpdateFunctionsServer::executeAllPatches();
 			case 'eval':
-				return eval('?>' . $this->Code);
+				$c = strtr($this->Code, array('we_forms' => 'we_html_forms', '$we_button->' => 'we_html_button::', 'new we_button()' => '""'));
+
+				return eval('?>' . $c);
 				break;
 
 			case 'state':

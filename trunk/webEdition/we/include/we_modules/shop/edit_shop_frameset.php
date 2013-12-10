@@ -28,8 +28,8 @@ we_html_tools::protect();
 
 $what = (isset($_REQUEST["pnt"])) ? $_REQUEST["pnt"] : "frameset";
 
-$weFrame = new weShopFrames(WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php');
-$weFrame->getHTMLDocumentHeader();
+$weFrame = new we_shop_frames(WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php');
+echo $weFrame->getHTMLDocumentHeader();
 print STYLESHEET;
 $weFrame->View->processCommands();
-$weFrame->getHTML($what);
+echo $weFrame->getHTML($what);

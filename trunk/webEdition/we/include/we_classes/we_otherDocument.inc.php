@@ -60,7 +60,7 @@ class we_otherDocument extends we_binaryDocument{
 	}
 
 	function formExtension2(){
-		return $this->htmlFormElementTable($this->htmlTextInput('we_' . $this->Name . '_Extension', 5, $this->Extension, '', 'onchange="_EditorFrame.setEditorIsHot(true);" style="width:92px"'), g_l('weClass', '[extension]'));
+		return we_html_tools::htmlFormElementTable($this->htmlTextInput('we_' . $this->Name . '_Extension', 5, $this->Extension, '', 'onchange="_EditorFrame.setEditorIsHot(true);" style="width:92px"'), g_l('weClass', '[extension]'));
 	}
 
 	public function we_save($resave = 0){
@@ -80,7 +80,7 @@ class we_otherDocument extends we_binaryDocument{
 	function insertAtIndex(){
 		$text = '';
 		$this->resetElements();
-		while((list($k, $v) = $this->nextElement(''))) {
+		while((list($k, $v) = $this->nextElement(''))){
 			$foo = (isset($v['dat']) && substr($v['dat'], 0, 2) == 'a:') ? unserialize($v['dat']) : '';
 			if(!is_array($foo)){
 				if(isset($v['type']) && $v['type'] == 'txt' && isset($v['dat'])){
@@ -203,13 +203,13 @@ class we_otherDocument extends we_binaryDocument{
 								$binaryId = intval($GLOBALS[$key][$formname]->getElement($binaryName));
 
 								// move document from upload location to tmp dir
-								$_SESSION[$_binaryDataId]['serverPath'] = TEMP_PATH . '/' . weFile::getUniqueId();
+								$_SESSION[$_binaryDataId]['serverPath'] = TEMP_PATH . '/' . we_base_file::getUniqueId();
 								move_uploaded_file(
 									$_FILES["we_ui_$formname"]['tmp_name'][$binaryName], $_SESSION[$_binaryDataId]['serverPath']);
 
 
 
-								$tmp_Filename = $binaryName . '_' . weFile::getUniqueId() . '_' . preg_replace(
+								$tmp_Filename = $binaryName . '_' . we_base_file::getUniqueId() . '_' . preg_replace(
 										'/[^A-Za-z0-9._-]/', '', $_FILES["we_ui_$formname"]['name'][$binaryName]);
 
 								if($binaryId){
@@ -231,4 +231,3 @@ class we_otherDocument extends we_binaryDocument{
 	}
 
 }
-

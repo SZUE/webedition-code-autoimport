@@ -39,53 +39,50 @@ if(isset($wasSaved) && $wasSaved){
 	// DOC was saved, mark open tabs to reload if necessary
 	// outsource this, if code gets too big
 	// was saved - not hot anymore
-	print "_EditorFrame.setEditorIsHot(false);";
-
-
-	$_reloadJs = "";
+	?>
+		_EditorFrame.setEditorIsHot(false);
+	<?php
+	$reload = array();
 	switch($GLOBALS['we_doc']->ContentType){
 
 		case 'text/weTmpl': // #538 reload documents based on this template
 
-			$_reloadDocsTempls = we_rebuild::getTemplAndDocIDsOfTemplate($GLOBALS['we_doc']->ID, false, false, true,true);
+			$reloadDocsTempls = we_rebuild::getTemplAndDocIDsOfTemplate($GLOBALS['we_doc']->ID, false, false, true, true);
 
-			$_reload[FILE_TABLE] = $_reloadDocsTempls['documentIDs'];
-			$_reload[TEMPLATES_TABLE] = $_reloadDocsTempls['templateIDs'];
-
+			$reload[FILE_TABLE] = implode(',', $reloadDocsTempls['documentIDs']);
+			$reload[TEMPLATES_TABLE] = implode(',', $reloadDocsTempls['templateIDs']);
 			// reload all documents based on this template
-			if(!empty($_reload[FILE_TABLE]) || !empty($_reload[TEMPLATES_TABLE])){
 
-				$_reloadJs .= "
-var _reloadTabs = new Object();
-_reloadTabs['" . FILE_TABLE . "'] = '," . implode(",", $_reload[FILE_TABLE]) . ",';
-_reloadTabs['" . TEMPLATES_TABLE . "'] = '," . implode(",", $_reload[TEMPLATES_TABLE]) . ",';
-				";
+			break;
+		case 'object':
+			$GLOBALS['DB_WE']->query('SELECT f.ID FROM ' . OBJECT_FILES_TABLE . ' f INNER JOIN ' . LOCK_TABLE . ' l ON f.ID=l.ID AND l.tbl="' . stripTblPrefix(OBJECT_FILES_TABLE) . '" WHERE f.TableID=' . intval($GLOBALS['we_doc']->ID));
+			$reload[OBJECT_FILES_TABLE] = implode(',', $GLOBALS['DB_WE']->getAll(true));
+	}
+	$reload = array_filter($reload);
 
-				$_reloadJs .= "
+	if($reload){
+		echo "var _reloadTabs = new Object();";
+		foreach($reload as $table => $vals){
+			echo "_reloadTabs['" . $table . "'] = '," . $vals . ",';";
+		}
+		echo "
 var _usedEditors = top.weEditorFrameController.getEditorsInUse();
 
 for (frameId in _usedEditors) {
-
 	if ( _reloadTabs[_usedEditors[frameId].getEditorEditorTable()] && (_reloadTabs[_usedEditors[frameId].getEditorEditorTable()]).indexOf(',' + _usedEditors[frameId].getEditorDocumentId() + ',') != -1 ) {
 		_usedEditors[frameId].setEditorReloadNeeded(true);
-
  	}
-}
-				";
-			}
-			break;
+}";
 	}
-	print $_reloadJs;
-
 
 	if($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
 
 		$_newDocJs = "";
 
 		//	JS, when not in seem
-		$isTmpl = $we_doc->ContentType == "text/weTmpl" && (we_hasPerm("NEW_WEBEDITIONSITE") || we_hasPerm("ADMINISTRATOR"));
+		$isTmpl = $we_doc->ContentType == "text/weTmpl" && (permissionhandler::hasPerm("NEW_WEBEDITIONSITE") || permissionhandler::hasPerm("ADMINISTRATOR"));
 		if(!$isTmpl){
-			$isObject = $we_doc->ContentType == "object" && (we_hasPerm("NEW_OBJECTFILE") || we_hasPerm("ADMINISTRATOR"));
+			$isObject = $we_doc->ContentType == "object" && (permissionhandler::hasPerm("NEW_OBJECTFILE") || permissionhandler::hasPerm("ADMINISTRATOR"));
 		}
 		if($isTmpl){
 			$_newDocJs .= 'if( _EditorFrame.getEditorMakeNewDoc() == true ) {' .
@@ -142,7 +139,7 @@ if($we_responseText){
 				" . we_message_reporting::getShowMessageCall($we_responseText, $we_responseTextType) . "
 			}
 			";
-		} else{ //	alert when in preview mode
+		} else { //	alert when in preview mode
 			$_jsCommand .= we_message_reporting::getShowMessageCall($we_responseText, $we_responseTextType) .
 				"_EditorFrameDocumentRef.frames[0].we_cmd('switch_edit_page'," . $GLOBALS['we_doc']->EditPageNr . ",'" . $GLOBALS['we_transaction'] . "');" .
 				//	JavaScript: generated in we_editor.inc.php
@@ -160,7 +157,7 @@ if($we_responseText){
 			}
 			";
 		}
-	} else{ //	alert in normal mode
+	} else { //	alert in normal mode
 		$_jsCommand .= we_message_reporting::getShowMessageCall($we_responseText, $we_responseTextType) .
 			//	JavaScript: generated in we_editor.inc.php
 			(isset($_REQUEST['we_cmd'][5]) ? $_REQUEST['we_cmd'][5] : '' );
@@ -168,5 +165,5 @@ if($we_responseText){
 	print $_jsCommand;
 }
 ?>
-	//-->
+//-->
 </script></head><body></body></html>

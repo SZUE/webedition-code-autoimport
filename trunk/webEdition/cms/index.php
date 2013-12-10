@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,7 +22,6 @@
  * @package    webEdition_cms
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 // include autoload function
 require_once('../lib/we/core/autoload.php');
 

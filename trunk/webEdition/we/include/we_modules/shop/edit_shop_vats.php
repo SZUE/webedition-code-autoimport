@@ -39,12 +39,12 @@ if(isset($_REQUEST['we_cmd'])){
 				$_REQUEST['weShopVatId'], $_REQUEST['weShopVatText'], $_REQUEST['weShopVatVat'], $_REQUEST['weShopVatStandard']
 			);
 
-			if($newId = weShopVats::saveWeShopVAT($weShopVat)){
+			if($newId = we_shop_vats::saveWeShopVAT($weShopVat)){
 				$weShopVat->id = $newId;
 				unset($newId);
 				$jsMessage = g_l('modules_shop', '[vat][save_success]');
 				$jsMessageType = we_message_reporting::WE_MESSAGE_NOTICE;
-			} else{
+			} else {
 				$jsMessage = g_l('modules_shop', '[vat][save_error]');
 				$jsMessageType = we_message_reporting::WE_MESSAGE_ERROR;
 			}
@@ -53,10 +53,10 @@ if(isset($_REQUEST['we_cmd'])){
 
 		case 'deleteVat':
 
-			if(weShopVats::deleteVatById($_REQUEST['weShopVatId'])){
+			if(we_shop_vats::deleteVatById($_REQUEST['weShopVatId'])){
 				$jsMessage = g_l('modules_shop', '[vat][delete_success]');
 				$jsMessageType = we_message_reporting::WE_MESSAGE_NOTICE;
-			} else{
+			} else {
 				$jsMessage = g_l('modules_shop', '[vat][delete_error]');
 				$jsMessageType = we_message_reporting::WE_MESSAGE_ERROR;
 			}
@@ -194,7 +194,7 @@ $jsFunction = '
 
 
 // at top of page show a table with all actual vats
-$allVats = weShopVats::getAllShopVATs();
+$allVats = we_shop_vats::getAllShopVATs();
 
 
 $parts = array();
@@ -227,8 +227,8 @@ if(!empty($allVats)){
 		<td>' . oldHtmlspecialchars($_weShopVat->text) . '</td>
 		<td>' . $_weShopVat->vat . '%</td>
 		<td>' . ($_weShopVat->standard ? g_l('global', "[yes]") : g_l('global', "[no]")) . '</td>
-		<td>' . we_button::create_button('image:btn_edit_edit', 'javascript:we_cmd(\'edit\',\'' . $_weShopVat->id . '\');') . '</td>
-		<td>' . we_button::create_button('image:btn_function_trash', 'javascript:we_cmd(\'delete\',\'' . $_weShopVat->id . '\');') . '</td>
+		<td>' . we_html_button::create_button('image:btn_edit_edit', 'javascript:we_cmd(\'edit\',\'' . $_weShopVat->id . '\');') . '</td>
+		<td>' . we_html_button::create_button('image:btn_function_trash', 'javascript:we_cmd(\'delete\',\'' . $_weShopVat->id . '\');') . '</td>
 	</tr>';
 		unset($_weShopVat);
 	}
@@ -236,7 +236,7 @@ if(!empty($allVats)){
 	$vatTable .= '</table>';
 }
 
-$plusBut = we_button::create_button('image:btn_function_plus', 'javascript:we_cmd(\'addVat\')');
+$plusBut = we_html_button::create_button('image:btn_function_plus', 'javascript:we_cmd(\'addVat\')');
 
 print we_html_element::jsElement(
 		$vatJavaScript .
@@ -269,7 +269,7 @@ $formVat = '
 <tr>
 	<td width="100">' . g_l('modules_shop', '[vat][vat_form_name]') . ':</td>
 	<td><input class="wetextinput" type="text" id="weShopVatText" name="weShopVatText" value="' . $weShopVat->text . '" /></td>
-	<td>' . we_button::create_button('save', 'javascript:we_cmd(\'save\');') . '</td>
+	<td>' . we_html_button::create_button('save', 'javascript:we_cmd(\'save\');') . '</td>
 </tr>
 <tr>
 	<td>' . g_l('modules_shop', '[vat][vat_form_vat]') . ':</td>
@@ -292,9 +292,9 @@ $parts[] = array(
 	'space' => 0
 );
 
-print we_multiIconBox::getHTML(
-		'weShopVates', "100%", $parts, 30, we_button::position_yes_no_cancel(
-			'', '', we_button::create_button('close', 'javascript:we_cmd(\'close\');')
+print we_html_multiIconBox::getHTML(
+		'weShopVates', "100%", $parts, 30, we_html_button::position_yes_no_cancel(
+			'', '', we_html_button::create_button('close', 'javascript:we_cmd(\'close\');')
 		), -1, '', '', false, g_l('modules_shop', '[vat][vat_edit_form_headline_box]'), "", 409
 );
 

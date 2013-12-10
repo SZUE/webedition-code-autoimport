@@ -55,4 +55,5 @@ class we_shop_orderitemtag{
 	public function getObject(){
 		return $this->object;
 	}
+
 }

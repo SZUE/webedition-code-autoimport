@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition SDK
  *
@@ -10,7 +11,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -19,11 +20,11 @@
  * @subpackage we_net_LiveUpdate
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-
 /**
  * @see we_net_Exception
  */
 Zend_Loader::loadClass('we_net_Exception');
 
-class we_net_LiveUpdate_Exception extends we_net_Exception
-{}
+class we_net_LiveUpdate_Exception extends we_net_Exception{
+
+}

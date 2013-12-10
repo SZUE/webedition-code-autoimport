@@ -92,8 +92,10 @@ function keyDialogListener(_successor) {
 	this.dealEvent = function(evt) {
 
 
+		switch (evt.keyCode) {
+			case 27:// ESCAPE
 		// does function closeOnEscape exist!!
-		if (typeof (top.closeOnEscape) == "function" && evt.keyCode == "27") {	// ESCAPE
+				if (typeof (top.closeOnEscape) == "function") {
 
 			if (top.closeOnEscape()) {
 				this.cancelEvent(evt);
@@ -102,14 +104,18 @@ function keyDialogListener(_successor) {
 			}
 		}
 
+				break;
+			case 13:// ENTER
 		// does function applyOnEnter exist?
-		if (typeof (top.applyOnEnter) == "function" && evt.keyCode == "13") {	// ENTER
+				if (typeof (top.applyOnEnter) == "function") {
 			if (top.applyOnEnter(evt)) {
 				this.cancelEvent(evt);
 				return true;
 			}
 		}
 
+				break;
+		}
 		return this.next(evt);
 	}
 }
@@ -131,13 +137,15 @@ function keyDialogSaveListener(_successor) {
 	this.successor = (_successor ? _successor : null);
 	this.dealEvent = function(evt) {
 
-		if (evt["ctrlKey"]) {
-			if (typeof (top.saveOnKeyBoard) == "function" && evt["keyCode"] == 83) { // S (Save)
+		switch (evt["keyCode"]) {
+			case 83:// S (Save)
+				if (typeof (top.saveOnKeyBoard) == "function" && evt["ctrlKey"]) {
 				if (top.saveOnKeyBoard()) {
 					this.cancelEvent(evt);
 					return true;
 				}
 			}
+				break;
 		}
 
 		return this.next(evt);
@@ -165,7 +173,7 @@ function keyEditorListener(_successor) {
 		_editorType = "";
 
 		// check if an editor is open
-		if (typeof (top.weEditorFrameController) != "undefined") {
+		if (top.weEditorFrameController !== undefined) {
 			_activeEditorFrame = top.weEditorFrameController.getActiveEditorFrame();
 			if (top.weEditorFrameController.getActiveDocumentReference()) {
 				_editorType = _activeEditorFrame.getEditorType();
@@ -196,6 +204,7 @@ function keyEditorListener(_successor) {
 					return true;
 
 				case 90://Strg-z
+//					console.log("strg-z canceled");
 					return true;
 				case 87:
 				case 115: // W, F4 (closing a tab)
@@ -232,7 +241,7 @@ function keyModuleListener(_successor) {
 
 	this.dealEvent = function(evt) {
 
-		if (typeof (top.weModuleWindow) != "undefined" && (evt["ctrlKey"])) { // || evt["metaKey"] when target bug is solved by Safari
+		if (top.weModuleWindow !== undefined && (evt["ctrlKey"])) { // || evt["metaKey"] when target bug is solved by Safari
 
 			if (evt["keyCode"] == 83) { // S (Save)
 				if (top.content &&
@@ -266,7 +275,7 @@ function keyToolListener(_successor) {
 	this.successor = (_successor ? _successor : null);
 
 	this.dealEvent = function(evt) {
-		if (typeof (top.weToolWindow) != "undefined" && (evt["ctrlKey"])) { // || evt["metaKey"] when target bug is solved by Safari
+		if (top.weToolWindow !== undefined && (evt["ctrlKey"])) { // || evt["metaKey"] when target bug is solved by Safari
 			if (evt["keyCode"] == 83) { // S (Save)
 				if (top.content &&
 								top.content.resize &&
@@ -306,11 +315,11 @@ function keyTagWizardListener(_successor) {
 
 		if (evt["keyCode"] == 73) { // I (Open Tag-Wizard Prompt)
 
-			if (typeof (top.weEditorFrameController) != "undefined") {
+			if (top.weEditorFrameController !== undefined) {
 				_activeEditorFrame = top.weEditorFrameController.getActiveEditorFrame();
 
 				if (_activeEditorFrame.getEditorContentType() == "text/weTmpl" &&
-								typeof (_activeEditorFrame.getEditorFrameWindow().frames[3].tagGroups['alltags']) != "undefined") {
+								_activeEditorFrame.getEditorFrameWindow().frames[3].tagGroups['alltags'] !== undefined) {
 
 					_activeEditorFrame.getEditorFrameWindow().frames[3].openTagWizardPrompt();
 					this.cancelEvent(evt);
@@ -337,19 +346,22 @@ function keyReloadListener(_successor) {
 	this.successor = (_successor ? _successor : null);
 	this.dealEvent = function(evt) {
 
-		if (typeof (top.weEditorFrameController) != "undefined") {
+		if (top.weEditorFrameController !== undefined) {
+			switch (evt["keyCode"]) {
+				case 82:// R Reload
 			if (evt["ctrlKey"] || evt["metaKey"]) {
 
-				if ((evt["keyCode"] == 82) || // R Reload
-								(evt["ctrlKey"] && evt["keyCode"] == 90))//Z Back
-				{
-					console.log('event canceled');
-					console.log(evt);
 					this.cancelEvent(evt);
 					return true;
 				}
+					break;
+				case 90://Z Back
+					if (evt["ctrlKey"]) {
+						this.cancelEvent(evt);
+						return true;
 			}
-			if (evt["keyCode"] == 116) { // F5
+					break;
+				case 116:
 				this.cancelEvent(evt);
 				return true;
 			}
@@ -373,27 +385,25 @@ var keyListener = new keyEditorListener(new keyModuleListener(new keyToolListene
 function dealWithKeyboardShortCut(evt) {
 	// This function receives all events, when a key is pressed and forwards the event to
 	// the first keyboardlistener ("chain of responsibility")
-	if (
-					evt["keyCode"] == 27			// ESCAPE
-					|| evt["keyCode"] == 13			// ENTER
-					|| evt["keyCode"] == 116		// F5 - works only in FF
-
-					|| (// ctrl-key for windows, meta-key for mac
-									(evt["ctrlKey"] || evt["metaKey"])
-
-									&& (evt["keyCode"] != 17 // don't forward only CTRL
-													&& evt["keyCode"] != 67 //Strg-C
-													&& evt["keyCode"] != 86 //Strg-V
-													)
-									)
-					) {
-		//console.log('deal'+evt['keyCode'])
+	switch (evt["keyCode"]) {
+		case 27: // ESCAPE
+		case 13: // ENTER
+		case 116: // F5 - works only in FF
 		return keyListener.dealEvent(evt);
 
-	} else {
-		//console.log('for'+evt['keyCode']);
+		case 45://ins
+		case 46://del
 		return true;
-		// event is NOT forwarded
+		case 67: //C
+		case 86: //V
+			if (evt["ctrlKey"] || evt["metaKey"]) {
+				//console.log('Copy/paste' + evt['keyCode']);
+				return true;
+			}
+		default:
+			//console.log('deal' + evt['keyCode']);
+			return (evt["ctrlKey"] || evt["metaKey"] ?
+							keyListener.dealEvent(evt) : true);
 	}
 }
 top.dealWithKeyboardShortCut = dealWithKeyboardShortCut;

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -23,7 +24,6 @@
  *
  * Taken from poppler sources
  */
-
 $encodings = array(
 	'macRomanEncoding' => array(
 		NULL,

@@ -26,7 +26,7 @@
  *
  * @todo check if needed and if, then complete it and DON'T use old stuff like DB and other
  * */
-abstract class we_util_File extends weFile{
+abstract class we_util_File extends we_base_file{
 
 	public static function save($filename, $content, $flags = "wb", $create_path = false){
 		if(($create_path && !self::mkpath(dirname($filename))) || (!is_writable(dirname($filename)))){
@@ -283,7 +283,7 @@ abstract class we_util_File extends weFile{
 			$tar_object->createModify($DirFileObjectsArray, '', $directoy);
 		} else {
 //FIXME: remove include
-			include($GLOBALS['__WE_LIB_PATH__'] . DIRECTORY_SEPARATOR . 'additional' . DIRECTORY_SEPARATOR . 'archive' . DIRECTORY_SEPARATOR . 'altArchive_Tar.class.php');
+			include(WE_LIB_PATH . 'additional/archive/altArchive_Tar.class.php');
 			$tar_object = new altArchive_Tar($gzfile, true);
 			$tar_object->createModify($DirFileObjectsArray, '', $directoy);
 		}
@@ -300,7 +300,7 @@ abstract class we_util_File extends weFile{
 			$tar_object->extractModify($destination, '');
 		} else {
 //FIXME: remove include
-			include($GLOBALS['__WE_LIB_PATH__'] . DIRECTORY_SEPARATOR . 'additional' . DIRECTORY_SEPARATOR . 'archive' . DIRECTORY_SEPARATOR . 'altArchive_Tar.class.php');
+			include(WE_LIB_PATH . 'additional/archive/altArchive_Tar.class.php');
 			$tar_object = new altArchive_Tar($gzfile, true);
 			$tar_object->extractModify($destination, '');
 		}

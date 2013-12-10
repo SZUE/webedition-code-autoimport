@@ -45,7 +45,7 @@ function formBannerChooser($width = "", $table = BANNER_TABLE, $idvalue, $idname
 	$wecmdenc1 = we_cmd_enc("document.we_form.elements['$idname'].value");
 	$wecmdenc2 = we_cmd_enc("document.we_form.elements['$textname'].value");
 	$wecmdenc3 = we_cmd_enc(str_replace('\\', '', $cmd));
-	$button = we_button::create_button('select', "javascript:we_cmd('openBannerSelector',document.we_form.elements['$idname'].value,'" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "')");
+	$button = we_html_button::create_button('select', "javascript:we_cmd('openBannerSelector',document.we_form.elements['$idname'].value,'" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "')");
 
 	$yuiSuggest->setAcId("Path");
 	$yuiSuggest->setContentType("folder");
@@ -73,32 +73,39 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 			}
 		}
 	}
-	function we_cmd(){
+	function we_cmd() {
 		var args = "";
-		var url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-		switch (arguments[0]){
+		var url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?";
+		for (var i = 0; i < arguments.length; i++) {
+			url += "we_cmd[" + i + "]=" + escape(arguments[i]);
+			if (i < (arguments.length - 1)) {
+				url += "&";
+			}
+		}
+		switch (arguments[0]) {
 			case "openBannerSelector":
-				new jsWindow(url,"we_bannerselector",-1,-1,650,400,true,true,true);
+				new jsWindow(url, "we_bannerselector", -1, -1, 650, 400, true, true, true);
 				break;
 			default:
-				for(var i = 0; i < arguments.length; i++){
-					args += 'arguments['+i+']' + ((i < (arguments.length-1)) ? ',' : '');
+				for (var i = 0; i < arguments.length; i++) {
+					args += 'arguments[' + i + ']' + ((i < (arguments.length - 1)) ? ',' : '');
 				}
-				eval('top.content.we_cmd('+args+')');
+				eval('top.content.we_cmd(' + args + ')');
 		}
 	}
 
 	function we_save() {
-		var acLoopCount=0;
+		var acLoopCount = 0;
 		var acIsRunning = false;
-		while(acLoopCount<20 && YAHOO.autocoml.isRunnigProcess()){
+		while (acLoopCount < 20 && YAHOO.autocoml.isRunnigProcess()) {
 			acLoopCount++;
 			acIsRunning = true;
-			setTimeout('we_save()',100);
+			setTimeout('we_save()', 100);
 		}
-		if(!acIsRunning) {
-			if(YAHOO.autocoml.isValid()) {
-				document.we_form.submit();;
+		if (!acIsRunning) {
+			if (YAHOO.autocoml.isValid()) {
+				document.we_form.submit();
+				;
 			} else {
 <?php echo we_message_reporting::getShowMessageCall(g_l('alert', '[save_error_fields_value_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 			}
@@ -110,14 +117,14 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 <?php echo weSuggest::getYuiJsFiles(); ?>
 
 </head>
-<body class="weDialogBody" onUnload="doUnload()">
+<body class="weDialogBody" onunload="doUnload()">
 	<form name="we_form" action="<?php print $_SERVER["SCRIPT_NAME"]; ?>" method="post"><input type="hidden" name="ok" value="1" /><input type="hidden" name="we_cmd[0]" value="<?php print $_REQUEST['we_cmd'][0]; ?>" />
 		<?php
 		$DefaultBannerID = f("SELECT pref_value FROM " . BANNER_PREFS_TABLE . " WHERE pref_name='DefaultBannerID'", "pref_value", $DB_WE);
 		$content = formBannerChooser(300, BANNER_TABLE, $DefaultBannerID, "DefaultBannerID", "");
-		$yes_button = we_button::create_button("save", "javascript:we_save();");
-		$cancel_button = we_button::create_button("cancel", "javascript:top.close();");
-		$buttons = we_button::position_yes_no_cancel($yes_button, null, $cancel_button);
+		$yes_button = we_html_button::create_button("save", "javascript:we_save();");
+		$cancel_button = we_html_button::create_button("cancel", "javascript:top.close();");
+		$buttons = we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button);
 
 		print we_html_tools::htmlDialogLayout($content, g_l('modules_banner', '[defaultbanner]'), $buttons, "100%", 30, "175");
 		?>

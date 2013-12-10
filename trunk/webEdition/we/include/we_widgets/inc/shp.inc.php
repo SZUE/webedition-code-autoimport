@@ -3,9 +3,9 @@
 /**
  * webEdition CMS
  *
- * $Rev: 6749 $
- * $Author: mokraemer $
- * $Date: 2013-10-08 11:11:15 +0200 (Di, 08 Okt 2013) $
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 $oTblCont = new we_html_table(array(
 	"border" => 0, "cellpadding" => 0, "cellspacing" => 0
 	), 1, 1);
@@ -34,5 +33,5 @@ $oTblCont->setCol(
 		), we_html_element::htmlDiv(array('id' => 'shp_data'), $shopDashboard)
 ));
 $aLang = array(
-	g_l('cockpit', '[shop_dashboard][headline]').':&nbsp;'.$interval, ""
+	g_l('cockpit', '[shop_dashboard][headline]') . '&nbsp;' . $interval, ""
 );

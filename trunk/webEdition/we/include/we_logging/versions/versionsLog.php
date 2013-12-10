@@ -39,7 +39,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') .
 
 print $versionsLogView->getJS();
 
-$closeButton = we_button::create_button("close", "javascript:window.close();");
+$closeButton = we_html_button::create_button("close", "javascript:window.close();");
 ?>
 <style type="text/css">
 

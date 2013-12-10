@@ -7,16 +7,16 @@ if(empty($_SESSION["user"]["Username"])){
 		if(!file_exists(WE_SPELLCHECKER_MODULE_PATH . '/tmp/' . md5($_REQUEST['scid']))){
 			we_html_tools::protect();
 		}
-	} else{
+	} else {
 		we_html_tools::protect();
 	}
-} else{
+} else {
 	we_html_tools::protect();
 }
 
 we_html_tools::htmlTop();
 
-function saveSettings($default, $active, $langs=array()){
+function saveSettings($default, $active, $langs = array()){
 	$_lang = '';
 
 	foreach($langs as $k => $v){
@@ -32,9 +32,9 @@ function saveSettings($default, $active, $langs=array()){
 				\'default\' => \'' . $default . '\',
 				\'active\' => array(\'' . implode('\',\'', $active) . '\'),
 				);
-				' . $_lang ;
+				' . $_lang;
 
-	weFile::save(WE_SPELLCHECKER_MODULE_PATH . 'spellchecker.conf.inc.php', $_construct);
+	we_base_file::save(WE_SPELLCHECKER_MODULE_PATH . 'spellchecker.conf.inc.php', $_construct);
 
 	$_SESSION['weS']['dictLang'] = $default;
 }
@@ -52,7 +52,7 @@ if(isset($_REQUEST['cmd'][0])){
 				}
 
 				$_userDict = WE_SPELLCHECKER_MODULE_PATH . '/dict/' . $_username . '@' . $_SERVER['SERVER_NAME'] . '.dict';
-				weFile::save($_userDict, $_REQUEST['cmd'][1] . "\n", 'ab');
+				we_base_file::save($_userDict, $_REQUEST['cmd'][1] . "\n", 'ab');
 			}
 			break;
 		case 'addWords' :
@@ -73,7 +73,7 @@ if(isset($_REQUEST['cmd'][0])){
 				}
 
 				$_userDict = WE_SPELLCHECKER_MODULE_PATH . '/dict/' . $_username . '@' . $_SERVER['SERVER_NAME'] . '.dict';
-				weFile::save($_userDict, implode("\n", $_words) . "\n", 'ab');
+				we_base_file::save($_userDict, implode("\n", $_words) . "\n", 'ab');
 			}
 			break;
 		case 'setLangDict' :
@@ -97,16 +97,16 @@ if(isset($_REQUEST['cmd'][0])){
 
 				move_uploaded_file($_FILES['chunk']['tmp_name'], WE_SPELLCHECKER_MODULE_PATH . 'chunk');
 
-				$_content = weFile::load(WE_SPELLCHECKER_MODULE_PATH . 'chunk');
+				$_content = we_base_file::load(WE_SPELLCHECKER_MODULE_PATH . 'chunk');
 				$_checksum = crc32($_content);
 
 				if(sprintf("%u", $_checksum) != $_REQUEST['cmd'][2])
 					t_e('Corrupt!!!');
 
-				weFile::save(WE_SPELLCHECKER_MODULE_PATH . 'dict/' . $_REQUEST['cmd'][1], $_content, 'ab');
+				we_base_file::save(WE_SPELLCHECKER_MODULE_PATH . 'dict/' . $_REQUEST['cmd'][1], $_content, 'ab');
 
 				unlink(WE_SPELLCHECKER_MODULE_PATH . 'chunk');
-			} else{
+			} else {
 
 			}
 
@@ -134,11 +134,11 @@ if(isset($_REQUEST['cmd'][0])){
 			saveSettings($_default, $_active, $_langs);
 
 			$_content = $_REQUEST['defaultDict'];
-			weFile::save(WE_SPELLCHECKER_MODULE_PATH . 'dict/default.inc.php', $_content);
+			we_base_file::save(WE_SPELLCHECKER_MODULE_PATH . 'dict/default.inc.php', $_content);
 
 			print we_html_element::jsElement(
 					we_message_reporting::getShowMessageCall(g_l('modules_spellchecker', '[save_settings]'), we_message_reporting::WE_MESSAGE_NOTICE)
-				);
+			);
 
 			break;
 
@@ -160,7 +160,7 @@ if(isset($_REQUEST['cmd'][0])){
 						saveSettings(isset($_new_ac[0]) ? $_new_ac[0] : '', $_new_ac);
 					}
 				}
-			} else{
+			} else {
 				$_mess = g_l('modules_spellchecker', '[name_invalid]');
 				$_messType = we_message_reporting::WE_MESSAGE_ERROR;
 			}
@@ -194,7 +194,7 @@ if(isset($_REQUEST['cmd'][0])){
 			$_dir = dir(WE_SPELLCHECKER_MODULE_PATH . 'dict');
 
 			$_i = 0;
-			while(false !== ($entry = $_dir->read())) {
+			while(false !== ($entry = $_dir->read())){
 				if($entry != '.' && $entry != '..' && strpos($entry, '.zip') !== false){
 					$_i++;
 					$table->addRow();
@@ -202,22 +202,22 @@ if(isset($_REQUEST['cmd'][0])){
 					$_name = str_replace('.zip', '', $entry);
 					$_display = (strlen($_name) > 10) ? (substr($_name, 0, 10) . '...') : $_name;
 
-					$table->setCol($_i, 0, array('valign' => 'top'), we_forms::radiobutton($_name, (($spellcheckerConf['default'] == $_name) ? true : false), 'default', '', true, 'defaultfont', 'document.we_form.enable_' . $_name . '.value=1;document.we_form._enable_' . $_name . '.checked=true;'));
+					$table->setCol($_i, 0, array('valign' => 'top'), we_html_forms::radiobutton($_name, (($spellcheckerConf['default'] == $_name) ? true : false), 'default', '', true, 'defaultfont', 'document.we_form.enable_' . $_name . '.value=1;document.we_form._enable_' . $_name . '.checked=true;'));
 					$table->setCol($_i, 1, array('valign' => 'top', 'class' => 'defaultfont'), $_display);
 
 					$_lanSelect->setAttribute('name', 'lang[' . $_name . ']');
 
 					if(isset($_langs[$_name])){
 						$_lanSelect->selectOption($_langs[$_name]);
-					} else{
+					} else {
 						$_lanSelect->selectOption($GLOBALS['weDefaultFrontendLanguage']);
 					}
 
 					$table->setCol($_i, 2, array('valign' => 'top', 'class' => 'defaultfont'), $_lanSelect->getHtml());
 
-					$table->setCol($_i, 3, array('valign' => 'top', 'align' => 'center'), we_forms::checkboxWithHidden(in_array($_name, $spellcheckerConf['active']), 'enable_' . $_name, '', false, 'defaultfont', ''));
-					$table->setCol($_i, 4, array('valign' => 'top', 'align' => 'center'), '<div style="display: none;" id="updateIcon_' . $_name . '"><img src="' . IMAGE_DIR . 'spinner.gif"/></div><div style="display: block;" id="updateBut_' . $_name . '">' . we_button::create_button('image:btn_function_reload', 'javascript: updateDict("' . $_name . '");') . '</div>');
-					$table->setCol($_i, 5, array('valign' => 'top', 'align' => 'center'), we_button::create_button('image:btn_function_trash', 'javascript: deleteDict("' . $_name . '");'));
+					$table->setCol($_i, 3, array('valign' => 'top', 'align' => 'center'), we_html_forms::checkboxWithHidden(in_array($_name, $spellcheckerConf['active']), 'enable_' . $_name, '', false, 'defaultfont', ''));
+					$table->setCol($_i, 4, array('valign' => 'top', 'align' => 'center'), '<div style="display: none;" id="updateIcon_' . $_name . '"><img src="' . IMAGE_DIR . 'spinner.gif"/></div><div style="display: block;" id="updateBut_' . $_name . '">' . we_html_button::create_button('image:btn_function_reload', 'javascript: updateDict("' . $_name . '");') . '</div>');
+					$table->setCol($_i, 5, array('valign' => 'top', 'align' => 'center'), we_html_button::create_button('image:btn_function_trash', 'javascript: deleteDict("' . $_name . '");'));
 				}
 			}
 			$_dir->close();
@@ -237,8 +237,8 @@ if(isset($_REQUEST['cmd'][0])){
 
 	function dispatch(cmd) {
 		document.dispatcherForm.elements["cmd[0]"].value = cmd;
-		for(var i = 1; i < arguments.length; i++) {
-			document.dispatcherForm.elements["cmd["+i+"]"].value = arguments[i];
+		for (var i = 1; i < arguments.length; i++) {
+			document.dispatcherForm.elements["cmd[" + i + "]"].value = arguments[i];
 		}
 		document.dispatcherForm.submit();
 	}

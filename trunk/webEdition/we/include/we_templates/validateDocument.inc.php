@@ -34,7 +34,7 @@ we_html_tools::htmlTop();
 
 if($we_doc->ContentType == 'text/css' || $we_doc->Extension == '.css'){
 	require_once(WE_INCLUDES_PATH . 'accessibility/services_css.inc.php');
-} else{
+} else {
 	require_once(WE_INCLUDES_PATH . 'accessibility/services_html.inc.php');
 }
 
@@ -104,7 +104,7 @@ if(!empty($services)){
 		we_html_tools::hidden('checkvia', $selectedService->checkvia) .
 		we_html_tools::hidden('varname', $selectedService->varname) .
 		we_html_tools::hidden('additionalVars', $selectedService->additionalVars);
-} else{
+} else {
 	$_select = g_l('validation', '[no_services_available]');
 }
 
@@ -201,9 +201,9 @@ $parts = array(
 		$_select .
 		$_hiddens .
 		'</td><td>' . we_html_tools::getPixel(20, 5) . '</td><td>' .
-		we_button::create_button('edit', 'javascript:we_cmd(\'customValidationService\')', true, 100, 22, "", "", !we_hasPerm("CAN_EDIT_VALIDATION"))
+		we_html_button::create_button('edit', 'javascript:we_cmd(\'customValidationService\')', true, 100, 22, "", "", !permissionhandler::hasPerm("CAN_EDIT_VALIDATION"))
 		. '</td><td>' . we_html_tools::getPixel(20, 5) . '</td><td>' .
-		we_button::create_button('ok', 'javascript:we_cmd(\'checkDocument\')', true, 100, 22, '', '', (empty($services)))
+		we_html_button::create_button('ok', 'javascript:we_cmd(\'checkDocument\')', true, 100, 22, '', '', (empty($services)))
 		. '</td></tr></table>'
 		, 'space' => 95),
 	array('html' => g_l('validation', '[result]'), 'noline' => 1, 'space' => 0),
@@ -212,7 +212,7 @@ $parts = array(
 
 $body = '<form name="we_form">'
 	. we_html_tools::hidden('we_transaction', (isset($_REQUEST['we_transaction']) && preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0))
-	. we_multiIconBox::getHTML('weDocValidation', "100%", $parts, 20, '', -1, '', '', false) .
+	. we_html_multiIconBox::getHTML('weDocValidation', "100%", $parts, 20, '', -1, '', '', false) .
 	'</form>';
 
 print we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'setIFrameSize()', 'onresize' => 'setIFrameSize()'), $body) .

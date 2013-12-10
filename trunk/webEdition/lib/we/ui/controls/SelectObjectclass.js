@@ -9,7 +9,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -22,7 +22,7 @@
 
 /**
  * Class for handling we_ui_controls_Select Element
- * 
+ *
  * @category   we
  * @package    we_ui
  * @subpackage we_ui_controls
@@ -38,13 +38,13 @@ we_ui_controls_SelectObjectclass = new Object();
  *@param {boolean} disabled flag that indicates if Select is disabled or not
  *@return void
  */
-we_ui_controls_Select.setDisabled = function(idOrObject, disabled) 
+we_ui_controls_Select.setDisabled = function(idOrObject, disabled)
 {
 	var element = idOrObject;
-	if (typeof(element) != "object") {
+	if (typeof (element) != "object") {
 		element = document.getElementById(idOrObject);
 	}
-	if(disabled){
+	if (disabled) {
 		element.className = 'we_ui_controls_Select_disabled';
 	}
 	else {
@@ -63,10 +63,10 @@ we_ui_controls_Select.setDisabled = function(idOrObject, disabled)
 we_ui_controls_Select.hide = function(idOrObject)
 {
 	var element = idOrObject;
-	if (typeof(element) != "object") {
+	if (typeof (element) != "object") {
 		element = document.getElementById(idOrObject);
 	}
-	if(element != null){
+	if (element != null) {
 		element.style.display = "none";
 	}
 }
@@ -81,10 +81,10 @@ we_ui_controls_Select.hide = function(idOrObject)
 we_ui_controls_Select.show = function(idOrObject)
 {
 	var element = idOrObject;
-	if (typeof(element) != "object") {
+	if (typeof (element) != "object") {
 		element = document.getElementById(idOrObject);
 	}
-	if(element != null){
+	if (element != null) {
 		element.style.display = "";
 	}
 }
@@ -101,18 +101,18 @@ we_ui_controls_Select.show = function(idOrObject)
 we_ui_controls_Select.insertOptionBeforeSelected = function(idOrObject, text, value)
 {
 	var element = idOrObject;
-	if (typeof(element) != "object") {
+	if (typeof (element) != "object") {
 		element = document.getElementById(idOrObject);
 	}
 	if (element.selectedIndex >= 0) {
 		var elOptNew = document.createElement('option');
 		elOptNew.text = text;
 		elOptNew.value = value;
-		var elOptOld = element.options[element.selectedIndex];  
+		var elOptOld = element.options[element.selectedIndex];
 		try {
 			element.add(elOptNew, elOptOld); // standards compliant; doesn't work in IE
 		}
-		catch(ex) {
+		catch (ex) {
 			element.add(elOptNew, element.selectedIndex); // IE only
 		}
 	}
@@ -128,13 +128,13 @@ we_ui_controls_Select.insertOptionBeforeSelected = function(idOrObject, text, va
 we_ui_controls_Select.removeOptionSelected = function(idOrObject)
 {
 	var element = idOrObject;
-	if (typeof(element) != "object") {
+	if (typeof (element) != "object") {
 		element = document.getElementById(idOrObject);
 	}
 	var i;
-  	for (i = element.length - 1; i>=0; i--) {
-    	if (element.options[i].selected) {
-    		element.remove(i);
+	for (i = element.length - 1; i >= 0; i--) {
+		if (element.options[i].selected) {
+			element.remove(i);
 		}
 	}
 }
@@ -151,17 +151,17 @@ we_ui_controls_Select.removeOptionSelected = function(idOrObject)
 we_ui_controls_Select.addLastOption = function(idOrObject, text, value)
 {
 	var element = idOrObject;
-	if (typeof(element) != "object") {
+	if (typeof (element) != "object") {
 		element = document.getElementById(idOrObject);
 	}
 	var elOptNew = document.createElement('option');
 	elOptNew.text = text;
-	elOptNew.value = value;	
+	elOptNew.value = value;
 	try {
-	  element.add(elOptNew, null); // standards compliant; doesn't work in IE
+		element.add(elOptNew, null); // standards compliant; doesn't work in IE
 	}
-	catch(ex) {
-	  element.add(elOptNew); // IE only
+	catch (ex) {
+		element.add(elOptNew); // IE only
 	}
 }
 
@@ -175,7 +175,7 @@ we_ui_controls_Select.addLastOption = function(idOrObject, text, value)
 we_ui_controls_Select.removeLastOption = function(idOrObject)
 {
 	var element = idOrObject;
-	if (typeof(element) != "object") {
+	if (typeof (element) != "object") {
 		element = document.getElementById(idOrObject);
 	}
 	if (element.length > 0)
@@ -183,4 +183,3 @@ we_ui_controls_Select.removeLastOption = function(idOrObject)
 		element.remove(element.length - 1);
 	}
 }
-		

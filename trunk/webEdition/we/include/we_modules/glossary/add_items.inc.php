@@ -130,21 +130,21 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 	$Text = str_replace("&nbsp;", " ", $Text);
 	$Text = preg_replace(array("/[\t]+/", "/[ ]+/"), " ", $Text);
 
-	$ExceptionListFilename = weGlossary::getExceptionFilename($Language);
+	$ExceptionListFilename = we_glossary_glossary::getExceptionFilename($Language);
 
 	if(!file_exists($ExceptionListFilename)){
-		weGlossary::editException($Language, "");
+		we_glossary_glossary::editException($Language, "");
 	}
 
-	$ExceptionList = weGlossary::getException($Language);
-	$PublishedEntries = weGlossary::getEntries($Language, 'published');
+	$ExceptionList = we_glossary_glossary::getException($Language);
+	$PublishedEntries = we_glossary_glossary::getEntries($Language, 'published');
 	foreach($PublishedEntries as $Key => $Value){
 		$ExceptionList[] = $Value['Text'];
 	}
-	$UnpublishedEntries = weGlossary::getEntries($Language, 'unpublished');
+	$UnpublishedEntries = we_glossary_glossary::getEntries($Language, 'unpublished');
 	$List = array();
 	foreach($UnpublishedEntries as $Key => $Value){
-		if($UnpublishedEntries[$Key]['Type'] != weGlossary::TYPE_LINK){
+		if($UnpublishedEntries[$Key]['Type'] != we_glossary_glossary::TYPE_LINK){
 			$List[] = $Value;
 		}
 	}
@@ -183,12 +183,9 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 
 	<?php
 	foreach($List as $Key => $Value){
-		$Replaced = false;
-		$Value['Text'] = str_replace("\n", "", str_replace("\r\n", "\n", $Value['Text']));
-		$TextReplaced = preg_replace("/((<[^>]*)|([^[:alnum:]]){$Value['Text']}([^[:alnum:]]))/e", '"\2"=="\1"?"\1":"\3\4"', " " . $Text . " ");
-		if(trim($TextReplaced) != trim($Text)){
-			$Replaced = true;
-		}
+		$Value['Text'] = str_replace(array("\r", "\n"), '', $Value['Text']);
+		$TextReplaced = preg_replace('-(^|\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~])(' . preg_quote($Value['Text'], '-') . ')(\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~]|$)-', '${1}${3}', $Text);
+		$Replaced = (trim($TextReplaced) != trim($Text));
 		$Text = trim($TextReplaced);
 		if($Replaced){
 			echo "top.frames.glossarycheck.addPredefinedRow('" . $Value['Text'] . "',new Array(),'" . $Value['Type'] . "','" . $Value['Title'] . "','" . $Value['Lang'] . "');\n";
@@ -196,9 +193,8 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 	}
 
 	foreach($ExceptionList as $Key => $Value){
-		$Value = str_replace("\n", "", str_replace("\r\n", "\n", $Value));
-		$Text = preg_replace("/((<[^>]*)|([^[:alnum:]]){$Value}([^[:alnum:]]))/e", '"\2"=="\1"?"\1":"\3\4"', " " . $Text . " ");
-		$Text = trim($Text);
+		$Value = str_replace(array("\r", "\n"), '', $Value);
+		$Text = preg_replace('-(^|\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~])(' . preg_quote($Value, '-') . ')(\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~]|$)-', '${1}${3}', $Text);
 	}
 	?>
 			orginal = "<?php echo $Text; ?>";
@@ -294,7 +290,7 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 				window.setTimeout("fadeout(\"" + id + "\"," + (from - step) + "," + step + "," + speed + ")", speed);
 			}
 		}
-		//-->
+	//-->
 	</script>
 	<style type="text/css">
 		#applet {
@@ -319,7 +315,7 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 			?>
 
 			<script type="text/javascript"><!--
-				function we_save_document() {
+		function we_save_document() {
 					top.opener._showGlossaryCheck = 0;
 					top.opener.we_save_document();
 					top.close();
@@ -327,7 +323,7 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 				function we_reloadEditPage() {
 					top.opener.top.we_cmd('switch_edit_page', <?php echo $we_doc->EditPageNr; ?>, '<?php echo $Transaction; ?>', 'save_document');
 				}
-				//-->
+	//-->
 			</script>
 			<?php
 			echo '<iframe id="glossarycheck" name="glossarycheck" frameborder="0" src="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=' . $_REQUEST['we_cmd'][0] . '&we_cmd[1]=prepare&we_cmd[2]=' . $_REQUEST['we_cmd'][2] . (isset($_REQUEST['we_cmd'][3]) ? '&we_cmd[3]=' . $_REQUEST['we_cmd'][3] : '' ) . '" width="730px" height="400px" style="overflow: hidden;"></iframe>' .
@@ -338,9 +334,9 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 //
 		} else if($_REQUEST['we_cmd'][1] == 'prepare'){
 
-			$configFile = WE_GLOSSARY_MODULE_PATH . weGlossaryReplace::configFile;
+			$configFile = WE_GLOSSARY_MODULE_PATH . we_glossary_replace::configFile;
 			if(!file_exists($configFile) || !is_file($configFile)){
-				weGlossarySettingControl::saveSettings(true);
+				we_glossary_settingControl::saveSettings(true);
 			}
 			include($configFile);
 
@@ -365,13 +361,13 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 				$Modes[''] = g_l('modules_glossary', '[please_choose]');
 			}
 			$Modes['ignore'] = g_l('modules_glossary', '[ignore]');
-			if(we_hasPerm('NEW_GLOSSARY')){
-				$Modes[weGlossary::TYPE_ABBREVATION] = g_l('modules_glossary', '[abbreviation]');
-				$Modes[weGlossary::TYPE_ACRONYM] = g_l('modules_glossary', '[acronym]');
-				$Modes[weGlossary::TYPE_FOREIGNWORD] = g_l('modules_glossary', '[foreignword]');
-				$Modes[weGlossary::TYPE_TEXTREPLACE] = g_l('modules_glossary', '[textreplacement]');
+			if(permissionhandler::hasPerm("NEW_GLOSSARY")){
+				$Modes[we_glossary_glossary::TYPE_ABBREVATION] = g_l('modules_glossary', '[abbreviation]');
+				$Modes[we_glossary_glossary::TYPE_ACRONYM] = g_l('modules_glossary', '[acronym]');
+				$Modes[we_glossary_glossary::TYPE_FOREIGNWORD] = g_l('modules_glossary', '[foreignword]');
+				$Modes[we_glossary_glossary::TYPE_TEXTREPLACE] = g_l('modules_glossary', '[textreplacement]');
 			}
-			if(we_hasPerm('EDIT_GLOSSARY_DICTIONARY')){
+			if(permissionhandler::hasPerm("EDIT_GLOSSARY_DICTIONARY")){
 				$Modes['exception'] = g_l('modules_glossary', '[to_exceptionlist]');
 			}
 			$Modes['correct'] = g_l('modules_glossary', '[correct_word]');
@@ -639,7 +635,7 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 	<?php
 	if(!isset($_REQUEST['we_cmd'][3]) || $_REQUEST['we_cmd'][3] != "checkOnly"){
 		?>
-						document.getElementById('execute').innerHTML = '<?php echo str_replace("'", "\'", we_button::create_button("publish", "javascript:top.we_save_document();", true, 120, 22, "", "", true, false)); ?>';
+						document.getElementById('execute').innerHTML = '<?php echo str_replace("'", "\'", we_html_button::create_button("publish", "javascript:top.we_save_document();", true, 120, 22, "", "", true, false)); ?>';
 						weButton.enable('publish');
 		<?php
 	}
@@ -649,7 +645,7 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 
 				function disableItem(id, value) {
 					switch (value) {
-						case <?php echo weGlossary::TYPE_FOREIGNWORD; ?>:
+						case <?php echo we_glossary_glossary::TYPE_FOREIGNWORD; ?>:
 							document.getElementById('title_' + id).disabled = true;
 							document.getElementById('lang_' + id).disabled = false;
 							document.getElementById('title_' + id).style.display = 'inline';
@@ -690,8 +686,8 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 						title = document.getElementById('title_' + i).value;
 						lang = document.getElementById('lang_' + i).value;
 						switch (type) {
-							case <?php echo weGlossary::TYPE_ABBREVATION; ?>:
-							case <?php echo weGlossary::TYPE_ACRONYM; ?>:
+							case <?php echo we_glossary_glossary::TYPE_ABBREVATION; ?>:
+							case <?php echo we_glossary_glossary::TYPE_ACRONYM; ?>:
 								if (title === '') {
 									document.getElementById('title_' + i).focus();
 	<?php print we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[please_insert_title]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
@@ -703,7 +699,7 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 									return false;
 								}
 								break;
-							case <?php echo weGlossary::TYPE_FOREIGNWORD; ?>:
+							case <?php echo we_glossary_glossary::TYPE_FOREIGNWORD; ?>:
 								if (lang === '') {
 									document.getElementById('lang_' + i).focus();
 	<?php print we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[please_insert_language]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
@@ -732,7 +728,7 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 					}
 					document.forms[0].submit();
 				}
-				//-->
+	//-->
 			</script>
 
 		</head>
@@ -805,18 +801,18 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 
 				// Only glossary check
 				if(isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3] == "checkOnly"){
-					$CancelButton = we_button::create_button("close", "javascript:top.close();", true, 120, 22, "", "", false, false);
+					$CancelButton = we_html_button::create_button("close", "javascript:top.close();", true, 120, 22, "", "", false, false);
 					$PublishButton = "";
 
 					// glossary check and publishing
 				} else {
-					$CancelButton = we_button::create_button("cancel", "javascript:top.close();", true, 120, 22, "", "", false, false);
-					$PublishButton = we_button::create_button("publish", "javascript:top.we_save_document();", true, 120, 22, "", "", true, false);
+					$CancelButton = we_html_button::create_button("cancel", "javascript:top.close();", true, 120, 22, "", "", false, false);
+					$PublishButton = we_html_button::create_button("publish", "javascript:top.we_save_document();", true, 120, 22, "", "", true, false);
 				}
-				$ExecuteButton = we_button::create_button("execute", "javascript:checkForm();", true, 120, 22, "", "", true, false);
+				$ExecuteButton = we_html_button::create_button("execute", "javascript:checkForm();", true, 120, 22, "", "", true, false);
 
 
-				$Buttons = we_button::position_yes_no_cancel($PublishButton . $ExecuteButton, "", $CancelButton);
+				$Buttons = we_html_button::position_yes_no_cancel($PublishButton . $ExecuteButton, "", $CancelButton);
 				if(!isset($_REQUEST['we_cmd'][3]) || $_REQUEST['we_cmd'][3] != "checkOnly"){
 					$Buttons .= we_html_element::jsElement("weButton.hide('publish');");
 				}
@@ -829,7 +825,7 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 				);
 				$Parts[] = $Part;
 
-				echo we_multiIconBox::getHTML('weMultibox', "100%", $Parts, 30, $Buttons, -1, '', '', false, g_l('modules_glossary', '[glossary_check]'));
+				echo we_html_multiIconBox::getHTML('weMultibox', "100%", $Parts, 30, $Buttons, -1, '', '', false, g_l('modules_glossary', '[glossary_check]'));
 
 //
 // --> Finish Step
@@ -853,22 +849,19 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 
 					foreach($_REQUEST['item'] as $Key => $Entry){
 						switch($Entry['type']){
-							case "exception":
-								weGlossary::addToException($Language, $Key);
+							case 'exception':
+								we_glossary_glossary::addToException($Language, $Key);
 								break;
 							case '':
-							case "ignore":
+							case 'ignore':
 								break;
-							case "correct":
+							case 'correct':
 								foreach($we_doc->elements as &$val){
 									if(isset($val['type']) && (
-										$val['type'] == "txt" || $val['type'] == "input"
+										$val['type'] == 'txt' || $val['type'] == 'input'
 										)
 									){
-										//FIXME: this looks like the old glossary replace code!
-										$temp = ' ' . $val['dat'] . ' ';
-										$temp = trim(preg_replace("/((<[^>]*)|([^[:alnum:]]){$Key}([^[:alnum:]]))/e", '"\2"=="\1"?"\1":"\3' . $Entry['title'] . '\4"', $temp));
-										$val['dat'] = $temp;
+										$val['dat'] = preg_replace('-(^|\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~])(' . preg_quote($Key, '-') . ')(\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~]|$)-', '${1}' . $Entry['title'] . '${3}', $temp);
 									}
 								}
 								unset($val);
@@ -877,7 +870,7 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 								$AddJs .= "AddWords += '" . addslashes($Key) . ",'\n";
 								break;
 							default:
-								$Glossary = new weGlossary();
+								$Glossary = new we_glossary_glossary();
 								$Glossary->Path = '/' . $Language . '/' . $Entry['type'] . '/' . $Key;
 								$Glossary->IsFolder = 0;
 								$Glossary->Icon = "";
@@ -905,7 +898,7 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 				// --> Actualize to Cache
 				//
 
-				$Cache = new weGlossaryCache($Language);
+	$Cache = new we_glossary_cache($Language);
 				$Cache->write();
 				unset($Cache);
 

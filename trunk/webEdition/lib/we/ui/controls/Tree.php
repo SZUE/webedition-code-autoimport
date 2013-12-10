@@ -129,13 +129,13 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement{
 		$this->addJSFile(we_ui_controls_Tree::computeJSURL(__CLASS__));
 
 		// add needed JS Files
-		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/libs/yui/yahoo-min.js');
-		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/libs/yui/dom-min.js');
-		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/libs/yui/event-min.js');
-		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/libs/yui/connection-min.js');
-		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/libs/yui/json-min.js');
+		$this->addJSFile(JS_DIR . 'libs/yui/yahoo-min.js');
+		$this->addJSFile(JS_DIR . 'libs/yui/dom-min.js');
+		$this->addJSFile(JS_DIR . 'libs/yui/event-min.js');
+		$this->addJSFile(JS_DIR . 'libs/yui/connection-min.js');
+		$this->addJSFile(JS_DIR . 'libs/yui/json-min.js');
 		$this->addJSFile(LIB_DIR . '/we/core/JsonRpc.js');
-		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/libs/yui/treeview/treeview-min.js');
+		$this->addJSFile(JS_DIR . 'libs/yui/treeview/treeview-min.js');
 	}
 
 	/**
@@ -197,27 +197,25 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement{
 			unset($_SESSION['apps']['customData']);
 		}
 
-		$_SESSION['apps']['customData'][] =
-			array(
-				'ID' => 'customId1',
-				'ParentID' => 0,
-				'Text' => 'custom 1',
-				'ContentType' => $appName . '/item',
-				'IsFolder' => 0,
-				'Published' => 1,
-				'Status' => ''
+		$_SESSION['apps']['customData'][] = array(
+			'ID' => 'customId1',
+			'ParentID' => 0,
+			'Text' => 'custom 1',
+			'ContentType' => $appName . '/item',
+			'IsFolder' => 0,
+			'Published' => 1,
+			'Status' => ''
 			)
 		;
 
-		$_SESSION['apps']['customData'][] =
-			array(
-				'ID' => 'customId2',
-				'ParentID' => 0,
-				'Text' => 'custom 2',
-				'ContentType' => $appName . '/item',
-				'IsFolder' => 0,
-				'Published' => 1,
-				'Status' => ''
+		$_SESSION['apps']['customData'][] = array(
+			'ID' => 'customId2',
+			'ParentID' => 0,
+			'Text' => 'custom 2',
+			'ContentType' => $appName . '/item',
+			'IsFolder' => 0,
+			'Published' => 1,
+			'Status' => ''
 			)
 		;
 
@@ -484,4 +482,3 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement{
 	}
 
 }
-

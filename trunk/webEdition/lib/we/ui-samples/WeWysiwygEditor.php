@@ -16,16 +16,16 @@ $WeWysiwygEditor->setAppName('dieApp');
 $WeWysiwygEditor->setId('WysiwygEditor'); // Wichtig :die Id sollte identisch sein mit dem Namen
 
 $WeWysiwygEditor2 = new we_ui_controls_Textarea(
-		array(
-			'title' => 'This is the title of the textarea!',
-			'name' => 'WysiwygEditor2',
-			'text' => 'Hallo2...',
-			'disabled' => true,
-			'hidden' => false,
-			'width' => 300,
-			'height' => 300,
-			'id' => 'WysiwygEditor2'
-		)
+	array(
+	'title' => 'This is the title of the textarea!',
+	'name' => 'WysiwygEditor2',
+	'text' => 'Hallo2...',
+	'disabled' => true,
+	'hidden' => false,
+	'width' => 300,
+	'height' => 300,
+	'id' => 'WysiwygEditor2'
+	)
 );
 
 $htmlPage = we_ui_layout_HTMLPage::getInstance();

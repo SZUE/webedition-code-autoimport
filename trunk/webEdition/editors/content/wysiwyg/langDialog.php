@@ -22,7 +22,7 @@
  * @package    webEdition_wysiwyg
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 $noInternals = false;
 if(!(isset($_REQUEST['we_dialog_args']) &&
@@ -36,9 +36,9 @@ $noInternals = $noInternals || !isset($_SESSION['user']) || !isset($_SESSION['us
 
 $appendJS = "";
 if(defined("GLOSSARY_TABLE") && isset($_REQUEST['weSaveToGlossary']) && $_REQUEST['weSaveToGlossary'] == 1 && !$noInternals){
-	$Glossary = new weGlossary();
+	$Glossary = new we_glossary_glossary();
 	$Glossary->Language = $_REQUEST['language'];
-	$Glossary->Type = weGlossary::TYPE_FOREIGNWORD;
+	$Glossary->Type = we_glossary_glossary::TYPE_FOREIGNWORD;
 	$Glossary->Text = trim($_REQUEST['text']);
 	$Glossary->Published = time();
 	$Glossary->setAttribute('lang', $_REQUEST['we_dialog_args']['lang']);
@@ -54,7 +54,7 @@ if(defined("GLOSSARY_TABLE") && isset($_REQUEST['weSaveToGlossary']) && $_REQUES
 	}
 }
 
-$dialog = new weLangDialog($noInternals);
+$dialog = new we_dialog_lang($noInternals);
 $dialog->initByHttp();
 $dialog->registerOkJsFN("weDoLangJS");
 print $dialog->getHTML();

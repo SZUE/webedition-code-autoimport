@@ -287,7 +287,7 @@ class XML_Parser extends PEAR{
 	function _create(){
 		if($this->srcenc === null){
 			$xp = @xml_parser_create();
-		} else{
+		} else {
 			$xp = @xml_parser_create($this->srcenc);
 		}
 		if(is_resource($xp)){
@@ -403,7 +403,7 @@ class XML_Parser extends PEAR{
 			return $this->setInputFile($fp);
 		}
 		// it must be a string
-		else{
+		else {
 			$this->fp = $fp;
 			return true;
 		}
@@ -431,7 +431,7 @@ class XML_Parser extends PEAR{
 		// if $this->fp was fopened previously
 		if(is_resource($this->fp)){
 
-			while($data = fread($this->fp, 4096)) {
+			while($data = fread($this->fp, 4096)){
 				if(!$this->_parseString($data, feof($this->fp))){
 					$error = &$this->raiseError();
 					$this->free();
@@ -439,7 +439,7 @@ class XML_Parser extends PEAR{
 				}
 			}
 			// otherwise, $this->fp must be a string
-		} else{
+		} else {
 			if(!$this->_parseString($this->fp, true)){
 				$error = &$this->raiseError();
 				$this->free();

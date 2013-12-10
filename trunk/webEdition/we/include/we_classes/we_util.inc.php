@@ -134,4 +134,33 @@ abstract class we_util{
 		return $outArray;
 	}
 
+	/**
+	 * Converts a given number in a via array specified system.
+	 * as default a number is converted in the matching chars 0->^,1->a,2->b, ...
+	 * other systems can simply set via the parameter $chars for example -> array(0,1)
+	 * for bin-system
+	 *
+	 * @return string
+	 * @param int $value
+	 * @param array[optional] $chars
+	 * @param string[optional] $str
+	 */
+	public static function number2System($value, $chars = array(), $str = ''){
+
+		if(!(is_array($chars) && count($chars) > 1)){ //	in case of error take default-array
+			$chars = array('^', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z');
+		}
+		$base = count($chars);
+
+//	get some information about the numbers:
+		$_rest = $value % $base;
+		$_result = ($value - $_rest) / $base;
+
+//	1. Deal with the rest
+		$str = $chars[$_rest] . $str;
+
+//	2. Deal with remaining result
+		return ($_result > 0 ? self::number2System($_result, $chars, $str) : $str);
+	}
+
 }

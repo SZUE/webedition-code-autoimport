@@ -29,6 +29,6 @@ if(isset($_REQUEST['code'])){
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
-$Tree = new weMainTree('webEdition.php', 'top', 'top.tree', 'top.load');//IMI: FOR MODULES WE NEED top.tree NOT top.left.tree!!!
+$Tree = new weMainTree('webEdition.php', 'top', 'top.tree', 'top.load'); //IMI: FOR MODULES WE NEED top.tree NOT top.left.tree!!!
 
 print $Tree->getHTMLContruct('if(top.treeResized){top.treeResized();}');

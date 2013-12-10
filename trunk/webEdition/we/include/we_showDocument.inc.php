@@ -25,21 +25,20 @@
 if(str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']) == str_replace(dirname(__FILE__), '', __FILE__)){
 	exit();
 }
-
-if(isset($GLOBALS['noSess']) && $GLOBALS['noSess'] && !defined('NO_SESS')){
+if(!defined('NO_SESS')){
 	define('NO_SESS', 1);
 }
 //leave this
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 
-//  Diese we_cmds werden auf den Seiten gespeichert und nicht �bergeben!!!!!
+//  Diese we_cmds werden auf den Seiten gespeichert und nicht übergeben!!!!!
 //  Sie kommen von showDoc.php
 $we_ID = intval(isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : 0);
 $tmplID = intval(isset($_REQUEST['we_cmd'][4]) ? $_REQUEST['we_cmd'][4] : 0);
-$baseHref = addslashes(isset($_REQUEST['we_cmd'][5]) ? $_REQUEST['we_cmd'][5] : '');
+//these come from external!
 $we_editmode = addslashes(isset($_REQUEST['we_cmd'][6]) ? $_REQUEST['we_cmd'][6] : '');
-$createFromTmpFile = addslashes(isset($_REQUEST['we_cmd'][7]) ? $_REQUEST['we_cmd'][7] : '');
+//$createFromTmpFile = addslashes(isset($_REQUEST['we_cmd'][7]) ? $_REQUEST['we_cmd'][7] : '');
 
 $we_Table = FILE_TABLE;
 
@@ -60,7 +59,7 @@ if(isset($_REQUEST['vers_we_obj'])){
 	if($_REQUEST['vers_we_obj']){
 		$f = $_SERVER['DOCUMENT_ROOT'] . VERSION_DIR . 'tmpSavedObj.txt';
 		$_REQUEST['vers_we_obj'] = false;
-		$tempFile = weFile::load($f);
+		$tempFile = we_base_file::load($f);
 		$obj = unserialize($tempFile);
 		$we_doc = $obj;
 	}
@@ -71,16 +70,12 @@ if(isset($_REQUEST['vers_we_obj'])){
 
 	// call session_start to init session, otherwise NO customer can exist
 	if(!isset($_SESSION)){
-		@session_start();
-		//FIXME: remove in 6.4; due to upgrade!
-		if(isset($_SESSION['we'])){
-			unset($_SESSION['we']);
-		}
+		session_start();
 	}
 
 	if(($_visitorHasAccess = $we_doc->documentCustomerFilter->accessForVisitor($we_doc))){
 
-		if(!($_visitorHasAccess == weDocumentCustomerFilter::ACCESS || $_visitorHasAccess == weDocumentCustomerFilter::CONTROLONTEMPLATE)){
+		if(!($_visitorHasAccess == we_customer_documentFilter::ACCESS || $_visitorHasAccess == we_customer_documentFilter::CONTROLONTEMPLATE)){
 			// user has NO ACCESS => show errordocument
 			$_errorDocId = $we_doc->documentCustomerFilter->getErrorDoc($_visitorHasAccess);
 			if(($_errorDocPath = id_to_path($_errorDocId, FILE_TABLE))){ // use given document instead !
@@ -97,15 +92,14 @@ if(isset($_REQUEST['vers_we_obj'])){
 	}
 }
 
+//FIXME: is this relevant at this point?!
 $we_doc->EditPageNr = $we_editmode ? WE_EDITPAGE_CONTENT : WE_EDITPAGE_PREVIEW;
 
 if($tmplID && ($we_doc->ContentType == 'text/webedition')){ // if the document should displayed with an other template
 	$we_doc->setTemplateID($tmplID);
 }
 
-//$we_doc->setCache();
-
-if(($we_include = $we_doc->editor($baseHref))){
+if(($we_include = $we_doc->editor())){
 	if(substr(strtolower($we_include), 0, strlen($_SERVER['DOCUMENT_ROOT'])) == strtolower($_SERVER['DOCUMENT_ROOT'])){
 		if((!defined('WE_CONTENT_TYPE_SET')) && isset($we_doc->elements['Charset']['dat']) && $we_doc->elements['Charset']['dat']){ //	send charset which might be determined in template
 			define('WE_CONTENT_TYPE_SET', 1);
@@ -114,17 +108,17 @@ if(($we_include = $we_doc->editor($baseHref))){
 
 		$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE']);
 // --> Glossary Replacement
-		$useGlossary = ((defined('GLOSSARY_TABLE') && (!isset($GLOBALS['WE_MAIN_DOC']) || $GLOBALS['WE_MAIN_DOC'] == $GLOBALS['we_doc'])) && (isset($we_doc->InGlossar) && $we_doc->InGlossar == 0) && weGlossaryReplace::useAutomatic());
+		$useGlossary = ((defined('GLOSSARY_TABLE') && (!isset($GLOBALS['WE_MAIN_DOC']) || $GLOBALS['WE_MAIN_DOC'] == $GLOBALS['we_doc'])) && (isset($we_doc->InGlossar) && $we_doc->InGlossar == 0) && we_glossary_replace::useAutomatic());
 		$useBuffer = !empty($urlReplace) || $useGlossary;
 		if($useBuffer){
 			ob_start();
 		}
-		include ($we_include);
+		include($we_include);
 		if($useBuffer){
 			$content = ob_get_contents();
 			ob_end_clean();
 			if($useGlossary){
-				$content = weGlossaryReplace::doReplace($content, $GLOBALS['we_doc']->Language);
+				$content = we_glossary_replace::doReplace($content, $GLOBALS['we_doc']->Language);
 			}
 			if($urlReplace){
 				$content = preg_replace($urlReplace, array_keys($urlReplace), $content);

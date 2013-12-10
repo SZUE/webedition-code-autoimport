@@ -144,7 +144,7 @@ class we_app_controller_EditorAction extends Zend_Controller_Action{
 
 		if($forceNew === false && isset($session->model)){
 			$this->_model = $session->model;
-		} else{
+		} else {
 			try{
 				$args = array("" . $appName . "_models_Default");
 				$modelId = $this->getRequest()->getParam('modelId');

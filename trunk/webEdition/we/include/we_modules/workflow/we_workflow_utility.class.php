@@ -176,7 +176,7 @@ abstract class we_workflow_utility{
 		}
 		$i = $doc->findLastActiveStep();
 		return (($i <= 0) || ($i < count($doc->steps) - 1) || ($doc->steps[$i]->findNumOfFinishedTasks() < count($doc->steps[$i]->tasks)) ?
-						false : true);
+				false : true);
 	}
 
 	/**
@@ -203,7 +203,7 @@ abstract class we_workflow_utility{
 	  defined documnet, otherwise false
 	 */
 	static function canUserEditDoc($docID, $table, $userID){
-		if(we_hasPerm("ADMINISTRATOR")){
+		if(permissionhandler::hasPerm("ADMINISTRATOR")){
 			return true;
 		}
 		$doc = self::getWorkflowDocument($docID, $table);
@@ -285,7 +285,7 @@ abstract class we_workflow_utility{
 	static function getDocumentStatusInfo($docID, $table){
 		$doc = self::getWorkflowDocumentID($docID, $table);
 		if($doc){
-			return weWorkflowView::getDocumentStatus($doc, 700);
+			return we_workflow_view::getDocumentStatus($doc, 700);
 		}
 	}
 
@@ -327,7 +327,7 @@ abstract class we_workflow_utility{
 
 	static function getLogButton($docID, $table){
 		$type = self::getTypeForTable($table);
-		return we_button::create_button("logbook", "javascript:new jsWindow('" . WE_WORKFLOW_MODULE_DIR . "edit_workflow_frameset.php?pnt=log&art=" . $docID . "&type=" . $type . "','workflow_history',-1,-1,640,480,true,false,true);");
+		return we_html_button::create_button("logbook", "javascript:new jsWindow('" . WE_WORKFLOW_MODULE_DIR . "edit_workflow_frameset.php?pnt=log&art=" . $docID . "&type=" . $type . "','workflow_history',-1,-1,640,480,true,false,true);");
 	}
 
 }

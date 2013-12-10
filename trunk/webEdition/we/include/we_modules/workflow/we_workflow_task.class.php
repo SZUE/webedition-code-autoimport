@@ -71,7 +71,7 @@ class we_workflow_task extends we_workflow_base{
 
 		$tasks = array();
 
-		while($db->next_record()) {
+		while($db->next_record()){
 			$tasks[] = new self($db->f("ID"));
 		}
 		return $tasks;
@@ -80,13 +80,13 @@ class we_workflow_task extends we_workflow_base{
 	/**
 	 * Load task from database
 	 */
-	function load($id=0){
+	function load($id = 0){
 		if($id)
 			$this->ID = $id;
 		if($this->ID){
 			parent::load();
 			return true;
-		} else{
+		} else {
 			$this->ErrorReporter->Error("No Task with ID $taskID !");
 			return false;
 		}

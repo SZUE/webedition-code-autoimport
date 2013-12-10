@@ -21,7 +21,6 @@
  * @package    webEdition_update
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 /*
  * This is the template for tab nextVersion. Still to decide if this tab is
  * neccessary. This information could also be as additional information in the
@@ -29,12 +28,12 @@
  *
  */
 ?><html>
-<head></head>
-<body>
-<table>
-<tr>
-	<td>Upgrade auf höhere Version ?</td>
-</tr>
-</table>
-</body>
+	<head></head>
+	<body>
+		<table>
+			<tr>
+				<td>Upgrade auf höhere Version ?</td>
+			</tr>
+		</table>
+	</body>
 </html>

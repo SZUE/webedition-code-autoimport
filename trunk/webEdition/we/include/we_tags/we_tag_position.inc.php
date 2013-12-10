@@ -54,7 +54,7 @@ function we_tag_position($attribs){
 			break;
 
 		case "linklist" : //	look in fkt we_tag_linklist and class we_linklist for details
-			$missingAttrib = attributFehltError($attribs, "reference", __FUNCTION__);// seperate because of #6890
+			$missingAttrib = attributFehltError($attribs, "reference", __FUNCTION__); // seperate because of #6890
 			if($missingAttrib){
 				print $missingAttrib;
 				return "";
@@ -68,7 +68,7 @@ function we_tag_position($attribs){
 				}
 			}
 			if(isset($_content) && isset($_content['position'])){
-				$_retPos = $_content['position'];  //  #6890
+				$_retPos = $_content['position']; //  #6890
 			}
 			break;
 
@@ -96,12 +96,12 @@ function we_tag_position($attribs){
 	//	convert to desired format
 	switch($format){
 
-		case "a" :
-			return number2System($_retPos);
+		case 'a' :
+			return we_util::number2System($_retPos);
 			break;
 
-		case "A" :
-			return strtoupper(number2System($_retPos));
+		case 'A' :
+			return strtoupper(we_util::number2System($_retPos));
 			break;
 
 		default :

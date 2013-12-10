@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition SDK
  *
@@ -10,7 +11,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -18,7 +19,6 @@
  * @package    we_app
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-
 require_once 'Zend/Config/Xml.php';
 
 /**
@@ -33,14 +33,13 @@ Zend_Loader::loadClass('we_app_Installer');
 
 /**
  * class for webEdition applications (formerly known as "tools")
- * 
+ *
  * @category   we
  * @package    we_app
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  * @internal   all default properties of an applications are to be read from webEdition/lib/we/app/defaults/manifest.xml
  */
-class we_app_Application
-{
+class we_app_Application{
 
 	/**
 	 * @var bool name of this tool
@@ -48,7 +47,7 @@ class we_app_Application
 	private $_name = "";
 
 	/**
-	 * @var Zend_Config_Xml object for general application handling configuration 
+	 * @var Zend_Config_Xml object for general application handling configuration
 	 */
 	private $_config = null;
 
@@ -62,12 +61,11 @@ class we_app_Application
 	 */
 	private $_defaults = null;
 
-	public function __construct($name = "")
-	{
+	public function __construct($name = ""){
 		$this->_config = &we_app_Common::readConfig();
-		if (empty($name)) {
+		if(empty($name)){
 			return false;
-		} else if (!we_app_Common::isInstalled($name)) {
+		} else if(!we_app_Common::isInstalled($name)){
 			error_log("no installed application with name " . $name . " found.");
 			$this->_manifest = null;
 			return false;
@@ -80,13 +78,12 @@ class we_app_Application
 	/**
 	 * getter method for fetching the application's properties from the manifest file
 	 */
-	public function __get($property = "")
-	{
-		if (empty($this->_name) || empty($property) || is_null($this->_manifest)) {
+	public function __get($property = ""){
+		if(empty($this->_name) || empty($property) || is_null($this->_manifest)){
 			error_log("no such property");
 			return false;
 		}
-		if (!isset($this->_manifest->$property)) {
+		if(!isset($this->_manifest->$property)){
 			error_log("requested property " . $property . " is not specified in the manifest of " . $this->_name);
 			return false;
 		} else {
@@ -97,9 +94,8 @@ class we_app_Application
 	/**
 	 * returns the application's name, if it is installed
 	 */
-	public function __toString()
-	{
-		if (is_null($this->_manifest) || empty($this->_name)) {
+	public function __toString(){
+		if(is_null($this->_manifest) || empty($this->_name)){
 			return false;
 		} else {
 			return $this->_name;
@@ -109,9 +105,8 @@ class we_app_Application
 	/**
 	 * returns an array with all categories the application is assigned to
 	 */
-	public function getCategories()
-	{
-		if (is_null($this->_manifest) || empty($this->_name)) {
+	public function getCategories(){
+		if(is_null($this->_manifest) || empty($this->_name)){
 			return false;
 		}
 		return $this->_manifest->info->categories->toArray("category");
@@ -120,26 +115,23 @@ class we_app_Application
 	/**
 	 * @see we_app_Installer_Local::uninstall()
 	 */
-	public function uninstall()
-	{
-		if (is_null($this->_manifest) || empty($this->_name)) {
+	public function uninstall(){
+		if(is_null($this->_manifest) || empty($this->_name)){
 			return false;
 		}
 		$installer = new we_app_Installer_Local($this->_name);
-		if (!$installer->uninstall()) {
+		if(!$installer->uninstall()){
 			return false;
 		}
 		return true;
-	
 	}
 
 	/**
 	 * @see we_app_Common
 	 */
-	private function _getDefaultManifest()
-	{
+	private function _getDefaultManifest(){
 		$this->_defaults = we_app_Common::getDefaultManifest();
-		if ($this->_defaults == false) {
+		if($this->_defaults == false){
 			$this->_defaults = null;
 			return false;
 		}
@@ -148,13 +140,12 @@ class we_app_Application
 	/**
 	 * @see we_app_Common
 	 */
-	private function _getAppManifest()
-	{
-		if (empty($this->_name)) {
+	private function _getAppManifest(){
+		if(empty($this->_name)){
 			return false;
 		}
 		$this->_manifest = we_app_Common::getMergedManifest($this->_name);
-		if ($this->_manifest == false) {
+		if($this->_manifest == false){
 			$this->_manifest = null;
 			return false;
 		}
@@ -167,17 +158,16 @@ class we_app_Application
 	 * @internal the "old" values are these from the default manifest. The "new" values come from the application's manifest and overwrite the default properties.
 	 * @url http://framework.zend.com/issues/browse/ZF-998
 	 */
-	private function _getMergedManifest()
-	{
-		if (empty($this->_name)) {
+	private function _getMergedManifest(){
+		if(empty($this->_name)){
 			return false;
 		}
 		$this->_defaults = $this->_getDefaultManifest();
-		if (is_null($this->_defaults)) {
+		if(is_null($this->_defaults)){
 			return false;
 		}
 		$this->_manifest = $this->_getAppManifest();
-		if (is_null($this->_manifest)) {
+		if(is_null($this->_manifest)){
 			return false;
 		}
 	}
@@ -185,9 +175,8 @@ class we_app_Application
 	/**
 	 * checks if this application is activated:
 	 */
-	private function _isActive()
-	{
-		if (is_null($this->_manifest) || empty($this->_name)) {
+	private function _isActive(){
+		if(is_null($this->_manifest) || empty($this->_name)){
 			return false;
 		} else {
 			return true;

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,65 +22,51 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 $oTblCont = new we_html_table(
-		array(
-
-				"id" => "m_" . $iCurrId . "_inline",
-				"style" => "width:" . $iWidth . "px;",
-				"cellpadding" => 0,
-				"cellspacing" => 0,
-				"border" => 0
-		),
-		3,
-		3);
+	array(
+	"id" => "m_" . $iCurrId . "_inline",
+	"style" => "width:" . $iWidth . "px;",
+	"cellpadding" => 0,
+	"cellspacing" => 0,
+	"border" => 0
+	), 3, 3);
 $oTblCont->setCol(0, 0, array(
 	"width" => 34, "valign" => "middle", "class" => "middlefont"
-), $msg_button);
+	), $msg_button);
 $oTblCont->setCol(0, 1, array(
 	"width" => 5
-), we_html_tools::getPixel(5, 1));
+	), we_html_tools::getPixel(5, 1));
 $oTblCont->setCol(
-		0,
-		2,
+	0, 2, array(
+	"valign" => "middle"
+	), we_html_element::htmlA(
 		array(
-			"valign" => "middle"
-		),
-		we_html_element::htmlA(
-				array(
-
-						"href" => $msg_cmd,
-						"class" => "middlefont",
-						"style" => "font-weight:bold;text-decoration:none;"
-				),
-				$new_messages . " (" . we_html_element::htmlSpan(array(
-					"id" => "msg_count"
-				), $newmsg_count) . ")"));
+		"href" => $msg_cmd,
+		"class" => "middlefont",
+		"style" => "font-weight:bold;text-decoration:none;"
+		), $new_messages . " (" . we_html_element::htmlSpan(array(
+			"id" => "msg_count"
+			), $newmsg_count) . ")"));
 $oTblCont->setCol(1, 0, array(
 	"height" => 3
-), we_html_tools::getPixel(1, 3));
+	), we_html_tools::getPixel(1, 3));
 $oTblCont->setCol(2, 0, array(
 	"width" => 34, "valign" => "middle", "class" => "middlefont"
-), $todo_button);
+	), $todo_button);
 $oTblCont->setCol(2, 1, array(
 	"width" => 5
-), we_html_tools::getPixel(5, 1));
+	), we_html_tools::getPixel(5, 1));
 $oTblCont->setCol(
-		2,
-		2,
+	2, 2, array(
+	"valign" => "middle"
+	), we_html_element::htmlA(
 		array(
-			"valign" => "middle"
-		),
-		we_html_element::htmlA(
-				array(
-
-						"href" => $msg_cmd,
-						"class" => "middlefont",
-						"style" => "font-weight:bold;text-decoration:none;"
-				),
-				$new_tasks . " (" . we_html_element::htmlSpan(array(
-					"id" => "task_count"
-				), $newtodo_count) . ")"));
+		"href" => $msg_cmd,
+		"class" => "middlefont",
+		"style" => "font-weight:bold;text-decoration:none;"
+		), $new_tasks . " (" . we_html_element::htmlSpan(array(
+			"id" => "task_count"
+			), $newtodo_count) . ")"));
 $aLang = array(
-	g_l('cockpit',"[messaging]"), ""
+	g_l('cockpit', "[messaging]"), ""
 );

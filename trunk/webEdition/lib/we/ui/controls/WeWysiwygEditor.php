@@ -28,8 +28,6 @@ Zend_Loader::loadClass('we_ui_controls_Button');
 Zend_Loader::loadClass('we_ui_controls_Label');
 Zend_Loader::loadClass('we_ui_layout_Table');
 
-
-
 /**
  * Class to display an webEdition Wysiwyg-Editor
  *
@@ -433,7 +431,7 @@ class we_ui_controls_WeWysiwygEditor extends we_ui_abstract_AbstractFormElement{
 
 		if($this->getFonts() != ''){
 			$Fonts = '","' . $this->getFonts();
-		} else{
+		} else {
 			$Fonts = '';
 		}
 		$Fieldname = $this->getName();

@@ -24,8 +24,8 @@
  */
 function we_tag_navigationWrite($attribs){
 
-	$name = weTag_getAttribute("navigationname", $attribs, "default");
-	$depth = weTag_getAttribute("depth", $attribs);
+	$name = weTag_getAttribute('navigationname', $attribs, 'default');
+	$depth = weTag_getAttribute('depth', $attribs);
 
 	if(!$depth){
 		$depth = false;

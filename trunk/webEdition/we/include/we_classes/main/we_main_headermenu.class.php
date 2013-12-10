@@ -24,6 +24,44 @@
  */
 class we_main_headermenu{
 
+	/**
+	 * creates a new messageConsole
+	 *
+	 * @param string $consoleName
+	 * @return string
+	 */
+	public static function createMessageConsole($consoleName = 'NoName'){
+		return we_html_element::jsScript(JS_DIR . 'messageConsoleImages.js') .
+			we_html_element::jsScript(JS_DIR . 'messageConsoleView.js') .
+			we_html_element::jsElement('
+var _msgNotice  = "' . g_l('messageConsole', '[iconBar][notice]') . '";
+var _msgWarning = "' . g_l('messageConsole', '[iconBar][warning]') . '";
+var _msgError   = "' . g_l('messageConsole', '[iconBar][error]') . '";
+
+
+var _console_' . $consoleName . ' = new messageConsoleView("' . $consoleName . '", window );
+_console_' . $consoleName . '.register();
+
+onunload=function() {
+	_console_' . $consoleName . '.unregister();
+}
+') . '
+<div style="position:relative;float:left;">
+	<table>
+	<tr>
+		<td valign="middle">
+		<span class="small" id="messageConsoleMessage' . $consoleName . '" style="display: none; background-color: white; border: 1px solid #cdcdcd; padding: 2px 4px 2px 4px; margin: 3px 10px 0 0;">
+			--
+		</span>
+		</td>
+		<td>
+			<div onclick="_console_' . $consoleName . '.openMessageConsole();" class="navigation_normal" onmouseover="this.className=\'navigation_hover\'" onmouseout="this.className=\'navigation_normal\'"><img id="messageConsoleImage' . $consoleName . '" src="' . IMAGE_DIR . 'messageConsole/notice.gif" style="border: none; padding: 1px;" /></div>
+		</td>
+	</tr>
+	</table>
+</div>';
+	}
+
 	static function pCSS(){
 		echo self::css();
 	}
@@ -49,14 +87,14 @@ class we_main_headermenu{
 		if(we_base_browserDetect::inst()->isMAC()){
 			$arr[] = WEBEDITION_DIR . 'css/menu/pro_drop_mac.css';
 		}
-		
+
 		return $arr;
 	}
 
 	static function getJsForCssMenu(){
 		if(we_base_browserDetect::isIE() && intval(we_base_browserDetect::inst()->getBrowserVersion()) < 9){
 			return WEBEDITION_DIR . 'css/menu/clickMenu_IE8.js';
-		} else{
+		} else {
 			return WEBEDITION_DIR . 'css/menu/clickMenu.js';
 		}
 	}
@@ -84,7 +122,7 @@ top.weSidebar = weSidebar;
 
 	static function getMenuReloadCode($location = 'top.opener.'){
 		$menu = self::getMenu();
-		$menu = str_replace("\n", '"+"', addslashes($menu->getHTML(false)));
+		$menu = str_replace("\n", '"+"', addslashes($menu->getHTML()));
 		return $location . 'document.getElementById("nav").parentNode.innerHTML="' . $menu . '";';
 	}
 
@@ -98,10 +136,10 @@ top.weSidebar = weSidebar;
 			isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
 
 			$jmenu = new weJavaMenu($we_menu, "top.load");
-		} else{ // menu for seemode
+		} else { // menu for seemode
 			if(permissionhandler::isUserAllowedForAction("header", "with_java")){
 				$jmenu = new weJavaMenu($we_menu, "top.load");
-			} else{
+			} else {
 				return null;
 			}
 		}
@@ -115,14 +153,14 @@ top.weSidebar = weSidebar;
 		$jmenu = self::getMenu();
 		$navigationButtons = array();
 
-		if(!isset($_REQUEST["SEEM_edit_include"])){ // there is only a menu when not in seem_edit_include!
+		if(!isset($_REQUEST['SEEM_edit_include'])){ // there is only a menu when not in seem_edit_include!
 			if(// menu for normalmode
 				isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
 
-			} else{ // menu for seemode
-				if(permissionhandler::isUserAllowedForAction("header", "with_java")){
+			} else { // menu for seemode
+				if(permissionhandler::isUserAllowedForAction('header', 'with_java')){
 
-				} else{
+				} else {
 //  no menu in this case !
 					$navigationButtons[] = array(
 						"onclick" => "top.we_cmd('dologout');",
@@ -144,7 +182,7 @@ top.weSidebar = weSidebar;
 			<div style="position:relative;border:0px;float:left;" >
 				<?php
 				if($jmenu){
-					print $jmenu->getCode(false);
+					print $jmenu->getCode();
 				}
 				?>
 			</div>
@@ -160,8 +198,7 @@ top.weSidebar = weSidebar;
 
 
 				<?php
-				require_once(WE_INCLUDES_PATH . "jsMessageConsole/messageConsole.inc.php" );
-				print createMessageConsole("mainWindow");
+				print self::createMessageConsole('mainWindow');
 				?>
 				<img src="<?php print IMAGE_DIR ?>pixel.gif" alt="" name="busy" width="20" height="19">
 				<img src="<?php print IMAGE_DIR ?>webedition.gif" alt="" style="width:78px;height:25px;padding-left: 10px;padding-right: 5px;padding-top:3px;">

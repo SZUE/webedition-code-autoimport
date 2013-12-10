@@ -8,5 +8,5 @@ $this->Groups[] = 'if_tags';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
 $this->Attributes[] = new weTagData_selectAttribute('doc', array(new weTagDataOption('top'),
- new weTagDataOption('self'),
-), false, '');
+	new weTagDataOption('self'),
+	), false, '');

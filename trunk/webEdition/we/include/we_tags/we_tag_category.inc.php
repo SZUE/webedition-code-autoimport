@@ -31,17 +31,28 @@ function we_tag_category($attribs){
 	$showpath = weTag_getAttribute('showpath', $attribs, false, true);
 	$docAttr = weTag_getAttribute('doc', $attribs);
 	$field = weTag_getAttribute('field', $attribs);
+	$name = weTag_getAttribute('_name_orig', $attribs);
 	$id = weTag_getAttribute('id', $attribs);
 	$separator = weTag_getAttribute('separator', $attribs, '/');
 	$onlyindir = weTag_getAttribute('onlyindir', $attribs);
 
+	if($GLOBALS['we_editmode'] && !empty($name)){
+		$_REQUEST['we_' . $GLOBALS['we_doc']->Name . '_category[' . $name . ']'] = $GLOBALS['we_doc']->getElement($name);
+		$attribs['name'] = 'we_' . $GLOBALS['we_doc']->Name . '_category[' . $name . ']';
+		$attribs['type'] = 'request';
+		$attribs['fromTag'] = true;
+		return we_tag('categorySelect', $attribs);
+	}
+
 	// end initialize possible Attributes
 	if($id){
 		$catIDs = $id;
+	} elseif($name){
+		$catIDs = $GLOBALS['we_doc']->getElement($name);
 	} elseif(isset($GLOBALS['lv']) && (!$docAttr)){
 		// get cats from listview object
-		switch($GLOBALS["lv"]->ClassName){
-			case 'we_listview_object':
+		switch(get_class($GLOBALS['lv'])){
+			case 'we_listview_object' :
 				$catIDs = $GLOBALS['lv']->f('wedoc_Category');
 				break;
 			case 'we_search_listview':
@@ -50,7 +61,7 @@ function we_tag_category($attribs){
 			default :
 				$catIDs = $GLOBALS['lv']->f('wedoc_Category');
 		}
-	} else{
+	} else {
 		$doc = we_getDocForTag($docAttr, false);
 		$catIDs = $doc->Category;
 	}

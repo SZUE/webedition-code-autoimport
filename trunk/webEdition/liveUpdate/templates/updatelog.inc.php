@@ -65,9 +65,9 @@ if($this->Data['allEntries']){ // entries exist
 </tr>
 </table>
 <div class="defaultfont">
-	' . we_forms::checkbox(1, isset($_REQUEST['messages']), 'messages', "<span class=\"logMessage\">" . g_l('liveUpdate', '[updatelog][legendMessages]') . " (" . $this->Data['amountMessages'] . ")</span>", false, "small", "document.we_form.submit();") . '
-	' . we_forms::checkbox(1, isset($_REQUEST['notices']), 'notices', "<span class=\"logNotice\">" . g_l('liveUpdate', '[updatelog][legendNotices]') . " (" . $this->Data['amountNotices'] . ")</span>", false, "small", "document.we_form.submit();") . '
-	' . we_forms::checkbox(1, isset($_REQUEST['errors']), 'errors', "<span class=\"logError\">" . g_l('liveUpdate', '[updatelog][legendErrors]') . " (" . $this->Data['amountErrors'] . ")</span>", false, "small", "document.we_form.submit();") . '
+	' . we_html_forms::checkbox(1, isset($_REQUEST['messages']), 'messages', "<span class=\"logMessage\">" . g_l('liveUpdate', '[updatelog][legendMessages]') . " (" . $this->Data['amountMessages'] . ")</span>", false, "small", "document.we_form.submit();") . '
+	' . we_html_forms::checkbox(1, isset($_REQUEST['notices']), 'notices', "<span class=\"logNotice\">" . g_l('liveUpdate', '[updatelog][legendNotices]') . " (" . $this->Data['amountNotices'] . ")</span>", false, "small", "document.we_form.submit();") . '
+	' . we_html_forms::checkbox(1, isset($_REQUEST['errors']), 'errors', "<span class=\"logError\">" . g_l('liveUpdate', '[updatelog][legendErrors]') . " (" . $this->Data['amountErrors'] . ")</span>", false, "small", "document.we_form.submit();") . '
 </div>
 <br />
 ';
@@ -104,14 +104,14 @@ if($this->Data['allEntries']){ // entries exist
 		 */
 
 		$backButton = ($_REQUEST['start'] > 0 ? //	backbutton
-				we_button::create_button("back", "javascript:lastEntries();") :
-				we_button::create_button("back", "#", true, 100, 22, "", "", true));
+				we_html_button::create_button("back", "javascript:lastEntries();") :
+				we_html_button::create_button("back", "#", true, 100, 22, "", "", true));
 
 		$nextButton = ($this->Data['amountEntries'] <= $_REQUEST['start'] + $this->Data['amountPerPage'] ? //	next_button
-				we_button::create_button("next", "#", true, 100, 22, "", "", true) :
-				we_button::create_button("next", "javascript:nextEntries();"));
+				we_html_button::create_button("next", "#", true, 100, 22, "", "", true) :
+				we_html_button::create_button("next", "javascript:nextEntries();"));
 
-		$deleteButton = we_button::create_button("delete", "javascript:confirmDelete();");
+		$deleteButton = we_html_button::create_button("delete", "javascript:confirmDelete();");
 
 		$buttons = "<table><tr><td>$deleteButton</td><td>$backButton</td><td>$nextButton</td></tr></table>";
 

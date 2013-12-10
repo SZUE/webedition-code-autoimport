@@ -55,7 +55,7 @@ class rpcGetMouseOverDivsCmd extends rpcCmd{
 				$x = $x - ($x - count($content));
 			}
 
-			$code = searchtoolView::makeMouseOverDivs($x, $content, $whichsearch);
+			$code = we_search_view::makeMouseOverDivs($x, $content, $whichsearch);
 		}
 
 		$resp->setData("data", $code);

@@ -84,7 +84,7 @@ function we_tag_subscribe($attribs){
 			if($ishtml){
 				$options = getHtmlTag('option', array('value' => 0), oldHtmlspecialchars($values[0])) . "\n";
 				$options .= getHtmlTag('option', array('value' => 1, 'selected' => 'selected'), oldHtmlspecialchars($values[1])) . "\n";
-			} else{
+			} else {
 				$options = getHtmlTag('option', array('value' => 0, 'selected' => 'selected'), oldHtmlspecialchars($values[0])) . "\n";
 				$options .= getHtmlTag('option', array('value' => 1), oldHtmlspecialchars($values[1])) . "\n";
 			}
@@ -107,7 +107,7 @@ function we_tag_subscribe($attribs){
 				$name = 'we_subscribe_salutation__';
 				$value = filterXss(isset($_REQUEST["we_subscribe_salutation__"]) ? $_REQUEST["we_subscribe_salutation__"] : $value);
 				return we_getSelectField($name, $value, $values, $newAttribs, true); //same function like <we:sessionField type="select">
-			} else{
+			} else {
 				$newAttribs = removeAttribs($attribs, array('name', 'type', 'value', 'values'));
 				$newAttribs['name'] = 'we_subscribe_salutation__';
 				$newAttribs['type'] = 'text';
@@ -122,7 +122,7 @@ function we_tag_subscribe($attribs){
 				$name = 'we_subscribe_title__';
 				$value = filterXss(isset($_REQUEST["we_subscribe_title__"]) ? $_REQUEST["we_subscribe_title__"] : $value);
 				return we_getSelectField($name, $value, $values, $newAttribs, true); //same function like <we:sessionField type="select">
-			} else{
+			} else {
 				$newAttribs = removeAttribs($attribs, array('name', 'type', 'value', 'values'));
 				$newAttribs['name'] = 'we_subscribe_title__';
 				$newAttribs['type'] = 'text';

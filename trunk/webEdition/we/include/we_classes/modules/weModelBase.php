@@ -39,7 +39,7 @@ class weModelBase{
 	 * Default Constructor
 	 */
 	function __construct($table, $db = ''){
-		$this->db = ($db ? $db : new DB_WE());//FIXME: => ?:
+		$this->db = ($db ? $db : new DB_WE()); //FIXME: => ?:
 		$this->table = $table;
 		$this->loadPresistents();
 	}
@@ -68,14 +68,12 @@ class weModelBase{
 			//	$this->ID = $id;
 			//}
 			//#6338: Kode vor den if-Block geschoben
-			$tableInfo = $this->db->metadata($this->table);
-			$data = getHash('SELECT * FROM `' . $this->table . '` WHERE ' . $this->getKeyWhere(), $this->db);
+			//$tableInfo = $this->db->metadata($this->table);
 
-			if(!empty($data)){
-				foreach($tableInfo as $info){
-					$fieldName = $info["name"];
+			if(($data = getHash('SELECT * FROM `' . $this->table . '` WHERE ' . $this->getKeyWhere(), $this->db, MYSQL_ASSOC))){
+				foreach($data as $fieldName => $value){
 					if(in_array($fieldName, $this->persistent_slots)){
-						$this->{$fieldName} = $data[$fieldName];
+						$this->{$fieldName} = $value;
 					}
 				}
 				$this->isnew = false;

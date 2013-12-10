@@ -35,7 +35,6 @@ $tableMap = array(
 		'tblthumbnails' => THUMBNAILS_TABLE,
 		'tblnavigation' => NAVIGATION_TABLE,
 		'tblnavigationrules' => NAVIGATION_RULE_TABLE,
-		
 		'tblmetadata' => METADATA_TABLE
 	),
 	'versions' => array(

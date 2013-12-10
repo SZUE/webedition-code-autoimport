@@ -23,6 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 $information = array(
-		'foldername' => 'Verschiedenes',
+	'foldername' => 'Verschiedenes',
 );
 

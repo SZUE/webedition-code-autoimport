@@ -61,7 +61,7 @@ class we_workflow_base{
 			if($val == "ID"){
 				$wheres[] = $val . '="' . $this->{$val} . '"';
 			}
-			$sets[$val] =$this->{$val};
+			$sets[$val] = $this->{$val};
 		}
 		$where = implode(',', $wheres);
 		$set = we_database_base::arraySetter($sets);
@@ -70,7 +70,7 @@ class we_workflow_base{
 			$this->db->query('INSERT INTO ' . $this->db->escape($this->table) . ' SET ' . $set);
 			# get ID #
 			$this->ID = $this->db->getInsertId();
-		} else{
+		} else {
 			$this->db->query('UPDATE ' . $this->db->escape($this->table) . ' SET ' . $set . ' WHERE ' . $where);
 		}
 	}

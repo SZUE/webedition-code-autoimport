@@ -48,7 +48,7 @@ function we_tag_saveRegisteredUser($attribs){
 		//register new User
 		if(isset($_REQUEST['s']['ID']) && (!isset($_SESSION['webuser']['ID'])) && intval($_REQUEST['s']['ID']) <= 0 && $registerallowed && (!isset($_SESSION['webuser']['registered']) || !$_SESSION['webuser']['registered'])){ // neuer User
 			if($_REQUEST['s']['Password'] != '' && $_REQUEST['s']['Username'] != ''){ // wenn password und Username nicht leer
-				if(!weCustomer::customerNameExist($_REQUEST['s']['Username'], $GLOBALS['DB_WE'])){ // username existiert noch nicht!
+				if(!we_customer_customer::customerNameExist($_REQUEST['s']['Username'], $GLOBALS['DB_WE'])){ // username existiert noch nicht!
 					$hook = new weHook('customer_preSave', '', array('customer' => &$_REQUEST['s'], 'from' => 'tag', 'type' => 'new', 'tagname' => 'saveRegisteredUser'));
 					$ret = $hook->executeHook();
 
@@ -74,7 +74,7 @@ function we_tag_saveRegisteredUser($attribs){
 									ModifyDate=UNIX_TIMESTAMP(),ModifiedBy="frontend" WHERE ID=' . $_SESSION['webuser']['ID']);
 						}
 					}
-				} else{ // Username existiert schon!
+				} else { // Username existiert schon!
 					if(!$userexists){
 						$userexists = g_l('customer', '[username_exists]');
 					}
@@ -84,7 +84,7 @@ function we_tag_saveRegisteredUser($attribs){
 
 					print getHtmlTag('script', array('type' => 'text/javascript'), 'history.back(); ' . we_message_reporting::getShowMessageCall(sprintf($userexists, $_REQUEST['s']['Username']), we_message_reporting::WE_MESSAGE_FRONTEND));
 				}
-			} else{ // Password oder Username leer!
+			} else { // Password oder Username leer!
 				// Eingabe in Session schreiben, damit die eingegebenen Werte erhalten bleiben!
 				if(isset($_REQUEST['s'])){
 					we_tag_saveRegisteredUser_keepInput();
@@ -129,7 +129,7 @@ function we_tag_saveRegisteredUser($attribs){
 						$GLOBALS['we_customer_written'] = true;
 					}
 				}
-			} else{
+			} else {
 				$userexists = $userexists ? $userexists : g_l('customer', '[username_exists]');
 				print getHtmlTag('script', array('type' => 'text/javascript'), 'history.back(); ' . we_message_reporting::getShowMessageCall(sprintf($userexists, $_REQUEST['s']['Username']), we_message_reporting::WE_MESSAGE_FRONTEND));
 			}
@@ -177,14 +177,14 @@ function we_saveCustomerImages(){
 				$ct = getContentTypeFromFile($filename);
 				if($ct == 'image/*'){
 
-					$_serverPath = TEMP_PATH . '/' . weFile::getUniqueId();
+					$_serverPath = TEMP_PATH . '/' . we_base_file::getUniqueId();
 					move_uploaded_file($_FILES['WE_SF_IMG_DATA']['tmp_name'][$imgName], $_serverPath);
 
 					$we_size = we_thumbnail::getimagesize($_serverPath);
 
 					if(!empty($we_size)){
 
-						$tmp_Filename = $imgName . '_' . weFile::getUniqueId() . '_' . preg_replace('/[^A-Za-z0-9._-]/', '', $_FILES['WE_SF_IMG_DATA']['name'][$imgName]);
+						$tmp_Filename = $imgName . '_' . we_base_file::getUniqueId() . '_' . preg_replace('/[^A-Za-z0-9._-]/', '', $_FILES['WE_SF_IMG_DATA']['name'][$imgName]);
 						$tmp = explode('.', $tmp_Filename);
 						$_extension = '.' . $tmp[count($tmp) - 1];
 						unset($tmp[count($tmp) - 1]);
@@ -194,14 +194,14 @@ function we_saveCustomerImages(){
 						//image needs to be scaled
 						if((isset($_SESSION['webuser']['imgtmp'][$imgName]['width']) && $_SESSION['webuser']['imgtmp'][$imgName]['width']) ||
 							(isset($_SESSION['webuser']['imgtmp'][$imgName]['height']) && $_SESSION['webuser']['imgtmp'][$imgName]['height'])){
-							$imageData = weFile::load($_serverPath);
+							$imageData = we_base_file::load($_serverPath);
 							$thumb = new we_thumbnail();
 							$thumb->init('dummy', $_SESSION['webuser']['imgtmp'][$imgName]['width'], $_SESSION['webuser']['imgtmp'][$imgName]['height'], $_SESSION['webuser']['imgtmp'][$imgName]['keepratio'], $_SESSION['webuser']['imgtmp'][$imgName]['maximize'], false, false, '', 'dummy', 0, '', '', $_extension, $we_size[0], $we_size[1], $imageData, '', $_SESSION['webuser']['imgtmp'][$imgName]['quality'], true);
 
 							$imgData = '';
 							$thumb->getThumb($imgData);
 
-							weFile::save($_serverPath, $imgData);
+							we_base_file::save($_serverPath, $imgData);
 							$we_size = we_thumbnail::getimagesize($_serverPath);
 						}
 
@@ -286,11 +286,13 @@ function we_tag_saveRegisteredUser_processRequest($protected, $allowed){
 			case 'ID':
 				break;
 			default:
-				if((!empty($protected) && in_array($name, $protected))||
+				if((!empty($protected) && in_array($name, $protected)) ||
 					(!empty($allowed) && !in_array($name, $allowed))){
 					continue;
 				}
-				$set[$name] = $val;
+				$set[$name] = ($name == 'Password' ?
+						we_customer_customer::cryptPassword($val) :
+						$val);
 				break;
 		}
 	}

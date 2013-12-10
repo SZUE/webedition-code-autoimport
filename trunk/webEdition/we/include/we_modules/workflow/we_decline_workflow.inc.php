@@ -46,7 +46,7 @@ if($cmd == "ok"){
 		if(($we_doc->EditPageNr == WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == WE_EDITPAGE_INFO)){
 			$script .= 'opener.top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");'; // will be inserted into the template
 		}
-	} else{
+	} else {
 		$msg = g_l('modules_workflow', '[' . stripTblPrefix($we_doc->Table) . '][decline_workflow_notok]');
 		$msgType = we_message_reporting::WE_MESSAGE_ERROR;
 		//	in SEEM-Mode back to Preview page
@@ -59,18 +59,18 @@ if($cmd == "ok"){
 		}
 	}
 	print we_html_element::jsElement($script . we_message_reporting::getShowMessageCall($msg, $msgType) . 'self.close();');
-			}
+}
 print STYLESHEET;
 ?>
 </head>
 
 <body class="weDialogBody">
-	<center>
-<?php if($cmd != 'ok'){ ?>
-			<form action="<?php print WEBEDITION_DIR; ?>we_cmd.php" method="post">
+<center>
+	<?php if($cmd != 'ok'){ ?>
+		<form action="<?php print WEBEDITION_DIR; ?>we_cmd.php" method="post">
 			<?php
-			$okbut = we_button::create_button("ok", "javascript:document.forms[0].submit()");
-			$cancelbut = we_button::create_button("cancel", "javascript:top.close()");
+			$okbut = we_html_button::create_button("ok", "javascript:document.forms[0].submit()");
+			$cancelbut = we_html_button::create_button("cancel", "javascript:top.close()");
 			$content = '<table border="0" cellpadding="0" cellspacing="0">';
 			$wf_textarea = '<textarea name="wf_text" rows="7" cols="50" style="width:360;height:190"></textarea>';
 			$content .= '
@@ -84,7 +84,7 @@ print STYLESHEET;
 						</tr>
 					</table>';
 
-			$_button = we_button::position_yes_no_cancel($okbut, "", $cancelbut);
+			$_button = we_html_button::position_yes_no_cancel($okbut, "", $cancelbut);
 			$frame = we_html_tools::htmlDialogLayout($content, g_l('modules_workflow', '[decline_workflow]'), $_button);
 			print $frame;
 			print '
@@ -92,9 +92,9 @@ print STYLESHEET;
 						<input type="hidden" name="we_cmd[0]" value="' . $_REQUEST['we_cmd'][0] . '" />
 						<input type="hidden" name="we_cmd[1]" value="' . $we_transaction . '" />';
 			?>
-			</form>
-			<?php } ?>
-	</center>
+		</form>
+	<?php } ?>
+</center>
 
 </body>
 

@@ -27,9 +27,9 @@ print STYLESHEET;
 ?>
 </head>
 <body style="background-color:#EBEBEB;margin: 0px 0px 0px 0px;" onBlur="self.close()" onClick="self.close()" onload="self.focus();">
-	<center><?php
-include (WE_INCLUDES_PATH . 'we_templates/we_info.inc.php');
-?>
-	</center>
+<center><?php
+	include (WE_INCLUDES_PATH . 'we_templates/we_info.inc.php');
+	?>
+</center>
 </body>
 </html>

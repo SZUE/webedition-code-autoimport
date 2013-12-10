@@ -28,8 +28,8 @@ we_html_tools::protect();
 
 $what = isset($_REQUEST["pnt"]) ? $_REQUEST["pnt"] : "frameset";
 
-$weFrame = new weGlossaryFrames();
-$weFrame->getHTMLDocumentHeader();
+$weFrame = new we_glossary_frames();
+echo $weFrame->getHTMLDocumentHeader();
 $weFrame->View->processVariables();
 $weFrame->View->processCommands();
-$weFrame->getHTML($what);
+echo $weFrame->getHTML($what);

@@ -58,7 +58,7 @@ class weTagDataAttribute{
 	 * @param boolean $required
 	 * @param string $module
 	 */
-	function __construct($name, $required=false, $module = '', $description = '', $deprecated = false){
+	function __construct($name, $required = false, $module = '', $description = '', $deprecated = false){
 		static $count = 0;
 		$this->Id = ++$count;
 		$this->Name = $name;
@@ -123,7 +123,7 @@ class weTagDataAttribute{
 	 * @return boolean
 	 */
 	function useAttribute(){
-		return ($this->Module == '' || in_array($this->Module, $GLOBALS['_we_active_integrated_modules']));
+		return ($this->Module == '' || weModuleInfo::isActive($this->Module));
 	}
 
 	/**

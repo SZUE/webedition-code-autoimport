@@ -57,7 +57,7 @@ foreach($_FILES as $_index => $_file){
 		flush();
 		unset($_FILES['we_File']);
 		$_counter++;
-	} else{
+	} else {
 		break;
 	}
 }
@@ -70,7 +70,7 @@ if(isset($_SESSION['weS']['WE_IMPORT_FILES_ERRORs'])){
 	echo "\n";
 	t_e('import error', $_SESSION['weS']['WE_IMPORT_FILES_ERRORs']);
 	unset($_SESSION['weS']['WE_IMPORT_FILES_ERRORs']);
-} else{
+} else {
 	echo "SUCCESS\n";
 }
 

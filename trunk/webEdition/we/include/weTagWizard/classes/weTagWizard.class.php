@@ -29,7 +29,7 @@ abstract class weTagWizard{
 		$main = self::getMainTagModules($useDeprecated);
 		foreach($main as $modulename => $tags){
 
-			if($modulename == 'basis' || $modulename == 'navigation' || in_array($modulename, $GLOBALS['_we_active_integrated_modules'])){
+			if($modulename == 'basis' || $modulename == 'navigation' || weModuleInfo::isActive($modulename)){
 				$retTags = array_merge($retTags, $tags);
 			}
 		}
@@ -60,7 +60,7 @@ abstract class weTagWizard{
 				$taggroups['alltags'] = $tags;
 			}
 
-			if(in_array($modulename, $GLOBALS['_we_active_integrated_modules'])){
+			if(weModuleInfo::isActive($modulename)){
 				$taggroups[$modulename] = $tags;
 				$taggroups['alltags'] = array_merge($taggroups['alltags'], $tags);
 			}
@@ -171,7 +171,7 @@ abstract class weTagWizard{
 			// get the custom tag-descriptions
 			$handle = dir($dir);
 
-			while(false !== ($entry = $handle->read())) {
+			while(false !== ($entry = $handle->read())){
 
 				if(preg_match('/we_tag_(.*).inc.php/', $entry, $match)){
 					$ret[] = $match[1];
@@ -187,9 +187,9 @@ abstract class weTagWizard{
 
 			$GLOBALS['weTagWizard_applicationTags'] = array();
 			$apptags = array();
-			$alltools = weToolLookup::getAllTools(true);
+			$alltools = we_tool_lookup::getAllTools(true);
 			foreach($alltools as $tool){
-				$apptags = weToolLookup::getAllToolTagWizards($tool['name']);
+				$apptags = we_tool_lookup::getAllToolTagWizards($tool['name']);
 				$apptagnames = array_keys($apptags);
 				$GLOBALS['weTagWizard_applicationTags'] = array_merge($GLOBALS['weTagWizard_applicationTags'], $apptagnames);
 			}

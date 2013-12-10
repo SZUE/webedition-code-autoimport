@@ -122,25 +122,25 @@ $_dns = explode("\n", $websites);
 
 
 $sctDns = we_html_tools::htmlFormElementTable(
-		we_html_tools::htmlSelect("sct_dns", $_dns, 1, 0, false, 'onChange="" style="width:300px;"', 'value'), g_l('cockpit', "[domain]"));
+		we_html_tools::htmlSelect("sct_dns", $_dns, 1, 0, false, array('onChange' => "", 'style' => "width:300px;"), 'value'), g_l('cockpit', "[domain]"));
 
-$chbxChart[0] = we_forms::checkbox(
+$chbxChart[0] = we_html_forms::checkbox(
 		$value = 0, $checked = 0, $name = "chbx_chart", $text = g_l('cockpit', '[visitors_data_today]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
-$chbxChart[1] = we_forms::checkbox(
+$chbxChart[1] = we_html_forms::checkbox(
 		$value = 0, $checked = 0, $name = "chbx_chart", $text = g_l('cockpit', '[visitors_data_yesterday]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
-$chbxChart[2] = we_forms::checkbox(
+$chbxChart[2] = we_html_forms::checkbox(
 		$value = 0, $checked = 0, $name = "chbx_chart", $text = g_l('cockpit', '[visitors_data_this_month]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
-$chbxChart[3] = we_forms::checkbox(
+$chbxChart[3] = we_html_forms::checkbox(
 		$value = 0, $checked = 0, $name = "chbx_chart", $text = g_l('cockpit', '[visitors_behaviour_today]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
-$chbxChart[4] = we_forms::checkbox(
+$chbxChart[4] = we_html_forms::checkbox(
 		$value = 0, $checked = 0, $name = "chbx_chart", $text = g_l('cockpit', '[Snapshot]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
-$chbxChart[5] = we_forms::checkbox(
+$chbxChart[5] = we_html_forms::checkbox(
 		$value = 0, $checked = 0, $name = "chbx_chart", $text = g_l('cockpit', '[top_visiting_periods]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
-$chbxChart[6] = we_forms::checkbox(
+$chbxChart[6] = we_html_forms::checkbox(
 		$value = 0, $checked = 0, $name = "chbx_chart", $text = g_l('cockpit', '[visitors_forecast]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
-$chbxChart[7] = we_forms::checkbox(
+$chbxChart[7] = we_html_forms::checkbox(
 		$value = 0, $checked = 0, $name = "chbx_chart", $text = g_l('cockpit', '[avg_amount_visitors]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
-$chbxChart[8] = we_forms::checkbox(
+$chbxChart[8] = we_html_forms::checkbox(
 		$value = 0, $checked = 0, $name = "chbx_chart", $text = g_l('cockpit', '[promo_value_tai]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
 
 $chart = new we_html_table(array(
@@ -168,11 +168,11 @@ $parts = array(
 		"headline" => "", "html" => $oSelCls->getHTML(), "space" => 0
 	));
 
-$save_button = we_button::create_button("save", "javascript:save();", false, -1, -1);
-$preview_button = we_button::create_button("preview", "javascript:preview();", false, -1, -1);
-$cancel_button = we_button::create_button("close", "javascript:exit_close();");
-$buttons = we_button::position_yes_no_cancel($save_button, $preview_button, $cancel_button);
-$sMultibox = we_multiIconBox::getJS() . we_multiIconBox::getHTML(
+$save_button = we_html_button::create_button("save", "javascript:save();", false, 0, 0);
+$preview_button = we_html_button::create_button("preview", "javascript:preview();", false, 0, 0);
+$cancel_button = we_html_button::create_button("close", "javascript:exit_close();");
+$buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button, $cancel_button);
+$sMultibox = we_html_multiIconBox::getJS() . we_html_multiIconBox::getHTML(
 		"plgProps", "100%", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[pagelogger]'));
 
 $_pLogProps = new we_html_table(array(

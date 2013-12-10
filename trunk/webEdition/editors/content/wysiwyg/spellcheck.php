@@ -22,6 +22,4 @@
  * @package    webEdition_wysiwyg
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-
-include(WE_MODULES_PATH . 'spellchecker/weSpellchecker.php');
+require_once(WE_MODULES_PATH . 'spellchecker/weSpellchecker.php');

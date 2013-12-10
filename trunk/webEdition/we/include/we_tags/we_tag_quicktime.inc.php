@@ -54,8 +54,8 @@ function we_tag_quicktime($attribs){
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['" . $fname . "'].value");
 		$wecmdenc3 = we_cmd_enc("opener.setScrollTo(); opener._EditorFrame.setEditorIsHot(true); opener.top.we_cmd('reload_editpage'); opener._EditorFrame.setEditorIsHot(true);");
 
-		$quicktime_button = we_button::create_button("image:btn_edit_quicktime", "javascript:we_cmd('openDocselector','" . ($id != "" ? $id : $startid) . "', '" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "'," . $parentid . ", 'video/quicktime', " . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true);
-		$clear_button = we_button::create_button("image:btn_function_trash", "javascript:we_cmd('remove_image', '" . $name . "')", true);
+		$quicktime_button = we_html_button::create_button("image:btn_edit_quicktime", "javascript:we_cmd('openDocselector','" . ($id != "" ? $id : $startid) . "', '" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "'," . $parentid . ", 'video/quicktime', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true);
+		$clear_button = we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('remove_image', '" . $name . "')", true);
 
 		$out = '
 			<table class="weEditTable padding0 spacing2">
@@ -64,7 +64,7 @@ function we_tag_quicktime($attribs){
 				</tr>
 				<tr>
 					<td class="weEditmodeStyle" align="center">' .
-			we_button::create_button_table(array(
+			we_html_button::create_button_table(array(
 				$quicktime_button, $clear_button
 				), 5) . "</td></tr></table>";
 	}

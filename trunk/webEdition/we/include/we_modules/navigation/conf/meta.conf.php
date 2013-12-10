@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,16 +22,12 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-
-	$metaInfo = array(
-		'name' => 'navigation',
-		'maintable' => NAVIGATION_TABLE,
-		'classname' => 'weNavigation',
-		'datasource' => 'table:' . NAVIGATION_TABLE,
-		'startpermission' => 'EDIT_NAVIGATION',
-		'supportshooks' => 0
-	);
-
+$metaInfo = array(
+	'name' => 'navigation',
+	'maintable' => NAVIGATION_TABLE,
+	'classname' => 'weNavigation',
+	'datasource' => 'table:' . NAVIGATION_TABLE,
+	'startpermission' => 'EDIT_NAVIGATION',
+	'supportshooks' => 0
+);
 ?>

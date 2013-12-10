@@ -150,7 +150,7 @@
 		 * RETURNS:
 		 *   nothing
 		 */
-				this.openDocument = function(table, id, ct, editcmd, dt, url, code, mode, parameters) {
+		this.openDocument = function(table, id, ct, editcmd, dt, url, code, mode, parameters) {
 
 			if (this.EditorFrames === null) {
 				this.init();
@@ -228,7 +228,7 @@
 
 					} else {	// new_document
 
-						if (typeof(code) !== "undefined" && code) { // open new document with standard code
+						if (typeof (code) !== "undefined" && code) { // open new document with standard code
 							we_cmd('new_document', table, id, ct, "", "", "", "", dt, "", code);
 
 						} else {
@@ -633,32 +633,32 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 
 					if (first) {
 						this.getEditorFrame(frameId).setEmptyEditor();
-	<?php
-	echo (we_base_browserDetect::isChrome() ?
-		'this.getEditorFrame(frameId).EditorFrameReference.style.display="block";' :
-		'this.getEditorFrame(frameId).EditorFrameReference.style.width = "100%";
+<?php
+echo (we_base_browserDetect::isChrome() ?
+	'this.getEditorFrame(frameId).EditorFrameReference.style.display="block";' :
+	'this.getEditorFrame(frameId).EditorFrameReference.style.width = "100%";
 		this.getEditorFrame(frameId).EditorFrameReference.style.height = "100%";');
-	?>
+?>
 						first = false;
 					} else {
-	<?php
-	echo (we_base_browserDetect::isChrome() ?
-		'this.getEditorFrame(frameId).EditorFrameReference.style.display="none";' :
-		'this.getEditorFrame(frameId).EditorFrameReference.style.height = "0px";
+<?php
+echo (we_base_browserDetect::isChrome() ?
+	'this.getEditorFrame(frameId).EditorFrameReference.style.display="none";' :
+	'this.getEditorFrame(frameId).EditorFrameReference.style.height = "0px";
 	this.getEditorFrame(frameId).EditorFrameReference.style.witdh = "0px";');
-	?>
+?>
 					}
 				}
 
 			} else {
 				for (frameId in this.EditorFrames) {
 					if (this.ActiveEditorFrameId === frameId) {
-	<?php
-	echo (we_base_browserDetect::isChrome() ?
-		'this.getEditorFrame(frameId).EditorFrameReference.style.display="block";' :
-		'this.getEditorFrame(frameId).EditorFrameReference.style.width = "100%";
+<?php
+echo (we_base_browserDetect::isChrome() ?
+	'this.getEditorFrame(frameId).EditorFrameReference.style.display="block";' :
+	'this.getEditorFrame(frameId).EditorFrameReference.style.width = "100%";
 		this.getEditorFrame(frameId).EditorFrameReference.style.height = "100%";');
-	?>
+?>
 					} else {
 						if (this.getEditorFrame(frameId).getEditorIsInUse() && this.getEditorFrame(frameId).EditorType !== "none_webedition" && this.EditorFrames[frameId].getDocumentReference().closeAllModalWindows) {
 							this.EditorFrames[frameId].getDocumentReference().closeAllModalWindows();
@@ -667,12 +667,12 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 							this.getEditorFrame(frameId).EditorExitDocQuestionDialog.close();
 							this.getEditorFrame(frameId).EditorExitDocQuestionDialog = false;
 						}
-	<?php
-	echo (we_base_browserDetect::isChrome() ?
-		'this.getEditorFrame(frameId).EditorFrameReference.style.display="none";' :
-		'this.getEditorFrame(frameId).EditorFrameReference.style.height = "0px";
+<?php
+echo (we_base_browserDetect::isChrome() ?
+	'this.getEditorFrame(frameId).EditorFrameReference.style.display="none";' :
+	'this.getEditorFrame(frameId).EditorFrameReference.style.height = "0px";
 	this.getEditorFrame(frameId).EditorFrameReference.style.witdh = "0px";');
-	?>
+?>
 					}
 				}
 			}
@@ -779,7 +779,7 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 		};
 
 		this.getEditorFrame = function(frameId) {
-			if (typeof(frameId) === "string" && frameId !== "undefined") {
+			if (typeof (frameId) === "string" && frameId !== "undefined") {
 				return this.EditorFrames[frameId];
 			} else if (this.ActiveEditorFrameId) {
 				return this.EditorFrames[this.ActiveEditorFrameId];
@@ -994,7 +994,7 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 
 			if (obj) {
 				for (eigen in obj) {
-					if (typeof(obj[eigen]) === "boolean") {
+					if (typeof (obj[eigen]) === "boolean") {
 						eval("this." + eigen + " = " + obj[eigen]);
 					} else {
 						eval("this." + eigen + " = \"" + obj[eigen] + "\"");
@@ -1291,5 +1291,5 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 		};
 
 	}
-	//-->
+//-->
 </script>

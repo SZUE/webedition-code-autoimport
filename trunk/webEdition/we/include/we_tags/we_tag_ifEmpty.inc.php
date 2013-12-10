@@ -52,7 +52,7 @@ function we_isNotEmpty($attribs){
 			if($int){ // for type = href int
 				$intID = $doc->getElement($match . we_base_link::MAGIC_INT_LINK_ID);
 				return (bool) ($intID > 0) && strlen(id_to_path(array($intID)));
-			} else{
+			} else {
 				$hreftmp = $doc->getElement($match);
 				if(substr($hreftmp, 0, 1) == '/'){
 					return (bool) (file_exists($_SERVER['DOCUMENT_ROOT'] . $hreftmp));

@@ -57,7 +57,7 @@ class weXMLBrowser extends we_xml_parser{
 		if(!is_dir(dirname($cache))){
 			we_util_File::createLocalFolder(dirname($cache));
 		}
-		if(weFile::save($cache, serialize($this->nodes))){
+		if(we_base_file::save($cache, serialize($this->nodes))){
 			we_util_File::insertIntoCleanUp($cache, $expire);
 		}
 	}
@@ -68,7 +68,7 @@ class weXMLBrowser extends we_xml_parser{
 		} else {
 			$this->cache = $cache;
 		}
-		$this->nodes = unserialize(weFile::load($cache));
+		$this->nodes = unserialize(we_base_file::load($cache));
 	}
 
 	function getNodeDataset($xpath = "*"){
@@ -104,7 +104,7 @@ class weXMLBrowser extends we_xml_parser{
 		if(file_exists(WEBEDITION_PATH . 'updateinclude/proxysettings.php')){
 			require_once(WEBEDITION_PATH . 'updateinclude/proxysettings.php');
 		}
-		$url = (weFile::hasURL($file) ? getHttpOption() : 'local');
+		$url = (we_base_file::hasURL($file) ? getHttpOption() : 'local');
 		$this->fileName = $file;
 
 		switch($url){

@@ -57,13 +57,13 @@ function we_tag_path($attribs){
 		}
 		$path = $oldHtmlspecialchars ? oldHtmlspecialchars($sep . $show) : $sep . $show;
 	}
-	while($pID) {
+	while($pID){
 		$db->query('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ParentID=' . intval($pID) . ' AND IsFolder = 0 AND (' . $q . ') AND (Published > 0 AND IsSearchable = 1)');
 		$db->next_record();
 		$fileID = $db->f('ID');
 		$filePath = $db->f('Path');
 		if($fileID){
-			$show = f('SELECT ' . CONTENT_TABLE . '.Dat as Dat FROM ' . LINK_TABLE . ',' . CONTENT_TABLE . ' WHERE ' . LINK_TABLE . '.DID=' . intval($fileID) . ' AND ' . LINK_TABLE . '.Name="' . $db->escape($dirfield) .  '" AND ' . CONTENT_TABLE . '.ID=' . LINK_TABLE . '.CID', 'Dat', $db);
+			$show = f('SELECT ' . CONTENT_TABLE . '.Dat as Dat FROM ' . LINK_TABLE . ',' . CONTENT_TABLE . ' WHERE ' . LINK_TABLE . '.DID=' . intval($fileID) . ' AND ' . LINK_TABLE . '.Name="' . $db->escape($dirfield) . '" AND ' . CONTENT_TABLE . '.ID=' . LINK_TABLE . '.CID', 'Dat', $db);
 			if(!$show && $fieldforfolder){
 				$show = f('SELECT ' . CONTENT_TABLE . '.Dat as Dat FROM ' . LINK_TABLE . ',' . CONTENT_TABLE . ' WHERE ' . LINK_TABLE . '.DID=' . intval($fileID) . ' AND ' . LINK_TABLE . '.Name="' . $db->escape($field) . '" AND ' . CONTENT_TABLE . '.ID=' . LINK_TABLE . '.CID', 'Dat', $db);
 			}
@@ -73,10 +73,10 @@ function we_tag_path($attribs){
 			if($fileID != $doc->ID){
 				$link_pre = '<a href="' . $filePath . '"' . $class . $style . '>';
 				$link_post = '</a>';
-			} else{
+			} else {
 				$link_pre = $link_post = '';
 			}
-		} else{
+		} else {
 			$link_pre = $link_post = '';
 			$show = f('SELECT Text FROM ' . FILE_TABLE . ' WHERE ID=' . intval($pID), 'Text', $db);
 		}
@@ -89,7 +89,7 @@ function we_tag_path($attribs){
 	}
 
 	$hash = getHash('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ParentID=0 AND IsFolder=0 AND (' . $q . ') AND (Published>0 AND IsSearchable=1)', $db);
-	list($fileID, $filePath) = (empty($hash) ? array(0, '') : $hash);
+	list($fileID, $filePath) = ($hash ? $hash : array(0, ''));
 	if($fileID){
 		$show = f('SELECT ' . CONTENT_TABLE . '.Dat as Dat FROM ' . LINK_TABLE . ',' . CONTENT_TABLE . ' WHERE ' . LINK_TABLE . '.DID=' . intval($fileID) . ' AND ' . LINK_TABLE . '.Name="' . $db->escape($field) . '" AND ' . CONTENT_TABLE . '.ID = ' . LINK_TABLE . '.CID', 'Dat', $db);
 		if(!$show){
@@ -97,7 +97,7 @@ function we_tag_path($attribs){
 		}
 		$link_pre = '<a href="' . $filePath . '"' . $class . $style . '>';
 		$link_post = '</a>';
-	} else{
+	} else {
 		$link_pre = $link_post = '';
 		$show = $home;
 	}

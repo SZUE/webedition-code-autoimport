@@ -34,10 +34,10 @@ Zend_Loader::loadClass('we_ui_controls_Select');
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_ui_controls_SelectCustomerfield extends we_ui_controls_Select{
+
 	/**
 	 * Default class name for Select
 	 */
-
 	const kSelectClass = 'we_ui_controls_Select';
 
 	/**
@@ -55,14 +55,13 @@ class we_ui_controls_SelectCustomerfield extends we_ui_controls_Select{
 	 */
 	public function __construct($properties = null){
 		parent::__construct($properties);
-		include ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/conf/we_active_integrated_modules.inc.php");
-		if(in_array('customer', $GLOBALS['_we_active_integrated_modules'])){
+		if(weModuleInfo::isActive('customer')){
 			if(file_exists(WE_MODULES_PATH . 'customer/we_conf_customer.inc.php')){
 				require_once (WE_MODULES_PATH . 'customer/we_conf_customer.inc.php');
 				$db = new DB_WE();
 				$db->query('SHOW FIELDS FROM ' . CUSTOMER_TABLE);
 				$this->addOption(0, '-');
-				while($db->next_record()) {
+				while($db->next_record()){
 					$this->addOption($db->f('Field'), $db->f('Field'));
 				}
 			}

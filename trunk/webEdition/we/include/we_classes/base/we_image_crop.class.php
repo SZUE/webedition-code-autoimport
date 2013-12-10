@@ -932,8 +932,8 @@ if(!Function.prototype.apply){
 	}
 
 	static function getCrop($attribs){
-		$cancelbut = we_button::create_button("cancel", "javascript:we_cmd('crop_cancel')");
-		$okbut = we_button::create_button("save", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('doImage_crop',document.forms['we_form'].cropCoordX.value,document.forms['we_form'].cropCoordY.value,document.forms['we_form'].CropWidth.value,document.forms['we_form'].CropHeight.value);", true, -1, -1, "", "", true, false);
+		$cancelbut = we_html_button::create_button("cancel", "javascript:we_cmd('crop_cancel')");
+		$okbut = we_html_button::create_button("save", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('doImage_crop',document.forms['we_form'].cropCoordX.value,document.forms['we_form'].cropCoordY.value,document.forms['we_form'].CropWidth.value,document.forms['we_form'].CropHeight.value);", true, 0, 0, "", "", true, false);
 
 		return '
 <input type="hidden" name="cropCoordX" id="cropCoordX" />
@@ -959,7 +959,7 @@ if(!Function.prototype.apply){
               <a id="cropButtonZoomOut" title="' . g_l('crop', '[reduce_crop_area]') . '" onmousedown="CropTool.zoom(-1);">&nbsp;</a>
               </div>
             </td>
-            <td>' . we_button::position_yes_no_cancel($okbut, "", $cancelbut, 10, "", "", 2) . '</td>
+            <td>' . we_html_button::position_yes_no_cancel($okbut, "", $cancelbut, 10, "", "", 2) . '</td>
           </tr>
         </table>
       </div>

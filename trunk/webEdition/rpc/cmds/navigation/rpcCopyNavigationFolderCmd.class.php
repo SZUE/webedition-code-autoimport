@@ -67,7 +67,7 @@ class rpcCopyNavigationFolderCmd extends rpcCmd{
 					$mapedId[$row['ID']] = $db->getInsertId();
 					$folders[] = $mapedId[$row['ID']];
 					$query = "";
-				} else{
+				} else {
 					if(!empty($query)){
 						$query .= ', ';
 					}
@@ -79,12 +79,12 @@ class rpcCopyNavigationFolderCmd extends rpcCmd{
 				$db->query("INSERT INTO " . NAVIGATION_TABLE . " VALUES " . $query);
 			}
 			foreach($folders as $folder){
-				$newNavi = new weNavigation($folder);
+				$newNavi = new we_navigation_navigation($folder);
 				$newNavi->save();
 			}
 			$resp->setData("status", "ok");
 			$resp->setData("folders", $folders);
-		} else{
+		} else {
 			$resp->setData("folders", "");
 		}
 

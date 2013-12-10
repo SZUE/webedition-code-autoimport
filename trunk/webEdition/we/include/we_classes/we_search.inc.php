@@ -90,7 +90,7 @@ class we_search{
 							$sql .= $this->sqlwhere($searchfield[$i], ' BETWEEN ' . $from . ' AND ' . $till . ' ', null);
 							break;
 					}
-				} else{
+				} else {
 
 					switch($searchlocation[$i]){
 						case 'END':
@@ -139,7 +139,7 @@ class we_search{
 				$q [] = $tmp . '` ' . $searchlocation;
 			}
 			return ' ' . $concat . ' ( ' . implode(' OR ', $q) . ' ) ';
-		} else{
+		} else {
 			$tmp = str_replace('.', '.`', $we_SearchField);
 			if($tmp == $we_SearchField){
 				$tmp = '`' . $tmp;
@@ -149,19 +149,19 @@ class we_search{
 	}
 
 	function countitems($where = '', $table = ''){
-		$this->table = (empty($table)) ? ((empty($this->table)) ? '' : $this->table) : $table;
+		$this->table = ($table ? $table : ($this->table ? $this->table : ''));
 
 		if(!empty($this->table)){
-			$this->where = (empty($where)) ? ((empty($this->where)) ? '1' : $this->where) : $where;
+			$this->where = ($where ? $where : ($this->where ? $this->where : '1'));
 			return f('SELECT COUNT(1) as Count FROM ' . $this->db->escape($this->table) . ' WHERE ' . $this->where, 'Count', $this->db);
-		} else{
+		} else {
 			return -1;
 		}
 	}
 
 	function searchquery($where = '', $get = '*', $table = '', $order = '', $limit = ''){
 
-		$this->table = (empty($table)) ? ((empty($this->table)) ? '' : $this->table) : $table;
+		$this->table = ($table ? $table : ($this->table ? $this->table : ''));
 
 		if(!empty($this->table)){
 			$this->where = (empty($where)) ? ((empty($this->where)) ? '' : ' WHERE ' . $this->where) : ' WHERE ' . $where;
@@ -171,17 +171,17 @@ class we_search{
 
 			$this->limit = ' ' . $this->searchstart . ',' . $this->anzahl . ' ';
 
-			$this->limit = (empty($limit)) ? ((empty($this->limit)) ? '' : ' LIMIT ' . ($this->limit)) : ' LIMIT ' . ($limit);
+			$this->limit = ' LIMIT ' . ($limit ? $limit : $this->limit);
 
 			$this->db->query('SELECT ' . rtrim($this->get, ',') . ' FROM ' . $this->db->escape($this->table) . ' ' . $this->where . ' ' . $order . ' ' . $this->limit);
-		} else{
+		} else {
 			return -1;
 		}
 	}
 
 	function setlimit($anzahl = '', $searchstart = ''){
-		$this->anzahl = (empty($anzahl)) ? ((empty($this->anzahl)) ? $this->defaultanzahl : $this->anzahl) : $anzahl;
-		$this->searchstart = (empty($searchstart)) ? ((empty($this->searchstart)) ? '0' : $this->searchstart) : $searchstart;
+		$this->anzahl = ($anzahl ? $anzahl : ($this->anzahl ? $this->anzahl : $this->defaultanzahl));
+		$this->searchstart = ($searchstart ? $searchstart : ($this->searchstart ? $this->searchstart : '0'));
 
 		$this->limit = ' ' . $this->searchstart . ',' . $this->anzahl . ' ';
 
@@ -289,8 +289,8 @@ class we_search{
 <tr>
 	<td>' .
 			($this->searchstart ?
-				we_button::create_button('back', 'javascript:back();') : //bt_back
-				we_button::create_button('back', '', true, 100, 22, '', '', true)
+				we_html_button::create_button('back', 'javascript:back();') : //bt_back
+				we_html_button::create_button('back', '', true, 100, 22, '', '', true)
 			) . '
 	</td>
 	<td>' . we_html_tools::getPixel(10, 2) . '</td>
@@ -302,9 +302,9 @@ class we_search{
 	<td>' . we_html_tools::getPixel(10, 2) . '</td>
 	<td>' .
 			(($this->searchstart + $this->anzahl) < $we_search_anzahl ?
-				we_button::create_button("next", "javascript:next();") : //bt_back
+				we_html_button::create_button("next", "javascript:next();") : //bt_back
 
-				we_button::create_button("next", "", true, 100, 22, "", "", true)) .
+				we_html_button::create_button("next", "", true, 100, 22, "", "", true)) .
 			'</td>
 	<td>' . we_html_tools::getPixel(10, 2) . '</td>
 	<td>';
@@ -316,7 +316,7 @@ class we_search{
 
 		$page = ceil($this->searchstart / $this->anzahl) * $this->anzahl;
 
-		$select = we_html_tools::htmlSelect("page", $pages, 1, $page, false, "onChange=\"this.form.elements['SearchStart'].value = this.value;we_cmd('reload_editpage');\"");
+		$select = we_html_tools::htmlSelect("page", $pages, 1, $page, false, array("onchange" => "this.form.elements['SearchStart'].value = this.value;we_cmd('reload_editpage');"));
 		if(!defined("SearchStart")){
 			define("SearchStart", true);
 			$out .= we_html_tools::hidden("SearchStart", $this->searchstart);

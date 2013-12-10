@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition SDK
  *
@@ -10,7 +11,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -19,8 +20,6 @@
  * @subpackage we_app_Installer
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-
-
 /**
  * @see we_app_Application
  */
@@ -39,33 +38,28 @@ Zend_Loader::loadClass('we_app_Installer');
 /**
  * class for remote installation of webEdition applications from update server
  * the source files need to be present as a zip file at a specified location
- * 
+ *
  * @category   we
  * @package    we_app
  * @subpackage we_app_Installer
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_app_Installer_Server extends we_app_Installer
-{
-	
-	public function preInstall()
-	{
+class we_app_Installer_Server extends we_app_Installer{
+
+	public function preInstall(){
 		// fetch files from update server via http
 	}
-	
-	public function postInstall()
-	{
-		
+
+	public function postInstall(){
+
 	}
-	
-	public function preUninstall()
-	{
-		
+
+	public function preUninstall(){
+
 	}
-	
-	public function postUninstall()
-	{
-		
+
+	public function postUninstall(){
+
 	}
-	
+
 }

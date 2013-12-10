@@ -11,7 +11,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -22,13 +22,12 @@
 
 /**
  * Utility class for creating XML Tags
- * 
+ *
  * @category   we
  * @package    we_xml
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_xml_Tags
-{
+class we_xml_Tags{
 
 	/**
 	 * Returns attribute string to insert in any XML tag
@@ -37,12 +36,11 @@ class we_xml_Tags
 	 * @param string $excludeAttribs comma separated list of attributes which should not be included in generated string
 	 * @return string
 	 */
-	static function createAttributeStringFromArray($attribArray, $excludeAttribs = NULL)
-	{
+	static function createAttributeStringFromArray($attribArray, $excludeAttribs = NULL){
 		$excludeArr = is_null($excludeAttribs) ? array() : explode(',', $excludeAttribs);
 		$attribString = '';
-		foreach ($attribArray as $n => $v) {
-			if (!in_array($n, $excludeArr)) {
+		foreach($attribArray as $n => $v){
+			if(!in_array($n, $excludeArr)){
 				$attribString .= ' ' . oldHtmlspecialchars($n) . '="' . oldHtmlspecialchars($v) . '"';
 			}
 		}
@@ -55,11 +53,10 @@ class we_xml_Tags
 	 * @param string $tagName name of tag
 	 * @param string $attribArray associative array with attributes
 	 * @param string $excludeAttribs comma separated list of attributes which should not be included in generated string
-	 * @param boolean $endSlash flag which controls if tag should have an end slash or not 
+	 * @param boolean $endSlash flag which controls if tag should have an end slash or not
 	 * @return string
 	 */
-	static function createStartTag($tagName, $attribArray = array(), $excludeAttribs = NULL, $endSlash = false)
-	{
+	static function createStartTag($tagName, $attribArray = array(), $excludeAttribs = NULL, $endSlash = false){
 		return '<' . strtolower($tagName) . we_xml_Tags::createAttributeStringFromArray($attribArray, $excludeAttribs) . ($endSlash ? ' /' : '') . '>';
 	}
 

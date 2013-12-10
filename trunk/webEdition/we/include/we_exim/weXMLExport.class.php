@@ -43,7 +43,7 @@ class weXMLExport extends weXMLExIm{
 			strpos($doc->ContentType, "image/") === 0 ||
 			strpos($doc->ContentType, "application/") === 0 ||
 			strpos($doc->ContentType, "video/") === 0)){
-			$doc->setElement("data", weFile::load($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $doc->Path));
+			$doc->setElement("data", we_base_file::load($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $doc->Path));
 		}
 
 		$fh = fopen($fname, 'ab');
@@ -88,7 +88,7 @@ class weXMLExport extends weXMLExIm{
 			weContentProvider::object2xml($doc, $fh, $attribute);
 		}
 
-		fwrite($fh, weBackup::backupMarker . "\n");
+		fwrite($fh, we_backup_backup::backupMarker . "\n");
 
 		if($classname == "weTableItem" && $export_binary &&
 			strtolower($doc->table) == strtolower(FILE_TABLE) &&
@@ -193,8 +193,8 @@ class weXMLExport extends weXMLExIm{
 					$path = dirname($path);
 				}
 			}
-		} else if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE && (!we_hasPerm("ADMINISTRATOR"))){
-			$ac = getAllowedClasses($db);
+		} else if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE && (!permissionhandler::hasPerm("ADMINISTRATOR"))){
+			$ac = we_users_util::getAllowedClasses($db);
 			foreach($ac as $cid){
 				$path = id_to_path($cid, OBJECT_TABLE);
 				if($wsQuery != ''){
@@ -204,7 +204,7 @@ class weXMLExport extends weXMLExIm{
 			}
 		}
 
-		return makeOwnersSql() . ( $wsQuery ? 'OR (' . $wsQuery . ')' : '');
+		return we_users_util::makeOwnersSql() . ( $wsQuery ? 'OR (' . $wsQuery . ')' : '');
 	}
 
 	function getIDs($selIDs, $table, $with_dirs = false){
@@ -239,7 +239,7 @@ class weXMLExport extends weXMLExIm{
 
 	function prepareExport(){
 		//$this->RefTable = new RefTable();
-		$_preparer = new weExportPreparer($this->options, $this->RefTable);
+		$_preparer = new we_export_preparer($this->options, $this->RefTable);
 		$_preparer->prepareExport();
 	}
 
@@ -253,7 +253,7 @@ class weXMLExport extends weXMLExIm{
 			$out.='></we:map>';
 		}
 		$out.='</we:info>' .
-			weBackup::backupMarker . "\n";
+			we_backup_backup::backupMarker . "\n";
 		return $out;
 	}
 

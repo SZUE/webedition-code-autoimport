@@ -74,11 +74,11 @@ class weTagData{
 		} else {
 			//Application Tags
 			$apptags = array();
-			$alltools = weToolLookup::getAllTools(true);
+			$alltools = we_tool_lookup::getAllTools(true);
 			$allapptags = array();
 			$allapptagnames = array();
 			foreach($alltools as $tool){
-				$apptags = weToolLookup::getAllToolTagWizards($tool['name']);
+				$apptags = we_tool_lookup::getAllToolTagWizards($tool['name']);
 				$allapptags = array_merge($allapptags, $apptags);
 				$apptagnames = array_keys($apptags);
 				$allapptagnames = array_merge($allapptagnames, $apptagnames);

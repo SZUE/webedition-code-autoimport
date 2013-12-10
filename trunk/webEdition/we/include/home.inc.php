@@ -47,7 +47,7 @@ print STYLESHEET .
 	text-decoration:none;
 }') . we_html_element::jsScript(JS_DIR . '/utils/prototypes.js');
 
-if(we_hasPerm("CAN_SEE_QUICKSTART")){
+if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 	$iLayoutCols = isset($_SESSION["prefs"]["cockpit_amount_columns"]) ? $_SESSION["prefs"]["cockpit_amount_columns"] : 3;
 	$bResetProps = ($_REQUEST['we_cmd'][0] == "reset_home") ? true : false;
 	if(!$bResetProps && $iLayoutCols){
@@ -57,7 +57,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 		$aDat = (!empty($aDatTblPref)) ? @unserialize($aDatTblPref) : $aCfgProps; //
 		$aDat = $aDat ? $aDat : $aCfgProps;
 		$aTrf = empty($aTrf) ? array_pop($aDat) : @unserialize($aTrf);
-		$aTrf = empty($aTrf) ? $aTopRssFeeds : $aTrf;
+		$aTrf = $aTrf ? $aTrf : $aTopRssFeeds;
 		if(count($aDat) > $iLayoutCols){
 			while(count($aDat) > $iLayoutCols){
 				$aDelCol = array_pop($aDat);
@@ -87,7 +87,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 				if($item == $value){
 					return true;
 				}
-			}elseif(in_array($value, $item)){
+			} elseif(in_array($value, $item)){
 				return true;
 			} elseif(in_array_recursive($value, $item)){
 				return true;
@@ -203,12 +203,12 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 				for (var i = 0; i < _iLayoutCols; i++) {
 					var asoc = getColumnAsoc('c_' + (i + 1));
 					var asoc_len = asoc.length;
-					if ((typeof(dat[i]) == 'undefined' && !!asoc_len) || (typeof(dat[i]) != 'undefined' && asoc_len != dat[i].length)) {
+					if ((typeof (dat[i]) == 'undefined' && !!asoc_len) || (typeof (dat[i]) != 'undefined' && asoc_len != dat[i].length)) {
 						return true;
 					}
 					for (var k = 0; k < asoc_len; k++) {
 						for (var j = 0; j < ix_len; j++) {
-							if (typeof(dat[i][k][ix[j]]) == 'undefined' || asoc[k][ix[j]] != dat[i][k][ix[j]]) {
+							if (typeof (dat[i][k][ix[j]]) == 'undefined' || asoc[k][ix[j]] != dat[i][k][ix[j]]) {
 								return true;
 							}
 						}
@@ -401,7 +401,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 			var el_label = gel(id + '_lbl');
 			var w = parseInt(el_label.style.width);
 			var suspensionPts = '';
-			if (typeof(prefix) == 'undefined' || typeof(postfix) == 'undefined') {
+			if (typeof (prefix) == 'undefined' || typeof (postfix) == 'undefined') {
 				label = getLabel(id);
 			} else {
 				label = strip_tags(prefix + postfix);
@@ -627,10 +627,10 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 		}
 
 		function implode(arr, delimeter, enclosure) {
-			if (typeof(delimeter) == 'undefined') {
+			if (typeof (delimeter) == 'undefined') {
 				delimeter = ',';
 			}
-			if (typeof(enclosure) == 'undefined') {
+			if (typeof (enclosure) == 'undefined') {
 				enclosure = "'";
 			}
 			var out = '';
@@ -772,7 +772,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 
 		var ajaxCallback = {
 			success: function(o) {
-				if (typeof(o.responseText) !== undefined && o.responseText !== '') {
+				if (typeof (o.responseText) !== undefined && o.responseText !== '') {
 					var weResponse = false;
 					try {
 						eval(o.responseText);
@@ -952,7 +952,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 
 			new jsWindow(url, 'browse_users', -1, -1, 500, 300, true, false, true);
 		}
-		//-->
+	//-->
 	</script>
 	</head>
 	<?php
@@ -1109,8 +1109,8 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 			), we_html_element::htmlDiv(
 				array(
 				"class" => "defaultfont errorMessage", "style" => "width: 400px;"
-				), (we_hasPerm("CHANGE_START_DOCUMENT") && we_hasPerm("EDIT_SETTINGS") ? we_html_tools::htmlAlertAttentionBox(
-						"<strong>" . g_l('SEEM', "[question_change_startdocument]") . "</strong><br /><br />" . we_button::create_button(
+				), (permissionhandler::hasPerm("CHANGE_START_DOCUMENT") && permissionhandler::hasPerm("EDIT_SETTINGS") ? we_html_tools::htmlAlertAttentionBox(
+						"<strong>" . g_l('SEEM', "[question_change_startdocument]") . "</strong><br /><br />" . we_html_button::create_button(
 							"preferences", "javascript:top.we_cmd('openPreferences');"), we_html_tools::TYPE_ALERT, 0, false) : we_html_tools::htmlAlertAttentionBox(
 						"<strong>" . g_l('SEEM', "[start_with_SEEM_no_startdocument]") . "</strong>", we_html_tools::TYPE_ALERT, 0, false))));
 }

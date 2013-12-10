@@ -98,12 +98,12 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 				return "we_templates/we_srcTmpl.inc.php";
 			case WE_EDITPAGE_PREVIEW:
 				$GLOBALS["we_editmode"] = true;
-				$GLOBALS["we_file_to_delete_after_include"] = TEMP_PATH . '/' . weFile::getUniqueId();
+				$GLOBALS["we_file_to_delete_after_include"] = TEMP_PATH . '/' . we_base_file::getUniqueId();
 				we_util_File::saveFile($GLOBALS["we_file_to_delete_after_include"], $this->i_getDocument());
 				return $GLOBALS["we_file_to_delete_after_include"];
 			case WE_EDITPAGE_PREVIEW_TEMPLATE:
 				$GLOBALS["we_editmode"] = false;
-				$GLOBALS["we_file_to_delete_after_include"] = TEMP_PATH . '/' . weFile::getUniqueId();
+				$GLOBALS["we_file_to_delete_after_include"] = TEMP_PATH . '/' . we_base_file::getUniqueId();
 				we_util_File::saveFile($GLOBALS["we_file_to_delete_after_include"], $this->i_getDocument());
 				return $GLOBALS["we_file_to_delete_after_include"];
 			case WE_EDITPAGE_VARIANTS:
@@ -258,7 +258,7 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 					$tmp = explode("\r", $code);
 				}
 				$errCode = "\n";
-				for($ln = max(0,$error['line'] - 2); $ln <= $error['line'] + 2 && isset($tmp[$ln]); $ln++){
+				for($ln = max(0, $error['line'] - 2); $ln <= $error['line'] + 2 && isset($tmp[$ln]); $ln++){
 					$errCode.=$ln . ': ' . $tmp[$ln] . "\n";
 				}
 
@@ -520,9 +520,9 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$textname'].value");
 		$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);if(currentID==$this->ID){" . we_message_reporting::getShowMessageCall($alerttext, we_message_reporting::WE_MESSAGE_ERROR) . "opener.document.we_form.elements['$idname'].value='';opener.document.we_form.elements['$textname'].value='';}");
 
-		$button = we_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','text/weTmpl',1)");
-		$openButton = we_button::create_button('edit', 'javascript:goTemplate(document.we_form.elements[\'we_' . $GLOBALS['we_doc']->Name . '_MasterTemplateID\'].value)');
-		$trashButton = we_button::create_button(we_button::WE_IMAGE_BUTTON_IDENTIFY . 'btn_function_trash', "javascript:document.we_form.elements['$idname'].value='';document.we_form.elements['$textname'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInputMasterTemplate');_EditorFrame.setEditorIsHot(true);", true, 27, 22);
+		$button = we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','text/weTmpl',1)");
+		$openButton = we_html_button::create_button('edit', 'javascript:goTemplate(document.we_form.elements[\'we_' . $GLOBALS['we_doc']->Name . '_MasterTemplateID\'].value)');
+		$trashButton = we_html_button::create_button(we_html_button::WE_IMAGE_BUTTON_IDENTIFY . 'btn_function_trash', "javascript:document.we_form.elements['$idname'].value='';document.we_form.elements['$textname'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInputMasterTemplate');_EditorFrame.setEditorIsHot(true);", true, 27, 22);
 
 		$yuiSuggest->setAcId('MasterTemplate');
 		$yuiSuggest->setContentType('folder,text/weTmpl');
@@ -540,16 +540,11 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 	}
 
 	private function isUsedByDocuments(){
-		$paths = array();
-
 		if($this->ID == 0){
-			return $paths;
+			return array();
 		}
-		$this->DB_WE->query('SELECT ID, Path FROM ' . FILE_TABLE . ' WHERE temp_template_id=' . intval($this->ID) . ' OR (temp_template_id=0 AND TemplateID=' . intval($this->ID) . ') ORDER BY Path');
-		while($this->DB_WE->next_record()){
-			$paths[$this->DB_WE->f('ID')] = $this->DB_WE->f('Path') . ' (ID: ' . $this->DB_WE->f('ID') . ')';
-		}
-		return $paths;
+		$this->DB_WE->query('SELECT ID, CONCAT(Path," (ID: ",ID,")") FROM ' . FILE_TABLE . ' WHERE temp_template_id=' . intval($this->ID) . ' OR (temp_template_id=0 AND TemplateID=' . intval($this->ID) . ') ORDER BY Path');
+		return $this->DB_WE->getAllFirst(false);
 	}
 
 	function formTemplateDocuments(){
@@ -564,9 +559,8 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 			return g_l('weClass', "[no_documents]");
 		}
 
-		$button = we_button::create_button('open', "javascript:top.weEditorFrameController.openDocument('" . FILE_TABLE . "', document.we_form.elements['TemplateDocuments'].value, 'text/webedition');");
-		$foo = $this->htmlSelect($textname, $path, 1, '', false, '', 'value', 388);
-		return $this->htmlFormElementTable($foo, '', 'left', 'defaultfont', '', we_html_tools::getPixel(20, 4), $button);
+		$button = we_html_button::create_button('open', "javascript:top.weEditorFrameController.openDocument('" . FILE_TABLE . "', document.we_form.elements['TemplateDocuments'].value, 'text/webedition');");
+		return we_html_tools::htmlFormElementTable($this->htmlSelect($textname, $path, 1, '', false, array(), 'value', 388), '', 'left', 'defaultfont', '', we_html_tools::getPixel(20, 4), $button);
 	}
 
 	/**
@@ -594,7 +588,7 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 
 	static function getUsedTemplatesOfTemplate($id, &$arr){
 		$hash = getHash('SELECT IncludedTemplates, MasterTemplateID FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($id), $GLOBALS['DB_WE']);
-		list($_tmplCSV, $_masterTemplateID) = (empty($hash) ? array('', 0) : $hash);
+		list($_tmplCSV, $_masterTemplateID) = ($hash ? $hash : array('', 0));
 
 		$_tmpArr = makeArrayFromCSV($_tmplCSV);
 		foreach($_tmpArr as $_tid){
@@ -649,15 +643,14 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 
 
 		foreach($regs as $reg){
-			$attribs = we_tag_tagParser::makeArrayFromAttribs(isset($reg[2]) ? $reg[2] : '');
+			$attribs = we_tag_tagParser::parseAttribs(isset($reg[2]) ? $reg[2] : '', true);
 			$name = isset($attribs['name']) ? $attribs['name'] : '';
 			if($name){
-				if(!isset($masterTags[$name])){
-					$masterTags[$name] = array();
-				}
-				$masterTags[$name]['all'] = $reg[0];
-				$masterTags[$name]['startTag'] = $reg[1];
-				$masterTags[$name]['content'] = isset($reg[3]) ? $reg[3] : "";
+				$masterTags[$name] = array(
+					//'all' => $reg[0],
+					//'startTag' => $reg[1],
+					'content' => isset($reg[3]) ? $reg[3] : '',
+				);
 				$code = str_replace($reg[0], '', $code);
 			}
 		}
@@ -683,14 +676,13 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 
 				foreach($contentTags as $reg){
 					$all = $reg[0];
-					$attribs = we_tag_tagParser::makeArrayFromAttribs($reg[1]);
+					$attribs = we_tag_tagParser::parseAttribs($reg[1], true);
 					$name = isset($attribs['name']) ? $attribs['name'] : '';
-					if($name){
-						$we_masterTagCode = isset($masterTags[$name]['content']) ? $masterTags[$name]['content'] : '';
-						$masterTemplateCode = str_replace($all, $we_masterTagCode, $masterTemplateCode);
-					} else {
-						$masterTemplateCode = str_replace($all, $code, $masterTemplateCode);
-					}
+					$masterTemplateCode = str_replace($all, ($name ?
+							(isset($masterTags[$name]['content']) ?
+								$masterTags[$name]['content'] :
+								'') :
+							$code), $masterTemplateCode);
 				}
 
 				$code = str_replace('</we:content>', '', $masterTemplateCode);
@@ -704,9 +696,9 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 		$regs = array();
 		foreach($tags as $tag){
 			// search for include tag
-			if(preg_match('|^<we:include ([^>]+)>$|i', $tag, $regs)){ // include found
+			if(preg_match('|^<we:include ([^>]+)>$|mi', $tag, $regs)){ // include found
 				// get attributes of tag
-				$att = we_tag_tagParser::makeArrayFromAttribs($regs[1]);
+				$att = we_tag_tagParser::parseAttribs($regs[1], true);
 				// if type-attribute is equal to "template"
 				if(isset($att['type']) && $att['type'] == 'template'){
 
@@ -716,6 +708,8 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 						$templId = path_to_id($att['path'], TEMPLATES_TABLE);
 						if($templId){
 							$att['id'] = $templId;
+						} elseif(!isset($att['id'])){
+							continue;
 						}
 					}
 
@@ -731,11 +725,14 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 							$recursiveTemplates[] = $att['id'];
 							$templObj = new we_template();
 							$templObj->initByID($att['id'], TEMPLATES_TABLE);
-							$completeCode = (!(isset($att['included']) && ($att['included'] == 'false' || $att["included"] === '0' || $att['included'] == "off")));
-							$includedTemplateCode = $templObj->getTemplateCode($completeCode);
+							//$completeCode = (!(isset($att['included']) && ($att['included'] == 'false' || $att["included"] === '0' || $att['included'] == "off")));
+							$includedTemplateCode = $templObj->getTemplateCode(true);
 							array_pop($recursiveTemplates);
 							// replace include tag with template code
-							$code = str_replace($tag, $includedTemplateCode, $code);
+							if(strpos($includedTemplateCode, 'we:content') !== false || strpos($includedTemplateCode, 'we:master') !== false){
+								//only insert code if really needed!
+								$code = str_replace($tag, $includedTemplateCode, $code);
+							}
 							$this->IncludedTemplates .= ',' . intval($att['id']);
 						}
 					}
@@ -754,9 +751,10 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 		if($updateCode){
 			$this->_updateCompleteCode(true);
 			if(defined('SHOP_TABLE')){
-				$this->elements['allVariants'] = array();
-				$this->elements['allVariants']['type'] = 'variants';
-				$this->elements['allVariants']['dat'] = serialize($this->readAllVariantFields($this->elements['completeData']['dat']));
+				$this->elements['allVariants'] = array(
+					'type' => 'variants',
+					'dat' => serialize($this->readAllVariantFields($this->elements['completeData']['dat']))
+				);
 			}
 		} else {
 			$this->doUpdateCode = false;

@@ -35,24 +35,24 @@ if(!preg_match('|^([a-f0-9]){32}$|', $_REQUEST['we_transaction'])){
 }
 
 
-$messaging = new we_messaging($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
+$messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 $messaging->init($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 ?>
 <script type="text/javascript"><!--
-	function we_submitForm(target,url) {
+	function we_submitForm(target, url) {
 		var f = self.document.we_form;
 		var sel = "";
-		for(var i=1;i<=top.menuDaten.laenge;i++) {
-			if(top.menuDaten[i].checked)
-				sel += (top.menuDaten[i].name+",");
+		for (var i = 1; i <= top.menuDaten.laenge; i++) {
+			if (top.menuDaten[i].checked)
+				sel += (top.menuDaten[i].name + ",");
 		}
-		if(!sel) {
+		if (!sel) {
 			top.toggleBusy(0);
 <?php print we_message_reporting::getShowMessageCall(g_l('alert', "[nothing_to_delete]"), we_message_reporting::WE_MESSAGE_ERROR); ?>
 			return;
 		}
-		sel = sel.substring(0,sel.length-1);
+		sel = sel.substring(0, sel.length - 1);
 		f.sel.value = sel;
 		f.target = target;
 		f.action = url;
@@ -77,16 +77,16 @@ if(isset($_REQUEST['mcmd']) && $_REQUEST['mcmd'] == 'delete_folders'){
 
 			$messaging->saveInSession($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 			?>
-							top.content.cmd.location = '<?php print WE_MESSAGING_MODULE_DIR; ?>edit_messaging_frameset.php?pnt=cmd&we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mcmd=delete_folders&folders=<?php echo join(',', $v) ?>';
-							top.content.we_cmd('messaging_start_view','','<?php echo isset($_REQUEST['table']) ? $_REQUEST['table'] : '' ?>');
-							//-->
+				top.content.cmd.location = '<?php print WE_MESSAGING_MODULE_DIR; ?>edit_messaging_frameset.php?pnt=cmd&we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mcmd=delete_folders&folders=<?php echo join(',', $v) ?>';
+					top.content.we_cmd('messaging_start_view', '', '<?php echo isset($_REQUEST['table']) ? $_REQUEST['table'] : '' ?>');
+			//-->
 			</script>
 			</head>
 			<body></body>
 			</html>
 			<?php
 			exit;
-		} else{
+		} else {
 			echo we_message_reporting::getShowMessageCall(g_l('modules_messaging', '[err_delete_folders]'), we_message_reporting::WE_MESSAGE_ERROR);
 		}
 	}
@@ -106,7 +106,7 @@ $form = '<form name="we_form" method="post">' .
 	.
 	'</form>';
 
-$_buttons = we_button::position_yes_no_cancel(we_button::create_button("ok", "javascript:do_delete()"), "", we_button::create_button("cancel", "javascript:top.content.we_cmd('messaging_start_view')")
+$_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "javascript:do_delete()"), "", we_html_button::create_button("cancel", "javascript:top.content.we_cmd('messaging_start_view')")
 );
 ?>
 </head>

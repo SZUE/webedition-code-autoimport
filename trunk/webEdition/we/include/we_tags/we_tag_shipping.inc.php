@@ -35,7 +35,7 @@ function we_tag_shipping($attribs){
 	// shipping depends on total value of basket
 	if(isset($GLOBALS['summe'][$sumName])){
 		$orderVal = $GLOBALS['summe'][$sumName];
-		$weShippingControl = weShippingControl::getShippingControl();
+		$weShippingControl = we_shop_shippingControl::getShippingControl();
 
 		// check if user is registered
 		$customer = (we_tag('ifRegisteredUser') ? $_SESSION['webuser'] : false);
@@ -69,7 +69,7 @@ function we_tag_shipping($attribs){
 								$shippingCost / ( ((1 + ($weShippingControl->vatRate / 100)) * 100) ) * $weShippingControl->vatRate);
 						break;
 				}
-			} else{ // always return net prices
+			} else { // always return net prices
 				switch($type){
 					case 'gros':
 					case 'net':

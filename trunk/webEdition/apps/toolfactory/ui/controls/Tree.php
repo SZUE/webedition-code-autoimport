@@ -81,10 +81,10 @@ class toolfactory_ui_controls_Tree extends we_ui_controls_Tree{
 	 */
 	public static function doCustom(){
 		$items = array();
-		$_tools = weToolLookup::getAllTools(false, false, true);
+		$_tools = we_tool_lookup::getAllTools(false, false, true);
 
 		foreach($_tools as $_k => $_tool){
-			if(!weToolLookup::isInIgnoreList($_tool['name'])){
+			if(!we_tool_lookup::isInIgnoreList($_tool['name'])){
 				if(isset($_tool['text'])){
 					$name = $_tool['text'];
 				} else {

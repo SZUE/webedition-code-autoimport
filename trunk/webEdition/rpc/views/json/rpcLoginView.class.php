@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,24 +22,19 @@
  * @package    webEdition_rpc
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+class rpcLoginView extends rpcView{
 
-class rpcLoginView extends rpcView {
+	function getResponse($response){
 
-
-	function getResponse($response) {
-
-		if($response->getStatus()== rpcCmd::STATUS_OK) {
+		if($response->getStatus() == rpcCmd::STATUS_OK){
 
 			$html = 'LOGIN OK<br>';
-
-
 		} else {
 
 			$html = 'LOGIN FAILED:' . $response->getReason();
-
 		}
 
 		return $html;
-
 	}
+
 }

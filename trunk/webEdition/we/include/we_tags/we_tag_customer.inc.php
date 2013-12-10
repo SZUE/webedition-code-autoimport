@@ -64,8 +64,8 @@ function we_tag_customer($attribs){
 		$textname = 'we_' . $we_doc->Name . '_txt[' . $name . '_path]';
 		$idname = 'we_' . $we_doc->Name . '_txt[' . $name . ']';
 		$table = CUSTOMER_TABLE;
-		$delbutton = we_button::create_button('image:btn_function_trash', "javascript:document.forms[0].elements['$idname'].value=0;document.forms[0].elements['$textname'].value='';_EditorFrame.setEditorIsHot(false);we_cmd('reload_editpage');");
-		$button = we_button::create_button('select', "javascript:we_cmd('openSelector',document.forms[0].elements['$idname'].value,'$table','document.forms[\'we_form\'].elements[\'$idname\'].value','document.forms[\'we_form\'].elements[\'$textname\'].value','opener.we_cmd(\'reload_editpage\');opener._EditorFrame.setEditorIsHot(true);','" . session_id() . "',0,'',1)");
+		$delbutton = we_html_button::create_button('image:btn_function_trash', "javascript:document.forms[0].elements['$idname'].value=0;document.forms[0].elements['$textname'].value='';_EditorFrame.setEditorIsHot(false);we_cmd('reload_editpage');");
+		$button = we_html_button::create_button('select', "javascript:we_cmd('openSelector',document.forms[0].elements['$idname'].value,'$table','document.forms[\'we_form\'].elements[\'$idname\'].value','document.forms[\'we_form\'].elements[\'$textname\'].value','opener.we_cmd(\'reload_editpage\');opener._EditorFrame.setEditorIsHot(true);','" . session_id() . "',0,'',1)");
 
 		if($GLOBALS['we_editmode']){
 			?>
@@ -86,7 +86,7 @@ function we_tag_customer($attribs){
 		$we_cid = $we_cid ? $we_cid : (isset($_REQUEST['we_cid']) ? $_REQUEST['we_cid'] : 0);
 	}
 
-	$GLOBALS['lv'] = new we_customertag($we_cid, $condition, $hidedirindex);
+	$GLOBALS['lv'] = new we_customer_customertag($we_cid, $condition, $hidedirindex);
 	$lv = clone($GLOBALS['lv']); // for backwards compatibility
 	if(is_array($GLOBALS['we_lv_array']))
 		$GLOBALS['we_lv_array'][] = clone($GLOBALS['lv']);

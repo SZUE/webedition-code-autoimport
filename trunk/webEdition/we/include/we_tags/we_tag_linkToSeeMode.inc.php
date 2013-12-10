@@ -44,12 +44,12 @@ function we_tag_linkToSeeMode($attribs){
 		$type = 'object';
 		if($oid){
 			$id = $oid;
-		} else{
+		} else {
 			if(isset($GLOBALS['we_obj'])){
 				$id = $GLOBALS['we_obj']->ID;
 			}
 		}
-	} else{
+	} else {
 
 		$type = 'document';
 		$doc = we_getDocForTag($docAttr, true); // check if we should use the top document or the  included document
@@ -63,7 +63,7 @@ function we_tag_linkToSeeMode($attribs){
 
 			$q = getHash('SELECT UseSalt, passwd FROM ' . USER_TABLE . ' WHERE IsFolder=0 AND LoginDenied=0 AND username="' . $tmpDB->escape($_SESSION["webuser"]["Username"]) . '"', $tmpDB);
 
-			if(!empty($q) && we_user::comparePasswords($q['UseSalt'], $_SESSION["webuser"]["Username"], $q['passwd'], $_SESSION["webuser"]["Password"])){// customer is also a user
+			if(!empty($q) && we_users_user::comparePasswords($q['UseSalt'], $_SESSION['webuser']['Username'], $q['passwd'], $_SESSION['webuser']['Password'])){// customer is also a user
 				unset($q);
 				$retStr = getHtmlTag(
 						'form', array(
@@ -89,19 +89,19 @@ function we_tag_linkToSeeMode($attribs){
 							'name' => 'path',
 							'value' => $_SERVER['HTTP_REQUEST_URI'],
 							'xml' => $xml
-						))) . getHtmlTag(
+					))) . getHtmlTag(
 						'a', array(
 						'href' => 'javascript:document.forms[\'startSeeMode_' . $type . '_' . $id . '\'].submit();',
 						'xml' => $xml
 						), $value);
-			} else{ //	customer is no user
+			} else { //	customer is no user
 				return "<!-- ERROR: CUSTOMER IS NO USER! -->";
 			}
 			unset($tmpDB);
-		} else{ // User has not the right permissions.
+		} else { // User has not the right permissions.
 			return "<!-- ERROR: USER DOES NOT HAVE REQUIRED PERMISSION! -->";
 		}
-	} else{ //	webUser is not registered, show nothing
+	} else { //	webUser is not registered, show nothing
 		return "<!-- ERROR: USER HAS NOT BEEN LOGGED IN! -->";
 	}
 	return $retStr;

@@ -65,7 +65,7 @@ class rpcCmd{
 		if(!empty($this->Permissions)){
 
 			foreach($this->Permissions as $perm){
-				if(!we_hasPerm($perm)){
+				if(!permissionhandler::hasPerm($perm)){
 					$this->Status = self::STATUS_NO_PERMISSION;
 				}
 			}
@@ -108,10 +108,6 @@ class rpcCmd{
 	//FIXME: remove this - session is already started by we.inc
 	function startSession(){
 
-		if(isset($_REQUEST["weSessionId"])){
-			session_id($_REQUEST["weSessionId"]);
-		}
-		@session_start();
 	}
 
 	function checkParameters(){

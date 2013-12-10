@@ -33,7 +33,7 @@ if($GLOBALS['we_doc']->EditPageNr != WE_EDITPAGE_WORKSPACE){
 		"icon" => "path.gif"
 	);
 
-	if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE || !we_hasPerm('CAN_SEE_OBJECTS')){ // No link to class in normal mode
+	if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE || !permissionhandler::hasPerm('CAN_SEE_OBJECTS')){ // No link to class in normal mode
 		$parts[] = array(
 			"headline" => g_l('modules_object', '[class]'),
 			"html" => $GLOBALS['we_doc']->formClass(),
@@ -110,7 +110,7 @@ if($GLOBALS['we_doc']->EditPageNr != WE_EDITPAGE_WORKSPACE){
 		"forceRightHeadline" => 1
 	);
 
-	$button = we_button::create_button("ws_from_class", "javascript:we_cmd('ws_from_class');_EditorFrame.setEditorIsHot(true);");
+	$button = we_html_button::create_button("ws_from_class", "javascript:we_cmd('ws_from_class');_EditorFrame.setEditorIsHot(true);");
 
 	$parts[] = array(
 		"headline" => "",
@@ -124,6 +124,6 @@ if($GLOBALS['we_doc']->EditPageNr != WE_EDITPAGE_WORKSPACE){
 		"space" => 0
 	);
 }
+print we_html_multiIconBox::getJS() .
+	we_html_multiIconBox::getHTML("weOjFileProp", "100%", $parts, 30);
 
-print we_multiIconBox::getJS() .
-	we_multiIconBox::getHTML("weOjFileProp", "100%", $parts, 30);

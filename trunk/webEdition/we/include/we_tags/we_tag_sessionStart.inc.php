@@ -28,11 +28,7 @@ function we_tag_sessionStart($attribs){
 	$onlinemonitor = weTag_getAttribute('onlinemonitor', $attribs, false, true);
 
 	if(!isset($_SESSION)){
-		@session_start();
-		//FIXME: remove in 6.4; due to upgrade!
-		if(isset($_SESSION['we'])){
-			unset($_SESSION['we']);
-		}
+		session_start();
 	}
 
 	if(!defined('CUSTOMER_TABLE')){
@@ -54,7 +50,7 @@ function we_tag_sessionStart($attribs){
 		if(isset($_REQUEST['we_set_registeredUser']) && $GLOBALS['we_doc']->InWebEdition){
 			$_SESSION['weS']['we_set_registered'] = $_REQUEST['we_set_registeredUser'];
 		}
-		if(!isset($GLOBALS['we_editmode']) || !$GLOBALS['we_editmode']){
+		if(!(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
 			if(!isset($_SESSION['webuser'])){
 				$_SESSION['webuser'] = array(
 					'registered' => false
@@ -81,9 +77,9 @@ function we_tag_sessionStart($attribs){
 			}
 			//FIXME: make this a performance entry in prefs
 			if(/* (isset($GLOBALS['WE_LOGIN']) && $GLOBALS['WE_LOGIN'])&& */isset($_SESSION['webuser']['registered']) && isset($_SESSION['webuser']['ID']) && isset($_SESSION['webuser']['Username']) && $_SESSION['webuser']['registered'] && $_SESSION['webuser']['ID'] && $_SESSION['webuser']['Username'] != ''){
-				if($_SESSION['webuser']['LastAccess']+60<time()){
+				if($_SESSION['webuser']['LastAccess'] + 60 < time()){
 					$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET LastAccess=UNIX_TIMESTAMP() WHERE ID=' . intval($_SESSION['webuser']['ID']));
-					$_SESSION['webuser']['LastAccess']=time();
+					$_SESSION['webuser']['LastAccess'] = time();
 				}
 			}
 		}
@@ -92,40 +88,27 @@ function we_tag_sessionStart($attribs){
 			$monitorgroupfield = weTag_getAttribute('monitorgroupfield', $attribs);
 			$docAttr = weTag_getAttribute('monitordoc', $attribs);
 			$doc = we_getDocForTag($docAttr, false);
-			$PageID = $doc->ID;
-			$ObjectID = 0;
-			$SessionID = session_id();
-			$SessionIp = (!empty($_SERVER['REMOTE_ADDR'])) ? oldHtmlspecialchars((string) $_SERVER['REMOTE_ADDR']) : '';
 
-			$Browser = (!empty($_SERVER['HTTP_USER_AGENT'])) ? oldHtmlspecialchars((string) $_SERVER['HTTP_USER_AGENT']) : '';
-			$Referrer = (!empty($_SERVER['HTTP_REFERER'])) ? oldHtmlspecialchars((string) $_SERVER['HTTP_REFERER']) : '';
-			if($_SESSION['webuser']['registered']){
-				$WebUserID = $_SESSION['webuser']['ID'];
-				$WebUserGroup = ($monitorgroupfield != '' ? $_SESSION['webuser'][$monitorgroupfield] : 'we_guest');
-			} else {
-				$WebUserID = 0;
-				$WebUserGroup = 'we_guest';
-			}
-			$WebUserDescription = '';
+			$WebUserID = ($_SESSION['webuser']['registered'] ? $_SESSION['webuser']['ID'] : 0);
+			$WebUserGroup = ($_SESSION['webuser']['registered'] && !empty($monitorgroupfield) ? $_SESSION['webuser'][$monitorgroupfield] : 'we_guest');
 
 			$GLOBALS['DB_WE']->query('INSERT INTO ' . CUSTOMER_SESSION_TABLE . ' SET ' .
 				we_database_base::arraySetter(array(
-					'SessionID' => $SessionID,
-					'SessionIp' => $SessionIp,
-					'WebUserID' => $WebUserID,
+					'SessionID' => session_id(),
+					'SessionIp' => (empty($_SERVER['REMOTE_ADDR']) ? '' : oldHtmlspecialchars((string) $_SERVER['REMOTE_ADDR'])), 'WebUserID' => $WebUserID,
 					'WebUserGroup' => $WebUserGroup,
-					'WebUserDescription' => $WebUserDescription,
-					'Browser' => $Browser,
-					'Referrer' => $Referrer,
+					'WebUserDescription' => '',
+					'Browser' => (!empty($_SERVER['HTTP_USER_AGENT']) ? oldHtmlspecialchars((string) $_SERVER['HTTP_USER_AGENT']) : ''),
+					'Referrer' => (!empty($_SERVER['HTTP_REFERER']) ? oldHtmlspecialchars((string) $_SERVER['HTTP_REFERER']) : ''),
 					'LastLogin' => sql_function('NOW()'),
-					'PageID' => $PageID,
-					'ObjectID' => $ObjectID,
+					'PageID' => $doc->ID,
+					'ObjectID' => 0,
 					'SessionAutologin' => $SessionAutologin
 				)) . ' ON DUPLICATE KEY UPDATE ' . we_database_base::arraySetter(array(
-					'PageID' => $PageID,
-					'WebUserID' => intval($WebUserID),
+					'PageID' => $doc->ID,
+					'WebUserID' => $WebUserID,
 					'WebUserGroup' => $WebUserGroup,
-					'WebUserDescription' => $WebUserDescription,
+					'WebUserDescription' => '',
 			)));
 		}
 		return '';
@@ -134,7 +117,7 @@ function we_tag_sessionStart($attribs){
 
 function wetagsessionHandleFailedLogin(){
 	$_SESSION['webuser'] = array(
-		'registered' => false, 'loginfailed' => we_user::INVALID_CREDENTIALS
+		'registered' => false, 'loginfailed' => we_users_user::INVALID_CREDENTIALS
 	);
 	if(!isset($GLOBALS['WE_LOGIN_DENIED'])){
 		we_log_loginFailed('tblWebUser', $_REQUEST['s']['Username']);
@@ -147,7 +130,7 @@ function wetagsessionHandleFailedLogin(){
 	){
 		//don't serve user
 		if(SECURITY_LIMIT_CUSTOMER_REDIRECT){
-			$_SESSION['webuser']['loginfailed'] = we_user::MAX_LOGIN_COUNT_REACHED;
+			$_SESSION['webuser']['loginfailed'] = we_users_user::MAX_LOGIN_COUNT_REACHED;
 			unset($_REQUEST['s']);
 			@include($_SERVER['DOCUMENT_ROOT'] . id_to_path(SECURITY_LIMIT_CUSTOMER_REDIRECT, FILE_TABLE));
 		} else {
@@ -169,8 +152,15 @@ function wetagsessionStartdoLogin($persistentlogins, &$SessionAutologin){
 		}
 		$wasRegistered = $_SESSION['webuser']['registered'];
 		$u = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE Password!="" AND LoginDenied=0 AND Username="' . $GLOBALS['DB_WE']->escape($_REQUEST['s']['Username']) . '"', $GLOBALS['DB_WE'], MYSQL_ASSOC);
-		if($u && ( ($_REQUEST['s']['Password'] === $u['Password']) || (strpos($u['Password'], '$2y$') === 0 && we_user::comparePasswords(2, $_REQUEST['s']['Username'], $u['Password'], $_REQUEST['s']['Password'])))){
+		if($u && we_customer_customer::comparePassword($u['Password'], $_REQUEST['s']['Password'])){
+			if(SECURITY_SESSION_PASSWORD & we_customer_customer::STORE_DBPASSWORD == 0){
+				unset($u['Password']);
+			}
 			$_SESSION['webuser'] = $u;
+			//keep Password if known
+			if(SECURITY_SESSION_PASSWORD & we_customer_customer::STORE_PASSWORD){
+				$_SESSION['webuser']['_Password'] = $_REQUEST['s']['Password'];
+			}
 			$_SESSION['webuser']['registered'] = true;
 			$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET LastLogin=UNIX_TIMESTAMP() WHERE ID=' . intval($_SESSION['webuser']['ID']));
 
@@ -198,7 +188,15 @@ function wetagsessionStartdoAutoLogin(){
 		$wasRegistered = $_SESSION['webuser']['registered'];
 		$u = getHash('SELECT u.* FROM ' . CUSTOMER_TABLE . ' u JOIN ' . CUSTOMER_AUTOLOGIN_TABLE . ' c ON u.ID=c.WebUserID WHERE u.LoginDenied=0 AND u.AutoLoginDenied=0 AND u.Password!="" AND c.AutoLoginID="' . $GLOBALS['DB_WE']->escape(sha1($autologinSeek)) . '"', $GLOBALS['DB_WE'], MYSQL_ASSOC);
 		if(!empty($u)){
+			if(SECURITY_SESSION_PASSWORD & we_customer_customer::STORE_DBPASSWORD == 0){
+				unset($u['Password']);
+			}
+
 			$_SESSION['webuser'] = $u;
+			//try to decrypt password if possible
+			if(SECURITY_SESSION_PASSWORD & we_customer_customer::STORE_PASSWORD){
+				$_SESSION['webuser']['_Password'] = we_customer_customer::decryptData($_SESSION['webuser']['Password']);
+			}
 			$_SESSION['webuser']['registered'] = true;
 			$_SESSION['webuser']['AutoLoginID'] = uniqid(hexdec(substr(session_id(), 0, 8)), true);
 			$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_AUTOLOGIN_TABLE . ' SET ' . we_database_base::arraySetter(array(

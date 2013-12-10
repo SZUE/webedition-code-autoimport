@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition SDK
  *
@@ -10,7 +11,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -19,9 +20,6 @@
  * @subpackage we_ui_view
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
+class we_ui_view_DialogView extends Zend_View{
 
-class we_ui_view_DialogView extends Zend_View 
-{
-	
-	
 }

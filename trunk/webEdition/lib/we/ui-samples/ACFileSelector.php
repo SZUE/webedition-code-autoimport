@@ -1,13 +1,12 @@
 <?php
 
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 $IDValue = '0';
-if ($IDValue == '0') {
+if($IDValue == '0'){
 	$_path = '/';
 } else {
-	$_path = we_util_Path::id2Path($IDValue,$table);
-
+	$_path = we_util_Path::id2Path($IDValue, $table);
 }
 
 $ac = new we_ui_controls_ACFileSelector();
@@ -111,7 +110,7 @@ $ac7->setWidth(360);
 //$ac7->setDisabled(false);
 //$ac7->setHidden(false);
 
-$ac8 = new we_ui_controls_ACFileSelector();//was das soll ist mir unklar
+$ac8 = new we_ui_controls_ACFileSelector(); //was das soll ist mir unklar
 $ac8->setButtonText('Select');
 $ac8->setButtonTitle('Select');
 $ac8->setFolderIdValue($IDValue);
@@ -142,7 +141,7 @@ $ac9->setWidth(380);
 //$ac9->setHidden(false);
 
 
-$ac10 = new we_ui_controls_ACFileSelector();//was das soll ist mir unklar
+$ac10 = new we_ui_controls_ACFileSelector(); //was das soll ist mir unklar
 $ac10->setButtonText('Select');
 $ac10->setButtonTitle('Select');
 $ac10->setFolderIdValue($IDValue);
@@ -159,7 +158,7 @@ $ac10->setAppName('navigation');
 
 $htmlPage = we_ui_layout_HTMLPage::getInstance();
 $htmlPage->setTitle('Samples Autocompleter');
-$htmlPage->addJSFile('/webEdition/js/windows.js');
+$htmlPage->addJSFile(JS_DIR . 'windows.js');
 $htmlPage->addInlineCSS('
 body {
 	padding:10px !important;
@@ -170,57 +169,56 @@ $htmlPage->addHTML('<span style="font-size:16px;font-weight:bold;">ACs nur benut
 
 $htmlPage->addHTML('<br>Dokumentverzeichnis-Selektor');
 $htmlPage->addElement($ac);
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_ACFileSelector.setDisabled(&quot;'.$ac->getId().'&quot;, true);">disable</a></div>');
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_ACFileSelector.setDisabled(&quot;'.$ac->getId().'&quot;, false);">enable</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_ACFileSelector.setDisabled(&quot;' . $ac->getId() . '&quot;, true);">disable</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_ACFileSelector.setDisabled(&quot;' . $ac->getId() . '&quot;, false);">enable</a></div>');
 
 
 $htmlPage->addHTML('<br><br>Templateverzeichnis-Selektor<br>');
 $htmlPage->addElement($ac2);
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_ACFileSelector.setDisabled(&quot;'.$ac2->getId().'&quot;, true);">disable</a></div>');
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_ACFileSelector.setDisabled(&quot;'.$ac2->getId().'&quot;, false);">enable</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_ACFileSelector.setDisabled(&quot;' . $ac2->getId() . '&quot;, true);">disable</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_ACFileSelector.setDisabled(&quot;' . $ac2->getId() . '&quot;, false);">enable</a></div>');
 
 
 $htmlPage->addHTML('<br><br>Template-Selektor (mayBeEmpty=true)<br>');
 $htmlPage->addElement($ac3);
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_ACFileSelector.setDisabled(&quot;'.$ac3->getId().'&quot;, true);">disable</a></div>');
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_ACFileSelector.setDisabled(&quot;'.$ac3->getId().'&quot;, false);">enable</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_ACFileSelector.setDisabled(&quot;' . $ac3->getId() . '&quot;, true);">disable</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_ACFileSelector.setDisabled(&quot;' . $ac3->getId() . '&quot;, false);">enable</a></div>');
 
 $htmlPage->addHTML('<br><br>Klassen-Selektor<br>');
 $htmlPage->addElement($ac4);
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_ACFileSelector.setDisabled(&quot;'.$ac4->getId().'&quot;, true);">disable</a></div>');
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_ACFileSelector.setDisabled(&quot;'.$ac4->getId().'&quot;, false);">enable</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_ACFileSelector.setDisabled(&quot;' . $ac4->getId() . '&quot;, true);">disable</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_ACFileSelector.setDisabled(&quot;' . $ac4->getId() . '&quot;, false);">enable</a></div>');
 
 $htmlPage->addHTML('<br><br>Objekt-Selektor<br>');
 $htmlPage->addElement($ac5);
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_ACFileSelector.setDisabled(&quot;'.$ac5->getId().'&quot;, true);">disable</a></div>');
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_ACFileSelector.setDisabled(&quot;'.$ac5->getId().'&quot;, false);">enable</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_ACFileSelector.setDisabled(&quot;' . $ac5->getId() . '&quot;, true);">disable</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_ACFileSelector.setDisabled(&quot;' . $ac5->getId() . '&quot;, false);">enable</a></div>');
 
 $htmlPage->addHTML('<br><br>Objektverzeichnis-Selektor<br>');
 $htmlPage->addElement($ac6);
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_ACFileSelector.setDisabled(&quot;'.$ac6->getId().'&quot;, true);">disable</a></div>');
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_ACFileSelector.setDisabled(&quot;'.$ac6->getId().'&quot;, false);">enable</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_ACFileSelector.setDisabled(&quot;' . $ac6->getId() . '&quot;, true);">disable</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_ACFileSelector.setDisabled(&quot;' . $ac6->getId() . '&quot;, false);">enable</a></div>');
 
 $htmlPage->addHTML('<br><br>Grafik-Selektor (ContentType=folder,image/*)<br>');
 $htmlPage->addElement($ac7);
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_ACFileSelector.setDisabled(&quot;'.$ac7->getId().'&quot;, true);">disable</a></div>');
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_ACFileSelector.setDisabled(&quot;'.$ac7->getId().'&quot;, false);">enable</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_ACFileSelector.setDisabled(&quot;' . $ac7->getId() . '&quot;, true);">disable</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_ACFileSelector.setDisabled(&quot;' . $ac7->getId() . '&quot;, false);">enable</a></div>');
 
 $htmlPage->addHTML('<br><br>Toolverzeichnis-Selektor (toolname=leer)<br>');
 $htmlPage->addElement($ac8);
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_ACFileSelector.setDisabled(&quot;'.$ac8->getId().'&quot;, true);">disable</a></div>');
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_ACFileSelector.setDisabled(&quot;'.$ac8->getId().'&quot;, false);">enable</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_ACFileSelector.setDisabled(&quot;' . $ac8->getId() . '&quot;, true);">disable</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_ACFileSelector.setDisabled(&quot;' . $ac8->getId() . '&quot;, false);">enable</a></div>');
 
 $htmlPage->addHTML('<br><br>Grafik-Selektor 2 (ContentType=folder,image/*)<br>');
 $htmlPage->addElement($ac9);
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_ACFileSelector.setDisabled(&quot;'.$ac9->getId().'&quot;, true);">disable</a></div>');
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_ACFileSelector.setDisabled(&quot;'.$ac9->getId().'&quot;, false);">enable</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_ACFileSelector.setDisabled(&quot;' . $ac9->getId() . '&quot;, true);">disable</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_ACFileSelector.setDisabled(&quot;' . $ac9->getId() . '&quot;, false);">enable</a></div>');
 
 $htmlPage->addHTML('<br><br>Navigation-Selektor<br>');
 $htmlPage->addElement($ac10);
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_ACFileSelector.setDisabled(&quot;'.$ac10->getId().'&quot;, true);">disable</a></div>');
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_ACFileSelector.setDisabled(&quot;'.$ac10->getId().'&quot;, false);">enable</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_ACFileSelector.setDisabled(&quot;' . $ac10->getId() . '&quot;, true);">disable</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_ACFileSelector.setDisabled(&quot;' . $ac10->getId() . '&quot;, false);">enable</a></div>');
 
 
 print $htmlPage->getHTML();
-
 ?>

@@ -55,7 +55,7 @@ if(defined('FORMMAIL_VIAWEDOC') && FORMMAIL_VIAWEDOC == 1){
 		new weTagDataOption('search', false, '', array($id, $name, $nameid, $method, $target), array()),
 		new weTagDataOption('shopliste', false, '', array($id, $nameid, $method, $target), array())
 		), false, '');
-} else{
+} else {
 	$this->TypeAttribute = new weTagData_typeAttribute('type', array(
 		new weTagDataOption('-', false, '', array($id, $name, $nameid, $method, $target, $enctype), array()),
 		new weTagDataOption('document', false, '', array($id, $name, $nameid, $method, $target, $doctype, $tid, $enctype), array($doctype)),

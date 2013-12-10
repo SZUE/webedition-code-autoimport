@@ -28,7 +28,7 @@ we_html_tools::protect();
 
 // grep the last element from the year-set, wich is the current year
 $DB_WE->query("SELECT DATE_FORMAT(DateOrder,'%Y') AS DateOrd FROM " . SHOP_TABLE . " ORDER BY DateOrd");
-while($DB_WE->next_record()) {
+while($DB_WE->next_record()){
 	if(isset($strs)){
 		$strs = array($DB_WE->f("DateOrd"));
 		$yearTrans = end($strs);

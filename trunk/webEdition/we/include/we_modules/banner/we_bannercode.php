@@ -46,7 +46,7 @@ r = Math.random();
 document.write ("<" + "script type=\"text/javascript\" src=\"' . $getscript . '?r="+r+"&amp;bannername=' . rawurlencode($tagname) . '&amp;paths=' . rawurlencode($paths) . '&amp;type=js&amp;target=' . rawurlencode($target) . '&amp;bannerclick=' . rawurlencode($clickscript) . '&amp;height=' . rawurlencode($height) . '&amp;width=' . rawurlencode($width) . '&amp;page=' . rawurlencode($page) . '"+(document.referer ? ("&amp;referer="+escape(document.referer)) : "")+"\"><" + "/script>");
 
 ') . '<noscript><a href="' . $clickscript . '?u=' . md5(uniqid('', true)) . '&amp;bannername=' . rawurlencode($tagname) . '&amp;page=' . rawurlencode($page) . '" target="' . $target . '"><img src="' . $getscript . '?bannername=' . rawurlencode($tagname) . '&amp;paths=' . rawurlencode($paths) . '&amp;page=' . rawurlencode($page) . '&amp;bannerclick=' . rawurlencode($clickscript) . '&amp;c=1" border="0" alt="" width="' . $width . '" height="' . $height . '" /></a></noscript>';
-	} else{
+	} else {
 		$code = '<iframe
 	src="' . $getscript . '?bannername=' . rawurlencode($tagname) . '&amp;type=iframe&amp;target=' . rawurlencode($target) . '&amp;bannerclick=' . rawurlencode($clickscript) . '&amp;width=' . rawurlencode($width) . '&amp;height=' . rawurlencode($height) . '&amp;page=' . rawurlencode($page) . '"
 	width="' . $width . '"
@@ -71,38 +71,38 @@ document.write ("<" + "script type=\"text/javascript\" src=\"' . $getscript . '?
 	self.focus();
 
 
-	function checkForm(f){
-		if(f.tagname.value==""){
+	function checkForm(f) {
+		if (f.tagname.value == "") {
 <?php print we_message_reporting::getShowMessageCall(g_l('modules_banner', '[error_tagname_empty]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 			f.tagname.focus();
 			f.tagname.select();
 			return false;
 		}
-		if(f.page.value==""){
+		if (f.page.value == "") {
 <?php print we_message_reporting::getShowMessageCall(g_l('modules_banner', '[error_page_empty]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 			f.page.focus();
 			f.page.select();
 			return false;
 		}
-		if(f.width.value==""){
+		if (f.width.value == "") {
 <?php print we_message_reporting::getShowMessageCall(g_l('modules_banner', '[error_width_empty]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 			f.width.focus();
 			f.width.select();
 			return false;
 		}
-		if(f.height.value==""){
+		if (f.height.value == "") {
 <?php print we_message_reporting::getShowMessageCall(g_l('modules_banner', '[error_height_empty]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 			f.height.focus();
 			f.height.select();
 			return false;
 		}
-		if(f.getscript.value==""){
+		if (f.getscript.value == "") {
 <?php print we_message_reporting::getShowMessageCall(g_l('modules_banner', '[error_getscript_empty]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 			f.getscript.focus();
 			f.getscript.select();
 			return false;
 		}
-		if(f.clickscript.value==""){
+		if (f.clickscript.value == "") {
 <?php print we_message_reporting::getShowMessageCall(g_l('modules_banner', '[error_clickscript_empty]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 			f.clickscript.focus();
 			f.clickscript.select();
@@ -114,7 +114,8 @@ document.write ("<" + "script type=\"text/javascript\" src=\"' . $getscript . '?
 
 
 </head>
-<body class="weDialogBody"<?php if($ok){ ?> onLoad="document.we_form.code.focus();document.we_form.code.select();"<?php } ?>>
+<body class="weDialogBody"<?php if($ok){ ?> onLoad="document.we_form.code.focus();
+			document.we_form.code.select();"<?php } ?>>
 	<form onsubmit="return checkForm(this);" name="we_form" action="<?php print $_SERVER["SCRIPT_NAME"]; ?>" method="get"><input type="hidden" name="ok" value="1" /><input type="hidden" name="we_cmd[0]" value="<?php print $_REQUEST['we_cmd'][0]; ?>" />
 		<?php
 		$typeselect = '<select name="type" size="1">
@@ -188,12 +189,12 @@ document.write ("<" + "script type=\"text/javascript\" src=\"' . $getscript . '?
 ';
 		}
 		$content .= '</table>' . (($ok) ? "" : '<p class="defaultfont">*' . g_l('modules_banner', '[required]')) . '</p>';
-		$cancel_button = we_button::create_button("cancel", "javascript:top.close();");
-		$ok_button = we_button::create_button("ok", "form:submit:we_form");
-		$back_button = we_button::create_button("back", "javascript:history.back();");
-		$close_button = we_button::create_button("close", "javascript:top.close();");
+		$cancel_button = we_html_button::create_button("cancel", "javascript:top.close();");
+		$ok_button = we_html_button::create_button("ok", "form:submit:we_form");
+		$back_button = we_html_button::create_button("back", "javascript:history.back();");
+		$close_button = we_html_button::create_button("close", "javascript:top.close();");
 
-		$buttons = $ok ? we_button::position_yes_no_cancel($close_button, null, $back_button) : we_button::position_yes_no_cancel($ok_button, null, $cancel_button);
+		$buttons = $ok ? we_html_button::position_yes_no_cancel($close_button, null, $back_button) : we_html_button::position_yes_no_cancel($ok_button, null, $cancel_button);
 
 		print we_html_tools::htmlDialogLayout($content, $ok ? g_l('modules_banner', '[bannercode_copy]') : g_l('modules_banner', '[bannercode_ext]'), $buttons);
 		?>

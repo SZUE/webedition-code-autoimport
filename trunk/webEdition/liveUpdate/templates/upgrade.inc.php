@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,19 +22,18 @@
  * @package    webEdition_update
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 /*
  * This is the template for tab update. It contains the information screen
  * before searching for an update
  *
  */
 
-$searchButton = we_button::create_button('search', $_SERVER['SCRIPT_NAME'] . '?section=upgrade&update_cmd=upgrade&detail=lookForUpgrade');
+$searchButton = we_html_button::create_button('search', $_SERVER['SCRIPT_NAME'] . '?section=upgrade&update_cmd=upgrade&detail=lookForUpgrade');
 
 $content = '
 <table class="defaultfont" width="100%">
 <tr>
-	<td>' . g_l('liveUpdate','[upgrade][actualVersion]') . '</td>
+	<td>' . g_l('liveUpdate', '[upgrade][actualVersion]') . '</td>
 	<td>' . $GLOBALS['LU_Variables']['clientVersion'] . '</td>
 </tr>
 <tr>
@@ -43,9 +43,9 @@ $content = '
 	</td>
 </tr>
 <tr>
-	<td>' . g_l('liveUpdate','[upgrade][lookForUpdate]') . '</td>
+	<td>' . g_l('liveUpdate', '[upgrade][lookForUpdate]') . '</td>
 	<td>' . $searchButton . '</td>
 </tr>
 </table>';
 
-print liveUpdateTemplates::getHtml(g_l('liveUpdate','[upgrade][headline]'), $content);
+print liveUpdateTemplates::getHtml(g_l('liveUpdate', '[upgrade][headline]'), $content);

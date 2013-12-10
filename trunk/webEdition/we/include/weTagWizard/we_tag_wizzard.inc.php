@@ -64,19 +64,19 @@ var typeAttributeRequires = new Object();';
 			$_allowedAttribs = $option->getAllowedAttributes();
 			if(empty($_allowedAttribs)){
 				$typeAttributeJs .= 'typeAttributeAllows["' . $option->getName() . '"] = new Array();';
-			} else{
-				$typeAttributeJs .= 'typeAttributeAllows["' . $option->getName() . '"] = new Array("'.
-				 implode('","', $_allowedAttribs).
-				 '");';
+			} else {
+				$typeAttributeJs .= 'typeAttributeAllows["' . $option->getName() . '"] = new Array("' .
+					implode('","', $_allowedAttribs) .
+					'");';
 			}
 
 			$_reqAttribs = $option->getRequiredAttributes($_attributes);
 			if(empty($_reqAttribs)){
 				$typeAttributeJs .= "typeAttributeRequires[\"" . $option->getName() . "\"] = new Array();";
-			} else{
-				$typeAttributeJs .= "typeAttributeRequires[\"" . $option->getName() . "\"] = new Array(\"".
-				implode('","', $_reqAttribs).
-				 "\");";
+			} else {
+				$typeAttributeJs .= "typeAttributeRequires[\"" . $option->getName() . "\"] = new Array(\"" .
+					implode('","', $_reqAttribs) .
+					"\");";
 			}
 		}
 
@@ -85,7 +85,7 @@ weTagWizard.typeAttributeAllows = typeAttributeAllows;
 weTagWizard.typeAttributeRequires = typeAttributeRequires;';
 	}
 	$typeAttributeJs .= "weTagWizard.typeAttributeId = typeAttributeId;";
-} else{
+} else {
 	$typeAttributeJs = '';
 }
 // additional javascript for the individual tags - end
@@ -165,16 +165,16 @@ function we_cmd(){
 		break;
 
 		case "openDirselector":
-			new jsWindow(url,"we_fileselector",-1,-1,' . we_fileselector::WINDOW_DIRSELECTOR_WIDTH . ',' . we_fileselector::WINDOW_DIRSELECTOR_HEIGHT . ',true,true,true,true);
+			new jsWindow(url,"we_fileselector",-1,-1,' . we_selector_file::WINDOW_DIRSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DIRSELECTOR_HEIGHT . ',true,true,true,true);
 			break;
 		case "openDocselector":
-			new jsWindow(url,"we_fileselector",-1,-1,' . we_fileselector::WINDOW_DOCSELECTOR_WIDTH . ',' . we_fileselector::WINDOW_DOCSELECTOR_HEIGHT . ',true,true,true,true);
+			new jsWindow(url,"we_fileselector",-1,-1,' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ',true,true,true,true);
 			break;
 		case "openSelector":
-			new jsWindow(url,"we_fileselector",-1,-1,' . we_fileselector::WINDOW_SELECTOR_WIDTH . ',' . we_fileselector::WINDOW_SELECTOR_HEIGHT . ',true,true,true,true);
+			new jsWindow(url,"we_fileselector",-1,-1,' . we_selector_file::WINDOW_SELECTOR_WIDTH . ',' . we_selector_file::WINDOW_SELECTOR_HEIGHT . ',true,true,true,true);
 			break;
 		case "openCatselector":
-			new jsWindow(url,"we_catselector",-1,-1,' . we_fileselector::WINDOW_CATSELECTOR_WIDTH . ',' . we_fileselector::WINDOW_CATSELECTOR_HEIGHT . ',true,true,true,true);
+			new jsWindow(url,"we_catselector",-1,-1,' . we_selector_file::WINDOW_CATSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_CATSELECTOR_HEIGHT . ',true,true,true,true);
 			break;
 		case "browse_users":
 	        new jsWindow(url,"browse_users",-1,-1,500,300,true,false,true);
@@ -226,8 +226,8 @@ $code = '<fieldset>
 	'</fieldset>' . $typeAttribCode . ' ' . $attributesCode . ' ' .
 	$defaultValueCode;
 
-$_buttons = we_button::position_yes_no_cancel(
-		we_button::create_button('ok', "javascript:we_cmd('saveTag');"), null, we_button::create_button('cancel', "javascript:self.close();")
+$_buttons = we_html_button::position_yes_no_cancel(
+		we_html_button::create_button('ok', "javascript:we_cmd('saveTag');"), null, we_html_button::create_button('cancel', "javascript:self.close();")
 );
 ?>
 <div id="divTagName">

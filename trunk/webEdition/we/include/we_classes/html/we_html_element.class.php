@@ -40,12 +40,12 @@ abstract class we_html_element{
 	 *
 	 * @return		string
 	 */
-	static function htmlForm($attribs = array(), $content = ''){
+	public static function htmlForm($attribs = array(), $content = ''){
 
 		if(!isset($attribs['name'])){
 			$attribs['name'] = 'we_form';
 		}
-		return we_baseElement::getHtmlCode(new we_baseElement('form', true, $attribs, $content));
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('form', true, $attribs, $content));
 	}
 
 	/**
@@ -55,12 +55,12 @@ abstract class we_html_element{
 	 *
 	 * @return		string
 	 */
-	static function htmlInput($attribs = array()){
+	public static function htmlInput(array $attribs = array()){
 
 		if(!isset($attribs['class'])){
 			$attribs['class'] = 'defaultfont';
 		}
-		return we_baseElement::getHtmlCode(new we_baseElement('input', 'selfclose', $attribs));
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('input', 'selfclose', $attribs));
 	}
 
 	/**
@@ -70,7 +70,7 @@ abstract class we_html_element{
 	 *
 	 * @return		string
 	 */
-	static function htmlRadioCheckbox($attribs = array()){
+	public static function htmlRadioCheckbox(array $attribs = array()){
 		$attribs['type'] = 'checkbox';
 
 		$table = new we_html_table(array('cellpadding' => 0, 'cellspacing' => 0, 'border' => 0), 1, 3);
@@ -92,18 +92,15 @@ abstract class we_html_element{
 	public static function cssElement($content = '', array $attribs = array()){
 		$attribs['type'] = 'text/css';
 
-		/* if($local){
-		  $attribs['scoped'] = 'scoped';
-		  } */
-		return we_baseElement::getHtmlCode(new we_baseElement('style', true, $attribs, $content));
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('style', true, $attribs, $content));
 	}
 
-	static function jsScript($name){
+	public static function jsScript($name){
 		$attribs = array(
 			'src' => self::getUnCache($name),
 			'type' => 'text/javascript',
 		);
-		return we_baseElement::getHtmlCode(new we_baseElement('script', true, $attribs));
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('script', true, $attribs));
 	}
 
 	/**
@@ -114,16 +111,16 @@ abstract class we_html_element{
 	 *
 	 * @return		string
 	 */
-	static function jsElement($content = '', $attribs = array()){
+	public static function jsElement($content = '', array $attribs = array()){
 		$attribs['type'] = 'text/javascript';
 		if(strpos($content, '<!--') === FALSE){
 			$content = "<!--\n" . trim($content, " \n") . "\n//-->\n";
 		}
-		return we_baseElement::getHtmlCode(new we_baseElement('script', true, $attribs, $content));
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('script', true, $attribs, $content));
 	}
 
-	static function cssLink($url){
-		return we_baseElement::getHtmlCode(new we_baseElement('link', false, array('href' => self::getUnCache($url), 'rel' => 'styleSheet', 'type' => 'text/css')
+	public static function cssLink($url){
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('link', false, array('href' => self::getUnCache($url), 'rel' => 'styleSheet', 'type' => 'text/css')
 		));
 	}
 
@@ -134,20 +131,8 @@ abstract class we_html_element{
 	 *
 	 * @return		string
 	 */
-	static function linkElement($attribs = array()){
-		return we_baseElement::getHtmlCode(new we_baseElement('link', 'selfclose', $attribs));
-	}
-
-	/**
-	 * Function generates html code for html font element
-	 *
-	 * @param		$attribs								array			(optional)
-	 * @param		$content								string			(optional)
-	 *
-	 * @return		string
-	 */
-	static function htmlFont($attribs = array(), $content = ''){
-		return we_baseElement::getHtmlCode(new we_baseElement('font', true, $attribs, $content));
+	public static function linkElement(array $attribs = array()){
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('link', 'selfclose', $attribs));
 	}
 
 	/**
@@ -158,8 +143,13 @@ abstract class we_html_element{
 	 *
 	 * @return		string
 	 */
-	static function htmlSpan($attribs = array(), $content = ''){
-		return we_baseElement::getHtmlCode(new we_baseElement('span', true, $attribs, $content));
+	public static function htmlSpan(array $attribs = array(), $content = ''){
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('span', true, $attribs, $content));
+	}
+
+	//FIMXE: remove for htmltools
+	public static function htmlSelect(array $attribs = array(), $content = ''){
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('select', true, $attribs, $content));
 	}
 
 	/**
@@ -170,8 +160,8 @@ abstract class we_html_element{
 	 *
 	 * @return		string
 	 */
-	static function htmlDiv($attribs = array(), $content = ''){
-		return we_baseElement::getHtmlCode(new we_baseElement('div', true, $attribs, $content));
+	public static function htmlDiv(array $attribs = array(), $content = ''){
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('div', true, $attribs, $content));
 	}
 
 	/**
@@ -181,8 +171,8 @@ abstract class we_html_element{
 	 *
 	 * @return		string
 	 */
-	static function htmlB($content){
-		return we_baseElement::getHtmlCode(new we_baseElement('b', true, array(), $content));
+	public static function htmlB($content){
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('span', true, array('style' => 'font-weight:bold'), $content));
 	}
 
 	/**
@@ -192,9 +182,9 @@ abstract class we_html_element{
 	 *
 	 * @return		string
 	 */
-	static function htmlI($content){
-		return we_baseElement::getHtmlCode(new we_baseElement('i', true, array(), $content));
-	}
+	/* 	public static function htmlI($content){
+	  return we_baseElement::getHtmlCode(new we_baseElement('i', true, array(), $content));
+	  } */
 
 	/**
 	 * Function generates html code for html u element
@@ -203,9 +193,9 @@ abstract class we_html_element{
 	 *
 	 * @return		string
 	 */
-	static function htmlU($content){
-		return we_baseElement::getHtmlCode(new we_baseElement('u', true, array(), $content));
-	}
+	/* public static function htmlU($content){
+	  return we_baseElement::getHtmlCode(new we_baseElement('u', true, array(), $content));
+	  } */
 
 	/**
 	 * Function generates html code for html image element
@@ -214,12 +204,12 @@ abstract class we_html_element{
 	 *
 	 * @return		string
 	 */
-	static function htmlImg($attribs = array()){
+	public static function htmlImg(array $attribs = array()){
 		//if no alt is set, set dummy alt
 		if(!isset($attribs['alt'])){
 			$attribs['alt'] = '-';
 		}
-		return we_baseElement::getHtmlCode(new we_baseElement('img', 'selfclose', $attribs));
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('img', 'selfclose', $attribs));
 	}
 
 	/**
@@ -230,8 +220,8 @@ abstract class we_html_element{
 	 *
 	 * @return		string
 	 */
-	static function htmlBody($attribs = array(), $content = ''){
-		$body = new we_baseElement('body', true, $attribs, $content);
+	public static function htmlBody(array $attribs = array(), $content = ''){
+		$body = new we_html_baseElement('body', true, $attribs, $content);
 		if(!$body->hasStyle('margin')){
 			$body->setStyle('margin', '0px 0px 0px 0px');
 		}
@@ -246,8 +236,8 @@ abstract class we_html_element{
 	 *
 	 * @return		string
 	 */
-	static function htmlLabel($attribs = array(), $content = ''){
-		return we_baseElement::getHtmlCode(new we_baseElement('label', true, $attribs, $content));
+	public static function htmlLabel(array $attribs = array(), $content = ''){
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('label', true, $attribs, $content));
 	}
 
 	/**
@@ -257,9 +247,9 @@ abstract class we_html_element{
 	 *
 	 * @return		string
 	 */
-	static function htmlHidden($attribs = array()){
+	public static function htmlHidden(array $attribs = array()){
 		$attribs['type'] = 'hidden';
-		return we_baseElement::getHtmlCode(new we_baseElement('input', 'selfclose', $attribs));
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('input', 'selfclose', $attribs));
 	}
 
 	/**
@@ -270,8 +260,8 @@ abstract class we_html_element{
 	 *
 	 * @return		string
 	 */
-	static function htmlA($attribs = array(), $content = ''){
-		return we_baseElement::getHtmlCode(new we_baseElement('a', true, $attribs, $content));
+	public static function htmlA(array $attribs = array(), $content = ''){
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('a', true, $attribs, $content));
 	}
 
 	/**
@@ -279,9 +269,9 @@ abstract class we_html_element{
 	 *
 	 * @return		string
 	 */
-	static function htmlBr(){
+	public static function htmlBr(){
 		static $br = 0;
-		$br = ($br ? $br : we_baseElement::getHtmlCode(new we_baseElement('br', 'selfclose')));
+		$br = ($br ? $br : we_html_baseElement::getHtmlCode(new we_html_baseElement('br', 'selfclose')));
 		return $br;
 	}
 
@@ -290,8 +280,8 @@ abstract class we_html_element{
 	 *
 	 * @return		string
 	 */
-	static function htmlNobr($content = ''){
-		return we_baseElement::getHtmlCode(new we_baseElement('nobr', true, array(), $content));
+	public static function htmlNobr($content = ''){
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('nobr', true, array(), $content));
 	}
 
 	/**
@@ -301,14 +291,14 @@ abstract class we_html_element{
 	 *
 	 * @return		string
 	 */
-	static function htmlComment($content){
-		return we_baseElement::getHtmlCode(new we_baseElement('!-- ' . $content . ' --', false));
+	public static function htmlComment($content){
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('!-- ' . $content . ' --', false));
 	}
 
 	/**
 	 *
 	 */
-	static function htmlDocType($version = '4Trans'){
+	public static function htmlDocType($version = '4Trans'){
 		switch($version){
 			case 5:
 			case '5':
@@ -324,8 +314,8 @@ abstract class we_html_element{
 	 *
 	 * @return		string
 	 */
-	static function htmlHtml($content, $close = true){
-		return we_baseElement::getHtmlCode(new we_baseElement('html', $close, array(), $content));
+	public static function htmlHtml($content, $close = true){
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('html', $close, array(), $content));
 	}
 
 	/**
@@ -333,16 +323,16 @@ abstract class we_html_element{
 	 *
 	 * @return		string
 	 */
-	static function htmlHead($content, $close = true){
-		return we_baseElement::getHtmlCode(new we_baseElement('head', $close, array(), $content));
+	public static function htmlHead($content, $close = true){
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('head', $close, array(), $content));
 	}
 
-	static function htmlMeta($attribs = array()){
-		return we_baseElement::getHtmlCode(new we_baseElement('meta', 'selfclose', $attribs));
+	public static function htmlMeta(array $attribs = array()){
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('meta', 'selfclose', $attribs));
 	}
 
-	static function htmlTitle($content){
-		return we_baseElement::getHtmlCode(new we_baseElement('title', true, array(), $content));
+	public static function htmlTitle($content){
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('title', true, array(), $content));
 	}
 
 	/**
@@ -350,8 +340,8 @@ abstract class we_html_element{
 	 *
 	 * @return		string
 	 */
-	static function htmlTextArea($attribs = array(), $content = ''){
-		return we_baseElement::getHtmlCode(new we_baseElement('textarea', true, $attribs, $content));
+	public static function htmlTextArea(array $attribs = array(), $content = ''){
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('textarea', true, $attribs, $content));
 	}
 
 	/**
@@ -359,8 +349,8 @@ abstract class we_html_element{
 	 *
 	 * @return		string
 	 */
-	static function htmlP($attribs = array(), $content = ''){
-		return we_baseElement::getHtmlCode(new we_baseElement('p', true, $attribs, $content));
+	public static function htmlP(array $attribs = array(), $content = ''){
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('p', true, $attribs, $content));
 	}
 
 	/**
@@ -368,8 +358,8 @@ abstract class we_html_element{
 	 *
 	 * @return		string
 	 */
-	static function htmlCenter($content){
-		return we_baseElement::getHtmlCode(new we_baseElement('center', true, array(), $content));
+	public static function htmlCenter($content){
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('center', true, array(), $content));
 	}
 
 	/**
@@ -377,7 +367,7 @@ abstract class we_html_element{
 	 *
 	 * @return		string
 	 */
-	static function htmlApplet(array $attribs = array(), $content = '', array $params = array()){
+	public static function htmlApplet(array $attribs = array(), $content = '', array $params = array()){
 		//$params['cache_archive'] = $attribs['archive']; // Applet seams not to like this param
 		$params['cache_version'] = WE_VERSION;
 		$params['type'] = 'application/x-java-applet;jpi-version=1.6.0';
@@ -392,7 +382,7 @@ abstract class we_html_element{
 		$attribs['SCRIPTABLE'] = '';
 
 
-		return we_baseElement::getHtmlCode(new we_baseElement('applet', true, $attribs, $content));
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('applet', true, $attribs, $content));
 	}
 
 	/**
@@ -400,8 +390,8 @@ abstract class we_html_element{
 	 *
 	 * @return		string
 	 */
-	static function htmlParam($attribs = array()){
-		return we_baseElement::getHtmlCode(new we_baseElement('param', 'selfclose', $attribs));
+	public static function htmlParam(array $attribs = array()){
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('param', 'selfclose', $attribs));
 	}
 
 	/**
@@ -411,7 +401,7 @@ abstract class we_html_element{
 	 * @param string $url url to add the version-unique param
 	 * @return string resulting url
 	 */
-	static function getUnCache($url){
+	private static function getUnCache($url){
 		static $cache = -1;
 		if($cache == -1){
 			$cache = md5(WE_VERSION . filemtime(WE_INCLUDES_PATH . 'we_version.php') . __FILE__);
@@ -419,15 +409,15 @@ abstract class we_html_element{
 		return $url . (strstr($url, '?') ? '&amp;' : '?') . $cache;
 	}
 
-	static function htmlIFrame($name, $src, $style, $iframestyle = ''){
+	public static function htmlIFrame($name, $src, $style, $iframestyle = ''){
 		$iframestyle = empty($iframestyle) ? 'border:0px;width:100%;height:100%;overflow: ' . (we_base_browserDetect::isFF() ? 'auto' : 'hidden') . ';' : $iframestyle;
 		return self::htmlDiv(array('style' => $style, 'name' => $name . 'Div', 'id' => $name . 'Div')
-				, we_baseElement::getHtmlCode(
-					new we_baseElement('iframe', true, array('name' => $name, 'id' => $name, 'frameBorder' => 0, 'src' => $src, 'style' => $iframestyle))
+				, we_html_baseElement::getHtmlCode(
+					new we_html_baseElement('iframe', true, array('name' => $name, 'id' => $name, 'frameBorder' => 0, 'src' => $src, 'style' => $iframestyle))
 		));
 	}
 
-	static function htmlExIFrame($__name, $__src, $__style, $class = ''){
+	public static function htmlExIFrame($__name, $__src, $__style, $class = ''){
 		if(strlen($__src) > 100){
 			$tmp = $__src;
 		} else {

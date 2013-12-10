@@ -40,7 +40,6 @@ class we_core_Translate extends Zend_Translate{
 	 */
 	private $_adapter;
 
-
 	/**
 	 * Generates the standard translation object
 	 *

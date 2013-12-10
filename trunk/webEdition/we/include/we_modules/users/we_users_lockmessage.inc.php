@@ -35,17 +35,17 @@ $content = "<p class='defaultfont'>" . sprintf(g_l('alert', "[temporaere_no_acce
 <script  type="text/javascript">
 	<!--
 	top.toggleBusy(0);
-	//-->
+//-->
 </script>
 </head>
 
 <body class="weDialogBody">
-<?php
-print we_html_tools::htmlDialogLayout($content, g_l('alert', "[temporaere_no_access]"));
+	<?php
+	print we_html_tools::htmlDialogLayout($content, g_l('alert', "[temporaere_no_access]"));
 
 //	For SEEM-Mode
-if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
-	?><a href="javascript://" style="text-decoration:none" onClick="top.weNavigationHistory.navigateReload()" ><?php print g_l('SEEM', "[try_doc_again]") ?></a>
+	if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
+		?><a href="javascript://" style="text-decoration:none" onClick="top.weNavigationHistory.navigateReload()" ><?php print g_l('SEEM', "[try_doc_again]") ?></a>
 		<?php
 	}
 	?>

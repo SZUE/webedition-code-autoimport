@@ -29,7 +29,7 @@ if(str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']) ==
 /* send new email message */
 
 function msg_new_email(&$rcpts, $subject, $body, &$errs){
-	$m = new we_msg_email();
+	$m = new we_messaging_email();
 	$m->set_login_data($_SESSION["user"]["ID"], isset($_SESSION["user"]["Name"]) ? $_SESSION["user"]["Name"] : "");
 	$data = array('subject' => $subject, 'body' => $body);
 
@@ -46,7 +46,7 @@ function msg_new_email(&$rcpts, $subject, $body, &$errs){
 /* generate new webedition message */
 
 function msg_new_message(&$rcpts, $subject, $body, &$errs){
-	$m = new we_message();
+	$m = new we_messaging_message();
 	$m->set_login_data($_SESSION["user"]["ID"], isset($_SESSION["user"]["Name"]) ? $_SESSION["user"]["Name"] : "");
 	$data = array('subject' => $subject, 'body' => $body);
 
@@ -64,7 +64,7 @@ function msg_new_message(&$rcpts, $subject, $body, &$errs){
 /* return the ID of the created ToDo, 0 on error */
 
 function msg_new_todo(&$rcpts, $subject, $body, &$errs, $ct = 'text', $deadline = 1, $priority = 5){
-	$m = new we_todo();
+	$m = new we_messaging_todo();
 	$m->set_login_data($_SESSION["user"]["ID"], isset($_SESSION["user"]["Name"]) ? $_SESSION["user"]["Name"] : "");
 	$data = array('subject' => $subject, 'body' => $body, 'deadline' => $deadline, 'Content_Type' => $ct, 'priority' => $priority);
 
@@ -84,7 +84,7 @@ function msg_new_todo(&$rcpts, $subject, $body, &$errs, $ct = 'text', $deadline 
 function msg_done_todo($id, &$errs){
 	$res = array();
 
-	$m = new we_todo();
+	$m = new we_messaging_todo();
 
 	$i_headers = array('_ID' => $id);
 
@@ -108,7 +108,7 @@ function msg_done_todo($id, &$errs){
 /* $id - value of the 'ID' field in MSG_TODO_TABLE */
 
 function msg_rm_todo($id){
-	$m = new we_todo();
+	$m = new we_messaging_todo();
 	$m->set_login_data($_SESSION["user"]["ID"], isset($_SESSION["user"]["Name"]) ? $_SESSION["user"]["Name"] : "");
 
 	$i_headers = array('_ID' => $id);
@@ -131,28 +131,26 @@ function msg_create_folders($userid){
 		2 => -1);
 
 	$db->query('SELECT ID, msg_type, obj_type FROM ' . MSG_FOLDERS_TABLE . ' WHERE (obj_type=3 OR obj_type=5 OR obj_type=9 OR obj_type=11 OR obj_type=13) AND UserID=' . intval($userid));
-	while($db->next_record()) {
+	while($db->next_record()){
 		if(isset($default_folders[$db->f('msg_type')][$db->f('obj_type')])){
-			if($db->f('obj_type') == 3)
+			if($db->f('obj_type') == 3){
 				$pfolders[$db->f('msg_type')] = $db->f('ID');
-
+			}
 			unset($default_folders[$db->f('msg_type')][$db->f('obj_type')]);
 		}
 	}
 
 	foreach($default_folders as $mt => $farr){
-		if($pfolders[$mt] != -1)
+		if($pfolders[$mt] != -1){
 			$pf_id = $pfolders[$mt];
-		else{
-			$db->query("INSERT INTO " . MSG_FOLDERS_TABLE . " (ID, ParentID, UserID, msg_type, obj_type, Properties, Name) VALUES (NULL, 0, " . intval($userid) . ", $mt, 3, 1, '" . $default_folders[$mt]['3'] . '\')');
-			$db->query('SELECT LAST_INSERT_ID() as pf_id');
-			$db->next_record();
-			$pf_id = $db->f('pf_id');
+		} else {
+			$db->query('INSERT INTO ' . MSG_FOLDERS_TABLE . ' (ID, ParentID, UserID, msg_type, obj_type, Properties, Name) VALUES (NULL, 0, ' . intval($userid) . ", $mt, 3, 1, '" . $default_folders[$mt]['3'] . '\')');
+			$pf_id = $db->getInsertId();
 			unset($farr['3']);
 		}
 
 		foreach($farr as $df => $fname){
-			$db->query("INSERT INTO " . MSG_FOLDERS_TABLE . " (ID, ParentID, UserID, msg_type, obj_type, Properties, Name) VALUES (NULL, $pf_id, " . intval($userid) . ", $mt, " . $df . ', 1, "' . $fname . '")');
+			$db->query('INSERT INTO ' . MSG_FOLDERS_TABLE . " (ID, ParentID, UserID, msg_type, obj_type, Properties, Name) VALUES (NULL, $pf_id, " . intval($userid) . ", $mt, " . $df . ', 1, "' . $fname . '")');
 		}
 	}
 
@@ -165,7 +163,7 @@ function msg_create_folders($userid){
 function msg_reject_todo($id){
 	$res = array();
 
-	$m = new we_todo();
+	$m = new we_messaging_todo();
 
 	$db = new DB_WE();
 

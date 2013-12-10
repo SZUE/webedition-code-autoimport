@@ -65,17 +65,17 @@ class weModuleFrames{
 
 	function getHTMLDocumentHeader(){
 		we_html_tools::headerCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']);
-		print we_html_tools::getHtmlTop($this->module);
+		return we_html_tools::getHtmlTop($this->module);
 	}
 
 	function getHTMLDocument($body, $extraHead = ''){
 		/*
-		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-			we_html_element::htmlHead(we_html_tools::getHtmlInnerHead($this->module) . 
-			STYLESHEET . $extraHead) . $body
-		);
-		*
-		*/
+		  return we_html_element::htmlDocType() . we_html_element::htmlHtml(
+		  we_html_element::htmlHead(we_html_tools::getHtmlInnerHead($this->module) .
+		  STYLESHEET . $extraHead) . $body
+		  );
+		 *
+		 */
 		//this is not nice, but it works for the moment...
 		return STYLESHEET . $extraHead .
 			we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
@@ -90,43 +90,33 @@ class weModuleFrames{
 
 	function getHTML($what = ''){
 		switch($what){
-			case "frameset":
-				print $this->getHTMLFrameset();
-				break;
-			case "iconbar":
-				print $this->getHTMLIconbar();
-				break;
-			case "editor":
-				print $this->getHTMLEditor();
-				break;
-			case "edheader":
-				print $this->getHTMLEditorHeader();
-				break;
-			case "edbody":
-				print $this->getHTMLEditorBody();
-				break;
-			case "edfooter":
-				print $this->getHTMLEditorFooter();
-				break;
-			case "cmd":
-				print $this->getHTMLCmd();
-				break;
-			case "tree":
-				print $this->getHTMLTree();
-			case "treeheader":
-				print $this->getHTMLTreeHeader();
-				break;
-			case "treefooter":
-				print $this->getHTMLTreeFooter();
-				break;
-			case "search":
-				print $this->getHTMLSearch();
-				break;
+			case 'frameset':
+				return $this->getHTMLFrameset();
+			case 'iconbar':
+				return $this->getHTMLIconbar();
+			case 'editor':
+				return $this->getHTMLEditor();
+			case 'edheader':
+				return $this->getHTMLEditorHeader();
+			case 'edbody':
+				return $this->getHTMLEditorBody();
+			case 'edfooter':
+				return $this->getHTMLEditorFooter();
+			case 'cmd':
+				return $this->getHTMLCmd();
+			case 'tree':
+				return $this->getHTMLTree();
+			case 'treeheader':
+				return $this->getHTMLTreeHeader();
+			case 'treefooter':
+				return $this->getHTMLTreeFooter();
+			case 'search':
+				return $this->getHTMLSearch();
 			case 'exit_doc_question':
-				print $this->getHTMLExitQuestion();
-				break;
+				return $this->getHTMLExitQuestion();
 			default:
-				t_e(__FILE__ . " unknown reference: $what");
+				t_e(__FILE__ . ' unknown reference: ' . $what);
+				return '';
 		}
 	}
 
@@ -151,7 +141,6 @@ class weModuleFrames{
 
 	function getHTMLHeader($_menuFile, $_module){
 		include($_menuFile);
-		require_once(WE_INCLUDES_PATH . "jsMessageConsole/messageConsole.inc.php" );
 
 		$lang_arr = "we_menu_" . $_module;
 		$jmenu = new weJavaMenu($$lang_arr, 'top.opener.top.load', '');
@@ -160,7 +149,7 @@ class weModuleFrames{
 
 		$table = new we_html_table(array("width" => "100%", "cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 2);
 		$table->setCol(0, 0, array("align" => "left", "valign" => "top"), $menu);
-		$table->setCol(0, 1, array("align" => "right", "valign" => "top"), createMessageConsole("moduleFrame"));
+		$table->setCol(0, 1, array("align" => "right", "valign" => "top"), we_main_headermenu::createMessageConsole('moduleFrame'));
 
 		return we_html_element::htmlDiv(array('class' => 'menuDiv'), $table->getHtml());
 	}
@@ -172,7 +161,7 @@ class weModuleFrames{
 			<img id="arrowImg" src="' . BUTTONS_DIR . 'icons/direction_' . ($this->treeWidth <= 30 ? 'right' : 'left') . '.gif" width="9" height="12" style="position:absolute;bottom:13px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer;" onClick="top.content.toggleTree();">
 		';
 
-		$content = we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;'), we_html_element::htmlDiv(array('id' => 'lframeDiv', 'style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;width: ' . $this->treeWidth . 'px;'), we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; width: ' . weTree::HiddenWidth . 'px; background-image: url(/webEdition/images/v-tabs/background.gif); background-repeat: repeat-y; border-top: 1px solid black;'), $_incDecTree) .
+		$content = we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;'), we_html_element::htmlDiv(array('id' => 'lframeDiv', 'style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;width: ' . $this->treeWidth . 'px;'), we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; width: ' . weTree::HiddenWidth . 'px; background-image: url(' . IMAGE_DIR . 'v-tabs/background.gif); background-repeat: repeat-y; border-top: 1px solid black;'), $_incDecTree) .
 					$this->getHTMLLeft()
 				) .
 				we_html_element::htmlDiv(array('id' => 'right', 'style' => 'background: #F0EFF0; position: absolute; top: 0px; bottom: 0px; left: ' . $this->treeWidth . 'px; right: 0px; width: auto; border-left: 1px solid black; overflow: auto;'), we_html_element::htmlIFrame('editor', $this->frameset . '?pnt=editor' . $extraUrlParams, 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; overflow: hidden;')
@@ -204,7 +193,6 @@ class weModuleFrames{
 			if(isset($_REQUEST['code'])){
 				//return('REQUEST[\'code\'] is forbidden!');
 			}
-			require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 			$Tree = new weMainTree('webEdition.php', 'top', 'top', 'top.load'); //IMI: FOR MODULES WE NEED top.tree NOT top.left.tree!!!
 
 			return we_html_element::htmlDiv(array(
@@ -252,7 +240,7 @@ class weModuleFrames{
 
 	function getHTMLEditorFooter($btn_cmd, $extraHead = ''){
 		if(isset($_REQUEST['home'])){
-			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "EFf0EF"), ""));
+			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#EFf0EF"), ""));
 		}
 
 		$extraHead .= we_html_element::jsElement('
@@ -265,7 +253,7 @@ class weModuleFrames{
 		$table2 = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0, 'style' => 'width:300px;margin-top:10px;'), 1, 2);
 		$table2->setRow(0, array('valign' => 'middle'));
 		$table2->setCol(0, 0, array('nowrap' => null), we_html_tools::getPixel(5, 5));
-		$table2->setCol(0, 1, array('nowrap' => null), we_button::create_button('save', 'javascript:we_save()'));
+		$table2->setCol(0, 1, array('nowrap' => null), we_html_button::create_button('save', 'javascript:we_save()'));
 
 		$body = we_html_element::htmlBody(array('bgcolor' => 'white', 'background' => IMAGE_DIR . 'edit/editfooterback.gif', 'marginwidth' => 0, 'marginheight' => 0, 'leftmargin' => 0, 'topmargin' => 0), $table2->getHtml());
 

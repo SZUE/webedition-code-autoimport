@@ -22,14 +22,13 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$createAbbreviation = we_button::create_button("new_glossary_abbreviation", "javascript:top.opener.top.we_cmd('new_glossary_abbreviation');", true, -1, -1, "", "", !we_hasPerm("NEW_GLOSSARY"));
-$createAcronym = we_button::create_button("new_glossary_acronym", "javascript:top.opener.top.we_cmd('new_glossary_acronym');", true, -1, -1, "", "", !we_hasPerm("NEW_GLOSSARY"));
-$createForeignWord = we_button::create_button("new_glossary_foreignword", "javascript:top.opener.top.we_cmd('new_glossary_foreignword');", true, -1, -1, "", "", !we_hasPerm("NEW_GLOSSARY"));
-$createLink = we_button::create_button("new_glossary_link", "javascript:top.opener.top.we_cmd('new_glossary_link');", true, -1, -1, "", "", !we_hasPerm("NEW_GLOSSARY"));
-$createTextReplacement = we_button::create_button("new_glossary_textreplacement", "javascript:top.opener.top.we_cmd('new_glossary_textreplacement');", true, -1, -1, "", "", !we_hasPerm("NEW_GLOSSARY"));
+$createAbbreviation = we_html_button::create_button("new_glossary_abbreviation", "javascript:top.opener.top.we_cmd('new_glossary_abbreviation');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_GLOSSARY"));
+$createAcronym = we_html_button::create_button("new_glossary_acronym", "javascript:top.opener.top.we_cmd('new_glossary_acronym');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_GLOSSARY"));
+$createForeignWord = we_html_button::create_button("new_glossary_foreignword", "javascript:top.opener.top.we_cmd('new_glossary_foreignword');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_GLOSSARY"));
+$createLink = we_html_button::create_button("new_glossary_link", "javascript:top.opener.top.we_cmd('new_glossary_link');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_GLOSSARY"));
+$createTextReplacement = we_html_button::create_button("new_glossary_textreplacement", "javascript:top.opener.top.we_cmd('new_glossary_textreplacement');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_GLOSSARY"));
 
-$content =
-	$createAbbreviation . we_html_tools::getPixel(2, 10) .
+$content = $createAbbreviation . we_html_tools::getPixel(2, 10) .
 	$createAcronym . we_html_tools::getPixel(2, 10) .
 	$createForeignWord . we_html_tools::getPixel(2, 10) .
 	$createLink . we_html_tools::getPixel(2, 10) .

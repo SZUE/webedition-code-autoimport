@@ -9,7 +9,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -19,7 +19,7 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
- /**
+/**
  * mark application entry
  *
  * @return void
@@ -29,7 +29,7 @@ function mark() {
 	elem.style.display = 'inline';
 }
 
- /**
+/**
  * unmark application entry
  *
  * @return void
@@ -39,90 +39,90 @@ function unmark() {
 	elem.style.display = 'none';
 }
 
- /**
- * set the frame size after resizing 
+/**
+ * set the frame size after resizing
  *
  * @return void
  */
-function setFrameSize(){
-	if(document.getElementById('we_ui_controls_Tabs_Container').offsetWidth > 0) {
+function setFrameSize() {
+	if (document.getElementById('we_ui_controls_Tabs_Container').offsetWidth > 0) {
 		var fs = parent.document.getElementsByTagName("FRAMESET")[0];
 		var tabsHeight = document.getElementById('main').offsetHeight;
 		var fsRows = fs.rows.split(',');
 		fsRows[0] = tabsHeight;
-		fs.rows =  fsRows.join(",");
+		fs.rows = fsRows.join(",");
 	} else {
-		setTimeout("setFrameSize()",100);
+		setTimeout("setFrameSize()", 100);
 	}
 }
- /**
+/**
  * var resizeDummy
  */
 var resizeDummy = 1;
 
- /**
+/**
  * name of the title path
  */
-var titlePathName='';
+var titlePathName = '';
 
- /**
+/**
  * group of the title path
  */
-var titlePathGroup='';
- 
- /**
+var titlePathGroup = '';
+
+/**
  * set the title path of the entry
  *
  * @static
- * @param {string} group 
- * @param {string} name 
+ * @param {string} group
+ * @param {string} name
  * @return void
  */
-function setTitlePath(group, name){
-	if (group){
+function setTitlePath(group, name) {
+	if (group) {
 		titlePathGroup = group;
 	}
-	if (name){
+	if (name) {
 		titlePathName = name;
 	}
-	
+
 	var titlePathGroupElem = document.getElementById('titlePathGroup');
 	var titlePathNameElem = document.getElementById('titlePathName');
-	
-	
-	if(titlePathGroupElem) {
-		if (titlePathGroup ==="") {
+
+
+	if (titlePathGroupElem) {
+		if (titlePathGroup === "") {
 			titlePathGroup = titlePathGroupElem.innerHTML
 		}
 		titlePathGroupElem.innerHTML = titlePathGroup;
 	}
-	if(titlePathNameElem) {
-		if (titlePathName ==="") {
+	if (titlePathNameElem) {
+		if (titlePathName === "") {
 			titlePathName = titlePathNameElem.innerHTML
 		}
 		titlePathNameElem.innerHTML = titlePathName;
 	}
 }
 
- /**
+/**
  * set the path name
  *
  * @static
- * @param {string} pathName 
+ * @param {string} pathName
  * @return void
  */
 function setPathName(pathName) {
 	titlePathName = pathName;
 }
 
- /**
+/**
  * set the path group
  *
  * @static
- * @param {string} pathGroup 
+ * @param {string} pathGroup
  * @return void
  */
 function setPathGroup(pathGroup) {
-	//DUMMY for compatibility	
+	//DUMMY for compatibility
 	//titlePathGroup = pathGroup;
 }

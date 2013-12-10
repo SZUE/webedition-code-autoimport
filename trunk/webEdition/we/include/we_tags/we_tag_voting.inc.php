@@ -41,16 +41,16 @@ function we_tag_voting($attribs){
 	require_once(WE_MODULES_PATH . 'voting/weVoting.php');
 	$version = ($version > 0) ? ($version - 1) : 0;
 	$GLOBALS["_we_voting_namespace"] = $name;
-	$GLOBALS['_we_voting'] = new weVoting();
+	$GLOBALS['_we_voting'] = new we_voting_voting();
 
 	if(isset($GLOBALS['we_doc']->elements[$GLOBALS['_we_voting_namespace']]['dat'])){
-		$GLOBALS['_we_voting'] = new weVoting($GLOBALS['we_doc']->elements[$GLOBALS['_we_voting_namespace']]['dat']);
+		$GLOBALS['_we_voting'] = new we_voting_voting($GLOBALS['we_doc']->elements[$GLOBALS['_we_voting_namespace']]['dat']);
 	} else if($id != 0){
-		$GLOBALS['_we_voting'] = new weVoting($id);
-	} else{
+		$GLOBALS['_we_voting'] = new we_voting_voting($id);
+	} else {
 		$__voting_matches = array();
 		if(preg_match_all('/_we_voting_answer_([0-9]+)_?([0-9]+)?/', implode(',', array_keys($_REQUEST)), $__voting_matches)){
-			$GLOBALS['_we_voting'] = new weVoting($__voting_matches[1][0]);
+			$GLOBALS['_we_voting'] = new we_voting_voting($__voting_matches[1][0]);
 		}
 	}
 

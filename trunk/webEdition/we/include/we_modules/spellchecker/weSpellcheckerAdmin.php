@@ -5,7 +5,7 @@ include_once(WE_SPELLCHECKER_MODULE_PATH . '/spellchecker.conf.inc.php');
 
 we_html_tools::protect();
 
-if(!we_hasPerm('SPELLCHECKER_ADMIN')){
+if(!permissionhandler::hasPerm('SPELLCHECKER_ADMIN')){
 	print we_html_element::jsElement(
 			we_message_reporting::getShowMessageCall(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR) .
 			'self.close();
@@ -54,10 +54,10 @@ if(we_base_browserDetect::isMAC() && we_base_browserDetect::isGecko()){
 	}
 	$_scid_file = $_tmp_dir . '/' . md5($l_param['scid']);
 	if(!file_exists($_scid_file)){
-		weFile::save($_scid_file, '');
+		we_base_file::save($_scid_file, '');
 		we_util_File::insertIntoCleanUp($_scid_file, time() + (24 * 3600));
 	}
-} else{
+} else {
 	$l_param['scid'] = '';
 }
 // -------------------------------
@@ -72,8 +72,8 @@ foreach($l_param as $key => $value){
 
 $we_tabs = new we_tabs();
 
-$we_tabs->addTab(new we_tab("#", g_l('modules_spellchecker', '[dictAdmin]'), '((activ_tab==1) ? TAB_ACTIVE : TAB_NORMAL)', "setTab('1');", array("id" => "tab_1")));
-$we_tabs->addTab(new we_tab("#", g_l('modules_spellchecker', '[userDictAdmin]'), '((activ_tab==2) ? TAB_ACTIVE : TAB_NORMAL)', "setTab('2');", array("id" => "tab_2")));
+$we_tabs->addTab(new we_tab("#", g_l('modules_spellchecker', '[dictAdmin]'), '((activ_tab==1) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('1');", array("id" => "tab_1")));
+$we_tabs->addTab(new we_tab("#", g_l('modules_spellchecker', '[userDictAdmin]'), '((activ_tab==2) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('2');", array("id" => "tab_2")));
 
 
 $js = $we_tabs->getHeader() . we_html_element::jsElement('
@@ -97,46 +97,43 @@ $table->setCol(0, 4, array('valign' => 'top', 'class' => 'small'), g_l('modules_
 $_dir = dir(WE_SPELLCHECKER_MODULE_PATH . 'dict');
 
 $_i = 0;
-while(false !== ($entry = $_dir->read())) {
+while(false !== ($entry = $_dir->read())){
 	if($entry != '.' && $entry != '..' && strpos($entry, '.zip') !== false){
 		$_i++;
 		$table->addRow();
 
 		$_name = str_replace('.zip', '', $entry);
 
-		$table->setCol($_i, 0, array('valign' => 'top'), we_forms::radiobutton($_name, (($spellcheckerConf['default'] == $_name) ? true : false), 'default', '', true, 'defaultfont', 'document.we_form.enable_' . $_name . '.value=1;document.we_form._enable_' . $_name . '.checked=true;'));
+		$table->setCol($_i, 0, array('valign' => 'top'), we_html_forms::radiobutton($_name, (($spellcheckerConf['default'] == $_name) ? true : false), 'default', '', true, 'defaultfont', 'document.we_form.enable_' . $_name . '.value=1;document.we_form._enable_' . $_name . '.checked=true;'));
 		$table->setCol($_i, 1, array('valign' => 'top', 'class' => 'defaultfont'), $_name);
-		$table->setCol($_i, 2, array('valign' => 'top', 'align' => 'right'), we_forms::checkboxWithHidden(in_array($_name, $spellcheckerConf['active']), 'enable_' . $_name, '', false, 'defaultfont', ''));
-		$table->setCol($_i, 3, array('valign' => 'top', 'align' => 'right'), we_button::create_button('image:btn_function_reload', 'javascript: updateDict("' . $_name . '");'));
-		$table->setCol($_i, 4, array('valign' => 'top', 'align' => 'right'), we_button::create_button('image:btn_function_trash', 'javascript: deleteDict("' . $_name . '");'));
+		$table->setCol($_i, 2, array('valign' => 'top', 'align' => 'right'), we_html_forms::checkboxWithHidden(in_array($_name, $spellcheckerConf['active']), 'enable_' . $_name, '', false, 'defaultfont', ''));
+		$table->setCol($_i, 3, array('valign' => 'top', 'align' => 'right'), we_html_button::create_button('image:btn_function_reload', 'javascript: updateDict("' . $_name . '");'));
+		$table->setCol($_i, 4, array('valign' => 'top', 'align' => 'right'), we_html_button::create_button('image:btn_function_trash', 'javascript: deleteDict("' . $_name . '");'));
 	}
 }
 $_dir->close();
 
-$_button = we_button::create_button("close", "javascript:self.close();");
+$_button = we_html_button::create_button("close", "javascript:self.close();");
 $tabsBody = $we_tabs->getHTML() . we_html_element::jsElement('if(!activ_tab) activ_tab = 1; document.getElementById("tab_"+activ_tab).className="tabActive";');
 
-$_tab_1 =
-	we_html_tools::htmlDialogLayout('
+$_tab_1 = we_html_tools::htmlDialogLayout('
 	 <form name="we_form" target="hiddenCmd" method="post" action="' . WE_SPELLCHECKER_MODULE_DIR . 'weSpellcheckerCmd.php">
 	 <input type="hidden" name="cmd[0]" value="saveSettings" />
 	 <div id="dictTable">
-	 	<div id="selector" class="blockWrapper" style="width: 400px; height: 320px; border: 1px solid #AFB0AF;margin-bottom: 5px;background-color:#f6f6f6 ! important;">
-		</div>
+	 	<div id="selector" class="blockWrapper" style="width: 400px; height: 320px; border: 1px solid #AFB0AF;margin-bottom: 5px;background-color:#f6f6f6 ! important;"></div>
 
 		<div id="dictSelector" style="display: none; width: 400px; height: 220px;background-color: silver;">
 			<div id="appletPanel"></div>
 		</div>
 
-		<div id="addButt">' . we_button::create_button_table(array(we_button::create_button("save", "javascript:document.we_form.submit()"), we_button::create_button("add", "javascript:showDictSelector();"))) . '</div>
+		<div id="addButt">' . we_html_button::create_button_table(array(we_html_button::create_button("save", "javascript:document.we_form.submit()"), we_html_button::create_button("add", "javascript:showDictSelector();"))) . '</div>
 	</div>
 	 ', '', '');
 
 
-$_tab_2 =
-	we_html_tools::htmlDialogLayout('
-					<textarea class="defaultfont" name="defaultDict" style="width: 400px; padding:5px;height: 320px; border: 1px solid #AFB0AF;margin-bottom: 5px;background-color:white ! important;">' . (file_exists(WE_SPELLCHECKER_MODULE_PATH . 'dict/default.inc.php') ? ((filesize(WE_SPELLCHECKER_MODULE_PATH . 'dict/default.inc.php') > 0) ? weFile::load(WE_SPELLCHECKER_MODULE_PATH . 'dict/default.inc.php') : '') : '') . '</textarea>
-					<div>' . we_button::create_button("save", "javascript:document.we_form.submit()") . '</div>
+$_tab_2 = we_html_tools::htmlDialogLayout('
+					<textarea class="defaultfont" name="defaultDict" style="width: 400px; padding:5px;height: 320px; border: 1px solid #AFB0AF;margin-bottom: 5px;background-color:white ! important;">' . (file_exists(WE_SPELLCHECKER_MODULE_PATH . 'dict/default.inc.php') ? ((filesize(WE_SPELLCHECKER_MODULE_PATH . 'dict/default.inc.php') > 0) ? we_base_file::load(WE_SPELLCHECKER_MODULE_PATH . 'dict/default.inc.php') : '') : '') . '</textarea>
+					<div>' . we_html_button::create_button("save", "javascript:document.we_form.submit()") . '</div>
 	</form>
 	 ', '', '');
 
@@ -218,87 +215,85 @@ $_applet_code2 = we_html_element::htmlApplet(array(
 		return argum;
 	}
 
-	function setVisible(id,visible){
+	function setVisible(id, visible) {
 		var elem = document.getElementById(id);
-		if(visible==true) elem.style.display = "block";
-		else elem.style.display = "none";
+		elem.style.display = (visible == true ? "block" : "none");
 	}
 
-	function toggle(id){
+	function toggle(id) {
 		var elem = document.getElementById(id);
-		if(elem.style.display == "none") elem.style.display = "block";
-		else elem.style.display = "none";
+		elem.style.display = (elem.style.display == "none" ? "block" : "none");
 	}
 
 	function showDictSelector() {
-		setVisible("addButt",false);
+		setVisible("addButt", false);
 		document.getElementById("selector").style.height = "100px";
-		setVisible("dictSelector",true);
-		setTimeout("setAppletCode()",1000);
+		setVisible("dictSelector", true);
+		setTimeout("setAppletCode()", 1000);
 	}
 
 	function hideDictSelector() {
-		setVisible("dictSelector",false);
+		setVisible("dictSelector", false);
 		document.getElementById("selector").style.height = "320px";
-		setVisible("addButt",true);
+		setVisible("addButt", true);
 	}
 
 	function setAppletCode() {
-		if(!appletActiv) {
-			document.getElementById('appletPanel').innerHTML = '<?php echo addcslashes(str_replace("\n", '', $_applet_code),'\''); ?>';
+		if (!appletActiv) {
+			document.getElementById('appletPanel').innerHTML = '<?php echo addcslashes(str_replace("\n", '', $_applet_code), '\''); ?>';
 		}
 		appletActiv = true;
-		setTimeout("checkApplet()",2000);
+		setTimeout("checkApplet()", 2000);
 	}
 
 
-	function updateDict(dict){
+	function updateDict(dict) {
 
-		setVisible("updateBut_"+dict,false);
-		setVisible("updateIcon_"+dict,true);
-		document.getElementById('appletPanel2').innerHTML = '<?php echo addcslashes(str_replace("\n", '', $_applet_code2),'\''); ?>';
-		setTimeout("selectDict(\""+dict+"\")",1000);
+		setVisible("updateBut_" + dict, false);
+		setVisible("updateIcon_" + dict, true);
+		document.getElementById('appletPanel2').innerHTML = '<?php echo addcslashes(str_replace("\n", '', $_applet_code2), '\''); ?>';
+		setTimeout("selectDict(\"" + dict + "\")", 1000);
 	}
 
-	function updateDict(dict){
+	function updateDict(dict) {
 
-		setVisible("updateBut_"+dict,false);
-		setVisible("updateIcon_"+dict,true);
-		document.getElementById('appletPanel2').innerHTML = '<?php echo addcslashes(str_replace("\n", '', $_applet_code2),'\'');  ?>';
-		setTimeout("selectDict(\""+dict+"\")",1000);
+		setVisible("updateBut_" + dict, false);
+		setVisible("updateIcon_" + dict, true);
+		document.getElementById('appletPanel2').innerHTML = '<?php echo addcslashes(str_replace("\n", '', $_applet_code2), '\''); ?>';
+		setTimeout("selectDict(\"" + dict + "\")", 1000);
 	}
 
 	function selectDict(dict) {
-		if(document.spellcheckerCmd.isReady) {
-			if(document.spellcheckerCmd.isReady()) {
+		if (document.spellcheckerCmd.isReady) {
+			if (document.spellcheckerCmd.isReady()) {
 				document.spellcheckerCmd.setDict(dict);
-				setTimeout("setStatusDone(\""+dict+"\")",3000);
+				setTimeout("setStatusDone(\"" + dict + "\")", 3000);
 			}
 		}
 	}
 
 	function setStatusDone(dict) {
-		if(document.spellcheckerCmd.isDictReady) {
-			if(document.spellcheckerCmd.isDictReady()) {
-				setVisible("updateBut_"+dict,true);
-				setVisible("updateIcon_"+dict,false);
+		if (document.spellcheckerCmd.isDictReady) {
+			if (document.spellcheckerCmd.isDictReady()) {
+				setVisible("updateBut_" + dict, true);
+				setVisible("updateIcon_" + dict, false);
 				return;
 			}
 		}
-		setTimeout("setStatusDone()",3000);
+		setTimeout("setStatusDone()", 3000);
 	}
 
 
 	function checkApplet() {
 
-		if(appletActiv) {
-			if(document.spellchecker.uploadFinished) {
-				if(document.spellchecker.uploadFinished()) {
-					if(document.spellchecker.packingFinished()) {
+		if (appletActiv) {
+			if (document.spellchecker.uploadFinished) {
+				if (document.spellchecker.uploadFinished()) {
+					if (document.spellchecker.packingFinished()) {
 <?php print we_message_reporting::getShowMessageCall(g_l('modules_spellchecker', '[dict_saved]'), we_message_reporting::WE_MESSAGE_NOTICE); ?>
 					}
 					hideDictSelector();
-					appletActiv=false;
+					appletActiv = false;
 					loadTable();
 					return;
 				}
@@ -306,20 +301,20 @@ $_applet_code2 = we_html_element::htmlApplet(array(
 
 		}
 
-		setTimeout("checkApplet()",2000);
+		setTimeout("checkApplet()", 2000);
 	}
 
 	function deleteDict(name) {
-		if(confirm(sprintf("<?php print g_l('modules_spellchecker', '[ask_dict_del]'); ?>",name))){
-			hiddenCmd.dispatch("deleteDict",name);
+		if (confirm(sprintf("<?php print g_l('modules_spellchecker', '[ask_dict_del]'); ?>", name))) {
+			hiddenCmd.dispatch("deleteDict", name);
 		}
 	}
 
 	function loadTable() {
-		if(hiddenCmd.dispatch) {
+		if (hiddenCmd.dispatch) {
 			hiddenCmd.dispatch("refresh");
 		} else {
-			setTimeout("loadTable()",1000);
+			setTimeout("loadTable()", 1000);
 		}
 	}
 

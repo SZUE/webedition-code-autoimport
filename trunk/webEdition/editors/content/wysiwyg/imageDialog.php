@@ -22,7 +22,7 @@
  * @package    webEdition_wysiwyg
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 $noInternals = false;
 if(!(isset($_REQUEST['we_dialog_args']) &&
@@ -34,7 +34,7 @@ if(!(isset($_REQUEST['we_dialog_args']) &&
 }
 $noInternals = $noInternals || !isset($_SESSION['user']) || !isset($_SESSION['user']['Username']) || $_SESSION['user']['Username'] == '';
 
-$dialog = new weImageDialog($noInternals);
+$dialog = new we_dialog_image($noInternals);
 $dialog->initByHttp();
 $dialog->registerCmdFn(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] ? "" : "weDoImgCmd");
 
@@ -56,7 +56,7 @@ top.close();
 ');
 	} else{
 		$attribs = $_REQUEST['imgChangedCmd'] && !$_REQUEST['wasThumbnailChange'] ? $_REQUEST['we_dialog_args'] : $args;
-		return weDialog::getTinyMceJS() .
+		return we_dialog_base::getTinyMceJS() .
 			we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/weimage/js/image_insert.js') .
 			'<form name="tiny_form">
 				<input type="hidden" name="src" value="' . $args["src"] . '">

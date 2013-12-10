@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,7 +22,6 @@
  * @package    webEdition_update
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 /*
  * In this file constants and variables determining the behaviour of the
  * Liveupdate are set
@@ -38,9 +38,8 @@ define('LIVEUPDATE_TEMPLATE_DIR', $_SERVER['DOCUMENT_ROOT'] . '/webEdition/liveU
 
 define('LIVEUPDATE_SERVER', 'update.webedition.org');
 
-if(isset($_REQUEST['section'])) {
+if(isset($_REQUEST['section'])){
 	$_SESSION['liveUpdateSection'] = $_REQUEST['section'];
-
 }
 
 define('LIVEUPDATE_SERVER_SCRIPT', '/server/we/liveUpdate.p' . 'hp');
@@ -52,9 +51,9 @@ define('LIVEUPDATE_CLIENT_DOCUMENT_DIR', $_SERVER['DOCUMENT_ROOT'] . '/webEditio
 define('LIVEUPDATE_TABLE_PREFIX', TBL_PREFIX);
 
 // liveupdater contains the following actions
-$updatecmds = array('update', 'languages', 'updatelog', 'connect','beta');
+$updatecmds = array('update', 'languages', 'updatelog', 'connect', 'beta');
 //$updatecmds = array('update', 'languages', 'updatelog', 'connect');
-if(is_callable("set_time_limit") && strtolower(ini_get("safe_mode")) != "on" && ini_get("safe_mode") != "1") {
+if(is_callable("set_time_limit") && strtolower(ini_get("safe_mode")) != "on" && ini_get("safe_mode") != "1"){
 	@set_time_limit(180);
 }
 

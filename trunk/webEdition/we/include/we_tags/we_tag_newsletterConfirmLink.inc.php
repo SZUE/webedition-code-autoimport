@@ -36,10 +36,10 @@ function we_tag_newsletterConfirmLink($attribs, $content){
 		if(!$plain){
 			$attribs["href"] = $link;
 			return getHtmlTag("a", $attribs, $content);
-		} else{
+		} else {
 			return $link;
 		}
-	} else{
+	} else {
 		return "";
 	}
 }

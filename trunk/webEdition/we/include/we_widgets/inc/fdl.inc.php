@@ -1,10 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
  *
- * $Rev: 6489 $
- * $Author: mokraemer $
- * $Date: 2013-08-19 15:19:40 +0200 (Mon, 19 Aug 2013) $
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -21,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 $oTblCont = new we_html_table(array(
 	"border" => 0, "cellpadding" => 0, "cellspacing" => 0
 	), 1, 1);
@@ -33,5 +33,5 @@ $oTblCont->setCol(
 		), we_html_element::htmlDiv(array('id' => 'fdl_data'), $failedLoginHTML)
 ));
 $aLang = array(
-	g_l('cockpit', '[kv_failedLogins][headline]').' ('.$maxRows.')', ""
+	g_l('cockpit', '[kv_failedLogins][headline]') . ' (' . $maxRows . ')', ""
 );

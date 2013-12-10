@@ -11,7 +11,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -22,25 +22,20 @@
 
 /**
  * class for service error codes
- * 
+ *
  * @category   we
  * @package    we_service
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_service_ErrorCodes {
+class we_service_ErrorCodes{
+
 	const kModelNotSetInSession = 1;
-
 	const kModelTextEmpty = 2;
-
 	const kModelFormDataNotSet = 3;
-
 	const kModelIdNotSet = 4;
-
 	const kModelIdsNotTheSame = 5;
-
 	const kDBError = 6;
-
 	const kModelNoPrimaryKeySet = 7;
-
 	const kPathExists = 8;
+
 }

@@ -85,70 +85,70 @@ $tabs->setTabs(array(
 );
 
 $tabs2 = new we_ui_controls_Tabs(
+	array(
+	'disabled' => false,
+	'id' => 'tabContainer2',
+	'width' => 400,
+	'tabs' => array(
 		array(
-			'disabled' => false,
-			'id' => 'tabContainer2',
-			'width' => 400,
-			'tabs' => array(
-				array(
-					'id' => 'tabx',
-					'text' => 'Tab x',
-					'onClick' => 'alert("tabx!");',
-					'title' => 'Tab x',
-					'hidden' => false
-				),
-				array(
-					'id' => 'tabxx',
-					'text' => 'Tab xx',
-					'title' => 'Tab xx',
-					'hidden' => false,
-					'active' => true
-				),
-				array(
-					'id' => 'tabxxx',
-					'text' => 'Tab xxx',
-					'hidden' => false,
-					'title' => 'Tab xxx'
-				)
-			),
+			'id' => 'tabx',
+			'text' => 'Tab x',
+			'onClick' => 'alert("tabx!");',
+			'title' => 'Tab x',
 			'hidden' => false
+		),
+		array(
+			'id' => 'tabxx',
+			'text' => 'Tab xx',
+			'title' => 'Tab xx',
+			'hidden' => false,
+			'active' => true
+		),
+		array(
+			'id' => 'tabxxx',
+			'text' => 'Tab xxx',
+			'hidden' => false,
+			'title' => 'Tab xxx'
 		)
+	),
+	'hidden' => false
+	)
 );
 
 $tabs3 = new we_ui_controls_Tabs(
+	array(
+	'disabled' => false,
+	'width' => 400,
+	'tabs' => array(
 		array(
-			'disabled' => false,
-			'width' => 400,
-			'tabs' => array(
-				array(
-					'id' => 'tabr',
-					'text' => 'Tab r',
-					'onClick' => 'alert("tabr!");',
-					'title' => 'Tab r',
-					'hidden' => false,
-					'icon' => we_ui_layout_Image::kTreeIconAudio
-				),
-				array(
-					'id' => 'tabrr',
-					'text' => 'Tabrr',
-					'title' => 'Tab rr',
-					'hidden' => false,
-					'active' => true,
-					'bottomline' => true,
-					'close' => true,
-					'onCloseClick' => 'alert("close!");',
-					'icon' => we_ui_layout_Image::kTreeIconCss
-				),
-				array(
-					'id' => 'tabrrr',
-					'text' => 'Tab rrr',
-					'hidden' => false,
-					'title' => 'Tab rrr',
-					'icon' => we_ui_layout_Image::kTreeIconExcel
-				)
-			),
-			'hidden' => false
+			'id' => 'tabr',
+			'text' => 'Tab r',
+			'onClick' => 'alert("tabr!");',
+			'title' => 'Tab r',
+			'hidden' => false,
+			'icon' => we_ui_layout_Image::kTreeIconAudio
+		),
+		array(
+			'id' => 'tabrr',
+			'text' => 'Tabrr',
+			'title' => 'Tab rr',
+			'hidden' => false,
+			'active' => true,
+			'bottomline' => true,
+			'close' => true,
+			'onCloseClick' => 'alert("close!");',
+			'icon' => we_ui_layout_Image::kTreeIconCss
+		),
+		array(
+			'id' => 'tabrrr',
+			'text' => 'Tab rrr',
+			'hidden' => false,
+			'title' => 'Tab rrr',
+			'icon' => we_ui_layout_Image::kTreeIconExcel
 		)
+	),
+	'hidden' => false
+	)
 );
 
 $htmlPage = we_ui_layout_HTMLPage::getInstance();

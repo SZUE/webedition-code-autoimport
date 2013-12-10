@@ -29,19 +29,19 @@ we_html_tools::protect();
 $what = (isset($_REQUEST['pnt']) ? $_REQUEST['pnt'] : 'frameset');
 $mode = (isset($_REQUEST['art']) ? $_REQUEST['art'] : 0);
 
-$newsletterFrame = new weNewsletterFrames();
-$newsletterFrame->getHTMLDocumentHeader($what, $mode);
+$newsletterFrame = new we_newsletter_frames();
+echo $newsletterFrame->getHTMLDocumentHeader($what, $mode);
 
 if(isset($_REQUEST['inid'])){
-	$newsletterFrame->View->newsletter = new weNewsletter($_REQUEST["inid"]);
-} else{
+	$newsletterFrame->View->newsletter = new we_newsletter_newsletter($_REQUEST['inid']);
+} else {
 	switch($what){
-		case "export_csv_mes":
-		case "newsletter_settings":
-		case "qsend":
-		case "eedit":
-		case "black_list":
-		case "upload_csv":
+		case 'export_csv_mes':
+		case 'newsletter_settings':
+		case 'qsend':
+		case 'eedit':
+		case 'black_list':
+		case 'upload_csv':
 			break;
 		default:
 			$newsletterFrame->View->processVariables();
@@ -49,18 +49,18 @@ if(isset($_REQUEST['inid'])){
 }
 
 switch($what){
-	case "export_csv_mes":
-	case "preview":
-	case "domain_check":
-	case "newsletter_settings":
-	case "show_log":
-	case "print_lists":
-	case "qsend":
-	case "eedit":
-	case "black_list":
+	case 'export_csv_mes':
+	case 'preview':
+	case 'domain_check':
+	case 'newsletter_settings':
+	case 'show_log':
+	case 'print_lists':
+	case 'qsend':
+	case 'eedit':
+	case 'black_list':
 		break;
 	default:
 		$newsletterFrame->View->processCommands();
 }
 
-$newsletterFrame->getHTML($what, $mode);
+echo $newsletterFrame->getHTML($what, $mode);

@@ -75,7 +75,7 @@ echo STYLESHEET .
 						}
 
 
-						$delbut = we_button::create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('del_thumb','" . $thumbid . "');", true, 30);
+						$delbut = we_html_button::create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('del_thumb','" . $thumbid . "');", true, 30);
 
 						$thumbnail = '<table cellspacing="0" style="boder:0px;padding:0x;width:570px;"><tr><td width="538"><img src="' . $src . '" width="' . $thumbObj->getOutputWidth() .
 							'" height="' . $thumbObj->getOutputHeight() . '" border="0" /></td><td width="10">' . we_html_tools::getPixel(10, 2) . '</td><td width="22">' . $delbut . '</td></tr></table>';
@@ -86,7 +86,7 @@ echo STYLESHEET .
 						);
 					}
 					$parts[] = array("headline" => "",
-						"html" => we_html_tools::htmlAlertAttentionBox(g_l('thumbnails', "[add_descriptiontext]"), we_html_tools::TYPE_INFO, 700) . '<br><br>' . we_button::create_button("image:btn_add_thumbnail", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('add_thumbnail','" . $we_transaction . "');"),
+						"html" => we_html_tools::htmlAlertAttentionBox(g_l('thumbnails', "[add_descriptiontext]"), we_html_tools::TYPE_INFO, 700) . '<br><br>' . we_html_button::create_button("image:btn_add_thumbnail", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('add_thumbnail','" . $we_transaction . "');"),
 						"space" => 0
 					);
 				} else {
@@ -101,7 +101,7 @@ echo STYLESHEET .
 					"space" => 0
 				);
 			}
-			print we_multiIconBox::getJS() . we_multiIconBox::getHTML('', '100%', $parts, 20);
+			print we_html_multiIconBox::getJS() . we_html_multiIconBox::getHTML('', '100%', $parts, 20);
 			?>
 
 	</form>

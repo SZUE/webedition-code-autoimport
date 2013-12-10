@@ -281,7 +281,7 @@ class we_net_Community{
 		if(!file_put_contents($filename, $output)){
 			we_util_Log::log("ERROR: could not write community configuration to file " . $filename, 3);
 			return false;
-		} else{
+		} else {
 			return true;
 		}
 	}
@@ -297,7 +297,7 @@ class we_net_Community{
 		if(!file_put_contents($filename, $output)){
 			we_util_Log::log("ERROR: could not write empty community configuration to file " . $filename, 3);
 			return false;
-		} else{
+		} else {
 			return true;
 		}
 	}

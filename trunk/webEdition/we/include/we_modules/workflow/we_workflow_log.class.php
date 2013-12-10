@@ -23,15 +23,16 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_workflow_log{
-	const TYPE_APPROVE=1;
-	const TYPE_APPROVE_FORCE=2;
-	const TYPE_DECLINE=3;
-	const TYPE_DECLINE_FORCE=4;
-	const TYPE_DOC_FINISHED=5;
-	const TYPE_DOC_FINISHED_FORCE=6;
-	const TYPE_DOC_INSERTED=7;
-	const TYPE_DOC_REMOVED=8;
-	const NUMBER_LOGS=8;
+
+	const TYPE_APPROVE = 1;
+	const TYPE_APPROVE_FORCE = 2;
+	const TYPE_DECLINE = 3;
+	const TYPE_DECLINE_FORCE = 4;
+	const TYPE_DOC_FINISHED = 5;
+	const TYPE_DOC_FINISHED_FORCE = 6;
+	const TYPE_DOC_INSERTED = 7;
+	const TYPE_DOC_REMOVED = 8;
+	const NUMBER_LOGS = 8;
 
 	function logDocumentEvent($workflowDocID, $userID, $type, $description){
 		$db = new DB_WE();
@@ -43,7 +44,7 @@ class we_workflow_log{
 		$db->query("INSERT INTO " . WORKFLOW_LOG_TABLE . " (ID, RefID, docTable, userID, logDate, Type, Description) VALUES ('', " . intval($workflowDocID) . ", '" . WORKFLOW_TABLE . "', " . intval($userID) . ", UNIX_TIMESTAMP(), " . intval($type) . ", '" . $db->escape($description) . "');");
 	}
 
-	static function getLogForDocument($docID, $order="DESC", $wfType=0){
+	static function getLogForDocument($docID, $order = "DESC", $wfType = 0){
 
 		$offset = isset($_REQUEST["offset"]) ? abs($_REQUEST["offset"]) : 0;
 		$db = new DB_WE();
@@ -97,7 +98,7 @@ class we_workflow_log{
 		return $db->Record;
 	}
 
-	function clearLog($stamp=0){
+	function clearLog($stamp = 0){
 		$db = new DB_WE();
 		$db->query("DELETE FROM " . WORKFLOW_LOG_TABLE . " " . ($stamp ? "WHERE logDate<" . intval($stamp) : "") . ";");
 	}

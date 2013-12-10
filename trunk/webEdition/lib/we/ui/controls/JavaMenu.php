@@ -89,7 +89,7 @@ class we_ui_controls_JavaMenu extends we_ui_abstract_AbstractElement{
 						foreach($and as $key => $val){
 							$set[] = 'isset($_SESSION["perms"]["' . trim($val) . '"])';
 							//$and[$key]='$_SESSION["perms"]["'.trim($val).'"]';
-							$and[$key] = '(isset($_SESSION["perms"]["' . trim($val) . '"]) && $_SESSION["perms"]["' . trim($val) . '"])';
+							$and[$key] = 'permissionhandler::hasPerm("' . trim($val) . '")';
 							$one = false;
 						}
 						$or[$k] = implode(" && ", $and);

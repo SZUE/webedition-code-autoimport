@@ -47,7 +47,7 @@ $xml = (isset($_GET["xml"]) && $_GET["xml"]) ? true : false;
 $c = isset($_GET["c"]) ? $_GET["c"] : 0;
 
 if($type && $type != "pixel"){
-	$code = weBanner::getBannerCode($did, $paths, $target, $width, $height, $dt, $cats, $bannername, $link, $referer, $bannerclick, getServerUrl() . $_SERVER['SCRIPT_NAME'], $type, $page, $nocount, $xml);
+	$code = we_banner_banner::getBannerCode($did, $paths, $target, $width, $height, $dt, $cats, $bannername, $link, $referer, $bannerclick, getServerUrl() . $_SERVER['SCRIPT_NAME'], $type, $page, $nocount, $xml);
 }
 switch($type){
 	case "js":
@@ -63,7 +63,7 @@ switch($type){
 		break;
 	default:
 		if(!$id){
-			$bannerData = weBanner::getBannerData($did, $paths, $dt, $cats, $bannername, $GLOBALS['DB_WE']);
+			$bannerData = we_banner_banner::getBannerData($did, $paths, $dt, $cats, $bannername, $GLOBALS['DB_WE']);
 			$id = $bannerData["ID"];
 			$bid = $bannerData["bannerID"];
 		}
@@ -113,7 +113,7 @@ switch($type){
 			header("Content-Type: $contenttype");
 
 			readfile($_SERVER['DOCUMENT_ROOT'] . $bannerpath);
-		} else{
+		} else {
 			header("Content-type: image/gif");
 			print chr(0x47) . chr(0x49) . chr(0x46) . chr(0x38) . chr(0x39) . chr(0x61) . chr(0x01) . chr(0x00) .
 				chr(0x01) . chr(0x00) . chr(0x80) . chr(0x00) . chr(0x00) . chr(0x04) . chr(0x02) . chr(0x04) .

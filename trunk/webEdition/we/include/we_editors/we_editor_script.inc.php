@@ -57,7 +57,7 @@ we_html_tools::protect();
 <?php
 if(isset($GLOBALS['we_doc'])){
 	if($GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT && $GLOBALS['we_doc']->ContentType == 'text/weTmpl'){
-	//no wyswyg
+		//no wyswyg
 	} else {
 		echo we_wysiwyg::getHeaderHTML();
 	}
@@ -127,7 +127,7 @@ if(isset($GLOBALS['we_doc'])){
 		// check if parentId was changed
 		var ajaxCallback = {
 			success: function(o) {
-				if (typeof(o.responseText) !== undefined && o.responseText !== '') {
+				if (typeof (o.responseText) !== undefined && o.responseText !== '') {
 					var weResponse = false;
 					try {
 						eval(o.responseText);
@@ -293,7 +293,7 @@ if(isset($GLOBALS['we_doc'])){
 			} else if (_EditorFrame.getEditorDidSetHiddenText()) {
 				_EditorFrame.setEditorDidSetHiddenText(false);
 			}
-			if (typeof(self.weEditorSetHiddenText) != "undefined") {
+			if (typeof (self.weEditorSetHiddenText) != "undefined") {
 				self.weEditorSetHiddenText();
 			}
 		}
@@ -339,13 +339,13 @@ if(isset($GLOBALS['we_doc'])){
 				break;
 			case "openDirselector":
 			case "openDocselector":
-				new jsWindow(url, "we_fileselector", -1, -1,<?php echo we_fileselector::WINDOW_DOCSELECTOR_WIDTH . ", " . we_fileselector::WINDOW_DOCSELECTOR_HEIGHT; ?>, true, true, true, true);
+				new jsWindow(url, "we_fileselector", -1, -1,<?php echo we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ", " . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT; ?>, true, true, true, true);
 				break;
 			case "openSelector":
 				new jsWindow(url, "we_fileselector", -1, -1, 900, 685, true, true, true, true);
 				break;
 			case "openCatselector":
-				new jsWindow(url, "we_catselector", -1, -1,<?php echo we_fileselector::WINDOW_CATSELECTOR_WIDTH . ", " . we_fileselector::WINDOW_CATSELECTOR_HEIGHT; ?>, true, true, true, true);
+				new jsWindow(url, "we_catselector", -1, -1,<?php echo we_selector_file::WINDOW_CATSELECTOR_WIDTH . ", " . we_selector_file::WINDOW_CATSELECTOR_HEIGHT; ?>, true, true, true, true);
 				break;
 			case "browse_server":
 				new jsWindow(url, "browse_server", -1, -1, 840, 400, true, false, true);
@@ -538,5 +538,5 @@ print we_message_reporting::getShowMessageCall("'" . $_msg . "'", we_message_rep
 		}
 		return true;
 	}
-	//-->
+//-->
 </script>

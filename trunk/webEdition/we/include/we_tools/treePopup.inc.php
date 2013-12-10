@@ -52,12 +52,12 @@ class treePopup{
 	function search($eintrag, $filter){
 		if($this->showEntries){
 			$query = "SELECT * from " . $DB_WE->escape($this->table) . " WHERE ParentID=" . intval($eintrag) . ' ' . (($filter) ? (" AND ($filter)") : "") . " ORDER BY Text";
-		} else{
+		} else {
 			$query = "SELECT * from " . $DB_WE->escape($this->table) . " WHERE IsFolder=1 AND ParentID=" . intval($eintrag) . ' ' . (($filter) ? (" AND ($filter)") : "") . " ORDER BY Text";
 		}
 		$GLOBALS['DB_WE']->query($query);
 		$container = array();
-		while($GLOBALS['DB_WE']->next_record()) {
+		while($GLOBALS['DB_WE']->next_record()){
 			$container[] = $this->dirEntry($GLOBALS['DB_WE']->f("ID"), $GLOBALS['DB_WE']->f("ParentID"), $GLOBALS['DB_WE']->f("Text"), $GLOBALS['DB_WE']->f("IsFolder"));
 		}
 		return $container;
@@ -92,7 +92,7 @@ class treePopup{
 				}
 				if($nf[$ai]["IsFolder"] == 1 && $this->showEntries){
 					$this->Options .= "<option" . ($flag ? " selected" : "") . " value=\"" . $nf[$ai]["name"] . "\">" . $spaces . $newAst . "[" . $nf[$ai]["text"] . "]\n";
-				} else{
+				} else {
 					$this->Options .= "<option" . ($flag ? " selected" : "") . " value=\"" . $nf[$ai]["name"] . "\">" . $spaces . $newAst . $nf[$ai]["text"] . "\n";
 				}
 				$newAst = $newAst . "&nbsp;&nbsp;&nbsp;&nbsp;";

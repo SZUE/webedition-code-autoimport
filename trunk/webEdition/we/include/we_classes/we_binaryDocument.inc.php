@@ -54,7 +54,7 @@ class we_binaryDocument extends we_document{
 		parent::__construct();
 		array_push($this->persistent_slots, 'html', 'DocChanged');
 		array_push($this->EditPageNrs, WE_EDITPAGE_PROPERTIES, WE_EDITPAGE_INFO, WE_EDITPAGE_CONTENT, WE_EDITPAGE_VERSIONS);
-		if(defined('CUSTOMER_TABLE') && (we_hasPerm('CAN_EDIT_CUSTOMERFILTER') || we_hasPerm('CAN_CHANGE_DOCS_CUSTOMER'))){
+		if(defined('CUSTOMER_TABLE') && (permissionhandler::hasPerm('CAN_EDIT_CUSTOMERFILTER') || permissionhandler::hasPerm('CAN_CHANGE_DOCS_CUSTOMER'))){
 			$this->EditPageNrs[] = WE_EDITPAGE_WEBUSER;
 		}
 		$this->LoadBinaryContent = $LoadBinaryContent;
@@ -115,7 +115,7 @@ class we_binaryDocument extends we_document{
 	}
 
 	function i_getDocument($size = -1){
-		return (isset($this->elements['data']['dat']) && file_exists($this->elements["data"]["dat"])) ? ($size == -1 ? weFile::load($this->elements["data"]["dat"]) : weFile::loadPart($this->elements["data"]["dat"], 0, $size)) : '';
+		return (isset($this->elements['data']['dat']) && file_exists($this->elements["data"]["dat"])) ? ($size == -1 ? we_base_file::load($this->elements["data"]["dat"]) : we_base_file::loadPart($this->elements["data"]["dat"], 0, $size)) : '';
 	}
 
 	protected function i_writeDocument(){
@@ -134,7 +134,7 @@ class we_binaryDocument extends we_document{
 				$this->rewriteNavigation();
 			}
 			$this->update_filehash();
-		} else{
+		} else {
 			return false;
 		}
 
@@ -205,7 +205,7 @@ class we_binaryDocument extends we_document{
 			if(!$this->metaDataReader){
 				$source = $this->getElement('data');
 				if(file_exists($source)){
-					$this->metaDataReader = new weMetaData($source);
+					$this->metaDataReader = new we_metadata_metaData($source);
 				}
 			}
 			return $this->metaDataReader;
@@ -249,7 +249,7 @@ class we_binaryDocument extends we_document{
 		 * 4. show button to copy metadata from image into the form fields
 		 */
 		// first we fetch all defined metadata fields from tblMetadata:
-		$_defined_fields = weMetaData::getDefinedMetaDataFields();
+		$_defined_fields = we_metadata_metaData::getDefinedMetaDataFields();
 
 
 		// show an alert if there are none
@@ -271,15 +271,15 @@ class we_binaryDocument extends we_document{
 
 				switch($_type){
 
-					case "textarea":
-						$_inp = $this->formTextArea('txt', $_tagName, $_tagName, 10, 30, ' onChange="_EditorFrame.setEditorIsHot(true);" style="width:508px;height:150px;border: #AAAAAA solid 1px" class="wetextarea"');
+					case 'textarea':
+						$_inp = $this->formTextArea('txt', $_tagName, $_tagName, 10, 30, array('onchange' => '_EditorFrame.setEditorIsHot(true);', 'style' => 'width:508px;height:150px;border: #AAAAAA solid 1px'));
 						break;
 
-					case "wysiwyg":
-						$_inp = $this->formTextArea('txt', $_tagName, $_tagName, 10, 30, ' onChange="_EditorFrame.setEditorIsHot(true);" style="width:508px;height:150px;border: #AAAAAA solid 1px" class="wetextarea"');
+					case 'wysiwyg':
+						$_inp = $this->formTextArea('txt', $_tagName, $_tagName, 10, 30, array('onchange' => '_EditorFrame.setEditorIsHot(true);', 'style' => 'width:508px;height:150px;border: #AAAAAA solid 1px'));
 						break;
 
-					case "date":
+					case 'date':
 						$_inp = we_html_tools::htmlFormElementTable(
 								we_html_tools::getDateInput2('we_' . $this->Name . '_date[' . $_tagName . ']', abs($this->getElement($_tagName)), true), $_tagName
 						);
@@ -307,7 +307,7 @@ class we_binaryDocument extends we_document{
 	 * Returns HTML code for Upload Button and infotext
 	 */
 	function formUpload(){
-		$uploadButton = we_button::create_button("upload", "javascript:we_cmd('editor_uploadFile')", true, 150, 22, "", "", false, true, "", true);
+		$uploadButton = we_html_button::create_button("upload", "javascript:we_cmd('editor_uploadFile')", true, 150, 22, "", "", false, true, "", true);
 		$fs = $GLOBALS['we_doc']->getFilesize();
 		$fs = g_l('metadata', "[filesize]") . ": " . round(($fs / 1024), 2) . "&nbsp;KB";
 		$_metaData = $this->getMetaData();
@@ -355,7 +355,7 @@ class we_binaryDocument extends we_document{
 	function savebinarydata(){
 		$_data = $this->getElement('data');
 		if($_data && (strlen($_data) > 512 || !@file_exists($_data))){ //assume data>512 = binary data
-			$_path = weFile::saveTemp($_data);
+			$_path = we_base_file::saveTemp($_data);
 			$this->setElement('data', $_path);
 		}
 	}

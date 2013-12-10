@@ -51,7 +51,7 @@ class we_util_Sys_Server extends we_util_Sys{
 			return "Apache";
 		} else if(self::isIIS()){
 			return "IIS";
-		} else{
+		} else {
 			return false;
 		}
 	}
@@ -77,17 +77,17 @@ class we_util_Sys_Server extends we_util_Sys{
 		if(function_exists("apache_get_version")){
 			if(empty($version)){
 				return true;
-			} else{
+			} else {
 				$apacheVersion = apache_get_version();
 				if($apacheVersion === false){
 					return false;
 				} else if(stristr($version, "Apache/" . $apacheVersion)){
 					return true;
-				} else{
+				} else {
 					return false;
 				}
 			}
-		} else{
+		} else {
 			return false;
 		}
 	}
@@ -100,7 +100,7 @@ class we_util_Sys_Server extends we_util_Sys{
 	public static function isIIS(){
 		if(defined("IIS_RUNNING") && IIS_RUNNING === true){
 			return true;
-		} else{
+		} else {
 			return false;
 		}
 	}
@@ -142,7 +142,7 @@ class we_util_Sys_Server extends we_util_Sys{
 		$uri = getServerUrl();
 		if($url !== ''){
 			return $uri . '/' . ltrim($url, '/');
-		} else{
+		} else {
 			return $uri;
 		}
 	}
@@ -156,7 +156,7 @@ class we_util_Sys_Server extends we_util_Sys{
 	public static function getDocroot(){
 		if(isset($_SERVER['DOCUMENT' . '_ROOT']) && !empty($_SERVER['DOCUMENT' . '_ROOT'])){
 			return $_SERVER['DOCUMENT' . '_ROOT'];
-		} else{
+		} else {
 			// mostly on Microsoft IIS servers (Windows) without DOCUMENT_ROOT:
 			return realpath(dirname(__FILE__) . "/.." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR);
 		}

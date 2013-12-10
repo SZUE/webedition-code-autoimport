@@ -60,7 +60,7 @@ abstract class validation{
 		if($validationService->id != 0){
 			$query = 'UPDATE ' . VALIDATION_SERVICES_TABLE . ' SET ' . $qSet .
 				' WHERE PK_tblvalidationservices = ' . intval($validationService->id);
-		} else{
+		} else {
 			$query = 'INSERT INTO ' . VALIDATION_SERVICES_TABLE . ' SET ' . $qSet;
 		}
 
@@ -69,7 +69,7 @@ abstract class validation{
 				$validationService->id = $GLOBALS['DB_WE']->getInsertId();
 			}
 			return $validationService;
-		} else{
+		} else {
 			return false;
 		}
 	}
@@ -80,7 +80,7 @@ abstract class validation{
 			if($GLOBALS['DB_WE']->query('DELETE FROM ' . VALIDATION_SERVICES_TABLE . ' WHERE PK_tblvalidationservices = ' . intval($validationService->id))){
 				return true;
 			}
-		} else{
+		} else {
 			//  not saved entry - must not be deleted from db
 			return true;
 		}
@@ -100,7 +100,7 @@ abstract class validation{
 		}
 
 		$GLOBALS['DB_WE']->query($query);
-		while($GLOBALS['DB_WE']->next_record()) {
+		while($GLOBALS['DB_WE']->next_record()){
 			$_ret[] = new validationService($GLOBALS['DB_WE']->f('PK_tblvalidationservices'), 'custom', $GLOBALS['DB_WE']->f('category'), $GLOBALS['DB_WE']->f('name'), $GLOBALS['DB_WE']->f('host'), $GLOBALS['DB_WE']->f('path'), $GLOBALS['DB_WE']->f('method'), $GLOBALS['DB_WE']->f('varname'), $GLOBALS['DB_WE']->f('checkvia'), $GLOBALS['DB_WE']->f('ctype'), $GLOBALS['DB_WE']->f('additionalVars'), $GLOBALS['DB_WE']->f('fileEndings'), $GLOBALS['DB_WE']->f('active'));
 		}
 		return $_ret;

@@ -123,7 +123,7 @@ if(!$bDisplay){
 // validity settings
 $sctValid = we_html_tools::htmlSelect("sct_valid", array(
 		g_l('cockpit', '[always]'), g_l('cockpit', '[from_date]'), g_l('cockpit', '[period]')
-		), 1, g_l('cockpit', '[always]'), false, 'style="width:100px;" onChange="toggleTblValidity()"', 'value', 100, 'middlefont');
+		), 1, g_l('cockpit', '[always]'), false, array('style' => "width:100px;", 'onChange' => "toggleTblValidity()"), 'value', 100, 'middlefont');
 $oTblValidity = new we_html_table(array(
 	"cellpadding" => 0, "cellspacing" => 0, "border" => 0, "id" => "oTblValidity"
 	), 1, 3);
@@ -141,9 +141,9 @@ $oTblPeriod->setCol(0, 1, array(
 	), $oTblValidity->getHTML());
 
 // Edit note prio settings
-$rdoPrio[0] = we_forms::radiobutton($value = 0, $checked = 0, $name = "rdo_prio", $text = g_l('cockpit', '[high]'), $uniqid = true, $class = "middlefont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
-$rdoPrio[1] = we_forms::radiobutton($value = 1, $checked = 0, $name = "rdo_prio", $text = g_l('cockpit', '[medium]'), $uniqid = true, $class = "middlefont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
-$rdoPrio[2] = we_forms::radiobutton($value = 2, $checked = 1, $name = "rdo_prio", $text = g_l('cockpit', '[low]'), $uniqid = true, $class = "middlefont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
+$rdoPrio[0] = we_html_forms::radiobutton($value = 0, $checked = 0, $name = "rdo_prio", $text = g_l('cockpit', '[high]'), $uniqid = true, $class = "middlefont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
+$rdoPrio[1] = we_html_forms::radiobutton($value = 1, $checked = 0, $name = "rdo_prio", $text = g_l('cockpit', '[medium]'), $uniqid = true, $class = "middlefont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
+$rdoPrio[2] = we_html_forms::radiobutton($value = 2, $checked = 1, $name = "rdo_prio", $text = g_l('cockpit', '[low]'), $uniqid = true, $class = "middlefont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
 $oTblPrio = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 8);
 $oTblPrio->setCol(0, 0, null, $rdoPrio[0]);
 $oTblPrio->setCol(0, 1, null, we_html_element::htmlImg(
@@ -175,10 +175,10 @@ $oTblPrio->setCol(
 )));
 
 // Edit note buttons
-$delete_button = we_button::create_button("delete", "javascript:deleteNote();", false, -1, -1, "", "", true, false);
-$cancel_button = we_button::create_button("cancel", "javascript:cancelNote();", false, -1, -1);
-$save_button = we_button::create_button("save", "javascript:saveNote();");
-$buttons = we_button::position_yes_no_cancel($delete_button, $cancel_button, $save_button);
+$delete_button = we_html_button::create_button("delete", "javascript:deleteNote();", false, 0, 0, "", "", true, false);
+$cancel_button = we_html_button::create_button("cancel", "javascript:cancelNote();", false, 0, 0);
+$save_button = we_html_button::create_button("save", "javascript:saveNote();");
+$buttons = we_html_button::position_yes_no_cancel($delete_button, $cancel_button, $save_button);
 
 // Edit note dialog
 $oTblProps = new we_html_table(array(
@@ -227,7 +227,7 @@ $oTblBtnProps = new we_html_table(array(
 	), 1, 1);
 $oTblBtnProps->setCol(0, 0, array(
 	"align" => "right"
-	), we_button::create_button("image:btn_add_note", "javascript:displayNote();", false, -1, -1));
+	), we_html_button::create_button("image:btn_add_note", "javascript:displayNote();", false, 0, 0));
 
 // Table with the note list
 $oPad = new we_html_table(
@@ -304,7 +304,7 @@ print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 			)) . we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
 			we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
 			we_html_element::jsScript(JS_DIR . "jscalendar/calendar-setup.js") .
-			we_button::create_state_changer() . we_html_element::jsElement(
+			we_html_button::create_state_changer() . we_html_element::jsElement(
 				(($_REQUEST['we_cmd'][6] == "pad/pad") ? "
 			var _sObjId='" . $_sObjId . "';
 			var _sCls_=parent.gel(_sObjId+'_cls').value;

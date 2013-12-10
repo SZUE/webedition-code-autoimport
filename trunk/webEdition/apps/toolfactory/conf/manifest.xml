@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest>
-	
+
 	<creator>
 		<company>webEdition project</company>
 		<name>webEdition e.V.</name>
 		<address>Innsbrucker Str. 35, 10825 Berlin</address>
-        <country>DE</country>
+		<country>DE</country>
 		<phone>+49 30 57 70 53 17 0</phone>
 		<fax>+49 30 57 70 53 17 9</fax>
 		<email>info@webedition.org</email>
 		<www>http://www.webedition.org</www>
 		<year>2011</year>
 	</creator>
-	
+
 	<info>
 		<implementation>tool</implementation>
 		<name>toolfactory</name>

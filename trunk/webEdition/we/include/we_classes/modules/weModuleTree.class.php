@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 //This is a copy of weToolTree:
 //If this is appropriate for other modules too, make a generic combination of both classes!
 
@@ -257,7 +256,7 @@ function showSegment(){
 
 	function getJSTreeFunctions(){
 		// must override
-		return weTree::getJSTreeFunctions() .'
+		return weTree::getJSTreeFunctions() . '
 function doClick(id,typ){
 }' .
 			$this->topFrame . '.loaded=1;';

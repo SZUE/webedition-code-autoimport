@@ -63,11 +63,11 @@ function we_tag_saferpay($attribs){
 	if($useVat){
 		if(isset($_SESSION['webuser'])){
 			$_customer = $_SESSION['webuser'];
-		} else{
+		} else {
 			$_customer = false;
 		}
 
-		$weShopVatRule = weShopVatRule::getShopVatRule();
+		$weShopVatRule = we_shop_vatRule::getShopVatRule();
 		$calcVat = $weShopVatRule->executeVatRule($_customer);
 	}
 
@@ -94,10 +94,10 @@ function we_tag_saferpay($attribs){
 				$currency = "CHF";
 			} elseif($feldnamen[0] == "CAD"){
 				$currency = "CAD";
-			} else{
+			} else {
 				$currency = "EUR";
 			}
-		} else{
+		} else {
 			$currency = "EUR";
 		}
 		/*		 * ***** get the currency ******* */
@@ -108,7 +108,7 @@ function we_tag_saferpay($attribs){
 			if(isset($formField[8])){ // determine the language
 				$langID = $formField[8];
 			}
-		} else{
+		} else {
 			$langID = $languagecode;
 		}
 		if(isset($formField[9])){ // determine the Notify-Email
@@ -163,10 +163,10 @@ function we_tag_saferpay($attribs){
 
 			// foreach article we must determine the correct tax-rate
 			$vatId = isset($item['serial'][WE_SHOP_VAT_FIELD_NAME]) ? $item['serial'][WE_SHOP_VAT_FIELD_NAME] : 0;
-			$shopVat = weShopVats::getVatRateForSite($vatId, true, false);
+			$shopVat = we_shop_vats::getVatRateForSite($vatId, true, false);
 			if($shopVat){ // has selected or standard shop rate
 				$$item['serial'][WE_SHOP_VAT_FIELD_NAME] = $shopVat;
-			} else{ // could not find any shoprates, remove field if necessary
+			} else { // could not find any shoprates, remove field if necessary
 				if(isset($shoppingItem['serial'][WE_SHOP_VAT_FIELD_NAME])){
 					unset($shoppingItem['serial'][WE_SHOP_VAT_FIELD_NAME]);
 				}
@@ -187,7 +187,7 @@ function we_tag_saferpay($attribs){
 
 		//get the shipping costs
 
-		$weShippingControl = weShippingControl::getShippingControl();
+		$weShippingControl = we_shop_shippingControl::getShippingControl();
 
 		$customer = (we_tag('ifRegisteredUser') ? // check if user is registered
 				$_SESSION['webuser'] : false);
@@ -198,7 +198,7 @@ function we_tag_saferpay($attribs){
 				'isNet' => $weShippingControl->isNet,
 				'vatRate' => $weShippingControl->vatRate
 			);
-		} else{
+		} else {
 			$cartField[WE_SHOP_SHIPPING] = array(
 				'costs' => $shipping,
 				'isNet' => $shippingIsNet,
@@ -277,7 +277,7 @@ function we_tag_saferpay($attribs){
 			print g_l('modules_shop', '[saferpayError]');
 			print $strAttributes;
 			exit;
-		} else{
+		} else {
 
 			/* get the payinit URL */
 			$fp = popen($command, "r");
@@ -287,7 +287,7 @@ function we_tag_saferpay($attribs){
 		if($payinit_url){
 			print $processOK .
 				we_html_element::jsElement('	OpenSaferpayWindowJScript(\'' . $payinit_url . '\');');
-		} else{
+		} else {
 			print $processError;
 		}
 

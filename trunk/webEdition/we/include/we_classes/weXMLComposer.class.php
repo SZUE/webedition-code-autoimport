@@ -25,7 +25,7 @@
 abstract class weXMLComposer{
 
 	static function we_xmlElement($name, $content = "", $attributes = null){
-		$element = new we_baseElement($name, true, (isset($attributes) && is_array($attributes) ? $attributes : null), $content);
+		$element = new we_html_baseElement($name, true, (isset($attributes) && is_array($attributes) ? $attributes : null), $content);
 		return $element->getHTML();
 	}
 
@@ -40,7 +40,7 @@ abstract class weXMLComposer{
 	static function buildXMLElements($elements){
 		$out = "";
 		foreach($elements as $element){
-			$element = new we_baseElement($element["name"], true, $element["attributes"], (is_array($element["content"]) ? weXMLComposer::buildXMLElements($element["content"]) : $element["content"]));
+			$element = new we_html_baseElement($element["name"], true, $element["attributes"], (is_array($element["content"]) ? weXMLComposer::buildXMLElements($element["content"]) : $element["content"]));
 			$out.=$element->getHTML();
 		}
 		return $out;

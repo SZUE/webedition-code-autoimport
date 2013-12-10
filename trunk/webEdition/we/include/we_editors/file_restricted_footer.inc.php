@@ -23,10 +23,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 $_messageTbl = new we_html_table(array("border" => 0,
-		"cellpadding" => 0,
-		"cellspacing" => 0),
-		2,
-		4);
+	"cellpadding" => 0,
+	"cellspacing" => 0), 2, 4);
 //	spaceholder
 $_messageTbl->setColContent(0, 0, we_html_tools::getPixel(20, 7));
 $_messageTbl->setColContent(1, 1, we_html_element::htmlImg(array("src" => IMAGE_DIR . "alert.gif")));

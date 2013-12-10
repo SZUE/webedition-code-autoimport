@@ -58,7 +58,7 @@ function yearSelect($select_name){
 	$yearNow = date('Y');
 	$opts = array();
 
-	while($yearNow > $yearStart) {
+	while($yearNow > $yearStart){
 		$opts[$yearNow] = $yearNow;
 		$yearNow--;
 	}
@@ -121,7 +121,7 @@ $feldnamen = explode('|', f('SELECT strFelder from ' . ANZEIGE_PREFS_TABLE . ' W
 $waehr = "&nbsp;" . oldHtmlspecialchars($feldnamen[0]);
 $numberformat = $feldnamen[2];
 $classid = (isset($feldnamen[3]) ? $feldnamen[3] : '');
-$defaultVat = !empty($feldnamen[1]) ? ($feldnamen[1]) : 0;
+$defaultVat = $feldnamen[1] ? $feldnamen[1] : 0;
 
 if(!isset($nrOfPage)){
 
@@ -146,7 +146,7 @@ $parts = array(
 		'noline' => 1
 	),
 	array(
-		'headline' => we_button::create_button('select', "javascript:we_submitDateform();"),
+		'headline' => we_html_button::create_button('select', "javascript:we_submitDateform();"),
 		'html' => '',
 		'space' => 150
 	)
@@ -171,7 +171,7 @@ if(($maxRows = f('SELECT COUNT(1) AS a ' . $query, 'a', $DB_WE))){
 	//get table entries
 	$orderRows = array();
 	$DB_WE->query('SELECT strSerial,strSerialOrder,IntOrderID,IntCustomerID,IntArticleID,IntQuantity,DatePayment,DateOrder,DateCancellation,DATE_FORMAT(DateOrder, "%d.%m.%Y") AS formatDateOrder, DATE_FORMAT(DatePayment, "%d.%m.%Y") AS formatDatePayment, DATE_FORMAT(DateCancellation, "%d.%m.%Y") AS formatDateCancellation, Price ' . $query . ' ORDER BY ' . (isset($_REQUEST['orderBy']) && $_REQUEST['orderBy'] ? $_REQUEST['orderBy'] : 'IntOrderID') . ' LIMIT ' . ($actPage * $nrOfPage) . ',' . $nrOfPage);
-	while($DB_WE->next_record()) {
+	while($DB_WE->next_record()){
 
 		// for the articlelist, we need also all these article, so sve them in array
 		// initialize all data saved for an article
@@ -200,10 +200,10 @@ if(($maxRows = f('SELECT COUNT(1) AS a ' . $query, 'a', $DB_WE))){
 
 	// first of all calculate complete revenue of this year -> important check vats as well.
 	$cur = 0;
-	while($maxRows > $cur) {
+	while($maxRows > $cur){
 		$DB_WE->query('SELECT strSerial,strSerialOrder,(Price*IntQuantity) AS actPrice,(!ISNULL(DatePayment) && DatePayment>0) AS payed, (!ISNULL(DateCancellation) && DateCancellation>0) AS canceled  ' . $query . ' LIMIT ' . $cur . ',1000');
 		$cur+=1000;
-		while($DB_WE->next_record()) {
+		while($DB_WE->next_record()){
 
 			// for the articlelist, we need also all these article, so sve them in array
 			// initialize all data saved for an article
@@ -247,7 +247,7 @@ if(($maxRows = f('SELECT COUNT(1) AS a ' . $query, 'a', $DB_WE))){
 							$articleVatArray[$articleVat] += ($actPrice * $articleVat / 100);
 						}
 						$actPrice += ($actPrice * $articleVat / 100);
-					} else{
+					} else {
 						if($DB_WE->f('canceled') == 0){ // #7896 but not, if order is canceled
 							$articleVatArray[$articleVat] += ($actPrice * $articleVat / (100 + $articleVat));
 						}
@@ -257,11 +257,11 @@ if(($maxRows = f('SELECT COUNT(1) AS a ' . $query, 'a', $DB_WE))){
 
 			if($DB_WE->f('canceled') > 0){ //#7896
 				$canceled += $actPrice;
-			}else{
+			} else {
 				$total += $actPrice;
 				if($DB_WE->f('payed') > 0){
 					$payed += $actPrice;
-				}else{
+				} else {
 					$unpayed += $actPrice;
 				}
 			}
@@ -366,14 +366,14 @@ if(($maxRows = f('SELECT COUNT(1) AS a ' . $query, 'a', $DB_WE))){
 		'html' => blaettern::getStandardPagerHTML(getPagerLink(), $actPage, $nrOfPage, $maxRows),
 		'space' => 0
 	);
-} else{
+} else {
 	$parts[] = array(
 		'html' => g_l('modules_shop', '[NoRevenue]') . ' (' . ($selectedMonth > 0 ? g_l('modules_shop', '[month][' . $selectedMonth . ']') . ' ' : '') . $selectedYear . ')',
 		'space' => 0
 	);
 }
 
-print we_multiIconBox::getHTML('revenues', '100%', $parts, 30, '', -1, '', '', false, sprintf(g_l('tabs', '[module][revenueTotal]'), $selectedYear));
+print we_html_multiIconBox::getHTML('revenues', '100%', $parts, 30, '', -1, '', '', false, sprintf(g_l('tabs', '[module][revenueTotal]'), $selectedYear));
 ?>
 </form>
 </body>

@@ -33,6 +33,6 @@ function we_siteimport_sort($a, $b){
 	return 0;
 }
 
-$import_object = new weSiteImport();
+$import_object = new we_import_site();
 
 print $import_object->getHTML();

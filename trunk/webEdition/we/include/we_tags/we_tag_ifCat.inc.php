@@ -42,7 +42,7 @@ function we_tag_ifCat($attribs){
 
 	if($docAttr == 'listview' && isset($GLOBALS['lv'])){
 		$cat = $GLOBALS['lv']->f('wedoc_Category');
-	} else{
+	} else {
 		$doc = we_getDocForTag($docAttr);
 		$cat = $doc->Category;
 	}
@@ -54,7 +54,7 @@ function we_tag_ifCat($attribs){
 			if(strpos($DocCatsPaths, ',' . $match . ',') !== false || strpos($DocCatsPaths, ',' . $match . '/') !== false){
 				return true;
 			}
-		} else{
+		} else {
 			if(!(strpos($DocCatsPaths, ',' . $match . ',') === false)){
 				return true;
 			}

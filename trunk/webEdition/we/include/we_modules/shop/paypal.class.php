@@ -1,7 +1,8 @@
 <?php
-/*******************************************************************************
+
+/* * *****************************************************************************
  *                      Paypal IPN Integration Class
- *******************************************************************************
+ * ******************************************************************************
  *      Author:     Jan Gorba
  *      Email:      jan.gorba@webedition.de
  *      Website:    http://www.webedition.de
@@ -9,7 +10,7 @@
  *      File:       paypal.class.php
  *      Version:    1.2.0
  *
-  *******************************************************************************
+ * ******************************************************************************
  *  DESCRIPTION:
  *
  *      This file provides a neat and simple method to interface with paypal and
@@ -60,65 +61,57 @@
  *         all the directions in setting up a sandbox test environment, including
  *         the addition of fake bank accounts and credit cards.
  *
- *******************************************************************************
-*/
+ * ******************************************************************************
+ */
 
+class paypal_class{
 
-class paypal_class {
+	var $last_error;				 // holds the last error encountered
+	var $remove_quotes;			 // bool: remove quotes from paypal post?
+	var $ipn_log;					// bool: log IPN results to text file?
+	var $ipn_log_file;				// filename of the IPN log
+	var $ipn_response;				// holds the IPN response from paypal
+	var $ipn_data = array();		 // array contains the POST values for IPN
+	var $fields = array();			// array holds the fields to submit to paypal
 
-	var $last_error;                 // holds the last error encountered
+	function paypal_class(){
 
-   var $remove_quotes;              // bool: remove quotes from paypal post?
-   var $ipn_log;                    // bool: log IPN results to text file?
+		// initialization constructor.  Called when class is created.
+		//$this->paypal_url = 'https://www.sandbox.paypal.com/cgi-bin/webscr'; //testing
+		$this->paypal_url = 'https://www.paypal.com/cgi-bin/webscr';
 
-   var $ipn_log_file;               // filename of the IPN log
-   var $ipn_response;               // holds the IPN response from paypal
-   var $ipn_data = array();         // array contains the POST values for IPN
+		$this->last_error = '';
 
-   var $fields = array();           // array holds the fields to submit to paypal
+		$this->ipn_log_file = 'ipn_results.txt';
+		$this->ipn_log = true;
+		$this->remove_quotes = true;
+		$this->ipn_response = '';
 
+		// populate $fields array with a few default values.  See the paypal
+		// documentation for a list of fields and their data types. These defaul
+		// values can be overwritten by the calling script.
 
-   function paypal_class() {
+		$this->add_field('rm', '2');			// Return method = POST
+		$this->add_field('cmd', '_cart');
+		$this->add_field('upload', '1'); // #6952
+	}
 
-      // initialization constructor.  Called when class is created.
+	function add_field($field, $value){
 
-     //$this->paypal_url = 'https://www.sandbox.paypal.com/cgi-bin/webscr'; //testing
-      $this->paypal_url = 'https://www.paypal.com/cgi-bin/webscr';
+		// adds a key=>value pair to the fields array, which is what will be
+		// sent to paypal as POST variables.  If the value is already in the
+		// array, it will be overwritten.
+		// remove any quotes if remove_quotes is turned on.
 
-      $this->last_error = '';
+		if($this->remove_quotes){
+			$value = str_replace("'", '', $value);
+			$value = str_replace("\"", '', $value);
+		}
 
-      $this->ipn_log_file = 'ipn_results.txt';
-      $this->ipn_log = true;
-      $this->remove_quotes = true;
-      $this->ipn_response = '';
+		$this->fields["$field"] = $value;
+	}
 
-      // populate $fields array with a few default values.  See the paypal
-      // documentation for a list of fields and their data types. These defaul
-      // values can be overwritten by the calling script.
-
-      $this->add_field('rm','2');           // Return method = POST
-      $this->add_field('cmd','_cart');
-      $this->add_field('upload', '1'); // #6952
-
-   }
-
-   function add_field($field, $value) {
-
-      // adds a key=>value pair to the fields array, which is what will be
-      // sent to paypal as POST variables.  If the value is already in the
-      // array, it will be overwritten.
-
-      // remove any quotes if remove_quotes is turned on.
-
-      if ($this->remove_quotes) {
-            $value = str_replace("'", '', $value);
-            $value = str_replace("\"", '', $value);
-      }
-
-      $this->fields["$field"] = $value;
-   }
-
-	function submit_paypal_post($formTagOnly,$messageAuto='',$messageMan='') {
+	function submit_paypal_post($formTagOnly, $messageAuto = '', $messageMan = ''){
 		// this function actually generates an entire HTML page consisting of
 		// a form with hidden elements which is submitted to paypal via the
 		// BODY element's onLoad attribute.  We do this so that you can validate
@@ -126,40 +119,42 @@ class paypal_class {
 		// basically, you'll have your own form which is submitted to your script
 		// to validate the data, which in turn calls this function to create
 		// another hidden form and submit to paypal.
-
 		// The user will briefly see a message on the screen that reads:
 		// "Please wait, your order is being processed..." and then immediately
 		// is redirected to paypal.
 
-		if ($messageAuto=='') {$messageAuto = g_l('modules_shop','[paypal][redirect_auto]');}
-		if ($messageMan=='') {$messageMan = g_l('modules_shop','[paypal][redirect_man]');}
-		if ($formTagOnly) {
-			echo '<h2 id="paypal_headline">'.$messageAuto."</h2>\n";
+		if($messageAuto == ''){
+			$messageAuto = g_l('modules_shop', '[paypal][redirect_auto]');
+		}
+		if($messageMan == ''){
+			$messageMan = g_l('modules_shop', '[paypal][redirect_man]');
+		}
+		if($formTagOnly){
+			echo '<h2 id="paypal_headline">' . $messageAuto . "</h2>\n";
 			echo "<form method=\"post\" name=\"paypal_form\" id=\"paypal_form\" ";
-			echo "action=\"".$this->paypal_url."\">\n";
+			echo "action=\"" . $this->paypal_url . "\">\n";
 
-			foreach ($this->fields as $name => $value) {
+			foreach($this->fields as $name => $value){
 				echo "<input type=\"hidden\" name=\"$name\" value=\"$value\"/>\n";
 			}
 
-			echo "<br/><br/>".$messageMan."<br/><br/>\n";
+			echo "<br/><br/>" . $messageMan . "<br/><br/>\n";
 			echo "<input type=\"submit\" id=\"paypal_submit\" value=\"PayPal\"/>\n";
 
 			echo "</form>\n";
-
 		} else {
 			echo "<html>\n";
 			echo "<body onload=\"document.forms['paypal_form'].submit();\">\n";
 			echo "<body>\n";
-			echo "<center><h2>".$messageAuto."</h2></center>\n";
+			echo "<center><h2>" . $messageAuto . "</h2></center>\n";
 			echo "<form method=\"post\" name=\"paypal_form\" ";
-			echo "action=\"".$this->paypal_url."\">\n";
+			echo "action=\"" . $this->paypal_url . "\">\n";
 
-			foreach ($this->fields as $name => $value) {
+			foreach($this->fields as $name => $value){
 				echo "<input type=\"hidden\" name=\"$name\" value=\"$value\"/>\n";
 			}
 
-			echo "<center><br/><br/>".$messageMan."<br/><br/>\n";
+			echo "<center><br/><br/>" . $messageMan . "<br/><br/>\n";
 			echo "<input type=\"submit\" value=\"PayPal\" /></center>\n";
 
 			echo "</form>\n";
@@ -167,114 +162,108 @@ class paypal_class {
 		}
 	}
 
-   function validate_ipn() {
+	function validate_ipn(){
 
-      // parse the paypal URL
-      $url_parsed=parse_url($this->paypal_url);
+		// parse the paypal URL
+		$url_parsed = parse_url($this->paypal_url);
 
-      // generate the post string from the _POST vars aswell as load the
-      // _POST vars into an arry so we can play with them from the calling
-      // script.
-      $post_string = '';
-      foreach ($_POST as $field=>$value) {
-         $this->ipn_data["$field"] = $value;
-         $post_string .= $field.'='.urlencode($value).'&';
-      }
-      $post_string.="cmd=_notify-validate"; // append ipn command
+		// generate the post string from the _POST vars aswell as load the
+		// _POST vars into an arry so we can play with them from the calling
+		// script.
+		$post_string = '';
+		foreach($_POST as $field => $value){
+			$this->ipn_data["$field"] = $value;
+			$post_string .= $field . '=' . urlencode($value) . '&';
+		}
+		$post_string.="cmd=_notify-validate"; // append ipn command
+		// open the connection to paypal
+		$fp = fsockopen($url_parsed[host], 80, $err_num, $err_str, 30);
+		if(!$fp){
 
-      // open the connection to paypal
-      $fp = fsockopen($url_parsed[host],80,$err_num,$err_str,30);
-      if(!$fp) {
+			// could not open the connection.  If loggin is on, the error message
+			// will be in the log.
+			$this->last_error = "fsockopen error no. $errnum: $errstr";
+			$this->log_ipn_results(false);
+			return false;
+		} else {
 
-         // could not open the connection.  If loggin is on, the error message
-         // will be in the log.
-         $this->last_error = "fsockopen error no. $errnum: $errstr";
-         $this->log_ipn_results(false);
-         return false;
+			// Post the data back to paypal
+			fputs($fp, "POST $url_parsed[path] HTTP/1.1\r\n");
+			fputs($fp, "Host: $url_parsed[host]\r\n");
+			fputs($fp, "Content-type: application/x-www-form-urlencoded\r\n");
+			fputs($fp, "Content-length: " . strlen($post_string) . "\r\n");
+			fputs($fp, "Connection: close\r\n\r\n");
+			fputs($fp, $post_string . "\r\n\r\n");
 
-      } else {
+			// loop through the response from the server and append to variable
+			while(!feof($fp)){
+				$this->ipn_response .= fgets($fp, 1024);
+			}
 
-         // Post the data back to paypal
-         fputs($fp, "POST $url_parsed[path] HTTP/1.1\r\n");
-         fputs($fp, "Host: $url_parsed[host]\r\n");
-         fputs($fp, "Content-type: application/x-www-form-urlencoded\r\n");
-         fputs($fp, "Content-length: ".strlen($post_string)."\r\n");
-         fputs($fp, "Connection: close\r\n\r\n");
-         fputs($fp, $post_string . "\r\n\r\n");
+			fclose($fp); // close connection
+		}
 
-         // loop through the response from the server and append to variable
-         while(!feof($fp)) {
-            $this->ipn_response .= fgets($fp, 1024);
-         }
+		if(stripos($this->ipn_response, "VERIFIED") !== false){
+			// Valid IPN transaction.
+			$this->log_ipn_results(true);
+			return true;
+		} else {
 
-         fclose($fp); // close connection
+			// Invalid IPN transaction.  Check the log for details.
+			$this->last_error = 'IPN Validation Failed.';
+			$this->log_ipn_results(false);
+			return false;
+		}
+	}
 
-      }
+	function log_ipn_results($success){
 
-  	  if (stripos($this->ipn_response,"VERIFIED") !== false) {
-         // Valid IPN transaction.
-         $this->log_ipn_results(true);
-         return true;
+		if(!$this->ipn_log)
+			return; // is logging turned off?
+		// Timestamp
+		$text = '[' . date('m/d/Y g:i A') . '] - ';
 
-      } else {
+		// Success or failure being logged?
+		if($success)
+			$text .= "SUCCESS!\n";
+		else
+			$text .= 'FAIL: ' . $this->last_error . "\n";
 
-         // Invalid IPN transaction.  Check the log for details.
-         $this->last_error = 'IPN Validation Failed.';
-         $this->log_ipn_results(false);
-         return false;
+		// Log the POST variables
+		$text .= "IPN POST Vars from Paypal:\n";
+		foreach($this->ipn_data as $key => $value){
+			$text .= "$key=$value, ";
+		}
 
-      }
+		// Log the response from the paypal server
+		$text .= "\nIPN Response from Paypal Server:\n " . $this->ipn_response;
 
-   }
+		// Write to log
+		$fp = fopen($this->ipn_log_file, 'a');
+		fwrite($fp, $text . "\n\n");
 
-   function log_ipn_results($success) {
+		fclose($fp); // close file
+	}
 
-      if (!$this->ipn_log) return;  // is logging turned off?
+	function dump_fields(){
 
-      // Timestamp
-      $text = '['.date('m/d/Y g:i A').'] - ';
+		// Used for debugging, this function will output all the field/value pairs
+		// that are currently defined in the instance of the class using the
+		// add_field() function.
 
-      // Success or failure being logged?
-      if ($success) $text .= "SUCCESS!\n";
-      else $text .= 'FAIL: '.$this->last_error."\n";
-
-      // Log the POST variables
-      $text .= "IPN POST Vars from Paypal:\n";
-      foreach ($this->ipn_data as $key=>$value) {
-         $text .= "$key=$value, ";
-      }
-
-      // Log the response from the paypal server
-      $text .= "\nIPN Response from Paypal Server:\n ".$this->ipn_response;
-
-      // Write to log
-      $fp=fopen($this->ipn_log_file,'a');
-      fwrite($fp, $text . "\n\n");
-
-      fclose($fp);  // close file
-   }
-
-   function dump_fields() {
-
-      // Used for debugging, this function will output all the field/value pairs
-      // that are currently defined in the instance of the class using the
-      // add_field() function.
-
-      echo "<h3>paypal_class->dump_fields() Output:</h3>";
-      echo "<table width=\"95%\" border=\"1\" cellpadding=\"2\" cellspacing=\"0\">
+		echo "<h3>paypal_class->dump_fields() Output:</h3>";
+		echo "<table width=\"95%\" border=\"1\" cellpadding=\"2\" cellspacing=\"0\">
             <tr>
                <td bgcolor=\"black\"><b><font color=\"white\">Field Name</font></b></td>
                <td bgcolor=\"black\"><b><font color=\"white\">Value</font></b></td>
             </tr>";
 
-      ksort($this->fields);
-      foreach ($this->fields as $key => $value) {
-         echo "<tr><td>$key</td><td>".urldecode($value)."&nbsp;</td></tr>";
-      }
+		ksort($this->fields);
+		foreach($this->fields as $key => $value){
+			echo "<tr><td>$key</td><td>" . urldecode($value) . "&nbsp;</td></tr>";
+		}
 
-      echo "</table><br>";
-   }
+		echo "</table><br>";
+	}
+
 }
-
-
-

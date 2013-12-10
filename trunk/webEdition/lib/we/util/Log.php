@@ -161,7 +161,7 @@ class we_util_Log{
 		if(empty($filename) || ctype_alnum($filename) === false){
 			return false;
 		}
-		$logPath = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/log/';
+		$logPath = WEBEDITION_PATH . 'log/';
 		$file = $logPath . $filename . ".php";
 		if(is_file($file) && is_writable($file)){
 			return $file;

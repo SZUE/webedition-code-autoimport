@@ -123,7 +123,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 	}
 
 
-	//-->
+//-->
 </script>
 </head>
 <body background="<?php print IMAGE_DIR ?>backgrounds/radient.gif" LINK="#000000" ALINK="#000000" VLINK="#000000" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px" onLoad="setLookin();
@@ -139,24 +139,24 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 					</select><?php print we_html_tools::getPixel(1, 1); ?></td>
 				<td width="10"><?php print we_html_tools::getPixel(10, 29); ?></td>
 				<td width="40">
-					<?php print we_button::create_button("root_dir", "javascript:top.fscmd.setDir('/');"); ?>
+					<?php print we_html_button::create_button("root_dir", "javascript:top.fscmd.setDir('/');"); ?>
 				</td>
 				<td width="10"><?php print we_html_tools::getPixel(10, 29); ?></td>
 				<td width="40">
-					<?php print we_button::create_button("image:btn_fs_back", "javascript:top.fscmd.goUp();"); ?>
+					<?php print we_html_button::create_button("image:btn_fs_back", "javascript:top.fscmd.goUp();"); ?>
 				</td>
 				<?php if(!$_REQUEST["ret"]){ ?>
 					<td width="10"><?php print we_html_tools::getPixel(10, 29); ?></td>
 					<td width="40">
-						<?php print we_button::create_button("image:btn_new_dir", "javascript:top.fscmd.drawNewFolder();", true, 100, 22, "", "", false, false, "_ss"); ?>
+						<?php print we_html_button::create_button("image:btn_new_dir", "javascript:top.fscmd.drawNewFolder();", true, 100, 22, "", "", false, false, "_ss"); ?>
 					</td>
 					<td width="10"><?php print we_html_tools::getPixel(10, 29); ?></td>
 					<td width="40">
-						<?php print we_button::create_button("image:btn_add_file", "javascript:javascript:openFile();", true, 100, 22, "", "", false, false, "_ss"); ?>
+						<?php print we_html_button::create_button("image:btn_add_file", "javascript:javascript:openFile();", true, 100, 22, "", "", false, false, "_ss"); ?>
 					</td>
 					<td width="10"><?php print we_html_tools::getPixel(10, 29); ?></td>
 					<td width="25">
-						<?php print we_button::create_button("image:btn_function_trash", "javascript:top.fscmd.delFile();", true, 100, 22, "", "", false, false, "_ss"); ?>
+						<?php print we_html_button::create_button("image:btn_function_trash", "javascript:top.fscmd.delFile();", true, 100, 22, "", "", false, false, "_ss"); ?>
 					</td>
 				<?php } ?>
 				<td width="10"><?php print we_html_tools::getPixel(10, 29); ?></td>

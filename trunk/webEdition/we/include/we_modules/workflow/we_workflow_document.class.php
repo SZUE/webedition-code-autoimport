@@ -251,7 +251,7 @@ class we_workflow_document extends we_workflow_base{
 	 */
 
 	function find($documentID, $type = '0,1', $status = self::STATUS_UNKNOWN){
-		$db=new DB_WE();
+		$db = new DB_WE();
 		$id = f('SELECT ' . WORKFLOW_DOC_TABLE . '.ID FROM ' . WORKFLOW_DOC_TABLE . ',' . WORKFLOW_TABLE . " WHERE " . WORKFLOW_DOC_TABLE . ".workflowID=" . WORKFLOW_TABLE . ".ID AND " . WORKFLOW_DOC_TABLE . ".documentID=" . intval($documentID) . " AND " . WORKFLOW_DOC_TABLE . ".Status IN (" . $db->escape($status) . ")" . ($type != "" ? " AND " . WORKFLOW_TABLE . ".Type IN (" . $db->escape($type) . ")" : "") . " ORDER BY " . WORKFLOW_DOC_TABLE . ".ID DESC", 'ID', $db);
 		return ($id ? new self($id) : false);
 	}

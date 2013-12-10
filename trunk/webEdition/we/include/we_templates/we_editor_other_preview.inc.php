@@ -90,7 +90,7 @@ print STYLESHEET;
 			}
 			$parts[] = array("headline" => g_l('weClass', "[download]"), "html" => $link, "space" => 120);
 
-			print we_multiIconBox::getHTML('weOtherDocPrev', '100%', $parts, 20);
+			print we_html_multiIconBox::getHTML('weOtherDocPrev', '100%', $parts, 20);
 		}
 		?>
 

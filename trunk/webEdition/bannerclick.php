@@ -45,7 +45,7 @@ if(!$id){
 }
 
 if($id && is_numeric($id) && $did > 0){
-	$url = weBanner::getBannerURL($id);
+	$url = we_banner_banner::getBannerURL($id);
 	if(!$nocount){
 		$db->query('INSERT INTO ' . BANNER_CLICKS_TABLE . ' SET ' . we_database_base::arraySetter(array(
 				'ID' => intval($id),

@@ -28,7 +28,7 @@ we_html_tools::protect();
 
 $what = (isset($_REQUEST['pnt']) ? $_REQUEST['pnt'] : 'frameset');
 $step = (isset($_REQUEST['step']) ? $_REQUEST['step'] : 1);
-$weBackupWizard = new weBackupWizard(WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php', weBackupWizard::RECOVER);
+$weBackupWizard = new we_backup_wizard(WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php', we_backup_wizard::RECOVER);
 
 switch($what){
 	case 'frameset':
