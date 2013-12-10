@@ -35,6 +35,7 @@ class we_import_jUpload{
 	function __construct(){
 
 		$this->Params = array(
+			'permissions' => 'all-permissions',
 			'postURL' => getServerUrl(true) . WEBEDITION_DIR . 'jupload/import.php?jupl=1&csid=' . session_id(),
 			'maxFileSize' => getUploadMaxFilesize(false) - (10 * 1024),
 			'afterUploadURL' => getServerUrl(true) . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=import_files&cmd=content&step=3',
@@ -83,11 +84,6 @@ class we_import_jUpload{
 	}
 
 	function getAppletTag($content = '', $w = 300, $h = 300){
-		$_params = '';
-
-		foreach($this->Params as $name => $value){
-			$_params .= '<param name="' . $name . '" value="' . $value . '"/>';
-		}
 
 		return we_html_element::htmlApplet(array(
 				'name' => "JUpload",
@@ -96,7 +92,7 @@ class we_import_jUpload{
 				'codebase' => getServerUrl(true) . WEBEDITION_DIR . 'jupload/',
 				'width' => $w,
 				'height' => $h,
-				), $_params . $content);
+				), $content, $this->Params);
 	}
 
 	function getJS(){

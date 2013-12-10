@@ -447,7 +447,8 @@ switch($_SESSION['prefs']['editorMode']){
 				'phpext' => '.php',
 				'serverUrl' => getServerUrl(true),
 				'editorPath' => 'webEdition/editors/template/editor',
-			);
+				'permissions'=>'sandbox',
+				);
 			if($_SESSION["prefs"]["editorFont"] == 1){
 				// translate html font names into java font names
 				switch($_SESSION["prefs"]["editorFontname"]){
