@@ -58,7 +58,7 @@ abstract class we_customer_treeLoader{
 
 		$where = ' WHERE ParentID=' . intval($ParentID) . ' ' . $addWhere;
 
-		$db->query('SELECT ' . $settings->treeTextFormatSQL . ' AS treeFormat, ' . $elem . ',LoginDenied FROM ' . CUSTOMER_TABLE . ' ' . $where . ' ' . self::getSortOrder($settings) . ($segment ? " LIMIT $offset,$segment;" : ";" ));
+		$db->query('SELECT ' . $settings->treeTextFormatSQL . ' AS treeFormat, ' . $elem . ',LoginDenied FROM ' . CUSTOMER_TABLE . ' ' . $where . ' ' . self::getSortOrder($settings) . ($segment ? ' LIMIT ' . $offset . ',' . $segment : ''));
 
 		while($db->next_record(MYSQLI_ASSOC)){
 
@@ -154,7 +154,7 @@ abstract class we_customer_treeLoader{
 
 		$grp = implode(',', array_slice($grouparr, 0, $level + 1));
 
-		$db->query('SELECT ' . $settings->treeTextFormatSQL . ' AS treeFormat,ID,ParentID,Path,Text,Icon,IsFolder,LoginDenied,Forename,Surname' . (empty($select) ? '' : ',' . implode(',', $select) ) . ' FROM ' . CUSTOMER_TABLE . ' GROUP BY ' . $grp . (count($grouparr) ? ($level != 0 ? ',ID' : '') : 'ID') . (count($havingarr) ? ' HAVING ' . implode(' AND ', $havingarr) : '') . ' ORDER BY ' . implode(',', $orderarr) . self::getSortOrder($settings, ',') . (($level == $levelcount && $segment) ? " LIMIT $offset,$segment" : ''));
+		$db->query('SELECT ' . $settings->treeTextFormatSQL . ' AS treeFormat,ID,ParentID,Path,Text,Icon,IsFolder,LoginDenied,Forename,Surname' . (empty($select) ? '' : ',' . implode(',', $select) ) . ' FROM ' . CUSTOMER_TABLE . ' GROUP BY ' . $grp . (count($grouparr) ? ($level != 0 ? ',ID' : '') : 'ID') . (count($havingarr) ? ' HAVING ' . implode(' AND ', $havingarr) : '') . ' ORDER BY ' . implode(',', $orderarr) . self::getSortOrder($settings, ($orderarr ? ',' : '')) . (($level == $levelcount && $segment) ? ' LIMIT ' . $offset . ',' . $segment : ''));
 
 		$items = $foo = array();
 		$gname = '';
@@ -271,13 +271,12 @@ abstract class we_customer_treeLoader{
 	}
 
 	public static function getSortOrder($settings, $concat = 'ORDER BY'){
-		$_formatFields = implode(',', $settings->formatFields);
-
-		$ret = ($settings->getSettings('default_order') != '' ?
-				($_formatFields != '' ?
-					implode(' ' . $settings->getSettings('default_order') . ',', $settings->formatFields) . ', ' . $settings->getSettings('default_order') :
-					'Text ' . $settings->getSettings('default_order')) : '');
-		return (!empty($ret) ? $concat . ' ' . $ret : '');
+		$ret = ($settings->getSettings('default_order') ?
+				($settings->formatFields ?
+					implode(' ' . $settings->getSettings('default_order') . ',', $settings->formatFields) . ' ' . $settings->getSettings('default_order') :
+					'Text ' . $settings->getSettings('default_order')) :
+				'');
+		return ($ret ? $concat . ' ' . $ret : '');
 	}
 
 }
