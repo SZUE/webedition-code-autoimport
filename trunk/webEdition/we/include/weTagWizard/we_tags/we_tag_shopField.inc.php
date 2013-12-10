@@ -11,14 +11,17 @@ $this->Attributes[] = new weTagData_selectAttribute('reference', array(new weTag
 	new weTagDataOption('cart'),
 	), true, '');
 $this->Attributes[] = new weTagData_textAttribute('shopname', true, '');
-$this->Attributes[] = new weTagData_selectAttribute('type', array(new weTagDataOption('checkbox'),
+$this->Attributes[] = new weTagData_selectAttribute('type', array(
+	new weTagDataOption('checkbox'),
 	new weTagDataOption('choice'),
+	new weTagDataOption('country'),
 	new weTagDataOption('hidden'),
+	new weTagDataOption('language'),
 	new weTagDataOption('print'),
+	new weTagDataOption('radio'),
 	new weTagDataOption('select'),
 	new weTagDataOption('textarea'),
 	new weTagDataOption('textinput'),
-	new weTagDataOption('radio'),
 	), false, '');
 $this->Attributes[] = new weTagData_textAttribute('value', false, '');
 $this->Attributes[] = new weTagData_textAttribute('values', false, '');
