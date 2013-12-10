@@ -113,6 +113,93 @@ function we_tag_shopField($attribs){
 		case 'select':
 			return we_getSelectField($fieldname, $savedVal, $values, $atts, false);
 			break;
+			
+		case 'country':
+			$newAtts = removeAttribs($attribs, array('name', 'type', 'value', 'values','checked', 'mode'));
+			$newAtts['name'] = 'we_sscf[' . $name . ']';
+			$docAttr = weTag_getAttribute('doc', $attribs, 'self');
+			$doc = we_getDocForTag($docAttr);
+			$lang = $doc->Language;
+			$langcode = ($lang != '' ?
+					substr($lang, 0, 2) :
+					we_core_Local::weLangToLocale($GLOBALS["WE_LANGUAGE"]));
+
+			if(!Zend_Locale::hasCache()){
+				Zend_Locale::setCache(getWEZendCache());
+			}
+
+			//$zendsupported = Zend_Locale::getTranslationList('territory', $langcode, 2);
+			$topCountries = array_flip(explode(',', WE_COUNTRIES_TOP));
+			foreach($topCountries as $countrykey => &$countryvalue){
+				$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
+			}
+			unset($countryvalue);
+
+			$shownCountries = array_flip(explode(',', WE_COUNTRIES_SHOWN));
+			foreach($shownCountries as $countrykey => &$countryvalue){
+				$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
+			}
+			unset($countryvalue);
+			$oldLocale = setlocale(LC_ALL, NULL);
+			setlocale(LC_ALL, $lang . '.UTF-8');
+			asort($topCountries, SORT_LOCALE_STRING);
+			asort($shownCountries, SORT_LOCALE_STRING);
+			setlocale(LC_ALL, $oldLocale);
+
+			$content = '';
+			if(WE_COUNTRIES_DEFAULT != ''){
+				$content.='<option value="--" ' . ($orgVal == '--' ? ' selected="selected">' : '>') . WE_COUNTRIES_DEFAULT . '</option>';
+			}
+			foreach($topCountries as $countrykey => &$countryvalue){
+				$content.='<option value="' . $countrykey . '" ' . ($orgVal == $countrykey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue) . '</option>';
+			}
+			unset($countryvalue);
+
+			if(!empty($topCountries) && !empty($shownCountries)){
+				$content.='<option value="-" disabled="disabled">----</option>';
+			}
+			foreach($shownCountries as $countrykey2 => &$countryvalue2){
+				$content.='<option value="' . $countrykey2 . '" ' . ($orgVal == $countrykey2 ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue2) . '</option>';
+			}
+			unset($countryvalue2);
+
+			return getHtmlTag('select', $newAtts, $content, true);
+
+		case 'language':
+			$newAtts = removeAttribs($attribs, array('name', 'type', 'value', 'values','checked', 'mode'));
+			$newAtts['name'] = 'we_sscf[' . $name . ']';
+			$docAttr = weTag_getAttribute('doc', $attribs, 'self');
+			$doc = we_getDocForTag($docAttr);
+			$lang = $doc->Language;
+			if($lang != ''){
+				$langcode = substr($lang, 0, 2);
+			} else{
+				$langcode = we_core_Local::weLangToLocale($GLOBALS["WE_LANGUAGE"]);
+			}
+			$frontendL = $GLOBALS['weFrontendLanguages'];
+			foreach($frontendL as &$lcvalue){
+				$lccode = explode('_', $lcvalue);
+				$lcvalue = $lccode[0];
+			}
+			if(!Zend_Locale::hasCache()){
+				Zend_Locale::setCache(getWEZendCache());
+			}
+
+			$frontendLL = array();
+			foreach($frontendL as &$lcvalue){
+				$frontendLL[$lcvalue] = Zend_Locale::getTranslation($lcvalue, 'language', $langcode);
+			}
+
+			$oldLocale = setlocale(LC_ALL, NULL);
+			setlocale(LC_ALL, $lang . '.UTF-8');
+			asort($frontendLL, SORT_LOCALE_STRING);
+			setlocale(LC_ALL, $oldLocale);
+			$content = '';
+			foreach($frontendLL as $langkey => &$langvalue){
+				$content.='<option value="' . $langkey . '" ' . ($orgVal == $langkey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($langvalue) . '</option>' . "\n";
+			}
+			unset($langvalue);
+			return getHtmlTag('select', $newAtts, $content, true);
 
 		case 'textarea':
 			return we_getTextareaField($fieldname, $savedVal, $atts);
