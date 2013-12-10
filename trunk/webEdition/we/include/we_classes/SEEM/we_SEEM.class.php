@@ -669,9 +669,17 @@ abstract class we_SEEM{
 	static function onlyUseHyperlinks($oldArray){
 
 		$newArray = array();
-
+t_e($oldArray);
 		for($i = 0; $i < count($oldArray[2]); $i++){
-			if($oldArray[2][$i] && ($oldArray[2][$i]{0} == '#' || strpos($oldArray[2][$i], "javascript") === 0 && strpos($oldArray[2][$i], "javascript:history") === FALSE || strpos($oldArray[2][$i], we_base_link::TYPE_MAIL_PREFIX) === 0 || strpos($oldArray[2][$i], we_base_link::TYPE_INT_PREFIX) === 0 || strpos($oldArray[2][$i], we_base_link::TYPE_OBJ_PREFIX) === 0)){
+			if(
+				$oldArray[2][$i]
+				&&
+				($oldArray[2][$i]{0} == '#' ||
+				strpos($oldArray[2][$i], "javascript") === 0
+					&& strpos($oldArray[2][$i], "javascript:history") === FALSE
+					|| strpos($oldArray[2][$i], we_base_link::TYPE_MAIL_PREFIX) === 0 ||
+					strpos($oldArray[2][$i], we_base_link::TYPE_INT_PREFIX) === 0 ||
+					strpos($oldArray[2][$i], we_base_link::TYPE_OBJ_PREFIX) === 0)){
 				//  this link must not be changed - so it will be removed
 			} else {
 				$newArray[0][] = $oldArray[0][$i];
