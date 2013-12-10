@@ -439,7 +439,7 @@ function uploadFinished() {
 		// JUpload part0
 
 
-		if(getPref('use_jupload') && file_exists(WEBEDITION_PATH . 'jupload/jupload.jar')){
+		if(getPref('use_jupload')){
 			$_weju = new we_import_jUpload();
 			$formhtml = $_weju->getAppletTag($formhtml, 530, 300);
 		}
@@ -449,9 +449,10 @@ function uploadFinished() {
 		);
 
 		$content = we_html_element::htmlDiv(
-				array("id" => "forms", "style" => "display:block"), (getPref('use_jupload') && file_exists(WEBEDITION_PATH . 'jupload/jupload.jar') ? we_html_element::htmlForm(array(
+				array("id" => "forms", "style" => "display:block"), (getPref('use_jupload') ? we_html_element::htmlForm(array(
 						"name" => "JUploadForm"
-						), '') : '') . we_html_element::htmlForm(
+						), '') : '') .
+				we_html_element::htmlForm(
 					array(
 					"action" => WEBEDITION_DIR . "we_cmd.php",
 					"name" => "we_startform",
