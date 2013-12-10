@@ -72,7 +72,7 @@ if(isset($_REQUEST['we_cmd']) && $_REQUEST['we_cmd'][0] == 'saveVatRule'){
 	// initialise the vatRule by request
 	$weShopVatRule = we_shop_vatRule::initByRequest($_REQUEST);
 	$weShopVatRule->save();
-} else{
+} else {
 
 	$weShopVatRule = we_shop_vatRule::getShopVatRule();
 }

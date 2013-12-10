@@ -61,7 +61,7 @@ $_applet_code = we_html_element::htmlApplet(array(
 if(isset($_REQUEST['we_dialog_args']['editname'])){
 	$_mode = $_REQUEST['we_dialog_args']['editname'] == 'tinyMce' ? 'tinyMce' : 'wysiwyg';
 	$_editname = $_REQUEST['we_dialog_args']['editname'];
-} else{
+} else {
 	if(isset($_REQUEST['editname'])){
 		$_editname = $_REQUEST['editname'];
 	}
@@ -144,7 +144,7 @@ if(isset($_REQUEST['we_dialog_args']['editname'])){
 			filter: alpha(opacity=80);
 		<?php } else if(we_base_browserDetect::isSafari()){ ?>
 			KhtmlOpacity: .8;
-		<?php } else{ ?>
+		<?php } else { ?>
 			opacity: .8;
 		<?php } ?>
 	}
@@ -185,7 +185,7 @@ if(isset($_REQUEST['we_dialog_args']['editname'])){
 <?php } else if($_mode == 'wysiwyg'){ ?>
 			editorObj = top.opener.weWysiwygObject_<?php print $_editname ?>;
 			var text = getTextFromWysiwyg();
-<?php } else{ ?>
+<?php } else { ?>
 			var elements = top.opener.document.getElementsByName("<?php print $_editname ?>");
 			if (elements[0]) {
 				editorObj = elements[0];
@@ -203,7 +203,7 @@ if(isset($_REQUEST['we_dialog_args']['editname'])){
 		var text = "";
 <?php if($_mode == 'wysiwyg'){ ?>
 			editorObj = top.opener.weWysiwygObject_<?php print $_editname ?>;
-<?php } else{ ?>
+<?php } else { ?>
 			var elements = top.opener.document.getElementsByName("<?php print $_editname ?>");
 			if (elements[0]) {
 				editorObj = elements[0];
@@ -257,7 +257,7 @@ if(isset($_REQUEST['we_dialog_args']['editname'])){
 			} else {
 				editorObj.setText(orginal);
 			}
-<?php } else{ ?>
+<?php } else { ?>
 			editorObj.value = orginal;
 <?php } ?>
 	}
@@ -487,7 +487,7 @@ echo we_html_button::create_state_changer(false);
 
 	$_dir = dir(WE_SPELLCHECKER_MODULE_PATH . 'dict');
 	$_i = 0;
-	while(false !== ($entry = $_dir->read())) {
+	while(false !== ($entry = $_dir->read())){
 		if($entry != '.' && $entry != '..' && strpos($entry, '.zip') !== false){
 			$_name = str_replace('.zip', '', $entry);
 			if(in_array($_name, $spellcheckerConf['active'])){

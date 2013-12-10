@@ -80,7 +80,7 @@ abstract class we_rebuild_wizard{
 		if($dc){
 			$buttons = we_html_button::create_button_table(array($refreshButton, $cancelButton), 10);
 			$pb = we_html_tools::htmlDialogLayout($pb, g_l('rebuild', "[rebuild]"), $buttons);
-		} else{
+		} else {
 			$prevButton = we_html_button::create_button("back", "javascript:parent.wizbody.handle_event('previous');", true, 0, 0, "", "", true, false);
 			$nextButton = we_html_button::create_button("next", "javascript:parent.wizbody.handle_event('next');", true, 0, 0, "", "", $nextbutdisabled, false);
 
@@ -101,7 +101,7 @@ abstract class we_rebuild_wizard{
 					we_html_tools::getHtmlInnerHead(g_l('rebuild', "[rebuild]")) .
 					STYLESHEET .
 					($dc ? '' : we_html_button::create_state_changer()) . $js) .
-				we_html_element::htmlBody(array('style'=>'overflow:hidden',"class" => ($dc ? "weDialogBody" : "weDialogButtonsBody")), ($dc ? $pb : $content->getHtml())
+				we_html_element::htmlBody(array('style' => 'overflow:hidden', "class" => ($dc ? "weDialogBody" : "weDialogButtonsBody")), ($dc ? $pb : $content->getHtml())
 				)
 		);
 	}
@@ -136,7 +136,7 @@ abstract class we_rebuild_wizard{
 
 		if(isset($_REQUEST["type"])){
 			$type = $_REQUEST["type"];
-		} else{
+		} else {
 			if(permissionhandler::hasPerm("REBUILD_ALL") || permissionhandler::hasPerm("REBUILD_FILTERD")){
 				$type = "rebuild_documents";
 			} else if(defined("OBJECT_FILES_TABLE") && permissionhandler::hasPerm("REBUILD_OBJECTS")){
@@ -149,7 +149,7 @@ abstract class we_rebuild_wizard{
 				$type = "rebuild_navigation";
 			} else if(permissionhandler::hasPerm("REBUILD_META")){
 				$type = "rebuild_metadata";
-			} else{
+			} else {
 				$type = "";
 			}
 		}
@@ -215,8 +215,7 @@ abstract class we_rebuild_wizard{
 		$allbutdisabled = !(permissionhandler::hasPerm("REBUILD_ALL") || permissionhandler::hasPerm("REBUILD_FILTERD") || permissionhandler::hasPerm("REBUILD_OBJECTS") || permissionhandler::hasPerm("REBUILD_INDEX") || permissionhandler::hasPerm("REBUILD_THUMBS") || permissionhandler::hasPerm("REBUILD_META"));
 
 
-		$js =
-			'window.onload = function(){top.focus();}
+		$js = 'window.onload = function(){top.focus();}
 			function handle_event(what){
 				f = document.we_form;
 				switch(what){
@@ -390,10 +389,10 @@ abstract class we_rebuild_wizard{
 				$fr = new rebuildFragment($taskname, 1, 0, array(), $data);
 
 				return array();
-			} else{
+			} else {
 				return array($js . we_message_reporting::getShowMessageCall(g_l('rebuild', '[nothing_to_rebuild]'), we_message_reporting::WE_MESSAGE_ERROR) . 'top.wizbusy.showPrevNextButton();', "");
 			}
-		} else{
+		} else {
 			$fr = new rebuildFragment($taskname, 1, 0, array());
 
 			return array();
@@ -430,7 +429,7 @@ abstract class we_rebuild_wizard{
 		$DTselect = g_l('global', "[doctypes]") . "<br>" . we_html_tools::getPixel(1, 3) . "<br>" . '<select class="defaultfont" name="doctypes[]" size="5" multiple style="width: 495px" onchange="document.we_form.btype[2].checked=true;">' . "\n";
 
 		$doctypesArray = makeArrayFromCSV($doctypes);
-		while($GLOBALS['DB_WE']->next_record()) {
+		while($GLOBALS['DB_WE']->next_record()){
 			$DTselect .= '<option value="' . $GLOBALS['DB_WE']->f("ID") . '"' . (in_array($GLOBALS['DB_WE']->f("ID"), $doctypesArray) ? " selected" : "") . '>' . $GLOBALS['DB_WE']->f("DocType") . "</option>\n";
 		}
 		$DTselect .= "</select>\n";
@@ -466,7 +465,7 @@ abstract class we_rebuild_wizard{
 			'<select class="defaultfont" name="thumbs[]" size="10" multiple style="width: 520px">' . "\n";
 
 		$thumbsArray = makeArrayFromCSV($thumbs);
-		while($GLOBALS['DB_WE']->next_record()) {
+		while($GLOBALS['DB_WE']->next_record()){
 			$Thselect .= '<option value="' . $GLOBALS['DB_WE']->f("ID") . '"' . (in_array($GLOBALS['DB_WE']->f("ID"), $thumbsArray) ? " selected" : "") . '>' . $GLOBALS['DB_WE']->f("Name") . "</option>\n";
 		}
 		$Thselect .= "</select>\n";
@@ -631,7 +630,7 @@ abstract class we_rebuild_wizard{
 
 
 
-		$parts[]= array(
+		$parts[] = array(
 			'headline' => '',
 			'html' => $content,
 			'space' => 0
@@ -741,8 +740,7 @@ abstract class we_rebuild_wizard{
 	 * @return string
 	 */
 	static function getFrameset(){
-		$tail =
-			(isset($_REQUEST['btype']) ? '&amp;btype=' . rawurlencode($_REQUEST['btype']) : '') .
+		$tail = (isset($_REQUEST['btype']) ? '&amp;btype=' . rawurlencode($_REQUEST['btype']) : '') .
 			(isset($_REQUEST['type']) ? '&amp;type=' . rawurlencode($_REQUEST['type']) : '') .
 			(isset($_REQUEST['templateID']) ? '&amp;templateID=' . rawurlencode($_REQUEST['templateID']) : '') .
 			(isset($_REQUEST['step']) ? '&amp;step=' . rawurlencode($_REQUEST['step']) : '') .
@@ -759,15 +757,15 @@ abstract class we_rebuild_wizard{
 					, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
 						, we_html_element::htmlIFrame('wizbusy', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&amp;fr=busy&amp;dc=1", 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden') .
 						we_html_element::htmlIFrame('wizcmd', HTML_DIR . "white.html", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
-					));
-		} else{
+			));
+		} else {
 			$height = (we_base_browserDetect::isFF() ? 60 : 40);
 			$body = we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;')
 					, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
 						, we_html_element::htmlIFrame('wizbody', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&amp;fr=body", 'position:absolute;top:0px;bottom:' . $height . 'px;left:0px;right:0px;overflow: hidden') .
 						we_html_element::htmlIFrame('wizbusy', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&amp;fr=busy", 'position:absolute;height:' . $height . 'px;bottom:0px;left:0px;right:0px;overflow: hidden') .
 						we_html_element::htmlIFrame('wizcmd', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&amp;fr=cmd", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
-					));
+			));
 		}
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(

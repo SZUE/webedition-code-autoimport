@@ -9,7 +9,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -21,23 +21,23 @@
 
 /**
  * Class for handling we_ui_layout_Dialog Element
- * 
+ *
  * @category   we
  * @package    we_ui
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 function we_ui_layout_Dialog(url, w, h, args) {
-	
+
 	var foo_w = w;
 	var foo_h = h;
 	var x = 0;
 	var y = 0;
-	
+
 	if (window.screen) {
-		var screen_height = ((screen.height - 50) > screen.availHeight ) ? screen.height - 50 : screen.availHeight;
+		var screen_height = ((screen.height - 50) > screen.availHeight) ? screen.height - 50 : screen.availHeight;
 		screen_height = screen_height - 40;
-		var screen_width = screen.availWidth-10;
+		var screen_width = screen.availWidth - 10;
 		w = Math.min(screen_width, w);
 		h = Math.min(screen_height, h);
 		x = Math.round((screen_width - w) / 2);
@@ -52,17 +52,18 @@ function we_ui_layout_Dialog(url, w, h, args) {
 	this.h = h;
 	this.win = null;
 	this.args = args;
-	
+
 	this.open = function() {
-		var properties = "menubar=no,resizable=no,scrollbars=no," +"width="+this.w+",height="+this.h+",left="+this.x+",top="+this.y;
+		var properties = "menubar=no,resizable=no,scrollbars=no," + "width=" + this.w + ",height=" + this.h + ",left=" + this.x + ",top=" + this.y;
 		this.win = window.open(this.url, this.name, properties);
-		this.win.moveTo(this.x,this.y);
+		this.win.moveTo(this.x, this.y);
 		this.win.focus();
-			
+
 	}
-	
+
 	this.close = function() {
-		if(!this.win.closed) this.wind.close();
+		if (!this.win.closed)
+			this.wind.close();
 	}
 
 	this.obj = this.name + "_Object";

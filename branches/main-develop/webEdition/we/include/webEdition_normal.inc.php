@@ -38,7 +38,7 @@ function pWebEdition_Tree(){
 function pWebEdition_JSFunctions(){
 	?>
 	function toggleBusy(w) {/* => removed since no header animation anymore
-/*	if(w == busy || firstLoad==false){
+	/*	if(w == busy || firstLoad==false){
 	return;
 	}
 	if(self.header){
@@ -83,10 +83,10 @@ function pWebEdition_JSFunctions(){
 	if(whichWindow != "include"){ 	// only when no SEEM-edit-include window is closed
 	// FIXME: closing-actions for SEEM
 	if(top.opener) {
-		<?php if(!(we_base_browserDetect::isChrome() || we_base_browserDetect::isSafari())){ ?>
-			top.opener.location.replace('<?php print WEBEDITION_DIR; ?>we_loggingOut.php?isopener=1');
+	<?php if(!(we_base_browserDetect::isChrome() || we_base_browserDetect::isSafari())){ ?>
+		top.opener.location.replace('<?php print WEBEDITION_DIR; ?>we_loggingOut.php?isopener=1');
 		top.opener.focus();
-	<?php } else{ ?>
+	<?php } else { ?>
 		top.opener.location.reload();
 		var logoutpopup = window.open('<?php print WEBEDITION_DIR; ?>we_loggingOut.php?isopener=0', "webEdition","width=350,height=70,toolbar=no,menubar=no,directories=no,location=no,resizable=no,status=no,scrollbars=no,top=300,left=500");
 		logoutpopup.focus();
@@ -208,17 +208,17 @@ function pWebEdition_Frameset(){
 	<div style="position:absolute;top:0px;left:0px;right:0px;height:32px;border-bottom: 1px solid black;">
 		<?php we_main_header::pbody(); ?>
 	</div>
-		<div style="position:absolute;top:32px;left:0px;right:0px;bottom:0px;border: 0;">
-			<iframe frameBorder="0" src="<?php print WEBEDITION_DIR; ?>resizeframe.php" style="border:0px;width:100%;height:100%;overflow: hidden;" id="rframe" name="rframe"></iframe>
+	<div style="position:absolute;top:32px;left:0px;right:0px;bottom:0px;border: 0;">
+		<iframe frameBorder="0" src="<?php print WEBEDITION_DIR; ?>resizeframe.php" style="border:0px;width:100%;height:100%;overflow: hidden;" id="rframe" name="rframe"></iframe>
+	</div>
+	<div style="position:absolute;left:0px;right:0px;bottom:0px;height: 0px;border: 1px solid;">
+		<div style="height:100%;float:left;width:25%;border:0px;">
+			<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="load"></iframe>
 		</div>
-		<div style="position:absolute;left:0px;right:0px;bottom:0px;height: 0px;border: 1px solid;">
-			<div style="height:100%;float:left;width:25%;border:0px;">
-				<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="load"></iframe>
-			</div>
-			<div style="height:100%;float:left;width:25%;border:0px;">
-				<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="load2"></iframe>
-			</div>
-			<!-- Bugfix Opera >=10.5  target name is always "ad" -->
+		<div style="height:100%;float:left;width:25%;border:0px;">
+			<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="load2"></iframe>
+		</div>
+		<!-- Bugfix Opera >=10.5  target name is always "ad" -->
 		<div style="height:100%;float:left;width:10%;border:0px;">
 			<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="ad"></iframe>
 		</div>

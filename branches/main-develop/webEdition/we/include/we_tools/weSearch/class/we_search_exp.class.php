@@ -71,7 +71,7 @@ class we_search_exp extends we_search{
 		foreach($_tables as $_table){
 			$this->db->query('SELECT * FROM ' . $_table . ' ' . $_condition);
 
-			while($this->next_record()) {
+			while($this->next_record()){
 				$_result[] = array_merge(array(
 					'Table' => $_table
 					), $this->db->Record);
@@ -205,7 +205,7 @@ class we_search_exp extends we_search{
 		if(($_expr['operand1'] == 'DocType')){
 			if(strpos($_expr['operand2'], '\*') !== false){
 				$_expr['operand2'] = f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType LIKE "' . str_replace("*", "%", $_expr['operand2']) . '"', 'ID', new DB_WE());
-			} else{
+			} else {
 				$_expr['operand2'] = f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType LIKE "' . $_expr['operand2'] . '"', 'ID', new DB_WE());
 			}
 			// if operand2 is empty make some impossible condition
@@ -266,7 +266,7 @@ class we_search_exp extends we_search{
 			foreach($_token as $_op){
 				if(count($_op) < 3){
 					$_word[] = ' ' . $_op['operand1'] . ' ';
-				} else{
+				} else {
 					$_word[] = $_op['operand1'] . ' ' . $_op['operator'] . ' "' . addslashes($_op['operand2']) . '"';
 				}
 			}
@@ -277,7 +277,7 @@ class we_search_exp extends we_search{
 			if(!empty($_conditions)){
 				if(empty($_condition)){
 					$_condition .= implode(' ' . $_log . ' ', $_conditions);
-				} else{
+				} else {
 					$_condition .= ' ' . $_log . ' ' . implode(' ' . $_log . ' ', $_conditions);
 				}
 			}

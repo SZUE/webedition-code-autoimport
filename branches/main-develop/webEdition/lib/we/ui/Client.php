@@ -28,10 +28,10 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_ui_Client{
+
 	/**
 	 * constant for IE Browser
 	 */
-
 	const kBrowserIE = 0;
 
 	/**

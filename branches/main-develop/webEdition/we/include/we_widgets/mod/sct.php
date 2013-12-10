@@ -31,7 +31,7 @@ $_cmdNew = "javascript:top.we_cmd('new','" . FILE_TABLE . "','','text/webedition
 if(permissionhandler::hasPerm("NEW_WEBEDITIONSITE")){
 	if(permissionhandler::hasPerm("NO_DOCTYPE")){
 		$_disableNew = false;
-	} else{
+	} else {
 		$q = "ORDER BY DocType";
 		$paths = array();
 		$ws = get_ws(FILE_TABLE);
@@ -46,15 +46,15 @@ if(permissionhandler::hasPerm("NEW_WEBEDITIONSITE")){
 		if(!empty($paths)){
 			$q = 'WHERE (' . implode(' OR ', $paths) . ") OR ParentPath='' ORDER BY DocType";
 		}
-		$DB_WE->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' '.$q);
+		$DB_WE->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . $q);
 		if($DB_WE->next_record()){
 			$_disableNew = false;
 			$_cmdNew = "javascript:top.we_cmd('new','" . FILE_TABLE . "','','text/webedition','" . $DB_WE->f("ID") . "')";
-		} else{
+		} else {
 			$_disableNew = true;
 		}
 	}
-} else{
+} else {
 	$_disableNew = true;
 }
 
@@ -118,7 +118,7 @@ foreach($shortcuts as $sctCol){
 							"width" => 34,
 							"height" => 34,
 							"border" => 0
-					))) . '</td>';
+				))) . '</td>';
 			$sSctOut .= '<td width="5">' . we_html_tools::getPixel(5, 1) . '</td>';
 			$sSctOut .= '<td valign="middle">' . we_html_element::htmlA(
 					array(
@@ -135,8 +135,8 @@ foreach($shortcuts as $sctCol){
 }
 
 $sc = new we_html_table(array(
-		"width" => "100%", "border" => 0, "cellpadding" => 0, "cellspacing" => 0
-		), 1, 1);
+	"width" => "100%", "border" => 0, "cellpadding" => 0, "cellspacing" => 0
+	), 1, 1);
 $sc->setCol(0, 0, array(
 	"align" => "center", "valign" => "top"
 	), $sSctOut);

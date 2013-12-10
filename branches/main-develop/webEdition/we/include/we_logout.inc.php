@@ -34,9 +34,9 @@ $DB_WE->query('UPDATE ' . USER_TABLE . ' SET Ping=0 WHERE ID=' . intval($_SESSIO
 we_base_file::cleanTempFiles(true);
 
 //	getJSCommand
-$_path = (isset($_SESSION['weS']['SEEM']['startId'])? // logout from webEdition opened with tag:linkToSuperEasyEditMode
-		$_SESSION['weS']['SEEM']['startPath']:
-	WEBEDITION_DIR);
+$_path = (isset($_SESSION['weS']['SEEM']['startId']) ? // logout from webEdition opened with tag:linkToSuperEasyEditMode
+		$_SESSION['weS']['SEEM']['startPath'] :
+		WEBEDITION_DIR);
 
 we_users_user::removeOldWESession();
 

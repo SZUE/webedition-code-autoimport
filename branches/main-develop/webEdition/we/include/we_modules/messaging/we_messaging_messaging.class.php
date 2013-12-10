@@ -397,7 +397,6 @@ class we_messaging_messaging extends we_class{
 		return 1;
 	}
 
-
 	function init(){
 		if($this->we_transact && isset($this->we_transact['we_messaging'])){
 			$this->initSessionDat($this->we_transact['we_messaging']);

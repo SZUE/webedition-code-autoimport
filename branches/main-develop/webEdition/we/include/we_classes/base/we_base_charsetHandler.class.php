@@ -140,7 +140,7 @@ class we_base_charsetHandler{
 	 * @desc returns array (national, international, charset, when charset is known)
 	 */
 	function getCharsetArrByCharset($charset){
-		$charset=strtolower($charset);
+		$charset = strtolower($charset);
 		foreach($this->charsets as $key => $val){
 
 			if(strtolower($val['charset']) == $charset){

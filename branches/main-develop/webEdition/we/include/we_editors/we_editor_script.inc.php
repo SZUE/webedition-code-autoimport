@@ -57,7 +57,7 @@ we_html_tools::protect();
 <?php
 if(isset($GLOBALS['we_doc'])){
 	if($GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT && $GLOBALS['we_doc']->ContentType == 'text/weTmpl'){
-	//no wyswyg
+		//no wyswyg
 	} else {
 		echo we_wysiwyg::getHeaderHTML();
 	}
@@ -127,7 +127,7 @@ if(isset($GLOBALS['we_doc'])){
 		// check if parentId was changed
 		var ajaxCallback = {
 			success: function(o) {
-				if (typeof(o.responseText) !== undefined && o.responseText !== '') {
+				if (typeof (o.responseText) !== undefined && o.responseText !== '') {
 					var weResponse = false;
 					try {
 						eval(o.responseText);
@@ -293,7 +293,7 @@ if(isset($GLOBALS['we_doc'])){
 			} else if (_EditorFrame.getEditorDidSetHiddenText()) {
 				_EditorFrame.setEditorDidSetHiddenText(false);
 			}
-			if (typeof(self.weEditorSetHiddenText) != "undefined") {
+			if (typeof (self.weEditorSetHiddenText) != "undefined") {
 				self.weEditorSetHiddenText();
 			}
 		}
@@ -538,5 +538,5 @@ print we_message_reporting::getShowMessageCall("'" . $_msg . "'", we_message_rep
 		}
 		return true;
 	}
-	//-->
+//-->
 </script>

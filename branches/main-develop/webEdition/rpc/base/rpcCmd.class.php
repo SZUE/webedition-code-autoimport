@@ -107,6 +107,7 @@ class rpcCmd{
 
 	//FIXME: remove this - session is already started by we.inc
 	function startSession(){
+
 	}
 
 	function checkParameters(){

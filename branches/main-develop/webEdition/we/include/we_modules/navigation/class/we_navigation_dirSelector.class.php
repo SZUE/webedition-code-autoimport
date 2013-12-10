@@ -174,7 +174,7 @@ top.unselectAllFiles();') . '
 				d.writeln('</body>');
 				d.close();
 			}
-			//-->
+		//-->
 		</script>
 		<?php
 	}
@@ -327,12 +327,11 @@ top.clearEntries();
 if(top.opener.top.updateEntry){
 	ref = top.opener.top;
 	ref.updateEntry(' . $folder->ID . ',"' . $txt . '","' . $folder->ParentID . '",1,0);
-}'.($this->canSelectDir?
+}' . ($this->canSelectDir ?
 							print 'top.currentPath = "' . $folder->Path . '";
 top.currentID = "' . $folder->ID . '";
 top.fsfooter.document.we_form.fname.value = "' . $folder->Text . '";
-':'');
-
+'  : '');
 					}
 				}
 			}

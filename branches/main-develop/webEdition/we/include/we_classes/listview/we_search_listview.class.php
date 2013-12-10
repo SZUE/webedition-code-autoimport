@@ -78,7 +78,7 @@ class we_search_listview extends listviewBase{
 			}
 
 			$where_lang .= ' ) ';
-		} else{
+		} else {
 			$where_lang = '';
 		}
 
@@ -92,11 +92,11 @@ class we_search_listview extends listviewBase{
 				//$ord = str_replace("we_creationdate",FILE_TABLE . ".CreationDate",$ord); // NOTE: this won't work, cause Indextable doesn't know this field & filetable is not used in this query
 				$ord = str_replace('we_creationdate', '', $ord);
 				$this->order = str_replace("we_filename", INDEX_TABLE . ".Path", $ord);
-			} else{
+			} else {
 				$orderArr1 = makeArrayFromCSV($this->order);
 				if(in_array('random()', $orderArr1)){
 					$random = true;
-				} else{
+				} else {
 					foreach($orderArr1 as $o){
 						if(trim($o)){
 							$foo = preg_split('/ +/', $o);
@@ -145,7 +145,7 @@ class we_search_listview extends listviewBase{
 			$dtcl_query = ' AND ' . INDEX_TABLE . ".Doctype='" . $this->DB_WE->escape($dt) . "' ";
 		} else if($cl){
 			$dtcl_query = ' AND ' . INDEX_TABLE . ".ClassID=" . intval($cl) . ' ';
-		} else{
+		} else {
 			$dtcl_query = '';
 		}
 
@@ -165,10 +165,10 @@ class we_search_listview extends listviewBase{
 				}
 				if($not){
 					$bedingungen3_sql[] = $not . '(' . implode($klammer, ' OR ') . ')';
-				} else{
+				} else {
 					$bedingungen_sql[] = '(' . implode($klammer, ' OR ') . ')';
 				}
-			} else{
+			} else {
 				$klammer = array();
 				reset($spalten);
 				foreach($spalten as $v){
@@ -190,7 +190,7 @@ class we_search_listview extends listviewBase{
 
 		if(isset($bedingung_sql1) && $bedingung_sql1){
 			$bedingung_sql = $bedingung_sql1;
-		} else{
+		} else {
 			$bedingung_sql = $bedingung_sql2;
 		}
 		if($this->workspaceID != ""){
@@ -201,7 +201,7 @@ class we_search_listview extends listviewBase{
 				$cond[] = '(' . INDEX_TABLE . ".Workspace LIKE '" . $this->DB_WE->escape($workspace) . "/%' OR " . INDEX_TABLE . ".Workspace='" . $this->DB_WE->escape($workspace) . "')";
 			}
 			$ws_where = ' AND (' . implode(' OR ', $cond) . ')';
-		} else{
+		} else {
 			$ws_where = '';
 		}
 
@@ -210,7 +210,7 @@ class we_search_listview extends listviewBase{
 			$weDocumentCustomerFilter_tail = we_customer_documentFilter::getConditionForListviewQuery($this);
 		}
 
-		$this->anz_all = f('SELECT COUNT(1) AS a FROM ' . INDEX_TABLE . " WHERE $bedingung_sql $dtcl_query $cat_tail $ws_where $where_lang $weDocumentCustomerFilter_tail",'a',$this->DB_WE);
+		$this->anz_all = f('SELECT COUNT(1) AS a FROM ' . INDEX_TABLE . " WHERE $bedingung_sql $dtcl_query $cat_tail $ws_where $where_lang $weDocumentCustomerFilter_tail", 'a', $this->DB_WE);
 
 		$this->DB_WE->query('SELECT ' . INDEX_TABLE . ".Category as Category, " . INDEX_TABLE . ".DID as DID," . INDEX_TABLE . ".OID as OID," . INDEX_TABLE . ".ClassID as ClassID," . INDEX_TABLE . ".Text as Text," . INDEX_TABLE . ".Workspace as Workspace," . INDEX_TABLE . ".WorkspaceID as WorkspaceID," . INDEX_TABLE . ".Title as Title," . INDEX_TABLE . ".Description as Description," . INDEX_TABLE . ".Path as Path," . INDEX_TABLE . '.Language as Language, ' . ($random ? 'RAND() ' : $ranking) . ' AS ranking FROM ' . INDEX_TABLE . " WHERE $bedingung_sql $dtcl_query $cat_tail $ws_where $where_lang $weDocumentCustomerFilter_tail ORDER BY ranking" . ($this->order ? ("," . $this->order) : "") . (($this->maxItemsPerPage > 0) ? (" LIMIT " . intval($this->start) . ',' . intval($this->maxItemsPerPage)) : ""));
 		$this->anz = $this->DB_WE->num_rows();
@@ -236,7 +236,7 @@ class we_search_listview extends listviewBase{
 						($objecturl != '' ?
 							'/' . $objecturl . $pidstr :
 							'/?we_objectID=' . $this->DB_WE->Record["OID"] . str_replace('?', '&amp;', $pidstr));
-				} else{
+				} else {
 					$this->DB_WE->Record["WE_PATH"] = ($objecturl != '' ?
 							($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $path_parts['filename'] . '/' . $objecturl . $pidstr :
 							$_SERVER["SCRIPT_NAME"] . '?we_objectID=' . $this->DB_WE->Record["OID"] . str_replace('?', '&amp;', $pidstr));
@@ -244,7 +244,7 @@ class we_search_listview extends listviewBase{
 				$this->DB_WE->Record["wedoc_Path"] = $this->DB_WE->Record["WE_PATH"];
 				$this->DB_WE->Record["we_WE_URL"] = $objectdaten['Url'];
 				$this->DB_WE->Record["we_WE_TRIGGERID"] = ($this->triggerID ? $this->triggerID : $objectdaten['TriggerID']);
-			} else{
+			} else {
 				$this->DB_WE->Record["wedoc_Path"] = $this->DB_WE->Record["Path"];
 				$this->DB_WE->Record["WE_PATH"] = $this->DB_WE->Record["Path"];
 			}
@@ -254,7 +254,7 @@ class we_search_listview extends listviewBase{
 			$this->DB_WE->Record["WE_ID"] = (isset($this->DB_WE->Record["DID"]) && $this->DB_WE->Record["DID"]) ? $this->DB_WE->Record["DID"] : (isset($this->DB_WE->Record["OID"]) ? $this->DB_WE->Record["OID"] : 0);
 			$this->count++;
 			return true;
-		} else{
+		} else {
 			$this->stop_next_row = $this->shouldPrintEndTR();
 			if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
 				$this->DB_WE->Record = array(

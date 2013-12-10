@@ -131,7 +131,7 @@ function msg_create_folders($userid){
 		2 => -1);
 
 	$db->query('SELECT ID, msg_type, obj_type FROM ' . MSG_FOLDERS_TABLE . ' WHERE (obj_type=3 OR obj_type=5 OR obj_type=9 OR obj_type=11 OR obj_type=13) AND UserID=' . intval($userid));
-	while($db->next_record()) {
+	while($db->next_record()){
 		if(isset($default_folders[$db->f('msg_type')][$db->f('obj_type')])){
 			if($db->f('obj_type') == 3){
 				$pfolders[$db->f('msg_type')] = $db->f('ID');
@@ -143,7 +143,7 @@ function msg_create_folders($userid){
 	foreach($default_folders as $mt => $farr){
 		if($pfolders[$mt] != -1){
 			$pf_id = $pfolders[$mt];
-		}else{
+		} else {
 			$db->query('INSERT INTO ' . MSG_FOLDERS_TABLE . ' (ID, ParentID, UserID, msg_type, obj_type, Properties, Name) VALUES (NULL, 0, ' . intval($userid) . ", $mt, 3, 1, '" . $default_folders[$mt]['3'] . '\')');
 			$pf_id = $db->getInsertId();
 			unset($farr['3']);

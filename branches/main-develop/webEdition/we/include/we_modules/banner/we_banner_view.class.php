@@ -225,7 +225,7 @@ class we_banner_view extends we_banner_base{
 		<?php
 		$mod = isset($_REQUEST['mod']) ? $_REQUEST['mod'] : '';
 		$modData = weModuleInfo::getModuleData($mod);
-		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' .$modData['text'] : '';
+		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 		?>
 
 			parent.document.title = "webEdition <?php print g_l('global', "[modules]") . ' - ' . $title; ?>";
@@ -264,7 +264,7 @@ class we_banner_view extends we_banner_base{
 						if (top.content.editor.edbody.loaded) {
 							top.content.editor.edbody.document.we_form.ncmd.value = arguments[0];
 							top.content.editor.edbody.submitForm();
-						}else{
+						} else {
 							setTimeout('we_cmd("new_banner");', 10);
 						}
 						break;
@@ -272,7 +272,7 @@ class we_banner_view extends we_banner_base{
 						if (top.content.editor.edbody.loaded) {
 							top.content.editor.edbody.document.we_form.ncmd.value = arguments[0];
 							top.content.editor.edbody.submitForm();
-						}else{
+						} else {
 							setTimeout('we_cmd("new_bannergroup");', 10);
 						}
 						break;
@@ -283,7 +283,7 @@ class we_banner_view extends we_banner_base{
 		} else {
 			?>
 							if (top.content.editor.edbody.loaded && top.content.editor.edbody.we_is_home == undefined) {
-								if (!confirm("<?php print g_l('modules_banner', '[delete_question]') ?>")){
+								if (!confirm("<?php print g_l('modules_banner', '[delete_question]') ?>")) {
 									return;
 								}
 							}
@@ -451,11 +451,10 @@ class we_banner_view extends we_banner_base{
 
 			function submitForm() {
 				var f = self.document.we_form;
-				f.target =  (arguments[0]?:"edbody");
-				f.action =  (arguments[1]?:"");
-				f.method =  (arguments[2]?:"post");
-
-				f.submit();
+								f.target = (arguments[0]?:"edbody");
+								f.action = (arguments[1]?:"");
+								f.method = (arguments[2]?:"post");
+								f.submit();
 			}
 			function checkData() {
 

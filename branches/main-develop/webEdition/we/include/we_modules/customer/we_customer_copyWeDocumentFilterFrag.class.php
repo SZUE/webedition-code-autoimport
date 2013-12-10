@@ -50,7 +50,7 @@ class we_customer_copyWeDocumentFilterFrag extends taskFragment{
 
 		$this->alldata = array();
 
-		while($_db->next_record()) {
+		while($_db->next_record()){
 
 			$this->alldata[] = array(
 				"folder_id" => $_id,
@@ -110,7 +110,7 @@ class we_customer_copyWeDocumentFilterFrag extends taskFragment{
 
 if(isset($_REQUEST["startCopy"])){ // start the fragment
 	$_theFrag = new we_customer_copyWeDocumentFilterFrag("copyWeDocumentCustomerFilter", 1, 200);
-} else{ // print the window
+} else { // print the window
 	// if any childs of the folder are open - bring message to close them
 	// REQUEST[we_cmd][1] = id of folder
 	// REQUEST[we_cmd][2] = table
@@ -132,7 +132,7 @@ if(isset($_REQUEST["startCopy"])){ // start the fragment
 
 	$_allChildsJS = 'var _allChilds = new Object();';
 
-	while($_db->next_record()) {
+	while($_db->next_record()){
 		$_allChildsJS .= "_allChilds['id_" . $_db->f("ID") . "'] = '" . $_db->f("ContentType") . "';";
 	}
 	$_js = 'var _openChilds = Array();

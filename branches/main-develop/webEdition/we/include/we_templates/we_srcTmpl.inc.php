@@ -186,7 +186,7 @@ switch($_SESSION['prefs']['editorMode']){
 								hlLine = editor.addLineClass(cur, "background", "activeline");
 							}
 						});
-		<?php } else { //FIX for CM which doesn't display lines beyond 27 if this line is missing....   ?>
+		<?php } else { //FIX for CM which doesn't display lines beyond 27 if this line is missing....     ?>
 						hlLine = editor.addLineClass(0, "background", "");
 
 		<?php } ?>

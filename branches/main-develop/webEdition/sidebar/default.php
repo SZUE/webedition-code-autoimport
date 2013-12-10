@@ -47,7 +47,7 @@ echo we_html_element::cssLink(WEBEDITION_DIR . 'css/global.php');
 							$text['link'] = str_replace("\"", "'", $text['link']); #6625
 							$text['link'] = str_replace("`", "'", $text['link']); #6625
 							$link = "<a href=\"" . $text['link'] . "\">%s</a>";
-						} else{
+						} else {
 							$link = "<a href=\"" . $text['link'] . "\" target=\"_blank\">%s</a>";
 						}
 					}
@@ -64,8 +64,8 @@ echo we_html_element::cssLink(WEBEDITION_DIR . 'css/global.php');
 					?>
 					<tr><td colspan="2"><?php we_html_tools::pPixel(1, 5); ?></td></tr>
 					<tr><?php
-			if($icon == ""){
-						?>
+						if($icon == ""){
+							?>
 							<td class="defaultfont" valign="top" colspan="2">
 								<strong><?php echo $headline; ?></strong><br />
 								<?php we_html_tools::pPixel(1, 4); ?>
@@ -73,7 +73,7 @@ echo we_html_element::cssLink(WEBEDITION_DIR . 'css/global.php');
 								<?php echo $text['text']; ?>
 							</td>
 							<?php
-						} else{
+						} else {
 							?>
 							<td class="defaultfont" valign="top" width="52"><?php echo $icon; ?></td>
 							<td class="defaultfont" valign="top">

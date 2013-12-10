@@ -42,7 +42,7 @@ top.clearEntries();
 		$txt = $this->FolderText;
 		if($txt == ""){
 			print we_message_reporting::getShowMessageCall(g_l('weEditor', "[folder][filename_empty]"), we_message_reporting::WE_MESSAGE_ERROR);
-		} else{
+		} else {
 			$folder = new we_folder();
 			$folder->we_new();
 			$folder->setParentID($this->dir);
@@ -59,11 +59,11 @@ top.clearEntries();
 			if($this->db->next_record()){
 				$we_responseText = sprintf(g_l('weEditor', "[folder][response_path_exists]"), $folder->Path);
 				print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
-			} else{
+			} else {
 				if(preg_match('-[<>?":|\\/*]-', $folder->Filename)){
 					$we_responseText = sprintf(g_l('weEditor', "[folder][we_filename_notValid]"), $folder->Path);
 					print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
-				} else{
+				} else {
 					$folder->we_save();
 					print 'var ref;
 if(top.opener.top.content.makeNewEntry) ref = top.opener.top.content;
@@ -102,7 +102,7 @@ top.clearEntries();
 		$txt = $this->FolderText;
 		if($txt == ""){
 			print we_message_reporting::getShowMessageCall(g_l('weEditor', "[folder][filename_empty]"), we_message_reporting::WE_MESSAGE_ERROR);
-		} else{
+		} else {
 			$folder = new we_folder();
 			$folder->initByID($this->we_editDirID, $this->table);
 			$folder->Text = $txt;
@@ -115,11 +115,11 @@ top.clearEntries();
 			if($this->db->next_record()){
 				$we_responseText = sprintf(g_l('weEditor', "[folder][response_path_exists]"), $folder->Path);
 				print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
-			} else{
+			} else {
 				if(preg_match('-[<>?":|\\/*]-', $folder->Filename)){
 					$we_responseText = sprintf(g_l('weEditor', "[folder][we_filename_notValid]"), $folder->Path);
 					print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
-				} else{
+				} else {
 					if(f('SELECT Text FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editDirID), "Text", $this->db) != $txt){
 						$folder->we_save();
 						print 'var ref;
@@ -158,7 +158,7 @@ top.selectFile(top.currentID);
 
 	function printFramesetJSFunctionAddEntries(){
 		$ret = '';
-		while($this->next_record()) {
+		while($this->next_record()){
 			$ret.='addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . addcslashes($this->f("Text"), '"') . '",' . $this->f("IsFolder") . ',"' . addcslashes($this->f("Path"), '"') . '");';
 		}
 		return we_html_element::jsElement($ret);
@@ -167,7 +167,7 @@ top.selectFile(top.currentID);
 	function printCmdAddEntriesHTML(){
 		$ret = '';
 		$this->query();
-		while($this->next_record()) {
+		while($this->next_record()){
 			$ret.='top.addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . $this->f("Text") . '",' . $this->f("IsFolder") . ',"' . $this->f("Path") . '");' . "\n";
 		}
 		$ret.=($this->userCanMakeNewDir() ?
@@ -200,8 +200,8 @@ top.selectFile(top.currentID);
 
 	function printFramesetJSFunctioWriteBody(){
 		?><script type="text/javascript"><!--
-					function writeBody(d){
-						d.open();
+					function writeBody(d) {
+				d.open();
 		<?php
 		echo self::makeWriteDoc(we_html_tools::getHtmlTop('', '', '4Trans', true) . STYLESHEET_SCRIPT . we_html_element::jsElement('
 var ctrlpressed=false
@@ -253,19 +253,19 @@ top.unselectAllFiles();') . '
 ');
 		?>
 
-				for(i=0;i < entries.length; i++){
-					var onclick = ' onClick="weonclick(<?php echo (we_base_browserDetect::isIE() ? "this" : "event") ?>);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick('+entries[i].ID+',0);}else{top.wasdblclick=0;}\',300);return true"';
-					var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick('+entries[i].ID+',1);return true;"';
-					d.writeln('<tr id="line_'+entries[i].ID+'" style="' + ((entries[i].ID == top.currentID && (!makeNewFolder) )  ? 'background-color:#DFE9F5;' : '')+'cursor:pointer;'+((we_editDirID != entries[i].ID) ? '' : '' )+'"'+((we_editDirID || makeNewFolder) ? '' : onclick)+ (entries[i].isFolder ? ondblclick : '') + ' >');
+				for (i = 0; i < entries.length; i++) {
+					var onclick = ' onClick="weonclick(<?php echo (we_base_browserDetect::isIE() ? "this" : "event") ?>);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=0;}\',300);return true"';
+					var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
+					d.writeln('<tr id="line_' + entries[i].ID + '" style="' + ((entries[i].ID == top.currentID && (!makeNewFolder)) ? 'background-color:#DFE9F5;' : '') + 'cursor:pointer;' + ((we_editDirID != entries[i].ID) ? '' : '') + '"' + ((we_editDirID || makeNewFolder) ? '' : onclick) + (entries[i].isFolder ? ondblclick : '') + ' >');
 					d.writeln('<td class="selector" width="25" align="center">');
-					d.writeln('<img src="<?php print ICON_DIR; ?>'+entries[i].icon+'" width="16" height="18" border="0" />');
+					d.writeln('<img src="<?php print ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0" />');
 					d.writeln('</td>');
-					if(we_editDirID == entries[i].ID){
+					if (we_editDirID == entries[i].ID) {
 						d.writeln('<td class="selector">');
-						d.writeln('<input type="hidden" name="we_FolderText" value="'+entries[i].text+'" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="'+entries[i].text+'" class="wetextinput" onBlur="this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" />');
-					}else{
+						d.writeln('<input type="hidden" name="we_FolderText" value="' + entries[i].text + '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" onBlur="this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" />');
+					} else {
 						d.writeln('<td class="selector" style="" >');
-						d.writeln(cutText(entries[i].text,24));
+						d.writeln(cutText(entries[i].text, 24));
 					}
 					d.writeln('</td>');
 					d.writeln('</tr><tr><td colspan="3"><?php print we_html_tools::getPixel(2, 1); ?></td></tr>');
@@ -277,13 +277,13 @@ top.unselectAllFiles();') . '
 </tr>
 </table></form>
 #				if(makeNewFolder || top.we_editDirID){
-	<script type="text/javascript">document.we_form.we_FolderText_tmp.focus();document.we_form.we_FolderText_tmp.select();</script>
+<script type="text/javascript">document.we_form.we_FolderText_tmp.focus();document.we_form.we_FolderText_tmp.select();</script>
 #				}
 </body>
 '); ?>
 				d.close();
 			}
-			//-->
+		//-->
 		</script>
 		<?php
 	}

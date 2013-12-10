@@ -44,7 +44,7 @@ if(isset($_REQUEST['we_cmd'])){
 				unset($newId);
 				$jsMessage = g_l('modules_shop', '[vat][save_success]');
 				$jsMessageType = we_message_reporting::WE_MESSAGE_NOTICE;
-			} else{
+			} else {
 				$jsMessage = g_l('modules_shop', '[vat][save_error]');
 				$jsMessageType = we_message_reporting::WE_MESSAGE_ERROR;
 			}
@@ -56,7 +56,7 @@ if(isset($_REQUEST['we_cmd'])){
 			if(we_shop_vats::deleteVatById($_REQUEST['weShopVatId'])){
 				$jsMessage = g_l('modules_shop', '[vat][delete_success]');
 				$jsMessageType = we_message_reporting::WE_MESSAGE_NOTICE;
-			} else{
+			} else {
 				$jsMessage = g_l('modules_shop', '[vat][delete_error]');
 				$jsMessageType = we_message_reporting::WE_MESSAGE_ERROR;
 			}

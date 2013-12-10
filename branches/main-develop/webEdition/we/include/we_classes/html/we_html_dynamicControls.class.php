@@ -327,7 +327,7 @@ class we_html_dynamicControls{
 					$_arrow_image = $this->_arrow_image_opened;
 					$_arrow_hint = $this->_arrow_hint_opened;
 					$_style_display = "block";
-				} else{
+				} else {
 					// Define various values for folded groups
 					$_arrow_image = $this->_arrow_image_closed;
 					$_arrow_hint = $this->_arrow_hint_closed;
@@ -490,7 +490,7 @@ class we_html_dynamicControls{
 					$_arrow_image = $this->_arrow_image_opened;
 					$_arrow_hint = $this->_arrow_hint_opened;
 					$_style_display = "block";
-				} else{
+				} else {
 					// Define various values for folded groups
 					$_arrow_image = $this->_arrow_image_closed;
 					$_arrow_hint = $this->_arrow_hint_closed;

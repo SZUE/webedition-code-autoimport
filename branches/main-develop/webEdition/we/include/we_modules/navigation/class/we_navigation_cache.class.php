@@ -37,7 +37,7 @@ class we_navigation_cache{
 		//self::cacheRootNavigation();
 		$_id = $id;
 		$_c = 0;
-		while($_id != 0) {
+		while($_id != 0){
 			self::delCacheNavigationEntry($_id);
 			$deleted[] = $_id;
 			$_id = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($_id), 'ParentID', new DB_WE());
@@ -57,7 +57,7 @@ class we_navigation_cache{
 		$_id = $id;
 		$_c = 0;
 		$db = new DB_WE();
-		while($_id != 0) {
+		while($_id != 0){
 			self::cacheNavigation($_id);
 			$_id = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($_id), 'ParentID', $db);
 			$_c++;

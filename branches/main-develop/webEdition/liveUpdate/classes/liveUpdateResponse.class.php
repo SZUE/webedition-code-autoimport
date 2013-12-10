@@ -22,7 +22,6 @@
  * @package    webEdition_update
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 class liveUpdateResponse{
 
 	var $Type;

@@ -53,7 +53,7 @@ class we_customer_customertag{
 	public function f($key){
 		return ($this->id ? $this->object->f($key) : '');
 	}
-	
+
 	public function getObject(){
 		return $this->object;
 	}

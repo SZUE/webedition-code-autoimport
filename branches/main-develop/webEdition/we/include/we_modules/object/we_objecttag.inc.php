@@ -61,7 +61,7 @@ class we_objecttag{
 	}
 
 	public function getDBf($key){
-		return ($this->id ?$this->object->getDBf($key):'');
+		return ($this->id ? $this->object->getDBf($key) : '');
 	}
 
 	public function f($key){
@@ -76,4 +76,5 @@ class we_objecttag{
 	public function getDB(){
 		return $this->DB_WE;
 	}
+
 }

@@ -169,24 +169,24 @@ abstract class we_class{
 		return we_html_tools::htmlFormElementTable(self::htmlTextArea(($elementtype ? ('we_' . $this->Name . '_' . $elementtype . "[$name]") : ('we_' . $this->Name . '_' . $name)), $rows, $cols, $this->getElement($name), $attribs), $text, $textalign, $textclass);
 	}
 
-/*	function formSelect($elementtype, $name, $table, $val, $txt, $text, $sqlTail = '', $size = 1, $selectedIndex = '', $multiple = false, array $attribs = array(), $textalign = 'left', $textclass = 'defaultfont', $precode = '', $postcode = '', $firstEntry = ''){
-		$vals = array();
-		if($firstEntry){
-			$vals[$firstEntry[0]] = $firstEntry[1];
-		}
-		$this->DB_WE->query('SELECT * FROM ' . $table . ' ' . $sqlTail);
-		while($this->DB_WE->next_record()){
-			$v = $this->DB_WE->f($val);
-			$t = $this->DB_WE->f($txt);
-			$vals[$v] = $t;
-		}
+	/* 	function formSelect($elementtype, $name, $table, $val, $txt, $text, $sqlTail = '', $size = 1, $selectedIndex = '', $multiple = false, array $attribs = array(), $textalign = 'left', $textclass = 'defaultfont', $precode = '', $postcode = '', $firstEntry = ''){
+	  $vals = array();
+	  if($firstEntry){
+	  $vals[$firstEntry[0]] = $firstEntry[1];
+	  }
+	  $this->DB_WE->query('SELECT * FROM ' . $table . ' ' . $sqlTail);
+	  while($this->DB_WE->next_record()){
+	  $v = $this->DB_WE->f($val);
+	  $t = $this->DB_WE->f($txt);
+	  $vals[$v] = $t;
+	  }
 
-		if(!$elementtype){
-			$ps = $this->$name;
-		}
-		$pop = $this->htmlSelect(($elementtype ? ('we_' . $this->Name . '_' . $elementtype . "[$name]") : ('we_' . $this->Name . '_' . $name)), $vals, $size, ($elementtype ? $this->getElement($name) : $ps), $multiple, $attribs);
-		return we_html_tools::htmlFormElementTable(($precode ? $precode : '') . $pop . ($postcode ? $postcode : ''), $text, $textalign, $textclass);
-	}*/
+	  if(!$elementtype){
+	  $ps = $this->$name;
+	  }
+	  $pop = $this->htmlSelect(($elementtype ? ('we_' . $this->Name . '_' . $elementtype . "[$name]") : ('we_' . $this->Name . '_' . $name)), $vals, $size, ($elementtype ? $this->getElement($name) : $ps), $multiple, $attribs);
+	  return we_html_tools::htmlFormElementTable(($precode ? $precode : '') . $pop . ($postcode ? $postcode : ''), $text, $textalign, $textclass);
+	  } */
 
 	function formSelectFromArray($elementtype, $name, $vals, $text, $size = 1, $selectedIndex = '', $multiple = false, $attribs = '', $textalign = 'left', $textclass = 'defaultfont', $precode = '', $postcode = '', $firstEntry = ''){
 		if(!$elementtype){

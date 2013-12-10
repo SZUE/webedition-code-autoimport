@@ -34,13 +34,13 @@ function we_tag_back($attribs){
 		default:
 			if(isset($GLOBALS["_we_voting_list"])){
 				return $GLOBALS["_we_voting_list"]->getBackLink($attribs);
-			} else{
+			} else {
 				return $GLOBALS["lv"]->getBackLink($attribs);
 			}
 		case 'stop':
 			if(isset($GLOBALS["_we_voting_list"])){
 				return ($GLOBALS["_we_voting_list"]->hasPrevPage() ? '</a>' : '');
-			} else{
+			} else {
 				return ($GLOBALS["lv"]->hasPrevPage() && $GLOBALS["lv"]->close_a() ? '</a>' : '');
 			}
 	}

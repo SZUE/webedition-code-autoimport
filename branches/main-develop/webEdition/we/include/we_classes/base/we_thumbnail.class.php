@@ -406,7 +406,7 @@ class we_thumbnail{
 	 * @public
 	 */
 	public function getOutputPath($withDocumentRoot = false, $unique = false){
-		return ($withDocumentRoot ? $_SERVER['DOCUMENT_ROOT'] : '') . $this->outputPath . ((!$withDocumentRoot && $unique )? '?t=' . ($this->exists() ? filemtime($_SERVER['DOCUMENT_ROOT'] . $this->outputPath) : time()):'');
+		return ($withDocumentRoot ? $_SERVER['DOCUMENT_ROOT'] : '') . $this->outputPath . ((!$withDocumentRoot && $unique ) ? '?t=' . ($this->exists() ? filemtime($_SERVER['DOCUMENT_ROOT'] . $this->outputPath) : time()) : '');
 	}
 
 	/**

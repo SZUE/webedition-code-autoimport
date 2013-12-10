@@ -569,7 +569,7 @@ function changeit(value, rowNr){
 		search = "' . str_replace(
 					"\n", "\\n", addslashes(
 						we_html_tools::htmlSelect(
-							'search[__we_new_id__]', $this->searchclass->getUsers(), 1, "", false, array('class'=>"defaultfont" ,'style'=>"width:190px;" ,'id'=>"search[__we_new_id__]" )))) . '";
+							'search[__we_new_id__]', $this->searchclass->getUsers(), 1, "", false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[__we_new_id__]")))) . '";
 
 		var cell = document.createElement("TD");
 		cell.setAttribute("id", "td_search["+rowNr+"]");
@@ -593,7 +593,7 @@ function changeit(value, rowNr){
 		search = "' . str_replace(
 					"\n", "\\n", addslashes(
 						we_html_tools::htmlSelect(
-							'search[__we_new_id__]', $this->searchclass->getStats(), 1, "", false, array('class'=>"defaultfont" ,'style'=>"width:190px;" ,'id'=>"search[__we_new_id__]" )))) . '";
+							'search[__we_new_id__]', $this->searchclass->getStats(), 1, "", false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[__we_new_id__]")))) . '";
 
 		var cell = document.createElement("TD");
 		cell.setAttribute("id", "td_search["+rowNr+"]");
@@ -690,7 +690,7 @@ function delRow(id) {
 
 			$search = we_html_tools::htmlSelect(
 					"search[" . $i . "]", $this->searchclass->getModFields(), 1, (isset($this->searchclass->search) && is_array($this->searchclass->search) && isset(
-						$this->searchclass->search[$i]) ? $this->searchclass->search[$i] : ""), false, array('class'=>"defaultfont", 'style'=>"width:190px;" ,'id'=>'search[' . $i . ']'));
+						$this->searchclass->search[$i]) ? $this->searchclass->search[$i] : ""), false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => 'search[' . $i . ']'));
 
 			$locationDisabled = "disabled";
 			$handle = "";
@@ -700,17 +700,17 @@ function delRow(id) {
 				if($this->searchclass->searchFields[$i] == "allModsIn"){
 					$search = we_html_tools::htmlSelect(
 							"search[" . $i . "]", $this->searchclass->getModFields(), 1, (isset($this->searchclass->search) && is_array($this->searchclass->search) && isset(
-								$this->searchclass->search[$i]) ? $this->searchclass->search[$i] : ""), false, array('class'=>"defaultfont" ,'style'=>"width:190px;" ,'id'=>'search[' . $i . ']'));
+								$this->searchclass->search[$i]) ? $this->searchclass->search[$i] : ""), false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => 'search[' . $i . ']'));
 				}
 				if($this->searchclass->searchFields[$i] == "modifierID"){
 					$search = we_html_tools::htmlSelect(
 							"search[" . $i . "]", $this->searchclass->getUsers(), 1, (isset($this->searchclass->search) && is_array($this->searchclass->search) && isset(
-								$this->searchclass->search[$i]) ? $this->searchclass->search[$i] : ""), false, array('class'=>"defaultfont" ,'style'=>"width:190px;" ,'id'=>'search[' . $i . ']'));
+								$this->searchclass->search[$i]) ? $this->searchclass->search[$i] : ""), false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => 'search[' . $i . ']'));
 				}
 				if($this->searchclass->searchFields[$i] == "status"){
 					$search = we_html_tools::htmlSelect(
 							"search[" . $i . "]", $this->searchclass->getStats(), 1, (isset($this->searchclass->search) && is_array($this->searchclass->search) && isset(
-								$this->searchclass->search[$i]) ? $this->searchclass->search[$i] : ""), false, array('class'=>"defaultfont" ,'style'=>"width:190px;" ,'id'=>'search[' . $i . ']'));
+								$this->searchclass->search[$i]) ? $this->searchclass->search[$i] : ""), false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => 'search[' . $i . ']'));
 				}
 				if($this->searchclass->searchFields[$i] == "timestamp"){
 					$locationDisabled = "";
@@ -724,10 +724,10 @@ function delRow(id) {
 				<tr id="filterRow_' . $i . '">
 					<td>' . we_html_tools::htmlSelect(
 					"searchFields[" . $i . "]", $this->searchclass->getFields(), 1, (isset($this->searchclass->searchFields) && is_array($this->searchclass->searchFields) && isset(
-						$this->searchclass->searchFields[$i]) ? $this->searchclass->searchFields[$i] : ""), false, array('class'=>"defaultfont" ,'id'=>'searchFields[' . $i . ']', 'onChange'=>'changeit(this.value, ' . $i . ');')) . '</td>
+						$this->searchclass->searchFields[$i]) ? $this->searchclass->searchFields[$i] : ""), false, array('class' => "defaultfont", 'id' => 'searchFields[' . $i . ']', 'onChange' => 'changeit(this.value, ' . $i . ');')) . '</td>
 					<td id="td_location[' . $i . ']">' . we_html_tools::htmlSelect(
 					"location[" . $i . "]", $this->searchclass->getLocation($handle), 1, (isset($this->searchclass->location) && is_array($this->searchclass->location) && isset(
-						$this->searchclass->location[$i]) ? $this->searchclass->location[$i] : ""), false, array('class'=>"defaultfont",$locationDisabled =>$locationDisabled,'id'=>'location[' . $i . ']')) . '</td>
+						$this->searchclass->location[$i]) ? $this->searchclass->location[$i] : ""), false, array('class' => "defaultfont", $locationDisabled => $locationDisabled, 'id' => 'location[' . $i . ']')) . '</td>
 					<td id="td_search[' . $i . ']">' . $search . '</td>
 					<td id="td_delButton[' . $i . ']">' . $button . '</td>
 				</tr>

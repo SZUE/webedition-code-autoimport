@@ -40,8 +40,8 @@ $_iFrmPadAtts['frameborder'] = '0';
 $_iFrmPad = str_replace('>', ' allowtransparency="true">', getHtmlTag('iframe', $_iFrmPadAtts, '', true));
 
 $oTblCont = new we_html_table(array(
-		"cellpadding" => 0, "cellspacing" => 0, "border" => 0
-		), 1, 1);
+	"cellpadding" => 0, "cellspacing" => 0, "border" => 0
+	), 1, 1);
 $oTblCont->setCol(0, 0, null, $_iFrmPad);
 $aLang = array(
 	g_l('cockpit', '[notes]') . " - " . base64_decode($pad_header_enc), ""

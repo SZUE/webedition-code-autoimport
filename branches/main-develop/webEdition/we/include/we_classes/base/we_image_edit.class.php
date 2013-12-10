@@ -102,7 +102,7 @@ class we_image_edit{
 			case "\x89" . 'PN':
 				return 'png';
 			default:
-				if(substr($imagedata,0,2)=='BM'){
+				if(substr($imagedata, 0, 2) == 'BM'){
 					return 'bmp';
 				}
 				return '';

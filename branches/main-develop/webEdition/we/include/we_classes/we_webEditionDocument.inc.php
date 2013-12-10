@@ -469,7 +469,7 @@ class we_webEditionDocument extends we_textContentDocument{
 <tr><td>
 	<table style="border-spacing: 0px;border-style:none" cellpadding="0">
 		<tr><td colspan="2" class="defaultfont">' . g_l('weClass', "[Charset]") . '</td>
-		<tr><td>' . $this->htmlTextInput("dummi", 40, g_l('charset', "[error][no_charset_tag]"), "", " readonly disabled", "text", 254) . '</td><td>' . $this->htmlSelect("dummi2", array(g_l('charset', "[error][no_charset_available]")), 1, DEFAULT_CHARSET, false, array("disabled"=>'disabled'), "value", "254") . '</td></tr>
+		<tr><td>' . $this->htmlTextInput("dummi", 40, g_l('charset', "[error][no_charset_tag]"), "", " readonly disabled", "text", 254) . '</td><td>' . $this->htmlSelect("dummi2", array(g_l('charset', "[error][no_charset_available]")), 1, DEFAULT_CHARSET, false, array("disabled" => 'disabled'), "value", "254") . '</td></tr>
 	</table>
 </td></tr>';
 		}

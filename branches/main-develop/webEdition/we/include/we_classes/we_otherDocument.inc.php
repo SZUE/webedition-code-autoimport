@@ -80,7 +80,7 @@ class we_otherDocument extends we_binaryDocument{
 	function insertAtIndex(){
 		$text = '';
 		$this->resetElements();
-		while((list($k, $v) = $this->nextElement(''))) {
+		while((list($k, $v) = $this->nextElement(''))){
 			$foo = (isset($v['dat']) && substr($v['dat'], 0, 2) == 'a:') ? unserialize($v['dat']) : '';
 			if(!is_array($foo)){
 				if(isset($v['type']) && $v['type'] == 'txt' && isset($v['dat'])){
@@ -231,4 +231,3 @@ class we_otherDocument extends we_binaryDocument{
 	}
 
 }
-

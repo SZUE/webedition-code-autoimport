@@ -853,7 +853,7 @@ set_button_state(false);';
 			$seconds = $version_delete['delete_seconds'];
 			$timestamp = mktime($hour, $minutes, $seconds, $month, $day, $year);
 
-			$timestampWhere = ' timestamp<' . $timestamp.' ';
+			$timestampWhere = ' timestamp<' . $timestamp . ' ';
 		}
 
 		$parts = array();
@@ -1277,8 +1277,7 @@ set_button_state(false);';
 		if(!count($contents)){
 			return '';
 		}
-		$headCal =
-			we_html_element::linkElement(
+		$headCal = we_html_element::linkElement(
 				array(
 					"rel" => "stylesheet",
 					"type" => "text/css",

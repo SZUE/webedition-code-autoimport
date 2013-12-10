@@ -79,13 +79,13 @@ $_button = we_html_button::create_button("close", "javascript:self.close();");
 
 $we_tabs = new we_tabs();
 
-$we_tabs->addTab(new we_tab("#", g_l('versions', '[versionDiffs]'), '((activ_tab==1) ? '.we_tab::ACTIVE.' : '.we_tab::NORMAL.')', "setTab('1');", array("id" => "tab_1")));
+$we_tabs->addTab(new we_tab("#", g_l('versions', '[versionDiffs]'), '((activ_tab==1) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('1');", array("id" => "tab_1")));
 
 if(!$isObj){
-	$we_tabs->addTab(new we_tab("#", g_l('versions', '[previewVersionNew]'), '((activ_tab==2) ? '.we_tab::ACTIVE.' : '.we_tab::NORMAL.')', "setTab('2');", array("id" => "tab_2")));
+	$we_tabs->addTab(new we_tab("#", g_l('versions', '[previewVersionNew]'), '((activ_tab==2) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('2');", array("id" => "tab_2")));
 }
 if(!empty($oldDoc) && !$isObj){
-	$we_tabs->addTab(new we_tab("#", g_l('versions', '[previewVersionOld]'), '((activ_tab==3) ? '.we_tab::ACTIVE.' : '.we_tab::NORMAL.')', "setTab('3');", array("id" => "tab_3")));
+	$we_tabs->addTab(new we_tab("#", g_l('versions', '[previewVersionOld]'), '((activ_tab==3) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('3');", array("id" => "tab_3")));
 }
 
 $js = $we_tabs->getHeader() . we_html_element::jsElement('
@@ -607,7 +607,7 @@ print STYLESHEET;
 		//new jsWindow("<?php print WEBEDITION_DIR; ?>we/include/we_versions/weVersionsPreview.php?ID="+ID+"&newCompareID="+newID+"", "version_preview",-1,-1,1000,750,true,true,true,true);
 
 	}
-	//-->
+//-->
 </script>
 <?php print we_html_element::jsScript(JS_DIR . 'windows.js') . $js; ?>
 <style type="text/css" media="screen">

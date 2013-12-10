@@ -264,7 +264,7 @@ class we_import_updater extends weXMLExIm{
 					}
 				}
 
-				if(isset($object->ClassName) && ($object->ClassName == "we_object") && preg_match('|'.we_object::QUERY_PREFIX.'([0-9])+([a-zA-Z]*[0-9]*)|', $k, $regs)){
+				if(isset($object->ClassName) && ($object->ClassName == "we_object") && preg_match('|' . we_object::QUERY_PREFIX . '([0-9])+([a-zA-Z]*[0-9]*)|', $k, $regs)){
 					if(count($regs) > 2 && isset($object->elements[we_object::QUERY_PREFIX . $regs[1] . $regs[2]])){
 						$ref = $this->RefTable->getRef(
 							array(
@@ -365,14 +365,14 @@ class we_import_updater extends weXMLExIm{
 
 	function updateObjectModuleData(&$object){
 
-		if(isset($object->ClassName) && ($object->ClassName == "we_object") && preg_match('|'.we_object::QUERY_PREFIX.'([0-9])+|', implode(',', array_keys($object->SerializedArray)))){
+		if(isset($object->ClassName) && ($object->ClassName == "we_object") && preg_match('|' . we_object::QUERY_PREFIX . '([0-9])+|', implode(',', array_keys($object->SerializedArray)))){
 			if($this->debug){
 				debug("Updating object module data...\n");
 			}
 			$new = array();
 			$del = array();
 			foreach($object->SerializedArray as $elkey => $elvalue){
-				if(preg_match('|'.we_object::QUERY_PREFIX.'([0-9])+|', $elkey, $regs)){
+				if(preg_match('|' . we_object::QUERY_PREFIX . '([0-9])+|', $elkey, $regs)){
 					if(count($regs) > 1){
 						$ref = $this->RefTable->getRef(
 							array(

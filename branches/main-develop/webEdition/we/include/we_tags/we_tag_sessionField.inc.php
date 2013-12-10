@@ -122,7 +122,7 @@ function we_tag_sessionField($attribs, $content){
 			$lang = $doc->Language;
 			if($lang != ''){
 				$langcode = substr($lang, 0, 2);
-			} else{
+			} else {
 				$langcode = we_core_Local::weLangToLocale($GLOBALS["WE_LANGUAGE"]);
 			}
 			$frontendL = $GLOBALS['weFrontendLanguages'];
@@ -174,7 +174,7 @@ function we_tag_sessionField($attribs, $content){
 					if($optionsAr[$i] == $orgVal){
 						$options .= getHtmlTag('option', array('value' => oldHtmlspecialchars($optionsAr[$i]), 'selected' => 'selected'), $optionsAr[$i], true);
 						$isin = 1;
-					} else{
+					} else {
 						$options .= getHtmlTag('option', array('value' => oldHtmlspecialchars($optionsAr[$i])), $optionsAr[$i], true);
 					}
 				}
@@ -182,7 +182,7 @@ function we_tag_sessionField($attribs, $content){
 					$options .= getHtmlTag('option', array('value' => oldHtmlspecialchars($orgVal), 'selected' => 'selected'), oldHtmlspecialchars($orgVal), true);
 				}
 				return getHtmlTag('select', $newAtts, $options, true);
-			} else{
+			} else {
 				return we_getInputTextInputField('s[' . $name . ']', $orgVal, $newAtts);
 			}
 		case 'textarea':
@@ -191,7 +191,7 @@ function we_tag_sessionField($attribs, $content){
 			if($pure){
 				$attribs = removeAttribs($attribs, array('checked', 'type', 'options', 'selected', 'onchange', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'size', 'wysiwyg'));
 				return we_getTextareaField('s[' . $name . ']', $orgVal, $attribs);
-			} else{
+			} else {
 				echo we_html_element::jsElement('weFrontpageEdit=true;');
 				require_once(JS_PATH . 'we_textarea_include.inc.php');
 				$autobr = $autobrAttr ? 'on' : 'off';
@@ -226,7 +226,7 @@ function we_tag_sessionField($attribs, $content){
 				} elseif(!empty($dateformat) && $weTimestemp = new DateTime($orgVal)){
 					return $weTimestemp->format($dateformat);
 				}
-			} else{
+			} else {
 				$lang = weTag_getAttribute('outputlanguage', $attribs);
 				if($lang == ''){
 					$docAttr = weTag_getAttribute('doc', $attribs, 'self');
@@ -241,7 +241,7 @@ function we_tag_sessionField($attribs, $content){
 				if($ascountry){
 					if($orgVal == '--'){
 						return '';
-					} else{
+					} else {
 						if(!Zend_Locale::hasCache()){
 							Zend_Locale::setCache(getWEZendCache());
 						}
@@ -323,7 +323,7 @@ function we_tag_sessionField($attribs, $content){
 			if($thumbnail != ''){
 				$attr['thumbnail'] = $thumbnail;
 				$imgTag = $GLOBALS['we_doc']->getFieldByVal($imgId, 'img', $attr);
-			} else{
+			} else {
 				$imgTag = $GLOBALS['we_doc']->getFieldByVal($imgId, 'img');
 			}
 
@@ -356,7 +356,7 @@ function we_tag_sessionField($attribs, $content){
 						</td>
 					</tr>
 				</table>';
-			} else{
+			} else {
 				return ($imgId ? $imgTag : '');
 			}
 	}

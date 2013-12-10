@@ -35,11 +35,9 @@ class we_captcha_memory{
 		$items = self::readData($file);
 
 		// delete old items
-		if(!empty($items)) {
+		if(!empty($items)){
 			foreach($items as $code => $item){
-				if(time() > $item['time']
-					|| ($_SERVER['REMOTE_ADDR'] == $item['ip']
-					&& $_SERVER['HTTP_USER_AGENT'] == $item['agent'])){
+				if(time() > $item['time'] || ($_SERVER['REMOTE_ADDR'] == $item['ip'] && $_SERVER['HTTP_USER_AGENT'] == $item['agent'])){
 					unset($items[$code]);
 				}
 			}
@@ -69,11 +67,7 @@ class we_captcha_memory{
 		$items = self::readData($file);
 
 		// check if code is valid
-		if(isset($items[$captcha])
-			&& is_array($items[$captcha])
-			&& time() < $items[$captcha]['time']
-			&& $_SERVER['REMOTE_ADDR'] == $items[$captcha]['ip']
-			&& $_SERVER['HTTP_USER_AGENT'] == $items[$captcha]['agent']){
+		if(isset($items[$captcha]) && is_array($items[$captcha]) && time() < $items[$captcha]['time'] && $_SERVER['REMOTE_ADDR'] == $items[$captcha]['ip'] && $_SERVER['HTTP_USER_AGENT'] == $items[$captcha]['agent']){
 			unset($items[$captcha]);
 			$returnValue = true;
 		}
@@ -81,9 +75,7 @@ class we_captcha_memory{
 		// delete old items
 		if(!empty($items)){
 			foreach($items as $code => $item){
-				if(time() > $item['time']
-					|| ($_SERVER['REMOTE_ADDR'] == $item['ip']
-					&& $_SERVER['HTTP_USER_AGENT'] == $item['agent'])){
+				if(time() > $item['time'] || ($_SERVER['REMOTE_ADDR'] == $item['ip'] && $_SERVER['HTTP_USER_AGENT'] == $item['agent'])){
 					unset($items[$code]);
 				}
 			}
@@ -123,7 +115,7 @@ class we_captcha_memory{
 			if(file_exists($file . '.php')){
 				we_base_file::delete($file . '.php');
 			}
-		} else{
+		} else {
 			we_base_file::save($file . '.php', '<?php $data=\'' . serialize($data) . '\';', 'w+');
 		}
 	}

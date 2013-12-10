@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 //FIXME: remove this class
 abstract class we_sidebar_documentParser{
 

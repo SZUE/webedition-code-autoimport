@@ -55,8 +55,8 @@ class weTagData_choiceAttribute extends weTagDataAttribute{
 
 		$select = new we_html_select(array(
 			'onchange' => ($this->Multiple ?
-					'var valSel=this.options[this.selectedIndex].value; var valTa = document.getElementById(\'' . $this->getIdName() . '\').value; document.getElementById(\'' . $this->getIdName() . '\').value=((valTa==\'\' || (valSel==\'\')) ? valSel : (valTa+\',\'+valSel));' :
-					'document.getElementById(\'' . $this->getIdName() . '\').value=this.options[this.selectedIndex].value;'),
+				'var valSel=this.options[this.selectedIndex].value; var valTa = document.getElementById(\'' . $this->getIdName() . '\').value; document.getElementById(\'' . $this->getIdName() . '\').value=((valTa==\'\' || (valSel==\'\')) ? valSel : (valTa+\',\'+valSel));' :
+				'document.getElementById(\'' . $this->getIdName() . '\').value=this.options[this.selectedIndex].value;'),
 			'class' => 'defaultfont selectinput'
 		));
 
@@ -82,12 +82,12 @@ class weTagData_choiceAttribute extends weTagDataAttribute{
 <tr>
 	<td class="attributeName">' . $this->getLabelCodeForTagWizard() . '</td>
 	<td class="attributeField">' . we_html_element::htmlInput(
-						array(
-							'name' => $this->Name,
-							'value' => $this->Value,
-							'id' => $this->getIdName(),
-							'class' => 'wetextinput'
-				)) . '</td>
+				array(
+					'name' => $this->Name,
+					'value' => $this->Value,
+					'id' => $this->getIdName(),
+					'class' => 'wetextinput'
+			)) . '</td>
 	<td class="attributeButton">' . $select->getHtml() . '</td>
 </tr>
 </table>';

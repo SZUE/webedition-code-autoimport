@@ -34,12 +34,11 @@ Zend_Loader::loadClass('we_ui_abstract_AbstractInputElement');
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_ui_controls_DateTime extends we_ui_abstract_AbstractInputElement{
+
 	/**
 	 * Default class name for text input fields
 	 */
-
 	const kDateTimeClas = 'we_ui_controls_DateTime';
-
 
 	/**
 	 * class name for disabled Select

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -22,5 +23,4 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  * @todo       new command controller
  */
-
 echo "the new command controller is not programmed jet.";

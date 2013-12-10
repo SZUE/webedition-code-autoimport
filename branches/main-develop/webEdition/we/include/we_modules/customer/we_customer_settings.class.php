@@ -193,7 +193,7 @@ class we_customer_settings{
 		$field_names = array_keys($field_names);
 
 		foreach($field_names as $fieldname){
-			if(strpos($this->treeTextFormatSQL, '#' . $fieldname)!==false){
+			if(strpos($this->treeTextFormatSQL, '#' . $fieldname) !== false){
 				$this->formatFields[] = $fieldname;
 			}
 			$this->treeTextFormatSQL = str_replace('#' . $fieldname, '",`' . $fieldname . '`,"', $this->treeTextFormatSQL);

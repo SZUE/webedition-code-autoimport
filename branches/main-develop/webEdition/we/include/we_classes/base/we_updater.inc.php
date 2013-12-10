@@ -96,19 +96,19 @@ class we_updater{
 	}
 
 	static function convertPerms(){
-/* don't use, this will damage new Permission entries
- * 		global $DB_WE;
-		$db_tmp = new DB_WE();
-		$DB_WE->query('SELECT ID,username,Permissions FROM ' . USER_TABLE . ' WHERE Permissions NOT LIKE "%ADMINISTRATOR%"');
-		while($DB_WE->next_record()){
-			$perms_slot = array();
-			$pstr = $DB_WE->f("Permissions");
-			$perms_slot["ADMINISTRATOR"] = $pstr[0];
-			$perms_slot["PUBLISH"] = $pstr[1];
-			if(!empty($perms_slot)){
-				$db_tmp->query('UPDATE ' . USER_TABLE . " SET Permissions='" . $db_tmp->escape(serialize($perms_slot)) . "' WHERE ID=" . intval($DB_WE->f("ID")));
-			}
-		}*/
+		/* don't use, this will damage new Permission entries
+		 * 		global $DB_WE;
+		  $db_tmp = new DB_WE();
+		  $DB_WE->query('SELECT ID,username,Permissions FROM ' . USER_TABLE . ' WHERE Permissions NOT LIKE "%ADMINISTRATOR%"');
+		  while($DB_WE->next_record()){
+		  $perms_slot = array();
+		  $pstr = $DB_WE->f("Permissions");
+		  $perms_slot["ADMINISTRATOR"] = $pstr[0];
+		  $perms_slot["PUBLISH"] = $pstr[1];
+		  if(!empty($perms_slot)){
+		  $db_tmp->query('UPDATE ' . USER_TABLE . " SET Permissions='" . $db_tmp->escape(serialize($perms_slot)) . "' WHERE ID=" . intval($DB_WE->f("ID")));
+		  }
+		  } */
 	}
 
 	static function fix_path(){

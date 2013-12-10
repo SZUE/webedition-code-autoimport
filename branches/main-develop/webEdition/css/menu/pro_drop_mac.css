@@ -37,7 +37,7 @@
 #nav li div.click:hover ul{
 	background-color: transparent;
 	background: url(/webEdition/images/menu/bg_mac.png) repeat;
-	opacity: 0.98;	
+	opacity: 0.98;
 	border: 1px solid #cccccc;
 	width: 16.6em;
 	padding: 4px 0 4px 0;
@@ -59,7 +59,7 @@
 
 #nav li div.click:hover ul.sub li:hover{
 	background: url(/webEdition/images/menu/bg_mac_active.gif) repeat;
-	opacity: 1.0;	
+	opacity: 1.0;
 	border-top: solid 1px #3366ff;
 	border-bottom: solid 1px #0066ff;
 	color: #ffffff;

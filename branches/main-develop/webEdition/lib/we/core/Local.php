@@ -26,7 +26,6 @@
  * @package    we_core
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-
 !defined('NO_SESS') && define('NO_SESS', 1);
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
@@ -123,19 +122,18 @@ class we_core_Local{
 
 		if(defined('WE_WEBUSER_LANGUAGE')){
 			self::$_lang = WE_WEBUSER_LANGUAGE;
-		} else{
+		} else {
 			if(!isset($_SESSION)){
 				if(!isset($_SERVER['TMP'])){
-					$_SERVER['TMP'] = WEBEDITION_PATH. 'we/zendcache';
+					$_SERVER['TMP'] = WEBEDITION_PATH . 'we/zendcache';
 				}
-				try {
+				try{
 					Zend_Session::start();
-                } catch(Zend_Session_Exception $e) {
-					t_e('Zend_Session start failed',$e);
+				} catch (Zend_Session_Exception $e){
+					t_e('Zend_Session start failed', $e);
 				}
 				if(!isset($_SESSION)){
-                	t_e('Zend_Session start failed');
-
+					t_e('Zend_Session start failed');
 				}
 			}
 
@@ -146,7 +144,7 @@ class we_core_Local{
 					$_SESSION['prefs']['Language'] = WE_LANGUAGE;
 					self::$_lang = WE_LANGUAGE;
 				}
-			} else{
+			} else {
 				if(defined('WE_LANGUAGE')){
 					self::$_lang = WE_LANGUAGE;
 				}
@@ -201,7 +199,7 @@ class we_core_Local{
 				if(is_null(self::$_translate)){
 					self::$_translate = new we_core_Translate('tmx', $path, $locale);
 					self::$_translate->setLocale($locale);
-				} else{
+				} else {
 					self::$_translate->addTranslation($path, $locale);
 				}
 				self::$_translationSources[] = $path;

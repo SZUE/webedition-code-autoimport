@@ -42,13 +42,13 @@ class we_users_online{
 
 		$DB_WE->query('SELECT ID,username,Ping  FROM ' . USER_TABLE . ' WHERE Ping>UNIX_TIMESTAMP(DATE_SUB(NOW(),INTERVAL ' . (PING_TIME + PING_TOLERANZ) . ' second )) ORDER BY Ping DESC');
 		$colorCount = count($colors);
-		while($DB_WE->next_record()) {
+		while($DB_WE->next_record()){
 			$this->num_uo++;
 			$_fontWeight = ($_SESSION["user"]["ID"] == $DB_WE->f("ID")) ? 'bold' : 'bold';
 			if($i >= 0){
 				$_row .= '<tr><td height="8">' . we_html_tools::getPixel(1, 8) . '</td></tr>';
 			}
-			$_row .= '<tr><td width="30"><img src="' . IMAGE_DIR . 'pd/usr/user_' . $colors[(++$i) % $colorCount] . '.gif" width="24" height="29" /></td>' .
+			$_row .= '<tr><td width="30"><img src="' . IMAGE_DIR . 'pd/usr/user_' . $colors[( ++$i) % $colorCount] . '.gif" width="24" height="29" /></td>' .
 				'<td valign="middle" class="middlefont" style="font-weight:' . $_fontWeight . ';">' . $DB_WE->f("username") . '</td>';
 			if(defined("MESSAGES_TABLE")){
 				$_row .= '<td valign="middle" width="24"><a href="javascript:newMessage(\'' . $DB_WE->f("username") . '\');">' .

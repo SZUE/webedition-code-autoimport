@@ -21,7 +21,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 $_charsetHandler = new we_base_charsetHandler();
 $whiteList = array();
 $_charsets = $_charsetHandler->charsets;
@@ -102,14 +101,14 @@ try{
 top.close();');
 	?>
 
-		</head>
+	</head>
 	<body marginwidth="0" marginheight="0" leftmargin="0" topmargin="0">
 		<?php
 	} else {
 
 		echo STYLESHEET .
-			we_html_element::jsScript(JS_DIR . 'windows.js') .
-			we_html_element::jsElement('top.focus();');
+		we_html_element::jsScript(JS_DIR . 'windows.js') .
+		we_html_element::jsElement('top.focus();');
 		?>
 	</head>
 	<body marginwidth="0" marginheight="0" leftmargin="0" topmargin="0" style="background-image:url(<?php echo IMAGE_DIR; ?>backgrounds/aquaBackground.gif);">
@@ -118,7 +117,7 @@ top.close();');
 			<?php
 			foreach($_REQUEST['we_cmd'] as $i => $v){
 				echo '<input type="hidden" name="we_cmd[' . $i . ']" value="' . $_REQUEST['we_cmd'][$i] . '" />';
-				}
+			}
 
 			/*
 			  1 = name
@@ -149,7 +148,7 @@ top.close();');
 			 */
 
 			$e = new we_wysiwyg(
-					$_REQUEST['we_cmd'][1], $_REQUEST['we_cmd'][2], $_REQUEST['we_cmd'][3], ($_REQUEST['we_cmd'][4] ? we_cmd_dec(4) : ''), $_REQUEST['we_cmd'][5], $_REQUEST['we_cmd'][13], '', $_REQUEST['we_cmd'][6], $_REQUEST['we_cmd'][7], $_REQUEST['we_cmd'][8], $_REQUEST['we_cmd'][11], $_REQUEST['we_cmd'][12], true, $_REQUEST['we_cmd'][14], $_REQUEST['we_cmd'][15], $_REQUEST['we_cmd'][16], $_REQUEST['we_cmd'][17], '', true, $_REQUEST['we_cmd'][23], 'top', true, we_cmd_dec(18), we_cmd_dec(19), we_cmd_dec(20), we_cmd_dec(21), true, $_REQUEST['we_cmd'][24]
+				$_REQUEST['we_cmd'][1], $_REQUEST['we_cmd'][2], $_REQUEST['we_cmd'][3], ($_REQUEST['we_cmd'][4] ? we_cmd_dec(4) : ''), $_REQUEST['we_cmd'][5], $_REQUEST['we_cmd'][13], '', $_REQUEST['we_cmd'][6], $_REQUEST['we_cmd'][7], $_REQUEST['we_cmd'][8], $_REQUEST['we_cmd'][11], $_REQUEST['we_cmd'][12], true, $_REQUEST['we_cmd'][14], $_REQUEST['we_cmd'][15], $_REQUEST['we_cmd'][16], $_REQUEST['we_cmd'][17], '', true, $_REQUEST['we_cmd'][23], 'top', true, we_cmd_dec(18), we_cmd_dec(19), we_cmd_dec(20), we_cmd_dec(21), true, $_REQUEST['we_cmd'][24]
 			);
 
 
@@ -160,8 +159,8 @@ top.close();');
 				'<div style="height:8px"></div>' . we_html_button::position_yes_no_cancel($okBut, $cancelBut);
 			?>
 		</form>
-			<?php
-		}
+		<?php
+	}
 	?>
 </body>
 </html>

@@ -254,7 +254,7 @@ abstract class we_ui_abstract_AbstractElement extends we_core_AbstractObject{
 		if($this->getClass() !== ''){
 			if($class !== ''){
 				$class .= ' ' . $this->getClass();
-			} else{
+			} else {
 				$class = $this->getClass();
 			}
 		}

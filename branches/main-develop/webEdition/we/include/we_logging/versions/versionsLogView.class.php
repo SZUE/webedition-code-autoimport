@@ -241,7 +241,7 @@ class versionsLogView{
 			}
 
 			$out .= '</table></div>';
-		} else{
+		} else {
 			$out = '<div align="center" width="100%">' . g_l('logging', '[notfound]') . '</div>';
 		}
 

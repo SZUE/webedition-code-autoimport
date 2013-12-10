@@ -35,7 +35,7 @@ class weTagData_sqlColAttribute extends weTagData_selectAttribute{
 	 * @param boolean $required
 	 * @param array $filter
 	 */
-	function __construct($name, $table, $required = false, $filter = array(), $module = '', $description='', $deprecated=false){
+	function __construct($name, $table, $required = false, $filter = array(), $module = '', $description = '', $deprecated = false){
 
 		$this->Table = $table;
 

@@ -564,11 +564,11 @@ setTimeout('we_import(1," . $v['numFiles'] . ");',15);";
 										$_progress_text = addslashes(substr($_progress_text, 0, 65) . '<acronym title="' . $_path_info . '">...</acronym>' . substr($_progress_text, -10));
 									}
 
-										print we_html_element::jsElement(
-												'if (top.wizbody.addLog){
+									print we_html_element::jsElement(
+											'if (top.wizbody.addLog){
 												top.wizbody.addLog("' . addslashes(we_html_tools::getPixel(50, 5)) . $_progress_text . '<br>");
 											}');
-										flush();
+									flush();
 								} else {
 									$_status = g_l('import', '[skip]');
 								}
@@ -676,7 +676,7 @@ top.wizbusy.setProgress(Math.floor(((" . $v['cid'] . "+1)/" . (int) (2 * $v["num
 							case 'documents':
 								$IsSearchable = $v["docType"] > 0 ? (isset($v['doc_search']) && $v['doc_search']) || f('SELECT IsSearchable FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($v["docType"]), 'IsSearchable', new DB_WE()) : $v['doc_search'];
 								if(!we_import_functions::importDocument($v["store_to_id"], $v["we_TemplateID"], $fields, $v["docType"], $v["docCategories"], $rcd_name, $v["is_dynamic"], $v["we_Extension"], isset($v['doc_publish']) ? $v['doc_publish'] : true, $IsSearchable, isset($v['encoding']) ? DEFAULT_CHARSET : '' //if charset is set, we know csv was converted to defaultcharset
-								,$v['collision'])){
+										, $v['collision'])){
 									t_e('warning', 'import of entry failed', $fields);
 								}
 								break;

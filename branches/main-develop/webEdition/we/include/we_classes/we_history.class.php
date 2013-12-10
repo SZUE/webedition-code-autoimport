@@ -67,4 +67,3 @@ abstract class we_history{
 	}
 
 }
-

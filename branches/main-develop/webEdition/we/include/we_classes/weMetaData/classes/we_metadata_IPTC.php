@@ -61,7 +61,7 @@ class we_metadata_IPTC extends we_metadata_metaData{
 				foreach($selection as $value){
 					$this->metadata[] = $_iptcData->getTag($value);
 				}
-			} else{
+			} else {
 				foreach(explode(',', self::usedFields) as $fieldName){
 					$_data = $_iptcData->getTag($fieldName);
 					if(!is_null($_data)){

@@ -100,7 +100,7 @@ function remember_value(array &$setArray, $settingvalue, $settingname){
 			default:
 				$setArray[$settingname] = abs($settingvalue);
 		}
-	} else{
+	} else {
 		switch($settingname){
 			case 'Format':
 				$setArray[$settingname] = 'jpg';
@@ -184,7 +184,7 @@ function build_dialog($selected_setting = 'ui'){
 
 			$DB_WE->query('SELECT Name FROM ' . THUMBNAILS_TABLE);
 
-			while($DB_WE->next_record()) {
+			while($DB_WE->next_record()){
 				$_thumbnail_names .= "'" . str_replace("'", "\'", $DB_WE->f("Name")) . "',";
 			}
 
@@ -253,7 +253,7 @@ function build_dialog($selected_setting = 'ui'){
 
 			$_thumbnail_counter_firsttime = true;
 
-			while($DB_WE->next_record()) {
+			while($DB_WE->next_record()){
 				$_enabled_buttons = true;
 				$_thumbnail_counter = $DB_WE->f('ID');
 
@@ -410,14 +410,14 @@ function getMainDialog(){
 		if(isset($_REQUEST['thumbnail_name']) && (strpos($_REQUEST['thumbnail_name'], "'") !== false || strpos($_REQUEST['thumbnail_name'], ',') !== false)){
 			$save_javascript = we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[thumbnail_hochkomma]'), we_message_reporting::WE_MESSAGE_ERROR) .
 					'history.back()');
-		} else{
+		} else {
 			save_all_values();
 			$save_javascript = we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('thumbnails', '[saved]'), we_message_reporting::WE_MESSAGE_NOTICE) .
 					"self.location = '" . $GLOBALS['reloadUrl'] . "&id=" . $_REQUEST["edited_id"] . "';");
 		}
 
 		return $save_javascript . build_dialog('saved');
-	} else{
+	} else {
 
 		return we_html_element::htmlForm(array('name' => 'we_form', 'method' => 'get', 'action' => $_SERVER['SCRIPT_NAME']), we_html_element::htmlHidden(array('name' => 'we_cmd[0]', 'value' => 'editThumbs')) . we_html_element::htmlHidden(array('name' => 'save_thumbnails', 'value' => 'false')) . render_dialog()) .
 			we_html_element::jsElement('init();');
@@ -444,7 +444,7 @@ function saveOnKeyBoard() {
 			, we_html_element::htmlExIFrame('we_thumbnails', getMainDialog(), 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: hidden;', 'weDialogBody') .
 			we_html_element::htmlExIFrame('we_thumbnails_footer', getFooter(), 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden;')
 	)) . '</html>';
-} else{ //  gd_lib is not installed - show error
+} else { //  gd_lib is not installed - show error
 	print STYLESHEET . '</head><body class="weDialogBody">';
 
 

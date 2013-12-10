@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class weGlossarySettingFrames{
+
 	private $Frameset;
 	var $Controller;
 	var $db;
@@ -53,7 +54,7 @@ class weGlossarySettingFrames{
 				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
 					, we_html_element::htmlExIFrame('content', $this->getHTMLContent(), 'position:absolute;top:0px;bottom:1px;left:0px;right:0px;overflow: hidden;') .
 					we_html_element::htmlIFrame('cmdFrame', HTML_DIR . 'white.html', 'position:absolute;height:1px;bottom:0px;left:0px;right:0px;overflow: hidden;')
-				)) . '</html>';
+			)) . '</html>';
 	}
 
 	function getHTMLContent(){

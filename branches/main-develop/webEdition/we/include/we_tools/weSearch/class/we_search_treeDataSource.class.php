@@ -39,7 +39,7 @@ class we_search_treeDataSource extends we_tool_treeDataSource{
 			$id = $_SESSION['weS']['weSearch']["modelidForTree"];
 			$pid = f("SELECT ParentID FROM " . $db->escape($table) . " WHERE ID=" . intval($id), "ParentID", $db);
 			$openFolders[] = $pid;
-			while($pid > 0) {
+			while($pid > 0){
 				$pid = f("SELECT ParentID FROM " . $db->escape($table) . " WHERE ID=" . intval($pid), "ParentID", $db);
 				$openFolders[] = $pid;
 			}
@@ -69,21 +69,21 @@ class we_search_treeDataSource extends we_tool_treeDataSource{
 
 		$db->query("SELECT $elem, LOWER(Text) AS lowtext, abs(Text) as Nr, (Text REGEXP '^[0-9]') as isNr from " . $db->escape($table) . " $where ORDER BY isNr DESC,Nr,lowtext,Text " . ($segment ? "LIMIT " . abs($offset) . "," . abs($segment) . ";" : ";"));
 
-		while($db->next_record()) {
+		while($db->next_record()){
 			if(($db->f('ID') == 3 || $db->f('ID') == 7) && (!defined('OBJECT_FILES_TABLE') || !defined('OBJECT_TABLE') || !permissionhandler::hasPerm('CAN_SEE_OBJECTFILES'))){
 
 			} elseif(($db->f('ID') == 2 || $db->f('ID') == 4 || $db->f('ID') == 5 || $db->f('ID') == 6) && !permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
 
 			} elseif(($db->f('Path') == '/Versionen' || $db->f('Path') == '/Versionen/Dokumente' || $db->f('Path') == '/Versionen/Objekte' || $db->f('Path') == '/Versionen/Dokumente/gel�schte Dokumente' || $db->f('Path') == '/Versionen/Objekte/gel�schte Objekte') && !permissionhandler::hasPerm('SEE_VERSIONS')){
 
-			} else{
+			} else {
 				$OpenCloseStatus = (in_array($db->f('ID'), $openFolders) ? 1 : 0);
 
 				if($db->f('IsFolder') == 1){
 					$typ = array(
 						'typ' => 'group'
 					);
-				} else{
+				} else {
 					$typ = array(
 						'typ' => 'item'
 					);

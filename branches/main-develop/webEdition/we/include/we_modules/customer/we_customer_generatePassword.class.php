@@ -75,16 +75,16 @@ class we_customer_generatePassword{
 		for($i = 0; $i < strlen($pass); $i++){
 			$c = substr($pass, $i, 1);
 			if(strpos($this->caps, $c)){
-				$cond['caps']++;
+				$cond['caps'] ++;
 			}
 			if(strpos($this->small, $c)){
-				$cond['small']++;
+				$cond['small'] ++;
 			}
 			if(strpos($this->nums, $c)){
-				$cond['nums']++;
+				$cond['nums'] ++;
 			}
 			if(strpos($this->specs, $c)){
-				$cond['specs']++;
+				$cond['specs'] ++;
 			}
 		}
 		return ($this->condition['caps'] <= $cond['caps'] && $this->condition['small'] <= $cond['small'] && $this->condition['nums'] <= $cond['nums'] && $this->condition['specs'] <= $cond['specs']);

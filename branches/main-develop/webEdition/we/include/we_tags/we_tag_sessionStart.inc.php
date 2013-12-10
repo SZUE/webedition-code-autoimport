@@ -77,9 +77,9 @@ function we_tag_sessionStart($attribs){
 			}
 			//FIXME: make this a performance entry in prefs
 			if(/* (isset($GLOBALS['WE_LOGIN']) && $GLOBALS['WE_LOGIN'])&& */isset($_SESSION['webuser']['registered']) && isset($_SESSION['webuser']['ID']) && isset($_SESSION['webuser']['Username']) && $_SESSION['webuser']['registered'] && $_SESSION['webuser']['ID'] && $_SESSION['webuser']['Username'] != ''){
-				if($_SESSION['webuser']['LastAccess']+60<time()){
+				if($_SESSION['webuser']['LastAccess'] + 60 < time()){
 					$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET LastAccess=UNIX_TIMESTAMP() WHERE ID=' . intval($_SESSION['webuser']['ID']));
-					$_SESSION['webuser']['LastAccess']=time();
+					$_SESSION['webuser']['LastAccess'] = time();
 				}
 			}
 		}
@@ -94,21 +94,21 @@ function we_tag_sessionStart($attribs){
 
 			$GLOBALS['DB_WE']->query('INSERT INTO ' . CUSTOMER_SESSION_TABLE . ' SET ' .
 				we_database_base::arraySetter(array(
-						'SessionID' => session_id(),
-						'SessionIp' => (empty($_SERVER['REMOTE_ADDR']) ? '' : oldHtmlspecialchars((string) $_SERVER['REMOTE_ADDR'])),					'WebUserID' => $WebUserID,
+					'SessionID' => session_id(),
+					'SessionIp' => (empty($_SERVER['REMOTE_ADDR']) ? '' : oldHtmlspecialchars((string) $_SERVER['REMOTE_ADDR'])), 'WebUserID' => $WebUserID,
 					'WebUserGroup' => $WebUserGroup,
-						'WebUserDescription' => '',
-						'Browser' => (!empty($_SERVER['HTTP_USER_AGENT']) ? oldHtmlspecialchars((string) $_SERVER['HTTP_USER_AGENT']) : ''),
-						'Referrer' => (!empty($_SERVER['HTTP_REFERER']) ? oldHtmlspecialchars((string) $_SERVER['HTTP_REFERER']) : ''),
+					'WebUserDescription' => '',
+					'Browser' => (!empty($_SERVER['HTTP_USER_AGENT']) ? oldHtmlspecialchars((string) $_SERVER['HTTP_USER_AGENT']) : ''),
+					'Referrer' => (!empty($_SERVER['HTTP_REFERER']) ? oldHtmlspecialchars((string) $_SERVER['HTTP_REFERER']) : ''),
 					'LastLogin' => sql_function('NOW()'),
-						'PageID' => $doc->ID,
-						'ObjectID' => 0,
+					'PageID' => $doc->ID,
+					'ObjectID' => 0,
 					'SessionAutologin' => $SessionAutologin
 				)) . ' ON DUPLICATE KEY UPDATE ' . we_database_base::arraySetter(array(
-						'PageID' => $doc->ID,
-						'WebUserID' => $WebUserID,
+					'PageID' => $doc->ID,
+					'WebUserID' => $WebUserID,
 					'WebUserGroup' => $WebUserGroup,
-						'WebUserDescription' => '',
+					'WebUserDescription' => '',
 			)));
 		}
 		return '';
@@ -152,7 +152,7 @@ function wetagsessionStartdoLogin($persistentlogins, &$SessionAutologin){
 		}
 		$wasRegistered = $_SESSION['webuser']['registered'];
 		$u = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE Password!="" AND LoginDenied=0 AND Username="' . $GLOBALS['DB_WE']->escape($_REQUEST['s']['Username']) . '"', $GLOBALS['DB_WE'], MYSQL_ASSOC);
-		if($u  && we_customer_customer::comparePassword($u['Password'], $_REQUEST['s']['Password'])){
+		if($u && we_customer_customer::comparePassword($u['Password'], $_REQUEST['s']['Password'])){
 			if(SECURITY_SESSION_PASSWORD & we_customer_customer::STORE_DBPASSWORD == 0){
 				unset($u['Password']);
 			}

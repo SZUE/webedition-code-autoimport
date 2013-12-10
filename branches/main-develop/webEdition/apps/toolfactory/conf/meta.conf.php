@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,15 +22,14 @@
  * @package    webEdition_toolfactory
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 include_once('define.conf.php');
 
 $metaInfo = array(
 	'name' => 'toolfactory',
-	'classname'=>'toolfactory',
-	'maintable'=>'',
-	'datasource'=>'custom:',
-	'startpermission'=>'USE_APP_TOOLFACTORY',
+	'classname' => 'toolfactory',
+	'maintable' => '',
+	'datasource' => 'custom:',
+	'startpermission' => 'USE_APP_TOOLFACTORY',
 	'supportshooks' => 1,
-	'appdisabled'=>0 
+	'appdisabled' => 0
 );

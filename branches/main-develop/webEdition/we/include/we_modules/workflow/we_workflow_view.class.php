@@ -174,7 +174,7 @@ class we_workflow_view extends we_workflow_base{
 
 	function getWorkflowSelectHTML(){
 		$vals = we_workflow_workflow::getAllWorkflowsInfo();
-		return we_html_tools::htmlSelect('wid', $vals, 4, $this->workflowDef->ID, false, array("onclick"=>"we_cmd(\"edit_workflow\")"), "value", 200);
+		return we_html_tools::htmlSelect('wid', $vals, 4, $this->workflowDef->ID, false, array("onclick" => "we_cmd(\"edit_workflow\")"), "value", 200);
 	}
 
 	function getWorkflowTypeHTML(){
@@ -436,7 +436,7 @@ class we_workflow_view extends we_workflow_base{
 			$t = $this->db->f('DocType');
 			$vals[$v] = $t;
 		}
-		$pop = we_html_tools::htmlSelect($this->uid . '_MYDocType[]', $vals, 6, $this->workflowDef->DocType, true, array('onChange'=>"top.content.setHot();"), "value", $width, "defaultfont");
+		$pop = we_html_tools::htmlSelect($this->uid . '_MYDocType[]', $vals, 6, $this->workflowDef->DocType, true, array('onChange' => "top.content.setHot();"), "value", $width, "defaultfont");
 
 		return we_html_tools::htmlFormElementTable($pop, g_l('modules_workflow', '[doctype]'));
 	}
@@ -462,7 +462,7 @@ class we_workflow_view extends we_workflow_base{
 	function getJSTopCode(){
 		$mod = isset($_REQUEST['mod']) ? $_REQUEST['mod'] : '';
 		$modData = weModuleInfo::getModuleData($mod);
-		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' .$modData['text'] : '';
+		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 		?>
 		<script type="text/javascript"><!--
 
@@ -517,7 +517,7 @@ class we_workflow_view extends we_workflow_base{
 							}
 							else {
 			<?php print we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
-						}
+							}
 
 							top.content.editor.edbody.document.we_form.wcmd.value = arguments[0];
 							top.content.editor.edbody.submitForm();
@@ -541,7 +541,7 @@ class we_workflow_view extends we_workflow_base{
 							}
 							else {
 			<?php print we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[nothing_to_save]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
-						}
+							}
 							top.content.editor.edbody.document.we_form.wcmd.value = arguments[0];
 							top.content.editor.edbody.submitForm();
 							top.content.usetHot();
@@ -568,7 +568,7 @@ class we_workflow_view extends we_workflow_base{
 						eval('top.opener.top.we_cmd(' + args + ')');
 				}
 			}
-			//-->
+		//-->
 		</script>
 		<?php
 	}

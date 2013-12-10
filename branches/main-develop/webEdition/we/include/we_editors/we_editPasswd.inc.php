@@ -67,7 +67,7 @@ top.document.forms[0].elements["newpasswd"].select();';
 			$js = we_message_reporting::getShowMessageCall(g_l('global', '[pass_not_confirmed]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 top.document.forms[0].elements["newpasswd2"].focus();
 top.document.forms[0].elements["newpasswd2"].select();';
-		} else{
+		} else {
 			$useSalt = 0;
 			//essential leave this line
 			$pwd = $DB_WE->escape(we_users_user::makeSaltedPassword($useSalt, $_SESSION['user']['Username'], $newpasswd));

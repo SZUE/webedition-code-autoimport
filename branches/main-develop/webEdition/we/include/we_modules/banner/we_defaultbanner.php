@@ -73,32 +73,39 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 			}
 		}
 	}
-	function we_cmd(){
+	function we_cmd() {
 		var args = "";
-		var url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-		switch (arguments[0]){
+		var url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?";
+		for (var i = 0; i < arguments.length; i++) {
+			url += "we_cmd[" + i + "]=" + escape(arguments[i]);
+			if (i < (arguments.length - 1)) {
+				url += "&";
+			}
+		}
+		switch (arguments[0]) {
 			case "openBannerSelector":
-				new jsWindow(url,"we_bannerselector",-1,-1,650,400,true,true,true);
+				new jsWindow(url, "we_bannerselector", -1, -1, 650, 400, true, true, true);
 				break;
 			default:
-				for(var i = 0; i < arguments.length; i++){
-					args += 'arguments['+i+']' + ((i < (arguments.length-1)) ? ',' : '');
+				for (var i = 0; i < arguments.length; i++) {
+					args += 'arguments[' + i + ']' + ((i < (arguments.length - 1)) ? ',' : '');
 				}
-				eval('top.content.we_cmd('+args+')');
+				eval('top.content.we_cmd(' + args + ')');
 		}
 	}
 
 	function we_save() {
-		var acLoopCount=0;
+		var acLoopCount = 0;
 		var acIsRunning = false;
-		while(acLoopCount<20 && YAHOO.autocoml.isRunnigProcess()){
+		while (acLoopCount < 20 && YAHOO.autocoml.isRunnigProcess()) {
 			acLoopCount++;
 			acIsRunning = true;
-			setTimeout('we_save()',100);
+			setTimeout('we_save()', 100);
 		}
-		if(!acIsRunning) {
-			if(YAHOO.autocoml.isValid()) {
-				document.we_form.submit();;
+		if (!acIsRunning) {
+			if (YAHOO.autocoml.isValid()) {
+				document.we_form.submit();
+				;
 			} else {
 <?php echo we_message_reporting::getShowMessageCall(g_l('alert', '[save_error_fields_value_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 			}

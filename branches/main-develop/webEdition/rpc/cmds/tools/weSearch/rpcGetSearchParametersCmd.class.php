@@ -56,4 +56,3 @@ class rpcGetSearchParametersCmd extends rpcCmd{
 	}
 
 }
-

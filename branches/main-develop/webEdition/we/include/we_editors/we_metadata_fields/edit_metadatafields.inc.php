@@ -184,7 +184,7 @@ function build_dialog($selected_setting = 'ui'){
 				$_adv_row .= '
 <tr id="metadataRow_' . $key . '">
 	<td width="210" style="padding-right:5px;">' . we_html_tools::htmlTextInput('metadataTag[' . $key . ']', 24, $value['tag'], 255, "", "text", 205) . '</td>
-	<td width="200">' . we_html_tools::htmlSelect('metadataType[' . $key . ']', $_metadata_types, 1, $value['type'], false, array('class'=>"defaultfont")) . '</td>
+	<td width="200">' . we_html_tools::htmlSelect('metadataType[' . $key . ']', $_metadata_types, 1, $value['type'], false, array('class' => "defaultfont")) . '</td>
 	<td align="right" width="30">' . we_html_button::create_button("image:btn_function_trash", "javascript:delRow(" . $_i . ")") . '</td>
 </tr>
 <tr id="metadataRow2_' . $key . '">

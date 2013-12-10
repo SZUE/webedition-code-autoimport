@@ -9,7 +9,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -20,7 +20,7 @@
 function we_core_CmdController() {
 
 	this.cmds = new Array();
-	
+
 	//register all command (TopFrameView)
 	this.register = function(cmdid, cmdName, fn, scope, checkFn) {
 		var obj = new Object();
@@ -29,28 +29,28 @@ function we_core_CmdController() {
 		obj.fn = fn;
 		obj.scope = scope ? scope : window;
 		obj.id = cmdid;
-		
+
 		this.cmds.push(obj);
 	}
-	
+
 	this.unregister = function(cmdid) {
 		var newCmds = [];
 		var l = this.cmds.length;
-		for (var i=0; i<l; i++) {
+		for (var i = 0; i < l; i++) {
 			if (this.cmds[i].id !== cmdid) {
 				newCmds.push(this.cmds[i]);
 			}
 		}
 		this.cmds = newCmds;
 	}
-	
+
 	this.fire = function(cmdObj) {
 		var l = arguments.length;
 		var i;
 		var args = [];
 
 		l = this.cmds.length;
-		for (i=0; i<l; i++) {
+		for (i = 0; i < l; i++) {
 			if (this.cmds[i].cmd.cmdName == cmdObj.cmdName && this.cmds[i].checkFn !== null) {
 				//if checking function returns false
 				if (this.cmds[i].checkFn.call(this.cmds[i].scope, cmdObj) === false) {
@@ -58,23 +58,23 @@ function we_core_CmdController() {
 				}
 			}
 		}
-		for (i=0; i<l; i++) {
+		for (i = 0; i < l; i++) {
 			if (this.cmds[i].cmd.cmdName == cmdObj.cmdName && this.cmds[i].fn !== null) {
 				//call every registered function for cmdName as a method of this.cmds[i].scope object
-				
+
 				this.cmds[i].fn.call(this.cmds[i].scope, cmdObj);
 			}
 		}
 	}
-	
+
 	this.cmdOk = function(cmdObj) {
-		if (typeof(cmdObj.followCmd) != "undefined") {
+		if (typeof (cmdObj.followCmd) != "undefined") {
 			this.fire(cmdObj.followCmd);
 		}
 	}
-	
+
 	this.cmdError = function(cmdObj) {
-		if (typeof(weEventController) != undefined && weEventController !== null) {
+		if (typeof (weEventController) != undefined && weEventController !== null) {
 			if (cmdObj.errorType) {
 				switch (cmdObj.errorType) {
 					case "notice":

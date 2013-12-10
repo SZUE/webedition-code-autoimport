@@ -27,5 +27,5 @@ function we_tag_ifNotHtmlMail(){
 		return true;
 	}
 
-	return (isset($GLOBALS['WE_HTMLMAIL'])&& (!$GLOBALS['WE_HTMLMAIL']));
+	return (isset($GLOBALS['WE_HTMLMAIL']) && (!$GLOBALS['WE_HTMLMAIL']));
 }

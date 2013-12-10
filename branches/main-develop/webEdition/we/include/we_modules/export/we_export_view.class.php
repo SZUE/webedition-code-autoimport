@@ -87,7 +87,7 @@ class we_export_view{
 	function getJSTop(){
 		$mod = isset($_REQUEST['mod']) ? $_REQUEST['mod'] : '';
 		$modData = weModuleInfo::getModuleData($mod);
-		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' .$modData['text'] : '';
+		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 
 		$js = '
 			var get_focus = 1;
@@ -396,9 +396,9 @@ class we_export_view{
 					if(!permissionhandler::hasPerm("NEW_EXPORT")){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('export', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
-							);
+						);
 						break;
-					} else{
+					} else {
 						$this->export = new we_export_export();
 						print we_html_element::jsElement('
 								' . $this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->export->Text) . '";
@@ -411,9 +411,9 @@ class we_export_view{
 					if(!permissionhandler::hasPerm("NEW_EXPORT")){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('export', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
-							);
+						);
 						break;
-					} else{
+					} else {
 						$this->export = new we_export_export();
 						$this->export->Text = g_l('export', '[newFolder]');
 						$this->export->IsFolder = 1;
@@ -427,9 +427,9 @@ class we_export_view{
 					if(!permissionhandler::hasPerm("EDIT_EXPORT")){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('export', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
-							);
+						);
 						break;
-					} else{
+					} else {
 						$this->export = new we_export_export($_REQUEST["cmdid"]);
 						print we_html_element::jsElement('
 								' . $this->topFrame . '.hot=0;
@@ -442,28 +442,28 @@ class we_export_view{
 					if(!permissionhandler::hasPerm("NEW_EXPORT")){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('export', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
-							);
+						);
 						break;
-					} else{
+					} else {
 						$js = "";
 						if($this->export->filenameNotValid($this->export->Text)){
 							print we_html_element::jsElement(
 									we_message_reporting::getShowMessageCall(g_l('export', "[wrongtext]"), we_message_reporting::WE_MESSAGE_ERROR)
-								);
+							);
 							break;
 						}
 						// check if filename is valid.
 						if($this->export->exportToFilenameValid($this->export->Filename)){
 							print we_html_element::jsElement(
 									we_message_reporting::getShowMessageCall(g_l('export', "[wrongfilename]"), we_message_reporting::WE_MESSAGE_ERROR)
-								);
+							);
 							break;
 						}
 
 						if(trim($this->export->Text) == ''){
 							print we_html_element::jsElement(
 									we_message_reporting::getShowMessageCall(g_l('export', "[name_empty]"), we_message_reporting::WE_MESSAGE_ERROR)
-								);
+							);
 							break;
 						}
 						$oldpath = $this->export->Path;
@@ -472,13 +472,13 @@ class we_export_view{
 						if($this->export->pathExists($this->export->Path)){
 							print we_html_element::jsElement(
 									we_message_reporting::getShowMessageCall(g_l('export', "[name_exists]"), we_message_reporting::WE_MESSAGE_ERROR)
-								);
+							);
 							break;
 						}
 						if($this->export->isSelf()){
 							print we_html_element::jsElement(
 									we_message_reporting::getShowMessageCall(g_l('export', "[path_nok]"), we_message_reporting::WE_MESSAGE_ERROR)
-								);
+							);
 							break;
 						}
 
@@ -488,7 +488,7 @@ class we_export_view{
 							if(!is_array($weAcResult) || $weAcResult[0]['IsFolder'] == 0){
 								print we_html_element::jsElement(
 										we_message_reporting::getShowMessageCall(g_l('export', '[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR)
-									);
+								);
 								break;
 							}
 						}
@@ -498,7 +498,7 @@ class we_export_view{
 							if(!is_array($weAcResult) || $weAcResult[0]['IsFolder'] == 0){
 								print we_html_element::jsElement(
 										we_message_reporting::getShowMessageCall(g_l('export', '[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR)
-									);
+								);
 								break;
 							}
 						}
@@ -512,7 +512,7 @@ class we_export_view{
 						if($this->export->IsFolder && $oldpath != '' && $oldpath != '/' && $oldpath != $this->export->Path){
 							$db_tmp = new DB_WE();
 							$this->db->query('SELECT ID FROM ' . EXPORT_TABLE . ' WHERE Path LIKE \'' . $this->db->escape($oldpath) . '%\' AND ID!=' . intval($this->export->ID) . ';');
-							while($this->db->next_record()) {
+							while($this->db->next_record()){
 								$db_tmp->query('UPDATE ' . EXPORT_TABLE . ' SET Path=\'' . $this->export->evalPath($this->db->f("ID")) . '\' WHERE ID=' . $this->db->f("ID") . ';');
 							}
 						}
@@ -521,7 +521,7 @@ class we_export_view{
 							$js = '
 									' . $this->topFrame . '.makeNewEntry(\'' . $this->export->Icon . '\',\'' . $this->export->ID . '\',\'' . $this->export->ParentID . '\',\'' . $this->export->Text . '\',0,\'' . ($this->export->IsFolder ? 'folder' : 'item') . '\',\'' . EXPORT_TABLE . '\');
 							' . $this->topFrame . '.drawTree();';
-						} else{
+						} else {
 							$js = '' . $this->topFrame . '.updateEntry(' . $this->export->ID . ',"' . $this->export->Text . '","' . $this->export->ParentID . '");' . "\n";
 						}
 						print we_html_element::jsElement($js . '
@@ -535,9 +535,9 @@ class we_export_view{
 					if(!permissionhandler::hasPerm("DELETE_EXPORT")){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('export', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
-							);
+						);
 						return;
-					} else{
+					} else {
 
 						if($this->export->delete()){
 							print we_html_element::jsElement('
@@ -546,10 +546,10 @@ class we_export_view{
 									' . $this->topFrame . '.we_cmd("home");
 							');
 							$this->export = new we_export_export();
-						} else{
+						} else {
 							print we_html_element::jsElement(
 									we_message_reporting::getShowMessageCall(($this->export->IsFolder == 1 ? g_l('export', "[delete_group_nok]") : g_l('export', "[delete_nok]")), we_message_reporting::WE_MESSAGE_ERROR)
-								);
+							);
 						}
 					}
 
@@ -600,4 +600,3 @@ class we_export_view{
 	}
 
 }
-

@@ -24,7 +24,7 @@
  */
 we_html_tools::protect();
 
-$uniqid = md5(uniqid(__FILE__,true)); // #6590, changed from: uniqid(time())
+$uniqid = md5(uniqid(__FILE__, true)); // #6590, changed from: uniqid(time())
 
 $we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : 0);
 
@@ -109,7 +109,7 @@ function we_cmd(){
 
 	$selectedID = 0;
 	$_enabled_buttons = false;
-	while($DB_WE->next_record()) {
+	while($DB_WE->next_record()){
 		if(!in_array($DB_WE->f("ID"), $doc_thumbs)){
 			$_enabled_buttons = true;
 			$_thumbnail_counter = $DB_WE->f("ID");
@@ -141,6 +141,6 @@ function we_cmd(){
 
 	$dialog = we_html_multiIconBox::getHTML("", "100%", $_thumbs, 30, $buttons, -1, "", "", false, g_l('weClass', "[thumbnails]"));
 	print we_html_element::htmlBody(array("class" => "weDialogBody", "style" => "overflow: hidden;", "onload" => "top.focus();"), $dialog) . "</html>";
-} else{
+} else {
 	exit("ERROR: Couldn't initialize we_imageDocument object");
 }

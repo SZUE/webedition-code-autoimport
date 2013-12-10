@@ -39,8 +39,8 @@ class we_metadata_PDF extends we_metadata_metaData{
 		}
 		if(is_array($selection)){
 			// fetch some
-		} else{
-			$pdf= new we_helpers_pdf2text($this->datasource);
+		} else {
+			$pdf = new we_helpers_pdf2text($this->datasource);
 			$this->metadata = $pdf->getInfo();
 		}
 		return $this->metadata;

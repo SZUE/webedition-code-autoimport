@@ -70,4 +70,3 @@ class we_htmlDocument extends we_textContentDocument{
 	}
 
 }
-

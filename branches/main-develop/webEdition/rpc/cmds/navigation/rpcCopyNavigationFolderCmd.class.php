@@ -67,7 +67,7 @@ class rpcCopyNavigationFolderCmd extends rpcCmd{
 					$mapedId[$row['ID']] = $db->getInsertId();
 					$folders[] = $mapedId[$row['ID']];
 					$query = "";
-				} else{
+				} else {
 					if(!empty($query)){
 						$query .= ', ';
 					}
@@ -84,7 +84,7 @@ class rpcCopyNavigationFolderCmd extends rpcCmd{
 			}
 			$resp->setData("status", "ok");
 			$resp->setData("folders", $folders);
-		} else{
+		} else {
 			$resp->setData("folders", "");
 		}
 

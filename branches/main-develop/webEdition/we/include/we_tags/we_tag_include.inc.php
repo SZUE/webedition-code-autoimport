@@ -119,7 +119,7 @@ function we_tag_include($attribs){
 			$db = $GLOBALS['DB_WE'];
 			$type = weTag_getAttribute('kind', $attribs);
 			$_name = weTag_getAttribute('_name_orig', $attribs);
-			$path = we_tag('href', array('name' => $_name, 'hidedirindex' => 'false', 'type' => $type, 'isInternal'=>1));
+			$path = we_tag('href', array('name' => $_name, 'hidedirindex' => 'false', 'type' => $type, 'isInternal' => 1));
 			$nint = $name . we_base_link::MAGIC_INT_LINK;
 			$int = ($GLOBALS['we_doc']->getElement($nint) == '') ? 0 : $GLOBALS['we_doc']->getElement($nint);
 			$intID = $GLOBALS['we_doc']->getElement($nint . 'ID');
@@ -185,7 +185,7 @@ function we_tag_include($attribs){
 		}
 
 		return 'we_setBackVar(' . $we_unique . ');' .
-				($isSeemode ? //extra stuff in seemode
+			($isSeemode ? //extra stuff in seemode
 				'eval(\'?>' . addcslashes(preg_replace('|< */? *form[^>]*>|i', '', $content), '\'') .
 				($seeMode ? //	only show link to seeMode, when id is given
 					($id ?

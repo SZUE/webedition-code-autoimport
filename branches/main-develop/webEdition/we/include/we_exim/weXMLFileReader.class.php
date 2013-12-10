@@ -95,11 +95,11 @@ abstract class weXMLFileReader{
 			if($size > 0){
 				if(empty($buffer)){
 					$condition = false;
-				} else{
+				} else {
 					$condition = (strlen($buffer) < $size ? !$eof(self::$file['fp']) : false );
 				}
 			} else if($lines > 0){
-				$condition = (--$lines > 0 ? !$eof(self::$file['fp']) : false );
+				$condition = ( --$lines > 0 ? !$eof(self::$file['fp']) : false );
 			}
 			$condition&=!we_backup_backup::limitsReached('', 0.1, 10);
 

@@ -47,10 +47,10 @@ class rpcPublishDocsCmd extends rpcCmd{
 						$ContentType = f('SELECT ContentType FROM `' . $db->escape($k) . '` WHERE ID=' . intval($val), 'ContentType', $db);
 						$object = weContentProvider::getInstance($ContentType, $val, $k);
 						/* bugs #6189 & 4859
-						we_temporaryDocument::delete($object->ID,$db);
-						$object->initByID($object->ID);
-						$object->ModDate = $object->Published;
-						*/
+						  we_temporaryDocument::delete($object->ID,$db);
+						  $object->initByID($object->ID);
+						  $object->ModDate = $object->Published;
+						 */
 						$_SESSION['weS']['versions']['doPublish'] = true;
 						$object->we_save();
 						$object->we_publish();
@@ -67,4 +67,3 @@ class rpcPublishDocsCmd extends rpcCmd{
 	}
 
 }
-

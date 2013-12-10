@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition SDK
  *
@@ -10,7 +11,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -19,8 +20,6 @@
  * @subpackage we_app_Installer
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-
-
 /**
  * @see we_app_Installer
  */
@@ -33,40 +32,32 @@ Zend_Loader::loadClass('we_app_Installer');
  * when using code like
  * 		$myInstaller = new we_app_Installer($_SERVER['DOCUMENT_ROOT']."/tmp/leer/");
  * 		$myInstaller->getInstance()->install();
- * 
+ *
  * @category   we
  * @package    we_app
  * @subpackage we_app_Installer
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
+class we_app_Installer_Dummy extends we_app_Installer{
 
-class we_app_Installer_Dummy extends we_app_Installer
-{
-	
-	
-	public function __construct($source = "", $installer = "")
-	{
-		
+	public function __construct($source = "", $installer = ""){
+
 	}
-	
-	public function __call($method = "", $args = "")
-	{
+
+	public function __call($method = "", $args = ""){
 		return false;
 	}
-	
-	public function install()
-	{
+
+	public function install(){
 		return false;
 	}
-	
-	public function update()
-	{
+
+	public function update(){
 		return false;
 	}
-	
-	public function uninstall()
-	{
+
+	public function uninstall(){
 		return false;
 	}
-	
+
 }

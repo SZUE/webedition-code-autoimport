@@ -754,7 +754,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement{
 
 			if($this->getDisabled()){
 				$onClick = "return false;";
-			} else{
+			} else {
 				$onClick = "return true;";
 			}
 			return '<div style="width:' . $this->getWidth() . 'px;
@@ -801,7 +801,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement{
 			$classMiddle = self::kButtonClassDisabledMiddle;
 			$classRight = self::kButtonClassDisabledRight;
 			$tblClass = self::kButtonClassDisabledInnerTable;
-		} else{
+		} else {
 			$classLeft = self::kButtonClassLeft;
 			$classMiddle = self::kButtonClassMiddle;
 			$classRight = self::kButtonClassRight;
@@ -832,11 +832,11 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement{
 							$buttonHTML .= '<td>' . $button . '</td><td>' . $text . '</td>';
 							break;
 					}
-				} else{
+				} else {
 					$buttonHTML .= '<td>' . $button . '</td>';
 				}
 			}
-		} else{
+		} else {
 			$buttonHTML .= '<td>' . $this->getText() . '</td>';
 		}
 		$buttonHTML .= '</tr></table>';
@@ -889,7 +889,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement{
 
 		if($this->getDisabled()){
 			$classNormal = self::kButtonClassDisabledNormal;
-		} else{
+		} else {
 			$classNormal = self::kButtonClassNormal;
 		}
 

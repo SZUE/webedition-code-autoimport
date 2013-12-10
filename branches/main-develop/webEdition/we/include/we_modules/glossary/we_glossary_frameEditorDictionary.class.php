@@ -102,4 +102,3 @@ class we_glossary_frameEditorDictionary extends we_glossary_frameEditor{
 	}
 
 }
-

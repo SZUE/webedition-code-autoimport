@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition SDK
  *
@@ -10,7 +11,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -21,25 +22,24 @@
  */
 
 /**
- * 
- * 
+ *
+ *
  * @category   we
  * @package    we_util
  * @subpackage we_util_Sys
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-interface we_util_Sys_Db_Interface
-{
-    /**
-     * Performs an connection attempt
-     *
-     * @throws we_util_Sys_Dbms_Exception If connection cannot be performed
-     * @return bool
-     */
-    public function isAvailable();
-    
+interface we_util_Sys_Db_Interface{
+
+	/**
+	 * Performs an connection attempt
+	 *
+	 * @throws we_util_Sys_Dbms_Exception If connection cannot be performed
+	 * @return bool
+	 */
+	public function isAvailable();
+
 	public function permission();
-	
+
 	public function table();
-    
 }

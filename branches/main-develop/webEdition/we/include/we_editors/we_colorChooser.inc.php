@@ -41,13 +41,14 @@ print
 
 		<?php print $_REQUEST['we_cmd'][3]; ?>
 
-	<?php } else{ ?>
+	<?php } else { ?>
 
 				opener._EditorFrame.setEditorIsHot(true);
 				opener.we_cmd("reload_editpage");
 
-	<?php }
-} else{
+		<?php
+	}
+} else {
 	?>
 			window.returnValue = document.we_form.colorvalue.value;
 <?php } ?>
@@ -57,7 +58,7 @@ print
 		top.focus();
 <?php if($_REQUEST['we_cmd'][0]){ ?>
 			document.we_form.colorvalue.value = "<?php print $_REQUEST['we_cmd'][2]; ?>";
-<?php } else{ ?>
+<?php } else { ?>
 			document.we_form.colorvalue.value = window.dialogArguments["bgcolor"];
 <?php } ?>
 	}
@@ -67,9 +68,9 @@ print
 
 <body class="weDialogBody"<?php if($_REQUEST['we_cmd'][0]){ ?> onLoad="init()"<?php } ?>>
 	<form name="we_form" action="" onsubmit="<?php if(!$_REQUEST['we_cmd'][0]){ ?>setColor();<?php } ?>return
-	false">
-		<?php
-		$colortable = '<table border="1" bordercolor="SILVER" bordercolorlight="WHITE" bordercolordark="BLACK" cellspacing="0" cellpadding="0">
+			false">
+					<?php
+					$colortable = '<table border="1" bordercolor="SILVER" bordercolorlight="WHITE" bordercolordark="BLACK" cellspacing="0" cellpadding="0">
 <script  type="text/javascript">
 var z=0;
 for ( col in we_color2 ){
@@ -96,19 +97,17 @@ if(z != 0){
 		</table>
 	';
 
-		$foo = '<input type="text" size="20" name="colorvalue" class="defaultfont" style="width:150px" />';
-		$color = we_html_tools::htmlFormElementTable($foo, g_l('wysiwyg', "[color]"));
+					$foo = '<input type="text" size="20" name="colorvalue" class="defaultfont" style="width:150px" />';
+					$color = we_html_tools::htmlFormElementTable($foo, g_l('wysiwyg', "[color]"));
 
-		if($_REQUEST['we_cmd'][0]){
-			$buttons =
-				we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "javascript:setColor();"), "", we_html_button::create_button("cancel", "javascript:window.close()")
-			);
-		} else{
-			$buttons =
-				we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "form:submit:we_form"), "", we_html_button::create_button("cancel", "javascript:window.close()")
-			);
-		}
-		$table = '<table border="0" cellpadding="0" cellspacing="0">
+					if($_REQUEST['we_cmd'][0]){
+						$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "javascript:setColor();"), "", we_html_button::create_button("cancel", "javascript:window.close()")
+						);
+					} else {
+						$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "form:submit:we_form"), "", we_html_button::create_button("cancel", "javascript:window.close()")
+						);
+					}
+					$table = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td>' . $colortable . '</td>
 	</tr>
@@ -121,8 +120,8 @@ if(z != 0){
 </table>
 ';
 
-		print we_html_tools::htmlDialogLayout($table, g_l('global', '[select_color]'), $buttons);
-		?>
+					print we_html_tools::htmlDialogLayout($table, g_l('global', '[select_color]'), $buttons);
+					?>
 	</form>
 </body>
 

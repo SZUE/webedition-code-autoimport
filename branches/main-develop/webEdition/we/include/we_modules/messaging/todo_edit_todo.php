@@ -52,50 +52,50 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 
 		var rs = escape(document.compose_form.mn_recipients.value);
 
-		new jsWindow("<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_usel.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&maxsel=1&rs=" + rs,"messaging_usel",-1,-1,530,420,true,false,true,false);
+		new jsWindow("<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_usel.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&maxsel=1&rs=" + rs, "messaging_usel", -1, -1, 530, 420, true, false, true, false);
 	}
 
 	function do_send() {
 <?php if($mode != 'reject'){ ?>
-					rcpt_s = escape(document.compose_form.mn_recipients.value);
-					document.compose_form.rcpts_string.value = rcpt_s;
+			rcpt_s = escape(document.compose_form.mn_recipients.value);
+			document.compose_form.rcpts_string.value = rcpt_s;
 <?php } ?>
-				document.compose_form.submit();
-			}
+		document.compose_form.submit();
+	}
 
-			function doUnload() {
-				if(jsWindow_count) {
-					for(i=0;i<jsWindow_count;i++) {
-						eval("jsWindow"+i+"Object.close()");
-					}
-				}
+	function doUnload() {
+		if (jsWindow_count) {
+			for (i = 0; i < jsWindow_count; i++) {
+				eval("jsWindow" + i + "Object.close()");
 			}
-			//-->
+		}
+	}
+//-->
 </script>
 </head>
 
 <body class="weDialogBody" <?php echo ($mode == 'reject' ? '' : 'onLoad="document.compose_form.mn_subject.focus()"') ?> onunload="doUnload();">
-<?php
-if($mode == 'forward'){
-	$compose = new we_messaging_format('forward', $messaging->selected_message);
-	$heading = g_l('modules_messaging', '[forward_todo]');
-} else if($mode == 'reject'){
-	$compose = new we_messaging_format('reject', $messaging->selected_message);
-	$heading = g_l('modules_messaging', '[reject_todo]');
-} else{
-	$compose = new we_messaging_format('new');
-	$heading = g_l('modules_messaging', '[new_todo]');
-}
-$compose->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
-?>
-	<form action="<?php print WE_MESSAGING_MODULE_DIR; ?>todo_send_ntodo.php" name="compose_form" method="post">
 	<?php
-	echo we_html_tools::hidden('we_transaction', $_REQUEST['we_transaction']);
-	echo we_html_tools::hidden('rcpts_string', '');
-	echo we_html_tools::hidden('mode', $mode);
+	if($mode == 'forward'){
+		$compose = new we_messaging_format('forward', $messaging->selected_message);
+		$heading = g_l('modules_messaging', '[forward_todo]');
+	} else if($mode == 'reject'){
+		$compose = new we_messaging_format('reject', $messaging->selected_message);
+		$heading = g_l('modules_messaging', '[reject_todo]');
+	} else {
+		$compose = new we_messaging_format('new');
+		$heading = g_l('modules_messaging', '[new_todo]');
+	}
+	$compose->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
+	?>
+	<form action="<?php print WE_MESSAGING_MODULE_DIR; ?>todo_send_ntodo.php" name="compose_form" method="post">
+		<?php
+		echo we_html_tools::hidden('we_transaction', $_REQUEST['we_transaction']);
+		echo we_html_tools::hidden('rcpts_string', '');
+		echo we_html_tools::hidden('mode', $mode);
 
-	if($mode == 'reject'){
-		$tbl = '
+		if($mode == 'reject'){
+			$tbl = '
 					<table cellpadding="6">
 					    <tr>
 							<td class="defaultgray">
@@ -117,8 +117,8 @@ $compose->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"])
 						</tr>
 					</table>
 					<table cellpadding="6">';
-	} else{
-		$tbl = '
+		} else {
+			$tbl = '
 					<table cellpadding="6">
 						<tr>
 							<td class="defaultgray">
@@ -150,26 +150,26 @@ $compose->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"])
 						</tr>
 					</table>
 					<table cellpadding="6">';
-	}
-	if($mode != 'new'){
-		$tbl .= '
+		}
+		if($mode != 'new'){
+			$tbl .= '
 					<tr>
 						<td class="defaultfont">' . $compose->get_msg_text() . '</td>
 					</tr>
 					<tr>
 						<td class="defaultfont">' . $compose->get_todo_history() . '</td>
 					</tr>';
-	}
-	$tbl .= '
+		}
+		$tbl .= '
 					<tr>
 						<td>
 							<textarea cols="68" rows="10" name="mn_body" style="width:624px"></textarea></td>
 					</tr>
 				</table>';
-	$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "javascript:do_send()"), "", we_html_button::create_button("cancel", "javascript:top.window.close()")
-	);
-	echo we_html_tools::htmlDialogLayout($tbl, "<div style='padding:6px'>" . $heading . "</div>", $buttons, 100, 24);
-	?>
+		$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "javascript:do_send()"), "", we_html_button::create_button("cancel", "javascript:top.window.close()")
+		);
+		echo we_html_tools::htmlDialogLayout($tbl, "<div style='padding:6px'>" . $heading . "</div>", $buttons, 100, 24);
+		?>
 	</form>
 </body>
 </html>

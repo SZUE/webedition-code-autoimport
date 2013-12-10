@@ -28,6 +28,7 @@
  *
  */
 class we_newsletter_block extends we_newsletter_base{
+
 // Document based Newsletter Block
 
 	const DOCUMENT = 0;

@@ -318,4 +318,3 @@ class we_tool_view{
 	}
 
 }
-

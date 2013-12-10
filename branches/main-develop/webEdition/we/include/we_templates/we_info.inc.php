@@ -167,18 +167,18 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 				$_modetable->setCol(0, 1, array("align" => "right",
 					"valign" => "bottom",
 					"rowspan" => 2), '<input type="hidden" name="popup" value="popup"/>' . $loginButton);
-			} else{
+			} else {
 				$_modetable->setCol(0, 1, array("align" => "right",
 					"valign" => "bottom",
 					"rowspan" => 2), $loginButton);
 			}
-		} else{
+		} else {
 			$_modetable->setCol(0, 0, array(), we_html_forms::checkbox('popup', getValueLoginMode('popup'), 'popup', g_l('SEEM', '[popup]')));
 			$_modetable->setCol(0, 1, array("align" => "right",
 				"valign" => "bottom",
 				"rowspan" => 2), we_html_element::htmlHidden(array("name" => "mode", "value" => "normal")) . $loginButton);
 		}
-	} else{ //	normal login
+	} else { //	normal login
 		//	15th Mode
 		$_table->setCol($_actRow, 0, array("width" => $_space), we_html_tools::getPixel($_space, 5));
 		$_table->setCol($_actRow, 1, array("width" => $_middlePart, "class" => "small"), (!WE_SEEM ? '' : g_l('SEEM', '[start_mode]')));
@@ -267,6 +267,6 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 
 if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "info"){
 	print $_table->getHtml();
-} else{
+} else {
 	$_loginTable = $_table->getHtml() . we_html_tools::getPixel(1, 1);
 }

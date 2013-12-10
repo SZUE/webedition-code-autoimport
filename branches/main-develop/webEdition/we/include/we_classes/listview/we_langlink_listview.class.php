@@ -95,7 +95,7 @@ class we_langlink_listview extends listviewBase{
 		if($this->order == 'Locale'){
 			if($this->desc){
 				krsort($_languages);
-			} else{
+			} else {
 				ksort($_languages);
 			}
 		}
@@ -105,7 +105,7 @@ class we_langlink_listview extends listviewBase{
 				if($this->linkType == 'tblFile'){
 					$q = 'SELECT ' . LANGLINK_TABLE . '.DID as DID, ' . LANGLINK_TABLE . '.DLocale as DLocale, ' . LANGLINK_TABLE . '.LDID as LDID, ' . LANGLINK_TABLE . '.Locale as Locale, ' . LANGLINK_TABLE . '.IsFolder as IsFolder, ' . LANGLINK_TABLE . ".IsObject as IsObject, " . LANGLINK_TABLE . ".DocumentTable as DocumentTable, " . FILE_TABLE . ".Path as Path, " . FILE_TABLE . ".ParentID as ParentID  FROM " . LANGLINK_TABLE . "," . FILE_TABLE . " WHERE " . LANGLINK_TABLE . ".Locale='" . $langkey . "' AND " . LANGLINK_TABLE . ".LDID = " . FILE_TABLE . '.ID AND ' . FILE_TABLE . ".Published >0 AND " . LANGLINK_TABLE . ".DocumentTable='" . $this->linkType . "' AND " . LANGLINK_TABLE . '.DID=' . $this->id;
 					$this->dirsearchtable = FILE_TABLE;
-				} else{
+				} else {
 					$q = "SELECT " . LANGLINK_TABLE . ".DID as DID, " . LANGLINK_TABLE . ".DLocale as DLocale, " . LANGLINK_TABLE . ".LDID as LDID, " . LANGLINK_TABLE . ".Locale as Locale, " . LANGLINK_TABLE . ".IsFolder as IsFolder, " . LANGLINK_TABLE . ".IsObject as IsObject, " . LANGLINK_TABLE . ".DocumentTable as DocumentTable, " . OBJECT_FILES_TABLE . ".Path as Path, " . OBJECT_FILES_TABLE . ".Url as Url, " . OBJECT_FILES_TABLE . ".TriggerID as TriggerID  FROM " . LANGLINK_TABLE . "," . OBJECT_FILES_TABLE . " WHERE " . LANGLINK_TABLE . ".Locale='" . $langkey . "' AND " . LANGLINK_TABLE . ".LDID = " . OBJECT_FILES_TABLE . ".ID AND " . OBJECT_FILES_TABLE . ".Published >0 AND " . LANGLINK_TABLE . ".DocumentTable='" . $this->linkType . "' AND " . LANGLINK_TABLE . '.DID=' . $this->id;
 					$this->dirsearchtable = OBJECT_FILES_TABLE;
 				}
@@ -115,7 +115,7 @@ class we_langlink_listview extends listviewBase{
 				if($found){
 					$this->DB_WE->next_record();
 					$this->foundlinks[$this->DB_WE->Record['Locale']] = $this->DB_WE->Record;
-				} else{
+				} else {
 					$this->getParentData($this->id, $langkey);
 				}
 			}
@@ -128,7 +128,7 @@ class we_langlink_listview extends listviewBase{
 				$dt = array('DID' => $this->id, 'DLocale' => $this->ownlanguage, 'LDID' => $this->id, 'Locale' => $this->ownlanguage, 'DocumentTable' => (($this->linkType == 'tblFile') ? 'tblFile' : 'tblObjectFile'), 'IsObject' => (($this->linkType == 'tblFile') ? '0' : '1'), 'IsFolder' => 0);
 				if($this->linkType == 'tblFile'){
 					$dt['Path'] = id_to_path($this->id, FILE_TABLE);
-				} else{
+				} else {
 					$dt['Path'] = id_to_path($this->id, OBJECT_FILES_TABLE);
 					$row = getHash("SELECT Url, TriggerID FROM " . OBJECT_FILES_TABLE . " WHERE ID=" . intval($this->id), $this->DB_WE);
 					$dt['Url'] = $row['Url'];
@@ -143,7 +143,7 @@ class we_langlink_listview extends listviewBase{
 			} else if($this->order == "Locale"){
 				if($this->desc){
 					krsort($this->foundlinks);
-				} else{
+				} else {
 					ksort($this->foundlinks);
 				}
 			} else if(strpos($this->order, '_') > 0){ //csv: ordered list of locales
@@ -173,7 +173,7 @@ class we_langlink_listview extends listviewBase{
 			$this->anz_all = count($this->foundlinks);
 			$this->anz = $this->anz_all;
 			$this->count = 0;
-		} else{
+		} else {
 			$this->anz_all = 0;
 			$this->anz = $this->anz_all;
 			$this->count = 0;
@@ -195,7 +195,7 @@ class we_langlink_listview extends listviewBase{
 			if($found){
 				$this->DB_WE->next_record();
 				$this->foundlinks[] = $this->DB_WE->Record;
-			} else{
+			} else {
 				$this->getParentData($pid, $langkey);
 			}
 		}
@@ -221,7 +221,7 @@ class we_langlink_listview extends listviewBase{
 
 			if($this->foundlinks[$count]['DocumentTable'] == 'tblFile'){
 				$this->Record["WE_PATH"] = $this->foundlinks[$count]["Path"];
-			} else{
+			} else {
 
 				$path_parts = pathinfo(
 					(isset($this->foundlinks[$count]['TriggerID']) && $this->foundlinks[$count]['TriggerID'] ?
@@ -233,13 +233,13 @@ class we_langlink_listview extends listviewBase{
 				if($this->objectseourls && $this->foundlinks[$count]['Url'] != '' && show_SeoLinks()){
 					if(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 						$this->Record["WE_PATH"] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $this->foundlinks[$count]['Url'];
-					} else{
+					} else {
 						$this->Record["WE_PATH"] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $path_parts['filename'] . '/' . $this->foundlinks[$count]['Url'];
 					}
-				} else{
+				} else {
 					if(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 						$this->Record["WE_PATH"] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . "?$paramName=" . $this->Record["WE_ID"];
-					} else{
+					} else {
 						$this->Record["WE_PATH"] = $_SERVER['SCRIPT_NAME'] . "?$paramName=" . $this->Record["WE_ID"];
 					}
 				}
@@ -250,7 +250,7 @@ class we_langlink_listview extends listviewBase{
 
 			$this->count++;
 			return true;
-		} else{
+		} else {
 			$this->stop_next_row = $this->shouldPrintEndTR();
 			if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
 				$this->Record = array();

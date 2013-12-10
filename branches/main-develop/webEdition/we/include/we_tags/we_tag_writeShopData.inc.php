@@ -94,7 +94,7 @@ function we_tag_writeShopData($attribs){
 			$shopVat = we_shop_vats::getVatRateForSite($vatId, true, false);
 			if($shopVat){ // has selected or standard shop rate
 				$shoppingItem['serial'][WE_SHOP_VAT_FIELD_NAME] = $shopVat;
-			} else{ // could not find any shoprates, remove field if necessary
+			} else { // could not find any shoprates, remove field if necessary
 				if(isset($shoppingItem['serial'][WE_SHOP_VAT_FIELD_NAME])){
 					unset($shoppingItem['serial'][WE_SHOP_VAT_FIELD_NAME]);
 				}

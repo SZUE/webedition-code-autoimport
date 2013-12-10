@@ -363,7 +363,7 @@ class we_selector_query{
 				case USER_TABLE:
 					break;
 				default:
-				$userExtraSQL.=' OR RestrictOwners=0 ';
+					$userExtraSQL.=' OR RestrictOwners=0 ';
 			}
 		}
 		return $userExtraSQL . ')';

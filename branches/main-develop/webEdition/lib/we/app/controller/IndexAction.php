@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition SDK
  * This source is part of the webEdition SDK. The webEdition SDK is
@@ -9,7 +10,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -18,7 +19,6 @@
  * @subpackage we_app_controller
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-
 /*
  * @see Zend_Controller_Action
  */
@@ -26,26 +26,24 @@ Zend_Loader::loadClass('Zend_Controller_Action');
 
 /**
  * Base IndexAction Controller
- * 
+ *
  * @category   we
  * @package    we_app
  * @subpackage we_app_controller
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_app_controller_IndexAction extends Zend_Controller_Action
-{
+class we_app_controller_IndexAction extends Zend_Controller_Action{
 
 	/**
 	 * The default action - show the home page
 	 * @return void
 	 */
-	public function indexAction()
-	{
-		if (strpos($this->getFrontController()->getBaseUrl(), 'index.php') === false) {
+	public function indexAction(){
+		if(strpos($this->getFrontController()->getBaseUrl(), 'index.php') === false){
 			$this->_redirect('index.php/frameset/index');
 		} else {
 			$this->_redirect('frameset/index');
 		}
-	
 	}
+
 }

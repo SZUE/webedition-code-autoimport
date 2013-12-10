@@ -76,7 +76,7 @@ function getNavButtons($size, $pos, $id){
 			), 10) .
 		'</td><td align="center">' .
 		we_html_button::create_button_table(array(
-			we_html_button::create_button("export", $_SERVER['SCRIPT_NAME'] . '?function=export&ID=' . $id, true,0, 0),
+			we_html_button::create_button("export", $_SERVER['SCRIPT_NAME'] . '?function=export&ID=' . $id, true, 0, 0),
 			we_html_button::create_button("delete", $_SERVER['SCRIPT_NAME'] . '?function=delete&ID=' . $id, true, 0, 0),
 			), 10) . '</td><td align="right">' .
 		we_html_button::create_button_table(array(

@@ -42,7 +42,8 @@ class we_wysiwyg_ToolbarElement{
 
 	function hasProp($cmd = '', $contextMenu = false){
 		$cmd = ($cmd ? $cmd : $this->cmd);
-		return !$contextMenu ? stripos($this->editor->propstring, ',' . $cmd . ',') !== false || $this->editor->propstring == '' : 
+		return !$contextMenu ? stripos($this->editor->propstring, ',' . $cmd . ',') !== false || $this->editor->propstring == '' :
 			stripos($this->editor->restrictContextmenu, ',' . $cmd . ',') !== false;
 	}
+
 }

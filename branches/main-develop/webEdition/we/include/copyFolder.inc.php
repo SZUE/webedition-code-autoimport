@@ -126,8 +126,7 @@ if(isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3]){
 	$buttons = '<table border="0" cellpadding="0" cellspacing="0" width="300"><tr><td align="left" id="pbTd" style="display:none;">' . $pbHTML . '</td><td align="right">' .
 		we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button) .
 		'</td></tr></table>';
-	$hidden =
-		we_html_element::htmlHidden(array("name" => "we_cmd[0]", "value" => $_REQUEST['we_cmd'][0])) .
+	$hidden = we_html_element::htmlHidden(array("name" => "we_cmd[0]", "value" => $_REQUEST['we_cmd'][0])) .
 		we_html_element::htmlHidden(array("name" => "we_cmd[1]", "value" => $_REQUEST['we_cmd'][1])) .
 		we_html_element::htmlHidden(array("name" => "we_cmd[2]", "value" => $_REQUEST['we_cmd'][2])) .
 		(isset($_REQUEST['we_cmd'][4]) ? we_html_element::htmlHidden(array("name" => "we_cmd[4]", "value" => $_REQUEST['we_cmd'][4])) : '');
@@ -142,7 +141,7 @@ if(isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3]){
 			we_html_forms::radiobutton("rename", 0, "OverwriteObjects", g_l('copyFolder', "[sameName_rename]")) .
 			we_html_forms::radiobutton("nothing", 1, "OverwriteObjects", g_l('copyFolder', "[sameName_nothing]")) .
 			$hidden;
-	} else{
+	} else {
 		$content = '<table border="0" cellpadding="0" cellspacing="0" width="500"><tr><td>' . we_html_forms::checkbox(
 				1, 0, 'CreateTemplate', g_l('copyFolder', "[create_new_templates]"), false, "defaultfont", "toggleButton(); incTemp(this.checked)") . '
 					<div id="imTemp" style="display:block">' . we_html_forms::checkbox(
@@ -170,15 +169,14 @@ if(isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3]){
 		$yuiSuggest->getYuiCss() .
 		$yuiSuggest->getYuiJs();
 	'</body></html>';
-} else{
+} else {
 
-	$bodyAttribs =
-		array(
-			"bgcolor" => "#FFFFFF",
-			"marginwidth" => 15,
-			"marginheight" => 10,
-			"leftmargin" => 15,
-			"topmargin" => 10
+	$bodyAttribs = array(
+		"bgcolor" => "#FFFFFF",
+		"marginwidth" => 15,
+		"marginheight" => 10,
+		"leftmargin" => 15,
+		"topmargin" => 10
 	);
 	$fr = (isset($_REQUEST["finish"]) ?
 			new copyFolderFinishFrag("we_copyFolderFinish", 1, 0, $bodyAttribs) :

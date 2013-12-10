@@ -115,7 +115,7 @@ function exit_close(){
 ";
 
 // Typ block
-while(strlen($sType) < 4) {
+while(strlen($sType) < 4){
 	$sType .= "0";
 }
 if($sType{0} == "0" && $sType{1} == "0" && $sType{2} == "0" && $sType{3} == "0"){
@@ -124,21 +124,21 @@ if($sType{0} == "0" && $sType{1} == "0" && $sType{2} == "0" && $sType{3} == "0")
 
 if(defined("CUSTOMER_TABLE") && permissionhandler::hasPerm("CAN_SEE_CUSTOMER")){
 	$oChbxCustomer = we_html_forms::checkbox(
-			$value = 0, $checked = $sType{1}, $name = "chbx_type", $text = g_l('cockpit','[shop_dashboard][cnt_new_customer]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined("CUSTOMER_TABLE") && permissionhandler::hasPerm('CAN_SEE_CUSTOMER')), $description = "", $type = 0, $width = 0);
-} else{
+			$value = 0, $checked = $sType{1}, $name = "chbx_type", $text = g_l('cockpit', '[shop_dashboard][cnt_new_customer]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined("CUSTOMER_TABLE") && permissionhandler::hasPerm('CAN_SEE_CUSTOMER')), $description = "", $type = 0, $width = 0);
+} else {
 	$oChbxCustomer = "";
 }
 
 if(defined("WE_SHOP_MODULE_DIR") && permissionhandler::hasPerm("CAN_SEE_SHOP")){
 	$oChbxOrders = we_html_forms::checkbox(
-			$value = 0, $checked = $sType{0}, $name = "chbx_type", $text = g_l('cockpit','[shop_dashboard][cnt_order]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined('WE_SHOP_MODULE_DIR') && permissionhandler::hasPerm("CAN_SEE_SHOP")), $description = "", $type = 0, $width = 0);
+			$value = 0, $checked = $sType{0}, $name = "chbx_type", $text = g_l('cockpit', '[shop_dashboard][cnt_order]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined('WE_SHOP_MODULE_DIR') && permissionhandler::hasPerm("CAN_SEE_SHOP")), $description = "", $type = 0, $width = 0);
 	$oChbxAverageOrder = we_html_forms::checkbox(
-			$value = 0, $checked = $sType{2}, $name = "chbx_type", $text = g_l('cockpit','[shop_dashboard][revenue_order]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined("WE_SHOP_MODULE_DIR") && permissionhandler::hasPerm('CAN_SEE_SHOP')), $description = "", $type = 0, $width = 0);
+			$value = 0, $checked = $sType{2}, $name = "chbx_type", $text = g_l('cockpit', '[shop_dashboard][revenue_order]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined("WE_SHOP_MODULE_DIR") && permissionhandler::hasPerm('CAN_SEE_SHOP')), $description = "", $type = 0, $width = 0);
 	$oChbxTarget = we_html_forms::checkbox(
-			$value = 0, $checked = $sType{3}, $name = "chbx_type", $text = g_l('cockpit','[shop_dashboard][revenue_target]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined("WE_SHOP_MODULE_DIR") && permissionhandler::hasPerm('CAN_SEE_SHOP')), $description = "", $type = 0, $width = 0);
+			$value = 0, $checked = $sType{3}, $name = "chbx_type", $text = g_l('cockpit', '[shop_dashboard][revenue_target]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined("WE_SHOP_MODULE_DIR") && permissionhandler::hasPerm('CAN_SEE_SHOP')), $description = "", $type = 0, $width = 0);
 
 	//$revenueTarget = we_forms::textinput($value = "",$name = "input_revenueTarget", $text = "Umsatzziel", $uniqid = true, $class = "defaultfont",$onClick = "", $disabled = !(defined("WE_SHOP_MODULE_DIR") && permissionhandler::hasPerm('CAN_SEE_SHOP'), $description = "", $type = 0, $width = 255);
-} else{
+} else {
 	$oChbxOrders = "";
 	$oChbxAverageOrder = "";
 	$oChbxTarget = "";
@@ -152,7 +152,7 @@ $oDbTableType->setCol(0, 1, null, we_html_tools::getPixel(10, 1));
 $oDbTableType->setCol(0, 2, null, $oChbxAverageOrder . $oChbxTarget);
 //$oDbTableType->setCol(0, 3, null, $revenueTarget);
 
-$divContent = we_html_element::htmlDiv(array("style" => "display:block;"),we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($name = "revenueTarget", $size = 55, $value = $sRevenueTarget, $maxlength = 255, $attribs = "", $type = "text", $width = 100, $height = 0)."&nbsp;&euro;", '', "left", "defaultfont"));
+$divContent = we_html_element::htmlDiv(array("style" => "display:block;"), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($name = "revenueTarget", $size = 55, $value = $sRevenueTarget, $maxlength = 255, $attribs = "", $type = "text", $width = 100, $height = 0) . "&nbsp;&euro;", '', "left", "defaultfont"));
 
 $oSctDate = new we_html_select(array(
 	"name" => "sct_date", "size" => 1, "class" => "defaultfont", "onChange" => ""

@@ -118,29 +118,29 @@ if($we_alerttext){
 	print we_message_reporting::getShowMessageCall($we_alerttext, we_message_reporting::WE_MESSAGE_ERROR);
 	if($error){
 		?>
-		top.close();
+					top.close();
 		<?php
 	}
 }
 
 if(isset($we_File) && (!$we_alerttext)){
 	?>
-	opener.we_cmd("update_file");
-	_EditorFrame = opener.top.weEditorFrameController.getActiveEditorFrame();
-	_EditorFrame.getDocumentReference().frames[0].we_setPath("<?php print $we_doc->Path; ?>", "<?php print $we_doc->Text; ?>");
-	self.close();
+				opener.we_cmd("update_file");
+				_EditorFrame = opener.top.weEditorFrameController.getActiveEditorFrame();
+				_EditorFrame.getDocumentReference().frames[0].we_setPath("<?php print $we_doc->Path; ?>", "<?php print $we_doc->Text; ?>");
+				self.close();
 <?php } ?>
 //-->
 </script>
 </head>
 
 <body class="weDialogBody" onLoad="self.focus();">
-	<center>
-		<form method="post" enctype="multipart/form-data">
-			<input type="hidden" name="we_transaction" value="<?php print $we_transaction ?>" />
-			<?php print we_html_tools::htmlDialogLayout($content, g_l('newFile', "[import_File_from_hd_title]"), $_buttons); ?>
-		</form>
-	</center>
+<center>
+	<form method="post" enctype="multipart/form-data">
+		<input type="hidden" name="we_transaction" value="<?php print $we_transaction ?>" />
+		<?php print we_html_tools::htmlDialogLayout($content, g_l('newFile', "[import_File_from_hd_title]"), $_buttons); ?>
+	</form>
+</center>
 </body>
 
 </html>

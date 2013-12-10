@@ -57,7 +57,7 @@ if(permissionhandler::hasPerm("administrator")){
 	$num_rows = $GLOBALS['DB_WE']->num_rows();
 	if($num_rows > 0){
 		$ind = 0;
-		while($GLOBALS['DB_WE']->next_record()) {
+		while($GLOBALS['DB_WE']->next_record()){
 
 			$content[$ind] = array();
 			$content[$ind][0]['dat'] = $GLOBALS['DB_WE']->f("ip");
@@ -92,7 +92,7 @@ if(permissionhandler::hasPerm("administrator")){
 				'noline' => 1
 			)
 		);
-	} else{
+	} else {
 		$parts[] = array(
 			'headline' => '',
 			'html' => we_html_element::htmlSpan(array('class' => 'middlefontgray'), g_l('prefs', '[log_is_empty]')) .

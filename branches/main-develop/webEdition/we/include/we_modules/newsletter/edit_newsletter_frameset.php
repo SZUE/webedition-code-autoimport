@@ -34,7 +34,7 @@ echo $newsletterFrame->getHTMLDocumentHeader($what, $mode);
 
 if(isset($_REQUEST['inid'])){
 	$newsletterFrame->View->newsletter = new we_newsletter_newsletter($_REQUEST['inid']);
-} else{
+} else {
 	switch($what){
 		case 'export_csv_mes':
 		case 'newsletter_settings':

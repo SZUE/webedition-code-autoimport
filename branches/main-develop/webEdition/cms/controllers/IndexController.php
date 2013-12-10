@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,13 +22,12 @@
  * @package    webEdition_toolfactory
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+class IndexController extends Zend_Controller_Action{
 
-
-class IndexController extends Zend_Controller_Action {  
-      
-    function indexAction() {  
-	   	$this->view = new we_ui_view_DialogView();
+	function indexAction(){
+		$this->view = new we_ui_view_DialogView();
 		$this->view->setScriptPath('views/scripts');
 		echo $this->view->render('index/index.php');
-    }  
-}  
+	}
+
+}

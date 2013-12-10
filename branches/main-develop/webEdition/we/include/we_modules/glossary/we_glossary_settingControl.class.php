@@ -48,7 +48,7 @@ class we_glossary_settingControl{
 
 		if($default){
 			$GlossaryAutomaticReplacement = 'false';
-		} else{
+		} else {
 
 			$GlossaryAutomaticReplacement = 'false';
 			if(isset($_REQUEST['GlossaryAutomaticReplacement']) && $_REQUEST['GlossaryAutomaticReplacement'] == 1){

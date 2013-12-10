@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,9 +22,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+class XML_Validate extends we_xml_parser{
 
-
-class XML_Validate extends we_xml_parser {
 	/**
 	 * This array contains all child elements of the "we:document" node.
 	 * @var array
@@ -62,7 +62,7 @@ class XML_Validate extends we_xml_parser {
 		"Filename", "Path", "OldPath", "CreationDate", "ModDate", "IsFolder", "ContentType", "Icon", "EditPageNr", "CopyID", "Owners",
 		"CreatorID", "ModifierID", "DefaultInit", "RestrictOwners", "Extension", "IsDynamic", "Published", "Category", "IsSearchable",
 		"schedArr", "DefArray", "AllowedClasses", "Templates", "ExtraTemplates", "Workspaces", "ExtraWorkspaces", "ExtraWorkspacesSelected",
-		"RootDirPath", "rootDirID", "TableID", "ObjectID", "Category", "FromOk", "ToOk", "From", "To", "WebUserID","Url","TriggerID");
+		"RootDirPath", "rootDirID", "TableID", "ObjectID", "Category", "FromOk", "ToOk", "From", "To", "WebUserID", "Url", "TriggerID");
 
 	/**
 	 * This array contains all child elements of the "we:content" node with the parent node "we:object".
@@ -84,80 +84,78 @@ class XML_Validate extends we_xml_parser {
 	 */
 	//alle Felder
 	/*
-	var $clsNode = array("ClassName", "Name", "ID", "Table", "wasUpdate", "InWebEdition", "OwnersReadOnly", "ParentID", "ParentPath", "Text",
-		"Filename", "Path", "OldPath", "CreationDate", "ModDate", "IsFolder", "ContentType", "Icon", "EditPageNr", "CopyID", "Owners",
-		"CreatorID", "ModifierID", "DefaultInit", "RestrictOwners", "WebUserID", "Extension", "IsDynamic", "Published", "Category", "IsSearchable","InGlossar","Language",
-		"schedArr", "WorkspaceFlag", "RestrictUsers", "UsersReadOnly", "Text","SerializedArray", "Templates", "Workspaces", "DefaultWorkspaces","Users", "strOrder",
-		"Category", "DefaultCategory", "DefaultText", "DefaultValues", "DefaultTitle", "DefaultKeywords","DefaultUrl","DefaultUrlfield0","DefaultUrlfield1","DefaultUrlfield2","DefaultUrlfield3","DefaultTriggerID", "DefaultDesc","CSS","CacheType","CacheLifeTime");
-*/
+	  var $clsNode = array("ClassName", "Name", "ID", "Table", "wasUpdate", "InWebEdition", "OwnersReadOnly", "ParentID", "ParentPath", "Text",
+	  "Filename", "Path", "OldPath", "CreationDate", "ModDate", "IsFolder", "ContentType", "Icon", "EditPageNr", "CopyID", "Owners",
+	  "CreatorID", "ModifierID", "DefaultInit", "RestrictOwners", "WebUserID", "Extension", "IsDynamic", "Published", "Category", "IsSearchable","InGlossar","Language",
+	  "schedArr", "WorkspaceFlag", "RestrictUsers", "UsersReadOnly", "Text","SerializedArray", "Templates", "Workspaces", "DefaultWorkspaces","Users", "strOrder",
+	  "Category", "DefaultCategory", "DefaultText", "DefaultValues", "DefaultTitle", "DefaultKeywords","DefaultUrl","DefaultUrlfield0","DefaultUrlfield1","DefaultUrlfield2","DefaultUrlfield3","DefaultTriggerID", "DefaultDesc","CSS","CacheType","CacheLifeTime");
+	 */
 	//nur die vermeintlich gew�nschten
 	var $clsNode = array("ClassName", "Name", "ID", "Table", "wasUpdate", "InWebEdition", "OwnersReadOnly", "ParentID", "ParentPath", "Text",
 		"Filename", "Path", "OldPath", "CreationDate", "ModDate", "IsFolder", "ContentType", "Icon", "EditPageNr", "CopyID", "Owners",
-		"CreatorID", "ModifierID", "DefaultInit", "RestrictOwners",         "Extension", "IsDynamic", "Published", "Category", "IsSearchable",
-		"schedArr", "WorkspaceFlag", "RestrictUsers", "UsersReadOnly",       "SerializedArray", "Templates", "Workspaces",         "Users", "strOrder",
-		"Category", "DefaultCategory", "DefaultText", "DefaultValues", "DefaultTitle", "DefaultKeywords","DefaultUrl","DefaultUrlfield0","DefaultUrlfield1","DefaultUrlfield2","DefaultUrlfield3","DefaultTriggerID", "DefaultDesc"           );
+		"CreatorID", "ModifierID", "DefaultInit", "RestrictOwners", "Extension", "IsDynamic", "Published", "Category", "IsSearchable",
+		"schedArr", "WorkspaceFlag", "RestrictUsers", "UsersReadOnly", "SerializedArray", "Templates", "Workspaces", "Users", "strOrder",
+		"Category", "DefaultCategory", "DefaultText", "DefaultValues", "DefaultTitle", "DefaultKeywords", "DefaultUrl", "DefaultUrlfield0", "DefaultUrlfield1", "DefaultUrlfield2", "DefaultUrlfield3", "DefaultTriggerID", "DefaultDesc");
 
 	/**
 	 * This array contains all child elements of the "we:category" node.
 	 * @var array
 	 */
-	var $catNode = array("ID", "Category", "Text", "Path", "ParentID", "IsFolder", "Icon","Catfields");
-
+	var $catNode = array("ID", "Category", "Text", "Path", "ParentID", "IsFolder", "Icon", "Catfields");
 
 	/**
-	* @param string $file
-	* @desc Parses the given XML file.
-	*/
-	function __construct($file = "") {
-		if (!empty($file)) {
+	 * @param string $file
+	 * @desc Parses the given XML file.
+	 */
+	function __construct($file = ""){
+		if(!empty($file)){
 			// Read and try to parse the given file.
 			$this->getFile($file);
 		}
 	}
 
 	/**
-	* @throws TRUE if valid, otherwise FALSE.
-	* @desc Validates if the xml document matches the webEdition DTD.
-	*/
-	function validate_we_xml() {
+	 * @throws TRUE if valid, otherwise FALSE.
+	 * @desc Validates if the xml document matches the webEdition DTD.
+	 */
+	function validate_we_xml(){
 		$valid = true;
 		// Node-set with the paths of the child nodes.
 		$node_set = $this->evaluate("webEdition/child::*");
 
 		// If the node_set does not contain nodes either the name of the document root does not match
 		// or there are no child nodes.
-		if (!empty($node_set)) {
+		if(!empty($node_set)){
 			// Run through the child nodes.
-			foreach($node_set as $node) {
+			foreach($node_set as $node){
 				// The current node name.
 				$n = $this->nodeName($node);
 
 				// Test if the node name complies with the specified node names.
-				if ($n!="we:document" && $n!="we:template" && $n!="we:object" && $n!="we:doctype" && $n!="we:class" && $n!="we:category") {
+				if($n != "we:document" && $n != "we:template" && $n != "we:object" && $n != "we:doctype" && $n != "we:class" && $n != "we:category"){
 					// The node name is not valid.
 					$valid = false;
 					break;
 				} else {
 					// Run through the second level child elements.
-					foreach ($this->nodes[$node]["children"] as $k=>$v) {
+					foreach($this->nodes[$node]["children"] as $k => $v){
 						// Check whether there is a child element, except of we:content, that itself contains child
 						// elements or whether there are content elements in we:doctype or we:category nodes.
-						if (($v>1 && $k!="we:content") || (($n=="we:class" || $n=="we:doctype" || $n=="we:category") && $k=="we:content")) {
+						if(($v > 1 && $k != "we:content") || (($n == "we:class" || $n == "we:doctype" || $n == "we:category") && $k == "we:content")){
 							// Invalid child elements or content nodes, q.v. above.
 							$valid = false;
 							break;
-						}
-						else if ($n=="we:document") {
-							if ($k!="we:content") {
-								if (!in_array($k, $this->docNode)) {
+						} else if($n == "we:document"){
+							if($k != "we:content"){
+								if(!in_array($k, $this->docNode)){
 									// The current element <$k> is not defined in the array docNode.
 									$valid = false;
 									break;
 								}
 							} else {
-								for ($i=1; $i <= $v; $i++) {
-									foreach($this->nodes[$node."/".$k."[".$i."]"]["children"] as $ck=>$cv) {
-										if (!in_array($ck, $this->docChildNode)) {
+								for($i = 1; $i <= $v; $i++){
+									foreach($this->nodes[$node . "/" . $k . "[" . $i . "]"]["children"] as $ck => $cv){
+										if(!in_array($ck, $this->docChildNode)){
 											// The current child element <$ck> is not defined in the array docChildNode.
 											$valid = false;
 											break;
@@ -165,18 +163,17 @@ class XML_Validate extends we_xml_parser {
 									}
 								}
 							}
-						}
-						else if ($n=="we:template") {
-							if ($k!="we:content") {
-								if (!in_array($k, $this->tplNode)) {
+						} else if($n == "we:template"){
+							if($k != "we:content"){
+								if(!in_array($k, $this->tplNode)){
 									// The current element <$k> is not defined in the array tplNode.
 									$valid = false;
 									break;
 								}
 							} else {
-								for ($i=1; $i <= $v; $i++) {
-									foreach($this->nodes[$node."/".$k."[".$i."]"]["children"] as $ck=>$cv) {
-										if (!in_array($ck, $this->tplChildNode)) {
+								for($i = 1; $i <= $v; $i++){
+									foreach($this->nodes[$node . "/" . $k . "[" . $i . "]"]["children"] as $ck => $cv){
+										if(!in_array($ck, $this->tplChildNode)){
 											// The current child element <$ck> is not defined in the array tplChildNode.
 											$valid = false;
 											break;
@@ -184,18 +181,17 @@ class XML_Validate extends we_xml_parser {
 									}
 								}
 							}
-						}
-						else if ($n=="we:object") {
-							if ($k!="we:content") {
-								if (!in_array($k, $this->objNode)) {
+						} else if($n == "we:object"){
+							if($k != "we:content"){
+								if(!in_array($k, $this->objNode)){
 									// The current element <$k> is not defined in the array objNode.
 									$valid = false;
 									break;
 								}
 							} else {
-								for ($i=1; $i <= $v; $i++) {
-									foreach($this->nodes[$node."/".$k."[".$i."]"]["children"] as $ck=>$cv) {
-										if (!in_array($ck, $this->objChildNode)) {
+								for($i = 1; $i <= $v; $i++){
+									foreach($this->nodes[$node . "/" . $k . "[" . $i . "]"]["children"] as $ck => $cv){
+										if(!in_array($ck, $this->objChildNode)){
 											// The current child element <$ck> is not defined in the array objChildNode.
 											$valid = false;
 											break;
@@ -203,23 +199,20 @@ class XML_Validate extends we_xml_parser {
 									}
 								}
 							}
-						}
-						else if ($n=="we:doctype") {
-							if (!in_array($k, $this->dtNode)) {
+						} else if($n == "we:doctype"){
+							if(!in_array($k, $this->dtNode)){
 								// The current element <$k> is not defined in the array dtNode.
 								$valid = false;
 								break;
 							}
-						}
-						else if ($n=="we:class") {
-							if (!in_array($k, $this->clsNode)) {
+						} else if($n == "we:class"){
+							if(!in_array($k, $this->clsNode)){
 								// The current element <$k> is not defined in the array clsNode.
 								$valid = false;
 								break;
 							}
-						}
-						else if ($n=="we:category") {
-							if (!in_array($k, $this->catNode)) {
+						} else if($n == "we:category"){
+							if(!in_array($k, $this->catNode)){
 								// The current element <$k> is not defined in the array catNode.
 								$valid = false;
 								break;
@@ -233,10 +226,9 @@ class XML_Validate extends we_xml_parser {
 			// or there are no child elements.
 			$valid = false;
 
-			if ($this->nodeName($this->root)!="webEdition") {
+			if($this->nodeName($this->root) != "webEdition"){
 				// The name of the document root does not match.
-			}
-			else if (empty($this->nodes[$this->root]["children"])) {
+			} else if(empty($this->nodes[$this->root]["children"])){
 				// The document root does not contain any child elements.
 			}
 		}

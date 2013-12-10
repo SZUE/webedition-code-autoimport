@@ -37,7 +37,7 @@ echo we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
 	var weRpcFailedCnt = 0;
 	var ajaxCallback = {
 		success: function(o) {
-			if (typeof(o.responseText) !== undefined && o.responseText !== '') {
+			if (typeof (o.responseText) !== undefined && o.responseText !== '') {
 				try {
 					eval("var result=" + o.responseText);
 				} catch (exp) {
@@ -92,5 +92,5 @@ echo we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
 	}
 
 	setTimeout("YUIdoAjax()",<?php print PING_TIME; ?> * 1000);
-	//-->
+//-->
 </script>

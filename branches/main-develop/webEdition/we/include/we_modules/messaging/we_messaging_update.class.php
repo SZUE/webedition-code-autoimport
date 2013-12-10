@@ -36,4 +36,3 @@ class we_messaging_update extends we_class{
 	}
 
 }
-

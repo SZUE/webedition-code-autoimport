@@ -35,19 +35,19 @@ class we_backup_delete extends taskFragment{
 		if(isset($_SESSION['weS']['backup_delete']) && $_SESSION['weS']['backup_delete']){
 
 			$this->db->query("SELECT Icon,Path, CHAR_LENGTH(Path) as Plen FROM " . FILE_TABLE . " ORDER BY IsFolder, Plen DESC;");
-			while($this->db->next_record()) {
+			while($this->db->next_record()){
 				$this->alldata[] = $_SERVER['DOCUMENT_ROOT'] . $this->db->f("Path") . "," . $this->db->f("Icon");
 				$this->alldata[] = $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $this->db->f("Path") . "," . $this->db->f("Icon");
 			}
 			$this->db->query("SELECT Icon,Path, CHAR_LENGTH(Path) as Plen FROM " . TEMPLATES_TABLE . " ORDER BY IsFolder, Plen DESC;");
-			while($this->db->next_record()) {
+			while($this->db->next_record()){
 				$this->alldata[] = TEMPLATES_PATH . '/' . preg_replace('/\.tmpl$/i', '.php', $this->db->f("Path")) . "," . $this->db->f("Icon");
 			}
 
 			if(empty($this->alldata)){
 				print we_html_element::jsElement(
 						we_message_reporting::getShowMessageCall(g_l('backup', "[nothing_to_delete]"), we_message_reporting::WE_MESSAGE_WARNING)
-					);
+				);
 				$this->finish();
 			}
 		}
@@ -84,7 +84,7 @@ class we_backup_delete extends taskFragment{
 
 	function printHeader(){
 		we_html_tools::protect();
-		print we_html_tools::htmlTop().'</head>';
+		print we_html_tools::htmlTop() . '</head>';
 	}
 
 }

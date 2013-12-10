@@ -98,14 +98,14 @@ $content = we_html_tools::htmlDialogLayout($content, g_l('newFile', '[import_Fil
 	print we_message_reporting::getShowMessageCall($we_alerttext, we_message_reporting::WE_MESSAGE_ERROR);
 }
 ?>
-	//-->
+//-->
 </script>
 </head>
 <body class="weDialogBody" onLoad="self.focus();"><center>
-		<input type="hidden" name="pat" value="<?php print $_REQUEST["pat"]; ?>" />
-		<form method="post" enctype="multipart/form-data" name="we_form">
-			<?php print $content; ?>
-		</form>
-	</center>
+	<input type="hidden" name="pat" value="<?php print $_REQUEST["pat"]; ?>" />
+	<form method="post" enctype="multipart/form-data" name="we_form">
+		<?php print $content; ?>
+	</form>
+</center>
 </body>
 </html>

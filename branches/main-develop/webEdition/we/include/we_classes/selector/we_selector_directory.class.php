@@ -879,19 +879,19 @@ top.selectFile(top.currentID);
 	<div style='overflow:auto; height:100%' id='info'>
 	<table cellpadding='0' cellspacing='0' width='100%'>
 		<tr><td colspan='2' class='headline'>" . g_l('weClass', '[tab_properties]') . "</td></tr>
-		<tr class='" . (++$next % 2 == 0 ? 'even' : 'odd') . "'><td title=\"" . $result['Path'] . "\" width='10'>" . g_l('fileselector', "[name]") . ": </td><td>
+		<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td title=\"" . $result['Path'] . "\" width='10'>" . g_l('fileselector', "[name]") . ": </td><td>
 			<div style='margin-right:14px'>" . $result['Text'] . "</div></td></tr>
-		<tr class='" . (++$next % 2 == 0 ? 'even' : 'odd') . "'><td width='10'>ID: </td><td>
+		<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td width='10'>ID: </td><td>
 			<a href='javascript:openToEdit(\"" . $this->table . "\",\"" . $this->id . "\",\"" . $result['ContentType'] . "\")' style='color:black'><div style='float:left; vertical-align:baseline; margin-right:4px;'><img src='" . ICON_DIR . "bearbeiten.gif' border='0' vspace='0' hspace='0'></div></a>
 			<a href='javascript:openToEdit(\"" . $this->table . "\",\"" . $this->id . "\",\"" . $result['ContentType'] . "\")' style='color:black'><div>" . $this->id . "</div></a>
 		</td></tr>";
 				if($result['CreationDate']){
-					$previewDefauts .= "<tr class='" . (++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('fileselector', "[created]") . ": </td><td>" . date(g_l('date', '[format][default]'), $result['CreationDate']) . "</td></tr>";
+					$previewDefauts .= "<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('fileselector', "[created]") . ": </td><td>" . date(g_l('date', '[format][default]'), $result['CreationDate']) . "</td></tr>";
 				}
 				if($result['ModDate']){
-					$previewDefauts .= "<tr class='" . (++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('fileselector', "[modified]") . ": </td><td>" . date(g_l('date', '[format][default]'), $result['ModDate']) . "</td></tr>";
+					$previewDefauts .= "<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('fileselector', "[modified]") . ": </td><td>" . date(g_l('date', '[format][default]'), $result['ModDate']) . "</td></tr>";
 				}
-				$previewDefauts .= "<tr class='" . (++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('fileselector', "[type]") . ": </td><td>" . (g_l('contentTypes', '[' . $result['ContentType'] . ']', true) !== false ? g_l('contentTypes', '[' . $result['ContentType'] . ']') : $result['ContentType']) . "</td></tr>";
+				$previewDefauts .= "<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('fileselector', "[type]") . ": </td><td>" . (g_l('contentTypes', '[' . $result['ContentType'] . ']', true) !== false ? g_l('contentTypes', '[' . $result['ContentType'] . ']') : $result['ContentType']) . "</td></tr>";
 
 				$out .= '<table cellpadding="0" cellspacing="0" height="100%" width="100%">';
 				switch($result['ContentType']){
@@ -911,23 +911,23 @@ top.selectFile(top.currentID);
 
 							$out .= "<tr><td valign='middle' class='image' height='160' align='center' bgcolor='#EDEEED'><a href='" . getServerUrl(true) . $result['Path'] . "' target='_blank' align='center'><img src='$thumbpath' border='0' id='previewpic'></a></td></tr>" .
 								$previewDefauts . "
-<tr class='" . (++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', "[width]") . " x " . g_l('weClass', "[height]") . ": </td><td>" . $imagesize[0] . " x " . $imagesize[1] . " px </td></tr>
-<tr class='" . (++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('fileselector', "[filesize]") . ": </td><td>" . $filesize . "</td></tr>";
+<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', "[width]") . " x " . g_l('weClass', "[height]") . ": </td><td>" . $imagesize[0] . " x " . $imagesize[1] . " px </td></tr>
+<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('fileselector', "[filesize]") . ": </td><td>" . $filesize . "</td></tr>";
 
 							$next = 0;
 							$out .= "
 <tr><td colspan='2' class='headline'>" . g_l('weClass', "[metainfo]") . "</td></tr>
-<tr class='" . (++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', "[Title]") . ": </td><td>" . (isset($metainfos['Title']) ? $metainfos['Title'] : '') . "</td></tr>
-<tr class='" . (++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', "[Description]") . ": </td><td>" . (isset($metainfos['Description']) ? $metainfos['Description'] : '') . "</td></tr>
-<tr class='" . (++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', "[Keywords]") . ": </td><td>" . (isset($metainfos['Keywords']) ? $metainfos['Keywords'] : '') . "</td></tr>";
+<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', "[Title]") . ": </td><td>" . (isset($metainfos['Title']) ? $metainfos['Title'] : '') . "</td></tr>
+<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', "[Description]") . ": </td><td>" . (isset($metainfos['Description']) ? $metainfos['Description'] : '') . "</td></tr>
+<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', "[Keywords]") . ": </td><td>" . (isset($metainfos['Keywords']) ? $metainfos['Keywords'] : '') . "</td></tr>";
 
 							$next = 0;
 							$out .= "
 <tr><td colspan='2' class='headline'>" . g_l('weClass', "[attribs]") . "</td></tr>
-<tr class='" . (++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', "[Title]") . ": </td><td>" . (isset($metainfos['Title']) ? $metainfos['Title'] : '') . "</td></tr>
-<tr class='" . (++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', "[name]") . ": </td><td>" . (isset($metainfos['name']) ? $metainfos['name'] : '') . "</td></tr>
-<tr class='" . (++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', "[alt]") . ": </td><td>" . (isset($metainfos['alt']) ? $metainfos['alt'] : '') . "</td></tr>
-<tr class='" . (++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', "[width]") . " x " . g_l('weClass', "[height]") . ": </td><td>" . (isset($metainfos['width']) ? $metainfos['width'] : '') . " x " . (isset($metainfos['height']) ? $metainfos['height'] : '') . " px </td></tr>";
+<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', "[Title]") . ": </td><td>" . (isset($metainfos['Title']) ? $metainfos['Title'] : '') . "</td></tr>
+<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', "[name]") . ": </td><td>" . (isset($metainfos['name']) ? $metainfos['name'] : '') . "</td></tr>
+<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', "[alt]") . ": </td><td>" . (isset($metainfos['alt']) ? $metainfos['alt'] : '') . "</td></tr>
+<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', "[width]") . " x " . g_l('weClass', "[height]") . ": </td><td>" . (isset($metainfos['width']) ? $metainfos['width'] : '') . " x " . (isset($metainfos['height']) ? $metainfos['height'] : '') . " px </td></tr>";
 						}
 						break;
 					case "folder":
@@ -936,14 +936,14 @@ top.selectFile(top.currentID);
 							$next = 0;
 							$out .= "<tr><td colspan='2' class='headline'>" . g_l('fileselector', "[folders]") . "</td></tr>";
 							foreach($folderFolders as $fId => $fxVal){
-								$out .= "<tr class='" . (++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . $fId . ": </td><td>" . $fxVal . "</td></tr>";
+								$out .= "<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . $fId . ": </td><td>" . $fxVal . "</td></tr>";
 							}
 						}
 						if(isset($folderFiles) && is_array($folderFiles) && count($folderFiles)){
 							$next = 0;
 							$out .= "<tr><td colspan='2' class='headline'>" . g_l('fileselector', "[files]") . "</td></tr>";
 							foreach($folderFiles as $fId => $fxVal){
-								$out .= "<tr class='" . (++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . $fId . ": </td><td>" . $fxVal . "</td></tr>";
+								$out .= "<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . $fId . ": </td><td>" . $fxVal . "</td></tr>";
 							}
 						}
 						break;
@@ -954,8 +954,8 @@ top.selectFile(top.currentID);
 							$next = 0;
 							$out .= "
 <tr><td colspan='2' class='headline'>" . g_l('weClass', "[master_template]") . "</td></tr>
-<tr class='" . (++$next % 2 == 0 ? 'even' : 'odd') . "'><td>ID:</td><td>" . $result['MasterTemplateID'] . "</td></tr>
-<tr class='" . (++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', "[path]") . ":</td><td>" . $mastertemppath . "</td></tr>";
+<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>ID:</td><td>" . $result['MasterTemplateID'] . "</td></tr>
+<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', "[path]") . ":</td><td>" . $mastertemppath . "</td></tr>";
 						}
 						break;
 					case "text/webedition":
@@ -963,17 +963,17 @@ top.selectFile(top.currentID);
 <tr><td colspan='2' class='headline'>" . g_l('weClass', "[metainfo]") . "</td></tr>";
 						$next = 0;
 						$out .= "
-<tr class='" . (++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', "[Title]") . ":</td><td>" . (isset($metainfos['Title']) ? $metainfos['Title'] : '') . "</td></tr>
-<tr class='" . (++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', "[Charset]") . ":</td><td>" . (isset($metainfos['Charset']) ? $metainfos['Charset'] : '') . "</td></tr>
-<tr class='" . (++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', "[Keywords]") . ":</td><td>" . (isset($metainfos['Keywords']) ? $metainfos['Keywords'] : '') . "</td></tr>
-<tr class='" . (++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', "[Description]") . ":</td><td>" . (isset($metainfos['Description']) ? $metainfos['Description'] : '') . "</td></tr>";
+<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', "[Title]") . ":</td><td>" . (isset($metainfos['Title']) ? $metainfos['Title'] : '') . "</td></tr>
+<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', "[Charset]") . ":</td><td>" . (isset($metainfos['Charset']) ? $metainfos['Charset'] : '') . "</td></tr>
+<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', "[Keywords]") . ":</td><td>" . (isset($metainfos['Keywords']) ? $metainfos['Keywords'] : '') . "</td></tr>
+<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', "[Description]") . ":</td><td>" . (isset($metainfos['Description']) ? $metainfos['Description'] : '') . "</td></tr>";
 						break;
 					case "text/html":
 					case "text/css":
 					case "text/js":
 					case "application/*":
 						$out .= $previewDefauts;
-						$out .= "<tr class='" . (++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('fileselector', "[filesize]") . ":</td><td>" . $filesize . "</td></tr>";
+						$out .= "<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('fileselector', "[filesize]") . ":</td><td>" . $filesize . "</td></tr>";
 						break;
 					case "object":
 					case "objectFile":

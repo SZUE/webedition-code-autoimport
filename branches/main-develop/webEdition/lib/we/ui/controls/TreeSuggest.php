@@ -199,8 +199,7 @@ if(isset($sessionName) && $sessionName !== '' && isset($id) && $id !== ''){
 		$response .= ']}}';
 
 		print $response;
-	}
-	else {
+	} else {
 		return;
 	}
 } else {

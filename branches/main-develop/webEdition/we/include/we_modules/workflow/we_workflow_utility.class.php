@@ -176,7 +176,7 @@ abstract class we_workflow_utility{
 		}
 		$i = $doc->findLastActiveStep();
 		return (($i <= 0) || ($i < count($doc->steps) - 1) || ($doc->steps[$i]->findNumOfFinishedTasks() < count($doc->steps[$i]->tasks)) ?
-						false : true);
+				false : true);
 	}
 
 	/**

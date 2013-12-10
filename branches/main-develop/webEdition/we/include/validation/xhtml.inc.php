@@ -36,7 +36,7 @@ function validateXhtmlAttribs($element, &$attribs, $xhtmlType, $showWrong, $remo
 	if($xhtmlType == "transitional"){ //	use xml-transitional
 		include(WE_INCLUDES_PATH . 'validation/xhtml_10_transitional.inc.php');
 		//   the array $_validAtts and $_reqAtts are set inside this include-file
-	} else{													//	use xml-strict
+	} else {			 //	use xml-strict
 		include(WE_INCLUDES_PATH . 'validation/xhtml_10_strict.inc.php');
 		//   the array $_validAtts and $_reqAtts are set inside this include-file
 	}
@@ -87,7 +87,7 @@ function validateXhtmlAttribs($element, &$attribs, $xhtmlType, $showWrong, $remo
 				}
 			}
 		}
-	} else{	//	element does not exist
+	} else { //	element does not exist
 		if($showWrong){
 			if(isset($_SESSION['prefs']['xhtml_show_wrong_text']) && $_SESSION['prefs']['xhtml_show_wrong_text']){
 				print '<p>' . sprintf(g_l('xhtmlDebug', '[wrong_element][text]'), $element) . '</p>';

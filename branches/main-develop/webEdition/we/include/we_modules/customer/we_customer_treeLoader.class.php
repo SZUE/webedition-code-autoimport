@@ -65,7 +65,7 @@ abstract class we_customer_treeLoader{
 			$typ = array(
 				'typ' => ($db->f("IsFolder") == 1 ? "group" : "item"),
 				'disabled' => 0,
-				'published'=>$db->f('LoginDenied'),
+				'published' => $db->f('LoginDenied'),
 				'tooltip' => $db->f("ID"),
 				'offset' => $offset,
 			);
@@ -239,7 +239,7 @@ abstract class we_customer_treeLoader{
 						'isfolder' => $db->f("IsFolder"),
 						'typ' => "item",
 						'disabled' => 0,
-						'published'=>$db->f('LoginDenied'),
+						'published' => $db->f('LoginDenied'),
 						'tooltip' => $db->f("ID")
 					);
 				}

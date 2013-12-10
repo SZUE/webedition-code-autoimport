@@ -163,11 +163,11 @@ echo implode(',', $tmp);
 			toggleTree();
 		}
 	}
-	//-->
+//-->
 </script>
 <div style="position:absolute;top:8px;left:5px;z-index:10;<?php echo $useSvg ? "border-left:1px solid #909090;border-bottom:1px solid #909090;" : "border-top:1px solid black;" ?>text-decoration:none ">
 	<script type="text/javascript"><!--
-		for (var i = 0; i < we_tabs.length; i++) {
+	for (var i = 0; i < we_tabs.length; i++) {
 			if (we_tabs[i] !== null) {
 				we_tabs[i].write();
 			}
@@ -195,7 +195,7 @@ if(isset($_REQUEST["table"]) && $_REQUEST["table"]){
 }
 ?>
 		setTab(defTab);
-		//-->
+//-->
 	</script>
 </div>
 <img id="incBaum" src="<?php echo BUTTONS_DIR ?>icons/function_plus.gif" width="9" height="12" style="position:absolute;bottom:53px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer;<?php echo ($_treewidth <= 100) ? 'bgcolor:grey;' : ''; ?>" onClick="incTree();">

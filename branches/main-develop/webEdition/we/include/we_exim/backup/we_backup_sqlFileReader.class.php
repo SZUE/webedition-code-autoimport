@@ -29,7 +29,7 @@ class we_backup_sqlFileReader{
 		// set the number of lines
 		$lines = 1;
 
-		if($filename == ''||!is_readable($filename)){
+		if($filename == '' || !is_readable($filename)){
 			return false;
 		}
 
@@ -40,7 +40,7 @@ class we_backup_sqlFileReader{
 			$gets = 'fgets';
 			$close = 'fclose';
 			$eof = 'feof';
-		} else{
+		} else {
 			$open = 'gzopen';
 			$seek = 'gzseek';
 			$tell = 'gztell';
@@ -77,7 +77,7 @@ class we_backup_sqlFileReader{
 
 								$_buffer = '';
 								$_isend = $eof($_fp);
-							} else{
+							} else {
 
 								$_isend = true;
 								$_buffer = preg_replace("/\r?\n/", ' ', $_buffer);
@@ -95,12 +95,12 @@ class we_backup_sqlFileReader{
 					if($size > 0){
 						if(empty($_buffer)){
 							$_condition = false && !$eof($_fp);
-						} else{
+						} else {
 							$i = strlen($_buffer);
 							if($i < $size){
 								$_condition = true && !$eof($_fp);
 								;
-							} else{
+							} else {
 								$_condition = false && !$eof($_fp);
 								;
 							}
@@ -109,7 +109,7 @@ class we_backup_sqlFileReader{
 						if($i < $lines){
 							$_condition = true && !$eof($_fp);
 							;
-						} else{
+						} else {
 							$_condition = false && !$eof($_fp);
 							;
 						}
@@ -130,10 +130,10 @@ class we_backup_sqlFileReader{
 
 				if(empty($data)){
 					return false;
-				} else{
+				} else {
 					return true;
 				}
-			} else{
+			} else {
 				$close($_fp);
 				return false;
 			}

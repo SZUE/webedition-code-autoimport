@@ -73,7 +73,7 @@ print STYLESHEET;
 
 		f.submit();
 	}
-	//-->
+//-->
 </script>
 </head>
 <body class="weDialogBody" style="overflow:hidden;">

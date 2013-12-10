@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -22,23 +23,20 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+/**
+ * if hook execution is enabled this function will be executed
+ * when saving an entry or folder in the application toolfactory
+ * Files in the sample_hooks folder are not executed and are not update-safe and will be overwritten by the next webEdition update
+ *
+ * @param array $param
+ */
+function weCustomHook_toolfactory_save($param){
 
-		
 	/**
-	 * if hook execution is enabled this function will be executed 
-	 * when saving an entry or folder in the application toolfactory
-	 * Files in the sample_hooks folder are not executed and are not update-safe and will be overwritten by the next webEdition update
-	 * 
-	 * @param array $param
-	 */	
-	function weCustomHook_toolfactory_save($param) { 
-	
-		/**
-		 * e.g.:
-		 * 
-		 * ob_start("error_log");
-		 * print_r($param);
-		 * ob_end_clean();
-		 */
-
-	}
+	 * e.g.:
+	 *
+	 * ob_start("error_log");
+	 * print_r($param);
+	 * ob_end_clean();
+	 */
+}

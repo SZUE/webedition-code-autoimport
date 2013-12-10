@@ -28,14 +28,14 @@ class MultiDirChooser2 extends MultiDirChooser{
 	var $catField = '';
 
 	function __construct($width = "", $ids = "", $cmd_del = "", $addbut = "", $ws = "", $fields = "Icon,Path", $table = FILE_TABLE, $css = "defaultfont", $thirdDelPar = "", $extraDelFn = ""){
-	parent::__construct($width, $ids, $cmd_del, $addbut, $ws, $fields, $table, $css, $thirdDelPar, $extraDelFn);
+		parent::__construct($width, $ids, $cmd_del, $addbut, $ws, $fields, $table, $css, $thirdDelPar, $extraDelFn);
 	}
 
 	function getLine($lineNr){
 		$_catFieldJS = "";
-	/*	if($this->catField){
-			$_ids = str_replace("," . $this->Record["ID"] . ",", ",", $this->ids);
-		}*/
+		/* 	if($this->catField){
+		  $_ids = str_replace("," . $this->Record["ID"] . ",", ",", $this->ids);
+		  } */
 		$_catFieldJS .= "deleteCategory('" . $this->rowPrefix . "'," . $this->Record["ID"] . "); ";
 		switch($lineNr){
 			case 0:
@@ -70,7 +70,7 @@ class MultiDirChooser2 extends MultiDirChooser{
 		$idArr = makeArrayFromCSV($this->ids);
 
 		foreach($idArr as $id){
-			$this->Record=getHash('SELECT ID,' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ID =' . intval($id),$this->db);
+			$this->Record = getHash('SELECT ID,' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ID =' . intval($id), $this->db);
 			if(!empty($this->Record)){
 				for($i = 0; $i < $this->lines; $i++){
 					$out .= $this->getLine($i);

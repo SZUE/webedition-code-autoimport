@@ -99,8 +99,8 @@ function we_makeTextFromPath(path){
 
 	function printFramesetJSFunctioWriteBody(){
 		?><script type="text/javascript"><!--
-					function writeBody(d){
-						d.open();
+					function writeBody(d) {
+				d.open();
 		<?php
 		echo self::makeWriteDoc(we_html_tools::getHtmlTop('', '', '4Trans', true) . STYLESHEET_SCRIPT . we_html_element::jsElement('
 var ctrlpressed=false
@@ -109,37 +109,37 @@ var wasdblclick=false
 var tout=null
 document.onclick = weonclick;
 function weonclick(e){
-	if(document.all){
-		if(event.ctrlKey || event.altKey){ ctrlpressed=true;}
-		if(event.shiftKey){ shiftpressed=true;}
-	}else{
-		if(e.altKey || e.metaKey || e.ctrlKey){ ctrlpressed=true;}
-		if(e.shiftKey){ shiftpressed=true;}
-	}' . ($this->multiple ? '
-		if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles();}' : '
-		top.unselectAllFiles();') . '
+if(document.all){
+if(event.ctrlKey || event.altKey){ ctrlpressed=true;}
+if(event.shiftKey){ shiftpressed=true;}
+}else{
+if(e.altKey || e.metaKey || e.ctrlKey){ ctrlpressed=true;}
+if(e.shiftKey){ shiftpressed=true;}
+}' . ($this->multiple ? '
+if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles();}' : '
+top.unselectAllFiles();') . '
 }') . '</head>
 <body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0">
 <table style="border-spacing: 0px;border-style:none;width:100%" cellpadding="0">');
 		?>
-				for(i=0;i < entries.length; i++){
-					var onclick = ' onClick="weonclick(<?php echo (we_base_browserDetect::isIE() ? "this" : "event") ?>);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick('+entries[i].ID+',0);}else{top.wasdblclick=0;}\',300);return true;"';
-					var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick('+entries[i].ID+',1);return true;"';
-					d.writeln('<tr' + ((entries[i].ID == top.currentID)  ? ' style="background-color:#DFE9F5;cursor:pointer;"' : '') + ' id="line_'+entries[i].ID+'" style="cursor:pointer;"'+onclick+ (entries[i].isFolder ? ondblclick : '') + ' >');
+				for (i = 0; i < entries.length; i++) {
+					var onclick = ' onClick="weonclick(<?php echo (we_base_browserDetect::isIE() ? "this" : "event") ?>);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=0;}\',300);return true;"';
+					var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
+					d.writeln('<tr' + ((entries[i].ID == top.currentID) ? ' style="background-color:#DFE9F5;cursor:pointer;"' : '') + ' id="line_' + entries[i].ID + '" style="cursor:pointer;"' + onclick + (entries[i].isFolder ? ondblclick : '') + ' >');
 					d.writeln('<td class="selector" width="25" align="center">');
-					d.writeln('<img src="<?php print ICON_DIR; ?>'+entries[i].icon+'" width="16" height="18" border="0" />');
+					d.writeln('<img src="<?php print ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0" />');
 					d.writeln('</td>');
-					d.writeln('<td class="selector"  title="'+entries[i].text+'">');
-					d.writeln(cutText(entries[i].text,80));
+					d.writeln('<td class="selector"  title="' + entries[i].text + '">');
+					d.writeln(cutText(entries[i].text, 80));
 					d.writeln('</td>');
 					d.writeln('</tr><tr><td colspan="2"><?php print we_html_tools::getPixel(2, 1); ?></td></tr>');
 				}<?php echo self::makeWriteDoc('
-		<tr><td width="25">' . we_html_tools::getPixel(25, 2) . '</td>
-		<td>' . we_html_tools::getPixel(150, 2) . '</td>
-		</tr></table></body>'); ?>
-						d.close();
-					}
-					//->
+<tr><td width="25">' . we_html_tools::getPixel(25, 2) . '</td>
+<td>' . we_html_tools::getPixel(150, 2) . '</td>
+</tr></table></body>'); ?>
+				d.close();
+			}
+			//->
 		</script>
 		<?php
 	}

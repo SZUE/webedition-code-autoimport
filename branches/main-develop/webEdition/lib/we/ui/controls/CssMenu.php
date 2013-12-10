@@ -22,8 +22,6 @@
  * @package    webEdition_javamenu
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
  * @see we_ui_abstract_AbstractElement
  */
@@ -61,7 +59,6 @@ class we_ui_controls_CssMenu extends we_ui_abstract_AbstractElement{
 
 	protected function _renderHTML(){
 		return $this->getJS() . $this->getHTMLMenu(false);
-
 	}
 
 	function getJS(){

@@ -99,7 +99,7 @@ class we_import_CSV extends CSV{
 
 					if($field_input){
 						$field_input--;
-					} else{
+					} else {
 						$field_input++;
 					}
 				} else if($akt_char == "\n"){
@@ -125,7 +125,7 @@ class we_import_CSV extends CSV{
 
 			if($head_complete){
 				$this->Fields[$akt_line][$akt_field] = $this->FromCharset == $this->ToCharset ? trim($akt_field_value) : mb_convert_encoding(trim($akt_field_value), $this->ToCharset, $this->FromCharset);
-			} else{
+			} else {
 				$this->FieldNames[$akt_field] = $this->FromCharset == $this->ToCharset ? trim($akt_field_value) : mb_convert_encoding(trim($akt_field_value), $this->ToCharset, $this->FromCharset);
 			}
 		}

@@ -38,6 +38,7 @@ class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement{
 	/*
 	 * Class for main title of table
 	 */
+
 	const kTableTitle = 'we_ui_layout_HeadlineIconTable_Title';
 
 	/*
@@ -267,7 +268,7 @@ class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement{
 			$html .= $rowHTML;
 			if($i < (count($this->_rows) - 1) && ($row->hasLine())){
 				$html .= '<div class="we_ui_layout_HeadlineIconTable_Rule"></div>';
-			} else{
+			} else {
 				$html .= '<div class="we_ui_layout_HeadlineIconTable_Space"></div>';
 			}
 		}
@@ -294,7 +295,7 @@ class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement{
 	</tr>
 	<tr>
 		<td id="td_' . oldHtmlspecialchars($this->getId()) . '">';
-		} else{
+		} else {
 
 			return $tableTag . '
 	<tr>

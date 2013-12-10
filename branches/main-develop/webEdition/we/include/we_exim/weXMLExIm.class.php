@@ -244,8 +244,8 @@ class weXMLExIm{
 	}
 
 	static function getHeader($encoding = '', $type = ''){
-		$encoding= ($encoding?$encoding:$GLOBALS['WE_BACKENDCHARSET']);
-		
+		$encoding = ($encoding ? $encoding : $GLOBALS['WE_BACKENDCHARSET']);
+
 		return '<?xml version="1.0" encoding="' . $encoding . '" standalone="yes"?>' . "\n" .
 			we_backup_backup::weXmlExImHead . ' version="' . WE_VERSION . '" type="' . $type . '" xmlns:we="we-namespace">' . "\n";
 	}
@@ -402,4 +402,3 @@ class weXMLExIm{
 
 //FIXME: splitFile,exportChunk missing - called in Backup class
 }
-

@@ -28,8 +28,9 @@ require_once(WE_MESSAGING_MODULE_PATH . "messaging_std.inc.php");
 /* messaging email send class */
 
 class we_messaging_email extends we_messaging_proto{
-	const TYPE_SEND_RECEIVE=0;
-	const TYPE_SEND_ONLY=1;
+
+	const TYPE_SEND_RECEIVE = 0;
+	const TYPE_SEND_ONLY = 1;
 
 	var $msgclass_type = self::TYPE_SEND_ONLY;
 
@@ -65,7 +66,7 @@ class we_messaging_email extends we_messaging_proto{
 			if(($oc >= 33 && $oc <= 60) || ($oc >= 62 && $oc <= 126)){
 				$enc_header .= $c;
 				$ew_len++;
-			} else{
+			} else {
 				$enc_header .= sprintf("=%X", $oc);
 				$ew_len += 3;
 			}
@@ -89,7 +90,7 @@ class we_messaging_email extends we_messaging_proto{
 		if(we_mail($to, $data['subject'], $data['body'], $from)){
 			$results['err'] = g_l('modules_messaging', '[error_occured]') . ': ' . g_l('modules_messaging', '[mail_not_sent]');
 			$results['failed'] = $rcpts;
-		} else{
+		} else {
 			array_unshift($rcpts, $to);
 			$results['ok'] = $rcpts;
 		}

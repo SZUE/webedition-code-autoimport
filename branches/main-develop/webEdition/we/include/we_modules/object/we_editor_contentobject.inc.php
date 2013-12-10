@@ -76,7 +76,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 			i.setAttribute("oldValue", i.value);
 		}
 	}
-	//-->
+//-->
 </script>
 <?php
 echo $jsGUI->getJS(WEBEDITION_DIR . 'js');
@@ -117,8 +117,8 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
  <td></td>
  </tr>
  </table>
- </div>'.
-			we_html_multiIconBox::_getBoxEnd('100%');
+ </div>' .
+		we_html_multiIconBox::_getBoxEnd('100%');
 
 		for($i = 0; $i <= $count && !empty($sort); $i++){
 			$identifier = $we_doc->getSortIndex($i);

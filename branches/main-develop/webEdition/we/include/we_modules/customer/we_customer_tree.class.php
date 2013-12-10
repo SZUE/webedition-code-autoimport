@@ -38,7 +38,7 @@ class we_customer_tree extends weTree{
 
 	function getJSCustomDraw(){
 		return array_merge(parent::getJSCustomDraw(), array(
-		"sort" => '
+			"sort" => '
 var newAst = zweigEintrag;
 var zusatz = (ai == nf.laenge) ? "end" : "";
 var oc_img;
@@ -61,8 +61,7 @@ if (nf[ai].open){
 	row+=draw(nf[ai].id,newAst);
 }
 			',
-
-		"group" => '
+			"group" => '
 var newAst = zweigEintrag;
 var zusatz = (ai == nf.len) ? "end" : "";
 var oc_img;
@@ -177,7 +176,6 @@ function startTree(){
 			$this->getJSStartTree();
 	}
 
-
 	function getJSLoadTree($treeItems){
 		$days = array(
 			'Sunday' => 0,
@@ -206,7 +204,7 @@ function startTree(){
 
 		$js = 'var attribs=new Array();';
 		foreach($treeItems as $item){
-			$js.='if(' . $this->topFrame . '.indexOfEntry(\'' . str_replace(array("\n","\r",'\''), '', $item["id"]) . '\')<0){';
+			$js.='if(' . $this->topFrame . '.indexOfEntry(\'' . str_replace(array("\n", "\r", '\''), '', $item["id"]) . '\')<0){';
 			foreach($item as $k => $v){
 				if($k == 'text'){
 					if(in_array($v, array_keys($days))){
@@ -216,7 +214,7 @@ function startTree(){
 						$v = g_l('date', '[month][long][' . $months[$v] . ']');
 					}
 				}
-				$js.='attribs["' . strtolower($k) . '"]=\'' . addslashes(stripslashes(str_replace(array("\n","\r",'\''), '', $v))) . '\';';
+				$js.='attribs["' . strtolower($k) . '"]=\'' . addslashes(stripslashes(str_replace(array("\n", "\r", '\''), '', $v))) . '\';';
 			}
 			$js.=$this->topFrame . '.treeData.add(new ' . $this->topFrame . '.node(attribs));
 				}';
@@ -248,5 +246,4 @@ function getLayout(){
 }';
 	}
 
-
-	}
+}

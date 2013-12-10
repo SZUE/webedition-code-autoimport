@@ -123,7 +123,7 @@ if(!$bDisplay){
 // validity settings
 $sctValid = we_html_tools::htmlSelect("sct_valid", array(
 		g_l('cockpit', '[always]'), g_l('cockpit', '[from_date]'), g_l('cockpit', '[period]')
-		), 1, g_l('cockpit', '[always]'), false, array('style'=>"width:100px;" ,'onChange'=>"toggleTblValidity()"), 'value', 100, 'middlefont');
+		), 1, g_l('cockpit', '[always]'), false, array('style' => "width:100px;", 'onChange' => "toggleTblValidity()"), 'value', 100, 'middlefont');
 $oTblValidity = new we_html_table(array(
 	"cellpadding" => 0, "cellspacing" => 0, "border" => 0, "id" => "oTblValidity"
 	), 1, 3);

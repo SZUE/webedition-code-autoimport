@@ -171,7 +171,7 @@ abstract class weTagWizard{
 			// get the custom tag-descriptions
 			$handle = dir($dir);
 
-			while(false !== ($entry = $handle->read())) {
+			while(false !== ($entry = $handle->read())){
 
 				if(preg_match('/we_tag_(.*).inc.php/', $entry, $match)){
 					$ret[] = $match[1];

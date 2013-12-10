@@ -42,10 +42,8 @@ $_backbutton = we_html_button::create_button("back", "javascript:top.weNavigatio
 
 
 $_table = new we_html_table(array("cellpadding" => 0,
-		"cellspacing" => 0,
-		"border" => 0),
-		2,
-		2);
+	"cellspacing" => 0,
+	"border" => 0), 2, 2);
 $_table->setColContent(0, 0, we_html_tools::getPixel(20, 6));
 $_table->setColContent(1, 1, $_backbutton);
 

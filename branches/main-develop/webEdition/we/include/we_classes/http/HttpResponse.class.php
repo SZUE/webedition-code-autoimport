@@ -71,7 +71,7 @@ class HttpResponse{
 
 				if(isset($_line[1])){ //  normal header
 					$headers[trim($_line[0])] = trim($_line[1]);
-				} else {		//  this is first line with http answer
+				} else { //  this is first line with http answer
 					if(preg_match('/(.+) (.+) (.+)/si', $cur, $matches)){
 
 						$this->http_answer['prot'] = $matches[1];

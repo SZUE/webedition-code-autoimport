@@ -191,7 +191,7 @@ class we_glossary_view{
 	function getJSTop(){
 		$mod = isset($_REQUEST['mod']) ? $_REQUEST['mod'] : '';
 		$modData = weModuleInfo::getModuleData($mod);
-		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' .$modData['text'] : '';
+		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 		$js = '
 			var get_focus = 1;
 			var activ_tab = 1;
@@ -455,7 +455,7 @@ class we_glossary_view{
 					if(!permissionhandler::hasPerm("NEW_GLOSSARY")){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('modules_glossary', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
-							);
+						);
 						break;
 					}
 					$this->Glossary = new we_glossary_glossary();
@@ -475,7 +475,7 @@ class we_glossary_view{
 					if(!permissionhandler::hasPerm("EDIT_GLOSSARY")){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('modules_glossary', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
-							);
+						);
 						$_REQUEST['home'] = '1';
 						$_REQUEST['pnt'] = 'edbody';
 						break;
@@ -504,15 +504,15 @@ class we_glossary_view{
 							' . $_js . '
 							' . $this->EditorBodyFrame . '.setDisplay("ObjectWorkspaceID","block");
 						');
-					} else{
+					} else {
 						if(we_navigation_dynList::getWorkspaceFlag($objectLinkID)){
 							print we_html_element::jsElement(
 									$this->EditorBodyFrame . '.setDisplay("ObjectWorkspaceID","block");
 								' . $this->EditorBodyForm . '.elements[\'link[Attributes][ObjectWorkspaceID]\'].options.length = 0;
 								' . $this->EditorBodyForm . '.elements[\'link[Attributes][ObjectWorkspaceID]\'].options[' . $this->EditorBodyForm . '.elements[\'link[Attributes][ObjectWorkspaceID]\'].options.length] = new Option("/",0);
 								' . $this->EditorBodyForm . '.elements[\'link[Attributes][ObjectWorkspaceID]\'].selectedIndex = 0;'
-								);
-						} else{
+							);
+						} else {
 							print we_html_element::jsElement(
 									$this->EditorBodyFrame . '.setDisplay("ObjectWorkspaceID","none");
 								' . $this->EditorBodyForm . '.elements[\'link[Attributes][ObjectWorkspaceID]\'].options.length = 0;
@@ -536,7 +536,7 @@ class we_glossary_view{
 
 					print we_html_element::jsElement(
 							we_message_reporting::getShowMessageCall(g_l('modules_glossary', "[save_ok]"), we_message_reporting::WE_MESSAGE_NOTICE)
-						);
+					);
 
 					break;
 
@@ -553,35 +553,35 @@ class we_glossary_view{
 					}
 					if(isset($_REQUEST[$_REQUEST['Type']]['Attributes'])){
 						$this->Glossary->Attributes = $_REQUEST[$_REQUEST['Type']]['Attributes'];
-					} else{
+					} else {
 						$this->Glossary->Attributes = '';
 					}
 
 					if(!permissionhandler::hasPerm("NEW_GLOSSARY") && !permissionhandler::hasPerm("EDIT_GLOSSARY")){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('modules_glossary', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
-							);
+						);
 						break;
 					}
 
 					if(trim($this->Glossary->Text) == ''){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('modules_glossary', "[name_empty]"), we_message_reporting::WE_MESSAGE_ERROR)
-							);
+						);
 						break;
 					}
 
 					if($this->Glossary->checkFieldText($this->Glossary->Text)){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('modules_glossary', "[text_notValid]"), we_message_reporting::WE_MESSAGE_ERROR)
-							);
+						);
 						break;
 					}
 
 					if($this->Glossary->checkFieldText($this->Glossary->Title)){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('modules_glossary', "[title_notValid]"), we_message_reporting::WE_MESSAGE_ERROR)
-							);
+						);
 						break;
 					}
 
@@ -593,21 +593,21 @@ class we_glossary_view{
 					if($this->Glossary->pathExists($this->Glossary->Path)){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('modules_glossary', "[name_exists]"), we_message_reporting::WE_MESSAGE_ERROR)
-							);
+						);
 						break;
 					}
 
 					if($this->Glossary->isSelf()){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('modules_glossary', "[path_nok]"), we_message_reporting::WE_MESSAGE_ERROR)
-							);
+						);
 						break;
 					}
 
 
 					if($this->Glossary->ID != 0){
 						$StateBefore = f("SELECT Published FROM " . GLOSSARY_TABLE . " WHERE ID = " . intval($this->Glossary->ID), "Published", new DB_WE());
-					} else{
+					} else {
 						$StateBefore = 0;
 					}
 
@@ -622,7 +622,7 @@ class we_glossary_view{
 						if($isNew){
 							$js = $this->TopFrame . '.makeNewEntry(\'' . $this->Glossary->Icon . '\',\'' . $this->Glossary->ID . '\',\'' . $this->Glossary->Language . '_' . $this->Glossary->Type . '\',\'' . $this->Glossary->Text . '\',0,\'' . ($this->Glossary->IsFolder ? 'folder' : 'item') . '\',\'' . GLOSSARY_TABLE . '\',' . ($this->Glossary->Published > 0 ? 1 : 0) . ');
 								' . $this->TopFrame . '.drawTree();';
-						} else{
+						} else {
 							$js = $this->TopFrame . '.updateEntry(' . $this->Glossary->ID . ',"' . $this->Glossary->Text . '","' . $this->Glossary->Language . '_' . $this->Glossary->Type . '",' . ($this->Glossary->Published > 0 ? 1 : 0) . ');' . "\n";
 						}
 
@@ -673,9 +673,9 @@ class we_glossary_view{
 					if(!permissionhandler::hasPerm("DELETE_GLOSSARY")){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('modules_glossary', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
-							);
+						);
 						return;
-					} else{
+					} else {
 						if($this->Glossary->delete()){
 							print we_html_element::jsElement('
 								' . $this->TopFrame . '.deleteEntry(' . $this->Glossary->ID . ');
@@ -697,7 +697,7 @@ class we_glossary_view{
 							$this->Glossary = new we_glossary_glossary();
 							$_REQUEST['home'] = '1';
 							$_REQUEST['pnt'] = 'edbody';
-						} else{
+						} else {
 							print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR));
 						}
 					}
@@ -731,7 +731,7 @@ class we_glossary_view{
 						}
 					} else if(is_array($_REQUEST[$val])){
 						$this->Glossary->$val = $_REQUEST[$val];
-					} else{
+					} else {
 						$this->Glossary->$val = $_REQUEST[$val];
 					}
 				}

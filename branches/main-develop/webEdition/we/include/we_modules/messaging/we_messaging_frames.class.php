@@ -802,7 +802,7 @@ function msg_start() {
 		//TODO: move to a better place: jsTop()
 		$mod = isset($_REQUEST['mod']) ? $_REQUEST['mod'] : '';
 		$modData = weModuleInfo::getModuleData($mod);
-		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' .$modData['text'] : '';
+		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 
 		$extraHead = $this->getJSCmdCode() .
 			we_html_element::jsScript(JS_DIR . 'messaging_std.js') .

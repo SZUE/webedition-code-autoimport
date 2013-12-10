@@ -32,9 +32,8 @@ $text = '';
 $msg = intval($_REQUEST['msg']) - intval($_REQUEST['omsg']);
 $todo = intval($_REQUEST['todo']) - intval($_REQUEST['otodo']);
 
-$text =
-	($msg > 0 ? sprintf(g_l('modules_messaging', '[newHeaderMsg]'), '<a href="' . $msg_cmd . '">' . $msg, '</a>').'<br/>' : '') .
-	($todo > 0 ? sprintf(g_l('modules_messaging', '[newHeaderTodo]'), '<a href="' . $todo_cmd . '">' . $todo, '</a>').'<br/>' : '');
+$text = ($msg > 0 ? sprintf(g_l('modules_messaging', '[newHeaderMsg]'), '<a href="' . $msg_cmd . '">' . $msg, '</a>') . '<br/>' : '') .
+	($todo > 0 ? sprintf(g_l('modules_messaging', '[newHeaderTodo]'), '<a href="' . $todo_cmd . '">' . $todo, '</a>') . '<br/>' : '');
 $parts = array(
 	array(
 		"headline" => we_html_tools::htmlAlertAttentionBox($text, we_html_tools::TYPE_INFO, 500, false),
@@ -55,4 +54,4 @@ print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_multiIconBox::getHTML("", "100%", $parts, 30, $buttons->getHtml())
 			)
 		)
-	);
+);

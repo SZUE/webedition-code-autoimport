@@ -191,8 +191,8 @@ if(isset($GLOBALS['we_obj']) && $GLOBALS['we_obj']->documentCustomerFilter && !i
 			if(($_errorDocPath = id_to_path($_errorDocId, FILE_TABLE))){ // use given document instead !
 				if($_errorDocId){
 					unset($_errorDocId);
-				@include($_SERVER['DOCUMENT_ROOT'] . $_errorDocPath);
-				unset($_errorDocPath);
+					@include($_SERVER['DOCUMENT_ROOT'] . $_errorDocPath);
+					unset($_errorDocPath);
 				}
 				return;
 			} else {

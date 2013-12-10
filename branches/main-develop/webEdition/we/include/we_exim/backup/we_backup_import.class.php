@@ -32,8 +32,7 @@ class we_backup_import{
 			return false;
 		}
 
-		$data =
-			(isset($_SESSION['weS']['weBackupVars']['options']['convert_charset']) && $_SESSION['weS']['weBackupVars']['options']['convert_charset'] ?
+		$data = (isset($_SESSION['weS']['weBackupVars']['options']['convert_charset']) && $_SESSION['weS']['weBackupVars']['options']['convert_charset'] ?
 				weXMLExIm::getHeader($_SESSION['weS']['weBackupVars']['encoding'], 'backup') :
 				weXMLExIm::getHeader('', 'backup')) .
 			$data .
@@ -94,11 +93,11 @@ class we_backup_import{
 						unset($element_value);
 
 						$parser->gotoMark('second');
-					} else{
+					} else {
 						$attr = $parser->getNodeAttributes();
 						if(version_compare($_SESSION['weS']['weBackupVars']['weVersion'], '6.3.3.1', '>')){
 							$object->$name = weContentProvider::getDecodedData(($attr && isset($attr[weContentProvider::CODING_ATTRIBUTE]) ? $attr[weContentProvider::CODING_ATTRIBUTE] : weContentProvider::CODING_NONE), $parser->getNodeData());
-						} else{
+						} else {
 							// import field
 							$object->$name = (weContentProvider::needCoding($classname, $name, weContentProvider::CODING_OLD) ?
 									weContentProvider::decode($parser->getNodeData()) :
@@ -151,7 +150,7 @@ class we_backup_import{
 					self::handlePrefs($object);
 				} else if(defined('SPELLCHECKER') && isset($object->Path) && (strpos($object->Path, WE_MODULES_DIR . 'spellchecker/') === 0) && !$_SESSION['weS']['weBackupVars']['handle_options']['spellchecker']){
 					// do nothing
-				} else{
+				} else {
 					$object->save(true);
 				}
 

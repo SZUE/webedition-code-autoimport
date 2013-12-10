@@ -305,7 +305,7 @@ class XML_RSS extends XML_Parser{
 	function _add($type, $field, $value){
 		if(empty($this->{$type}) || empty($this->{$type}[$field])){
 			$this->{$type}[$field] = $value;
-		} else{
+		} else {
 			$this->{$type}[$field] .= $value;
 		}
 

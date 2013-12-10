@@ -50,10 +50,10 @@ class we_tool_treeDataSource{
 	function getQueryParents($path){
 		$out = array();
 		while($path != '/' && $path != '\\' && $path){
-			$out[]= "Path='$path'";
+			$out[] = "Path='$path'";
 			$path = dirname($path);
 		}
-		return implode(' OR ',$out);
+		return implode(' OR ', $out);
 	}
 
 	function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,Icon,IsFolder', $addWhere = '', $addOrderBy = ''){

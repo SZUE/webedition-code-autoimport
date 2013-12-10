@@ -27,7 +27,7 @@ function we_tag_ifEmailInvalid(){
 		return ($GLOBALS['WE_REMOVENEWSLETTER_STATUS'] == we_newsletter_base::STATUS_EMAIL_INVALID);
 	} else if(isset($GLOBALS['WE_WRITENEWSLETTER_STATUS'])){
 		return ($GLOBALS['WE_WRITENEWSLETTER_STATUS'] == we_newsletter_base::STATUS_EMAIL_INVALID);
-	} else{
+	} else {
 		return false;
 	}
 }

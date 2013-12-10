@@ -32,13 +32,13 @@ function we_tag_ifShopPayVat($attribs){
 		$customerarray = $cus->object->DB_WE->Record;
 		unset($cus);
 		$customer = ($customerarray ? $customerarray : false);
-	} else{
+	} else {
 		if(isset($GLOBALS[$namefrom]) && $GLOBALS[$namefrom]){
 			$cus = new we_customer_customertag($GLOBALS[$namefrom]);
 			$customerarray = $cus->object->getDBRecord();
 			unset($cus);
 			$customer = ($customerarray ? $customerarray : false);
-		} else{
+		} else {
 			$customer = false;
 		}
 	}

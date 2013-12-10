@@ -30,7 +30,7 @@ $_cmdNew = "javascript:top.we_cmd('new','" . FILE_TABLE . "','','text/webedition
 if(permissionhandler::hasPerm("NEW_WEBEDITIONSITE")){
 	if(permissionhandler::hasPerm("NO_DOCTYPE")){
 		$_disableNew = false;
-	} else{
+	} else {
 		$q = "ORDER BY DocType";
 		$paths = array();
 		$ws = get_ws(FILE_TABLE);
@@ -49,11 +49,11 @@ if(permissionhandler::hasPerm("NEW_WEBEDITIONSITE")){
 		if($DB_WE->next_record()){
 			$_disableNew = false;
 			$_cmdNew = "javascript:top.we_cmd('new','" . FILE_TABLE . "','','text/webedition','" . $DB_WE->f("ID") . "')";
-		} else{
+		} else {
 			$_disableNew = true;
 		}
 	}
-} else{
+} else {
 	$_disableNew = true;
 }
 
@@ -101,11 +101,11 @@ foreach($shortcuts as $k => $v){
 }
 
 $oSctPool = new we_html_select(
-		array(
-			"name" => "sct_pool",
-			"size" => 1,
-			"class" => "defaultfont",
-			"onChange" => "addBtn(_fo['list11'],this.options[this.selectedIndex].text,this.options[this.selectedIndex].value,true);this.options[0].selected=true;"
+	array(
+	"name" => "sct_pool",
+	"size" => 1,
+	"class" => "defaultfont",
+	"onChange" => "addBtn(_fo['list11'],this.options[this.selectedIndex].text,this.options[this.selectedIndex].value,true);this.options[0].selected=true;"
 	));
 $oSctPool->insertOption(0, " ", "");
 $iCurrOpt = 1;
@@ -115,22 +115,22 @@ foreach($shortcuts as $key => $value){
 }
 
 $oSctList11 = new we_html_select(
-		array(
-			"multiple" => "multiple",
-			"name" => "list11",
-			"size" => 10,
-			"style" => "width:200px;",
-			"class" => "defaultfont",
-			"onDblClick" => "moveSelectedOptions(this.form['list11'],this.form['list21'],false);"
+	array(
+	"multiple" => "multiple",
+	"name" => "list11",
+	"size" => 10,
+	"style" => "width:200px;",
+	"class" => "defaultfont",
+	"onDblClick" => "moveSelectedOptions(this.form['list11'],this.form['list21'],false);"
 	));
 $oSctList21 = new we_html_select(
-		array(
-			"multiple" => "multiple",
-			"name" => "list21",
-			"size" => 10,
-			"style" => "width:200px;",
-			"class" => "defaultfont",
-			"onDblClick" => "moveSelectedOptions(this.form['list21'],this.form['list11'],false);"
+	array(
+	"multiple" => "multiple",
+	"name" => "list21",
+	"size" => 10,
+	"style" => "width:200px;",
+	"class" => "defaultfont",
+	"onDblClick" => "moveSelectedOptions(this.form['list21'],this.form['list11'],false);"
 	));
 
 $oBtnDelete = we_html_button::create_button(
@@ -138,8 +138,8 @@ $oBtnDelete = we_html_button::create_button(
 $oShortcutsRem = we_html_tools::htmlAlertAttentionBox(g_l('cockpit', '[sct_rem]'), we_html_tools::TYPE_INFO, 420);
 
 $oPool = new we_html_table(array(
-		"border" => 0, "width" => 420, "cellpadding" => 0, "cellspacing" => 0
-		), 3, 3);
+	"border" => 0, "width" => 420, "cellpadding" => 0, "cellspacing" => 0
+	), 3, 3);
 $oPool->setCol(0, 0, null, $oSctList11->getHTML());
 $oPool->setCol(
 	0, 1, array(
@@ -150,25 +150,25 @@ $oPool->setCol(
 		"onClick" => "moveOptionUp(document.forms[0]['list11']);moveOptionUp(document.forms[0]['list21']);return false;"
 		), we_html_element::htmlImg(array(
 			"src" => IMAGE_DIR . "pd/arrow_up.gif", "border" => 0
-		))) . we_html_element::htmlBr() . we_html_element::htmlBr() . we_html_element::htmlA(
+	))) . we_html_element::htmlBr() . we_html_element::htmlBr() . we_html_element::htmlA(
 		array(
 		"href" => "#",
 		"onClick" => "moveSelectedOptions(document.forms[0]['list11'],document.forms[0]['list21'],false);return false;"
 		), we_html_element::htmlImg(array(
 			"src" => IMAGE_DIR . "pd/arrow_right.gif", "border" => 0
-		))) . we_html_element::htmlBr() . we_html_element::htmlBr() . we_html_element::htmlA(
+	))) . we_html_element::htmlBr() . we_html_element::htmlBr() . we_html_element::htmlA(
 		array(
 		"href" => "#",
 		"onClick" => "moveSelectedOptions(document.forms[0]['list21'],document.forms[0]['list11'],false);return false;"
 		), we_html_element::htmlImg(array(
 			"src" => IMAGE_DIR . "pd/arrow_left.gif", "border" => 0
-		))) . we_html_element::htmlBr() . we_html_element::htmlBr() . we_html_element::htmlA(
+	))) . we_html_element::htmlBr() . we_html_element::htmlBr() . we_html_element::htmlA(
 		array(
 		"href" => "#",
 		"onClick" => "moveOptionDown(document.forms[0]['list11']);moveOptionDown(document.forms[0]['list21']);return false;"
 		), we_html_element::htmlImg(array(
 			"src" => IMAGE_DIR . "pd/arrow_down.gif", "border" => 0
-		))));
+))));
 $oPool->setCol(0, 2, null, $oSctList21->getHTML());
 $oPool->setCol(1, 0, null, we_html_tools::getPixel(1, 5));
 $oPool->setCol(2, 0, array(

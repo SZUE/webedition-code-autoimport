@@ -22,10 +22,9 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 //TODO: make weModuleIconbar.class for all Iconbars and let weMessagingIconbar inherit from it
 
-class we_messaging_iconbar {
+class we_messaging_iconbar{
 
 	private $parentFrameset;
 	private $weTransaction;
@@ -40,7 +39,6 @@ class we_messaging_iconbar {
 		array("image:btn_messages_update", "javascript:refresh()", false),
 		array("image:btn_messages_tasks", "javascript:launch_todo()", false)
 	);
-
 	private $buttonsTodo = array(
 		array("image:btn_task_create", "javascript:new_todo()", false),
 		array("image:btn_task_forward", "javascript:forward_todo()", false),
@@ -187,7 +185,7 @@ class we_messaging_iconbar {
 		$buttons = $this->viewclass == 'todo' ? $this->buttonsTodo : $this->buttonsMsg;
 
 		$j = 0;
-		$table = new we_html_table(array('border' => 0, 'cellpadding' => 8, 'cellspacing' => 0, 'width' => 'auto', 'style' =>'margin-top: 5px'), 1, count($buttons));
+		$table = new we_html_table(array('border' => 0, 'cellpadding' => 8, 'cellspacing' => 0, 'width' => 'auto', 'style' => 'margin-top: 5px'), 1, count($buttons));
 		foreach($buttons as $button){
 			$table->setCol(0, $j++, array('width' => 36), we_html_button::create_button($button[0], $button[1], true));
 			if($button[2]){

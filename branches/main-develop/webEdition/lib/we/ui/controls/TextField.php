@@ -34,10 +34,10 @@ Zend_Loader::loadClass('we_ui_abstract_AbstractInputElement');
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_ui_controls_TextField extends we_ui_abstract_AbstractInputElement{
+
 	/**
 	 * Default class name for text input fields
 	 */
-
 	const kTextInputClassNormal = 'we_ui_controls_TextInput';
 
 	/**

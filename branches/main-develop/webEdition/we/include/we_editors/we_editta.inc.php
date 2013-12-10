@@ -75,13 +75,13 @@ foreach($_REQUEST['we_cmd'] as $k => $v){
 // WYSIWYG && FORBIDHTML && FORBIDPHP
 $onOffVals = array('off' => 'false', 'on' => 'true');
 $selected = (isset($we_doc->elements[$name . "dhtmledit"]) && isset($we_doc->elements[$name . "dhtmledit"]["dat"]) && $we_doc->elements[$name . "dhtmledit"]["dat"] == "on") ? 'on' : 'off';
-$wysiwyg = we_html_tools::htmlSelect("dhtmledit", $onOffVals, 1, $selected, false, array('class'=>"defaultfont"), 'value', 60);
+$wysiwyg = we_html_tools::htmlSelect("dhtmledit", $onOffVals, 1, $selected, false, array('class' => "defaultfont"), 'value', 60);
 
 $selected = (isset($we_doc->elements[$name . "forbidhtml"]) && isset($we_doc->elements[$name . "forbidhtml"]["dat"]) && $we_doc->elements[$name . "forbidhtml"]["dat"] == "on") ? 'on' : 'off';
-$forbidhtml = we_html_tools::htmlSelect("forbidhtml", $onOffVals, 1, $selected, false, array('class'=>"defaultfont"), 'value', 60);
+$forbidhtml = we_html_tools::htmlSelect("forbidhtml", $onOffVals, 1, $selected, false, array('class' => "defaultfont"), 'value', 60);
 
 $selected = ( (!isset($we_doc->elements[$name . "forbidphp"]["dat"])) || $we_doc->elements[$name . "forbidphp"]["dat"] == "on" ? 'on' : 'off');
-$forbidphp = we_html_tools::htmlSelect("forbidphp", $onOffVals, 1, $selected, false, array('class'=>"defaultfont"), 'value', 60);
+$forbidphp = we_html_tools::htmlSelect("forbidphp", $onOffVals, 1, $selected, false, array('class' => "defaultfont"), 'value', 60);
 
 $table = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
@@ -108,10 +108,10 @@ $parts = array(
 
 // XML && REMOVEFIRSTPARAGRAPH
 $selected = ( (!isset($we_doc->elements[$name . "xml"]["dat"])) || $we_doc->elements[$name . "xml"]["dat"] == "on" ? 'on' : 'off');
-$xml = we_html_tools::htmlSelect("xml", $onOffVals, 1, $selected, false, array('class'=>"defaultfont"), 'value', 60);
+$xml = we_html_tools::htmlSelect("xml", $onOffVals, 1, $selected, false, array('class' => "defaultfont"), 'value', 60);
 
 $selected = ( (!isset($we_doc->elements[$name . "removefirstparagraph"]["dat"])) || $we_doc->elements[$name . "removefirstparagraph"]["dat"] == "on" ? 'on' : 'off');
-$removefirstparagraph = we_html_tools::htmlSelect("removefirstparagraph", $onOffVals, 1, $selected, false, array('class'=>"defaultfont"), 'value', 60);
+$removefirstparagraph = we_html_tools::htmlSelect("removefirstparagraph", $onOffVals, 1, $selected, false, array('class' => "defaultfont"), 'value', 60);
 
 $table = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
@@ -138,10 +138,10 @@ $parts[] = array(
 
 // INLINEEDIT && SHOWMENUS
 $selected = ( (!isset($we_doc->elements[$name . "inlineedit"]["dat"])) || $we_doc->elements[$name . "inlineedit"]["dat"] == "on" ? 'on' : 'off');
-$inlineedit = we_html_tools::htmlSelect("inlineedit", $onOffVals, 1, $selected, false, array('class'=>"defaultfont"), 'value', 60);
+$inlineedit = we_html_tools::htmlSelect("inlineedit", $onOffVals, 1, $selected, false, array('class' => "defaultfont"), 'value', 60);
 
 $selected = ( (!isset($we_doc->elements[$name . "showmenus"]["dat"])) || $we_doc->elements[$name . "showmenus"]["dat"] == "on" ? 'on' : 'off');
-$showmenus = we_html_tools::htmlSelect("showmenus", $onOffVals, 1, $selected, false, array('class'=>"defaultfont"), 'value', 60);
+$showmenus = we_html_tools::htmlSelect("showmenus", $onOffVals, 1, $selected, false, array('class' => "defaultfont"), 'value', 60);
 
 $table = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>

@@ -44,7 +44,7 @@ function we_tag_registeredUser($attribs){
 				$show = str_replace('%' . $f[1], $h[$f[1]], $show);
 			}
 			return $show;
-		} else{
+		} else {
 			return $h['Username'];
 		}
 	}

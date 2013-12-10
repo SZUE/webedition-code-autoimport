@@ -34,7 +34,7 @@ if(is_array($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']])){
 	$arr = array('rcpts_string' => $_REQUEST['rcpts_string'], 'subject' => $_REQUEST['mn_subject'], 'body' => $_REQUEST['mn_body']);
 
 	$res = $messaging->send($arr);
-} else{
+} else {
 	require_once(WE_MESSAGING_MODULE_PATH . "messaging_interfaces.inc.php");
 	$errs = array();
 	$rcpts = array(urldecode($_REQUEST['rcpts_string'])); /* user names */
@@ -92,7 +92,7 @@ if(!empty($res['ok'])){
 		$tbl .= '<tr>
                     <td class="defaultfont" valign="top">' . g_l('modules_messaging', '[occured_errs]') . ':</td>
                     <td class="defaultfont">
-                        <ul><li>'.implode('</li><li>',$res['err']).'</li></ul>
+                        <ul><li>' . implode('</li><li>', $res['err']) . '</li></ul>
                     </td>
                 </tr>';
 	}

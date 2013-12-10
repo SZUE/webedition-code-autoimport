@@ -29,7 +29,7 @@ function we_tag_ifCaptcha($attribs){
 	if(isset($_REQUEST[$name])){
 		if(!empty($formname) && isset($_REQUEST['we_ui_' . $formname][$name])){
 			return we_captcha_captcha::check(filterXss($_REQUEST['we_ui_' . $formname][$name]));
-		} else{
+		} else {
 			if(isset($_REQUEST['we_ui_we_global_form'][$name])){
 				return we_captcha_captcha::check(filterXss($_REQUEST['we_ui_we_global_form'][$name]));
 			}

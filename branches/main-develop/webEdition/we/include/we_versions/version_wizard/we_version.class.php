@@ -102,7 +102,7 @@ class we_version{
 		if(permissionhandler::hasPerm("ADMINISTRATOR")){
 
 			$GLOBALS['DB_WE']->query($_SESSION['weS']['versions']['query']);
-			while($GLOBALS['DB_WE']->next_record()) {
+			while($GLOBALS['DB_WE']->next_record()){
 
 				$data[] = array(
 					"ID" => $GLOBALS['DB_WE']->f("ID"),
@@ -126,7 +126,7 @@ class we_version{
 		if(permissionhandler::hasPerm("ADMINISTRATOR")){
 
 			$GLOBALS['DB_WE']->query($_SESSION['weS']['versions']['query']);
-			while($GLOBALS['DB_WE']->next_record()) {
+			while($GLOBALS['DB_WE']->next_record()){
 
 				$data[] = array(
 					"ID" => $GLOBALS['DB_WE']->f("ID"),
@@ -162,7 +162,7 @@ class we_version{
 		if(permissionhandler::hasPerm("REBUILD_META")){
 			$foldersQuery = count($metaFolders) ? ' AND ParentId IN(' . implode(",", $metaFolders) . ') ' : '';
 			$GLOBALS['DB_WE']->query("SELECT ID,path FROM " . FILE_TABLE . " WHERE ContentType='image/*' AND (Extension='.jpg' OR Extension='jpeg' OR Extension='wbmp') $foldersQuery");
-			while($GLOBALS['DB_WE']->next_record()) {
+			while($GLOBALS['DB_WE']->next_record()){
 
 				$data[] = array(
 					"id" => $GLOBALS['DB_WE']->f("ID"),
@@ -185,7 +185,7 @@ class we_version{
 		$data = array();
 		if(permissionhandler::hasPerm("REBUILD_TEMPLATES")){
 			$GLOBALS['DB_WE']->query("SELECT ID,ClassName,Path FROM " . TEMPLATES_TABLE . " ORDER BY ID");
-			while($GLOBALS['DB_WE']->next_record()) {
+			while($GLOBALS['DB_WE']->next_record()){
 
 				$data[] = array(
 					"id" => $GLOBALS['DB_WE']->f("ID"),
@@ -257,7 +257,7 @@ class we_version{
 					$where = '(' . $where . ')';
 
 					$GLOBALS['DB_WE']->query("SELECT ID,ClassName,Path FROM " . TEMPLATES_TABLE . " WHERE $where ORDER BY ID");
-					while($GLOBALS['DB_WE']->next_record()) {
+					while($GLOBALS['DB_WE']->next_record()){
 
 						$data[] = array(
 							"id" => $GLOBALS['DB_WE']->f("ID"),
@@ -278,7 +278,7 @@ class we_version{
 					$_template_query = substr(
 						$_template_query, 0, strlen($_template_query) - 3);
 					$_template_query = '(' . $_template_query . ')';
-				} else{
+				} else {
 					$_template_query = "( TemplateID='$templateID' )";
 				}
 			}
@@ -286,7 +286,7 @@ class we_version{
 			$query = ($_cat_query ? " AND $_cat_query " : "") . ($_doctype_query ? " AND $_doctype_query " : "") . ($_folders_query ? " AND $_folders_query " : "") . ($_template_query ? " AND $_template_query " : "");
 
 			$GLOBALS['DB_WE']->query("SELECT ID,ClassName,Path FROM " . FILE_TABLE . " WHERE IsDynamic=0 AND Published > 0 AND ContentType='text/webedition' $query ORDER BY ID");
-			while($GLOBALS['DB_WE']->next_record()) {
+			while($GLOBALS['DB_WE']->next_record()){
 
 				$dat[] = array(
 					"id" => $GLOBALS['DB_WE']->f("ID"),
@@ -311,7 +311,7 @@ class we_version{
 		$data = array();
 		if(permissionhandler::hasPerm("REBUILD_OBJECTS")){
 			$GLOBALS['DB_WE']->query("SELECT ID,ClassName,Path FROM " . OBJECT_FILES_TABLE . " WHERE Published > 0 ORDER BY ID");
-			while($GLOBALS['DB_WE']->next_record()) {
+			while($GLOBALS['DB_WE']->next_record()){
 
 				$data[] = array(
 					"id" => $GLOBALS['DB_WE']->f("ID"),
@@ -336,7 +336,7 @@ class we_version{
 		$data = array();
 		if(permissionhandler::hasPerm("REBUILD_NAVIGATION")){
 			$GLOBALS['DB_WE']->query("SELECT ID,Path FROM " . NAVIGATION_TABLE . " WHERE IsFolder=0 ORDER BY ID");
-			while($GLOBALS['DB_WE']->next_record()) {
+			while($GLOBALS['DB_WE']->next_record()){
 
 				$data[] = array(
 					"id" => $GLOBALS['DB_WE']->f("ID"),
@@ -377,7 +377,7 @@ class we_version{
 		$data = array();
 		if(permissionhandler::hasPerm("REBUILD_INDEX")){
 			$GLOBALS['DB_WE']->query("SELECT ID,ClassName,Path FROM " . FILE_TABLE . " WHERE Published > 0 AND IsSearchable='1' ORDER BY ID");
-			while($GLOBALS['DB_WE']->next_record()) {
+			while($GLOBALS['DB_WE']->next_record()){
 
 				$data[] = array(
 					"id" => $GLOBALS['DB_WE']->f("ID"),
@@ -391,7 +391,7 @@ class we_version{
 			}
 			if(defined("OBJECT_FILES_TABLE")){
 				$GLOBALS['DB_WE']->query("SELECT ID,ClassName,Path FROM " . OBJECT_FILES_TABLE . " WHERE Published > 0 ORDER BY ID");
-				while($GLOBALS['DB_WE']->next_record()) {
+				while($GLOBALS['DB_WE']->next_record()){
 
 					$data[] = array(
 						"id" => $GLOBALS['DB_WE']->f("ID"),
@@ -429,7 +429,7 @@ class we_version{
 				$_folders_query = '( ParentID IN(' . implode(',', $_foldersList) . ') )';
 			}
 			$GLOBALS['DB_WE']->query("SELECT ID,ClassName,Path,Extension FROM " . FILE_TABLE . " WHERE ContentType='image/*'" . ($_folders_query ? " AND $_folders_query " : "") . " ORDER BY ID");
-			while($GLOBALS['DB_WE']->next_record()) {
+			while($GLOBALS['DB_WE']->next_record()){
 
 				$data[] = array(
 					"id" => $GLOBALS['DB_WE']->f("ID"),

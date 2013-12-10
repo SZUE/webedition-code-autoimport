@@ -69,7 +69,7 @@ switch($browser->getBrowser()){
 			case we_base_browserDetect::SYS_MAC:
 				if($browser->isFF() && $browser->getBrowserVersion() < 3){
 					$tabDummy = '<div class="hidden" id="tabDummy" title="" name="" ondblclick=";" onclick="top.weMultiTabs.selectFrame(this)"><nobr><span class="spacer">&nbsp;<img src="' . IMAGE_DIR . 'pixel.gif" width="16" height="16" id="###loadId###" title="" class="status" style="background-position:0px -1px" />&nbsp;</span><span id="###tabTextId###" class="text"></span><span class="spacer"><img src="' . IMAGE_DIR . 'pixel.gif" width="5" height="16" id="###modId###" class="status" /><img src="' . IMAGE_DIR . 'multiTabs/close.gif" id="###closeId###" border="0" vspace="0" hspace="0" onclick="top.weMultiTabs.onCloseTab(this)" onmouseover="this.src=\'' . IMAGE_DIR . 'multiTabs/closeOver.gif\'" onmouseout="this.src=\'' . IMAGE_DIR . 'multiTabs/close.gif\'" class="close" />&nbsp;</span><img src="' . IMAGE_DIR . 'multiTabs/tabBorder.gif" height="21" style="vertical-align:bottom;" /></nobr></div>';
-				} else{
+				} else {
 					$tabContainerMargin = "0px";
 				}
 				$tabBorder = "border: 0px; border-bottom: 0px solid #888888; border-right: 1px solid #888888;";
@@ -77,7 +77,7 @@ switch($browser->getBrowser()){
 			case we_base_browserDetect::SYS_UNIX:
 				if($browser->isFF() && $browser->getBrowserVersion() < 3){
 					$tabDummy = '<div class="hidden" id="tabDummy" title="" name="" onclick="top.weMultiTabs.selectFrame(this)"><nobr><span class="spacer">&nbsp;<img src="' . IMAGE_DIR . 'pixel.gif" width="16" height="16" id="###loadId###" title="" class="status" />&nbsp;</span><span id="###tabTextId###" class="text" style="background-position:0px -1px"></span><span class="spacer"><img src="' . IMAGE_DIR . 'pixel.gif" width="5" height="16" id="###modId###" class="status" /><img src="' . IMAGE_DIR . 'multiTabs/close.gif" id="###closeId###" border="0" vspace="0" hspace="0" onclick="top.weMultiTabs.onCloseTab(this)" onmouseover="this.src=\'' . IMAGE_DIR . 'multiTabs/closeOver.gif\'" onmouseout="this.src=\'' . IMAGE_DIR . 'multiTabs/close.gif\'" class="close" />&nbsp;</span><img src="' . IMAGE_DIR . 'multiTabs/tabBorder.gif" height="21" style="vertical-align:bottom;" /></nobr></div>';
-				} else{
+				} else {
 					$tabContainerMargin = "0px";
 				}
 				$tabBorder = "border:0px;";
@@ -197,9 +197,9 @@ print we_html_element::jsElement($content = $_contentTypes);
 		/**
 		 * removes a tab from the tab view
 		 */
-		closeTab : function(frameId) {
-			this.tabContainer.removeChild(this.myDoc.getElementById('tab_'+frameId));
-			if (this.activeTab == frameId){
+		closeTab: function(frameId) {
+			this.tabContainer.removeChild(this.myDoc.getElementById('tab_' + frameId));
+			if (this.activeTab == frameId) {
 				this.activeTab = null;
 			}
 			setFrameSize();
@@ -213,7 +213,7 @@ print we_html_element::jsElement($content = $_contentTypes);
 			if (this.activeTab != null) {
 				this.deselectTab(this.activeTab);
 			}
-			if (this.myDoc.getElementById('tab_' + frameId) && typeof(this.myDoc.getElementById('tab_' + frameId)) == "object") {
+			if (this.myDoc.getElementById('tab_' + frameId) && typeof (this.myDoc.getElementById('tab_' + frameId)) == "object") {
 				this.myDoc.getElementById('tab_' + frameId).className = 'tabActive';
 			}
 			this.activeTab = frameId;
@@ -328,7 +328,7 @@ print we_html_element::jsElement($content = $_contentTypes);
 	function init() {
 		top.weMultiTabs = new TabView(document);
 	}
-	//-->
+//-->
 </script>
 <style type="text/css">
 	body {
@@ -348,7 +348,7 @@ print we_html_element::jsElement($content = $_contentTypes);
 	}
 	div.tab{
 		margin: 0px; padding: 0px;
-<?php echo $tabBorder; ?>
+		<?php echo $tabBorder; ?>
 		display:inline-block;
 		background-image:url(<?php echo IMAGE_DIR; ?>multiTabs/tabsBG_normal.gif);
 		background-repeat: repeat-x;
@@ -358,22 +358,22 @@ print we_html_element::jsElement($content = $_contentTypes);
 	}
 	div.tabOver{
 		margin: 0px; padding: 0px;
-<?php echo $tabBorder; ?>
+		<?php echo $tabBorder; ?>
 		display:inline-block;
 		background-image:url(<?php echo IMAGE_DIR; ?>multiTabs/tabsBG_over.gif);
 		background-repeat: repeat-x;
-<?php echo $tabBG; ?>
+		<?php echo $tabBG; ?>
 		line-height:21px;
 		font-size:17px;
 		cursor:pointer;
 	}
 	div.tabActive{
 		margin: 0px; padding: 0px;
-<?php echo $tabBorder; ?>
+		<?php echo $tabBorder; ?>
 		display: inline-block;
 		background-image:url(<?php echo IMAGE_DIR; ?>multiTabs/tabsBG_active.gif);
 		background-repeat: repeat-x;
-<?php echo $tabBG; ?>
+		<?php echo $tabBG; ?>
 		line-height:21px;
 		font-size:17px;
 		cursor:pointer;
@@ -412,6 +412,6 @@ print we_html_element::jsElement($content = $_contentTypes);
 <body style="background-color: Silver;" onresize="setFrameSize()" onload="init()">
 	<div id="tabContainer" name="tabContainer">
 	</div>
-<?php echo $tabDummy; ?>
+	<?php echo $tabDummy; ?>
 </body>
 </html>

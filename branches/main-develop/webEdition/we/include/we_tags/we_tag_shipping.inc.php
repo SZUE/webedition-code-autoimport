@@ -69,7 +69,7 @@ function we_tag_shipping($attribs){
 								$shippingCost / ( ((1 + ($weShippingControl->vatRate / 100)) * 100) ) * $weShippingControl->vatRate);
 						break;
 				}
-			} else{ // always return net prices
+			} else { // always return net prices
 				switch($type){
 					case 'gros':
 					case 'net':

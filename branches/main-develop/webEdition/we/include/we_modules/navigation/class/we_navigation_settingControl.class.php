@@ -31,7 +31,7 @@ class we_navigation_settingControl{
 				$Add = 'true';
 				$Edit = 'true';
 				$Delete = 'true';
-			} else{
+			} else {
 				$CacheLifeTime = (int) str_replace("'", "", $_REQUEST['CacheLifeTime']);
 
 				$Add = 'false';

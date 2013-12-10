@@ -184,7 +184,7 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 	<?php
 	foreach($List as $Key => $Value){
 		$Value['Text'] = str_replace(array("\r", "\n"), '', $Value['Text']);
-		$TextReplaced= preg_replace('-(^|\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~])(' . preg_quote($Value['Text'], '-') . ')(\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~]|$)-', '${1}${3}', $Text);
+		$TextReplaced = preg_replace('-(^|\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~])(' . preg_quote($Value['Text'], '-') . ')(\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~]|$)-', '${1}${3}', $Text);
 		$Replaced = (trim($TextReplaced) != trim($Text));
 		$Text = trim($TextReplaced);
 		if($Replaced){

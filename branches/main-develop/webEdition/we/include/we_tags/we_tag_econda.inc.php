@@ -64,7 +64,7 @@ function we_tag_econda($attribs){
 			$pageName = weTag_getAttribute("pageName", $attribs);
 			return '<a name="emos_name" title="orderProcess" rel="' . $step . '_' . $pageName . '" rev=""></a>';
 		}
-	} else{
+	} else {
 
 	}
 }

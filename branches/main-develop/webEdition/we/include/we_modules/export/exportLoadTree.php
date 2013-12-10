@@ -58,7 +58,7 @@ if($ws = get_ws($table)){
 	$wsPathArray = id_to_path($ws, $table, $DB_WE, false, true);
 	foreach($wsPathArray as $path){
 		$wsQuery[] = 'Path LIKE "' . $DB_WE->escape($path) . '/%" OR ' . getQueryParents($path);
-		while($path != '/' && $path) {
+		while($path != '/' && $path){
 			$parentpaths[] = $path;
 			$path = dirname($path);
 		}
@@ -78,7 +78,7 @@ $openFolders = (isset($_REQUEST['we_cmd'][3]) ? explode(",", $_REQUEST['we_cmd']
 function getQueryParents($path){
 
 	$out = array();
-	while($path != '/' && $path) {
+	while($path != '/' && $path){
 		$out[] = 'Path="' . $path . '"';
 		$path = dirname($path);
 	}
@@ -124,7 +124,7 @@ function getItems($ParentID){
 
 	$DB_WE->query('SELECT ' . $elem . ', ABS(text) as Nr, (text REGEXP "^[0-9]") AS isNr FROM ' . $DB_WE->escape($GLOBALS['table']) . ' ' . $where . ' ORDER BY isNr DESC,Nr,Text');
 
-	while($DB_WE->next_record()) {
+	while($DB_WE->next_record()){
 		$ID = $DB_WE->f("ID");
 		$ParentID = $DB_WE->f("ParentID");
 		$Text = $DB_WE->f("Text");
@@ -177,10 +177,7 @@ function getItems($ParentID){
 
 we_html_tools::protect();
 
-$Tree = new we_export_tree("export_frameset.php",
-		$topFrame,
-		$topFrame . ".body",
-		$topFrame . ".cmd");
+$Tree = new we_export_tree("export_frameset.php", $topFrame, $topFrame . ".body", $topFrame . ".cmd");
 
 $treeItems = array();
 
@@ -201,4 +198,4 @@ if(!' . $Tree->topFrame . '.treeData) {' .
 print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 		we_html_element::htmlHead(we_html_tools::getHtmlInnerHead() . $js) .
 		we_html_element::htmlBody(array("bgcolor" => "#ffffff"))
-	);
+);

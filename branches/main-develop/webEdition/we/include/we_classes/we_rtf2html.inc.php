@@ -677,7 +677,7 @@ class we_rtf2html{
 				break;
 			case 99: if($para == "6"){
 					$this->pasteChars("�");
-			}
+				}
 				if($para == "c")
 					$this->pasteChars("�");
 				if($para == "f")

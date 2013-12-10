@@ -199,7 +199,7 @@ class we_glossary_glossary extends weModelBase{
 
 	function getEntries($Language, $Mode = 'all', $Type = 'all'){
 		$Query = 'SELECT Type,Text,Title,Attributes FROM ' . GLOSSARY_TABLE . " WHERE Language='" . $GLOBALS['DB_WE']->escape($Language) . "' " .
-				($Type != 'all' ? "AND Type='" . $GLOBALS['DB_WE']->escape($Type) . "' " : '');
+			($Type != 'all' ? "AND Type='" . $GLOBALS['DB_WE']->escape($Type) . "' " : '');
 
 		switch($Mode){
 			case 'published':
@@ -233,7 +233,7 @@ class we_glossary_glossary extends weModelBase{
 
 	function publishItem($Language, $Text){
 		return $GLOBALS['DB_WE']->query('UPDATE ' . GLOSSARY_TABLE . ' SET Published=UNIX_TIMESTAMP()'
-						. " WHERE Language='" . $GLOBALS['DB_WE']->escape($Language) . "' AND Text='" . $GLOBALS['DB_WE']->escape($Text) . "'");
+				. " WHERE Language='" . $GLOBALS['DB_WE']->escape($Language) . "' AND Text='" . $GLOBALS['DB_WE']->escape($Text) . "'");
 	}
 
 	/**

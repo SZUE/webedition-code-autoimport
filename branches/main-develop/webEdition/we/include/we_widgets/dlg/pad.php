@@ -125,8 +125,8 @@ $oRdoSort[4] = we_html_forms::radiobutton(
 		$value = 4, $checked = 1, $name = "rdo_sort", $text = g_l('cockpit', '[alphabetic]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
 
 $sort = new we_html_table(array(
-		"cellpadding" => 0, "cellspacing" => 0, "border" => 0
-		), 3, 3);
+	"cellpadding" => 0, "cellspacing" => 0, "border" => 0
+	), 3, 3);
 $sort->setCol(0, 0, array(
 	"width" => 145
 	), $oRdoSort[0]);
@@ -150,8 +150,8 @@ $oRdoDisplay[1] = we_html_forms::radiobutton(
 		$value = 1, $checked = 0, $name = "rdo_display", $text = g_l('cockpit', '[only_valid]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
 
 $display = new we_html_table(array(
-		"cellpadding" => 0, "cellspacing" => 0, "border" => 0
-		), 1, 3);
+	"cellpadding" => 0, "cellspacing" => 0, "border" => 0
+	), 1, 3);
 $display->setCol(0, 0, array(
 	"width" => 145
 	), $oRdoDisplay[0]);
@@ -172,8 +172,8 @@ $oRdoDate[2] = we_html_forms::radiobutton(
 		$value = 2, $checked = 0, $name = "rdo_date", $text = g_l('cockpit', '[by_valid_until]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
 
 $date = new we_html_table(array(
-		"cellpadding" => 0, "cellspacing" => 0, "border" => 0
-		), 3, 1);
+	"cellpadding" => 0, "cellspacing" => 0, "border" => 0
+	), 3, 1);
 $date->setCol(0, 0, array(
 	"width" => 145
 	), $oRdoDate[0]);
@@ -192,8 +192,8 @@ $oRdoPrio[2] = we_html_forms::radiobutton(
 		$value = 2, $checked = 1, $name = "rdo_prio", $text = g_l('cockpit', '[low]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
 
 $prio = new we_html_table(array(
-		"cellpadding" => 0, "cellspacing" => 0, "border" => 0
-		), 3, 3);
+	"cellpadding" => 0, "cellspacing" => 0, "border" => 0
+	), 3, 3);
 $prio->setCol(0, 0, array(
 	"width" => 70
 	), $oRdoPrio[0]);
@@ -203,15 +203,15 @@ $prio->setCol(0, 2, array(
 	"width" => 20
 	), we_html_element::htmlImg(array(
 		"src" => IMAGE_DIR . "pd/prio_high.gif", "width" => 13, "height" => 14
-	)));
+)));
 $prio->setCol(1, 0, null, $oRdoPrio[1]);
 $prio->setCol(1, 2, null, we_html_element::htmlImg(array(
 		"src" => IMAGE_DIR . "pd/prio_medium.gif", "width" => 13, "height" => 14
-	)));
+)));
 $prio->setCol(2, 0, null, $oRdoPrio[2]);
 $prio->setCol(2, 2, null, we_html_element::htmlImg(array(
 		"src" => IMAGE_DIR . "pd/prio_low.gif", "width" => 13, "height" => 14
-	)));
+)));
 
 $parts[] = array(
 	"headline" => g_l('cockpit', '[default_priority]'), "html" => $prio->getHTML(), "space" => 100
@@ -219,7 +219,7 @@ $parts[] = array(
 
 $oSctValid = we_html_tools::htmlSelect("sct_valid", array(
 		g_l('cockpit', '[always]'), g_l('cockpit', '[from_date]'), g_l('cockpit', '[period]')
-		), 1, g_l('cockpit', '[always]'), false, array('style'=>"width:120px;" ,'onChange'=>""), 'value', 120);
+		), 1, g_l('cockpit', '[always]'), false, array('style' => "width:120px;", 'onChange' => ""), 'value', 120);
 
 $parts[] = array(
 	"headline" => g_l('cockpit', '[default_validity]'), "html" => $oSctValid, "space" => 100
@@ -232,10 +232,10 @@ $DB_WE->query('SELECT	distinct(WidgetName) FROM ' . NOTEPAD_TABLE . ' WHERE User
 $_options = array(
 	$pad_header => $pad_header, g_l('cockpit', '[change]') => g_l('cockpit', '[change]')
 );
-while($DB_WE->next_record()) {
+while($DB_WE->next_record()){
 	$_options[$DB_WE->f('WidgetName')] = $DB_WE->f('WidgetName');
 }
-$oSctTitle = we_html_tools::htmlSelect("sct_title", array_unique($_options), 1, "", false, array('id'=>"title", 'onChange'=>""), 'value');
+$oSctTitle = we_html_tools::htmlSelect("sct_title", array_unique($_options), 1, "", false, array('id' => "title", 'onChange' => ""), 'value');
 $parts[] = array(
 	"headline" => g_l('cockpit', '[title]'), "html" => $oSctTitle, "space" => 100
 );

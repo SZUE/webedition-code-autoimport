@@ -424,50 +424,50 @@ if($_REQUEST['we_cmd'][0] != "delete_single_document"){ // no select mode in del
 	}
 }
 ?>
-if (top.treeData.table != "<?php
+	if (top.treeData.table != "<?php
 print preg_replace('#_cache$#', '', $table);
 ?>") {
-	top.treeData.table = "<?php
+		top.treeData.table = "<?php
 print preg_replace('#_cache$#', '', $table);
 ?>";
-	we_cmd("load", "<?php
+		we_cmd("load", "<?php
 print preg_replace('#_cache$#', '', $table);
 ?>");
-} else {
-	top.drawTree();
-}
-
-function we_submitForm(target, url) {
-	var f = self.document.we_form;
-	var sel = "";
-	for (var i = 1; i <= top.treeData.len; i++) {
-		if (top.treeData[i].checked == 1) {
-			sel += (top.treeData[i].id + ",");
-		}
+	} else {
+		top.drawTree();
 	}
-	if (!sel) {
-		top.toggleBusy(0);
+
+	function we_submitForm(target, url) {
+		var f = self.document.we_form;
+		var sel = "";
+		for (var i = 1; i <= top.treeData.len; i++) {
+			if (top.treeData[i].checked == 1) {
+				sel += (top.treeData[i].id + ",");
+			}
+		}
+		if (!sel) {
+			top.toggleBusy(0);
 <?php
 print we_message_reporting::getShowMessageCall(g_l('alert', "[nothing_to_delete]"), we_message_reporting::WE_MESSAGE_ERROR);
 ?>
-		return;
-	}
+			return;
+		}
 
-	sel = sel.substring(0, sel.length - 1);
+		sel = sel.substring(0, sel.length - 1);
 
-	f.sel.value = sel;
-	f.target = target;
-	f.action = url;
-	f.method = "post";
-	f.submit();
-}
-function we_cmd() {
-	var args = "";
-	for (var i = 0; i < arguments.length; i++) {
-		args += 'arguments[' + i + ']' + ((i < (arguments.length - 1)) ? ',' : '');
+		f.sel.value = sel;
+		f.target = target;
+		f.action = url;
+		f.method = "post";
+		f.submit();
 	}
-	eval('top.we_cmd(' + args + ')');
-}
+	function we_cmd() {
+		var args = "";
+		for (var i = 0; i < arguments.length; i++) {
+			args += 'arguments[' + i + ']' + ((i < (arguments.length - 1)) ? ',' : '');
+		}
+		eval('top.we_cmd(' + args + ')');
+	}
 //-->
 </script>
 <?php

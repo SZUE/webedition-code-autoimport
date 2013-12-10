@@ -123,7 +123,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 	}
 
 
-	//-->
+//-->
 </script>
 </head>
 <body background="<?php print IMAGE_DIR ?>backgrounds/radient.gif" LINK="#000000" ALINK="#000000" VLINK="#000000" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px" onLoad="setLookin();

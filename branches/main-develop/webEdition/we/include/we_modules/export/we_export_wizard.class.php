@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 $yuiSuggest = & weSuggest::getInstance();
 
 class we_export_wizard{
@@ -898,8 +897,8 @@ function setState(a) {
 				var winHeight = getWindowHeight(window);
 
 				var we_tabs = new Array();
-				' . ($art == "docs" ? ('we_tabs.push(new We_Tab("#","' . g_l('export', "[documents]") . '",(' . $this->topFrame . '.table=="' . FILE_TABLE . '" ? '.we_tab::ACTIVE.' : '.we_tab::NORMAL.'),"self.setTab(0);"));') : '') . '
-				' . ($art == "objects" && defined("OBJECT_FILES_TABLE") ? ('we_tabs.push(new We_Tab("#","' . g_l('export', "[objects]") . '",(' . $this->topFrame . '.table=="' . OBJECT_FILES_TABLE . '" ? '.we_tab::ACTIVE.': '.we_tab::NORMAL.'),"self.setTab(1);"));') : '') . '
+				' . ($art == "docs" ? ('we_tabs.push(new We_Tab("#","' . g_l('export', "[documents]") . '",(' . $this->topFrame . '.table=="' . FILE_TABLE . '" ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . '),"self.setTab(0);"));') : '') . '
+				' . ($art == "objects" && defined("OBJECT_FILES_TABLE") ? ('we_tabs.push(new We_Tab("#","' . g_l('export', "[objects]") . '",(' . $this->topFrame . '.table=="' . OBJECT_FILES_TABLE . '" ? ' . we_tab::ACTIVE . ': ' . we_tab::NORMAL . '),"self.setTab(1);"));') : '') . '
 
 		');
 
@@ -1241,8 +1240,7 @@ function setState(a) {
 						$percent = 100;
 					}
 
-					$_progress_update =
-						we_html_element::jsElement('
+					$_progress_update = we_html_element::jsElement('
 							if (top.footer.setProgress) top.footer.setProgress(' . $percent . ');
 						');
 
@@ -1369,8 +1367,7 @@ function setState(a) {
 					} else if($percent > 100){
 						$percent = 100;
 					}
-					$_progress_update =
-						we_html_element::jsElement('
+					$_progress_update = we_html_element::jsElement('
 								if (top.footer.setProgress) top.footer.setProgress(' . $percent . ');
 					');
 					$_SESSION['weS']['exportVars']["CurrentRef"] = $xmlExIm->RefTable->current;
@@ -1391,8 +1388,7 @@ function setState(a) {
 					if(is_writable($filename)){
 						we_base_file::save($filename, weXMLExIm::getFooter(), "ab");
 					}
-					$_progress_update =
-						we_html_element::jsElement('if (top.footer.setProgress) top.footer.setProgress(100);');
+					$_progress_update = we_html_element::jsElement('if (top.footer.setProgress) top.footer.setProgress(100);');
 					return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 							we_html_element::htmlHead($head . $_progress_update) .
 							we_html_element::htmlBody(
@@ -1465,7 +1461,7 @@ function setState(a) {
 		$pop = "";
 		$vals = array();
 
-		$this->db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' '.we_docTypes::getDoctypeQuery($this->db));
+		$this->db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . we_docTypes::getDoctypeQuery($this->db));
 		$select = new we_html_select(array("name" => "doctype", "size" => 1, "class" => "weSelect", "style" => "{width: $width;}", "onChange" => ""));
 		$first = "";
 		while($this->db->next_record()){

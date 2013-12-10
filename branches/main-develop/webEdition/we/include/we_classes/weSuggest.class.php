@@ -894,7 +894,7 @@ function weInputInArray(arr, val) {
 
 	function getHTML(){
 		$selectButtonSpace = $this->selectButtonSpace + $this->width - 1;
-		$inputId = $this->inputId ? $this->inputId :'yuiAcInput' . $this->acId;
+		$inputId = $this->inputId ? $this->inputId : 'yuiAcInput' . $this->acId;
 		$resultId = $this->resultId ? $this->resultId : 'yuiAcResult' . $this->acId;
 		$containerWidth = $this->containerWidth ? $this->containerWidth : $this->width;
 

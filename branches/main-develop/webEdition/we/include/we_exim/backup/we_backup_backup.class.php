@@ -213,28 +213,28 @@ class we_backup_backup extends we_backup_base{
 		we_base_file::delete($_SERVER['DOCUMENT_ROOT'] . $file);
 	}
 
-	/*function recoverInfo($nodeset, &$xmlBrowser){
-		$node_set2 = $xmlBrowser->getSet($nodeset);
+	/* function recoverInfo($nodeset, &$xmlBrowser){
+	  $node_set2 = $xmlBrowser->getSet($nodeset);
 
-		//$classname = weContentProvider::getContentTypeHandler("weBinary");
-		$db2 = new DB_WE();
-		foreach($node_set2 as $nsv){
-			$index = $xmlBrowser->nodeName($nsv);
-			if($index == "we:map"){
-				$attributes = $xmlBrowser->getAttributes($nsv);
-				$tablename = $attributes["table"];
-				if($tablename == $this->getDefaultTableName(TEMPLATES_TABLE)){
-					$id = $attributes["ID"];
-					$path = $attributes["Path"];
-					//$this->backup_db->query("SELECT ".FILE_TABLE.".ID AS ID,".FILE_TABLE.".TemplateID AS TemplateID,".TEMPLATES_TABLE.".Path AS TemplatePath FROM ".FILE_TABLE.",".TEMPLATES_TABLE." WHERE ".FILE_TABLE.".TemplateID=".TEMPLATES_TABLE.".ID;");
-					$tmpId = f('SELECT ID FROM ' . TEMPLATES_TABLE . ' WHERE Path="' . $this->backup_db->escape($path) . '"', 'ID', $this->backup_db);
-					if(!empty($tmpId) && $tmpId != $id){
-						$db2->query('UPDATE ' . FILE_TABLE . ' SET TemplateID=' . intval($tmpId) . ' WHERE TemplateID=' . intval($id));
-					}
-				}
-			}
-		}
-	}*/
+	  //$classname = weContentProvider::getContentTypeHandler("weBinary");
+	  $db2 = new DB_WE();
+	  foreach($node_set2 as $nsv){
+	  $index = $xmlBrowser->nodeName($nsv);
+	  if($index == "we:map"){
+	  $attributes = $xmlBrowser->getAttributes($nsv);
+	  $tablename = $attributes["table"];
+	  if($tablename == $this->getDefaultTableName(TEMPLATES_TABLE)){
+	  $id = $attributes["ID"];
+	  $path = $attributes["Path"];
+	  //$this->backup_db->query("SELECT ".FILE_TABLE.".ID AS ID,".FILE_TABLE.".TemplateID AS TemplateID,".TEMPLATES_TABLE.".Path AS TemplatePath FROM ".FILE_TABLE.",".TEMPLATES_TABLE." WHERE ".FILE_TABLE.".TemplateID=".TEMPLATES_TABLE.".ID;");
+	  $tmpId = f('SELECT ID FROM ' . TEMPLATES_TABLE . ' WHERE Path="' . $this->backup_db->escape($path) . '"', 'ID', $this->backup_db);
+	  if(!empty($tmpId) && $tmpId != $id){
+	  $db2->query('UPDATE ' . FILE_TABLE . ' SET TemplateID=' . intval($tmpId) . ' WHERE TemplateID=' . intval($id));
+	  }
+	  }
+	  }
+	  }
+	  } */
 
 	function recover($chunk_file){
 		if(!is_readable($chunk_file)){
@@ -358,7 +358,7 @@ class we_backup_backup extends we_backup_base{
 				if($this->backup_step < $this->table_end && $this->backup_db->num_rows() != 0){
 					$this->partial = true;
 					break;
-				} else{
+				} else {
 					$this->partial = false;
 				}
 				if(!$this->partial && !in_array($table, $this->extables)){
@@ -512,7 +512,7 @@ class we_backup_backup extends we_backup_base{
 								$this->addToFileList($file, $rem_doc_root);
 							}
 							$this->getFileList($file, $with_dirs, $rem_doc_root);
-						} else{
+						} else {
 							$this->addToFileList($file, $rem_doc_root);
 						}
 					} elseif(is_dir($file)){

@@ -63,7 +63,7 @@ class we_helpers_lessc extends lessc{
 		// don't import if it ends in css
 		if(!self::isLess($url)){
 			if(is_numeric($url)){
-				return array(false,'@import "'.id_to_path($url, FILE_TABLE, $GLOBALS['DB_WE']).'";');
+				return array(false, '@import "' . id_to_path($url, FILE_TABLE, $GLOBALS['DB_WE']) . '";');
 			}
 			return false;
 		}
@@ -98,7 +98,7 @@ class we_helpers_lessc extends lessc{
 		foreach($root->children as $childName => $child){
 			if(isset($parentBlock->children[$childName])){
 				$parentBlock->children[$childName] = array_merge(
-						$parentBlock->children[$childName], $child);
+					$parentBlock->children[$childName], $child);
 			} else {
 				$parentBlock->children[$childName] = $child;
 			}

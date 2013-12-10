@@ -76,7 +76,7 @@ class we_import_CSVFix extends CSV{
 			parent::convertFieldType();
 			parent::applyFilter();
 			$this->fetchCursor = 0;
-		} else{
+		} else {
 			$this->CSVError[] = "No data for import set.";
 			return FALSE;
 		}

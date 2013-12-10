@@ -34,10 +34,10 @@ Zend_Loader::loadClass('we_ui_controls_Select');
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_ui_controls_SelectCustomerfield extends we_ui_controls_Select{
+
 	/**
 	 * Default class name for Select
 	 */
-
 	const kSelectClass = 'we_ui_controls_Select';
 
 	/**
@@ -61,7 +61,7 @@ class we_ui_controls_SelectCustomerfield extends we_ui_controls_Select{
 				$db = new DB_WE();
 				$db->query('SHOW FIELDS FROM ' . CUSTOMER_TABLE);
 				$this->addOption(0, '-');
-				while($db->next_record()) {
+				while($db->next_record()){
 					$this->addOption($db->f('Field'), $db->f('Field'));
 				}
 			}

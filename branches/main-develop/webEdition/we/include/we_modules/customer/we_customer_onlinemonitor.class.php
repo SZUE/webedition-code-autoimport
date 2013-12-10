@@ -108,7 +108,7 @@ class we_customer_onlinemonitor extends listviewBase{
 			$this->DB_WE->Record['we_wedoc_lastPath'] = $this->LastDocPath . '?we_omid=' . $this->DB_WE->Record['SessionID'];
 			$this->count++;
 			return true;
-		} else{
+		} else {
 			$this->stop_next_row = $this->shouldPrintEndTR();
 			if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
 				$this->DB_WE->Record = array(

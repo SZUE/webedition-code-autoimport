@@ -35,21 +35,21 @@ we_html_tools::htmlTop(g_l('modules_messaging', '[search_advanced]'));
 print STYLESHEET;
 ?>
 <script type="text/javascript">
-	<!--
+<!--
 <?php
 if(isset($_REQUEST['save']) && $_REQUEST['save'] == 1){
 	$messaging->set_search_settings($_REQUEST['search_fields'], (isset($_REQUEST['search_folders']) && is_array($_REQUEST['search_folders'])) ? $_REQUEST['search_folders'] : array());
 	$messaging->saveInSession($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 	?>
-			self.close();
-			//-->
+		self.close();
+	//-->
 	</script>
 	</head>
 	<body>
 	</body>
 	</html>
 	<?php
-} else{
+} else {
 	?>
 	function save_settings() {
 	document.search_adv.submit();

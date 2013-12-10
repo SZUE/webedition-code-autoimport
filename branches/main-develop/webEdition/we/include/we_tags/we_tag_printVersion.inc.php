@@ -56,18 +56,18 @@ function we_tag_printVersion($attribs, $content){
 			$_query_string['we_objectID'] = $id;
 			$_query_string['tid'] = $tid;
 			$url = id_to_path($triggerID);
-		} else{
+		} else {
 			$_query_string['we_cmd[0]'] = 'preview_objectFile';
 			$_query_string['we_objectID'] = $id;
 			$_query_string['we_cmd[2]'] = $tid;
 			$url = WEBEDITION_DIR . 'we_cmd.php';
 		}
-	} else{
+	} else {
 		if($triggerID){
 			$_query_string['pv_id'] = $id;
 			$_query_string['pv_tid'] = $tid;
 			$url = id_to_path($triggerID);
-		} else{
+		} else {
 			$_query_string['we_cmd[0]'] = 'show';
 			$_query_string['we_cmd[1]'] = $id;
 			$_query_string['we_cmd[4]'] = $tid;
@@ -77,7 +77,7 @@ function we_tag_printVersion($attribs, $content){
 
 	if($link == "off" || $link == "false"){
 		return $url . '?' . http_build_query($_query_string);
-	} else{
+	} else {
 		$attribs = removeAttribs($attribs, array('tid', 'triggerID', 'triggerid', 'doc', 'type', 'link', 'Link')); //	not html - valid
 		$attribs['href'] = $url . '?' . http_build_query($_query_string);
 		return getHtmlTag('a', $attribs, $content, true);

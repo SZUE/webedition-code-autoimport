@@ -34,6 +34,7 @@ Zend_Loader::loadClass('we_ui_abstract_AbstractFormElement');
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_ui_controls_Label extends we_ui_abstract_AbstractFormElement{
+
 	/**
 	 * Default class name for label
 	 */
@@ -120,7 +121,7 @@ class we_ui_controls_Label extends we_ui_abstract_AbstractFormElement{
 	protected function _renderHTML(){
 		if($this->getDisabled()){
 			$class = self::kLabelClassDisabled;
-		} else{
+		} else {
 			$class = self::kLabelClass;
 		}
 

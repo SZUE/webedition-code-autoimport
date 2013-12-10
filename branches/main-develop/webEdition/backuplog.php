@@ -39,7 +39,7 @@ if(permissionhandler::hasPerm("BACKUPLOG")){
 			'html' => '<p>' . g_l('backup', "[view_log_not_found]") . '</p>',
 			'space' => 10
 		);
-	} else{
+	} else {
 		$log = file_get_contents($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'data/lastlog.php');
 		$_parts[] = array(
 			'headline' => '',
@@ -47,7 +47,7 @@ if(permissionhandler::hasPerm("BACKUPLOG")){
 			'space' => 10
 		);
 	}
-} else{
+} else {
 	$_parts[] = array(
 		'headline' => '',
 		'html' => '<p>' . g_l('backup', "[view_log_no_perm]") . '</p>',

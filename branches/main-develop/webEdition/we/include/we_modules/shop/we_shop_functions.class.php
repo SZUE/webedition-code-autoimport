@@ -51,7 +51,7 @@ class we_shop_functions{
 
 			$orderStr .='</tr>';
 
-			while($GLOBALS['DB_WE']->next_record()) {
+			while($GLOBALS['DB_WE']->next_record()){
 
 				$orderStr .= '<tr>';
 				if(permissionhandler::hasPerm("EDIT_SHOP_ORDER")){
@@ -59,7 +59,7 @@ class we_shop_functions{
 							('<td>' . we_html_button::create_button('image:btn_edit_edit', 'javascript:top.content.editor.location = \'' . WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php?pnt=editor&bid=' . $GLOBALS['DB_WE']->f('IntOrderID') . '\';') . '</td>') :
 							('<td>' . we_html_button::create_button('image:btn_edit_edit', 'javascript:top.document.location = \'' . WE_MODULES_DIR . 'show_frameset.php?mod=shop&bid=' . $GLOBALS['DB_WE']->f('IntOrderID') . '\';') . '</td>')
 						);
-				} else{
+				} else {
 					$orderStr .='<td></td>';
 				}
 				$orderStr .= '<td>' . $GLOBALS['DB_WE']->f('IntOrderID') . '. ' . g_l('modules_shop', '[orderList][order]') . '</td>';
@@ -71,7 +71,7 @@ class we_shop_functions{
 
 				$orderStr .= '</tr>';
 			}
-		} else{
+		} else {
 			$orderStr .= '<tr><td>' . g_l('modules_shop', '[orderList][noOrders]') . '</td></tr>';
 		}
 		$orderStr .= '</table>';

@@ -489,8 +489,7 @@ abstract class we_backup_preparer{
 						fwrite($fp, $data);
 					} while(true);
 					fclose($fp);
-				}
-				else {
+				} else {
 					fclose($fs);
 					return false;
 				}

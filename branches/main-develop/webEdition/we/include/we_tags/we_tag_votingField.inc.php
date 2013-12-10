@@ -166,11 +166,11 @@ function we_tag_votingField($attribs){
 								if(isset($_SESSION['_we_voting_sessionData']) && isset($_SESSION['_we_voting_sessionData'][$GLOBALS['_we_voting']->ID])){
 									if($GLOBALS['_we_voting']->IsRadio){
 										$value = $_SESSION['_we_voting_sessionData'][$GLOBALS['_we_voting']->ID]['value'][0];
-									} else{
+									} else {
 										if($GLOBALS['_we_voting']->IsCheckbox){
 											$mycount = count($_SESSION['_we_voting_sessionData'][$GLOBALS['_we_voting']->ID]['value']);
 											$value = $_SESSION['_we_voting_sessionData'][$GLOBALS['_we_voting']->ID]['value'][$mycount - 1];
-										} else{
+										} else {
 											$value = $_SESSION['_we_voting_sessionData'][$GLOBALS['_we_voting']->ID]['value'][$GLOBALS['_we_voting']->answerCount];
 										}
 									}
@@ -196,11 +196,11 @@ function we_tag_votingField($attribs){
 								if(isset($_SESSION['_we_voting_sessionData']) && isset($_SESSION['_we_voting_sessionData'][$GLOBALS['_we_voting']->ID])){
 									if($GLOBALS['_we_voting']->IsRadio){
 										$value = $_SESSION['_we_voting_sessionData'][$GLOBALS['_we_voting']->ID]['value'][0];
-									} else{
+									} else {
 										if($GLOBALS['_we_voting']->IsCheckbox){
 											$mycount = count($_SESSION['_we_voting_sessionData'][$GLOBALS['_we_voting']->ID]['value']);
 											$value = $_SESSION['_we_voting_sessionData'][$GLOBALS['_we_voting']->ID]['value'][$mycount - 1];
-										} else{
+										} else {
 											$value = $_SESSION['_we_voting_sessionData'][$GLOBALS['_we_voting']->ID]['value'][$GLOBALS['_we_voting']->answerCount];
 										}
 									}

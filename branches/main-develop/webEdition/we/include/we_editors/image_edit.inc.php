@@ -37,7 +37,7 @@ if(get_class($we_doc) == "we_imageDocument"){
 
 	we_html_tools::htmlTop();
 
-	print we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .we_html_element::jsElement('
+	print we_html_element::jsScript(JS_DIR . 'we_showMessage.js') . we_html_element::jsElement('
 document.onkeyup = function(e) {
 	var e = (typeof(event) != "undefined") ? event : e;
 	if (e.keyCode == 13) {
@@ -81,7 +81,7 @@ self.focus();');
 	$_dialog = we_html_element::htmlForm(array("name" => "we_form"), $_dialog);
 
 	print we_html_element::htmlBody(array("class" => "weDialogBody"), $_dialog) . "</html>";
-} else{
+} else {
 	exit("ERROR: Couldn't initialize we_imageDocument object");
 }
 

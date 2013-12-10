@@ -46,9 +46,9 @@ function we_tag_css($attribs){
 		switch($applyto){
 			case 'around' :
 				break;
-			case 'wysiwyg' : 
+			case 'wysiwyg' :
 				$nolink = true;
-			case 'all' : 
+			case 'all' :
 				$media = weTag_getAttribute('media', $attribs);
 				if($media == "" || $media == "screen" || $media == "all"){
 					$GLOBALS['we_doc']->addDocumentCss($attribs['href'] . "?" . time());

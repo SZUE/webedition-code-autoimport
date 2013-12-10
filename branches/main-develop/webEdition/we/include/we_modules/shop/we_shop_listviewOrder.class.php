@@ -96,7 +96,7 @@ class we_shop_listviewOrder extends listviewBase{
 				$this->order = 'Int' . $this->order;
 			}
 			$orderstring = " ORDER BY " . $this->order . " ";
-		} else{
+		} else {
 			$orderstring = '';
 		}
 
@@ -163,7 +163,7 @@ class we_shop_listviewOrder extends listviewBase{
 			$this->DB_WE->Record["we_wedoc_lastPath"] = $this->LastDocPath . "?we_orderid=" . $this->DB_WE->Record["OrderID"];
 			$this->count++;
 			return true;
-		} else{
+		} else {
 			$this->stop_next_row = $this->shouldPrintEndTR();
 			if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
 				$this->DB_WE->Record = array();

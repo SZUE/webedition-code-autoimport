@@ -239,7 +239,7 @@ class we_navigation_ruleControl{
 
 		$navigationRules = array();
 
-		while($db->next_record()) {
+		while($db->next_record()){
 			$navigationRules[] = new we_navigation_rule(false, $db->Record);
 		}
 		return $navigationRules;

@@ -44,7 +44,6 @@ class we_dialog_base{
 	protected $noInternals = false;
 	protected $we_cmd = array();
 
-
 	/*	 * ***********************************************************************
 	 * CONSTRUCTOR
 	 * *********************************************************************** */
@@ -116,7 +115,7 @@ class we_dialog_base{
 
 		if($this->cmdFN){
 			return $fn($send);
-		} else{
+		} else {
 			return $this->cmdFunction($send);
 		}
 	}
@@ -210,7 +209,7 @@ class we_dialog_base{
 			$okBut = ($this->getBackBut() != '') ? we_html_button::create_button_table(array($this->getBackBut(), we_html_button::create_button('ok', 'form:we_form'))) : we_html_button::create_button('ok', 'form:we_form');
 		} else if($this->pageNr < $this->numPages){
 			$okBut = (($this->getBackBut() != '') && ($this->getNextBut()) != '') ? we_html_button::create_button_table(array($this->getBackBut(), $this->getNextBut())) : (($this->getBackBut() == '') ? $this->getNextBut() : $this->getBackBut());
-		} else{
+		} else {
 			$okBut = (($this->getBackBut() != '') && ($this->getOkBut()) != '') ? we_html_button::create_button_table(array($this->getBackBut(), $this->getOkBut())) : (($this->getBackBut() == '') ? $this->getOkBut() : $this->getBackBut());
 		}
 		return we_html_button::position_yes_no_cancel($okBut, '', $this->getCancelBut());
@@ -226,13 +225,13 @@ class we_dialog_base{
 		}
 
 		//create some empty we_cmds to be filled by JS if needed
-		for($i= 0; $i < 4; $i++){
+		for($i = 0; $i < 4; $i++){
 			$hiddens .= isset($_REQUEST['we_cmd'][$i]) ? '' : "<input type=\"hidden\" name=\"we_cmd[$i]\" value=\"\" />";
 		}
 
 		$target = (!$this->JsOnly ? ' target="we_' . $this->ClassName . '_cmd_frame"' : '');
 
-		return '<form name="we_form" action="' . $_SERVER["SCRIPT_NAME"] . '" method="post"' . $target . $this->getFormJsOnSubmit() .'>' . $hiddens;
+		return '<form name="we_form" action="' . $_SERVER["SCRIPT_NAME"] . '" method="post"' . $target . $this->getFormJsOnSubmit() . '>' . $hiddens;
 	}
 
 	function getFormJsOnSubmit(){
@@ -287,21 +286,21 @@ function doKeyDown(e) {
 		case 27:
 			top.close();
 			break;' .
-($this->pageNr == $this->numPages && $this->JsOnly ? '
+				($this->pageNr == $this->numPages && $this->JsOnly ? '
 				case 13:
 					if (!textareaFocus) {
 						weDoOk();
 					}
 					break;' : '') .
-'	}
+				'	}
 }
 
 function weDoOk() {' .
-($this->pageNr == $this->numPages && $this->JsOnly ? '
+				($this->pageNr == $this->numPages && $this->JsOnly ? '
 			if (!textareaFocus) {
 				' . $this->getOkJs() . '
 			}' : '') .
-'
+				'
 }
 
 function IsDigit(e) {

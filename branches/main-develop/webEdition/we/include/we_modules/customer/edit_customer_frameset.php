@@ -32,7 +32,7 @@ if($what == 'export' || $what == 'eibody' || $what == 'eifooter' || $what == 'ei
 	$ExImport = new we_customer_EIWizard();
 	$step = (isset($_REQUEST['step']) ? $_REQUEST['step'] : 0);
 	echo $ExImport->getHTML($what, $mode, $step);
-} else{
+} else {
 	$weFrame = new we_customer_frames();
 	echo $weFrame->getHTMLDocumentHeader($what, $mode);
 	$weFrame->View->processVariables();

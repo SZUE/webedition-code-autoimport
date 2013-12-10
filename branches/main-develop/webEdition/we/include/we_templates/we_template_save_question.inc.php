@@ -31,7 +31,7 @@ if(isset($_REQUEST['we_cmd'][6])){
 
 if($nrTemplatesUsedByThisTemplate){
 	$alerttext = g_l('alert', "[template_save_warning2]");
-} else{
+} else {
 	$alerttext = sprintf((($nrDocsUsedByThisTemplate == 1) ? g_l('alert', "[template_save_warning1]") : g_l('alert', "[template_save_warning]")), $nrDocsUsedByThisTemplate);
 }
 echo we_html_element::jsScript(JS_DIR . 'keyListener.js');
@@ -51,14 +51,14 @@ echo we_html_element::jsScript(JS_DIR . 'keyListener.js');
 	}
 
 	function pressed_yes_button() {
-		opener.top.we_cmd('save_document','<?php print $we_transaction; ?>',0,1,1,'<?php print str_replace("'", "\\'", $_REQUEST['we_cmd'][5]); ?>',"<?php print $_we_cmd6; ?>");
+		opener.top.we_cmd('save_document', '<?php print $we_transaction; ?>', 0, 1, 1, '<?php print str_replace("'", "\\'", $_REQUEST['we_cmd'][5]); ?>', "<?php print $_we_cmd6; ?>");
 		opener.top.toggleBusy(1);
 		self.close();
 
 	}
 
 	function pressed_no_button() {
-		opener.top.we_cmd('save_document','<?php print $we_transaction; ?>',0,1,0,'<?php print str_replace("'", "\\'", $_REQUEST['we_cmd'][5]) ?>',"<?php print $_we_cmd6; ?>");
+		opener.top.we_cmd('save_document', '<?php print $we_transaction; ?>', 0, 1, 0, '<?php print str_replace("'", "\\'", $_REQUEST['we_cmd'][5]) ?>', "<?php print $_we_cmd6; ?>");
 		opener.top.toggleBusy(1);
 		self.close();
 
@@ -75,7 +75,7 @@ echo we_html_element::jsScript(JS_DIR . 'keyListener.js');
 <?php print STYLESHEET; ?>
 </head>
 <body class="weEditorBody" onBlur="self.focus()">
-<?php print we_html_tools::htmlYesNoCancelDialog($alerttext, IMAGE_DIR . "alert.gif", true, true, true, "pressed_yes_button()", "pressed_no_button()", "pressed_cancel_button()"); ?>
+	<?php print we_html_tools::htmlYesNoCancelDialog($alerttext, IMAGE_DIR . "alert.gif", true, true, true, "pressed_yes_button()", "pressed_no_button()", "pressed_cancel_button()"); ?>
 </body>
 
 </html>

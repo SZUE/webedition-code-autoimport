@@ -55,7 +55,7 @@ if($we_doc->EditPageNr != WE_EDITPAGE_WORKSPACE){
 			'icon' => 'copy.gif'
 		)
 	);
-} else{
+} else {
 	$parts = array(
 		array(
 			'headline' => g_l('weClass', '[workspaces]'),

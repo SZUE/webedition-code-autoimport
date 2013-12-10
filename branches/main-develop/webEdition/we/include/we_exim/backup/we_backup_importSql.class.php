@@ -44,7 +44,7 @@ class we_backup_importSql{
 				if($_insert == BACKUP_TABLE){
 					we_backup_importSql::flushBackupTable();
 				}
-			} else{
+			} else {
 
 				return;
 			}
@@ -73,7 +73,7 @@ class we_backup_importSql{
 
 						we_backup_util::addLog('DB Error: ' . $GLOBALS['DB_WE']->Error);
 					}
-				} else{
+				} else {
 
 					$_object = new weTable($_table, (defined('CUSTOMER_TABLE') && $_table == CUSTOMER_TABLE));
 					$_object->save();
@@ -108,7 +108,7 @@ class we_backup_importSql{
 
 		$GLOBALS['DB_WE']->query('SELECT * FROM ' . BACKUP_TABLE . ' WHERE IsFolder=0 ORDER BY Path ASC;');
 
-		while($GLOBALS['DB_WE']->next_record()) {
+		while($GLOBALS['DB_WE']->next_record()){
 			$_file = new weBinary();
 			$_file->ID = 0;
 			$_file->Path = $GLOBALS['DB_WE']->f('Path');

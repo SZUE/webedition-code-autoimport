@@ -255,10 +255,10 @@ function we_save() {
 
 		$content = $hidden . '<table border="0" cellpadding="0" cellspacing="0">
 	<tr><td class="defaultfont">' . g_l('modules_glossary', '[folder]') . '</td></tr>
-	<tr><td>' . we_html_tools::htmlSelect("Language", getWeFrontendLanguagesForBackend(), 1, $language, false, array("onchange"=>"top.content.setHot();"), "value", 520) . '</td></tr>
+	<tr><td>' . we_html_tools::htmlSelect("Language", getWeFrontendLanguagesForBackend(), 1, $language, false, array("onchange" => "top.content.setHot();"), "value", 520) . '</td></tr>
 	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
 	<tr><td class="defaultfont">' . g_l('modules_glossary', '[type]') . '</td></tr>
-	<tr><td>' . we_html_tools::htmlSelect("Type", $_types, 1, $weGlossaryFrames->View->Glossary->Type, false, array("onchange"=>"top.content.setHot();showType(this.value);"), "value", 520) . '</td></tr>
+	<tr><td>' . we_html_tools::htmlSelect("Type", $_types, 1, $weGlossaryFrames->View->Glossary->Type, false, array("onchange" => "top.content.setHot();showType(this.value);"), "value", 520) . '</td></tr>
 	<tr><td class="defaultfont">' .
 			we_html_forms::checkboxWithHidden((bool) $weGlossaryFrames->View->Glossary->Fullword, 'Fullword', g_l('modules_glossary', '[Fullword]'), false, 'defaultfont', 'top.content.setHot();') . '</td></tr>
 </table>';
@@ -382,7 +382,7 @@ function we_save() {
 				'extern' => g_l('modules_glossary', '[link_extern]'),
 				'object' => g_l('modules_glossary', '[link_object]'),
 				'category' => g_l('modules_glossary', '[link_category]'),
-				), 1, $_mode, false, array("onchange"=>"setHot();showLinkMode(this.value);"), "value", 520) . '</td></tr>
+				), 1, $_mode, false, array("onchange" => "setHot();showLinkMode(this.value);"), "value", 520) . '</td></tr>
 	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
 </table>' .
 			self::getHTMLIntern($weGlossaryFrames) .
@@ -473,7 +473,7 @@ function we_save() {
 	<div id="ObjectWorkspaceID" style="display: block;">
 		<table border="0" cellpadding="0" cellspacing="0">
 			<tr><td class="defaultfont">' . g_l('modules_glossary', '[workspace]') . '</td></tr>
-			<tr><td>' . we_html_tools::htmlSelect('link[Attributes][ObjectWorkspaceID]', $_wsid, 0, $_workspaceID, false, array('style'=>"width:520px; border: #AAAAAA solid 1px;", 'onchange'=>"setHot();"), 'value') . '</td></tr>
+			<tr><td>' . we_html_tools::htmlSelect('link[Attributes][ObjectWorkspaceID]', $_wsid, 0, $_workspaceID, false, array('style' => "width:520px; border: #AAAAAA solid 1px;", 'onchange' => "setHot();"), 'value') . '</td></tr>
 		</table>
 	</div>
 	<table border="0" cellpadding="0" cellspacing="0">
@@ -537,7 +537,7 @@ function we_save() {
 		<tr><td>' . we_html_tools::htmlSelect("link[Attributes][modeCategory]", array(
 				'intern' => g_l('modules_glossary', '[link_intern]'),
 				'extern' => g_l('modules_glossary', '[link_extern]'),
-				), 1, $_modeCategory, false, array('onchange'=>"setHot();showLinkModeCategory(this.value);"), "value", 520) . '</td></tr>
+				), 1, $_modeCategory, false, array('onchange' => "setHot();showLinkModeCategory(this.value);"), "value", 520) . '</td></tr>
 		<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
 	</table>
 	<div id="mode_category_intern" style="display: none;">
@@ -582,7 +582,7 @@ function we_save() {
 
 		$input = we_html_tools::htmlTextInput($name, 15, $value, "", '', "text", ($width - $_width));
 
-		$select = we_html_tools::htmlSelect($_name, $_options, 1, "", false, array("onchange"=>"setHot();this.form.elements['" . $name . "'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"), 'value', $_width);
+		$select = we_html_tools::htmlSelect($_name, $_options, 1, "", false, array("onchange" => "setHot();this.form.elements['" . $name . "'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"), 'value', $_width);
 
 		return we_html_tools::htmlFormElementTable($input, $title, "left", "defaultfont", $select);
 	}
@@ -616,7 +616,7 @@ function we_save() {
 
 		$input = we_html_tools::htmlTextInput($name, 15, $value, "", '', "text", ($width - $_width));
 
-		$select = we_html_tools::htmlSelect($_name, $_options, $_size, "", $_multiple, array("onchange"=>"setHot();this.form.elements['" . $name . "'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"), $_compare, $_width);
+		$select = we_html_tools::htmlSelect($_name, $_options, $_size, "", $_multiple, array("onchange" => "setHot();this.form.elements['" . $name . "'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"), $_compare, $_width);
 
 		return we_html_tools::htmlFormElementTable($input, $title, "left", "defaultfont", $select);
 	}

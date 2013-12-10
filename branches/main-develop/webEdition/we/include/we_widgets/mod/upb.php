@@ -80,7 +80,7 @@ foreach($tbls as $table){
 			$parentlist = makeCSVFromArray($parents);
 
 			$wsQuery = ($parentlist ? ' t.ID IN(' . $parentlist . ') ' . ($childlist ? ' OR ' : '') : '') .
-					($childlist ? ' t.ParentID IN(' . $childlist . ') ' : '');
+				($childlist ? ' t.ParentID IN(' . $childlist . ') ' : '');
 		}
 	}
 
@@ -89,16 +89,16 @@ foreach($tbls as $table){
 
 
 	$s = 'SELECT ' . ($wfDocsCSV ? "(t.ID IN($wfDocsCSV)) AS wforder," : '') . ' ' . ($myWfDocsCSV ? "(t.ID IN($myWfDocsCSV)) AS mywforder," : '') . ' '
-			. 't.ContentType,t.ID,t.Text,t.ParentID,t.Path,t.Icon,t.ModDate,'
-			. 'IF(t.Published>0,FROM_UNIXTIME(t.Published,"' . $sqld . '"),"-") AS Published,'
-			. 'IF(t.ModDate>0,FROM_UNIXTIME(t.ModDate,"' . $sqld . '"),"-") AS Modified,'
-			. 'IF(t.CreationDate>0,FROM_UNIXTIME(t.CreationDate,"' . $sqld . '"),"-") AS CreationDate,'
-			. 'u2.username AS Modifier,'
-			. 'u1.username AS Creator ';
+		. 't.ContentType,t.ID,t.Text,t.ParentID,t.Path,t.Icon,t.ModDate,'
+		. 'IF(t.Published>0,FROM_UNIXTIME(t.Published,"' . $sqld . '"),"-") AS Published,'
+		. 'IF(t.ModDate>0,FROM_UNIXTIME(t.ModDate,"' . $sqld . '"),"-") AS Modified,'
+		. 'IF(t.CreationDate>0,FROM_UNIXTIME(t.CreationDate,"' . $sqld . '"),"-") AS CreationDate,'
+		. 'u2.username AS Modifier,'
+		. 'u1.username AS Creator ';
 	$q = 'FROM ' . $db->escape($table) . ' t LEFT JOIN ' . USER_TABLE . ' u1 ON u1.ID=t.CreatorID LEFT JOIN ' . USER_TABLE . ' u2 ON u2.ID=t.ModifierID ' .
-			" WHERE (((t.Published=0 OR t.Published<t.ModDate) AND t.ContentType IN ('text/webedition','text/html','objectFile'))" .
-			($myWfDocsCSV ? ' OR (t.ID IN(' . $myWfDocsCSV . ')) ' : '') . ')' .
-			(isset($wsQuery) ? ' AND (' . $wsQuery . ') ' : '');
+		" WHERE (((t.Published=0 OR t.Published<t.ModDate) AND t.ContentType IN ('text/webedition','text/html','objectFile'))" .
+		($myWfDocsCSV ? ' OR (t.ID IN(' . $myWfDocsCSV . ')) ' : '') . ')' .
+		(isset($wsQuery) ? ' AND (' . $wsQuery . ') ' : '');
 	$order = ' ORDER BY ' . ($myWfDocsCSV ? 'mywforder DESC,' : '') . $order;
 
 	$anz = f('SELECT COUNT(1) AS a ' . $q, 'a', $db);
@@ -108,14 +108,14 @@ foreach($tbls as $table){
 
 	while($db->next_record()){
 		$_cont[$db->f("ModDate")] = $path = '<tr><td width="20" height="20" valign="middle" nowrap><img src="' . ICON_DIR . $db->f("Icon") .
-				'" width="16" height="18" />' . we_html_tools::getPixel(4, 1) . '</td><td valign="middle" class="middlefont"><nobr><a href="javascript:top.weEditorFrameController.openDocument(\'' . $table . '\',' . $db->f("ID") . ',\'' . $db->f("ContentType") . '\')" title="' . $db->f("Path") . '" style="color:' . ($db->f("Published") != '-' ? "#3366CC" : "#FF0000") . ';text-decoration:none;">' . $db->f("Path") . '</a></nobr></td></tr>';
+			'" width="16" height="18" />' . we_html_tools::getPixel(4, 1) . '</td><td valign="middle" class="middlefont"><nobr><a href="javascript:top.weEditorFrameController.openDocument(\'' . $table . '\',' . $db->f("ID") . ',\'' . $db->f("ContentType") . '\')" title="' . $db->f("Path") . '" style="color:' . ($db->f("Published") != '-' ? "#3366CC" : "#FF0000") . ';text-decoration:none;">' . $db->f("Path") . '</a></nobr></td></tr>';
 		$row = array(
 			array("dat" => $path),
-			/*array("dat" => $db->f("Creator") ? $db->f("Creator") : '-'),
-			array("dat" => $db->f('CreationDate')),
-			array("dat" => $db->f("Modifier") ? $db->f("Modifier") : '-'),
-			array("dat" => $db->f("Modified")),
-			array("dat" => $db->f("Published")),*/
+			/* array("dat" => $db->f("Creator") ? $db->f("Creator") : '-'),
+			  array("dat" => $db->f('CreationDate')),
+			  array("dat" => $db->f("Modifier") ? $db->f("Modifier") : '-'),
+			  array("dat" => $db->f("Modified")),
+			  array("dat" => $db->f("Published")), */
 		);
 		if(defined("WORKFLOW_TABLE")){
 			if($db->f("wforder")){

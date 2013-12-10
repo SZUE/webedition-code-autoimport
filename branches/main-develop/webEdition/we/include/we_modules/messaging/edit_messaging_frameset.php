@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -32,8 +33,7 @@ if(!isset($we_transaction)){
 }
 $transaction = $what == 'frameset' ? $we_transaction : (isset($_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 'no_request');
 
-$weFrame = new we_messaging_frames(WE_MESSAGING_MODULE_DIR . 'edit_messaging_frameset.php', isset($_REQUEST["viewclass"]) ? $_REQUEST["viewclass"] : 'message',
-		isset($_REQUEST["we_transaction"]) ? $_REQUEST["we_transaction"] : 'no_request', $we_transaction);
+$weFrame = new we_messaging_frames(WE_MESSAGING_MODULE_DIR . 'edit_messaging_frameset.php', isset($_REQUEST["viewclass"]) ? $_REQUEST["viewclass"] : 'message', isset($_REQUEST["we_transaction"]) ? $_REQUEST["we_transaction"] : 'no_request', $we_transaction);
 echo $weFrame->getHTMLDocumentHeader();
 $weFrame->View->processVariables();
 $weFrame->View->processCommands();

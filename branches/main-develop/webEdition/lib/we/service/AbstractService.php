@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition SDK
  *
@@ -10,23 +11,22 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
  * @category   we
  * @package    we_service
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
- */ 
+ */
 
 /**
  * class for abstract service
- * 
+ *
  * @category   we
  * @package    we_service
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_service_AbstractService
-{
+class we_service_AbstractService{
 
 }

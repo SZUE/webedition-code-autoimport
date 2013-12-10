@@ -113,7 +113,7 @@ switch($type){
 			header("Content-Type: $contenttype");
 
 			readfile($_SERVER['DOCUMENT_ROOT'] . $bannerpath);
-		} else{
+		} else {
 			header("Content-type: image/gif");
 			print chr(0x47) . chr(0x49) . chr(0x46) . chr(0x38) . chr(0x39) . chr(0x61) . chr(0x01) . chr(0x00) .
 				chr(0x01) . chr(0x00) . chr(0x80) . chr(0x00) . chr(0x00) . chr(0x04) . chr(0x02) . chr(0x04) .

@@ -22,66 +22,66 @@ $select->setOptions(array(
 ));
 
 $select2 = new we_ui_controls_Select(
-		array(
-			'name' => 'select2',
-			'multiple' => true,
-			'size' => 3,
-			'disabled' => false,
-			'hidden' => false,
-			'onChange' => 'alert("onChange!");',
-			'title' => 'Titel 2',
-			'selectedValue' => 2,
-			'options' => array(
-				'1' => 'Option 1',
-				'2' => 'Option 2',
-				'3' => 'Option 3',
-				'4' => 'Option 4',
-				'5' => 'Option 5',
-				'6' => 'Option 6'
-			)
-		)
+	array(
+	'name' => 'select2',
+	'multiple' => true,
+	'size' => 3,
+	'disabled' => false,
+	'hidden' => false,
+	'onChange' => 'alert("onChange!");',
+	'title' => 'Titel 2',
+	'selectedValue' => 2,
+	'options' => array(
+		'1' => 'Option 1',
+		'2' => 'Option 2',
+		'3' => 'Option 3',
+		'4' => 'Option 4',
+		'5' => 'Option 5',
+		'6' => 'Option 6'
+	)
+	)
 );
 
 $select3 = new we_ui_controls_Select(
+	array(
+	'name' => 'select',
+	'multiple' => true,
+	'size' => 16,
+	'disabled' => false,
+	'hidden' => false,
+	'title' => 'Titel 2',
+	'width' => 150,
+	'selectedValue' => 2,
+	'optgroups' => array(
 		array(
-			'name' => 'select',
-			'multiple' => true,
-			'size' => 16,
-			'disabled' => false,
-			'hidden' => false,
-			'title' => 'Titel 2',
-			'width' => 150,
-			'selectedValue' => 2,
-			'optgroups' => array(
-				array(
-					'label' => 'group 1',
-					'options' => array(
-						'7' => 'Option 7',
-						'8' => 'Option 8',
-						'9' => 'Option 9',
-						'10' => 'Option 10',
-						'11' => 'Option 11',
-						'12' => 'Option 12'
-					)
-				),
-				array(
-					'label' => 'group 2',
-					'options' => array(
-						'13' => 'Option 13',
-						'14' => 'Option 14',
-						'15' => 'Option 15'
-					)
-				)
-			),
+			'label' => 'group 1',
 			'options' => array(
-				'1' => 'Option 1',
-				'2' => 'Option 2',
-				'3' => 'Option 3',
-				'4' => 'Option 4',
-				'5' => 'Option 5',
-				'6' => 'Option 6'
+				'7' => 'Option 7',
+				'8' => 'Option 8',
+				'9' => 'Option 9',
+				'10' => 'Option 10',
+				'11' => 'Option 11',
+				'12' => 'Option 12'
+			)
+		),
+		array(
+			'label' => 'group 2',
+			'options' => array(
+				'13' => 'Option 13',
+				'14' => 'Option 14',
+				'15' => 'Option 15'
 			)
 		)
+	),
+	'options' => array(
+		'1' => 'Option 1',
+		'2' => 'Option 2',
+		'3' => 'Option 3',
+		'4' => 'Option 4',
+		'5' => 'Option 5',
+		'6' => 'Option 6'
+	)
+	)
 );
 
 $select->addOption(7, "added Option 7");

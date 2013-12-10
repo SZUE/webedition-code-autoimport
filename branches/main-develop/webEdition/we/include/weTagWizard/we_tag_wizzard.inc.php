@@ -64,19 +64,19 @@ var typeAttributeRequires = new Object();';
 			$_allowedAttribs = $option->getAllowedAttributes();
 			if(empty($_allowedAttribs)){
 				$typeAttributeJs .= 'typeAttributeAllows["' . $option->getName() . '"] = new Array();';
-			} else{
-				$typeAttributeJs .= 'typeAttributeAllows["' . $option->getName() . '"] = new Array("'.
-				 implode('","', $_allowedAttribs).
-				 '");';
+			} else {
+				$typeAttributeJs .= 'typeAttributeAllows["' . $option->getName() . '"] = new Array("' .
+					implode('","', $_allowedAttribs) .
+					'");';
 			}
 
 			$_reqAttribs = $option->getRequiredAttributes($_attributes);
 			if(empty($_reqAttribs)){
 				$typeAttributeJs .= "typeAttributeRequires[\"" . $option->getName() . "\"] = new Array();";
-			} else{
-				$typeAttributeJs .= "typeAttributeRequires[\"" . $option->getName() . "\"] = new Array(\"".
-				implode('","', $_reqAttribs).
-				 "\");";
+			} else {
+				$typeAttributeJs .= "typeAttributeRequires[\"" . $option->getName() . "\"] = new Array(\"" .
+					implode('","', $_reqAttribs) .
+					"\");";
 			}
 		}
 
@@ -85,7 +85,7 @@ weTagWizard.typeAttributeAllows = typeAttributeAllows;
 weTagWizard.typeAttributeRequires = typeAttributeRequires;';
 	}
 	$typeAttributeJs .= "weTagWizard.typeAttributeId = typeAttributeId;";
-} else{
+} else {
 	$typeAttributeJs = '';
 }
 // additional javascript for the individual tags - end

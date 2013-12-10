@@ -388,7 +388,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 		</tr>
 		<tr>
 			<td class="defaultgray">' . g_l('modules_glossary', '[view]') . '</td>
-			<td>' . we_html_tools::htmlSelect("Rows", $_rows, 1, $Search->Rows, "", array('onchange'=>"SubmitForm();")) . '</td>
+			<td>' . we_html_tools::htmlSelect("Rows", $_rows, 1, $Search->Rows, "", array('onchange' => "SubmitForm();")) . '</td>
 			<td>' . we_html_forms::checkboxWithHidden(isset($_REQUEST['GreenOnly']) && $_REQUEST['GreenOnly'] == 1 ? true : false, "GreenOnly", g_l('modules_glossary', '[show_only_visible_items]'), false, "defaultfont", "jump(0);") . '</td>
 			<td>' . we_html_tools::getPixel(18, 2) . '</td>
 			<td>' . $newButton . '</td>
@@ -421,7 +421,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 
 		$pages = $Search->getPages();
 
-		$select = we_html_tools::htmlSelect("TmpOffset", $pages, 1, $Search->Offset, false, array("onchange"=>"jump(this.value);"));
+		$select = we_html_tools::htmlSelect("TmpOffset", $pages, 1, $Search->Offset, false, array("onchange" => "jump(this.value);"));
 
 		$out = '
 		<table border="0" cellpadding="0" cellspacing="0">

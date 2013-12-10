@@ -73,7 +73,7 @@ function we_tag_banner($attribs, $content){
 			$linkAtts['target'] = $target;
 		}
 		$noscript = getHtmlTag('a', $linkAtts, $img);
-	} else{ //  only img
+	} else { //  only img
 		$noscript = $img;
 	}
 
@@ -101,7 +101,7 @@ function we_tag_banner($attribs, $content){
 		$newAttribs['scrolling'] = 'no';
 
 		return getHtmlTag('iframe', $newAttribs, $content);
-	} else{
+	} else {
 		return ($GLOBALS["WE_MAIN_DOC"]->IsDynamic ?
 				we_banner_banner::getBannerCode($GLOBALS["WE_MAIN_DOC"]->ID, $paths, $target, $width, $height, $GLOBALS["WE_MAIN_DOC"]->DocType, $GLOBALS["WE_MAIN_DOC"]->Category, $bannername, $link, "", $bannerclick, $getbanner, "", $page, $GLOBALS["WE_MAIN_DOC"]->InWebEdition, $xml) :
 				($type == "cookie" ?

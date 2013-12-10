@@ -34,7 +34,6 @@ abstract class we_glossary_replace{
 		include_once($configFile);
 
 		return (isset($GLOBALS['weGlossaryAutomaticReplacement']) && $GLOBALS['weGlossaryAutomaticReplacement']);
-
 	}
 
 	/**

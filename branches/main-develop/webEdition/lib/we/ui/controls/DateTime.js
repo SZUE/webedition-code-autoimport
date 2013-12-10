@@ -20,7 +20,7 @@
 
  * http://www.gnu.org/licenses/lgpl-3.0.html.
 
- * A copy is found in the textfile 
+ * A copy is found in the textfile
 
  * webEdition/licenses/webEditionSDK/License.txt
 
@@ -46,7 +46,7 @@
 
  * Class for handling we_ui_controls_TextField Element
 
- * 
+ *
 
  * @category   we
 
@@ -78,13 +78,13 @@ we_ui_controls_DateTime = new Object();
 
  */
 
-we_ui_controls_DateTime.setDisabled = function(idOrObject, disabled) 
+we_ui_controls_DateTime.setDisabled = function(idOrObject, disabled)
 
 {
 
 	var element = idOrObject;
 
-	if (typeof(element) != "object") {
+	if (typeof (element) != "object") {
 
 		element = document.getElementById(idOrObject);
 
@@ -94,18 +94,18 @@ we_ui_controls_DateTime.setDisabled = function(idOrObject, disabled)
 
 }
 
-we_ui_controls_DateTime.setDateTimeValueOnChange = function(idOrObject) 
+we_ui_controls_DateTime.setDateTimeValueOnChange = function(idOrObject)
 
 {
 
 	var element = idOrObject;
-	var datumMS = new Date(document.getElementById(idOrObject+'_years').value, document.getElementById(idOrObject+'_months').value - 1, document.getElementById(idOrObject+'_days').value, document.getElementById(idOrObject+'_hours').value, document.getElementById(idOrObject+'_minutes').value,document.getElementById(idOrObject+'_seconds').value);
-	if (typeof(element) != "object") {
+	var datumMS = new Date(document.getElementById(idOrObject + '_years').value, document.getElementById(idOrObject + '_months').value - 1, document.getElementById(idOrObject + '_days').value, document.getElementById(idOrObject + '_hours').value, document.getElementById(idOrObject + '_minutes').value, document.getElementById(idOrObject + '_seconds').value);
+	if (typeof (element) != "object") {
 
 		element = document.getElementById(idOrObject);
 
 	}
 
-	element.value = datumMS.getTime()/1000;
+	element.value = datumMS.getTime() / 1000;
 
 }

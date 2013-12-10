@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 $id = $_REQUEST['we_cmd'][4];
 $table = USER_TABLE;
 

@@ -38,7 +38,7 @@
 		<person>
 			<author name="my-author"/>
 			<location country="DE">
-		<!-- no adress provided -->
+				<!-- no adress provided -->
 				<email>info@webedition.org</email>
 			</location>
 			<year>2010</year>

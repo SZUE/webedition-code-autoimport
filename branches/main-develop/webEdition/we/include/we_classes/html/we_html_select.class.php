@@ -182,7 +182,7 @@ class we_html_select extends we_html_baseCollection{
 		foreach($this->childs as $k => $v){
 			//fix #7912
 			$equal = (is_bool($v->attribs["value"]) || is_bool($value)) ? $v->attribs["value"] == $value :
-				(string)$v->attribs["value"] == (string)$value;
+				(string) $v->attribs["value"] == (string) $value;
 
 			if($equal){
 				$this->setOption($k, array("selected" => 'selected'));

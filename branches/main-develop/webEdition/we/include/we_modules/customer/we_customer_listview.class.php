@@ -97,7 +97,7 @@ class we_customer_listview extends listviewBase{
 			$this->DB_WE->Record["we_wedoc_lastPath"] = $this->LastDocPath . "?we_cid=" . $this->DB_WE->Record["ID"];
 			$this->count++;
 			return true;
-		} else{
+		} else {
 			$this->stop_next_row = $this->shouldPrintEndTR();
 			if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
 				$this->DB_WE->Record = array(

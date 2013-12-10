@@ -111,7 +111,7 @@ abstract class we_backup_util{
 		if(isset($_SESSION['weS']['weBackupVars']['files_to_delete_count'])){
 			$rest1 = intval($_SESSION['weS']['weBackupVars']['files_to_delete_count']) - count($_SESSION['weS']['weBackupVars']['files_to_delete']);
 			$rest2 = intval($_SESSION['weS']['weBackupVars']['files_to_delete_count']);
-		} else{
+		} else {
 			$rest1 = 0;
 			$rest2 = 0;
 		}
@@ -210,7 +210,7 @@ abstract class we_backup_util{
 
 					$_SESSION['weS']['weBackupVars']['current_table'] = $_table;
 				}
-			} else{
+			} else {
 				$_SESSION['weS']['weBackupVars']['current_table'] = false;
 				$_do = false;
 			}
@@ -274,7 +274,7 @@ abstract class we_backup_util{
 			return 'unknown';
 		}
 		$_hasbinary = false;
-		while($_found == 'unknown' && $_try < $_count) {
+		while($_found == 'unknown' && $_try < $_count){
 			if(preg_match('/.*' . we_backup_backup::weXmlExImHead . '.*type="backup".*>/', $_part)){
 				return 'backup';
 			} elseif(preg_match('/<we:(document|template|class|object|info|navigation)/i', $_part)){
@@ -313,10 +313,10 @@ abstract class we_backup_util{
 				$end = ftell($fh);
 				fclose($fh);
 			}
-		} else{
+		} else {
 
 			$fh = gzopen($filename, 'rb');
-			while(!gzeof($fh)) {
+			while(!gzeof($fh)){
 				gzread($fh, 16768);
 			}
 			$end = gztell($fh);

@@ -60,9 +60,9 @@ function getObjectTags($id, $isField = false){
 }
 
 function getMultiObjectTags($name){
-	if(isset($_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"][we_objectFile::TYPE_MULTIOBJECT. '_' . $name . "class"]["dat"])){
-		$id = $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"][we_objectFile::TYPE_MULTIOBJECT.'_' . $name . "class"]["dat"];
-	} else{
+	if(isset($_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"][we_objectFile::TYPE_MULTIOBJECT . '_' . $name . "class"]["dat"])){
+		$id = $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"][we_objectFile::TYPE_MULTIOBJECT . '_' . $name . "class"]["dat"];
+	} else {
 		return '';
 		$newfields = explode(',', $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"]["neuefelder"]["dat"]);
 		foreach($newfields as $tempname){
@@ -126,7 +126,7 @@ function getTmplTableRow($type, $name, $isField = false){
 		if($isField){
 			$open = '<we:ifFieldNotEmpty match="' . $name . '" type="' . $type . '">';
 			$close = "</we:ifFieldNotEmpty>";
-		} else{
+		} else {
 			$open = '<we:ifVarNotEmpty match="' . $name . '" type="' . $type . '">';
 			$close = "</we:ifVarNotEmpty>";
 		}
@@ -143,7 +143,7 @@ function getTmplTableRow($type, $name, $isField = false){
 		' . $close . '
 	</td>
 </tr>';
-	} else{
+	} else {
 		return '
 <tr>
 	<td width="100"><b>' . (($type != "object") ? $name : "") . '</b></td>

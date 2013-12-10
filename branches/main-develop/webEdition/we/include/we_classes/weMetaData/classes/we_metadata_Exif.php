@@ -54,17 +54,17 @@ class we_metadata_Exif extends we_metadata_metaData{
 		}
 		if(is_array($selection)){
 // fetch some
-		} else{
+		} else {
 // fetch all
 			if(@exif_imagetype($this->datasource)){
 				$_metadata = @exif_read_data($this->datasource);
-			} else{
+			} else {
 				$this->_valid = false;
 				return false;
 			}
 		}
 
-		foreach(explode(',',self::usedFields) as $value){
+		foreach(explode(',', self::usedFields) as $value){
 			if(isset($_metadata[$value])){
 				$this->metadata[$value] = $_metadata[$value];
 			}

@@ -68,4 +68,4 @@ print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_multiIconBox::getHTML("", "100%", $parts, 30, $buttons->getHtml())
 			)
 		)
-	);
+);

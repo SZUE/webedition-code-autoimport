@@ -37,7 +37,7 @@ class weJavaMenu{
 	}
 
 	public function getCode(){
-		return $this->getJS(). $this->getHTML();
+		return $this->getJS() . $this->getHTML();
 	}
 
 	public function getJS(){
@@ -106,32 +106,32 @@ function menuaction(cmd) {
 		return $enabled;
 	}
 
-/*	function h_pOption($men, &$opt, $p, $zweig){
-		$nf = self::h_search($men, $p);
-		if(!empty($nf)){
-			foreach($nf as $id => $e){
-				$newAst = $zweig;
-				$e['enabled'] = isset($e['perm']) ? self::isEnabled($e['perm']) : 1;
-				$mtext = (isset($e['text']) && is_array($e['text']) ?
-						($e['text'][$GLOBALS['WE_LANGUAGE']] ? $e['text'][$GLOBALS['WE_LANGUAGE']] : '') :
-						( isset($e['text']) ? $e['text'] : ''));
+	/* 	function h_pOption($men, &$opt, $p, $zweig){
+	  $nf = self::h_search($men, $p);
+	  if(!empty($nf)){
+	  foreach($nf as $id => $e){
+	  $newAst = $zweig;
+	  $e['enabled'] = isset($e['perm']) ? self::isEnabled($e['perm']) : 1;
+	  $mtext = (isset($e['text']) && is_array($e['text']) ?
+	  ($e['text'][$GLOBALS['WE_LANGUAGE']] ? $e['text'][$GLOBALS['WE_LANGUAGE']] : '') :
+	  ( isset($e['text']) ? $e['text'] : ''));
 
-				if(isset($e['hide']) && $e['hide']){
+	  if(isset($e['hide']) && $e['hide']){
 
-				} else {
-					if((!isset($e["cmd"])) && $mtext){
-						$opt .= '<option value="" disabled>&nbsp;&nbsp;' . $newAst . $mtext . "&nbsp;&gt;";
-						$newAst = $newAst . "&nbsp;&nbsp;";
-						$this->h_pOption($men, $opt, $id, $newAst);
-					} else if($mtext){
-						$opt .= '<option' . (($e["enabled"] == 0) ? (' value="" style="{color:\'grey\'}" disabled') : (' value="' . $e["cmd"] . '"')) . '>&nbsp;&nbsp;' . $newAst . $mtext;
-					} else {
-						$opt .= '<option value="" disabled>&nbsp;&nbsp;' . $newAst . "--------\n";
-					}
-				}
-			}
-		}
-	}*/
+	  } else {
+	  if((!isset($e["cmd"])) && $mtext){
+	  $opt .= '<option value="" disabled>&nbsp;&nbsp;' . $newAst . $mtext . "&nbsp;&gt;";
+	  $newAst = $newAst . "&nbsp;&nbsp;";
+	  $this->h_pOption($men, $opt, $id, $newAst);
+	  } else if($mtext){
+	  $opt .= '<option' . (($e["enabled"] == 0) ? (' value="" style="{color:\'grey\'}" disabled') : (' value="' . $e["cmd"] . '"')) . '>&nbsp;&nbsp;' . $newAst . $mtext;
+	  } else {
+	  $opt .= '<option value="" disabled>&nbsp;&nbsp;' . $newAst . "--------\n";
+	  }
+	  }
+	  }
+	  }
+	  } */
 
 	private function h_pCODE($men, &$opt, $p, $zweig){
 		$nf = self::h_search($men, $p);

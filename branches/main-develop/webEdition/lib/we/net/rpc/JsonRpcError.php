@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition SDK
  *
@@ -10,7 +11,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -19,25 +20,23 @@
  * @subpackage we_net_rpc
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-
- /*
+/*
  * class JsonRpcError
  *
  * This class allows service methods to easily provide error information for
  * return via JSON-RPC.
  */
 
-class we_net_rpc_JsonRpcError {
-	
-    private		$json;
-    private		$data;
-    private		$id;
-	
+class we_net_rpc_JsonRpcError{
+
+	private $json;
+	private $data;
+	private $id;
+
 	const kErrorOriginServer = 1;
 	const kErrorOriginApplication = 2;
 	const kErrorOriginTransport = 3;
 	const kErrorOriginClient = 4;
-	
 	const kErrorUnknown = 0;
 	const kErrorIllegalService = 1;
 	const kErrorServiceNotFound = 2;
@@ -46,40 +45,37 @@ class we_net_rpc_JsonRpcError {
 	const kErrorParameterMismatch = 5;
 	const kErrorPermissionDenied = 6;
 
-    
-    public function __construct (
-									$origin = self::kErrorOriginServer,
-									$code = self::kErrorUnknown,
-									$message = 'Unknown error'
-								) {
+	public function __construct(
+	$origin = self::kErrorOriginServer, $code = self::kErrorUnknown, $message = 'Unknown error'
+	){
 
 		$this->data = array(
-			'origin'  => $origin,
-			'code'    => $code,
+			'origin' => $origin,
+			'code' => $code,
 			'message' => $message,
-			'type'    => 'error'
+			'type' => 'error'
 		);
+	}
 
-    }
-	
-	public function SetOrigin($origin) {
+	public function SetOrigin($origin){
 		$this->data['origin'] = $origin;
 	}
 
-	public function SetError($code, $message, $type='error') {
+	public function SetError($code, $message, $type = 'error'){
 		$this->data['code'] = $code;
 		$this->data['message'] = $message;
 		$this->data['type'] = $type;
 	}
-    
-	public function SetId($id) {
+
+	public function SetId($id){
 		$this->id = $id;
 	}
-        
-    public function getError() {
-    	$ret = array('error' => $this->data,
-                     'id'    => $this->id,
-    				 'result' => NULL);
-        return Zend_Json::encode($ret);
-    }
+
+	public function getError(){
+		$ret = array('error' => $this->data,
+			'id' => $this->id,
+			'result' => NULL);
+		return Zend_Json::encode($ret);
+	}
+
 }

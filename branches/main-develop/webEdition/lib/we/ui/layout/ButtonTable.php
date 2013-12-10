@@ -34,6 +34,7 @@ Zend_Loader::loadClass('we_ui_layout_Table');
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_ui_layout_ButtonTable extends we_ui_layout_Table{
+
 	/**
 	 * Default class name for button
 	 */

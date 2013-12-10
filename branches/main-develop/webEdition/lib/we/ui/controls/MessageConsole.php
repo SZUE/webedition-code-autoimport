@@ -34,10 +34,10 @@ Zend_Loader::loadClass('we_ui_abstract_AbstractElement');
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_ui_controls_MessageConsole extends we_ui_abstract_AbstractElement{
+
 	/**
 	 * class for HeaderFont
 	 */
-
 	const kHeaderFontClass = 'we_ui_controls_MessageConsoleHeaderText';
 
 	/**

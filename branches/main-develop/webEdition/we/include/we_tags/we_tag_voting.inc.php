@@ -47,7 +47,7 @@ function we_tag_voting($attribs){
 		$GLOBALS['_we_voting'] = new we_voting_voting($GLOBALS['we_doc']->elements[$GLOBALS['_we_voting_namespace']]['dat']);
 	} else if($id != 0){
 		$GLOBALS['_we_voting'] = new we_voting_voting($id);
-	} else{
+	} else {
 		$__voting_matches = array();
 		if(preg_match_all('/_we_voting_answer_([0-9]+)_?([0-9]+)?/', implode(',', array_keys($_REQUEST)), $__voting_matches)){
 			$GLOBALS['_we_voting'] = new we_voting_voting($__voting_matches[1][0]);

@@ -472,16 +472,16 @@ class we_messaging_todo extends we_messaging_proto{
 			}
 
 			$this->selected_set[] = array('ID' => $i++,
-					'hdrs' => array('Deadline' => $this->DB_WE->f('headerDeadline'),
-						'Subject' => $this->DB_WE->f('headerSubject'),
-						'Creator' => $this->DB_WE->f('username'),
-						'Priority' => $this->DB_WE->f('Priority'),
-						'seenStatus' => $this->DB_WE->f('seenStatus'),
-						'status' => $this->DB_WE->f('headerStatus'),
-						'ClassName' => $this->ClassName),
-					'int_hdrs' => array('_from_userid' => $this->DB_WE->f('headerCreator'),
-						'_ParentID' => $this->DB_WE->f('ParentID'),
-						'_ID' => $this->DB_WE->f('ID')));
+				'hdrs' => array('Deadline' => $this->DB_WE->f('headerDeadline'),
+					'Subject' => $this->DB_WE->f('headerSubject'),
+					'Creator' => $this->DB_WE->f('username'),
+					'Priority' => $this->DB_WE->f('Priority'),
+					'seenStatus' => $this->DB_WE->f('seenStatus'),
+					'status' => $this->DB_WE->f('headerStatus'),
+					'ClassName' => $this->ClassName),
+				'int_hdrs' => array('_from_userid' => $this->DB_WE->f('headerCreator'),
+					'_ParentID' => $this->DB_WE->f('ParentID'),
+					'_ID' => $this->DB_WE->f('ID')));
 		}
 
 		/* mark selected_set messages as seen */

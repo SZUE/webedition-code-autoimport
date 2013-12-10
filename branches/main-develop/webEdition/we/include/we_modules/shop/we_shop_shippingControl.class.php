@@ -51,13 +51,10 @@ class we_shop_shippingControl{
 			$shippingControl->vatRate = we_shop_vats::getVatRateForSite($shippingControl->vatId);
 
 			return $shippingControl;
-		} else{
+		} else {
 			return new we_shop_shippingControl(
-					'',
-					1,
-					1,
-					array(
-					)
+				'', 1, 1, array(
+				)
 			);
 		}
 	}
@@ -72,12 +69,7 @@ class we_shop_shippingControl{
 		if(isset($req['weShippingId'])){
 
 			$newShipping = new we_shop_shipping(
-					$req['weShippingId'],
-					$req['weShipping_text'],
-					self::makeArrayFromReq($req['weShipping_countries']),
-					$req['weShipping_cartValue'],
-					$req['weShipping_shipping'],
-					($req['weShipping_default'] == '1' ? 1 : 0)
+				$req['weShippingId'], $req['weShipping_text'], self::makeArrayFromReq($req['weShipping_countries']), $req['weShipping_cartValue'], $req['weShipping_shipping'], ($req['weShipping_default'] == '1' ? 1 : 0)
 			);
 			$this->shippings[$req['weShippingId']] = $newShipping;
 
@@ -94,23 +86,18 @@ class we_shop_shippingControl{
 
 	function getNewEmptyShipping(){
 		return new we_shop_shipping(
-				'weShipping_' . md5(uniqid('', true)),
-				g_l('modules_shop', '[new_entry]'),
-				array('Deutschland'),
-				array(10, 20, 100),
-				array(15, 5, 0),
-				0
+			'weShipping_' . md5(uniqid('', true)), g_l('modules_shop', '[new_entry]'), array('Deutschland'), array(10, 20, 100), array(15, 5, 0), 0
 		);
 	}
 
 	function save(){
 		$DB_WE = $GLOBALS['DB_WE'];
 
-		return $DB_WE->query('REPLACE INTO ' . ANZEIGE_PREFS_TABLE . ' SET '.
+		return $DB_WE->query('REPLACE INTO ' . ANZEIGE_PREFS_TABLE . ' SET ' .
 				we_database_base::arraySetter(array(
 					'strDateiname' => 'weShippingControl',
 					'strFelder' => serialize($this)
-				)));
+		)));
 	}
 
 	function delete($id){
@@ -161,7 +148,7 @@ class we_shop_shippingControl{
 
 				if($shipping->cartValue[$i] > $orderValue){
 					continue;
-				} else{
+				} else {
 					$shippingId = $i;
 				}
 			}

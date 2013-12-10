@@ -96,7 +96,7 @@ function we_tag_delete($attribs){
 			if($type == "object"){
 				$mailtext = sprintf(g_l('global', "[std_mailtext_delObj]"), $doc->Path) . "\n";
 				$subject = g_l('global', "[std_subject_delObj]");
-			} else{
+			} else {
 				$mailtext = sprintf(g_l('global', "[std_mailtext_delDoc]"), $doc->Path) . "\n";
 				$subject = g_l('global', "[std_subject_delDoc]");
 			}
@@ -106,7 +106,7 @@ function we_tag_delete($attribs){
 			$phpmail->buildMessage();
 			$phpmail->Send();
 		}
-	} else{
+	} else {
 		$GLOBALS["we_" . $type . "_delete_ok"] = false;
 	}
 	return '';

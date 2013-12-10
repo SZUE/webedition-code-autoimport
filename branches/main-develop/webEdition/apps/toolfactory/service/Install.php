@@ -35,7 +35,7 @@ class toolfactory_service_Install extends we_app_service_AbstractCmd{
 		$_app_directory = dir(WE_APPS_PATH);
 		$_app_directory_string = WE_APPS_PATH;
 		$apparray = array();
-		while(false !== ($entry = $_app_directory->read())) {
+		while(false !== ($entry = $_app_directory->read())){
 			if($entry != "." && $entry != ".."){
 				$path_parts = pathinfo($entry);
 				if(isset($path_parts['extension']) && $path_parts['extension'] == 'tgz'){
@@ -51,7 +51,7 @@ class toolfactory_service_Install extends we_app_service_AbstractCmd{
 		if(is_dir($_SERVER['DOCUMENT_ROOT'] . '/appinstall')){
 			$_app_directory = dir($_SERVER['DOCUMENT_ROOT'] . '/appinstall');
 			$_app_directory_string = $_SERVER['DOCUMENT_ROOT'] . '/appinstall';
-			while(false !== ($entry = $_app_directory->read())) {
+			while(false !== ($entry = $_app_directory->read())){
 				if($entry != "." && $entry != ".."){
 					$path_parts = pathinfo($entry);
 					if(isset($path_parts['extension']) && $path_parts['extension'] == 'tgz'){

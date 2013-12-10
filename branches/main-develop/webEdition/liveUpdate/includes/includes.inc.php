@@ -35,13 +35,13 @@ if(!defined('WE_ERROR_HANDLER_SET')){
 //FIXME: remove in 6.4
 if(isset($_REQUEST['PHPSESSID'])){
 	session_id($_REQUEST['PHPSESSID']);
-	unset($_REQUEST['PHPSESSID'],$_GET['PHPSESSID'],$_POST['PHPSESSID']);
+	unset($_REQUEST['PHPSESSID'], $_GET['PHPSESSID'], $_POST['PHPSESSID']);
 }
 
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_defines.inc.php');
 if(isset($_REQUEST[SESSION_NAME])){
 	session_id($_REQUEST[SESSION_NAME]);
-	unset($_REQUEST[SESSION_NAME],$_GET[SESSION_NAME],$_POST[SESSION_NAME]);
+	unset($_REQUEST[SESSION_NAME], $_GET[SESSION_NAME], $_POST[SESSION_NAME]);
 }
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 require_once(LIVEUPDATE_DIR . 'classes/liveUpdateHttp.class.php');

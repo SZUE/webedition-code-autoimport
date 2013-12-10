@@ -92,15 +92,15 @@ class MultiDirChooser{
 	function isEditable(){
 		return $this->isEditable;
 
-		/*if($this->isEditable == false){
-			return false;
-		}
-		if($this->ws){
-			if(!in_workspace($this->Record["ID"], $this->ws, $this->table, $this->db)){
-				return false;
-			}
-		}
-		return true;*/
+		/* if($this->isEditable == false){
+		  return false;
+		  }
+		  if($this->ws){
+		  if(!in_workspace($this->Record["ID"], $this->ws, $this->table, $this->db)){
+		  return false;
+		  }
+		  }
+		  return true; */
 	}
 
 	function get(){
@@ -111,7 +111,7 @@ class MultiDirChooser{
 		$idArr = makeArrayFromCSV($this->ids);
 
 		foreach($idArr as $id){
-			$this->Record=  getHash('SELECT ID,' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($id),$this->db);
+			$this->Record = getHash('SELECT ID,' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($id), $this->db);
 			if(!empty($this->Record)){
 				for($i = 0; $i < $this->lines; $i++){
 					$out .= $this->getLine($i);

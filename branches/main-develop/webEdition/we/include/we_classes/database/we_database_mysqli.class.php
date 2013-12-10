@@ -118,7 +118,7 @@ class DB_WE extends we_database_base{
 				$len/=3;
 			}
 			return $len;
-		} else{
+		} else {
 			return 0;
 		}
 	}

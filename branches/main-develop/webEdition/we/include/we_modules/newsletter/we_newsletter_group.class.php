@@ -167,7 +167,7 @@ class we_newsletter_group extends we_newsletter_base{
 	 * return all newsletter blocks for given newsletter id
 	 *
 	 * ***************************************************** */
-	static function __getAllGroups($newsletterID,$db){
+	static function __getAllGroups($newsletterID, $db){
 		$db->query('SELECT ID FROM ' . NEWSLETTER_GROUP_TABLE . ' WHERE NewsletterID=' . intval($newsletterID) . ' ORDER BY ID');
 		$ret = array();
 		while($db->next_record()){

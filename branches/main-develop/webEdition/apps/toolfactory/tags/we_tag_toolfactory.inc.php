@@ -22,7 +22,6 @@
  * @package    webEdition_toolfactory
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 function we_tag_toolfactory($attribs, $content){
 	return 'Hello toolfactory!';
 }

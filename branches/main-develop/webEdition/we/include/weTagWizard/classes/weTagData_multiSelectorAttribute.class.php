@@ -46,7 +46,7 @@ class weTagData_multiSelectorAttribute extends weTagDataAttribute{
 	 * @param string $textName
 	 * @param boolean $required
 	 */
-	function __construct($name, $table, $selectable, $textName = 'path', $required = false, $module = '', $description='', $deprecated=false){
+	function __construct($name, $table, $selectable, $textName = 'path', $required = false, $module = '', $description = '', $deprecated = false){
 
 		$this->Table = $table;
 		$this->Selectable = $selectable;
@@ -73,7 +73,7 @@ class weTagData_multiSelectorAttribute extends weTagDataAttribute{
 		$input = we_html_element::htmlTextArea(
 				array(
 					'name' => $this->Name, 'id' => $this->getIdName(), 'class' => 'wetextinput wetextarea'
-			));
+		));
 		$button = we_html_button::create_button(
 				"select", "javascript:we_cmd('" . $we_cmd . "', '', '" . $this->Table . "', '', '', 'fillIDs();var foo2=\\'\\'; if(all" . $this->TextName . "s.length>=2){foo2=all" . $this->TextName . "s.substring(1,all" . $this->TextName . "s.length-1)};var foo=opener.document.getElementById(\\'" . $this->getIdName() . "\\'); if(foo.value){foo.value WE_PLUS= \\',\\'WE_PLUS foo2;}else{foo.value = foo2;};')");
 

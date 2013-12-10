@@ -91,7 +91,7 @@ class we_dialog_cell extends we_dialog_base{
 						</select>';
 		$valign = we_html_tools::htmlFormElementTable($foo, g_l('wysiwyg', "[valignment]"));
 
-		$foo = we_html_element::jsElement( 'showclasss("we_dialog_args[class]","' . (isset($this->args["class"]) ? $this->args["class"] : "") . '","");');
+		$foo = we_html_element::jsElement('showclasss("we_dialog_args[class]","' . (isset($this->args["class"]) ? $this->args["class"] : "") . '","");');
 		$classSelect = we_html_tools::htmlFormElementTable($foo, g_l('wysiwyg', "[css_style]"));
 
 		$_isheader = we_html_forms::checkboxWithHidden($this->args["isheader"] == 1, "we_dialog_args[isheader]", g_l('wysiwyg', "[isheader]"));

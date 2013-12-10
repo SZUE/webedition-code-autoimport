@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,10 +22,9 @@
  * @package    webEdition_rpc
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+class rpcSelectorGetFilesOfDirCmd extends rpcCmd{
 
-class rpcSelectorGetFilesOfDirCmd extends rpcCmd {
-
-	function execute() {
+	function execute(){
 
 		$resp = new rpcResponse();
 
@@ -32,28 +32,23 @@ class rpcSelectorGetFilesOfDirCmd extends rpcCmd {
 		$table = $_REQUEST["table"];
 
 		// if a value is already inserted in a selector, we get an i, not a parentID
-		if (isset($_REQUEST["id"])) {
+		if(isset($_REQUEST["id"])){
 			$id = $_REQUEST["id"];
 
 			// detect belonging parentid
 			$queryClass = new we_selector_query();
-			if ($res = $queryClass->getItemById($id, $table) ) {
+			if($res = $queryClass->getItemById($id, $table)){
 				$id = $res[0]["ParentID"];
-
 			} else {
 				$id = 0;
-
 			}
-
 		} else {
 			$id = isset($_REQUEST["parentId"]) ? $_REQUEST["parentId"] : 0;
-
 		}
 
 		$types = array();
-		if ($_REQUEST["types"]) {
+		if($_REQUEST["types"]){
 			$types = explode(",", $_REQUEST["types"]);
-
 		}
 		$queryClass->queryFolderContents($id, $table, $types, null);
 		$entries = $queryClass->getResult();
@@ -61,24 +56,24 @@ class rpcSelectorGetFilesOfDirCmd extends rpcCmd {
 		$first = true;
 
 		$data = "_files = new Object();";
-			// 1st step, select this folder if folders are selectable
-			if (in_array("folder", $types)) {
-				$data .= '_files["id_' . $id . '"] = {"type":"folder","text":".","id":"' . $id . '"};';
-			}
-			// one folder, or up to root
-			// parent Folder for navigation up
-			if ($parentFolder = $queryClass->getItemById($id, $table) ) {
-				$data .= '_files["id_' . $parentFolder[0]["ParentID"] . '"] = {"type":"folder","text":"..","id":"' . $parentFolder[0]["ParentID"] . '"};';
-			} else {
-				$data .= '_files["id_0"] = {"type":"folder","text":"..","id":"0"};';
-			}
+		// 1st step, select this folder if folders are selectable
+		if(in_array("folder", $types)){
+			$data .= '_files["id_' . $id . '"] = {"type":"folder","text":".","id":"' . $id . '"};';
+		}
+		// one folder, or up to root
+		// parent Folder for navigation up
+		if($parentFolder = $queryClass->getItemById($id, $table)){
+			$data .= '_files["id_' . $parentFolder[0]["ParentID"] . '"] = {"type":"folder","text":"..","id":"' . $parentFolder[0]["ParentID"] . '"};';
+		} else {
+			$data .= '_files["id_0"] = {"type":"folder","text":"..","id":"0"};';
+		}
 
 
-			foreach ($entries as $entry) {
-				$data .= '_files["id_' . $entry["ID"] . '"] = {"type":"' . (isset($entry["ContentType"]) ? $entry["ContentType"] : "") . '","text":"' . $entry["Text"] . '","id":"' . $entry["ID"] . '"};';
-
-			}
+		foreach($entries as $entry){
+			$data .= '_files["id_' . $entry["ID"] . '"] = {"type":"' . (isset($entry["ContentType"]) ? $entry["ContentType"] : "") . '","text":"' . $entry["Text"] . '","id":"' . $entry["ID"] . '"};';
+		}
 		$resp->addData("data", $data);
 		return $resp;
 	}
+
 }

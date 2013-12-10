@@ -65,8 +65,8 @@ class objectsearch extends we_search{
 				$regs = explode('_', $tableInfo[$i]["name"], 2);
 				if(count($regs) == 2){
 					$opts .= '<option value="' . $tableInfo[$i]["name"] . '" '
-							. (($select == $tableInfo[$i]["name"]) ? "selected" : "") . '>'
-							. $regs[1] . '</option>';
+						. (($select == $tableInfo[$i]["name"]) ? "selected" : "") . '>'
+						. $regs[1] . '</option>';
 				}
 				$all .= $tableInfo[$i]["name"] . ",";
 			} else {

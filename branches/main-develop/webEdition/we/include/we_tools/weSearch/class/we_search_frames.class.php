@@ -58,8 +58,7 @@ class we_search_frames extends we_tool_frames{
 				'');
 
 
-		$hiddens =
-			we_html_element::htmlHidden(array('name' => 'pnt', 'value' => 'cmd')) .
+		$hiddens = we_html_element::htmlHidden(array('name' => 'pnt', 'value' => 'cmd')) .
 			we_html_element::htmlHidden(array('name' => 'cmd', 'value' => 'no_cmd'));
 
 		$out = we_html_element::htmlBody(

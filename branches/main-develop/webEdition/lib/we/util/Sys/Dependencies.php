@@ -77,7 +77,7 @@ class we_util_Sys_Dependencies extends we_util_Sys{
 			$reflectionClass = new ReflectionClass('we_util_Sys_' . $class);
 			if(!$reflectionClass->hasMethod($values["operation"])){
 				return false;
-			} else{
+			} else {
 				// identify the required and optional parameters of this method:
 				$reflectionMethod = new ReflectionMethod('we_util_Sys_' . $class, $values["operation"]);
 				$reflectionParameters = array();

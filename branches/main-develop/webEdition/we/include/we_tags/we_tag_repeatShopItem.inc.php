@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_parse_tag_repeatShopItem($a, $content,$attribs){
+function we_parse_tag_repeatShopItem($a, $content, $attribs){
 	if(($foo = attributFehltError($attribs, 'shopname', __FUNCTION__))){
 		return $foo;
 	}
@@ -57,7 +57,7 @@ function we_tag_repeatShopItem($attribs){
 		case 'stop':
 			if(isset($GLOBALS['we_lv_array'])){
 				we_post_tag_listview();
-			} else{
+			} else {
 				unset($GLOBALS["lv"]);
 			}
 			break;

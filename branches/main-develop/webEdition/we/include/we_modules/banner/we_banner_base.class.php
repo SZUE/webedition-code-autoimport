@@ -69,7 +69,7 @@ abstract class we_banner_base{
 			$this->db->query("SELECT LAST_INSERT_ID()");
 			$this->db->next_record();
 			$this->ID = $this->db->f(0);
-		} else{
+		} else {
 			$query = 'UPDATE ' . $this->table . ' SET ' . $set . ' WHERE ' . $where;
 			$this->db->query($query);
 		}

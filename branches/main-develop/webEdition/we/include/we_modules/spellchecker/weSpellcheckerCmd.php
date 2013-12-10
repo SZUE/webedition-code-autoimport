@@ -7,16 +7,16 @@ if(empty($_SESSION["user"]["Username"])){
 		if(!file_exists(WE_SPELLCHECKER_MODULE_PATH . '/tmp/' . md5($_REQUEST['scid']))){
 			we_html_tools::protect();
 		}
-	} else{
+	} else {
 		we_html_tools::protect();
 	}
-} else{
+} else {
 	we_html_tools::protect();
 }
 
 we_html_tools::htmlTop();
 
-function saveSettings($default, $active, $langs=array()){
+function saveSettings($default, $active, $langs = array()){
 	$_lang = '';
 
 	foreach($langs as $k => $v){
@@ -32,7 +32,7 @@ function saveSettings($default, $active, $langs=array()){
 				\'default\' => \'' . $default . '\',
 				\'active\' => array(\'' . implode('\',\'', $active) . '\'),
 				);
-				' . $_lang ;
+				' . $_lang;
 
 	we_base_file::save(WE_SPELLCHECKER_MODULE_PATH . 'spellchecker.conf.inc.php', $_construct);
 
@@ -106,7 +106,7 @@ if(isset($_REQUEST['cmd'][0])){
 				we_base_file::save(WE_SPELLCHECKER_MODULE_PATH . 'dict/' . $_REQUEST['cmd'][1], $_content, 'ab');
 
 				unlink(WE_SPELLCHECKER_MODULE_PATH . 'chunk');
-			} else{
+			} else {
 
 			}
 
@@ -138,7 +138,7 @@ if(isset($_REQUEST['cmd'][0])){
 
 			print we_html_element::jsElement(
 					we_message_reporting::getShowMessageCall(g_l('modules_spellchecker', '[save_settings]'), we_message_reporting::WE_MESSAGE_NOTICE)
-				);
+			);
 
 			break;
 
@@ -160,7 +160,7 @@ if(isset($_REQUEST['cmd'][0])){
 						saveSettings(isset($_new_ac[0]) ? $_new_ac[0] : '', $_new_ac);
 					}
 				}
-			} else{
+			} else {
 				$_mess = g_l('modules_spellchecker', '[name_invalid]');
 				$_messType = we_message_reporting::WE_MESSAGE_ERROR;
 			}
@@ -194,7 +194,7 @@ if(isset($_REQUEST['cmd'][0])){
 			$_dir = dir(WE_SPELLCHECKER_MODULE_PATH . 'dict');
 
 			$_i = 0;
-			while(false !== ($entry = $_dir->read())) {
+			while(false !== ($entry = $_dir->read())){
 				if($entry != '.' && $entry != '..' && strpos($entry, '.zip') !== false){
 					$_i++;
 					$table->addRow();
@@ -209,7 +209,7 @@ if(isset($_REQUEST['cmd'][0])){
 
 					if(isset($_langs[$_name])){
 						$_lanSelect->selectOption($_langs[$_name]);
-					} else{
+					} else {
 						$_lanSelect->selectOption($GLOBALS['weDefaultFrontendLanguage']);
 					}
 
@@ -237,8 +237,8 @@ if(isset($_REQUEST['cmd'][0])){
 
 	function dispatch(cmd) {
 		document.dispatcherForm.elements["cmd[0]"].value = cmd;
-		for(var i = 1; i < arguments.length; i++) {
-			document.dispatcherForm.elements["cmd["+i+"]"].value = arguments[i];
+		for (var i = 1; i < arguments.length; i++) {
+			document.dispatcherForm.elements["cmd[" + i + "]"].value = arguments[i];
 		}
 		document.dispatcherForm.submit();
 	}

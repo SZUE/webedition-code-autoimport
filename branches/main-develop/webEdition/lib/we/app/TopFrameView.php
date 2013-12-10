@@ -29,12 +29,12 @@ include_once ('Zend/View.php');
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_app_TopFrameView extends Zend_View{
+
 	/**
 	 * editor frameset
 	 *
 	 * @var string
 	 */
-
 	const kEditorFrameset = 'self.resize.right.editor';
 
 	/**
@@ -92,13 +92,13 @@ class we_app_TopFrameView extends Zend_View{
 		//we_util_Strings::p_r($this);
 		if(file_exists($_SERVER['DOCUMENT_ROOT'] . $this->appDir . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'info.php')){
 			$infowindow = $this->appDir . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'info.php';
-		} else{
-			$infowindow = WEBEDITION_DIR ."we_cmd.php?we_cmd[0]=info";
+		} else {
+			$infowindow = WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=info";
 		}
 		if(file_exists($_SERVER['DOCUMENT_ROOT'] . $this->appDir . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'help.php')){
 			$helpwindow = $this->appDir . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'help.php';
-		} else{
-			$helpwindow = WEBEDITION_DIR."getHelp.php";
+		} else {
+			$helpwindow = WEBEDITION_DIR . "getHelp.php";
 		}
 
 		$js = <<<EOS

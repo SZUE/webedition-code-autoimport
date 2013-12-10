@@ -57,7 +57,7 @@ class weOrderContainer{
 
 		if($this->debug){
 			$style = ' style="display: block; border: 1px #ff0000 solid;"';
-		} else{
+		} else {
 			$style = '';
 		}
 
@@ -80,7 +80,7 @@ class weOrderContainer{
 
 		if($afterid){
 			$afterid = "'" . $afterid . "'";
-		} else{
+		} else {
 			$afterid = "null";
 		}
 
@@ -122,7 +122,7 @@ class weOrderContainer{
 
 		if($this->debug){
 			$style = ' style="display: block; width: 90%; height: 90%; overflow: auto; border: 1px #ff0000 solid; font-family: verdana, arial; font-size: 11px; color: #000000; padding: 5px;"';
-		} else{
+		} else {
 			$style = ' style="display: none;"';
 		}
 

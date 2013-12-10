@@ -56,8 +56,8 @@ print STYLESHEET;
 <script type="text/javascript"><!--
 	function todo_markdone() {
 		top.content.cmd.location = '<?php print WE_MESSAGING_MODULE_DIR; ?>edit_messaging_frameset.php?pnt=cmd&mcmd=todo_markdone&we_transaction=<?php echo $_REQUEST['we_transaction'] ?>';
-	}
-	//-->
+			}
+//-->
 </script>
 </head>
 <body class="weDialogBody">
@@ -109,7 +109,7 @@ print STYLESHEET;
 				"space" => 0
 			);
 		}
-	} else{ //	Message
+	} else { //	Message
 		$parts = array(
 			array("headline" => g_l('modules_messaging', '[subject]'),
 				"html" => "<b>" . oldHtmlspecialchars($format->get_subject()) . "</b>",

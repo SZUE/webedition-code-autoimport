@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,12 +22,11 @@
  * @package    webEdition_toolfactory
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 $appDir = Zend_Controller_Front::getInstance()->getParam('appDir');
 
 $frameset = new we_ui_layout_Frameset(array('rows' => '1,*'));
 $frameset->addFrame(array(
-	'src' => HTML_DIR.'white.html',
+	'src' => HTML_DIR . 'white.html',
 	'name' => 'treeheader',
 	'noresize' => 'noresize',
 	'scrolling' => 'no'
@@ -34,9 +34,9 @@ $frameset->addFrame(array(
 
 $frameset->addFrame(array(
 	'src' => $appDir . '/index.php/tree/index' .
-		($this->modelId ?
-			'/modelId/' . $this->modelId :
-			''),
+	($this->modelId ?
+		'/modelId/' . $this->modelId :
+		''),
 	'name' => 'tree',
 	'noresize' => 'noresize',
 	'scrolling' => 'auto'

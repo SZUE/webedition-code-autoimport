@@ -157,7 +157,7 @@ class we_core_AbstractModel extends we_core_AbstractObject{
 				throw new we_core_ModelException('Error inserting model to database with db exception: ' . $e->getMessage(), we_service_ErrorCodes::kDBError);
 			}
 			$this->{$this->_primaryKey} = $db->lastInsertId();
-		} else{
+		} else {
 			try{
 				$db->update($this->_table, $updateArray, $this->_getPKCondition());
 			} catch (Exception $e){

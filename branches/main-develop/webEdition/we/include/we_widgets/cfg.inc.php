@@ -40,7 +40,7 @@ if(defined('FILE_TABLE') && permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
 	$shortCuts_left[] = 'open_document';
 	$shortCuts_left[] = 'new_document';
 	$shortCutsDocs = '1';
-} else{
+} else {
 	$shortCutsDocs = '0';
 }
 
@@ -49,7 +49,7 @@ if(defined('TEMPLATES_TABLE')){
 	if(permissionhandler::hasPerm('NEW_TEMPLATE')){
 		$shortCuts_left[] = 'new_template';
 	}
-} else{
+} else {
 	$shortCutsTemplates = '0';
 }
 $shortCuts_left[] = 'new_directory';
@@ -59,7 +59,7 @@ if(defined('FILE_TABLE') && permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
 if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES')){
 	$shortCuts_right[] = 'unpublished_objects';
 	$shortCutsObjects = '1';
-} else{
+} else {
 	$shortCutsObjects = '0';
 }
 if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm('NEW_OBJECTFILE')){
@@ -71,7 +71,7 @@ if(defined('OBJECT_TABLE')){
 	if(permissionhandler::hasPerm('NEW_OBJECT')){
 		$shortCuts_right[] = 'new_class';
 	}
-} else{
+} else {
 	$shortCutsClasses = '0';
 }
 if(permissionhandler::hasPerm('EDIT_SETTINGS')){

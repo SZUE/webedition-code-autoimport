@@ -1367,7 +1367,7 @@ class doclistView{
 
 		$page = ceil($searchstart / $anzahl) * $anzahl;
 
-		$select = we_html_tools::htmlSelect("page", $pages, 1, $page, false, array("onchange"=>"this.form.elements['searchstart'].value = this.value; search(false);"));
+		$select = we_html_tools::htmlSelect("page", $pages, 1, $page, false, array("onchange" => "this.form.elements['searchstart'].value = this.value; search(false);"));
 
 		if(!isset($_REQUEST['we_cmd'] ['setInputSearchstart'])){
 			if(!defined("searchstart")){

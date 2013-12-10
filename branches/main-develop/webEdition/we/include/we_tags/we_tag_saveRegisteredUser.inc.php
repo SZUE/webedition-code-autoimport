@@ -193,7 +193,7 @@ function we_saveCustomerImages(){
 
 						//image needs to be scaled
 						if((isset($_SESSION['webuser']['imgtmp'][$imgName]['width']) && $_SESSION['webuser']['imgtmp'][$imgName]['width']) ||
-								(isset($_SESSION['webuser']['imgtmp'][$imgName]['height']) && $_SESSION['webuser']['imgtmp'][$imgName]['height'])){
+							(isset($_SESSION['webuser']['imgtmp'][$imgName]['height']) && $_SESSION['webuser']['imgtmp'][$imgName]['height'])){
 							$imageData = we_base_file::load($_serverPath);
 							$thumb = new we_thumbnail();
 							$thumb->init('dummy', $_SESSION['webuser']['imgtmp'][$imgName]['width'], $_SESSION['webuser']['imgtmp'][$imgName]['height'], $_SESSION['webuser']['imgtmp'][$imgName]['keepratio'], $_SESSION['webuser']['imgtmp'][$imgName]['maximize'], false, false, '', 'dummy', 0, '', '', $_extension, $we_size[0], $we_size[1], $imageData, '', $_SESSION['webuser']['imgtmp'][$imgName]['quality'], true);
@@ -287,12 +287,12 @@ function we_tag_saveRegisteredUser_processRequest($protected, $allowed){
 				break;
 			default:
 				if((!empty($protected) && in_array($name, $protected)) ||
-						(!empty($allowed) && !in_array($name, $allowed))){
+					(!empty($allowed) && !in_array($name, $allowed))){
 					continue;
 				}
 				$set[$name] = ($name == 'Password' ?
-								we_customer_customer::cryptPassword($val) :
-								$val);
+						we_customer_customer::cryptPassword($val) :
+						$val);
 				break;
 		}
 	}

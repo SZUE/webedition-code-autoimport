@@ -34,10 +34,10 @@ Zend_Loader::loadClass('we_ui_abstract_AbstractElement');
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_ui_controls_Tabs extends we_ui_abstract_AbstractElement{
+
 	/**
 	 * Default class name for tab container
 	 */
-
 	const kTabs_ContainerClass = 'we_ui_controls_Tabs_Container';
 
 	/**
@@ -162,7 +162,7 @@ class we_ui_controls_Tabs extends we_ui_abstract_AbstractElement{
 			case "id" :
 				if(isset($_tabArray["id"]) && $_tabArray["id"] != ""){
 					return $_tabArray["id"];
-				} else{
+				} else {
 					return "";
 				}
 				break;
@@ -174,14 +174,14 @@ class we_ui_controls_Tabs extends we_ui_abstract_AbstractElement{
 			case "text" :
 				if(isset($_tabArray["text"])){
 					return $_tabArray["text"];
-				} else{
+				} else {
 					return '';
 				}
 				break;
 			case "title" :
 				if(isset($_tabArray["title"])){
 					return $_tabArray["title"];
-				} else{
+				} else {
 					return '';
 				}
 				break;
@@ -198,7 +198,7 @@ class we_ui_controls_Tabs extends we_ui_abstract_AbstractElement{
 			case "onClick" :
 				if(isset($_tabArray["onClick"])){
 					return $_tabArray["onClick"];
-				} else{
+				} else {
 					return '';
 				}
 				break;
@@ -220,14 +220,14 @@ class we_ui_controls_Tabs extends we_ui_abstract_AbstractElement{
 			case "onCloseClick" :
 				if(isset($_tabArray["onCloseClick"])){
 					return $_tabArray["onCloseClick"];
-				} else{
+				} else {
 					return '';
 				}
 				break;
 			case "reload" :
 				if(isset($_tabArray["reload"])){
 					return $_tabArray["reload"];
-				} else{
+				} else {
 					return false;
 				}
 				break;

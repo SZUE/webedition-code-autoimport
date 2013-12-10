@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition SDK
  *
@@ -26,8 +27,8 @@
  * @package    we_util
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_util_Sys
-{
+class we_util_Sys{
+
 	/**
 	 * protected method for comparing two specified version numbers with each other
 	 *
@@ -44,8 +45,7 @@ class we_util_Sys
 	 * @example we_util_Sys::_versionCompare("1.0", "1,1", "<"); // will return (bool)true
 	 * @example we_util_Sys::_versionCompare("1.0", "1,1", ">"); // will return (bool)false
 	 */
-	protected  static function _versionCompare($version="", $reference = "", $operator = "")
-	{
+	protected static function _versionCompare($version = "", $reference = "", $operator = ""){
 		/*
 		 * will soon replace the code of following methods:
 		 * - we_util_Sys_Webedition::versionCompare()
@@ -54,11 +54,12 @@ class we_util_Sys
 		 * - we_util_Sys_Db_Mysql::versionCompare()
 		 * they'll call this method here insead of implementing the functionality themselves.
 		 */
-		if(empty($version) ||!empty($reference)) return false;
-		if(!empty($operator)) {
-			return version_compare($version,$reference,$operator);
+		if(empty($version) || !empty($reference))
+			return false;
+		if(!empty($operator)){
+			return version_compare($version, $reference, $operator);
 		} else {
-			return version_compare($version,$reference);
+			return version_compare($version, $reference);
 		}
 	}
 

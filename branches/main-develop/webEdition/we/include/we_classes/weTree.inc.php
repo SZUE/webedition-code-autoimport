@@ -661,7 +661,7 @@ function drawTree(){
 		window.setTimeout("drawTree()", 500);
 		return;
 	}
-	var out="'.	addcslashes(we_html_element::cssElement(implode('', $this->styles)),'"') .'<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"><tr><td class=\""+treeData.getlayout()+"\"><nobr>"+draw(treeData.startloc,"")+"</nobr></td></tr></table>";' .
+	var out="' . addcslashes(we_html_element::cssElement(implode('', $this->styles)), '"') . '<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"><tr><td class=\""+treeData.getlayout()+"\"><nobr>"+draw(treeData.startloc,"")+"</nobr></td></tr></table>";' .
 			$this->treeFrame . '.document.getElementById("treetable").innerHTML=out;
 }' .
 			$this->getJSDraw();

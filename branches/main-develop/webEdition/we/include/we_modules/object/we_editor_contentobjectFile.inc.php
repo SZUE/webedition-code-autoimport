@@ -27,7 +27,7 @@ we_html_tools::protect();
 
 if(isset($GLOBALS['we_doc']->Charset) && $GLOBALS['we_doc']->Charset){ //	send charset which might be determined in template
 	$charset = $GLOBALS['we_doc']->Charset;
-} else{
+} else {
 	$charset = DEFAULT_CHARSET;
 }
 
@@ -71,13 +71,13 @@ echo we_html_multiIconBox::getJs();
 	<!--
 	function toggleObject(id) {
 		var elem = document.getElementById(id);
-		if(elem.style.display == "none") {
+		if (elem.style.display == "none") {
 			elem.style.display = "block";
 		} else {
 			elem.style.display = "none";
 		}
 	}
-	//-->
+//-->
 </script>
 <?php
 echo we_html_element::jsScript(JS_DIR . 'windows.js');
@@ -88,17 +88,17 @@ print STYLESHEET;
 
 <body class="weEditorBody" onunload="doUnload()">
 	<form name="we_form" method="post"><?php
-echo we_class::hiddenTrans();
+		echo we_class::hiddenTrans();
 
-if($_editMode){
+		if($_editMode){
 
-	echo we_html_multiIconBox::_getBoxStart("100%", g_l('weClass', "[edit]"), md5(uniqid(__FILE__, true)), 30) .
-	$jsGUI->getContainer() .
-	we_html_multiIconBox::_getBoxEnd("100%");
+			echo we_html_multiIconBox::_getBoxStart("100%", g_l('weClass', "[edit]"), md5(uniqid(__FILE__, true)), 30) .
+			$jsGUI->getContainer() .
+			we_html_multiIconBox::_getBoxEnd("100%");
 
-	foreach($parts as $idx => $part){
+			foreach($parts as $idx => $part){
 
-		echo '<div id="' . $part['name'] . '">
+				echo '<div id="' . $part['name'] . '">
 			<a name="f' . $part['name'] . '"></a>
 			<table cellpadding="0" cellspacing="0" border="0" width="100%">
 			<tr>
@@ -113,15 +113,15 @@ if($_editMode){
 			</tr>
 			</table>
 			</div>' .
-		we_html_element::jsElement('objectEntry.add(document, \'' . $part['name'] . '\', null);');
-	}
-} else{
-	if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
-		$_msg = "";
-	}
-	print we_SEEM::parseDocument(we_html_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false));
-}
-?>
+				we_html_element::jsElement('objectEntry.add(document, \'' . $part['name'] . '\', null);');
+			}
+		} else {
+			if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
+				$_msg = "";
+			}
+			print we_SEEM::parseDocument(we_html_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false));
+		}
+		?>
 	</form>
-</body><?php echo we_html_element::jsElement('setTimeout("doScrollTo();",100);');?>
+</body><?php echo we_html_element::jsElement('setTimeout("doScrollTo();",100);'); ?>
 </html>

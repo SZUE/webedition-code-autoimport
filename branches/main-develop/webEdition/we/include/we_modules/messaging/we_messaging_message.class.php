@@ -246,18 +246,17 @@ class we_messaging_message extends we_messaging_proto{
 				$seen_ids[] = $this->DB_WE->f('ID');
 			}
 
-			$this->selected_set[] =
-				array('ID' => $i++,
-					'hdrs' => array('Date' => $this->DB_WE->f('headerDate'),
-						'Subject' => $this->DB_WE->f('headerSubject'),
-						'From' => $this->DB_WE->f('username'),
-						'Priority' => $this->DB_WE->f('Priority'),
-						'seenStatus' => $this->DB_WE->f('seenStatus'),
-						'ClassName' => $this->ClassName),
-					'int_hdrs' => array('_from_userid' => $this->DB_WE->f('headerUserID'),
-						'_ParentID' => $this->DB_WE->f('ParentID'),
-						'_ClassName' => $this->ClassName,
-						'_ID' => $this->DB_WE->f('ID')));
+			$this->selected_set[] = array('ID' => $i++,
+				'hdrs' => array('Date' => $this->DB_WE->f('headerDate'),
+					'Subject' => $this->DB_WE->f('headerSubject'),
+					'From' => $this->DB_WE->f('username'),
+					'Priority' => $this->DB_WE->f('Priority'),
+					'seenStatus' => $this->DB_WE->f('seenStatus'),
+					'ClassName' => $this->ClassName),
+				'int_hdrs' => array('_from_userid' => $this->DB_WE->f('headerUserID'),
+					'_ParentID' => $this->DB_WE->f('ParentID'),
+					'_ClassName' => $this->ClassName,
+					'_ID' => $this->DB_WE->f('ID')));
 		}
 
 		/* mark selected_set messages as seen */

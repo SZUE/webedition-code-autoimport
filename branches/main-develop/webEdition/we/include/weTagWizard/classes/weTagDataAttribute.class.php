@@ -58,7 +58,7 @@ class weTagDataAttribute{
 	 * @param boolean $required
 	 * @param string $module
 	 */
-	function __construct($name, $required=false, $module = '', $description = '', $deprecated = false){
+	function __construct($name, $required = false, $module = '', $description = '', $deprecated = false){
 		static $count = 0;
 		$this->Id = ++$count;
 		$this->Name = $name;

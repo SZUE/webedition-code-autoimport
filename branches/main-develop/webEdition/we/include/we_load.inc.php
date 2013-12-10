@@ -40,7 +40,7 @@ if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "closeFolder"){
 	new_array_splice($openDirs, $parentFolder, 1);
 	$openDirs = array_keys($openDirs);
 	$_SESSION["prefs"]["openFolders_" . stripTblPrefix($table)] = makeCSVFromArray($openDirs);
-} else{
+} else {
 	$GLOBALS["OBJECT_FILES_TREE_COUNT"] = defined("OBJECT_FILES_TREE_COUNT") ? OBJECT_FILES_TREE_COUNT : 20;
 
 	$counts = array();
@@ -53,8 +53,8 @@ if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "closeFolder"){
 
 	function getQueryParents($path){
 		$out = array();
-		while($path != "/" && $path != "\\" && $path) {
-			$out[]= 'Path="' . $path . '"';
+		while($path != "/" && $path != "\\" && $path){
+			$out[] = 'Path="' . $path . '"';
 			$path = dirname($path);
 		}
 		return ($out ? implode(' OR ', $out) : '');
@@ -102,7 +102,7 @@ if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "closeFolder"){
 		$ct = we_base_ContentTypes::inst();
 
 		$tree_count = 0;
-		while($DB_WE->next_record()) {
+		while($DB_WE->next_record()){
 			$tree_count++;
 			$ID = $DB_WE->f("ID");
 			$Path = $DB_WE->f("Path");
@@ -164,7 +164,7 @@ if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "closeFolder"){
 
 		foreach($wsPathArray as $path){
 			$wspaces[] = " Path LIKE '" . $DB_WE->escape($path) . "/%' OR " . getQueryParents($path);
-			while($path != '/' && $path != '\\' && $path) {
+			while($path != '/' && $path != '\\' && $path){
 				$parentpaths[] = $path;
 				$path = dirname($path);
 			}
@@ -222,7 +222,7 @@ function loadTreeData(){
 	}
 }
 loadTreeData();');
-	} else{
+	} else {
 		$js = '';
 	}
 

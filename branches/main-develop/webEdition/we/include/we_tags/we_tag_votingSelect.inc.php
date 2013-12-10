@@ -44,7 +44,7 @@ function we_tag_votingSelect($attribs, $content){
 
 		if($submitonchange){
 			$newAttribs['onchange'] = 'we_submitForm();';
-		} else{
+		} else {
 			$newAttribs['onchange'] = '_EditorFrame.setEditorIsHot(true)' . ($reload ? (';setScrollTo();top.we_cmd(\'reload_editpage\');') : '') . '';
 		}
 
@@ -55,7 +55,7 @@ function we_tag_votingSelect($attribs, $content){
 		}
 
 		$DB_WE->query("SELECT ID,Text,Path FROM " . VOTING_TABLE . " $where ORDER BY Path;");
-		while($DB_WE->next_record()) {
+		while($DB_WE->next_record()){
 			$options .= getHtmlTag('option', ($DB_WE->f('ID') == $val ? array('value' => $DB_WE->f("ID"), 'selected' => 'selected') : array('value' => $DB_WE->f("ID"))), $DB_WE->f("Path")) . "\n";
 		}
 

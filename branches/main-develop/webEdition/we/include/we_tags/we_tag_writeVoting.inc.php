@@ -42,7 +42,7 @@ function we_tag_writeVoting($attribs){
 			if(!isset($_voting[$id]) || !is_array($_voting[$id])){
 				$_voting[$id] = array();
 			}
-			if (isset($_REQUEST[$value]) && $_REQUEST[$value]!='') {// Bug #6118: !empty geht hier nicht, da es die 0 nicht durch lässt
+			if(isset($_REQUEST[$value]) && $_REQUEST[$value] != ''){// Bug #6118: !empty geht hier nicht, da es die 0 nicht durch lässt
 				$_voting[$id][] = filterXss($_REQUEST[$value]);
 			}
 		}
@@ -69,7 +69,7 @@ function we_tag_writeVoting($attribs){
 				$GLOBALS['_we_voting_status'] = we_voting_voting::ERROR;
 				if(isset($_SESSION['_we_voting_sessionID'])){
 					$votingsession = $_SESSION['_we_voting_sessionID'];
-				} else{
+				} else {
 					$votingsession = 0;
 				}
 				if($voting->Log)
@@ -81,14 +81,14 @@ function we_tag_writeVoting($attribs){
 			if($GLOBALS['_we_voting_status'] != we_voting_voting::SUCCESS){
 				break;
 			}
-		} else{
+		} else {
 			$voting = new we_voting_voting($id);
 			if($voting->IsRequired && implode('', $value) == ''){
 
 				$GLOBALS['_we_voting_status'] = we_voting_voting::ERROR;
 				if(isset($_SESSION['_we_voting_sessionID'])){
 					$votingsession = $_SESSION['_we_voting_sessionID'];
-				} else{
+				} else {
 					$votingsession = 0;
 				}
 				if($voting->Log)

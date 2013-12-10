@@ -42,7 +42,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 
 	<?php print $GLOBALS['we_doc']->getUpdateTreeScript(true); ?>
 
-			_EditorFrame.getDocumentReference().frames[3].location.reload();
+		_EditorFrame.getDocumentReference().frames[3].location.reload();
 
 
 <?php } ?>

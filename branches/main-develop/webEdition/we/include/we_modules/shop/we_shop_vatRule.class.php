@@ -72,12 +72,7 @@ class we_shop_vatRule{
 	function initByRequest(&$req){
 
 		return new we_shop_vatRule(
-				$req['defaultValue'],
-				$req['stateField'],
-				we_shop_vatRule::makeArrayFromReq($req['liableToVat']),
-				we_shop_vatRule::makeArrayFromReq($req['notLiableToVat']),
-				we_shop_vatRule::makeArrayFromConditionField($req),
-				$req['stateFieldIsISO']
+			$req['defaultValue'], $req['stateField'], we_shop_vatRule::makeArrayFromReq($req['liableToVat']), we_shop_vatRule::makeArrayFromReq($req['notLiableToVat']), we_shop_vatRule::makeArrayFromConditionField($req), $req['stateFieldIsISO']
 		);
 	}
 
@@ -90,21 +85,16 @@ class we_shop_vatRule{
 		if($strFelder !== ''){
 
 			return unserialize($strFelder);
-		} else{
+		} else {
 			return new we_shop_vatRule(
-					'true',
-					'',
-					array(),
-					array(),
-					array(
-						array(
-							'states' => array(),
-							'customerField' => '',
-							'condition' => '',
-							'returnValue' => 1
-						)
-					),
-					0
+				'true', '', array(), array(), array(
+				array(
+					'states' => array(),
+					'customerField' => '',
+					'condition' => '',
+					'returnValue' => 1
+				)
+				), 0
 			);
 		}
 	}
@@ -151,7 +141,7 @@ class we_shop_vatRule{
 			}
 
 			return true;
-		} else{
+		} else {
 			return false;
 		}
 	}

@@ -181,7 +181,7 @@ abstract class we_customer_abstractFilter{
 			}
 			if($flag && $_filter['logic'] == 'AND'){
 				$hasPermission&=self::evalSingleFilter($_filter['operation'], $_filter['field'], $_filter['value']);
-			} else{
+			} else {
 				if($hasPermission){
 					break;
 				}
@@ -210,7 +210,7 @@ abstract class we_customer_abstractFilter{
 			$_parse = true;
 			$_count = 0;
 
-			while($_parse) {
+			while($_parse){
 				if(isset($_REQUEST['filterSelect_' . $_count])){
 
 					if(isset($_REQUEST['filterValue_' . $_count]) && trim($_REQUEST['filterValue_' . $_count]) <> ''){
@@ -222,7 +222,7 @@ abstract class we_customer_abstractFilter{
 						);
 					}
 					$_count++;
-				} else{
+				} else {
 					$_parse = false;
 				}
 			}
@@ -241,11 +241,11 @@ abstract class we_customer_abstractFilter{
 
 		if(isset($_REQUEST['specificCustomersEditControl'])){
 			$i = 0;
-			while(true) {
+			while(true){
 				if(isset($_REQUEST[$_REQUEST['specificCustomersEditControl'] . '_variant0_' . $_REQUEST['specificCustomersEditControl'] . '_item' . $i])){
 					$_customers[] = $_REQUEST[$_REQUEST['specificCustomersEditControl'] . '_variant0_' . $_REQUEST['specificCustomersEditControl'] . '_item' . $i];
 					$i++;
-				} else{
+				} else {
 					break;
 				}
 			}
@@ -264,11 +264,11 @@ abstract class we_customer_abstractFilter{
 
 		if(isset($_REQUEST['blackListEditControl'])){
 			$i = 0;
-			while(true) {
+			while(true){
 				if(isset($_REQUEST[$_REQUEST['blackListEditControl'] . '_variant0_' . $_REQUEST['blackListEditControl'] . '_item' . $i])){
 					$_blackList[] = $_REQUEST[$_REQUEST['blackListEditControl'] . '_variant0_' . $_REQUEST['blackListEditControl'] . '_item' . $i];
 					$i++;
-				} else{
+				} else {
 					break;
 				}
 			}
@@ -287,11 +287,11 @@ abstract class we_customer_abstractFilter{
 
 		if(isset($_REQUEST['whiteListEditControl'])){
 			$i = 0;
-			while(true) {
+			while(true){
 				if(isset($_REQUEST[$_REQUEST['whiteListEditControl'] . '_variant0_' . $_REQUEST['whiteListEditControl'] . '_item' . $i])){
 					$_whiteList[] = $_REQUEST[$_REQUEST['whiteListEditControl'] . '_variant0_' . $_REQUEST['whiteListEditControl'] . '_item' . $i];
 					$i++;
-				} else{
+				} else {
 					break;
 				}
 			}

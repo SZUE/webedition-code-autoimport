@@ -24,7 +24,7 @@
  */
 if($aProps[3]){
 	list($_rssUri, $_rssCont, $_rssNumItems, $_rssTb, $_rssTitle) = explode(',', $aProps[3]);
-} else{//use default if data is corrupt
+} else {//use default if data is corrupt
 	$_rssUri = base64_encode('http://www.webedition.org/de/rss/webedition.xml');
 	$_rssCont = '111000';
 	$_rssNumItems = 0;
@@ -70,6 +70,6 @@ if ( window.addEventListener ) { // moz
 }") . '<div class="rssDiv" id="m_' . $iCurrId . '_inline" style="width: ' . $iWidth . 'px;height:287px ! important; overflow: auto;"></div>';
 
 $oTblCont = new we_html_table(array(
-		"cellpadding" => 0, "cellspacing" => 0, "border" => 0
-		), 1, 1);
+	"cellpadding" => 0, "cellspacing" => 0, "border" => 0
+	), 1, 1);
 $oTblCont->setCol(0, 0, null, $_iFrmRss);

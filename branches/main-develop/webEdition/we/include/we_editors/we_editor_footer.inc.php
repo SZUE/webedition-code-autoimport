@@ -43,7 +43,7 @@ function getControlElement($type, $name){
 		return (isset($GLOBALS['we_doc']->controlElement[$type][$name]) ?
 				$GLOBALS['we_doc']->controlElement[$type][$name] :
 				false);
-	} else{
+	} else {
 		return false;
 	}
 }
@@ -97,15 +97,12 @@ switch($we_doc->ContentType){
 // load Glossary Settings
 $showGlossaryCheck = 0;
 
-if(isset($_SESSION['prefs']['force_glossary_check'])
-	&& $_SESSION['prefs']['force_glossary_check'] == 1
-	&& (
-	$we_doc->ContentType == "text/webedition"
-	|| $we_doc->ContentType == "objectFile"
+if(isset($_SESSION['prefs']['force_glossary_check']) && $_SESSION['prefs']['force_glossary_check'] == 1 && (
+	$we_doc->ContentType == "text/webedition" || $we_doc->ContentType == "objectFile"
 	)
 ){
 	$showGlossaryCheck = 1;
-} else{
+} else {
 	$showGlossaryCheck = 0;
 }
 
@@ -258,7 +255,7 @@ if($we_doc->Table == TEMPLATES_TABLE){ //	Its a template
 " ) . '
 			return;
 		';
-} else{ //	Its not a template
+} else { //	Its not a template
 	$_js_we_cmd .= '
 			case "check_glossary":
 				new jsWindow(url,"check_glossary",-1,-1,730,400,true,false,true);
@@ -324,10 +321,8 @@ function showEditFooterForNormalMode(){
 	global $we_doc, $we_transaction, $haspermNew, $showPubl;
 
 	$_normalTable = new we_html_table(array("cellpadding" => 0,
-			"cellspacing" => 0,
-			"border" => 0),
-			1,
-			1);
+		"cellspacing" => 0,
+		"border" => 0), 1, 1);
 	$_pos = 0;
 	$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
 
@@ -402,7 +397,7 @@ function showEditFooterForNormalMode(){
 			if(weModuleInfo::isActive('editor')){
 				if(stripos($we_doc->ContentType, 'text/') !== false){
 					$_normalTable->setColContent(0, $_pos++, we_html_button::create_button("startEditor", "javascript:editSource();"));
-				} else{
+				} else {
 					$_normalTable->setColContent(0, $_pos++, we_html_button::create_button("startEditor", "javascript:editFile();"));
 				}
 
@@ -494,10 +489,8 @@ function showEditFooterForSEEMMode(){
 	global $we_doc, $we_transaction, $haspermNew, $showPubl;
 
 	$_seeModeTable = new we_html_table(array("cellpadding" => 0,
-			"cellspacing" => 0,
-			"border" => 0),
-			1,
-			1);
+		"cellspacing" => 0,
+		"border" => 0), 1, 1);
 	$_pos = 0;
 	$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
 
@@ -551,25 +544,24 @@ function showEditFooterForSEEMMode(){
 
 
 	//	Button scheduler
-	if(in_array(WE_EDITPAGE_SCHEDULER, $GLOBALS['we_doc']->EditPageNrs) && ($GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT || $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PROPERTIES)&&
+	if(in_array(WE_EDITPAGE_SCHEDULER, $GLOBALS['we_doc']->EditPageNrs) && ($GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT || $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PROPERTIES) &&
 		defined("SCHEDULE_TABLE") && permissionhandler::hasPerm("CAN_SEE_SCHEDULER")){
-			$_seeModeTable->addCol(2);
-			$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_html_button::create_button("schedule_button", "javascript:parent.editHeader.we_cmd('switch_edit_page', " . WE_EDITPAGE_SCHEDULER . ", '" . $GLOBALS["we_transaction"] . "');"));
-			$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
+		$_seeModeTable->addCol(2);
+		$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_html_button::create_button("schedule_button", "javascript:parent.editHeader.we_cmd('switch_edit_page', " . WE_EDITPAGE_SCHEDULER . ", '" . $GLOBALS["we_transaction"] . "');"));
+		$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
 	}
 
 	//	Button put in workflow
-	if(/*$GLOBALS['we_doc']->EditPageNr != WE_EDITPAGE_PROPERTIES &&*/ $GLOBALS['we_doc']->EditPageNr != WE_EDITPAGE_SCHEDULER && // then button "workflow"
+	if(/* $GLOBALS['we_doc']->EditPageNr != WE_EDITPAGE_PROPERTIES && */ $GLOBALS['we_doc']->EditPageNr != WE_EDITPAGE_SCHEDULER && // then button "workflow"
 		defined("WORKFLOW_TABLE") && $we_doc->IsTextContentDoc && $we_doc->ID){
 
-			$_ctrlElem = getControlElement('button', 'workflow'); //	look tag we:controlElement for details
+		$_ctrlElem = getControlElement('button', 'workflow'); //	look tag we:controlElement for details
 
-			if(!$_ctrlElem || !$_ctrlElem['hide']){
-				$_seeModeTable->addCol(2);
-				$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_html_button::create_button("in_workflow", "javascript:put_in_workflow();"));
-				$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
-			}
-
+		if(!$_ctrlElem || !$_ctrlElem['hide']){
+			$_seeModeTable->addCol(2);
+			$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_html_button::create_button("in_workflow", "javascript:put_in_workflow();"));
+			$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
+		}
 	}
 
 	//###########################	Special buttons for special EDITPAGE
@@ -666,7 +658,8 @@ function showEditFooterForSEEMMode(){
 ?>
 
 <body style="background-color:#f0f0f0; background-image: url('<?php print EDIT_IMAGE_DIR ?>editfooterback.gif');background-repeat:repeat;margin:10px 0px 10px 0px">
-	<form name="we_form" action=""<?php if(isset($we_doc->IsClassFolder) && $we_doc->IsClassFolder){ ?> onsubmit="sub();return false;"<?php } ?>>
+	<form name="we_form" action=""<?php if(isset($we_doc->IsClassFolder) && $we_doc->IsClassFolder){ ?> onsubmit="sub();
+				return false;"<?php } ?>>
 		<input type="hidden" name="sel" value="<?php print $we_doc->ID; ?>" />
 		<?php
 		$_SESSION['weS']['seemForOpenDelSelector']['ID'] = $we_doc->ID;
@@ -683,15 +676,13 @@ function showEditFooterForSEEMMode(){
 					showEditFooterForSEEMMode();
 					break;
 			}
-		} else{
+		} else {
 
 			if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 
 				$_noPermTable = new we_html_table(array("cellpadding" => 0,
-						"cellspacing" => 0,
-						"border" => 0),
-						1,
-						4);
+					"cellspacing" => 0,
+					"border" => 0), 1, 4);
 
 				$_noPermTable->setColContent(0, 0, we_html_tools::getPixel(20, 2));
 				$_noPermTable->setColContent(0, 1, we_html_element::htmlImg(array("src" => IMAGE_DIR . "alert.gif")));
@@ -740,7 +731,7 @@ function showEditFooterForSEEMMode(){
 				}
 			}
 			');
-			} else{ //	$_ctrlElement determines values
+			} else { //	$_ctrlElement determines values
 				$_js_permnew = '
 			if(self.document.we_form && self.document.we_form.makeSameDoc){
 				self.document.we_form.makeSameDoc.checked = ' . ($_ctrlElem["checked"] ? "true" : "false") . ';
@@ -754,7 +745,7 @@ function showEditFooterForSEEMMode(){
 			"try{
 			_EditorFrame.getDocumentReference().frames[0].we_setPath('" . $we_doc->Path . "','" . $we_doc->Text . "', '" . $we_doc->ID . "');
 			}catch(e){;}"
-		);
+	);
 	?>
 </body>
 </html>

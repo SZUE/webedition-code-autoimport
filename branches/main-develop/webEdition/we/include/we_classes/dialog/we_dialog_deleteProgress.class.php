@@ -51,7 +51,7 @@ class we_dialog_deleteProgress{
 				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
 					, we_html_element::htmlIFrame('delmain', WEBEDITION_DIR . "delFrag.php?frame=main", 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden') .
 					we_html_element::htmlIFrame('delcmd', HTML_DIR . "white.html", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
-				));
+		));
 
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
@@ -65,7 +65,7 @@ class we_dialog_deleteProgress{
 		if(isset($_SESSION['weS']['backup_delete']) && $_SESSION['weS']['backup_delete']){
 			$taskname = md5(session_id() . "_backupdel");
 			$fr = new we_backup_delete($taskname, 1, 0);
-		} else{
+		} else {
 			$taskname = md5(session_id() . "_del");
 			$table = (isset($_REQUEST["table"]) && $_REQUEST["table"]) ? $_REQUEST["table"] : FILE_TABLE;
 			$fr = new we_base_delFragment($taskname, 1, 0, $table);

@@ -107,7 +107,7 @@ abstract class we_shop_variants{
 			if(!isset($nameOfPosition["nameof_$elemNr"])){
 				$nameOfPosition["nameof_$elemNr"] = $data['dat'];
 				$variationElement[$elemNr][$nameOfPosition["nameof_$elemNr"]] = array();
-			} else{
+			} else {
 				$fieldName = self::getFieldNameFromElemName($element);
 				$variationElement[$elemNr][$nameOfPosition["nameof_$elemNr"]][$fieldName] = $data;
 			}
@@ -134,8 +134,7 @@ abstract class we_shop_variants{
 		if(isset($elements[WE_SHOP_VARIANTS_ELEMENT_NAME])){
 
 			if($unserialize){
-				$model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'] =
-					is_array($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']) ?
+				$model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'] = is_array($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']) ?
 					$model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'] :
 					(
 					(substr($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'], 0, 2) == "a:") ?
@@ -205,7 +204,7 @@ abstract class we_shop_variants{
 		// now move element, it is actually at last position
 		if($amount > $position){ // move all elements
 			$newElemPos = $amount;
-			while($position < $newElemPos) {
+			while($position < $newElemPos){
 				self::changeVariantPosition($newElemPos, --$newElemPos, $model);
 			}
 		}
@@ -234,7 +233,7 @@ abstract class we_shop_variants{
 
 		if($pos === false){
 			return $variationElements;
-		} else{
+		} else {
 			foreach($variationElements as $name => $value){
 				if(self::getNrFromElemName($name) != $pos){
 					unset($variationElements[$name]);
@@ -296,7 +295,7 @@ abstract class we_shop_variants{
 		$lastPos = $total - 1;
 
 		// move at last position, then remove it
-		while($delPos < $lastPos) {
+		while($delPos < $lastPos){
 			self::moveVariant($model, $delPos++, 'down');
 		}
 
@@ -553,7 +552,7 @@ abstract class we_shop_variants{
 						if(isset($model->elements[$key])){
 							if($noFirst){
 								$elements[$newPos][$defaultname][$key] = $model->elements[$key];
-							} else{
+							} else {
 								$elementF[$defaultname][$key] = $model->elements[$key];
 							}
 						}

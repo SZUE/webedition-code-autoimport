@@ -113,7 +113,7 @@ class we_captcha_image{
 			$this->textlength = 3;
 			//} else if($textlength > 20) {
 			//	$this->textlength = 20;
-		} else{
+		} else {
 			$this->textlength = $textlength;
 		}
 
@@ -150,7 +150,7 @@ class we_captcha_image{
 		$this->setBackground();
 	}
 
-/* end: __construct */
+	/* end: __construct */
 
 	/**
 	 * Destructor
@@ -161,7 +161,7 @@ class we_captcha_image{
 		$this->height = 0;
 	}
 
-/* end: __desctruct */
+	/* end: __desctruct */
 
 	/**
 	 * Set the font family and size
@@ -182,7 +182,7 @@ class we_captcha_image{
 			foreach($families as $idx => $family){
 				$this->font['family'][] = $family;
 			}
-		} else{
+		} else {
 			$this->font['family'][] = $family;
 		}
 
@@ -193,11 +193,11 @@ class we_captcha_image{
 			if($sizes[0] < $sizes[1]){
 				$this->font['size']['min'] = $sizes[0];
 				$this->font['size']['max'] = $sizes[1];
-			} else{
+			} else {
 				$this->font['size']['min'] = $sizes[1];
 				$this->font['size']['max'] = $sizes[0];
 			}
-		} else{
+		} else {
 			$this->font['size']['min'] = $size;
 			$this->font['size']['max'] = $size;
 		}
@@ -209,12 +209,12 @@ class we_captcha_image{
 			foreach($colors as $idx => $color){
 				$this->font['color'][] = $this->_hex2rgb($color);
 			}
-		} else{
+		} else {
 			$this->font['color'][] = $this->_hex2rgb($color);
 		}
 	}
 
-/* setFont */
+	/* setFont */
 
 	/**
 	 * Set the path where the fonts are located
@@ -226,7 +226,7 @@ class we_captcha_image{
 		$this->fontpath = $path;
 	}
 
-/* setFontPath */
+	/* setFontPath */
 
 	/**
 	 * Set the font family and size
@@ -244,7 +244,7 @@ class we_captcha_image{
 					$this->charactersubset = array(array(65, 90));
 				} elseif($case == "lower"){
 					$this->charactersubset = array(array(97, 122));
-				} else{
+				} else {
 					$this->charactersubset = array(array(65, 90), array(97, 122));
 				}
 				break;
@@ -260,7 +260,7 @@ class we_captcha_image{
 					$this->charactersubset = array(array(48, 57), array(65, 90));
 				} elseif($case == "lower"){
 					$this->charactersubset = array(array(48, 57), array(97, 122));
-				} else{
+				} else {
 					$this->charactersubset = array(array(48, 57), array(65, 90), array(97, 122));
 				}
 				break;
@@ -274,7 +274,7 @@ class we_captcha_image{
 		}
 	}
 
-/* end: setCharacterSubset */
+	/* end: setCharacterSubset */
 
 	/**
 	 * Set the range of the angles
@@ -288,13 +288,13 @@ class we_captcha_image{
 		if(count($angles) > 1){
 			$this->angle['left'] = (-1) * $angles[0];
 			$this->angle['right'] = $angles[1];
-		} else{
+		} else {
 			$this->angle['left'] = (-1) * $angle;
 			$this->angle['right'] = $angle;
 		}
 	}
 
-/* setAngleRange */
+	/* setAngleRange */
 
 	/**
 	 * Set the styles
@@ -336,7 +336,7 @@ class we_captcha_image{
 				foreach($colors as $idx => $color){
 					$this->style['color'][] = $this->_hex2rgb($color);
 				}
-			} else{
+			} else {
 				$this->style['color'][] = $this->_hex2rgb($color);
 			}
 			$numbers = explode(",", $number);
@@ -344,18 +344,18 @@ class we_captcha_image{
 				if($numbers[0] < $numbers[1]){
 					$this->style['number']['min'] = $numbers[0];
 					$this->style['number']['max'] = $numbers[1];
-				} else{
+				} else {
 					$this->style['number']['min'] = $numbers[1];
 					$this->style['size']['max'] = $numbers[0];
 				}
-			} else{
+			} else {
 				$this->style['number']['min'] = $number;
 				$this->style['number']['max'] = $number;
 			}
 		}
 	}
 
-/* setStyle */
+	/* setStyle */
 
 	/**
 	 * Set the vertical position
@@ -381,7 +381,7 @@ class we_captcha_image{
 		}
 	}
 
-/* setVerticalAlign */
+	/* setVerticalAlign */
 
 	/**
 	 * Set the position
@@ -407,7 +407,7 @@ class we_captcha_image{
 		}
 	}
 
-/* setAlign */
+	/* setAlign */
 
 	/**
 	 * Set the background color
@@ -420,7 +420,7 @@ class we_captcha_image{
 		$this->transparent = $transparent;
 	}
 
-/* setBackground */
+	/* setBackground */
 
 	/**
 	 * Converts a Hex-code to rgb values
@@ -439,13 +439,13 @@ class we_captcha_image{
 			$rgb[0] = hexdec($hex[0] . $hex[1]);
 			$rgb[1] = hexdec($hex[2] . $hex[3]);
 			$rgb[2] = hexdec($hex[4] . $hex[5]);
-		} else{
+		} else {
 			return -1;
 		}
 		return $rgb;
 	}
 
-/* end: _hex2rgb */
+	/* end: _hex2rgb */
 
 	/**
 	 * Displayes the captcha image
@@ -541,7 +541,7 @@ class we_captcha_image{
 			$idx1 = rand(0, count($this->charactersubset) - 1);
 			$sign = rand($this->charactersubset[$idx1][0], $this->charactersubset[$idx1][1]);
 			if(!empty($this->skip)){
-				while(in_array($sign, $this->skip) || $j < 100) {
+				while(in_array($sign, $this->skip) || $j < 100){
 					$j++;
 					$idx1 = rand(0, count($this->charactersubset) - 1);
 					$sign = rand($this->charactersubset[$idx1][0], $this->charactersubset[$idx1][1]);
@@ -590,7 +590,7 @@ class we_captcha_image{
 						$family = $windir . "/fonts/" . $family . "ttf";
 					} else if(file_exists(substr($windir, 0, 2) . "/fonts/" . $family . "ttf")){
 						$family = substr($windir, 0, 2) . "/fonts/" . $family . "ttf";
-					} else{
+					} else {
 						$family = WE_INCLUDES_PATH . "fonts/DejaVuSans.ttf";
 					}
 				} else if(isset($_ENV['SystemRoot'])){
@@ -599,7 +599,7 @@ class we_captcha_image{
 						$family = $windir . "/fonts/" . $family . "ttf";
 					} else if(file_exists(substr($windir, 0, 2) . "/fonts/" . $family . "ttf")){
 						$family = substr($windir, 0, 2) . "/fonts/" . $family . "ttf";
-					} else{
+					} else {
 						$family = WE_INCLUDES_PATH . "fonts/DejaVuSans.ttf";
 					}
 				} else if(isset($_ENV['SystemDrive'])){
@@ -610,10 +610,10 @@ class we_captcha_image{
 						$family = $windir . "/winnt/fonts/" . $family . "ttf";
 					} else if(file_exists($windir . "/fonts/" . $family . "ttf")){
 						$family = $windir . "/fonts/" . $family . "ttf";
-					} else{
+					} else {
 						$family = WE_INCLUDES_PATH . "fonts/DejaVuSans.ttf";
 					}
-				} else{
+				} else {
 					$use_fontfile = false;
 					$family = WE_INCLUDES_PATH . "fonts/DejaVuSans.ttf";
 				}
@@ -626,7 +626,7 @@ class we_captcha_image{
 				$coords = imagettfbbox($size, $angle, $family, $sign);
 				$width = abs(( (-1) * abs(min($coords[0], $coords[6])) ) + ( abs(max($coords[2], $coords[4])) ));
 				$height = abs(( (-1) * abs(min($coords[1], $coords[7])) ) + ( abs(max($coords[3], $coords[5])) ));
-			} else{
+			} else {
 				$family = 5;
 				$use_fontfile = false;
 
@@ -665,7 +665,7 @@ class we_captcha_image{
 						'family' => $family,
 						'sign' => $sign,
 					);
-				} else{
+				} else {
 
 					// Y-Position
 					if($this->valign == 'top'){
@@ -718,7 +718,7 @@ class we_captcha_image{
 			} elseif($this->align == 'center'){
 				$xoffset = ($this->width / 2) - ($sumwidth / 2);
 			}
-		} else{
+		} else {
 			if($this->align == 'left'){
 				$xoffset = 5;
 			} elseif($this->align == 'right'){
@@ -740,9 +740,9 @@ class we_captcha_image{
 					$sign['ypos'], // Y-Position
 					$sign['color'], // Fontcolor
 					$sign['family'], // Font Family (File)
-					$sign['sign']		 // Text
+					$sign['sign']	// Text
 				);
-			} else{
+			} else {
 
 				imagestring(
 					$image, $sign['family'], $xoffset + $sign['xpos'], $sign['ypos'], $sign['sign'], $sign['color']
@@ -771,7 +771,7 @@ class we_captcha_image{
 		return $image;
 	}
 
-/* end: get */
+	/* end: get */
 }
 
 /* end: Class */

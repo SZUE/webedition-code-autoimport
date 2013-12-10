@@ -34,7 +34,7 @@ if(!isset($_url) || (substr($_url, 0, 7) != "http://" && substr($_url, 0, 8) != 
 	if(!isset($_url) || substr($_url, 0, 1) != "/"){
 
 		$_url = $serveradress . "/" . $_url;
-	} else{
+	} else {
 
 		$_url = $serveradress . $_url;
 	}
@@ -105,10 +105,10 @@ we_html_tools::htmlTop();
 <frameset onLoad="_EditorFrame.initEditorFrameData({'EditorIsLoading': false});" rows="40,*,40" framespacing="0" border="0" frameborder="NO">
 
 	<frame src="<?php print WEBEDITION_DIR . "we/include/we_seem/"; ?>we_SEEM_openExtDoc_header.php?filepath=<?php print urlencode($_url); ?>&url=<?php print $newUrl ?>" name="extDocHeader" noresize scrolling="no">
-	<frame onload="if (openedWithWE == 0) {
-			checkDocument();
-		}
-		openedWithWE = 0;" src="<?php print WEBEDITION_DIR . "we/include/we_seem/"; ?>we_SEEM_openExtDoc_content.php?filepath=<?php print urlencode($_url); ?>&url=<?php print $newUrl ?>&paras=<?php print (isset($parastr) ? urlencode($parastr) : ""); ?>" name="extDocContent" noresize>
-	<frame src="<?php print WEBEDITION_DIR . "we/include/we_seem/"; ?>we_SEEM_openExtDoc_footer.php" name="extDocFooter" noresize>
-</frameset><noframes></noframes>
-</html>
+		<frame onload="if (openedWithWE == 0) {
+					checkDocument();
+				}
+				openedWithWE = 0;" src="<?php print WEBEDITION_DIR . "we/include/we_seem/"; ?>we_SEEM_openExtDoc_content.php?filepath=<?php print urlencode($_url); ?>&url=<?php print $newUrl ?>&paras=<?php print (isset($parastr) ? urlencode($parastr) : ""); ?>" name="extDocContent" noresize>
+			<frame src="<?php print WEBEDITION_DIR . "we/include/we_seem/"; ?>we_SEEM_openExtDoc_footer.php" name="extDocFooter" noresize>
+				</frameset><noframes></noframes>
+				</html>

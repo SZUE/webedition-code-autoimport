@@ -34,7 +34,7 @@ we_html_tools::htmlTop();
 
 if($we_doc->ContentType == 'text/css' || $we_doc->Extension == '.css'){
 	require_once(WE_INCLUDES_PATH . 'accessibility/services_css.inc.php');
-} else{
+} else {
 	require_once(WE_INCLUDES_PATH . 'accessibility/services_html.inc.php');
 }
 
@@ -104,7 +104,7 @@ if(!empty($services)){
 		we_html_tools::hidden('checkvia', $selectedService->checkvia) .
 		we_html_tools::hidden('varname', $selectedService->varname) .
 		we_html_tools::hidden('additionalVars', $selectedService->additionalVars);
-} else{
+} else {
 	$_select = g_l('validation', '[no_services_available]');
 }
 

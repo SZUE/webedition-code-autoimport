@@ -38,13 +38,13 @@ if(isset($_REQUEST['isopener']) && $_REQUEST['isopener']){
 <html>
 	<head>
 		<script type="text/javascript"><!--
-			function closeIt(){
+			function closeIt() {
 				self.close();
 			}
-			//-->
+//-->
 		</script>
 	</head>
-	<body onLoad="self.setTimeout(closeIt,1000);" style="background-color:#386AAB;color:white">
+	<body onLoad="self.setTimeout(closeIt, 1000);" style="background-color:#386AAB;color:white">
 		<?php echo g_l('global', "[irregular_logout]"); ?>
 	</body>
 </html>

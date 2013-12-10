@@ -31,14 +31,14 @@ we_html_tools::htmlTop(g_l('modules_messaging', '[settings]'));
 echo we_html_element::jsScript(JS_DIR . 'we_showMessage.js');
 ?>
 <script type="text/javascript">
-	<!--
+<!--
 <?php
 if(isset($_REQUEST['mcmd']) && $_REQUEST['mcmd'] == 'save_settings' && isset($_REQUEST['check_step'])){
 	if($messaging->save_settings(array('check_step' => $_REQUEST['check_step']))){
 		print we_message_reporting::getShowMessageCall(g_l('modules_messaging', '[saved]'), we_message_reporting::WE_MESSAGE_NOTICE);
 		?>
-					window.close();
-					//-->
+			window.close();
+		//-->
 		</script>
 		</head>
 		<body></body>

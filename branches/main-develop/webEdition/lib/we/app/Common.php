@@ -28,7 +28,7 @@ require_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we.inc.php");
  * @package    we_app
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_app_Common {
+class we_app_Common{
 	/*
 	 * some class variables:
 	 */
@@ -173,7 +173,7 @@ class we_app_Common {
 		if(isset(self::$_config->applicationpath) && !empty(self::$_config->applicationpath)){
 			$filename = self::$_config->applicationpath . "/toc.xml";
 		} else {
-			$filename = WE_APPS_PATH. "toc.xml";
+			$filename = WE_APPS_PATH . "toc.xml";
 		}
 		if(!is_readable($filename)){
 			return false;
@@ -410,7 +410,7 @@ class we_app_Common {
 	 */
 	public static function isJMenu($appname = ""){
 		$tocentry = self::getAppTOCEntry($appname);
-		$element = $tocentry && $tocentry->name == $appname && isset($tocentry->usejmenu) ? (string)$tocentry->usejmenu : 'false';
+		$element = $tocentry && $tocentry->name == $appname && isset($tocentry->usejmenu) ? (string) $tocentry->usejmenu : 'false';
 
 		return $element == 'true' ? true : false;
 	}
@@ -657,7 +657,7 @@ class we_app_Common {
 			return false;
 		}
 		self::getDefaultManifest();
-		$filename =WE_APPS_PATH . $application . '/conf/manifest.xml';
+		$filename = WE_APPS_PATH . $application . '/conf/manifest.xml';
 		if(!is_readable($filename)){
 			error_log('Could not find the application\'s manifest file from application "' . $application . '". Using default values for this application.');
 			return false;

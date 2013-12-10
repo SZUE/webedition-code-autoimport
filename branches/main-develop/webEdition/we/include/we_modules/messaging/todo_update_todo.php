@@ -54,62 +54,62 @@ function do_confirm() {
 </script>
 </head>
 <body class="weDialogBody" onunload="doUnload();">
-<?php
-$heading = g_l('modules_messaging', '[todo_status_update]');
-$compose = new we_messaging_format('update', $messaging->selected_message);
-$compose->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
-?>
-	<form action="<?php print WE_MESSAGING_MODULE_DIR; ?>todo_update.php" name="update_todo_form" method="post">
 	<?php
-	echo we_html_tools::hidden('we_transaction', $_REQUEST['we_transaction']) .
-	we_html_tools::hidden('rcpts_string', '') .
-	we_html_tools::hidden('mode', $_REQUEST['mode']);
-
-	$prio = $compose->get_priority();
-	$parts = array(
-		array("headline" => g_l('modules_messaging', '[assigner]'),
-			"html" => $compose->get_from(),
-			"space" => 120,
-			"noline" => 1
-		),
-		array("headline" => g_l('modules_messaging', '[subject]'),
-			"html" => $compose->get_subject(),
-			"space" => 120,
-			"noline" => 1
-		),
-		array("headline" => g_l('modules_messaging', '[deadline]'),
-			"html" => we_html_tools::getDateInput2('td_deadline%s', $compose->get_deadline()),
-			"space" => 120,
-			"noline" => 1
-		),
-		array("headline" => g_l('modules_messaging', '[status]'),
-			"html" => we_html_tools::htmlTextInput('todo_status', 4, $messaging->selected_message['hdrs']['status']) . ' %',
-			"space" => 120,
-			"noline" => 1
-		),
-		array("headline" => g_l('modules_messaging', '[priority]'),
-			"html" => we_html_tools::html_select('todo_priority', 1, array(1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10), $compose->get_priority()),
-			"space" => 120,
-		),
-		array("headline" => "",
-			"html" => $compose->get_msg_text(),
-			"space" => 0,
-			"noline" => 1
-		),
-		array("headline" => "",
-			"html" => $compose->get_todo_history(),
-			"space" => 0,
-		),
-		array("headline" => g_l('modules_messaging', '[comment]'),
-			"html" => '<textarea cols="40" rows="8" name="todo_comment"></textarea>',
-			"space" => 120,
-		)
-	);
-
-	$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "javascript:do_confirm();"), "", we_html_button::create_button("cancel", "javascript:top.window.close()")
-	);
-	print we_html_multiIconBox::getHTML("todoStatusUpdate", "100%", $parts, 30, $buttons, -1, "", "", false, $heading);
+	$heading = g_l('modules_messaging', '[todo_status_update]');
+	$compose = new we_messaging_format('update', $messaging->selected_message);
+	$compose->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 	?>
+	<form action="<?php print WE_MESSAGING_MODULE_DIR; ?>todo_update.php" name="update_todo_form" method="post">
+		<?php
+		echo we_html_tools::hidden('we_transaction', $_REQUEST['we_transaction']) .
+		we_html_tools::hidden('rcpts_string', '') .
+		we_html_tools::hidden('mode', $_REQUEST['mode']);
+
+		$prio = $compose->get_priority();
+		$parts = array(
+			array("headline" => g_l('modules_messaging', '[assigner]'),
+				"html" => $compose->get_from(),
+				"space" => 120,
+				"noline" => 1
+			),
+			array("headline" => g_l('modules_messaging', '[subject]'),
+				"html" => $compose->get_subject(),
+				"space" => 120,
+				"noline" => 1
+			),
+			array("headline" => g_l('modules_messaging', '[deadline]'),
+				"html" => we_html_tools::getDateInput2('td_deadline%s', $compose->get_deadline()),
+				"space" => 120,
+				"noline" => 1
+			),
+			array("headline" => g_l('modules_messaging', '[status]'),
+				"html" => we_html_tools::htmlTextInput('todo_status', 4, $messaging->selected_message['hdrs']['status']) . ' %',
+				"space" => 120,
+				"noline" => 1
+			),
+			array("headline" => g_l('modules_messaging', '[priority]'),
+				"html" => we_html_tools::html_select('todo_priority', 1, array(1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10), $compose->get_priority()),
+				"space" => 120,
+			),
+			array("headline" => "",
+				"html" => $compose->get_msg_text(),
+				"space" => 0,
+				"noline" => 1
+			),
+			array("headline" => "",
+				"html" => $compose->get_todo_history(),
+				"space" => 0,
+			),
+			array("headline" => g_l('modules_messaging', '[comment]'),
+				"html" => '<textarea cols="40" rows="8" name="todo_comment"></textarea>',
+				"space" => 120,
+			)
+		);
+
+		$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "javascript:do_confirm();"), "", we_html_button::create_button("cancel", "javascript:top.window.close()")
+		);
+		print we_html_multiIconBox::getHTML("todoStatusUpdate", "100%", $parts, 30, $buttons, -1, "", "", false, $heading);
+		?>
 	</form>
 </body>
 </html>

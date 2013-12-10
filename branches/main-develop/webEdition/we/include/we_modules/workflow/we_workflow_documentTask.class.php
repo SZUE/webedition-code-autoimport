@@ -30,9 +30,10 @@
  *
  */
 class we_workflow_documentTask extends we_workflow_base{
-	const STATUS_UNKNOWN=0;
-	const STATUS_APPROVED=1;
-	const STATUS_CANCELED=2;
+
+	const STATUS_UNKNOWN = 0;
+	const STATUS_APPROVED = 1;
+	const STATUS_CANCELED = 2;
 
 	// workflow document task ID
 	var $ID;
@@ -50,7 +51,7 @@ class we_workflow_documentTask extends we_workflow_base{
 	/**
 	 * Default Constructor
 	 */
-	function __construct($wfDocumentTask=0){
+	function __construct($wfDocumentTask = 0){
 		parent::__construct();
 		$this->table = WORKFLOW_DOC_TASK_TABLE;
 		$this->ClassName = __CLASS__;
@@ -117,7 +118,7 @@ class we_workflow_documentTask extends we_workflow_base{
 
 		$docTasks = array();
 
-		while($db->next_record()) {
+		while($db->next_record()){
 			$docTasks[] = new we_workflow_documentTask($db->f("ID"));
 		}
 		return $docTasks;
@@ -132,7 +133,7 @@ class we_workflow_documentTask extends we_workflow_base{
 
 		$db->query("SELECT ID FROM " . WORKFLOW_TASK_TABLE . " WHERE stepID=" . intval($workflowStepID) . " ORDER BY ID");
 		$docTasks = array();
-		while($db->next_record()) {
+		while($db->next_record()){
 			$docTasks[] = we_workflow_documentTask::__createTask($db->f("ID"));
 		}
 		return $docTasks;

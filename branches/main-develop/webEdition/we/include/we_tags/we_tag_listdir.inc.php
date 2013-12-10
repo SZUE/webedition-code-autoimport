@@ -77,7 +77,7 @@ function we_tag_listdir($attribs, $content){
 
 	$db->query('SELECT ID,Text,IsFolder,Path FROM ' . FILE_TABLE . ' WHERE ((Published>0 AND IsSearchable=1) OR (IsFolder=1)) AND ParentID=' . intval($dirID));
 
-	while($db->next_record()) {
+	while($db->next_record()){
 		$id = intval($db->f('IsFolder') ?
 				f('SELECT ID FROM ' . FILE_TABLE . ' WHERE ParentID=' . intval($db->f('ID')) . ' AND IsFolder=0 AND (' . $indexes . ') AND (Published>0 AND IsSearchable=1)', 'ID', $db2) :
 				$db->f('ID'));

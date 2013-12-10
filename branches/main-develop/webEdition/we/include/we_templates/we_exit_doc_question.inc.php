@@ -45,11 +45,7 @@ $isDoLogoutCmd = preg_match('/^top\.we_cmd\("dologout"\)\s*;\s*$/', $nextCmd);
 $isCloseAllCmd = preg_match('/^top\.we_cmd\("close_all_documents"\)\s*;\s*$/', $nextCmd);
 $isCloseAllButActiveDocumentCmd = preg_match('/^top\.we_cmd\("close_all_but_active_document"\s*,\s*"[^"]*"\s*\)\s*;\s*$/', $nextCmd);
 
-$nextCmdOk = ($nextCmd === "")
-	|| $isOpenDocCmd
-	|| $isDoLogoutCmd
-	|| $isCloseAllCmd
-	|| $isCloseAllButActiveDocumentCmd;
+$nextCmdOk = ($nextCmd === "") || $isOpenDocCmd || $isDoLogoutCmd || $isCloseAllCmd || $isCloseAllButActiveDocumentCmd;
 
 
 if(!$nextCmdOk){
@@ -139,7 +135,7 @@ print STYLESHEET;
 </head>
 
 <body onunload="window_closed();" class="weEditorBody" onload="self.focus();" onblur="self.focus();">
-<?php print we_html_tools::htmlYesNoCancelDialog(g_l('alert', '[' . stripTblPrefix($_documentTable) . '][exit_doc_question]'), IMAGE_DIR . "alert.gif", true, true, true, $yesCmd, $noCmd, $cancelCmd); ?>
+	<?php print we_html_tools::htmlYesNoCancelDialog(g_l('alert', '[' . stripTblPrefix($_documentTable) . '][exit_doc_question]'), IMAGE_DIR . "alert.gif", true, true, true, $yesCmd, $noCmd, $cancelCmd); ?>
 </body>
 
 </html>

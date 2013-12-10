@@ -79,7 +79,7 @@ function save(){
 	}
 	previewPrefs();
 	" . we_message_reporting::getShowMessageCall(
-				g_l('cockpit', '[prefs_saved_successfully]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
+		g_l('cockpit', '[prefs_saved_successfully]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
 	self.close();
 }
 
@@ -103,11 +103,10 @@ function exit_close(){
 $oChbxDocs = we_html_forms::checkbox(0, true, "chbx_type", g_l('cockpit', '[documents]'), true, "defaultfont", "", false, "", 0, 0);
 $oChbxObjs = we_html_forms::checkbox(0, true, "chbx_type", g_l('cockpit', '[objects]'), true, "defaultfont", "", false, "", 0, 0);
 
-$dbTableType = "<table><tr>".
-
-(defined("FILE_TABLE") ? "<td>" . $oChbxDocs . "</td><td>" . we_html_tools::getPixel(10, 1) . "</td>" : '') .
-		(defined("OBJECT_FILES_TABLE") && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES") ? "<td>" . $oChbxObjs . "</td>" : '') .
-		"</tr></table>";
+$dbTableType = "<table><tr>" .
+	(defined("FILE_TABLE") ? "<td>" . $oChbxDocs . "</td><td>" . we_html_tools::getPixel(10, 1) . "</td>" : '') .
+	(defined("OBJECT_FILES_TABLE") && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES") ? "<td>" . $oChbxObjs . "</td>" : '') .
+	"</tr></table>";
 
 $parts = array(
 	array(
@@ -126,11 +125,11 @@ $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button,
 $sTblWidget = we_html_multiIconBox::getHTML("mfdProps", "100%", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[unpublished]'));
 
 print we_html_element::htmlDocType() . we_html_element::htmlHtml(
-				we_html_element::htmlHead(
-						we_html_tools::getHtmlInnerHead(g_l('cockpit', '[unpublished]')) . STYLESHEET . we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
-						we_html_element::jsElement(
-								$jsPrefs . $jsCode . we_html_button::create_state_changer(false))) .
- we_html_element::htmlBody(
-						array(
-					"class" => "weDialogBody", "onload" => "init();"
-						), we_html_element::htmlForm("", $sTblWidget)));
+		we_html_element::htmlHead(
+			we_html_tools::getHtmlInnerHead(g_l('cockpit', '[unpublished]')) . STYLESHEET . we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
+			we_html_element::jsElement(
+				$jsPrefs . $jsCode . we_html_button::create_state_changer(false))) .
+		we_html_element::htmlBody(
+			array(
+			"class" => "weDialogBody", "onload" => "init();"
+			), we_html_element::htmlForm("", $sTblWidget)));

@@ -2438,7 +2438,7 @@ class we_search_view extends we_tool_view{
 					array("dat" => '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none" class="middlefont" title="' . $_result[$f]["Text"] . '">' . $imageView . '</a>'),
 					array("dat" => we_util_Strings::shortenPath($_result[$f]["SiteTitle"], 17)),
 					array("dat" => '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none;color:' . $fontColor . ';" class="middlefont" title="' . $_result[$f]["Text"] . '"><u>' . we_util_Strings::shortenPath($_result[$f]["Text"], 20) . '</u></a>'),
-					 array("dat" => '<nobr>' . ($_result[$f]["CreationDate"] ? date(g_l('searchtool', "[date_format]"), $_result[$f]["CreationDate"]) : "-") . '</nobr>'),
+					array("dat" => '<nobr>' . ($_result[$f]["CreationDate"] ? date(g_l('searchtool', "[date_format]"), $_result[$f]["CreationDate"]) : "-") . '</nobr>'),
 					array("dat" => '<nobr>' . ($_result[$f]["ModDate"] ? date(g_l('searchtool', "[date_format]"), $_result[$f]["ModDate"]) : "-") . '</nobr>'),
 					array("dat" => '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none;" class="middlefont" title="' . $_result[$f]["Text"] . '">' . $imageViewPopup . '</a>'),
 					array("dat" => $filesize),
@@ -2447,7 +2447,7 @@ class we_search_view extends we_tool_view{
 					array("dat" => '<span style="color:' . $fontColor . ';">' . we_util_Strings::shortenPath($_result[$f]["Text"], 30) . '</span>'),
 					array("dat" => we_util_Strings::shortenPath($_result[$f]["SiteTitle"], 45)),
 					array("dat" => we_util_Strings::shortenPath($_result[$f]["Description"], 100)),
-					 array("dat" => $_result[$f]['ContentType']),
+					array("dat" => $_result[$f]['ContentType']),
 					array("dat" => we_util_Strings::shortenPath($creator, 22)),
 					array("dat" => $templateText),
 					array("dat" => $metafields),
@@ -2790,10 +2790,10 @@ class we_search_view extends we_tool_view{
      <td>' . we_html_tools::hidden(
 					"hidden_searchFieldsAdvSearch[" . $i . "]", isset($this->Model->searchFieldsAdvSearch[$i]) ? $this->Model->searchFieldsAdvSearch[$i] : "") . we_html_tools::htmlSelect(
 					"searchFieldsAdvSearch[" . $i . "]", $this->searchclass->getFields($i, ""), 1, (isset($this->Model->searchFieldsAdvSearch) && is_array($this->Model->searchFieldsAdvSearch) && isset(
-						$this->Model->searchFieldsAdvSearch[$i]) ? $this->Model->searchFieldsAdvSearch[$i] : ""), false, array('class'=>"defaultfont", 'id'=>'searchFieldsAdvSearch[' . $i . ']', 'onChange'=>'changeit(this.value, ' . $i . ');')) . '</td>
+						$this->Model->searchFieldsAdvSearch[$i]) ? $this->Model->searchFieldsAdvSearch[$i] : ""), false, array('class' => "defaultfont", 'id' => 'searchFieldsAdvSearch[' . $i . ']', 'onChange' => 'changeit(this.value, ' . $i . ');')) . '</td>
      <td id="td_locationAdvSearch[' . $i . ']">' . we_html_tools::htmlSelect(
 					"locationAdvSearch[" . $i . "]", $this->searchclass->getLocation($handle), 1, (isset($this->Model->locationAdvSearch) && is_array($this->Model->locationAdvSearch) && isset(
-						$this->Model->locationAdvSearch[$i]) ? $this->Model->locationAdvSearch[$i] : ""), false, array('class'=>"defaultfont",$locationDisabled =>$locationDisabled,'id'=>'locationAdvSearch[' . $i . ']')) . '</td>
+						$this->Model->locationAdvSearch[$i]) ? $this->Model->locationAdvSearch[$i] : ""), false, array('class' => "defaultfont", $locationDisabled => $locationDisabled, 'id' => 'locationAdvSearch[' . $i . ']')) . '</td>
      <td id="td_searchAdvSearch[' . $i . ']">' . $searchInput . '</td>
      <td id="td_delButton[' . $i . ']">' . $button . '</td>
     </tr>

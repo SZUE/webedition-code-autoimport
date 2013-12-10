@@ -56,7 +56,7 @@ if(permissionhandler::hasPerm('administrator')){
 	$num_rows = $GLOBALS['DB_WE']->num_rows();
 	if($num_rows > 0){
 		$ind = 0;
-		while($GLOBALS['DB_WE']->next_record()) {
+		while($GLOBALS['DB_WE']->next_record()){
 
 			$content[$ind] = array();
 			$content[$ind][0]['dat'] = $GLOBALS['DB_WE']->f("ip");
@@ -68,7 +68,7 @@ if(permissionhandler::hasPerm('administrator')){
 		$nextprev = '<table style="margin-top: 10px;" border="0" cellpadding="0" cellspacing="0"><tr><td>';
 		if($start > 0){
 			$nextprev .= we_html_button::create_button("back", $_SERVER['SCRIPT_NAME'] . "?start=" . ($start - $count)); //bt_back
-		} else{
+		} else {
 			$nextprev .= we_html_button::create_button("back", "", false, 100, 22, "", "", true);
 		}
 
@@ -82,7 +82,7 @@ if(permissionhandler::hasPerm('administrator')){
 
 		if($next < $num_all){
 			$nextprev .= we_html_button::create_button("next", $_SERVER['SCRIPT_NAME'] . "?start=" . $next); //bt_next
-		} else{
+		} else {
 			$nextprev .= we_html_button::create_button("next", "", "", 100, 22, "", "", true);
 		}
 		$nextprev .= "</td></tr></table>";
@@ -95,7 +95,7 @@ if(permissionhandler::hasPerm('administrator')){
 			'space' => 0,
 			'noline' => 1
 		);
-	} else{
+	} else {
 		$parts[] = array(
 			'headline' => '',
 			'html' => we_html_element::htmlSpan(array('class' => 'middlefontgray'), g_l('prefs', '[log_is_empty]')) .
@@ -121,7 +121,7 @@ function clearLog() {
 	print getHTMLDocument($body, $script);
 }
 
-function getHTMLDocument($body, $head=""){
+function getHTMLDocument($body, $head = ""){
 	$head = we_html_tools::getHtmlInnerHead(g_l('prefs', '[formmail_log]')) . STYLESHEET . $head;
 	return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 			we_html_element::htmlHead($head) .

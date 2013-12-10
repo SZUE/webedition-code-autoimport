@@ -1225,8 +1225,8 @@ class blaettern{
 			}
 			echo ")\n";
 		} else {
-			echo '$' . str_pad('links', $width, ' ', STR_PAD_RIGHT) . " = $this->links\n".
-				'$' . str_pad('links', $width, ' ', STR_PAD_RIGHT) . ' = ' . htmlentities(str_replace('<a href', "\n	<a href", $this->links)) . "\n";
+			echo '$' . str_pad('links', $width, ' ', STR_PAD_RIGHT) . " = $this->links\n" .
+			'$' . str_pad('links', $width, ' ', STR_PAD_RIGHT) . ' = ' . htmlentities(str_replace('<a href', "\n	<a href", $this->links)) . "\n";
 		}
 
 		echo "</pre>\n";

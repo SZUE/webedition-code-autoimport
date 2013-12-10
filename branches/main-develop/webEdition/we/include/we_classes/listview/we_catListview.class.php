@@ -50,7 +50,7 @@ class we_catListview extends listviewBase{
 	 * @param   cols   		  integer - to display a table this is the number of cols
 	 *
 	 */
-	function __construct($name, $rows=999999999, $offset=0, $order="", $desc=false, $parentID=0, $catID=0, $variant="default", $cols="", $parentidname='we_parentid', $hidedirindex=false){
+	function __construct($name, $rows = 999999999, $offset = 0, $order = "", $desc = false, $parentID = 0, $catID = 0, $variant = "default", $cols = "", $parentidname = 'we_parentid', $hidedirindex = false){
 		parent::__construct($name, $rows, $offset, $order, $desc, "", false, "", $cols);
 		$this->parentID = isset($_REQUEST[$parentidname]) ? intval($_REQUEST[$parentidname]) : intval($parentID);
 		$this->catID = trim($catID);
@@ -75,7 +75,7 @@ class we_catListview extends listviewBase{
 			}
 			$tail = preg_replace('/^(.+) OR /', '$1', $tail);
 			$tail = '(' . $tail . ')';
-		} else{
+		} else {
 			$tail = ' ParentID=' . intval($this->parentID) . ' ';
 		}
 
@@ -106,7 +106,7 @@ class we_catListview extends listviewBase{
 
 			$this->count++;
 			return true;
-		} else{
+		} else {
 			$this->stop_next_row = $this->shouldPrintEndTR();
 			if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
 				$this->Record = array();

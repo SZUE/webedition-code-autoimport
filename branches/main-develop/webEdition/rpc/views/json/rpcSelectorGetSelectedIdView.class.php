@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,19 +22,17 @@
  * @package    webEdition_rpc
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+class rpcSelectorGetSelectedIdView extends rpcView{
 
-
-class rpcSelectorGetSelectedIdView extends rpcView {
-
-
-	function getResponse($response) {
+	function getResponse($response){
 
 		header('Content-type: text/plain');
 		$suggests = $response->getData("data");
 		$html = "";
-		if (is_array($suggests)) {
+		if(is_array($suggests)){
 			$html .= $suggests[0]['ID'];
 		}
 		return $html;
 	}
+
 }

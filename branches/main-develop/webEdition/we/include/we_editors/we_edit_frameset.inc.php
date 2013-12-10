@@ -37,7 +37,7 @@ we_html_tools::protect();
 function getFirstValidEditPageNr($doc, $EditPageNr){
 	if($doc->isValidEditPage($EditPageNr) && permissionhandler::isUserAllowedForAction('switch_edit_page', $EditPageNr)){
 		return $EditPageNr;
-	} else{
+	} else {
 		//	bugfix for new tag: we:hidePages
 		foreach(array_keys($doc->EditPageNrs) as $key){
 			//  the command in this case is swith_edit_page, because in this funtion
@@ -114,11 +114,11 @@ if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 	if(isset($_REQUEST['SEEM_edit_include']) && $_REQUEST['SEEM_edit_include'] && $we_doc->userHasAccess() == 1){ //	Open seem_edit_include pages in edit-mode
 		$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_CONTENT;
 		$we_doc->EditPageNr = WE_EDITPAGE_CONTENT;
-	} else{
+	} else {
 		if(get_class($we_doc) == 'we_imageDocument'){
 			$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_CONTENT;
 			$we_doc->EditPageNr = WE_EDITPAGE_CONTENT;
-		} else{
+		} else {
 			$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_PREVIEW;
 			$we_doc->EditPageNr = WE_EDITPAGE_PREVIEW;
 		}
@@ -173,7 +173,7 @@ if($we_doc->ID){
 	if(($_access !== we_root::USER_HASACCESS && $_access !== we_root::FILE_LOCKED)){ //   user has no access to object/document - bugfix #2481
 		if($we_ContentType != 'object'){
 			$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_PREVIEW;
-		} else{
+		} else {
 			include(WE_USERS_MODULE_PATH . 'we_users_permmessage.inc.php');
 			exit();
 		}
@@ -195,7 +195,7 @@ if($we_doc->ID == 0){
 	}
 	if(in_array($_SESSION['weS']['EditPageNr'], $we_doc->EditPageNrs)){
 		$we_doc->EditPageNr = getTabs($we_doc->ClassName, $_SESSION['weS']['EditPageNr']);
-	} else{
+	} else {
 		//	Here we must get the first valid EDIT_PAGE
 		$we_doc->EditPageNr = getFirstValidEditPageNr($we_doc, WE_EDITPAGE_CONTENT);
 	}
@@ -289,7 +289,7 @@ we_html_tools::htmlTop();
 			for (var i = 0; i < arguments.length; i++) {
 				args += 'arguments[' + i + ']' + ((i < (arguments.length - 1)) ? ',' : '');
 			}
-			if (top.we_cmd){
+			if (top.we_cmd) {
 				eval('top.we_cmd(' + args + ')');
 			}
 		}
@@ -390,7 +390,7 @@ if($GLOBALS['we_doc']->ContentType != 'text/weTmpl'){
 		?>
 					top.close();
 		<?php
-	} else{
+	} else {
 		?>
 					_EditorFrame.initEditorFrameData(
 									{
@@ -412,7 +412,7 @@ if($GLOBALS['we_doc']->ContentType != 'text/weTmpl'){
 	<?php
 }
 ?>
-	//-->
+//-->
 </script>
 <?php
 
@@ -438,7 +438,7 @@ if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 		<frame src="<?php print we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_edit_footer"); ?>&SEEM_edit_include=<?php print ( isset($_REQUEST["SEEM_edit_include"]) && $_REQUEST["SEEM_edit_include"] ? "true" : "false") ?>" name="editFooter" scrolling=no noresize/>
 	</frameset><noframes></noframes>
 	<?php
-} else{
+} else {
 
 	$showContentEditor = ($we_doc->EditPageNr == WE_EDITPAGE_CONTENT && substr($we_doc->ContentType, 0, 5) == 'text/' && $we_doc->ContentType != 'text/webedition');
 	?>
@@ -447,7 +447,7 @@ if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 		<?php if($showContentEditor){ ?>
 			<frame <?php print setOnload(); ?> src="about:blank" name="editor_<?php print $_REQUEST["frameId"]; ?>" noresize/>
 			<frame  src="<?php print we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_editor") . (isset($parastr) ? '&' . $parastr : ''); ?>" name="contenteditor_<?php print $_REQUEST['frameId']; ?>" noresize/>
-		<?php } else{ ?>
+		<?php } else { ?>
 			<frame <?php print setOnload(); ?> src="<?php print we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_editor") . (isset($parastr) ? '&' . $parastr : ''); ?>" name="editor_<?php print $_REQUEST["frameId"]; ?>" noresize/>
 			<frame  src="about:blank" name="contenteditor_<?php print $_REQUEST["frameId"]; ?>" noresize/>
 		<?php } ?>

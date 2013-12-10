@@ -211,7 +211,7 @@ function setDir(id){
 		$db = new DB_WE();
 		$db2 = new DB_WE();
 		$db->query("SELECT ID,IsFolder,Text FROM " . $db->escape($this->table) . " WHERE ParentID=" . intval($id));
-		while($db->next_record()) {
+		while($db->next_record()){
 			$newPath = f("SELECT Path FROM " . $db->escape($this->table) . " WHERE ID=" . intval($id), "Path", $db2) . "/" . $db->f("Text");
 			$db2->query("UPDATE " . $db->escape($this->table) . " SET Path='" . $db->escape($newPath) . "' WHERE ID=" . intval($db->f("ID")));
 			if($db->f("IsFolder")){

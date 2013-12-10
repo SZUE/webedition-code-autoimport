@@ -68,7 +68,7 @@ $rootDir = ((isset($_REQUEST['we_cmd'][5]) && $_REQUEST['we_cmd'][5] != '') ? $_
 
 	function exit_close() {
 <?php if(isset($_REQUEST['we_cmd'][1]) && $_REQUEST['we_cmd'][1] != ""){ ?>
-			var foo= (!currentID ||(currentID === sitepath) ? "/" : currentID.substring(sitepath.length));
+			var foo = (!currentID || (currentID === sitepath) ? "/" : currentID.substring(sitepath.length));
 
 			opener.<?php print $_REQUEST['we_cmd'][1] ?> = foo;
 			if (!!opener.postSelectorSelect) {
@@ -90,7 +90,7 @@ if(isset($_REQUEST['we_cmd'][4]) && $_REQUEST['we_cmd'][4] != ""){
 		return true;
 
 	}
-	//-->
+//-->
 </script>
 <?php
 echo we_html_element::jsScript(JS_DIR . 'keyListener.js');
@@ -99,10 +99,10 @@ echo we_html_element::jsScript(JS_DIR . 'keyListener.js');
 
 <frameset rows="73,*,<?php print ( (isset($_REQUEST['we_cmd'][2]) && $_REQUEST['we_cmd'][2] ) ? 60 : 90); ?>,0" border="0" onload="top.fscmd.selectDir()">
   <frame src="we_sselector_header.php?ret=<?php print ( (isset($_REQUEST['we_cmd'][1]) && $_REQUEST['we_cmd'][1]) ? 1 : 0); ?>&filter=<?php print $filter; ?>&currentDir=<?php print $currentDir; ?>" name="fsheader" noresize scrolling="no">
-	<frame src="<?php print HTML_DIR; ?>white.html" name="fsbody" noresize scrolling="auto">
-	<frame  src="we_sselector_footer.php?ret=<?php print ( (isset($_REQUEST['we_cmd'][1]) && $_REQUEST['we_cmd'][1]) ? 1 : 0); ?>&filter=<?php print $filter; ?>&currentName=<?php print $currentName; ?>" name="fsfooter" noresize scrolling="no">
-	<frame src="we_sselector_cmd.php?ret=<?php print ( (isset($_REQUEST['we_cmd'][1]) && $_REQUEST['we_cmd'][1]) ? 1 : 0); ?>&filter=<?php print $filter; ?>&currentName=<?php print $currentName; ?>" name="fscmd" noresize scrolling="no">
-</frameset>
-<body>
-</body>
-</html>
+		<frame src="<?php print HTML_DIR; ?>white.html" name="fsbody" noresize scrolling="auto">
+			<frame  src="we_sselector_footer.php?ret=<?php print ( (isset($_REQUEST['we_cmd'][1]) && $_REQUEST['we_cmd'][1]) ? 1 : 0); ?>&filter=<?php print $filter; ?>&currentName=<?php print $currentName; ?>" name="fsfooter" noresize scrolling="no">
+				<frame src="we_sselector_cmd.php?ret=<?php print ( (isset($_REQUEST['we_cmd'][1]) && $_REQUEST['we_cmd'][1]) ? 1 : 0); ?>&filter=<?php print $filter; ?>&currentName=<?php print $currentName; ?>" name="fscmd" noresize scrolling="no">
+					</frameset>
+					<body>
+					</body>
+					</html>

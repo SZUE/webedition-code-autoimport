@@ -253,7 +253,7 @@ function showSegment(){
 
 	function getJSTreeFunctions(){
 		// must override
-		return weTree::getJSTreeFunctions() .'
+		return weTree::getJSTreeFunctions() . '
 function doClick(id,typ){
 }' .
 			$this->topFrame . '.loaded=1;';

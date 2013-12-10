@@ -48,7 +48,7 @@ we_html_tools::htmlTop();
 	function startMultiEditor() {
 		we_cmd('start_multi_editor'<?php print $_cmd_string; ?>);
 	}
-	//-->
+//-->
 </script>
 <?php
 include(WEBEDITION_PATH . 'multiEditor/EditorFrameController.inc.php');
@@ -65,7 +65,7 @@ include(WEBEDITION_PATH . 'multiEditor/EditorFrameController.inc.php');
 			for($i = 0; $i < $count; $i++){
 				//'overflow:hidden;' removed to fix bug #6540
 				echo '<iframe frameBorder="0" style="' . ($i == 0 ? 'width:100%;height:100%;' : (we_base_browserDetect::isChrome() ? 'width:100%;height:100%;display:none;' : 'width:0px;height:0px;')) . 'margin:0px;border:0px;" src="' . HTML_DIR . 'blank_editor.html" name="multiEditFrame_' . $i . '" id="multiEditFrame_' . $i . '"  noresize ></iframe>';
-}
+			}
 			?>
 		</div>
 	</div>

@@ -170,10 +170,9 @@ abstract class we_import_functions{
 			return false;
 		}
 		// PUBLISH OR EXIT
-		return ($publish?
-			$object->we_publish():
-			true);
-
+		return ($publish ?
+				$object->we_publish() :
+				true);
 	}
 
 	/**

@@ -31,10 +31,10 @@ function we_tag_navigation($attribs){
 	if(isset($GLOBALS['initNavigationFromSession']) && $GLOBALS['initNavigationFromSession']){
 		$showRoot = ($parentid == -1);
 		$GLOBALS['we_navigation'][$name]->initByNavigationObject($showRoot);
-	} else{
+	} else {
 		$realId = ($id ? $id : ($parentid != -1 ? $parentid : 0));
 		$showRoot = ($id ? true : ($parentid == -1));
-		if(!$GLOBALS['we_navigation'][$name]->initFromCache($realId, $showRoot)){ 
+		if(!$GLOBALS['we_navigation'][$name]->initFromCache($realId, $showRoot)){
 			//make sure we use cache next time!
 			$GLOBALS['we_navigation'][$name]->initById($realId, false, $showRoot);
 			we_navigation_cache::saveCacheNavigation($realId, $GLOBALS['we_navigation'][$name]);

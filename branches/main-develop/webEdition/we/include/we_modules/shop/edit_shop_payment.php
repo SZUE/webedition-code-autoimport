@@ -28,7 +28,7 @@ function prepareFieldname($str){
 
 	if(strpos($str, '_')){
 		return substr_replace($str, "/", strpos($str, '_'), 1);
-	} else{
+	} else {
 		return $str;
 	}
 }
@@ -71,11 +71,9 @@ $Parts = array();
 
 if(defined("CUSTOMER_TABLE")){
 	$_htmlTable = new we_html_table(array('border' => 0,
-			'cellpadding' => 0,
-			'cellspacing' => 0,
-			'width' => "100%"),
-			14,
-			3);
+		'cellpadding' => 0,
+		'cellspacing' => 0,
+		'width' => "100%"), 14, 3);
 	$_htmlTable->setCol($_row++, 0, array('colspan' => 4, 'class' => 'defaultfont'), g_l('modules_shop', '[FormFieldsTxt]'));
 	$_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 15));
 
@@ -83,7 +81,7 @@ if(defined("CUSTOMER_TABLE")){
 
 
 	$DB_WE->query("SHOW FIELDS FROM " . CUSTOMER_TABLE);
-	while($DB_WE->next_record()) {
+	while($DB_WE->next_record()){
 		$custfields[$DB_WE->f("Field")] = $DB_WE->f("Field");
 	}
 
@@ -122,11 +120,9 @@ if(defined("CUSTOMER_TABLE")){
 
 // PayPal
 $_htmlTable = new we_html_table(array('border' => 0,
-		'cellpadding' => 0,
-		'cellspacing' => 0,
-		'width' => "100%"),
-		20,
-		3);
+	'cellpadding' => 0,
+	'cellspacing' => 0,
+	'width' => "100%"), 20, 3);
 
 $_htmlTable->setCol($_row++, 0, array('class' => 'weDialogHeadline', 'colspan' => 4), g_l('modules_shop', '[paypal][name]'));
 $_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 8));
@@ -155,11 +151,9 @@ $Parts[] = array("html" => $_htmlTable->getHtml());
 
 // saferpay
 $_htmlTable = new we_html_table(array('border' => 0,
-		'cellpadding' => 0,
-		'cellspacing' => 0,
-		'width' => "100%"),
-		43,
-		3);
+	'cellpadding' => 0,
+	'cellspacing' => 0,
+	'width' => "100%"), 43, 3);
 
 $_htmlTable->setCol($_row++, 0, array('class' => 'weDialogHeadline', 'colspan' => 4), g_l('modules_shop', '[saferpay]'));
 $_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 8));

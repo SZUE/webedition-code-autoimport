@@ -31,7 +31,7 @@ require_once('../../mod/shp.php');
 $sJsCode = "
 var _sObjId='" . $newSCurrId . "';
 var _sType='shp';
-var _sTb='" . g_l('cockpit', '[shop_dashboard][headline]').':&nbsp;'. $interval . "';
+var _sTb='" . g_l('cockpit', '[shop_dashboard][headline]') . ':&nbsp;' . $interval . "';
 
 function init(){
 	parent.rpcHandleResponse(_sType,_sObjId,document.getElementById(_sType),_sTb);
@@ -39,7 +39,7 @@ function init(){
 
 print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 		we_html_element::htmlHead(
-			we_html_tools::getHtmlInnerHead(g_l('cockpit', '[shop_dashboard][headline]').'&nbsp;'. $interval) . STYLESHEET . we_html_element::jsElement(
+			we_html_tools::getHtmlInnerHead(g_l('cockpit', '[shop_dashboard][headline]') . '&nbsp;' . $interval) . STYLESHEET . we_html_element::jsElement(
 				$sJsCode)) . we_html_element::htmlBody(
 			array(
 			"marginwidth" => 15,

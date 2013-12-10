@@ -39,13 +39,13 @@ if(isset($_REQUEST["cid"])){
 		<tr><td colspan=3></tr>';
 
 	$DB_WE->query("SELECT IntOrderID,DateShipping, DATE_FORMAT(DateOrder,'" . $da . "') as orddate, DATE_FORMAT(DateOrder,'%c%Y') as mdate FROM " . SHOP_TABLE . " WHERE IntCustomerID=" . intval($_REQUEST["cid"]) . " GROUP BY IntOrderID ORDER BY IntID DESC");
-	while($DB_WE->next_record()) {
+	while($DB_WE->next_record()){
 		$Bestelldaten .= "<tr><td class='defaultfont'><a href='" . WE_SHOP_MODULE_DIR . "edit_shop_frameset.php?pnt=edbody&bid=" . $DB_WE->f("IntOrderID") . "' class=\"defaultfont\"><b>" . $DB_WE->f("IntOrderID") . ".</b></a></td>
 			<td class='defaultgray'>" . g_l('modules_shop', '[bestellungvom]') . "</td>
 			<td class='defaultfont'><a href='" . WE_SHOP_MODULE_DIR . "edit_shop_frameset.php?pnt=editor&bid=" . $DB_WE->f("IntOrderID") . "' class=\"defaultfont\" target=\"editor\"><b>" . $DB_WE->f("orddate") . "</b></a></td></tr>";
 	}
 	$Bestelldaten .= "</table>";
-} else{
+} else {
 	$Bestelldaten = g_l('modules_shop', '[keinedaten]');
 }
 ?>

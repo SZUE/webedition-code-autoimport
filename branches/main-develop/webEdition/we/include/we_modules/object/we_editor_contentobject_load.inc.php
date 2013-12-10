@@ -40,8 +40,8 @@ $we_doc->we_initSessDat($we_dt);
 //	---> Setting the Content-Type
 //
 
-$charset = (isset($we_doc->elements['Charset']['dat']) && $we_doc->elements['Charset']['dat']? //	send charset which might be determined in template
-	$we_doc->elements['Charset']['dat']:DEFAULT_CHARSET);
+$charset = (isset($we_doc->elements['Charset']['dat']) && $we_doc->elements['Charset']['dat'] ? //	send charset which might be determined in template
+		$we_doc->elements['Charset']['dat'] : DEFAULT_CHARSET);
 
 we_html_tools::headerCtCharset('text/html', $charset);
 
@@ -80,7 +80,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 			if($id != false){
 				$after = array_pop(explode('_', $id));
 				$afterid = $id;
-			} else{
+			} else {
 				$after = false;
 				$afterid = false;
 			}
@@ -170,7 +170,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 					$we_doc->changeLink($_REQUEST['we_cmd'][3]);
 					break;
 				case 'change_multiobject_at_class':
-					while($we_doc->elements[$_REQUEST['we_cmd'][3] . 'count']['dat'] > 0) {
+					while($we_doc->elements[$_REQUEST['we_cmd'][3] . 'count']['dat'] > 0){
 						$we_doc->removeMetaFromClass($_REQUEST['we_cmd'][3], 0);
 					}
 					$we_doc->removeMetaFromClass($_REQUEST['we_cmd'][3], 0);

@@ -80,14 +80,14 @@ class we_dialog_image extends we_dialog_base{
 				$this->args["fileID"] = $id;
 				$this->args["fileSrc"] = $_fileScr;
 				$this->args["thumbnail"] = $thumb;
-			} else{
+			} else {
 				$this->args["type"] = we_base_link::TYPE_EXT;
 				$this->args["extSrc"] = preg_replace('|^' . WEBEDITION_DIR . '|', '', preg_replace('|^' . WEBEDITION_DIR . 'we_cmd.php[^"\'#]+(#.*)$|', '\1', preg_replace('|^https?://' . $_SERVER['SERVER_NAME'] . '(/.*)$|i', '\1', $this->args["src"])));
 				$this->args["fileID"] = "";
 				$this->args["fileSrc"] = "";
 				$this->args["thumbnail"] = 0;
 			}
-		} else{
+		} else {
 			$this->args["type"] = we_base_link::TYPE_EXT;
 			$this->args["extSrc"] = we_base_link::EMPTY_EXT;
 		}
@@ -137,7 +137,7 @@ class we_dialog_image extends we_dialog_base{
 				$width = $thumbObj->getOutputWidth();
 				$height = $thumbObj->getOutputHeight();
 				unset($thumbObj);
-			} else{
+			} else {
 				$this->args['thumbnail'] = '';
 				$this->args['fileSrc'] = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->args['fileID']), 'Path', $this->db);
 				$this->args['src'] = $this->args['fileSrc'] . '?id=' . $fileID;
@@ -160,7 +160,7 @@ class we_dialog_image extends we_dialog_base{
 		$longdescid = $this->getHttpVar('longdescid');
 		if($longdescsrc && $longdescid){
 			$longdesc = $longdescsrc . '?id=' . $longdescid;
-		} else{
+		} else {
 			$longdesc = $this->getHttpVar('longdesc');
 		}
 		$border = $this->getHttpVar('border');
@@ -203,7 +203,7 @@ class we_dialog_image extends we_dialog_base{
 					$this->initByFileID($fileID, $width, $height, $hspace, $vspace, $border, $alt, $align, $name, $thumbnail, $class, $title, $longdesc);
 					break;
 			}
-		} else{
+		} else {
 			$this->defaultInit();
 		}
 	}
@@ -226,8 +226,8 @@ class we_dialog_image extends we_dialog_base{
 	}
 
 	/* use parent
-	function getFormHTML(){}
-	*/
+	  function getFormHTML(){}
+	 */
 
 	function getFormJsOnSubmit(){
 		return ' onsubmit="return fsubmit(this)"';
@@ -241,7 +241,7 @@ class we_dialog_image extends we_dialog_base{
 			$thumbnails = '';
 
 			$_longdesc = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('we_dialog_args[longdesc]', 30, str_replace('"', '&quot;', (isset($this->args["longdesc"]) ? $this->args["longdesc"] : "")), "", '', "text", 520), g_l('weClass', "[longdesc_text]"));
-		} else{
+		} else {
 			//javascript:we_cmd('browse_server','document.we_form.elements[\\'we_dialog_args[extSrc]\\'].value','',document.we_form.elements['we_dialog_args[extSrc]'].value,'opener.document.we_form.elements[\\'we_dialog_args[type]\\'][0].checked=true;opener.imageChanged();')
 			$wecmdenc1 = we_cmd_enc("document.we_form.elements['we_dialog_args[extSrc]'].value");
 			$wecmdenc4 = we_cmd_enc("opener.document.we_form.elements['we_dialog_args[type]'][0].checked=true;opener.imageChanged();");
@@ -286,7 +286,7 @@ class we_dialog_image extends we_dialog_base{
 			$thumbnails = '<select name="we_dialog_args[thumbnail]" size="1" onchange="imageChanged(true);">' .
 				'<option value="0"' . (($thumbdata == 0) ? (' selected="selected"') : "") . '>' . g_l('wysiwyg', "[nothumb]") . '</option>';
 			$this->db->query('SELECT ID,Name FROM ' . THUMBNAILS_TABLE . ' ORDER BY Name');
-			while($this->db->next_record()) {
+			while($this->db->next_record()){
 				$thumbnails .= '<option value="' . $this->db->f("ID") . '"' . (($thumbdata == $this->db->f("ID")) ? (' selected="selected"') : "") . '>' . $this->db->f("Name") . '</option>';
 			}
 			$thumbnails .= '</select>';
@@ -369,7 +369,7 @@ class we_dialog_image extends we_dialog_base{
 
 		if($this->args["editor"] == 'tinyMce'){
 			$classSelect = we_html_tools::htmlFormElementTable($this->getClassSelect(), g_l('wysiwyg', "[css_style]"));
-		} else{
+		} else {
 			$foo = we_html_element::jsElement('showclasss("we_dialog_args[class]","' . (isset($this->args["class"]) ? $this->args["class"] : "") . '","");');
 			$classSelect = $classSelect = we_html_tools::htmlFormElementTable($foo, g_l('wysiwyg', "[css_style]"));
 		}
@@ -408,7 +408,7 @@ class we_dialog_image extends we_dialog_base{
 	}
 
 	function cmdFunction($args){
-		if (isset($this->we_cmd[0])){
+		if(isset($this->we_cmd[0])){
 			switch($this->we_cmd[0]){
 				case 'update_editor':
 					//fill in all fields

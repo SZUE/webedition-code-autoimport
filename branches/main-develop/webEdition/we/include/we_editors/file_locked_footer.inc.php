@@ -30,10 +30,8 @@ $_username = f("SELECT username FROM " . USER_TABLE . " WHERE ID=" . intval($_is
 
 
 $_messageTbl = new we_html_table(array("border" => 0,
-		"cellpadding" => 0,
-		"cellspacing" => 0),
-		2,
-		6);
+	"cellpadding" => 0,
+	"cellspacing" => 0), 2, 6);
 
 
 $refreshButton = "";

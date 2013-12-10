@@ -24,10 +24,10 @@ we_html_tools::protect();
 
 $filename = $_SERVER['DOCUMENT_ROOT'] . $_REQUEST['file'];
 if(file_exists($filename)){
-	$isCompressed=we_base_file::isCompressed($filename);
+	$isCompressed = we_base_file::isCompressed($filename);
 	if(function_exists('finfo_open')){
 		$finfo = finfo_open(FILEINFO_MIME_TYPE);
-		$mimetype = finfo_buffer($finfo,we_base_file::loadPart($filename, 0, 8192, $isCompressed));
+		$mimetype = finfo_buffer($finfo, we_base_file::loadPart($filename, 0, 8192, $isCompressed));
 	} else {
 		$mimetype = '';
 		if(function_exists('getimagesizefromstring')){
