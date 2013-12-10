@@ -2074,7 +2074,7 @@ HTS;
 				"size" => 1,
 				"class" => "weSelect",
 				"onclick" => "self.document.forms['we_form'].elements['v[import_type]'][1].checked=true;",
-				'onchange' => "document.we_form.elements['v[obj_path]'].value='/'+document.we_form.elements['v[classID]'].selectedOptions[0].text;"
+				'onchange' => "var elem=document.we_form.elements['v[classID]'];document.we_form.elements['v[obj_path]'].value='/'+elem.options[elem.selectedIndex].text;"
 				. "document.we_form.elements['v[obj_path_id]'].value=document.we_form.elements['v[classID]'].value.split('_')[1];",
 				"style" => "width: 150px")
 			);
