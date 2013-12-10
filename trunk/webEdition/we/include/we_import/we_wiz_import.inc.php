@@ -2050,9 +2050,8 @@ HTS;
 
 		$storeTo = $yuiSuggest->getHTML();
 
-		$seaPu = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 3);
-		$seaPu->setCol(0, 2, array(), we_forms::checkboxWithHidden(isset($v["doc_search"]) && $v["doc_search"], 'v[doc_search]', g_l('weClass', '[IsSearchable]'), false, 'defaultfont'));
-		$seaPu->setCol(0, 1, array("width" => 20), we_html_tools::getPixel(20, 1));
+		$seaPu = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 2, 1);
+		$seaPu->setCol(1, 0, array(), we_forms::checkboxWithHidden(isset($v["doc_search"]) && $v["doc_search"], 'v[doc_search]', g_l('weClass', '[IsSearchable]'), false, 'defaultfont'));
 		$seaPu->setCol(0, 0, array(), we_forms::checkboxWithHidden(isset($v["doc_publish"]) ? $v["doc_publish"] : true, 'v[doc_publish]', g_l('buttons_global', '[publish][value]'), false, 'defaultfont'));
 
 		$docCategories = $this->formCategory2("doc", isset($v["docCategories"]) ? $v["docCategories"] : "");
@@ -2123,9 +2122,8 @@ HTS;
 
 			$objStoreTo = $yuiSuggest->getHTML();
 
-			$objSeaPu = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 3);
-			$objSeaPu->setCol(0, 2, array(), we_forms::checkboxWithHidden(isset($v["obj_search"]) && $v["obj_search"], 'v[obj_search]', g_l('weClass', '[IsSearchable]'), false, 'defaultfont'));
-			$objSeaPu->setCol(0, 1, array("width" => 20), we_html_tools::getPixel(20, 1));
+			$objSeaPu = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 2, 1);
+			$objSeaPu->setCol(1, 0, array(), we_forms::checkboxWithHidden(isset($v["obj_search"]) && $v["obj_search"], 'v[obj_search]', g_l('weClass', '[IsSearchable]'), false, 'defaultfont'));
 			$objSeaPu->setCol(0, 0, array(), we_forms::checkboxWithHidden(isset($v["obj_publish"]) ? $v["obj_publish"] : true, 'v[obj_publish]', g_l('buttons_global', '[publish][value]'), false, 'defaultfont'));
 
 			$objCategories = $this->formCategory2("obj", isset($v["objCategories"]) ? $v["objCategories"] : "");
