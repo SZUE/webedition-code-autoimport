@@ -161,7 +161,7 @@ class we_search{
 
 	function searchquery($where = '', $get = '*', $table = '', $order = '', $limit = ''){
 
-		$this->table = ($table ? $table : ($this->table? : ''));
+		$this->table = ($table ? $table : ($this->table? $this->table : ''));
 
 		if(!empty($this->table)){
 			$this->where = (empty($where)) ? ((empty($this->where)) ? '' : ' WHERE ' . $this->where) : ' WHERE ' . $where;
