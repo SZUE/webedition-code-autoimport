@@ -313,7 +313,7 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 	  $we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
 	 */
 	$we_ext = ($we_doc->Extension == '.js' || $we_doc->Extension == '.css' || $we_doc->Extension == '.wml' || $we_doc->Extension == '.xml') ? '.html' : $we_doc->Extension;
-	$tempName = TEMP_DIR . weFile::getUniqueId() . $we_ext;
+	$tempName = TEMP_DIR . we_base_file::getUniqueId() . $we_ext;
 	$fullName = $_SERVER['DOCUMENT_ROOT'] . $tempName;
 	we_util_File::insertIntoCleanUp($fullName, time());
 
