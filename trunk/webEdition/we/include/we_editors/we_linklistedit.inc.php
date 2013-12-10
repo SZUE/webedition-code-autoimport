@@ -77,17 +77,17 @@ if(isset($_REQUEST['ok']) && $_REQUEST['ok']){
 	$alt = $_REQUEST['alt'];
 	$img_title = $_REQUEST['img_title'];
 	$text = $_REQUEST['text'];
-	$attribs = $_REQUEST['attribs'];
+	$attribs = isset($_REQUEST['attribs']) ? $_REQUEST['attribs'] : '';
 	$href = $_REQUEST['href'];
 	$anchor = trim($_REQUEST['anchor']);
-	$tabindex = $_REQUEST['tabindex'];
-	$accesskey = $_REQUEST['accesskey'];
-	$lang = $_REQUEST['lang'];
-	$rel = $_REQUEST['rel'];
-	$rev = $_REQUEST['rev'];
-	$hreflang = $_REQUEST['hreflang'];
+	$tabindex = isset($_REQUEST['tabindex']) ? $_REQUEST['tabindex'] : '';
+	$accesskey = isset($_REQUEST['accesskey']) ? $_REQUEST['accesskey'] : '';
+	$lang = isset($_REQUEST['lang']) ? $_REQUEST['lang'] : '';
+	$rel = isset($_REQUEST['rel']) ? $_REQUEST['rel'] : '';
+	$rev = isset($_REQUEST['rev']) ? $_REQUEST['rev'] : '';
+	$hreflang = isset($_REQUEST['hreflang']) ? $_REQUEST['hreflang'] : '';
 	$params = $_REQUEST['params'];
-	$title = $_REQUEST['title'];
+	$title = isset($_REQUEST['title']) ? $_REQUEST['title'] : '';
 
 	if(!empty($anchor)){ //	accept anchor with or without '#', when saving the link
 		$anchor = (substr($anchor, 0, 1) == '#' ? $anchor : '#' . $anchor);
