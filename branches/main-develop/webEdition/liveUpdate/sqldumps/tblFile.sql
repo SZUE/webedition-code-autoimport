@@ -7,7 +7,7 @@ CREATE TABLE ###TBLPREFIX###tblFile (
   `Text` varchar(255) NOT NULL default '',
   Icon enum('pdf.gif','zip.gif','word.gif','excel.gif','powerpoint.gif','prog.gif','link.gif','image.gif','html.gif','we_dokument.gif','javascript.gif','css.gif','htaccess.gif','folder.gif','flashmovie.gif','quicktime.gif','odg.gif') NOT NULL default 'prog.gif',
   IsFolder tinyint(1) unsigned NOT NULL default '0',
-  ContentType enum('','image/*','text/html','text/webedition','text/js','text/css','text/htaccess','text/plain','folder','application/x-shockwave-flash','application/*','video/quicktime','application/*','text/xml') NOT NULL default '',
+  ContentType enum('','image/*','text/html','text/webedition','text/js','text/css','text/htaccess','text/plain','folder','application/x-shockwave-flash','application/*','video/quicktime','text/xml') NOT NULL default '',
   CreationDate int(11) unsigned NOT NULL default '0',
   ModDate int(11) unsigned NOT NULL default '0',
   RebuildDate int(11) unsigned NOT NULL default '0',

@@ -26,7 +26,7 @@
 /**
   @param $query: SQL query; an empty query resets the cache
  */
-function getHash($query, we_database_base $DB_WE = NULL, $resultType = MYSQL_BOTH){
+function getHash($query = '', we_database_base $DB_WE = NULL, $resultType = MYSQL_BOTH){
 	static $cache = array();
 	if($query == ''){
 		$cache = array();
@@ -42,9 +42,9 @@ function getHash($query, we_database_base $DB_WE = NULL, $resultType = MYSQL_BOT
 	return $cache[$hash];
 }
 
-function f($query, $field = -1, we_database_base $DB_WE = NULL, $emptyValue = ''){
+function f($query, $field = '', we_database_base $DB_WE = NULL, $emptyValue = ''){
 	$h = getHash($query, ($DB_WE ? $DB_WE : $GLOBALS['DB_WE']), MYSQL_ASSOC);
-	return ($field == -1 ? current($h) : (isset($h[$field]) ? $h[$field] : $emptyValue));
+	return ($field == '' ? current($h) : (isset($h[$field]) ? $h[$field] : $emptyValue));
 }
 
 function doUpdateQuery(we_database_base $DB_WE, $table, $hash, $where){

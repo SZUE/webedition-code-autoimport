@@ -123,9 +123,9 @@ class we_navigation_items{
 				$_href = id_to_path($_dyn['id']);
 				$_items[] = array(
 					'id' => $_dyn['id'],
-					'text' => isset($_dyn['field']) && !empty($_dyn['field']) ? $_dyn['field'] : $_dyn['text'],
-					'display' => isset($_dyn['display']) && !empty($_dyn['display']) ? $_dyn['display'] : '',
-					'name' => $_dyn['field'] ? $_dyn['field'] : (isset($_dyn['name']) && !empty($_dyn['name']) ? $_dyn['name'] : $_dyn['text']),
+					'text' => isset($_dyn['field']) && $_dyn['field'] ? $_dyn['field'] : $_dyn['text'],
+					'display' => isset($_dyn['display']) && $_dyn['display'] ? $_dyn['display'] : '',
+					'name' => $_dyn['field'] ? $_dyn['field'] : (isset($_dyn['name']) && $_dyn['name'] ? $_dyn['name'] : $_dyn['text']),
 					'docid' => $_dyn['id'],
 					'table' => (($_nav->SelectionType == we_navigation_navigation::STPYE_CLASS || $_nav->SelectionType == we_navigation_navigation::STPYE_OBJLINK) ? OBJECT_FILES_TABLE : FILE_TABLE),
 					'href' => $_href,
@@ -149,16 +149,16 @@ class we_navigation_items{
 		return $_items;
 	}
 
-	function loopAllRules($id){
+	function loopAllRules(/* $id */){
 		if(!$this->hasCurrent){
 // add defined rules
 			$newRules = we_navigation_ruleControl::getAllNavigationRules();
 
-			foreach($newRules as $_rule){
-				$this->currentRules[] = $_rule;
+			foreach($newRules as $rule){
+				$this->currentRules[] = $rule;
 			}
 
-			$this->checkCurrent($this->items['id' . $id]->items);
+			$this->checkCurrent(/* $this->items['id' . $id]->items */);
 		}
 	}
 
@@ -197,7 +197,7 @@ class we_navigation_items{
 			}
 		}
 		unset($_item);
-		$this->loopAllRules($parentid);
+		$this->loopAllRules(/* $parentid */);
 		return true;
 	}
 
@@ -247,7 +247,7 @@ class we_navigation_items{
 			}
 		}
 
-		$this->loopAllRules($_navigation->ID);
+		$this->loopAllRules(/* $_navigation->ID */);
 
 //make avail in cache
 		self::$cache[$parentid] = $this->items;
@@ -278,7 +278,7 @@ class we_navigation_items{
 		}
 	}
 
-	function checkCurrent(&$items){
+	function checkCurrent(/* &$items */){
 		if(!isset($GLOBALS['WE_MAIN_DOC'])){
 			return false;
 		}
@@ -368,17 +368,17 @@ class we_navigation_items{
 	}
 
 	function getItemIds($id){
-		$_items = array($id);
+		$items = array($id);
 
 		foreach($this->items[$id]->items as $key => $val){
 			if($val->type == 'folder'){
-				$_items = array_merge($_items, $this->getItemIds($key));
+				$items = array_merge($items, $this->getItemIds($key));
 			} else {
-				$_items[] = $key;
+				$items[] = $key;
 			}
 		}
 
-		return $_items;
+		return $items;
 	}
 
 	function getItems($id = false){

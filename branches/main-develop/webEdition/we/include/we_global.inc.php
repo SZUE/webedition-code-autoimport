@@ -1355,6 +1355,7 @@ function g_l($name, $specific, $omitErrors = false){
 			(isset($GLOBALS['we']['PageCharset']) ? $GLOBALS['we']['PageCharset'] : $GLOBALS['WE_BACKENDCHARSET']) :
 //front-end
 			(isset($GLOBALS['CHARSET']) && $GLOBALS['CHARSET'] ? $GLOBALS['CHARSET'] : DEFAULT_CHARSET) );
+//	return $name.$specific;
 //cache last accessed lang var
 	static $cache = array();
 //echo $name.$specific;

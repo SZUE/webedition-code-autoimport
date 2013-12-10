@@ -240,7 +240,7 @@ class we_objectFile extends we_document{
 		return parent::we_rewrite();
 	}
 
-	private static function getObjectRootPathOfObjectWorkspace($classDir, $classId, $db = ''){
+	private static function getObjectRootPathOfObjectWorkspace($classDir, $classId, we_database_base $db = null){
 		$db = ($db ? $db : new DB_WE());
 		$classDir = rtrim($classDir, '/');
 		$rootId = $classId;
@@ -611,7 +611,7 @@ class we_objectFile extends we_document{
 	}
 
 	function formPath(){
-		$rootDirId = self::getObjectRootPathOfObjectWorkspace($this->RootDirPath, $this->rootDirID);
+		$rootDirId = self::getObjectRootPathOfObjectWorkspace($this->RootDirPath, $this->rootDirID, $this->DB_WE);
 		if($this->ParentID == ""){
 			$this->ParentID = $rootDirId;
 			$this->ParentPath = id_to_path($rootDirId, OBJECT_FILES_TABLE);
@@ -1394,7 +1394,7 @@ class we_objectFile extends we_document{
 	function getTextareaHTML($name, $attribs, $editable = true, $variant = false){
 		if($editable){
 			//	send charset which might be determined in template
-			$charset = (isset($this->Charset) ? $this->Charset : $GLOBALS['WE_BACKENDCHARSET']);
+			$charset = (isset($this->Charset) ? $this->Charset : DEFAULT_CHARSET);
 
 			$value = $this->getElement($name);
 			$attribs["width"] = isset($attribs["width"]) ? $attribs["width"] : 620;

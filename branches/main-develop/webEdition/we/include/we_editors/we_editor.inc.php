@@ -380,7 +380,7 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 				$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][we_objecturl_exists]'), $we_doc->Url);
 				$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 			} else if(!$we_doc->i_checkPathDiffAndCreate()){
-				$we_responseText = sprintf(g_l('weClass', '[notValidFolder]'), $we_doc->Url);
+				$we_responseText = sprintf(g_l('weClass', '[notValidFolder]'), $we_doc->Path);
 				$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 			} else if(($n = $we_doc->i_check_requiredFields())){
 				$we_responseText = sprintf(g_l('weEditor', '[required_field_alert]'), $n);

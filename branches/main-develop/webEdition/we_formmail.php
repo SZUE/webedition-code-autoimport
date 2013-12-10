@@ -44,16 +44,17 @@ if(FORMMAIL_LOG){
 		$GLOBALS['DB_WE']->query('DELETE FROM ' . FORMMAIL_BLOCK_TABLE . ' WHERE blockedUntil!=-1 AND blockedUntil<UNIX_TIMESTAMP()');
 
 		// check if ip is allready blocked
-		if(f('SELECT id FROM ' . FORMMAIL_BLOCK_TABLE . ' WHERE ip="' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '"', 'id', $GLOBALS['DB_WE'])){
+		if(f('SELECT id FROM ' . FORMMAIL_BLOCK_TABLE . ' WHERE ip="' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '"')){
 			$_blocked = true;
-		} else{
+		} else {
 			// ip is not blocked, so see if we need to block it
-			$_num = f('SELECT COUNT(1) AS a FROM ' . FORMMAIL_LOG_TABLE . ' WHERE unixTime>(UNIX_TIMESTAMP()-' . intval(FORMMAIL_SPAN) . ') AND ip="' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '"', 'a', $GLOBALS['DB_WE']);
-			if($_num > FORMMAIL_TRIALS){
+			if(f('SELECT COUNT(1) FROM ' . FORMMAIL_LOG_TABLE . ' WHERE unixTime>(UNIX_TIMESTAMP()-' . intval(FORMMAIL_SPAN) . ') AND ip="' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '"') > FORMMAIL_TRIALS){
 				$_blocked = true;
 				// insert in block table
-				$blockedUntil = (FORMMAIL_BLOCKTIME == -1) ? -1 : '(UNIX_TIMESTAMP()+' . intval(FORMMAIL_BLOCKTIME) . ')';
-				$GLOBALS['DB_WE']->query('REPLACE INTO ' . FORMMAIL_BLOCK_TABLE . " (ip, blockedUntil) VALUES('" . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . "', " . $blockedUntil . ")");
+				$GLOBALS['DB_WE']->query('REPLACE INTO ' . FORMMAIL_BLOCK_TABLE . ' SET ' . we_database_base::arraySetter(array(
+						'ip' => $_SERVER['REMOTE_ADDR'],
+						'blockedUntil' => (FORMMAIL_BLOCKTIME == -1 ? -1 : sql_function('(UNIX_TIMESTAMP()+' . intval(FORMMAIL_BLOCKTIME) . ')'))
+				)));
 			}
 		}
 	}
@@ -115,7 +116,7 @@ function print_error($errortext){
 	$content = g_l('global', '[formmailerror]') . getHtmlTag('br') . '&#8226; ' . $errortext;
 
 	print we_html_tools::htmlTop() .
-		we_html_element::cssLink(WEBEDITION_DIR . 'css/global.php').
+		we_html_element::cssLink(WEBEDITION_DIR . 'css/global.php') .
 		'</head>' .
 		getHtmlTag('body', array('class' => 'weEditorBody'), '', false, true) .
 		we_html_tools::htmlDialogLayout(getHtmlTag('div', array('class' => 'defaultgray'), $content), $headline) .
@@ -140,7 +141,7 @@ function error_page(){
 	if($_REQUEST['error_page']){
 		$errorpage = (get_magic_quotes_gpc() == 1) ? stripslashes($_REQUEST['error_page']) : $_REQUEST['error_page'];
 		redirect($errorpage);
-	} else{
+	} else {
 		print_error(g_l('global', '[email_notallfields]'));
 	}
 }
@@ -149,7 +150,7 @@ function ok_page(){
 	if($_REQUEST['ok_page']){
 		$ok_page = (get_magic_quotes_gpc() == 1) ? stripslashes($_REQUEST['ok_page']) : $_REQUEST['ok_page'];
 		redirect($ok_page);
-	} else{
+	} else {
 		echo 'Vielen Dank, Ihre Formulardaten sind bei uns angekommen! / Thank you, we received your form data!';
 		exit;
 	}
@@ -185,7 +186,7 @@ if(isset($_REQUEST['email']) && $_REQUEST['email']){
 		if($_REQUEST['mail_error_page']){
 			$foo = (get_magic_quotes_gpc() == 1) ? stripslashes($_REQUEST['mail_error_page']) : $_REQUEST['mail_error_page'];
 			redirect($foo);
-		} else{
+		} else {
 			print_error(g_l('global', '[email_invalid]'));
 		}
 	}
@@ -243,7 +244,7 @@ foreach($output as $n => $v){
 				$we_html .= '<tr><td align="right"><b>' . $n . '[' . $n2 . ']:</b></td><td>' . $foo . '</td></tr>';
 			}
 		}
-	} else{
+	} else {
 		$foo = replace_bad_str((get_magic_quotes_gpc() == 1) ? stripslashes($v) : $v);
 		$n = replace_bad_str($n);
 		$we_txt .= $n . ': ' . $foo . "\n" . ($foo ? '' : "\n");
@@ -335,7 +336,7 @@ if($recipient){
 
 		if(we_check_email($recipient) && check_recipient($recipient)){
 			$recipientsList[] = $recipient;
-		} else{
+		} else {
 			print_error(g_l('global', '[email_recipient_invalid]'));
 		}
 	}
@@ -351,7 +352,7 @@ if($recipient){
 		$phpmail->addAddressList($recipientsList);
 		if($mimetype == 'text/html'){
 			$phpmail->addHTMLPart($we_html);
-		} else{
+		} else {
 			$phpmail->addTextPart($we_txt);
 		}
 		$phpmail->buildMessage();
@@ -370,14 +371,14 @@ if($recipient){
 			$phpmail->setCharSet($charset);
 			if($mimetype == 'text/html'){
 				$phpmail->addHTMLPart($we_html_confirm);
-			} else{
+			} else {
 				$phpmail->addTextPart($we_txt_confirm);
 			}
 			$phpmail->buildMessage();
 			$phpmail->Send();
 		}
 	}
-} else{
+} else {
 	print_error(g_l('global', '[email_no_recipient]'));
 }
 

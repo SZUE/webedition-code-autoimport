@@ -82,7 +82,7 @@ function getNavButtons($size, $pos, $id){
 		we_html_button::create_button_table(array(
 			we_html_button::create_button("next", $_SERVER['SCRIPT_NAME'] . '?function=next&ID=' . $id, true, 0, 0, "", "", ($pos == $size)),
 			we_html_button::getButton("+" . $div, 'btn2', "window.location.href='" . $_SERVER['SCRIPT_NAME'] . '?function=nextX&ID=' . $id . '&step=' . $div . "';", 0, '', ($pos + $div > $size)),
-			we_html_button::create_button("last", $_SERVER['SCRIPT_NAME'] . '?function=last', true, 0, 0, "", "", ($pos == $size)),
+			we_html_button::create_button("last", $_SERVER['SCRIPT_NAME'] . '?function=last', true),
 			), 10) .
 		'</td></tr><tr><td colspan="3" align="center" class="defaultfont" width="120"><b>' . $pos . "&nbsp;" . g_l('global', '[from]') . ' ' . $size . '</b>' .
 		'</td></table>';
@@ -103,7 +103,7 @@ function getPosData($bt){
 		}
 		$lineNo = $matches[2][$i];
 
-		$lines = we_base_file::loadLines((strpos($file, $_SERVER['DOCUMENT_ROOT']) === 0 ||strpos($file, realpath(WEBEDITION_PATH))===0? '' : $_SERVER['DOCUMENT_ROOT'] . '/' ) . $file, max(1, $lineNo - 1), $lineNo + 5);
+		$lines = we_base_file::loadLines((strpos($file, $_SERVER['DOCUMENT_ROOT']) === 0 || strpos($file, realpath(WEBEDITION_PATH)) === 0 ? '' : $_SERVER['DOCUMENT_ROOT'] . '/' ) . $file, max(1, $lineNo - 1), $lineNo + 5);
 		if($lines){
 			array_walk($lines, 'formatLine');
 			$ret .=$file . ":\n" . implode('', $lines) . "\n----------------------------------------------------------\n";
@@ -138,7 +138,7 @@ switch(isset($_REQUEST['function']) ? $_REQUEST['function'] : 'last'){
 		break;
 	case 'export':
 		header('Content-Type: text/plain');
-		header('Content-Disposition: attachment; filename=error.txt');
+		header('Content-Disposition: attachment; filename=error' . $id . '.txt');
 		$cur = getHash('SELECT ID,Type,Function,File,Line,Text,Backtrace,Date FROM `' . ERROR_LOG_TABLE . '` WHERE ID=' . $id . ' ORDER By ID ASC LIMIT 1', $db, MYSQL_ASSOC);
 		$sep = "\n" . str_repeat('-', 80) . "\n";
 		if($cur){
@@ -156,6 +156,8 @@ switch(isset($_REQUEST['function']) ? $_REQUEST['function'] : 'last'){
 		$pos = $size - f('SELECT COUNT(1) FROM `' . ERROR_LOG_TABLE . '` WHERE ID>=' . $id) + 1;
 		break;
 	case 'delete':
+		$db->query('DELETE FROM `' . ERROR_LOG_TABLE . '` WHERE ID=' . $id);
+		$size = f('SELECT COUNT(1) FROM `' . ERROR_LOG_TABLE . '`');
 	case 'next':
 		$cur = getHash('SELECT * FROM `' . ERROR_LOG_TABLE . '` WHERE ID>' . $id . ' ORDER By ID ASC LIMIT 1');
 		$pos = $size - f('SELECT COUNT(1) FROM `' . ERROR_LOG_TABLE . '` WHERE ID>' . $id) + 1;
@@ -172,14 +174,6 @@ switch(isset($_REQUEST['function']) ? $_REQUEST['function'] : 'last'){
 		$cur = getHash('SELECT * FROM `' . ERROR_LOG_TABLE . '` WHERE ID<=' . $id . ' ORDER By ID DESC LIMIT ' . $step . ',1');
 		$pos = f('SELECT COUNT(1) FROM `' . ERROR_LOG_TABLE . '` WHERE ID<=' . $cur['ID']);
 		break;
-}
-
-if(isset($_REQUEST['function']) && $_REQUEST['function'] == 'delete'){
-	$db->query('DELETE FROM `' . ERROR_LOG_TABLE . '` WHERE ID=' . $id);
-	if($db->affected_rows()){
-		--$size;
-		--$pos;
-	}
 }
 
 if($size && !$cur){//nothing found, go to last element
@@ -244,8 +238,8 @@ table.error td pre{
 	<div id="info" style="display: block;">
 		<?php
 		print we_html_multiIconBox::getJS() .
-			we_html_element::htmlDiv(array('style' => 'position:absolute; top:0px; left:30px;right:30px;height:100px;'), getNavButtons($size, $pos, isset($cur['ID']) ? $cur['ID'] : 0)) .
-			we_html_element::htmlDiv(array('style' => 'position:absolute;top:40px;bottom:0px;left:0px;right:0px;'), we_html_multiIconBox::getHTML('', 700, $_parts, 30, $buttons, -1, '', '', false, "", "", "", "auto"));
+			we_html_element::htmlDiv(array('style' => 'position:absolute; top:0px; left:30px;right:30px;height:60px;'), $size && $data ? getNavButtons($size, $pos, isset($cur['ID']) ? $cur['ID'] : 0) : '') .
+			we_html_element::htmlDiv(array('style' => 'position:absolute;top:60px;bottom:0px;left:0px;right:0px;'), we_html_multiIconBox::getHTML('', 700, $_parts, 30, $buttons, -1, '', '', false, "", "", "", "auto"));
 		?>
 	</div>
 </body>

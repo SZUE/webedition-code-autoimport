@@ -380,7 +380,7 @@ class we_class_folder extends we_folder{
 			foreach(array_keys($_REQUEST) as $f){
 				if(substr($f, 0, 3) == "weg"){
 					//$this->query("");
-					$ofid = f('SELECT OF_ID FROM ' . OBJECT_X_TABLE . intval($classArray["ID"]) . ' WHERE ID=' . intval(substr($f, 3), 'OF_ID', $DB_WE));
+					$ofid = f('SELECT OF_ID FROM ' . OBJECT_X_TABLE . intval($classArray["ID"]) . ' WHERE ID=' . intval(substr($f, 3)), '', $DB_WE);
 
 					if(permissionhandler::checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE, $DB_WE)){
 						$DB_WE->query('DELETE FROM ' . OBJECT_X_TABLE . intval($classArray["ID"]) . ' WHERE ID=' . intval(substr($f, 3)));

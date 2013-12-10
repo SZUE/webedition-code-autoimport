@@ -268,7 +268,7 @@ abstract class we_root extends we_class{
 
 		$yuiSuggest->setAcId('Path', id_to_path(array($rootDirID), $table));
 		$yuiSuggest->setContentType('folder,class_folder');
-		$yuiSuggest->setInput($textname, $path, array('onBlur' => $_parentPathChangedBlur));
+		$yuiSuggest->setInput($textname, $path, array('onblur' => $_parentPathChangedBlur));
 		$yuiSuggest->setLabel(g_l('weClass', '[dir]'));
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(0);
@@ -693,7 +693,14 @@ abstract class we_root extends we_class{
 	/* get the HTTP-Path of the Object */
 
 	function getHttpPath(){
-		return getServerUrl() . $this->getPath();
+		$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE'], true);
+		$http = $this->getPath();
+		if($urlReplace){
+			$http = preg_replace($urlReplace, array_keys($urlReplace), $http, -1, $cnt);
+			return ($cnt ? 'http:' : getServerUrl()) . $http;
+		}
+
+		return $http;
 	}
 
 	function editor(){
