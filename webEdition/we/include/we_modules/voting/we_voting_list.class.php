@@ -62,7 +62,7 @@ class we_voting_list{
 		}
 
 		$limit = ($rows || $this->Start ?
-				' LIMIT ' . $this->Start . ',' . ($rows == 0 ? 9999999 : $rows) : '');
+						' LIMIT ' . $this->Start . ',' . ($rows == 0 ? 9999999 : $rows) : '');
 
 		if($order != ""){
 			$order_sql = ' ORDER BY ' . $order;
@@ -97,6 +97,7 @@ class we_voting_list{
 			$urlID = weTag_getAttribute("id", $attribs);
 			$foo = $this->Start + $this->Rows;
 			$attribs["href"] = we_tag('url', array('id' => ($urlID ? $urlID : 'self'), 'hidedirindex' => 'false')) . '?' . oldHtmlspecialchars(listviewBase::we_makeQueryString("_we_vl_start_" . $this->Name . "=$foo"));
+			$attribs['rel'] = 'next';
 
 			return getHtmlTag("a", $attribs, "", false, true);
 		} else {
@@ -113,6 +114,7 @@ class we_voting_list{
 			$urlID = weTag_getAttribute("id", $attribs);
 			$foo = $this->Start - $this->Rows;
 			$attribs["href"] = we_tag('url', array('id' => ($urlID ? $urlID : 'self'), 'hidedirindex' => 'false')) . '?' . oldHtmlspecialchars(listviewBase::we_makeQueryString("_we_vl_start_" . $this->Name . "=$foo"));
+			$attribs['rel'] = 'prev';
 
 			return getHtmlTag("a", $attribs, "", false, true);
 		} else {
