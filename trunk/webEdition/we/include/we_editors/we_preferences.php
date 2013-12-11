@@ -1679,7 +1679,7 @@ if(window.onload) {
 			$_template_editor_tabstop_code = we_html_forms::checkbox(1, get_value('editorShowTab'), 'editorShowTab', g_l('prefs', '[show]'), true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorShowTab]\');') .
 				we_html_tools::hidden('newconf[editorShowTab]', get_value('editorShowTab')) .
 				'<table border="0" cellpadding="0" cellspacing="0">
-				<tr><td class="defaultfont" style="width:200px;">' . g_l('prefs', '[editor_tabSize]') . '</td><td>' . we_html_tools::htmlTextInput("newconf[editorTabSize]", 2, get_value("editorTabSize"), "", "", "int", 135) . '</td></tr>
+				<tr><td class="defaultfont" style="width:200px;">' . g_l('prefs', '[editor_tabSize]') . '</td><td>' . we_html_tools::htmlTextInput("newconf[editorTabSize]", 2, get_value("editorTabSize"), 2, "", "number", 135) . '</td></tr>
 			</table>';
 
 			$_template_editor_Wrap_code = we_html_forms::checkbox(1, get_value('editorWrap'), 'editorWrap', g_l('prefs', '[editor_enable]'), true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorWrap]\');') .
