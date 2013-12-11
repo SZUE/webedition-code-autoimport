@@ -248,13 +248,10 @@ class we_navigation_item{
 		if(!($depth === false || $this->level <= $depth) || !$this->isVisible()){
 			return '';
 		}
-		$template = $weNavigationItems->getTemplate($this);
-
 		$GLOBALS['weNavigationItemArray'][] = &$this;
 
-		$content = $template;
 		ob_start();
-		eval('?>' . $content);
+		eval('?>' . $weNavigationItems->getTemplate($this));
 		$executeContent = ob_get_contents();
 		ob_end_clean();
 
