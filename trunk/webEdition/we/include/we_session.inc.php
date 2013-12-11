@@ -35,12 +35,12 @@ if(!isset($_SESSION)){
 
 //FIXME: still relevant?
 //set new sessionID from dw-extension
-if((isset($_SESSION['user']['ID']) && isset($_REQUEST['weSessionId']) && $_REQUEST['weSessionId'] != '' && isset($_REQUEST['cns']) && $_REQUEST['cns'] == 'dw')){
+/*if((isset($_SESSION['user']['ID']) && isset($_REQUEST['weSessionId']) && $_REQUEST['weSessionId'] != '' && isset($_REQUEST['cns']) && $_REQUEST['cns'] == 'dw')){
 	$sid = htmlspecialchars(strip_tags($_REQUEST['weSessionId']));
 	session_name(SESSION_NAME);
 	session_id($sid);
 	session_start();
-}
+}*/
 
 if(!isset($_SESSION['weS'])){
 	$_SESSION['weS'] = array();

@@ -34,8 +34,10 @@ if(!defined('WE_ERROR_HANDLER_SET')){
 
 //FIXME: remove in 6.4
 if(isset($_REQUEST['PHPSESSID'])){
+	session_name('PHPSESSID');
 	session_id($_REQUEST['PHPSESSID']);
 	unset($_REQUEST['PHPSESSID'], $_GET['PHPSESSID'], $_POST['PHPSESSID']);
+	session_start();
 }
 
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_defines.inc.php');
