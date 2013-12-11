@@ -291,8 +291,8 @@ class we_metadata_metaData{
 		if(!$this->_valid){
 			return false;
 		}
-		if(is_readable(WE_INCLUDES_PATH . 'we_classes/weMetaData/classes/' . $value . '.class.php')){
-			$className = 'weMetaData_' . $value;
+		$className = 'we_metadata_' . $value;
+		if(class_exists($className, true)){
 			$this->_instance[$value] = new $className($this->filetype);
 			if(!$this->_instance[$value]->_checkDependencies()){
 				$this->_instance[$value]->_valid = false;
