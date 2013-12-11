@@ -61,7 +61,7 @@ function we_tag_shopField($attribs){
 			$savedVal = $tmpVal;
 			unset($tmpVal);
 		}
-	} else {
+	} else{
 		$savedVal = isset($GLOBALS[$shopname]) ? $GLOBALS[$shopname]->getCartField($name) : '';
 		$isFieldForCheckBox = isset($GLOBALS[$shopname]) ? $GLOBALS[$shopname]->hasCartField($name) : false;
 	}
@@ -148,10 +148,10 @@ function we_tag_shopField($attribs){
 
 			$content = '';
 			if(WE_COUNTRIES_DEFAULT != ''){
-				$content.='<option value="--" ' . ($orgVal == '--' ? ' selected="selected">' : '>') . WE_COUNTRIES_DEFAULT . '</option>';
+				$content.='<option value="--" ' . ($savedVal == '--' ? ' selected="selected">' : '>') . WE_COUNTRIES_DEFAULT . '</option>';
 			}
 			foreach($topCountries as $countrykey => &$countryvalue){
-				$content.='<option value="' . $countrykey . '" ' . ($orgVal == $countrykey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue) . '</option>';
+				$content.='<option value="' . $countrykey . '" ' . ($savedVal == $countrykey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue) . '</option>';
 			}
 			unset($countryvalue);
 
@@ -159,7 +159,7 @@ function we_tag_shopField($attribs){
 				$content.='<option value="-" disabled="disabled">----</option>';
 			}
 			foreach($shownCountries as $countrykey2 => &$countryvalue2){
-				$content.='<option value="' . $countrykey2 . '" ' . ($orgVal == $countrykey2 ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue2) . '</option>';
+				$content.='<option value="' . $countrykey2 . '" ' . ($savedVal == $countrykey2 ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue2) . '</option>';
 			}
 			unset($countryvalue2);
 
@@ -196,7 +196,7 @@ function we_tag_shopField($attribs){
 			setlocale(LC_ALL, $oldLocale);
 			$content = '';
 			foreach($frontendLL as $langkey => &$langvalue){
-				$content.='<option value="' . $langkey . '" ' . ($orgVal == $langkey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($langvalue) . '</option>' . "\n";
+				$content.='<option value="' . $langkey . '" ' . ($savedVal == $langkey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($langvalue) . '</option>' . "\n";
 			}
 			unset($langvalue);
 			return getHtmlTag('select', $newAtts, $content, true);
