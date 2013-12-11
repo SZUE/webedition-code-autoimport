@@ -82,7 +82,7 @@ abstract class we_html_button{
 
 		$_imp = $important ? ' ! important' : '';
 
-		return ' style="border-style:none; padding:0px;border-spacing:0px;' . ($width ? 'width:' . $width . 'px' . $_imp . ';' : '') .
+		return ' style="border-style:none; padding:0px;border-spacing:0px;' . ($width>0 ? 'width:' . $width . 'px' . $_imp . ';' : '') .
 			($height ? 'height:' . $height . 'px' . $_imp . ';' : '') .
 			($float ? 'float:' . $float . $_imp . ';' : '') .
 			($clear ? 'clear:' . $clear . $_imp . ';' : '') .

@@ -280,6 +280,7 @@ abstract class listviewBase{
 
 			$attribs['href'] = we_tag('url', array('id' => ($urlID ? $urlID : 'top'), 'hidedirindex' => $this->hidedirindex));
 			$attribs['href'] .=(strpos($attribs['href'], '?') === false ? '?' : '&');
+			$attribs['rel'] = 'prev';
 
 			$tmp_href = oldHtmlspecialchars(listviewBase::we_makeQueryString('we_lv_calendar_' . $this->name . '=' . $this->calendar_struct['calendar'] . '&we_lv_datefield_' . $this->name . '=' . $this->calendar_struct['datefield'] . '&we_lv_date_' . $this->name . '=' . $newdate));
 		} else if($this->hasPrevPage()){
@@ -397,6 +398,7 @@ abstract class listviewBase{
 
 		$attribs['href'] = we_tag('url', array('id' => ($urlID ? $urlID : 'top'), 'hidedirindex' => $this->hidedirindex));
 		$attribs['href'] .= (strpos($attribs['href'], '?') === false ? '?' : '&') . $tmp_href;
+		$attribs['rel'] = 'next';
 		if($only){
 			$this->close_a = false;
 			return (isset($attribs[$only]) ? $attribs[$only] : '');
@@ -525,8 +527,8 @@ abstract class listviewBase{
 				$calendar_where = ' AND (' . FILE_TABLE . '.Published>=' . $start_date . ' AND ' . FILE_TABLE . '.Published<=' . $end_date . ') ';
 			} else {
 				$field = (!empty($matrix) && in_array($this->calendar_struct['datefield'], array_keys($matrix))) ?
-					$matrix[$this->calendar_struct['datefield']]['table'] . '.' . $matrix[$this->calendar_struct['datefield']]['type'] . '_' . $this->calendar_struct['datefield'] :
-					CONTENT_TABLE . '.Dat';
+						$matrix[$this->calendar_struct['datefield']]['table'] . '.' . $matrix[$this->calendar_struct['datefield']]['type'] . '_' . $this->calendar_struct['datefield'] :
+						CONTENT_TABLE . '.Dat';
 
 				$calendar_select = ',' . $field . ' AS Calendar ';
 				$condition = ($condition == '' ? '' : $condition . ' AND ') . $this->calendar_struct['datefield'] . '>=' . $start_date . ' AND ' . $this->calendar_struct['datefield'] . '<=' . $end_date;
