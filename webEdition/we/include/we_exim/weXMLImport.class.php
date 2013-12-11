@@ -35,7 +35,7 @@ class weXMLImport extends weXMLExIm{
 		update_time_limit(0);
 
 		$objects = array();
-		$GLOBALS['isNewImport'] = version_compare(weBackupPreparer::getWeVersion($chunk_file, false), '6.3.3.1', '>');
+		$GLOBALS['isNewImport'] = version_compare(we_backup_preparer::getWeVersion($chunk_file, false), '6.3.3.1', '>');
 
 		$data = we_base_file::load($chunk_file);
 		$this->xmlBrowser = new weXMLParser();
