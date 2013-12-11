@@ -17,5 +17,5 @@ CREATE TABLE ###TBLPREFIX###tblglossary (
   CreatorID INT(11) unsigned NOT NULL DEFAULT '0',
   ModifierID INT(11) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY  (ID),
-  KEY valid (Language(5),Published)
+  KEY valid (Language,Published)
 ) ENGINE=MyISAM;

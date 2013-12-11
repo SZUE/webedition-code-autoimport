@@ -47,7 +47,7 @@ function we_tag_object($attribs){
 	$name = weTag_getAttribute('name', $attribs);
 	//never show name generated inside blocks
 	$_showName = weTag_getAttribute('text', $attribs, weTag_getAttribute('_name_orig', $attribs));
-	$size = weTag_getAttribute('size', $attribs, 30);
+	$size = 5 * intval(weTag_getAttribute('size', $attribs, 30));
 	$triggerid = weTag_getAttribute('triggerid', $attribs, '0');
 	$searchable = weTag_getAttribute('searchable', $attribs, false, true);
 	$hidedirindex = weTag_getAttribute('hidedirindex', $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, true);
@@ -76,17 +76,30 @@ function we_tag_object($attribs){
 
 		if($GLOBALS['we_editmode']){
 			$delbutton = we_html_button::create_button('image:btn_function_trash', "javascript:document.forms[0].elements['$idname'].value=0;document.forms[0].elements['$textname'].value='';_EditorFrame.setEditorIsHot(false);we_cmd('reload_editpage');");
+			$open = we_html_button::create_button(we_html_button::WE_IMAGE_BUTTON_IDENTIFY . 'function_view', "javascript:if(document.forms[0].elements['$idname'].value){top.weEditorFrameController.openDocument('" . OBJECT_FILES_TABLE . "', document.forms[0].elements['$idname'].value,'');}");
+
 			$button = we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.forms[0].elements['$idname'].value,'$table','document.forms[\'we_form\'].elements[\'$idname\'].value','document.forms[\'we_form\'].elements[\'$textname\'].value','opener.we_cmd(\'reload_editpage\');opener._EditorFrame.setEditorIsHot(true);','" . session_id() . "','$rootDirID','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")");
+
+
+			$yuiSuggest = &weSuggest::getInstance();
+			$yuiSuggest->setAcId($name . we_base_file::getUniqueId(), f('SELECT Path FROM ' . OBJECT_TABLE . ' WHERE ID=' . $classid));
+			$yuiSuggest->setContentType('folder,objectFile');
+			$yuiSuggest->setInput($textname, $path);
+			$yuiSuggest->setResult($idname, $we_oid);
+			$yuiSuggest->setMaxResults(10);
+			$yuiSuggest->setMayBeEmpty(1);
+			$yuiSuggest->setSelector('Docselector');
+			$yuiSuggest->setTable(OBJECT_FILES_TABLE);
+			$yuiSuggest->setWidth($size);
 			?>
 			<table class="weEditTable padding0 spacing0 border0">
 				<tr>
-					<td style="padding:0 6px;"><span style="color: black; font-size: 12px; font-family: Verdana, sans-serif"><b><?php echo $_showName; ?></b></span></td>
-					<td><?php print we_html_tools::hidden($idname, $we_oid); ?></td>
-					<td><?php print we_html_tools::htmlTextInput($textname, $size, $path, "", ' readonly', "text", 0, 0); ?></td>
-					<td><?php we_html_tools::getPixel(6, 4); ?></td>
-					<td><?php print $button; ?></td>
-					<td><?php we_html_tools::getPixel(6, 4); ?></td>
-					<td><?php print $delbutton; ?></td>
+					<td class="weEditmodeStyle" style="padding:0 6px;"><span style="font-weight: bold;"><?php echo $_showName; ?></span></td>
+					<?php echo '<td class="weEditmodeStyle" style="width:' . ($size + 20) . 'px">' . $yuiSuggest->getHTML() . '</td>'; ?>
+					<td class="weEditmodeStyle"><?php echo $button; ?></td>
+					<td class="weEditmodeStyle"><?php echo $open; ?></td>
+					<td class="weEditmodeStyle"><?php echo $delbutton; ?></td>
+
 				</tr>
 			</table><?php
 		}

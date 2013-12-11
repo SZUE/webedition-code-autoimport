@@ -43,8 +43,8 @@ function we_tag_sessionField($attribs, $content){
 	$autofill = weTag_getAttribute('autofill', $attribs, false, true);
 	if($autofill){
 		$condition = ($name == 'Username' ?
-				array('caps' => 4, 'small' => 4, 'nums' => 4, 'specs' => 0) :
-				array('caps' => 3, 'small' => 4, 'nums' => 3, 'specs' => 2));
+						array('caps' => 4, 'small' => 4, 'nums' => 4, 'specs' => 0) :
+						array('caps' => 3, 'small' => 4, 'nums' => 3, 'specs' => 2));
 
 		$pass = new we_customer_generatePassword(7, $condition);
 		$orgVal = $pass->PassGen();
@@ -61,7 +61,7 @@ function we_tag_sessionField($attribs, $content){
 				$orgVal = time();
 			}
 			return we_html_tools::getDateInput2(
-					"s[we_date_" . $name . "]", ($orgVal ? new DateTime((is_numeric($orgVal) ? '@' : '') . $orgVal) : new DateTime()), false, $format, '', '', $xml, $minyear, $maxyear);
+							"s[we_date_" . $name . "]", ($orgVal ? new DateTime((is_numeric($orgVal) ? '@' : '') . $orgVal) : new DateTime()), false, $format, '', '', $xml, $minyear, $maxyear);
 			break;
 		case 'country':
 			$newAtts = removeAttribs($attribs, array('checked', 'type', 'options', 'selected', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'rows', 'cols', 'maxlength', 'wysiwyg'));
@@ -70,8 +70,8 @@ function we_tag_sessionField($attribs, $content){
 			$doc = we_getDocForTag($docAttr);
 			$lang = $doc->Language;
 			$langcode = ($lang != '' ?
-					substr($lang, 0, 2) :
-					we_core_Local::weLangToLocale($GLOBALS["WE_LANGUAGE"]));
+							substr($lang, 0, 2) :
+							we_core_Local::weLangToLocale($GLOBALS["WE_LANGUAGE"]));
 
 			if(!Zend_Locale::hasCache()){
 				Zend_Locale::setCache(getWEZendCache());
@@ -120,11 +120,8 @@ function we_tag_sessionField($attribs, $content){
 			$docAttr = weTag_getAttribute('doc', $attribs, 'self');
 			$doc = we_getDocForTag($docAttr);
 			$lang = $doc->Language;
-			if($lang != ''){
-				$langcode = substr($lang, 0, 2);
-			} else {
-				$langcode = we_core_Local::weLangToLocale($GLOBALS["WE_LANGUAGE"]);
-			}
+			$langcode = ($lang ? substr($lang, 0, 2) : we_core_Local::weLangToLocale($GLOBALS["WE_LANGUAGE"]));
+
 			$frontendL = $GLOBALS['weFrontendLanguages'];
 			foreach($frontendL as &$lcvalue){
 				$lccode = explode('_', $lcvalue);
@@ -182,9 +179,9 @@ function we_tag_sessionField($attribs, $content){
 					$options .= getHtmlTag('option', array('value' => oldHtmlspecialchars($orgVal), 'selected' => 'selected'), oldHtmlspecialchars($orgVal), true);
 				}
 				return getHtmlTag('select', $newAtts, $options, true);
-			} else {
-				return we_getInputTextInputField('s[' . $name . ']', $orgVal, $newAtts);
 			}
+			return we_getInputTextInputField('s[' . $name . ']', $orgVal, $newAtts);
+
 		case 'textarea':
 			//old Attribute
 			$pure = weTag_getAttribute('pure', $attribs, false, true);
@@ -223,7 +220,8 @@ function we_tag_sessionField($attribs, $content){
 			if(!$ascountry && !$aslanguage){
 				if(is_numeric($orgVal) && !empty($dateformat)){
 					return date($dateformat, $orgVal);
-				} elseif(!empty($dateformat) && $weTimestemp = new DateTime($orgVal)){
+				}
+				if(!empty($dateformat) && $weTimestemp = new DateTime($orgVal)){
 					return $weTimestemp->format($dateformat);
 				}
 			} else {
@@ -241,13 +239,12 @@ function we_tag_sessionField($attribs, $content){
 				if($ascountry){
 					if($orgVal == '--'){
 						return '';
-					} else {
-						if(!Zend_Locale::hasCache()){
-							Zend_Locale::setCache(getWEZendCache());
-						}
-
-						return CheckAndConvertISOfrontend(Zend_Locale::getTranslation($orgVal, 'territory', $langcode));
 					}
+					if(!Zend_Locale::hasCache()){
+						Zend_Locale::setCache(getWEZendCache());
+					}
+
+					return CheckAndConvertISOfrontend(Zend_Locale::getTranslation($orgVal, 'territory', $langcode));
 				}
 				if($aslanguage){
 					if(!Zend_Locale::hasCache()){
@@ -282,10 +279,10 @@ function we_tag_sessionField($attribs, $content){
 				$_SESSION['webuser']['imgtmp'][$name] = array();
 			}
 
-			$_SESSION['webuser']['imgtmp'][$name]['parentid'] = weTag_getAttribute('parentid', $attribs, '0');
+			$_SESSION['webuser']['imgtmp'][$name]['parentid'] = weTag_getAttribute('parentid', $attribs, 0);
 			$_SESSION['webuser']['imgtmp'][$name]['width'] = weTag_getAttribute('width', $attribs, 0);
 			$_SESSION['webuser']['imgtmp'][$name]['height'] = weTag_getAttribute('height', $attribs, 0);
-			$_SESSION['webuser']['imgtmp'][$name]['quality'] = weTag_getAttribute('quality', $attribs, '8');
+			$_SESSION['webuser']['imgtmp'][$name]['quality'] = weTag_getAttribute('quality', $attribs, 8);
 			$_SESSION['webuser']['imgtmp'][$name]['keepratio'] = weTag_getAttribute('keepratio', $attribs, true, true);
 			$_SESSION['webuser']['imgtmp'][$name]['maximize'] = weTag_getAttribute('maximize', $attribs, false, true);
 			$_SESSION['webuser']['imgtmp'][$name]['id'] = $orgVal ? $orgVal : '';
@@ -331,31 +328,31 @@ function we_tag_sessionField($attribs, $content){
 				$checked = '';
 
 				return '<table class="weEditTable padding2 spacing2" style="border: solid ' . $bordercolor . ' 1px;">
-					<tr>
-						<td class="weEditmodeStyle" colspan="2" align="center">' .
-					$imgTag . '
-							<input type="hidden" name="s[' . $name . ']" value="' . $_SESSION['webuser']['imgtmp'][$name]["id"] . '" /></td>
-					</tr>
-					<tr>
-						<td class="weEditmodeStyle" colspan="2" align="left">
-							<input' . ($size ? ' size="' . $size . '"' : '') . ' name="WE_SF_IMG_DATA[' . $name . ']" type="file" accept="' . we_image_edit::IMAGE_CONTENT_TYPES . '"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . ' />
-						</td>
-					</tr>
-					<tr>
-						<td class="weEditmodeStyle" colspan="2" align="left">
-							<table class="weEditTable padding0 spacing0 border0">
-								<tr>
-									<td style="padding-right: 5px;">
-										<input style="border:0px solid black;" type="checkbox" id="WE_SF_DEL_CHECKBOX_' . $name . '" name="WE_SF_DEL_CHECKBOX_' . $name . '" value="1" ' . $checked . '/>
-									</td>
-									<td>
-										<label for="WE_SF_DEL_CHECKBOX_' . $name . '"' . ($checkboxstyle ? (' style="' . $checkboxstyle . '"') : '') . ($checkboxclass ? (' class="' . $checkboxclass . '"') : '') . '>' . $checkboxtext . '</label>
-									</td>
-								</tr>
-							</table>
-						</td>
-					</tr>
-				</table>';
+	<tr>
+		<td class="weEditmodeStyle" colspan="2" align="center">' .
+						$imgTag . '
+			<input type="hidden" name="s[' . $name . ']" value="' . $_SESSION['webuser']['imgtmp'][$name]["id"] . '" /></td>
+	</tr>
+	<tr>
+		<td class="weEditmodeStyle" colspan="2" align="left">
+			<input' . ($size ? ' size="' . $size . '"' : '') . ' name="WE_SF_IMG_DATA[' . $name . ']" type="file" accept="' . we_image_edit::IMAGE_CONTENT_TYPES . '"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . ' />
+		</td>
+	</tr>
+	<tr>
+		<td class="weEditmodeStyle" colspan="2" align="left">
+			<table class="weEditTable padding0 spacing0 border0">
+				<tr>
+					<td style="padding-right: 5px;">
+						<input style="border:0px solid black;" type="checkbox" id="WE_SF_DEL_CHECKBOX_' . $name . '" name="WE_SF_DEL_CHECKBOX_' . $name . '" value="1" ' . $checked . '/>
+					</td>
+					<td>
+						<label for="WE_SF_DEL_CHECKBOX_' . $name . '"' . ($checkboxstyle ? (' style="' . $checkboxstyle . '"') : '') . ($checkboxclass ? (' class="' . $checkboxclass . '"') : '') . '>' . $checkboxtext . '</label>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>';
 			} else {
 				return ($imgId ? $imgTag : '');
 			}

@@ -327,7 +327,7 @@ function selectFile(id){
 var currentID="' . $this->id . '";
 var currentDir="' . $this->dir . '";
 var currentPath="' . $this->path . '";
-var currentText="' . $this->values["Text"] . '";
+var currentText="' . (isset($this->values["Text"]) ? $this->values["Text"] : '') . '";
 var currentType="' . (isset($this->filter) ? $this->filter : "") . '";
 
 var startPath="' . $startPath . '";
