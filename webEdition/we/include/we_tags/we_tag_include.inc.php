@@ -105,11 +105,10 @@ function we_tag_include($attribs){
 	if(we_tag('ifEditmode')){
 		if($name && !($id || $path)){
 			$type = weTag_getAttribute('kind', $attribs);
-			$style = 'color: white;font-size:' . ((we_base_browserDetect::isMAC()) ? '11px' : ((we_base_browserDetect::isUNIX()) ? '13px' : '12px')) . ';font-family:' . g_l('css', '[font_family]') . ';';
 			$_name = weTag_getAttribute('_name_orig', $attribs);
 			$description = weTag_getAttribute('description', $attribs, g_l('tags', '[include_file]'));
 
-			echo '<table style="background: #006DB8;border:0px;padding:0px;"><tr><td style="padding: 3px;' . $style . '">' . '&nbsp;' . $description . '</td></tr><tr><td>' .
+			echo '<table class="weEditTable" style="background: #006DB8;border:0px;padding:0px;"><tr><td style="padding: 3px;color:white;">' . '&nbsp;' . $description . '</td></tr><tr><td>' .
 			we_tag('href', array('name' => $_name, 'rootdir' => weTag_getAttribute('rootdir', $attribs, '/'), 'startid' => weTag_getAttribute('startid', $attribs, 0), 'type' => $type, 'size' => weTag_getAttribute('size', $attribs, 50))) .
 			'</td></tr></table>';
 			return '';
