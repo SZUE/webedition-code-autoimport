@@ -107,7 +107,7 @@ class we_navigation_items{
 		$_all = count($_items) - count($_depended) + count($_new_items);
 		$_items = array_splice($_items, 0, $_all);
 		foreach($_items as $_item){
-			$this->items['id' . $_item['id']] = new we_navigation_item($_item['id'], $_item['docid'], $_item['table'], $_item['text'], $_item['display'], $_item['href'], $_item['type'], $_item['icon'], $_item['attributes'], $_item['limitaccess'], $_item['customers'], $_item['currentonurlpar'], $_item['currentonanker']);
+			$this->items['id' . $_item['id']] = new we_navigation_item($_item['id'], $_item['docid'], $_item['table'], $_item['text'], $_item['display'], $_item['href'], $_item['type'], $_item['icon'], $_item['attributes'], $_item['limitaccess'], $_item['customers'], isset($_item['currentonurlpar'])?$_item['currentonurlpar']:'', isset($_item['currentonanker'])?$_item['currentonanker']:'');
 			if(isset($this->items['id' . $_item['parentid']])){
 				$this->items['id' . $_item['parentid']]->addItem($this->items['id' . $_item['id']]);
 			}
@@ -192,7 +192,7 @@ class we_navigation_items{
 		unset($navigationRulesStorage);
 
 		foreach($this->items as &$_item){
-			if(strtolower(get_class($_item)) == 'wenavigationitem'){
+			if(strtolower(get_class($_item)) == 'we_navigation_item'){
 				$this->hasCurrent = ($_item->isCurrent($this));
 			}
 		}
@@ -451,7 +451,7 @@ class we_navigation_items{
 	function writeNavigation($depth = false){
 		$GLOBALS['weNavigationObject'] = &$this;
 
-		if(isset($this->items['id' . $this->rootItem]) && (get_class($this->items['id' . $this->rootItem]) == 'weNavigationItem')){
+		if(isset($this->items['id' . $this->rootItem]) && (get_class($this->items['id' . $this->rootItem]) == 'we_navigation_item')){
 			if($this->items['id' . $this->rootItem]->type == 'folder' && $depth !== false){
 // if initialised by id => root item is on lvl0 -> therefore decrease depth
 // this is to make it equal init by id, parentid

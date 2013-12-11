@@ -62,8 +62,8 @@ abstract class we_navigation_dynList{
 			$_arr[$_k] = array();
 			foreach($_docs as $_id => $_doc){
 				$_arr[$_k]['id_' . $_id] = (in_array($_sort['field'], array_keys($_doc)) ?
-						$_doc[$_sort['field']] :
-						$_fields[$_id]);
+								$_doc[$_sort['field']] :
+								$_fields[$_id]);
 			}
 			if($_sort['order'] == 'DESC'){
 				natcasesort($_arr[$_k]);
@@ -122,31 +122,28 @@ abstract class we_navigation_dynList{
 		$dirpath = clearPath($dirpath . '/');
 
 		$_db->query('SELECT ' . implode(',', $select) . ' FROM ' . FILE_TABLE . ',' . LINK_TABLE . ', ' . CONTENT_TABLE . ' WHERE (' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID)  AND (' . FILE_TABLE . '.IsFolder=0 AND ' . FILE_TABLE . '.Published>0) ' . ($doctype ? ' AND ' . FILE_TABLE . '.DocType=' . $_db->escape($doctype) : '') . (count(
-				$_cats) ? (' AND (' . implode(" $catlogic ", $_cats) . ')') : '') . ($dirpath != '/' ? (' AND Path LIKE "' . $_db->escape($dirpath) . '%"') : '') . ' ' . ($condition ? (' AND ' . implode(
-					' AND ', $condition)) : '') . ' ' . ($order ? (' ORDER BY ' . $order) : '') . '  LIMIT ' . $offset . ',' . $count);
+						$_cats) ? (' AND (' . implode(" $catlogic ", $_cats) . ')') : '') . ($dirpath != '/' ? (' AND Path LIKE "' . $_db->escape($dirpath) . '%"') : '') . ' ' . ($condition ? (' AND ' . implode(
+								' AND ', $condition)) : '') . ' ' . ($order ? (' ORDER BY ' . $order) : '') . '  LIMIT ' . $offset . ',' . $count);
 
 
 		return $_db;
 	}
 
 	function getObjects($classid, $dirid, $categories, $catlogic, &$sort, $count, $field){
+		$select = array('OF_ID', 'OF_Text');
 
-		$_select = array(
-			'OF_ID', 'OF_Text'
-		);
-
-		if(!empty($field)){
-			$_select[] = $field;
+		if($field){
+			$select[] = $field;
 		}
 
 		$sort = is_array($sort) ? $sort : array();
 
 		$_order = array();
-		foreach($sort as $_k => $_sort){
+		foreach($sort as $_sort){
 			$_order[] = $_sort['field'] . ' ' . $_sort['order'];
 		}
 		$categories = is_array($categories) ? $categories : makeArrayFromCSV($categories);
-		$_fieldset = self::getObjData($_select, $classid, id_to_path($dirid, OBJECT_FILES_TABLE), $categories, $catlogic, array(), $_order, 0, $count);
+		$_fieldset = self::getObjData($select, $classid, id_to_path($dirid, OBJECT_FILES_TABLE), $categories, $catlogic, array(), $_order, 0, $count);
 		$_ids = array();
 
 		while($_fieldset->next_record()){
@@ -154,14 +151,14 @@ abstract class we_navigation_dynList{
 			$_ids[] = array(
 				'id' => $_fieldset->Record['OF_ID'],
 				'text' => $_fieldset->Record['OF_Text'],
-				'field' => we_navigation_navigation::encodeSpecChars($_fieldset->Record[$field] ? $_fieldset->Record[$field] : '')
+				'field' => $field && $_fieldset->Record[$field] ? we_navigation_navigation::encodeSpecChars($_fieldset->Record[$field]) : ''
 			);
 		}
 
 		return $_ids;
 	}
 
-	private function getObjData($select = array(), $classid, $dirpath = '/', $categories = array(), $catlogic = 'AND', $condition = array(), $order = array(), $offset = 0, $count = 999999999){
+	private function getObjData(array $select, $classid, $dirpath = '/', array $categories = array(), $catlogic = 'AND', array $condition = array(), array $order = array(), $offset = 0, $count = 999999999){
 		$_db = new DB_WE();
 		$categories = is_array($categories) ? $categories : makeArrayFromCSV($categories);
 		$_cats = array();
@@ -181,10 +178,10 @@ abstract class we_navigation_dynList{
 		if($dirpath != '/'){
 			$_where[] = 'OF_Path LIKE "' . $_db->escape($dirpath) . '%"';
 		}
-		$_where[] = 'OF_Published > 0'; // Bug #4797
-		$_db->query('SELECT ' . implode(',', $select) . ' FROM ' . OBJECT_X_TABLE . $classid . '
-						WHERE OF_ID<>0 ' . (!empty($_where) ? ('AND ' . implode(
-					' AND ', $_where)) : '') . ($order ? (' ORDER BY ' . implode(',', $order)) : '') . ' LIMIT ' . $offset . ',' . $count);
+		$_where[] = 'OF_Published>0'; // Bug #4797
+		$_db->query('SELECT ' . implode(',', $select) . ' FROM ' . OBJECT_X_TABLE . $classid . ' WHERE OF_ID!=0 ' .
+				($_where ? ('AND ' . implode(' AND ', $_where)) : '') .
+				($order ? (' ORDER BY ' . implode(',', $order)) : '') . ' LIMIT ' . $offset . ',' . $count);
 
 		return $_db;
 	}
@@ -200,7 +197,7 @@ abstract class we_navigation_dynList{
 				'id' => $_fieldset->Record['ID'],
 				'text' => $_fieldset->Record['Text'],
 				'field' => we_navigation_navigation::encodeSpecChars(
-					isset($_catfields['default']['Title']) ? $_catfields['default']['Title'] : '')
+						isset($_catfields['default']['Title']) ? $_catfields['default']['Title'] : '')
 			);
 		}
 
