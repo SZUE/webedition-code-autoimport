@@ -34,7 +34,7 @@ foreach($js_load as $js){
 unset($js_load);
 
 print STYLESHEET .
-	we_html_element::cssElement('
+		we_html_element::cssElement('
 .rssDiv, .rssDiv *{
 	background-color: transparent;
 	color: black;
@@ -265,7 +265,9 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 					var oRemoveCol = gel('c_' + i);
 					oRemoveCol.parentNode.removeChild(oRemoveCol);
 					var oSpacer = gel('spacer_' + (i - 1));
-					oSpacer.parentNode.removeChild(oSpacer);
+					if (oSpacer) {
+						oSpacer.parentNode.removeChild(oSpacer);
+					}
 				}
 				_iLayoutCols -= iRemoveCols;
 				le_dragInit(gel('le_tblWidgets'));
@@ -897,7 +899,7 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 	$_transact = md5(uniqid(__FILE__, true));
 
 	echo "function newMessage(username){" . ( defined("WE_MESSAGING_MODULE_DIR") ?
-		"	new jsWindow('" . WE_MESSAGING_MODULE_DIR . "messaging_newmessage.php?we_transaction=" . $_transact . "&mode=u_'+escape(username),'messaging_new_message',-1,-1,670,530,true,false,true,false);" : ''
+			"	new jsWindow('" . WE_MESSAGING_MODULE_DIR . "messaging_newmessage.php?we_transaction=" . $_transact . "&mode=u_'+escape(username),'messaging_new_message',-1,-1,670,530,true,false,true,false);" : ''
 	) . "}";
 	?>
 
@@ -972,8 +974,8 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 		foreach($d as $aProps){
 			$iCurrId++;
 			if(!((($aProps[0] == 'usr' || $aProps[0] == 'msg') && !defined('USER_TABLE')) ||
-				($aProps[0] == 'msg' && !defined('MESSAGING_SYSTEM')) ||
-				($aProps[0] == 'plg' && (!WE_TRACKER_DIR || !file_exists($_SERVER['DOCUMENT_ROOT'] . WE_TRACKER_DIR . "/includes/showme.inc.php"))))){
+					($aProps[0] == 'msg' && !defined('MESSAGING_SYSTEM')) ||
+					($aProps[0] == 'plg' && (!WE_TRACKER_DIR || !file_exists($_SERVER['DOCUMENT_ROOT'] . WE_TRACKER_DIR . "/includes/showme.inc.php"))))){
 				$iWidth = ((!$aProps[2]) ? $small : $large);
 				if(!in_array($aProps[0], $aDiscard)){
 					if($aProps[0] == 'upb' && $aProps[3] == ''){
@@ -990,19 +992,19 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 				}
 				include(WE_INCLUDES_PATH . 'we_widgets/inc/' . $aProps[0] . '.inc.php');
 				$$aProps[0] = we_widget::create(
-						'm_' . $iCurrId, $aProps[0], $oTblCont, $aLang, $aProps[1], $aProps[2], $aProps[3], $iWidth, $aPrefs[$aProps[0]]["height"], $aPrefs[$aProps[0]]["isResizable"]);
+								'm_' . $iCurrId, $aProps[0], $oTblCont, $aLang, $aProps[1], $aProps[2], $aProps[3], $iWidth, $aPrefs[$aProps[0]]["height"], $aPrefs[$aProps[0]]["isResizable"]);
 				$s2 .= we_html_element::htmlDiv(
-						array(
-						"id" => "m_" . $iCurrId, "class" => "le_widget", "style" => "position:relative;"
-						), $$aProps[0]->getHtml()) .
-					we_html_element::jsElement("initWidget('" . 'm_' . $iCurrId . "');");
+								array(
+							"id" => "m_" . $iCurrId, "class" => "le_widget", "style" => "position:relative;"
+								), $$aProps[0]->getHtml()) .
+						we_html_element::jsElement("initWidget('" . 'm_' . $iCurrId . "');");
 			}
 		}
 		$s1 .= '<td id="c_' . $iCurrCol . '" class="cls_' . $iCurrCol . (($bExtendedCol) ? '_expand' : '_collapse') . '">' .
-			$s2 .
-			we_html_element::htmlDiv(array(
-				"class" => "wildcard"
-				), "") . '</td>';
+				$s2 .
+				we_html_element::htmlDiv(array(
+					"class" => "wildcard"
+						), "") . '</td>';
 		if($iDatLen > $iCurrCol){
 			$s1 .= '<td id="spacer_' . $iCurrCol . '" style="width: 5px;"></td>';
 		}
@@ -1010,61 +1012,61 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 	while($iCurrCol < $iLayoutCols){
 		$iCurrCol++;
 		$s1 .= '<td id="c_' . $iCurrCol . '" class="cls_' . $iCurrCol . '_collapse">' . we_html_element::htmlDiv(
-				array(
-				"class" => "wildcard"
-				), "") . '</td>' .
-			($iLayoutCols > $iCurrCol ? '<td>&nbsp;&nbsp;</td>' : '');
+						array(
+					"class" => "wildcard"
+						), "") . '</td>' .
+				($iLayoutCols > $iCurrCol ? '<td>&nbsp;&nbsp;</td>' : '');
 	}
 
 	$oTblWidgets = new we_html_table(array(
 		"cellpadding" => 0, "cellspacing" => 0, "border" => 0, "height" => "98%"
-		), 1, 1);
+			), 1, 1);
 	$oTblWidgets->setCol(
-		0, 0, array(
+			0, 0, array(
 		"valign" => "top", "width" => "100%", "align" => "left"
-		), we_html_element::htmlDiv(
-			array(
-			"id" => "modules"
-			), '<table id="le_tblWidgets" cellspacing="0" border="0"><tr id="rowWidgets">' . $s1 . '</tr></table>'));
+			), we_html_element::htmlDiv(
+					array(
+				"id" => "modules"
+					), '<table id="le_tblWidgets" cellspacing="0" border="0"><tr id="rowWidgets">' . $s1 . '</tr></table>'));
 
 	// this is the clone widget
 	$oClone = we_widget::create("clone", "_reCloneType_", null, array('', ''), "white", 0, "", 100, 60);
 
 	print
-		we_html_element::htmlBody(
-			array(
-			'onload' => "_EditorFrame.initEditorFrameData({'EditorIsLoading':false});",
-			'style' => 'margin: 10px 10px 10px 10px',
-			'class' => "bgc_white"
-			), we_html_element::htmlForm(
-				array(
-				"name" => "we_form"
-				), we_html_element::htmlHidden(array(
-					"name" => "we_cmd[0]", "value" => "save"
-				)) . we_html_element::htmlHidden(array(
-					"name" => "we_cmd[1]", "value" => ""
-				)) . we_html_element::htmlHidden(array(
-					"name" => "we_cmd[2]", "value" => ""
-			))) . we_html_element::htmlDiv(
-				array(
-				"id" => "rpcBusy", "style" => "display:none;"
-				), we_html_element::htmlImg(
+			we_html_element::htmlBody(
 					array(
-						"src" => IMAGE_DIR . "pd/busy.gif",
-						"width" => '32px',
-						"height" => '32px',
-						"border" => '0px',
-						"style" => "margin-left:10px;"
-			))) . we_html_element::htmlDiv(array(
-				"id" => "widgets"
-				), "") . $oTblWidgets->getHtml() . we_html_element::jsElement(
-				"oTblWidgets=gel('le_tblWidgets');initDragWidgets();") . we_html_element::htmlDiv(
-				array(
-				"id" => "divClone", "style" => "position:relative;display:none;"
-				), $oClone->getHtml()));
+				'onload' => "_EditorFrame.initEditorFrameData({'EditorIsLoading':false});",
+				'style' => 'margin: 10px 10px 10px 10px',
+				'class' => "bgc_white"
+					), we_html_element::htmlForm(
+							array(
+						"name" => "we_form"
+							), we_html_element::htmlHidden(array(
+								"name" => "we_cmd[0]", "value" => "save"
+							)) . we_html_element::htmlHidden(array(
+								"name" => "we_cmd[1]", "value" => ""
+							)) . we_html_element::htmlHidden(array(
+								"name" => "we_cmd[2]", "value" => ""
+					))) . we_html_element::htmlDiv(
+							array(
+						"id" => "rpcBusy", "style" => "display:none;"
+							), we_html_element::htmlImg(
+									array(
+										"src" => IMAGE_DIR . "pd/busy.gif",
+										"width" => '32px',
+										"height" => '32px',
+										"border" => '0px',
+										"style" => "margin-left:10px;"
+					))) . we_html_element::htmlDiv(array(
+						"id" => "widgets"
+							), "") . $oTblWidgets->getHtml() . we_html_element::jsElement(
+							"oTblWidgets=gel('le_tblWidgets');initDragWidgets();") . we_html_element::htmlDiv(
+							array(
+						"id" => "divClone", "style" => "position:relative;display:none;"
+							), $oClone->getHtml()));
 } else { // no right to see cockpit!!!
 	print
-		we_html_element::jsElement('
+			we_html_element::jsElement('
 		function isHot(){
 			return false;
 		}
@@ -1081,7 +1083,7 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 		}
 		);
 	') .
-		we_html_element::cssElement('
+			we_html_element::cssElement('
 		html {
 			heigth: 90%;
 		}
@@ -1102,16 +1104,16 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 			padding: 1px;
 		}
 		') .
-		'</head>' .
-		we_html_element::htmlBody(
-			array(
-			"onload" => "_EditorFrame.initEditorFrameData({'EditorIsLoading':false});"
-			), we_html_element::htmlDiv(
-				array(
-				"class" => "defaultfont errorMessage", "style" => "width: 400px;"
-				), (permissionhandler::hasPerm("CHANGE_START_DOCUMENT") && permissionhandler::hasPerm("EDIT_SETTINGS") ? we_html_tools::htmlAlertAttentionBox(
-						"<strong>" . g_l('SEEM', "[question_change_startdocument]") . "</strong><br /><br />" . we_html_button::create_button(
-							"preferences", "javascript:top.we_cmd('openPreferences');"), we_html_tools::TYPE_ALERT, 0, false) : we_html_tools::htmlAlertAttentionBox(
-						"<strong>" . g_l('SEEM', "[start_with_SEEM_no_startdocument]") . "</strong>", we_html_tools::TYPE_ALERT, 0, false))));
+			'</head>' .
+			we_html_element::htmlBody(
+					array(
+				"onload" => "_EditorFrame.initEditorFrameData({'EditorIsLoading':false});"
+					), we_html_element::htmlDiv(
+							array(
+						"class" => "defaultfont errorMessage", "style" => "width: 400px;"
+							), (permissionhandler::hasPerm("CHANGE_START_DOCUMENT") && permissionhandler::hasPerm("EDIT_SETTINGS") ? we_html_tools::htmlAlertAttentionBox(
+											"<strong>" . g_l('SEEM', "[question_change_startdocument]") . "</strong><br /><br />" . we_html_button::create_button(
+													"preferences", "javascript:top.we_cmd('openPreferences');"), we_html_tools::TYPE_ALERT, 0, false) : we_html_tools::htmlAlertAttentionBox(
+											"<strong>" . g_l('SEEM', "[start_with_SEEM_no_startdocument]") . "</strong>", we_html_tools::TYPE_ALERT, 0, false))));
 }
 echo '<iframe id="RSIFrame" name="RSIFrame" style="border:0px;width:1px;height:1px; visibility:hidden"></iframe></html>';
