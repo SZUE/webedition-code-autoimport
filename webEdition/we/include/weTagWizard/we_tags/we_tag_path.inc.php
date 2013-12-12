@@ -7,15 +7,17 @@ $this->NeedsEndTag = false;
 //$this->Module = '';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$this->Attributes[] = new weTagData_textAttribute('index', false, '');
-$this->Attributes[] = new weTagData_textAttribute('separator', false, '');
-$this->Attributes[] = new weTagData_textAttribute('home', false, '');
-$this->Attributes[] = new weTagData_selectAttribute('hidehome', array(new weTagDataOption('false'),
-	new weTagDataOption('true'),
-	), false, '');
-$this->Attributes[] = new weTagData_textAttribute('field', false, '');
-$this->Attributes[] = new weTagData_textAttribute('dirfield', false, '');
-$this->Attributes[] = new weTagData_selectAttribute('fieldforfolder', weTagData_selectAttribute::getTrueFalse(), false, '');
-$this->Attributes[] = new weTagData_selectAttribute('doc', array(new weTagDataOption('top'),
-	new weTagDataOption('self'),
-	), false, '');
+$this->Attributes = array(
+	new weTagData_textAttribute('index', false, ''),
+	new weTagData_textAttribute('separator', false, ''),
+	new weTagData_textAttribute('home', false, ''),
+	new weTagData_selectAttribute('hidehome', weTagData_selectAttribute::getTrueFalse(), false, ''),
+	new weTagData_textAttribute('field', false, ''),
+	new weTagData_textAttribute('dirfield', false, ''),
+	new weTagData_selectAttribute('fieldforfolder', weTagData_selectAttribute::getTrueFalse(), false, ''),
+	new weTagData_selectAttribute('doc', array(
+		new weTagDataOption('top'),
+		new weTagDataOption('self'),
+			), false, ''),
+	new weTagData_textAttribute('max', false, ''),
+);
