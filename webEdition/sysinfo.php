@@ -76,7 +76,6 @@ function ini_get_bool($val){
 }
 
 function ini_get_message($val){
-	global $_sysinfo;
 	$bool = ini_get($val);
 	if($val == "1"){
 		return 'on';

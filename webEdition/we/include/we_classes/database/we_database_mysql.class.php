@@ -56,9 +56,9 @@ class DB_WE extends we_database_base{
 					exit('Error in DB connect');
 			}
 			if(!@mysql_select_db($Database, $this->Link_ID) &&
-				!@mysql_select_db($Database, $this->Link_ID) &&
-				!@mysql_select_db($Database, $this->Link_ID) &&
-				!@mysql_select_db($Database, $this->Link_ID)){
+					!@mysql_select_db($Database, $this->Link_ID) &&
+					!@mysql_select_db($Database, $this->Link_ID) &&
+					!@mysql_select_db($Database, $this->Link_ID)){
 				$this->halt('cannot use database ' . $this->Database);
 				return false;
 			}
@@ -81,8 +81,8 @@ class DB_WE extends we_database_base{
 
 	protected function _query($Query_String, $unbuffered = false){
 		return ($unbuffered ?
-				@mysql_unbuffered_query($Query_String, $this->Link_ID) :
-				@mysql_query($Query_String, $this->Link_ID));
+						@mysql_unbuffered_query($Query_String, $this->Link_ID) :
+						@mysql_query($Query_String, $this->Link_ID));
 	}
 
 	public function close(){
@@ -146,17 +146,19 @@ class DB_WE extends we_database_base{
 		return mysql_insert_id($this->Link_ID);
 	}
 
-	public function getCurrentCharset(){
+	public function _getCurrentCharset(){
 		return mysql_client_encoding();
 	}
 
-	public function getInfo(){
-		return '<table class="defaultfont"><tr><td>type:</td><td>' . $this->conType .
-			'</td></tr><tr><td>protocol:</td><td>' . mysql_get_proto_info() .
-			'</td></tr><tr><td>client:</td><td>' . mysql_get_client_info() .
-			'</td></tr><tr><td>host:</td><td>' . mysql_get_host_info() .
-			'</td></tr><tr><td>server:</td><td>' . mysql_get_server_info() .
-			'</td></tr><tr><td>encoding:</td><td>' . mysql_client_encoding() . '</td></tr></table>';
+	public function _getInfo(){
+		return array(
+			'type' => $this->conType,
+			'protocol' => mysql_get_proto_info(),
+			'client' => mysql_get_client_info(),
+			'host' => mysql_get_host_info(),
+			'server' => mysql_get_server_info(),
+			'encoding' => mysql_client_encoding(),
+		);
 	}
 
 	protected function errno(){
