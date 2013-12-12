@@ -180,12 +180,10 @@ function openClose(name,status) {
 	if(status) {
 		if(!menuDaten[eintragsIndex].loaded) {
 			drawEintraege();
-		}
-		else {
+		}else {
 			drawEintraege();
 		}
-	}
-	else {
+	}else {
 		drawEintraege();
 	}
 }
@@ -280,7 +278,7 @@ function urlEntry(icon,name,vorfahr,text,contentType,table,published,denied) {
 	this.denied = denied;
 	return this;
 }
-		';
+';
 
 		$jsCode .= '
 function loadData() {

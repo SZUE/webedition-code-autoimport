@@ -35,12 +35,12 @@ if(!isset($_SESSION)){
 
 //FIXME: still relevant?
 //set new sessionID from dw-extension
-if((isset($_SESSION['user']['ID']) && isset($_REQUEST['weSessionId']) && $_REQUEST['weSessionId'] != '' && isset($_REQUEST['cns']) && $_REQUEST['cns'] == 'dw')){
-	$sid = htmlspecialchars(strip_tags($_REQUEST['weSessionId']));
-	session_name(SESSION_NAME);
-	session_id($sid);
-	session_start();
-}
+/* if((isset($_SESSION['user']['ID']) && isset($_REQUEST['weSessionId']) && $_REQUEST['weSessionId'] != '' && isset($_REQUEST['cns']) && $_REQUEST['cns'] == 'dw')){
+  $sid = htmlspecialchars(strip_tags($_REQUEST['weSessionId']));
+  session_name(SESSION_NAME);
+  session_id($sid);
+  session_start();
+  } */
 
 if(!isset($_SESSION['weS'])){
 	$_SESSION['weS'] = array();
@@ -92,76 +92,13 @@ if(!(isset($_SESSION['user']) && is_array($_SESSION['user']))){
 $_SESSION['user']['Username'] = $userdata['username'];
 $_SESSION['user']['ID'] = $userdata['ID'];
 
-$workspaces = array(
-	FILE_TABLE => array('key' => 'workSpace', 'value' => array(), 'parent' => 0, 'parentKey' => 'ParentWs'),
-	TEMPLATES_TABLE => array('key' => 'workSpaceTmp', 'value' => array(), 'parent' => 0, 'parentKey' => 'ParentWst'),
-	NAVIGATION_TABLE => array('key' => 'workSpaceNav', 'value' => array(), 'parent' => 0, 'parentKey' => 'ParentWsn'),
-);
+if($_SESSION['user']['Username'] && $_SESSION['user']['ID']){
 
-if(defined('OBJECT_FILES_TABLE')){
-	$workspaces[OBJECT_FILES_TABLE] = array('key' => 'workSpaceObj', 'value' => array(), 'parent' => 0, 'parentKey' => 'ParentWso');
-}
-if(defined('NEWSLETTER_TABLE')){
-	$workspaces[NEWSLETTER_TABLE] = array('key' => 'workSpaceNwl', 'value' => array(), 'parent' => 0, 'parentKey' => 'ParentWsnl');
-}
+	$_SESSION['prefs'] = we_users_user::readPrefs($userdata['ID'], $DB_WE, true);
 
-$fields = array('ParentID');
-foreach($workspaces as $cur){
-	$fields[] = $cur['key'];
-	$fields[] = $cur['parentKey'];
-}
-$fields = implode(',', $fields);
-
-$userGroups = array(); //	Get Groups user belongs to.
-$db_tmp = new DB_WE();
-
-$DB_WE->query('SELECT ' . $fields . ' FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION['user']['ID']) . ' OR Alias=' . intval($_SESSION['user']['ID']));
-while($DB_WE->next_record()){
-	$pid = $DB_WE->f('ParentID');
-
-	foreach($workspaces as &$cur){
-		// get workspaces
-		$a = explode(',', trim($DB_WE->f($cur['key']), ','));
-		foreach($a as $k => $v){
-			$cur['value'][] = $v;
-		}
-		$cur['parent'] = $DB_WE->f($cur['parentKey']);
-	}
-	unset($cur);
-	while($pid){ //	For each group
-		$userGroups[] = $pid;
-
-		$row = getHash('SELECT ' . $fields . ' FROM ' . USER_TABLE . ' WHERE ID=' . intval($pid), $db_tmp);
-		if(!empty($row)){
-			$pid = $row['ParentID'];
-			foreach($workspaces as &$cur){
-				if($cur['parent']){
-					// get workspaces
-					$a = explode(',', trim($row[$cur['key']], ','));
-					foreach($a as $k => $v){
-						$cur['value'][] = $v;
-					}
-				}
-				$cur['parent'] = $row[$cur['parentKey']];
-			}
-			unset($cur);
-		} else {
-			$pid = 0;
-		}
-	}
-}
-$_SESSION['user']['groups'] = $userGroups; //	order: first is folder with user himself (deepest in tree)
-$_SESSION['user']['workSpace'] = array();
-
-foreach($workspaces as $key => $cur){
-	$_SESSION['user']['workSpace'][$key] = array_unique(array_filter($cur['value']));
-}
-
-$_SESSION['prefs'] = we_users_user::readPrefs($userdata['ID'], $DB_WE, true);
-
-if(isset($_SESSION['user']['Username']) && isset($_SESSION['user']['ID']) && $_SESSION['user']['Username'] && $_SESSION['user']['ID']){
 	$_SESSION['perms'] = we_users_user::getAllPermissions($_SESSION['user']['ID']);
+	we_users_user::setEffectiveWorkspaces($_SESSION['user']['ID'], $GLOBALS['DB_WE']);
 }
 $_SESSION['user']['isWeSession'] = true; // for pageLogger, to know that it is really a webEdition session
 //FIMXE make this a function to remove uneeded vars from global
-unset($userdata, $userGroups);
+unset($userdata);

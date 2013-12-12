@@ -36,12 +36,15 @@ switch(DB_CONNECT){
 	case 'mysqli_connect':
 	case 'mysqli_pconnect':
 		require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/database/we_database_mysqli.class.php');
-		if(!defined('MYSQL_BOTH'))
+		if(!defined('MYSQL_BOTH')){
 			define('MYSQL_BOTH', MYSQLI_BOTH);
-		if(!defined('MYSQL_ASSOC'))
+		}
+		if(!defined('MYSQL_ASSOC')){
 			define('MYSQL_ASSOC', MYSQLI_ASSOC);
-		if(!defined('MYSQL_NUM'))
+		}
+		if(!defined('MYSQL_NUM')){
 			define('MYSQL_NUM', MYSQLI_NUM);
+		}
 		break;
 	default:
 		echo 'unknown DB connection type "' . DB_CONNECT . "\"\n";

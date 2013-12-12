@@ -107,7 +107,7 @@ class we_navigation_items{
 		$_all = count($_items) - count($_depended) + count($_new_items);
 		$_items = array_splice($_items, 0, $_all);
 		foreach($_items as $_item){
-			$this->items['id' . $_item['id']] = new we_navigation_item($_item['id'], $_item['docid'], $_item['table'], $_item['text'], $_item['display'], $_item['href'], $_item['type'], $_item['icon'], $_item['attributes'], $_item['limitaccess'], $_item['customers'], $_item['currentonurlpar'], $_item['currentonanker']);
+			$this->items['id' . $_item['id']] = new we_navigation_item($_item['id'], $_item['docid'], $_item['table'], $_item['text'], $_item['display'], $_item['href'], $_item['type'], $_item['icon'], $_item['attributes'], $_item['limitaccess'], $_item['customers'], isset($_item['currentonurlpar']) ? $_item['currentonurlpar'] : '', isset($_item['currentonanker']) ? $_item['currentonanker'] : '');
 			if(isset($this->items['id' . $_item['parentid']])){
 				$this->items['id' . $_item['parentid']]->addItem($this->items['id' . $_item['id']]);
 			}
@@ -133,7 +133,7 @@ class we_navigation_items{
 					'parentid' => $_nav->ID,
 					'workspaceid' => $_nav->WorkspaceID,
 					'icon' => isset($this->Storage['ids'][$_nav->IconID]) ? $this->Storage['ids'][$_nav->IconID] : id_to_path(
-							$_nav->IconID),
+									$_nav->IconID),
 					'attributes' => $_nav->Attributes,
 					'limitaccess' => $_nav->LimitAccess,
 					'customers' => self::getCustomerData($_nav),
@@ -142,7 +142,7 @@ class we_navigation_items{
 
 				if($rules){
 					$_items[(count($_items) - 1)]['currentRule'] = we_navigation_rule::getWeNavigationRule(
-							'defined_' . ($_dyn['field'] ? $_dyn['field'] : $_dyn['text']), $_nav->ID, $_nav->SelectionType, $_nav->FolderID, $_nav->DocTypeID, $_nav->ClassID, $_nav->CategoryIDs, $_nav->WorkspaceID, $_href, false);
+									'defined_' . ($_dyn['field'] ? $_dyn['field'] : $_dyn['text']), $_nav->ID, $_nav->SelectionType, $_nav->FolderID, $_nav->DocTypeID, $_nav->ClassID, $_nav->CategoryIDs, $_nav->WorkspaceID, $_href, false);
 				}
 			}
 		}
@@ -192,7 +192,7 @@ class we_navigation_items{
 		unset($navigationRulesStorage);
 
 		foreach($this->items as &$_item){
-			if(strtolower(get_class($_item)) == 'wenavigationitem'){
+			if(method_exists($_item, 'isCurrent')){
 				$this->hasCurrent = ($_item->isCurrent($this));
 			}
 		}
@@ -212,14 +212,14 @@ class we_navigation_items{
 		$_item = $this->getItemFromPool($parentid);
 
 		$_navigation->initByRawData($_item ? $_item : array(
-				'ID' => 0, 'Path' => '/'
+					'ID' => 0, 'Path' => '/'
 		));
 
 // set defaultTemplates
 		$this->setDefaultTemplates();
 
 		$this->items['id' . $_navigation->ID] = new we_navigation_item(
-			$_navigation->ID, $_navigation->LinkID, ($_navigation->IsFolder ? ($_navigation->FolderSelection == we_navigation_navigation::STPYE_OBJLINK ? OBJECT_FILES_TABLE : FILE_TABLE) : (($_navigation->SelectionType == we_navigation_navigation::STPYE_CLASS || $_navigation->SelectionType == we_navigation_navigation::STPYE_OBJLINK) ? OBJECT_FILES_TABLE : FILE_TABLE)), $_navigation->Text, $_navigation->Display, $_navigation->getHref($this->Storage['ids']), $showRoot ? ($_navigation->ID == 0 ? 'root' : ($_navigation->IsFolder ? 'folder' : 'item')) : 'root', $this->id2path($_navigation->IconID), $_navigation->Attributes, $_navigation->LimitAccess, $this->getCustomerData($_navigation), $_navigation->CurrentOnUrlPar, $_navigation->CurrentOnAnker);
+				$_navigation->ID, $_navigation->LinkID, ($_navigation->IsFolder ? ($_navigation->FolderSelection == we_navigation_navigation::STPYE_OBJLINK ? OBJECT_FILES_TABLE : FILE_TABLE) : (($_navigation->SelectionType == we_navigation_navigation::STPYE_CLASS || $_navigation->SelectionType == we_navigation_navigation::STPYE_OBJLINK) ? OBJECT_FILES_TABLE : FILE_TABLE)), $_navigation->Text, $_navigation->Display, $_navigation->getHref($this->Storage['ids']), $showRoot ? ($_navigation->ID == 0 ? 'root' : ($_navigation->IsFolder ? 'folder' : 'item')) : 'root', $this->id2path($_navigation->IconID), $_navigation->Attributes, $_navigation->LimitAccess, $this->getCustomerData($_navigation), $_navigation->CurrentOnUrlPar, $_navigation->CurrentOnAnker);
 
 		$_items = $_navigation->getDynamicPreview($this->Storage, true);
 
@@ -230,7 +230,7 @@ class we_navigation_items{
 					$_item['text'] = $_item['name'];
 				}
 				$this->items['id' . $_item['id']] = new we_navigation_item(
-					$_item['id'], $_item['docid'], $_item['table'], $_item['text'], $_item['display'], $_item['href'], $_item['type'], $_item['icon'], $_item['attributes'], $_item['limitaccess'], $_item['customers'], isset($_item['currentonurlpar']) ? $_item['currentonurlpar'] : '', isset($_item['currentonanker']) ? $_item['currentonanker'] : '');
+						$_item['id'], $_item['docid'], $_item['table'], $_item['text'], $_item['display'], $_item['href'], $_item['type'], $_item['icon'], $_item['attributes'], $_item['limitaccess'], $_item['customers'], isset($_item['currentonurlpar']) ? $_item['currentonurlpar'] : '', isset($_item['currentonanker']) ? $_item['currentonanker'] : '');
 
 				if(isset($this->items['id' . $_item['parentid']])){
 					$this->items['id' . $_item['parentid']]->addItem($this->items['id' . $_item['id']]);
@@ -383,8 +383,8 @@ class we_navigation_items{
 
 	function getItems($id = false){
 		return ($id ?
-				$this->getItemIds($id) :
-				array_keys($this->items));
+						$this->getItemIds($id) :
+						array_keys($this->items));
 	}
 
 	function getItem($id){
@@ -410,7 +410,7 @@ class we_navigation_items{
 // is last entry??
 		if(isset($useTemplate['last']) &&
 // check if item is last
-			((count($this->items['id' . $item->parentid]->items)) == $item->position)){
+				((count($this->items['id' . $item->parentid]->items)) == $item->position)){
 			return $useTemplate['last'];
 		}
 
@@ -451,7 +451,7 @@ class we_navigation_items{
 	function writeNavigation($depth = false){
 		$GLOBALS['weNavigationObject'] = &$this;
 
-		if(isset($this->items['id' . $this->rootItem]) && (get_class($this->items['id' . $this->rootItem]) == 'weNavigationItem')){
+		if(isset($this->items['id' . $this->rootItem]) && (get_class($this->items['id' . $this->rootItem]) == 'we_navigation_item')){ //FIXME: getclass
 			if($this->items['id' . $this->rootItem]->type == 'folder' && $depth !== false){
 // if initialised by id => root item is on lvl0 -> therefore decrease depth
 // this is to make it equal init by id, parentid

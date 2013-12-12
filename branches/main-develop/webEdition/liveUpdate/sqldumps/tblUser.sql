@@ -31,7 +31,6 @@ CREATE TABLE ###TBLPREFIX###tblUser (
   ModifierID int(11) unsigned NOT NULL default '0',
   ModifyDate int(10) unsigned NOT NULL default '0',
   Ping int(11) unsigned NOT NULL default '0',
-  Portal varchar(255) NOT NULL default '',
   workSpace TEXT NOT NULL default '',
   workSpaceDef TEXT NOT NULL default '',
   workSpaceTmp TEXT NOT NULL default '',

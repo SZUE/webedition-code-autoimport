@@ -91,7 +91,7 @@ abstract class we_customer_abstractFilter{
 	 * @param array $filter
 	 * @return we_customer_abstractFilter
 	 */
-	function __construct($mode = self::OFF, $specificCustomers = array(), $blackList = array(), $whiteList = array(), $filter = array()){
+	function __construct($mode = self::OFF, array $specificCustomers = array(), array $blackList = array(), array $whiteList = array(), array $filter = array()){
 		$this->setMode($mode);
 		$this->setSpecificCustomers($specificCustomers);
 		if(is_array($blackList)){
@@ -197,6 +197,49 @@ abstract class we_customer_abstractFilter{
 		return $hasPermission;
 	}
 
+	private static function evalSingleFilterQuery($op, $key, $value){
+		switch($op){
+			case self::OP_EQ:
+				return '`' . $key . '`="' . $value . '"';
+			case self::OP_NEQ:
+				return '`' . $key . '`!="' . $value . '"';
+			case self::OP_LESS:
+				return '`' . $key . '`<"' . $value . '"';
+			case self::OP_LEQ:
+				return '`' . $key . '`<="' . $value . '"';
+			case self::OP_GREATER:
+				return '`' . $key . '`>"' . $value . '"';
+			case self::OP_GEQ:
+				return '`' . $key . '`>="' . $value . '"';
+			case self::OP_STARTS_WITH:
+				return '`' . $key . '` LIKE "' . $value . '%"';
+			case self::OP_ENDS_WITH:
+				return '`' . $key . '` LIKE "%' . $value . '"';
+			case self::OP_CONTAINS:
+				return '`' . $key . '` LIKE "%' . $value . '%"';
+			case self::OP_NOT_CONTAINS:
+				return '`' . $key . '` NOT LIKE "%' . $value . '%"';
+			case self::OP_IN:
+				return 'FIND_IN_SET("' . $value . '",`' . $key . '`)';
+			case self::OP_NOT_IN:
+				return '!FIND_IN_SET("' . $value . '",`' . $key . '`)';
+			default:
+				t_e('invalid customer filter op: ' . $op);
+				return 'FALSE';
+		}
+	}
+
+	public static function getQueryFromFilter(array $filter){
+		$flag = false;
+		$ret = '';
+		foreach($filter as $_filter){
+			//FIXME: read webuser table to check for nonexistent fields
+			$ret.=($flag ? ' ' . $_filter['logic'] . ' ' : '') . self::evalSingleFilterQuery($_filter['operation'], $_filter['field'], $_filter['value']);
+			$flag = true;
+		}
+		return $ret ? '(' . $ret . ')' : '';
+	}
+
 	/**
 	 * Creates and returns the filter array from $_REQUEST
 	 *
@@ -213,7 +256,7 @@ abstract class we_customer_abstractFilter{
 			while($_parse){
 				if(isset($_REQUEST['filterSelect_' . $_count])){
 
-					if(isset($_REQUEST['filterValue_' . $_count]) && trim($_REQUEST['filterValue_' . $_count]) <> ''){
+					if(isset($_REQUEST['filterValue_' . $_count]) && trim($_REQUEST['filterValue_' . $_count]) != ''){
 						$_filter[] = array(
 							'logic' => (isset($_REQUEST['filterLogic_' . $_count]) && $_REQUEST['filterLogic_' . $_count] == 'OR' ? 'OR' : 'AND'),
 							'field' => $_REQUEST['filterSelect_' . $_count],
