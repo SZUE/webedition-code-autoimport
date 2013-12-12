@@ -514,9 +514,8 @@ class we_users_user{
 		if(defined('NEWSLETTER_TABLE') && $this->workSpaceNwl){
 			$this->workspaces[NEWSLETTER_TABLE] = makeArrayFromCSV($this->workSpaceNwl);
 		}
-
 		if(defined('CUSTOMER_TABLE')){
-			$this->workspaces[CUSTOMER_TABLE] = $this->workspaceCust ? unserialize($this->workspaceCust) : array();
+			$this->workspaces[CUSTOMER_TABLE] = $this->workSpaceCust ? unserialize($this->workSpaceCust) : array();
 		}
 
 		if($this->workSpaceDef){
