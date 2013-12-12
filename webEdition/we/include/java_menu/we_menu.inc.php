@@ -336,7 +336,7 @@ $we_menu = array(
 	array(// separator
 		'parent' => 1000000
 	),
-	array(// File > Save
+	/*array(// File > Save
 		'text' => g_l('javaMenu_global', '[save]'),
 		'parent' => 1000000,
 		'cmd' => 'trigger_save_document',
@@ -349,7 +349,7 @@ $we_menu = array(
 		'cmd' => 'trigger_publish_document',
 		'perm' => 'PUBLISH || ADMINISTRATOR',
 		'enabled' => 1,
-	),
+	),*/
 	array(
 		'text' => g_l('javaMenu_glossary', '[glossary_check]'),
 		'parent' => 1000000,
@@ -365,13 +365,13 @@ $we_menu = array(
 		'enabled' => 1,
 		'hide' => $seeMode
 	),
-	array(// File > Close
+	/*array(// File > Close
 		'text' => g_l('javaMenu_global', '[close_single_document]'),
 		'parent' => 1000000,
 		'cmd' => 'close_document',
 		'perm' => '',
 		'enabled' => 1,
-	),
+	),*/
 	array(// File > Close All
 		'text' => g_l('javaMenu_global', '[close_all_documents]'),
 		'parent' => 1000000,
@@ -405,9 +405,6 @@ $we_menu = array(
 		'perm' => 'CAN_SEE_OBJECTFILES || ADMINISTRATOR',
 		'enabled' => 1,
 		'hide' => !defined('OBJECT_TABLE')
-	),
-	array(// separator
-		'parent' => 1000000,
 	),
 	array(// File > Search
 		'text' => g_l('javaMenu_global', '[search]') . '&hellip;',
@@ -473,9 +470,6 @@ $we_menu = array(
 		'cmd' => 'rebuild',
 		'perm' => 'REBUILD || ADMINISTRATOR',
 		'enabled' => 1,
-	),
-	array(// separator
-		'parent' => 1000000,
 	),
 	array(// File > Browse server
 		'text' => g_l('javaMenu_global', '[browse_server]') . '&hellip;',
@@ -616,9 +610,7 @@ $we_menu = array(
 		'perm' => 'EDIT_KATEGORIE || ADMINISTRATOR',
 		'enabled' => 1,
 	),
-	array(// separator
-		'parent' => 4000000
-	),
+
 	array(// Extras > Thumbnails
 		'text' => g_l('javaMenu_global', '[thumbnails]') . '&hellip;',
 		'parent' => 4000000,
@@ -634,12 +626,18 @@ $we_menu = array(
 		'enabled' => 1,
 		'hide' => $seeMode
 	),
+	array(// separator
+		'parent' => 4000000
+	),
 	array(// Extras > change password
 		'text' => g_l('javaMenu_global', '[change_password]') . '&hellip;',
 		'parent' => 4000000,
 		'cmd' => 'change_passwd',
 		'perm' => 'EDIT_PASSWD || ADMINISTRATOR',
 		'enabled' => 1,
+	),
+	array(// separator
+		'parent' => 4000000
 	),
 	array(// Extras > versioning
 		'text' => g_l('javaMenu_global', '[versioning]') . '&hellip;',
