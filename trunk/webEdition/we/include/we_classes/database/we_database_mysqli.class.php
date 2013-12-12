@@ -66,8 +66,8 @@ class DB_WE extends we_database_base{
 
 	protected function fetch_array($resultType){
 		return (is_object($this->Query_ID)) ?
-			$this->Query_ID->fetch_array($resultType) :
-			false;
+				$this->Query_ID->fetch_array($resultType) :
+				false;
 	}
 
 	protected function _affected_rows(){
@@ -147,19 +147,21 @@ class DB_WE extends we_database_base{
 		return is_object($this->Query_ID) ? $this->Query_ID->num_rows : 0;
 	}
 
-	public function getCurrentCharset(){
+	public function _getCurrentCharset(){
 		$charset = mysqli_get_charset($this->Link_ID);
 		return $charset->charset;
 	}
 
-	public function getInfo(){
+	public function _getInfo(){
 		$charset = mysqli_get_charset($this->Link_ID);
-		return '<table class="defaultfont"><tr><td>type:</td><td>' . DB_CONNECT .
-			'</td></tr><tr><td>protocol:</td><td>' . $this->Link_ID->protocol_version .
-			'</td></tr><tr><td>client:</td><td>' . $this->Link_ID->client_info .
-			'</td></tr><tr><td>host:</td><td>' . $this->Link_ID->host_info .
-			'</td></tr><tr><td>server:</td><td>' . $this->Link_ID->server_info .
-			'</td></tr><tr><td>encoding:</td><td>' . $charset->charset . '</td></tr></table>';
+		return array(
+			'type' => DB_CONNECT,
+			'protocol' => $this->Link_ID->protocol_version,
+			'client' => $this->Link_ID->client_info,
+			'host' => $this->Link_ID->host_info,
+			'server' => $this->Link_ID->server_info,
+			'encoding' => $charset->charset
+		);
 	}
 
 	protected function ping(){
