@@ -41,7 +41,7 @@ class we_search_model extends we_tool_model{
 	/**
 	 * @var string: classname
 	 */
-	var $ModelClassName = 'searchtool';
+	var $ModelClassName = __CLASS__;
 
 	/**
 	 * @var string: name of the icon in the tree
