@@ -261,6 +261,7 @@ class we_folder extends we_root{
 				return false;
 			}
 		}
+		$this->OldPath = $this->Path;
 		if(defined('OBJECT_TABLE') && $this->Table == OBJECT_TABLE){
 			$f = new we_class_folder();
 			$f->initByPath($this->Path, OBJECT_FILES_TABLE, 0, 1);
