@@ -85,25 +85,26 @@ class we_customer_selector extends we_users_selector{
 			foreach($sort_defs as $c => $sortdef){
 				if(isset($sortdef['function']) && $sortdef['function']){
 					$select[] = '@select' . count($select) . ':=' . ($settings->customer->isInfoDate($sortdef['field']) ?
-							sprintf($settings->FunctionTable[$sortdef['function']], 'FROM_UNIXTIME(' . $sortdef['field'] . ')') . ' AS ' . $sortdef['field'] . "_" . $sortdef["function"] :
-							sprintf($settings->FunctionTable[$sortdef['function']], $sortdef['field']) . " AS " . $sortdef['field'] . '_' . $sortdef['function']);
+									sprintf($settings->FunctionTable[$sortdef['function']], 'FROM_UNIXTIME(' . $sortdef['field'] . ')') . ' AS ' . $sortdef['field'] . "_" . $sortdef["function"] :
+									sprintf($settings->FunctionTable[$sortdef['function']], $sortdef['field']) . " AS " . $sortdef['field'] . '_' . $sortdef['function']);
 
 					$grouparr[] = $sortdef['field'] . '_' . $sortdef['function'];
 					$orderarr[] = $sortdef['field'] . '_' . $sortdef['function'] . ' ' . $sortdef['order'];
 					$orderarr[] = $sortdef['field'] . ' ' . $sortdef['order'];
 					if(isset($pidarr[$c])){
 						$havingarr[] = (empty($pidarr[$c]) ?
-								'(' . $sortdef['field'] . '_' . $sortdef["function"] . "='' OR " . $sortdef['field'] . '_' . $sortdef['function'] . ' IS NULL)' :
-								$sortdef['field'] . '_' . $sortdef['function'] . "='" . $pidarr[$c] . "'");
+										'(' . $sortdef['field'] . '_' . $sortdef["function"] . "='' OR " . $sortdef['field'] . '_' . $sortdef['function'] . ' IS NULL)' :
+										$sortdef['field'] . '_' . $sortdef['function'] . "='" . $pidarr[$c] . "'");
 					}
 				} else {
 					$select[] = '@select' . count($select) . ':=' . $sortdef['field'];
 					$grouparr[] = $sortdef['field'];
 					$orderarr[] = $sortdef['field'] . ' ' . $sortdef['order'];
-					if(isset($pidarr[$c]) && $pidarr[$c])
+					if(isset($pidarr[$c]) && $pidarr[$c]){
 						$havingarr[] = (empty($pidarr[$c]) ?
-								'(' . $sortdef['field'] . "='' OR " . $sortdef['field'] . ' IS NULL)' :
-								$sortdef['field'] . "='" . $pidarr[$c] . "'");
+										'(' . $sortdef['field'] . "='' OR " . $sortdef['field'] . ' IS NULL)' :
+										$sortdef['field'] . "='" . $pidarr[$c] . "'");
+					}
 				}
 			}
 
@@ -117,12 +118,16 @@ class we_customer_selector extends we_users_selector{
 			} else {
 				$fields = $settings->treeTextFormatSQL . ' AS Text,ID,ParentID,Path,Icon,0 AS IsFolder' . (empty($select) ? '' : ',' . implode(',', $select) );
 			}
-			$this->db->query('SELECT ' . $fields . ' FROM ' . CUSTOMER_TABLE . ($optionalID ? ' WHERE ID=' . intval($optionalID) : '') . ' GROUP BY ' . $grp . (count($grouparr) ? ($level != 0 ? ',ID' : '') : 'ID') . (count($havingarr) ? ' HAVING ' . implode(' AND ', $havingarr) : '') . ' ORDER BY ' . implode(',', $orderarr) . we_customer_treeLoader::getSortOrder($settings, ','));
+
+			$this->db->query('SELECT ' . $fields . ' FROM ' . CUSTOMER_TABLE . ' WHERE ' .
+					($optionalID ? ' ID=' . intval($optionalID) : '1') . ' AND ' .
+					(!permissionhandler::hasPerm("ADMINISTRATOR") && $_SESSION['user']['workSpace'][CUSTOMER_TABLE] ? $_SESSION['user']['workSpace'][CUSTOMER_TABLE] : '1 ') .
+					' GROUP BY ' . $grp . (count($grouparr) ? ($level != 0 ? ',ID' : '') : 'ID') . (count($havingarr) ? ' HAVING ' . implode(' AND ', $havingarr) : '') .
+					' ORDER BY ' . implode(',', $orderarr) . we_customer_treeLoader::getSortOrder($settings, ','));
 			return ($level < $levelcount);
 		} else {
-			$this->db->query('SELECT ID,ParentID,Path,IsFolder,Icon,' . $settings->treeTextFormatSQL . ' AS Text  FROM ' .
-				$this->db->escape($this->table) .
-				' WHERE 1 ' . we_customer_treeLoader::getSortOrder($settings));
+			$this->db->query('SELECT ID,ParentID,Path,IsFolder,Icon,' . $settings->treeTextFormatSQL . ' AS Text FROM ' . CUSTOMER_TABLE .
+					' WHERE ' . (!permissionhandler::hasPerm("ADMINISTRATOR") && $_SESSION['user']['workSpace'][CUSTOMER_TABLE] ? $_SESSION['user']['workSpace'][CUSTOMER_TABLE] : '1 ') . we_customer_treeLoader::getSortOrder($settings));
 			//no need to search directory
 			return false;
 		}
@@ -132,9 +137,9 @@ class we_customer_selector extends we_users_selector{
 		print '<script type="text/javascript"><!--
 top.clearEntries();
 ' .
-			$this->printCmdAddEntriesHTML() .
-			$this->printCMDWriteAndFillSelectorHTML() .
-			'top.fsheader.' . (empty($this->dir) ? 'disable' : 'enable') . 'RootDirButs();';
+				$this->printCmdAddEntriesHTML() .
+				$this->printCMDWriteAndFillSelectorHTML() .
+				'top.fsheader.' . (empty($this->dir) ? 'disable' : 'enable') . 'RootDirButs();';
 
 		if(permissionhandler::hasPerm("ADMINISTRATOR")){
 			$go = true;
@@ -144,12 +149,12 @@ top.clearEntries();
 				$this->path = '/';
 			}
 			print 'top.currentPath = "' . $this->path . '";
-top.currentID = "' . $this->id . '";
-top.fsfooter.document.we_form.fname.value = "' . $this->values["Text"] . '";';
+top.currentID = "' . $this->id . '";';
+//top.fsfooter.document.we_form.fname.value = "' . $this->values["Text"] . '";';
 		}
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
+//top.parentID = "' . $this->values["ParentID"] . '";
 		print 'top.currentDir = "' . $this->dir . '";
-top.parentID = "' . $this->values["ParentID"] . '";
 //-->
 </script>';
 	}
@@ -203,7 +208,7 @@ function setDir(id){
 		return '
 top.writeBody(top.fsbody.document);
 top.fsheader.clearOptions();' .
-			$out . '
+				$out . '
 top.fsheader.selectIt();';
 	}
 
