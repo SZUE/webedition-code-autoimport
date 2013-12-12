@@ -26,7 +26,7 @@ require_once (WE_INCLUDES_PATH . 'we_tools/weSearch/conf/define.conf.php');
 
 $metaInfo = array(
 	'name' => 'weSearch',
-	'classname' => 'searchtool',
+	'classname' => 'we_search_model',
 	'maintable' => SUCHE_TABLE,
 	'datasource' => 'table:' . SUCHE_TABLE,
 	'startpermission' => '',
