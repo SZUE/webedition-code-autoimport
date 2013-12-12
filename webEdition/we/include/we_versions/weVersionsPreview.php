@@ -182,7 +182,7 @@ if(!empty($oldDoc)){
 	$versionOld = ' AND version!=' . intval($oldDoc['version']);
 }
 $_db->query('SELECT ID,version, DATE_FORMAT(timestamp,"' . g_l('weEditorInfo', '[mysql_date_format]') . '") AS timestamp FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($newDoc['documentID']) . " AND documentTable='" . $_db->escape($newDoc['documentTable']) . "' AND version!=" . intval($newDoc['version']) . ' ' . $versionOld . "  ORDER BY version ASC");
-$versions = $_db->getAllFirst(true, MYSQLI_ASSOC);
+$versions = $_db->getAllFirst(true, MYSQL_ASSOC);
 
 $_versions_time_days->addOption('', g_l('versions', '[pleaseChoose]'));
 foreach($versions as $k => $v){

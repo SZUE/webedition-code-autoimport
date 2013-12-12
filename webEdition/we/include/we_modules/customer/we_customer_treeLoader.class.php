@@ -26,8 +26,8 @@ abstract class we_customer_treeLoader{
 
 	static function getItems($pid, $offset = 0, $segment = 500, $sort = ""){
 		return (empty($sort) ?
-				self::getItemsFromDB($pid, $offset, $segment) :
-				self::getSortFromDB($pid, $sort, $offset, $segment));
+						self::getItemsFromDB($pid, $offset, $segment) :
+						self::getSortFromDB($pid, $sort, $offset, $segment));
 	}
 
 	private static function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,Icon,IsFolder,Forename,Surname', $addWhere = "", $addOrderBy = ""){
@@ -36,31 +36,33 @@ abstract class we_customer_treeLoader{
 		$prevoffset = $offset - $segment;
 		$prevoffset = ($prevoffset < 0) ? 0 : $prevoffset;
 		$items = ($offset && $segment ?
-				array(array(
-					"icon" => "arrowup.gif",
-					"id" => "prev_" . $ParentID,
-					"parentid" => $ParentID,
-					"text" => "display (" . $prevoffset . "-" . $offset . ")",
-					"contenttype" => "arrowup",
-					"table" => CUSTOMER_TABLE,
-					"typ" => "threedots",
-					"open" => 0,
-					"published" => 1,
-					"disabled" => 0,
-					"tooltip" => "",
-					"offset" => $prevoffset
-				)) : array());
+						array(array(
+						"icon" => "arrowup.gif",
+						"id" => "prev_" . $ParentID,
+						"parentid" => $ParentID,
+						"text" => "display (" . $prevoffset . "-" . $offset . ")",
+						"contenttype" => "arrowup",
+						"table" => CUSTOMER_TABLE,
+						"typ" => "threedots",
+						"open" => 0,
+						"published" => 1,
+						"disabled" => 0,
+						"tooltip" => "",
+						"offset" => $prevoffset
+					)) : array());
 
 
 		$settings = new we_customer_settings();
 		$settings->load();
 
 
-		$where = ' WHERE ParentID=' . intval($ParentID) . ' ' . $addWhere;
+		$where = ' WHERE ParentID=' . intval($ParentID) .
+				(!permissionhandler::hasPerm("ADMINISTRATOR") && $_SESSION['user']['workSpace'][CUSTOMER_TABLE] ? ' AND ' . $_SESSION['user']['workSpace'][CUSTOMER_TABLE] : '') .
+				' ' . $addWhere;
 
 		$db->query('SELECT ' . $settings->treeTextFormatSQL . ' AS treeFormat, ' . $elem . ',LoginDenied FROM ' . CUSTOMER_TABLE . ' ' . $where . ' ' . self::getSortOrder($settings) . ($segment ? ' LIMIT ' . $offset . ',' . $segment : ''));
 
-		while($db->next_record(MYSQLI_ASSOC)){
+		while($db->next_record(MYSQL_ASSOC)){
 
 			$typ = array(
 				'typ' => ($db->f("IsFolder") == 1 ? "group" : "item"),
@@ -127,25 +129,26 @@ abstract class we_customer_treeLoader{
 		foreach($sort_defs as $c => $sortdef){
 			if(isset($sortdef['function']) && $sortdef['function']){
 				$select[] = ($settings->customer->isInfoDate($sortdef['field']) ?
-						sprintf($settings->FunctionTable[$sortdef['function']], 'FROM_UNIXTIME(' . $sortdef['field'] . ')') . ' AS ' . $sortdef["field"] . "_" . $sortdef["function"] :
-						sprintf($settings->FunctionTable[$sortdef['function']], $sortdef['field']) . " AS " . $sortdef['field'] . '_' . $sortdef["function"]);
+								sprintf($settings->FunctionTable[$sortdef['function']], 'FROM_UNIXTIME(' . $sortdef['field'] . ')') . ' AS ' . $sortdef["field"] . "_" . $sortdef["function"] :
+								sprintf($settings->FunctionTable[$sortdef['function']], $sortdef['field']) . " AS " . $sortdef['field'] . '_' . $sortdef["function"]);
 
 				$grouparr[] = $sortdef['field'] . '_' . $sortdef['function'];
 				$orderarr[] = $sortdef['field'] . '_' . $sortdef['function'] . ' ' . $sortdef['order'];
 				$orderarr[] = $sortdef['field'] . ' ' . $sortdef['order'];
 				if(isset($pidarr[$c])){
 					$havingarr[] = ($pidarr[$c] == g_l('modules_customer', '[no_value]') ?
-							'(' . $sortdef['field'] . '_' . $sortdef["function"] . "='' OR " . $sortdef['field'] . '_' . $sortdef['function'] . ' IS NULL)' :
-							$sortdef['field'] . '_' . $sortdef['function'] . "='" . $pidarr[$c] . "'");
+									'(' . $sortdef['field'] . '_' . $sortdef["function"] . "='' OR " . $sortdef['field'] . '_' . $sortdef['function'] . ' IS NULL)' :
+									$sortdef['field'] . '_' . $sortdef['function'] . "='" . $pidarr[$c] . "'");
 				}
 			} else {
 				$select[] = $sortdef['field'];
 				$grouparr[] = $sortdef['field'];
 				$orderarr[] = $sortdef['field'] . ' ' . $sortdef['order'];
-				if(isset($pidarr[$c]) && $pidarr[$c])
+				if(isset($pidarr[$c]) && $pidarr[$c]){
 					$havingarr[] = ($pidarr[$c] == g_l('modules_customer', '[no_value]') ?
-							'(' . $sortdef['field'] . "='' OR " . $sortdef['field'] . ' IS NULL)' :
-							$sortdef['field'] . "='" . $pidarr[$c] . "'");
+									'(' . $sortdef['field'] . "='' OR " . $sortdef['field'] . ' IS NULL)' :
+									$sortdef['field'] . "='" . $pidarr[$c] . "'");
+				}
 			}
 		}
 
@@ -154,7 +157,10 @@ abstract class we_customer_treeLoader{
 
 		$grp = implode(',', array_slice($grouparr, 0, $level + 1));
 
-		$db->query('SELECT ' . $settings->treeTextFormatSQL . ' AS treeFormat,ID,ParentID,Path,Text,Icon,IsFolder,LoginDenied,Forename,Surname' . (empty($select) ? '' : ',' . implode(',', $select) ) . ' FROM ' . CUSTOMER_TABLE . ' GROUP BY ' . $grp . (count($grouparr) ? ($level != 0 ? ',ID' : '') : 'ID') . (count($havingarr) ? ' HAVING ' . implode(' AND ', $havingarr) : '') . ' ORDER BY ' . implode(',', $orderarr) . self::getSortOrder($settings, ($orderarr ? ',' : '')) . (($level == $levelcount && $segment) ? ' LIMIT ' . $offset . ',' . $segment : ''));
+		$db->query('SELECT ' . $settings->treeTextFormatSQL . ' AS treeFormat,ID,ParentID,Path,Text,Icon,IsFolder,LoginDenied,Forename,Surname' .
+				($select ? ',' . implode(',', $select) : '' ) . ' FROM ' . CUSTOMER_TABLE .
+				(!permissionhandler::hasPerm("ADMINISTRATOR") && $_SESSION['user']['workSpace'][CUSTOMER_TABLE] ? ' WHERE ' . $_SESSION['user']['workSpace'][CUSTOMER_TABLE] : '') .
+				' GROUP BY ' . $grp . (count($grouparr) ? ($level != 0 ? ',ID' : '') : 'ID') . (count($havingarr) ? ' HAVING ' . implode(' AND ', $havingarr) : '') . ' ORDER BY ' . implode(',', $orderarr) . self::getSortOrder($settings, ($orderarr ? ',' : '')) . (($level == $levelcount && $segment) ? ' LIMIT ' . $offset . ',' . $segment : ''));
 
 		$items = $foo = array();
 		$gname = '';
@@ -185,8 +191,8 @@ abstract class we_customer_treeLoader{
 				$foo = array();
 				for($i = 0; $i < $levelcount; $i++){
 					$foo[] = ($i == 0 ?
-							('{' . ($db->f($grouparr[$i]) != '' ? $db->f($grouparr[$i]) : g_l('modules_customer', '[no_value]')) . '}') :
-							($db->f($grouparr[$i]) != '' ? $db->f($grouparr[$i]) : g_l('modules_customer', '[no_value]')));
+									('{' . ($db->f($grouparr[$i]) != '' ? $db->f($grouparr[$i]) : g_l('modules_customer', '[no_value]')) . '}') :
+									($db->f($grouparr[$i]) != '' ? $db->f($grouparr[$i]) : g_l('modules_customer', '[no_value]')));
 					$gname = implode('-|-', $foo);
 					if($i >= $level){
 						if(!isset($check[$gname])){
@@ -272,10 +278,10 @@ abstract class we_customer_treeLoader{
 
 	public static function getSortOrder($settings, $concat = 'ORDER BY'){
 		$ret = ($settings->getSettings('default_order') ?
-				($settings->formatFields ?
-					implode(' ' . $settings->getSettings('default_order') . ',', $settings->formatFields) . ' ' . $settings->getSettings('default_order') :
-					'Text ' . $settings->getSettings('default_order')) :
-				'');
+						($settings->formatFields ?
+								implode(' ' . $settings->getSettings('default_order') . ',', $settings->formatFields) . ' ' . $settings->getSettings('default_order') :
+								'Text ' . $settings->getSettings('default_order')) :
+						'');
 		return ($ret ? $concat . ' ' . $ret : '');
 	}
 
