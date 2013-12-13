@@ -1,3 +1,5 @@
+###UPDATEDROPCOL(ID,###TBLPREFIX###tblAnzeigePrefs)###
+/* query separator */
 CREATE TABLE ###TBLPREFIX###tblAnzeigePrefs (
   strDateiname varchar(255) NOT NULL default '',
   strFelder text NOT NULL,
