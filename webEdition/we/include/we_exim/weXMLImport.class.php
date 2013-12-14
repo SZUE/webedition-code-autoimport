@@ -387,7 +387,7 @@ class weXMLImport extends weXMLExIm{
 							switch($noddata){
 								case "we_object":
 									if(defined("OBJECT_TABLE")){
-										$object = new we_objectEx();
+										$object = new we_object_exImport();
 									}
 									break;
 								case "we_objectFile":

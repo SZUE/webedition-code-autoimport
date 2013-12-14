@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_objecttag{
+class we_object_tag{
 
 	private $DB_WE;
 	var $class = '';
@@ -55,8 +55,8 @@ class we_objecttag{
 			return;
 		}
 		//FIXME: fix regex in listview_object and listview_multiobject, then restore type int for ID
-		//$this->object = new we_listview_object($unique, 1, 0, '', 0, $foo['TableID'], '', '', '(' . OBJECT_X_TABLE . $foo['TableID'] . '.ID=' . intval($foo['ObjectID']) . ')' . ($condition ? ' AND '.$condition : ''), $this->triggerID, '', '', $searchable, '', '', '', '', '', '', '', 0, '', '', '', '', $hidedirindex, $objectseourls);
-		$this->object = new we_listview_object($unique, 1, 0, '', 0, $foo['TableID'], '', '', '(' . OBJECT_X_TABLE . $foo['TableID'] . '.ID="' . intval($foo['ObjectID']) . '")' . ($condition ? ' AND ' . $condition : ''), $this->triggerID, '', '', $searchable, '', '', '', '', '', '', '', 0, '', '', '', '', $hidedirindex, $objectseourls);
+		//$this->object = new we_object_listview($unique, 1, 0, '', 0, $foo['TableID'], '', '', '(' . OBJECT_X_TABLE . $foo['TableID'] . '.ID=' . intval($foo['ObjectID']) . ')' . ($condition ? ' AND '.$condition : ''), $this->triggerID, '', '', $searchable, '', '', '', '', '', '', '', 0, '', '', '', '', $hidedirindex, $objectseourls);
+		$this->object = new we_object_listview($unique, 1, 0, '', 0, $foo['TableID'], '', '', '(' . OBJECT_X_TABLE . $foo['TableID'] . '.ID="' . intval($foo['ObjectID']) . '")' . ($condition ? ' AND ' . $condition : ''), $this->triggerID, '', '', $searchable, '', '', '', '', '', '', '', 0, '', '', '', '', $hidedirindex, $objectseourls);
 		$this->avail = $this->object->next_record();
 	}
 
