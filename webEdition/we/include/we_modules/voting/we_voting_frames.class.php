@@ -185,8 +185,8 @@ class we_voting_frames extends weModuleFrames{
 
 		$sel_but = addslashes(we_html_element::htmlImg(array('src' => BUTTONS_DIR . 'btn_function_trash.gif', 'onclick' => 'javascript:top.content.setHot();', 'style' => 'cursor: pointer; width: 27px;')));
 
-		$js = we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js?' . time()) .
-			we_html_element::jsScript(JS_DIR . 'utils/multi_editMulti.js?' . time());
+		$js = we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
+			we_html_element::jsScript(JS_DIR . 'utils/multi_editMulti.js');
 
 		$variant_js = ' function callAnswerLimit() {
 				' . we_message_reporting::getShowMessageCall(g_l('modules_voting', '[answer_limit]'), we_message_reporting::WE_MESSAGE_ERROR) . '
@@ -289,7 +289,7 @@ class we_voting_frames extends weModuleFrames{
 				'html' => we_html_element::htmlHidden(array('name' => 'owners_name', 'value' => '')) .
 				we_html_element::htmlHidden(array('name' => 'owners_count', 'value' => 0)) .
 				we_html_element::htmlHidden(array('name' => 'newone', 'value' => ($this->View->voting->ID == 0 ? 1 : 0))) .
-				we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Text', '', $this->View->voting->Text, '', 'style="width: ' . $this->_width_size . '" id="yuiAcInputPathName" onchange="top.content.setHot();" onblur="parent.edheader.setPathName(this.value); parent.edheader.setTitlePath()"'), g_l('modules_voting', '[headline_name]')) .
+				we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Text', '', $this->View->voting->Text, '', 'style="width: ' . $this->_width_size . 'px;" id="yuiAcInputPathName" onchange="top.content.setHot();" onblur="parent.edheader.setPathName(this.value); parent.edheader.setTitlePath()"'), g_l('modules_voting', '[headline_name]')) .
 				we_html_element::htmlBr() .
 				$this->getHTMLDirChooser() .
 				weSuggest::getYuiJsFiles() . $yuiSuggest->getYuiCss() . $yuiSuggest->getYuiJs() .
@@ -447,7 +447,7 @@ class we_voting_frames extends weModuleFrames{
 				we_html_forms::checkboxWithHidden($this->View->voting->AllowImages ? true : false, 'AllowImages', g_l('modules_voting', '[AllowImages]'), false, 'defaultfont', 'top.content.setHot();answers_edit.toggleImages();') .
 				we_html_forms::checkboxWithHidden($this->View->voting->AllowMedia ? true : false, 'AllowMedia', g_l('modules_voting', '[AllowMedia]'), false, 'defaultfont', 'top.content.setHot();answers_edit.toggleMedia();') .
 				we_html_forms::checkboxWithHidden($this->View->voting->AllowSuccessor ? true : false, 'AllowSuccessor', g_l('modules_voting', '[AllowSuccessor]'), false, 'defaultfont', 'top.content.setHot(); toggle(\'Successor\')') .
-				we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Successor', '', $this->View->voting->Successor, '', 'style="width: ' . $this->_width_size . ';display:' . $displaySuccessor . '" id="Successor" onchange="top.content.setHot();" '), '') .
+				we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Successor', '', $this->View->voting->Successor, '', 'style="width: ' . $this->_width_size . 'px;display:' . $displaySuccessor . '" id="Successor" onchange="top.content.setHot();" '), '') .
 				we_html_forms::checkboxWithHidden($this->View->voting->AllowSuccessors ? true : false, 'AllowSuccessors', g_l('modules_voting', '[AllowSuccessors]'), false, 'defaultfont', 'top.content.setHot();answers_edit.toggleSuccessors();')
 				,
 				'space' => $this->_space_size
@@ -455,8 +455,8 @@ class we_voting_frames extends weModuleFrames{
 		);
 
 
-		$select = new we_html_select(array('name' => 'selectVar', 'class' => 'weSelect', 'onchange' => 'top.content.setHot();question_edit.showVariant(this.value);answers_edit.showVariant(this.value);document.we_form.vernr.value=this.value;refreshTexts();', 'style' => 'width:' . ($this->_width_size - 64)));
-		foreach($this->View->voting->QASet as $variant => $value){
+		$select = new we_html_select(array('name' => 'selectVar', 'class' => 'weSelect', 'onchange' => 'top.content.setHot();question_edit.showVariant(this.value);answers_edit.showVariant(this.value);document.we_form.vernr.value=this.value;refreshTexts();', 'style' => 'width:' . ($this->_width_size - 64) . 'px;'));
+		foreach(array_keys($this->View->voting->QASet) as $variant){
 			$select->addOption($variant, g_l('modules_voting', '[variant]') . ' ' . ($variant + 1));
 		}
 		$select->selectOption(isset($_REQUEST['vernr']) ? $_REQUEST['vernr'] : 0);
@@ -634,7 +634,6 @@ class we_voting_frames extends weModuleFrames{
 
 	function getHTMLTab4(){
 		$parts = array();
-		$content = "";
 
 		$total_score = array_sum($this->View->voting->Scores);
 
@@ -673,45 +672,43 @@ class we_voting_frames extends weModuleFrames{
 		$butt = we_html_button::create_button("reset_score", "javascript:top.content.setHot();resetScores();");
 
 		$js = we_html_element::jsElement('
-			function resetScores(){
-				if(confirm("' . g_l('modules_voting', '[result_delete_alert]') . '")) {
-					for(var i=0;i<' . ($i - 1) . ';i++){
-						document.we_form.elements["scores_"+i].value = 0;
-					}
-					document.we_form.scores_changed.value=1;
-					refreshTotal();
-				} else {}
+	function resetScores(){
+		if(confirm("' . g_l('modules_voting', '[result_delete_alert]') . '")) {
+			for(var i=0;i<' . ($i - 1) . ';i++){
+				document.we_form.elements["scores_"+i].value = 0;
 			}
+			document.we_form.scores_changed.value=1;
+			refreshTotal();
+		} else {}
+	}
 
-			function refreshTotal(){
-				var total=0;
-				for(var i=0;i<' . ($i - 1) . ';i++){
-					total += parseInt(document.we_form.elements["scores_"+i].value);
-				}
+	function refreshTotal(){
+		var total=0;
+		for(var i=0;i<' . ($i - 1) . ';i++){
+			total += parseInt(document.we_form.elements["scores_"+i].value);
+		}
 
-				var t = document.getElementById("total");
-				t.innerHTML = total;
+		var t = document.getElementById("total");
+		t.innerHTML = total;
 
-				for(var i=0;i<' . ($i - 1) . ';i++){
-					if(total!=0){
-						percent = Math.round((parseInt(document.we_form.elements["scores_"+i].value)/total) * 100);
-					}
-					else percent = 0;
-					eval("setProgressitem"+i+"("+percent+");");
-				}
-
+		for(var i=0;i<' . ($i - 1) . ';i++){
+			if(total!=0){
+				percent = Math.round((parseInt(document.we_form.elements["scores_"+i].value)/total) * 100);
 			}
+			else percent = 0;
+			eval("setProgressitem"+i+"("+percent+");");
+		}
 
-			function refreshTexts(){
-				var t = document.getElementById("question_score");
-				eval("t.innerHTML = document.we_form."+question_edit.name+"_item0.value");
-				for(i=0;i<answers_edit.itemCount;i++){
-					var t = document.getElementById("answers_score_"+i);
-					eval("t.innerHTML = document.we_form."+answers_edit.name+"_item"+i+".value");
-				}
-			}
+	}
 
-		');
+	function refreshTexts(){
+		var t = document.getElementById("question_score");
+		eval("t.innerHTML = document.we_form."+question_edit.name+"_item0.value");
+		for(i=0;i<answers_edit.itemCount;i++){
+			var t = document.getElementById("answers_score_"+i);
+			eval("t.innerHTML = document.we_form."+answers_edit.name+"_item"+i+".value");
+		}
+	}');
 
 		$parts[] = array(
 			"headline" => g_l('modules_voting', '[inquiry]'),
