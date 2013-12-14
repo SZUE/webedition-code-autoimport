@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class objectsearch extends we_search{
+class we_object_search extends we_search{
 
 	var $height;
 	var $searchname;
