@@ -44,6 +44,12 @@ if(isset($wasSaved) && $wasSaved){
 	<?php
 	$reload = array();
 	switch($GLOBALS['we_doc']->ContentType){
+		case 'folder':
+			if($GLOBALS['we_doc']->wasMoved()){
+				$GLOBALS['DB_WE']->query('SELECT f.ID FROM ' . $GLOBALS['we_doc']->Table . ' f INNER JOIN ' . LOCK_TABLE . ' l ON f.ID=l.ID AND l.tbl="' . stripTblPrefix($GLOBALS['we_doc']->Table) . '" WHERE f.Path LIKE "' . $GLOBALS['we_doc']->Path . '/%"');
+				$reload[$GLOBALS['we_doc']->Table] = implode(',', $GLOBALS['DB_WE']->getAll(true));
+			}
+			break;
 
 		case 'text/weTmpl': // #538 reload documents based on this template
 

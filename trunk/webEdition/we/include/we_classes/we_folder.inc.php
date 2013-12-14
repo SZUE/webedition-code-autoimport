@@ -237,7 +237,7 @@ class we_folder extends we_root{
 		if($objFolder){
 			$this->ClassName = 'we_class_folder';
 		}
-		$update = ($this->OldPath != '' && $this->OldPath != $this->Path);
+		$update = $this->isMoved();
 		if($update && !$objFolder){
 			if(file_exists($this->OldPath) && file_exists($this->Path)){
 				t_e('Both paths exists!', $this->OldPath, $this->Path);
@@ -620,7 +620,7 @@ class we_folder extends we_root{
 
 	/* for internal use */
 
-	function moveAtServer(){
+	private function moveAtServer(){
 		if($this->Table == FILE_TABLE || $this->Table == TEMPLATES_TABLE){
 
 			// renames the folder on the local machine in the root-dir

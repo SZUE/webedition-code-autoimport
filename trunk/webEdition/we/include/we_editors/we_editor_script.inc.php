@@ -68,26 +68,26 @@ if(isset($_REQUEST["cmd"]) && $_REQUEST['cmd'] == 'ShowPreparedPreview'){
 
 	print we_html_element::jsElement("
 
-	// overwrite/disable some functions in javascript!!!!
-	window.open = function(){};
-	window.onerror = function () {
-		return true;
+// overwrite/disable some functions in javascript!!!!
+window.open = function(){};
+window.onerror = function () {
+	return true;
 
-	}
+}
 
-	function we_rpc_dw_onload() {
-		we_cmd = function(){};
-		we_submitForm = function(){};
-		doUnload = function(){};
+function we_rpc_dw_onload() {
+	we_cmd = function(){};
+	we_submitForm = function(){};
+	doUnload = function(){};
 
-	}
+}
 
-	if (window.addEventListener) {
-		window.addEventListener('load', we_rpc_dw_onload);
-	} else {
-		window.attachEvent('onload', we_rpc_dw_onload);
+if (window.addEventListener) {
+	window.addEventListener('load', we_rpc_dw_onload);
+} else {
+	window.attachEvent('onload', we_rpc_dw_onload);
 
-	}
+}
 ");
 }
 

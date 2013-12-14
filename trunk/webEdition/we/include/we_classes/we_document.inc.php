@@ -766,10 +766,6 @@ class we_document extends we_root{
 		$this->Text = $this->Filename . $this->Extension;
 	}
 
-	protected function isMoved(){
-		return ($this->OldPath && ($this->Path != $this->OldPath));
-	}
-
 	protected function i_writeSiteDir($doc){
 		if($this->isMoved()){
 			we_util_File::deleteLocalFile($this->getSitePath(true));

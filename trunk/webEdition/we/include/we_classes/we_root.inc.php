@@ -73,6 +73,7 @@ abstract class we_root extends we_class{
 
 	/* array which holds the content of the Object */
 	var $elements = array();
+	private $wasMoved=false;
 
 	/* Number of the EditPage when editor() is called */
 	public $EditPageNr = WE_EDITPAGE_CONTENT;
@@ -915,6 +916,7 @@ abstract class we_root extends we_class{
 				$this->elements[$k]['dat'] = mktime($dates[$k]['hour'], $dates[$k]['minute'], 0, $dates[$k]['month'], $dates[$k]['day'], $dates[$k]['year']);
 			}
 		}
+		$this->ParentPath = $this->getParentPath();
 		$this->Path = $this->getPath();
 	}
 
@@ -1304,4 +1306,12 @@ abstract class we_root extends we_class{
 		return false;
 	}
 
+	protected function isMoved(){
+		$this->wasMoved=($this->OldPath && ($this->Path != $this->OldPath));
+		return $this->wasMoved;
+	}
+
+	public function wasMoved(){
+		return $this->wasMoved;
+	}
 }

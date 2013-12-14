@@ -79,7 +79,7 @@ class we_class_folder extends we_folder{
 		if(is_object($this->searchclass_class)){
 			$this->searchclass = $this->searchclass_class;
 		} else {
-			$this->searchclass = new objectsearch();
+			$this->searchclass = new we_object_search();
 			$this->searchclass_class = serialize($this->searchclass);
 		}
 
