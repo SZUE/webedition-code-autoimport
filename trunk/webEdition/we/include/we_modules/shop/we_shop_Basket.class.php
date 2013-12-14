@@ -231,7 +231,7 @@ class we_shop_Basket{
 					return array();
 				}
 
-				$olv = new we_listview_object(0, 1, 0, '', 0, $classArray['TableID'], '', '', ' ' . OBJECT_X_TABLE . $classArray['TableID'] . '.ID=' . $classArray['ObjectID']);
+				$olv = new we_object_listview(0, 1, 0, '', 0, $classArray['TableID'], '', '', ' ' . OBJECT_X_TABLE . $classArray['TableID'] . '.ID=' . $classArray['ObjectID']);
 				$olv->next_record();
 
 				$Record = $olv->DB_WE->Record;

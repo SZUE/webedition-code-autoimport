@@ -152,13 +152,8 @@ abstract class we_autoloader{
 		),
 		'we_modules' => array(
 			'we_class_folder' => 'object/we_class_folder.inc.php',
-			'we_listview_multiobject' => 'object/we_listview_multiobject.class.php',
-			'we_listview_object' => 'object/we_listview_object.class.php',
 			'we_object' => 'object/we_object.inc.php',
-			'we_objectEx' => 'object/we_objectEx.inc.php',
 			'we_objectFile' => 'object/we_objectFile.inc.php',
-			'we_makenewtemplate' => 'object/we_object_createTemplate.inc.php',
-			'we_objecttag' => 'object/we_objecttag.inc.php',
 			'we_schedpro' => 'schedule/we_schedpro.inc.php',
 			'paypal_class' => 'shop/paypal.class.php',
 			'shop' => 'shop/we_shop_shop.class.php',

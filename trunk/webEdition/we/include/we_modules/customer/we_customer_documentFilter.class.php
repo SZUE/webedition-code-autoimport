@@ -405,8 +405,8 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 			case 'we_listview': // type="document"
 				$_queryForIds = 'SELECT * FROM ' . CUSTOMER_FILTER_TABLE . " WHERE modelType='text/webedition'  AND ($_defaultQuery $_blacklistQuery OR ( ($_specificCustomersQuery OR $_whiteLlistQuery) $_accessControlOnTemplateQuery))";
 				break;
-			case 'we_listview_object':
-			case 'we_listview_multiobject': // type="object"
+			case 'we_object_listview':
+			case 'we_object_listviewMultiobject': // type="object"
 				$_queryForIds = 'SELECT * FROM ' . CUSTOMER_FILTER_TABLE . " WHERE modelType='objectFile' AND ($_defaultQuery $_blacklistQuery OR ( ($_specificCustomersQuery OR $_whiteLlistQuery) $_accessControlOnTemplateQuery))";
 				break;
 		}

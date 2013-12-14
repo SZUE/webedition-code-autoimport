@@ -34,10 +34,10 @@ function we_tag_author($attribs){
 		case 'listview' :
 			$authorID = '';
 			switch(get_class($GLOBALS['lv'])){
-				case 'we_listview_object'://listview type=object
+				case 'we_object_listview'://listview type=object
 					$objID = $GLOBALS['lv']->getDBf('OF_ID');
 					break;
-				case 'we_objecttag'://we:object
+				case 'we_object_tag'://we:object
 					$objID = $GLOBALS['lv']->id;
 					break;
 				case 'we_search_listview'://listview type=search

@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_objectEx extends we_object{
+class we_object_exImport extends we_object{
 
 	private $_ObjectBaseElements = array(
 		'ID', 'OF_ID', 'OF_ParentID', 'OF_Text', 'OF_Path', 'OF_Url', 'OF_TriggerID', 'OF_Workspaces', 'OF_ExtraWorkspaces', 'OF_ExtraWorkspacesSelected',
@@ -464,7 +464,7 @@ class we_objectEx extends we_object{
 					$this->DB_WE->query('ALTER TABLE ' . $ctable . ' MODIFY COLUMN ' . $ovalname . ' ' . $type . ' AFTER ' . $last);
 					$last = $ovalname;
 				} else {
-					t_e('warning', 'we_ObjectEx::setOrder ' . $ctable . ' (' . $this->Text . ') Field not found: Field: ' . $ovalname);
+					t_e('warning', __METHOD__ . ' ' . $ctable . ' (' . $this->Text . ') Field not found: Field: ' . $ovalname);
 				}
 			}
 		}
@@ -479,16 +479,16 @@ class we_objectEx extends we_object{
 				if($zw){
 					$neworder[] = $zw;
 				} else {
-					t_e('warning', 'we_ObjectEx::setOrder: ' . $ctable . ' (' . $this->Text . ')  No Field-Prefix found in for ' . $oval);
+					t_e('warning', __METHOD__ . ' ' . $ctable . ' (' . $this->Text . ')  No Field-Prefix found in for ' . $oval);
 				}
 			}
 			if(count($neworder) != count($consider)){
 				if(count($neworder) > count($consider)){
 					$thedifference = array_diff($neworder, $consider);
-					t_e('warning', 'we_ObjectEx::setOrder: ' . $ctable . ' (' . $this->Text . ')  Order-Array (' . count($neworder) . ') has larger length than generated Fields Array (' . count($consider) . '), Missing: (' . implode(',', $thedifference) . ') Order-Array:(' . implode(',', $neworder) . ') Fields-Array:(' . implode(',', $consider) . ') ');
+					t_e('warning', __METHOD__ . ' ' . $ctable . ' (' . $this->Text . ')  Order-Array (' . count($neworder) . ') has larger length than generated Fields Array (' . count($consider) . '), Missing: (' . implode(',', $thedifference) . ') Order-Array:(' . implode(',', $neworder) . ') Fields-Array:(' . implode(',', $consider) . ') ');
 				} else {
 					$thedifference = array_diff($consider, $neworder);
-					t_e('warning', 'we_ObjectEx::setOrder: ' . $ctable . ' (' . $this->Text . ')  Order-Array (' . count($neworder) . ') has smaller length than generated Fields Array (' . count($consider) . '), Missing: (' . implode(',', $thedifference) . ') Order-Array:(' . implode(',', $neworder) . ') Fields-Array:(' . implode(',', $consider) . ') ');
+					t_e('warning', __METHOD__ . ' ' . $ctable . ' (' . $this->Text . ')  Order-Array (' . count($neworder) . ') has smaller length than generated Fields Array (' . count($consider) . '), Missing: (' . implode(',', $thedifference) . ') Order-Array:(' . implode(',', $neworder) . ') Fields-Array:(' . implode(',', $consider) . ') ');
 				}
 			} else {
 				$neworder = array_flip($neworder);
@@ -541,13 +541,13 @@ class we_objectEx extends we_object{
 			$isOK = true;
 			foreach($fields as $field){
 				if(!in_array($field, $consider)){
-					t_e('warning', 'we_ObjectEx::checkFields: ' . $ctable . ' (' . $this->Text . ')  Field ' . $field . ' not found');
+					t_e('warning', __METHOD__ . ' ' . $ctable . ' (' . $this->Text . ')  Field ' . $field . ' not found');
 					$isOK = false;
 				}
 			}
 			return $isOK;
 		} else {
-			t_e('warning', 'we_ObjectEx::checkFields: ' . $ctable . ' (' . $this->Text . ') different field count - not recoverable bei resetOrder strOrder');
+			t_e('warning', __METHOD__ . ' ' . $ctable . ' (' . $this->Text . ') different field count - not recoverable bei resetOrder strOrder');
 		}
 	}
 

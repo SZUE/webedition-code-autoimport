@@ -24,11 +24,11 @@
  */
 
 /**
- * class    we_listview_object
+ * class    we_object_listview
  * @desc    class for tag <we:listview type="object">
  *
  */
-class we_listview_object extends listviewBase{
+class we_object_listview extends listviewBase{
 
 	var $classID; /* ID of a class */
 	var $triggerID; /* ID of a document which to use for displaying thr detail page */
@@ -272,7 +272,7 @@ class we_listview_object extends listviewBase{
 	}
 
 	static function decodeEregString(array $match){
-		return "'" . preg_replace_callback("/&([^;]+);/", 'we_listview_object::char', $match[1]) . "'";
+		return "'" . preg_replace_callback("/&([^;]+);/", 'we_object_listview::char', $match[1]) . "'";
 	}
 
 	function makeSQLParts($matrix, $classID, $order, $cond){
@@ -281,7 +281,7 @@ class we_listview_object extends listviewBase{
 
 		$cond = str_replace(array('&gt;', '&lt;'), array('>', '<',), $cond);
 
-		$cond = ' ' . preg_replace_callback("/'([^']*)'/", 'we_listview_object::encodeEregString', $cond) . ' ';
+		$cond = ' ' . preg_replace_callback("/'([^']*)'/", 'we_object_listview::encodeEregString', $cond) . ' ';
 
 
 		if($order && ($order != 'random()')){
@@ -332,7 +332,7 @@ class we_listview_object extends listviewBase{
 			$cond = preg_replace("/([\!\=%&\(\*\+\.\/<>|~ ])$n([\!\=%&\)\*\+\.\/<>|~ ])/", "$1" . $p['table'] . ".`" . $p['type'] . '_' . $n . "`$2", $cond);
 		}
 
-		$cond = preg_replace_callback("/'([^']*)'/", 'we_listview_object::decodeEregString', $cond);
+		$cond = preg_replace_callback("/'([^']*)'/", 'we_object_listview::decodeEregString', $cond);
 
 		ksort($ordertmp);
 		$_tmporder = trim(str_ireplace('desc', '', $order));

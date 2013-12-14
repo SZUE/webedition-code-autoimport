@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_makenewtemplate extends we_template{
+class we_object_createTemplate extends we_template{
 
 	function formDirChooser($width = "", $rootDirID = 0, $table = TEMPLATES_TABLE, $Pathname = "ParentPath", $IDName = "ParentID", $cmd = ""){
 		if(!$table){
@@ -159,7 +159,7 @@ print we_html_element::jsScript(JS_DIR . 'windows.js') .
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 echo '</head><body class="weDialogBody"><form name="we_form">';
-$tmpl = new we_makenewtemplate();
+$tmpl = new we_object_createTemplate();
 $tmpl->we_new();
 
 $tmpl->Filename = isset($filename) ? $filename : "";

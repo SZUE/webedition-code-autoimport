@@ -24,12 +24,12 @@
  */
 
 /**
- * class    we_listview_multiobject
+ * class    we_object_listviewMultiobject
  * @desc    class for tag <we:listview type="multiobject">
  *
  */
 //FIXME: is this class not ~ listview_object? why is this not the base class???
-class we_listview_multiobject extends listviewBase{
+class we_object_listviewMultiobject extends listviewBase{
 
 	var $classID = ''; /* ID of a class */
 	var $objects = ''; /* Comma sepearated list of all objetcs to show in this listview */
@@ -282,7 +282,7 @@ class we_listview_multiobject extends listviewBase{
 		$descArr = array();
 		$ordertmp = array();
 
-		$cond = ' ' . preg_replace_callback("/'([^']*)'/", 'we_listview_object::encodeEregString', strtr($cond, array('&gt;' => '>', '&lt;' => '<'))) . ' ';
+		$cond = ' ' . preg_replace_callback("/'([^']*)'/", 'we_object_listview::encodeEregString', strtr($cond, array('&gt;' => '>', '&lt;' => '<'))) . ' ';
 
 		if($order && ($order != 'random()')){
 			$foo = makeArrayFromCSV($order);
@@ -331,7 +331,7 @@ class we_listview_multiobject extends listviewBase{
 			$cond = preg_replace("/([\!\=%&\(\*\+\.\/<>|~ ])$n([\!\=%&\)\*\+\.\/<>|~ ])/", '$1' . $p["table"] . '.`' . $p['type'] . '_' . $n . '`$2', $cond);
 		}
 
-		$cond = preg_replace_callback("/'([^']*)'/", 'we_listview_object::decodeEregString', $cond);
+		$cond = preg_replace_callback("/'([^']*)'/", 'we_object_listview::decodeEregString', $cond);
 
 		ksort($ordertmp);
 		$_tmporder = trim(str_ireplace('desc', '', $order));

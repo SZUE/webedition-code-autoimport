@@ -80,7 +80,7 @@ class weContentProvider{
 			// fix for classes
 			case 'object':
 				if(defined('OBJECT_TABLE')){
-					$we_doc = new we_objectEx();
+					$we_doc = new we_object_exImport();
 					$we_doc->initByID($ID, OBJECT_TABLE);
 				}
 				break;
