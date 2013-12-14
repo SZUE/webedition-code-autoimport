@@ -381,14 +381,16 @@ abstract class we_base_file{
 
 	static function getComPrefix($compression){
 		switch($compression){
+			case 0:
+			case '0':
+			default://leave here since 0 is equivalent to first switch
+				return 'f';
 			case 'gzip':
 				return 'gz';
 			case 'zip':
 				return 'zip_';
 			case 'bzip':
 				return 'bz';
-			default:
-				return 'f';
 		}
 	}
 
