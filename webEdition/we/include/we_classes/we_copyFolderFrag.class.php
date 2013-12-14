@@ -569,7 +569,7 @@ class copyFolderFrag extends taskFragment{
 						}
 						break;
 					case 'linklist' :
-						$ll = new we_linklist($we_doc->elements[$k]['dat']);
+						$ll = new we_base_linklist($we_doc->elements[$k]['dat']);
 						$changed = false;
 						$cnt = $ll->length();
 						for($i = 0; $i < $cnt; $i++){

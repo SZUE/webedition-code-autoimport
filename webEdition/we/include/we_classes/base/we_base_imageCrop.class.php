@@ -28,7 +28,7 @@
  *
  * Provides image cropping functions.
  */
-abstract class we_image_crop{
+abstract class we_base_imageCrop{
 
 	static function getJS(){
 		if(!isset($GLOBALS['we_doc']->elements["origwidth"])){

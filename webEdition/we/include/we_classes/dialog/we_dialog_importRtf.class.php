@@ -22,6 +22,8 @@
  * @package    webEdition_wysiwyg
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+
+//FIXME: 6.4: remove this file
 class we_dialog_importRtf extends we_dialog_base{
 
 	var $ClassName = __CLASS__;

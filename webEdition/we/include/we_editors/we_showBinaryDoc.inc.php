@@ -78,7 +78,7 @@ header("Expires: 0");
 
 $dataPath = $we_doc->getElement("data");
 if(isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3]){ // create thumbnail
-	if(we_image_edit::gd_version()){
+	if(we_base_imageEdit::gd_version()){
 		$thumbObj = new we_thumbnail();
 		$thumbObj->initByThumbID($_REQUEST['we_cmd'][3], $we_doc->ID, $we_doc->Filename, $we_doc->Path, $we_doc->Extension, $we_doc->getElement("origwidth"), $we_doc->getElement("origheight"), $we_doc->getDocument());
 		$thumbObj->getThumb($out);

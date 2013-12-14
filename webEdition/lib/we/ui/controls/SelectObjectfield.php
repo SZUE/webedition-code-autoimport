@@ -95,7 +95,7 @@ class we_ui_controls_SelectObjectfield extends we_ui_controls_Select{
 	 * @return string
 	 */
 	public function getOptionsHTML(){
-		if(weModuleInfo::isActive('object')){
+		if(we_base_moduleInfo::isActive('object')){
 
 			if(file_exists(WE_MODULES_PATH . 'object/we_conf_object.inc.php')){
 				require_once (WE_MODULES_PATH . 'object/we_conf_object.inc.php');

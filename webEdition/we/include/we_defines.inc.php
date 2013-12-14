@@ -57,7 +57,6 @@ if(version_compare(phpversion(), '5.1.3', '=')){
 	}
 }
 
-
 define('WEBEDITION_DIR', '/webEdition/');
 
 define('WE_INCLUDES_DIR', WEBEDITION_DIR . 'we/include/');

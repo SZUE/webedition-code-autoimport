@@ -73,7 +73,7 @@ class weXMLExport extends weXMLExIm{
 		$attribute = (isset($doc->attribute_slots) ? $doc->attribute_slots : array());
 
 		switch($classname){
-			case "weTable":
+			case "we_backup_table":
 				if((defined("OBJECT_X_TABLE") && strtolower(substr($doc->table, 0, 10)) == strtolower(stripTblPrefix(OBJECT_X_TABLE))) ||
 					defined("CUSTOMER_TABLE")){
 					$doc->getColumns();
@@ -90,7 +90,7 @@ class weXMLExport extends weXMLExIm{
 
 		fwrite($fh, we_backup_backup::backupMarker . "\n");
 
-		if($classname == "weTableItem" && $export_binary &&
+		if($classname == "we_backup_tableItem" && $export_binary &&
 			strtolower($doc->table) == strtolower(FILE_TABLE) &&
 			($doc->ContentType == "image/*" || stripos($doc->ContentType, "application/") !== false)){
 			$bin = weContentProvider::getInstance("weBinary", $doc->ID);

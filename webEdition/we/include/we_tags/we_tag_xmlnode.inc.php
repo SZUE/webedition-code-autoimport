@@ -75,7 +75,7 @@ function we_tag_xmlnode($attribs){
 
 	// find feed
 	if($url){
-		$feed_name = new weXMLBrowser($url);
+		$feed_name = new we_xml_browser($url);
 		$GLOBALS["xpaths"][$ind_name]["url"] = $url;
 		$got_name = true;
 	} else {
@@ -92,7 +92,7 @@ function we_tag_xmlnode($attribs){
 					$otac_name = $GLOBALS["xstack"][$c_name];
 					if(isset($GLOBALS["xpaths"][$otac_name])){
 						if(isset($GLOBALS["xpaths"][$otac_name]["url"]) && !empty($GLOBALS["xpaths"][$otac_name]["url"])){
-							$feed_name = new weXMLBrowser($GLOBALS["xpaths"][$otac_name]["url"]);
+							$feed_name = new we_xml_browser($GLOBALS["xpaths"][$otac_name]["url"]);
 							$GLOBALS["xpaths"][$ind_name]["url"] = $GLOBALS["xpaths"][$otac_name]["url"];
 							$got_name = true;
 						}

@@ -1,6 +1,6 @@
 <?php
 
-abstract class weModuleInfo{
+abstract class we_base_moduleInfo{
 
 	private static $we_available_modules = '';
 
@@ -20,7 +20,7 @@ abstract class weModuleInfo{
 	 * @param hash $array
 	 */
 	static function orderModuleArray(&$array){
-		uasort($array, array('weModuleInfo', '_orderModules'));
+		uasort($array, array('we_base_moduleInfo', '_orderModules'));
 	}
 
 	/**

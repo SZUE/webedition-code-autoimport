@@ -316,7 +316,7 @@ function build_dialog($selected_setting = 'ui'){
 
 			$_thumbnail_specify_table->setCol(0, 2, null, we_html_tools::htmlTextInput('thumbnail_width', 6, ($_thumbnail_width != -1 ? $_thumbnail_width : ''), 4, ($_thumbnail_width == -1 ? 'disabled="disabled"' : ''), 'text', 60));
 			$_thumbnail_specify_table->setCol(2, 2, null, we_html_tools::htmlTextInput('thumbnail_height', 6, ($_thumbnail_height != -1 ? $_thumbnail_height : ''), 4, ($_thumbnail_height == -1 ? 'disabled="disabled"' : ''), 'text', 60));
-			$_thumbnail_specify_table->setCol(4, 2, array('class' => 'defaultfont', 'id' => 'thumbnail_quality_value_cell'), we_image_edit::qualitySelect('thumbnail_quality', $_thumbnail_quality));
+			$_thumbnail_specify_table->setCol(4, 2, array('class' => 'defaultfont', 'id' => 'thumbnail_quality_value_cell'), we_base_imageEdit::qualitySelect('thumbnail_quality', $_thumbnail_quality));
 
 			// Create checkboxes for options for thumbnails
 			$_thumbnail_ratio = ($_GET['id'] != -1) ? $allData['Ratio'] : -1;
@@ -359,7 +359,7 @@ function build_dialog($selected_setting = 'ui'){
 			$_thumbnail_format_select = new we_html_select($_thumbnail_format_select_attribs);
 
 			foreach($_thumbnails_formats as $_k => $_v){
-				if(in_array($_k, we_image_edit::supported_image_types()) || $_k == 'none'){
+				if(in_array($_k, we_base_imageEdit::supported_image_types()) || $_k == 'none'){
 					$_thumbnail_format_select->addOption($_k, $_v);
 
 					// Check if added option is selected
@@ -425,7 +425,7 @@ function getMainDialog(){
 }
 
 //  check if gd_lib is installed ...
-if(we_image_edit::gd_version() > 0){
+if(we_base_imageEdit::gd_version() > 0){
 
 	echo
 	we_html_element::jsElement('self.focus();') .

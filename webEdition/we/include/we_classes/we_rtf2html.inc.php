@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 define("EOF", -999999);
-
+//FIXME: 6.4: remove this class
 class we_rtf2html{
 
 	var $current = -1;

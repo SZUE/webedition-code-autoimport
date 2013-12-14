@@ -28,7 +28,7 @@
  *
  * Provides functions for creating webEdition buttons.
  */
-class we_image_edit{
+abstract class we_base_imageEdit{
 
 	const IMAGE_CONTENT_TYPES = 'image/jpeg,image/pjpeg,image/gif,image/png,image/x-png,image/svg-xml,image/x-citrix-pjpeg';
 
@@ -45,7 +45,7 @@ class we_image_edit{
 	 *
 	 * @return     array
 	 */
-	function php_info(){
+	private static function php_info(){
 		static $_phpinfo = array();
 
 		// Check if need to get the requested information
@@ -68,7 +68,7 @@ class we_image_edit{
 		return $_phpinfo;
 	}
 
-	function supported_image_types(){
+	public static function supported_image_types(){
 		$_output_formats = array();
 
 		if(function_exists("ImageTypes")){
@@ -90,7 +90,7 @@ class we_image_edit{
 		return $_output_formats;
 	}
 
-	static function detect_image_type($filename, $imagedata = ''){
+	public static function detect_image_type($filename, $imagedata = ''){
 		// Check if we need to read the beginning of the image
 		$imagedata = (file_exists($filename) ? we_base_file::loadPart($filename, 0, 3) : substr($imagedata, 0, 3));
 
@@ -109,7 +109,7 @@ class we_image_edit{
 		}
 	}
 
-	function gd_info(){
+	private static function gd_info(){
 		// Check if we need to emulate this function since it is built into PHP v4.3.0+ (with bundled GD2 library)
 		if(!function_exists("gd_info")){
 			static $_gdinfo = array();
@@ -120,7 +120,7 @@ class we_image_edit{
 				$_gdinfo = array("GD Version" => "", "FreeType Support" => false, "FreeType Linkage" => "", "T1Lib Support" => false, "GIF Read Support" => false, "GIF Create Support" => false, "JPG Support" => false, "PNG Support" => false, "WBMP Support" => false, "XBM Support" => false);
 
 				// Now we need to read the phpinfo() to detect the GD library support
-				$_phpinfo = we_image_edit::php_info();
+				$_phpinfo = self::php_info();
 
 				foreach($_phpinfo as $_value){
 					$_value = trim(strip_tags($_value));
@@ -184,14 +184,14 @@ class we_image_edit{
 		}
 	}
 
-	function gd_version(){
+	public static function gd_version(){
 
 		static $_gdversion = 0;
 
 		// Check if need to get the requested information
 		if(empty($_gdversion)){
 			// Request information about GD libary
-			$_gdinfo = we_image_edit::gd_info();
+			$_gdinfo = self::gd_info();
 
 			// Define string to be searched
 			$_searchstring = "bundled (";
@@ -205,11 +205,11 @@ class we_image_edit{
 		return $_gdversion;
 	}
 
-	function ImageCreateFromStringReplacement(&$imagedata){
+	private static function ImageCreateFromStringReplacement(&$imagedata){
 		// Serious bugs in the non-bundled versions of GD library cause PHP to segfault when calling ImageCreateFromString() - avoid if possible
 		$_gdimg = false;
 
-		switch(we_image_edit::detect_image_type('', $imagedata)){
+		switch(self::detect_image_type('', $imagedata)){
 			case 'gif':
 				$_image_create_from_string_replacement_function = "imagecreatefromgif";
 				break;
@@ -235,8 +235,8 @@ class we_image_edit{
 		return $_gdimg;
 	}
 
-	function ImageCreateFromFileReplacement($filename){
-		switch(we_image_edit::detect_image_type($filename)){
+	private static function ImageCreateFromFileReplacement($filename){
+		switch(self::detect_image_type($filename)){
 			case "gif":
 				$_image_create_from_string_replacement_function = "imagecreatefromgif";
 				break;
@@ -255,8 +255,8 @@ class we_image_edit{
 		}
 	}
 
-	function calculate_image_size($origwidth, $origheight, $newwidth, $newheight, $keep_aspect_ratio = true, $maxsize = true, $fitinside = false){
-		if(we_image_edit::should_not_resize($origwidth, $origheight, $newwidth, $newheight, $maxsize, $fitinside)){
+	private static function calculate_image_size($origwidth, $origheight, $newwidth, $newheight, $keep_aspect_ratio = true, $maxsize = true, $fitinside = false){
+		if(self::should_not_resize($origwidth, $origheight, $newwidth, $newheight, $maxsize, $fitinside)){
 			return array("width" => $origwidth, "height" => $origheight, "useorig" => 1);
 		}
 
@@ -295,8 +295,8 @@ class we_image_edit{
 		return array("width" => $_outsize["width"], "height" => $_outsize["height"], "useorig" => 0);
 	}
 
-	function calculate_image_sizeFit($origwidth, $origheight, $newwidth, $newheight, $maxsize = true){
-		if(we_image_edit::should_not_resize($origwidth, $origheight, $newwidth, $newheight, $maxsize, true)){
+	static function calculate_image_sizeFit($origwidth, $origheight, $newwidth, $newheight, $maxsize = true){
+		if(self::should_not_resize($origwidth, $origheight, $newwidth, $newheight, $maxsize, true)){
 			return array("width" => $origwidth, "height" => $origheight, "useorig" => 1);
 		}
 
@@ -320,14 +320,14 @@ class we_image_edit{
 		return array("width" => $_outsize["width"], "height" => $_outsize["height"], "useorig" => 0);
 	}
 
-	function should_not_resize($origwidth, $origheight, $newwidth, $newheight, $maxsize = false, $fitinside = false){
+	private static function should_not_resize($origwidth, $origheight, $newwidth, $newheight, $maxsize = false, $fitinside = false){
 		return ($maxsize == false) && ($fitinside == false) && ($origwidth <= $newwidth) && ($origheight <= $newheight);
 	}
 
-	function getimagesize($filename){
-		$type = we_image_edit::detect_image_type($filename);
-		if(we_image_edit::is_imagetype_supported($type)){
-			$_gdimg = we_image_edit::ImageCreateFromFileReplacement($filename);
+	public static function getimagesize($filename){
+		$type = self::detect_image_type($filename);
+		if(self::is_imagetype_supported($type)){
+			$_gdimg = self::ImageCreateFromFileReplacement($filename);
 			$ct = 0;
 			switch($type){
 				case "gif":
@@ -347,14 +347,14 @@ class we_image_edit{
 		return array();
 	}
 
-	function is_imagetype_supported($type){
-		return in_array($type, we_image_edit::supported_image_types());
+	public static function is_imagetype_supported($type){
+		return in_array($type, self::supported_image_types());
 	}
 
-	function is_imagetype_read_supported($type){
+	public static function is_imagetype_read_supported($type){
 		$t = array("gif", "jpg", "png");
 
-		$sit = we_image_edit::supported_image_types();
+		$sit = self::supported_image_types();
 		$fn = "";
 
 		foreach($t as $cur){
@@ -378,7 +378,7 @@ class we_image_edit{
 		return in_array($type, $sit);
 	}
 
-	function edit_image($imagedata, $output_format = "jpg", $output_filename = "", $output_quality = 75, $width = "", $height = "", $keep_aspect_ratio = true, $interlace = true, $crop_x = 0, $crop_y = 0, $crop_width = -1, $crop_height = -1, $rotate_angle = 0, $fitinside = false){
+	public static function edit_image($imagedata, $output_format = "jpg", $output_filename = "", $output_quality = 75, $width = "", $height = "", $keep_aspect_ratio = true, $interlace = true, $crop_x = 0, $crop_y = 0, $crop_width = -1, $crop_height = -1, $rotate_angle = 0, $fitinside = false){
 		$output_format = strtolower($output_format);
 		if($output_format == "jpeg"){
 			$output_format = "jpg";
@@ -387,14 +387,14 @@ class we_image_edit{
 		$_fromFile = (strlen($imagedata) < 255 && @file_exists($imagedata));
 
 		// Output format is available
-		if(in_array($output_format, we_image_edit::supported_image_types())){
+		if(in_array($output_format, self::supported_image_types())){
 			// Set quality for JPG images
 			if($output_format == 'jpg'){
 				// Keep quality between 1 and 99
 				$output_quality = max(1, min(99, (is_int($output_quality) ? $output_quality : 75)));
 			}
 
-			$_gdimg = ($_fromFile ? we_image_edit::ImageCreateFromFileReplacement($imagedata) : we_image_edit::ImageCreateFromStringReplacement($imagedata));
+			$_gdimg = ($_fromFile ? self::ImageCreateFromFileReplacement($imagedata) : self::ImageCreateFromStringReplacement($imagedata));
 
 			// Now we need to ensure that we could read the file
 			if($_gdimg){
@@ -418,10 +418,10 @@ class we_image_edit{
 					}
 				}
 
-				$_outsize = we_image_edit::calculate_image_size($_width, $_height, $width, $height, $keep_aspect_ratio, true, $fitinside);
+				$_outsize = self::calculate_image_size($_width, $_height, $width, $height, $keep_aspect_ratio, true, $fitinside);
 
 				// Decide, which functions to use (depends on version of GD library)
-				$_image_create_function = (we_image_edit::gd_version() >= 2.0 ? "imagecreatetruecolor" : "imagecreate");
+				$_image_create_function = (self::gd_version() >= 2.0 ? "imagecreatetruecolor" : "imagecreate");
 				$_image_resize_function = (function_exists('imagecopyresampled') ? "imagecopyresampled" : "imagecopyresized");
 
 				if($_outsize["width"] == 0){
@@ -434,7 +434,7 @@ class we_image_edit{
 				// Now create the image
 				$_output_gdimg = $_image_create_function($_outsize["width"], $_outsize["height"]); // this image is always black
 
-				$GDInfo = we_image_edit::gd_info();
+				$GDInfo = self::gd_info();
 				// DEBIAN EDGE FIX => crashes at imagefill, so use old Method
 				if($GDInfo["GD Version"] == "2.0 or higher" && !function_exists("imagerotate")){
 					// set black to transparent!
@@ -543,21 +543,21 @@ class we_image_edit{
 		}
 	}
 
-	function ImageTrueColorToPalette2($image, $dither, $ncolors){
-		$width = @imagesx($image);
-		$height = @imagesy($image);
-		$colors_handle = @imagecreatetruecolor($width, $height);
-		@imagecopymerge($colors_handle, $image, 0, 0, 0, 0, $width, $height, 100);
-		@imagetruecolortopalette($image, $dither, $ncolors);
-		if(is_callable("imagecolormatch")){
-			@imagecolormatch($colors_handle, $image);
-		}
-		@imagedestroy($colors_handle);
-		return $image;
-	}
+	/* static function ImageTrueColorToPalette2($image, $dither, $ncolors){
+	  $width = @imagesx($image);
+	  $height = @imagesy($image);
+	  $colors_handle = @imagecreatetruecolor($width, $height);
+	  @imagecopymerge($colors_handle, $image, 0, 0, 0, 0, $width, $height, 100);
+	  @imagetruecolortopalette($image, $dither, $ncolors);
+	  if(is_callable("imagecolormatch")){
+	  @imagecolormatch($colors_handle, $image);
+	  }
+	  @imagedestroy($colors_handle);
+	  return $image;
+	  } */
 
-	function createPreviewThumb($imgSrc, $imgID, $width, $height, $outputFormat = "jpg", $outputQuality = 75, $tmpName = ""){
-		if(we_image_edit::gd_version() == 0){
+	public static function createPreviewThumb($imgSrc, $imgID, $width, $height, $outputFormat = "jpg", $outputQuality = 75, $tmpName = ""){
+		if(self::gd_version() == 0){
 			return IMAGE_DIR . 'icons/doclist/image.gif';
 		}
 		if(substr($imgSrc, 0, strlen($_SERVER['DOCUMENT_ROOT'])) == $_SERVER['DOCUMENT_ROOT']){ // it is no src, it is a server path
@@ -585,7 +585,7 @@ class we_image_edit{
 			$_thumbCreationDate = $_thumbExists ? filemtime($_thumbPath) : 0;
 
 			if(!$_thumbExists || ($_imageCreationDate > $_thumbCreationDate)){
-				$thumb = we_image_edit::edit_image($_imgPath, $outputFormat, $_thumbPath, $outputQuality, $width, $height);
+				$thumb = self::edit_image($_imgPath, $outputFormat, $_thumbPath, $outputQuality, $width, $height);
 			}
 			return $_thumbSrc;
 		}
@@ -600,7 +600,7 @@ class we_image_edit{
 	 * @param string $name
 	 * @param string[optional] $sel
 	 */
-	static function qualitySelect($name = 'quality', $sel = 8){
+	public static function qualitySelect($name = 'quality', $sel = 8){
 		return '<select name="' . $name . '" class="weSelect" size="1">
 <option value="0"' . (($sel == 0) ? ' selected' : '') . '>0 - ' . g_l('weClass', '[quality_low]') . '</option>
 <option value="1"' . (($sel == 1) ? ' selected' : '') . '>1</option>

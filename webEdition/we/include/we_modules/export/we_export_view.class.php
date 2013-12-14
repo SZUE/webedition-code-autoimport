@@ -86,7 +86,7 @@ class we_export_view{
 
 	function getJSTop(){
 		$mod = isset($_REQUEST['mod']) ? $_REQUEST['mod'] : '';
-		$modData = weModuleInfo::getModuleData($mod);
+		$modData = we_base_moduleInfo::getModuleData($mod);
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 
 		$js = '

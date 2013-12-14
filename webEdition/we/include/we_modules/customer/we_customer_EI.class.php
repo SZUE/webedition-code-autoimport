@@ -239,7 +239,7 @@ abstract class we_customer_EI{
 				$xml_from = $options['xml_from'];
 				$xml_to = $options['xml_to'];
 
-				$parse = new XML_SplitFile($_SERVER['DOCUMENT_ROOT'] . $filename);
+				$parse = new we_xml_splitFile($_SERVER['DOCUMENT_ROOT'] . $filename);
 				$parse->splitFile('*/' . $dataset, $xml_from, $xml_to);
 
 				$ret['tmp_dir'] = str_replace(TEMP_PATH . '/', '', $parse->path);

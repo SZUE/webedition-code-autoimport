@@ -41,7 +41,7 @@ abstract class we_backup_export{
 				we_backup_util::addLog(sprintf('Exporting table %s', $_table));
 			}
 
-			$_object = new weTableAdv($_table, true);
+			$_object = new we_backup_tableAdv($_table, true);
 
 			$_attributes = array(
 				'name' => we_backup_util::getDefaultTableName($_table),
@@ -76,7 +76,7 @@ abstract class we_backup_export{
 
 		// export table item
 
-		$_keys = weTableItem::getTableKey($_table);
+		$_keys = we_backup_tableItem::getTableKey($_table);
 		$_keys_str = '`' . implode('`,`', $_keys) . '`';
 
 		$_db->query('SELECT ' . $_db->escape($_keys_str) . ' FROM  ' . $_db->escape($_table) . ' ORDER BY ' . $_keys_str . ' LIMIT ' . intval($offset) . ' ,' . intval($lines), true);
@@ -96,7 +96,7 @@ abstract class we_backup_export{
 				we_backup_util::addLog(sprintf('Exporting item %s:%s', $_table, $_ids));
 			}
 
-			$_object = new weTableItem($_table);
+			$_object = new we_backup_tableItem($_table);
 			$_object->load($_keyvalue);
 
 

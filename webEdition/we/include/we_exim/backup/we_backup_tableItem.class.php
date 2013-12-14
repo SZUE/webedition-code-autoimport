@@ -28,9 +28,9 @@
  *
  * Provides functions for exporting and importing table rows.
  */
-class weTableItem extends weModelBase{
+class we_backup_tableItem extends weModelBase{
 
-	var $Pseudo = 'weTableItem';
+	var $Pseudo = 'we_backup_tableItem';
 	var $attribute_slots = array();
 
 	function __construct($table){
@@ -228,7 +228,7 @@ class weTableItem extends weModelBase{
 
 //FIXME: remove
 	static function correctSerDataISOtoUTF($serial_str){
-		return preg_replace_callback('|s:\d+:"(.*?)";|s', 'weTableItem::serialize_fix_callback', $serial_str);
+		return preg_replace_callback('|s:\d+:"(.*?)";|s', 'we_backup_tableItem::serialize_fix_callback', $serial_str);
 	}
 
 }

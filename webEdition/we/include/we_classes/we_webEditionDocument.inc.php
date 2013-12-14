@@ -960,10 +960,10 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 		$MNEMONIC_EDITPAGES = array(
 			WE_EDITPAGE_PROPERTIES => 'properties', WE_EDITPAGE_CONTENT => 'edit', WE_EDITPAGE_INFO => 'information', WE_EDITPAGE_PREVIEW => 'preview', WE_EDITPAGE_SCHEDULER => 'schedpro', WE_EDITPAGE_VALIDATION => 'validation', WE_EDITPAGE_VERSIONS => 'versions'
 		);
-		if(weModuleInfo::isActive('shop')){
+		if(we_base_moduleInfo::isActive('shop')){
 			$MNEMONIC_EDITPAGES[WE_EDITPAGE_VARIANTS] = 'variants';
 		}
-		if(weModuleInfo::isActive('customer')){
+		if(we_base_moduleInfo::isActive('customer')){
 			$MNEMONIC_EDITPAGES[WE_EDITPAGE_WEBUSER] = 'customer';
 		}
 

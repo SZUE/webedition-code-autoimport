@@ -32,7 +32,7 @@
  * @version $Revision$
  * @access  public
  */
-class XML_RSS extends XML_Parser{
+class we_xml_rss extends XML_Parser{
 	// {{{ properties
 
 	/**
@@ -144,7 +144,7 @@ class XML_RSS extends XML_Parser{
 	 *                default encoding (ISO-8859-1)
 	 * @return void
 	 */
-	function XML_RSS($handle = '', $srcenc = null, $tgtenc = null){
+	function we_xml_rss($handle = '', $srcenc = null, $tgtenc = null){
 		/* if ($srcenc === null && $tgtenc === null) {
 		  parent::__construct();
 		  } else { */

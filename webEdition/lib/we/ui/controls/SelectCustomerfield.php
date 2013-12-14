@@ -55,7 +55,7 @@ class we_ui_controls_SelectCustomerfield extends we_ui_controls_Select{
 	 */
 	public function __construct($properties = null){
 		parent::__construct($properties);
-		if(weModuleInfo::isActive('customer')){
+		if(we_base_moduleInfo::isActive('customer')){
 			if(file_exists(WE_MODULES_PATH . 'customer/we_conf_customer.inc.php')){
 				require_once (WE_MODULES_PATH . 'customer/we_conf_customer.inc.php');
 				$db = new DB_WE();

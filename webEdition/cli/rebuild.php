@@ -304,21 +304,21 @@ switch($_REQUEST['type']){
 		$_REQUEST['type'] = "filter";
 	case 'all':
 	case 'templates':
-		$data = we_rebuild::getDocuments(
+		$data = we_rebuild_base::getDocuments(
 				"rebuild_" . $_REQUEST['type'], $_REQUEST['categories'], $_REQUEST['catAnd'], $_REQUEST['doctypes'], $_REQUEST['directories'], $_REQUEST['rewriteMaintable'], $_REQUEST['rewriteTmptable']
 		);
 		break;
 
 	case 'objects':
-		$data = we_rebuild::getObjects();
+		$data = we_rebuild_base::getObjects();
 		break;
 
 	case 'navigation':
-		$data = we_rebuild::getNavigation();
+		$data = we_rebuild_base::getNavigation();
 		break;
 
 	case 'index':
-		$data = we_rebuild::getIndex();
+		$data = we_rebuild_base::getIndex();
 		break;
 
 	case 'thumbnails':
@@ -329,7 +329,7 @@ switch($_REQUEST['type']){
 			$_thumbIds[] = f("SELECT ID FROM " . THUMBNAILS_TABLE . " WHERE NAME='" . $db->escape($_thumbName) . "'", "ID", $db);
 		}
 		$_thumbIds = makeCSVFromArray($_thumbIds);
-		$data = we_rebuild::getThumbnails($_thumbIds);
+		$data = we_rebuild_base::getThumbnails($_thumbIds);
 		break;
 
 	default:
@@ -340,5 +340,5 @@ switch($_REQUEST['type']){
 // start rebuild
 
 foreach($data as $d){
-	we_rebuild::rebuild($d, $_REQUEST['verbose']);
+	we_rebuild_base::rebuild($d, $_REQUEST['verbose']);
 }

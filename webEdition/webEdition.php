@@ -464,7 +464,7 @@ foreach($GLOBALS['_we_active_integrated_modules'] as $mod){
 		include_once(WE_MODULES_PATH . $mod . '/we_webEditionCmd_' . $mod . '.inc.php');
 	}
 }{ // deal with uninstalled modules
-	$mods = weModuleInfo::getAllModules();
+	$mods = we_base_moduleInfo::getAllModules();
 	foreach($mods as $m){
 		echo 'case "edit_' . $m["name"] . '_ifthere":';
 	}

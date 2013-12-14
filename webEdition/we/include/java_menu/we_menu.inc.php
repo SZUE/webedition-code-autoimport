@@ -842,14 +842,14 @@ if(defined('OBJECT_TABLE')){
 
 $z = 3000001;
 // order all modules
-$buyableModules = weModuleInfo::getAllModules();
-weModuleInfo::orderModuleArray($buyableModules);
+$buyableModules = we_base_moduleInfo::getAllModules();
+we_base_moduleInfo::orderModuleArray($buyableModules);
 
 //$moduleList = 'schedpro|';
 
 foreach($buyableModules as $m){
 
-	if(weModuleInfo::showModuleInMenu($m['name'])){
+	if(we_base_moduleInfo::showModuleInMenu($m['name'])){
 		// workarround (old module names) for not installed Modules WIndow
 		/* 	if($m['name'] == 'customer'){
 		  $moduleList .= 'customerpro|';
@@ -877,8 +877,8 @@ foreach($_tools as $_k => $_tool){
 	);
 }
 
-$_activeIntModules = weModuleInfo::getIntegratedModules(true);
-weModuleInfo::orderModuleArray($_activeIntModules);
+$_activeIntModules = we_base_moduleInfo::getIntegratedModules(true);
+we_base_moduleInfo::orderModuleArray($_activeIntModules);
 
 if(!empty($_activeIntModules)){
 

@@ -783,7 +783,7 @@ class we_import_site{
 				'space' => 120
 			);
 
-			if(we_image_edit::gd_version() > 0){
+			if(we_base_imageEdit::gd_version() > 0){
 				$parts[] = array(
 					"headline" => g_l('importFiles', "[make_thumbs]"),
 					"html" => $_thumbs,
@@ -836,7 +836,7 @@ class we_import_site{
 
 				$parts[] = array(
 					"headline" => g_l('weClass', "[quality]"),
-					"html" => we_image_edit::qualitySelect("quality", $this->quality),
+					"html" => we_base_imageEdit::qualitySelect("quality", $this->quality),
 					"space" => 120
 				);
 			} else {
