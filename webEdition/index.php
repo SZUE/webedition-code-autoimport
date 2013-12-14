@@ -222,8 +222,8 @@ function getError($reason, $cookie = false){
 	if(isset($GLOBALS['FOUND_SESSION_PROBLEM'])){
 		$_error .= ++$_error_count . ' - ' .
 			'PHP is not allowed to write / cleanup session data correctly. Please contact your Admin. Additional Information for your Admin:' . we_html_element::htmlBr() .
-			'session.gc_probability: ' .ini_get('session.gc_probability'). we_html_element::htmlBr() . '
- Session Path: ' . $GLOBALS['FOUND_SESSION_PROBLEM'] . we_html_element::htmlBr() . '
+			'session.gc_probability: ' . $GLOBALS['FOUND_SESSION_PROBLEM'] . we_html_element::htmlBr() . '
+ Session Path: ' . session_save_path() . we_html_element::htmlBr() . '
  Opendir: failed' . we_html_element::htmlBr() .
 			'Problem is temporary fixed by webEdition' . we_html_element::htmlBr() .
 			'<a href="' . WEBEDITION_DIR . 'index.php?skipSess=1">Click here, to start anyway</a>' . we_html_element::htmlBr();
