@@ -136,7 +136,7 @@ class we_backup_backup extends we_backup_base{
 					$this->description["import"][strtolower($tablename)] :
 					g_l('backup', "[working]"));
 
-			$object = weContentProvider::getInstance("weTable", 0, $tablename);
+			$object = weContentProvider::getInstance("we_backup_table", 0, $tablename);
 			$node_set2 = $xmlBrowser->getSet($nodeset);
 			foreach($node_set2 as $set2){
 				$node_set3 = $xmlBrowser->getSet($set2);
@@ -162,7 +162,7 @@ class we_backup_backup extends we_backup_base{
 	function recoverTableItem($nodeset, &$xmlBrowser){
 		$content = array();
 		$node_set2 = $xmlBrowser->getSet($nodeset);
-		$classname = "weTableItem";
+		$classname = "we_backup_tableItem";
 
 		foreach($node_set2 as $nsv){
 			$index = $xmlBrowser->nodeName($nsv);
@@ -241,7 +241,7 @@ class we_backup_backup extends we_backup_base{
 			return false;
 		}
 
-		$xmlBrowser = new weXMLBrowser($chunk_file);
+		$xmlBrowser = new we_xml_browser($chunk_file);
 		$xmlBrowser->mode = "backup";
 
 		foreach($xmlBrowser->nodes as $key => $val){
@@ -323,7 +323,7 @@ class we_backup_backup extends we_backup_base{
 					//$metadata = $this->backup_db->metadata($table);
 
 					if(!$this->partial){
-						$xmlExport->exportChunk(0, "weTable", $this->dumpfilename, $table, $this->backup_binary);
+						$xmlExport->exportChunk(0, "we_backup_table", $this->dumpfilename, $table, $this->backup_binary);
 
 						$this->backup_step = 0;
 						$this->table_end = 0;
@@ -335,7 +335,7 @@ class we_backup_backup extends we_backup_base{
 							$this->description["export"][strtolower($table)] :
 							g_l('backup', "[working]"));
 
-					$keys = weTableItem::getTableKey($table);
+					$keys = we_backup_tableItem::getTableKey($table);
 					$this->partial = false;
 
 					do{
@@ -349,7 +349,7 @@ class we_backup_backup extends we_backup_base{
 							}
 							++$this->row_count;
 
-							$xmlExport->exportChunk(implode(",", $keyvalue), "weTableItem", $this->dumpfilename, $table, $this->backup_binary);
+							$xmlExport->exportChunk(implode(",", $keyvalue), "we_backup_tableItem", $this->dumpfilename, $table, $this->backup_binary);
 							++$this->backup_step;
 						}
 					} while(self::limitsReached($table, microtime(true) - $start));

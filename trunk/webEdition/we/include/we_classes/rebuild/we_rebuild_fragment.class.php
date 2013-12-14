@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rebuildFragment extends taskFragment{
+class we_rebuild_fragment extends taskFragment{
 
 	function __construct($name, $taskPerFragment, $pause = 0, $bodyAttributes = "", $initdata = ""){
 		parent::__construct($name, $taskPerFragment, $pause, $bodyAttributes, $initdata);
@@ -30,7 +30,7 @@ class rebuildFragment extends taskFragment{
 
 	function doTask(){
 		$this->updateProgressBar();
-		we_rebuild::rebuild($this->data);
+		we_rebuild_base::rebuild($this->data);
 	}
 
 	function updateProgressBar(){

@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weXMLBrowser extends we_xml_parser{
+class we_xml_browser extends we_xml_parser{
 
 	var $cache;
 

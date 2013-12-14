@@ -224,7 +224,7 @@ class we_banner_view extends we_banner_base{
 			}
 		<?php
 		$mod = isset($_REQUEST['mod']) ? $_REQUEST['mod'] : '';
-		$modData = weModuleInfo::getModuleData($mod);
+		$modData = we_base_moduleInfo::getModuleData($mod);
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 		?>
 

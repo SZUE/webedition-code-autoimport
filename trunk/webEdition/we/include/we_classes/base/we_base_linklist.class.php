@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_linklist{
+class we_base_linklist{
 
 	private $name = "";
 	private $sString = "";

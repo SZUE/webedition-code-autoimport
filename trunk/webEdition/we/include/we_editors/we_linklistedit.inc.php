@@ -116,7 +116,7 @@ if(isset($_REQUEST['ok']) && $_REQUEST['ok']){
 		$linklist = $_REQUEST['linklist'];
 		//  set $nr to global, because it is used everywhere;
 		$nr = $_REQUEST['nr'];
-		$ll = new we_linklist($linklist);
+		$ll = new we_base_linklist($linklist);
 		$ll->setID($_REQUEST['nr'], $_REQUEST['id']);
 		if(defined('OBJECT_TABLE')){
 			$ll->setObjID($_REQUEST['nr'], $_REQUEST['obj_id']);
@@ -222,7 +222,7 @@ if(isset($_REQUEST['ok']) && $_REQUEST['ok']){
 	$name = $_REQUEST['we_cmd'][1];
 	$nr = isset($_REQUEST['we_cmd'][2]) ? $_REQUEST['we_cmd'][2] : '';
 	if($nr != ''){
-		$ll = new we_linklist($we_doc->getElement($name));
+		$ll = new we_base_linklist($we_doc->getElement($name));
 		$href = $ll->getHref($nr);
 		if(!empty($href) && strpos($href, we_base_link::TYPE_MAIL_PREFIX) === 0){
 			$emaillink = substr($href, strlen(we_base_link::TYPE_MAIL_PREFIX));

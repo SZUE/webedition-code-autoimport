@@ -286,7 +286,7 @@ function uploadFinished() {
 				'space' => 150
 			);
 
-			if(we_image_edit::gd_version() > 0){
+			if(we_base_imageEdit::gd_version() > 0){
 				$GLOBALS['DB_WE']->query("SELECT ID,Name FROM " . THUMBNAILS_TABLE . " Order By Name");
 				$Thselect = g_l('importFiles', "[thumbnails]") . "<br>" . we_html_tools::getPixel(1, 3) . "<br>" . '<select class="defaultfont" name="thumbs_tmp" size="5" multiple style="width: 260px" onchange="this.form.thumbs.value=\'\';for(var i=0;i<this.options.length;i++){if(this.options[i].selected){this.form.thumbs.value +=(this.options[i].value+\',\');}};this.form.thumbs.value=this.form.thumbs.value.replace(/^(.+),$/,\'$1\');">' . "\n";
 
@@ -344,7 +344,7 @@ function uploadFinished() {
 
 				$parts[] = array(
 					"headline" => g_l('weClass', "[quality]"),
-					"html" => we_image_edit::qualitySelect("quality", $this->quality),
+					"html" => we_base_imageEdit::qualitySelect("quality", $this->quality),
 					"space" => 150
 				);
 			} else {
@@ -603,7 +603,7 @@ function next() {
 		for(var i=0; i<forms.length;i++){
 			if(forms[i].name.substring(0,14) == 'we_upload_form') {
 				if(z == weFormNum && forms[i].we_File.value != ''){
-					forms[i].importToID.value = top.imgimportcontent.document.we_startform.importToID.value;" . ((we_image_edit::gd_version() > 0) ? ("
+					forms[i].importToID.value = top.imgimportcontent.document.we_startform.importToID.value;" . ((we_base_imageEdit::gd_version() > 0) ? ("
 					forms[i].thumbs.value = top.imgimportcontent.document.we_startform.thumbs.value;
 					forms[i].width.value = top.imgimportcontent.document.we_startform.width.value;
 					forms[i].height.value = top.imgimportcontent.document.we_startform.height.value;

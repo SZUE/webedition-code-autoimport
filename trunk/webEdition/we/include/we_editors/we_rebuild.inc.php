@@ -40,4 +40,3 @@ switch($fr){
 	default:
 		print we_rebuild_wizard::getFrameset();
 }
-

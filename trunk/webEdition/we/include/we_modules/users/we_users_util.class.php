@@ -182,7 +182,7 @@ abstract class we_users_util{
 			return true;
 		}
 //FIXME: remove eval + change code
-		$m = weModuleInfo::getModuleData($modName);
+		$m = we_base_moduleInfo::getModuleData($modName);
 
 		if(empty($m)){
 			return true;

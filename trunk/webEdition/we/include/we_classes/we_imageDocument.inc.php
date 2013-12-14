@@ -290,7 +290,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 		}
 		$quality = ($quality > 10 ? 10 : ($quality < 0 ? 0 : $quality)) * 10;
 		$dataPath = TEMP_PATH . '/' . we_base_file::getUniqueId();
-		$_resized_image = we_image_edit::edit_image($this->getElement('data'), $this->getGDType(), $dataPath, $quality, $width, $height, $ratio);
+		$_resized_image = we_base_imageEdit::edit_image($this->getElement('data'), $this->getGDType(), $dataPath, $quality, $width, $height, $ratio);
 		if(!$_resized_image[0]){
 			return false;
 		}
@@ -322,7 +322,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 		$quality = max(min($quality, 10), 0) * 10;
 
 		$dataPath = TEMP_PATH . '/' . we_base_file::getUniqueId();
-		$_resized_image = we_image_edit::edit_image($this->getElement('data'), $this->getGDType(), $dataPath, $quality, $width, $height, false, true, 0, 0, -1, -1, $rotation);
+		$_resized_image = we_base_imageEdit::edit_image($this->getElement('data'), $this->getGDType(), $dataPath, $quality, $width, $height, false, true, 0, 0, -1, -1, $rotation);
 
 		if(!$_resized_image[0]){
 			return false;
@@ -517,7 +517,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 				$this->html = ( trim($this->getRollOverScript($src)) . getHtmlTag('a', $aAtts, getHtmlTag('img', $attribs)) );
 			} else {
 				$this->html = (defined('WE_EDIT_IMAGE')) ?
-					we_image_crop::getJS() . we_image_crop::getCSS() . we_image_crop::getCrop($attribs) :
+					we_base_imageCrop::getJS() . we_base_imageCrop::getCSS() . we_base_imageCrop::getCrop($attribs) :
 					$this->getRollOverScript($src) . getHtmlTag('img', array_merge($attribs, $this->getRollOverAttribsArr(false)));
 			}
 		} else {
@@ -661,7 +661,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 	 * @return boolean
 	 */
 	function gd_support(){
-		return in_array($this->getGDType(), we_image_edit::supported_image_types());
+		return in_array($this->getGDType(), we_base_imageEdit::supported_image_types());
 	}
 
 	/**
@@ -670,7 +670,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 	 * @return string
 	 */
 	function getGDType(){
-		return isset(we_image_edit::$GDIMAGE_TYPE[strtolower($this->Extension)]) ? we_image_edit::$GDIMAGE_TYPE[strtolower($this->Extension)] : 'jpg';
+		return isset(we_base_imageEdit::$GDIMAGE_TYPE[strtolower($this->Extension)]) ? we_base_imageEdit::$GDIMAGE_TYPE[strtolower($this->Extension)] : 'jpg';
 	}
 
 	function convert($type, $quality = 8){
@@ -681,7 +681,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 		$quality = max(min($quality, 10), 0) * 10;
 
 		$dataPath = TEMP_PATH . '/' . we_base_file::getUniqueId();
-		we_image_edit::edit_image($this->getElement('data'), $type, $dataPath, $quality, $width, $height, false);
+		we_base_imageEdit::edit_image($this->getElement('data'), $type, $dataPath, $quality, $width, $height, false);
 
 		$this->setElement('data', $dataPath);
 		$this->Extension = '.' . $type;

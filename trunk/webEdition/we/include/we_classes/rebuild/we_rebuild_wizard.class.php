@@ -180,7 +180,7 @@ abstract class we_rebuild_wizard{
 
 		$parts[] = array(
 			"headline" => "",
-			"html" => we_html_forms::radiobutton("rebuild_thumbnails", ($type == "rebuild_thumbnails" && permissionhandler::hasPerm("REBUILD_THUMBS")), "type", g_l('rebuild', "[thumbnails]"), true, "defaultfont", "setNavStatDocDisabled()", (we_image_edit::gd_version() == 0 || (!permissionhandler::hasPerm("REBUILD_THUMBS"))), g_l('rebuild', "[txt_rebuild_thumbnails]"), 0, 495),
+			"html" => we_html_forms::radiobutton("rebuild_thumbnails", ($type == "rebuild_thumbnails" && permissionhandler::hasPerm("REBUILD_THUMBS")), "type", g_l('rebuild', "[thumbnails]"), true, "defaultfont", "setNavStatDocDisabled()", (we_base_imageEdit::gd_version() == 0 || (!permissionhandler::hasPerm("REBUILD_THUMBS"))), g_l('rebuild', "[txt_rebuild_thumbnails]"), 0, 495),
 			"space" => 0
 		);
 
@@ -364,36 +364,36 @@ abstract class we_rebuild_wizard{
 		if(!(file_exists($taskFilename) && $currentTask)){
 			switch($type){
 				case 'rebuild_documents':
-					$data = we_rebuild::getDocuments($btype, $categories, $catAnd, $doctypes, $folders, $maintable, $tmptable, $templateID);
+					$data = we_rebuild_base::getDocuments($btype, $categories, $catAnd, $doctypes, $folders, $maintable, $tmptable, $templateID);
 					break;
 				case 'rebuild_thumbnails':
 					if(!$thumbs){
 						return array($js . ';top.wizbusy.showPrevNextButton();' . we_message_reporting::getShowMessageCall(g_l('rebuild', '[no_thumbs_selected]'), we_message_reporting::WE_MESSAGE_ERROR), '');
 					}
-					$data = we_rebuild::getThumbnails($thumbs, $thumbsFolders);
+					$data = we_rebuild_base::getThumbnails($thumbs, $thumbsFolders);
 					break;
 				case 'rebuild_index':
-					$data = we_rebuild::getIndex();
+					$data = we_rebuild_base::getIndex();
 					break;
 				case 'rebuild_objects':
-					$data = we_rebuild::getObjects();
+					$data = we_rebuild_base::getObjects();
 					break;
 				case 'rebuild_navigation':
-					$data = we_rebuild::getNavigation();
+					$data = we_rebuild_base::getNavigation();
 					break;
 				case 'rebuild_metadata':
-					$data = we_rebuild::getMetadata($metaFields, $onlyEmpty, $metaFolders);
+					$data = we_rebuild_base::getMetadata($metaFields, $onlyEmpty, $metaFolders);
 					break;
 			}
 			if(!empty($data)){
-				$fr = new rebuildFragment($taskname, 1, 0, array(), $data);
+				$fr = new we_rebuild_fragment($taskname, 1, 0, array(), $data);
 
 				return array();
 			} else {
 				return array($js . we_message_reporting::getShowMessageCall(g_l('rebuild', '[nothing_to_rebuild]'), we_message_reporting::WE_MESSAGE_ERROR) . 'top.wizbusy.showPrevNextButton();', "");
 			}
 		} else {
-			$fr = new rebuildFragment($taskname, 1, 0, array());
+			$fr = new we_rebuild_fragment($taskname, 1, 0, array());
 
 			return array();
 		}

@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-abstract class weXMLComposer{
+abstract class we_xml_composer{
 
 	static function we_xmlElement($name, $content = "", $attributes = null){
 		$element = new we_html_baseElement($name, true, (isset($attributes) && is_array($attributes) ? $attributes : null), $content);
@@ -40,7 +40,7 @@ abstract class weXMLComposer{
 	static function buildXMLElements($elements){
 		$out = "";
 		foreach($elements as $element){
-			$element = new we_html_baseElement($element["name"], true, $element["attributes"], (is_array($element["content"]) ? weXMLComposer::buildXMLElements($element["content"]) : $element["content"]));
+			$element = new we_html_baseElement($element["name"], true, $element["attributes"], (is_array($element["content"]) ? we_xml_composer::buildXMLElements($element["content"]) : $element["content"]));
 			$out.=$element->getHTML();
 		}
 		return $out;

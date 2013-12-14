@@ -42,7 +42,7 @@ function we_tag_xmlfeed($attribs){
 		$GLOBALS['xmlfeeds'] = array();
 	}
 
-	$GLOBALS['xmlfeeds'][$name] = new weXMLBrowser();
+	$GLOBALS['xmlfeeds'][$name] = new we_xml_browser();
 	$cache = $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'xmlfeeds/' . $name;
 
 	$do_refresh = (is_file($cache) && $refresh > 0 ? ((filemtime($cache) + $refresh) < time()) : true);

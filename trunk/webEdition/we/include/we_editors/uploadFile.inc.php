@@ -44,7 +44,7 @@ if(!isset($_SESSION['weS']['we_data'][$we_transaction])){
 
 	switch($we_doc->ContentType){
 		case 'image/*';
-			$allowedContentTypes = we_image_edit::IMAGE_CONTENT_TYPES;
+			$allowedContentTypes = we_base_imageEdit::IMAGE_CONTENT_TYPES;
 			break;
 		case 'application/*';
 			break;
@@ -65,7 +65,7 @@ if(!isset($_SESSION['weS']['we_data'][$we_transaction])){
 		$foo = explode('/', $_FILES["we_File"]["type"]);
 		$we_doc->setElement('data', $we_File, $foo[0]);
 
-		if($we_doc->ContentType == 'image/*' && !$we_doc->isSvg() && !in_array(we_image_edit::detect_image_type($we_File), we_image_edit::$GDIMAGE_TYPE)){
+		if($we_doc->ContentType == 'image/*' && !$we_doc->isSvg() && !in_array(we_base_imageEdit::detect_image_type($we_File), we_base_imageEdit::$GDIMAGE_TYPE)){
 			$we_alerttext = g_l('alert', '[wrong_file][' . $we_doc->ContentType . ']');
 		} else {
 

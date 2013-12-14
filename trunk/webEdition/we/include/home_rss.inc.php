@@ -41,7 +41,7 @@ if(isset($http_response->http_headers['Location'])){//eine Weiterleitung ist akt
 }
 $feeddata = $http_response->http_body;
 
-$rss = new XML_RSS($feeddata, null, $GLOBALS['WE_BACKENDCHARSET']); // Umstellung in der XML_RSS-Klasse: den string, und nicht die url weiterzugeben
+$rss = new we_xml_rss($feeddata, null, $GLOBALS['WE_BACKENDCHARSET']); // Umstellung in der XML_RSS-Klasse: den string, und nicht die url weiterzugeben
 $rss->parse();
 $rss_out = '<div id="rss">';
 foreach($rss->getItems() as $item){

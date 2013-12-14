@@ -461,7 +461,7 @@ class we_workflow_view extends we_workflow_base{
 
 	function getJSTopCode(){
 		$mod = isset($_REQUEST['mod']) ? $_REQUEST['mod'] : '';
-		$modData = weModuleInfo::getModuleData($mod);
+		$modData = we_base_moduleInfo::getModuleData($mod);
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 		?>
 		<script type="text/javascript"><!--

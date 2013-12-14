@@ -113,7 +113,7 @@ function we_cmd(){
 		if(!in_array($DB_WE->f("ID"), $doc_thumbs)){
 			$_enabled_buttons = true;
 			$_thumbnail_counter = $DB_WE->f("ID");
-			if(we_image_edit::is_imagetype_read_supported(we_image_edit::$GDIMAGE_TYPE[strtolower($we_doc->Extension)]) && we_image_edit::is_imagetype_supported(trim($DB_WE->f("Format")) ? $DB_WE->f("Format") : we_image_edit::$GDIMAGE_TYPE[strtolower($we_doc->Extension)])){
+			if(we_base_imageEdit::is_imagetype_read_supported(we_base_imageEdit::$GDIMAGE_TYPE[strtolower($we_doc->Extension)]) && we_base_imageEdit::is_imagetype_supported(trim($DB_WE->f("Format")) ? $DB_WE->f("Format") : we_base_imageEdit::$GDIMAGE_TYPE[strtolower($we_doc->Extension)])){
 				$_thumbnails->addOption($DB_WE->f("ID"), $DB_WE->f("Name"));
 			}
 			if($_thumbnail_counter_firsttime){

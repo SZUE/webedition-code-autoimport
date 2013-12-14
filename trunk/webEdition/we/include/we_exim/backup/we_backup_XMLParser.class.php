@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weXMLParser{
+class we_backup_XMLParser{
 
 	var $parseError;
 	var $Nodes = array();

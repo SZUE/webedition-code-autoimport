@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-abstract class we_rebuild{
+abstract class we_rebuild_base{
 
 	public static function rebuild($data, $printIt = false){
 		if($printIt){

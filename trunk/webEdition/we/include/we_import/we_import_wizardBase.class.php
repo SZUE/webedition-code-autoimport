@@ -344,7 +344,7 @@ if (top.wizbody && top.wizbody.addLog){
 							}
 							break;
 						case we_import_functions::TYPE_GENERIC_XML:
-							$parse = new XML_SplitFile($_SERVER['DOCUMENT_ROOT'] . $v["import_from"]);
+							$parse = new we_xml_splitFile($_SERVER['DOCUMENT_ROOT'] . $v["import_from"]);
 							$parse->splitFile("*/" . $v["rcd"], (isset($v["from_elem"])) ? $v["from_elem"] : FALSE, (isset($v["to_elem"])) ? $v["to_elem"] : FALSE, 1);
 							break;
 						case we_import_functions::TYPE_CSV:

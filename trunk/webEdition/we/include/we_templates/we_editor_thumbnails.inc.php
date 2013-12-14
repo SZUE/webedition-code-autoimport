@@ -34,17 +34,17 @@ echo STYLESHEET .
 			<?php
 			$parts = array();
 
-			if(we_image_edit::gd_version() > 0){
+			if(we_base_imageEdit::gd_version() > 0){
 
 				$_doc = $we_doc->getDocument();
-				$imgType = we_image_edit::detect_image_type('', $_doc);
+				$imgType = we_base_imageEdit::detect_image_type('', $_doc);
 
 				if(!$_doc){
 					$parts[] = array("headline" => "",
 						"html" => we_html_tools::htmlAlertAttentionBox(g_l('thumbnails', '[no_image_uploaded]'), we_html_tools::TYPE_INFO, 700),
 						"space" => 0
 					);
-				} else if(we_image_edit::is_imagetype_read_supported($imgType)){
+				} else if(we_base_imageEdit::is_imagetype_read_supported($imgType)){
 
 					// look if the fields origwidth & origheight exixts. If not get and set the values
 					if((!isset($we_doc->elements['origwidth']['dat'])) || (!isset($we_doc->elements['origheight']['dat']))){

@@ -759,7 +759,7 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 				if($tagGroupName == 'custom'){
 					$groupselect .= '<option value="-1" disabled="disabled">----------</option>';
 				}
-				$groupselect .= '<option value="' . $tagGroupName . '"' . ($tagGroupName == $selectedGroup ? ' selected="selected"' : '') . '">' . (weModuleInfo::isActive($tagGroupName) ? g_l('javaMenu_moduleInformation', '[' . $tagGroupName . '][text]') : g_l('weTagGroups', '[' . $tagGroupName . ']')) . '</option>';
+				$groupselect .= '<option value="' . $tagGroupName . '"' . ($tagGroupName == $selectedGroup ? ' selected="selected"' : '') . '">' . (we_base_moduleInfo::isActive($tagGroupName) ? g_l('javaMenu_moduleInformation', '[' . $tagGroupName . '][text]') : g_l('weTagGroups', '[' . $tagGroupName . ']')) . '</option>';
 				if($tagGroupName == 'alltags'){
 					$groupselect .= '<option value="-1" disabled="disabled">----------</option>';
 				}

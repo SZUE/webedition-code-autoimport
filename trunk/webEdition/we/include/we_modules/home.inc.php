@@ -33,7 +33,7 @@ $mod = str_replace(array('.', '/', '\\'), '', (isset($_REQUEST["mod"]) ? $_REQUE
 $we_head_insert = isset($GLOBALS["we_head_insert"]) ? $GLOBALS["we_head_insert"] : "";
 $we_body_insert = isset($GLOBALS["we_body_insert"]) ? $GLOBALS["we_body_insert"] : "";
 
-$modData = weModuleInfo::getModuleData($mod);
+$modData = we_base_moduleInfo::getModuleData($mod);
 $title = isset($modData['text']) ? $modData['text'] : '';
 
 

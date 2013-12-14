@@ -320,8 +320,8 @@ class we_flashDocument extends we_binaryDocument{
 		if(isset($arr) && is_array($arr) && (count($arr) >= 4) && $arr[0] && $arr[1]){
 			return $arr;
 		} else {
-			if(we_image_edit::gd_version()){
-				return we_image_edit::getimagesize($filename);
+			if(we_base_imageEdit::gd_version()){
+				return we_base_imageEdit::getimagesize($filename);
 			}
 			return $arr;
 		}

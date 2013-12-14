@@ -29,7 +29,7 @@
  * This class offers methods to split a XML document using the XPath language.
  * The xml document will be split into self-contained XML files.
  */
-class XML_SplitFile extends we_xml_parser{
+class we_xml_splitFile extends we_xml_parser{
 
 	/**
 	 * Number of exported XML files.

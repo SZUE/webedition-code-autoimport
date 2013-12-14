@@ -59,11 +59,11 @@ class weContentProvider{
 				$we_doc = new we_thumbnailEx();
 				$we_doc->we_load($ID);
 				break;
-			case 'weTable':
-				$we_doc = new weTable($table);
+			case 'we_backup_table':
+				$we_doc = new we_backup_table($table);
 				break;
-			case 'weTableItem':
-				$we_doc = new weTableItem($table);
+			case 'we_backup_tableItem':
+				$we_doc = new we_backup_tableItem($table);
 				if(!empty($ID)){
 					$we_doc->load($ID);
 				}
@@ -147,11 +147,11 @@ class weContentProvider{
 				return 'we:doctype';
 			case 'we_category':
 				return 'we:category';
-			case 'weTable':
+			case 'we_backup_table':
 				return 'we:table';
-			case 'weTableAdv':
+			case 'we_backup_tableAdv':
 				return 'we:tableadv';
-			case 'weTableItem':
+			case 'we_backup_tableItem':
 				return 'we:tableitem';
 			case 'weBinary':
 				return 'we:binary';
@@ -177,7 +177,7 @@ class weContentProvider{
 
 		$encoded = array(
 			'we_element' => array('Dat', 'dat'),
-			'weTableItem' => array('Dat', 'strFelder', 'strSerial', 'DocumentObject',
+			'we_backup_tableItem' => array('Dat', 'strFelder', 'strSerial', 'DocumentObject',
 				'QASet', 'QASetAdditions', 'Catfields', 'RevoteUserAgent', 'agent',
 				'LogData', 'strSerialOrder',
 				'documentElements', 'documentScheduler', 'documentCustomFilter'//tblVersions
@@ -267,7 +267,7 @@ class weContentProvider{
 				} else if(self::needCdata($object->ClassName, $v, $content)){
 					$content = self::getCDATA($content);
 				}
-				$attribs .= weXMLComposer::we_xmlElement($v, $content, $coding);
+				$attribs .= we_xml_composer::we_xmlElement($v, $content, $coding);
 			}
 		}
 
@@ -284,8 +284,8 @@ class weContentProvider{
 				$data = we_base_file::loadPart($path, $offset, $rsize);
 				if(!empty($data)){
 					$fwrite($file, '<we:binary>' . $attribs .
-						weXMLComposer::we_xmlElement('SeqN', $object->SeqN) .
-						weXMLComposer::we_xmlElement('Data', self::encode($data), array(self::CODING_ATTRIBUTE => self::CODING_ENCODE)) .
+						we_xml_composer::we_xmlElement('SeqN', $object->SeqN) .
+						we_xml_composer::we_xmlElement('Data', self::encode($data), array(self::CODING_ATTRIBUTE => self::CODING_ENCODE)) .
 						'</we:binary>' . we_backup_backup::backupMarker . "\n");
 					$offset+=$rsize;
 					$object->SeqN++;
@@ -312,7 +312,7 @@ class weContentProvider{
 				} else if(self::needCdata($object->ClassName, $v, $content)){
 					$content = self::getCDATA($content);
 				}
-				$attribs .= weXMLComposer::we_xmlElement($v, $content, $coding);
+				$attribs .= we_xml_composer::we_xmlElement($v, $content, $coding);
 			}
 		}
 
@@ -329,8 +329,8 @@ class weContentProvider{
 
 				if(!empty($data)){
 					$fwrite($file, '<we:version>' . $attribs .
-						weXMLComposer::we_xmlElement('SeqN', $object->SeqN) .
-						weXMLComposer::we_xmlElement('Data', self::encode($data), array(self::CODING_ATTRIBUTE => self::CODING_ENCODE)) .
+						we_xml_composer::we_xmlElement('SeqN', $object->SeqN) .
+						we_xml_composer::we_xmlElement('Data', self::encode($data), array(self::CODING_ATTRIBUTE => self::CODING_ENCODE)) .
 						'</we:version>' . we_backup_backup::backupMarker . "\n");
 					$offset+=$rsize;
 					$object->SeqN++;
@@ -368,7 +368,7 @@ class weContentProvider{
 		}
 
 		//write tag name
-		$write = '<' . self::getTagName($object) . (!empty($attribs) ? weXMLComposer::buildAttributesFromArray($attribs) : '') . '>';
+		$write = '<' . self::getTagName($object) . (!empty($attribs) ? we_xml_composer::buildAttributesFromArray($attribs) : '') . '>';
 
 		// fix for classes; insert missing field length into default values ---
 		switch($classname){
@@ -416,7 +416,7 @@ class weContentProvider{
 			} else if(self::needCdata($classname, $v, $content)){
 				$content = self::getCDATA($content);
 			}
-			$write.=weXMLComposer::we_xmlElement($v, $content, $coding);
+			$write.=we_xml_composer::we_xmlElement($v, $content, $coding);
 		}
 		$fwrite($file, $write);
 
@@ -424,8 +424,8 @@ class weContentProvider{
 			$elements_ids = array_keys($object->elements);
 
 			foreach($elements_ids as $ck){
-				if($object->ClassName == 'weTable' || $object->ClassName == 'weTableAdv'){
-					if($object->ClassName == 'weTable'){
+				if($object->ClassName == 'we_backup_table' || $object->ClassName == 'we_backup_tableAdv'){
+					if($object->ClassName == 'we_backup_table'){
 						$contentObj = new we_element(false, $object->elements[$ck]);
 					} else {
 						array_unshift($object->elements[$ck], ' ');

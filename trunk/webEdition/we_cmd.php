@@ -275,7 +275,7 @@ if(!$INCLUDE){
 			$INCLUDE = 'we_import/we_wiz_frameset.php';
 			break;
 		case 'export':
-			$INCLUDE = WE_EXPORT_MODULE_DIR . 'export_frameset.php';
+			$INCLUDE = 'we_modules/export/export_frameset.php';
 			break;
 		case 'copyFolder':
 			$INCLUDE = 'copyFolder.inc.php';
@@ -321,9 +321,9 @@ if(!$INCLUDE){
 
 			$foo = false;
 			if(isset($_REQUEST['we_cmd'][0])){
-				$mods = weModuleInfo::getAllModules();
+				$mods = we_base_moduleInfo::getAllModules();
 				foreach($mods as $m){
-					if($_REQUEST['we_cmd'][0] == 'edit_' . $m['name'] . '_ifthere' && !weModuleInfo::isActive($m['name'])){
+					if($_REQUEST['we_cmd'][0] == 'edit_' . $m['name'] . '_ifthere' && !we_base_moduleInfo::isActive($m['name'])){
 						$foo = true;
 						$_moduleName = $m['text_short'];
 						$INCLUDE = 'messageModuleNotActivated.inc.php';

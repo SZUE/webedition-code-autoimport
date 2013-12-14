@@ -53,7 +53,7 @@ if(isset($wasSaved) && $wasSaved){
 
 		case 'text/weTmpl': // #538 reload documents based on this template
 
-			$reloadDocsTempls = we_rebuild::getTemplAndDocIDsOfTemplate($GLOBALS['we_doc']->ID, false, false, true, true);
+			$reloadDocsTempls = we_rebuild_base::getTemplAndDocIDsOfTemplate($GLOBALS['we_doc']->ID, false, false, true, true);
 
 			$reload[FILE_TABLE] = implode(',', $reloadDocsTempls['documentIDs']);
 			$reload[TEMPLATES_TABLE] = implode(',', $reloadDocsTempls['templateIDs']);
