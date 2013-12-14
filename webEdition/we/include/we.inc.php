@@ -56,7 +56,7 @@ if(!isset($GLOBALS['we'])){
 	$GLOBALS['we'] = array();
 }
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_defines.inc.php');
-if(ini_get('session.gc_probability') == '1' && !@opendir(session_save_path())){
+if(ini_get('session.gc_probability') != '0' && !@opendir(session_save_path())){
 	$GLOBALS['FOUND_SESSION_PROBLEM'] = session_save_path();
 	//ini_set('session.gc_probability', '0');
 	session_save_path($_SERVER['DOCUMENT_ROOT'] . TEMP_DIR);
