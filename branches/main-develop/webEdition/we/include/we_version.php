@@ -1,5 +1,6 @@
 <?php
 
+
 define("WE_VERSION", "6.3.9.2");
 define("WE_ZFVERSION", "1.12.3"); // recommended version of the Zend Framework (bundled with webEdition)
 define("WE_SVNREV", "");

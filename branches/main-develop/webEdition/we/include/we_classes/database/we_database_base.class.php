@@ -164,11 +164,11 @@ abstract class we_database_base{
 	/** get Information about the used driver etc.
 	 * @return string containing all information
 	 */
-	abstract public function getInfo();
+	abstract public function _getInfo();
 
 	/*	 * returns the charset of the current connection */
 
-	abstract public function getCurrentCharset();
+	abstract public function _getCurrentCharset();
 
 	/** Constructor, establishes the connection to the DB
 	 *
@@ -686,8 +686,8 @@ abstract class we_database_base{
 			$query = array();
 			foreach($table as $key => $value){
 				$query[] = (is_numeric($key) ?
-						$value . ' ' . $mode :
-						$key . ' ' . $value);
+								$value . ' ' . $mode :
+								$key . ' ' . $value);
 			}
 			$query = implode(',', $query);
 		} else {
@@ -817,8 +817,8 @@ abstract class we_database_base{
 	function getTableCreateArray($tab){
 		$this->query('SHOW CREATE TABLE ' . $this->escape($tab));
 		return ($this->next_record()) ?
-			explode("\n", $this->f("Create Table")) :
-			false;
+				explode("\n", $this->f("Create Table")) :
+				false;
 	}
 
 	public function getTableKeyArray($tab){
@@ -950,6 +950,36 @@ abstract class we_database_base{
 
 	public function t_e_query($cnt = 1){
 		self::$Trigger_cnt = $cnt;
+	}
+
+	public function getInfo($html = true){
+		if(!$this->isConnected() && !$this->_connect()){
+			return false;
+		}
+
+		$data = $this->_getInfo($html);
+		$ret = '';
+		$this->repool();
+		if($html){
+			foreach($data as $key => $val){
+				$ret.='<tr><td>' . $key . ':</td><td>' . $val . '</td></tr>';
+			}
+			$ret = '<table class="defaultfont">' . $ret . '</table>';
+		} else {
+			foreach($data as $key => $val){
+				$ret.=$key . ': ' . $val . "\n";
+			}
+		}
+		return $ret;
+	}
+
+	public function getCurrentCharset(){
+		if(!$this->isConnected() && !$this->_connect()){
+			return false;
+		}
+		$ret = $this->_getCurrentCharset();
+		$this->repool();
+		return $ret;
 	}
 
 }

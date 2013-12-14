@@ -76,7 +76,6 @@ function ini_get_bool($val){
 }
 
 function ini_get_message($val){
-	global $_sysinfo;
 	$bool = ini_get($val);
 	if($val == "1"){
 		return 'on';
@@ -158,9 +157,9 @@ if(strlen($_install_dir) > 35){
 }
 
 $weVersion = WE_VERSION .
-	(defined("WE_SVNREV") && WE_SVNREV != '0000' ? ' (SVN-Revision: ' . WE_SVNREV . ((defined("WE_VERSION_BRANCH") && WE_VERSION_BRANCH != 'trunk') ? '|' . WE_VERSION_BRANCH : '') . ')' : '') .
-	(defined("WE_VERSION_SUPP") && WE_VERSION_SUPP != '' ? ' ' . g_l('global', '[' . WE_VERSION_SUPP . ']') : '') .
-	(defined("WE_VERSION_SUPP_VERSION") && WE_VERSION_SUPP_VERSION != '0' ? WE_VERSION_SUPP_VERSION : '');
+		(defined("WE_SVNREV") && WE_SVNREV != '0000' ? ' (SVN-Revision: ' . WE_SVNREV . ((defined("WE_VERSION_BRANCH") && WE_VERSION_BRANCH != 'trunk') ? '|' . WE_VERSION_BRANCH : '') . ')' : '') .
+		(defined("WE_VERSION_SUPP") && WE_VERSION_SUPP != '' ? ' ' . g_l('global', '[' . WE_VERSION_SUPP . ']') : '') .
+		(defined("WE_VERSION_SUPP_VERSION") && WE_VERSION_SUPP_VERSION != '0' ? WE_VERSION_SUPP_VERSION : '');
 
 // GD_VERSION is more precise but only available in PHP 5.2.4 or newer
 if(is_callable("gd_info")){
@@ -277,7 +276,7 @@ $_types = array(
 );
 
 $buttons = we_html_button::position_yes_no_cancel(
-		we_html_button::create_button("close", "javascript:self.close()"), '', ''
+				we_html_button::create_button("close", "javascript:self.close()"), '', ''
 );
 
 
@@ -325,8 +324,8 @@ print STYLESHEET;
 <body class="weDialogBody" style="overflow:hidden;" onLoad="self.focus();">
 	<div id="info" style="display: block;">
 		<?php
-		print we_html_multiIconBox::getJS();
-		print we_html_multiIconBox::getHTML('', 700, $_parts, 30, $buttons, -1, '', '', false, "", "", 620, "auto");
+		print we_html_multiIconBox::getJS() .
+				we_html_multiIconBox::getHTML('', 700, $_parts, 30, $buttons, -1, '', '', false, "", "", 620, "auto");
 		?>
 	</div>
 	<div id="more" style="display:none;">
@@ -335,7 +334,7 @@ print STYLESHEET;
 			array(
 				'headline' => '',
 				'html' => '<iframe id="phpinfo" style="width:1280px;height:530px;">' . g_l('sysinfo', '[more_info]') . ' &hellip;</iframe>',
-				'space' => $_space_size
+				'space' => 0
 			),
 			array(
 				'headline' => '',

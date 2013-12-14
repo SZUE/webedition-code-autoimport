@@ -35,6 +35,7 @@ function we_tag_path($attribs){
 	$hidehome = weTag_getAttribute('hidehome', $attribs, false, true);
 	$class = weTag_getAttribute('class', $attribs);
 	$style = weTag_getAttribute('style', $attribs);
+	$max = weTag_getAttribute('max', $attribs);
 
 	$doc = we_getDocForTag($docAttr, true);
 	$pID = $doc->ParentID;
@@ -58,17 +59,17 @@ function we_tag_path($attribs){
 		$path = $oldHtmlspecialchars ? oldHtmlspecialchars($sep . $show) : $sep . $show;
 	}
 	while($pID){
-		$db->query('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ParentID=' . intval($pID) . ' AND IsFolder = 0 AND (' . $q . ') AND (Published > 0 AND IsSearchable = 1)');
+		$db->query('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ParentID=' . intval($pID) . ' AND IsFolder=0 AND (' . $q . ') AND (Published>0 AND IsSearchable=1)');
 		$db->next_record();
 		$fileID = $db->f('ID');
 		$filePath = $db->f('Path');
 		if($fileID){
-			$show = f('SELECT ' . CONTENT_TABLE . '.Dat as Dat FROM ' . LINK_TABLE . ',' . CONTENT_TABLE . ' WHERE ' . LINK_TABLE . '.DID=' . intval($fileID) . ' AND ' . LINK_TABLE . '.Name="' . $db->escape($dirfield) . '" AND ' . CONTENT_TABLE . '.ID=' . LINK_TABLE . '.CID', 'Dat', $db);
+			$show = f('SELECT ' . CONTENT_TABLE . '.Dat FROM ' . LINK_TABLE . ',' . CONTENT_TABLE . ' WHERE ' . LINK_TABLE . '.DID=' . intval($fileID) . ' AND ' . LINK_TABLE . '.Name="' . $db->escape($dirfield) . '" AND ' . CONTENT_TABLE . '.ID=' . LINK_TABLE . '.CID');
 			if(!$show && $fieldforfolder){
-				$show = f('SELECT ' . CONTENT_TABLE . '.Dat as Dat FROM ' . LINK_TABLE . ',' . CONTENT_TABLE . ' WHERE ' . LINK_TABLE . '.DID=' . intval($fileID) . ' AND ' . LINK_TABLE . '.Name="' . $db->escape($field) . '" AND ' . CONTENT_TABLE . '.ID=' . LINK_TABLE . '.CID', 'Dat', $db);
+				$show = f('SELECT ' . CONTENT_TABLE . '.Dat FROM ' . LINK_TABLE . ',' . CONTENT_TABLE . ' WHERE ' . LINK_TABLE . '.DID=' . intval($fileID) . ' AND ' . LINK_TABLE . '.Name="' . $db->escape($field) . '" AND ' . CONTENT_TABLE . '.ID=' . LINK_TABLE . '.CID');
 			}
 			if(!$show){
-				$show = f('SELECT Text FROM ' . FILE_TABLE . ' WHERE ID=' . intval($pID), 'Text', $db);
+				$show = f('SELECT Text FROM ' . FILE_TABLE . ' WHERE ID=' . intval($pID));
 			}
 			if($fileID != $doc->ID){
 				$link_pre = '<a href="' . $filePath . '"' . $class . $style . '>';
@@ -78,9 +79,12 @@ function we_tag_path($attribs){
 			}
 		} else {
 			$link_pre = $link_post = '';
-			$show = f('SELECT Text FROM ' . FILE_TABLE . ' WHERE ID=' . intval($pID), 'Text', $db);
+			$show = f('SELECT Text FROM ' . FILE_TABLE . ' WHERE ID=' . intval($pID));
 		}
-		$pID = f('SELECT ParentID FROM ' . FILE_TABLE . ' WHERE ID=' . intval($pID), 'ParentID', $db);
+		if($max){
+			$show = cutText($show, $max);
+		}
+		$pID = f('SELECT ParentID FROM ' . FILE_TABLE . ' WHERE ID=' . intval($pID));
 		$path = (!$pID && $hidehome ? '' : $sep) . $link_pre . ($oldHtmlspecialchars ? oldHtmlspecialchars($show) : $show) . $link_post . $path;
 	}
 
@@ -88,10 +92,10 @@ function we_tag_path($attribs){
 		return $path;
 	}
 
-	$hash = getHash('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ParentID=0 AND IsFolder=0 AND (' . $q . ') AND (Published>0 AND IsSearchable=1)', $db);
+	$hash = getHash('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ParentID=0 AND IsFolder=0 AND (' . $q . ') AND (Published>0 AND IsSearchable=1)');
 	list($fileID, $filePath) = ($hash ? $hash : array(0, ''));
 	if($fileID){
-		$show = f('SELECT ' . CONTENT_TABLE . '.Dat as Dat FROM ' . LINK_TABLE . ',' . CONTENT_TABLE . ' WHERE ' . LINK_TABLE . '.DID=' . intval($fileID) . ' AND ' . LINK_TABLE . '.Name="' . $db->escape($field) . '" AND ' . CONTENT_TABLE . '.ID = ' . LINK_TABLE . '.CID', 'Dat', $db);
+		$show = f('SELECT ' . CONTENT_TABLE . '.Dat as Dat FROM ' . LINK_TABLE . ',' . CONTENT_TABLE . ' WHERE ' . LINK_TABLE . '.DID=' . intval($fileID) . ' AND ' . LINK_TABLE . '.Name="' . $db->escape($field) . '" AND ' . CONTENT_TABLE . '.ID = ' . LINK_TABLE . '.CID');
 		if(!$show){
 			$show = $home;
 		}
@@ -101,5 +105,9 @@ function we_tag_path($attribs){
 		$link_pre = $link_post = '';
 		$show = $home;
 	}
+	if($max){
+		$show = cutText($show, $max);
+	}
+
 	return $link_pre . ($oldHtmlspecialchars ? oldHtmlspecialchars($show) : $show) . $link_post . $path;
 }

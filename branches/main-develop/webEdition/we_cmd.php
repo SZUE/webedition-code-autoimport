@@ -45,13 +45,13 @@ if(isset($GLOBALS['_we_active_integrated_modules'])){
 
 if(!$INCLUDE){
 	switch($_REQUEST['we_cmd'][0]){
-		case 'versions_preview' :
+		case 'versions_preview':
 			$INCLUDE = 'we_versions/weVersionsPreview.php';
 			break;
-		case 'versions_wizard' :
+		case 'versions_wizard':
 			$INCLUDE = 'we_versions/version_wizard/we_versions.inc.php';
 			break;
-		case 'versioning_log' :
+		case 'versioning_log':
 			$INCLUDE = 'we_logging/versions/versionsLog.php';
 			break;
 		case 'import_files':
@@ -146,7 +146,7 @@ if(!$INCLUDE){
 		case 'edit_folder':
 			$INCLUDE = 'we_editors/we_edit_frameset.inc.php';
 			break;
-		case 'edit_include_document' :
+		case 'edit_include_document':
 			$INCLUDE = 'we_editors/SEEM_edit_include_document.inc.php';
 			break;
 		case 'load_editor':
@@ -271,10 +271,10 @@ if(!$INCLUDE){
 		case 'start_multi_editor':
 			$INCLUDE = 'multiEditor/start_multi_editor.inc.php';
 			break;
-		case 'import' :
+		case 'import':
 			$INCLUDE = 'we_import/we_wiz_frameset.php';
 			break;
-		case 'export' :
+		case 'export':
 			$INCLUDE = WE_EXPORT_MODULE_DIR . 'export_frameset.php';
 			break;
 		case 'copyFolder':
@@ -289,7 +289,7 @@ if(!$INCLUDE){
 		case 'changeTriggerIDRecursive':
 			$INCLUDE = 'changeTriggerID_rec.inc.php';
 			break;
-		case 'add_thumbnail' :
+		case 'add_thumbnail':
 			$INCLUDE = 'we_editors/add_thumbnail.inc.php';
 			break;
 		case 'image_resize':

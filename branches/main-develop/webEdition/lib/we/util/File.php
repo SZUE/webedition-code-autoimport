@@ -182,7 +182,7 @@ abstract class we_util_File extends we_base_file{
 			t_e('notice', "source and destination are the same.");
 			return true;
 		}
-		if(!@rename($dir, self::addTrailingSlash($target))){
+		if(!rename($dir, self::addTrailingSlash($target))){
 			t_e('warning', "could not move directory " . $dir . " to " . self::addTrailingSlash($target) . ".");
 			return false;
 		}

@@ -51,6 +51,13 @@ $we_menu = array(
 		'parent' => 1010100,
 		'hide' => !$seeMode,
 	),
+	1010200 => array(// File > new > Object
+		'text' => g_l('javaMenu_object', '[object]'),
+		'parent' => 1010000,
+		'perm' => 'NEW_OBJECTFILE || ADMINISTRATOR',
+		'enabled' => 0,
+		'hide' => !defined('OBJECT_TABLE')
+	),
 	array(// File > New > Others (Import)
 		'text' => g_l('javaMenu_global', '[other]'),
 		'parent' => 1010100,
@@ -137,15 +144,7 @@ $we_menu = array(
 	),
 	array(// separator
 		'parent' => 1010000,
-		'perm' => 'NEW_DOC_FOLDER || NEW_OBJECTFILE || ADMINISTRATOR',
 		'hide' => $seeMode
-	),
-	1010800 => array(// File > new > Object
-		'text' => g_l('javaMenu_object', '[object]'),
-		'parent' => 1010000,
-		'perm' => 'NEW_OBJECTFILE || ADMINISTRATOR',
-		'enabled' => 0,
-		'hide' => !defined('OBJECT_TABLE')
 	),
 	1011000 => array(// File > New > Directory
 		'text' => g_l('javaMenu_global', '[directory]'),
@@ -225,14 +224,6 @@ $we_menu = array(
 		'perm' => 'CAN_SEE_DOCUMENTS || ADMINISTRATOR',
 		'enabled' => 1,
 	),
-	array(// File > Open > Template
-		'text' => g_l('javaMenu_global', '[open_template]') . '&hellip;',
-		'parent' => 1030000,
-		'cmd' => 'open_template',
-		'perm' => 'CAN_SEE_TEMPLATES || ADMINISTRATOR',
-		'enabled' => 1,
-		'hide' => $seeMode
-	),
 	array(// File > open > Object
 		'text' => g_l('javaMenu_object', '[open_object]') . '&hellip;',
 		'parent' => 1030000,
@@ -240,6 +231,19 @@ $we_menu = array(
 		'perm' => 'CAN_SEE_OBJECTFILES || ADMINISTRATOR',
 		'enabled' => 1,
 		'hide' => !defined('OBJECT_TABLE')
+	),
+	array(// separator
+		'parent' => 1030000,
+		'perm' => 'CAN_SEE_TEMPLATES || CAN_SEE_OBJECTS || ADMINISTRATOR',
+		'hide' => $seeMode
+	),
+	array(// File > Open > Template
+		'text' => g_l('javaMenu_global', '[open_template]') . '&hellip;',
+		'parent' => 1030000,
+		'cmd' => 'open_template',
+		'perm' => 'CAN_SEE_TEMPLATES || ADMINISTRATOR',
+		'enabled' => 1,
+		'hide' => $seeMode
 	),
 	array(// File > Open > Class
 		'text' => g_l('javaMenu_object', '[open_class]') . '&hellip;',
@@ -264,6 +268,19 @@ $we_menu = array(
 		'enabled' => 1,
 		'hide' => $seeMode,
 	),
+	array(// File > Delete > Objects
+		'text' => g_l('javaMenu_object', '[objects]'),
+		'parent' => 1080000,
+		'cmd' => 'delete_objectfile',
+		'perm' => 'DELETE_OBJECTFILE || ADMINISTRATOR',
+		'enabled' => 1,
+		'hide' => !defined('OBJECT_TABLE') || ($_SESSION['weS']['we_mode'] != we_base_constants::MODE_NORMAL)
+	),
+	array(// separator
+		'parent' => 1080000,
+		'perm' => 'CAN_SEE_TEMPLATES || CAN_SEE_OBJECTS || ADMINISTRATOR',
+		'hide' => $seeMode
+	),
 	array(// File > Delete > Templates
 		'text' => g_l('javaMenu_global', '[templates]'),
 		'parent' => 1080000,
@@ -272,14 +289,7 @@ $we_menu = array(
 		'enabled' => 1,
 		'hide' => $seeMode,
 	),
-	array(// File > Delete > Objects
-		'text' => g_l('javaMenu_object', '[objects]'),
-		'parent' => 1080000,
-		'cmd' => 'delete_objectfile',
-		'perm' => 'DELETE_OBJECTFILE || ADMINISTRATOR',
-		'enabled' => 1,
-		'hide' => !defined('OBJECT_TABLE') || ($_SESSION['weS']['we_mode'] != we_base_constants::MODE_NORMAL)
-	), array(// File > Delete > Classes
+	array(// File > Delete > Classes
 		'text' => g_l('javaMenu_object', '[classes]'),
 		'parent' => 1080000,
 		'cmd' => 'delete_object',
@@ -302,14 +312,6 @@ $we_menu = array(
 		'enabled' => 1,
 		'hide' => $seeMode,
 	),
-	array(// File > Move > Templates
-		'text' => g_l('javaMenu_global', '[templates]'),
-		'parent' => 1090000,
-		'cmd' => 'move_templates',
-		'perm' => 'MOVE_TEMPLATE || ADMINISTRATOR',
-		'enabled' => 1,
-		'hide' => $seeMode,
-	),
 	array(// File > move > objects
 		'text' => g_l('javaMenu_object', '[objects]'),
 		'parent' => 1090000,
@@ -319,9 +321,22 @@ $we_menu = array(
 		'hide' => !defined('OBJECT_TABLE') || ($_SESSION['weS']['we_mode'] != we_base_constants::MODE_NORMAL)
 	),
 	array(// separator
+		'parent' => 1090000,
+		'perm' => 'CAN_SEE_TEMPLATES || CAN_SEE_OBJECTS || ADMINISTRATOR',
+		'hide' => $seeMode
+	),
+	array(// File > Move > Templates
+		'text' => g_l('javaMenu_global', '[templates]'),
+		'parent' => 1090000,
+		'cmd' => 'move_templates',
+		'perm' => 'MOVE_TEMPLATE || ADMINISTRATOR',
+		'enabled' => 1,
+		'hide' => $seeMode,
+	),
+	array(// separator
 		'parent' => 1000000
 	),
-	array(// File > Save
+	/*array(// File > Save
 		'text' => g_l('javaMenu_global', '[save]'),
 		'parent' => 1000000,
 		'cmd' => 'trigger_save_document',
@@ -334,7 +349,7 @@ $we_menu = array(
 		'cmd' => 'trigger_publish_document',
 		'perm' => 'PUBLISH || ADMINISTRATOR',
 		'enabled' => 1,
-	),
+	),*/
 	array(
 		'text' => g_l('javaMenu_glossary', '[glossary_check]'),
 		'parent' => 1000000,
@@ -350,13 +365,13 @@ $we_menu = array(
 		'enabled' => 1,
 		'hide' => $seeMode
 	),
-	array(// File > Close
+	/*array(// File > Close
 		'text' => g_l('javaMenu_global', '[close_single_document]'),
 		'parent' => 1000000,
 		'cmd' => 'close_document',
 		'perm' => '',
 		'enabled' => 1,
-	),
+	),*/
 	array(// File > Close All
 		'text' => g_l('javaMenu_global', '[close_all_documents]'),
 		'parent' => 1000000,
@@ -390,9 +405,6 @@ $we_menu = array(
 		'perm' => 'CAN_SEE_OBJECTFILES || ADMINISTRATOR',
 		'enabled' => 1,
 		'hide' => !defined('OBJECT_TABLE')
-	),
-	array(// separator
-		'parent' => 1000000,
 	),
 	array(// File > Search
 		'text' => g_l('javaMenu_global', '[search]') . '&hellip;',
@@ -458,9 +470,6 @@ $we_menu = array(
 		'cmd' => 'rebuild',
 		'perm' => 'REBUILD || ADMINISTRATOR',
 		'enabled' => 1,
-	),
-	array(// separator
-		'parent' => 1000000,
 	),
 	array(// File > Browse server
 		'text' => g_l('javaMenu_global', '[browse_server]') . '&hellip;',
@@ -601,9 +610,7 @@ $we_menu = array(
 		'perm' => 'EDIT_KATEGORIE || ADMINISTRATOR',
 		'enabled' => 1,
 	),
-	array(// separator
-		'parent' => 4000000
-	),
+
 	array(// Extras > Thumbnails
 		'text' => g_l('javaMenu_global', '[thumbnails]') . '&hellip;',
 		'parent' => 4000000,
@@ -619,12 +626,18 @@ $we_menu = array(
 		'enabled' => 1,
 		'hide' => $seeMode
 	),
+	array(// separator
+		'parent' => 4000000
+	),
 	array(// Extras > change password
 		'text' => g_l('javaMenu_global', '[change_password]') . '&hellip;',
 		'parent' => 4000000,
 		'cmd' => 'change_passwd',
 		'perm' => 'EDIT_PASSWD || ADMINISTRATOR',
 		'enabled' => 1,
+	),
+	array(// separator
+		'parent' => 4000000
 	),
 	array(// Extras > versioning
 		'text' => g_l('javaMenu_global', '[versioning]') . '&hellip;',
@@ -808,13 +821,13 @@ if(defined('OBJECT_TABLE')){
 		$nr = 801;
 		while($GLOBALS['DB_WE']->next_record()){
 
-			$we_menu[1010800]['enabled'] = 1;
+			$we_menu[1010200]['enabled'] = 1;
 
 			$foo = str_replace(array('"', '\''), '', $GLOBALS['DB_WE']->f('Text'));
 
 			$we_menu[1010 . $nr] = array(
 				'text' => $foo,
-				'parent' => 1010800,
+				'parent' => 1010200,
 				'cmd' => 'new_ClObjectFile' . $GLOBALS['DB_WE']->f('ID'),
 				'perm' => 'NEW_OBJECTFILE || ADMINISTRATOR',
 				'enabled' => 1,

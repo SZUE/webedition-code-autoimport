@@ -25,9 +25,8 @@
 $metaInfo = array(
 	'name' => 'navigation',
 	'maintable' => NAVIGATION_TABLE,
-	'classname' => 'weNavigation',
+	'classname' => 'we_navigation_navigation',
 	'datasource' => 'table:' . NAVIGATION_TABLE,
 	'startpermission' => 'EDIT_NAVIGATION',
 	'supportshooks' => 0
 );
-?>
