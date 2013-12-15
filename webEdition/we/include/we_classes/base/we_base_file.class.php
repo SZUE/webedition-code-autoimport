@@ -157,7 +157,7 @@ abstract class we_base_file{
 			t_e('error writing file', $filename);
 			return false;
 		}
-		$prefix = self::getComPrefix($compression);
+		$prefix = $compression ? self::getComPrefix($compression) : 'f';
 		$open = $prefix . 'open';
 		$write = $prefix . 'write';
 		$close = $prefix . 'close';
@@ -381,16 +381,14 @@ abstract class we_base_file{
 
 	static function getComPrefix($compression){
 		switch($compression){
-			case 0:
-			case '0':
-			default://leave here since 0 is equivalent to first switch
-				return 'f';
 			case 'gzip':
 				return 'gz';
 			case 'zip':
 				return 'zip_';
 			case 'bzip':
 				return 'bz';
+			default://leave here since 0 is equivalent to first switch
+				return 'f';
 		}
 	}
 
@@ -505,9 +503,8 @@ abstract class we_base_file{
 				// according to rfc1952 the first two bytes identify the format
 				$_id1 = fgets($fh, 2);
 				$_id2 = fgets($fh, 2);
-				if((ord($_id1) == 31) && (ord($_id2) == 139)){
-					return true;
-				}
+				fclose($fh);
+				return ((ord($_id1) == 31) && (ord($_id2) == 139));
 			}
 			fclose($fh);
 		}
