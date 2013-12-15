@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 //FIXME: unused??
-class we_import_CSVFix extends CSV{
+class we_import_CSVFix extends we_import_csvBase{
 
 	var $FieldLengths;
 

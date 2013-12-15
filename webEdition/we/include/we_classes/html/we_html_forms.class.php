@@ -203,16 +203,16 @@ abstract class we_html_forms{
 			$width = $width ? $width : (abs($cols) ? (abs($cols) * 5.5) : 520);
 			$height = $height ? $height : (abs($rows) ? (abs($rows) * 8) : 200);
 			if(!$showmenues && (strlen($commands) == 0)){
-				$commands = str_replace(array('formatblock,', 'fontname,', 'fontsize,',), '', implode(',', we_wysiwyg::getAllCmds()));
+				$commands = str_replace(array('formatblock,', 'fontname,', 'fontsize,',), '', implode(',', we_wysiwyg_editor::getAllCmds()));
 				if($hidestylemenu){
 					$commands = str_replace('applystyle,', '', $commands);
 				}
 			}
 			if($hidestylemenu && (strlen($commands) == 0)){
-				$commands = str_replace('applystyle,', '', implode(',', we_wysiwyg::getAllCmds()));
+				$commands = str_replace('applystyle,', '', implode(',', we_wysiwyg_editor::getAllCmds()));
 			}
 
-			$out .= we_wysiwyg::getHeaderHTML(!$inwebedition);
+			$out .= we_wysiwyg_editor::getHeaderHTML(!$inwebedition);
 
 			$_lang = (isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']->Language)) ? $GLOBALS['we_doc']->Language : WE_LANGUAGE;
 			$buttonpos = $buttonpos ? $buttonpos : 'top';
@@ -220,10 +220,10 @@ abstract class we_html_forms{
 			$templates = weTag_getAttribute('templates', $attribs);
 
 			if($inlineedit){
-				$e = new we_wysiwyg($name, $width, $height, $value, $commands, $bgcolor, '', $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $_lang, '', $showSpell, $isFrontendEdit, $buttonpos, $oldHtmlspecialchars, $contentCss, $origName, $tinyParams, $contextmenu, false, $templates);
+				$e = new we_wysiwyg_editor($name, $width, $height, $value, $commands, $bgcolor, '', $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $_lang, '', $showSpell, $isFrontendEdit, $buttonpos, $oldHtmlspecialchars, $contentCss, $origName, $tinyParams, $contextmenu, false, $templates);
 				$out .= $e->getHTML();
 			} else {
-				$e = new we_wysiwyg($name, $width, $height, '', $commands, $bgcolor, '', $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $_lang, '', $showSpell, $isFrontendEdit, $buttonpos, $oldHtmlspecialchars, $contentCss, $origName, $tinyParams, $contextmenu, false, $templates);
+				$e = new we_wysiwyg_editor($name, $width, $height, '', $commands, $bgcolor, '', $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $_lang, '', $showSpell, $isFrontendEdit, $buttonpos, $oldHtmlspecialchars, $contentCss, $origName, $tinyParams, $contextmenu, false, $templates);
 
 				if(stripos($name, "we_ui") === false){//we are in backend
 					$hiddenTextareaContent = str_replace(array("##|r##", "##|n##"), array("\r", "\n"), $e->parseInternalImageSrc($value));
@@ -242,7 +242,7 @@ abstract class we_html_forms{
 
 				$out .= we_html_element::htmlTextArea(array('name' => $name, 'id' => $name, 'onchange' => '_EditorFrame.setEditorIsHot(true);', 'style' => 'display: none'), $hiddenTextareaContent);
 				$out .= ($fieldName ? we_html_element::jsElement('tinyEditors["' . $fieldName . '"] = "' . $name . '";') : '') .
-					($buttonTop ? '<div class="tbButtonWysiwygBorder" style="width:25px;border-bottom:0px;background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">' . $e->getHTML(we_wysiwyg::$editorType == 'tinyMCE' ? '' : $hiddenTextareaContent) . '</div>' : '') . '<div class="tbButtonWysiwygBorder ' . (empty($class) ? "" : $class . " ") . 'wetextarea tiny-wetextarea wetextarea-' . $origName . '" id="div_wysiwyg_' . $name . '">' . $previewDivContent . '</div>' . ($buttonBottom ? '<div class="tbButtonWysiwygBorder" style="width:25px;border-top:0px;background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">' . $e->getHTML(we_wysiwyg::$editorType == 'tinyMCE' ? '' : $hiddenTextareaContent) . '</div>' : '');
+					($buttonTop ? '<div class="tbButtonWysiwygBorder" style="width:25px;border-bottom:0px;background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">' . $e->getHTML(we_wysiwyg_editor::$editorType == 'tinyMCE' ? '' : $hiddenTextareaContent) . '</div>' : '') . '<div class="tbButtonWysiwygBorder ' . (empty($class) ? "" : $class . " ") . 'wetextarea tiny-wetextarea wetextarea-' . $origName . '" id="div_wysiwyg_' . $name . '">' . $previewDivContent . '</div>' . ($buttonBottom ? '<div class="tbButtonWysiwygBorder" style="width:25px;border-top:0px;background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">' . $e->getHTML(we_wysiwyg_editor::$editorType == 'tinyMCE' ? '' : $hiddenTextareaContent) . '</div>' : '');
 			}
 		} else {
 			if($width){

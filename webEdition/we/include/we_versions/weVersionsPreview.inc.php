@@ -21,13 +21,11 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+
 @include_once('Text/Diff.php');
 @include_once('Text/Diff/Renderer/inline.php');
 
-we_html_tools::protect();
-
-$_db = new DB_WE();
+$_db = $GLOBALS['DB_WE'];
 
 $ID = $_REQUEST['we_cmd'][1];
 
@@ -585,8 +583,6 @@ if(!$isObj){
 	$_tab_3 = "";
 	$activTab = 1;
 }
-
-
 
 we_html_tools::htmlTop("webEdition - " . g_l('versions', '[versioning]'), ($newDoc['Charset'] ? $newDoc['Charset'] : DEFAULT_CHARSET));
 

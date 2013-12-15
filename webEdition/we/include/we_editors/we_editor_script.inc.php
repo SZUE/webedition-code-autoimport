@@ -59,7 +59,7 @@ if(isset($GLOBALS['we_doc'])){
 	if($GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT && $GLOBALS['we_doc']->ContentType == 'text/weTmpl'){
 		//no wyswyg
 	} else {
-		echo we_wysiwyg::getHeaderHTML();
+		echo we_wysiwyg_editor::getHeaderHTML();
 	}
 }
 // Dreamweaver RPC Command ShowPreparedPreview

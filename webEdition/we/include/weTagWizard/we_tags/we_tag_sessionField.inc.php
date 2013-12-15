@@ -66,7 +66,7 @@ if(defined('CUSTOMER_TABLE')){
 	$php = new weTagData_selectAttribute('php', weTagData_selectAttribute::getTrueFalse(), false, '');
 	$abbr = new weTagData_selectAttribute('abbr', weTagData_selectAttribute::getTrueFalse(), false, '');
 	$spellcheck = new weTagData_selectAttribute('spellcheck', weTagData_selectAttribute::getTrueFalse(), false, 'spellchecker');
-	$commands = new weTagData_choiceAttribute('commands', we_wysiwyg::getEditorCommands(true), false, true, '');
+	$commands = new weTagData_choiceAttribute('commands', we_wysiwyg_editor::getEditorCommands(true), false, true, '');
 
 
 	$this->TypeAttribute = new weTagData_typeAttribute('type', array(

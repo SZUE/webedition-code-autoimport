@@ -25,9 +25,9 @@ class we_wysiwyg_ToolbarButton extends we_wysiwyg_ToolbarElement{
 	var $imgSrc = "";
 
 	function __construct($editor, $cmd, $imgSrc, $tooltiptext = "", $width = 22, $height = 22){
-		$width = we_wysiwyg::$editorType != 'tinyMCE' ? 25 : $width; //block of n buttons = n*22px + 2px left and right border of block
+		$width = we_wysiwyg_editor::$editorType != 'tinyMCE' ? 25 : $width; //block of n buttons = n*22px + 2px left and right border of block
 		parent::__construct($editor, $cmd, $width, $height);
-		if(we_wysiwyg::$editorType != 'tinyMCE'){
+		if(we_wysiwyg_editor::$editorType != 'tinyMCE'){
 			$this->tooltiptext = $tooltiptext;
 			$this->imgSrc = $imgSrc;
 		}
@@ -76,7 +76,7 @@ onclick="' . $this->editor->ref . 'Obj.click(\'' . $this->cmd . '\');" /></div>'
 			case "caption":
 			case "removecaption":
 			case "edittable":
-				return we_wysiwyg::$editorType == 'tinyMCE' ? false : parent::hasProp('', $contextMenu) || parent::hasProp('table', $contextMenu);
+				return we_wysiwyg_editor::$editorType == 'tinyMCE' ? false : parent::hasProp('', $contextMenu) || parent::hasProp('table', $contextMenu);
 			case "inserttable":
 			case "editcell":
 			case "insertcolumnright":
@@ -112,7 +112,7 @@ onclick="' . $this->editor->ref . 'Obj.click(\'' . $this->cmd . '\');" /></div>'
 				$this->editor->setPlugin('lists', parent::hasProp('', $contextMenu) || parent::hasProp('list', $contextMenu));
 				return $this->editor->setPlugin('advlist', parent::hasProp('', $contextMenu) || parent::hasProp('list', $contextMenu));
 			case "blockquote":
-				return we_wysiwyg::$editorType == 'tinyMCE' && parent::hasProp('', $contextMenu);
+				return we_wysiwyg_editor::$editorType == 'tinyMCE' && parent::hasProp('', $contextMenu);
 			case "justifyleft":
 			case "justifycenter":
 			case "justifyright":
@@ -128,7 +128,7 @@ onclick="' . $this->editor->ref . 'Obj.click(\'' . $this->cmd . '\');" /></div>'
 			case "removeformat":
 				return parent::hasProp('', $contextMenu) || parent::hasProp('prop', $contextMenu);
 			case "importrtf":
-				return we_wysiwyg::$editorType == 'tinyMCE' ? false : parent::hasProp('', $contextMenu);
+				return we_wysiwyg_editor::$editorType == 'tinyMCE' ? false : parent::hasProp('', $contextMenu);
 			case "absolute":
 			case "insertlayer":
 			case "movebackward":
@@ -158,9 +158,9 @@ onclick="' . $this->editor->ref . 'Obj.click(\'' . $this->cmd . '\');" /></div>'
 			case "nonbreaking":
 			case "hr":
 			case "fullscreen":
-				return !$this->editor->getIsFrontendEdit() && we_wysiwyg::$editorType == 'tinyMCE' && parent::hasProp('', $contextMenu);
+				return !$this->editor->getIsFrontendEdit() && we_wysiwyg_editor::$editorType == 'tinyMCE' && parent::hasProp('', $contextMenu);
 			case "template":
-				return we_wysiwyg::$editorType == 'tinyMCE' && parent::hasProp('', $contextMenu);
+				return we_wysiwyg_editor::$editorType == 'tinyMCE' && parent::hasProp('', $contextMenu);
 			default:
 				return parent::hasProp('', $contextMenu);
 		}

@@ -33,8 +33,8 @@ $classes = new weTagData_textAttribute('classes', false, '');
 $hideautobr = new weTagData_selectAttribute('hideautobr', weTagData_selectAttribute::getTrueFalse(), false, '');
 $wysiwyg = new weTagData_selectAttribute('wysiwyg', weTagData_selectAttribute::getTrueFalse(), false, '');
 $buttonpos = new weTagData_choiceAttribute('buttonpos', array(new weTagDataOption('top'), new weTagDataOption('bottom')), false, false, '');
-$commands = new weTagData_choiceAttribute('commands', we_wysiwyg::getEditorCommands(true), false, true, '');
-$contextmenu = new weTagData_choiceAttribute('contextmenu', we_wysiwyg::getEditorCommands(true), false, true, '');
+$commands = new weTagData_choiceAttribute('commands', we_wysiwyg_editor::getEditorCommands(true), false, true, '');
+$contextmenu = new weTagData_choiceAttribute('contextmenu', we_wysiwyg_editor::getEditorCommands(true), false, true, '');
 if(defined('FILE_TABLE')){
 	$editorcss = new weTagData_selectorAttribute('editorcss', FILE_TABLE, 'text/css', false, '');
 }

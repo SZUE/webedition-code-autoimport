@@ -686,8 +686,8 @@ abstract class we_database_base{
 			$query = array();
 			foreach($table as $key => $value){
 				$query[] = (is_numeric($key) ?
-								$value . ' ' . $mode :
-								$key . ' ' . $value);
+						$value . ' ' . $mode :
+						$key . ' ' . $value);
 			}
 			$query = implode(',', $query);
 		} else {
@@ -817,8 +817,8 @@ abstract class we_database_base{
 	function getTableCreateArray($tab){
 		$this->query('SHOW CREATE TABLE ' . $this->escape($tab));
 		return ($this->next_record()) ?
-				explode("\n", $this->f("Create Table")) :
-				false;
+			explode("\n", $this->f("Create Table")) :
+			false;
 	}
 
 	public function getTableKeyArray($tab){
@@ -837,6 +837,21 @@ abstract class we_database_base{
 			}
 		}
 		return $myarray;
+	}
+
+	public function getPrimaryKeys($tab){
+		$zw = $this->getTableCreateArray($tab);
+		if(!$zw){
+			return false;
+		}
+		$matches = array();
+		foreach($zw as $v){
+			if(preg_match('|PRIMARY KEY \((.*)\)|', $v, $matches)){
+				preg_match_all('|`([^`]+)`|',$matches[1],$matches);
+				return $matches[1];
+			}
+		}
+		return false;
 	}
 
 	/**

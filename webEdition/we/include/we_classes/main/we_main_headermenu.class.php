@@ -135,10 +135,10 @@ top.weSidebar = weSidebar;
 		if(// menu for normalmode
 			isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
 
-			$jmenu = new weJavaMenu($we_menu, "top.load");
+			$jmenu = new we_base_menu($we_menu, "top.load");
 		} else { // menu for seemode
 			if(permissionhandler::isUserAllowedForAction("header", "with_java")){
-				$jmenu = new weJavaMenu($we_menu, "top.load");
+				$jmenu = new we_base_menu($we_menu, "top.load");
 			} else {
 				return null;
 			}

@@ -698,11 +698,6 @@ class we_rtf2html{
 				$go = false;
 				break;
 			case 50:
-				if($this->codepage == "1251" || $this->codepage == "1252" || $this->codepage == "10000"){
-					$this->pasteChars("&#x" . we_codeConvertor::toUnicode($this->codepage, strtoupper($para)) . ";");
-				} else {
-					$this->pasteChars("&#x" . we_codeConvertor::toUnicode(($this->standard == "mac" ? 10000 : 1252), strtoupper($para)) . ";");
-				}
 				$go = false;
 				break;
 		}
