@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 class we_backup_tableAdv extends we_backup_table{
 
 	var $ClassName = __CLASS__;
@@ -31,9 +31,7 @@ class we_backup_tableAdv extends we_backup_table{
 			$this->db->query("SHOW CREATE TABLE $this->table;");
 			if($this->db->next_record()){
 				$zw = explode("\n", $this->db->f("Create Table"));
-				if(TBL_PREFIX != ''){
-					$zw[0] = str_replace($this->table, stripTblPrefix($this->table), $zw[0]);
-				}
+				$zw[0] = str_replace($this->table, stripTblPrefix($this->table), $zw[0]);
 			}
 			$this->elements[$this->db->f("Table")] = array('Field' => 'create');
 			foreach($zw as $k => $v){

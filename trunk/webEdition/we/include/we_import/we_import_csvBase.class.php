@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class CSV{
+class we_import_csvBase{
 
 	var $CSVFile;
 	var $CSVData;

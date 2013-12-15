@@ -177,54 +177,51 @@ abstract class we_backup_preparer{
 
 	static function getOptions(&$options, &$handle_options){
 
-		$options['backup_extern'] = (isset($_REQUEST['handle_extern']) && $_REQUEST['handle_extern']) ? 1 : 0;
-		$options['convert_charset'] = (isset($_REQUEST["convert_charset"]) && $_REQUEST["convert_charset"]) ? 1 : 0;
-		$options['compress'] = (isset($_REQUEST['compress']) && $_REQUEST['compress']) ? 1 : 0;
-		$options['backup_binary'] = (isset($_REQUEST['handle_binary']) && $_REQUEST['handle_binary']) ? 1 : 0;
-		$options['rebuild'] = (isset($_REQUEST['rebuild']) && $_REQUEST['rebuild']) ? 1 : 0;
+		$options = array(
+			'backup_extern' => (isset($_REQUEST['handle_extern']) && $_REQUEST['handle_extern']) ? 1 : 0,
+			'convert_charset' => (isset($_REQUEST["convert_charset"]) && $_REQUEST["convert_charset"]) ? 1 : 0,
+			'compress' => (isset($_REQUEST['compress']) && $_REQUEST['compress']) ? 1 : 0,
+			'backup_binary' => (isset($_REQUEST['handle_binary']) && $_REQUEST['handle_binary']) ? 1 : 0,
+			'rebuild' => (isset($_REQUEST['rebuild']) && $_REQUEST['rebuild']) ? 1 : 0,
+			'export2server' => (isset($_REQUEST['export_server']) && $_REQUEST['export_server']) ? 1 : 0,
+			'export2send' => (isset($_REQUEST['export_send']) && $_REQUEST['export_send']) ? 1 : 0,
+			'do_import_after_backup' => (isset($_REQUEST['do_import_after_backup']) && $_REQUEST['do_import_after_backup']) ? 1 : 0,
+		);
 
-		$options['export2server'] = (isset($_REQUEST['export_server']) && $_REQUEST['export_server']) ? 1 : 0;
-		$options['export2send'] = (isset($_REQUEST['export_send']) && $_REQUEST['export_send']) ? 1 : 0;
+		$handle_options = array(
+			'user' => (isset($_REQUEST['handle_user']) && $_REQUEST['handle_user']) ? 1 : 0,
+			'customer' => (isset($_REQUEST['handle_customer']) && $_REQUEST['handle_customer']) ? 1 : 0,
+			'shop' => (isset($_REQUEST['handle_shop']) && $_REQUEST['handle_shop']) ? 1 : 0,
+			'workflow' => (isset($_REQUEST['handle_workflow']) && $_REQUEST['handle_workflow']) ? 1 : 0,
+			'todo' => (isset($_REQUEST['handle_todo']) && $_REQUEST['handle_todo']) ? 1 : 0,
+			'newsletter' => (isset($_REQUEST['handle_newsletter']) && $_REQUEST['handle_newsletter']) ? 1 : 0,
+			'temporary' => (isset($_REQUEST['handle_temporary']) && $_REQUEST['handle_temporary']) ? 1 : 0,
+			'history' => (isset($_REQUEST['handle_history']) && $_REQUEST['handle_history']) ? 1 : 0,
+			'banner' => (isset($_REQUEST['handle_banner']) && $_REQUEST['handle_banner']) ? 1 : 0,
+			'core' => (isset($_REQUEST['handle_core']) && $_REQUEST['handle_core']) ? 1 : 0,
+			'object' => (isset($_REQUEST['handle_object']) && $_REQUEST['handle_object']) ? 1 : 0,
+			'schedule' => (isset($_REQUEST['handle_schedule']) && $_REQUEST['handle_schedule']) ? 1 : 0,
+			'settings' => (isset($_REQUEST['handle_settings']) && $_REQUEST['handle_settings']) ? 1 : 0,
+			'configuration' => (isset($_REQUEST['handle_configuration']) && $_REQUEST['handle_configuration']) ? 1 : 0,
+			'export' => (isset($_REQUEST['handle_export']) && $_REQUEST['handle_export']) ? 1 : 0,
+			'voting' => (isset($_REQUEST['handle_voting']) && $_REQUEST['handle_voting']) ? 1 : 0,
+			'spellchecker' => (isset($_REQUEST['handle_spellchecker']) && $_REQUEST['handle_spellchecker']) ? 1 : 0,
+			'versions' => (isset($_REQUEST['handle_versions']) && $_REQUEST['handle_versions']) ? 1 : 0,
+			'versions_binarys' => (isset($_REQUEST['handle_versions_binarys']) && $_REQUEST['handle_versions_binarys']) ? 1 : 0,
+			'tools' => array(),
+			'spellchecker' => (isset($_REQUEST['handle_spellchecker']) && $_REQUEST['handle_spellchecker']) ? 1 : 0,
+			'glossary' => (isset($_REQUEST['handle_glossary']) && $_REQUEST['handle_glossary']) ? 1 : 0,
+			'backup' => $options['backup_extern'],
+		);
 
-		$options['do_import_after_backup'] = (isset($_REQUEST['do_import_after_backup']) && $_REQUEST['do_import_after_backup']) ? 1 : 0;
-
-
-		$handle_options['user'] = (isset($_REQUEST['handle_user']) && $_REQUEST['handle_user']) ? 1 : 0;
-		$handle_options['customer'] = (isset($_REQUEST['handle_customer']) && $_REQUEST['handle_customer']) ? 1 : 0;
-		$handle_options['shop'] = (isset($_REQUEST['handle_shop']) && $_REQUEST['handle_shop']) ? 1 : 0;
-		$handle_options['workflow'] = (isset($_REQUEST['handle_workflow']) && $_REQUEST['handle_workflow']) ? 1 : 0;
-		$handle_options['todo'] = (isset($_REQUEST['handle_todo']) && $_REQUEST['handle_todo']) ? 1 : 0;
-		$handle_options['newsletter'] = (isset($_REQUEST['handle_newsletter']) && $_REQUEST['handle_newsletter']) ? 1 : 0;
-		$handle_options['temporary'] = (isset($_REQUEST['handle_temporary']) && $_REQUEST['handle_temporary']) ? 1 : 0;
-		$handle_options['history'] = (isset($_REQUEST['handle_history']) && $_REQUEST['handle_history']) ? 1 : 0;
-		$handle_options['banner'] = (isset($_REQUEST['handle_banner']) && $_REQUEST['handle_banner']) ? 1 : 0;
-		$handle_options['core'] = (isset($_REQUEST['handle_core']) && $_REQUEST['handle_core']) ? 1 : 0;
-		$handle_options['object'] = (isset($_REQUEST['handle_object']) && $_REQUEST['handle_object']) ? 1 : 0;
-		$handle_options['schedule'] = (isset($_REQUEST['handle_schedule']) && $_REQUEST['handle_schedule']) ? 1 : 0;
-		$handle_options['settings'] = (isset($_REQUEST['handle_settings']) && $_REQUEST['handle_settings']) ? 1 : 0;
-		$handle_options['configuration'] = (isset($_REQUEST['handle_configuration']) && $_REQUEST['handle_configuration']) ? 1 : 0;
-		$handle_options['export'] = (isset($_REQUEST['handle_export']) && $_REQUEST['handle_export']) ? 1 : 0;
-		$handle_options['voting'] = (isset($_REQUEST['handle_voting']) && $_REQUEST['handle_voting']) ? 1 : 0;
-		$handle_options['spellchecker'] = (isset($_REQUEST['handle_spellchecker']) && $_REQUEST['handle_spellchecker']) ? 1 : 0;
-		$handle_options['versions'] = (isset($_REQUEST['handle_versions']) && $_REQUEST['handle_versions']) ? 1 : 0;
-		$handle_options['versions_binarys'] = (isset($_REQUEST['handle_versions_binarys']) && $_REQUEST['handle_versions_binarys']) ? 1 : 0;
-
-		$handle_options['tools'] = array();
-
-		foreach($_REQUEST as $_k => $_val){
-			if(stripos($_k, "handle_tool_") === 0){
-				$_tool = str_replace("handle_tool_", '', $_k);
-				if(we_tool_lookup::isTool($_tool)){
-					$handle_options['tools'][] = $_tool;
+		if(isset($_REQUEST['handle_tool'])){
+			foreach(array_keys($_REQUEST['handle_tool']) as $tool){
+				if(we_tool_lookup::isTool($tool)){
+					$handle_options['tools'][] = $tool;
 				}
 			}
 		}
-		$handle_options['spellchecker'] = (isset($_REQUEST['handle_spellchecker']) && $_REQUEST['handle_spellchecker']) ? 1 : 0;
 
-		// exception for sql imports
-		$handle_options['glossary'] = (isset($_REQUEST['handle_glossary']) && $_REQUEST['handle_glossary']) ? 1 : 0;
-		// exception for sql imports
-		$handle_options['backup'] = $options['backup_extern'];
 		if($options['convert_charset']){
 			$handle_options['settings'] = 0;
 			$handle_options['spellchecker'] = 0;
@@ -246,7 +243,7 @@ abstract class we_backup_preparer{
 				$tables = array_merge($tables, we_tool_lookup::getBackupTables($_tool));
 			}
 		}
-
+t_e($tables);
 		return $tables;
 	}
 

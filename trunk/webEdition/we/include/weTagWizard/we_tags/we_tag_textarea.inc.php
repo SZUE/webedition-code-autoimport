@@ -23,8 +23,8 @@ $ignoredocumentcss = new weTagData_selectAttribute('ignoredocumentcss', weTagDat
 $html = new weTagData_selectAttribute('html', weTagData_selectAttribute::getTrueFalse(), false, '');
 $htmlspecialchars = new weTagData_selectAttribute('htmlspecialchars', weTagData_selectAttribute::getTrueFalse(), false, '');
 $php = new weTagData_selectAttribute('php', weTagData_selectAttribute::getTrueFalse(), false, '');
-$commands = new weTagData_choiceAttribute('commands', we_wysiwyg::getEditorCommands(true), false, true, '');
-$contextmenu = new weTagData_choiceAttribute('contextmenu', we_wysiwyg::getEditorCommands(true), false, true, '');
+$commands = new weTagData_choiceAttribute('commands', we_wysiwyg_editor::getEditorCommands(true), false, true, '');
+$contextmenu = new weTagData_choiceAttribute('contextmenu', we_wysiwyg_editor::getEditorCommands(true), false, true, '');
 $fontnames = new weTagData_choiceAttribute('fontnames', array(new weTagDataOption('arial'),
 	new weTagDataOption('courier'),
 	new weTagDataOption('tahoma'),

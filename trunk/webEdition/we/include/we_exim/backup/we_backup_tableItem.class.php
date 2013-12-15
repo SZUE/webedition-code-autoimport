@@ -52,13 +52,12 @@ class we_backup_tableItem extends weModelBase{
 	}
 
 	static function getTableKey($table){
-		$table = strtolower($table);
-		include(WE_INCLUDES_PATH . 'we_exim/backup/weTableKeys.inc.php');
-		if(in_array($table, array_keys($tableKeys))){
-			return $tableKeys[$table];
-		} else {
-			return array('ID');
+		static $cache = array();
+		if(isset($cache[$table])){
+			return $cache[$table];
 		}
+		$cache[$table] = $GLOBALS['DB_WE']->getPrimaryKeys(addTblPrefix($table));
+		return $cache[$table];
 	}
 
 	function getFieldType($fieldname){

@@ -46,13 +46,13 @@ if(isset($GLOBALS['_we_active_integrated_modules'])){
 if(!$INCLUDE){
 	switch($_REQUEST['we_cmd'][0]){
 		case 'versions_preview':
-			$INCLUDE = 'we_versions/weVersionsPreview.php';
+			$INCLUDE = 'we_versions/weVersionsPreview.inc.php';
 			break;
 		case 'versions_wizard':
 			$INCLUDE = 'we_versions/version_wizard/we_versions.inc.php';
 			break;
 		case 'versioning_log':
-			$INCLUDE = 'we_logging/versions/versionsLog.php';
+			$INCLUDE = 'we_logging/versions/versionsLog.inc.php';
 			break;
 		case 'import_files':
 			$INCLUDE = 'we_import_files.inc.php';

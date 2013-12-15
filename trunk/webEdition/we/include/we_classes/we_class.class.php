@@ -527,7 +527,7 @@ abstract class we_class{
 			$newLang = $_REQUEST['we_' . $this->Name . '_Language'];
 			$db = new DB_WE();
 			$documentTable = ($type == 'tblObjectFile') ? 'tblObjectFiles' : $type;
-			$ownDocumentTable = ($isfolder && $isobject) ? TBL_PREFIX . 'tblFile' : TBL_PREFIX . $documentTable;
+			$ownDocumentTable = ($isfolder && $isobject) ? FILE_TABLE : addTblPrefix($documentTable);
 			$origLinks = array();
 
 			if(!$isfolder){
@@ -591,7 +591,7 @@ abstract class we_class{
 	 */
 	private function prepareSetLanguageLink($LangLinkArray, $origLinks, $langChange = false, $ownLocale, $type, $isfolder = false, $isobject = false, $ownDocumentTable){
 		$documentTable = ($type == 'tblObjectFile') ? 'tblObjectFiles' : $type; // we could take these  from setLanguageLink()...
-		$ownDocumentTable = ($isfolder && $isobject) ? TBL_PREFIX . 'tblFile' : TBL_PREFIX . $documentTable;
+		$ownDocumentTable = ($isfolder && $isobject) ? FILE_TABLE : addTblPrefix($documentTable);
 
 		if(in_array(0, $LangLinkArray) || in_array('', $LangLinkArray)){
 			if(!$langChange){
@@ -629,7 +629,7 @@ abstract class we_class{
 				// from Folders, links lead only to documents, never to objects
 				//$fileTable = $isfolder ? FILE_TABLE : ($isobject ? OBJECT_FILES_TABLE : FILE_TABLE);
 
-				if(($fileLang = f('SELECT Language FROM ' . TBL_PREFIX . $documentTable . ' WHERE ID = ' . intval($LDID), 'Language', $this->DB_WE))){
+				if(($fileLang = f('SELECT Language FROM ' . addTblPrefix($documentTable) . ' WHERE ID=' . intval($LDID), '', $this->DB_WE))){
 					if($fileLang != $locale){
 						$we_responseText = sprintf(g_l('weClass', '[languageLinksLangNotok]'), $locale, $fileLang, $locale);
 						$_js = we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_NOTICE);

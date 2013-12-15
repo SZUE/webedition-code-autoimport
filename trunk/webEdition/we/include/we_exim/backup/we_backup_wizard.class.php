@@ -580,7 +580,7 @@ extra_files_desc=new Array();';
 		$i = 0;
 		$_tools = we_tool_lookup::getToolsForBackup();
 		foreach($_tools as $_tool){
-			$form_properties[700 + $i] = "handle_tool_" . $_tool;
+			$form_properties[700 + $i] = "handle_tool[" . $_tool . ']';
 			$i++;
 		}
 
@@ -631,7 +631,7 @@ extra_files_desc=new Array();';
 					g_l('searchtool', '[import_tool_' . $_tool . '_data]') :
 					g_l('backup', "[import][weapp]") . ' ' . $_tool);
 
-			$parts[] = array("headline" => "", "html" => we_html_forms::checkbox(1, true, 'handle_tool_' . $_tool, $text, false, "defaultfont", "doClick($k);"), "space" => 70, "noline" => 1);
+			$parts[] = array("headline" => "", "html" => we_html_forms::checkbox(1, true, 'handle_tool[' . $_tool . ']', $text, false, "defaultfont", "doClick($k);"), "space" => 70, "noline" => 1);
 		}
 
 		$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[extern_exp]"), we_html_tools::TYPE_ALERT, 600, false), "space" => 70, "noline" => 1);
@@ -857,7 +857,7 @@ self.focus();');
 		$i = 0;
 		$_tools = we_tool_lookup::getToolsForBackup();
 		foreach($_tools as $_tool){
-			$form_properties[700 + $i] = "handle_tool_" . $_tool;
+			$form_properties[700 + $i] = "handle_tool[" . $_tool . ']';
 			$i++;
 		}
 
@@ -931,7 +931,7 @@ self.focus();');
 					g_l('searchtool', '[import_tool_' . $_tool . '_data]') :
 					g_l('backup', "[export][weapp]") . ' ' . $_tool);
 
-			$parts[] = array("headline" => "", "html" => we_html_forms::checkbox(1, true, 'handle_tool_' . $_tool, $text, false, "defaultfont", "doClick($k);"), "space" => 70, "noline" => 1);
+			$parts[] = array("headline" => "", "html" => we_html_forms::checkbox(1, true, 'handle_tool[' . $_tool . ']', $text, false, "defaultfont", "doClick($k);"), "space" => 70, "noline" => 1);
 			$k++;
 		}
 

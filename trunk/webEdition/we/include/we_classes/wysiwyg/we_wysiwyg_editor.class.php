@@ -24,7 +24,7 @@
  */
 //make sure we know which browser is used
 
-class we_wysiwyg{
+class we_wysiwyg_editor{
 
 	var $name = '';
 	private $origName = '';

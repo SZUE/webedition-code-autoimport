@@ -31,6 +31,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 if(!isset($_SESSION)){
 	session_name(SESSION_NAME);
 }
+
 class we_core_Local{
 
 	/**
@@ -130,6 +131,7 @@ class we_core_Local{
 					$_SERVER['TMP'] = WEBEDITION_PATH . 'we/zendcache';
 				}
 				try{
+					Zend_Session::setOptions(array('name' => SESSION_NAME));
 					Zend_Session::start();
 				} catch (Zend_Session_Exception $e){
 					t_e('Zend_Session start failed', $e);

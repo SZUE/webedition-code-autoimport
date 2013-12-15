@@ -147,7 +147,7 @@ top.close();');
 			 *
 			 */
 
-			$e = new we_wysiwyg(
+			$e = new we_wysiwyg_editor(
 				$_REQUEST['we_cmd'][1], $_REQUEST['we_cmd'][2], $_REQUEST['we_cmd'][3], ($_REQUEST['we_cmd'][4] ? we_cmd_dec(4) : ''), $_REQUEST['we_cmd'][5], $_REQUEST['we_cmd'][13], '', $_REQUEST['we_cmd'][6], $_REQUEST['we_cmd'][7], $_REQUEST['we_cmd'][8], $_REQUEST['we_cmd'][11], $_REQUEST['we_cmd'][12], true, $_REQUEST['we_cmd'][14], $_REQUEST['we_cmd'][15], $_REQUEST['we_cmd'][16], $_REQUEST['we_cmd'][17], '', true, $_REQUEST['we_cmd'][23], 'top', true, we_cmd_dec(18), we_cmd_dec(19), we_cmd_dec(20), we_cmd_dec(21), true, $_REQUEST['we_cmd'][24]
 			);
 
@@ -155,7 +155,7 @@ top.close();');
 			$cancelBut = we_html_button::create_button('cancel', "javascript:top.close()");
 			$okBut = we_html_button::create_button('ok', "javascript:weWysiwygSetHiddenText();document.we_form.submit();");
 
-			print we_wysiwyg::getHeaderHTML() . $e->getHTML() .
+			print we_wysiwyg_editor::getHeaderHTML() . $e->getHTML() .
 				'<div style="height:8px"></div>' . we_html_button::position_yes_no_cancel($okBut, $cancelBut);
 			?>
 		</form>
