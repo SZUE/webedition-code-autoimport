@@ -246,7 +246,7 @@ class we_version{
 
 			if($templateID){
 
-				$arr = we_rebuild::getTemplAndDocIDsOfTemplate($templateID);
+				$arr = we_rebuild_base::getTemplAndDocIDsOfTemplate($templateID);
 
 				if(!empty($arr["templateIDs"])){
 					$where = "";

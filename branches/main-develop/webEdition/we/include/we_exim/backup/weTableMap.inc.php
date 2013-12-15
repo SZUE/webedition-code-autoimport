@@ -24,39 +24,38 @@
  */
 $tableMap = array(
 	'core' => array(
-		'tblfile' => FILE_TABLE,
-		'tbllink' => LINK_TABLE,
-		'tbllanglink' => LANGLINK_TABLE,
-		'tbltemplates' => TEMPLATES_TABLE,
-		'tblindex' => INDEX_TABLE,
-		'tblcontent' => CONTENT_TABLE,
-		'tblcategorys' => CATEGORY_TABLE,
-		'tbldoctypes' => DOC_TYPES_TABLE,
-		'tblthumbnails' => THUMBNAILS_TABLE,
-		'tblnavigation' => NAVIGATION_TABLE,
-		'tblnavigationrules' => NAVIGATION_RULE_TABLE,
-		'tblmetadata' => METADATA_TABLE
+		strtolower(stripTblPrefix(FILE_TABLE)) => FILE_TABLE,
+		strtolower(stripTblPrefix(LINK_TABLE)) => LINK_TABLE,
+		strtolower(stripTblPrefix(LANGLINK_TABLE)) => LANGLINK_TABLE,
+		strtolower(stripTblPrefix(TEMPLATES_TABLE)) => TEMPLATES_TABLE,
+		strtolower(stripTblPrefix(CONTENT_TABLE)) => CONTENT_TABLE,
+		strtolower(stripTblPrefix(CATEGORY_TABLE)) => CATEGORY_TABLE,
+		strtolower(stripTblPrefix(DOC_TYPES_TABLE)) => DOC_TYPES_TABLE,
+		strtolower(stripTblPrefix(THUMBNAILS_TABLE)) => THUMBNAILS_TABLE,
+		strtolower(stripTblPrefix(NAVIGATION_TABLE)) => NAVIGATION_TABLE,
+		strtolower(stripTblPrefix(NAVIGATION_RULE_TABLE)) => NAVIGATION_RULE_TABLE,
+		strtolower(stripTblPrefix(METADATA_TABLE)) => METADATA_TABLE
 	),
 	'versions' => array(
-		'tblversions' => VERSIONS_TABLE,
-		'tblversionslog' => VERSIONS_TABLE_LOG
+		strtolower(stripTblPrefix(VERSIONS_TABLE)) => VERSIONS_TABLE,
+		strtolower(stripTblPrefix(VERSIONS_TABLE_LOG)) => VERSIONS_TABLE_LOG
 	),
 	'settings' => array(
-		'tblprefs' => PREFS_TABLE,
-		'tblrecipients' => RECIPIENTS_TABLE,
-		'tblvalidationservices' => VALIDATION_SERVICES_TABLE,
+		strtolower(stripTblPrefix(PREFS_TABLE)) => PREFS_TABLE,
+		strtolower(stripTblPrefix(RECIPIENTS_TABLE)) => RECIPIENTS_TABLE,
+		strtolower(stripTblPrefix(VALIDATION_SERVICES_TABLE)) => VALIDATION_SERVICES_TABLE,
 	),
 	'user' => array(
-		'tbluser' => USER_TABLE
+		strtolower(stripTblPrefix(USER_TABLE)) => USER_TABLE
 	),
 	'temporary' => array(
-		'tbltemporarydoc' => TEMPORARY_DOC_TABLE
+		strtolower(stripTblPrefix(TEMPORARY_DOC_TABLE)) => TEMPORARY_DOC_TABLE
 	),
 	'history' => array(
-		'tblhistory' => HISTORY_TABLE
+		strtolower(stripTblPrefix(HISTORY_TABLE)) => HISTORY_TABLE
 	),
 	'backup' => array(
-		'tblbackup' => TBL_PREFIX . 'tblbackup'
+		'tblbackup' => addTblPrefix('tblbackup')
 	),
 	'configuration' => array(
 	),
@@ -65,94 +64,94 @@ $tableMap = array(
 
 if(defined('OBJECT_TABLE')){
 	$tableMap['object'] = array(
-		'tblobject' => OBJECT_TABLE,
-		'tblobjectfiles' => OBJECT_FILES_TABLE,
+		strtolower(stripTblPrefix(OBJECT_TABLE)) => OBJECT_TABLE,
+		strtolower(stripTblPrefix(OBJECT_FILES_TABLE)) => OBJECT_FILES_TABLE,
 		'tblobject_' => OBJECT_X_TABLE
 	);
 }
 
 if(defined('CUSTOMER_TABLE')){
 	$tableMap['customer'] = array(
-		'tblwebuser' => CUSTOMER_TABLE,
-		'tblwebadmin' => CUSTOMER_ADMIN_TABLE,
-		'tblcustomerfilter' => CUSTOMER_FILTER_TABLE,
-		'tblwebuserautologin' => CUSTOMER_AUTOLOGIN_TABLE
+		strtolower(stripTblPrefix(CUSTOMER_TABLE)) => CUSTOMER_TABLE,
+		strtolower(stripTblPrefix(CUSTOMER_ADMIN_TABLE)) => CUSTOMER_ADMIN_TABLE,
+		strtolower(stripTblPrefix(CUSTOMER_FILTER_TABLE)) => CUSTOMER_FILTER_TABLE,
+		strtolower(stripTblPrefix(CUSTOMER_AUTOLOGIN_TABLE)) => CUSTOMER_AUTOLOGIN_TABLE
 	);
 }
 
 if(defined('SHOP_TABLE')){
 	$tableMap['shop'] = array(
-		'tblanzeigeprefs' => ANZEIGE_PREFS_TABLE,
-		'tblorders' => SHOP_TABLE,
-		'tblshopvats' => WE_SHOP_VAT_TABLE
+		strtolower(stripTblPrefix(ANZEIGE_PREFS_TABLE)) => ANZEIGE_PREFS_TABLE,
+		strtolower(stripTblPrefix(SHOP_TABLE)) => SHOP_TABLE,
+		strtolower(stripTblPrefix(WE_SHOP_VAT_TABLE)) => WE_SHOP_VAT_TABLE
 	);
 }
 
 if(defined('WORKFLOW_TABLE')){
 	$tableMap['workflow'] = array(
-		'tblworkflowdef' => WORKFLOW_TABLE,
-		'tblworkflowstep' => WORKFLOW_STEP_TABLE,
-		'tblworkflowtask' => WORKFLOW_TASK_TABLE,
-		'tblworkflowdoc' => WORKFLOW_DOC_TABLE,
-		'tblworkflowdocstep' => WORKFLOW_DOC_STEP_TABLE,
-		'tblworkflowdoctask' => WORKFLOW_DOC_TASK_TABLE,
-		'tblworkflowlog' => WORKFLOW_LOG_TABLE
+		strtolower(stripTblPrefix(WORKFLOW_TABLE)) => WORKFLOW_TABLE,
+		strtolower(stripTblPrefix(WORKFLOW_STEP_TABLE)) => WORKFLOW_STEP_TABLE,
+		strtolower(stripTblPrefix(WORKFLOW_TASK_TABLE)) => WORKFLOW_TASK_TABLE,
+		strtolower(stripTblPrefix(WORKFLOW_DOC_TABLE)) => WORKFLOW_DOC_TABLE,
+		strtolower(stripTblPrefix(WORKFLOW_DOC_STEP_TABLE)) => WORKFLOW_DOC_STEP_TABLE,
+		strtolower(stripTblPrefix(WORKFLOW_DOC_TASK_TABLE)) => WORKFLOW_DOC_TASK_TABLE,
+		strtolower(stripTblPrefix(WORKFLOW_LOG_TABLE)) => WORKFLOW_LOG_TABLE
 	);
 }
 
 if(defined('MSG_TODO_TABLE')){
 	$tableMap['todo'] = array(
-		'tbltodo' => MSG_TODO_TABLE,
-		'tbltodohistory' => MSG_TODOHISTORY_TABLE,
-		'tblmessages' => MESSAGES_TABLE,
-		'tblmsgaccounts' => MSG_ACCOUNTS_TABLE,
-		'tblmsgaddrbook' => MSG_ADDRBOOK_TABLE,
-		'tblmsgfolders' => MSG_FOLDERS_TABLE,
-		'tblmsgsettings' => MSG_SETTINGS_TABLE
+		strtolower(stripTblPrefix(MSG_TODO_TABLE)) => MSG_TODO_TABLE,
+		strtolower(stripTblPrefix(MSG_TODOHISTORY_TABLE)) => MSG_TODOHISTORY_TABLE,
+		strtolower(stripTblPrefix(MESSAGES_TABLE)) => MESSAGES_TABLE,
+		strtolower(stripTblPrefix(MSG_ACCOUNTS_TABLE)) => MSG_ACCOUNTS_TABLE,
+		strtolower(stripTblPrefix(MSG_ADDRBOOK_TABLE)) => MSG_ADDRBOOK_TABLE,
+		strtolower(stripTblPrefix(MSG_FOLDERS_TABLE)) => MSG_FOLDERS_TABLE,
+		strtolower(stripTblPrefix(MSG_SETTINGS_TABLE)) => MSG_SETTINGS_TABLE
 	);
 }
 
 if(defined('NEWSLETTER_TABLE')){
 	$tableMap['newsletter'] = array(
-		'tblnewsletter' => NEWSLETTER_TABLE,
-		'tblnewslettergroup' => NEWSLETTER_GROUP_TABLE,
-		'tblnewsletterblock' => NEWSLETTER_BLOCK_TABLE,
-		'tblnewsletterlog' => NEWSLETTER_LOG_TABLE,
-		'tblnewsletterprefs' => NEWSLETTER_PREFS_TABLE,
-		'tblnewsletterconfirm' => NEWSLETTER_CONFIRM_TABLE
+		strtolower(stripTblPrefix(NEWSLETTER_TABLE)) => NEWSLETTER_TABLE,
+		strtolower(stripTblPrefix(NEWSLETTER_GROUP_TABLE)) => NEWSLETTER_GROUP_TABLE,
+		strtolower(stripTblPrefix(NEWSLETTER_BLOCK_TABLE)) => NEWSLETTER_BLOCK_TABLE,
+		strtolower(stripTblPrefix(NEWSLETTER_LOG_TABLE)) => NEWSLETTER_LOG_TABLE,
+		strtolower(stripTblPrefix(NEWSLETTER_PREFS_TABLE)) => NEWSLETTER_PREFS_TABLE,
+		strtolower(stripTblPrefix(NEWSLETTER_CONFIRM_TABLE)) => NEWSLETTER_CONFIRM_TABLE
 	);
 }
 
 if(defined('BANNER_TABLE')){
 	$tableMap['banner'] = array(
-		'tblbanner' => BANNER_TABLE,
-		'tblbannerclicks' => BANNER_CLICKS_TABLE,
-		'tblbannerprefs' => BANNER_PREFS_TABLE,
-		'tblbannerviews' => BANNER_VIEWS_TABLE
+		strtolower(stripTblPrefix(BANNER_TABLE)) => BANNER_TABLE,
+		strtolower(stripTblPrefix(BANNER_CLICKS_TABLE)) => BANNER_CLICKS_TABLE,
+		strtolower(stripTblPrefix(BANNER_PREFS_TABLE)) => BANNER_PREFS_TABLE,
+		strtolower(stripTblPrefix(BANNER_VIEWS_TABLE)) => BANNER_VIEWS_TABLE
 	);
 }
 
 if(defined('SCHEDULE_TABLE')){
 	$tableMap['schedule'] = array(
-		'tblschedule' => SCHEDULE_TABLE
+		strtolower(stripTblPrefix(SCHEDULE_TABLE)) => SCHEDULE_TABLE
 	);
 }
 
 if(defined('EXPORT_TABLE')){
 	$tableMap['export'] = array(
-		'tblexport' => EXPORT_TABLE
+		strtolower(stripTblPrefix(EXPORT_TABLE)) => EXPORT_TABLE
 	);
 }
 
 if(defined('VOTING_TABLE')){
 	$tableMap['voting'] = array(
-		'tblvoting' => VOTING_TABLE,
-		'tblvotinglog' => VOTING_LOG_TABLE
+		strtolower(stripTblPrefix(VOTING_TABLE)) => VOTING_TABLE,
+		strtolower(stripTblPrefix(VOTING_LOG_TABLE)) => VOTING_LOG_TABLE
 	);
 }
 
 if(defined('GLOSSARY_TABLE')){
 	$tableMap['glossary'] = array(
-		'tblglossary' => GLOSSARY_TABLE
+		strtolower(stripTblPrefix(GLOSSARY_TABLE)) => GLOSSARY_TABLE
 	);
 }

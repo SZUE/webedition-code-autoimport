@@ -46,13 +46,13 @@ if(isset($GLOBALS['_we_active_integrated_modules'])){
 if(!$INCLUDE){
 	switch($_REQUEST['we_cmd'][0]){
 		case 'versions_preview':
-			$INCLUDE = 'we_versions/weVersionsPreview.php';
+			$INCLUDE = 'we_versions/weVersionsPreview.inc.php';
 			break;
 		case 'versions_wizard':
 			$INCLUDE = 'we_versions/version_wizard/we_versions.inc.php';
 			break;
 		case 'versioning_log':
-			$INCLUDE = 'we_logging/versions/versionsLog.php';
+			$INCLUDE = 'we_logging/versions/versionsLog.inc.php';
 			break;
 		case 'import_files':
 			$INCLUDE = 'we_import_files.inc.php';
@@ -275,7 +275,7 @@ if(!$INCLUDE){
 			$INCLUDE = 'we_import/we_wiz_frameset.php';
 			break;
 		case 'export':
-			$INCLUDE = WE_EXPORT_MODULE_DIR . 'export_frameset.php';
+			$INCLUDE = 'we_modules/export/export_frameset.php';
 			break;
 		case 'copyFolder':
 			$INCLUDE = 'copyFolder.inc.php';
@@ -321,9 +321,9 @@ if(!$INCLUDE){
 
 			$foo = false;
 			if(isset($_REQUEST['we_cmd'][0])){
-				$mods = weModuleInfo::getAllModules();
+				$mods = we_base_moduleInfo::getAllModules();
 				foreach($mods as $m){
-					if($_REQUEST['we_cmd'][0] == 'edit_' . $m['name'] . '_ifthere' && !weModuleInfo::isActive($m['name'])){
+					if($_REQUEST['we_cmd'][0] == 'edit_' . $m['name'] . '_ifthere' && !we_base_moduleInfo::isActive($m['name'])){
 						$foo = true;
 						$_moduleName = $m['text_short'];
 						$INCLUDE = 'messageModuleNotActivated.inc.php';

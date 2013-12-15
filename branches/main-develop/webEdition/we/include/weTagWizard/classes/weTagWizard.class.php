@@ -29,7 +29,7 @@ abstract class weTagWizard{
 		$main = self::getMainTagModules($useDeprecated);
 		foreach($main as $modulename => $tags){
 
-			if($modulename == 'basis' || $modulename == 'navigation' || weModuleInfo::isActive($modulename)){
+			if($modulename == 'basis' || $modulename == 'navigation' || we_base_moduleInfo::isActive($modulename)){
 				$retTags = array_merge($retTags, $tags);
 			}
 		}
@@ -60,7 +60,7 @@ abstract class weTagWizard{
 				$taggroups['alltags'] = $tags;
 			}
 
-			if(weModuleInfo::isActive($modulename)){
+			if(we_base_moduleInfo::isActive($modulename)){
 				$taggroups[$modulename] = $tags;
 				$taggroups['alltags'] = array_merge($taggroups['alltags'], $tags);
 			}

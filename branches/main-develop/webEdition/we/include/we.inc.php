@@ -44,9 +44,6 @@ if(isset($_SERVER['HTTP_HOST']) && $_SERVER['SERVER_NAME'] != $_SERVER['HTTP_HOS
 @ini_set('allow_url_fopen', '1');
 @ini_set('file_uploads', '1');
 @ini_set('session.use_trans_sid', '0');
-if(ini_get('session.gc_probability') && !opendir(session_save_path())){
-	ini_set('session.gc_probability', '0');
-}
 //@ini_set("arg_separator.output","&");
 //fix insecure cookies
 $cookie = session_get_cookie_params();
@@ -59,6 +56,11 @@ if(!isset($GLOBALS['we'])){
 	$GLOBALS['we'] = array();
 }
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_defines.inc.php');
+if(ini_get('session.gc_probability') != '0' && !@opendir(session_save_path())){
+	$GLOBALS['FOUND_SESSION_PROBLEM'] = ini_get('session.gc_probability');
+	ini_set('session.gc_probability', '0');
+	//won't work with apps like phpmyadmin session_save_path($_SERVER['DOCUMENT_ROOT'] . TEMP_DIR);
+}
 //start autoloader!
 require_once ($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
 

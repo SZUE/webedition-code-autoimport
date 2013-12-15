@@ -217,23 +217,24 @@ function getError($reason, $cookie = false){
 	$tmp = ini_get('session.save_path');
 
 	if(!(is_dir($tmp) || (is_link($tmp) && is_dir(readlink($tmp))))){
-		$_error .= $_error_count++ . ' - ' . sprintf(g_l('start', '[tmp_path]'), ini_get('session.save_path')) . we_html_element::htmlBr();
+		$_error .= ++$_error_count . ' - ' . sprintf(g_l('start', '[tmp_path]'), ini_get('session.save_path')) . we_html_element::htmlBr();
 	}
-	if(ini_get('session.gc_probability') && !opendir(session_save_path())){
-		$_error .= $_error_count++ . ' - ' .
-			'PHP is not allowed to write session data correctly. Please contact your Admin. Additional Information for your Admin:' . we_html_element::htmlBr() .
-			'session.gc_probability: ' . ini_get('session.gc_probability') . we_html_element::htmlBr() . '
- Session Path: ' . ini_set('session.gc_probability', 0) . we_html_element::htmlBr() . '
+	if(isset($GLOBALS['FOUND_SESSION_PROBLEM'])){
+		$_error .= ++$_error_count . ' - ' .
+			'PHP is not allowed to write / cleanup session data correctly. Please contact your Admin. Additional Information for your Admin:' . we_html_element::htmlBr() .
+			'session.gc_probability: ' . $GLOBALS['FOUND_SESSION_PROBLEM'] . we_html_element::htmlBr() . '
+ Session Path: ' . session_save_path() . we_html_element::htmlBr() . '
  Opendir: failed' . we_html_element::htmlBr() .
+			'Problem is temporary fixed by webEdition' . we_html_element::htmlBr() .
 			'<a href="' . WEBEDITION_DIR . 'index.php?skipSess=1">Click here, to start anyway</a>' . we_html_element::htmlBr();
 	}
 
 	if(!ini_get('session.use_cookies')){
-		$_error .= $_error_count++ . ' - ' . g_l('start', '[use_cookies]') . we_html_element::htmlBr();
+		$_error .= ++$_error_count . ' - ' . g_l('start', '[use_cookies]') . we_html_element::htmlBr();
 	}
 
 	if(ini_get('session.cookie_path') != '/'){
-		$_error .= $_error_count++ . ' - ' . sprintf(g_l('start', '[cookie_path]'), ini_get('session.cookie_path')) . we_html_element::htmlBr();
+		$_error .= ++$_error_count . ' - ' . sprintf(g_l('start', '[cookie_path]'), ini_get('session.cookie_path')) . we_html_element::htmlBr();
 	}
 
 	if($cookie && $_error_count == 0){
@@ -261,7 +262,7 @@ if(isset($_POST['checkLogin']) && empty($_COOKIE)){
 
 	printHeader($login, 503);
 	print we_html_element::htmlBody(array('style' => 'background-color:#FFFFFF;'), $_layout->getHtml()) . '</html>';
-} elseif(!isset($_REQUEST['skipSess']) && ini_get('session.gc_probability') && !opendir(session_save_path())){
+} elseif(!isset($_REQUEST['skipSess']) && isset($GLOBALS['FOUND_SESSION_PROBLEM'])){
 	$_layout = getError(/* g_l('start', '[cookies_disabled]') */'Session-Problem');
 
 	printHeader($login);
@@ -352,9 +353,9 @@ if(isset($_POST['checkLogin']) && empty($_COOKIE)){
 	if($ignore_browser){
 		$_hidden_values .= we_html_element::htmlHidden(array('name' => 'ignore_browser', 'value' => 'true'));
 	}
-
-
-
+	if(isset($_REQUEST['skipSess'])){
+		$_hidden_values .= we_html_element::htmlHidden(array('name' => 'skipSess', 'value' => 'true'));
+	}
 
 	/*	 * ***********************************************************************
 	 * BUILD DIALOG

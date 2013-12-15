@@ -233,7 +233,7 @@ class we_thumbnail{
 		$this->date = $date;
 		$this->generateSmaller = $generateSmaller;
 		if($this->thumbID && $this->thumbName){
-			$this->outputFormat = $this->thumbFormat ? $this->thumbFormat : (isset(we_image_edit::$GDIMAGE_TYPE[strtolower($this->imageExtension)]) ? we_image_edit::$GDIMAGE_TYPE[strtolower($this->imageExtension)] : 'jpg');
+			$this->outputFormat = $this->thumbFormat ? $this->thumbFormat : (isset(we_base_imageEdit::$GDIMAGE_TYPE[strtolower($this->imageExtension)]) ? we_base_imageEdit::$GDIMAGE_TYPE[strtolower($this->imageExtension)] : 'jpg');
 			$this->checkAndGetImageSizeIfNeeded();
 			$this->setOutputPath();
 			$this->calculateOutsize();
@@ -311,16 +311,16 @@ class we_thumbnail{
 	 * @public
 	 */
 	public function createThumb(){
-		if(we_image_edit::gd_version() <= 0){
+		if(we_base_imageEdit::gd_version() <= 0){
 			return self::NO_GDLIB_ERROR;
 		}
 		$tmp = explode('.', $this->imagePath);
-		$type = we_image_edit::$GDIMAGE_TYPE['.' . strtolower(end($tmp))];
+		$type = we_base_imageEdit::$GDIMAGE_TYPE['.' . strtolower(end($tmp))];
 		if($this->useOriginalSize() && $this->outputFormat == $type){
 			return self::USE_ORIGINAL;
 		}
 
-		if(!we_image_edit::is_imagetype_read_supported($type)){
+		if(!we_base_imageEdit::is_imagetype_read_supported($type)){
 			return self::INPUTFORMAT_NOT_SUPPORTED;
 		}
 
@@ -329,7 +329,7 @@ class we_thumbnail{
 			we_util_File::createLocalFolder($_thumbdir);
 		}
 		$quality = $this->thumbQuality < 1 ? 10 : ($this->thumbQuality > 10 ? 100 : $this->thumbQuality * 10);
-		$outarr = we_image_edit::edit_image($this->imageData ? $this->imageData : $_SERVER['DOCUMENT_ROOT'] . $this->imagePath, $this->outputFormat, $_SERVER['DOCUMENT_ROOT'] . $this->outputPath, $quality, $this->thumbWidth, $this->thumbHeight, $this->thumbRatio, $this->thumbInterlace, 0, 0, -1, -1, 0, $this->thumbFitinside);
+		$outarr = we_base_imageEdit::edit_image($this->imageData ? $this->imageData : $_SERVER['DOCUMENT_ROOT'] . $this->imagePath, $this->outputFormat, $_SERVER['DOCUMENT_ROOT'] . $this->outputPath, $quality, $this->thumbWidth, $this->thumbHeight, $this->thumbRatio, $this->thumbInterlace, 0, 0, -1, -1, 0, $this->thumbFitinside);
 
 		return $outarr[0] ? self::OK : self::BUILDERROR;
 	}
@@ -346,7 +346,7 @@ class we_thumbnail{
 	 * @public
 	 */
 	public function getThumb(&$thumbDataPointer){
-		if(we_image_edit::gd_version() <= 0){
+		if(we_base_imageEdit::gd_version() <= 0){
 			return self::NO_GDLIB_ERROR;
 		}
 
@@ -354,7 +354,7 @@ class we_thumbnail{
 			return self::USE_ORIGINAL;
 		}
 		$quality = $this->thumbQuality < 1 ? 10 : ($this->thumbQuality > 10 ? 100 : $this->thumbQuality * 10);
-		$outarr = we_image_edit::edit_image($this->imageData ? $this->imageData : $_SERVER["DOCUMENT_ROOT"] . $this->imagePath, $this->outputFormat, "", $quality, $this->thumbWidth, $this->thumbHeight, $this->thumbRatio, $this->thumbInterlace, 0, 0, -1, -1, 0, $this->thumbFitinside);
+		$outarr = we_base_imageEdit::edit_image($this->imageData ? $this->imageData : $_SERVER["DOCUMENT_ROOT"] . $this->imagePath, $this->outputFormat, "", $quality, $this->thumbWidth, $this->thumbHeight, $this->thumbRatio, $this->thumbInterlace, 0, 0, -1, -1, 0, $this->thumbFitinside);
 		if($outarr[0]){
 			$thumbDataPointer = $outarr[0];
 			return self::OK;
@@ -393,8 +393,8 @@ class we_thumbnail{
 		if(isset($arr) && is_array($arr) && (count($arr) >= 4) && $arr[0] && $arr[1]){
 			return $arr;
 		}
-		if(we_image_edit::gd_version()){
-			return we_image_edit::getimagesize($filename);
+		if(we_base_imageEdit::gd_version()){
+			return we_base_imageEdit::getimagesize($filename);
 		}
 		return $arr;
 	}
@@ -457,10 +457,10 @@ class we_thumbnail{
 	 * @private
 	 */
 	private function setOutputPath(){
-		if(we_image_edit::gd_version() > 0 &&
-			we_image_edit::is_imagetype_supported($this->outputFormat) &&
-			we_image_edit::is_imagetype_read_supported(isset(we_image_edit::$GDIMAGE_TYPE[strtolower($this->imageExtension)]) ?
-					we_image_edit::$GDIMAGE_TYPE[strtolower($this->imageExtension)] : "") &&
+		if(we_base_imageEdit::gd_version() > 0 &&
+			we_base_imageEdit::is_imagetype_supported($this->outputFormat) &&
+			we_base_imageEdit::is_imagetype_read_supported(isset(we_base_imageEdit::$GDIMAGE_TYPE[strtolower($this->imageExtension)]) ?
+					we_base_imageEdit::$GDIMAGE_TYPE[strtolower($this->imageExtension)] : "") &&
 			( (!$this->useOriginalSize()) || (!$this->hasOriginalType() ) )){
 			$this->outputPath = self::getThumbDirectory() . "/" . $this->imageID . "_" . $this->thumbID . "_" . $this->imageFileName . "." . $this->outputFormat;
 		} else {

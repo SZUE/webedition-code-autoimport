@@ -83,7 +83,7 @@ function we_tag_a($attribs, $content){
 				return $foo;
 			}
 			$amount = weTag_getAttribute('amount', $attribs, 1);
-			$foo = (isset($GLOBALS['lv']) && get_class($GLOBALS['lv']) != 'we_listview_multiobject' ? $GLOBALS['lv']->count - 1 : -1);
+			$foo = (isset($GLOBALS['lv']) && get_class($GLOBALS['lv']) != 'we_object_listviewMultiobject' ? $GLOBALS['lv']->count - 1 : -1);
 
 			// get ID of element
 			$customReq = '';
@@ -93,7 +93,7 @@ function we_tag_a($attribs, $content){
 				$customReq = $GLOBALS['lv']->getCustomFieldsAsRequest();
 			} else {
 				//Zwei Faelle werden abgedeckt, bei denen die Objekt-ID nicht gefunden wird: (a) bei einer listview ueber shop-objekte, darin eine listview über shop-varianten, hierin der we:a-link und (b) Objekt wird ueber den objekt-tag geladen #3538
-				if((isset($GLOBALS['lv']) && get_class($GLOBALS['lv']) == 'we_shop_listviewShopVariants' && isset($GLOBALS['lv']->Model) && $GLOBALS['lv']->Model->ClassName == 'we_objectFile') || isset($GLOBALS['lv']) && get_class($GLOBALS['lv']) == 'we_objecttag'){
+				if((isset($GLOBALS['lv']) && get_class($GLOBALS['lv']) == 'we_shop_listviewShopVariants' && isset($GLOBALS['lv']->Model) && $GLOBALS['lv']->Model->ClassName == 'we_objectFile') || isset($GLOBALS['lv']) && get_class($GLOBALS['lv']) == 'we_object_tag'){
 					$type = we_shop_shop::OBJECT;
 					$idd = (get_class($GLOBALS['lv']) == 'we_shop_listviewShopVariants' ? $GLOBALS['lv']->Id : $GLOBALS['lv']->id);
 				} else {

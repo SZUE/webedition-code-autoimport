@@ -52,7 +52,7 @@ function we_tag_category($attribs){
 	} elseif(isset($GLOBALS['lv']) && (!$docAttr)){
 		// get cats from listview object
 		switch(get_class($GLOBALS['lv'])){
-			case 'we_listview_object' :
+			case 'we_object_listview' :
 				$catIDs = $GLOBALS['lv']->f('wedoc_Category');
 				break;
 			case 'we_search_listview':

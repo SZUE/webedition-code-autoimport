@@ -2098,7 +2098,7 @@ function formmailBlockOnOff() {
 			if(!we_base_preferences::userIsAllowed('active_integrated_modules')){
 				break;
 			}
-			$_modInfos = weModuleInfo::getIntegratedModules();
+			$_modInfos = we_base_moduleInfo::getIntegratedModules();
 
 			$_html = '';
 
@@ -2113,7 +2113,7 @@ function formmailBlockOnOff() {
 				if(!empty($_modInfo["dependson"])){
 					$onclick = "if(this.checked){document.getElementById('newconf[active_integrated_modules][" . $_modInfo["dependson"] . "]').checked=true;}";
 				}
-				$_html .= we_html_forms::checkbox($_modKey, $_modInfo["alwaysActive"] || weModuleInfo::isActive($_modKey), "newconf[active_integrated_modules][$_modKey]", $_modInfo["text"], false, "defaultfont", $onclick, $_modInfo["alwaysActive"]) . ($_modInfo["alwaysActive"] ? "<input type=\"hidden\" name=\"newconf[active_integrated_modules][$_modKey]\" value=\"$_modKey\" />" : "" ) . "<br />";
+				$_html .= we_html_forms::checkbox($_modKey, $_modInfo["alwaysActive"] || we_base_moduleInfo::isActive($_modKey), "newconf[active_integrated_modules][$_modKey]", $_modInfo["text"], false, "defaultfont", $onclick, $_modInfo["alwaysActive"]) . ($_modInfo["alwaysActive"] ? "<input type=\"hidden\" name=\"newconf[active_integrated_modules][$_modKey]\" value=\"$_modKey\" />" : "" ) . "<br />";
 			}
 
 			$_settings = array(
@@ -2331,7 +2331,7 @@ function formmailBlockOnOff() {
 			$_authpass = we_html_tools::htmlTextInput("newconf[HTTP_PASSWORD]", 22, $_auth_pass, "", "", "password", 225, 0, "", !$_auth);
 
 
-			if(we_image_edit::gd_version() > 0){ //  gd lib ist installiert
+			if(we_base_imageEdit::gd_version() > 0){ //  gd lib ist installiert
 				$wecmdenc1 = we_cmd_enc("document.forms[0].elements['newconf[WE_THUMBNAIL_DIRECTORY]'].value");
 				$wecmdenc4 = '';
 				$_but = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button("select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', 'folder', document.forms[0].elements['newconf[WE_THUMBNAIL_DIRECTORY]'].value, '')") : "";

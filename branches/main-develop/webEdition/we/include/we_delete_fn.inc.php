@@ -67,7 +67,7 @@ function checkDeleteFile($id, $table){
 		case (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'):
 			return !(ObjectUsedByObjectFile($id, false));
 		case TEMPLATES_TABLE:
-			$arr = we_rebuild::getTemplAndDocIDsOfTemplate($id, false, false, true);
+			$arr = we_rebuild_base::getTemplAndDocIDsOfTemplate($id, false, false, true);
 			return (empty($arr["documentIDs"]));
 	}
 	return true;
@@ -158,7 +158,7 @@ function deleteFile($id, $table, $path = '', $contentType = '', $DB_WE = ''){
 			$DB_WE->query('UPDATE ' . CONTENT_TABLE . ' SET BDID=0 WHERE BDID=' . intval($id));
 			$DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($id));
 
-			if(weModuleInfo::isActive('schedule')){ //	Delete entries from schedule as well
+			if(we_base_moduleInfo::isActive('schedule')){ //	Delete entries from schedule as well
 				$DB_WE->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($id) . ' AND ClassName !="we_objectFile"');
 			}
 
@@ -201,7 +201,7 @@ function deleteFile($id, $table, $path = '', $contentType = '', $DB_WE = ''){
 				$DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable = "tblObjectFile" AND DID = ' . intval($id));
 				$DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable = "tblObjectFile" AND LDID = ' . intval($id));
 			}
-			if(weModuleInfo::isActive('schedule')){ //	Delete entries from schedule as well
+			if(we_base_moduleInfo::isActive('schedule')){ //	Delete entries from schedule as well
 				$DB_WE->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($id) . ' AND ClassName="we_objectFile"');
 			}
 			break;

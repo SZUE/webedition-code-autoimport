@@ -72,7 +72,7 @@ class we_customer_view extends weModuleView{
 
 	function getJSTop(){
 		$mod = isset($_REQUEST['mod']) ? $_REQUEST['mod'] : '';
-		$modData = weModuleInfo::getModuleData($mod);
+		$modData = we_base_moduleInfo::getModuleData($mod);
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 
 		return we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('

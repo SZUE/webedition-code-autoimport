@@ -38,7 +38,7 @@ function we_tag_ifSelf($attribs){
 	switch($type){
 		case 'listview':
 			switch(get_class($GLOBALS['lv'])){
-				case 'we_listview_object':
+				case 'we_object_listview':
 					return in_array($GLOBALS['lv']->getDBf('OF_ID'), $ids);
 				case 'we_search_listview':
 					return in_array($GLOBALS['lv']->getDBf('WE_ID'), $ids);

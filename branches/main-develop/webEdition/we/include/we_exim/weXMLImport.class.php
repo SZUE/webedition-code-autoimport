@@ -38,7 +38,7 @@ class weXMLImport extends weXMLExIm{
 		$GLOBALS['isNewImport'] = version_compare(we_backup_preparer::getWeVersion($chunk_file, false), '6.3.3.1', '>');
 
 		$data = we_base_file::load($chunk_file);
-		$this->xmlBrowser = new weXMLParser();
+		$this->xmlBrowser = new we_backup_XMLParser();
 		$this->xmlBrowser->parse($data, $this->options['xml_encoding']);
 		unset($data);
 		$this->xmlBrowser->normalize();
@@ -387,7 +387,7 @@ class weXMLImport extends weXMLExIm{
 							switch($noddata){
 								case "we_object":
 									if(defined("OBJECT_TABLE")){
-										$object = new we_objectEx();
+										$object = new we_object_exImport();
 									}
 									break;
 								case "we_objectFile":

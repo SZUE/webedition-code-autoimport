@@ -75,7 +75,7 @@ class we_backup_importSql{
 					}
 				} else {
 
-					$_object = new weTable($_table, (defined('CUSTOMER_TABLE') && $_table == CUSTOMER_TABLE));
+					$_object = new we_backup_table($_table, (defined('CUSTOMER_TABLE') && $_table == CUSTOMER_TABLE));
 					$_object->save();
 				}
 				$create = $_table;

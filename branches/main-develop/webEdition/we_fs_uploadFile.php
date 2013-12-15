@@ -36,7 +36,7 @@ $allowedContentTypes = '';
 
 switch($we_ContentType){
 	case 'image/*';
-		$allowedContentTypes = we_image_edit::IMAGE_CONTENT_TYPES;
+		$allowedContentTypes = we_base_imageEdit::IMAGE_CONTENT_TYPES;
 		break;
 	case 'application/*';
 		break;
@@ -100,7 +100,7 @@ if((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploaded
 	$foo = explode('/', $_FILES['we_uploadedFile']['type']);
 	$we_doc->setElement('data', $tempName, $foo[0]);
 
-	if($we_ContentType == 'image/*' && !$we_doc->isSvg() && !in_array(we_image_edit::detect_image_type($tempName), we_image_edit::$GDIMAGE_TYPE)){
+	if($we_ContentType == 'image/*' && !$we_doc->isSvg() && !in_array(we_base_imageEdit::detect_image_type($tempName), we_base_imageEdit::$GDIMAGE_TYPE)){
 		$we_alerttext = g_l('alert', '[wrong_file][' . $we_ContentType . ']');
 	} else {
 		if($we_ContentType == 'image/*' || $we_ContentType == 'application/x-shockwave-flash'){

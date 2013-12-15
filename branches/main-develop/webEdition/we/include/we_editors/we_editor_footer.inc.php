@@ -394,7 +394,7 @@ function showEditFooterForNormalMode(){
 
 
 			$_normalTable->addCol(2);
-			if(weModuleInfo::isActive('editor')){
+			if(we_base_moduleInfo::isActive('editor')){
 				if(stripos($we_doc->ContentType, 'text/') !== false){
 					$_normalTable->setColContent(0, $_pos++, we_html_button::create_button("startEditor", "javascript:editSource();"));
 				} else {

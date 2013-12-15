@@ -78,13 +78,13 @@ class we_util_Sys_Webedition extends we_util_Sys{
 			return -1;
 		}
 
-		if(!weModuleInfo::isModuleInstalled($property)){
+		if(!we_base_moduleInfo::isModuleInstalled($property)){
 			return -1;
 		}
 
 		// integrated modules (free of charge, can be deactivated in webEdition preferences):
 		// users, schedule, editor, banner, export, voting, spellchecker, glossary
-		return (weModuleInfo::isActive($property) ? 1 : 0);
+		return (we_base_moduleInfo::isActive($property) ? 1 : 0);
 	}
 
 	/**
@@ -113,7 +113,7 @@ class we_util_Sys_Webedition extends we_util_Sys{
 	 * @return array a list of all available webEdition modules or (bool)false, if an error occured
 	 */
 	public static function modulesAvailable(){
-		return weModuleInfo::getAllModules();
+		return we_base_moduleInfo::getAllModules();
 	}
 
 	/**

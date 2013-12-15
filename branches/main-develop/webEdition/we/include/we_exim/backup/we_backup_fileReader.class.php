@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-abstract class we_backup_fileReader extends weXMLFileReader{
+abstract class we_backup_fileReader extends we_backup_XMLFileReader{
 
 	static function preParse(&$content){
 		$match = array();

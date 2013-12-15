@@ -84,7 +84,7 @@ window.close();');
 
 			 */
 
-			$e = new we_wysiwyg(
+			$e = new we_wysiwyg_editor(
 				$_REQUEST['we_cmd'][1], //$name,
 				$_REQUEST['we_cmd'][2], //$width,
 				$_REQUEST['we_cmd'][3], //$height
@@ -109,7 +109,7 @@ window.close();');
 			$cancelBut = we_html_button::create_button('cancel', 'javascript:top.close()');
 			$okBut = we_html_button::create_button('ok', 'javascript:weWysiwygSetHiddenText();document.we_form.submit();');
 
-			echo we_wysiwyg::getHeaderHTML() . $e->getHTML() .
+			echo we_wysiwyg_editor::getHeaderHTML() . $e->getHTML() .
 			'<div style="height:8px"></div>' . we_html_button::position_yes_no_cancel($okBut, $cancelBut);
 			?>
 		</form>

@@ -30,7 +30,6 @@
  */
 class we_backup_backup extends we_backup_base{
 
-	const backupSteps = "1,5,7,10,15,20,30,40,50,80,100,500,1000";
 	const backupMarker = '<!-- webackup -->';
 	const weXmlExImHead = '<webEdition';
 	const weXmlExImFooter = '</webEdition>';
@@ -136,7 +135,7 @@ class we_backup_backup extends we_backup_base{
 					$this->description["import"][strtolower($tablename)] :
 					g_l('backup', "[working]"));
 
-			$object = weContentProvider::getInstance("weTable", 0, $tablename);
+			$object = weContentProvider::getInstance("we_backup_table", 0, $tablename);
 			$node_set2 = $xmlBrowser->getSet($nodeset);
 			foreach($node_set2 as $set2){
 				$node_set3 = $xmlBrowser->getSet($set2);
@@ -162,7 +161,7 @@ class we_backup_backup extends we_backup_base{
 	function recoverTableItem($nodeset, &$xmlBrowser){
 		$content = array();
 		$node_set2 = $xmlBrowser->getSet($nodeset);
-		$classname = "weTableItem";
+		$classname = "we_backup_tableItem";
 
 		foreach($node_set2 as $nsv){
 			$index = $xmlBrowser->nodeName($nsv);
@@ -213,35 +212,12 @@ class we_backup_backup extends we_backup_base{
 		we_base_file::delete($_SERVER['DOCUMENT_ROOT'] . $file);
 	}
 
-	/* function recoverInfo($nodeset, &$xmlBrowser){
-	  $node_set2 = $xmlBrowser->getSet($nodeset);
-
-	  //$classname = weContentProvider::getContentTypeHandler("weBinary");
-	  $db2 = new DB_WE();
-	  foreach($node_set2 as $nsv){
-	  $index = $xmlBrowser->nodeName($nsv);
-	  if($index == "we:map"){
-	  $attributes = $xmlBrowser->getAttributes($nsv);
-	  $tablename = $attributes["table"];
-	  if($tablename == $this->getDefaultTableName(TEMPLATES_TABLE)){
-	  $id = $attributes["ID"];
-	  $path = $attributes["Path"];
-	  //$this->backup_db->query("SELECT ".FILE_TABLE.".ID AS ID,".FILE_TABLE.".TemplateID AS TemplateID,".TEMPLATES_TABLE.".Path AS TemplatePath FROM ".FILE_TABLE.",".TEMPLATES_TABLE." WHERE ".FILE_TABLE.".TemplateID=".TEMPLATES_TABLE.".ID;");
-	  $tmpId = f('SELECT ID FROM ' . TEMPLATES_TABLE . ' WHERE Path="' . $this->backup_db->escape($path) . '"', 'ID', $this->backup_db);
-	  if(!empty($tmpId) && $tmpId != $id){
-	  $db2->query('UPDATE ' . FILE_TABLE . ' SET TemplateID=' . intval($tmpId) . ' WHERE TemplateID=' . intval($id));
-	  }
-	  }
-	  }
-	  }
-	  } */
-
 	function recover($chunk_file){
 		if(!is_readable($chunk_file)){
 			return false;
 		}
 
-		$xmlBrowser = new weXMLBrowser($chunk_file);
+		$xmlBrowser = new we_xml_browser($chunk_file);
 		$xmlBrowser->mode = "backup";
 
 		foreach($xmlBrowser->nodes as $key => $val){
@@ -323,7 +299,7 @@ class we_backup_backup extends we_backup_base{
 					//$metadata = $this->backup_db->metadata($table);
 
 					if(!$this->partial){
-						$xmlExport->exportChunk(0, "weTable", $this->dumpfilename, $table, $this->backup_binary);
+						$xmlExport->exportChunk(0, "we_backup_table", $this->dumpfilename, $table, $this->backup_binary);
 
 						$this->backup_step = 0;
 						$this->table_end = 0;
@@ -335,7 +311,7 @@ class we_backup_backup extends we_backup_base{
 							$this->description["export"][strtolower($table)] :
 							g_l('backup', "[working]"));
 
-					$keys = weTableItem::getTableKey($table);
+					$keys = we_backup_tableItem::getTableKey($table);
 					$this->partial = false;
 
 					do{
@@ -349,7 +325,7 @@ class we_backup_backup extends we_backup_base{
 							}
 							++$this->row_count;
 
-							$xmlExport->exportChunk(implode(",", $keyvalue), "weTableItem", $this->dumpfilename, $table, $this->backup_binary);
+							$xmlExport->exportChunk(implode(",", $keyvalue), "we_backup_tableItem", $this->dumpfilename, $table, $this->backup_binary);
 							++$this->backup_step;
 						}
 					} while(self::limitsReached($table, microtime(true) - $start));
@@ -619,50 +595,6 @@ $this->file_list=' . var_export($this->file_list, true) . ';';
 		$file_list_count = (int) ($this->file_list_count - count($this->file_list)) / 100;
 		$percent = (int) ((($this->file_counter + $file_list_count) / (($this->file_list_count / 100) + $this->file_end)) * 100);
 		return ($percent > 100 ? 100 : ($percent < 0 ? 0 : $percent));
-	}
-
-	function setDescriptions(){
-		$this->description["import"][strtolower(CONTENT_TABLE)] = g_l('backup', "[import_content]");
-		$this->description["import"][strtolower(FILE_TABLE)] = g_l('backup', "[import_files]");
-		$this->description["import"][strtolower(DOC_TYPES_TABLE)] = g_l('backup', "[import_doctypes]");
-		if(isset($this->handle_options["users"]) && $this->handle_options["users"]){
-			$this->description["import"][strtolower(USER_TABLE)] = g_l('backup', "[import_user_data]");
-		}
-		if(defined("CUSTOMER_TABLE") && isset($this->handle_options["customers"]) && $this->handle_options["customers"]){
-			$this->description["import"][strtolower(CUSTOMER_TABLE)] = g_l('backup', "[import_customers_data]");
-		}
-		if(defined("SHOP_TABLE") && isset($this->handle_options["shop"]) && $this->handle_options["shop"]){
-			$this->description["import"][strtolower(SHOP_TABLE)] = g_l('backup', "[import_shop_data]");
-		}
-		if(defined("ANZEIGE_PREFS_TABLE") && isset($this->handle_options["shop"]) && $this->handle_options["shop"]){
-			$this->description["import"][strtolower(ANZEIGE_PREFS_TABLE)] = g_l('backup', "[import_prefs]");
-		}
-		$this->description["import"][strtolower(TEMPLATES_TABLE)] = g_l('backup', "[import_templates]");
-		$this->description["import"][strtolower(TEMPORARY_DOC_TABLE)] = g_l('backup', "[import][temporary_data]");
-		$this->description["import"][strtolower(BACKUP_TABLE)] = g_l('backup', "[external_backup]");
-		$this->description["import"][strtolower(LINK_TABLE)] = g_l('backup', "[import_links]");
-		$this->description["import"][strtolower(INDEX_TABLE)] = g_l('backup', "[import_indexes]");
-
-		$this->description["export"][strtolower(CONTENT_TABLE)] = g_l('backup', "[export_content]");
-		$this->description["export"][strtolower(FILE_TABLE)] = g_l('backup', "[export_files]");
-		$this->description["export"][strtolower(DOC_TYPES_TABLE)] = g_l('backup', "[export_doctypes]");
-		if(isset($this->handle_options["users"]) && $this->handle_options["users"]){
-			$this->description["export"][strtolower(USER_TABLE)] = g_l('backup', "[export_user_data]");
-		}
-		if(defined("CUSTOMER_TABLE") && isset($this->handle_options["customers"]) && $this->handle_options["customers"]){
-			$this->description["export"][strtolower(CUSTOMER_TABLE)] = g_l('backup', "[export_customers_data]");
-		}
-		if(defined("SHOP_TABLE") && isset($this->handle_options["shop"]) && $this->handle_options["shop"]){
-			$this->description["export"][strtolower(SHOP_TABLE)] = g_l('backup', "[export_shop_data]");
-		}
-		if(defined("ANZEIGE_PREFS_TABLE") && isset($this->handle_options["shop"]) && $this->handle_options["shop"]){
-			$this->description["export"][strtolower(ANZEIGE_PREFS_TABLE)] = g_l('backup', "[export_prefs]");
-		}
-		$this->description["export"][strtolower(TEMPLATES_TABLE)] = g_l('backup', "[export_templates]");
-		$this->description["export"][strtolower(TEMPORARY_DOC_TABLE)] = g_l('backup', "[export][temporary_data]");
-		$this->description["export"][strtolower(BACKUP_TABLE)] = g_l('backup', "[external_backup]");
-		$this->description["export"][strtolower(LINK_TABLE)] = g_l('backup', "[export_links]");
-		$this->description["export"][strtolower(INDEX_TABLE)] = g_l('backup', "[export_indexes]");
 	}
 
 	function exportGlobalPrefs(){

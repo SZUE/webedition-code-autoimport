@@ -96,7 +96,7 @@ if($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){ //	No tabs in Su
 		  }
 		 */
 
-		if(permissionhandler::hasPerm("CAN_SEE_SCHEDULER") && weModuleInfo::isActive("schedule") && in_array(WE_EDITPAGE_SCHEDULER, $we_doc->EditPageNrs) && $we_doc->ContentType != "folder"){
+		if(permissionhandler::hasPerm("CAN_SEE_SCHEDULER") && we_base_moduleInfo::isActive("schedule") && in_array(WE_EDITPAGE_SCHEDULER, $we_doc->EditPageNrs) && $we_doc->ContentType != "folder"){
 			$we_tabs->addTab(new we_tab("#", g_l('weClass', "[scheduler]"), (($we_doc->EditPageNr == WE_EDITPAGE_SCHEDULER) ? we_tab::ACTIVE : we_tab::NORMAL), "we_cmd('switch_edit_page'," . WE_EDITPAGE_SCHEDULER . ",'" . $we_transaction . "');", array("id" => "tab_" . WE_EDITPAGE_SCHEDULER)));
 		}
 		if((in_array(WE_EDITPAGE_VALIDATION, $we_doc->EditPageNrs) && ($we_doc->ContentType == 'text/webedition' || $we_doc->ContentType == 'text/css' || $we_doc->ContentType == 'text/html' )) && permissionhandler::hasPerm("CAN_SEE_VALIDATION")){

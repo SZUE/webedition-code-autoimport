@@ -45,7 +45,7 @@ class we_backup_import{
 	private static function transfer(&$data, $charset = 'ISO-8859-1'){
 		we_backup_util::addLog('Parsing data');
 
-		$parser = new weXMLParser();
+		$parser = new we_backup_XMLParser();
 
 		$parser->parse($data, ((DEFAULT_CHARSET == '') ? 'ISO-8859-1' : DEFAULT_CHARSET)); // Fix f�r 4092, in Verbindung mit alter Version f�r bug 3412 l�st das beide Situationen
 		// free some memory
@@ -128,11 +128,11 @@ class we_backup_import{
 				}
 				$_prefix = 'Saving object ';
 				switch($classname){
-					case 'weTable':
-					case 'weTableAdv':
+					case 'we_backup_table':
+					case 'we_backup_tableAdv':
 						we_backup_util::addLog($_prefix . $classname . ':' . $object->table . $addtext);
 						break;
-					case 'weTableItem':
+					case 'we_backup_tableItem':
 						$_id_val = '';
 						foreach($object->keys as $_key){
 							$_id_val .= ':' . $object->$_key;
@@ -169,8 +169,8 @@ class we_backup_import{
 				$table = we_backup_util::getRealTableName($attribs['name']);
 				if($table !== false){
 					we_backup_util::setBackupVar('current_table', $table);
-					$object = new weTable($table);
-					$classname = 'weTable';
+					$object = new we_backup_table($table);
+					$classname = 'we_backup_table';
 					return true;
 				}
 				return false;
@@ -179,8 +179,8 @@ class we_backup_import{
 				$table = we_backup_util::getRealTableName($attribs['name']);
 				if($table !== false){
 					we_backup_util::setBackupVar('current_table', $table);
-					$object = new weTableAdv($table);
-					$classname = 'weTableAdv';
+					$object = new we_backup_tableAdv($table);
+					$classname = 'we_backup_tableAdv';
 					return true;
 				}
 				return false;
@@ -189,8 +189,8 @@ class we_backup_import{
 				$table = we_backup_util::getRealTableName($attribs['table']);
 				if($table !== false){
 					we_backup_util::setBackupVar('current_table', $table);
-					$object = new weTableItem($table);
-					$classname = 'weTableItem';
+					$object = new we_backup_tableItem($table);
+					$classname = 'we_backup_tableItem';
 					return true;
 				}
 				return false;

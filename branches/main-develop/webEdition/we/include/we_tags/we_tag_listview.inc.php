@@ -174,7 +174,7 @@ function we_tag_listview($attribs){
 				return false;
 			}
 			if(f('SELECT 1 AS a FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($class), 'a', $GLOBALS['DB_WE']) == '1'){
-				$GLOBALS['lv'] = new we_listview_object($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $class, $we_lv_cats, $we_lv_catOr, $cond, $triggerid, $cols, $seeMode, $we_lv_se, $we_lv_calendar, $we_lv_datefield, $we_lv_date, $we_lv_weekstart, $we_lv_categoryids, $we_lv_ws, $cfilter, $docid, $customers, $id, $predefinedSQL, $we_lv_languages, $hidedirindex, $objectseourls);
+				$GLOBALS['lv'] = new we_object_listview($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $class, $we_lv_cats, $we_lv_catOr, $cond, $triggerid, $cols, $seeMode, $we_lv_se, $we_lv_calendar, $we_lv_datefield, $we_lv_date, $we_lv_weekstart, $we_lv_categoryids, $we_lv_ws, $cfilter, $docid, $customers, $id, $predefinedSQL, $we_lv_languages, $hidedirindex, $objectseourls);
 			} else {
 				t_e('warning', 'Class with id=' . intval($class) . ' does not exist');
 				unset($GLOBALS['lv']);
@@ -186,9 +186,9 @@ function we_tag_listview($attribs){
 			$we_lv_ownlanguage = $we_lv_langguagesdoc->Language;
 
 			switch(isset($GLOBALS['lv']) ? get_class($GLOBALS['lv']) : ''){
-				case 'we_listview_object':
-				case 'we_objecttag':
-					$record = get_class($GLOBALS['lv']) == 'we_listview_object' ? $GLOBALS['lv']->DB_WE->Record : $GLOBALS['lv']->getObject()->DB_WE->Record;
+				case 'we_object_listview':
+				case 'we_object_tag':
+					$record = get_class($GLOBALS['lv']) == 'we_object_listview' ? $GLOBALS['lv']->DB_WE->Record : $GLOBALS['lv']->getObject()->DB_WE->Record;
 					$we_lv_pageID = $record['OF_ID'];
 					$we_lv_linktype = 'tblObjectFile';
 					$we_lv_pagelanguage = $we_lv_pagelanguage == 'self' ? $record['OF_Language'] : ($we_lv_pagelanguage == 'top' ? $we_lv_ownlanguage : $we_lv_pagelanguage);
@@ -243,7 +243,7 @@ function we_tag_listview($attribs){
 				return;
 			}
 			$name = weTag_getAttribute('_name_orig', $attribs);
-			$GLOBALS['lv'] = new we_listview_multiobject($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $we_lv_cats, $we_lv_catOr, $cond, $triggerid, $cols, $seeMode, $we_lv_se, $we_lv_calendar, $we_lv_datefield, $we_lv_date, $we_lv_weekstart, $we_lv_categoryids, $cfilter, $docid, $we_lv_languages, $hidedirindex, $objectseourls);
+			$GLOBALS['lv'] = new we_object_listviewMultiobject($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $we_lv_cats, $we_lv_catOr, $cond, $triggerid, $cols, $seeMode, $we_lv_se, $we_lv_calendar, $we_lv_datefield, $we_lv_date, $we_lv_weekstart, $we_lv_categoryids, $cfilter, $docid, $we_lv_languages, $hidedirindex, $objectseourls);
 			break;
 		case 'banner':
 			if(!defined('BANNER_TABLE')){
@@ -270,8 +270,8 @@ function we_tag_listview($attribs){
 			$objectId = weTag_getAttribute('objectid', $attribs, 0);
 			if($objectId == 0){
 				switch(isset($GLOBALS['lv']) ? get_class($GLOBALS['lv']) : ''){
-					case 'we_objecttag':
-					case 'we_listview_object':
+					case 'we_object_tag':
+					case 'we_object_listview':
 						$objectId = $GLOBALS['lv']->getDBf('OF_ID');
 				}
 			}
