@@ -82,7 +82,7 @@ switch(isset($we_ContentType) ? $we_ContentType : ''){
 			$moduleDir .= '/';
 		}
 
-		if(file_exists(WE_MODULES_PATH . $moduleDir . 'we_' . $we_ContentType . '.inc.php')){
+		if(file_exists(WE_MODULES_PATH . $moduleDir . 'we_' . $we_ContentType . '.class.php')){
 			$we_doc = 'we_' . $we_ContentType;
 			$we_doc = new $we_doc();
 		} else {
