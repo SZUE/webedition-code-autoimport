@@ -7,6 +7,25 @@ function saveContent() {
 }
 
 function onLoadInit() {
+	/* WE IE11 Fix */
+	tinyMCEPopup.resizeToInnerSize();
+	document.getElementById('htmlSource').value = tinyMCEPopup.editor.getContent({source_view : true});
+	resizeInputs(); 
+
+	// Remove Gecko spellchecking
+	try{
+		if(tinymce.isGecko){ 
+			document.body.spellcheck = tinyMCEPopup.editor.getParam("gecko_spellcheck");
+		}
+	} catch(e){}
+
+	if (tinyMCEPopup.editor.getParam("theme_advanced_source_editor_wrap", true)) {
+		turnWrapOn();
+		document.getElementById('wraped').checked = true;
+	}
+	/* End WE IE11 Fix */
+	
+	/* original code
 	tinyMCEPopup.resizeToInnerSize();
 
 	// Remove Gecko spellchecking
@@ -21,6 +40,7 @@ function onLoadInit() {
 	}
 
 	resizeInputs();
+	*/
 }
 
 function setWrap(val) {
