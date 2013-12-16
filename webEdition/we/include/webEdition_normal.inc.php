@@ -79,7 +79,6 @@ function pWebEdition_JSFunctions(){
 	browserwind.close();
 	}
 	} catch(e){}
-
 	if(whichWindow != "include"){ 	// only when no SEEM-edit-include window is closed
 	// FIXME: closing-actions for SEEM
 	if(top.opener) {
@@ -91,8 +90,7 @@ function pWebEdition_JSFunctions(){
 		var logoutpopup = window.open('<?php print WEBEDITION_DIR; ?>we_loggingOut.php?isopener=0', "webEdition","width=350,height=70,toolbar=no,menubar=no,directories=no,location=no,resizable=no,status=no,scrollbars=no,top=300,left=500");
 		logoutpopup.focus();
 	<?php } ?>
-	}
-	else{
+	}else{
 	var logoutpopup = window.open('<?php print WEBEDITION_DIR; ?>we_loggingOut.php?isopener=0', "webEdition","width=350,height=70,toolbar=no,menubar=no,directories=no,location=no,resizable=no,status=no,scrollbars=no,top=300,left=500");
 	logoutpopup.focus();
 	}

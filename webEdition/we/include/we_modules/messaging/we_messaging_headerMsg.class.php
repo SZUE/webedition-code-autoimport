@@ -90,22 +90,20 @@ class we_messaging_headerMsg{
 	static function pbody(){
 		self::start();
 		//start with 0 to get popup with new count
-		$newmsg_count = 0; //self::$messaging->used_msgobjs['we_message']->get_newmsg_count();
-		$newtodo_count = 0; //self::$messaging->used_msgobjs['we_todo']->get_newmsg_count();
-		$msg_cmd = "javascript:top.we_cmd('messaging_start', 'message');";
-		$todo_cmd = "javascript:top.we_cmd('messaging_start', 'todo');";
+		$msg_cmd = "we_cmd('messaging_start', 'message');";
+		$todo_cmd = "we_cmd('messaging_start', 'todo');";
 		?>
 		<table class="msgheadertable">
 			<?php echo '
 <tr>
-	<td id="msgCount" align="right" class="middlefont' . ($newmsg_count ? 'red' : '') . '"><a style="text-decoration:none"  href="' . $msg_cmd . '">' . $newmsg_count . '</a></td>
+	<td id="msgCount" align="right" class="middlefont"><div onclick="' . $msg_cmd . '">0</div></td>
 	<td>' . we_html_tools::getPixel(5, 1) . '</td>
-	<td valign="bottom"><a href="' . $msg_cmd . '"><img src="' . IMAGE_DIR . 'modules/messaging/launch_messages.gif" border="0" width="16" height="12" alt="" /></a></td>
+	<td valign="bottom"><img src="' . IMAGE_DIR . 'modules/messaging/launch_messages.gif" style="width:16px;height:12px;" alt="" onclick="' . $msg_cmd . '"/></td>
 </tr>
 <tr>
-	<td id="todoCount" align="right" class="middlefont' . ($newtodo_count ? 'red' : '') . '"><a style="text-decoration:none" href="' . $todo_cmd . '">' . $newtodo_count . '</a></td>
+	<td id="todoCount" align="right" class="middlefont"><div onclick="' . $todo_cmd . '">0</div></td>
 	<td>' . we_html_tools::getPixel(5, 1) . '</td>
-	<td valign="bottom"><a href="' . $todo_cmd . '"><img src="' . IMAGE_DIR . 'modules/messaging/launch_tasks.gif" border="0" width="16" height="12" alt="" /></a></td>
+	<td valign="bottom"><img src="' . IMAGE_DIR . 'modules/messaging/launch_tasks.gif" style="width:16px;height:12px;" alt="" onclick="' . $todo_cmd . '"/></td>
 </tr>'
 			?>
 		</table>
