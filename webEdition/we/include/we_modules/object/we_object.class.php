@@ -278,8 +278,7 @@ class we_object extends we_document{
 			$this->DB_WE->query('CREATE TABLE ' . $ctable . ' (' . implode(',', $q) . ', ' . implode(',', $indexe) . ') ENGINE = MYISAM ' . we_database_base::getCharsetCollation());
 
 			//dummy eintrag schreiben
-			$this->DB_WE->query('INSERT INTO ' . $ctable . ' (OF_ID) VALUES (0)');
-
+			$this->DB_WE->query('INSERT INTO ' . $ctable . ' SET OF_ID=0');
 
 			// folder in object schreiben
 			if(!($this->OldPath && ($this->OldPath != $this->Path))){
@@ -290,8 +289,7 @@ class we_object extends we_document{
 
 			$ctable = OBJECT_X_TABLE . $this->ID;
 			$tableInfo = $this->DB_WE->metadata($ctable);
-			$q = array();
-			$regs = array();
+			$q = $regs = array();
 			$fieldsToDelete = isset($this->elements['felderloeschen']['dat']) ? explode(',', $this->elements['felderloeschen']['dat']) : array();
 			foreach($tableInfo as $info){
 				if(preg_match('/(.+?)_(.*)/', $info['name'], $regs)){
@@ -485,13 +483,12 @@ class we_object extends we_document{
 				}
 			}
 
-			$this->strOrder = implode(",", $this->getElement("we_sort"));
+			$this->strOrder = implode(',', $this->getElement("we_sort"));
 			$this->i_savePersistentSlotsToDB();
 		}
 
 		////// resave the line O to O.....
-		$this->DB_WE->query('DELETE FROM ' . $ctable . ' WHERE OF_ID=0 OR ID=0');
-		$this->DB_WE->query('INSERT INTO ' . $ctable . ' SET OF_ID=0');
+		$this->DB_WE->query('REPLACE INTO ' . $ctable . ' SET OF_ID=0');
 		////// resave the line O to O.....
 
 		unset($this->elements);
