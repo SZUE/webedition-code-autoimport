@@ -254,7 +254,6 @@ $contentDiff .= '</table>';
 $contentDiff .= '<table cellpadding="5" cellspacing="0" border="0" width="95%" style="background-color:#F5F5F5;margin:15px 15px 15px 25px;border-left:1px solid #B8B8B7;border-right:1px solid #B8B8B7;">
 		<tr>
 		<td align="left" colspan="3" style="padding:5px;background-color:#BCBBBB;" class="defaultfont"><strong>' . g_l('versions', '[contentElementsMod]') . '</strong>' .
-	(class_exists('Text_Diff', false) ? '' : '<br/><b>PHP-Pear-Text_Diff not installed - Quirks mode.</b>') .
 	'</td></tr>';
 if($newDoc['documentElements']){
 	$newDocElements = unserialize((substr_compare($newDoc['documentElements'], 'a%3A', 0, 4) == 0 ?
@@ -627,17 +626,17 @@ print STYLESHEET;
 
 <body>
 	<div id="mytabs">
-		<?php print $tabsBody; ?>
+<?php print $tabsBody; ?>
 	</div>
 	<div id="content" style="position:absolute;margin: 0px; top:30px;bottom:40px;left:0px;right:0px;overflow:auto;">
 		<div id="tab1" style="display:block;">
-			<?php print $_tab_1 ?>
+<?php print $_tab_1 ?>
 		</div>
 		<div id="tab2" style="display:none;height:100%;width:100%">
-			<?php print $_tab_2 ?>
+<?php print $_tab_2 ?>
 		</div>
 		<div id="tab3" style="display:none;height:100%;width:100%">
-			<?php print $_tab_3 ?>
+<?php print $_tab_3 ?>
 		</div>
 	</div>
 

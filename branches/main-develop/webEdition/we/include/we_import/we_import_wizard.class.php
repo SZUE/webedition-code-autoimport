@@ -53,9 +53,8 @@ class we_import_wizard extends we_import_wizardBase{
 	 */
 	function getClassFields($classID){
 		$db = new DB_WE();
-		$foo = getHash('SELECT strOrder,DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($classID), $db);
-		$order = makeArrayFromCSV($foo['strOrder']);
-		$dv = $foo['DefaultValues'] ? unserialize($foo['DefaultValues']) : array();
+		$dv = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($classID), '', $db);
+		$dv = $dv ? unserialize($dv) : array();
 		if(!is_array($dv)){
 			$dv = array();
 		}
@@ -265,32 +264,32 @@ class we_import_wizard extends we_import_wizardBase{
 		$nav_root = get_def_ws(NAVIGATION_TABLE);
 
 		$hdns = we_html_element::htmlHidden(array('name' => 'v[doc_dir_id]', 'value' => (isset($v['doc_dir_id']) ? $v['doc_dir_id'] : $doc_root))) .
-				we_html_element::htmlHidden(array('name' => 'v[tpl_dir_id]', 'value' => (isset($v['tpl_dir_id']) ? $v['tpl_dir_id'] : $tmpl_root))) .
-				we_html_element::htmlHidden(array('name' => 'v[doc_dir]', 'value' => (isset($v['doc_dir']) ? $v['doc_dir'] : id_to_path($doc_root)))) .
-				we_html_element::htmlHidden(array('name' => 'v[tpl_dir]', 'value' => (isset($v['tpl_dir']) ? $v['tpl_dir'] : id_to_path($tmpl_root, TEMPLATES_TABLE)))) .
-				we_html_element::htmlHidden(array('name' => 'v[import_from]', 'value' => (isset($v['import_from']) ? $v['import_from'] : 0))) .
-				we_html_element::htmlHidden(array('name' => 'v[navigation_dir_id]', 'value' => (isset($v['navigation_dir_id']) ? $v['navigation_dir_id'] : $nav_root))) .
-				we_html_element::htmlHidden(array('name' => 'v[navigation_dir]', 'value' => (isset($v['navigation_dir']) ? $v['navigation_dir'] : id_to_path($nav_root, NAVIGATION_TABLE)))) .
-				we_html_element::htmlHidden(array('name' => 'v[import_docs]', 'value' => (isset($v['import_docs'])) ? $v['import_docs'] : 0)) .
-				we_html_element::htmlHidden(array('name' => 'v[import_templ]', 'value' => (isset($v['import_templ'])) ? $v['import_templ'] : 0)) .
-				we_html_element::htmlHidden(array('name' => 'v[import_thumbnails]', 'value' => (isset($v['import_thumbnails'])) ? $v['import_thumbnails'] : 0)) .
-				we_html_element::htmlHidden(array('name' => 'v[import_objs]', 'value' => (isset($v['import_objs'])) ? $v['import_objs'] : 0)) .
-				we_html_element::htmlHidden(array('name' => 'v[import_classes]', 'value' => (isset($v['import_classes'])) ? $v['import_classes'] : 0)) .
-				we_html_element::htmlHidden(array('name' => 'v[restore_doc_path]', 'value' => (isset($v['restore_doc_path'])) ? $v['restore_doc_path'] : 1)) .
-				we_html_element::htmlHidden(array('name' => 'v[restore_tpl_path]', 'value' => (isset($v['restore_tpl_path'])) ? $v['restore_tpl_path'] : 1)) .
-				we_html_element::htmlHidden(array('name' => 'v[import_dt]', 'value' => (isset($v['import_dt'])) ? $v['import_dt'] : 0)) .
-				we_html_element::htmlHidden(array('name' => 'v[import_ct]', 'value' => (isset($v['import_ct'])) ? $v['import_ct'] : 0)) .
-				we_html_element::htmlHidden(array('name' => 'v[import_binarys]', 'value' => (isset($v['import_binarys'])) ? $v['import_binarys'] : 0)) .
-				we_html_element::htmlHidden(array('name' => 'v[import_owners]', 'value' => (isset($v['import_owners'])) ? $v['import_owners'] : 0)) .
-				we_html_element::htmlHidden(array('name' => 'v[owners_overwrite]', 'value' => (isset($v['owners_overwrite'])) ? $v['owners_overwrite'] : 0)) .
-				we_html_element::htmlHidden(array('name' => 'v[owners_overwrite_id]', 'value' => (isset($v['owners_overwrite_id'])) ? $v['owners_overwrite_id'] : 0)) .
-				we_html_element::htmlHidden(array('name' => 'v[owners_overwrite_path]', 'value' => (isset($v['owners_overwrite_path'])) ? $v['owners_overwrite_path'] : '/')) .
-				we_html_element::htmlHidden(array('name' => 'v[import_navigation]', 'value' => (isset($v['import_navigation'])) ? $v['import_navigation'] : 0)) .
-				we_html_element::htmlHidden(array('name' => 'v[rebuild]', 'value' => (isset($v['rebuild'])) ? $v['rebuild'] : 1)) .
-				we_html_element::htmlHidden(array('name' => 'v[mode]', 'value' => (isset($v['mode']) ? $v['mode'] : 0)));
+			we_html_element::htmlHidden(array('name' => 'v[tpl_dir_id]', 'value' => (isset($v['tpl_dir_id']) ? $v['tpl_dir_id'] : $tmpl_root))) .
+			we_html_element::htmlHidden(array('name' => 'v[doc_dir]', 'value' => (isset($v['doc_dir']) ? $v['doc_dir'] : id_to_path($doc_root)))) .
+			we_html_element::htmlHidden(array('name' => 'v[tpl_dir]', 'value' => (isset($v['tpl_dir']) ? $v['tpl_dir'] : id_to_path($tmpl_root, TEMPLATES_TABLE)))) .
+			we_html_element::htmlHidden(array('name' => 'v[import_from]', 'value' => (isset($v['import_from']) ? $v['import_from'] : 0))) .
+			we_html_element::htmlHidden(array('name' => 'v[navigation_dir_id]', 'value' => (isset($v['navigation_dir_id']) ? $v['navigation_dir_id'] : $nav_root))) .
+			we_html_element::htmlHidden(array('name' => 'v[navigation_dir]', 'value' => (isset($v['navigation_dir']) ? $v['navigation_dir'] : id_to_path($nav_root, NAVIGATION_TABLE)))) .
+			we_html_element::htmlHidden(array('name' => 'v[import_docs]', 'value' => (isset($v['import_docs'])) ? $v['import_docs'] : 0)) .
+			we_html_element::htmlHidden(array('name' => 'v[import_templ]', 'value' => (isset($v['import_templ'])) ? $v['import_templ'] : 0)) .
+			we_html_element::htmlHidden(array('name' => 'v[import_thumbnails]', 'value' => (isset($v['import_thumbnails'])) ? $v['import_thumbnails'] : 0)) .
+			we_html_element::htmlHidden(array('name' => 'v[import_objs]', 'value' => (isset($v['import_objs'])) ? $v['import_objs'] : 0)) .
+			we_html_element::htmlHidden(array('name' => 'v[import_classes]', 'value' => (isset($v['import_classes'])) ? $v['import_classes'] : 0)) .
+			we_html_element::htmlHidden(array('name' => 'v[restore_doc_path]', 'value' => (isset($v['restore_doc_path'])) ? $v['restore_doc_path'] : 1)) .
+			we_html_element::htmlHidden(array('name' => 'v[restore_tpl_path]', 'value' => (isset($v['restore_tpl_path'])) ? $v['restore_tpl_path'] : 1)) .
+			we_html_element::htmlHidden(array('name' => 'v[import_dt]', 'value' => (isset($v['import_dt'])) ? $v['import_dt'] : 0)) .
+			we_html_element::htmlHidden(array('name' => 'v[import_ct]', 'value' => (isset($v['import_ct'])) ? $v['import_ct'] : 0)) .
+			we_html_element::htmlHidden(array('name' => 'v[import_binarys]', 'value' => (isset($v['import_binarys'])) ? $v['import_binarys'] : 0)) .
+			we_html_element::htmlHidden(array('name' => 'v[import_owners]', 'value' => (isset($v['import_owners'])) ? $v['import_owners'] : 0)) .
+			we_html_element::htmlHidden(array('name' => 'v[owners_overwrite]', 'value' => (isset($v['owners_overwrite'])) ? $v['owners_overwrite'] : 0)) .
+			we_html_element::htmlHidden(array('name' => 'v[owners_overwrite_id]', 'value' => (isset($v['owners_overwrite_id'])) ? $v['owners_overwrite_id'] : 0)) .
+			we_html_element::htmlHidden(array('name' => 'v[owners_overwrite_path]', 'value' => (isset($v['owners_overwrite_path'])) ? $v['owners_overwrite_path'] : '/')) .
+			we_html_element::htmlHidden(array('name' => 'v[import_navigation]', 'value' => (isset($v['import_navigation'])) ? $v['import_navigation'] : 0)) .
+			we_html_element::htmlHidden(array('name' => 'v[rebuild]', 'value' => (isset($v['rebuild'])) ? $v['rebuild'] : 1)) .
+			we_html_element::htmlHidden(array('name' => 'v[mode]', 'value' => (isset($v['mode']) ? $v['mode'] : 0)));
 
 		$functions = we_html_button::create_state_changer(false) .
-				"function we_cmd() {
+			"function we_cmd() {
 				var args = '';
 				var url = '" . WEBEDITION_DIR . "we_cmd.php?';
 				for(var i = 0; i < arguments.length; i++) {
@@ -441,11 +440,11 @@ function we_submit_form(we_form, target, url) {
 }';
 
 		$hdns = we_html_element::htmlHidden(array('name' => 'v[type]', 'value' => $v['type'])) .
-				we_html_element::htmlHidden(array('name' => 'v[mode]', 'value' => (isset($v['mode'])) ? $v['mode'] : 0)) .
-				we_html_element::htmlHidden(array('name' => 'v[fserver]', 'value' => $v['fserver'])) .
-				we_html_element::htmlHidden(array('name' => 'v[rdofloc]', 'value' => $v['rdofloc'])) .
-				we_html_element::htmlHidden(array('name' => 'v[import_from]', 'value' => $v['import_from'])) .
-				we_html_element::htmlHidden(array('name' => 'v[collision]', 'value' => isset($v['collision']) ? $v['collision'] : 0));
+			we_html_element::htmlHidden(array('name' => 'v[mode]', 'value' => (isset($v['mode'])) ? $v['mode'] : 0)) .
+			we_html_element::htmlHidden(array('name' => 'v[fserver]', 'value' => $v['fserver'])) .
+			we_html_element::htmlHidden(array('name' => 'v[rdofloc]', 'value' => $v['rdofloc'])) .
+			we_html_element::htmlHidden(array('name' => 'v[import_from]', 'value' => $v['import_from'])) .
+			we_html_element::htmlHidden(array('name' => 'v[collision]', 'value' => isset($v['collision']) ? $v['collision'] : 0));
 
 
 		$functions = we_html_button::create_state_changer(false) . "
@@ -479,7 +478,7 @@ function we_cmd() {
 function set_button_state() {
 	top.wizbusy.back_enabled = top.wizbusy.switch_button_state('back', 'back_enabled', 'enabled');
 	top.wizbusy.next_enabled = top.wizbusy.switch_button_state('next', 'next_enabled', " .
-				(($we_valid) ? ((isset($v["mode"]) && $v["mode"] == 1) ? "'disabled'" : "'enabled'") : "'disabled'") . ");
+			(($we_valid) ? ((isset($v["mode"]) && $v["mode"] == 1) ? "'disabled'" : "'enabled'") : "'disabled'") . ");
 }" . $event_handler . '
 function toggle(name){
 	var con = document.getElementById(name);
@@ -491,7 +490,7 @@ function toggle(name){
 
 			$maxsize = getUploadMaxFilesize();
 			$_return[1] = we_html_element::jsElement($functions . ' ' .
-							we_message_reporting::getShowMessageCall(sprintf(g_l('import', '[upload_failed]'), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB)), we_message_reporting::WE_MESSAGE_ERROR) . '
+					we_message_reporting::getShowMessageCall(sprintf(g_l('import', '[upload_failed]'), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB)), we_message_reporting::WE_MESSAGE_ERROR) . '
 							handle_event("previous");');
 			return $_return;
 		}
@@ -499,7 +498,7 @@ function toggle(name){
 		$_import_file = $_SERVER['DOCUMENT_ROOT'] . $v['import_from'];
 		if(we_backup_util::getFormat($_import_file) != 'xml'){
 			$_return[1] = we_html_element::jsElement($functions . ' ' .
-							we_message_reporting::getShowMessageCall(g_l('import', '[format_unknown]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+					we_message_reporting::getShowMessageCall(g_l('import', '[format_unknown]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 							handle_event("previous");');
 			return $_return;
 		} else {
@@ -518,9 +517,9 @@ if(confirm("' . str_replace('"', '\'', g_l('import', '[backup_file_found]') . ' 
 handle_event("previous");');
 					} else {
 						$_return[1] = we_html_element::jsElement(
-										$functions .
-										we_message_reporting::getShowMessageCall(g_l('import', '[backup_file_found]'), we_message_reporting::WE_MESSAGE_ERROR) .
-										'handle_event("previous");');
+								$functions .
+								we_message_reporting::getShowMessageCall(g_l('import', '[backup_file_found]'), we_message_reporting::WE_MESSAGE_ERROR) .
+								'handle_event("previous");');
 					}
 					return $_return;
 				case 'customer':
@@ -740,8 +739,8 @@ handle_event("previous");');
 				);
 			} else {
 				$hdns .= we_html_element::htmlHidden(array('name' => 'v[import_owners]', 'value' => 0)) .
-						we_html_element::htmlHidden(array('name' => 'v[owners_overwrite]', 'value' => 0)) .
-						we_html_element::htmlHidden(array('name' => 'v[owners_overwrite_id]', 'value' => 0));
+					we_html_element::htmlHidden(array('name' => 'v[owners_overwrite]', 'value' => 0)) .
+					we_html_element::htmlHidden(array('name' => 'v[owners_overwrite_id]', 'value' => 0));
 			}
 		} else {
 			$parts[] = array(
@@ -811,15 +810,15 @@ function handle_event(evt) {
 		}
 
 		$hdns = we_html_element::htmlHidden(array('name' => 'v[importDataType]', 'value' => '')) .
-				we_html_element::htmlHidden(array('name' => 'v[import_from]', 'value' => (isset($v['import_from']) ? $v['import_from'] : ''))) .
-				we_html_element::htmlHidden(array('name' => 'v[docCategories]', 'value' => (isset($v['docCategories']) ? $v['docCategories'] : ''))) .
-				we_html_element::htmlHidden(array('name' => 'v[objCategories]', 'value' => (isset($v['objCategories']) ? $v['objCategories'] : ''))) .
-				//we_html_element::htmlHidden(array('name' => 'v[store_to_id]', 'value' => (isset($v['store_to_id']) ? $v['store_to_id'] : 0))).
-				we_html_element::htmlHidden(array('name' => 'v[collision]', 'value' => (isset($v['collision']) ? $v['collision'] : 'rename'))) .
-				we_html_element::htmlHidden(array('name' => 'doctypeChanged', 'value' => 0)) .
-				we_html_element::htmlHidden(array('name' => 'v[we_TemplateID]', 'value' => 0)) .
-				//we_html_element::htmlHidden(array('name' => 'v[we_TemplateName]', 'value' => '/')).
-				we_html_element::htmlHidden(array('name' => 'v[is_dynamic]', 'value' => (isset($v['is_dynamic']) ? $v['is_dynamic'] : 0)));
+			we_html_element::htmlHidden(array('name' => 'v[import_from]', 'value' => (isset($v['import_from']) ? $v['import_from'] : ''))) .
+			we_html_element::htmlHidden(array('name' => 'v[docCategories]', 'value' => (isset($v['docCategories']) ? $v['docCategories'] : ''))) .
+			we_html_element::htmlHidden(array('name' => 'v[objCategories]', 'value' => (isset($v['objCategories']) ? $v['objCategories'] : ''))) .
+			//we_html_element::htmlHidden(array('name' => 'v[store_to_id]', 'value' => (isset($v['store_to_id']) ? $v['store_to_id'] : 0))).
+			we_html_element::htmlHidden(array('name' => 'v[collision]', 'value' => (isset($v['collision']) ? $v['collision'] : 'rename'))) .
+			we_html_element::htmlHidden(array('name' => 'doctypeChanged', 'value' => 0)) .
+			we_html_element::htmlHidden(array('name' => 'v[we_TemplateID]', 'value' => 0)) .
+			//we_html_element::htmlHidden(array('name' => 'v[we_TemplateName]', 'value' => '/')).
+			we_html_element::htmlHidden(array('name' => 'v[is_dynamic]', 'value' => (isset($v['is_dynamic']) ? $v['is_dynamic'] : 0)));
 
 		if(!defined('OBJECT_TABLE'))
 			$hdns .= we_html_element::htmlHidden(array('name' => 'v[import_type]', 'value' => 'documents'));
@@ -888,17 +887,17 @@ function handle_event(evt) {
 				" . we_message_reporting::getShowMessageCall(g_l('import', '[select_source_file]'), we_message_reporting::WE_MESSAGE_ERROR) . "break;
 			}
 			if(!f.elements['v[we_TemplateID]'].value ) f.elements['v[we_TemplateID]'].value =f.elements['noDocTypeTemplateId'].value;" .
-				(defined("OBJECT_TABLE") ?
-						"if((f.elements['v[import_type]'][0].checked == true && f.elements['v[we_TemplateID]'].value != 0) || (f.elements['v[import_type]'][1].checked == true)) {\n" :
-						"if(f.elements['v[we_TemplateID]'].value!=0) {\n"
-				) . "
+			(defined("OBJECT_TABLE") ?
+				"if((f.elements['v[import_type]'][0].checked == true && f.elements['v[we_TemplateID]'].value != 0) || (f.elements['v[import_type]'][1].checked == true)) {\n" :
+				"if(f.elements['v[we_TemplateID]'].value!=0) {\n"
+			) . "
 				f.step.value = 2;
 				we_submit_form(f, 'wizbody', '" . $this->path . "');
 			} else {" .
-				(defined('OBJECT_TABLE') ?
-						"				if(f.elements['v[import_type]'][0].checked == true) " . we_message_reporting::getShowMessageCall(g_l('import', "[select_docType]"), we_message_reporting::WE_MESSAGE_ERROR) :
-						we_message_reporting::getShowMessageCall(g_l('import', "[select_docType]"), we_message_reporting::WE_MESSAGE_ERROR)
-				) . "
+			(defined('OBJECT_TABLE') ?
+				"				if(f.elements['v[import_type]'][0].checked == true) " . we_message_reporting::getShowMessageCall(g_l('import', "[select_docType]"), we_message_reporting::WE_MESSAGE_ERROR) :
+				we_message_reporting::getShowMessageCall(g_l('import', "[select_docType]"), we_message_reporting::WE_MESSAGE_ERROR)
+			) . "
 		}
 			break;
 		case 'cancel':
@@ -1168,8 +1167,8 @@ HTS;
 			$parts[] = array(
 				'headline' => $radioObjs,
 				'html' => (defined('OBJECT_TABLE')) ? we_html_tools::htmlFormElementTable($CLselect->getHTML(), g_l('import', '[class]'), 'left', 'defaultfont') .
-						we_html_tools::getPixel(1, 4) .
-						we_html_tools::htmlFormElementTable($objCategories, g_l('import', '[categories]'), 'left', 'defaultfont') : '',
+					we_html_tools::getPixel(1, 4) .
+					we_html_tools::htmlFormElementTable($objCategories, g_l('import', '[categories]'), 'left', 'defaultfont') : '',
 				'space' => 120,
 				'noline' => 1
 			);
@@ -1179,11 +1178,11 @@ HTS;
 		$znr = -1;
 
 		$content = we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
-				we_html_element::jsScript(JS_DIR . 'libs/yui/event-min.js') .
-				we_html_element::jsScript(JS_DIR . 'libs/yui/connection-min.js') .
-				$hdns .
-				we_html_multiIconBox::getJS() .
-				we_html_multiIconBox::getHTML('xml', '100%', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos == 'down'), g_l('import', '[gxml_import]'));
+			we_html_element::jsScript(JS_DIR . 'libs/yui/event-min.js') .
+			we_html_element::jsScript(JS_DIR . 'libs/yui/connection-min.js') .
+			$hdns .
+			we_html_multiIconBox::getJS() .
+			we_html_multiIconBox::getHTML('xml', '100%', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos == 'down'), g_l('import', '[gxml_import]'));
 
 		return array($functions, $content);
 	}
@@ -1207,7 +1206,7 @@ HTS;
 			'we_TemplateName', 'we_TemplateID', 'store_to_path', 'we_Extension', 'import_type', 'classID', 'sct_node', 'rcd', 'from_elem', 'to_elem', 'collision');
 		foreach($vars as $var){
 			$hdns.= we_html_element::htmlHidden(array('name' => 'v[' . $var . ']', 'value' => (isset($v[$var])) ? $v[$var] : '')) .
-					we_html_element::htmlHidden(array('name' => 'v[mode]', 'value' => 0)) . we_html_element::htmlHidden(array('name' => 'v[cid]', 'value' => -2));
+				we_html_element::htmlHidden(array('name' => 'v[mode]', 'value' => 0)) . we_html_element::htmlHidden(array('name' => 'v[cid]', 'value' => -2));
 		}
 
 		if((file_exists($_SERVER['DOCUMENT_ROOT'] . $v['import_from']) && is_readable($_SERVER['DOCUMENT_ROOT'] . $v['import_from']))){
@@ -1267,7 +1266,7 @@ HTS;
 
 				$tblFrame = new we_html_table(array(), 3, 2);
 				$tblFrame->setCol(0, 0, array('colspan' => 2, 'class' => 'defaultfont'), ($isSingleNode) ? we_html_tools::htmlAlertAttentionBox(g_l('import', '[well_formed]') . ' ' . g_l('import', '[select_elements]'), we_html_tools::TYPE_INFO, 530) :
-								we_html_tools::htmlAlertAttentionBox(g_l('import', '[xml_valid_1]') . ' ' . $optid . ' ' . g_l('import', '[xml_valid_m2]'), we_html_tools::TYPE_INFO, 530));
+						we_html_tools::htmlAlertAttentionBox(g_l('import', '[xml_valid_1]') . ' ' . $optid . ' ' . g_l('import', '[xml_valid_m2]'), we_html_tools::TYPE_INFO, 530));
 				$tblFrame->setCol(1, 0, array('colspan' => 2));
 				$tblFrame->setCol(2, 1, array(), $tblSelect->getHtml());
 
@@ -1326,8 +1325,8 @@ function handle_event(evt) {
 		$znr = -1;
 
 		$content = $hdns .
-				we_html_multiIconBox::getJS() .
-				we_html_multiIconBox::getHTML('xml', '100%', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos == 'down'), g_l('import', '[select_data_set]'));
+			we_html_multiIconBox::getJS() .
+			we_html_multiIconBox::getHTML('xml', '100%', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos == 'down'), g_l('import', '[select_data_set]'));
 
 		return array($functions, $content);
 	}
@@ -1345,12 +1344,12 @@ function handle_event(evt) {
 		}
 
 		$hdns = $this->getHdns('v', $v) .
-				($records ? $this->getHdns('records', $records) : '') .
-				($we_flds ? $this->getHdns('we_flds', $we_flds) : '') .
-				($attrs ? $this->getHdns('attributes', $attrs) : '') .
-				//$hdns .= we_html_element::htmlHidden(array('name' => 'v[cid]', 'value' => -2));
-				we_html_element::htmlHidden(array('name' => 'v[pfx_fn]', 'value' => ((!isset($v['pfx_fn'])) ? 0 : $v['pfx_fn']))) .
-				(isset($v['rdo_timestamp']) ? we_html_element::htmlHidden(array('name' => 'v[sTimeStamp]', 'value' => $v['rdo_timestamp'])) : '');
+			($records ? $this->getHdns('records', $records) : '') .
+			($we_flds ? $this->getHdns('we_flds', $we_flds) : '') .
+			($attrs ? $this->getHdns('attributes', $attrs) : '') .
+			//$hdns .= we_html_element::htmlHidden(array('name' => 'v[cid]', 'value' => -2));
+			we_html_element::htmlHidden(array('name' => 'v[pfx_fn]', 'value' => ((!isset($v['pfx_fn'])) ? 0 : $v['pfx_fn']))) .
+			(isset($v['rdo_timestamp']) ? we_html_element::htmlHidden(array('name' => 'v[sTimeStamp]', 'value' => $v['rdo_timestamp'])) : '');
 
 
 		$functions = "
@@ -1391,7 +1390,7 @@ function handle_event(evt) {
 
 		if($v['import_type'] == 'documents'){
 			$templateCode = f('SELECT ' . CONTENT_TABLE . '.Dat as Dat FROM ' . CONTENT_TABLE . ',' . LINK_TABLE . ' WHERE ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID AND ' .
-					LINK_TABLE . '.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND ' . LINK_TABLE . '.DID=' . intval($v['we_TemplateID']) . ' AND ' . LINK_TABLE . '.Name="completeData"', "Dat", $db);
+				LINK_TABLE . '.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND ' . LINK_TABLE . '.DID=' . intval($v['we_TemplateID']) . ' AND ' . LINK_TABLE . '.Name="completeData"', "Dat", $db);
 			$tp = new we_tag_tagParser($templateCode);
 			$tags = $tp->getAllTags();
 			$regs = array();
@@ -1501,7 +1500,7 @@ function handle_event(evt) {
 		// Associated prefix selector.
 		$asocPfx = new we_html_table(array('cellpadding' => 0, 'cellspacing' => 0, 'border' => 0), 1, 1);
 		$asocPfx->setCol(0, 0, array('class' => 'defaultfont'), g_l('import', '[pfx]') . '<br>' . we_html_tools::getPixel(1, 2) . '<br>' .
-				we_html_tools::htmlTextInput('v[asoc_prefix]', 30, (isset($v['asoc_prefix']) ? $v['asoc_prefix'] : (($v['import_type'] == 'documents') ? g_l('import', '[pfx_doc]') : g_l('import', '[pfx_obj]'))), 255, "onClick=\"self.document.forms['we_form'].elements['v[rdo_filename]'][0].checked=true;\"", "text", 150));
+			we_html_tools::htmlTextInput('v[asoc_prefix]', 30, (isset($v['asoc_prefix']) ? $v['asoc_prefix'] : (($v['import_type'] == 'documents') ? g_l('import', '[pfx_doc]') : g_l('import', '[pfx_obj]'))), 255, "onClick=\"self.document.forms['we_form'].elements['v[rdo_filename]'][0].checked=true;\"", "text", 150));
 
 		// Assigned record or attribute field selectors.
 		$rcdPfxSelect = new we_html_select(array(
@@ -1591,8 +1590,8 @@ function handle_event(evt) {
 		$znr = -1;
 
 		$content = $hdns .
-				we_html_multiIconBox::getJS() .
-				we_html_multiIconBox::getHTML('xml', '100%', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos == 'down'), g_l('import', '[assign_record_fields]'));
+			we_html_multiIconBox::getJS() .
+			we_html_multiIconBox::getHTML('xml', '100%', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos == 'down'), g_l('import', '[assign_record_fields]'));
 
 		return array($functions, $content);
 	}
@@ -1649,7 +1648,7 @@ function handle_event(evt) {
 				ext = fl.substr(fl.length-4,4);
 				f.elements['v[import_from]'].value = fl;
 			}else if (fs=='/' || fl=='') {" .
-				(we_message_reporting::getShowMessageCall(g_l('import', "[select_source_file]"), we_message_reporting::WE_MESSAGE_ERROR)) . "break;
+			(we_message_reporting::getShowMessageCall(g_l('import', "[select_source_file]"), we_message_reporting::WE_MESSAGE_ERROR)) . "break;
 			}
 			if (fvalid && f.elements['v[csv_seperator]'].value=='') { fvalid=false; " . we_message_reporting::getShowMessageCall(g_l('import', "[select_seperator]"), we_message_reporting::WE_MESSAGE_ERROR) . "}
 			if (fvalid) {
@@ -1743,10 +1742,10 @@ function handle_event(evt) {
 
 
 		$content = we_html_element::htmlHidden(array('name' => 'v[csv_fieldnames]', 'value' => (isset($v['csv_fieldnames'])) ? $v['csv_fieldnames'] : 1)) .
-				we_html_element::htmlHidden(array('name' => 'v[import_from]', 'value' => (isset($v['import_from']) ? $v['import_from'] : ''))) .
-				we_html_element::htmlHidden(array('name' => 'v[csv_escaped]', 'value' => (isset($v['csv_escaped'])) ? $v['csv_escaped'] : '')) .
-				we_html_element::htmlHidden(array('name' => 'v[collision]', 'value' => (isset($v['collision'])) ? $v['collision'] : 'rename')) .
-				we_html_element::htmlHidden(array('name' => 'v[csv_terminated]', 'value' => (isset($v['csv_terminated'])) ? $v['csv_terminated'] : ''));
+			we_html_element::htmlHidden(array('name' => 'v[import_from]', 'value' => (isset($v['import_from']) ? $v['import_from'] : ''))) .
+			we_html_element::htmlHidden(array('name' => 'v[csv_escaped]', 'value' => (isset($v['csv_escaped'])) ? $v['csv_escaped'] : '')) .
+			we_html_element::htmlHidden(array('name' => 'v[collision]', 'value' => (isset($v['collision'])) ? $v['collision'] : 'rename')) .
+			we_html_element::htmlHidden(array('name' => 'v[csv_terminated]', 'value' => (isset($v['csv_terminated'])) ? $v['csv_terminated'] : ''));
 		$content.= we_html_multiIconBox::getHTML('csv', '100%', $parts, 30, '', -1, '', '', false, g_l('import', '[csv_import]'));
 
 		return array($functions, $content);
@@ -1792,24 +1791,24 @@ function handle_event(evt) {
 			$v['docCategories'] = $values['Category'];
 		}
 		$hdns = we_html_element::htmlHidden(array('name' => 'v[mode]', 'value' => (isset($v['mode']) ? $v['mode'] : ''))) .
-				we_html_element::htmlHidden(array('name' => 'v[import_from]', 'value' => $v['import_from'])) .
-				we_html_element::htmlHidden(array('name' => 'v[collision]', 'value' => $v['collision'])) .
-				we_html_element::htmlHidden(array('name' => 'v[rdofloc]', 'value' => $v['rdofloc'])) .
-				we_html_element::htmlHidden(array('name' => 'v[fserver]', 'value' => $v['fserver'])) .
-				we_html_element::htmlHidden(array('name' => 'v[csv_fieldnames]', 'value' => $v['csv_fieldnames'])) .
-				we_html_element::htmlHidden(array('name' => 'v[csv_seperator]', 'value' => trim($v['csv_seperator']))) .
-				we_html_element::htmlHidden(array('name' => 'v[csv_enclosed]', 'value' => $v['csv_enclosed'])) .
-				we_html_element::htmlHidden(array('name' => 'v[csv_escaped]', 'value' => $v['csv_escaped'])) .
-				we_html_element::htmlHidden(array('name' => 'v[csv_terminated]', 'value' => $v['csv_terminated'])) .
-				we_html_element::htmlHidden(array('name' => 'v[docCategories]', 'value' => (isset($v['docCategories']) ? $v['docCategories'] : ''))) .
-				we_html_element::htmlHidden(array('name' => 'v[objCategories]', 'value' => (isset($v['objCategories']) ? $v['objCategories'] : ''))) .
-				//we_html_element::htmlHidden(array('name' => 'v[store_to_id]', 'value' => (isset($v['store_to_id']) ? $v['store_to_id'] : 0))).
-				we_html_element::htmlHidden(array('name' => 'v[is_dynamic]', 'value' => (isset($v['is_dynamic']) ? $v['is_dynamic'] : 0))) .
-				we_html_element::htmlHidden(array('name' => 'doctypeChanged', 'value' => 0)) .
-				we_html_element::htmlHidden(array('name' => 'v[file_format]', 'value' => $v['file_format'])) .
-				(defined('OBJECT_TABLE') ? '' :
-						$hdns .= we_html_element::htmlHidden(array('name' => 'v[import_type]', 'value' => 'documents'))
-				);
+			we_html_element::htmlHidden(array('name' => 'v[import_from]', 'value' => $v['import_from'])) .
+			we_html_element::htmlHidden(array('name' => 'v[collision]', 'value' => $v['collision'])) .
+			we_html_element::htmlHidden(array('name' => 'v[rdofloc]', 'value' => $v['rdofloc'])) .
+			we_html_element::htmlHidden(array('name' => 'v[fserver]', 'value' => $v['fserver'])) .
+			we_html_element::htmlHidden(array('name' => 'v[csv_fieldnames]', 'value' => $v['csv_fieldnames'])) .
+			we_html_element::htmlHidden(array('name' => 'v[csv_seperator]', 'value' => trim($v['csv_seperator']))) .
+			we_html_element::htmlHidden(array('name' => 'v[csv_enclosed]', 'value' => $v['csv_enclosed'])) .
+			we_html_element::htmlHidden(array('name' => 'v[csv_escaped]', 'value' => $v['csv_escaped'])) .
+			we_html_element::htmlHidden(array('name' => 'v[csv_terminated]', 'value' => $v['csv_terminated'])) .
+			we_html_element::htmlHidden(array('name' => 'v[docCategories]', 'value' => (isset($v['docCategories']) ? $v['docCategories'] : ''))) .
+			we_html_element::htmlHidden(array('name' => 'v[objCategories]', 'value' => (isset($v['objCategories']) ? $v['objCategories'] : ''))) .
+			//we_html_element::htmlHidden(array('name' => 'v[store_to_id]', 'value' => (isset($v['store_to_id']) ? $v['store_to_id'] : 0))).
+			we_html_element::htmlHidden(array('name' => 'v[is_dynamic]', 'value' => (isset($v['is_dynamic']) ? $v['is_dynamic'] : 0))) .
+			we_html_element::htmlHidden(array('name' => 'doctypeChanged', 'value' => 0)) .
+			we_html_element::htmlHidden(array('name' => 'v[file_format]', 'value' => $v['file_format'])) .
+			(defined('OBJECT_TABLE') ? '' :
+				$hdns .= we_html_element::htmlHidden(array('name' => 'v[import_type]', 'value' => 'documents'))
+			);
 
 		$DefaultDynamicExt = DEFAULT_DYNAMIC_EXT;
 		$DefaultStaticExt = DEFAULT_STATIC_EXT;
@@ -1879,16 +1878,16 @@ function handle_event(evt) {
 			if(f.elements['v[import_type]']== 'documents'){
 					if(!f.elements['v[we_TemplateID]'].value ) f.elements['v[we_TemplateID]'].value =f.elements['DocTypeTemplateId'].value;
 					}" . (defined("OBJECT_TABLE") ?
-						"			if(f.elements['v[import_from]'].value != '/' && ((f.elements['v[import_type]'][0].checked == true && f.elements['v[we_TemplateID]'].value != 0) || (f.elements['v[import_type]'][1].checked == true)))" :
-						"			if(f.elements['v[import_from]'].value != '/' && f.elements['v[we_TemplateID]'].value != 0)") . "
+				"			if(f.elements['v[import_from]'].value != '/' && ((f.elements['v[import_type]'][0].checked == true && f.elements['v[we_TemplateID]'].value != 0) || (f.elements['v[import_type]'][1].checked == true)))" :
+				"			if(f.elements['v[import_from]'].value != '/' && f.elements['v[we_TemplateID]'].value != 0)") . "
 			{
 				f.step.value = 3;
 				we_submit_form(f, 'wizbody', '" . $this->path . "');
 			}else {
 				if(f.elements['v[import_from]'].value == '/') " . we_message_reporting::getShowMessageCall(g_l('import', "[select_source_file]"), we_message_reporting::WE_MESSAGE_ERROR) .
-				(defined("OBJECT_TABLE") ?
-						"				else if(f.elements['v[import_type]'][0].checked == true) " . we_message_reporting::getShowMessageCall(g_l('import', "[select_docType]"), we_message_reporting::WE_MESSAGE_ERROR) :
-						"				else " . we_message_reporting::getShowMessageCall(g_l('import', "[select_docType]"), we_message_reporting::WE_MESSAGE_ERROR)) . "
+			(defined("OBJECT_TABLE") ?
+				"				else if(f.elements['v[import_type]'][0].checked == true) " . we_message_reporting::getShowMessageCall(g_l('import', "[select_docType]"), we_message_reporting::WE_MESSAGE_ERROR) :
+				"				else " . we_message_reporting::getShowMessageCall(g_l('import', "[select_docType]"), we_message_reporting::WE_MESSAGE_ERROR)) . "
 			}
 			break;
 	case 'cancel':
@@ -1986,8 +1985,8 @@ HTS;
 		$textname = "v[we_TemplateName]";
 		$idname = "v[we_TemplateID]";
 		$ueberschrift = (permissionhandler::hasPerm("CAN_SEE_TEMPLATES") ?
-						'<a href="javascript:goTemplate(document.we_form.elements[\'' . $idname . '\'].value)">' . g_l('import', "[template]") . '</a>' :
-						g_l('import', "[template]"));
+				'<a href="javascript:goTemplate(document.we_form.elements[\'' . $idname . '\'].value)">' . g_l('import', "[template]") . '</a>' :
+				g_l('import', "[template]"));
 
 		$myid = (isset($v["we_TemplateID"])) ? $v["we_TemplateID"] : 0;
 		$path = f('SELECT Path FROM ' . $DB_WE->escape(TEMPLATES_TABLE) . " WHERE ID=" . intval($myid), "Path", $DB_WE);
@@ -2188,10 +2187,10 @@ HTS;
 
 
 		$content = we_html_element::jsScript(JS_DIR . "libs/yui/yahoo-min.js") .
-				we_html_element::jsScript(JS_DIR . "libs/yui/event-min.js") .
-				we_html_element::jsScript(JS_DIR . "libs/yui/connection-min.js") .
-				$hdns .
-				we_html_multiIconBox::getHTML('csv', "100%", $parts, 30, "", -1, "", "", false, g_l('import', "[csv_import]"));
+			we_html_element::jsScript(JS_DIR . "libs/yui/event-min.js") .
+			we_html_element::jsScript(JS_DIR . "libs/yui/connection-min.js") .
+			$hdns .
+			we_html_multiIconBox::getHTML('csv', "100%", $parts, 30, "", -1, "", "", false, g_l('import', "[csv_import]"));
 
 		return array($functions, $content);
 	}
@@ -2215,14 +2214,14 @@ HTS;
 		}
 
 		$hdns = $this->getHdns("v", $v) .
-				(isset($_REQUEST["records"]) ? $this->getHdns("records", $_REQUEST["records"]) : "") .
-				(isset($_REQUEST["we_flds"]) ? $this->getHdns("we_flds", $_REQUEST["we_flds"]) : "") .
-				(isset($_REQUEST["attrs"]) ? $this->getHdns("attrs", $_REQUEST["attrs"]) : "") .
-				we_html_element::htmlHidden(array("name" => "v[startCSVImport]", "value" => (isset($v["startCSVImport"]) && $v["startCSVImport"] == 1) ? 1 : 0)) .
-				we_html_element::htmlHidden(array("name" => "v[cid]", "value" => -2)) .
-				we_html_element::htmlHidden(array("name" => "v[encoding]", "value" => $encoding)) .
-				we_html_element::htmlHidden(array("name" => "v[pfx_fn]", "value" => ((!isset($v["pfx_fn"])) ? 0 : $v["pfx_fn"]))) .
-				(isset($v["rdo_timestamp"]) ? we_html_element::htmlHidden(array("name" => "v[sTimeStamp]", "value" => $v["rdo_timestamp"])) : '');
+			(isset($_REQUEST["records"]) ? $this->getHdns("records", $_REQUEST["records"]) : "") .
+			(isset($_REQUEST["we_flds"]) ? $this->getHdns("we_flds", $_REQUEST["we_flds"]) : "") .
+			(isset($_REQUEST["attrs"]) ? $this->getHdns("attrs", $_REQUEST["attrs"]) : "") .
+			we_html_element::htmlHidden(array("name" => "v[startCSVImport]", "value" => (isset($v["startCSVImport"]) && $v["startCSVImport"] == 1) ? 1 : 0)) .
+			we_html_element::htmlHidden(array("name" => "v[cid]", "value" => -2)) .
+			we_html_element::htmlHidden(array("name" => "v[encoding]", "value" => $encoding)) .
+			we_html_element::htmlHidden(array("name" => "v[pfx_fn]", "value" => ((!isset($v["pfx_fn"])) ? 0 : $v["pfx_fn"]))) .
+			(isset($v["rdo_timestamp"]) ? we_html_element::htmlHidden(array("name" => "v[sTimeStamp]", "value" => $v["rdo_timestamp"])) : '');
 
 
 		$functions = "
@@ -2263,7 +2262,7 @@ function handle_event(evt) {
 
 		if($v["import_type"] == "documents"){
 			$templateCode = f('SELECT ' . CONTENT_TABLE . '.Dat as Dat FROM ' . CONTENT_TABLE . ' LEFT JOIN ' . LINK_TABLE . ' ON ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID  WHERE ' .
-					LINK_TABLE . ".DocumentTable='" . stripTblPrefix(TEMPLATES_TABLE) . "' AND " . LINK_TABLE . '.DID=' . intval($v['we_TemplateID']) . ' AND ' . LINK_TABLE . ".Name='completeData'", '', $db);
+				LINK_TABLE . ".DocumentTable='" . stripTblPrefix(TEMPLATES_TABLE) . "' AND " . LINK_TABLE . '.DID=' . intval($v['we_TemplateID']) . ' AND ' . LINK_TABLE . ".Name='completeData'", '', $db);
 			$tp = new we_tag_tagParser($templateCode);
 
 			$tags = $tp->getAllTags();
@@ -2391,7 +2390,7 @@ function handle_event(evt) {
 		// Associated prefix selector.
 		$asocPfx = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 1);
 		$asocPfx->setCol(0, 0, array("class" => "defaultfont"), g_l('import', "[pfx]") . "<br>" . we_html_tools::getPixel(1, 2) . "<br>" .
-				we_html_tools::htmlTextInput("v[asoc_prefix]", 30, (isset($v["asoc_prefix"]) ? $v["asoc_prefix"] : (($v["import_type"] == "documents") ? g_l('import', "[pfx_doc]") : g_l('import', "[pfx_obj]"))), 255, "onClick=\"self.document.forms['we_form'].elements['v[rdo_filename]'][0].checked=true;\"", "text", 150));
+			we_html_tools::htmlTextInput("v[asoc_prefix]", 30, (isset($v["asoc_prefix"]) ? $v["asoc_prefix"] : (($v["import_type"] == "documents") ? g_l('import', "[pfx_doc]") : g_l('import', "[pfx_obj]"))), 255, "onClick=\"self.document.forms['we_form'].elements['v[rdo_filename]'][0].checked=true;\"", "text", 150));
 
 		// Assigned record or attribute field selectors.
 		$rcdPfxSelect = new we_html_select(array(
@@ -2477,8 +2476,8 @@ function handle_event(evt) {
 		$znr = -1;
 
 		$content = $hdns .
-				we_html_multiIconBox::getJS() .
-				we_html_multiIconBox::getHTML('csv', '100%', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos == 'down'), g_l('import', '[assign_record_fields]'));
+			we_html_multiIconBox::getJS() .
+			we_html_multiIconBox::getHTML('csv', '100%', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos == 'down'), g_l('import', '[assign_record_fields]'));
 
 		return array($functions, $content);
 	}

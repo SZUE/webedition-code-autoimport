@@ -25,8 +25,8 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
-$msg_cmd = "javascript:top.opener.we_cmd('messaging_start', 'message');self.close();";
-$todo_cmd = "javascript:top.opener.we_cmd('messaging_start', 'todo');self.close();";
+$msg_cmd = "javascript:top.opener.we_cmd('messaging_start', 'message');";
+$todo_cmd = "javascript:top.opener.we_cmd('messaging_start', 'todo');";
 
 $text = '';
 $msg = intval($_REQUEST['msg']) - intval($_REQUEST['omsg']);
