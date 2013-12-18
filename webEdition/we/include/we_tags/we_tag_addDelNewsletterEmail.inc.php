@@ -207,9 +207,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 				$port = defined('HTTP_PORT') ? HTTP_PORT : ($use_https_refer ? 443 : 80);
 				$basehref = $protocol . $_SERVER['SERVER_NAME'] . ':' . $port;
 
-				$confirmLink = $id ? id_to_path($id, FILE_TABLE) : $_SERVER['SCRIPT_NAME'];
-
-				$confirmLink .= '?confirmID=' . $confirmID . '&mail=' . rawurlencode($f['subscribe_mail']);
+				$confirmLink = $id ? id_to_path($id, FILE_TABLE) : $_SERVER['SCRIPT_NAME'] . '?confirmID=' . $confirmID . '&mail=' . rawurlencode($f['subscribe_mail']);
 
 				$confirmLink = $protocol . $_SERVER['SERVER_NAME'] . (($port && ($port != 80)) ? ':' . $port : '') . $confirmLink;
 				$GLOBALS['WE_MAIL'] = $f['subscribe_mail'];
@@ -431,7 +429,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 				case 'emailonly':
 					//nicht in eine Liste eintragen sondern adminmail versenden
 					$GLOBALS['WE_WRITENEWSLETTER_STATUS'] = we_newsletter_base::STATUS_SUCCESS;
-					_weMailNewSuccessfullNewsletterActiviation($adminmailid, $adminemail, $adminsubject, $charset, $f, weTag_getAttribute('includeimages', $attribs, false, true));
+					_weMailNewSuccessfullNewsletterActiviation($adminmailid, $adminemail, $adminsubject, DEFAULT_CHARSET, $f, weTag_getAttribute('includeimages', $attribs, false, true));
 					break;
 				case 'csv':
 					//in die Liste eintragen
@@ -473,7 +471,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 					}
 
 
-					_weMailNewSuccessfullNewsletterActiviation($adminmailid, $adminemail, $adminsubject, $charset, $f, weTag_getAttribute('includeimages', $attribs, false, true));
+					_weMailNewSuccessfullNewsletterActiviation($adminmailid, $adminemail, $adminsubject, DEFAULT_CHARSET, $f, weTag_getAttribute('includeimages', $attribs, false, true));
 			}
 			$__db->query('DELETE FROM ' . NEWSLETTER_CONFIRM_TABLE . " WHERE LOWER(subscribe_mail) ='" . $__db->escape(strtolower($f["subscribe_mail"])) . "'");
 		}
