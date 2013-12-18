@@ -418,13 +418,13 @@ abstract class we_html_element{
 	}
 
 	public static function htmlExIFrame($__name, $__src, $__style, $class = ''){
-		if(strlen($__src) > 100){
-			$tmp = $__src;
-		} else {
+		if(strpos($__src, $_SERVER['DOCUMENT_ROOT']) === 0){
 			ob_start();
 			include $__src;
 			$tmp = ob_get_contents();
 			ob_end_clean();
+		} else {
+			$tmp = $__src;
 		}
 		$tmpArray = array('style' => $__style, 'name' => $__name . 'Div', 'id' => $__name . 'Div');
 		if(!empty($class)){

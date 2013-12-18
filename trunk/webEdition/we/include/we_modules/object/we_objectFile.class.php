@@ -680,7 +680,7 @@ class we_objectFile extends we_document{
 		if(!$tableID){
 			return array();
 		}
-		$order = makeArrayFromCSV(f('SELECT strOrder FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($tableID), 'strOrder', $db));
+		$order = makeArrayFromCSV(f('SELECT strOrder FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($tableID), '', $db));
 		$ctable = OBJECT_X_TABLE . $tableID;
 		$tableInfo = $db->metadata($ctable);
 		$fields = $regs = array();
