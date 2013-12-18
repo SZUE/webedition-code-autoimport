@@ -194,7 +194,7 @@ $sUsrContent = '<table border="0" cellpadding="0" cellspacing="0" width="300"><t
 		"name" => "UserNameTmp", "value" => ""
 	)) . we_html_element::htmlHidden(array(
 		"name" => "UserIDTmp", "value" => ""
-	)) . '</td></tr><tr><td align="right">' . we_html_tools::getPixel(2, 8) . we_html_element::htmlBr() . we_button::create_button_table(
+	)) . '</td></tr><tr><td align="right">' . we_html_tools::getPixel(2, 8) . we_html_element::htmlBr() . we_html_button::create_button_table(
 		array(
 			$delallbut, $addbut
 	)) . '</td></tr></table>';
