@@ -39,26 +39,24 @@ function we_parse_tag_listview($attribs, $content, array $arr){
 			if(defined('OBJECT_TABLE')){
 				$predefinedSQL = weTag_getParserAttribute('predefinedSQL', $arr, '');
 
-				if(($foo = attributFehltError($arr, 'classid', __FUNCTION__)) && $predefinedSQL == '')
+				if(($foo = attributFehltError($arr, 'classid', __FUNCTION__)) && $predefinedSQL == ''){
 					return $foo;
+				}
 			}
 			break;
 		case 'orderitem':
-			if(defined('SHOP_TABLE')){
-				if(($foo = attributFehltError($arr, 'orderid', __FUNCTION__)))
-					return $foo;
+			if(defined('SHOP_TABLE') && ($foo = attributFehltError($arr, 'orderid', __FUNCTION__))){
+				return $foo;
 			}
 			break;
 		case 'multiobject':
-			if(defined('OBJECT_TABLE')){
-				if(($foo = attributFehltError($arr, 'name', __FUNCTION__)))
-					return $foo;
+			if(defined('OBJECT_TABLE') && ($foo = attributFehltError($arr, 'name', __FUNCTION__))){
+				return $foo;
 			}
 			break;
 		case 'banner':
-			if(defined('BANNER_TABLE')){
-				if(($foo = attributFehltError($arr, 'path', __FUNCTION__)))
-					return $foo;
+			if(defined('BANNER_TABLE') && ($foo = attributFehltError($arr, 'path', __FUNCTION__))){
+				return $foo;
 			}
 			break;
 	}
@@ -113,8 +111,8 @@ function we_tag_listview($attribs){
 	$we_lv_se = (isset($_REQUEST['we_lv_se_' . $name]) ? $_REQUEST['we_lv_se_' . $name] : weTag_getAttribute('searchable', $attribs, true, true)) ? true : false;
 
 	$seeMode = (isset($attribs['seem'])) ?
-		weTag_getAttribute('seem', $attribs, true, true) : //	backwards compatibility
-		weTag_getAttribute('seeMode', $attribs, true, true);
+			weTag_getAttribute('seem', $attribs, true, true) : //	backwards compatibility
+			weTag_getAttribute('seeMode', $attribs, true, true);
 
 	$calendar = weTag_getAttribute('calendar', $attribs);
 	$datefield = weTag_getAttribute('datefield', $attribs);
@@ -125,8 +123,8 @@ function we_tag_listview($attribs){
 
 	// deprecated, because subfolders acts the other way arround as it should
 	$subfolders = (isset($attribs['subfolders'])) ?
-		!weTag_getAttribute('subfolders', $attribs, false, true) :
-		weTag_getAttribute('recursive', $attribs, true, true);
+			!weTag_getAttribute('subfolders', $attribs, false, true) :
+			weTag_getAttribute('recursive', $attribs, true, true);
 
 	$we_lv_subfolders = isset($_REQUEST['we_lv_subfolders_' . $name]) ? (bool) $_REQUEST['we_lv_subfolders_' . $name] : $subfolders;
 
