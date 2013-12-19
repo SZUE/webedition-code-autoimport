@@ -1014,7 +1014,10 @@ function weInputInArray(arr, val) {
 }
 
 {$this->addJS}
-";
+//-->
+</script>
+"
+;
 		/*		 * ******************************************************
 		  var weShowDebug = true;
 		  var debugsizeW=145;
