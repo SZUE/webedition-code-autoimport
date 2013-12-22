@@ -12,7 +12,7 @@ class we_shop_vatRule{
 	//		condition -> string
 	//		returnValue -> 0 | 1
 	var $conditionalRules;
-	var $defaultValue = true;
+	var $defaultValue = 'true';
 
 	function __construct($defaultValue, $stateField, $liableToVat, $notLiableToVat, $conditionalRules, $stateFieldIsISO = '0'){
 
@@ -25,13 +25,10 @@ class we_shop_vatRule{
 	}
 
 	function executeVatRule($customer = false){
-
 		// now check all rules for the vat
 
 		if($customer){
-
 			if(isset($this->stateField) && isset($customer[$this->stateField])){
-
 				$state = $customer[$this->stateField];
 
 				// is state liableToVat
@@ -46,20 +43,15 @@ class we_shop_vatRule{
 
 				// now check additional fields
 				foreach($this->conditionalRules as $rule){
-
 					$ret = $rule['returnValue'] == 'true' ? true : false;
-
 					$field = $customer[$rule['customerField']];
 
 					if(in_array($state, $rule['states'])){
-
 						switch($rule['condition']){
 							case 'is_empty':
 								return (empty($field) ? $ret : !$ret);
-								break;
 							case 'is_set':
 								return (!empty($field) ? $ret : !$ret);
-								break;
 						}
 					}
 				}
@@ -77,17 +69,12 @@ class we_shop_vatRule{
 	}
 
 	function getShopVatRule(){
-
-		global $DB_WE;
-
-		$strFelder = f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="weShopVatRule"', 'strFelder', $DB_WE);
+		$strFelder = f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="weShopVatRule"');
 
 		if($strFelder !== ''){
-
 			return unserialize($strFelder);
 		} else {
-			return new we_shop_vatRule(
-				'true', '', array(), array(), array(
+			return new we_shop_vatRule('true', '', array(), array(), array(
 				array(
 					'states' => array(),
 					'customerField' => '',
@@ -137,7 +124,7 @@ class we_shop_vatRule{
 				$CLFields = unserialize($strFelder);
 				$CLFields['stateField'] = $this->stateField;
 				$CLFields['stateFieldIsISO'] = $this->stateFieldIsISO;
-				$DB_WE->query("UPDATE " . ANZEIGE_PREFS_TABLE . " SET strFelder = '" . $DB_WE->escape(serialize($CLFields)) . "' WHERE strDateiname ='shop_CountryLanguage'");
+				$DB_WE->query('UPDATE ' . ANZEIGE_PREFS_TABLE . " SET strFelder='" . $DB_WE->escape(serialize($CLFields)) . "' WHERE strDateiname ='shop_CountryLanguage'");
 			}
 
 			return true;

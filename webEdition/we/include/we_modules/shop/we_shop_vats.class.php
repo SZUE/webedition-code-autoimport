@@ -27,83 +27,47 @@ class we_shop_vats{
 	// some arrays for caching results
 
 	function getAllShopVATs(){
-
 		if(!isset($GLOBALS['weShopVats']['getAllVats'])){
-
-			$query = 'SELECT * FROM ' . WE_SHOP_VAT_TABLE;
-
-			$GLOBALS['DB_WE']->query($query);
-
-			$ret = array();
+			$GLOBALS['DB_WE']->query('SELECT * FROM ' . WE_SHOP_VAT_TABLE);
+			$GLOBALS['weShopVats']['getAllVats'] = array();
 
 			while($GLOBALS['DB_WE']->next_record()){
-
-				$ret[$GLOBALS['DB_WE']->f('id')] = new we_shop_vat(
-					$GLOBALS['DB_WE']->f('id'), $GLOBALS['DB_WE']->f('text'), $GLOBALS['DB_WE']->f('vat'), ($GLOBALS['DB_WE']->f('standard') ? 1 : 0)
-				);
+				$GLOBALS['weShopVats']['getAllVats'][$GLOBALS['DB_WE']->f('id')] = new we_shop_vat($GLOBALS['DB_WE']->f('id'), $GLOBALS['DB_WE']->f('text'), $GLOBALS['DB_WE']->f('vat'), ($GLOBALS['DB_WE']->f('standard') ? 1 : 0));
 			}
-			$GLOBALS['weShopVats']['getAllVats'] = $ret;
 		}
 		return $GLOBALS['weShopVats']['getAllVats'];
 	}
 
 	function getShopVATById($id){
-
 		if(!isset($GLOBALS['weShopVats']['getShopVATById']["$id"])){
-
-			$query = 'SELECT * FROM ' . WE_SHOP_VAT_TABLE . ' WHERE id=' . intval($id);
-
-			$GLOBALS['DB_WE']->query($query);
-
-			$ret = false;
-
-			if($GLOBALS['DB_WE']->next_record()){
-
-				$ret = new we_shop_vat(
-					$GLOBALS['DB_WE']->f('id'), $GLOBALS['DB_WE']->f('text'), $GLOBALS['DB_WE']->f('vat'), ($GLOBALS['DB_WE']->f('standard') ? true : false)
-				);
-			}
-			$GLOBALS['weShopVats']['getShopVATById']["$id"] = $ret;
+			$data = getHash('SELECT * FROM ' . WE_SHOP_VAT_TABLE . ' WHERE id=' . intval($id));
+			$GLOBALS['weShopVats']['getShopVATById']["$id"] = ($data ?
+					new we_shop_vat($data['id'], $data['text'], $data['vat'], ($data['standard'] ? true : false)) :
+					false);
 		}
-		return $GLOBALS['weShopVats']['getShopVATById']["$id"];
+		return $GLOBALS['weShopVats']['getShopVATById'][$id];
 	}
 
 	function getVatRateForSite($id = false, $fallBackToStandard = true, $standard = ''){
-
 		if($id){
 			$weShopVat = we_shop_vats::getShopVATById($id);
 		}
 
 		if(!isset($weShopVat) || !$weShopVat){
-
 			$weShopVat = we_shop_vats::getStandardShopVat();
 		}
 
-		if($weShopVat){
-			return $weShopVat->vat;
-		}
-		return $standard;
+		return ($weShopVat ? $weShopVat->vat : $standard);
 	}
 
 	function getStandardShopVat(){
-
 		if(!isset($GLOBALS['weShopVats']['getStandardShopVat'])){
+			$data = getHash('SELECT * FROM ' . WE_SHOP_VAT_TABLE . ' WHERE standard=1');
 
-			$query = 'SELECT * FROM ' . WE_SHOP_VAT_TABLE . ' WHERE standard=1';
-
-			$GLOBALS['DB_WE']->query($query);
-
-			$ret = false;
-
-			if($GLOBALS['DB_WE']->next_record()){
-
-				$ret = new we_shop_vat(
-					$GLOBALS['DB_WE']->f('id'), $GLOBALS['DB_WE']->f('text'), $GLOBALS['DB_WE']->f('vat'), ($GLOBALS['DB_WE']->f('standard') ? true : false)
-				);
-			}
-			$GLOBALS['weShopVats']['getStandardShopVat'] = $ret;
+			$GLOBALS['weShopVats']['getStandardShopVat'] = ($data ?
+					new we_shop_vat($data['id'], $data['text'], $data['vat'], ($data['standard'] ? true : false)) :
+					false);
 		}
-
 
 		return $GLOBALS['weShopVats']['getStandardShopVat'];
 	}
@@ -118,20 +82,17 @@ class we_shop_vats{
 			$GLOBALS['DB_WE']->query($query);
 		}
 
+		$set = we_database_base::arraySetter(array(
+				'text' => $weShopVat->text,
+				'vat' => $weShopVat->vat,
+				standard => $weShopVat->standard
+		));
 		if($weShopVat->id == 0){ // insert a new vat
-			$query = 'INSERT INTO ' . WE_SHOP_VAT_TABLE . ' (text, vat, standard)
-				VALUES("' . $GLOBALS['DB_WE']->escape($weShopVat->text) . '", "' . $GLOBALS['DB_WE']->escape($weShopVat->vat) . '", ' . $GLOBALS['DB_WE']->escape($weShopVat->standard) . ')
-			';
-
-			if($GLOBALS['DB_WE']->query($query)){
+			if($GLOBALS['DB_WE']->query('INSERT INTO ' . WE_SHOP_VAT_TABLE . ' SET ' . $set)){
 				return $GLOBALS['DB_WE']->getInsertId();
 			}
 		} else { // update existing vat
-			$query = 'UPDATE ' . WE_SHOP_VAT_TABLE . ' SET text="' . $GLOBALS['DB_WE']->escape($weShopVat->text) . '", vat="' . $GLOBALS['DB_WE']->escape($weShopVat->vat) . '", standard=' . $GLOBALS['DB_WE']->escape($weShopVat->standard) . '
-				WHERE id=' . intval($weShopVat->id) . '
-			';
-
-			if($GLOBALS['DB_WE']->query($query)){
+			if($GLOBALS['DB_WE']->query('UPDATE ' . WE_SHOP_VAT_TABLE . ' SET ' . $set . '	WHERE id=' . intval($weShopVat->id))){
 				return $weShopVat->id;
 			}
 		}

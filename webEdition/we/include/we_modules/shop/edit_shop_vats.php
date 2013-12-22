@@ -30,16 +30,11 @@ we_html_tools::htmlTop();
 print STYLESHEET;
 
 if(isset($_REQUEST['we_cmd'])){
-
 	switch($_REQUEST['we_cmd'][0]){
-
 		case 'saveVat':
+			$weShopVat = new we_shop_vat($_REQUEST['weShopVatId'], $_REQUEST['weShopVatText'], $_REQUEST['weShopVatVat'], $_REQUEST['weShopVatStandard']);
 
-			$weShopVat = new we_shop_vat(
-				$_REQUEST['weShopVatId'], $_REQUEST['weShopVatText'], $_REQUEST['weShopVatVat'], $_REQUEST['weShopVatStandard']
-			);
-
-			if($newId = we_shop_vats::saveWeShopVAT($weShopVat)){
+			if(($newId = we_shop_vats::saveWeShopVAT($weShopVat))){
 				$weShopVat->id = $newId;
 				unset($newId);
 				$jsMessage = g_l('modules_shop', '[vat][save_success]');
@@ -52,7 +47,6 @@ if(isset($_REQUEST['we_cmd'])){
 			break;
 
 		case 'deleteVat':
-
 			if(we_shop_vats::deleteVatById($_REQUEST['weShopVatId'])){
 				$jsMessage = g_l('modules_shop', '[vat][delete_success]');
 				$jsMessageType = we_message_reporting::WE_MESSAGE_NOTICE;
@@ -65,131 +59,126 @@ if(isset($_REQUEST['we_cmd'])){
 }
 
 if(!isset($weShopVat)){
-	$weShopVat = new we_shop_vat(
-		0, g_l('modules_shop', '[vat][new_vat_name]'), 19, 0
-	);
+	$weShopVat = new we_shop_vat(0, g_l('modules_shop', '[vat][new_vat_name]'), 19, 0);
 }
 $jsFunction = '
-
-		var isGecko = ' . (we_base_browserDetect::isGecko() ? 'true' : 'false') . ';
+var isGecko = ' . (we_base_browserDetect::isGecko() ? 'true' : 'false') . ';
 
 ' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'document.addEventListener("keyup",doKeyDown,true);' : 'document.onkeydown = doKeyDown;') . '
 
-		function doKeyDown(e) {
-			var key;
+function doKeyDown(e) {
+	var key;
 
 ' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'key = e.keyCode;' : 'key = event.keyCode;') . '
 
-			switch (key) {
-				case 27:
-					top.close();
-					break;	}
-		}
+	switch (key) {
+		case 27:
+			top.close();
+			break;	}
+}
 
-		function IsDigit(e) {
-			var key;
+function IsDigit(e) {
+	var key;
 
 ' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'key = e.charCode;' : 'key = event.keyCode;') . '
-			return ( (key == 46) || ((key >= 48) && (key <= 57)) || (key == 0) || (key == 13)  || (key == 8) || (key <= 63235 && key >= 63232) || (key == 63272));
+	return ( (key == 46) || ((key >= 48) && (key <= 57)) || (key == 0) || (key == 13)  || (key == 8) || (key <= 63235 && key >= 63232) || (key == 63272));
+}
+
+
+function changeFormTextField(theId, newVal) {
+	document.getElementById(theId).value = newVal;
+}
+
+function changeFormSelect(theId, newVal) {
+
+	elem = document.getElementById(theId);
+
+	for (i=0; i<elem.options.length; i++) {
+		if ( elem.options[i].value == newVal ) {
+			elem.selectedIndex = i;
 		}
+	}
+}
 
 
-		function changeFormTextField(theId, newVal) {
-			document.getElementById(theId).value = newVal;
+function doUnload() {
+	if (!!jsWindow_count) {
+		for (i = 0; i < jsWindow_count; i++) {
+			eval("jsWindow" + i + "Object.close()");
 		}
+	}
+}
 
-		function changeFormSelect(theId, newVal) {
+function we_cmd(){
 
-			elem = document.getElementById(theId);
-
-
-			for (i=0; i<elem.options.length; i++) {
-				if ( elem.options[i].value == newVal ) {
-					elem.selectedIndex = i;
-				}
+	var args = "";
+	var url = "' . WEBEDITION_DIR . 'we_cmd.php?";
+	for(var i = 0; i < arguments.length; i++){
+			url += "we_cmd["+i+"]="+escape(arguments[i]);
+			if(i < (arguments.length - 1)){
+					url += "&";
 			}
-		}
+	}
 
+	switch (arguments[0]) {
 
-		function doUnload() {
-			if (!!jsWindow_count) {
-				for (i = 0; i < jsWindow_count; i++) {
-					eval("jsWindow" + i + "Object.close()");
-				}
+		case "save":
+			we_submitForm("' . $_SERVER['SCRIPT_NAME'] . '");
+		break;
+
+		case "close":
+			window.close();
+		break;
+
+		case "edit":
+
+			elem = document.getElementById("editShopVatForm");
+			if (elem.style.display == "none") {
+				elem.style.display = "";
 			}
-		}
 
-		function we_cmd(){
+			if (theVat = allVats["vat_" + arguments[1]]) {
+				changeFormTextField("weShopVatId", theVat["id"]);
+				changeFormTextField("weShopVatText", theVat["text"]);
+				changeFormTextField("weShopVatVat", theVat["vat"]);
+				changeFormSelect("weShopVatStandard", theVat["standard"]);
+			}
+		break;
 
-            var args = "";
-            var url = "' . WEBEDITION_DIR . 'we_cmd.php?";
-            for(var i = 0; i < arguments.length; i++){
-                url += "we_cmd["+i+"]="+escape(arguments[i]);
-                if(i < (arguments.length - 1)){
-                    url += "&";
-                }
-            }
+		case "delete":
+			if (confirm("' . g_l('modules_shop', '[vat][js_confirm_delete]') . '")) {
+				document.location = "' . $_SERVER['SCRIPT_NAME'] . '?we_cmd[0]=deleteVat&weShopVatId=" + arguments[1];
+			}
+		break;
 
-            switch (arguments[0]) {
+		case "addVat":
+			elem = document.getElementById("editShopVatForm");
+			if (elem.style.display == "none") {
+				elem.style.display = "";
+			}
+			if (theVat = allVats["vat_0"]) {
+				changeFormTextField("weShopVatId", theVat["id"]);
+				changeFormTextField("weShopVatText", theVat["text"]);
+				changeFormTextField("weShopVatVat", theVat["vat"]);
+				changeFormSelect("weShopVatStandard", theVat["standard"]);
+			}
 
-            	case "save":
-            		we_submitForm("' . $_SERVER['SCRIPT_NAME'] . '");
-            	break;
+		break;
 
-            	case "close":
-            		window.close();
-            	break;
+		default :
+	break;
+	}
+}
 
-            	case "edit":
+function we_submitForm(url){
 
-            		elem = document.getElementById("editShopVatForm");
-            		if (elem.style.display == "none") {
-            			elem.style.display = "";
-            		}
+		var f = self.document.we_form;
 
-            		if (theVat = allVats["vat_" + arguments[1]]) {
-            			changeFormTextField("weShopVatId", theVat["id"]);
-            			changeFormTextField("weShopVatText", theVat["text"]);
-            			changeFormTextField("weShopVatVat", theVat["vat"]);
-            			changeFormSelect("weShopVatStandard", theVat["standard"]);
-            		}
-            	break;
+	f.action = url;
+	f.method = "post";
 
-            	case "delete":
-            		if (confirm("' . g_l('modules_shop', '[vat][js_confirm_delete]') . '")) {
-            			document.location = "' . $_SERVER['SCRIPT_NAME'] . '?we_cmd[0]=deleteVat&weShopVatId=" + arguments[1];
-            		}
-            	break;
-
-            	case "addVat":
-            		elem = document.getElementById("editShopVatForm");
-            		if (elem.style.display == "none") {
-            			elem.style.display = "";
-            		}
-            		if (theVat = allVats["vat_0"]) {
-            			changeFormTextField("weShopVatId", theVat["id"]);
-            			changeFormTextField("weShopVatText", theVat["text"]);
-            			changeFormTextField("weShopVatVat", theVat["vat"]);
-            			changeFormSelect("weShopVatStandard", theVat["standard"]);
-            		}
-
-            	break;
-
-            	default :
-				break;
-            }
-        }
-
-        function we_submitForm(url){
-
-            var f = self.document.we_form;
-
-        	f.action = url;
-        	f.method = "post";
-
-        	f.submit();
-        }
-        ';
+	f.submit();
+}';
 
 
 
