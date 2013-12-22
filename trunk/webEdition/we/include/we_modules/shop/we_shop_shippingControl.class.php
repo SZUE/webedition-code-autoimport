@@ -41,21 +41,14 @@ class we_shop_shippingControl{
 	}
 
 	function getShippingControl(){
-		global $DB_WE;
+		$data = getHash('SELECT * FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="weShippingControl"');
 
-		$DB_WE->query('SELECT * FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="weShippingControl"');
-
-		if($DB_WE->next_record()){
-
-			$shippingControl = unserialize($DB_WE->f('strFelder'));
+		if($data){
+			$shippingControl = unserialize(strtr($data['strFelder'], array('O:17:"weShippingControl"' => 'O:' . strlen(__CLASS__) . ':"' . __CLASS__ . '"', 'O:10:"weShipping"' => 'O:' . strlen('we_shop_shipping') . ':"we_shop_shipping"')));
 			$shippingControl->vatRate = we_shop_vats::getVatRateForSite($shippingControl->vatId);
-
 			return $shippingControl;
 		} else {
-			return new we_shop_shippingControl(
-				'', 1, 1, array(
-				)
-			);
+			return new we_shop_shippingControl('', 1, 1, array());
 		}
 	}
 

@@ -24,16 +24,12 @@
  */
 class we_users_frames extends weModuleFrames{
 
-	var $db;
-	var $View;
-	var $frameset;
-	public $module = "users";
-	protected $useMainTree = false;
-	protected $treeFooterHeight = 40;
-	protected $treeDefaultWidth = 224;
-
 	function __construct(){
 		parent::__construct(WE_USERS_MODULE_DIR . "edit_users_frameset.php");
+		$this->module = 'users';
+		$this->useMainTree = false;
+		$this->treeFooterHeight = 40;
+		$this->treeDefaultWidth = 224;
 		$this->View = new we_users_view(WE_USERS_MODULE_DIR . "edit_users_frameset.php", "top.content");
 	}
 
