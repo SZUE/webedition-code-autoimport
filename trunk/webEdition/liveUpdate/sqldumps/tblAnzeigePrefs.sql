@@ -6,6 +6,6 @@ CREATE TABLE ###TBLPREFIX###tblAnzeigePrefs (
   PRIMARY KEY  (strDateiname)
 ) ENGINE=MyISAM;
 /* query separator */
-INSERT IGNORE INTO ###TBLPREFIX###tblAnzeigePrefs SET ID=1,strDateiname='edit_shop_properties',strFelder='a:2:{s:14:"customerFields";a:0:{}s:19:"orderCustomerFields";a:0:{}}';
+###INSTALLONLY###INSERT IGNORE INTO ###TBLPREFIX###tblAnzeigePrefs SET strDateiname='edit_shop_properties',strFelder='a:2:{s:14:"customerFields";a:0:{}s:19:"orderCustomerFields";a:0:{}}';
 /* query separator */
-INSERT IGNORE INTO ###TBLPREFIX###tblAnzeigePrefs SET ID=2,strDateiname='shop_pref',strFelder='€|19|german';
+###INSTALLONLY###INSERT IGNORE INTO ###TBLPREFIX###tblAnzeigePrefs SET strDateiname='shop_pref',strFelder='€|19|german';
