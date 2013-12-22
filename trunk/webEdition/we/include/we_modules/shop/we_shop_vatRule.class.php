@@ -14,7 +14,7 @@ class we_shop_vatRule{
 	var $conditionalRules;
 	var $defaultValue = true;
 
-	function we_shop_vatRule($defaultValue, $stateField, $liableToVat, $notLiableToVat, $conditionalRules, $stateFieldIsISO = '0'){
+	function __construct($defaultValue, $stateField, $liableToVat, $notLiableToVat, $conditionalRules, $stateFieldIsISO = '0'){
 
 		$this->defaultValue = $defaultValue;
 		$this->stateField = $stateField;

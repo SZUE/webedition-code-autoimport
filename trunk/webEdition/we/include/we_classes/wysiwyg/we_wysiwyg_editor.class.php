@@ -829,8 +829,10 @@ function weWysiwygSetHiddenText(arg) {
 
 	function setFilteredElements(){
 		$lastSep = true;
-		foreach($this->elements as $i => $elem){
-			if($elem->showMe){
+		foreach($this->elements as $elem){
+			if(!is_object($elem)){
+				t_e('no object', $elem, $this->elements);
+			} else if($elem->showMe){
 				if((!$lastSep) || ($elem->classname != "we_wysiwyg_ToolbarSeparator")){
 					$this->filteredElements[] = $elem;
 				}

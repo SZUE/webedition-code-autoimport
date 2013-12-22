@@ -1,5 +1,27 @@
 <?php
 
+/**
+ * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
+ * This source is part of webEdition CMS. webEdition CMS is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * any later version.
+ *
+ * The GNU General Public License can be found at
+ * http://www.gnu.org/copyleft/gpl.html.
+ * A copy is found in the textfile
+ * webEdition/licenses/webEditionCMS/License.txt
+ *
+ * @category   webEdition
+ * @package    webEdition_base
+ * @license    http://www.gnu.org/copyleft/gpl.html  GPL
+ */
 class we_shop_vats{
 
 	// some arrays for caching results
@@ -16,7 +38,7 @@ class we_shop_vats{
 
 			while($GLOBALS['DB_WE']->next_record()){
 
-				$ret[$GLOBALS['DB_WE']->f('id')] = new weShopVat(
+				$ret[$GLOBALS['DB_WE']->f('id')] = new we_shop_vat(
 					$GLOBALS['DB_WE']->f('id'), $GLOBALS['DB_WE']->f('text'), $GLOBALS['DB_WE']->f('vat'), ($GLOBALS['DB_WE']->f('standard') ? 1 : 0)
 				);
 			}
@@ -37,7 +59,7 @@ class we_shop_vats{
 
 			if($GLOBALS['DB_WE']->next_record()){
 
-				$ret = new weShopVat(
+				$ret = new we_shop_vat(
 					$GLOBALS['DB_WE']->f('id'), $GLOBALS['DB_WE']->f('text'), $GLOBALS['DB_WE']->f('vat'), ($GLOBALS['DB_WE']->f('standard') ? true : false)
 				);
 			}
@@ -75,7 +97,7 @@ class we_shop_vats{
 
 			if($GLOBALS['DB_WE']->next_record()){
 
-				$ret = new weShopVat(
+				$ret = new we_shop_vat(
 					$GLOBALS['DB_WE']->f('id'), $GLOBALS['DB_WE']->f('text'), $GLOBALS['DB_WE']->f('vat'), ($GLOBALS['DB_WE']->f('standard') ? true : false)
 				);
 			}
@@ -118,26 +140,7 @@ class we_shop_vats{
 	}
 
 	function deleteVatById($id){
-
-		$query = 'DELETE FROM ' . WE_SHOP_VAT_TABLE . ' WHERE id=' . intval($id);
-		return $GLOBALS['DB_WE']->query($query);
-	}
-
-}
-
-class weShopVat{
-
-	var $id;
-	var $text;
-	var $vat;
-	var $standard;
-
-	function weShopVat($id, $text, $vat, $standard = false){
-
-		$this->id = $id;
-		$this->text = $text;
-		$this->vat = $vat;
-		$this->standard = $standard;
+		return $GLOBALS['DB_WE']->query('DELETE FROM ' . WE_SHOP_VAT_TABLE . ' WHERE id=' . intval($id));
 	}
 
 }
