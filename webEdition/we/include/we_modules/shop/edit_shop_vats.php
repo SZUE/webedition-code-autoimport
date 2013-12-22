@@ -35,7 +35,7 @@ if(isset($_REQUEST['we_cmd'])){
 
 		case 'saveVat':
 
-			$weShopVat = new weShopVat(
+			$weShopVat = new we_shop_vat(
 				$_REQUEST['weShopVatId'], $_REQUEST['weShopVatText'], $_REQUEST['weShopVatVat'], $_REQUEST['weShopVatStandard']
 			);
 
@@ -65,7 +65,7 @@ if(isset($_REQUEST['we_cmd'])){
 }
 
 if(!isset($weShopVat)){
-	$weShopVat = new weShopVat(
+	$weShopVat = new we_shop_vat(
 		0, g_l('modules_shop', '[vat][new_vat_name]'), 19, 0
 	);
 }

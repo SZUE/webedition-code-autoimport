@@ -35,14 +35,6 @@ function we_getModuleNameByContentType($ctype){
 	return '';
 }
 
-/* function we_getIndexFileIDs($db){
-  return f('SELECT GROUP_CONCAT(ID) AS IDs FROM ' . FILE_TABLE . ' WHERE IsSearchable=1 AND ((Published > 0 AND (ContentType="text/html" OR ContentType="text/webedition")) OR (ContentType="application/*") )', 'IDs', $db);
-  }
-
-  function we_getIndexObjectIDs($db){
-  return f('SELECT GROUP_CONCAT(ID) AS IDs FROM ' . OBJECT_FILES_TABLE . ' WHERE Published > 0 AND Workspaces != ""', 'IDs', $db);
-  } */
-
 function weFileExists($id, $table = FILE_TABLE, we_database_base $db = NULL){
 	t_e('deprecated', __FUNCTION__);
 	return we_base_file::isWeFile($id, $table, $db);

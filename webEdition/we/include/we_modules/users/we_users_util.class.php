@@ -137,8 +137,8 @@ abstract class we_users_util{
 		return $db->getAllFirst(false);
 	}
 
-	static function getAliases($id, $db = ''){
-		$foo = f('SELECT GROUP_CONCAT(ID) AS IDS FROM ' . USER_TABLE . ' WHERE Alias=' . intval($id), 'IDS', ($db ? $db : new DB_WE()));
+	static function getAliases($id, we_database_base $db = null){
+		$foo = f('SELECT GROUP_CONCAT(ID) AS IDS FROM ' . USER_TABLE . ' WHERE Alias=' . intval($id), '', ($db ? $db : new DB_WE()));
 		return $foo ? explode(',', $foo) : array();
 	}
 
