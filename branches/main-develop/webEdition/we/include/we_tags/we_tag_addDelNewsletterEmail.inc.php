@@ -130,11 +130,11 @@ function we_tag_addDelNewsletterEmail($attribs){
 			$emailExistsInOneOfTheLists = false;
 			switch($type){
 				case 'customer':
-					$__query = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ' . $_customerFieldPrefs['customer_email_field'] . "='" . $db->escape($f['subscribe_mail']) . "'", $db);
+					$hash = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ' . $_customerFieldPrefs['customer_email_field'] . "='" . $db->escape($f['subscribe_mail']) . "'", $db);
 					// #5589 start
-					if(!empty($__query)){
+					if($hash){
 						foreach($abos as $cAbo){
-							$dbAbo = isset($__query[$cAbo]) ? $__query[$cAbo] : false;
+							$dbAbo = isset($hash[$cAbo]) ? $hash[$cAbo] : false;
 							if(empty($dbAbo)){
 								$lists[] = $cAbo;
 							}
@@ -149,7 +149,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 				case 'csv':
 					foreach($paths as $p){
 						$realPath = realpath((substr($p, 0, 1) == '/') ? ($_SERVER['DOCUMENT_ROOT'] . $p) : ($_SERVER['DOCUMENT_ROOT'] . '/' . $p));
-						if(@file_exists($realPath)){
+						if(file_exists($realPath)){
 							$file = we_base_file::load($realPath);
 							if($file !== false){// #5135
 								if(!preg_match("%[\r\n]" . $f['subscribe_mail'] . ",[^\r\n]+[\r\n]%i", $file) && !preg_match('%^' . $f['subscribe_mail'] . ",[^\r\n]+[\r\n]%i", $file)){
@@ -185,23 +185,23 @@ function we_tag_addDelNewsletterEmail($attribs){
 			if($mailid){
 
 				$db->query('REPLACE INTO ' . NEWSLETTER_CONFIRM_TABLE . ' SET ' .
-					we_database_base::arraySetter(array(
-						'confirmID' => $confirmID,
-						'subscribe_mail' => strtolower($f['subscribe_mail']),
-						'subscribe_html' => $f['subscribe_html'],
-						'subscribe_salutation' => $f['subscribe_salutation'],
-						'subscribe_title' => $f['subscribe_title'],
-						'subscribe_firstname' => $f['subscribe_firstname'],
-						'subscribe_lastname' => $f['subscribe_lastname'],
-						'lists' => $lists,
-						'expires' => sql_function('UNIX_TIMESTAMP() + ' . weTag_getAttribute('expiredoubleoptin', $attribs, 1440) * 60) // in secs
+						we_database_base::arraySetter(array(
+							'confirmID' => $confirmID,
+							'subscribe_mail' => strtolower($f['subscribe_mail']),
+							'subscribe_html' => $f['subscribe_html'],
+							'subscribe_salutation' => $f['subscribe_salutation'],
+							'subscribe_title' => $f['subscribe_title'],
+							'subscribe_firstname' => $f['subscribe_firstname'],
+							'subscribe_lastname' => $f['subscribe_lastname'],
+							'lists' => $lists,
+							'expires' => sql_function('UNIX_TIMESTAMP() + ' . weTag_getAttribute('expiredoubleoptin', $attribs, 1440) * 60) // in secs
 				)));
 
 				$id = weTag_getAttribute('id', $attribs);
 				$subject = weTag_getAttribute('subject', $attribs, 'newsletter');
 				$from = weTag_getAttribute('from', $attribs, 'newsletter@' . $_SERVER['SERVER_NAME']);
 
-				$use_https_refer = f('SELECT pref_value FROM ' . NEWSLETTER_PREFS_TABLE . ' WHERE pref_name="use_https_refer"', 'pref_value', $db);
+				$use_https_refer = f('SELECT pref_value FROM ' . NEWSLETTER_PREFS_TABLE . ' WHERE pref_name="use_https_refer"', '', $db);
 				$protocol = ($use_https_refer ? 'https://' : 'http://');
 
 				$port = defined('HTTP_PORT') ? HTTP_PORT : ($use_https_refer ? 443 : 80);
@@ -259,12 +259,11 @@ function we_tag_addDelNewsletterEmail($attribs){
 
 				$placeholderReplaceValue = '';
 				if($type == 'customer'){
-					$db->query('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ' . $_customerFieldPrefs['customer_email_field'] . "='" . $db->escape($f['subscribe_mail']) . "'");
-					$db->next_record();
+					$customerHash = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ' . $_customerFieldPrefs['customer_email_field'] . "='" . $db->escape($f['subscribe_mail']) . "'", $db);
 				}
 				if(is_array($placeholderfields)){
 					foreach($placeholderfields as $phf){
-						$placeholderReplaceValue = ($type == 'customer') ? $db->f($phf) : '';
+						$placeholderReplaceValue = ($type == 'customer' && isset($customerHash[$phf])) ? $customerHash[$phf] : '';
 						$mailtext = str_replace('####PLACEHOLDER:DB::CUSTOMER_TABLE:' . $phf . '####', $placeholderReplaceValue, $mailtext);
 						$mailtextHTML = str_replace('####PLACEHOLDER:DB::CUSTOMER_TABLE:' . $phf . '####', $placeholderReplaceValue, $mailtextHTML);
 					}
@@ -335,9 +334,10 @@ function we_tag_addDelNewsletterEmail($attribs){
 				$phpmail->Send();
 				$GLOBALS['WE_DOUBLEOPTIN'] = 1;
 
-				if(isset($mywedoc))
+				if(isset($mywedoc)){
 					$GLOBALS['we_doc'] = $mywedoc;
-			}else {
+				}
+			} else {
 				$GLOBALS['WE_WRITENEWSLETTER_STATUS'] = we_newsletter_base::STATUS_ERROR;
 				return;
 			}
@@ -352,79 +352,79 @@ function we_tag_addDelNewsletterEmail($attribs){
 						$GLOBALS['WE_NEWSUBSCRIBER_USERNAME'] = $f['subscribe_mail'];
 					}
 					$fields = ($__id == '' ? array(
-							'Username' => $f['subscribe_mail'],
-							'Text' => $f['subscribe_mail'],
-							'Password' => $GLOBALS['WE_NEWSUBSCRIBER_PASSWORD'],
-							'MemberSince' => time(),
-							'IsFolder' => 0,
-							'Icon' => 'customer.gif',
-							'ParentID' => 0,
-							'LoginDenied' => 0,
-							'LastLogin' => 0,
-							'LastAccess' => 0,
-							$_customerFieldPrefs['customer_salutation_field'] => $f['subscribe_salutation'],
-							$_customerFieldPrefs['customer_title_field'] => $f['subscribe_title'],
-							$_customerFieldPrefs['customer_firstname_field'] => $f['subscribe_firstname'],
-							$_customerFieldPrefs['customer_lastname_field'] => $f['subscribe_lastname'],
-							$_customerFieldPrefs['customer_email_field'] => $f['subscribe_mail'],
-							$_customerFieldPrefs['customer_html_field'] => $f['subscribe_html'],
-							) : array(
-							'ModifyDate' => time(),
-							'ModifiedBy' => 'frontend',
+								'Username' => $f['subscribe_mail'],
+								'Text' => $f['subscribe_mail'],
+								'Path' => '/' . $f['subscribe_mail'],
+								'Password' => $GLOBALS['WE_NEWSUBSCRIBER_PASSWORD'],
+								'MemberSince' => time(),
+								'IsFolder' => 0,
+								'Icon' => 'customer.gif',
+								'ParentID' => 0,
+								'LoginDenied' => 0,
+								'LastLogin' => 0,
+								'LastAccess' => 0,
+								$_customerFieldPrefs['customer_salutation_field'] => $f['subscribe_salutation'],
+								$_customerFieldPrefs['customer_title_field'] => $f['subscribe_title'],
+								$_customerFieldPrefs['customer_firstname_field'] => $f['subscribe_firstname'],
+								$_customerFieldPrefs['customer_lastname_field'] => $f['subscribe_lastname'],
+								$_customerFieldPrefs['customer_email_field'] => $f['subscribe_mail'],
+								$_customerFieldPrefs['customer_html_field'] => $f['subscribe_html'],
+									) : array(
+								'ModifyDate' => time(),
+								'ModifiedBy' => 'frontend',
 					));
 					$hook = new weHook('customer_preSave', '', array('customer' => &$fields, 'from' => 'tag', 'type' => ($__id == '' ? 'new' : 'modify'), 'tagname' => 'addDelNewsletterEmail', 'isSubscribe' => $isSubscribe, 'isUnsubscribe' => $isUnsubscribe));
 					$ret = $hook->executeHook();
 
-					if($__id == ''){
-						$__db->query('INSERT INTO ' . CUSTOMER_TABLE . ' SET ' . we_database_base::arraySetter($fields));
-					} else {
-						$__db->query('UPDATE ' . CUSTOMER_TABLE . ' SET ' . we_database_base::arraySetter($fields) . ' WHERE ID=' . $__id);
-					}
+					$__db->query(($__id ?
+									'UPDATE ' . CUSTOMER_TABLE . ' SET ' . we_database_base::arraySetter($fields) . ' WHERE ID=' . $__id :
+									'INSERT INTO ' . CUSTOMER_TABLE . ' SET ' . we_database_base::arraySetter($fields)));
 
 
-					$__set = '';
-					$__customerFields = f('SELECT Value FROM ' . CUSTOMER_ADMIN_TABLE . ' WHERE Name="FieldAdds"', 'Value', $__db);
-					$__customerFields = $__customerFields ? unserialize($__customerFields) : '';
+
+					$set = '';
+					$customerFields = f('SELECT Value FROM ' . CUSTOMER_ADMIN_TABLE . ' WHERE Name="FieldAdds"', 'Value', $__db);
+					$customerFields = $customerFields ? unserialize($customerFields) : '';
 					$updateCustomerFields = false;
 					foreach($abos as $abo){
-						if(isset($__customerFields[$abo]['default']) && !empty($__customerFields[$abo]['default'])){
-							$__setVals = explode(',', $__customerFields[$abo]['default']);
-						} else if(isset($__customerFields['Newsletter_Ok']['default']) && !empty($__customerFields[$abo]['default'])){
-							$__setVals = explode(',', $__customerFields['Newsletter_Ok']['default']);
+						if(isset($customerFields[$abo]['default']) && !empty($customerFields[$abo]['default'])){
+							$setVals = explode(',', $customerFields[$abo]['default']);
+						} else if(isset($customerFields['Newsletter_Ok']['default']) && !empty($customerFields[$abo]['default'])){
+							$setVals = explode(',', $customerFields['Newsletter_Ok']['default']);
 						} else {
-							$__setVals = array('', '1');
+							$setVals = array('', '1');
 						}
 
 						switch(true){
-							case is_array($__setVals) && count($__setVals) > 1 :
-								$__setDefault = $__setVals[0];
-								$__setVal = $__setVals[1];
+							case is_array($setVals) && count($setVals) > 1 :
+								$setDefault = $setVals[0];
+								$setVal = $setVals[1];
 								break;
-							case is_array($__setVals) && (count($__setVals) == 1) :
-								$__setDefault = '';
-								$__setVal = $__setVals[0];
+							case is_array($setVals) && (count($setVals) == 1) :
+								$setDefault = '';
+								$setVal = $setVals[0];
 								break;
 							default :
-								$__setDefault = '';
-								$__setVal = '1';
+								$setDefault = '';
+								$setVal = '1';
 								break;
 						}
 
 						if(!$__db->isColExist(CUSTOMER_TABLE, $abo)){
-							$__db->addCol(CUSTOMER_TABLE, $abo, 'VARCHAR(200) DEFAULT "' . $__db->escape($__setDefault) . '"');
-							$fieldDefault = array('default' => isset($__customerFields['Newsletter_Ok']['default']) && !empty($__customerFields['Newsletter_Ok']['default']) ? $__customerFields['Newsletter_Ok']['default'] : ',1');
-							$__customerFields[$abo] = $fieldDefault;
+							$__db->addCol(CUSTOMER_TABLE, $abo, 'VARCHAR(200) DEFAULT "' . $__db->escape($setDefault) . '"');
+							$fieldDefault = array('default' => isset($customerFields['Newsletter_Ok']['default']) && !empty($customerFields['Newsletter_Ok']['default']) ? $customerFields['Newsletter_Ok']['default'] : ',1');
+							$customerFields[$abo] = $fieldDefault;
 							$updateCustomerFields = true;
 						}
-						$__set .= $abo . "='" . $__db->escape($__setVal) . "', ";
+						$set .= $abo . "='" . $__db->escape($setVal) . "', ";
 					}
 
 					if($updateCustomerFields){
-						$__db->query('UPDATE ' . CUSTOMER_ADMIN_TABLE . ' SET Value="' . $__db->escape(serialize($__customerFields)) . '" WHERE Name="FieldAdds"');
+						$__db->query('UPDATE ' . CUSTOMER_ADMIN_TABLE . ' SET Value="' . $__db->escape(serialize($customerFields)) . '" WHERE Name="FieldAdds"');
 					}
 
-					$__set .= $_customerFieldPrefs['customer_html_field'] . '= "' . $__db->escape($f["subscribe_html"]) . '"';
-					$__db->query('UPDATE ' . CUSTOMER_TABLE . ' SET ' . $__set . ' WHERE ' . $_customerFieldPrefs['customer_email_field'] . '="' . $__db->escape($f["subscribe_mail"]) . '"');
+					$set .= $_customerFieldPrefs['customer_html_field'] . '= "' . $__db->escape($f["subscribe_html"]) . '"';
+					$__db->query('UPDATE ' . CUSTOMER_TABLE . ' SET ' . $set . ' WHERE ' . $_customerFieldPrefs['customer_email_field'] . '="' . $__db->escape($f["subscribe_mail"]) . '"');
 					break;
 				case 'emailonly':
 					//nicht in eine Liste eintragen sondern adminmail versenden
@@ -435,7 +435,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 					//in die Liste eintragen
 					foreach($paths as $p){
 						$realPath = realpath((substr($p, 0, 1) == '/') ? ($_SERVER['DOCUMENT_ROOT'] . $p) : ($_SERVER['DOCUMENT_ROOT'] . '/' . $p));
-						if(!@file_exists(dirname($realPath)) || strpos(realpath($realPath), realpath($_SERVER['DOCUMENT_ROOT'])) === FALSE){
+						if(!file_exists(dirname($realPath)) || strpos(realpath($realPath), realpath($_SERVER['DOCUMENT_ROOT'])) === FALSE){
 							$GLOBALS['WE_WRITENEWSLETTER_STATUS'] = we_newsletter_base::STATUS_ERROR; // FATAL ERROR
 							$GLOBALS['WE_REMOVENEWSLETTER_STATUS'] = we_newsletter_base::STATUS_ERROR; // FATAL ERROR
 							return;
@@ -508,26 +508,25 @@ function we_unsubscribeNL($db, $customer, $_customerFieldPrefs, $abos, $paths){
 	$db->query('DELETE FROM ' . NEWSLETTER_CONFIRM_TABLE . ' WHERE subscribe_mail ="' . $db->escape($unsubscribe_mail) . '"');
 
 	if($customer){
-		$__db = new DB_WE();
 
-		$__customerFields = f('SELECT Value FROM ' . CUSTOMER_ADMIN_TABLE . ' WHERE Name="FieldAdds"', 'Value', $__db);
-		$__customerFields = $__customerFields ? unserialize($__customerFields) : '';
+		$customerFields = f('SELECT Value FROM ' . CUSTOMER_ADMIN_TABLE . ' WHERE Name="FieldAdds"', '', $db);
+		$customerFields = $customerFields ? unserialize($customerFields) : '';
 
 		$tmp = array();
 		foreach($abos as $abo){
-			$tmp[] = '"' . $__db->escape($abo) . '"';
+			$tmp[] = '"' . $db->escape($abo) . '"';
 		}
-		$where = ' WHERE ' . $_customerFieldPrefs['customer_email_field'] . '="' . $__db->escape($unsubscribe_mail) . '"';
-		$__db->query('SELECT ' . implode(',', $tmp) . ' FROM ' . CUSTOMER_TABLE . $where);
+		$where = ' WHERE ' . $_customerFieldPrefs['customer_email_field'] . '="' . $db->escape($unsubscribe_mail) . '"';
+		$hash = getHash('SELECT ' . implode(',', $tmp) . ' FROM ' . CUSTOMER_TABLE . $where, $db);
 		unset($tmp);
 		$update = array();
-		if($__db->next_record()){
+		if($hash){
 			foreach($abos as $abo){
-				$fieldDefault = (isset($__customerFields[$abo]['default']) ? $__customerFields[$abo]['default'] : '');
+				$fieldDefault = (isset($customerFields[$abo]['default']) ? $customerFields[$abo]['default'] : '');
 				$fieldDefaults = explode(',', $fieldDefault);
 				$aboNeg = is_array($fieldDefaults) && count($fieldDefaults) > 1 ? $fieldDefaults[0] : '';
 
-				$dbAbo = $__db->f($abo);
+				$dbAbo = $hash[$abo];
 				if(!empty($dbAbo) || $dbAbo != $aboNeg){
 					$update[$abo] = $aboNeg;
 					$emailExists = true;
@@ -540,7 +539,7 @@ function we_unsubscribeNL($db, $customer, $_customerFieldPrefs, $abos, $paths){
 				);
 				$hook = new weHook('customer_preSave', '', array('customer' => &$fields, 'from' => 'tag', 'type' => 'modify', 'tagname' => 'addDelNewsletterEmail', 'isSubscribe' => 0, 'isUnsubscribe' => 1));
 				$ret = $hook->executeHook();
-				$__db->query('UPDATE ' . CUSTOMER_TABLE . ' SET ' . we_database_base::arraySetter(array_merge($update, $fields)) . ' ' . $where);
+				$db->query('UPDATE ' . CUSTOMER_TABLE . ' SET ' . we_database_base::arraySetter(array_merge($update, $fields)) . ' ' . $where);
 			}
 		}
 	} else {
@@ -560,7 +559,7 @@ function we_unsubscribeNL($db, $customer, $_customerFieldPrefs, $abos, $paths){
 				usleep(500000);
 			}
 
-			$file = @file($path);
+			$file = file($path);
 			if(!$file){
 				we_base_file::unlock($lock);
 				continue;
@@ -635,8 +634,8 @@ function _weMailNewSuccessfullNewsletterActiviation($adminmailid, $adminemail, $
 	$phpmail->setCharSet($charset);
 
 	$adminmailtextHTML = strtr(
-		(($adminmailid > 0) && we_base_file::isWeFile($adminmailid, FILE_TABLE, $db) ? we_getDocumentByID($adminmailid, '', $db, $charset) : '')
-		, array(
+			(($adminmailid > 0) && we_base_file::isWeFile($adminmailid, FILE_TABLE, $db) ? we_getDocumentByID($adminmailid, '', $db, $charset) : '')
+			, array(
 		'###MAIL###' => $f['subscribe_mail'],
 		'###SALUTATION###' => $f['subscribe_salutation'],
 		'###TITLE###' => $f['subscribe_title'],

@@ -45,10 +45,8 @@ function we_tag_object($attribs){
 	$classid = weTag_getAttribute('classid', $attribs);
 	$we_oid = weTag_getAttribute('id', $attribs, 0);
 	$name = weTag_getAttribute('name', $attribs);
-	//never show name generated inside blocks
-	$_showName = weTag_getAttribute('text', $attribs, weTag_getAttribute('_name_orig', $attribs));
 	$size = 5 * intval(weTag_getAttribute('size', $attribs, 30));
-	$triggerid = weTag_getAttribute('triggerid', $attribs, '0');
+	$triggerid = weTag_getAttribute('triggerid', $attribs, 0);
 	$searchable = weTag_getAttribute('searchable', $attribs, false, true);
 	$hidedirindex = weTag_getAttribute('hidedirindex', $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, true);
 	$objectseourls = weTag_getAttribute('objectseourls', $attribs, TAGLINKS_OBJECTSEOURLS, true);
@@ -56,8 +54,6 @@ function we_tag_object($attribs){
 	if(!isset($GLOBALS['we_lv_array'])){
 		$GLOBALS['we_lv_array'] = array();
 	}
-
-	$rootDirID = ($classid ? f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path=(SELECT Path FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($classid) . ')', 'ID', $GLOBALS['DB_WE']) : 0);
 
 	if($name){
 		if(strpos($name, ' ') !== false){
@@ -68,6 +64,7 @@ function we_tag_object($attribs){
 		$we_doc = $GLOBALS['we_doc'];
 		//handle listview of documents
 		$we_oid = isset($GLOBALS['lv']) && is_object($GLOBALS['lv']) && $GLOBALS['lv']->f($name) ? $GLOBALS['lv']->f($name) : ($we_doc->getElement($name) ? $we_doc->getElement($name) : $we_oid);
+		$rootDirID = ($classid ? f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path=(SELECT Path FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($classid) . ')', 'ID', $GLOBALS['DB_WE']) : 0);
 
 		$path = f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . $we_oid, 'Path', $GLOBALS['DB_WE']);
 		$textname = 'we_' . $we_doc->Name . '_txt[' . $name . '_path]';
@@ -94,7 +91,7 @@ function we_tag_object($attribs){
 			?>
 			<table class="weEditTable padding0 spacing0 border0">
 				<tr>
-					<td class="weEditmodeStyle" style="padding:0 6px;"><span style="font-weight: bold;"><?php echo $_showName; ?></span></td>
+					<td class="weEditmodeStyle" style="padding:0 6px;"><span style="font-weight: bold;"><?php echo weTag_getAttribute('text', $attribs, weTag_getAttribute('_name_orig', $attribs)); ?></span></td>
 					<?php echo '<td class="weEditmodeStyle" style="width:' . ($size + 20) . 'px">' . $yuiSuggest->getHTML() . '</td>'; ?>
 					<td class="weEditmodeStyle"><?php echo $button; ?></td>
 					<td class="weEditmodeStyle"><?php echo $open; ?></td>
@@ -106,14 +103,14 @@ function we_tag_object($attribs){
 	} else {
 		$we_oid = $we_oid ? $we_oid : (isset($_REQUEST['we_oid']) ? intval($_REQUEST['we_oid']) : 0);
 	}
-	$GLOBALS['lv'] = new we_object_tag($classid, $we_oid, $triggerid, ($searchable ? $searchable : false), $condition, $hidedirindex, $objectseourls);
+	$GLOBALS['lv'] = new we_object_tag($classid, $we_oid, $triggerid, $searchable, $condition, $hidedirindex, $objectseourls);
 	if(is_array($GLOBALS['we_lv_array'])){
 		$GLOBALS['we_lv_array'][] = clone($GLOBALS['lv']);
 	}
 
 	if($GLOBALS['lv']->avail){
 		if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
-			print '<a href="' . $we_oid . '" seem="object"></a>';
+			echo '<a href="' . $we_oid . '" seem="object"></a>';
 		}
 	}
 	return $GLOBALS['lv']->avail;

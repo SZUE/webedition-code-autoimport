@@ -29,8 +29,8 @@ we_html_tools::protect();
 we_html_tools::htmlTop();
 echo we_html_element::jsScript(JS_DIR . 'windows.js');
 
-require_oncerequire_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
-print STYLESHEET;
+require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
+echo STYLESHEET;
 ?>
 </head>
 <body bgcolor="white" marginwidth="15" marginheight="15" leftmargin="15" topmargin="15" onunload="doUnload()">
