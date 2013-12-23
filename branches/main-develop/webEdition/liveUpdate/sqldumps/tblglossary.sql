@@ -5,7 +5,7 @@ CREATE TABLE ###TBLPREFIX###tblglossary (
   Icon enum('folder.gif','prog.gif') NOT NULL,
   `Text` VARCHAR(255) NOT NULL DEFAULT '',
   `Type` enum('abbreviation','acronym','foreignword','link','textreplacement') NOT NULL DEFAULT 'abbreviation',
-  Language enum('','de','en','es','fi','ru','nl','pl') NOT NULL DEFAULT '',
+  Language CHAR(5) NOT NULL DEFAULT '',
   Title tinytext NOT NULL,
   Attributes text NOT NULL,
   Linked tinyINT(1) unsigned NOT NULL DEFAULT '0',
@@ -19,3 +19,5 @@ CREATE TABLE ###TBLPREFIX###tblglossary (
   PRIMARY KEY  (ID),
   KEY valid (Language,Published)
 ) ENGINE=MyISAM;
+/* query separator */
+UPDATE ###TBLPREFIX###tblglossary SET Language="de_DE" WHERE Language="";

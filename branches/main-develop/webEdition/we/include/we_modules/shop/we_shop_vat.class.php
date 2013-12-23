@@ -3,9 +3,9 @@
 /**
  * webEdition CMS
  *
- * $Rev$
- * $Author$
- * $Date$
+ * $Rev: 7121 $
+ * $Author: mokraemer $
+ * $Date: 2013-12-10 22:47:43 +0100 (Di, 10. Dez 2013) $
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -22,15 +22,19 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+class we_shop_vat{
 
-we_html_tools::protect();
+	var $id;
+	var $text;
+	var $vat;
+	var $standard;
 
-$what = isset($_REQUEST["pnt"]) ? $_REQUEST["pnt"] : "frameset";
+	function __construct($id, $text, $vat, $standard = false){
 
-$weFrame = new we_glossary_settingFrames();
+		$this->id = $id;
+		$this->text = $text;
+		$this->vat = $vat;
+		$this->standard = $standard;
+	}
 
-$weFrame->Controller->processVariables();
-$weFrame->Controller->processCommands();
-
-echo $weFrame->getHTML($what);
+}

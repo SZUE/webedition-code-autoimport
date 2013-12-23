@@ -218,7 +218,7 @@ foreach($customerTableFields as $tblField){
 $parts[] = array(
 	'headline' => g_l('modules_shop', '[vat_country][stateField]'),
 	'space' => 200,
-	'html' => we_class::htmlSelect('stateField', $selectFields, 1, $weShippingControl->stateField, false, '', 'value', 200),
+	'html' => we_class::htmlSelect('stateField', $selectFields, 1, $weShippingControl->stateField, false, array(), 'value', 200),
 	'noline' => 1
 );
 unset($selectFields);
@@ -231,13 +231,13 @@ foreach($shopVats as $id => $shopVat){
 $parts[] = array(
 	'headline' => g_l('modules_shop', '[mwst]'),
 	'space' => 200,
-	'html' => we_class::htmlSelect('vatId', $selectFields, 1, $weShippingControl->vatId, false, '', 'value', 200),
+	'html' => we_class::htmlSelect('vatId', $selectFields, 1, $weShippingControl->vatId, false, array(), 'value', 200),
 	'noline' => 1
 );
 $parts[] = array(
 	'headline' => g_l('modules_shop', '[shipping][prices_are_net]'),
 	'space' => 200,
-	'html' => we_class::htmlSelect('isNet', array(1 => g_l('global', "[true]"), 0 => g_l('global', "[false]")), 1, $weShippingControl->isNet, false, '', 'value', 200)
+	'html' => we_class::htmlSelect('isNet', array(1 => g_l('global', "[true]"), 0 => g_l('global', "[false]")), 1, $weShippingControl->isNet, false, array(), 'value', 200)
 );
 // selectBox with all existing shippings
 // select menu with all available shipping costs
@@ -328,8 +328,6 @@ print we_html_multiIconBox::getHTML(
 		'weShipping', "100%", $parts, 30, we_html_button::position_yes_no_cancel(
 			we_html_button::create_button('save', 'javascript:we_cmd(\'save\');'), '', we_html_button::create_button('close', 'javascript:we_cmd(\'close\');')
 		), -1, '', '', false, g_l('modules_shop', '[shipping][shipping_package]')
-);
-
-print '
+	) . '
 </form>
 </body></html>';

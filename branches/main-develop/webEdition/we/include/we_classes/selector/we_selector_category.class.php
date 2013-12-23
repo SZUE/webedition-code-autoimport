@@ -24,17 +24,17 @@
  */
 class we_selector_category extends we_selector_multiple{
 
-	const CREATECAT = 7;
-	const DORENAMECAT = 9;
-	const DORENAMEENTRY = 10;
+	const CREATE_CAT = 7;
+	const DO_RENAME_CAT = 9;
+	const DO_RENAME_ENTRY = 10;
 	const PROPERTIES = 12;
 	const CHANGE_CAT = 13;
 
-	var $we_editCatID = '';
-	var $EntryText = '';
-	var $noChoose = false;
+	private $we_editCatID = '';
+	private $EntryText = '';
+	private $noChoose = false;
 
-	function __construct($id, $table = FILE_TABLE, $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $sessionID = '', $we_editCatID = '', $EntryText = "", $rootDirID = 0, $noChoose = false){
+	function __construct($id, $table = FILE_TABLE, $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $sessionID = '', $we_editCatID = '', $EntryText = '', $rootDirID = 0, $noChoose = false){
 		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, $sessionID, $rootDirID);
 		$this->title = g_l('fileselector', '[catSelector][title]');
 
@@ -60,13 +60,13 @@ class we_selector_category extends we_selector_multiple{
 			case self::CREATEFOLDER:
 				$this->printCreateEntryHTML(1);
 				break;
-			case self::DORENAMEENTRY:
+			case self::DO_RENAME_ENTRY:
 				$this->printDoRenameEntryHTML();
 				break;
-			case self::CREATECAT:
+			case self::CREATE_CAT:
 				$this->printCreateEntryHTML(0);
 				break;
-			case self::DORENAMECAT:
+			case self::DO_RENAME_CAT:
 				$this->printDoRenameEntryHTML();
 				break;
 			case self::DEL:
@@ -178,7 +178,7 @@ function enableDelBut(){
 	function printFramesetJSFunctioWriteBody(){
 		?><script type="text/javascript"><!--
 					function writeBody(d) {
-				d.open();
+						d.open();
 		<?php
 		echo self::makeWriteDoc(we_html_tools::getHtmlTop('', '', '4Trans', true) . STYLESHEET_SCRIPT . we_html_element::jsElement('
 var ctrlpressed=false
@@ -212,65 +212,65 @@ if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles
 		?>
 
 		<?php if(we_base_browserDetect::isIE() && substr($GLOBALS["WE_LANGUAGE"], -5) !== "UTF-8"){ ?>
-					d.writeln('<form name="we_form" target="fscmd" action="<?php print $_SERVER["SCRIPT_NAME"]; ?>" onsubmit="document.we_form.we_EntryText.value=escape(document.we_form.we_EntryText_tmp.value);return true;">');
+							d.writeln('<form name="we_form" target="fscmd" action="<?php print $_SERVER["SCRIPT_NAME"]; ?>" onsubmit="document.we_form.we_EntryText.value=escape(document.we_form.we_EntryText_tmp.value);return true;">');
 
 		<?php } else { ?>
-					d.writeln('<form name="we_form" target="fscmd" action="<?php print $_SERVER["SCRIPT_NAME"]; ?>" onsubmit="document.we_form.we_EntryText.value=document.we_form.we_EntryText_tmp.value;return true;">');
+							d.writeln('<form name="we_form" target="fscmd" action="<?php print $_SERVER["SCRIPT_NAME"]; ?>" onsubmit="document.we_form.we_EntryText.value=document.we_form.we_EntryText_tmp.value;return true;">');
 
 		<?php } ?>
-				if (top.we_editCatID) {
-					d.writeln('<input type="hidden" name="what" value="<?php print self::DORENAMEENTRY; ?>" />');
-					d.writeln('<input type="hidden" name="we_editCatID" value="' + top.we_editCatID + '" />');
-				} else {
-					if (makeNewFolder) {
-						d.writeln('<input type="hidden" name="what" value="<?php print self::CREATEFOLDER; ?>" />');
-					} else {
-						d.writeln('<input type="hidden" name="what" value="<?php print self::CREATECAT; ?>" />');
+						if (top.we_editCatID) {
+							d.writeln('<input type="hidden" name="what" value="<?php print self::DO_RENAME_ENTRY; ?>" />');
+							d.writeln('<input type="hidden" name="we_editCatID" value="' + top.we_editCatID + '" />');
+						} else {
+							if (makeNewFolder) {
+								d.writeln('<input type="hidden" name="what" value="<?php print self::CREATEFOLDER; ?>" />');
+							} else {
+								d.writeln('<input type="hidden" name="what" value="<?php print self::CREATE_CAT; ?>" />');
+							}
+						}
+						d.writeln('<input type="hidden" name="order" value="' + top.order + '" />');
+						d.writeln('<input type="hidden" name="rootDirID" value="<?php print $this->rootDirID; ?>" />');
+						d.writeln('<input type="hidden" name="table" value="<?php print $this->table; ?>" />');
+						d.writeln('<input type="hidden" name="id" value="' + top.currentDir + '" />');
+						d.writeln('<table border="0" cellpadding="0" cellspacing="0" width="100%">');
+						if (makeNewFolder) {
+							d.writeln('<tr style="background-color:#DFE9F5;">');
+							d.writeln('<td align="center"><img src="<?php print ICON_DIR . we_base_ContentTypes::FOLDER_ICON; ?>" width="16" height="18" border="0" /></td>');
+							d.writeln('<td><input type="hidden" name="we_EntryText" value="<?php print g_l('fileselector', "[new_folder_name]"); ?>" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="<?php print g_l('fileselector', "[new_folder_name]") ?>" class="wetextinput" onblur="this.className=\'wetextinput\';" onfocus="this.className=\'wetextinputselected\'" style="width:100%" /></td>');
+							d.writeln('</tr>');
+						} else if (makeNewCat) {
+							d.writeln('<tr style="background-color:#DFE9F5;">');
+							d.writeln('<td align="center"><img src="<?php print ICON_DIR ?>cat.gif" width="16" height="18" border="0" /></td>');
+							d.writeln('<td><input type="hidden" name="we_EntryText" value="<?php print g_l('fileselector', "[new_cat_name]"); ?>" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="<?php print g_l('fileselector', "[new_cat_name]") ?>" class="wetextinput" onblur="this.className=\'wetextinput\';" onfocus="this.className=\'wetextinputselected\'" style="width:100%" /></td>');
+							d.writeln('</tr>');
+						}
+						for (i = 0; i < entries.length; i++) {
+							var onclick = ' onClick="weonclick(<?php echo (we_base_browserDetect::isIE() ? "this" : "event") ?>);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=0;}\',300);return true;"';
+							var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
+							d.writeln('<tr id="line_' + entries[i].ID + '" style="cursor:pointer;' + ((we_editCatID != entries[i].ID) ? '' : '') + '"' + ((we_editCatID || makeNewFolder || makeNewCat) ? '' : onclick) + (entries[i].isFolder ? ondblclick : '') + ' >');
+							d.writeln('<td class="selector" width="25" align="center">');
+							if (we_editCatID == entries[i].ID) {
+								d.writeln('<img src="<?php print ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0" />');
+								d.writeln('</td>');
+								d.writeln('<td class="selector">');
+								d.writeln('<input type="hidden" name="we_EntryText" value="' + entries[i].text + '" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" onblur="this.className=\'wetextinput\';" onfocus="this.className=\'wetextinputselected\'" style="width:100%" />');
+							} else {
+								d.writeln('<img src="<?php print ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0" />');
+								d.writeln('</td>');
+								d.writeln('<td class="selector"' + (we_editCatID ? '' : '') + ' title="' + entries[i].text + '">');
+								d.writeln(cutText(entries[i].text, 80));
+							}
+							d.writeln('</td>');
+							d.writeln('</tr><tr><td colspan="2"><?php print we_html_tools::getPixel(2, 1); ?></td></tr>');
+						}
+						d.writeln('<tr>');
+						d.writeln('<td width="25"><?php print we_html_tools::getPixel(25, 2) ?></td>');
+						d.writeln('<td><?php print we_html_tools::getPixel(150, 2) ?></td>');
+						d.writeln('</tr>');
+						d.writeln('</table></form>');
+						d.writeln('</body>');
+						d.close();
 					}
-				}
-				d.writeln('<input type="hidden" name="order" value="' + top.order + '" />');
-				d.writeln('<input type="hidden" name="rootDirID" value="<?php print $this->rootDirID; ?>" />');
-				d.writeln('<input type="hidden" name="table" value="<?php print $this->table; ?>" />');
-				d.writeln('<input type="hidden" name="id" value="' + top.currentDir + '" />');
-				d.writeln('<table border="0" cellpadding="0" cellspacing="0" width="100%">');
-				if (makeNewFolder) {
-					d.writeln('<tr style="background-color:#DFE9F5;">');
-					d.writeln('<td align="center"><img src="<?php print ICON_DIR . we_base_ContentTypes::FOLDER_ICON; ?>" width="16" height="18" border="0" /></td>');
-					d.writeln('<td><input type="hidden" name="we_EntryText" value="<?php print g_l('fileselector', "[new_folder_name]"); ?>" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="<?php print g_l('fileselector', "[new_folder_name]") ?>" class="wetextinput" onblur="this.className=\'wetextinput\';" onfocus="this.className=\'wetextinputselected\'" style="width:100%" /></td>');
-					d.writeln('</tr>');
-				} else if (makeNewCat) {
-					d.writeln('<tr style="background-color:#DFE9F5;">');
-					d.writeln('<td align="center"><img src="<?php print ICON_DIR ?>cat.gif" width="16" height="18" border="0" /></td>');
-					d.writeln('<td><input type="hidden" name="we_EntryText" value="<?php print g_l('fileselector', "[new_cat_name]"); ?>" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="<?php print g_l('fileselector', "[new_cat_name]") ?>" class="wetextinput" onblur="this.className=\'wetextinput\';" onfocus="this.className=\'wetextinputselected\'" style="width:100%" /></td>');
-					d.writeln('</tr>');
-				}
-				for (i = 0; i < entries.length; i++) {
-					var onclick = ' onClick="weonclick(<?php echo (we_base_browserDetect::isIE() ? "this" : "event") ?>);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=0;}\',300);return true;"';
-					var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
-					d.writeln('<tr id="line_' + entries[i].ID + '" style="cursor:pointer;' + ((we_editCatID != entries[i].ID) ? '' : '') + '"' + ((we_editCatID || makeNewFolder || makeNewCat) ? '' : onclick) + (entries[i].isFolder ? ondblclick : '') + ' >');
-					d.writeln('<td class="selector" width="25" align="center">');
-					if (we_editCatID == entries[i].ID) {
-						d.writeln('<img src="<?php print ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0" />');
-						d.writeln('</td>');
-						d.writeln('<td class="selector">');
-						d.writeln('<input type="hidden" name="we_EntryText" value="' + entries[i].text + '" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" onblur="this.className=\'wetextinput\';" onfocus="this.className=\'wetextinputselected\'" style="width:100%" />');
-					} else {
-						d.writeln('<img src="<?php print ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0" />');
-						d.writeln('</td>');
-						d.writeln('<td class="selector"' + (we_editCatID ? '' : '') + ' title="' + entries[i].text + '">');
-						d.writeln(cutText(entries[i].text, 80));
-					}
-					d.writeln('</td>');
-					d.writeln('</tr><tr><td colspan="2"><?php print we_html_tools::getPixel(2, 1); ?></td></tr>');
-				}
-				d.writeln('<tr>');
-				d.writeln('<td width="25"><?php print we_html_tools::getPixel(25, 2) ?></td>');
-				d.writeln('<td><?php print we_html_tools::getPixel(150, 2) ?></td>');
-				d.writeln('</tr>');
-				d.writeln('</table></form>');
-				d.writeln('</body>');
-				d.close();
-			}
 		//-->
 		</script>
 		<?php
@@ -773,23 +773,19 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 	}
 
 	function delDir($id){
-		$entries = f('SELECT GROUP_CONCAT(ID) AS entries FROM ' . $this->db->escape($this->table) . ' WHERE IsFolder=1 AND ParentID=' . intval($id), 'entries', $this->db);
-		if($entries){
-			$entries = explode(',', $entries);
-			foreach($entries as $entry){
-				$this->delDir($entry);
-			}
-		}
-		$entries = f('SELECT GROUP_CONCAT(ID) AS entries FROM ' . $this->db->escape($this->table) . ' WHERE IsFolder=0 AND ParentID=' . intval($id), 'entries', $this->db);
-		$entries = ($entries ? explode(',', $entries) : array());
-		$entries[] = $id;
+		$this->db->query('SELECT ID FROM ' . $this->db->escape($this->table) . ' WHERE IsFolder=1 AND ParentID=' . intval($id));
+		$entries = $this->db->getAll(true);
 		foreach($entries as $entry){
-			$this->delEntry($entry);
+			$this->delDir($entry);
 		}
+		$this->db->query('SELECT ID FROM ' . $this->db->escape($this->table) . ' WHERE IsFolder=0 AND ParentID=' . intval($id));
+		$entries = $this->db->getAll(true);
+		$entries[] = $id;
+		$this->delEntry($entries);
 	}
 
 	function delEntry($id){
-		$this->db->query('DELETE FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($id));
+		$this->db->query('DELETE FROM ' . $this->db->escape($this->table) . ' WHERE ID IN (' . (is_array($id) ? implode(',', $id) : intval($id)) . ')');
 	}
 
 	function printFooterTable(){
@@ -866,8 +862,8 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 
 			$targetPath = id_to_path($parentid, CATEGORY_TABLE);
 
-			$js = "";
-			if(preg_match("|^" . preg_quote($path, "|") . "|", $targetPath) || preg_match("|^" . preg_quote($path, "|") . "/|", $targetPath)){
+			$js = '';
+			if(preg_match('|^' . preg_quote($path, '|') . '|', $targetPath) || preg_match('|^' . preg_quote($path, '|') . '/|', $targetPath)){
 				// Verschieben nicht m�glich
 				$parentid = $result['ParentID'];
 
@@ -884,7 +880,13 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 			} else {
 				$path = ($parentid != 0 ? $targetPath : '') . '/' . $category;
 			}
-			$updateok = $db->query('UPDATE ' . CATEGORY_TABLE . ' SET Category="' . $db->escape($category) . '", Text="' . $db->escape($category) . '", Path="' . $db->escape($path) . '", ParentID=' . intval($parentid) . ', Catfields="' . $db->escape(serialize($fields)) . '" WHERE ID=' . intval($_POST["catid"]));
+			$updateok = $db->query('UPDATE ' . CATEGORY_TABLE . ' SET ' . we_database_base::arraySetter(array(
+					'Category' => $category,
+					'Text' => $category,
+					'Path' => $path,
+					'ParentID' => $parentid,
+					'Catfields' => serialize($fields),
+				)) . ' WHERE ID=' . intval($_POST["catid"]));
 			if($updateok){
 				$this->renameChildrenPath(intval($_POST["catid"]));
 			}

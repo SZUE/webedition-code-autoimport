@@ -121,7 +121,7 @@ class we_users_user{
 	// Newsletter workspaces
 	var $workSpaceNwl = '';
 	// Customer workspaces
-	private $workspaceCust = '';
+	private $workSpaceCust = '';
 	// Flag which indicated if user inherits files workspaces from parent
 	var $ParentWs = 0;
 	// Flag which indicated if user inherits templates workspaces from parent
@@ -153,8 +153,6 @@ class we_users_user{
 		TEMPLATES_TABLE => array(),
 		NAVIGATION_TABLE => array(),
 	);
-	// Aliases array
-	var $aliases = array();
 	// Permissions headers array
 	var $permissions_main_titles = array();
 	// Permissions values array
