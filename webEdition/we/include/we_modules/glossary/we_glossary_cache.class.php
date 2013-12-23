@@ -395,9 +395,9 @@ if (window.screen) {
 			}
 			//make sure we found a whole word!
 			if($full){
-				$content[$Type]['-(^|\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~])(' . preg_quote($Text, '-') . ')(\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~]|$)-'] = '${1}' . $prefix . '${2}' . $postfix . '${3}';
+				$content[$Type]['-(^|\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~])(' . preg_quote($Text, '-') . ')(\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~]|$)-'] = '${1}' . $prefix . ($Tag ? '${2}' : '') . $postfix . '${3}';
 			} else {
-				$content[$Type]['-(' . preg_quote($Text, '-') . ')-'] = $prefix . '${2}' . $postfix;
+				$content[$Type]['-(' . preg_quote($Text, '-') . ')-'] = $prefix . ($Tag ? '${2}' : '') . $postfix;
 			}
 		}
 
