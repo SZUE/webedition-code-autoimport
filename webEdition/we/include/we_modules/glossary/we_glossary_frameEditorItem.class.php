@@ -297,11 +297,11 @@ function we_save() {
 
 		return '<div id="type_abbreviation" style="display: block;">'
 			. '<table border="0" cellpadding="0" cellspacing="0">
-	<tr><td class="defaultfont">' . $text . '</td></tr>
-	<tr><td>' . we_html_tools::htmlTextInput("abbreviation[Text]", 24, g_l('modules_glossary', '[abbreviation]'), 255, 'onchange="setHot();"', "text", 520) . '</td></tr>
+	<tr><td class="defaultfont">' . g_l('modules_glossary', '[abbreviation]') . '</td></tr>
+	<tr><td>' . we_html_tools::htmlTextInput("abbreviation[Text]", 24, $text, 255, 'onchange="setHot();"', "text", 520) . '</td></tr>
 	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
-	<tr><td class="defaultfont">' . $title . '</td></tr>
-	<tr><td>' . we_html_tools::htmlTextInput("abbreviation[Title]", 24, g_l('modules_glossary', '[announced_word]'), 255, 'onchange="setHot();"', "text", 520) . '</td></tr>
+	<tr><td class="defaultfont">' . g_l('modules_glossary', '[announced_word]') . '</td></tr>
+	<tr><td>' . we_html_tools::htmlTextInput("abbreviation[Title]", 24, $title, 255, 'onchange="setHot();"', "text", 520) . '</td></tr>
 	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
 	<tr><td>' . self::getLangField("abbreviation[Attributes][lang]", $language, g_l('modules_glossary', '[language]'), 520) . '</td></tr>
 </table>

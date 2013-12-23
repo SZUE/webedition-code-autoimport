@@ -269,6 +269,7 @@ class we_folder extends we_root{
 		$this->resaveWeDocumentCustomerFilter();
 
 		if($resave == 0 && $update){
+			//FIXME:improve!
 			we_navigation_cache::clean(true);
 		}
 		if(LANGLINK_SUPPORT && isset($_REQUEST['we_' . $this->Name . '_LanguageDocID']) && $_REQUEST['we_' . $this->Name . '_LanguageDocID'] != 0){

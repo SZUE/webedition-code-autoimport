@@ -36,11 +36,12 @@ abstract class we_rebuild_base{
 					flush();
 				}
 
-				we_navigation_cache::delCacheNavigationEntry($data['id']);
 				if($data['id']){ //don't save id=0
 					$nav = new we_navigation_navigation($data['id']);
 					$nav->save(false, true);
 				}
+				//clean AFTER rebuild to make sure all data is acurate afterwards!
+				we_navigation_cache::clean(true);
 				if($printIt){
 					print ("   done$_newLine");
 					flush();

@@ -28,7 +28,7 @@ we_html_tools::protect();
 
 $what = isset($_REQUEST["pnt"]) ? $_REQUEST["pnt"] : "frameset";
 
-$weFrame = new weGlossarySettingFrames();
+$weFrame = new we_glossary_settingFrames();
 
 $weFrame->Controller->processVariables();
 $weFrame->Controller->processCommands();

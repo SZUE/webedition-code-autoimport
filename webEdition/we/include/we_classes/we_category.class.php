@@ -43,16 +43,18 @@ class we_category extends weModelBase{
 		}
 
 		parent::save();
+		//FIXME:improve!
 		we_navigation_cache::clean(true);
 	}
 
 	function delete(){
 		$ret = parent::delete();
+		//FIXME:improve!
 		we_navigation_cache::clean(true);
 		return $ret;
 	}
 
-	static function getCatSQLTail($catCSV = '', $table = FILE_TABLE, $catOr = false, $db = '', $fieldName = 'Category', $getParentCats = true, $categoryids = ''){
+	static function getCatSQLTail($catCSV = '', $table = FILE_TABLE, $catOr = false, we_database_base $db = null, $fieldName = 'Category', $getParentCats = true, $categoryids = ''){
 		$db = $db ? $db : new DB_WE();
 		$catCSV = trim($catCSV, ' ,');
 		$pre = ' FIND_IN_SET("';
