@@ -492,17 +492,15 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 //  If needed - js output for rollover.
 
 			if(isset($attribs['only'])){
-				$this->html = (array_key_exists($attribs['only'], $attribs) ? $attribs[$attribs['only']] : '');
-				return $this->html;
+				return (array_key_exists($attribs['only'], $attribs) ? $attribs[$attribs['only']] : '');
 			} else if(isset($attribs['pathonly']) && $attribs['pathonly']){
-				$this->html = $attribs['src'];
-				return $this->html;
+				return $attribs['src'];
 			}
 
 			if((isset($href) && $href) && $inc_href){ //  use link with rollover
 				$aAtts = array(
 					'href' => $href,
-					'title' => $attribs['title'],
+					'title' => isset($attribs['title']) ? $attribs['title'] : '',
 				);
 
 				if($target){
