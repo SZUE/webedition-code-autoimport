@@ -245,15 +245,6 @@ class we_navigation_navigation extends weModelBase{
 			$this->CustomerFilter = '';
 		}
 
-		// Clear the Cache if the option is set
-		/* $ClearCache = false;
-		  if($this->isnew && $GLOBALS['weNavigationCacheDeleteAfterAdd']){
-		  $ClearCache = true;
-		  } else
-		  if(!$this->isnew && $GLOBALS['weNavigationCacheDeleteAfterEdit']){
-		  $ClearCache = true;
-		  } */
-
 		parent::save();
 
 		if($order && isset($_oldPid) && $_oldPid != $this->ParentID){
@@ -280,27 +271,19 @@ class we_navigation_navigation extends weModelBase{
 			$this->CustomerFilter = unserialize($this->CustomerFilter);
 		}
 		$this->Name = $this->Text;
-		if($rebuild){
-			//cache is written on demand, just make sure current entry is deleted
-			we_navigation_cache::delCacheNavigationEntry($this->ID);
-		} else {
+		if(!$rebuild){
 			we_navigation_cache::delNavigationTree($this->ID);
 			if(isset($_oldPid) && $_oldPid != $this->ParentID){
 				we_navigation_cache::delNavigationTree($this->ParentID);
 				we_navigation_cache::delNavigationTree($_oldPid);
 			}
-			/* Cache is written on demand
-			 * if($this->IsFolder){
-			  weNavigationCache::cacheNavigationTree($this->ID);
-			  } else{
-			  weNavigationCache::cacheNavigationTree($this->ParentID);
-			  } */
 		}
 	}
 
 	function convertToPaths($ids, $table){
-		if(!is_array($ids))
+		if(!is_array($ids)){
 			return array();
+		}
 		$ids = array_unique($ids);
 		$paths = array();
 		foreach($ids as $id){
@@ -324,7 +307,7 @@ class we_navigation_navigation extends weModelBase{
 		}
 		parent::delete();
 
-		we_navigation_cache::cacheNavigationTree($this->ParentID);
+		we_navigation_cache::delNavigationTree($this->ParentID);
 
 		return true;
 	}
@@ -365,7 +348,7 @@ class we_navigation_navigation extends weModelBase{
 	}
 
 	function pathExists($path){
-		return f('SELECT 1 AS a FROM ' . $this->db->escape($this->table) . ' WHERE Path = "' . $this->db->escape($path) . '" AND ID !=' . intval($this->ID), 'a', $this->db) === '1';
+		return f('SELECT 1 FROM ' . $this->db->escape($this->table) . ' WHERE Path="' . $this->db->escape($path) . '" AND ID!=' . intval($this->ID), '', $this->db) === '1';
 	}
 
 	function isSelf(){
@@ -378,7 +361,7 @@ class we_navigation_navigation extends weModelBase{
 			if($_parentid == $this->ID){
 				return true;
 			}
-			$_parentid = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($_parentid), 'ParentID', $this->db);
+			$_parentid = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($_parentid), '', $this->db);
 			$_count++;
 			if($_count == 9999){
 				return false;
@@ -392,7 +375,7 @@ class we_navigation_navigation extends weModelBase{
 			return true;
 		}
 		//checkWS
-		return f('SELECT 1 AS a FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . $this->ParentID . ' ' . self::getWSQuery(), 'a', $this->db) == '1';
+		return f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . $this->ParentID . ' ' . self::getWSQuery(), '', $this->db) == '1';
 	}
 
 	function evalPath($id = 0){
@@ -408,7 +391,7 @@ class we_navigation_navigation extends weModelBase{
 
 		$pid = isset($foo['ParentID']) ? $foo['ParentID'] : '';
 		while($pid > 0){
-			$db_tmp->query("SELECT Text,ParentID FROM " . NAVIGATION_TABLE . ' WHERE ID=' . intval($pid));
+			$db_tmp->query('SELECT Text,ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($pid));
 			while($db_tmp->next_record()){
 				$path = '/' . $db_tmp->f('Text') . $path;
 				$pid = $db_tmp->f('ParentID');
@@ -430,8 +413,9 @@ class we_navigation_navigation extends weModelBase{
 				case self::STPYE_CATEGORY:
 					return we_navigation_dynList::getCatgories($this->FolderID, $this->ShowCount);
 				default:
-					return $this->ClassID > 0 ? we_navigation_dynList::getObjects(
-							$this->ClassID, $this->FolderID, $this->Categories, $this->CatAnd ? 'AND' : 'OR', $this->Sort, $this->ShowCount, $this->TitleField) : array();
+					return $this->ClassID > 0 ?
+						we_navigation_dynList::getObjects($this->ClassID, $this->FolderID, $this->Categories, $this->CatAnd ? 'AND' : 'OR', $this->Sort, $this->ShowCount, $this->TitleField) :
+						array();
 			}
 		}
 	}
@@ -525,21 +509,21 @@ class we_navigation_navigation extends weModelBase{
 		if(!$this->ID){
 			return false;
 		}
-		return f('SELECT 1 as Navi FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' AND Depended=1 LIMIT 1', 'Navi', $this->db) === '1';
+		return f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' AND Depended=1 LIMIT 1', '', $this->db) === '1';
 	}
 
 	function hasAnyChilds(){
 		if(!$this->ID){
 			return false;
 		}
-		return f('SELECT 1 as Navi FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' LIMIT 1', 'Navi', $this->db) === '1';
+		return f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' LIMIT 1', '', $this->db) === '1';
 	}
 
 	function hasIndependentChilds(){
 		if(!$this->ID){
 			return false;
 		}
-		return f('SELECT 1 as Navi FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' AND Depended=0 LIMIT 1', 'Navi', $this->db) === '1';
+		return f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' AND Depended=0 LIMIT 1', '', $this->db) === '1';
 	}
 
 	function getDynamicPreview(&$storage, $rules = false){
@@ -583,7 +567,7 @@ class we_navigation_navigation extends weModelBase{
 							//'text'=>str_replace('&amp;','&',!empty($_dyn['field']) ? $_dyn['field'] : $_dyn['text']),
 							'name' => $_dyn['field'] ? $_dyn['field'] : $_dyn['text'],
 							'text' => $_dyn['field'] ? $_dyn['field'] : $_dyn['text'],
-							'display' => $_dyn['display'] ? $_dyn['display'] : '',
+							'display' => isset($_dyn['display']) ? $_dyn['display'] : '',
 							'docid' => $_dyn['id'],
 							'table' => (($_nav->SelectionType == self::STPYE_CLASS || $_nav->SelectionType == self::STPYE_OBJLINK) ? OBJECT_FILES_TABLE : FILE_TABLE),
 							'href' => $_href,
@@ -616,25 +600,22 @@ class we_navigation_navigation extends weModelBase{
 	}
 
 	function reorder($pid){
-		$_count = 0;
-		$_db = new DB_WE();
-		$_db->query('SELECT ID FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($pid) . ' ORDER BY Ordn');
-		while($_db->next_record()){
-			$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . abs($_count) . ' WHERE ID=' . intval($_db->f('ID')));
-			$_count++;
+		$count = 0;
+		$this->db->query('SELECT ID FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($pid) . ' ORDER BY Ordn');
+		$ids = $this->db->getAll(true);
+		foreach($ids as $id){
+			$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . ($count++) . ' WHERE ID=' . $id);
 		}
 	}
 
 	function reorderUp(){
-		if($this->ID){
-			if($this->Ordn > 0){
-				$_parentid = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->ID), 'ParentID', $this->db);
-				$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . abs($this->Ordn) . ' WHERE ParentID=' . intval($_parentid) . ' AND Ordn=' . abs($this->Ordn - 1));
-				$this->Ordn--;
-				$this->saveField('Ordn');
-				$this->reorder($this->ParentID);
-				return true;
-			}
+		if($this->ID && $this->Ordn > 0){
+			$_parentid = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->ID), 'ParentID', $this->db);
+			$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . abs($this->Ordn) . ' WHERE ParentID=' . intval($_parentid) . ' AND Ordn=' . abs($this->Ordn - 1));
+			$this->Ordn--;
+			$this->saveField('Ordn');
+			$this->reorder($this->ParentID);
+			return true;
 		}
 		return false;
 	}
@@ -744,7 +725,7 @@ class we_navigation_navigation extends weModelBase{
 		}
 
 		if(!is_array($this->Attributes)){
-			$this->Attributes = @unserialize($this->Attributes);
+			$this->Attributes = unserialize($this->Attributes);
 		}
 		$_path = str_replace(' ', '%20', trim($_path)) .
 			($_param ? ((strpos($_path, '?') === false ? '?' : '&amp;') . $_param) : '');
@@ -874,7 +855,7 @@ class we_navigation_navigation extends weModelBase{
 			$_condition[] = 'Path LIKE "' . $GLOBALS['DB_WE']->escape(id_to_path($_value, NAVIGATION_TABLE)) . '/%"';
 		}
 
-		return ($_wrkNavi ? ' AND (ID IN (' . implode(',', $_wrkNavi) . ') OR (' . implode(' OR ', $_condition) . '))' : '');
+		return ($_wrkNavi ? ' AND (ID IN(' . implode(',', $_wrkNavi) . ') OR (' . implode(' OR ', $_condition) . '))' : '');
 	}
 
 }

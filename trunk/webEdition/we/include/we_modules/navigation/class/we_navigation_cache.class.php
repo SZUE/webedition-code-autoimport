@@ -33,6 +33,7 @@ class we_navigation_cache{
 		if(in_array($id, $deleted)){
 			return;
 		}
+		$db=new DB_WE();
 		self::delCacheNavigationEntry(0);
 		//self::cacheRootNavigation();
 		$_id = $id;
@@ -40,7 +41,7 @@ class we_navigation_cache{
 		while($_id != 0){
 			self::delCacheNavigationEntry($_id);
 			$deleted[] = $_id;
-			$_id = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($_id), 'ParentID', new DB_WE());
+			$_id = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($_id), '', $db);
 			$_c++;
 			if($_c > 99999){
 				break;

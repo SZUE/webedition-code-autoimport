@@ -129,7 +129,7 @@ abstract class we_glossary_treeLoader{
 
 		$Items = array();
 
-		$Where = " WHERE Language = '" . $Db->escape($Language) . "' AND Type = '" . $Db->escape($Type) . "'";
+		$Where = " WHERE Language='" . $Db->escape($Language) . "' AND Type='" . $Db->escape($Type) . "'";
 
 		$PrevOffset = $Offset - $Segment;
 		$PrevOffset = ($PrevOffset < 0) ? 0 : $PrevOffset;
@@ -151,11 +151,10 @@ abstract class we_glossary_treeLoader{
 			$Items[] = $Item;
 		}
 
-		$Query = 'SELECT ID, Type, Language, Text, Icon, abs(Text) AS Nr, (Text REGEXP "^[0-9]") AS isNr, Published FROM ' . GLOSSARY_TABLE . ' ' .
+		$Db->query('SELECT ID, Type, Language, Text, Icon, abs(Text) AS Nr, (Text REGEXP "^[0-9]") AS isNr, Published FROM ' . GLOSSARY_TABLE . ' ' .
 			$Where . ' ORDER BY isNr DESC, Nr, Text ' .
-			($Segment ? 'LIMIT ' . intval($Offset) . ',' . intval($Segment) : '');
+			($Segment ? 'LIMIT ' . intval($Offset) . ',' . intval($Segment) : ''));
 
-		$Db->query($Query);
 		while($Db->next_record(MYSQL_ASSOC)){
 
 			$Item = array(
@@ -197,7 +196,7 @@ abstract class we_glossary_treeLoader{
 			$Items[] = $Item;
 		}
 
-		$Total = f('SELECT COUNT(1) as total FROM ' . $Db->escape(GLOSSARY_TABLE) . ' ' . $Where, 'total', $Db);
+		$Total = f('SELECT COUNT(1) FROM ' . $Db->escape(GLOSSARY_TABLE) . ' ' . $Where, '', $Db);
 
 		$NextOffset = $Offset + $Segment;
 		if($Segment && ($Total > $NextOffset)){
