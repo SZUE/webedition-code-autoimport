@@ -109,7 +109,7 @@ class we_shop_listviewOrderitem extends listviewBase{
 
 	function next_record(){
 		if(($ret = $this->DB_WE->next_record(MYSQL_ASSOC))){
-			$strSerial = @unserialize($this->DB_WE->Record['strSerial']);
+			$strSerial = unserialize($this->DB_WE->Record['strSerial']);
 			unset($this->DB_WE->Record['strSerial']);
 			if(is_array($strSerial)){
 				if(isset($strSerial['OF_ID'])){//Object based Article
@@ -127,7 +127,7 @@ class we_shop_listviewOrderitem extends listviewBase{
 						if(is_array($value)){
 							$val = $value;
 						} elseif(substr($value, 0, 2) == 'a:'){
-							$val = @unserialize($value);
+							$val = unserialize($value);
 						}
 						$this->DB_WE->Record[$key] = (isset($val) && is_array($val) ? $val : $value);
 						unset($val);
