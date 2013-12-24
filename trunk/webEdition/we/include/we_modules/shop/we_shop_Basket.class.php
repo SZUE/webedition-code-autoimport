@@ -210,7 +210,7 @@ class we_shop_Basket{
 				}
 
 				$Record['WE_PATH'] = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'Path', $DB_WE) . ($variant ? '?' . WE_SHOP_VARIANT_REQUEST . '=' . $variant : '');
-				$Record['WE_TEXT'] = f('SELECT Text FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($id), 'Text', $DB_WE);
+				$Record['WE_TEXT'] = f('SELECT Text FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($id), '', $DB_WE);
 				$Record['WE_VARIANT'] = $variant;
 				$Record['WE_ID'] = intval($id);
 
@@ -231,7 +231,7 @@ class we_shop_Basket{
 					return array();
 				}
 
-				$olv = new we_object_listview(0, 1, 0, '', 0, $classArray['TableID'], '', '', ' ' . OBJECT_X_TABLE . $classArray['TableID'] . '.ID=' . $classArray['ObjectID']);
+				$olv = new we_object_listview(0, 1, 0, '', false, $classArray['TableID'], '', '', ' ' . OBJECT_X_TABLE . $classArray['TableID'] . '.ID=' . $classArray['ObjectID'], 0, 0, true, false);
 				$olv->next_record();
 
 				$Record = $olv->DB_WE->Record;

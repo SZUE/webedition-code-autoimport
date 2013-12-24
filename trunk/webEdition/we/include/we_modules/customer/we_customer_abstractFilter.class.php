@@ -119,7 +119,7 @@ abstract class we_customer_abstractFilter{
 			case self::NONE:
 				return !self::customerIsLogedIn();
 			case self::SPECIFIC:
-				return self::customerIsLogedIn() && in_array($_SESSION["webuser"]["ID"], $this->_specificCustomers);
+				return self::customerIsLogedIn() && in_array($_SESSION['webuser']['ID'], $this->_specificCustomers);
 			case self::FILTER:
 				return self::customerIsLogedIn() && self::customerHasFilterAccess();
 			default:
