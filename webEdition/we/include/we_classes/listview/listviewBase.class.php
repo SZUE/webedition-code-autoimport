@@ -52,7 +52,7 @@ abstract class listviewBase{
 	private $close_a = true; /* close </a> when endtag used */
 	var $customerFilterType = 'false'; // shall we control customer-filter?
 	var $calendar_struct = array();
-	var $id = '';
+	var $id = 0;
 	var $hidedirindex = false;
 
 	/**
@@ -70,7 +70,7 @@ abstract class listviewBase{
 	 * @param   cols   		  integer - to display a table this is the number of cols
 	 *
 	 */
-	function __construct($name = 0, $rows = 999999999, $offset = 0, $order = '', $desc = false, $cats = '', $catOr = false, $workspaceID = 0, $cols = 0, $calendar = '', $datefield = '', $date = '', $weekstart = '', $categoryids = '', $customerFilterType = 'all', $id = ''){
+	function __construct($name = 0, $rows = 999999999, $offset = 0, $order = '', $desc = false, $cats = '', $catOr = false, $workspaceID = 0, $cols = 0, $calendar = '', $datefield = '', $date = '', $weekstart = '', $categoryids = '', $customerFilterType = 'all', $id = 0){
 
 		$this->name = $name;
 		//? strange setting - don't know what it is supposed to be

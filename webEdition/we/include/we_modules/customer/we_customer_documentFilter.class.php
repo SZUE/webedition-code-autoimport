@@ -391,9 +391,9 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 		$_filesWithRestrictionsForCustomer = array();
 		$_defaultQuery = !self::customerIsLogedIn() ? '(mode=' . we_customer_abstractFilter::ALL . ') OR ' : '';
 
-		$_blacklistQuery = " (mode=" . we_customer_abstractFilter::FILTER . " AND blackList LIKE '%,$_cid,%') ";
-		$_whiteLlistQuery = " (mode=" . we_customer_abstractFilter::FILTER . " AND whiteList NOT LIKE '%,$_cid,%') ";
-		$_specificCustomersQuery = " (mode=" . we_customer_abstractFilter::SPECIFIC . " AND specificCustomers NOT LIKE '%,$_cid,%') ";
+		$_blacklistQuery = ' (mode=' . we_customer_abstractFilter::FILTER . " AND blackList LIKE '%,$_cid,%') ";
+		$_whiteLlistQuery = ' (mode=' . we_customer_abstractFilter::FILTER . " AND whiteList NOT LIKE '%,$_cid,%') ";
+		$_specificCustomersQuery = ' (mode=' . we_customer_abstractFilter::SPECIFIC . " AND specificCustomers NOT LIKE '%,$_cid,%') ";
 
 		$_accessControlOnTemplateQuery = ( ($listview->customerFilterType != 'all' && $listview->customerFilterType != 'true') ? ' AND (accessControlOnTemplate = 0) ' : '' );
 
@@ -422,11 +422,8 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 			}
 		} else { // visitor has logged in
 			$_filters = array();
-			if($_db->num_rows()){
-
-				while($_db->next_record()){
-					$_filters[] = self::getFilterByDbHash($_db->Record);
-				}
+			while($_db->next_record()){
+				$_filters[] = self::getFilterByDbHash($_db->Record);
 			}
 
 			$__tmp = array();
