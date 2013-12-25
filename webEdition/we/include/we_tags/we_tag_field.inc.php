@@ -234,7 +234,7 @@ function we_tag_field($attribs){
 			break;
 
 		case 'multiobject':
-			$temp = unserialize($GLOBALS['lv']->DB_WE->Record['we_' . $name]);
+			$temp = unserialize($GLOBALS['lv']->getDBf('we_' . $name));
 			$out = (isset($temp['objects']) && !empty($temp['objects']) ? implode(',', $temp['objects']) : '');
 			break;
 		case 'country' :
@@ -631,7 +631,7 @@ function we_tag_field($attribs){
 		$seeMode){
 
 		$GLOBALS['_we_object_listview_flag'] = false;
-		$out = '<a href="' . $GLOBALS['lv']->DB_WE->Record['OF_ID'] . '" seem="object"></a>' . $out;
+		$out = '<a href="' . $GLOBALS['lv']->getDBf('OF_ID') . '" seem="object"></a>' . $out;
 	}
 	return $out;
 }

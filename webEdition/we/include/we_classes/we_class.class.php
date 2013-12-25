@@ -559,7 +559,7 @@ abstract class we_class{
 						if($deleteIt){
 							$DB_WE2->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE LDID = ' . $this->DB_WE->Record['LDID'] . ' AND DID = ' . $this->DB_WE->Record['DID'] . ' AND IsFolder = 1');
 						} else {
-							$DB_WE2->query('UPDATE ' . LANGLINK_TABLE . ' SET LOCALE = "' . $newLang . '" WHERE LDID = ' . $this->DB_WE->Record['LDID'] . ' AND DID = ' . $this->DB_WE->Record['DID'] . ' AND IsFolder = 1');
+							$DB_WE2->query('UPDATE ' . LANGLINK_TABLE . ' SET LOCALE="' . $newLang . '" WHERE LDID = ' . $this->DB_WE->Record['LDID'] . ' AND DID=' . $this->DB_WE->Record['DID'] . ' AND IsFolder = 1');
 						}
 					}
 
