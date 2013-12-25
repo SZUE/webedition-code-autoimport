@@ -431,7 +431,7 @@ abstract class we_database_base{
 	 * @return mixed returns the value or '' if not present
 	 */
 	public function f($Name){
-		return isset($this->Record[$Name]) ? $this->Record[$Name] : "";
+		return isset($this->Record[$Name]) ? $this->Record[$Name] : '';
 	}
 
 	/**
