@@ -21,3 +21,4 @@ if(defined("FILE_TABLE")){
 }
 $this->Attributes[] = new weTagData_selectAttribute('hidedirindex', weTagData_selectAttribute::getTrueFalse(), false, '');
 $this->Attributes[] = new weTagData_selectAttribute('objectseourls', weTagData_selectAttribute::getTrueFalse(), false, '');
+$this->Attributes[] = new weTagData_selectAttribute('searchable', weTagData_selectAttribute::getTrueFalse(), false, '');

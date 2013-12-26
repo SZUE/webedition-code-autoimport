@@ -48,9 +48,9 @@ class we_shop_listviewOrder extends listviewBase{
 	 * @param   $docID	   	   string - id of a document where a we:customer tag is on
 	 *
 	 */
-	function __construct($name, $rows = 100000000, $offset = 0, $order = "", $desc = false, $condition = "", $cols = "", $docID = 0, $hidedirindex = false){
+	function __construct($name, $rows = 100000000, $offset = 0, $order = '', $desc = false, $condition = '', $cols = '', $docID = 0, $hidedirindex = false){
 
-		parent::__construct($name, $rows, $offset, $order, $desc, "", false, 0, $cols);
+		parent::__construct($name, $rows, $offset, $order, $desc, '', false, 0, $cols);
 
 		$this->docID = $docID;
 		$this->condition = $condition ? $condition : (isset($GLOBALS["we_lv_condition"]) ? $GLOBALS["we_lv_condition"] : "");
@@ -118,7 +118,7 @@ class we_shop_listviewOrder extends listviewBase{
 	function next_record(){
 		$ret = $this->DB_WE->next_record();
 		if($ret){
-			$strSerialOrder = @unserialize($this->DB_WE->Record["strSerialOrder"]);
+			$strSerialOrder = unserialize($this->DB_WE->Record["strSerialOrder"]);
 			unset($this->DB_WE->Record["strSerialOrder"]);
 			if(is_array($strSerialOrder)){
 				if(is_array($strSerialOrder['we_sscf'])){

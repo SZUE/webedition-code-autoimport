@@ -194,7 +194,7 @@ class we_shop_Basket{
 				// but its much faster -> so we use it
 				$DB_WE->query('SELECT ' . CONTENT_TABLE . '.BDID as BDID, ' . CONTENT_TABLE . '.Dat as Dat, ' . LINK_TABLE . '.Name as Name FROM ' . LINK_TABLE . ',' . CONTENT_TABLE . ' WHERE ' . LINK_TABLE . '.DID=' . intval($id) . ' AND ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID AND ' . LINK_TABLE . '.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
 				while($DB_WE->next_record()){
-					$tmp = ($DB_WE->f('BDID'));
+					$tmp = $DB_WE->f('BDID');
 					$Record[$DB_WE->f('Name')] = $tmp ? $tmp : $DB_WE->f('Dat');
 				}
 
@@ -202,15 +202,14 @@ class we_shop_Basket{
 					we_shop_variants::useVariantForShop($Record, $variant);
 				}
 
-				$hash = getHash('SELECT * FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $DB_WE);
-				if(!empty($hash)){
+				if(($hash = getHash('SELECT * FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $DB_WE, MYSQL_ASSOC))){
 					foreach($hash as $key => $val){
 						$Record['wedoc_' . $key] = $val;
 					}
 				}
 
-				$Record['WE_PATH'] = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'Path', $DB_WE) . ($variant ? '?' . WE_SHOP_VARIANT_REQUEST . '=' . $variant : '');
-				$Record['WE_TEXT'] = f('SELECT Text FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($id), 'Text', $DB_WE);
+				$Record['WE_PATH'] = $Record['wedoc_Path'] . ($variant ? '?' . WE_SHOP_VARIANT_REQUEST . '=' . $variant : '');
+				$Record['WE_TEXT'] = f('SELECT Text FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($id), '', $DB_WE);
 				$Record['WE_VARIANT'] = $variant;
 				$Record['WE_ID'] = intval($id);
 
@@ -225,16 +224,16 @@ class we_shop_Basket{
 				}
 				break;
 			case we_shop_shop::OBJECT:
-				$classArray = getHash('SELECT * FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id), $DB_WE);
-				if(empty($classArray)){
+				$classArray = getHash('SELECT TableID,ObjectID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id), $DB_WE);
+				if(!$classArray){
 					t_e('fatal shop error', $id, $_REQUEST);
 					return array();
 				}
 
-				$olv = new we_object_listview(0, 1, 0, '', 0, $classArray['TableID'], '', '', ' ' . OBJECT_X_TABLE . $classArray['TableID'] . '.ID=' . $classArray['ObjectID']);
+				$olv = new we_object_listview(0, 1, 0, '', false, $classArray['TableID'], '', '', ' ' . OBJECT_X_TABLE . $classArray['TableID'] . '.ID=' . $classArray['ObjectID'], 0, 0, true, false);
 				$olv->next_record();
 
-				$Record = $olv->DB_WE->Record;
+				$Record = $olv->DB_WE->getDBRecord();
 
 				if($variant){
 					// init model to detect variants
