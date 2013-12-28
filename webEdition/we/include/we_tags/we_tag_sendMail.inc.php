@@ -151,11 +151,11 @@ function we_tag_sendMail($attribs, $content){
 				$content = g_l('global', "[formmailerror]") . getHtmlTag("br") . "&#8226; " . "Email dispatch blocked / Email Versand blockiert!";
 				$css = array('media' => 'screen', 'rel' => 'stylesheet', 'type' => 'text/css', 'href' => WEBEDITION_DIR . 'css/global.php');
 
-				print we_html_tools::htmlTop() .
-					getHtmlTag("link", $css) .
-					'</head>' .
-					getHtmlTag("body", array("class" => "weEditorBody"), we_html_tools::htmlDialogLayout(getHtmlTag("div", array("class" => "defaultgray"), $content), $headline)) .
-					'</html>';
+				echo we_html_tools::getHtmlTop() .
+				getHtmlTag("link", $css) .
+				'</head>' .
+				getHtmlTag("body", array("class" => "weEditorBody"), we_html_tools::htmlDialogLayout(getHtmlTag("div", array("class" => "defaultgray"), $content), $headline)) .
+				'</html>';
 
 				exit;
 			} else {

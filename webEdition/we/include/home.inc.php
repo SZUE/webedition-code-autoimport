@@ -25,7 +25,7 @@ include_once (WE_INCLUDES_PATH . '/we_widgets/cfg.inc.php');
 //make sure we know which browser is used
 
 we_html_tools::protect();
-we_html_tools::htmlTop();
+echo we_html_tools::getHtmlTop();
 
 $js_load = array('windows', 'utils/dimension', 'utils/prototypes', 'utils/cockpit');
 foreach($js_load as $js){

@@ -23,9 +23,7 @@
  */
 we_html_tools::protect();
 
-we_html_tools::htmlTop();
-
-print STYLESHEET;
+echo we_html_tools::getHtmlTop() . STYLESHEET;
 
 $content = "<p class=\"defaultfont\">" . (isset($we_message) ? $we_message : sprintf(g_l('alert', "[no_perms]"), f("SELECT Username FROM " . USER_TABLE . " WHERE ID='" . $we_doc->CreatorID . "'", "Username", $DB_WE))) . "</p>";
 ?>

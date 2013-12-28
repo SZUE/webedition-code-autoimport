@@ -21,7 +21,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 @include_once('Text/Diff.php');
 @include_once('Text/Diff/Renderer/inline.php');
 
@@ -145,8 +144,8 @@ if(!($isObj || $isTempl)){
 if($isTempl){
 	if($newDoc['documentElements']){
 		$nDocElements = unserialize((substr_compare($newDoc['documentElements'], 'a%3A', 0, 4) == 0 ?
-				html_entity_decode(urldecode($newDoc['documentElements']), ENT_QUOTES) :
-				gzuncompress($newDoc['documentElements']))
+						html_entity_decode(urldecode($newDoc['documentElements']), ENT_QUOTES) :
+						gzuncompress($newDoc['documentElements']))
 		);
 	} else {
 		$nDocElements = array();
@@ -159,8 +158,8 @@ if(!empty($oldDoc) && !($isObj || $isTempl)){
 if(!empty($oldDoc) && $isTempl){
 	if($oldDoc['documentElements']){
 		$oDocElements = unserialize((substr_compare($oldDoc['documentElements'], 'a%3A', 0, 4) == 0 ?
-				html_entity_decode(urldecode($oldDoc['documentElements']), ENT_QUOTES) :
-				gzuncompress($oldDoc['documentElements']))
+						html_entity_decode(urldecode($oldDoc['documentElements']), ENT_QUOTES) :
+						gzuncompress($oldDoc['documentElements']))
 		);
 	} else {
 		$oDocElements = array();
@@ -172,7 +171,7 @@ $_versions_time_days = new we_html_select(array(
 	'style' => '',
 	'class' => 'weSelect',
 	'onchange' => 'previewVersion(' . $ID . ', this.value);'
-	)
+		)
 );
 
 $versionOld = '';
@@ -189,7 +188,7 @@ foreach($versions as $k => $v){
 }
 
 $contentDiff = '<div style="margin-left:25px;" id="top">' . g_l('versions', '[VersionChangeTxt]') . '<br/><br/>' .
-	g_l('versions', '[VersionNumber]') . " " . $_versions_time_days->getHtml() . '
+		g_l('versions', '[VersionNumber]') . " " . $_versions_time_days->getHtml() . '
 			<div style="margin:20px 0px 0px 0px;" class="defaultfont"><a href="javascript:window.print()">' . g_l('versions', '[printPage]') . '</a></div>
 			</div>
 			<div style="margin:0px 0px 0px 25px;" id="topPrint">
@@ -203,9 +202,9 @@ $contentDiff = '<div style="margin-left:25px;" id="top">' . g_l('versions', '[Ve
 			<td style="border-bottom:1px solid #B8B8B7;background-color:#BCBBBB;">' . we_html_tools::getPixel(30, 15) . '
 			</td>
 	  		<td class="defaultfont" align="left" style="border-bottom:1px solid #B8B8B7;background-color:#BCBBBB;"><strong>' . g_l('versions', '[VersionNew]') . '</strong></td>' .
-	(empty($oldDoc) ? '' :
-		'<td class="defaultfont" align="left" style="border-left:1px solid #B8B8B7;background-color:#BCBBBB;border-bottom:1px solid #B8B8B7;"><strong>' . g_l('versions', '[VersionOld]') . '</strong></td>') .
-	'</tr>';
+		(empty($oldDoc) ? '' :
+				'<td class="defaultfont" align="left" style="border-left:1px solid #B8B8B7;background-color:#BCBBBB;border-bottom:1px solid #B8B8B7;"><strong>' . g_l('versions', '[VersionOld]') . '</strong></td>') .
+		'</tr>';
 
 foreach($newDoc as $k => $v){
 	if(doNotShowFields($k)){
@@ -213,9 +212,9 @@ foreach($newDoc as $k => $v){
 
 		$oldVersion = true;
 		$newVal = ($k == "ParentID" ?
-				$newDoc['Path'] :
-				weVersions::showValue($k, $newDoc[$k], $newDoc['documentTable'])
-			);
+						$newDoc['Path'] :
+						weVersions::showValue($k, $newDoc[$k], $newDoc['documentTable'])
+				);
 
 		if($k == "Owners" && $newDoc[$k] == ""){
 			$newVal = g_l('versions', '[CreatorID]');
@@ -224,8 +223,8 @@ foreach($newDoc as $k => $v){
 		$mark = "border-bottom:1px solid #B8B8B7; ";
 		if(!empty($oldDoc)){
 			$oldVal = ($k == "ParentID" ?
-					$oldDoc['Path'] :
-					weVersions::showValue($k, $oldDoc[$k], $oldDoc['documentTable']));
+							$oldDoc['Path'] :
+							weVersions::showValue($k, $oldDoc[$k], $oldDoc['documentTable']));
 
 			if($k == "Owners" && $oldDoc[$k] == ""){
 				$oldVal = g_l('versions', '[CreatorID]');
@@ -242,8 +241,8 @@ foreach($newDoc as $k => $v){
 		$contentDiff .= '<tr>
 <td width="33%" style="' . $mark . '"><strong>' . $name . '</strong></td>
 <td width="33%" style="' . $mark . '">' . $newVal . '</td>' .
-			($oldVersion ? '<td width="33%" style="' . $mark . 'border-left:1px solid #B8B8B7;">' . $oldVal . '</td>' : '') .
-			'</tr>';
+				($oldVersion ? '<td width="33%" style="' . $mark . 'border-left:1px solid #B8B8B7;">' . $oldVal . '</td>' : '') .
+				'</tr>';
 	}
 }
 
@@ -254,11 +253,11 @@ $contentDiff .= '</table>';
 $contentDiff .= '<table cellpadding="5" cellspacing="0" border="0" width="95%" style="background-color:#F5F5F5;margin:15px 15px 15px 25px;border-left:1px solid #B8B8B7;border-right:1px solid #B8B8B7;">
 		<tr>
 		<td align="left" colspan="3" style="padding:5px;background-color:#BCBBBB;" class="defaultfont"><strong>' . g_l('versions', '[contentElementsMod]') . '</strong>' .
-	'</td></tr>';
+		'</td></tr>';
 if($newDoc['documentElements']){
 	$newDocElements = unserialize((substr_compare($newDoc['documentElements'], 'a%3A', 0, 4) == 0 ?
-			html_entity_decode(urldecode($newDoc['documentElements']), ENT_QUOTES) :
-			gzuncompress($newDoc['documentElements']))
+					html_entity_decode(urldecode($newDoc['documentElements']), ENT_QUOTES) :
+					gzuncompress($newDoc['documentElements']))
 	);
 } else {
 	$newDocElements = array();
@@ -267,8 +266,8 @@ if($newDoc['documentElements']){
 if(isset($oldDoc['documentElements'])){
 	if($oldDoc['documentElements']){
 		$oldDocElements = unserialize((substr_compare($oldDoc['documentElements'], 'a%3A', 0, 4) == 0 ?
-				html_entity_decode(urldecode($oldDoc['documentElements']), ENT_QUOTES) :
-				gzuncompress($oldDoc['documentElements']))
+						html_entity_decode(urldecode($oldDoc['documentElements']), ENT_QUOTES) :
+						gzuncompress($oldDoc['documentElements']))
 		);
 	} else {
 		$oldDocElements = array();
@@ -366,15 +365,15 @@ if(!empty($newDocElements)){
 
 $contentDiff .= '</table>' .
 //scheduler
-	'<table cellpadding="5" cellspacing="0" border="0" width="95%" style="background-color:#F5F5F5;margin:15px 15px 15px 25px;border-left:1px solid #B8B8B7;border-right:1px solid #B8B8B7;">
+		'<table cellpadding="5" cellspacing="0" border="0" width="95%" style="background-color:#F5F5F5;margin:15px 15px 15px 25px;border-left:1px solid #B8B8B7;border-right:1px solid #B8B8B7;">
 <tr>
 	<td align="left" colspan="3" style="padding:5px;background-color:#BCBBBB;" class="defaultfont"><strong>' . g_l('versions', '[schedulerMod]') . '</strong></td>
 </tr>';
 
 if($newDoc['documentScheduler']){
 	$newDocScheduler = unserialize((substr_compare($newDoc['documentScheduler'], 'a%3A', 0, 4) == 0 ?
-			html_entity_decode(urldecode($newDoc['documentScheduler']), ENT_QUOTES) :
-			gzuncompress($newDoc['documentScheduler']))
+					html_entity_decode(urldecode($newDoc['documentScheduler']), ENT_QUOTES) :
+					gzuncompress($newDoc['documentScheduler']))
 	);
 } else {
 	$newDocScheduler = array();
@@ -382,8 +381,8 @@ if($newDoc['documentScheduler']){
 if(isset($oldDoc['documentScheduler'])){
 	if($oldDoc['documentScheduler']){
 		$oldDocScheduler = unserialize((substr_compare($oldDoc['documentScheduler'], 'a%3A', 0, 4) == 0 ?
-				html_entity_decode(urldecode($oldDoc['documentScheduler']), ENT_QUOTES) :
-				gzuncompress($oldDoc['documentScheduler']))
+						html_entity_decode(urldecode($oldDoc['documentScheduler']), ENT_QUOTES) :
+						gzuncompress($oldDoc['documentScheduler']))
 		);
 	} else {
 		$oldDocScheduler = array();
@@ -411,8 +410,8 @@ if(empty($newDocScheduler) && empty($oldDocScheduler)){
 				$oldVal = weVersions::showValue($key, $val, $oldDoc['documentTable']);
 			} else {
 				$oldVal = (is_array($val) ?
-						weVersions::showValue($key, $val, $oldDoc['documentTable']) :
-						we_html_tools::getPixel(1, 1));
+								weVersions::showValue($key, $val, $oldDoc['documentTable']) :
+								we_html_tools::getPixel(1, 1));
 			}
 
 
@@ -430,7 +429,7 @@ if(empty($newDocScheduler) && empty($oldDocScheduler)){
 		$contentDiff .= '<tr>
 	<td width="33%" style="background-color:#FFF; "><strong>' . g_l('versions', '[scheduleTask]') . ' ' . $number . '</strong></td>
 	<td width="33%" style="background-color:#FFF;">' . we_html_tools::getPixel(1, 1) . '</td>' .
-			(empty($oldDoc) ? '' : '<td width="33%" style="background-color:#FFF;">' . we_html_tools::getPixel(1, 1) . '</td>') . '
+				(empty($oldDoc) ? '' : '<td width="33%" style="background-color:#FFF;">' . we_html_tools::getPixel(1, 1) . '</td>') . '
 </tr>';
 
 
@@ -443,8 +442,8 @@ if(empty($newDocScheduler) && empty($oldDocScheduler)){
 
 				if(!empty($oldDocScheduler)){
 					$oldVal = (isset($oldDocScheduler[$k][$key]) && !is_array($oldDocScheduler[$k][$key]) ?
-							weVersions::showValue($key, $oldDocScheduler[$k][$key], $oldDoc['documentTable']) :
-							we_html_tools::getPixel(1, 1));
+									weVersions::showValue($key, $oldDocScheduler[$k][$key], $oldDoc['documentTable']) :
+									we_html_tools::getPixel(1, 1));
 
 					if($newVal != $oldVal){
 						$mark .= "background-color:#BFD5FF;";
@@ -456,8 +455,8 @@ if(empty($newDocScheduler) && empty($oldDocScheduler)){
 				$newVal = weVersions::showValue($key, $val, $newDoc['documentTable']);
 				if(!empty($oldDocScheduler)){
 					$oldVal = (isset($oldDocScheduler[$k][$key]) && is_array($oldDocScheduler[$k][$key]) ?
-							weVersions::showValue($key, $oldDocScheduler[$k][$key], $oldDoc['documentTable']) :
-							we_html_tools::getPixel(1, 1));
+									weVersions::showValue($key, $oldDocScheduler[$k][$key], $oldDoc['documentTable']) :
+									we_html_tools::getPixel(1, 1));
 
 					if($newVal != $oldVal){
 						$mark .= "background-color:#BFD5FF;";
@@ -470,7 +469,7 @@ if(empty($newDocScheduler) && empty($oldDocScheduler)){
 			$contentDiff .= '<tr>
 	<td width="33%" style="' . $mark . '"><strong>' . $name . '</strong></td>
 	<td width="33%" style="' . $mark . '">' . $newVal . '</td>' .
-				(empty($oldDoc) ? '' : '<td width="33%" style="border-left:1px solid #B8B8B7;' . $mark . '">' . $oldVal . '</td>') . '
+					(empty($oldDoc) ? '' : '<td width="33%" style="border-left:1px solid #B8B8B7;' . $mark . '">' . $oldVal . '</td>') . '
 </tr>';
 		}
 	}
@@ -478,15 +477,15 @@ if(empty($newDocScheduler) && empty($oldDocScheduler)){
 
 $contentDiff .= '</table>' .
 //customfilter
-	'<table cellpadding="5" cellspacing="0" border="0" width="95%" style="background-color:#F5F5F5;margin:15px 15px 15px 25px;border-left:1px solid #B8B8B7;border-right:1px solid #B8B8B7;">
+		'<table cellpadding="5" cellspacing="0" border="0" width="95%" style="background-color:#F5F5F5;margin:15px 15px 15px 25px;border-left:1px solid #B8B8B7;border-right:1px solid #B8B8B7;">
 <tr>
 	<td align="left" colspan="3" style="padding:5px;background-color:#BCBBBB;" class="defaultfont"><strong>' . g_l('versions', '[customerMod]') . '</strong></td>
 </tr>';
 
 if($newDoc['documentCustomFilter']){
 	$newCustomFilter = unserialize((substr_compare($newDoc['documentCustomFilter'], 'a%3A', 0, 4) == 0 ?
-			html_entity_decode(urldecode($newDoc['documentCustomFilter']), ENT_QUOTES) :
-			gzuncompress($newDoc['documentCustomFilter']))
+					html_entity_decode(urldecode($newDoc['documentCustomFilter']), ENT_QUOTES) :
+					gzuncompress($newDoc['documentCustomFilter']))
 	);
 } else {
 	$newCustomFilter = array();
@@ -494,8 +493,8 @@ if($newDoc['documentCustomFilter']){
 if(isset($oldDoc['documentCustomFilter'])){
 	if($oldDoc['documentCustomFilter']){
 		$oldCustomFilter = unserialize((substr_compare($oldDoc['documentCustomFilter'], 'a%3A', 0, 4) == 0 ?
-				html_entity_decode(urldecode($oldDoc['documentCustomFilter']), ENT_QUOTES) :
-				gzuncompress($oldDoc['documentCustomFilter']))
+						html_entity_decode(urldecode($oldDoc['documentCustomFilter']), ENT_QUOTES) :
+						gzuncompress($oldDoc['documentCustomFilter']))
 		);
 	} else {
 		$oldCustomFilter = array();
@@ -516,14 +515,14 @@ if(empty($newCustomFilter) && empty($oldCustomFilter)){
 			$oldVal = weVersions::showValue($key, $val, $oldDoc['documentTable']);
 		} else {
 			$oldVal = (is_array($val) ?
-					weVersions::showValue($key, $val, $oldDoc['documentTable']) :
-					we_html_tools::getPixel(1, 1));
+							weVersions::showValue($key, $val, $oldDoc['documentTable']) :
+							we_html_tools::getPixel(1, 1));
 		}
 
 		$contentDiff .= '<tr>
 	<td width="33%" style="' . $mark . '"><strong>' . $name . '</strong></td>
 	<td width="33%" style="' . $mark . 'border-right:1px solid #000;">' . $newVal . '</td>' .
-			(empty($oldDoc) ? '' : '<td width="33%" style="' . $mark . '">' . $oldVal . '</td>') . '
+				(empty($oldDoc) ? '' : '<td width="33%" style="' . $mark . '">' . $oldVal . '</td>') . '
 </tr>';
 	}
 } else {
@@ -537,8 +536,8 @@ if(empty($newCustomFilter) && empty($oldCustomFilter)){
 			$newVal = weVersions::showValue($key, $val, $newDoc['documentTable']);
 			if(!empty($oldCustomFilter)){
 				$oldVal = (!is_array($oldCustomFilter[$key]) ?
-						weVersions::showValue($key, $oldCustomFilter[$key], $oldDoc['documentTable']) :
-						we_html_tools::getPixel(1, 1));
+								weVersions::showValue($key, $oldCustomFilter[$key], $oldDoc['documentTable']) :
+								we_html_tools::getPixel(1, 1));
 
 				if($newVal != $oldVal){
 					$mark .= "background-color:#BFD5FF;";
@@ -550,8 +549,8 @@ if(empty($newCustomFilter) && empty($oldCustomFilter)){
 			$newVal = weVersions::showValue($key, $val, $newDoc['documentTable']);
 			if(!empty($oldCustomFilter)){
 				$oldVal = (isset($oldCustomFilter[$key]) && is_array($oldCustomFilter[$key]) ?
-						weVersions::showValue($key, $oldCustomFilter[$key], $oldDoc['documentTable']) :
-						we_html_tools::getPixel(1, 1));
+								weVersions::showValue($key, $oldCustomFilter[$key], $oldDoc['documentTable']) :
+								we_html_tools::getPixel(1, 1));
 
 				if($newVal != $oldVal){
 					$mark .= "background-color:#BFD5FF;";
@@ -564,7 +563,7 @@ if(empty($newCustomFilter) && empty($oldCustomFilter)){
 		$contentDiff .= '<tr>
 	<td width="33%" style="' . $mark . '"><strong>' . $name . '</strong></td>
 	<td width="33%" style="' . $mark . '">' . $newVal . '</td>' .
-			(empty($oldDoc) ? '' : '<td width="33%" style="' . $mark . '">' . $oldVal . '</td>') . '
+				(empty($oldDoc) ? '' : '<td width="33%" style="' . $mark . '">' . $oldVal . '</td>') . '
 </tr>';
 	}
 }
@@ -583,9 +582,8 @@ if(!$isObj){
 	$activTab = 1;
 }
 
-we_html_tools::htmlTop("webEdition - " . g_l('versions', '[versioning]'), ($newDoc['Charset'] ? $newDoc['Charset'] : DEFAULT_CHARSET));
-
-print STYLESHEET;
+echo we_html_tools::getHtmlTop("webEdition - " . g_l('versions', '[versioning]'), ($newDoc['Charset'] ? $newDoc['Charset'] : DEFAULT_CHARSET)) .
+ STYLESHEET;
 ?>
 
 <script type="text/javascript">
@@ -626,17 +624,17 @@ print STYLESHEET;
 
 <body>
 	<div id="mytabs">
-<?php print $tabsBody; ?>
+		<?php print $tabsBody; ?>
 	</div>
 	<div id="content" style="position:absolute;margin: 0px; top:30px;bottom:40px;left:0px;right:0px;overflow:auto;">
 		<div id="tab1" style="display:block;">
-<?php print $_tab_1 ?>
+			<?php print $_tab_1 ?>
 		</div>
 		<div id="tab2" style="display:none;height:100%;width:100%">
-<?php print $_tab_2 ?>
+			<?php print $_tab_2 ?>
 		</div>
 		<div id="tab3" style="display:none;height:100%;width:100%">
-<?php print $_tab_3 ?>
+			<?php print $_tab_3 ?>
 		</div>
 	</div>
 

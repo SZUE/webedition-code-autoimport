@@ -23,7 +23,7 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
-we_html_tools::htmlTop();
+echo we_html_tools::getHtmlTop();
 
 $we_tabs = new we_tabs();
 

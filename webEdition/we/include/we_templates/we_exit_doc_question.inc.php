@@ -23,7 +23,7 @@
  */
 we_html_tools::protect();
 
-we_html_tools::htmlTop(g_l('global', '[question]'));
+echo we_html_tools::getHtmlTop(g_l('global', '[question]'));
 
 
 // we_cmd[0] => exit_doc_question

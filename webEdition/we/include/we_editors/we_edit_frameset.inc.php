@@ -258,7 +258,7 @@ if(!isset($we_doc->elements['data']['dat'])){
 			base64_decode($_REQUEST['we_cmd'][10]) :
 			we_base_ContentTypes::inst()->getDefaultCode($we_doc->ContentType));
 }
-we_html_tools::htmlTop();
+echo we_html_tools::getHtmlTop();
 ?>
 <script  type="text/javascript">
 	<!--

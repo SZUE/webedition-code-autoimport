@@ -24,9 +24,8 @@
  */
 we_html_tools::protect();
 
-we_html_tools::htmlTop();
-
-echo we_html_element::jsScript(JS_DIR . 'windows.js') .
+echo we_html_tools::getHtmlTop() .
+ we_html_element::jsScript(JS_DIR . 'windows.js') .
  we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
  we_html_element::jsScript(JS_DIR . 'libs/yui/event-min.js') .
  we_html_element::jsScript(JS_DIR . 'libs/yui/connection-min.js');
@@ -34,16 +33,16 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') .
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 $headCal = we_html_element::cssLink(JS_DIR . "jscalendar/skins/aqua/theme.css") .
-	we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
-	we_html_element::jsScript(WE_INCLUDES_DIR . "we_language/" . $GLOBALS ["WE_LANGUAGE"] . "/calendar.js") .
-	we_html_element::jsScript(JS_DIR . "jscalendar/calendar-setup.js");
+		we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
+		we_html_element::jsScript(WE_INCLUDES_DIR . "we_language/" . $GLOBALS ["WE_LANGUAGE"] . "/calendar.js") .
+		we_html_element::jsScript(JS_DIR . "jscalendar/calendar-setup.js");
 
 $_view = new doclistView ( );
 
 print $headCal .
-	$_view->getSearchJS() .
-	STYLESHEET .
-	'</head>
+		$_view->getSearchJS() .
+		STYLESHEET .
+		'</head>
 
 <body class="weEditorBody" onunload="doUnload()" onkeypress="javascript:if(event.keyCode==\'13\' || event.keyCode==\'3\') search(true);" onLoad="setTimeout(\'init();\',200)" onresize="sizeScrollContent();">
 <div id="mouseOverDivs_doclist"></div>

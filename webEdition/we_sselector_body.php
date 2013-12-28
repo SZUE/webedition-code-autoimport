@@ -37,8 +37,7 @@ if(file_exists($supportDebuggingFile)){
 	}
 }
 
-we_html_tools::htmlTop();
-print STYLESHEET;
+echo we_html_tools::getHtmlTop() . STYLESHEET;
 
 function _cutText($text, $l){
 	if(strlen($text) > $l){
@@ -318,8 +317,8 @@ var i = 0;
 					$_date = date("d-m-Y H:i:s");
 				} else {
 					$_text_to_show = '<span' . ($indb ? ' style="color:#006699"' : '') . ' title="' . oldHtmlspecialchars($entry) . '">' .
-						((strlen($entry) > 24) ? oldHtmlspecialchars(_cutText($entry, 24)) : oldHtmlspecialchars($entry)) .
-						'</span>';
+							((strlen($entry) > 24) ? oldHtmlspecialchars(_cutText($entry, 24)) : oldHtmlspecialchars($entry)) .
+							'</span>';
 					$_type = '<span' . ($indb ? ' style="color:#006699"' : '') . ' title="' . oldHtmlspecialchars($type) . '">' . oldHtmlspecialchars(_cutText($type, 17)) . '</span>';
 					$_date = '<span' . ($indb ? ' style="color:#006699"' : '') . '>' . (file_exists($dir . "/" . $entry) ? date("d-m-Y H:i:s", filectime($dir . '/' . $entry)) : 'n/a') . '<span>';
 				}

@@ -22,11 +22,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 we_html_tools::protect();
-we_html_tools::htmlTop(g_l('global', '[select_color]'));
-
-print
-	STYLESHEET .
-	we_html_element::jsScript(JS_DIR . 'we_colors2.js');
+echo we_html_tools::getHtmlTop(g_l('global', '[select_color]')) .
+ STYLESHEET .
+ we_html_element::jsScript(JS_DIR . 'we_colors2.js');
 ?>
 <script  type="text/javascript">
 

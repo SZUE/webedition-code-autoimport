@@ -49,7 +49,7 @@ we_html_tools::headerCtCharset('text/html', $charset);
 //	---> Output the HTML Header
 //
 
-we_html_tools::htmlTop('', $charset, 5);
+echo we_html_tools::getHtmlTop('', $charset, 5);
 
 
 //

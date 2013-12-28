@@ -22,11 +22,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 we_html_tools::protect();
-if(!(isset($GLOBALS['we_print_not_htmltop']) && $GLOBALS['we_print_not_htmltop'])){
-	we_html_tools::htmlTop();
-}
-print STYLESHEET .
-	we_html_element::jsScript(JS_DIR . 'attachKeyListener.js');
+echo (!(isset($GLOBALS['we_print_not_htmltop']) && $GLOBALS['we_print_not_htmltop']) ? we_html_tools::getHtmlTop() : '') .
+ STYLESHEET .
+ we_html_element::jsScript(JS_DIR . 'attachKeyListener.js');
 
 $mod = str_replace(array('.', '/', '\\'), '', (isset($_REQUEST["mod"]) ? $_REQUEST["mod"] : (isset($GLOBALS["mod"]) ? $GLOBALS["mod"] : "")));
 
@@ -47,7 +45,7 @@ $_starttable->setCol($_row++, 0, array(
 	"class" => "defaultfont",
 	"colspan" => 3,
 	"align" => "center"), "<strong>" .
-	$title . "</strong>");
+		$title . "</strong>");
 
 $_starttable->setCol($_row++, 0, array("class" => "defaultfont",
 	"colspan" => 3), "");

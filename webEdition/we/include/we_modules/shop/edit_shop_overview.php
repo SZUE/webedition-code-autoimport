@@ -25,9 +25,8 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
-we_html_tools::htmlTop();
-
-print STYLESHEET;
+echo we_html_tools::getHtmlTop() .
+ STYLESHEET;
 
 /// config
 $DB_WE->query('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . " WHERE strDateiname='shop_pref'");
@@ -81,18 +80,18 @@ echo we_html_element::jsScript(JS_DIR . 'images.js') . we_html_element::jsScript
 </head>
 
 <body class="weEditorBody" onunload="doUnload()"><?php
-	$parts = array(
-		array(
-			"headline" => g_l('modules_shop', '[month][' . $month . ']') . " " . $year,
-			"html" => $info,
-			"space" => 170
-		),
-		array(
-			"headline" => g_l('modules_shop', '[stat]'),
-			"html" => $stat,
-			"space" => 170
-		)
-	);
+$parts = array(
+	array(
+		"headline" => g_l('modules_shop', '[month][' . $month . ']') . " " . $year,
+		"html" => $info,
+		"space" => 170
+	),
+	array(
+		"headline" => g_l('modules_shop', '[stat]'),
+		"html" => $stat,
+		"space" => 170
+	)
+);
 
-	print we_html_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false, g_l('tabs', "[module][overview]"));
-	?></body></html>
+print we_html_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false, g_l('tabs', "[module][overview]"));
+?></body></html>

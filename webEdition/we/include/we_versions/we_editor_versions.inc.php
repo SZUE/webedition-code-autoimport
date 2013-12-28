@@ -23,11 +23,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 we_html_tools::protect();
-
-we_html_tools::htmlTop();
 $_view = new weVersionsView();
 
-echo we_html_element::jsScript(JS_DIR . 'windows.js') .
+echo we_html_tools::getHtmlTop() .
+ we_html_element::jsScript(JS_DIR . 'windows.js') .
  we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
  we_html_element::jsScript(JS_DIR . 'libs/yui/event-min.js') .
  we_html_element::jsScript(JS_DIR . 'libs/yui/connection-min.js');

@@ -34,7 +34,7 @@ if(isset($_REQUEST['SEEM_edit_include']) && $_REQUEST['SEEM_edit_include']){
 	$_cmd_string .= ",'SEEM_edit_include'";
 }
 
-we_html_tools::htmlTop();
+echo we_html_tools::getHtmlTop();
 ?>
 <script type="text/javascript"><!--
 	function we_cmd() {

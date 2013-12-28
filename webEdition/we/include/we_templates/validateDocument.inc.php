@@ -27,7 +27,7 @@
 //  when the server is accessible via web
 
 we_html_tools::protect();
-we_html_tools::htmlTop();
+echo we_html_tools::getHtmlTop();
 
 //  for predefined services include properties file, depending on content-Type
 //  and depending on fileending.

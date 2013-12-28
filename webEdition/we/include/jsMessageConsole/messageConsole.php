@@ -25,8 +25,8 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
-we_html_tools::htmlTop(g_l('messageConsole', '[headline]'));
-print STYLESHEET;
+echo we_html_tools::getHtmlTop(g_l('messageConsole', '[headline]')) .
+ STYLESHEET;
 
 
 $deleteAllButton = we_html_button::create_button("delete", "javascript:messageConsoleWindow.removeMessages();");

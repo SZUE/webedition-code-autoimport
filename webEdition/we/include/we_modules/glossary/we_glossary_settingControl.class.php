@@ -34,7 +34,7 @@ class we_glossary_settingControl{
 					break;
 			}
 
-			print we_html_tools::htmlTop() .
+			echo we_html_tools::getHtmlTop() .
 				'</head><body>' . $html . '</body></html>';
 			exit;
 		}

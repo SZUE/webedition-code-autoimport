@@ -61,7 +61,7 @@ if(preg_match('%^.+_te?xt\[.+\]$%i', $_REQUEST['we_cmd'][1])){
 	$writeToFrontend = true;
 }
 
-we_html_tools::htmlTop(sprintf('', $fieldName), ($_REQUEST['we_cmd'][15] ? $_REQUEST['we_cmd'][15] : $defaultCharset));
+echo we_html_tools::getHtmlTop(sprintf('', $fieldName), ($_REQUEST['we_cmd'][15] ? $_REQUEST['we_cmd'][15] : $defaultCharset));
 
 if(isset($fieldName) && isset($_REQUEST['we_okpressed']) && $_REQUEST['we_okpressed']){
 	if(!isset($writeToFrontend)){

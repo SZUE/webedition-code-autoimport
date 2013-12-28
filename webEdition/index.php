@@ -43,7 +43,7 @@ if(permissionhandler::hasPerm('ADMINISTRATOR')){
 	$suhosinMsg = (in_array('suhosin', get_loaded_extensions()) && !in_array(ini_get('suhosin.simulation'), array(1, 'on', 'yes', 'true', true))) ? 'suhosin=on\n' : '';
 
 	$maxInputMsg = !ini_get('max_input_vars') ? 'max_input_vars = 1000 (PHP default value)' :
-		(ini_get('max_input_vars') < 2000 ? 'max_input_vars = ' . ini_get('max_input_vars') : '');
+			(ini_get('max_input_vars') < 2000 ? 'max_input_vars = ' . ini_get('max_input_vars') : '');
 	$maxInputMsg .= $maxInputMsg ? ': >= 2000 is recommended' : $maxInputMsg;
 
 	$criticalPhpMsg = trim($maxInputMsg . $suhosinMsg);
@@ -85,20 +85,19 @@ function printHeader($login, $status = 200){
 	header('Pragma: public');
 	header('Pragma: no-cache');
 	we_html_tools::setHttpCode($status);
-	we_html_tools::htmlTop('webEdition');
 
-	print STYLESHEET .
-		we_html_element::cssElement('html, body {height:100%;}') .
-		we_html_element::jsScript(JS_DIR . 'windows.js');
+	echo we_html_tools::getHtmlTop('webEdition') . STYLESHEET .
+	we_html_element::cssElement('html, body {height:100%;}') .
+	we_html_element::jsScript(JS_DIR . 'windows.js');
 	include(JS_PATH . 'weJsStrings.inc.php');
 
 	if($login != LOGIN_OK){
 		print we_html_element::linkElement(array('rel' => 'home', 'href' => WEBEDITION_DIR)) .
-			we_html_element::linkElement(array('rel' => 'author', 'href' => g_l('start', '[we_homepage]')));
+				we_html_element::linkElement(array('rel' => 'author', 'href' => g_l('start', '[we_homepage]')));
 	}
 
 	print we_html_element::linkElement(array('rel' => 'SHORTCUT ICON', 'href' => IMAGE_DIR . 'webedition.ico')) .
-		we_html_element::jsElement('cookieBackup = document.cookie;
+			we_html_element::jsElement('cookieBackup = document.cookie;
 	document.cookie = "cookie=yep";
 	cookieOk = document.cookie.indexOf("cookie=yep") > -1;
 	document.cookie = cookieBackup;
@@ -151,7 +150,7 @@ function showMessage(message, prio, win){
 		}
 	}
 }') .
-		'</head>';
+			'</head>';
 }
 
 /* * ***************************************************************************
@@ -181,11 +180,11 @@ $GLOBALS['DB_WE']->query('DELETE FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTabl
 $count = f('SELECT COUNT(1) FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblUser" AND IP="' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '" AND LoginDate > DATE_SUB(NOW(), INTERVAL ' . intval(LOGIN_FAILED_TIME) . ' MINUTE)');
 
 if($count >= LOGIN_FAILED_NR){
-	we_html_tools::htmlTop('webEdition ');
-	print we_html_element::jsElement(
+	echo we_html_tools::getHtmlTop('webEdition ') .
+	we_html_element::jsElement(
 			we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[3timesLoginError]'), LOGIN_FAILED_NR, LOGIN_FAILED_TIME), we_message_reporting::WE_MESSAGE_ERROR)
-	);
-	print '</html>';
+	) .
+	'</html>';
 	exit();
 }
 
@@ -221,12 +220,12 @@ function getError($reason, $cookie = false){
 	}
 	if(isset($GLOBALS['FOUND_SESSION_PROBLEM'])){
 		$_error .= ++$_error_count . ' - ' .
-			'PHP is not allowed to write / cleanup session data correctly. Please contact your Admin. Additional Information for your Admin:' . we_html_element::htmlBr() .
-			'session.gc_probability: ' . $GLOBALS['FOUND_SESSION_PROBLEM'] . we_html_element::htmlBr() . '
+				'PHP is not allowed to write / cleanup session data correctly. Please contact your Admin. Additional Information for your Admin:' . we_html_element::htmlBr() .
+				'session.gc_probability: ' . $GLOBALS['FOUND_SESSION_PROBLEM'] . we_html_element::htmlBr() . '
  Session Path: ' . session_save_path() . we_html_element::htmlBr() . '
  Opendir: failed' . we_html_element::htmlBr() .
-			'Problem is temporary fixed by webEdition' . we_html_element::htmlBr() .
-			'<a href="' . WEBEDITION_DIR . 'index.php?skipSess=1">Click here, to start anyway</a>' . we_html_element::htmlBr();
+				'Problem is temporary fixed by webEdition' . we_html_element::htmlBr() .
+				'<a href="' . WEBEDITION_DIR . 'index.php?skipSess=1">Click here, to start anyway</a>' . we_html_element::htmlBr();
 	}
 
 	if(!ini_get('session.use_cookies')){
@@ -348,7 +347,7 @@ if(isset($_POST['checkLogin']) && empty($_COOKIE)){
 	 * *************************************************************************** */
 
 	$_hidden_values = we_html_element::htmlHidden(array('name' => 'checkLogin', 'value' => session_id())) .
-		we_html_element::htmlHidden(array('name' => 'indexDate', 'value' => date('d.m.Y, H:i:s')));
+			we_html_element::htmlHidden(array('name' => 'indexDate', 'value' => date('d.m.Y, H:i:s')));
 
 	if($ignore_browser){
 		$_hidden_values .= we_html_element::htmlHidden(array('name' => 'ignore_browser', 'value' => 'true'));
@@ -469,8 +468,8 @@ if(isset($_POST['checkLogin']) && empty($_COOKIE)){
 			$cnt = f('SELECT COUNT(1) FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblUser" AND IP="' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '" AND LoginDate > DATE_SUB(NOW(), INTERVAL ' . intval(LOGIN_FAILED_TIME) . ' MINUTE)');
 
 			$_body_javascript = ($cnt >= LOGIN_FAILED_NR ?
-					we_message_reporting::getShowMessageCall(sprintf(g_l('alert', "[3timesLoginError]"), LOGIN_FAILED_NR, LOGIN_FAILED_TIME), we_message_reporting::WE_MESSAGE_ERROR) :
-					we_message_reporting::getShowMessageCall(g_l('alert', "[login_failed]"), we_message_reporting::WE_MESSAGE_ERROR));
+							we_message_reporting::getShowMessageCall(sprintf(g_l('alert', "[3timesLoginError]"), LOGIN_FAILED_NR, LOGIN_FAILED_TIME), we_message_reporting::WE_MESSAGE_ERROR) :
+							we_message_reporting::getShowMessageCall(g_l('alert', "[login_failed]"), we_message_reporting::WE_MESSAGE_ERROR));
 			break;
 		case 3:
 			$_body_javascript = we_message_reporting::getShowMessageCall(g_l('alert', "[login_failed_security]"), we_message_reporting::WE_MESSAGE_ERROR) . "document.location = '" . WEBEDITION_DIR . "index.php" . (($ignore_browser || (isset($_COOKIE["ignore_browser"]) && $_COOKIE["ignore_browser"] == "true")) ? "&ignore_browser=" . (isset($_COOKIE["ignore_browser"]) ? $_COOKIE["ignore_browser"] : ($ignore_browser ? "true" : "false")) : "") . "';";

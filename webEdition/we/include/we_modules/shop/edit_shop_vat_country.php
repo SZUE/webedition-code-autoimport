@@ -25,9 +25,8 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
-we_html_tools::htmlTop();
-
-print STYLESHEET;
+echo we_html_tools::getHtmlTop() .
+ STYLESHEET;
 
 $jsFunction = '
 
@@ -180,9 +179,9 @@ print '</head>
 ';
 
 print we_html_multiIconBox::getHTML(
-		'weShopCountryVat', "100%", $parts, 30, we_html_button::position_yes_no_cancel(
-			we_html_button::create_button('save', 'javascript:we_cmd(\'save\');'), '', we_html_button::create_button('cancel', 'javascript:we_cmd(\'close\');')
-		), -1, '', '', false, g_l('modules_shop', '[vat_country][box_headline]'), '', 741
+				'weShopCountryVat', "100%", $parts, 30, we_html_button::position_yes_no_cancel(
+						we_html_button::create_button('save', 'javascript:we_cmd(\'save\');'), '', we_html_button::create_button('cancel', 'javascript:we_cmd(\'close\');')
+				), -1, '', '', false, g_l('modules_shop', '[vat_country][box_headline]'), '', 741
 );
 
 

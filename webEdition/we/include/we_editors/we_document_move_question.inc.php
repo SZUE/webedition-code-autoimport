@@ -22,9 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 we_html_tools::protect();
-we_html_tools::htmlTop(g_l('global', '[question]'));
-
-echo we_html_element::jsScript(JS_DIR . 'windows.js') .
+echo we_html_tools::getHtmlTop(g_l('global', '[question]')) .
+ we_html_element::jsScript(JS_DIR . 'windows.js') .
  we_html_element::jsElement('self.focus();') .
  STYLESHEET;
 ?>

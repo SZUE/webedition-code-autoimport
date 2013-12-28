@@ -21,8 +21,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-@we_html_tools::headerCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']);
-we_html_tools::htmlTop();
+echo we_html_tools::getHtmlTop();
 ?>
 
 <script  type="text/javascript">

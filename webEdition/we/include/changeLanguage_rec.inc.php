@@ -34,9 +34,8 @@ if(permissionhandler::hasPerm('ADMINISTRATOR')){
 	$ok = $we_doc->changeLanguageRecursive();
 }
 
-we_html_tools::htmlTop();
-
-print ($ok ? we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('weClass', "[grant_language_ok]"), we_message_reporting::WE_MESSAGE_NOTICE)) :
+echo we_html_tools::getHtmlTop() .
+ ($ok ? we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('weClass', "[grant_language_ok]"), we_message_reporting::WE_MESSAGE_NOTICE)) :
 		we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('weClass', "[grant_language_notok]"), we_message_reporting::WE_MESSAGE_ERROR)));
 ?>
 </head>
