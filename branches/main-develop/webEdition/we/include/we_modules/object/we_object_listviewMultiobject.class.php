@@ -245,7 +245,7 @@ class we_object_listviewMultiobject extends listviewBase{
 		return false;
 	}
 
-	function fillMatrix(&$matrix, $classID, $db = ''){
+	function fillMatrix(&$matrix, $classID, we_database_base $db = null){
 		$db = $db ? $db : new DB_WE();
 		$table = OBJECT_X_TABLE . $classID;
 		$joinWhere = array();

@@ -117,7 +117,7 @@ abstract class we_util{
 	 * @return array
 	 * @param int $folderID
 	 */
-	static function getFoldersInFolder($folderID, $table = FILE_TABLE, $db = ''){
+	static function getFoldersInFolder($folderID, $table = FILE_TABLE, we_database_base $db = null){
 		$outArray = array(
 			$folderID
 		);

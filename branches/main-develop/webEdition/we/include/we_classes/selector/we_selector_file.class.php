@@ -125,7 +125,7 @@ class we_selector_file{
 		);
 	}
 
-	function isIDInFolder($ID, $folderID, $db = ''){
+	function isIDInFolder($ID, $folderID, we_database_base $db = null){
 		if($folderID == $ID){
 			return true;
 		}

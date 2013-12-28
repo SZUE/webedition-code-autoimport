@@ -38,7 +38,7 @@ class weModelBase{
 	/**
 	 * Default Constructor
 	 */
-	function __construct($table, $db = ''){
+	function __construct($table, we_database_base $db = null){
 		$this->db = ($db ? $db : new DB_WE()); //FIXME: => ?:
 		$this->table = $table;
 		$this->loadPresistents();
