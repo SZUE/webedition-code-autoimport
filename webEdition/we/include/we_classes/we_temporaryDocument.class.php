@@ -40,7 +40,7 @@ abstract class we_temporaryDocument{
 	 * @param int documentID ID for document which will be stored in database
 	 * @param object mixed document object
 	 */
-	static function save($documentID, $table, $document, $db){
+	static function save($documentID, $table, $document, we_database_base $db){
 		$documentID = intval($documentID);
 		$db->query('UPDATE ' . TEMPORARY_DOC_TABLE . ' SET Active=0 WHERE DocumentID=' . $documentID . ' AND Active=1 AND  DocTable="' . $db->escape(stripTblPrefix($table)) . '"');
 		$ret = $db->query('INSERT INTO ' . TEMPORARY_DOC_TABLE . ' SET ' .
@@ -59,7 +59,7 @@ abstract class we_temporaryDocument{
 		return $ret;
 	}
 
-	static function resave($documentID, $table, $document, $db){
+	static function resave($documentID, $table, $document, we_database_base $db){
 		$docSer = $db->escape(serialize($document));
 		return $db->query('UPDATE ' . TEMPORARY_DOC_TABLE . ' SET DocumentObject="' . $docSer . '",UnixTimestamp=UNIX_TIMESTAMP() WHERE DocumentID=' . intval($documentID) . ' AND Active=1 AND  DocTable="' . $db->escape(stripTblPrefix($table)) . '"');
 	}
@@ -73,7 +73,7 @@ abstract class we_temporaryDocument{
 	 * @param int documentID Document ID
 	 * @return object mixed document object. if return value is flase, document doesn't exists in temporary table
 	 */
-	static function load($documentID, $table, $db){
+	static function load($documentID, $table, we_database_base $db){
 		return f('SELECT DocumentObject FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . intval($documentID) . ' AND Active=1 AND  DocTable="' . $db->escape(stripTblPrefix($table)) . '"', 'DocumentObject', $db);
 	}
 
@@ -85,11 +85,11 @@ abstract class we_temporaryDocument{
 	 *
 	 * @param int documentID Document ID
 	 */
-	static function delete($documentID, $table, $db){
+	static function delete($documentID, $table, we_database_base $db){
 		return $db->query('DELETE FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . intval($documentID) . ' AND  DocTable="' . $db->escape(stripTblPrefix($table)) . '"');
 	}
 
-	static function isInTempDB($id, $table, $db){
+	static function isInTempDB($id, $table, we_database_base $db){
 		return (intval($id) > 0 ?
 				(f('SELECT 1 AS a FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . intval($id) . ' AND Active=1 AND  DocTable="' . $db->escape(stripTblPrefix($table)) . '"', 'a', $db) == '1') :
 				false);

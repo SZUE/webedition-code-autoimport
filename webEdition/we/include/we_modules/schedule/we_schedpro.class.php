@@ -363,7 +363,7 @@ function checkFooter(){
 		return we_html_element::jsElement('var we_hasExtraRow_' . intval($this->nr) . '=' . ($extracont ? 'true' : 'false')) . $table;
 	}
 
-	function processSchedule($id, $schedFile, $now, $DB_WE){
+	function processSchedule($id, $schedFile, $now, we_database_base $DB_WE){
 		usort($schedFile['value'], array('we_schedpro', 'weCmpSchedLast'));
 		$GLOBALS['we']['Scheduler_active'] = 1;
 		$doc_save = isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc'] : NULL;
@@ -740,7 +740,7 @@ function checkFooter(){
 		return false;
 	}
 
-	static function publInScheduleTable($object, $db = ''){
+	static function publInScheduleTable($object, we_database_base $db = null){
 		$db = $db ? $db : new DB_WE();
 		$db->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($object->ID) . ' AND ClassName="' . $db->escape($object->ClassName) . '"');
 		$makeSched = false;

@@ -227,7 +227,7 @@ class we_docTypes extends we_class{
 	 */
 	function formDocTypes2($arrHide = array()){
 		$vals = array();
-		$this->DB_WE->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . we_docTypes::getDoctypeQuery($this->DB_WE));
+		$this->DB_WE->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . self::getDoctypeQuery($this->DB_WE));
 
 		while($this->DB_WE->next_record()){
 			$v = $this->DB_WE->f('ID');
@@ -360,7 +360,7 @@ function switchExt(){
 	 *
 	 * @return         string
 	 */
-	public static function getDoctypeQuery($db = ''){
+	public static function getDoctypeQuery(we_database_base $db = null){
 		$db = $db ? $db : new DB_WE();
 
 		$paths = array();

@@ -122,7 +122,7 @@ class we_newsletter_block extends we_newsletter_base{
 	 * return all newsletter blocks for given newsletter id
 	 *
 	 * ***************************************************** */
-	static function __getAllBlocks($newsletterID, $db){
+	static function __getAllBlocks($newsletterID, we_database_base $db){
 		$db->query('SELECT ID FROM ' . NEWSLETTER_BLOCK_TABLE . ' WHERE NewsletterID=' . intval($newsletterID) . ' ORDER BY ID');
 		$ret = array();
 		while($db->next_record()){

@@ -56,7 +56,7 @@ switch($_REQUEST['we_cmd'][0]){
 				$we_show_response = 1;
 			} else {
 				$we_JavaScript = 'opener.top.makefocus = self;' .
-					we_main_headermenu::getMenuReloadCode();
+						we_main_headermenu::getMenuReloadCode();
 
 				//$we_JavaScript .= "opener.top.header.document.location.reload();\n";
 				if($we_doc->we_save()){
@@ -150,8 +150,8 @@ switch($_REQUEST['we_cmd'][0]){
 		break;
 	default:
 		$id = (isset($_REQUEST['we_cmd'][1]) ?
-				$_REQUEST['we_cmd'][1] :
-				f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' ' . getDoctypeQuery($GLOBALS['DB_WE']), "ID", $GLOBALS['DB_WE']));
+						$_REQUEST['we_cmd'][1] :
+						f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' ' . we_docTypes::getDoctypeQuery($GLOBALS['DB_WE']), "ID", $GLOBALS['DB_WE']));
 
 		if($id){
 			$we_doc->initByID($id, DOC_TYPES_TABLE);
@@ -386,14 +386,14 @@ echo we_main_headermenu::getMenuReloadCode();
 		$cancelbut = we_html_button::create_button("close", "javascript:self.close();if(top.opener.we_cmd){top.opener.we_cmd('switch_edit_page',0);}");
 
 		$buttons = ($we_doc->ID ?
-				we_html_button::position_yes_no_cancel(we_html_button::create_button("save", "javascript:we_cmd('save_docType', '$we_transaction')"), "", $cancelbut) :
-				'<div align="right">' . $cancelbut . '</div>');
+						we_html_button::position_yes_no_cancel(we_html_button::create_button("save", "javascript:we_cmd('save_docType', '$we_transaction')"), "", $cancelbut) :
+						'<div align="right">' . $cancelbut . '</div>');
 
 
 		print we_html_multiIconBox::getJS() .
-			we_html_multiIconBox::getHTML("", "100%", $parts, 30, $buttons, -1, "", "", false, "", "", 630) .
-			$yuiSuggest->getYuiCss() .
-			$yuiSuggest->getYuiJs();
+				we_html_multiIconBox::getHTML("", "100%", $parts, 30, $buttons, -1, "", "", false, "", "", 630) .
+				$yuiSuggest->getYuiCss() .
+				$yuiSuggest->getYuiJs();
 		?>
 	</form>
 </body>

@@ -676,7 +676,7 @@ class we_objectFile extends we_document{
 		return '<span class="defaultfont">' . $this->TableID . '</span>';
 	}
 
-	static function getSortArray($tableID, $db){
+	static function getSortArray($tableID, we_database_base $db){
 		if(!$tableID){
 			return array();
 		}
@@ -702,7 +702,7 @@ class we_objectFile extends we_document{
 		return $order;
 	}
 
-	static function getSortedTableInfo($tableID, $contentOnly = false, $db = '', $checkVariants = false){
+	static function getSortedTableInfo($tableID, $contentOnly = false, we_database_base $db = null, $checkVariants = false){
 		if(!$tableID){
 			return array();
 		}
@@ -3091,7 +3091,7 @@ class we_objectFile extends we_document{
 		return $this->DB_WE->getAll(true);
 	}
 
-	public static function getObjectHref($id, $pid, $path = '', $DB_WE = '', $hidedirindex = false, $objectseourls = false){
+	public static function getObjectHref($id, $pid, $path = '', we_database_base $DB_WE = null, $hidedirindex = false, $objectseourls = false){
 		if(!$id){
 			return '';
 		}
@@ -3102,7 +3102,7 @@ class we_objectFile extends we_document{
 		$DB_WE = ($DB_WE ? $DB_WE : new DB_WE());
 
 		$foo = getHash('SELECT Published,Workspaces, ExtraWorkspacesSelected,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id), $DB_WE);
-		if(empty($foo)){
+		if(!$foo){
 			return '';
 		}
 
@@ -3180,7 +3180,7 @@ class we_objectFile extends we_document{
 		return '';
 	}
 
-	private static function getNextDynDoc($path, $pid, $ws1, $ws2, $DB_WE){
+	private static function getNextDynDoc($path, $pid, $ws1, $ws2, we_database_base $DB_WE){
 		if(f('SELECT IsDynamic FROM ' . FILE_TABLE . ' WHERE Path="' . $DB_WE->escape($path) . '" LIMIT 1', 'IsDynamic', $DB_WE)){
 			return $path;
 		}
@@ -3196,10 +3196,11 @@ class we_objectFile extends we_document{
 				}
 			}
 		}
-		foreach($arr2 as $i => $ws)
+		foreach($arr2 as $i => $ws){
 			if(in_workspace($pid, $arr4[$i])){
 				return f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published > 0 AND ContentType="text/webedition" AND IsDynamic=1 AND Path LIKE "' . $DB_WE->escape($ws) . '%" LIMIT 1', 'Path', $DB_WE);
 			}
+		}
 		return '';
 	}
 

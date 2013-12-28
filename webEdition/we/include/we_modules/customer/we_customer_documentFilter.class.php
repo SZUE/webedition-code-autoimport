@@ -153,7 +153,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	 * @param mixed $model
 	 * @return we_customer_documentFilter
 	 */
-	static function getFilterOfDocument(&$model, $db = ''){
+	static function getFilterOfDocument(&$model, we_database_base $db = null){
 		return self::getFilterByIdAndTable($model->ID, $model->Table, $db);
 	}
 
@@ -164,7 +164,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	 * @param string $contentType
 	 * @return we_customer_documentFilter
 	 */
-	static function getFilterByIdAndTable($id, $table, $db = ''){
+	static function getFilterByIdAndTable($id, $table, we_database_base $db = null){
 		$db = ($db ? $db : new DB_WE());
 		$hash = getHash('SELECT * FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="' . $db->escape(stripTblPrefix($table)) . '" AND modelId = ' . intval($id), $db);
 		if(!empty($hash)){
@@ -341,7 +341,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	 * param webeditionDocument or objectFile
 	 * @param mixed $model
 	 */
-	function deleteForModel(&$model, $db = ''){
+	function deleteForModel(&$model, we_database_base $db = null){
 		if($model->ID){
 			$_db = ($db ? $db : new DB_WE());
 			$_db->query('DELETE FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelId=' . $model->ID . ' AND modelType="' . $model->ContentType . '" AND modelTable="' . stripTblPrefix($model->Table) . '"');

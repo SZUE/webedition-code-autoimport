@@ -2371,13 +2371,13 @@ top.content.hloaded=1;') .
 				$tab_body;
 	}
 
-	public static function getUsername($id, $db = ''){
+	public static function getUsername($id, we_database_base $db = null){
 		$db = $db ? $db : new DB_WE();
 		$user = f('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($id), 'username', $db);
 		return $user ? $user : g_l('modules_messaging', '[userid_not_found]');
 	}
 
-	public static function getUserID($username, $db){
+	public static function getUserID($username, we_database_base $db){
 		$uid = f('SELECT ID FROM ' . USER_TABLE . ' WHERE username="' . $db->escape(trim($username)) . '"', 'ID', $db);
 		return $uid ? $uid : -1;
 	}

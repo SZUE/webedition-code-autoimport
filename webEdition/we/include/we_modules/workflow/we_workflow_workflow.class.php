@@ -219,12 +219,12 @@ class we_workflow_workflow extends we_workflow_base{
 		//$this->ID = -2; # status deleted
 	}
 
-	static function isDocInWorkflow($docID, $db){
+	static function isDocInWorkflow($docID, we_database_base $db){
 		$db->query('SELECT ID FROM ' . WORKFLOW_DOC_TABLE . ' WHERE documentID=' . intval($docID) . ' AND Type IN(0,1) AND Status=0');
 		return ($db->next_record() ? $db->f('ID') : false);
 	}
 
-	static function isObjectInWorkflow($docID, $db){
+	static function isObjectInWorkflow($docID, we_database_base $db){
 		$db->query('SELECT ID FROM ' . WORKFLOW_DOC_TABLE . ' WHERE documentID=' . intval($docID) . ' AND Type=2 AND Status=0');
 		return ($db->next_record() ? $db->f('ID') : false);
 	}
@@ -232,7 +232,7 @@ class we_workflow_workflow extends we_workflow_base{
 	/**
 	 * Get workflow for document
 	 */
-	static function getDocumentWorkflow($doctype, $categories, $folder, $db){
+	static function getDocumentWorkflow($doctype, $categories, $folder, we_database_base $db){
 
 		$wfIDs = array();
 		$workflowID = 0;
@@ -303,7 +303,7 @@ class we_workflow_workflow extends we_workflow_base{
 	/**
 	 * Get workflow for object
 	 */
-	function getObjectWorkflow($object, $categories, $folderID, $db){
+	function getObjectWorkflow($object, $categories, $folderID, we_database_base $db){
 		$workflowID = 0;
 		$wfIDs = array();
 		$tail = ($folderID != 0 ? ' AND ObjectFileFolders LIKE "%,' . intval($folderID) . ',%"' : '');

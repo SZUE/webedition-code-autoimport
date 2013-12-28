@@ -157,7 +157,7 @@ class copyFolderFrag extends taskFragment{
 		}
 	}
 
-	function getObjectPid($path, $db){
+	function getObjectPid($path, we_database_base $db){
 		$path = dirname($path);
 		if($path == '/'){
 			return 0;
@@ -208,7 +208,7 @@ class copyFolderFrag extends taskFragment{
 		return true;
 	}
 
-	function CheckForSameObjectName($path, $db){
+	function CheckForSameObjectName($path, we_database_base $db){
 		return f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' . $db->escape($path) . '"', 'ID', $db);
 	}
 
@@ -611,7 +611,7 @@ class copyFolderFrag extends taskFragment{
 		$we_doc->i_setDocument($doc);
 	}
 
-	function parseInternalLinks(&$text, $DB_WE){
+	function parseInternalLinks(&$text, we_database_base $DB_WE){
 		$regs = array();
 		if(preg_match_all('/(href|src)="' . we_base_link::TYPE_INT_PREFIX . '([^" ]+)/i', $text, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
@@ -628,11 +628,11 @@ class copyFolderFrag extends taskFragment{
 		}
 	}
 
-	function getID($path, $db){
+	function getID($path, we_database_base $db){
 		return f('SELECT ID FROM ' . FILE_TABLE . " WHERE Path='" . $db->escape($path) . "'", '', $db);
 	}
 
-	function getPid($path, $db){
+	function getPid($path, we_database_base $db){
 		$path = dirname($path);
 		if($path == "/"){
 			return 0;

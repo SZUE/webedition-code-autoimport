@@ -823,7 +823,7 @@ class we_document extends we_root{
 
 //FIXME: parameter $attribt should be: array $attribs=array()
 	//FIXME: check if we can rid of this function, since it causes problems every change of tags since it also uses the given attribs array!
-	public function getFieldByVal($val, $type, $attribs = '', $pathOnly = false, $parentID = 0, $path = '', $db = '', $classID = '', $fn = 'this'){
+	public function getFieldByVal($val, $type, $attribs = '', $pathOnly = false, $parentID = 0, $path = '', we_database_base $db = null, $classID = '', $fn = 'this'){
 		$attribs = is_array($attribs) ? $attribs : array();
 		if(isset($attribs['_name_orig'])){
 			unset($attribs['_name_orig']);
@@ -1130,7 +1130,7 @@ class we_document extends we_root{
 		}
 	}
 
-	function getHref($attribs, $db = '', $fn = 'this'){
+	function getHref($attribs, we_database_base $db = null, $fn = 'this'){
 		$db = $db ? $db : new_DB_WE();
 		$n = $attribs['name'];
 		$nint = $n . we_base_link::MAGIC_INT_LINK;
@@ -1151,7 +1151,7 @@ class we_document extends we_root{
 		}
 	}
 
-	function getLinkHref($link, $parentID, $path, $db = '', $hidedirindex = false, $objectseourls = false){
+	function getLinkHref($link, $parentID, $path, we_database_base $db = null, $hidedirindex = false, $objectseourls = false){
 		$db = ($db ? $db : new DB_WE());
 
 		// Bug Fix 8170&& 8166
@@ -1196,7 +1196,7 @@ class we_document extends we_root{
 		}
 	}
 
-	function getLinkContent($link, $parentID = 0, $path = '', $db = '', $img = '', $xml = '', $_useName = '', $htmlspecialchars = false, $hidedirindex = false, $objectseourls = false){
+	function getLinkContent($link, $parentID = 0, $path = '', we_database_base $db = null, $img = '', $xml = '', $_useName = '', $htmlspecialchars = false, $hidedirindex = false, $objectseourls = false){
 		$l_href = self::getLinkHref($link, $parentID, $path, $db, $hidedirindex, $objectseourls);
 
 		if(isset($GLOBALS['we_link_not_published']) && $GLOBALS['we_link_not_published']){
@@ -1247,7 +1247,7 @@ class we_document extends we_root{
 		}
 	}
 
-	function getLinkStartTag($link, $attribs, $parentID = 0, $path = '', $db = '', $img = '', $_useName = '', $hidedirindex = false, $objectseourls = false){
+	function getLinkStartTag($link, $attribs, $parentID = 0, $path = '', we_database_base $db = null, $img = '', $_useName = '', $hidedirindex = false, $objectseourls = false){
 		if(($l_href = self::getLinkHref($link, $parentID, $path, $db, $hidedirindex, $objectseourls))){
 			//    define some arrays to order the attribs to image, link or js-window ...
 			$_popUpAtts = array('jswin', 'jscenter', 'jswidth', 'jsheight', 'jsposx', 'jsposy', 'jsstatus', 'jsscrollbars', 'jsmenubar', 'jstoolbar', 'jsresizable', 'jslocation');

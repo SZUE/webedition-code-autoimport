@@ -296,7 +296,7 @@ class we_customer_customer extends weModelBase{
 			unset($_SESSION['weS']['customer_session']);
 	}
 
-	static function customerNameExist($name, $db = ''){
+	static function customerNameExist($name, we_database_base $db = null){
 		$db = $db ? $db : new DB_WE();
 		return (f('SELECT 1 AS a FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $db->escape($name) . '"', 'a', $db) == '1');
 	}
