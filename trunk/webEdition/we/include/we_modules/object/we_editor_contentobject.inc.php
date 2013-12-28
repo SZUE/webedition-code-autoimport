@@ -28,10 +28,9 @@ we_html_tools::protect();
 //	---> Setting the Content-Type
 
 $charset = (isset($we_doc->elements["Charset"]["dat"]) && $we_doc->elements["Charset"]["dat"] ? //	send charset which might be determined in template
-		$we_doc->elements["Charset"]["dat"] : DEFAULT_CHARSET);
+				$we_doc->elements["Charset"]["dat"] : DEFAULT_CHARSET);
 
-we_html_tools::headerCtCharset('text/html', $charset);
-we_html_tools::htmlTop('', $charset, 5);
+echo we_html_tools::getHtmlTop('', $charset, 5);
 
 //	---> initialize some vars
 $jsGUI = new weOrderContainer("_EditorFrame.getContentEditor()", "classEntry");

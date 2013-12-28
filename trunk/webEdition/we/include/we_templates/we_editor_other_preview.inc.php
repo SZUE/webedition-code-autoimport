@@ -47,14 +47,11 @@ if(isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3] == 'download'){
 }
 
 
-we_html_tools::htmlTop();
-
-
-if(isset($_REQUEST['we_cmd'][0]) && substr($_REQUEST['we_cmd'][0], 0, 15) == 'doImage_convert'){
-	print we_html_element::jsElement('parent.frames[0].we_setPath("' . $we_doc->Path . '","' . $we_doc->Text . '", "' . $we_doc->ID . '");');
-}
-
-echo we_html_element::jsScript(JS_DIR . 'windows.js');
+echo we_html_tools::getHtmlTop() .
+ (isset($_REQUEST['we_cmd'][0]) && substr($_REQUEST['we_cmd'][0], 0, 15) == 'doImage_convert' ?
+		we_html_element::jsElement('parent.frames[0].we_setPath("' . $we_doc->Path . '","' . $we_doc->Text . '", "' . $we_doc->ID . '");') : ''
+) .
+ we_html_element::jsScript(JS_DIR . 'windows.js');
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 print STYLESHEET;

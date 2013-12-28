@@ -25,9 +25,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
-we_html_tools::htmlTop();
-
-print STYLESHEET;
+echo we_html_tools::getHtmlTop() . STYLESHEET;
 
 if(isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] == "save_last"){
 	$_SESSION["user"]["LastDir"] = $last;
@@ -204,10 +202,10 @@ if(!isset($_REQUEST["cmd"]) || (isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] != "
 	if(isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] == "rename_folder"){
 		if($_REQUEST["txt"] == ""){
 			print we_message_reporting::getShowMessageCall(g_l('alert', "[we_filename_empty]"), we_message_reporting::WE_MESSAGE_ERROR) .
-				"drawDir(top.currentDir);\n";
+					"drawDir(top.currentDir);\n";
 		} else if(preg_match('|[\'"<>/]|', $_REQUEST["txt"])){
 			print we_message_reporting::getShowMessageCall(g_l('alert', "[name_nok]"), we_message_reporting::WE_MESSAGE_ERROR) .
-				"drawDir(top.currentDir);\n";
+					"drawDir(top.currentDir);\n";
 		} else {
 			$old = str_replace('//', '/', $_SERVER['DOCUMENT_ROOT'] . $_REQUEST['pat'] . '/' . $_REQUEST['sid']);
 			$new = str_replace('//', '/', $_SERVER['DOCUMENT_ROOT'] . $_REQUEST['pat'] . '/' . $_REQUEST['txt']);
@@ -228,10 +226,10 @@ if(!isset($_REQUEST["cmd"]) || (isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] != "
 	} else if(isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] == "rename_file"){
 		if($_REQUEST["txt"] == ""){
 			print we_message_reporting::getShowMessageCall(g_l('alert', "[we_filename_empty]"), we_message_reporting::WE_MESSAGE_ERROR) .
-				"drawDir(top.currentDir);\n";
+					"drawDir(top.currentDir);\n";
 		} else if(preg_match('|[\'"<>/]|', $_REQUEST["txt"])){
 			print we_message_reporting::getShowMessageCall(g_l('alert', "[name_nok]"), we_message_reporting::WE_MESSAGE_ERROR) .
-				"drawDir(top.currentDir);\n";
+					"drawDir(top.currentDir);\n";
 		} else {
 			$old = str_replace('//', '/', $_SERVER['DOCUMENT_ROOT'] . $_REQUEST["pat"] . '/' . $_REQUEST["sid"]);
 			$new = str_replace('//', '/', $_SERVER['DOCUMENT_ROOT'] . $_REQUEST["pat"] . '/' . $_REQUEST["txt"]);

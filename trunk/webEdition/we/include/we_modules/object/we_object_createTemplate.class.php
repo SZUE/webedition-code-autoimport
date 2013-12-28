@@ -37,7 +37,7 @@ class we_object_createTemplate extends we_template{
 		$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$textname'].value");
 		$button = we_html_button::create_button("select", "javascript:we_cmd('openDirselector',document.forms['we_form'].elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "')");
 		return we_html_tools::htmlFormElementTable($this->htmlTextInput($textname, 30, $path, "", ' readonly', "text", $width, 0), g_l('weClass', "[dir]"), "left", "defaultfont", $this->htmlHidden($idname, 0), //$myid
-				we_html_tools::getPixel(20, 4), $button);
+						we_html_tools::getPixel(20, 4), $button);
 	}
 
 	function formExtension2(){
@@ -152,9 +152,9 @@ function getTmplTableRow($type, $name, $isField = false){
 	}
 }
 
-we_html_tools::htmlTop(g_l('weClass', '[generateTemplate]'));
-print we_html_element::jsScript(JS_DIR . 'windows.js') .
-	STYLESHEET;
+echo we_html_tools::getHtmlTop(g_l('weClass', '[generateTemplate]')) .
+ we_html_element::jsScript(JS_DIR . 'windows.js') .
+ STYLESHEET;
 
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
@@ -244,7 +244,7 @@ $content .= '
 $_SESSION['weS']['content'] = $content;
 
 $buttons = we_html_button::position_yes_no_cancel(
-		we_html_button::create_button("save", "javascript:if(document.forms['we_form'].we_" . $tmpl->Name . "_Filename.value != ''){ document.forms['we_form'].action='" . WE_OBJECT_MODULE_DIR . "we_object_createTemplatecmd.php';document.forms['we_form'].submit();}else{ " . we_message_reporting::getShowMessageCall(g_l('alert', '[input_file_name]'), we_message_reporting::WE_MESSAGE_ERROR) . " }"), null, we_html_button::create_button("cancel", "javascript:self.close();")
+				we_html_button::create_button("save", "javascript:if(document.forms['we_form'].we_" . $tmpl->Name . "_Filename.value != ''){ document.forms['we_form'].action='" . WE_OBJECT_MODULE_DIR . "we_object_createTemplatecmd.php';document.forms['we_form'].submit();}else{ " . we_message_reporting::getShowMessageCall(g_l('alert', '[input_file_name]'), we_message_reporting::WE_MESSAGE_ERROR) . " }"), null, we_html_button::create_button("cancel", "javascript:self.close();")
 );
 
 

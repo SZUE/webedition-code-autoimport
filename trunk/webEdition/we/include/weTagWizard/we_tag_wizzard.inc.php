@@ -66,8 +66,8 @@ var typeAttributeRequires = new Object();';
 				$typeAttributeJs .= 'typeAttributeAllows["' . $option->getName() . '"] = new Array();';
 			} else {
 				$typeAttributeJs .= 'typeAttributeAllows["' . $option->getName() . '"] = new Array("' .
-					implode('","', $_allowedAttribs) .
-					'");';
+						implode('","', $_allowedAttribs) .
+						'");';
 			}
 
 			$_reqAttribs = $option->getRequiredAttributes($_attributes);
@@ -75,8 +75,8 @@ var typeAttributeRequires = new Object();';
 				$typeAttributeJs .= "typeAttributeRequires[\"" . $option->getName() . "\"] = new Array();";
 			} else {
 				$typeAttributeJs .= "typeAttributeRequires[\"" . $option->getName() . "\"] = new Array(\"" .
-					implode('","', $_reqAttribs) .
-					"\");";
+						implode('","', $_reqAttribs) .
+						"\");";
 			}
 		}
 
@@ -90,13 +90,13 @@ weTagWizard.typeAttributeRequires = typeAttributeRequires;';
 }
 // additional javascript for the individual tags - end
 // print html header of page
-print we_html_tools::htmlTop() .
-	STYLESHEET .
-	we_html_element::cssLink(CSS_DIR . 'tagWizard.css') .
-	we_html_element::jsScript(JS_DIR . 'windows.js') .
-	we_html_element::jsScript(JS_DIR . 'tagWizard.js') .
-	we_html_element::jsScript(JS_DIR . 'keyListener.js') .
-	we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') . we_html_element::jsElement('
+echo we_html_tools::getHtmlTop() .
+ STYLESHEET .
+ we_html_element::cssLink(CSS_DIR . 'tagWizard.css') .
+ we_html_element::jsScript(JS_DIR . 'windows.js') .
+ we_html_element::jsScript(JS_DIR . 'tagWizard.js') .
+ we_html_element::jsScript(JS_DIR . 'keyListener.js') .
+ we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') . we_html_element::jsElement('
 
 
 function closeOnEscape() {
@@ -222,12 +222,12 @@ if($defaultValueCode){
 
 $code = '<fieldset>
 		<div class="legend"><strong>' . g_l('taged', '[description]') . '</strong></div>' .
-	($weTag->isDeprecated() ? we_html_tools::htmlAlertAttentionBox(g_l('taged', '[deprecated][description]'), we_html_tools::TYPE_ALERT, '98%') : '') . $weTag->getDescription() .
-	'</fieldset>' . $typeAttribCode . ' ' . $attributesCode . ' ' .
-	$defaultValueCode;
+		($weTag->isDeprecated() ? we_html_tools::htmlAlertAttentionBox(g_l('taged', '[deprecated][description]'), we_html_tools::TYPE_ALERT, '98%') : '') . $weTag->getDescription() .
+		'</fieldset>' . $typeAttribCode . ' ' . $attributesCode . ' ' .
+		$defaultValueCode;
 
 $_buttons = we_html_button::position_yes_no_cancel(
-		we_html_button::create_button('ok', "javascript:we_cmd('saveTag');"), null, we_html_button::create_button('cancel', "javascript:self.close();")
+				we_html_button::create_button('ok', "javascript:we_cmd('saveTag');"), null, we_html_button::create_button('cancel', "javascript:self.close();")
 );
 ?>
 <div id="divTagName">

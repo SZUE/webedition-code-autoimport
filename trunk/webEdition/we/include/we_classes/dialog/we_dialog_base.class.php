@@ -254,7 +254,7 @@ class we_dialog_base{
 	}
 
 	function getHeaderHTML($printJS_Style = false){
-		return we_html_tools::htmlTop($this->dialogTitle, $this->charset) . STYLESHEET .
+		return we_html_tools::getHtmlTop($this->dialogTitle, $this->charset) . STYLESHEET .
 			(isset($this->args['editor']) && $this->args['editor'] == 'tinyMce' ? $this->getTinyMceJS() : '') .
 			($printJS_Style ? STYLESHEET . $this->getJs() : '') . we_html_element::cssLink(WEBEDITION_DIR . 'editors/content/tinymce/we_tinymce/weDialogCss.css') .
 			'</head>';

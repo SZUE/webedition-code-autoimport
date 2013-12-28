@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 we_html_tools::protect();
-we_html_tools::htmlTop(g_l('metadata', '[headline]'));
+echo we_html_tools::getHtmlTop(g_l('metadata', '[headline]'));
 
 function getFooter(){
 	// Define needed JS

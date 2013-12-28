@@ -48,8 +48,8 @@ class we_rebuild_fragment extends taskFragment{
 
 	function printHeader(){
 		we_html_tools::protect();
-		we_html_tools::htmlTop();
-		echo '</head>';
+		echo we_html_tools::getHtmlTop() .
+		'</head>';
 	}
 
 	function printBodyTag($attributes = ""){

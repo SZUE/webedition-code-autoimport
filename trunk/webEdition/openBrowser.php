@@ -42,7 +42,7 @@ if(is_numeric($_REQUEST["url"])){
 	$loc = filter_var($_REQUEST["url"], FILTER_VALIDATE_URL);
 }
 header('Location: ' . $loc);
-we_html_tools::htmlTop();
+echo we_html_tools::getHtmlTop();
 ?>
 <meta HTTP-EQUIV="REFRESH" content="1; url=<?php echo $loc; ?>">
 </head><body></body></html>

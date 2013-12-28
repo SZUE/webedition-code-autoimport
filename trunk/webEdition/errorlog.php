@@ -151,15 +151,15 @@ switch(isset($_REQUEST['function']) ? $_REQUEST['function'] : 'last'){
 		$data.='WE-Info:
 Version: ' . WE_VERSION . '
 SVN: ' . WE_SVNREV . ' ' . WE_VERSION_BRANCH . ' ' . WE_VERSION_SUPP . $sep .
-'System:
+				'System:
 PHP: ' . phpversion() . '
 max_execution_time: ' . ini_get('max_execution_time') . '
 memory_limit: ' . ini_get('memory_limit') . '
 short_open_tag: ' . ini_get('short_open_tag') . '
 post_max_size: ' . ini_get('post_max_size') . '
 max_input_vars: ' . ini_get('max_input_vars') . '
-session.auto_start: ' . ini_get('session.auto_start') .$sep.
-'Mysql:
+session.auto_start: ' . ini_get('session.auto_start') . $sep .
+				'Mysql:
 ' . $GLOBALS['DB_WE']->getInfo(false);
 
 		echo str_replace($_SERVER['DOCUMENT_ROOT'], 'DOCUMENT_ROOT', $data);
@@ -208,8 +208,8 @@ $_parts = array(
 	)
 );
 
-we_html_tools::htmlTop(g_l('javaMenu_global', '[showerrorlog]'));
-echo we_html_element::jsScript(JS_DIR . 'keyListener.js') .
+echo we_html_tools::getHtmlTop(g_l('javaMenu_global', '[showerrorlog]')) .
+ we_html_element::jsScript(JS_DIR . 'keyListener.js') .
  we_html_element::jsElement('function closeOnEscape() {
 		return true;
 	}

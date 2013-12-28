@@ -26,11 +26,8 @@ $createNavigationGroup = we_html_button::create_button('new_folder', "javascript
 $content = $createNavigation . we_html_tools::getPixel(2, 14) . $createNavigationGroup;
 $title = g_l('navigation', '[navigation]');
 
-if(!(isset($GLOBALS["we_print_not_htmltop"]) && $GLOBALS["we_print_not_htmltop"])){
-	we_html_tools::htmlTop();
-}
-print STYLESHEET;
-
+echo (!(isset($GLOBALS["we_print_not_htmltop"]) && $GLOBALS["we_print_not_htmltop"]) ? we_html_tools::getHtmlTop() : '') .
+ STYLESHEET;
 
 $we_head_insert = isset($GLOBALS["we_head_insert"]) ? $GLOBALS["we_head_insert"] : "";
 $we_body_insert = isset($GLOBALS["we_body_insert"]) ? $GLOBALS["we_body_insert"] : "";
@@ -44,7 +41,7 @@ $_starttable = new we_html_table(array("border" => 0,
 $_starttable->setCol($_row++, 0, array("class" => "defaultfont",
 	"colspan" => 3,
 	"align" => "center"), "<strong>" .
-	$title . "</strong>");
+		$title . "</strong>");
 
 $_starttable->setCol($_row++, 0, array("class" => "defaultfont",
 	"colspan" => 3), "");

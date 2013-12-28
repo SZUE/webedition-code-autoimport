@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 we_html_tools::protect();
-we_html_tools::htmlTop(g_l('thumbnails', '[thumbnails]'));
+echo we_html_tools::getHtmlTop(g_l('thumbnails', '[thumbnails]'));
 
 $reloadUrl = getServerUrl(true) . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=editThumbs';
 

@@ -23,9 +23,8 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-we_html_tools::htmlTop();
-
-print STYLESHEET;
+echo we_html_tools::getHtmlTop() .
+ STYLESHEET;
 
 $browser = we_base_browserDetect::inst();
 if(!preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction'])){

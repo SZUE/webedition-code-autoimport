@@ -347,7 +347,7 @@ if(isset($_REQUEST['ok']) && $_REQUEST['ok']){
 	}
 }
 
-we_html_tools::htmlTop(g_l('linklistEdit', '[edit_link]'), isset($we_doc->elements['Charset']['dat']) ? $we_doc->elements['Charset']['dat'] : '');
+echo we_html_tools::getHtmlTop(g_l('linklistEdit', '[edit_link]'), isset($we_doc->elements['Charset']['dat']) ? $we_doc->elements['Charset']['dat'] : '');
 $yuiSuggest = & weSuggest::getInstance();
 echo $yuiSuggest->getYuiCssFiles() .
  $yuiSuggest->getYuiJsFiles() .

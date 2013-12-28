@@ -49,7 +49,7 @@ class we_navigation_ruleFrames{
 	}
 
 	function getHTMLFrameset(){
-		return we_html_tools::htmlTop(g_l('navigation', '[menu_highlight_rules]')) . STYLESHEET . '</head>' .
+		return we_html_tools::getHtmlTop(g_l('navigation', '[menu_highlight_rules]')) . STYLESHEET . '</head>' .
 			we_html_element::htmlBody(array('style' => 'background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;')
 				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
 					, we_html_element::htmlIFrame('content', $this->Frameset . '?pnt=content', 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden') .
@@ -221,7 +221,7 @@ class we_navigation_ruleFrames{
 		$closeButton = we_html_button::create_button('close', 'javascript:top.window.close();');
 		$acErrorMsg = we_message_reporting::getShowMessageCall(
 				g_l('alert', '[save_error_fields_value_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR);
-		return we_html_tools::htmlTop() . STYLESHEET .
+		return we_html_tools::getHtmlTop() . STYLESHEET .
 			we_html_element::jsScript(JS_DIR . 'formFunctions.js') .
 			we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('
 

@@ -36,9 +36,8 @@ if(isset($_GET['u']) && isset($_GET['t']) && isset($_GET['id'])){
 
 	$thumbIDs = makeArrayFromCSV($_GET['id']);
 
-	we_html_tools::htmlTop();
-
-	print STYLESHEET . "</head>";
+	echo we_html_tools::getHtmlTop() .
+	STYLESHEET . "</head>";
 
 	$table = '<table border="0" cellpadding="5" cellspacing="0"><tr>';
 
@@ -60,12 +59,12 @@ if(isset($_GET['u']) && isset($_GET['t']) && isset($_GET['id'])){
 			$src = $thumbObj->getOutputPath(false, true);
 		} else {
 			$src = WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(
-					array(
-						'we_cmd[0]' => 'show_binaryDoc',
-						'we_cmd[1]' => $we_doc->ContentType,
-						'we_cmd[2]' => $we_transaction,
-						'we_cmd[3]' => ($useOrig ? '' : $thumbid),
-						'rand' => $randval
+							array(
+								'we_cmd[0]' => 'show_binaryDoc',
+								'we_cmd[1]' => $we_doc->ContentType,
+								'we_cmd[2]' => $we_transaction,
+								'we_cmd[3]' => ($useOrig ? '' : $thumbid),
+								'rand' => $randval
 			));
 		}
 

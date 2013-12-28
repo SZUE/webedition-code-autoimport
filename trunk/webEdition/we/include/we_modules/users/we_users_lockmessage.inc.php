@@ -23,9 +23,7 @@
  */
 we_html_tools::protect();
 
-we_html_tools::htmlTop();
-
-print STYLESHEET;
+echo we_html_tools::getHtmlTop() . STYLESHEET;
 
 $foo = f("SELECT username FROM " . USER_TABLE . " WHERE ID=$_userID", "username", $GLOBALS['DB_WE']);
 

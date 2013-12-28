@@ -50,7 +50,7 @@ $parts[] = array(
 
 
 
-print we_html_tools::htmlTop() .
+echo we_html_tools::getHtmlTop() .
 	STYLESHEET;
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 print we_html_element::cssElement('

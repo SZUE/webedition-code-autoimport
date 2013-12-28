@@ -24,8 +24,8 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
-we_html_tools::htmlTop(g_l('modules_banner', '[defaultbanner]'));
-print STYLESHEET;
+echo we_html_tools::getHtmlTop(g_l('modules_banner', '[defaultbanner]')) .
+ STYLESHEET;
 $DefaultBannerID = 0;
 
 if(isset($_REQUEST["ok"]) && $_REQUEST["ok"]){

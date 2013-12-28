@@ -23,10 +23,9 @@
  */
 we_html_tools::protect();
 
-we_html_tools::htmlTop();
-
-print STYLESHEET .
-	we_html_element::jsElement('
+echo we_html_tools::getHtmlTop() .
+ STYLESHEET .
+ we_html_element::jsElement('
 	top.toggleBusy(0);
 	var _EditorFrame = top.weEditorFrameController.getEditorFrame(window.name);
 	_EditorFrame.setEditorIsLoading(false);');

@@ -25,7 +25,7 @@ if(defined("SCHEDULE_TABLE")){
 	we_schedpro::trigger_schedule();
 }
 
-we_html_tools::htmlTop();
+echo we_html_tools::getHtmlTop();
 
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 print STYLESHEET .

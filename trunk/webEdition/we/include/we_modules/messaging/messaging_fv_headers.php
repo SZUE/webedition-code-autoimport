@@ -24,18 +24,18 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . WE_MESSAGING_MODULE_DIR . "msg_html_tools.inc.php");
 we_html_tools::protect();
-we_html_tools::htmlTop();
-
 $_REQUEST['we_transaction'] = isset($_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : $we_transaction;
 $_REQUEST['we_transaction'] = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0);
-print we_html_element::jsElement('
+
+echo we_html_tools::getHtmlTop() .
+ we_html_element::jsElement('
 	function doSort(sortitem) {
 		entrstr = "";
 
 		top.content.cmd.location = "' . WE_MESSAGING_MODULE_DIR . 'edit_messaging_frameset.php?pnt=cmd&mcmd=show_folder_content&sort=" + sortitem + entrstr + "&we_transaction=' . $_REQUEST['we_transaction'] . '";
 	}') .
-	STYLESHEET .
-	we_html_element::cssElement('.defaultfont a {color:black; text-decoration:none}');
+ STYLESHEET .
+ we_html_element::cssElement('.defaultfont a {color:black; text-decoration:none}');
 ?>
 </head>
 <body  background="<?php print IMAGE_DIR; ?>backgrounds/header_with_black_line.gif"  marginwidth="7" marginheight="6" topmargin="6" leftmargin="7">

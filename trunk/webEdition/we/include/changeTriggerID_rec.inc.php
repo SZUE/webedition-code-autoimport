@@ -30,9 +30,8 @@ if(permissionhandler::hasPerm("ADMINISTRATOR")){
 	$ok = $we_doc->changeTriggerIDRecursive();
 }
 
-we_html_tools::htmlTop();
-
-print ($ok ? we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('weClass', "[grant_tid_ok]"), we_message_reporting::WE_MESSAGE_NOTICE)) :
+echo we_html_tools::getHtmlTop() .
+ ($ok ? we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('weClass', "[grant_tid_ok]"), we_message_reporting::WE_MESSAGE_NOTICE)) :
 		we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('weClass', "[grant_tid_notok]"), we_message_reporting::WE_MESSAGE_ERROR)));
 ?>
 </head>

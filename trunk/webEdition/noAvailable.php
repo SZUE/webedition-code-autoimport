@@ -22,10 +22,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+//FIXME:remove
 
-we_html_tools::htmlTop();
-
-print STYLESHEET;
+echo we_html_tools::getHtmlTop().
+		STYLESHEET;
 
 $content = '<table cellpadding="0" cellspacing="0" border="0">
         <tr><td class="defaultfont">' . g_l('help', '[help_not_available_text]') . '</td></tr>

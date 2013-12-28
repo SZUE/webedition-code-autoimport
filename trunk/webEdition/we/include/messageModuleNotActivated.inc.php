@@ -21,8 +21,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-we_html_tools::htmlTop();
-print STYLESHEET;
+echo we_html_tools::getHtmlTop() .
+ STYLESHEET;
 ?>
 </head>
 
@@ -32,7 +32,7 @@ print STYLESHEET;
 <table border="0" cellpadding="7" width="100%" class="defaultfont">
 <tr>
 	<td colspan="2"><strong>' . sprintf(
-		g_l('moduleActivation', '[headline]'), $_moduleName) . '</strong></td>
+			g_l('moduleActivation', '[headline]'), $_moduleName) . '</strong></td>
 </tr>
 <tr>
 	<td valign="top">

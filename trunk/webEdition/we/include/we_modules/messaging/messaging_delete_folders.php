@@ -26,9 +26,8 @@ require_once(WE_INCLUDES_PATH . 'we_delete_fn.inc.php');
 
 we_html_tools::protect();
 
-we_html_tools::htmlTop();
-
-print STYLESHEET;
+echo we_html_tools::getHtmlTop().
+		STYLESHEET;
 
 if(!preg_match('|^([a-f0-9]){32}$|', $_REQUEST['we_transaction'])){
 	exit();

@@ -29,7 +29,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 $messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 $messaging->init($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
-we_html_tools::htmlTop(g_l('modules_messaging', '[folder_settings]'));
+echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[folder_settings]'));
 ?>
 <script type="text/javascript"><!--
 <?php

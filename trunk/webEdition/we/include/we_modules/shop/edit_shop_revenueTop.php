@@ -36,21 +36,21 @@ function orderBy($a, $b){
 
 function getTitleLink($text, $orderKey){
 	$_href = $_SERVER['SCRIPT_NAME'] .
-		'?ViewYear=' . $GLOBALS['selectedYear'] .
-		'&ViewMonth=' . $GLOBALS['selectedMonth'] .
-		'&orderBy=' . $orderKey .
-		'&actPage=' . $GLOBALS['actPage'] .
-		( ($GLOBALS['orderBy'] == $orderKey && !isset($_REQUEST['orderDesc'])) ? '&orderDesc=true' : '' );
+			'?ViewYear=' . $GLOBALS['selectedYear'] .
+			'&ViewMonth=' . $GLOBALS['selectedMonth'] .
+			'&orderBy=' . $orderKey .
+			'&actPage=' . $GLOBALS['actPage'] .
+			( ($GLOBALS['orderBy'] == $orderKey && !isset($_REQUEST['orderDesc'])) ? '&orderDesc=true' : '' );
 
 	return '<a href="' . $_href . '">' . $text . '</a>' . ($GLOBALS['orderBy'] == $orderKey ? ' <img src="' . IMAGE_DIR . 'arrow_sort_' . (isset($_REQUEST['orderDesc']) ? 'desc' : 'asc') . '.gif" />' : '');
 }
 
 function getPagerLink(){
 	return $_SERVER['SCRIPT_NAME'] .
-		'?ViewYear=' . $GLOBALS['selectedYear'] .
-		'&ViewMonth=' . $GLOBALS['selectedMonth'] .
-		'&orderBy=' . $GLOBALS['orderBy'] .
-		(isset($_REQUEST['orderdesc']) ? '&orderDesc=true' : '' );
+			'?ViewYear=' . $GLOBALS['selectedYear'] .
+			'&ViewMonth=' . $GLOBALS['selectedMonth'] .
+			'&orderBy=' . $GLOBALS['orderBy'] .
+			(isset($_REQUEST['orderdesc']) ? '&orderDesc=true' : '' );
 }
 
 function yearSelect($select_name){
@@ -73,10 +73,9 @@ function monthSelect($select_name, $selectedMonth){
 }
 
 we_html_tools::protect();
-we_html_tools::htmlTop();
-
-print STYLESHEET .
-	we_html_element::jsElement('
+echo we_html_tools::getHtmlTop() .
+ STYLESHEET .
+ we_html_element::jsElement('
 	function we_submitDateform() {
 		elem = document.forms[0];
 		elem.submit();
@@ -232,9 +231,9 @@ if(($maxRows = f('SELECT COUNT(1) AS a ' . $query, 'a', $DB_WE))){
 			if($calcVat){ // vat must be payed for this order
 				// now determine VAT
 				$articleVat = (isset($shopArticleObject[WE_SHOP_VAT_FIELD_NAME]) ?
-						$shopArticleObject[WE_SHOP_VAT_FIELD_NAME] :
-						(isset($defaultVat) ? $defaultVat : 0)
-					);
+								$shopArticleObject[WE_SHOP_VAT_FIELD_NAME] :
+								(isset($defaultVat) ? $defaultVat : 0)
+						);
 
 				if($articleVat > 0){
 					if(!isset($articleVatArray[$articleVat])){ // avoid notices

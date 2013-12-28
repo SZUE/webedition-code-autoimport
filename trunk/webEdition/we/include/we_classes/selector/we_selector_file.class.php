@@ -218,25 +218,25 @@ function closeOnEscape() {
 	}
 
 	function printFramesetHTML(){
-		we_html_tools::htmlTop($this->title);
-		print implodeJS(
-						we_html_element::jsScript(JS_DIR . 'keyListener.js') .
-						$this->getFramesetJavaScriptIncludes() .
-						we_html_element::jsElement('var weSelectorWindow = true;') .
-						$this->getFramesetJavaScriptDef() .
-						$this->getJS_keyListenerFunctions() .
-						$this->getExitClose() .
-						we_html_element::jsElement('
+		echo we_html_tools::getHtmlTop($this->title) .
+		implodeJS(
+				we_html_element::jsScript(JS_DIR . 'keyListener.js') .
+				$this->getFramesetJavaScriptIncludes() .
+				we_html_element::jsElement('var weSelectorWindow = true;') .
+				$this->getFramesetJavaScriptDef() .
+				$this->getJS_keyListenerFunctions() .
+				$this->getExitClose() .
+				we_html_element::jsElement('
 function in_array(needle,haystack){
 	for(var i=0;i<haystack.length;i++){
 		if(haystack[i] == needle) return true;
 	}
 	return false;
 }') .
-						$this->getExitOpen() .
-						$this->printFramesetJSDoClickFn() .
-						$this->printFramesetJSsetDir() .
-						we_html_element::jsElement('
+				$this->getExitOpen() .
+				$this->printFramesetJSDoClickFn() .
+				$this->printFramesetJSsetDir() .
+				we_html_element::jsElement('
 function orderIt(o){
 	if(order == o){
 		order=o+" DESC";
@@ -264,16 +264,16 @@ function cutText(text,l){
 		return text;
 	}
 }') .
-						$this->printFramesetRootDirFn() .
-						$this->printFramesetSelectFileHTML() .
-						$this->printFramesetUnselectFileHTML() .
-						$this->printFramesetSelectFilesFromHTML() .
-						$this->printFramesetGetFirstSelectedHTML() .
-						$this->printFramesetGetPositionByIDHTML() .
-						$this->printFramesetIsFileSelectedHTML() .
-						$this->printFramesetUnselectAllFilesHTML() .
-						$this->printFramesetJSFunctions() .
-						we_html_element::jsElement('self.focus();')
+				$this->printFramesetRootDirFn() .
+				$this->printFramesetSelectFileHTML() .
+				$this->printFramesetUnselectFileHTML() .
+				$this->printFramesetSelectFilesFromHTML() .
+				$this->printFramesetGetFirstSelectedHTML() .
+				$this->printFramesetGetPositionByIDHTML() .
+				$this->printFramesetIsFileSelectedHTML() .
+				$this->printFramesetUnselectAllFilesHTML() .
+				$this->printFramesetJSFunctions() .
+				we_html_element::jsElement('self.focus();')
 		);
 		?>
 		</head>
@@ -442,33 +442,33 @@ function queryString(what,id,o){
 	function printFramesetJSFunctioWriteBody(){
 		?><script type="text/javascript"><!--
 					function writeBody(d) {
-						d.open();
+				d.open();
 		<?php
 		echo self::makeWriteDoc(we_html_tools::getHtmlTop('', '', '4Trans', true) . STYLESHEET_SCRIPT . '
 </head>
 <body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0">
 <table border="0" cellpadding="0" cellspacing="0">');
 		?>
-						for (i = 0; i < entries.length; i++) {
-							d.writeln('<tr>');
-							d.writeln('<td class="selector" align="center">');
-							var link = '<a title="' + entries[i].text + '" href="javascript://"';
-							if (entries[i].isFolder) {
-								link += ' onDblClick="this.blur();top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
-							}
-							link += ' onClick="this.blur();tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=0;}\',300);return true">' + "\n";
-							d.writeln(link + '<img src="<?php print ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0"></a>');
-							d.writeln('</td>');
-							d.writeln('<td class="selector" title="' + entries[i].text + '">');
-							d.writeln(link + cutText(entries[i].text, 70) + '</a>');
-							d.writeln('</td></tr>');
-							d.writeln('<tr>');
-							d.writeln('<td width="25"><?php print we_html_tools::getPixel(25, 2) ?></td>');
-							d.writeln('<td><?php print we_html_tools::getPixel(200, 2) ?></td></tr>');
-						}
-						d.writeln('</table></body>');
-						d.close();
+				for (i = 0; i < entries.length; i++) {
+					d.writeln('<tr>');
+					d.writeln('<td class="selector" align="center">');
+					var link = '<a title="' + entries[i].text + '" href="javascript://"';
+					if (entries[i].isFolder) {
+						link += ' onDblClick="this.blur();top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
 					}
+					link += ' onClick="this.blur();tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=0;}\',300);return true">' + "\n";
+					d.writeln(link + '<img src="<?php print ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0"></a>');
+					d.writeln('</td>');
+					d.writeln('<td class="selector" title="' + entries[i].text + '">');
+					d.writeln(link + cutText(entries[i].text, 70) + '</a>');
+					d.writeln('</td></tr>');
+					d.writeln('<tr>');
+					d.writeln('<td width="25"><?php print we_html_tools::getPixel(25, 2) ?></td>');
+					d.writeln('<td><?php print we_html_tools::getPixel(200, 2) ?></td></tr>');
+				}
+				d.writeln('</table></body>');
+				d.close();
+			}
 		//-->
 		</script>
 		<?php
@@ -525,12 +525,12 @@ function clearEntries(){
 
 	function printHeaderHTML(){
 		$this->setDirAndID();
-		we_html_tools::htmlTop();
-		print STYLESHEET .
-				$this->printHeaderJSIncluddes() .
-				we_html_element::jsElement(
-						$this->printHeaderJSDef() .
-						$this->printHeaderJS() . '
+		echo we_html_tools::getHtmlTop() .
+		STYLESHEET .
+		$this->printHeaderJSIncluddes() .
+		we_html_element::jsElement(
+				$this->printHeaderJSDef() .
+				$this->printHeaderJS() . '
 function clearOptions(){
 	 var a=document.forms["we_form"].elements["lookin"];
 	 for(var i=a.options.length-1;i >= 0;i--){
@@ -551,12 +551,12 @@ function selectIt(){
 </head>
 	<body background="' . IMAGE_DIR . 'backgrounds/radient.gif" LINK="#000000" ALINK="#000000" VLINK="#000000" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
 		<form name="we_form" method="post">' .
-				((!defined("OBJECT_TABLE")) || $this->table != OBJECT_TABLE ?
-						$this->printHeaderTable() .
-						$this->printHeaderLine() : '') .
-				$this->printHeaderHeadlines() .
-				$this->printHeaderLine() .
-				'		</form>
+		((!defined("OBJECT_TABLE")) || $this->table != OBJECT_TABLE ?
+				$this->printHeaderTable() .
+				$this->printHeaderLine() : '') .
+		$this->printHeaderHeadlines() .
+		$this->printHeaderLine() .
+		'		</form>
 	</body>
 </html>';
 	}
@@ -705,16 +705,15 @@ top.fsheader.selectIt();';
 	}
 
 	function printFooterHTML(){
-		we_html_tools::htmlTop();
-
-		print STYLESHEET . implodeJS(
-						$this->printFooterJSIncluddes() .
-						$this->printFooterJSDef() .
-						$this->printFooterJS()) . '
+		echo we_html_tools::getHtmlTop() .
+		STYLESHEET . implodeJS(
+				$this->printFooterJSIncluddes() .
+				$this->printFooterJSDef() .
+				$this->printFooterJS()) . '
 </head>
 	<body background="' . IMAGE_DIR . 'backgrounds/radient.gif" LINK="#000000" ALINK="#000000" VLINK="#000000" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
 	<form name="we_form" target="fscmd">' .
-				$this->printFooterTable() . '
+		$this->printFooterTable() . '
 	</form>
 	</body>
 </html>';

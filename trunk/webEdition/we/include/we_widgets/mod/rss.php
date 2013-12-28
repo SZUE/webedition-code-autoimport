@@ -25,7 +25,7 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
-print we_html_tools::htmlTop() .
+echo we_html_tools::getHtmlTop() .
 	we_html_element::jsElement(
 		"function init() {
 	parent.executeAjaxRequest('" . implode("', '", $_REQUEST['we_cmd']) . "');

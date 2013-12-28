@@ -43,8 +43,8 @@ if(permissionhandler::hasPerm("ADMINISTRATOR")){
 	}
 }
 
-we_html_tools::htmlTop();
-print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_users', "[grant_owners_ok]"), ($ok ? we_message_reporting::WE_MESSAGE_NOTICE : we_message_reporting::WE_MESSAGE_ERROR)));
+echo we_html_tools::getHtmlTop() .
+ we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_users', "[grant_owners_ok]"), ($ok ? we_message_reporting::WE_MESSAGE_NOTICE : we_message_reporting::WE_MESSAGE_ERROR)));
 ?>
 </head>
 

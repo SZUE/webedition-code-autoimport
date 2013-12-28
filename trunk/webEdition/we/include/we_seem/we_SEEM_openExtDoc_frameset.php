@@ -45,7 +45,7 @@ $newUrl = $arr["scheme"] . "://" . $arr["host"] . ( isset($arr["port"]) ? (":" .
 
 
 //	we also need some functionality here to check if the location of the doc was cahnged
-we_html_tools::htmlTop();
+echo we_html_tools::getHtmlTop();
 ?>
 <script type="text/javascript">
 

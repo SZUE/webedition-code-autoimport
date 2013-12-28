@@ -26,7 +26,7 @@ if(!$_SESSION['user']['Username']){
 }
 
 we_html_tools::protect(array('BROWSE_SERVER', 'ADMINISTRATOR'));
-we_html_tools::htmlTop();
+echo we_html_tools::getHtmlTop();
 
 $docroot = str_replace('\\', '/', rtrim($_SERVER['DOCUMENT_ROOT'], '/'));
 we_cmd_dec(4);

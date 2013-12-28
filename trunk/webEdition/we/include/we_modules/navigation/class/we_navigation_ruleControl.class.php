@@ -172,7 +172,7 @@ class we_navigation_ruleControl{
 					break;
 			}
 
-			print we_html_tools::htmlTop() .
+			echo we_html_tools::getHtmlTop() .
 				we_html_element::jsElement($js) .
 				'</head><body>' . $html . '</body></html>';
 			exit();

@@ -21,10 +21,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-if(!(isset($GLOBALS["we_print_not_htmltop"]) && $GLOBALS["we_print_not_htmltop"])){
-	we_html_tools::htmlTop();
-}
-print STYLESHEET;
+echo (!(isset($GLOBALS["we_print_not_htmltop"]) && $GLOBALS["we_print_not_htmltop"]) ? we_html_tools::getHtmlTop() : '') .
+ STYLESHEET;
 
 
 $we_head_insert = isset($GLOBALS["we_head_insert"]) ? $GLOBALS["we_head_insert"] : "";
@@ -39,7 +37,7 @@ $_starttable = new we_html_table(array("border" => 0,
 $_starttable->setCol($_row++, 0, array("class" => "defaultfont",
 	"colspan" => 3,
 	"align" => "center"), "<strong>" .
-	$title . "</strong>");
+		$title . "</strong>");
 
 $_starttable->setCol($_row++, 0, array("class" => "defaultfont",
 	"colspan" => 3), "");

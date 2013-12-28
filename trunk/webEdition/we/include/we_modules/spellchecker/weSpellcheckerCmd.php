@@ -14,7 +14,7 @@ if(empty($_SESSION["user"]["Username"])){
 	we_html_tools::protect();
 }
 
-we_html_tools::htmlTop();
+echo we_html_tools::getHtmlTop();
 
 function saveSettings($default, $active, $langs = array()){
 	$_lang = '';

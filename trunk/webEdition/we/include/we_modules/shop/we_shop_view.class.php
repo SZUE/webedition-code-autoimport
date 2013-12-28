@@ -302,7 +302,6 @@ function we_cmd() {
 
 	function getProperties(){
 		we_html_tools::protect();
-		//we_html_tools::htmlTop();
 		print STYLESHEET;
 
 		//$weShopVatRule = weShopVatRule::getShopVatRule();

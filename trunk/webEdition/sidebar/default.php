@@ -23,8 +23,8 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
-we_html_tools::htmlTop('sideBar');
-echo we_html_element::cssLink(WEBEDITION_DIR . 'css/global.php');
+echo we_html_tools::getHtmlTop('sideBar') .
+ we_html_element::cssLink(WEBEDITION_DIR . 'css/global.php');
 ?>
 
 </head>

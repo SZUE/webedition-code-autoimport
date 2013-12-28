@@ -42,7 +42,7 @@ class we_customer_frames extends weModuleFrames{
 		//We need to set this (and in corresponding frames, since the data in database is formated this way
 		if(!($mode == 'export' && isset($_REQUEST["step"]) && $_REQUEST["step"] == 5)){
 			return we_html_tools::headerCtCharset('text/html', DEFAULT_CHARSET) .
-				we_html_tools::htmlTop('', DEFAULT_CHARSET);
+				we_html_tools::getHtmlTop('', DEFAULT_CHARSET);
 		}
 		return parent::getHTMLDocumentHeader();
 	}

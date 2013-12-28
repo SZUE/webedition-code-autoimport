@@ -3107,7 +3107,7 @@ function render_dialog(){
 	//we_html_element::jsElement("setTimeout(\"top.we_cmd('show_tabs');\", 50);");
 }
 
-we_html_tools::htmlTop();
+echo we_html_tools::getHtmlTop();
 
 $doSave = false;
 $acError = false;

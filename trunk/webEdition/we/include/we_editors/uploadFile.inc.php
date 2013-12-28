@@ -30,9 +30,8 @@ $error = false;
 $maxsize = getUploadMaxFilesize(false);
 $we_maxfilesize_text = sprintf(g_l('newFile', '[max_possible_size]'), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB));
 
-we_html_tools::htmlTop(g_l('newFile', "[import_File_from_hd_title]"));
-
-print STYLESHEET;
+echo we_html_tools::getHtmlTop(g_l('newFile', "[import_File_from_hd_title]")) .
+ STYLESHEET;
 
 if(!isset($_SESSION['weS']['we_data'][$we_transaction])){
 	$we_alerttext = $we_maxfilesize_text;
@@ -98,8 +97,8 @@ if(!isset($_SESSION['weS']['we_data'][$we_transaction])){
 }
 
 $content = '<table border="0" cellpadding="0" cellspacing="0">' .
-	($maxsize ? ('<tr><td>' . we_html_tools::htmlAlertAttentionBox(
-			$we_maxfilesize_text, we_html_tools::TYPE_ALERT, 390) . '</td></tr><tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>') : '') . '
+		($maxsize ? ('<tr><td>' . we_html_tools::htmlAlertAttentionBox(
+						$we_maxfilesize_text, we_html_tools::TYPE_ALERT, 390) . '</td></tr><tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>') : '') . '
 				<tr><td><input name="we_File" TYPE="file"' . ($allowedContentTypes ? ' ACCEPT="' . $allowedContentTypes . '"' : '') . ' size="35" /></td></tr>
 				<tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>';
 if($we_doc->ContentType == "image/*"){

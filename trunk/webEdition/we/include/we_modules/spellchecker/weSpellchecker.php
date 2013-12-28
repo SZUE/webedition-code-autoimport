@@ -4,7 +4,7 @@ include_once(WE_SPELLCHECKER_MODULE_PATH . '/spellchecker.conf.inc.php');
 
 we_html_tools::protect();
 
-we_html_tools::htmlTop();
+echo we_html_tools::getHtmlTop();
 
 if(isset($_REQUEST['we_dialog_args']['editname']) && $_REQUEST['we_dialog_args']['editname'] == 'tinyMce'){
 	print we_html_element::jsScript(TINYMCE_JS_DIR . 'tiny_mce_popup.js') .

@@ -58,8 +58,8 @@ class we_banner_frames extends weModuleFrames{
 	function getJSTreeCode(){//TODO: move (as in all modules...) to some future moduleTree class
 		//start of code from ex class weModuleBannerFrames
 		print we_html_element::jsScript(JS_DIR . 'images.js') .
-			we_html_element::jsScript(JS_DIR . 'windows.js') .
-			we_html_element::jsScript(JS_DIR . 'md5.js');
+				we_html_element::jsScript(JS_DIR . 'windows.js') .
+				we_html_element::jsScript(JS_DIR . 'md5.js');
 		?>
 		<script type="text/javascript"><!--
 
@@ -120,7 +120,7 @@ class we_banner_frames extends weModuleFrames{
 						if (nf[ai].name != -1) {
 							fr.write("<a name='_" + nf[ai].name + "' href=\"javascript://\" onClick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" BORDER=0>");
 						}
-						fr.write("<IMG SRC=<?php print TREE_IMAGE_DIR; ?>icons/" + nf[ai].icon + " WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 alt=\"<?php #print g_l('tree',"[edit_statustext]");              ?>\">");
+						fr.write("<IMG SRC=<?php print TREE_IMAGE_DIR; ?>icons/" + nf[ai].icon + " WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 alt=\"<?php #print g_l('tree',"[edit_statustext]");               ?>\">");
 						fr.write("</a>");
 						fr.write("&nbsp;<a name='_" + nf[ai].name + "' href=\"javascript://\" onClick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" + (parseInt(nf[ai].published) ? "" : "") + nf[ai].text + (parseInt(nf[ai].published) ? "" : "") + "</A>&nbsp;&nbsp;<BR>\n");
 					} else {
@@ -129,14 +129,14 @@ class we_banner_frames extends weModuleFrames{
 						var zusatz = (ai == nf.laenge) ? "end" : "";
 
 						if (nf[ai].offen == 0) {
-							fr.write("&nbsp;&nbsp;<A href=\"javascript:top.content.openClose('" + nf[ai].name + "',1)\" BORDER=0><IMG SRC=<?php print TREE_IMAGE_DIR; ?>auf" + zusatz + ".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php #print g_l('tree',"[open_statustext]")              ?>\"></A>");
+							fr.write("&nbsp;&nbsp;<A href=\"javascript:top.content.openClose('" + nf[ai].name + "',1)\" BORDER=0><IMG SRC=<?php print TREE_IMAGE_DIR; ?>auf" + zusatz + ".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php #print g_l('tree',"[open_statustext]")               ?>\"></A>");
 							var zusatz2 = "";
 						} else {
-							fr.write("&nbsp;&nbsp;<A href=\"javascript:top.content.openClose('" + nf[ai].name + "',0)\" BORDER=0><IMG SRC=<?php print TREE_IMAGE_DIR; ?>zu" + zusatz + ".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php #print g_l('tree',"[close_statustext]")              ?>\"></A>");
+							fr.write("&nbsp;&nbsp;<A href=\"javascript:top.content.openClose('" + nf[ai].name + "',0)\" BORDER=0><IMG SRC=<?php print TREE_IMAGE_DIR; ?>zu" + zusatz + ".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php #print g_l('tree',"[close_statustext]")               ?>\"></A>");
 							var zusatz2 = "open";
 						}
 						fr.write("<a name='_" + nf[ai].name + "' href=\"javascript://\" onClick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" BORDER=0>");
-						fr.write("<IMG SRC=<?php print TREE_IMAGE_DIR; ?>icons/" + nf[ai].icon.replace(/\.gif/, "") + zusatz2 + ".gif WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php #print g_l('tree',"[edit_statustext]");              ?>\">");
+						fr.write("<IMG SRC=<?php print TREE_IMAGE_DIR; ?>icons/" + nf[ai].icon.replace(/\.gif/, "") + zusatz2 + ".gif WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php #print g_l('tree',"[edit_statustext]");               ?>\">");
 						fr.write("</a>");
 						fr.write("<A name='_" + nf[ai].name + "' HREF=\"javascript://\" onClick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">");
 						fr.write("&nbsp;<b>" + nf[ai].text + "</b>");
@@ -334,8 +334,8 @@ class we_banner_frames extends weModuleFrames{
 			$IsFolder = $this->db->f("IsFolder");
 
 			$out.=($IsFolder ?
-					"  menuDaten.add(new dirEntry('" . $Icon . "'," . $ID . "," . $ParentID . ",'" . $Text . "',0,'folder','" . BANNER_TABLE . "',1));" :
-					"  menuDaten.add(new urlEntry('" . $Icon . "'," . $ID . "," . $ParentID . ",'" . $Text . "','file','" . BANNER_TABLE . "',1));");
+							"  menuDaten.add(new dirEntry('" . $Icon . "'," . $ID . "," . $ParentID . ",'" . $Text . "',0,'folder','" . BANNER_TABLE . "',1));" :
+							"  menuDaten.add(new urlEntry('" . $Icon . "'," . $ID . "," . $ParentID . ",'" . $Text . "','file','" . BANNER_TABLE . "',1));");
 		}
 
 		$out.='}';
@@ -379,7 +379,7 @@ class we_banner_frames extends weModuleFrames{
 		$tab_body = $we_tabs->getJS();
 
 		$extraHead = $tab_head .
-			we_html_element::jsElement('
+				we_html_element::jsElement('
 				function setTab(tab){
 					switch(tab){
 						case ' . we_banner_banner::PAGE_PROPERTY . ':
@@ -394,15 +394,15 @@ class we_banner_frames extends weModuleFrames{
 
 		//TODO: we have the following body in several modules!
 		$body = we_html_element::htmlBody(array('onresize' => 'setFrameSize()', 'onload' => 'setFrameSize()', 'bgcolor' => 'white', 'background' => IMAGE_DIR . 'backgrounds/header_with_black_line.gif', 'marginwidth' => 0, 'marginheight' => 0, 'leftmargin' => 0, 'topmargin' => 0), we_html_element::htmlDiv(array('id' => 'main'), we_html_tools::getPixel(100, 3) .
-					we_html_element::htmlDiv(array('style' => 'margin:0px;padding-left:10px;', 'id' => 'headrow'), we_html_element::htmlNobr(
-							we_html_element::htmlB(str_replace(" ", "&nbsp;", $headline1) . ':&nbsp;') .
-							we_html_element::htmlSpan(array('id' => 'h_path', 'class' => 'header_small'), '<b id="titlePath">' . str_replace(" ", "&nbsp;", $text) . '</b>'
-							)
+								we_html_element::htmlDiv(array('style' => 'margin:0px;padding-left:10px;', 'id' => 'headrow'), we_html_element::htmlNobr(
+												we_html_element::htmlB(str_replace(" ", "&nbsp;", $headline1) . ':&nbsp;') .
+												we_html_element::htmlSpan(array('id' => 'h_path', 'class' => 'header_small'), '<b id="titlePath">' . str_replace(" ", "&nbsp;", $text) . '</b>'
+												)
+										)
+								) .
+								we_html_tools::getPixel(100, 3) .
+								$we_tabs->getHTML()
 						)
-					) .
-					we_html_tools::getPixel(100, 3) .
-					$we_tabs->getHTML()
-				)
 		);
 
 		return $this->getHTMLDocument($body, $extraHead);
@@ -413,8 +413,8 @@ class we_banner_frames extends weModuleFrames{
 			return $this->getHTMLDocument(we_html_element::htmlBody(array('bgcolor' => '#F0EFF0'), ''));
 		}
 
-		we_html_tools::htmlTop();
-		print STYLESHEET;
+		echo we_html_tools::getHtmlTop() .
+		STYLESHEET;
 
 		$this->View->getJSFooterCode();
 
@@ -474,8 +474,8 @@ class we_banner_frames extends weModuleFrames{
 		$extraHead = $this->View->getJSCmd();
 
 		$body = we_html_element::htmlBody(array(), we_html_element::htmlForm(array(), $this->View->htmlHidden("ncmd", "") .
-					$this->View->htmlHidden("nopt", "")
-				)
+								$this->View->htmlHidden("nopt", "")
+						)
 		);
 
 		return $this->getHTMLDocument($body, $extraHead);

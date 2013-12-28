@@ -25,9 +25,8 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
-we_html_tools::htmlTop();
-
-print STYLESHEET;
+echo we_html_tools::getHtmlTop() .
+ STYLESHEET;
 
 if(isset($_REQUEST['we_cmd'])){
 	switch($_REQUEST['we_cmd'][0]){
@@ -228,9 +227,9 @@ if(!empty($allVats)){
 $plusBut = we_html_button::create_button('image:btn_function_plus', 'javascript:we_cmd(\'addVat\')');
 
 print we_html_element::jsElement(
-		$vatJavaScript .
-		$jsFunction .
-		(isset($jsMessage) ? we_message_reporting::getShowMessageCall($jsMessage, $jsMessageType) : '')) . "
+				$vatJavaScript .
+				$jsFunction .
+				(isset($jsMessage) ? we_message_reporting::getShowMessageCall($jsMessage, $jsMessageType) : '')) . "
 	</head>
 <body class=\"weDialogBody\" onload='window.focus();'>";
 
@@ -282,9 +281,9 @@ $parts[] = array(
 );
 
 print we_html_multiIconBox::getHTML(
-		'weShopVates', "100%", $parts, 30, we_html_button::position_yes_no_cancel(
-			'', '', we_html_button::create_button('close', 'javascript:we_cmd(\'close\');')
-		), -1, '', '', false, g_l('modules_shop', '[vat][vat_edit_form_headline_box]'), "", 409
+				'weShopVates', "100%", $parts, 30, we_html_button::position_yes_no_cancel(
+						'', '', we_html_button::create_button('close', 'javascript:we_cmd(\'close\');')
+				), -1, '', '', false, g_l('modules_shop', '[vat][vat_edit_form_headline_box]'), "", 409
 );
 
 print '

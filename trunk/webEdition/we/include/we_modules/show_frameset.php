@@ -23,8 +23,8 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
-we_html_tools::htmlTop();
-print we_html_element::jsElement('
+echo we_html_tools::getHtmlTop() .
+ we_html_element::jsElement('
 	function toggleBusy(){
 	}
 	var makeNewEntry = 0;
@@ -38,8 +38,8 @@ function we_cmd() {
 		}
 		eval("top.content.we_cmd("+args+")");
 	}
-');
-print we_html_element::jsScript(JS_DIR . "keyListener.js");
+') .
+ we_html_element::jsScript(JS_DIR . "keyListener.js");
 if(isset($_REQUEST['mod']) && !isset($mod)){
 	$mod = $_REQUEST['mod'];
 }
@@ -54,6 +54,6 @@ if(isset($_REQUEST['tool']) && $_REQUEST['tool'] = 'navigation'){
 <body style="background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;" onload="setFrameSize()" onresize="setFrameSize()">
 	<?php
 	echo we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;'), we_html_element::htmlExIFrame('navi', WE_MODULES_PATH . 'navi.php', 'background-color:white;position:absolute;top:0px;height:21px;left:0px;right:0px;overflow: hidden;') .
-		we_html_element::htmlIFrame('content', WE_MODULES_DIR . 'show.php?mod=' . $mod . (empty($_REQUEST['we_cmd'][1]) ? '' : "&msg_param=" . $_REQUEST['we_cmd'][1]) . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : '') . (isset($_REQUEST['bid']) ? '&bid=' . $_REQUEST['bid'] : ''), 'position:absolute;top:21px;bottom:0px;left:0px;right:0px;overflow: hidden;')
+			we_html_element::htmlIFrame('content', WE_MODULES_DIR . 'show.php?mod=' . $mod . (empty($_REQUEST['we_cmd'][1]) ? '' : "&msg_param=" . $_REQUEST['we_cmd'][1]) . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : '') . (isset($_REQUEST['bid']) ? '&bid=' . $_REQUEST['bid'] : ''), 'position:absolute;top:21px;bottom:0px;left:0px;right:0px;overflow: hidden;')
 	);
 	?></body></html>

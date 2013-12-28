@@ -35,9 +35,8 @@ function prepareFieldname($str){
 
 we_html_tools::protect();
 
-we_html_tools::htmlTop();
-
-print STYLESHEET;
+echo we_html_tools::getHtmlTop() .
+ STYLESHEET;
 
 
 if(!empty($_REQUEST["fieldForname"])){ //	save data in arrays ..
