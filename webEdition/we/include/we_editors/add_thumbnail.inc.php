@@ -35,7 +35,9 @@ $we_dt = isset($_SESSION['weS']['we_data'][$we_transaction]) ? $_SESSION['weS'][
 include(WE_INCLUDES_PATH . "we_editors/we_init_doc.inc.php");
 $_thumbs = array();
 
-if(get_class($we_doc) == 'we_imageDocument'){
+if(get_class($we_doc) != 'we_imageDocument'){
+	exit("ERROR: Couldn't initialize we_imageDocument object");
+}
 
 	echo we_html_tools::getHtmlTop(g_l('weClass', "[thumbnails]")) .
 	we_html_element::jsElement('
@@ -94,53 +96,50 @@ function we_cmd(){
 	}
 }') . we_html_button::create_state_changer();
 
-	print we_html_element::jsScript(JS_DIR . 'windows.js');
+print we_html_element::jsScript(JS_DIR . 'windows.js');
 
 
-	print STYLESHEET . "</head>";
+print STYLESHEET . "</head>";
 
-	// SELECT Box with thumbnails
-	$_thumbnails = new we_html_select(array("multiple" => "multiple", "name" => "Thumbnails", "id" => "Thumbnails", "class" => "defaultfont", "size" => 6, "style" => "width: 340px;", "onchange" => "select_thumbnails(this);"));
-	$DB_WE->query("SELECT ID,Name,Format FROM " . THUMBNAILS_TABLE . " ORDER BY Name");
+// SELECT Box with thumbnails
+$_thumbnails = new we_html_select(array("multiple" => "multiple", "name" => "Thumbnails", "id" => "Thumbnails", "class" => "defaultfont", "size" => 6, "style" => "width: 340px;", "onchange" => "select_thumbnails(this);"));
+$DB_WE->query("SELECT ID,Name,Format FROM " . THUMBNAILS_TABLE . " ORDER BY Name");
 
-	$_thumbnail_counter_firsttime = true;
+$_thumbnail_counter_firsttime = true;
 
-	$doc_thumbs = ($we_doc->Thumbs == -1) ? array() : makeArrayFromCSV($we_doc->Thumbs);
+$doc_thumbs = ($we_doc->Thumbs == -1) ? array() : makeArrayFromCSV($we_doc->Thumbs);
 
-	$selectedID = 0;
-	$_enabled_buttons = false;
-	while($DB_WE->next_record()){
-		if(!in_array($DB_WE->f("ID"), $doc_thumbs)){
-			$_enabled_buttons = true;
-			$_thumbnail_counter = $DB_WE->f("ID");
-			if(we_base_imageEdit::is_imagetype_read_supported(we_base_imageEdit::$GDIMAGE_TYPE[strtolower($we_doc->Extension)]) && we_base_imageEdit::is_imagetype_supported(trim($DB_WE->f("Format")) ? $DB_WE->f("Format") : we_base_imageEdit::$GDIMAGE_TYPE[strtolower($we_doc->Extension)])){
-				$_thumbnails->addOption($DB_WE->f("ID"), $DB_WE->f("Name"));
-			}
-			if($_thumbnail_counter_firsttime){
-				$selectedID = $DB_WE->f("ID");
-				$_thumbnails->selectOption($selectedID);
-			}
-
-			$_thumbnail_counter_firsttime = false;
+$selectedID = 0;
+$_enabled_buttons = false;
+while($DB_WE->next_record()){
+	if(!in_array($DB_WE->f("ID"), $doc_thumbs)){
+		$_enabled_buttons = true;
+		$_thumbnail_counter = $DB_WE->f("ID");
+		if(we_base_imageEdit::is_imagetype_read_supported(we_base_imageEdit::$GDIMAGE_TYPE[strtolower($we_doc->Extension)]) && we_base_imageEdit::is_imagetype_supported(trim($DB_WE->f("Format")) ? $DB_WE->f("Format") : we_base_imageEdit::$GDIMAGE_TYPE[strtolower($we_doc->Extension)])){
+			$_thumbnails->addOption($DB_WE->f("ID"), $DB_WE->f("Name"));
 		}
+		if($_thumbnail_counter_firsttime){
+			$selectedID = $DB_WE->f("ID");
+			$_thumbnails->selectOption($selectedID);
+		}
+
+		$_thumbnail_counter_firsttime = false;
 	}
-
-	$editbut = we_html_button::create_button("edit_all_thumbs", "javascript:we_cmd('editThumbs','top.opener.location = top.opener.location;');", false);
-
-	$_thumbs[] = array("headline" => "", "html" => $_thumbnails->getHtml() . '<p align="right">' . $editbut . '</p>', "space" => 0);
-
-
-	$iframe = '<iframe name="showthumbs" id="showthumbs" src="' . WEBEDITION_DIR . 'showThumb.php?u=' . $uniqid . '&t=' . $we_transaction . '&id=' . $selectedID . '" width="340" height="130"></iframe>';
-
-	$_thumbs[] = array("headline" => "", "html" => $iframe, "space" => 0);
-
-	$addbut = we_html_button::create_button("add", "javascript:add_thumbnails();", false, 0, 0, "", "", !$_enabled_buttons, false);
-	$cancelbut = we_html_button::create_button("cancel", "javascript:top.close();");
-
-	$buttons = we_html_button::position_yes_no_cancel($addbut, null, $cancelbut);
-
-	$dialog = we_html_multiIconBox::getHTML("", "100%", $_thumbs, 30, $buttons, -1, "", "", false, g_l('weClass', "[thumbnails]"));
-	print we_html_element::htmlBody(array("class" => "weDialogBody", "style" => "overflow: hidden;", "onload" => "top.focus();"), $dialog) . "</html>";
-} else {
-	exit("ERROR: Couldn't initialize we_imageDocument object");
 }
+
+$editbut = we_html_button::create_button("edit_all_thumbs", "javascript:we_cmd('editThumbs','top.opener.location = top.opener.location;');", false);
+
+$_thumbs[] = array("headline" => "", "html" => $_thumbnails->getHtml() . '<p align="right">' . $editbut . '</p>', "space" => 0);
+
+
+$iframe = '<iframe name="showthumbs" id="showthumbs" src="' . WEBEDITION_DIR . 'showThumb.php?u=' . $uniqid . '&t=' . $we_transaction . '&id=' . $selectedID . '" width="340" height="130"></iframe>';
+
+$_thumbs[] = array("headline" => "", "html" => $iframe, "space" => 0);
+
+$addbut = we_html_button::create_button("add", "javascript:add_thumbnails();", false, 0, 0, "", "", !$_enabled_buttons, false);
+$cancelbut = we_html_button::create_button("cancel", "javascript:top.close();");
+
+$buttons = we_html_button::position_yes_no_cancel($addbut, null, $cancelbut);
+
+$dialog = we_html_multiIconBox::getHTML("", "100%", $_thumbs, 30, $buttons, -1, "", "", false, g_l('weClass', "[thumbnails]"));
+print we_html_element::htmlBody(array("class" => "weDialogBody", "style" => "overflow: hidden;", "onload" => "top.focus();"), $dialog) . "</html>";
