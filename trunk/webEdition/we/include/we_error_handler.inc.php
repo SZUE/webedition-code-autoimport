@@ -228,7 +228,7 @@ function display_error_message($type, $message, $file, $line, $skipBT = false){
 	</table><br />';
 }
 
-function getVariableMax($var, $db = ''){
+function getVariableMax($var, we_database_base $db = null){
 	static $max = 65500; //max lenght of text-col in mysql - this is enough debug-data, leave some space...
 	switch($var){
 		case 'Request':
@@ -355,7 +355,7 @@ function mail_error_message($type, $message, $file, $line, $skipBT = false, $ins
 
 	// Build the error table
 	$_detailedError = "An error occurred while executing a script in webEdition.\n\n\n" .
-		($insertID ?
+		($insertID && function_exists('getServerUrl')?
 			getServerUrl() . WEBEDITION_DIR . 'errorlog.php?function=pos&ID=' . $insertID . "\n\n" : '') .
 // Domain
 		'webEdition address: ' . $_SERVER['SERVER_NAME'] . ",\n\n" .

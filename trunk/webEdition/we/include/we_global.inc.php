@@ -44,7 +44,7 @@ function correctUml($in){
 	return str_replace(array('ä', 'ö', 'ü', 'Ä', 'Ö', 'Ü', 'ß'), array('ae', 'oe', 'ue', 'Ae', 'Oe', 'Ue', 'ss'), $in);
 }
 
-function makePIDTail($pid, $cid, $db = '', $table = FILE_TABLE){
+function makePIDTail($pid, $cid, we_database_base $db = null, $table = FILE_TABLE){
 	if($table != FILE_TABLE){
 		return '1';
 	}
@@ -73,13 +73,13 @@ function makePIDTail($pid, $cid, $db = '', $table = FILE_TABLE){
 		);
 }
 
-function we_getCatsFromDoc($doc, $tokken = ',', $showpath = false, $db = '', $rootdir = '/', $catfield = '', $onlyindir = ''){
+function we_getCatsFromDoc($doc, $tokken = ',', $showpath = false, we_database_base $db = null, $rootdir = '/', $catfield = '', $onlyindir = ''){
 	return (isset($doc->Category) ?
 			we_getCatsFromIDs($doc->Category, $tokken, $showpath, $db, $rootdir, $catfield, $onlyindir) :
 			'');
 }
 
-function we_getCatsFromIDs($catIDs, $tokken = ',', $showpath = false, $db = '', $rootdir = '/', $catfield = '', $onlyindir = '', $asArray = false){
+function we_getCatsFromIDs($catIDs, $tokken = ',', $showpath = false, we_database_base $db = null, $rootdir = '/', $catfield = '', $onlyindir = '', $asArray = false){
 	if(!$catIDs){
 		return $asArray ? array() : '';
 	}
@@ -272,7 +272,7 @@ function getHTTP($server, $url, $port = '', $username = '', $password = ''){
  * @param type $table
  * @return bool true on success, or if not in DB
  */
-function deleteContentFromDB($id, $table, $DB_WE = ''){
+function deleteContentFromDB($id, $table, we_database_base $DB_WE = null){
 	$DB_WE = $DB_WE ? $DB_WE : new DB_WE();
 
 	if(f('SELECT 1 AS cnt FROM ' . LINK_TABLE . ' WHERE DID=' . intval($id) . ' AND DocumentTable="' . $DB_WE->escape(stripTblPrefix($table)) . '" LIMIT 1', 'cnt', $DB_WE) != 1){
@@ -374,7 +374,7 @@ function we_hasPerm($perm){
 	return permissionhandler::hasPerm($perm);
 }
 
-function we_getParentIDs($table, $id, &$ids, $db = ''){
+function we_getParentIDs($table, $id, &$ids, we_database_base $db = null){
 	$db = $db ? $db : new DB_WE();
 	while(($pid = f('SELECT ParentID FROM ' . $table . ' WHERE ID=' . intval($id), 'ParentID', $db)) > 0){
 		$id = $pid; // #5836
@@ -417,7 +417,7 @@ function makeCSVFromArray($arr, $prePostKomma = false, $sep = ','){
 			$out);
 }
 
-function in_parentID($id, $pid, $table = FILE_TABLE, $db = ''){
+function in_parentID($id, $pid, $table = FILE_TABLE, we_database_base $db = null){
 	if(intval($pid) != 0 && intval($id) == 0){
 		return false;
 	}
@@ -440,7 +440,7 @@ function in_parentID($id, $pid, $table = FILE_TABLE, $db = ''){
 	return false;
 }
 
-function in_workspace($IDs, $wsIDs, $table = FILE_TABLE, $db = '', $objcheck = false){
+function in_workspace($IDs, $wsIDs, $table = FILE_TABLE, we_database_base $db = null, $objcheck = false){
 	if(empty($wsIDs) || empty($IDs)){
 		return true;
 	}
@@ -468,7 +468,7 @@ function in_workspace($IDs, $wsIDs, $table = FILE_TABLE, $db = '', $objcheck = f
 	return false;
 }
 
-function path_to_id($path, $table = FILE_TABLE, $db = ''){
+function path_to_id($path, $table = FILE_TABLE, we_database_base $db = null){
 	//FIXME: make them all use $db at call
 	if($path == '/'){
 		return 0;
@@ -500,7 +500,7 @@ function path_to_id_ct($path, $table, &$contentType){
 	return intval(isset($res['ID']) ? $res['ID'] : 0);
 }
 
-function id_to_path($IDs, $table = FILE_TABLE, $db = '', $prePostKomma = false, $asArray = false, $endslash = false){
+function id_to_path($IDs, $table = FILE_TABLE, we_database_base $db = null, $prePostKomma = false, $asArray = false, $endslash = false){
 	if(!is_array($IDs) && !$IDs){
 		return '/';
 	}
@@ -532,7 +532,7 @@ function getTemplatePath($dest){
 	return ($ret && $ret != '/' ? TEMPLATES_PATH . $ret : '');
 }
 
-function getHashArrayFromCSV($csv, $firstEntry, $db = ''){
+function getHashArrayFromCSV($csv, $firstEntry, we_database_base $db = null){
 	if(!$csv){
 		return array();
 	}
@@ -549,7 +549,7 @@ function getHashArrayFromCSV($csv, $firstEntry, $db = ''){
 	return $out;
 }
 
-function getPathsFromTable($table = FILE_TABLE, $db = '', $type = FILE_ONLY, $wsIDs = '', $order = 'Path', $limitCSV = '', $first = ''){
+function getPathsFromTable($table = FILE_TABLE, we_database_base $db = null, $type = FILE_ONLY, $wsIDs = '', $order = 'Path', $limitCSV = '', $first = ''){
 	$db = ($db ? $db : new DB_WE());
 	$limitCSV = trim($limitCSV, ',');
 	$query = array();
@@ -626,7 +626,7 @@ function get_ws($table = FILE_TABLE, $prePostKomma = false){
 	return '';
 }
 
-function we_readParents($id, &$parentlist, $tab, $match = 'ContentType', $matchvalue = 'folder', $db = ''){
+function we_readParents($id, &$parentlist, $tab, $match = 'ContentType', $matchvalue = 'folder', we_database_base $db = null){
 	$db = $db ? $db : new DB_WE();
 	$pid = f('SELECT ParentID FROM ' . $db->escape($tab) . ' WHERE ID=' . intval($id), 'ParentID', $db);
 	if($pid !== ''){
@@ -642,7 +642,7 @@ function we_readParents($id, &$parentlist, $tab, $match = 'ContentType', $matchv
 	}
 }
 
-function we_readChilds($pid, &$childlist, $tab, $folderOnly = true, $where = '', $match = 'ContentType', $matchvalue = 'folder', $db = ''){
+function we_readChilds($pid, &$childlist, $tab, $folderOnly = true, $where = '', $match = 'ContentType', $matchvalue = 'folder', we_database_base $db = null){
 	$db = $db ? $db : new DB_WE();
 	$db->query('SELECT ID,' . $db->escape($match) . ' FROM ' . $db->escape($tab) . ' WHERE ' . ($folderOnly ? ' IsFolder=1 AND ' : '') . 'ParentID=' . intval($pid) . ' ' . $where);
 	$todo = array();
@@ -932,7 +932,7 @@ function getContentTypeFromFile($dat){
 	return 'application/*';
 }
 
-function getUploadMaxFilesize($mysql = false, $db = ''){
+function getUploadMaxFilesize($mysql = false, we_database_base $db = null){
 	$post_max_size = we_convertIniSizes(ini_get('post_max_size'));
 	$upload_max_filesize = we_convertIniSizes(ini_get('upload_max_filesize'));
 	$min = min($post_max_size, $upload_max_filesize, ($mysql ? getMaxAllowedPacket($db) : PHP_INT_MAX));
@@ -944,7 +944,7 @@ function getUploadMaxFilesize($mysql = false, $db = ''){
 	}
 }
 
-function getMaxAllowedPacket($db = ''){
+function getMaxAllowedPacket(we_database_base $db = null){
 	return f('SHOW VARIABLES LIKE "max_allowed_packet"', 'Value', ($db ? $db : new DB_WE()));
 }
 
@@ -959,7 +959,7 @@ function we_convertIniSizes($in){
 	return intval($in);
 }
 
-function we_getDocumentByID($id, $includepath = '', $db = '', &$charset = ''){
+function we_getDocumentByID($id, $includepath = '', we_database_base $db = null, &$charset = ''){
 	$db = $db ? $db : new DB_WE();
 // look what document it is and get the className
 	$clNm = f('SELECT ClassName FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'ClassName', $db);

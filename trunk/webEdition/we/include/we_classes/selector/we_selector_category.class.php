@@ -628,7 +628,7 @@ function setDir(id){
 }');
 	}
 
-	function renameChildrenPath($id, $db = ''){
+	function renameChildrenPath($id, we_database_base $db = null){
 		$db = $db ? $db : new DB_WE();
 		$db->query('SELECT ID,IsFolder FROM ' . CATEGORY_TABLE . ' WHERE ParentID=' . intval($id));
 		$updates = $db->getAllFirst(false);

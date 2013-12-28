@@ -27,7 +27,7 @@ we_html_tools::protect();
 we_html_tools::htmlTop();
 print STYLESHEET;
 
-function getObjectsForDocWorkspace($id, $db){
+function getObjectsForDocWorkspace($id, we_database_base $db){
 	$ids = (is_array($id)) ? $id : array($id);
 
 	if(!defined('OBJECT_FILES_TABLE')){

@@ -77,7 +77,7 @@ function makeAlertDelFolderNotEmpty($folders){
 	return sprintf(g_l('alert', '[folder_not_empty]'), implode("\n", $folders) . "\n");
 }
 
-function deleteFolder($id, $table, $path = '', $delR = true, $DB_WE = ''){
+function deleteFolder($id, $table, $path = '', $delR = true, we_database_base $DB_WE = null){
 	$isTemplateFolder = ($table == TEMPLATES_TABLE);
 
 	$DB_WE = ($DB_WE ? $DB_WE : new DB_WE());
@@ -132,7 +132,7 @@ function deleteFolder($id, $table, $path = '', $delR = true, $DB_WE = ''){
 	}
 }
 
-function deleteFile($id, $table, $path = '', $contentType = '', $DB_WE = ''){
+function deleteFile($id, $table, $path = '', $contentType = '', we_database_base $DB_WE = null){
 	$DB_WE = $DB_WE ? $DB_WE : new DB_WE();
 
 	$isTemplateFile = ($table == TEMPLATES_TABLE);
@@ -228,7 +228,7 @@ function deleteThumbsByThumbID($id){
 	we_thumbnail::deleteByThumbID($id);
 }
 
-function deleteEntry($id, $table, $delR = true, $skipHook = 0, $DB_WE = ''){
+function deleteEntry($id, $table, $delR = true, $skipHook = 0, we_database_base $DB_WE = null){
 
 	$DB_WE = ($DB_WE ? $DB_WE : new DB_WE());
 	if(defined('WORKFLOW_TABLE') && ($table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE))){

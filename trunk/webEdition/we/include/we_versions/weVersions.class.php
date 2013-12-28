@@ -1628,7 +1628,7 @@ class weVersions{
 	/**
 	 * @abstract save version-entry in DB which is marked as deleted
 	 */
-	function setVersionOnDelete($docID, $docTable, $ct, $db){
+	function setVersionOnDelete($docID, $docTable, $ct, we_database_base $db){
 
 		if(isset($_SESSION["user"]["ID"])){
 			$lastEntry = $this->getLastEntry($docID, $docTable);

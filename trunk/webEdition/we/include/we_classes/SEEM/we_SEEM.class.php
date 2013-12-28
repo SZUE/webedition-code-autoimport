@@ -619,7 +619,7 @@ abstract class we_SEEM{
 	 * @param    tbl             string table to look for the paths
 	 * @return   ID              string Document-ID to which the path belongs to or -1
 	 */
-	static function getDocIDbyPath($docPath, $tbl = "", $db = ''){
+	static function getDocIDbyPath($docPath, $tbl = "", we_database_base $db = null){
 		//FIXME: does this work for SEO Url's???
 		$db = ($db ? $db : new DB_WE());
 		$docPath = $db->escape(trim($docPath));
@@ -990,7 +990,7 @@ abstract class we_SEEM{
 	 * @param int $id
 	 * @desc Looks for the ContentType of the document with the given id and returns it
 	 */
-	static function getDocContentTypeByID($id, $db = ''){
+	static function getDocContentTypeByID($id, we_database_base $db = null){
 		return f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'ContentType', ($db ? $db : new DB_WE()));
 	}
 

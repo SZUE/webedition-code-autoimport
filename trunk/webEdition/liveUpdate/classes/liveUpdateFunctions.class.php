@@ -397,7 +397,7 @@ class liveUpdateFunctions{
 	 * @param string $tableName
 	 * @return array
 	 */
-	function getFieldsOfTable($tableName, $db){
+	function getFieldsOfTable($tableName, we_database_base $db){
 
 		$fieldsOfTable = array();
 		$db->query('DESCRIBE ' . $db->escape($tableName));
@@ -581,7 +581,7 @@ class liveUpdateFunctions{
 	 *
 	 * @param string $query
 	 */
-	function executeUpdateQuery($query, $db = ''){
+	function executeUpdateQuery($query, we_database_base $db = null){
 		$db = ($db ? $db : new DB_WE());
 
 		// when executing a create statement, try to create table,

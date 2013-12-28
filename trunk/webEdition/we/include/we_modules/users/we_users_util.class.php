@@ -89,7 +89,7 @@ abstract class we_users_util{
 		return false;
 	}
 
-	static function isUserInGroup($uid, $groupID, $db = ''){
+	static function isUserInGroup($uid, $groupID, we_database_base $db = null){
 		$db = $db ? $db : new DB_WE();
 		$pid = f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($uid), "ParentID", $db);
 		if($pid == $groupID){
@@ -152,7 +152,7 @@ abstract class we_users_util{
 
 	public static function userIsOwnerCreatorOfParentDir($folderID, $tab){
 		if(($tab != FILE_TABLE && $tab != OBJECT_FILES_TABLE) ||
-			(permissionhandler::hasPerm('ADMINISTRATOR') || ($folderID == 0))){
+				(permissionhandler::hasPerm('ADMINISTRATOR') || ($folderID == 0))){
 			return true;
 		}
 		$db = new DB_WE();
@@ -234,7 +234,7 @@ abstract class we_users_util{
 		return ' AND ( RestrictOwners=0 OR (RestrictOwners=1 AND (' . implode(' OR ', $q) . '))) ';
 	}
 
-	public static function getAllowedClasses($db = ''){
+	public static function getAllowedClasses(we_database_base $db = null){
 		if(!defined('OBJECT_FILES_TABLE')){
 			return '';
 		}

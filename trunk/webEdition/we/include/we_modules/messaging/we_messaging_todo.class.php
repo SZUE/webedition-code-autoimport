@@ -108,7 +108,7 @@ class we_messaging_todo extends we_messaging_proto{
 
 	/* Methods dealing with USER_TABLE and other userstuff */
 
-	function username_to_userid($username, $db = ''){
+	function username_to_userid($username, we_database_base $db = null){
 		$db = $db ? $db : new DB_WE();
 		$id = f('SELECT ID FROM ' . USER_TABLE . ' WHERE username="' . $db->escape($username) . '"', 'ID', $db);
 		return $id ? $id : -1;
