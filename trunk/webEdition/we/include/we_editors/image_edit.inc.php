@@ -33,7 +33,9 @@ $we_dt = isset($_SESSION['weS']['we_data'][$we_transaction]) ? $_SESSION['weS'][
 include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
 
-if(get_class($we_doc) == "we_imageDocument"){
+if(get_class($we_doc) != "we_imageDocument"){
+	exit("ERROR: Couldn't initialize we_imageDocument object");
+}
 
 	echo we_html_tools::getHtmlTop() .
 	we_html_element::jsScript(JS_DIR . 'we_showMessage.js') . we_html_element::jsElement('
@@ -48,41 +50,36 @@ document.onkeyup = function(e) {
 
 self.focus();');
 
-	switch($_REQUEST['we_cmd'][0]){
-		case "image_resize":
-			print we_html_element::jsElement(we_getImageResizeDialogJS());
-			break;
-		case "image_convertJPEG":
-			print we_html_element::jsElement(we_getImageConvertDialogJS());
-			break;
-		case "image_rotate":
-			print we_html_element::jsElement(we_getImageRotateDialogJS());
-			break;
-	}
-
-	print STYLESHEET . "</head>";
-
-
-	switch($_REQUEST['we_cmd'][0]){
-		case "image_resize":
-			$_dialog = we_getImageResizeDialog();
-			break;
-		case "image_convertJPEG":
-			$_dialog = we_getImageConvertDialog();
-			break;
-		case "image_rotate":
-			$_dialog = we_getImageRotateDialog();
-			break;
-		default:
-			$_dialog = "";
-	}
-
-	$_dialog = we_html_element::htmlForm(array("name" => "we_form"), $_dialog);
-
-	print we_html_element::htmlBody(array("class" => "weDialogBody"), $_dialog) . "</html>";
-} else {
-	exit("ERROR: Couldn't initialize we_imageDocument object");
+switch($_REQUEST['we_cmd'][0]){
+	case "image_resize":
+		print we_html_element::jsElement(we_getImageResizeDialogJS());
+		break;
+	case "image_convertJPEG":
+		print we_html_element::jsElement(we_getImageConvertDialogJS());
+		break;
+	case "image_rotate":
+		print we_html_element::jsElement(we_getImageRotateDialogJS());
+		break;
 }
+
+print STYLESHEET . "</head>";
+
+
+switch($_REQUEST['we_cmd'][0]){
+	case "image_resize":
+		$_dialog = we_getImageResizeDialog();
+		break;
+	case "image_convertJPEG":
+		$_dialog = we_getImageConvertDialog();
+		break;
+	case "image_rotate":
+		$_dialog = we_getImageRotateDialog();
+		break;
+	default:
+		$_dialog = '';
+}
+
+print we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form"), $_dialog)) . "</html>";
 
 function we_getImageResizeDialogJS(){
 	list($width, $height) = $GLOBALS['we_doc']->getOrigSize();
