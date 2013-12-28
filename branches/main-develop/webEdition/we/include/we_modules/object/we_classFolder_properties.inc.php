@@ -55,10 +55,8 @@ if(isset($_REQUEST['do'])){
 
 we_html_tools::protect();
 
-// Ausgabe beginnen
-we_html_tools::htmlTop();
-
-echo we_html_element::jsScript(JS_DIR . 'windows.js') .
+echo we_html_tools::getHtmlTop() .
+ we_html_element::jsScript(JS_DIR . 'windows.js') .
  $we_doc->getSearchJS() .
  (isset($javascript) ? we_html_element::jsElement($javascript) : '');
 

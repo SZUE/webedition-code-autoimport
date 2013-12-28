@@ -23,9 +23,8 @@
  */
 we_html_tools::protect();
 
-we_html_tools::htmlTop();
-
-print STYLESHEET;
+echo we_html_tools::getHtmlTop() .
+ STYLESHEET;
 
 $content = '<p class="defaultfont">' . g_l('alert', '[no_perms_action]') . '</p>';
 ?>

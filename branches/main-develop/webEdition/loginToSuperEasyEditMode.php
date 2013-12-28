@@ -49,8 +49,8 @@ if(isset($_POST["username"]) && isset($_POST["id"]) && isset($_POST["type"])){
 			"open_selected" => true, //	This var is only temporary
 		);
 		//	now start webEdition
-		we_html_tools::htmlTop();
-		print '
+		echo we_html_tools::getHtmlTop().
+				'
 </head>
 <body>
 <form name="startSuperEasyEditMode" method="post" action="/webEdition/webEdition.php">

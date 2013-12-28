@@ -31,9 +31,8 @@ if($we_doc->EditPageNr == WE_EDITPAGE_PROPERTIES){
 	$charset = $GLOBALS['WE_BACKENDCHARSET'];
 }
 we_html_tools::headerCtCharset('text/html', $charset);
-we_html_tools::htmlTop('', $charset);
-
-echo we_html_element::jsScript(JS_DIR . 'windows.js');
+echo we_html_tools::getHtmlTop('', $charset) .
+ we_html_element::jsScript(JS_DIR . 'windows.js');
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 print STYLESHEET;
 ?>

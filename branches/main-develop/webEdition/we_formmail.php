@@ -115,7 +115,7 @@ function print_error($errortext){
 	$headline = 'Fehler / Error';
 	$content = g_l('global', '[formmailerror]') . getHtmlTag('br') . '&#8226; ' . $errortext;
 
-	print we_html_tools::htmlTop() .
+	echo we_html_tools::getHtmlTop() .
 		we_html_element::cssLink(WEBEDITION_DIR . 'css/global.php') .
 		'</head>' .
 		getHtmlTag('body', array('class' => 'weEditorBody'), '', false, true) .

@@ -263,8 +263,8 @@ class taskFragment{
 	 *
 	 */
 	function printHeader(){
-		we_html_tools::htmlTop();
-		print '</head>';
+		echo we_html_tools::getHtmlTop().
+				'</head>';
 	}
 
 	/**

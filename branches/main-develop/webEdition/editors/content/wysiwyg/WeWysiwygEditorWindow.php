@@ -22,7 +22,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
 $fieldName = $_REQUEST['we_cmd'][1];
-we_html_tools::htmlTop(sprintf(g_l('wysiwyg', "[window_title]"), $fieldName), 'UTF-8');
+echo we_html_tools::getHtmlTop(sprintf(g_l('wysiwyg', "[window_title]"), $fieldName), 'UTF-8');
 
 if(isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpressed"]){
 

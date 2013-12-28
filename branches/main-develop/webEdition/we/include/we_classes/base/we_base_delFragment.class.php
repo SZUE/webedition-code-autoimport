@@ -77,7 +77,7 @@ class we_base_delFragment extends taskFragment{
 
 	function printHeader(){
 		we_html_tools::protect();
-		print we_html_tools::htmlTop() . "</head>";
+		echo we_html_tools::getHtmlTop() . "</head>";
 	}
 
 }

@@ -25,8 +25,6 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
-we_html_tools::htmlTop('Messaging System - ' . g_l('modules_messaging', '[new_message]'));
-
 if(!preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction'])){
 	exit();
 }
@@ -36,9 +34,9 @@ $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"
 $messaging->init($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 
 
-
-print STYLESHEET;
-echo we_html_element::jsScript(JS_DIR . 'windows.js');
+echo we_html_tools::getHtmlTop('Messaging System - ' . g_l('modules_messaging', '[new_message]')) .
+ STYLESHEET .
+ we_html_element::jsScript(JS_DIR . 'windows.js');
 ?>
 
 <script type="text/javascript"><!--

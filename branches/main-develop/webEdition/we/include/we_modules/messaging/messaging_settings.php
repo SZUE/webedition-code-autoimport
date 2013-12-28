@@ -27,8 +27,8 @@ we_html_tools::protect();
 $messaging = new we_messaging_messaging($_SESSION['weS']['we_data']['we_messagin_setting']);
 $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 $messaging->init($_SESSION['weS']['we_data']['we_messagin_setting']);
-we_html_tools::htmlTop(g_l('modules_messaging', '[settings]'));
-echo we_html_element::jsScript(JS_DIR . 'we_showMessage.js');
+echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[settings]')) .
+ we_html_element::jsScript(JS_DIR . 'we_showMessage.js');
 ?>
 <script type="text/javascript">
 <!--
@@ -83,7 +83,7 @@ print STYLESHEET;
 </table>';
 
 		$_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("save", "javascript:save()"), "", we_html_button::create_button("cancel", "javascript:window.close();")
-			)
+				)
 		;
 
 		echo we_html_tools::htmlDialogLayout($input_tbl, $heading, $_buttons);

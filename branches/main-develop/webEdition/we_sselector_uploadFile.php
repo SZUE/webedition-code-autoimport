@@ -25,9 +25,8 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
-we_html_tools::htmlTop();
-
-print STYLESHEET;
+echo we_html_tools::getHtmlTop() .
+ STYLESHEET;
 
 $cpat = str_replace('//', '/', $_SERVER['DOCUMENT_ROOT'] . $_REQUEST["pat"]);
 
@@ -78,12 +77,12 @@ $cancel_button = we_html_button::create_button("cancel", "javascript:self.close(
 $buttons = we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button);
 
 $content = '<table border="0" cellpadding="0" cellspacing="0">' .
-	($maxsize ? ('<tr><td>' . we_html_tools::htmlAlertAttentionBox(
-			sprintf(g_l('newFile', "[max_possible_size]"), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 390) . '</td></tr><tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>') : '') . '
+		($maxsize ? ('<tr><td>' . we_html_tools::htmlAlertAttentionBox(
+						sprintf(g_l('newFile', "[max_possible_size]"), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 390) . '</td></tr><tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>') : '') . '
 			<tr><td><input name="we_uploadFile" TYPE="file" size="35" /></td></tr><tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>
 			<tr><td class="defaultfont">' . g_l('newFile', '[caseFileExists]') . '</td></tr><tr><td>' .
-	we_html_forms::radiobutton("yes", true, "overwrite", g_l('newFile', '[overwriteFile]')) .
-	we_html_forms::radiobutton("no", false, "overwrite", g_l('newFile', '[renameFile]')) . '</td></tr></table>';
+		we_html_forms::radiobutton("yes", true, "overwrite", g_l('newFile', '[overwriteFile]')) .
+		we_html_forms::radiobutton("no", false, "overwrite", g_l('newFile', '[renameFile]')) . '</td></tr></table>';
 
 $content = we_html_tools::htmlDialogLayout($content, g_l('newFile', '[import_File_from_hd_title]'), $buttons);
 ?>

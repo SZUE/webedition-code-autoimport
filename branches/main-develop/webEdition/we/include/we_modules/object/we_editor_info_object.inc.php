@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 we_html_tools::protect();
-we_html_tools::htmlTop();
+echo we_html_tools::getHtmlTop();
 
 
 $_html = '<div class="weMultiIconBoxHeadline" style="margin-bottom:5px;">ID</div>' .

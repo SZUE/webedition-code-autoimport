@@ -26,13 +26,13 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 function prepareFieldname($str){
 	return (strpos($str, '_') ?
-			substr_replace($str, '/', strpos($str, '_'), 1) :
-			$str);
+					substr_replace($str, '/', strpos($str, '_'), 1) :
+					$str);
 }
 
 we_html_tools::protect();
-we_html_tools::htmlTop();
-print STYLESHEET;
+echo we_html_tools::getHtmlTop() .
+ STYLESHEET;
 
 
 $ignoreFields = explode(',', we_shop_shop::ignoredEditFields);
@@ -95,7 +95,7 @@ $_htmlTable = new we_html_table(array(
 	'cellpadding' => 0,
 	'cellspacing' => 0,
 	'width' => 410
-	), 35, 3);
+		), 35, 3);
 
 
 //	NumberFormat - currency and taxes

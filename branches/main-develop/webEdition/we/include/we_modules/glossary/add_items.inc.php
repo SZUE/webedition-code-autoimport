@@ -24,8 +24,7 @@
 include_once(WE_SPELLCHECKER_MODULE_PATH . '/spellchecker.conf.inc.php');
 
 we_html_tools::protect();
-we_html_tools::htmlTop(g_l('modules_glossary', '[glossary_check]'));
-print STYLESHEET;
+echo we_html_tools::getHtmlTop(g_l('modules_glossary', '[glossary_check]')) . STYLESHEET;
 
 // Step
 if(!isset($_REQUEST['we_cmd'][1]) || $_REQUEST['we_cmd'][1] == ""){
@@ -65,15 +64,15 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 	$UserDict = WE_SPELLCHECKER_MODULE_PATH . '/dict/' . $_SESSION['user']['Username'] . '@' . $_SERVER['SERVER_NAME'] . '.dict';
 
 	$AppletCode = we_html_element::htmlApplet(array(
-			'name' => "spellchecker",
-			'code' => "LeSpellchecker.class",
-			'archive' => "lespellchecker.jar",
-			'codebase' => getServerUrl() . WE_SPELLCHECKER_MODULE_DIR,
-			'width' => 2,
-			'height' => 2,
-			'id' => "applet",
-			'style' => "visibility: hidden",
-			), '
+				'name' => "spellchecker",
+				'code' => "LeSpellchecker.class",
+				'archive' => "lespellchecker.jar",
+				'codebase' => getServerUrl() . WE_SPELLCHECKER_MODULE_DIR,
+				'width' => 2,
+				'height' => 2,
+				'id' => "applet",
+				'style' => "visibility: hidden",
+					), '
 <param name="code" value="LeSpellchecker.class"/>
 <param name="archive" value="lespellchecker.jar"/>
 <param name="type" value="application/x-java-applet;version=1.1"/>
@@ -98,8 +97,8 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 			case 'Charset':
 			default:
 				if(isset($we_doc->elements[$key]['type']) && (
-					$we_doc->elements[$key]['type'] == "txt" || $we_doc->elements[$key]['type'] == "input"
-					)
+						$we_doc->elements[$key]['type'] == "txt" || $we_doc->elements[$key]['type'] == "input"
+						)
 				){
 					$SrcBody .= $we_doc->elements[$key]['dat'] . " ";
 				}
@@ -353,10 +352,10 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 
 			$Modes = array();
 			if((
-				isset($_SESSION['prefs']['force_glossary_action']) && $_SESSION['prefs']['force_glossary_action'] == 0
-				) && (
-				!isset($_REQUEST['we_cmd'][3]) || $_REQUEST['we_cmd'][3] != "checkOnly"
-				)
+					isset($_SESSION['prefs']['force_glossary_action']) && $_SESSION['prefs']['force_glossary_action'] == 0
+					) && (
+					!isset($_REQUEST['we_cmd'][3]) || $_REQUEST['we_cmd'][3] != "checkOnly"
+					)
 			){
 				$Modes[''] = g_l('modules_glossary', '[please_choose]');
 			}
@@ -858,8 +857,8 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 							case 'correct':
 								foreach($we_doc->elements as &$val){
 									if(isset($val['type']) && (
-										$val['type'] == 'txt' || $val['type'] == 'input'
-										)
+											$val['type'] == 'txt' || $val['type'] == 'input'
+											)
 									){
 										$val['dat'] = preg_replace('-(^|\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~])(' . preg_quote($Key, '-') . ')(\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~]|$)-', '${1}' . $Entry['title'] . '${3}', $temp);
 									}
@@ -916,13 +915,13 @@ top.add();
 
 				// Only glossary check
 				$Message = (isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3] == 'checkOnly' ?
-						g_l('modules_glossary', '[check_successful]') :
-						// glossary check with publishing
-						g_l('modules_glossary', '[check_successful_and_publish]'));
+								g_l('modules_glossary', '[check_successful]') :
+								// glossary check with publishing
+								g_l('modules_glossary', '[check_successful_and_publish]'));
 
 
 				$Js .= we_message_reporting::getShowMessageCall($Message, we_message_reporting::WE_MESSAGE_NOTICE, false, true) .
-					"top.close();";
+						"top.close();";
 
 				echo we_html_element::jsElement($Js);
 				?>

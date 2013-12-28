@@ -104,12 +104,12 @@ if(isset($_REQUEST['we_transaction'])){ //  initialise Document
 			//  change base href -> css of included page is loaded correctly
 			print str_replace('<head>', '<head><base href="http://' . $host . '" />', $http_response->http_body);
 		} else { //  no correct answer
-			we_html_tools::htmlTop();
-			print STYLESHEET;
-			print '</head>
-                <body>';
-			print we_html_tools::htmlAlertAttentionBox(sprintf(g_l('validation', '[connection_problems]'), $http_response->getHttp_answer()), we_html_tools::TYPE_ALERT, 0, false);
-			print '</body></html>';
+			echo we_html_tools::getHtmlTop() .
+			STYLESHEET .
+			'</head>
+                <body>' .
+			we_html_tools::htmlAlertAttentionBox(sprintf(g_l('validation', '[connection_problems]'), $http_response->getHttp_answer()), we_html_tools::TYPE_ALERT, 0, false) .
+			'</body></html>';
 		}
 	} else {
 		print $http_request->errno . ": " . $http_request->errstr . "<br>";

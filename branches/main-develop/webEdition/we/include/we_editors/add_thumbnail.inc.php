@@ -37,8 +37,8 @@ $_thumbs = array();
 
 if(get_class($we_doc) == 'we_imageDocument'){
 
-	we_html_tools::htmlTop(g_l('weClass', "[thumbnails]"));
-	print we_html_element::jsElement('
+	echo we_html_tools::getHtmlTop(g_l('weClass', "[thumbnails]")) .
+	we_html_element::jsElement('
 function select_thumbnails(sel){
 
 	var thumbs = "";

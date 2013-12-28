@@ -62,8 +62,8 @@ switch($_REQUEST["mode"]){
 		$n_action = g_l('modules_messaging', '[todo_n_created]');
 		break;
 }
-we_html_tools::htmlTop($heading);
-print STYLESHEET . we_html_element::jsElement('
+echo we_html_tools::getHtmlTop($heading) .
+ STYLESHEET . we_html_element::jsElement('
 			top.opener.top.content.cmd.location = "' . WE_MESSAGING_MODULE_DIR . 'edit_messaging_frameset.php?pnt=cmd&mcmd=refresh_mwork&we_transaction=' . $_REQUEST['we_transaction'] . '";');
 if(!empty($res['ok'])){
 	echo we_html_element::jsElement('
@@ -90,7 +90,7 @@ if(!empty($res['ok'])){
 		        <td class="defaultfont" valign="top">' . $n_action . ':</td>
 		        <td class="defaultfont"><ul><li>' . implode("</li>\n<li>", $res['failed']) . '</li></ul></td>
 		    </tr>') .
-		(empty($res['err']) ? '' : '<tr>
+			(empty($res['err']) ? '' : '<tr>
 		        <td class="defaultfont" valign="top">' . g_l('modules_messaging', '[occured_errs]') . ':</td>
 		        <td class="defaultfont"><ul><li>' . implode('</li><li>', $res['err']) . '</li></ul></td>
 		    </tr>') . '

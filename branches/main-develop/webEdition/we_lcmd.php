@@ -23,7 +23,7 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
-we_html_tools::htmlTop('command-bridge', '', 5);
+echo we_html_tools::getHtmlTop('command-bridge', '', 5);
 ?>
 <script  type="text/javascript">
 	// bugfix WE-356

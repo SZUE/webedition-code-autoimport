@@ -21,9 +21,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-we_html_tools::htmlTop();
-
-echo we_html_element::jsScript(JS_DIR . 'windows.js');
+echo we_html_tools::getHtmlTop() .
+ we_html_element::jsScript(JS_DIR . 'windows.js');
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 print STYLESHEET;

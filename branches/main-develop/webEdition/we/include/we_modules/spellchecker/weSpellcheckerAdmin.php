@@ -7,15 +7,13 @@ we_html_tools::protect();
 
 if(!permissionhandler::hasPerm('SPELLCHECKER_ADMIN')){
 	print we_html_element::jsElement(
-			we_message_reporting::getShowMessageCall(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR) .
-			'self.close();
+					we_message_reporting::getShowMessageCall(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR) .
+					'self.close();
 		');
 	exit();
 }
 
-we_html_tools::htmlTop();
-
-print STYLESHEET;
+echo we_html_tools::getHtmlTop() . STYLESHEET;
 
 $_width = 600;
 $space = 5;
@@ -145,13 +143,13 @@ for($_i = 0; $_i < count($_replacement); $_i++){
 }
 
 $_applet_code = we_html_element::htmlApplet(array(
-		'name' => 'spellchecker',
-		'code' => 'com/livinge/spellchecker/swing/DictEditor.class',
-		'archive' => 'lespellchecker.jar',
-		'codebase' => getServerUrl() . WE_SPELLCHECKER_MODULE_DIR,
-		'width' => 400,
-		'height' => 220,
-		), '
+			'name' => 'spellchecker',
+			'code' => 'com/livinge/spellchecker/swing/DictEditor.class',
+			'archive' => 'lespellchecker.jar',
+			'codebase' => getServerUrl() . WE_SPELLCHECKER_MODULE_DIR,
+			'width' => 400,
+			'height' => 220,
+				), '
 <param name="code" value="com/livinge/spellchecker/swing/DictEditor.class"/>
 <param name="archive" value="lespellchecker.jar"/>
 <param name="type" value="application/x-java-applet;version=1.1"/>
@@ -159,14 +157,14 @@ $_applet_code = we_html_element::htmlApplet(array(
 <param name="dictionary" value="' . (isset($_SESSION['weS']['dictLang']) ? $_SESSION['weS']['dictLang'] : 'Deutsch') . '"/>
 <param name="debug" value="off"><param name="user" value="' . $_username . '@' . $_SERVER['SERVER_NAME'] . '"/>
 <param name="udSize" value="' . (is_file(WE_SPELLCHECKER_MODULE_PATH . '/dict/' . $_username . '.dict') ? filesize(WE_SPELLCHECKER_MODULE_PATH . '/dict/' . $_username . '.dict') : '0') . '"/>' .
-		$l_params);
+				$l_params);
 $_applet_code2 = we_html_element::htmlApplet(array(
-		'name' => "spellcheckerCmd",
-		'code' => "LeSpellchecker.class",
-		'archive' => "lespellchecker.jar",
-		'codebase' => getServerUrl() . WE_SPELLCHECKER_MODULE_DIR,
-		'width' => 20,
-		'height' => 20,), '
+			'name' => "spellcheckerCmd",
+			'code' => "LeSpellchecker.class",
+			'archive' => "lespellchecker.jar",
+			'codebase' => getServerUrl() . WE_SPELLCHECKER_MODULE_DIR,
+			'width' => 20,
+			'height' => 20,), '
 <param name="scriptable" value="true"/>
 <param name="mayscript" value="true"/>
 <param name="CODE" value="LeSpellchecker.class"/>

@@ -295,7 +295,7 @@ $_parts[] = array(
 	'html' => '<a href="javascript:showPhpInfo();">' . g_l('sysinfo', '[more_info]') . '&hellip;</a>',
 	'space' => 10
 );
-we_html_tools::htmlTop(g_l('sysinfo', '[sysinfo]'));
+echo we_html_tools::getHtmlTop(g_l('sysinfo', '[sysinfo]'));
 ?>
 <script type="text/javascript"><!--
 	function closeOnEscape() {

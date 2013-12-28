@@ -35,8 +35,8 @@ $messaging->init($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 if(!preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction'])){
 	exit();
 }
-we_html_tools::htmlTop(g_l('modules_messaging', '[sel_rcpts]'));
-echo we_html_element::jsScript(JS_DIR . 'windows.js') .
+echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[sel_rcpts]')) .
+ we_html_element::jsScript(JS_DIR . 'windows.js') .
  we_html_element::jsScript(JS_DIR . 'messaging_std.js') .
  we_html_element::jsScript(JS_DIR . 'we_showMessage.js');
 ?>

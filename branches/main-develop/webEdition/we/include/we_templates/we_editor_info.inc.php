@@ -21,10 +21,9 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-we_html_tools::htmlTop();
-
-print STYLESHEET;
-echo we_html_element::jsScript(JS_DIR . 'windows.js');
+echo we_html_tools::getHtmlTop() .
+ STYLESHEET .
+ we_html_element::jsScript(JS_DIR . 'windows.js');
 ?>
 <script type="text/javascript">
 	function revertToPublished() {
@@ -62,7 +61,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 		$fs = $GLOBALS['we_doc']->getFilesize();
 
 		$_html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', "[file_size]") . '</div>' .
-			'<div style="margin-bottom:10px;">' . round(($fs / 1024), 2) . "&nbsp;KB&nbsp;(" . $fs . "&nbsp;Byte)" . '</div>';
+				'<div style="margin-bottom:10px;">' . round(($fs / 1024), 2) . "&nbsp;KB&nbsp;(" . $fs . "&nbsp;Byte)" . '</div>';
 	}
 	$parts = array(
 		array(
@@ -97,7 +96,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 
 		if($GLOBALS['we_doc']->ContentType == "text/html" || $GLOBALS['we_doc']->ContentType == "text/webedition"){
 			$_html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', "[lastLive]") . '</div>' .
-				'<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->Published ? date(g_l('weEditorInfo', "[date_format]"), $GLOBALS['we_doc']->Published) : "-") . '</div>';
+					'<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->Published ? date(g_l('weEditorInfo', "[date_format]"), $GLOBALS['we_doc']->Published) : "-") . '</div>';
 
 			if($GLOBALS['we_doc']->Published && $GLOBALS['we_doc']->ModDate > $GLOBALS['we_doc']->Published){
 				$_html .= '<div style="margin-bottom:10px;">' . we_html_button::create_button('revert_published', 'javascript:revertToPublished();', true, 280) . '</div>';
@@ -115,10 +114,10 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 			$rp = $GLOBALS['we_doc']->getRealPath();
 			$http = $GLOBALS['we_doc']->getHttpPath();
 			$showlink = ($GLOBALS['we_doc']->ContentType == 'text/html' ||
-				$GLOBALS['we_doc']->ContentType == 'text/webedition' ||
-				$GLOBALS['we_doc']->ContentType == 'image/*' ||
-				$GLOBALS['we_doc']->ContentType == 'application/x-shockwave-flash' ||
-				$GLOBALS['we_doc']->ContentType == 'video/quicktime');
+					$GLOBALS['we_doc']->ContentType == 'text/webedition' ||
+					$GLOBALS['we_doc']->ContentType == 'image/*' ||
+					$GLOBALS['we_doc']->ContentType == 'application/x-shockwave-flash' ||
+					$GLOBALS['we_doc']->ContentType == 'video/quicktime');
 
 			$published = !(($GLOBALS['we_doc']->ContentType == 'text/html' || $GLOBALS['we_doc']->ContentType == 'text/webedition') && $GLOBALS['we_doc']->Published == 0);
 
@@ -138,8 +137,8 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 
 		if(defined('WORKFLOW_TABLE') && $GLOBALS['we_doc']->ContentType == 'text/webedition'){
 			$anzeige = (we_workflow_utility::inWorkflow($GLOBALS['we_doc']->ID, $GLOBALS['we_doc']->Table) ?
-					we_workflow_utility::getDocumentStatusInfo($GLOBALS['we_doc']->ID, $GLOBALS['we_doc']->Table) :
-					we_workflow_utility::getLogButton($GLOBALS['we_doc']->ID, $GLOBALS['we_doc']->Table));
+							we_workflow_utility::getDocumentStatusInfo($GLOBALS['we_doc']->ID, $GLOBALS['we_doc']->Table) :
+							we_workflow_utility::getLogButton($GLOBALS['we_doc']->ID, $GLOBALS['we_doc']->Table));
 
 			$parts[] = array(
 				'headline' => g_l('modules_workflow', '[workflow]'),
@@ -208,7 +207,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 	}
 
 	print we_html_multiIconBox::getJS() .
-		we_html_multiIconBox::getHTML('', '100%', $parts, 20, '', -1, '', '', false);
+			we_html_multiIconBox::getHTML('', '100%', $parts, 20, '', -1, '', '', false);
 	?>
 </body>
 </html>

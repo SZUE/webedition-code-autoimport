@@ -84,8 +84,8 @@ class we_customer_copyWeDocumentFilterFrag extends taskFragment{
 		$_targetDoc->initById($this->data["id"], $this->data["table"]);
 
 		$_targetDoc->documentCustomerFilter = ($_theFolder->documentCustomerFilter ?
-				$_theFolder->documentCustomerFilter :
-				we_customer_documentFilter::getEmptyDocumentCustomerFilter());
+						$_theFolder->documentCustomerFilter :
+						we_customer_documentFilter::getEmptyDocumentCustomerFilter());
 
 		// write filter to target document
 		// save filter
@@ -161,9 +161,9 @@ if(isset($_REQUEST["startCopy"])){ // start the fragment
 
 	$_iframeLocation = WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=' . $_REQUEST['we_cmd'][0] . '&we_cmd[1]=' . $_REQUEST['we_cmd'][1] . "&we_cmd[2]=" . $_REQUEST['we_cmd'][2] . (isset($_REQUEST['we_cmd'][3]) ? "&we_cmd[3]=" . $_REQUEST['we_cmd'][3] : "" ) . '&startCopy=1';
 
-	we_html_tools::htmlTop(g_l('modules_customerFilter', '[apply_filter]'));
-	print STYLESHEET;
-	print we_html_element::jsElement("
+	echo we_html_tools::getHtmlTop(g_l('modules_customerFilter', '[apply_filter]')) .
+	STYLESHEET .
+	we_html_element::jsElement("
 		function checkForOpenChilds() {
 
 			$_allChildsJS
@@ -189,8 +189,8 @@ if(isset($_REQUEST["startCopy"])){ // start the fragment
 
 	");
 	print '</head><body class="weDialogBody" onload="checkForOpenChilds()">' .
-		$js . we_html_tools::htmlDialogLayout($content, g_l('modules_customerFilter', "[apply_filter]"), $buttonBar) .
-		'<div style="display: none;"> <!-- hidden -->
+			$js . we_html_tools::htmlDialogLayout($content, g_l('modules_customerFilter', "[apply_filter]"), $buttonBar) .
+			'<div style="display: none;"> <!-- hidden -->
 	<iframe style="position: absolute; top: 150; height: 1px; width: 1px;" name="iframeCopyWeDocumentCustomerFilter" id="iframeCopyWeDocumentCustomerFilter" src="about:blank"></iframe>
 </div>
 </html>';

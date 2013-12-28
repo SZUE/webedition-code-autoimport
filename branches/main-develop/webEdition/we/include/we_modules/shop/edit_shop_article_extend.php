@@ -36,11 +36,11 @@ function orderBy($a, $b){
 function getTitleLinkObj($text, $orderKey){
 
 	$_href = $_SERVER['SCRIPT_NAME'] .
-		'?typ=' . $GLOBALS['typeObj'] .
-		'&orderBy=' . $orderKey .
-		'&ViewClass=' . $GLOBALS['classid'] .
-		'&actPage=' . $GLOBALS['actPage'] .
-		( ($GLOBALS['orderBy'] == $orderKey && !isset($_REQUEST['orderDesc'])) ? '&orderDesc=true' : '' );
+			'?typ=' . $GLOBALS['typeObj'] .
+			'&orderBy=' . $orderKey .
+			'&ViewClass=' . $GLOBALS['classid'] .
+			'&actPage=' . $GLOBALS['actPage'] .
+			( ($GLOBALS['orderBy'] == $orderKey && !isset($_REQUEST['orderDesc'])) ? '&orderDesc=true' : '' );
 
 	return '<a href="' . $_href . '">' . $text . '</a>' . ($GLOBALS['orderBy'] == $orderKey ? ' <img src="' . IMAGE_DIR . 'arrow_sort_' . (isset($_REQUEST['orderDesc']) ? 'desc' : 'asc') . '.gif" />' : '');
 }
@@ -48,20 +48,20 @@ function getTitleLinkObj($text, $orderKey){
 function getPagerLinkObj(){
 
 	return $_SERVER['SCRIPT_NAME'] .
-		'?typ=' . $GLOBALS['typeObj'] .
-		'&orderBy=' . $GLOBALS['orderBy'] .
-		'&ViewClass=' . $GLOBALS['classid'] .
-		'&actPage=' . $GLOBALS['actPage'] .
-		(isset($_REQUEST['orderdesc']) ? '&orderDesc=true' : '' );
+			'?typ=' . $GLOBALS['typeObj'] .
+			'&orderBy=' . $GLOBALS['orderBy'] .
+			'&ViewClass=' . $GLOBALS['classid'] .
+			'&actPage=' . $GLOBALS['actPage'] .
+			(isset($_REQUEST['orderdesc']) ? '&orderDesc=true' : '' );
 }
 
 function getTitleLinkDoc($text, $orderKey){
 
 	$_href = $_SERVER['SCRIPT_NAME'] .
-		'?typ=' . $GLOBALS['typeDoc'] .
-		'&orderBy=' . $orderKey .
-		'&actPage=' . $GLOBALS['actPage'] .
-		( ($GLOBALS['orderBy'] == $orderKey && !isset($_REQUEST['orderDesc'])) ? '&orderDesc=true' : '' );
+			'?typ=' . $GLOBALS['typeDoc'] .
+			'&orderBy=' . $orderKey .
+			'&actPage=' . $GLOBALS['actPage'] .
+			( ($GLOBALS['orderBy'] == $orderKey && !isset($_REQUEST['orderDesc'])) ? '&orderDesc=true' : '' );
 
 	$arrow = '';
 
@@ -81,10 +81,10 @@ function getTitleLinkDoc($text, $orderKey){
 function getPagerLinkDoc(){
 
 	return $_SERVER['SCRIPT_NAME'] .
-		'?typ=' . $GLOBALS['typeDoc'] .
-		'&orderBy=' . $GLOBALS['orderBy'] .
-		'&actPage=' . $GLOBALS['actPage'] .
-		(isset($_REQUEST['orderdesc']) ? '&orderDesc=true' : '' );
+			'?typ=' . $GLOBALS['typeDoc'] .
+			'&orderBy=' . $GLOBALS['orderBy'] .
+			'&actPage=' . $GLOBALS['actPage'] .
+			(isset($_REQUEST['orderdesc']) ? '&orderDesc=true' : '' );
 }
 
 /* * ************ fuction for orders  ************** */
@@ -93,16 +93,14 @@ function getPagerLinkDoc(){
 
 we_html_tools::protect();
 
-we_html_tools::htmlTop();
-
-
-print STYLESHEET .
-	we_html_element::jsElement('
+echo we_html_tools::getHtmlTop() .
+ STYLESHEET .
+ we_html_element::jsElement('
 	function we_submitDateform() {
 		elem = document.forms[0];
 		elem.submit();
 	}') .
-	we_html_element::cssElement('
+ we_html_element::cssElement('
 	table.revenueTable {
 		border-collapse: collapse;
 	}
@@ -170,8 +168,8 @@ if(isset($daten)){
 
 	function array_select($arr_value, $select_name, $label){ // function for a selectbox for the purpose of selecting a class..
 		$fe = (isset($GLOBALS['feldnamen'][3]) ?
-				explode(",", $GLOBALS['feldnamen'][3]) : //determine more than just one class-ID
-				array(0));
+						explode(",", $GLOBALS['feldnamen'][3]) : //determine more than just one class-ID
+						array(0));
 
 		$menu = '<label for="' . $select_name . '">' . $label . '</label>
 <select name="' . $select_name . "\" onChange=\"document.location.href='" . $_SERVER['SCRIPT_NAME'] . "?typ=object&ViewClass='+ this.options[this.selectedIndex].value\">\n";
@@ -179,9 +177,9 @@ if(isset($daten)){
 		foreach($fe as $val){
 			if($val != ''){
 				$menu .= "  <option value=\"" . $val . "\"" .
-					((isset($_REQUEST[$select_name]) && $val == $_REQUEST[$select_name]) ? " selected=\"selected\"" : "") . '>' .
-					f('SELECT ' . OBJECT_TABLE . '.Text as ClassIDName FROM ' . OBJECT_TABLE . ' WHERE ' . OBJECT_TABLE . '.ID = ' . intval($val), 'ClassIDName', $GLOBALS['DB_WE']) .
-					'</option>';
+						((isset($_REQUEST[$select_name]) && $val == $_REQUEST[$select_name]) ? " selected=\"selected\"" : "") . '>' .
+						f('SELECT ' . OBJECT_TABLE . '.Text as ClassIDName FROM ' . OBJECT_TABLE . ' WHERE ' . OBJECT_TABLE . '.ID = ' . intval($val), 'ClassIDName', $GLOBALS['DB_WE']) .
+						'</option>';
 			}
 		}
 		$menu .= '</select><input type="hidden" name="typ" value="object" />';

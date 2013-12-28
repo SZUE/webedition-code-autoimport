@@ -53,8 +53,8 @@ $res = $messaging->used_msgobjs['we_todo']->update_status($arr, $messaging->sele
 $messaging->get_fc_data($messaging->Folder_ID, '', '', 0);
 
 $messaging->saveInSession($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
-we_html_tools::htmlTop($heading);
-print STYLESHEET . we_html_element::jsElement('
+echo we_html_tools::getHtmlTop($heading) .
+ STYLESHEET . we_html_element::jsElement('
 			if (opener && opener.top && opener.top.content) {
 				top.opener.top.content.update_messaging();
 			}');

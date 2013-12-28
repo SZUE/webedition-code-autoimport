@@ -158,7 +158,7 @@ switch($_REQUEST['we_cmd'][0]){
 		}
 }
 
-we_html_tools::htmlTop(g_l('weClass', "[doctypes]"));
+echo we_html_tools::getHtmlTop(g_l('weClass', "[doctypes]"));
 $yuiSuggest = & weSuggest::getInstance();
 echo weSuggest::getYuiFiles() .
  we_html_element::jsScript(JS_DIR . "keyListener.js") .

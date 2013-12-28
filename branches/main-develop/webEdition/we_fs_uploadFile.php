@@ -25,10 +25,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
-we_html_tools::htmlTop(g_l('newFile', '[import_File_from_hd_title]'));
-$parts = array();
-
-print STYLESHEET;
+echo we_html_tools::getHtmlTop(g_l('newFile', '[import_File_from_hd_title]')) . STYLESHEET;
 
 $we_ContentType = isset($_REQUEST['ct']) ? $_REQUEST['ct'] : 'image/*';
 
@@ -45,6 +42,7 @@ switch($we_ContentType){
 }
 
 $we_alerttext = '';
+$parts = array();
 
 if(isset($_FILES['we_uploadedFile'])){
 	if(!permissionhandler::hasPerm(we_base_ContentTypes::inst()->getPermission(getContentTypeFromFile($_FILES['we_uploadedFile']['name'])))){
@@ -128,8 +126,8 @@ if((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploaded
 		}
 		if(isset($_REQUEST['Thumbnails'])){
 			$we_doc->Thumbs = (is_array($_REQUEST['Thumbnails']) ?
-					makeCSVFromArray($_REQUEST['Thumbnails'], true) :
-					$_REQUEST['Thumbnails']);
+							makeCSVFromArray($_REQUEST['Thumbnails'], true) :
+							$_REQUEST['Thumbnails']);
 		}
 		$we_doc->Table = $_REQUEST['tab'];
 		$we_doc->Published = time();
@@ -138,8 +136,8 @@ if((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploaded
 	}
 } else if(isset($_FILES['we_uploadedFile'])){
 	$we_alerttext = (we_filenameNotValid($_FILES['we_uploadedFile']['name']) ?
-			g_l('alert', '[we_filename_notValid]') :
-			g_l('alert', '[wrong_file][' . ($we_ContentType ? $we_ContentType : 'other') . ']'));
+					g_l('alert', '[we_filename_notValid]') :
+					g_l('alert', '[wrong_file][' . ($we_ContentType ? $we_ContentType : 'other') . ']'));
 }
 
 // find out the smallest possible upload size
@@ -153,7 +151,7 @@ $buttons = we_html_button::position_yes_no_cancel($yes_button, null, $cancel_but
 
 if($maxsize){
 	$parts[] = array('headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(
-			sprintf(g_l('newFile', '[max_possible_size]'), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 390), 'space' => 0, 'noline' => 1);
+				sprintf(g_l('newFile', '[max_possible_size]'), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 390), 'space' => 0, 'noline' => 1);
 }
 
 $parts[] = array('headline' => '', 'html' => '<input name="we_uploadedFile" TYPE="file"' . ($allowedContentTypes ? ' ACCEPT="' . $allowedContentTypes . '"' : '') . ' size="35" />', "space" => 0);

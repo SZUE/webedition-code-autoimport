@@ -32,10 +32,9 @@ class we_newsletter_dirSelector extends we_selector_directory{
 	}
 
 	function printCreateFolderHTML(){
-		we_html_tools::htmlTop();
 		we_html_tools::protect();
-
-		print '<script type="text/javascript"><!--
+		echo we_html_tools::getHtmlTop() .
+		'<script type="text/javascript"><!--
 top.clearEntries();
 ';
 		$this->FolderText = rawurldecode($this->FolderText);
@@ -82,9 +81,9 @@ top.fsfooter.document.we_form.fname.value = "' . $folder->Text . '";
 
 
 		print
-			$this->printCmdAddEntriesHTML() .
-			$this->printCMDWriteAndFillSelectorHTML() .
-			'top.makeNewFolder = 0;
+				$this->printCmdAddEntriesHTML() .
+				$this->printCMDWriteAndFillSelectorHTML() .
+				'top.makeNewFolder = 0;
 top.selectFile(top.currentID);
 //-->
 </script>
@@ -92,10 +91,9 @@ top.selectFile(top.currentID);
 	}
 
 	function printDoRenameFolderHTML(){
-		we_html_tools::htmlTop();
 		we_html_tools::protect();
-
-		print '<script type="text/javascript"><!--
+		echo we_html_tools::getHtmlTop() .
+		'<script type="text/javascript"><!--
 top.clearEntries();
 ';
 		$this->FolderText = rawurldecode($this->FolderText);
@@ -141,8 +139,8 @@ top.fsfooter.document.we_form.fname.value = "' . $folder->Text . '";
 
 
 		print $this->printCmdAddEntriesHTML() .
-			$this->printCMDWriteAndFillSelectorHTML() .
-			'top.makeNewFolder = 0;
+				$this->printCMDWriteAndFillSelectorHTML() .
+				'top.makeNewFolder = 0;
 top.selectFile(top.currentID);
 //-->
 </script>
@@ -151,8 +149,8 @@ top.selectFile(top.currentID);
 
 	function query(){
 		$this->db->query('SELECT ' . $this->db->escape($this->fields) . ' FROM ' . $this->db->escape($this->table) . ' WHERE IsFolder=1 AND ParentID=' . intval($this->dir) .
-			getWsQueryForSelector(NEWSLETTER_TABLE) .
-			($this->order ? (' ORDER BY ' . $this->order) : '')
+				getWsQueryForSelector(NEWSLETTER_TABLE) .
+				($this->order ? (' ORDER BY ' . $this->order) : '')
 		);
 	}
 
@@ -171,8 +169,8 @@ top.selectFile(top.currentID);
 			$ret.='top.addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . $this->f("Text") . '",' . $this->f("IsFolder") . ',"' . $this->f("Path") . '");' . "\n";
 		}
 		$ret.=($this->userCanMakeNewDir() ?
-				'top.fsheader.enableNewFolderBut();' :
-				'top.fsheader.disableNewFolderBut();');
+						'top.fsheader.enableNewFolderBut();' :
+						'top.fsheader.disableNewFolderBut();');
 		return $ret;
 	}
 

@@ -41,11 +41,10 @@ if(empty($messaging->selected_message)){
 $format = new we_messaging_format('view', $messaging->selected_message);
 $format->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 
-we_html_tools::htmlTop();
-
 we_html_tools::protect();
 
-print STYLESHEET;
+echo we_html_tools::getHtmlTop() .
+ STYLESHEET;
 ?>
 <style>
 	.quote_lvl_0 {}
@@ -78,7 +77,7 @@ print STYLESHEET;
 			array("headline" => g_l('modules_messaging', '[status]'),
 				"html" => '<table border="0" cellpadding="0" cellspacing="0"><tr><td class="defaultfont">' . $messaging->selected_message['hdrs']['status'] . '%</td><td>' . we_html_tools::getPixel(20, 2) .
 				(($messaging->selected_message['hdrs']['status'] < 100) ? '<td>' . we_html_button::create_button(
-						"percent100", "javascript:todo_markdone()") . '</td>' : '') . '</tr></table>',
+								"percent100", "javascript:todo_markdone()") . '</td>' : '') . '</tr></table>',
 				"noline" => 1,
 				"space" => 140
 			),
@@ -143,7 +142,7 @@ print STYLESHEET;
 	}
 
 	print we_html_multiIconBox::getJS() .
-		we_html_multiIconBox::getHTML("weMessageView", "100%", $parts, 30, "", -1, "", "", false, (isset($messaging->selected_message['hdrs']['ClassName']) && $messaging->selected_message['hdrs']['ClassName'] == 'we_todo' ? g_l('modules_messaging', "[type_todo]") : g_l('modules_messaging', "[type_message]")));
+			we_html_multiIconBox::getHTML("weMessageView", "100%", $parts, 30, "", -1, "", "", false, (isset($messaging->selected_message['hdrs']['ClassName']) && $messaging->selected_message['hdrs']['ClassName'] == 'we_todo' ? g_l('modules_messaging', "[type_todo]") : g_l('modules_messaging', "[type_message]")));
 	?>
 </body>
 </html>

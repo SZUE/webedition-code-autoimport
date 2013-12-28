@@ -46,9 +46,8 @@ if(isset($_REQUEST['tool'])){
 	}
 }
 
-we_html_tools::htmlTop($title);
-
-print we_html_element::jsElement('
+echo we_html_tools::getHtmlTop($title) .
+ we_html_element::jsElement('
 	top.weToolWindow = true;
 
 	function toggleBusy(){
@@ -102,9 +101,9 @@ if($_REQUEST['tool'] == "weSearch"){
 }
 
 print we_html_element::jsScript(JS_DIR . "keyListener.js") .
-	we_html_element::jsScript(JS_DIR . "libs/yui/yahoo-min.js") .
-	we_html_element::jsScript(JS_DIR . "libs/yui/event-min.js") .
-	we_html_element::jsScript(JS_DIR . "libs/yui/connection-min.js");
+		we_html_element::jsScript(JS_DIR . "libs/yui/yahoo-min.js") .
+		we_html_element::jsScript(JS_DIR . "libs/yui/event-min.js") .
+		we_html_element::jsScript(JS_DIR . "libs/yui/connection-min.js");
 ?>
 </head>
 <frameset rows="26,*" border="0" framespacing="0" frameborder="no">');

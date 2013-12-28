@@ -54,7 +54,7 @@ $wsQuery = array();
 
 $parentpaths = array();
 
-if($ws = get_ws($table)){
+if(($ws = get_ws($table))){
 	$wsPathArray = id_to_path($ws, $table, $DB_WE, false, true);
 	foreach($wsPathArray as $path){
 		$wsQuery[] = 'Path LIKE "' . $DB_WE->escape($path) . '/%" OR ' . getQueryParents($path);

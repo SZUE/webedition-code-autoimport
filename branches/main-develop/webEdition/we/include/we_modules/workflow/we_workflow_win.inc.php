@@ -37,7 +37,7 @@ $we_dt = $_SESSION['weS']['we_data'][$we_transaction];
 include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
 
-we_html_tools::htmlTop();
+echo we_html_tools::getHtmlTop();
 
 switch($_REQUEST['we_cmd'][0]){
 
