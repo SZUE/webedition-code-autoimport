@@ -842,7 +842,7 @@ function build_dialog($selected_setting = 'ui'){
 						$_seem_start_type = 'object';
 						if(get_value('seem_start_file') != 0){
 							$_object_id = get_value('seem_start_file');
-							$_get_object_paths = getPathsFromTable(OBJECT_FILES_TABLE, '', FILE_ONLY, $_object_id);
+							$_get_object_paths = getPathsFromTable(OBJECT_FILES_TABLE, null, FILE_ONLY, $_object_id);
 
 							if(isset($_get_object_paths[$_object_id])){ //	seeMode start file exists
 								$_object_path = $_get_object_paths[$_object_id];
@@ -861,7 +861,7 @@ function build_dialog($selected_setting = 'ui'){
 						$_seem_start_type = 'document';
 						if(get_value('seem_start_file') != 0){
 							$_document_id = get_value('seem_start_file');
-							$_get_document_paths = getPathsFromTable(FILE_TABLE, '', FILE_ONLY, $_document_id);
+							$_get_document_paths = getPathsFromTable(FILE_TABLE, null, FILE_ONLY, $_document_id);
 
 							if(isset($_get_document_paths[$_document_id])){ //	seeMode start file exists
 								$_document_path = $_get_document_paths[$_document_id];
@@ -966,7 +966,7 @@ function build_dialog($selected_setting = 'ui'){
 				$_sidebar_show = ($_sidebar_disable) ? 'none' : 'block';
 
 				$_sidebar_id = get_value('SIDEBAR_DEFAULT_DOCUMENT');
-				$_sidebar_paths = getPathsFromTable(FILE_TABLE, '', FILE_ONLY, $_sidebar_id);
+				$_sidebar_paths = getPathsFromTable(FILE_TABLE, null, FILE_ONLY, $_sidebar_id);
 				$_sidebar_path = '';
 				if(isset($_sidebar_paths[$_sidebar_id])){
 					$_sidebar_path = $_sidebar_paths[$_sidebar_id];
