@@ -132,8 +132,7 @@ class we_navigation_items{
 					'type' => 'item',
 					'parentid' => $_nav->ID,
 					'workspaceid' => $_nav->WorkspaceID,
-					'icon' => isset($this->Storage['ids'][$_nav->IconID]) ? $this->Storage['ids'][$_nav->IconID] : id_to_path(
-									$_nav->IconID),
+					'icon' => isset($this->Storage['ids'][$_nav->IconID]) ? $this->Storage['ids'][$_nav->IconID] : id_to_path($_nav->IconID),
 					'attributes' => $_nav->Attributes,
 					'limitaccess' => $_nav->LimitAccess,
 					'customers' => self::getCustomerData($_nav),
@@ -471,7 +470,7 @@ class we_navigation_items{
 		$this->Storage['items'] = array();
 		$this->Storage['ids'] = array();
 
-		$_pathArr = id_to_path($id, NAVIGATION_TABLE, "", false, true);
+		$_pathArr = id_to_path($id, NAVIGATION_TABLE, null, false, true);
 		$_path = isset($_pathArr[0]) ? $_pathArr[0] : "";
 
 		$_db = new DB_WE();

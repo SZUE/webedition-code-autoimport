@@ -665,7 +665,7 @@ function getWsQueryForSelector($tab, $includingFolders = true){
 	if(!($ws = makeArrayFromCSV(get_ws($tab)))){
 		return ($tab == NAVIGATION_TABLE || $tab == NEWSLETTER_TABLE ? '' : ' OR RestrictOwners=0 ');
 	}
-	$paths = id_to_path($ws, $tab, '', false, true);
+	$paths = id_to_path($ws, $tab, null, false, true);
 	$wsQuery = array();
 	foreach($paths as $path){
 		$parts = explode('/', $path);
