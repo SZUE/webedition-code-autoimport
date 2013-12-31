@@ -100,7 +100,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	 * @param array $blackList
 	 * @return we_customer_documentFilter
 	 */
-	function __construct($id = 0, $modelId = 0, $modelType = '', $modelTable = '', $accessControlOnTemplate = true, $errorDocNoLogin = 0, $errorDocNoAccess = 0, $mode = we_customer_abstractFilter::OFF, $specificCustomers = array(), $filter = array(), $whiteList = array(), $blackList = array()){
+	function __construct($id = 0, $modelId = 0, $modelType = '', $modelTable = '', $accessControlOnTemplate = true, $errorDocNoLogin = 0, $errorDocNoAccess = 0, $mode = we_customer_abstractFilter::OFF, array $specificCustomers = array(), array $filter = array(), array $whiteList = array(), array $blackList = array()){
 		parent::__construct($mode, $specificCustomers, $blackList, $whiteList, $filter);
 		$this->setId($id);
 		$this->setModelId($modelId);
@@ -118,9 +118,9 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	 * @return we_customer_documentFilter
 	 */
 	function getFilterByDbHash(&$hash){
-		$_f = @unserialize($hash['filter']);
+		$f = $hash['filter'] ? unserialize($hash['filter']) : array();
 		return new self(
-			intval($hash['id']), intval($hash['modelId']), $hash['modelType'], $hash['modelTable'], intval($hash['accessControlOnTemplate']), intval($hash['errorDocNoLogin']), intval($hash['errorDocNoAccess']), intval($hash['mode']), makeArrayFromCSV($hash['specificCustomers']), $_f, makeArrayFromCSV($hash['whiteList']), makeArrayFromCSV($hash['blackList'])
+			intval($hash['id']), intval($hash['modelId']), $hash['modelType'], $hash['modelTable'], intval($hash['accessControlOnTemplate']), intval($hash['errorDocNoLogin']), intval($hash['errorDocNoAccess']), intval($hash['mode']), makeArrayFromCSV($hash['specificCustomers']), $f, makeArrayFromCSV($hash['whiteList']), makeArrayFromCSV($hash['blackList'])
 		);
 	}
 
@@ -135,14 +135,9 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 		if($_REQUEST['wecf_mode'] == we_customer_abstractFilter::OFF){
 			return self::getEmptyDocumentCustomerFilter();
 		} else {
-			$_specificCustomers = self::getSpecificCustomersFromRequest();
-			$_blackList = self::getBlackListFromRequest();
-			$_whiteList = self::getWhiteListFromRequest();
-			$_filter = self::getFilterFromRequest();
-
 
 			return new self(
-				intval($_REQUEST['weDocumentCustomerFilter_id']), intval($model->ID), $model->ContentType, $model->Table, ($_REQUEST['wecf_accessControlOnTemplate'] == "onTemplate") ? 1 : 0, intval($_REQUEST['wecf_noLoginId']), intval($_REQUEST['wecf_noAccessId']), intval($_REQUEST['wecf_mode']), $_specificCustomers, $_filter, $_whiteList, $_blackList
+				intval($_REQUEST['weDocumentCustomerFilter_id']), intval($model->ID), $model->ContentType, $model->Table, ($_REQUEST['wecf_accessControlOnTemplate'] == "onTemplate") ? 1 : 0, intval($_REQUEST['wecf_noLoginId']), intval($_REQUEST['wecf_noAccessId']), intval($_REQUEST['wecf_mode']), self::getSpecificCustomersFromRequest(), self::getFilterFromRequest(), self::getWhiteListFromRequest(), self::getBlackListFromRequest()
 			);
 		}
 	}

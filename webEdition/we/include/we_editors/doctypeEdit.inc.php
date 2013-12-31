@@ -151,7 +151,7 @@ switch($_REQUEST['we_cmd'][0]){
 	default:
 		$id = (isset($_REQUEST['we_cmd'][1]) ?
 						$_REQUEST['we_cmd'][1] :
-						f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' ' . we_docTypes::getDoctypeQuery($GLOBALS['DB_WE']), "ID", $GLOBALS['DB_WE']));
+						f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' ' . we_docTypes::getDoctypeQuery($GLOBALS['DB_WE'])));
 
 		if($id){
 			$we_doc->initByID($id, DOC_TYPES_TABLE);
