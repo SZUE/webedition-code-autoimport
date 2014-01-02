@@ -307,9 +307,6 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 * @return boolean
 	 */
 	function replaceCode($filePath, $replace, $needle = ''){
-		if(strpos($filePath, 'we/include/we_version') !== false){
-			return true;
-		}
 
 		// decode parameters
 		$needle = $this->decodeCode($needle);
