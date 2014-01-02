@@ -342,6 +342,10 @@ class liveUpdateFunctions{
 	 * @return boolean
 	 */
 	function replaceCode($filePath, $replace, $needle = ''){
+		if(strpos($filePath, 'we/include/we_version') !== false){
+			return true;
+		}
+
 		if(!$this->replaceDocRootNeeded()){
 			return true;
 		}
