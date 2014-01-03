@@ -1119,7 +1119,7 @@ function weWysiwygSetHiddenText(arg) {
 				$plugins = ($this->createContextmenu ? 'wecontextmenu,' : '') .
 					($this->tinyPlugins ? $this->tinyPlugins . ',' : '') .
 					($this->wePlugins ? $this->wePlugins . ',' : '') .
-					'weutil,autolink,template'; //TODO: load "templates" on demand as we do it with other plugins
+					'weutil,autolink,template,wewordcount'; //TODO: load "templates" on demand as we do it with other plugins
 				//fast fix for textarea-height. TODO, when wysiwyg is thrown out: use or rewrite existing methods like getToolbarWithAndHeight()
 				$toolBarHeight = $this->buttonpos == 'external' ? 0 : ($k - 1) * 26 + 22 - $k * 3;
 				$this->height += $toolBarHeight;
@@ -1235,6 +1235,7 @@ function weWysiwygSetHiddenText(arg) {
 						},
 						weClassNames_urlEncoded : "' . urlencode($this->cssClassesCSV) . '",
 						weIsFrontend : "' . ($this->isFrontendEdit ? 1 : 0) . '",
+						weWordCounter : 0,
 
 						language : "' . $lang . '",
 						mode : "exact",
