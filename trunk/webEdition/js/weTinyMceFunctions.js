@@ -132,4 +132,16 @@ function TinyWrapper(fieldname) {
 				console.log("unable to add event");
 			}
 	};
+
+	this.getParam = function(param){
+		if(this.getEditor(true) !== "undefined"){
+			if(typeof this.getEditor().settings[param] == "undefined"){
+				console.log("function getParam(): The parameter you tried to derive is not defined: " + param);
+				return "undefined";
+			}
+			return this.getEditor().settings[param];
+		}
+		console.log("Editor not available");
+		return "undefined";
+	};
 }
