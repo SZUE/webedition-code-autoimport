@@ -169,6 +169,7 @@ function setTab(tab) {
 			top.content.editor.edbody.we_cmd("switchPage",3);
 			break;
 	}
+}
 top.content.hloaded = 1;
 ');
 
