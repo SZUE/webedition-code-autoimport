@@ -85,6 +85,8 @@ $numberformat = $feldnamen[2];
 $classid = (isset($feldnamen[3]) ? $feldnamen[3] : '');
 $defaultVat = !empty($feldnamen[1]) ? ($feldnamen[1]) : 0;
 
+$amountCustomers = $amountOrders = $amountArticles = 0;
+
 if(defined("WE_SHOP_MODULE_DIR") && permissionhandler::hasPerm("CAN_SEE_SHOP")){
 	$queryShop = ' FROM ' . SHOP_TABLE . '	WHERE ' . $queryShopDateCondtion;
 
@@ -210,7 +212,7 @@ $shopDashboardTable->setCol(1, 2, array("class" => "middlefont", "align" => "rig
 $shopDashboardTable->addRow();
 $shopDashboardTable->setCol(2, 0, array("class" => "middlefont"), g_l('cockpit', '[shop_dashboard][articles_order]'));
 $shopDashboardTable->setCol(2, 1, array(), we_html_tools::getPixel(10, 1));
-$shopDashboardTable->setCol(2, 2, array("class" => "middlefont", "align" => "right"), we_util_Strings::formatNumber($amountArticles / $amountOrders, $numberformat));
+$shopDashboardTable->setCol(2, 2, array("class" => "middlefont", "align" => "right"), we_util_Strings::formatNumber(($amountArticles > 0 ? ($amountArticles / $amountOrders) : 0), $numberformat));
 
 //4. row
 $shopDashboardTable->addRow();
@@ -240,7 +242,7 @@ $shopDashboardTable->setCol(6, 2, array("class" => "middlefont", "align" => "rig
 $shopDashboardTable->addRow();
 $shopDashboardTable->setCol(7, 0, array("class" => "middlefont"), g_l('cockpit', '[shop_dashboard][order_value_order]'));
 $shopDashboardTable->setCol(7, 1, array(), we_html_tools::getPixel(10, 1));
-$shopDashboardTable->setCol(7, 2, array("class" => "middlefont", "align" => "right"), we_util_Strings::formatNumber($total / $amountOrders, $numberformat) . '&nbsp;' . $currency);
+$shopDashboardTable->setCol(7, 2, array("class" => "middlefont", "align" => "right"), we_util_Strings::formatNumber(($amountOrders > 0 ? ($total / $amountOrders) : 0), $numberformat) . '&nbsp;' . $currency);
 
 //9. row
 $shopDashboardTable->addRow();
