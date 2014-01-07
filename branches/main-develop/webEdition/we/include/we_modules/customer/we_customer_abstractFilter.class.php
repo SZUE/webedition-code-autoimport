@@ -94,15 +94,9 @@ abstract class we_customer_abstractFilter{
 	function __construct($mode = self::OFF, array $specificCustomers = array(), array $blackList = array(), array $whiteList = array(), array $filter = array()){
 		$this->setMode($mode);
 		$this->setSpecificCustomers($specificCustomers);
-		if(is_array($blackList)){
-			$this->setBlackList($blackList);
-		}
-		if(is_array($whiteList)){
-			$this->setWhiteList($whiteList);
-		}
-		if(is_array($filter)){
-			$this->setFilter($filter);
-		}
+		$this->setBlackList($blackList);
+		$this->setWhiteList($whiteList);
+		$this->setFilter($filter);
 	}
 
 	/**
@@ -247,30 +241,30 @@ abstract class we_customer_abstractFilter{
 	 * @return array
 	 */
 	static function getFilterFromRequest(){
-		$_filter = array();
+		$filter = array();
 
 		if(isset($_REQUEST['filterSelect_0'])){
-			$_parse = true;
-			$_count = 0;
+			$parse = true;
+			$count = 0;
 
-			while($_parse){
-				if(isset($_REQUEST['filterSelect_' . $_count])){
+			while($parse){
+				if(isset($_REQUEST['filterSelect_' . $count])){
 
-					if(isset($_REQUEST['filterValue_' . $_count]) && trim($_REQUEST['filterValue_' . $_count]) != ''){
-						$_filter[] = array(
-							'logic' => (isset($_REQUEST['filterLogic_' . $_count]) && $_REQUEST['filterLogic_' . $_count] == 'OR' ? 'OR' : 'AND'),
-							'field' => $_REQUEST['filterSelect_' . $_count],
-							'operation' => $_REQUEST['filterOperation_' . $_count],
-							'value' => $_REQUEST['filterValue_' . $_count]
+					if(isset($_REQUEST['filterValue_' . $count]) && trim($_REQUEST['filterValue_' . $count]) != ''){
+						$filter[] = array(
+							'logic' => (isset($_REQUEST['filterLogic_' . $count]) && $_REQUEST['filterLogic_' . $count] == 'OR' ? 'OR' : 'AND'),
+							'field' => $_REQUEST['filterSelect_' . $count],
+							'operation' => $_REQUEST['filterOperation_' . $count],
+							'value' => $_REQUEST['filterValue_' . $count]
 						);
 					}
-					$_count++;
+					$count++;
 				} else {
-					$_parse = false;
+					$parse = false;
 				}
 			}
 		}
-		return $_filter;
+		return $filter;
 	}
 
 	/**
@@ -280,20 +274,20 @@ abstract class we_customer_abstractFilter{
 	 * @return array
 	 */
 	static function getSpecificCustomersFromRequest(){
-		$_customers = array();
+		$customers = array();
 
 		if(isset($_REQUEST['specificCustomersEditControl'])){
 			$i = 0;
 			while(true){
 				if(isset($_REQUEST[$_REQUEST['specificCustomersEditControl'] . '_variant0_' . $_REQUEST['specificCustomersEditControl'] . '_item' . $i])){
-					$_customers[] = $_REQUEST[$_REQUEST['specificCustomersEditControl'] . '_variant0_' . $_REQUEST['specificCustomersEditControl'] . '_item' . $i];
+					$customers[] = $_REQUEST[$_REQUEST['specificCustomersEditControl'] . '_variant0_' . $_REQUEST['specificCustomersEditControl'] . '_item' . $i];
 					$i++;
 				} else {
 					break;
 				}
 			}
 		}
-		return weConvertToIds($_customers, CUSTOMER_TABLE);
+		return weConvertToIds($customers, CUSTOMER_TABLE);
 	}
 
 	/**
@@ -303,20 +297,20 @@ abstract class we_customer_abstractFilter{
 	 * @return array
 	 */
 	static function getBlackListFromRequest(){
-		$_blackList = array();
+		$blackList = array();
 
 		if(isset($_REQUEST['blackListEditControl'])){
 			$i = 0;
 			while(true){
 				if(isset($_REQUEST[$_REQUEST['blackListEditControl'] . '_variant0_' . $_REQUEST['blackListEditControl'] . '_item' . $i])){
-					$_blackList[] = $_REQUEST[$_REQUEST['blackListEditControl'] . '_variant0_' . $_REQUEST['blackListEditControl'] . '_item' . $i];
+					$blackList[] = $_REQUEST[$_REQUEST['blackListEditControl'] . '_variant0_' . $_REQUEST['blackListEditControl'] . '_item' . $i];
 					$i++;
 				} else {
 					break;
 				}
 			}
 		}
-		return weConvertToIds($_blackList, CUSTOMER_TABLE);
+		return weConvertToIds($blackList, CUSTOMER_TABLE);
 	}
 
 	/**
@@ -326,20 +320,20 @@ abstract class we_customer_abstractFilter{
 	 * @return array
 	 */
 	static function getWhiteListFromRequest(){
-		$_whiteList = array();
+		$whiteList = array();
 
 		if(isset($_REQUEST['whiteListEditControl'])){
 			$i = 0;
 			while(true){
 				if(isset($_REQUEST[$_REQUEST['whiteListEditControl'] . '_variant0_' . $_REQUEST['whiteListEditControl'] . '_item' . $i])){
-					$_whiteList[] = $_REQUEST[$_REQUEST['whiteListEditControl'] . '_variant0_' . $_REQUEST['whiteListEditControl'] . '_item' . $i];
+					$whiteList[] = $_REQUEST[$_REQUEST['whiteListEditControl'] . '_variant0_' . $_REQUEST['whiteListEditControl'] . '_item' . $i];
 					$i++;
 				} else {
 					break;
 				}
 			}
 		}
-		return weConvertToIds($_whiteList, CUSTOMER_TABLE);
+		return weConvertToIds($whiteList, CUSTOMER_TABLE);
 	}
 
 	/**

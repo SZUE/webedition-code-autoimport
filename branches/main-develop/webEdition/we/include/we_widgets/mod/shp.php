@@ -88,7 +88,7 @@ $defaultVat = !empty($feldnamen[1]) ? ($feldnamen[1]) : 0;
 if(defined("WE_SHOP_MODULE_DIR") && permissionhandler::hasPerm("CAN_SEE_SHOP")){
 	$queryShop = ' FROM ' . SHOP_TABLE . '	WHERE ' . $queryShopDateCondtion;
 
-	$total = $payed = $unpayed = 0;
+	$total = $payed = $unpayed = $timestampDatePayment = 0;
 	if(($maxRows = f('SELECT COUNT(1) AS a ' . $queryShop, 'a', $DB_WE))){
 
 		$amountOrders = f('SELECT COUNT(distinct IntOrderID) AS a ' . $queryShop, 'a', $DB_WE);
@@ -97,7 +97,7 @@ if(defined("WE_SHOP_MODULE_DIR") && permissionhandler::hasPerm("CAN_SEE_SHOP")){
 		// first of all calculate complete revenue of this year -> important check vats as well.
 		$cur = 0;
 		while($maxRows > $cur){
-			$DB_WE->query('SELECT strSerial,strSerialOrder,(Price*IntQuantity) AS actPrice,(!ISNULL(DatePayment) && DatePayment>0) AS payed ' . $queryShop . ' LIMIT ' . $cur . ',1000');
+			$DB_WE->query('SELECT strSerial,strSerialOrder,(Price*IntQuantity) AS actPrice,UNIX_TIMESTAMP(DatePayment) AS payed ' . $queryShop . ' LIMIT ' . $cur . ',1000');
 			$cur+=1000;
 			while($DB_WE->next_record()){
 
@@ -148,11 +148,8 @@ if(defined("WE_SHOP_MODULE_DIR") && permissionhandler::hasPerm("CAN_SEE_SHOP")){
 				}
 				$total += $actPrice;
 
-				if($DB_WE->f('payed') == 0){
-					$payed += $actPrice;
-				} else {
-					$unpayed += $actPrice;
-				}
+				$timestampDatePayment = $DB_WE->f('payed');
+				!empty($timestampDatePayment) ? $payed += $actPrice : $unpayed += $actPrice;
 			}
 		}
 	}

@@ -370,6 +370,7 @@ abstract class we_database_base{
 					$tmp['explain'][] = implode(' | ', $this->Record);
 				}
 				$this->Row = 0;
+				!$this->isConnected() && !$this->_connect();
 				$this->Query_ID = $this->_query($Query_String, $unbuffered);
 			}
 			t_e($Query_String, $tmp);

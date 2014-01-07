@@ -372,7 +372,7 @@ class weXMLExIm{
 		$ret = true;
 		if(is_object($object)){
 			// save binary data first to stay compatible with the new binary feature in v5.1
-			if(in_array('savebinarydata', get_class_methods(get_class($object)))){
+			if(method_exists($object, 'savebinarydata')){
 				$object->savebinarydata();
 			}
 
@@ -380,19 +380,19 @@ class weXMLExIm{
 				$ret = $object->we_save_exim();
 			} else {
 				$GLOBALS['we_doc'] = $object;
-				if(in_array('we_save', get_class_methods(get_class($object)))){
+				if(method_exists($object, 'we_save')){
 					if(!$object->we_save()){
 						return false;
 					}
 				}
 
-				if(in_array('we_publish', get_class_methods(get_class($object)))){
+				if(method_exists($object,'we_publish')){
 					if(!$object->we_publish()){
 						return false;
 					}
 				}
 
-				if(in_array('savebinarydata', get_class_methods(get_class($object)))){
+				if(method($object,'savebinarydata')){
 					$object->setElement('data', '');
 				}
 			}

@@ -546,8 +546,7 @@ class we_navigation_navigation extends weModelBase{
 						'type' => $_nav->IsFolder ? 'folder' : 'item',
 						'parentid' => $_nav->ParentID,
 						'workspaceid' => $_nav->WorkspaceID,
-						'icon' => isset($storage['ids'][$_nav->IconID]) ? $storage['ids'][$_nav->IconID] : id_to_path(
-								$_nav->IconID),
+						'icon' => isset($storage['ids'][$_nav->IconID]) ? $storage['ids'][$_nav->IconID] : id_to_path($_nav->IconID),
 						'attributes' => $_nav->Attributes,
 						'customers' => we_navigation_items::getCustomerData($_nav),
 						'currentonurlpar' => $_nav->CurrentOnUrlPar,

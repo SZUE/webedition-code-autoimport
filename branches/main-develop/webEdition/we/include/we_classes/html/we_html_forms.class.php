@@ -154,7 +154,7 @@ abstract class we_html_forms{
 		//first prepare stylesheets from textarea-attribute editorcss (templates) or class-css (classes): csv of ids. then (if document) get document-css, defined by we:css
 		$contentCss = (isset($GLOBALS['we_doc']) && (get_class($GLOBALS['we_doc']) == 'we_objectFile' || get_class($GLOBALS['we_doc']) == 'we_object')) ? $GLOBALS['we_doc']->CSS :
 			((isset($GLOBALS['we_doc']) && get_class($GLOBALS['we_doc']) == 'we_webEditionDocument') ? weTag_getAttribute('editorcss', $attribs) : '');
-		$contentCss = !empty($contentCss) ? implode('?' . time() . ',', id_to_path(trim($contentCss, ', '), FILE_TABLE, '', false, true)) . '?' . time() : '';
+		$contentCss = !empty($contentCss) ? implode('?' . time() . ',', id_to_path(trim($contentCss, ', '), FILE_TABLE, null, false, true)) . '?' . time() : '';
 		$contentCss = (isset($GLOBALS['we_doc']) && get_class($GLOBALS['we_doc']) == 'we_webEditionDocument' && !$ignoredocumentcss) ? trim($GLOBALS['we_doc']->getDocumentCss() . ',' . $contentCss, ',') :
 			$contentCss;
 

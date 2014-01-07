@@ -94,7 +94,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		$this->resetElements();
 		while((list($k, $v) = $this->nextElement(''))){
 			$_dat = (isset($v['dat']) && is_string($v['dat']) && substr($v['dat'], 0, 2) == 'a:') ? unserialize($v['dat']) : (isset($v['dat']) ? $v['dat'] : '');
-			if($k[0] === '$' || $k[1] === '$' || $k == 'Charset' || empty($_dat)){
+			if($k[0] === '$' || (isset($k[1]) && $k[1] === '$') || $k == 'Charset' || empty($_dat)){
 				//skip elements whose names are variables or if element is empty
 				continue;
 			}

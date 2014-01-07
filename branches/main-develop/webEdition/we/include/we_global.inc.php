@@ -665,7 +665,7 @@ function getWsQueryForSelector($tab, $includingFolders = true){
 	if(!($ws = makeArrayFromCSV(get_ws($tab)))){
 		return ($tab == NAVIGATION_TABLE || $tab == NEWSLETTER_TABLE ? '' : ' OR RestrictOwners=0 ');
 	}
-	$paths = id_to_path($ws, $tab, '', false, true);
+	$paths = id_to_path($ws, $tab, null, false, true);
 	$wsQuery = array();
 	foreach($paths as $path){
 		$parts = explode('/', $path);
@@ -823,7 +823,7 @@ function parseInternalLinks(&$text, $pid, $path = '', $doBaseReplace = true){
 	if(defined('OBJECT_TABLE')){
 		if(preg_match_all('/href="' . we_base_link::TYPE_OBJ_PREFIX . '(\d+)(\??)("|[^"]+")/i', $text, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
-				$href = we_objectFile::getObjectHref($reg[1], $pid, $path, '', WYSIWYGLINKS_DIRECTORYINDEX_HIDE, WYSIWYGLINKS_OBJECTSEOURLS);
+				$href = we_objectFile::getObjectHref($reg[1], $pid, $path, null, WYSIWYGLINKS_DIRECTORYINDEX_HIDE, WYSIWYGLINKS_OBJECTSEOURLS);
 				if(isset($GLOBALS['we_link_not_published'])){
 					unset($GLOBALS['we_link_not_published']);
 				}

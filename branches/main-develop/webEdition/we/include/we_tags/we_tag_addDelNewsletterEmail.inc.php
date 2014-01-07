@@ -383,7 +383,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 
 
 					$set = '';
-					$customerFields = f('SELECT Value FROM ' . CUSTOMER_ADMIN_TABLE . ' WHERE Name="FieldAdds"', 'Value', $__db);
+					$customerFields = f('SELECT Value FROM ' . CUSTOMER_ADMIN_TABLE . ' WHERE Name="FieldAdds"', '', $__db);
 					$customerFields = $customerFields ? unserialize($customerFields) : '';
 					$updateCustomerFields = false;
 					foreach($abos as $abo){
