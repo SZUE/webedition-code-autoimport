@@ -53,7 +53,7 @@ switch($iDate){
 		break;
 	case 2 : //letzte woche
 		$queryShopDateCondtion = '(WEEK(DateOrder) = WEEK(CURDATE())-1 AND YEAR(DateOrder) = YEAR(CURDATE()))';
-		$timestampCustomer = '(MemberSince>=UNIX_TIMESTAMP(NOW()-INTERVAL 7 DAY))';
+		$timestampCustomer = '(MemberSince>=UNIX_TIMESTAMP(NOW()-INTERVAL 7 DAY) AND MemberSince<UNIX_TIMESTAMP(DATE_SUB(NOW(),INTERVAL 7 DAY)))';
 		$interval = g_l('cockpit', '[last_week]');
 		break;
 	case 3 : //dieser monat
@@ -63,7 +63,7 @@ switch($iDate){
 		break;
 	case 4 : //letzter monat
 		$queryShopDateCondtion = '(YEAR(DateOrder) = YEAR(CURDATE()) AND MONTH(DateOrder) = MONTH(CURDATE())-1)';
-		$timestampCustomer = '(MemberSince>=UNIX_TIMESTAMP(NOW()-INTERVAL 1 MONTH))';
+		$timestampCustomer = '(MemberSince>=UNIX_TIMESTAMP(NOW()-INTERVAL 1 MONTH) AND MemberSince<UNIX_TIMESTAMP(DATE_SUB(NOW(),INTERVAL 1 MONTH)))';
 		$interval = g_l('cockpit', '[last_month]');
 		break;
 	case 5 : //dieses jahr
@@ -73,7 +73,7 @@ switch($iDate){
 		break;
 	case 6 : //letztes jahr
 		$queryShopDateCondtion = '(YEAR(DateOrder) = YEAR(CURDATE()) - 1)';
-		$timestampCustomer = '(MemberSince>=UNIX_TIMESTAMP(NOW()-INTERVAL 1 YEAR))';
+		$timestampCustomer = '(MemberSince>=UNIX_TIMESTAMP(NOW()-INTERVAL 1 YEAR) AND MemberSince<UNIX_TIMESTAMP(DATE_SUB(NOW(),INTERVAL 1 YEAR)))';
 		$interval = g_l('cockpit', '[last_year]');
 		break;
 }
