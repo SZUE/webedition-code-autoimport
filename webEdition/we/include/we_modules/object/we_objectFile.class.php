@@ -3142,7 +3142,7 @@ class we_objectFile extends we_document{
 
 			if(!((isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']) || (isset($GLOBALS['WE_MAIN_EDITMODE']) && $GLOBALS['WE_MAIN_EDITMODE'])) && $hidedirindex){
 				$path_parts = pathinfo($path);
-				if(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
+				if(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 					$path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 				}
 			}
@@ -3163,7 +3163,7 @@ class we_objectFile extends we_document{
 			}
 			if($objectseourls && $objecturl != ''){
 				return ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
-						($hidedirindex && show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
+						($hidedirindex && show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
 								'' :
 								$path_parts['filename'] . '/' ) .
 						$objecturl . $pidstr;
