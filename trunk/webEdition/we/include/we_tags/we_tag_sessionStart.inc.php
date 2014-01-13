@@ -43,8 +43,7 @@ function we_tag_sessionStart($attribs){
 			setcookie('_we_autologin', '', (time() - 3600), '/');
 			$GLOBALS['WE_LOGOUT'] = true;
 		}
-		unset($_SESSION['s']);
-		unset($_REQUEST['s']);
+		unset($_SESSION['s'], $_REQUEST['s']);
 		$_SESSION['webuser'] = array('registered' => false);
 	} else {
 		if(isset($_REQUEST['we_set_registeredUser']) && $GLOBALS['we_doc']->InWebEdition){
