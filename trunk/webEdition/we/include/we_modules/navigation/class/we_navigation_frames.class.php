@@ -364,8 +364,8 @@ function setTab(tab) {
 				we_html_tools::htmlSelect('Selection', array(
 					we_navigation_navigation::SELECTION_DYNAMIC => g_l('navigation', '[dyn_selection]'),
 					we_navigation_navigation::SELECTION_STATIC => g_l('navigation', '[stat_selection]')
-						), 1, $this->Model->Selection, false, array('onchange' => "closeAllSelection();toggle(this.value);setPresentation(this.value);setWorkspaces(\'\');' . $this->topFrame . '.mark();setCustomerFilter(this);onSelectionTypeChangeJS(\'' . we_navigation_navigation::STPYE_DOCTYPE . '\');"), 'value', $this->_width_size) . '<br />' . we_html_tools::htmlSelect(
-						'SelectionType', $_seltype, 1, $this->Model->SelectionType, false, array('onChange' => "closeAllType();clearFields();closeAllStats();toggle(this.value);setWorkspaces(this.value);onSelectionTypeChangeJS(this.value);setStaticSelection(this.value);' . $this->topFrame . '.mark();", 'style' => 'width: ' . $this->_width_size . 'px; margin-top: 5px;'), 'value', $this->_width_size) .
+						), 1, $this->Model->Selection, false, array('onchange' => 'closeAllSelection();toggle(this.value);setPresentation(this.value);setWorkspaces(\'\');' . $this->topFrame . '.mark();setCustomerFilter(this);onSelectionTypeChangeJS(\'' . we_navigation_navigation::STPYE_DOCTYPE . '\');'), 'value', $this->_width_size) . '<br />' . we_html_tools::htmlSelect(
+						'SelectionType', $_seltype, 1, $this->Model->SelectionType, false, array('onchange' => 'closeAllType();clearFields();closeAllStats();toggle(this.value);setWorkspaces(this.value);onSelectionTypeChangeJS(this.value);setStaticSelection(this.value);' . $this->topFrame . '.mark();', 'style' => 'width: ' . $this->_width_size . 'px; margin-top: 5px;'), 'value', $this->_width_size) .
 				'<div id="dynamic" style="' . ($this->Model->Selection == we_navigation_navigation::SELECTION_DYNAMIC ? 'display: block;' : 'display: none;') . '">' .
 				$this->getHTMLDynamic() .
 				'</div>
