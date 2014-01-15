@@ -420,14 +420,20 @@ function setCustomerFilter(sel) {
 ' . ($this->Model->IsFolder ? '' : '
 	var st = document.we_form.SelectionType;
 	if (sel.options[sel.selectedIndex].value == "dynamic") {
+	try{//FIXME
 		document.we_form.elements["_wecf_useDocumentFilter"].checked = false;
 		document.we_form.elements["wecf_useDocumentFilter"].value = 0;
 		document.we_form.elements["_wecf_useDocumentFilter"].disabled = true;
 		document.getElementById("label__wecf_useDocumentFilter").style.color = "grey";
+		}catch(e){
+		}
 		document.getElementById("MainFilterDiv").style.display = "block";
 	} else {
+	try{//FIXME
 		document.we_form.elements["_wecf_useDocumentFilter"].disabled = false;
 		document.getElementById("label__wecf_useDocumentFilter").style.color = "";
+		}catch(e){
+		}
 	}') . '
 }
 
