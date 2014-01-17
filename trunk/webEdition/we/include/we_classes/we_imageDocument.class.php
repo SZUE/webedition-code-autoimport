@@ -29,9 +29,7 @@
 class we_imageDocument extends we_binaryDocument{
 
 	const ALT_FIELD = '_img_custom_alt';
-	const ALT_FIELD_IMGDOC = 'alt';
 	const TITLE_FIELD = '_img_custom_title';
-	const TITLE_FIELD_IMGDOC = 'title';
 	const THUMB_FIELD = '_img_custom_thumb';
 
 	private static $imgCnt = 0;
