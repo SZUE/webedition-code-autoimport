@@ -37,7 +37,7 @@ function we_tag_field($attribs){
 	$orgAlt = weTag_getAttribute('alt', $attribs);
 	$alt = we_tag_getPostName($orgAlt);
 	if(isset($attribs['alt'])){
-		$attribs['type'] = $alt;
+		$attribs['alt'] = $alt;
 	}
 	$value = weTag_getAttribute('value', $attribs);
 	if(isset($attribs['value'])){
