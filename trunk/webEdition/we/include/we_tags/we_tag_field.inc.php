@@ -39,6 +39,11 @@ function we_tag_field($attribs){
 	if(isset($attribs['alt'])){
 		$attribs['alt'] = $alt;
 	}
+	$orgTitle = weTag_getAttribute('title', $attribs);
+	$title = we_tag_getPostName($orgTitle);
+	if(isset($attribs['title'])){
+		$attribs['title'] = $title;
+	}
 	$value = weTag_getAttribute('value', $attribs);
 	if(isset($attribs['value'])){
 		$attribs['value'] = $value;
