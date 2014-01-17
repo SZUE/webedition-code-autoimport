@@ -849,10 +849,18 @@ class we_document extends we_root{
 				$altField = $img->Name . we_imageDocument::ALT_FIELD;
 				$titleField = $img->Name . we_imageDocument::TITLE_FIELD;
 
-				if(isset($GLOBALS['lv']) && get_class($GLOBALS['lv']) == 'we_shop_listviewShopVariants'){
-
-					$altField = (WE_SHOP_VARIANTS_PREFIX . $GLOBALS['lv']->Position . '_' . $altField);
-					$titleField = (WE_SHOP_VARIANTS_PREFIX . $GLOBALS['lv']->Position . '_' . $titleField);
+				if(isset($GLOBALS['lv'])){
+					switch(get_class($GLOBALS['lv'])){
+						case 'we_shop_listviewShopVariants':
+							$altField = (WE_SHOP_VARIANTS_PREFIX . $GLOBALS['lv']->Position . '_' . $altField);
+							$titleField = (WE_SHOP_VARIANTS_PREFIX . $GLOBALS['lv']->Position . '_' . $titleField);
+							break;
+						case 'we_listview':
+						case 'we_object_listview':
+						case 'we_object_listviewMultiobject':
+							$attribs['alt'] = $GLOBALS['lv']->f($altField) ? $GLOBALS['lv']->f($altField) : ($GLOBALS['lv']->f(we_imageDocument::ALT_FIELD_IMGDOC) ? $GLOBALS['lv']->f(we_imageDocument::ALT_FIELD_IMGDOC) : (isset($attribs['alt']) ? $attribs['alt'] : ''));
+							$attribs['title'] = $GLOBALS['lv']->f($titleField) ? $GLOBALS['lv']->f($titleField) : ($GLOBALS['lv']->f(we_imageDocument::TITLE_FIELD_IMGDOC) ? $GLOBALS['lv']->f(we_imageDocument::TITLE_FIELD_IMGDOC) : (isset($attribs['title']) ? $attribs['title'] : ''));
+					}
 				}
 				if(isset($attribs['alt'])){
 					$attribs['alt'] = oldHtmlspecialchars($attribs['alt']);
