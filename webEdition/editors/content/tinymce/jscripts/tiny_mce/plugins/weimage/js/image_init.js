@@ -189,7 +189,7 @@ var ImageDialog = {
 		styles = tinyMCEPopup.getParam(specific_option, styles);
 
 		//TODO: Do not write classes in weDialog, so we do not need to delete them here...
-		for (var i=1; i <= styleSelectElm.length; i++) {
+		for (var i=styleSelectElm.length-1; i > 0; i--) {
 			styleSelectElm.remove(i);
 		}
 
