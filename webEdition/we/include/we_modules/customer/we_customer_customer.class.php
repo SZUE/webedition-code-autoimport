@@ -363,7 +363,7 @@ class we_customer_customer extends weModelBase{
 	}
 
 	public static function cryptData($data){//Note we need 4 Bytes prefix + 16 Byte IV + 1$ = 21 Bytes. The rest is avail for data, which is hex'ed, so "half" of length is available
-		if(($res = mcrypt_module_open(MCRYPT_BLOWFISH, '', MCRYPT_MODE_OFB, ''))){
+		if(function_exists('mcrypt_module_open') && ($res = mcrypt_module_open(MCRYPT_BLOWFISH, '', MCRYPT_MODE_OFB, ''))){
 			$iv = self::cryptGetIV();
 			mcrypt_generic_init($res, SECURITY_ENCRYPTION_KEY, hex2bin($iv));
 			$data = mcrypt_generic($res, $data);
@@ -381,7 +381,7 @@ class we_customer_customer extends weModelBase{
 		}
 		switch($matches[1]){
 			case '-1':
-				if(($res = mcrypt_module_open(MCRYPT_BLOWFISH, '', MCRYPT_MODE_OFB, ''))){
+				if(function_exists('mcrypt_module_open') && ($res = mcrypt_module_open(MCRYPT_BLOWFISH, '', MCRYPT_MODE_OFB, ''))){
 					mcrypt_generic_init($res, SECURITY_ENCRYPTION_KEY, hex2bin($matches[2]));
 					$data = mdecrypt_generic($res, hex2bin($matches[3]));
 					mcrypt_generic_deinit($res);
