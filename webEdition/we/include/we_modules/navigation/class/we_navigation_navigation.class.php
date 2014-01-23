@@ -666,7 +666,7 @@ class we_navigation_navigation extends weModelBase{
 					if(NAVIGATION_OBJECTSEOURLS && $objecturl != ''){
 						$path_parts = pathinfo($_path);
 						$_path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
-							(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ? 
+							(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
 								'' : $path_parts['filename'] . '/'
 							) . $objecturl;
 					}

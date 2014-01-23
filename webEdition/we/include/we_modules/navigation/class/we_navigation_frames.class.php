@@ -1506,7 +1506,6 @@ function selectItem() {
 	}
 
 	function getHTMLLink($prefix = ''){
-		//javascript:we_cmd('openDocselector',document.we_form.elements['" . $prefix . "UrlID'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'" . $prefix . "UrlID\\'].value','document.we_form.elements[\\'" . $prefix . "UrlIDPath\\'].value','opener." . $this->topFrame . ".mark()','" . session_id() . "',0,'text/webedition'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")";
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['" . $prefix . "UrlID'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['" . $prefix . "UrlIDPath'].value");
 		$wecmdenc3 = we_cmd_enc("opener." . $this->topFrame . ".mark()");
