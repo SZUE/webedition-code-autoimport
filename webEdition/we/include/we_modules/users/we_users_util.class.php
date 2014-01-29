@@ -213,7 +213,7 @@ abstract class we_users_util{
 		if(permissionhandler::hasPerm('ADMINISTRATOR')){
 			return '';
 		}
-		$aliases = we_getAliases($_SESSION['user']['ID'], $GLOBALS['DB_WE']);
+		$aliases = self::getAliases($_SESSION['user']['ID'], $GLOBALS['DB_WE']);
 		$aliases[] = $_SESSION['user']['ID'];
 		$q = array();
 		if($useCreatorID){
@@ -253,7 +253,7 @@ abstract class we_users_util{
 
 		while($db->next_record()){
 			$path = $db->f('Path');
-			if(!$ws || permissionhandler::hasPerm('ADMINISTRATOR') || (!$db->f('Workspaces')) || in_workspace($db->f('Workspaces'), $ws, FILE_TABLE, '', true)){
+			if(!$ws || permissionhandler::hasPerm('ADMINISTRATOR') || (!$db->f('Workspaces')) || in_workspace($db->f('Workspaces'), $ws, FILE_TABLE, null, true)){
 				$path2 = $path . '/';
 				if(!$ofWs || permissionhandler::hasPerm('ADMINISTRATOR')){
 					$out[] = $db->f('ID');
