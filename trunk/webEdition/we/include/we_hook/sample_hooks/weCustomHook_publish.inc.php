@@ -39,6 +39,8 @@
 function weCustomHook_publish($param){
 	$hookHandler = $param['hookHandler'];
 	$obj = $param[0];
+	//object before publish
+	$oldObj = $param['prePublish'];
 	switch(get_class($obj)){
 
 	}
