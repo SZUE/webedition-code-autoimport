@@ -36,8 +36,7 @@ abstract class permissionhandler{
 
 	public static function hasPerm($perm){
 		return (isset($_SESSION['perms']['ADMINISTRATOR']) && $_SESSION['perms']['ADMINISTRATOR']) ||
-				((isset($_SESSION['perms'][$perm]) && $_SESSION['perms'][$perm])
-				);
+				((isset($_SESSION['perms'][$perm]) && $_SESSION['perms'][$perm]));
 	}
 
 	/**
