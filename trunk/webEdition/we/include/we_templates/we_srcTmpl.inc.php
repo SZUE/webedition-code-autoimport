@@ -230,7 +230,7 @@ switch($_SESSION['prefs']['editorMode']){
 						setTimeout(initEditor, 500);
 					}
 				} else {
-					alert("<?php echo g_l('eplugin', 'no_java'); ?>"); // TODO: make regular we-Alaert
+					alert("<?php echo g_l('eplugin', '[no_java]'); ?>"); // TODO: make regular we-Alaert
 				}
 		<?php
 		break;
