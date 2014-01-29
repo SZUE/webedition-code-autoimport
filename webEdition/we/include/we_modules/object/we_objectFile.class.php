@@ -2448,6 +2448,7 @@ class we_objectFile extends we_document{
 				return false;
 			}
 		}
+		$old = $this;
 		$oldUrl = f('SELECT Url FROM ' . $this->Table . ' WHERE ID=' . $this->ID, 'Url', $this->DB_WE);
 		$wasPublished = $this->Published > 0;
 		$this->oldCategory = f('SELECT Category FROM ' . $this->Table . ' WHERE ID=' . $this->ID, 'Category', $this->DB_WE);
@@ -2462,7 +2463,7 @@ class we_objectFile extends we_document{
 		}
 		//hook
 		if(!$skipHook){
-			$hook = new weHook('publish', '', array($this));
+			$hook = new weHook('publish', '', array($this, 'prePublish' => $old));
 			$ret = $hook->executeHook();
 //check if doc should be saved
 			if($ret === false){
