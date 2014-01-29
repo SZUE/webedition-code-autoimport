@@ -328,7 +328,6 @@ abstract class we_textContentDocument extends we_textDocument{
 				return false;
 			}
 		}
-		$old = $this;
 		$this->oldCategory = f('SELECT Category FROM ' . $this->Table . ' WHERE ID=' . $this->ID, '', $this->DB_WE);
 		//$oldDocType = f('SELECT DocType FROM ' . $this->Table . ' WHERE ID=' . $this->ID, 'DocType', $this->DB_WE);
 
@@ -363,7 +362,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		}
 		/* hook */
 		if(!$skipHook){
-			$hook = new weHook('publish', '', array($this, 'prePublish' => $old));
+			$hook = new weHook('publish', '', array($this, 'prePublishTime' => $oldPublished));
 			$ret = $hook->executeHook();
 			//check if doc should be saved
 			if($ret === false){
