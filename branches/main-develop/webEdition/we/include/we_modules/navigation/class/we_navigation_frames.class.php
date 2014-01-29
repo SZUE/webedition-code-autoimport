@@ -278,7 +278,7 @@ function setTab(tab) {
 						f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->Model->ID), 'ParentID', $this->db) :
 						(isset($_REQUEST['presetFolder']) && $_REQUEST['presetFolder'] ?
 								$this->Model->ParentID :
-								(($wq = weNavigation::getWSQuery()) ?
+								(($wq = we_navigation_navigation::getWSQuery()) ?
 										f('SELECT ID FROM ' . NAVIGATION_TABLE . ' WHERE IsFolder=1 ' . $wq . ' ORDER BY Path LIMIT 1', 'ID', $this->db) :
 										0)
 						));
@@ -364,8 +364,8 @@ function setTab(tab) {
 				we_html_tools::htmlSelect('Selection', array(
 					we_navigation_navigation::SELECTION_DYNAMIC => g_l('navigation', '[dyn_selection]'),
 					we_navigation_navigation::SELECTION_STATIC => g_l('navigation', '[stat_selection]')
-						), 1, $this->Model->Selection, false, array('onchange' => "closeAllSelection();toggle(this.value);setPresentation(this.value);setWorkspaces(\'\');' . $this->topFrame . '.mark();setCustomerFilter(this);onSelectionTypeChangeJS(\'' . we_navigation_navigation::STPYE_DOCTYPE . '\');"), 'value', $this->_width_size) . '<br />' . we_html_tools::htmlSelect(
-						'SelectionType', $_seltype, 1, $this->Model->SelectionType, false, array('onChange' => "closeAllType();clearFields();closeAllStats();toggle(this.value);setWorkspaces(this.value);onSelectionTypeChangeJS(this.value);setStaticSelection(this.value);' . $this->topFrame . '.mark();", 'style' => 'width: ' . $this->_width_size . 'px; margin-top: 5px;'), 'value', $this->_width_size) .
+						), 1, $this->Model->Selection, false, array('onchange' => 'closeAllSelection();toggle(this.value);setPresentation(this.value);setWorkspaces(\'\');' . $this->topFrame . '.mark();setCustomerFilter(this);onSelectionTypeChangeJS(\'' . we_navigation_navigation::STPYE_DOCTYPE . '\');'), 'value', $this->_width_size) . '<br />' . we_html_tools::htmlSelect(
+						'SelectionType', $_seltype, 1, $this->Model->SelectionType, false, array('onchange' => 'closeAllType();clearFields();closeAllStats();toggle(this.value);setWorkspaces(this.value);onSelectionTypeChangeJS(this.value);setStaticSelection(this.value);' . $this->topFrame . '.mark();', 'style' => 'width: ' . $this->_width_size . 'px; margin-top: 5px;'), 'value', $this->_width_size) .
 				'<div id="dynamic" style="' . ($this->Model->Selection == we_navigation_navigation::SELECTION_DYNAMIC ? 'display: block;' : 'display: none;') . '">' .
 				$this->getHTMLDynamic() .
 				'</div>
@@ -1506,7 +1506,6 @@ function selectItem() {
 	}
 
 	function getHTMLLink($prefix = ''){
-		//javascript:we_cmd('openDocselector',document.we_form.elements['" . $prefix . "UrlID'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'" . $prefix . "UrlID\\'].value','document.we_form.elements[\\'" . $prefix . "UrlIDPath\\'].value','opener." . $this->topFrame . ".mark()','" . session_id() . "',0,'text/webedition'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")";
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['" . $prefix . "UrlID'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['" . $prefix . "UrlIDPath'].value");
 		$wecmdenc3 = we_cmd_enc("opener." . $this->topFrame . ".mark()");

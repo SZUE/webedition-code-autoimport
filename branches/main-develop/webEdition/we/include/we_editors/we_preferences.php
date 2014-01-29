@@ -2773,7 +2773,7 @@ function formmailBlockOnOff() {
 
 			$encryption = new we_html_select(array('name' => 'newconf[SECURITY_ENCRYPTION_TYPE_PASSWORD]', 'class' => 'weSelect'));
 			$encryption->addOption(we_customer_customer::ENCRYPT_NONE, g_l('prefs', '[security][encryption][type][0]'));
-			if(($res = mcrypt_module_open(MCRYPT_BLOWFISH, '', MCRYPT_MODE_OFB, ''))){
+			if(function_exists('mcrypt_module_open') && ($res = mcrypt_module_open(MCRYPT_BLOWFISH, '', MCRYPT_MODE_OFB, ''))){
 				$encryption->addOption(we_customer_customer::ENCRYPT_SYMMETRIC, g_l('prefs', '[security][encryption][type][1]'));
 				mcrypt_module_close($res);
 			}

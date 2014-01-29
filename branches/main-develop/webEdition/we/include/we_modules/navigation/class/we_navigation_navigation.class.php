@@ -666,8 +666,9 @@ class we_navigation_navigation extends weModelBase{
 					if(NAVIGATION_OBJECTSEOURLS && $objecturl != ''){
 						$path_parts = pathinfo($_path);
 						$_path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
-							(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ? '' : $path_parts['filename'] . '/') .
-							$objecturl;
+							(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
+								'' : $path_parts['filename'] . '/'
+							) . $objecturl;
 					}
 					break;
 			}
@@ -716,8 +717,8 @@ class we_navigation_navigation extends weModelBase{
 					if(NAVIGATION_OBJECTSEOURLS && isset($objecturl) && $objecturl != ''){
 						$path_parts = pathinfo($_path);
 						$_path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . (
-							(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))) ?
-								$path_parts['filename'] . '/' : ''
+							(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))) ?
+								'' : $path_parts['filename'] . '/'
 							) . $objecturl;
 					}
 			}
@@ -735,7 +736,7 @@ class we_navigation_navigation extends weModelBase{
 
 		$_path = str_replace(array('&amp;', '&'), array('&', '&amp;'), $_path);
 
-		if(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $this->LinkSelection != 'extern'){
+		if(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES && $this->LinkSelection != 'extern'){
 			$dirindexnames = array_map('trim', explode(',', '/' . str_replace(',', ',/', NAVIGATION_DIRECTORYINDEX_NAMES)));
 			return str_replace($dirindexnames, '/', $_path);
 		}

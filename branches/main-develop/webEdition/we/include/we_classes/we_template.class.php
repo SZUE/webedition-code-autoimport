@@ -296,10 +296,10 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 			$code = str_replace(array('__WE_?__WE__', '__WE_=__WE__'), array('?>', '=>'), $code);
 			$code = str_ireplace(array('</head>', '</body>'), array(self::TemplateHead . '</head>', self::TemplatePostContent . '</body>'), $code);
 		} else if(!$this->hasStartAndEndTag('html', $code) && !$this->hasStartAndEndTag('head', $code) && !$this->hasStartAndEndTag('body', $code)){
-			$code = '<?php if((isset($GLOBALS[\'we_editmode\']) && $GLOBALS[\'we_editmode\']) && (!isset($GLOBALS[\'WE_HTML_HEAD_BODY\']) || !$GLOBALS[\'WE_HTML_HEAD_BODY\'] )){  $GLOBALS["WE_HTML_HEAD_BODY"] = true; ?>' . we_html_element::htmlDocType() . '<html><head><title>WE</title>' . self::TemplateHead . '</head>
+			$code = '<?php if(!isset($is_inc) || !$is_inc){ if((isset($GLOBALS[\'we_editmode\']) && $GLOBALS[\'we_editmode\']) && (!isset($GLOBALS[\'WE_HTML_HEAD_BODY\']) || !$GLOBALS[\'WE_HTML_HEAD_BODY\'] )){  $GLOBALS["WE_HTML_HEAD_BODY"] = true; ?>' . we_html_element::htmlDocType() . '<html><head><title>WE</title>' . self::TemplateHead . '</head>
 <body <?php if(isset($GLOBALS[\'we_editmode\']) && $GLOBALS[\'we_editmode\']) print \' onunload="doUnload()"\'; ?>><?php } ?>
-' . self::TemplatePreContent . $code . self::TemplatePostContent . '<?php if((isset($GLOBALS[\'we_editmode\']) && $GLOBALS[\'we_editmode\'])&&($GLOBALS[\'we_templatePreContent\']==0) ){ ?>' . '
-</body></html><?php }?>';
+' . self::TemplatePreContent . '<?php } ?>' . $code . '<?php if(!isset($is_inc) || !$is_inc){ ?>' . self::TemplatePostContent . '<?php if((isset($GLOBALS[\'we_editmode\']) && $GLOBALS[\'we_editmode\'])&&($GLOBALS[\'we_templatePreContent\']==0) ){ ?>' . '
+</body></html><?php }}?>';
 		} else {
 			return parseError(g_l('parser', '[html_tags]')) . '<?php exit();?><!-- current parsed template code for debugging -->' . $code;
 		}

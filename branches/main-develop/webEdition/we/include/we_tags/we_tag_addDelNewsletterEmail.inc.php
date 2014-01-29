@@ -207,7 +207,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 				$port = defined('HTTP_PORT') ? HTTP_PORT : ($use_https_refer ? 443 : 80);
 				$basehref = $protocol . $_SERVER['SERVER_NAME'] . ':' . $port;
 
-				$confirmLink = $id ? id_to_path($id, FILE_TABLE) : $_SERVER['SCRIPT_NAME'] . '?confirmID=' . $confirmID . '&mail=' . rawurlencode($f['subscribe_mail']);
+				$confirmLink = ($id ? id_to_path($id, FILE_TABLE) : $_SERVER['SCRIPT_NAME']) . '?confirmID=' . $confirmID . '&mail=' . rawurlencode($f['subscribe_mail']);
 
 				$confirmLink = $protocol . $_SERVER['SERVER_NAME'] . (($port && ($port != 80)) ? ':' . $port : '') . $confirmLink;
 				$GLOBALS['WE_MAIL'] = $f['subscribe_mail'];

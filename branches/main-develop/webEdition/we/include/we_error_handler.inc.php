@@ -232,7 +232,7 @@ function getVariableMax($var, we_database_base $db = null){
 	static $max = 65500; //max lenght of text-col in mysql - this is enough debug-data, leave some space...
 	switch($var){
 		case 'Request':
-			$ret = (isset($_REQUEST) ? print_r($_REQUEST, true) : ' - ');
+			$ret = (isset($_REQUEST) ? print_r(array_diff_key($_REQUEST, array('user' => '', 'username' => '', 'pass' => '', 'password' => '','s'=>'')), true) : ' - ');
 			break;
 		case 'Session':
 			if(!isset($_SESSION)){

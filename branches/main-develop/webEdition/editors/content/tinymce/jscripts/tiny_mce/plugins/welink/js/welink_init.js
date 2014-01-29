@@ -118,7 +118,7 @@ function addClassesToList(list_id, specific_option) {
 	styles = tinyMCEPopup.getParam(specific_option, styles);
 
 	//TODO: Do not write classes in weDialog, so we do not need to delete them here...
-	for (var i=1; i <= styleSelectElm.length; i++) {
+	for (var i=styleSelectElm.length-1; i > 0; i--) {
 		styleSelectElm.remove(i);
 	}
 
@@ -126,7 +126,7 @@ function addClassesToList(list_id, specific_option) {
 		var stylesAr = styles.split(';');
 
 		for (var i=0; i<stylesAr.length; i++) {
-			if (stylesAr != "") {
+			if (stylesAr !== "") {
 				var key, value;
 
 				key = stylesAr[i].split('=')[0];
@@ -140,6 +140,7 @@ function addClassesToList(list_id, specific_option) {
 			styleSelectElm.options[styleSelectElm.length] = new Option(o.title || o['class'], o['class']);
 		});
 	}
+
 }
 
 function selectOptionByValue(form, selName, val) {
