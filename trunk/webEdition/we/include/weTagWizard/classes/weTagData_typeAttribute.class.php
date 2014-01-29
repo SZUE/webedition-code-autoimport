@@ -25,21 +25,16 @@
 class weTagData_typeAttribute extends weTagDataAttribute{
 
 	/**
-	 * @var boolean/string
-	 */
-	var $Value;
-
-	/**
 	 * @var array
 	 */
-	var $Options;
+	private $Options;
 
 	/**
 	 * @param string $name
 	 * @param array $options
 	 * @param boolean $required
 	 */
-	function __construct($name, $options = array(), $required = true, $module = '', $description = '', $deprecated = false){
+	function __construct($name, array $options = array(), $required = true, $module = '', $description = '', $deprecated = false){
 
 		parent::__construct($name, $required, $module, $description, $deprecated);
 		$this->Options = parent::getUseOptions($options);
@@ -56,28 +51,18 @@ class weTagData_typeAttribute extends weTagDataAttribute{
 	 * @return string
 	 */
 	function getCodeForTagWizard(){
-
-		$keys = array();
-		$values = array();
-
-		$keys[] = '';
-		$values[] = g_l('taged', '[select_type]');
+		$keys = array('');
+		$values = array(g_l('taged', '[select_type]'));
 
 		foreach($this->Options as $option){
-
 			$keys[] = $option->Value;
-
-			if($option->getName() == '-'){
-				$values[] = '';
-			} else {
-				$values[] = $option->getName();
-			}
+			$values[] = ($option->getName() == '-' ? '' : $option->getName());
 		}
 
 		$js = "we_cmd('switch_type', this.value);";
 
 		$select = new we_html_select(
-			array(
+				array(
 			'name' => $this->Name,
 			'id' => $this->getIdName(),
 			'onchange' => $js,

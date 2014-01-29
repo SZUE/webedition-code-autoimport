@@ -61,7 +61,6 @@ class weTagData_selectAttribute extends weTagDataAttribute{
 		}
 
 		foreach($this->Options as $option){
-
 			$keys[] = $option->Value;
 			$values[] = $option->getName();
 		}
