@@ -39,6 +39,11 @@
 function weCustomHook_publish($param){
 	$hookHandler = $param['hookHandler'];
 	$obj = $param[0];
+	//timestamp before publish
+	$oldPublishTime = $param['prePublishTime'];
+	//object before save
+	$preSaveObj = $param['preSave'];
+
 	switch(get_class($obj)){
 
 	}

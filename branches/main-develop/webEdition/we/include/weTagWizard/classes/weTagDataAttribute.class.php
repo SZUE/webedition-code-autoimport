@@ -130,7 +130,7 @@ class weTagDataAttribute{
 	 * checks if this option should be used, checks if needed modules are installed
 	 * @return boolean
 	 */
-	static function getUseOptions($options){
+	static function getUseOptions(array $options){
 		$useOptions = array();
 		foreach($options as $option){
 			if($option->useOption()){

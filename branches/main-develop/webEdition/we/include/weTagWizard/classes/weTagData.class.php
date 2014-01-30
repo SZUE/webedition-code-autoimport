@@ -63,34 +63,38 @@ class weTagData{
 
 	private function __construct($tagName){
 		$this->Name = $tagName;
-		// include the selected tag, its either normal, or custom tag
-		if(file_exists(WE_INCLUDES_PATH . 'weTagWizard/we_tags/we_tag_' . $tagName . '.inc.php')){
-			require (WE_INCLUDES_PATH . 'weTagWizard/we_tags/we_tag_' . $tagName . '.inc.php');
-			$this->Exists = true;
-		} elseif(file_exists(WE_INCLUDES_PATH . 'weTagWizard/we_tags/custom_tags/we_tag_' . $tagName . '.inc.php')){
-			require (WE_INCLUDES_PATH . 'weTagWizard/we_tags/custom_tags/we_tag_' . $tagName . '.inc.php');
-			$this->Exists = true;
-			$this->Groups[] = 'custom';
-		} else {
-			//Application Tags
-			$apptags = array();
-			$alltools = we_tool_lookup::getAllTools(true);
-			$allapptags = array();
-			$allapptagnames = array();
-			foreach($alltools as $tool){
-				$apptags = we_tool_lookup::getAllToolTagWizards($tool['name']);
-				$allapptags = array_merge($allapptags, $apptags);
-				$apptagnames = array_keys($apptags);
-				$allapptagnames = array_merge($allapptagnames, $apptagnames);
-			}
-			if(in_array($tagName, $allapptagnames)){
-				require_once ($allapptags[$tagName]);
+		try{
+			// include the selected tag, its either normal, or custom tag
+			if(file_exists(WE_INCLUDES_PATH . 'weTagWizard/we_tags/we_tag_' . $tagName . '.inc.php')){
+				require (WE_INCLUDES_PATH . 'weTagWizard/we_tags/we_tag_' . $tagName . '.inc.php');
 				$this->Exists = true;
-				$this->Groups[] = 'apptags';
+			} elseif(file_exists(WE_INCLUDES_PATH . 'weTagWizard/we_tags/custom_tags/we_tag_' . $tagName . '.inc.php')){
+				require (WE_INCLUDES_PATH . 'weTagWizard/we_tags/custom_tags/we_tag_' . $tagName . '.inc.php');
+				$this->Exists = true;
+				$this->Groups[] = 'custom';
 			} else {
-				t_e('requested help entry of tag ' . $tagName . ' not found');
-				return;
+				//Application Tags
+				$apptags = array();
+				$alltools = we_tool_lookup::getAllTools(true);
+				$allapptags = array();
+				$allapptagnames = array();
+				foreach($alltools as $tool){
+					$apptags = we_tool_lookup::getAllToolTagWizards($tool['name']);
+					$allapptags = array_merge($allapptags, $apptags);
+					$apptagnames = array_keys($apptags);
+					$allapptagnames = array_merge($allapptagnames, $apptagnames);
+				}
+				if(in_array($tagName, $allapptagnames)){
+					require_once ($allapptags[$tagName]);
+					$this->Exists = true;
+					$this->Groups[] = 'apptags';
+				} else {
+					t_e('requested help entry of tag ' . $tagName . ' not found');
+					return;
+				}
 			}
+		} catch (Exception $e){
+			t_e('Error in TW-Tag ' . $this->Name, $e->getMessage());
 		}
 
 		if(strpos($tagName, 'if') !== 0){
@@ -222,16 +226,12 @@ class weTagData{
 	 * @return array
 	 */
 	function getAllAttributes($idPrefix = false){
-
 		$attribs = array();
-
 		foreach($this->UsedAttributes as $attrib){
-
-			if($idPrefix){
-				$attribs[] = $attrib->getIdName();
-			} else {
-				$attribs[] = $attrib->getName();
-			}
+			$attribs[] = ($idPrefix ?
+					$attrib->getIdName() :
+					$attrib->getName()
+				);
 		}
 		return $attribs;
 	}
@@ -247,7 +247,6 @@ class weTagData{
 	 * @return array
 	 */
 	function getRequiredAttributes(){
-
 		$req = array();
 
 		foreach($this->UsedAttributes as $attrib){
@@ -262,7 +261,6 @@ class weTagData{
 	 * @return array
 	 */
 	function getTypeAttributeOptions(){
-
 		if($this->TypeAttribute){
 			return $this->TypeAttribute->getOptions();
 		}
@@ -279,14 +277,12 @@ class weTagData{
 			}
 		}
 		return $attr;
-		;
 	}
 
 	/**
 	 * @return string
 	 */
 	function getAttributesCodeForTagWizard(){
-
 		$ret = '';
 
 		$typeAttrib = $this->getTypeAttribute();
@@ -295,7 +291,6 @@ class weTagData{
 
 			$ret = '<ul>';
 			foreach($this->UsedAttributes as $attribute){
-
 				if($attribute != $this->TypeAttribute){
 					$ret .= '<li ' . ($typeAttrib ? 'style="display:none;"' : '') . ' id="li_' . $attribute->getIdName() . '">' . $attribute->getCodeForTagWizard() . '</li>';
 				}

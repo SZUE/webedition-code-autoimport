@@ -15,7 +15,7 @@ $name = new weTagData_textAttribute('name', false, '');
 $doctype = new weTagData_sqlRowAttribute('doctype', DOC_TYPES_TABLE, false, 'DocType', '', '', '');
 $categories = new weTagData_multiSelectorAttribute('categories', CATEGORY_TABLE, '', 'Path', false, '');
 $catOr = new weTagData_selectAttribute('catOr', array(new weTagDataOption('true'),
-	), false, '');
+		), false, '');
 $rows = new weTagData_textAttribute('rows', false, '');
 $cols = new weTagData_textAttribute('cols', false, '');
 $order_document = new weTagData_choiceAttribute('order', array(new weTagDataOption('random()'),
@@ -24,12 +24,12 @@ $order_document = new weTagData_choiceAttribute('order', array(new weTagDataOpti
 	new weTagDataOption('we_creationdate'),
 	new weTagDataOption('we_moddate'),
 	new weTagDataOption('we_published'),
-	), false, false, '');
+		), false, false, '');
 $order_object = new weTagData_choiceAttribute('order', array(new weTagDataOption('random()'),
 	new weTagDataOption('we_id'),
 	new weTagDataOption('we_filename'),
 	new weTagDataOption('we_published'),
-	), false, false, '');
+		), false, false, '');
 $order_search = new weTagData_choiceAttribute('order', array(new weTagDataOption('random()'),
 	new weTagDataOption('we_id'),
 	new weTagDataOption('we_filename'),
@@ -41,25 +41,25 @@ $order_search = new weTagData_choiceAttribute('order', array(new weTagDataOption
 	new weTagDataOption('DID'),
 	new weTagDataOption('OID'),
 	new weTagDataOption('ID'),
-	), false, false, '');
+		), false, false, '');
 $order_category = new weTagData_choiceAttribute('order', array(new weTagDataOption('random()'),
 	new weTagDataOption('ID'),
 	new weTagDataOption('Category'),
 	new weTagDataOption('Text'),
 	new weTagDataOption('Path'),
-	), false, false, '');
+		), false, false, '');
 $order_banner = new weTagData_choiceAttribute('order', array(new weTagDataOption('random()'),
 	new weTagDataOption('Path'),
 	new weTagDataOption('Clicks'),
 	new weTagDataOption('Views'),
 	new weTagDataOption('Rate'),
-	), false, false, '');
+		), false, false, '');
 $order_customer = (defined('CUSTOMER_TABLE') ? new weTagData_choiceAttribute('order', array(new weTagDataOption('random()'),
-		new weTagDataOption('ID'),
-		new weTagDataOption('Username'),
-		new weTagDataOption('Forename'),
-		new weTagDataOption('Surname'),
-		), false, false, 'customer') : null);
+			new weTagDataOption('ID'),
+			new weTagDataOption('Username'),
+			new weTagDataOption('Forename'),
+			new weTagDataOption('Surname'),
+				), false, false, 'customer') : null);
 $order_onlinemonitor = new weTagData_choiceAttribute('order', array(new weTagDataOption('random()'),
 	new weTagDataOption('WebUserID'),
 	new weTagDataOption('WebUserGroup'),
@@ -68,12 +68,12 @@ $order_onlinemonitor = new weTagData_choiceAttribute('order', array(new weTagDat
 	new weTagDataOption('ObjectID'),
 	new weTagDataOption('LastLogin'),
 	new weTagDataOption('LastAccess'),
-	), false, false, '');
+		), false, false, '');
 $order_languagelink = new weTagData_choiceAttribute('order', array(new weTagDataOption('random()'),
 	new weTagDataOption('Locale'),
-	), false, false, '');
+		), false, false, '');
 $desc = new weTagData_selectAttribute('desc', array(new weTagDataOption('true'),
-	), false, '');
+		), false, '');
 $offset = new weTagData_textAttribute('offset', false, '');
 $casesensitive = new weTagData_selectAttribute('casesensitive', weTagData_selectAttribute::getTrueFalse(), false, '');
 $classid = (defined("OBJECT_TABLE") ? new weTagData_selectorAttribute('classid', OBJECT_TABLE, 'object', false, '') : null);
@@ -96,7 +96,7 @@ $contenttypes = new weTagData_choiceAttribute('contenttypes', array(new weTagDat
 	new weTagDataOption('application/*'),
 	new weTagDataOption('application/x-shockwave-flash'),
 	new weTagDataOption('video/quicktime'),
-	), false, true, '');
+		), false, true, '');
 $searchable = new weTagData_selectAttribute('searchable', weTagData_selectAttribute::getTrueFalse(), false, '');
 $defaultname = new weTagData_textAttribute('defaultname', false, '');
 $documentid = new weTagData_selectorAttribute('documentid', FILE_TABLE, 'text/webedition', false, '');
@@ -105,7 +105,7 @@ $calendar = new weTagData_selectAttribute('calendar', array(new weTagDataOption(
 	new weTagDataOption('month'),
 	new weTagDataOption('month_table'),
 	new weTagDataOption('day'),
-	), false, '');
+		), false, '');
 $datefield = new weTagData_textAttribute('datefield', false, '');
 $date = new weTagData_textAttribute('date', false, '');
 $weekstart = new weTagData_selectAttribute('weekstart', array(new weTagDataOption('sunday'),
@@ -115,11 +115,11 @@ $weekstart = new weTagData_selectAttribute('weekstart', array(new weTagDataOptio
 	new weTagDataOption('thursday'),
 	new weTagDataOption('friday'),
 	new weTagDataOption('saturday'),
-	), false, '');
+		), false, '');
 $cfilter = (defined('CUSTOMER_TABLE') ? new weTagData_selectAttribute('cfilter', array(new weTagDataOption('false'),
-		new weTagDataOption('true'),
-		new weTagDataOption('auto'),
-		), false, 'customer') : null);
+			new weTagDataOption('true'),
+			new weTagDataOption('auto'),
+				), false, 'customer') : null);
 $recursive = new weTagData_selectAttribute('recursive', weTagData_selectAttribute::getTrueFalse(), false, '');
 $docid = new weTagData_multiSelectorAttribute('docid', FILE_TABLE, 'text/webedition', 'ID', false, '');
 $customer = (defined('CUSTOMER_TABLE') ? new weTagData_textAttribute('customer', false, 'customer') : null);
@@ -141,8 +141,9 @@ $hidedirindex = new weTagData_selectAttribute('hidedirindex', weTagData_selectAt
 $pagelanguage = new weTagData_choiceAttribute('pagelanguage', $locales, false, true, '');
 $doc = new weTagData_selectAttribute('doc', array(new weTagDataOption('self'),
 	new weTagDataOption('top'),
-	), false, '');
+		), false, '');
 $showself = new weTagData_selectAttribute('showself', weTagData_selectAttribute::getTrueFalse(), false, '');
+$orderid = new weTagData_textAttribute('id', false, '');
 
 $this->TypeAttribute = new weTagData_typeAttribute('type', array(
 	new weTagDataOption('-', false, '', array(), array()),
@@ -157,7 +158,7 @@ $this->TypeAttribute = new weTagData_typeAttribute('type', array(
 	new weTagDataOption('onlinemonitor', false, 'customer', array($name, $rows, $cols, $order_onlinemonitor, $desc, $offset, $condition, $docid, $lastaccesslimit, $lastloginlimit), array()),
 	new weTagDataOption('languagelink', false, '', array($name, $rows, $cols, $order_languagelink, $desc, $offset, $pagelanguage, $showself, $objectseourls, $hidedirindex), array()),
 	new weTagDataOption('order', false, '', array($name, $rows, $cols, $order_document, $desc, $offset, $condition, $docid), array()),
-	new weTagDataOption('orderitem', false, 'shop', array($name, $rows, $cols, $order_document, $desc, $offset, $condition, $docid), array())), false, '');
+	new weTagDataOption('orderitem', false, 'shop', array($name, $rows, $cols, $order_document, $desc, $offset, $condition, $docid, $orderid), array())), false, '');
 
 $this->Attributes = array($MultiSelector, $name, $doctype, $categories, $catOr, $rows, $cols, $order_document, $order_object, $order_search, $order_category,
 	$order_banner, $order_customer, $order_onlinemonitor, $order_languagelink, $desc, $offset, $casesensitive, $classid, $condition, $triggerid, $seeMode,

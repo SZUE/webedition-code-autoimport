@@ -36,8 +36,7 @@ abstract class permissionhandler{
 
 	public static function hasPerm($perm){
 		return (isset($_SESSION['perms']['ADMINISTRATOR']) && $_SESSION['perms']['ADMINISTRATOR']) ||
-			((isset($_SESSION['perms'][$perm]) && $_SESSION['perms'][$perm]) ||
-			(!isset($_SESSION['perms'][$perm])));
+				((isset($_SESSION['perms'][$perm]) && $_SESSION['perms'][$perm]));
 	}
 
 	/**
@@ -92,7 +91,7 @@ abstract class permissionhandler{
 
 
 		return (isset($knownActions[$requestedAction][$parameter]) ?
-				$knownActions[$requestedAction][$parameter] : 'none');
+						$knownActions[$requestedAction][$parameter] : 'none');
 	}
 
 	/**
@@ -110,25 +109,25 @@ abstract class permissionhandler{
 	static function isUserAllowedForAction($requestedAction, $parameter){
 		$neededPerm = permissionhandler::getPermissionsForAction($requestedAction, $parameter);
 		//  An array is returned, check the rights.
-		if(is_array($neededPerm)){
-			foreach($neededPerm as $val){
-				$allowed = true;
-				$perms = explode(',', $val);
-				foreach($perms as $perm){
-					if(!permissionhandler::hasPerm($perm)){
-						$allowed = false;
-						break;
-					}
-				}
-
-				if($allowed){
-					return true;
-				}
-			}
+		if(!is_array($neededPerm)){
 			//  no permissions are needed for this action
-		} else {
 			return true;
 		}
+		foreach($neededPerm as $val){
+			$allowed = true;
+			$perms = explode(',', $val);
+			foreach($perms as $perm){
+				if(!permissionhandler::hasPerm($perm)){
+					$allowed = false;
+					break;
+				}
+			}
+
+			if($allowed){
+				return true;
+			}
+		}
+
 		return false;
 	}
 
