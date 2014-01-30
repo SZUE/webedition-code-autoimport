@@ -243,7 +243,7 @@ abstract class we_backup_preparer{
 				$tables = array_merge($tables, we_tool_lookup::getBackupTables($_tool));
 			}
 		}
-t_e($tables);
+
 		return $tables;
 	}
 
