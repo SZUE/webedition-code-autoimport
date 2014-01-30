@@ -9,6 +9,7 @@ $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
 $_db = new DB_WE();
 $_db->query('SELECT DocType FROM ' . DOC_TYPES_TABLE);
+$docTypes = array();
 while($_db->next_record()){
 	$docTypes[] = new weTagDataOption($_db->f('DocType'));
 }
