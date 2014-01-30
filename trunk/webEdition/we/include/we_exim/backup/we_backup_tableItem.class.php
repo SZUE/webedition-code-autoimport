@@ -56,7 +56,7 @@ class we_backup_tableItem extends weModelBase{
 		if(isset($cache[$table])){
 			return $cache[$table];
 		}
-		$cache[$table] = $GLOBALS['DB_WE']->getPrimaryKeys(addTblPrefix($table));
+		$cache[$table] = $GLOBALS['DB_WE']->getPrimaryKeys($table);
 		return $cache[$table];
 	}
 
