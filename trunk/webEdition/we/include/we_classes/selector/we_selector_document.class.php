@@ -402,6 +402,8 @@ function enableNewFileBut() {
 }';
 			}
 		}
+
+		return $ret;
 	}
 
 	function _userCanMakeNewFile(){
