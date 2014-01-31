@@ -721,6 +721,7 @@ class we_objectFile extends we_document{
 				case we_object::QUERY_PREFIX:
 				case self::TYPE_MULTIOBJECT . '_':
 				case self::TYPE_META . '_':
+				case (defined('WE_SHOP_VARIANTS_ELEMENT_NAME') && !$checkVariants && $arr['name'] == 'variant_' . WE_SHOP_VARIANTS_ELEMENT_NAME): //FIX 8099
 					break;
 				case (defined('WE_SHOP_VARIANTS_ELEMENT_NAME') && $checkVariants ? 'variant_' . WE_SHOP_VARIANTS_ELEMENT_NAME : '-1'):
 					$variantdata = $arr;
