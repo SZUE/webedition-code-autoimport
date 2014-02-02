@@ -82,7 +82,7 @@ class weXMLImport extends weXMLExIm{
 						break;
 					case "we_docTypes":
 						$extra["ContentType"] = "doctype";
-						$dtid = f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType="' . $db->escape($object->DocType) . '"', 'ID', $db);
+						$dtid = f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType="' . $db->escape($object->DocType) . '"', '', $db);
 						if($dtid){
 							if($this->options["handle_collision"] == 'replace'){
 								$object->ID = $dtid;
@@ -95,7 +95,7 @@ class weXMLImport extends weXMLExIm{
 						}
 						break;
 					case "weNavigationRule":
-						$nid = f('SELECT ID FROM ' . NAVIGATION_RULE_TABLE . ' WHERE NavigationName="' . $db->escape($object->NavigationName) . '"', 'ID', $db);
+						$nid = f('SELECT ID FROM ' . NAVIGATION_RULE_TABLE . ' WHERE NavigationName="' . $db->escape($object->NavigationName) . '"', '', $db);
 						if($nid){
 							if($this->options["handle_collision"] == "replace"){
 								$object->ID = $nid;
@@ -108,7 +108,7 @@ class weXMLImport extends weXMLExIm{
 						}
 						break;
 					case "we_thumbnailEx":
-						$nid = f("SELECT ID FROM " . THUMBNAILS_TABLE . " WHERE Name='" . $db->escape($object->Name) . "'", "ID", $db);
+						$nid = f("SELECT ID FROM " . THUMBNAILS_TABLE . " WHERE Name='" . $db->escape($object->Name) . "'", "", $db);
 						if($nid){
 							if($this->options["handle_collision"] == "replace"){
 								$object->ID = $nid;
@@ -188,7 +188,7 @@ class weXMLImport extends weXMLExIm{
 							$match = array();
 							preg_match('|(/+[a-zA-Z0-9_+-\.]*)|', $object->Path, $match);
 							if(isset($match[0])){
-								if(f('SELECT 1 AS a FROM ' . OBJECT_TABLE . ' WHERE Path="' . $db->escape($match[0]) . '"', 'a', $db) !== '1'){
+								if(f('SELECT 1 FROM ' . OBJECT_TABLE . ' WHERE Path="' . $db->escape($match[0]) . '"', '', $db) !== '1'){
 									return false;
 								}
 							}
@@ -269,7 +269,7 @@ class weXMLImport extends weXMLExIm{
 						$match = array();
 						preg_match('|(/+[a-zA-Z0-9_+-\.]*)|', $object->Path, $match);
 						if(isset($match[0])){
-							$object->TableID = f('SELECT ID FROM ' . OBJECT_TABLE . ' WHERE Path="' . $db->escape($match[0]) . '"', 'ID', $db);
+							$object->TableID = f('SELECT ID FROM ' . OBJECT_TABLE . ' WHERE Path="' . $db->escape($match[0]) . '"', '', $db);
 						}
 					}
 				}
@@ -300,13 +300,13 @@ class weXMLImport extends weXMLExIm{
 			}
 			switch($object->ClassName){
 				case "we_docTypes":
-					$newid = f("SELECT ID FROM " . DOC_TYPES_TABLE . " WHERE DocType='" . escape_sql_query($newname) . "'", "ID", new DB_WE());
+					$newid = f('SELECT ID FROM ' . DOC_TYPES_TABLE . " WHERE DocType='" . escape_sql_query($newname) . "'", "", new DB_WE());
 					break;
 				case 'weNavigationRule':
-					$newid = f("SELECT ID FROM " . NAVIGATION_RULE_TABLE . " WHERE NavigationName='" . escape_sql_query($newname) . "'", "ID", new DB_WE());
+					$newid = f('SELECT ID FROM ' . NAVIGATION_RULE_TABLE . " WHERE NavigationName='" . escape_sql_query($newname) . "'", "", new DB_WE());
 					break;
 				case 'we_thumbnailEx':
-					$newid = f("SELECT ID FROM " . THUMBNAILS_TABLE . " WHERE Name='" . escape_sql_query($newname) . "'", "ID", new DB_WE());
+					$newid = f('SELECT ID FROM ' . THUMBNAILS_TABLE . " WHERE Name='" . escape_sql_query($newname) . "'", "", new DB_WE());
 					break;
 				default:
 					$newid = path_to_id(clearPath(dirname($object->Path) . "/" . $newname), $object->Table);
@@ -570,7 +570,7 @@ class weXMLImport extends weXMLExIm{
 
 		$buff = "";
 		$filename_tmp = "";
-		$fh = ($compress != "none" ? @gzopen($filename, "rb") : @fopen($filename, "rb"));
+		$fh = ($compress != "none" ? gzopen($filename, "rb") : @fopen($filename, "rb"));
 
 		$num = -1;
 		$open_new = true;
@@ -582,7 +582,7 @@ class weXMLImport extends weXMLExIm{
 		$marker2_size = strlen($marker2); //Backup 5089
 
 		if($fh){
-			while(!@feof($fh)){
+			while(!feof($fh)){
 				$line = "";
 				$findline = false;
 
@@ -626,7 +626,7 @@ class weXMLImport extends weXMLExIm{
 									$elnum = 0;
 									$open_new = true;
 									fwrite($fh_temp, $footer);
-									@fclose($fh_temp);
+									fclose($fh_temp);
 								}
 								$fsize = 0;
 							}
@@ -647,15 +647,15 @@ class weXMLImport extends weXMLExIm{
 		}
 		if($fh_temp && trim($line) != we_backup_backup::weXmlExImFooter){
 			if($buff){
-				@fwrite($fh_temp, $buff);
+				fwrite($fh_temp, $buff);
 			}
-			@fwrite($fh_temp, $footer);
-			@fclose($fh_temp);
+			fwrite($fh_temp, $footer);
+			fclose($fh_temp);
 		}
 		if($compress != "none"){
-			@gzclose($fh);
+			gzclose($fh);
 		} else {
-			@fclose($fh);
+			fclose($fh);
 		}
 
 		return $num + 1;
