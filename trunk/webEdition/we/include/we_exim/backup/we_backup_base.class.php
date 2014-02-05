@@ -33,6 +33,7 @@ define('BACKUP_TABLE', TBL_PREFIX . 'tblbackup');
 abstract class we_backup_base{
 
 	const COMPRESSION = 'gzip';
+	const NO_COMPRESSION = 'none';
 
 	var $backup_db;
 	var $errors = array();

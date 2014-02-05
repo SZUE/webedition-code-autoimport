@@ -40,7 +40,7 @@ class we_backup_backup extends we_backup_base{
 	var $nl = "\n";
 	var $mode = "sql";
 	var $filename;
-	var $compress = "none";
+	var $compress = self::NO_COMPRESSION;
 	var $rebuild;
 	var $file_list = array();
 	var $file_counter = 0;
@@ -380,7 +380,7 @@ class we_backup_backup extends we_backup_base{
 	 */
 	function printDump2BackupDir(){
 		$backupfilename = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . $this->filename;
-		if($this->compress != "none" && $this->compress != ""){
+		if($this->compress != self::NO_COMPRESSION && $this->compress != ""){
 			$this->dumpfilename = we_base_file::compress($this->dumpfilename, $this->compress);
 			$this->filename = $this->filename . '.' . we_base_file::getZExtension($this->compress);
 		}

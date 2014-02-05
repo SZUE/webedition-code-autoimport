@@ -100,18 +100,18 @@ function we_tag_userInput($attribs, $content){
 				$_imgDataId = isset($_REQUEST['WE_UI_IMG_DATA_ID_' . $name]) ? $_REQUEST['WE_UI_IMG_DATA_ID_' . $name] : md5(uniqid(__FUNCTION__, true));
 
 				if($editable){
-					if(($foo = attributFehltError($attribs, "parentid", __FUNCTION__))){
+					if(($foo = attributFehltError($attribs, 'parentid', __FUNCTION__))){
 						return $foo;
 					}
 
 					if(!isset($_SESSION[$_imgDataId])){
 						$_SESSION[$_imgDataId] = array();
 					}
-					$_SESSION[$_imgDataId]["parentid"] = weTag_getAttribute("parentid", $attribs, "0");
+					$_SESSION[$_imgDataId]["parentid"] = weTag_getAttribute("parentid", $attribs, 0);
 					//$_SESSION[$_imgDataId]["maxfilesize"] = weTag_getAttribute("maxfilesize",$attribs);
 					$_SESSION[$_imgDataId]["width"] = weTag_getAttribute("width", $attribs, 0);
 					$_SESSION[$_imgDataId]["height"] = weTag_getAttribute("height", $attribs, 0);
-					$_SESSION[$_imgDataId]["quality"] = weTag_getAttribute("quality", $attribs, "8");
+					$_SESSION[$_imgDataId]["quality"] = weTag_getAttribute("quality", $attribs, 8);
 					$_SESSION[$_imgDataId]["keepratio"] = weTag_getAttribute("keepratio", $attribs, true, true);
 					$_SESSION[$_imgDataId]["maximize"] = weTag_getAttribute("maximize", $attribs, false, true);
 					$_SESSION[$_imgDataId]["id"] = $orgVal ? $orgVal : '';

@@ -382,7 +382,7 @@ if(!isset($_SESSION['weS']['weBackupVars']) || empty($_SESSION['weS']['weBackupV
 			if($_REQUEST['verbose']){
 				print "\nCompressing...\n";
 			}
-			$_SESSION['weS']['weBackupVars']['backup_file'] = we_base_file::compress($_SESSION['weS']['weBackupVars']['backup_file'], 'gzip');
+			$_SESSION['weS']['weBackupVars']['backup_file'] = we_base_file::compress($_SESSION['weS']['weBackupVars']['backup_file'], we_backup_base::COMPRESSION);
 			$_SESSION['weS']['weBackupVars']['filename'] .= '.gz';
 			$_backup_filename .= '.gz';
 		}

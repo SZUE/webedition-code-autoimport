@@ -82,9 +82,9 @@ abstract class we_backup_preparer{
 
 		$_SESSION['weS']['weBackupVars']['protect'] = (isset($_REQUEST['protect']) && $_REQUEST['protect']) ? $_REQUEST['protect'] : 0;
 
-		$_SESSION['weS']['weBackupVars']['options']['compress'] = (isset($_REQUEST['compress']) && $_REQUEST['compress'] && we_base_file::hasCompression($_REQUEST['compress'])) ? we_backup_base::COMPRESSION : 0;
-		$_SESSION['weS']['weBackupVars']['filename'] = ((isset($_REQUEST['filename']) && $_REQUEST['filename']) ? ($_REQUEST['filename']) : '') . ($_SESSION['weS']['weBackupVars']['options']['compress'] ? '.' . we_base_file::getZExtension(we_backup_base::COMPRESSION) : '');
-		$_SESSION['weS']['weBackupVars']['backup_file'] = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . $_SESSION['weS']['weBackupVars']['filename'] . ($_SESSION['weS']['weBackupVars']['options']['compress'] ? '.' . we_base_file::getZExtension(we_backup_base::COMPRESSION) : '');
+		$_SESSION['weS']['weBackupVars']['options']['compress'] = (isset($_REQUEST['compress']) && $_REQUEST['compress'] && we_base_file::hasCompression($_REQUEST['compress'])) ? we_backup_base::COMPRESSION : we_backup_base::NO_COMPRESSION;
+		$_SESSION['weS']['weBackupVars']['filename'] = ((isset($_REQUEST['filename']) && $_REQUEST['filename']) ? ($_REQUEST['filename']) : '') . ($_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_base::NO_COMPRESSION ? '.' . we_base_file::getZExtension(we_backup_base::COMPRESSION) : '');
+		$_SESSION['weS']['weBackupVars']['backup_file'] = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . $_SESSION['weS']['weBackupVars']['filename'];
 		$prefix = we_base_file::getComPrefix($_SESSION['weS']['weBackupVars']['options']['compress']);
 		$_SESSION['weS']['weBackupVars']['open'] = $prefix . 'open';
 		$_SESSION['weS']['weBackupVars']['close'] = $prefix . 'close';
@@ -132,30 +132,30 @@ abstract class we_backup_preparer{
 
 		$_offset = strlen(we_backup_backup::weXmlExImProtectCode);
 		$_SESSION['weS']['weBackupVars']['offset'] = (we_base_file::loadLine($_SESSION['weS']['weBackupVars']['backup_file'], 0, ($_offset)) == we_backup_backup::weXmlExImProtectCode) ? $_offset : 0;
-		$_SESSION['weS']['weBackupVars']['options']['compress'] = we_base_file::isCompressed($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['offset']) ? 1 : 0;
-		if($_SESSION['weS']['weBackupVars']['options']['compress']){
+		$_SESSION['weS']['weBackupVars']['options']['compress'] = we_base_file::isCompressed($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['offset']) ? we_backup_base::COMPRESSION : we_backup_base::NO_COMPRESSION;
+		if($_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_base::NO_COMPRESSION){
 			$_SESSION['weS']['weBackupVars']['backup_file'] = self::makeCleanGzip($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['offset']);
 			we_util_File::insertIntoCleanUp($_SESSION['weS']['weBackupVars']['backup_file'], time() + (8 * 3600)); //valid for 8 hours
 			$_SESSION['weS']['weBackupVars']['offset'] = 0;
 		}
 
-		$_SESSION['weS']['weBackupVars']['options']['format'] = we_backup_util::getFormat($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['options']['compress']);
+		$_SESSION['weS']['weBackupVars']['options']['format'] = we_backup_util::getFormat($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['options']['compress']!=we_backup_base::NO_COMPRESSION);
 
 		if($_SESSION['weS']['weBackupVars']['options']['format'] != 'xml' && $_SESSION['weS']['weBackupVars']['options']['format'] != 'sql'){
 			return false;
 		}
 
-		$_SESSION['weS']['weBackupVars']['offset_end'] = we_backup_util::getEndOffset($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['options']['compress']);
+		$_SESSION['weS']['weBackupVars']['offset_end'] = we_backup_util::getEndOffset($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['options']['compress']!=we_backup_base::NO_COMPRESSION);
 
 		if($_SESSION['weS']['weBackupVars']['options']['format'] == 'xml'){
-			$_SESSION['weS']['weBackupVars']['options']['xmltype'] = we_backup_util::getXMLImportType($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['options']['compress'], $_SESSION['weS']['weBackupVars']['offset_end']);
+			$_SESSION['weS']['weBackupVars']['options']['xmltype'] = we_backup_util::getXMLImportType($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['options']['compress']!=we_backup_base::NO_COMPRESSION, $_SESSION['weS']['weBackupVars']['offset_end']);
 			if($_SESSION['weS']['weBackupVars']['options']['xmltype'] != 'backup'){
 				return false;
 			}
 		}
 
-		$_SESSION['weS']['weBackupVars']['encoding'] = self::getEncoding($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['options']['compress']);
-		$_SESSION['weS']['weBackupVars']['weVersion'] = self::getWeVersion($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['options']['compress']);
+		$_SESSION['weS']['weBackupVars']['encoding'] = self::getEncoding($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['options']['compress']!=we_backup_base::NO_COMPRESSION);
+		$_SESSION['weS']['weBackupVars']['weVersion'] = self::getWeVersion($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['options']['compress']!=we_backup_base::NO_COMPRESSION);
 
 		if($_SESSION['weS']['weBackupVars']['handle_options']['core']){
 			self::clearTemporaryData('tblFile');
@@ -180,7 +180,7 @@ abstract class we_backup_preparer{
 		$options = array(
 			'backup_extern' => (isset($_REQUEST['handle_extern']) && $_REQUEST['handle_extern']) ? 1 : 0,
 			'convert_charset' => (isset($_REQUEST["convert_charset"]) && $_REQUEST["convert_charset"]) ? 1 : 0,
-			'compress' => (isset($_REQUEST['compress']) && $_REQUEST['compress']) ? 1 : 0,
+			'compress' => (isset($_REQUEST['compress']) && $_REQUEST['compress']) ? we_backup_base::COMPRESSION : we_backup_base::NO_COMPRESSION,
 			'backup_binary' => (isset($_REQUEST['handle_binary']) && $_REQUEST['handle_binary']) ? 1 : 0,
 			'rebuild' => (isset($_REQUEST['rebuild']) && $_REQUEST['rebuild']) ? 1 : 0,
 			'export2server' => (isset($_REQUEST['export_server']) && $_REQUEST['export_server']) ? 1 : 0,
@@ -454,7 +454,7 @@ abstract class we_backup_preparer{
 		} else if($_SESSION['weS']['weBackupVars']['options']['xmltype'] != 'backup'){
 
 			return self::isOtherXMLImport($_SESSION['weS']['weBackupVars']['options']['xmltype']);
-		} else if($_SESSION['weS']['weBackupVars']['options']['compress'] && !we_base_file::hasGzip()){
+		} else if($_SESSION['weS']['weBackupVars']['options']['compress']!=we_backup_base::NO_COMPRESSION && !we_base_file::hasGzip()){
 
 			$_mess = g_l('backup', '[cannot_split_file_ziped]');
 		} else {

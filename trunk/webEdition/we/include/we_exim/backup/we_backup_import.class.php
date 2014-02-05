@@ -27,16 +27,19 @@ class we_backup_import{
 	static function import($filename, &$offset, $lines = 1, $iscompressed = 0, $encoding = 'ISO-8859-1'){
 		we_backup_util::addLog(sprintf('Reading offset %s, %s lines, Mem: %s', $offset, $lines, memory_get_usage(true)));
 		we_backup_util::writeLog();
-		$data = we_backup_fileReader::readLine($filename, $offset, $lines, 0, $iscompressed);
-		if(empty($data)){
+		$header = (isset($_SESSION['weS']['weBackupVars']['options']['convert_charset']) && $_SESSION['weS']['weBackupVars']['options']['convert_charset'] ?
+				weXMLExIm::getHeader($_SESSION['weS']['weBackupVars']['encoding'], 'backup') :
+				weXMLExIm::getHeader('', 'backup'));
+		$data = $header . we_backup_fileReader::readLine($filename, $offset, $lines, $iscompressed);
+
+		if(strlen($data) == strlen($header)){
 			return false;
 		}
 
-		$data = (isset($_SESSION['weS']['weBackupVars']['options']['convert_charset']) && $_SESSION['weS']['weBackupVars']['options']['convert_charset'] ?
-				weXMLExIm::getHeader($_SESSION['weS']['weBackupVars']['encoding'], 'backup') :
-				weXMLExIm::getHeader('', 'backup')) .
-			$data .
-			we_backup_backup::weXmlExImFooter;
+		we_backup_util::addLog(sprintf('Read %s bytes, Mem: %s', strlen($data), memory_get_usage(true)));
+		we_backup_util::writeLog();
+
+		$data .=we_backup_backup::weXmlExImFooter;
 
 		self::transfer($data, $encoding);
 		return true;
@@ -47,7 +50,7 @@ class we_backup_import{
 
 		$parser = new we_backup_XMLParser();
 
-		$parser->parse($data, ((DEFAULT_CHARSET == '') ? 'ISO-8859-1' : DEFAULT_CHARSET)); // Fix f�r 4092, in Verbindung mit alter Version f�r bug 3412 l�st das beide Situationen
+		$parser->parse($data, (DEFAULT_CHARSET ? DEFAULT_CHARSET : 'ISO-8859-1')); // Fix f�r 4092, in Verbindung mit alter Version f�r bug 3412 l�st das beide Situationen
 		// free some memory
 		unset($data);
 

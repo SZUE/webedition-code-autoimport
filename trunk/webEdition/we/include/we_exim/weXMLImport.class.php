@@ -560,7 +560,7 @@ class weXMLImport extends weXMLExIm{
 		$marker2 = "<!--webackup -->"; //Bug 5089
 		$pattern = basename($filename) . "_%s";
 
-		$compress = (we_base_file::isCompressed($filename) ? "gzip" : "none");
+		$compress = (we_base_file::isCompressed($filename) ? we_backup_base::COMPRESSION : we_backup_base::NO_COMPRESSION);
 		$head = we_base_file::loadPart($filename, 0, 256, $compress == 'gzip');
 
 		$encoding = we_xml_parser::getEncoding('', $head);
@@ -570,7 +570,7 @@ class weXMLImport extends weXMLExIm{
 
 		$buff = "";
 		$filename_tmp = "";
-		$fh = ($compress != "none" ? gzopen($filename, "rb") : @fopen($filename, "rb"));
+		$fh = ($compress != we_backup_base::NO_COMPRESSION ? gzopen($filename, "rb") : @fopen($filename, "rb"));
 
 		$num = -1;
 		$open_new = true;
@@ -587,7 +587,7 @@ class weXMLImport extends weXMLExIm{
 				$findline = false;
 
 				while($findline == false && !@feof($fh)){
-					$line .= ($compress != "none" ? @gzgets($fh, 4096) : @fgets($fh, 4096));
+					$line .= ($compress != we_backup_base::NO_COMPRESSION ? @gzgets($fh, 4096) : @fgets($fh, 4096));
 					if(substr($line, -1) == "\n"){
 						$findline = true;
 					}
@@ -652,7 +652,7 @@ class weXMLImport extends weXMLExIm{
 			fwrite($fh_temp, $footer);
 			fclose($fh_temp);
 		}
-		if($compress != "none"){
+		if($compress != we_backup_base::NO_COMPRESSION){
 			gzclose($fh);
 		} else {
 			fclose($fh);

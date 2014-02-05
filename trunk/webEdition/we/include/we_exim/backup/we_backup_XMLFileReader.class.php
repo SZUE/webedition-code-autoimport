@@ -26,7 +26,7 @@ abstract class we_backup_XMLFileReader{
 
 	static $file = array();
 
-	static function readLine($filename, &$offset, $lines = 1, $size = 0, $iscompressed = 0){
+	static function readLine($filename, &$offset, $lines = 1, $iscompressed = 0){
 		$data = '';
 		$prefix = $iscompressed == 0 ? 'f' : we_base_file::getComPrefix('gzip');
 		$open = $prefix . 'open';
@@ -74,7 +74,7 @@ abstract class we_backup_XMLFileReader{
 
 				$isend = preg_match("|<!-- *webackup *-->|", $buffer) || empty($buffer);
 
-				if($isend && self::preParse($first)){
+				if($isend && we_backup_fileReader::preParse($first)){
 					$buffer = '';
 					$isend = $eof(self::$file['fp']);
 				}
@@ -85,25 +85,17 @@ abstract class we_backup_XMLFileReader{
 				}
 				// -----------------------------------------------------
 				// avoid endless loop
-				$count++;
-				if($count > 100000){
+
+				if(++$count > 10000){
+					t_e('line didn\'t end after 10000 iterations', strlen($buffer), $first, $end);
 					break;
 				}
 			} while(!$isend);
-
 			//  check condition
-			if($size > 0){
-				if(empty($buffer)){
-					$condition = false;
-				} else {
-					$condition = (strlen($buffer) < $size ? !$eof(self::$file['fp']) : false );
-				}
-			} else if($lines > 0){
-				$condition = ( --$lines > 0 ? !$eof(self::$file['fp']) : false );
-			}
-			$condition&=!we_backup_backup::limitsReached('', 0.1, 10);
+			$condition = --$lines > 0 && !$eof(self::$file['fp']) && we_backup_backup::limitsReached('', 0.1, 10);
 
 			$data .= $buffer;
+			$condition&=strlen($data) < (5 * 1024 * 1024);
 		} while($condition);
 
 		unset($buffer);
@@ -118,10 +110,6 @@ abstract class we_backup_XMLFileReader{
 		}
 		gzclose(self::$file['fp']);
 		self::$file = array();
-	}
-
-	static function preParse(&$content){
-		return false;
 	}
 
 }

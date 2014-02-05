@@ -1197,7 +1197,7 @@ function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = 
 				$v :
 				str_replace('pass_', '', $k) . '="' . $v . '"');
 	}
-	return $tag . ($content != '' || $forceEndTag ? //	use endtag
+	return $tag . ($content || $forceEndTag ? //	use endtag
 			'>' . $content . '</' . $element . '>' :
 //	xml style or not
 			( ($_xmlClose && !$onlyStartTag) ? ' />' : '>'));
