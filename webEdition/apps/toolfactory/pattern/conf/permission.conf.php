@@ -1,7 +1,7 @@
 
 require_once ($_SERVER['DOCUMENT_ROOT'] . LIB_DIR.'we/core/autoload.php');
 
-$isUTF8 = $GLOBALS['WE_BACKENDCHARSET'] == 'UTF-8';
+$isUTF8 = ($GLOBALS['WE_BACKENDCHARSET'] == 'UTF-8');
 
 $translate = we_core_Local::addTranslation('default.xml', '<?php print $TOOLNAME; ?>');
 
