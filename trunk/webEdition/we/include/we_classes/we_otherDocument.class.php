@@ -78,6 +78,11 @@ class we_otherDocument extends we_binaryDocument{
 	}
 
 	function insertAtIndex(){
+		if(!($this->IsSearchable && $this->Published)){
+			$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($this->ID));
+			return true;
+		}
+
 		$text = '';
 		$this->resetElements();
 		while((list($k, $v) = $this->nextElement(''))){
@@ -129,30 +134,23 @@ class we_otherDocument extends we_binaryDocument{
 				$content = '';
 		}
 
-		/* if($this->Extension == ".pdf" && function_exists("gzuncompress")){
-		  $content = $this->getPDFText($this->i_getDocument());
-		  } */
 		$content = preg_replace('/[\x00-\x1F]/', '', $content);
 		$text.= ' ' . trim($content);
 
 		$maxDB = min(1000000, getMaxAllowedPacket($this->DB_WE) - 1024);
 		$text = substr(preg_replace(array("/\n+/", '/  +/'), ' ', $text), 0, $maxDB);
 
-		if($this->IsSearchable && $this->Published){
-			$set = array(
-				'DID' => intval($this->ID),
-				'Text' => $text,
-				'Workspace' => $this->ParentPath,
-				'WorkspaceID' => intval($this->ParentID),
-				'Category' => $this->Category,
-				'Doctype' => '',
-				'Title' => $this->getElement('Title'),
-				'Description' => $this->getElement('Description'),
-				'Path' => $this->Path);
-			return $this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter($set));
-		}
-		$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($this->ID));
-		return true;
+		$set = array(
+			'DID' => intval($this->ID),
+			'Text' => $text,
+			'Workspace' => $this->ParentPath,
+			'WorkspaceID' => intval($this->ParentID),
+			'Category' => $this->Category,
+			'Doctype' => '',
+			'Title' => $this->getElement('Title'),
+			'Description' => $this->getElement('Description'),
+			'Path' => $this->Path);
+		return $this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter($set));
 	}
 
 	function i_descriptionMissing(){

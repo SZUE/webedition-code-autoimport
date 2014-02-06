@@ -2101,7 +2101,7 @@ class we_objectFile extends we_document{
 		$ws = array_unique($ws);
 
 		if(empty($ws)){
-			return $this->DB_WE->query('INSERT INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter(array(
+			return $this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter(array(
 						'OID' => $this->ID,
 						'Text' => $text,
 						'Workspace' => '',
@@ -2121,8 +2121,7 @@ class we_objectFile extends we_document{
 				if($w == '0'){
 					$wsPath = '/';
 				}
-				if(!$this->DB_WE->query(
-						'INSERT INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter(array(
+				if(!$this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter(array(
 							'OID' => $this->ID,
 							'Text' => $text,
 							'Workspace' => $wsPath,

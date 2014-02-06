@@ -615,7 +615,7 @@ class we_webEditionDocument extends we_textContentDocument{
 				$this->setElement($name, $value);
 			}
 		}
-		//FIXME: it is better to use $this->getUsedElements - only we:input type="date" is not handled...
+		//FIXME: it is better to use $this->getUsedElements - only we:input type="date" is not handled... => this will call the TP which is not desired since this method is called on save in frontend
 		$types = self::getFieldTypes($this->getTemplateCode());
 
 		foreach($this->elements as $k => $v){

@@ -26,8 +26,8 @@ class we_tag_tagParser{
 
 	private $lastpos = 0;
 	private $tags = array();
-	private static $CloseTags = 0;
-	private static $AllKnownTags = 0;
+	private static $CloseTags = array();
+	private static $AllKnownTags = array();
 	public static $curFile = '';
 
 	//private $AppListviewItemsTags = array();
@@ -38,10 +38,11 @@ class we_tag_tagParser{
 		if($content != ''){
 			$this->setAllTags($content);
 		}
-		if(!is_array(self::$CloseTags)){
+		/*
+		 * if(!is_array(self::$CloseTags)){
 			self::$CloseTags = weTagWizard::getTagsWithEndTag();
 			self::$AllKnownTags = weTagWizard::getExistingWeTags();
-		}
+		}*/
 	}
 
 	/* 	private function parseAppListviewItemsTags($tagname, $tag, $code, $attribs = "", $postName = ""){
