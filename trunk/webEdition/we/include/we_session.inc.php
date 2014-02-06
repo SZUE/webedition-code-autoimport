@@ -68,7 +68,7 @@ if(!(isset($_POST['username']) && isset($_POST['password']))){
 	return;
 }
 
-$userdata = getHash('SELECT UseSalt, passwd, username, LoginDenied, ID FROM ' . USER_TABLE . ' WHERE IsFolder=0 AND username="' . $DB_WE->escape($_POST['username']) . '"', $DB_WE);
+$userdata = getHash('SELECT UseSalt, passwd, username, LoginDenied, ID FROM ' . USER_TABLE . ' WHERE IsFolder=0 AND username="' . $DB_WE->escape($_POST['username']) . '"');
 
 // only if username exists !!
 if(empty($userdata) || (!we_users_user::comparePasswords($userdata['UseSalt'], $_POST['username'], $userdata['passwd'], $_POST['password']))){
@@ -97,7 +97,7 @@ $_SESSION['user']['ID'] = $userdata['ID'];
 
 if($_SESSION['user']['Username'] && $_SESSION['user']['ID']){
 
-	$_SESSION['prefs'] = we_users_user::readPrefs($userdata['ID'], $DB_WE, true);
+	$_SESSION['prefs'] = we_users_user::readPrefs($userdata['ID'], $GLOBALS['DB_WE'], true);
 
 	$_SESSION['perms'] = we_users_user::getAllPermissions($_SESSION['user']['ID']);
 	we_users_user::setEffectiveWorkspaces($_SESSION['user']['ID'], $GLOBALS['DB_WE']);
