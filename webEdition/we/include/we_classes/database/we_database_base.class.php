@@ -343,6 +343,7 @@ abstract class we_database_base{
 			getHash();
 			$repool = true;
 		}
+		$matches = array();
 		if(preg_match('/^[[:space:]]*alter[[:space:]]*table[[:space:]]*(`?([[:alpha:]]|[[:punct:]])+`?)[[:space:]]*(add|change|modify|drop)/i', $Query_String, $matches)){
 			$this->_query('ANALYZE TABLE `' . $matches[1] . '`');
 			$repool = true;
@@ -387,8 +388,9 @@ abstract class we_database_base{
 						$this->retry = false;
 						return $tmp;
 					}
-				case 0:
-					//don't know why, but ignore this
+				case 1062://ignore as error - duplicate entry
+					return false;
+				case 0:// ignore this
 					return true;
 				default:
 					trigger_error('MYSQL-ERROR' . "\nFehler: " . $this->Errno . "\nDetail: " . $this->Error . "\nInfo:" . $this->info() . "\nQuery: " . $Query_String, E_USER_WARNING);
@@ -848,7 +850,7 @@ abstract class we_database_base{
 		$matches = array();
 		foreach($zw as $v){
 			if(preg_match('|PRIMARY KEY \((.*)\)|', $v, $matches)){
-				preg_match_all('|`([^`]+)`|',$matches[1],$matches);
+				preg_match_all('|`([^`]+)`|', $matches[1], $matches);
 				return $matches[1];
 			}
 		}
