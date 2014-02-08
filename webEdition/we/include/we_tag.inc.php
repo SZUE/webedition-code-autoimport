@@ -263,7 +263,7 @@ function weTag_getAttribute($name, $attribs, $default = '', $isFlag = false, $us
 			!($val === 'false' || $val === 'off' || $val === '0' || $val === 0 || $val === false)) ||
 			($val === 'true' || $val === 'on' || $val === '1' || $value === $name || $val === 1 || $val === true);
 	}
-	$value = is_array($value) || strlen($value) ? $value : $default;
+	$value = is_array($value) || strlen($value)|| is_bool($value) ? $value : $default;
 
 	return is_array($value) ? $value : htmlspecialchars_decode($value);
 }
