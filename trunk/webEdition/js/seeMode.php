@@ -23,7 +23,7 @@
  */
 header("Content-Type: text/javascript");
 require_once( $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_defines.inc.php');
-require_once (WE_LIB_PATH.'we/core/autoload.php');
+require_once (WE_LIB_PATH . 'we/core/autoload.php');
 
 
 $useSeeModeJS = array(
@@ -48,38 +48,40 @@ if(!$includeJs){
 	exit;
 }
 ?>
-
+<script type="text/javascript"><!--
 function seeMode_dealWithLinks() {
 
-var _aTags = document.getElementsByTagName("a");
+		var _aTags = document.getElementsByTagName("a");
 
-for (i = 0; i < _aTags.length; i++) {
-var _href = _aTags[i].href;
+		for (i = 0; i < _aTags.length; i++) {
+			var _href = _aTags[i].href;
 
-if (	!(	_href.indexOf("javascript:") === 0
-|| _href.indexOf("#") === 0
-|| (_href.indexOf("#") === document.URL.length && _href === (document.URL+_aTags[i].hash))
-|| _href.indexOf("<?php echo we_base_link::TYPE_OBJ_PREFIX; ?>") === 0
-|| _href.indexOf("<?php echo we_base_link::TYPE_INT_PREFIX; ?>") === 0
-|| _href.indexOf("<?php echo we_base_link::TYPE_MAIL_PREFIX; ?>") === 0
-|| _href.indexOf("?") === 0
-|| _href===""
-)
-){
-_aTags[i].href = "javascript:seeMode_clickLink('" + _aTags[i].href + "')";
+			if (!(_href.indexOf("javascript:") === 0
+							|| _href.indexOf("#") === 0
+							|| (_href.indexOf("#") === document.URL.length && _href === (document.URL + _aTags[i].hash))
+							|| _href.indexOf("<?php echo we_base_link::TYPE_OBJ_PREFIX; ?>") === 0
+							|| _href.indexOf("<?php echo we_base_link::TYPE_INT_PREFIX; ?>") === 0
+							|| _href.indexOf("<?php echo we_base_link::TYPE_MAIL_PREFIX; ?>") === 0
+							|| _href.indexOf("?") === 0
+							|| _href === ""
+							)
+							) {
+				_aTags[i].href = "javascript:seeMode_clickLink('" + _aTags[i].href + "')";
 
-}
-}
-}
+			}
+		}
+	}
 
-function seeMode_clickLink ( url ) {
-top.we_cmd("open_url_in_editor", url);
+	function seeMode_clickLink(url) {
+		top.we_cmd("open_url_in_editor", url);
 
-}
+	}
 
 // add event-Handler, replace links after load
-if ( window.addEventListener ) {
-window.addEventListener("load", seeMode_dealWithLinks, false);
-} else if ( window.attachEvent ){
-window.attachEvent("onload", seeMode_dealWithLinks);
-}
+	if (window.addEventListener) {
+		window.addEventListener("load", seeMode_dealWithLinks, false);
+	} else if (window.attachEvent) {
+		window.attachEvent("onload", seeMode_dealWithLinks);
+	}
+//-->
+</script>
