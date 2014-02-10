@@ -4,4 +4,4 @@ Codebase: *
 Trusted-Only: true
 Application-Name: External Editor-Plugin
 Permissions: all-permissions
-
+Caller-Allowable-Codebase: *

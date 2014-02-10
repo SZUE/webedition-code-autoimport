@@ -4,3 +4,4 @@ Codebase: *
 Trusted-Only: true
 Application-Name: Editor-Plugin
 Permissions: sandbox
+Caller-Allowable-Codebase: *
