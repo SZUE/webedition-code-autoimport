@@ -976,7 +976,7 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 			if(in_array('all', $_hidePagesArr)){
 				$this->EditPageNrs = array();
 			} else {
-				foreach($this->EditPageNrs AS $key => $editPage){
+				foreach($this->EditPageNrs as $key => $editPage){
 					if(array_key_exists($editPage, $MNEMONIC_EDITPAGES) && in_array($MNEMONIC_EDITPAGES[$editPage], $_hidePagesArr)){
 						unset($this->EditPageNrs[$key]);
 					}

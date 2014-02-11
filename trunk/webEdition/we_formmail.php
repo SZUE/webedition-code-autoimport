@@ -165,7 +165,7 @@ function redirect($url, $_emosScontact = ''){
 }
 
 function check_recipient($email){
-	return (f('SELECT 1 AS a FROM ' . RECIPIENTS_TABLE . ' WHERE Email="' . $GLOBALS['DB_WE']->escape($email) . '"', 'a', $GLOBALS['DB_WE']) ? true : false);
+	return (f('SELECT 1 FROM ' . RECIPIENTS_TABLE . ' WHERE Email="' . $GLOBALS['DB_WE']->escape($email) . '"') ? true : false);
 }
 
 function check_captcha(){

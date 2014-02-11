@@ -2200,7 +2200,7 @@ class we_objectFile extends we_document{
 			$ws = makeArrayFromCSV($this->Workspaces);
 			$newWs = array();
 			foreach($ws as $wsID){
-				if(f('SELECT 1 AS a FROM ' . FILE_TABLE . ' WHERE ID=' . intval($wsID) . ' AND IsFolder=1', 'a', $this->DB_WE)){
+				if(f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE ID=' . intval($wsID) . ' AND IsFolder=1', '', $this->DB_WE)){
 					$newWs[] = $wsID;
 				} else if($wsID == 0 && strlen($wsID) == 1){
 					$newWs[] = $wsID;
@@ -2212,7 +2212,7 @@ class we_objectFile extends we_document{
 			$ws = makeArrayFromCSV($this->ExtraWorkspaces);
 			$newWs = array();
 			foreach($ws as $wsID){
-				if(f('SELECT 1 AS a FROM ' . FILE_TABLE . ' WHERE ID=' . intval($wsID) . ' AND IsFolder=1', 'a', $this->DB_WE)){
+				if(f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE ID=' . intval($wsID) . ' AND IsFolder=1', '', $this->DB_WE)){
 					$newWs[] = $wsID;
 				}
 			}
@@ -2222,7 +2222,7 @@ class we_objectFile extends we_document{
 			$ws = makeArrayFromCSV($this->ExtraWorkspacesSelected);
 			$newWs = array();
 			foreach($ws as $wsID){
-				if(f('SELECT 1 AS a FROM ' . FILE_TABLE . ' WHERE ID=' . intval($wsID) . ' AND IsFolder=1', 'a', $this->DB_WE)){
+				if(f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE ID=' . intval($wsID) . ' AND IsFolder=1', '', $this->DB_WE)){
 					$newWs[] = $wsID;
 				}
 			}

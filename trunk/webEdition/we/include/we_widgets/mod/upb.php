@@ -101,7 +101,7 @@ foreach($tbls as $table){
 		(isset($wsQuery) ? ' AND (' . $wsQuery . ') ' : '');
 	$order = ' ORDER BY ' . ($myWfDocsCSV ? 'mywforder DESC,' : '') . $order;
 
-	$anz = f('SELECT COUNT(1) AS a ' . $q, 'a', $db);
+	$anz = f('SELECT COUNT(1) ' . $q, '', $db);
 
 	$db->query($s . $q . $order . ' LIMIT ' . intval($offset) . ',' . intval($numRows));
 	$content = array();
