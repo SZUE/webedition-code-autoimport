@@ -94,7 +94,50 @@ if (window.addEventListener) {
 echo we_html_element::jsScript(JS_DIR . 'we_textarea.js');
 
 if(isset($GLOBALS['we_doc'])){
-	echo we_html_element::jsScript(JS_DIR . 'seeMode.php?EditPage=' . $GLOBALS['we_doc']->EditPageNr . '&amp;ContentType=' . $GLOBALS['we_doc']->ContentType);
+	$useSeeModeJS = array(
+		"text/webedition" => array(WE_EDITPAGE_CONTENT),
+		"text/weTmpl" => array(WE_EDITPAGE_PREVIEW, WE_EDITPAGE_PREVIEW_TEMPLATE),
+		"objectFile" => array(WE_EDITPAGE_CONTENT, WE_EDITPAGE_PREVIEW)
+	);
+
+
+	if(isset($useSeeModeJS[$GLOBALS['we_doc']->ContentType]) && in_array($GLOBALS['we_doc']->EditPageNr, $useSeeModeJS[$GLOBALS['we_doc']->ContentType])){
+		echo we_html_element::jsElement('
+function seeMode_dealWithLinks() {
+		var _aTags = document.getElementsByTagName("a");
+
+		for (i = 0; i<_aTags.length; i++) {
+			var _href = _aTags[i].href;
+
+			if (!(_href.indexOf("javascript:") === 0
+							|| _href.indexOf("#") === 0
+							|| (_href.indexOf("#") === document.URL.length && _href === (document.URL + _aTags[i].hash))
+							|| _href.indexOf("' . we_base_link::TYPE_OBJ_PREFIX . '") === 0
+							|| _href.indexOf("' . we_base_link::TYPE_INT_PREFIX . '") === 0
+							|| _href.indexOf("' . we_base_link::TYPE_MAIL_PREFIX . '") === 0
+							|| _href.indexOf("?") === 0
+							|| _href === ""
+							)
+							) {
+				_aTags[i].href = "javascript:seeMode_clickLink(\'" + _aTags[i].href + "\')";
+
+			}
+		}
+	}
+
+	function seeMode_clickLink(url) {
+		top.we_cmd("open_url_in_editor", url);
+
+	}
+
+// add event-Handler, replace links after load
+	if (window.addEventListener) {
+		window.addEventListener("load", seeMode_dealWithLinks, false);
+	} else if (window.attachEvent) {
+		window.attachEvent("onload", seeMode_dealWithLinks);
+	}
+');
+	}
 }
 ?>
 <script type="text/javascript"><!--
