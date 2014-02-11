@@ -102,9 +102,8 @@ class we_navigation_navigation extends weModelBase{
 	function __construct($navigationID = 0){
 		parent::__construct(NAVIGATION_TABLE);
 
-		if(($_ws = get_ws(NAVIGATION_TABLE))){
-			$_wsa = makeArrayFromCSV($_ws);
-			$this->ParentID = $_wsa[0];
+		if(($ws = get_ws(NAVIGATION_TABLE))){
+			list($this->ParentID) = makeArrayFromCSV($ws);
 		}
 
 		if($navigationID){
@@ -414,8 +413,8 @@ class we_navigation_navigation extends weModelBase{
 					return we_navigation_dynList::getCatgories($this->FolderID, $this->ShowCount);
 				default:
 					return $this->ClassID > 0 ?
-						we_navigation_dynList::getObjects($this->ClassID, $this->FolderID, $this->Categories, $this->CatAnd ? 'AND' : 'OR', $this->Sort, $this->ShowCount, $this->TitleField) :
-						array();
+							we_navigation_dynList::getObjects($this->ClassID, $this->FolderID, $this->Categories, $this->CatAnd ? 'AND' : 'OR', $this->Sort, $this->ShowCount, $this->TitleField) :
+							array();
 			}
 		}
 	}
@@ -584,7 +583,7 @@ class we_navigation_navigation extends weModelBase{
 
 						if($rules){
 							$_items[(count($_items) - 1)]['currentRule'] = we_navigation_rule::getWeNavigationRule(
-									'defined_' . ($_dyn['field'] ? $_dyn['field'] : $_dyn['text']), $_nav->ID, $_nav->SelectionType, $_nav->FolderID, $_nav->DocTypeID, $_nav->ClassID, $_nav->CategoryIDs, $_nav->WorkspaceID, $_href, false);
+											'defined_' . ($_dyn['field'] ? $_dyn['field'] : $_dyn['text']), $_nav->ID, $_nav->SelectionType, $_nav->FolderID, $_nav->DocTypeID, $_nav->ClassID, $_nav->CategoryIDs, $_nav->WorkspaceID, $_href, false);
 						}
 					}
 				}
@@ -666,9 +665,9 @@ class we_navigation_navigation extends weModelBase{
 					if(NAVIGATION_OBJECTSEOURLS && $objecturl != ''){
 						$path_parts = pathinfo($_path);
 						$_path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
-							(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
-								'' : $path_parts['filename'] . '/'
-							) . $objecturl;
+								(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
+										'' : $path_parts['filename'] . '/'
+								) . $objecturl;
 					}
 					break;
 			}
@@ -717,9 +716,9 @@ class we_navigation_navigation extends weModelBase{
 					if(NAVIGATION_OBJECTSEOURLS && isset($objecturl) && $objecturl != ''){
 						$path_parts = pathinfo($_path);
 						$_path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . (
-							(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))) ?
-								'' : $path_parts['filename'] . '/'
-							) . $objecturl;
+								(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))) ?
+										'' : $path_parts['filename'] . '/'
+								) . $objecturl;
 					}
 			}
 		}
@@ -728,11 +727,11 @@ class we_navigation_navigation extends weModelBase{
 			$this->Attributes = unserialize($this->Attributes);
 		}
 		$_path = str_replace(' ', '%20', trim($_path)) .
-			($_param ? ((strpos($_path, '?') === false ? '?' : '&amp;') . $_param) : '');
+				($_param ? ((strpos($_path, '?') === false ? '?' : '&amp;') . $_param) : '');
 
 		//leave this, because of strpos
 		$_path .= (($this->CurrentOnAnker && isset($this->Attributes['anchor']) && !empty($this->Attributes['anchor'])) ? ( (strpos($_path, '?') === false ? '?' : '&amp;') . 'we_anchor=' . $this->Attributes['anchor']) : '') .
-			((isset($this->Attributes['anchor']) && !empty($this->Attributes['anchor'])) ? ('#' . $this->Attributes['anchor']) : '');
+				((isset($this->Attributes['anchor']) && !empty($this->Attributes['anchor'])) ? ('#' . $this->Attributes['anchor']) : '');
 
 		$_path = str_replace(array('&amp;', '&'), array('&', '&amp;'), $_path);
 
@@ -820,42 +819,41 @@ class we_navigation_navigation extends weModelBase{
 			'|<(\/)?b>|',
 			'|<(\/)?i>|',
 			'|&([^;]+);|',
-			), array(
+				), array(
 			$open . 'br\\1' . $close,
 			$open . '\\1b' . $close,
 			$open . '\\1i' . $close,
 			$amp . '\\1;',
-			), $string);
+				), $string);
 
 		return str_replace(array(
 			$open,
 			$close,
 			$amp,
-			), array(
+				), array(
 			'<',
 			'>',
 			'&',
-			), oldHtmlspecialchars($string));
+				), oldHtmlspecialchars($string));
 	}
 
 	public static function getNavCondition($id, $table){
-		$_linkType = ($table == OBJECT_FILES_TABLE ? self::STPYE_OBJLINK : self::STPYE_DOCLINK);
-		return ' ((IsFolder=1 AND FolderSelection="' . escape_sql_query($_linkType) . '") OR (IsFolder=0 AND SelectionType="' . escape_sql_query($_linkType) . '")) AND LinkID=' . intval($id) . ' ';
+		$linkType = ($table == OBJECT_FILES_TABLE ? self::STPYE_OBJLINK : self::STPYE_DOCLINK);
+		return ' ((IsFolder=1 AND FolderSelection="' . escape_sql_query($linkType) . '") OR (IsFolder=0 AND SelectionType="' . escape_sql_query($linkType) . '")) AND LinkID=' . intval($id) . ' ';
 	}
 
 	public static function getWSQuery(){
-		if(permissionhandler::hasPerm('ADMINISTRATOR')){
+		if(permissionhandler::hasPerm('ADMINISTRATOR') || !($ws = get_ws(NAVIGATION_TABLE))){
 			return '';
 		}
-		if(($_ws = get_ws(NAVIGATION_TABLE))){ // #5836: Use function get_ws()
-			$_wrkNavi = makeArrayFromCSV($_ws);
-		}
+		// #5836: Use function get_ws()
+		$_wrkNavi = makeArrayFromCSV($ws);
+
 		$_condition = array();
 		foreach($_wrkNavi as $_value){
 			$_condition[] = 'Path LIKE "' . $GLOBALS['DB_WE']->escape(id_to_path($_value, NAVIGATION_TABLE)) . '/%"';
 		}
-
-		return ($_wrkNavi ? ' AND (ID IN(' . implode(',', $_wrkNavi) . ') OR (' . implode(' OR ', $_condition) . '))' : '');
+		return ' AND (ID IN(' . implode(',', $_wrkNavi) . ') OR (' . implode(' OR ', $_condition) . '))';
 	}
 
 }
