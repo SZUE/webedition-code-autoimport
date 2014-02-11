@@ -667,13 +667,17 @@ abstract class we_database_base{
 	/*	 * checks if this DB connection with this user is allowed to lock a table */
 
 	public function hasLock(){
+		static $lock = -1;
+		if(is_bool($lock)){
+			return $lock;
+		}
 //lock table
 		$this->lock(VALIDATION_SERVICES_TABLE, 'read');
-//select from an not locked table - must fail
-		$this->_query('SELECT 1 FROM ' . FILE_TABLE);
-		$ret = ($this->errno() > 0);
+//if lock unavailable this will generate an error 1044 - access denied
+
+		$lock = ($this->errno() == 0);
 		$this->unlock();
-		return $ret;
+		return $lock;
 	}
 
 	/**
@@ -689,8 +693,8 @@ abstract class we_database_base{
 			$query = array();
 			foreach($table as $key => $value){
 				$query[] = (is_numeric($key) ?
-						$value . ' ' . $mode :
-						$key . ' ' . $value);
+								$value . ' ' . $mode :
+								$key . ' ' . $value);
 			}
 			$query = implode(',', $query);
 		} else {
@@ -820,8 +824,8 @@ abstract class we_database_base{
 	function getTableCreateArray($tab){
 		$this->query('SHOW CREATE TABLE ' . $this->escape($tab));
 		return ($this->next_record()) ?
-			explode("\n", $this->f("Create Table")) :
-			false;
+				explode("\n", $this->f("Create Table")) :
+				false;
 	}
 
 	public function getTableKeyArray($tab){
