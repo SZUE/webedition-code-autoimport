@@ -71,25 +71,25 @@ class we_navigation_items{
 
 	function initByNavigationObject($showRoot = true){
 		$this->items = array();
-		$_navigation = unserialize($_SESSION['weS']['navigation_session']);
+		$navigation = unserialize($_SESSION['weS']['navigation_session']);
 
-		$this->rootItem = $_navigation->ID;
+		$this->rootItem = $navigation->ID;
 
 // set defaultTemplates
 		$this->setDefaultTemplates();
 
 		$this->readItemsFromDb($this->rootItem);
 
-		$this->items['id' . $_navigation->ID] = new we_navigation_item($_navigation->ID, $_navigation->LinkID, ($_navigation->IsFolder ? ($_navigation->FolderSelection == we_navigation_navigation::STPYE_OBJLINK ? OBJECT_FILES_TABLE : FILE_TABLE) : (($_navigation->SelectionType == we_navigation_navigation::STPYE_CLASS || $_navigation->SelectionType == we_navigation_navigation::STPYE_OBJLINK) ? OBJECT_FILES_TABLE : FILE_TABLE)), $_navigation->Text, $_navigation->Display, $_navigation->getHref($_navigation->SelectionType, $_navigation->LinkID, $_navigation->Url, $_navigation->Parameter, $_navigation->WorkspaceID), $showRoot ? 'folder' : 'root', $this->id2path($_navigation->IconID), $_navigation->Attributes, $_navigation->LimitAccess, $this->getCustomerData($_navigation), $_navigation->CurrentOnUrlPar, $_navigation->CurrentOnAnker);
+		$this->items['id' . $navigation->ID] = new we_navigation_item($navigation->ID, $navigation->LinkID, ($navigation->IsFolder ? ($navigation->FolderSelection == we_navigation_navigation::STPYE_OBJLINK ? OBJECT_FILES_TABLE : FILE_TABLE) : (($navigation->SelectionType == we_navigation_navigation::STPYE_CLASS || $navigation->SelectionType == we_navigation_navigation::STPYE_OBJLINK) ? OBJECT_FILES_TABLE : FILE_TABLE)), $navigation->Text, $navigation->Display, $navigation->getHref($navigation->SelectionType, $navigation->LinkID, $navigation->Url, $navigation->Parameter, $navigation->WorkspaceID), $showRoot ? 'folder' : 'root', $this->id2path($navigation->IconID), $navigation->Attributes, $navigation->LimitAccess, $this->getCustomerData($navigation), $navigation->CurrentOnUrlPar, $navigation->CurrentOnAnker);
 
-		$_items = $_navigation->getDynamicPreview($this->Storage);
+		$items = $navigation->getDynamicPreview($this->Storage);
 
-		$_new_items = self::getStaticSavedDynamicItems($_navigation);
+		$_new_items = self::getStaticSavedDynamicItems($navigation);
 
 // fetch the new items in item array
 		$_depended = array();
-		foreach($_items as $k => $v){
-			if($v['depended'] == 1 && $v['parentid'] == $_navigation->ID){
+		foreach($items as $k => $v){
+			if($v['depended'] == 1 && $v['parentid'] == $navigation->ID){
 				$_depended[] = $k;
 			}
 		}
@@ -97,16 +97,16 @@ class we_navigation_items{
 		$i = 0;
 		foreach($_new_items as $_new){
 			if(isset($_depended[$i])){
-				$_items[$_depended[$i]] = $_new;
+				$items[$_depended[$i]] = $_new;
 			} else {
-				$_items[] = $_new;
+				$items[] = $_new;
 			}
 			$i++;
 		}
 
-		$_all = count($_items) - count($_depended) + count($_new_items);
-		$_items = array_splice($_items, 0, $_all);
-		foreach($_items as $_item){
+		$_all = count($items) - count($_depended) + count($_new_items);
+		$items = array_splice($items, 0, $_all);
+		foreach($items as $_item){
 			$this->items['id' . $_item['id']] = new we_navigation_item($_item['id'], $_item['docid'], $_item['table'], $_item['text'], $_item['display'], $_item['href'], $_item['type'], $_item['icon'], $_item['attributes'], $_item['limitaccess'], $_item['customers'], isset($_item['currentonurlpar']) ? $_item['currentonurlpar'] : '', isset($_item['currentonanker']) ? $_item['currentonanker'] : '');
 			if(isset($this->items['id' . $_item['parentid']])){
 				$this->items['id' . $_item['parentid']]->addItem($this->items['id' . $_item['id']]);
@@ -114,21 +114,21 @@ class we_navigation_items{
 		}
 	}
 
-	function getStaticSavedDynamicItems($_nav, $rules = false){
-		$_items = array();
-		$_dyn_items = $_nav->getDynamicEntries();
-		if(is_array($_dyn_items)){
-			foreach($_dyn_items as $_dyn){
+	function getStaticSavedDynamicItems(we_navigation_navigation $_nav, $rules = false){
+		$items = array();
+		$dyn_items = $_nav->getDynamicEntries();
+		if(is_array($dyn_items)){
+			foreach($dyn_items as $_dyn){
 
-				$_href = id_to_path($_dyn['id']);
-				$_items[] = array(
+				$href = id_to_path($_dyn['id']);
+				$items[] = array(
 					'id' => $_dyn['id'],
 					'text' => isset($_dyn['field']) && $_dyn['field'] ? $_dyn['field'] : $_dyn['text'],
 					'display' => isset($_dyn['display']) && $_dyn['display'] ? $_dyn['display'] : '',
 					'name' => $_dyn['field'] ? $_dyn['field'] : (isset($_dyn['name']) && $_dyn['name'] ? $_dyn['name'] : $_dyn['text']),
 					'docid' => $_dyn['id'],
 					'table' => (($_nav->SelectionType == we_navigation_navigation::STPYE_CLASS || $_nav->SelectionType == we_navigation_navigation::STPYE_OBJLINK) ? OBJECT_FILES_TABLE : FILE_TABLE),
-					'href' => $_href,
+					'href' => $href,
 					'type' => 'item',
 					'parentid' => $_nav->ID,
 					'workspaceid' => $_nav->WorkspaceID,
@@ -140,12 +140,12 @@ class we_navigation_items{
 				);
 
 				if($rules){
-					$_items[(count($_items) - 1)]['currentRule'] = we_navigation_rule::getWeNavigationRule(
-									'defined_' . ($_dyn['field'] ? $_dyn['field'] : $_dyn['text']), $_nav->ID, $_nav->SelectionType, $_nav->FolderID, $_nav->DocTypeID, $_nav->ClassID, $_nav->CategoryIDs, $_nav->WorkspaceID, $_href, false);
+					$items[(count($items) - 1)]['currentRule'] = we_navigation_rule::getWeNavigationRule(
+									'defined_' . ($_dyn['field'] ? $_dyn['field'] : $_dyn['text']), $_nav->ID, $_nav->SelectionType, $_nav->FolderID, $_nav->DocTypeID, $_nav->ClassID, $_nav->CategoryIDs, $_nav->WorkspaceID, $href, false);
 				}
 			}
 		}
-		return $_items;
+		return $items;
 	}
 
 	function loopAllRules(/* $id */){
@@ -220,9 +220,9 @@ class we_navigation_items{
 		$this->items['id' . $_navigation->ID] = new we_navigation_item(
 				$_navigation->ID, $_navigation->LinkID, ($_navigation->IsFolder ? ($_navigation->FolderSelection == we_navigation_navigation::STPYE_OBJLINK ? OBJECT_FILES_TABLE : FILE_TABLE) : (($_navigation->SelectionType == we_navigation_navigation::STPYE_CLASS || $_navigation->SelectionType == we_navigation_navigation::STPYE_OBJLINK) ? OBJECT_FILES_TABLE : FILE_TABLE)), $_navigation->Text, $_navigation->Display, $_navigation->getHref($this->Storage['ids']), $showRoot ? ($_navigation->ID == 0 ? 'root' : ($_navigation->IsFolder ? 'folder' : 'item')) : 'root', $this->id2path($_navigation->IconID), $_navigation->Attributes, $_navigation->LimitAccess, $this->getCustomerData($_navigation), $_navigation->CurrentOnUrlPar, $_navigation->CurrentOnAnker);
 
-		$_items = $_navigation->getDynamicPreview($this->Storage, true);
+		$items = $_navigation->getDynamicPreview($this->Storage, true);
 
-		foreach($_items as $_item){
+		foreach($items as $_item){
 
 			if(!empty($_item['id'])){
 				if(isset($_item['name']) && !empty($_item['name'])){
@@ -272,8 +272,8 @@ class we_navigation_items{
 	}
 
 	function setCurrent($navigationID, $current){
-		if(isset($this->items["id$navigationID"])){
-			$this->items["id$navigationID"]->setCurrent($this, true);
+		if(isset($this->items['id'.$navigationID])){
+			$this->items['id'.$navigationID]->setCurrent($this, true);
 		}
 	}
 
@@ -409,19 +409,19 @@ class we_navigation_items{
 // is last entry??
 		if(isset($useTemplate['last']) &&
 // check if item is last
-				((count($this->items['id' . $item->parentid]->items)) == $item->position)){
+				((count($this->items['id' . $item->parentid]->items)) == we_navigation_item::$currentPosition)){
 			return $useTemplate['last'];
 		}
 
-		if(isset($useTemplate[$item->position])){
-			return $useTemplate[$item->position];
+		if(isset($useTemplate[we_navigation_item::$currentPosition])){
+			return $useTemplate[we_navigation_item::$currentPosition];
 		}
 
-		if(isset($useTemplate['odd']) && $item->position % 2 === 1){
+		if(isset($useTemplate['odd']) && we_navigation_item::$currentPosition % 2 === 1){
 			return $useTemplate['odd'];
 		}
 
-		if(isset($useTemplate['even']) && $item->position % 2 === 0){
+		if(isset($useTemplate['even']) && we_navigation_item::$currentPosition % 2 === 0){
 			return $useTemplate['even'];
 		}
 
