@@ -25,18 +25,17 @@
 function we_tag_navigationWrite($attribs){
 
 	$name = weTag_getAttribute('navigationname', $attribs, 'default');
-	$depth = weTag_getAttribute('depth', $attribs,false);
+	$depth = weTag_getAttribute('depth', $attribs, false);
 
 	if(!$depth){
 		$depth = false;
 	}
-	$ret = '';
 
 	if(isset($GLOBALS['we_navigation'][$name])){
-
 		$GLOBALS['weNavigationDepth'] = $depth;
 		$ret = $GLOBALS['we_navigation'][$name]->writeNavigation($depth);
 		unset($GLOBALS['weNavigationDepth']);
+		return $ret;
 	}
-	return $ret;
+	return '';
 }
