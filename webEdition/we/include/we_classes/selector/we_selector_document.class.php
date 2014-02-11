@@ -51,7 +51,7 @@ class we_selector_document extends we_selector_directory{
 			if(strpos($this->filter, ',')){
 				$contentTypes = explode(',', $this->filter);
 				$filterQuery .= ' AND (  ';
-				foreach($contentTypes AS $ct){
+				foreach($contentTypes as $ct){
 					$filterQuery .= 'ContentType="' . $this->db->escape($ct) . '" OR ';
 				}
 				$filterQuery .= ' isFolder=1)';

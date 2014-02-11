@@ -221,7 +221,7 @@ class we_users_user{
 	function initFromDB($id){
 		$ret = false;
 		if($id){
-			if(f('SELECT 1 AS a FROM ' . USER_TABLE . ' WHERE ID=' . intval($id), 'a', $this->DB_WE)){
+			if(f('SELECT 1 FROM ' . USER_TABLE . ' WHERE ID=' . intval($id), '', $this->DB_WE)){
 				$this->ID = $id;
 				$this->getPersistentSlotsFromDB();
 				$this->getPreferenceSlotsFromDB();
@@ -1113,7 +1113,7 @@ _multiEditorreload = true;";
 
 	function isLastAdmin(){
 		$this->ID = intval($this->ID);
-		$exist = (f('SELECT 1 AS a FROM ' . USER_TABLE . " WHERE Permissions LIKE ('%\"ADMINISTRATOR\";i:1;%') AND ID!=" . $this->ID, 'a', $this->DB_WE) == '1');
+		$exist = (f('SELECT 1 FROM ' . USER_TABLE . " WHERE Permissions LIKE ('%\"ADMINISTRATOR\";i:1;%') AND ID!=" . $this->ID, '', $this->DB_WE) == '1');
 		if($exist){
 			return false;
 		} else {

@@ -298,12 +298,12 @@ class we_customer_customer extends weModelBase{
 
 	static function customerNameExist($name, we_database_base $db = null){
 		$db = $db ? $db : new DB_WE();
-		return (f('SELECT 1 AS a FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $db->escape($name) . '"', 'a', $db) == '1');
+		return (f('SELECT 1 FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $db->escape($name) . '"', '', $db) == '1');
 	}
 
 	function customerFieldValueExist($fieldname, $value, $condition = ''){
 		$db = new DB_WE();
-		return (f('SELECT 1 AS a FROM ' . CUSTOMER_TABLE . ' WHERE ' . $db->escape($fieldname) . '="' . $db->escape($value) . '"' . ($condition != '' ? ' AND ' . $condition : ''), 'a', $db) == '1');
+		return (f('SELECT 1 FROM ' . CUSTOMER_TABLE . ' WHERE ' . $db->escape($fieldname) . '="' . $db->escape($value) . '"' . ($condition != '' ? ' AND ' . $condition : ''), '', $db) == '1');
 	}
 
 	function fieldExist($field){

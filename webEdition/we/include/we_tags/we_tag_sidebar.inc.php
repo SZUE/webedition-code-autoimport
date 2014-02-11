@@ -43,7 +43,7 @@ function we_tag_sidebar($attribs, $content){
 	}
 
 	if($id){
-		if(f('SELECT 1 AS a FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'a', $GLOBALS['DB_WE']) != 1){
+		if(f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id)) != 1){
 			return $content;
 		}
 

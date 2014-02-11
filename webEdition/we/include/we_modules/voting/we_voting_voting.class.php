@@ -247,7 +247,7 @@ class we_voting_voting extends weModelBase{
 	}
 
 	function pathExists($path){
-		return f('SELECT 1 AS a FROM ' . $this->db->escape($this->table) . ' WHERE Path = "' . $this->db->escape($path) . '" AND ID != ' . intval($this->ID), 'a', $this->db) == '1';
+		return f('SELECT 1 FROM ' . $this->db->escape($this->table) . ' WHERE Path = "' . $this->db->escape($path) . '" AND ID != ' . intval($this->ID), '', $this->db) == '1';
 	}
 
 	function isSelf(){
@@ -562,7 +562,7 @@ class we_voting_voting extends weModelBase{
 		} else {
 			$testtime = ($this->RevoteTime < 0 ? 0 : time() - $this->RevoteTime);
 
-			if(f('SELECT 1 AS a FROM `' . VOTING_LOG_TABLE . '` WHERE `' . VOTING_LOG_TABLE . '`.`voting` = ' . $this->ID . ' AND `' . VOTING_LOG_TABLE . '`.`userid` = ' . $userid . ' AND `' . VOTING_LOG_TABLE . '`.`time` > ' . $testtime, 'a', $this->db) == '1'){
+			if(f('SELECT 1 FROM `' . VOTING_LOG_TABLE . '` WHERE `' . VOTING_LOG_TABLE . '`.`voting` = ' . $this->ID . ' AND `' . VOTING_LOG_TABLE . '`.`userid` = ' . $userid . ' AND `' . VOTING_LOG_TABLE . '`.`time` > ' . $testtime, '', $this->db) == '1'){
 				return self::ERROR_REVOTE;
 			}
 			return self::SUCCESS;

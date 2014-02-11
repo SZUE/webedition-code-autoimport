@@ -353,7 +353,7 @@ function we_cmd() {
 
 		if(isset($_REQUEST['deleteaarticle'])){
 			$this->db->query('DELETE FROM ' . SHOP_TABLE . ' WHERE IntID=' . intval($_REQUEST['deleteaarticle']));
-			if(f('SELECT COUNT(1) AS a FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . intval($_REQUEST['bid']), 'a', $this->db) < 1){
+			if(f('SELECT COUNT(1) FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . intval($_REQUEST['bid']), '', $this->db) < 1){
 				$letzerartikel = 1;
 			}
 		}

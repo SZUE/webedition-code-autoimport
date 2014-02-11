@@ -130,7 +130,7 @@ abstract class we_customer_treeLoader{
 			if(isset($sortdef['function']) && $sortdef['function']){
 				$select[] = ($settings->customer->isInfoDate($sortdef['field']) ?
 								sprintf($settings->FunctionTable[$sortdef['function']], 'FROM_UNIXTIME(' . $sortdef['field'] . ')') . ' AS ' . $sortdef["field"] . "_" . $sortdef["function"] :
-								sprintf($settings->FunctionTable[$sortdef['function']], $sortdef['field']) . " AS " . $sortdef['field'] . '_' . $sortdef["function"]);
+								sprintf($settings->FunctionTable[$sortdef['function']], $sortdef['field']) . ' AS ' . $sortdef['field'] . '_' . $sortdef["function"]);
 
 				$grouparr[] = $sortdef['field'] . '_' . $sortdef['function'];
 				$orderarr[] = $sortdef['field'] . '_' . $sortdef['function'] . ' ' . $sortdef['order'];

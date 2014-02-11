@@ -2326,7 +2326,7 @@ class we_search_view extends we_tool_view{
 						//if class doesn't exists it's not possible to reset object-version!
 						if($_result[$f]['ContentType'] == "objectFile"){
 
-							$classExists = f('SELECT 1 AS a FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($_result[$f]["TableID"]), 'a', $DB_WE);
+							$classExists = f('SELECT 1 FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($_result[$f]["TableID"]), '', $DB_WE);
 							if(empty($classExists)){
 								$resetDisabled = true;
 								$classNotExistsText = '(' . g_l('versions', '[objClassNotExists]') . ')';

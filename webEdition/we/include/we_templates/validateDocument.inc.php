@@ -41,7 +41,7 @@ if($we_doc->ContentType == 'text/css' || $we_doc->Extension == '.css'){
 $services = array();
 $js = '';
 
-foreach($validationService AS $_service){
+foreach($validationService as $_service){
 	$services[$_service->art][$_service->category][] = $_service;
 }
 

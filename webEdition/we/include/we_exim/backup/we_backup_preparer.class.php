@@ -375,7 +375,7 @@ abstract class we_backup_preparer{
 	static function isPathExist($path){
 		global $DB_WE;
 
-		return ((f('SELECT 1 AS a FROM ' . FILE_TABLE . " WHERE Path='" . $DB_WE->escape($path) . "'", 'a', $DB_WE) == '1') || (f('SELECT 1 AS a FROM ' . TEMPLATES_TABLE . " WHERE Path='" . $DB_WE->escape($path) . "'", 'a', $DB_WE) == '1'));
+		return ((f('SELECT 1 FROM ' . FILE_TABLE . " WHERE Path='" . $DB_WE->escape($path) . "'", '', $DB_WE) == '1') || (f('SELECT 1 FROM ' . TEMPLATES_TABLE . " WHERE Path='" . $DB_WE->escape($path) . "'", '', $DB_WE) == '1'));
 	}
 
 	static function getEncoding($file, $iscompressed){

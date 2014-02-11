@@ -390,7 +390,7 @@ class we_navigation_items{
 		return isset($this->items[$id]) ? $this->items[$id] : false;
 	}
 
-	function getTemplate($item){
+	function getTemplate(we_navigation_item $item){
 		if(!isset($this->templates[$item->type])){
 			return $this->getDefaultTemplate($item);
 		}

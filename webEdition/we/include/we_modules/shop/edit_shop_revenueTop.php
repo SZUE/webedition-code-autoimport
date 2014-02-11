@@ -159,13 +159,13 @@ $queryCondtion = 'YEAR(DateOrder)=' . $selectedYear . ($selectedMonth > 0 ? ' AN
 
 
 $query = ' FROM ' . SHOP_TABLE . '	WHERE ' . $queryCondtion;
-if(($maxRows = f('SELECT COUNT(1) AS a ' . $query, 'a', $DB_WE))){
+if(($maxRows = f('SELECT COUNT(1) ' . $query, '', $DB_WE))){
 	$total = $payed = $unpayed = $canceled = 0;
 
-	$amountOrders = f('SELECT COUNT(distinct IntOrderID) AS a ' . $query, 'a', $DB_WE);
-	//$unpayedOrders = f('SELECT COUNT(distinct IntOrderID) AS a ' . $query . ' AND ISNULL(DatePayment)', 'a', $DB_WE);
+	$amountOrders = f('SELECT COUNT(distinct IntOrderID) ' . $query, '', $DB_WE);
+	//$unpayedOrders = f('SELECT COUNT(distinct IntOrderID) ' . $query . ' AND ISNULL(DatePayment)', '', $DB_WE);
 	//$payedOrders = $amountOrders - $unpayedOrders;
-	$editedOrders = f('SELECT COUNT(distinct IntOrderID) AS a ' . $query . ' AND !ISNULL(DateShipping)', 'a', $DB_WE);
+	$editedOrders = f('SELECT COUNT(distinct IntOrderID) ' . $query . ' AND !ISNULL(DateShipping)', '', $DB_WE);
 
 	//get table entries
 	$orderRows = array();

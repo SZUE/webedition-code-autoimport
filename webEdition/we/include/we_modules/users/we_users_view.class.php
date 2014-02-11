@@ -725,7 +725,7 @@ function we_cmd(){
 							print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_users', "[username_empty]"), we_message_reporting::WE_MESSAGE_ERROR));
 							break;
 						}
-						$exist = (f('SELECT 1 AS a FROM ' . USER_TABLE . ' WHERE ID!=' . intval($user_object->ID) . " AND username='" . $user_object->username . "'", 'a', $GLOBALS['DB_WE']) == '1');
+						$exist = (f('SELECT 1 FROM ' . USER_TABLE . ' WHERE ID!=' . intval($user_object->ID) . " AND username='" . $user_object->username . "'", '', $GLOBALS['DB_WE']) == '1');
 						if($exist && $user_object->Type != we_users_user::TYPE_ALIAS){
 							print we_html_element::jsElement(we_message_reporting::getShowMessageCall(sprintf(g_l('modules_users', "[username_exists]"), $user_object->username), we_message_reporting::WE_MESSAGE_ERROR));
 							break;

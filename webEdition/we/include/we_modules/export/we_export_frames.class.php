@@ -612,7 +612,7 @@ function closeAllType(){
 
 						if(!empty($ref->ID) && !empty($ref->ContentType)){
 							$table = $this->db->escape($ref->Table);
-							$exists = ($ref->ContentType == 'weBinary') || f('SELECT 1 AS a FROM ' . $table . ' WHERE ID=' . intval($ref->ID), 'a', $this->db);
+							$exists = ($ref->ContentType == 'weBinary') || f('SELECT 1 FROM ' . $table . ' WHERE ID=' . intval($ref->ID), '', $this->db);
 
 							if($exists){
 								$xmlExIm->export($ref->ID, $ref->ContentType, $this->View->export->ExportFilename);
