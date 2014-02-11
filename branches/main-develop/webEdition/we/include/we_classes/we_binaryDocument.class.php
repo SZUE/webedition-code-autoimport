@@ -166,30 +166,31 @@ class we_binaryDocument extends we_document{
 	}
 
 	function insertAtIndex(){
-		if(isset($this->IsSearchable) && $this->IsSearchable && $this->Published){
-			$text = "";
-			$this->resetElements();
-			while((list($k, $v) = $this->nextElement(""))){
-				$foo = (isset($v["dat"]) && substr($v["dat"], 0, 2) == "a:") ? unserialize($v["dat"]) : "";
-				if(!is_array($foo)){
-					if(isset($v["type"]) && $v["type"] == "txt"){
-						$text .= ' ' . (isset($v["dat"]) ? $v["dat"] : '');
-					}
+		if(!(isset($this->IsSearchable) && $this->IsSearchable && $this->Published)){
+			$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($this->ID));
+			return true;
+		}
+
+		$text = "";
+		$this->resetElements();
+		while((list($k, $v) = $this->nextElement(""))){
+			$foo = (isset($v["dat"]) && substr($v["dat"], 0, 2) == "a:") ? unserialize($v["dat"]) : "";
+			if(!is_array($foo)){
+				if(isset($v["type"]) && $v["type"] == "txt"){
+					$text .= ' ' . (isset($v["dat"]) ? $v["dat"] : '');
 				}
 			}
-			$set = array('DID' => intval($this->ID),
-				'Text' => $text,
-				'Workspace' => $this->ParentPath,
-				'WorkspaceID' => intval($this->ParentID),
-				'Category' => $this->Category,
-				'Doctype' => '',
-				'Title' => $this->getElement('Title'),
-				'Description' => $this->getElement("Description"),
-				'Path' => $this->Path);
-			return $this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter($set));
 		}
-		$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($this->ID));
-		return true;
+		$set = array('DID' => intval($this->ID),
+			'Text' => $text,
+			'Workspace' => $this->ParentPath,
+			'WorkspaceID' => intval($this->ParentID),
+			'Category' => $this->Category,
+			'Doctype' => '',
+			'Title' => $this->getElement('Title'),
+			'Description' => $this->getElement("Description"),
+			'Path' => $this->Path);
+		return $this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter($set));
 	}
 
 	public function we_new(){

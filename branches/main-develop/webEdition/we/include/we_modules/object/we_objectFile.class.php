@@ -721,14 +721,16 @@ class we_objectFile extends we_document{
 				case we_object::QUERY_PREFIX:
 				case self::TYPE_MULTIOBJECT . '_':
 				case self::TYPE_META . '_':
-					break;
-				case (defined('WE_SHOP_VARIANTS_ELEMENT_NAME') && $checkVariants ? 'variant_' . WE_SHOP_VARIANTS_ELEMENT_NAME : '-1'):
-					$variantdata = $arr;
+				case (defined('WE_SHOP_VARIANTS_ELEMENT_NAME') ? 'variant_' . WE_SHOP_VARIANTS_ELEMENT_NAME : '-1'):
+					if($checkVariants){
+						$variantdata = $arr;
+					}
 					break;
 				default:
 					$tableInfo2[] = $arr;
 			}
 		}
+
 		if($contentOnly == false){
 			return $tableInfo2;
 		}
@@ -2099,7 +2101,7 @@ class we_objectFile extends we_document{
 		$ws = array_unique($ws);
 
 		if(empty($ws)){
-			return $this->DB_WE->query('INSERT INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter(array(
+			return $this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter(array(
 						'OID' => $this->ID,
 						'Text' => $text,
 						'Workspace' => '',
@@ -2119,8 +2121,7 @@ class we_objectFile extends we_document{
 				if($w == '0'){
 					$wsPath = '/';
 				}
-				if(!$this->DB_WE->query(
-						'INSERT INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter(array(
+				if(!$this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter(array(
 							'OID' => $this->ID,
 							'Text' => $text,
 							'Workspace' => $wsPath,
@@ -2199,7 +2200,7 @@ class we_objectFile extends we_document{
 			$ws = makeArrayFromCSV($this->Workspaces);
 			$newWs = array();
 			foreach($ws as $wsID){
-				if(f('SELECT 1 AS a FROM ' . FILE_TABLE . ' WHERE ID=' . intval($wsID) . ' AND IsFolder=1', 'a', $this->DB_WE)){
+				if(f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE ID=' . intval($wsID) . ' AND IsFolder=1', '', $this->DB_WE)){
 					$newWs[] = $wsID;
 				} else if($wsID == 0 && strlen($wsID) == 1){
 					$newWs[] = $wsID;
@@ -2211,7 +2212,7 @@ class we_objectFile extends we_document{
 			$ws = makeArrayFromCSV($this->ExtraWorkspaces);
 			$newWs = array();
 			foreach($ws as $wsID){
-				if(f('SELECT 1 AS a FROM ' . FILE_TABLE . ' WHERE ID=' . intval($wsID) . ' AND IsFolder=1', 'a', $this->DB_WE)){
+				if(f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE ID=' . intval($wsID) . ' AND IsFolder=1', '', $this->DB_WE)){
 					$newWs[] = $wsID;
 				}
 			}
@@ -2221,7 +2222,7 @@ class we_objectFile extends we_document{
 			$ws = makeArrayFromCSV($this->ExtraWorkspacesSelected);
 			$newWs = array();
 			foreach($ws as $wsID){
-				if(f('SELECT 1 AS a FROM ' . FILE_TABLE . ' WHERE ID=' . intval($wsID) . ' AND IsFolder=1', 'a', $this->DB_WE)){
+				if(f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE ID=' . intval($wsID) . ' AND IsFolder=1', '', $this->DB_WE)){
 					$newWs[] = $wsID;
 				}
 			}

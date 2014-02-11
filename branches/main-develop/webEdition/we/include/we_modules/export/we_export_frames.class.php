@@ -564,12 +564,12 @@ function closeAllType(){
 
 						if(!$xmlExIm->prepare){
 							$_progress_update = we_html_element::jsElement('
-										if (' . $this->editorBodyFrame . '.addLog) ' . $this->editorBodyFrame . '.addLog("' . addslashes(we_html_tools::getPixel(10, 10)) . we_html_element::htmlB(g_l('export', '[start_export]') . ' - ' . date("d.m.Y H:i:s")) . '<br><br>");
-										if (' . $this->editorBodyFrame . '.addLog) ' . $this->editorBodyFrame . '.addLog("' . addslashes(we_html_tools::getPixel(20, 5)) . we_html_element::htmlB(g_l('export', '[prepare]')) . '<br>");
+										if (' . $this->editorBodyFrame . '.addLog) ' . $this->editorBodyFrame . '.addLog("' . addslashes(we_html_tools::getPixel(10, 10) . we_html_element::htmlB(g_l('export', '[start_export]') . ' - ' . date("d.m.Y H:i:s"))) . '<br><br>");
+										if (' . $this->editorBodyFrame . '.addLog) ' . $this->editorBodyFrame . '.addLog("' . addslashes(we_html_tools::getPixel(20, 5) . we_html_element::htmlB(g_l('export', '[prepare]'))) . '<br>");
 										if (' . $this->topFrame . '.editor.edfooter.doProgress) ' . $this->topFrame . '.editor.edfooter.doProgress(0);
 										if(' . $this->topFrame . '.editor.edfooter.setProgressText) ' . $this->topFrame . '.editor.edfooter.setProgressText("current_description","' . g_l('export', '[working]') . '");
 										if(' . $this->editorBodyFrame . '.addLog){
-										' . $this->editorBodyFrame . '.addLog("' . addslashes(we_html_tools::getPixel(20, 5)) . we_html_element::htmlB(g_l('export', '[export]')) . '<br>");
+										' . $this->editorBodyFrame . '.addLog("' . addslashes(we_html_tools::getPixel(20, 5) . we_html_element::htmlB(g_l('export', '[export]'))) . '<br>");
 									}
 								');
 							//FIXME: set export type in getHeader
@@ -612,7 +612,7 @@ function closeAllType(){
 
 						if(!empty($ref->ID) && !empty($ref->ContentType)){
 							$table = $this->db->escape($ref->Table);
-							$exists = ($ref->ContentType == 'weBinary') || f('SELECT 1 AS a FROM ' . $table . ' WHERE ID=' . intval($ref->ID), 'a', $this->db);
+							$exists = ($ref->ContentType == 'weBinary') || f('SELECT 1 FROM ' . $table . ' WHERE ID=' . intval($ref->ID), '', $this->db);
 
 							if($exists){
 								$xmlExIm->export($ref->ID, $ref->ContentType, $this->View->export->ExportFilename);
@@ -622,7 +622,7 @@ function closeAllType(){
 									case 'weBinary':
 										$_progress_update .= "\n" .
 											we_html_element::jsElement('
-											if (' . $this->editorBodyFrame . '.addLog) ' . $this->editorBodyFrame . '.addLog("' . addslashes(we_html_tools::getPixel(50, 5)) . we_html_element::htmlB(g_l('export', '[weBinary]')) . '&nbsp;&nbsp;' . $ref->ID . '<br>");
+											if (' . $this->editorBodyFrame . '.addLog) ' . $this->editorBodyFrame . '.addLog("' . addslashes(we_html_tools::getPixel(50, 5) . we_html_element::htmlB(g_l('export', '[weBinary]'))) . '&nbsp;&nbsp;' . $ref->ID . '<br>");
 										') . "\n";
 										$proceed = false;
 										break;
@@ -653,7 +653,7 @@ function closeAllType(){
 
 									$_progress_update .= "\n" .
 										we_html_element::jsElement('
-											if (' . $this->editorBodyFrame . '.addLog) ' . $this->editorBodyFrame . '.addLog("' . addslashes(we_html_tools::getPixel(50, 5)) . $_progress_text . '<br>");
+											if (' . $this->editorBodyFrame . '.addLog) ' . $this->editorBodyFrame . '.addLog("' . addslashes(we_html_tools::getPixel(50, 5) . $_progress_text) . '<br>");
 										');
 								}
 							}
@@ -688,11 +688,11 @@ function closeAllType(){
 							$_progress_update .= "\n" .
 								we_html_element::jsElement('
 									if (' . $this->topFrame . '.editor.edfooter.doProgress) ' . $this->topFrame . '.editor.edfooter.doProgress(100);
-									if (' . $this->editorBodyFrame . '.addLog) ' . $this->editorBodyFrame . '.addLog("<br>' . addslashes(we_html_tools::getPixel(10, 10)) . we_html_element::htmlB(g_l('export', '[end_export]') . ' - ' . date("d.m.Y H:i:s")) . '<br><br>");
+									if (' . $this->editorBodyFrame . '.addLog) ' . $this->editorBodyFrame . '.addLog("<br>' . addslashes(we_html_tools::getPixel(10, 10) . we_html_element::htmlB(g_l('export', '[end_export]') . ' - ' . date("d.m.Y H:i:s"))) . '<br><br>");
 							') . "\n" .
 								($this->View->export->ExportTo == 'local' ?
 									we_html_element::jsElement($this->editorBodyFrame . '.addLog(\'' .
-										we_html_element::htmlSpan(array("class" => "defaultfont"), addslashes(we_html_tools::getPixel(10, 1)) . g_l('export', "[backup_finished]") . "<br>" .
+										we_html_element::htmlSpan(array("class" => "defaultfont"), addslashes(we_html_tools::getPixel(10, 1) . g_l('export', "[backup_finished]")) . "<br>" .
 											addslashes(we_html_tools::getPixel(10, 1)) . g_l('export', "[download_starting2]") . "<br><br>" .
 											addslashes(we_html_tools::getPixel(10, 1)) . g_l('export', "[download_starting3]") . "<br>" .
 											addslashes(we_html_tools::getPixel(10, 1)) . we_html_element::htmlB(we_html_element::htmlA(array("href" => $this->frameset . "?pnt=cmd&cmd=upload&exportfile=" . urlencode($this->View->export->ExportFilename)), g_l('export', "[download]"))) . "<br><br>"
@@ -702,7 +702,9 @@ function closeAllType(){
 								);
 
 							$out = we_html_element::htmlDocType() . we_html_element::htmlHtml(
-									we_html_element::htmlHead($head . $_progress_update) .
+									we_html_element::htmlHead($head . $_progress_update.
+										we_html_element::jsElement('function showEndStatus(){' . we_message_reporting::getShowMessageCall(g_l('export', "[server_finished]"), we_message_reporting::WE_MESSAGE_NOTICE) . ';}')
+										) .
 									we_html_element::htmlBody(
 										array(
 											"bgcolor" => "#ffffff",
@@ -710,7 +712,12 @@ function closeAllType(){
 											"marginheight" => 5,
 											"leftmargin" => 5,
 											"topmargin" => 5,
-											"onLoad" => ($this->View->export->ExportTo == 'local' ? ($this->cmdFrame . ".location='" . $this->frameset . "?pnt=cmd&cmd=upload&exportfile=" . urlencode($this->View->export->ExportFilename) . "';") : ( we_message_reporting::getShowMessageCall(g_l('export', "[server_finished]"), we_message_reporting::WE_MESSAGE_NOTICE) )) . $this->topFrame . ".editor.edfooter.hideProgress();")
+											"onLoad" =>
+											($this->View->export->ExportTo == 'local' ?
+												($this->cmdFrame . ".location='" . $this->frameset . "?pnt=cmd&cmd=upload&exportfile=" . urlencode($this->View->export->ExportFilename) . "';") :
+												'showEndStatus();') .
+											$this->topFrame . ".editor.edfooter.hideProgress();"
+										)
 									), null
 							);
 							$xmlExIm->unsetPerserves();

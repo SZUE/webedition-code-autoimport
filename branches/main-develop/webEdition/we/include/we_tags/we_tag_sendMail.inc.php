@@ -128,7 +128,7 @@ function we_tag_sendMail($attribs, $content){
 					$GLOBALS['DB_WE']->query('DELETE FROM ' . FORMMAIL_BLOCK_TABLE . ' WHERE blockedUntil!=-1 AND blockedUntil<UNIX_TIMESTAMP()');
 
 					// check if ip is allready blocked
-					if(f('SELECT 1 AS a FROM ' . FORMMAIL_BLOCK_TABLE . " WHERE ip='" . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . "'", "a", $GLOBALS['DB_WE'])){
+					if(f('SELECT 1 FROM ' . FORMMAIL_BLOCK_TABLE . " WHERE ip='" . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . "'")){
 						$_blocked = true;
 					} else {
 

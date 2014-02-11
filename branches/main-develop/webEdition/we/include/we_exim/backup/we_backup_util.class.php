@@ -270,6 +270,10 @@ abstract class we_backup_util{
 
 		$_part = we_base_file::loadPart($file, 0, $_part_len, $iscompr);
 
+		if($_part===false){
+			return 'unreadble';
+		}
+
 		if(stripos($_part, we_backup_backup::weXmlExImHead) === false){
 			return 'unknown';
 		}

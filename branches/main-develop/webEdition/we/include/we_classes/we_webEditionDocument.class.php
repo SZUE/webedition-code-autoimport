@@ -615,7 +615,7 @@ class we_webEditionDocument extends we_textContentDocument{
 				$this->setElement($name, $value);
 			}
 		}
-		//FIXME: it is better to use $this->getUsedElements - only we:input type="date" is not handled...
+		//FIXME: it is better to use $this->getUsedElements - only we:input type="date" is not handled... => this will call the TP which is not desired since this method is called on save in frontend
 		$types = self::getFieldTypes($this->getTemplateCode());
 
 		foreach($this->elements as $k => $v){
@@ -689,7 +689,8 @@ class we_webEditionDocument extends we_textContentDocument{
 	public function we_load($from = we_class::LOAD_MAID_DB){
 		switch($from){
 			case we_class::LOAD_SCHEDULE_DB:
-				$sessDat = f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . " AND ClassName='" . $this->ClassName . "' AND Was=" . we_schedpro::SCHEDULE_FROM, 'SerializedData', $this->DB_WE);
+				$sessDat = f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . " AND ClassName='" . $this->ClassName . "' AND Was=" . we_schedpro::SCHEDULE_FROM, '', $this->DB_WE);
+
 				if($sessDat &&
 					$this->i_initSerializedDat(unserialize(substr_compare($sessDat, 'a:', 0, 2) == 0 ? $sessDat : gzuncompress($sessDat)))){
 					$this->i_getPersistentSlotsFromDB('Path,Text,Filename,Extension,ParentID,Published,ModDate,CreatorID,ModifierID,Owners,RestrictOwners');
@@ -975,7 +976,7 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 			if(in_array('all', $_hidePagesArr)){
 				$this->EditPageNrs = array();
 			} else {
-				foreach($this->EditPageNrs AS $key => $editPage){
+				foreach($this->EditPageNrs as $key => $editPage){
 					if(array_key_exists($editPage, $MNEMONIC_EDITPAGES) && in_array($MNEMONIC_EDITPAGES[$editPage], $_hidePagesArr)){
 						unset($this->EditPageNrs[$key]);
 					}

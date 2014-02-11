@@ -349,7 +349,7 @@ var old=0;');
 			$parentPath = (!intval($this->dir)) ? '' : f('SELECT Path FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->dir), 'Path', $this->db);
 			$Path = $parentPath . '/' . $txt;
 
-			if(f('SELECT 1 AS a FROM ' . $this->db->escape($this->table) . " WHERE Path='" . $this->db->escape($Path) . "'", 'a', $this->db) === '1'){
+			if(f('SELECT 1 FROM ' . $this->db->escape($this->table) . " WHERE Path='" . $this->db->escape($Path) . "'", '', $this->db) === '1'){
 				$js.=we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', ($what == 1 ? '[folder][response_path_exists]' : '[category][response_path_exists]')), $Path), we_message_reporting::WE_MESSAGE_ERROR);
 			} else {
 				if(preg_match('|[\\\'"<>/]|', $txt)){
@@ -416,7 +416,7 @@ top.selectFile(top.currentID);') .
 		} else {
 			$parentPath = (!intval($this->dir)) ? '' : f('SELECT Path FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->dir), 'Path', $this->db);
 			$Path = $parentPath . '/' . $txt;
-			if(f('SELECT 1 AS a FROM ' . $this->db->escape($this->table) . " WHERE Path='" . $this->db->escape($Path) . "' AND ID!=" . intval($this->we_editCatID), 'a', $this->db) === '1'){
+			if(f('SELECT 1 FROM ' . $this->db->escape($this->table) . " WHERE Path='" . $this->db->escape($Path) . "' AND ID!=" . intval($this->we_editCatID), '', $this->db) === '1'){
 				$js.=we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', ($what == 1 ? '[folder]' : '[category]') . '[response_path_exists]'), $Path), we_message_reporting::WE_MESSAGE_ERROR);
 			} else {
 				if(preg_match('|[\'"<>/]|', $txt)){
@@ -645,11 +645,11 @@ function setDir(id){
 		if($IsDir){
 			return $this->DirInUse($id);
 		} else {
-			if(f('SELECT 1 AS a FROM ' . FILE_TABLE . " WHERE Category LIKE '%," . intval($id) . ",%' OR temp_category like '%," . intval($id) . ",%'", 'a', $db) === '1'){
+			if(f('SELECT 1  FROM ' . FILE_TABLE . " WHERE Category LIKE '%," . intval($id) . ",%' OR temp_category like '%," . intval($id) . ",%'", '', $db) === '1'){
 				return true;
 			}
 			if(defined("OBJECT_TABLE")){
-				if(f('SELECT 1 AS a FROM ' . OBJECT_FILES_TABLE . " WHERE Category LIKE '%," . intval($id) . ",%'", 'a', $db) === '1'){
+				if(f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . " WHERE Category LIKE '%," . intval($id) . ",%'", '', $db) === '1'){
 					return true;
 				}
 			}

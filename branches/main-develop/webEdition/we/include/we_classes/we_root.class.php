@@ -1012,8 +1012,7 @@ abstract class we_root extends we_class{
 			}
 		}
 
-		$replace = implode(',', $replace);
-		if($replace){
+		if(($replace = implode(',', $replace))){
 			/* 			t_e($replace,$this);
 			  exit(); */
 			$this->DB_WE->query('DELETE FROM ' . LINK_TABLE . ' WHERE DocumentTable="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) . '" AND CID IN(' . $replace . ')');

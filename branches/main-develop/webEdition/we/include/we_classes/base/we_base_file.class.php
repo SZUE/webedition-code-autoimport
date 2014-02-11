@@ -574,7 +574,7 @@ abstract class we_base_file{
 		if($id == 0){
 			return true;
 		}
-		return (f('SELECT 1 AS a FROM ' . $table . ' WHERE ID=' . $id, 'a', ($db ? $db : new DB_WE())) === '1');
+		return (f('SELECT 1 FROM ' . $table . ' WHERE ID=' . $id, '', ($db ? $db : new DB_WE())) === '1');
 	}
 
 	public static function cleanTempFiles($cleanSessFiles = false){

@@ -159,17 +159,17 @@ $queryCondtion = 'YEAR(DateOrder)=' . $selectedYear . ($selectedMonth > 0 ? ' AN
 
 
 $query = ' FROM ' . SHOP_TABLE . '	WHERE ' . $queryCondtion;
-if(($maxRows = f('SELECT COUNT(1) AS a ' . $query, 'a', $DB_WE))){
+if(($maxRows = f('SELECT COUNT(1) ' . $query, '', $DB_WE))){
 	$total = $payed = $unpayed = $canceled = 0;
 
-	$amountOrders = f('SELECT COUNT(distinct IntOrderID) AS a ' . $query, 'a', $DB_WE);
-	//$unpayedOrders = f('SELECT COUNT(distinct IntOrderID) AS a ' . $query . ' AND ISNULL(DatePayment)', 'a', $DB_WE);
+	$amountOrders = f('SELECT COUNT(distinct IntOrderID) ' . $query, '', $DB_WE);
+	//$unpayedOrders = f('SELECT COUNT(distinct IntOrderID) ' . $query . ' AND ISNULL(DatePayment)', '', $DB_WE);
 	//$payedOrders = $amountOrders - $unpayedOrders;
-	$editedOrders = f('SELECT COUNT(distinct IntOrderID) AS a ' . $query . ' AND !ISNULL(DateShipping)', 'a', $DB_WE);
+	$editedOrders = f('SELECT COUNT(distinct IntOrderID) ' . $query . ' AND !ISNULL(DateShipping)', '', $DB_WE);
 
 	//get table entries
 	$orderRows = array();
-	$DB_WE->query('SELECT strSerial,strSerialOrder,IntOrderID,IntCustomerID,IntArticleID,IntQuantity,DatePayment,DateOrder,DateCancellation,DATE_FORMAT(DateOrder, "%d.%m.%Y") AS formatDateOrder, DATE_FORMAT(DatePayment, "%d.%m.%Y") AS formatDatePayment, DATE_FORMAT(DateCancellation, "%d.%m.%Y") AS formatDateCancellation, Price ' . $query . ' ORDER BY ' . (isset($_REQUEST['orderBy']) && $_REQUEST['orderBy'] ? $_REQUEST['orderBy'] : 'IntOrderID') . ' LIMIT ' . ($actPage * $nrOfPage) . ',' . $nrOfPage);
+	$DB_WE->query('SELECT strSerial,strSerialOrder,IntOrderID,IntCustomerID,IntArticleID,IntQuantity,(IntQuantity*Price) AS articleSum,DatePayment,DateOrder,DateCancellation,DATE_FORMAT(DateOrder, "%d.%m.%Y") AS formatDateOrder, DATE_FORMAT(DatePayment, "%d.%m.%Y") AS formatDatePayment, DATE_FORMAT(DateCancellation, "%d.%m.%Y") AS formatDateCancellation, Price ' . $query . ' ORDER BY ' . (isset($_REQUEST['orderBy']) && $_REQUEST['orderBy'] ? $_REQUEST['orderBy'] : 'IntOrderID') . ' LIMIT ' . ($actPage * $nrOfPage) . ',' . $nrOfPage);
 	while($DB_WE->next_record()){
 
 		// for the articlelist, we need also all these article, so sve them in array
@@ -184,6 +184,7 @@ if(($maxRows = f('SELECT COUNT(1) AS a ' . $query, 'a', $DB_WE))){
 			'IntCustomerID' => $DB_WE->f('IntCustomerID'),
 			'IntArticleID' => $DB_WE->f('IntArticleID'), // also for ordering
 			'IntQuantity' => $DB_WE->f('IntQuantity'),
+			'articleSum' => $DB_WE->f('articleSum'),
 			'DatePayment' => $DB_WE->f('DatePayment'),
 			'DateOrder' => $DB_WE->f('DateOrder'),
 			'DateCancellation' => $DB_WE->f('DateCancellation'),
@@ -314,7 +315,9 @@ if(($maxRows = f('SELECT COUNT(1) AS a ' . $query, 'a', $DB_WE))){
 	$headline = array(
 		array("dat" => getTitleLink(g_l('modules_shop', '[bestellung]'), 'IntOrderID')),
 		array("dat" => g_l('modules_shop', '[ArtName]')), // 'shoptitle'
+		array("dat" => g_l('modules_shop', '[anzahl]')),
 		array("dat" => getTitleLink(g_l('modules_shop', '[artPrice]'), 'Price')),
+		array("dat" => g_l('modules_shop', '[Gesamt]')),
 		array("dat" => getTitleLink(g_l('modules_shop', '[artOrdD]'), 'DateOrder')),
 		array("dat" => getTitleLink(g_l('modules_shop', '[ArtID]'), 'IntArticleID')),
 		array("dat" => getTitleLink(g_l('modules_shop', '[artPay]'), 'DatePayment')),
@@ -348,7 +351,9 @@ if(($maxRows = f('SELECT COUNT(1) AS a ' . $query, 'a', $DB_WE))){
 		$content[] = array(
 			array('dat' => $orderRow['IntOrderID']),
 			array('dat' => $orderRow[WE_SHOP_TITLE_FIELD_NAME] . '<span class="small">' . $variantStr . ' ' . $customFields . '</span>'),
+			array('dat' => $orderRow['IntQuantity']),
 			array('dat' => we_util_Strings::formatNumber($orderRow['Price']) . $waehr),
+			array('dat' => we_util_Strings::formatNumber($orderRow['articleSum']) . $waehr),
 			array('dat' => $orderRow['formatDateOrder']),
 			array('dat' => $orderRow['IntArticleID']),
 			array('dat' => ($orderRow['DatePayment'] != 0 ? $orderRow['formatDatePayment'] : ( $orderRow['DateCancellation'] != 0 ? '<span class="npshopContentfontR">' . g_l('modules_shop', '[artCanceled]') . '</span>' : '<span class="npshopContentfontR">' . g_l('modules_shop', '[artNPay]') . '</span>'))),

@@ -33,6 +33,7 @@ define('BACKUP_TABLE', TBL_PREFIX . 'tblbackup');
 abstract class we_backup_base{
 
 	const COMPRESSION = 'gzip';
+	const NO_COMPRESSION = 'none';
 
 	var $backup_db;
 	var $errors = array();
@@ -283,8 +284,8 @@ abstract class we_backup_base{
 	 * @return     bool
 	 */
 	function isPathExist($path){
-		$ret = f('SELECT 1 AS a FROM ' . FILE_TABLE . " WHERE Path='" . $this->backup_db->escape($path) . "'", 'a', $this->backup_db) == '1';
-		$ret|=f('SELECT 1 AS a FROM ' . TEMPLATES_TABLE . " WHERE Path='" . $this->backup_db->escape($path) . "'", 'a', $this->backup_db) == '1';
+		$ret = f('SELECT 1  FROM ' . FILE_TABLE . " WHERE Path='" . $this->backup_db->escape($path) . "'", '', $this->backup_db) == '1';
+		$ret|=f('SELECT 1 FROM ' . TEMPLATES_TABLE . " WHERE Path='" . $this->backup_db->escape($path) . "'", '', $this->backup_db) == '1';
 		return $ret;
 	}
 

@@ -74,7 +74,7 @@ abstract class we_temporaryDocument{
 	 * @return object mixed document object. if return value is flase, document doesn't exists in temporary table
 	 */
 	static function load($documentID, $table, we_database_base $db){
-		return f('SELECT DocumentObject FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . intval($documentID) . ' AND Active=1 AND  DocTable="' . $db->escape(stripTblPrefix($table)) . '"', 'DocumentObject', $db);
+		return f('SELECT DocumentObject FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . intval($documentID) . ' AND Active=1 AND  DocTable="' . $db->escape(stripTblPrefix($table)) . '"', '', $db);
 	}
 
 	/**
@@ -91,7 +91,7 @@ abstract class we_temporaryDocument{
 
 	static function isInTempDB($id, $table, we_database_base $db){
 		return (intval($id) > 0 ?
-				(f('SELECT 1 AS a FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . intval($id) . ' AND Active=1 AND  DocTable="' . $db->escape(stripTblPrefix($table)) . '"', 'a', $db) == '1') :
+				(f('SELECT 1 FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . intval($id) . ' AND Active=1 AND  DocTable="' . $db->escape(stripTblPrefix($table)) . '"', '', $db) == '1') :
 				false);
 	}
 

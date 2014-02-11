@@ -527,6 +527,12 @@ handle_event("previous");');
 							' . we_message_reporting::getShowMessageCall(g_l('import', '[customer_import_file_found]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 							handle_event("previous");');
 					return $_return;
+				case 'unreadble':
+					$_return[1] = we_html_element::jsElement($functions . '
+							' . we_message_reporting::getShowMessageCall(g_l('backup', '[file_not_readable]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+							handle_event("previous");');
+					return $_return;
+
 				case 'unknown':
 					$_return[1] = we_html_element::jsElement($functions . '
 							' . we_message_reporting::getShowMessageCall(g_l('import', '[format_unknown]'), we_message_reporting::WE_MESSAGE_ERROR) . '

@@ -35,8 +35,8 @@ class we_dialog_color extends we_dialog_base{
 
 	function getDialogContentHTML(){
 
-		$colortable = '<table border="1" bordercolor="SILVER" bordercolorlight="WHITE" bordercolordark="BLACK" cellspacing="0" cellpadding="0">
-<script  type="text/javascript">
+		$colortable = '<table border="1" bordercolor="SILVER" bordercolorlight="WHITE" bordercolordark="BLACK" cellspacing="0" cellpadding="0">' .
+			we_html_element::jsElement('
 var z=0;
 for ( col in we_color2 ){
 	if(z == 0){
@@ -57,10 +57,7 @@ if(z != 0){
 		document.writeln(\'<td></td>\');
 	}
 	document.writeln(\'</tr>\');
-}
-</script>
-		</table>
-	';
+}') . '</table>';
 		$trash = we_html_button::create_button("image:btn_function_trash", "javascript:selectColor('')");
 
 		$foo = '<table border="0" cellpadding="0" cellspacing="0"><tr><td><input type="text" size="20" name="we_dialog_args[color]" class="defaultfont" style="width:150px;' . ($this->args["color"] ? ('background-color:' . $this->args["color"] . ';') : '') . '" value="' . $this->args["color"] . '" /></td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>' . $trash . '</td></tr></table>';

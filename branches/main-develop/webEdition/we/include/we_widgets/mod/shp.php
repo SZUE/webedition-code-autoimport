@@ -91,9 +91,9 @@ if(defined("WE_SHOP_MODULE_DIR") && permissionhandler::hasPerm("CAN_SEE_SHOP")){
 	$queryShop = ' FROM ' . SHOP_TABLE . '	WHERE ' . $queryShopDateCondtion;
 
 	$total = $payed = $unpayed = $timestampDatePayment = 0;
-	if(($maxRows = f('SELECT COUNT(1) AS a ' . $queryShop, 'a', $DB_WE))){
+	if(($maxRows = f('SELECT COUNT(1) ' . $queryShop, '', $DB_WE))){
 
-		$amountOrders = f('SELECT COUNT(distinct IntOrderID) AS a ' . $queryShop, 'a', $DB_WE);
+		$amountOrders = f('SELECT COUNT(distinct IntOrderID) ' . $queryShop, '', $DB_WE);
 		$amountArticles = f('SELECT COUNT(IntID) AS b ' . $queryShop, 'b', $DB_WE);
 
 		// first of all calculate complete revenue of this year -> important check vats as well.
@@ -160,8 +160,8 @@ if(defined("WE_SHOP_MODULE_DIR") && permissionhandler::hasPerm("CAN_SEE_SHOP")){
 if(defined("CUSTOMER_TABLE") && permissionhandler::hasPerm("CAN_SEE_CUSTOMER")){
 	$queryCustomer = ' FROM ' . CUSTOMER_TABLE . '	WHERE ' . $timestampCustomer;
 
-	if(($maxRowsCustomer = f('SELECT COUNT(1) AS a ' . $queryCustomer, 'a', $DB_WE))){
-		$amountCustomers = f('SELECT COUNT(distinct Username) AS a ' . $queryCustomer, 'a', $DB_WE);
+	if(($maxRowsCustomer = f('SELECT COUNT(1) ' . $queryCustomer, '', $DB_WE))){
+		$amountCustomers = f('SELECT COUNT(distinct Username) ' . $queryCustomer, '', $DB_WE);
 	}
 }
 

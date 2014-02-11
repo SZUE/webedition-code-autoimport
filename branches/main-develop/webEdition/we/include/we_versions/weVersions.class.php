@@ -1813,7 +1813,7 @@ class weVersions{
 
 				if($resetArray["ParentID"] != 0){
 					//if folder was deleted
-					$existsPath = f('SELECT 1 AS a FROM ' . $db->escape($resetArray["documentTable"]) . ' WHERE ID=' . intval($resetArray["ParentID"]) . ' AND IsFolder=1', "a", $db);
+					$existsPath = f('SELECT 1 FROM ' . $db->escape($resetArray["documentTable"]) . ' WHERE ID=' . intval($resetArray["ParentID"]) . ' AND IsFolder=1', '', $db);
 
 					if(empty($existsPath)){
 						// create old folder if it does not exists

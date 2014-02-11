@@ -31,6 +31,10 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 if(!isset($_SESSION)){
 	session_name(SESSION_NAME);
 }
+//on frontend this is not set, since no session is started where prefs are read. We assume UTF-8.
+if(!isset($GLOBALS['WE_BACKENDCHARSET'])){
+	$GLOBALS['WE_BACKENDCHARSET'] = 'UTF-8';
+}
 
 class we_core_Local{
 

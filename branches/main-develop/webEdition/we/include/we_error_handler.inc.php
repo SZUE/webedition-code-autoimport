@@ -171,7 +171,7 @@ function getBacktrace($skip){
 		unset($skip[$pos]);
 	}
 
-	foreach($_backtrace AS $no => $arr){
+	foreach($_backtrace as $no => $arr){
 		//NOTE: error_handler holds line no & filename of the callee if not called by t_e
 		if(in_array($arr['function'], $skip)){
 			continue;

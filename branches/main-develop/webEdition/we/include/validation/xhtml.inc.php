@@ -43,7 +43,7 @@ function validateXhtmlAttribs($element, &$attribs, $xhtmlType, $showWrong, $remo
 
 	if(isset($_validAtts[$element])){ //	element exists
 		//	check if all parameters are allowed.
-		foreach($attribs AS $k => $v){
+		foreach($attribs as $k => $v){
 			if(!in_array($k, $_validAtts[$element]) && !in_array(str_replace('pass_', '', $k), $_validAtts[$element])){
 
 				$removeText = '';
@@ -69,7 +69,7 @@ function validateXhtmlAttribs($element, &$attribs, $xhtmlType, $showWrong, $remo
 
 		//	check if all required parameters are there.
 		if(array_key_exists($element, $_reqAtts)){
-			foreach($_reqAtts[$element] AS $required){
+			foreach($_reqAtts[$element] as $required){
 
 				if(!array_key_exists($required, $attribs)){
 

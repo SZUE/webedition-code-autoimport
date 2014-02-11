@@ -47,7 +47,7 @@ function we_tag_img($attribs){
 	}
 
 	//look if image exists in tblfile, and is an image
-	if(f('SELECT 1 AS a FROM ' . FILE_TABLE . ' WHERE ContentType="image/*" AND ID=' . intval($id), 'a', $GLOBALS['DB_WE']) !== '1'){
+	if(f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE ContentType="image/*" AND ID=' . intval($id)) !== '1'){
 		$id = 0;
 	}
 

@@ -1245,7 +1245,7 @@ class we_document extends we_root{
 				}
 				//  deal with all remaining attribs
 				$img_attList = array('width', 'height', 'border', 'hspace', 'vspace', 'align', 'alt', 'name');
-				foreach($img_attList AS $k){
+				foreach($img_attList as $k){
 					if(isset($link[$k]) && $link[$k] != ''){
 						$img_attribs[$k] = $link[$k];
 					}
@@ -1305,14 +1305,14 @@ class we_document extends we_root{
 			}
 
 			//   2nd take all atts given in link-array - from function we_tag_link()
-			foreach($link AS $k => $v){ //   define all attribs - later we can remove/overwrite them
+			foreach($link as $k => $v){ //   define all attribs - later we can remove/overwrite them
 				if($v != '' && !in_array($k, $_we_linkAtts) && !in_array($k, $_imgAtts) && !in_array($k, $_popUpAtts) && !in_array($k, $_dontUse)){
 					$_linkAttribs[$k] = $v;
 				}
 			}
 
 			//   3rd we take attribs given from we:link,
-			foreach($attribs AS $k => $v){ //   define all attribs - later we can remove/overwrite them
+			foreach($attribs as $k => $v){ //   define all attribs - later we can remove/overwrite them
 				if($v != '' && !in_array($k, $_imgAtts) && !in_array($k, $_popUpAtts) && !in_array($k, $_dontUse)){
 					$_linkAttribs[$k] = $v;
 				}
@@ -1332,7 +1332,7 @@ class we_document extends we_root{
 
 			// The pop-up-window                              */
 			$_popUpCtrl = array();
-			foreach($_popUpAtts AS $n){
+			foreach($_popUpAtts as $n){
 				if(isset($link[$n])){
 					$_popUpCtrl[$n] = $link[$n];
 				}

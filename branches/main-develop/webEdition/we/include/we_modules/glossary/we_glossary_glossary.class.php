@@ -349,7 +349,7 @@ class we_glossary_glossary extends weModelBase{
 	function pathExists($Path){
 		$table = $this->db->escape($this->table);
 		$Path = $this->db->escape($Path);
-		return (f('SELECT 1 AS a FROM ' . $table . " WHERE Path Like Binary '" . $Path . "'" . ($this->ID ? ' AND ID != ' . intval($this->ID) : '') . ' LIMIT 1', 'a', $this->db) == 1);
+		return (f('SELECT 1 FROM ' . $table . " WHERE Path Like Binary '" . $Path . "'" . ($this->ID ? ' AND ID != ' . intval($this->ID) : '') . ' LIMIT 1', '', $this->db) == 1);
 	}
 
 	function getIDByPath($Path){

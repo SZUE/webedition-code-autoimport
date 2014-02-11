@@ -850,7 +850,7 @@ abstract class we_SEEM{
 		$ignor = array_merge($ignor, array_keys($_COOKIE));
 
 		$parastr = '';
-		foreach($array AS $key => $val){
+		foreach($array as $key => $val){
 			if(!in_array($key, $ignor)){
 				if($arrayname != ''){
 					$key = '[' . $key . ']';
