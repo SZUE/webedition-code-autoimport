@@ -94,7 +94,8 @@ onclick="' . $this->editor->ref . 'Obj.click(\'' . $this->cmd . '\');" /></div>'
 			case "cut":
 			case "copy":
 			case "paste":
-				return $this->editor->setPlugin('paste', parent::hasProp('', $contextMenu) || parent::hasProp('copypaste', $contextMenu));
+				return false;
+				//return $this->editor->setPlugin('paste', parent::hasProp('', $contextMenu) || parent::hasProp('copypaste', $contextMenu));
 			case "pastetext":
 			case "pasteword":
 			case "selectall":
