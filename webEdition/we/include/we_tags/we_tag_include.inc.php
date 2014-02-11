@@ -26,10 +26,10 @@ function we_parse_tag_include($attribs, $c, array $attr){
 	$type = weTag_getParserAttribute('type', $attr, 'document');
 	$path = weTag_getParserAttribute('path', $attr);
 	return ($type != 'template' ? '<?php eval(' . we_tag_tagParser::printTag('include', $attribs) . ');?>' :
-			($path ? '<?php $we_inc=getTemplatePath(\'' . str_replace('\'', '', $path) . '\');' :
-				'<?php $we_inc=getTemplatePath(' . intval(weTag_getParserAttribute('id', $attr)) . ');') .
-				'if($we_inc){$is_inc = isset($is_inc) ? ++$is_inc : 1; include($we_inc); $is_inc--;}; ?>'
-		);
+					($path ? '<?php $we_inc=getTemplatePath(\'' . str_replace('\'', '', $path) . '\');' :
+							'<?php $we_inc=getTemplatePath(' . intval(weTag_getParserAttribute('id', $attr)) . ');') .
+					'if($we_inc){$is_inc = isset($is_inc) ? ++$is_inc : 1; include($we_inc); $is_inc--;}; ?>'
+			);
 }
 
 function we_setBackVar($we_unique){
@@ -124,13 +124,13 @@ function we_tag_include($attribs){
 			$int = ($GLOBALS['we_doc']->getElement($nint) == '') ? 0 : $GLOBALS['we_doc']->getElement($nint);
 			$intID = $GLOBALS['we_doc']->getElement($nint . 'ID');
 			if($int && $intID){
-				$ct = f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . ' AND Published>0', 'ContentType', $db);
+				$ct = f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . ' AND Published>0');
 			}
 		}
 	}
 
 	if($id || $path){
-		if(!(($id && ($GLOBALS['we_doc']->ContentType != 'text/webedition' || $GLOBALS['WE_MAIN_DOC']->ID != $id )) || $path != '' )){
+		if(!($id && ($GLOBALS['we_doc']->ContentType != 'text/webedition' || $GLOBALS['WE_MAIN_DOC']->ID != $id )) || $path == '' || ($intID && $intID == $GLOBALS['WE_MAIN_DOC']->ID)){
 			return '';
 		}
 		$db = $GLOBALS['DB_WE'];
@@ -185,18 +185,18 @@ function we_tag_include($attribs){
 		}
 
 		return 'we_setBackVar(' . $we_unique . ');' .
-			($isSeemode ? //extra stuff in seemode
-				'eval(\'?>' . addcslashes(preg_replace('|< */? *form[^>]*>|i', '', $content), '\'') .
-				($seeMode ? //	only show link to seeMode, when id is given
-					($id ?
-						'<a href="' . $id . '" seem="include"></a>' :
-						($path ? '<a href="' . path_to_id($path) . '" seem="include"></a>' :
-							'')) : '')
-				. '\');' :
-				//no seemode
-				$content
-			) .
-			'we_resetBackVar(' . $we_unique . ');';
+				($isSeemode ? //extra stuff in seemode
+						'eval(\'?>' . addcslashes(preg_replace('|< */? *form[^>]*>|i', '', $content), '\'') .
+						($seeMode ? //	only show link to seeMode, when id is given
+								($id ?
+										'<a href="' . $id . '" seem="include"></a>' :
+										($path ? '<a href="' . path_to_id($path) . '" seem="include"></a>' :
+												'')) : '')
+						. '\');' :
+						//no seemode
+						$content
+				) .
+				'we_resetBackVar(' . $we_unique . ');';
 	}
 	return '';
 }
