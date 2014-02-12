@@ -80,8 +80,10 @@ function we_tag_write($attribs){
 					$userid && ($_SESSION['webuser']['ID'] == $GLOBALS['we_' . $type][$name]->getElement($userid)));
 
 			$isAdmin = $admin && isset($_SESSION['webuser'][$admin]) && $_SESSION['webuser'][$admin];
+			
+			$isNew = (($GLOBALS['we_' . $type][$name]->ID == 0) ? ($isAdmin ? false : true) : false); //FR #8411
 
-			if($isAdmin || ($GLOBALS['we_' . $type][$name]->ID == 0) || $isOwner || $forceedit){
+			if($isAdmin || $isNew || $isOwner || $forceedit){
 				$doWrite = true;
 				//$newObject = ($GLOBALS['we_'.$type][$name]->ID) ? false : true;
 				if($protected){
