@@ -35,7 +35,7 @@ function we_tag_navigationEntry($attribs, $content){
 	$navigationName = weTag_getAttribute('navigationname', $attribs, 'default');
 	$type = weTag_getAttribute('type', $attribs);
 	$level = weTag_getAttribute('level', $attribs, 'defaultLevel');
-	$current = (weTag_getAttribute('current', $attribs, we_navigation_item::DEFAULT_CURRENT) != we_navigation_item::DEFAULT_CURRENT ?
+	$current = (isset($attribs['current']) ?
 			weTag_getAttribute('current', $attribs, false, true) :
 			we_navigation_item::DEFAULT_CURRENT);
 
