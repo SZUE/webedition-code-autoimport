@@ -275,9 +275,9 @@ function we_tag_saveRegisteredUser_processRequest($protected, $allowed){
 	foreach($_REQUEST['s'] as $name => $val){
 		switch($name){
 			case 'Username': ### QUICKFIX !!!
-				$set['Username'] = $val;
-				$set['Path'] = '/' . $val;
-				$set['Text'] = $val;
+				$set['Username'] = we_util::rmPhp($val);
+				$set['Path'] = '/' . we_util::rmPhp($val);
+				$set['Text'] = we_util::rmPhp($val);
 				$set['Icon'] = 'customer.gif';
 				break;
 			case 'Text':
