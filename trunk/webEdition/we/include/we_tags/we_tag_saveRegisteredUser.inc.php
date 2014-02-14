@@ -34,7 +34,7 @@ function we_tag_saveRegisteredUser($attribs){
 			unset($_REQUEST['s']['Password2']);
 		}
 
-		$dates = array(); //type date
+		$dates = $regs = array(); //type date
 		foreach($_REQUEST['s'] as $n => $v){
 			if(preg_match('/^we_date_([a-zA-Z0-9_]+)_(day|month|year|minute|hour)$/', $n, $regs)){
 				$dates[$regs[1]][$regs[2]] = $v;
@@ -292,7 +292,7 @@ function we_tag_saveRegisteredUser_processRequest($protected, $allowed){
 				}
 				$set[$name] = ($name == 'Password' ?
 						we_customer_customer::cryptPassword($val) :
-						$val);
+						we_util::rmPhp($val));
 				break;
 		}
 	}
