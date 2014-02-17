@@ -26,10 +26,10 @@ function we_parse_tag_include($attribs, $c, array $attr){
 	$type = weTag_getParserAttribute('type', $attr, 'document');
 	$path = weTag_getParserAttribute('path', $attr);
 	return ($type != 'template' ? '<?php eval(' . we_tag_tagParser::printTag('include', $attribs) . ');?>' :
-					($path ? '<?php $we_inc=getTemplatePath(\'' . str_replace('\'', '', $path) . '\');' :
-							'<?php $we_inc=getTemplatePath(' . intval(weTag_getParserAttribute('id', $attr)) . ');') .
-					'if($we_inc){$is_inc = isset($is_inc) ? ++$is_inc : 1; include($we_inc); $is_inc--;}; ?>'
-			);
+			($path ? '<?php $we_inc=getTemplatePath(\'' . str_replace('\'', '', $path) . '\');' :
+				'<?php $we_inc=getTemplatePath(' . intval(weTag_getParserAttribute('id', $attr)) . ');') .
+			'if($we_inc){$is_inc = isset($is_inc) ? ++$is_inc : 1; include($we_inc); $is_inc--;}; ?>'
+		);
 }
 
 function we_setBackVar($we_unique){
@@ -116,7 +116,6 @@ function we_tag_include($attribs){
 		}
 	} else {//notEditmode
 		if($name && !($id || $path)){
-			$db = $GLOBALS['DB_WE'];
 			$type = weTag_getAttribute('kind', $attribs);
 			$_name = weTag_getAttribute('_name_orig', $attribs);
 			$path = we_tag('href', array('name' => $_name, 'hidedirindex' => 'false', 'type' => $type, 'isInternal' => 1));
@@ -129,74 +128,72 @@ function we_tag_include($attribs){
 		}
 	}
 
-	if($id || $path){
-		if(!($id && ($GLOBALS['we_doc']->ContentType != 'text/webedition' || $GLOBALS['WE_MAIN_DOC']->ID != $id )) || $path == '' || ($intID && $intID == $GLOBALS['WE_MAIN_DOC']->ID)){
+	if(!$id && !$path){
+		return '';
+	}
+
+	if($id){
+		$tmp = $GLOBALS['WE_MAIN_DOC']->ID == $id || //don't include same id
+			$GLOBALS['we_doc']->ContentType != 'text/webedition' //don't include any unknown document
+			? '' : getHash('SELECT Path,ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . ' AND Published>0');
+		if(!$tmp){
 			return '';
 		}
-		$db = $GLOBALS['DB_WE'];
-		$realPath = '';
-		if($id){
-			$tmp = getHash('SELECT Path,ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . ' AND Published>0', $db);
-			if(empty($tmp)){
-				return '';
-			}
-			list($realPath, $ct) = $tmp;
-		} else {
-			$realPath = $path;
-		}
-		if($realPath == ''){
+		list($realPath, $ct) = $tmp;
+	} else {
+		$realPath = $path;
+	}
+	if(!$realPath){
+		return '';
+	}
+
+	$isSeemode = (we_tag('ifSeeMode'));
+	// check early if there is a document - if not the rest is never needed
+	if($gethttp){
+		$content = ($isSeemode ? getHTTP(getServerUrl(true), $realPath) : 'echo getHTTP(getServerUrl(true), \'' . $realPath . '\');');
+	} else {
+		$realPath = $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '..' . $realPath; //(symlink) webEdition always points to the REAL DOC-Root!
+		if(!file_exists($realPath) || !is_file($realPath)){
+			//t_e('include of', 'id:' . $id . ',path:' . $path . ',name:' . $name, ' doesn\'t exist');
 			return '';
 		}
+		//check Customer-Filter on static documents
+		$id = intval($id ? $id : (isset($intID) ? $intID : 0));
+		if(defined('CUSTOMER_TABLE') && $id){
+			$filter = we_customer_documentFilter::getFilterByIdAndTable($id, FILE_TABLE);
 
-		$isSeemode = (we_tag('ifSeeMode'));
-		// check early if there is a document - if not the rest is never needed
-		if($gethttp){
-			$content = ($isSeemode ? getHTTP(getServerUrl(true), $realPath) : 'echo getHTTP(getServerUrl(true), \'' . $realPath . '\');');
-		} else {
-			$realPath = $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '..' . $realPath; //(symlink) webEdition always points to the REAL DOC-Root!
-			if(!file_exists($realPath) || !is_file($realPath)){
-				//t_e('include of', 'id:' . $id . ',path:' . $path . ',name:' . $name, ' doesn\'t exist');
-				return '';
-			}
-			//check Customer-Filter on static documents
-			$id = intval($id ? $id : (isset($intID) ? $intID : 0));
-			if(defined('CUSTOMER_TABLE') && $id){
-				$filter = we_customer_documentFilter::getFilterByIdAndTable($id, FILE_TABLE);
-
-				if(is_object($filter)){
-					$obj = (object) array('ID' => $id, 'ContentType' => $ct);
-					if($filter->accessForVisitor($obj, array(), true) != we_customer_documentFilter::ACCESS){
-						return '';
-					}
+			if(is_object($filter)){
+				$obj = (object) array('ID' => $id, 'ContentType' => $ct);
+				if($filter->accessForVisitor($obj, array(), true) != we_customer_documentFilter::ACCESS){
+					return '';
 				}
 			}
-			$content = ($isSeemode ? file_get_contents($realPath) : 'include(\'' . $realPath . '\');');
 		}
-
-		if(isset($GLOBALS['we']['backVars']) && count($GLOBALS['we']['backVars'])){
-			end($GLOBALS['we']['backVars']);
-			$we_unique = key($GLOBALS['we']['backVars']) + 1;
-			$GLOBALS['we']['backVars'][$we_unique] = array();
-		} else {
-			$we_unique = 1;
-			$GLOBALS['we']['backVars'] = array(
-				$we_unique => array()
-			);
-		}
-
-		return 'we_setBackVar(' . $we_unique . ');' .
-				($isSeemode ? //extra stuff in seemode
-						'eval(\'?>' . addcslashes(preg_replace('|< */? *form[^>]*>|i', '', $content), '\'') .
-						($seeMode ? //	only show link to seeMode, when id is given
-								($id ?
-										'<a href="' . $id . '" seem="include"></a>' :
-										($path ? '<a href="' . path_to_id($path) . '" seem="include"></a>' :
-												'')) : '')
-						. '\');' :
-						//no seemode
-						$content
-				) .
-				'we_resetBackVar(' . $we_unique . ');';
+		$content = ($isSeemode ? file_get_contents($realPath) : 'include(\'' . $realPath . '\');');
 	}
-	return '';
+
+	if(isset($GLOBALS['we']['backVars']) && count($GLOBALS['we']['backVars'])){
+		end($GLOBALS['we']['backVars']);
+		$we_unique = key($GLOBALS['we']['backVars']) + 1;
+		$GLOBALS['we']['backVars'][$we_unique] = array();
+	} else {
+		$we_unique = 1;
+		$GLOBALS['we']['backVars'] = array(
+			$we_unique => array()
+		);
+	}
+
+	return 'we_setBackVar(' . $we_unique . ');' .
+		($isSeemode ? //extra stuff in seemode
+			'eval(\'?>' . addcslashes(preg_replace('|< */? *form[^>]*>|i', '', $content), '\'') .
+			($seeMode ? //	only show link to seeMode, when id is given
+				($id ?
+					'<a href="' . $id . '" seem="include"></a>' :
+					($path ? '<a href="' . path_to_id($path) . '" seem="include"></a>' :
+						'')) : '')
+			. '\');' :
+			//no seemode
+			$content
+		) .
+		'we_resetBackVar(' . $we_unique . ');';
 }

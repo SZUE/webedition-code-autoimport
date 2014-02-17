@@ -228,7 +228,7 @@ class we_helpers_pdf2text{
 		/* if(!isset($elem['stream'])){
 		  print_r($elem);
 		  } */
-		switch($elem['Filter']){
+		switch(isset($elem['Filter']) ? $elem['Filter'] : ''){
 
 			case '/Fl':
 			case '/FlateDecode':
