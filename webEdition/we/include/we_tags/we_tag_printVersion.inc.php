@@ -23,14 +23,14 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_printVersion($attribs, $content){
-	if(($foo = attributFehltError($attribs, "tid", __FUNCTION__))){
+	if(($foo = attributFehltError($attribs, 'tid', __FUNCTION__))){
 		return $foo;
 	}
 
-	$tid = weTag_getAttribute("tid", $attribs);
-	$triggerID = weTag_getAttribute("triggerid", $attribs, weTag_getAttribute("triggerID", $attribs));
+	$tid = weTag_getAttribute('tid', $attribs);
+	$triggerID = weTag_getAttribute('triggerid', $attribs, weTag_getAttribute('triggerID', $attribs));
 	$docAttr = weTag_getAttribute("doc", $attribs, weTag_getAttribute("type", $attribs));
-	$link = weTag_getAttribute("Link", $attribs, weTag_getAttribute("link", $attribs, false, true), true);
+	$link = weTag_getAttribute("Link", $attribs, weTag_getAttribute("link", $attribs, true, true), true);
 
 	$doc = we_getDocForTag($docAttr);
 
@@ -75,11 +75,10 @@ function we_tag_printVersion($attribs, $content){
 		}
 	}
 
-	if($link == "off" || $link == "false"){
-		return $url . '?' . http_build_query($_query_string);
-	} else {
+	if($link){
 		$attribs = removeAttribs($attribs, array('tid', 'triggerID', 'triggerid', 'doc', 'type', 'link', 'Link')); //	not html - valid
 		$attribs['href'] = $url . '?' . http_build_query($_query_string);
 		return getHtmlTag('a', $attribs, $content, true);
 	}
+	return $url . '?' . http_build_query($_query_string);
 }
