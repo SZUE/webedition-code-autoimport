@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_users_user {
+class we_users_user{
 
 	const TYPE_USER = 0;
 	const TYPE_USER_GROUP = 1;
@@ -1137,12 +1137,12 @@ _multiEditorreload = true;";
 		return $path;
 	}
 
-	public static function getAllPermissions($uid){
+	public static function getAllPermissions($uid, $onlyParent = false){
 		$user_permissions = array();
 
 		$db = $GLOBALS['DB_WE'];
 		$db_tmp = new DB_WE();
-		$db->query('SELECT ParentID,ParentPerms,Permissions,Alias FROM ' . USER_TABLE . ' WHERE ID=' . intval($uid) . ' OR Alias=' . intval($uid));
+		$db->query('SELECT ParentID,ParentPerms,' . ($onlyParent ? '"a:0:{}" AS ' : '') . 'Permissions,Alias FROM ' . USER_TABLE . ' WHERE ID=' . intval($uid) . ($onlyParent ? '' : ' OR Alias=' . intval($uid)));
 		while($db->next_record(MYSQL_ASSOC)){
 			if($db->f('Alias') != $uid){
 				$group_permissions = unserialize($db->f('Permissions'));
@@ -1170,7 +1170,7 @@ _multiEditorreload = true;";
 				}
 			}
 		}
-		if(!array_filter($user_permissions)){
+		if(!$onlyParent && !array_filter($user_permissions)){
 			t_e('error reading user permissions! Check parent permissions & resave parent folders! UID: ' . $uid, $user_permissions);
 		}
 		return (isset($user_permissions['ADMINISTRATOR']) && $user_permissions['ADMINISTRATOR'] ? array('ADMINISTRATOR' => 1) : array_filter($user_permissions));
@@ -1429,7 +1429,9 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 		// Create a object of the class dynamicControls
 		$dynamic_controls = new we_html_dynamicControls();
 		// Now we create the overview of the user rights
-		$content = $dynamic_controls->fold_checkbox_groups($this->permissions_slots, $this->permissions_main_titles, $this->permissions_titles, $this->Name, $branch, array('administrator'), true, true, 'we_form', 'perm_branch', true, true);
+		$parentPerm = self::getAllPermissions($this->ID, true);
+		t_e($parentPerm);
+		$content = $dynamic_controls->fold_checkbox_groups($this->permissions_slots, $parentPerm, $this->permissions_main_titles, $this->permissions_titles, $this->Name, $branch, array('administrator'), true, true, 'we_form', 'perm_branch', true, true);
 
 		$javascript = '
 function rebuildCheckboxClicked() {
@@ -1931,7 +1933,7 @@ function show_seem_chooser(val) {
 			case 'weapp':
 				$_seem_start_type = 'weapp';
 				if($this->Preferences['seem_start_file'] != 0){
-					
+
 				}
 				break;
 			// Document

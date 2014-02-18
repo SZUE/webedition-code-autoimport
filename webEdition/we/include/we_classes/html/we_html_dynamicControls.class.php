@@ -258,7 +258,7 @@ class we_html_dynamicControls{
 	 *
 	 * @return     string
 	 */
-	function fold_checkbox_groups($groups, $main_titles, $titles, $item_names, $open_group = "", $filter = "", $check_permissions = false, $use_form = false, $form_name = "", $form_group_name = "", $display_check_all = false, $use_with_user_module = false, $width = 500, $bgcolor = "#DDDDDD", $seperator_color = "#EEEEEE"){
+	function fold_checkbox_groups($groups, $parentGroups,$main_titles, $titles, $item_names, $open_group = "", $filter = "", $check_permissions = false, $use_form = false, $form_name = "", $form_group_name = "", $display_check_all = false, $use_with_user_module = false, $width = 500, $bgcolor = "#DDDDDD", $seperator_color = "#EEEEEE"){
 		// Include the needed JavaScript
 		$_content = $this->js_fold_checkbox_groups($groups, $filter, $use_with_user_module);
 
@@ -341,10 +341,8 @@ class we_html_dynamicControls{
 								<label for="arrow_link_' . $_groups_key . '" style="cursor: pointer;" onclick="toggle(\'' . $_groups_key . '\', \'show_single\', \'' . $use_form . '\', \'' . $form_name . '\', \'' . $form_group_name . '\');"><b>' . $_checkbox_title . '</b></label></td>
 						</tr>
 						<tr valign="middle" bgcolor="' . $bgcolor . '">
-							<td>
-								' . we_html_tools::getPixel(10, 1) . '</td>
-							<td>
-								' . we_html_tools::getPixel($width, 1) . '</td>
+							<td>' . we_html_tools::getPixel(10, 1) . '</td>
+							<td>' . we_html_tools::getPixel($width, 1) . '</td>
 						</tr>
 					</table>';
 
@@ -353,7 +351,7 @@ class we_html_dynamicControls{
 
 				// first of all order all the entries
 				$_groups = array();
-				foreach($groups[$_groups_key] as $_group_item_key => $_group_item_value){
+				foreach($_groups_value as $_group_item_key => $_group_item_value){
 
 					$_groups[$_groups_key][$titles[$_groups_key][$_group_item_key]] = array(
 						'perm' => $_group_item_key,
@@ -376,7 +374,7 @@ class we_html_dynamicControls{
 								<tr>
 									<td></td>
 									<td style="padding:5px 0;">
-										' . we_html_forms::checkbox(($_group_item_value ? $_group_item_value : "0"), ($_group_item_value ? true : false), $item_names . "_Permission_" . $_group_item_key, $titles[$_groups_key][$_group_item_key], false, "defaultfont", "top.content.setHot();") . '</td>
+										' . (isset($parentGroups[$_groups_key][$_group_item_text])?1:0).we_html_forms::checkbox(($_group_item_value ? $_group_item_value : "0"), ($_group_item_value ? true : false), $item_names . "_Permission_" . $_group_item_key, $titles[$_groups_key][$_group_item_key], false, "defaultfont", "top.content.setHot();") . '</td>
 								<tr>
 									<td>
 										' . we_html_tools::getPixel(15, 3) . '</td>
