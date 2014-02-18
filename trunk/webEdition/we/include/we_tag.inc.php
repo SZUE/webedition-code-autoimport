@@ -201,11 +201,11 @@ function mta($hash, $key){
 
 function printElement($code){
 	if(isset($code)){
-		/*if(strpos($code, '<?') !== FALSE){
+		if(strpos($code, '<?') !== FALSE){
 			eval('?>' . str_replace(array('<?php', '?>'), array('<?php ', ' ?>'), $code));
-		} else {*/
+		} else {
 			echo $code;
-		//}
+		}
 	}
 }
 
