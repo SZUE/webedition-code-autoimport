@@ -50,8 +50,12 @@ function we_tag_ifVar($attribs){
 	$type = weTag_getAttribute('type', $attribs);
 	$operator = weTag_getAttribute('operator', $attribs, 'equal');
 
-	$matchArray = makeArrayFromCSV($match);
-	$size = count($matchArray);
+	if(is_bool($match)){
+		$size = 1;
+	} else {
+		$matchArray = makeArrayFromCSV($match);
+		$size = count($matchArray);
+	}
 
 	switch($type){
 		case 'customer' :
