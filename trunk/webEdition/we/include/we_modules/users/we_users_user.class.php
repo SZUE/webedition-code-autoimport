@@ -1142,7 +1142,7 @@ _multiEditorreload = true;";
 
 		$db = $GLOBALS['DB_WE'];
 		$db_tmp = new DB_WE();
-		$db->query('SELECT ParentID,ParentPerms,' . ($onlyParent ? '"a:0:{}" AS ' : '') . 'Permissions,Alias FROM ' . USER_TABLE . ' WHERE ID=' . intval($uid) . ($onlyParent ? '' : ' OR Alias=' . intval($uid)));
+		$db->query('SELECT ParentID,' . ($onlyParent ? '1 AS ' : '') . ' ParentPerms,' . ($onlyParent ? '"a:0:{}" AS ' : '') . 'Permissions,Alias FROM ' . USER_TABLE . ' WHERE ID=' . intval($uid) . ($onlyParent ? '' : ' OR Alias=' . intval($uid)));
 		while($db->next_record(MYSQL_ASSOC)){
 			if($db->f('Alias') != $uid){
 				$group_permissions = unserialize($db->f('Permissions'));
@@ -1170,9 +1170,9 @@ _multiEditorreload = true;";
 				}
 			}
 		}
-		if(!$onlyParent && !array_filter($user_permissions)){
-			t_e('error reading user permissions! Check parent permissions & resave parent folders! UID: ' . $uid, $user_permissions);
-		}
+		/* 		if(!$onlyParent && !array_filter($user_permissions)){
+		  t_e('error reading user permissions! Check parent permissions & resave parent folders! UID: ' . $uid, $user_permissions);
+		  } */
 		return (isset($user_permissions['ADMINISTRATOR']) && $user_permissions['ADMINISTRATOR'] ? array('ADMINISTRATOR' => 1) : array_filter($user_permissions));
 	}
 
@@ -1430,7 +1430,6 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 		$dynamic_controls = new we_html_dynamicControls();
 		// Now we create the overview of the user rights
 		$parentPerm = self::getAllPermissions($this->ID, true);
-		t_e($parentPerm);
 		$content = $dynamic_controls->fold_checkbox_groups($this->permissions_slots, $parentPerm, $this->permissions_main_titles, $this->permissions_titles, $this->Name, $branch, array('administrator'), true, true, 'we_form', 'perm_branch', true, true);
 
 		$javascript = '
@@ -1518,11 +1517,13 @@ function toggleRebuildPerm(disabledOnly) {';
 				'space' => 0
 			);
 		}
-		$parts[] = array(
-			'headline' => '',
-			'html' => $this->formInherits('_ParentPerms', $this->ParentPerms, g_l('modules_users', '[inherit]')),
-			'space' => 0
-		);
+		if($this->ParentID){
+			$parts[] = array(
+				'headline' => '',
+				'html' => $this->formInherits('_ParentPerms', $this->ParentPerms, g_l('modules_users', '[inherit]')),
+				'space' => 0
+			);
+		}
 
 		return we_html_multiIconBox::getHTML('', '100%', $parts, 30) . we_html_element::jsElement($javascript);
 	}
@@ -1654,7 +1655,7 @@ function delElement(elvalues,elem) {
 				<table border="0" cellpadding="0" cellspacing="2" width="520">';
 			foreach($v as $key => $val){
 				$value = $val;
-				$path = f('SELECT Path FROM ' . $k . ' WHERE ' . $k . '.ID=' . $value, 'Path', $this->DB_WE);
+				$path = f('SELECT Path FROM ' . $k . ' WHERE ' . $k . '.ID=' . $value, '', $this->DB_WE);
 				if(!$path){
 					$foo = get_def_ws($k);
 					$fooA = makeArrayFromCSV($foo);
@@ -2284,12 +2285,12 @@ function show_seem_chooser(val) {
 		return we_html_multiIconBox::getHTML('', '100%', $parts, 30);
 	}
 
-	function formInherits($name, $value, $title){
+	function formInherits($name, $value, $title, $onClick = ''){
 		return '
 <table cellpadding="0" cellspacing="0" border="0" width="500">
 	<tr>
 		<td class="defaultfont">' .
-			we_html_forms::checkbox(1, ($value ? true : false), $this->Name . $name, $title, '', 'defaultfont', 'top.content.setHot();') . '
+			we_html_forms::checkbox(1, ($value ? true : false), $this->Name . $name, $title, '', 'defaultfont', 'top.content.setHot();' . $onClick) . '
 	</tr>
 </table>';
 	}
@@ -2368,12 +2369,12 @@ top.content.hloaded=1;') .
 
 	public static function getUsername($id, we_database_base $db = null){
 		$db = $db ? $db : new DB_WE();
-		$user = f('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($id), 'username', $db);
+		$user = f('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($id), '', $db);
 		return $user ? $user : g_l('modules_messaging', '[userid_not_found]');
 	}
 
 	public static function getUserID($username, we_database_base $db){
-		$uid = f('SELECT ID FROM ' . USER_TABLE . ' WHERE username="' . $db->escape(trim($username)) . '"', 'ID', $db);
+		$uid = f('SELECT ID FROM ' . USER_TABLE . ' WHERE username="' . $db->escape(trim($username)) . '"', '', $db);
 		return $uid ? $uid : -1;
 	}
 
@@ -2381,8 +2382,7 @@ top.content.hloaded=1;') .
 		return preg_match('|^[A-Za-z0-9._\-][A-Za-z0-9._\-@]+$|', $username);
 	}
 
-	static function setEffectiveWorkspaces($user, we_database_base $db = null){
-		$db = ($db ? $db : new DB_WE());
+	static function setEffectiveWorkspaces($user, we_database_base $db){
 		$workspaces = array(
 			FILE_TABLE => array('key' => 'workSpace', 'value' => array(), 'parent' => 0, 'parentKey' => 'ParentWs', 'keep' => false),
 			TEMPLATES_TABLE => array('key' => 'workSpaceTmp', 'value' => array(), 'parent' => 0, 'parentKey' => 'ParentWst', 'keep' => false),
