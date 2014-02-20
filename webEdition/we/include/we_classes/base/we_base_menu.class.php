@@ -57,14 +57,16 @@ function menuaction(cmd) {
 		$menus = array();
 		foreach($this->entries as $id => $e){
 			if($e['parent'] == 0){
-				$mtext = (is_array($e['text']) ?
-						($e['text'][$GLOBALS['WE_LANGUAGE']] ? $e['text'][$GLOBALS['WE_LANGUAGE']] : '') :
-						($e['text'] ? $e['text'] : ''));
+				if(isset($e['perm']) ? self::isEnabled($e['perm']) : 1){
+					$mtext = (is_array($e['text']) ?
+							($e['text'][$GLOBALS['WE_LANGUAGE']] ? $e['text'][$GLOBALS['WE_LANGUAGE']] : '') :
+							($e['text'] ? $e['text'] : ''));
 
-				$menus[] = array(
-					'id' => $id,
-					'code' => '<li class="top" onmouseover="topMenuHover(this)"><div class="top_div" onclick="topMenuClick(this)"><a href="#void" class="top_link"><span class="down">' . $mtext . '</span></a><ul class="sub">',
-				);
+					$menus[] = array(
+						'id' => $id,
+						'code' => '<li class="top" onmouseover="topMenuHover(this)"><div class="top_div" onclick="topMenuClick(this)"><a href="#void" class="top_link"><span class="down">' . $mtext . '</span></a><ul class="sub">',
+					);
+				}
 			}
 		}
 
@@ -90,6 +92,9 @@ function menuaction(cmd) {
 	}
 
 	private static function isEnabled($perm){
+		if(!$perm){
+			return true;
+		}
 		$enabled = 0;
 		$or = explode('||', $perm);
 		foreach($or as $v){
@@ -120,14 +125,16 @@ function menuaction(cmd) {
 
 				} else {
 					if((!(isset($e['cmd']) && $e['cmd'])) && $mtext){
-						$opt .= '<li><a class="fly" href="#void">' . $mtext . '</a><ul>' . "\n";
-						$this->h_pCODE($men, $opt, $id, $newAst);
-						$opt .= '</ul></li>' . "\n";
+						if($e['enabled'] == 1){
+							$opt .= '<li><a class="fly" href="#void">' . $mtext . '</a><ul>' . "\n";
+							$this->h_pCODE($men, $opt, $id, $newAst);
+							$opt .= '</ul></li>' . "\n";
+						}
 					} else if($mtext){
-						if(!(isset($e['enabled']) && $e['enabled'] == 0)){
+						if($e['enabled'] == 1){
 							$opt .= '<li><a href="#void" onclick="' . $this->menuaction . 'menuaction(\'' . $e["cmd"] . '\')">' . $mtext . '</a></li>';
 						}
-					} elseif(!(isset($e['enabled']) && $e['enabled'] == 0)){
+					} elseif($e['enabled'] == 1){//separator
 						$opt .= '<li class="disabled"></li>';
 					}
 				}
