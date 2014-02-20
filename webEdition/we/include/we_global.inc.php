@@ -527,6 +527,7 @@ function id_to_path($IDs, $table = FILE_TABLE, we_database_base $db = null, $pre
 	return $asArray ? $foo : makeCSVFromArray($foo, $prePostKomma);
 }
 
+//FIXME: remove this in 6.3.9
 function getTemplatePath($dest){
 	$ret = preg_replace('/.tmpl$/i', '.php', (is_numeric($dest) ? id_to_path($dest, TEMPLATES_TABLE) : $dest));
 	return ($ret && $ret != '/' ? TEMPLATES_PATH . $ret : '');
@@ -1440,13 +1441,15 @@ function we_templateHead($fullHeader = false){
 	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']){
 		if($fullHeader){
 			if($GLOBALS['WE_HTML_HEAD_BODY']){
-				echo we_templatePreContent();//to increment we_templatePreContent-var
+				echo we_templatePreContent(); //to increment we_templatePreContent-var
 				return;
 			}
 			$GLOBALS['WE_HTML_HEAD_BODY'] = true;
 		}
 		echo ($fullHeader ? we_html_element::htmlDocType() . '<html><head><title>WE</title>' : '') . STYLESHEET_BUTTONS_ONLY . SCRIPT_BUTTONS_ONLY .
-		we_html_element::jsScript(JS_DIR . 'windows.js') . weSuggest::getYuiFiles();
+		we_html_element::jsScript(JS_DIR . 'windows.js') . weSuggest::getYuiFiles() .
+		we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') .
+		we_html_element::jsElement('parent.openedWithWE = 1;');
 		require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 		if($fullHeader){
 			echo '</head><body onunload="doUnload()">';
@@ -1461,7 +1464,7 @@ function we_templatePreContent(){
 			echo '<form name="we_form" action="" method="post" onsubmit="return false;">' .
 			we_class::hiddenTrans();
 		}
-		$GLOBALS['we_templatePreContent'] = (isset($GLOBALS['we_templatePreContent']) ? $GLOBALS['we_templatePreContent']+1  : $GLOBALS['WE_TEMPLATE_INIT']);
+		$GLOBALS['we_templatePreContent'] = (isset($GLOBALS['we_templatePreContent']) ? $GLOBALS['we_templatePreContent'] + 1 : $GLOBALS['WE_TEMPLATE_INIT']);
 	}
 }
 
