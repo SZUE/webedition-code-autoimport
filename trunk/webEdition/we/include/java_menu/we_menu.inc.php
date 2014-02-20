@@ -627,7 +627,8 @@ $we_menu = array(
 		'hide' => $seeMode
 	),
 	array(// separator
-		'parent' => 4000000
+		'parent' => 4000000,
+		'perm'=>'EDIT_DOCTYPE || EDIT_KATEGORIE || EDIT_THUMBS || ADMINISTRATOR',
 	),
 	array(// Extras > change password
 		'text' => g_l('javaMenu_global', '[change_password]') . '&hellip;',
@@ -637,7 +638,8 @@ $we_menu = array(
 		'enabled' => 1,
 	),
 	array(// separator
-		'parent' => 4000000
+		'parent' => 4000000,
+		'perm' => 'EDIT_PASSWD || ADMINISTRATOR',
 	),
 	array(// Extras > versioning
 		'text' => g_l('javaMenu_global', '[versioning]') . '&hellip;',
@@ -655,6 +657,7 @@ $we_menu = array(
 	),
 	array(// separator
 		'parent' => 4000000,
+		'perm' => 'ADMINISTRATOR',
 	),
 	4179999 => array(// separator
 		'parent' => 4000000,
@@ -673,6 +676,7 @@ $we_menu = array(
 	),
 	array(// separator
 		'parent' => 4180000,
+		'perm' => 'EDIT_SETTINGS || ADMINISTRATOR',
 	),
 	5000000 => array(// Help
 		'text' => g_l('javaMenu_global', '[help]'),

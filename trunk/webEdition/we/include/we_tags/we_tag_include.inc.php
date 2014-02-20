@@ -26,7 +26,7 @@ function we_parse_tag_include($attribs, $c, array $attr){
 	$type = weTag_getParserAttribute('type', $attr, 'document');
 	//$path = weTag_getParserAttribute('path', $attr);
 	if($type == 'template'){
-		$attr['_parsed'] = true;
+		$attr['_parsed'] = 'true';
 	}
 	return ($type != 'template' ?
 			'<?php eval(' . we_tag_tagParser::printTag('include', $attribs) . ');?>' : //include documents

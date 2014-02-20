@@ -40,9 +40,9 @@ class we_tag_tagParser{
 		}
 		/*
 		 * if(!is_array(self::$CloseTags)){
-			self::$CloseTags = weTagWizard::getTagsWithEndTag();
-			self::$AllKnownTags = weTagWizard::getExistingWeTags();
-		}*/
+		  self::$CloseTags = weTagWizard::getTagsWithEndTag();
+		  self::$AllKnownTags = weTagWizard::getExistingWeTags();
+		  } */
 	}
 
 	/* 	private function parseAppListviewItemsTags($tagname, $tag, $code, $attribs = "", $postName = ""){
@@ -377,8 +377,14 @@ class we_tag_tagParser{
 	public static function printArray($array, $printEmpty = true){
 		$ret = array();
 		foreach($array as $key => $val){
-			$quotes = ((strpos($val, '$') !== FALSE) || (strpos($val, '\'') !== FALSE) ? '"' : '\'');
-			$ret[] = '\'' . $key . '\'=>' . (is_numeric($val) || $val == 'true' || $val == 'false' ? $val : $quotes . $val . $quotes);
+			switch($key){
+				case 'comment':
+				case 'cachelifetime':
+					continue;
+				default:
+					$quotes = ((strpos($val, '$') !== FALSE) || (strpos($val, '\'') !== FALSE) ? '"' : '\'');
+					$ret[] = '\'' . $key . '\'=>' . (is_numeric($val) || $val == 'true' || $val == 'false' ? $val : $quotes . $val . $quotes);
+			}
 		}
 		return ($ret || (!$ret && $printEmpty) ? 'array(' . implode(',', $ret) . ')' : '');
 	}
