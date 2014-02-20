@@ -32,9 +32,6 @@ class we_template extends we_document{
 	var $IncludedTemplates = '';
 	var $doUpdateCode = true; // will be protected in later WE Versions
 
-	const TemplateHead = '<?php we_templateHead();?>';
-	const TemplatePreContent = '<?php we_templatePreContent();?>';
-	const TemplatePostContent = '<?php we_templatePostContent();?>';
 	const NO_TEMPLATE_INC = 'we_noTmpl.inc.php';
 
 	/* Constructor */
@@ -286,20 +283,17 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 
 
 		if($this->hasStartAndEndTag('html', $code) && $this->hasStartAndEndTag('head', $code) && $this->hasStartAndEndTag('body', $code)){
-			$pre_code = '<?php $GLOBALS[\'WE_HTML_HEAD_BODY\'] = true; ?>' . $pre_code;
+			$pre_code .= '<?php $GLOBALS[\'WE_HTML_HEAD_BODY\'] = true; ?>';
 
 			//#### parse base href
 			$code = str_replace(array('?>', '=>'), array('__WE_?__WE__', '__WE_=__WE__'), $code);
 
-			$code = preg_replace('%(<body[^>]*)(>)%i', '\\1<?php if(isset($GLOBALS[\'we_editmode\']) && $GLOBALS[\'we_editmode\']) print \' onunload="doUnload()"\'; ?>\\2' . self::TemplatePreContent, $code);
+			$code = preg_replace('%(<body[^>]*)>%i', '\\1<?php echo (isset($GLOBALS[\'we_editmode\']) && $GLOBALS[\'we_editmode\']? \' onunload="doUnload()">\':\'>\'); we_templatePreContent();?>', $code);
 
 			$code = str_replace(array('__WE_?__WE__', '__WE_=__WE__'), array('?>', '=>'), $code);
-			$code = str_ireplace(array('</head>', '</body>'), array(self::TemplateHead . '</head>', self::TemplatePostContent . '</body>'), $code);
+			$code = str_ireplace(array('</head>', '</body>'), array('<?php we_templateHead();?></head>', '<?php we_templatePostContent(true);?></body>'), $code);
 		} else if(!$this->hasStartAndEndTag('html', $code) && !$this->hasStartAndEndTag('head', $code) && !$this->hasStartAndEndTag('body', $code)){
-			$code = '<?php if(!isset($is_inc) || !$is_inc){ if((isset($GLOBALS[\'we_editmode\']) && $GLOBALS[\'we_editmode\']) && (!isset($GLOBALS[\'WE_HTML_HEAD_BODY\']) || !$GLOBALS[\'WE_HTML_HEAD_BODY\'] )){  $GLOBALS["WE_HTML_HEAD_BODY"] = true; ?>' . we_html_element::htmlDocType() . '<html><head><title>WE</title>' . self::TemplateHead . '</head>
-<body <?php if(isset($GLOBALS[\'we_editmode\']) && $GLOBALS[\'we_editmode\']) print \' onunload="doUnload()"\'; ?>><?php } ?>
-' . self::TemplatePreContent . '<?php } ?>' . $code . '<?php if(!isset($is_inc) || !$is_inc){ ?>' . self::TemplatePostContent . '<?php if((isset($GLOBALS[\'we_editmode\']) && $GLOBALS[\'we_editmode\'])&&($GLOBALS[\'we_templatePreContent\']==0) ){ ?>' . '
-</body></html><?php }}?>';
+			$code =  '<?php we_templateHead(true);?>'. $code . '<?php we_templatePostContent(false,true);?>';
 		} else {
 			return parseError(g_l('parser', '[html_tags]')) . '<?php exit();?><!-- current parsed template code for debugging -->' . $code;
 		}
