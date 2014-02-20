@@ -68,7 +68,6 @@ $perm_defaults[$perm_group_name] = array(
 	'CAN_SEE_VALIDATION' => 1,
 	'CAN_EDIT_VALIDATION' => 0,
 	'CAN_SEE_ACCESSIBLE_PARAMETERS' => 1,
-	'EDIT_NAVIGATION' => 1
 );
 
 $perm_values[$perm_group_name] = array_keys($perm_defaults[$perm_group_name]);
