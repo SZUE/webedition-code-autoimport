@@ -25,10 +25,13 @@
 function we_parse_tag_include($attribs, $c, array $attr){
 	$type = weTag_getParserAttribute('type', $attr, 'document');
 	$path = weTag_getParserAttribute('path', $attr);
-	return ($type != 'template' ? '<?php eval(' . we_tag_tagParser::printTag('include', $attribs) . ');?>' :
-			($path ? '<?php $we_inc=getTemplatePath(\'' . str_replace('\'', '', $path) . '\');' :
-				'<?php $we_inc=getTemplatePath(' . intval(weTag_getParserAttribute('id', $attr)) . ');') .
-			'if($we_inc){$is_inc = isset($is_inc) ? ++$is_inc : 1; include($we_inc); $is_inc--;}; ?>'
+	return ($type != 'template' ?
+			'<?php eval(' . we_tag_tagParser::printTag('include', $attribs) . ');?>' : //include documents
+			(($path ?
+				'<?php $we_inc=getTemplatePath("' . $path . '");' : //include templates of paths
+				'<?php $we_inc=getTemplatePath(intval("' . weTag_getParserAttribute('id', $attr) . '"));' //include templates of ID's
+			) . 'if($we_inc){include($we_inc);}; ?>'
+			)
 		);
 }
 
@@ -96,6 +99,11 @@ function we_tag_include($attribs){
 	$name = weTag_getAttribute('name', $attribs);
 	$gethttp = weTag_getAttribute('gethttp', $attribs, false, true);
 	$seeMode = weTag_getAttribute((isset($attribs['seem']) ? 'seem' : 'seeMode'), $attribs, true, true);
+
+	if(weTag_getAttribute('type', $attribs) == 'template'){
+		echo 'cannot use we:include with type="template" dynamically';
+		return;
+	}
 
 	if((!$id) && (!$path) && (!$name)){
 		t_e('we:include - missing id, path or name');
