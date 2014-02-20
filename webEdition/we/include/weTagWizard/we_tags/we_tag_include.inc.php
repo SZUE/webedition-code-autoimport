@@ -13,6 +13,7 @@ $path = (defined('FILE_TABLE') ? new weTagData_selectorAttribute('path', FILE_TA
 //$path = new weTagData_textAttribute('path', false, '');
 $gethttp = new weTagData_selectAttribute('gethttp', weTagData_selectAttribute::getTrueFalse(), false, '');
 $seeMode = new weTagData_selectAttribute('seeMode', weTagData_selectAttribute::getTrueFalse(), false, '');
+$once = new weTagData_selectAttribute('once', weTagData_selectAttribute::getTrueFalse(), false, '');
 $kind = new weTagData_selectAttribute('kind', array(new weTagDataOption('all', false, ''), new weTagDataOption('int', false, ''), new weTagDataOption('ext', false, '')), false, '');
 $name = new weTagData_textAttribute('name', false, '');
 $description = new weTagData_textAttribute('description', false, '');
@@ -23,6 +24,6 @@ $startid = new weTagData_selectorAttribute('startid', FILE_TABLE, weTagData_sele
 
 $this->TypeAttribute = new weTagData_typeAttribute('type', array(
 	new weTagDataOption('document', false, '', array($id, $path, $gethttp, $seeMode, $kind, $name, $rootdir, $startid, $description), array()),
-	new weTagDataOption('template', false, '', array($path_temp, $id_temp), array())), false, '');
+	new weTagDataOption('template', false, '', array($path_temp, $id_temp, $once), array())), false, '');
 
-$this->Attributes = array($included, $id, $path, $path_temp, $gethttp, $seeMode, $kind, $name, $id_temp, $rootdir, $startid, $description);
+$this->Attributes = array($included, $id, $path, $path_temp, $gethttp, $seeMode, $kind, $name, $id_temp, $once, $rootdir, $startid, $description);

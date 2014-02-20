@@ -24,15 +24,14 @@
  */
 function we_parse_tag_include($attribs, $c, array $attr){
 	$type = weTag_getParserAttribute('type', $attr, 'document');
-	//$path = weTag_getParserAttribute('path', $attr);
 	if($type == 'template'){
 		$attr['_parsed'] = 'true';
 	}
 	return ($type != 'template' ?
 			'<?php eval(' . we_tag_tagParser::printTag('include', $attribs) . ');?>' : //include documents
 			//(($path ?
-				'<?php $we_inc='.we_tag_tagParser::printTag('include', $attr).';' //include templates of ID's
-			 . 'if($we_inc){include($we_inc);}; ?>'
+			'<?php $we_inc=' . we_tag_tagParser::printTag('include', $attr) . ';' //include templates of ID's
+			. 'if($we_inc){include' . (weTag_getParserAttribute('once', $attr, false, true) ? '_once' : '') . '($we_inc);}; ?>'
 
 		);
 }
@@ -98,18 +97,20 @@ function we_resetBackVar($we_unique){
 function we_tag_include($attribs){
 	$id = intval(weTag_getAttribute('id', $attribs));
 	$path = weTag_getAttribute('path', $attribs);
-	$name = weTag_getAttribute('name', $attribs);
-	$gethttp = weTag_getAttribute('gethttp', $attribs, false, true);
-	$seeMode = weTag_getAttribute((isset($attribs['seem']) ? 'seem' : 'seeMode'), $attribs, true, true);
 
 	if(weTag_getAttribute('type', $attribs) == 'template'){
 		if(!isset($attribs['_parsed'])){
 			echo 'cannot use we:include with type="template" dynamically';
 			return '';
 		}
-		$ret = preg_replace('/.tmpl$/i', '.php', ($id ? id_to_path($id, TEMPLATES_TABLE) : str_replace('..', '', $path)));//filter rel. paths
+		$ret = preg_replace('/.tmpl$/i', '.php', ($id ? id_to_path($id, TEMPLATES_TABLE) : str_replace('..', '', $path))); //filter rel. paths
 		return ($ret && $ret != '/' ? TEMPLATES_PATH . $ret : '');
 	}
+
+	$name = weTag_getAttribute('name', $attribs);
+	$gethttp = weTag_getAttribute('gethttp', $attribs, false, true);
+	$seeMode = weTag_getAttribute((isset($attribs['seem']) ? 'seem' : 'seeMode'), $attribs, true, true);
+	$once = weTag_getAttribute('once', $attribs, false, true);
 
 	if((!$id) && (!$path) && (!$name)){
 		t_e('we:include - missing id, path or name');
@@ -183,7 +184,7 @@ function we_tag_include($attribs){
 				}
 			}
 		}
-		$content = ($isSeemode ? file_get_contents($realPath) : 'include(\'' . $realPath . '\');');
+		$content = ($isSeemode ? file_get_contents($realPath) : 'include' . ($once ? '_once' : '') . '(\'' . $realPath . '\');');
 	}
 
 	if(isset($GLOBALS['we']['backVars']) && count($GLOBALS['we']['backVars'])){
