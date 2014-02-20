@@ -107,7 +107,7 @@ function we_tag_include($attribs){
 			echo 'cannot use we:include with type="template" dynamically';
 			return '';
 		}
-		$ret = preg_replace('/.tmpl$/i', '.php', ($id ? id_to_path($id, TEMPLATES_TABLE) : $path));
+		$ret = preg_replace('/.tmpl$/i', '.php', ($id ? id_to_path($id, TEMPLATES_TABLE) : str_replace('..', '', $path)));//filter rel. paths
 		return ($ret && $ret != '/' ? TEMPLATES_PATH . $ret : '');
 	}
 
