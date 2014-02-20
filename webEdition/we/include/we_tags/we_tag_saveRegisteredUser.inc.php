@@ -23,7 +23,7 @@ function we_tag_saveRegisteredUser($attribs){
 	$userempty = weTag_getAttribute('userempty', $attribs);
 	$passempty = weTag_getAttribute('passempty', $attribs);
 	$changesessiondata = weTag_getAttribute('changesessiondata', $attribs, true, true);
-	$default_register = f('SELECT Value FROM ' . CUSTOMER_ADMIN_TABLE . ' WHERE Name="default_saveRegisteredUser_register"', 'Value', $GLOBALS['DB_WE']) == 'true';
+	$default_register = f('SELECT Value FROM ' . CUSTOMER_ADMIN_TABLE . ' WHERE Name="default_saveRegisteredUser_register"') == 'true';
 	$registerallowed = (isset($attribs['register']) ? weTag_getAttribute('register', $attribs, $default_register, true) : $default_register);
 	$protected = makeArrayFromCSV(weTag_getAttribute('protected', $attribs));
 	$allowed = makeArrayFromCSV(weTag_getAttribute('allowed', $attribs));
@@ -67,7 +67,7 @@ function we_tag_saveRegisteredUser($attribs){
 						$GLOBALS["we_customer_writen"] = true;
 						$GLOBALS['we_customer_written'] = true;
 						if($uID && $changesessiondata){
-							$_SESSION['webuser'] = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . $uID, $GLOBALS['DB_WE']);
+							$_SESSION['webuser'] = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . $uID);
 							$_SESSION['webuser']['registered'] = true;
 
 							$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET MemberSince=UNIX_TIMESTAMP(),LastAccess=UNIX_TIMESTAMP(),LastLogin=UNIX_TIMESTAMP(),
@@ -137,7 +137,7 @@ function we_tag_saveRegisteredUser($attribs){
 			//die neuen daten in die session schreiben
 			$oldReg = $_SESSION['webuser']['registered'];
 			if($changesessiondata){
-				$_SESSION['webuser'] = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($_REQUEST['s']['ID']), $GLOBALS['DB_WE']);
+				$_SESSION['webuser'] = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($_REQUEST['s']['ID']));
 			}
 			//don't set anything that wasn't set before
 			$_SESSION['webuser']['registered'] = $oldReg;
