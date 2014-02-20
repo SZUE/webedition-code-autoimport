@@ -423,7 +423,6 @@ class we_users_user{
 				$entries[] = WE_USERS_MODULE_PATH . 'perms/' . $file;
 			}
 		}
-		t_e($entries);
 		$d->close();
 
 		foreach($entries as $entry){
@@ -432,7 +431,6 @@ class we_users_user{
 			$perm_values = $perm_titles = $perm_group_title = array();
 
 			include($entry);
-			t_e($entry,$perm_group_name);
 			if(!($perm_group_name == 'administrator' && $this->Type != self::TYPE_USER) && $perm_group_name){
 				if(!isset($this->permissions_main_titles[$perm_group_name])){
 					$this->permissions_main_titles[$perm_group_name] = '';
