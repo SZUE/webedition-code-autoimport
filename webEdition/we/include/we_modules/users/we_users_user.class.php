@@ -1430,7 +1430,7 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 		// Create a object of the class dynamicControls
 		$dynamic_controls = new we_html_dynamicControls();
 		// Now we create the overview of the user rights
-		$parentPerm = self::getAllPermissions($this->ID, true);
+		$parentPerm = $this->ParentID ? self::getAllPermissions($this->ID, true) : false;
 		$content = $dynamic_controls->fold_checkbox_groups($this->permissions_slots, $parentPerm, $this->permissions_main_titles, $this->permissions_titles, $this->Name, $branch, array('administrator'), true, true, 'we_form', 'perm_branch', true, true);
 
 		$javascript = '
@@ -2287,11 +2287,20 @@ function show_seem_chooser(val) {
 	}
 
 	function formInherits($name, $value, $title, $onClick = ''){
-		return '
+		return
+			we_html_element::jsElement('
+function showParentPerms(show) {
+	tmp=document.getElementsByClassName("showParentPerms");
+	for( var k=0; k<tmp .length; k++ ) {
+		tmp[k].style.display=(show?"inline":"none");
+	}
+}
+showParentPerms(' . ($value ? 1 : 0) . ');') .
+			'
 <table cellpadding="0" cellspacing="0" border="0" width="500">
 	<tr>
 		<td class="defaultfont">' .
-			we_html_forms::checkbox(1, ($value ? true : false), $this->Name . $name, $title, '', 'defaultfont', 'top.content.setHot();' . $onClick) . '
+			we_html_forms::checkbox(1, ($value ? true : false), $this->Name . $name, $title, '', 'defaultfont', 'top.content.setHot();showParentPerms(this.checked);' . $onClick) . '
 	</tr>
 </table>';
 	}
