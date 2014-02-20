@@ -22,7 +22,6 @@ $l_perms_workpermissions=array(
 	'EDIT_DOCEXTENSION'=>'The user is allowed to change the file extension of a document',
 	'EDIT_DOCTYPE'=>'Käyttäjä voi muuttaa dokumenttityyppiä.',
 	'EDIT_KATEGORIE'=>'Käyttäjä voi muuttaa kategorioita.',
-	'EDIT_NAVIGATION'=>'Käyttäjä voi muokata navigointia',
 	'EXPORTNODOWNLOAD'=>'The user is allowed to make backups on the server',
 	'EXPORT'=>'The user is allowed to make backups on the server and the local hard drive.',
 	'FORMMAIL'=>'Käyttäjä voi muuttaa formmail -vastaanottajia.',

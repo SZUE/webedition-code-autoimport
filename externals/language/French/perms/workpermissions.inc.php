@@ -22,7 +22,6 @@ $l_perms_workpermissions=array(
 	'EDIT_DOCEXTENSION'=>'L`utilisateur a le droit de modifier l`extension de fichier d`un document',
 	'EDIT_DOCTYPE'=>'L`utilisateur a le droit de modifier des Type-de-Document',
 	'EDIT_KATEGORIE'=>'L`utilisateur a le droit de 	administrer des Catégories',
-	'EDIT_NAVIGATION'=>'L`utilisateur a le droit de changer la navigation',
 	'EXPORTNODOWNLOAD'=>'L`utilisateur a le droit de créer une sauvegarde sur le serveur',
 	'EXPORT'=>'L`utilisateur a le droit de créer une sauvegarde sur le serveur et disque dur local',
 	'FORMMAIL'=>'L`utilisateur a le droit de modifier les destinataire-Formmail',

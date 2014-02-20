@@ -22,7 +22,6 @@ $l_perms_workpermissions=array(
 	'EDIT_DOCEXTENSION'=>'The user is allowed to change the file extension of a document',
 	'EDIT_DOCTYPE'=>'De gebruiker is bevoegd om document types te wijzigen.',
 	'EDIT_KATEGORIE'=>'De gebruiker is bevoegd om categorieën te wijzigen.',
-	'EDIT_NAVIGATION'=>'De gebruiker is bevoegd om de navigatie te wijzigen',
 	'EXPORTNODOWNLOAD'=>'The user is allowed to make backups on the server',
 	'EXPORT'=>'The user is allowed to make backups on the server and the local hard drive.',
 	'FORMMAIL'=>'De gebruiker is bevoegd om formmail ontvangers te wijzigen.',

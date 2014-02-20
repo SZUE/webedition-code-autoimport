@@ -22,7 +22,6 @@ $l_perms_workpermissions=array(
 	'EDIT_DOCEXTENSION'=>'Der Benutzer darf die Datei-Erweiterung eines Dokumentes ändern',
 	'EDIT_DOCTYPE'=>'Der Benutzer darf Dokument-Typen ändern',
 	'EDIT_KATEGORIE'=>'Der Benutzer darf Kategorien verwalten',
-	'EDIT_NAVIGATION'=>'Der Benutzer darf die Navigation ändern',
 	'EXPORTNODOWNLOAD'=>'Der Benutzer darf ein Backup auf dem Server erstellen',
 	'EXPORT'=>'Der Benutzer darf ein Backup auf dem Server und der lokalen Festplatte erstellen',
 	'FORMMAIL'=>'Der Benutzer darf die Formmail-Empfänger verändern',
