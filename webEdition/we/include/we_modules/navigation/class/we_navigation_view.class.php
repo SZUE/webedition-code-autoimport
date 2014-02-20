@@ -175,7 +175,7 @@ function we_cmd() {
 				' . we_message_reporting::getShowMessageCall(g_l('navigation', "[nothing_to_delete]"), we_message_reporting::WE_MESSAGE_ERROR) . '
 				return;
 			} }
-			' . (!permissionhandler::hasPerm("DELETE_NAVIGATION") ?
+			' . (!permissionhandler::hasPerm('DELETE_NAVIGATION') ?
 				(
 				we_message_reporting::getShowMessageCall(g_l('navigation', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
 				) :
@@ -856,9 +856,9 @@ function submitForm() {
 
 					print we_html_element::jsScript(JS_DIR . 'we_showMessage.js');
 
-					if(!permissionhandler::hasPerm("DELETE_NAVIGATION")){
+					if(!permissionhandler::hasPerm('DELETE_NAVIGATION')){
 						print we_html_element::jsElement(
-								we_message_reporting::getShowMessageCall(g_l('navigation', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
+								we_message_reporting::getShowMessageCall(g_l('navigation', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
 						);
 						return;
 					} else {
