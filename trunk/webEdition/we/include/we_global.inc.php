@@ -1440,7 +1440,7 @@ function we_templateInit(){
 function we_templateHead($fullHeader = false){
 	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']){
 		if($fullHeader){
-			if($GLOBALS['WE_HTML_HEAD_BODY']){
+			if(isset($GLOBALS['WE_HTML_HEAD_BODY'])){
 				echo we_templatePreContent(); //to increment we_templatePreContent-var
 				return;
 			}

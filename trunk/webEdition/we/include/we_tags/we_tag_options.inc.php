@@ -33,13 +33,11 @@ function we_tag_options($attribs){
 			$GLOBALS['WE_OBJECT_DEFARRAY'] = array();
 		}
 		if(!isset($GLOBALS['WE_OBJECT_DEFARRAY']['cid_' . $classid])){
-			$db = $GLOBALS['DB_WE'];
-			$GLOBALS['WE_OBJECT_DEFARRAY']['cid_' . $classid] = unserialize(
-				f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($classid), 'DefaultValues', $db));
+			$GLOBALS['WE_OBJECT_DEFARRAY']['cid_' . $classid] = unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($classid)));
 		}
 		$foo = $GLOBALS['WE_OBJECT_DEFARRAY']['cid_' . $classid]['meta_' . $field]['meta'];
 		foreach($foo as $key => $val){
-			$o .= '<option value="' . $key . '"' . ((($GLOBALS[$name] == $key) && strlen($GLOBALS[$name]) != 0) ? ' selected' : '') . '>' . $val . '</option>';
+			$o .= '<option value="' . $key . '"' . ((($GLOBALS[$name] == $key) && strlen($GLOBALS[$name]) != 0) ? ' selected="selected"' : '') . '>' . $val . '</option>';
 		}
 		return $o;
 	}
