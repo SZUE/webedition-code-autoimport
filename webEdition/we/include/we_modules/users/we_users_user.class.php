@@ -1321,24 +1321,24 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 		$_tableObj = new we_html_table($_attr, 12, 2);
 		$line = 0;
 		$_tableObj->setCol($line, 0, null, $this->getUserfield('Salutation', 'salutation'));
-		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('First', 'first_name'));
+		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('First', 'first_name'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Second', 'second_name'));
-		$_tableObj->setCol(++$line, 0, array('colspan' => 2), we_html_tools::getPixel(560, 20));
-		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('Address', 'address'));
+		$_tableObj->setCol( ++$line, 0, array('colspan' => 2), we_html_tools::getPixel(560, 20));
+		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('Address', 'address'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('HouseNo', 'houseno'));
-		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('PLZ', 'PLZ', 'text', 16, true));
+		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('PLZ', 'PLZ', 'text', 16, true));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('City', 'city'));
-		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('State', 'state'));
+		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('State', 'state'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Country', 'country'));
-		$_tableObj->setCol(++$line, 0, array('colspan' => 2), we_html_tools::getPixel(560, 20));
-		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('Tel_preselection', 'tel_pre'));
+		$_tableObj->setCol( ++$line, 0, array('colspan' => 2), we_html_tools::getPixel(560, 20));
+		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('Tel_preselection', 'tel_pre'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Telephone', 'telephone'));
-		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('Fax_preselection', 'fax_pre'));
+		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('Fax_preselection', 'fax_pre'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Fax', 'fax'));
-		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('Handy', 'mobile'));
+		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('Handy', 'mobile'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Email', 'email'));
-		$_tableObj->setCol(++$line, 0, array('colspan' => 2), we_html_tools::getPixel(520, 4));
-		$_tableObj->setCol(++$line, 0, array('colspan' => 2), we_html_tools::htmlFormElementTable($_description, g_l('modules_users', '[description]')));
+		$_tableObj->setCol( ++$line, 0, array('colspan' => 2), we_html_tools::getPixel(520, 4));
+		$_tableObj->setCol( ++$line, 0, array('colspan' => 2), we_html_tools::htmlFormElementTable($_description, g_l('modules_users', '[description]')));
 
 
 		$parts = array(
@@ -1521,7 +1521,15 @@ function toggleRebuildPerm(disabledOnly) {';
 		if($this->ParentID){
 			$parts[] = array(
 				'headline' => '',
-				'html' => $this->formInherits('_ParentPerms', $this->ParentPerms, g_l('modules_users', '[inherit]')),
+				'html' => we_html_element::jsElement('
+function showParentPerms(show) {
+	tmp=document.getElementsByClassName("showParentPerms");
+	for( var k=0; k<tmp .length; k++ ) {
+		tmp[k].style.display=(show?"inline":"none");
+	}
+}
+showParentPerms(' . ($this->ParentPerms ? 1 : 0) . ');') .
+				$this->formInherits('_ParentPerms', $this->ParentPerms, g_l('modules_users', '[inherit]'), 'showParentPerms(this.checked);'),
 				'space' => 0
 			);
 		}
@@ -1530,6 +1538,7 @@ function toggleRebuildPerm(disabledOnly) {';
 	}
 
 	function formWorkspace(){
+		$parentWsp = self::setEffectiveWorkspaces($this->ID, $this->DB_WE, true);
 		$parts = array();
 		$content = we_html_element::jsElement('
 function addElement(elvalues) {
@@ -1602,44 +1611,48 @@ function delElement(elvalues,elem) {
 		$yuiSuggest = & weSuggest::getInstance();
 
 		foreach($this->workspaces as $k => $v){
-			$content1 = '';
 			switch($k){
 				case TEMPLATES_TABLE:
 					if(defined('WK')){//FIXME: WTF is WK??
 						break 2;
 					}
 					$title = g_l('modules_users', '[workspace_templates]');
-					$content1 .= $this->formInherits('_ParentWst', $this->ParentWst, g_l('modules_users', '[inherit_wst]'));
 					$setValue = 'TEMPLATES_TABLE';
+					$showParent = $this->ParentWst;
+					$content1 = $this->ParentID ? $this->formInherits('_ParentWst', $this->ParentWst, g_l('modules_users', '[inherit_wst]'), 'document.getElementById(\'info' . $setValue . '\').style.display=(this.checked?\'inline\':\'none\');') : '';
 					break;
 				case NAVIGATION_TABLE:
 					if(defined('WK')){
 						break 2;
 					}
 					$title = g_l('modules_users', '[workspace_navigations]');
-					$content1 .= $this->formInherits('_ParentWsn', $this->ParentWsn, g_l('modules_users', '[inherit_wsn]'));
 					$setValue = 'NAVIGATION_TABLE';
+					$showParent = $this->ParentWsn;
+					$content1 = $this->ParentID ? $this->formInherits('_ParentWsn', $this->ParentWsn, g_l('modules_users', '[inherit_wsn]'), 'document.getElementById(\'info' . $setValue . '\').style.display=(this.checked?\'inline\':\'none\');') : '';
 					break;
 				case (defined('NEWSLETTER_TABLE') ? NEWSLETTER_TABLE : 'NEWSLETTER_TABLE'):
 					if(defined('WK')){
 						break 2;
 					}
 					$title = g_l('modules_users', '[workspace_newsletter]');
-					$content1 .= $this->formInherits('_ParentWsnl', $this->ParentWsnl, g_l('modules_users', '[inherit_wsnl]'));
 					$setValue = 'NEWSLETTER_TABLE';
+					$showParent = $this->ParentWsnl;
+					$content1 = $this->ParentID ? $this->formInherits('_ParentWsnl', $this->ParentWsnl, g_l('modules_users', '[inherit_wsnl]'), 'document.getElementById(\'info' . $setValue . '\').style.display=(this.checked?\'inline\':\'none\');') : '';
 					break;
 				case (defined('OBJECT_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 					if(defined('WK')){
 						break 2;
 					}
 					$title = g_l('modules_users', '[workspace_objects]');
-					$content1 .= $this->formInherits('_ParentWso', $this->ParentWso, g_l('modules_users', '[inherit_wso]'));
 					$setValue = 'OBJECT_TABLE';
+					$showParent = $this->ParentWso;
+					$content1 = $this->ParentID ? $this->formInherits('_ParentWso', $this->ParentWso, g_l('modules_users', '[inherit_wso]'), 'document.getElementById(\'info' . $setValue . '\').style.display=(this.checked?\'inline\':\'none\');') : '';
 					break;
 				case FILE_TABLE:
 					$title = g_l('modules_users', '[workspace_documents]');
-					$content1 .= $this->formInherits('_ParentWs', $this->ParentWs, g_l('modules_users', '[inherit_ws]'));
 					$setValue = 'FILE_TABLE';
+					$showParent = $this->ParentWs;
+					$content1 = $this->ParentID ? $this->formInherits('_ParentWs', $this->ParentWs, g_l('modules_users', '[inherit_ws]'), 'document.getElementById(\'info' . $setValue . '\').style.display=(this.checked?\'inline\':\'none\');') : '';
 					break;
 				default:
 					continue 2;
@@ -1719,10 +1732,16 @@ function delElement(elvalues,elem) {
 	<tr><td colspan="4">' . we_html_button::create_button("image:btn_function_plus", "javascript:top.content.setHot();fillValues(document.we_form." . $obj_values . ",'" . $obj_names . "');fillDef(document.we_form." . $obj_def_values . ",document.we_form." . $obj_values . ",'" . $obj_def_names . "','" . $obj_names . "');addElement(document.we_form." . $obj_values . ");addElement(document.we_form." . $obj_def_values . ");", true) . '</td></tr>
 </table>';
 
+			if($parentWsp[$k]){
+				$this->DB_WE->query('SELECT Path FROM ' . $k . ' WHERE ID IN(' . implode(',', $parentWsp[$k]) . ')');
+				$parent = implode("\n", $this->DB_WE->getAll(true));
+			} else {
+				$parent = ' - ';
+			}
 
 			$parts[] = array(
 				'headline' => $title,
-				'html' => $content1,
+				'html' => ($this->ParentID ? '<div id="info' . $setValue . '" style="' . ($showParent ? '' : 'display:none;') . '">' . we_html_tools::htmlAlertAttentionBox($parent, we_html_tools::TYPE_INFO, 600) . '</div>' : '') . $content1,
 				'space' => 200
 			);
 		}
@@ -1730,16 +1749,30 @@ function delElement(elvalues,elem) {
 		if(defined('CUSTOMER_TABLE')){
 			$filter = new we_navigation_customerFilter(we_customer_abstractFilter::FILTER, array(), array(), array(), $this->workspaces[CUSTOMER_TABLE]);
 			$view = new we_customer_filterView($filter, 'top.content.setHot();', 520);
+			if($parentWsp[CUSTOMER_TABLE]){
 
+				$parent = '';
+				foreach($parentWsp[CUSTOMER_TABLE] as $setting){
+					$setting = unserialize($setting);
+					foreach($setting as $cur){
+						$parent.=($parent ? $cur['logic'] . ' ' : '') . we_customer_abstractFilter::evalSingleFilterQuery($cur['operation'], $cur['field'], $cur['value']) . "\n";
+					}
+				}
+			} else {
+				$parent = ' - ';
+			}
 			$parts[] = array(
 				'headline' => g_l('modules_users', '[workspace_customer]'),
-				'html' => $this->formInherits('_ParentWsCust', $this->ParentWsCust, g_l('modules_users', '[inherit_cust]')) . $view->getFilterCustomers(),
+				'html' => ($this->ParentID ?
+					'<div id="infoCUSTOMER" style="' . ($this->ParentWsCust ? '' : 'display:none;') . '">' . we_html_tools::htmlAlertAttentionBox($parent, we_html_tools::TYPE_INFO, 600) . '</div>' .
+					$this->formInherits('_ParentWsCust', $this->ParentWsCust, g_l('modules_users', '[inherit_cust]'), 'document.getElementById(\'infoCUSTOMER\').style.display=(this.checked?\'inline\':\'none\');') : '') . $view->getFilterCustomers(),
 				'space' => 200
 			);
 		}
 
 
-		return $content . we_html_multiIconBox::getHTML('', '100%', $parts, 30);
+		return $content .
+			we_html_multiIconBox::getHTML('', '100%', $parts, 30);
 	}
 
 	function formPreferences($branch = ''){
@@ -2287,20 +2320,11 @@ function show_seem_chooser(val) {
 	}
 
 	function formInherits($name, $value, $title, $onClick = ''){
-		return
-			we_html_element::jsElement('
-function showParentPerms(show) {
-	tmp=document.getElementsByClassName("showParentPerms");
-	for( var k=0; k<tmp .length; k++ ) {
-		tmp[k].style.display=(show?"inline":"none");
-	}
-}
-showParentPerms(' . ($value ? 1 : 0) . ');') .
-			'
+		return '
 <table cellpadding="0" cellspacing="0" border="0" width="500">
 	<tr>
 		<td class="defaultfont">' .
-			we_html_forms::checkbox(1, ($value ? true : false), $this->Name . $name, $title, '', 'defaultfont', 'top.content.setHot();showParentPerms(this.checked);' . $onClick) . '
+			we_html_forms::checkbox(1, ($value ? true : false), $this->Name . $name, $title, '', 'defaultfont', 'top.content.setHot();' . $onClick) . '
 	</tr>
 </table>';
 	}
@@ -2392,7 +2416,7 @@ top.content.hloaded=1;') .
 		return preg_match('|^[A-Za-z0-9._\-][A-Za-z0-9._\-@]+$|', $username);
 	}
 
-	static function setEffectiveWorkspaces($user, we_database_base $db){
+	static function setEffectiveWorkspaces($user, we_database_base $db, $onlyParent = false){
 		$workspaces = array(
 			FILE_TABLE => array('key' => 'workSpace', 'value' => array(), 'parent' => 0, 'parentKey' => 'ParentWs', 'keep' => false),
 			TEMPLATES_TABLE => array('key' => 'workSpaceTmp', 'value' => array(), 'parent' => 0, 'parentKey' => 'ParentWst', 'keep' => false),
@@ -2414,14 +2438,14 @@ top.content.hloaded=1;') .
 		$fields = array('ParentID');
 		foreach($workspaces as $cur){
 			$fields[] = $cur['key'];
-			$fields[] = $cur['parentKey'];
+			$fields[] = ($onlyParent ? '1 AS ' : '') . $cur['parentKey'];
 		}
 		$fields = implode(',', $fields);
 
 		$userGroups = array(); //	Get Groups user belongs to.
 		$db_tmp = new DB_WE();
 
-		$db->query('SELECT ' . $fields . ' FROM ' . USER_TABLE . ' WHERE ID=' . intval($user) . ' OR Alias=' . intval($user));
+		$db->query('SELECT ' . $fields . ' FROM ' . USER_TABLE . ' WHERE ID=' . intval($user) . ($onlyParent ? '' : ' OR Alias=' . intval($user)));
 		while($db->next_record()){
 			$pid = $db->f('ParentID');
 
@@ -2460,11 +2484,17 @@ top.content.hloaded=1;') .
 				}
 			}
 		}
-		$_SESSION['user']['groups'] = $userGroups; //	order: first is folder with user himself (deepest in tree)
-		$_SESSION['user']['workSpace'] = array();
-		foreach($workspaces as $key => $cur){
-			$_SESSION['user']['workSpace'][$key] = array_unique(array_filter($cur['value']));
+
+		foreach($workspaces as &$cur){
+			$cur = array_unique(array_filter($cur['value']));
 		}
+		unset($cur);
+		if($onlyParent){
+			return $workspaces;
+		}
+		$_SESSION['user']['workSpace'] = $workspaces;
+		$_SESSION['user']['groups'] = $userGroups; //	order: first is folder with user himself (deepest in tree)
+
 		if(defined('CUSTOMER_TABLE') && $_SESSION['user']['workSpace'][CUSTOMER_TABLE]){
 			//setup customer
 			$filter = array();
