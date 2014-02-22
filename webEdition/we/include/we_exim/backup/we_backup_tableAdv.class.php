@@ -28,7 +28,7 @@ class we_backup_tableAdv extends we_backup_table{
 
 	function getColumns(){
 		if($this->db->isTabExist($this->table)){
-			$this->db->query("SHOW CREATE TABLE $this->table;");
+			$this->db->query('SHOW CREATE TABLE ' . $this->table);
 			if($this->db->next_record()){
 				$zw = explode("\n", $this->db->f("Create Table"));
 				$zw[0] = str_replace($this->table, stripTblPrefix($this->table), $zw[0]);
