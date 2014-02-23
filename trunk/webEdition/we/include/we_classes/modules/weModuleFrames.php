@@ -147,11 +147,11 @@ class weModuleFrames{
 
 		$menu = $jmenu->getCode(false) . $jmenu->getJS();
 
-		$table = new we_html_table(array("width" => "100%", "cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 2);
-		$table->setCol(0, 0, array("align" => "left", "valign" => "top"), $menu);
-		$table->setCol(0, 1, array("align" => "right", "valign" => "top"), we_main_headermenu::createMessageConsole('moduleFrame'));
+		$table = new we_html_table(array("style" => "width:100%;background-color:#efefef;background-image: url(/webEdition/images/java_menu/background.gif); background-repeat: repeat-x;", "cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 2);
+		$table->setCol(0, 0, array("align" => "left", "valign" => "top"), we_html_element::htmlDiv(array('class' => 'menuDiv'), $menu));
+		$table->setCol(0, 1, array("align" => "right", "valign" => "top", 'style' => 'width:5em;'), we_main_headermenu::createMessageConsole('moduleFrame'));
 
-		return we_html_element::htmlDiv(array('class' => 'menuDiv'), $table->getHtml());
+		return $table->getHtml();
 	}
 
 	function getHTMLResize($extraUrlParams = ''){//TODO: only customer uses param sid: handle sid with extraUrlParams

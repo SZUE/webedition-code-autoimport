@@ -768,10 +768,10 @@ function we_cmd(){
 						}
 
 						if($ret == we_users_user::ERR_USER_PATH_NOK){
-							print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_users', "[user_path_nok]"), we_message_reporting::WE_MESSAGE_ERROR));
+							echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_users', "[user_path_nok]"), we_message_reporting::WE_MESSAGE_ERROR));
 						} else {
 							$tree_code = ($id ?
-									'top.content.updateEntry(' . $user_object->ID . ',' . $user_object->ParentID . ',"' . $user_object->Text . '",' . ($user_object->checkPermission("ADMINISTRATOR") ? 1 : 0) . ',' . ($user_object->LoginDenied ? 1 : 0) . ');' :
+									'top.content.updateEntry(' . $user_object->ID . ',' . $user_object->ParentID . ',"' . $user_object->Text . '",' . ($user_object->checkPermission('ADMINISTRATOR') ? 1 : 0) . ',' . ($user_object->LoginDenied ? 1 : 0) . ');' :
 									'top.content.makeNewEntry("user.gif",' . $user_object->ID . ',' . $user_object->ParentID . ',"' . $user_object->Text . '",false,"' . (($user_object->Type == we_users_user::TYPE_USER_GROUP) ? ("folder") : (($user_object->Type == we_users_user::TYPE_ALIAS) ? ("alias") : ("user"))) . '","' . USER_TABLE . '",' . ($user_object->checkPermission("ADMINISTRATOR") ? 1 : 0) . ',' . ($user_object->LoginDenied ? 1 : 0) . ');');
 
 							switch($user_object->Type){
@@ -790,7 +790,7 @@ function we_cmd(){
 							if($user_object->Type == we_users_user::TYPE_USER){
 								$tree_code .= 'top.content.cgroup=' . $user_object->ParentID . ';';
 							}
-							print we_html_element::jsElement('top.content.usetHot();' . $tree_code . $savemessage . $ret);
+							echo we_html_element::jsElement('top.content.usetHot();' . $tree_code . $savemessage . $ret);
 						}
 					}
 					break;
