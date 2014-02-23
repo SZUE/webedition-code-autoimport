@@ -42,6 +42,7 @@ if(isset($_REQUEST['PHPSESSID'])){
 
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_defines.inc.php');
 if(isset($_REQUEST[SESSION_NAME])){
+	session_name(SESSION_NAME);
 	session_id($_REQUEST[SESSION_NAME]);
 	unset($_REQUEST[SESSION_NAME], $_GET[SESSION_NAME], $_POST[SESSION_NAME]);
 }
