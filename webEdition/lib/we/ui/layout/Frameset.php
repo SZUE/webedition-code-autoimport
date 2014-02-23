@@ -266,5 +266,3 @@ class we_ui_layout_Frameset extends we_ui_abstract_AbstractElement{
 	}
 
 }
-
-?>
