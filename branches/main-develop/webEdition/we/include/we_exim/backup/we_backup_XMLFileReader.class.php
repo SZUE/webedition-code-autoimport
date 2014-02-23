@@ -24,6 +24,8 @@
  */
 abstract class we_backup_XMLFileReader{
 
+	const READ_SIZE = 8192;
+
 	static $file = array();
 
 	static function readLine($filename, &$offset, $lines = 1, $iscompressed = 0){
@@ -59,11 +61,9 @@ abstract class we_backup_XMLFileReader{
 		do{
 			$buffer = '';
 			$count = 0;
-			$rsize = 8192; // read 8KB
 			do{
 
-				$buffer .= $gets(self::$file['fp'], $rsize);
-
+				$buffer .= $gets(self::$file['fp'], self::READ_SIZE);
 				$first = substr($buffer, 0, 256);
 				$end = substr($buffer, -20, 20);
 

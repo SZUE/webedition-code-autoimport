@@ -23,7 +23,7 @@ function we_tag_saveRegisteredUser($attribs){
 	$userempty = weTag_getAttribute('userempty', $attribs);
 	$passempty = weTag_getAttribute('passempty', $attribs);
 	$changesessiondata = weTag_getAttribute('changesessiondata', $attribs, true, true);
-	$default_register = f('SELECT Value FROM ' . CUSTOMER_ADMIN_TABLE . ' WHERE Name="default_saveRegisteredUser_register"', 'Value', $GLOBALS['DB_WE']) == 'true';
+	$default_register = f('SELECT Value FROM ' . CUSTOMER_ADMIN_TABLE . ' WHERE Name="default_saveRegisteredUser_register"') == 'true';
 	$registerallowed = (isset($attribs['register']) ? weTag_getAttribute('register', $attribs, $default_register, true) : $default_register);
 	$protected = makeArrayFromCSV(weTag_getAttribute('protected', $attribs));
 	$allowed = makeArrayFromCSV(weTag_getAttribute('allowed', $attribs));
@@ -34,7 +34,7 @@ function we_tag_saveRegisteredUser($attribs){
 			unset($_REQUEST['s']['Password2']);
 		}
 
-		$dates = array(); //type date
+		$dates = $regs = array(); //type date
 		foreach($_REQUEST['s'] as $n => $v){
 			if(preg_match('/^we_date_([a-zA-Z0-9_]+)_(day|month|year|minute|hour)$/', $n, $regs)){
 				$dates[$regs[1]][$regs[2]] = $v;
@@ -67,7 +67,7 @@ function we_tag_saveRegisteredUser($attribs){
 						$GLOBALS["we_customer_writen"] = true;
 						$GLOBALS['we_customer_written'] = true;
 						if($uID && $changesessiondata){
-							$_SESSION['webuser'] = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . $uID, $GLOBALS['DB_WE']);
+							$_SESSION['webuser'] = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . $uID);
 							$_SESSION['webuser']['registered'] = true;
 
 							$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET MemberSince=UNIX_TIMESTAMP(),LastAccess=UNIX_TIMESTAMP(),LastLogin=UNIX_TIMESTAMP(),
@@ -137,7 +137,7 @@ function we_tag_saveRegisteredUser($attribs){
 			//die neuen daten in die session schreiben
 			$oldReg = $_SESSION['webuser']['registered'];
 			if($changesessiondata){
-				$_SESSION['webuser'] = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($_REQUEST['s']['ID']), $GLOBALS['DB_WE']);
+				$_SESSION['webuser'] = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($_REQUEST['s']['ID']));
 			}
 			//don't set anything that wasn't set before
 			$_SESSION['webuser']['registered'] = $oldReg;
@@ -275,9 +275,9 @@ function we_tag_saveRegisteredUser_processRequest($protected, $allowed){
 	foreach($_REQUEST['s'] as $name => $val){
 		switch($name){
 			case 'Username': ### QUICKFIX !!!
-				$set['Username'] = $val;
-				$set['Path'] = '/' . $val;
-				$set['Text'] = $val;
+				$set['Username'] = we_util::rmPhp($val);
+				$set['Path'] = '/' . we_util::rmPhp($val);
+				$set['Text'] = we_util::rmPhp($val);
 				$set['Icon'] = 'customer.gif';
 				break;
 			case 'Text':
@@ -292,7 +292,7 @@ function we_tag_saveRegisteredUser_processRequest($protected, $allowed){
 				}
 				$set[$name] = ($name == 'Password' ?
 						we_customer_customer::cryptPassword($val) :
-						$val);
+						we_util::rmPhp($val));
 				break;
 		}
 	}

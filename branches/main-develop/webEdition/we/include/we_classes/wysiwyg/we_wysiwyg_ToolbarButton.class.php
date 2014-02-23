@@ -21,10 +21,10 @@
 class we_wysiwyg_ToolbarButton extends we_wysiwyg_ToolbarElement{
 
 	var $classname = __CLASS__;
-	var $tooltiptext = "";
-	var $imgSrc = "";
+	var $tooltiptext = '';
+	var $imgSrc = '';
 
-	function __construct($editor, $cmd, $imgSrc, $tooltiptext = "", $width = 22, $height = 22){
+	function __construct($editor, $cmd, $imgSrc, $tooltiptext = '', $width = 22, $height = 22){
 		$width = we_wysiwyg_editor::$editorType != 'tinyMCE' ? 25 : $width; //block of n buttons = n*22px + 2px left and right border of block
 		parent::__construct($editor, $cmd, $width, $height);
 		if(we_wysiwyg_editor::$editorType != 'tinyMCE'){
@@ -73,94 +73,95 @@ onclick="' . $this->editor->ref . 'Obj.click(\'' . $this->cmd . '\');" /></div>'
 		  )
 		  ); */
 		switch($this->cmd){
-			case "caption":
-			case "removecaption":
-			case "edittable":
+			case 'caption':
+			case 'removecaption':
+			case 'edittable':
 				return we_wysiwyg_editor::$editorType == 'tinyMCE' ? false : parent::hasProp('', $contextMenu) || parent::hasProp('table', $contextMenu);
-			case "inserttable":
-			case "editcell":
-			case "insertcolumnright":
-			case "insertcolumnleft":
-			case "insertrowabove":
-			case "insertrowbelow":
-			case "deleterow":
-			case "deletecol":
-			case "increasecolspan":
-			case "decreasecolspan":
+			case 'inserttable':
+			case 'editcell':
+			case 'insertcolumnright':
+			case 'insertcolumnleft':
+			case 'insertrowabove':
+			case 'insertrowbelow':
+			case 'deleterow':
+			case 'deletecol':
+			case 'increasecolspan':
+			case 'decreasecolspan':
 				return $this->editor->setPlugin('table', parent::hasProp('', $contextMenu) || parent::hasProp('table', $contextMenu));
-			case "editrow":
-			case "deletetable":
+			case 'editrow':
+			case 'deletetable':
 				return $this->editor->setPlugin('table', parent::hasProp('', $contextMenu) || parent::hasProp('table', $contextMenu));
-			case "cut":
-			case "copy":
-			case "paste":
+			case 'cut':
+			case 'copy':
+			case 'paste':
 				return false;
-				//return $this->editor->setPlugin('paste', parent::hasProp('', $contextMenu) || parent::hasProp('copypaste', $contextMenu));
-			case "pastetext":
-			case "pasteword":
-			case "selectall":
+			//return $this->editor->setPlugin('paste', parent::hasProp('', $contextMenu) || parent::hasProp('copypaste', $contextMenu));
+			case 'pastetext':
+			case 'pasteword':
+			case 'selectall':
 				return $this->editor->setPlugin('paste', parent::hasProp('', $contextMenu) || parent::hasProp('copypaste', $contextMenu));
-			case "forecolor":
-			case "backcolor":
+			case 'forecolor':
+			case 'backcolor':
 				return parent::hasProp('', $contextMenu) || parent::hasProp('color', $contextMenu);
-			case "createlink":
-			case "unlink":
+			case 'anchor':
+			case 'createlink':
+			case 'unlink':
 				return parent::hasProp('', $contextMenu) || parent::hasProp('link', $contextMenu);
-			case "insertunorderedlist":
-			case "insertorderedlist":
-			case "indent":
-			case "outdent":
+			case 'insertunorderedlist':
+			case 'insertorderedlist':
+			case 'indent':
+			case 'outdent':
 				$this->editor->setPlugin('lists', parent::hasProp('', $contextMenu) || parent::hasProp('list', $contextMenu));
 				return $this->editor->setPlugin('advlist', parent::hasProp('', $contextMenu) || parent::hasProp('list', $contextMenu));
-			case "blockquote":
+			case 'blockquote':
 				return we_wysiwyg_editor::$editorType == 'tinyMCE' && parent::hasProp('', $contextMenu);
-			case "justifyleft":
-			case "justifycenter":
-			case "justifyright":
-			case "justifyfull":
+			case 'justifyleft':
+			case 'justifycenter':
+			case 'justifyright':
+			case 'justifyfull':
 				return parent::hasProp('', $contextMenu) || parent::hasProp('justify', $contextMenu);
-			case "bold":
-			case "italic":
-			case "underline":
-			case "subscript":
-			case "superscript":
-			case "strikethrough":
-			case "removetags":
-			case "removeformat":
+			case 'bold':
+			case 'italic':
+			case 'underline':
+			case 'subscript':
+			case 'superscript':
+			case 'strikethrough':
+			case 'removetags':
+			case 'removeformat':
 				return parent::hasProp('', $contextMenu) || parent::hasProp('prop', $contextMenu);
-			case "importrtf":
+			case 'importrtf':
 				return we_wysiwyg_editor::$editorType == 'tinyMCE' ? false : parent::hasProp('', $contextMenu);
-			case "absolute":
-			case "insertlayer":
-			case "movebackward":
-			case "moveforward":
+			case 'absolute':
+			case 'insertlayer':
+			case 'movebackward':
+			case 'moveforward':
 				return $this->editor->setPlugin('layer', parent::hasProp('', $contextMenu) || parent::hasProp('layer', $contextMenu));
-			//TODO: we shouldcombine the following command to "insertelements": emotions,insertdate,inserttime,nonbreaking,hr,advhr,specialchar,nbsp?
-			//TODO: we should combine the following command to "direction": ltr,rtl?
-			case "abbr":
-			case "acronym":
-			case "lang":
+			//TODO: we shouldcombine the following command to 'insertelements': emotions,insertdate,inserttime,nonbreaking,hr,advhr,specialchar,nbsp?
+			//TODO: we should combine the following command to 'direction': ltr,rtl?
+			case 'abbr':
+			case 'acronym':
+			case 'lang':
 				return parent::hasProp('', $contextMenu) || parent::hasProp('xhtmlxtras', $contextMenu);
-			case "del":
-			case "ins":
-			case "cite" :
+			case 'del':
+			case 'ins':
+			case 'cite' :
 				return $this->editor->setPlugin('xhtmlxtras', parent::hasProp('', $contextMenu) || parent::hasProp('xhtmlxtras', $contextMenu));
-			case "insertdate":
-			case "inserttime":
+			case 'insertdate':
+			case 'inserttime':
 				return $this->editor->setPlugin('insertdatetime', parent::hasProp('', $contextMenu));
-			case "ltr":
-			case "rtl":
+			case 'ltr':
+			case 'rtl':
 				return $this->editor->setPlugin('directionality', parent::hasProp('', $contextMenu));
-			case "search":
-			case "replace":
+			case 'search':
+			case 'replace':
 				return $this->editor->setPlugin('searchreplace', parent::hasProp('', $contextMenu));
-			case "styleprops":
+			case 'styleprops':
 				return $this->editor->setPlugin('style', parent::hasProp('', $contextMenu));
-			case "nonbreaking":
-			case "hr":
-			case "fullscreen":
+			case 'nonbreaking':
+			case 'hr':
+			case 'fullscreen':
 				return !$this->editor->getIsFrontendEdit() && we_wysiwyg_editor::$editorType == 'tinyMCE' && parent::hasProp('', $contextMenu);
-			case "template":
+			case 'template':
 				return we_wysiwyg_editor::$editorType == 'tinyMCE' && parent::hasProp('', $contextMenu);
 			default:
 				return parent::hasProp('', $contextMenu);

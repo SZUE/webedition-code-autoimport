@@ -265,7 +265,7 @@ function weTag_getAttribute($name, $attribs, $default = '', $isFlag = false, $us
 	}
 	$value = is_array($value) || strlen($value)|| is_bool($value) ? $value : $default;
 
-	return is_array($value) ? $value : htmlspecialchars_decode($value);
+	return is_array($value)||is_bool($value) ? $value : htmlspecialchars_decode($value);
 }
 
 /*

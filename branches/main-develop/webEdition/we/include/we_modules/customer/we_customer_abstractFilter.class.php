@@ -191,7 +191,7 @@ abstract class we_customer_abstractFilter{
 		return $hasPermission;
 	}
 
-	private static function evalSingleFilterQuery($op, $key, $value){
+	public static function evalSingleFilterQuery($op, $key, $value){
 		switch($op){
 			case self::OP_EQ:
 				return '`' . $key . '`="' . $value . '"';

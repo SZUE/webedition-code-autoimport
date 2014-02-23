@@ -1202,7 +1202,7 @@ function weWysiwygSetHiddenText(arg) {
 							"tt_wespellchecker":"' . g_l('wysiwyg', "[spellcheck]") . '",
 							"tt_wevisualaid":"' . g_l('wysiwyg', "[visualaid]") . '",
 							"cm_inserttable":"' . g_l('wysiwyg', "[insert_table]") . '",
-							"cm_table_props":"' . g_l('wysiwyg', "[edit_table]") . '",
+							"cm_table_props":"' . g_l('wysiwyg', "[edit_table]") . '"
 						}}});
 
 					tinyMCE.init({
@@ -1231,7 +1231,7 @@ function weWysiwygSetHiddenText(arg) {
 							"origName" : "' . urlencode($this->origName) . '",
 							"tinyParams" : "' . urlencode($this->tinyParams) . '",
 							"contextmenu" : "' . urlencode(trim($this->restrictContextmenu, ',')) . '",
-							"templates" : "' . $this->templates . '",
+							"templates" : "' . $this->templates . '"
 						},
 						weClassNames_urlEncoded : "' . urlencode($this->cssClassesCSV) . '",
 						weIsFrontend : "' . ($this->isFrontendEdit ? 1 : 0) . '",

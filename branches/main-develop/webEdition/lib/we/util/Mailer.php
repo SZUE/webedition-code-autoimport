@@ -247,39 +247,38 @@ class we_util_Mailer extends Zend_Mail{
 			if($this->isEmbedImages){
 				preg_match_all("/(src|background)=\"(.*)\"/Ui", $this->Body, $images);
 				$images[2] = array_unique($images[2]); //entfernt doppelte Bildereinfügungen #3725
+
 				foreach($images[2] as $i => $url){
-					// only images that from the own server will be embeded
-					if(preg_match('/^[A-z][A-z]*:\/\/' . $_SERVER['SERVER_NAME'] . '/', $url) || !preg_match('/^[A-z][A-z]*:\/\//', $url)){
+					$isBinaryData = preg_match("/image\/(.*);base64,(.*)\"/Ui", $url . '"', $binParts);
+
+					if($isBinaryData){
+						if(in_array($binParts[1], $this->embedImages)){
+							$cid = 'cid:' . $this->doaddAttachmentInline($binParts[2], true, $binParts[1]);
+						} else {
+							continue;
+						}
+					} elseif(preg_match('/^[A-z][A-z]*:\/\/' . $_SERVER['SERVER_NAME'] . '/', $url) || !preg_match('/^[A-z][A-z]*:\/\//', $url)){
 						$filename = basename($url);
-						$directory = str_replace('..', '', dirname($url));
-						if($directory == '.'){
-							$directory = '';
-						}
-						if(($pos = stripos($directory, $_SERVER['SERVER_NAME']))){
-							$directory = substr($directory, (strlen($_SERVER['SERVER_NAME']) + $pos), strlen($directory));
-						}
+						$fileParts = pathinfo($filename);	
+					$ext = $fileParts['extension'];
 
-						$fileParts = pathinfo($filename);
-						$ext = $fileParts['extension'];
-
-						if($this->basedir == ''){
-							$this->basedir = $_SERVER['DOCUMENT_ROOT'];
-						}
-						if(strlen($this->basedir) > 1 && substr($this->basedir, -1) != '/'){
-							$this->basedir .= '/';
-						}
-						if(strlen($directory) > 1 && substr($directory, -1) != '/'){
-							$directory .= '/';
-						}
 						if(in_array($ext, $this->embedImages)){
+							$directory = str_replace('..', '', dirname($url));
+							$directory = $directory == '.' ? '' : $directory;
+							if(($pos = stripos($directory, $_SERVER['SERVER_NAME']))){
+								$directory = substr($directory, (strlen($_SERVER['SERVER_NAME']) + $pos), strlen($directory));
+							}
+							$this->basedir = $this->basedir == '' ? $_SERVER['DOCUMENT_ROOT'] : $this->basedir;
+							$this->basedir .= (strlen($this->basedir) > 1 && substr($this->basedir, -1) != '/') ? '/' : '';
+							$directory .= (strlen($directory) > 1 && substr($directory, -1) != '/') ? '/' : '';
 							$attachmentpath = $this->basedir . $directory . $filename;
 							$attachmentpath = str_replace('//', '/', $attachmentpath);
-
 							$cid = 'cid:' . $this->doaddAttachmentInline($attachmentpath);
-
-							$this->Body = preg_replace('/' . $images[1][$i] . '="' . preg_quote($url, '/') . '"/Ui', $images[1][$i] . '="' . $cid . '"', $this->Body);
+						} else {
+							continue;
 						}
 					}
+					$this->Body = preg_replace('/' . $images[1][$i] . '="' . preg_quote($url, '/') . '"/Ui', $images[1][$i] . '="' . $cid . '"', $this->Body);
 				}
 			}
 
@@ -341,21 +340,26 @@ class we_util_Mailer extends Zend_Mail{
 		$this->AltBody = trim(strip_tags(preg_replace('/<(head|title|style|script)[^>]*>.*?<\/\\1>/s', '', $textpart)));
 	}
 
-	public function doaddAttachmentInline($attachmentpath){
-		if($attachmentpath != ''){
-			$binarydata = we_base_file::load($attachmentpath);
-			$at = new Zend_Mime_Part($binarydata);
+	public function doaddAttachmentInline($attachment, $isBinData = false, $ext = ''){
+		if($attachment != ''){
+			if($isBinData){
+				$at = new Zend_Mime_Part(base64_decode($attachment));
+				$at->id = $at->filename = str_replace('.', '', uniqid('', true));
+				$at->type = self::get_mime_type($ext, $at->filename);
+			} else {
+				$at = new Zend_Mime_Part(we_base_file::load($attachment));
+				$filename = basename($attachment);
+				$rep = str_replace($_SERVER['DOCUMENT_ROOT'], '', $attachment);
+				$at->id = md5($filename);
+				$at->filename = $filename;
+				$fileParts = pathinfo($filename);
+				$ext = $fileParts['extension'];
+				$at->type = self::get_mime_type($ext, $filename, $attachment);
+				$loc = getServerUrl() . $rep;
+				$at->location = $loc;
+			}
 			$at->disposition = Zend_Mime::DISPOSITION_INLINE;
 			$at->encoding = Zend_Mime::ENCODING_BASE64;
-			$filename = basename($attachmentpath);
-			$rep = str_replace($_SERVER['DOCUMENT_ROOT'], '', $attachmentpath);
-			$at->id = md5($filename);
-			$at->filename = $filename;
-			$fileParts = pathinfo($filename);
-			$ext = $fileParts['extension'];
-			$at->type = self::get_mime_type($ext, $filename, $attachmentpath);
-			$loc = getServerUrl() . $rep;
-			$at->location = $loc;
 			$this->inlineAtt[] = $at;
 			return $at->id;
 		}
@@ -391,8 +395,8 @@ class we_util_Mailer extends Zend_Mail{
 	 * Replacement for  finfo_file, available only for >= PHP 5.3
 	 * Da Zend Mail keinen name="yxz" übergibt, kann man den hier einfach anhängen
 	 */
-	public static function get_mime_type($ext, $name, $filepath){
-		if(function_exists('finfo_open')){
+	public static function get_mime_type($ext, $name = '', $filepath = ''){
+		if($filepath && function_exists('finfo_open')){
 			$finfo = finfo_open(FILEINFO_MIME_TYPE);
 			$mime = finfo_file($finfo, $filepath);
 			finfo_close($finfo);

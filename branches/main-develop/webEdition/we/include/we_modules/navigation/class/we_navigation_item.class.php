@@ -42,6 +42,7 @@ class we_navigation_item{
 	var $type;
 	var $level;
 	var $position;
+	static $currentPosition;
 	var $current = false;
 	var $containsCurrent = false;
 	private $visible = true;
@@ -135,7 +136,7 @@ class we_navigation_item{
 		$item->position = count($this->items);
 	}
 
-	function setCurrent(&$weNavigationItems, $self = true){
+	function setCurrent(we_navigation_items &$weNavigationItems, $self = true){
 		if($self){
 			$this->current = true;
 		}
@@ -146,7 +147,7 @@ class we_navigation_item{
 		}
 	}
 
-	function unsetCurrent(&$weNavigationItems, $self = true){
+	function unsetCurrent(we_navigation_items &$weNavigationItems, $self = true){
 		if($self){
 			$this->current = false;
 		}
@@ -168,7 +169,7 @@ class we_navigation_item{
 		$this->containsCurrent = false;
 	}
 
-	function isCurrent($weNavigationItems){
+	function isCurrent(we_navigation_items $weNavigationItems){
 		$thishref = $this->href;
 		if(isset($_SERVER['REQUEST_URI']) && ($this->CurrentOnAnker || $this->CurrentOnUrlPar)){
 			$uri = parse_url(str_replace('&amp;', '&', $_SERVER['REQUEST_URI']));
@@ -243,11 +244,15 @@ class we_navigation_item{
 	}
 
 	function writeItem(&$weNavigationItems, $depth = false){
+		if($this->position == 1){
+			self::$currentPosition = 0;
+		}
 		if(!($depth === false || $this->level <= $depth) || !$this->isVisible()){
 			return '';
 		}
 		$GLOBALS['weNavigationItemArray'][] = &$this;
-
+		//use this since items might be invisible
+		self::$currentPosition++;
 		ob_start();
 		eval('?>' . $weNavigationItems->getTemplate($this));
 		$executeContent = ob_get_contents();

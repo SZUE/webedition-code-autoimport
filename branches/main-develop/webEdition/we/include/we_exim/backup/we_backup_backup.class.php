@@ -510,7 +510,7 @@ class we_backup_backup extends we_backup_base{
 		$this->getFileList($_SERVER['DOCUMENT_ROOT'] . SITE_DIR, true, false);
 		$out = array();
 		foreach($this->file_list as $file){
-			$ct = f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE Path="' . $this->backup_db->escape(str_replace($_SERVER['DOCUMENT_ROOT'] . rtrim(SITE_DIR, '/'), '', $file)) . '"', 'ContentType', $this->backup_db);
+			$ct = f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE Path="' . $this->backup_db->escape(str_replace($_SERVER['DOCUMENT_ROOT'] . rtrim(SITE_DIR, '/'), '', $file)) . '"', '', $this->backup_db);
 			switch($ct){
 				case'image/*':
 				case 'application/*':

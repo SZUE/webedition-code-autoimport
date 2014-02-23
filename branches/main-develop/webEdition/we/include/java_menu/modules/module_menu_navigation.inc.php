@@ -60,7 +60,7 @@ $we_menu_navigation = array(
 		'text' => g_l('navigation', '[menu_delete]'),
 		'parent' => 100,
 		'cmd' => 'module_navigation_delete',
-		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
+		'perm' => 'DELETE_NAVIGATION || EDIT_NAVIGATION || ADMINISTRATOR',
 		'enabled' => 1,
 	),
 	array(

@@ -10,6 +10,12 @@ $this->DefaultValue = '<option>#1</option>
 <option>#2</option>
 <option>#3</option>';
 
-$this->Attributes[] = new weTagData_textAttribute('name', true, '');
-$this->Attributes[] = new weTagData_textAttribute('size', false, '');
-$this->Attributes[] = new weTagData_selectAttribute('reload', weTagData_selectAttribute::getTrueFalse(), false, '');
+$name = new weTagData_textAttribute('name', true, '');
+$size = new weTagData_textAttribute('size', false, '');
+$reload = new weTagData_selectAttribute('reload', weTagData_selectAttribute::getTrueFalse(), false, '');
+$values = new weTagData_textAttribute('values', false, '');
+$this->TypeAttribute = new weTagData_typeAttribute('type', array(
+	new weTagDataOption('', false, '', array(), array($name, $size, $reload)),
+	new weTagDataOption('csv', false, '', array($name, $size, $reload, $values), array())), false, '');
+
+$this->Attributes = array($name, $size, $reload, $values);
