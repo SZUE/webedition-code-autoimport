@@ -45,6 +45,9 @@ if(isset($_REQUEST[SESSION_NAME])){
 	session_name(SESSION_NAME);
 	session_id($_REQUEST[SESSION_NAME]);
 	unset($_REQUEST[SESSION_NAME], $_GET[SESSION_NAME], $_POST[SESSION_NAME]);
+	if(!isset($_SESSION)){
+		session_start();
+	}
 }
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 require_once(LIVEUPDATE_DIR . 'classes/liveUpdateHttp.class.php');
