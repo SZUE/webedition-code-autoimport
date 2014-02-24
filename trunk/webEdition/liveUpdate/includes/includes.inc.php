@@ -31,16 +31,16 @@ if(function_exists('we_error_setHandleAll')){
 if(!defined('WE_ERROR_HANDLER_SET')){
 	we_error_handler();
 }
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_defines.inc.php');
 
 //FIXME: remove in 6.4
-if(isset($_REQUEST['PHPSESSID'])){
+if(!isset($_COOKIE[SESSION_NAME]) && isset($_REQUEST['PHPSESSID'])){
 	session_name('PHPSESSID');
 	session_id($_REQUEST['PHPSESSID']);
 	unset($_REQUEST['PHPSESSID'], $_GET['PHPSESSID'], $_POST['PHPSESSID']);
 	session_start();
 }
 
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_defines.inc.php');
 if(isset($_REQUEST[SESSION_NAME])){
 	session_name(SESSION_NAME);
 	session_id($_REQUEST[SESSION_NAME]);
