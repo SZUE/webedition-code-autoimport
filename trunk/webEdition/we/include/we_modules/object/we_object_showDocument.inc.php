@@ -67,14 +67,14 @@ if(($_userID != 0 && $_userID != $_SESSION['user']['ID']) || (isset($_REQUEST['w
 
 	$we_dt = $_SESSION['weS']['we_data'][$we_transaction];
 
-	if(isset($_SESSION['weS']['we_data'][$we_transaction]['0']['Templates'])){
-		$tids = makeArrayFromCSV($_SESSION['weS']['we_data'][$we_transaction]['0']['Templates']); //	get all templateIds.
-		$workspaces = makeArrayFromCSV($_SESSION['weS']['we_data'][$we_transaction]['0']['Workspaces']);
-		if($_SESSION['weS']['we_data'][$we_transaction]['0']['ExtraWorkspaces']){
-			$workspaces[] = $_SESSION['weS']['we_data'][$we_transaction]['0']['ExtraWorkspaces'];
+	if(isset($_SESSION['weS']['we_data'][$we_transaction][0]['Templates'])){
+		$tids = makeArrayFromCSV($_SESSION['weS']['we_data'][$we_transaction][0]['Templates']); //	get all templateIds.
+		$workspaces = makeArrayFromCSV($_SESSION['weS']['we_data'][$we_transaction][0]['Workspaces']);
+		if($_SESSION['weS']['we_data'][$we_transaction][0]['ExtraWorkspaces']){
+			$workspaces[] = $_SESSION['weS']['we_data'][$we_transaction][0]['ExtraWorkspaces'];
 		}
-		if($_SESSION['weS']['we_data'][$we_transaction]['0']['ExtraTemplates']){
-			$tids[] = $_SESSION['weS']['we_data'][$we_transaction]['0']['ExtraTemplates'];
+		if($_SESSION['weS']['we_data'][$we_transaction][0]['ExtraTemplates']){
+			$tids[] = $_SESSION['weS']['we_data'][$we_transaction][0]['ExtraTemplates'];
 		}
 
 		$tmpDB = new DB_WE();
@@ -82,29 +82,24 @@ if(($_userID != 0 && $_userID != $_SESSION['user']['ID']) || (isset($_REQUEST['w
 		//	determine Path from last opened wE-Document
 		$_lastDoc = isset($_SESSION['weS']['last_webEdition_document']) ? $_SESSION['weS']['last_webEdition_document'] : array();
 		if(isset($_lastDoc['Path'])){
-
-			if(!empty($workspaces)){ // get the correct template
+			if($workspaces){ // get the correct template
 				//	Select a matching workspace.
 				foreach($workspaces as $workspace){
-
 					$workspace = id_to_path($workspace, FILE_TABLE, $tmpDB);
 
-					if($workspace != '' && strpos($_lastDoc['Path'], $workspace) === 0 && $tids){
-
+					if($workspace && strpos($_lastDoc['Path'], $workspace) === 0 && $tids){
 						//	init document
 						$tid = $tids[0];
-						$GLOBALS['we_doc']->we_initSessDat($we_dt);
-						$_REQUEST['we_objectID'] = $_SESSION['weS']['we_data'][$we_transaction][0]['ID'];
+/*						$GLOBALS['we_doc']->we_initSessDat($we_dt);
+						$_REQUEST['we_objectID'] = $_SESSION['weS']['we_data'][$we_transaction][0]['ID'];*/
 						break;
 					}
 				}
-				unset($tmpDB);
 			}
 		}
 		if(!isset($tid)){
-
 			foreach($tids as $ltid){
-				$path = id_to_path($ltid, TEMPLATES_TABLE);
+				$path = id_to_path($ltid, TEMPLATES_TABLE, $tmpDB);
 				if($path && $path != '/'){
 					$tid = $ltid;
 					break;
@@ -115,7 +110,6 @@ if(($_userID != 0 && $_userID != $_SESSION['user']['ID']) || (isset($_REQUEST['w
 	}
 
 	if(isset($tid)){
-
 		//	init document
 		$GLOBALS['we_doc']->we_initSessDat($we_dt);
 		$_REQUEST['we_objectID'] = $_SESSION['weS']['we_data'][$we_transaction][0]['ID'];
@@ -191,7 +185,7 @@ if(isset($GLOBALS['we_obj']) && $GLOBALS['we_obj']->documentCustomerFilter && !i
 			if(($_errorDocPath = id_to_path($_errorDocId, FILE_TABLE))){ // use given document instead !
 				if($_errorDocId){
 					unset($_errorDocId);
-					@include($_SERVER['DOCUMENT_ROOT'] . $_errorDocPath);
+					include($_SERVER['DOCUMENT_ROOT'] . $_errorDocPath);
 					unset($_errorDocPath);
 				}
 				return;
@@ -203,7 +197,7 @@ if(isset($GLOBALS['we_obj']) && $GLOBALS['we_obj']->documentCustomerFilter && !i
 }
 
 if(!isset($pid) || !($pid)){
-	$pid = f('SELECT ParentID FROM ' . FILE_TABLE . ' WHERE Path="' . $DB_WE->escape($_SERVER['SCRIPT_NAME']) . '"', 'ParentID', $DB_WE);
+	$pid = f('SELECT ParentID FROM ' . FILE_TABLE . ' WHERE Path="' . $DB_WE->escape($_SERVER['SCRIPT_NAME']) . '"');
 }
 
 if(!isset($tid) || !($tid)){
@@ -211,7 +205,7 @@ if(!isset($tid) || !($tid)){
 }
 
 if(!$tid){
-	$tids = makeArrayFromCSV(f('SELECT Templates FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($GLOBALS['we_obj']->TableID), 'Templates', $DB_WE));
+	$tids = makeArrayFromCSV(f('SELECT Templates FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($GLOBALS['we_obj']->TableID)));
 	if(!empty($tids)){
 		$tid = $tids[0];
 	}
@@ -219,20 +213,18 @@ if(!$tid){
 
 if(!$tid){
 	we_html_tools::setHttpCode(404);
-
-	$path = id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE, FILE_TABLE);
-	if($path){
+	if(($path = id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE, FILE_TABLE))){
 		header('Location: ' . $path);
 	}
 	exit;
 }
 
-$tmplPath = preg_replace('/.tmpl$/i', '.php', f('SELECT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($tid), 'Path', $DB_WE));
+$tmplPath = preg_replace('/.tmpl$/i', '.php', f('SELECT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($tid)));
 
 if((!defined('WE_CONTENT_TYPE_SET')) && isset($GLOBALS['we_doc']->Charset) && $GLOBALS['we_doc']->Charset){ //	send charset which might be determined in template
 	define('WE_CONTENT_TYPE_SET', 1);
 	//	@ -> to aware of unproper use of this element, f. ex in include-File
-	@we_html_tools::headerCtCharset('text/html', $GLOBALS['we_doc']->Charset);
+	we_html_tools::headerCtCharset('text/html', $GLOBALS['we_doc']->Charset);
 }
 
 //	If in webEdition, parse the document !!!!
