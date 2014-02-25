@@ -39,15 +39,15 @@ if(!isset($_COOKIE[SESSION_NAME]) && isset($_REQUEST['PHPSESSID'])){
 	session_id($_REQUEST['PHPSESSID']);
 	unset($_REQUEST['PHPSESSID'], $_GET['PHPSESSID'], $_POST['PHPSESSID']);
 	session_start();
+	define('NO_SESS', 1);
 }
 
 if(isset($_REQUEST[SESSION_NAME])){
 	session_name(SESSION_NAME);
 	session_id($_REQUEST[SESSION_NAME]);
 	unset($_REQUEST[SESSION_NAME], $_GET[SESSION_NAME], $_POST[SESSION_NAME]);
-	if(!isset($_SESSION)){
-		session_start();
-	}
+	session_start();
+	define('NO_SESS', 1);
 }
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 require_once(LIVEUPDATE_DIR . 'classes/liveUpdateHttp.class.php');
