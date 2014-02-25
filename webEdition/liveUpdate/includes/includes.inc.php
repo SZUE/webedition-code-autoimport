@@ -33,12 +33,13 @@ if(!defined('WE_ERROR_HANDLER_SET')){
 }
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_defines.inc.php');
 
-//FIXME: remove in 6.4
 if(!isset($_COOKIE[SESSION_NAME]) && isset($_REQUEST['PHPSESSID'])){
 	session_name('PHPSESSID');
 	session_id($_REQUEST['PHPSESSID']);
 	unset($_REQUEST['PHPSESSID'], $_GET['PHPSESSID'], $_POST['PHPSESSID']);
 	session_start();
+	//rename session
+	session_name(SESSION_NAME);
 	define('NO_SESS', 1);
 }
 
