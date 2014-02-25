@@ -120,22 +120,23 @@ function save(){
 		if((!_bPrev&&sCsv!=_sInitCsv_)||(_bPrev&&sCsv!=_sLastPreviewCsv)){
 			refresh(false);
 		}
-		" . we_message_reporting::getShowMessageCall(
-		g_l('cockpit', '[prefs_saved_successfully]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
+		" . we_message_reporting::getShowMessageCall(g_l('cockpit', '[prefs_saved_successfully]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
 		self.close();
 	} else {
-		" . we_message_reporting::getShowMessageCall(
-		g_l('cockpit', '[no_type_selected]'), we_message_reporting::WE_MESSAGE_ERROR) . "
+		" . we_message_reporting::getShowMessageCall(g_l('cockpit', '[no_type_selected]'), we_message_reporting::WE_MESSAGE_ERROR) . "
 	}
 }
 
 function isNoError(){
-	chbx_type_checked = false;
-	for( var chbx_type_i = 0; chbx_type_i < document.we_form.chbx_type.length; chbx_type_i++) {
-		if(document.we_form.chbx_type[chbx_type_i].checked) chbx_type_checked = true;
+	elem=document.getElementsByName('chbx_type');
+	for( var i = 0; i < elem.length; i++) {
+		if(elem[i].checked){
+			return true;
+		}
 	}
-	return chbx_type_checked;
+	return false;
 }
+
 function preview(){
 	if(isNoError()) {
 		_bPrev=true;
@@ -179,8 +180,7 @@ if(!empty($users)){
 	$db = new DB_WE();
 	foreach($users as $user){
 		$foo = getHash("SELECT ID,Path,Icon FROM " . USER_TABLE . " WHERE ID=" . intval($user), $db);
-		$content .= '<tr><td><img src="' . ICON_DIR . $foo["Icon"] . '" width="16" height="18" /></td><td class="defaultfont">' . $foo["Path"] . '</td><td>' . we_html_button::create_button(
-				"image:btn_function_trash", "javascript:delUser('" . $user . "');") . '</td></tr>';
+		$content .= '<tr><td><img src="' . ICON_DIR . $foo["Icon"] . '" width="16" height="18" /></td><td class="defaultfont">' . $foo["Path"] . '</td><td>' . we_html_button::create_button("image:btn_function_trash", "javascript:delUser('" . $user . "');") . '</td></tr>';
 	}
 } else {
 	$content .= '<tr><td><img src="' . ICON_DIR . "user.gif" . '" width="16" height="18" /></td><td class="defaultfont">' . g_l('cockpit', '[all_users]') . '</td><td></td><td></td></tr>';
@@ -210,16 +210,16 @@ if($sType{0} == "0" && $sType{1} == "0" && $sType{2} == "0" && $sType{3} == "0")
 }
 
 $oChbxDocs = (permissionhandler::hasPerm('CAN_SEE_DOCUMENTS') ?
-		we_html_forms::checkbox($value = 0, $checked = $sType{0}, $name = "chbx_type", $text = g_l('cockpit', '[documents]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined('FILE_TABLE') && permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")), $description = "", $type = 0, $width = 0) :
+		we_html_forms::checkbox(1, $sType{0}, "chbx_type", g_l('cockpit', '[documents]'), true, "defaultfont", "", !(defined('FILE_TABLE') && permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")), '', 0, 0) :
 		'');
 $oChbxTmpl = (permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE ?
-		we_html_forms::checkbox($value = 0, $checked = $sType{1}, $name = "chbx_type", $text = g_l('cockpit', '[templates]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined("TEMPLATES_TABLE") && permissionhandler::hasPerm('CAN_SEE_TEMPLATES')), $description = "", $type = 0, $width = 0) :
+		we_html_forms::checkbox(1, $sType{1}, "chbx_type", g_l('cockpit', '[templates]'), true, "defaultfont", "", !(defined("TEMPLATES_TABLE") && permissionhandler::hasPerm('CAN_SEE_TEMPLATES')), "", 0, 0) :
 		'');
 $oChbxObjs = (permissionhandler::hasPerm('CAN_SEE_OBJECTS') ?
-		we_html_forms::checkbox($value = 0, $checked = $sType{2}, $name = "chbx_type", $text = g_l('cockpit', '[objects]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined("OBJECT_FILES_TABLE") && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES')), $description = "", $type = 0, $width = 0) :
+		we_html_forms::checkbox(1, $sType{2}, "chbx_type", g_l('cockpit', '[objects]'), true, "defaultfont", "", !(defined("OBJECT_FILES_TABLE") && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES')), "", 0, 0) :
 		'');
 $oChbxCls = (permissionhandler::hasPerm('CAN_SEE_CLASSES') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE ?
-		we_html_forms::checkbox($value = 0, $checked = $sType{3}, $name = "chbx_type", $text = g_l('cockpit', '[classes]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined("OBJECT_TABLE") && permissionhandler::hasPerm('CAN_SEE_OBJECTS')), $description = "", $type = 0, $width = 0) :
+		we_html_forms::checkbox(1, $sType{3}, "chbx_type", g_l('cockpit', '[classes]'), true, "defaultfont", "", !(defined("OBJECT_TABLE") && permissionhandler::hasPerm('CAN_SEE_OBJECTS')), "", 0, 0) :
 		'');
 
 $oDbTableType = new we_html_table(array(
@@ -244,8 +244,8 @@ foreach($aLangDate as $k => $v){
 }
 $oSctDate->selectOption($iDate);
 
-$oChbxShowMfdBy = we_html_forms::checkbox($value = 0, $checked = $sDisplayOpt{0}, $name = "chbx_display_opt", $text = g_l('cockpit', '[modified_by]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
-$oChbxShowDate = we_html_forms::checkbox($value = 0, $checked = $sDisplayOpt{1}, $name = "chbx_display_opt", $text = g_l('cockpit', '[date_last_modification]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
+$oChbxShowMfdBy = we_html_forms::checkbox(0, $sDisplayOpt{0}, "chbx_display_opt", g_l('cockpit', '[modified_by]'), true, "defaultfont", "", false, "", 0, 0);
+$oChbxShowDate = we_html_forms::checkbox(0, $sDisplayOpt{1}, "chbx_display_opt", g_l('cockpit', '[date_last_modification]'), true, "defaultfont", "", false, "", 0, 0);
 $oSctNumEntries = new we_html_select(array("name" => "sct_amount_entries", "size" => 1, "class" => "defaultfont"));
 $oSctNumEntries->insertOption(0, 0, g_l('cockpit', '[all]'));
 for($iCurrEntry = 1; $iCurrEntry <= 50; $iCurrEntry++){
