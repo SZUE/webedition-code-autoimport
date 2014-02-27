@@ -22,19 +22,19 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 we_html_tools::protect();
-echo we_html_tools::getHtmlTop(g_l('global', '[question]'));
+echo we_html_tools::getHtmlTop(g_l('global', '[question]')) .
+ we_html_element::jsScript(JS_DIR . 'keyListener.js');
 
 $_we_cmd6 = "";
 if(isset($_REQUEST['we_cmd'][6])){
 	$_we_cmd6 = $_REQUEST['we_cmd'][6];
 }
 
-if($nrTemplatesUsedByThisTemplate){
+if($isTemplatesUsedByThisTemplate){
 	$alerttext = g_l('alert', "[template_save_warning2]");
 } else {
 	$alerttext = sprintf((($nrDocsUsedByThisTemplate == 1) ? g_l('alert', "[template_save_warning1]") : g_l('alert', "[template_save_warning]")), $nrDocsUsedByThisTemplate);
 }
-echo we_html_element::jsScript(JS_DIR . 'keyListener.js');
 ?>
 <script type="text/javascript"><!--
 

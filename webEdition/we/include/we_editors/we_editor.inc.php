@@ -413,8 +413,8 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 					$TEMPLATE_SAVE_CODE2 = true;
 					$arr = we_rebuild_base::getTemplAndDocIDsOfTemplate($we_doc->ID, true, true);
 					$nrDocsUsedByThisTemplate = count($arr['documentIDs']);
-					$nrTemplatesUsedByThisTemplate = count($arr['templateIDs']);
-					$somethingNeedsToBeResaved = ($nrDocsUsedByThisTemplate + $nrTemplatesUsedByThisTemplate) > 0;
+					$isTemplatesUsedByThisTemplate = f('SELECT 1 FROM ' . TEMPLATES_TABLE . ' WHERE MasterTemplateID=' .$we_doc->ID);
+					$somethingNeedsToBeResaved = ($nrDocsUsedByThisTemplate + $isTemplatesUsedByThisTemplate) > 0;
 
 					if($_REQUEST['we_cmd'][2]){
 //this is the second call to save_document (see next else command)
