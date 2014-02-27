@@ -332,7 +332,7 @@ class we_listview extends listviewBase{
 					$tmp = ($this->DB_WE->f('BDID'));
 					$this->Record[$this->DB_WE->f('Name')] = $tmp ? $tmp : $this->DB_WE->f('Dat');
 				}
-				$tmp = getHash('SELECT * FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $this->DB_WE);
+				$tmp = getHash('SELECT * FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $this->DB_WE, MYSQL_ASSOC);
 				foreach($tmp as $key => $val){
 					$this->Record['wedoc_' . $key] = $val;
 				}

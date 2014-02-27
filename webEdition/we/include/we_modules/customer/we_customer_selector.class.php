@@ -122,7 +122,7 @@ class we_customer_selector extends we_users_selector{
 			$this->db->query('SELECT ' . $fields . ' FROM ' . CUSTOMER_TABLE . ' WHERE ' .
 					($optionalID ? ' ID=' . intval($optionalID) : '1') . ' AND ' .
 					(!permissionhandler::hasPerm("ADMINISTRATOR") && $_SESSION['user']['workSpace'][CUSTOMER_TABLE] ? $_SESSION['user']['workSpace'][CUSTOMER_TABLE] : '1 ') .
-					' GROUP BY ' . $grp . (count($grouparr) ? ($level != 0 ? ',ID' : '') : 'ID') . (count($havingarr) ? ' HAVING ' . implode(' AND ', $havingarr) : '') .
+					' GROUP BY ' . $grp . ($grouparr ? ($level == $levelcount? ',ID' : '') : 'ID') . ($havingarr ? ' HAVING ' . implode(' AND ', $havingarr) : '') .
 					' ORDER BY ' . implode(',', $orderarr) . we_customer_treeLoader::getSortOrder($settings, ','));
 			return ($level < $levelcount);
 		} else {
