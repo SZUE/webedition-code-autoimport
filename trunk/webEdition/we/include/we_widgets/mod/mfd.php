@@ -31,10 +31,10 @@ if(!isset($aCols) || count($aCols) < 5){
 }
 $sTypeBinary = $aCols[0];
 $pos = 0;
-$bTypeDoc = permissionhandler::hasPerm('CAN_SEE_DOCUMENTS') && isset($sTypeBinary{$pos++})&&($sTypeBinary{$pos++});
-$bTypeTpl = permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && isset($sTypeBinary{$pos++})&&($sTypeBinary{$pos++});
-$bTypeObj = permissionhandler::hasPerm('CAN_SEE_OBJECTS') && isset($sTypeBinary{$pos++})&&($sTypeBinary{$pos++});
-$bTypeCls = permissionhandler::hasPerm('CAN_SEE_CLASSES') && isset($sTypeBinary{$pos++})&&($sTypeBinary{$pos++});
+$bTypeDoc = permissionhandler::hasPerm('CAN_SEE_DOCUMENTS') && isset($sTypeBinary{$pos++}) && ($sTypeBinary{$pos++});
+$bTypeTpl = permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && isset($sTypeBinary{$pos++}) && ($sTypeBinary{$pos++});
+$bTypeObj = permissionhandler::hasPerm('CAN_SEE_OBJECTS') && isset($sTypeBinary{$pos++}) && ($sTypeBinary{$pos++});
+$bTypeCls = permissionhandler::hasPerm('CAN_SEE_CLASSES') && isset($sTypeBinary{$pos++}) && ($sTypeBinary{$pos++});
 
 $iDate = intval($aCols[1]);
 
@@ -81,14 +81,18 @@ $bDateLastMfd = $sDisplayOpt{1};
 $aUsers = makeArrayFromCSV($aCols[4]);
 $db = $GLOBALS['DB_WE'];
 
+if(!permissionhandler::hasPerm('ADMINISTRATOR')){
+	$aUsers = array($_SESSION['user']['ID']);
+}
 foreach($aUsers as $uid){
 	$_users_where[] = '"' . basename(id_to_path($uid, USER_TABLE)) . '"';
 }
+
 if($aUsers){
 	$where[] = 'UserName IN (' . implode(',', $_users_where) . ')';
 }
 
-if(defined("FILE_TABLE") && $bTypeDoc && permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
+if(defined('FILE_TABLE') && $bTypeDoc && permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
 	$doctable[] = '"' . stripTblPrefix(FILE_TABLE) . '"';
 	$paths = array();
 	foreach(makeArrayFromCSV(get_ws(FILE_TABLE)) as $id){
@@ -130,7 +134,7 @@ $queries = array();
 foreach($tables as $ctable => $ids){
 	$table = addTblPrefix($ctable);
 	$paths = ((!permissionhandler::hasPerm('ADMINISTRATOR') || ($table != TEMPLATES_TABLE && (defined('OBJECT_TABLE') ? ($table != OBJECT_TABLE) : true))) && isset($workspace[$table]) ?
-			$workspace[$table] : '');
+					$workspace[$table] : '');
 
 	$queries[] = '(SELECT ID,Path,Icon,Text,ContentType,ModDate,CreatorID,Owners,RestrictOwners,"' . $ctable . '" AS ctable FROM ' . $db->escape($table) . ' WHERE ID IN(' . implode(',', $ids) . ')' . ($paths ? (' AND (' . $paths . ')') : '') . ')';
 }
@@ -148,17 +152,17 @@ if($queries){
 		$table = addTblPrefix($db->f('ctable'));
 
 		$show = ($table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && ($table == OBJECT_FILES_TABLE)) ?
-				we_history::userHasPerms($file['CreatorID'], $file['Owners'], $file['RestrictOwners']) :
-				true);
+						we_history::userHasPerms($file['CreatorID'], $file['Owners'], $file['RestrictOwners']) :
+						true);
 
 		if($show){
 			$isOpen = $hist['isOpen'];
 			$lastModified .= '<tr><td width="20" height="20" valign="middle" nowrap><img src="' . ICON_DIR . $file['Icon'] . '" />' . we_html_tools::getPixel(4, 1) . '</td>' .
-				'<td valign="middle" class="middlefont" ' . ($isOpen ? 'style="color:red;"' : '') . '>' .
-				($isOpen ? '' : '<a href="javascript:top.weEditorFrameController.openDocument(\'' . $table . '\',' . $file['ID'] . ',\'' . $file['ContentType'] . '\');" title="' . $file['Path'] . '" style="color:#000000;text-decoration:none;">') . $file['Path'] . ($isOpen ? '' : '</a>') . '</td>' .
-				($bMfdBy ? '<td>' . we_html_tools::getPixel(5, 1) . '</td><td class="middlefont" nowrap>' . $hist['UserName'] . (($bDateLastMfd) ? ',' : '') . '</td>' : '') .
-				($bDateLastMfd ? '<td>' . we_html_tools::getPixel(5, 1) . '</td><td class="middlefont" nowrap>' . date(g_l('date', '[format][default]'), $file['ModDate']) . '</td>' : '') .
-				'</tr>';
+					'<td valign="middle" class="middlefont" ' . ($isOpen ? 'style="color:red;"' : '') . '>' .
+					($isOpen ? '' : '<a href="javascript:top.weEditorFrameController.openDocument(\'' . $table . '\',' . $file['ID'] . ',\'' . $file['ContentType'] . '\');" title="' . $file['Path'] . '" style="color:#000000;text-decoration:none;">') . $file['Path'] . ($isOpen ? '' : '</a>') . '</td>' .
+					($bMfdBy ? '<td>' . we_html_tools::getPixel(5, 1) . '</td><td class="middlefont" nowrap>' . $hist['UserName'] . (($bDateLastMfd) ? ',' : '') . '</td>' : '') .
+					($bDateLastMfd ? '<td>' . we_html_tools::getPixel(5, 1) . '</td><td class="middlefont" nowrap>' . date(g_l('date', '[format][default]'), $file['ModDate']) . '</td>' : '') .
+					'</tr>';
 
 			$j++;
 		}
