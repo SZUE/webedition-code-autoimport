@@ -273,22 +273,17 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 		// Because of this reason the following code must be putted out directly and(!)
 		// echoed in templates with CacheType = document
 		$pre_code = '<?php
-	// Activate the webEdition error handler
-	require_once($_SERVER[\'DOCUMENT_ROOT\'].\'/webEdition/we/include/we_error_handler.inc.php\');
-	we_error_handler(false);
-
-	require_once($_SERVER[\'DOCUMENT_ROOT\'].\'/webEdition/we/include/we_global.inc.php\');
-	require_once($_SERVER[\'DOCUMENT_ROOT\'].\'/webEdition/we/include/we_tag.inc.php\');
-	we_templateInit();?>';
+require_once($_SERVER[\'DOCUMENT_ROOT\'].\'/webEdition/we/include/we_global.inc.php\');
+we_templateInit();?>';
 
 
 		if($this->hasStartAndEndTag('html', $code) && $this->hasStartAndEndTag('head', $code) && $this->hasStartAndEndTag('body', $code)){
-			$pre_code .= '<?php $GLOBALS[\'WE_HTML_HEAD_BODY\'] = true; ?>';
+			$pre_code .= '<?php $GLOBALS[\'WE_HTML_HEAD_BODY\']=true; ?>';
 
 			//#### parse base href
 			$code = str_replace(array('?>', '=>'), array('__WE_?__WE__', '__WE_=__WE__'), $code);
 
-			$code = preg_replace('%(<body[^>]*)>%i', '\\1<?php echo (isset($GLOBALS[\'we_editmode\']) && $GLOBALS[\'we_editmode\']? \' onunload="doUnload()">\':\'>\'); we_templatePreContent();?>', $code);
+			$code = preg_replace('%(<body[^>]*)>%i', '\\1<?php echo (isset($GLOBALS[\'we_editmode\']) && $GLOBALS[\'we_editmode\']? \' onunload="doUnload()">\':\'>\'); we_templatePreContent(true);?>', $code);
 
 			$code = str_replace(array('__WE_?__WE__', '__WE_=__WE__'), array('?>', '=>'), $code);
 			$code = str_ireplace(array('</head>', '</body>'), array('<?php we_templateHead();?></head>', '<?php we_templatePostContent(true);?></body>'), $code);
