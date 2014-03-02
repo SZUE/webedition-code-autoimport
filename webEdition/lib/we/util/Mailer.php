@@ -259,7 +259,7 @@ class we_util_Mailer extends Zend_Mail{
 						}
 					} elseif(preg_match('/^[A-z][A-z]*:\/\/' . $_SERVER['SERVER_NAME'] . '/', $url) || !preg_match('/^[A-z][A-z]*:\/\//', $url)){
 						$filename = basename($url);
-						$fileParts = pathinfo($filename);	
+						$fileParts = pathinfo($filename);
 					$ext = $fileParts['extension'];
 
 						if(in_array($ext, $this->embedImages)){

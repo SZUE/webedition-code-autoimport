@@ -202,21 +202,21 @@ $applet = we_html_element::htmlApplet(array(
 $charset = '';
 
 //FIXME: charset
-print we_html_element::htmlDocType() . we_html_element::htmlHtml(
-		we_html_element::htmlHead(
-			we_html_element::htmlMeta(array("http-equiv" => "content-type", "content" => "text/html; charset=" . $GLOBALS['WE_BACKENDCHARSET'])) .
-			we_html_element::htmlTitle('start wePlugin') .
-			$js) .
-		we_html_element::htmlBody(array("bgcolor" => "white", "onload" => "to=window.setTimeout('pingPlugin()',5000);"), we_html_element::htmlDiv(array("id" => "debug"), "") .
-			we_html_element::htmlHidden(array("name" => "hm", "value" => 0)) .
-			$applet .
-			we_html_element::htmlForm(array("name" => "we_form", "target" => "load", "action" => WEBEDITION_DIR . "editors/content/eplugin/weplugin_cmd.php", "method" => "post", "accept-charset" => $charset), we_html_element::htmlHidden(array("name" => "we_cmd[0]", "value" => "")) .
-				we_html_element::htmlHidden(array("name" => "we_cmd[1]", "value" => "")) .
-				we_html_element::htmlHidden(array("name" => "we_cmd[2]", "value" => "")) .
-				we_html_element::htmlHidden(array("name" => "we_cmd[3]", "value" => "")) .
-				we_html_element::htmlHidden(array("name" => "we_cmd[4]", "value" => "")) . "\n"
-				//we_html_element::htmlInput(array("name"=>"wePluginUpload","type"=>"file","value"=>""))."\n"
-			)
-			//.we_html_element::htmlInput(array("type"=>"button","onclick"=>"setFile('file');"))
+echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
+	we_html_element::htmlHead(
+		we_html_element::htmlMeta(array("http-equiv" => "content-type", "content" => "text/html; charset=" . $GLOBALS['WE_BACKENDCHARSET'])) .
+		we_html_element::htmlTitle('start wePlugin') .
+		$js) .
+	we_html_element::htmlBody(array("bgcolor" => "white", "onload" => "to=window.setTimeout('pingPlugin()',5000);"), we_html_element::htmlDiv(array("id" => "debug"), "") .
+		we_html_element::htmlHidden(array("name" => "hm", "value" => 0)) .
+		$applet .
+		we_html_element::htmlForm(array("name" => "we_form", "target" => "load", "action" => WEBEDITION_DIR . "editors/content/eplugin/weplugin_cmd.php", "method" => "post", "accept-charset" => $charset), we_html_element::htmlHidden(array("name" => "we_cmd[0]", "value" => "")) .
+			we_html_element::htmlHidden(array("name" => "we_cmd[1]", "value" => "")) .
+			we_html_element::htmlHidden(array("name" => "we_cmd[2]", "value" => "")) .
+			we_html_element::htmlHidden(array("name" => "we_cmd[3]", "value" => "")) .
+			we_html_element::htmlHidden(array("name" => "we_cmd[4]", "value" => "")) . "\n"
+			//we_html_element::htmlInput(array("name"=>"wePluginUpload","type"=>"file","value"=>""))."\n"
 		)
+		//.we_html_element::htmlInput(array("type"=>"button","onclick"=>"setFile('file');"))
+	)
 );

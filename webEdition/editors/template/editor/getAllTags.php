@@ -24,7 +24,6 @@ require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 header('Content-Type: text/xml');
 echo '<?xml version="1.0" encoding="utf-8"?>
 <tags>
@@ -32,6 +31,6 @@ echo '<?xml version="1.0" encoding="utf-8"?>
 $allWeTags = weTagWizard::getExistingWeTags();
 foreach($allWeTags as $tag){
 	$tagData = weTagData::getTagData($tag);
-	echo  "\t". '<tag needsEndtag="'.($tagData->needsEndTag()? "true" : "false").'" name="' . $tagData->getName() . '" />'."\n";
+	echo "\t" . '<tag needsEndtag="' . ($tagData->needsEndTag() ? "true" : "false") . '" name="' . $tagData->getName() . '" />' . "\n";
 }
 echo "</tags>\n";

@@ -161,7 +161,7 @@ class we_version{
 		$data = array();
 		if(permissionhandler::hasPerm("REBUILD_META")){
 			$foldersQuery = count($metaFolders) ? ' AND ParentId IN(' . implode(",", $metaFolders) . ') ' : '';
-			$GLOBALS['DB_WE']->query("SELECT ID,path FROM " . FILE_TABLE . " WHERE ContentType='image/*' AND (Extension='.jpg' OR Extension='jpeg' OR Extension='wbmp') $foldersQuery");
+			$GLOBALS['DB_WE']->query("SELECT ID,path FROM " . FILE_TABLE . " WHERE ContentType='" . we_base_ContentTypes::IMAGE . "' AND (Extension='.jpg' OR Extension='jpeg' OR Extension='wbmp') $foldersQuery");
 			while($GLOBALS['DB_WE']->next_record()){
 
 				$data[] = array(
@@ -285,7 +285,7 @@ class we_version{
 
 			$query = ($_cat_query ? " AND $_cat_query " : "") . ($_doctype_query ? " AND $_doctype_query " : "") . ($_folders_query ? " AND $_folders_query " : "") . ($_template_query ? " AND $_template_query " : "");
 
-			$GLOBALS['DB_WE']->query("SELECT ID,ClassName,Path FROM " . FILE_TABLE . " WHERE IsDynamic=0 AND Published > 0 AND ContentType='text/webedition' $query ORDER BY ID");
+			$GLOBALS['DB_WE']->query("SELECT ID,ClassName,Path FROM " . FILE_TABLE . " WHERE IsDynamic=0 AND Published > 0 AND ContentType='" . we_base_ContentTypes::WEDOCUMENT . "' $query ORDER BY ID");
 			while($GLOBALS['DB_WE']->next_record()){
 
 				$dat[] = array(
@@ -428,7 +428,7 @@ class we_version{
 				}
 				$_folders_query = '( ParentID IN(' . implode(',', $_foldersList) . ') )';
 			}
-			$GLOBALS['DB_WE']->query("SELECT ID,ClassName,Path,Extension FROM " . FILE_TABLE . " WHERE ContentType='image/*'" . ($_folders_query ? " AND $_folders_query " : "") . " ORDER BY ID");
+			$GLOBALS['DB_WE']->query("SELECT ID,ClassName,Path,Extension FROM " . FILE_TABLE . " WHERE ContentType='" . we_base_ContentTypes::IMAGE . "'" . ($_folders_query ? " AND $_folders_query " : "") . " ORDER BY ID");
 			while($GLOBALS['DB_WE']->next_record()){
 
 				$data[] = array(

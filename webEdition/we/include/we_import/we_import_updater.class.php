@@ -52,7 +52,7 @@ class we_import_updater extends weXMLExIm{
 			$ref = $this->RefTable->getRef(
 				array(
 					'OldID' => $object->MasterTemplateID,
-					'ContentType' => 'text/weTmpl'
+					'ContentType' => we_base_ContentTypes::TEMPLATE
 				)
 			);
 			if($ref){
@@ -72,7 +72,7 @@ class we_import_updater extends weXMLExIm{
 			$ref = $this->RefTable->getRef(
 				array(
 					"OldID" => $object->TemplateID,
-					"ContentType" => "text/weTmpl"
+					"ContentType" => we_base_ContentTypes::TEMPLATE
 				)
 			);
 			if($ref){
@@ -293,7 +293,7 @@ class we_import_updater extends weXMLExIm{
 					$object->DefArray[$ek] = $ev;
 			}
 
-			if(isset($object->ContentType) && ($object->ContentType == 'text/webedition' || $object->ContentType == 'text/html')){
+			if(isset($object->ContentType) && ($object->ContentType == we_base_ContentTypes::WEDOCUMENT || $object->ContentType == we_base_ContentTypes::HTML)){
 				if(isset($object->elements["data"])){
 					if($this->debug){
 						debug("Updating webEdition and html documents for external links\n");
@@ -319,7 +319,7 @@ class we_import_updater extends weXMLExIm{
 							$this->updateArray($dat);
 							$object->elements[$ek]["dat"] = serialize($dat);
 						} else {
-							if(isset($object->ContentType) && ($object->ContentType == 'text/webedition' || $object->ContentType == 'text/html')){
+							if(isset($object->ContentType) && ($object->ContentType == we_base_ContentTypes::WEDOCUMENT || $object->ContentType == we_base_ContentTypes::HTML)){
 								$source = $ev["dat"];
 								$this->updateSource($this->Patterns->wysiwyg_patterns['doc'], $source);
 								$this->updateSource($this->Patterns->wysiwyg_patterns['obj'], $source);

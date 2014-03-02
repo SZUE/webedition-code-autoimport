@@ -159,7 +159,7 @@ function we_tag_field($attribs){
 					$GLOBALS['we_doc']->TableID :
 					0)));
 
-	$isImageDoc = (isset($GLOBALS['lv']->Record['wedoc_ContentType']) && $GLOBALS['lv']->Record['wedoc_ContentType'] == 'image/*' ? true : false);
+	$isImageDoc = (isset($GLOBALS['lv']->Record['wedoc_ContentType']) && $GLOBALS['lv']->Record['wedoc_ContentType'] == we_base_ContentTypes::IMAGE);
 	$isCalendar = (isset($GLOBALS['lv']->calendar_struct['calendar']) && $GLOBALS['lv']->calendar_struct['calendar'] != '' && $GLOBALS['lv']->isCalendarField($type));
 
 	if((!$GLOBALS['lv']->f('WE_ID') && property_exists($GLOBALS['lv'], 'calendar_struct') && $GLOBALS['lv']->calendar_struct['calendar'] == '')){
@@ -621,7 +621,7 @@ function we_tag_field($attribs){
 		}
 	}
 
-	if($isImageDoc && isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE && $GLOBALS['we_doc']->InWebEdition && $GLOBALS['we_doc']->ContentType != 'text/weTmpl'){
+	if($isImageDoc && isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE && $GLOBALS['we_doc']->InWebEdition && $GLOBALS['we_doc']->ContentType != we_base_ContentTypes::TEMPLATE){
 		$out .= '<a href="' . $GLOBALS['lv']->f('WE_ID') . '" seem="edit_image"></a>';
 	}
 
@@ -631,7 +631,7 @@ function we_tag_field($attribs){
 		isset($GLOBALS['_we_object_listview_flag']) &&
 		$GLOBALS['_we_object_listview_flag'] &&
 		$GLOBALS['we_doc']->InWebEdition &&
-		$GLOBALS['we_doc']->ContentType != 'text/weTmpl' &&
+		$GLOBALS['we_doc']->ContentType != we_base_ContentTypes::TEMPLATE &&
 		$GLOBALS['lv']->seeMode &&
 		$seeMode){
 

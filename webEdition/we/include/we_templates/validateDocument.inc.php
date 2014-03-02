@@ -32,7 +32,7 @@ echo we_html_tools::getHtmlTop();
 //  for predefined services include properties file, depending on content-Type
 //  and depending on fileending.
 
-if($we_doc->ContentType == 'text/css' || $we_doc->Extension == '.css'){
+if($we_doc->ContentType == we_base_ContentTypes::CSS || $we_doc->Extension == '.css'){
 	require_once(WE_INCLUDES_PATH . 'accessibility/services_css.inc.php');
 } else {
 	require_once(WE_INCLUDES_PATH . 'accessibility/services_html.inc.php');

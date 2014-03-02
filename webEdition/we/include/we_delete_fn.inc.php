@@ -215,7 +215,7 @@ function deleteFile($id, $table, $path = '', $contentType = '', we_database_base
 		}
 		$DB_WE->query('DROP TABLE IF EXISTS ' . OBJECT_X_TABLE . intval($id));
 	}
-	if($contentType == 'image/*'){
+	if($contentType == we_base_ContentTypes::IMAGE){
 		we_thumbnail::deleteByImageID($id);
 	}
 }

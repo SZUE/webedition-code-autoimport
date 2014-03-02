@@ -175,7 +175,7 @@ function we_saveCustomerImages(){
 			} else if($filename){
 				// file is selected, check to see if it is an image
 				$ct = getContentTypeFromFile($filename);
-				if($ct == 'image/*'){
+				if($ct == we_base_ContentTypes::IMAGE){
 
 					$_serverPath = TEMP_PATH . '/' . we_base_file::getUniqueId();
 					move_uploaded_file($_FILES['WE_SF_IMG_DATA']['tmp_name'][$imgName], $_serverPath);
@@ -232,7 +232,7 @@ function we_saveCustomerImages(){
 						$imgDocument->setElement('height', $_imgheight, 'attrib');
 						$imgDocument->setElement('origwidth', $_imgwidth);
 						$imgDocument->setElement('origheight', $_imgheight);
-						$imgDocument->setElement('type', 'image/*', 'attrib');
+						$imgDocument->setElement('type', we_base_ContentTypes::IMAGE, 'attrib');
 
 						$imgDocument->setElement('data', $_serverPath, 'image');
 

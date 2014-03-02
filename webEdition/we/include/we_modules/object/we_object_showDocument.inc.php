@@ -90,8 +90,8 @@ if(($_userID != 0 && $_userID != $_SESSION['user']['ID']) || (isset($_REQUEST['w
 					if($workspace && strpos($_lastDoc['Path'], $workspace) === 0 && $tids){
 						//	init document
 						$tid = $tids[0];
-/*						$GLOBALS['we_doc']->we_initSessDat($we_dt);
-						$_REQUEST['we_objectID'] = $_SESSION['weS']['we_data'][$we_transaction][0]['ID'];*/
+						/* 						$GLOBALS['we_doc']->we_initSessDat($we_dt);
+						  $_REQUEST['we_objectID'] = $_SESSION['weS']['we_data'][$we_transaction][0]['ID']; */
 						break;
 					}
 				}

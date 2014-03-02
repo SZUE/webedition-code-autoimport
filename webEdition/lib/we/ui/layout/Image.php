@@ -351,37 +351,37 @@ abstract class we_ui_layout_Image{
 	 */
 	public static function getIconClass($contentType, $extension = ''){
 		switch($contentType){
-			case "image/*" :
+			case we_base_ContentTypes::IMAGE:
 				return "image";
-			case "text/webedition" :
+			case we_base_ContentTypes::WEDOCUMENT:
 				return "we_document";
-			case "text/html" :
+			case we_base_ContentTypes::HTML:
 				return "text_html";
 			case "folder" :
 				return "folder";
 			case "folderOpen" :
 				return "folderOpen";
-			case "text/css" :
+			case we_base_ContentTypes::CSS:
 				return "text_css";
-			case "text/weTmpl" :
+			case we_base_ContentTypes::TEMPLATE:
 				return "text_weTmpl";
-			case "text/js" :
+			case we_base_ContentTypes::JS:
 				return "text_js";
-			case "text/plain" :
+			case we_base_ContentTypes::TEXT:
 				return "text_plain";
-			case "text/htaccess" :
+			case we_base_ContentTypes::HTACESS:
 				return "text_htaccess";
-			case "text/xml" :
+			case we_base_ContentTypes::XML:
 				return "text_xml";
-			case "application/x-shockwave-flash" :
+			case we_base_ContentTypes::FLASH:
 				return "flash";
-			case "video/quicktime" :
+			case we_base_ContentTypes::QUICKTIME:
 				return "quicktime";
 			case "object" :
 				return "object";
 			case "objectFile" :
 				return "objectFile";
-			case "application/*" :
+			case we_base_ContentTypes::APPLICATION:
 				switch($extension){
 					case ".pdf" :
 						return "pdf";

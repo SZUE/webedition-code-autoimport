@@ -95,7 +95,7 @@ if(isset($_REQUEST['vers_we_obj'])){
 //FIXME: is this relevant at this point?!
 $we_doc->EditPageNr = $we_editmode ? WE_EDITPAGE_CONTENT : WE_EDITPAGE_PREVIEW;
 
-if($tmplID && ($we_doc->ContentType == 'text/webedition')){ // if the document should displayed with an other template
+if($tmplID && ($we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT)){ // if the document should displayed with an other template
 	$we_doc->setTemplateID($tmplID);
 }
 

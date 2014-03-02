@@ -80,7 +80,7 @@ function we_tag_write($attribs){
 					$userid && ($_SESSION['webuser']['ID'] == $GLOBALS['we_' . $type][$name]->getElement($userid)));
 
 			$isAdmin = $admin && isset($_SESSION['webuser'][$admin]) && $_SESSION['webuser'][$admin];
-			
+
 			$isNew = (($GLOBALS['we_' . $type][$name]->ID == 0) ? ((!$isAdmin && $admin) ? false : true) : false); //FR #8411
 
 			if($isAdmin || $isNew || $isOwner || $forceedit){
@@ -275,7 +275,7 @@ function checkAndCreateFlashmovie($formname, $type = 'we_document'){
 					}
 				}
 			} elseif(isset($_SESSION[$_flashmovieDataId]['serverPath'])){
-				if(substr($_SESSION[$_flashmovieDataId]['type'], 0, 29) == 'application/x-shockwave-flash'){
+				if(substr($_SESSION[$_flashmovieDataId]['type'], 0, 29) == we_base_ContentTypes::FLASH){
 					$flashDocument = new we_flashDocument();
 
 					if($flashId){
@@ -298,7 +298,7 @@ function checkAndCreateFlashmovie($formname, $type = 'we_document'){
 					$flashDocument->setElement('origwidth', $_SESSION[$_flashmovieDataId]['imgwidth']);
 					$flashDocument->setElement('origheight', $_SESSION[$_flashmovieDataId]['imgheight']);
 
-					$flashDocument->setElement('type', 'application/x-shockwave-flash', 'attrib');
+					$flashDocument->setElement('type', we_base_ContentTypes::FLASH, 'attrib');
 
 					$flashDocument->setElement('data', $_SESSION[$_flashmovieDataId]['serverPath'], 'image');
 
@@ -349,7 +349,7 @@ function checkAndCreateQuicktime($formname, $type = 'we_document'){
 					}
 				}
 			} elseif(isset($_SESSION[$_quicktimeDataId]['serverPath'])){
-				if(substr($_SESSION[$_quicktimeDataId]['type'], 0, 15) == 'video/quicktime'){
+				if(substr($_SESSION[$_quicktimeDataId]['type'], 0, 15) == we_base_ContentTypes::QUICKTIME){
 					$quicktimeDocument = new we_quicktimeDocument();
 
 					if($quicktimeId){
@@ -373,7 +373,7 @@ function checkAndCreateQuicktime($formname, $type = 'we_document'){
 					//$quicktimeDocument->setElement('origwidth', $_SESSION[$_quicktimeDataId]['imgwidth']);
 					//$quicktimeDocument->setElement('origheight', $_SESSION[$_quicktimeDataId]['imgheight']);
 
-					$quicktimeDocument->setElement('type', 'video/quicktime', 'attrib');
+					$quicktimeDocument->setElement('type', we_base_ContentTypes::QUICKTIME, 'attrib');
 
 					$quicktimeDocument->setElement('data', $_SESSION[$_quicktimeDataId]['serverPath'], 'image');
 
@@ -448,7 +448,7 @@ function checkAndCreateImage($formname, $type = 'we_document'){
 					$imgDocument->setElement('origwidth', $_SESSION[$_imgDataId]['imgwidth']);
 					$imgDocument->setElement('origheight', $_SESSION[$_imgDataId]['imgheight']);
 
-					$imgDocument->setElement('type', 'image/*', 'attrib');
+					$imgDocument->setElement('type', we_base_ContentTypes::IMAGE, 'attrib');
 
 					$imgDocument->setElement('data', $_SESSION[$_imgDataId]['serverPath'], 'image');
 
@@ -519,7 +519,7 @@ function checkAndCreateBinary($formname, $type = 'we_document'){
 					$binaryDocument->Path = $binaryDocument->getParentPath() . (($binaryDocument->getParentPath() != '/') ? '/' : '') . $binaryDocument->Text;
 
 
-					$binaryDocument->setElement('type', 'application/*', 'attrib');
+					$binaryDocument->setElement('type', we_base_ContentTypes::APPLICATION, 'attrib');
 
 					$binaryDocument->setElement('data', $_SESSION[$_binaryDataId]['serverPath'], 'application');
 

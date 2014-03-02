@@ -32,7 +32,7 @@ class we_flashDocument extends we_binaryDocument{
 	function __construct(){
 		parent::__construct();
 		$this->EditPageNrs[] = WE_EDITPAGE_PREVIEW;
-		$this->ContentType = 'application/x-shockwave-flash';
+		$this->ContentType = we_base_ContentTypes::FLASH;
 	}
 
 	/* must be called from the editor-script. Returns a filename which has to be included from the global-Script */

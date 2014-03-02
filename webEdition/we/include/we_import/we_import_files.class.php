@@ -728,7 +728,7 @@ function next() {
 			}
 			// now change the category
 			$we_doc->Category = $this->categories;
-			if($we_ContentType == 'image/*' || $we_ContentType == 'application/x-shockwave-flash'){
+			if($we_ContentType == we_base_ContentTypes::IMAGE || $we_ContentType == we_base_ContentTypes::FLASH){
 				$we_size = $we_doc->getimagesize($tempName);
 				if(is_array($we_size) && count($we_size) >= 2){
 					$we_doc->setElement("width", $we_size[0], "attrib");
@@ -761,7 +761,7 @@ function next() {
 			$we_doc->setElement('filesize', $_FILES['we_File']['size'], 'attrib');
 			$we_doc->Table = FILE_TABLE;
 			$we_doc->Published = time();
-			if($we_ContentType == 'image/*'){
+			if($we_ContentType == we_base_ContentTypes::IMAGE){
 				$we_doc->Thumbs = $this->thumbs;
 
 				$newWidth = 0;
@@ -795,7 +795,7 @@ function next() {
 			if(!$we_doc->we_save()){
 				return array('filename' => $_FILES['we_File']["name"], "error" => g_l('importFiles', '[save_error]'));
 			}
-			if($we_ContentType == 'image/*' && $this->importMetadata){
+			if($we_ContentType == we_base_ContentTypes::IMAGE && $this->importMetadata){
 				$we_doc->importMetaData();
 				$we_doc->we_save();
 			}
@@ -803,7 +803,7 @@ function next() {
 				return array("filename" => $_FILES['we_File']["name"], "error" => "publish_error"
 				);
 			}
-			if($we_ContentType == 'image/*' && $this->importMetadata){
+			if($we_ContentType == we_base_ContentTypes::IMAGE && $this->importMetadata){
 				$we_doc->importMetaData();
 			}
 			return array();

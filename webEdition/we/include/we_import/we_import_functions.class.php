@@ -87,7 +87,7 @@ abstract class we_import_functions{
 		$GLOBALS['we_doc']->setTemplateID($templateID);
 		$GLOBALS['we_doc']->Category = $categories;
 
-		$GLOBALS['we_doc']->ContentType = "text/webedition";
+		$GLOBALS['we_doc']->ContentType = we_base_ContentTypes::WEDOCUMENT;
 
 		$GLOBALS['we_doc']->IsDynamic = $isDynamic;
 		$GLOBALS['we_doc']->IsSearchable = $IsSearchable;

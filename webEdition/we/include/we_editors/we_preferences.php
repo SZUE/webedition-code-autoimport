@@ -735,7 +735,7 @@ function build_dialog($selected_setting = 'ui'){
 										break;
 									}
 								}
-								parent.opener.top.we_cmd('openDocselector',document.getElementsByName('newconf[SIDEBAR_DEFAULT_DOCUMENT]').value,'" . FILE_TABLE . "',myWindStr + '.content.document.getElementsByName(\'newconf[SIDEBAR_DEFAULT_DOCUMENT]\')[0].value',myWindStr + '.content.document.getElementsByName(\'ui_sidebar_file_name\')[0].value','','" . session_id() . "', '', 'text/webedition'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");
+								parent.opener.top.we_cmd('openDocselector',document.getElementsByName('newconf[SIDEBAR_DEFAULT_DOCUMENT]').value,'" . FILE_TABLE . "',myWindStr + '.content.document.getElementsByName(\'newconf[SIDEBAR_DEFAULT_DOCUMENT]\')[0].value',myWindStr + '.content.document.getElementsByName(\'ui_sidebar_file_name\')[0].value','','" . session_id() . "', '', '" . we_base_ContentTypes::WEDOCUMENT . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");
 							}
 
 							function select_seem_start() {
@@ -759,7 +759,7 @@ function build_dialog($selected_setting = 'ui'){
 						(defined("OBJECT_FILES_TABLE") ?
 							"parent.opener.top.we_cmd('openDocselector', document.getElementsByName('seem_start_object')[0].value, '" . OBJECT_FILES_TABLE . "', myWindStr + '.content.document.getElementsByName(\'seem_start_object\')[0].value', myWindStr + '.content.document.getElementsByName(\'seem_start_object_name\')[0].value', '', '" . session_id() . "', '', 'objectFile',1);" : '') .
 						"} else {
-									parent.opener.top.we_cmd('openDocselector', document.getElementsByName('seem_start_document')[0].value, '" . FILE_TABLE . "', myWindStr + '.content.document.getElementsByName(\'seem_start_document\')[0].value', myWindStr + '.content.document.getElementsByName(\'seem_start_document_name\')[0].value', '', '" . session_id() . "', '', 'text/webedition'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");
+									parent.opener.top.we_cmd('openDocselector', document.getElementsByName('seem_start_document')[0].value, '" . FILE_TABLE . "', myWindStr + '.content.document.getElementsByName(\'seem_start_document\')[0].value', myWindStr + '.content.document.getElementsByName(\'seem_start_document_name\')[0].value', '', '" . session_id() . "', '', '" . we_base_ContentTypes::WEDOCUMENT . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");
 								}
 							}
 							function show_seem_chooser(val) {
@@ -889,7 +889,7 @@ function build_dialog($selected_setting = 'ui'){
 					// Build SEEM select start document chooser
 
 					$yuiSuggest->setAcId('Doc');
-					$yuiSuggest->setContentType('folder,text/webEdition,text/html,image/*');
+					$yuiSuggest->setContentType(implode(',', array('folder', we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::HTML, we_base_ContentTypes::IMAGE)));
 					$yuiSuggest->setInput('seem_start_document_name', $_document_path, '', get_value('seem_start_file'));
 					$yuiSuggest->setMaxResults(20);
 					$yuiSuggest->setMayBeEmpty(false);
@@ -986,7 +986,7 @@ function build_dialog($selected_setting = 'ui'){
 				$_sidebar_document_button = we_html_button::create_button('select', 'javascript:selectSidebarDoc()');
 
 				$yuiSuggest->setAcId('SidebarDoc');
-				$yuiSuggest->setContentType('folder,text/webEdition');
+				$yuiSuggest->setContentType('folder,' . we_base_ContentTypes::WEDOCUMENT);
 				$yuiSuggest->setInput('ui_sidebar_file_name', $_sidebar_path);
 				$yuiSuggest->setMaxResults(20);
 				$yuiSuggest->setMayBeEmpty(true);
@@ -1470,7 +1470,7 @@ function build_dialog($selected_setting = 'ui'){
 			}
 
 			// Get webEdition extensions
-			$_we_extensions = we_base_ContentTypes::inst()->getExtension('text/webedition');
+			$_we_extensions = we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::WEDOCUMENT);
 
 			// Build static webEdition extensions select box
 			$_static_we_extensions = new we_html_select(array('name' => 'newconf[DEFAULT_STATIC_EXT]', 'class' => 'weSelect'));
@@ -1485,7 +1485,7 @@ function build_dialog($selected_setting = 'ui'){
 			$_we_extensions_html = g_l('prefs', '[static]') . we_html_element::htmlBr() . $_static_we_extensions->getHtml() . we_html_element::htmlBr() . we_html_element::htmlBr() . g_l('prefs', '[dynamic]') . we_html_element::htmlBr() . $_dynamic_we_extensions->getHtml();
 
 			// HTML extensions
-			$_html_extensions = we_base_ContentTypes::inst()->getExtension('text/html');
+			$_html_extensions = we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::HTML);
 
 			// Build static webEdition extensions select box
 			$_static_html_extensions = new we_html_select(array('name' => 'newconf[DEFAULT_HTML_EXT]', 'class' => 'weSelect'));
@@ -2489,11 +2489,11 @@ function formmailBlockOnOff() {
 
 			$wecmdenc1 = we_cmd_enc("document.forms[0].elements['newconf[ERROR_DOCUMENT_NO_OBJECTFILE]'].value");
 			$wecmdenc2 = we_cmd_enc("document.forms[0].elements['error_document_no_objectfile_text'].value");
-			$_acButton1 = we_html_button::create_button('select', "javascript:we_cmd('openDocselector', document.forms[0].elements['newconf[ERROR_DOCUMENT_NO_OBJECTFILE]'].value, '" . FILE_TABLE . "', '" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "','', 'text/webEdition,text/html', 1)");
+			$_acButton1 = we_html_button::create_button('select', "javascript:we_cmd('openDocselector', document.forms[0].elements['newconf[ERROR_DOCUMENT_NO_OBJECTFILE]'].value, '" . FILE_TABLE . "', '" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "','', '" . we_base_ContentTypes::WEDOCUMENT . "," . we_base_ContentTypes::HTML . "', 1)");
 			$_acButton2 = we_html_button::create_button('image:btn_function_trash', 'javascript:document.forms[0].elements[\'newconf[ERROR_DOCUMENT_NO_OBJECTFILE]\'].value = 0;document.forms[0].elements[\'error_document_no_objectfile_text\'].value = \'\'');
 
 			$yuiSuggest->setAcId("doc2");
-			$yuiSuggest->setContentType("folder,text/webEdition,text/html");
+			$yuiSuggest->setContentType('folder,' . we_base_ContentTypes::WEDOCUMENT . ',' . we_base_ContentTypes::HTML);
 			$yuiSuggest->setInput('error_document_no_objectfile_text', ( ERROR_DOCUMENT_NO_OBJECTFILE ? id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE) : ''));
 			$yuiSuggest->setMaxResults(20);
 			$yuiSuggest->setMayBeEmpty(true);
@@ -2752,14 +2752,14 @@ function formmailBlockOnOff() {
 			$wecmdenc2 = we_cmd_enc("document.forms[0].elements['SECURITY_LIMIT_CUSTOMER_REDIRECT_text'].value");
 
 			$yuiSuggest->setAcId('SECURITY_LIMIT_CUSTOMER_REDIRECT_doc');
-			$yuiSuggest->setContentType('folder,text/webEdition,text/html');
+			$yuiSuggest->setContentType('folder,' . we_base_ContentTypes::WEDOCUMENT . ',' . we_base_ContentTypes::HTML);
 			$yuiSuggest->setInput('SECURITY_LIMIT_CUSTOMER_REDIRECT_text', (SECURITY_LIMIT_CUSTOMER_REDIRECT ? id_to_path(SECURITY_LIMIT_CUSTOMER_REDIRECT) : ''));
 			$yuiSuggest->setMaxResults(20);
 			$yuiSuggest->setMayBeEmpty(true);
 			$yuiSuggest->setResult('newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]', ( SECURITY_LIMIT_CUSTOMER_REDIRECT ? SECURITY_LIMIT_CUSTOMER_REDIRECT : 0));
 			$yuiSuggest->setSelector('Docselector');
 			$yuiSuggest->setWidth(250);
-			$yuiSuggest->setSelectButton(we_html_button::create_button('select', "javascript:we_cmd('openDocselector', document.forms[0].elements['newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]'].value, '" . FILE_TABLE . "', '" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "','', 'text/webEdition,text/html', 1)"), 10);
+			$yuiSuggest->setSelectButton(we_html_button::create_button('select', "javascript:we_cmd('openDocselector', document.forms[0].elements['newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]'].value, '" . FILE_TABLE . "', '" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "','', '" . we_base_ContentTypes::WEDOCUMENT . "," . we_base_ContentTypes::HTML . "', 1)"), 10);
 			$yuiSuggest->setTrashButton(we_html_button::create_button('image:btn_function_trash', 'javascript:document.forms[0].elements[\'newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]\'].value = 0;document.forms[0].elements[\'SECURITY_LIMIT_CUSTOMER_REDIRECT_text\'].value = \'\''), 4);
 
 			$customer_table->setCol(4, 3, array('class' => 'defaultfont', 'colspan' => 5), $yuiSuggest->getHTML());
@@ -2852,18 +2852,18 @@ function formmailBlockOnOff() {
 
 			$versionsPrefs = array(
 				'ctypes' => array(
-					'image/*' => 'VERSIONING_IMAGE',
-					'text/html' => 'VERSIONING_TEXT_HTML',
-					'text/webedition' => 'VERSIONING_TEXT_WEBEDITION',
-					'text/js' => 'VERSIONING_TEXT_JS',
-					'text/css' => 'VERSIONING_TEXT_CSS',
-					'text/plain' => 'VERSIONING_TEXT_PLAIN',
-					'text/htaccess' => 'VERSIONING_TEXT_HTACCESS',
-					'text/weTmpl' => 'VERSIONING_TEXT_WETMPL',
-					'application/x-shockwave-flash' => 'VERSIONING_FLASH',
-					'video/quicktime' => 'VERSIONING_QUICKTIME',
-					'application/*' => 'VERSIONING_SONSTIGE',
-					'text/xml' => 'VERSIONING_TEXT_XML',
+					we_base_ContentTypes::IMAGE => 'VERSIONING_IMAGE',
+					we_base_ContentTypes::HTML => 'VERSIONING_TEXT_HTML',
+					we_base_ContentTypes::WEDOCUMENT => 'VERSIONING_TEXT_WEBEDITION',
+					we_base_ContentTypes::JS => 'VERSIONING_TEXT_JS',
+					we_base_ContentTypes::CSS => 'VERSIONING_TEXT_CSS',
+					we_base_ContentTypes::TEXT => 'VERSIONING_TEXT_PLAIN',
+					we_base_ContentTypes::HTACESS => 'VERSIONING_TEXT_HTACCESS',
+					we_base_ContentTypes::TEMPLATE => 'VERSIONING_TEXT_WETMPL',
+					we_base_ContentTypes::FLASH => 'VERSIONING_FLASH',
+					we_base_ContentTypes::QUICKTIME => 'VERSIONING_QUICKTIME',
+					we_base_ContentTypes::APPLICATION => 'VERSIONING_SONSTIGE',
+					we_base_ContentTypes::XML => 'VERSIONING_TEXT_XML',
 					'objectFile' => 'VERSIONING_OBJECT',
 				),
 				'other' => array(

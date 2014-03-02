@@ -37,7 +37,7 @@ print STYLESHEET;
 		echo we_class::hiddenTrans();
 
 		switch($we_doc->ContentType){
-			case 'text/webedition':
+			case we_base_ContentTypes::WEDOCUMENT:
 				include(WE_MODULES_PATH . 'shop/we_editor_variants_webEditionDocument.inc.php');
 				break;
 
@@ -45,7 +45,7 @@ print STYLESHEET;
 				include(WE_MODULES_PATH . 'shop/we_editor_variants_objectFile.inc.php');
 				break;
 
-			case 'text/weTmpl':
+			case we_base_ContentTypes::TEMPLATE:
 				include(WE_MODULES_PATH . 'shop/we_template_variant.inc.php');
 				break;
 

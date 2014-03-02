@@ -144,7 +144,7 @@ if (
 
 				$we_doc->we_initSessDat($we_dt);
 
-				if($we_ContentType == 'image/*'){
+				if($we_ContentType == we_base_ContentTypes::IMAGE){
 					$we_doc->setElement('data', $tempName, 'image');
 					$_dim = we_thumbnail::getimagesize($tempName);
 					if(is_array($_dim) && count($_dim) > 0){

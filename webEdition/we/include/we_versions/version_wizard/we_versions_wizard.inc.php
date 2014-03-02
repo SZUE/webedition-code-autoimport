@@ -1002,11 +1002,17 @@ set_button_state(false);';
 
 			if($k != "all" && $k != "reset_date" && $k != "reset_hours" && $k != "reset_minutes" && $k != "reset_seconds" && $k != "reset_doPublish"){
 				if($v){
-					if($w != "")
+					if($w != ""){
 						$w .= " || ";
+					}
 					$wHelp = " ContentType = '" . $k . "' ";
-					if($k == "text/webedition" || $k == "text/html" || $k == "objectFile"){
-						$wHelp = $wHelp . " AND status='published' ";
+					switch($k){
+						case we_base_ContentTypes::WEDOCUMENT:
+						case we_base_ContentTypes::HTML:
+						case "objectFile":
+							$wHelp = $wHelp . " AND status='published' ";
+						default:
+							;
 					}
 					$w .= "(" . $wHelp . ")";
 				}

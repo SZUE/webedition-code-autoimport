@@ -854,7 +854,7 @@ class doclistView{
 					//javascript:we_cmd('openDocselector',document.we_form.elements['searchParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','document.we_form.elements[\\'searchParentID[" . $i . "]\\'].value','document.we_form.elements[\\'search[" . $i . "]\\'].value','','" . session_id () . "','$_rootDirID','','text/weTmpl')
 					$wecmdenc1 = we_cmd_enc("document.we_form.elements['searchParentID[" . $i . "]'].value");
 					$wecmdenc2 = we_cmd_enc("document.we_form.elements['search[" . $i . "]'].value");
-					$_cmd = "javascript:we_cmd('openDocselector',document.we_form.elements['searchParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "','$_rootDirID','','text/weTmpl')";
+					$_cmd = "javascript:we_cmd('openDocselector',document.we_form.elements['searchParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "','$_rootDirID','','" . we_base_ContentTypes::TEMPLATE . "')";
 					$_button = we_html_button::create_button('select', $_cmd, true, 70, 22, '', '', false);
 					$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('search[' . $i . ']', 58, $_linkPath, '', 'readonly ', 'text', 190, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(array('name' => 'searchParentID[' . $i . ']', "value" => "")), we_html_tools::getPixel(5, 4), $_button);
 
@@ -1139,7 +1139,7 @@ class doclistView{
 		for($f = 0; $f < $resultCount; $f++){
 			$fontColor = "black";
 			if(isset($_result [$f] ["Published"])){
-				$published = ((($_result [$f] ["Published"] != 0) && ($_result [$f] ["Published"] < $_result [$f] ["ModDate"]) && ($_result [$f] ["ContentType"] == "text/html" || $_result [$f] ["ContentType"] == "text/webedition" || $_result [$f] ["ContentType"] == "objectFile")) ? - 1 : $_result [$f] ["Published"]);
+				$published = ((($_result [$f] ["Published"] != 0) && ($_result [$f] ["Published"] < $_result [$f] ["ModDate"]) && ($_result [$f] ["ContentType"] == we_base_ContentTypes::HTML || $_result [$f] ["ContentType"] == we_base_ContentTypes::WEDOCUMENT || $_result [$f] ["ContentType"] == "objectFile")) ? - 1 : $_result [$f] ["Published"]);
 				$showPubCheckbox = true;
 				if($_result [$f] ["ContentType"] != "folder"){
 					if($published == 0){
@@ -1155,7 +1155,7 @@ class doclistView{
 			$Icon = we_base_ContentTypes::inst()->getIcon($_result [$f] ["ContentType"], we_base_ContentTypes::LINK_ICON, $ext);
 
 			if($view == 0){
-				$publishCheckbox = (!$showPubCheckbox) ? (($_result[$f]["ContentType"] == "text/webedition" || $_result[$f]["ContentType"] == "text/html" || $_result[$f]["ContentType"] == "objectFile") && permissionhandler::hasPerm('PUBLISH')) ? we_html_forms::checkbox($_result[$f]["docID"] . "_" . $_result[$f]["docTable"], 0, "publish_docs_doclist", "", false, "middlefont", "") : we_html_tools::getPixel(20, 10)  : '';
+				$publishCheckbox = (!$showPubCheckbox) ? (($_result[$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT || $_result[$f]["ContentType"] == we_base_ContentTypes::HTML || $_result[$f]["ContentType"] == "objectFile") && permissionhandler::hasPerm('PUBLISH')) ? we_html_forms::checkbox($_result[$f]["docID"] . "_" . $_result[$f]["docTable"], 0, "publish_docs_doclist", "", false, "middlefont", "") : we_html_tools::getPixel(20, 10) : '';
 
 				$content [$f] [0] ["dat"] = $publishCheckbox;
 				$content [$f] [1] ["dat"] = '<img src="' . ICON_DIR . $Icon . '" border="0" width="16" height="18" />';
@@ -1168,7 +1168,7 @@ class doclistView{
 				$fs = file_exists($_SERVER['DOCUMENT_ROOT'] . $_result [$f] ["Path"]) ? filesize($_SERVER['DOCUMENT_ROOT'] . $_result [$f] ["Path"]) : 0;
 				$filesize = we_base_file::getHumanFileSize($fs);
 
-				if($_result [$f] ["ContentType"] == "image/*"){
+				if($_result [$f] ["ContentType"] == we_base_ContentTypes::IMAGE){
 					$smallSize = 64;
 					$bigSize = 140;
 
@@ -1202,7 +1202,7 @@ class doclistView{
 
 				$creator = $_result [$f] ["CreatorID"] ? id_to_path($_result [$f] ["CreatorID"], USER_TABLE, $DB_WE) : g_l('searchtool', "[nobody]");
 
-				if($_result [$f] ["ContentType"] == "text/webedition"){
+				if($_result [$f] ["ContentType"] == we_base_ContentTypes::WEDOCUMENT){
 					$templateID = ($_result [$f] ["Published"] >= $_result [$f] ["ModDate"] && $_result [$f] ["Published"] != 0 ?
 							$_result [$f] ["TemplateID"] :
 							$_result [$f] ["temp_template_id"]);

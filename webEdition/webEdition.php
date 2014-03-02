@@ -11,7 +11,7 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * any later version.
- * 
+ *
  * The GNU General Public License can be found at
  * http://www.gnu.org/copyleft/gpl.html.
  * A copy is found in the textfile
@@ -650,29 +650,29 @@ if(!empty($_jsincludes)){
 				//we_sbmtFrmC(self.load,url);
 				break;
 			case "open_document":
-				we_cmd("load", "<?php print FILE_TABLE; ?>");
-				url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?we_cmd[0]=openDocselector&we_cmd[1]=&we_cmd[2]=<?php print FILE_TABLE; ?>&we_cmd[5]=<?php print rawurlencode("opener.top.weEditorFrameController.openDocument(table,currentID,currentType)"); ?>&we_cmd[9]=1";
+				we_cmd("load", "<?php echo FILE_TABLE; ?>");
+				url = "<?php echo WEBEDITION_DIR; ?>we_cmd.php?we_cmd[0]=openDocselector&we_cmd[1]=&we_cmd[2]=<?php echo FILE_TABLE; ?>&we_cmd[5]=<?php echo rawurlencode("opener.top.weEditorFrameController.openDocument(table,currentID,currentType)"); ?>&we_cmd[9]=1";
 				new jsWindow(url, "we_dirChooser", -1, -1,<?php echo we_selector_file::WINDOW_DOCSELECTOR_WIDTH . "," . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT; ?>, true, true, true, true);
 				break;
 			case "open_template":
-				we_cmd("load", "<?php print TEMPLATES_TABLE; ?>");
-				url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?we_cmd[0]=openDocselector&we_cmd[8]=text/weTmpl&we_cmd[2]=<?php print TEMPLATES_TABLE; ?>&we_cmd[5]=<?php print rawurlencode("opener.top.weEditorFrameController.openDocument(table,currentID,currentType)"); ?>&we_cmd[9]=1";
+				we_cmd("load", "<?php echo TEMPLATES_TABLE; ?>");
+				url = "<?php echo WEBEDITION_DIR; ?>we_cmd.php?we_cmd[0]=openDocselector&we_cmd[8]=<?php echo we_base_ContentTypes::TEMPLATE; ?>&we_cmd[2]=<?php print TEMPLATES_TABLE; ?>&we_cmd[5]=<?php echo rawurlencode("opener.top.weEditorFrameController.openDocument(table,currentID,currentType)"); ?>&we_cmd[9]=1";
 				new jsWindow(url, "we_dirChooser", -1, -1,<?php echo we_selector_file::WINDOW_DOCSELECTOR_WIDTH . "," . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT; ?>, true, true, true, true);
 				break;
 			case "change_passwd":
 				new jsWindow(url, "we_change_passwd", -1, -1, 250, 220, true, false, true, false);
 				break;
 			case "update":
-				new jsWindow("<?php print WEBEDITION_DIR; ?>liveUpdate/liveUpdate.php?active=update", "we_update_<?php print session_id(); ?>", -1, -1, 600, 500, true, true, true);
+				new jsWindow("<?php echo WEBEDITION_DIR; ?>liveUpdate/liveUpdate.php?active=update", "we_update_<?php echo session_id(); ?>", -1, -1, 600, 500, true, true, true);
 				break;
 			case "upgrade":
-				new jsWindow("<?php print WEBEDITION_DIR; ?>liveUpdate/liveUpdate.php?active=upgrade", "we_update_<?php print session_id(); ?>", -1, -1, 600, 500, true, true, true);
+				new jsWindow("<?php echo WEBEDITION_DIR; ?>liveUpdate/liveUpdate.php?active=upgrade", "we_update_<?php echo session_id(); ?>", -1, -1, 600, 500, true, true, true);
 				break;
 				/*case "moduleinstallation":
 				 new jsWindow("<?php print WEBEDITION_DIR; ?>liveUpdate/liveUpdate.php?active=modules", "we_update_<?php print session_id(); ?>", -1, -1, 600, 500, true, true, true);
 				 break;*/
 			case "languageinstallation":
-				new jsWindow("<?php print WEBEDITION_DIR; ?>liveUpdate/liveUpdate.php?active=languages", "we_update_<?php print session_id(); ?>", -1, -1, 600, 500, true, true, true);
+				new jsWindow("<?php echo WEBEDITION_DIR; ?>liveUpdate/liveUpdate.php?active=languages", "we_update_<?php echo session_id(); ?>", -1, -1, 600, 500, true, true, true);
 				break;
 			case "del":
 				we_cmd('delete', 1, arguments[2]);
@@ -800,7 +800,7 @@ if(!empty($_jsincludes)){
 									""
 									);
 					new jsWindow(url, "help", -1, -1, 720, 600, true, false, true, true);
-<?php } else { //FIXME:remove ?>
+<?php } else { //FIXME:remove  ?>
 					url = "<?php echo WEBEDITION_DIR; ?>noAvailable.php";
 					new jsWindow(url, "help_no_available", -1, -1, 380, 140, true, false, true);
 <?php } ?>

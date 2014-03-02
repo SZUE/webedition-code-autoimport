@@ -32,8 +32,8 @@ we_html_tools::protect();
 function checkIfValidStartdocument($id, $type = 'document'){
 
 	return ($type == 'object' ?
-			(f('SELECT ContentType FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id), 'ContentType', $GLOBALS['DB_WE']) == 'objectFile') :
-			(f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'ContentType', $GLOBALS['DB_WE']) == 'text/webedition'));
+			(f('SELECT ContentType FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id)) == 'objectFile') :
+			(f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id)) == we_base_ContentTypes::WEDOCUMENT));
 }
 
 //	Here begins the code for showing the correct frameset.
@@ -62,7 +62,7 @@ if(isset($_REQUEST['we_cmd']) && isset($_REQUEST['we_cmd'][4]) && $_REQUEST['we_
 					$directCmd = array(
 						FILE_TABLE,
 						$_SESSION['weS']['SEEM']['startId'],
-						'text/webedition',
+						we_base_ContentTypes::WEDOCUMENT,
 					);
 					$jsCommand = _buildJsCommand($directCmd);
 				} else {
@@ -107,7 +107,7 @@ if(isset($_REQUEST['we_cmd']) && isset($_REQUEST['we_cmd'][4]) && $_REQUEST['we_
 					$directCmd = array(
 						FILE_TABLE,
 						$_SESSION['prefs']['seem_start_file'],
-						'text/webedition',
+						we_base_ContentTypes::WEDOCUMENT,
 					);
 					$jsCommand = _buildJsCommand($directCmd);
 				} else {

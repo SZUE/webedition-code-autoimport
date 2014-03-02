@@ -512,9 +512,9 @@ class we_backup_backup extends we_backup_base{
 		foreach($this->file_list as $file){
 			$ct = f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE Path="' . $this->backup_db->escape(str_replace($_SERVER['DOCUMENT_ROOT'] . rtrim(SITE_DIR, '/'), '', $file)) . '"', '', $this->backup_db);
 			switch($ct){
-				case'image/*':
-				case 'application/*':
-				case 'application/x-shockwave-flash':
+				case we_base_ContentTypes::IMAGE:
+				case we_base_ContentTypes::APPLICATION:
+				case we_base_ContentTypes::FLASH:
 					continue;
 				default:
 					$out[] = $file;

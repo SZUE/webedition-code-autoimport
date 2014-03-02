@@ -34,7 +34,7 @@ class we_otherDocument extends we_binaryDocument{
 				break;
 		}
 		$this->EditPageNrs[] = WE_EDITPAGE_PREVIEW;
-		$this->ContentType = 'application/*';
+		$this->ContentType = we_base_ContentTypes::APPLICATION;
 	}
 
 	/* must be called from the editor-script. Returns a filename which has to be included from the global-Script */
@@ -197,7 +197,7 @@ class we_otherDocument extends we_binaryDocument{
 						} elseif($filename){
 							// file is selected, check to see if it is an image
 							$ct = getContentTypeFromFile($filename);
-							if($ct == 'application/*'){
+							if($ct == we_base_ContentTypes::APPLICATION){
 								$binaryId = intval($GLOBALS[$key][$formname]->getElement($binaryName));
 
 								// move document from upload location to tmp dir

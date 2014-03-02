@@ -47,7 +47,7 @@ function we_tag_img($attribs){
 	}
 
 	//look if image exists in tblfile, and is an image
-	if(f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE ContentType="image/*" AND ID=' . intval($id)) !== '1'){
+	if(f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE ContentType="' . we_base_ContentTypes::IMAGE . '" AND ID=' . intval($id)) !== '1'){
 		$id = 0;
 	}
 
@@ -185,7 +185,7 @@ function we_tag_img($attribs){
 				we_html_button::create_button("image:btn_edit_image", "#", false, 100, 20, "", "", true) :
 				//	show edit_image_button
 				//	we use hardcoded Content-Type - because it must be an image -> <we:img  >
-				we_html_button::create_button("image:btn_edit_image", "javascript:top.doClickDirect($id,'image/*', '" . FILE_TABLE . "'  )"));
+				we_html_button::create_button("image:btn_edit_image", "javascript:top.doClickDirect($id,'" . we_base_ContentTypes::IMAGE . "', '" . FILE_TABLE . "'  )"));
 
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['" . $fname . "'].value");
 		$wecmdenc3 = we_cmd_enc("opener.setScrollTo(); opener._EditorFrame.setEditorIsHot(true); opener.top.we_cmd('reload_editpage','" . $name . "','change_image'); opener.top.hot = 1;");
@@ -193,7 +193,7 @@ function we_tag_img($attribs){
 		$out .= we_html_button::create_button_table(
 				array(
 				$_editButton,
-				we_html_button::create_button("image:btn_select_image", "javascript:we_cmd('openDocselector', '" . ($id != "" ? $id : $startid) . "', '" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "'," . $parentid . ",'image/*', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true),
+				we_html_button::create_button("image:btn_select_image", "javascript:we_cmd('openDocselector', '" . ($id != "" ? $id : $startid) . "', '" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "'," . $parentid . ",'" . we_base_ContentTypes::IMAGE . "', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true),
 				we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('remove_image', '" . $name . "')", true)
 				), 5) . '</td></tr></table>';
 	}

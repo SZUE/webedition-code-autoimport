@@ -28,10 +28,10 @@ function we_parse_tag_include($attribs, $c, array $attr){
 		$attr['_parsed'] = 'true';
 	}
 	return ($type != 'template' ?
-					'<?php eval(' . we_tag_tagParser::printTag('include', $attribs) . ');?>' : //include documents
-					//(($path ?
-					'<?php if(($we_inc=' . we_tag_tagParser::printTag('include', $attr) . ')){include' . (weTag_getParserAttribute('once', $attr, false, true) ? '_once' : '') . '($we_inc);}; ?>'//include templates of ID's
-			);
+			'<?php eval(' . we_tag_tagParser::printTag('include', $attribs) . ');?>' : //include documents
+			//(($path ?
+			'<?php if(($we_inc=' . we_tag_tagParser::printTag('include', $attr) . ')){include' . (weTag_getParserAttribute('once', $attr, false, true) ? '_once' : '') . '($we_inc);}; ?>'//include templates of ID's
+		);
 }
 
 function we_setBackVar($we_unique){
@@ -53,7 +53,7 @@ function we_setBackVar($we_unique){
 			'FROM_WE_SHOW_DOC' => isset($GLOBALS['FROM_WE_SHOW_DOC']) ? $GLOBALS['FROM_WE_SHOW_DOC'] : '',
 			'we_transaction' => isset($GLOBALS['we_transaction']) ? $GLOBALS['we_transaction'] : '',
 			'we_editmode' => isset($GLOBALS['we_editmode']) ? $GLOBALS['we_editmode'] : null,
-			'we_ContentType' => isset($GLOBALS['we_ContentType']) ? $GLOBALS['we_ContentType'] : 'text/webedition',
+			'we_ContentType' => isset($GLOBALS['we_ContentType']) ? $GLOBALS['we_ContentType'] : we_base_ContentTypes::WEDOCUMENT,
 			'postTagName' => isset($GLOBALS['postTagName']) ? $GLOBALS['postTagName'] : '',
 		),
 		'REQUEST' => array(
@@ -147,8 +147,8 @@ function we_tag_include($attribs){
 
 	if($id){
 		$tmp = $GLOBALS['WE_MAIN_DOC']->ID == $id || //don't include same id
-				$GLOBALS['we_doc']->ContentType != 'text/webedition' //don't include any unknown document
-				? '' : getHash('SELECT Path,ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . ' AND Published>0');
+			$GLOBALS['we_doc']->ContentType != we_base_ContentTypes::WEDOCUMENT //don't include any unknown document
+			? '' : getHash('SELECT Path,ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . ' AND Published>0');
 		if(!$tmp){
 			return '';
 		}
@@ -197,16 +197,16 @@ function we_tag_include($attribs){
 	}
 
 	return 'we_setBackVar(' . $we_unique . ');' .
-			($isSeemode ? //extra stuff in seemode
-					'eval(\'?>' . addcslashes(preg_replace('|< */? *form[^>]*>|i', '', $content), '\'') .
-					($seeMode ? //	only show link to seeMode, when id is given
-							($id ?
-									'<a href="' . $id . '" seem="include"></a>' :
-									($path ? '<a href="' . path_to_id($path) . '" seem="include"></a>' :
-											'')) : '')
-					. '\');' :
-					//no seemode
-					$content
-			) .
-			'we_resetBackVar(' . $we_unique . ');';
+		($isSeemode ? //extra stuff in seemode
+			'eval(\'?>' . addcslashes(preg_replace('|< */? *form[^>]*>|i', '', $content), '\'') .
+			($seeMode ? //	only show link to seeMode, when id is given
+				($id ?
+					'<a href="' . $id . '" seem="include"></a>' :
+					($path ? '<a href="' . path_to_id($path) . '" seem="include"></a>' :
+						'')) : '')
+			. '\');' :
+			//no seemode
+			$content
+		) .
+		'we_resetBackVar(' . $we_unique . ');';
 }

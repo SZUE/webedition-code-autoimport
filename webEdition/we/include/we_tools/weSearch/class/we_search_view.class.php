@@ -2278,8 +2278,8 @@ class we_search_view extends we_tool_view{
 			$fontColor = "black";
 			$showPubCheckbox = true;
 			if(isset($_result[$f]["Published"])){
-				$published = ((($_result[$f]["Published"] != 0) && ($_result[$f]["Published"] < $_result[$f]["ModDate"]) && ($_result[$f]["ContentType"] == "text/html" || $_result[$f]["ContentType"] == "text/webedition" || $_result[$f]["ContentType"] == "objectFile")) ? -1 : $_result[$f]["Published"]);
-				if($_result[$f]["ContentType"] == "text/html" || $_result[$f]["ContentType"] == "objectFile" || $_result[$f]["ContentType"] == "text/webedition"){
+				$published = ((($_result[$f]["Published"] != 0) && ($_result[$f]["Published"] < $_result[$f]["ModDate"]) && ($_result[$f]["ContentType"] == we_base_ContentTypes::HTML || $_result[$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT || $_result[$f]["ContentType"] == "objectFile")) ? -1 : $_result[$f]["Published"]);
+				if($_result[$f]["ContentType"] == we_base_ContentTypes::HTML || $_result[$f]["ContentType"] == "objectFile" || $_result[$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT){
 					if($published == 0){
 						$fontColor = "red";
 						$showPubCheckbox = false;
@@ -2341,17 +2341,18 @@ class we_search_view extends we_tool_view{
 							array("version" => array($k => "<span style='margin-left:5px;'>" . date("d.m.Y", $timestamp) . "</span>")),
 							array("version" => array($k => "")),
 							array("version" => array($k => "<div style='margin-left:5px;'>" .
-									(($_result[$f]["ContentType"] == "text/webedition" || $_result[$f]["ContentType"] == "text/html" || $_result[$f]["ContentType"] == "objectFile") ? we_html_forms::checkbox(
-											$ID, 0, "publishVersion_" . $ID, g_l('versions', '[publishIfReset]'), false, "middlefont", "") : "") .
+									(($_result[$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT || $_result[$f]["ContentType"] == we_base_ContentTypes::HTML || $_result[$f]["ContentType"] == "objectFile") ?
+										we_html_forms::checkbox($ID, 0, "publishVersion_" . $ID, g_l('versions', '[publishIfReset]'), false, "middlefont", "") :
+										"") .
 									"</div>")),
 						);
 					}
 				}
 				$docExists = f('SELECT ID FROM ' . escape_sql_query($_result[$f]["docTable"]) . ' WHERE ID=' . intval($_result[$f]["docID"]), 'ID', $DB_WE);
 
-				$publishCheckbox = (!$showPubCheckbox) ? (($_result[$f]["ContentType"] == "text/webedition" || $_result[$f]["ContentType"] == "text/html" || $_result[$f]["ContentType"] == "objectFile") && permissionhandler::hasPerm(
+				$publishCheckbox = (!$showPubCheckbox) ? (($_result[$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT || $_result[$f]["ContentType"] == we_base_ContentTypes::HTML || $_result[$f]["ContentType"] == "objectFile") && permissionhandler::hasPerm(
 						'PUBLISH') && $docExists != "") ? we_html_forms::checkbox(
-							$_result[$f]["docID"] . "_" . $_result[$f]["docTable"], 0, "publish_docs_" . $whichSearch, "", false, "middlefont", "") : we_html_tools::getPixel(20, 10)  : '';
+							$_result[$f]["docID"] . "_" . $_result[$f]["docTable"], 0, "publish_docs_" . $whichSearch, "", false, "middlefont", "") : we_html_tools::getPixel(20, 10) : '';
 
 
 				$content[$f] = array(
@@ -2367,7 +2368,7 @@ class we_search_view extends we_tool_view{
 				$fs = file_exists($_SERVER['DOCUMENT_ROOT'] . $_result[$f]["Path"]) ? filesize($_SERVER['DOCUMENT_ROOT'] . $_result[$f]["Path"]) : 0;
 				$filesize = we_base_file::getHumanFileSize($fs);
 
-				if($_result[$f]["ContentType"] == "image/*"){
+				if($_result[$f]["ContentType"] == we_base_ContentTypes::IMAGE){
 					$smallSize = 64;
 					$bigSize = 140;
 
@@ -2399,7 +2400,7 @@ class we_search_view extends we_tool_view{
 
 				$creator = $_result[$f]["CreatorID"] ? id_to_path($_result[$f]["CreatorID"], USER_TABLE, $DB_WE) : g_l('searchtool', "[nobody]");
 
-				if($_result[$f]["ContentType"] == "text/webedition" && $_result[$f]["Table"] != VERSIONS_TABLE){
+				if($_result[$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT && $_result[$f]["Table"] != VERSIONS_TABLE){
 					if($_result[$f]["Published"] >= $_result[$f]["ModDate"] && $_result[$f]["Published"] != 0){
 						$templateID = $_result[$f]["TemplateID"];
 					} else {
@@ -2757,7 +2758,7 @@ class we_search_view extends we_tool_view{
 					$wecmdenc1 = we_cmd_enc("document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value");
 					$wecmdenc2 = we_cmd_enc("document.we_form.elements['searchAdvSearch[" . $i . "]'].value");
 					$wecmdenc3 = '';
-					$_cmd = "javascript:we_cmd('openDocselector',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "','$_rootDirID','','text/weTmpl')";
+					$_cmd = "javascript:we_cmd('openDocselector',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "','$_rootDirID','','" . we_base_ContentTypes::TEMPLATE . "')";
 					$_button = we_html_button::create_button('select', $_cmd, true, 70, 22, '', '', false);
 					$selector = we_html_tools::htmlFormElementTable(
 							we_html_tools::htmlTextInput(
@@ -2949,15 +2950,15 @@ class we_search_view extends we_tool_view{
 			<td>' . $content[$n][16]["dat"] . '</td></tr>
 			<tr><td valign="top">' . g_l('searchtool', "[dateityp]") . ': </td>
 			<td>' . $content[$n][8]["dat"] . '</td></tr>';
-			if($content[$n][12]["dat"] == "image/*" || $content[$n][12]["dat"] == "application/*"){
+			if($content[$n][12]["dat"] == we_base_ContentTypes::IMAGE || $content[$n][12]["dat"] == we_base_ContentTypes::APPLICATION){
 				$outDivs .= '<tr><td valign="top">' . g_l('searchtool', "[groesse]") . ': </td>
 				<td>' . $content[$n][6]["dat"] . '</td></tr>';
-				if($content[$n][12]["dat"] == "image/*"){
+				if($content[$n][12]["dat"] == we_base_ContentTypes::IMAGE){
 					$outDivs .= '<tr><td valign="top">' . g_l('searchtool', "[aufloesung]") . ': </td>
 					<td>' . $content[$n][7]["dat"] . '</td></tr>';
 				}
 			}
-			if($content[$n][12]["dat"] == "text/webedition"){
+			if($content[$n][12]["dat"] == we_base_ContentTypes::WEDOCUMENT){
 				$outDivs .= '<tr><td valign="top">' . g_l('searchtool', "[template]") . ': ' . '</td>
 					<td>' . $content[$n][14]["dat"] . '</td></tr>';
 			}

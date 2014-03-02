@@ -46,7 +46,7 @@ $GLOBALS['we_doc']->Extension = '.tmpl';
 $GLOBALS['we_doc']->Icon = 'prog.gif';
 $GLOBALS['we_doc']->setParentID($ParentID);
 $GLOBALS['we_doc']->Path = $GLOBALS['we_doc']->ParentPath . (($GLOBALS['we_doc']->ParentPath != '/') ? '/' : '') . $filename . '.tmpl';
-$GLOBALS['we_doc']->ContentType = 'text/weTmpl';
+$GLOBALS['we_doc']->ContentType = we_base_ContentTypes::TEMPLATE;
 
 $GLOBALS['we_doc']->Table = TEMPLATES_TABLE;
 
