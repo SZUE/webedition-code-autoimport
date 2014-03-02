@@ -97,7 +97,7 @@ echo we_html_tools::getHtmlTop() .
 ?>
 <script type="text/javascript"><!--
 	function _getIcon(contentType, extension) {
-		if (contentType == "application/*") {
+		if (contentType == "<?php echo we_base_ContentTypes::APPLICATION;?>") {
 			switch (extension.toLowerCase()) {
 				case '.pdf' :
 					return 'pdf.gif';

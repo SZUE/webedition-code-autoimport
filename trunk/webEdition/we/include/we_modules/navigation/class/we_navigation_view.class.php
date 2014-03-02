@@ -953,7 +953,7 @@ function submitForm() {
 					break;
 				case 'create_template':
 					print we_html_element::jsElement(
-							$this->topFrame . '.opener.top.we_cmd("new","' . TEMPLATES_TABLE . '","","text/weTmpl","","' . base64_encode($this->Model->previewCode) . '");
+							$this->topFrame . '.opener.top.we_cmd("new","' . TEMPLATES_TABLE . '","","' . we_base_ContentTypes::TEMPLATE . '","","' . base64_encode($this->Model->previewCode) . '");
 					');
 					break;
 				case 'populateFolderWs':

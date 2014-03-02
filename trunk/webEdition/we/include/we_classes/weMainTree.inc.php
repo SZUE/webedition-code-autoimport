@@ -124,8 +124,7 @@ function doClick(id){
 
 	function getJSUpdateTreeScript($doc, $select = true){
 
-//		$published = ((isset($doc->Published) && ($doc->Published != 0) && ($doc->Published >= $doc->ModDate) && ($doc->ContentType == 'text/html' || $doc->ContentType == 'text/webedition' || $doc->ContentType == 'objectFile')) ? $doc->Published : -1);
-		$published = ((($doc->Published != 0) && ($doc->Published < $doc->ModDate) && ($doc->ContentType == "text/html" || $doc->ContentType == "text/webedition" || $doc->ContentType == "objectFile")) ? -1 : $doc->Published);
+		$published = ((($doc->Published != 0) && ($doc->Published < $doc->ModDate) && ($doc->ContentType == we_base_ContentTypes::HTML || $doc->ContentType == we_base_ContentTypes::WEDOCUMENT || $doc->ContentType == "objectFile")) ? -1 : $doc->Published);
 
 //	This is needed in SeeMode
 		$s = '

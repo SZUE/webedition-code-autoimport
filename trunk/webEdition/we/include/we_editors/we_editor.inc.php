@@ -40,7 +40,7 @@ $wasNew = 0;
 switch($_REQUEST['we_cmd'][0]){
 	case 'load_editor':
 // set default tab for creating new imageDocuments to "metadata":
-		if($we_doc->ContentType == 'image/*' && $we_doc->ID == 0){
+		if($we_doc->ContentType == we_base_ContentTypes::IMAGE && $we_doc->ID == 0){
 			$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_CONTENT;
 			$we_doc->EditPageNr = WE_EDITPAGE_CONTENT;
 			$_REQUEST['we_cmd'][1] = WE_EDITPAGE_CONTENT;
@@ -283,11 +283,11 @@ if($_userID != 0 && $_userID != $_SESSION['user']['ID'] && $we_doc->ID){ // docu
  * We need to do this, because, when the pages has for example jsp. content, it will be parsed right!
  * This is only done when the IsDynamic - PersistantSlot is false.
  */
-if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'publish' && $_REQUEST['we_cmd'][0] != 'unpublish') && (($we_doc->ContentType == 'text/webedition') && ($we_doc->EditPageNr == WE_EDITPAGE_PREVIEW || $we_doc->EditPageNr == WE_EDITPAGE_CONTENT )) || ($we_doc->ContentType == 'text/html' && $we_doc->EditPageNr == WE_EDITPAGE_PREVIEW && $_REQUEST['we_cmd'][0] != 'save_document')) && (!$we_doc->IsDynamic)){
+if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'publish' && $_REQUEST['we_cmd'][0] != 'unpublish') && (($we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT) && ($we_doc->EditPageNr == WE_EDITPAGE_PREVIEW || $we_doc->EditPageNr == WE_EDITPAGE_CONTENT )) || ($we_doc->ContentType == we_base_ContentTypes::HTML && $we_doc->EditPageNr == WE_EDITPAGE_PREVIEW && $_REQUEST['we_cmd'][0] != 'save_document')) && (!$we_doc->IsDynamic)){
 	$we_include = $we_doc->editor();
 	$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
 	ob_start();
-	if($we_doc->ContentType == 'text/webedition'){
+	if($we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT){
 //remove all already parsed names
 		$we_doc->resetUsedElements();
 	}
@@ -300,7 +300,7 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 	ob_end_clean();
 //  SEEM the file
 //  but only, if we are not in the template-editor
-	if($we_doc->ContentType != 'text/weTmpl'){
+	if($we_doc->ContentType != we_base_ContentTypes::TEMPLATE){
 		$contents = we_SEEM::parseDocument($contents);
 
 		if(strpos($contents, '</head>')){
@@ -396,7 +396,7 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 				$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 			} else {
 				$we_JavaScript = '_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');'; // save/ rename a document
-				if($we_doc->ContentType == 'text/weTmpl'){
+				if($we_doc->ContentType == we_base_ContentTypes::TEMPLATE){
 					if(isset($_REQUEST['we_cmd'][8]) && $_REQUEST['we_cmd'][8]){
 // if  we_cmd[8] is set, it means that 'automatic rebuild' was clicked
 // so we need to check we_cmd[3] (means save immediately) and we_cmd[4] (means rebuild immediately)
@@ -413,7 +413,7 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 					$TEMPLATE_SAVE_CODE2 = true;
 					$arr = we_rebuild_base::getTemplAndDocIDsOfTemplate($we_doc->ID, true, true);
 					$nrDocsUsedByThisTemplate = count($arr['documentIDs']);
-					$isTemplatesUsedByThisTemplate = f('SELECT 1 FROM ' . TEMPLATES_TABLE . ' WHERE MasterTemplateID=' .$we_doc->ID);
+					$isTemplatesUsedByThisTemplate = f('SELECT 1 FROM ' . TEMPLATES_TABLE . ' WHERE MasterTemplateID=' . $we_doc->ID);
 					$somethingNeedsToBeResaved = ($nrDocsUsedByThisTemplate + $isTemplatesUsedByThisTemplate) > 0;
 
 					if($_REQUEST['we_cmd'][2]){
@@ -465,7 +465,7 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 						$we_JavaScript .= $_REQUEST['we_cmd'][6];
 					}
 				} else {
-					if((!permissionhandler::hasPerm('NEW_SONSTIGE')) && $we_doc->ContentType == 'application/*' && in_array($we_doc->Extension, we_base_ContentTypes::inst()->getExtension('text/html'))){
+					if((!permissionhandler::hasPerm('NEW_SONSTIGE')) && $we_doc->ContentType == we_base_ContentTypes::APPLICATION && in_array($we_doc->Extension, we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::HTML))){
 						$we_JavaScript = '';
 						$we_responseText = sprintf(g_l('weEditor', '[application/*][response_save_wrongExtension]'), $we_doc->Path, $we_doc->Extension);
 						$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
@@ -551,7 +551,7 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 									}
 								}
 // Bug Fix #2065 -> Reload Preview Page of other documents
-								elseif($we_doc->EditPageNr == WE_EDITPAGE_PREVIEW && $we_doc->ContentType == "application/*"){
+								elseif($we_doc->EditPageNr == WE_EDITPAGE_PREVIEW && $we_doc->ContentType == we_base_ContentTypes::APPLICATION){
 									$we_JavaScript .= 'top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");';
 								}
 							}
@@ -570,7 +570,7 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 								$we_JavaScript .= '_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');';
 							}
 
-							if(($we_doc->ContentType == 'text/webedition' || $we_doc->ContentType == 'objectFile') && $we_doc->canHaveVariants(true)){
+							if(($we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT || $we_doc->ContentType == 'objectFile') && $we_doc->canHaveVariants(true)){
 								we_shop_variants::setVariantDataForModel($we_doc, true);
 							}
 						} else {
@@ -666,7 +666,7 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 
 //  SEEM the file
 //  but only, if we are not in the template-editor
-				if($we_doc->ContentType != 'text/weTmpl' || ($we_doc->ContentType == 'text/weTmpl' && $we_doc->EditPageNr == WE_EDITPAGE_PREVIEW_TEMPLATE)){
+				if($we_doc->ContentType != we_base_ContentTypes::TEMPLATE || ($we_doc->ContentType == we_base_ContentTypes::TEMPLATE && $we_doc->EditPageNr == WE_EDITPAGE_PREVIEW_TEMPLATE)){
 					$tmpCntnt = we_SEEM::parseDocument($contents);
 
 // insert $_reloadFooter at right place

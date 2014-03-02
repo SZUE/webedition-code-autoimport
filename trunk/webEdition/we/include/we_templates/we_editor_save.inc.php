@@ -50,7 +50,7 @@ if(isset($wasSaved) && $wasSaved){
 			}
 			break;
 
-		case 'text/weTmpl': // #538 reload documents based on this template
+		case we_base_ContentTypes::TEMPLATE: // #538 reload documents based on this template
 
 			$reloadDocsTempls = we_rebuild_base::getTemplAndDocIDsOfTemplate($GLOBALS['we_doc']->ID, false, false, true, true);
 
@@ -85,14 +85,14 @@ for (frameId in _usedEditors) {
 		$_newDocJs = "";
 
 		//	JS, when not in seem
-		$isTmpl = $we_doc->ContentType == "text/weTmpl" && (permissionhandler::hasPerm("NEW_WEBEDITIONSITE") || permissionhandler::hasPerm("ADMINISTRATOR"));
+		$isTmpl = $we_doc->ContentType == we_base_ContentTypes::TEMPLATE && (permissionhandler::hasPerm("NEW_WEBEDITIONSITE") || permissionhandler::hasPerm("ADMINISTRATOR"));
 		if(!$isTmpl){
 			$isObject = $we_doc->ContentType == "object" && (permissionhandler::hasPerm("NEW_OBJECTFILE") || permissionhandler::hasPerm("ADMINISTRATOR"));
 		}
 		if($isTmpl){
 			$_newDocJs .= 'if( _EditorFrame.getEditorMakeNewDoc() == true ) {' .
 				(isset($saveTemplate) && $saveTemplate ?
-					"	top.we_cmd('new','" . FILE_TABLE . "','','text/webedition','','" . $we_doc->ID . "');" :
+					"	top.we_cmd('new','" . FILE_TABLE . "','','" . we_base_ContentTypes::WEDOCUMENT . "','','" . $we_doc->ID . "');" :
 					''
 				) .
 				'} else {';

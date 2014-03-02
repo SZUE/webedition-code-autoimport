@@ -26,8 +26,8 @@ if(isset($we_doc->elements["Charset"]["dat"]) && $we_doc->elements["Charset"]["d
 	we_html_tools::headerCtCharset('text/html', $we_doc->elements["Charset"]["dat"]);
 }
 we_html_tools::protect();
-echo we_html_tools::getHtmlTop().
-		we_html_element::jsScript(JS_DIR . 'windows.js');
+echo we_html_tools::getHtmlTop() .
+ we_html_element::jsScript(JS_DIR . 'windows.js');
 
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 echo STYLESHEET;

@@ -59,7 +59,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		}
 		array_push($this->persistent_slots, 'TemplateID', 'TemplatePath', 'hidePages', 'controlElement', 'temp_template_id', 'temp_doc_type', 'temp_category', 'usedElementNames');
 		$this->Icon = 'we_dokument.gif';
-		$this->ContentType = 'text/webedition';
+		$this->ContentType = we_base_ContentTypes::WEDOCUMENT;
 	}
 
 	public static function initDocument($formname = 'we_global_form', $tid = 0, $doctype = '', $categories = '', $wewrite = false){
@@ -220,7 +220,7 @@ class we_webEditionDocument extends we_textContentDocument{
 
 	function formDocTypeTempl(){
 		$disable = (permissionhandler::hasPerm('EDIT_DOCEXTENSION') ?
-				(($this->ContentType == 'text/html' || $this->ContentType == 'text/webedition') && $this->Published) :
+				(($this->ContentType == we_base_ContentTypes::HTML || $this->ContentType == we_base_ContentTypes::WEDOCUMENT) && $this->Published) :
 				true);
 
 		return '
@@ -278,9 +278,9 @@ class we_webEditionDocument extends we_textContentDocument{
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$textname'].value");
 		$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd('reload_editpage');");
 
-		$button = we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','text/weTmpl',1)");
+		$button = we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','" . we_base_ContentTypes::TEMPLATE . "',1)");
 		$yuiSuggest->setAcId('Template');
-		$yuiSuggest->setContentType('folder,text/weTmpl');
+		$yuiSuggest->setContentType('folder,' . we_base_ContentTypes::TEMPLATE);
 		$yuiSuggest->setInput($textname, $path);
 		$yuiSuggest->setLabel("<span id='TemplateLabel' style='" . $styleTemplateLabel . "'>" . $ueberschrift . "</span><span id='TemplateLabelLink' style='" . $styleTemplateLabelLink . "'>" . $ueberschrift . "</span>");
 		$yuiSuggest->setMaxResults(10);
@@ -802,7 +802,7 @@ class we_webEditionDocument extends we_textContentDocument{
 if(!defined(\'NO_SESS\')){define(\'NO_SESS\',1);}
 $GLOBALS[\'WE_IS_DYN\'] = 1;
 $GLOBALS[\'we_transaction\'] = 0;
-$GLOBALS[\'we_ContentType\'] = \'text/webedition\';
+$GLOBALS[\'we_ContentType\'] = \'' . we_base_ContentTypes::WEDOCUMENT . '\';
 
 if (isset($_REQUEST[\'pv_id\']) && isset($_REQUEST[\'pv_tid\'])) {
 	$_REQUEST[\'we_cmd\']=array(

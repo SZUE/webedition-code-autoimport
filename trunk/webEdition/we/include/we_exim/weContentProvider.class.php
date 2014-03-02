@@ -90,7 +90,7 @@ class weContentProvider{
 					case 'folder':
 						$we_Table = $table ? $table : FILE_TABLE;
 						break;
-					case 'text/weTmpl':
+					case we_base_ContentTypes::TEMPLATE:
 						$we_Table = TEMPLATES_TABLE;
 						break;
 					case 'object':
@@ -486,7 +486,7 @@ class weContentProvider{
 	}
 
 	static function isBinary($id){
-		return f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . " AND ContentType='image/*' OR ContentType LIKE 'application/%'", '', new DB_WE()) === '1';
+		return f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . " AND ContentType='" . we_base_ContentTypes::IMAGE . "' OR ContentType LIKE 'application/%'", '', new DB_WE()) === '1';
 	}
 
 	static function getCDATA($data){
@@ -505,7 +505,7 @@ class weContentProvider{
 		switch($contenttype){
 			case 'category':
 				return 'weModelBase';
-			case 'text/weTmpl':
+			case we_base_ContentTypes::TEMPLATE:
 				return 'we_template';
 			case 'doctype':
 				return 'we_docTypes';

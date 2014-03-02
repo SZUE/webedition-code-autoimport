@@ -29,8 +29,8 @@ class we_selector_document extends we_selector_directory{
 	protected $titles = array();
 	protected $titleName = '';
 	protected $startPath;
-	protected $ctp = array("image/*" => "NEW_GRAFIK", "video/quicktime" => "NEW_QUICKTIME", "application/x-shockwave-flash" => "NEW_FLASH");
-	protected $ctb = array("" => "btn_add_file", "image/*" => "btn_add_image", "video/quicktime" => "btn_add_quicktime", "application/x-shockwave-flash" => "btn_add_flash");
+	protected $ctp = array(we_base_ContentTypes::IMAGE => "NEW_GRAFIK", we_base_ContentTypes::QUICKTIME => "NEW_QUICKTIME", we_base_ContentTypes::FLASH => "NEW_FLASH");
+	protected $ctb = array("" => "btn_add_file", we_base_ContentTypes::IMAGE => "btn_add_image", we_base_ContentTypes::QUICKTIME => "btn_add_quicktime", we_base_ContentTypes::FLASH => "btn_add_flash");
 
 	function __construct($id, $table = '', $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $sessionID = '', $we_editDirID = '', $FolderText = '', $filter = '', $rootDirID = 0, $open_doc = 0, $multiple = 0, $canSelectDir = 0){
 		parent::__construct($id, ($table == '' ? FILE_TABLE : $table), $JSIDName, $JSTextName, $JSCommand, $order, $sessionID, $we_editDirID, $FolderText, $rootDirID, $multiple, $filter);
@@ -337,7 +337,7 @@ function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 			$ret.='top.addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . $this->f("Text") . '",' . $this->f("IsFolder") . ',"' . $this->f("Path") . '","' . date(g_l('date', '[format][default]'), $this->f("ModDate")) . '","' . $this->f("ContentType") . '","' . $published . '","' . $title . '");';
 		}
 
-		if($this->filter != "text/weTmpl" && $this->filter != "object" && $this->filter != "objectFile" && $this->filter != "text/webedition"){
+		if($this->filter != we_base_ContentTypes::TEMPLATE && $this->filter != "object" && $this->filter != "objectFile" && $this->filter != we_base_ContentTypes::WEDOCUMENT){
 
 			$tmp = ((in_workspace($this->dir, get_ws($this->table))) && $this->userCanMakeNewFile) ? 'enable' : 'disable';
 			$ret.= 'if(top.fsheader.' . $tmp . 'NewFileBut) top.fsheader.' . $tmp . 'NewFileBut();';
@@ -364,10 +364,10 @@ function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 	function printHeaderTableExtraCols(){
 		$newFileState = $this->userCanMakeNewFile ? 1 : 0;
 		return parent::printHeaderTableExtraCols() .
-			($this->filter != "text/weTmpl" && $this->filter != "object" && $this->filter != "objectFile" && $this->filter != "text/webedition" ?
+			($this->filter != we_base_ContentTypes::TEMPLATE && $this->filter != "object" && $this->filter != "objectFile" && $this->filter != we_base_ContentTypes::WEDOCUMENT ?
 				'<td width="10">' . we_html_tools::getPixel(10, 10) . '</td><td width="40">' .
 				we_html_element::jsElement('newFileState=' . $newFileState . ';') .
-				($this->filter == "image/*" || $this->filter == "video/quicktime" || $this->filter == "application/x-shockwave-flash" ?
+				($this->filter == we_base_ContentTypes::IMAGE || $this->filter == we_base_ContentTypes::QUICKTIME || $this->filter == we_base_ContentTypes::FLASH ?
 					we_html_button::create_button("image:" . $this->ctb[$this->filter], "javascript:top.newFile();", true, 0, 0, "", "", !$newFileState, false) :
 					we_html_button::create_button("image:btn_add_file", "javascript:top.newFile();", true, 0, 0, "", "", !$newFileState, false)) .
 				'</td>' : '');
@@ -375,10 +375,10 @@ function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 
 	function printHeaderJSDef(){
 		$ret = parent::printHeaderJSDef();
-		if($this->filter != "text/weTmpl" && $this->filter != "object" && $this->filter != "objectFile" && $this->filter != "text/webedition"){
+		if($this->filter != we_base_ContentTypes::TEMPLATE && $this->filter != "object" && $this->filter != "objectFile" && $this->filter != we_base_ContentTypes::WEDOCUMENT){
 			$ret.= '
 var newFileState = ' . ($this->userCanMakeNewFile ? 1 : 0) . ';';
-			if($this->filter == "image/*" || $this->filter == "video/quicktime" || $this->filter == "application/x-shockwave-flash"){
+			if($this->filter == we_base_ContentTypes::IMAGE || $this->filter == we_base_ContentTypes::QUICKTIME || $this->filter == we_base_ContentTypes::FLASH){
 				return $ret . '
 function disableNewFileBut() {
 	' . ((isset($this->ctb[$this->filter])) ? $this->ctb[$this->filter] : "") . '_enabled = switch_button_state("' . ((isset($this->ctb[$this->filter])) ? $this->ctb[$this->filter] : "") . '", "", "disabled", "image");
@@ -413,7 +413,7 @@ function enableNewFileBut() {
 		if(!$this->userCanSeeDir()){
 			return false;
 		}
-		if($this->filter == "image/*" || $this->filter == "video/quicktime" || $this->filter == "application/x-shockwave-flash"){
+		if($this->filter == we_base_ContentTypes::IMAGE || $this->filter == we_base_ContentTypes::QUICKTIME || $this->filter == we_base_ContentTypes::FLASH){
 			if(!permissionhandler::hasPerm($this->ctp[$this->filter])){
 				return false;
 			}
@@ -633,10 +633,10 @@ top.parentID = "' . $this->values["ParentID"] . '";
 				}
 			}
 			switch($result['ContentType']){
-				case 'image/*':
-				case 'text/webedition':
-				case 'text/html':
-				case 'application/*':
+				case we_base_ContentTypes::IMAGE:
+				case we_base_ContentTypes::WEDOCUMENT:
+				case we_base_ContentTypes::HTML:
+				case we_base_ContentTypes::APPLICATION:
 					$showPriview = $result['Published'] > 0 ? true : false;
 					break;
 
@@ -650,7 +650,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 			$_filesize = we_base_file::getHumanFileSize($fs);
 
 
-			if($result['ContentType'] == "image/*" && file_exists($_SERVER['DOCUMENT_ROOT'] . $result['Path'])){
+			if($result['ContentType'] == we_base_ContentTypes::IMAGE && file_exists($_SERVER['DOCUMENT_ROOT'] . $result['Path'])){
 				if($fs === 0){
 					$_imagesize = array(0, 0);
 					$_thumbpath = IMAGE_DIR . 'icons/no_image.gif';
@@ -719,7 +719,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 				);
 			}
 
-			if($result['ContentType'] != "folder" && $result['ContentType'] != "text/weTmpl" && $result['ContentType'] != "object" && $result['ContentType'] != "objectFile"){
+			if($result['ContentType'] != "folder" && $result['ContentType'] != we_base_ContentTypes::TEMPLATE && $result['ContentType'] != "object" && $result['ContentType'] != "objectFile"){
 				$_previewFields["properies"]["data"][] = array(
 					"caption" => g_l('fileselector', "[filesize]"),
 					"content" => $_filesize
@@ -748,7 +748,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 				);
 			}
 			switch($result['ContentType']){
-				case 'image/*':
+				case we_base_ContentTypes::IMAGE:
 					$Title = (isset($metainfos['title']) ? $metainfos['title'] : ((isset($metainfos['Title']) && isset($metainfos['useMetaTitle']) && $metainfos['useMetaTitle']) ? $metainfos['Title'] : ''));
 					$name = (isset($metainfos['name']) ? $metainfos['name'] : '');
 					$alt = (isset($metainfos['alt']) ? $metainfos['alt'] : '');
@@ -771,9 +771,9 @@ top.parentID = "' . $this->values["ParentID"] . '";
 						);
 					}
 				//no break!
-				case "application/x-shockwave-flash":
-				case "video/quicktime":
-				case "application/*":
+				case we_base_ContentTypes::FLASH:
+				case we_base_ContentTypes::QUICKTIME:
+				case we_base_ContentTypes::APPLICATION:
 					// only binary data have additional metadata
 					$metaDataFields = we_metadata_metaData::getDefinedMetaDataFields();
 					foreach($metaDataFields as $md){
@@ -807,7 +807,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 					}
 					break;
 
-				case "text/weTmpl":
+				case we_base_ContentTypes::TEMPLATE:
 					if(isset($result['MasterTemplateID']) && !empty($result['MasterTemplateID'])){
 						$mastertemppath = f("SELECT Text, Path FROM " . $this->db->escape($this->table) . " WHERE ID=" . intval($result['MasterTemplateID']), "Path", $this->db);
 						$_previewFields["masterTemplate"]["data"][] = array(

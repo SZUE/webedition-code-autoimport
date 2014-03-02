@@ -198,7 +198,7 @@ class we_banner_view extends we_banner_base{
 		if($ID){
 			$ct = f('SELECT ContentType FROM ' . FILE_TABLE . " WHERE ID=" . intval($ID), "ContentType", $this->db);
 			switch($ct){
-				case "image/*";
+				case we_base_ContentTypes::IMAGE;
 					$img = new we_imageDocument();
 					$img->initByID($ID, FILE_TABLE);
 					return $img->getHTML();
@@ -663,7 +663,7 @@ class we_banner_view extends we_banner_base{
 						}
 						if($this->banner->bannerID > 0){
 							$acResult = $acQuery->getItemById($this->banner->bannerID, FILE_TABLE, array("ContentType"));
-							if(!$acResult || $acResult[0]['ContentType'] != 'image/*'){
+							if(!$acResult || $acResult[0]['ContentType'] != we_base_ContentTypes::IMAGE){
 								print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[error_ac_field]'), we_message_reporting::WE_MESSAGE_ERROR));
 								return;
 							}
@@ -809,7 +809,7 @@ class we_banner_view extends we_banner_base{
 	function formFiles(){
 		$delallbut = we_html_button::create_button("delete_all", "javascript:top.content.setHot(); we_cmd('del_all_files')");
 		$wecmdenc3 = we_cmd_enc("fillIDs();opener.we_cmd('add_file',top.allIDs);");
-		$addbut = we_html_button::create_button("add", "javascript:top.content.setHot(); we_cmd('openDocselector','','" . FILE_TABLE . "','','','" . $wecmdenc3 . "','','','text/webedition','',1)");
+		$addbut = we_html_button::create_button("add", "javascript:top.content.setHot(); we_cmd('openDocselector','','" . FILE_TABLE . "','','','" . $wecmdenc3 . "','','','" . we_base_ContentTypes::WEDOCUMENT . "','',1)");
 
 		$dirs = new MultiDirChooser(495, $this->banner->FileIDs, "del_file", we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", FILE_TABLE);
 
@@ -1006,11 +1006,11 @@ class we_banner_view extends we_banner_base{
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$IDName'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$Pathname'].value");
 		$wecmdenc3 = we_cmd_enc(str_replace('\\', '', $cmd));
-		$button = we_html_button::create_button("select", "javascript:top.content.setHot();we_cmd('openDocselector',((document.we_form.elements['$IDName'].value != 0) ? document.we_form.elements['$IDName'].value : ''),'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0,'image/*')");
+		$button = we_html_button::create_button("select", "javascript:top.content.setHot();we_cmd('openDocselector',((document.we_form.elements['$IDName'].value != 0) ? document.we_form.elements['$IDName'].value : ''),'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0,'" . we_base_ContentTypes::IMAGE . "')");
 
 		$yuiSuggest->setAcId("Image");
 		$yuiSuggest->setLabel($title);
-		$yuiSuggest->setContentType('folder,image/*,application/*,application/x-shockwave-flash,video/quicktime');
+		$yuiSuggest->setContentType(implode(',', array('folder', we_base_ContentTypes::IMAGE, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::FLASH, we_base_ContentTypes::QUICKTIME)));
 		$yuiSuggest->setInput($Pathname, $Pathvalue, "onchange=\"top.content.setHot();\"", true);
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(true);
@@ -1103,7 +1103,7 @@ class we_banner_view extends we_banner_base{
 		$button = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0,'')");
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId("InternalURL");
-		$yuiSuggest->setContentType("folder,text/xml,text/webedition,image/*,text/html,application/*,application/x-shockwave-flash,video/quicktime");
+		$yuiSuggest->setContentType(implode(',', array('folder', we_base_ContentTypes::XML, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::FLASH, we_base_ContentTypes::QUICKTIME)));
 		$yuiSuggest->setInput($Pathname, $Pathvalue, "onchange=\"top.content.setHot();\"", true);
 		$yuiSuggest->setLabel($title2);
 		$yuiSuggest->setMaxResults(10);

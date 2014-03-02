@@ -146,7 +146,7 @@ function we_tag_href($attribs){
 	if($type == we_base_link::TYPE_ALL || $type == we_base_link::TYPE_INT){
 		$yuiSuggest = &weSuggest::getInstance();
 		$yuiSuggest->setAcId($name . we_base_file::getUniqueId(), $rootdir);
-		$yuiSuggest->setContentType('folder,text/webedition,image/*,text/js,text/css,text/html,application/*,video/quicktime');
+		$yuiSuggest->setContentType(implode(',', array('folder', we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::JS, we_base_ContentTypes::CSS, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::QUICKTIME)));
 		$yuiSuggest->setInput($intPath_elem_Name, $intPath);
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(1);

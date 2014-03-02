@@ -92,7 +92,7 @@ class weXMLExport extends weXMLExIm{
 
 		if($classname == "we_backup_tableItem" && $export_binary &&
 			strtolower($doc->table) == strtolower(FILE_TABLE) &&
-			($doc->ContentType == "image/*" || stripos($doc->ContentType, "application/") !== false)){
+			($doc->ContentType == we_base_ContentTypes::IMAGE || stripos($doc->ContentType, "application/") !== false)){
 			$bin = weContentProvider::getInstance("weBinary", $doc->ID);
 			$attribute = (isset($bin->attribute_slots) ? $bin->attribute_slots : array());
 			weContentProvider::binary2file($bin, $fh);
@@ -151,7 +151,7 @@ class weXMLExport extends weXMLExIm{
 		foreach($selTempl as $k => $v){
 			$this->RefTable->add2(array(
 				"ID" => $v,
-				"ContentType" => "text/weTmpl",
+				"ContentType" => we_base_ContentTypes::TEMPLATE,
 				"level" => 0
 				)
 			);

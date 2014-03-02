@@ -136,7 +136,7 @@ class weXMLExIm{
 		}
 	}
 
-	function getTableForCT($we_ContentType, $table = ""){
+	function getTableForCT($we_ContentType, $table = ''){
 		switch($we_ContentType){
 			case "doctype":
 				return DOC_TYPES_TABLE;
@@ -144,7 +144,7 @@ class weXMLExIm{
 				return CATEGORY_TABLE;
 			case "object":
 				return (defined("OBJECT_TABLE")) ? OBJECT_TABLE : null;
-			case "text/weTmpl":
+			case we_base_ContentTypes::TEMPLATE:
 				return TEMPLATES_TABLE;
 			case "objectFile":
 				return (defined("OBJECT_FILES_TABLE")) ? OBJECT_FILES_TABLE : null;
@@ -386,13 +386,13 @@ class weXMLExIm{
 					}
 				}
 
-				if(method_exists($object,'we_publish')){
+				if(method_exists($object, 'we_publish')){
 					if(!$object->we_publish()){
 						return false;
 					}
 				}
 
-				if(method($object,'savebinarydata')){
+				if(method($object, 'savebinarydata')){
 					$object->setElement('data', '');
 				}
 			}

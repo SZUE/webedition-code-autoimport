@@ -30,7 +30,7 @@ var _EditorFrame = top.weEditorFrameController.getActiveEditorFrame();
 if(		_EditorFrame != false
 &&	_EditorFrame.getEditorType() == "model"
 &&	(
-_EditorFrame.getEditorContentType() == "text/webedition"
+_EditorFrame.getEditorContentType() == "<?php echo we_base_ContentTypes::WEDOCUMENT; ?>"
 ||	_EditorFrame.getEditorContentType() == "objectFile"
 )
 ) {

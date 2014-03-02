@@ -73,7 +73,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		}
 		$text = '';
 
-		if($this->ContentType == 'text/webedition'){
+		if($this->ContentType == we_base_ContentTypes::WEDOCUMENT){
 			$allUsedElements = $this->getUsedElements(true);
 			if(empty($allUsedElements)){//FIXME:needed for rebuild, since tags are unintialized
 				// dont save unneeded fields in index-table
@@ -168,7 +168,7 @@ abstract class we_textContentDocument extends we_textDocument{
 					$this->ParentPath = $rec['ParentPath'];
 					$this->ParentID = $rec['ParentID'];
 				}
-				if($this->ContentType == 'text/webedition'){
+				if($this->ContentType == we_base_ContentTypes::WEDOCUMENT){
 					// only switch template, when current template is not in Templates
 					$_templates = explode(',', $rec['Templates']);
 					if(!in_array($this->TemplateID, $_templates)){
@@ -300,7 +300,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		$ret = $this->i_saveTmp(!$resave);
 		$this->OldPath = $this->Path;
 
-		if(($this->ContentType == 'text/webedition' && defined('VERSIONING_TEXT_WEBEDITION') && VERSIONING_TEXT_WEBEDITION) || ($this->ContentType == 'text/html' && defined('VERSIONING_TEXT_HTML') && VERSIONING_TEXT_HTML)){
+		if(($this->ContentType == we_base_ContentTypes::WEDOCUMENT && defined('VERSIONING_TEXT_WEBEDITION') && VERSIONING_TEXT_WEBEDITION) || ($this->ContentType == we_base_ContentTypes::HTML && defined('VERSIONING_TEXT_HTML') && VERSIONING_TEXT_HTML)){
 			$version->save($this);
 		}
 
@@ -356,7 +356,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		//FIXME: changes of customerFilter are missing here
 		$this->rewriteNavigation();
 		//	}
-		if(isset($_SESSION['weS']['versions']['fromScheduler']) && $_SESSION['weS']['versions']['fromScheduler'] && (($this->ContentType == 'text/webedition' && defined('VERSIONING_TEXT_WEBEDITION') && VERSIONING_TEXT_WEBEDITION) || ($this->ContentType == 'text/html' && defined('VERSIONING_TEXT_HTML') && VERSIONING_TEXT_HTML))){
+		if(isset($_SESSION['weS']['versions']['fromScheduler']) && $_SESSION['weS']['versions']['fromScheduler'] && (($this->ContentType == we_base_ContentTypes::WEDOCUMENT && defined('VERSIONING_TEXT_WEBEDITION') && VERSIONING_TEXT_WEBEDITION) || ($this->ContentType == we_base_ContentTypes::HTML && defined('VERSIONING_TEXT_HTML') && VERSIONING_TEXT_HTML))){
 			$version = new weVersions();
 			$version->save($this, 'published');
 		}
@@ -388,7 +388,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		$this->rewriteNavigation();
 
 		/* version */
-		if((VERSIONING_TEXT_WEBEDITION && $this->ContentType == 'text/webedition' ) || (VERSIONING_TEXT_HTML && $this->ContentType == 'text/html')){
+		if((VERSIONING_TEXT_WEBEDITION && $this->ContentType == we_base_ContentTypes::WEDOCUMENT ) || (VERSIONING_TEXT_HTML && $this->ContentType == we_base_ContentTypes::HTML)){
 			$version = new weVersions();
 			$version->save($this, 'unpublished');
 		}
@@ -479,7 +479,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		$this->ModDate = $this->Published;
 		$this->we_save();
 		$this->we_publish();
-		if(defined('WORKFLOW_TABLE') && $this->ContentType == 'text/webedition'){
+		if(defined('WORKFLOW_TABLE') && $this->ContentType == we_base_ContentTypes::WEDOCUMENT){
 			if(we_workflow_utility::inWorkflow($this->ID, $this->Table)){
 				we_workflow_utility::removeDocFromWorkflow($this->ID, $this->Table, $_SESSION['user']['ID'], '');
 			}

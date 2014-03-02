@@ -40,7 +40,7 @@ $imageSizeW = $_REQUEST['size'];
 $imageSizeH = (isset($_REQUEST['size2']) ? $_REQUEST['size2'] : $imageSizeW);
 
 
-$whiteList = we_base_ContentTypes::inst()->getExtension('image/*');
+$whiteList = we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::IMAGE);
 
 if(!in_array(strtolower($_REQUEST['extension']), $whiteList)){
 	exit();

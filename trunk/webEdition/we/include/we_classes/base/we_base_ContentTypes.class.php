@@ -28,6 +28,18 @@ class we_base_ContentTypes{
 	const FOLDER_ICON = 'folder.gif';
 	const IMAGE_ICON = 'image.gif';
 	const LINK_ICON = 'link.gif';
+	const IMAGE = 'image/*';
+	const TEMPLATE = 'text/weTmpl';
+	const XML = 'text/xml';
+	const HTML = 'text/html';
+	const WEDOCUMENT = 'text/webedition';
+	const JS = 'text/js';
+	const CSS = 'text/css';
+	const HTACESS = 'text/htaccess';
+	const TEXT = 'text/plain';
+	const FLASH = 'application/x-shockwave-flash';
+	const QUICKTIME = 'video/quicktime';
+	const APPLICATION = 'application/*';
 
 	private $ct;
 
@@ -35,7 +47,7 @@ class we_base_ContentTypes{
 		$charset = defined('WE_BACKENDCHARSET') ? WE_BACKENDCHARSET : 'UTF-8';
 		$this->ct = array(
 // Content Type for Images
-			'image/*' => array(
+			self::IMAGE => array(
 				'Extension' => array('.gif', '.jpg', '.jpeg', '.png', '.svg', '.svgz'),
 				'ExtensionIsFilename' => false,
 				'Permission' => 'NEW_GRAFIK',
@@ -44,7 +56,7 @@ class we_base_ContentTypes{
 				'IsWebEditionFile' => true,
 				'Icon' => self::IMAGE_ICON,
 			),
-			'text/xml' => array(//this entry must stay before text/html, text/we because filetypes are not distinct
+			self::XML => array(//this entry must stay before text/html, text/we because filetypes are not distinct
 				'Extension' => '.xml',
 				'ExtensionIsFilename' => false,
 				'Permission' => 'NEW_TEXT',
@@ -53,7 +65,7 @@ class we_base_ContentTypes{
 				'IsWebEditionFile' => true,
 				'Icon' => self::LINK_ICON,
 			),
-			'text/html' => array(
+			self::HTML => array(
 				'Extension' => array('.html', '.htm', '.shtm', '.shtml', '.stm', '.php', '.jsp', '.asp', '.pl', '.cgi', '.xml', '.xsl'),
 				'ExtensionIsFilename' => false,
 				'Permission' => 'NEW_HTML',
@@ -69,7 +81,7 @@ class we_base_ContentTypes{
 				'IsRealFile' => true,
 				'Icon' => 'html.gif',
 			),
-			'text/webedition' => array(
+			self::WEDOCUMENT => array(
 				'Extension' => array('.html', '.htm', '.shtm', '.shtml', '.stm', '.php', '.jsp', '.asp', '.pl', '.cgi', '.xml'),
 				'ExtensionIsFilename' => false,
 				'Permission' => 'NEW_WEBEDITIONSITE',
@@ -78,7 +90,7 @@ class we_base_ContentTypes{
 				'IsRealFile' => false,
 				'Icon' => 'we_dokument.gif',
 			),
-			'text/weTmpl' => array(
+			self::TEMPLATE => array(
 				'Extension' => '.tmpl',
 				'ExtensionIsFilename' => false,
 				'Permission' => 'NEW_TEMPLATE',
@@ -105,7 +117,7 @@ class we_base_ContentTypes{
 				'IsWebEditionFile' => false,
 				'Icon' => 'we_template.gif',
 			),
-			'text/js' => array(
+			self::JS => array(
 				'Extension' => '.js',
 				'ExtensionIsFilename' => false,
 				'Permission' => 'NEW_JS',
@@ -114,7 +126,7 @@ class we_base_ContentTypes{
 				'IsWebEditionFile' => true,
 				'Icon' => 'javascript.gif',
 			),
-			'text/css' => array(
+			self::CSS => array(
 				'Extension' => array('.css', '.less', '.scss', '.sass'),
 				'ExtensionIsFilename' => false,
 				'Permission' => 'NEW_CSS',
@@ -123,7 +135,7 @@ class we_base_ContentTypes{
 				'IsWebEditionFile' => true,
 				'Icon' => 'css.gif',
 			),
-			'text/htaccess' => array(
+			self::HTACESS => array(
 				'Extension' => '.htaccess',
 				'ExtensionIsFilename' => true,
 				'Permission' => 'NEW_HTACCESS',
@@ -132,7 +144,7 @@ class we_base_ContentTypes{
 				'IsWebEditionFile' => true,
 				'Icon' => 'htaccess.gif'
 			),
-			'text/plain' => array(
+			self::TEXT => array(
 				'Extension' => '.txt',
 				'ExtensionIsFilename' => false,
 				'Permission' => 'NEW_TEXT',
@@ -159,7 +171,7 @@ class we_base_ContentTypes{
 				'IsWebEditionFile' => false,
 				'Icon' => self::CLASS_FOLDER_ICON,
 			),
-			'application/x-shockwave-flash' => array(
+			self::FLASH => array(
 				'Extension' => '.swf',
 				'ExtensionIsFilename' => false,
 				'Permission' => 'NEW_FLASH',
@@ -168,7 +180,7 @@ class we_base_ContentTypes{
 				'IsWebEditionFile' => true,
 				'Icon' => 'flashmovie.gif',
 			),
-			'video/quicktime' => array(
+			self::QUICKTIME => array(
 				'Extension' => array('.mov', '.moov', '.qt'),
 				'ExtensionIsFilename' => false,
 				'Permission' => 'NEW_QUICKTIME',
@@ -177,7 +189,7 @@ class we_base_ContentTypes{
 				'IsWebEditionFile' => true,
 				'Icon' => 'quicktime.gif',
 			),
-			'application/*' => array(
+			self::APPLICATION => array(
 				'Extension' => array('.doc', '.xls', '.ppt', '.zip', '.sit', '.bin', '.hqx', '.exe', '.pdf'),
 				'ExtensionIsFilename' => false,
 				'Permission' => 'NEW_SONSTIGE',
@@ -222,7 +234,7 @@ class we_base_ContentTypes{
 	}
 
 	public function getIcon($name, $default = '', $extension = ''){
-		if($name == 'application/*'){
+		if($name == self::APPLICATION){
 			switch(strtolower($extension)){
 				case '.pdf' :
 					return 'pdf.gif';

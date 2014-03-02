@@ -36,11 +36,11 @@ function orderBy($a, $b){
 function getTitleLinkObj($text, $orderKey){
 
 	$_href = $_SERVER['SCRIPT_NAME'] .
-			'?typ=' . $GLOBALS['typeObj'] .
-			'&orderBy=' . $orderKey .
-			'&ViewClass=' . $GLOBALS['classid'] .
-			'&actPage=' . $GLOBALS['actPage'] .
-			( ($GLOBALS['orderBy'] == $orderKey && !isset($_REQUEST['orderDesc'])) ? '&orderDesc=true' : '' );
+		'?typ=' . $GLOBALS['typeObj'] .
+		'&orderBy=' . $orderKey .
+		'&ViewClass=' . $GLOBALS['classid'] .
+		'&actPage=' . $GLOBALS['actPage'] .
+		( ($GLOBALS['orderBy'] == $orderKey && !isset($_REQUEST['orderDesc'])) ? '&orderDesc=true' : '' );
 
 	return '<a href="' . $_href . '">' . $text . '</a>' . ($GLOBALS['orderBy'] == $orderKey ? ' <img src="' . IMAGE_DIR . 'arrow_sort_' . (isset($_REQUEST['orderDesc']) ? 'desc' : 'asc') . '.gif" />' : '');
 }
@@ -48,20 +48,20 @@ function getTitleLinkObj($text, $orderKey){
 function getPagerLinkObj(){
 
 	return $_SERVER['SCRIPT_NAME'] .
-			'?typ=' . $GLOBALS['typeObj'] .
-			'&orderBy=' . $GLOBALS['orderBy'] .
-			'&ViewClass=' . $GLOBALS['classid'] .
-			'&actPage=' . $GLOBALS['actPage'] .
-			(isset($_REQUEST['orderdesc']) ? '&orderDesc=true' : '' );
+		'?typ=' . $GLOBALS['typeObj'] .
+		'&orderBy=' . $GLOBALS['orderBy'] .
+		'&ViewClass=' . $GLOBALS['classid'] .
+		'&actPage=' . $GLOBALS['actPage'] .
+		(isset($_REQUEST['orderdesc']) ? '&orderDesc=true' : '' );
 }
 
 function getTitleLinkDoc($text, $orderKey){
 
 	$_href = $_SERVER['SCRIPT_NAME'] .
-			'?typ=' . $GLOBALS['typeDoc'] .
-			'&orderBy=' . $orderKey .
-			'&actPage=' . $GLOBALS['actPage'] .
-			( ($GLOBALS['orderBy'] == $orderKey && !isset($_REQUEST['orderDesc'])) ? '&orderDesc=true' : '' );
+		'?typ=' . $GLOBALS['typeDoc'] .
+		'&orderBy=' . $orderKey .
+		'&actPage=' . $GLOBALS['actPage'] .
+		( ($GLOBALS['orderBy'] == $orderKey && !isset($_REQUEST['orderDesc'])) ? '&orderDesc=true' : '' );
 
 	$arrow = '';
 
@@ -81,10 +81,10 @@ function getTitleLinkDoc($text, $orderKey){
 function getPagerLinkDoc(){
 
 	return $_SERVER['SCRIPT_NAME'] .
-			'?typ=' . $GLOBALS['typeDoc'] .
-			'&orderBy=' . $GLOBALS['orderBy'] .
-			'&actPage=' . $GLOBALS['actPage'] .
-			(isset($_REQUEST['orderdesc']) ? '&orderDesc=true' : '' );
+		'?typ=' . $GLOBALS['typeDoc'] .
+		'&orderBy=' . $GLOBALS['orderBy'] .
+		'&actPage=' . $GLOBALS['actPage'] .
+		(isset($_REQUEST['orderdesc']) ? '&orderDesc=true' : '' );
 }
 
 /* * ************ fuction for orders  ************** */
@@ -168,8 +168,8 @@ if(isset($daten)){
 
 	function array_select($arr_value, $select_name, $label){ // function for a selectbox for the purpose of selecting a class..
 		$fe = (isset($GLOBALS['feldnamen'][3]) ?
-						explode(",", $GLOBALS['feldnamen'][3]) : //determine more than just one class-ID
-						array(0));
+				explode(",", $GLOBALS['feldnamen'][3]) : //determine more than just one class-ID
+				array(0));
 
 		$menu = '<label for="' . $select_name . '">' . $label . '</label>
 <select name="' . $select_name . "\" onChange=\"document.location.href='" . $_SERVER['SCRIPT_NAME'] . "?typ=object&ViewClass='+ this.options[this.selectedIndex].value\">\n";
@@ -177,9 +177,9 @@ if(isset($daten)){
 		foreach($fe as $val){
 			if($val != ''){
 				$menu .= "  <option value=\"" . $val . "\"" .
-						((isset($_REQUEST[$select_name]) && $val == $_REQUEST[$select_name]) ? " selected=\"selected\"" : "") . '>' .
-						f('SELECT ' . OBJECT_TABLE . '.Text as ClassIDName FROM ' . OBJECT_TABLE . ' WHERE ' . OBJECT_TABLE . '.ID = ' . intval($val), 'ClassIDName', $GLOBALS['DB_WE']) .
-						'</option>';
+					((isset($_REQUEST[$select_name]) && $val == $_REQUEST[$select_name]) ? " selected=\"selected\"" : "") . '>' .
+					f('SELECT ' . OBJECT_TABLE . '.Text as ClassIDName FROM ' . OBJECT_TABLE . ' WHERE ' . OBJECT_TABLE . '.ID = ' . intval($val), 'ClassIDName', $GLOBALS['DB_WE']) .
+					'</option>';
 			}
 		}
 		$menu .= '</select><input type="hidden" name="typ" value="object" />';
@@ -346,7 +346,7 @@ if(isset($daten)){
 			$orderBy = isset($_REQUEST['orderBy']) ? $_REQUEST['orderBy'] : 'sql';
 			$entries = f('SELECT count(Name) AS Anzahl FROM ' . LINK_TABLE . ' WHERE Name ="' . $DB_WE->escape(WE_SHOP_TITLE_FIELD_NAME) . '"', 'Anzahl', $DB_WE); // Pager: determine the number of records;
 			$active_page = !empty($_GET['page']) ? $_GET['page'] : 0; // Pager: determine the number of records;
-			$docType = isset($docType) ? $docType = "text/webedition" : $docType = "text/webedition"; // Pager: determine the current page
+			$docType = we_base_ContentTypes::WEDOCUMENT; // Pager: determine the current page
 			$typeAlias = isset($typeAlias) ? $typeAlias = "document" : $typeAlias = "document"; // Pager: determine the current page
 
 			if($entries != 0){ // Pager: Number of records not empty?

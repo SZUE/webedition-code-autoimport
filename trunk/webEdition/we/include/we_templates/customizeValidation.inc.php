@@ -86,12 +86,12 @@ echo we_html_tools::getHtmlTop() . STYLESHEET;
 				$_service = new validationService($_REQUEST['id'], 'custom', $_REQUEST['category'], $_REQUEST['name'], $_REQUEST['host'], $_REQUEST['path'], $_REQUEST['s_method'], $_REQUEST['varname'], $_REQUEST['checkvia'], $_REQUEST['ctype'], $_REQUEST['additionalVars'], $_REQUEST['fileEndings'], $_REQUEST['active']);
 				if($selectedService = validation::saveService($_service)){
 					print we_html_element::jsElement(
-									we_message_reporting::getShowMessageCall(g_l('validation', '[edit_service][saved_success]'), we_message_reporting::WE_MESSAGE_NOTICE)
+							we_message_reporting::getShowMessageCall(g_l('validation', '[edit_service][saved_success]'), we_message_reporting::WE_MESSAGE_NOTICE)
 					);
 				} else {
 					$selectedService = $_service;
 					print we_html_element::jsElement(
-									we_message_reporting::getShowMessageCall(g_l('validation', '[edit_service][saved_failure]') . (isset($GLOBALS['errorMessage']) ? '\n' . $GLOBALS['errorMessage'] : ''), we_message_reporting::WE_MESSAGE_ERROR)
+							we_message_reporting::getShowMessageCall(g_l('validation', '[edit_service][saved_failure]') . (isset($GLOBALS['errorMessage']) ? '\n' . $GLOBALS['errorMessage'] : ''), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 				}
 				break;
@@ -99,12 +99,12 @@ echo we_html_tools::getHtmlTop() . STYLESHEET;
 				$_service = new validationService($_REQUEST['id'], 'custom', $_REQUEST['category'], $_REQUEST['name'], $_REQUEST['host'], $_REQUEST['path'], $_REQUEST['s_method'], $_REQUEST['varname'], $_REQUEST['checkvia'], $_REQUEST['ctype'], $_REQUEST['additionalVars'], $_REQUEST['fileEndings'], $_REQUEST['active']);
 				if(validation::deleteService($_service)){
 					print we_html_element::jsElement(
-									we_message_reporting::getShowMessageCall(g_l('validation', '[edit_service][delete_success]'), we_message_reporting::WE_MESSAGE_NOTICE)
+							we_message_reporting::getShowMessageCall(g_l('validation', '[edit_service][delete_success]'), we_message_reporting::WE_MESSAGE_NOTICE)
 					);
 				} else {
 					print we_html_element::jsElement(
-									we_message_reporting::getShowMessageCall(g_l('validation', '[edit_service][delete_failure]'), WE_MESSAGE_ERR
-									)
+							we_message_reporting::getShowMessageCall(g_l('validation', '[edit_service][delete_failure]'), WE_MESSAGE_ERR
+							)
 					);
 				}
 				break;
@@ -137,7 +137,7 @@ echo we_html_tools::getHtmlTop() . STYLESHEET;
 			}
 		}
 		$hiddenFields = we_html_tools::hidden('id', $selectedService->id) .
-				we_html_tools::hidden('art', 'custom');
+			we_html_tools::hidden('art', 'custom');
 	} else {
 		$hiddenFields = we_html_tools::hidden('art', 'custom');
 		$selectArr = array();
@@ -151,12 +151,12 @@ echo we_html_tools::getHtmlTop() . STYLESHEET;
     <tr><td>' . we_html_tools::htmlSelect('validationService', $selectArr, 5, (isset($selectedService) ? $selectedService->getName() : ''), false, array('onchange' => 'we_cmd(\'customValidationService\',\'selectService\');'), "value", 320) . '</td>
         <td>' . we_html_tools::getPixel(10, 2) . '</td>
         <td valign="top">' . we_html_button::create_button('new_service', 'javascript:we_cmd(\'customValidationService\',\'newService\');')
-			. '<div style="height:10px;"></div>'
-			. we_html_button::create_button('delete', 'javascript:we_cmd(\'customValidationService\',\'deleteService\');', true, 100, 22, '', '', (empty($services))) . '
+		. '<div style="height:10px;"></div>'
+		. we_html_button::create_button('delete', 'javascript:we_cmd(\'customValidationService\',\'deleteService\');', true, 100, 22, '', '', (empty($services))) . '
         </td>
     </tr>
     </table>' .
-			$hiddenFields;
+		$hiddenFields;
 
 	$parts = array(
 		array('headline' => g_l('validation', '[available_services]'), 'html' => $_table, 'space' => 150)
@@ -177,6 +177,6 @@ echo we_html_tools::getHtmlTop() . STYLESHEET;
 	}
 
 	print '<form name="we_form" onsubmit="return false;">' . we_html_multiIconBox::getHTML('weDocValidation', '100%', $parts, 30, we_html_button::position_yes_no_cancel(we_html_button::create_button('save', 'javascript:we_cmd(\'customValidationService\',\'saveService\');', true, 100, 22, '', '', (empty($services))), we_html_button::create_button('cancel', 'javascript:we_cmd(\'close\');')), -1, '', '', false, g_l('validation', '[adjust_service]'))
-			. '</form>' .
-			'</body></html>';
+		. '</form>' .
+		'</body></html>';
 

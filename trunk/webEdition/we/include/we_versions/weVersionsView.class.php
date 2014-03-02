@@ -944,7 +944,7 @@ function delRow(id) {
 				array("dat" => "<span class='printShow'>" . we_html_button::create_button("reset", "javascript:resetVersion('" . $_versions[$f]["ID"] . "','" . $_versions[$f]["documentID"] . "','" . $_versions[$f]["version"] . "','" . $_versions[$f]["documentTable"] . "');", true, 100, 22, "", "", $disabledReset) . "</span>"),
 				array("dat" => "<span class='printShow'>" . we_html_button::create_button("preview", "javascript:previewVersion('" . $_versions[$f]["ID"] . "');") . "</span>" . we_html_tools::getPixel(1, 1)),
 				array("dat" => "<span class='printShow'>" .
-					(($_versions[$f]["ContentType"] == "text/webedition" || $_versions[$f]["ContentType"] == "text/html" || $_versions[$f]["ContentType"] == "objectFile") ?
+					(($_versions[$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT || $_versions[$f]["ContentType"] == we_base_ContentTypes::HTML || $_versions[$f]["ContentType"] == "objectFile") ?
 						we_html_forms::checkbox($_versions[$f]["ID"], 0, "publishVersion_" . $_versions[$f]["ID"], g_l('versions', '[publishIfReset]'), false, "middlefont", "") :
 						'') .
 					'</span>' . we_html_tools::getPixel(1, 1)),

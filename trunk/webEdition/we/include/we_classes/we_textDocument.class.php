@@ -73,7 +73,7 @@ class we_textDocument extends we_document{
 
 	function isValidEditPage($editPageNr){
 		if($editPageNr == WE_EDITPAGE_VALIDATION){
-			return ($this->ContentType == 'text/css');
+			return ($this->ContentType == we_base_ContentTypes::CSS);
 		}
 
 		return parent::isValidEditPage($editPageNr);
@@ -90,7 +90,7 @@ class we_textDocument extends we_document{
 	}
 
 	function getPath(){
-		if($this->parseFile && $this->ContentType == 'text/css' && ($this->Extension == '.less' || $this->Extension == '.scss')){
+		if($this->parseFile && $this->ContentType == we_base_ContentTypes::CSS && ($this->Extension == '.less' || $this->Extension == '.scss')){
 			return rtrim($this->getParentPath(), '/') . '/' . ( isset($this->Filename) ? $this->Filename : '' ) . '.css';
 		}
 		return parent::getPath();
@@ -99,7 +99,7 @@ class we_textDocument extends we_document{
 	protected function i_getDocumentToSave(){
 		$doc = parent::i_getDocumentToSave();
 		switch($this->ContentType){
-			case 'text/css':
+			case we_base_ContentTypes::CSS:
 				switch($this->Extension){
 					case '.sass':
 					case '.css':
@@ -131,7 +131,7 @@ class we_textDocument extends we_document{
 						}
 				}
 			//no break
-			case 'text/js':
+			case we_base_ContentTypes::JS:
 				$doc = self::replaceWEIDs($doc);
 				break;
 			default:

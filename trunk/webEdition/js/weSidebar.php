@@ -110,7 +110,7 @@ top.we_cmd("open_url_in_editor", url);
 
 weSidebar.openDocument = function(obj) {
 obj['table'] = "<?php echo FILE_TABLE; ?>";
-obj['ct'] = (typeof obj['ct'] == "undefined" ? "text/webedition" : obj['ct']);
+obj['ct'] = (typeof obj['ct'] == "undefined" ? "<?php echo we_base_ContentTypes::WEDOCUMENT;?>" : obj['ct']);
 weSidebar._open(obj);
 
 }
@@ -118,7 +118,7 @@ weSidebar._open(obj);
 
 weSidebar.openDocumentById = function() {
 obj['id'] = (typeof arguments[0] == "undefined" ? 0 : arguments[0]);
-obj['ct'] = (typeof arguments[1] == "undefined" ? "text/webedition" : arguments[1]);
+obj['ct'] = (typeof arguments[1] == "undefined" ? "<?php echo we_base_ContentTypes::WEDOCUMENT;?>" : arguments[1]);
 weSidebar._open(obj);
 
 }
@@ -126,7 +126,7 @@ weSidebar._open(obj);
 
 weSidebar.openTemplate = function(obj) {
 obj['table'] = "<?php echo TEMPLATES_TABLE; ?>";
-obj['ct'] = "text/weTmpl";
+obj['ct'] = "<?php echo we_base_ContentTypes::TEMPLATE;?>";
 weSidebar._open(obj);
 
 }

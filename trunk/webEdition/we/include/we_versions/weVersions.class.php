@@ -953,29 +953,29 @@ class weVersions{
 		//apply content types in preferences
 
 		switch($ct){
-			case "text/webedition":
+			case we_base_ContentTypes::WEDOCUMENT:
 				return VERSIONING_TEXT_WEBEDITION;
-			case "image/*":
+			case we_base_ContentTypes::IMAGE:
 				return VERSIONING_IMAGE;
-			case "text/html":
+			case we_base_ContentTypes::HTML:
 				return VERSIONING_TEXT_HTML;
-			case "text/js":
+			case we_base_ContentTypes::JS:
 				return VERSIONING_TEXT_JS;
-			case "text/css":
+			case we_base_ContentTypes::CSS:
 				return VERSIONING_TEXT_CSS;
-			case "text/plain":
+			case we_base_ContentTypes::TEXT:
 				return VERSIONING_TEXT_PLAIN;
-			case "text/htaccess":
+			case we_base_ContentTypes::HTACESS:
 				return VERSIONING_TEXT_HTACCESS;
-			case "text/weTmpl":
+			case we_base_ContentTypes::TEMPLATE:
 				return VERSIONING_TEXT_WETMPL;
-			case "application/x-shockwave-flash":
+			case we_base_ContentTypes::FLASH:
 				return VERSIONING_FLASH;
-			case "video/quicktime":
+			case we_base_ContentTypes::QUICKTIME:
 				return VERSIONING_QUICKTIME;
-			case "application/*":
+			case we_base_ContentTypes::APPLICATION:
 				return VERSIONING_SONSTIGE;
-			case "text/xml":
+			case we_base_ContentTypes::XML:
 				return VERSIONING_TEXT_XML;
 			case "objectFile":
 				return VERSIONING_OBJECT;
@@ -1060,7 +1060,7 @@ class weVersions{
 				$status = "published";
 			}
 
-			if($document["ContentType"] != "objectFile" && $document["ContentType"] != "text/webedition" && $document["ContentType"] != "text/html" && !($document["ContentType"] == "text/weTmpl" && defined("VERSIONS_CREATE_TMPL") && VERSIONS_CREATE_TMPL)){
+			if($document["ContentType"] != "objectFile" && $document["ContentType"] != we_base_ContentTypes::WEDOCUMENT && $document["ContentType"] != we_base_ContentTypes::HTML && !($document["ContentType"] == we_base_ContentTypes::TEMPLATE && defined("VERSIONS_CREATE_TMPL") && VERSIONS_CREATE_TMPL)){
 				$status = "saved";
 			}
 
@@ -1072,11 +1072,11 @@ class weVersions{
 				$status = "published";
 			}
 
-			if($document["ContentType"] == "objectFile" || $document["ContentType"] == "text/webedition" || $document["ContentType"] == "text/html" || ($document["ContentType"] == "text/weTmpl" && defined("VERSIONS_CREATE_TMPL") && VERSIONS_CREATE_TMPL)){
-				if($document["ContentType"] != "text/weTmpl" && (defined("VERSIONS_CREATE") && VERSIONS_CREATE) && $status != "published" && isset($_REQUEST['we_cmd'][5]) && !$_REQUEST['we_cmd'][5]){
+			if($document["ContentType"] == "objectFile" || $document["ContentType"] == we_base_ContentTypes::WEDOCUMENT || $document["ContentType"] == we_base_ContentTypes::HTML || ($document["ContentType"] == we_base_ContentTypes::TEMPLATE && defined("VERSIONS_CREATE_TMPL") && VERSIONS_CREATE_TMPL)){
+				if($document["ContentType"] != we_base_ContentTypes::TEMPLATE && (defined("VERSIONS_CREATE") && VERSIONS_CREATE) && $status != "published" && isset($_REQUEST['we_cmd'][5]) && !$_REQUEST['we_cmd'][5]){
 					$writeVersion = false;
 				}
-				if($document["ContentType"] == "text/weTmpl" && (defined("VERSIONS_CREATE_TMPL") && VERSIONS_CREATE_TMPL) && $status != "published" && isset($_REQUEST['we_cmd'][5]) && !$_REQUEST['we_cmd'][5]){
+				if($document["ContentType"] == we_base_ContentTypes::TEMPLATE && (defined("VERSIONS_CREATE_TMPL") && VERSIONS_CREATE_TMPL) && $status != "published" && isset($_REQUEST['we_cmd'][5]) && !$_REQUEST['we_cmd'][5]){
 					$writeVersion = false;
 				}
 			}
@@ -1181,7 +1181,7 @@ class weVersions{
 			case 'binaryPath':
 				$binaryPath = '';
 				$this->Filehash = '';
-				if(!($document['ContentType'] == 'objectFile' || $document['ContentType'] == 'text/weTmpl')){
+				if(!($document['ContentType'] == 'objectFile' || $document['ContentType'] == we_base_ContentTypes::TEMPLATE)){
 					$documentPath = substr($document["Path"], 1);
 					$siteFile = $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $documentPath;
 
@@ -1192,10 +1192,10 @@ class weVersions{
 
 					if($document['IsDynamic']){
 						$this->writePreviewDynFile($document['ID'], $siteFile, $_SERVER['DOCUMENT_ROOT'] . $binaryPath, $documentObj);
-					} elseif(file_exists($siteFile) && $document['Extension'] == '.php' && ($document['ContentType'] == 'text/webedition' || $document['ContentType'] == 'text/html')){
+					} elseif(file_exists($siteFile) && $document['Extension'] == '.php' && ($document['ContentType'] == we_base_ContentTypes::WEDOCUMENT || $document['ContentType'] == we_base_ContentTypes::HTML)){
 
 						we_util_File::saveFile($_SERVER['DOCUMENT_ROOT'] . $binaryPath, gzencode(file_get_contents($siteFile), 9));
-					} elseif(isset($document['TemplatePath']) && $document['TemplatePath'] && substr($document['TemplatePath'], -18) != '/' . we_template::NO_TEMPLATE_INC && $document['ContentType'] == 'text/webedition'){
+					} elseif(isset($document['TemplatePath']) && $document['TemplatePath'] && substr($document['TemplatePath'], -18) != '/' . we_template::NO_TEMPLATE_INC && $document['ContentType'] == we_base_ContentTypes::WEDOCUMENT){
 						$includeTemplate = preg_replace('/.tmpl$/i', '.php', $document['TemplatePath']);
 						$this->writePreviewDynFile($document['ID'], $includeTemplate, $_SERVER['DOCUMENT_ROOT'] . $binaryPath, $documentObj);
 					} else {
@@ -1325,12 +1325,6 @@ class weVersions{
 									$modifications[] = $val;
 								}
 							}
-							/* if($document["ContentType"]=="application/x-shockwave-flash" || $document["ContentType"]=="application/*"
-							  || $document["ContentType"]=="video/quicktime" || $document["ContentType"]=="image/*") {
-							  if($val=="binaryPath" && $this->binaryPath!="" && $lastEntryField!=$this->binaryPath) {
-							  //$modifications[] = $val;
-							  }
-							  } */
 
 							if($val == 'status' && $lastEntryField != $this->status){
 								$modifications[] = $val;
@@ -1792,7 +1786,7 @@ class weVersions{
 					}
 				}
 
-				if($resetDoc->ContentType == "image/*"){
+				if($resetDoc->ContentType == we_base_ContentTypes::IMAGE){
 					$lastBinaryPath = f('SELECT binaryPath FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($resetArray["documentID"]) . " AND documentTable='" . $resetArray["documentTable"] . "' AND version <='" . $version . "' AND binaryPath !='' ORDER BY version DESC LIMIT 1", 'binaryPath', $db);
 					$resetDoc->elements["data"]["dat"] = $_SERVER['DOCUMENT_ROOT'] . $lastBinaryPath;
 				}
@@ -1900,7 +1894,7 @@ class weVersions{
 					$resetDoc->we_publish();
 				}
 
-				if(defined("WORKFLOW_TABLE") && $resetDoc->ContentType == "text/webedition"){
+				if(defined("WORKFLOW_TABLE") && $resetDoc->ContentType == we_base_ContentTypes::WEDOCUMENT){
 					if(we_workflow_utility::inWorkflow($resetDoc->ID, $resetDoc->Table)){
 						we_workflow_utility::removeDocFromWorkflow($resetDoc->ID, $resetDoc->Table, $_SESSION["user"]["ID"], "");
 					}

@@ -1477,7 +1477,7 @@ class we_objectFile extends we_document{
 			(!empty($thumbID) ?
 				'<img src="' . $_imgSrc . '" height="' . $_imgHeight . '" width="' . $_imgWight . '" />' :
 				$img->getHtml()) .
-			we_html_button::create_button_table(array(we_html_button::create_button("edit", "javascript:we_cmd('openDocselector','" . ($id != 0 ? $id : (isset($this->DefArray["img_$name"]['defaultdir']) ? $this->DefArray["img_$name"]['defaultdir'] : 0)) . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "', " . (isset($this->DefArray["img_$name"]['rootdir']) && $this->DefArray["img_$name"]['rootdir'] != "" ? $this->DefArray["img_$name"]['rootdir'] : 0) . ",'image/*')"),
+			we_html_button::create_button_table(array(we_html_button::create_button("edit", "javascript:we_cmd('openDocselector','" . ($id != 0 ? $id : (isset($this->DefArray["img_$name"]['defaultdir']) ? $this->DefArray["img_$name"]['defaultdir'] : 0)) . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "', " . (isset($this->DefArray["img_$name"]['rootdir']) && $this->DefArray["img_$name"]['rootdir'] != "" ? $this->DefArray["img_$name"]['rootdir'] : 0) . ",'" . we_base_ContentTypes::IMAGE . "')"),
 				we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('remove_image_at_object','" . $GLOBALS['we_transaction'] . "','img_" . $name . "');setScrollTo();")));
 	}
 
@@ -1493,7 +1493,7 @@ class we_objectFile extends we_document{
 
 			$content = '<input type=hidden name="' . $fname . '" value="' . $this->getElement($name) . '" />' .
 				$img->getHtml() .
-				we_html_button::create_button_table(array(we_html_button::create_button("edit", "javascript:we_cmd('openDocselector','" . ($id != 0 ? $id : (isset($this->DefArray["binary_$name"]['defaultdir']) ? $this->DefArray["binary_$name"]['defaultdir'] : 0)) . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "', " . (isset($this->DefArray["binary_$name"]['rootdir']) && $this->DefArray["binary_$name"]['rootdir'] != "" ? $this->DefArray["binary_$name"]['rootdir'] : 0) . ",'application/*')"),
+				we_html_button::create_button_table(array(we_html_button::create_button("edit", "javascript:we_cmd('openDocselector','" . ($id != 0 ? $id : (isset($this->DefArray["binary_$name"]['defaultdir']) ? $this->DefArray["binary_$name"]['defaultdir'] : 0)) . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "', " . (isset($this->DefArray["binary_$name"]['rootdir']) && $this->DefArray["binary_$name"]['rootdir'] != "" ? $this->DefArray["binary_$name"]['rootdir'] : 0) . ",'".we_base_ContentTypes::APPLICATION."')"),
 					we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('remove_image_at_object','" . $GLOBALS['we_transaction'] . "','binary_" . $name . "')")));
 			return '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["binary_" . $name]["required"] ? "*" : "") . "</span>" . ( isset($this->DefArray["binary_$name"]['editdescription']) && $this->DefArray["binary_$name"]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["binary_$name"]['editdescription'] . '</div>' : we_html_element::htmlBr()) . $content;
 		} else {
@@ -1514,7 +1514,7 @@ class we_objectFile extends we_document{
 			$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['" . $fname . "'].value");
 			$wecmdenc3 = we_cmd_enc("opener.top.we_cmd('reload_entry_at_object','" . $GLOBALS['we_transaction'] . "','flashmovie_" . $name . "');opener._EditorFrame.setEditorIsHot(true);");
 
-			$content .= we_html_button::create_button_table(array(we_html_button::create_button("edit", "javascript:we_cmd('openDocselector','" . ($id != 0 ? $id : (isset($this->DefArray["flashmovie_$name"]['defaultdir']) ? $this->DefArray["flashmovie_$name"]['defaultdir'] : 0)) . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "', " . (isset($this->DefArray["flashmovie_$name"]['rootdir']) && $this->DefArray["flashmovie_$name"]['rootdir'] != "" ? $this->DefArray["flashmovie_$name"]['rootdir'] : 0) . ",'application/x-shockwave-flash')"),
+			$content .= we_html_button::create_button_table(array(we_html_button::create_button("edit", "javascript:we_cmd('openDocselector','" . ($id != 0 ? $id : (isset($this->DefArray["flashmovie_$name"]['defaultdir']) ? $this->DefArray["flashmovie_$name"]['defaultdir'] : 0)) . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "', " . (isset($this->DefArray["flashmovie_$name"]['rootdir']) && $this->DefArray["flashmovie_$name"]['rootdir'] != "" ? $this->DefArray["flashmovie_$name"]['rootdir'] : 0) . ",'" . we_base_ContentTypes::FLASH . "')"),
 					we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('remove_image_at_object','" . $GLOBALS['we_transaction'] . "','flashmovie_" . $name . "')")));
 			return '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["flashmovie_" . $name]["required"] ? "*" : "") . "</span>" . ( isset($this->DefArray["flashmovie_$name"]['editdescription']) && $this->DefArray["flashmovie_$name"]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["flashmovie_$name"]['editdescription'] . '</div>' : we_html_element::htmlBr()) . $content;
 		}
@@ -1533,7 +1533,7 @@ class we_objectFile extends we_document{
 
 			return '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["quicktime_" . $name]["required"] ? "*" : "") . "</span>" . ( isset($this->DefArray["quicktime_$name"]['editdescription']) && $this->DefArray["quicktime_$name"]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["quicktime_$name"]['editdescription'] . '</div>' : we_html_element::htmlBr()) .
 				'<input type=hidden name="' . $fname . '" value="' . $this->getElement($name) . '" />' . $img->getHtml() .
-				we_html_button::create_button_table(array(we_html_button::create_button("edit", "javascript:we_cmd('openDocselector','" . ($id != 0 ? $id : (isset($this->DefArray["quicktime_$name"]['defaultdir']) ? $this->DefArray["quicktime_$name"]['defaultdir'] : 0)) . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "', " . (isset($this->DefArray["quicktime_$name"]['rootdir']) && $this->DefArray["quicktime_$name"]['rootdir'] != "" ? $this->DefArray["quicktime_$name"]['rootdir'] : 0) . ",'video/quicktime')"),
+				we_html_button::create_button_table(array(we_html_button::create_button("edit", "javascript:we_cmd('openDocselector','" . ($id != 0 ? $id : (isset($this->DefArray["quicktime_$name"]['defaultdir']) ? $this->DefArray["quicktime_$name"]['defaultdir'] : 0)) . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "', " . (isset($this->DefArray["quicktime_$name"]['rootdir']) && $this->DefArray["quicktime_$name"]['rootdir'] != "" ? $this->DefArray["quicktime_$name"]['rootdir'] : 0) . ",'" . we_base_ContentTypes::QUICKTIME . "')"),
 					we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('remove_image_at_object','" . $GLOBALS['we_transaction'] . "',quicktime_" . $name . "')")));
 		}
 		return $this->getPreviewView($name, $img->getHtml());
@@ -3175,7 +3175,7 @@ class we_objectFile extends we_document{
 		} else {
 			if($foo['Workspaces']){
 				$fooArr = makeArrayFromCSV($foo['Workspaces']);
-				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published > 0 AND ContentType="text/webedition" AND IsDynamic=1 AND Path LIKE "' . $DB_WE->escape(id_to_path($fooArr[0], FILE_TABLE, $DB_WE)) . '%"', 'Path', $DB_WE);
+				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published>0 AND ContentType="' . we_base_ContentTypes::WEDOCUMENT . '" AND IsDynamic=1 AND Path LIKE "' . $DB_WE->escape(id_to_path($fooArr[0], FILE_TABLE, $DB_WE)) . '%"', 'Path', $DB_WE);
 				return ($path ? $path . '?we_objectID=' . intval($id) . '&pid=' . intval($pid) : '');
 			}
 		}
@@ -3183,7 +3183,7 @@ class we_objectFile extends we_document{
 	}
 
 	private static function getNextDynDoc($path, $pid, $ws1, $ws2, we_database_base $DB_WE){
-		if(f('SELECT IsDynamic FROM ' . FILE_TABLE . ' WHERE Path="' . $DB_WE->escape($path) . '" LIMIT 1', 'IsDynamic', $DB_WE)){
+		if(f('SELECT IsDynamic FROM ' . FILE_TABLE . ' WHERE Path="' . $DB_WE->escape($path) . '" LIMIT 1', '', $DB_WE)){
 			return $path;
 		}
 		$arr1 = makeArrayFromCSV(id_to_path($ws1, FILE_TABLE, $DB_WE));
@@ -3192,7 +3192,7 @@ class we_objectFile extends we_document{
 		$arr4 = makeArrayFromCSV($ws2);
 		foreach($arr1 as $i => $ws){
 			if(in_workspace($pid, $arr3[$i])){
-				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published > 0 AND ContentType="text/webedition" AND IsDynamic=1 AND Path LIKE "' . $DB_WE->escape($ws) . '%" LIMIT 1', 'Path', $DB_WE);
+				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published>0 AND ContentType="' . we_base_ContentTypes::WEDOCUMENT . '" AND IsDynamic=1 AND Path LIKE "' . $DB_WE->escape($ws) . '%" LIMIT 1', '', $DB_WE);
 				if($path){
 					return $path;
 				}
@@ -3200,7 +3200,7 @@ class we_objectFile extends we_document{
 		}
 		foreach($arr2 as $i => $ws){
 			if(in_workspace($pid, $arr4[$i])){
-				return f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published > 0 AND ContentType="text/webedition" AND IsDynamic=1 AND Path LIKE "' . $DB_WE->escape($ws) . '%" LIMIT 1', 'Path', $DB_WE);
+				return f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published>0 AND ContentType="' . we_base_ContentTypes::WEDOCUMENT . '" AND IsDynamic=1 AND Path LIKE "' . $DB_WE->escape($ws) . '%" LIMIT 1', '', $DB_WE);
 			}
 		}
 		return '';

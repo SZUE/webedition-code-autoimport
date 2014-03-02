@@ -26,7 +26,7 @@ class we_htmlDocument extends we_textContentDocument{
 
 	function __construct(){
 		parent::__construct();
-		$this->ContentType = 'text/html';
+		$this->ContentType = we_base_ContentTypes::HTML;
 	}
 
 	function i_saveContentDataInDB(){

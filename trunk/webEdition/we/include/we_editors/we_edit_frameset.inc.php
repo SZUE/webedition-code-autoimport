@@ -130,7 +130,7 @@ if(!isset($we_ID)){
 	$_SESSION['weS']['EditPageNr'] = getTabs('we_webEditionDocument', WE_EDITPAGE_PROPERTIES);
 }
 
-if((isset($_REQUEST['we_cmd'][10])) && ($we_Table == FILE_TABLE) && ($we_ContentType == 'text/webedition')){
+if((isset($_REQUEST['we_cmd'][10])) && ($we_Table == FILE_TABLE) && ($we_ContentType == we_base_ContentTypes::WEDOCUMENT)){
 	$we_doc->setTemplateID($_REQUEST['we_cmd'][10]);
 	$_SESSION['weS']['EditPageNr'] = getTabs($we_doc->ClassName, 1);
 }
@@ -143,7 +143,7 @@ if(isset($_REQUEST['we_cmd'][0]) && isset($_REQUEST['we_cmd'][5]) && $_REQUEST['
 }
 
 
-if((isset($_REQUEST['we_cmd'][8])) && ($we_Table == FILE_TABLE) && ($we_ContentType == 'text/webedition')){
+if((isset($_REQUEST['we_cmd'][8])) && ($we_Table == FILE_TABLE) && ($we_ContentType == we_base_ContentTypes::WEDOCUMENT)){
 	$we_doc->changeDoctype($_REQUEST['we_cmd'][8]);
 	$_SESSION['weS']['EditPageNr'] = getTabs($we_doc->ClassName, 1);
 } else if(isset($_REQUEST['we_cmd'][8]) && (defined('OBJECT_FILES_TABLE') && $we_Table == OBJECT_FILES_TABLE) && ($we_ContentType == 'objectFile')){
@@ -245,7 +245,7 @@ if(!isset($we_doc->IsClassFolder)){
 }
 
 // objects need to know the last webEdition Path, because of Workspaces
-if($we_doc->ContentType == 'text/webedition'){
+if($we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT){
 	$_SESSION['weS']['last_webEdition_document'] = array(
 		'Path' => $we_doc->Path
 	);
@@ -253,7 +253,7 @@ if($we_doc->ContentType == 'text/webedition'){
 
 // get default code
 if(!isset($we_doc->elements['data']['dat'])){
-	$we_doc->elements['data']['dat'] = (isset($_REQUEST['we_cmd'][10]) && $we_doc->ContentType == 'text/weTmpl' ?
+	$we_doc->elements['data']['dat'] = (isset($_REQUEST['we_cmd'][10]) && $we_doc->ContentType == we_base_ContentTypes::TEMPLATE ?
 			base64_decode($_REQUEST['we_cmd'][10]) :
 			we_base_ContentTypes::inst()->getDefaultCode($we_doc->ContentType));
 }
@@ -351,7 +351,7 @@ if(isset($_REQUEST['we_cmd'][0]) && isset($parastr) && ($_REQUEST['we_cmd'][0] =
 }
 
 
-if($GLOBALS['we_doc']->ContentType != 'text/weTmpl'){
+if($GLOBALS['we_doc']->ContentType != we_base_ContentTypes::TEMPLATE){
 	?>
 		function setOpenedWithWE(val) {
 			openedWithWE = val;
@@ -416,7 +416,7 @@ function setOnload(){
 	// Don't do this with Templates and only in Preview Mode
 	// in Edit-Mode all must be reloaded !!!
 	// To remove this functionality - just use the second condition as well.
-	return ($GLOBALS['we_doc']->ContentType != 'text/weTmpl'/* && $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PREVIEW */ ?
+	return ($GLOBALS['we_doc']->ContentType != we_base_ContentTypes::TEMPLATE/* && $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PREVIEW */ ?
 			'onload="if(top.edit_include){top.edit_include.close();} if(openedWithWE == 0){ checkDocument(); } setOpenedWithWE(0);"' :
 			'');
 }
@@ -436,7 +436,7 @@ if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 	<?php
 } else {
 
-	$showContentEditor = ($we_doc->EditPageNr == WE_EDITPAGE_CONTENT && substr($we_doc->ContentType, 0, 5) == 'text/' && $we_doc->ContentType != 'text/webedition');
+	$showContentEditor = ($we_doc->EditPageNr == WE_EDITPAGE_CONTENT && substr($we_doc->ContentType, 0, 5) == 'text/' && $we_doc->ContentType != we_base_ContentTypes::WEDOCUMENT);
 	?>
 	<frameset onload="_EditorFrame.initEditorFrameData({'EditorIsLoading': false});" rows="39,<?php echo $showContentEditor ? "0,*" : "*,0"; ?>,40" framespacing="0" border="0" frameborder="NO" onunload="doUnload();">
 		<frame src="<?php echo we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_edit_header"); ?>" name="editHeader" noresize scrolling="no"/>
