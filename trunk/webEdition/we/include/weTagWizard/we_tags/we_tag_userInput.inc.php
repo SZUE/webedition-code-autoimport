@@ -13,23 +13,23 @@ $checked = new weTagData_selectAttribute('checked', weTagData_selectAttribute::g
 $editable = new weTagData_selectAttribute('editable', weTagData_selectAttribute::getTrueFalse(), false, '');
 $xml = new weTagData_selectAttribute('xml', weTagData_selectAttribute::getTrueFalse(), false, '');
 $removefirstparagraph = new weTagData_selectAttribute('removefirstparagraph', weTagData_selectAttribute::getTrueFalse(), false, '');
-$size = new weTagData_textAttribute('size', false, '');
-$maxlength = new weTagData_textAttribute('maxlength', false, '');
-$format = new weTagData_textAttribute('format', false, '');
-$value = new weTagData_textAttribute('value', false, '');
-$values = new weTagData_textAttribute('values', false, '');
+$size = new weTagData_textAttribute('size');
+$maxlength = new weTagData_textAttribute('maxlength');
+$format = new weTagData_textAttribute('format');
+$value = new weTagData_textAttribute('value');
+$values = new weTagData_textAttribute('values');
 $hidden = new weTagData_selectAttribute('hidden', weTagData_selectAttribute::getTrueFalse(), false, '');
 $currentdate = new weTagData_selectAttribute('currentdate', weTagData_selectAttribute::getTrueFalse(), false, '');
-$cols = new weTagData_textAttribute('cols', false, '');
-$rows = new weTagData_textAttribute('rows', false, '');
+$cols = new weTagData_textAttribute('cols');
+$rows = new weTagData_textAttribute('rows');
 $pure = new weTagData_selectAttribute('pure', weTagData_selectAttribute::getTrueFalse(), false, '');
 $autobr = new weTagData_selectAttribute('autobr', weTagData_selectAttribute::getTrueFalse(), false, '');
-$width = new weTagData_textAttribute('width', false, '');
-$height = new weTagData_textAttribute('height', false, '');
-$bgcolor = new weTagData_textAttribute('bgcolor', false, '');
-$class = new weTagData_textAttribute('class', false, '');
-$style = new weTagData_textAttribute('style', false, '');
-$classes = new weTagData_textAttribute('classes', false, '');
+$width = new weTagData_textAttribute('width');
+$height = new weTagData_textAttribute('height');
+$bgcolor = new weTagData_textAttribute('bgcolor');
+$class = new weTagData_textAttribute('class');
+$style = new weTagData_textAttribute('style');
+$classes = new weTagData_textAttribute('classes');
 $hideautobr = new weTagData_selectAttribute('hideautobr', weTagData_selectAttribute::getTrueFalse(), false, '');
 $wysiwyg = new weTagData_selectAttribute('wysiwyg', weTagData_selectAttribute::getTrueFalse(), false, '');
 $buttonpos = new weTagData_choiceAttribute('buttonpos', array(new weTagDataOption('top'), new weTagDataOption('bottom')), false, false, '');
@@ -67,11 +67,12 @@ $checkboxclass = new weTagData_textAttribute('checkboxclass', false, 'customer')
 $inputstyle = new weTagData_textAttribute('inputstyle', false, 'customer');
 $inputclass = new weTagData_textAttribute('inputclass', false, 'customer');
 $checkboxtext = new weTagData_textAttribute('checkboxtext', false, 'customer');
-$doc = new weTagData_selectAttribute('doc', array(new weTagDataOption('self'),
+$doc = new weTagData_selectAttribute('doc', array(
+	new weTagDataOption('self'),
 	new weTagDataOption('top'),
 	), false, '');
-$minyear = new weTagData_textAttribute('minyear', false, '');
-$maxyear = new weTagData_textAttribute('maxyear', false, '');
+$minyear = new weTagData_textAttribute('minyear');
+$maxyear = new weTagData_textAttribute('maxyear');
 $thumbnail = new weTagData_sqlRowAttribute('thumbnail', THUMBNAILS_TABLE, false, 'Name', '', '', '');
 
 

@@ -383,7 +383,7 @@ class we_tag_tagParser{
 					continue;
 				default:
 					$quotes = ((strpos($val, '$') !== FALSE) || (strpos($val, '\'') !== FALSE) ? '"' : '\'');
-					$ret[] = '\'' . $key . '\'=>' . (is_numeric($val) || $val == 'true' || $val == 'false' ? $val : $quotes . $val . $quotes);
+					$ret[] = '\'' . $key . '\'=>' . ((is_numeric($val)&&$val{0}!='+') || $val == 'true' || $val == 'false' ? $val : $quotes . $val . $quotes);
 			}
 		}
 		return ($ret || (!$ret && $printEmpty) ? 'array(' . implode(',', $ret) . ')' : '');
