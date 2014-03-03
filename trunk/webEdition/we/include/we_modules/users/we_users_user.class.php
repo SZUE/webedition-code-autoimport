@@ -1552,7 +1552,7 @@ function setValues(section) {
 		table="' . TEMPLATES_TABLE . '";
 		break;' .
 				(defined("OBJECT_TABLE") ? '
-	case "OBJECT_FILES_TABLE":
+	case "OBJECT_TABLE":
 		table="' . OBJECT_FILES_TABLE . '";
 		break;' : '') .
 				(defined('NEWSLETTER_TABLE') ? '
