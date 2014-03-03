@@ -60,6 +60,8 @@ $l_weEditor=array(
 		'we_filename_notAllowed'=>'De bestandsnaam die u heeft ingevoerd is niet toegestaan!',
 		'we_filename_notValid'=>'Ongeldige bestandsnaam\nGeldige karakters zijn alfa-numeriek, boven- en onderkast, eveneens als de underscore, koppelteken en punt (a-z, A-Z, 0-9, _, -, .)',
 	),
+	'incompleteRequest'=>'',
+	
 	'objectFile'=>array(
 		'autoschedule'=>'Het object wordt automatisch gepubliceerd op %s.',
 		'filename_empty'=>'Er is geen naam opgegeven voor dit object!',

@@ -60,6 +60,8 @@ $l_weEditor=array(
 		'we_filename_notAllowed'=>'Le nom du fichier n`est pas permis!',
 		'we_filename_notValid'=>'Le nom saisi pour le fichier n`est pas valide!\nSignes permis sont les lettres de a à z (majuscule- ou minuscule) , nombres, soulignage (_), signe moins (-), point (.)',
 	),
+	'incompleteRequest'=>'',
+	
 	'objectFile'=>array(
 		'autoschedule'=>'L`object sera publié automatiquement le %s',
 		'filename_empty'=>'Vous avez pas encore saisi un nom au object!',

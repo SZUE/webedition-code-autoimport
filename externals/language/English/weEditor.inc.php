@@ -60,6 +60,8 @@ $l_weEditor=array(
 		'we_filename_notAllowed'=>'The file name you have entered is not allowed!',
 		'we_filename_notValid'=>'Invalid file name\nAll characters except <>?":|\\/* are valid.',
 	),
+	'incompleteRequest'=>'',
+	
 	'objectFile'=>array(
 		'autoschedule'=>'The object will be published automatically on %s.',
 		'filename_empty'=>'No name entered for this object!',
