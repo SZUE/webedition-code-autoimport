@@ -37,7 +37,7 @@ if(!$weTag){
 // needed javascript for the individual tags
 // #1 - all attributes of this we:tag (ids of attributes)
 $_attributes = $weTag->getAllAttributes(true);
-$jsAllAttributes = 'var allAttributes = new Array(' . (empty($_attributes) ? '' : '"' . implode('", "', $_attributes) . '"') . ');';
+$jsAllAttributes = 'var allAttributes = new Array(' . ($_attributes ? '"' . implode('", "', $_attributes) . '"' : '') . ');';
 
 // #2 all required attributes
 $_reqAttributes = $weTag->getRequiredAttributes();
