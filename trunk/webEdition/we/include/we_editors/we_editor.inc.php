@@ -656,11 +656,11 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 				exit('Nothing to include ...');
 			}
 
+			/* At this point complete requests are not common
 			if(!isset($_REQUEST['we_complete_request'])){
-				t_e('missing completed request');
 				$we_responseText = g_l('weEditor', '[incompleteRequest]');
 				$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
-			}
+			}*/
 			$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
 			if($_SERVER['DOCUMENT_ROOT'] && substr(strtolower($we_include), 0, strlen($_SERVER['DOCUMENT_ROOT'])) == strtolower($_SERVER['DOCUMENT_ROOT'])){
 
