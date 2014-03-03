@@ -22,14 +22,14 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 $tagName = $_REQUEST['we_cmd'][1];
-$openAtCursor = $_REQUEST['we_cmd'][2] === "1" ? true : false;
+$openAtCursor = $_REQUEST['we_cmd'][2] === '1';
 
 we_html_tools::protect();
 
 // include wetag depending on we_cmd[1]
 $weTag = weTagData::getTagData($tagName);
 if(!$weTag){
-	print sprintf(g_l('taged', '[tag_not_found]'), $tagName);
+	echo sprintf(g_l('taged', '[tag_not_found]'), $tagName);
 	exit;
 }
 
