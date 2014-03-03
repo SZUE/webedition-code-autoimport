@@ -54,7 +54,7 @@ echo we_html_tools::getHtmlTop() .
  we_html_element::jsScript(JS_DIR . 'windows.js');
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
-print STYLESHEET;
+echo STYLESHEET;
 ?>
 </head>
 
@@ -87,10 +87,10 @@ print STYLESHEET;
 			}
 			$parts[] = array("headline" => g_l('weClass', "[download]"), "html" => $link, "space" => 120);
 
-			print we_html_multiIconBox::getHTML('weOtherDocPrev', '100%', $parts, 20);
+			echo we_html_multiIconBox::getHTML('weOtherDocPrev', '100%', $parts, 20);
 		}
 		?>
-
+		<input type="hidden" name="we_complete_request" value="1"/>
 	</form>
 </body>
 

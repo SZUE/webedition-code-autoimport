@@ -42,7 +42,7 @@ class we_template extends we_document{
 		$this->Table = TEMPLATES_TABLE;
 
 		array_push($this->persistent_slots, 'MasterTemplateID', 'IncludedTemplates', 'TagWizardCode', 'TagWizardSelection');
-		$this->elements["Charset"]["dat"] = DEFAULT_CHARSET;
+		$this->elements['Charset']['dat'] = DEFAULT_CHARSET;
 		array_push($this->EditPageNrs, WE_EDITPAGE_PROPERTIES, WE_EDITPAGE_INFO, WE_EDITPAGE_CONTENT, WE_EDITPAGE_PREVIEW, WE_EDITPAGE_PREVIEW_TEMPLATE, WE_EDITPAGE_VARIANTS, WE_EDITPAGE_VERSIONS);
 		$this->Published = 1;
 		$this->InWebEdition = true;

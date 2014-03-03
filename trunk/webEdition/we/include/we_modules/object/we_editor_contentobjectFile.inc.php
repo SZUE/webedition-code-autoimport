@@ -26,7 +26,7 @@ require_once(WE_INCLUDES_PATH . 'we_tag.inc.php');
 we_html_tools::protect();
 
 $charset = (isset($GLOBALS['we_doc']->Charset) && $GLOBALS['we_doc']->Charset ? //	send charset which might be determined in template
-		$GLOBALS['we_doc']->Charset : DEFAULT_CHARSET);
+				$GLOBALS['we_doc']->Charset : DEFAULT_CHARSET);
 
 
 we_html_tools::headerCtCharset('text/html', $charset);
@@ -114,11 +114,12 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') .
 			}
 		} else {
 			if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
-				$_msg = "";
+				$_msg = '';
 			}
-			print we_SEEM::parseDocument(we_html_multiIconBox::getHTML('', '100%', $parts, 30, '', -1, '', '', false));
+			echo we_SEEM::parseDocument(we_html_multiIconBox::getHTML('', '100%', $parts, 30, '', -1, '', '', false));
 		}
 		?>
+		<input type="hidden" name="we_complete_request" value="1"/>
 	</form>
 </body><?php echo we_html_element::jsElement('setTimeout("doScrollTo();",100);'); ?>
 </html>

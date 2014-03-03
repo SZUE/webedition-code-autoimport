@@ -62,7 +62,6 @@ echo we_html_tools::getHtmlTop() . STYLESHEET;
 	}
 
 	function we_submitForm(url) {
-
 		var f = self.document.we_form;
 
 		f.action = url;

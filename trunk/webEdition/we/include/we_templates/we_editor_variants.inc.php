@@ -29,7 +29,7 @@ if(isset($we_doc->elements["Charset"]["dat"]) && $we_doc->elements["Charset"]["d
 echo we_html_tools::getHtmlTop() .
  we_html_element::jsScript(JS_DIR . 'windows.js');
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
-print STYLESHEET;
+echo STYLESHEET;
 ?>
 </head>
 <body class="weEditorBody" onunload="doUnload()">
@@ -54,6 +54,7 @@ print STYLESHEET;
 				break;
 		}
 		?>
+		<input type="hidden" name="we_complete_request" value="1"/>
 	</form>
 </body>
 </html>

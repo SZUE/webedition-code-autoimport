@@ -502,16 +502,15 @@ abstract class we_root extends we_class{
 	function formTriggerDocument($isclass = false){
 		$yuiSuggest = &weSuggest::getInstance();
 		$table = FILE_TABLE;
+		$textname = 'we_' . $this->Name . '_TriggerName';
 		if($isclass){
-			$textname = 'we_' . $this->Name . '_TriggerName';
 			$idname = 'we_' . $this->Name . '_DefaultTriggerID';
 			$myid = $this->DefaultTriggerID ? $this->DefaultTriggerID : '';
 		} else {
-			$textname = 'we_' . $this->Name . '_TriggerName';
 			$idname = 'we_' . $this->Name . '_TriggerID';
 			$myid = $this->TriggerID ? $this->TriggerID : '';
 		}
-		$path = f('SELECT Path FROM ' . $this->DB_WE->escape($table) . ' WHERE ID=' . intval($myid), 'Path', $this->DB_WE);
+		$path = f('SELECT Path FROM ' . $this->DB_WE->escape($table) . ' WHERE ID=' . intval($myid), '', $this->DB_WE);
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$idname'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$textname'].value");
 		$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);");
@@ -528,8 +527,8 @@ abstract class we_root extends we_class{
 		$yuiSuggest->setSelector('Docselector');
 		$yuiSuggest->setTable($table);
 		$yuiSuggest->setWidth(388);
-		$yuiSuggest->setSelectButton($button);
-		$yuiSuggest->setTrashButton($trashButton);
+		$yuiSuggest->setSelectButton(we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','text/webedition',1)"));
+		$yuiSuggest->setTrashButton(we_html_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['$idname'].value='';document.we_form.elements['$textname'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInputTriggerID');_EditorFrame.setEditorIsHot(true);", true, 27, 22));
 		//$yuiSuggest->setDoOnTextfieldBlur("if(document.getElementById('yuiAcResultTemplate').value == '' || document.getElementById('yuiAcResultTemplate').value == 0) { document.getElementById('TemplateLabel').style.display = 'inline'; document.getElementById('TemplateLabelLink').style.display = 'none'; } else { document.getElementById('TemplateLabel').style.display = 'none'; document.getElementById('TemplateLabelLink').style.display = 'inline'; }");
 		//$yuiSuggest->setDoOnTextfieldBlur("if(yuiAcFields[yuiAcFieldsById['yuiAcInputTemplate'].set].changed && YAHOO.autocoml.isValidById('yuiAcInputTemplate')) top.we_cmd('reload_editpage')");
 		return $yuiSuggest->getHTML();
@@ -544,9 +543,9 @@ abstract class we_root extends we_class{
 		//$idname = 'we_'.$this->Name.'_LanguageDocID-'.$langkey;
 		//$myid = $this->TriggerID ? $this->TriggerID : '';
 		$myid = $LDID ? $LDID : '';
-		$path = f('SELECT Path FROM ' . $this->DB_WE->escape($table) . ' WHERE ID=' . intval($myid), 'Path', $this->DB_WE);
+		$path = f('SELECT Path FROM ' . $this->DB_WE->escape($table) . ' WHERE ID=' . intval($myid), '', $this->DB_WE);
 		if($rootDirID && $path == ''){
-			$path = f('SELECT Path FROM ' . $this->DB_WE->escape($table) . ' WHERE ID=' . intval($rootDirID), 'Path', $this->DB_WE);
+			$path = f('SELECT Path FROM ' . $this->DB_WE->escape($table) . ' WHERE ID=' . intval($rootDirID), '', $this->DB_WE);
 		}
 		$yuiSuggest->setAcId($ackeyshort, $path);
 		if($table == FILE_TABLE){
@@ -567,7 +566,7 @@ abstract class we_root extends we_class{
 		$trashButton = we_html_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['$idname'].value='-1';document.we_form.elements['$textname'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInput" . $ackeyshort . "');_EditorFrame.setEditorIsHot(true);", true, 27, 22);
 		$openbutton = we_html_button::create_button("image:edit_edit", "javascript:if(document.we_form.elements['$idname'].value){top.doClickDirect(document.we_form.elements['$idname'].value,'" . $ctype . "','" . $etype . "'); }");
 		if(isset($this->DocType) && $this->DocType && permissionhandler::hasPerm("NEW_WEBEDITIONSITE")){
-			$LDcoType = f('SELECT LDID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblDocTypes" AND DID=' . $this->DocType . ' AND Locale="' . $langkey . '"', 'LDID', new DB_WE());
+			$LDcoType = f('SELECT LDID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblDocTypes" AND DID=' . $this->DocType . ' AND Locale="' . $langkey . '"', '', new DB_WE());
 			if($LDcoType){
 				$createbutton = we_html_button::create_button("image:add_doc", "javascript:top.we_cmd('new','" . FILE_TABLE . "','','" . we_base_ContentTypes::WEDOCUMENT . "','" . $LDcoType . "');");
 				$yuiSuggest->setCreateButton($createbutton);

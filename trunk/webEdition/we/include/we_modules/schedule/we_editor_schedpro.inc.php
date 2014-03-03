@@ -28,7 +28,7 @@ if(defined("SCHEDULE_TABLE")){
 echo we_html_tools::getHtmlTop();
 
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
-print STYLESHEET .
+echo STYLESHEET .
 	we_html_element::jsScript(JS_DIR . 'windows.js');
 ?>
 </head>
@@ -52,10 +52,11 @@ print STYLESHEET .
 			'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_schedule', '[descriptiontext]'), we_html_tools::TYPE_INFO, 700) . '<br><br>' . we_html_button::create_button('image:btn_add_schedule', "javascript:we_cmd('add_schedule')"),
 			'space' => 0
 		);
-		print we_html_multiIconBox::getJS() .
+		echo we_html_multiIconBox::getJS() .
 			we_schedpro::getMainJS($we_doc) .
 			we_html_multiIconBox::getHTML('', '100%', $parts, 20, '', -1, '', '', false);
 		?>
+		<input type="hidden" name="we_complete_request" value="1"/>
 	</form>
 </body>
 </html>

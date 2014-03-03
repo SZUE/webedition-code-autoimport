@@ -82,13 +82,13 @@ abstract class we_SEEM{
 		//  All these informations are needed to replace the old link with a new one
 		$linkArray = self::getAllHrefs($code);
 
-		if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT && !defined("WE_SIDEBAR")){
+		if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT && !defined('WE_SIDEBAR')){
 
 			//  The edit-mode only changes SEEM-links
 			$code = self::parseLinksForEditMode($code, $linkArray);
 		}
 
-		if(!isset($GLOBALS['we_doc']) || $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PREVIEW || $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PREVIEW_TEMPLATE || defined("WE_SIDEBAR")){
+		if(!isset($GLOBALS['we_doc']) || $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PREVIEW || $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PREVIEW_TEMPLATE || defined('WE_SIDEBAR')){
 
 			//  in the preview mode all found links in the document shall be changed
 			$code = self::parseLinksForPreviewMode($code, $linkArray);

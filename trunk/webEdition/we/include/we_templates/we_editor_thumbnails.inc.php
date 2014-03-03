@@ -70,15 +70,15 @@ echo STYLESHEET .
 							$src = $thumbObj->getOutputPath(false, true);
 						} else {
 							$src = WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=show_binaryDoc&amp;we_cmd[1]=' .
-								$we_doc->ContentType . '&amp;we_cmd[2]=' .
-								$we_transaction . '&amp;we_cmd[3]=' . ($useOrig ? "" : $thumbid) . '&amp;rand=' . $randval;
+									$we_doc->ContentType . '&amp;we_cmd[2]=' .
+									$we_transaction . '&amp;we_cmd[3]=' . ($useOrig ? "" : $thumbid) . '&amp;rand=' . $randval;
 						}
 
 
 						$delbut = we_html_button::create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('del_thumb','" . $thumbid . "');", true, 30);
 
 						$thumbnail = '<table cellspacing="0" style="boder:0px;padding:0x;width:570px;"><tr><td width="538"><img src="' . $src . '" width="' . $thumbObj->getOutputWidth() .
-							'" height="' . $thumbObj->getOutputHeight() . '" border="0" /></td><td width="10">' . we_html_tools::getPixel(10, 2) . '</td><td width="22">' . $delbut . '</td></tr></table>';
+								'" height="' . $thumbObj->getOutputHeight() . '" border="0" /></td><td width="10">' . we_html_tools::getPixel(10, 2) . '</td><td width="22">' . $delbut . '</td></tr></table>';
 
 						$parts[] = array("headline" => $thumbObj->getThumbName(),
 							"html" => $thumbnail,
@@ -101,9 +101,10 @@ echo STYLESHEET .
 					"space" => 0
 				);
 			}
-			print we_html_multiIconBox::getJS() . we_html_multiIconBox::getHTML('', '100%', $parts, 20);
+			echo we_html_multiIconBox::getJS() . we_html_multiIconBox::getHTML('', '100%', $parts, 20);
 			?>
-
+		</table>
+		<input type="hidden" name="we_complete_request" value="1"/>
 	</form>
 </body>
 </html>

@@ -250,7 +250,7 @@ function getVariableMax($var, we_database_base $db = null){
 			}
 
 			if(isset($_SESSION['perms'])){
-				$ret.= "Effective Permissions:\n" . print_r(array_filter($_SESSION['perms']), true);
+				$ret.= "----------------------------------------\nEffective Permissions:\n" . print_r(array_filter($_SESSION['perms']), true)."\n------------------------------------";
 			}
 			$ret.= print_r($clone, true);
 
