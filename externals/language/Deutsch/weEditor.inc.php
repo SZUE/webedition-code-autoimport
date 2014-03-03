@@ -60,7 +60,8 @@ $l_weEditor=array(
 		'we_filename_notAllowed'=>'Der eingegebene Dateiname ist nicht erlaubt!',
 		'we_filename_notValid'=>'Der eingegebene Dateiname ist nicht gültig!\nErlaubte Zeichen sind allle außer <>?":|\\/* .',
 	),
-	'incompleteRequest'=>'',
+	'incompleteRequest'=>'Das Dokument wurde nicht vollständig an den Server übertragen. Es konnte nicht gespeichert werden.
+Sollte dies kein temporäres Problem sein, kontaktieren Sie ihren Administrator zur Überprüfung des Fehlerlogs.',
 	
 	'objectFile'=>array(
 		'autoschedule'=>'Das Objekt wird am %s automatisch veröffentlicht!',

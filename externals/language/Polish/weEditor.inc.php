@@ -60,7 +60,8 @@ $l_weEditor=array(
 		'we_filename_notAllowed'=>'Wprowadzona nazwa pliku jest niedozwolona!',
 		'we_filename_notValid'=>'Wprowadzona nazwa pliku jest nieprawidłowa!\nDozwolone znaki to litery od a do z (wielkie lub małe) , cyfry, znak podkrelenia (_), minus (-) oraz kropka (.).',
 	),
-	'incompleteRequest'=>'',
+	'incompleteRequest'=>'The transfer of the document was incomplete and could therefore not be saved.
+If this problem persists, please contact your administrator to check for entries in the Errorlog.',
 	
 	'objectFile'=>array(
 		'autoschedule'=>'Obiekt opublikowano automatycznie dn. %s!',

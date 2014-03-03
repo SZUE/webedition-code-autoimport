@@ -60,7 +60,8 @@ $l_weEditor=array(
 		'we_filename_notAllowed'=>'Annettu tiedoston nimi ei ole sallittu!',
 		'we_filename_notValid'=>'Virheellinen tiedoston nimi!\nSallitut merkit ovat alfa-numeerisia, isot ja pienet kirjaimet, alaviiva, tavuviiva ja piste (a-z, A-Z, 0-9, _, -, .)',
 	),
-	'incompleteRequest'=>'',
+	'incompleteRequest'=>'The transfer of the document was incomplete and could therefore not be saved.
+If this problem persists, please contact your administrator to check for entries in the Errorlog.',
 	
 	'objectFile'=>array(
 		'autoschedule'=>'Objekti julkaistaan automaattisesti %s.',

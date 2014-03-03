@@ -60,7 +60,8 @@ $l_weEditor=array(
 		'we_filename_notAllowed'=>'De bestandsnaam die u heeft ingevoerd is niet toegestaan!',
 		'we_filename_notValid'=>'Ongeldige bestandsnaam\nGeldige karakters zijn alfa-numeriek, boven- en onderkast, eveneens als de underscore, koppelteken en punt (a-z, A-Z, 0-9, _, -, .)',
 	),
-	'incompleteRequest'=>'',
+	'incompleteRequest'=>'The transfer of the document was incomplete and could therefore not be saved.
+If this problem persists, please contact your administrator to check for entries in the Errorlog.',
 	
 	'objectFile'=>array(
 		'autoschedule'=>'Het object wordt automatisch gepubliceerd op %s.',

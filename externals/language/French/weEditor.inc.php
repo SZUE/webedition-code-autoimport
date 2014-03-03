@@ -60,7 +60,8 @@ $l_weEditor=array(
 		'we_filename_notAllowed'=>'Le nom du fichier n`est pas permis!',
 		'we_filename_notValid'=>'Le nom saisi pour le fichier n`est pas valide!\nSignes permis sont les lettres de a à z (majuscule- ou minuscule) , nombres, soulignage (_), signe moins (-), point (.)',
 	),
-	'incompleteRequest'=>'',
+	'incompleteRequest'=>'The transfer of the document was incomplete and could therefore not be saved.
+If this problem persists, please contact your administrator to check for entries in the Errorlog.',
 	
 	'objectFile'=>array(
 		'autoschedule'=>'L`object sera publié automatiquement le %s',

@@ -60,7 +60,8 @@ $l_weEditor=array(
 		'we_filename_notAllowed'=>'The file name you have entered is not allowed!',
 		'we_filename_notValid'=>'Invalid file name\nAll characters except <>?":|\\/* are valid.',
 	),
-	'incompleteRequest'=>'',
+	'incompleteRequest'=>'The transfer of the document was incomplete and could therefore not be saved.
+If this problem persists, please contact your administrator to check for entries in the Errorlog.',
 	
 	'objectFile'=>array(
 		'autoschedule'=>'The object will be published automatically on %s.',
