@@ -44,10 +44,10 @@ abstract class we_html_tools{
 		if(!$allow || !isset($_SESSION['user']) || !isset($_SESSION['user']['Username']) || $_SESSION['user']['Username'] == ''){
 			self::setHttpCode(401);
 			print self::getHtmlTop() .
-				we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[perms_no_permissions]'), we_message_reporting::WE_MESSAGE_ERROR) . ($redirect ? 'document.location = "' . $redirect . '"' : 'top.close();')) .
-				'</head><body>' .
-				str_replace('\n', '<br/>', g_l('alert', '[perms_no_permissions]')) .
-				'</body></html>';
+					we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[perms_no_permissions]'), we_message_reporting::WE_MESSAGE_ERROR) . ($redirect ? 'document.location = "' . $redirect . '"' : 'top.close();')) .
+					'</head><body>' .
+					str_replace('\n', '<br/>', g_l('alert', '[perms_no_permissions]')) .
+					'</body></html>';
 			exit();
 		}
 	}
@@ -89,9 +89,9 @@ abstract class we_html_tools{
 			}
 		}
 		return '<table style="border-spacing: 0px;border-style:none" cellpadding="0">' .
-			($text ? '<tr><td class="' . trim($textclass) . '" align="' . trim($textalign) . '" colspan="' . $colspan . '">' . $text . '</td></tr>' : '') .
-			($abstand ? ('<tr style="height:' . $abstand . 'px"><td colspan="' . $colspan . '"></td></tr>') : '') .
-			'<tr>' . $elemOut . '</tr></table>';
+				($text ? '<tr><td class="' . trim($textclass) . '" align="' . trim($textalign) . '" colspan="' . $colspan . '">' . $text . '</td></tr>' : '') .
+				($abstand ? ('<tr style="height:' . $abstand . 'px"><td colspan="' . $colspan . '"></td></tr>') : '') .
+				'<tr>' . $elemOut . '</tr></table>';
 	}
 
 	static function targetBox($name, $size, $width = '', $id = '', $value = '', $onChange = '', $abstand = 8, $selectboxWidth = '', $disabled = false){
@@ -111,13 +111,13 @@ abstract class we_html_tools{
 		$_target_box = new we_html_select($_inputs, 0);
 		$_target_box->addOptions(5, array(
 			'', '_top', '_parent', '_self', '_blank'
-			), array(
+				), array(
 			'', '_top', '_parent', '_self', '_blank'
 		));
 
 		$_table = new we_html_table(array(
 			'cellpadding' => 0, 'cellspacing' => 0, 'border' => 0
-			), 1, 3);
+				), 1, 3);
 
 		$_inputs = array(
 			'name' => $name,
@@ -142,38 +142,38 @@ abstract class we_html_tools{
 
 		$_table->setCol(0, 0, array(
 			'class' => 'defaultfont'
-			), self::htmlTextInput(
-				$name, $size, $value, '', (!empty($onChange) ? 'onchange="' . $onChange . '"' : ''), 'text', $width, 0, '', $disabled));
+				), self::htmlTextInput(
+						$name, $size, $value, '', (!empty($onChange) ? 'onchange="' . $onChange . '"' : ''), 'text', $width, 0, '', $disabled));
 
 		$_table->setCol(0, 1, null, self::getPixel($abstand, 1));
 
 		$_table->setCol(0, 2, array(
 			'class' => 'defaultfont'
-			), $_target_box->getHtml());
+				), $_target_box->getHtml());
 
 		return $_table->getHtml();
 	}
 
 	static function htmlTextInput($name, $size = 24, $value = '', $maxlength = '', $attribs = '', $type = 'text', $width = 0, $height = 0, $markHot = '', $disabled = false){
 		$style = ($width || $height) ? (' style="' . ($width ? ('width: ' . $width . (is_numeric($width) ? 'px' : '') . ';') : '') .
-			($height ? ('height: ' . $height . (is_numeric($height) ? 'px' : '') . ';') : '') . '"') : '';
+				($height ? ('height: ' . $height . (is_numeric($height) ? 'px' : '') . ';') : '') . '"') : '';
 		return '<input' . ($markHot ? ' onchange="if(_EditorFrame){_EditorFrame.setEditorIsHot(true);}' . $markHot . '.hot=1;"' : '') .
-			(strstr($attribs, "class=") ? "" : ' class="wetextinput"') . ' type="' . trim($type) . '" name="' . trim($name) .
-			'" size="' . intval($size) . '" value="' . oldHtmlspecialchars($value) . '"' . ($maxlength ? (' maxlength="' . intval($maxlength) . '"') : '') . ($attribs ? " $attribs" : '') . $style . ' onblur="this.className=\'wetextinput\';" onfocus="this.className=\'wetextinputselected\'"' . ($disabled ? (' disabled="true"') : '') . ' />';
+				(strstr($attribs, "class=") ? "" : ' class="wetextinput"') . ' type="' . trim($type) . '" name="' . trim($name) .
+				'" size="' . intval($size) . '" value="' . oldHtmlspecialchars($value) . '"' . ($maxlength ? (' maxlength="' . intval($maxlength) . '"') : '') . ($attribs ? " $attribs" : '') . $style . ' onblur="this.className=\'wetextinput\';" onfocus="this.className=\'wetextinputselected\'"' . ($disabled ? (' disabled="true"') : '') . ' />';
 	}
 
 	static function htmlMessageBox($w, $h, $content, $headline = '', $buttons = ''){
 		return '<div style="width:' . $w . 'px;height:' . $h . 'px;background-color:#F7F5F5;border: 2px solid #D7D7D7;padding:20px;">' .
-			($headline ? '<h1 class="header">' . $headline . '</h1>' : '') .
-			'<div>' . $content . '</div><div style="margin-top:20px;">' . $buttons . '</div></div>';
+				($headline ? '<h1 class="header">' . $headline . '</h1>' : '') .
+				'<div>' . $content . '</div><div style="margin-top:20px;">' . $buttons . '</div></div>';
 	}
 
 	static function htmlDialogLayout($content, $headline, $buttons = '', $width = "100%", $marginLeft = 30, $height = "", $overflow = "auto"){
 		return we_html_multiIconBox::getHTML('', $width, array(
-				array(
-					"html" => $content, "headline" => "", "space" => 0
-				)
-				), $marginLeft, ($buttons ? '<div align="right" style="margin-left:10px;">' . $buttons . '</div>' : ''), -1, "", "", false, $headline, "", $height, $overflow);
+					array(
+						"html" => $content, "headline" => "", "space" => 0
+					)
+						), $marginLeft, ($buttons ? '<div align="right" style="margin-left:10px;">' . $buttons . '</div>' : ''), -1, "", "", false, $headline, "", $height, $overflow);
 	}
 
 	static function htmlDialogBorder3($w, $h, $content, $headline, $class = "middlefont", $bgColor = "", $buttons = "", $id = "", $style = ""){ //content && headline are arrays
@@ -202,11 +202,11 @@ abstract class we_html_tools{
 			$_table = new we_html_table($attribs, 3, 1);
 			$_table->setCol(0, 0, array(
 				'colspan' => 2
-				), $out);
+					), $out);
 			$_table->setCol(1, 0, null, self::getPixel($w, 5)); // row for gap between buttons and dialogborder
 			$_table->setCol(2, 0, array(
 				'align' => 'right'
-				), $buttons);
+					), $buttons);
 			return $_table->getHtml();
 		} else {
 			return $out;
@@ -216,18 +216,18 @@ abstract class we_html_tools{
 	static function htmlDialogBorder4Row($content, $class = 'middlefont', $bgColor = ''){
 		$anz = count($content);
 		$out = '<td style="border-bottom: 1px solid silver;background-image:url(' . IMAGE_DIR . 'box/shaddowBox3_l.gif);">' .
-			self::getPixel(8, isset($content[0]["height"]) ? $content[0]["height"] : 1) . '</td>';
+				self::getPixel(8, isset($content[0]["height"]) ? $content[0]["height"] : 1) . '</td>';
 
 		for($f = 0; $f < $anz; $f++){
 			$bgcol = $bgColor ? $bgColor : ((isset($content[$f]["bgcolor"]) && $content[$f]["bgcolor"]) ? $content[$f]["bgcolor"] : "white");
 			$out .= '<td class="' . $class . '" style="padding:2px 5px 2px 5px;' . (($f != 0) ? "border-left:1px solid silver;" : "") . 'border-bottom: 1px solid silver;background-color:' . $bgcol . ';" ' .
-				((isset($content[$f]["align"])) ? 'align="' . $content[$f]["align"] . '"' : "") . ' ' .
-				((isset($content[$f]["height"])) ? 'height="' . $content[$f]["height"] . '"' : "") . '>' .
-				((isset($content[$f]["dat"]) && $content[$f]["dat"]) ? $content[$f]["dat"] : "&nbsp;") .
-				'</td>';
+					((isset($content[$f]["align"])) ? 'align="' . $content[$f]["align"] . '"' : "") . ' ' .
+					((isset($content[$f]["height"])) ? 'height="' . $content[$f]["height"] . '"' : "") . '>' .
+					((isset($content[$f]["dat"]) && $content[$f]["dat"]) ? $content[$f]["dat"] : "&nbsp;") .
+					'</td>';
 		}
 		$out .= '<td style="border-bottom: 1px solid silver;background-image:url(' . IMAGE_DIR . 'box/shaddowBox3_r.gif);">' .
-			self::getPixel(8, isset($content[0]["height"]) ? $content[0]["height"] : 1) . '</td>';
+				self::getPixel(8, isset($content[0]["height"]) ? $content[0]["height"] : 1) . '</td>';
 		return $out;
 	}
 
@@ -267,11 +267,11 @@ abstract class we_html_tools{
 			$out .= '<option value="' . oldHtmlspecialchars($v) . '"' . (($v == $value) ? ' selected="selected"' : '') . '>' . $t . '</option>';
 		}
 		return we_html_element::htmlSelect(array_merge(array(
-				'class' => 'weSelect',
-				'name' => $name,
-				'size' => $size,
-				'onchange' => ($onchange ? $onchange : '')
-					), $attribs), $out);
+					'class' => 'weSelect',
+					'name' => $name,
+					'size' => $size,
+					'onchange' => ($onchange ? $onchange : '')
+								), $attribs), $out);
 	}
 
 	static function htmlInputChoiceField($name, $value, $values, $atts, $mode, $valuesIsHash = false){
@@ -307,9 +307,9 @@ abstract class we_html_tools{
 			$atts['id'] = 'tmp_' . $atts['id'];
 		}
 		$atts['onchange'] = 'this.form.elements[\'' . $name . '\'].value' . ($mode == 'add' ?
-				' += ((this.form.elements[\'' . $name . '\'].value ? \' \' : \'\') + this.options[this.selectedIndex].value);' :
-				'=this.options[this.selectedIndex].value;'
-			) . 'this.selectedIndex=0;';
+						' += ((this.form.elements[\'' . $name . '\'].value ? \' \' : \'\') + this.options[this.selectedIndex].value);' :
+						'=this.options[this.selectedIndex].value;'
+				) . 'this.selectedIndex=0;';
 		$atts['name'] = 'tmp_' . $name;
 		//$atts['size'] = isset($atts['size']) ? $atts['size'] : 1;
 		$atts = removeAttribs($atts, array('size')); //  remove size for choice
@@ -319,18 +319,18 @@ abstract class we_html_tools{
 
 	static function gifButton($name, $href, $language = "Deutsch", $alt = "", $width = "", $height = "", $onClick = "", $bname = "", $target = "", $disabled = false){
 		$img = we_html_element::htmlImg(array(
-				'src' => IMAGE_DIR . 'buttons/' . $name . ($disabled ? '_d' : "") . ($language ? '_' : '') . $language . '.gif',
-				'style' => ($width ? ' width:' . $width . 'px;' : '') . ($height ? ' height:' . $height . 'px' : ''),
-				'alt' => $alt,
-				'border' => 0,
-				'name' => ($bname ? $bname : '')
+					'src' => IMAGE_DIR . 'buttons/' . $name . ($disabled ? '_d' : "") . ($language ? '_' : '') . $language . '.gif',
+					'style' => ($width ? ' width:' . $width . 'px;' : '') . ($height ? ' height:' . $height . 'px' : ''),
+					'alt' => $alt,
+					'border' => 0,
+					'name' => ($bname ? $bname : '')
 		));
 
 		return ($disabled ?
-				$img : ($href ?
-					'<a href="' . $href . '" onmouseover="window.status=\'' . $alt . '\';return true;" onmouseout="window.status=\'\';return true;"' . ($onClick ? ' onclick="' . $onClick . '"' : '') . ($target ? (' target="' . $target . '"') : '') . '>' . $img . '</a>' :
-					'<input type="image" src="' . IMAGE_DIR . 'buttons/' . $name . ($language ? '_' : '') . $language . '.gif"' . ($width ? ' width="' . $width . '"' : '') . ($height ? ' height="' . $height . '"' : '') . ' border="0" alt="' . $alt . '"' . ($onClick ? ' onClick="' . $onClick . '"' : '') . ($bname ? ' name="' . $bname . '"' : '') . ' />'
-				));
+						$img : ($href ?
+								'<a href="' . $href . '" onmouseover="window.status=\'' . $alt . '\';return true;" onmouseout="window.status=\'\';return true;"' . ($onClick ? ' onclick="' . $onClick . '"' : '') . ($target ? (' target="' . $target . '"') : '') . '>' . $img . '</a>' :
+								'<input type="image" src="' . IMAGE_DIR . 'buttons/' . $name . ($language ? '_' : '') . $language . '.gif"' . ($width ? ' width="' . $width . '"' : '') . ($height ? ' height="' . $height . '"' : '') . ' border="0" alt="' . $alt . '"' . ($onClick ? ' onClick="' . $onClick . '"' : '') . ($bname ? ' name="' . $bname . '"' : '') . ' />'
+						));
 	}
 
 	static function getExtensionPopup($name, $selected, $extensions, $width = '', $attribs = '', $permission = true){
@@ -342,8 +342,8 @@ abstract class we_html_tools{
 				$disabled = '';
 			}
 			$out = '<table style="border-spacing: 0px;border-style:none;" cellpadding="0"><tr><td>' .
-				self::htmlTextInput($name, 5, $selected, "", $attribs, "text", $width / 2, 0, "top") .
-				'</td><td><select class="weSelect" name="wetmp_' . $name . '" size=1' . $disabled . ($width ? ' style="width: ' . ($width / 2) . 'px"' : '') . ' onchange="if(typeof(_EditorFrame) != \'undefined\'){_EditorFrame.setEditorIsHot(true);}if(this.options[this.selectedIndex].text){this.form.elements[\'' . $name . '\'].value=this.options[this.selectedIndex].text;};this.selectedIndex=0"><option>';
+					self::htmlTextInput($name, 5, $selected, "", $attribs, "text", $width / 2, 0, "top") .
+					'</td><td><select class="weSelect" name="wetmp_' . $name . '" size=1' . $disabled . ($width ? ' style="width: ' . ($width / 2) . 'px"' : '') . ' onchange="if(typeof(_EditorFrame) != \'undefined\'){_EditorFrame.setEditorIsHot(true);}if(this.options[this.selectedIndex].text){this.form.elements[\'' . $name . '\'].value=this.options[this.selectedIndex].text;};this.selectedIndex=0"><option>';
 			foreach($extensions as $extension){
 				$out .= '<option>' . $extension . '</option>';
 			}
@@ -424,13 +424,13 @@ abstract class we_html_tools{
 		return -1;
 	}
 
-	static function getDateInput2($name, $time = '', $setHot = false, $format = '', $onchange = '', $class = 'weSelect', $xml = '', $minyear = '', $maxyear = '', $style = ''){
-		$_attsSelect = $_attsOption = $_attsHidden = (empty($xml) ? array() : array('xml' => $xml));
+	static function getDateInput2($name, $time = 0, $setHot = false, $format = '', $onchange = '', $class = 'weSelect', $xml = false, $minyear = 0, $maxyear = 0, $style = ''){
+		$_attsSelect = $_attsOption = $_attsHidden = $xml ? array('xml' => $xml) : array();
 
-		if(!empty($class)){
+		if($class){
 			$_attsSelect['class'] = $class;
 		}
-		if(!empty($style)){
+		if($style){
 			$_attsSelect['style'] = $style;
 		}
 		$_attsSelect['size'] = '1';
@@ -467,20 +467,18 @@ abstract class we_html_tools{
 		$_showMinute = true;
 
 		$name = preg_replace('/^(.+)]$/', '\1%s]', $name);
-		if(empty($format) || $_dayPos > -1){
+		if(!$format || $_dayPos > -1){
 			$days = '';
 			for($i = 1; $i <= 31; $i++){
 				$_atts2 = ($time && $day == $i) ? array('selected' => 'selected') : array();
 				$days .= getHtmlTag('option', array_merge($_attsOption, $_atts2), sprintf('%02d', $i));
 			}
-			$daySelect = getHtmlTag(
-					'select', array_merge($_attsSelect, array(
-					'name' => sprintf($name, '_day'), 'id' => sprintf($name, '_day')
-					)), $days, true) . '&nbsp;';
+			$daySelect = getHtmlTag('select', array_merge($_attsSelect, array(
+						'name' => sprintf($name, '_day'),
+						'id' => sprintf($name, '_day')
+							)), $days, true) . '&nbsp;';
 		} else {
-			$daySelect = getHtmlTag(
-				'input', array_merge(
-					$_attsHidden, array(
+			$daySelect = getHtmlTag('input', array_merge($_attsHidden, array(
 				'type' => 'hidden',
 				'name' => sprintf($name, '_day'),
 				'id' => sprintf($name, '_day'),
@@ -489,7 +487,7 @@ abstract class we_html_tools{
 			$_showDay = false;
 		}
 
-		if(($format == '') || $_monthPos > -1){
+		if(!$format || $_monthPos > -1){
 			$months = '';
 			$monthType = (strpos($format, 'F') ? 'F' : (strpos($format, 'M') ? 'M' : 0));
 			for($i = 1; $i <= 12; $i++){
@@ -503,18 +501,15 @@ abstract class we_html_tools{
 					default:
 						$val = sprintf('%02d', $i);
 				}
-				$_atts2 = ($time && $month == $i) ? array('selected' => 'selected', 'value' =>
-					$i) : array('value' => $i);
+				$_atts2 = ($time && $month == $i) ? array('selected' => 'selected', 'value' => $i) : array('value' => $i);
 				$months .= getHtmlTag('option', array_merge($_attsOption, $_atts2), $val);
 			}
-			$monthSelect = getHtmlTag(
-					'select', array_merge($_attsSelect, array(
-					'name' => sprintf($name, '_month'), 'id' => sprintf($name, '_month')
-					)), $months, true) . '&nbsp;';
+			$monthSelect = getHtmlTag('select', array_merge($_attsSelect, array(
+						'name' => sprintf($name, '_month'),
+						'id' => sprintf($name, '_month')
+							)), $months, true) . '&nbsp;';
 		} else {
-			$monthSelect = getHtmlTag(
-				'input', array_merge(
-					$_attsHidden, array(
+			$monthSelect = getHtmlTag('input', array_merge($_attsHidden, array(
 				'type' => 'hidden',
 				'name' => sprintf($name, '_month'),
 				'id' => sprintf($name, '_month'),
@@ -522,26 +517,24 @@ abstract class we_html_tools{
 			)));
 			$_showMonth = false;
 		}
-		if(empty($format) || $_yearPos > -1){
+		if(!$format || $_yearPos > -1){
 			$years = '';
-			if(empty($minyear)){
+			if(!$minyear){
 				$minyear = 1970;
 			}
-			if(empty($maxyear)){
+			if(!$maxyear){
 				$maxyear = abs(date('Y') + 100);
 			}
 			for($i = $minyear; $i <= $maxyear; $i++){
 				$_atts2 = ($time && $year == $i) ? array('selected' => 'selected') : array();
 				$years .= getHtmlTag('option', array_merge($_attsOption, $_atts2), sprintf('%02d', $i));
 			}
-			$yearSelect = getHtmlTag(
-					'select', array_merge($_attsSelect, array(
-					'name' => sprintf($name, '_year'), 'id' => sprintf($name, '_year')
-					)), $years, true) . '&nbsp;';
+			$yearSelect = getHtmlTag('select', array_merge($_attsSelect, array(
+						'name' => sprintf($name, '_year'),
+						'id' => sprintf($name, '_year')
+							)), $years, true) . '&nbsp;';
 		} else {
-			$yearSelect = getHtmlTag(
-				'input', array_merge(
-					$_attsHidden, array(
+			$yearSelect = getHtmlTag('input', array_merge($_attsHidden, array(
 				'type' => 'hidden',
 				'name' => sprintf($name, '_year'),
 				'id' => sprintf($name, '_year'),
@@ -550,20 +543,17 @@ abstract class we_html_tools{
 			$_showYear = false;
 		}
 
-		if(empty($format) || $_hourPos > -1){
+		if(!$format || $_hourPos > -1){
 			$hours = '';
 			for($i = 0; $i <= 23; $i++){
 				$_atts2 = ($time && $hour == $i) ? array('selected' => 'selected') : array();
 				$hours .= getHtmlTag('option', array_merge($_attsOption, $_atts2), sprintf('%02d', $i));
 			}
-			$hourSelect = getHtmlTag(
-					'select', array_merge($_attsSelect, array(
-					'name' => sprintf($name, '_hour'), 'id' => sprintf($name, '_hour')
-					)), $hours, true) . '&nbsp;';
+			$hourSelect = getHtmlTag('select', array_merge($_attsSelect, array(
+						'name' => sprintf($name, '_hour'), 'id' => sprintf($name, '_hour')
+							)), $hours, true) . '&nbsp;';
 		} else {
-			$hourSelect = getHtmlTag(
-				'input', array_merge(
-					$_attsHidden, array(
+			$hourSelect = getHtmlTag('input', array_merge($_attsHidden, array(
 				'type' => 'hidden',
 				'name' => sprintf($name, '_hour'),
 				'id' => sprintf($name, '_hour'),
@@ -572,20 +562,18 @@ abstract class we_html_tools{
 			$_showHour = false;
 		}
 
-		if(empty($format) || $_minutePos > -1){
+		if(!$format || $_minutePos > -1){
 			$minutes = '';
 			for($i = 0; $i <= 59; $i++){
 				$_atts2 = ($time && $minute == $i) ? array('selected' => 'selected') : array();
 				$minutes .= getHtmlTag('option', array_merge($_attsOption, $_atts2), sprintf('%02d', $i));
 			}
-			$minSelect = getHtmlTag(
-					'select', array_merge($_attsSelect, array(
-					'name' => sprintf($name, '_minute'), 'id' => sprintf($name, '_minute')
-					)), $minutes, true) . '&nbsp;';
+			$minSelect = getHtmlTag('select', array_merge($_attsSelect, array(
+						'name' => sprintf($name, '_minute'),
+						'id' => sprintf($name, '_minute')
+							)), $minutes, true) . '&nbsp;';
 		} else {
-			$minSelect = getHtmlTag(
-				'input', array_merge(
-					$_attsHidden, array(
+			$minSelect = getHtmlTag('input', array_merge($_attsHidden, array(
 				'type' => 'hidden',
 				'name' => sprintf($name, '_minute'),
 				'id' => sprintf($name, '_minute'),
@@ -607,38 +595,12 @@ abstract class we_html_tools{
 		ksort($_datePosArray);
 		ksort($_timePosArray);
 
-		$retVal = '<table style="border-spacing: 0px;border-style:none;" cellpadding="0"><tr><td>';
-		if($_showDay || $_showMonth || $_showYear){
-
-			foreach($_datePosArray as $foo){
-				$retVal .= $foo;
-			}
-		} else {
-			foreach($_datePosArray as $foo){
-				$retVal .= $foo;
-			}
-		}
-		if($_showHour || $_showMinute){
-			$retVal .= '</td></tr><tr><td>';
-			foreach($_timePosArray as $foo){
-				$retVal .= $foo;
-			}
-		} else {
-			foreach($_timePosArray as $foo){
-				$retVal .= $foo;
-			}
-		}
-		$retVal .= '</td></tr></table>';
-		return $retVal;
+		return '<table style="border-spacing: 0px;border-style:none;" cellpadding="0"><tr><td>' .
+				implode('', $_datePosArray) .
+				($_showHour || $_showMinute ? '</td></tr><tr><td>' : '') .
+				implode('', $_timePosArray) .
+				'</td></tr></table>';
 	}
-
-	/* 	public static function getHTMLDocument($body = '', $extraHead = '', $title){
-	  return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-	  we_html_element::htmlHead(
-	  self::getHtmlInnerHead($title) . STYLESHEET . $extraHead
-	  ) . ($body ? $body : we_html_element::htmlBody())
-	  );
-	  } */
 
 	//FIXME: remove deprecated
 	public static function htmlTop($title = 'webEdition', $charset = '', $doctype = ''){
@@ -648,9 +610,9 @@ abstract class we_html_tools{
 
 	public static function getHtmlTop($title = 'webEdition', $charset = '', $doctype = '', $expand = false, $closeHtml = false, $closeHead = false){
 		return we_html_element::htmlDocType($doctype) .
-			we_html_element::htmlhtml(we_html_element::htmlHead(
-					self::getHtmlInnerHead($title, $charset, $expand), $closeHead)
-				, $closeHtml);
+				we_html_element::htmlhtml(we_html_element::htmlHead(
+								self::getHtmlInnerHead($title, $charset, $expand), $closeHead)
+						, $closeHtml);
 	}
 
 	public static function getHtmlInnerHead($title = 'webEdition', $charset = '', $expand = false){
@@ -658,36 +620,36 @@ abstract class we_html_tools{
 			self::headerCtCharset('text/html', ($charset ? $charset : $GLOBALS['WE_BACKENDCHARSET']));
 		}
 		return we_html_element::htmlTitle($_SERVER['SERVER_NAME'] . ' ' . $title) .
-			we_html_element::htmlMeta(array(
-				'http-equiv' => 'Expires', 'content' => gmdate('D, d M Y H:i:s') . ' GMT'
-			)) .
-			we_html_element::htmlMeta(array(
-				'http-equiv' => 'Cache-Control', 'content' => 'no-cache'
-			)) .
-			we_html_element::htmlMeta(array(
-				'http-equiv' => 'pragma', 'content' => 'no-cache'
-			)) .
-			self::htmlMetaCtCharset('text/html', ($charset ? $charset : $GLOBALS['WE_BACKENDCHARSET'])) .
-			we_html_element::htmlMeta(array(
-				'http-equiv' => 'imagetoolbar', 'content' => 'no'
-			)) .
-			we_html_element::htmlMeta(array(
-				'name' => 'generator', 'content' => 'webEdition'
-			)) .
-			we_html_element::linkElement(array('rel' => 'SHORTCUT ICON', 'href' => IMAGE_DIR . 'webedition.ico')) .
-			($expand ?
-				we_html_element::jsElement(we_base_file::load(JS_PATH . 'we_showMessage.js')) .
-				we_html_element::jsElement(we_base_file::load(JS_PATH . 'attachKeyListener.js')) :
-				we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
-				we_html_element::jsScript(JS_DIR . 'attachKeyListener.js')
-			);
+				we_html_element::htmlMeta(array(
+					'http-equiv' => 'Expires', 'content' => gmdate('D, d M Y H:i:s') . ' GMT'
+				)) .
+				we_html_element::htmlMeta(array(
+					'http-equiv' => 'Cache-Control', 'content' => 'no-cache'
+				)) .
+				we_html_element::htmlMeta(array(
+					'http-equiv' => 'pragma', 'content' => 'no-cache'
+				)) .
+				self::htmlMetaCtCharset('text/html', ($charset ? $charset : $GLOBALS['WE_BACKENDCHARSET'])) .
+				we_html_element::htmlMeta(array(
+					'http-equiv' => 'imagetoolbar', 'content' => 'no'
+				)) .
+				we_html_element::htmlMeta(array(
+					'name' => 'generator', 'content' => 'webEdition'
+				)) .
+				we_html_element::linkElement(array('rel' => 'SHORTCUT ICON', 'href' => IMAGE_DIR . 'webedition.ico')) .
+				($expand ?
+						we_html_element::jsElement(we_base_file::load(JS_PATH . 'we_showMessage.js')) .
+						we_html_element::jsElement(we_base_file::load(JS_PATH . 'attachKeyListener.js')) :
+						we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
+						we_html_element::jsScript(JS_DIR . 'attachKeyListener.js')
+				);
 	}
 
 	static function htmlMetaCtCharset($content, $charset){
 		$GLOBALS['we']['PageCharset'] = $charset;
 		return we_html_element::htmlMeta(array(
-				'http-equiv' => 'content-type',
-				'content' => $content . '; charset=' . $charset
+					'http-equiv' => 'content-type',
+					'content' => $content . '; charset=' . $charset
 		));
 	}
 
@@ -719,26 +681,26 @@ abstract class we_html_tools{
 
 		$content = new we_html_table(array(
 			'cellpadding' => 10, 'cellspacing' => 0, 'border' => 0
-			), 1, (empty($img) ? 1 : 2));
+				), 1, (empty($img) ? 1 : 2));
 
 		if(!empty($img) && file_exists($_SERVER['DOCUMENT_ROOT'] . $img)){
 			$size = getimagesize($_SERVER['DOCUMENT_ROOT'] . $img);
 			$content->setCol(
-				0, 0, array(
+					0, 0, array(
 				'valign' => 'top'
-				), we_html_element::htmlImg(
-					array(
-						'src' => $img, 'border' => 0, 'width' => $size[0], 'height' => $size[1]
+					), we_html_element::htmlImg(
+							array(
+								'src' => $img, 'border' => 0, 'width' => $size[0], 'height' => $size[1]
 			)));
 		}
 
 		$content->setCol(0, (empty($img) ? 0 : 1), array(
 			'class' => 'defaultfont'
-			), $text);
+				), $text);
 
 		return self::htmlDialogLayout(
-				(empty($script) ? '' : we_html_element::jsElement($script)) . $content->getHtml()
-				, '', we_html_button::position_yes_no_cancel($yesButton, $noButton, $cancelButton), '99%', 0);
+						(empty($script) ? '' : we_html_element::jsElement($script)) . $content->getHtml()
+						, '', we_html_button::position_yes_no_cancel($yesButton, $noButton, $cancelButton), '99%', 0);
 	}
 
 	static function groupArray(array $arr, $sort = true, $len = 1){
@@ -781,7 +743,7 @@ abstract class we_html_tools{
 				continue;
 			}
 			$ret .= '<option value="' . ($oldHtmlspecialchars ? oldHtmlspecialchars($value) : $value) . '"' . (in_array(
-					(($compare == "value") ? $value : $text), $selIndex) ? ' selected="selected"' : '') . '>' . ($oldHtmlspecialchars ? oldHtmlspecialchars($text) : $text) . '</option>';
+							(($compare == "value") ? $value : $text), $selIndex) ? ' selected="selected"' : '') . '>' . ($oldHtmlspecialchars ? oldHtmlspecialchars($text) : $text) . '</option>';
 		}
 		$ret .= ($optgroup ? '</optgroup>' : '');
 
@@ -790,13 +752,13 @@ abstract class we_html_tools{
 		}
 
 		return ($name ? we_html_element::htmlSelect(array_merge(array(
-					'class' => 'weSelect ' . $cls,
-					'name' => trim($name),
-					'size' => abs($size),
-					($multiple ? 'multiple' : '') => 'multiple',
-					($width ? 'width' : '') => ($width ? $width : '')
-						), $attribs
-					), $ret) : $ret);
+							'class' => 'weSelect ' . $cls,
+							'name' => trim($name),
+							'size' => abs($size),
+							($multiple ? 'multiple' : '') => 'multiple',
+							($width ? 'width' : '') => ($width ? $width : '')
+										), $attribs
+								), $ret) : $ret);
 	}
 
 	/* displays a grey box with text and an icon
