@@ -360,7 +360,7 @@ class we_html_dynamicControls{
 
 				foreach($_groups as $_groups_key => $_group_item){
 
-					ksort($_group_item);
+					//ksort($_group_item);
 
 					foreach($_group_item as $_group_item_values){
 
@@ -389,7 +389,7 @@ class we_html_dynamicControls{
 		}
 		//	sort the permission-groups alphabetically (perm_group_name)
 		ksort($_contentTable);
-		foreach($_contentTable as $key => $value){
+		foreach($_contentTable as $value){
 
 			$_content .= $value;
 		}
