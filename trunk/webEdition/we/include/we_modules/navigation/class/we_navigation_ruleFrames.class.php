@@ -38,10 +38,10 @@ class we_navigation_ruleFrames{
 	function getHTML($what){
 		switch($what){
 			case 'frameset' :
-				print $this->getHTMLFrameset();
+				echo $this->getHTMLFrameset();
 				break;
 			case 'content' :
-				print $this->getHTMLContent();
+				echo $this->getHTMLContent();
 				break;
 			default :
 				t_e(__FILE__ . ": unknown reference $what");
@@ -70,7 +70,6 @@ class we_navigation_ruleFrames{
 			$_rules[$_navigationRule->ID] = $_navigationRule->NavigationName;
 		}
 		asort($_rules);
-		$yuiSuggest = & weSuggest::getInstance();
 
 		$parts = array(
 			array(
@@ -184,7 +183,6 @@ class we_navigation_ruleFrames{
 			$yuiSuggest->setSelector("Docselector");
 			$yuiSuggest->setTable(OBJECT_TABLE);
 			$yuiSuggest->setWidth(275);
-//javascript:we_cmd('openDocselector', document.we_form.elements['ClassID'].value, '" . OBJECT_TABLE . "', 'document.we_form.elements[\\'ClassID\\'].value', 'document.we_form.elements[\\'ClassIDPath\\'].value', 'top.opener.we_cmd(\"get_workspaces\");')
 			$wecmdenc1 = we_cmd_enc("document.we_form.elements['ClassID'].value");
 			$wecmdenc2 = we_cmd_enc("document.we_form.elements['ClassIDPath'].value");
 			$wecmdenc3 = we_cmd_enc("top.opener.we_cmd('get_workspaces');");
