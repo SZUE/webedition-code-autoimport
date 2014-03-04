@@ -763,7 +763,7 @@ we_templateInit();?>';
 	public function we_publish(){
 		if(VERSIONS_CREATE_TMPL){
 			$version = new weVersions();
-			$version->save($this, "published");
+			$version->save($this, 'published');
 		}
 		return true;
 	}
