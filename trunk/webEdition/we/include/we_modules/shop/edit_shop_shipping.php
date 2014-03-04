@@ -111,7 +111,7 @@ $jsFunction = '
             	break;
 
             	case "delete":
-            		if (confirm("Möchten sie den ausgewählten Portosatz wirklich löschen?")) {
+            		if (confirm("' . g_l('modules_shop', '[delete][shipping]') . '")) {
             			var we_cmd_field = document.getElementById("we_cmd_field");
             			we_cmd_field.value = "deleteShipping";
             			we_submitForm("' . $_SERVER['SCRIPT_NAME'] . '");
@@ -235,7 +235,7 @@ $parts[] = array(
 $parts[] = array(
 	'headline' => g_l('modules_shop', '[shipping][prices_are_net]'),
 	'space' => 200,
-	'html' => we_class::htmlSelect('isNet', array(1 => g_l('global', "[true]"), 0 => g_l('global', "[false]")), 1, $weShippingControl->isNet, false, array(), 'value', 200)
+	'html' => we_class::htmlSelect('isNet', array(1 => g_l('global', '[true]'), 0 => g_l('global', '[false]')), 1, $weShippingControl->isNet, false, array(), 'value', 200)
 );
 // selectBox with all existing shippings
 // select menu with all available shipping costs
@@ -278,7 +278,7 @@ if(isset($weShipping)){ // show the shipping which must be edited
 	);
 	// foreach ...
 	// form table with every value -> cost entry
-	if(!empty($weShipping->shipping)){
+	if($weShipping->shipping){
 
 		$tblPart = '';
 		for($i = 0; $i < count($weShipping->shipping); $i++){
@@ -323,9 +323,9 @@ if(isset($weShipping)){ // show the shipping which must be edited
 }
 
 print we_html_multiIconBox::getHTML(
-				'weShipping', "100%", $parts, 30, we_html_button::position_yes_no_cancel(
-						we_html_button::create_button('save', 'javascript:we_cmd(\'save\');'), '', we_html_button::create_button('close', 'javascript:we_cmd(\'close\');')
-				), -1, '', '', false, g_l('modules_shop', '[shipping][shipping_package]')
-		) . '
+		'weShipping', "100%", $parts, 30, we_html_button::position_yes_no_cancel(
+			we_html_button::create_button('save', 'javascript:we_cmd(\'save\');'), '', we_html_button::create_button('close', 'javascript:we_cmd(\'close\');')
+		), -1, '', '', false, g_l('modules_shop', '[shipping][shipping_package]')
+	) . '
 </form>
 </body></html>';
