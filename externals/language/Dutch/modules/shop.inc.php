@@ -66,6 +66,10 @@ $l_modules_shop=array(
 	'datum'=>'Datum',
 	'datumeingabe'=>'U moet de datum invoeren volgens mm/dd/jj.',
 	'del_shop'=>'Weet u zeker dat u deze bestelling wilt verwijderen?',
+	
+	'delete'=>array(
+		'shipping'=>'Delete current shipping cost entry?',
+	),
 	'delete_alert'=>'Verwijder alle gebruikers details voor gebruikersnaam `%s`.\n Weet u het zeker?',
 	'delete_last_user'=>'Er is minimaal één administrator nodig voor handeling.\nU kunt de administrator niet verwijderen.',
 	'docType'=>'Type',

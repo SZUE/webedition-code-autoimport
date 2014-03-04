@@ -66,6 +66,10 @@ $l_modules_shop=array(
 	'datum'=>'Päivämäärä',
 	'datumeingabe'=>'Päivämäärä täytyy syöttää muodossa kk/pp/vv.',
 	'del_shop'=>'Oletko varma että haluat poistaa tilauksen?',
+	
+	'delete'=>array(
+		'shipping'=>'Delete current shipping cost entry?',
+	),
 	'delete_alert'=>'Poistetaan kaikki käyttäjätiedot käyttältä `%s`.\n Oletko varma?',
 	'delete_last_user'=>'Ainakin yksi järjestelmänvalvoja tarvitaan hallintaan.\nEt voi poistaa järjestelmänvalvojaa.',
 	'docType'=>'Tyyppi',

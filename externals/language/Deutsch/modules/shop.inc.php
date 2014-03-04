@@ -66,6 +66,10 @@ $l_modules_shop=array(
 	'datum'=>'Datum',
 	'datumeingabe'=>'Sie muessen das Datum im format dd.mm.yy angeben.',
 	'del_shop'=>'Sind Sie sicher, dass Sie diese Bestellung löschen wollen?',
+	
+	'delete'=>array(
+		'shipping'=>'Möchten Sie den ausgewählten Portosatz wirklich löschen?',
+	),
 	'delete_alert'=>'Alle Benutzerdaten von Benutzer `%s` werden gelöscht.\n Sind Sie sicher?',
 	'delete_last_user'=>'Zur Verwaltung wird mindestens ein Administrator benötigt.\nSie können den  Administrator nicht löschen.',
 	'docType'=>'Typ',

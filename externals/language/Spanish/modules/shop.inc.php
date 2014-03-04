@@ -66,6 +66,10 @@ $l_modules_shop=array(
 	'datum'=>'Fecha',
 	'datumeingabe'=>'UD debe entrar la fecha en el formato dd.mm.aa.',
 	'del_shop'=>'¿Está UD seguro que quiere borrar esta orden?',
+	
+	'delete'=>array(
+		'shipping'=>'Delete current shipping cost entry?',
+	),
 	'delete_alert'=>'Borrar todo el data del usuario para el nombre de usuario `%s`.\n Está UD seguro?',
 	'delete_last_user'=>'Para la administración se requiere por lo menos de un administrador.\nUd no puede borrar el administrador.',
 	'docType'=>'Tipo',

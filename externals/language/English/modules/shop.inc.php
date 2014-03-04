@@ -66,6 +66,10 @@ $l_modules_shop=array(
 	'datum'=>'Date',
 	'datumeingabe'=>'You must enter the date in the format mm/dd/yy.',
 	'del_shop'=>'Are you sure that you want to delete this order?',
+	
+	'delete'=>array(
+		'shipping'=>'Delete current shipping cost entry?',
+	),
 	'delete_alert'=>'Delete all user details for user name `%s`.\n Are you sure?',
 	'delete_last_user'=>'At least one administrator is required for administration.\nYou cannot delete the administrator.',
 	'docType'=>'Type',
