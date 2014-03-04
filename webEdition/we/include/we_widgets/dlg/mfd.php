@@ -171,14 +171,14 @@ $wecmdenc5 = we_cmd_enc("opener.top.weEditorFrameController.getActiveDocumentRef
 $content = '<table border="0" cellpadding="0" cellspacing="0" width="300">
 <tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(254, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>';
 
-if(permissionhandler::hasPerm('ADMINISTRATOR') && $users){
+if(permissionhandler::hasPerm('EDIT_MFD_USER') && $users){
 	$db = new DB_WE();
 	foreach($users as $user){
 		$foo = getHash('SELECT ID,Path,Icon FROM ' . USER_TABLE . ' WHERE ID=' . intval($user), $db);
 		$content .= '<tr><td><img src="' . ICON_DIR . $foo["Icon"] . '" width="16" height="18" /></td><td class="defaultfont">' . $foo["Path"] . '</td><td>' . we_html_button::create_button("image:btn_function_trash", "javascript:delUser('" . $user . "');") . '</td></tr>';
 	}
 } else {
-	$content .= '<tr><td><img src="' . ICON_DIR . "user.gif" . '" width="16" height="18" /></td><td class="defaultfont">' . (permissionhandler::hasPerm('ADMINISTRATOR') ? g_l('cockpit', '[all_users]') : $_SESSION['user']['Username']) . '</td><td></td><td></td></tr>';
+	$content .= '<tr><td><img src="' . ICON_DIR . "user.gif" . '" width="16" height="18" /></td><td class="defaultfont">' . (permissionhandler::hasPerm('EDIT_MFD_USER') ? g_l('cockpit', '[all_users]') : $_SESSION['user']['Username']) . '</td><td></td><td></td></tr>';
 }
 $content .= '<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(254, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr></table>';
 
@@ -189,7 +189,7 @@ $sUsrContent = '<table border="0" cellpadding="0" cellspacing="0" width="300"><t
 		)) . we_html_element::htmlHidden(array(
 			"name" => "UserIDTmp",
 			"value" => ""
-		)) . '</td></tr>' . (permissionhandler::hasPerm('ADMINISTRATOR') ? '<tr><td align="right">' . we_html_tools::getPixel(2, 8) . we_html_element::htmlBr() . we_html_button::create_button_table(
+		)) . '</td></tr>' . (permissionhandler::hasPerm('EDIT_MFD_USER') ? '<tr><td align="right">' . we_html_tools::getPixel(2, 8) . we_html_element::htmlBr() . we_html_button::create_button_table(
 						array(
 							we_html_button::create_button('delete_all', "javascript:delUser(-1)", true, -1, -1, "", "", (count($users)) ? false : true),
 							we_html_button::create_button('add', "javascript:opener.getUser('browse_users','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $wecmdenc5 . "','','',1);")
