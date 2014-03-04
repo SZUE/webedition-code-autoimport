@@ -64,6 +64,7 @@ $l_wysiwyg=array(
 	'format'=>'Styl',
 	'fullscreen'=>'Otwórz edytor w trybie Fullscreen',
 	'fullscreen_editor'=>'Fullscreen edytor',
+	'groups'=>'Groups',
 	'h1'=>'Nagłówek 1',
 	'h2'=>'Nagłówek 2',
 	'h3'=>'Nagłówek 3',

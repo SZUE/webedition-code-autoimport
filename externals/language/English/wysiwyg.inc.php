@@ -64,6 +64,7 @@ $l_wysiwyg=array(
 	'format'=>'Format',
 	'fullscreen'=>'Open editor in full-screen mode',
 	'fullscreen_editor'=>'Full-screen editor',
+	'groups'=>'Groups',
 	'h1'=>'Heading 1',
 	'h2'=>'Heading 2',
 	'h3'=>'Heading 3',

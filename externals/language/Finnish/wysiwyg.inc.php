@@ -64,6 +64,7 @@ $l_wysiwyg=array(
 	'format'=>'Muotoilu',
 	'fullscreen'=>'Avaa editori kokoruudussa',
 	'fullscreen_editor'=>'Kokoruutu-editori',
+	'groups'=>'Groups',
 	'h1'=>'Otsikko 1',
 	'h2'=>'Otsikko 2',
 	'h3'=>'Otsikko 3',

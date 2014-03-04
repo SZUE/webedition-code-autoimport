@@ -64,6 +64,7 @@ $l_wysiwyg=array(
 	'format'=>'Opmaak',
 	'fullscreen'=>'Open editor in volledig scherm',
 	'fullscreen_editor'=>'Volledige scherm editor',
+	'groups'=>'Groups',
 	'h1'=>'Kop 1',
 	'h2'=>'Kop 2',
 	'h3'=>'Kop 3',

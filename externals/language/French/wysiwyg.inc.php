@@ -64,6 +64,7 @@ $l_wysiwyg=array(
 	'format'=>'Style de police',
 	'fullscreen'=>'Démarrer l`editeur en plein écran',
 	'fullscreen_editor'=>'Editeur en plein écran',
+	'groups'=>'Groups',
 	'h1'=>'L`en-tête 1',
 	'h2'=>'L`en-tête 2',
 	'h3'=>'L`en-tête 3',

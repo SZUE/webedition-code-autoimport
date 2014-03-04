@@ -64,6 +64,7 @@ $l_wysiwyg=array(
 	'format'=>'Schriftstil',
 	'fullscreen'=>'Editor im Fullscreen-Modus öffnen',
 	'fullscreen_editor'=>'Fullscreen Editor',
+	'groups'=>'Gruppen',
 	'h1'=>'Überschrift 1',
 	'h2'=>'Überschrift 2',
 	'h3'=>'Überschrift 3',
