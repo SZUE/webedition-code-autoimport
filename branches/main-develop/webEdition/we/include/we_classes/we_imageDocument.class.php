@@ -49,7 +49,7 @@ class we_imageDocument extends we_binaryDocument{
 		parent::__construct($LoadBinaryContent);
 		$this->persistent_slots[] = 'Thumbs';
 		$this->Icon = we_base_ContentTypes::IMAGE_ICON;
-		$this->ContentType = 'image/*';
+		$this->ContentType = we_base_ContentTypes::IMAGE;
 		array_push($this->EditPageNrs, WE_EDITPAGE_IMAGEEDIT, WE_EDITPAGE_THUMBNAILS);
 		self::$imgCnt++;
 		/* 		if(defined("CUSTOMER_TABLE")){
@@ -631,7 +631,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId('LonDesc');
-		$yuiSuggest->setContentType('folder,text/webEdition,text/html');
+		$yuiSuggest->setContentType('folder,' . we_base_ContentTypes::WEDOCUMENT . ',' . we_base_ContentTypes::HTML);
 		$yuiSuggest->setInput($longdesc_text_name, $longdescPath);
 		$yuiSuggest->setLabel(g_l('weClass', '[longdesc_text]'));
 		$yuiSuggest->setMaxResults(20);
@@ -639,12 +639,11 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 		$yuiSuggest->setResult($longdesc_id_name, $longdesc_id);
 		$yuiSuggest->setSelector('Docselector');
 		$yuiSuggest->setWidth(328);
-		//javascript:we_cmd('openDocselector',document.we_form.elements['$longdesc_id_name'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'$longdesc_id_name\\'].value','document.we_form.elements[\\'$longdesc_text_name\\'].value','opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd(\'reload_editpage\');','".session_id()."','','text/webedition,text/plain,text/html',1)
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$longdesc_id_name'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$longdesc_text_name'].value");
 		$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd('reload_editpage');");
 
-		$yuiSuggest->setSelectButton(we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['$longdesc_id_name'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','text/webedition,text/plain,text/html',1)"));
+		$yuiSuggest->setSelectButton(we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['$longdesc_id_name'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','" . we_base_ContentTypes::WEDOCUMENT . "," . we_base_ContentTypes::TEXT . "," . we_base_ContentTypes::HTML . "',1)"));
 		$yuiSuggest->setTrashButton(we_html_button::create_button('image:btn_function_trash', "javascript:document.we_form.elements['$longdesc_id_name'].value='-1';document.we_form.elements['$longdesc_text_name'].value='';_EditorFrame.setEditorIsHot(true); YAHOO.autocoml.setValidById('" . $yuiSuggest->getInputId() . "')"));
 		$_content->setCol(7, 0, array('colspan' => 5), we_html_tools::getPixel(1, 5));
 		$_content->setCol(8, 0, array('valign' => 'bottom', 'colspan' => 5), weSuggest::getYuiFiles() . $yuiSuggest->getHTML() . $yuiSuggest->getYuiCode());
@@ -783,7 +782,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$RollOverIDName'].value");
 		$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$RollOverPathname'].value");
 		$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements['$RollOverFlagName'].value=1;opener.document.we_form.elements['$checkFlagName'].checked=true;");
-		$but2 = we_html_button::create_button('select', "javascript:we_cmd('openDocselector', document.forms['we_form'].elements['$RollOverIDName'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0,'image/*'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
+		$but2 = we_html_button::create_button('select', "javascript:we_cmd('openDocselector', document.forms['we_form'].elements['$RollOverIDName'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0,'" . we_base_ContentTypes::IMAGE . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$extname'].value");
 		$wecmdenc4 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements['we_" . $this->Name . "_txt[LinkType]'][1].checked=true;");
@@ -829,7 +828,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 
 		// Internal link
 		$yuiSuggest->setAcId('internalPath');
-		$yuiSuggest->setContentType("folder,text/webedition,image/*,text/js,text/css,text/html,application/*,video/quicktime");
+		$yuiSuggest->setContentType(implode(',', array('folder', we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::JS, we_base_ContentTypes::CSS, we_base_ContentTypes::HTML, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::QUICKTIME)));
 		$yuiSuggest->setInput($textname, $linkPath);
 		$yuiSuggest->setResult($idname, $this->getElement('LinkID'));
 		$yuiSuggest->setTable(FILE_TABLE);
@@ -880,7 +879,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 
 		// Rollover image
 		$yuiSuggest->setAcId('rollOverPath');
-		$yuiSuggest->setContentType("folder,text/webedition,image/*,text/js,text/css,text/html,application/*,video/quicktime");
+		$yuiSuggest->setContentType(implode(',', array('folder', we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::JS, we_base_ContentTypes::CSS, we_base_ContentTypes::HTML, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::QUICKTIME)));
 		$yuiSuggest->setInput($RollOverPathname, $RollOverPath);
 		$yuiSuggest->setResult($RollOverIDName, $RollOverID);
 		$yuiSuggest->setTable(FILE_TABLE);
@@ -917,7 +916,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 	<tr><td colspan="2">' . $this->formInputField('txt', 'Keywords', g_l('weClass', '[Keywords]'), 40, 508, '', "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>
 	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
 </table>' .
-			($this->ContentType == 'image/*' ? $this->formCharset(true) : '');
+			($this->ContentType == we_base_ContentTypes::IMAGE ? $this->formCharset(true) : '');
 	}
 
 	static function checkAndPrepare($formname, $key = 'we_document'){
@@ -936,7 +935,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 						} elseif($filename){
 							// file is selected, check to see if it is an image
 							$ct = getContentTypeFromFile($filename);
-							if($ct == 'image/*'){
+							if($ct == we_base_ContentTypes::IMAGE){
 								$imgId = intval($GLOBALS[$key][$formname]->getElement($imgName));
 
 								// move document from upload location to tmp dir

@@ -456,7 +456,7 @@ abstract class we_export_functions{
 			self::fileCreate($format, $filename, $path);
 		}
 		// Read content
-		if($we_doc->ContentType == "text/webedition"){
+		if($we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT){
 			$DB_WE = new DB_WE();
 
 			$_template_code = f('SELECT ' . CONTENT_TABLE . '.Dat as Dat FROM ' . CONTENT_TABLE . ',' . LINK_TABLE . ' WHERE ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID AND ' . LINK_TABLE . ".DocumentTable='" . stripTblPrefix(TEMPLATES_TABLE) . "' AND " . LINK_TABLE . ".DID=" . intval($we_doc->TemplateID) . ' AND ' . LINK_TABLE . ".Name='completeData'", 'Dat', $DB_WE);

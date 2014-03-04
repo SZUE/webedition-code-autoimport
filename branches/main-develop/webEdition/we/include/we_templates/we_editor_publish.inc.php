@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,20 +22,15 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-?><script type="text/javascript"><!--
-var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction("<?php print $GLOBALS['we_transaction']; ?>");
-	var _EditorFrameDocumentRef = _EditorFrame.getDocumentReference();
-<?php
-print $we_JavaScript . ';';
-if($we_responseText){
-	?>top.toggleBusy(0);<?php
-	print we_message_reporting::getShowMessageCall($we_responseText, $we_responseTextType);
-}
 we_html_tools::protect();
-if(isset($_REQUEST['we_cmd'][5]) && $_REQUEST['we_cmd'][5] != ''){
-	print $_REQUEST['we_cmd'][5];
-}
-?>
-	top.toggleBusy(0);
-//-->
-</script>
+echo we_html_element::jsElement('
+var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction("' . $GLOBALS['we_transaction'] . '");
+var _EditorFrameDocumentRef = _EditorFrame.getDocumentReference();' .
+		$we_JavaScript . ';top.toggleBusy(0);' .
+		($we_responseText ?
+				we_message_reporting::getShowMessageCall($we_responseText, $we_responseTextType) :
+				'') .
+		(isset($_REQUEST['we_cmd'][5]) && $_REQUEST['we_cmd'][5] != '' ?
+				$_REQUEST['we_cmd'][5] : ''
+		)
+);

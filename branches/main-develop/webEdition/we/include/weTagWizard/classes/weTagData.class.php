@@ -93,7 +93,7 @@ class weTagData{
 					return;
 				}
 			}
-		} catch (Exception $e){
+		}catch(Exception $e){
 			t_e('Error in TW-Tag ' . $this->Name, $e->getMessage());
 		}
 
@@ -109,7 +109,7 @@ class weTagData{
 				new weTagDataOption('block'),
 				new weTagDataOption('sessionfield'),
 				new weTagDataOption('screen'),
-				), false, false, '');
+					), false, false, '');
 			$nameto = new weTagData_textAttribute('nameto', false, '');
 		}
 
@@ -120,7 +120,7 @@ class weTagData{
 				$options = $this->TypeAttribute->getOptions();
 				if(!$this->noDocuLink){
 					foreach($options as &$value){
-						$tmp = new weTagData_cmdAttribute('TagReferenz', false, '', array('open_tagreference', strtolower($tagName) . '-' . $this->TypeAttribute->getName() . '-' . $value->Name), g_l('taged', '[tagreference_linktext]'));
+						$tmp = new weTagData_cmdAttribute('TagReferenz', false, '', array('open_tagreference', strtolower($tagName) . ($value->Name ? '-' . $this->TypeAttribute->getName() . '-' . $value->Name : '')), g_l('taged', '[tagreference_linktext]'));
 						$value->AllowedAttributes[] = $tmp;
 						if($value->Value != '-'){
 							$this->Attributes[] = $tmp;
@@ -229,9 +229,9 @@ class weTagData{
 		$attribs = array();
 		foreach($this->UsedAttributes as $attrib){
 			$attribs[] = ($idPrefix ?
-					$attrib->getIdName() :
-					$attrib->getName()
-				);
+							$attrib->getIdName() :
+							$attrib->getName()
+					);
 		}
 		return $attribs;
 	}
@@ -306,8 +306,8 @@ class weTagData{
 	function getTypeAttributeCodeForTagWizard(){
 		if($this->TypeAttribute){
 			return '<ul>' .
-				'<li>' . $this->TypeAttribute->getCodeForTagWizard() . '</li>' .
-				'</ul>';
+					'<li>' . $this->TypeAttribute->getCodeForTagWizard() . '</li>' .
+					'</ul>';
 		}
 		return '';
 	}
@@ -318,11 +318,11 @@ class weTagData{
 	function getDefaultValueCodeForTagWizard(){
 
 		return we_html_element::htmlTextArea(
-				array(
-				'name' => 'weTagData_defaultValue',
-				'id' => 'weTagData_defaultValue',
-				'class' => 'wetextinput wetextarea'
-				), $this->DefaultValue);
+						array(
+					'name' => 'weTagData_defaultValue',
+					'id' => 'weTagData_defaultValue',
+					'class' => 'wetextinput wetextarea'
+						), $this->DefaultValue);
 	}
 
 }

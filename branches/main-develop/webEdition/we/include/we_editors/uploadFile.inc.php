@@ -42,10 +42,10 @@ if(!isset($_SESSION['weS']['we_data'][$we_transaction])){
 	include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
 	switch($we_doc->ContentType){
-		case 'image/*';
+		case we_base_ContentTypes::IMAGE;
 			$allowedContentTypes = we_base_imageEdit::IMAGE_CONTENT_TYPES;
 			break;
-		case 'application/*';
+		case we_base_ContentTypes::APPLICATION;
 			break;
 		default:
 			$allowedContentTypes = $we_doc->ContentType;
@@ -64,11 +64,11 @@ if(!isset($_SESSION['weS']['we_data'][$we_transaction])){
 		$foo = explode('/', $_FILES["we_File"]["type"]);
 		$we_doc->setElement('data', $we_File, $foo[0]);
 
-		if($we_doc->ContentType == 'image/*' && !$we_doc->isSvg() && !in_array(we_base_imageEdit::detect_image_type($we_File), we_base_imageEdit::$GDIMAGE_TYPE)){
+		if($we_doc->ContentType == we_base_ContentTypes::IMAGE && !$we_doc->isSvg() && !in_array(we_base_imageEdit::detect_image_type($we_File), we_base_imageEdit::$GDIMAGE_TYPE)){
 			$we_alerttext = g_l('alert', '[wrong_file][' . $we_doc->ContentType . ']');
 		} else {
 
-			if($we_doc->ContentType == 'image/*' || $we_doc->ContentType == 'application/x-shockwave-flash'){
+			if($we_doc->ContentType == we_base_ContentTypes::IMAGE || $we_doc->ContentType == we_base_ContentTypes::FLASH){
 				$we_size = $we_doc->getimagesize($we_File);
 				$we_doc->setElement('width', $we_size[0], 'attrib');
 				$we_doc->setElement('height', $we_size[1], 'attrib');
@@ -97,11 +97,11 @@ if(!isset($_SESSION['weS']['we_data'][$we_transaction])){
 }
 
 $content = '<table border="0" cellpadding="0" cellspacing="0">' .
-		($maxsize ? ('<tr><td>' . we_html_tools::htmlAlertAttentionBox(
-						$we_maxfilesize_text, we_html_tools::TYPE_ALERT, 390) . '</td></tr><tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>') : '') . '
+	($maxsize ? ('<tr><td>' . we_html_tools::htmlAlertAttentionBox(
+			$we_maxfilesize_text, we_html_tools::TYPE_ALERT, 390) . '</td></tr><tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>') : '') . '
 				<tr><td><input name="we_File" TYPE="file"' . ($allowedContentTypes ? ' ACCEPT="' . $allowedContentTypes . '"' : '') . ' size="35" /></td></tr>
 				<tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>';
-if($we_doc->ContentType == "image/*"){
+if($we_doc->ContentType == we_base_ContentTypes::IMAGE){
 	$content .= '<tr><td>' . we_html_forms::checkbox(1, true, "import_metadata", g_l('metadata', "[import_metadata_at_upload]")) . '</td></tr>';
 }
 $content .= '</table>';
@@ -117,29 +117,29 @@ if($we_alerttext){
 	print we_message_reporting::getShowMessageCall($we_alerttext, we_message_reporting::WE_MESSAGE_ERROR);
 	if($error){
 		?>
-					top.close();
+		top.close();
 		<?php
 	}
 }
 
 if(isset($we_File) && (!$we_alerttext)){
 	?>
-				opener.we_cmd("update_file");
-				_EditorFrame = opener.top.weEditorFrameController.getActiveEditorFrame();
-				_EditorFrame.getDocumentReference().frames[0].we_setPath("<?php print $we_doc->Path; ?>", "<?php print $we_doc->Text; ?>");
-				self.close();
+	opener.we_cmd("update_file");
+	_EditorFrame = opener.top.weEditorFrameController.getActiveEditorFrame();
+	_EditorFrame.getDocumentReference().frames[0].we_setPath("<?php print $we_doc->Path; ?>", "<?php print $we_doc->Text; ?>");
+	self.close();
 <?php } ?>
 //-->
 </script>
 </head>
 
 <body class="weDialogBody" onLoad="self.focus();">
-<center>
-	<form method="post" enctype="multipart/form-data">
-		<input type="hidden" name="we_transaction" value="<?php print $we_transaction ?>" />
-		<?php print we_html_tools::htmlDialogLayout($content, g_l('newFile', "[import_File_from_hd_title]"), $_buttons); ?>
-	</form>
-</center>
+	<center>
+		<form method="post" enctype="multipart/form-data">
+			<input type="hidden" name="we_transaction" value="<?php print $we_transaction ?>" />
+			<?php print we_html_tools::htmlDialogLayout($content, g_l('newFile', "[import_File_from_hd_title]"), $_buttons); ?>
+		</form>
+	</center>
 </body>
 
 </html>

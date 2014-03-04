@@ -306,7 +306,7 @@ class we_export_preparer extends weXMLExIm{
 		if(get_class($object) == "we_template"){
 			$tlinked = array();
 			if($this->options["handle_def_templates"] && $object->MasterTemplateID){
-				$this->addToDepArray($level, $object->MasterTemplateID, 'text/weTmpl');
+				$this->addToDepArray($level, $object->MasterTemplateID, we_base_ContentTypes::TEMPLATE);
 			}
 			$_data = $object->getElement("data");
 			if($this->options["handle_document_includes"]){
@@ -330,7 +330,7 @@ class we_export_preparer extends weXMLExIm{
 				foreach($this->PatternSearch->tmpl_patterns as $_include_pattern){
 					if(preg_match_all($_include_pattern, $_data, $match)){
 						foreach($match[2] as $key => $value){
-							$this->addToDepArray($level, $value, 'text/weTmpl');
+							$this->addToDepArray($level, $value, we_base_ContentTypes::TEMPLATE);
 						}
 					}
 				}
@@ -338,7 +338,7 @@ class we_export_preparer extends weXMLExIm{
 		}
 
 		if(isset($object->TemplateID) && $object->TemplateID && $this->options["handle_def_templates"]){
-			$this->addToDepArray($level, $object->TemplateID, "text/weTmpl");
+			$this->addToDepArray($level, $object->TemplateID, we_base_ContentTypes::TEMPLATE);
 		}
 
 		if(isset($object->TableID) && $this->options["handle_def_classes"]){
@@ -378,7 +378,7 @@ class we_export_preparer extends weXMLExIm{
 
 	function makeExportList(){
 
-		$serachCT = array('text/webedition', 'text/weTmpl', 'doctype', 'category', 'object', 'objectFile', 'image/*');
+		$serachCT = array(we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::TEMPLATE, 'doctype', 'category', 'object', 'objectFile', we_base_ContentTypes::IMAGE);
 
 		$_step = 0;
 		$id = $this->RefTable->getNext();

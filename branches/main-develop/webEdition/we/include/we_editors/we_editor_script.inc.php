@@ -56,7 +56,7 @@ we_html_tools::protect();
 </style>
 <?php
 if(isset($GLOBALS['we_doc'])){
-	if($GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT && $GLOBALS['we_doc']->ContentType == 'text/weTmpl'){
+	if($GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT && $GLOBALS['we_doc']->ContentType == we_base_ContentTypes::TEMPLATE){
 		//no wyswyg
 	} else {
 		echo we_wysiwyg_editor::getHeaderHTML();
@@ -91,8 +91,8 @@ echo we_html_element::jsScript(JS_DIR . 'we_textarea.js');
 
 if(isset($GLOBALS['we_doc'])){
 	$useSeeModeJS = array(
-		"text/webedition" => array(WE_EDITPAGE_CONTENT),
-		"text/weTmpl" => array(WE_EDITPAGE_PREVIEW, WE_EDITPAGE_PREVIEW_TEMPLATE),
+		we_base_ContentTypes::WEDOCUMENT => array(WE_EDITPAGE_CONTENT),
+		we_base_ContentTypes::TEMPLATE => array(WE_EDITPAGE_PREVIEW, WE_EDITPAGE_PREVIEW_TEMPLATE),
 		"objectFile" => array(WE_EDITPAGE_CONTENT, WE_EDITPAGE_PREVIEW)
 	);
 
@@ -144,8 +144,8 @@ function seeMode_dealWithLinks() {
 
 <?php
 echo (isset($_REQUEST["we_transaction"]) ?
-		"_EditorFrame = _controller.getEditorFrameByTransaction('" . ($_we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0)) . "');" :
-		"_EditorFrame = _controller.getEditorFrame();");
+	"_EditorFrame = _controller.getEditorFrameByTransaction('" . ($_we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0)) . "');" :
+	"_EditorFrame = _controller.getEditorFrame();");
 ?>
 
 	}
@@ -280,7 +280,7 @@ if(isset($GLOBALS['we_doc'])){
 
 	function goTemplate(tid) {
 		if (tid > 0) {
-			top.weEditorFrameController.openDocument("<?php echo TEMPLATES_TABLE ?>", tid, "text/weTmpl");
+			top.weEditorFrameController.openDocument("<?php echo TEMPLATES_TABLE ?>", tid, "<?php echo we_base_ContentTypes::TEMPLATE; ?>");
 		}
 	}
 
@@ -401,14 +401,14 @@ if(isset($GLOBALS['we_doc'])){
 				break;
 
 
-<?php if(isset($we_doc) && ($we_doc->ContentType == "text/webedition" || $we_doc->ContentType == "objectFile") && defined("GLOSSARY_TABLE")){ ?>
+<?php if(defined("GLOSSARY_TABLE") && isset($we_doc) && ($we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT || $we_doc->ContentType == "objectFile")){ ?>
 				case "check_glossary":
 					new jsWindow(url, "check_glossary", -1, -1, 730, 400, true, false, true);
 					break;
 	<?php
 }
 
-if(isset($we_doc) && $we_doc->ContentType == "image/*"){
+if(isset($we_doc) && $we_doc->ContentType == we_base_ContentTypes::IMAGE){
 	?>
 
 				case "add_thumbnail":

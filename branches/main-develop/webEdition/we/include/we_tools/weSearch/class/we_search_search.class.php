@@ -420,34 +420,34 @@ class we_search_search extends we_search{
 	function getStatusFiles($status, $table){
 		switch($status){
 			case "jeder" :
-				return "AND (" . escape_sql_query($table) . ".ContentType='text/webedition' OR " . escape_sql_query($table) . ".ContentType='text/html' OR " . escape_sql_query($table) . ".ContentType='objectFile')";
+				return "AND (" . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::WEDOCUMENT . "' OR " . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::HTML . "' OR " . escape_sql_query($table) . ".ContentType='objectFile')";
 
 			case "geparkt" :
 				return ($table == VERSIONS_TABLE ?
 						"AND " . escape_sql_query($table) . ".status='unpublished'" :
-						"AND ((" . escape_sql_query($table) . ".Published=0) AND (" . escape_sql_query($table) . ".ContentType='text/webedition' OR " . escape_sql_query($table) . ".ContentType='text/html' OR " . escape_sql_query($table) . ".ContentType='objectFile'))");
+						"AND ((" . escape_sql_query($table) . ".Published=0) AND (" . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::WEDOCUMENT . "' OR " . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::HTML . "' OR " . escape_sql_query($table) . ".ContentType='objectFile'))");
 
 			case "veroeffentlicht" :
 				return ($table == VERSIONS_TABLE ?
 						"AND " . escape_sql_query($table) . ".status='published'" :
-						"AND ((" . escape_sql_query($table) . ".Published >= " . escape_sql_query($table) . ".ModDate AND " . escape_sql_query($table) . ".Published !=0) AND (" . escape_sql_query($table) . ".ContentType='text/webedition' OR " . escape_sql_query($table) . ".ContentType='text/html' OR " . escape_sql_query($table) . ".ContentType='objectFile'))");
+						"AND ((" . escape_sql_query($table) . ".Published >= " . escape_sql_query($table) . ".ModDate AND " . escape_sql_query($table) . ".Published !=0) AND (" . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::WEDOCUMENT . "' OR " . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::HTML . "' OR " . escape_sql_query($table) . ".ContentType='objectFile'))");
 			case "geaendert" :
 				return ($table == VERSIONS_TABLE ?
 						"AND " . escape_sql_query($table) . ".status='saved'" :
-						"AND ((" . escape_sql_query($table) . ".Published < " . escape_sql_query($table) . ".ModDate AND " . escape_sql_query($table) . ".Published !=0) AND (" . escape_sql_query($table) . ".ContentType='text/webedition' OR " . escape_sql_query($table) . ".ContentType='text/html' OR " . escape_sql_query($table) . ".ContentType='objectFile'))");
+						"AND ((" . escape_sql_query($table) . ".Published < " . escape_sql_query($table) . ".ModDate AND " . escape_sql_query($table) . ".Published !=0) AND (" . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::WEDOCUMENT . "' OR " . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::HTML . "' OR " . escape_sql_query($table) . ".ContentType='objectFile'))");
 			case "veroeff_geaendert" :
-				return "AND ((" . escape_sql_query($table) . ".Published >= " . escape_sql_query($table) . ".ModDate OR " . escape_sql_query($table) . ".Published < " . escape_sql_query($table) . ".ModDate AND " . escape_sql_query($table) . ".Published !=0) AND (" . escape_sql_query($table) . ".ContentType='text/webedition' OR " . escape_sql_query($table) . ".ContentType='text/html' OR " . escape_sql_query($table) . ".ContentType='objectFile'))";
+				return "AND ((" . escape_sql_query($table) . ".Published >= " . escape_sql_query($table) . ".ModDate OR " . escape_sql_query($table) . ".Published < " . escape_sql_query($table) . ".ModDate AND " . escape_sql_query($table) . ".Published !=0) AND (" . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::WEDOCUMENT . "' OR " . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::HTML . "' OR " . escape_sql_query($table) . ".ContentType='objectFile'))";
 
 			case "geparkt_geaendert" :
 				return ($table == VERSIONS_TABLE ?
 						"AND " . escape_sql_query($table) . ".status!='published'" :
-						"AND ((" . escape_sql_query($table) . ".Published=0 OR " . escape_sql_query($table) . ".Published < " . escape_sql_query($table) . ".ModDate) AND (" . escape_sql_query($table) . ".ContentType='text/webedition' OR " . escape_sql_query($table) . ".ContentType='text/html' OR " . escape_sql_query($table) . ".ContentType='objectFile'))");
+						"AND ((" . escape_sql_query($table) . ".Published=0 OR " . escape_sql_query($table) . ".Published < " . escape_sql_query($table) . ".ModDate) AND (" . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::WEDOCUMENT . "' OR " . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::HTML . "' OR " . escape_sql_query($table) . ".ContentType='objectFile'))");
 			case "dynamisch" :
 				return ($table != FILE_TABLE && $table != VERSIONS_TABLE ? '' :
-						"AND ((" . escape_sql_query($table) . ".IsDynamic=1) AND (" . escape_sql_query($table) . ".ContentType='text/webedition'))");
+						"AND ((" . escape_sql_query($table) . ".IsDynamic=1) AND (" . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::WEDOCUMENT . "'))");
 			case "statisch" :
 				return ($table != FILE_TABLE && $table != VERSIONS_TABLE ? '' :
-						"AND ((" . escape_sql_query($table) . ".IsDynamic=0) AND (" . escape_sql_query($table) . ".ContentType='text/webedition'))");
+						"AND ((" . escape_sql_query($table) . ".IsDynamic=0) AND (" . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::WEDOCUMENT . "'))");
 			case "deleted" :
 				return ($table == VERSIONS_TABLE ? "AND " . escape_sql_query($table) . ".status='deleted' " : '');
 		}

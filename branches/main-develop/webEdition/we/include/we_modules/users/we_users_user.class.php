@@ -1552,7 +1552,7 @@ function setValues(section) {
 		table="' . TEMPLATES_TABLE . '";
 		break;' .
 				(defined("OBJECT_TABLE") ? '
-	case "OBJECT_FILES_TABLE":
+	case "OBJECT_TABLE":
 		table="' . OBJECT_FILES_TABLE . '";
 		break;' : '') .
 				(defined('NEWSLETTER_TABLE') ? '
@@ -1907,7 +1907,7 @@ function select_seem_start() {
 	if(document.getElementById('seem_start_type').value == 'object') {
 		top.opener.top.we_cmd('openDocselector', document.forms[0].elements['seem_start_object'].value, '" . (defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : "") . "', myWindStr + '.document.forms[0].elements[\'seem_start_object\'].value', myWindStr + '.document.forms[0].elements[\'seem_start_object_name\'].value', '', '" . session_id() . "', '', 'objectFile','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");
 	} else {
-		top.opener.top.we_cmd('openDocselector', document.forms[0].elements['seem_start_document'].value, '" . FILE_TABLE . "', myWindStr + '.document.forms[0].elements[\'seem_start_document\'].value', myWindStr + '.document.forms[0].elements[\'seem_start_document_name\'].value', '', '" . session_id() . "', '', 'text/webedition','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");
+		top.opener.top.we_cmd('openDocselector', document.forms[0].elements['seem_start_document'].value, '" . FILE_TABLE . "', myWindStr + '.document.forms[0].elements[\'seem_start_document\'].value', myWindStr + '.document.forms[0].elements[\'seem_start_document_name\'].value', '', '" . session_id() . "', '', '" . we_base_ContentTypes::WEDOCUMENT . "','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");
 	}
 }
 
@@ -2015,7 +2015,7 @@ function show_seem_chooser(val) {
 		// Build SEEM select start document chooser
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId('Doc');
-		$yuiSuggest->setContentType('folder,text/webedition,image/*,text/js,text/css,text/html,application/*,video/quicktime');
+		$yuiSuggest->setContentType(implode(',', array('folder', we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::JS, we_base_ContentTypes::CSS, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::QUICKTIME)));
 		$yuiSuggest->setInput('seem_start_document_name', $_document_path);
 		$yuiSuggest->setMaxResults(20);
 		$yuiSuggest->setMayBeEmpty(true);

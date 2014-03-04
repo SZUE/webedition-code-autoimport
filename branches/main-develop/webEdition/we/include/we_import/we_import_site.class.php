@@ -585,7 +585,7 @@ class we_import_site{
 		$wecmdenc3 = we_cmd_enc("opener.displayTable();");
 
 		$button = we_html_button::create_button(
-				"select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','text/weTmpl',1)");
+				"select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','" . we_base_ContentTypes::TEMPLATE . "',1)");
 
 		$foo = we_html_tools::htmlTextInput($textname, 30, $path, "", ' readonly', "text", 320, 0);
 		return we_html_tools::htmlFormElementTable(
@@ -1448,7 +1448,7 @@ class we_import_site{
 		$id = path_to_id_ct($href, FILE_TABLE, $ct);
 		if(substr($ct, 0, 5) == "text/"){
 			$href = we_base_link::TYPE_INT_PREFIX . $id;
-		} elseif($ct == "image/*"){
+		} elseif($ct == we_base_ContentTypes::IMAGE){
 			if(strpos($href, "?") === false){
 				$href .= '?id=' . $id;
 			}
@@ -1670,8 +1670,7 @@ class we_import_site{
 		$GLOBALS["we_doc"]->Text = we_import_functions::correctFilename(basename($path));
 		$GLOBALS["we_doc"]->Path = $destinationPath;
 		// get Data of File
-		if(!is_dir($path) && filesize($path) > 0 && $contentType != 'image/*' && $contentType != 'application/*' && $contentType != 'application/x-shockwave-fla
-sh' && $contentType != 'movie/quicktime'){
+		if(!is_dir($path) && filesize($path) > 0 && $contentType != we_base_ContentTypes::IMAGE && $contentType != we_base_ContentTypes::APPLICATION && $contentType != we_base_ContentTypes::FLASH && $contentType != we_base_ContentTypes::QUICKTIME){
 			//if(!is_dir($path) && filesize($path) > 0 && !$GLOBALS["we_doc"]->isBinary()){
 			$data = we_base_file::load($path);
 		}
@@ -1715,13 +1714,13 @@ sh' && $contentType != 'movie/quicktime'){
 
 		// initialize Content
 		switch($contentType){
-			case "text/webedition" :
+			case we_base_ContentTypes::WEDOCUMENT :
 				self::_importWebEditionPage($data, $GLOBALS["we_doc"], $sourcePath);
 				$GLOBALS["we_doc"]->IsSearchable = 1;
 				break;
 			case "folder" :
 				break;
-			case "image/*" :
+			case we_base_ContentTypes::IMAGE :
 				// getting attributes of image
 				$foo = $GLOBALS["we_doc"]->getimagesize($path);
 				$GLOBALS["we_doc"]->setElement("width", $foo[0], "attrib");
@@ -1729,22 +1728,22 @@ sh' && $contentType != 'movie/quicktime'){
 				$GLOBALS["we_doc"]->setElement("origwidth", $foo[0]);
 				$GLOBALS["we_doc"]->setElement("origheight", $foo[1]);
 			// no break!! because we need to do the same after the following case
-			case "application/*" :
-			case "application/x-shockwave-flash" :
-			case "movie/quicktime" :
+			case we_base_ContentTypes::APPLICATION:
+			case we_base_ContentTypes::FLASH:
+			case we_base_ContentTypes::QUICKTIME:
 				$GLOBALS["we_doc"]->setElement("data", $path, "image");
 				break;
-			case "text/html" :
+			case we_base_ContentTypes::HTML :
 				$GLOBALS["we_doc"]->IsSearchable = 1;
-			case "text/plain" :
-			case "text/js" :
-			case "text/css" :
+			case we_base_ContentTypes::TEXT:
+			case we_base_ContentTypes::JS:
+			case we_base_ContentTypes::CSS:
 			default :
 				// set Data of File
 				$GLOBALS["we_doc"]->setElement("data", $data, "txt");
 		}
 
-		if($contentType == "image/*"){
+		if($contentType == we_base_ContentTypes::IMAGE){
 			$GLOBALS["we_doc"]->Thumbs = $thumbs;
 			$newWidth = 0;
 			$newHeight = 0;
@@ -1779,7 +1778,7 @@ sh' && $contentType != 'movie/quicktime'){
 				"error" => "save_error"
 			);
 		}
-		if($contentType == "image/*" && $importMetadata){
+		if($contentType == we_base_ContentTypes::IMAGE && $importMetadata){
 			$GLOBALS["we_doc"]->importMetaData();
 			$GLOBALS["we_doc"]->we_save();
 		}
@@ -1820,12 +1819,12 @@ sh' && $contentType != 'movie/quicktime'){
 			}
 		}
 		foreach($this->_files as $e){
-			if($e["contentType"] != "folder" && $e["contentType"] != "text/webedition"){
+			if($e["contentType"] != "folder" && $e["contentType"] != we_base_ContentTypes::WEDOCUMENT){
 				$tmp[] = $e;
 			}
 		}
 		foreach($this->_files as $e){
-			if($e["contentType"] == "text/webedition"){
+			if($e["contentType"] == we_base_ContentTypes::WEDOCUMENT){
 				$tmp[] = $e;
 			}
 		}
@@ -1868,15 +1867,15 @@ sh' && $contentType != 'movie/quicktime'){
 			$importIt = false;
 
 			switch($contentType){
-				case "image/*" :
+				case we_base_ContentTypes::IMAGE:
 					if($this->images){
 						$importIt = true;
 					}
 					break;
-				case "text/html" :
+				case we_base_ContentTypes::HTML:
 					if($this->htmlPages){
 						if($this->createWePages){
-							$contentType = "text/webedition";
+							$contentType = we_base_ContentTypes::WEDOCUMENT;
 							// webEdition files needs to be post processed (external links => internal links)
 							$this->_postProcess[] = array(
 								"path" => $PathOfEntry,
@@ -1888,27 +1887,27 @@ sh' && $contentType != 'movie/quicktime'){
 						$importIt = true;
 					}
 					break;
-				case "application/x-shockwave-flash" :
+				case we_base_ContentTypes::FLASH:
 					if($this->flashmovies){
 						$importIt = true;
 					}
 					break;
-				case "video/quicktime" :
+				case we_base_ContentTypes::QUICKTIME:
 					if($this->quicktime){
 						$importIt = true;
 					}
 					break;
-				case "text/js" :
+				case we_base_ContentTypes::JS:
 					if($this->js){
 						$importIt = true;
 					}
 					break;
-				case "text/plain" :
+				case we_base_ContentTypes::TEXT:
 					if($this->text){
 						$importIt = true;
 					}
 					break;
-				case "text/css" :
+				case we_base_ContentTypes::CSS:
 					if($this->css){
 						$importIt = true;
 					}

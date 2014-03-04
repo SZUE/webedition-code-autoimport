@@ -1320,7 +1320,7 @@ function setState(a) {
 						foreach($finalTempl as $k => $v){
 							$ids[] = array(
 								"ID" => $v,
-								"ContentType" => "text/weTmpl",
+								"ContentType" => we_base_ContentTypes::TEMPLATE,
 								"level" => 0
 							);
 						}

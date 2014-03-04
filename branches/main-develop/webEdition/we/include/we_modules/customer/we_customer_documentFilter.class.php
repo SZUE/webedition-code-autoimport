@@ -179,7 +179,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 			return '';
 		}
 		$_queryTail = '';
-		$_allowedCTs = array('text/webedition', 'objectFile');
+		$_allowedCTs = array(we_base_ContentTypes::WEDOCUMENT, 'objectFile');
 
 		// if customer is not logged in, all documents/objects with filters must be hidden
 		$_restrictedFilesForCustomer = self::_getFilesWithRestrictionsOfCustomer($listview);
@@ -190,7 +190,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 
 				if(in_array($ct, $_allowedCTs)){
 
-					$_idField = ($ct == 'text/webedition' ? 'DID' : 'OID');
+					$_idField = ($ct == we_base_ContentTypes::WEDOCUMENT ? 'DID' : 'OID');
 					if(!empty($_fileArray)){
 						$_queryTail .= ' AND ' . $_idField . ' NOT IN(' . implode(', ', $_fileArray) . ')';
 					}
@@ -204,7 +204,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 
 				if(in_array($ct, $_allowedCTs)){
 
-					$_idField = ($ct == 'text/webedition' ?
+					$_idField = ($ct == we_base_ContentTypes::WEDOCUMENT ?
 							FILE_TABLE . '.ID' :
 							OBJECT_X_TABLE . $listview->classID . '.OF_ID');
 				}
@@ -398,7 +398,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 				$_queryForIds = 'SELECT * FROM ' . CUSTOMER_FILTER_TABLE . " WHERE $_defaultQuery $_blacklistQuery OR ( ($_specificCustomersQuery OR $_whiteLlistQuery) $_accessControlOnTemplateQuery)";
 				break;
 			case 'we_listview': // type="document"
-				$_queryForIds = 'SELECT * FROM ' . CUSTOMER_FILTER_TABLE . " WHERE modelType='text/webedition'  AND ($_defaultQuery $_blacklistQuery OR ( ($_specificCustomersQuery OR $_whiteLlistQuery) $_accessControlOnTemplateQuery))";
+				$_queryForIds = 'SELECT * FROM ' . CUSTOMER_FILTER_TABLE . " WHERE modelType='" . we_base_ContentTypes::WEDOCUMENT . "'  AND ($_defaultQuery $_blacklistQuery OR ( ($_specificCustomersQuery OR $_whiteLlistQuery) $_accessControlOnTemplateQuery))";
 				break;
 			case 'we_object_listview':
 			case 'we_object_listviewMultiobject': // type="object"

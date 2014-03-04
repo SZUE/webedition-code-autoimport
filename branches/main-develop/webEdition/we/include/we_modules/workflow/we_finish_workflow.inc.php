@@ -53,7 +53,6 @@ if(we_workflow_utility::approve($we_doc->ID, $we_doc->Table, $_SESSION["user"]["
 } else {
 	$we_responseText = g_l('modules_workflow', '[' . stripTblPrefix($we_doc->Table) . '][pass_workflow_notok]');
 	$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
-	//$we_responseText = '';
 }
 
 include(WE_INCLUDES_PATH . 'we_templates/we_editor_save.inc.php');

@@ -34,7 +34,7 @@ class we_quicktimeDocument extends we_binaryDocument{
 	function __construct(){
 		parent::__construct();
 		$this->EditPageNrs[] = WE_EDITPAGE_PREVIEW;
-		$this->ContentType = "video/quicktime";
+		$this->ContentType = we_base_ContentTypes::QUICKTIME;
 	}
 
 	/* must be called from the editor-script. Returns a filename which has to be included from the global-Script */

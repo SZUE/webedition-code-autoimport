@@ -42,11 +42,11 @@ class we_template extends we_document{
 		$this->Table = TEMPLATES_TABLE;
 
 		array_push($this->persistent_slots, 'MasterTemplateID', 'IncludedTemplates', 'TagWizardCode', 'TagWizardSelection');
-		$this->elements["Charset"]["dat"] = DEFAULT_CHARSET;
+		$this->elements['Charset']['dat'] = DEFAULT_CHARSET;
 		array_push($this->EditPageNrs, WE_EDITPAGE_PROPERTIES, WE_EDITPAGE_INFO, WE_EDITPAGE_CONTENT, WE_EDITPAGE_PREVIEW, WE_EDITPAGE_PREVIEW_TEMPLATE, WE_EDITPAGE_VARIANTS, WE_EDITPAGE_VERSIONS);
 		$this->Published = 1;
 		$this->InWebEdition = true;
-		$this->ContentType = 'text/weTmpl';
+		$this->ContentType = we_base_ContentTypes::TEMPLATE;
 	}
 
 	function copyDoc($id){
@@ -273,27 +273,21 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 		// Because of this reason the following code must be putted out directly and(!)
 		// echoed in templates with CacheType = document
 		$pre_code = '<?php
-	// Activate the webEdition error handler
-	require_once($_SERVER[\'DOCUMENT_ROOT\'].\'/webEdition/we/include/we_error_handler.inc.php\');
-	we_error_handler(false);
-
-	require_once($_SERVER[\'DOCUMENT_ROOT\'].\'/webEdition/we/include/we_global.inc.php\');
-	require_once($_SERVER[\'DOCUMENT_ROOT\'].\'/webEdition/we/include/we_tag.inc.php\');
-	we_templateInit();?>';
-
+require_once($_SERVER[\'DOCUMENT_ROOT\'].\'/webEdition/we/include/we_global.inc.php\');
+we_templateInit();?>';
 
 		if($this->hasStartAndEndTag('html', $code) && $this->hasStartAndEndTag('head', $code) && $this->hasStartAndEndTag('body', $code)){
-			$pre_code .= '<?php $GLOBALS[\'WE_HTML_HEAD_BODY\'] = true; ?>';
+			$pre_code .= '<?php $GLOBALS[\'WE_HTML_HEAD_BODY\']=true; ?>';
 
 			//#### parse base href
 			$code = str_replace(array('?>', '=>'), array('__WE_?__WE__', '__WE_=__WE__'), $code);
 
-			$code = preg_replace('%(<body[^>]*)>%i', '\\1<?php echo (isset($GLOBALS[\'we_editmode\']) && $GLOBALS[\'we_editmode\']? \' onunload="doUnload()">\':\'>\'); we_templatePreContent();?>', $code);
+			$code = preg_replace('%(<body[^>]*)>%i', '\\1<?php echo (isset($GLOBALS[\'we_editmode\']) && $GLOBALS[\'we_editmode\']? \' onunload="doUnload()">\':\'>\'); we_templatePreContent(true);?>', $code);
 
 			$code = str_replace(array('__WE_?__WE__', '__WE_=__WE__'), array('?>', '=>'), $code);
 			$code = str_ireplace(array('</head>', '</body>'), array('<?php we_templateHead();?></head>', '<?php we_templatePostContent(true);?></body>'), $code);
 		} else if(!$this->hasStartAndEndTag('html', $code) && !$this->hasStartAndEndTag('head', $code) && !$this->hasStartAndEndTag('body', $code)){
-			$code =  '<?php we_templateHead(true);?>'. $code . '<?php we_templatePostContent(false,true);?>';
+			$code = '<?php we_templateHead(true);?>' . $code . '<?php we_templatePostContent(false,true);?>';
 		} else {
 			return parseError(g_l('parser', '[html_tags]')) . '<?php exit();?><!-- current parsed template code for debugging -->' . $code;
 		}
@@ -514,12 +508,12 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$textname'].value");
 		$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);if(currentID==$this->ID){" . we_message_reporting::getShowMessageCall($alerttext, we_message_reporting::WE_MESSAGE_ERROR) . "opener.document.we_form.elements['$idname'].value='';opener.document.we_form.elements['$textname'].value='';}");
 
-		$button = we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','text/weTmpl',1)");
+		$button = we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','" . we_base_ContentTypes::TEMPLATE . "',1)");
 		$openButton = we_html_button::create_button('edit', 'javascript:goTemplate(document.we_form.elements[\'we_' . $GLOBALS['we_doc']->Name . '_MasterTemplateID\'].value)');
 		$trashButton = we_html_button::create_button(we_html_button::WE_IMAGE_BUTTON_IDENTIFY . 'btn_function_trash', "javascript:document.we_form.elements['$idname'].value='';document.we_form.elements['$textname'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInputMasterTemplate');_EditorFrame.setEditorIsHot(true);", true, 27, 22);
 
 		$yuiSuggest->setAcId('MasterTemplate');
-		$yuiSuggest->setContentType('folder,text/weTmpl');
+		$yuiSuggest->setContentType('folder,' . we_base_ContentTypes::TEMPLATE);
 		$yuiSuggest->setInput($textname, $path);
 		$yuiSuggest->setLabel('');
 		$yuiSuggest->setMayBeEmpty(1);
@@ -553,7 +547,7 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 			return g_l('weClass', "[no_documents]");
 		}
 
-		$button = we_html_button::create_button('open', "javascript:top.weEditorFrameController.openDocument('" . FILE_TABLE . "', document.we_form.elements['TemplateDocuments'].value, 'text/webedition');");
+		$button = we_html_button::create_button('open', "javascript:top.weEditorFrameController.openDocument('" . FILE_TABLE . "', document.we_form.elements['TemplateDocuments'].value, '" . we_base_ContentTypes::WEDOCUMENT . "');");
 		return we_html_tools::htmlFormElementTable($this->htmlSelect($textname, $path, 1, '', false, array(), 'value', 388), '', 'left', 'defaultfont', '', we_html_tools::getPixel(20, 4), $button);
 	}
 
@@ -741,7 +735,7 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 	}
 
 	public function we_save($resave = 0, $updateCode = 1){
-		$this->Extension = we_base_ContentTypes::inst()->getExtension('text/weTmpl');
+		$this->Extension = we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::TEMPLATE);
 		if($updateCode){
 			$this->_updateCompleteCode(true);
 			if(defined('SHOP_TABLE')){
@@ -769,14 +763,14 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 	public function we_publish(){
 		if(VERSIONS_CREATE_TMPL){
 			$version = new weVersions();
-			$version->save($this, "published");
+			$version->save($this, 'published');
 		}
 		return true;
 	}
 
 	public function we_load($from = we_class::LOAD_MAID_DB){
 		parent::we_load($from);
-		$this->Extension = we_base_ContentTypes::inst()->getExtension('text/weTmpl');
+		$this->Extension = we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::TEMPLATE);
 		$this->_updateCompleteCode();
 		if(defined('SHOP_TABLE') && isset($this->elements['allVariants'])){
 			$this->elements['allVariants']['dat'] = @unserialize($this->elements['allVariants']['dat']);

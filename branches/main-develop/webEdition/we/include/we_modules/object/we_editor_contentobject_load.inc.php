@@ -61,11 +61,11 @@ if($we_doc->CSS){
 	foreach($cssArr as $cs){
 		$path = id_to_path($cs);
 		if($path){
-			print we_html_element::cssLink($path);
+			echo we_html_element::cssLink($path);
 		}
 	}
 }
-print STYLESHEET;
+echo STYLESHEET;
 
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 ?>

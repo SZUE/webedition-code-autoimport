@@ -96,7 +96,7 @@ foreach($tbls as $table){
 		. 'u2.username AS Modifier,'
 		. 'u1.username AS Creator ';
 	$q = 'FROM ' . $db->escape($table) . ' t LEFT JOIN ' . USER_TABLE . ' u1 ON u1.ID=t.CreatorID LEFT JOIN ' . USER_TABLE . ' u2 ON u2.ID=t.ModifierID ' .
-		" WHERE (((t.Published=0 OR t.Published<t.ModDate) AND t.ContentType IN ('text/webedition','text/html','objectFile'))" .
+		" WHERE (((t.Published=0 OR t.Published<t.ModDate) AND t.ContentType IN ('" . we_base_ContentTypes::WEDOCUMENT . "','" . we_base_ContentTypes::HTML . "','objectFile'))" .
 		($myWfDocsCSV ? ' OR (t.ID IN(' . $myWfDocsCSV . ')) ' : '') . ')' .
 		(isset($wsQuery) ? ' AND (' . $wsQuery . ') ' : '');
 	$order = ' ORDER BY ' . ($myWfDocsCSV ? 'mywforder DESC,' : '') . $order;

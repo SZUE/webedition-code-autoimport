@@ -445,7 +445,7 @@ function we_cmd() {
 				}
 			}
 
-			top.opener.top.we_cmd("openDocselector", myWind.document.forms[0].elements["seem_start_file"].value, "' . FILE_TABLE . '", myWindStr + ".document.forms[0].elements[\'seem_start_file\'].value", myWindStr + ".document.forms[0].elements[\'seem_start_file_name\'].value", "", "' . session_id() . '", "", "text/webedition", 1);
+			top.opener.top.we_cmd("openDocselector", myWind.document.forms[0].elements["seem_start_file"].value, "' . FILE_TABLE . '", myWindStr + ".document.forms[0].elements[\'seem_start_file\'].value", myWindStr + ".document.forms[0].elements[\'seem_start_file_name\'].value", "", "' . session_id() . '", "", "' . we_base_ContentTypes::WEDOCUMENT . '", 1);
 
 			break;
 		case "openNavigationDirselector":

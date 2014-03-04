@@ -186,7 +186,7 @@ switch($_SESSION['prefs']['editorMode']){
 								hlLine = editor.addLineClass(cur, "background", "activeline");
 							}
 						});
-		<?php } else { //FIX for CM which doesn't display lines beyond 27 if this line is missing....       ?>
+		<?php } else { //FIX for CM which doesn't display lines beyond 27 if this line is missing....           ?>
 						hlLine = editor.addLineClass(0, "background", "");
 
 		<?php } ?>
@@ -564,14 +564,14 @@ switch($_SESSION['prefs']['editorMode']){
 			$toolTip = false;
 			$useCompletion = false;
 			switch($GLOBALS['we_doc']->ContentType){ // Depending on content type we use different parsers and css files
-				case 'text/css':
+				case we_base_ContentTypes::CSS:
 					$parser_js[] = 'mode/css/css.js';
 					$parser_js[] = 'mode/sass/sass.js';
 					$parser_js[] = 'addon/fold/foldcode.js';
 					$parser_js[] = 'addon/edit/matchbrackets.js';
 					$mode = 'text/css';
 					break;
-				case 'text/js':
+				case we_base_ContentTypes::JS:
 					$parser_js[] = 'mode/javascript/javascript.js';
 					$parser_js[] = 'mode/sass/sass.js';
 					$parser_js[] = 'addon/fold/foldcode.js';
@@ -581,7 +581,7 @@ switch($_SESSION['prefs']['editorMode']){
 					$parser_css[] = 'addon/hint/show-hint.css';
 					$mode = 'text/javascript';
 					break;
-				case 'text/weTmpl':
+				case we_base_ContentTypes::TEMPLATE:
 					$parser_js[] = 'mode/htmlmixed/htmlmixed.js';
 					$parser_js[] = 'mode/xml/xml.js';
 					$parser_js[] = 'mode/javascript/javascript.js';
@@ -598,9 +598,9 @@ switch($_SESSION['prefs']['editorMode']){
 					}
 					$parser_css[] = 'addon/hint/show-hint.css';
 					$toolTip = $_SESSION['prefs']['editorTooltips'];
-					$mode = 'text/weTmpl';
+					$mode = we_base_ContentTypes::TEMPLATE;
 					$useCompletion = true;
-				case 'text/html':
+				case we_base_ContentTypes::HTML:
 					$parser_js[] = 'mode/htmlmixed/htmlmixed.js';
 					$parser_js[] = 'mode/xml/xml.js';
 					$parser_js[] = 'mode/javascript/javascript.js';
@@ -618,7 +618,7 @@ switch($_SESSION['prefs']['editorMode']){
 					$mode = (isset($mode) ? $mode : 'application/x-httpd-php');
 					$useCompletion = true;
 					break;
-				case 'text/xml':
+				case we_base_ContentTypes::XML:
 					$parser_js[] = 'mode/xml/xml.js';
 					$parser_js[] = 'addon/edit/matchbrackets.js';
 					$parser_js[] = 'addon/hint/show-hint.js';
@@ -646,7 +646,7 @@ switch($_SESSION['prefs']['editorMode']){
 
 				$tmp = @unserialize($_SESSION['prefs']['editorCodecompletion']);
 				$hasCompletion = is_array($tmp) ? array_sum($tmp) : false;
-				$maineditor.=we_html_element::cssElement(($toolTip && $GLOBALS['we_doc']->ContentType == 'text/weTmpl' ? we_getCodeMirror2Tags(true) : '') . '
+				$maineditor.=we_html_element::cssElement(($toolTip && $GLOBALS['we_doc']->ContentType == we_base_ContentTypes::TEMPLATE ? we_getCodeMirror2Tags(true) : '') . '
 .weSelfClose:hover:after, .cm-weSelfClose:hover:after, .weOpenTag:hover:after, .cm-weOpenTag:hover:after, .weTagAttribute:hover:after, .cm-weTagAttribute:hover:after {
 	font-family: ' . ($_SESSION['prefs']['editorTooltipFont'] && $_SESSION['prefs']['editorTooltipFontname'] ? $_SESSION['prefs']['editorTooltipFontname'] : 'sans-serif') . ';
 	font-size: ' . ($_SESSION['prefs']['editorTooltipFont'] && $_SESSION['prefs']['editorTooltipFontsize'] ? $_SESSION['prefs']['editorTooltipFontsize'] : '12') . 'px;
@@ -690,7 +690,7 @@ var CMoptions = { //these are the CodeMirror options
 						) .
 						'
 	}
-};' . ($hasCompletion && $useCompletion ? we_getCodeMirror2Tags(false, $mode == 'text/weTmpl') : '') . '
+};' . ($hasCompletion && $useCompletion ? we_getCodeMirror2Tags(false, $mode == we_base_ContentTypes::TEMPLATE) : '') . '
 window.orignalTemplateContent=document.getElementById("editarea").value.replace(/\r/g,""); //this is our reference of the original content to compare with current content
 ');
 			}
@@ -743,7 +743,7 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 		$parts[] = array("headline" => "", "html" => $maineditor, "space" => 0);
 
 
-		if($we_doc->ContentType == "text/weTmpl"){
+		if($we_doc->ContentType == we_base_ContentTypes::TEMPLATE){
 			// Code Wizard
 			$CodeWizard = new weCodeWizard();
 			$allWeTags = weTagWizard::getExistingWeTags();
@@ -974,7 +974,9 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 		}
 		print we_html_multiIconBox::getJS() .
 			'<div id="bodydiv"' . ($_SESSION['prefs']['editorMode'] == 'java' ? '' : 'style="display:none;"') . '>' . we_html_multiIconBox::getHTML("weTMPLDocEdit", "100%", $parts, 20, "", $znr, g_l('weClass', "[showTagwizard]"), g_l('weClass', "[hideTagwizard]"), ($wepos == "down"), "", 'toggleTagWizard();') . '</div>';
-		?></body>
+		?>
+		<input type="hidden" name="we_complete_request" value="1"/>
+	</form></body>
 
 <?php
 if(isset($selectedGroup)){

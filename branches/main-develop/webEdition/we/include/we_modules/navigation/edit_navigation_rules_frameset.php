@@ -24,7 +24,7 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-we_html_tools::protect();
+we_html_tools::protect(array('EDIT_NAVIAGTION_RULES'));
 
 $what = isset($_REQUEST["pnt"]) ? $_REQUEST["pnt"] : "frameset";
 $weFrame = new we_navigation_ruleFrames();

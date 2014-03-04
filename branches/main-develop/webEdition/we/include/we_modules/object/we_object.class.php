@@ -71,8 +71,6 @@ class we_object extends we_document{
 	}
 
 	function save(){
-		global $we_JavaScript, $we_responseText, $we_responseTextType;
-
 		if(!$this->checkIfPathOk()){
 			return false;
 		}
@@ -82,8 +80,8 @@ class we_object extends we_document{
 
 		$this->saveToDB();
 
-		$we_responseText = g_l('weClass', '[response_save_ok]');
-		$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
+		$GLOBALS['we_responseText'] = g_l('weClass', '[response_save_ok]');
+		$GLOBALS['we_responseTextType'] = we_message_reporting::WE_MESSAGE_NOTICE;
 
 		if($this->OldPath && ($this->OldPath != $this->Path)){
 			$fID = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . " WHERE Path='" . $this->DB_WE->escape($this->OldPath) . "'", 'ID', $this->DB_WE);
@@ -100,9 +98,9 @@ class we_object extends we_document{
 
 		$this->OldPath = $this->Path; // reset oldPath
 		if(!(isset($this->isInApp) && $this->isInApp)){// allows to save Classes from within WE-Apps
-			$we_JavaScript = "top.we_cmd('reload_editpage');_EditorFrame.setEditorDocumentId(" . $this->ID . ");" .
-				$this->getUpdateTreeScript() .
-				we_main_headermenu::getMenuReloadCode('top.');
+			$GLOBALS['we_JavaScript'] = "top.we_cmd('reload_editpage');_EditorFrame.setEditorDocumentId(" . $this->ID . ");" .
+					$this->getUpdateTreeScript() .
+					we_main_headermenu::getMenuReloadCode('top.');
 		}
 	}
 
@@ -301,7 +299,7 @@ class we_object extends we_document{
 
 							$nam = $this->getElement($info['name'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($info['name'], 'dat');
 							$q [] = ' CHANGE `' . $info['name'] . '` `' . $nam . '` ' .
-								$this->switchtypes($info['name']);
+									$this->switchtypes($info['name']);
 							//change from object is indexed to unindexed
 							if((strpos($info['name'], self::QUERY_PREFIX) === 0) && (strpos($nam, self::QUERY_PREFIX) !== 0) && (strpos($info['flags'], 'multiple_key') !== false)){
 								$q[] = ' DROP KEY `' . $info['name'] . '` ';
@@ -311,8 +309,8 @@ class we_object extends we_document{
 
 							$arrt[$nam] = array(
 								'default' => (strpos($info['name'], 'date_') === 0 ?
-									($this->elements[$info['name'] . 'defaultThumb']['dat'] ? '' : $this->elements[$info['name'] . 'default']['dat']) :
-									$this->elements[$info['name'] . 'default']['dat']),
+										($this->elements[$info['name'] . 'defaultThumb']['dat'] ? '' : $this->elements[$info['name'] . 'default']['dat']) :
+										$this->elements[$info['name'] . 'default']['dat']),
 								'defaultThumb' => $this->elements[$info['name'] . 'defaultThumb']['dat'],
 								'autobr' => $this->elements[$info['name'] . 'autobr']['dat'],
 								'defaultdir' => $this->elements[$info['name'] . 'defaultdir']['dat'],
@@ -564,12 +562,11 @@ class we_object extends we_document{
 	/* must be called from the editor-script. Returns a filename which has to be included from the global-Script */
 
 	function editor(){
-		global $we_responseText, $we_JavaScript, $we_responseTextType;
 		if($_REQUEST['we_cmd'][0] == "save_document"){
-			$we_JavaScript = "";
+			$GLOBALS['we_JavaScript'] = '';
 			$this->save();
-			$we_responseText = sprintf(g_l('weClass', "[response_save_ok]"), $this->Path);
-			$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
+			$GLOBALS['we_responseText'] = sprintf(g_l('weClass', "[response_save_ok]"), $this->Path);
+			$GLOBALS['we_responseTextType'] = we_message_reporting::WE_MESSAGE_NOTICE;
 			return 'we_templates/we_editor_save.inc.php';
 		}
 		switch($this->EditPageNr){
@@ -837,7 +834,7 @@ class we_object extends we_document{
 			if($type == we_objectFile::TYPE_SHOPVAT){
 				$foo = WE_SHOP_VAT_FIELD_NAME;
 				$content .= we_html_tools::hidden("we_" . $this->Name . "_input[$name]", $foo) .
-					$this->htmlTextInput("tmp" . WE_SHOP_VAT_FIELD_NAME, 40, $foo, 52, ' readonly="readonly" disabled="disabled"', "text", 388);
+						$this->htmlTextInput("tmp" . WE_SHOP_VAT_FIELD_NAME, 40, $foo, 52, ' readonly="readonly" disabled="disabled"', "text", 388);
 			} else {
 				$foo = $foo ? $foo : g_l('modules_object', '[new_field]');
 				$content .= $this->htmlTextInput("we_" . $this->Name . "_input[$name]", 40, $foo, 52, ' oldValue="' . $foo . '" onBlur="we_checkObjFieldname(this);" onChange="_EditorFrame.setEditorIsHot(true);"', "text", 388);
@@ -846,11 +843,11 @@ class we_object extends we_document{
 
 
 		$content .= '</td></tr>' .
-			'<tr><td class="weMultiIconBoxHeadlineThin" valign="top">' . g_l('global', "[description]") . '</td><td>' .
-			$this->htmlTextArea("we_" . $this->Name . "_input[" . $name . "editdescription]", 3, 40, $this->getElement($name . "editdescription"), array('onchange' => '_EditorFrame.setEditorIsHot(true)', 'style' => 'width: 388px;')) .
-			'</td></tr>' .
-			//type
-			'<tr><td  width="100" class="weMultiIconBoxHeadlineThin"  valign="top">' . g_l('modules_object', '[type]') . '</td>
+				'<tr><td class="weMultiIconBoxHeadlineThin" valign="top">' . g_l('global', "[description]") . '</td><td>' .
+				$this->htmlTextArea("we_" . $this->Name . "_input[" . $name . "editdescription]", 3, 40, $this->getElement($name . "editdescription"), array('onchange' => '_EditorFrame.setEditorIsHot(true)', 'style' => 'width: 388px;')) .
+				'</td></tr>' .
+				//type
+				'<tr><td  width="100" class="weMultiIconBoxHeadlineThin"  valign="top">' . g_l('modules_object', '[type]') . '</td>
 		<td width="170" class="defaultfont"  valign="top">';
 
 		$val = array(
@@ -876,7 +873,7 @@ class we_object extends we_document{
 			$val[we_objectFile::TYPE_SHOPVAT] = g_l('modules_object', '[shopVat_field]');
 		}
 		$content .= $this->htmlSelect("we_" . $this->Name . "_input[" . $name . self::ELEMENT_TYPE . ']', $val, 1, $type, "", array('onchange' => 'if(this.form.elements[\'' . 'we_' . $this->Name . '_input[' . $name . 'default]' . '\']){this.form.elements[\'' . 'we_' . $this->Name . '_input[' . $name . 'default]' . '\'].value=\'\' };_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_entry_at_class\',\'' . $GLOBALS['we_transaction'] . '\',\'' . $identifier . '\');'), "value", 388) .
-			'</td></tr>';
+				'</td></tr>';
 
 		switch($type){
 			case we_objectFile::TYPE_SHOPVAT:
@@ -900,16 +897,16 @@ class we_object extends we_document{
 				// Length
 				$maxLengthVal = $type == we_objectFile::TYPE_INT ? 10 : 1023;
 				$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin"  valign="top">' . g_l('modules_object', '[length]') . '</td>' .
-					'<td width="170" class="defaultfont">' .
-					$this->htmlTextInput("we_" . $this->Name . "_input[" . $name . self::ELEMENT_LENGHT . ']', 10, ($this->getElement($name . "length", "dat") > 0 && ($this->getElement($name . "length", "dat") < ($maxLengthVal + 1)) ? $this->getElement($name . "length", "dat") : $maxLengthVal), ($type == we_objectFile::TYPE_INT ? 2 : 4), 'onChange="_EditorFrame.setEditorIsHot(true);" weType="weObject_' . $type . '_length"', "text", 388) .
-					'</td></tr>';
+						'<td width="170" class="defaultfont">' .
+						$this->htmlTextInput("we_" . $this->Name . "_input[" . $name . self::ELEMENT_LENGHT . ']', 10, ($this->getElement($name . "length", "dat") > 0 && ($this->getElement($name . "length", "dat") < ($maxLengthVal + 1)) ? $this->getElement($name . "length", "dat") : $maxLengthVal), ($type == we_objectFile::TYPE_INT ? 2 : 4), 'onChange="_EditorFrame.setEditorIsHot(true);" weType="weObject_' . $type . '_length"', "text", 388) .
+						'</td></tr>';
 		}
 
 		switch($type){
 			case we_objectFile::TYPE_MULTIOBJECT:
 				$content .= '<tr>' .
-					'<td  width="100" class="weMultiIconBoxHeadlineThin" valign="top" >' . g_l('contentTypes', '[object]') . '</td>' .
-					'<td  width="170" class="defaultfont" valign="top">';
+						'<td  width="100" class="weMultiIconBoxHeadlineThin" valign="top" >' . g_l('contentTypes', '[object]') . '</td>' .
+						'<td  width="170" class="defaultfont" valign="top">';
 				$vals = array();
 				$all = $this->DB_WE->table_names(OBJECT_X_TABLE . "%");
 				$count = 0;
@@ -930,7 +927,7 @@ class we_object extends we_document{
 					$this->setElement($name . "class", array_shift(array_flip($vals)));
 				}
 				$content .= $this->htmlSelect("we_" . $this->Name . '_' . we_objectFile::TYPE_MULTIOBJECT . '[' . $name . "class]", $vals, 1, $this->getElement($name . 'class', "dat"), "", array('onchange' => 'if(this.form.elements[\'' . 'we_' . $this->Name . '_input[' . $name . 'default]' . '\']){this.form.elements[\'' . 'we_' . $this->Name . '_input[' . $name . 'default]' . '\'].value=\'\' };_EditorFrame.setEditorIsHot(true);we_cmd(\'change_multiobject_at_class\',\'' . $GLOBALS['we_transaction'] . '\',\'' . $identifier . '\',\'' . $name . '\')'), "value", 388) .
-					'</td></tr>
+						'</td></tr>
 						<tr valign="top">
 						<td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[max_objects]') . '</td>
 						<td class="defaultfont"><nobr>' . $this->htmlTextInput("we_" . $this->Name . '_' . we_objectFile::TYPE_MULTIOBJECT . '[' . $name . "max]", 5, $this->getElement($name . "max", "dat"), 3, 'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_entry_at_class\',\'' . $GLOBALS['we_transaction'] . '\',\'' . ($identifier) . '\');"', "text", 50) . ' (' . g_l('modules_object', '[no_maximum]') . ')</nobr></td>
@@ -967,15 +964,15 @@ class we_object extends we_document{
 			<option' . (($dirVal == "false") ? " selected" : "") . ' value="false">true
 			</select>';
 				$content .= '<tr valign="top"><td  width="100" class="defaultfont"  valign="top"></td>' .
-					'<td class="defaultfont">type' . we_html_tools::getPixel(8, 2) .
-					$typeSelect . we_html_tools::getPixel(30, 2) . "file" . we_html_tools::getPixel(8, 2) .
-					$fileSelect . we_html_tools::getPixel(30, 2) . "directory" . we_html_tools::getPixel(8, 2) .
-					$dirSelect .
-					'</td></tr>
+						'<td class="defaultfont">type' . we_html_tools::getPixel(8, 2) .
+						$typeSelect . we_html_tools::getPixel(30, 2) . "file" . we_html_tools::getPixel(8, 2) .
+						$fileSelect . we_html_tools::getPixel(30, 2) . "directory" . we_html_tools::getPixel(8, 2) .
+						$dirSelect .
+						'</td></tr>
 					<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[default]') . '</td>
 						<td width="170" class="defaultfont">' .
-					$this->htmlHref($name) .
-					'</td></tr>';
+						$this->htmlHref($name) .
+						'</td></tr>';
 				break;
 
 
@@ -987,93 +984,93 @@ class we_object extends we_document{
 			 */
 			case we_objectFile::TYPE_CHECKBOX:
 				$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[default]') . '</td>' .
-					'<td width="170" class="defaultfont">' .
-					we_html_forms::checkbox(1, $this->getElement($name . "default", "dat"), "we_" . $this->Name . "_input[" . $name . "default1]", g_l('modules_object', '[checked]'), true, "defaultfont", "if(this.checked){document.we_form.elements['" . "we_" . $this->Name . "_input[" . $name . "default]" . "'].value=1;}else{ document.we_form.elements['" . "we_" . $this->Name . "_input[" . $name . "default]" . "'].value=0;}") .
-					'<input type=hidden name="' . "we_" . $this->Name . "_input[" . $name . "default]" . '" value="' . $this->getElement($name . "default", "dat") . '" />' .
-					'</td></tr>';
+						'<td width="170" class="defaultfont">' .
+						we_html_forms::checkbox(1, $this->getElement($name . "default", "dat"), "we_" . $this->Name . "_input[" . $name . "default1]", g_l('modules_object', '[checked]'), true, "defaultfont", "if(this.checked){document.we_form.elements['" . "we_" . $this->Name . "_input[" . $name . "default]" . "'].value=1;}else{ document.we_form.elements['" . "we_" . $this->Name . "_input[" . $name . "default]" . "'].value=0;}") .
+						'<input type=hidden name="' . "we_" . $this->Name . "_input[" . $name . "default]" . '" value="' . $this->getElement($name . "default", "dat") . '" />' .
+						'</td></tr>';
 				break;
 			case we_objectFile::TYPE_IMG:
 				$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[rootdir]') . '</td>' .
-					'<td width="170" class="defaultfont"  valign="top">' .
-					$this->formDirChooser(267, 0, FILE_TABLE, "ParentPath", "input[" . $name . "rootdir]", "", $this->getElement($name . "rootdir", "dat"), $identifier) .
-					'</td></tr>' .
-					'<tr><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[defaultdir]') . '</td>' .
-					'<td width="170" class="defaultfont"  valign="top">' .
-					$this->formDirChooser(267, 0, FILE_TABLE, "StartPath", "input[" . $name . "defaultdir]", "", $this->getElement($name . "defaultdir", "dat"), $identifier) .
-					'</td></tr>' .
-					'<tr><td  width="100" class="weMultiIconBoxHeadlineThin" valign="top">' . g_l('modules_object', '[default]') . '</td>' .
-					'<td width="170" class="defaultfont"  valign="top">' .
-					$this->getImageHTML($name . "default", $this->getElement($name . "default", "dat"), $identifier) .
-					'</td></tr>';
+						'<td width="170" class="defaultfont"  valign="top">' .
+						$this->formDirChooser(267, 0, FILE_TABLE, "ParentPath", "input[" . $name . "rootdir]", "", $this->getElement($name . "rootdir", "dat"), $identifier) .
+						'</td></tr>' .
+						'<tr><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[defaultdir]') . '</td>' .
+						'<td width="170" class="defaultfont"  valign="top">' .
+						$this->formDirChooser(267, 0, FILE_TABLE, "StartPath", "input[" . $name . "defaultdir]", "", $this->getElement($name . "defaultdir", "dat"), $identifier) .
+						'</td></tr>' .
+						'<tr><td  width="100" class="weMultiIconBoxHeadlineThin" valign="top">' . g_l('modules_object', '[default]') . '</td>' .
+						'<td width="170" class="defaultfont"  valign="top">' .
+						$this->getImageHTML($name . "default", $this->getElement($name . "default", "dat"), $identifier) .
+						'</td></tr>';
 				break;
 			case we_objectFile::TYPE_FLASHMOVIE:
 				$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[rootdir]') . '</td>' .
-					'<td width="170" class="defaultfont"  valign="top">' .
-					$this->formDirChooser(267, 0, FILE_TABLE, "ParentPath", "input[" . $name . "rootdir]", "", $this->getElement($name . "rootdir", "dat"), $identifier) .
-					'</td></tr>' .
-					'<tr><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[defaultdir]') . '</td>' .
-					'<td width="170" class="defaultfont"  valign="top">' .
-					$this->formDirChooser(267, 0, FILE_TABLE, "StartPath", "input[" . $name . "defaultdir]", "", $this->getElement($name . "defaultdir", "dat"), $identifier) .
-					'</td></tr>' .
-					'<tr><td  width="100" class="weMultiIconBoxHeadlineThin" valign="top">' . g_l('modules_object', '[default]') . '</td>' .
-					'<td width="170" class="defaultfont"  valign="top">' .
-					$this->getFlashmovieHTML($name . "default", $this->getElement($name . "default", "dat"), $identifier) .
-					'</td></tr>';
+						'<td width="170" class="defaultfont"  valign="top">' .
+						$this->formDirChooser(267, 0, FILE_TABLE, "ParentPath", "input[" . $name . "rootdir]", "", $this->getElement($name . "rootdir", "dat"), $identifier) .
+						'</td></tr>' .
+						'<tr><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[defaultdir]') . '</td>' .
+						'<td width="170" class="defaultfont"  valign="top">' .
+						$this->formDirChooser(267, 0, FILE_TABLE, "StartPath", "input[" . $name . "defaultdir]", "", $this->getElement($name . "defaultdir", "dat"), $identifier) .
+						'</td></tr>' .
+						'<tr><td  width="100" class="weMultiIconBoxHeadlineThin" valign="top">' . g_l('modules_object', '[default]') . '</td>' .
+						'<td width="170" class="defaultfont"  valign="top">' .
+						$this->getFlashmovieHTML($name . "default", $this->getElement($name . "default", "dat"), $identifier) .
+						'</td></tr>';
 				break;
 			case we_objectFile::TYPE_QUICKTIME:
 				$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[rootdir]') . '</td>' .
-					'<td width="170" class="defaultfont"  valign="top">' .
-					$this->formDirChooser(267, 0, FILE_TABLE, "ParentPath", "input[" . $name . "rootdir]", "", $this->getElement($name . "rootdir", "dat"), $identifier) .
-					'</td></tr>' .
-					'<tr><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[defaultdir]') . '</td>' .
-					'<td width="170" class="defaultfont"  valign="top">' .
-					$this->formDirChooser(267, 0, FILE_TABLE, "StartPath", "input[" . $name . "defaultdir]", "", $this->getElement($name . "defaultdir", "dat"), $identifier) .
-					'</td></tr>' .
-					'<tr><td  width="100" class="weMultiIconBoxHeadlineThin" valign="top">' . g_l('modules_object', '[default]') . '</td>' .
-					'<td width="170" class="defaultfont"  valign="top">' .
-					$this->getQuicktimeHTML($name . "default", $this->getElement($name . "default", "dat"), $identifier) .
-					'</td></tr>';
+						'<td width="170" class="defaultfont"  valign="top">' .
+						$this->formDirChooser(267, 0, FILE_TABLE, "ParentPath", "input[" . $name . "rootdir]", "", $this->getElement($name . "rootdir", "dat"), $identifier) .
+						'</td></tr>' .
+						'<tr><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[defaultdir]') . '</td>' .
+						'<td width="170" class="defaultfont"  valign="top">' .
+						$this->formDirChooser(267, 0, FILE_TABLE, "StartPath", "input[" . $name . "defaultdir]", "", $this->getElement($name . "defaultdir", "dat"), $identifier) .
+						'</td></tr>' .
+						'<tr><td  width="100" class="weMultiIconBoxHeadlineThin" valign="top">' . g_l('modules_object', '[default]') . '</td>' .
+						'<td width="170" class="defaultfont"  valign="top">' .
+						$this->getQuicktimeHTML($name . "default", $this->getElement($name . "default", "dat"), $identifier) .
+						'</td></tr>';
 				break;
 			case we_objectFile::TYPE_BINARY:
 				$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[rootdir]') . '</td>' .
-					'<td width="170" class="defaultfont"  valign="top">' .
-					$this->formDirChooser(267, 0, FILE_TABLE, "ParentPath", "input[" . $name . "rootdir]", "", $this->getElement($name . "rootdir", "dat"), $identifier) .
-					'</td></tr>' .
-					'<tr><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[defaultdir]') . '</td>' .
-					'<td width="170" class="defaultfont"  valign="top">' .
-					$this->formDirChooser(267, 0, FILE_TABLE, "StartPath", "input[" . $name . "defaultdir]", "", $this->getElement($name . "defaultdir", "dat"), $identifier) .
-					'</td></tr>' .
-					'<tr><td  width="100" valign="top" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[default]') . '</td>' .
-					'<td width="170" class= "defaultfont"  valign="top">' .
-					$this->getBinaryHTML($name . "default", $this->getElement($name . "default", "dat"), $identifier) .
-					'</td></tr>';
+						'<td width="170" class="defaultfont"  valign="top">' .
+						$this->formDirChooser(267, 0, FILE_TABLE, "ParentPath", "input[" . $name . "rootdir]", "", $this->getElement($name . "rootdir", "dat"), $identifier) .
+						'</td></tr>' .
+						'<tr><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[defaultdir]') . '</td>' .
+						'<td width="170" class="defaultfont"  valign="top">' .
+						$this->formDirChooser(267, 0, FILE_TABLE, "StartPath", "input[" . $name . "defaultdir]", "", $this->getElement($name . "defaultdir", "dat"), $identifier) .
+						'</td></tr>' .
+						'<tr><td  width="100" valign="top" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[default]') . '</td>' .
+						'<td width="170" class= "defaultfont"  valign="top">' .
+						$this->getBinaryHTML($name . "default", $this->getElement($name . "default", "dat"), $identifier) .
+						'</td></tr>';
 				break;
 			case we_objectFile::TYPE_DATE:
 
 				$d = abs($this->getElement($name . "default", "dat"));
 				$dd = abs($this->getElement($name . "defaultThumb", "dat"));
 				$content .= '<tr valign="top"><td  width="100" class="defaultfont">Default</td>' .
-					'<td width="170" class="defaultfont">' .
-					we_html_forms::checkboxWithHidden(($dd == '1' ? true : false), "we_" . $this->Name . "_xdate[" . $name . "defaultThumb]", 'Creation Date', false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);') .
-					we_html_tools::getDateInput2('we_' . $this->Name . '_date[' . $name . 'default]', ($d ? $d : time()), true) .
-					'</td></tr>';
+						'<td width="170" class="defaultfont">' .
+						we_html_forms::checkboxWithHidden(($dd == '1' ? true : false), "we_" . $this->Name . "_xdate[" . $name . "defaultThumb]", 'Creation Date', false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);') .
+						we_html_tools::getDateInput2('we_' . $this->Name . '_date[' . $name . 'default]', ($d ? $d : time()), true) .
+						'</td></tr>';
 
 				break;
 			case we_objectFile::TYPE_TEXT:
 				$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin"  valign="top">' . g_l('modules_object', '[default]') . '</td>' .
-					'<td width="170" class="defaultfont"  valign="top">' .
-					$this->dhtmledit($name, $identifier) .
-					'</td></tr>';
+						'<td width="170" class="defaultfont"  valign="top">' .
+						$this->dhtmledit($name, $identifier) .
+						'</td></tr>';
 				break;
 			case we_objectFile::TYPE_OBJECT:
 				$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin"  valign="top">' . g_l('modules_object', '[default]') . '</td>' .
-					'<td width="170" class="defaultfont"  valign="top">' .
-					$this->getObjectFieldHTML($name, isset($attribs) ? $attribs : "") .
-					'</td></tr>';
+						'<td width="170" class="defaultfont"  valign="top">' .
+						$this->getObjectFieldHTML($name, isset($attribs) ? $attribs : "") .
+						'</td></tr>';
 				break;
 			case we_objectFile::TYPE_META:
 				$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[default]') . '</td>' .
-					'<td width="170" class="defaultfont"><table border="0"><tr><td class="defaultfont">Key</td><td class="defaultfont">Value</td><td></td></tr>';
+						'<td width="170" class="defaultfont"><table border="0"><tr><td class="defaultfont">Key</td><td class="defaultfont">Value</td><td></td></tr>';
 				if(!isset($this->elements[$name . "count"]["dat"])){
 					$this->elements[$name . "count"]["dat"] = 0;
 				}
@@ -1082,7 +1079,7 @@ class we_object extends we_document{
 
 				for($f = 0; $f <= $this->elements[$name . "count"]["dat"]; $f++){
 					$content .= '<tr><td>' . $this->htmlTextInput("we_" . $this->Name . "_input[" . $name . "defaultkey" . $f . "]", 40, $this->getElement($name . "defaultkey" . $f, "dat"), 255, 'onChange="_EditorFrame.setEditorIsHot(true);"', "text", 105) .
-						'</td><td>' . $this->htmlTextInput("we_" . $this->Name . "_input[" . $name . "defaultvalue" . $f . "]", 40, $this->getElement($name . "defaultvalue" . $f, "dat"), 255, 'onChange="_EditorFrame.setEditorIsHot(true);"', "text", 105);
+							'</td><td>' . $this->htmlTextInput("we_" . $this->Name . "_input[" . $name . "defaultvalue" . $f . "]", 40, $this->getElement($name . "defaultvalue" . $f, "dat"), 255, 'onChange="_EditorFrame.setEditorIsHot(true);"', "text", 105);
 
 					$upbut = we_html_button::create_button("image:btn_direction_up", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('up_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($identifier) . "','" . $name . "','" . ($f) . "')");
 					$upbutDis = we_html_button::create_button("image:btn_direction_up", "#", true, 0, 0, "", "", true);
@@ -1094,35 +1091,35 @@ class we_object extends we_document{
 					$trashbut = we_html_button::create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('delete_meta_class','" . $GLOBALS['we_transaction'] . "','" . ($identifier) . "','" . $name . "','" . ($f) . "')");
 
 					$content .= "</td><td>" .
-						we_html_button::create_button_table(array($plusAmount,
-							$plusbut,
-							(($f > 0) ? $upbut : $upbutDis ),
-							(($f < ($this->elements[$name . "count"]["dat"])) ? $downbut : $downbutDis),
-							$trashbut
-							), 5
-						) .
-						'</td></tr>';
+							we_html_button::create_button_table(array($plusAmount,
+								$plusbut,
+								(($f > 0) ? $upbut : $upbutDis ),
+								(($f < ($this->elements[$name . "count"]["dat"])) ? $downbut : $downbutDis),
+								$trashbut
+									), 5
+							) .
+							'</td></tr>';
 					//$content.="test<br>test<input type='text'>".$upbut."test<br>";
 				}
 				$content .= '</table></td></tr>';
 				break;
 			case we_objectFile::TYPE_COUNTRY:
 				$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[default]') . '</td>' .
-					'<td width="170" class="defaultfont">' .
-					$this->htmlTextInput("we_" . $this->Name . "_country[" . $name . "default]", 40, $this->getElement($name . "default", "dat"), 10, 'onChange="_EditorFrame.setEditorIsHot(true);" weType="' . $type . '"', "text", 388) .
-					'</td></tr>';
+						'<td width="170" class="defaultfont">' .
+						$this->htmlTextInput("we_" . $this->Name . "_country[" . $name . "default]", 40, $this->getElement($name . "default", "dat"), 10, 'onChange="_EditorFrame.setEditorIsHot(true);" weType="' . $type . '"', "text", 388) .
+						'</td></tr>';
 				break;
 			case we_objectFile::TYPE_LANGUAGE:
 				$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[default]') . '</td>' .
-					'<td width="170" class="defaultfont">' .
-					$this->htmlTextInput("we_" . $this->Name . "_language[" . $name . "default]", 40, $this->getElement($name . "default", "dat"), 15, 'onChange="_EditorFrame.setEditorIsHot(true);" weType="' . $type . '"', "text", 388) .
-					'</td></tr>';
+						'<td width="170" class="defaultfont">' .
+						$this->htmlTextInput("we_" . $this->Name . "_language[" . $name . "default]", 40, $this->getElement($name . "default", "dat"), 15, 'onChange="_EditorFrame.setEditorIsHot(true);" weType="' . $type . '"', "text", 388) .
+						'</td></tr>';
 				break;
 			case we_objectFile::TYPE_LINK:
 				$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[default]') . '</td>' .
-					'<td width="170" class="defaultfont">' .
-					$this->htmlLinkInput($name, $identifier) .
-					'</td></tr>';
+						'<td width="170" class="defaultfont">' .
+						$this->htmlLinkInput($name, $identifier) .
+						'</td></tr>';
 				break;
 			case we_objectFile::TYPE_SHOPVAT:
 				$values = array();
@@ -1137,41 +1134,41 @@ class we_object extends we_document{
 					}
 				}
 				$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[default]') . '</td>' .
-					'<td width="170" class="defaultfont">' .
-					we_class::htmlSelect("we_" . $this->Name . "_shopVat[" . $name . "default]", $values, 1, $this->getElement($name . "default", "dat")) .
-					'</td></tr>';
+						'<td width="170" class="defaultfont">' .
+						we_class::htmlSelect("we_" . $this->Name . "_shopVat[" . $name . "default]", $values, 1, $this->getElement($name . "default", "dat")) .
+						'</td></tr>';
 				break;
 			default: // default for input, int and float
 
 				$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[default]') . '</td>' .
-					'<td width="170" class="defaultfont">' .
-					$this->htmlTextInput("we_" . $this->Name . "_input[" . $name . "default]", 40, $this->getElement($name . "default", "dat"), ($type == we_objectFile::TYPE_INT ? 10 : ($type == we_objectFile::TYPE_FLOAT ? 19 : 255)), 'onChange="_EditorFrame.setEditorIsHot(true);" weType="' . $type . '"', "text", 388) .
-					'</td></tr>';
+						'<td width="170" class="defaultfont">' .
+						$this->htmlTextInput("we_" . $this->Name . "_input[" . $name . "default]", 40, $this->getElement($name . "default", "dat"), ($type == we_objectFile::TYPE_INT ? 10 : ($type == we_objectFile::TYPE_FLOAT ? 19 : 255)), 'onChange="_EditorFrame.setEditorIsHot(true);" weType="' . $type . '"', "text", 388) .
+						'</td></tr>';
 				break;
 		}
 
 
 		if($type == we_objectFile::TYPE_TEXT || $type == we_objectFile::TYPE_INPUT || $type == we_objectFile::TYPE_META || $type == we_objectFile::TYPE_LINK || $type == we_objectFile::TYPE_HREF){
 			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin"></td>' .
-				'<td width="170" class="defaultfont">' .
-				// TITEL
-				we_html_forms::radiobutton($name, (($this->getElement("title", "dat") == $name) ? 1 : 0), "we_" . $this->Name . "_input[title]", g_l('global', "[title]"), true, "defaultfont", "if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}") .
-				// Beschreibung
-				we_html_forms::radiobutton($name, (($this->getElement("desc", "dat") == $name) ? 1 : 0), "we_" . $this->Name . "_input[desc]", g_l('global', "[description]"), true, "defaultfont", "if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}") .
-				// Keywords
-				we_html_forms::radiobutton($name, (($this->getElement("keywords", "dat") == $name) ? 1 : 0), "we_" . $this->Name . "_input[keywords]", g_l('weClass', "[Keywords]"), true, "defaultfont", "if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}") .
-				'</td></tr>';
+					'<td width="170" class="defaultfont">' .
+					// TITEL
+					we_html_forms::radiobutton($name, (($this->getElement("title", "dat") == $name) ? 1 : 0), "we_" . $this->Name . "_input[title]", g_l('global', "[title]"), true, "defaultfont", "if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}") .
+					// Beschreibung
+					we_html_forms::radiobutton($name, (($this->getElement("desc", "dat") == $name) ? 1 : 0), "we_" . $this->Name . "_input[desc]", g_l('global', "[description]"), true, "defaultfont", "if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}") .
+					// Keywords
+					we_html_forms::radiobutton($name, (($this->getElement("keywords", "dat") == $name) ? 1 : 0), "we_" . $this->Name . "_input[keywords]", g_l('weClass', "[Keywords]"), true, "defaultfont", "if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}") .
+					'</td></tr>';
 		}
 
 		if($type == we_objectFile::TYPE_TEXT || $type == we_objectFile::TYPE_INPUT || $type == we_objectFile::TYPE_DATE){
 			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin"></td>' .
-				'<td width="170" class="defaultfont">';
+					'<td width="170" class="defaultfont">';
 			if($type == we_objectFile::TYPE_DATE){
 				$content .= we_html_forms::radiobutton($name, (($this->getElement("urlfield0", "dat") == $name) ? 1 : 0), "we_" . $this->Name . "_input[urlfield0]", g_l('weClass', "[urlfield0]"), true, "defaultfont", "if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}");
 			} else {
 				$content .= we_html_forms::radiobutton($name, (($this->getElement("urlfield1", "dat") == $name) ? 1 : 0), "we_" . $this->Name . "_input[urlfield1]", g_l('weClass', "[urlfield1]"), true, "defaultfont", "if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}") .
-					we_html_forms::radiobutton($name, (($this->getElement("urlfield2", "dat") == $name) ? 1 : 0), "we_" . $this->Name . "_input[urlfield2]", g_l('weClass', "[urlfield2]"), true, "defaultfont", "if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}") .
-					we_html_forms::radiobutton($name, (($this->getElement("urlfield3", "dat") == $name) ? 1 : 0), "we_" . $this->Name . "_input[urlfield3]", g_l('weClass', "[urlfield3]"), true, "defaultfont", "if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}");
+						we_html_forms::radiobutton($name, (($this->getElement("urlfield2", "dat") == $name) ? 1 : 0), "we_" . $this->Name . "_input[urlfield2]", g_l('weClass', "[urlfield2]"), true, "defaultfont", "if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}") .
+						we_html_forms::radiobutton($name, (($this->getElement("urlfield3", "dat") == $name) ? 1 : 0), "we_" . $this->Name . "_input[urlfield3]", g_l('weClass', "[urlfield3]"), true, "defaultfont", "if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}");
 			}
 			$content .= '</td></tr>';
 		}
@@ -1180,8 +1177,8 @@ class we_object extends we_document{
 		if($type != we_objectFile::TYPE_CHECKBOX){
 			//Pflichtfeld
 			$content .= '<tr valign="top"><td  width="100" class="defaultfont"></td>' .
-				'<td width="170" class="defaultfont">' .
-				we_html_forms::checkbox(1, $this->getElement($name . "required", "dat"), "we_" . $this->Name . "_input[" . $name . "required1]", g_l('global', "[required_field]"), true, "defaultfont", "if(this.checked){document.we_form.elements['" . "we_" . $this->Name . "_input[" . $name . "required]" . "'].value=1;}else{ document.we_form.elements['" . "we_" . $this->Name . "_input[" . $name . "required]" . "'].value=0;}");
+					'<td width="170" class="defaultfont">' .
+					we_html_forms::checkbox(1, $this->getElement($name . "required", "dat"), "we_" . $this->Name . "_input[" . $name . "required1]", g_l('global', "[required_field]"), true, "defaultfont", "if(this.checked){document.we_form.elements['" . "we_" . $this->Name . "_input[" . $name . "required]" . "'].value=1;}else{ document.we_form.elements['" . "we_" . $this->Name . "_input[" . $name . "required]" . "'].value=0;}");
 			if(defined('SHOP_TABLE')){
 				if($this->canHaveVariants() && $this->isVariantField($name)){
 					$variant = $this->getElement($name . "variant", "dat");
@@ -1189,18 +1186,18 @@ class we_object extends we_document{
 				}
 			}
 			$content .= '<input type=hidden name="' . "we_" . $this->Name . "_input[" . $name . "required]" . '" value="' . $this->getElement($name . "required", "dat") . '" />' .
-				'</td></tr>';
+					'</td></tr>';
 			// description for editmode.
 		} else if(defined('SHOP_TABLE')){
 			//Pflichtfeld
 			$content .= '<tr valign="top"><td  width="100" class="defaultfont"></td>' .
-				'<td width="170" class="defaultfont">';
+					'<td width="170" class="defaultfont">';
 			if($this->canHaveVariants() && $this->isVariantField($name)){
 				$variant = $this->getElement($name . "variant", "dat");
 				$content .= we_html_forms::checkboxWithHidden(($variant == 1 ? true : false), "we_" . $this->Name . "_variant[" . $name . "variant]", g_l('global', "[variant_field]"), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);');
 			}
 			$content .= '<input type=hidden name="' . "we_" . $this->Name . "_input[" . $name . "required]" . '" value="0" />' .
-				'</td></tr>';
+					'</td></tr>';
 			// description for editmode.
 		} else {
 			$content .= '<input type=hidden name="' . "we_" . $this->Name . "_input[" . $name . "required]" . '" value="0" />';
@@ -1209,16 +1206,16 @@ class we_object extends we_document{
 
 		$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('weClass', "[fieldusers]") . '</td>
 			<td width="170" class="defaultfont" >' .
-			$this->formUsers1($name, $identifier) .
-			'</td></tr>';
+				$this->formUsers1($name, $identifier) .
+				'</td></tr>';
 
 		return $content;
 	}
 
 	function htmlHref($n){
 		$type = isset($this->elements[$n . "hreftype"]["dat"]) ?
-			$this->elements[$n . "hreftype"]["dat"] :
-			"";
+				$this->elements[$n . "hreftype"]["dat"] :
+				"";
 
 		$n .= 'default';
 		$hrefArr = $this->getElement($n) ? unserialize($this->getElement($n)) : array();
@@ -1254,7 +1251,7 @@ class we_object extends we_document{
 				break;
 			default:
 				$out = we_objectFile::hrefRow($intID_elem_Name, $intID, $intPath_elem_Name, $intPath, $attr, $int_elem_Name, true, $int) .
-					we_objectFile::hrefRow('', '', $ext_elem_Name, $extPath, $attr, $int_elem_Name, true, $int);
+						we_objectFile::hrefRow('', '', $ext_elem_Name, $extPath, $attr, $int_elem_Name, true, $int);
 		}
 		return '<table border="0" cellpadding="0" cellspacing="0">' . $out . '</table>';
 	}
@@ -1360,23 +1357,23 @@ class we_object extends we_document{
 		$trashbut = we_html_button::create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('delete_meta_class','" . $GLOBALS['we_transaction'] . "','" . ($i) . "','" . $name . "','" . ($f) . "')", true, 27, 22);
 		$trashbutDis = we_html_button::create_button("image:btn_function_trash", "#", true, 27, 22, "", "", true);
 		return '<tr>' .
-			'<td>' . $this->htmlTextInput($textname, 30, $path, 255, 'onChange="_EditorFrame.setEditorIsHot(true);" readonly ', "text", 146) . '</td>' .
-			'<td>' . we_html_button::create_button_table(
-				array(
-				$selectObject,
-				$this->htmlHidden($idname, $myid),
-				(($this->elements[$name . "count"]["dat"] + 1 < $this->getElement($name . "max") || $this->getElement($name . "max") == "") ? $plusbut : $plusbutDis),
-				(($f > 0) ? $upbut : $upbutDis ),
-				(($f < ($this->elements[$name . "count"]["dat"])) ? $downbut : $downbutDis),
-				($this->elements[$name . "count"]["dat"] >= 1 ? $trashbut : $trashbutDis)
-				), 5
-			) .
-			'</td></tr>';
+				'<td>' . $this->htmlTextInput($textname, 30, $path, 255, 'onChange="_EditorFrame.setEditorIsHot(true);" readonly ', "text", 146) . '</td>' .
+				'<td>' . we_html_button::create_button_table(
+						array(
+					$selectObject,
+					$this->htmlHidden($idname, $myid),
+					(($this->elements[$name . "count"]["dat"] + 1 < $this->getElement($name . "max") || $this->getElement($name . "max") == "") ? $plusbut : $plusbutDis),
+					(($f > 0) ? $upbut : $upbutDis ),
+					(($f < ($this->elements[$name . "count"]["dat"])) ? $downbut : $downbutDis),
+					($this->elements[$name . "count"]["dat"] >= 1 ? $trashbut : $trashbutDis)
+						), 5
+				) .
+				'</td></tr>';
 	}
 
 	function dhtmledit($name, $i = 0){
 		return we_html_button::create_button("attributes", "javascript:we_cmd('editObjectTextArea','" . $i . "','" . $name . "','" . $GLOBALS["we_transaction"] . "');") .
-			$this->getWysiwygArea($name);
+				$this->getWysiwygArea($name);
 	}
 
 	function getWysiwygArea($name){
@@ -1429,7 +1426,7 @@ class we_object extends we_document{
 	function formUsers1($name, $nr = 0){
 		$users = $this->getElement($name . "users", "dat") ? explode(",", $this->getElement($name . "users", "dat")) : array();
 		$content = '<table border="0" cellpadding="0" cellspacing="0" width="388">' .
-			'<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(324, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>';
+				'<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(324, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>';
 		if(empty($users)){
 			$content .= '<tr><td><img src="' . ICON_DIR . 'usergroup.gif" width="16" height="18" /></td><td class="defaultfont">' . g_l('weClass', "[everybody]") . '</td><td>' . we_html_tools::getPixel(26, 18) . '</td></tr>';
 		} else {
@@ -1446,7 +1443,7 @@ class we_object extends we_document{
 		$addbut = $this->htmlHidden($idname, "0") . $this->htmlHidden($textname, "") . we_html_button::create_button("add", "javascript:we_cmd('browse_users','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','',document.forms['we_form'].elements['" . $idname . "'].value,'fillIDs();opener.we_cmd(\\'add_user_to_field\\',\\'" . $GLOBALS['we_transaction'] . "\\',\\'" . $nr . "\\', top.allIDs,\\'" . $name . "\\')','','',1)");
 
 		return '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' .
-			'<div style="width:388px;" class="multichooser">' . $content . '</div></td></tr><tr><td align="right">' . we_html_tools::getPixel(2, 4) . we_html_button::create_button_table(array($delallbut, $addbut)) . '</td></tr></table>';
+				'<div style="width:388px;" class="multichooser">' . $content . '</div></td></tr><tr><td align="right">' . we_html_tools::getPixel(2, 4) . we_html_button::create_button_table(array($delallbut, $addbut)) . '</td></tr></table>';
 	}
 
 	function formUsers($canChange = true){
@@ -1455,16 +1452,16 @@ class we_object extends we_document{
 		$usersReadOnly = $this->UsersReadOnly ? unserialize($this->UsersReadOnly) : array();
 
 		$content = '<table border="0" cellpadding="0" cellspacing="0" width="388">' .
-			'<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(333, 2) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(80, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>';
+				'<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(333, 2) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(80, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>';
 		if(empty($users)){
 			$content .= '<tr><td><img src="' . ICON_DIR . "user.gif" . '" width="16" height="18" /></td><td class="defaultfont">' . g_l('weClass', "[onlyOwner]") . '</td><td></td></tr>';
 		} else {
 			for($i = 0; $i < count($users); $i++){
 				$foo = getHash('SELECT Path,Icon FROM ' . USER_TABLE . ' WHERE ID=' . intval($users[$i]), $this->DB_WE);
 				$content .= '<tr><td>' . (empty($foo) ? '' : '<img src="' . ICON_DIR . $foo["Icon"] . '" width="16" height="18" />') . '</td><td class="defaultfont">' . (empty($foo) ? 'Unknown' : $foo["Path"]) . '</td><td>' .
-					($canChange ?
-						$this->htmlHidden('we_users_read_only[' . $users[$i] . ']', (isset($usersReadOnly[$users[$i]]) && $usersReadOnly[$users[$i]]) ? $usersReadOnly[$users[$i]] : "" ) . '<input type="checkbox" value="1" name="wetmp_users_read_only[' . $users[$i] . ']"' . ( (isset($usersReadOnly[$users[$i]]) && $usersReadOnly[$users[$i]] ) ? ' checked' : '') . ' OnClick="this.form.elements[\'we_users_read_only[' . $users[$i] . ']\'].value=(this.checked ? 1 : 0);_EditorFrame.setEditorIsHot(true);" />' :
-						'<img src="' . TREE_IMAGE_DIR . ($usersReadOnly[$users[$i]] ? 'check1_disabled.gif' : 'check0_disabled.gif') . '" />') . '</td><td class="defaultfont">' . g_l('weClass', "[readOnly]") . '</td><td>' . ($canChange ? we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('del_user','" . $users[$i] . "');_EditorFrame.setEditorIsHot(true);") : "") . '</td></tr>';
+						($canChange ?
+								$this->htmlHidden('we_users_read_only[' . $users[$i] . ']', (isset($usersReadOnly[$users[$i]]) && $usersReadOnly[$users[$i]]) ? $usersReadOnly[$users[$i]] : "" ) . '<input type="checkbox" value="1" name="wetmp_users_read_only[' . $users[$i] . ']"' . ( (isset($usersReadOnly[$users[$i]]) && $usersReadOnly[$users[$i]] ) ? ' checked' : '') . ' OnClick="this.form.elements[\'we_users_read_only[' . $users[$i] . ']\'].value=(this.checked ? 1 : 0);_EditorFrame.setEditorIsHot(true);" />' :
+								'<img src="' . TREE_IMAGE_DIR . ($usersReadOnly[$users[$i]] ? 'check1_disabled.gif' : 'check0_disabled.gif') . '" />') . '</td><td class="defaultfont">' . g_l('weClass', "[readOnly]") . '</td><td>' . ($canChange ? we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('del_user','" . $users[$i] . "');_EditorFrame.setEditorIsHot(true);") : "") . '</td></tr>';
 			}
 		}
 		$content .= '<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(333, 2) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(80, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr></table>';
@@ -1477,11 +1474,11 @@ class we_object extends we_document{
 		$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$textname'].value");
 		$wecmdenc5 = we_cmd_enc("fillIDs();opener.we_cmd('add_user',top.allIDs)");
 		$addbut = $canChange ?
-			$this->htmlHidden($idname, "") . $this->htmlHidden($textname, "") . we_html_button::create_button("add", "javascript:we_cmd('browse_users','" . $wecmdenc1 . "','" . $wecmdenc2 . "','',document.forms[0].elements['$idname'].value,'" . $wecmdenc5 . "','','',1)") : '';
+				$this->htmlHidden($idname, "") . $this->htmlHidden($textname, "") . we_html_button::create_button("add", "javascript:we_cmd('browse_users','" . $wecmdenc1 . "','" . $wecmdenc2 . "','',document.forms[0].elements['$idname'].value,'" . $wecmdenc5 . "','','',1)") : '';
 
 		$content = '<table border="0" cellpadding="0" cellspacing="0">
 <tr><td><div style="width:506px;" class="multichooser">' . $content . '</div></td></tr>' .
-			($canChange ? '<tr><td align="right">' . we_html_tools::getPixel(2, 6) . '<br>' . we_html_button::create_button_table(array($delallbut, $addbut)) . '</td></tr>' : "") . '</table>';
+				($canChange ? '<tr><td align="right">' . we_html_tools::getPixel(2, 6) . '<br>' . we_html_button::create_button_table(array($delallbut, $addbut)) . '</td></tr>' : "") . '</table>';
 
 		return we_html_tools::htmlFormElementTable($content, g_l('weClass', "[otherowners]"), "left", "defaultfont");
 	}
@@ -1548,17 +1545,16 @@ class we_object extends we_document{
 		}
 
 		$fname = 'we_' . $this->Name . '_input[' . $name . ']';
-		//javascript:we_cmd('openDocselector','" . $id . "','" .FILE_TABLE. "','document.forms[\\'we_form\\'].elements[\\'" . $fname . "\\'].value','','opener.top.we_cmd(\\'reload_entry_at_class\\',\\'".$GLOBALS['we_transaction']."\\',\\'".$i."\\');opener._EditorFrame.setEditorIsHot(true);','".session_id()."',0,'image/*')
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['" . $fname . "'].value");
 		$wecmdenc3 = we_cmd_enc("opener.top.we_cmd('reload_entry_at_class','" . $GLOBALS['we_transaction'] . "','" . $i . "');opener._EditorFrame.setEditorIsHot(true);");
 
 		$content = '<input type=hidden name="' . $fname . '" value="' . $defaultname . '" />' .
-			we_html_button::create_button_table(array(
-				we_html_button::create_button("edit", "javascript:we_cmd('openDocselector','" . $id . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "',0,'image/*')"),
-				we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('remove_image_at_class','" . $GLOBALS['we_transaction'] . "','" . $i . "','" . $name . "')")
-				)
-			) .
-			'<br>' . $img->getHtml();
+				we_html_button::create_button_table(array(
+					we_html_button::create_button("edit", "javascript:we_cmd('openDocselector','" . $id . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "',0,'" . we_base_ContentTypes::IMAGE . "')"),
+					we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('remove_image_at_class','" . $GLOBALS['we_transaction'] . "','" . $i . "','" . $name . "')")
+						)
+				) .
+				'<br/>' . $img->getHtml();
 
 		// gets thumbnails and shows a select field, if there are any:
 		$thumbdb = new DB_WE();
@@ -1568,8 +1564,8 @@ class we_object extends we_document{
 			$content .= "<br />" . g_l('modules_object', '[use_thumbnail_preview]') . ":<br />";
 			array_unshift($thumbList, '-');
 			$currentSelection = (isset($this->elements["" . $name . "Thumb"]) && isset($this->elements["" . $name . "Thumb"]["dat"]) && isset($thumbList[$this->elements["" . $name . "Thumb"]["dat"]]) ?
-					$this->elements["" . $name . "Thumb"]["dat"] :
-					'');
+							$this->elements["" . $name . "Thumb"]["dat"] :
+							'');
 
 			$content .= $this->htmlSelect("we_" . $this->Name . "_input[" . $name . "Thumb]", $thumbList, 1, $currentSelection, "", array('onchange' => "_EditorFrame.setEditorIsHot(true);"), "value", 388);
 		}
@@ -1586,17 +1582,16 @@ class we_object extends we_document{
 		}
 
 		$fname = 'we_' . $this->Name . '_input[' . $name . ']';
-		//javascript:we_cmd('openDocselector','" . $id . "','" .FILE_TABLE. "','document.forms[\\'we_form\\'].elements[\\'" . $fname . "\\'].value','','opener.top.we_cmd(\\'reload_entry_at_class\\',\\'".$GLOBALS['we_transaction']."\\',\\'".$i."\\');opener._EditorFrame.setEditorIsHot(true);','".session_id()."',0,'application/x-shockwave-flash')
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['" . $fname . "'].value");
 		$wecmdenc3 = we_cmd_enc("opener.top.we_cmd('reload_entry_at_class','" . $GLOBALS['we_transaction'] . "','" . $i . "');opener._EditorFrame.setEditorIsHot(true);");
 
 		return '<input type=hidden name="' . $fname . '" value="' . $defaultname . '" />' .
-			we_html_button::create_button_table(array(
-				we_html_button::create_button("edit", "javascript:we_cmd('openDocselector','" . $id . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "',0,'application/x-shockwave-flash')"),
-				we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('remove_image_at_class','" . $GLOBALS['we_transaction'] . "','" . $i . "','" . $name . "')")
-				)
-			) .
-			'<br>' . $img->getHtml();
+				we_html_button::create_button_table(array(
+					we_html_button::create_button("edit", "javascript:we_cmd('openDocselector','" . $id . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "',0,'" . we_base_ContentTypes::FLASH . "')"),
+					we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('remove_image_at_class','" . $GLOBALS['we_transaction'] . "','" . $i . "','" . $name . "')")
+						)
+				) .
+				'<br/>' . $img->getHtml();
 	}
 
 	function getQuicktimeHTML($name, $defaultname, $i = 0){
@@ -1609,17 +1604,16 @@ class we_object extends we_document{
 		}
 
 		$fname = 'we_' . $this->Name . '_input[' . $name . ']';
-		//javascript:we_cmd('openDocselector','" . $id . "','" .FILE_TABLE. "','document.forms[\\'we_form\\'].elements[\\'" . $fname . "\\'].value','','opener.top.we_cmd(\\'reload_entry_at_class\\',\\'".$GLOBALS['we_transaction']."\\',\\'".$i."\\');opener._EditorFrame.setEditorIsHot(true);','".session_id()."',0,'video/quicktime')
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['" . $fname . "'].value");
 		$wecmdenc3 = we_cmd_enc("opener.top.we_cmd('reload_entry_at_class','" . $GLOBALS['we_transaction'] . "','" . $i . "');opener._EditorFrame.setEditorIsHot(true);");
 
 		return '<input type=hidden name="' . $fname . '" value="' . $defaultname . '" />' .
-			we_html_button::create_button_table(array(
-				we_html_button::create_button("edit", "javascript:we_cmd('openDocselector','" . $id . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "',0,'video/quicktime')"),
-				we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('remove_image_at_class','" . $GLOBALS['we_transaction'] . "','" . $i . "','" . $name . "')")
-				)
-			) .
-			'<br>' . $img->getHtml();
+				we_html_button::create_button_table(array(
+					we_html_button::create_button("edit", "javascript:we_cmd('openDocselector','" . $id . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "',0,'" . we_base_ContentTypes::QUICKTIME . "')"),
+					we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('remove_image_at_class','" . $GLOBALS['we_transaction'] . "','" . $i . "','" . $name . "')")
+						)
+				) .
+				'<br/>' . $img->getHtml();
 	}
 
 	function getBinaryHTML($name, $defaultname, $i = 0){
@@ -1627,17 +1621,16 @@ class we_object extends we_document{
 		$id = $defaultname; //$this->getElement($defaultname);
 		$other->initByID($id, FILE_TABLE, false);
 		$fname = 'we_' . $this->Name . '_input[' . $name . ']';
-		//javascript:we_cmd('openDocselector','".$id."','".FILE_TABLE."','document.forms[\\'we_form\\'].elements[\\'".$fname."\\'].value','','opener.top.we_cmd(\\'reload_entry_at_class\\',\\'".$GLOBALS['we_transaction']."\\',\\'".$i."\\');opener._EditorFrame.setEditorIsHot(true);','".session_id()."',0,'application/*')
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['" . $fname . "'].value");
 		$wecmdenc3 = we_cmd_enc("opener.top.we_cmd('reload_entry_at_class','" . $GLOBALS['we_transaction'] . "','" . $i . "');opener._EditorFrame.setEditorIsHot(true);");
 
 		return '<input type=hidden name="' . $fname . '" value="' . $defaultname . '" />' .
-			we_html_button::create_button_table(array(
-				we_html_button::create_button("select", "javascript:we_cmd('openDocselector','" . $id . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "',0,'application/*')"),
-				we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('remove_image_at_class','" . $GLOBALS['we_transaction'] . "','" . $i . "','" . $name . "');")
-				)
-			) .
-			'<br>' . $other->getHtml();
+				we_html_button::create_button_table(array(
+					we_html_button::create_button("select", "javascript:we_cmd('openDocselector','" . $id . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "',0,'" . we_base_ContentTypes::APPLICATION . "')"),
+					we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('remove_image_at_class','" . $GLOBALS['we_transaction'] . "','" . $i . "','" . $name . "');")
+						)
+				) .
+				'<br/>' . $other->getHtml();
 	}
 
 	function formDefault(){
@@ -1670,7 +1663,7 @@ class we_object extends we_document{
 					$unique = substr(md5(uniqid(__FUNCTION__, true)), 0, min($anz, 32));
 					$text = preg_replace('/%unique[^%]*%/', $unique, (isset($text) ? $text : ""));
 					$select .= $this->htmlSelect("we_" . $this->Name . "_input[DefaultText_" . $zahl . "]", g_l('modules_object', '[value]'), 1, "%unique%", "", array('onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;" .
-						$this->htmlTextInput("we_" . $this->Name . "_input[unique_" . $zahl . "]", 40, $anz, 255, 'onChange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
+							$this->htmlTextInput("we_" . $this->Name . "_input[unique_" . $zahl . "]", 40, $anz, 255, 'onChange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
 				} else {
 					$select .= $this->htmlSelect("we_" . $this->Name . "_input[DefaultText_" . $zahl . "]", g_l('modules_object', '[value]'), 1, "%" . $key . "%", "", array('onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;";
 				}
@@ -1678,7 +1671,7 @@ class we_object extends we_document{
 				$all = substr($all, strlen($regs[1]));
 				$key = $regs[1];
 				$select .= $this->htmlSelect("textwert_" . $zahl, g_l('modules_object', '[value]'), 1, "Text", "", array('onchange' => '_EditorFrame.setEditorIsHot(true); document.we_form.elements[\'we_' . $this->Name . '_input[DefaultText_' . $zahl . ']\'].value = this.options[this.selectedIndex].value; we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;" .
-					$this->htmlTextInput("we_" . $this->Name . "_input[DefaultText_" . $zahl . "]", 40, $key, 255, 'onChange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
+						$this->htmlTextInput("we_" . $this->Name . "_input[DefaultText_" . $zahl . "]", 40, $key, 255, 'onChange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
 			}
 
 			$select .= we_html_element::htmlBr();
@@ -1686,7 +1679,7 @@ class we_object extends we_document{
 		}
 
 		$select .= $this->htmlSelect("we_" . $this->Name . "_input[DefaultText_" . $zahl . "]", g_l('modules_object', '[value]'), 1, "", "", array('onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;" .
-			'<input type = "hidden" name="we_' . $this->Name . '_input[Defaultanzahl]" value="' . $zahl . '" />';
+				'<input type = "hidden" name="we_' . $this->Name . '_input[Defaultanzahl]" value="' . $zahl . '" />';
 
 		$var_flip = array_flip(g_l('modules_object', '[url]'));
 
@@ -1727,20 +1720,20 @@ class we_object extends we_document{
 					$unique = substr(md5(uniqid(__FUNCTION__, true)), 0, min($anz, 32));
 					$text = preg_replace('/%urlunique[^%]*%/', $unique, (isset($text) ? $text : ""));
 					$select2 .= $this->htmlSelect("we_" . $this->Name . "_input[DefaultUrl_" . $zahl . "]", g_l('modules_object', '[url]'), 1, "%urlunique%", "", array('onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;" .
-						$this->htmlTextInput("we_" . $this->Name . "_input[urlunique_" . $zahl . "]", 40, $anz, 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
+							$this->htmlTextInput("we_" . $this->Name . "_input[urlunique_" . $zahl . "]", 40, $anz, 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
 				} else {
 					if(preg_match('/urlfield1([^%]*)/', $key, $regs)){
 						$anz = (!$regs[1] ? 64 : abs($regs[1]));
 						$select2 .= $this->htmlSelect("we_" . $this->Name . "_input[DefaultUrl_" . $zahl . "]", g_l('modules_object', '[url]'), 1, "%urlfield1%", "", array('onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;" .
-							$this->htmlTextInput("we_" . $this->Name . "_input[urlfield1_" . $zahl . "]", 40, $anz, 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
+								$this->htmlTextInput("we_" . $this->Name . "_input[urlfield1_" . $zahl . "]", 40, $anz, 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
 					} elseif(preg_match('/urlfield2([^%]*)/', $key, $regs)){
 						$anz = (!$regs[1] ? 64 : abs($regs[1]));
 						$select2 .= $this->htmlSelect("we_" . $this->Name . "_input[DefaultUrl_" . $zahl . "]", g_l('modules_object', '[url]'), 1, "%urlfield2%", "", array('onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;" .
-							$this->htmlTextInput("we_" . $this->Name . "_input[urlfield2_" . $zahl . "]", 40, $anz, 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
+								$this->htmlTextInput("we_" . $this->Name . "_input[urlfield2_" . $zahl . "]", 40, $anz, 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
 					} elseif(preg_match('/urlfield3([^%]*)/', $key, $regs)){
 						$anz = (!$regs[1] ? 64 : abs($regs[1]));
 						$select2 .= $this->htmlSelect("we_" . $this->Name . "_input[DefaultUrl_" . $zahl . "]", g_l('modules_object', '[url]'), 1, "%urlfield3%", "", array('onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;" .
-							$this->htmlTextInput("we_" . $this->Name . "_input[urlfield3_" . $zahl . "]", 40, $anz, 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
+								$this->htmlTextInput("we_" . $this->Name . "_input[urlfield3_" . $zahl . "]", 40, $anz, 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
 					} else {
 						$select2 .= $this->htmlSelect("we_" . $this->Name . "_input[DefaultUrl_" . $zahl . "]", g_l('modules_object', '[url]'), 1, "%" . $key . "%", "", array('onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;";
 					}
@@ -1749,7 +1742,7 @@ class we_object extends we_document{
 				$all = substr($all, strlen($regs[1]));
 				$key = $regs[1];
 				$select2 .= $this->htmlSelect("textwert_" . $zahl, g_l('modules_object', '[url]'), 1, "Text", "", array('onchange' => '_EditorFrame.setEditorIsHot(true); document.we_form.elements[\'we_' . $this->Name . '_input[DefaultUrl_' . $zahl . ']\'].value = this.options[this.selectedIndex].value; we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;" .
-					$this->htmlTextInput("we_" . $this->Name . "_input[DefaultUrl_" . $zahl . "]", 40, $key, 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
+						$this->htmlTextInput("we_" . $this->Name . "_input[DefaultUrl_" . $zahl . "]", 40, $key, 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
 			}
 
 			$select2 .= we_html_element::htmlBr();
@@ -1757,7 +1750,7 @@ class we_object extends we_document{
 		}
 
 		$select2 .= $this->htmlSelect("we_" . $this->Name . "_input[DefaultUrl_" . $zahl . "]", g_l('modules_object', '[url]'), 1, "", "", array('onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;" .
-			'<input type = "hidden" name="we_' . $this->Name . '_input[DefaultanzahlUrl]" value="' . $zahl . '" />';
+				'<input type = "hidden" name="we_' . $this->Name . '_input[DefaultanzahlUrl]" value="' . $zahl . '" />';
 
 		return '<table border="0" cellpadding="0" cellspacing="0">
 	<tr><td colspan="2" class="defaultfont" valign=top>' . g_l('modules_object', '[name]') . '</td><td>' . we_html_tools::getPixel(20, 20) . '</td></tr>
@@ -1772,11 +1765,11 @@ class we_object extends we_document{
 	<tr><td colspan="3" >' . $this->formCategory() . '</td></tr>
 	<tr><td>' . we_html_tools::getPixel(20, 16) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td></tr>
 	<tr><td colspan="3" >' . $this->formRestrictUsers() . '</td></tr>' .
-			($this->RestrictUsers ?
-				'<tr><td>' . we_html_tools::getPixel(20, 10) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td></tr>
+				($this->RestrictUsers ?
+						'<tr><td>' . we_html_tools::getPixel(20, 10) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td></tr>
 	<tr><td colspan="3" >' . $this->formUsers() . '</td></tr>' :
-				'') .
-			'</table>';
+						'') .
+				'</table>';
 	}
 
 	function formRestrictUsers($canChange = true){
@@ -1842,14 +1835,14 @@ class we_object extends we_document{
 
 	function formWorkspacesFlag(){
 		return '<div style="margin-bottom:8px;">' . we_html_forms::radiobutton(1, $this->WorkspaceFlag == 1, "we_" . $this->Name . "_WorkspaceFlag", g_l('modules_object', '[behaviour_all]')) . '</div><div>' .
-			we_html_forms::radiobutton(0, $this->WorkspaceFlag != 1, "we_" . $this->Name . "_WorkspaceFlag", g_l('modules_object', '[behaviour_no]')) . '</div>';
+				we_html_forms::radiobutton(0, $this->WorkspaceFlag != 1, "we_" . $this->Name . "_WorkspaceFlag", g_l('modules_object', '[behaviour_no]')) . '</div>';
 	}
 
 	function formCSS(){
 		require_once(WE_INCLUDES_PATH . 'we_tools/MultiDirChooser.inc.php');
 		$wecmdenc3 = we_cmd_enc("fillIDs();opener.we_cmd('add_css', top.allIDs);");
 
-		$addbut = we_html_button::create_button("add", "javascript:we_cmd('openDocselector', '', '" . FILE_TABLE . "','','','" . $wecmdenc3 . "','','','text/css', 1,1)");
+		$addbut = we_html_button::create_button("add", "javascript:we_cmd('openDocselector', '', '" . FILE_TABLE . "','','','" . $wecmdenc3 . "','','','" . we_base_ContentTypes::CSS . "', 1,1)");
 		$css = new MultiDirChooser(510, $this->CSS, "del_css", $addbut, "", "Icon,Path", FILE_TABLE);
 		return $css->get();
 	}

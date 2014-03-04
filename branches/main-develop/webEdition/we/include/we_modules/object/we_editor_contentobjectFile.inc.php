@@ -25,11 +25,9 @@ require_once(WE_INCLUDES_PATH . 'we_tag.inc.php');
 
 we_html_tools::protect();
 
-if(isset($GLOBALS['we_doc']->Charset) && $GLOBALS['we_doc']->Charset){ //	send charset which might be determined in template
-	$charset = $GLOBALS['we_doc']->Charset;
-} else {
-	$charset = DEFAULT_CHARSET;
-}
+$charset = (isset($GLOBALS['we_doc']->Charset) && $GLOBALS['we_doc']->Charset ? //	send charset which might be determined in template
+				$GLOBALS['we_doc']->Charset : DEFAULT_CHARSET);
+
 
 we_html_tools::headerCtCharset('text/html', $charset);
 
@@ -62,9 +60,8 @@ if($GLOBALS['we_doc']->CSS){
 $we_doc = $GLOBALS['we_doc'];
 
 $jsGUI = new weOrderContainer("_EditorFrame.getContentEditor()", "objectEntry");
-echo $jsGUI->getJS(JS_DIR);
-
-echo we_html_multiIconBox::getJs();
+echo $jsGUI->getJS(JS_DIR) .
+ we_html_multiIconBox::getJs();
 ?>
 
 <script type="text/javascript">
@@ -80,9 +77,9 @@ echo we_html_multiIconBox::getJs();
 //-->
 </script>
 <?php
-echo we_html_element::jsScript(JS_DIR . 'windows.js');
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
-print STYLESHEET;
+echo we_html_element::jsScript(JS_DIR . 'windows.js') .
+ STYLESHEET;
 ?>
 </head>
 
@@ -117,11 +114,12 @@ print STYLESHEET;
 			}
 		} else {
 			if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
-				$_msg = "";
+				$_msg = '';
 			}
-			print we_SEEM::parseDocument(we_html_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false));
+			echo we_SEEM::parseDocument(we_html_multiIconBox::getHTML('', '100%', $parts, 30, '', -1, '', '', false));
 		}
 		?>
+		<input type="hidden" name="we_complete_request" value="1"/>
 	</form>
 </body><?php echo we_html_element::jsElement('setTimeout("doScrollTo();",100);'); ?>
 </html>

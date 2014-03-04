@@ -43,7 +43,7 @@ abstract class we_html_tools{
 		}
 		if(!$allow || !isset($_SESSION['user']) || !isset($_SESSION['user']['Username']) || $_SESSION['user']['Username'] == ''){
 			self::setHttpCode(401);
-			print self::getHtmlTop() .
+			echo self::getHtmlTop() .
 					we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[perms_no_permissions]'), we_message_reporting::WE_MESSAGE_ERROR) . ($redirect ? 'document.location = "' . $redirect . '"' : 'top.close();')) .
 					'</head><body>' .
 					str_replace('\n', '<br/>', g_l('alert', '[perms_no_permissions]')) .
@@ -424,13 +424,13 @@ abstract class we_html_tools{
 		return -1;
 	}
 
-	static function getDateInput2($name, $time = '', $setHot = false, $format = '', $onchange = '', $class = 'weSelect', $xml = '', $minyear = '', $maxyear = '', $style = ''){
-		$_attsSelect = $_attsOption = $_attsHidden = (empty($xml) ? array() : array('xml' => $xml));
+	static function getDateInput2($name, $time = 0, $setHot = false, $format = '', $onchange = '', $class = 'weSelect', $xml = false, $minyear = 0, $maxyear = 0, $style = ''){
+		$_attsSelect = $_attsOption = $_attsHidden = $xml ? array('xml' => $xml) : array();
 
-		if(!empty($class)){
+		if($class){
 			$_attsSelect['class'] = $class;
 		}
-		if(!empty($style)){
+		if($style){
 			$_attsSelect['style'] = $style;
 		}
 		$_attsSelect['size'] = '1';
@@ -467,20 +467,18 @@ abstract class we_html_tools{
 		$_showMinute = true;
 
 		$name = preg_replace('/^(.+)]$/', '\1%s]', $name);
-		if(empty($format) || $_dayPos > -1){
+		if(!$format || $_dayPos > -1){
 			$days = '';
 			for($i = 1; $i <= 31; $i++){
 				$_atts2 = ($time && $day == $i) ? array('selected' => 'selected') : array();
 				$days .= getHtmlTag('option', array_merge($_attsOption, $_atts2), sprintf('%02d', $i));
 			}
-			$daySelect = getHtmlTag(
-							'select', array_merge($_attsSelect, array(
-						'name' => sprintf($name, '_day'), 'id' => sprintf($name, '_day')
+			$daySelect = getHtmlTag('select', array_merge($_attsSelect, array(
+						'name' => sprintf($name, '_day'),
+						'id' => sprintf($name, '_day')
 							)), $days, true) . '&nbsp;';
 		} else {
-			$daySelect = getHtmlTag(
-					'input', array_merge(
-							$_attsHidden, array(
+			$daySelect = getHtmlTag('input', array_merge($_attsHidden, array(
 				'type' => 'hidden',
 				'name' => sprintf($name, '_day'),
 				'id' => sprintf($name, '_day'),
@@ -489,7 +487,7 @@ abstract class we_html_tools{
 			$_showDay = false;
 		}
 
-		if(($format == '') || $_monthPos > -1){
+		if(!$format || $_monthPos > -1){
 			$months = '';
 			$monthType = (strpos($format, 'F') ? 'F' : (strpos($format, 'M') ? 'M' : 0));
 			for($i = 1; $i <= 12; $i++){
@@ -503,18 +501,15 @@ abstract class we_html_tools{
 					default:
 						$val = sprintf('%02d', $i);
 				}
-				$_atts2 = ($time && $month == $i) ? array('selected' => 'selected', 'value' =>
-					$i) : array('value' => $i);
+				$_atts2 = ($time && $month == $i) ? array('selected' => 'selected', 'value' => $i) : array('value' => $i);
 				$months .= getHtmlTag('option', array_merge($_attsOption, $_atts2), $val);
 			}
-			$monthSelect = getHtmlTag(
-							'select', array_merge($_attsSelect, array(
-						'name' => sprintf($name, '_month'), 'id' => sprintf($name, '_month')
+			$monthSelect = getHtmlTag('select', array_merge($_attsSelect, array(
+						'name' => sprintf($name, '_month'),
+						'id' => sprintf($name, '_month')
 							)), $months, true) . '&nbsp;';
 		} else {
-			$monthSelect = getHtmlTag(
-					'input', array_merge(
-							$_attsHidden, array(
+			$monthSelect = getHtmlTag('input', array_merge($_attsHidden, array(
 				'type' => 'hidden',
 				'name' => sprintf($name, '_month'),
 				'id' => sprintf($name, '_month'),
@@ -522,26 +517,24 @@ abstract class we_html_tools{
 			)));
 			$_showMonth = false;
 		}
-		if(empty($format) || $_yearPos > -1){
+		if(!$format || $_yearPos > -1){
 			$years = '';
-			if(empty($minyear)){
+			if(!$minyear){
 				$minyear = 1970;
 			}
-			if(empty($maxyear)){
+			if(!$maxyear){
 				$maxyear = abs(date('Y') + 100);
 			}
 			for($i = $minyear; $i <= $maxyear; $i++){
 				$_atts2 = ($time && $year == $i) ? array('selected' => 'selected') : array();
 				$years .= getHtmlTag('option', array_merge($_attsOption, $_atts2), sprintf('%02d', $i));
 			}
-			$yearSelect = getHtmlTag(
-							'select', array_merge($_attsSelect, array(
-						'name' => sprintf($name, '_year'), 'id' => sprintf($name, '_year')
+			$yearSelect = getHtmlTag('select', array_merge($_attsSelect, array(
+						'name' => sprintf($name, '_year'),
+						'id' => sprintf($name, '_year')
 							)), $years, true) . '&nbsp;';
 		} else {
-			$yearSelect = getHtmlTag(
-					'input', array_merge(
-							$_attsHidden, array(
+			$yearSelect = getHtmlTag('input', array_merge($_attsHidden, array(
 				'type' => 'hidden',
 				'name' => sprintf($name, '_year'),
 				'id' => sprintf($name, '_year'),
@@ -550,20 +543,17 @@ abstract class we_html_tools{
 			$_showYear = false;
 		}
 
-		if(empty($format) || $_hourPos > -1){
+		if(!$format || $_hourPos > -1){
 			$hours = '';
 			for($i = 0; $i <= 23; $i++){
 				$_atts2 = ($time && $hour == $i) ? array('selected' => 'selected') : array();
 				$hours .= getHtmlTag('option', array_merge($_attsOption, $_atts2), sprintf('%02d', $i));
 			}
-			$hourSelect = getHtmlTag(
-							'select', array_merge($_attsSelect, array(
+			$hourSelect = getHtmlTag('select', array_merge($_attsSelect, array(
 						'name' => sprintf($name, '_hour'), 'id' => sprintf($name, '_hour')
 							)), $hours, true) . '&nbsp;';
 		} else {
-			$hourSelect = getHtmlTag(
-					'input', array_merge(
-							$_attsHidden, array(
+			$hourSelect = getHtmlTag('input', array_merge($_attsHidden, array(
 				'type' => 'hidden',
 				'name' => sprintf($name, '_hour'),
 				'id' => sprintf($name, '_hour'),
@@ -572,20 +562,18 @@ abstract class we_html_tools{
 			$_showHour = false;
 		}
 
-		if(empty($format) || $_minutePos > -1){
+		if(!$format || $_minutePos > -1){
 			$minutes = '';
 			for($i = 0; $i <= 59; $i++){
 				$_atts2 = ($time && $minute == $i) ? array('selected' => 'selected') : array();
 				$minutes .= getHtmlTag('option', array_merge($_attsOption, $_atts2), sprintf('%02d', $i));
 			}
-			$minSelect = getHtmlTag(
-							'select', array_merge($_attsSelect, array(
-						'name' => sprintf($name, '_minute'), 'id' => sprintf($name, '_minute')
+			$minSelect = getHtmlTag('select', array_merge($_attsSelect, array(
+						'name' => sprintf($name, '_minute'),
+						'id' => sprintf($name, '_minute')
 							)), $minutes, true) . '&nbsp;';
 		} else {
-			$minSelect = getHtmlTag(
-					'input', array_merge(
-							$_attsHidden, array(
+			$minSelect = getHtmlTag('input', array_merge($_attsHidden, array(
 				'type' => 'hidden',
 				'name' => sprintf($name, '_minute'),
 				'id' => sprintf($name, '_minute'),
@@ -607,38 +595,12 @@ abstract class we_html_tools{
 		ksort($_datePosArray);
 		ksort($_timePosArray);
 
-		$retVal = '<table style="border-spacing: 0px;border-style:none;" cellpadding="0"><tr><td>';
-		if($_showDay || $_showMonth || $_showYear){
-
-			foreach($_datePosArray as $foo){
-				$retVal .= $foo;
-			}
-		} else {
-			foreach($_datePosArray as $foo){
-				$retVal .= $foo;
-			}
-		}
-		if($_showHour || $_showMinute){
-			$retVal .= '</td></tr><tr><td>';
-			foreach($_timePosArray as $foo){
-				$retVal .= $foo;
-			}
-		} else {
-			foreach($_timePosArray as $foo){
-				$retVal .= $foo;
-			}
-		}
-		$retVal .= '</td></tr></table>';
-		return $retVal;
+		return '<table style="border-spacing: 0px;border-style:none;" cellpadding="0"><tr><td>' .
+				implode('', $_datePosArray) .
+				($_showHour || $_showMinute ? '</td></tr><tr><td>' : '') .
+				implode('', $_timePosArray) .
+				'</td></tr></table>';
 	}
-
-	/* 	public static function getHTMLDocument($body = '', $extraHead = '', $title){
-	  return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-	  we_html_element::htmlHead(
-	  self::getHtmlInnerHead($title) . STYLESHEET . $extraHead
-	  ) . ($body ? $body : we_html_element::htmlBody())
-	  );
-	  } */
 
 	//FIXME: remove deprecated
 	public static function htmlTop($title = 'webEdition', $charset = '', $doctype = ''){

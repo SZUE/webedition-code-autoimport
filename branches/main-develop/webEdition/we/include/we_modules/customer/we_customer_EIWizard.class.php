@@ -598,7 +598,7 @@ class we_customer_EIWizard{
 				');
 
 		$tmptable = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 4, 1);
-		$tmptable->setCol(0, 0, array("valign" => "middle"), $this->formFileChooser(250, "source", $source, "opener." . $this->bodyFrame . ".document.we_form.import_from[0].checked=true;", ($type == "gxml" ? "text/xml" : "")));
+		$tmptable->setCol(0, 0, array("valign" => "middle"), $this->formFileChooser(250, "source", $source, "opener." . $this->bodyFrame . ".document.we_form.import_from[0].checked=true;", ($type == "gxml" ? we_base_ContentTypes::XML : "")));
 		$tmptable->setCol(1, 0, array(), we_html_tools::getPixel(2, 5));
 
 		$table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 4, 2);

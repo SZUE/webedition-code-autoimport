@@ -34,7 +34,7 @@ we_html_tools::headerCtCharset('text/html', $charset);
 echo we_html_tools::getHtmlTop('', $charset) .
  we_html_element::jsScript(JS_DIR . 'windows.js');
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
-print STYLESHEET;
+echo STYLESHEET;
 ?>
 </head>
 <body class="weEditorBody" onunload="doUnload()">
@@ -46,30 +46,30 @@ print STYLESHEET;
 				include(WE_INCLUDES_PATH . 'we_templates/we_folder_properties.inc.php');
 				$implementYuiAC = true;
 				break;
-			case 'text/webedition':
+			case we_base_ContentTypes::WEDOCUMENT:
 				include(WE_INCLUDES_PATH . 'we_templates/we_webedition_properties.inc.php');
 				break;
-			case 'text/xml':
-			case 'text/css':
-			case 'text/js':
-			case 'text/htaccess':
-			case 'text/plain':
+			case we_base_ContentTypes::XML:
+			case we_base_ContentTypes::CSS:
+			case we_base_ContentTypes::JS:
+			case we_base_ContentTypes::HTACESS:
+			case we_base_ContentTypes::TEXT:
 				include(WE_INCLUDES_PATH . 'we_templates/we_textfile_properties.inc.php');
 				break;
-			case 'text/html':
+			case we_base_ContentTypes::HTML:
 				include(WE_INCLUDES_PATH . 'we_templates/we_htmlfile_properties.inc.php');
 				break;
-			case 'text/weTmpl':
+			case we_base_ContentTypes::TEMPLATE:
 				include(WE_INCLUDES_PATH . 'we_templates/we_template_properties.inc.php');
 				break;
-			case 'image/*':
+			case we_base_ContentTypes::IMAGE:
 				include(WE_INCLUDES_PATH . 'we_templates/we_image_properties.inc.php');
 				break;
-			case 'video/quicktime':
-			case 'application/x-shockwave-flash':
+			case we_base_ContentTypes::QUICKTIME:
+			case we_base_ContentTypes::FLASH:
 				include(WE_INCLUDES_PATH . 'we_templates/we_flash_properties.inc.php');
 				break;
-			case 'application/*':
+			case we_base_ContentTypes::APPLICATION:
 				include(WE_INCLUDES_PATH . 'we_templates/we_other_properties.inc.php');
 				break;
 			default:
@@ -87,6 +87,7 @@ print STYLESHEET;
 				}
 		}
 		?>
+		<input type="hidden" name="we_complete_request" value="1"/>
 	</form>
 	<?php
 	echo weSuggest::getYuiFiles() .

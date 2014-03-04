@@ -25,6 +25,10 @@
 $perm_group_name = 'importExportpermissions';
 $perm_group_title[$perm_group_name] = g_l('perms_' . $perm_group_name, '[perm_group_title]');
 $perm_defaults[$perm_group_name] = array(
+	'EXPORT' => 0,
+	'EXPORTNODOWNLOAD' => 0,
+	'IMPORT' => 0,
+	'BACKUPLOG' => 0,
 	'FILE_IMPORT' => 1,
 	'SITE_IMPORT' => 1,
 	'WXML_IMPORT' => 0,

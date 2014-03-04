@@ -54,11 +54,11 @@ function makePIDTail($pid, $cid, we_database_base $db = null, $table = FILE_TABL
 	$pid = intval($pid);
 	$parentIDs[] = $pid;
 	while($pid != 0){
-		$pid = f('SELECT ParentID FROM ' . FILE_TABLE . ' WHERE ID=' . $pid, 'ParentID', $db);
+		$pid = f('SELECT ParentID FROM ' . FILE_TABLE . ' WHERE ID=' . $pid, '', $db);
 		$parentIDs[] = $pid;
 	}
 	$cid = intval($cid);
-	$foo = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . $cid, 'DefaultValues', $db);
+	$foo = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . $cid, '', $db);
 	$fooArr = unserialize($foo);
 	$flag = (isset($fooArr['WorkspaceFlag']) ? $fooArr['WorkspaceFlag'] : 1);
 	$pid_tail = array();
@@ -68,9 +68,7 @@ function makePIDTail($pid, $cid, we_database_base $db = null, $table = FILE_TABL
 	foreach($parentIDs as $pid){
 		$pid_tail[] = OBJECT_X_TABLE . $cid . '.OF_Workspaces LIKE "%,' . $pid . ',%" OR ' . OBJECT_X_TABLE . $cid . '.OF_ExtraWorkspacesSelected LIKE "%,' . $pid . ',%"';
 	}
-	return (empty($pid_tail) ? 1 :
-			' (' . implode(' OR ', $pid_tail) . ') '
-		);
+	return (empty($pid_tail) ? 1 : ' (' . implode(' OR ', $pid_tail) . ') ' );
 }
 
 function we_getCatsFromDoc($doc, $tokken = ',', $showpath = false, we_database_base $db = null, $rootdir = '/', $catfield = '', $onlyindir = ''){
@@ -122,7 +120,7 @@ function makeIDsFromPathCVS($paths, $table = FILE_TABLE, $prePostKomma = true){
 	$db = new DB_WE();
 	$outArray = array();
 	foreach($foo as $path){
-		$id = f('SELECT ID FROM ' . $table . ' WHERE Path="' . $db->escape('/' . ltrim(trim($path), '/')) . '"', 'ID', $db);
+		$id = f('SELECT ID FROM ' . $table . ' WHERE Path="' . $db->escape('/' . ltrim(trim($path), '/')) . '"', '', $db);
 		if($id){
 			$outArray[] = $id;
 		}
@@ -275,7 +273,7 @@ function getHTTP($server, $url, $port = '', $username = '', $password = ''){
 function deleteContentFromDB($id, $table, we_database_base $DB_WE = null){
 	$DB_WE = $DB_WE ? $DB_WE : new DB_WE();
 
-	if(f('SELECT 1 AS cnt FROM ' . LINK_TABLE . ' WHERE DID=' . intval($id) . ' AND DocumentTable="' . $DB_WE->escape(stripTblPrefix($table)) . '" LIMIT 1', 'cnt', $DB_WE) != 1){
+	if(f('SELECT 1 FROM ' . LINK_TABLE . ' WHERE DID=' . intval($id) . ' AND DocumentTable="' . $DB_WE->escape(stripTblPrefix($table)) . '" LIMIT 1', '', $DB_WE) != 1){
 		return true;
 	}
 
@@ -298,7 +296,7 @@ function addTblPrefix($table){
 }
 
 function ObjectUsedByObjectFile($id){
-	return ($id ? f('SELECT 1 AS cnt FROM ' . OBJECT_FILES_TABLE . ' WHERE TableID=' . intval($id) . ' LIMIT 0,1', 'cnt', $GLOBALS['DB_WE']) == 1 : false);
+	return ($id ? f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . ' WHERE TableID=' . intval($id) . ' LIMIT 1', '', $GLOBALS['DB_WE']) == 1 : false);
 }
 
 //FIXME: remove this & decide where to use old version of htmlspecialchars
@@ -376,7 +374,7 @@ function we_hasPerm($perm){
 
 function we_getParentIDs($table, $id, &$ids, we_database_base $db = null){
 	$db = $db ? $db : new DB_WE();
-	while(($pid = f('SELECT ParentID FROM ' . $table . ' WHERE ID=' . intval($id), 'ParentID', $db)) > 0){
+	while(($pid = f('SELECT ParentID FROM ' . $table . ' WHERE ID=' . intval($id), '', $db)) > 0){
 		$id = $pid; // #5836
 		$ids[] = $id;
 	}
@@ -436,7 +434,7 @@ function in_parentID($id, $pid, $table = FILE_TABLE, we_database_base $db = null
 			return false;
 		}
 		$found[] = $p;
-	} while(($p = f('SELECT ParentID FROM ' . $table . ' WHERE ID=' . intval($p), 'ParentID', $db)));
+	} while(($p = f('SELECT ParentID FROM ' . $table . ' WHERE ID=' . intval($p), '', $db)));
 	return false;
 }
 
@@ -474,7 +472,7 @@ function path_to_id($path, $table = FILE_TABLE, we_database_base $db = null){
 		return 0;
 	}
 	$db = ($db ? $db : new DB_WE());
-	return intval(f('SELECT DISTINCT ID FROM ' . $db->escape($table) . ' WHERE Path="' . $db->escape($path) . '" LIMIT 1', 'ID', $db));
+	return intval(f('SELECT DISTINCT ID FROM ' . $db->escape($table) . ' WHERE Path="' . $db->escape($path) . '" LIMIT 1', '', $db));
 }
 
 function weConvertToIds($paths, $table){
@@ -629,7 +627,7 @@ function get_ws($table = FILE_TABLE, $prePostKomma = false){
 
 function we_readParents($id, &$parentlist, $tab, $match = 'ContentType', $matchvalue = 'folder', we_database_base $db = null){
 	$db = $db ? $db : new DB_WE();
-	$pid = f('SELECT ParentID FROM ' . $db->escape($tab) . ' WHERE ID=' . intval($id), 'ParentID', $db);
+	$pid = f('SELECT ParentID FROM ' . $db->escape($tab) . ' WHERE ID=' . intval($id), '', $db);
 	if($pid !== ''){
 		if($pid == 0){
 			$parentlist[] = $pid;
@@ -705,7 +703,7 @@ function get_def_ws($table = FILE_TABLE, $prePostKomma = false){
 	}
 	$ws = '';
 
-	$foo = f('SELECT workSpaceDef FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION['user']['ID']), 'workSpaceDef', new DB_WE());
+	$foo = f('SELECT workSpaceDef FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION['user']['ID']), '', new DB_WE());
 	$ws = makeCSVFromArray(makeArrayFromCSV($foo), $prePostKomma);
 
 	if($ws == ''){
@@ -795,7 +793,7 @@ function parseInternalLinks(&$text, $pid, $path = '', $doBaseReplace = true){
 	if(preg_match_all('/(href|src)="' . we_base_link::TYPE_INT_PREFIX . '(\\d+)(&amp;|&)?("|[^"]+")/i', $text, $regs, PREG_SET_ORDER)){
 		foreach($regs as $reg){
 
-			$foo = getHash('SELECT Path,(ContentType="image/*") AS isImage  FROM ' . FILE_TABLE . ' WHERE ID=' . intval($reg[2]) . (isset($GLOBALS['we_doc']->InWebEdition) && $GLOBALS['we_doc']->InWebEdition ? '' : ' AND Published > 0'), $DB_WE);
+			$foo = getHash('SELECT Path,(ContentType="' . we_base_ContentTypes::IMAGE . '") AS isImage  FROM ' . FILE_TABLE . ' WHERE ID=' . intval($reg[2]) . (isset($GLOBALS['we_doc']->InWebEdition) && $GLOBALS['we_doc']->InWebEdition ? '' : ' AND Published>0'), $DB_WE);
 
 			if(!empty($foo) && $foo['Path']){
 				$path_parts = pathinfo($foo['Path']);
@@ -854,7 +852,7 @@ function removePHP($val){
 
 function getMysqlVer($nodots = true){
 	$DB_WE = new DB_WE();
-	$res = f('SELECT VERSION() AS Version', 'Version', $DB_WE);
+	$res = f('SELECT VERSION()', '', $DB_WE);
 
 	if($res){
 		$res = explode('-', $res);
@@ -930,7 +928,7 @@ function getContentTypeFromFile($dat){
 			}
 		}
 	}
-	return 'application/*';
+	return we_base_ContentTypes::APPLICATION;
 }
 
 function getUploadMaxFilesize($mysql = false, we_database_base $db = null){
@@ -963,7 +961,7 @@ function we_convertIniSizes($in){
 function we_getDocumentByID($id, $includepath = '', we_database_base $db = null, &$charset = ''){
 	$db = $db ? $db : new DB_WE();
 // look what document it is and get the className
-	$clNm = f('SELECT ClassName FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'ClassName', $db);
+	$clNm = f('SELECT ClassName FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), '', $db);
 
 // init Document
 	if(isset($GLOBALS['we_doc'])){
@@ -1392,14 +1390,22 @@ function g_l($name, $specific, $omitErrors = false){
 }
 
 function we_templateInit(){
+	if(isset($GLOBALS['WE_TEMPLATE_INIT'])){
+		++$GLOBALS['WE_TEMPLATE_INIT'];
+		return;
+	}
+	$GLOBALS['WE_TEMPLATE_INIT'] = 1;
+
+	// Activate the webEdition error handler
+	require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_error_handler.inc.php');
+	we_error_handler(false);
+
 	require_once ($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
+	require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tag.inc.php');
+
 	if(!isset($GLOBALS['DB_WE'])){
 		$GLOBALS['DB_WE'] = new DB_WE();
 	}
-	if(!isset($GLOBALS['WE_TEMPLATE_INIT'])){
-		$GLOBALS['WE_TEMPLATE_INIT'] = 0;
-	}
-	++$GLOBALS['WE_TEMPLATE_INIT'];
 
 	if($GLOBALS['we_doc'] && (!isset($GLOBALS['WE_DOC_ID']) || $GLOBALS['WE_DOC_ID'] != $GLOBALS['we_doc']->ID)){
 		$GLOBALS['WE_DOC_ID'] = $GLOBALS['we_doc']->ID;
@@ -1438,29 +1444,30 @@ function we_templateInit(){
 }
 
 function we_templateHead($fullHeader = false){
-	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']){
-		if($fullHeader){
-			if(isset($GLOBALS['WE_HTML_HEAD_BODY'])){
-				echo we_templatePreContent(); //to increment we_templatePreContent-var
-				return;
-			}
-			$GLOBALS['WE_HTML_HEAD_BODY'] = true;
+	if(!isset($GLOBALS['we_editmode']) || !$GLOBALS['we_editmode']){
+		return;
+	}
+	if($fullHeader){
+		if(isset($GLOBALS['WE_HTML_HEAD_BODY'])){
+			echo we_templatePreContent(); //to increment we_templatePreContent-var
+			return;
 		}
-		echo ($fullHeader ? we_html_element::htmlDocType() . '<html><head><title>WE</title>' : '') . STYLESHEET_BUTTONS_ONLY . SCRIPT_BUTTONS_ONLY .
-		we_html_element::jsScript(JS_DIR . 'windows.js') . weSuggest::getYuiFiles() .
-		we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') .
-		we_html_element::jsElement('parent.openedWithWE = 1;');
-		require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
-		if($fullHeader){
-			echo '</head><body onunload="doUnload()">';
-			we_templatePreContent();
-		}
+	}
+	echo ($fullHeader ? we_html_element::htmlDocType() . '<html><head><title>WE</title>' : '') . STYLESHEET_BUTTONS_ONLY . SCRIPT_BUTTONS_ONLY .
+	we_html_element::jsScript(JS_DIR . 'windows.js') . weSuggest::getYuiFiles() .
+	we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') .
+	we_html_element::jsElement('parent.openedWithWE = 1;');
+	require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
+	if($fullHeader){
+		echo '</head><body onunload="doUnload()">';
+		we_templatePreContent();
+		$GLOBALS['WE_HTML_HEAD_BODY'] = true;
 	}
 }
 
-function we_templatePreContent(){
+function we_templatePreContent($force = false){//force is used by templates with a full html/body.
 	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']){
-		if(!isset($GLOBALS['we_templatePreContent'])){
+		if($force || (!isset($GLOBALS['WE_HTML_HEAD_BODY']) && !isset($GLOBALS['we_templatePreContent']))){
 			echo '<form name="we_form" action="" method="post" onsubmit="return false;">' .
 			we_class::hiddenTrans();
 		}
@@ -1520,7 +1527,9 @@ function we_TemplateExit($param = 0){
 }
 
 function we_cmd_enc($str){
-	return ($str == '' ? '' : 'WECMDENC_' . urlencode(base64_encode($str)));
+	return ($str == '' ? '' : 'WECMDENC_'
+			.
+			urlencode(base64_encode($str)));
 }
 
 function we_cmd_dec($no, $default = ''){

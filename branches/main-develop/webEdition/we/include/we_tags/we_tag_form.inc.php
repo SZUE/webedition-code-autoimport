@@ -38,7 +38,7 @@ function we_tag_form($attribs){
 	$categories = weTag_getAttribute('categories', $attribs);
 	$onsubmit = weTag_getAttribute('onSubmit', $attribs, weTag_getAttribute('onsubmit', $attribs));
 	$remove = weTag_getAttribute('remove', $attribs);
-	$xml = weTag_getAttribute('xml', $attribs);
+	$xml = weTag_getAttribute('xml', $attribs, XHTML_DEFAULT, true);
 	$formname = weTag_getAttribute('name', $attribs, 'we_global_form');
 	if(array_key_exists('nameid', $attribs)){ // Bug #3153
 		$formname = weTag_getAttribute('nameid', $attribs, 'we_global_form');
@@ -59,7 +59,7 @@ function we_tag_form($attribs){
 	$formAttribs['method'] = $method;
 
 	$GLOBALS['we_form_action'] = ($id ?
-			($id == 'self' ? (defined('WE_REDIRECTED_SEO') ? WE_REDIRECTED_SEO : $_SERVER['SCRIPT_NAME']) : f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'Path', $GLOBALS['DB_WE'])) :
+			($id == 'self' ? (defined('WE_REDIRECTED_SEO') ? WE_REDIRECTED_SEO : $_SERVER['SCRIPT_NAME']) : f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id))) :
 			($action ? $action : $_SERVER['SCRIPT_NAME']));
 
 	if($type != 'search'){
@@ -92,7 +92,10 @@ function we_tag_form($attribs){
 								$GLOBALS['lv']->IDs[$GLOBALS['lv']->count - 1] :
 								$GLOBALS['we_doc']->ID) ),
 					)) .
-					getHtmlTag('input', array('xml' => $xml, 'type' => 'hidden', 'name' => 'we_variant',
+					getHtmlTag('input', array(
+						'xml' => $xml,
+						'type' => 'hidden',
+						'name' => 'we_variant',
 						'value' => (isset($GLOBALS['we_doc']->Variant) ? $GLOBALS['we_doc']->Variant : ''),
 					)) .
 					getHtmlTag('input', array('xml' => $xml, 'type' => 'hidden', 'name' => 't', 'value' => time(),));
@@ -151,11 +154,11 @@ function we_tag_form($attribs){
 			$oncaptchaerror = weTag_getAttribute('oncaptchaerror', $attribs);
 			$recipient = weTag_getAttribute('recipient', $attribs);
 
-			$successpage = $onsuccess ? f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($onsuccess), 'Path', $GLOBALS['DB_WE']) : '';
-			$errorpage = $onerror ? f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($onerror), 'Path', $GLOBALS['DB_WE']) : '';
-			$mailerrorpage = $onmailerror ? f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($onmailerror), 'Path', $GLOBALS['DB_WE']) : '';
-			$recipienterrorpage = $onrecipienterror ? f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($onrecipienterror), 'Path', $GLOBALS['DB_WE']) : '';
-			$captchaerrorpage = $oncaptchaerror ? f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($oncaptchaerror), 'Path', $GLOBALS['DB_WE']) : '';
+			$successpage = $onsuccess ? f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($onsuccess)) : '';
+			$errorpage = $onerror ? f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($onerror)) : '';
+			$mailerrorpage = $onmailerror ? f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($onmailerror)) : '';
+			$recipienterrorpage = $onrecipienterror ? f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($onrecipienterror)) : '';
+			$captchaerrorpage = $oncaptchaerror ? f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($oncaptchaerror)) : '';
 
 			$preconfirm = $confirmmail && $preconfirm ? str_replace("'", "\\'", $GLOBALS['we_doc']->getElement($preconfirm)) : '';
 			$postconfirm = $confirmmail && $postconfirm ? str_replace("'", "\\'", $GLOBALS['we_doc']->getElement($postconfirm)) : '';
@@ -170,7 +173,7 @@ function we_tag_form($attribs){
 			$formAttribs['onsubmit'] = $onsubmit;
 			$formAttribs['action'] = WEBEDITION_DIR . 'we_formmail.php';
 			if($id){
-				$formAttribs['action'] = ($id == 'self' ? (defined('WE_REDIRECTED_SEO') ? WE_REDIRECTED_SEO : $_SERVER['SCRIPT_NAME']) : f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'Path', $GLOBALS['DB_WE']));
+				$formAttribs['action'] = ($id == 'self' ? (defined('WE_REDIRECTED_SEO') ? WE_REDIRECTED_SEO : $_SERVER['SCRIPT_NAME']) : f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id)));
 			}
 
 

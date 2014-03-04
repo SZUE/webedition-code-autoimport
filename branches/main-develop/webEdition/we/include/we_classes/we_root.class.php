@@ -351,15 +351,15 @@ abstract class we_root extends we_class{
 		$ownersReadOnly = $this->OwnersReadOnly ? unserialize($this->OwnersReadOnly) : array();
 
 		$content = '<table style="border-spacing: 0px;border-style:none;width:370px;" cellpadding="0">' .
-				'<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(351, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>';
+			'<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(351, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>';
 		if(!empty($owners)){
 			foreach($owners as $owner){
 				$foo = getHash('SELECT ID,Path,Icon from ' . USER_TABLE . ' WHERE ID=' . intval($owner), $this->DB_WE);
 				$icon = isset($foo['Icon']) ? ICON_DIR . $foo['Icon'] : ICON_DIR . 'user.gif';
 				$_path = isset($foo['Path']) ? $foo['Path'] : '';
 				$content .= '<tr><td><img src="' . $icon . '" width="16" height="18" /></td><td class="defaultfont">' . $_path . '</td><td>' .
-						we_html_forms::checkboxWithHidden(isset($ownersReadOnly[$owner]) ? $ownersReadOnly[$owner] : '', 'we_owners_read_only[' . $owner . ']', g_l('weClass', '[readOnly]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);', !$canChange) .
-						'</td><td>' . ($canChange ? we_html_button::create_button('image:btn_function_trash', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('del_owner','" . $owner . "');") : '') . '</td></tr>';
+					we_html_forms::checkboxWithHidden(isset($ownersReadOnly[$owner]) ? $ownersReadOnly[$owner] : '', 'we_owners_read_only[' . $owner . ']', g_l('weClass', '[readOnly]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);', !$canChange) .
+					'</td><td>' . ($canChange ? we_html_button::create_button('image:btn_function_trash', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('del_owner','" . $owner . "');") : '') . '</td></tr>';
 			}
 		} else {
 			$content .= '<tr><td><img src="' . ICON_DIR . "user.gif" . '" width="16" height="18" /></td><td class="defaultfont">' . g_l('weClass', '[onlyOwner]') . '</td><td></td><td></td></tr>';
@@ -374,7 +374,7 @@ abstract class we_root extends we_class{
 		$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$textname'].value");
 		$wecmdenc5 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.setScrollTo();fillIDs();opener.we_cmd('add_owner',top.allIDs);");
 		$addbut = $canChange ?
-				$this->htmlHidden($idname, '') . $this->htmlHidden($textname, '') . we_html_button::create_button('add', "javascript:we_cmd('browse_users','" . $wecmdenc1 . "','" . $wecmdenc2 . "','',document.forms[0].elements['$idname'].value,'" . $wecmdenc5 . "','','',1);") : "";
+			$this->htmlHidden($idname, '') . $this->htmlHidden($textname, '') . we_html_button::create_button('add', "javascript:we_cmd('browse_users','" . $wecmdenc1 . "','" . $wecmdenc2 . "','',document.forms[0].elements['$idname'].value,'" . $wecmdenc5 . "','','',1);") : "";
 
 		$content = '<table style="border-spacing: 0px;border-style:none;width:500px;" cellpadding="0">
 <tr><td><div class="multichooser">' . $content . '</div></td></tr>
@@ -390,10 +390,10 @@ abstract class we_root extends we_class{
 <tr><td class="defaultfont">' . $this->formCreator($canChange && permissionhandler::hasPerm('CHANGE_DOCUMENT_OWNER'), 388) . '</td></tr>
 <tr><td>' . we_html_tools::getPixel(2, 20) . '</td></tr>
 <tr><td>' . $this->formRestrictOwners($canChange && permissionhandler::hasPerm('CHANGE_DOCUMENT_PERMISSION')) . '</td></tr>' .
-				($this->RestrictOwners ?
-						'<tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>
+			($this->RestrictOwners ?
+				'<tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>
 <tr><td>' . $this->formOwners($canChange && permissionhandler::hasPerm('CHANGE_DOCUMENT_PERMISSION')) . '</td></tr>' : '') .
-				'</table>';
+			'</table>';
 	}
 
 	function del_all_owners(){
@@ -502,24 +502,23 @@ abstract class we_root extends we_class{
 	function formTriggerDocument($isclass = false){
 		$yuiSuggest = &weSuggest::getInstance();
 		$table = FILE_TABLE;
+		$textname = 'we_' . $this->Name . '_TriggerName';
 		if($isclass){
-			$textname = 'we_' . $this->Name . '_TriggerName';
 			$idname = 'we_' . $this->Name . '_DefaultTriggerID';
 			$myid = $this->DefaultTriggerID ? $this->DefaultTriggerID : '';
 		} else {
-			$textname = 'we_' . $this->Name . '_TriggerName';
 			$idname = 'we_' . $this->Name . '_TriggerID';
 			$myid = $this->TriggerID ? $this->TriggerID : '';
 		}
-		$path = f('SELECT Path FROM ' . $this->DB_WE->escape($table) . ' WHERE ID=' . intval($myid), 'Path', $this->DB_WE);
+		$path = f('SELECT Path FROM ' . $this->DB_WE->escape($table) . ' WHERE ID=' . intval($myid), '', $this->DB_WE);
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$idname'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$textname'].value");
 		$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);");
-		$button = we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','text/webedition',1)");
+		$button = we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','" . we_base_ContentTypes::WEDOCUMENT . "',1)");
 		$trashButton = we_html_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['$idname'].value='';document.we_form.elements['$textname'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInputTriggerID');_EditorFrame.setEditorIsHot(true);", true, 27, 22);
 
 		$yuiSuggest->setAcId('TriggerID');
-		$yuiSuggest->setContentType('folder,text/webedition');
+		$yuiSuggest->setContentType('folder,' . we_base_ContentTypes::WEDOCUMENT);
 		$yuiSuggest->setInput($textname, $path);
 		$yuiSuggest->setLabel(g_l('modules_object', '[seourltrigger]'));
 		$yuiSuggest->setMaxResults(10);
@@ -528,8 +527,8 @@ abstract class we_root extends we_class{
 		$yuiSuggest->setSelector('Docselector');
 		$yuiSuggest->setTable($table);
 		$yuiSuggest->setWidth(388);
-		$yuiSuggest->setSelectButton($button);
-		$yuiSuggest->setTrashButton($trashButton);
+		$yuiSuggest->setSelectButton(we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','text/webedition',1)"));
+		$yuiSuggest->setTrashButton(we_html_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['$idname'].value='';document.we_form.elements['$textname'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInputTriggerID');_EditorFrame.setEditorIsHot(true);", true, 27, 22));
 		//$yuiSuggest->setDoOnTextfieldBlur("if(document.getElementById('yuiAcResultTemplate').value == '' || document.getElementById('yuiAcResultTemplate').value == 0) { document.getElementById('TemplateLabel').style.display = 'inline'; document.getElementById('TemplateLabelLink').style.display = 'none'; } else { document.getElementById('TemplateLabel').style.display = 'none'; document.getElementById('TemplateLabelLink').style.display = 'inline'; }");
 		//$yuiSuggest->setDoOnTextfieldBlur("if(yuiAcFields[yuiAcFieldsById['yuiAcInputTemplate'].set].changed && YAHOO.autocoml.isValidById('yuiAcInputTemplate')) top.we_cmd('reload_editpage')");
 		return $yuiSuggest->getHTML();
@@ -544,14 +543,14 @@ abstract class we_root extends we_class{
 		//$idname = 'we_'.$this->Name.'_LanguageDocID-'.$langkey;
 		//$myid = $this->TriggerID ? $this->TriggerID : '';
 		$myid = $LDID ? $LDID : '';
-		$path = f('SELECT Path FROM ' . $this->DB_WE->escape($table) . ' WHERE ID=' . intval($myid), 'Path', $this->DB_WE);
+		$path = f('SELECT Path FROM ' . $this->DB_WE->escape($table) . ' WHERE ID=' . intval($myid), '', $this->DB_WE);
 		if($rootDirID && $path == ''){
-			$path = f('SELECT Path FROM ' . $this->DB_WE->escape($table) . ' WHERE ID=' . intval($rootDirID), 'Path', $this->DB_WE);
+			$path = f('SELECT Path FROM ' . $this->DB_WE->escape($table) . ' WHERE ID=' . intval($rootDirID), '', $this->DB_WE);
 		}
 		$yuiSuggest->setAcId($ackeyshort, $path);
 		if($table == FILE_TABLE){
-			$yuiSuggest->setContentType('folder,text/webedition');
-			$ctype = 'text/webedition';
+			$yuiSuggest->setContentType('folder,' . we_base_ContentTypes::WEDOCUMENT);
+			$ctype = we_base_ContentTypes::WEDOCUMENT;
 			$etype = FILE_TABLE;
 		} else {
 			$yuiSuggest->setContentType('folder,objectFile');
@@ -567,9 +566,9 @@ abstract class we_root extends we_class{
 		$trashButton = we_html_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['$idname'].value='-1';document.we_form.elements['$textname'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInput" . $ackeyshort . "');_EditorFrame.setEditorIsHot(true);", true, 27, 22);
 		$openbutton = we_html_button::create_button("image:edit_edit", "javascript:if(document.we_form.elements['$idname'].value){top.doClickDirect(document.we_form.elements['$idname'].value,'" . $ctype . "','" . $etype . "'); }");
 		if(isset($this->DocType) && $this->DocType && permissionhandler::hasPerm("NEW_WEBEDITIONSITE")){
-			$LDcoType = f('SELECT LDID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblDocTypes" AND DID=' . $this->DocType . ' AND Locale="' . $langkey . '"', 'LDID', new DB_WE());
+			$LDcoType = f('SELECT LDID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblDocTypes" AND DID=' . $this->DocType . ' AND Locale="' . $langkey . '"', '', new DB_WE());
 			if($LDcoType){
-				$createbutton = we_html_button::create_button("image:add_doc", "javascript:top.we_cmd('new','" . FILE_TABLE . "','','text/webedition','" . $LDcoType . "');");
+				$createbutton = we_html_button::create_button("image:add_doc", "javascript:top.we_cmd('new','" . FILE_TABLE . "','','" . we_base_ContentTypes::WEDOCUMENT . "','" . $LDcoType . "');");
 				$yuiSuggest->setCreateButton($createbutton);
 			}
 		}
@@ -927,9 +926,9 @@ abstract class we_root extends we_class{
 	protected function i_getContentData($loadBinary = 0){
 
 		$this->DB_WE->query('SELECT * FROM ' . CONTENT_TABLE . ',' . LINK_TABLE . ' WHERE ' . LINK_TABLE . '.DID=' . intval($this->ID) .
-				' AND ' . LINK_TABLE . '.DocumentTable="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) .
-				'" AND ' . CONTENT_TABLE . '.ID=' . LINK_TABLE . '.CID ' .
-				($loadBinary ? '' : ' AND ' . CONTENT_TABLE . '.IsBinary=0'));
+			' AND ' . LINK_TABLE . '.DocumentTable="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) .
+			'" AND ' . CONTENT_TABLE . '.ID=' . LINK_TABLE . '.CID ' .
+			($loadBinary ? '' : ' AND ' . CONTENT_TABLE . '.IsBinary=0'));
 		$filter = array('Name', 'DID', 'Ord');
 		while($this->DB_WE->next_record()){
 			$Name = $this->DB_WE->f('Name');
@@ -1063,8 +1062,8 @@ abstract class we_root extends we_class{
 	function i_fileExtensionNotValid(){
 		if(isset($this->Extension)){
 			$ext = (substr($this->Extension, 0, 1) == '.' ?
-							substr($this->Extension, 1) :
-							$this->Extension);
+					substr($this->Extension, 1) :
+					$this->Extension);
 
 			return !(preg_match('/^[a-zA-Z0-9]+$/iD', $ext) || $ext == '');
 		}

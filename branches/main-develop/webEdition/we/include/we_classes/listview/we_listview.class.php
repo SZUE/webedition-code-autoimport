@@ -172,7 +172,7 @@ class we_listview extends listviewBase{
 		$ws_where = '';
 
 		if($this->contentTypes){
-			$this->contentTypes = str_replace(array('img', 'wepage', 'binary'), array('image/*', 'text/webEdition', 'application/*'), $this->contentTypes);
+			$this->contentTypes = str_replace(array('img', 'wepage', 'binary'), array(we_base_ContentTypes::IMAGE, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::APPLICATION), $this->contentTypes);
 			$CtArr = makeArrayFromCSV($this->contentTypes);
 			foreach($CtArr as $ct){
 				$sql_tail .= ' AND ' . FILE_TABLE . '.ContentType = "' . $this->DB_WE->escape($ct) . '"';
@@ -294,7 +294,7 @@ class we_listview extends listviewBase{
 				$_idListArray = array_unique($_idListArray);
 				$_idlist = implode(',', $_idListArray);
 				$this->DB_WE->query('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID IN(' . $_idlist . ')');
-				while($this->DB_WE->next_record()){
+				while($this->DB_WE->next_record(MYSQL_ASSOC)){
 					$this->customerArray['cid_' . $this->DB_WE->f('ID')] = $this->DB_WE->getRecord();
 				}
 			}
@@ -332,7 +332,7 @@ class we_listview extends listviewBase{
 					$tmp = ($this->DB_WE->f('BDID'));
 					$this->Record[$this->DB_WE->f('Name')] = $tmp ? $tmp : $this->DB_WE->f('Dat');
 				}
-				$tmp = getHash('SELECT * FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $this->DB_WE);
+				$tmp = getHash('SELECT * FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $this->DB_WE, MYSQL_ASSOC);
 				foreach($tmp as $key => $val){
 					$this->Record['wedoc_' . $key] = $val;
 				}

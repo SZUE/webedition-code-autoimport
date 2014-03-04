@@ -125,7 +125,7 @@ function we_tag_a($attribs, $content){
 
 			//	preview mode in seem
 			if(isset($_REQUEST['we_transaction']) && isset(
-					$_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]['0']['ClassName']) && $_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]['0']['ClassName'] == 'we_objectFile'){
+					$_SESSION['weS']['we_data'][$_REQUEST['we_transaction']][0]['ClassName']) && $_SESSION['weS']['we_data'][$_REQUEST['we_transaction']][0]['ClassName'] == 'we_objectFile'){
 				$type = we_shop_shop::OBJECT;
 			}
 
@@ -160,7 +160,7 @@ function we_tag_a($attribs, $content){
 				}
 				//	preview mode in seem
 				if(isset($_REQUEST['we_transaction']) && isset(
-						$_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]['0']['ClassName']) && $_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]['0']['ClassName'] == 'we_objectFile'){
+						$_SESSION['weS']['we_data'][$_REQUEST['we_transaction']][0]['ClassName']) && $_SESSION['weS']['we_data'][$_REQUEST['we_transaction']][0]['ClassName'] == 'we_objectFile'){
 					$type = we_shop_shop::OBJECT;
 				}
 				$param[] = 'del_shop_artikelid=' . $idd . '&type=' . $type . '&t=' . time() . $variant . $customReq . $ifShopname;

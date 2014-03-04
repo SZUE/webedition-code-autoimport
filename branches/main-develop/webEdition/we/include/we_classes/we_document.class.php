@@ -207,10 +207,10 @@ class we_document extends we_root{
 
 		if($this->ID == 0 && $_REQUEST['we_cmd'][0] == 'load_editor' && $doctype == ''){ //	Neues Dokument oder Dokument ohne DocType
 			switch($this->ContentType){
-				case 'text/html': //	is HTML-File
+				case we_base_ContentTypes::HTML: //	is HTML-File
 					$selected = DEFAULT_HTML_EXT;
 					break;
-				case 'text/webedition': //	webEdition Document
+				case we_base_ContentTypes::WEDOCUMENT: //	webEdition Document
 					$selected = ($this->IsDynamic == 1 ? DEFAULT_DYNAMIC_EXT : DEFAULT_STATIC_EXT);
 					break;
 				default: //	no webEdition Document
@@ -224,8 +224,8 @@ class we_document extends we_root{
 	}
 
 	function formPath(){
-		$disable = ( ($this->ContentType == 'text/html' || $this->ContentType == 'text/webedition') && $this->Published);
-		if($this->ContentType == 'text/htaccess'){
+		$disable = ( ($this->ContentType == we_base_ContentTypes::HTML || $this->ContentType == we_base_ContentTypes::WEDOCUMENT) && $this->Published);
+		if($this->ContentType == we_base_ContentTypes::HTACESS){
 			$this->Filename = '.htaccess';
 			$filenameinput = 'disabled="disabled" ';
 		} else {
@@ -256,7 +256,7 @@ class we_document extends we_root{
 	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
 	<tr><td colspan="2">' . $this->formInputField("txt", "Keywords", g_l('weClass', "[Keywords]"), 40, 508, "", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>
 </table>' .
-			($this->ContentType == 'image/*' ? $this->formCharset(true) : '');
+			($this->ContentType == we_base_ContentTypes::IMAGE ? $this->formCharset(true) : '');
 	}
 
 	function formCategory(){
@@ -621,24 +621,24 @@ class we_document extends we_root{
 
 	private function isVersioned(){
 		switch($this->ContentType){
-			case 'application/x-shockwave-flash':
+			case we_base_ContentTypes::FLASH:
 				return VERSIONING_FLASH;
-			case 'image/*':
+			case we_base_ContentTypes::IMAGE:
 				return VERSIONING_IMAGE;
-			case 'text/weTmpl':
+			case we_base_ContentTypes::TEMPLATE:
 				return VERSIONING_TEXT_WETMPL;
-			case 'video/quicktime':
+			case we_base_ContentTypes::QUICKTIME:
 				return VERSIONING_QUICKTIME;
-			case 'text/js':
+			case we_base_ContentTypes::JS:
 				return VERSIONING_TEXT_JS;
-			case 'text/css':
+			case we_base_ContentTypes::CSS:
 				return VERSIONING_TEXT_CSS;
-			case 'text/plain':
+			case we_base_ContentTypes::TEXT:
 				return VERSIONING_TEXT_PLAIN;
-			case 'text/xml':
+			case we_base_ContentTypes::XML:
 				return VERSIONING_TEXT_XML;
 			default:
-			case 'application/*':
+			case we_base_ContentTypes::APPLICATION:
 				return VERSIONING_SONSTIGE;
 		}
 	}

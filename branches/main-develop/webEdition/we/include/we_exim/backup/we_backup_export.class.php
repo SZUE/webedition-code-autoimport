@@ -107,7 +107,7 @@ abstract class we_backup_export{
 			if($export_binarys || $export_version_binarys){
 				switch($_def_table){
 					case 'tblfile':
-						if(($_object->ContentType == "image/*" || stripos($_object->ContentType, "application/") !== false)){
+						if(($_object->ContentType == we_base_ContentTypes::IMAGE || stripos($_object->ContentType, "application/") !== false)){
 							if($log){
 								we_backup_util::addLog(sprintf('Exporting binary data for item %s:%s', $_table, $_object->ID));
 							}

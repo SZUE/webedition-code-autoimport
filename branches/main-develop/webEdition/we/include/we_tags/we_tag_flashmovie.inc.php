@@ -49,10 +49,9 @@ function we_tag_flashmovie($attribs){
 		$startid = weTag_getAttribute('startid', $attribs);
 		$parentid = weTag_getAttribute('parentid', $attribs, 0);
 		// Create "Edit Flash" button
-		//				"javascript:we_cmd('openDocselector','" . ($id != "" ? $id : $startid) . "', '" . FILE_TABLE . "', 'document.forms[\'we_form\'].elements[\'" . $fname . "\'].value', '', 'opener.setScrollTo();opener.top.we_cmd(\'reload_editpage\');opener._EditorFrame.setEditorIsHot(true);', '" . session_id() . "'," .$parentid. ", 'application/x-shockwave-flash', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")",
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['" . $fname . "'].value");
 		$wecmdenc3 = we_cmd_enc("opener.setScrollTo(); opener._EditorFrame.setEditorIsHot(true); opener.top.we_cmd('reload_editpage'); opener._EditorFrame.setEditorIsHot(true);");
-		$flash_button = we_html_button::create_button("image:btn_edit_flash", "javascript:we_cmd('openDocselector','" . ($id != "" ? $id : $startid) . "', '" . FILE_TABLE . "', '" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "'," . $parentid . ", 'application/x-shockwave-flash', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true);
+		$flash_button = we_html_button::create_button("image:btn_edit_flash", "javascript:we_cmd('openDocselector','" . ($id != "" ? $id : $startid) . "', '" . FILE_TABLE . "', '" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "'," . $parentid . ", '" . we_base_ContentTypes::FLASH . "', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true);
 
 		// Create "Delete/Clear Flash" button
 		$clear_button = we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('remove_image', '" . $name . "')", true);

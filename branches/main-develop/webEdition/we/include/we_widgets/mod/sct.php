@@ -27,7 +27,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 $aCols = explode(';', isset($aProps) ? $aProps[3] : $_REQUEST['we_cmd'][0]);
 $_disableNew = true;
-$_cmdNew = "javascript:top.we_cmd('new','" . FILE_TABLE . "','','text/webedition');";
+$_cmdNew = "javascript:top.we_cmd('new','" . FILE_TABLE . "','','" . we_base_ContentTypes::WEDOCUMENT . "');";
 if(permissionhandler::hasPerm("NEW_WEBEDITIONSITE")){
 	if(permissionhandler::hasPerm("NO_DOCTYPE")){
 		$_disableNew = false;
@@ -49,7 +49,7 @@ if(permissionhandler::hasPerm("NEW_WEBEDITIONSITE")){
 		$DB_WE->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . $q);
 		if($DB_WE->next_record()){
 			$_disableNew = false;
-			$_cmdNew = "javascript:top.we_cmd('new','" . FILE_TABLE . "','','text/webedition','" . $DB_WE->f("ID") . "')";
+			$_cmdNew = "javascript:top.we_cmd('new','" . FILE_TABLE . "','','" . we_base_ContentTypes::WEDOCUMENT . "','" . $DB_WE->f("ID") . "')";
 		} else {
 			$_disableNew = true;
 		}
@@ -75,7 +75,7 @@ if(defined('FILE_TABLE') && permissionhandler::hasPerm("CAN_SEE_DOCUMENTS") && !
 	$js["new_document"] = $_cmdNew;
 }
 if(defined('TEMPLATES_TABLE') && permissionhandler::hasPerm("NEW_TEMPLATE") && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
-	$js["new_template"] = "top.we_cmd('new','" . TEMPLATES_TABLE . "','','text/weTmpl');";
+	$js["new_template"] = "top.we_cmd('new','" . TEMPLATES_TABLE . "','','" . we_base_ContentTypes::TEMPLATE . "');";
 }
 if(permissionhandler::hasPerm("NEW_DOC_FOLDER")){
 	$js["new_directory"] = "top.we_cmd('new','" . FILE_TABLE . "','','folder')";

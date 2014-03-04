@@ -31,7 +31,7 @@ echo we_html_tools::getHtmlTop();
 
 <?php
 if($we_responseText && $we_responseTextType == we_message_reporting::WE_MESSAGE_ERROR){
-	print "_EditorFrame.setEditorIsHot(true);";
+	echo "_EditorFrame.setEditorIsHot(true);";
 }
 
 if(isset($wasSaved) && $wasSaved){
@@ -50,7 +50,7 @@ if(isset($wasSaved) && $wasSaved){
 			}
 			break;
 
-		case 'text/weTmpl': // #538 reload documents based on this template
+		case we_base_ContentTypes::TEMPLATE: // #538 reload documents based on this template
 
 			$reloadDocsTempls = we_rebuild_base::getTemplAndDocIDsOfTemplate($GLOBALS['we_doc']->ID, false, false, true, true);
 
@@ -81,47 +81,37 @@ for (frameId in _usedEditors) {
 	}
 
 	if($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
-
-		$_newDocJs = "";
-
 		//	JS, when not in seem
-		$isTmpl = $we_doc->ContentType == "text/weTmpl" && (permissionhandler::hasPerm("NEW_WEBEDITIONSITE") || permissionhandler::hasPerm("ADMINISTRATOR"));
-		if(!$isTmpl){
-			$isObject = $we_doc->ContentType == "object" && (permissionhandler::hasPerm("NEW_OBJECTFILE") || permissionhandler::hasPerm("ADMINISTRATOR"));
-		}
-		if($isTmpl){
-			$_newDocJs .= 'if( _EditorFrame.getEditorMakeNewDoc() == true ) {' .
+		$isTmpl = $we_doc->ContentType == we_base_ContentTypes::TEMPLATE && (permissionhandler::hasPerm("NEW_WEBEDITIONSITE") || permissionhandler::hasPerm("ADMINISTRATOR"));
+		echo ($isTmpl ?
+				'if( _EditorFrame.getEditorMakeNewDoc() == true ) {' .
 				(isset($saveTemplate) && $saveTemplate ?
-					"	top.we_cmd('new','" . FILE_TABLE . "','','text/webedition','','" . $we_doc->ID . "');" :
-					''
+						"	top.we_cmd('new','" . FILE_TABLE . "','','" . we_base_ContentTypes::WEDOCUMENT . "','','" . $we_doc->ID . "');" :
+						''
 				) .
-				'} else {';
-		} elseif($isObject){
-			$_newDocJs .=
-				"if( _EditorFrame.getEditorMakeNewDoc() == true ) {
+				'} else {' :
+				(($isObject = $we_doc->ContentType == 'object' && (permissionhandler::hasPerm('NEW_OBJECTFILE') || permissionhandler::hasPerm("ADMINISTRATOR"))) ?
+						"if( _EditorFrame.getEditorMakeNewDoc() == true ) {
 				top.we_cmd('new','" . OBJECT_FILES_TABLE . "','','objectFile','" . $we_doc->ID . "');
-			} else {";
-		}
-		$_newDocJs .= 'if ( _EditorFrame.getEditorIsInUse() ) {_EditorFrameDocumentRef.frames[0].location.reload();}';
-		if($isTmpl || $isObject){
-			$_newDocJs .= "}";
-		}
-		print $_newDocJs;
+			} else {" : '')) .
+		'if ( _EditorFrame.getEditorIsInUse() ) {_EditorFrameDocumentRef.frames[0].location.reload();}' .
+		($isTmpl || $isObject ?
+				'}' : '');
 	}
 }
 
-print (isset($we_JavaScript) ? $we_JavaScript : "");
+echo (isset($we_JavaScript) ? $we_JavaScript : "");
 
 if($we_responseText){
 	$_jsCommand = "";
-	print 'self.focus();
+	echo 'self.focus();
 		top.toggleBusy(0);
 		showAlert = 0;
 		var contentEditor = top.weEditorFrameController.getVisibleEditorFrame();';
 
 	// enable navigation box if doc has been published
 	if(isset($GLOBALS['we_doc']->Published) && $GLOBALS['we_doc']->Published){
-		print "try{ if( _EditorFrame && _EditorFrame.getEditorIsInUse() && contentEditor && contentEditor.switch_button_state) contentEditor.switch_button_state('add', 'add_enabled', 'enabled'); } catch(e) {}";
+		echo "try{ if( _EditorFrame && _EditorFrame.getEditorIsInUse() && contentEditor && contentEditor.switch_button_state) contentEditor.switch_button_state('add', 'add_enabled', 'enabled'); } catch(e) {}";
 	}
 
 	if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE && (!isset($_showAlert) || !$_showAlert)){ //	Confirm Box or alert in seeMode
@@ -146,28 +136,27 @@ if($we_responseText){
 			";
 		} else { //	alert when in preview mode
 			$_jsCommand .= we_message_reporting::getShowMessageCall($we_responseText, $we_responseTextType) .
-				"_EditorFrameDocumentRef.frames[0].we_cmd('switch_edit_page'," . $GLOBALS['we_doc']->EditPageNr . ",'" . $GLOBALS['we_transaction'] . "');" .
-				//	JavaScript: generated in we_editor.inc.php
-				(isset($_REQUEST['we_cmd'][5]) ? $_REQUEST['we_cmd'][5] : '' );
+					"_EditorFrameDocumentRef.frames[0].we_cmd('switch_edit_page'," . $GLOBALS['we_doc']->EditPageNr . ",'" . $GLOBALS['we_transaction'] . "');" .
+					//	JavaScript: generated in we_editor.inc.php
+					(isset($_REQUEST['we_cmd'][5]) ? $_REQUEST['we_cmd'][5] : '' );
 		}
 
 		if(isset($GLOBALS["publish_doc"]) && $GLOBALS["publish_doc"] == true){
 
 			$_jsCommand .="
 			if(isEditInclude){
-				" . we_message_reporting::getShowMessageCall(g_l('SEEM', "[alert][changed_include]"), we_message_reporting::WE_MESSAGE_NOTICE) . "
-						weWindow.top.we_cmd(\"reload_editpage\");
+				" . we_message_reporting::getShowMessageCall(g_l('SEEM', "[alert][changed_include]"), we_message_reporting::WE_MESSAGE_NOTICE) . '
+						weWindow.top.we_cmd("reload_editpage");
 						weWindow.edit_include.close();
 						top.close();
-			}
-			";
+			}';
 		}
 	} else { //	alert in normal mode
 		$_jsCommand .= we_message_reporting::getShowMessageCall($we_responseText, $we_responseTextType) .
-			//	JavaScript: generated in we_editor.inc.php
-			(isset($_REQUEST['we_cmd'][5]) ? $_REQUEST['we_cmd'][5] : '' );
+				//	JavaScript: generated in we_editor.inc.php
+				(isset($_REQUEST['we_cmd'][5]) ? $_REQUEST['we_cmd'][5] : '' );
 	}
-	print $_jsCommand;
+	echo $_jsCommand;
 }
 ?>
 //-->

@@ -30,7 +30,7 @@ we_html_tools::protect();
 $yuiSuggest = new weSuggest();
 $showAC = false;
 $yuiSuggest->setAutocompleteField(
-	"yuiAcInputDoc", "yuiAcContainerDoc", FILE_TABLE, "folder,text/webEdition,text/html", "docSelector", 14, 1, "yuiAcLayerDoc", array(
+	"yuiAcInputDoc", "yuiAcContainerDoc", FILE_TABLE, "folder," . we_base_ContentTypes::WEDOCUMENT . "," . we_base_ContentTypes::HTML, "docSelector", 14, 1, "yuiAcLayerDoc", array(
 	"yuiAcIdDoc"
 	), 1, "296px");
 

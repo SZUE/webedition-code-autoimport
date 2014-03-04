@@ -56,7 +56,14 @@ class we_backup_tableItem extends weModelBase{
 		if(isset($cache[$table])){
 			return $cache[$table];
 		}
-		$cache[$table] = $GLOBALS['DB_WE']->getPrimaryKeys($table);
+		//read Primary key from installed default files
+		if(file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/liveUpdate/sqldumps/' . stripTblPrefix($table) . '.sql')){
+			$lines = we_util_File::loadLines($_SERVER['DOCUMENT_ROOT'] . '/webEdition/liveUpdate/sqldumps/' . stripTblPrefix($table) . '.sql', 2, 999);
+			$cache[$table] = $GLOBALS['DB_WE']->getPrimaryKeys($table, $lines);
+		}
+		if(!isset($cache[$table]) || !$cache[$table]){//fallback, or for external tables
+			$cache[$table] = $GLOBALS['DB_WE']->getPrimaryKeys($table);
+		}
 		return $cache[$table];
 	}
 

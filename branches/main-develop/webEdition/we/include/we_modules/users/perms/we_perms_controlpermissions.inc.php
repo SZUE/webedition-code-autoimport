@@ -38,7 +38,8 @@ $perm_defaults[$perm_group_name] = array(
 	'CHANGE_DOCUMENT_OWNER' => 0,
 	'CHANGE_DOCUMENT_PERMISSION' => 0,
 	'EDIT_SETTINGS' => 1,
-	'EDIT_PASSWD' => 1
+	'EDIT_PASSWD' => 1,
+	'EDIT_MFD_USER' => 0
 );
 
 $perm_values[$perm_group_name] = array_keys($perm_defaults[$perm_group_name]);

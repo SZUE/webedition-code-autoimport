@@ -45,8 +45,7 @@ class we_customer_copyWeDocumentFilterFrag extends taskFragment{
 		$_db = new DB_WE();
 		// now get all childs of this folder
 
-		$_db->query('SELECT *, ID, ContentType FROM ' . $_db->escape($_table) . ' WHERE	( ContentType = "folder" OR ContentType = "text/webedition" OR ContentType="objectFile" )
-			AND PATH LIKE "' . $_theFolder->Path . '/%"');
+		$_db->query('SELECT *,ID,ContentType FROM ' . $_db->escape($_table) . ' WHERE	ContentType IN("folder","' . we_base_ContentTypes::WEDOCUMENT . '","objectFile") AND PATH LIKE "' . $_theFolder->Path . '/%"');
 
 		$this->alldata = array();
 
@@ -74,7 +73,7 @@ class we_customer_copyWeDocumentFilterFrag extends taskFragment{
 			case "folder":
 				$_targetDoc = new we_folder();
 				break;
-			case "text/webedition":
+			case we_base_ContentTypes::WEDOCUMENT:
 				$_targetDoc = new we_webEditionDocument();
 				break;
 			case "objectFile":
@@ -84,8 +83,8 @@ class we_customer_copyWeDocumentFilterFrag extends taskFragment{
 		$_targetDoc->initById($this->data["id"], $this->data["table"]);
 
 		$_targetDoc->documentCustomerFilter = ($_theFolder->documentCustomerFilter ?
-						$_theFolder->documentCustomerFilter :
-						we_customer_documentFilter::getEmptyDocumentCustomerFilter());
+				$_theFolder->documentCustomerFilter :
+				we_customer_documentFilter::getEmptyDocumentCustomerFilter());
 
 		// write filter to target document
 		// save filter
@@ -127,8 +126,7 @@ if(isset($_REQUEST["startCopy"])){ // start the fragment
 	// now get all childs of this folder
 	$_db = new DB_WE();
 
-	$_db->query('SELECT ID, ContentType FROM ' . $_db->escape($_table) . ' WHERE ( ContentType = "folder" OR ContentType = "text/webedition" OR ContentType="objectFile" )
-			AND PATH LIKE "' . $_theFolder->Path . '/%"');
+	$_db->query('SELECT ID,ContentType FROM ' . $_db->escape($_table) . ' WHERE ContentType IN("folder","' . we_base_ContentTypes::WEDOCUMENT . '","objectFile" ) AND PATH LIKE "' . $_theFolder->Path . '/%"');
 
 	$_allChildsJS = 'var _allChilds = new Object();';
 
@@ -189,8 +187,8 @@ if(isset($_REQUEST["startCopy"])){ // start the fragment
 
 	");
 	print '</head><body class="weDialogBody" onload="checkForOpenChilds()">' .
-			$js . we_html_tools::htmlDialogLayout($content, g_l('modules_customerFilter', "[apply_filter]"), $buttonBar) .
-			'<div style="display: none;"> <!-- hidden -->
+		$js . we_html_tools::htmlDialogLayout($content, g_l('modules_customerFilter', "[apply_filter]"), $buttonBar) .
+		'<div style="display: none;"> <!-- hidden -->
 	<iframe style="position: absolute; top: 150; height: 1px; width: 1px;" name="iframeCopyWeDocumentCustomerFilter" id="iframeCopyWeDocumentCustomerFilter" src="about:blank"></iframe>
 </div>
 </html>';

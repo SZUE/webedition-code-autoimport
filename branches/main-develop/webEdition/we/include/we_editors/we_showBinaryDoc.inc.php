@@ -24,22 +24,22 @@
  */
 we_html_tools::protect();
 switch($_REQUEST['we_cmd'][1]){
-	case "image/*":
+	case we_base_ContentTypes::IMAGE:
 		$we_doc = new we_imageDocument();
 		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][2]]);
 		$contenttype = $we_doc->getElement("type");
 		break;
-	case "application/x-shockwave-flash":
+	case we_base_ContentTypes::FLASH:
 		$we_doc = new we_flashDocument();
 		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][2]]);
 		$contenttype = $_REQUEST['we_cmd'][1];
 		break;
-	case "video/quicktime":
+	case we_base_ContentTypes::QUICKTIME:
 		$we_doc = new we_quicktimeDocument();
 		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][2]]);
 		$contenttype = $_REQUEST['we_cmd'][1];
 		break;
-	case "application/*":
+	case we_base_ContentTypes::APPLICATION:
 		$we_doc = new we_otherDocument();
 		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][2]]);
 		switch($we_doc->Extension){

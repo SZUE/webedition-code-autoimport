@@ -22,14 +22,14 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 $tagName = $_REQUEST['we_cmd'][1];
-$openAtCursor = $_REQUEST['we_cmd'][2] === "1" ? true : false;
+$openAtCursor = $_REQUEST['we_cmd'][2] === '1';
 
 we_html_tools::protect();
 
 // include wetag depending on we_cmd[1]
 $weTag = weTagData::getTagData($tagName);
 if(!$weTag){
-	print sprintf(g_l('taged', '[tag_not_found]'), $tagName);
+	echo sprintf(g_l('taged', '[tag_not_found]'), $tagName);
 	exit;
 }
 
@@ -37,7 +37,7 @@ if(!$weTag){
 // needed javascript for the individual tags
 // #1 - all attributes of this we:tag (ids of attributes)
 $_attributes = $weTag->getAllAttributes(true);
-$jsAllAttributes = 'var allAttributes = new Array(' . (empty($_attributes) ? '' : '"' . implode('", "', $_attributes) . '"') . ');';
+$jsAllAttributes = 'var allAttributes = new Array(' . ($_attributes ? '"' . implode('", "', $_attributes) . '"' : '') . ');';
 
 // #2 all required attributes
 $_reqAttributes = $weTag->getRequiredAttributes();

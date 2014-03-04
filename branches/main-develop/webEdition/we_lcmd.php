@@ -38,7 +38,7 @@ foreach($_REQUEST['we_cmd'] as &$cmdvalue){
 
 switch($_REQUEST['we_cmd'][0]){
 	case "trigger_save_document":
-		print 'if(top.weEditorFrameController.getActiveDocumentReference() && top.weEditorFrameController.getActiveDocumentReference().frames[3] && top.weEditorFrameController.getActiveDocumentReference().frames[3].weCanSave){
+		echo 'if(top.weEditorFrameController.getActiveDocumentReference() && top.weEditorFrameController.getActiveDocumentReference().frames[3] && top.weEditorFrameController.getActiveDocumentReference().frames[3].weCanSave){
 	top.weEditorFrameController.getActiveEditorFrame().setEditorPublishWhenSave(false);
 	top.weEditorFrameController.getActiveDocumentReference().frames[3].we_save_document();
 }else{
@@ -48,7 +48,7 @@ switch($_REQUEST['we_cmd'][0]){
 		break;
 
 	case "trigger_publish_document":
-		print 'if(top.weEditorFrameController.getActiveDocumentReference() && top.weEditorFrameController.getActiveDocumentReference().frames[3] && top.weEditorFrameController.getActiveDocumentReference().frames[3].weCanSave){
+		echo 'if(top.weEditorFrameController.getActiveDocumentReference() && top.weEditorFrameController.getActiveDocumentReference().frames[3] && top.weEditorFrameController.getActiveDocumentReference().frames[3].weCanSave){
 	top.weEditorFrameController.getActiveEditorFrame().setEditorPublishWhenSave(true);
 	top.weEditorFrameController.getActiveDocumentReference().frames[3].we_save_document();
 }else{
@@ -57,61 +57,61 @@ switch($_REQUEST['we_cmd'][0]){
 ';
 		break;
 	case "new_webEditionPage":
-		print 'top.we_cmd("new","' . FILE_TABLE . '","","text/webedition");';
+		echo 'top.we_cmd("new","' . FILE_TABLE . '","","' . we_base_ContentTypes::WEDOCUMENT . '");';
 		break;
 	case "new_image":
-		print 'top.we_cmd("new","' . FILE_TABLE . '","","image/*");';
+		echo 'top.we_cmd("new","' . FILE_TABLE . '","","' . we_base_ContentTypes::IMAGE . '");';
 		break;
 	case "new_html_page":
-		print 'top.we_cmd("new","' . FILE_TABLE . '","","text/html");';
+		echo 'top.we_cmd("new","' . FILE_TABLE . '","","' . we_base_ContentTypes::HTML . '");';
 		break;
 	case "new_flash_movie":
-		print 'top.we_cmd("new","' . FILE_TABLE . '","","application/x-shockwave-flash");';
+		echo 'top.we_cmd("new","' . FILE_TABLE . '","","' . we_base_ContentTypes::FLASH . '");';
 		break;
 	case "new_quicktime_movie":
-		print 'top.we_cmd("new","' . FILE_TABLE . '","","video/quicktime");';
+		echo 'top.we_cmd("new","' . FILE_TABLE . '","","' . we_base_ContentTypes::QUICKTIME . '");';
 		break;
 	case "new_javascript":
-		print 'top.we_cmd("new","' . FILE_TABLE . '","","text/js");';
+		echo 'top.we_cmd("new","' . FILE_TABLE . '","","' . we_base_ContentTypes::JS . '");';
 		break;
 	case "new_text_plain":
-		print 'top.we_cmd("new","' . FILE_TABLE . '","","text/plain");';
+		echo 'top.we_cmd("new","' . FILE_TABLE . '","","' . we_base_ContentTypes::TEXT . '");';
 		break;
 	case "new_text_xml":
-		print 'top.we_cmd("new","' . FILE_TABLE . '","","text/xml");';
+		echo 'top.we_cmd("new","' . FILE_TABLE . '","","' . we_base_ContentTypes::XML . '");';
 		break;
 	case "new_text_htaccess":
-		print 'top.we_cmd("new","' . FILE_TABLE . '","","text/htaccess");';
+		echo 'top.we_cmd("new","' . FILE_TABLE . '","","' . we_base_ContentTypes::HTACESS . '");';
 		break;
 	case "new_css_stylesheet":
-		print 'top.we_cmd("new","' . FILE_TABLE . '","","text/css");';
+		echo 'top.we_cmd("new","' . FILE_TABLE . '","","' . we_base_ContentTypes::CSS . '");';
 		break;
 	case "new_binary_document":
-		print 'top.we_cmd("new","' . FILE_TABLE . '","","application/*");';
+		echo 'top.we_cmd("new","' . FILE_TABLE . '","","' . we_base_ContentTypes::APPLICATION . '");';
 		break;
 	case "new_template":
-		print 'top.we_cmd("new","' . TEMPLATES_TABLE . '","","text/weTmpl");';
+		echo 'top.we_cmd("new","' . TEMPLATES_TABLE . '","","' . we_base_ContentTypes::TEMPLATE . '");';
 		break;
 	case "new_document_folder":
-		print 'top.we_cmd("new","' . FILE_TABLE . '","","folder");';
+		echo 'top.we_cmd("new","' . FILE_TABLE . '","","folder");';
 		break;
 	case "new_template_folder":
-		print 'top.we_cmd("new","' . TEMPLATES_TABLE . '","","folder");';
+		echo 'top.we_cmd("new","' . TEMPLATES_TABLE . '","","folder");';
 		break;
 	case "delete_documents":
-		print 'top.we_cmd("del",1,"' . FILE_TABLE . '");';
+		echo 'top.we_cmd("del",1,"' . FILE_TABLE . '");';
 		break;
 	case "delete_templates":
-		print 'top.we_cmd("del",1,"' . TEMPLATES_TABLE . '");';
+		echo 'top.we_cmd("del",1,"' . TEMPLATES_TABLE . '");';
 		break;
 	case "delete_documents_cache":
-		print 'top.we_cmd("del",1,"' . FILE_TABLE . '_cache");';
+		echo 'top.we_cmd("del",1,"' . FILE_TABLE . '_cache");';
 		break;
 	case "move_documents":
-		print 'top.we_cmd("mv",1,"' . FILE_TABLE . '");';
+		echo 'top.we_cmd("mv",1,"' . FILE_TABLE . '");';
 		break;
 	case "move_templates":
-		print 'top.we_cmd("mv",1,"' . TEMPLATES_TABLE . '");';
+		echo 'top.we_cmd("mv",1,"' . TEMPLATES_TABLE . '");';
 		break;
 
 	case "openDelSelector":
@@ -121,7 +121,7 @@ switch($_REQUEST['we_cmd'][0]){
 			unset($_SESSION['weS']['seemForOpenDelSelector']['Table']);
 		}
 		$_cmd = 'top.we_cmd("openDelSelector","","' . $openTable . '","","","","","","",1);';
-		print "setTimeout('$_cmd',50)";
+		echo "setTimeout('$_cmd',50)";
 		break;
 
 	case "export_documents":
@@ -137,18 +137,18 @@ switch($_REQUEST['we_cmd'][0]){
 		$regs = array();
 		if(preg_match('/^new_dtPage(.+)$/', $_REQUEST['we_cmd'][0], $regs)){
 			$dt = $regs[1];
-			print 'top.we_cmd("new","' . FILE_TABLE . '","","text/webedition","' . $dt . '");';
+			echo 'top.we_cmd("new","' . FILE_TABLE . '","","' . we_base_ContentTypes::WEDOCUMENT . '","' . $dt . '");';
 			break;
 		} else if(preg_match('/^new_ClObjectFile(.+)$/', $_REQUEST['we_cmd'][0], $regs)){
 			$clID = $regs[1];
-			print 'top.we_cmd("new","' . OBJECT_FILES_TABLE . '","","objectFile","' . $clID . '");';
+			echo 'top.we_cmd("new","' . OBJECT_FILES_TABLE . '","","objectFile","' . $clID . '");';
 			break;
 		}
 		$arr = array();
 		foreach($_REQUEST['we_cmd'] as $cur){
 			$arr[] = '\'' . str_replace(array('\'', '"'), array('\\\'', '\\"'), $cur) . '\'';
 		}
-		print 'setTimeout("top.we_cmd(' . implode(',', $arr) . ')",50);';
+		echo 'setTimeout("top.we_cmd(' . implode(',', $arr) . ')",50);';
 }
 ?>
 </script>

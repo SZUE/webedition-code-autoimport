@@ -158,7 +158,6 @@ class we_export_export extends weModelBase{
 	}
 
 	function filenameNotValid($text){
-		//FIXME: check on utf-8 systems!! this string is not readable!
 		return preg_match('%[^a-z0-9äöü\._\@\ \-]%i', $text);
 	}
 

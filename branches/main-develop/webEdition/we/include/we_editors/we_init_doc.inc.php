@@ -34,13 +34,13 @@ if((!isset($we_ContentType)) && ((!isset($we_dt)) || (!is_array($we_dt)) || (!$w
 }
 
 switch(isset($we_ContentType) ? $we_ContentType : ''){
-	case 'application/x-shockwave-flash':
+	case we_base_ContentTypes::FLASH:
 		$we_doc = new we_flashDocument();
 		break;
-	case 'video/quicktime':
+	case we_base_ContentTypes::QUICKTIME:
 		$we_doc = new we_quicktimeDocument();
 		break;
-	case 'image/*':
+	case we_base_ContentTypes::IMAGE:
 		$we_doc = new we_imageDocument();
 		break;
 	case 'folder':
@@ -49,23 +49,23 @@ switch(isset($we_ContentType) ? $we_ContentType : ''){
 	case 'class_folder':
 		$we_doc = new we_class_folder();
 		break;
-	case 'text/weTmpl':
+	case we_base_ContentTypes::TEMPLATE:
 		$we_doc = new we_template();
 		break;
-	case 'text/webedition':
+	case we_base_ContentTypes::WEDOCUMENT:
 		$we_doc = new we_webEditionDocument();
 		break;
-	case 'text/html':
+	case we_base_ContentTypes::HTML:
 		$we_doc = new we_htmlDocument();
 		break;
-	case 'text/xml':
-	case 'text/js':
-	case 'text/css':
-	case 'text/plain':
-	case 'text/htaccess':
+	case we_base_ContentTypes::XML:
+	case we_base_ContentTypes::JS:
+	case we_base_ContentTypes::CSS:
+	case we_base_ContentTypes::TEXT:
+	case we_base_ContentTypes::HTACESS:
 		$we_doc = new we_textDocument();
 		break;
-	case 'application/*':
+	case we_base_ContentTypes::APPLICATION:
 		$we_doc = new we_otherDocument();
 		break;
 	case '':

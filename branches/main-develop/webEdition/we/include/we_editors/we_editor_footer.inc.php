@@ -74,15 +74,15 @@ switch($we_doc->userHasAccess()){
 echo we_html_tools::getHtmlTop();
 
 $showPubl = permissionhandler::hasPerm("PUBLISH") && $we_doc->userCanSave() && $we_doc->IsTextContentDoc;
-$reloadPage = (($showPubl || $we_doc->ContentType == 'text/weTmpl') && (!$we_doc->ID)) ? true : false;
+$reloadPage = (($showPubl || $we_doc->ContentType == we_base_ContentTypes::TEMPLATE) && (!$we_doc->ID)) ? true : false;
 $haspermNew = false;
 
 //	Check permissions for buttons
 switch($we_doc->ContentType){
-	case "text/html":
+	case we_base_ContentTypes::HTML:
 		$haspermNew = permissionhandler::hasPerm("NEW_HTML");
 		break;
-	case "text/webedition":
+	case we_base_ContentTypes::WEDOCUMENT:
 		$haspermNew = permissionhandler::hasPerm("NEW_WEBEDITIONSITE");
 		break;
 	case "objectFile":
@@ -98,7 +98,7 @@ switch($we_doc->ContentType){
 $showGlossaryCheck = 0;
 
 if(isset($_SESSION['prefs']['force_glossary_check']) && $_SESSION['prefs']['force_glossary_check'] == 1 && (
-	$we_doc->ContentType == "text/webedition" || $we_doc->ContentType == "objectFile"
+	$we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT || $we_doc->ContentType == "objectFile"
 	)
 ){
 	$showGlossaryCheck = 1;
@@ -164,7 +164,7 @@ if($we_doc->userCanSave()){
 
 	// publish for templates to save in version
 	$pass_publish = $showPubl ? " _EditorFrame.getEditorPublishWhenSave() " : "''";
-	if($we_doc->ContentType == "text/weTmpl" && defined("VERSIONING_TEXT_WETMPL") && defined("VERSIONS_CREATE_TMPL") && VERSIONS_CREATE_TMPL && VERSIONING_TEXT_WETMPL){
+	if($we_doc->ContentType == we_base_ContentTypes::TEMPLATE && defined("VERSIONING_TEXT_WETMPL") && defined("VERSIONS_CREATE_TMPL") && VERSIONS_CREATE_TMPL && VERSIONING_TEXT_WETMPL){
 		$pass_publish = " _EditorFrame.getEditorPublishWhenSave() ";
 	}
 
@@ -328,9 +328,9 @@ function showEditFooterForNormalMode(){
 
 	if($we_doc->ID){
 		switch($we_doc->ContentType){
-			case "text/weTmpl":
+			case we_base_ContentTypes::TEMPLATE:
 				$_normalTable->addCol(2);
-				$_normalTable->setColContent(0, $_pos++, we_html_button::create_button("make_new_document", "javascript:top.we_cmd('new','" . FILE_TABLE . "','','text/webedition','','" . $we_doc->ID . "');_EditorFrame.setEditorMakeNewDoc(false);"));
+				$_normalTable->setColContent(0, $_pos++, we_html_button::create_button("make_new_document", "javascript:top.we_cmd('new','" . FILE_TABLE . "','','" . we_base_ContentTypes::WEDOCUMENT . "','','" . $we_doc->ID . "');_EditorFrame.setEditorMakeNewDoc(false);"));
 				$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
 				break;
 			case "object":
@@ -366,7 +366,7 @@ function showEditFooterForNormalMode(){
 	}
 
 	switch($we_doc->ContentType){
-		case 'text/webedition':
+		case we_base_ContentTypes::WEDOCUMENT:
 		case 'object':
 		case 'objectFile':
 		case 'folder':
@@ -423,7 +423,7 @@ function showEditFooterForNormalMode(){
 		//}
 	}
 
-	if($we_doc->ContentType == "text/weTmpl"){
+	if($we_doc->ContentType == we_base_ContentTypes::TEMPLATE){
 
 		if(defined("VERSIONING_TEXT_WETMPL") && defined("VERSIONS_CREATE_TMPL") && VERSIONS_CREATE_TMPL && VERSIONING_TEXT_WETMPL){
 			$_normalTable->addCol(2);
@@ -462,7 +462,7 @@ function showEditFooterForNormalMode(){
 	}
 
 	switch($we_doc->ContentType){
-		case "text/weTmpl":
+		case we_base_ContentTypes::TEMPLATE:
 			if(permissionhandler::hasPerm("NEW_WEBEDITIONSITE") || permissionhandler::hasPerm("ADMINISTRATOR")){
 				$_normalTable->addCol(2);
 				$_normalTable->setColContent(0, $_pos++, we_html_forms::checkbox("makeNewDoc", false, "makeNewDoc", g_l('global', "[we_new_doc_after_save]"), false, "defaultfont", "_EditorFrame.setEditorMakeNewDoc( (this.checked) ? true : false );"));
@@ -698,7 +698,7 @@ function showEditFooterForSEEMMode(){
 	<?php
 	$_js_tmpl = $_js_publish = $_js_permnew = '';
 
-	if($we_doc->ContentType == "text/weTmpl"){ // a template
+	if($we_doc->ContentType == we_base_ContentTypes::TEMPLATE){ // a template
 		$_js_tmpl = '
 		if( _EditorFrame.getEditorAutoRebuild() ) {
 			self.document.we_form.autoRebuild.checked = true;

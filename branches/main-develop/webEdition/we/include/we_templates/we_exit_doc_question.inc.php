@@ -53,7 +53,7 @@ if(!$nextCmdOk){
 }
 
 switch($exitDocCt){
-	case "text/weTmpl":
+	case we_base_ContentTypes::TEMPLATE:
 		$_documentTable = TEMPLATES_TABLE;
 		break;
 	case "object":
@@ -67,12 +67,12 @@ switch($exitDocCt){
 		}
 		break;
 	case "folder":
-	case "text/webedition":
-	case "text/html":
-	case "text/css":
-	case "text/js":
-	case "image/*":
-	case "application/*":
+	case we_base_ContentTypes::WEDOCUMENT:
+	case we_base_ContentTypes::HTML:
+	case we_base_ContentTypes::CSS:
+	case we_base_ContentTypes::JS:
+	case we_base_ContentTypes::IMAGE:
+	case we_base_ContentTypes::APPLICATION:
 	default:
 		$_documentTable = FILE_TABLE;
 		break;

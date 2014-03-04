@@ -254,18 +254,17 @@ class we_dialog_image extends we_dialog_base{
 
 			$extSrc = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extSrc]", 30, (isset($this->args["extSrc"]) ? $this->args["extSrc"] : ""), "", ' onfocus="if(this.form.elements[\'we_dialog_args[type]\'][1].checked) { this.form.elements[\'we_dialog_args[type]\'][0].checked=true;imageChanged();}" onChange="this.form.elements[\'we_dialog_args[type]\'][0].checked=true;imageChanged();"', "text", 300), $radioBut, "left", "defaultfont", we_html_tools::getPixel(20, 2), $but, "", "", "", 0
 			);
-			//javascript:we_cmd('openDocselector',document.we_form.elements['we_dialog_args[fileID]'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'we_dialog_args[fileID]\\'].value','document.we_form.elements[\\'we_dialog_args[fileSrc]\\'].value','opener.document.we_form.elements[\\'we_dialog_args[type]\\'][1].checked=true;opener.imageChanged();','','','image/*',".(permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).");
 			$wecmdenc1 = we_cmd_enc("document.we_form.elements['we_dialog_args[fileID]'].value");
 			$wecmdenc2 = we_cmd_enc("document.we_form.elements['we_dialog_args[fileSrc]'].value");
 			$wecmdenc3 = we_cmd_enc("opener.document.we_form.elements['we_dialog_args[type]'][1].checked=true;opener.imageChanged();");
 
-			$but = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['we_dialog_args[fileID]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','image/*'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");"
+			$but = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['we_dialog_args[fileID]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . we_base_ContentTypes::IMAGE . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");"
 			);
 
 			$radioBut = we_html_forms::radiobutton(we_base_link::TYPE_INT, (isset($this->args["type"]) && $this->args["type"] == we_base_link::TYPE_INT), "we_dialog_args[type]", g_l('wysiwyg', "[internal_image]"), true, "defaultfont", "imageChanged();");
 
 			$yuiSuggest->setAcId("Image");
-			$yuiSuggest->setContentType("folder,image/*");
+			$yuiSuggest->setContentType("folder," . we_base_ContentTypes::IMAGE);
 			//Bug #3556, orig, imageChanged wird aufgerufen sobald man mit der Maus klickt, und bevor das input feld gef�llt ist
 			//$yuiSuggest->setInput("we_dialog_args[fileSrc]",str_replace('"','&quot;',(isset($this->args["fileSrc"]) ? $this->args["fileSrc"] : "")),array("onfocus"=>"document.we_form.elements[2].checked=true;","onchange"=>"imageChanged()"));
 			$yuiSuggest->setInput("we_dialog_args[fileSrc]", str_replace('"', '&quot;', (isset($this->args["fileSrc"]) ? $this->args["fileSrc"] : "")), array("onfocus" => "document.we_form.elements[2].checked=true;", "onchange" => "document.we_form.elements['we_dialog_args[type]'][1].checked=true;"));
@@ -300,7 +299,7 @@ class we_dialog_image extends we_dialog_base{
 			$but2 = we_html_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['we_dialog_args[longdescid]'].value='';document.we_form.elements['we_dialog_args[longdescsrc]'].value='';");
 
 			$yuiSuggest->setAcId("Longdesc");
-			$yuiSuggest->setContentType("folder,text/webedition,text/html");
+			$yuiSuggest->setContentType('folder,' . we_base_ContentTypes::WEDOCUMENT . ',' . we_base_ContentTypes::HTML);
 			$yuiSuggest->setInput("we_dialog_args[longdescsrc]", str_replace('"', '&quot;', (isset($this->args["longdescsrc"]) ? $this->args["longdescsrc"] : "")));
 			$yuiSuggest->setLabel(g_l('weClass', "[longdesc_text]"));
 			$yuiSuggest->setMaxResults(7);

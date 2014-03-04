@@ -92,10 +92,10 @@ function we_error_handler($in_webEdition = true){
 
 	if(defined('WE_ERROR_HANDLER') && (WE_ERROR_HANDLER == 1)){
 		$_error_level = 0 +
-			((version_compare(PHP_VERSION, '5.3.0') >= 0) && $GLOBALS['we']['errorhandler']['deprecated'] && defined('E_DEPRECATED') ? E_DEPRECATED | E_USER_DEPRECATED | E_STRICT : 0) +
-			($GLOBALS['we']['errorhandler']['notice'] ? E_NOTICE | E_USER_NOTICE : 0) +
-			($GLOBALS['we']['errorhandler']['warning'] ? E_WARNING | E_CORE_WARNING | E_COMPILE_WARNING | E_USER_WARNING : 0) +
-			($GLOBALS['we']['errorhandler']['error'] ? E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR : 0);
+				((version_compare(PHP_VERSION, '5.3.0') >= 0) && $GLOBALS['we']['errorhandler']['deprecated'] && defined('E_DEPRECATED') ? E_DEPRECATED | E_USER_DEPRECATED | E_STRICT : 0) +
+				($GLOBALS['we']['errorhandler']['notice'] ? E_NOTICE | E_USER_NOTICE : 0) +
+				($GLOBALS['we']['errorhandler']['warning'] ? E_WARNING | E_CORE_WARNING | E_COMPILE_WARNING | E_USER_WARNING : 0) +
+				($GLOBALS['we']['errorhandler']['error'] ? E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR : 0);
 		error_reporting($_error_level);
 		//ini_set('display_errors', $GLOBALS['we']['errorhandler']['display']);
 		set_error_handler('error_handler', $_error_level);
@@ -232,7 +232,7 @@ function getVariableMax($var, we_database_base $db = null){
 	static $max = 65500; //max lenght of text-col in mysql - this is enough debug-data, leave some space...
 	switch($var){
 		case 'Request':
-			$ret = (isset($_REQUEST) ? print_r(array_diff_key($_REQUEST, array('user' => '', 'username' => '', 'pass' => '', 'password' => '','s'=>'')), true) : ' - ');
+			$ret = (isset($_REQUEST) ? print_r(array_diff_key($_REQUEST, array('user' => '', 'username' => '', 'pass' => '', 'password' => '', 's' => '')), true) : ' - ');
 			break;
 		case 'Session':
 			if(!isset($_SESSION)){
@@ -250,7 +250,7 @@ function getVariableMax($var, we_database_base $db = null){
 			}
 
 			if(isset($_SESSION['perms'])){
-				$ret.= "Effective Permissions:\n" . print_r(array_filter($_SESSION['perms']), true);
+				$ret.= "----------------------------------------\nEffective Permissions:\n" . print_r(array_filter($_SESSION['perms']), true) . "\n------------------------------------\n";
 			}
 			$ret.= print_r($clone, true);
 
@@ -355,21 +355,21 @@ function mail_error_message($type, $message, $file, $line, $skipBT = false, $ins
 
 	// Build the error table
 	$_detailedError = "An error occurred while executing a script in webEdition.\n\n\n" .
-		($insertID && function_exists('getServerUrl')?
-			getServerUrl() . WEBEDITION_DIR . 'errorlog.php?function=pos&ID=' . $insertID . "\n\n" : '') .
+			($insertID && function_exists('getServerUrl') ?
+					getServerUrl() . WEBEDITION_DIR . 'errorlog.php?function=pos&ID=' . $insertID . "\n\n" : '') .
 // Domain
-		'webEdition address: ' . $_SERVER['SERVER_NAME'] . ",\n\n" .
-		'URI: ' . $_SERVER['REQUEST_URI'] . "\n" .
-		// Error type
-		'Error type: ' . $ttype . "\n" .
-		// Error message
-		'Error message: ' . str_replace($_SERVER['DOCUMENT_ROOT'], 'SECURITY_REPL_DOC_ROOT', $message) . "\n" .
-		// Script name
-		'Script name: ' . str_replace($_SERVER['DOCUMENT_ROOT'], 'SECURITY_REPL_DOC_ROOT', $file) . "\n" .
-		// Line
-		'Line number: ' . $line . "\n" .
-		'Caller: ' . $_caller . "\n" .
-		'Backtrace: ' . $detailedError;
+			'webEdition address: ' . $_SERVER['SERVER_NAME'] . ",\n\n" .
+			'URI: ' . $_SERVER['REQUEST_URI'] . "\n" .
+			// Error type
+			'Error type: ' . $ttype . "\n" .
+			// Error message
+			'Error message: ' . str_replace($_SERVER['DOCUMENT_ROOT'], 'SECURITY_REPL_DOC_ROOT', $message) . "\n" .
+			// Script name
+			'Script name: ' . str_replace($_SERVER['DOCUMENT_ROOT'], 'SECURITY_REPL_DOC_ROOT', $file) . "\n" .
+			// Line
+			'Line number: ' . $line . "\n" .
+			'Caller: ' . $_caller . "\n" .
+			'Backtrace: ' . $detailedError;
 
 	// Log the error
 	if(defined('WE_ERROR_MAIL_ADDRESS')){
