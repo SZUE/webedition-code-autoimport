@@ -29,8 +29,6 @@ function we_isVarNotEmpty($attribs){
 	$match_orig = weTag_getAttribute('match', $attribs);
 	$match = we_tag_getPostName($match_orig); //#6367
 
-	$name = weTag_getAttribute('name', $attribs);
-
 	$type = weTag_getAttribute('type', $attribs, 'txt');
 	$formname = weTag_getAttribute('formname', $attribs, 'we_global_form');
 	$property = weTag_getAttribute('property', $attribs, false, true);
@@ -66,43 +64,45 @@ function we_isVarNotEmpty($attribs){
 				default :
 					$doc = isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc'] : false;
 			}
-			if($doc){
-				if($property){
-					return isset($doc->$match_orig) ? $doc->$match_orig : '';
-				} else {
-					$name = $match;
-					switch($type){
-						case 'href' :
-							$attribs['name'] = $match;
-							$attribs['_name_orig'] = $match_orig;
-							$foo = $doc->getField($attribs, $type, true);
-							break;
-						case 'multiobject':
-							//FIXME: this makes no sense
-							$attribs['name'] = $match;
-							$attribs['_name_orig'] = $match_orig;
-							$data = unserialize($doc->getField($attribs, $type, true));
-							if(!is_array($data['objects'])){
-								$data['objects'] = array();
-							}
-							$temp = new we_object_listviewMultiobject($match);
-							return (!empty($temp->Record));
-						default :
-							$foo = $doc->getElement($match);
-							if(!$foo){
-								$foo = $doc->getElement($match_orig);
-							}
-					}
-					return (strlen($foo) > 0);
-				}
+			if(!$doc){
+				return false;
 			}
-			return false;
+			if($property){
+				return isset($doc->$match_orig) ? $doc->$match_orig : '';
+			}
+
+			switch($type){
+				case 'href' :
+					$attribs['name'] = $match;
+					$attribs['_name_orig'] = $match_orig;
+					$foo = $doc->getField($attribs, $type, true);
+					break;
+				case 'multiobject':
+					//FIXME: this makes no sense
+					$attribs['name'] = $match;
+					$attribs['_name_orig'] = $match_orig;
+					$data = unserialize($doc->getField($attribs, $type, true));
+					if(!is_array($data['objects'])){
+						$data['objects'] = array();
+					}
+					$temp = new we_object_listviewMultiobject($match);
+					return (!empty($temp->Record));
+				default :
+					$type = $doc->getElement($match, 'type');
+					$foo = $doc->getElement($match, $type == 'img' ? 'bdid' : 'dat');
+
+					if(!$foo){
+						$type = $doc->getElement($match_orig, 'type');
+						$foo = $doc->getElement($match_orig, $type == 'img' ? 'bdid' : 'dat');
+					}
+			}
+			return (strlen($foo) > 0);
 	}
 }
 
 function we_tag_ifVarEmpty($attribs){
 	if(($foo = attributFehltError($attribs, 'match', __FUNCTION__))){
-		print($foo);
+		echo $foo;
 		return false;
 	}
 	return !we_isVarNotEmpty($attribs);

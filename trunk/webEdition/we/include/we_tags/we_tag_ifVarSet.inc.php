@@ -41,7 +41,7 @@ function we_isVarSet($name, $orig, $type, $docAttr, $property = false, $formname
 		case 'sum' :
 			return (isset($GLOBALS['summe']) && isset($GLOBALS['summe'][$orig]));
 		default :
-			$doc = false;
+
 			switch($docAttr){
 				case 'object' :
 				case 'document' :
@@ -53,23 +53,25 @@ function we_isVarSet($name, $orig, $type, $docAttr, $property = false, $formname
 				default :
 					$doc = isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc'] : false;
 			}
-			if($doc){
-				if($property){
-					return isset($doc->$name) || isset($doc->orig);
-				} else {
-					if($type == 'href' && isset($doc->elements[$name . we_base_link::MAGIC_INT_LINK]) && $doc->elements[$name . we_base_link::MAGIC_INT_LINK]['dat']){
-						return isset($doc->elements[$name . we_base_link::MAGIC_INT_LINK_PATH]['dat']);
-					}
-					if(isset($doc->elements[$name])){
-						$fieldType = isset($doc->elements[$name]['type']) ? $doc->elements[$name]['type'] : '';
-						$issetElemNameDat = isset($doc->elements[$name]['dat']);
-						return ($fieldType == 'checkbox_feld' && $issetElemNameDat && $doc->elements[$name]['dat'] == 0 ?
-								false :
-								$issetElemNameDat);
-					}
+			if(!$doc){
+				return false;
+			}
+			if($property){
+				return isset($doc->$name) || isset($doc->orig);
+			}
+			if($type == 'href' && isset($doc->elements[$name . we_base_link::MAGIC_INT_LINK]) && $doc->elements[$name . we_base_link::MAGIC_INT_LINK]['dat']){
+				return isset($doc->elements[$name . we_base_link::MAGIC_INT_LINK_PATH]['dat']);
+			}
+			if(isset($doc->elements[$name])){
+				switch(isset($doc->elements[$name]['type']) ? $doc->elements[$name]['type'] : ''){
+					case 'checkbox_feld':
+						return isset($doc->elements[$name]['dat']) && $doc->elements[$name]['dat'] != 0;
+					case 'img':
+						return isset($doc->elements[$name]['bdid']) && $doc->elements[$name]['bdid'] != 0;
+					default:
+						return isset($doc->elements[$name]['dat']);
 				}
 			}
-			return false;
 	}
 }
 
