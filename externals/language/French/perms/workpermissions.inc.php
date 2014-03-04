@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_perms_workpermissions=array(
-	'BACKUPLOG'=>'L`utilisateur a le droit de voir l`historique d`une sauvegarde',
 	'BROWSE_SERVER'=>'L`utilisateur a le droit de supprimer d`utiliser la fonction Fouiller le Server',
 	'CAN_COPY_FOLDERS'=>'L`utilisateur a le droit de copier des répertoires entiers',
 	'CAN_EDIT_VALIDATION'=>'L`utilisateur a le droit d`éditer le service de validation.',
@@ -22,10 +21,7 @@ $l_perms_workpermissions=array(
 	'EDIT_DOCEXTENSION'=>'L`utilisateur a le droit de modifier l`extension de fichier d`un document',
 	'EDIT_DOCTYPE'=>'L`utilisateur a le droit de modifier des Type-de-Document',
 	'EDIT_KATEGORIE'=>'L`utilisateur a le droit de 	administrer des Catégories',
-	'EXPORTNODOWNLOAD'=>'L`utilisateur a le droit de créer une sauvegarde sur le serveur',
-	'EXPORT'=>'L`utilisateur a le droit de créer une sauvegarde sur le serveur et disque dur local',
 	'FORMMAIL'=>'L`utilisateur a le droit de modifier les destinataire-Formmail',
-	'IMPORT'=>'L`utilisateur a le droit d`importer des sauvegardes',
 	'MOVE_DOCUMENT'=>'L`utilisateur a le droit de déplacer des documents',
 	'MOVE_TEMPLATE'=>'L`utilisateur a le droit de déplacer des templates',
 	'NEW_CSS'=>'L`utilisateur a le droit de créer des feuilles de style CSS',

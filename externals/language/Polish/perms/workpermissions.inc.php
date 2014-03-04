@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_perms_workpermissions=array(
-	'BACKUPLOG'=>'The user is allowed to view the backup log file',
 	'BROWSE_SERVER'=>'Użytkownik może korzystać z funkcji Browse Server',
 	'CAN_COPY_FOLDERS'=>'Użytkownik może kopiować całe katalogi',
 	'CAN_EDIT_VALIDATION'=>'Użytkownik może edytować usługi walidacji',
@@ -22,10 +21,7 @@ $l_perms_workpermissions=array(
 	'EDIT_DOCEXTENSION'=>'The user is allowed to change the file extension of a document',
 	'EDIT_DOCTYPE'=>'Użytkownik może zmieniać typy dokumentów',
 	'EDIT_KATEGORIE'=>'Użytkownik może zmieniać kategorie',
-	'EXPORTNODOWNLOAD'=>'The user is allowed to make backups on the server',
-	'EXPORT'=>'The user is allowed to make backups on the server and the local hard drive.',
 	'FORMMAIL'=>'Użytkownik może zmieniać adresata formularza e-mail',
-	'IMPORT'=>'Użytkownik może importować kopie zapasowe',
 	'MOVE_DOCUMENT'=>'The user is allowed to move documents.',
 	'MOVE_TEMPLATE'=>'The user is allowed to move templates.',
 	'NEW_CSS'=>'Użytkownik może tworzyć CSS',

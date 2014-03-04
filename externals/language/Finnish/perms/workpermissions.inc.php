@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_perms_workpermissions=array(
-	'BACKUPLOG'=>'The user is allowed to view the backup log file',
 	'BROWSE_SERVER'=>'Käyttäjä voi käyttää "Selaa palvelinta" toimintoa.',
 	'CAN_COPY_FOLDERS'=>'Käyttäjä voi kopioida hakemistoja.',
 	'CAN_EDIT_VALIDATION'=>'Käyttäjä voi muokata validointisivun palveluja.',
@@ -22,10 +21,7 @@ $l_perms_workpermissions=array(
 	'EDIT_DOCEXTENSION'=>'The user is allowed to change the file extension of a document',
 	'EDIT_DOCTYPE'=>'Käyttäjä voi muuttaa dokumenttityyppiä.',
 	'EDIT_KATEGORIE'=>'Käyttäjä voi muuttaa kategorioita.',
-	'EXPORTNODOWNLOAD'=>'The user is allowed to make backups on the server',
-	'EXPORT'=>'The user is allowed to make backups on the server and the local hard drive.',
 	'FORMMAIL'=>'Käyttäjä voi muuttaa formmail -vastaanottajia.',
-	'IMPORT'=>'Käyttäjä voi tuoda varmuuskopiosta.',
 	'MOVE_DOCUMENT'=>'Käyttäjä voi siirtää objekteja.',
 	'MOVE_TEMPLATE'=>'Käyttäjä voi siirtää sivupohjia.',
 	'NEW_CSS'=>'Käyttäjä voi luoda CSS -tiedostoja.',
