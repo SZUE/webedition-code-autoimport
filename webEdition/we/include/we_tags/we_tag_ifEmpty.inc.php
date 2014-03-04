@@ -59,31 +59,25 @@ function we_isNotEmpty($attribs){
 				}
 			}
 		default :
-
-			if(isset($doc)){
-				//   #3938 added this - some php version crashed, when unserialize started with a ?,?,?
-				if((substr($doc->getElement($match), 0, 2) == 'a:')){ //  only unserialize, when $match cluld be an array
-					// Added @-operator in front of the unserialze function because there
-					// were some PHP notices that had no effect on the output of the function
-					// remark holeg: when it is a serialized array, the function looks if it is not empty
-					if(is_array(
-							$arr = @unserialize($doc->getElement($match)))){
-						return !empty($arr);
-					}
+			//   #3938 added this - some php version crashed, when unserialize started with a ?,?,?
+			if((substr($doc->getElement($match), 0, 2) == 'a:')){ //  only unserialize, when $match cluld be an array
+				// Added @-operator in front of the unserialze function because there
+				// were some PHP notices that had no effect on the output of the function
+				// remark holeg: when it is a serialized array, the function looks if it is not empty
+				if(is_array(
+						$arr = unserialize($doc->getElement($match)))){
+					return !empty($arr);
 				}
-				//   end of #3938
 			}
+		//   end of #3938
 	}
 	return (bool) ($doc->getElement($match) != '') || $doc->getElement($match, 'bdid');
 }
 
 function we_tag_ifEmpty($attribs){
 	if(($foo = attributFehltError($attribs, 'match', __FUNCTION__))){
-		print($foo);
-		return '';
+		echo $foo;
+		return false;
 	}
-	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']){
-		return true;
-	}
-	return !we_isNotEmpty($attribs);
+	return (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']) || !we_isNotEmpty($attribs);
 }
