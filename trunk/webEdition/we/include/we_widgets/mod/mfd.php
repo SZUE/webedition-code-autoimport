@@ -81,7 +81,7 @@ $bDateLastMfd = $sDisplayOpt{1};
 $aUsers = makeArrayFromCSV($aCols[4]);
 $db = $GLOBALS['DB_WE'];
 
-if(!permissionhandler::hasPerm('ADMINISTRATOR')){
+if(!permissionhandler::hasPerm('EDIT_MFD_USER')){
 	$aUsers = array($_SESSION['user']['ID']);
 }
 foreach($aUsers as $uid){
