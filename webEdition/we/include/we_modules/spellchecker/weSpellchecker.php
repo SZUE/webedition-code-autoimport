@@ -140,13 +140,9 @@ if(isset($_REQUEST['we_dialog_args']['editname'])){
 		left:0px;
 		top:0px;
 		background: white;
-		<?php if(we_base_browserDetect::isIE()){ ?>
-			filter: alpha(opacity=80);
-		<?php } else if(we_base_browserDetect::isSafari()){ ?>
-			KhtmlOpacity: .8;
-		<?php } else { ?>
-			opacity: .8;
-		<?php } ?>
+		filter: alpha(opacity=80);
+		KhtmlOpacity: .8;
+		opacity: .8;
 	}
 
 	.highlight {
@@ -183,10 +179,10 @@ if(isset($_REQUEST['we_dialog_args']['editname'])){
 			editorObj = tinyMCEPopup.editor;
 			var text = editorObj.selection.isCollapsed() ? editorObj.getContent({format: "html"}) : editorObj.selection.getContent({format: "html"});
 <?php } else if($_mode == 'wysiwyg'){ ?>
-			editorObj = top.opener.weWysiwygObject_<?php print $_editname ?>;
+			editorObj = top.opener.weWysiwygObject_<?php echo $_editname ?>;
 			var text = getTextFromWysiwyg();
 <?php } else { ?>
-			var elements = top.opener.document.getElementsByName("<?php print $_editname ?>");
+			var elements = top.opener.document.getElementsByName("<?php echo $_editname ?>");
 			if (elements[0]) {
 				editorObj = elements[0];
 				var text = editorObj.value;
@@ -202,9 +198,9 @@ if(isset($_REQUEST['we_dialog_args']['editname'])){
 	function getTextFromWysiwyg() {
 		var text = "";
 <?php if($_mode == 'wysiwyg'){ ?>
-			editorObj = top.opener.weWysiwygObject_<?php print $_editname ?>;
+			editorObj = top.opener.weWysiwygObject_<?php echo $_editname ?>;
 <?php } else { ?>
-			var elements = top.opener.document.getElementsByName("<?php print $_editname ?>");
+			var elements = top.opener.document.getElementsByName("<?php echo $_editname ?>");
 			if (elements[0]) {
 				editorObj = elements[0];
 			}
@@ -265,7 +261,7 @@ if(isset($_REQUEST['we_dialog_args']['editname'])){
 	function spellcheck() {
 		retry = 0;
 		if (document.spellchecker.isReady()) {
-			document.getElementById("statusText").innerHTML = "<?php print g_l('modules_spellchecker', '[checking]'); ?>";
+			document.getElementById("statusText").innerHTML = "<?php echo g_l('modules_spellchecker', '[checking]'); ?>";
 			var text = getTextOnly(orginal);
 			document.spellchecker.check(text);
 			setTimeout("findNext()", 2000);
@@ -274,7 +270,7 @@ if(isset($_REQUEST['we_dialog_args']['editname'])){
 				setTimeout("spellcheck()", 1000);
 				retryjava++;
 			} else {
-<?php print we_message_reporting::getShowMessageCall(g_l('modules_spellchecker', '[no_java]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
+<?php echo we_message_reporting::getShowMessageCall(g_l('modules_spellchecker', '[no_java]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 				self.close();
 			}
 		}
@@ -320,7 +316,7 @@ if(isset($_REQUEST['we_dialog_args']['editname'])){
 							fadeout("spinner", 80, 10, 10);
 						}
 						weButton.enable("check");
-<?php print we_message_reporting::getShowMessageCall(g_l('modules_spellchecker', '[finished]'), we_message_reporting::WE_MESSAGE_NOTICE); ?>
+<?php echo we_message_reporting::getShowMessageCall(g_l('modules_spellchecker', '[finished]'), we_message_reporting::WE_MESSAGE_NOTICE); ?>
 					}
 				}
 			} else {
