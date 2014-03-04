@@ -25,7 +25,7 @@ if(!$_SESSION['user']['Username']){
 	session_id;
 }
 
-we_html_tools::protect(array('BROWSE_SERVER', 'ADMINISTRATOR'));
+we_html_tools::protect(array('BROWSE_SERVER', 'SITE_IMPORT', 'ADMINISTRATOR'));
 echo we_html_tools::getHtmlTop();
 
 $docroot = str_replace('\\', '/', rtrim($_SERVER['DOCUMENT_ROOT'], '/'));
@@ -98,11 +98,11 @@ echo we_html_element::jsScript(JS_DIR . 'keyListener.js');
 </head>
 
 <frameset rows="73,*,<?php print ( (isset($_REQUEST['we_cmd'][2]) && $_REQUEST['we_cmd'][2] ) ? 60 : 90); ?>,0" border="0" onload="top.fscmd.selectDir()">
-  <frame src="we_sselector_header.php?ret=<?php print ( (isset($_REQUEST['we_cmd'][1]) && $_REQUEST['we_cmd'][1]) ? 1 : 0); ?>&filter=<?php print $filter; ?>&currentDir=<?php print $currentDir; ?>" name="fsheader" noresize scrolling="no">
-		<frame src="<?php print HTML_DIR; ?>white.html" name="fsbody" noresize scrolling="auto">
-			<frame  src="we_sselector_footer.php?ret=<?php print ( (isset($_REQUEST['we_cmd'][1]) && $_REQUEST['we_cmd'][1]) ? 1 : 0); ?>&filter=<?php print $filter; ?>&currentName=<?php print $currentName; ?>" name="fsfooter" noresize scrolling="no">
-				<frame src="we_sselector_cmd.php?ret=<?php print ( (isset($_REQUEST['we_cmd'][1]) && $_REQUEST['we_cmd'][1]) ? 1 : 0); ?>&filter=<?php print $filter; ?>&currentName=<?php print $currentName; ?>" name="fscmd" noresize scrolling="no">
-					</frameset>
-					<body>
-					</body>
-					</html>
+  <frame src="we_sselector_header.php?ret=<?php print ( (isset($_REQUEST['we_cmd'][1]) && $_REQUEST['we_cmd'][1]) ? 1 : 0); ?>&filter=<?php print $filter; ?>&currentDir=<?php echo $currentDir; ?>" name="fsheader" noresize scrolling="no">
+	<frame src="<?php echo HTML_DIR; ?>white.html" name="fsbody" noresize scrolling="auto">
+	<frame  src="we_sselector_footer.php?ret=<?php print ( (isset($_REQUEST['we_cmd'][1]) && $_REQUEST['we_cmd'][1]) ? 1 : 0); ?>&filter=<?php print $filter; ?>&currentName=<?php echo $currentName; ?>" name="fsfooter" noresize scrolling="no">
+	<frame src="we_sselector_cmd.php?ret=<?php print ( (isset($_REQUEST['we_cmd'][1]) && $_REQUEST['we_cmd'][1]) ? 1 : 0); ?>&filter=<?php print $filter; ?>&currentName=<?php echo $currentName; ?>" name="fscmd" noresize scrolling="no">
+</frameset>
+<body>
+</body>
+</html>

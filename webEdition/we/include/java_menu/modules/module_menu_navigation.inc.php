@@ -73,39 +73,16 @@ $we_menu_navigation = array(
 		'perm' => '',
 		'enabled' => 1,
 	),
-	/*
-	  1500=>array(
-	  'text'=> g_l('navigation','[menu_options]'),
-	  'parent'=> 0,
-	  'perm'=> '',
-	  'enabled'=> '1',
-	  ),
-	  array(
-
-	  'text'=> g_l('navigation','[menu_generate]').'...',
-	  'parent'=> 1500,
-	  'cmd'=> 'generate_navigation',
-	  'perm'=> '',
-	  'enabled'=> '1',
-	  ),
-	  array(
-
-	  'text'=> g_l('navigation','[menu_settings]'),
-	  'parent'=> 1500,
-	  'cmd'=> 'settings_navigation',
-	  'perm'=> '',
-	  'enabled'=> '1',
-	  ), */
 	2000 => array(
 		'text' => g_l('navigation', '[menu_options]'),
 		'parent' => 0,
-		'perm' => '',
+		'perm' => 'EDIT_NAVIAGTION_RULES',
 		'enabled' => 1,
 	),
 	array(
 		'text' => g_l('navigation', '[menu_highlight_rules]'),
 		'parent' => 2000,
-		'perm' => '',
+		'perm' => 'EDIT_NAVIAGTION_RULES',
 		'cmd' => 'module_navigation_rules',
 		'enabled' => 1,
 	));

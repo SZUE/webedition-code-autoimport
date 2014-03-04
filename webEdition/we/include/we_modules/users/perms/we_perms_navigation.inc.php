@@ -22,13 +22,13 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 $perm_group_name = 'navigation';
 
 $perm_group_title[$perm_group_name] = g_l('perms_' . $perm_group_name, '[perm_group_title]');
 $perm_defaults[$perm_group_name] = array(
 	'EDIT_NAVIGATION' => 1,
-	'DELETE_NAVIGATION' => 1
+	'DELETE_NAVIGATION' => 1,
+	'EDIT_NAVIAGTION_RULES' => 0
 );
 
 $perm_values[$perm_group_name] = array_keys($perm_defaults[$perm_group_name]);

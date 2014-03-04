@@ -23,7 +23,7 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-we_html_tools::protect(array('BROWSE_SERVER', 'ADMINISTRATOR'));
+we_html_tools::protect(array('BROWSE_SERVER', 'SITE_IMPORT', 'ADMINISTRATOR'));
 
 $supportDebuggingFile = WEBEDITION_PATH . 'we_sselector_inc.php';
 $supportDebugging = false;
