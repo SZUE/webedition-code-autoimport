@@ -5,6 +5,7 @@ $l_perms_controlpermissions=array(
 	'CHANGE_DOCUMENT_PERMISSION'=>'The user is allowed to change the document permissions.',
 	'DELETE_GROUP'=>'Użytkownik może usuwać grupy',
 	'DELETE_USER'=>'Użytkownik może usuwać użytkowników',
+	'EDIT_MFD_USER'=>'The user is allowed to add other users to the widget `last edited files`',
 	'EDIT_PASSWD'=>'Użytkownik może zmieniać hasło',
 	'EDIT_SETTINGS'=>'Użytkownik może zmieniać ustawnienia webEdition',
 	'EDIT_SETTINGS_DEF_EXT'=>'Użytkownik może zmieniać standardowe rozszerzenia',
