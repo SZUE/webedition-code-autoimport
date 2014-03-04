@@ -24,7 +24,7 @@
  */
 //make sure we know which browser is used
 
-class we_wysiwyg_editor{
+class we_wysiwyg_editor {
 
 	var $name = '';
 	private $origName = '';
@@ -178,22 +178,23 @@ class we_wysiwyg_editor{
 
 	public static function getEditorCommands($isTag){
 		$commands = array(
-			'unsorted' => array('formatblock', 'fontname', 'fontsize', 'applystyle', 'insertimage', 'inserthorizontalrule', 'insertspecialchar', 'caption', 'removecaption', 'importrtf', 'fullscreen', 'visibleborders', 'editsource', 'insertbreak', 'spellcheck'),
+			'unsorted' => array('formatblock', 'fontname', 'fontsize', 'applystyle', 'caption', 'removecaption', 'importrtf', 'fullscreen', 'visibleborders', 'editsource', 'spellcheck', 'template', 'styleprops', 'ltr', 'rtl','search','replace'),
 			'prop' => array('bold', 'italic', 'underline', 'subscript', 'superscript', 'strikethrough', 'removeformat', 'removetags'),
 			'xhtmlxtras' => array('abbr', 'acronym', 'lang', 'del', 'ins', 'cite'),
 			'color' => array('forecolor', 'backcolor'),
-			'justify' => array('justifyleft', 'justifycenter', 'justifyright', 'justifyfull'),
+			'justify' => array('justifyleft', 'justifycenter', 'justifyright', 'justifyfull', 'blockquote'),
 			'list' => array('insertunorderedlist', 'insertorderedlist', 'indent', 'outdent'),
 			'link' => array('createlink', 'unlink', 'anchor'),
-			'table' => array('inserttable', 'edittable', 'editcell', 'insertcolumnright', 'insertcolumnleft', 'insertrowabove', 'insertrowbelow', 'deletecol', 'deleterow', 'increasecolspan', 'decreasecolspan'),
+			'table' => array('inserttable', 'edittable', 'editcell', 'insertcolumnright', 'insertcolumnleft', 'insertrowabove', 'insertrowbelow', 'deletecol', 'deleterow', 'increasecolspan', 'decreasecolspan', 'editrow', 'deletetable', 'increasecolspan', 'decreasecolspan'),
+			'insert' => array('insertimage', 'hr', 'inserthorizontalrule', 'insertspecialchar', 'insertbreak', 'insertdate', 'inserttime'),
 			'copypaste' => array(/* 'cut', 'copy', 'paste', */'undo', 'redo', 'pastetext', 'pasteword', 'selectall'),
-			'layer' => array(),
+			'layer' => array('insertlayer', 'movebackward', 'moveforward','absolute'),
 		);
 
 		$tmp = array_keys($commands);
-		unset($tmp['unsorted']);
+		unset($tmp[0]); //unsorted
 		if($isTag){
-			$ret = array(new weTagDataOption('Gruppen', we_html_tools::OPTGROUP));
+			$ret = array(new weTagDataOption(g_l('wysiwyg', '[groups]'), we_html_tools::OPTGROUP));
 
 			foreach($tmp as $command){
 				$ret[] = new weTagDataOption($command);
@@ -209,7 +210,7 @@ class we_wysiwyg_editor{
 		}
 		$ret = array(
 			'',
-			'Gruppen' => we_html_tools::OPTGROUP
+			g_l('wysiwyg', '[groups]') => we_html_tools::OPTGROUP
 		);
 		$ret = array_merge($ret, $tmp);
 		foreach($commands as $key => $values){
@@ -513,9 +514,6 @@ function weWysiwygSetHiddenText(arg) {
 			'removecaption',
 			'importrtf',
 			'fullscreen',
-			/* 'cut',
-			  'copy',
-			  'paste', */
 			'undo',
 			'redo',
 			'visibleborders',
