@@ -67,7 +67,7 @@ abstract class we_textContentDocument extends we_textDocument{
 	}
 
 	function insertAtIndex(){
-		if($this->IsSearchable && $this->Published){
+		if(!($this->IsSearchable && $this->Published)){
 			$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($this->ID));
 			return true;
 		}

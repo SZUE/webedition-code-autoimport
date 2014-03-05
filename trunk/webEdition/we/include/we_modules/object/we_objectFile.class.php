@@ -1493,7 +1493,7 @@ class we_objectFile extends we_document{
 
 			$content = '<input type=hidden name="' . $fname . '" value="' . $this->getElement($name) . '" />' .
 				$img->getHtml() .
-				we_html_button::create_button_table(array(we_html_button::create_button("edit", "javascript:we_cmd('openDocselector','" . ($id != 0 ? $id : (isset($this->DefArray["binary_$name"]['defaultdir']) ? $this->DefArray["binary_$name"]['defaultdir'] : 0)) . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "', " . (isset($this->DefArray["binary_$name"]['rootdir']) && $this->DefArray["binary_$name"]['rootdir'] != "" ? $this->DefArray["binary_$name"]['rootdir'] : 0) . ",'".we_base_ContentTypes::APPLICATION."')"),
+				we_html_button::create_button_table(array(we_html_button::create_button("edit", "javascript:we_cmd('openDocselector','" . ($id != 0 ? $id : (isset($this->DefArray["binary_$name"]['defaultdir']) ? $this->DefArray["binary_$name"]['defaultdir'] : 0)) . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "', " . (isset($this->DefArray["binary_$name"]['rootdir']) && $this->DefArray["binary_$name"]['rootdir'] != "" ? $this->DefArray["binary_$name"]['rootdir'] : 0) . ",'" . we_base_ContentTypes::APPLICATION . "')"),
 					we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('remove_image_at_object','" . $GLOBALS['we_transaction'] . "','binary_" . $name . "')")));
 			return '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["binary_" . $name]["required"] ? "*" : "") . "</span>" . ( isset($this->DefArray["binary_$name"]['editdescription']) && $this->DefArray["binary_$name"]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["binary_$name"]['editdescription'] . '</div>' : we_html_element::htmlBr()) . $content;
 		} else {
@@ -2040,8 +2040,8 @@ class we_objectFile extends we_document{
 	}
 
 	function insertAtIndex(){
-		$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE OID=' . $this->ID);
-		if(!$this->IsSearchable){
+		if(!($this->IsSearchable && $this->Published)){
+			$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE OID=' . $this->ID);
 			return true;
 		}
 

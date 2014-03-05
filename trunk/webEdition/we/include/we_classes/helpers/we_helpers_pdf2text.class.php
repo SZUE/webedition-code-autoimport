@@ -253,7 +253,7 @@ class we_helpers_pdf2text{
 			//can be ignored - used for images only
 
 			default:
-				return $elem['stream'];
+				return isset($elem['stream']) ? $elem['stream'] : '';
 		}
 	}
 
