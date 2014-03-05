@@ -5,7 +5,7 @@ abstract class we_base_moduleInfo{
 	private static $we_available_modules = '';
 
 	private static function init(){
-		if(empty(self::$we_available_modules)){
+		if(!self::$we_available_modules){
 			self::$we_available_modules = include(WE_INCLUDES_PATH . 'we_available_modules.inc.php');
 		}
 	}

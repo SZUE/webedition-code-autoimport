@@ -91,7 +91,7 @@ function menuaction(cmd) {
 		return $container;
 	}
 
-	private static function isEnabled($perm){
+	public static function isEnabled($perm){
 		if(!$perm){
 			return true;
 		}
