@@ -82,7 +82,7 @@ if(!$we_doc->fileExists){
 	include(WE_INCLUDES_PATH . 'weInfoPages/weNoResource.inc.php');
 	exit();
 }
-$_needPerm = '';
+
 if(isset($_REQUEST['we_cmd'][1])){
 	switch($_REQUEST['we_cmd'][1]){
 		case TEMPLATES_TABLE:
@@ -91,11 +91,13 @@ if(isset($_REQUEST['we_cmd'][1])){
 		case FILE_TABLE:
 			$_needPerm = 'CAN_SEE_DOCUMENTS';
 			break;
+		default:
+			$_needPerm = '';
 	}
-}
-if($_needPerm != '' && !permissionhandler::hasPerm($_needPerm)){
-	include(WE_INCLUDES_PATH . 'weInfoPages/weNoPerms.inc.php');
-	exit();
+	if($_needPerm && !permissionhandler::hasPerm($_needPerm)){
+		include(WE_INCLUDES_PATH . 'weInfoPages/weNoPerms.inc.php');
+		exit();
+	}
 }
 
 $we_doc->InWebEdition = true;
@@ -110,14 +112,12 @@ if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 	if(isset($_REQUEST['SEEM_edit_include']) && $_REQUEST['SEEM_edit_include'] && $we_doc->userHasAccess() == 1){ //	Open seem_edit_include pages in edit-mode
 		$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_CONTENT;
 		$we_doc->EditPageNr = WE_EDITPAGE_CONTENT;
+	} elseif(get_class($we_doc) == 'we_imageDocument'){
+		$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_CONTENT;
+		$we_doc->EditPageNr = WE_EDITPAGE_CONTENT;
 	} else {
-		if(get_class($we_doc) == 'we_imageDocument'){
-			$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_CONTENT;
-			$we_doc->EditPageNr = WE_EDITPAGE_CONTENT;
-		} else {
-			$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_PREVIEW;
-			$we_doc->EditPageNr = WE_EDITPAGE_PREVIEW;
-		}
+		$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_PREVIEW;
+		$we_doc->EditPageNr = WE_EDITPAGE_PREVIEW;
 	}
 }
 
@@ -177,10 +177,8 @@ if($we_doc->ID){
 }
 
 
-if(isset($we_sess_folderID) && is_array($we_sess_folderID) && (!$we_doc->ID)){
-	if($we_sess_folderID[$we_doc->Table]){
-		$we_doc->setParentID($we_sess_folderID[$we_doc->Table]);
-	}
+if(isset($we_sess_folderID) && is_array($we_sess_folderID) && (!$we_doc->ID) && $we_sess_folderID[$we_doc->Table]){
+	$we_doc->setParentID($we_sess_folderID[$we_doc->Table]);
 }
 
 if($we_doc->ID == 0){
