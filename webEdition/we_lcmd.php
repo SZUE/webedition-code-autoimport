@@ -104,9 +104,6 @@ switch($_REQUEST['we_cmd'][0]){
 	case "delete_templates":
 		echo 'top.we_cmd("del",1,"' . TEMPLATES_TABLE . '");';
 		break;
-	case "delete_documents_cache":
-		echo 'top.we_cmd("del",1,"' . FILE_TABLE . '_cache");';
-		break;
 	case "move_documents":
 		echo 'top.we_cmd("mv",1,"' . FILE_TABLE . '");';
 		break;
