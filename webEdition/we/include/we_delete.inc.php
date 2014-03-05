@@ -143,7 +143,7 @@ if(!$wfchk){
 			foreach($selectedItems as $selectedItem){
 
 				if($table == FILE_TABLE && defined('USER_TABLE')){
-					$users = we_users_util::getUsersForDocWorkspace($selectedItem);
+					$users = we_users_util::getUsersForDocWorkspace($GLOBALS['DB_WE'],$selectedItem);
 					if(!empty($users)){
 						$retVal = -2;
 						break;
@@ -155,7 +155,7 @@ if(!$wfchk){
 					pushChilds($childs, $selectedItem, $table, true);
 					$users = array();
 					foreach($childs as $ch){
-						$users = array_merge($users, we_users_util::getUsersForDocWorkspace($childs));
+						$users = array_merge($users, we_users_util::getUsersForDocWorkspace($GLOBALS['DB_WE'],$childs));
 					}
 					$users = array_unique($users);
 
@@ -166,7 +166,7 @@ if(!$wfchk){
 				}
 
 				if($table == TEMPLATES_TABLE && defined('USER_TABLE')){
-					$users = we_users_util::getUsersForDocWorkspace($selectedItem, "workSpaceTmp");
+					$users = we_users_util::getUsersForDocWorkspace($GLOBALS['DB_WE'],$selectedItem, "workSpaceTmp");
 					if(!empty($users)){
 						$retVal = -2;
 						break;
@@ -178,7 +178,7 @@ if(!$wfchk){
 					pushChilds($childs, $selectedItem, $table, true);
 					$users = array();
 					foreach($childs as $ch){
-						$users = array_merge($users, we_users_util::getUsersForDocWorkspace($childs, "workSpaceTmp"));
+						$users = array_merge($users, we_users_util::getUsersForDocWorkspace($GLOBALS['DB_WE'],$childs, "workSpaceTmp"));
 					}
 					$users = array_unique($users);
 
@@ -190,7 +190,7 @@ if(!$wfchk){
 
 				if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE && defined('USER_TABLE')){
 
-					$users = we_users_util::getUsersForDocWorkspace($selectedItem, "workSpaceObj");
+					$users = we_users_util::getUsersForDocWorkspace($GLOBALS['DB_WE'],$selectedItem, "workSpaceObj");
 					if(!empty($users)){
 						$retVal = -2;
 						break;
@@ -199,7 +199,7 @@ if(!$wfchk){
 					$childs = array();
 
 					pushChilds($childs, $selectedItem, $table, true);
-					$users = we_users_util::getUsersForDocWorkspace($childs, "workSpaceObj");
+					$users = we_users_util::getUsersForDocWorkspace($GLOBALS['DB_WE'],$childs, "workSpaceObj");
 
 					if(!empty($users)){
 						$retVal = -4;
