@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-abstract class we_users_util{
+abstract class we_users_util {
 
 	private static function getGroupList($id){
 		$ret = array();
@@ -152,7 +152,7 @@ abstract class we_users_util{
 
 	public static function userIsOwnerCreatorOfParentDir($folderID, $tab){
 		if(($tab != FILE_TABLE && $tab != OBJECT_FILES_TABLE) ||
-				(permissionhandler::hasPerm('ADMINISTRATOR') || ($folderID == 0))){
+			(permissionhandler::hasPerm('ADMINISTRATOR') || ($folderID == 0))){
 			return true;
 		}
 		$db = new DB_WE();
@@ -175,15 +175,10 @@ abstract class we_users_util{
 	}
 
 	public static function canEditModule($modName){
-		if(permissionhandler::hasPerm('ADMINISTRATOR')){
+		if(permissionhandler::hasPerm('ADMINISTRATOR') || ($m = we_base_moduleInfo::getModuleData($modName))){
 			return true;
 		}
 
-		$m = we_base_moduleInfo::getModuleData($modName);
-
-		if(!$m){
-			return true;
-		}
 		return we_base_menu::isEnabled($m);
 	}
 
