@@ -175,38 +175,16 @@ abstract class we_users_util{
 	}
 
 	public static function canEditModule($modName){
-		$one = false;
-		$set = array();
-		$enable = 1;
 		if(permissionhandler::hasPerm('ADMINISTRATOR')){
 			return true;
 		}
-//FIXME: remove eval + change code
+
 		$m = we_base_moduleInfo::getModuleData($modName);
 
-		if(empty($m)){
+		if(!$m){
 			return true;
 		}
-
-		$p = isset($m['perm']) ? $m['perm'] : '';
-		$or = explode('||', $p);
-		foreach($or as $k => $v){
-			$and = explode('&&', $v);
-			$one = true;
-			foreach($and as &$val){
-				$set[] = 'isset($_SESSION[\'perms\'][\'' . trim($val) . '\'])';
-				$val = '$_SESSION[\'perms\'][\'' . trim($val) . '\']';
-				$one = false;
-			}
-			$or[$k] = implode(' && ', $and);
-			if($one && !in_array('isset($_SESSION[\'perms\'][\'' . trim($v) . '\'])', $set)){
-				$set[] = 'isset($_SESSION[\'perms\'][\'' . trim($v) . '\'])';
-			}
-		}
-		$set_str = implode(' || ', $set);
-		$condition_str = implode(' || ', $or);
-		eval('if ((' . $set_str . ')&&(' . $condition_str . ')) { $enable=1; } else { $enable=0; }');
-		return $enable;
+		return we_base_menu::isEnabled($m);
 	}
 
 	public static function makeOwnersSql($useCreatorID = true){
