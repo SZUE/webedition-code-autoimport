@@ -82,7 +82,7 @@ function we_tag_saferpay($attribs){
 			return;
 		}
 		/*		 * ***** get the currency ******* */
-		$feldnamen = explode("|", f("SELECT strFelder from " . ANZEIGE_PREFS_TABLE . " where strDateiname = 'shop_pref'", "strFelder", $GLOBALS['DB_WE']));
+		$feldnamen = explode("|", f("SELECT strFelder from " . ANZEIGE_PREFS_TABLE . " where strDateiname = 'shop_pref'"));
 		if(isset($feldnamen[0])){ // determine the currency
 			if($feldnamen[0] == "$" || $feldnamen[0] == "USD"){
 				$currency = "USD";
@@ -274,8 +274,8 @@ function we_tag_saferpay($attribs){
 		$command = $execPath . "saferpay -payinit -p $confPath $strAttributes";
 
 		if(!$execPath || !$confPath){
-			print g_l('modules_shop', '[saferpayError]');
-			print $strAttributes;
+			echo g_l('modules_shop', '[saferpayError]').
+				$strAttributes;
 			exit;
 		} else {
 
@@ -285,10 +285,10 @@ function we_tag_saferpay($attribs){
 		}
 
 		if($payinit_url){
-			print $processOK .
+			echo $processOK .
 				we_html_element::jsElement('	OpenSaferpayWindowJScript(\'' . $payinit_url . '\');');
 		} else {
-			print $processError;
+			echo $processError;
 		}
 
 //data in DB
