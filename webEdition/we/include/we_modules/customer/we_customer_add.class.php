@@ -24,6 +24,8 @@
  */
 abstract class we_customer_add{
 
+	static $operator = array('=', '<>', '<', '<=', '>', '>=', 'LIKE');
+
 	static function getHTMLSortEditor(&$pob){
 		$branch = $pob->getHTMLBranchSelect();
 		$branch->setOptionVT(1, g_l('modules_customer', '[other]'), g_l('modules_customer', '[other]'));
@@ -287,7 +289,6 @@ function we_cmd(){
 	public static function getHTMLSearch(&$pob, &$search, &$select){
 		$count = $_REQUEST['count'];
 
-		$operators = array('=', '<>', '<', '<=', '>', '>=', 'LIKE');
 		$logic = array('AND' => 'AND', 'OR' => 'OR');
 
 		$search_arr = array();
@@ -348,7 +349,7 @@ function we_cmd(){
 			$advsearch->addRow();
 			$advsearch->setCol($c, 0, array(), $branch->getHtml());
 			$advsearch->setCol($c, 1, array(), $field->getHtml());
-			$advsearch->setCol($c, 2, array(), we_html_tools::htmlSelect("operator_" . $i, $operators, 1, (isset($search_arr["operator_" . $i]) ? $search_arr["operator_" . $i] : ""), false, array(), "value", "60"));
+			$advsearch->setCol($c, 2, array(), we_html_tools::htmlSelect("operator_" . $i, self::$operators, 1, (isset($search_arr["operator_" . $i]) ? $search_arr["operator_" . $i] : ""), false, array(), "value", "60"));
 			$advsearch->setCol($c, 3, array("width" => 190), "<table border='0' cellpadding='0' cellspacing='0'><tr><td>" . $value_i . $value_date_i . "</td><td>" . we_html_tools::getPixel(3, 1) . "</td><td id='dpzell_$i' style='display:none' align='right'>$btnDatePicker</td></tr></table>");
 			++$c;
 		}
@@ -357,7 +358,7 @@ function we_cmd(){
 		$advsearch->setCol($c, 0, array("colspan" => $colspan), we_html_tools::getPixel(5, 5));
 
 		$advsearch->addRow();
-		$advsearch->setCol(++$c, 0, array("colspan" => $colspan), we_html_button::create_button_table(array(
+		$advsearch->setCol( ++$c, 0, array("colspan" => $colspan), we_html_button::create_button_table(array(
 				we_html_button::create_button("image:btn_function_plus", "javascript:we_cmd('add_search')"),
 				we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('del_search')")
 				)
@@ -377,36 +378,31 @@ function we_cmd(){
 			) . '</td><td>&nbsp;</td></tr></table>'
 		);
 		$max_res = $pob->View->settings->getMaxSearchResults();
-		$result = (!empty($search_arr) && $_REQUEST["search"] ? self::getAdvSearchResults($search_arr, $count, $max_res) : array());
+		$result = ($search_arr && $_REQUEST['search'] ? self::getAdvSearchResults($pob->db, $search_arr, $count, $max_res) : array());
 
 		foreach($result as $id => $text){
 			$select->addOption($id, $text);
 		}
 	}
 
-	static function getAdvSearchResults($keywords, $count, $res_num){
-		$operators = array(
-			"0" => "=",
-			"1" => "<>",
-			"2" => "<",
-			"3" => "<=",
-			"4" => ">",
-			"5" => ">=",
-			"6" => "LIKE"
-		);
-
+	static function getAdvSearchResults(we_database_base $db, $keywords, $count, $res_num){
 		$where = '';
 
 		for($i = 0; $i < $count; $i++){
 			if(isset($keywords["field_" . $i])){
-				$keywords["field_" . $i] = str_replace(g_l('modules_customer', '[common]') . "_", "", $keywords["field_" . $i]);
+				$keywords["field_" . $i] = str_replace(g_l('modules_customer', '[common]') . '_', '', $keywords['field_' . $i]);
 			}
-			if(isset($keywords["field_" . $i]) && isset($keywords["operator_" . $i]) && isset($keywords["value_" . $i]))
-				$where.=(isset($keywords["logic_" . $i]) ? " " . $keywords["logic_" . $i] . " " : "") . $keywords["field_" . $i] . " " . $operators[$keywords["operator_" . $i]] . " '" . (is_numeric($keywords["value_" . $i]) ? $keywords["value_" . $i] : $pob->db->escape($keywords["value_" . $i])) . "'";
+			if(isset($keywords["field_" . $i]) && isset($keywords["operator_" . $i]) && isset($keywords["value_" . $i])){
+				$where.=
+					(isset($keywords['logic_' . $i]) ? ' ' . $keywords['logic_' . $i] . ' ' : '') .
+					$keywords['field_' . $i] . ' ' . self::$operators[$keywords['operator_' . $i]] . " '" .
+					(is_numeric($keywords['value_' . $i]) ? $keywords['value_' . $i] : $db->escape($keywords['value_' . $i])) .
+					"'";
+			}
 		}
 
-		$pob->db->query('SELECT ID,CONCAT(Username, " (",Forename," ",Surname,")") AS user FROM ' . CUSTOMER_TABLE . ' WHERE ' . (empty($where) ? 0 : $where) . ' ORDER BY Text LIMIT 0,' . $res_num);
-		return $pob->db->getAllFirst(false);
+		$db->query('SELECT ID,CONCAT(Username, " (",Forename," ",Surname,")") AS user FROM ' . CUSTOMER_TABLE . ' WHERE ' . (empty($where) ? 0 : $where) . ' ORDER BY Text LIMIT 0,' . $res_num);
+		return $db->getAllFirst(false);
 	}
 
 	static function getHTMLTreeHeader(&$pob){
