@@ -24,7 +24,7 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
-echo we_html_tools::getHtmlTop .
+echo we_html_tools::getHtmlTop() .
  we_html_element::jsScript(JS_DIR . 'windows.js') .
  we_html_element::jsElement('
 	self.location="http://help.webedition.org/index.php?language=' . $GLOBALS["WE_LANGUAGE"] . '";');
