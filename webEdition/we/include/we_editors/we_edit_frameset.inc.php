@@ -69,18 +69,14 @@ if($_REQUEST['we_cmd'][2]){
 }
 
 if(isset($_REQUEST['we_cmd'][3])){
-	$we_ContentType = $_REQUEST['we_cmd'][3];
-	if(empty($we_ContentType)){
-		//get ct from DB
-		$we_ContentType = f('SELECT ContentType FROM ' . $GLOBALS['DB_WE']->escape($we_Table) . ' WHERE ID=' . intval($we_ID));
-	}
+	$we_ContentType = $_REQUEST['we_cmd'][3] ? $_REQUEST['we_cmd'][3] : (isset($we_ID) ? f('SELECT ContentType FROM ' . $GLOBALS['DB_WE']->escape($we_Table) . ' WHERE ID=' . intval($we_ID)) : '');
 }
 
-// init document
 if(isset($_SESSION['weS']['we_data'][$we_transaction])){
 	$we_dt = $_SESSION['weS']['we_data'][$we_transaction];
 }
 
+// init document
 include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 if(!$we_doc->fileExists){
 	include(WE_INCLUDES_PATH . 'weInfoPages/weNoResource.inc.php');
