@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_users_user{
+class we_users_user {
 
 	const TYPE_USER = 0;
 	const TYPE_USER_GROUP = 1;
@@ -315,11 +315,10 @@ class we_users_user{
 			$try_name = '@' . $foo['username'];
 			$try_text = $foo['username'];
 			while($search){
-				$this->DB_WE->query('SELECT username FROM ' . USER_TABLE . ' WHERE ID!=' . intval($this->ID) . ' AND ID!=' . intval($uorginal) . " AND username='" . $this->DB_WE->escape($try_name) . "'");
-				if(!$this->DB_WE->next_record()){
-					$search = false;
-				} else {
+				if(f('SELECT 1 FROM ' . USER_TABLE . ' WHERE ID!=' . intval($this->ID) . ' AND ID!=' . intval($uorginal) . " AND username='" . $this->DB_WE->escape($try_name) . "'", '', $this->DB_WE)){
 					$try_name = $try_name . '_' . ++$ount;
+				} else {
+					$search = false;
 				}
 			}
 			$this->username = $try_name;
@@ -551,9 +550,7 @@ class we_users_user{
 			}
 			$this->workspaces_defaults[$k] = $new_array;
 		}
-		$this->workSpaceDef = (empty($this->workspaces[FILE_TABLE]) ?
-				'' :
-				makeCSVFromArray($this->workspaces_defaults[FILE_TABLE], true, ','));
+		$this->workSpaceDef = ($this->workspaces[FILE_TABLE] ? makeCSVFromArray($this->workspaces_defaults[FILE_TABLE], true, ',') : '');
 
 		// if no workspaces are set, take workspaces from creator
 		if(empty($this->workSpace)){
@@ -981,13 +978,26 @@ _multiEditorreload = true;";
 				break;
 			case self::TAB_WORKSPACES:
 				foreach($this->workspaces as $k => $v){
-					$obj = $this->Name . '_Workspace_' . $k . '_Values';
-					if(isset($_POST[$obj])){
-						$this->workspaces[$k] = ($_POST[$obj] != '' ? explode(',', $_POST[$obj]) : array());
-					}
-					$obj = $this->Name . '_defWorkspace_' . $k . '_Values';
-					if(isset($_POST[$obj])){
-						$this->workspaces_defaults[$k] = ($_POST[$obj] != '' ? explode(',', $_POST[$obj]) : array());
+					$obj = $this->Name . '_Workspace_' . $k;
+					if(isset($_POST[$obj]['id'])){
+						$this->workspaces[$k] = $_POST[$obj]['id'];
+						$obj = $this->Name . '_Workspace_' . $k . '_AddDel';
+						if(isset($_POST[$obj]) && $_POST[$obj] != ''){
+							if($_POST[$obj] == 'new'){//add
+								$this->workspaces[$k][] = 0;
+							} else {
+								unset($this->workspaces[$k][$_POST[$obj]]);
+							}
+						}
+						$obj = $this->Name . '_defWorkspace_' . $k;
+						$this->workspaces_defaults[$k] = array();
+						if(isset($_POST[$obj])){
+							foreach($this->workspaces[$k] as $pos => $id){
+								if(isset($_POST[$obj][$pos]) && $_POST[$obj][$pos]){
+									$this->workspaces_defaults[$k][] = $id;
+								}
+							}
+						}
 					}
 				}
 				if(defined('CUSTOMER_TABLE')){
@@ -1321,24 +1331,24 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 		$_tableObj = new we_html_table($_attr, 12, 2);
 		$line = 0;
 		$_tableObj->setCol($line, 0, null, $this->getUserfield('Salutation', 'salutation'));
-		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('First', 'first_name'));
+		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('First', 'first_name'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Second', 'second_name'));
-		$_tableObj->setCol( ++$line, 0, array('colspan' => 2), we_html_tools::getPixel(560, 20));
-		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('Address', 'address'));
+		$_tableObj->setCol(++$line, 0, array('colspan' => 2), we_html_tools::getPixel(560, 20));
+		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('Address', 'address'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('HouseNo', 'houseno'));
-		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('PLZ', 'PLZ', 'text', 16, true));
+		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('PLZ', 'PLZ', 'text', 16, true));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('City', 'city'));
-		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('State', 'state'));
+		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('State', 'state'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Country', 'country'));
-		$_tableObj->setCol( ++$line, 0, array('colspan' => 2), we_html_tools::getPixel(560, 20));
-		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('Tel_preselection', 'tel_pre'));
+		$_tableObj->setCol(++$line, 0, array('colspan' => 2), we_html_tools::getPixel(560, 20));
+		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('Tel_preselection', 'tel_pre'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Telephone', 'telephone'));
-		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('Fax_preselection', 'fax_pre'));
+		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('Fax_preselection', 'fax_pre'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Fax', 'fax'));
-		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('Handy', 'mobile'));
+		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('Handy', 'mobile'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Email', 'email'));
-		$_tableObj->setCol( ++$line, 0, array('colspan' => 2), we_html_tools::getPixel(520, 4));
-		$_tableObj->setCol( ++$line, 0, array('colspan' => 2), we_html_tools::htmlFormElementTable($_description, g_l('modules_users', '[description]')));
+		$_tableObj->setCol(++$line, 0, array('colspan' => 2), we_html_tools::getPixel(520, 4));
+		$_tableObj->setCol(++$line, 0, array('colspan' => 2), we_html_tools::htmlFormElementTable($_description, g_l('modules_users', '[description]')));
 
 
 		$parts = array(
@@ -1542,69 +1552,12 @@ showParentPerms(' . ($this->ParentPerms ? 1 : 0) . ');') .
 		$parts = array();
 		$content = we_html_element::jsElement('
 function addElement(elvalues) {
-	elvalues.value=(elvalues.value==""?"0":elvalues.value+",0");
+	elvalues.value="new";
 	switchPage(' . self::TAB_WORKSPACES . ');
 }
 
-function setValues(section) {
-	switch(section){
-	case "TEMPLATES_TABLE":
-		table="' . TEMPLATES_TABLE . '";
-		break;' .
-				(defined("OBJECT_TABLE") ? '
-	case "OBJECT_TABLE":
-		table="' . OBJECT_FILES_TABLE . '";
-		break;' : '') .
-				(defined('NEWSLETTER_TABLE') ? '
-	case "NEWSLETTER_TABLE":
-		table="' . NEWSLETTER_TABLE . '";
-		break;' : '') . '
-	case "NAVIGATION_TABLE":
-		table="' . NAVIGATION_TABLE . '";
-		break;
-	case "FILE_TABLE":
-		table="' . FILE_TABLE . '";
-		break;
-	}
-	eval(\'fillValues(document.we_form.' . $this->Name . '_Workspace_\'+table+\'_Values,"' . $this->Name . '_Workspace_\'+table+\'")\');
-}
-
-function fillValues(elvalues,names) {
-	var stack=elvalues.value.split(",");
-	elcount=stack.length;
-	for(i=0;i<elcount;i++) {
-		eval("if(document.we_form."+names+"_"+i+") stack[i]=document.we_form."+names+"_"+i+".value");
-	}
-	elvalues.value=stack.join();
-}
-
-function fillDef(elvalues,elvalues2,names,names2) {
-	var stack=elvalues2.value.split(",");
-	elcount=stack.length;
-	for(i=0;i<elcount;i++) {
-		if(document.we_form.elements[names+"_"+i]){
-			if(document.we_form.elements[names+"_"+i].checked){
-				stack[i]=document.we_form.elements[names2+"_"+i].value;
-			} else{
-				 stack[i]=0;
-			}
-		}
-	}
-	elvalues.value=stack.join();
-}
-
 function delElement(elvalues,elem) {
-	var stack=elvalues.value.split(",");
-	var res=new Array();
-	var c=-1;
-
-	for(i=0;i<stack.length;i++) {
-		if(i!=elem) {
-			c++;
-			res[c]=stack[i];
-		}
-	}
-	elvalues.value=res.join();
+	elvalues.value=elem;
 	top.content.setHot();
 }
 ');
@@ -1657,16 +1610,13 @@ function delElement(elvalues,elem) {
 				default:
 					continue 2;
 			}
-			$obj_values = $this->Name . '_Workspace_' . $k . '_Values';
+			$obj_values = $this->Name . '_Workspace_' . $k . '_AddDel';
 			$obj_names = $this->Name . '_Workspace_' . $k;
-			$obj_def_values = $this->Name . '_defWorkspace_' . $k . '_Values';
 			$obj_def_names = $this->Name . '_defWorkspace_' . $k;
 
 			//$content .= '<p>';
 
-			$content1.='<input type="hidden" name="' . $obj_values . '" value="' . implode(",", $v) . '" />
-				<input type="hidden" name="' . $obj_def_values . '" value="' . implode(",", $this->workspaces_defaults[$k]) . '" />
-				<table border="0" cellpadding="0" cellspacing="2" width="520">';
+			$content1.='<input type="hidden" name="' . $obj_values . '" value="" /><table border="0" cellpadding="0" cellspacing="2" width="520">';
 			foreach($v as $key => $val){
 				$value = $val;
 				$path = f('SELECT Path FROM ' . $k . ' WHERE ' . $k . '.ID=' . $value, '', $this->DB_WE);
@@ -1682,7 +1632,7 @@ function delElement(elvalues,elem) {
 					}
 				}
 				$default = false;
-				foreach($this->workspaces_defaults[$k] as $k1 => $v1){
+				foreach($this->workspaces_defaults[$k] as $v1){
 					if($v1 == $val && $v1 != 0){
 						$default = true;
 					}
@@ -1690,34 +1640,34 @@ function delElement(elvalues,elem) {
 
 				switch($k){
 					case (defined('NEWSLETTER_TABLE') ? NEWSLETTER_TABLE : 'NEWSLETTER_TABLE'):
-						$button = we_html_button::create_button('select', "javascript:we_cmd('openNewsletterDirselector',document.forms[0]." . $obj_names . "_" . $key . ".value,'document.we_form." . $obj_names . "_" . $key . ".value','document.we_form." . $obj_names . "_" . $key . "_Text.value','opener.top.content.editor.edbody.setValues(\"" . $setValue . "\")','" . session_id() . "','" . (isset($_REQUEST["rootDirID"]) ? $_REQUEST["rootDirID"] : "") . "' )");
+						$button = we_html_button::create_button('select', "javascript:we_cmd('openNewsletterDirselector',document.getElementsByName('" . $obj_names . "[id][" . $key . "]')[0].value,'document.getElementsByName(\'" . $obj_names . "[id][" . $key . "]\')[0].value','document.getElementsByName(\'" . $obj_names . "[Text][" . $key . "]\')[0].value','','" . session_id() . "','" . (isset($_REQUEST["rootDirID"]) ? $_REQUEST["rootDirID"] : "") . "' )");
 						break;
 					case NAVIGATION_TABLE:
-						$button = we_html_button::create_button('select', "javascript:we_cmd('openNavigationDirselector',document.forms[0]." . $obj_names . "_" . $key . ".value,'document.we_form." . $obj_names . "_" . $key . ".value','document.we_form." . $obj_names . "_" . $key . "_Text.value','opener.top.content.editor.edbody.setValues(\"" . $setValue . "\")','" . session_id() . "','" . (isset($_REQUEST["rootDirID"]) ? $_REQUEST["rootDirID"] : "") . "' )");
+						$button = we_html_button::create_button('select', "javascript:we_cmd('openNavigationDirselector',document.getElementsByName('" . $obj_names . "[id][" . $key . "]')[0].value,'document.getElementsByName(\'" . $obj_names . "[id][" . $key . "]\')[0].value','document.getElementsByName(\'" . $obj_names . "[Text][" . $key . "]\')[0].value','','" . session_id() . "','" . (isset($_REQUEST["rootDirID"]) ? $_REQUEST["rootDirID"] : "") . "' )");
 						break;
 					default:
-						$button = we_html_button::create_button('select', "javascript:we_cmd('openDirselector',document.forms[0]." . $obj_names . "_" . $key . ".value,'" . $k . "','document.we_form." . $obj_names . "_" . $key . ".value','document.we_form." . $obj_names . "_" . $key . "_Text.value','opener.top.content.editor.edbody.setValues(\"" . $setValue . "\")','" . session_id() . "','" . (isset($_REQUEST["rootDirID"]) ? $_REQUEST["rootDirID"] : "") . "' )");
+						$button = we_html_button::create_button('select', "javascript:we_cmd('openDirselector',document.getElementsByName('" . $obj_names . "[id][" . $key . "]')[0].value,'" . $k . "','document.getElementsByName(\'" . $obj_names . "[id][" . $key . "]\')[0].value','document.getElementsByName(\'" . $obj_names . "[Text][" . $key . "]\')[0].value','','" . session_id() . "','" . (isset($_REQUEST["rootDirID"]) ? $_REQUEST["rootDirID"] : "") . "' )");
 				}
 
 				$yuiSuggest->setAcId('WS' . $k . $key);
 				$yuiSuggest->setContentType('folder');
-				$yuiSuggest->setInput($obj_names . '_' . $key . '_Text', $path);
+				$yuiSuggest->setInput($obj_names . '[Text][' . $key . ']', $path);
 				$yuiSuggest->setMaxResults(10);
 				$yuiSuggest->setMayBeEmpty(true);
-				$yuiSuggest->setResult($obj_names . '_' . $key, $value);
+				$yuiSuggest->setResult($obj_names . '[id][' . $key . ']', $value);
 				$yuiSuggest->setSelector('Dirselector');
 				$yuiSuggest->setTable($k);
 				$yuiSuggest->setWidth(290);
 				$yuiSuggest->setSelectButton($button, 10);
-				$yuiSuggest->setDoOnTextfieldBlur('setValues("' . $setValue . '");');
+				//$yuiSuggest->setDoOnTextfieldBlur('');
 
 				$weAcSelector = $yuiSuggest->getHTML();
 
 				$content1.='
 <tr><td colspan="2">' . $weAcSelector . '</td>
-	<td><div style="position:relative; top:-1px">' . we_html_button::create_button("image:btn_function_trash", "javascript:fillValues(document.we_form." . $obj_values . ",'" . $obj_names . "');fillDef(document.we_form." . $obj_def_values . ",document.we_form." . $obj_values . ",'" . $obj_def_names . "','" . $obj_names . "');delElement(document.we_form." . $obj_values . "," . $key . ");delElement(document.we_form." . $obj_def_values . "," . $key . ");switchPage(" . self::TAB_WORKSPACES . ");", true) . '</td></div>' .
+	<td><div style="position:relative; top:-1px">' . we_html_button::create_button("image:btn_function_trash", "javascript:delElement(document.we_form." . $obj_values . "," . $key . ");switchPage(" . self::TAB_WORKSPACES . ");", true) . '</td></div>' .
 					($k == FILE_TABLE ?
-						'<td class="defaultfont">' . we_html_forms::checkbox(1, $default, $obj_def_names . "_$key", g_l('modules_users', "[make_def_ws]"), true, "defaultfont", 'top.content.setHot();fillDef(document.we_form.' . $obj_def_values . ',document.we_form.' . $obj_values . ',\'' . $obj_def_names . '\',\'' . $obj_names . '\');') . '</td>' :
+						'<td class="defaultfont">' . we_html_forms::checkbox(1, $default, $obj_def_names . "[$key]", g_l('modules_users', "[make_def_ws]"), true, "defaultfont", 'top.content.setHot();') . '</td>' :
 						'<td>' . we_html_tools::getPixel(5, 5) . '</td>') . '
 </tr>';
 			}
@@ -1729,7 +1679,7 @@ function delElement(elvalues,elem) {
 		<td>' . we_html_tools::getPixel(40, 3) . '</td>
 		<td>' . we_html_tools::getPixel(90, 3) . '</td>
 	</tr>
-	<tr><td colspan="4">' . we_html_button::create_button("image:btn_function_plus", "javascript:top.content.setHot();fillValues(document.we_form." . $obj_values . ",'" . $obj_names . "');fillDef(document.we_form." . $obj_def_values . ",document.we_form." . $obj_values . ",'" . $obj_def_names . "','" . $obj_names . "');addElement(document.we_form." . $obj_values . ");addElement(document.we_form." . $obj_def_values . ");", true) . '</td></tr>
+	<tr><td colspan="4">' . we_html_button::create_button("image:btn_function_plus", "javascript:top.content.setHot();addElement(document.we_form." . $obj_values . ");", true) . '</td></tr>
 </table>';
 
 			if($parentWsp[$k]){
@@ -1968,7 +1918,7 @@ function show_seem_chooser(val) {
 			case 'weapp':
 				$_seem_start_type = 'weapp';
 				if($this->Preferences['seem_start_file'] != 0){
-
+					
 				}
 				break;
 			// Document
