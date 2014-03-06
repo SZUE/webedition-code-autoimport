@@ -23,8 +23,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+$protect = we_base_moduleInfo::isActive('shop') && we_users_util::canEditModule('shop') ? null : array(false);
+we_html_tools::protect($protect);
 
-we_html_tools::protect();
 echo we_html_tools::getHtmlTop() .
  STYLESHEET;
 
@@ -49,9 +50,7 @@ $jsFunction = '
 	}
 
 	function we_cmd(){
-
 		switch (arguments[0]) {
-
 			case "close":
 				window.close();
 			break;
@@ -72,7 +71,6 @@ if(isset($_REQUEST['we_cmd']) && $_REQUEST['we_cmd'][0] == 'saveVatRule'){
 	$weShopVatRule = we_shop_vatRule::initByRequest($_REQUEST);
 	$weShopVatRule->save();
 } else {
-
 	$weShopVatRule = we_shop_vatRule::getShopVatRule();
 }
 
@@ -169,23 +167,17 @@ $parts = array(
 	)
 );
 
-print we_html_element::jsElement($jsFunction);
-
-
-print '</head>
+echo we_html_element::jsElement($jsFunction) .
+ '</head>
 <body class="weDialogBody" onload="window.focus();">
 	<form name="we_form" method="post">
 	<input type="hidden" name="we_cmd[0]" value="saveVatRule" />
-';
-
-print we_html_multiIconBox::getHTML(
-				'weShopCountryVat', "100%", $parts, 30, we_html_button::position_yes_no_cancel(
-						we_html_button::create_button('save', 'javascript:we_cmd(\'save\');'), '', we_html_button::create_button('cancel', 'javascript:we_cmd(\'close\');')
-				), -1, '', '', false, g_l('modules_shop', '[vat_country][box_headline]'), '', 741
-);
-
-
-print '
-	</form>
+' .
+ we_html_multiIconBox::getHTML(
+	'weShopCountryVat', "100%", $parts, 30, we_html_button::position_yes_no_cancel(
+		we_html_button::create_button('save', 'javascript:we_cmd(\'save\');'), '', we_html_button::create_button('cancel', 'javascript:we_cmd(\'close\');')
+	), -1, '', '', false, g_l('modules_shop', '[vat_country][box_headline]'), '', 741
+) .
+ '</form>
 </body>
 </html>';

@@ -798,13 +798,11 @@ failure: function(o) {
 
 		if(isset($_REQUEST['sort'])){
 			$sort = ($_REQUEST['sort'] == g_l('modules_customer', '[no_sort]') ? 0 : 1);
+		} elseif($this->View->settings->getSettings("default_sort_view") != g_l('modules_customer', '[no_sort]')){
+			$sort = 1;
+			$_REQUEST["sort"] = $this->View->settings->getSettings('default_sort_view');
 		} else {
-			if($this->View->settings->getSettings("default_sort_view") != g_l('modules_customer', '[no_sort]')){
-				$sort = 1;
-				$_REQUEST["sort"] = $this->View->settings->getSettings('default_sort_view');
-			} else {
-				$sort = 0;
-			}
+			$sort = 0;
 		}
 
 		$offset = (isset($_REQUEST["offset"])) ? $_REQUEST["offset"] : 0;
@@ -867,10 +865,12 @@ failure: function(o) {
 
 			$max_res = $this->View->settings->getMaxSearchResults();
 			$result = array();
-			if(isset($_REQUEST['keyword']) && isset($_REQUEST['search']) && $_REQUEST['keyword'] && $_REQUEST['search'])
+			if(isset($_REQUEST['keyword']) && isset($_REQUEST['search']) && $_REQUEST['keyword'] && $_REQUEST['search']){
 				$result = $this->View->getSearchResults($_REQUEST['keyword'], $max_res);
-			foreach($result as $id => $text)
+			}
+			foreach($result as $id => $text){
 				$select->addOption($id, $text);
+			}
 		}
 
 		$table = new we_html_table(array('border' => 0, 'cellpadding' => 2, 'cellspacing' => 0, 'width' => 550, 'height' => 50), 3, 1);
@@ -948,13 +948,11 @@ failure: function(o) {
 	}
 
 	function getHTMLSettings(){
-		$closeflag = false;
-
-		if(isset($_REQUEST["cmd"])){
-			if($_REQUEST["cmd"] == "save_settings"){
-				$this->View->processCommands();
-				$closeflag = true;
-			}
+		if(isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] == "save_settings"){
+			$this->View->processCommands();
+			$closeflag = true;
+		} else {
+			$closeflag = false;
 		}
 
 		$default_sort_view_select = $this->getHTMLSortSelect();

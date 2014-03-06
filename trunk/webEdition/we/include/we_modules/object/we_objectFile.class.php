@@ -290,7 +290,7 @@ class we_objectFile extends we_document{
 		if(LANGLINK_SUPPORT){
 			$htmlzw = '';
 			foreach($_languages as $langkey => $lang){
-				$LDID = intval(f('SELECT LDID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblObjectFile" AND DID=' . intval($this->ID) . ' AND Locale="' . $langkey . '"', 'LDID', $this->DB_WE));
+				$LDID = intval(f('SELECT LDID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblObjectFile" AND DID=' . intval($this->ID) . ' AND Locale="' . $langkey . '"', '', $this->DB_WE));
 				$divname = 'we_' . $this->Name . '_LanguageDocDiv[' . $langkey . ']';
 				$htmlzw.= '<div id="' . $divname . '" ' . ($this->Language == $langkey ? ' style="display:none" ' : '') . '>' . $this->formLanguageDocument($lang, $langkey, $LDID, $this->Table, $this->rootDirID) . '</div>';
 				$langkeys[] = $langkey;
@@ -350,7 +350,6 @@ class we_objectFile extends we_document{
 			$ac = makeCSVFromArray(getAllowedClasses($this->DB_WE));
 			$this->TableID = count($ac) ? $ac[0] : 0;
 		}
-		$ws = get_ws();
 		$foo = getHash('SELECT Workspaces,DefaultWorkspaces,Templates FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), $this->DB_WE);
 		$def_ws = isset($foo['DefaultWorkspaces']) ? $foo['DefaultWorkspaces'] : '';
 		$owsCSV = isset($foo['Workspaces']) ? $foo['Workspaces'] : '';
@@ -417,7 +416,7 @@ class we_objectFile extends we_document{
 		$this->restoreWorkspaces();
 		$this->elements = array();
 		$hash = getHash('SELECT Users,UsersReadOnly,RestrictUsers,DefaultCategory,DefaultText,DefaultValues,DefaultTriggerID FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), $this->DB_WE);
-		if(!empty($hash)){
+		if($hash){
 // fix - the class access permissions should not be applied
 			/* if($this->DB_WE->f("Users")){
 			  $this->Owners = $this->DB_WE->f("Users");
@@ -444,7 +443,7 @@ class we_objectFile extends we_document{
 				}
 				if(strpos($text, '%ID%') !== false){
 //FIXME: this is NOT safe!!! Insert entry, and update afterwards
-					$id = 1 + intval(f('SELECT max(ID) as ID FROM ' . OBJECT_FILES_TABLE, 'ID', $this->DB_WE));
+					$id = 1 + intval(f('SELECT max(ID) FROM ' . OBJECT_FILES_TABLE, '', $this->DB_WE));
 					$text = str_replace('%ID%', $id, $text);
 				}
 				$this->Text = strtr($text, array(
@@ -508,7 +507,7 @@ class we_objectFile extends we_document{
 						$val = $this->getElement('we_object_' . $name);
 						break;
 					case self::TYPE_MULTIOBJECT:
-						$temp = @unserialize($this->getElement($name));
+						$temp = unserialize($this->getElement($name));
 						$_array = isset($temp['objects']) ? $temp['objects'] : array();
 						if(count($_array) === 0){
 							$val = 0;
@@ -534,7 +533,7 @@ class we_objectFile extends we_document{
 				}
 				if((strlen($val) == 0) || (($type == self::TYPE_OBJECT || $type == self::TYPE_MULTIOBJECT || $type == self::TYPE_CHECKBOX || $type == self::TYPE_IMG) && ($val == '0'))){
 					if($type == self::TYPE_OBJECT){
-						$name = f('SELECT Text FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($name), 'Text', $this->DB_WE);
+						$name = f('SELECT Text FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($name), '', $this->DB_WE);
 					}
 					return $name;
 				}
@@ -668,7 +667,7 @@ class we_objectFile extends we_document{
 
 	function formClass(){
 		return ($this->ID ?
-				'<span class="defaultfont">' . f('SELECT Text FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), 'Text', $this->DB_WE) . '</span>' :
+				'<span class="defaultfont">' . f('SELECT Text FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE) . '</span>' :
 				$this->formSelect2('', 388, 'TableID', OBJECT_TABLE, 'ID', 'Text', '', 'WHERE IsFolder=0' . ($this->AllowedClasses ? ' AND ID IN(' . $this->AllowedClasses . ')' : '') . ' ORDER BY Path ', 1, $this->TableID, false, "if(_EditorFrame.getEditorDocumentId() != 0){we_cmd('reload_editpage');}else{we_cmd('restore_defaults');};_EditorFrame.setEditorIsHot(true);"));
 	}
 
@@ -989,11 +988,11 @@ class we_objectFile extends we_document{
 				$textname = 'we_' . $this->Name . '_txt[' . $name . '_path' . $f . ']';
 				$idname = 'we_' . $this->Name . '_' . self::TYPE_MULTIOBJECT . '[' . $name . '_default' . $f . ']';
 
-				$classPath = f('SELECT Path FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($classid), 'Path', $db);
-				$rootDir = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' . $classPath . '"', 'ID', $db);
+				$classPath = f('SELECT Path FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($classid), '', $db);
+				$rootDir = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' . $classPath . '"', '', $db);
 				$path = $this->getElement('we_object_' . $name . '_path');
 				if(($myid = intval($objects[$f]))){
-					$path = $path ? $path : f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . $myid, 'Path', $db);
+					$path = $path ? $path : f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . $myid, '', $db);
 				}
 
 				if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
@@ -1541,7 +1540,7 @@ class we_objectFile extends we_document{
 
 	function getDefaultValueArray(){
 		if($this->TableID){
-			$foo = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), 'DefaultValues', $this->DB_WE);
+			$foo = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE);
 			return $foo ? unserialize($foo) : array();
 		}
 		t_e('error no tableID!', $this);
@@ -1592,7 +1591,7 @@ class we_objectFile extends we_document{
 
 	function getPossibleWorkspaces($ClassWs, $all = false){
 		if(!$ClassWs){
-			$ClassWs = f('SELECT Workspaces FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), 'Workspaces', $this->DB_WE);
+			$ClassWs = f('SELECT Workspaces FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE);
 		}
 		$userWs = get_ws(FILE_TABLE);
 // wenn User Admin ist oder keine Workspaces zugeteilt wurden
@@ -1892,7 +1891,7 @@ class we_objectFile extends we_document{
 			}
 		}
 		if(!$tid){
-			$foo = makeArrayFromCSV(f('SELECT Templates FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), 'Templates', new DB_WE()));
+			$foo = makeArrayFromCSV(f('SELECT Templates FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', new DB_WE()));
 			if(!empty($foo)){
 				$tid = $foo[0];
 			}
@@ -2024,7 +2023,7 @@ class we_objectFile extends we_document{
 			}
 			if(strpos($text, '%PathNoC%') !== false){
 				$zwtext = str_replace($this->Text, '', $this->Path);
-				$classN = f('SELECT Path FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), 'Path', $this->DB_WE);
+				$classN = f('SELECT Path FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE);
 				$zwtext = ltrim(str_replace($classN, '', $zwtext), '/');
 				$text = str_replace('%PathNoC%', $zwtext, $text);
 			}
@@ -2258,7 +2257,7 @@ class we_objectFile extends we_document{
 			we_shop_variants::correctModelFields($this);
 		}
 		if(!$this->TriggerID){
-			$this->TriggerID = f('SELECT TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->ParentID), 'TriggerID', $this->DB_WE);
+			$this->TriggerID = f('SELECT TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->ParentID), '', $this->DB_WE);
 			if(!$this->TriggerID){
 				$this->TriggerID = $foo["DefaultTriggerID"];
 			}
@@ -2336,7 +2335,7 @@ class we_objectFile extends we_document{
 	}
 
 	function hasWorkspaces(){
-		return f('SELECT Workspaces FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), 'Workspaces', $this->DB_WE);
+		return f('SELECT Workspaces FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE);
 	}
 
 	function setTypeAndLength(){
@@ -2360,7 +2359,7 @@ class we_objectFile extends we_document{
 	public function we_load($from = we_class::LOAD_MAID_DB){
 		switch($from){
 			case we_class::LOAD_SCHEDULE_DB:
-				$sessDat = f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . " AND ClassName='" . $this->ClassName . "' AND Was=" . we_schedpro::SCHEDULE_FROM, 'SerializedData', $this->DB_WE);
+				$sessDat = f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . " AND ClassName='" . $this->ClassName . "' AND Was=" . we_schedpro::SCHEDULE_FROM, '', $this->DB_WE);
 				if($sessDat){
 					$this->i_getPersistentSlotsFromDB(/* "Path,Text,ParentID,CreatorID,Published,ModDate,Owners,ModifierID,RestrictOwners,OwnersReadOnly,IsSearchable,Charset,Url,TriggerID" */);
 					if($this->i_initSerializedDat(unserialize(substr_compare($sessDat, 'a:', 0, 2) == 0 ? $sessDat : gzuncompress($sessDat)))){
@@ -2450,9 +2449,9 @@ class we_objectFile extends we_document{
 			}
 		}
 		$old = $this->Published;
-		$oldUrl = f('SELECT Url FROM ' . $this->Table . ' WHERE ID=' . $this->ID, 'Url', $this->DB_WE);
+		$oldUrl = f('SELECT Url FROM ' . $this->Table . ' WHERE ID=' . $this->ID, '', $this->DB_WE);
 		$wasPublished = $this->Published > 0;
-		$this->oldCategory = f('SELECT Category FROM ' . $this->Table . ' WHERE ID=' . $this->ID, 'Category', $this->DB_WE);
+		$this->oldCategory = f('SELECT Category FROM ' . $this->Table . ' WHERE ID=' . $this->ID, '', $this->DB_WE);
 
 		if($saveinMainDB && !we_root::we_save(1)){
 			return false;
@@ -2537,7 +2536,7 @@ class we_objectFile extends we_document{
 		if($this->ID){
 
 			$this->setRootDirID();
-			$oldTableID = f('SELECT TableID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . $this->ID, "TableID", $this->DB_WE);
+			$oldTableID = f('SELECT TableID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . $this->ID, '', $this->DB_WE);
 			if($oldTableID != $this->TableID){
 				$this->resetParentID();
 			}
@@ -2724,12 +2723,12 @@ class we_objectFile extends we_document{
 	}
 
 	function i_filenameDouble(){
-		return f('SELECT ID FROM ' . $this->Table . ' WHERE ParentID=' . $this->ParentID . " AND Text='" . escape_sql_query($this->Text) . "' AND ID!=" . intval($this->ID), "ID", $this->DB_WE);
+		return f('SELECT ID FROM ' . $this->Table . ' WHERE ParentID=' . $this->ParentID . " AND Text='" . escape_sql_query($this->Text) . "' AND ID!=" . intval($this->ID), '', $this->DB_WE);
 	}
 
 	function i_urlDouble(){
 		$this->setUrl();
-		return ($this->Url != '' ? f('SELECT ID FROM ' . $this->Table . " WHERE Url='" . escape_sql_query($this->Url) . "' AND ID!=" . intval($this->ID), "ID", new DB_WE()) : false);
+		return ($this->Url != '' ? f('SELECT ID FROM ' . $this->Table . " WHERE Url='" . escape_sql_query($this->Url) . "' AND ID!=" . intval($this->ID), '', new DB_WE()) : false);
 	}
 
 	function i_checkPathDiffAndCreate(){
@@ -2751,7 +2750,7 @@ class we_objectFile extends we_document{
 	}
 
 	function getContentDataFromTemporaryDocs($ObjectID/* , $loadBinary = 0 */){
-		$DocumentObject = f('SELECT DocumentObject FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . intval($ObjectID) . ' AND Active=1 AND  DocTable="tblObjectFiles"', 'DocumentObject', $this->DB_WE);
+		$DocumentObject = f('SELECT DocumentObject FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . intval($ObjectID) . ' AND Active=1 AND  DocTable="tblObjectFiles"', '', $this->DB_WE);
 		if($DocumentObject){
 			$DocumentObject = unserialize($DocumentObject);
 			if(isset($DocumentObject[0]['elements']) && is_array($DocumentObject[0]['elements'])){
@@ -3175,7 +3174,7 @@ class we_objectFile extends we_document{
 		} else {
 			if($foo['Workspaces']){
 				$fooArr = makeArrayFromCSV($foo['Workspaces']);
-				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published>0 AND ContentType="' . we_base_ContentTypes::WEDOCUMENT . '" AND IsDynamic=1 AND Path LIKE "' . $DB_WE->escape(id_to_path($fooArr[0], FILE_TABLE, $DB_WE)) . '%"', 'Path', $DB_WE);
+				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published>0 AND ContentType="' . we_base_ContentTypes::WEDOCUMENT . '" AND IsDynamic=1 AND Path LIKE "' . $DB_WE->escape(id_to_path($fooArr[0], FILE_TABLE, $DB_WE)) . '%"', '', $DB_WE);
 				return ($path ? $path . '?we_objectID=' . intval($id) . '&pid=' . intval($pid) : '');
 			}
 		}

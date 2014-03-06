@@ -23,6 +23,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+$protect = we_base_moduleInfo::isActive('customer') && we_users_util::canEditModule('customer') ? null : array(false);
+we_html_tools::protect($protect);
+
 $what = isset($_REQUEST['pnt']) ? $_REQUEST['pnt'] : 'frameset';
 $mode = isset($_REQUEST['art']) ? $_REQUEST['art'] : 0;
 
