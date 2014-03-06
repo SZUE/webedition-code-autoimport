@@ -29,7 +29,6 @@
  */
 
 $ischecked = 0;
-//FIXME: Funktioniert so nicht, und verwirrt mehr als es hilft!
 
 if(defined('WE_VERSION_SUPP') && WE_VERSION_SUPP != 'release'){
 	$ischecked = 1;
@@ -82,4 +81,4 @@ $content = '
 </table>
 ';
 
-print liveUpdateTemplates::getHtml(g_l('liveUpdate', '[beta][headline]'), $content);
+echo liveUpdateTemplates::getHtml(g_l('liveUpdate', '[beta][headline]'), $content);

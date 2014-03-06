@@ -64,7 +64,6 @@ if(!isset($_REQUEST['we_cmd'][0]) || $_REQUEST['we_cmd'][0] != "edit_include_doc
 $GLOBALS['DB_WE']->query('UPDATE ' . USER_TABLE . '	SET Ping=0 WHERE Ping<UNIX_TIMESTAMP(NOW()-' . (PING_TIME + PING_TOLERANZ) . ')');
 
 
-$online_help = true; //FIXME:remove
 echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION["user"]["Username"]) .
  STYLESHEET .
  we_html_element::jsScript(JS_DIR . 'windows.js') .
@@ -794,16 +793,11 @@ if(!empty($_jsincludes)){
 				new jsWindow(url, "info", -1, -1, 432, 350, true, false, true);
 				break;
 			case "help":
-<?php if($online_help){ ?>
 					url = "<?php echo WEBEDITION_DIR; ?>getHelp.php" + (arguments[1] ?
 									"?hid=" + arguments[1] :
 									""
 									);
 					new jsWindow(url, "help", -1, -1, 720, 600, true, false, true, true);
-<?php } else { //FIXME:remove  ?>
-					url = "<?php echo WEBEDITION_DIR; ?>noAvailable.php";
-					new jsWindow(url, "help_no_available", -1, -1, 380, 140, true, false, true);
-<?php } ?>
 				break;
 			case "help_documentation":
 				new jsWindow("http://documentation.webedition.org/wiki/<?php echo ($GLOBALS["WE_LANGUAGE"] == 'Deutsch' ? 'de' : 'en'); ?>/", "help_documentation", -1, -1, 960, 700, true, true, true, true);
