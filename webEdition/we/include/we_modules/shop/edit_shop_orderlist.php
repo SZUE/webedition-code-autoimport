@@ -22,19 +22,22 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+$protect = we_base_moduleInfo::isActive('shop') && we_users_util::canEditModule('shop') ? null : array(false);
+we_html_tools::protect($protect);
 
-we_html_tools::protect();
 echo we_html_tools::getHtmlTop() .
  STYLESHEET;
 
 $Kundenname = '';
 
 if(isset($_REQUEST["cid"])){
-	$Kundenname = f('SELECT CONCAT(Forename," ",Surname) AS Name FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($_REQUEST["cid"]), 'Name', $DB_WE);
+	$Kundenname = f('SELECT CONCAT(Forename," ",Surname) AS Name FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($_REQUEST["cid"]));
 	$orderList = we_shop_functions::getCustomersOrderList($_REQUEST["cid"]);
+}else{
+	$Kundenname = $orderList='';
 }
 ?>
 </head>
 <body class="weEditorBody" onunload="doUnload()">
-	<?php print we_html_tools::htmlDialogLayout($orderList, g_l('modules_shop', '[order_liste]') . "&nbsp;" . $Kundenname); ?>
+	<?php echo we_html_tools::htmlDialogLayout($orderList, g_l('modules_shop', '[order_liste]') . "&nbsp;" . $Kundenname); ?>
 </body></html>

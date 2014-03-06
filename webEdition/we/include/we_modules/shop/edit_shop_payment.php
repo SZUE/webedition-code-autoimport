@@ -23,14 +23,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+$protect = we_base_moduleInfo::isActive('shop') && we_users_util::canEditModule('shop') ? null : array(false);
+we_html_tools::protect($protect);
 
 function prepareFieldname($str){
-
-	if(strpos($str, '_')){
-		return substr_replace($str, "/", strpos($str, '_'), 1);
-	} else {
-		return $str;
-	}
+	return (strpos($str, '_') ? substr_replace($str, "/", strpos($str, '_'), 1) : $str);
 }
 
 we_html_tools::protect();
@@ -39,14 +36,11 @@ echo we_html_tools::getHtmlTop() .
  STYLESHEET;
 
 
-if(!empty($_REQUEST["fieldForname"])){ //	save data in arrays ..
-	$q = 'SELECT 1 FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="payment_details"';
-
-	$DB_WE->query($q);
-	if($DB_WE->num_rows() == 0){
-		$DB_WE->query("INSERT INTO " . ANZEIGE_PREFS_TABLE . " (ID,strDateiname,strFelder) VALUES('','payment_details','strFelder')");
+if(($_REQUEST["fieldForname"])){ //	save data in arrays ..
+	if(!f('SELECT 1 FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="payment_details"')){
+		$DB_WE->query('INSERT INTO ' . ANZEIGE_PREFS_TABLE . " (ID,strDateiname,strFelder) VALUES('','payment_details','strFelder')");
 	}
-	$DB_WE->query("UPDATE " . ANZEIGE_PREFS_TABLE . " SET strFelder= '" . $DB_WE->escape($_REQUEST["fieldForname"]) . "|" . $DB_WE->escape($_REQUEST["fieldSurname"]) . "|" . $DB_WE->escape($_REQUEST["fieldStreet"]) . "|" . $DB_WE->escape($_REQUEST["fieldZip"]) . "|" . $DB_WE->escape($_REQUEST["fieldCity"]) . "|" . $DB_WE->escape($_REQUEST["lc"]) . "|" . $DB_WE->escape($_REQUEST["ppB"]) . "|" . $DB_WE->escape($_REQUEST["psb"]) . "|" . $DB_WE->escape($_REQUEST["lcS"]) . "|" . $DB_WE->escape($_REQUEST["spAID"]) . "|" . $DB_WE->escape($_REQUEST["spB"]) . "|" . $DB_WE->escape($_REQUEST["spC"]) . "|" . $DB_WE->escape($_REQUEST["spD"]) . "|" . $DB_WE->escape($_REQUEST["spCo"]) . "|" . $DB_WE->escape($_REQUEST["spPS"]) . "|" . $DB_WE->escape($_REQUEST["spcmdP"]) . "|" . $DB_WE->escape($_REQUEST["spconfP"]) . "|" . $DB_WE->escape($_REQUEST["spdesc"]) . "|" . $DB_WE->escape($_REQUEST["fieldEmail"]) . "' WHERE strDateiname = 'payment_details'");
+	$DB_WE->query('UPDATE ' . ANZEIGE_PREFS_TABLE . " SET strFelder= '" . $DB_WE->escape($_REQUEST["fieldForname"]) . "|" . $DB_WE->escape($_REQUEST["fieldSurname"]) . "|" . $DB_WE->escape($_REQUEST["fieldStreet"]) . "|" . $DB_WE->escape($_REQUEST["fieldZip"]) . "|" . $DB_WE->escape($_REQUEST["fieldCity"]) . "|" . $DB_WE->escape($_REQUEST["lc"]) . "|" . $DB_WE->escape($_REQUEST["ppB"]) . "|" . $DB_WE->escape($_REQUEST["psb"]) . "|" . $DB_WE->escape($_REQUEST["lcS"]) . "|" . $DB_WE->escape($_REQUEST["spAID"]) . "|" . $DB_WE->escape($_REQUEST["spB"]) . "|" . $DB_WE->escape($_REQUEST["spC"]) . "|" . $DB_WE->escape($_REQUEST["spD"]) . "|" . $DB_WE->escape($_REQUEST["spCo"]) . "|" . $DB_WE->escape($_REQUEST["spPS"]) . "|" . $DB_WE->escape($_REQUEST["spcmdP"]) . "|" . $DB_WE->escape($_REQUEST["spconfP"]) . "|" . $DB_WE->escape($_REQUEST["spdesc"]) . "|" . $DB_WE->escape($_REQUEST["fieldEmail"]) . "' WHERE strDateiname = 'payment_details'");
 
 
 	//	Close window when finished
@@ -56,9 +50,7 @@ if(!empty($_REQUEST["fieldForname"])){ //	save data in arrays ..
 
 
 //	NumberFormat - currency and taxes
-$DB_WE->query("SELECT strFelder from " . ANZEIGE_PREFS_TABLE . " WHERE strDateiname = 'payment_details'");
-$DB_WE->next_record();
-$feldnamen = explode("|", $DB_WE->f("strFelder"));
+$feldnamen = explode("|", f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . " WHERE strDateiname = 'payment_details'"));
 
 for($i = 0; $i <= 18; $i++){
 	$feldnamen[$i] = isset($feldnamen[$i]) ? $feldnamen[$i] : '';

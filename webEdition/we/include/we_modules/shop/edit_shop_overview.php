@@ -22,8 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-
-we_html_tools::protect();
+$protect = we_base_moduleInfo::isActive('shop') && we_users_util::canEditModule('shop') ? null : array(false);
+we_html_tools::protect($protect);
 
 echo we_html_tools::getHtmlTop() .
  STYLESHEET;
@@ -40,12 +40,7 @@ $mwst = (!empty($feldnamen[1])) ? (($feldnamen[1] / 100) + 1) : "";
 $year = abs(substr($_REQUEST["mid"], -4));
 $month = abs(str_replace($year, "", $_REQUEST["mid"]));
 
-$bezahlt = 0;
-$unbezahlt = 0;
-
-$r = 0;
-
-$f = 0;
+$bezahlt = $unbezahlt = $r = $f = 0;
 
 
 $DB_WE->query('SELECT IntOrderID, Price, IntQuantity, DateShipping,DatePayment FROM ' . SHOP_TABLE . " WHERE DateOrder >= '$year" . (($month < 10) ? "0" . $month : $month) . "01000000' and DateOrder <= '$year" . (($month < 10) ? "0" . $month : $month) . date("t", mktime(0, 0, 0, $month, 1, $year)) . "000000' ORDER BY IntOrderID");
@@ -80,18 +75,18 @@ echo we_html_element::jsScript(JS_DIR . 'images.js') . we_html_element::jsScript
 </head>
 
 <body class="weEditorBody" onunload="doUnload()"><?php
-$parts = array(
-	array(
-		"headline" => g_l('modules_shop', '[month][' . $month . ']') . " " . $year,
-		"html" => $info,
-		"space" => 170
-	),
-	array(
-		"headline" => g_l('modules_shop', '[stat]'),
-		"html" => $stat,
-		"space" => 170
-	)
-);
+	$parts = array(
+		array(
+			"headline" => g_l('modules_shop', '[month][' . $month . ']') . " " . $year,
+			"html" => $info,
+			"space" => 170
+		),
+		array(
+			"headline" => g_l('modules_shop', '[stat]'),
+			"html" => $stat,
+			"space" => 170
+		)
+	);
 
-print we_html_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false, g_l('tabs', "[module][overview]"));
-?></body></html>
+	echo we_html_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false, g_l('tabs', "[module][overview]"));
+	?></body></html>

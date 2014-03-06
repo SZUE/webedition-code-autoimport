@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-abstract class we_users_util {
+abstract class we_users_util{
 
 	private static function getGroupList($id){
 		if(!$id){
@@ -130,7 +130,7 @@ abstract class we_users_util {
 		return $array;
 	}
 
-	static function getUsersForDocWorkspace(we_database_base $db,$id, $wsField = "workSpace"){
+	static function getUsersForDocWorkspace(we_database_base $db, $id, $wsField = "workSpace"){
 		$ids = (is_array($id) ? $id : array($id));
 
 		$where = array();
@@ -174,17 +174,13 @@ abstract class we_users_util {
 			$ownersArr = array_unique($ownersArr);
 			return (in_array($_SESSION['user']['ID'], $ownersArr));
 		} else {
-			$pid = f('SELECT ParentID FROM ' . $tab . ' WHERE ID=' . intval($folderID), 'ParentID', $db);
+			$pid = f('SELECT ParentID FROM ' . $tab . ' WHERE ID=' . intval($folderID), '', $db);
 			return self::userIsOwnerCreatorOfParentDir($pid, $tab);
 		}
 	}
 
 	public static function canEditModule($modName){
-		if(permissionhandler::hasPerm('ADMINISTRATOR') || ($m = we_base_moduleInfo::getModuleData($modName))){
-			return true;
-		}
-
-		return we_base_menu::isEnabled($m);
+		return (permissionhandler::hasPerm('ADMINISTRATOR') || we_base_menu::isEnabled(we_base_moduleInfo::getModuleData($modName)['perm']));
 	}
 
 	public static function makeOwnersSql($useCreatorID = true){
