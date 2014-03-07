@@ -23,6 +23,8 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 require_once ($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/util/Strings.php');
+$protect = we_base_moduleInfo::isActive('shop') && we_users_util::canEditModule('shop') ? null : array(false);
+we_html_tools::protect($protect);
 
 $selectedYear = intval(isset($_REQUEST['ViewYear']) ? $_REQUEST['ViewYear'] : date('Y'));
 $selectedMonth = isset($_REQUEST['ViewMonth']) ? intval($_REQUEST['ViewMonth']) : 1;
@@ -72,7 +74,6 @@ function monthSelect($select_name, $selectedMonth){
 	return we_class::htmlSelect($select_name, $opts, 1, $selectedMonth, false, array('id' => $select_name));
 }
 
-we_html_tools::protect();
 echo we_html_tools::getHtmlTop() .
  STYLESHEET .
  we_html_element::jsElement('

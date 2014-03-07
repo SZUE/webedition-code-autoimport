@@ -143,7 +143,7 @@ if(!$wfchk){
 			foreach($selectedItems as $selectedItem){
 
 				if($table == FILE_TABLE && defined('USER_TABLE')){
-					$users = we_users_util::getUsersForDocWorkspace($selectedItem);
+					$users = we_users_util::getUsersForDocWorkspace($GLOBALS['DB_WE'], $selectedItem);
 					if(!empty($users)){
 						$retVal = -2;
 						break;
@@ -155,7 +155,7 @@ if(!$wfchk){
 					pushChilds($childs, $selectedItem, $table, true);
 					$users = array();
 					foreach($childs as $ch){
-						$users = array_merge($users, we_users_util::getUsersForDocWorkspace($childs));
+						$users = array_merge($users, we_users_util::getUsersForDocWorkspace($GLOBALS['DB_WE'], $childs));
 					}
 					$users = array_unique($users);
 
@@ -166,7 +166,7 @@ if(!$wfchk){
 				}
 
 				if($table == TEMPLATES_TABLE && defined('USER_TABLE')){
-					$users = we_users_util::getUsersForDocWorkspace($selectedItem, "workSpaceTmp");
+					$users = we_users_util::getUsersForDocWorkspace($GLOBALS['DB_WE'], $selectedItem, "workSpaceTmp");
 					if(!empty($users)){
 						$retVal = -2;
 						break;
@@ -178,7 +178,7 @@ if(!$wfchk){
 					pushChilds($childs, $selectedItem, $table, true);
 					$users = array();
 					foreach($childs as $ch){
-						$users = array_merge($users, we_users_util::getUsersForDocWorkspace($childs, "workSpaceTmp"));
+						$users = array_merge($users, we_users_util::getUsersForDocWorkspace($GLOBALS['DB_WE'], $childs, "workSpaceTmp"));
 					}
 					$users = array_unique($users);
 
@@ -190,7 +190,7 @@ if(!$wfchk){
 
 				if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE && defined('USER_TABLE')){
 
-					$users = we_users_util::getUsersForDocWorkspace($selectedItem, "workSpaceObj");
+					$users = we_users_util::getUsersForDocWorkspace($GLOBALS['DB_WE'], $selectedItem, "workSpaceObj");
 					if(!empty($users)){
 						$retVal = -2;
 						break;
@@ -199,7 +199,7 @@ if(!$wfchk){
 					$childs = array();
 
 					pushChilds($childs, $selectedItem, $table, true);
-					$users = we_users_util::getUsersForDocWorkspace($childs, "workSpaceObj");
+					$users = we_users_util::getUsersForDocWorkspace($GLOBALS['DB_WE'], $childs, "workSpaceObj");
 
 					if(!empty($users)){
 						$retVal = -4;
@@ -397,11 +397,6 @@ if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 <?php
 if($_REQUEST['we_cmd'][0] != "delete_single_document"){ // no select mode in delete_single_document
 	switch($table){
-		/* case FILE_TABLE . "_cache":
-		  if(permissionhandler::hasPerm("ADMINISTRATOR")){
-		  print 'top.treeData.setstate(top.treeData.tree_states["selectitem"]);';
-		  }
-		  break; */
 		case FILE_TABLE:
 			if(permissionhandler::hasPerm("DELETE_DOC_FOLDER") && permissionhandler::hasPerm("DELETE_DOCUMENT")){
 				print 'top.treeData.setstate(top.treeData.tree_states["select"]);';
@@ -421,24 +416,19 @@ if($_REQUEST['we_cmd'][0] != "delete_single_document"){ // no select mode in del
 				print 'top.treeData.setstate(top.treeData.tree_states["select"]);';
 			}
 			break;
-		case (defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE . "_cache" : 2):
-			if(permissionhandler::hasPerm("ADMINISTRATOR")){
-				print 'top.treeData.setstate(top.treeData.tree_states["selectitem"]);';
-			}
-			break;
 		default:
 			print 'top.treeData.setstate(top.treeData.tree_states["selectitem"]);';
 	}
 }
 ?>
 	if (top.treeData.table != "<?php
-print preg_replace('#_cache$#', '', $table);
+echo $table;
 ?>") {
 		top.treeData.table = "<?php
-print preg_replace('#_cache$#', '', $table);
+echo $table;
 ?>";
 		we_cmd("load", "<?php
-print preg_replace('#_cache$#', '', $table);
+echo $table;
 ?>");
 	} else {
 		top.drawTree();
@@ -488,13 +478,10 @@ if($_REQUEST['we_cmd'][0] == "do_delete"){
 }
 
 
-if((defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE . "_cache") || (defined("FILE_TABLE") && $table == FILE_TABLE . "_cache")){
-	$delete_text = g_l('newFile', "[delete_text_cache]");
-	$delete_confirm = g_l('alert', "[delete_cache]");
-} else {
-	$delete_text = g_l('newFile', "[delete_text]");
-	$delete_confirm = g_l('alert', "[delete]");
-}
+
+$delete_text = g_l('newFile', "[delete_text]");
+$delete_confirm = g_l('alert', "[delete]");
+
 $content = '<span class="middlefont">' . $delete_text . '</span>';
 
 $_buttons = we_html_button::position_yes_no_cancel(
@@ -502,7 +489,7 @@ $_buttons = we_html_button::position_yes_no_cancel(
 
 $form = '<form name="we_form" method="post">' . we_html_tools::hidden('sel', '') . '</form>';
 
-print '</head><body class="weTreeHeader">
+echo '</head><body class="weTreeHeader">
 <div style="width:380px;">
 <h1 class="big" style="padding:0px;margin:0px;">' . oldHtmlspecialchars(g_l('newFile', "[title_delete]")) . '</h1>
 <p class="small">' . $content . '</p>

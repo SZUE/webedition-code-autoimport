@@ -80,9 +80,6 @@ break;
 case "delete_objectfile":
 top.we_cmd("del",1,"<?php print OBJECT_FILES_TABLE; ?>");
 break;
-case "delete_objectfile_cache":
-top.we_cmd("del",1,"<?php print OBJECT_FILES_TABLE; ?>_cache");
-break;
 case "move_objectfile":
 top.we_cmd("mv",1,"<?php print OBJECT_FILES_TABLE; ?>");
 break;

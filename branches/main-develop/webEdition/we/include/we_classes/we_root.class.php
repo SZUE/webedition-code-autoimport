@@ -557,7 +557,6 @@ abstract class we_root extends we_class{
 			$ctype = 'objectFile';
 			$etype = OBJECT_FILES_TABLE;
 		}
-		//javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);','".session_id()."','" . $rootDir . "','".$ctype."',1)
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$idname'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$textname'].value");
 		$wecmdenc3 = we_cmd_enc('opener._EditorFrame.setEditorIsHot(true);');
@@ -1046,7 +1045,7 @@ abstract class we_root extends we_class{
 	}
 
 	function i_filenameNotValid(){
-		return we_filenameNotValid($this->Filename);
+		return we_filenameNotValid($this->Filename, $this->getElement('Charset') != 'UTF-8');
 	}
 
 	function i_filenameNotAllowed(){

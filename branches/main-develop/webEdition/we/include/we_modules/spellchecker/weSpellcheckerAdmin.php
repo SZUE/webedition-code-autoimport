@@ -1,12 +1,11 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-
 include_once(WE_SPELLCHECKER_MODULE_PATH . '/spellchecker.conf.inc.php');
-
-we_html_tools::protect();
+$protect = we_base_moduleInfo::isActive('glossary') && we_users_util::canEditModule('glossary') ? null : array(false);
+we_html_tools::protect($protect);
 
 if(!permissionhandler::hasPerm('SPELLCHECKER_ADMIN')){
-	print we_html_element::jsElement(
+	echo we_html_element::jsElement(
 					we_message_reporting::getShowMessageCall(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR) .
 					'self.close();
 		');

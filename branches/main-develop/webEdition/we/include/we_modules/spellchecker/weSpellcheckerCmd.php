@@ -1,18 +1,8 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 include_once(WE_SPELLCHECKER_MODULE_PATH . '/spellchecker.conf.inc.php');
-
-if(empty($_SESSION["user"]["Username"])){
-	if(isset($_REQUEST['scid'])){
-		if(!file_exists(WE_SPELLCHECKER_MODULE_PATH . '/tmp/' . md5($_REQUEST['scid']))){
-			we_html_tools::protect();
-		}
-	} else {
-		we_html_tools::protect();
-	}
-} else {
-	we_html_tools::protect();
-}
+$protect = we_base_moduleInfo::isActive('glossary') && we_users_util::canEditModule('glossary') ? null : array(false);
+we_html_tools::protect($protect);
 
 echo we_html_tools::getHtmlTop();
 
@@ -206,12 +196,7 @@ if(isset($_REQUEST['cmd'][0])){
 					$table->setCol($_i, 1, array('valign' => 'top', 'class' => 'defaultfont'), $_display);
 
 					$_lanSelect->setAttribute('name', 'lang[' . $_name . ']');
-
-					if(isset($_langs[$_name])){
-						$_lanSelect->selectOption($_langs[$_name]);
-					} else {
-						$_lanSelect->selectOption($GLOBALS['weDefaultFrontendLanguage']);
-					}
+					$_lanSelect->selectOption((isset($_langs[$_name]) ? $_langs[$_name] : $GLOBALS['weDefaultFrontendLanguage']));
 
 					$table->setCol($_i, 2, array('valign' => 'top', 'class' => 'defaultfont'), $_lanSelect->getHtml());
 
@@ -222,7 +207,7 @@ if(isset($_REQUEST['cmd'][0])){
 			}
 			$_dir->close();
 
-			print we_html_element::jsElement('
+			echo we_html_element::jsElement('
 
 				parent.document.getElementById("selector").innerHTML = "' . addslashes(preg_replace("|\r?\n|", '', $table->getHtml())) . '";
 

@@ -22,7 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-
+$protect = we_base_moduleInfo::isActive('shop') && we_users_util::canEditModule('shop') ? null : array(false);
+we_html_tools::protect($protect);
 
 /* * ************ fuction for orders  ************** */
 $typeObj = isset($_REQUEST['type']) ? $_REQUEST['type'] : 'object';
@@ -414,19 +415,18 @@ if(isset($daten)){
 
 				$pager = blaettern::getStandardPagerHTML(getPagerLinkDoc(), $actPage, $nrOfPage, count($orderRows));
 
-
 				$parts[] = array(
 					'html' => $pager,
 					'space' => 0
 				);
 
-				print we_html_multiIconBox::getHTML("revenues", "100%", $parts, 30, "", -1, "", "", false, sprintf(g_l('tabs', '[module][artList]'), $topInfo));
+				echo we_html_multiIconBox::getHTML("revenues", "100%", $parts, 30, "", -1, "", "", false, sprintf(g_l('tabs', '[module][artList]'), $topInfo));
 			}
 
 			/*			 * ******** END PROCESS THE OUTPUT IF OPTED FOR A DOCUMENT *********** */
 			break;
 		default:
-			print "Die von Ihnen gewünschte Seite kann nicht angezeigt werden!";
+			echo "Die von Ihnen gewünschte Seite kann nicht angezeigt werden!";
 	}
 }
 ?>

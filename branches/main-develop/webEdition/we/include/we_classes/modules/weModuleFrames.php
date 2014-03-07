@@ -244,7 +244,6 @@ class weModuleFrames{
 		}
 
 		$extraHead .= we_html_element::jsElement('
-
 			function we_save() {
 				top.content.we_cmd("' . $btn_cmd . '");
 			}'

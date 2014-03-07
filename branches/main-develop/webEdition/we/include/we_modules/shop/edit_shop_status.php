@@ -23,8 +23,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+$protect = we_base_moduleInfo::isActive('shop') && we_users_util::canEditModule('shop') ? null : array(false);
+we_html_tools::protect($protect);
 
-we_html_tools::protect();
 echo we_html_tools::getHtmlTop() . STYLESHEET;
 
 $jsFunction = '
@@ -47,9 +48,7 @@ $jsFunction = '
 	}
 
 	function we_cmd(){
-
 		switch (arguments[0]) {
-
 			case "close":
 				window.close();
 			break;
@@ -108,8 +107,8 @@ $i++;
 $tabStatus->setCol($i, 0, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap"), g_l('modules_shop', '[statusmails][EMailssenden]'));
 foreach(we_shop_statusMails::$StatusFields as $fieldkey => $fieldname){
 	$tabStatus->setCol($i, $fieldkey + 1, array("class" => "defaultfont", "nowrap" => "nowrap"), we_html_forms::radioButton(0, ($weShopStatusMails->FieldsMails[$fieldname] == 0 ? '1' : '0'), 'FieldsMails[' . $fieldname . ']', g_l('modules_shop', '[statusmails][EMailssendenNein]')) .
-			we_html_forms::radioButton(1, ($weShopStatusMails->FieldsMails[$fieldname] == 1 ? '1' : '0'), 'FieldsMails[' . $fieldname . ']', g_l('modules_shop', '[statusmails][EMailssendenHand]')) .
-			we_html_forms::radioButton(2, ($weShopStatusMails->FieldsMails[$fieldname] == 2 ? '1' : '0'), 'FieldsMails[' . $fieldname . ']', g_l('modules_shop', '[statusmails][EMailssendenAuto]')));
+		we_html_forms::radioButton(1, ($weShopStatusMails->FieldsMails[$fieldname] == 1 ? '1' : '0'), 'FieldsMails[' . $fieldname . ']', g_l('modules_shop', '[statusmails][EMailssendenHand]')) .
+		we_html_forms::radioButton(2, ($weShopStatusMails->FieldsMails[$fieldname] == 2 ? '1' : '0'), 'FieldsMails[' . $fieldname . ']', g_l('modules_shop', '[statusmails][EMailssendenAuto]')));
 }
 $parts = array(
 	array(
@@ -127,17 +126,17 @@ $parts = array(
 
 $tabEMail = new we_html_table(array("border" => 0, "cellpadding" => 2, "cellspacing" => 4), $rows_num = 4, $cols_num = 6);
 $tabEMail->setCol(0, 0, array("class" => "defaultfont", "nowrap" => "nowrap", "width" => 220), g_l('modules_shop', '[statusmails][AbsenderAdresse]') .
-		'<br/>' . we_class::htmlTextInput("EMailData[address]", 30, $weShopStatusMails->EMailData['address']));
+	'<br/>' . we_class::htmlTextInput("EMailData[address]", 30, $weShopStatusMails->EMailData['address']));
 $tabEMail->setCol(1, 0, array("class" => "defaultfont", "nowrap" => "nowrap", "width" => 220), g_l('modules_shop', '[statusmails][AbsenderName]') .
-		'<br/>' . we_class::htmlTextInput("EMailData[name]", 30, $weShopStatusMails->EMailData['name']));
+	'<br/>' . we_class::htmlTextInput("EMailData[name]", 30, $weShopStatusMails->EMailData['name']));
 $tabEMail->setCol(2, 0, array("class" => "defaultfont", "nowrap" => "nowrap", "width" => 220), g_l('modules_shop', '[statusmails][bcc]') .
-		'<br/>' . we_class::htmlTextInput("EMailData[bcc]", 30, $weShopStatusMails->EMailData['bcc']));
+	'<br/>' . we_class::htmlTextInput("EMailData[bcc]", 30, $weShopStatusMails->EMailData['bcc']));
 $tabEMail->setCol(0, 1, array("class" => "defaultfont", "nowrap" => "nowrap", "width" => 340), g_l('modules_shop', '[statusmails][EMailFeld]') .
-		'<br/>' . we_class::htmlSelect('EMailData[emailField]', $selectFields, 1, $weShopStatusMails->EMailData['emailField']));
+	'<br/>' . we_class::htmlSelect('EMailData[emailField]', $selectFields, 1, $weShopStatusMails->EMailData['emailField']));
 $tabEMail->setCol(1, 1, array("class" => "defaultfont", "nowrap" => "nowrap", "width" => 340), g_l('modules_shop', '[statusmails][TitelFeld]') .
-		'<br/>' . we_class::htmlSelect('EMailData[titleField]', $selectFields, 1, $weShopStatusMails->EMailData['titleField']));
+	'<br/>' . we_class::htmlSelect('EMailData[titleField]', $selectFields, 1, $weShopStatusMails->EMailData['titleField']));
 $tabEMail->setCol(2, 1, array("class" => "defaultfont", "nowrap" => "nowrap", "width" => 340), g_l('modules_shop', '[statusmails][DocumentSubjectField]') .
-		'<br/>' . we_class::htmlTextInput("EMailData[DocumentSubjectField]", 30, $weShopStatusMails->EMailData['DocumentSubjectField']));
+	'<br/>' . we_class::htmlTextInput("EMailData[DocumentSubjectField]", 30, $weShopStatusMails->EMailData['DocumentSubjectField']));
 $tabEMail->setCol(3, 0, array("class" => "defaultfont", "nowrap" => "nowrap", "width" => 340), g_l('modules_shop', '[statusmails][DocumentAttachmentFieldA]') . '<br/>' . we_class::htmlTextInput("EMailData[DocumentAttachmentFieldA]", 30, $weShopStatusMails->EMailData['DocumentAttachmentFieldA']));
 $tabEMail->setCol(3, 1, array("class" => "defaultfont", "nowrap" => "nowrap", "width" => 340), g_l('modules_shop', '[statusmails][DocumentAttachmentFieldB]') . '<br/>' . we_class::htmlTextInput("EMailData[DocumentAttachmentFieldB]", 30, $weShopStatusMails->EMailData['DocumentAttachmentFieldB']));
 
@@ -227,19 +226,15 @@ $parts[] = array(
 	'html' => $tabDokumente->getHtml()
 );
 
-print we_html_element::jsElement($jsFunction) .
-		'</head>
+echo we_html_element::jsElement($jsFunction) .
+ '</head>
 <body class="weDialogBody" onload="window.focus();">
 	<form name="we_form" method="post" >
-	<input type="hidden" name="we_cmd[0]" value="saveShopStatusMails" />';
-
-print we_html_multiIconBox::getHTML(
-				'weShopStatusMails', 700, $parts, 30, we_html_button::position_yes_no_cancel(
-						we_html_button::create_button('save', 'javascript:we_cmd(\'save\');'), '', we_html_button::create_button('cancel', 'javascript:we_cmd(\'close\');')
-				), -1, '', '', false, g_l('modules_shop', '[statusmails][box_headline]'), '', '', 'scroll'
-);
-
-
-print '</form>
+	<input type="hidden" name="we_cmd[0]" value="saveShopStatusMails" />' .
+ we_html_multiIconBox::getHTML(
+	'weShopStatusMails', 700, $parts, 30, we_html_button::position_yes_no_cancel(
+		we_html_button::create_button('save', 'javascript:we_cmd(\'save\');'), '', we_html_button::create_button('cancel', 'javascript:we_cmd(\'close\');')
+	), -1, '', '', false, g_l('modules_shop', '[statusmails][box_headline]'), '', '', 'scroll'
+) . '</form>
 </body>
 </html>';

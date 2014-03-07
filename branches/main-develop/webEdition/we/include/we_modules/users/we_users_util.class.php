@@ -25,15 +25,16 @@
 abstract class we_users_util{
 
 	private static function getGroupList($id){
+		if(!$id){
+			return array();
+		}
 		$ret = array();
-		if($id){
-			$db_tmp = new DB_WE();
-			$db_tmp->query('SELECT ID,username WHERE ParentID=' . intval($id) . ' AND Type=1');
-			while($db_tmp->next_record()){
-				$ret[$db_tmp->f("ID")] = $db_tmp->f("username");
-				$section = self::getGroupList($db_tmp->f("ID"));
-				$ret = array_merge($ret, $section);
-			}
+		$db_tmp = new DB_WE();
+		$db_tmp->query('SELECT ID,username WHERE ParentID=' . intval($id) . ' AND Type=1');
+		while($db_tmp->next_record()){
+			$ret[$db_tmp->f("ID")] = $db_tmp->f("username");
+			$section = self::getGroupList($db_tmp->f("ID"));
+			$ret = array_merge($ret, $section);
 		}
 		return $ret;
 	}
@@ -43,44 +44,46 @@ abstract class we_users_util{
 		$db_tmp = new DB_WE();
 		$db_tmp->query('SELECT ID,username,Type WHERE ParentID=' . intval($id));
 		while($db_tmp->next_record()){
-			$ret[$db_tmp->f("ID")]["name"] = $db_tmp->f("username");
-			$ret[$db_tmp->f("ID")]["ParentID"] = $id;
-			$ret[$db_tmp->f("ID")]["Type"] = $db_tmp->f("Type");
+			$ret[$db_tmp->f("ID")] = array(
+				"name" => $db_tmp->f("username"),
+				"ParentID" => $id,
+				"Type" => $db_tmp->f("Type")
+			);
 			$section = self::getUserTree($db_tmp->f("ID"));
 			$ret = array_merge($ret, $section);
 		}
 		return $ret;
 	}
 
-	static function isUserInUsers($uid, $users){ // $users can be a csv string or an array
-		if(permissionhandler::hasPerm("ADMINISTRATOR"))
+	static function isUserInUsers($uid, $users, we_database_base $db = null){ // $users can be a csv string or an array
+		if(permissionhandler::hasPerm("ADMINISTRATOR")){
 			return true;
+		}
 		if(!is_array($users)){
 			$users = makeArrayFromCSV($users);
 		}
 
 		if(in_array($uid, $users)){
 			return true;
-		} else {
-			$db = new DB_WE();
+		}
+		$db = $db ? $db : new DB_WE();
 
-			$aliases = self::getAliases($uid, $db);
-			foreach($aliases as $aid){
-				if(in_array($aid, $users)){
+		$aliases = self::getAliases($uid, $db);
+		foreach($aliases as $aid){
+			if(in_array($aid, $users)){
+				return true;
+			}
+		}
+
+		foreach($users as $user){
+			$isGroup = f('SELECT IsFolder FROM ' . USER_TABLE . ' WHERE ID=' . intval($user), "", $db);
+			if($isGroup){
+				if(self::isUserInGroup($uid, $user, $db)){
 					return true;
 				}
-			}
-
-			foreach($users as $user){
-				$isGroup = f('SELECT IsFolder FROM ' . USER_TABLE . ' WHERE ID=' . intval($user), "IsFolder", $db);
-				if($isGroup){
-					if(self::isUserInGroup($uid, $user)){
+				foreach($aliases as $aid){
+					if(self::isUserInGroup($aid, $user, $db)){
 						return true;
-					}
-					foreach($aliases as $aid){
-						if(self::isUserInGroup($aid, $user)){
-							return true;
-						}
 					}
 				}
 			}
@@ -112,20 +115,22 @@ abstract class we_users_util{
 	}
 
 	static function removeNonAsociative(&$array){
-		if(!is_array($array))
+		if(!is_array($array)){
 			return $array;
+		}
 
 		reset($array);
 
-		while(list($k) = each($array))
-			if((string) (int) $k == $k)
+		while(list($k) = each($array)){
+			if((string) (int) $k == $k){
 				unset($array[$k]);
+			}
+		}
 
 		return $array;
 	}
 
-	static function getUsersForDocWorkspace($id, $wsField = "workSpace"){
-		$db = new DB_WE();
+	static function getUsersForDocWorkspace(we_database_base $db, $id, $wsField = "workSpace"){
 		$ids = (is_array($id) ? $id : array($id));
 
 		$where = array();
@@ -137,9 +142,9 @@ abstract class we_users_util{
 		return $db->getAllFirst(false);
 	}
 
-	static function getAliases($id, we_database_base $db = null){
-		$foo = f('SELECT GROUP_CONCAT(ID) AS IDS FROM ' . USER_TABLE . ' WHERE Alias=' . intval($id), '', ($db ? $db : new DB_WE()));
-		return $foo ? explode(',', $foo) : array();
+	static function getAliases($id, we_database_base $db){
+		$db->query('SELECT ID FROM ' . USER_TABLE . ' WHERE Alias=' . intval($id));
+		return $db->getAll(true);
 	}
 
 	public static function isOwner($csvOwners){
@@ -152,7 +157,7 @@ abstract class we_users_util{
 
 	public static function userIsOwnerCreatorOfParentDir($folderID, $tab){
 		if(($tab != FILE_TABLE && $tab != OBJECT_FILES_TABLE) ||
-				(permissionhandler::hasPerm('ADMINISTRATOR') || ($folderID == 0))){
+			(permissionhandler::hasPerm('ADMINISTRATOR') || ($folderID == 0))){
 			return true;
 		}
 		$db = new DB_WE();
@@ -169,44 +174,13 @@ abstract class we_users_util{
 			$ownersArr = array_unique($ownersArr);
 			return (in_array($_SESSION['user']['ID'], $ownersArr));
 		} else {
-			$pid = f('SELECT ParentID FROM ' . $tab . ' WHERE ID=' . intval($folderID), 'ParentID', $db);
+			$pid = f('SELECT ParentID FROM ' . $tab . ' WHERE ID=' . intval($folderID), '', $db);
 			return self::userIsOwnerCreatorOfParentDir($pid, $tab);
 		}
 	}
 
 	public static function canEditModule($modName){
-		$one = false;
-		$set = array();
-		$enable = 1;
-		if(permissionhandler::hasPerm('ADMINISTRATOR')){
-			return true;
-		}
-//FIXME: remove eval + change code
-		$m = we_base_moduleInfo::getModuleData($modName);
-
-		if(empty($m)){
-			return true;
-		}
-
-		$p = isset($m['perm']) ? $m['perm'] : '';
-		$or = explode('||', $p);
-		foreach($or as $k => $v){
-			$and = explode('&&', $v);
-			$one = true;
-			foreach($and as &$val){
-				$set[] = 'isset($_SESSION[\'perms\'][\'' . trim($val) . '\'])';
-				$val = '$_SESSION[\'perms\'][\'' . trim($val) . '\']';
-				$one = false;
-			}
-			$or[$k] = implode(' && ', $and);
-			if($one && !in_array('isset($_SESSION[\'perms\'][\'' . trim($v) . '\'])', $set)){
-				$set[] = 'isset($_SESSION[\'perms\'][\'' . trim($v) . '\'])';
-			}
-		}
-		$set_str = implode(' || ', $set);
-		$condition_str = implode(' || ', $or);
-		eval('if ((' . $set_str . ')&&(' . $condition_str . ')) { $enable=1; } else { $enable=0; }');
-		return $enable;
+		return (permissionhandler::hasPerm('ADMINISTRATOR') || we_base_menu::isEnabled(we_base_moduleInfo::getModuleData($modName)['perm']));
 	}
 
 	public static function makeOwnersSql($useCreatorID = true){

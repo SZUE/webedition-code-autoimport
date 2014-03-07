@@ -24,46 +24,19 @@
  */
 class we_tabs{
 
-	var $heightPlus;
-	var $textvalign;
+	var $textvalign = 'top';
 	var $imgmargintop;
 	var $imgvalign;
-	var $frameDefaultHeight;
-	var $tabBorder;
-	var $tabBG;
-	var $containerStart;
+	var $tabBG = '';
 	var $container;
-	var $containerEnd;
 	var $head;
 	var $bodyAttribs;
 	var $JSonResize;
 
 	function __construct(){
-		$this->containerStart = '<div id="tabContainer" name="tabContainer">';
-		$this->containerEnd = '</div>';
-
-		switch(we_base_browserDetect::inst()->getBrowser()){
-			case we_base_browserDetect::SAFARI:
-				$this->heightPlus = '';
-				$this->textvalign = "top";
-				$this->frameDefaultHeight = 21;
-				$this->tabBorder = "border:0px;";
-				$this->tabBG = "";
-				break;
-			case we_base_browserDetect::IE:
-				if(we_base_browserDetect::inst()->getBrowserVersion() < 9){
-					$this->heightPlus = '';
-					$this->textvalign = "middle";
-					$this->frameDefaultHeight = 21;
-					$this->tabBorder = "border:0px;";
-					$this->tabBG = "background-position:bottom; ";
-					break;
-				}
-			default:
-				$this->heightPlus = '';
-				$this->textvalign = "top";
-				$this->frameDefaultHeight = 21;
-				$this->tabBorder = "border: 0px;";
+		if(we_base_browserDetect::isIE() && we_base_browserDetect::inst()->getBrowserVersion() < 9){
+			$this->textvalign = "middle";
+			$this->tabBG = "background-position:bottom; ";
 		}
 	}
 
@@ -72,7 +45,6 @@ class we_tabs{
 	}
 
 	function getHeader(){
-		$tabBorder = $this->tabBorder;
 		$tabBG = $this->tabBG;
 		$styles = <<<HTS
 body {
@@ -91,7 +63,7 @@ body {
 }
 div.tabNormal {
 	margin: 0px; padding: 0;
-	$tabBorder
+	border:0px;
 	float:left;
 	display: inline-block;
 	background-image:url(/webEdition/images/multiTabs/tabsBG_normal.gif);
@@ -103,7 +75,7 @@ div.tabNormal {
 }
 div.tabActive {
 	margin: 0px; padding: 0;
-	$tabBorder
+	border:0px;
 	float:left;
 	display: inline-block;
 	background-image:url(/webEdition/images/multiTabs/tabsBG_active2.gif);
@@ -232,7 +204,7 @@ HTS;
 	}
 
 	function getHTML(){
-		return $this->containerStart . $this->container . $this->containerEnd;
+		return '<div id="tabContainer" name="tabContainer">' . $this->container . '</div>';
 	}
 
 	/*	 * ******************************************************************************************** */
@@ -248,21 +220,20 @@ HTS;
 	/*	 * ******************************************************************************************** */
 
 	function onResize(){
-		$heightPlus = $this->heightPlus;
 		$this->JSonResize = <<<HTS
 
 function setFrameSize(){
 	if(document.getElementById('tabContainer').offsetWidth > 0) {
 		if(document.getElementById('naviDiv')){
-			var tabsHeight = document.getElementById('main').offsetHeight $heightPlus;
+			var tabsHeight = document.getElementById('main').offsetHeight;
 			document.getElementById('naviDiv').style.height = tabsHeight+"px";
 			document.getElementById('contentDiv').style.top = tabsHeight+"px";
 		}else if(parent.document.getElementById("edheaderDiv")){
-			var tabsHeight = document.getElementById('main').offsetHeight $heightPlus;
+			var tabsHeight = document.getElementById('main').offsetHeight;
 			parent.document.getElementById('edheaderDiv').style.height = tabsHeight+"px";
 			parent.document.getElementById('edbodyDiv').style.top = tabsHeight+"px";
 		}else if(parent.document.getElementsByName('editHeaderDiv').length>0){
-			var tabsHeight = document.getElementById('main').offsetHeight $heightPlus;
+			var tabsHeight = document.getElementById('main').offsetHeight;
 			var tmp=parent.document.getElementsByName("editHeaderDiv");
 			var nList=tmp[0].parentNode.getElementsByTagName("div");
 			nList[0].style.height = tabsHeight+"px";
@@ -272,7 +243,7 @@ function setFrameSize(){
 			//FIXME: remove this if frames are obsolete
 			var fs = parent.document.getElementsByTagName("FRAMESET")[0];
 			//document.getElementById('main').style.overflow = "hidden";
-			var tabsHeight = document.getElementById('main').offsetHeight $heightPlus;
+			var tabsHeight = document.getElementById('main').offsetHeight;
 			var fsRows = fs.rows.split(',');
 			fsRows[0] = tabsHeight;
 			fs.rows =  fsRows.join(",");

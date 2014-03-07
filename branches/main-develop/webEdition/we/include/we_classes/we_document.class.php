@@ -935,22 +935,19 @@ class we_document extends we_root{
 				return $pathOnly ? $fl->Path : $fl->getHtml();
 			case 'link':
 				$link = $val ? unserialize($val) : array();
-
 				$only = weTag_getAttribute('only', $attribs);
 
 				$hidedirindex = weTag_getAttribute('hidedirindex', $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, true);
 				$objectseourls = weTag_getAttribute('objectseourls', $attribs, TAGLINKS_OBJECTSEOURLS, true);
 
 				if($pathOnly || $only == 'href'){
-
 					$return = self::getLinkHref($link, $parentID, $path, $db, $hidedirindex, $objectseourls);
 
 					if((isset($GLOBALS['we_link_not_published'])) && ($GLOBALS['we_link_not_published'])){
 						unset($GLOBALS['we_link_not_published']);
 						return '';
-					} else {
-						return $return;
 					}
+					return $return;
 				}
 
 				if(is_array($link)){
@@ -969,16 +966,13 @@ class we_document extends we_root{
 						return ($only == 'content' ?
 								self::getLinkContent($link, $parentID, $path, $db, $img, $xml, $_useName, $oldHtmlspecialchars, $hidedirindex, $objectseourls) :
 								isset($link[$only]) ? $link[$only] : ''); // #3636
-					} else {
+					}
 
-						if(($content = self::getLinkContent($link, $parentID, $path, $db, $img, $xml, $_useName, $oldHtmlspecialchars, $hidedirindex, $objectseourls))){
-
-							if(($startTag = self::getLinkStartTag($link, $attribs, $parentID, $path, $db, $img, $_useName, $hidedirindex, $objectseourls))){
-								return $startTag . $content . '</a>';
-							} else {
-								return $content;
-							}
+					if(($content = self::getLinkContent($link, $parentID, $path, $db, $img, $xml, $_useName, $oldHtmlspecialchars, $hidedirindex, $objectseourls))){
+						if(($startTag = self::getLinkStartTag($link, $attribs, $parentID, $path, $db, $img, $_useName, $hidedirindex, $objectseourls))){
+							return $startTag . $content . '</a>';
 						}
+						return $content;
 					}
 				}
 				return '';
@@ -1010,12 +1004,11 @@ class we_document extends we_root{
 				if(isset($GLOBALS['WE_MAIN_DOC']) && $GLOBALS['WE_MAIN_DOC']->Language != 'de_DE' && is_numeric($val)){
 					$zdate = new Zend_Date($val, Zend_Date::TIMESTAMP);
 					return $zdate->toString($format, 'php', $GLOBALS['WE_MAIN_DOC']->Language);
-				} else {
-					require_once(WE_INCLUDES_PATH . 'we_tags/we_tag_date.inc.php');
-					$dt = new DateTime((is_numeric($val) ? '@' : '') . $val);
-					$dt->setTimeZone(new DateTimeZone(@date_default_timezone_get())); //Bug #6335
-					return $dt->format(correctDateFormat($format, $dt));
 				}
+				require_once(WE_INCLUDES_PATH . 'we_tags/we_tag_date.inc.php');
+				$dt = new DateTime((is_numeric($val) ? '@' : '') . $val);
+				$dt->setTimeZone(new DateTimeZone(@date_default_timezone_get())); //Bug #6335
+				return $dt->format(correctDateFormat($format, $dt));
 			case 'select':
 				if(defined('OBJECT_TABLE')){
 					if(strlen($val) == 0){
@@ -1148,18 +1141,16 @@ class we_document extends we_root{
 		if($this->getValFromSrc($fn, $nint)){
 			$intID = $this->getValFromSrc($fn, $n . we_base_link::MAGIC_INT_LINK_ID);
 			return f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($intID), 'Path', $db);
-		} else {
-			return $this->getValFromSrc($fn, $n);
 		}
+		return $this->getValFromSrc($fn, $n);
 	}
 
 	static function getHrefByArray($hrefArr){
 		if(isset($hrefArr['int']) && $hrefArr['int']){
 			$intID = isset($hrefArr['intID']) ? $hrefArr['intID'] : 0;
 			return $intID ? id_to_path($intID) : '';
-		} else {
-			return isset($hrefArr['extPath']) ? $hrefArr['extPath'] : '';
 		}
+		return isset($hrefArr['extPath']) ? $hrefArr['extPath'] : '';
 	}
 
 	function getLinkHref($link, $parentID, $path, we_database_base $db = null, $hidedirindex = false, $objectseourls = false){

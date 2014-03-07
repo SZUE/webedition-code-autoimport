@@ -22,7 +22,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-we_html_tools::protect();
+$protect = we_base_moduleInfo::isActive('users') && we_users_util::canEditModule('users') ? null : array(false);
+we_html_tools::protect($protect);
+
 echo we_html_tools::getHtmlTop(g_l('modules_users', "[search_result]"), $GLOBALS['WE_BACKENDCHARSET']) . STYLESHEET;
 
 $_kwd = isset($_REQUEST["kwd"]) ? $_REQUEST["kwd"] : "";

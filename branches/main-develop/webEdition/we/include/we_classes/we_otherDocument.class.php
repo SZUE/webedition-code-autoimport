@@ -78,7 +78,7 @@ class we_otherDocument extends we_binaryDocument{
 	}
 
 	function insertAtIndex(){
-		if(!($this->IsSearchable && $this->Published)){
+		if(!($this->IsSearchable && !$this->Published)){
 			$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($this->ID));
 			return true;
 		}
