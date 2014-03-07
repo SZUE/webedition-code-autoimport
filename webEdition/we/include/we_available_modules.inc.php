@@ -110,6 +110,7 @@ $_we_available_modules = array(
 		'name' => 'messaging',
 		'text' => g_l('javaMenu_moduleInformation', '[messaging][text]'),
 		'text_short' => g_l('javaMenu_moduleInformation', '[messaging][text_short]'),
+		'perm' => '',
 		'inModuleMenu' => true,
 		'integrated' => true,
 		'hasSettings' => true,
