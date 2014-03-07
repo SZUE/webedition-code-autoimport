@@ -40,7 +40,7 @@ $we_tabs->onResize('naviDiv');
 $tab_head = $we_tabs->getHeader('', 1);
 
 function getPreferencesTabsDefaultHeight(){
-	return $GLOBALS['we_tabs']->frameDefaultHeight;
+	return 22;
 }
 
 function getPreferencesJS(){
