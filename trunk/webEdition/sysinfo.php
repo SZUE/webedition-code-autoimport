@@ -153,7 +153,7 @@ function getOK($message = '', $value = ''){
 $_install_dir = $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR;
 
 if(strlen($_install_dir) > 35){
-	$_install_dir = substr($_install_dir, 0, 25) . '<acronym title="' . $_install_dir . '">&hellip;</acronym>' . substr($_install_dir, -10);
+	$_install_dir = substr($_install_dir, 0, 25) . '<abbr title="' . $_install_dir . '">&hellip;</abbr>' . substr($_install_dir, -10);
 }
 
 $weVersion = WE_VERSION .

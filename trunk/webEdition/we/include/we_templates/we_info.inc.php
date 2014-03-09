@@ -154,12 +154,10 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 
 
 	//	mode-table
-	$_modetable = new we_html_table(array("border" => 0,
-		"cellpadding" => 0,
-		"cellspacing" => 0,
+	$_modetable = new we_html_table(array("style" => 'border-style:none; padding:0px;border-spacing:0px;',
 		"width" => $_middlePart), 1, 3);
 
-	$loginButton = '<button type="submit" style="border: none; background-color: transparent; margin: 0px; padding: 0px;">' . we_html_button::create_button("login", "javascript:document.loginForm.submit();") . '</button>';
+	$loginButton = we_html_button::create_button("login", "javascript:document.loginForm.submit();") ;
 	if(!WE_SEEM){ //	deactivate See-Mode
 		if(WE_LOGIN_WEWINDOW){
 			$_modetable->setCol(0, 0, array(), '');
@@ -199,11 +197,11 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 		$_modetable->setCol(0, 0, array(), '<table style="border:0px;padding:0px;" cellspacing="0">
 		<tr>
 			<td>' . $we_login_type .
-			'</td></tr><td>' .
+			'</td></tr><tr><td>' .
 			we_html_forms::radiobutton(we_base_constants::MODE_NORMAL, getValueLoginMode(we_base_constants::MODE_NORMAL), 'mode', g_l('SEEM', '[start_mode_normal]'), true, 'small') . '</td>
 		</tr>
 		<tr>
-			<td>' . we_html_forms::radiobutton(we_base_constants::MODE_SEE, getValueLoginMode(we_base_constants::MODE_SEE), 'mode', '<acronym title="' . g_l('SEEM', "[start_mode_seem_acronym]") . '">' . g_l('SEEM', '[start_mode_seem]') . '</acronym>', true, "small") . '</td>
+			<td>' . we_html_forms::radiobutton(we_base_constants::MODE_SEE, getValueLoginMode(we_base_constants::MODE_SEE), 'mode', '<abbr title="' . g_l('SEEM', "[start_mode_seem_acronym]") . '">' . g_l('SEEM', '[start_mode_seem]') . '</abbr>', true, "small") . '</td>
 		</tr>
 		</table>');
 		$_modetable->setCol(0, 1, array(
@@ -230,9 +228,7 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 
 
 	$_loginTable = new we_html_table(
-		array("border" => 0,
-		"cellpadding" => 0,
-		"cellspacing" => 0
+		array("style" => 'border-style:none; padding:0px;border-spacing:0px;',
 		), 2, 2
 	);
 
