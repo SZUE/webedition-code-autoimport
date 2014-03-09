@@ -648,7 +648,7 @@ function closeAllType(){
 									$_progress_text = we_html_element::htmlB(g_l('contentTypes', '[' . $ref->ContentType . ']', true) !== false ? g_l('contentTypes', '[' . $ref->ContentType . ']') : (g_l('export', '[' . $ref->ContentType . ']', true) !== false ? g_l('export', '[' . $ref->ContentType . ']') : '')) . '&nbsp;&nbsp;' . $_path;
 
 									if(strlen($_path) > 75){
-										$_progress_text = addslashes(substr($_progress_text, 0, 65) . '<acronym title="' . $_path . '">...</acronym>' . substr($_progress_text, -10));
+										$_progress_text = addslashes(substr($_progress_text, 0, 65) . '<abbr title="' . $_path . '">...</abbr>' . substr($_progress_text, -10));
 									}
 
 									$_progress_update .= "\n" .
