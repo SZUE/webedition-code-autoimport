@@ -793,11 +793,11 @@ if(!empty($_jsincludes)){
 				new jsWindow(url, "info", -1, -1, 432, 350, true, false, true);
 				break;
 			case "help":
-					url = "<?php echo WEBEDITION_DIR; ?>getHelp.php" + (arguments[1] ?
-									"?hid=" + arguments[1] :
-									""
-									);
-					new jsWindow(url, "help", -1, -1, 720, 600, true, false, true, true);
+				url = "<?php echo WEBEDITION_DIR; ?>getHelp.php" + (arguments[1] ?
+								"?hid=" + arguments[1] :
+								""
+								);
+				new jsWindow(url, "help", -1, -1, 720, 600, true, false, true, true);
 				break;
 			case "help_documentation":
 				new jsWindow("http://documentation.webedition.org/wiki/<?php echo ($GLOBALS["WE_LANGUAGE"] == 'Deutsch' ? 'de' : 'en'); ?>/", "help_documentation", -1, -1, 960, 700, true, true, true, true);
