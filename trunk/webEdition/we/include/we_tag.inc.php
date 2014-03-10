@@ -544,7 +544,7 @@ function we_tag_ifTdNotEmpty(){
 }
 
 function we_tag_ifTop(){
-	return ($GLOBALS['WE_MAIN_DOC'] == $GLOBALS['we_doc']);
+	return ($GLOBALS['WE_MAIN_ID'] == $GLOBALS['we_doc']->ID);
 }
 
 function we_tag_ifFieldNotEmpty($attribs, $content){
