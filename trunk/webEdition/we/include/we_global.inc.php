@@ -1392,19 +1392,26 @@ function g_l($name, $specific, $omitErrors = false){
 function we_templateInit(){
 	if(isset($GLOBALS['WE_TEMPLATE_INIT'])){
 		++$GLOBALS['WE_TEMPLATE_INIT'];
-		return;
-	}
-	$GLOBALS['WE_TEMPLATE_INIT'] = 1;
+	} else {
+		$GLOBALS['WE_TEMPLATE_INIT'] = 1;
 
-	// Activate the webEdition error handler
-	require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_error_handler.inc.php');
-	we_error_handler(false);
+		// Activate the webEdition error handler
+		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_error_handler.inc.php');
+		we_error_handler(false);
 
-	require_once ($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
-	require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tag.inc.php');
+		require_once ($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
+		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tag.inc.php');
 
-	if(!isset($GLOBALS['DB_WE'])){
-		$GLOBALS['DB_WE'] = new DB_WE();
+		if(!isset($GLOBALS['DB_WE'])){
+			$GLOBALS['DB_WE'] = new DB_WE();
+		}
+//check for Trigger
+		if(defined('SCHEDULE_TABLE') && (!$GLOBALS['we_doc']->InWebEdition) &&
+			(SCHEDULER_TRIGGER == SCHEDULER_TRIGGER_PREDOC) &&
+			(!isset($GLOBALS['we']['backVars']) || (isset($GLOBALS['we']['backVars']) && count($GLOBALS['we']['backVars']) == 0)) //on first call this variable is unset, so we're not inside an include
+		){
+			we_schedpro::trigger_schedule();
+		}
 	}
 
 	if($GLOBALS['we_doc'] && (!isset($GLOBALS['WE_DOC_ID']) || $GLOBALS['WE_DOC_ID'] != $GLOBALS['we_doc']->ID)){
@@ -1421,13 +1428,6 @@ function we_templateInit(){
 		}
 		if(!isset($GLOBALS['WE_MAIN_EDITMODE'])){
 			$GLOBALS['WE_MAIN_EDITMODE'] = isset($GLOBALS['we_editmode']) ? $GLOBALS['we_editmode'] : false;
-		}
-//check for Trigger
-		if(defined('SCHEDULE_TABLE') && (!$GLOBALS['WE_MAIN_DOC']->InWebEdition) &&
-			(SCHEDULER_TRIGGER == SCHEDULER_TRIGGER_PREDOC) &&
-			(!isset($GLOBALS['we']['backVars']) || (isset($GLOBALS['we']['backVars']) && count($GLOBALS['we']['backVars']) == 0)) //on first call this variable is unset, so we're not inside an include
-		){
-			we_schedpro::trigger_schedule();
 		}
 		$GLOBALS['WE_DOC_ParentID'] = $GLOBALS['we_doc']->ParentID;
 		$GLOBALS['WE_DOC_Path'] = $GLOBALS['we_doc']->Path;
