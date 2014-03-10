@@ -23,8 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifEditmode($attribs){
-	$doc = weTag_getAttribute('doc', $attribs);
-	switch($doc){
+	switch(weTag_getAttribute('doc', $attribs)){
 		case 'self':
 			return $GLOBALS['WE_MAIN_ID'] == $GLOBALS['we_doc']->ID && isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'];
 		default:
