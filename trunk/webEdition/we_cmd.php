@@ -281,7 +281,7 @@ if(!$INCLUDE){
 			$INCLUDE = 'copyFolder.inc.php';
 			break;
 		case 'copyWeDocumentCustomerFilter':
-			$INCLUDE = 'we_modules/customer/copyWeDocumentCustomerFilter.inc.php';
+			$INCLUDE = 'we_modules/customer/we_customer_copyWeDocumentFilter.inc.php';
 			break;
 		case 'changeLanguageRecursive':
 			$INCLUDE = 'changeLanguage_rec.inc.php';
