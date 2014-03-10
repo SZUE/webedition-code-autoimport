@@ -688,7 +688,7 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 
 // --> Start Glossary Replacement
 
-					$useGlossary = ((defined('GLOSSARY_TABLE') && (!isset($GLOBALS['WE_MAIN_DOC']) || $GLOBALS['WE_MAIN_DOC'] == $GLOBALS['we_doc'])) && (isset($we_doc->InGlossar) && $we_doc->InGlossar == 0) && we_glossary_replace::useAutomatic());
+					$useGlossary = ((defined('GLOSSARY_TABLE') && (!isset($GLOBALS['WE_MAIN_DOC']) || $GLOBALS['WE_MAIN_ID'] == $GLOBALS['we_doc']->ID)) && (isset($we_doc->InGlossar) && $we_doc->InGlossar == 0) && we_glossary_replace::useAutomatic());
 					echo ($useGlossary ? we_glossary_replace::doReplace($tmpCntnt, $GLOBALS['we_doc']->Language) : $tmpCntnt);
 				} else {
 					echo $contents;

@@ -1413,6 +1413,7 @@ function we_templateInit(){
 			$GLOBALS['WE_MAIN_ID'] = $GLOBALS['we_doc']->ID;
 		}
 		if(!isset($GLOBALS['WE_MAIN_DOC'])){
+			//FIXME: remove? does this really have ever worked?
 			$GLOBALS['WE_MAIN_DOC'] = clone($GLOBALS['we_doc']);
 		}
 		if(!isset($GLOBALS['WE_MAIN_DOC_REF'])){
