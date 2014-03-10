@@ -71,8 +71,9 @@ class we_base_browserDetect{
 			$brArr = explode(';', $bracket);
 			$post = $regs[4];
 
-			list($bez, $prever) = explode('/', $pre);
-			$bez = strtolower($bez);
+			$tmp = explode('/', $pre);
+			$bez = strtolower($tmp[0]);
+			$prever = isset($tmp[1]) ? $tmp[1] : '';
 
 			switch($bez){
 				case 'lynx':
