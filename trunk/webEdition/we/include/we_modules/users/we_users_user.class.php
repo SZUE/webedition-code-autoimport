@@ -1918,7 +1918,7 @@ function show_seem_chooser(val) {
 			case 'weapp':
 				$_seem_start_type = 'weapp';
 				if($this->Preferences['seem_start_file'] != 0){
-					
+
 				}
 				break;
 			// Document
@@ -2483,7 +2483,7 @@ top.content.hloaded=1;') .
 				}
 				break;
 		}
-		return ($passwd == $storedPassword);
+		return ($passwd === $storedPassword);
 	}
 
 	static function makeSaltedPassword(&$useSalt, $username, $passwd, $strength = 15){
