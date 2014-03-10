@@ -35,12 +35,6 @@ class we_selector_directory extends we_selector_multiple{
 	protected $FolderText = '';
 
 	function __construct($id, $table = "", $JSIDName = "", $JSTextName = "", $JSCommand = "", $order = "", $sessionID = "", $we_editDirID = "", $FolderText = "", $rootDirID = 0, $multiple = 0, $filter = ''){
-		parent::__construct($id, ($table == '' ? FILE_TABLE : $table), $JSIDName, $JSTextName, $JSCommand, $order, $sessionID, $rootDirID, $multiple, $filter);
-		$this->title = g_l('fileselector', '[dirSelector][title]');
-		$this->userCanMakeNewFolder = $this->userCanMakeNewDir();
-		$this->userCanRenameFolder = $this->userCanRenameFolder();
-		$this->we_editDirID = $we_editDirID;
-		$this->FolderText = $FolderText;
 		switch($this->table){
 			case FILE_TABLE:
 			case TEMPLATES_TABLE:
@@ -50,6 +44,12 @@ class we_selector_directory extends we_selector_multiple{
 				break;
 			default:
 		}
+		parent::__construct($id, ($table == '' ? FILE_TABLE : $table), $JSIDName, $JSTextName, $JSCommand, $order, $sessionID, $rootDirID, $multiple, $filter);
+		$this->title = g_l('fileselector', '[dirSelector][title]');
+		$this->userCanMakeNewFolder = $this->userCanMakeNewDir();
+		$this->userCanRenameFolder = $this->userCanRenameFolder();
+		$this->we_editDirID = $we_editDirID;
+		$this->FolderText = $FolderText;
 	}
 
 	function printHTML($what = we_selector_file::FRAMESET){

@@ -180,15 +180,11 @@ abstract class we_base_file{
 	}
 
 	static function delete($filename){
-		if($filename == ''){
+		if(!$filename){
 			return false;
 		}
-		if(!self::hasURL($filename)){
-			if(is_writable($filename)){
-				return (is_dir($filename) ? rmdir($filename) : unlink($filename));
-			} else {
-				return false;
-			}
+		if(!self::hasURL($filename) && is_writable($filename)){
+			return (is_dir($filename) ? rmdir($filename) : unlink($filename));
 		}
 		return false;
 	}

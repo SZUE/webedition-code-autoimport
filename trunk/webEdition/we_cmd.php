@@ -350,6 +350,7 @@ if($INCLUDE){
 	//	This is ONLY used in the edit-mode of the documents.
 	$cmds_no_js = array('siteImport', 'mod_home', 'import_images', 'getWeDocFromID', 'rebuild', 'open_url_in_editor', 'open_form_in_editor', 'unlock', 'edit_document', 'load_editor', 'load_edit_header', 'load_edit_footer', 'exchange', 'validateDocument', 'show');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+	we_html_tools::protect();
 	if(substr($INCLUDE, 0, 5) == 'apps/'){
 		if(!defined('NO_SESS')){
 			define('NO_SESS', 1);
