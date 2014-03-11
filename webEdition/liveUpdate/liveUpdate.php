@@ -41,9 +41,7 @@ if(isset($_REQUEST['update_cmd'])){
 	 * Gather all needed Variables for the update-Request
 	 */
 	$parameters = array();
-
 	foreach($LU_ParameterNames as $parameterName){
-
 		if(isset($_REQUEST[$parameterName])){
 			$parameters[$parameterName] = $_REQUEST[$parameterName];
 		}
@@ -61,16 +59,11 @@ if(isset($_REQUEST['update_cmd'])){
 		$response = liveUpdateHttp::getHttpResponse(LIVEUPDATE_SERVER, LIVEUPDATE_SERVER_SCRIPT, $parameters);
 		$liveUpdateResponse = new liveUpdateResponse();
 
-		if($liveUpdateResponse->initByHttpResponse($response)){
+		echo ($liveUpdateResponse->initByHttpResponse($response) ?
+				liveUpdateFrames::htmlConnectionSuccess($liveUpdateResponse->isError() ? $liveUpdateResponse->getField('Message') : '') :
+				liveUpdateFrames::htmlConnectionError()
+		);
 
-			if($liveUpdateResponse->isError()){
-				print liveUpdateFrames::htmlConnectionSuccess($liveUpdateResponse->getField('Message'));
-			} else {
-				print liveUpdateFrames::htmlConnectionSuccess();
-			}
-		} else {
-			print liveUpdateFrames::htmlConnectionError();
-		}
 		exit();
 	}
 	/*
@@ -112,19 +105,19 @@ if(isset($_REQUEST['update_cmd'])){
 
 		$liveUpdateResponse = new liveUpdateResponse();
 
-		print ($liveUpdateResponse->initByHttpResponse($response) ?
-				$liveUpdateResponse->getOutput() :
-				liveUpdateFrames::htmlConnectionError());
+		echo ($liveUpdateResponse->initByHttpResponse($response) ?
+						$liveUpdateResponse->getOutput() :
+						liveUpdateFrames::htmlConnectionError());
 	} else {
 		/*
 		 * No response from the update-server. Error message
 		 */
-		print liveUpdateFrames::htmlConnectionError();
+		echo liveUpdateFrames::htmlConnectionError();
 	}
 } else {
 	/*
 	 * No update_cmd exists, show normal frameset
 	 */
 	$updateFrames = new liveUpdateFrames();
-	print $updateFrames->getFrame();
+	echo $updateFrames->getFrame();
 }

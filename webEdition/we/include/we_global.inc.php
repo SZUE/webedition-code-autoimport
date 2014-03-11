@@ -1523,9 +1523,7 @@ function we_TemplateExit($param = 0){
 }
 
 function we_cmd_enc($str){
-	return ($str == '' ? '' : 'WECMDENC_'
-					.
-					urlencode(base64_encode($str)));
+	return ($str ? 'WECMDENC_' . urlencode(base64_encode($str)) : '');
 }
 
 function we_cmd_dec($no, $default = ''){
