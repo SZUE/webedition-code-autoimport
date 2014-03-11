@@ -69,12 +69,12 @@ class we_fileselector{
 			$_SESSION['weS']['we_fs_lastDir'][$table] = 0;
 		}
 
-		$this->order = ($order ? $order : $this->order);
+		$this->order = ($order && strpos($order, $this->fields) !== false ? $order : $this->order);
 
 		$this->db = new DB_WE();
 		$this->id = $id;
 		$this->lastDir = isset($_SESSION['weS']['we_fs_lastDir'][$table]) ? intval($_SESSION['weS']['we_fs_lastDir'][$table]) : 0;
-		$this->table = $table;
+		$this->table = in_array($table, get_defined_constants(), true) ? $table : FILE_TABLE;
 		$this->JSIDName = $JSIDName;
 		$this->JSTextName = $JSTextName;
 		$this->JSCommand = $JSCommand;
