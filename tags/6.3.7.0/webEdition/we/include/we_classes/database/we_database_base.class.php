@@ -315,7 +315,7 @@ abstract class we_database_base{
 					}
 					exit();
 				}
-			}
+			
 		}
 
 # New query, discard previous result.
