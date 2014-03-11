@@ -23,5 +23,5 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-
-print g_l('global', '[site_not_exist]');
+we_html_tools::protect();
+echo g_l('global', '[site_not_exist]');
