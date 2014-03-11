@@ -113,10 +113,10 @@ class we_app_Installer{
 	 * @param string $installer name of the installer (without "we_app_Installer_", optional)
 	 */
 	public function __construct($source = "", $installer = ""){
-		if(empty($source)){
+		if(!$source){
 			return false;
 		}
-		if(!empty($installer)){
+		if($installer){
 			$installer = strtolower($installer);
 			$installer[0] = strtoupper($installer[0]);
 		}
@@ -223,11 +223,7 @@ class we_app_Installer{
 	 * @return object instance of we_app_Installer_*
 	 */
 	public function getInstance(){
-		if(is_null($this->_instance)){
-			return false;
-		} else {
-			return $this->_instance;
-		}
+		return (is_null($this->_instance) ? false : $this->_instance);
 	}
 
 	/**
@@ -235,7 +231,7 @@ class we_app_Installer{
 	 * - check first if there is already an application installed with the same name
 	 */
 	public function install(){
-		if(empty($this->_source)){
+		if(!$this->_source){
 			return false;
 		}
 		if(we_app_Common::isInstalled($this->_source)){
@@ -243,13 +239,6 @@ class we_app_Installer{
 			return false;
 		}
 		error_log(get_class() . " - starting installation of application \"" . $this->_appname . "\"");
-
-		if(!$this->_preInstall()){
-			return false;
-		}
-		if(!$this->_executeHook("preInstall")){
-			return false;
-		}
 
 		// beginn common installation process:
 		/*
@@ -259,23 +248,14 @@ class we_app_Installer{
 		 * - remove installation files
 		 * - inserts application entry into application toc
 		 */
-		if(!$this->_installFiles()){
-			return false;
-		}
-		if(!$this->_executeQueries("install")){
-			return false;
-		}
-		if(!we_app_Common::rebuildAppTOC($this->_appname)){
-			return false;
-		}
-		if(!$this->_removeInstallationFiles()){
-			return false;
-		}
-
-		if(!$this->_postInstall()){
-			return false;
-		}
-		if(!$this->_executeHook("postInstall")){
+		if(
+				!$this->_preInstall() ||
+				!$this->_executeHook("preInstall") ||
+				!$this->_installFiles() ||
+				!$this->_executeQueries("install") ||
+				!we_app_Common::rebuildAppTOC($this->_appname) ||
+				!$this->_removeInstallationFiles() ||
+				!$this->_postInstall() || !$this->_executeHook("postInstall")){
 			return false;
 		}
 		return true;
@@ -325,7 +305,7 @@ class we_app_Installer{
 	public function uninstall(){
 
 		error_log("uninstall() under construction");
-		if(empty($this->_source) || !we_app_Common::isInstalled($this->_source)){
+		if(!$this->_source || !we_app_Common::isInstalled($this->_source)){
 			error_log($this->_source . " seems not to be installed. Aborting deinstallation.");
 			return false;
 		}
@@ -334,15 +314,8 @@ class we_app_Installer{
 		$filename = we_app_Common::getConfigElement("applicationpath") . $this->_appname . '/conf/toc.xml';
 		if(!is_readable(we_app_Common::getConfigElement("applicationpath") . $this->_appname . '/conf/toc.xml')){
 			return false;
-		} else {
-			$this->_files = simplexml_load_file($filename);
 		}
-		if(!$this->_preUninstall()){
-			return false;
-		}
-		if(!$this->_executeHook("preUninstall")){
-			return false;
-		}
+		$this->_files = simplexml_load_file($filename);
 
 		// beginn common installation process:
 		/*
@@ -354,20 +327,20 @@ class we_app_Installer{
 		 * - remove entry from toc.xml
 		 */
 		//if(!$this->_executeQueries("uninstall")) return false;
-		if(!$this->_uninstallFiles()){
-			return false;
-		}
-
-		if(!$this->_postUninstall()){
-			return false;
-		}
-		if(!$this->_executeHook("postUninstall") || !$this->_removeAppConfig() || !we_app_Common::rebuildAppTOC($this->_appname)){
+		if(
+				!$this->_preUninstall() ||
+				!$this->_executeHook("preUninstall") ||
+				!$this->_uninstallFiles() ||
+				!$this->_postUninstall() ||
+				!$this->_executeHook("postUninstall") ||
+				!$this->_removeAppConfig() ||
+				!we_app_Common::rebuildAppTOC($this->_appname)){
 			return false;
 		}
 	}
 
 	protected function _executeHook($hook = ""){
-		if(empty($hook)){
+		if(!$hook){
 			return false;
 		}
 		error_log("---- hook START " . $hook . " ----");
@@ -394,7 +367,7 @@ class we_app_Installer{
 	 * @param string $source path to the source file or directory
 	 */
 	protected function _prepareInstallationFiles($source = ""){
-		if(empty($source)){
+		if(!$source){
 			return false;
 		}
 		error_log("preparing installation files.");
@@ -429,16 +402,12 @@ class we_app_Installer{
 					return false;
 				}
 				return we_util_File::extract($this->_tmpDir . $fileinfo["basename"]);
-			} else {
-				error_log("unsupported installation medium.");
-				return false;
 			}
-		} else {
-			error_log("could not find installation archive " . $source);
+			error_log("unsupported installation medium.");
 			return false;
 		}
-		error_log("everything seems to be ok.");
-		return true;
+		error_log("could not find installation archive " . $source);
+		return false;
 	}
 
 	/**
@@ -449,7 +418,7 @@ class we_app_Installer{
 	 * - are all files of the toc file present in the temporary installation directory?
 	 */
 	protected function _validateInstallationFiles(){
-		if(empty($this->_tmpDir)){
+		if(!$this->_tmpDir){
 			return false;
 		}
 		error_log("validating installation files.");
@@ -560,7 +529,7 @@ class we_app_Installer{
 				}
 			}
 		}
-		if(!empty($filesNotInstallable)){
+		if($filesNotInstallable){
 			error_log("the following files could not be installed: " . print_r($filesNotInstallable, true));
 		} else {
 			error_log("all files were installed successfully.");
@@ -574,10 +543,9 @@ class we_app_Installer{
 		if(!@we_util_File::rmdirr(we_util_File::addTrailingSlash($this->_tmpDir))){
 			error_log("could not remove installation files from " . we_util_File::addTrailingSlash($this->_tmpDir));
 			return false;
-		} else {
-			error_log("installation files removed successfully.");
-			return true;
 		}
+		error_log("installation files removed successfully.");
+		return true;
 	}
 
 	/**

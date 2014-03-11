@@ -42,9 +42,9 @@ class liveUpdateFunctions{
 
 	function insertUpdateLogEntry($action, $version, $errorCode){
 		$GLOBALS['DB_WE']->query('INSERT INTO ' . UPDATE_LOG_TABLE . we_database_base::arraySetter(array(
-				'aktion' => $action,
-				'versionsnummer' => $version,
-				'error' => $errorCode
+					'aktion' => $action,
+					'versionsnummer' => $version,
+					'error' => $errorCode
 		)));
 	}
 
@@ -119,7 +119,7 @@ class liveUpdateFunctions{
 				"\$_SERVER[\"DOCUMENT_ROOT\"]",
 				'$GLOBALS[\'DOCUMENT_ROOT\']',
 				"\$GLOBALS[\"DOCUMENT_ROOT\]",
-				), '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
+					), '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
 		}
 		return $content;
 	}
@@ -176,9 +176,8 @@ class liveUpdateFunctions{
 			}
 			closedir($dh);
 			return rmdir($dir);
-		} else {
-			return true;
 		}
+		return true;
 	}
 
 	/**
@@ -284,6 +283,11 @@ class liveUpdateFunctions{
 		if($source == $destination){
 			return true;
 		}
+		if(filesize($source)==0){//assume error, add warning, keep file!
+			$this->QueryLog['error'][] = 'File '.$source.' was empty, not overwriting!';
+			//keep going
+			return true;
+		}
 
 		if($this->checkMakeDir(dirname($destination))){
 			if($this->deleteFile($destination)){
@@ -301,15 +305,10 @@ class liveUpdateFunctions{
 					$this->deleteFile($source);
 					//should we handle file deletion?
 					return true;
-				} else {
-					return false;
 				}
-			} else {
-				return false;
 			}
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	/**
@@ -321,7 +320,7 @@ class liveUpdateFunctions{
 	function isPhpFile($path){
 
 		$pattern = "/\.([^\..]+)$/";
-
+		$matches = array();
 		if(preg_match($pattern, $path, $matches)){
 			$ext = strtolower($matches[1]);
 			if(($ext == 'jpg' || $ext == 'gif' || $ext == 'jpeg' || $ext == 'sql')){
@@ -342,11 +341,7 @@ class liveUpdateFunctions{
 	 * @return boolean
 	 */
 	function replaceCode($filePath, $replace, $needle = ''){
-		if(strpos($filePath, 'we/include/we_version') !== false){
-			return true;
-		}
-
-		if(!$this->replaceDocRootNeeded()){
+		if(strpos($filePath, 'we/include/we_version') !== false || !$this->replaceDocRootNeeded()){
 			return true;
 		}
 
@@ -360,10 +355,8 @@ class liveUpdateFunctions{
 			$newContent = ($needle ? preg_replace('/' . preg_quote($needle) . '/', $replace, $oldContent) : $replace );
 
 			return ($this->filePutContent($filePath, $newContent));
-		} else {
-			return false;
 		}
-		return true;
+		return false;
 	}
 
 	/*
@@ -469,10 +462,8 @@ class liveUpdateFunctions{
 
 			if(($fieldInfo['Default']) != ""){
 				$default = 'DEFAULT ' . (($fieldInfo['Default']) == 'CURRENT_TIMESTAMP' ? 'CURRENT_TIMESTAMP' : '\'' . $fieldInfo['Default'] . '\'');
-			} else {
-				if(strtoupper($fieldInfo['Null']) == "YES"){
-					$default = ' DEFAULT NULL';
-				}
+			} elseif(strtoupper($fieldInfo['Null']) == "YES"){
+				$default = ' DEFAULT NULL';
 			}
 			$extra = strtoupper($fieldInfo['Extra']);
 			//note: auto_increment cols must have an index!
