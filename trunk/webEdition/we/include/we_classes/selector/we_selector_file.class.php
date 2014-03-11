@@ -75,7 +75,7 @@ class we_selector_file{
 		$this->lastDir = isset($_SESSION['weS']['we_fs_lastDir'][$table]) ? intval($_SESSION['weS']['we_fs_lastDir'][$table]) : 0;
 //check table
 
-		$this->table = in_array($table, get_defined_constants(), true) ? $table : FILE_TABLE;
+		$this->table = $table && in_array($table, get_defined_constants(), true) ? $table : FILE_TABLE;
 
 		$this->JSIDName = $JSIDName;
 		$this->JSTextName = $JSTextName;
