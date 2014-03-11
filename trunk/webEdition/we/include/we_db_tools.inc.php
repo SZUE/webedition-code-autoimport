@@ -47,8 +47,31 @@ function f($query, $field = '', we_database_base $DB_WE = NULL, $emptyValue = ''
 	return ($field == '' ? current($h) : (isset($h[$field]) ? $h[$field] : $emptyValue));
 }
 
+function escape_sql_query($inp){
+	if(is_array($inp)){
+		return array_map(__METHOD__, $inp);
+	}
+
+	return ($inp && is_string($inp) ?
+					strtr($inp, array(
+						'\\' => '\\\\',
+						"\0" => '\\0',
+						"\n" => '\\n',
+						"\r" => '\\r',
+						"'" => "\\'",
+						'"' => '\\"',
+						"\x1a" => '\\Z'
+					)) :
+					$inp);
+}
+
+function sql_function($name){
+	return array('sqlFunction' => true, 'val' => $name);
+}
+
+//unused
 function doUpdateQuery(we_database_base $DB_WE, $table, $hash, $where){
-	if(empty($hash)){
+	if(!$hash){
 		return;
 	}
 	$tableInfo = $DB_WE->metadata($table);
@@ -62,21 +85,7 @@ function doUpdateQuery(we_database_base $DB_WE, $table, $hash, $where){
 	return $DB_WE->query('UPDATE `' . $table . '` SET ' . we_database_base::arraySetter($fn) . ' ' . $where);
 }
 
-function escape_sql_query($inp){
-	if(is_array($inp)){
-		return array_map(__METHOD__, $inp);
-	}
-
-	if(!empty($inp) && is_string($inp)){
-		return str_replace(array('\\', "\0", "\n", "\r", "'", '"', "\x1a"), array('\\\\', '\\0', '\\n', '\\r', "\\'", '\\"', '\\Z'), $inp);
-	}
-	return $inp;
-}
-
-function sql_function($name){
-	return array('sqlFunction' => true, 'val' => $name);
-}
-
+//unused
 function doInsertQuery(we_database_base $DB_WE, $table, $hash){
 	$tableInfo = $DB_WE->metadata($table);
 	$fn = array();

@@ -318,7 +318,7 @@ abstract class we_database_base{
 				}
 			}
 
-			if(!$allowUnion &&stristr($queryWithoutStrings, 'union')|| stristr($queryWithoutStrings, '/*!')){
+			if(!$allowUnion && stristr($queryWithoutStrings, 'union') || stristr($queryWithoutStrings, '/*!')){
 				if((defined('ERROR_LOG_TABLE') && strpos($Query_String, ERROR_LOG_TABLE) === false || !defined('ERROR_LOG_TABLE'))){
 					t_e('Attempt to execute union statement/injection', $Query_String);
 				}
@@ -693,8 +693,8 @@ abstract class we_database_base{
 			$query = array();
 			foreach($table as $key => $value){
 				$query[] = (is_numeric($key) ?
-						$value . ' ' . $mode :
-						$key . ' ' . $value);
+								$value . ' ' . $mode :
+								$key . ' ' . $value);
 			}
 			$query = implode(',', $query);
 		} else {
@@ -824,8 +824,8 @@ abstract class we_database_base{
 	function getTableCreateArray($tab){
 		$this->query('SHOW CREATE TABLE ' . $this->escape($tab));
 		return ($this->next_record()) ?
-			explode("\n", $this->f("Create Table")) :
-			false;
+				explode("\n", $this->f("Create Table")) :
+				false;
 	}
 
 	public function getTableKeyArray($tab){

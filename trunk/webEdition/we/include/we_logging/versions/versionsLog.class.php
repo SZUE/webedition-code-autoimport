@@ -32,7 +32,7 @@ class versionsLog extends logging{
 	public $data;
 
 	function __construct(){
-		parent::__construct(VERSIONS_TABLE_LOG);
+		parent::__construct(VERSIONSLOG_TABLE);
 	}
 
 	function saveVersionsLog($logArray, $action = ""){

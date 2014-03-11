@@ -27,7 +27,7 @@ function we_tag_js($attribs){
 		return $foo;
 	}
 	$id = weTag_getAttribute('id', $attribs);
-	$row = getHash('SELECT Path,IsFolder,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $GLOBALS['DB_WE']);
+	$row = getHash('SELECT Path,IsFolder,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id));
 
 	if(!empty($row)){
 		$url = $row['Path'] . ($row['IsFolder'] ? '/' : '');
