@@ -23,11 +23,10 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 header("Content-type: text/css");
-
 ?>
 
 /* css editor body:font-size: this sheet is included first, for font-size to be eventually overwritten by document-css */
 
 body {
-font-size: <?php print (we_base_browserDetect::isMAC()) ? "12px" : ((we_base_browserDetect::isUNIX()) ? "13px" : "12px"); ?>;
+font-size: <?php echo (we_base_browserDetect::isUNIX() ? 13 : 12); ?>px;
 }

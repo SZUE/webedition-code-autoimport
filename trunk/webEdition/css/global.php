@@ -23,6 +23,8 @@
  */
 $GLOBALS['show_stylesheet'] = true;
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+we_html_tools::protect();
+
 header('Content-Type: text/css', true);
 header('Expires: ' . gmdate('D, d M Y H:i:s', time() + 86400) . ' GMT', true);
 header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime(__FILE__)) . ' GMT', true);
