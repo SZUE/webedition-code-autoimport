@@ -25,7 +25,7 @@
 	$JSIDName = stripslashes(we_cmd_dec(2));
 	$JSTextName = stripslashes(we_cmd_dec(3));
 	$JSCommand = we_cmd_dec(4);
-	$sessionID = isset($_REQUEST["we_cmd"][5]) ? $_REQUEST["we_cmd"][5] : "";
+	$sessionID = 0;
 	$rootDirID = isset($_REQUEST["we_cmd"][6]) ? $_REQUEST["we_cmd"][6] : "";
 	$filter = isset($_REQUEST["we_cmd"][7]) ? $_REQUEST["we_cmd"][7] : "";
 	$multiple = isset($_REQUEST["we_cmd"][8]) ? $_REQUEST["we_cmd"][8] : "";

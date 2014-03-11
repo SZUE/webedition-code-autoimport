@@ -32,7 +32,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_global.inc.php
 		$JSIDName = we_cmd_dec(3);
 		$JSTextName = we_cmd_dec(4);
 		$JSCommand = we_cmd_dec(5);
-		$sessionID = isset($_REQUEST["we_cmd"][6]) ? $_REQUEST["we_cmd"][6] : "";
+		$sessionID = 0;
 		$rootDirID = isset($_REQUEST["we_cmd"][7]) ? $_REQUEST["we_cmd"][7] : "";
 		$filter = isset($_REQUEST["we_cmd"][8]) ? $_REQUEST["we_cmd"][8] : "";
 		$multiple = isset($_REQUEST["we_cmd"][9]) ? $_REQUEST["we_cmd"][9] : "";
@@ -44,7 +44,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_global.inc.php
 		$JSIDName = we_cmd_dec(3);
 		$JSTextName = we_cmd_dec(4);
 		$JSCommand = we_cmd_dec(5);
-		$sessionID = isset($_REQUEST["we_cmd"][6]) ? $_REQUEST["we_cmd"][6] : "";
+		$sessionID = 0;
 		$rootDirID = isset($_REQUEST["we_cmd"][7]) ? $_REQUEST["we_cmd"][7] : "";
 		$filter = isset($_REQUEST["we_cmd"][8]) ? $_REQUEST["we_cmd"][8] : "";
 		$open_doc = isset($_REQUEST["we_cmd"][9]) ? $_REQUEST["we_cmd"][9] : "";
