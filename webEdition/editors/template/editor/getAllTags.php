@@ -1,6 +1,8 @@
 <?php
 
+//used by old javaeditor
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+we_html_tools::protect();
 
 /**
  * webEdition CMS

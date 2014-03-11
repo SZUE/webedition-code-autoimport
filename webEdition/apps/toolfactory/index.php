@@ -27,6 +27,7 @@ require_once('../../lib/we/core/autoload.php');
 
 // include configuration
 include_once('toolfactory/conf/meta.conf.php');
+we_html_tools::protect();
 
 // get controller instance
 $controller = Zend_Controller_Front::getInstance();

@@ -22,6 +22,9 @@
  * @package    webEdition_rpc
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+we_html_tools::protect();
+
 if(!isset($_REQUEST['protocol'])){
 	$_REQUEST['protocol'] = 'json';
 }
@@ -31,12 +34,7 @@ define('RPC_URL', str_replace($_SERVER['DOCUMENT_ROOT'], '', RPC_DIR));
 
 ini_set('include_path', ini_get('include_path') . PATH_SEPARATOR . RPC_DIR);
 
-//define('NO_SESS',1);
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-
 require('base/rpcCmdShell.class.php');
-
-we_html_tools::protect();
 
 function dieWithError($text){
 	switch($_REQUEST['protocol']){
