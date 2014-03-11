@@ -285,8 +285,7 @@ abstract class we_database_base{
 
 // check for union This is the fastest check
 // if union is found in query, then take a closer look
-		if($allowUnion == false && stristr($Query_String, 'union')){
-			if(preg_match('/[\s\(`=\)\/]union[\s\(`\/]/i', $Query_String)){
+		if(!$allowUnion && stristr($Query_String, 'union') || stristr($Query_String, '/*!')){
 				$queryToCheck = str_replace(array("\\\"", "\\'"), '', $Query_String);
 
 				$singleQuote = false;
@@ -310,9 +309,9 @@ abstract class we_database_base{
 					}
 				}
 
-				if(preg_match('/[\s\(`"\'\\/)]union[\s\(`\/]/i', $queryWithoutStrings)){
+				if(!$allowUnion && stristr($Query_String, 'union') || stristr($Query_String, '/*!')){
 					exit('Bad SQL statement! For security reasons, the UNION operator is not allowed within SQL statements per default! You need to set the second parameter of the query function to true if you want to use the UNION operator!');
-				}
+
 			}
 		}
 
