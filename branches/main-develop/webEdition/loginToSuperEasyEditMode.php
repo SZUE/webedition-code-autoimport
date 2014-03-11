@@ -38,7 +38,8 @@ if(isset($_POST["username"]) && isset($_POST["id"]) && isset($_POST["type"])){
 
 	//	Login
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-
+	we_html_tools::protect();
+	
 	if(isset($_SESSION["user"]["Username"])){ //	login ok!
 		//	we must give some information, that we start in Super-Easy-Edit-Mode
 		$_SESSION['weS']['we_mode'] = we_base_constants::MODE_SEE;
@@ -49,13 +50,13 @@ if(isset($_POST["username"]) && isset($_POST["id"]) && isset($_POST["type"])){
 			"open_selected" => true, //	This var is only temporary
 		);
 		//	now start webEdition
-		echo we_html_tools::getHtmlTop().
-				'
+		echo we_html_tools::getHtmlTop() .
+		'
 </head>
 <body>
 <form name="startSuperEasyEditMode" method="post" action="/webEdition/webEdition.php">
 </form>' . we_html_element::jsElement('document.forms[\'startSuperEasyEditMode\'].submit();') .
-			'</body>
+		'</body>
 </html>';
 	} else {
 

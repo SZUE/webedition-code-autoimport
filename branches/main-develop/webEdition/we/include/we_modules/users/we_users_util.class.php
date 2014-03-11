@@ -180,7 +180,11 @@ abstract class we_users_util{
 	}
 
 	public static function canEditModule($modName){
-		return (permissionhandler::hasPerm('ADMINISTRATOR') || we_base_menu::isEnabled(we_base_moduleInfo::getModuleData($modName)['perm']));
+		if(permissionhandler::hasPerm('ADMINISTRATOR')){
+			return true;
+		}
+		$data = we_base_moduleInfo::getModuleData($modName);
+		return we_base_menu::isEnabled($data['perm']);
 	}
 
 	public static function makeOwnersSql($useCreatorID = true){

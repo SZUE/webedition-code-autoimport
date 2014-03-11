@@ -292,38 +292,38 @@ abstract class we_database_base{
 		$repool = false;
 // check for union This is the fastest check
 // if union is found in query, then take a closer look
-		if($allowUnion == false && stristr($Query_String, 'union')){
-			if(preg_match('/[\s\(`=\)\/]union[\s\(`\/]/i', $Query_String)){
-				$queryToCheck = str_replace(array("\\\"", "\\'"), '', $Query_String);
+		if(!$allowUnion && stristr($Query_String, 'union') || stristr($Query_String, '/*!')){
 
-				$singleQuote = false;
-				$doubleQuote = false;
+			$queryToCheck = str_replace(array("\\\"", "\\'"), '', $Query_String);
 
-				$queryWithoutStrings = '';
+			$singleQuote = $doubleQuote = false;
 
-				for($i = 0; $i < strlen($queryToCheck); $i++){
-					$char = $queryToCheck[$i];
-					if($char == '"' && $doubleQuote == false && $singleQuote == false){
+			$queryWithoutStrings = '';
+
+			for($i = 0; $i < strlen($queryToCheck); $i++){
+				$char = $queryToCheck[$i];
+				if(!$doubleQuote && !$singleQuote){
+					if($char == '"'){
 						$doubleQuote = true;
-					} else if($char == '\'' && $doubleQuote == false && $singleQuote == false){
+					} else if($char == '\''){
 						$singleQuote = true;
-					} else if($char == '"' && $doubleQuote == true){
-						$doubleQuote = false;
-					} else if($char == '\'' && $singleQuote == true){
-						$singleQuote = false;
 					}
-					if($doubleQuote == false && $singleQuote == false && $char !== '\'' && $char !== '"'){
-						$queryWithoutStrings .= $char;
-					}
+				} else if($char == '"' && $doubleQuote){
+					$doubleQuote = false;
+				} else if($char == '\'' && $singleQuote){
+					$singleQuote = false;
 				}
+				if(!$doubleQuote && !$singleQuote && $char !== '\'' && $char !== '"'){
+					$queryWithoutStrings .= $char;
+				}
+			}
 
-				if(preg_match('/[\s\(`"\'\\/)]union[\s\(`\/]/i', $queryWithoutStrings)){
-					if(self::$Trigger_cnt && (defined('ERROR_LOG_TABLE') && strpos($Query_String, ERROR_LOG_TABLE) === false || !defined('ERROR_LOG_TABLE'))){
-						--self::$Trigger_cnt;
-						t_e($Query_String);
-					}
-					exit('Bad SQL statement! For security reasons, the UNION operator is not allowed within SQL statements per default! You need to set the second parameter of the query function to true if you want to use the UNION operator!');
+			if(!$allowUnion && stristr($queryWithoutStrings, 'union') || stristr($queryWithoutStrings, '/*!')){
+				if((defined('ERROR_LOG_TABLE') && strpos($Query_String, ERROR_LOG_TABLE) === false || !defined('ERROR_LOG_TABLE'))){
+					t_e('Attempt to execute union statement/injection', $Query_String);
 				}
+				//be quiet, no need to give more information
+				exit();
 			}
 		}
 
@@ -693,8 +693,8 @@ abstract class we_database_base{
 			$query = array();
 			foreach($table as $key => $value){
 				$query[] = (is_numeric($key) ?
-						$value . ' ' . $mode :
-						$key . ' ' . $value);
+								$value . ' ' . $mode :
+								$key . ' ' . $value);
 			}
 			$query = implode(',', $query);
 		} else {
@@ -824,8 +824,8 @@ abstract class we_database_base{
 	function getTableCreateArray($tab){
 		$this->query('SHOW CREATE TABLE ' . $this->escape($tab));
 		return ($this->next_record()) ?
-			explode("\n", $this->f("Create Table")) :
-			false;
+				explode("\n", $this->f("Create Table")) :
+				false;
 	}
 
 	public function getTableKeyArray($tab){

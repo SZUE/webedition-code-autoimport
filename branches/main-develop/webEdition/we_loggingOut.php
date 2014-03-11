@@ -26,12 +26,13 @@
  * when webEdition.php is not closed regularily (by using menu -> quit): window.onbeforeunload()
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+we_html_tools::protect(null, WEBEDITION_DIR . 'index.php');
 
 $GLOBALS['isIncluded'] = true;
 include(WE_INCLUDES_PATH . 'we_logout.inc.php');
 
 if(isset($_REQUEST['isopener']) && $_REQUEST['isopener']){
-	header("location: " . WEBEDITION_DIR . "index.php");
+	header('location: ' . WEBEDITION_DIR . 'index.php');
 }
 ?>
 

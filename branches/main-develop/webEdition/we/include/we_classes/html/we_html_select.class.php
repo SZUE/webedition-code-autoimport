@@ -65,12 +65,8 @@ class we_html_select extends we_html_baseCollection{
 	 * @return		void
 	 */
 	function addOption($value, $text, $attribs = array()){
-		if(empty($attribs)){
-			$this->childs[] = new we_html_baseElement("option", true, array("value" => $value), $text);
-		} else {
-			$attribs["value"] = $value;
-			$this->childs[] = new we_html_baseElement("option", true, $attribs, $text);
-		}
+		$attribs["value"] = $value;
+		$this->childs[] = new we_html_baseElement("option", true, $attribs, $text);
 	}
 
 	/**
@@ -96,7 +92,6 @@ class we_html_select extends we_html_baseCollection{
 	 * @return		void
 	 */
 	function delOption($value){
-
 		foreach($this->childs as $k => $v){
 			if($v->attribs["value"] == $value){
 				$cid = $k;
@@ -114,7 +109,6 @@ class we_html_select extends we_html_baseCollection{
 	 * @return		void
 	 */
 	function delAllOptions(){
-
 		$this->childs = array();
 	}
 
@@ -160,7 +154,6 @@ class we_html_select extends we_html_baseCollection{
 	 * @return		void
 	 */
 	function setOption($optid, $attribs = array(), $content = null){
-
 		$opt = & $this->getChild($optid);
 		$opt->setAttributes($attribs);
 		if($content != null){
@@ -182,7 +175,7 @@ class we_html_select extends we_html_baseCollection{
 		foreach($this->childs as $k => $v){
 			//fix #7912
 			$equal = (is_bool($v->attribs["value"]) || is_bool($value)) ? $v->attribs["value"] == $value :
-				(string) $v->attribs["value"] == (string) $value;
+					(string) $v->attribs["value"] == (string) $value;
 
 			if($equal){
 				$this->setOption($k, array("selected" => 'selected'));
@@ -216,7 +209,6 @@ class we_html_select extends we_html_baseCollection{
 	 * @return		void
 	 */
 	function setOptionVT($optid, $value, $text){
-
 		$opt = & $this->getChild($optid);
 		$opt->setAttribute("value", $value);
 		$opt->setContent($text);

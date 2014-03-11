@@ -159,6 +159,9 @@ function showMessage(message, prio, win){
 if(is_dir(WEBEDITION_PATH . 'we/cache')){
 	we_util_File::deleteLocalFolder(WEBEDITION_PATH . 'we/cache', true);
 }
+if(is_dir(WEBEDITION_DIR . 'OnlineInstaller')){
+	we_util_File::deleteLocalFolder(WEBEDITION_DIR . 'OnlineInstaller');
+}
 
 we_base_file::cleanTempFiles(true);
 cleanWEZendCache();
@@ -255,17 +258,17 @@ if(isset($_POST['checkLogin']) && empty($_COOKIE)){
 	$_layout = getError(g_l('start', '[cookies_disabled]'));
 
 	printHeader($login, 400);
-	print we_html_element::htmlBody(array('style' => 'background-color:#FFFFFF;'), $_layout->getHtml()) . '</html>';
+	echo we_html_element::htmlBody(array('style' => 'background-color:#FFFFFF;'), $_layout->getHtml()) . '</html>';
 } else if(!we_database_base::hasDB() || $GLOBALS['DB_WE']->Error == 'No database selected'){
 	$_layout = getError(g_l('start', '[no_db_connection]'));
 
 	printHeader($login, 503);
-	print we_html_element::htmlBody(array('style' => 'background-color:#FFFFFF;'), $_layout->getHtml()) . '</html>';
+	echo we_html_element::htmlBody(array('style' => 'background-color:#FFFFFF;'), $_layout->getHtml()) . '</html>';
 } elseif(!isset($_REQUEST['skipSess']) && isset($GLOBALS['FOUND_SESSION_PROBLEM'])){
 	$_layout = getError(/* g_l('start', '[cookies_disabled]') */'Session-Problem');
 
 	printHeader($login);
-	print we_html_element::htmlBody(array('style' => 'background-color:#FFFFFF;'), $_layout->getHtml()) . '</html>';
+	echo we_html_element::htmlBody(array('style' => 'background-color:#FFFFFF;'), $_layout->getHtml()) . '</html>';
 } else
 /* if(isset($_POST['checkLogin']) && $_POST['checkLogin'] != session_id()){
   $_layout = getError(sprintf(g_l('start', '[phpini_problems]'), (ini_get('cfg_file_path') ? ' (' . ini_get('cfg_file_path') . ')' : '')) . we_html_element::htmlBr() . we_html_element::htmlBr() .

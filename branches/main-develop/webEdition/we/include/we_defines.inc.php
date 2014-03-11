@@ -153,7 +153,7 @@ define('FORMMAIL_BLOCK_TABLE', TBL_PREFIX . 'tblformmailblock');
 define('METADATA_TABLE', TBL_PREFIX . 'tblMetadata');
 define('NOTEPAD_TABLE', TBL_PREFIX . 'tblwidgetnotepad');
 define('VERSIONS_TABLE', TBL_PREFIX . 'tblversions');
-define('VERSIONS_TABLE_LOG', TBL_PREFIX . 'tblversionslog');
+define('VERSIONSLOG_TABLE', TBL_PREFIX . 'tblversionslog');
 
 define('NAVIGATION_TABLE', TBL_PREFIX . 'tblnavigation');
 define('NAVIGATION_RULE_TABLE', TBL_PREFIX . 'tblnavigationrules');

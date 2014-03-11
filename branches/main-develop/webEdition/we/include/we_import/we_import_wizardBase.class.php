@@ -561,7 +561,7 @@ setTimeout('we_import(1," . $v['numFiles'] . ");',15);";
 											) . '&nbsp;&nbsp;' . $_path_info;
 
 									if(strlen($_progress_text) > 75){
-										$_progress_text = addslashes(substr($_progress_text, 0, 65) . '<acronym title="' . $_path_info . '">...</acronym>' . substr($_progress_text, -10));
+										$_progress_text = addslashes(substr($_progress_text, 0, 65) . '<abbr title="' . $_path_info . '">...</abbr>' . substr($_progress_text, -10));
 									}
 
 									print we_html_element::jsElement(

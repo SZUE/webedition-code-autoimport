@@ -323,18 +323,18 @@ function log_error_message($type, $message, $file, $_line, $skipBT = false){
 				}
 			}
 		} else {
-			$_link = mysql_connect(DB_HOST, DB_USER, DB_PASSWORD) or die('Cannot log error! Could not connect: ' . mysql_error());
-			mysql_select_db(DB_DATABASE, $_link) or die('Cannot log error! Could not select database.');
-			if(mysql_query($_query) === FALSE){
+			$link = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD) or die('Cannot log error! Could not connect: ' . mysqli_error());
+			mysqli_select_db($link, DB_DATABASE) or die('Cannot log error! Could not select database.');
+			if(mysqli_query($link, $_query) === FALSE){
 				mail_error_message($type, 'Cannot log error! Query failed: ' . $message, $file, $_line, $skipBT);
 				//die('Cannot log error! Query failed: ' . mysql_error());
 			} else {
-				$id = mysql_insert_id();
+				$id = mysqli_insert_id($link);
 				foreach($logVars as $var){
-					mysql_query('UPDATE ' . $tbl . ' SET ' . getVariableMax($var) . ' WHERE ID=' . $id);
+					mysqli_query($link, 'UPDATE ' . $tbl . ' SET ' . getVariableMax($var) . ' WHERE ID=' . $id);
 				}
 			}
-			mysql_close();
+			mysqli_close($link);
 		}
 	} else {
 		mail_error_message($type, 'Cannot log error! Database connection not known: ' . $message, $file, $line, $skipBT);

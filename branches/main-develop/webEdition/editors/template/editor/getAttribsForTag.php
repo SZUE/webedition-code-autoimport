@@ -22,20 +22,17 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+//called by old javaeditor
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-
+we_html_tools::protect();
 $tagName = isset($_REQUEST['tagName']) ? $_REQUEST['tagName'] : "";
 
 // Remove . / \ because of security reasons
-$tagName = str_replace('.', '', $tagName);
-$tagName = str_replace('/', '', $tagName);
-$tagName = str_replace('\\', '', $tagName);
+$tagName = str_replace(array('.', '/', '\\'), '', $tagName);
 
-$xml = '<?xml version="1.0" encoding="utf-8"?>' . "\n";
-$xml .= "<attributes>\n";
+$xml = '<?xml version="1.0" encoding="utf-8"?>' . "\n<attributes>\n";
 
 if($tagName){
-
 	$tagData = weTagData::getTagData($tagName);
 	foreach($tagData->getAllAttributes() as $attr){
 		$xml .= "\t" . '<attribute name="' . $attr . '" />' . "\n";
@@ -45,4 +42,4 @@ if($tagName){
 $xml .= "</attributes>\n";
 
 header('Content-Type: text/xml');
-print $xml;
+echo $xml;

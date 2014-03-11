@@ -38,7 +38,7 @@ $tableMap = array(
 	),
 	'versions' => array(
 		strtolower(stripTblPrefix(VERSIONS_TABLE)) => VERSIONS_TABLE,
-		strtolower(stripTblPrefix(VERSIONS_TABLE_LOG)) => VERSIONS_TABLE_LOG
+		strtolower(stripTblPrefix(VERSIONS_LOG_TABLE)) => VERSIONSLOG_TABLE
 	),
 	'settings' => array(
 		strtolower(stripTblPrefix(PREFS_TABLE)) => PREFS_TABLE,
