@@ -310,7 +310,7 @@ abstract class we_database_base{
 				}
 
 				if(!$allowUnion && stristr($Query_String, 'union') || stristr($Query_String, '/*!')){
-					exit('Bad SQL statement! For security reasons, the UNION operator is not allowed within SQL statements per default! You need to set the second parameter of the query function to true if you want to use the UNION operator!');
+					exit();
 
 			}
 		}
