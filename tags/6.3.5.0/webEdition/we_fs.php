@@ -33,7 +33,7 @@ $fs = new we_multiSelector(
 		isset($JSTextName) ? $JSTextName : (isset($_REQUEST['JSTextName']) ? $_REQUEST['JSTextName'] : ''),
 		isset($JSCommand) ? $JSCommand : (isset($_REQUEST['JSCommand']) ? $_REQUEST['JSCommand'] : ''),
 		isset($order) ? $order : (isset($_REQUEST['order']) ? $_REQUEST['order'] : ''),
-		isset($sessionID) ? $sessionID : (isset($_REQUEST['sessionID']) ? $_REQUEST['sessionID'] : ''),
+		0,
 		isset($rootDirID) ? $rootDirID : (isset($_REQUEST['rootDirID']) ? $_REQUEST['rootDirID'] : ''),
 		isset($multiple) ? $multiple : (isset($_REQUEST['multiple']) ? $_REQUEST['multiple'] : ''),
 		isset($filter) ? $filter : (isset($_REQUEST['filter']) ? $_REQUEST['filter'] : ''));
