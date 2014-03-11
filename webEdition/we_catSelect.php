@@ -36,7 +36,7 @@ $fs = new we_catSelector(
 		isset($JSTextName) ? $JSTextName : ( isset($_REQUEST["JSTextName"]) ? $_REQUEST["JSTextName"] : "" ),
 		isset($JSCommand) ? $JSCommand : ( isset($_REQUEST["JSCommand"]) ? $_REQUEST["JSCommand"] : "" ),
 		isset($order) ? $order : ( isset($_REQUEST["order"]) ? $_REQUEST["order"] : "" ),
-		isset($sessionID) ? $sessionID : ( isset($_REQUEST["sessionID"]) ? $_REQUEST["sessionID"] : "" ),
+		0,
 		isset($we_editCatID) ? $we_editCatID : ( isset($_REQUEST["we_editCatID"]) ? $_REQUEST["we_editCatID"] : "" ),
 		isset($we_EntryText) ? $we_EntryText : ( isset($_REQUEST["we_EntryText"]) ? $_REQUEST["we_EntryText"] : "" ),
 		isset($rootDirID) ? $rootDirID : ( isset($_REQUEST["rootDirID"]) ? $_REQUEST["rootDirID"] : "" ),
