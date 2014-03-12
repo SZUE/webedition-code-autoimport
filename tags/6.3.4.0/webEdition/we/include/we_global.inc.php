@@ -937,7 +937,7 @@ function getWsQueryForSelector($tab, $includingFolders = true){
 	}
 
 	if(!($ws = makeArrayFromCSV(get_ws($tab)))){
-		return '';
+		return ' OR RestrictOwners=0 ';
 	}
 	$paths = id_to_path($ws, $tab, '', false, true);
 	$wsQuery = array();

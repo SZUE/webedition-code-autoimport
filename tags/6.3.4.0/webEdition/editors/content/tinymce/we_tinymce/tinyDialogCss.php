@@ -26,8 +26,8 @@ header("Content-type: text/css");
 ?>
 
 /* TODO: clean up this messy css! */
-
 /* CSS for all tiny Dialogs */
+
 body{ /* [role=application]? */
 letter-spacing: normal !important;
 font-family: Verdana,Arial,Helvetica,sans-serif;
@@ -105,6 +105,7 @@ margin-right:6px;
 legend{
 color:black;
 margin-top:16px;
+
 }
 
 body select, #block_text_indent, #box_width, #box_height, #box_padding_top, #box_padding_right, #box_padding_bottom, #box_padding_left {
@@ -212,7 +213,7 @@ margin-right:20px;
 
 /* Some dialogs do not work not with webEDition-Footer in IE: they do not have attribute role="application" in body tag */
 body[role=application] fieldset{
-border:none;	
+border:none;
 }
 
 body[role=application] label{
