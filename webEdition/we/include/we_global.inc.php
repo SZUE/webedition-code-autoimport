@@ -323,7 +323,7 @@ function filterXss($var, $type = 'string'){
  * @param array $data array pair of type & default
  * @return type
  */
-function _weGetVar(&$var, $key, array $data){
+function _weRequest(&$var, $key, array $data){
 	list($type, $default) = $data;
 	switch($type){
 		case 'transaction':
@@ -367,15 +367,15 @@ function _weGetVar(&$var, $key, array $data){
  * @param mixed $index optional index
  * @return mixed default, if value not set, the filtered value else
  */
-function weGetVar($type, $name, $default = false, $index = ''){
+function weRequest($type, $name, $default = false, $index = ''){
 	if(!isset($_REQUEST[$name])){
 		return $default;
 	}
 	$var = $index === '' ? $_REQUEST[$name] : $_REQUEST[$name][$index];
 	if(is_array($var)){
-		array_walk($var, '_weGetVar', array($type, $default));
+		array_walk($var, '_weRequest', array($type, $default));
 	} else {
-		_weGetVar($var, '', array($type, $default));
+		_weRequest($var, '', array($type, $default));
 	}
 	return $var;
 }
