@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+we_html_tools::protect();//s1
 
 if(isset($_SESSION['weS']['move_files_nok']) && is_array($_SESSION['weS']['move_files_nok'])){
 	$i = 0;

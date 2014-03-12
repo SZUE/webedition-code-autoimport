@@ -37,11 +37,15 @@ if(defined('WE_VERSION_SUPP') && WE_VERSION_SUPP!='release'){
 if (isset($_REQUEST["setTestUpdate"])){
 	 $ischecked = $_REQUEST["setTestUpdate"];
 }
+$conf=  weFile::load(LIVEUPDATE_DIR . 'conf/conf.inc.php');
 if($ischecked){
-	$conf=  weFile::load(LIVEUPDATE_DIR . 'conf/conf.inc.php');
-
 	if (strpos($conf,'$'."_REQUEST['testUpdate'] = 0;")!==false){
 		$conf=str_replace('$'."_REQUEST['testUpdate'] = 0;",'$'."_REQUEST['testUpdate'] = 1;",$conf);
+		weFile::save(LIVEUPDATE_DIR . 'conf/conf.inc.php',$conf);
+	}
+} else {
+	if (strpos($conf,'$'."_REQUEST['testUpdate'] = 1;")!==false){
+		$conf=str_replace('$'."_REQUEST['testUpdate'] = 1;",'$'."_REQUEST['testUpdate'] = 0;",$conf);
 		weFile::save(LIVEUPDATE_DIR . 'conf/conf.inc.php',$conf);
 	}
 }

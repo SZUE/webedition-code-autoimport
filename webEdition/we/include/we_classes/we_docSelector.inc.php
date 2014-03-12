@@ -84,9 +84,6 @@ class we_docSelector extends we_dirSelector{
 				}
 			}
 		}
-		if(empty($wsQuery)){
-			$wsQuery = ' OR RestrictOwners=0 ';
-		}
 
 		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->dir) . ' AND((1 ' .
 			makeOwnersSql() . ')' .
