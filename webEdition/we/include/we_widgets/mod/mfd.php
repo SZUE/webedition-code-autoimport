@@ -31,10 +31,14 @@ if(!isset($aCols) || count($aCols) < 5){
 }
 $sTypeBinary = $aCols[0];
 $pos = 0;
-$bTypeDoc = permissionhandler::hasPerm('CAN_SEE_DOCUMENTS') && isset($sTypeBinary{$pos++}) && ($sTypeBinary{$pos++});
-$bTypeTpl = permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && isset($sTypeBinary{$pos++}) && ($sTypeBinary{$pos++});
-$bTypeObj = permissionhandler::hasPerm('CAN_SEE_OBJECTS') && isset($sTypeBinary{$pos++}) && ($sTypeBinary{$pos++});
-$bTypeCls = permissionhandler::hasPerm('CAN_SEE_CLASSES') && isset($sTypeBinary{$pos++}) && ($sTypeBinary{$pos++});
+$bTypeDoc = permissionhandler::hasPerm('CAN_SEE_DOCUMENTS') && isset($sTypeBinary{$pos}) && ($sTypeBinary{$pos});
+$pos++;
+$bTypeTpl = permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && isset($sTypeBinary{$pos}) && ($sTypeBinary{$pos});
+$pos++;
+$bTypeObj = permissionhandler::hasPerm('CAN_SEE_OBJECTS') && isset($sTypeBinary{$pos}) && ($sTypeBinary{$pos});
+$pos++;
+$bTypeCls = permissionhandler::hasPerm('CAN_SEE_CLASSES') && isset($sTypeBinary{$pos}) && ($sTypeBinary{$pos});
+$pos++;
 
 $iDate = intval($aCols[1]);
 
