@@ -27,6 +27,7 @@
  * when webEdition.php is not closed regularily (by using menu -> quit): window.onbeforeunload()
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+we_html_tools::protect(null, WEBEDITION_DIR . 'index.php');//s1
 
 $isIncluded = true;
 include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_logout.inc.php');
