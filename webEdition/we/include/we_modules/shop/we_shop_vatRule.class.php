@@ -64,15 +64,14 @@ class we_shop_vatRule{
 	function initByRequest(&$req){
 
 		return new we_shop_vatRule(
-			$req['defaultValue'], $req['stateField'], we_shop_vatRule::makeArrayFromReq($req['liableToVat']), we_shop_vatRule::makeArrayFromReq($req['notLiableToVat']), we_shop_vatRule::makeArrayFromConditionField($req), $req['stateFieldIsISO']
+				$req['defaultValue'], $req['stateField'], we_shop_vatRule::makeArrayFromReq($req['liableToVat']), we_shop_vatRule::makeArrayFromReq($req['notLiableToVat']), we_shop_vatRule::makeArrayFromConditionField($req), $req['stateFieldIsISO']
 		);
 	}
 
 	function getShopVatRule(){
-		$strFelder = f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="weShopVatRule"');
-
-		if($strFelder !== ''){
-			return unserialize($strFelder);
+		if(($strFelder = f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="weShopVatRule"'))){
+			//FIX old class names
+			unserialize(strtr(array('O:13:"weShopVatRule":' => 'O:15:"we_shop_vatRule":', $strFelder)));
 		} else {
 			return new we_shop_vatRule('true', '', array(), array(), array(
 				array(
@@ -81,7 +80,7 @@ class we_shop_vatRule{
 					'condition' => '',
 					'returnValue' => 1
 				)
-				), 0
+					), 0
 			);
 		}
 	}
