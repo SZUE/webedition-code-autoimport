@@ -44,88 +44,80 @@ require_once("cliConfig.php");
  *
  * @var string
  */
-$_REQUEST['type'] = 'all';
-
-/**
- * When rebuild type is set to "all", it rewrites
- * the maintable (tblFile) also.
- * Only use this if the maintable is broken!!!
- *
- *  @var boolean
- */
-$_REQUEST['rewriteMaintable'] = false;
-
-/**
- * When rebuild type is set to "all", it rewrites the
- * temporary table (tblTemporaryDocs) also.
- * Only use this if the temporary table is broken!!!
- *
- * @var boolean
- */
-$_REQUEST['rewriteTmptable'] = false;
-
-
-/**
- * String with comma separated category ids.
- * If this is set, only documents with the specified
- * categories will be rebuilt
- * This is only working when rebuild type is
- * set to "static"
- *
- * @var string
- */
-$_REQUEST['categories'] = "";
-
-/**
- * Flag if should be an AND instead an OR operation
- * between the categories.
- * This is only working when rebuild type is
- * set to "static"
- *
- * @var boolean
- */
-$_REQUEST['catAnd'] = false;
-
-/**
- * comma separated string with document type ids
- * If this is set, only documents with the specified
- * document types will be rebuilt
- * This is only working when rebuild type is
- * set to "static"
- *
- * @var string
- */
-$_REQUEST['doctypes'] = "";
-
-/**
- * comma separated string with directory ids.
- * If this is set, only documents within the specified
- * directories will be rebuilt
- * This is only working when rebuild type is
- * set to "static"
- *
- * @var string
- */
-$_REQUEST['directories'] = "";
-
-/**
- * comma separated string with thumb names to rebuild.
- *
- * This needs to be set when rebuild type is
- * set to "thumbnails"
- *
- * @var string
- */
-$_REQUEST['thumbnails'] = "";
-
-
-/**
- * If you want to see the output of the script
- * set this to true;
- *
- * @var boolean
- */
-$_REQUEST['verbose'] = true;
+$_REQUEST = array(
+	'type' => 'all',
+	/**
+	 * When rebuild type is set to "all", it rewrites
+	 * the maintable (tblFile) also.
+	 * Only use this if the maintable is broken!!!
+	 *
+	 *  @var boolean
+	 */
+	'rewriteMaintable' => false,
+	/**
+	 * When rebuild type is set to "all", it rewrites the
+	 * temporary table (tblTemporaryDocs) also.
+	 * Only use this if the temporary table is broken!!!
+	 *
+	 * @var boolean
+	 */
+	'rewriteTmptable' => false,
+	/**
+	 * String with comma separated category ids.
+	 * If this is set, only documents with the specified
+	 * categories will be rebuilt
+	 * This is only working when rebuild type is
+	 * set to "static"
+	 *
+	 * @var string
+	 */
+	'categories' => "",
+	/**
+	 * Flag if should be an AND instead an OR operation
+	 * between the categories.
+	 * This is only working when rebuild type is
+	 * set to "static"
+	 *
+	 * @var boolean
+	 */
+	'catAnd' => false,
+	/**
+	 * comma separated string with document type ids
+	 * If this is set, only documents with the specified
+	 * document types will be rebuilt
+	 * This is only working when rebuild type is
+	 * set to "static"
+	 *
+	 * @var string
+	 */
+	'doctypes' => "",
+	/**
+	 * comma separated string with directory ids.
+	 * If this is set, only documents within the specified
+	 * directories will be rebuilt
+	 * This is only working when rebuild type is
+	 * set to "static"
+	 *
+	 * @var string
+	 */
+	'directories' => "",
+	/**
+	 * comma separated string with thumb names to rebuild.
+	 *
+	 * This needs to be set when rebuild type is
+	 * set to "thumbnails"
+	 *
+	 * @var string
+	 */
+	'thumbnails' => "",
+	/**
+	 * If you want to see the output of the script
+	 * set this to true;
+	 *
+	 * @var boolean
+	 */
+	'verbose' => true,
+);
 
 //  END OF OPTIONS
 
