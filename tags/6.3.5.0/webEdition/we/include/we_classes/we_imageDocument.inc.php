@@ -492,7 +492,7 @@ class we_imageDocument extends we_binaryDocument{
 
 			while((list($k, $v) = $this->nextElement('attrib'))) {
 				if(!in_array($k, $filter)){
-					if($v['dat'] != ''){
+					if(isset($v['dat']) && $v['dat'] != ''){
 						$attribs[$k] = $v['dat'];
 					}
 				}

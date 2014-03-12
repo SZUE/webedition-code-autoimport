@@ -2443,7 +2443,7 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 				$passwd = crypt($clearPassword, $password);
 				break;
 		}
-		return ($passwd == $password);
+		return ($passwd === $password);
 	}
 
 	static function makeSaltedPassword(&$useSalt, $username, $passwd, $strength = 15){

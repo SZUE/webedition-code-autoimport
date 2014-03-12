@@ -659,9 +659,10 @@ class we_document extends we_root{
 		}
 
 
-		if($this->ContentType == 'application/x-shockwave-flash' || $this->ContentType == 'image/*' || $this->ContentType == 'text/weTmpl' //#4120 hinzugef�gt
-			|| $this->ContentType == 'video/quicktime' || $this->ContentType == 'text/js' || $this->ContentType == 'text/css'
-			|| $this->ContentType == 'text/plain' || $this->ContentType == 'text/xml' || $this->ContentType == 'application/*'){
+		if( ($this->ContentType == 'application/x-shockwave-flash' && defined('VERSIONING_FLASH') && VERSIONING_FLASH) || ($this->ContentType == 'image/*' && defined('VERSIONING_IMAGE') && VERSIONING_IMAGE)|| ($this->ContentType == 'text/weTmpl' && defined('VERSIONING_TEXT_WETMPL') && VERSIONING_TEXT_WETMPL)//#4120 hinzugef�gt
+			|| ($this->ContentType == 'video/quicktime' && defined('VERSIONING_QUICKTIME') && VERSIONING_QUICKTIME) 
+			|| ($this->ContentType == 'text/js'  && defined('VERSIONING_TEXT_JS') && VERSIONING_TEXT_JS) || ($this->ContentType == 'text/css'  && defined('VERSIONING_TEXT_CSS') && VERSIONING_TEXT_CSS )
+			|| ($this->ContentType == 'text/plain'  && defined('VERSIONING_TEXT_PLAIN') && VERSIONING_TEXT_PLAIN) || ($this->ContentType == 'text/xml'  && defined('VERSIONING_TEXT_XML') && VERSIONING_TEXT_XML) || ($this->ContentType == 'application/*'  && defined('VERSIONING_SONSTIGE') && VERSIONING_SONSTIGE) ){
 
 			$version->save($this);
 		}
