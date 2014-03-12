@@ -27,10 +27,10 @@ class rpcCopyNavigationFolderCmd extends rpcCmd{
 	function execute(){
 		$resp = new rpcResponse();
 		if(isset($_REQUEST['we_cmd'][0]) && !empty($_REQUEST['we_cmd'][0]) &&
-			isset($_REQUEST['we_cmd'][1]) && !empty($_REQUEST['we_cmd'][1]) &&
-			isset($_REQUEST['we_cmd'][2]) && !empty($_REQUEST['we_cmd'][2]) &&
-			isset($_REQUEST['we_cmd'][3]) && !empty($_REQUEST['we_cmd'][3]) &&
-			(strpos($_REQUEST['we_cmd'][2], $_REQUEST['we_cmd'][0]) === false || strpos($_REQUEST['we_cmd'][2], $_REQUEST['we_cmd'][0]) > 0)
+				isset($_REQUEST['we_cmd'][1]) && !empty($_REQUEST['we_cmd'][1]) &&
+				isset($_REQUEST['we_cmd'][2]) && !empty($_REQUEST['we_cmd'][2]) &&
+				isset($_REQUEST['we_cmd'][3]) && !empty($_REQUEST['we_cmd'][3]) &&
+				(strpos($_REQUEST['we_cmd'][2], $_REQUEST['we_cmd'][0]) === false || strpos($_REQUEST['we_cmd'][2], $_REQUEST['we_cmd'][0]) > 0)
 		){
 
 			$db = $GLOBALS['DB_WE'];
@@ -68,15 +68,12 @@ class rpcCopyNavigationFolderCmd extends rpcCmd{
 					$folders[] = $mapedId[$row['ID']];
 					$query = "";
 				} else {
-					if(!empty($query)){
-						$query .= ', ';
-					}
-					$query .= $querySet;
+					$query .= ($query ? ',' : '') . $querySet;
 				}
 				$lastInserted = $row['IsFolder'];
 			}
 			if(!$lastInserted){
-				$db->query("INSERT INTO " . NAVIGATION_TABLE . " VALUES " . $query);
+				$db->query('INSERT INTO ' . NAVIGATION_TABLE . ' VALUES ' . $query);
 			}
 			foreach($folders as $folder){
 				$newNavi = new we_navigation_navigation($folder);

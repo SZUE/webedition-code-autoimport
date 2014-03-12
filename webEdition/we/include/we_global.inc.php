@@ -316,6 +316,35 @@ function filterXss($var, $type = 'string'){
 	return $ret;
 }
 
+function weGetVar($type, $name, $default = false, $index = ''){
+	if(!isset($_REQUEST['name'])){
+		return $default;
+	}
+	$var = $_REQUEST[$name];
+	if($index){
+		$var = $var[$index];
+	}
+	switch($type){
+		case 'transaction':
+			return (preg_match('|^([a-f0-9]){32}$|i', $var) ? $var : $default);
+		case 'int':
+			return intval($var);
+		case 'float':
+			return floatval($var);
+		case 'table':
+			return $var && in_array($var, get_defined_constants(), true) ? $var : $default;
+		case 'email':
+			return filter_var($var, FILTER_SANITIZE_EMAIL);
+		case 'url':
+			return filter_var($var, FILTER_SANITIZE_URL);
+		case 'string':
+			return filter_var($var, FILTER_SANITIZE_STRING);
+		case 'html':
+			return filter_var($var, FILTER_SANITIZE_SPECIAL_CHARS);
+	}
+	return $default;
+}
+
 /**
  * makes sure a give array/list of values has only ints
  * @param mixed $val
