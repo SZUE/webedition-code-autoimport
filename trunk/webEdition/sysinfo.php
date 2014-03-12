@@ -214,7 +214,7 @@ if(in_array('suhosin', get_loaded_extensions())){
 }
 
 $lockTables = $GLOBALS['DB_WE']->hasLock();
-$allowTempTables = we_search_search::checkRightTempTable() == '0';
+$allowTempTables = !we_search_search::checkRightTempTable();
 
 $_info = array(
 	'webEdition' => array(

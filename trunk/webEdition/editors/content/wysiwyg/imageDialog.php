@@ -36,9 +36,9 @@ $noInternals = $noInternals || !isset($_SESSION['user']) || !isset($_SESSION['us
 
 $dialog = new we_dialog_image($noInternals);
 $dialog->initByHttp();
-$dialog->registerCmdFn(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] ? "" : "weDoImgCmd");
+$dialog->registerCmdFn(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] ? '' : "weDoImgCmd");
 
-print $dialog->getHTML();
+echo $dialog->getHTML();
 
 function weDoImgCmd($args){
 	if($args["thumbnail"] && $args["fileID"]){
