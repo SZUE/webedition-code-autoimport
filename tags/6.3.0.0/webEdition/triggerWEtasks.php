@@ -19,6 +19,8 @@
  */
 
 require_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
+//remove all paramters in case some functions might hear to them:
+unset($_REQUEST,$_GET,$_POST);//s1
 
 if(defined("SCHEDULE_TABLE")) {
     we_schedpro::trigger_schedule();

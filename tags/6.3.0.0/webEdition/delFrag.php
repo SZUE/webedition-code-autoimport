@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
+we_html_tools::protect();//s1
 
 $frame = isset($_REQUEST["frame"]) ? $_REQUEST["frame"] : "";
 
