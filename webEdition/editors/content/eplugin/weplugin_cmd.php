@@ -35,11 +35,11 @@ if(isset($_REQUEST['we_cmd'][0])){
 			$_session = session_id();
 			$_we_transaction = isset($_REQUEST['we_cmd'][2]) ? $_REQUEST['we_cmd'][2] : '';
 
-			if(isset($_SESSION['weS']['we_data'][$_we_transaction][0]['Path']) && !empty($_SESSION['weS']['we_data'][$_we_transaction][0]['Path'])){
-				$_filename = $_SESSION['weS']['we_data'][$_we_transaction][0]['Path'];
-			} else {
-				$_filename = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : '';
-			}
+			$_filename = (isset($_SESSION['weS']['we_data'][$_we_transaction][0]['Path']) && !empty($_SESSION['weS']['we_data'][$_we_transaction][0]['Path']) ?
+							$_SESSION['weS']['we_data'][$_we_transaction][0]['Path'] :
+							(isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : '')
+					);
+
 
 			$_ct = isset($_REQUEST['we_cmd'][3]) ? $_REQUEST['we_cmd'][3] : '';
 			$_source = isset($_REQUEST['we_cmd'][4]) ? $_REQUEST['we_cmd'][4] : '###EDITORPLUGIN:EMPTYSTRING###';
@@ -50,13 +50,13 @@ if(isset($_REQUEST['we_cmd'][0])){
 
 			// charset is necessary when encoding=true
 			$charset = (isset($_SESSION['weS']['we_data'][$_we_transaction][0]['elements']['Charset']['dat']) && !empty($_SESSION['weS']['we_data'][$_we_transaction][0]['elements']['Charset']['dat']) ?
-					$_SESSION['weS']['we_data'][$_we_transaction][0]['elements']['Charset']['dat'] :
-					$GLOBALS['WE_BACKENDCHARSET']);
+							$_SESSION['weS']['we_data'][$_we_transaction][0]['elements']['Charset']['dat'] :
+							$GLOBALS['WE_BACKENDCHARSET']);
 
 
 			$out = we_html_element::jsElement('
 session = "' . session_id() . '";
-transaction = "' . $_we_transaction . '";
+transaction = "' . str_replace('"', '', $_we_transaction) . '";
 filename = "' . addslashes($_filename) . '";
 ct = "' . $_ct . '";
 source = "' . base64_encode($_source) . '";
@@ -173,9 +173,9 @@ if (
 		}
 	}
 
-	print we_html_element::htmlDocType() . we_html_element::htmlHtml(
+	echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
 			we_html_element::htmlHead(
-				we_html_tools::htmlMetaCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET'])
+					we_html_tools::htmlMetaCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET'])
 			) .
 			we_html_element::htmlBody(array('bgcolor' => 'white', 'marginwidth' => 0, 'marginheight' => 0, 'leftmargin' => 0, 'topmargin' => 0), $out
 			)
