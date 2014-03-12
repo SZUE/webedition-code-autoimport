@@ -1124,7 +1124,7 @@ _multiEditorreload = true;";
 		$db = $GLOBALS['DB_WE'];
 		$db_tmp = new DB_WE();
 		$db->query('SELECT ParentID,ParentPerms,Permissions,Alias FROM ' . USER_TABLE . ' WHERE ID=' . intval($uid) . ' OR Alias=' . intval($uid));
-		while($db->next_record(MYSQLI_ASSOC)){
+		while($db->next_record(MYSQL_ASSOC)){
 			if($db->f('Alias') != $uid){
 				$group_permissions = unserialize($db->f('Permissions'));
 				if(is_array($group_permissions)){
@@ -1137,7 +1137,7 @@ _multiEditorreload = true;";
 			if($db->f('ParentPerms')){
 				while($lpid){
 					$db_tmp->query('SELECT ParentID,ParentPerms,Permissions FROM ' . USER_TABLE . ' WHERE ID=' . intval($lpid));
-					if($db_tmp->next_record(MYSQLI_ASSOC)){
+					if($db_tmp->next_record(MYSQL_ASSOC)){
 						$group_permissions = unserialize($db_tmp->f('Permissions'));
 						if(is_array($group_permissions)){
 							foreach($group_permissions as $key => $val){
@@ -1152,7 +1152,7 @@ _multiEditorreload = true;";
 			}
 		}
 		if(!array_filter($user_permissions)){
-			t_e('error reading user permissions! Check parent permissions & resave parent folders! UID: '.$uid);
+			t_e('error reading user permissions! Check parent permissions & resave parent folders! UID: '.$uid,$user_permissions);
 		}
 		//FIXME:
 		//return (isset($user_permissions['ADMINISTRATOR']) && $user_permissions['ADMINISTRATOR'] ? array('ADMINISTRATOR' => 1) : array_filter($user_permissions));
