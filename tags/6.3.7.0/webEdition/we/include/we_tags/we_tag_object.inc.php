@@ -29,11 +29,6 @@ function we_parse_tag_object($attribs, $content){
 	if($name && strpos($name, ' ') !== false){
 		return parseError(sprintf(g_l('parser', '[name_with_space]'), 'object'));
 	}
-	$we_oid = weTag_getAttribute('id', $attribs, 0);
-	if(empty($we_oid) && empty($name)){
-		return attributFehltError($attribs, 'name', __FUNCTION__);
-	}
-
 	return '<?php global $lv;
 		if(' . we_tag_tagParser::printTag('object', $attribs) . '){?>' . $content . '<?php }
 		we_post_tag_listview(); ?>';
@@ -82,7 +77,7 @@ function we_tag_object($attribs){
 			$delbutton = we_button::create_button('image:btn_function_trash', "javascript:document.forms[0].elements['$idname'].value=0;document.forms[0].elements['$textname'].value='';_EditorFrame.setEditorIsHot(false);we_cmd('reload_editpage');");
 			$button = we_button::create_button('select', "javascript:we_cmd('openDocselector',document.forms[0].elements['$idname'].value,'$table','document.forms[\'we_form\'].elements[\'$idname\'].value','document.forms[\'we_form\'].elements[\'$textname\'].value','opener.we_cmd(\'reload_editpage\');opener._EditorFrame.setEditorIsHot(true);','" . session_id() . "','$rootDirID','objectFile'," . (we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")");
 			?>
-			<table border="0" cellpadding="0" cellspacing="0" background="<?php print IMAGE_DIR ?>backgrounds/aquaBackground.gif">
+			<table class="weEditTable padding0 spacing0 border0">
 				<tr>
 					<td style="padding:0 6px;"><span style="color: black; font-size: 12px; font-family: Verdana, sans-serif"><b><?php echo $_showName; ?></b></span></td>
 					<td><?php print we_html_tools::hidden($idname, $we_oid); ?></td>
@@ -95,7 +90,6 @@ function we_tag_object($attribs){
 			</table><?php
 		}
 	} else {
-
 		$we_oid = $we_oid ? $we_oid : (isset($_REQUEST['we_oid']) ? intval($_REQUEST['we_oid']) : 0);
 	}
 	$GLOBALS['lv'] = new we_objecttag($classid, $we_oid, $triggerid, (empty($searchable) ? false : $searchable), $condition, $hidedirindex, $objectseourls);

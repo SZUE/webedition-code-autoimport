@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once(WE_MESSAGING_MODULE_PATH . "messaging_std.inc.php");
+require_once(WE_MESSAGING_MODULE_PATH . 'messaging_std.inc.php');
 
 /* message object class */
 

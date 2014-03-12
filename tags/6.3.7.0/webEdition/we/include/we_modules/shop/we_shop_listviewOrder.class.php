@@ -147,6 +147,10 @@ class we_shop_listviewOrder extends listviewBase{
 				if(isset($strSerialOrder['we_shopCalcVat'])){
 					$this->DB_WE->Record['shopCalcVat'] = $strSerialOrder['we_shopCalcVat'];
 				}
+				//Fix #7993
+				if(isset($strSerialOrder['we_shopPricename'])){
+					$this->DB_WE->Record['shopPricename'] = $strSerialOrder['we_shopPricename'];
+				}
 			}
 			//$this->DB_WE->Record["CustomerID"] = $this->DB_WE->Record["IntCustomerID"];
 			$this->DB_WE->Record["we_cid"] = $this->DB_WE->Record["CustomerID"];

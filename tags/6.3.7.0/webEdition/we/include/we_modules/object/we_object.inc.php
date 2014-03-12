@@ -512,7 +512,7 @@ class we_object extends we_document{
 			case 'language':
 				return ' VARCHAR(2) NOT NULL ';
 			case 'link':
-			case 'href':
+			case we_objectFile::TYPE_HREF:
 				return ' TEXT NOT NULL ';
 			case 'text':
 				return ' LONGTEXT NOT NULL ';
@@ -864,7 +864,7 @@ class we_object extends we_document{
 			"float" => g_l('modules_object', '[float_field]'),
 			"meta" => g_l('modules_object', '[meta_field]'),
 			"link" => g_l('modules_object', '[link_field]'),
-			"href" => g_l('modules_object', '[href_field]'),
+			we_objectFile::TYPE_HREF => g_l('modules_object', '[href_field]'),
 			"binary" => g_l('modules_object', '[binary_field]'),
 			"flashmovie" => g_l('modules_object', '[flashmovie_field]'),
 			"quicktime" => g_l('modules_object', '[quicktime_field]'),
@@ -879,7 +879,7 @@ class we_object extends we_document{
 		$content .= $this->htmlSelect("we_" . $this->Name . "_input[" . $name . self::ELEMENT_TYPE . ']', $val, 1, $type, "", 'onChange="if(this.form.elements[\'' . "we_" . $this->Name . "_input[" . $name . "default]" . '\']){this.form.elements[\'' . "we_" . $this->Name . "_input[" . $name . "default]" . '\'].value=\'\' };_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_entry_at_class\',\'' . $GLOBALS['we_transaction'] . '\',\'' . $identifier . '\'); "', "value", 388) .
 			'</td></tr>';
 
-		if($type != 'shopVat' && $type != "float" && $type != "text" && $type != "country" && $type != "language" && $type != "img" && $type != "binary" && $type != "flashmovie" && $type != "quicktime" && $type != "date" && $type != "meta" && $type != "object" && $type != "link" && $type != "href" && $type != "checkbox" && $type != we_objectFile::TYPE_MULTIOBJECT){
+		if($type != 'shopVat' && $type != "float" && $type != "text" && $type != "country" && $type != "language" && $type != "img" && $type != "binary" && $type != "flashmovie" && $type != "quicktime" && $type != "date" && $type != "meta" && $type != "object" && $type != "link" && $type != we_objectFile::TYPE_HREF && $type != "checkbox" && $type != we_objectFile::TYPE_MULTIOBJECT){
 			// Length
 			$maxLengthVal = $type == 'int' ? 10 : 255;
 			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin"  valign="top">' . g_l('modules_object', '[length]') . '</td>' .
@@ -930,7 +930,7 @@ class we_object extends we_document{
 				$content .= '</tr></table></td></tr>';
 				break;
 
-			case 'href':
+			case we_objectFile::TYPE_HREF:
 				$typeVal = $this->getElement($name . 'hreftype', 'dat');
 				$typeSelect = '<select class="weSelect" id="we_' . $this->Name . '_input[' . $name . 'hreftype]" name="we_' . $this->Name . '_input[' . $name . 'hreftype]" onchange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_entry_at_class\',\'' . $GLOBALS['we_transaction'] . '\',\'' . $identifier . '\');">
 			<option' . (($typeVal == we_base_link::TYPE_ALL || $typeVal == "") ? " selected" : "") . ' value="' . we_base_link::TYPE_ALL . '">all
@@ -1134,7 +1134,7 @@ class we_object extends we_document{
 		}
 
 
-		if($type == "text" || $type == "input" || $type == "meta" || $type == "link" || $type == "href"){
+		if($type == "text" || $type == "input" || $type == "meta" || $type == "link" || $type == we_objectFile::TYPE_HREF){
 			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin"></td>' .
 				'<td width="170" class="defaultfont">' .
 				// TITEL
@@ -1212,7 +1212,7 @@ class we_object extends we_document{
 		$nint = $n . we_base_link::MAGIC_INT_LINK;
 		$nintID = $n . we_base_link::MAGIC_INT_LINK_ID;
 		$nintPath = $n . we_base_link::MAGIC_INT_LINK_PATH;
-		$nextPath = $n . "_we_jkhdsf_extPath";
+		$nextPath = $n . we_base_link::MAGIC_INT_LINK_EXTPATH;
 
 		$attr = ' size="20" ';
 
@@ -2174,42 +2174,32 @@ class we_object extends we_document{
 	}
 
 	protected function i_setElementsFromHTTP(){
-		$hrefFields = false;
-		$regs = array();
-		foreach($_REQUEST as $n => $v){
-			if(preg_match('/^we_' . preg_quote($this->Name) . '_([^\[]+)$/', $n, $regs)){
-				if($regs[1] == 'href'){
-					$hrefFields = true;
-					break;
+		parent::i_setElementsFromHTTP();
+		if(!empty($_REQUEST)){
+			$regs = array();
+			$hrefFields = false;
+
+			foreach(array_keys($_REQUEST) as $n){
+				if(preg_match('/^we_' . $this->Name . '_('.  we_objectFile::TYPE_HREF.')$/', $n, $regs)){
+					${$regs[1] . 'Fields'}|=true;
 				}
 			}
-		}
 
-		parent::i_setElementsFromHTTP();
-
-		if($hrefFields){
-			$this->resetElements();
-			$hrefs = array();
-			$matches = array();
-			while((list($k, $v) = $this->nextElement('href'))){
-				preg_match('/^(.+)_we_jkhdsf_(.+)$/', $k, $matches);
-				list(, $realName, $key) = $matches;
-				if(($pos = strpos($realName, 'default')) != false){
-					$name = substr($realName, 0, $pos);
-					//skip if new type is not href
-					if($this->getElement($name . self::ELEMENT_TYPE, 'dat') !== 'href'){
-						continue;
+			if($hrefFields){
+				$empty = array('int' => 1, 'intID' => '', 'intPath' => '', 'extPath' => '');
+				$hrefs = $match = array();
+				foreach($_REQUEST['we_' . $this->Name . '_' . we_objectFile::TYPE_HREF] as $k => $val){
+					if(preg_match('|^(.+)_' . we_objectFile::HREF_INFIX . '_(.+)$|', $k, $match)){
+						$hrefs[$match[1]][$match[2]] = $val;
 					}
 				}
-				if(!isset($hrefs[$realName])){
-					$hrefs[$realName] = array();
+				foreach($hrefs as $k => $v){
+					$href = array_merge($empty, $v);
+					$this->setElement($k, serialize($href), we_objectFile::TYPE_HREF);
 				}
-				$hrefs[$realName][$key] = $v['dat'];
-			}
-			foreach($hrefs as $k => $v){
-				$this->setElement($k, serialize($v));
 			}
 		}
+
 	}
 
 	public function we_save($resave = 0, $skipHook = 0){
@@ -2235,7 +2225,7 @@ class we_object extends we_document{
 	 * @param	$field - the name of the field
 	 */
 	function isVariantField($field){
-		$types = array('input', 'link', 'text', 'img', 'int', 'float', 'meta', 'date', 'href'); // #6924
+		$types = array('input', 'link', 'text', 'img', 'int', 'float', 'meta', 'date', we_objectFile::TYPE_HREF); // #6924
 		$type = ($this->getElement($field . self::ELEMENT_TYPE, 'dat') != '') ? $this->getElement($field . self::ELEMENT_TYPE, 'dat') : '';
 		return in_array($type, $types);
 	}
