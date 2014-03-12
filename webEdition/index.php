@@ -145,6 +145,10 @@ function showMessage(message, prio, win){
 if(is_dir(WEBEDITION_PATH . 'we/cache')){
 	we_util_File::deleteLocalFolder(WEBEDITION_PATH . 'we/cache', true);
 }
+//s1
+if(is_dir(WEBEDITION_DIR . 'OnlineInstaller')){
+	we_util_File::deleteLocalFolder(WEBEDITION_DIR . 'OnlineInstaller');
+}
 
 cleanTempFiles(true);
 cleanWEZendCache();
