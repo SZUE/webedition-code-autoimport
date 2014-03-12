@@ -22,6 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+we_html_tools::protect(null, WEBEDITION_DIR . 'index.php');//s1
 
 if(isset($_SESSION)){
 	while(list($name, $val) = each($_SESSION)) {

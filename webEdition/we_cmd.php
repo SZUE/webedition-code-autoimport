@@ -362,16 +362,18 @@ if($INCLUDE){
 	//  when the javascript command shall NOT be inserted (p.ex while saving the file.)
 	//	This is ONLY used in the edit-mode of the documents.
 	$cmds_no_js = array('siteImport', 'mod_home', 'import_images', 'getWeDocFromID', 'rebuild', 'open_url_in_editor', 'open_form_in_editor', 'unlock', 'edit_document', 'load_editor', 'load_edit_header', 'load_edit_footer', 'exchange', 'validateDocument', 'show');
+	require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+	we_html_tools::protect();//s1
 	if(substr($INCLUDE, 0, 5) == 'apps/'){
 		if(!defined('NO_SESS')){
 			define('NO_SESS', 1);
 		}
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 		include(WEBEDITION_PATH . $INCLUDE);
 	} else{
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 		include(WE_INCLUDES_PATH . $INCLUDE);
 	}
+	
+	
 	//  This statement prevents the page from being reloaded
 	if(!in_array($_REQUEST['we_cmd'][0], $cmds_no_js)){
 

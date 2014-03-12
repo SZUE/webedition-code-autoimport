@@ -24,6 +24,8 @@ require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+require_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
+we_html_tools::protect();//s1
 
 $xml = '<?xml version="1.0" encoding="utf-8"?>' . "\n";
 $xml .= "<tags>\n";

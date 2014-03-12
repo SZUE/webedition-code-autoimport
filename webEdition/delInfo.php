@@ -24,6 +24,7 @@
 
 
 require_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
+we_html_tools::protect();//s1
 
 	$parts=array();
 	$out="";
