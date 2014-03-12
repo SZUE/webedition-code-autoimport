@@ -65,7 +65,7 @@
   $link_href						bilder.php?id=$id&page=			<a href='bilder.php?id=BMW&page=2'>
  */
 
-class blaettern{
+class we_shop_pager{
 
 	// Wer hier Werte setzt, der sollte sicher sein, dass sie richtig sind, geprueft werden sie nicht!
 	// Also lieber die dafuer vorgesehenen Methoden nutzen.

@@ -31,9 +31,9 @@ class rpcGetMouseOverDivsCmd extends rpcCmd{
 		we_html_tools::protect();
 
 		$whichsearch = $_REQUEST['whichsearch'];
-		$setView = $_REQUEST['we_cmd']['setView'];
-		$anzahl = $_REQUEST['we_cmd']['anzahl'];
-		$searchstart = $_REQUEST['we_cmd']['searchstart'];
+		$setView = intval($_REQUEST['we_cmd']['setView']);
+		$anzahl = intval($_REQUEST['we_cmd']['anzahl']);
+		$searchstart = intval($_REQUEST['we_cmd']['searchstart']);
 
 		if(isset($_REQUEST["we_transaction"])){
 			$_REQUEST['we_transaction'] = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0);

@@ -81,7 +81,6 @@ foreach($customerTableFields as $tblField){
 	$selectFields[$tblField['name']] = $tblField['name'];
 }
 
-
 // default value f�r mwst
 $defaultInput = we_class::htmlSelect('defaultValue', array('true' => 'true', 'false' => 'false'), 1, $weShopVatRule->defaultValue);
 // select field containing land

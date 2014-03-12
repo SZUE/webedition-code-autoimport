@@ -316,6 +316,70 @@ function filterXss($var, $type = 'string'){
 	return $ret;
 }
 
+/** Helper for Filtering variables (callback of array_walk)
+ *
+ * @param mixed $var value
+ * @param string $key key
+ * @param array $data array pair of type & default
+ * @return type
+ */
+function _weRequest(&$var, $key, array $data){
+	list($type, $default) = $data;
+	switch($type){
+		case 'transaction':
+			$var = (preg_match('|^([a-f0-9]){32}$|i', $var) ? $var : $default);
+			return;
+		case 'intList':
+			 implode(',',array_map('intval', explode(',', $var)));
+		case 'int':
+			$var = intval($var);
+			return;
+		case 'float':
+			$var = floatval($var);
+			return;
+		case 'bool':
+			$var = (bool) $var;
+			return;
+		case 'table':
+			$var = $var && ($k = array_search($var, get_defined_constants(), true)) && (substr($k, -6) == '_TABLE') ? $var : $default;
+			return;
+		case 'email':
+			$var = filter_var($var, FILTER_SANITIZE_EMAIL);
+			return;
+		case 'url':
+			$var = filter_var($var, FILTER_SANITIZE_URL);
+			return;
+		case 'string':
+			$var = filter_var($var, FILTER_SANITIZE_STRING);
+			return;
+		case 'html':
+			$var = filter_var($var, FILTER_SANITIZE_SPECIAL_CHARS);
+			return;
+	}
+	$var = $default;
+}
+
+/**
+ * Filter an Requested variable
+ * @param string $type type to filter, see list in _weGetVar
+ * @param string $name name of variable in Request array
+ * @param mixed $default default value
+ * @param mixed $index optional index
+ * @return mixed default, if value not set, the filtered value else
+ */
+function weRequest($type, $name, $default = false, $index = ''){
+	if(!isset($_REQUEST[$name])){
+		return $default;
+	}
+	$var = $index === '' ? $_REQUEST[$name] : $_REQUEST[$name][$index];
+	if(is_array($var)){
+		array_walk($var, '_weRequest', array($type, $default));
+	} else {
+		_weRequest($var, '', array($type, $default));
+	}
+	return $var;
+}
+
 /**
  * makes sure a give array/list of values has only ints
  * @param mixed $val
@@ -493,7 +557,7 @@ function path_to_id_ct($path, $table, &$contentType){
 	return intval(isset($res['ID']) ? $res['ID'] : 0);
 }
 
-function id_to_path($IDs, $table = FILE_TABLE, we_database_base $db = null, $prePostKomma = false, $asArray = false, $endslash = false){
+function id_to_path($IDs, $table = FILE_TABLE, we_database_base $db = null, $prePostKomma = false, $asArray = false, $endslash = false, $isPublished = false){
 	if(!is_array($IDs) && !$IDs){
 		return '/';
 	}
@@ -508,7 +572,7 @@ function id_to_path($IDs, $table = FILE_TABLE, we_database_base $db = null, $pre
 		if($id == 0){
 			$foo[] = '/';
 		} else {
-			$foo2 = getHash('SELECT Path,IsFolder FROM ' . $db->escape($table) . ' WHERE ID=' . intval($id), $db);
+			$foo2 = getHash('SELECT Path,IsFolder FROM ' . $db->escape($table) . ' WHERE ID=' . intval($id) . ($isPublished ? ' AND Published>0' : ''), $db);
 			if(isset($foo2['Path'])){
 				if($endslash && $foo2['IsFolder']){
 					$foo2['Path'] .= '/';
