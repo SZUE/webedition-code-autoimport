@@ -332,7 +332,7 @@ function weGetVar($type, $name, $default = false, $index = ''){
 		case 'float':
 			return floatval($var);
 		case 'table':
-			return $var && in_array($var, get_defined_constants(), true) ? $var : $default;
+			return $var && ($key = array_search($var, get_defined_constants(), true)) && (substr($key, -6) == '_TABLE') ? $var : $default;
 		case 'email':
 			return filter_var($var, FILTER_SANITIZE_EMAIL);
 		case 'url':
