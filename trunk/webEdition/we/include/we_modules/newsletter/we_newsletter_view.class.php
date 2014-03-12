@@ -216,7 +216,7 @@ class we_newsletter_view{
 			$yuiSuggest->setMaxResults(10);
 			$yuiSuggest->setMayBeEmpty(true);
 			$yuiSuggest->setResult($IDName, $IDValue);
-			$yuiSuggest->setSelector('Docselector');
+			$yuiSuggest->setSelector(weSuggest::DocSelector);
 			$yuiSuggest->setTable($table);
 			$yuiSuggest->setWidth($width);
 			$yuiSuggest->setSelectButton($button);
@@ -245,7 +245,7 @@ class we_newsletter_view{
 			$yuiSuggest->setMaxResults(10);
 			$yuiSuggest->setMayBeEmpty(true);
 			$yuiSuggest->setResult($IDName, $IDValue);
-			$yuiSuggest->setSelector("Docselector");
+			$yuiSuggest->setSelector(weSuggest::DocSelector);
 			$yuiSuggest->setTable($table);
 			$yuiSuggest->setWidth($width);
 			$yuiSuggest->setSelectButton($button);
@@ -275,7 +275,7 @@ class we_newsletter_view{
 			$yuiSuggest->setMaxResults(10);
 			$yuiSuggest->setMayBeEmpty(true);
 			$yuiSuggest->setResult($IDName, $IDValue);
-			$yuiSuggest->setSelector('Dirselector');
+			$yuiSuggest->setSelector(weSuggest::DirSelector);
 			$yuiSuggest->setTable(NEWSLETTER_TABLE);
 			$yuiSuggest->setWidth($width);
 			$yuiSuggest->setSelectButton($button);

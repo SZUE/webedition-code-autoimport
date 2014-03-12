@@ -268,7 +268,7 @@ class we_docTypes extends we_class{
 		$yuiSuggest->setLabel(g_l('weClass', "[dir]"));
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult($idname, $this->ParentID);
-		$yuiSuggest->setSelector("Dirselector");
+		$yuiSuggest->setSelector(weSuggest::DirSelector);
 		$yuiSuggest->setWidth($width - (we_base_browserDetect::isIE() ? 0 : 10));
 		$yuiSuggest->setSelectButton($button);
 

@@ -53,7 +53,7 @@ function formBannerChooser($width = "", $table = BANNER_TABLE, $idvalue, $idname
 	$yuiSuggest->setMaxResults(10);
 	$yuiSuggest->setMayBeEmpty(false);
 	$yuiSuggest->setResult($idname, $idvalue);
-	$yuiSuggest->setSelector("Dirselector");
+	$yuiSuggest->setSelector(weSuggest::DirSelector);
 	$yuiSuggest->setTable($table);
 	$yuiSuggest->setWidth($width);
 	$yuiSuggest->setSelectButton($button);

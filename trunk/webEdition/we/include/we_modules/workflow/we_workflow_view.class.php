@@ -333,7 +333,7 @@ class we_workflow_view extends we_workflow_base{
 				$yuiSuggest->setMaxResults(10);
 				$yuiSuggest->setMayBeEmpty(false);
 				$yuiSuggest->setResult($this->uid . '_task_' . $counter . '_' . $counter1 . '_userid', $tv->userID);
-				$yuiSuggest->setSelector('Docselector');
+				$yuiSuggest->setSelector(weSuggest::DocSelector);
 				$yuiSuggest->setTable(USER_TABLE);
 				$yuiSuggest->setWidth(200);
 				$yuiSuggest->setContainerWidth(305);
