@@ -2426,7 +2426,7 @@ top.content.hloaded=1;') .
 				}
 				break;
 		}
-		return ($passwd == $password);
+		return ($passwd === $password);
 	}
 
 	static function makeSaltedPassword(&$useSalt, $username, $passwd, $strength = 15){

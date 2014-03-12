@@ -104,7 +104,7 @@ function we_tab_setState(state, init, objects) {
 	}
 }
 
-function we_tab(href, normSrc, activeSrc, disabledSrc, width, height, state, js, svg) {
+function we_tab(href, normSrc, activeSrc, disabledSrc, width, height, state, js, svg, no) {
 	this.src = "";
 	this.href = href;
 	this.normSrc = normSrc;
@@ -117,13 +117,10 @@ function we_tab(href, normSrc, activeSrc, disabledSrc, width, height, state, js,
 	this.nameActive = "tabActive_" + we_name_z;
 	this.nameDisabled = "tabDisabled_" + we_name_z;
 	this.js = js;
-	if (svg === undefined) {
-		this.svg = false;
-	} else {
-		this.svg = svg;
-	}
+	this.svg = (svg === undefined ? false : svg);
 
-	this.z = we_name_z;
+
+	this.z = (no === undefined ? we_name_z : no);
 	we_name_z++;
 	this.setState = we_tab_setState;
 	this.setState(state, true);
