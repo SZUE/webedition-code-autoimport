@@ -125,7 +125,7 @@ class doclistView{
 
       function search(newSearch) {
 
-      	if(' . we_search_search::checkRightTempTable() . ' && ' . we_search_search::checkRightDropTable() . ') {
+      	if(' . intval(!we_search_search::checkRightTempTable() && !we_search_search::checkRightDropTable()) . ') {
    			' . we_message_reporting::getShowMessageCall(g_l('searchtool', "[noTempTableRightsDoclist]"), we_message_reporting::WE_MESSAGE_NOTICE) . '
       	}
       	else {
@@ -829,7 +829,7 @@ class doclistView{
 			$searchInput = we_html_tools::htmlTextInput("search[" . $i . "]", 30, (isset($GLOBALS ['we_doc']->searchclassFolder->search) && is_array($GLOBALS ['we_doc']->searchclassFolder->search) && isset($GLOBALS ['we_doc']->searchclassFolder->search [$i]) ? $GLOBALS ['we_doc']->searchclassFolder->search [$i] : ''), "", " class=\"wetextinput\"  id=\"search['.$i.']\" ", "text", 190);
 
 			$locationDisabled = (isset($GLOBALS ['we_doc']->searchclassFolder->searchFields [$i]) && ($GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] == "Content" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] == "Status" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] == "Speicherart" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] == "temp_template_id" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] == "temp_doc_type" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] == "temp_category") ?
-					'disabled' : '');
+							'disabled' : '');
 
 			if(isset($GLOBALS ['we_doc']->searchclassFolder->searchFields [$i])){
 				if($GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] == "Status"){
@@ -896,7 +896,7 @@ class doclistView{
         </tr>
 
         </table>' .
-			we_html_element::jsElement('calendarSetup(' . $GLOBALS ['we_doc']->searchclassFolder->height . ');');
+				we_html_element::jsElement('calendarSetup(' . $GLOBALS ['we_doc']->searchclassFolder->height . ');');
 
 		return $out;
 	}
@@ -942,32 +942,32 @@ class doclistView{
 		$_table = FILE_TABLE;
 
 		$searchFields = (isset($_REQUEST['we_cmd'] ['searchFields']) ?
-				$_REQUEST['we_cmd'] ['searchFields'] :
-				$obj->searchclassFolder->searchFields);
+						$_REQUEST['we_cmd'] ['searchFields'] :
+						$obj->searchclassFolder->searchFields);
 
 		$searchText = (isset($_REQUEST['we_cmd'] ['search']) ?
-				$_REQUEST['we_cmd'] ['search'] :
-				$obj->searchclassFolder->search);
+						$_REQUEST['we_cmd'] ['search'] :
+						$obj->searchclassFolder->search);
 
 		$location = (isset($_REQUEST['we_cmd'] ['location']) ?
-				$_REQUEST['we_cmd'] ['location'] :
-				$obj->searchclassFolder->location);
+						$_REQUEST['we_cmd'] ['location'] :
+						$obj->searchclassFolder->location);
 
 		$_order = (isset($_REQUEST['we_cmd'] ['order']) ?
-				$_REQUEST['we_cmd'] ['order'] :
-				$obj->searchclassFolder->order);
+						$_REQUEST['we_cmd'] ['order'] :
+						$obj->searchclassFolder->order);
 
 		$_view = (isset($_REQUEST['we_cmd'] ['setView']) ?
-				$_REQUEST['we_cmd'] ['setView'] :
-				$obj->searchclassFolder->setView);
+						$_REQUEST['we_cmd'] ['setView'] :
+						$obj->searchclassFolder->setView);
 
 		$_searchstart = (isset($_REQUEST['we_cmd'] ['searchstart']) ?
-				$_REQUEST['we_cmd'] ['searchstart'] :
-				$obj->searchclassFolder->searchstart);
+						$_REQUEST['we_cmd'] ['searchstart'] :
+						$obj->searchclassFolder->searchstart);
 
 		$_anzahl = (isset($_REQUEST['we_cmd'] ['anzahl']) ?
-				$_REQUEST['we_cmd'] ['anzahl'] :
-				$obj->searchclassFolder->anzahl);
+						$_REQUEST['we_cmd'] ['anzahl'] :
+						$obj->searchclassFolder->anzahl);
 
 		for($i = 0; $i < count($searchText); $i++){
 			if(isset($searchText [$i])){
@@ -980,100 +980,102 @@ class doclistView{
 		$obj->searchclassFolder->settable($_table);
 
 
-		if(we_search_search::checkRightTempTable() == "1" && we_search_search::checkRightDropTable() == "1"){
-			print we_html_element::jsElement(
-					we_message_reporting::getShowMessageCall(g_l('searchtool', "[noTempTableRightsDoclist]"), we_message_reporting::WE_MESSAGE_NOTICE)
-			);
-		} else {
-			if($obj->ID != 0){
-				$obj->searchclassFolder->createTempTable();
+		if(!we_search_search::checkRightTempTable() && !we_search_search::checkRightDropTable()){
+			echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('searchtool', "[noTempTableRightsDoclist]"), we_message_reporting::WE_MESSAGE_NOTICE));
+			return '';
+		}
+		if($obj->ID != 0){
+			$obj->searchclassFolder->createTempTable();
 
-				for($i = 0; $i < count($searchFields); $i++){
+			for($i = 0; $i < count($searchFields); $i++){
 
-					$w = "";
-					if(isset($searchText [0])){
-						$searchString = (isset($searchText [$i]) ? $searchText [$i] : $searchText [0]);
-					}
-					if(isset($searchString) && $searchString != ""){
+				$w = "";
+				if(isset($searchText [0])){
+					$searchString = (isset($searchText [$i]) ? $searchText [$i] : $searchText [0]);
+				}
+				if(isset($searchString) && $searchString != ""){
 
-
-						if(($searchFields [$i] == "Text" || ($searchFields [$i] != "Content" && $searchFields [$i] != "Status" && $searchFields [$i] != "Speicherart" && $searchFields [$i] != "CreatorName" && $searchFields [$i] != "WebUserName" && $searchFields [$i] != "temp_category"))){
+					switch($searchFields [$i]){
+						default:
+						case "Text":
 							if(isset($searchFields [$i]) && isset($location [$i])){
 								$where .= $obj->searchclassFolder->searchfor($searchString, $searchFields [$i], $location [$i], $_table);
 							}
-						}
+						case "Content":
+						case "Status":
+						case "Speicherart":
+						case "CreatorName":
+						case "WebUserName":
+						case "temp_category":
+							break;
+					}
 
-						if($searchFields [$i] == "Content"){
-							$w = $obj->searchclassFolder->searchContent($searchString, $_table);
-							if($where == "" && $w == ""){
-								$where .= " AND 0";
-							} elseif($where == "" && $w != ""){
-								$where .= " AND " . $w;
-							} elseif($w != ""){
-								$where .= $op . " " . $w;
-							}
+					if($searchFields [$i] == "Content"){
+						$w = $obj->searchclassFolder->searchContent($searchString, $_table);
+						if($where == ""){
+							$where .= " AND " . ($w ? $w : '0');
+						} elseif($w != ""){
+							$where .= $op . " " . $w;
 						}
+					}
 
-						if($searchFields [$i] == "Title"){
-							$w = $obj->searchclassFolder->searchInTitle($searchString, $_table);
-							if($where == "" && $w == ""){
-								$where .= " AND 0";
-							} elseif($where == "" && $w != ""){
-								$where .= " AND " . $w;
-							} elseif($w != ""){
-								$where .= $op . " " . $w;
-							}
+					if($searchFields [$i] == 'Title'){
+						$w = $obj->searchclassFolder->searchInTitle($searchString, $_table);
+						if($where == ""){
+							$where .= " AND " . ($w ? $w : '0');
+						} elseif($w != ""){
+							$where .= $op . " " . $w;
 						}
+					}
 
-						if($searchString != "" && ($searchFields [$i] == "Status" || $searchFields [$i] == "Speicherart")){
-							if($_table == FILE_TABLE){
-								$w = $obj->searchclassFolder->getStatusFiles($searchString, $_table);
-								$where .= $w;
-							}
-						}
-
-						if($searchString != "" && ($searchFields [$i] == "CreatorName" || $searchFields [$i] == "WebUserName")){
-							$w = $obj->searchclassFolder->searchSpecial($searchString, $_table, $searchFields [$i], $location [$i]);
+					if($searchString != "" && ($searchFields [$i] == "Status" || $searchFields [$i] == "Speicherart")){
+						if($_table == FILE_TABLE){
+							$w = $obj->searchclassFolder->getStatusFiles($searchString, $_table);
 							$where .= $w;
 						}
+					}
 
-						if($searchFields [$i] == "temp_category"){
-							$w = $obj->searchclassFolder->searchCategory($searchString, $_table, $searchFields [$i]);
-							$where .= $w;
-						}
+					if($searchString != "" && ($searchFields [$i] == "CreatorName" || $searchFields [$i] == "WebUserName")){
+						$w = $obj->searchclassFolder->searchSpecial($searchString, $_table, $searchFields [$i], $location [$i]);
+						$where .= $w;
+					}
+
+					if($searchFields [$i] == "temp_category"){
+						$w = $obj->searchclassFolder->searchCategory($searchString, $_table, $searchFields [$i]);
+						$where .= $w;
 					}
 				}
+			}
 
-				$where .= $obj->searchclassFolder->ofFolderOnly($obj->ID);
+			$where .= $obj->searchclassFolder->ofFolderOnly($obj->ID);
 
-				if($where != ""){
-					$whereQuery = "1 " . $where;
-					switch($_table){
-						case FILE_TABLE:
-							$whereQuery .= " AND ((RestrictOwners='0' OR RestrictOwners= '" . intval($_SESSION["user"]["ID"]) . "') OR (Owners LIKE '%," . intval($_SESSION["user"]["ID"]) . ",%'))";
-							break;
-						case (defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-							$whereQuery .= " AND ((RestrictOwners='0' OR RestrictOwners= '" . intval($_SESSION["user"]["ID"]) . "') OR (Owners LIKE '%," . intval($_SESSION["user"]["ID"]) . ",%'))";
-							break;
-						case (defined("OBJECT_TABLE") ? OBJECT_TABLE : OBJECT_TABLE):
-							$whereQuery .= "AND ((RestrictUsers='0' OR RestrictUsers= '" . intval($_SESSION["user"]["ID"]) . "') OR (Users LIKE '%," . intval($_SESSION["user"]["ID"]) . ",%')) ";
-							break;
-					}
+			if($where != ""){
+				$whereQuery = "1 " . $where;
+				switch($_table){
+					case FILE_TABLE:
+						$whereQuery .= " AND ((RestrictOwners='0' OR RestrictOwners= '" . intval($_SESSION["user"]["ID"]) . "') OR (Owners LIKE '%," . intval($_SESSION["user"]["ID"]) . ",%'))";
+						break;
+					case (defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
+						$whereQuery .= " AND ((RestrictOwners='0' OR RestrictOwners= '" . intval($_SESSION["user"]["ID"]) . "') OR (Owners LIKE '%," . intval($_SESSION["user"]["ID"]) . ",%'))";
+						break;
+					case (defined("OBJECT_TABLE") ? OBJECT_TABLE : OBJECT_TABLE):
+						$whereQuery .= "AND ((RestrictUsers='0' OR RestrictUsers= '" . intval($_SESSION["user"]["ID"]) . "') OR (Users LIKE '%," . intval($_SESSION["user"]["ID"]) . ",%')) ";
+						break;
+				}
 
-					$obj->searchclassFolder->setwhere($whereQuery);
-					$obj->searchclassFolder->insertInTempTable($whereQuery, $_table, $obj->Path . '/');
+				$obj->searchclassFolder->setwhere($whereQuery);
+				$obj->searchclassFolder->insertInTempTable($whereQuery, $_table, $obj->Path . '/');
 
-					$foundItems = $obj->searchclassFolder->countitems($whereQuery, $_table);
+				$foundItems = $obj->searchclassFolder->countitems($whereQuery, $_table);
 
-					$_SESSION['weS']['weSearch'] ['foundItems'] = $foundItems;
+				$_SESSION['weS']['weSearch'] ['foundItems'] = $foundItems;
 
-					$obj->searchclassFolder->selectFromTempTable($_searchstart, $_anzahl, $_order);
+				$obj->searchclassFolder->selectFromTempTable($_searchstart, $_anzahl, $_order);
 
-					while($obj->searchclassFolder->next_record()){
-						if(!isset($saveArrayIds [$obj->searchclassFolder->Record ['ContentType']] [$obj->searchclassFolder->Record ['ID']])){
-							$saveArrayIds [$obj->searchclassFolder->Record ['ContentType']] [$obj->searchclassFolder->Record ['ID']] = $obj->searchclassFolder->Record ['ID'];
-							$_result [] = array_merge(array('Table' => $_table), $obj->searchclassFolder->Record);
-						}
+				while($obj->searchclassFolder->next_record()){
+					if(!isset($saveArrayIds [$obj->searchclassFolder->Record ['ContentType']] [$obj->searchclassFolder->Record ['ID']])){
+						$saveArrayIds [$obj->searchclassFolder->Record ['ContentType']] [$obj->searchclassFolder->Record ['ID']] = $obj->searchclassFolder->Record ['ID'];
+						$_result [] = array_merge(array('Table' => $_table), $obj->searchclassFolder->Record);
 					}
 				}
 			}
@@ -1204,8 +1206,8 @@ class doclistView{
 
 				if($_result [$f] ["ContentType"] == we_base_ContentTypes::WEDOCUMENT){
 					$templateID = ($_result [$f] ["Published"] >= $_result [$f] ["ModDate"] && $_result [$f] ["Published"] != 0 ?
-							$_result [$f] ["TemplateID"] :
-							$_result [$f] ["temp_template_id"]);
+									$_result [$f] ["TemplateID"] :
+									$_result [$f] ["temp_template_id"]);
 
 					$templateText = g_l('searchtool', "[no_template]");
 					if($templateID){
@@ -1274,16 +1276,16 @@ class doclistView{
 		$_anzahl = (isset($_REQUEST['we_cmd'] ['anzahl']) ? $_REQUEST['we_cmd'] ['anzahl'] : $GLOBALS ['we_doc']->searchclassFolder->anzahl);
 		$id = (isset($_REQUEST['id']) ? $_REQUEST['id'] : $GLOBALS ['we_doc']->ID);
 		$we_transaction = (isset($_REQUEST['we_cmd'] ['we_transaction']) ?
-				(preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_cmd'] ['we_transaction']) ? $_REQUEST['we_cmd'] ['we_transaction'] : 0) :
-				$GLOBALS ['we_transaction']);
+						(preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_cmd'] ['we_transaction']) ? $_REQUEST['we_cmd'] ['we_transaction'] : 0) :
+						$GLOBALS ['we_transaction']);
 
 		return
-			we_html_tools::hidden("we_transaction", $we_transaction) .
-			we_html_tools::hidden("order", $order) .
-			we_html_tools::hidden("todo", "") .
-			we_html_tools::hidden("mode", $mode) .
-			we_html_tools::hidden("setView", $setView) .
-			'<table border="0" cellpadding="0" cellspacing="0">
+				we_html_tools::hidden("we_transaction", $we_transaction) .
+				we_html_tools::hidden("order", $order) .
+				we_html_tools::hidden("todo", "") .
+				we_html_tools::hidden("mode", $mode) .
+				we_html_tools::hidden("setView", $setView) .
+				'<table border="0" cellpadding="0" cellspacing="0">
          <tr>
           <td>' . we_html_tools::getPixel(19, 12) . '</td>
           <td style="font-size:12px;width:125px;">' . g_l('searchtool', "[eintraege_pro_seite]") . ':</td>
@@ -1319,7 +1321,7 @@ class doclistView{
 		}
 
 		return
-			'<table border="0" cellpadding="0" cellspacing="0" style="margin-top:20px;">
+				'<table border="0" cellpadding="0" cellspacing="0" style="margin-top:20px;">
          <tr>
           <td>' . $publishButtonCheckboxAll . '</td>
           <td style="font-size:12px;width:125px;">' . $publishButton . '</td>
@@ -1346,19 +1348,19 @@ class doclistView{
 		}
 
 		$out = '<table cellpadding="0" cellspacing="0" border="0"><tr><td>' .
-			($searchstart ?
-				we_html_button::create_button("back", "javascript:back(" . $anzahl . ");") :
-				we_html_button::create_button("back", "", true, 100, 22, "", "", true)
-			) .
-			'</td><td>' . we_html_tools::getPixel(10, 2) . '</td>
+				($searchstart ?
+						we_html_button::create_button("back", "javascript:back(" . $anzahl . ");") :
+						we_html_button::create_button("back", "", true, 100, 22, "", "", true)
+				) .
+				'</td><td>' . we_html_tools::getPixel(10, 2) . '</td>
         <td class="defaultfont"><b>' . (($we_search_anzahl) ? $searchstart + 1 : 0) . '-' .
-			(($we_search_anzahl - $searchstart) < $anzahl ? $we_search_anzahl : $searchstart + $anzahl) .
-			' ' . g_l('global', "[from]") . ' ' . $we_search_anzahl . '</b></td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>' .
-			(($searchstart + $anzahl) < $we_search_anzahl ?
-				we_html_button::create_button("next", "javascript:next(" . $anzahl . ");") :
-				we_html_button::create_button("next", "", true, 100, 22, "", "", true)
-			) .
-			'</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>';
+				(($we_search_anzahl - $searchstart) < $anzahl ? $we_search_anzahl : $searchstart + $anzahl) .
+				' ' . g_l('global', "[from]") . ' ' . $we_search_anzahl . '</b></td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>' .
+				(($searchstart + $anzahl) < $we_search_anzahl ?
+						we_html_button::create_button("next", "javascript:next(" . $anzahl . ");") :
+						we_html_button::create_button("next", "", true, 100, 22, "", "", true)
+				) .
+				'</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>';
 
 		$pages = array();
 		for($i = 0; $i < ceil($we_search_anzahl / $anzahl); $i++){
@@ -1377,7 +1379,7 @@ class doclistView{
 		}
 
 		$out .= $select .
-			'</td></tr></table>';
+				'</td></tr></table>';
 
 		return $out;
 	}
@@ -1413,7 +1415,7 @@ class doclistView{
 			}
 
 			$out .= $rightContent .
-				'</div>' . ((we_base_browserDetect::isIE()) ? we_html_element::htmlBr() : '');
+					'</div>' . ((we_base_browserDetect::isIE()) ? we_html_element::htmlBr() : '');
 
 			if($i < (count($content) - 1) && (!isset($c ["noline"]))){
 				$out .= '<div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;"></div>';
