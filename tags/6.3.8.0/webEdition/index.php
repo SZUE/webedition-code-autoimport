@@ -160,6 +160,10 @@ function showMessage(message, prio, win){
 if(is_dir(WEBEDITION_PATH . 'we/cache')){
 	we_util_File::deleteLocalFolder(WEBEDITION_PATH . 'we/cache', true);
 }
+//s1
+if(is_dir(WEBEDITION_DIR . 'OnlineInstaller')){
+	we_util_File::deleteLocalFolder(WEBEDITION_DIR . 'OnlineInstaller');
+}
 
 cleanTempFiles(true);
 cleanWEZendCache();
@@ -217,15 +221,25 @@ function getError($reason, $cookie = false){
 	$tmp = ini_get('session.save_path');
 
 	if(!(is_dir($tmp) || (is_link($tmp) && is_dir(readlink($tmp))))){
-		$_error .= $_error_count++ . ' - ' . sprintf(g_l('start', '[tmp_path]'), ini_get('session.save_path')) . we_html_element::htmlBr();
+		$_error .= ++$_error_count . ' - ' . sprintf(g_l('start', '[tmp_path]'), ini_get('session.save_path')) . we_html_element::htmlBr();
+	}
+
+	if(isset($GLOBALS['FOUND_SESSION_PROBLEM'])){
+		$_error .= ++$_error_count . ' - ' .
+			'PHP is not allowed to write / cleanup session data correctly. Please contact your Admin. Additional Information for your Admin:' . we_html_element::htmlBr() .
+			'session.gc_probability: ' . $GLOBALS['FOUND_SESSION_PROBLEM'] . we_html_element::htmlBr() . '
+ Session Path: ' . session_save_path() . we_html_element::htmlBr() . '
+ Opendir: failed' . we_html_element::htmlBr() .
+			'Problem is temporary fixed by webEdition' . we_html_element::htmlBr() .
+			'<a href="' . WEBEDITION_DIR . 'index.php?skipSess=1">Click here, to start anyway</a>' . we_html_element::htmlBr();
 	}
 
 	if(!ini_get('session.use_cookies')){
-		$_error .= $_error_count++ . ' - ' . g_l('start', '[use_cookies]') . we_html_element::htmlBr();
+		$_error .= ++$_error_count . ' - ' . g_l('start', '[use_cookies]') . we_html_element::htmlBr();
 	}
 
 	if(ini_get('session.cookie_path') != '/'){
-		$_error .= $_error_count++ . ' - ' . sprintf(g_l('start', '[cookie_path]'), ini_get('session.cookie_path')) . we_html_element::htmlBr();
+		$_error .= ++$_error_count . ' - ' . sprintf(g_l('start', '[cookie_path]'), ini_get('session.cookie_path')) . we_html_element::htmlBr();
 	}
 
 	if($cookie && $_error_count == 0){
@@ -253,17 +267,23 @@ if(isset($_POST['checkLogin']) && empty($_COOKIE)){
 
 	printHeader($login, 503);
 	print we_html_element::htmlBody(array('style' => 'background-color:#FFFFFF;'), $_layout->getHtml()) . '</html>';
-} else if(isset($_POST['checkLogin']) && $_POST['checkLogin'] != session_id()){
-	$_layout = getError(sprintf(g_l('start', '[phpini_problems]'), (ini_get('cfg_file_path') ? ' (' . ini_get('cfg_file_path') . ')' : '')) . we_html_element::htmlBr() . we_html_element::htmlBr() .
-		'Debug-Info:' . we_html_element::htmlBr() .
-		'submitted session id: ' . filterXss($_POST['checkLogin']) . we_html_element::htmlBr() .
-		'current session id:   ' . session_id() . we_html_element::htmlBr() .
-		'login-page date:      ' . filterXss($_POST['indexDate']) .
-		we_html_element::htmlBr() . we_html_element::htmlBr()
-	);
-	printHeader($login, 408);
+} else if(!isset($_REQUEST['skipSess']) && isset($GLOBALS['FOUND_SESSION_PROBLEM'])){
+	$_layout = getError(/* g_l('start', '[cookies_disabled]') */'Session-Problem');
+
+	printHeader($login);
 	print we_html_element::htmlBody(array('style' => 'background-color:#FFFFFF;'), $_layout->getHtml()) . '</html>';
-} else if(!$ignore_browser && !we_base_browserDetect::isSupported()){
+} else 
+/* if(isset($_POST['checkLogin']) && $_POST['checkLogin'] != session_id()){
+  $_layout = getError(sprintf(g_l('start', '[phpini_problems]'), (ini_get('cfg_file_path') ? ' (' . ini_get('cfg_file_path') . ')' : '')) . we_html_element::htmlBr() . we_html_element::htmlBr() .
+  'Debug-Info:' . we_html_element::htmlBr() .
+  'submitted session id: ' . filterXss($_POST['checkLogin']) . we_html_element::htmlBr() .
+  'current session id:   ' . session_id() . we_html_element::htmlBr() .
+  'login-page date:      ' . filterXss($_POST['indexDate']) .
+  we_html_element::htmlBr() . we_html_element::htmlBr()
+  );
+  printHeader($login, 408);
+  print we_html_element::htmlBody(array('style' => 'background-color:#FFFFFF;'), $_layout->getHtml()) . '</html>';
+  } else */ if(!$ignore_browser && !we_base_browserDetect::isSupported()){
 
 	/*	 * *******************************************************************
 	 * CHECK BROWSER
@@ -338,9 +358,9 @@ if(isset($_POST['checkLogin']) && empty($_COOKIE)){
 	if($ignore_browser){
 		$_hidden_values .= we_html_element::htmlHidden(array('name' => 'ignore_browser', 'value' => 'true'));
 	}
-
-
-
+	if(isset($_REQUEST['skipSess'])){
+		$_hidden_values .= we_html_element::htmlHidden(array('name' => 'skipSess', 'value' => 'true'));
+	}
 
 	/*	 * ***********************************************************************
 	 * BUILD DIALOG
