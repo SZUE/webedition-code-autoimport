@@ -41,100 +41,83 @@ $_backup_filename = $_SERVER['DOCUMENT_ROOT'] . '/weBackup_daily.xml';
 /**
  * export webEdition Core Data (Documents, Templates and Navigation)
  */
-$_REQUEST['handle_core'] = true;
-
-/**
- * export binary data
- */
-$_REQUEST['handle_binary'] = true;
-
-/**
- * export version data
- */
-$_REQUEST['handle_versions'] = true;
-
-/**
- * export version binary files
- */
-$_REQUEST['handle_versions_binarys'] = true;
-
-/**
- * export user data
- */
-$_REQUEST['handle_user'] = true;
-
-/**
- * export customer data
- */
-$_REQUEST['handle_customer'] = true;
-
-/**
- * export shop data
- */
-$_REQUEST['handle_shop'] = true;
-
-/**
- * export workflow data
- */
-$_REQUEST['handle_workflow'] = true;
-
-/**
- * export user data
- */
-$_REQUEST['handle_todo'] = true;
-
-/**
- * export newsletter data
- */
-$_REQUEST['handle_newsletter'] = true;
-
-/**
- * export temporary data
- */
-$_REQUEST['handle_temporary'] = true;
-
-/**
- * export banner data
- */
-$_REQUEST['handle_banner'] = true;
-
-/**
- * export objects and classes
- */
-$_REQUEST['handle_object'] = true;
-
-/**
- * export scheduler data
- */
-$_REQUEST['handle_schedule'] = true;
-
-/**
- * export settings and preferences
- */
-$_REQUEST['handle_settings'] = true;
-
-/**
- * export configuration data
- */
-$_REQUEST['handle_configuration'] = true;
-
-/**
- * export webEdition export data
- */
-$_REQUEST['handle_export'] = true;
-
-/**
- * export voting data
- */
-$_REQUEST['handle_voting'] = true;
-
-/**
- * export extern fi�es
- */
-$_REQUEST['handle_extern'] = false;
-
+$_REQUEST = array(
+	'handle_core' => true,
+	/**
+	 * export binary data
+	 */
+	'handle_binary' => true,
+	/**
+	 * export version data
+	 */
+	'handle_versions' => true,
+	/**
+	 * export version binary files
+	 */
+	'handle_versions_binarys' => true,
+	/**
+	 * export user data
+	 */
+	'handle_user' => true,
+	/**
+	 * export customer data
+	 */
+	'handle_customer' => true,
+	/**
+	 * export shop data
+	 */
+	'handle_shop' => true,
+	/**
+	 * export workflow data
+	 */
+	'handle_workflow' => true,
+	/**
+	 * export user data
+	 */
+	'handle_todo' => true,
+	/**
+	 * export newsletter data
+	 */
+	'handle_newsletter' => true,
+	/**
+	 * export temporary data
+	 */
+	'handle_temporary' => true,
+	/**
+	 * export banner data
+	 */
+	'handle_banner' => true,
+	/**
+	 * export objects and classes
+	 */
+	'handle_object' => true,
+	/**
+	 * export scheduler data
+	 */
+	'handle_schedule' => true,
+	/**
+	 * export settings and preferences
+	 */
+	'handle_settings' => true,
+	/**
+	 * export configuration data
+	 */
+	'handle_configuration' => true,
+	/**
+	 * export webEdition export data
+	 */
+	'handle_export' => true,
+	/**
+	 * export voting data
+	 */
+	'handle_voting' => true,
+	/**
+	 * export extern fi�es
+	 */
+	'handle_extern' => false,
 // be user friendly :-)
-$_REQUEST['verbose'] = true;
+	'verbose' => true,
+);
 
 // CONFIGURATION ENDS ---------------------------------------------------------
 // we want to see errors
@@ -320,7 +303,7 @@ if(we_backup_preparer::prepareImport() === true){
 		if($_REQUEST['verbose']){
 			print '-';
 		}
-		if(!we_backup_import::import($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['offset'], $_SESSION['weS']['weBackupVars']['backup_steps'], $_SESSION['weS']['weBackupVars']['options']['compress']!=we_backup_base::NO_COMPRESSION, $_SESSION['weS']['weBackupVars']['encoding'])){
+		if(!we_backup_import::import($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['offset'], $_SESSION['weS']['weBackupVars']['backup_steps'], $_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_base::NO_COMPRESSION, $_SESSION['weS']['weBackupVars']['encoding'])){
 			break;
 		}
 	}
