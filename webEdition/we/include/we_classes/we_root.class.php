@@ -274,7 +274,7 @@ abstract class we_root extends we_class{
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(0);
 		$yuiSuggest->setResult($idname, $myid);
-		$yuiSuggest->setSelector('Dirselector');
+		$yuiSuggest->setSelector(weSuggest::DirSelector);
 		$yuiSuggest->setTable($table);
 		$yuiSuggest->setWidth($width);
 		$yuiSuggest->setSelectButton($button);
@@ -524,7 +524,7 @@ abstract class we_root extends we_class{
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(1);
 		$yuiSuggest->setResult($idname, $myid);
-		$yuiSuggest->setSelector('Docselector');
+		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setTable($table);
 		$yuiSuggest->setWidth(388);
 		$yuiSuggest->setSelectButton(we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','text/webedition',1)"));
@@ -577,7 +577,7 @@ abstract class we_root extends we_class{
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(1);
 		$yuiSuggest->setResult($idname, $myid);
-		$yuiSuggest->setSelector('Docselector');
+		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setTable($table);
 		$yuiSuggest->setWidth(388);
 		$yuiSuggest->setSelectButton($button);

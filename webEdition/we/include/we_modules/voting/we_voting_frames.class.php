@@ -813,7 +813,7 @@ class we_voting_frames extends weModuleFrames{
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult('ParentID', ($this->View->voting->ParentID ? $this->View->voting->ParentID : 0));
-		$yuiSuggest->setSelector("Dirselector");
+		$yuiSuggest->setSelector(weSuggest::DirSelector);
 		$yuiSuggest->setTable(VOTING_TABLE);
 		$yuiSuggest->setWidth($width);
 		$yuiSuggest->setSelectButton($button);

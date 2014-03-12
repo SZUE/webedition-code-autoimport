@@ -1594,7 +1594,7 @@ function setState(a) {
 		$yuiSuggest->setMaxResults(20);
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult($IDName, $IDValue);
-		$yuiSuggest->setSelector("Dirselector");
+		$yuiSuggest->setSelector(weSuggest::DirSelector);
 		$yuiSuggest->setWidth($width);
 		$yuiSuggest->setSelectButton($button, 10);
 

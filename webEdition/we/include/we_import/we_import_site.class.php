@@ -626,7 +626,7 @@ class we_import_site{
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(0);
 		$yuiSuggest->setResult("to", $this->to);
-		$yuiSuggest->setSelector("Dirselector");
+		$yuiSuggest->setSelector(weSuggest::DirSelector);
 		$yuiSuggest->setWidth(300);
 		$yuiSuggest->setSelectButton($_to_button, 10);
 
@@ -1075,7 +1075,7 @@ class we_import_site{
 		$yuiSuggest->setMayBeEmpty(1);
 		$yuiSuggest->setWidth(320);
 		$yuiSuggest->setTable($table);
-		$yuiSuggest->setSelector("Dirselector");
+		$yuiSuggest->setSelector(weSuggest::DirSelector);
 		$yuiSuggest->setSelectButton($button);
 		$dirChooser = weSuggest::getYuiFiles() . $yuiSuggest->getHTML() . $yuiSuggest->getYuiCode();
 

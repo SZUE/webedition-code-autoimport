@@ -429,16 +429,16 @@ class we_ui_controls_ACFileSelector extends we_ui_abstract_AbstractFormElement{
 		$contentTypesArray = explode(",", $contentTypesString);
 		$countCTs = count($contentTypesArray);
 		if($countCTs === 1 && $contentTypesArray[0] === 'folder'){
-			$this->setSelector('dirSelector');
+			$this->setSelector(weSuggest::DirSelector);
 			$selector = '"openDirselector"';
 		} else {
-			$this->setSelector('docSelector');
+			$this->setSelector(weSuggest::DocSelector);
 			$selector = '"openDocselector"';
 		}
 
 		if($this->getAppName() !== ''){
 			$appname = $this->getAppName();
-			$this->setSelector('Dirselector');
+			$this->setSelector(weSuggest::DirSelector);
 			$selector = '"open' . $appname . 'Dirselector"';
 			return 'we_ui_controls_ACFileSelector.openToolSelector(' . $selector . ',' . $idFieldNameInteger . ',' . $idFieldNameString . ',' . $pathFieldName . ', ' . $onChange . ', "' . $appname . '")';
 		}

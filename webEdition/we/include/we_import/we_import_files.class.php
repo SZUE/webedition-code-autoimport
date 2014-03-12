@@ -240,7 +240,7 @@ function uploadFinished() {
 		$yuiSuggest->setMaxResults(20);
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult('importToID', $store_id);
-		$yuiSuggest->setSelector('Dirselector');
+		$yuiSuggest->setSelector(weSuggest::DirSelector);
 		$yuiSuggest->setWidth(260);
 		$yuiSuggest->setSelectButton($button);
 

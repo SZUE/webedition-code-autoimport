@@ -894,7 +894,7 @@ function build_dialog($selected_setting = 'ui'){
 					$yuiSuggest->setMaxResults(20);
 					$yuiSuggest->setMayBeEmpty(false);
 					$yuiSuggest->setResult('seem_start_document', $_document_id);
-					$yuiSuggest->setSelector('Docselector');
+					$yuiSuggest->setSelector(weSuggest::DocSelector);
 					$yuiSuggest->setWidth(150);
 					$yuiSuggest->setSelectButton(we_html_button::create_button('select', 'javascript:select_seem_start()', true, 100, 22, '', '', false, false), 10);
 					$yuiSuggest->setContainerWidth(259);
@@ -914,7 +914,7 @@ function build_dialog($selected_setting = 'ui'){
 					$yuiSuggest->setMaxResults(20);
 					$yuiSuggest->setMayBeEmpty(false);
 					$yuiSuggest->setResult('seem_start_object', $_object_id);
-					$yuiSuggest->setSelector('Docselector');
+					$yuiSuggest->setSelector(weSuggest::DocSelector);
 					$yuiSuggest->setTable(OBJECT_FILES_TABLE);
 					$yuiSuggest->setWidth(150);
 					$yuiSuggest->setSelectButton(we_html_button::create_button('select', 'javascript:select_seem_start()', true, 100, 22, '', '', false, false), 10);
@@ -991,7 +991,7 @@ function build_dialog($selected_setting = 'ui'){
 				$yuiSuggest->setMaxResults(20);
 				$yuiSuggest->setMayBeEmpty(true);
 				$yuiSuggest->setResult('newconf[SIDEBAR_DEFAULT_DOCUMENT]', $_sidebar_id);
-				$yuiSuggest->setSelector('Docselector');
+				$yuiSuggest->setSelector(weSuggest::DocSelector);
 				$yuiSuggest->setWidth(150);
 				$yuiSuggest->setSelectButton($_sidebar_document_button, 10);
 				$yuiSuggest->setContainerWidth(259);
@@ -2491,7 +2491,7 @@ function formmailBlockOnOff() {
 			$yuiSuggest->setMaxResults(20);
 			$yuiSuggest->setMayBeEmpty(true);
 			$yuiSuggest->setResult('newconf[ERROR_DOCUMENT_NO_OBJECTFILE]', ( ERROR_DOCUMENT_NO_OBJECTFILE ? ERROR_DOCUMENT_NO_OBJECTFILE : 0));
-			$yuiSuggest->setSelector("Docselector");
+			$yuiSuggest->setSelector(weSuggest::DocSelector);
 			$yuiSuggest->setWidth(300);
 			$yuiSuggest->setSelectButton($_acButton1, 10);
 			$yuiSuggest->setTrashButton($_acButton2, 4);
@@ -2750,7 +2750,7 @@ function formmailBlockOnOff() {
 			$yuiSuggest->setMaxResults(20);
 			$yuiSuggest->setMayBeEmpty(true);
 			$yuiSuggest->setResult('newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]', ( SECURITY_LIMIT_CUSTOMER_REDIRECT ? SECURITY_LIMIT_CUSTOMER_REDIRECT : 0));
-			$yuiSuggest->setSelector('Docselector');
+			$yuiSuggest->setSelector(weSuggest::DocSelector);
 			$yuiSuggest->setWidth(250);
 			$yuiSuggest->setSelectButton(we_html_button::create_button('select', "javascript:we_cmd('openDocselector', document.forms[0].elements['newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]'].value, '" . FILE_TABLE . "', '" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "','', '" . we_base_ContentTypes::WEDOCUMENT . "," . we_base_ContentTypes::HTML . "', 1)"), 10);
 			$yuiSuggest->setTrashButton(we_html_button::create_button('image:btn_function_trash', 'javascript:document.forms[0].elements[\'newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]\'].value = 0;document.forms[0].elements[\'SECURITY_LIMIT_CUSTOMER_REDIRECT_text\'].value = \'\''), 4);

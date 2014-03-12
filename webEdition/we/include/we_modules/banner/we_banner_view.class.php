@@ -1015,7 +1015,7 @@ class we_banner_view extends we_banner_base{
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult($IDName, $IDValue);
-		$yuiSuggest->setSelector("Docselector");
+		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setWidth($width);
 		$yuiSuggest->setSelectButton($button);
 
@@ -1038,7 +1038,7 @@ class we_banner_view extends we_banner_base{
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(false);
 		$yuiSuggest->setResult($idname, $idvalue);
-		$yuiSuggest->setSelector("Dirselector");
+		$yuiSuggest->setSelector(weSuggest::DirSelector);
 		$yuiSuggest->setTable($table);
 		$yuiSuggest->setWidth($width);
 		$yuiSuggest->setSelectButton($button);
@@ -1109,7 +1109,7 @@ class we_banner_view extends we_banner_base{
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult($idname, $idvalue);
-		$yuiSuggest->setSelector("Docselector");
+		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setWidth($width);
 		$yuiSuggest->setSelectButton($button);
 

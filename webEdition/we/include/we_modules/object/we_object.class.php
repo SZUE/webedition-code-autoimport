@@ -1314,7 +1314,7 @@ class we_object extends we_document{
 		  $yuiSuggest->setMaxResults(20);
 		  $yuiSuggest->setMayBeEmpty(false);
 		  $yuiSuggest->setResult($idname,$myid);
-		  $yuiSuggest->setSelector("Docselector");
+		  $yuiSuggest->setSelector(weSuggest::DocSelector);
 		  $yuiSuggest->setTable($table);
 		  $yuiSuggest->setWidth(246);
 		  $yuiSuggest->setSelectButton($button,10);

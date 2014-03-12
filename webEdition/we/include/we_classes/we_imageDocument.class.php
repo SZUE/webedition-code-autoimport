@@ -637,7 +637,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 		$yuiSuggest->setMaxResults(20);
 		$yuiSuggest->setMayBeEmpty(1);
 		$yuiSuggest->setResult($longdesc_id_name, $longdesc_id);
-		$yuiSuggest->setSelector('Docselector');
+		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setWidth(328);
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$longdesc_id_name'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$longdesc_text_name'].value");
@@ -836,7 +836,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(0);
 		$yuiSuggest->setWidth(280);
-		$yuiSuggest->setSelector('Docselector');
+		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setLabel('href');
 		$_int_link = $yuiSuggest->getHTML();
 
@@ -857,7 +857,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 			$yuiSuggest->setMaxResults(10);
 			$yuiSuggest->setMayBeEmpty(0);
 			$yuiSuggest->setWidth(280);
-			$yuiSuggest->setSelector('Docselector');
+			$yuiSuggest->setSelector(weSuggest::DocSelector);
 			$yuiSuggest->setLabel('href');
 			$_obj_link = $yuiSuggest->getHTML();
 
@@ -887,7 +887,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(0);
 		$yuiSuggest->setWidth(280);
-		$yuiSuggest->setSelector('Docselector');
+		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setLabel('href');
 		$_rollover = $yuiSuggest->getHTML();
 

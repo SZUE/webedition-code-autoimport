@@ -439,7 +439,7 @@ function setTab(tab) {
 		$yuiSuggest->setMaxResults(50);
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult('LinkID', $this->Model->LinkID);
-		$yuiSuggest->setSelector("Docselector");
+		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setTable($this->Model->FolderSelection == we_navigation_navigation::STPYE_DOCLINK ? FILE_TABLE : (defined('OBJECT_TABLE') && $this->Model->FolderSelection == we_navigation_navigation::STPYE_OBJLINK ? OBJECT_FILES_TABLE : FILE_TABLE));
 		$yuiSuggest->setWidth($this->_width_size - 150);
 		$yuiSuggest->setSelectButton($_buttons);
@@ -725,7 +725,7 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 		$yuiSuggest->setMaxResults(50);
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult('LinkID', $this->Model->LinkID);
-		$yuiSuggest->setSelector("Docselector");
+		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setTable(
 			$this->Model->SelectionType == we_navigation_navigation::STPYE_DOCLINK ? FILE_TABLE : ($this->Model->SelectionType == we_navigation_navigation::STPYE_OBJLINK ? OBJECT_FILES_TABLE : CATEGORY_TABLE));
 		$yuiSuggest->setWidth($this->_width_size - 150);
@@ -1129,22 +1129,22 @@ function onSelectionClassChangeJS(value) {
 
 		if($table == NAVIGATION_TABLE){
 			$_cmd = "javascript:we_cmd('openNavigationDirselector',document.we_form.elements['" . $IDName . "'].value,'document.we_form." . $IDName . ".value','document.we_form." . $PathName . ".value','" . $cmd . "')";
-			$_selector = "dirSelector";
+			$_selector = weSuggest::DirSelector;
 		} else {
 			if($filter == 'folder'){
 				$_cmd = "javascript:we_cmd('openSelector',document.we_form.elements['$IDName'].value,'$table','document.we_form.$IDName.value','document.we_form.$PathName.value','" . $cmd . "','" . session_id() . "','$rootDirID')";
-				$_selector = "dirSelector";
+				$_selector = weSuggest::DirSelector;
 			} else {
 				//javascript:we_cmd('openDocselector',document.we_form.elements['$IDName'].value,'$table','document.we_form.$IDName.value','document.we_form.$PathName.value','" . $cmd . "','" . session_id() . "','$rootDirID','$filter'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")
 				$wecmdenc1 = we_cmd_enc("document.we_form.$IDName.value");
 				$wecmdenc2 = we_cmd_enc("document.we_form.$PathName.value");
 				$wecmdenc3 = we_cmd_enc(str_replace('\\', '', $cmd));
 				$_cmd = "javascript:we_cmd('openDocselector',document.we_form.elements['$IDName'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$rootDirID','$filter'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")";
-				$_selector = "docSelector";
+				$_selector = weSuggest::DocSelector;
 			}
 		}
 		$mayBeEmpty = 0;
-		if($_selector == "docSelector"){
+		if($_selector == weSuggest::DocSelector){
 			$_path = $_path == '/' ? "" : $_path;
 			$mayBeEmpty = 1;
 		}
@@ -1412,7 +1412,7 @@ function selectItem() {
 		$yuiSuggest->setMaxResults(50);
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult('FolderID', $this->Model->FolderID);
-		$yuiSuggest->setSelector("Dirselector");
+		$yuiSuggest->setSelector(weSuggest::DirSelector);
 		$yuiSuggest->setLabel(g_l('navigation', '[dir]'));
 		$yuiSuggest->setTable($_table);
 		$yuiSuggest->setWidth($this->_width_size - 120);
@@ -1524,7 +1524,7 @@ function selectItem() {
 		$yuiSuggest->setMaxResults(50);
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult($prefix . 'UrlID', $this->Model->UrlID);
-		$yuiSuggest->setSelector("Docselector");
+		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setWidth($this->_width_size - 120);
 		$yuiSuggest->setSelectButton(we_html_button::create_button('select', $_cmd));
 

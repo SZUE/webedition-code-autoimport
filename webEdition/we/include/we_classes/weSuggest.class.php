@@ -50,6 +50,9 @@
  */
 class weSuggest{
 
+	const DocSelector = 'docSelector';
+	const DirSelector = 'dirSelector';
+
 	var $inputfields = array();
 	var $containerfields = array();
 	var $containerwidth = array();
@@ -1064,11 +1067,7 @@ function weInputInArray(arr, val) {
 	}
 
 	function setInputId($val = ''){
-		if($val == ''){
-			$this->inputId = "yuiAcInput" . $this->acId;
-		} else {
-			$this->inputId = $val;
-		}
+		$this->inputId = ($val ? $val : "yuiAcInput" . $this->acId);
 	}
 
 	function setInputName($val){
@@ -1195,16 +1194,10 @@ function weInputInArray(arr, val) {
 		$this->containerwidth[] = $containerwidth;
 		$this->inputMayBeEmpty[] = $inputMayBeEmpty;
 		switch($contentType){
-			case "dirSelector":
+			case self::DirSelector:
 				array($this->ct, "folder");
 				break;
-			case "Dirselector":
-				array($this->ct, "folder");
-				break;
-			case "docSelector":
-				array($this->ct, "doc");
-				break;
-			case "Docselector":
+			case self::DocSelector:
 				array($this->ct, "doc");
 				break;
 		}
