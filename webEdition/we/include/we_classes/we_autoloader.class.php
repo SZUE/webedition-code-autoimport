@@ -141,7 +141,6 @@ abstract class we_autoloader{
 			'paypal_class' => 'shop/paypal.class.php',
 			'shop' => 'shop/we_shop_shop.class.php',
 			'Basket' => 'shop/we_shop_Basket.class.php',
-			'blaettern' => 'shop/we_pager_class.php',
 		),
 		'we_hook/class' => array(
 			'weHook' => 'weHook.class.php',

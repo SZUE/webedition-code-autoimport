@@ -368,7 +368,7 @@ if(($maxRows = f('SELECT COUNT(1) ' . $query, '', $DB_WE))){
 	);
 
 	$parts[] = array(
-		'html' => blaettern::getStandardPagerHTML(getPagerLink(), $actPage, $nrOfPage, $maxRows),
+		'html' => we_shop_pager::getStandardPagerHTML(getPagerLink(), $actPage, $nrOfPage, $maxRows),
 		'space' => 0
 	);
 } else {
