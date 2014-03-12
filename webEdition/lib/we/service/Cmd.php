@@ -11,7 +11,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -22,32 +22,31 @@
 
 /**
  * class for cmd service
- * 
+ *
  * @category   we
  * @package    we_service
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_service_Cmd extends we_service_AbstractService
-{
+class we_service_Cmd extends we_service_AbstractService{
+
 	/**
 	 * create model
-	 * 
-	 * @param array $args 
+	 *
+	 * @param array $args
 	 * @return NULL
 	 */
-	public function createModel($args)
-	{
-		if (!isset($args[0])) {
+	public function createModel($args){
+		if(!isset($args[0])){
 			throw new we_service_Exception('No model class name set!');
 		}
-		try {
+		try{
 			Zend_Loader::loadClass($args[0]);
 			$model = new $args[0]();
-			if (isset($args[1])) {
+			if(isset($args[1])){
 				$model->load(($args[1]));
 			}
 			return $model;
-		} catch (Zend_Exception $e) {
+		} catch (Zend_Exception $e){
 			throw new we_service_Exception('Error creating new model: ' . $e->getMessage());
 		}
 		return NULL;

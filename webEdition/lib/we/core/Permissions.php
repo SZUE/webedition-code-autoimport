@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition SDK
  *
@@ -10,7 +11,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -21,24 +22,22 @@
 
 /**
  * Base class for permissions
- * 
+ *
  * @category   we
  * @package    we_core
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_core_Permissions
-{
+class we_core_Permissions{
 
 	/**
 	 * check on specific permission
-	 * 
+	 *
 	 * @param string $perm
 	 * @return boolean
 	 */
-	static function hasPerm($perm)
-	{
+	static function hasPerm($perm){
 		$perm = strtoupper($perm);
-		if (isset($_SESSION["perms"]["ADMINISTRATOR"]) && $_SESSION["perms"]["ADMINISTRATOR"]) {
+		if(isset($_SESSION["perms"]["ADMINISTRATOR"]) && $_SESSION["perms"]["ADMINISTRATOR"]){
 			return true;
 		}
 		//we_util_Log::errorlog($perm);
@@ -49,22 +48,21 @@ class we_core_Permissions
 
 	/**
 	 * check on permission to see a page
-	 * 
+	 *
 	 * @return string
 	 */
-	static function protect()
-	{
-		
+	static function protect(){
+
 		$translate = we_core_Local::addTranslation('permissions.xml');
-		
-		if (!isset($_SESSION["user"]["Username"]) || $_SESSION["user"]["Username"] == "") {
+
+		if(!isset($_SESSION["user"]["Username"]) || $_SESSION["user"]["Username"] == ""){
 			$page = new we_ui_layout_HTMLPage();
 			$page->addJSFile('/webEdition/js/we_showMessage.js');
-			
+
 			$message = we_util_Strings::quoteForJSString($translate->_('You are not permitted to perform this action! Please login again.'), false);
-			
+
 			$messageCall = we_core_MessageReporting::getShowMessageCall($message, we_core_MessageReporting::kMessageNotice);
-			
+
 			$page->addInlineJS($messageCall . 'if (opener) {top.close();} else {location="/webEdition"}');
 			print $page->getHTML();
 			exit();

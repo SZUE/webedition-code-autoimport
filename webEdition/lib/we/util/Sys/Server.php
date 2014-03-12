@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition SDK
  *
@@ -10,7 +11,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -19,7 +20,6 @@
  * @subpackage we_util_Sys
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-
 /**
  * @see we_util_Sys
  */
@@ -32,14 +32,13 @@ Zend_Loader::loadClass('we_util_Sys_Exception');
 
 /**
  * utility class for various web servers
- * 
+ *
  * @category   we
  * @package    we_util
  * @subpackage we_util_Sys
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_util_Sys_Server extends we_util_Sys
-{
+class we_util_Sys_Server extends we_util_Sys{
 
 	/**
 	 * tries to identify the web server and return its product name.
@@ -47,13 +46,12 @@ class we_util_Sys_Server extends we_util_Sys
 	 *
 	 * @return string product name or false, if the server product is unknown.
 	 */
-	public static function product()
-	{
-		if (self::isApache()) {
+	public static function product(){
+		if(self::isApache()){
 			return "Apache";
-		} else if (self::isIIS()) {
+		} else if(self::isIIS()){
 			return "IIS";
-		} else {
+		} else{
 			return false;
 		}
 	}
@@ -72,25 +70,24 @@ class we_util_Sys_Server extends we_util_Sys
 	 * ServerTokens Minimal - Apache/2.0.55
 	 * ServerTokens Major - Apache/2
 	 * ServerTokens Prod - Apache
-	 * 
+	 *
 	 * @return bool true/false
 	 */
-	public static function isApache($version = "")
-	{
-		if (function_exists("apache_get_version")) {
-			if (empty($version)) {
+	public static function isApache($version = ""){
+		if(function_exists("apache_get_version")){
+			if(empty($version)){
 				return true;
-			} else {
+			} else{
 				$apacheVersion = apache_get_version();
-				if ($apacheVersion === false) {
+				if($apacheVersion === false){
 					return false;
-				} else if (stristr($version, "Apache/" . $apacheVersion)) {
+				} else if(stristr($version, "Apache/" . $apacheVersion)){
 					return true;
-				} else {
+				} else{
 					return false;
 				}
 			}
-		} else {
+		} else{
 			return false;
 		}
 	}
@@ -100,14 +97,12 @@ class we_util_Sys_Server extends we_util_Sys
 	 *
 	 * @return bool true/false
 	 */
-	public static function isIIS()
-	{
-		if (defined("IIS_RUNNING") && IIS_RUNNING === true) {
+	public static function isIIS(){
+		if(defined("IIS_RUNNING") && IIS_RUNNING === true){
 			return true;
-		} else {
+		} else{
 			return false;
 		}
-	
 	}
 
 	/**
@@ -115,11 +110,8 @@ class we_util_Sys_Server extends we_util_Sys
 	 *
 	 * @return string
 	 */
-	public static function getHost()
-	{
-		// in case the port is attached => remove it
-		$parts = explode(':', $_SERVER['HTTP_HOST']);
-		return $parts[0];
+	public static function getHost(){
+		return $_SERVER['SERVER_NAME'];
 	}
 
 	/**
@@ -127,9 +119,8 @@ class we_util_Sys_Server extends we_util_Sys
 	 *
 	 * @return string
 	 */
-	public static function getProtocol()
-	{
-		return (empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == 'off') ? 'http' : 'https';
+	public static function getProtocol(){
+		return getServerProtocol();
 	}
 
 	/**
@@ -137,8 +128,7 @@ class we_util_Sys_Server extends we_util_Sys
 	 *
 	 * @return integer
 	 */
-	public static function getPort()
-	{
+	public static function getPort(){
 		return $_SERVER['SERVER_PORT'];
 	}
 
@@ -148,33 +138,25 @@ class we_util_Sys_Server extends we_util_Sys
 	 * @param string $url  url to append. If empty a uri only with hostname is returned
 	 * @return string
 	 */
-	public static function getHostUri($url = '')
-	{
-		$host = self::getHost();
-		$proto = self::getProtocol();
-		$port = self::getPort();
-		$uri = $proto . '://' . $host;
-		if ((('http' == $proto) && (80 != $port)) || (('https' == $proto) && (443 != $port))) {
-			$uri .= ':' . $port;
-		}
-		if ($url !== '') {
+	public static function getHostUri($url = ''){
+		$uri = getServerUrl();
+		if($url !== ''){
 			return $uri . '/' . ltrim($url, '/');
-		} else {
+		} else{
 			return $uri;
 		}
 	}
 
 	/**
-	 * identify docroot, either via $_SERVER["DOCUMENT_ROOT"] or path reproduction
-	 * 
+	 * identify docroot, either via $_SERVER['DOCUMENT_ROOT'] or path reproduction
+	 *
 	 * @return string complete path of the servers docroot without a trailing slash
 	 * @author Alexander Lindenstruth
 	 */
-	public static function getDocroot()
-	{
-		if (isset($_SERVER["DOCUMENT" . "_ROOT"]) && !empty($_SERVER["DOCUMENT" . "_ROOT"])) {
-			return $_SERVER["DOCUMENT" . "_ROOT"];
-		} else {
+	public static function getDocroot(){
+		if(isset($_SERVER["DOCUMENT" . "_ROOT"]) && !empty($_SERVER['DOCUMENT_ROOT'])){
+			return $_SERVER['DOCUMENT_ROOT'];
+		} else{
 			// mostly on Microsoft IIS servers (Windows) without DOCUMENT_ROOT:
 			return realpath(dirname(__FILE__) . "/.." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR);
 		}

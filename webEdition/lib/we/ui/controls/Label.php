@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition SDK
  *
@@ -19,7 +20,6 @@
  * @subpackage we_ui_controls
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-
 /**
  * @see we_ui_abstract_AbstractFormElement
  */
@@ -33,9 +33,7 @@ Zend_Loader::loadClass('we_ui_abstract_AbstractFormElement');
  * @subpackage we_ui_controls
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_ui_controls_Label extends we_ui_abstract_AbstractFormElement
-{
-
+class we_ui_controls_Label extends we_ui_abstract_AbstractFormElement{
 	/**
 	 * Default class name for label
 	 */
@@ -68,8 +66,7 @@ class we_ui_controls_Label extends we_ui_abstract_AbstractFormElement
 	 * @param array $properties associative array containing named object properties
 	 * @return void
 	 */
-	public function __construct($properties = null)
-	{
+	public function __construct($properties = null){
 		parent::__construct($properties);
 
 		// add needed CSS files
@@ -77,7 +74,6 @@ class we_ui_controls_Label extends we_ui_abstract_AbstractFormElement
 
 		// add needed JS Files
 		$this->addJSFile(we_ui_abstract_AbstractElement::computeJSURL(__CLASS__));
-
 	}
 
 	/**
@@ -85,8 +81,7 @@ class we_ui_controls_Label extends we_ui_abstract_AbstractFormElement
 	 *
 	 * @return boolean
 	 */
-	public function getFor()
-	{
+	public function getFor(){
 		return $this->_for;
 	}
 
@@ -95,8 +90,7 @@ class we_ui_controls_Label extends we_ui_abstract_AbstractFormElement
 	 *
 	 * @param boolean $_for
 	 */
-	public function setFor($_for)
-	{
+	public function setFor($_for){
 		$this->_for = $_for;
 	}
 
@@ -105,8 +99,7 @@ class we_ui_controls_Label extends we_ui_abstract_AbstractFormElement
 	 *
 	 * @return boolean
 	 */
-	public function getText()
-	{
+	public function getText(){
 		return $this->_text;
 	}
 
@@ -115,8 +108,7 @@ class we_ui_controls_Label extends we_ui_abstract_AbstractFormElement
 	 *
 	 * @param boolean $_text
 	 */
-	public function setText($_text)
-	{
+	public function setText($_text){
 		$this->_text = $_text;
 	}
 
@@ -125,15 +117,14 @@ class we_ui_controls_Label extends we_ui_abstract_AbstractFormElement
 	 *
 	 * @return string
 	 */
-	protected function _renderHTML()
-	{
-		if ($this->getDisabled()) {
+	protected function _renderHTML(){
+		if($this->getDisabled()){
 			$class = self::kLabelClassDisabled;
-		} else {
+		} else{
 			$class = self::kLabelClass;
 		}
 
-		if ($this->getHidden()) {
+		if($this->getHidden()){
 			$this->_style .= "display:none;";
 		}
 
