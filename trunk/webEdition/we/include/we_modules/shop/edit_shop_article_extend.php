@@ -314,7 +314,7 @@ if(isset($daten)){
 				// now the pager class at last:
 				// Pager: Zweite Linkliste zeigen
 
-				$pager = blaettern::getStandardPagerHTML(getPagerLinkObj(), $actPage, $nrOfPage, count($orderRows));
+				$pager = we_shop_pager::getStandardPagerHTML(getPagerLinkObj(), $actPage, $nrOfPage, count($orderRows));
 
 				$parts[] = array(
 					'html' => $pager,
@@ -413,7 +413,7 @@ if(isset($daten)){
 					'noline' => true
 				);
 
-				$pager = blaettern::getStandardPagerHTML(getPagerLinkDoc(), $actPage, $nrOfPage, count($orderRows));
+				$pager = we_shop_pager::getStandardPagerHTML(getPagerLinkDoc(), $actPage, $nrOfPage, count($orderRows));
 
 				$parts[] = array(
 					'html' => $pager,
