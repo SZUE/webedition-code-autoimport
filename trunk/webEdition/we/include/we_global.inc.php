@@ -316,33 +316,68 @@ function filterXss($var, $type = 'string'){
 	return $ret;
 }
 
-function weGetVar($type, $name, $default = false, $index = ''){
-	if(!isset($_REQUEST['name'])){
-		return $default;
-	}
-	$var = $_REQUEST[$name];
-	if($index){
-		$var = $var[$index];
-	}
+/** Helper for Filtering variables (callback of array_walk)
+ *
+ * @param mixed $var value
+ * @param string $key key
+ * @param array $data array pair of type & default
+ * @return type
+ */
+function _weGetVar(&$var, $key, array $data){
+	list($type, $default) = $data;
 	switch($type){
 		case 'transaction':
-			return (preg_match('|^([a-f0-9]){32}$|i', $var) ? $var : $default);
+			$var = (preg_match('|^([a-f0-9]){32}$|i', $var) ? $var : $default);
+			return;
+		case 'intList':
+			 implode(',',array_map('intval', explode(',', $var)));
 		case 'int':
-			return intval($var);
+			$var = intval($var);
+			return;
 		case 'float':
-			return floatval($var);
+			$var = floatval($var);
+			return;
+		case 'bool':
+			$var = (bool) $var;
+			return;
 		case 'table':
-			return $var && ($key = array_search($var, get_defined_constants(), true)) && (substr($key, -6) == '_TABLE') ? $var : $default;
+			$var = $var && ($k = array_search($var, get_defined_constants(), true)) && (substr($k, -6) == '_TABLE') ? $var : $default;
+			return;
 		case 'email':
-			return filter_var($var, FILTER_SANITIZE_EMAIL);
+			$var = filter_var($var, FILTER_SANITIZE_EMAIL);
+			return;
 		case 'url':
-			return filter_var($var, FILTER_SANITIZE_URL);
+			$var = filter_var($var, FILTER_SANITIZE_URL);
+			return;
 		case 'string':
-			return filter_var($var, FILTER_SANITIZE_STRING);
+			$var = filter_var($var, FILTER_SANITIZE_STRING);
+			return;
 		case 'html':
-			return filter_var($var, FILTER_SANITIZE_SPECIAL_CHARS);
+			$var = filter_var($var, FILTER_SANITIZE_SPECIAL_CHARS);
+			return;
 	}
-	return $default;
+	$var = $default;
+}
+
+/**
+ * Filter an Requested variable
+ * @param string $type type to filter, see list in _weGetVar
+ * @param string $name name of variable in Request array
+ * @param mixed $default default value
+ * @param mixed $index optional index
+ * @return mixed default, if value not set, the filtered value else
+ */
+function weGetVar($type, $name, $default = false, $index = ''){
+	if(!isset($_REQUEST[$name])){
+		return $default;
+	}
+	$var = $index === '' ? $_REQUEST[$name] : $_REQUEST[$name][$index];
+	if(is_array($var)){
+		array_walk($var, '_weGetVar', array($type, $default));
+	} else {
+		_weGetVar($var, '', array($type, $default));
+	}
+	return $var;
 }
 
 /**
