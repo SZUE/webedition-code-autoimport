@@ -20,6 +20,7 @@
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/global.inc.php");
+protect();//s1
 
 if (isset($_SESSION)){
     while(list($name, $val) = each($_SESSION)){
