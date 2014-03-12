@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition SDK
  *
@@ -10,7 +11,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -19,7 +20,6 @@
  * @subpackage we_ui_controls
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-
 /**
  * @see we_ui_abstract_AbstractInputElement
  */
@@ -27,15 +27,13 @@ Zend_Loader::loadClass('we_ui_abstract_AbstractInputElement');
 
 /**
  * Class to display a Textarea
- * 
+ *
  * @category   we
  * @package    we_ui
  * @subpackage we_ui_controls
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_ui_controls_Textarea extends we_ui_abstract_AbstractInputElement
-{
-
+class we_ui_controls_Textarea extends we_ui_abstract_AbstractInputElement{
 	/**
 	 * Default class name for Textarea
 	 */
@@ -90,37 +88,34 @@ class we_ui_controls_Textarea extends we_ui_abstract_AbstractInputElement
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * Sets object properties if set in $properties array
-	 * 
+	 *
 	 * @param array $properties associative array containing named object properties
 	 * @return void
 	 */
-	public function __construct($properties = null)
-	{
+	public function __construct($properties = null){
 		parent::__construct($properties);
-		
+
 		// add needed CSS files
 		$this->addCSSFile(we_ui_layout_Themes::computeCSSURL(__CLASS__));
-		
+
 		// add needed JS Files
 		$this->addJSFile(we_ui_abstract_AbstractElement::computeJSURL(__CLASS__));
-		
 	}
-	
+
 	/**
 	 * Returns the computed onFocus attrib as text to insert into the HTML tag
 	 *
 	 * @return string
 	 */
-	protected function _getComputedOnFocusAttrib()
-	{
+	protected function _getComputedOnFocusAttrib(){
 		$class = self::kTextareaClassFocus;
-		if ($this->getClass() !== '') {
+		if($this->getClass() !== ''){
 			$class .= ' ' . $this->getClass();
 		}
 		$onFocus = 'this.className="' . $class . '";';
-		if ($this->getOnFocus() !== '') {
+		if($this->getOnFocus() !== ''){
 			$onFocus .= $this->getOnFocus();
 		}
 		return ' onFocus="' . htmlspecialchars($onFocus) . '"';
@@ -131,14 +126,13 @@ class we_ui_controls_Textarea extends we_ui_abstract_AbstractInputElement
 	 *
 	 * @return string
 	 */
-	protected function _getComputedOnBlurAttrib()
-	{
+	protected function _getComputedOnBlurAttrib(){
 		$class = self::kTextareaClassNormal;
-		if ($this->getClass() !== '') {
+		if($this->getClass() !== ''){
 			$class .= ' ' . $this->getClass();
 		}
 		$onBlur = 'this.className="' . $class . '";';
-		if ($this->getOnBlur() !== '') {
+		if($this->getOnBlur() !== ''){
 			$onBlur .= $this->getOnBlur();
 		}
 		return ' onBlur="' . htmlspecialchars($onBlur) . '"';
@@ -149,134 +143,121 @@ class we_ui_controls_Textarea extends we_ui_abstract_AbstractInputElement
 	 *
 	 * @return string
 	 */
-	protected function _renderHTML()
-	{
+	protected function _renderHTML(){
 		return '<textarea' . $this->_getNonBooleanAttribs('id,name,rows,cols,onChange') . $this->_getBooleanAttribs('disabled,readonly') . $this->_getComputedStyleAttrib() . $this->_getComputedClassAttrib(self::kTextareaClassNormal) . $this->_getComputedOnFocusAttrib() . $this->_getComputedOnBlurAttrib() . '>' . $this->getText() . '</textarea>';
 	}
 
 	/**
 	 * Retrieve onBlur attribute
-	 * 
+	 *
 	 * @return string
 	 */
-	public function getOnBlur()
-	{
+	public function getOnBlur(){
 		return $this->_onBlur;
 	}
 
 	/**
 	 * Retrieve onFocus attribute
-	 * 
+	 *
 	 * @return string
 	 */
-	public function getOnFocus()
-	{
+	public function getOnFocus(){
 		return $this->_onFocus;
 	}
 
 	/**
 	 * Retrieve onChange attribute
-	 * 
+	 *
 	 * @return string
 	 */
-	public function getOnChange()
-	{
+	public function getOnChange(){
 		return $this->_onChange;
 	}
 
 	/**
 	 * Retrieve cols attribute
-	 * 
+	 *
 	 * @return integer
 	 */
-	public function getCols()
-	{
+	public function getCols(){
 		return $this->_cols;
 	}
 
 	/**
 	 * Retrieve rows attribute
-	 * 
+	 *
 	 * @return integer
 	 */
-	public function getRows()
-	{
+	public function getRows(){
 		return $this->_rows;
 	}
 
 	/**
 	 * Retrieve text
-	 * 
+	 *
 	 * @return string
 	 */
-	public function getText()
-	{
+	public function getText(){
 		return $this->_text;
 	}
 
 	/**
 	 * Set onBlur attribute
-	 * 
+	 *
 	 * @param string $onBlur
 	 * @return void
 	 */
-	public function setOnBlur($onBlur)
-	{
+	public function setOnBlur($onBlur){
 		$this->_onBlur = $onBlur;
 	}
 
 	/**
 	 * Set onFocus attribute
-	 * 
+	 *
 	 * @param string $onFocus
 	 * @return void
 	 */
-	public function setOnFocus($onFocus)
-	{
+	public function setOnFocus($onFocus){
 		$this->_onFocus = $onFocus;
 	}
 
 	/**
 	 * Set onChange attribute
-	 * 
+	 *
 	 * @param string $onChange
 	 * @return void
 	 */
-	public function setOnChange($onChange)
-	{
+	public function setOnChange($onChange){
 		$this->_onChange = $onChange;
 	}
 
 	/**
 	 * Set cols attribute
-	 * 
+	 *
 	 * @param integer $cols
 	 * @return void
 	 */
-	public function setCols($cols)
-	{
+	public function setCols($cols){
 		$this->_cols = $cols;
 	}
 
 	/**
 	 * Set rows attribute
-	 * 
+	 *
 	 * @param integer $rows
 	 * @return void
 	 */
-	public function setRows($rows)
-	{
+	public function setRows($rows){
 		$this->_rows = $rows;
 	}
 
 	/**
 	 * Set text attribute
-	 * 
+	 *
 	 * @param string $text
 	 * @return void
 	 */
-	public function setText($text)
-	{
+	public function setText($text){
 		$this->_text = $text;
 	}
 

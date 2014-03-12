@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition SDK
  *
@@ -10,7 +11,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -19,7 +20,6 @@
  * @subpackage we_util_Sys
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-
 /**
  * @see we_util_Sys_Dbms_Interface
  */
@@ -31,39 +31,33 @@ require_once 'we/util/Sys/Db/Interface.php';
 require_once 'Zend/Db/Adapter/Abstract.php';
 
 /**
- * 
- * 
+ *
+ *
  * @category   we
  * @package    we_util
  * @subpackage we_util_Sys
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_util_Sys_Db_Mysql extends we_util_Sys_Db implements we_util_Sys_Db_Interface
-{
-	
-	protected function _connect()
-	{
+class we_util_Sys_Db_Mysql extends we_util_Sys_Db implements we_util_Sys_Db_Interface{
+
+	protected function _connect(){
 		return false;
 	}
-	
-	protected function _disconnect()
-	{
+
+	protected function _disconnect(){
 		return false;
 	}
-	
-	public function status()
-	{
-		
+
+	public function status(){
+
 	}
-	
-	public function variable()
-	{
-		
+
+	public function variable(){
+
 	}
-	
-	public function plugin()
-	{
-		
+
+	public function plugin(){
+
 	}
-	
+
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition SDK
  *
@@ -10,7 +11,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -19,7 +20,6 @@
  * @subpackage we_ui_controls
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-
 /**
  * @see we_ui_layout_Table
  */
@@ -27,15 +27,13 @@ Zend_Loader::loadClass('we_ui_layout_Table');
 
 /**
  * Class to display a ButtonTable
- * 
+ *
  * @category   we
  * @package    we_ui
  * @subpackage we_ui_controls
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_ui_layout_ButtonTable extends we_ui_layout_Table
-{
-
+class we_ui_layout_ButtonTable extends we_ui_layout_Table{
 	/**
 	 * Default class name for button
 	 */
@@ -53,8 +51,7 @@ class we_ui_layout_ButtonTable extends we_ui_layout_Table
 	 *
 	 * @return integer
 	 */
-	public function getHorizontalPadding()
-	{
+	public function getHorizontalPadding(){
 		return $this->_horizontalPadding;
 	}
 
@@ -64,31 +61,30 @@ class we_ui_layout_ButtonTable extends we_ui_layout_Table
 	 * @param $horizontalPadding
 	 * @return void
 	 */
-	public function setHorizontalPadding($horizontalPadding)
-	{
+	public function setHorizontalPadding($horizontalPadding){
 		$this->_horizontalPadding = $horizontalPadding;
 	}
 
 	/**
 	 * called before _renderHTML() is called
-	 * for HTMLDocuments we don't need to do anything here, 
+	 * for HTMLDocuments we don't need to do anything here,
 	 * so we overwrite it with an empty function
 	 *
 	 * @return void
 	 */
-	protected function _willRenderHTML()
-	{
-		if ($this->getHorizontalPadding()) {
-			foreach ($this->_cellHTML as $rowIndex => $cols) {
-				foreach (array_keys($cols) as $colIndex) {
+	protected function _willRenderHTML(){
+		if($this->getHorizontalPadding()){
+			foreach($this->_cellHTML as $rowIndex => $cols){
+				foreach(array_keys($cols) as $colIndex){
 					$columns = count($cols) - 1;
-					if ($columns !== $colIndex) {
+					if($columns !== $colIndex){
 						$this->setCellAttributes(array('style' => 'padding-right:' . $this->getHorizontalPadding() . 'px'), $colIndex, $rowIndex);
 					}
 				}
 			}
 		}
-		
+
 		parent::_willRenderHTML();
 	}
+
 }

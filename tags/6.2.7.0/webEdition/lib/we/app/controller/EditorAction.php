@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition SDK
  * This source is part of the webEdition SDK. The webEdition SDK is
@@ -9,7 +10,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -18,7 +19,6 @@
  * @subpackage we_app_controller
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-
 /*
  * @see Zend_Controller_Action
  */
@@ -26,14 +26,13 @@ Zend_Loader::loadClass('Zend_Controller_Action');
 
 /**
  * Base EditorAction Controller
- * 
+ *
  * @category   we
  * @package    we_app
  * @subpackage we_app_controller
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_app_controller_EditorAction extends Zend_Controller_Action
-{
+class we_app_controller_EditorAction extends Zend_Controller_Action{
 
 	/**
 	 * view
@@ -49,10 +48,9 @@ class we_app_controller_EditorAction extends Zend_Controller_Action
 	 * The default action - show the home page
 	 * @return void
 	 */
-	public function indexAction()
-	{
+	public function indexAction(){
 		$this->_setupModel(true);
-		if ($this->getRequest()->getParam('folder') == 1) {
+		if($this->getRequest()->getParam('folder') == 1){
 			$this->_model->IsFolder = 1;
 			$this->_model->ContentType = 'folder';
 		}
@@ -63,8 +61,7 @@ class we_app_controller_EditorAction extends Zend_Controller_Action
 	 * The body action - show the body
 	 * @return void
 	 */
-	public function bodyAction()
-	{
+	public function bodyAction(){
 		$this->_setupModel();
 		$this->_processPostVars();
 		$this->_renderDefaultView('editor/body.php');
@@ -73,8 +70,7 @@ class we_app_controller_EditorAction extends Zend_Controller_Action
 	/**
 	 * The header action - show the header
 	 */
-	public function headerAction()
-	{
+	public function headerAction(){
 		$this->_setupModel();
 		$this->_renderDefaultView('editor/header.php');
 	}
@@ -83,8 +79,7 @@ class we_app_controller_EditorAction extends Zend_Controller_Action
 	 * The footer action - show the footer
 	 * @return void
 	 */
-	public function footerAction()
-	{
+	public function footerAction(){
 		$this->_setupModel();
 		$this->_renderDefaultView('editor/footer.php');
 	}
@@ -93,8 +88,7 @@ class we_app_controller_EditorAction extends Zend_Controller_Action
 	 * The exit doc question action - show the exit doc question
 	 * @return void
 	 */
-	public function exitdocquestionAction()
-	{
+	public function exitdocquestionAction(){
 		$this->view = new Zend_View();
 		$this->view->setScriptPath('views/scripts');
 		$this->view->cmdstack = $this->getRequest()->getParam('cmdstack');
@@ -105,8 +99,7 @@ class we_app_controller_EditorAction extends Zend_Controller_Action
 	 * Render Default View - show the default view
 	 * @return void
 	 */
-	protected function _renderDefaultView($viewscript)
-	{
+	protected function _renderDefaultView($viewscript){
 		$this->view = new Zend_View();
 		$this->_setupParameter();
 		$this->_setupParamString();
@@ -118,18 +111,15 @@ class we_app_controller_EditorAction extends Zend_Controller_Action
 	 * setup the parameter string
 	 * @return void
 	 */
-	protected function _setupParamString()
-	{
+	protected function _setupParamString(){
 		$this->view->paramString = ((isset($this->view->tab) && $this->view->tab) ? '/tab/' . $this->view->tab : '') . ((isset($this->view->modelId) && $this->view->modelId) ? '/modelId/' . $this->view->modelId : '');
-	
 	}
 
 	/**
 	 * setup parameter
 	 * @return void
 	 */
-	protected function _setupParameter()
-	{
+	protected function _setupParameter(){
 		$this->view->tab = $this->getRequest()->getParam('tab', 0);
 		$this->view->sid = $this->getRequest()->getParam('sid', '');
 		$this->view->modelId = $this->getRequest()->getParam('modelId', 0);
@@ -140,8 +130,7 @@ class we_app_controller_EditorAction extends Zend_Controller_Action
 	 * process POST variables
 	 * @return void
 	 */
-	protected function _processPostVars()
-	{
+	protected function _processPostVars(){
 		$this->_model->setFields($_POST);
 	}
 
@@ -149,29 +138,29 @@ class we_app_controller_EditorAction extends Zend_Controller_Action
 	 * setup the model
 	 * @return void
 	 */
-	protected function _setupModel($forceNew = false)
-	{
+	protected function _setupModel($forceNew = false){
 		$appName = $this->getFrontController()->getParam('appName');
 		$session = new Zend_Session_Namespace($appName);
-		
-		if ($forceNew === false && isset($session->model)) {
+
+		if($forceNew === false && isset($session->model)){
 			$this->_model = $session->model;
-		} else {
-			try {
+		} else{
+			try{
 				$args = array("" . $appName . "_models_Default");
 				$modelId = $this->getRequest()->getParam('modelId');
-				if ($modelId) {
+				if($modelId){
 					$args[] = $modelId;
 				}
 				$serviceObj = new we_service_Cmd();
 				$this->_model = $serviceObj->createModel($args);
-			} catch (we_service_Exception $e) {
+			} catch (we_service_Exception $e){
 				we_util_Log::errorLog($e->getMessage());
 				return;
 			}
-			
+
 			unset($session->model);
 			$session->model = $this->_model;
 		}
 	}
+
 }

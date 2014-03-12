@@ -204,7 +204,7 @@ Zend_Loader::loadClass('we_util_File');
 			$this->_instance->_source = $source;
 			$this->_instance->_config = &we_app_Common::readConfig();
 			$this->_instance->_toc = &we_app_Common::readAppTOCsxmle();
-			$this->_instance->_tmpDir = we_util_File::addTrailingSlash($_SERVER["DOCUMENT_ROOT"].$this->_instance->_config->tmp_installer);
+			$this->_instance->_tmpDir = we_util_File::addTrailingSlash($_SERVER['DOCUMENT_ROOT'].$this->_instance->_config->tmp_installer);
 			$applicationPath = we_app_Common::getConfigElement("applicationpath").$this->_instance->_appname."/";
 			$this->_instance->_configFiles = array(
 				$applicationPath."conf/toc.xml",
@@ -382,8 +382,8 @@ Zend_Loader::loadClass('we_util_File');
 		}
 		error_log("preparing installation files.");
 		// checking readability of installation archive and writablility of the temp directory
-		we_util_File::createLocalFolderByPath($_SERVER["DOCUMENT_ROOT"].$this->_config->tmp_installer);
-		//$this->_tmpDir = we_util_File::addTrailingSlash($_SERVER["DOCUMENT_ROOT"].$this->_config->tmp_installer);
+		we_util_File::createLocalFolderByPath($_SERVER['DOCUMENT_ROOT'].$this->_config->tmp_installer);
+		//$this->_tmpDir = we_util_File::addTrailingSlash($_SERVER['DOCUMENT_ROOT'].$this->_config->tmp_installer);
 		// check if there is already a directory with the same name:
 		if(is_dir($this->_tmpDir)) {
 			error_log("removing existing directory.");
@@ -501,7 +501,7 @@ Zend_Loader::loadClass('we_util_File');
 				error_log("no destination directory specified for file ".$entry->source);
 			} else {
 				$srcinfo = pathinfo($entry->source);
-				$destDir = we_util_File::addTrailingSlash($_SERVER["DOCUMENT_ROOT"].$entry->destination.$srcinfo["dirname"]);
+				$destDir = we_util_File::addTrailingSlash($_SERVER['DOCUMENT_ROOT'].$entry->destination.$srcinfo["dirname"]);
 				$destFile = $srcinfo["basename"];
 				we_util_File::checkAndMakeFolder($destDir,true);
 				if(we_util_File::checkWritePermissions($destDir)) {
@@ -671,7 +671,7 @@ Zend_Loader::loadClass('we_util_File');
 			 * 		<destination>/webEdition/apps/leer/</destination>
 			 * 	</file>
 			 */
-			$path = $_SERVER["DOCUMENT_ROOT"].$entry->destination.$entry->source;
+			$path = $_SERVER['DOCUMENT_ROOT'].$entry->destination.$entry->source;
 			error_log("trying to remove $path");
 			if(in_array($path,$this->_configFiles)) {
 				error_log("skipping $entry->source because we may need it later");

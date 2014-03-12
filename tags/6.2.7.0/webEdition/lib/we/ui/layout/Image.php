@@ -11,7 +11,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -22,16 +22,14 @@
  */
 
 /**
- * static class with utility image functions   
- * 
+ * static class with utility image functions
+ *
  * @category   we
  * @package    we_ui
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_ui_layout_Image
-{
-
+abstract class we_ui_layout_Image{
 	/**
 	 * path of tree icon audio
 	 */
@@ -326,7 +324,7 @@ class we_ui_layout_Image
 	 * path of tree zip
 	 */
 	const kTreeIconZip = '/webEdition/images/tree/icons/zip.gif';
-	
+
 	/**
 	 * loading
 	 */
@@ -334,73 +332,56 @@ class we_ui_layout_Image
 
 	/**
 	 * Returns HTML img tag which points to a transparent image
-	 * 
+	 *
 	 * @param integer $w with of the image
 	 * @param integer $h height of the image
 	 * @return string
 	 */
-	static function getPixel($w = 1, $h = 1)
-	{
-		return '<img src="/webEdition/lib/we/ui/layout/img/pixel.gif" width="' . abs($w) . '" height="' . abs($h) . '" alt=""/>';
+	static function getPixel($w = 1, $h = 1){
+		return we_html_tools::getPixel(intval($w), intval($h));
 	}
 
 	/**
 	 * Maps the contentType to its css class name to display specific icons
-	 * 
+	 *
 	 * @param string $contentType
 	 * @param string $extension
 	 * @return string
 	 */
-	public static function getIconClass($contentType, $extension = '')
-	{
-		switch ($contentType) {
+	public static function getIconClass($contentType, $extension = ''){
+		switch($contentType){
 			case "image/*" :
 				return "image";
-				break;
 			case "text/webedition" :
 				return "we_document";
-				break;
 			case "text/html" :
 				return "text_html";
-				break;
 			case "folder" :
 				return "folder";
-				break;
 			case "folderOpen" :
 				return "folderOpen";
-				break;
 			case "text/css" :
 				return "text_css";
-				break;
 			case "text/weTmpl" :
 				return "text_weTmpl";
-				break;
 			case "text/js" :
 				return "text_js";
-				break;
 			case "text/plain" :
 				return "text_plain";
-				break;
 			case "text/htaccess" :
 				return "text_htaccess";
-				break;
 			case "text/xml" :
 				return "text_xml";
-				break;
 			case "application/x-shockwave-flash" :
 				return "flash";
-				break;
 			case "video/quicktime" :
 				return "quicktime";
-				break;
 			case "object" :
 				return "object";
-				break;
 			case "objectFile" :
 				return "objectFile";
-				break;
 			case "application/*" :
-				switch ($extension) {
+				switch($extension){
 					case ".pdf" :
 						return "pdf";
 					case ".zip" :
@@ -416,9 +397,9 @@ class we_ui_layout_Image
 						return "powerpoint";
 				}
 				return "text_plain";
-				break;
 			default :
 				return "text_plain";
 		}
 	}
+
 }

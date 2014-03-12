@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition SDK
  *
@@ -10,7 +11,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -18,24 +19,22 @@
  * @package    we_app
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-
 include_once ('Zend/View.php');
 
 /**
- * Base class for TopFrameView 
- * 
+ * Base class for TopFrameView
+ *
  * @category   we
  * @package    we_app
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_app_TopFrameView extends Zend_View
-{
-
+class we_app_TopFrameView extends Zend_View{
 	/**
 	 * editor frameset
-	 * 
+	 *
 	 * @var string
 	 */
+
 	const kEditorFrameset = 'self.resize.right.editor';
 
 	/**
@@ -54,55 +53,54 @@ class we_app_TopFrameView extends Zend_View
 
 	/**
 	 * return the javascript code of the top frame
-	 * 
+	 *
 	 * @return string
 	 */
-	public function getJSTop()
-	{
-		
+	public function getJSTop(){
+
 		$page = we_ui_layout_HTMLPage::getInstance();
-		$page->addJSFile('/webEdition/lib/we/ui/layout/Dialog.js');
-		
+		$page->addJSFile(LIB_DIR . 'we/ui/layout/Dialog.js');
+
 		$translate = we_core_Local::addTranslation('apps.xml');
 		we_core_Local::addTranslation('default.xml', $this->appName);
 
 		$fs = self::kEditorFrameset;
-		
+
 		// predefined message for JS output
 
 		$saveMessage = we_util_Strings::quoteForJSString($translate->_('The entry/folder \'%s\' has been succesfully saved.'), false);
-		
+
 		$saveEntryMessageCall = we_core_MessageReporting::getShowMessageCall('msg', we_core_MessageReporting::kMessageNotice, true);
-		
+
 		$nothingToSaveMessage = we_util_Strings::quoteForJSString($translate->_('There is nothing to save!'), false);
-		
+
 		$nothingToSaveMessageCall = we_core_MessageReporting::getShowMessageCall($nothingToSaveMessage, we_core_MessageReporting::kMessageNotice);
-		
+
 		$nothingToDeleteMessage = we_util_Strings::quoteForJSString($translate->_('There is nothing to delete!'), false);
-		
+
 		$nothingToDeleteMessageCall = we_core_MessageReporting::getShowMessageCall($nothingToDeleteMessage, we_core_MessageReporting::kMessageNotice);
-		
+
 		$deleteMessage = we_util_Strings::quoteForJSString($translate->_('The entry/folder \'%s\' has been succesfully deleted.'), false);
-		
+
 		$deleteMessageCall = we_core_MessageReporting::getShowMessageCall('msg', we_core_MessageReporting::kMessageNotice, true);
-		
+
 		$errorMessageCall = we_core_MessageReporting::getShowMessageCall('err', we_core_MessageReporting::kMessageError, true);
 		$noticeMessageCall = we_core_MessageReporting::getShowMessageCall('err', we_core_MessageReporting::kMessageNotice, true);
 		$warningMessageCall = we_core_MessageReporting::getShowMessageCall('err', we_core_MessageReporting::kMessageWarning, true);
-		
+
 		$appName = addslashes($translate->_($this->appName));
 		//we_util_Strings::p_r($this);
-		if (file_exists($_SERVER['DOCUMENT_ROOT'].$this->appDir. DIRECTORY_SEPARATOR.'app'. DIRECTORY_SEPARATOR.'info.php')){
-			$infowindow = $this->appDir. DIRECTORY_SEPARATOR.'app'. DIRECTORY_SEPARATOR.'info.php';
-		} else {
+		if(file_exists($_SERVER['DOCUMENT_ROOT'] . $this->appDir . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'info.php')){
+			$infowindow = $this->appDir . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'info.php';
+		} else{
 			$infowindow = "/webEdition/we_cmd.php?we_cmd[0]=info";
 		}
-		if (file_exists($_SERVER['DOCUMENT_ROOT'].$this->appDir. DIRECTORY_SEPARATOR.'app'. DIRECTORY_SEPARATOR.'help.php')){
-			$helpwindow =$this->appDir. DIRECTORY_SEPARATOR.'app'. DIRECTORY_SEPARATOR.'help.php';
-		} else {
+		if(file_exists($_SERVER['DOCUMENT_ROOT'] . $this->appDir . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'help.php')){
+			$helpwindow = $this->appDir . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'help.php';
+		} else{
 			$helpwindow = "/webEdition/getHelp.php";
 		}
-		
+
 		$js = <<<EOS
 
 
@@ -125,7 +123,7 @@ weEventController.register("cmdError", function(data, sender) {
 	} else {
 		err = "Unknown Error";
 	}
-	$errorMessageCall	
+	$errorMessageCall
 });
 
 /* cmdNotice */
@@ -135,7 +133,7 @@ weEventController.register("cmdNotice", function(data, sender) {
 	} else {
 		err = "Unknown Error";
 	}
-	$noticeMessageCall	
+	$noticeMessageCall
 });
 
 /* cmdWarning */
@@ -145,7 +143,7 @@ weEventController.register("cmdWarning", function(data, sender) {
 	} else {
 		err = "Unknown Error";
 	}
-	$warningMessageCall	
+	$warningMessageCall
 });
 
 
@@ -170,7 +168,7 @@ weEventController.register("save", function(data, sender) {
 		text = data.model.Text;
 	}
 	msg = msg.replace(/%s/, data.model.Text);
-	$saveEntryMessageCall	
+	$saveEntryMessageCall
 });
 
 /* publish */
@@ -186,7 +184,7 @@ weEventController.register("publish", function(data, sender) {
 		text = data.model.Text;
 	}
 	msg = msg.replace(/%s/, data.model.Text);
-	$saveEntryMessageCall	
+	$saveEntryMessageCall
 });
 
 /* unpublish */
@@ -202,7 +200,7 @@ weEventController.register("unpublish", function(data, sender) {
 		text = data.model.Text;
 	}
 	msg = msg.replace(/%s/, data.model.Text);
-	$saveEntryMessageCall	
+	$saveEntryMessageCall
 });
 
 /* delete */
@@ -212,8 +210,8 @@ weEventController.register("delete", function(data, sender) {
 	self.hot = false;  // reset hot
 	var msg = "$deleteMessage";
 	msg = msg.replace(/%s/, data.model.Path);
-	$deleteMessageCall	
-	
+	$deleteMessageCall
+
 });
 
 /*******************************************
@@ -260,10 +258,10 @@ weCmdController.register('save_top', 'app_{$this->appName}_save', function(cmdOb
 		$nothingToSaveMessageCall
 	} else {
 		we_core_JsonRpc.callMethod(
-			cmdObj, 
-			"{$this->appDir}/index.php/rpc/index", 
-			"{$this->appName}.service.Cmd", 
-			"save", 
+			cmdObj,
+			"{$this->appDir}/index.php/rpc/index",
+			"{$this->appName}.service.Cmd",
+			"save",
 			{$fs}.edbody.document.we_form
 		);
 	}
@@ -276,12 +274,12 @@ weCmdController.register('unpublish_top', 'app_{$this->appName}_unpublish', func
 		$nothingToSaveMessageCall
 	} else {
 		cmdObj.ignoreHot = true;
-		weEventController.fire('markunpublished',{$fs}.edbody.document.we_form.ID.value); 
+		weEventController.fire('markunpublished',{$fs}.edbody.document.we_form.ID.value);
 		we_core_JsonRpc.callMethod(
-			cmdObj, 
-			'{$this->appDir}/index.php/rpc/index', 
-			'{$this->appName}.service.Cmd', 
-			'unpublish', 
+			cmdObj,
+			'{$this->appDir}/index.php/rpc/index',
+			'{$this->appName}.service.Cmd',
+			'unpublish',
 			{$fs}.edbody.document.we_form
 		);
 	}
@@ -294,12 +292,12 @@ weCmdController.register('publish_top', 'app_{$this->appName}_publish', function
 		$nothingToSaveMessageCall
 	} else {
 		cmdObj.ignoreHot = true;
-		weEventController.fire('markpublished',{$fs}.edbody.document.we_form.ID.value); 
+		weEventController.fire('markpublished',{$fs}.edbody.document.we_form.ID.value);
 		we_core_JsonRpc.callMethod(
-			cmdObj, 
-			'{$this->appDir}/index.php/rpc/index', 
-			'{$this->appName}.service.Cmd', 
-			'publish', 
+			cmdObj,
+			'{$this->appDir}/index.php/rpc/index',
+			'{$this->appName}.service.Cmd',
+			'publish',
 			{$fs}.edbody.document.we_form
 		);
 	}
@@ -311,10 +309,10 @@ weCmdController.register('delete_top', 'app_{$this->appName}_delete', function(c
 		$nothingToDeleteMessageCall
 	} else {
 		we_core_JsonRpc.callMethod(
-			cmdObj, 
-			"{$this->appDir}/index.php/rpc/index", 
-			"{$this->appName}.service.Cmd", 
-			"delete", 
+			cmdObj,
+			"{$this->appDir}/index.php/rpc/index",
+			"{$this->appName}.service.Cmd",
+			"delete",
 			{$fs}.edbody.document.we_form.ID.value
 		);
 	}
