@@ -966,7 +966,7 @@ class doclistView{
 						$obj->searchclassFolder->searchstart);
 
 		$_anzahl = (isset($_REQUEST['we_cmd'] ['anzahl']) ?
-						$_REQUEST['we_cmd'] ['anzahl'] :
+						intval($_REQUEST['we_cmd'] ['anzahl']) :
 						$obj->searchclassFolder->anzahl);
 
 		for($i = 0; $i < count($searchText); $i++){
