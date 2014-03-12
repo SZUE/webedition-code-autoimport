@@ -2263,11 +2263,12 @@ function formmailBlockOnOff() {
 			// Build db select box
 			$_db_connect = new we_html_select(array("name" => "newconf[DB_CONNECT]", "class" => "weSelect"));
 			if(class_exists('mysqli', false)){
-				$_db_connect->addOption('mysqli_connect', "mysqli_connect");
-				$_db_connect->addOption('mysqli_pconnect', "mysqli_pconnect");
-			} elseif(function_exists('mysql_connect')){ //only allow old connection method if new is not available
-				$_db_connect->addOption('connect', "connect");
-				$_db_connect->addOption('pconnect', "pconnect");
+				$_db_connect->addOption('mysqli_connect', 'mysqli_connect');
+				$_db_connect->addOption('mysqli_pconnect', 'mysqli_pconnect');
+			}
+			if(function_exists('mysql_connect')){ //only allow old connection method if new is not available
+				$_db_connect->addOption('connect', 'connect (deprecated)');
+				$_db_connect->addOption('pconnect', 'pconnect (deprecated)');
 			}
 			$_db_connect->selectOption(DB_CONNECT);
 

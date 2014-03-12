@@ -25,16 +25,13 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
-$frame = isset($_REQUEST["frame"]) ? $_REQUEST["frame"] : "";
-
-switch($frame){
-
+switch(isset($_REQUEST["frame"]) ? $_REQUEST["frame"] : ""){
 	case "main":
-		print we_dialog_deleteProgress::main();
+		echo we_dialog_deleteProgress::main();
 		break;
 	case "cmd":
-		print we_dialog_deleteProgress::cmd();
+		echo we_dialog_deleteProgress::cmd();
 		break;
 	default:
-		print we_dialog_deleteProgress::frameset();
+		echo we_dialog_deleteProgress::frameset();
 }

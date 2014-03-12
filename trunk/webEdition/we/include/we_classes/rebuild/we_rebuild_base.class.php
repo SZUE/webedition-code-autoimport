@@ -280,7 +280,7 @@ abstract class we_rebuild_base{
 		}
 	}
 
-	private static function getDependendTemplates($db, array $done, array &$data, $mt, $tt){
+	private static function getDependendTemplates(we_database_base $db, array $done, array &$data, $mt, $tt){
 		//get other, these have to be processed in php
 		$db->query('SELECT ID,ClassName,Path,MasterTemplateID,IncludedTemplates FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND ID NOT IN (' . (empty($done) ? 0 : implode(',', $done)) . ') ORDER BY (`IncludedTemplates` = "") DESC');
 
@@ -387,7 +387,7 @@ abstract class we_rebuild_base{
 		if($templateID){
 			$arr = self::getTemplAndDocIDsOfTemplate($templateID);
 
-			if(!empty($arr['templateIDs'])){
+			if($arr['templateIDs']){
 
 				//$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path FROM ' . TEMPLATES_TABLE . ' WHERE ' . $where . ' ORDER BY ID');
 				//get other, these have to be processed in php
