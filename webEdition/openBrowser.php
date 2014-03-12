@@ -21,13 +21,14 @@
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
+protect();
 
 htmlTop();
 ?>
 </head>
-<frameset rows="*" framespacing="0" border="0" frameborder="NO" onLoad="self.focus()">
+<frameset rows="*,*" framespacing="0" border="0" frameborder="NO" onLoad="self.focus()">
 <frame src="<?php print filter_var($_REQUEST["url"], FILTER_VALIDATE_URL); ?>" name="contBrowse" scrolling="auto">
-</frameset>
+<frame src="UntitledFrame-4"></frameset><noframes></noframes>
 <body bgcolor="white">
 </body>
 </html>

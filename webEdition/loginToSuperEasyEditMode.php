@@ -40,6 +40,7 @@ if(isset($_POST["username"]) && isset($_POST["id"]) && isset($_POST["type"])){
 
 	//	Login
 	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
+	protect();//s1
 
 	if(isset($_SESSION["user"]["Username"])){	//	login ok!
 

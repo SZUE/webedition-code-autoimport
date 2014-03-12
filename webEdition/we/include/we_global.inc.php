@@ -849,6 +849,7 @@ function checkAndPrepareImage($formname, $key = "we_document") {
 												$_SESSION[$_imgDataId]["keepratio"],
 												$_SESSION[$_imgDataId]["maximize"],
 												false,
+												false,	// #6233, provisorisch: FIXIT in 6.3.1
 												'',
 												"dummy",
 												0,

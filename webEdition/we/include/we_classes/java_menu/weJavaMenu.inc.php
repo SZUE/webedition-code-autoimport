@@ -61,7 +61,11 @@ class weJavaMenu {
 				$ffJavaMenu = true;
 			}
 		}
-
+		if (preg_match('@firefox/([^ ]+)@i',$_SERVER["HTTP_USER_AGENT"],$regs)) {
+			if (abs($regs[1]) > 16) {
+				$ffJavaMenu = true;
+			}
+		}
 		return $this->getJS() . ( (!$ffJavaMenu && $GLOBALS["BROWSER"] == "NN6") ? $this->getMozillaMenuHTML() : $this->getHTML() );
 	}
 
