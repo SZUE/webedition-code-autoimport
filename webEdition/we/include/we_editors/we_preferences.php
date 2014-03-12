@@ -2243,14 +2243,7 @@ function formmailBlockOnOff() {
 					g_l('prefs', '[we_max_upload_size_hint]') .
 					'</td></tr></table>';
 			$_needed_JavaScript = we_html_element::jsElement('function IsDigit(e) {
-					var key;
-
-					if (e != null && e.charCode) {
-						key = e.charCode;
-					} else {
-						key = event.keyCode;
-					}
-
+					var key =  (e != null && e.charCode?e.charCode:event.keyCode);
 					return (((key >= 48) && (key <= 57)) || (key == 0) || (key == 13));
 				}');
 
@@ -2261,7 +2254,7 @@ function formmailBlockOnOff() {
 					'</td></tr></table>';
 
 			// Build db select box
-			$_db_connect = new we_html_select(array("name" => "newconf[DB_CONNECT]", "class" => "weSelect"));
+			$_db_connect = new we_html_select(array('name' => 'newconf[DB_CONNECT]', 'class' => 'weSelect'));
 			if(class_exists('mysqli', false)){
 				$_db_connect->addOption('mysqli_connect', 'mysqli_connect');
 				$_db_connect->addOption('mysqli_pconnect', 'mysqli_pconnect');
@@ -2276,7 +2269,7 @@ function formmailBlockOnOff() {
 			$html_db_charset_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[db_set_charset_information]'), we_html_tools::TYPE_INFO, 240, false, 40) . "<br/>";
 			$html_db_charset_warning = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[db_set_charset_warning]'), we_html_tools::TYPE_ALERT, 240, false, 40) . "<br/>";
 
-			$_db_set_charset = new we_html_select(array("name" => "newconf[DB_SET_CHARSET]", "class" => "weSelect"));
+			$_db_set_charset = new we_html_select(array('name' => 'newconf[DB_SET_CHARSET]', 'class' => 'weSelect'));
 
 			$GLOBALS['DB_WE']->query('SHOW CHARACTER SET');
 

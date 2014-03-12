@@ -493,7 +493,7 @@ function path_to_id_ct($path, $table, &$contentType){
 	return intval(isset($res['ID']) ? $res['ID'] : 0);
 }
 
-function id_to_path($IDs, $table = FILE_TABLE, we_database_base $db = null, $prePostKomma = false, $asArray = false, $endslash = false){
+function id_to_path($IDs, $table = FILE_TABLE, we_database_base $db = null, $prePostKomma = false, $asArray = false, $endslash = false, $isPublished = false){
 	if(!is_array($IDs) && !$IDs){
 		return '/';
 	}
@@ -508,7 +508,7 @@ function id_to_path($IDs, $table = FILE_TABLE, we_database_base $db = null, $pre
 		if($id == 0){
 			$foo[] = '/';
 		} else {
-			$foo2 = getHash('SELECT Path,IsFolder FROM ' . $db->escape($table) . ' WHERE ID=' . intval($id), $db);
+			$foo2 = getHash('SELECT Path,IsFolder FROM ' . $db->escape($table) . ' WHERE ID=' . intval($id) . ($isPublished ? ' AND Published>0' : ''), $db);
 			if(isset($foo2['Path'])){
 				if($endslash && $foo2['IsFolder']){
 					$foo2['Path'] .= '/';
