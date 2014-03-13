@@ -215,7 +215,6 @@ class we_class_folder extends we_folder{
 			$_disabledNote = ' ' . g_l('weClass', '[availableAfterSave]');
 		}
 
-		//javascript:we_cmd('openDirselector', document.forms[0].elements['" . $idname . "'].value, '" . $this->Table . "', 'document.forms[\\'we_form\\'].elements[\\'" . $idname . "\\'].value', '', 'var parents = \\'".$ParentsCSV."\\';if(parents.indexOf(\\',\\' WE_PLUS currentID WE_PLUS \\',\\') > -1){" . we_message_reporting::getShowMessageCall(g_l('alert',"[copy_folder_not_valid]"), we_message_reporting::WE_MESSAGE_ERROR) . "}else{opener.top.we_cmd(\\'copyFolder\\', currentID,".$this->ID.",1,\\'".$this->Table."\\');}','',".$this->RootfolderID.");
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['" . $idname . "'].value");
 		$wecmdenc3 = we_cmd_enc("var parents = '" . $ParentsCSV . "';if(parents.indexOf(',' WE_PLUS currentID WE_PLUS ',') > -1){" . we_message_reporting::getShowMessageCall(g_l('alert', '[copy_folder_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR) . "}else{opener.top.we_cmd('copyFolder', currentID," . $this->ID . ",1,'" . $this->Table . "');};");
 		$but = we_html_button::create_button('select', $this->ID ? "javascript:we_cmd('openDirselector', document.forms[0].elements['" . $idname . "'].value, '" . $this->Table . "', '" . $wecmdenc1 . "', '', '" . $wecmdenc3 . "',''," . $this->RootfolderID . ");" : "javascript:" . we_message_reporting::getShowMessageCall(g_l('alert', "[copy_folders_no_id]"), we_message_reporting::WE_MESSAGE_ERROR), true, 100, 22, "", "", $_disabled);
@@ -251,7 +250,7 @@ class we_class_folder extends we_folder{
 		$userWSArray = makeArrayFromCSV(get_ws());
 
 		$userDefaultWsID = !empty($userWSArray) ? $userWSArray[0] : 0;
-		$userDefaultWsPath = (intval($userDefaultWsID) != 0 ? id_to_path($userDefaultWsID, FILE_TABLE, $DB_WE) : '/');
+		//$userDefaultWsPath = (intval($userDefaultWsID) != 0 ? id_to_path($userDefaultWsID, FILE_TABLE, $DB_WE) : '/');
 
 		//#4076
 		$this->setClassProp();
@@ -282,7 +281,7 @@ class we_class_folder extends we_folder{
 
 
 		$content = array();
-		$foo = unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($classArray["ID"]), "DefaultValues", $DB_WE));
+		$foo = unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($classArray["ID"]), "", $DB_WE));
 
 		$ok = isset($foo["WorkspaceFlag"]) ? $foo["WorkspaceFlag"] : "";
 
@@ -395,7 +394,7 @@ class we_class_folder extends we_folder{
 		$userWSArray = makeArrayFromCSV(get_ws());
 
 		$userDefaultWsID = !empty($userWSArray) ? $userWSArray[0] : 0;
-		$userDefaultWsPath = (intval($userDefaultWsID) != 0 ? id_to_path($userDefaultWsID, FILE_TABLE, $DB_WE) : '/');
+		//$userDefaultWsPath = (intval($userDefaultWsID) != 0 ? id_to_path($userDefaultWsID, FILE_TABLE, $DB_WE) : '/');
 
 		$fields = '*';
 
@@ -575,7 +574,6 @@ class we_class_folder extends we_folder{
 	}
 
 	function getSearchDialog(){
-
 		$DB_WE = new DB_WE();
 
 		//#4076
@@ -597,7 +595,7 @@ class we_class_folder extends we_folder{
 
 
 			if(isset($this->searchclass->objsearchField) && is_array($this->searchclass->objsearchField) && isset($this->searchclass->objsearchField[$i]) && (substr($this->searchclass->objsearchField[$i], 0, 4) == "meta" || substr($this->searchclass->objsearchField[$i], 0, 8) == "checkbox")){
-				$DefaultValues = unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->ClassID), 'DefaultValues', $DB_WE));
+				$DefaultValues = unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->ClassID), '', $DB_WE));
 
 				$values = (substr($this->searchclass->objsearchField[$i], 0, 4) == "meta" ?
 						$DefaultValues[$this->searchclass->objsearchField[$i]]["meta"] :

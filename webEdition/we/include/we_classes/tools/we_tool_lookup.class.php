@@ -46,7 +46,7 @@ abstract class we_tool_lookup{
 		closedir($_d);
 
 		// include autoload function
-		require_once($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
+		require_once($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.inc.php');
 
 		$lang = isset($GLOBALS['WE_LANGUAGE']) ? $GLOBALS['WE_LANGUAGE'] : we_core_Local::getComputedUILang();
 		Zend_Loader::loadClass('we_core_Local');

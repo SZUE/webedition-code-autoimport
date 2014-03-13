@@ -23,7 +23,7 @@
  */
 
 // include autoload function
-require_once('../../lib/we/core/autoload.php');
+require_once ($_SERVER['DOCUMENT_ROOT']. '/webEdition/lib/we/core/autoload.inc.php');
 
 // include configuration
 include_once('<?php print $TOOLNAME;?>/conf/meta.conf.php');

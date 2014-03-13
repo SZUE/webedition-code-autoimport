@@ -864,7 +864,6 @@ class we_voting_frames extends weModuleFrames{
 			return;
 		}
 		$link = $_REQUEST["lnk"];
-		$port = defined("HTTP_PORT") ? HTTP_PORT : 80;
 		$down = getServerUrl() . $link;
 
 		$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 7, 1);

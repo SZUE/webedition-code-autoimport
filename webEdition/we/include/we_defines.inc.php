@@ -22,40 +22,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_stripslashes(&$arr){
-	foreach($arr as $n => $v){
-		if(is_array($v)){
-			we_stripslashes($arr[$n]);
-		} else {
-			$arr[$n] = stripslashes($v);
-		}
-	}
-}
 
-if((get_magic_quotes_gpc() == 1)){
-	if(!empty($_REQUEST)){
-		foreach($_REQUEST as $n => $v){
-			if(is_array($v)){
-				we_stripslashes($v);
-				$_REQUEST[$n] = $v;
-			} else {
-				$_REQUEST[$n] = stripslashes($v);
-			}
-		}
-	}
-}
-
-// bugfix for php bug id #37276
-if(version_compare(phpversion(), '5.1.3', '=')){
-	if(isset($_REQUEST['we_cmd'])){
-		foreach($_REQUEST['we_cmd'] as $key => $value){
-			if(is_array($value)){
-				$value = array_shift($value);
-			}
-			$_REQUEST['we_cmd'][$key] = $value;
-		}
-	}
-}
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf.inc.php');
 
 define('WEBEDITION_DIR', '/webEdition/');
 
@@ -98,15 +66,7 @@ define('WE_THUMB_PREVIEW_PATH', $_SERVER['DOCUMENT_ROOT'] . WE_THUMB_PREVIEW_DIR
 define('WE_FRAGMENT_PATH', WEBEDITION_PATH . 'fragments/');
 define('ZENDCACHE_PATH', WEBEDITION_PATH . 'we/zendcache/');
 
-
-// Activate the webEdition error handler
-require_once (WE_INCLUDES_PATH . 'we_error_handler.inc.php');
-if(!defined('WE_ERROR_HANDLER_SET')){
-	we_error_handler();
-}
-
 include_once (WE_INCLUDES_PATH . 'we_version.php');
-
 
 define('WE_EDITPAGE_PROPERTIES', 0);
 define('WE_EDITPAGE_CONTENT', 1);

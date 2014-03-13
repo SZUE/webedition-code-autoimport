@@ -26,15 +26,6 @@
  * INITIALIZATION
  * *************************************************************************** */
 
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf.inc.php');
-
-if(!file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf_language.inc.php')){
-	require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_defines.inc.php');
-	require_once (WE_LIB_PATH . 'we/core/autoload.php');
-	require_once(WE_INCLUDES_PATH . 'we_global.inc.php');
-	we_loadLanguageConfig();
-}
-
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 //Check some critical PHP Setings #7243

@@ -1,6 +1,6 @@
 <?php
 
-require_once($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
+require_once ($_SERVER['DOCUMENT_ROOT']. '/webEdition/lib/we/core/autoload.inc.php');
 
 $form = new we_ui_layout_Form();
 $form->setName('we_form');
@@ -28,4 +28,3 @@ $htmlPage->addElement($form);
 
 
 print $htmlPage->getHTML();
-?>

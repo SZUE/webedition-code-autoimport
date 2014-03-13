@@ -24,6 +24,7 @@
  */
 define('LIVEUPDATE_DIR', $_SERVER['DOCUMENT_ROOT'] . '/webEdition/liveUpdate/');
 
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_defines.inc.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_error_handler.inc.php');
 if(function_exists('we_error_setHandleAll')){
 	we_error_setHandleAll();
@@ -31,7 +32,6 @@ if(function_exists('we_error_setHandleAll')){
 if(!defined('WE_ERROR_HANDLER_SET')){
 	we_error_handler();
 }
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_defines.inc.php');
 
 if(!isset($_COOKIE[SESSION_NAME]) && isset($_REQUEST['PHPSESSID'])){
 	session_name('PHPSESSID');

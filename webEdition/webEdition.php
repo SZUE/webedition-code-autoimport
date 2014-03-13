@@ -104,8 +104,8 @@ include(JS_PATH . 'weJsStrings.inc.php');
 	var weSidebar = null;
 
 	// seeMode
-	var seeMode = <?php print ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE) ? "true" : "false"; ?>; // in seeMode
-	var seeMode_edit_include = <?php print (isset($SEEM_edit_include) && $SEEM_edit_include) ? "true" : "false"; ?>; // in edit_include mode of seeMode
+	var seeMode = <?php echo ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE) ? "true" : "false"; ?>; // in seeMode
+	var seeMode_edit_include = <?php echo (isset($SEEM_edit_include) && $SEEM_edit_include) ? "true" : "false"; ?>; // in edit_include mode of seeMode
 
 	var wePerms = {
 		"ADMINISTRATOR": <?php echo permissionhandler::hasPerm("ADMINISTRATOR") ? 1 : 0; ?>,
@@ -123,14 +123,14 @@ include(JS_PATH . 'weJsStrings.inc.php');
 	/**
 	 * setting integer, any sum of 1,2,4
 	 */
-	var messageSettings = <?php print (isset($_SESSION["prefs"]["message_reporting"]) && $_SESSION["prefs"]["message_reporting"] > 0 ? we_message_reporting::WE_MESSAGE_ERROR | $_SESSION["prefs"]["message_reporting"] : (we_message_reporting::WE_MESSAGE_ERROR | we_message_reporting::WE_MESSAGE_WARNING | we_message_reporting::WE_MESSAGE_NOTICE)); ?>;
+	var messageSettings = <?php echo (isset($_SESSION["prefs"]["message_reporting"]) && $_SESSION["prefs"]["message_reporting"] > 0 ? we_message_reporting::WE_MESSAGE_ERROR | $_SESSION["prefs"]["message_reporting"] : (we_message_reporting::WE_MESSAGE_ERROR | we_message_reporting::WE_MESSAGE_WARNING | we_message_reporting::WE_MESSAGE_NOTICE)); ?>;
 	var weEditorWasLoaded = false;
 
 	function reload_weJsStrings(newLng) {
 		if (!newLng) {
-			newLng = "<?php print $GLOBALS['WE_LANGUAGE'] ?>";
+			newLng = "<?php echo $GLOBALS['WE_LANGUAGE'] ?>";
 		}
-		var newSrc = "<?php print JS_DIR; ?>weJsStrings.php?lng=" + newLng;
+		var newSrc = "<?php echo JS_DIR; ?>weJsStrings.php?lng=" + newLng;
 		var elem = document.createElement("script");
 		elem.src = newSrc;
 		document.getElementsByTagName("head")[0].appendChild(elem);
@@ -212,13 +212,13 @@ include(JS_PATH . 'weJsStrings.inc.php');
 
 		} else {
 			//  If a include-file is edited and another link is chosen, it will appear on the main window. And the pop-up will be closed.
-<?php print we_message_reporting::getShowMessageCall(g_l('SEEM', "[open_link_in_SEEM_edit_include]"), we_message_reporting::WE_MESSAGE_WARNING); ?>
+<?php echo we_message_reporting::getShowMessageCall(g_l('SEEM', "[open_link_in_SEEM_edit_include]"), we_message_reporting::WE_MESSAGE_WARNING); ?>
 			top.opener.top.doClickDirect(id, ct, table, top.opener);
 			// clean session
 			// get the EditorFrame - this is important due to edit_include_mode!!!!
 			var _ActiveEditor = top.weEditorFrameController.getActiveEditorFrame();
 			if (_ActiveEditor) {
-				top.we_cmd('unlock', _ActiveEditor.getEditorDocumentId(), '<?php print $_SESSION["user"]["ID"]; ?>', _ActiveEditor.getEditorEditorTable(), _ActiveEditor.getEditorTransaction());
+				top.we_cmd('unlock', _ActiveEditor.getEditorDocumentId(), '<?php echo $_SESSION["user"]["ID"]; ?>', _ActiveEditor.getEditorEditorTable(), _ActiveEditor.getEditorTransaction());
 			}
 			top.close();
 		}
@@ -285,13 +285,13 @@ if(defined('MESSAGING_SYSTEM')){
 		}
 	}
 
-	var oldTreeWidth = <?php print weTree::DefaultWidth; ?>;
+	var oldTreeWidth = <?php echo weTree::DefaultWidth; ?>;
 	function toggleTree() {
 		var tfd = self.rframe.document.getElementById("treeFrameDiv");
 		var w = top.getTreeWidth();
 
 		if (tfd.style.display == "none") {
-			oldTreeWidth = (oldTreeWidth <<?php echo weTree::MinWidth; ?> ?<?php print weTree::DefaultWidth; ?> : oldTreeWidth);
+			oldTreeWidth = (oldTreeWidth <<?php echo weTree::MinWidth; ?> ?<?php echo weTree::DefaultWidth; ?> : oldTreeWidth);
 			setTreeWidth(oldTreeWidth);
 			tfd.style.display = "block";
 			setTreeArrow("left");
@@ -306,7 +306,7 @@ if(defined('MESSAGING_SYSTEM')){
 
 	function setTreeArrow(direction) {
 		try {
-			self.rframe.document.getElementById("arrowImg").src = "<?php print BUTTONS_DIR; ?>icons/direction_" + direction + ".gif";
+			self.rframe.document.getElementById("arrowImg").src = "<?php echo BUTTONS_DIR; ?>icons/direction_" + direction + ".gif";
 			if (direction === "right") {
 				self.rframe.document.getElementById("incBaum").style.backgroundColor = "gray";
 				self.rframe.document.getElementById("decBaum").style.backgroundColor = "gray";
@@ -421,8 +421,8 @@ if(defined('MESSAGING_SYSTEM')){
 
 	function we_cmd() {
 		var hasPerm = false;
-		var url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?";
-		var cmsurl = "<?php print WEBEDITION_DIR; ?>cms/index.php/";
+		var url = "<?php echo WEBEDITION_DIR; ?>we_cmd.php?";
+		var cmsurl = "<?php echo WEBEDITION_DIR; ?>cms/index.php/";
 		for (var i = 0; i < arguments.length; i++) {
 			url += "we_cmd[" + i + "]=" + escape(arguments[i]);
 			if (i < (arguments.length - 1))
@@ -479,7 +479,7 @@ if(!empty($_jsincludes)){
 }
 ?>
 			case "we_tracker":
-				new jsWindow("<?php print WE_TRACKER_DIR; ?>/controlcenter.php", "we_tracker", -1, -1, 1024, 768, true, true, true);
+				new jsWindow("<?php echo WE_TRACKER_DIR; ?>/controlcenter.php", "we_tracker", -1, -1, 1024, 768, true, true, true);
 				break;
 			case "openFirstStepsWizardMasterTemplate":
 			case "openFirstStepsWizardDetailTemplates":
@@ -567,13 +567,13 @@ if(!empty($_jsincludes)){
 				toggleBusy(1);
 				if (weEditorFrameController.getActiveDocumentReference()) {
 					if (!hasPerm) {
-<?php print we_message_reporting::getShowMessageCall(g_l('alert', "[no_perms_action]"), we_message_reporting::WE_MESSAGE_ERROR); ?>
-					} else if (window.confirm("<?php print g_l('alert', '[delete_single][confirm_delete]'); ?>\n" + path)) {
+<?php echo we_message_reporting::getShowMessageCall(g_l('alert', "[no_perms_action]"), we_message_reporting::WE_MESSAGE_ERROR); ?>
+					} else if (window.confirm("<?php echo g_l('alert', '[delete_single][confirm_delete]'); ?>\n" + path)) {
 						url2 = url.replace(/we_cmd\[0\]=delete_single_document_question/g, "we_cmd[0]=delete_single_document");
 						submit_we_form(top.weEditorFrameController.getActiveDocumentReference().frames["3"], self.load, url2 + "&we_cmd[2]=" + top.weEditorFrameController.getActiveEditorFrame().getEditorEditorTable());
 					}
 				} else {
-<?php print we_message_reporting::getShowMessageCall(g_l('global', "[no_document_opened]"), we_message_reporting::WE_MESSAGE_ERROR); ?>
+<?php echo we_message_reporting::getShowMessageCall(g_l('global', "[no_document_opened]"), we_message_reporting::WE_MESSAGE_ERROR); ?>
 				}
 				break;
 
@@ -626,12 +626,12 @@ if(!empty($_jsincludes)){
 				toggleBusy(1);
 				if (weEditorFrameController.getActiveDocumentReference()) {
 					if (!hasPerm) {
-<?php print we_message_reporting::getShowMessageCall(g_l('alert', "[no_perms_action]"), we_message_reporting::WE_MESSAGE_ERROR); ?>
+<?php echo we_message_reporting::getShowMessageCall(g_l('alert', "[no_perms_action]"), we_message_reporting::WE_MESSAGE_ERROR); ?>
 					} else {
 						submit_we_form(top.weEditorFrameController.getActiveDocumentReference().frames["3"], self.load, url + "&we_cmd[2]=" + top.weEditorFrameController.getActiveEditorFrame().getEditorEditorTable());
 					}
 				} else {
-<?php print we_message_reporting::getShowMessageCall(g_l('global', "[no_document_opened]"), we_message_reporting::WE_MESSAGE_ERROR); ?>
+<?php echo we_message_reporting::getShowMessageCall(g_l('global', "[no_document_opened]"), we_message_reporting::WE_MESSAGE_ERROR); ?>
 				}
 				break;
 			case "do_delete":
@@ -655,7 +655,7 @@ if(!empty($_jsincludes)){
 				break;
 			case "open_template":
 				we_cmd("load", "<?php echo TEMPLATES_TABLE; ?>");
-				url = "<?php echo WEBEDITION_DIR; ?>we_cmd.php?we_cmd[0]=openDocselector&we_cmd[8]=<?php echo we_base_ContentTypes::TEMPLATE; ?>&we_cmd[2]=<?php print TEMPLATES_TABLE; ?>&we_cmd[5]=<?php echo rawurlencode("opener.top.weEditorFrameController.openDocument(table,currentID,currentType)"); ?>&we_cmd[9]=1";
+				url = "<?php echo WEBEDITION_DIR; ?>we_cmd.php?we_cmd[0]=openDocselector&we_cmd[8]=<?php echo we_base_ContentTypes::TEMPLATE; ?>&we_cmd[2]=<?php echo TEMPLATES_TABLE; ?>&we_cmd[5]=<?php echo rawurlencode("opener.top.weEditorFrameController.openDocument(table,currentID,currentType)"); ?>&we_cmd[9]=1";
 				new jsWindow(url, "we_dirChooser", -1, -1,<?php echo we_selector_file::WINDOW_DOCSELECTOR_WIDTH . "," . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT; ?>, true, true, true, true);
 				break;
 			case "change_passwd":
@@ -668,7 +668,7 @@ if(!empty($_jsincludes)){
 				new jsWindow("<?php echo WEBEDITION_DIR; ?>liveUpdate/liveUpdate.php?active=upgrade", "we_update_<?php echo session_id(); ?>", -1, -1, 600, 500, true, true, true);
 				break;
 				/*case "moduleinstallation":
-				 new jsWindow("<?php print WEBEDITION_DIR; ?>liveUpdate/liveUpdate.php?active=modules", "we_update_<?php print session_id(); ?>", -1, -1, 600, 500, true, true, true);
+				 new jsWindow("<?php echo WEBEDITION_DIR; ?>liveUpdate/liveUpdate.php?active=modules", "we_update_<?php echo session_id(); ?>", -1, -1, 600, 500, true, true, true);
 				 break;*/
 			case "languageinstallation":
 				new jsWindow("<?php echo WEBEDITION_DIR; ?>liveUpdate/liveUpdate.php?active=languages", "we_update_<?php echo session_id(); ?>", -1, -1, 600, 500, true, true, true);
@@ -716,7 +716,7 @@ if(!empty($_jsincludes)){
 				new jsWindow(url, "preferences", -1, -1, 540, 670, true, true, true, true);
 				break;
 			case "editCat":
-				we_cmd("openCatselector", "", "<?php print CATEGORY_TABLE; ?>", "", "", "", "", "", 1);
+				we_cmd("openCatselector", "", "<?php echo CATEGORY_TABLE; ?>", "", "", "", "", "", 1);
 				break;
 			case "editThumbs":
 				new jsWindow(url, "thumbnails", -1, -1, 500, 550, true, true, true);
@@ -939,7 +939,7 @@ if(!empty($_jsincludes)){
 				//var _isEditpageContent = _visibleEditorFrame == _currentEditorRootFrame.document.getElementsByTagName("div")[2].getElementsByTagName("iframe")[0];
 
 				// if we switch from WE_EDITPAGE_CONTENT to another page
-				if (_isEditpageContent && arguments[1] !== <?php print WE_EDITPAGE_CONTENT; ?>) {
+				if (_isEditpageContent && arguments[1] !== <?php echo WE_EDITPAGE_CONTENT; ?>) {
 					// clean body to avoid flickering
 					try {
 						_currentEditorRootFrame.frames[1].document.body.innerHTML = "";
@@ -956,7 +956,7 @@ if(!empty($_jsincludes)){
 					_isEditpageContent = false;
 
 					// if we switch to WE_EDITPAGE_CONTENT from another page
-				} else if (!_isEditpageContent && arguments[1] === <?php print WE_EDITPAGE_CONTENT; ?>) {
+				} else if (!_isEditpageContent && arguments[1] === <?php echo WE_EDITPAGE_CONTENT; ?>) {
 					// switch to content editor frame
 					top.weEditorFrameController.switchToContentEditor();
 					// set var to new active editor frame
@@ -1056,7 +1056,7 @@ if(!empty($_jsincludes)){
 					}
 
 				} else {
-					alert("<?php print g_l('multiEditor', "[no_editor_left]"); ?>");
+					alert("<?php echo g_l('multiEditor', "[no_editor_left]"); ?>");
 
 				}
 				break;
@@ -1079,7 +1079,7 @@ if(!empty($_jsincludes)){
 					we_repl(_nextContent, url + "&frameId=" + nextWindow.getFrameId());
 
 				} else {
-					alert("<?php print g_l('multiEditor', "[no_editor_left]"); ?>");
+					alert("<?php echo g_l('multiEditor', "[no_editor_left]"); ?>");
 
 				}
 				break;
@@ -1171,7 +1171,7 @@ if(!empty($_jsincludes)){
 				new jsWindow(url, "copyfolder", -1, -1, 550, 320, true, true, true);
 				break;
 			case "del_frag":
-				new jsWindow("<?php print WEBEDITION_DIR; ?>delFrag.php?currentID=" + arguments[1], "we_del", -1, -1, 600, 130, true, true, true);
+				new jsWindow("<?php echo WEBEDITION_DIR; ?>delFrag.php?currentID=" + arguments[1], "we_del", -1, -1, 600, 130, true, true, true);
 				break;
 			case "open_wysiwyg_window":
 				if (top.weEditorFrameController.getActiveDocumentReference()) {
@@ -1211,21 +1211,21 @@ if(!empty($_jsincludes)){
 				var _currEditor = top.weEditorFrameController.getActiveEditorFrame();
 
 				if (_currEditor && _currEditor.getEditorType() === "cockpit") {
-					if (confirm('<?php print g_l('alert', '[cockpit_reset_settings]'); ?>')) {
+					if (confirm('<?php echo g_l('alert', '[cockpit_reset_settings]'); ?>')) {
 						//FIXME: currently this doesn't work
-						top.weEditorFrameController.getActiveDocumentReference().location = '<?php print WEBEDITION_DIR; ?>we/include/we_widgets/cmd.php?we_cmd[0]=' + arguments[0];
+						top.weEditorFrameController.getActiveDocumentReference().location = '<?php echo WEBEDITION_DIR; ?>we/include/we_widgets/cmd.php?we_cmd[0]=' + arguments[0];
 						if ((typeof treeData !== "undefined") && treeData) {
 							treeData.unselectnode();
 						}
 					}
 				} else {
-<?php print we_message_reporting::getShowMessageCall(g_l('alert', '[cockpit_not_activated]'), we_message_reporting::WE_MESSAGE_NOTICE); ?>
+<?php echo we_message_reporting::getShowMessageCall(g_l('alert', '[cockpit_not_activated]'), we_message_reporting::WE_MESSAGE_NOTICE); ?>
 				}
 
 				break;
 			case "edit_home":
 				if (arguments[1] === 'add') {
-					self.load.location = '<?php print WEBEDITION_DIR; ?>we/include/we_widgets/cmd.php?we_cmd[0]=' + arguments[1] + '&we_cmd[1]=' + arguments[2] + '&we_cmd[2]=' + arguments[3];
+					self.load.location = '<?php echo WEBEDITION_DIR; ?>we/include/we_widgets/cmd.php?we_cmd[0]=' + arguments[1] + '&we_cmd[1]=' + arguments[2] + '&we_cmd[2]=' + arguments[3];
 				}
 				break;
 			case "edit_navi":
@@ -1246,23 +1246,23 @@ if(!empty($_jsincludes)){
 					top.weEditorFrameController.getActiveDocumentReference().createWidget(arguments[0].substr(arguments[0].length - 3), 1, 1);
 				}
 				else {
-<?php print we_message_reporting::getShowMessageCall(g_l('alert', '[cockpit_not_activated]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
+<?php echo we_message_reporting::getShowMessageCall(g_l('alert', '[cockpit_not_activated]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 				}
 				break;
 			case "initPlugin":
-				weplugin_wait = new jsWindow("<?php print WEBEDITION_DIR; ?>editors/content/eplugin/weplugin_wait.php?callback=" + arguments[1], "weplugin_wait", -1, -1, 300, 100, true, false, true);
+				weplugin_wait = new jsWindow("<?php echo WEBEDITION_DIR; ?>editors/content/eplugin/weplugin_wait.php?callback=" + arguments[1], "weplugin_wait", -1, -1, 300, 100, true, false, true);
 				break;
 			case "edit_settings_newsletter":
-				new jsWindow("<?php print WE_MODULES_DIR; ?>newsletter/edit_newsletter_frameset.php?pnt=newsletter_settings", "newsletter_settings", -1, -1, 600, 750, true, false, true);
+				new jsWindow("<?php echo WE_MODULES_DIR; ?>newsletter/edit_newsletter_frameset.php?pnt=newsletter_settings", "newsletter_settings", -1, -1, 600, 750, true, false, true);
 				break;
 			case "edit_settings_customer":
-				new jsWindow("<?php print WE_MODULES_DIR; ?>customer/edit_customer_frameset.php?pnt=settings", "customer_settings", -1, -1, 520, 300, true, false, true);
+				new jsWindow("<?php echo WE_MODULES_DIR; ?>customer/edit_customer_frameset.php?pnt=settings", "customer_settings", -1, -1, 520, 300, true, false, true);
 				break;
 			case "edit_settings_shop":
 <?php
 if(defined("WE_SHOP_MODULE_DIR")){
 	?>
-					new jsWindow("<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_pref.php", "shoppref", -1, -1, 470, 600, true, false, true);
+					new jsWindow("<?php echo WE_SHOP_MODULE_DIR; ?>edit_shop_pref.php", "shoppref", -1, -1, 470, 600, true, false, true);
 	<?php
 }
 ?>
@@ -1271,7 +1271,7 @@ if(defined("WE_SHOP_MODULE_DIR")){
 <?php
 if(defined("WE_MESSAGING_MODULE_DIR")){
 	?>
-					new jsWindow("<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_settings.php?mode=1", "messaging_settings", -1, -1, 280, 200, true, false, true);
+					new jsWindow("<?php echo WE_MESSAGING_MODULE_DIR; ?>messaging_settings.php?mode=1", "messaging_settings", -1, -1, 280, 200, true, false, true);
 	<?php
 }
 ?>
@@ -1293,16 +1293,16 @@ if(defined("WE_MESSAGING_MODULE_DIR")){
 				we_cmd("glossary_settings");
 				break;
 			case "sysinfo":
-				new jsWindow("<?php print WEBEDITION_DIR; ?>sysinfo.php", "we_sysinfo", -1, -1, 720, 660, true, false, true);
+				new jsWindow("<?php echo WEBEDITION_DIR; ?>sysinfo.php", "we_sysinfo", -1, -1, 720, 660, true, false, true);
 				break;
 			case "showerrorlog":
-				new jsWindow("<?php print WEBEDITION_DIR; ?>errorlog.php", "we_errorlog", -1, -1, 920, 660, true, false, true);
+				new jsWindow("<?php echo WEBEDITION_DIR; ?>errorlog.php", "we_errorlog", -1, -1, 920, 660, true, false, true);
 				break;
 			case "view_backuplog":
-				new jsWindow("<?php print WEBEDITION_DIR; ?>backuplog.php", "we_backuplog", -1, -1, 720, 660, true, false, true);
+				new jsWindow("<?php echo WEBEDITION_DIR; ?>backuplog.php", "we_backuplog", -1, -1, 720, 660, true, false, true);
 				break;
 			case "show_message_console":
-				new jsWindow("<?php print WEBEDITION_DIR; ?>we/include/jsMessageConsole/messageConsole.php", "we_jsMessageConsole", -1, -1, 600, 500, true, false, true, false);
+				new jsWindow("<?php echo WEBEDITION_DIR; ?>we/include/jsMessageConsole/messageConsole.php", "we_jsMessageConsole", -1, -1, 600, 500, true, false, true, false);
 				break;
 			case "remove_from_editor_plugin":
 				if (arguments[1] && top.plugin && top.plugin.remove) {
@@ -1324,7 +1324,7 @@ if(defined("WE_MESSAGING_MODULE_DIR")){
 				return 0;
 				break;
 			case "open_tagreference":
-				var docupath = "http://tags.webedition.org/<?php print stristr($GLOBALS['WE_LANGUAGE'], 'Deutsch') ? 'de' : 'en'  ?>/" + arguments[1];
+				var docupath = "http://tags.webedition.org/<?php echo ($GLOBALS['WE_LANGUAGE'] == 'Deutsch') ? 'de' : 'en'  ?>/" + arguments[1];
 				new jsWindow(docupath, "we_tagreference", -1, -1, 1024, 768, true, true, true);
 				break;
 <?php
@@ -1355,7 +1355,7 @@ pWebEdition_JSwe_cmds();
 			doc.body.removeChild(doc.forms[0]);
 		}
 		var formElement = doc.createElement("FORM");
-		formElement.action = '<?php print WEBEDITION_DIR; ?>we_cmd.php';
+		formElement.action = '<?php echo WEBEDITION_DIR; ?>we_cmd.php';
 		formElement.method = "post";
 		formElement.target = target;
 
@@ -1409,7 +1409,7 @@ if(permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
 }
 
 if($_table_to_load){
-	print 'we_cmd("load","' . $_table_to_load . '");' . "\n";
+	echo 'we_cmd("load","' . $_table_to_load . '");' . "\n";
 }
 ?>
 	}
@@ -1421,7 +1421,7 @@ if($_table_to_load){
 		try {
 			browserwind = window.open("<?php echo WEBEDITION_DIR; ?>openBrowser.php?url=" + escape(url), "browser", "menubar=yes,resizable=yes,scrollbars=yes,location=yes,status=yes,toolbar=yes");
 		} catch (e) {
-<?php print we_message_reporting::getShowMessageCall(g_l('alert', "[browser_crashed]"), we_message_reporting::WE_MESSAGE_ERROR); ?>
+<?php echo we_message_reporting::getShowMessageCall(g_l('alert', "[browser_crashed]"), we_message_reporting::WE_MESSAGE_ERROR); ?>
 		}
 	}
 <?php

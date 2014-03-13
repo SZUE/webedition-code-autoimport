@@ -1,6 +1,6 @@
 <?php
 
-require_once($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
+require_once ($_SERVER['DOCUMENT_ROOT']. '/webEdition/lib/we/core/autoload.inc.php');
 
 $buttonHref = new we_ui_controls_Button(
 	array(
@@ -250,4 +250,3 @@ $buttonTable4->setCancelButton($buttonCancel2);
 $htmlPage->addElement($buttonTable4);
 
 print $htmlPage->getHTML();
-?>
