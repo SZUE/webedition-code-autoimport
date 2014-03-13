@@ -792,7 +792,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 		if(defined('OBJECT_TABLE')){
 			$objidname = 'we_' . $this->Name . '_txt[ObjID]';
 			$objtextname = 'we_' . $this->Name . '_txt[ObjPath]';
-			$objPath = f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID = ' . intval($this->getElement('ObjID')), 'Path', $this->DB_WE);
+			$objPath = f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID = ' . intval($this->getElement('ObjID')), '', $this->DB_WE);
 			$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$objidname'].value");
 			$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$objtextname'].value");
 			$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements['we_" . $this->Name . "_txt[LinkType]'][3].checked=true;");

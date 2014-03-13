@@ -122,7 +122,6 @@ $_tab_1 = we_html_tools::htmlDialogLayout('
 		<div id="dictSelector" style="display: none; width: 400px; height: 220px;background-color: silver;">
 			<div id="appletPanel"></div>
 		</div>
-
 		<div id="addButt">' . we_html_button::create_button_table(array(we_html_button::create_button("save", "javascript:document.we_form.submit()"), we_html_button::create_button("add", "javascript:showDictSelector();"))) . '</div>
 	</div>
 	 ', '', '');
@@ -287,7 +286,7 @@ $_applet_code2 = we_html_element::htmlApplet(array(
 			if (document.spellchecker.uploadFinished) {
 				if (document.spellchecker.uploadFinished()) {
 					if (document.spellchecker.packingFinished()) {
-<?php print we_message_reporting::getShowMessageCall(g_l('modules_spellchecker', '[dict_saved]'), we_message_reporting::WE_MESSAGE_NOTICE); ?>
+<?php echo we_message_reporting::getShowMessageCall(g_l('modules_spellchecker', '[dict_saved]'), we_message_reporting::WE_MESSAGE_NOTICE); ?>
 					}
 					hideDictSelector();
 					appletActiv = false;

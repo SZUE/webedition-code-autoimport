@@ -813,17 +813,13 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 	}
 
 	function getHTMLCopy(){
-		$IDName = "copyid";
-		$Pathname = "copyid_text";
-
-		//javascript:we_cmd('openSelector',document.we_form.elements['$IDName'].value,'".NEWSLETTER_TABLE."','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','opener.we_cmd(\\'copy_newsletter\\');','".session_id()."','".get_ws(NEWSLETTER_TABLE)."')
-		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$IDName'].value");
-		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$Pathname'].value");
+		$wecmdenc1 = we_cmd_enc("document.we_form.elements['copyid'].value");
+		$wecmdenc2 = we_cmd_enc("document.we_form.elements['copyid_text'].value");
 		$wecmdenc3 = we_cmd_enc("opener.we_cmd('copy_newsletter');");
 
-		return $this->View->htmlHidden($IDName, 0) .
-			$this->View->htmlHidden($Pathname, "") .
-			we_html_button::create_button('select', "javascript:we_cmd('openSelector',document.we_form.elements['$IDName'].value,'" . NEWSLETTER_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','" . get_ws(NEWSLETTER_TABLE) . "')");
+		return $this->View->htmlHidden('copyid', 0) .
+			$this->View->htmlHidden('copyid_text', "") .
+			we_html_button::create_button('select', "javascript:we_cmd('openSelector',document.we_form.elements['copyid'].value,'" . NEWSLETTER_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','" . get_ws(NEWSLETTER_TABLE) . "')");
 	}
 
 	function getHTMLCustomer($group){
