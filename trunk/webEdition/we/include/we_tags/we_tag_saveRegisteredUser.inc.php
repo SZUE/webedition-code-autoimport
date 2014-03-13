@@ -55,21 +55,18 @@ function we_tag_saveRegisteredUser($attribs){
 					we_saveCustomerImages();
 					$set = we_tag_saveRegisteredUser_processRequest($protected, $allowed);
 
-					if(!empty($set)){
+					if($set){
 						// User in DB speichern
 						$set['ModifyDate'] = sql_function('UNIX_TIMESTAMP()');
 						$set['ModifiedBy'] = 'frontend';
 						$GLOBALS['DB_WE']->query('INSERT INTO ' . CUSTOMER_TABLE . ' SET ' . we_database_base::arraySetter($set));
 
 						// User in session speichern
-						$uID = f('SELECT ID FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $GLOBALS['DB_WE']->escape($_REQUEST['s']['Username']) . '"', 'ID', $GLOBALS['DB_WE']);
-						$GLOBALS["we_customer_write_ID"] = $uID;
+						$_SESSION['webuser']['ID'] = f('SELECT ID FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $GLOBALS['DB_WE']->escape($_REQUEST['s']['Username']) . '"', 'ID', $GLOBALS['DB_WE']);
+						$GLOBALS["we_customer_write_ID"] = $_SESSION['webuser']['ID'];
 						$GLOBALS["we_customer_writen"] = true;
 						$GLOBALS['we_customer_written'] = true;
-						if($uID && $changesessiondata){
-							$_SESSION['webuser'] = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . $uID);
-							$_SESSION['webuser']['registered'] = true;
-
+						if($_SESSION['webuser']['ID'] && $changesessiondata){
 							$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET MemberSince=UNIX_TIMESTAMP(),LastAccess=UNIX_TIMESTAMP(),LastLogin=UNIX_TIMESTAMP(),
 									ModifyDate=UNIX_TIMESTAMP(),ModifiedBy="frontend" WHERE ID=' . $_SESSION['webuser']['ID']);
 						}
@@ -109,35 +106,46 @@ function we_tag_saveRegisteredUser($attribs){
 			// existierender User (Daten werden von User geaendert)!!
 			$Username = isset($_REQUEST['s']['Username']) ? $_REQUEST['s']['Username'] : $_SESSION['webuser']['Username'];
 
-			if(f('SELECT 1 FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $GLOBALS["DB_WE"]->escape($Username) . '" AND ID!=' . intval($_REQUEST['s']['ID'])) != '1'){ // es existiert kein anderer User mit den neuen Username oder username hat sich nicht geaendert
-				if(isset($_REQUEST['s'])){
-
-					$hook = new weHook('customer_preSave', '', array('customer' => &$_REQUEST['s'], 'from' => 'tag', 'type' => 'modify', 'tagname' => 'saveRegisteredUser'));
-					$ret = $hook->executeHook();
-
-					we_saveCustomerImages();
-					$set_a = we_tag_saveRegisteredUser_processRequest($protected, $allowed);
-
-					if(isset($_REQUEST['s']['Password']) && $_REQUEST['s']['Password'] != $_SESSION['webuser']['Password']){//bei Password�nderungen m�ssen die Autologins des Users gel�scht werden
-						$GLOBALS['DB_WE']->query('DELETE FROM ' . CUSTOMER_AUTOLOGIN_TABLE . ' WHERE WebUserID=' . intval($_REQUEST['s']['ID']));
-					}
-					if(!empty($set_a)){
-						$set_a['ModifyDate'] = sql_function('UNIX_TIMESTAMP()');
-						$set_a['ModifiedBy'] = 'frontend';
-						$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET ' . we_database_base::arraySetter($set_a) . ' WHERE ID=' . intval($_REQUEST['s']['ID']));
-						$GLOBALS["we_customer_writen"] = true;
-						$GLOBALS['we_customer_written'] = true;
-					}
-				}
-			} else {
+			if(f('SELECT 1 FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $GLOBALS["DB_WE"]->escape($Username) . '" AND ID!=' . intval($_SESSION['webuser']['ID']))){
 				$userexists = $userexists ? $userexists : g_l('customer', '[username_exists]');
 				print getHtmlTag('script', array('type' => 'text/javascript'), 'history.back(); ' . we_message_reporting::getShowMessageCall(sprintf($userexists, $_REQUEST['s']['Username']), we_message_reporting::WE_MESSAGE_FRONTEND));
+			} else
+			// es existiert kein anderer User mit den neuen Username oder username hat sich nicht geaendert
+			if(isset($_REQUEST['s'])){
+
+				$hook = new weHook('customer_preSave', '', array('customer' => &$_REQUEST['s'], 'from' => 'tag', 'type' => 'modify', 'tagname' => 'saveRegisteredUser'));
+				$ret = $hook->executeHook();
+
+				we_saveCustomerImages();
+				$set_a = we_tag_saveRegisteredUser_processRequest($protected, $allowed);
+
+				if(isset($_REQUEST['s']['Password']) && $_REQUEST['s']['Password'] != $_SESSION['webuser']['Password']){//bei Password�nderungen m�ssen die Autologins des Users gel�scht werden
+					$GLOBALS['DB_WE']->query('DELETE FROM ' . CUSTOMER_AUTOLOGIN_TABLE . ' WHERE WebUserID=' . intval($_SESSION['webuser']['ID']));
+				}
+				if(!empty($set_a)){
+					$set_a['ModifyDate'] = sql_function('UNIX_TIMESTAMP()');
+					$set_a['ModifiedBy'] = 'frontend';
+					$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET ' . we_database_base::arraySetter($set_a) . ' WHERE ID=' . intval($_SESSION['webuser']['ID']));
+					$GLOBALS["we_customer_writen"] = true;
+					$GLOBALS['we_customer_written'] = true;
+				}
 			}
 
 			//die neuen daten in die session schreiben
 			$oldReg = $_SESSION['webuser']['registered'];
 			if($changesessiondata){
-				$_SESSION['webuser'] = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($_REQUEST['s']['ID']));
+				//keep Password if known
+				if(SECURITY_SESSION_PASSWORD & we_customer_customer::STORE_PASSWORD){
+					$oldPwd = $_SESSION['webuser']['_Password'];
+				}
+				$_SESSION['webuser'] = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . $_SESSION['webuser']['ID'], null, MYSQL_ASSOC);
+				if((SECURITY_SESSION_PASSWORD & we_customer_customer::STORE_DBPASSWORD) == 0){
+					unset($_SESSION['webuser']['Password']);
+				}
+				if(SECURITY_SESSION_PASSWORD & we_customer_customer::STORE_PASSWORD){
+					$_SESSION['webuser']['_Password'] = $oldPwd;
+				}
+				$_SESSION['webuser']['registered'] = true;
 			}
 			//don't set anything that wasn't set before
 			$_SESSION['webuser']['registered'] = $oldReg;
