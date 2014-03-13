@@ -991,7 +991,7 @@ class we_objectFile extends we_document{
 				$textname = 'we_' . $this->Name . '_txt[' . $name . '_path' . $f . ']';
 				$idname = 'we_' . $this->Name . '_' . self::TYPE_MULTIOBJECT . '[' . $name . '_default' . $f . ']';
 
-				$rootDir = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' oft LEFT JOIN ' . OBJECT_TABLE . ' ot ON oft.Path=ot.Path WHERE oft.IsClassFolder=1 AND ot.ID=' . intval($classid), '', $db);
+				$rootDir = f('SELECT oft.ID FROM ' . OBJECT_FILES_TABLE . ' oft LEFT JOIN ' . OBJECT_TABLE . ' ot ON oft.Path=ot.Path WHERE oft.IsClassFolder=1 AND ot.ID=' . intval($classid), '', $db);
 				$path = $this->getElement('we_object_' . $name . '_path');
 				if(($myid = intval($objects[$f]))){
 					$path = $path ? $path : f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . $myid, '', $db);
