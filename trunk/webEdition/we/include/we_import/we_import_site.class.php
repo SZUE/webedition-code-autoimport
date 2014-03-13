@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_import_site{
+class we_import_site {
 
 	var $step = 0;
 	var $cmd = '';
@@ -575,21 +575,17 @@ class we_import_site{
 	 * @return	string
 	 */
 	private function _getTemplateSelectHTML($tid){
-		$table = TEMPLATES_TABLE;
-		$textname = 'templateDummy';
-		$idname = 'templateID';
-		$path = f('SELECT Path FROM ' . $GLOBALS['DB_WE']->escape($table) . ' WHERE ID=' . intval($tid), 'Path', $GLOBALS['DB_WE']);
+		$path = f('SELECT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($tid), 'Path', $GLOBALS['DB_WE']);
 		//javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','opener.displayTable();','" . session_id() . "','','text/weTmpl',1)
-		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$idname'].value");
-		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$textname'].value");
+		$wecmdenc1 = we_cmd_enc("document.we_form.elements['templateID'].value");
+		$wecmdenc2 = we_cmd_enc("document.we_form.elements['templateDummy'].value");
 		$wecmdenc3 = we_cmd_enc("opener.displayTable();");
 
-		$button = we_html_button::create_button(
-				"select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','" . we_base_ContentTypes::TEMPLATE . "',1)");
+		$button = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['templateID'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','" . we_base_ContentTypes::TEMPLATE . "',1)");
 
-		$foo = we_html_tools::htmlTextInput($textname, 30, $path, "", ' readonly', "text", 320, 0);
+		$foo = we_html_tools::htmlTextInput('templateDummy', 30, $path, "", ' readonly', "text", 320, 0);
 		return we_html_tools::htmlFormElementTable(
-				$foo, oldHtmlspecialchars(g_l('siteimport', "[template]"), ENT_QUOTES), "left", "defaultfont", we_html_tools::hidden($idname, intval($tid)), we_html_tools::getPixel(20, 4), $button);
+				$foo, oldHtmlspecialchars(g_l('siteimport', "[template]"), ENT_QUOTES), "left", "defaultfont", we_html_tools::hidden('templateID', intval($tid)), we_html_tools::getPixel(20, 4), $button);
 	}
 
 	/**
@@ -1057,24 +1053,20 @@ class we_import_site{
 	 */
 	private static function _formPathHTML($templateName = "neueVorlage", $myid = 0){
 		$path = id_to_path($myid, TEMPLATES_TABLE);
-		$table = TEMPLATES_TABLE;
-		$textname = 'templateDirName';
-		$idname = 'templateParentID';
-		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
-		$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$textname'].value");
-		$button = we_html_button::create_button(
-				"select", "javascript:we_cmd('openDirselector',document.forms['we_form'].elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "')");
+		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['templateParentID'].value");
+		$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['templateDirName'].value");
+		$button = we_html_button::create_button("select", "javascript:we_cmd('openDirselector',document.forms['we_form'].elements['templateParentID'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "')");
 
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId("TplPath");
 		$yuiSuggest->setContentType("folder");
-		$yuiSuggest->setInput($textname, $path);
-		$yuiSuggest->setResult($idname, 0);
+		$yuiSuggest->setInput('templateDirName', $path);
+		$yuiSuggest->setResult('templateParentID', 0);
 		$yuiSuggest->setLabel(g_l('weClass', "[dir]"));
 		$yuiSuggest->setMaxResults(20);
 		$yuiSuggest->setMayBeEmpty(1);
 		$yuiSuggest->setWidth(320);
-		$yuiSuggest->setTable($table);
+		$yuiSuggest->setTable(TEMPLATES_TABLE);
 		$yuiSuggest->setSelector(weSuggest::DirSelector);
 		$yuiSuggest->setSelectButton($button);
 		$dirChooser = weSuggest::getYuiFiles() . $yuiSuggest->getHTML() . $yuiSuggest->getYuiCode();

@@ -26,6 +26,13 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
+if(isset($_REQUEST['we_cmd'])){
+	$id = $_REQUEST['we_cmd'][1];
+	$JSIDName = we_cmd_dec(2);
+	$JSTextName = we_cmd_dec(3);
+	$JSCommand = we_cmd_dec(4);
+}
+
 $_SERVER["SCRIPT_NAME"] = WE_MODULES_DIR . "banner/we_bannerSelect.php";
 $fs = new we_banner_selector(isset($id) ? $id : (isset($_REQUEST["id"]) ? $_REQUEST["id"] : ''), isset($JSIDName) ? $JSIDName : (isset($_REQUEST["JSIDName"]) ? $_REQUEST["JSIDName"] : ''), isset($JSTextName) ? $JSTextName : (isset($_REQUEST["JSTextName"]) ? $_REQUEST["JSTextName"] : ''), isset($JSCommand) ? $JSCommand : (isset($_REQUEST["JSCommand"]) ? $_REQUEST["JSCommand"] : ''), isset($order) ? $order : (isset($_REQUEST["order"]) ? $_REQUEST["order"] : ''));
 

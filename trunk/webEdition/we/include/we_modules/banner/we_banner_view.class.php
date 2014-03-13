@@ -24,7 +24,7 @@
  */
 /* the parent class of storagable webEdition classes */
 
-class we_banner_view extends we_banner_base{
+class we_banner_view extends we_banner_base {
 
 	// settings array; format settings[setting_name]=settings_value
 	var $settings = array();
@@ -1022,7 +1022,7 @@ class we_banner_view extends we_banner_base{
 		return $yuiSuggest->getHTML();
 	}
 
-	function formDirChooser($width = "", $table = FILE_TABLE, $idvalue, $idname, $title = "", $cmd = "", $acID = ""){
+	function formDirChooser($width = "", $table = FILE_TABLE, $idvalue = 0, $idname = '', $title = "", $cmd = "", $acID = ""){
 		$yuiSuggest = & weSuggest::getInstance();
 		$path = id_to_path($idvalue, $table, $this->db);
 		$textname = md5(uniqid(__FUNCTION__, true));

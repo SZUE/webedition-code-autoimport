@@ -1330,7 +1330,7 @@ class we_object extends we_document{
 		$pid = $this->getElement($name . "class", "dat");
 
 		$db = new DB_WE();
-		$classPath = f("SELECT Path FROM " . OBJECT_TABLE . " WHERE ID=" . intval($pid), "Path", $db);
+		$classPath = f('SELECT Path FROM ' . OBJECT_TABLE . " WHERE ID=" . intval($pid), "", $db);
 		$textname = 'we_' . $this->Name . '_txt[' . $name . '_path' . $f . ']';
 		$idname = 'we_' . $this->Name . "_input[" . $name . "defaultvalue" . $f . "]";
 		$myid = $this->getElement($name . "defaultvalue" . $f, "dat");

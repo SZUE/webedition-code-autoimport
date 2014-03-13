@@ -29,10 +29,10 @@ switch($_REQUEST['we_cmd'][0]){
 		$INCLUDE = 'we_modules/show_frameset.php';
 		break;
 	case 'openBannerDirselector':
-		$INCLUDE = 'we_modules/banner/we_bannerDirSelectorFrameset.php';
+		$INCLUDE = 'we_modules/banner/we_bannerDirSelect.php';
 		break;
 	case 'openBannerSelector':
-		$INCLUDE = 'we_modules/banner/we_bannerSelectorFrameset.php';
+		$INCLUDE = 'we_modules/banner/we_bannerSelect.php';
 		break;
 	case 'default_banner':
 		$INCLUDE = 'we_modules/banner/we_defaultbanner.php';

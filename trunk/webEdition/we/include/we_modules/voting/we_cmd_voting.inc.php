@@ -29,6 +29,6 @@ switch($_REQUEST['we_cmd'][0]){
 		$INCLUDE = 'we_modules/show_frameset.php';
 		break;
 	case 'openVotingDirselector':
-		//$INCLUDE = 'we_modules/voting/we_votingDirSelectorFrameset.php';
+		//$INCLUDE = 'we_modules/voting/we_votingDirSelect.php';
 		break;
 }

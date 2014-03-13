@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_navigation_frames extends weModuleFrames{
+class we_navigation_frames extends weModuleFrames {
 
 //class weNavigationFrames extends weToolFramesInterim {
 
@@ -761,8 +761,7 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 
 		$_seltype[we_navigation_navigation::STPYE_CATEGORY] = g_l('navigation', '[categories]');
 
-		$_selection_block =
-			$this->View->htmlHidden('CategoriesControl', (isset($_REQUEST['CategoriesCount']) ? $_REQUEST['CategoriesCount'] : 0)) .
+		$_selection_block = $this->View->htmlHidden('CategoriesControl', (isset($_REQUEST['CategoriesCount']) ? $_REQUEST['CategoriesCount'] : 0)) .
 			$this->View->htmlHidden('SortControl', (isset($_REQUEST['SortCount']) ? $_REQUEST['SortCount'] : 0)) .
 			$this->View->htmlHidden('CategoriesCount', (isset($this->Model->Categories) ? count($this->Model->Categories) : '0')) .
 			$this->View->htmlHidden('SortCount', (isset($this->Model->Sort) ? count($this->Model->Sort) : '0')) .
@@ -1130,23 +1129,23 @@ function onSelectionClassChangeJS(value) {
 		if($table == NAVIGATION_TABLE){
 			$_cmd = "javascript:we_cmd('openNavigationDirselector',document.we_form.elements['" . $IDName . "'].value,'document.we_form." . $IDName . ".value','document.we_form." . $PathName . ".value','" . $cmd . "')";
 			$_selector = weSuggest::DirSelector;
+		} else if($filter == 'folder'){
+			$_cmd = "javascript:we_cmd('openSelector',document.we_form.elements['$IDName'].value,'$table','document.we_form.$IDName.value','document.we_form.$PathName.value','" . $cmd . "','" . session_id() . "','$rootDirID')";
+			$_selector = weSuggest::DirSelector;
 		} else {
-			if($filter == 'folder'){
-				$_cmd = "javascript:we_cmd('openSelector',document.we_form.elements['$IDName'].value,'$table','document.we_form.$IDName.value','document.we_form.$PathName.value','" . $cmd . "','" . session_id() . "','$rootDirID')";
-				$_selector = weSuggest::DirSelector;
-			} else {
-				//javascript:we_cmd('openDocselector',document.we_form.elements['$IDName'].value,'$table','document.we_form.$IDName.value','document.we_form.$PathName.value','" . $cmd . "','" . session_id() . "','$rootDirID','$filter'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")
-				$wecmdenc1 = we_cmd_enc("document.we_form.$IDName.value");
-				$wecmdenc2 = we_cmd_enc("document.we_form.$PathName.value");
-				$wecmdenc3 = we_cmd_enc(str_replace('\\', '', $cmd));
-				$_cmd = "javascript:we_cmd('openDocselector',document.we_form.elements['$IDName'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$rootDirID','$filter'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")";
-				$_selector = weSuggest::DocSelector;
-			}
+			//javascript:we_cmd('openDocselector',document.we_form.elements['$IDName'].value,'$table','document.we_form.$IDName.value','document.we_form.$PathName.value','" . $cmd . "','" . session_id() . "','$rootDirID','$filter'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")
+			$wecmdenc1 = we_cmd_enc("document.we_form.$IDName.value");
+			$wecmdenc2 = we_cmd_enc("document.we_form.$PathName.value");
+			$wecmdenc3 = we_cmd_enc(str_replace('\\', '', $cmd));
+			$_cmd = "javascript:we_cmd('openDocselector',document.we_form.elements['$IDName'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$rootDirID','$filter'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")";
+			$_selector = weSuggest::DocSelector;
 		}
-		$mayBeEmpty = 0;
+
 		if($_selector == weSuggest::DocSelector){
 			$_path = $_path == '/' ? "" : $_path;
 			$mayBeEmpty = 1;
+		} else {
+			$mayBeEmpty = 0;
 		}
 
 		if($showtrash){
@@ -1161,14 +1160,7 @@ function onSelectionClassChangeJS(value) {
 			$_button = we_html_button::create_button('select', $_cmd, true, 100, 22, '', '', $disabled);
 		}
 
-		//$_input  = we_html_tools::htmlTextInput($PathName,58,$_path,'','id="yuiAcInput'.$PathName.'"','text',($this->_width_size-$_width),0);
-		$_result = we_html_element::htmlHidden(
-				array(
-					'name' => $IDName,
-					'value' => $IDValue,
-					'id' => 'yuiAcResult' . $PathName
-		));
-		$yuiSuggest = & weSuggest::getInstance();
+		$yuiSuggest = &weSuggest::getInstance();
 		$yuiSuggest->setAcId($PathName);
 		$yuiSuggest->setContentType($acCTypes ? $acCTypes : $filter);
 		$yuiSuggest->setInput($PathName, $_path, array(
