@@ -24,38 +24,43 @@
  * for other classes and scripts and defines
  * the __autoload() function
  */
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_defines.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_error_handler.inc.php');
+we_error_handler(!isset($GLOBALS['WE_TEMPLATE_INIT']));
 
-// Absolute Server Path to the webEdition base directory
-$GLOBALS['__WE_BASE_PATH__'] = WEBEDITION_PATH;
+// include configuration file of webEdition
+require_once (WE_INCLUDES_PATH . 'conf/we_conf.inc.php');
+require_once(WE_INCLUDES_PATH . 'we_classes/we_autoloader.class.php');
 
-// Absolute Server Path to the lib directory
-$GLOBALS['__WE_LIB_PATH__'] = WE_LIB_PATH;
-
-// Absolute Server Path to the apps directory
-$GLOBALS['__WE_APP_PATH__'] = WE_APPS_PATH;
-
-// Absolute Server Path to the apps directory
-$GLOBALS['__WE_CMS_PATH__'] = WEBEDITION_PATH . 'cms';
-
-// Absolute URL to the webEdition base directory (eg. "/webEdition")
-$GLOBALS['__WE_BASE_URL__'] = WEBEDITION_DIR;
-
-// Absolute URL to the lib directory (eg. "/webEdition/lib")
-$GLOBALS['__WE_LIB_URL__'] = LIB_DIR;
-
-// Absolute URL to the apps directory (eg. "/webEdition/apps")
-$GLOBALS['__WE_APP_URL__'] = WE_APPS_DIR;
-
-// Absolute URL to the apps directory (eg. "/webEdition/apps")
-$GLOBALS['__WE_CMS_URL__'] = WEBEDITION_DIR . 'cms';
-
-// add __WE_LIB_PATH__ and __WE_APP_PATH__ to the include_path
 if(ini_set('include_path', WE_LIB_PATH . PATH_SEPARATOR . WE_APPS_PATH . PATH_SEPARATOR . ini_get('include_path')) === FALSE){
 	t_e('unable to add webEdition to include path! Expect Problems!');
 }
+// include Zend_Autoloader  #3815
+require_once('Zend/Loader/Autoloader.php');
 
-require_once(WE_INCLUDES_PATH . 'we_classes/we_autoloader.class.php');
+//FIXME: remove after end of support for PHP 5.3
+function we_stripslashes(&$arr){
+	foreach($arr as $n => $v){
+		if(is_array($v)){
+			we_stripslashes($arr[$n]);
+		} else {
+			$arr[$n] = stripslashes($v);
+		}
+	}
+}
+
+//FIXME: remove after end of support for PHP 5.3
+if((get_magic_quotes_gpc() == 1)){
+	if($_REQUEST){
+		foreach($_REQUEST as $n => $v){
+			if(is_array($v)){
+				we_stripslashes($v);
+				$_REQUEST[$n] = $v;
+			} else {
+				$_REQUEST[$n] = stripslashes($v);
+			}
+		}
+	}
+}
 
 //make we_autoloader the first autoloader
 $ret = spl_autoload_register('we_autoloader::autoload', false, true);
@@ -64,8 +69,6 @@ if($ret != true){
 	spl_autoload_register('we_autoloader::autoload', true);
 }
 
-// include Zend_Autoloader  #3815
-require_once('Zend/Loader/Autoloader.php');
 
 $loader = Zend_Loader_Autoloader::getInstance(); #3815
 $loader->setFallbackAutoloader(true); #3815
@@ -73,8 +76,6 @@ $loader->suppressNotFoundWarnings(true);
 
 spl_autoload_register('we_autoloader::finalLoad', true);
 
-// include configuration file of webEdition
-require_once (WE_INCLUDES_PATH . 'conf/we_conf.inc.php');
 
 if(!defined("DATETIME_INITIALIZED")){// to prevent additional initialization if set somewhere else, i.e in we_conf.inc.php, this also allows later to make that an settings-item
 	if(!date_default_timezone_set(@date_default_timezone_get())){

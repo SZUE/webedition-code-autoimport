@@ -20,7 +20,7 @@
  * @subpackage we_app_Installer
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-require_once (dirname(dirname(__FILE__)) . '/../../we/core/autoload.php');
+require_once ($_SERVER['DOCUMENT_ROOT']. '/webEdition/lib/we/core/autoload.inc.php');
 
 /**
  * @see we_app_Installer

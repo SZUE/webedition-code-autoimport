@@ -26,23 +26,14 @@ if(!isset($_REQUEST['we_cmd'])){
 	exit();
 }
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_defines.inc.php');
-
-//start autoloader!
-include_once ($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 $INCLUDE = '';
 switch($_REQUEST['we_cmd'][0]){
 	case 'open_wysiwyg_window':
-		$INCLUDE = 'wysiwygWindow.inc.php';
-		break;
+		include(WE_INCLUDES_PATH . 'wysiwygWindow.inc.php');
+		exit();
 
 	default:
 		exit();
-}
-
-if($INCLUDE){
-	require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-	include(WE_INCLUDES_PATH . $INCLUDE);
-	exit;
 }

@@ -1,7 +1,6 @@
 <?php
 
-require_once($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
-
+require_once ($_SERVER['DOCUMENT_ROOT']. '/webEdition/lib/we/core/autoload.inc.php');
 
 $select = new we_ui_controls_Select();
 $select->setName('select');
@@ -151,4 +150,3 @@ $htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Select.removeLastOpt
 
 
 print $htmlPage->getHTML();
-?>

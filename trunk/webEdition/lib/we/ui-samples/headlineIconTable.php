@@ -1,6 +1,6 @@
 <?php
 
-require_once($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
+require_once ($_SERVER['DOCUMENT_ROOT']. '/webEdition/lib/we/core/autoload.inc.php');
 
 $inp = new we_ui_controls_TextField(array('name' => 'test', 'value' => 'default', 'width' => 100));
 $inp1 = new we_ui_controls_TextField(array('name' => 'test1', 'value' => 'default', 'width' => 100));

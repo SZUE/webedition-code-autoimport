@@ -19,7 +19,6 @@
  * @package    we_util
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-//include_once $GLOBALS['__WE_LIB_PATH__'] . '/Zend/Mail.php';
 
 /**
  * PHP email transport class

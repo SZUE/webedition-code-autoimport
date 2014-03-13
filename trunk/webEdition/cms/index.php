@@ -23,7 +23,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 // include autoload function
-require_once('../lib/we/core/autoload.php');
+require_once ($_SERVER['DOCUMENT_ROOT']. '/webEdition/lib/we/core/autoload.inc.php');
+
 
 // get controller instabce
 $controller = Zend_Controller_Front::getInstance();

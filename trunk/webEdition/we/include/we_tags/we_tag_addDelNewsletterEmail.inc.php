@@ -204,7 +204,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 				$use_https_refer = f('SELECT pref_value FROM ' . NEWSLETTER_PREFS_TABLE . ' WHERE pref_name="use_https_refer"', '', $db);
 				$protocol = ($use_https_refer ? 'https://' : 'http://');
 
-				$port = defined('HTTP_PORT') ? HTTP_PORT : ($use_https_refer ? 443 : 80);
+				$port = $use_https_refer ? 443 : 80;
 				$basehref = $protocol . $_SERVER['SERVER_NAME'] . ':' . $port;
 
 				$confirmLink = ($id ? id_to_path($id, FILE_TABLE) : $_SERVER['SCRIPT_NAME']) . '?confirmID=' . $confirmID . '&mail=' . rawurlencode($f['subscribe_mail']);

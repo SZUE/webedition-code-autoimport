@@ -231,9 +231,6 @@ function getHTTP($server, $url, $port = '', $username = '', $password = ''){
 //FIXME: add code for proxy, see weXMLBrowser
 	$_opt = getHttpOption();
 	if(strpos($server, '://') === FALSE){
-		if(!$port){
-			$port = defined('HTTP_PORT') ? HTTP_PORT : 80;
-		}
 		$server = 'http' . ($port == 443 ? 's' : '') . '://' . (($username && $password) ? "$username:$password@" : '') . $server . ':' . $port;
 	}
 	switch($_opt){
@@ -1454,11 +1451,8 @@ function we_templateInit(){
 	} else {
 		$GLOBALS['WE_TEMPLATE_INIT'] = 1;
 
-		// Activate the webEdition error handler
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_error_handler.inc.php');
-		we_error_handler(false);
-
-		require_once ($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
+		// Activate the autoloader & webEdition error handler
+		require_once ($_SERVER['DOCUMENT_ROOT'] .'/webEdition/lib/we/core/autoload.inc.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tag.inc.php');
 
 		if(!isset($GLOBALS['DB_WE'])){

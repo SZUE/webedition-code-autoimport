@@ -55,19 +55,20 @@ session_set_cookie_params($cookie['lifetime'], $cookie['path'], $cookie['domain'
 if(!isset($GLOBALS['we'])){
 	$GLOBALS['we'] = array();
 }
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_defines.inc.php');
 if(ini_get('session.gc_probability') != '0' && !@opendir(session_save_path())){
 	$GLOBALS['FOUND_SESSION_PROBLEM'] = ini_get('session.gc_probability');
 	ini_set('session.gc_probability', '0');
 	//won't work with apps like phpmyadmin session_save_path($_SERVER['DOCUMENT_ROOT'] . TEMP_DIR);
 }
+
 //start autoloader!
-require_once ($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
+require_once ($_SERVER['DOCUMENT_ROOT']. '/webEdition/lib/we/core/autoload.inc.php');
 
 require_once (WE_INCLUDES_PATH . 'we_global.inc.php');
 update_mem_limit(32);
 
-include_once (WE_INCLUDES_PATH . 'conf/we_conf_language.inc.php');
+we_loadLanguageConfig();
+
 
 //	Insert all config files for all modules.
 include_once (WE_INCLUDES_PATH . 'conf/we_active_integrated_modules.inc.php');
