@@ -27,7 +27,7 @@
  * Customer filter (model) for document (or object) filters
  *
  */
-class we_customer_documentFilter extends we_customer_abstractFilter{
+class we_customer_documentFilter extends we_customer_abstractFilter {
 
 	const ACCESS = 'f_1';
 	const CONTROLONTEMPLATE = 'f_2';
@@ -162,10 +162,9 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	static function getFilterByIdAndTable($id, $table, we_database_base $db = null){
 		$db = ($db ? $db : new DB_WE());
 		$hash = getHash('SELECT * FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="' . $db->escape(stripTblPrefix($table)) . '" AND modelId = ' . intval($id), $db);
-		if(!empty($hash)){
-			return self::getFilterByDbHash($hash);
-		}
-		return ''; // important do NOT return null
+		return ($hash ?
+				self::getFilterByDbHash($hash) :
+				''); // important do NOT return null
 	}
 
 	/**

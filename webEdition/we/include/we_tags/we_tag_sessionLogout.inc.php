@@ -28,9 +28,9 @@ function we_tag_sessionLogout($attribs, $content){
 	}
 	$id = weTag_getAttribute('id', $attribs);
 	$id = ($id == 'self') ? $GLOBALS['WE_MAIN_DOC']->ID : $id;
-	$row = getHash('SELECT Path,IsFolder,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $GLOBALS['DB_WE']);
+	$row = getHash('SELECT Path,IsFolder,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id));
 
-	$url = (!empty($row) ? $row['Path'] . ($row['IsFolder'] ? '/' : '') : '');
+	$url = ($row ? $row['Path'] . ($row['IsFolder'] ? '/' : '') : '');
 	$attr = we_make_attribs($attribs, 'id,_name_orig');
 
 	return '<a href="' . $url . '?we_webUser_logout=1" ' . ($attr ? $attr : '') . '>' . $content . '</a>';

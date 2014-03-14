@@ -458,7 +458,7 @@ top.fsheader.selectIt();';
 		while($pid != 0){
 			++$c;
 			$data = getHash('SELECT ID,Text,ParentID FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($pid), $this->db);
-			if(!empty($data)){
+			if($data){
 				$out = '<option value="' . $data['ID'] . '"' . (($z == 0) ? ' selected="selected"' : '') . '>' . $data['Text'] . '</option>' . $out;
 				$z++;
 			}

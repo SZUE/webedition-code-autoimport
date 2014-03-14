@@ -664,7 +664,7 @@ abstract class we_root extends we_class{
 			$p = '/' . $this->Text;
 			$z = 0;
 			while($pid && $z < 50){
-				list($pid, $text) = getHash('SELECT ParentID,Text FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($pid), $this->DB_WE);
+				list($pid, $text) = getHash('SELECT ParentID,Text FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($pid), $this->DB_WE,MYSQL_NUM);
 				$p = '/' . $text . $p;
 				$z++;
 			}

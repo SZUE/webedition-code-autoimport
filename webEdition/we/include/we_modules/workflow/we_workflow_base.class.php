@@ -92,16 +92,16 @@ class we_workflow_base{
 
 	function sendMail($userID, $subject, $description, $contecttype = 'text/plain'){
 		$errs = array();
-		$foo = f("SELECT Email FROM " . USER_TABLE . " WHERE ID=" . intval($userID), "Email", $this->db);
+		$foo = f('SELECT Email FROM ' . USER_TABLE . ' WHERE ID=' . intval($userID), "", $this->db);
 		if(!empty($foo) && we_check_email($foo)){
-			$this_user = getHash("SELECT First,Second,Email FROM " . USER_TABLE . " WHERE ID=" . intval($_SESSION["user"]["ID"]), $this->db);
+			$this_user = getHash('SELECT First,Second,Email FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION["user"]["ID"]), $this->db);
 			we_mail($foo, correctUml($subject), $description, (isset($this_user["Email"]) && $this_user["Email"] != "" ? $this_user["First"] . " " . $this_user["Second"] . " <" . $this_user["Email"] . ">" : ""));
 		}
 	}
 
 	function sendTodo($userID, $subject, $description, $deadline){
 		$errs = array();
-		$foo = f("SELECT username FROM " . USER_TABLE . " WHERE ID=" . intval($userID), "username", $this->db);
+		$foo = f('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($userID), "", $this->db);
 		$rcpts = array($foo); /* user names */
 		return msg_new_todo($rcpts, $subject, $description, $errs, "html", $deadline);
 	}

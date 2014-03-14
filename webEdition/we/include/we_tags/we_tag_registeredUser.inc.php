@@ -31,11 +31,12 @@ function we_tag_registeredUser($attribs){
 	if(preg_match('|^field:(.+)$|', $id, $regs)){
 		$doc = we_getDocForTag($docAttr);
 		$field = $regs[1];
-		if(strlen($field))
+		if(strlen($field)){
 			$id = $doc->getElement($field);
+		}
 	}
 	if($id){
-		$h = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($id), $GLOBALS['DB_WE']);
+		$h = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($id));
 		unset($h['Password']);
 		if($show){
 			$foo = array();
@@ -44,9 +45,8 @@ function we_tag_registeredUser($attribs){
 				$show = str_replace('%' . $f[1], $h[$f[1]], $show);
 			}
 			return $show;
-		} else {
-			return $h['Username'];
 		}
+		return $h['Username'];
 	}
 	return '';
 }

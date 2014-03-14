@@ -604,8 +604,9 @@ top.parentID = "' . $this->values["ParentID"] . '";
 						$_fieldnames = getHash('SELECT DefaultDesc,DefaultTitle,DefaultKeywords FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($result["TableID"]), $this->db, MYSQL_ASSOC);
 						$_selFields = "";
 						foreach($_fieldnames as $_key => $_val){
-							if(empty($_val) || $_val == '_') // bug #4657
+							if(empty($_val) || $_val == '_'){ // bug #4657
 								continue;
+							}
 							if($_val == '_'){
 								$_val = '';
 							}

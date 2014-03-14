@@ -596,8 +596,8 @@ function we_unsubscribeNL($db, $customer, $_customerFieldPrefs, $abos, $paths){
 function getNewsletterFields($request, $confirmid, &$errorcode, $mail = ''){
 	$errorcode = we_newsletter_base::STATUS_SUCCESS;
 	if($confirmid){
-		$_h = getHash('SELECT * FROM ' . NEWSLETTER_CONFIRM_TABLE . ' WHERE confirmID = "' . $GLOBALS['DB_WE']->escape($confirmid) . '" AND LOWER(subscribe_mail)="' . $GLOBALS['DB_WE']->escape(strtolower($mail)) . '"', $GLOBALS['DB_WE']);
-		if(empty($_h)){
+		$_h = getHash('SELECT * FROM ' . NEWSLETTER_CONFIRM_TABLE . ' WHERE confirmID = "' . $GLOBALS['DB_WE']->escape($confirmid) . '" AND LOWER(subscribe_mail)="' . $GLOBALS['DB_WE']->escape(strtolower($mail)) . '"');
+		if(!$_h){
 			$errorcode = we_newsletter_base::STATUS_CONFIRM_FAILED;
 		}
 		return $_h;

@@ -1685,7 +1685,7 @@ class weVersions{
 
 			$data = getHash('SELECT ID,documentID,version,Text,ContentType,documentTable,Path,binaryPath FROM ' . VERSIONS_TABLE . ' WHERE ' . $w . ' LIMIT 1', $db);
 			$binaryPath = "";
-			if(!empty($data)){
+			if($data){
 				$binaryPath = $db->f('binaryPath');
 				$_SESSION['weS']['versions']['logDeleteIds'][$db->f('ID')] = array(
 					'Text' => $data['Text'],

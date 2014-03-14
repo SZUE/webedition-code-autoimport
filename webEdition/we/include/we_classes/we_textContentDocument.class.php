@@ -162,7 +162,7 @@ abstract class we_textContentDocument extends we_textDocument{
 				$this->DocType = $dt;
 			}
 			$rec = getHash('SELECT * FROM ' . DOC_TYPES_TABLE . ' WHERE ID =' . intval($this->DocType), new DB_WE());
-			if(!empty($rec)){
+			if($rec){
 				$this->Extension = $rec['Extension'];
 				if($rec['ParentPath'] != ''){
 					$this->ParentPath = $rec['ParentPath'];

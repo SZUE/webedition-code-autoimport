@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_selector_category extends we_selector_multiple{
+class we_selector_category extends we_selector_multiple {
 
 	const CREATE_CAT = 7;
 	const DO_RENAME_CAT = 9;
@@ -402,10 +402,7 @@ top.selectFile(top.currentID);') .
 	function printDoRenameEntryHTML(){
 		we_html_tools::protect();
 		echo we_html_tools::getHtmlTop();
-		$foo = getHash('SELECT IsFolder,Text FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editCatID), $this->db);
-		$IsDir = $foo['IsFolder'];
-		//$oldname = $foo["Text"];
-		$what = f('SELECT IsFolder FROM ' . CATEGORY_TABLE . ' WHERE ID=' . intval($this->we_editCatID), 'IsFolder', $this->db);
+		$what = f('SELECT IsFolder FROM ' . CATEGORY_TABLE . ' WHERE ID=' . intval($this->we_editCatID), '', $this->db);
 		$js = 'top.clearEntries();';
 		$this->EntryText = rawurldecode($this->EntryText);
 		$txt = $this->EntryText;
@@ -430,7 +427,7 @@ top.selectFile(top.currentID);') .
 								'Path' => $Path,
 							)) .
 							' WHERE ID=' . intval($this->we_editCatID));
-						if($IsDir){
+						if(f('SELECT IsFolder FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editCatID), '', $this->db)){
 							$this->renameChildrenPath($this->we_editCatID);
 						}
 						$js.='top.currentPath = "' . $Path . '";
@@ -445,13 +442,13 @@ if(top.currentID){
 			}
 		}
 
-		print we_html_element::jsElement(
-				$js .
-				$this->printCmdAddEntriesHTML() .
-				$this->printCMDWriteAndFillSelectorHTML() .
-				'top.fsfooter.document.we_form.fname.value = "";
+		echo we_html_element::jsElement(
+			$js .
+			$this->printCmdAddEntriesHTML() .
+			$this->printCMDWriteAndFillSelectorHTML() .
+			'top.fsfooter.document.we_form.fname.value = "";
 top.selectFile(' . $this->we_editCatID . ');top.makeNewFolder = 0;') .
-			'</head><body></body></html>';
+		'</head><body></body></html>';
 	}
 
 	function printFramesetJSDoClickFn(){
@@ -711,7 +708,7 @@ function setDir(id){
 			}
 			$this->id = $this->dir;
 			if($this->id){
-				list($Path, $Text) = getHash('SELECT Path,Text FROM ' . CATEGORY_TABLE . ' WHERE ID=' . intval($this->id), $this->db);
+				list($Path, $Text) = getHash('SELECT Path,Text FROM ' . CATEGORY_TABLE . ' WHERE ID=' . intval($this->id), $this->db, MYSQL_NUM);
 			} else {
 				$Path = '';
 				$Text = '';
@@ -751,7 +748,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 			$this->id = $this->dir;
 
 			if($this->id){
-				list($Path, $Text) = getHash('SELECT Path,Text FROM ' . CATEGORY_TABLE . ' WHERE ID=' . intval($this->id), $this->db);
+				list($Path, $Text) = getHash('SELECT Path,Text FROM ' . CATEGORY_TABLE . ' WHERE ID=' . intval($this->id), $this->db, MYSQL_NUM);
 			} else {
 				$Path = '';
 				$Text = '';
@@ -914,13 +911,13 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 					array('default' => array('Title' => '', 'Description' => ''))
 				);
 
-			if($result["ParentID"] != 0){
+			if($result["ParentID"]){
 				$result2 = getHash('SELECT Path FROM ' . CATEGORY_TABLE . ' WHERE ID=' . intval($result["ParentID"]), new DB_WE());
 				$path = isset($result2["Path"]) ? $result2["Path"] : '/';
 			} else {
 				$path = '/';
 			}
-			$parentId = isset($result["ParentID"]) ? $result["ParentID"] : '0';
+			$parentId = isset($result["ParentID"]) ? $result["ParentID"] : 0;
 			$category = isset($result["Category"]) ? $result["Category"] : '';
 			$catID = isset($result["ID"]) ? intval($result["ID"]) : 0;
 			$title = $fields[$_SESSION['weS']["we_catVariant"]]["Title"];
