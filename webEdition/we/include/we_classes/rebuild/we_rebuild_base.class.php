@@ -305,9 +305,9 @@ abstract class we_rebuild_base{
 			}
 			self::insertTemplatesInArray($preDone, $data, $mt, $tt);
 		}
-		if(!empty($todo)){
+		if($todo){
 			//we have conflicts
-			t_e('conflicting templates in rebuild', $todo, $done);
+			//t_e('conflicting templates in rebuild', $todo, $done);
 			//add them even if rebuild will not succeed
 			self::insertTemplatesInArray($todo, $data, $mt, $tt);
 		}

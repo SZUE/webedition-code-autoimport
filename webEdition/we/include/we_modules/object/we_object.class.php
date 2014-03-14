@@ -1869,7 +1869,6 @@ class we_object extends we_document{
 				$this->ObjectID = 0;
 				$this->CreationDate = time();
 				$this->CreatorID = $_SESSION["user"]["ID"];
-				$this->DefaultInit = true;
 				$this->ID = 0;
 				$this->OldPath = "";
 				$this->Published = 1;
