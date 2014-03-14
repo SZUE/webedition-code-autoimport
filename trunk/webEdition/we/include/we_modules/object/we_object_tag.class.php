@@ -51,7 +51,7 @@ class we_object_tag{
 		$unique = md5(uniqid(__FUNCTION__, true));
 
 		$foo = getHash('SELECT TableID,ObjectID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->id), $this->DB_WE);
-		if(empty($foo)){
+		if(!$foo){
 			return;
 		}
 		//FIXME: fix regex in listview_object and listview_multiobject, then restore type int for ID

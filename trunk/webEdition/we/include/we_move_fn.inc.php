@@ -62,7 +62,7 @@ function moveTreeEntries($dontMoveClassFolders = false){
 function checkMoveItem($DB_WE, $targetDirectoryID, $id, $table, &$items2move){
 	// check if entry is a folder
 	$row = getHash('SELECT Path, Text, IsFolder FROM ' . $DB_WE->escape($table) . ' WHERE  ID=' . intval($id), $DB_WE);
-	if(empty($row) || $row['IsFolder']){
+	if(!$row || $row['IsFolder']){
 		return -1;
 	}
 
@@ -105,7 +105,7 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems){
 		return false;
 	} elseif($targetDirectoryID){
 		$row = getHash('SELECT IsFolder,Path,ID FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($targetDirectoryID), $DB_WE);
-		if(empty($row) || !$row["IsFolder"]){
+		if(!$row || !$row["IsFolder"]){
 			return false;
 		}
 		$newPath = $row['Path'];
@@ -143,7 +143,7 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems){
 			$isFolder = ($row["IsFolder"] == 1 ? true : false);
 			$icon = $row['Icon'];
 			$item = array('ID' => $id, 'Text' => $fileName, 'Path' => $oldPath, 'Icon' => $icon);
-			if(empty($row) || $isFolder){
+			if(!$row || $isFolder){
 				$notMovedItems[] = $item;
 				return false;
 			}
@@ -216,7 +216,7 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems){
 			$item = array(
 				'ID' => $id, 'Text' => $fileName, 'Path' => $oldPath, 'Icon' => $icon
 			);
-			if(empty($row) || $isFolder){
+			if(!$row || $isFolder){
 				$notMovedItems[] = $item;
 				return false;
 			}

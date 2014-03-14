@@ -223,7 +223,6 @@ class we_search_listview extends listviewBase{
 				$db = new DB_WE();
 				$path_parts = pathinfo($_SERVER["SCRIPT_NAME"]);
 				$objectdaten = getHash('SELECT  Url,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->DB_WE->Record["OID"]) . " LIMIT 1", $db);
-				$objecturl = $objectdaten['Url'];
 				$objecttriggerid = ($this->triggerID ? $this->triggerID : $objectdaten['TriggerID']);
 
 				if($objecttriggerid){
@@ -233,17 +232,17 @@ class we_search_listview extends listviewBase{
 
 				if(NAVIGATION_DIRECTORYINDEX_NAMES && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 					$this->DB_WE->Record["WE_PATH"] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') .
-						($objecturl != '' ?
-							'/' . $objecturl . $pidstr :
+						($objectdaten['Url'] ?
+							'/' . $objectdaten['Url'] . $pidstr :
 							'/?we_objectID=' . $this->DB_WE->Record["OID"] . str_replace('?', '&amp;', $pidstr));
 				} else {
-					$this->DB_WE->Record["WE_PATH"] = ($objecturl != '' ?
-							($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $path_parts['filename'] . '/' . $objecturl . $pidstr :
+					$this->DB_WE->Record["WE_PATH"] = ($objectdaten['Url']?
+							($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $path_parts['filename'] . '/' . $objectdaten['Url'] . $pidstr :
 							$_SERVER["SCRIPT_NAME"] . '?we_objectID=' . $this->DB_WE->Record["OID"] . str_replace('?', '&amp;', $pidstr));
 				}
 				$this->DB_WE->Record["wedoc_Path"] = $this->DB_WE->Record["WE_PATH"];
 				$this->DB_WE->Record["we_WE_URL"] = $objectdaten['Url'];
-				$this->DB_WE->Record["we_WE_TRIGGERID"] = ($this->triggerID ? $this->triggerID : $objectdaten['TriggerID']);
+				$this->DB_WE->Record["we_WE_TRIGGERID"] = $objecttriggerid;
 			} else {
 				$this->DB_WE->Record["wedoc_Path"] = $this->DB_WE->Record["Path"];
 				$this->DB_WE->Record["WE_PATH"] = $this->DB_WE->Record["Path"];

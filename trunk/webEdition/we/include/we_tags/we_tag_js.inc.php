@@ -29,16 +29,16 @@ function we_tag_js($attribs){
 	$id = weTag_getAttribute('id', $attribs);
 	$row = getHash('SELECT Path,IsFolder,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id));
 
-	if(!empty($row)){
-		$url = $row['Path'] . ($row['IsFolder'] ? '/' : '');
-
-		$attribs['type'] = 'text/javascript';
-		$attribs['src'] = (we_isHttps() ? '' : BASE_JS) . $url;
-
-		$attribs = removeAttribs($attribs, array('id'));
-
-		//	prepare $attribs for output:
-		return getHtmlTag('script', $attribs, '', true) . "\n";
+	if(!$row){
+		return '';
 	}
-	return '';
+	$url = $row['Path'] . ($row['IsFolder'] ? '/' : '');
+
+	$attribs['type'] = 'text/javascript';
+	$attribs['src'] = (we_isHttps() ? '' : BASE_JS) . $url;
+
+	$attribs = removeAttribs($attribs, array('id'));
+
+	//	prepare $attribs for output:
+	return getHtmlTag('script', $attribs, '', true) . "\n";
 }

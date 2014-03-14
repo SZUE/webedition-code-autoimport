@@ -763,7 +763,7 @@ class we_navigation_navigation extends weModelBase{
 			$pid = 0;
 		}
 		$_db = new DB_WE();
-		while(empty($_charset)){
+		while(!$_charset){
 			$_hash = getHash('SELECT ParentID,Charset FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($pid), $_db);
 			if(isset($_hash['ParentID'])){
 				if(isset($_hash['Charset']) && !empty($_hash['Charset'])){

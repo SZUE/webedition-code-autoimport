@@ -1410,7 +1410,7 @@ function set_state_edit_delete_recipient(control) {
 							$h = getHash('SELECT Step,Offset FROM ' . NEWSLETTER_TABLE . ' WHERE ID=' . intval($this->newsletter->ID), $this->db);
 
 							if($h['Step'] != 0 || $h['Offset'] != 0){
-								print we_html_element::jsScript(JS_DIR . 'windows.js') .
+								echo we_html_element::jsScript(JS_DIR . 'windows.js') .
 									we_html_element::jsElement('
 										self.focus();
 										top.content.get_focus=0;
@@ -1420,7 +1420,7 @@ function set_state_edit_delete_recipient(control) {
 							}
 						}
 
-						if(empty($this->newsletter->Sender)){
+						if(!$this->newsletter->Sender){
 							$this->newsletter->Sender = $this->settings["default_sender"];
 						}
 

@@ -28,7 +28,7 @@ function we_tag_css($attribs){
 	}
 
 	$row = getHash('SELECT Path,IsFolder,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval(weTag_getAttribute('id', $attribs)));
-	if(empty($row)){
+	if(!$row){
 		return '';
 	}
 

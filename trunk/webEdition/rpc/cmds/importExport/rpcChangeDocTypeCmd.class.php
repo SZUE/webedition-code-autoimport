@@ -30,7 +30,7 @@ class rpcChangeDocTypeCmd extends rpcCmd{
 		//$categories = "";
 		if(isset($_REQUEST['docType'])){
 			if($_REQUEST['docType'] >= 0){
-				$values = getHash('SELECT * FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($_REQUEST['docType']), $GLOBALS['DB_WE']);
+				$values = getHash('SELECT * FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($_REQUEST['docType']));
 
 				$ids_arr = makeArrayFromCSV($values["Templates"]);
 

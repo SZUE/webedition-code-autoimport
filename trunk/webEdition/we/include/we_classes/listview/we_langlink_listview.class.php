@@ -28,7 +28,7 @@
  * @desc    class for tag <we:listview>
  *
  */
-class we_langlink_listview extends listviewBase{
+class we_langlink_listview extends listviewBase {
 
 	var $docType = ""; /* doctype string */
 	var $IDs = array(); /* array of ids with pages which are found */
@@ -130,9 +130,7 @@ class we_langlink_listview extends listviewBase{
 					$dt['Path'] = id_to_path($this->id, FILE_TABLE);
 				} else {
 					$dt['Path'] = id_to_path($this->id, OBJECT_FILES_TABLE);
-					$row = getHash("SELECT Url, TriggerID FROM " . OBJECT_FILES_TABLE . " WHERE ID=" . intval($this->id), $this->DB_WE);
-					$dt['Url'] = $row['Url'];
-					$dt['TriggerID'] = $row['TriggerID'];
+					list($dt['Url'], $dt['TriggerID']) = getHash('SELECT Url,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->id), $this->DB_WE, MYSQL_NUM);
 				}
 				$this->foundlinks[$this->ownlanguage] = $dt;
 			}

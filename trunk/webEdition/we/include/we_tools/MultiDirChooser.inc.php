@@ -112,7 +112,7 @@ class MultiDirChooser{
 
 		foreach($idArr as $id){
 			$this->Record = getHash('SELECT ID,' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($id), $this->db);
-			if(!empty($this->Record)){
+			if($this->Record){
 				for($i = 0; $i < $this->lines; $i++){
 					$out .= $this->getLine($i);
 				}

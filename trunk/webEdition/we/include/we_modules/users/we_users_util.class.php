@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-abstract class we_users_util{
+abstract class we_users_util {
 
 	private static function getGroupList($id){
 		if(!$id){
@@ -162,21 +162,20 @@ abstract class we_users_util{
 		}
 		$db = new DB_WE();
 		$tmp = getHash('SELECT RestrictOwners,Owners,CreatorID FROM ' . $tab . ' WHERE ID=' . intval($folderID), $db);
-		if(!count($tmp)){
+		if(!$tmp){
 			return true;
 		}
 		if($tmp['RestrictOwners']){
-			$ownersArr = makeArrayFromCSV($tmp['Owners']);
+			$ownersArr = explode(',', $tmp['Owners']);
 			foreach($ownersArr as $uid){
 				we_users_util::addAllUsersAndGroups($uid, $ownersArr);
 			}
 			$ownersArr[] = $tmp['CreatorID'];
 			$ownersArr = array_unique($ownersArr);
 			return (in_array($_SESSION['user']['ID'], $ownersArr));
-		} else {
-			$pid = f('SELECT ParentID FROM ' . $tab . ' WHERE ID=' . intval($folderID), '', $db);
-			return self::userIsOwnerCreatorOfParentDir($pid, $tab);
 		}
+		$pid = f('SELECT ParentID FROM ' . $tab . ' WHERE ID=' . intval($folderID), '', $db);
+		return self::userIsOwnerCreatorOfParentDir($pid, $tab);
 	}
 
 	public static function canEditModule($modName){

@@ -53,7 +53,7 @@ function getLoad(){
 
 
 	if(isset($_REQUEST['cmd']) && ($_REQUEST['cmd'] == 'ok')){
-		$userData = getHash('SELECT UseSalt,passwd FROM ' . USER_TABLE . ' WHERE username="' . $DB_WE->escape($_SESSION['user']['Username']) . '"', $DB_WE);
+		$userData = getHash('SELECT UseSalt,passwd FROM ' . USER_TABLE . ' WHERE username="' . $DB_WE->escape($_SESSION['user']['Username']) . '"');
 
 		if(!we_users_user::comparePasswords($userData['UseSalt'], $_SESSION['user']['Username'], $userData['passwd'], $oldpasswd)){
 			$js = we_message_reporting::getShowMessageCall(g_l('global', '[pass_not_match]'), we_message_reporting::WE_MESSAGE_ERROR) . '
