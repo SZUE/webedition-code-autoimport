@@ -43,8 +43,8 @@ function we_tag_sessionField($attribs, $content){
 	$autofill = weTag_getAttribute('autofill', $attribs, false, true);
 	if($autofill){
 		$condition = ($name == 'Username' ?
-						array('caps' => 4, 'small' => 4, 'nums' => 4, 'specs' => 0) :
-						array('caps' => 3, 'small' => 4, 'nums' => 3, 'specs' => 2));
+				array('caps' => 4, 'small' => 4, 'nums' => 4, 'specs' => 0) :
+				array('caps' => 3, 'small' => 4, 'nums' => 3, 'specs' => 2));
 
 		$pass = new we_customer_generatePassword(7, $condition);
 		$orgVal = $pass->PassGen();
@@ -61,7 +61,7 @@ function we_tag_sessionField($attribs, $content){
 				$orgVal = time();
 			}
 			return we_html_tools::getDateInput2(
-							"s[we_date_" . $name . "]", ($orgVal ? new DateTime((is_numeric($orgVal) ? '@' : '') . $orgVal) : new DateTime()), false, $format, '', '', $xml, $minyear, $maxyear);
+					"s[we_date_" . $name . "]", ($orgVal ? new DateTime((is_numeric($orgVal) ? '@' : '') . $orgVal) : new DateTime()), false, $format, '', '', $xml, $minyear, $maxyear);
 			break;
 		case 'country':
 			$newAtts = removeAttribs($attribs, array('checked', 'type', 'options', 'selected', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'rows', 'cols', 'maxlength', 'wysiwyg'));
@@ -70,8 +70,8 @@ function we_tag_sessionField($attribs, $content){
 			$doc = we_getDocForTag($docAttr);
 			$lang = $doc->Language;
 			$langcode = ($lang != '' ?
-							substr($lang, 0, 2) :
-							we_core_Local::weLangToLocale($GLOBALS["WE_LANGUAGE"]));
+					substr($lang, 0, 2) :
+					we_core_Local::weLangToLocale($GLOBALS["WE_LANGUAGE"]));
 
 			if(!Zend_Locale::hasCache()){
 				Zend_Locale::setCache(getWEZendCache());
@@ -212,23 +212,19 @@ function we_tag_sessionField($attribs, $content){
 		case 'password':
 			$newAtts = removeAttribs($attribs, array('checked', 'options', 'selected', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'rows', 'cols', 'wysiwyg'));
 			$newAtts['name'] = 's[' . $name . ']';
-			$newAtts['value'] = '';//oldHtmlspecialchars($_SESSION['webuser']['_Password']);
+			$newAtts['value'] = ''; //oldHtmlspecialchars($_SESSION['webuser']['_Password']);
 			return getHtmlTag('input', $newAtts);
 		case 'print':
 			$ascountry = weTag_getAttribute('ascountry', $attribs, false, true);
 			$aslanguage = weTag_getAttribute('aslanguage', $attribs, false, true);
-			if(!$ascountry && !$aslanguage){
-				if(is_numeric($orgVal) && !empty($dateformat)){
-					return date($dateformat, $orgVal);
+			if($ascountry || $aslanguage){
+				if(!Zend_Locale::hasCache()){
+					Zend_Locale::setCache(getWEZendCache());
 				}
-				if(!empty($dateformat) && $weTimestemp = new DateTime($orgVal)){
-					return $weTimestemp->format($dateformat);
-				}
-			} else {
+
 				$lang = weTag_getAttribute('outputlanguage', $attribs);
 				if($lang == ''){
-					$docAttr = weTag_getAttribute('doc', $attribs, 'self');
-					$doc = we_getDocForTag($docAttr);
+					$doc = we_getDocForTag(weTag_getAttribute('doc', $attribs, 'self'));
 					$lang = $doc->Language;
 				}
 				$langcode = substr($lang, 0, 2);
@@ -236,36 +232,28 @@ function we_tag_sessionField($attribs, $content){
 					$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
 					$langcode = array_search($lang[0], $GLOBALS['WE_LANGS']);
 				}
-				if($ascountry){
-					if($orgVal == '--'){
-						return '';
-					}
-					if(!Zend_Locale::hasCache()){
-						Zend_Locale::setCache(getWEZendCache());
-					}
-
-					return CheckAndConvertISOfrontend(Zend_Locale::getTranslation($orgVal, 'territory', $langcode));
+				return ($ascountry && $orgVal == '--' ? '' : CheckAndConvertISOfrontend(Zend_Locale::getTranslation($orgVal, ($ascountry ? 'territory' : 'language'), $langcode)));
+			}
+			if($dateformat){
+				if(is_numeric($orgVal)){
+					return date($dateformat, $orgVal);
 				}
-				if($aslanguage){
-					if(!Zend_Locale::hasCache()){
-						Zend_Locale::setCache(getWEZendCache());
-					}
-
-					return CheckAndConvertISOfrontend(Zend_Locale::getTranslation($orgVal, 'language', $langcode));
+				if(($weTimestemp = new DateTime($orgVal))){
+					return $weTimestemp->format($dateformat);
 				}
 			}
-			return $orgVal;
+			return weTag_getAttribute('htmlspecialchars', $attribs, false, true) ? oldHtmlspecialchars($orgVal) : $orgVal;
 		case 'hidden':
 			$usevalue = weTag_getAttribute('usevalue', $attribs, false, true);
 			$languageautofill = weTag_getAttribute('languageautofill', $attribs, false, true);
+			$v=($usevalue ? $value : $orgVal);
 			$_hidden = array(
 				'type' => 'hidden',
 				'name' => 's[' . $name . ']',
-				'value' => ($usevalue ? $value : $orgVal),
+				'value' => weTag_getAttribute('htmlspecialchars', $attribs, false, true) ? oldHtmlspecialchars($v) : $v,
 				'xml' => $xml);
 			if($languageautofill){
-				$docAttr = weTag_getAttribute('doc', $attribs, 'self');
-				$doc = we_getDocForTag($docAttr);
+				$doc = we_getDocForTag(weTag_getAttribute('doc', $attribs, 'self'));
 				$lang = $doc->Language;
 				$langcode = substr($lang, 0, 2);
 				$_hidden['value'] = $langcode;
@@ -330,7 +318,7 @@ function we_tag_sessionField($attribs, $content){
 				return '<table class="weEditTable padding2 spacing2" style="border: solid ' . $bordercolor . ' 1px;">
 	<tr>
 		<td class="weEditmodeStyle" colspan="2" align="center">' .
-						$imgTag . '
+					$imgTag . '
 			<input type="hidden" name="s[' . $name . ']" value="' . $_SESSION['webuser']['imgtmp'][$name]["id"] . '" /></td>
 	</tr>
 	<tr>
