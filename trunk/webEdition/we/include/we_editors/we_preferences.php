@@ -2179,6 +2179,7 @@ function formmailBlockOnOff() {
 
 
 			// Build select box
+	
 			$WYSIWYG_TYPE = new we_html_select(array("name" => "newconf[WYSIWYG_TYPE]", "class" => "weSelect"));
 			$_options = array('tinyMCE' => 'tinyMCE', 'default' => 'webEdition Editor (deprecated))');
 			foreach($_options as $key => $val){
