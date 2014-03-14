@@ -89,7 +89,6 @@ abstract class we_root extends we_class{
 	/* ID of the user who last modify the document */
 	var $ModifierID = 0;
 	var $RestrictOwners = 0;
-	protected $DefaultInit = false; // this flag is set when the document was first initialized with default values e.g. from Doc-Types
 
 	/* Constructor */
 
@@ -97,7 +96,7 @@ abstract class we_root extends we_class{
 		parent::__construct();
 		$this->CreationDate = time();
 		$this->ModDate = time();
-		array_push($this->persistent_slots, 'OwnersReadOnly', 'ParentID', 'ParentPath', 'Text', 'Filename', 'Path', 'Filehash', 'OldPath', 'CreationDate', 'ModDate', 'RebuildDate', 'IsFolder', 'ContentType', 'Icon', 'elements', 'EditPageNr', 'CopyID', 'Owners', 'CreatorID', 'ModifierID', 'DefaultInit', 'RestrictOwners', 'WebUserID');
+		array_push($this->persistent_slots, 'OwnersReadOnly', 'ParentID', 'ParentPath', 'Text', 'Filename', 'Path', 'Filehash', 'OldPath', 'CreationDate', 'ModDate', 'RebuildDate', 'IsFolder', 'ContentType', 'Icon', 'elements', 'EditPageNr', 'CopyID', 'Owners', 'CreatorID', 'ModifierID', 'RestrictOwners', 'WebUserID');
 	}
 
 	function makeSameNew(){

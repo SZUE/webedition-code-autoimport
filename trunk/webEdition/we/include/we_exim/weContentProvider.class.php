@@ -222,7 +222,7 @@ class weContentProvider{
 	}
 
 	static function needSerialize(&$object, $classname, $prop){
-		if($prop == 'schedArr'){
+		if($prop == 'schedArr'||is_array($object->$prop)){
 			return true;
 		}
 		$serialize = array(
@@ -406,7 +406,6 @@ class weContentProvider{
 				$content = serialize($content);
 				$coding = array(self::CODING_ATTRIBUTE => self::CODING_SERIALIZE);
 			}
-
 
 			if(self::needCoding($classname, $v, $content) || self::needCdata($classname, $v, $content)){//fix for faulty parser
 				if(!is_array($content)){

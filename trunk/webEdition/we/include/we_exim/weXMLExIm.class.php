@@ -392,7 +392,7 @@ class weXMLExIm{
 					}
 				}
 
-				if(method($object, 'savebinarydata')){
+				if(method_exists($object, 'savebinarydata')){
 					$object->setElement('data', '');
 				}
 			}
