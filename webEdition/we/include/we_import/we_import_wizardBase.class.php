@@ -558,15 +558,15 @@ setTimeout('we_import(1," . $v['numFiles'] . ");',15);";
 															(g_l('import', '[' . $ref->ContentType . ']', true) != '' ?
 																	g_l('import', '[' . $ref->ContentType . ']') : ''
 															)
-											) . '&nbsp;&nbsp;' . $_path_info;
+											) . '  ' . $_path_info;
 
-									if(strlen($_progress_text) > 75){
+									/*if(strlen($_progress_text) > 75){
 										$_progress_text = addslashes(substr($_progress_text, 0, 65) . '<abbr title="' . $_path_info . '">...</abbr>' . substr($_progress_text, -10));
-									}
+									}*/
 
-									print we_html_element::jsElement(
+									echo we_html_element::jsElement(
 													'if (top.wizbody.addLog){
-												top.wizbody.addLog("' . addslashes(we_html_tools::getPixel(50, 5)) . $_progress_text . '<br>");
+												top.wizbody.addLog("' . addslashes(we_html_tools::getPixel(50, 5) . $_progress_text ). '<br/>");
 											}');
 									flush();
 								} else {
