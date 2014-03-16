@@ -27,7 +27,6 @@ function we_tag_saveRegisteredUser($attribs){
 	$registerallowed = (isset($attribs['register']) ? weTag_getAttribute('register', $attribs, $default_register, true) : $default_register);
 	$protected = makeArrayFromCSV(weTag_getAttribute('protected', $attribs));
 	$allowed = makeArrayFromCSV(weTag_getAttribute('allowed', $attribs));
-	$GLOBALS['we_customer_writen'] = false;
 	$GLOBALS['we_customer_written'] = false;
 	if(defined('CUSTOMER_TABLE') && isset($_REQUEST['s'])){
 		if(isset($_REQUEST['s']['Password2'])){
@@ -62,24 +61,21 @@ function we_tag_saveRegisteredUser($attribs){
 						$GLOBALS['DB_WE']->query('INSERT INTO ' . CUSTOMER_TABLE . ' SET ' . we_database_base::arraySetter($set));
 
 						// User in session speichern
-						$_SESSION['webuser']['ID'] = f('SELECT ID FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $GLOBALS['DB_WE']->escape($_REQUEST['s']['Username']) . '"');
-						$GLOBALS["we_customer_write_ID"] = $_SESSION['webuser']['ID'];
-						$GLOBALS["we_customer_writen"] = true;
+						$_SESSION['webuser'] = array(
+							'ID' => f('SELECT ID FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $GLOBALS['DB_WE']->escape($_REQUEST['s']['Username']) . '"'),
+							'registered' => true,//needed for reload
+						);
+						$GLOBALS['we_customer_write_ID'] = $_SESSION['webuser']['ID'];
 						$GLOBALS['we_customer_written'] = true;
 						if($_SESSION['webuser']['ID'] && $changesessiondata){
-							$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET MemberSince=UNIX_TIMESTAMP(),LastAccess=UNIX_TIMESTAMP(),LastLogin=UNIX_TIMESTAMP(),
-									ModifyDate=UNIX_TIMESTAMP(),ModifiedBy="frontend" WHERE ID=' . $_SESSION['webuser']['ID']);
+							$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET MemberSince=UNIX_TIMESTAMP(),LastAccess=UNIX_TIMESTAMP(),LastLogin=UNIX_TIMESTAMP(),ModifyDate=UNIX_TIMESTAMP(),ModifiedBy="frontend" WHERE ID=' . $_SESSION['webuser']['ID']);
 						}
 					}
 				} else { // Username existiert schon!
-					if(!$userexists){
-						$userexists = g_l('customer', '[username_exists]');
-					}
-
 					// Eingabe in Session schreiben, damit die eingegebenen Werte erhalten bleiben!
 					we_tag_saveRegisteredUser_keepInput();
 
-					echo getHtmlTag('script', array('type' => 'text/javascript'), 'history.back(); ' . we_message_reporting::getShowMessageCall(sprintf($userexists, $_REQUEST['s']['Username']), we_message_reporting::WE_MESSAGE_FRONTEND));
+					echo getHtmlTag('script', array('type' => 'text/javascript'), we_message_reporting::getShowMessageCall(sprintf(($userexists ? $userexists : g_l('customer', '[username_exists]')), $_REQUEST['s']['Username']), we_message_reporting::WE_MESSAGE_FRONTEND));
 				}
 			} else { // Password oder Username leer!
 				// Eingabe in Session schreiben, damit die eingegebenen Werte erhalten bleiben!
@@ -88,17 +84,9 @@ function we_tag_saveRegisteredUser($attribs){
 				}
 
 				if(strlen($_REQUEST['s']['Username']) == 0){
-
-					if(!$userempty){
-						$userempty = g_l('customer', '[username_empty]');
-					}
-					echo getHtmlTag('script', array('type' => 'text/javascript'), 'history.back();' . we_message_reporting::getShowMessageCall($userempty, we_message_reporting::WE_MESSAGE_FRONTEND));
+					echo getHtmlTag('script', array('type' => 'text/javascript'), we_message_reporting::getShowMessageCall(($userempty ? $userempty : g_l('customer', '[username_empty]')), we_message_reporting::WE_MESSAGE_FRONTEND));
 				} else if(strlen($_REQUEST['s']['Password']) == 0){
-
-					if(!$passempty){
-						$passempty = g_l('customer', '[password_empty]');
-					}
-					echo getHtmlTag('script', array('type' => 'text/javascript'), 'history.back();' . we_message_reporting::getShowMessageCall($passempty, we_message_reporting::WE_MESSAGE_FRONTEND));
+					echo getHtmlTag('script', array('type' => 'text/javascript'), we_message_reporting::getShowMessageCall(($passempty ? $passempty : g_l('customer', '[password_empty]')), we_message_reporting::WE_MESSAGE_FRONTEND));
 				}
 			}
 		} else if(isset($_REQUEST['s']['ID']) && $_REQUEST['s']['ID'] == $_SESSION['webuser']['ID'] && $_SESSION['webuser']['registered']){ // existing user
@@ -107,10 +95,10 @@ function we_tag_saveRegisteredUser($attribs){
 
 			if(f('SELECT 1 FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $GLOBALS["DB_WE"]->escape($Username) . '" AND ID!=' . intval($_SESSION['webuser']['ID']))){
 				$userexists = $userexists ? $userexists : g_l('customer', '[username_exists]');
-				echo getHtmlTag('script', array('type' => 'text/javascript'), 'history.back(); ' . we_message_reporting::getShowMessageCall(sprintf($userexists, $_REQUEST['s']['Username']), we_message_reporting::WE_MESSAGE_FRONTEND));
-			} else
-			// es existiert kein anderer User mit den neuen Username oder username hat sich nicht geaendert
-			if(isset($_REQUEST['s'])){
+				echo getHtmlTag('script', array('type' => 'text/javascript'), we_message_reporting::getShowMessageCall(sprintf($userexists, $_REQUEST['s']['Username']), we_message_reporting::WE_MESSAGE_FRONTEND));
+			} elseif(isset($_REQUEST['s'])){
+				// es existiert kein anderer User mit den neuen Username oder username hat sich nicht geaendert
+
 				$hook = new weHook('customer_preSave', '', array('customer' => &$_REQUEST['s'], 'from' => 'tag', 'type' => 'modify', 'tagname' => 'saveRegisteredUser'));
 				$ret = $hook->executeHook();
 
@@ -124,7 +112,6 @@ function we_tag_saveRegisteredUser($attribs){
 					$set_a['ModifyDate'] = sql_function('UNIX_TIMESTAMP()');
 					$set_a['ModifiedBy'] = 'frontend';
 					$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET ' . we_database_base::arraySetter($set_a) . ' WHERE ID=' . intval($_SESSION['webuser']['ID']));
-					$GLOBALS["we_customer_writen"] = true;
 					$GLOBALS['we_customer_written'] = true;
 				}
 			}
