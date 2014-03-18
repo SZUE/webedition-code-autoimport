@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_users_user {
+class we_users_user{
 
 	const TYPE_USER = 0;
 	const TYPE_USER_GROUP = 1;
@@ -981,14 +981,16 @@ _multiEditorreload = true;";
 					$obj = $this->Name . '_Workspace_' . $k;
 					if(isset($_POST[$obj]['id'])){
 						$this->workspaces[$k] = $_POST[$obj]['id'];
-						$obj = $this->Name . '_Workspace_' . $k . '_AddDel';
-						if(isset($_POST[$obj]) && $_POST[$obj] != ''){
-							if($_POST[$obj] == 'new'){//add
-								$this->workspaces[$k][] = 0;
-							} else {
-								unset($this->workspaces[$k][$_POST[$obj]]);
-							}
+					}
+					$obj = $this->Name . '_Workspace_' . $k . '_AddDel';
+					if(isset($_POST[$obj]) && $_POST[$obj] != ''){
+						if($_POST[$obj] == 'new'){//add
+							$this->workspaces[$k][] = 0;
+						} else {
+							unset($this->workspaces[$k][$_POST[$obj]]);
 						}
+					}
+					if(isset($_POST[$obj]['id'])){
 						$obj = $this->Name . '_defWorkspace_' . $k;
 						$this->workspaces_defaults[$k] = array();
 						if(isset($_POST[$obj])){
@@ -1331,24 +1333,24 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 		$_tableObj = new we_html_table($_attr, 12, 2);
 		$line = 0;
 		$_tableObj->setCol($line, 0, null, $this->getUserfield('Salutation', 'salutation'));
-		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('First', 'first_name'));
+		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('First', 'first_name'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Second', 'second_name'));
-		$_tableObj->setCol( ++$line, 0, array('colspan' => 2), we_html_tools::getPixel(560, 20));
-		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('Address', 'address'));
+		$_tableObj->setCol(++$line, 0, array('colspan' => 2), we_html_tools::getPixel(560, 20));
+		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('Address', 'address'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('HouseNo', 'houseno'));
-		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('PLZ', 'PLZ', 'text', 16, true));
+		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('PLZ', 'PLZ', 'text', 16, true));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('City', 'city'));
-		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('State', 'state'));
+		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('State', 'state'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Country', 'country'));
-		$_tableObj->setCol( ++$line, 0, array('colspan' => 2), we_html_tools::getPixel(560, 20));
-		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('Tel_preselection', 'tel_pre'));
+		$_tableObj->setCol(++$line, 0, array('colspan' => 2), we_html_tools::getPixel(560, 20));
+		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('Tel_preselection', 'tel_pre'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Telephone', 'telephone'));
-		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('Fax_preselection', 'fax_pre'));
+		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('Fax_preselection', 'fax_pre'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Fax', 'fax'));
-		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('Handy', 'mobile'));
+		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('Handy', 'mobile'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Email', 'email'));
-		$_tableObj->setCol( ++$line, 0, array('colspan' => 2), we_html_tools::getPixel(520, 4));
-		$_tableObj->setCol( ++$line, 0, array('colspan' => 2), we_html_tools::htmlFormElementTable($_description, g_l('modules_users', '[description]')));
+		$_tableObj->setCol(++$line, 0, array('colspan' => 2), we_html_tools::getPixel(520, 4));
+		$_tableObj->setCol(++$line, 0, array('colspan' => 2), we_html_tools::htmlFormElementTable($_description, g_l('modules_users', '[description]')));
 
 
 		$parts = array(
