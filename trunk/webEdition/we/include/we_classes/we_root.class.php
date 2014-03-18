@@ -664,7 +664,7 @@ abstract class we_root extends we_class{
 			$p = '/' . $this->Text;
 			$z = 0;
 			while($pid && $z < 50){
-				list($pid, $text) = getHash('SELECT ParentID,Text FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($pid), $this->DB_WE,MYSQL_NUM);
+				list($pid, $text) = getHash('SELECT ParentID,Text FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($pid), $this->DB_WE, MYSQL_NUM);
 				$p = '/' . $text . $p;
 				$z++;
 			}
@@ -1256,14 +1256,14 @@ abstract class we_root extends we_class{
 	 */
 	protected function getNavigationFoldersForDoc(){
 		if($this->Table == FILE_TABLE){
-			$category = array_map('escape_sql_query', array_unique(array_filter(array_merge(explode(',', $this->Category), explode(',', $this->oldCategory)))));
+			$category = property_exists($this, 'Category') ? array_map('escape_sql_query', array_unique(array_filter(array_merge(explode(',', $this->Category), explode(',', $this->oldCategory))))) : '';
 			$queries = array('(((Selection="' . we_navigation_navigation::SELECTION_STATIC . '" AND SelectionType="' . we_navigation_navigation::STPYE_DOCLINK . '") OR (IsFolder=1 AND FolderSelection="' . we_navigation_navigation::STPYE_DOCLINK . '")) AND LinkID=' . intval($this->ID) . ')',
 			);
 			if(isset($this->DocType)){
 				//FIXME: query should use ID, not parentID
 				$queries[] = '((Selection="' . we_navigation_navigation::SELECTION_DYNAMIC . '") AND (DocTypeID="' . $this->DB_WE->escape($this->DocType) . '" OR FolderID=' . intval($this->ParentID) . '))';
 			}
-			if(!empty($category)){
+			if($category){
 				//FIXME: query should use ID, not parentID
 				$queries[] = '((Selection="' . we_navigation_navigation::SELECTION_DYNAMIC . '" AND SelectionType="' . we_navigation_navigation::STPYE_DOCTYPE . '") AND (FIND_IN_SET("' . implode('",Categories) OR FIND_IN_SET("', $category) . '",Categories)))';
 			}
