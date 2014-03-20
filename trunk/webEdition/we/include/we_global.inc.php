@@ -923,19 +923,19 @@ function we_check_email($email){ // Zend validates only the pure address
 	return (filter_var($email, FILTER_VALIDATE_EMAIL) !== false);
 }
 
-function getRequestVar($name, $default, $yescode = '', $nocode = ''){
+/*function getRequestVar($name, $default, $yescode = '', $nocode = ''){
 	if(isset($_REQUEST[$name])){
-		if($yescode != ''){
+		if($yescode){
 			eval($yescode);
 		}
 		return $_REQUEST[$name];
 	} else {
-		if($nocode != ''){
+		if($nocode){
 			eval($nocode);
 		}
 		return $default;
 	}
-}
+}*/
 
 /**
  * This function returns preference for given name; Checks first the users preferences and then global
@@ -1181,11 +1181,6 @@ function we_filenameNotValid($filename, $isIso = false){
 
 function we_isHttps(){
 	return isset($_SERVER['HTTPS']) && (strtoupper($_SERVER['HTTPS']) == 'ON' || $_SERVER['HTTPS'] == 1);
-}
-
-//check if number is positive
-function pos_number($val){
-	return abs($val) == $val && $val > 0;
 }
 
 function getVarArray($arr, $string){
