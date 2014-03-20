@@ -10,6 +10,15 @@ abstract class we_base_moduleInfo{
 		}
 	}
 
+	static function we_getModuleNameByContentType($ctype){
+		foreach($GLOBALS['_we_active_integrated_modules'] as $mod){
+			if(strstr($ctype, $mod)){
+				return $mod;
+			}
+		}
+		return '';
+	}
+
 	static function _orderModules($a, $b){
 		return (strcmp($a['text'], $b['text']));
 	}

@@ -414,8 +414,8 @@ abstract class we_root extends we_class{
 	function del_owner($id){
 		$owners = makeArrayFromCSV($this->Owners);
 		if(in_array($id, $owners)){
-			$pos = getArrayKey($id, $owners);
-			if($pos != '' || $pos == '0'){
+			$pos = array_search($id, $owners);
+			if($pos !== false || $pos == '0'){
 				array_splice($owners, $pos, 1);
 			}
 		}

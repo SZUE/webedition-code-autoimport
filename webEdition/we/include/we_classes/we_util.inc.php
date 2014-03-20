@@ -163,4 +163,93 @@ abstract class we_util{
 		return ($_result > 0 ? self::number2System($_result, $chars, $str) : $str);
 	}
 
+	static function getCurlHttp($server, $path, $files = array(), $header = false, $timeout = 0){
+		$_response = array(
+			'data' => '', // data if successful
+			'status' => 0, // 0=ok otherwise error
+			'error' => '' // error string
+		);
+		$parsedurl = parse_url($server);
+		$protocol = (isset($parsedurl['scheme']) ?
+				$parsedurl['scheme'] . '://' :
+				'http://');
+
+		$port = (isset($parsedurl['port']) ? ':' . $parsedurl['port'] : '');
+		$_pathA = explode('?', $path);
+		$_url = $protocol . $parsedurl['host'] . $port . $_pathA[0];
+		if(isset($_pathA[1]) && strlen($_url . $_pathA[1]) < 2000){
+//it is safe to have uri's lower than 2k chars - so no need to do a post which servers (e.g. twitter) do not accept.
+			$_url.='?' . $_pathA[1];
+			unset($_pathA[1]);
+		}
+		$_params = array();
+
+		$_session = curl_init();
+		curl_setopt($_session, CURLOPT_URL, $_url);
+		curl_setopt($_session, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($_session, CURLOPT_FOLLOWLOCATION, true);
+		curl_setopt($_session, CURLOPT_MAXREDIRS, 5);
+
+		if($timeout){
+			curl_setopt($_session, CURLOPT_CONNECTTIMEOUT, $timeout);
+		}
+
+		/* 	if($username != ''){
+		  curl_setopt($_session, CURLOPT_USERPWD, $username . ':' . $password);
+		  } */
+
+		if(isset($_pathA[1]) && $_pathA[1] != ''){
+			$_url_param = explode('&', $_pathA[1]);
+			foreach($_url_param as $cur){
+				$_param_split = explode('=', $cur);
+				$_params[$_param_split[0]] = isset($_param_split[1]) ? $_param_split[1] : '';
+			}
+		}
+
+		if(!empty($files)){
+			foreach($files as $k => $v){
+				$_params[$k] = '@' . $v;
+			}
+		}
+
+		if(!empty($_params)){
+			curl_setopt($_session, CURLOPT_POST, 1);
+			curl_setopt($_session, CURLOPT_POSTFIELDS, $_params);
+		}
+
+		if($header){
+			curl_setopt($_session, CURLOPT_HEADER, 1);
+		}
+
+		if(defined('WE_PROXYHOST') && WE_PROXYHOST != ''){
+
+			$_proxyhost = defined('WE_PROXYHOST') ? WE_PROXYHOST : '';
+			$_proxyport = (defined('WE_PROXYPORT') && WE_PROXYPORT) ? WE_PROXYPORT : '80';
+			$_proxy_user = defined('WE_PROXYUSER') ? WE_PROXYUSER : '';
+			$_proxy_pass = defined('WE_PROXYPASSWORD') ? WE_PROXYPASSWORD : '';
+
+			if($_proxyhost != ''){
+				curl_setopt($_session, CURLOPT_PROXY, $_proxyhost . ':' . $_proxyport);
+				if($_proxy_user != ''){
+					curl_setopt($_session, CURLOPT_PROXYUSERPWD, $_proxy_user . ':' . $_proxy_pass);
+				}
+				curl_setopt($_session, CURLOPT_SSL_VERIFYPEER, FALSE);
+			}
+		}
+
+		$_data = curl_exec($_session);
+
+		if(curl_errno($_session)){
+			$_response['status'] = 1;
+			$_response['error'] = curl_error($_session);
+			return false;
+		} else {
+			$_response['status'] = 0;
+			$_response['data'] = $_data;
+			curl_close($_session);
+		}
+
+		return $_response;
+	}
+
 }

@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_import_site {
+class we_import_site{
 
 	var $step = 0;
 	var $cmd = '';
@@ -43,7 +43,7 @@ class we_import_site {
 	var $importMetadata = true;
 	var $_files;
 	var $_depth = 0;
-	var $_slash = '/';
+	var $_slash = DIRECTORY_SEPARATOR;
 	var $thumbs = '';
 	var $width = '';
 	var $height = '';
@@ -105,9 +105,6 @@ class we_import_site {
 		$this->degrees = isset($_REQUEST['degrees']) ? $_REQUEST['degrees'] : $this->degrees;
 
 		$this->_files = array();
-		if(runAtWin()){
-			$this->_slash = "\\";
-		}
 	}
 
 	/**
@@ -1794,9 +1791,7 @@ class we_import_site {
 		$importDirectory = rtrim(rtrim($_SERVER['DOCUMENT_ROOT'], '/') . $this->from, '/');
 
 		// when running on windows we have to change slashes to backslashes
-		if(runAtWin()){
-			$importDirectory = str_replace("/", "\\", $importDirectory);
-		}
+		$importDirectory = str_replace('/', DIRECTORY_SEPARATOR, $importDirectory);
 		$this->_files = array();
 		$this->_depth = 0;
 		$this->_postProcess = array();

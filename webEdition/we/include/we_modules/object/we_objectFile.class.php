@@ -1716,12 +1716,12 @@ class we_objectFile extends we_document {
 
 		$tarr = makeArrayFromCSV($foo["Templates"]);
 		$warr = makeArrayFromCSV($foo["Workspaces"]);
-		$pos = getArrayKey($wsID, $warr);
+		$pos = array_search($wsID, $warr);
 		if($pos == ""){
 			foreach($warr as $wsi){
 				$wsp = id_to_path($wsi, FILE_TABLE, $this->DB_WE);
 				if(substr($mwsp, 0, strlen($wsp)) == $wsp){
-					$pos = getArrayKey($wsi, $warr);
+					$pos = array_search($wsi, $warr);
 					break;
 				}
 			}
