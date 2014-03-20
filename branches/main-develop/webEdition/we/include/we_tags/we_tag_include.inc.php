@@ -148,7 +148,7 @@ function we_tag_include($attribs){
 	if($id){
 		$tmp = $GLOBALS['WE_MAIN_DOC']->ID == $id || //don't include same id
 			$GLOBALS['we_doc']->ContentType != we_base_ContentTypes::WEDOCUMENT //don't include any unknown document
-			? '' : getHash('SELECT Path,ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . ' AND Published>0');
+			? '' : getHash('SELECT Path,ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . ' AND Published>0',null,MYSQL_NUM);
 		if(!$tmp){
 			return '';
 		}

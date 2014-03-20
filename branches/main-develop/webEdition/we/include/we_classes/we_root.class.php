@@ -89,7 +89,6 @@ abstract class we_root extends we_class{
 	/* ID of the user who last modify the document */
 	var $ModifierID = 0;
 	var $RestrictOwners = 0;
-	protected $DefaultInit = false; // this flag is set when the document was first initialized with default values e.g. from Doc-Types
 
 	/* Constructor */
 
@@ -97,7 +96,7 @@ abstract class we_root extends we_class{
 		parent::__construct();
 		$this->CreationDate = time();
 		$this->ModDate = time();
-		array_push($this->persistent_slots, 'OwnersReadOnly', 'ParentID', 'ParentPath', 'Text', 'Filename', 'Path', 'Filehash', 'OldPath', 'CreationDate', 'ModDate', 'RebuildDate', 'IsFolder', 'ContentType', 'Icon', 'elements', 'EditPageNr', 'CopyID', 'Owners', 'CreatorID', 'ModifierID', 'DefaultInit', 'RestrictOwners', 'WebUserID');
+		array_push($this->persistent_slots, 'OwnersReadOnly', 'ParentID', 'ParentPath', 'Text', 'Filename', 'Path', 'Filehash', 'OldPath', 'CreationDate', 'ModDate', 'RebuildDate', 'IsFolder', 'ContentType', 'Icon', 'elements', 'EditPageNr', 'CopyID', 'Owners', 'CreatorID', 'ModifierID', 'RestrictOwners', 'WebUserID');
 	}
 
 	function makeSameNew(){
@@ -274,7 +273,7 @@ abstract class we_root extends we_class{
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(0);
 		$yuiSuggest->setResult($idname, $myid);
-		$yuiSuggest->setSelector('Dirselector');
+		$yuiSuggest->setSelector(weSuggest::DirSelector);
 		$yuiSuggest->setTable($table);
 		$yuiSuggest->setWidth($width);
 		$yuiSuggest->setSelectButton($button);
@@ -415,8 +414,8 @@ abstract class we_root extends we_class{
 	function del_owner($id){
 		$owners = makeArrayFromCSV($this->Owners);
 		if(in_array($id, $owners)){
-			$pos = getArrayKey($id, $owners);
-			if($pos != '' || $pos == '0'){
+			$pos = array_search($id, $owners);
+			if($pos !== false || $pos == '0'){
 				array_splice($owners, $pos, 1);
 			}
 		}
@@ -524,7 +523,7 @@ abstract class we_root extends we_class{
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(1);
 		$yuiSuggest->setResult($idname, $myid);
-		$yuiSuggest->setSelector('Docselector');
+		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setTable($table);
 		$yuiSuggest->setWidth(388);
 		$yuiSuggest->setSelectButton(we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','text/webedition',1)"));
@@ -577,7 +576,7 @@ abstract class we_root extends we_class{
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(1);
 		$yuiSuggest->setResult($idname, $myid);
-		$yuiSuggest->setSelector('Docselector');
+		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setTable($table);
 		$yuiSuggest->setWidth(388);
 		$yuiSuggest->setSelectButton($button);
@@ -665,7 +664,7 @@ abstract class we_root extends we_class{
 			$p = '/' . $this->Text;
 			$z = 0;
 			while($pid && $z < 50){
-				list($pid, $text) = getHash('SELECT ParentID,Text FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($pid), $this->DB_WE);
+				list($pid, $text) = getHash('SELECT ParentID,Text FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($pid), $this->DB_WE, MYSQL_NUM);
 				$p = '/' . $text . $p;
 				$z++;
 			}
@@ -1257,14 +1256,14 @@ abstract class we_root extends we_class{
 	 */
 	protected function getNavigationFoldersForDoc(){
 		if($this->Table == FILE_TABLE){
-			$category = array_map('escape_sql_query', array_unique(array_filter(array_merge(explode(',', $this->Category), explode(',', $this->oldCategory)))));
+			$category = property_exists($this, 'Category') ? array_map('escape_sql_query', array_unique(array_filter(array_merge(explode(',', $this->Category), explode(',', $this->oldCategory))))) : '';
 			$queries = array('(((Selection="' . we_navigation_navigation::SELECTION_STATIC . '" AND SelectionType="' . we_navigation_navigation::STPYE_DOCLINK . '") OR (IsFolder=1 AND FolderSelection="' . we_navigation_navigation::STPYE_DOCLINK . '")) AND LinkID=' . intval($this->ID) . ')',
 			);
 			if(isset($this->DocType)){
 				//FIXME: query should use ID, not parentID
 				$queries[] = '((Selection="' . we_navigation_navigation::SELECTION_DYNAMIC . '") AND (DocTypeID="' . $this->DB_WE->escape($this->DocType) . '" OR FolderID=' . intval($this->ParentID) . '))';
 			}
-			if(!empty($category)){
+			if($category){
 				//FIXME: query should use ID, not parentID
 				$queries[] = '((Selection="' . we_navigation_navigation::SELECTION_DYNAMIC . '" AND SelectionType="' . we_navigation_navigation::STPYE_DOCTYPE . '") AND (FIND_IN_SET("' . implode('",Categories) OR FIND_IN_SET("', $category) . '",Categories)))';
 			}

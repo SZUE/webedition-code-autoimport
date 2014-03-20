@@ -71,7 +71,7 @@ function saveOnKeyBoard() {
 }";
 
 
-print we_html_element::jsElement($_javascript) .
+echo we_html_element::jsElement($_javascript) .
 		we_html_element::jsScript(JS_DIR . "keyListener.js") . "</head>";
 
 include(WE_INCLUDES_PATH . 'we_editors/we_preferences_footer.inc.php');

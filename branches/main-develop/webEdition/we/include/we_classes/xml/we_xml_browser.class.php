@@ -135,7 +135,7 @@ class we_xml_browser extends we_xml_parser{
 				if(!preg_match($_pattern, $file, $_m)){
 					return false;
 				}
-				$_content = getCurlHttp(str_replace($_m[9], '', $file), $_m[9], array(), false, $timeout);
+				$_content = we_util::getCurlHttp(str_replace($_m[9], '', $file), $_m[9], array(), false, $timeout);
 				if($_content['status'] === 0){
 					$content = $_content['data'];
 				} else {

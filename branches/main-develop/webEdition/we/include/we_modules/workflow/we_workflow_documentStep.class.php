@@ -27,7 +27,7 @@
  * WorkfFlow Document Step definition
  * This class describe document step in workflow process
  */
-class we_workflow_documentStep extends we_workflow_base{
+class we_workflow_documentStep extends we_workflow_base {
 
 	const STATUS_UNKNOWN = 0;
 	const STATUS_APPROVED = 1;
@@ -115,8 +115,8 @@ class we_workflow_documentStep extends we_workflow_base{
 
 				$this->tasks[$i]->todoID = $this->sendTodo($workflowTask->userID, g_l('modules_workflow', '[todo_subject]'), $mess . "<p>" . $path . "</p>", $deadline);
 				if($workflowTask->Mail){
-					$foo = f("SELECT Email FROM " . USER_TABLE . " WHERE ID=" . intval($workflowTask->userID), "Email", $this->db);
-					$this_user = getHash("SELECT First,Second,Email FROM " . USER_TABLE . " WHERE ID=" . intval($_SESSION["user"]["ID"]), $this->db);
+					$foo = f('SELECT Email FROM ' . USER_TABLE . ' WHERE ID=' . intval($workflowTask->userID), "Email", $this->db);
+					$this_user = getHash('SELECT First,Second,Email FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION["user"]["ID"]), $this->db);
 					if($foo){
 						$desc = str_replace('<br />', "\n", $desc);
 						$mess = g_l('modules_workflow', '[todo_next]') . " ID:" . $workflowDoc->document->ID . ", Pfad:" . $workflowDoc->document->Path . "\n\n" . $desc;
@@ -332,15 +332,12 @@ class we_workflow_documentStep extends we_workflow_base{
 	 *
 	 */
 	static function __createStep($WorkflowStep){
-
-		if(is_array($WorkflowStep))
+		if(is_array($WorkflowStep)){
 			return self::__createStepFromHash($WorkflowStep);
+		}
 
 		$tmp = getHash('SELECT * FROM ' . WORKFLOW_STEP_TABLE . ' WHERE ID=' . intval($WorkflowStep) . ' ORDER BY ID', new DB_WE());
-		if(empty($tmp)){
-			return false;
-		}
-		return self::__createStepFromHash($tmp);
+		return $tmp ? self::__createStepFromHash($tmp) : false;
 	}
 
 	/**

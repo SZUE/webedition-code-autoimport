@@ -179,7 +179,6 @@ class we_newsletter_view{
 	function formDocChooser($width = '', $rootDirID = 0, $Pathname = 'ParentPath', $Pathvalue = '/', $IDName = 'ParentID', $IDValue = 0, $cmd = ''){
 		$Pathvalue = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($IDValue), 'Path', $this->db);
 
-		//javascript:we_cmd('openDocselector',document.we_form.elements['$IDName'].value,'".FILE_TABLE."','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','".$cmd."','".session_id()."','$rootDirID','',".(permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).")
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$IDName'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$Pathname'].value");
 		$wecmdenc3 = we_cmd_enc(str_replace('\\', '', $cmd));
@@ -202,7 +201,6 @@ class we_newsletter_view{
 			$Pathvalue = f('SELECT Path FROM ' . $this->db->escape($table) . ' WHERE ID=' . intval($IDValue), 'Path', $this->db);
 		}
 
-		//javascript:we_cmd('openDocselector',document.we_form.elements['$IDName'].value,'$table','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','".$cmd."','".session_id()."','$rootDirID','','$open_doc')
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$IDName'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$Pathname'].value");
 		$wecmdenc3 = we_cmd_enc(str_replace('\\', '', $cmd));
@@ -216,7 +214,7 @@ class we_newsletter_view{
 			$yuiSuggest->setMaxResults(10);
 			$yuiSuggest->setMayBeEmpty(true);
 			$yuiSuggest->setResult($IDName, $IDValue);
-			$yuiSuggest->setSelector('Docselector');
+			$yuiSuggest->setSelector(weSuggest::DocSelector);
 			$yuiSuggest->setTable($table);
 			$yuiSuggest->setWidth($width);
 			$yuiSuggest->setSelectButton($button);
@@ -245,7 +243,7 @@ class we_newsletter_view{
 			$yuiSuggest->setMaxResults(10);
 			$yuiSuggest->setMayBeEmpty(true);
 			$yuiSuggest->setResult($IDName, $IDValue);
-			$yuiSuggest->setSelector("Docselector");
+			$yuiSuggest->setSelector(weSuggest::DocSelector);
 			$yuiSuggest->setTable($table);
 			$yuiSuggest->setWidth($width);
 			$yuiSuggest->setSelectButton($button);
@@ -275,7 +273,7 @@ class we_newsletter_view{
 			$yuiSuggest->setMaxResults(10);
 			$yuiSuggest->setMayBeEmpty(true);
 			$yuiSuggest->setResult($IDName, $IDValue);
-			$yuiSuggest->setSelector('Dirselector');
+			$yuiSuggest->setSelector(weSuggest::DirSelector);
 			$yuiSuggest->setTable(NEWSLETTER_TABLE);
 			$yuiSuggest->setWidth($width);
 			$yuiSuggest->setSelectButton($button);
@@ -1412,7 +1410,7 @@ function set_state_edit_delete_recipient(control) {
 							$h = getHash('SELECT Step,Offset FROM ' . NEWSLETTER_TABLE . ' WHERE ID=' . intval($this->newsletter->ID), $this->db);
 
 							if($h['Step'] != 0 || $h['Offset'] != 0){
-								print we_html_element::jsScript(JS_DIR . 'windows.js') .
+								echo we_html_element::jsScript(JS_DIR . 'windows.js') .
 									we_html_element::jsElement('
 										self.focus();
 										top.content.get_focus=0;
@@ -1422,7 +1420,7 @@ function set_state_edit_delete_recipient(control) {
 							}
 						}
 
-						if(empty($this->newsletter->Sender)){
+						if(!$this->newsletter->Sender){
 							$this->newsletter->Sender = $this->settings["default_sender"];
 						}
 

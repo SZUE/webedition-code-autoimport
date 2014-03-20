@@ -274,7 +274,7 @@ class we_dialog_image extends we_dialog_base{
 			$yuiSuggest->setMaxResults(10);
 			$yuiSuggest->setMayBeEmpty(true);
 			$yuiSuggest->setResult("we_dialog_args[fileID]", str_replace('"', '&quot;', (isset($this->args["fileID"]) ? $this->args["fileID"] : "")));
-			$yuiSuggest->setSelector("Docselector");
+			$yuiSuggest->setSelector(weSuggest::DocSelector);
 			$yuiSuggest->setWidth(300);
 			$yuiSuggest->setSelectButton($but);
 
@@ -305,7 +305,7 @@ class we_dialog_image extends we_dialog_base{
 			$yuiSuggest->setMaxResults(7);
 			$yuiSuggest->setMayBeEmpty(true);
 			$yuiSuggest->setResult("we_dialog_args[longdescid]", (isset($this->args["longdescid"]) ? $this->args["longdescid"] : ""));
-			$yuiSuggest->setSelector("Docselector");
+			$yuiSuggest->setSelector(weSuggest::DocSelector);
 			$yuiSuggest->setWidth(363);
 			$yuiSuggest->setSelectButton($but);
 			$yuiSuggest->setTrashButton($but2);

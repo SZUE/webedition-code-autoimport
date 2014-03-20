@@ -37,11 +37,10 @@ if(isset($_REQUEST["ok"]) && $_REQUEST["ok"]){
 }
 $yuiSuggest = & weSuggest::getInstance();
 
-function formBannerChooser($width = "", $table = BANNER_TABLE, $idvalue, $idname, $title = "", $cmd = ""){
+function formBannerChooser($width = "", $table = BANNER_TABLE, $idvalue=0, $idname='', $title = "", $cmd = ""){
 	$yuiSuggest = & weSuggest::getInstance();
 	$path = id_to_path($idvalue, $table);
 	$textname = md5(uniqid(__FUNCTION__, true));
-	//javascript:we_cmd('openBannerSelector',document.we_form.elements['$idname'].value,'document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','".$cmd."')
 	$wecmdenc1 = we_cmd_enc("document.we_form.elements['$idname'].value");
 	$wecmdenc2 = we_cmd_enc("document.we_form.elements['$textname'].value");
 	$wecmdenc3 = we_cmd_enc(str_replace('\\', '', $cmd));
@@ -53,7 +52,7 @@ function formBannerChooser($width = "", $table = BANNER_TABLE, $idvalue, $idname
 	$yuiSuggest->setMaxResults(10);
 	$yuiSuggest->setMayBeEmpty(false);
 	$yuiSuggest->setResult($idname, $idvalue);
-	$yuiSuggest->setSelector("Dirselector");
+	$yuiSuggest->setSelector(weSuggest::DirSelector);
 	$yuiSuggest->setTable($table);
 	$yuiSuggest->setWidth($width);
 	$yuiSuggest->setSelectButton($button);

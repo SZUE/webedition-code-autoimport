@@ -72,7 +72,7 @@ class we_customer_documentFilterView extends we_customer_filterView{
 		$yuiSuggest->setMaxResults(20);
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult($selectorNoLoginId, $_id_selectorNoLoginId);
-		$yuiSuggest->setSelector("Docselector");
+		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setWidth(409);
 		$yuiSuggest->setSelectButton($selectorNoLoginButton);
 
@@ -100,7 +100,7 @@ class we_customer_documentFilterView extends we_customer_filterView{
 		$yuiSuggest->setMaxResults(20);
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult($selectorNoAccessId, $_id_selectorNoAccessId);
-		$yuiSuggest->setSelector("Docselector");
+		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setWidth(409);
 		$yuiSuggest->setSelectButton($selectorNoAccessButton);
 

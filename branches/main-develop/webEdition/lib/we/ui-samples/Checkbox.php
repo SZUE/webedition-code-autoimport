@@ -1,6 +1,6 @@
 <?php
 
-require_once($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
+require_once ($_SERVER['DOCUMENT_ROOT']. '/webEdition/lib/we/core/autoload.inc.php');
 
 $checkbox = new we_ui_controls_Checkbox();
 $checkbox->setValue('1');
@@ -57,4 +57,3 @@ $htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Checkbox.show(&quot;
 $htmlPage->addHTML('</form>');
 
 print $htmlPage->getHTML();
-?>

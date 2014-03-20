@@ -152,7 +152,7 @@ function wetagsessionStartdoLogin($persistentlogins, &$SessionAutologin){
 		$wasRegistered = $_SESSION['webuser']['registered'];
 		$u = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE Password!="" AND LoginDenied=0 AND Username="' . $GLOBALS['DB_WE']->escape($_REQUEST['s']['Username']) . '"', null, MYSQL_ASSOC);
 		if($u && we_customer_customer::comparePassword($u['Password'], $_REQUEST['s']['Password'])){
-			if(SECURITY_SESSION_PASSWORD & we_customer_customer::STORE_DBPASSWORD == 0){
+			if((SECURITY_SESSION_PASSWORD & we_customer_customer::STORE_DBPASSWORD) == 0){
 				unset($u['Password']);
 			}
 			$_SESSION['webuser'] = $u;
@@ -186,8 +186,8 @@ function wetagsessionStartdoAutoLogin(){
 
 		$wasRegistered = $_SESSION['webuser']['registered'];
 		$u = getHash('SELECT u.* FROM ' . CUSTOMER_TABLE . ' u JOIN ' . CUSTOMER_AUTOLOGIN_TABLE . ' c ON u.ID=c.WebUserID WHERE u.LoginDenied=0 AND u.AutoLoginDenied=0 AND u.Password!="" AND c.AutoLoginID="' . $GLOBALS['DB_WE']->escape(sha1($autologinSeek)) . '"', null, MYSQL_ASSOC);
-		if(!empty($u)){
-			if(SECURITY_SESSION_PASSWORD & we_customer_customer::STORE_DBPASSWORD == 0){
+		if($u){
+			if((SECURITY_SESSION_PASSWORD & we_customer_customer::STORE_DBPASSWORD) == 0){
 				unset($u['Password']);
 			}
 

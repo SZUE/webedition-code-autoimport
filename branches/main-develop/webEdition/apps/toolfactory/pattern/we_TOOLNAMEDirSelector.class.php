@@ -22,7 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-require_once($_SERVER['DOCUMENT_ROOT'].LIB_DIR.'we/core/autoload.php');
+require_once ($_SERVER['DOCUMENT_ROOT']. '/webEdition/lib/we/core/autoload.inc.php');
+
 include_once('conf/define.conf.php');
 
 class we_<?php print $TOOLNAME; ?>DirSelector extends we_dirSelector{
@@ -383,4 +384,4 @@ function selectFile(id){
 	}
 
 
-<?php print '}';?>
+<?php print '}';

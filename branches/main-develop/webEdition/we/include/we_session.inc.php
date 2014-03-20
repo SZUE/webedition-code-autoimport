@@ -71,7 +71,7 @@ if(!(isset($_POST['username']) && isset($_POST['password']))){
 $userdata = getHash('SELECT UseSalt, passwd, username, LoginDenied, ID FROM ' . USER_TABLE . ' WHERE IsFolder=0 AND username="' . $DB_WE->escape($_POST['username']) . '"');
 
 // only if username exists !!
-if(empty($userdata) || (!we_users_user::comparePasswords($userdata['UseSalt'], $_POST['username'], $userdata['passwd'], $_POST['password']))){
+if(!$userdata || (!we_users_user::comparePasswords($userdata['UseSalt'], $_POST['username'], $userdata['passwd'], $_POST['password']))){
 	$_SESSION['user']['Username'] = '';
 	we_users_user::removeOldWESession();
 	return;

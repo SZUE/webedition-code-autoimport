@@ -281,7 +281,7 @@ function build_dialog($selected_setting = 'ui'){
 			$_thumbs[] = array('headline' => '', 'html' => $_thumbnails_table->getHtml(), 'space' => 0);
 
 			$allData = getHash('SELECT Name,Width,Height,Quality,Ratio,Maxsize,Interlace,Fitinside,Format FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . intval($_GET['id']), $DB_WE);
-			if(empty($allData)){
+			if(!$allData){
 				$allData = array('Name' => '', 'Width' => '', 'Height' => '', 'Quality' => '', 'Ratio' => '', 'Maxsize' => '', 'Interlace' => '', 'Fitinside' => '', 'Format' => '');
 			}
 

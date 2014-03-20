@@ -813,7 +813,7 @@ class we_voting_frames extends weModuleFrames{
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult('ParentID', ($this->View->voting->ParentID ? $this->View->voting->ParentID : 0));
-		$yuiSuggest->setSelector("Dirselector");
+		$yuiSuggest->setSelector(weSuggest::DirSelector);
 		$yuiSuggest->setTable(VOTING_TABLE);
 		$yuiSuggest->setWidth($width);
 		$yuiSuggest->setSelectButton($button);
@@ -864,7 +864,6 @@ class we_voting_frames extends weModuleFrames{
 			return;
 		}
 		$link = $_REQUEST["lnk"];
-		$port = defined("HTTP_PORT") ? HTTP_PORT : 80;
 		$down = getServerUrl() . $link;
 
 		$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 7, 1);

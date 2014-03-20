@@ -24,7 +24,7 @@
  */
 /* the parent class of storagable webEdition classes */
 
-class we_banner_view extends we_banner_base{
+class we_banner_view extends we_banner_base {
 
 	// settings array; format settings[setting_name]=settings_value
 	var $settings = array();
@@ -1015,14 +1015,14 @@ class we_banner_view extends we_banner_base{
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult($IDName, $IDValue);
-		$yuiSuggest->setSelector("Docselector");
+		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setWidth($width);
 		$yuiSuggest->setSelectButton($button);
 
 		return $yuiSuggest->getHTML();
 	}
 
-	function formDirChooser($width = "", $table = FILE_TABLE, $idvalue, $idname, $title = "", $cmd = "", $acID = ""){
+	function formDirChooser($width = "", $table = FILE_TABLE, $idvalue = 0, $idname = '', $title = "", $cmd = "", $acID = ""){
 		$yuiSuggest = & weSuggest::getInstance();
 		$path = id_to_path($idvalue, $table, $this->db);
 		$textname = md5(uniqid(__FUNCTION__, true));
@@ -1038,7 +1038,7 @@ class we_banner_view extends we_banner_base{
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(false);
 		$yuiSuggest->setResult($idname, $idvalue);
-		$yuiSuggest->setSelector("Dirselector");
+		$yuiSuggest->setSelector(weSuggest::DirSelector);
 		$yuiSuggest->setTable($table);
 		$yuiSuggest->setWidth($width);
 		$yuiSuggest->setSelectButton($button);
@@ -1109,7 +1109,7 @@ class we_banner_view extends we_banner_base{
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult($idname, $idvalue);
-		$yuiSuggest->setSelector("Docselector");
+		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setWidth($width);
 		$yuiSuggest->setSelectButton($button);
 

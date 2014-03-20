@@ -239,7 +239,7 @@ function checkFooter(){
 				$yuiSuggest->setMaxResults(20);
 				$yuiSuggest->setMayBeEmpty(0);
 				$yuiSuggest->setResult($idname, $myid);
-				$yuiSuggest->setSelector('Dirselector');
+				$yuiSuggest->setSelector(weSuggest::DirSelector);
 				$yuiSuggest->setTable(FILE_TABLE);
 				$yuiSuggest->setWidth(320);
 				$yuiSuggest->setSelectButton($button);

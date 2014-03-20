@@ -284,7 +284,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(1);
 		$yuiSuggest->setResult($idname, $myid);
-		$yuiSuggest->setSelector('Docselector');
+		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setTable($table);
 		$yuiSuggest->setWidth(388);
 		$yuiSuggest->setSelectButton($button);
@@ -336,7 +336,7 @@ class we_webEditionDocument extends we_textContentDocument{
 
 		$fieldname = 'we_' . $this->Name . '_TemplateID';
 
-		list($TID, $Templates) = getHash('SELECT TemplateID,Templates FROM ' . DOC_TYPES_TABLE . ' WHERE ID =' . intval($this->DocType), $this->DB_WE);
+		list($TID, $Templates) = getHash('SELECT TemplateID,Templates FROM ' . DOC_TYPES_TABLE . ' WHERE ID =' . intval($this->DocType), $this->DB_WE,MYSQL_NUM);
 		$tlist = '';
 		if($TID != ''){
 			$tlist = $TID;

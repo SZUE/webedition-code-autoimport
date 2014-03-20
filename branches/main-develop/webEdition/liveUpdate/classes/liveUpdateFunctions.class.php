@@ -27,7 +27,7 @@
  * This class contains all functions needed for the update process
  * TBD if we divide this class in several classes
  */
-class liveUpdateFunctions{
+class liveUpdateFunctions {
 
 	private $QueryLog = array(
 		'success' => array(),
@@ -42,9 +42,9 @@ class liveUpdateFunctions{
 
 	function insertUpdateLogEntry($action, $version, $errorCode){
 		$GLOBALS['DB_WE']->query('INSERT INTO ' . UPDATE_LOG_TABLE . we_database_base::arraySetter(array(
-					'aktion' => $action,
-					'versionsnummer' => $version,
-					'error' => $errorCode
+				'aktion' => $action,
+				'versionsnummer' => $version,
+				'error' => $errorCode
 		)));
 	}
 
@@ -119,7 +119,7 @@ class liveUpdateFunctions{
 				"\$_SERVER[\"DOCUMENT_ROOT\"]",
 				'$GLOBALS[\'DOCUMENT_ROOT\']',
 				"\$GLOBALS[\"DOCUMENT_ROOT\]",
-					), '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
+				), '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
 		}
 		return $content;
 	}
@@ -283,8 +283,8 @@ class liveUpdateFunctions{
 		if($source == $destination){
 			return true;
 		}
-		if(filesize($source)==0){//assume error, add warning, keep file!
-			$this->QueryLog['error'][] = 'File '.$source.' was empty, not overwriting!';
+		if(filesize($source) == 0){//assume error, add warning, keep file!
+			$this->QueryLog['error'][] = 'File ' . $source . ' was empty, not overwriting!';
 			//keep going
 			return true;
 		}
@@ -839,19 +839,11 @@ class liveUpdateFunctions{
 	 * @param string $errcontext
 	 */
 	static function liveUpdateErrorHandler($errno, $errstr, $errfile, $errline, $errcontext){
-		/* 		if(file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_error_handler.inc.php')){
-		  we_error_setHandleAll();
-		  error_handler($errno, $errstr, $errfile, $errline, $errcontext);
-		  } */
 
 		$GLOBALS['liveUpdateError']["errorNr"] = $errno;
 		$GLOBALS['liveUpdateError']["errorString"] = $errstr;
 		$GLOBALS['liveUpdateError']["errorFile"] = $errfile;
 		$GLOBALS['liveUpdateError']["errorLine"] = $errline;
-
-//		ob_start('error_log');
-//		var_dump($liveUpdateError);
-//		ob_end_clean();
 	}
 
 }

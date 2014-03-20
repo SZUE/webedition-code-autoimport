@@ -411,7 +411,7 @@ abstract class we_class{
 
 	protected function i_getPersistentSlotsFromDB($felder = '*'){
 		$fields = getHash('SELECT ' . $felder . ' FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($this->ID), $this->DB_WE);
-		if(!empty($fields)){
+		if($fields){
 			foreach($fields as $k => $v){
 				if($k && in_array($k, $this->persistent_slots)){
 					$this->{$k} = $v;

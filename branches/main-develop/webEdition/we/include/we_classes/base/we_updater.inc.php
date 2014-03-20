@@ -68,7 +68,7 @@ class we_updater{
 		$DB_WE->query('UPDATE ' . CATEGORY_TABLE . ' SET Path=CONCAT("/",Category) WHERE Path=""');
 
 		$DB_WE->query('DROP TABLE IF EXISTS ' . PREFS_TABLE . '_old');
-		if(count(getHash('SELECT * FROM ' . PREFS_TABLE . ' LIMIT 1', $GLOBALS['DB_WE'], MYSQL_ASSOC)) > 3){
+		if(count(getHash('SELECT * FROM ' . PREFS_TABLE . ' LIMIT 1', null, MYSQL_ASSOC)) > 3){
 			//make a backup
 			$DB_WE->query('CREATE TABLE ' . PREFS_TABLE . '_old LIKE ' . PREFS_TABLE);
 			$DB_WE->query('INSERT INTO ' . PREFS_TABLE . '_old SELECT * FROM ' . PREFS_TABLE);
@@ -373,9 +373,11 @@ class we_updater{
 
 	static function updateGlossar(){
 		//FIXME: remove after 7.0
-		foreach($GLOBALS['weFrontendLanguages'] as $lang){
-			$cache = new we_glossary_cache($lang);
-			$cache->write();
+		if(defined('GLOSSARY_TABLE')){
+			foreach($GLOBALS['weFrontendLanguages'] as $lang){
+				$cache = new we_glossary_cache($lang);
+				$cache->write();
+			}
 		}
 	}
 

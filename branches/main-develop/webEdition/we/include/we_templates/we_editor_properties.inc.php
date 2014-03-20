@@ -74,9 +74,9 @@ echo STYLESHEET;
 				break;
 			default:
 
-				$moduleDir = we_getModuleNameByContentType($we_doc->ContentType);
+				$moduleDir = we_base_moduleInfo::we_getModuleNameByContentType($we_doc->ContentType);
 
-				if($moduleDir != ''){
+				if($moduleDir){
 					$moduleDir .= '/';
 				}
 

@@ -103,7 +103,7 @@ class we_navigation_ruleFrames{
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setTable(NAVIGATION_TABLE);
 		$yuiSuggest->setResult('NavigationID');
-		$yuiSuggest->setSelector("Docselector");
+		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setWidth(275);
 		$yuiSuggest->setSelectButton(
 			we_html_button::create_button(
@@ -147,7 +147,7 @@ class we_navigation_ruleFrames{
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult('FolderID');
-		$yuiSuggest->setSelector("Dirselector");
+		$yuiSuggest->setSelector(weSuggest::DirSelector);
 		$yuiSuggest->setWidth(275);
 //javascript:we_cmd('openDirselector', document.we_form.elements['FolderID'].value, '" . FILE_TABLE . "', 'document.we_form.elements[\\'FolderID\\'].value', 'document.we_form.elements[\\'FolderIDPath\\'].value')
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['FolderID'].value");
@@ -180,7 +180,7 @@ class we_navigation_ruleFrames{
 			$yuiSuggest->setMaxResults(10);
 			$yuiSuggest->setMayBeEmpty(true);
 			$yuiSuggest->setResult('ClassID');
-			$yuiSuggest->setSelector("Docselector");
+			$yuiSuggest->setSelector(weSuggest::DocSelector);
 			$yuiSuggest->setTable(OBJECT_TABLE);
 			$yuiSuggest->setWidth(275);
 			$wecmdenc1 = we_cmd_enc("document.we_form.elements['ClassID'].value");

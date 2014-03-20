@@ -24,7 +24,7 @@
  */
 /* a class for handling templates */
 
-class we_template extends we_document{
+class we_template extends we_document {
 
 	var $MasterTemplateID = 0;
 	var $TagWizardCode; // bugfix 1502
@@ -518,7 +518,7 @@ we_templateInit();?>';
 		$yuiSuggest->setLabel('');
 		$yuiSuggest->setMayBeEmpty(1);
 		$yuiSuggest->setResult($idname, $myid);
-		$yuiSuggest->setSelector('Docselector');
+		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setTable($table);
 		$yuiSuggest->setWidth(388);
 		$yuiSuggest->setSelectButton($button);
@@ -575,7 +575,7 @@ we_templateInit();?>';
 	}
 
 	static function getUsedTemplatesOfTemplate($id, &$arr){
-		$hash = getHash('SELECT IncludedTemplates, MasterTemplateID FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($id));
+		$hash = getHash('SELECT IncludedTemplates, MasterTemplateID FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($id), null, MYSQL_NUM);
 		list($_tmplCSV, $_masterTemplateID) = ($hash ? $hash : array('', 0));
 
 		$_tmpArr = makeArrayFromCSV($_tmplCSV);

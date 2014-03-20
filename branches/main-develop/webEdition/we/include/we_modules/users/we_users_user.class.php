@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_users_user {
+class we_users_user{
 
 	const TYPE_USER = 0;
 	const TYPE_USER_GROUP = 1;
@@ -981,14 +981,16 @@ _multiEditorreload = true;";
 					$obj = $this->Name . '_Workspace_' . $k;
 					if(isset($_POST[$obj]['id'])){
 						$this->workspaces[$k] = $_POST[$obj]['id'];
-						$obj = $this->Name . '_Workspace_' . $k . '_AddDel';
-						if(isset($_POST[$obj]) && $_POST[$obj] != ''){
-							if($_POST[$obj] == 'new'){//add
-								$this->workspaces[$k][] = 0;
-							} else {
-								unset($this->workspaces[$k][$_POST[$obj]]);
-							}
+					}
+					$obj = $this->Name . '_Workspace_' . $k . '_AddDel';
+					if(isset($_POST[$obj]) && $_POST[$obj] != ''){
+						if($_POST[$obj] == 'new'){//add
+							$this->workspaces[$k][] = 0;
+						} else {
+							unset($this->workspaces[$k][$_POST[$obj]]);
 						}
+					}
+					if(isset($_POST[$obj]['id'])){
 						$obj = $this->Name . '_defWorkspace_' . $k;
 						$this->workspaces_defaults[$k] = array();
 						if(isset($_POST[$obj])){
@@ -1277,7 +1279,7 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(false);
 		$yuiSuggest->setResult($this->Name . '_ParentID', $this->ParentID);
-		$yuiSuggest->setSelector('Dirselector');
+		$yuiSuggest->setSelector(weSuggest::DirSelector);
 		$yuiSuggest->setTable(USER_TABLE);
 		$yuiSuggest->setWidth(450);
 		$yuiSuggest->setSelectButton(we_html_button::create_button('select', "javascript:we_cmd('browse_users','document.we_form." . $this->Name . "_ParentID.value','document.we_form." . $this->Name . "_ParentID_Text.value','group',document.we_form." . $this->Name . "_ParentID.value);"));
@@ -1379,7 +1381,7 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult($this->Name . '_ParentID', $this->ParentID);
-		$yuiSuggest->setSelector('Dirselector');
+		$yuiSuggest->setSelector(weSuggest::DirSelector);
 		$yuiSuggest->setTable(USER_TABLE);
 		$yuiSuggest->setWidth(403);
 		$yuiSuggest->setSelectButton(we_html_button::create_button('select', "javascript:we_cmd('browse_users','document.we_form." . $this->Name . "_ParentID.value','document.we_form." . $this->Name . "_ParentID_Text.value','group',document.we_form." . $this->Name . "_ParentID.value);"));
@@ -1655,7 +1657,7 @@ function delElement(elvalues,elem) {
 				$yuiSuggest->setMaxResults(10);
 				$yuiSuggest->setMayBeEmpty(true);
 				$yuiSuggest->setResult($obj_names . '[id][' . $key . ']', $value);
-				$yuiSuggest->setSelector('Dirselector');
+				$yuiSuggest->setSelector(weSuggest::DirSelector);
 				$yuiSuggest->setTable($k);
 				$yuiSuggest->setWidth(290);
 				$yuiSuggest->setSelectButton($button, 10);
@@ -1970,7 +1972,7 @@ function show_seem_chooser(val) {
 		$yuiSuggest->setMaxResults(20);
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult('seem_start_document', $_document_id);
-		$yuiSuggest->setSelector('Docselector');
+		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setWidth(191);
 		$yuiSuggest->setSelectButton(we_html_button::create_button('select', 'javascript:select_seem_start()', true, 100, 22, '', '', false, false), 10);
 		$yuiSuggest->setContainerWidth(299);
@@ -1984,7 +1986,7 @@ function show_seem_chooser(val) {
 		$yuiSuggest->setMaxResults(20);
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult('seem_start_object', $_object_id);
-		$yuiSuggest->setSelector('Docselector');
+		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		if(defined('OBJECT_FILES_TABLE')){
 			$yuiSuggest->setTable(OBJECT_FILES_TABLE);
 		}
@@ -2212,7 +2214,7 @@ function show_seem_chooser(val) {
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(false);
 		$yuiSuggest->setResult($this->Name . '_Alias', $this->Alias);
-		$yuiSuggest->setSelector('Docselector');
+		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setTable(USER_TABLE);
 		$yuiSuggest->setWidth(200);
 		$yuiSuggest->setSelectButton(we_html_button::create_button('select', "javascript:we_cmd('browse_users','document.we_form." . $this->Name . "_Alias.value','document.we_form." . $this->Name . "_Alias_Text.value','noalias',document.we_form." . $this->Name . "_Alias.value)"));
@@ -2225,7 +2227,7 @@ function show_seem_chooser(val) {
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult($this->Name . '_ParentID', $this->ParentID);
-		$yuiSuggest->setSelector("Dirselector");
+		$yuiSuggest->setSelector(weSuggest::DirSelector);
 		$yuiSuggest->setTable(USER_TABLE);
 		$yuiSuggest->setWidth(200);
 		$yuiSuggest->setSelectButton(we_html_button::create_button("select", "javascript:we_cmd('browse_users','document.we_form." . $this->Name . "_ParentID.value','document.we_form." . $this->Name . "_ParentID_Text.value','group',document.we_form." . $this->Name . "_ParentID.value)"));
@@ -2415,8 +2417,7 @@ top.content.hloaded=1;') .
 			while($pid){ //	For each group
 				$userGroups[] = $pid;
 
-				$row = getHash('SELECT ' . $fields . ' FROM ' . USER_TABLE . ' WHERE ID=' . intval($pid), $db_tmp);
-				if(!empty($row)){
+				if(($row = getHash('SELECT ' . $fields . ' FROM ' . USER_TABLE . ' WHERE ID=' . intval($pid), $db_tmp))){
 					$pid = $row['ParentID'];
 					foreach($workspaces as &$cur){
 						if($cur['parent']){

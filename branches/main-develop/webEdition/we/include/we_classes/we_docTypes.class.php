@@ -107,7 +107,7 @@ class we_docTypes extends we_class{
 				we_loadLanguageConfig();
 				$this->Language = ($GLOBALS['weDefaultFrontendLanguage'] ? $GLOBALS['weDefaultFrontendLanguage'] : 'de_DE');
 			} else {
-				if(($h = getHash('SELECT Language, ParentID FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($ParentID), $this->DB_WE, MYSQL_ASSOC))){
+				if(($h = getHash('SELECT Language, ParentID FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($ParentID), $this->DB_WE, MYSQL_NUM))){
 					list($this->Language, $ParentID) = $h;
 				}
 			}
@@ -157,8 +157,8 @@ class we_docTypes extends we_class{
 	function delCat($id){
 		$cats = makeArrayFromCSV($this->Category);
 		if(in_array($id, $cats)){
-			$pos = getArrayKey($id, $cats);
-			if($pos != "" || $pos == "0"){
+			$pos = array_search($id, $cats);
+			if($pos !== false || $pos == "0"){
 				array_splice($cats, $pos, 1);
 			}
 		}
@@ -268,7 +268,7 @@ class we_docTypes extends we_class{
 		$yuiSuggest->setLabel(g_l('weClass', "[dir]"));
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult($idname, $this->ParentID);
-		$yuiSuggest->setSelector("Dirselector");
+		$yuiSuggest->setSelector(weSuggest::DirSelector);
 		$yuiSuggest->setWidth($width - (we_base_browserDetect::isIE() ? 0 : 10));
 		$yuiSuggest->setSelectButton($button);
 

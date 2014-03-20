@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_import_wizard extends we_import_wizardBase{
+class we_import_wizard extends we_import_wizardBase {
 
 	var $TemplateID = 0;
 
@@ -561,7 +561,7 @@ handle_event("previous");');
 			$yuiSuggest->setMaxResults(10);
 			$yuiSuggest->setMayBeEmpty(0);
 			$yuiSuggest->setResult("v[doc_dir_id]", (isset($v["doc_dir_id"]) ? $v["doc_dir_id"] : $rootDirID));
-			$yuiSuggest->setSelector("Dirselector");
+			$yuiSuggest->setSelector(weSuggest::DirSelector);
 			$yuiSuggest->setTable(FILE_TABLE);
 			$yuiSuggest->setWidth(280);
 			$yuiSuggest->setSelectButton($btnDocDir, 10);
@@ -597,7 +597,7 @@ handle_event("previous");');
 			$yuiSuggest->setMaxResults(10);
 			$yuiSuggest->setMayBeEmpty(0);
 			$yuiSuggest->setResult('v[tpl_dir_id]', (isset($v['tpl_dir_id'])) ? $v['tpl_dir_id'] : $rootDirID);
-			$yuiSuggest->setSelector('Dirselector');
+			$yuiSuggest->setSelector(weSuggest::DirSelector);
 			$yuiSuggest->setTable(TEMPLATES_TABLE);
 			$yuiSuggest->setWidth(280);
 			$yuiSuggest->setSelectButton($btnDocDir, 10);
@@ -652,7 +652,7 @@ handle_event("previous");');
 			$yuiSuggest->setMaxResults(10);
 			$yuiSuggest->setMayBeEmpty(0);
 			$yuiSuggest->setResult("v[navigation_dir_id]", (isset($v["navigation_dir_id"])) ? $v["navigation_dir_id"] : $rootDirID);
-			$yuiSuggest->setSelector("Dirselector");
+			$yuiSuggest->setSelector(weSuggest::DirSelector);
 			$yuiSuggest->setTable(NAVIGATION_TABLE);
 			$yuiSuggest->setWidth(280);
 			$yuiSuggest->setSelectButton($btnDocDir, 10);
@@ -1018,21 +1018,17 @@ HTS;
 		$doctypeElement = we_html_tools::htmlFormElementTable($DTselect->getHTML(), g_l('import', '[doctype]'), 'left', 'defaultfont');
 
 		/*		 * * templateElement *************************************************** */
-		$table = TEMPLATES_TABLE;
-		$textname = 'v[we_TemplateName]';
-		$idname = 'noDocTypeTemplateId';
-		if(permissionhandler::hasPerm('CAN_SEE_TEMPLATES')){
-			$ueberschrift = '<a href="javascript:goTemplate(document.we_form.elements[\'' . $idname . '\'].value)">' . g_l('import', "[template]") . '</a>';
-		} else {
-			$ueberschrift = g_l('import', '[template]');
-		}
-		$myid = (isset($v['we_TemplateID'])) ? $v['we_TemplateID'] : 0;
-		$path = f('SELECT Path FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($myid), 'Path', $DB_WE);
+		/* $ueberschrift = (permissionhandler::hasPerm('CAN_SEE_TEMPLATES')?
+		  '<a href="javascript:goTemplate(document.we_form.elements[\'' . $idname . '\'].value)">' . g_l('import', "[template]") . '</a>':
+		  g_l('import', '[template]')); */
 
-		$wecmdenc1 = we_cmd_enc("self.wizbody.document.forms['we_form'].elements['$idname'].value");
-		$wecmdenc2 = we_cmd_enc("self.wizbody.document.forms['we_form'].elements['$textname'].value");
+		$myid = (isset($v['we_TemplateID'])) ? $v['we_TemplateID'] : 0;
+		//$path = f('SELECT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($myid), 'Path', $DB_WE);
+
+		$wecmdenc1 = we_cmd_enc("self.wizbody.document.forms['we_form'].elements['noDocTypeTemplateId'].value");
+		$wecmdenc2 = we_cmd_enc("self.wizbody.document.forms['we_form'].elements['v[we_TemplateName]'].value");
 		$wecmdenc3 = we_cmd_enc("opener.top.we_cmd('reload_editpage');");
-		$button = we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','" . we_base_ContentTypes::TEMPLATE . "',1)");
+		$button = we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['noDocTypeTemplateId'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','" . we_base_ContentTypes::TEMPLATE . "',1)");
 		/*		 * ******************************************************************** */
 		$yuiSuggest = & weSuggest::getInstance();
 
@@ -1056,8 +1052,9 @@ HTS;
 			while(list(, $templateID) = each($ids_arr)){
 				$TPLselect->insertOption($optid, $templateID, $paths_arr[$optid]);
 				$optid++;
-				if(isset($v['we_TemplateID']) && $v['we_TemplateID'] == $templateID)
+				if(isset($v['we_TemplateID']) && $v['we_TemplateID'] == $templateID){
 					$TPLselect->selectOption($templateID);
+				}
 			}
 		} else {
 			$displayDocType = 'display:none';
@@ -1071,8 +1068,8 @@ HTS;
 		$yuiSuggest->setInput('v[we_TemplateName]', (isset($v['we_TemplateName']) ? $v['we_TemplateName'] : ''), array('onFocus' => "self.document.forms['we_form'].elements['v[import_type]'][0].checked=true;"));
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(1);
-		$yuiSuggest->setResult($idname, $myid);
-		$yuiSuggest->setSelector('Docselector');
+		$yuiSuggest->setResult(noDocTypeTemplateId, $myid);
+		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setTable(TEMPLATES_TABLE);
 		$yuiSuggest->setWidth(300);
 		$yuiSuggest->setSelectButton($button, 10);
@@ -1098,7 +1095,7 @@ HTS;
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(0);
 		$yuiSuggest->setResult('v[store_to_id]', (isset($v['store_to_id']) ? $v['store_to_id'] : 0));
-		$yuiSuggest->setSelector('Dirselector');
+		$yuiSuggest->setSelector(weSuggest::DirSelector);
 		$yuiSuggest->setWidth(300);
 		$yuiSuggest->setSelectButton($storeToButton, 10);
 		$yuiSuggest->setLabel(g_l('import', '[import_dir]'));
@@ -1988,18 +1985,16 @@ HTS;
 		$doctypeElement = we_html_tools::htmlFormElementTable($DTselect->getHTML(), g_l('import', "[doctype]"), "left", "defaultfont");
 
 		/*		 * * templateElement *************************************************** */
-		$textname = "v[we_TemplateName]";
-		$idname = "v[we_TemplateID]";
-		$ueberschrift = (permissionhandler::hasPerm("CAN_SEE_TEMPLATES") ?
-				'<a href="javascript:goTemplate(document.we_form.elements[\'' . $idname . '\'].value)">' . g_l('import', "[template]") . '</a>' :
-				g_l('import', "[template]"));
+		/* $ueberschrift = (permissionhandler::hasPerm("CAN_SEE_TEMPLATES") ?
+		  '<a href="javascript:goTemplate(document.we_form.elements[\'' . $idname . '\'].value)">' . g_l('import', "[template]") . '</a>' :
+		  g_l('import', "[template]")); */
 
 		$myid = (isset($v["we_TemplateID"])) ? $v["we_TemplateID"] : 0;
-		$path = f('SELECT Path FROM ' . $DB_WE->escape(TEMPLATES_TABLE) . " WHERE ID=" . intval($myid), "Path", $DB_WE);
-		$wecmdenc1 = we_cmd_enc("self.wizbody.document.forms['we_form'].elements['$idname'].value");
-		$wecmdenc2 = we_cmd_enc("self.wizbody.document.forms['we_form'].elements['$textname'].value");
+		//$path = f('SELECT Path FROM ' . $DB_WE->escape(TEMPLATES_TABLE) . " WHERE ID=" . intval($myid), "Path", $DB_WE);
+		$wecmdenc1 = we_cmd_enc("self.wizbody.document.forms['we_form'].elements['v[we_TemplateID]'].value");
+		$wecmdenc2 = we_cmd_enc("self.wizbody.document.forms['we_form'].elements['v[we_TemplateName]'].value");
 		$wecmdenc3 = we_cmd_enc("opener.top.we_cmd('reload_editpage');");
-		$button = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','" . we_base_ContentTypes::TEMPLATE . "',1)");
+		$button = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['v[we_TemplateID]'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','" . we_base_ContentTypes::TEMPLATE . "',1)");
 
 		$yuiSuggest = & weSuggest::getInstance();
 
@@ -2021,8 +2016,9 @@ HTS;
 			foreach($ids_arr as $templateID){
 				$TPLselect->insertOption($optid, $templateID, $paths_arr[$optid]);
 				++$optid;
-				if(isset($v["we_TemplateID"]) && $v["we_TemplateID"] == $templateID)
+				if(isset($v["we_TemplateID"]) && $v["we_TemplateID"] == $templateID){
 					$TPLselect->selectOption($templateID);
+				}
 			}
 		} else {
 			$displayDocType = 'display:none';
@@ -2033,8 +2029,8 @@ HTS;
 		$yuiSuggest->setInput("v[we_TemplateName]", (isset($v["we_TemplateName"]) ? $v["we_TemplateName"] : ""), array("onFocus" => "self.document.forms['we_form'].elements['v[import_type]'][0].checked=true;"));
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(1);
-		$yuiSuggest->setResult($idname, $myid);
-		$yuiSuggest->setSelector("Docselector");
+		$yuiSuggest->setResult('v[we_TemplateID]', $myid);
+		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setTable(TEMPLATES_TABLE);
 		$yuiSuggest->setWidth(300);
 		$yuiSuggest->setSelectButton($button, 10);
@@ -2049,7 +2045,7 @@ HTS;
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(0);
 		$yuiSuggest->setResult("v[store_to_id]", (isset($v["store_to_id"]) ? $v["store_to_id"] : 0));
-		$yuiSuggest->setSelector("Dirselector");
+		$yuiSuggest->setSelector(weSuggest::DirSelector);
 		$yuiSuggest->setWidth(300);
 		$yuiSuggest->setSelectButton($storeToButton, 10);
 		$yuiSuggest->setLabel(g_l('import', "[import_dir]"));
@@ -2119,7 +2115,7 @@ HTS;
 			$yuiSuggest->setMaxResults(10);
 			$yuiSuggest->setMayBeEmpty(0);
 			$yuiSuggest->setResult("v[obj_path_id]", (isset($v["obj_path_id"]) ? $v["obj_path_id"] : (isset($firstID) ? $firstID : 0)));
-			$yuiSuggest->setSelector("Dirselector");
+			$yuiSuggest->setSelector(weSuggest::DirSelector);
 			$yuiSuggest->setTable(OBJECT_FILES_TABLE);
 			$yuiSuggest->setWidth(300);
 			$yuiSuggest->setSelectButton($objStoreToButton, 10);

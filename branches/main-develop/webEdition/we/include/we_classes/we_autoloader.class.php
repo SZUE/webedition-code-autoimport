@@ -22,8 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_defines.inc.php');
-
 
 /* * New Format for classes: we_Domain_specific
  * 1. ALL classes start with we_

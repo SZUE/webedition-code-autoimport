@@ -341,7 +341,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			$yuiSuggest->setMaxResults(20);
 			$yuiSuggest->setMayBeEmpty(0);
 			$yuiSuggest->setResult("we_dialog_args[fileID]", ($this->args["fileID"] == 0 ? "" : $this->args["fileID"]));
-			$yuiSuggest->setSelector("Docselector");
+			$yuiSuggest->setSelector(weSuggest::DocSelector);
 			$yuiSuggest->setWidth(300);
 			$yuiSuggest->setSelectButton($_internal_select_button, 10);
 
@@ -364,7 +364,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 				$yuiSuggest->setMaxResults(20);
 				$yuiSuggest->setMayBeEmpty(0);
 				$yuiSuggest->setResult('we_dialog_args[objID]', ($this->args["objID"] == 0 ? "" : $this->args["objID"]));
-				$yuiSuggest->setSelector('Docselector');
+				$yuiSuggest->setSelector(weSuggest::DocSelector);
 				$yuiSuggest->setTable(OBJECT_FILES_TABLE);
 				$yuiSuggest->setWidth(300);
 				$yuiSuggest->setSelectButton($_object_select_button, 10);

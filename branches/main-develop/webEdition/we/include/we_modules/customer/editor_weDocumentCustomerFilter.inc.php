@@ -122,7 +122,7 @@ function formWebuser($canChange, $width = 388){
 	$yuiSuggest->setMaxResults(20);
 	$yuiSuggest->setMayBeEmpty(true);
 	$yuiSuggest->setResult($idname, $GLOBALS['we_doc']->WebUserID);
-	$yuiSuggest->setSelector("Docselector");
+	$yuiSuggest->setSelector(weSuggest::DocSelector);
 	$yuiSuggest->setWidth(434);
 	$yuiSuggest->setSelectButton($button);
 	$yuiSuggest->setTrashButton($_trashBut);

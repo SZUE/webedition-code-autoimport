@@ -176,7 +176,7 @@ class we_object_listviewMultiobject extends listviewBase{
 				'');
 
 		if($sqlParts["tables"]){
-			$this->DB_WE->query('SELECT ' . $_obxTable . '.ID as ID ' . $calendar_select . ' FROM ' . $sqlParts['tables'] . ' WHERE ' . (!empty($this->objects) ? OBJECT_X_TABLE . $this->classID . ".OF_ID IN (" . implode(",", $this->objects) . ") AND " : '') . ($this->searchable ? " " . OBJECT_X_TABLE . $this->classID . ".OF_IsSearchable=1 AND" : "") . " " . $pid_tail . $where_lang . " AND " . OBJECT_X_TABLE . $this->classID . ".OF_ID != 0 " . ($join ? " AND ($join) " : "") . $cat_tail . " " . ($sqlParts["publ_cond"] ? (" AND " . $sqlParts["publ_cond"]) : "") . " " . ($sqlParts["cond"] ? (" AND (" . $sqlParts["cond"] . ") ") : "") . $calendar_where . $weDocumentCustomerFilter_tail . $sqlParts['groupBy']);
+			$this->DB_WE->query('SELECT ' . $_obxTable . '.ID as ID ' . $calendar_select . ' FROM ' . $sqlParts['tables'] . ' WHERE ' . (!empty($this->objects) ? OBJECT_X_TABLE . $this->classID . '.OF_ID IN (' . implode(',', $this->objects) . ') AND ' : '') . ($this->searchable ? ' ' . OBJECT_X_TABLE . $this->classID . '.OF_IsSearchable=1 AND' : '') . ' ' . $pid_tail . $where_lang . ' AND ' . OBJECT_X_TABLE . $this->classID . '.OF_ID!=0 ' . ($join ? ' AND (' . $join . ') ' : '') . $cat_tail . ' ' . ($sqlParts["publ_cond"] ? (' AND ' . $sqlParts["publ_cond"]) : '') . ' ' . ($sqlParts["cond"] ? (' AND (' . $sqlParts["cond"] . ') ') : '') . $calendar_where . $weDocumentCustomerFilter_tail . $sqlParts['groupBy']);
 			$mapping = array(); // KEY = ID -> VALUE = ROWID
 			$i = 0;
 			while($this->DB_WE->next_record()){
@@ -187,9 +187,7 @@ class we_object_listviewMultiobject extends listviewBase{
 				}
 			}
 
-			if($this->order == ''){
-				$this->anz_all = count($this->objects);
-			} else {
+			if($this->order){
 				$this->anz_all = 0;
 				$count = array_count_values($this->objects);
 				foreach($mapping as $objid => $rowid){
@@ -199,9 +197,11 @@ class we_object_listviewMultiobject extends listviewBase{
 						}
 					}
 				}
+			} else {
+				$this->anz_all = count($this->objects);
 			}
 
-			$this->DB_WE->query('SELECT ' . $sqlParts["fields"] . $calendar_select . ' FROM ' . $sqlParts["tables"] . ' WHERE  ' . (!empty($this->objects) ? OBJECT_X_TABLE . $this->classID . ".OF_ID IN (" . implode(",", $this->objects) . ") AND " : '') . ($this->searchable ? " " . OBJECT_X_TABLE . $this->classID . ".OF_IsSearchable=1 AND" : "") . " " . $pid_tail . $where_lang . " AND " . OBJECT_X_TABLE . $this->classID . ".OF_ID != 0 " . ($join ? " AND ($join) " : "") . $cat_tail . $weDocumentCustomerFilter_tail . " " . ($sqlParts["publ_cond"] ? (" AND " . $sqlParts["publ_cond"]) : "") . " " . ($sqlParts["cond"] ? (" AND (" . $sqlParts["cond"] . ") ") : "") . $calendar_where . $sqlParts['groupBy'] . $sqlParts["order"] . (($rows > 0 && $this->order != '') ? (' LIMIT ' . $this->start . "," . $this->rows) : ""));
+			$this->DB_WE->query('SELECT ' . $sqlParts['fields'] . $calendar_select . ' FROM ' . $sqlParts["tables"] . ' WHERE  ' . ($this->objects ? OBJECT_X_TABLE . $this->classID . '.OF_ID IN (' . implode(',', $this->objects) . ') AND ' : '') . ($this->searchable ? ' ' . OBJECT_X_TABLE . $this->classID . '.OF_IsSearchable=1 AND' : '') . ' ' . $pid_tail . $where_lang . " AND " . OBJECT_X_TABLE . $this->classID . '.OF_ID!=0 ' . ($join ? ' AND (' . $join . ') ' : '') . $cat_tail . $weDocumentCustomerFilter_tail . ' ' . ($sqlParts["publ_cond"] ? (' AND ' . $sqlParts["publ_cond"]) : '') . ' ' . ($sqlParts["cond"] ? (' AND (' . $sqlParts["cond"] . ') ') : '') . $calendar_where . $sqlParts['groupBy'] . $sqlParts["order"] . (($rows > 0 && $this->order) ? (' LIMIT ' . $this->start . ',' . $this->rows) : ''));
 
 			$mapping = array(); // KEY = ID -> VALUE = ROWID
 			$i = 0;
@@ -209,17 +209,17 @@ class we_object_listviewMultiobject extends listviewBase{
 				$mapping[$this->DB_WE->Record["OF_ID"]] = $i++;
 			}
 
-			if(empty($this->order)){
-				for($i = $offset; $i < min($offset + $rows, count($this->objects)); $i++){
-					if(in_array($this->objects[$i], array_keys($mapping))){
-						$this->Record[] = $mapping[$this->objects[$i]];
-					}
-				}
-			} else {
+			if($this->order){
 				$count = array_count_values($this->objects);
 				foreach($mapping as $objid => $rowid){
 					for($i = 0; $i < $count[$objid]; $i++){
 						$this->Record[] = $rowid;
+					}
+				}
+			} else {
+				for($i = $offset; $i < min($offset + $rows, count($this->objects)); $i++){
+					if(in_array($this->objects[$i], array_keys($mapping))){
+						$this->Record[] = $mapping[$this->objects[$i]];
 					}
 				}
 			}
@@ -325,7 +325,7 @@ class we_object_listviewMultiobject extends listviewBase{
 			$f .= $p['table'] . '.`' . $p['type'] . '_' . $n . '` AS `we_' . $n2 . '`,';
 			$from[] = $p['table'];
 			if(in_array($n, $orderArr)){
-				$pos = getArrayKey($n, $orderArr);
+				$pos = array_search($n, $orderArr);
 				$ordertmp[$pos] = $p['table'] . '.`' . $p['type'] . '_' . $n . '`' . ($descArr[$pos] ? ' DESC' : '');
 			}
 			$cond = preg_replace("/([\!\=%&\(\*\+\.\/<>|~ ])$n([\!\=%&\)\*\+\.\/<>|~ ])/", '$1' . $p["table"] . '.`' . $p['type'] . '_' . $n . '`$2', $cond);
@@ -364,42 +364,42 @@ class we_object_listviewMultiobject extends listviewBase{
 		$out = array(
 			"order" => $order,
 			"tables" => makeCSVFromArray($tb),
-			"groupBy" => (count($tb) > 1) ? ' GROUP BY ' . OBJECT_X_TABLE . $classID . ".ID " : '',
+			"groupBy" => (count($tb) > 1) ? ' GROUP BY ' . OBJECT_X_TABLE . $classID . '.ID ' : '',
 			"cond" => trim($cond),
 			"fields" => rtrim($f, ','),
 			"publ_cond" => array(),
 		);
 		if($order == ' ORDER BY RANDOM '){
-			$out['fields'] .= ', RAND() as RANDOM ';
+			$out['fields'] .= ',RAND() AS RANDOM ';
 		}
 		foreach($tb as $t){
-			$out["publ_cond"] [] = "( $t.OF_Published > 0 OR $t.OF_ID = 0)";
+			$out["publ_cond"] [] = ' (' . $t . '.OF_Published>0 OR ' . $t . '.OF_ID=0) ';
 		}
 		$out["publ_cond"] = implode(' AND ', $out["publ_cond"]);
 		if($out["publ_cond"]){
-			$out["publ_cond"] = " ( " . $out["publ_cond"] . " ) ";
+			$out["publ_cond"] = ' (' . $out["publ_cond"] . ') ';
 		}
 		return $out;
 	}
 
 	function next_record(){
-		$fetch = false;
-		if($this->calendar_struct["calendar"] != ''){
-			if($this->count < $this->anz){
-				parent::next_record();
-				$fetch = $this->calendar_struct["forceFetch"];
-				$this->DB_WE->Record = array();
-			} else {
+		if($this->calendar_struct["calendar"]){
+			if($this->count >= $this->anz){
 				return false;
 			}
+			parent::next_record();
+			$fetch = $this->calendar_struct["forceFetch"];
+			$this->DB_WE->Record = array();
+		} else {
+			$fetch = false;
 		}
 
-		if($this->calendar_struct["calendar"] == "" || $fetch){
+		if(!$this->calendar_struct["calendar"] || $fetch){
 
 			if($this->count < count($this->Record)){
 				$paramName = "we_objectID";
 				$this->DB_WE->Record($this->Record[$this->count]);
-				$this->DB_WE->Record["we_wedoc_Path"] = $this->Path . "?$paramName=" . $this->DB_WE->Record["OF_ID"];
+				$this->DB_WE->Record["we_wedoc_Path"] = $this->Path . '?' . $paramName . '=' . $this->DB_WE->Record["OF_ID"];
 				$path_parts = pathinfo($this->Path);
 				if($this->objectseourls && $this->DB_WE->Record['OF_Url'] != '' && show_SeoLinks()){
 					if(!$this->triggerID && $this->DB_WE->Record['OF_TriggerID'] != 0){
@@ -424,22 +424,21 @@ class we_object_listviewMultiobject extends listviewBase{
 				$this->DB_WE->Record["we_wedoc_Category"] = $this->DB_WE->f("OF_Category");
 
 				// for seeMode #5317
-				$this->DB_WE->Record["we_wedoc_lastPath"] = $this->LastDocPath . "?$paramName=" . $this->DB_WE->Record["OF_ID"];
+				$this->DB_WE->Record["we_wedoc_lastPath"] = $this->LastDocPath . '?' . $paramName . '=' . $this->DB_WE->Record["OF_ID"];
 				$this->count++;
 				return true;
-			} else {
-				$this->stop_next_row = $this->shouldPrintEndTR();
-				if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
-					$this->DB_WE->Record = array(
-						"WE_PATH" => "",
-						"WE_TEXT" => "",
-						"WE_ID" => ""
-					);
-					$this->count++;
-					return true;
-				}
-				return false;
 			}
+			$this->stop_next_row = $this->shouldPrintEndTR();
+			if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
+				$this->DB_WE->Record = array(
+					'WE_PATH' => '',
+					'WE_TEXT' => '',
+					'WE_ID' => ''
+				);
+				$this->count++;
+				return true;
+			}
+			return false;
 		}
 
 		return ($this->calendar_struct["calendar"] != '');

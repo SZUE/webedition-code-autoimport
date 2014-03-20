@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_shop_frames extends weModuleFrames{
+class we_shop_frames extends weModuleFrames {
 
 	var $db;
 	var $View;
@@ -560,9 +560,9 @@ function we_cmd() {
 
 		$bid = isset($_REQUEST["bid"]) ? intval($_REQUEST["bid"]) : 0;
 
-		list($cid, $cdat) = getHash('SELECT IntCustomerID,DATE_FORMAT(DateOrder,"' . g_l('date', '[format][mysqlDate]') . '") FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . intval($bid), $DB_WE);
+		list($cid, $cdat) = getHash('SELECT IntCustomerID,DATE_FORMAT(DateOrder,"' . g_l('date', '[format][mysqlDate]') . '") FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . intval($bid), $DB_WE, MYSQL_NUM);
 		$order = getHash('SELECT IntOrderID,DATE_FORMAT(DateOrder,"' . g_l('date', '[format][mysqlDate]') . '") as orddate FROM ' . SHOP_TABLE . ' GROUP BY IntOrderID ORDER BY IntID DESC LIMIT 1', $DB_WE);
-		$headline = (empty($order) ? '' : sprintf(g_l('modules_shop', '[lastOrder]'), $order["IntOrderID"], $order["orddate"]));
+		$headline = ($order ? sprintf(g_l('modules_shop', '[lastOrder]'), $order["IntOrderID"], $order["orddate"]) : '');
 
 		$we_tabs = new we_tabs();
 

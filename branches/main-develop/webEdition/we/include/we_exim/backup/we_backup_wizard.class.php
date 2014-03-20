@@ -992,7 +992,7 @@ function setLocation(loc){
 			$_down = $_SESSION['weS']['weBackupVars']['backup_file'];
 			if(is_file($_SESSION['weS']['weBackupVars']['backup_file'])){
 
-				$_link = we_backup_util::getHttpLink($_SERVER['SERVER_NAME'], str_replace($_SERVER['DOCUMENT_ROOT'], '', $_down), (defined('HTTP_PORT') ? HTTP_PORT : ''), (defined('HTTP_USERNAME') ? HTTP_USERNAME : ''), (defined('HTTP_PASSWORD') ? HTTP_PASSWORD : ''));
+				$_link = we_backup_util::getHttpLink($_SERVER['SERVER_NAME'], str_replace($_SERVER['DOCUMENT_ROOT'], '', $_down), '', (defined('HTTP_USERNAME') ? HTTP_USERNAME : ''), (defined('HTTP_PASSWORD') ? HTTP_PASSWORD : ''));
 
 				$table->setCol(2, 0, array('class' => 'defaultfont'), self::getDownloadLinkText() . '<br/><br/>' .
 					we_html_element::htmlA(array('href' => $_link), g_l('backup', '[download_file]'))

@@ -3088,7 +3088,7 @@ class we_search_view extends we_tool_view{
 		$yuiSuggest->setMaxResults(20);
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult($folderID, $pathID);
-		$yuiSuggest->setSelector("Dirselector");
+		$yuiSuggest->setSelector(weSuggest::DirSelector);
 		$yuiSuggest->setTable($table);
 		$yuiSuggest->setWidth(380);
 		//javascript:we_cmd('openDirselector',document.we_form.elements['$folderID'].value,'" . $table . "','document.we_form.elements[\\'$folderID\\'].value','document.we_form.elements[\\'$folderPath\\'].value')

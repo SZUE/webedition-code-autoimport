@@ -312,7 +312,7 @@ $yuiSuggest->setInput($textname, $ws_path);
 $yuiSuggest->setMaxResults(4);
 $yuiSuggest->setMayBeEmpty(false);
 $yuiSuggest->setResult(trim($idname), $ws_Id);
-$yuiSuggest->setSelector('Dirselector');
+$yuiSuggest->setSelector(weSuggest::DirSelector);
 $yuiSuggest->setTable($table);
 $yuiSuggest->setWidth(250);
 $yuiSuggest->setContainerWidth(360);

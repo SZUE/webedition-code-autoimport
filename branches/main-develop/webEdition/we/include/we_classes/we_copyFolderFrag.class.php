@@ -682,27 +682,24 @@ function fsubmit(e) {
 	}
 
 	function formCreateTemplateDirChooser(){
-		$textname = 'foo';
-		$idname = 'CreateTemplateInFolderID';
 		$path = '/';
 		$myid = 0;
 
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId('Template');
 		$yuiSuggest->setContentType('folder');
-		$yuiSuggest->setInput($textname, $path, '', 1);
+		$yuiSuggest->setInput('foo', $path, '', 1);
 		$yuiSuggest->setLabel(g_l('copyFolder', '[destdir]'));
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(0);
-		$yuiSuggest->setResult($idname, $myid);
-		$yuiSuggest->setSelector('Dirselector');
+		$yuiSuggest->setResult('CreateTemplateInFolderID', $myid);
+		$yuiSuggest->setSelector(weSuggest::DirSelector);
 		$yuiSuggest->setTable(TEMPLATES_TABLE);
 		$yuiSuggest->setWidth(370);
-		//javascript:we_cmd('openDirselector',document.we_form.elements['$idname'].value,'" . TEMPLATES_TABLE . "','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','opener.document.we_form.CreateTemplate.checked=true;')"
-		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$idname'].value");
-		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$textname'].value");
+		$wecmdenc1 = we_cmd_enc("document.we_form.elements['CreateTemplateInFolderID'].value");
+		$wecmdenc2 = we_cmd_enc("document.we_form.elements['foo'].value");
 		$wecmdenc3 = we_cmd_enc("opener.document.we_form.CreateTemplate.checked=true;");
-		$yuiSuggest->setSelectButton(we_html_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['$idname'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "')", true, 100, 22, "", "", true, false));
+		$yuiSuggest->setSelectButton(we_html_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['CreateTemplateInFolderID'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "')", true, 100, 22, "", "", true, false));
 
 		return $yuiSuggest->getHTML();
 	}

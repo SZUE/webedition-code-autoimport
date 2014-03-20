@@ -1,5 +1,5 @@
 
-require_once ($_SERVER['DOCUMENT_ROOT'] . LIB_DIR.'we/core/autoload.php');
+require_once ($_SERVER['DOCUMENT_ROOT']. '/webEdition/lib/we/core/autoload.inc.php');
 
 $isUTF8 = ($GLOBALS['WE_BACKENDCHARSET'] == 'UTF-8');
 

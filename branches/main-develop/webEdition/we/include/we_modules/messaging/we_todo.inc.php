@@ -26,7 +26,7 @@ require_once(WE_MESSAGING_MODULE_PATH . "messaging_std.inc.php");
 require_once(WE_MESSAGING_MODULE_PATH . 'we_conf_messaging.inc.php');
 /* todo object class */
 
-class we_todo extends we_messaging_proto{
+class we_todo extends we_messaging_proto {
 	/* Flag which is set when the file is not new */
 
 	var $selected_message = array();
@@ -332,23 +332,24 @@ class we_todo extends we_messaging_proto{
 		}
 
 		foreach($items as $item){
-			$tmp = array();
 			$row = getHash('SELECT msg_type, obj_type, headerDate, headerSubject, headerCreator, headerAssigner, headerStatus, headerDeadline, Priority, Content_Type, MessageText, seenStatus, tag FROM ' . $this->DB_WE->escape($this->table) . " WHERE ID=" . intval($item) . " AND UserID=" . intval($this->userid), $this->DB_WE);
-			$tmp['ParentID'] = $target_fid;
-			$tmp['UserID'] = $this->userid;
-			$tmp['msg_type'] = $row('msg_type');
-			$tmp['obj_type'] = $row('obj_type');
-			$tmp['headerDate'] = $row['headerDate'] != '' ? $row['headerDate'] : 'NULL';
-			$tmp['headerSubject'] = $row['headerSubject'] != '' ? $row['headerSubject'] : 'NULL';
-			$tmp['headerCreator'] = $row['headerCreator'] != '' ? $row['headerCreator'] : 'NULL';
-			$tmp['headerAssigner'] = $row['headerAssigner'] != '' ? $row['headerAssigner'] : 'NULL';
-			$tmp['headerStatus'] = $row['headerStatus'] != '' ? $row['headerStatus'] : 'NULL';
-			$tmp['headerDeadline'] = $row['headerDeadline'] != '' ? $row['headerDeadline'] : 'NULL';
-			$tmp['Priority'] = $row['Priority'] != '' ? $row['Priority'] : 'NULL';
-			$tmp['MessageText'] = $row['MessageText'];
-			$tmp['Content_Type'] = $row['Content_Type'];
-			$tmp['seenStatus'] = intval($row['seenStatus']);
-			$tmp['tag'] = $row['tag'] ? $row['tag'] : '';
+			$tmp = array(
+				'ParentID' => $target_fid,
+				'UserID' => $this->userid,
+				'msg_type' => $row('msg_type'),
+				'obj_type' => $row('obj_type'),
+				'headerDate' => $row['headerDate'] ? $row['headerDate'] : sql_function('NULL'),
+				'headerSubject' => $row['headerSubject'] ? $row['headerSubject'] : sql_function('NULL'),
+				'headerCreator' => $row['headerCreator'] ? $row['headerCreator'] : sql_function('NULL'),
+				'headerAssigner' => $row['headerAssigner'] ? $row['headerAssigner'] : sql_function('NULL'),
+				'headerStatus' => $row['headerStatus'] ? $row['headerStatus'] : sql_function('NULL'),
+				'headerDeadline' => $row['headerDeadline'] ? $row['headerDeadline'] : sql_function('NULL'),
+				'Priority' => $row['Priority'] ? $row['Priority'] : sql_function('NULL'),
+				'MessageText' => $row['MessageText'],
+				'Content_Type' => $row['Content_Type'],
+				'seenStatus' => intval($row['seenStatus']),
+				'tag' => $row['tag'] ? $row['tag'] : '',
+			);
 
 			$this->DB_WE->query('INSERT INTO ' . $this->DB_WE->escape($this->table) . ' ' . we_database_base::arraySetter($tmp));
 		}

@@ -84,7 +84,7 @@ if(!$wfchk){
 			'Path' => '',
 			'hasFiles' => 0
 		);
-		if(!empty($_REQUEST["sel"]) && !empty($selectedItems) && ($table == FILE_TABLE || $table == TEMPLATES_TABLE)){
+		if($_REQUEST["sel"] && $selectedItems && ($table == FILE_TABLE || $table == TEMPLATES_TABLE)){
 			$idInfos = getHash('SELECT IsFolder, Path FROM ' . $GLOBALS['DB_WE']->escape($table) . ' WHERE ID=' . intval($selectedItems[0]));
 			if(!$idInfos){
 				t_e('ID ' . $selectedItems[0] . ' not present in table ' . $table);

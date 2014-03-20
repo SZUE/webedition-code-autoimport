@@ -40,8 +40,8 @@ class we_shop_vats{
 
 	function getShopVATById($id){
 		if(!isset($GLOBALS['weShopVats']['getShopVATById']["$id"])){
-			$data = getHash('SELECT * FROM ' . WE_SHOP_VAT_TABLE . ' WHERE id=' . intval($id));
-			$GLOBALS['weShopVats']['getShopVATById']["$id"] = ($data ?
+			$data = getHash('SELECT id,text,vat,standard FROM ' . WE_SHOP_VAT_TABLE . ' WHERE id=' . intval($id));
+			$GLOBALS['weShopVats']['getShopVATById'][$id] = ($data ?
 					new we_shop_vat($data['id'], $data['text'], $data['vat'], ($data['standard'] ? true : false)) :
 					false);
 		}
@@ -62,10 +62,10 @@ class we_shop_vats{
 
 	function getStandardShopVat(){
 		if(!isset($GLOBALS['weShopVats']['getStandardShopVat'])){
-			$data = getHash('SELECT * FROM ' . WE_SHOP_VAT_TABLE . ' WHERE standard=1');
+			$data = getHash('SELECT id,text,vat FROM ' . WE_SHOP_VAT_TABLE . ' WHERE standard=1');
 
 			$GLOBALS['weShopVats']['getStandardShopVat'] = ($data ?
-					new we_shop_vat($data['id'], $data['text'], $data['vat'], ($data['standard'] ? true : false)) :
+					new we_shop_vat($data['id'], $data['text'], $data['vat'], true) :
 					false);
 		}
 

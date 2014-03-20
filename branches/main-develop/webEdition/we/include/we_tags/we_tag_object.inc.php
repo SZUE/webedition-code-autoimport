@@ -85,7 +85,7 @@ function we_tag_object($attribs){
 			$yuiSuggest->setResult($idname, $we_oid);
 			$yuiSuggest->setMaxResults(10);
 			$yuiSuggest->setMayBeEmpty(1);
-			$yuiSuggest->setSelector('Docselector');
+			$yuiSuggest->setSelector(weSuggest::DocSelector);
 			$yuiSuggest->setTable(OBJECT_FILES_TABLE);
 			$yuiSuggest->setWidth($size);
 			?>

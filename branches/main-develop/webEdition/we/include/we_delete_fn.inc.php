@@ -38,8 +38,7 @@ function checkDeleteEntry($id, $table){
 	if($table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE)){
 		return true;
 	}
-	$row = getHash('SELECT IsFolder FROM ' . $GLOBALS['DB_WE']->escape($table) . ' WHERE  ID=' . intval($id), $GLOBALS['DB_WE']);
-	return (isset($row['IsFolder']) && $row['IsFolder'] ?
+	return (f('SELECT IsFolder FROM ' . $GLOBALS['DB_WE']->escape($table) . ' WHERE  ID=' . intval($id))?
 			checkDeleteFolder($id, $table) :
 			checkDeleteFile($id, $table));
 }
@@ -65,7 +64,7 @@ function checkDeleteFile($id, $table){
 		case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 			return true;
 		case (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'):
-			return !(ObjectUsedByObjectFile($id, false));
+			return !(we_object::isUsedByObjectFile($id));
 		case TEMPLATES_TABLE:
 			$arr = we_rebuild_base::getTemplAndDocIDsOfTemplate($id, false, false, true);
 			return (empty($arr["documentIDs"]));
@@ -238,7 +237,7 @@ function deleteEntry($id, $table, $delR = true, $skipHook = 0, we_database_base 
 	}
 	if($id){
 		$row = getHash('SELECT Path,IsFolder,ContentType FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), $DB_WE);
-		if(empty($row)){
+		if(!$row){
 			$GLOBALS['deletedItems'][] = $id;
 			return;
 		}

@@ -151,7 +151,7 @@ function we_tag_href($attribs){
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(1);
 		$yuiSuggest->setResult($intID_elem_Name, $intID);
-		$yuiSuggest->setSelector('Docselector');
+		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setTable(FILE_TABLE);
 		$yuiSuggest->setWidth($size);
 	}
