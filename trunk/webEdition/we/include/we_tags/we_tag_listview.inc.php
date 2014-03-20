@@ -145,7 +145,7 @@ function we_tag_listview($attribs){
 	$we_lv_weekstart = isset($_REQUEST['we_lv_weekstart_' . $name]) ? $_REQUEST['we_lv_weekstart_' . $name] : $weekstart;
 
 	if($we_lv_cats == 'we_doc'){
-		$we_lv_cats = we_getCatsFromDoc($GLOBALS['we_doc'], ',', true, $GLOBALS['DB_WE']);
+		$we_lv_cats = we_category::we_getCatsFromDoc($GLOBALS['we_doc'], ',', true, $GLOBALS['DB_WE']);
 	}
 	$we_offset = intval($offset);
 	$we_rows = intval($rows);

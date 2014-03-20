@@ -325,7 +325,7 @@ class we_object_listviewMultiobject extends listviewBase{
 			$f .= $p['table'] . '.`' . $p['type'] . '_' . $n . '` AS `we_' . $n2 . '`,';
 			$from[] = $p['table'];
 			if(in_array($n, $orderArr)){
-				$pos = getArrayKey($n, $orderArr);
+				$pos = array_search($n, $orderArr);
 				$ordertmp[$pos] = $p['table'] . '.`' . $p['type'] . '_' . $n . '`' . ($descArr[$pos] ? ' DESC' : '');
 			}
 			$cond = preg_replace("/([\!\=%&\(\*\+\.\/<>|~ ])$n([\!\=%&\)\*\+\.\/<>|~ ])/", '$1' . $p["table"] . '.`' . $p['type'] . '_' . $n . '`$2', $cond);

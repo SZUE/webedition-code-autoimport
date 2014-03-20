@@ -193,7 +193,7 @@ class we_document extends we_root{
 	}
 
 	function formInGlossar(){
-		return (we_getModuleNameByContentType('glossary') == 'glossary' ?
+		return (we_base_moduleInfo::we_getModuleNameByContentType('glossary') == 'glossary' ?
 				we_html_forms::checkboxWithHidden((bool) $this->InGlossar, 'we_' . $this->Name . '_InGlossar', g_l('weClass', '[InGlossar]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);') :
 				'');
 	}
@@ -280,7 +280,7 @@ class we_document extends we_root{
 			if(!$_naviItem->hasAnyChilds()){
 
 				if(in_array($_path, $NoDelNavis)){
-					$pos = getArrayKey($_path, $NoDelNavis);
+					$pos = array_search($_path, $NoDelNavis);
 					array_splice($NoDelNavis, $pos, 1);
 				}
 			}
@@ -309,8 +309,8 @@ class we_document extends we_root{
 	function delCat($id){
 		$cats = makeArrayFromCSV($this->Category);
 		if(in_array($id, $cats)){
-			$pos = getArrayKey($id, $cats);
-			if($pos != '' || $pos == '0'){
+			$pos = array_search($id, $cats);
+			if($pos !== false || $pos == '0'){
 				array_splice($cats, $pos, 1);
 			}
 		}
@@ -378,8 +378,8 @@ class we_document extends we_root{
 		$path = urldecode($path); //Bug #3816
 		$navis = makeArrayFromCSV($this->NavigationItems);
 		if(in_array($path, $navis)){
-			$pos = getArrayKey($path, $navis);
-			if($pos != '' || $pos == '0'){
+			$pos = array_search($path, $navis);
+			if($pos !== false || $pos == '0'){
 				$_id = path_to_id($path, NAVIGATION_TABLE);
 				$_naviItem = new we_navigation_navigation($_id);
 				if(!$_naviItem->hasAnyChilds()){
@@ -399,7 +399,7 @@ class we_document extends we_root{
 			if(!$_naviItem->hasAnyChilds()){
 				$_naviItem->delete();
 				if(in_array($_path, $navis)){
-					$pos = getArrayKey($_path, $navis);
+					$pos = array_search($_path, $navis);
 					array_splice($navis, $pos, 1);
 				}
 			}
@@ -1448,8 +1448,8 @@ class we_document extends we_root{
 	function delete_schedcat($id, $nr){
 		$cats = makeArrayFromCSV($this->schedArr[$nr]['CategoryIDs']);
 		if(in_array($id, $cats)){
-			$pos = getArrayKey($id, $cats);
-			if($pos != '' || $pos == '0'){
+			$pos = array_search($id, $cats);
+			if($pos !== false || $pos == '0'){
 				array_splice($cats, $pos, 1);
 			}
 		}

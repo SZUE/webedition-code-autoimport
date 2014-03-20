@@ -77,8 +77,8 @@ switch(isset($we_ContentType) ? $we_ContentType : ''){
 		}
 		break;
 	default:
-		$moduleDir = we_getModuleNameByContentType($we_ContentType);
-		if($moduleDir != ''){
+		$moduleDir = we_base_moduleInfo::we_getModuleNameByContentType($we_ContentType);
+		if($moduleDir){
 			$moduleDir .= '/';
 		}
 

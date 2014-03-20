@@ -113,4 +113,45 @@ class we_category extends weModelBase{
 			' AND (' . implode(($catOr ? ' OR ' : ' AND '), $where) . ' )';
 	}
 
+	static function we_getCatsFromDoc($doc, $tokken = ',', $showpath = false, we_database_base $db = null, $rootdir = '/', $catfield = '', $onlyindir = ''){
+		return (isset($doc->Category) ?
+				self::we_getCatsFromIDs($doc->Category, $tokken, $showpath, $db, $rootdir, $catfield, $onlyindir) :
+				'');
+	}
+
+	static function we_getCatsFromIDs($catIDs, $tokken = ',', $showpath = false, we_database_base $db = null, $rootdir = '/', $catfield = '', $onlyindir = '', $asArray = false){
+		if(!$catIDs){
+			return $asArray ? array() : '';
+		}
+		$db = ($db ? $db : new DB_WE());
+//$foo = makeArrayFromCSV($catIDs);
+		$cats = array();
+		$field = $catfield ? $catfield : ($showpath ? 'Path' : 'Category');
+		$showpath &=!$catfield;
+		$db->query('SELECT ID,Path,Category,Catfields FROM ' . CATEGORY_TABLE . ' WHERE ID IN(' . trim($catIDs, ',') . ')');
+		while($db->next_record()){
+			$data = $db->getRecord();
+			if($field == 'Title' || $field == 'Description'){
+				if($data['Catfields']){
+					$_arr = unserialize($data['Catfields']);
+					if(empty($onlyindir) || strpos($data['Path'], $onlyindir) === 0){
+						$cats[] = ($field == 'Description') ? parseInternalLinks($_arr['default'][$field], 0) : $_arr['default'][$field];
+					}
+				} elseif(empty($onlyindir) || strpos($data['Path'], $onlyindir) === 0){
+					$cats[] = '';
+				}
+			} elseif(empty($onlyindir) || strpos($data['Path'], $onlyindir) === 0){
+				$cats[] = $data[$field];
+			}
+		}
+		if(($showpath || $catfield == 'Path') && strlen($rootdir)){
+			foreach($cats as &$cat){
+				if(substr($cat, 0, strlen($rootdir)) == $rootdir){
+					$cat = substr($cat, strlen($rootdir));
+				}
+			}
+		}
+		return $asArray ? $cats : makeCSVFromArray($cats, false, $tokken);
+	}
+
 }

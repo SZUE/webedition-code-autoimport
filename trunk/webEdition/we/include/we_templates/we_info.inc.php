@@ -79,49 +79,37 @@ $_table = new we_html_table(array(
 	"style" => "border-style:none; padding:0px;border-spacing:0px;background-image:url(" . IMAGE_DIR . 'info/' . $_logo . ");background-repeat: no-repeat;background-color:#EBEBEB;width:" . $_widthTotal . 'px'), 8, 3);
 $_actRow = 0;
 //	First row with background
-$_table->setCol($_actRow++, 0, array("colspan" => 3,
-	"style" => 'width: ' . $_widthTotal . 'px;height:110px;',
-	), '<a href="http://www.webedition.org" target="_blank"  title="www.webedition.org">' . we_html_tools::getPixel($_widthTotal, 110, 0) . '</a>'); //<br /><div class="defaultfont small" style="text-align:center;">Open Source Content Management</div>');
+$_table->setCol($_actRow++, 0, array("colspan" => 3, "style" => 'width: ' . $_widthTotal . 'px;height:110px;',), '<a href="http://www.webedition.org" target="_blank"  title="www.webedition.org">' . we_html_tools::getPixel($_widthTotal, 110, 0) . '</a>');
 
 $_table->addRow(2);
 //	spaceholder
-$_table->setCol($_actRow++, 0, array("width" => $_widthTotal,
-	"colspan" => 3), we_html_tools::getPixel($_widthTotal, 25));
+$_table->setCol($_actRow++, 0, array("width" => $_widthTotal, "colspan" => 3), we_html_tools::getPixel($_widthTotal, 25));
 
 //	3rd Version
 if($we_version){
 	$_table->setCol($_actRow, 0, array("width" => $_space), we_html_tools::getPixel($_space, 1));
-
-	$_table->setCol($_actRow, 1, array("width" => $_middlePart,
-		"class" => "small"), "Version: " . $we_version);
-
+	$_table->setCol($_actRow, 1, array("width" => $_middlePart, "class" => "small"), "Version: " . $we_version);
 	$_table->setCol($_actRow++, 2, array("width" => $_space), we_html_tools::getPixel($_space, 1));
 }
 
 //	4th row with spaceholder
-$_table->setCol($_actRow++, 0, array("width" => $_widthTotal,
-	"colspan" => 3), we_html_tools::getPixel($_widthTotal, 5));
+$_table->setCol($_actRow++, 0, array("width" => $_widthTotal, "colspan" => 3), we_html_tools::getPixel($_widthTotal, 5));
 
 
 //	5th credits
 $_table->setCol($_actRow, 0, array("width" => $_space), we_html_tools::getPixel($_space, 5));
-$_table->setCol($_actRow, 1, array("width" => $_middlePart,
-	"class" => "defaultfont small"), $_credits);
+$_table->setCol($_actRow, 1, array("width" => $_middlePart, "class" => "defaultfont small"), $_credits);
 $_table->setCol($_actRow++, 2, array("width" => $_space), we_html_tools::getPixel($_space, 1));
 
 //	6th row
-$_table->setCol($_actRow++, 0, array("width" => $_widthTotal,
-	"colspan" => 3), we_html_tools::getPixel($_widthTotal, 10));
+$_table->setCol($_actRow++, 0, array("width" => $_widthTotal, "colspan" => 3), we_html_tools::getPixel($_widthTotal, 10));
 
 //	7th agency
 if(is_readable($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'agency.php')){
 	include_once($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'agency.php');
-	$_table->setCol($_actRow++, 0, array("width" => $_widthTotal,
-		"colspan" => 3), we_html_tools::getPixel($_widthTotal, 10));
-
+	$_table->setCol($_actRow++, 0, array("width" => $_widthTotal, "colspan" => 3), we_html_tools::getPixel($_widthTotal, 10));
 	$_table->setCol($_actRow, 0, array("width" => $_space), we_html_tools::getPixel($_space, 5));
-	$_table->setCol($_actRow, 1, array("width" => $_middlePart,
-		"class" => "defaultfont small"), $_agency);
+	$_table->setCol($_actRow, 1, array("width" => $_middlePart, "class" => "defaultfont small"), $_agency);
 	$_table->setCol($_actRow++, 2, array("width" => $_space), we_html_tools::getPixel($_space, 1));
 }
 
@@ -154,32 +142,21 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 
 
 	//	mode-table
-	$_modetable = new we_html_table(array("style" => 'border-style:none; padding:0px;border-spacing:0px;',
-		"width" => $_middlePart), 1, 3);
+	$_modetable = new we_html_table(array("style" => 'border-style:none; padding:0px;border-spacing:0px;', "width" => $_middlePart), 1, 3);
 
-	$loginButton = we_html_button::create_button("login", "javascript:document.loginForm.submit();") ;
+	$loginButton = we_html_button::create_button("login", "javascript:document.loginForm.submit();");
 	if(!WE_SEEM){ //	deactivate See-Mode
 		if(WE_LOGIN_WEWINDOW){
 			$_modetable->setCol(0, 0, array(), '');
-			if(WE_LOGIN_WEWINDOW == 1){
-				$_modetable->setCol(0, 1, array("align" => "right",
-					"valign" => "bottom",
-					"rowspan" => 2), '<input type="hidden" name="popup" value="popup"/>' . $loginButton);
-			} else {
-				$_modetable->setCol(0, 1, array("align" => "right",
-					"valign" => "bottom",
-					"rowspan" => 2), $loginButton);
-			}
+			$_modetable->setCol(0, 1, array("align" => "right", "valign" => "bottom", "rowspan" => 2), (WE_LOGIN_WEWINDOW == 1 ? '<input type="hidden" name="popup" value="popup"/>' : '') . $loginButton);
 		} else {
 			$_modetable->setCol(0, 0, array(), we_html_forms::checkbox('popup', getValueLoginMode('popup'), 'popup', g_l('SEEM', '[popup]')));
-			$_modetable->setCol(0, 1, array("align" => "right",
-				"valign" => "bottom",
-				"rowspan" => 2), we_html_element::htmlHidden(array("name" => "mode", "value" => "normal")) . $loginButton);
+			$_modetable->setCol(0, 1, array("align" => "right", "valign" => "bottom", "rowspan" => 2), we_html_element::htmlHidden(array("name" => "mode", "value" => "normal")) . $loginButton);
 		}
 	} else { //	normal login
 		//	15th Mode
 		$_table->setCol($_actRow, 0, array("width" => $_space), we_html_tools::getPixel($_space, 5));
-		$_table->setCol($_actRow, 1, array("width" => $_middlePart, "class" => "small"), (!WE_SEEM ? '' : g_l('SEEM', '[start_mode]')));
+		$_table->setCol($_actRow, 1, array("width" => $_middlePart, "class" => "small"), (WE_SEEM ? g_l('SEEM', '[start_mode]') : ''));
 		$_table->setCol($_actRow++, 2, array("width" => $_space), we_html_tools::getPixel($_space, 1));
 
 		switch(WE_LOGIN_WEWINDOW){
@@ -195,14 +172,12 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 
 		// if button is between these radio boces, they can not be reachable with <tab>
 		$_modetable->setCol(0, 0, array(), '<table style="border:0px;padding:0px;" cellspacing="0">
-		<tr>
-			<td>' . $we_login_type .
-			'</td></tr><tr><td>' .
-			we_html_forms::radiobutton(we_base_constants::MODE_NORMAL, getValueLoginMode(we_base_constants::MODE_NORMAL), 'mode', g_l('SEEM', '[start_mode_normal]'), true, 'small') . '</td>
-		</tr>
-		<tr>
-			<td>' . we_html_forms::radiobutton(we_base_constants::MODE_SEE, getValueLoginMode(we_base_constants::MODE_SEE), 'mode', '<abbr title="' . g_l('SEEM', "[start_mode_seem_acronym]") . '">' . g_l('SEEM', '[start_mode_seem]') . '</abbr>', true, "small") . '</td>
-		</tr>
+		<tr><td>' . $we_login_type . '</td></tr>' .
+			'<tr><td>' .
+			we_html_forms::radiobutton(we_base_constants::MODE_NORMAL, getValueLoginMode(we_base_constants::MODE_NORMAL), 'mode', g_l('SEEM', '[start_mode_normal]'), true, 'small') .
+			'</td></tr>
+		<tr><td>' . we_html_forms::radiobutton(we_base_constants::MODE_SEE, getValueLoginMode(we_base_constants::MODE_SEE), 'mode', '<abbr title="' . g_l('SEEM', "[start_mode_seem_acronym]") . '">' . g_l('SEEM', '[start_mode_seem]') . '</abbr>', true, "small") .
+			'</td></tr>
 		</table>');
 		$_modetable->setCol(0, 1, array(
 			'align' => 'right',
@@ -226,7 +201,6 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 
 	$_content = g_l('global', '[loginok]');
 
-
 	$_loginTable = new we_html_table(
 		array("style" => 'border-style:none; padding:0px;border-spacing:0px;',
 		), 2, 2
@@ -239,30 +213,25 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 
 	//	9th Login ok
 	$_table->setCol($_actRow, 0, array("width" => $_space), we_html_tools::getPixel($_space, 5));
-	$_table->setCol($_actRow, 1, array("width" => $_middlePart,
-		"class" => "small"), $_loginTable->getHtml());
+	$_table->setCol($_actRow, 1, array("width" => $_middlePart, "class" => "small"), $_loginTable->getHtml());
 	$_table->setCol($_actRow++, 2, array("width" => $_space), we_html_tools::getPixel($_space, 1));
 
 	//	10th row
-	$_table->setCol($_actRow++, 0, array("width" => $_widthTotal,
-		"colspan" => 3), we_html_tools::getPixel($_widthTotal, 5));
+	$_table->setCol($_actRow++, 0, array("width" => $_widthTotal, "colspan" => 3), we_html_tools::getPixel($_widthTotal, 5));
 	//	11th back button
 	$_table->setCol($_actRow, 0, array("width" => $_space), we_html_tools::getPixel($_space, 5));
-	$_table->setCol($_actRow, 1, array("width" => $_middlePart,
-		"class" => "small",
-		"align" => "right"), we_html_button::create_button("back_to_login", WEBEDITION_DIR . "index.php?r=$r"));
+	$_table->setCol($_actRow, 1, array("width" => $_middlePart, "class" => "small", "align" => "right"), we_html_button::create_button("back_to_login", WEBEDITION_DIR . "index.php?r=$r"));
 	$_table->setCol($_actRow++, 2, array("width" => $_space), we_html_tools::getPixel($_space, 1));
 
 	//	12th row
-	$_table->setCol($_actRow++, 0, array("width" => $_widthTotal,
-		"colspan" => 3), we_html_tools::getPixel($_widthTotal, 15));
+	$_table->setCol($_actRow++, 0, array("width" => $_widthTotal, "colspan" => 3), we_html_tools::getPixel($_widthTotal, 15));
 } else if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "info"){
 	$_table->addRow();
 	$_table->setCol($_actRow++, 0, array("colspan" => 3), we_html_tools::getPixel(2, 50));
 }
 
 if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "info"){
-	print $_table->getHtml();
+	echo $_table->getHtml();
 } else {
 	$_loginTable = $_table->getHtml() . we_html_tools::getPixel(1, 1);
 }
