@@ -32,7 +32,7 @@ function weFileExists($id, $table = FILE_TABLE, we_database_base $db = NULL){
 }
 
 function correctUml($in){
-	return str_replace(array('ä', 'ö', 'ü', 'Ä', 'Ö', 'Ü', 'ß'), array('ae', 'oe', 'ue', 'Ae', 'Oe', 'Ue', 'ss'), $in);
+	return strtr($in, array('ä' => 'ae', 'ö' => 'oe', 'ü' => 'ue', 'Ä' => 'Ae', 'Ö' => 'Oe', 'Ü' => 'Ue', 'ß' => 'ss'));
 }
 
 function makePIDTail($pid, $cid, we_database_base $db = null, $table = FILE_TABLE){
@@ -59,23 +59,23 @@ function makePIDTail($pid, $cid, we_database_base $db = null, $table = FILE_TABL
 	foreach($parentIDs as $pid){
 		$pid_tail[] = OBJECT_X_TABLE . $cid . '.OF_Workspaces LIKE "%,' . $pid . ',%" OR ' . OBJECT_X_TABLE . $cid . '.OF_ExtraWorkspacesSelected LIKE "%,' . $pid . ',%"';
 	}
-	return (empty($pid_tail) ? 1 : ' (' . implode(' OR ', $pid_tail) . ') ' );
+	return ($pid_tail ? ' (' . implode(' OR ', $pid_tail) . ') ' : 1);
 }
 
-function makeIDsFromPathCVS($paths, $table = FILE_TABLE, $prePostKomma = true){
+function makeIDsFromPathCVS($paths, $table = FILE_TABLE){
 	if(strlen($paths) == 0 || strlen($table) == 0){
 		return '';
 	}
-	$foo = makeArrayFromCSV($paths);
+	$foo = exlplode(',', $paths);
 	$db = new DB_WE();
-	$outArray = array();
-	foreach($foo as $path){
-		$id = f('SELECT ID FROM ' . $table . ' WHERE Path="' . $db->escape('/' . ltrim(trim($path), '/')) . '"', '', $db);
-		if($id){
-			$outArray[] = $id;
-		}
+//cleanup paths
+	foreach($foo as &$path){
+		$path = '"' . $db->escape('/' . ltrim(trim($path), '/')) . '"';
 	}
-	return makeCSVFromArray($outArray, $prePostKomma);
+	$db->query('SELECT ID FROM ' . $table . ' WHERE PATH IN (' . implode(',', $foo) . ')');
+	$outArray = $db->getAll(true);
+
+	return implode(',', $outArray);
 }
 
 function getHttpOption(){
@@ -96,7 +96,6 @@ function getHTTP($server, $url, $port = '', $username = '', $password = ''){
 	}
 	switch($_opt){
 		case 'fopen':
-
 			$page = 'Server Error: Failed opening URL: ' . $server . $url;
 			$fh = @fopen($server . $url, 'rb');
 			if(!$fh){
@@ -104,8 +103,9 @@ function getHTTP($server, $url, $port = '', $username = '', $password = ''){
 			}
 			if($fh){
 				$page = '';
-				while(!feof($fh))
-					$page .= fgets($fh, 1024);
+				while(!feof($fh)){
+					$page .= fgets($fh, 8192);
+				}
 				fclose($fh);
 			}
 			return $page;
@@ -923,19 +923,19 @@ function we_check_email($email){ // Zend validates only the pure address
 	return (filter_var($email, FILTER_VALIDATE_EMAIL) !== false);
 }
 
-/*function getRequestVar($name, $default, $yescode = '', $nocode = ''){
-	if(isset($_REQUEST[$name])){
-		if($yescode){
-			eval($yescode);
-		}
-		return $_REQUEST[$name];
-	} else {
-		if($nocode){
-			eval($nocode);
-		}
-		return $default;
-	}
-}*/
+/* function getRequestVar($name, $default, $yescode = '', $nocode = ''){
+  if(isset($_REQUEST[$name])){
+  if($yescode){
+  eval($yescode);
+  }
+  return $_REQUEST[$name];
+  } else {
+  if($nocode){
+  eval($nocode);
+  }
+  return $default;
+  }
+  } */
 
 /**
  * This function returns preference for given name; Checks first the users preferences and then global
