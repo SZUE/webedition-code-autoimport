@@ -309,7 +309,10 @@ if(!$allowUnion && stristr($Query_String, 'union') || stristr($Query_String, '/*
 					}
 				}
 
-				if(!$allowUnion && stristr($Query_String, 'union') || stristr($Query_String, '/*!')){
+				if(!$allowUnion && stristr($queryWithoutStrings, 'union') || stristr($queryWithoutStrings, '/*!')){
+				if((defined('ERROR_LOG_TABLE') && strpos($Query_String, ERROR_LOG_TABLE) === false || !defined('ERROR_LOG_TABLE'))){
+					t_e('Attempt to execute union statement/injection', $Query_String);
+				}
 					exit();
 				}
 		}
