@@ -306,10 +306,9 @@ abstract class we_database_base{
 				}
 
 				if(!$allowUnion && stristr($queryWithoutStrings, 'union') || stristr($queryWithoutStrings, '/*!')){
-					if(self::$Trigger_cnt && (defined('ERROR_LOG_TABLE') && strpos($Query_String, ERROR_LOG_TABLE) === false || !defined('ERROR_LOG_TABLE'))){
-						--self::$Trigger_cnt;
-						t_e($Query_String);
-					}
+				if((defined('ERROR_LOG_TABLE') && strpos($Query_String, ERROR_LOG_TABLE) === false || !defined('ERROR_LOG_TABLE'))){
+					t_e('Attempt to execute union statement/injection', $Query_String);
+				}
 					exit();
 
 			}
