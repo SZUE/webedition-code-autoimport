@@ -24,7 +24,7 @@
  */
 include_once(WE_LIB_PATH . 'additional/lessphp/lessc.inc.php');
 
-class we_helpers_lessc extends lessc{
+class we_helpers_lessc extends lessc {
 
 	private $path = '';
 
@@ -40,12 +40,11 @@ class we_helpers_lessc extends lessc{
 		$matches = array();
 		if(preg_match('|#WE:(\d+)#|', $url, $matches)){
 			$url = intval($matches[1]);
-			return f('SELECT Extension FROM ' . FILE_TABLE . ' WHERE ID=' . intval($matches[1]), 'Extension', $GLOBALS['DB_WE']) == '.less';
-		} else {
-			if(substr_compare($url, '.css', -4, 4) === 0){
-				return false;
-			}
+			return f('SELECT Extension FROM ' . FILE_TABLE . ' WHERE ID=' . $url) == '.less';
+		} elseif(substr_compare($url, '.css', -4, 4) === 0){
+			return false;
 		}
+
 		return true;
 	}
 
@@ -55,8 +54,9 @@ class we_helpers_lessc extends lessc{
 		}
 
 		$str = $this->coerceString($importPath);
-		if($str === null)
+		if($str === null){
 			return false;
+		}
 		$url = $this->compileValue($this->lib_e($str));
 
 
@@ -70,8 +70,9 @@ class we_helpers_lessc extends lessc{
 
 		$realPath = $this->findImport($url);
 
-		if($realPath === null)
+		if($realPath === null){
 			return false;
+		}
 
 		if($this->importDisabled){
 			return array(false, "/* import disabled */");
@@ -97,8 +98,7 @@ class we_helpers_lessc extends lessc{
 		// TODO: need to mark the source parser	these came from this file
 		foreach($root->children as $childName => $child){
 			if(isset($parentBlock->children[$childName])){
-				$parentBlock->children[$childName] = array_merge(
-					$parentBlock->children[$childName], $child);
+				$parentBlock->children[$childName] = array_merge($parentBlock->children[$childName], $child);
 			} else {
 				$parentBlock->children[$childName] = $child;
 			}
@@ -144,7 +144,7 @@ class we_helpers_lessc extends lessc{
 
 	private static function getContent($file){
 		if(is_numeric($file)){
-			return f('SELECT c.Dat FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE l.Type="txt" AND l.Name="data" AND l.DocumentTable="tblFile" AND l.DID=' . intval($file), 'Dat', $GLOBALS['DB_WE']);
+			return f('SELECT c.Dat FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE l.Type="txt" AND l.Name="data" AND l.DocumentTable="tblFile" AND l.DID=' . intval($file));
 		} else {
 			return file_get_contents($file);
 		}
