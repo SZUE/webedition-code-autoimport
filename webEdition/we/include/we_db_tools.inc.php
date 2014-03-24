@@ -44,7 +44,11 @@ function getHash($query = '', we_database_base $DB_WE = NULL, $resultType = MYSQ
 
 function f($query, $field = '', we_database_base $DB_WE = NULL, $emptyValue = ''){
 	$h = getHash($query, ($DB_WE ? $DB_WE : $GLOBALS['DB_WE']), MYSQL_ASSOC);
-	return ($field == '' ? current($h) : (isset($h[$field]) ? $h[$field] : $emptyValue));
+	return
+		($field ?
+			($h && isset($h[$field]) ? $h[$field] : $emptyValue) :
+			($h ? current($h) : $emptyValue)
+		);
 }
 
 function escape_sql_query($inp){
@@ -53,16 +57,16 @@ function escape_sql_query($inp){
 	}
 
 	return ($inp && is_string($inp) ?
-					strtr($inp, array(
-						'\\' => '\\\\',
-						"\0" => '\\0',
-						"\n" => '\\n',
-						"\r" => '\\r',
-						"'" => "\\'",
-						'"' => '\\"',
-						"\x1a" => '\\Z'
-					)) :
-					$inp);
+			strtr($inp, array(
+				'\\' => '\\\\',
+				"\0" => '\\0',
+				"\n" => '\\n',
+				"\r" => '\\r',
+				"'" => "\\'",
+				'"' => '\\"',
+				"\x1a" => '\\Z'
+			)) :
+			$inp);
 }
 
 function sql_function($name){
