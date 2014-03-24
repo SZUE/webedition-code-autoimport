@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_objectFile extends we_document {
+class we_objectFile extends we_document{
 
 	const TYPE_BINARY = 'binary';
 	const TYPE_CHECKBOX = 'checkbox';
@@ -826,7 +826,7 @@ class we_objectFile extends we_document {
 	}
 
 	function getFieldsHTML($editable, $asString = false){
-		$foo = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), $this->DB_WE);
+		$foo = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE);
 
 		$dv = $foo ? unserialize($foo) : array();
 		if(!is_array($dv)){
@@ -3156,7 +3156,7 @@ class we_objectFile extends we_document {
 					$path_parts = pathinfo(id_to_path($objectdaten['TriggerID']));
 				}
 			} else {
-				$objectdaten['Url']= '';
+				$objectdaten['Url'] = '';
 			}
 			$pidstr = '';
 			if($pid){
