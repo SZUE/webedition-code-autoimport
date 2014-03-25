@@ -3085,7 +3085,7 @@ class we_objectFile extends we_document{
 			//FIXME: query should use ID, not parentID
 			'((Selection="' . we_navigation_navigation::SELECTION_DYNAMIC . '") AND SelectionType="' . we_navigation_navigation::STPYE_CLASS . '" AND (ClassID=' . $this->TableID . '))'
 		);
-		if(!empty($category)){
+		if($category){
 			//FIXME: query should use ID, not parentID
 			$queries[] = '((Selection="' . we_navigation_navigation::SELECTION_DYNAMIC . '" AND SelectionType="' . we_navigation_navigation::STPYE_CLASS . '") AND (FIND_IN_SET("' . implode('",Categories) OR FIND_IN_SET("', $category) . '",Categories)))';
 		}
@@ -3119,22 +3119,11 @@ class we_objectFile extends we_document{
 
 		if($foo['Workspaces']){
 			if($foo['TriggerID']){
-				if(in_workspace($foo['TriggerID'], $foo['Workspaces'], FILE_TABLE, $DB_WE)){
+				if(in_workspace($foo['TriggerID'], $foo['Workspaces'], FILE_TABLE, $DB_WE) || in_workspace($foo['TriggerID'], $foo['ExtraWorkspacesSelected'], FILE_TABLE, $DB_WE)){
 					$showLink = true;
 				}
-				if(in_workspace($foo['TriggerID'], $foo['ExtraWorkspacesSelected'], FILE_TABLE, $DB_WE)){
-					$showLink = true;
-				}
-			} else {
-				if(in_workspace($pid, $foo['Workspaces'], FILE_TABLE, $DB_WE)){
-					$showLink = true;
-				} else {
-					if($foo['ExtraWorkspacesSelected']){
-						if(in_workspace($pid, $foo['ExtraWorkspacesSelected'], FILE_TABLE, $DB_WE)){
-							$showLink = true;
-						}
-					}
-				}
+			} elseif(in_workspace($pid, $foo['Workspaces'], FILE_TABLE, $DB_WE) || ($foo['ExtraWorkspacesSelected'] && in_workspace($pid, $foo['ExtraWorkspacesSelected'], FILE_TABLE, $DB_WE))){
+				$showLink = true;
 			}
 		}
 		if($showLink){
@@ -3150,7 +3139,6 @@ class we_objectFile extends we_document{
 				}
 			}
 			if(show_SeoLinks() && $objectseourls){
-
 				$objectdaten = getHash('SELECT  Url,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id) . ' LIMIT 1', $DB_WE);
 				if($objectdaten['TriggerID']){
 					$path_parts = pathinfo(id_to_path($objectdaten['TriggerID']));
@@ -3158,26 +3146,22 @@ class we_objectFile extends we_document{
 			} else {
 				$objectdaten['Url'] = '';
 			}
-			$pidstr = '';
-			if($pid){
-				$pidstr = '?pid=' . intval($pid);
-			}
+			$pidstr = ($pid ? '?pid=' . intval($pid) : '');
+
 			if($objectseourls && $objectdaten['Url']){
 				return ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
 					($hidedirindex && show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
 						'' :
 						$path_parts['filename'] . '/' ) .
 					$objectdaten['Url'] . $pidstr;
-			} else {
-				return $path . '?we_objectID=' . intval($id) . str_replace('?', '&amp;', $pidstr);
 			}
-		} else {
-			if($foo['Workspaces']){
-				$fooArr = makeArrayFromCSV($foo['Workspaces']);
-				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published>0 AND ContentType="' . we_base_ContentTypes::WEDOCUMENT . '" AND IsDynamic=1 AND Path LIKE "' . $DB_WE->escape(id_to_path($fooArr[0], FILE_TABLE, $DB_WE)) . '%"', '', $DB_WE);
-				return ($path ? $path . '?we_objectID=' . intval($id) . '&pid=' . intval($pid) : '');
-			}
+			return $path . '?we_objectID=' . intval($id) . str_replace('?', '&amp;', $pidstr);
+		} elseif($foo['Workspaces']){
+			$fooArr = makeArrayFromCSV($foo['Workspaces']);
+			$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published>0 AND ContentType="' . we_base_ContentTypes::WEDOCUMENT . '" AND IsDynamic=1 AND Path LIKE "' . $DB_WE->escape(id_to_path($fooArr[0], FILE_TABLE, $DB_WE)) . '%"', '', $DB_WE);
+			return ($path ? $path . '?we_objectID=' . intval($id) . '&pid=' . intval($pid) : '');
 		}
+
 		return '';
 	}
 
