@@ -74,7 +74,7 @@ print we_html_element::jsScript(JS_DIR . 'windows.js') .
 		we_html_tools::hidden('we_edit_weDocumentCustomerFilter', 1) .
 		we_html_tools::hidden('weDocumentCustomerFilter_id', $_filter->getId()) : '') .
 	we_html_multiIconBox::getHTML('weDocProp', '100%', $parts, 20, '', -1, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]')) .
-	'</form>
+	'<input type="hidden" name="we_complete_request" value="1"/></form>
 </body>
 </html>';
 
