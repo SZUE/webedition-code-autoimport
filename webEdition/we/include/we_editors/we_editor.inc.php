@@ -286,7 +286,7 @@ if($_userID != 0 && $_userID != $_SESSION['user']['ID'] && $we_doc->ID){ // docu
 
 if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'publish' && $_REQUEST['we_cmd'][0] != 'unpublish') && (($we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT) && ($we_doc->EditPageNr == WE_EDITPAGE_PREVIEW || $we_doc->EditPageNr == WE_EDITPAGE_CONTENT )) || ($we_doc->ContentType == we_base_ContentTypes::HTML && $we_doc->EditPageNr == WE_EDITPAGE_PREVIEW && $_REQUEST['we_cmd'][0] != 'save_document')) && (!$we_doc->IsDynamic)){
 	$we_include = $we_doc->editor();
-	if(!isset($_REQUEST['we_complete_request'])){
+	if(isset($_POST) && $_POST && !isset($_REQUEST['we_complete_request'])){
 		t_e('missing completed request');
 	}
 	$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
@@ -296,8 +296,8 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 		$we_doc->resetUsedElements();
 	}
 	include((substr(strtolower($we_include), 0, strlen($_SERVER['DOCUMENT_ROOT'])) == strtolower($_SERVER['DOCUMENT_ROOT']) ?
-					'' : WE_INCLUDES_PATH) .
-			$we_include);
+			'' : WE_INCLUDES_PATH) .
+		$we_include);
 	$contents = ob_get_contents();
 	ob_end_clean();
 //  SEEM the file
@@ -306,8 +306,8 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 		$contents = we_SEEM::parseDocument($contents);
 
 		$contents = (strpos($contents, '</head>') ?
-						str_replace('</head>', $_insertReloadFooter . '</head>', $contents) :
-						$_insertReloadFooter . $contents);
+				str_replace('</head>', $_insertReloadFooter . '</head>', $contents) :
+				$_insertReloadFooter . $contents);
 	}
 	$we_ext = ($we_doc->Extension == '.js' || $we_doc->Extension == '.css' || $we_doc->Extension == '.wml' || $we_doc->Extension == '.xml') ? '.html' : $we_doc->Extension;
 	$tempName = TEMP_DIR . we_base_file::getUniqueId() . $we_ext;
@@ -433,7 +433,7 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 							$wasSaved = true;
 							$wasNew = (intval($we_doc->ID) == 0) ? true : false;
 							$we_JavaScript .= "_EditorFrame.getDocumentReference().frames[0].we_setPath('" . $we_doc->Path . "', '" . $we_doc->Text . "', '" . $we_doc->ID . "');" .
-									'_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');' . $we_doc->getUpdateTreeScript() . ';'; // save/ rename a document
+								'_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');' . $we_doc->getUpdateTreeScript() . ';'; // save/ rename a document
 							$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_save_ok]'), $we_doc->Path);
 							$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
 							if($_REQUEST['we_cmd'][4]){
@@ -558,7 +558,7 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 							if($wasNew || (!$wasPubl)){
 
 								$we_JavaScript .= ($we_doc->ContentType == "folder" ? 'top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");' : '') .
-										'_EditorFrame.getDocumentReference().frames[3].location.reload();';
+									'_EditorFrame.getDocumentReference().frames[3].location.reload();';
 							}
 							$we_JavaScript .= "_EditorFrame.getDocumentReference().frames[0].we_setPath('" . $we_doc->Path . "','" . $we_doc->Text . "', '" . $we_doc->ID . "');";
 
@@ -657,18 +657,18 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 			}
 
 			/* At this point complete requests are not common
-			if(!isset($_REQUEST['we_complete_request'])){
-				$we_responseText = g_l('weEditor', '[incompleteRequest]');
-				$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
-			}*/
+			  if(!isset($_REQUEST['we_complete_request'])){
+			  $we_responseText = g_l('weEditor', '[incompleteRequest]');
+			  $we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
+			  } */
 			$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
 			if($_SERVER['DOCUMENT_ROOT'] && substr(strtolower($we_include), 0, strlen($_SERVER['DOCUMENT_ROOT'])) == strtolower($_SERVER['DOCUMENT_ROOT'])){
 
 				ob_start();
 				if(!defined('WE_CONTENT_TYPE_SET')){
 					$charset = (isset($we_doc->elements['Charset']['dat']) && $we_doc->elements['Charset']['dat']) ? //	send charset which might be determined in template
-							$we_doc->elements['Charset']['dat'] :
-							DEFAULT_CHARSET;
+						$we_doc->elements['Charset']['dat'] :
+						DEFAULT_CHARSET;
 					define('WE_CONTENT_TYPE_SET', 1);
 					we_html_tools::headerCtCharset('text/html', $charset);
 				}
@@ -683,8 +683,8 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 
 // insert $_reloadFooter at right place
 					$tmpCntnt = (strpos($tmpCntnt, '</head>')) ?
-							str_replace('</head>', $_insertReloadFooter . '</head>', $tmpCntnt) :
-							$_insertReloadFooter . $tmpCntnt;
+						str_replace('</head>', $_insertReloadFooter . '</head>', $tmpCntnt) :
+						$_insertReloadFooter . $tmpCntnt;
 
 // --> Start Glossary Replacement
 
