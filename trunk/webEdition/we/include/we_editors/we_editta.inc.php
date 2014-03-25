@@ -221,12 +221,12 @@ $parts[] = array(
 );
 
 // COMMANDS && CONTEXTMENU
-$select = we_html_tools::htmlSelect('tmp_commands', we_wysiwyg_editor::getEditorCommands(false), 1, "", false, array('onchange' => "var elem=document.getElementById(\'commands\'); var txt = this.options[this.selectedIndex].text; if(elem.value.split(\',\').indexOf(txt)==-1){elem.value=(elem.value) ? (elem.value + \',\' + txt) : txt;}this.selectedIndex=-1"));
-$select_cm = we_html_tools::htmlSelect('tmp_contextmenu', we_wysiwyg_editor::getEditorCommands(false), 1, "", false, array('onchange' => "var elem=document.getElementById(\'contextmenu\'); var txt = this.options[this.selectedIndex].text; if(elem.value.split(\',\').indexOf(txt)==-1){elem.value=(elem.value) ? (elem.value + \',\' + txt) : txt;}this.selectedIndex=-1"));
+$select = we_html_tools::htmlSelect('tmp_commands', we_wysiwyg_editor::getEditorCommands(false), 1, "", false, array('onchange' => "var elem=document.getElementById('commands'); var txt = this.options[this.selectedIndex].text; if(elem.value.split(',').indexOf(txt)==-1){elem.value=(elem.value) ? (elem.value + ',' + txt) : txt;}this.selectedIndex=-1"));
+$select_cm = we_html_tools::htmlSelect('tmp_contextmenu', we_wysiwyg_editor::getEditorCommands(false), 1, "", false, array('onchange' => "var elem=document.getElementById('contextmenu'); var txt = this.options[this.selectedIndex].text; if(elem.value.split(',').indexOf(txt)==-1){elem.value=(elem.value) ? (elem.value + ',' + txt) : txt;}this.selectedIndex=-1"));
 
 $table = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
-		<td class="defaultfont" valign="top" align="right">commands&nbsp;</td><td colspan="5">' . $select . '<br>' . we_class::htmlTextArea("commands", 3, 30, oldHtmlspecialchars((isset($we_doc->elements[$name . "commands"]["dat"]) ? $we_doc->elements[$name . "commands"]["dat"] : "")), array('id' => "commands", 'style' => "width:415px;height:50px")) . '</td>
+		<td class="defaultfont" valign="top" align="right">commands&nbsp;</td><td colspan="5">' . $select . '<br/>' . we_class::htmlTextArea("commands", 3, 30, oldHtmlspecialchars((isset($we_doc->elements[$name . "commands"]["dat"]) ? $we_doc->elements[$name . "commands"]["dat"] : "")), array('id' => "commands", 'style' => "width:415px;height:50px")) . '</td>
 	</tr>
 	<tr>
 		<td>' . we_html_tools::getPixel(90, 10) . '</td>

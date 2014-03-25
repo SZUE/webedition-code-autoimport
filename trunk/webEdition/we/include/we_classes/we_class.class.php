@@ -211,7 +211,7 @@ abstract class we_class{
 				'class' => 'defaultfont wetextarea',
 				'rows' => abs($rows),
 				'cols' => abs($cols),
-				$attribs)
+					), $attribs
 				), ($value ? (oldHtmlspecialchars($value)) : ''));
 	}
 
