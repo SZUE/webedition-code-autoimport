@@ -129,7 +129,7 @@ class we_textDocument extends we_document{
 							}
 						}
 				}
-			break;
+			//no break;
 			case we_base_ContentTypes::JS:
 				$doc = self::replaceWEIDs($doc);
 				break;
