@@ -745,7 +745,7 @@ class we_messaging_messaging extends we_class{
 	function print_select_search_fields(){
 		$out = "";
 		foreach($this->sf_names as $key => $val){
-			$out .= '<option value="' . $key . '"' . (arr_in_array($this->si2sf[$key], $this->search_fields) ? ' selected' : '') . '>' . $val . "</option>\n";
+			$out .= '<option value="' . $key . '"' . (arr_in_array($this->si2sf[$key], $this->search_fields) ? ' selected' : '') . '>' . $val . '</option>';
 		}
 		return $out;
 	}
@@ -887,6 +887,49 @@ class we_messaging_messaging extends we_class{
 			$out .= '<option value="' . $val['ID'] . '"' . (in_array($val['ID'], $this->search_folder_ids) ? ' selected' : '') . '>' . $val['Name'] . "</option>\n";
 		}
 		return $out;
+	}
+
+	/* Create the default folders for the given $userid */
+
+	static function createFolders($userid){
+		$default_folders = array(
+			1 => array(
+				5 => "sent",
+				3 => "messages"),
+			2 => array(
+				13 => "done",
+				11 => "rejected",
+				3 => "todo"));
+
+		$db = new DB_WE();
+
+		$pfolders = array(1 => -1, 2 => -1);
+
+		$db->query('SELECT ID,msg_type,obj_type FROM ' . MSG_FOLDERS_TABLE . ' WHERE obj_type IN(3,5,9,11,13) AND UserID=' . intval($userid));
+		while($db->next_record()){
+			if(isset($default_folders[$db->f('msg_type')][$db->f('obj_type')])){
+				if($db->f('obj_type') == 3){
+					$pfolders[$db->f('msg_type')] = $db->f('ID');
+				}
+				unset($default_folders[$db->f('msg_type')][$db->f('obj_type')]);
+			}
+		}
+
+		foreach($default_folders as $mt => $farr){
+			if($pfolders[$mt] != -1){
+				$pf_id = $pfolders[$mt];
+			} else {
+				$db->query('INSERT INTO ' . MSG_FOLDERS_TABLE . ' (ID, ParentID, UserID, msg_type, obj_type, Properties, Name) VALUES (NULL, 0, ' . intval($userid) . ", $mt, 3, 1, '" . $default_folders[$mt]['3'] . '\')');
+				$pf_id = $db->getInsertId();
+				unset($farr['3']);
+			}
+
+			foreach($farr as $df => $fname){
+				$db->query('INSERT INTO ' . MSG_FOLDERS_TABLE . " (ID, ParentID, UserID, msg_type, obj_type, Properties, Name) VALUES (NULL, $pf_id, " . intval($userid) . ", $mt, " . $df . ', 1, "' . $fname . '")');
+			}
+		}
+
+		return 1;
 	}
 
 }

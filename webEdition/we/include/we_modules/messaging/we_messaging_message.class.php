@@ -162,8 +162,7 @@ class we_messaging_message extends we_messaging_proto{
 			$in_folder = f('SELECT ID FROM ' . $this->DB_WE->escape($this->folder_tbl) . ' WHERE obj_type = ' . we_messaging_proto::FOLDER_INBOX . ' AND msg_type = ' . intval($this->sql_class_nr) . ' AND UserID = ' . intval($userid), 'ID', $this->DB_WE);
 			if(!isset($in_folder) || $in_folder == ''){
 				/* Create default Folders for target user */
-				require_once(WE_MESSAGING_MODULE_PATH . "messaging_interfaces.inc.php");
-				if(msg_create_folders($userid) == 1){
+				if(we_messaging_messaging::createFolders($userid) == 1){
 					$this->DB_WE->query('SELECT ID FROM ' . $this->DB_WE->escape($this->folder_tbl) . ' WHERE obj_type = ' . we_messaging_proto::FOLDER_INBOX . ' AND msg_type = ' . intval($this->sql_class_nr) . ' AND UserID = ' . intval($userid));
 					$this->DB_WE->next_record();
 					$in_folder = $this->DB_WE->f('ID');
@@ -309,6 +308,23 @@ class we_messaging_message extends we_messaging_proto{
 		}
 
 		return $ret;
+	}
+
+	/* generate new webedition message */
+
+	static function newMessage(&$rcpts, $subject, $body, &$errs){
+		$m = new we_messaging_message();
+		$m->set_login_data($_SESSION["user"]["ID"], isset($_SESSION["user"]["Name"]) ? $_SESSION["user"]["Name"] : "");
+		$data = array('subject' => $subject, 'body' => $body);
+
+		$res = $m->send($rcpts, $data);
+
+		if($res['err']){
+			$errs = $res['err'];
+			return $res;
+		}
+
+		return $res;
 	}
 
 }

@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once(WE_MESSAGING_MODULE_PATH . "messaging_interfaces.inc.php");
 
 /**
  * Document Definition base class
@@ -87,7 +86,7 @@ class we_workflow_base{
 		$errs = array();
 		$foo = f("SELECT username FROM " . USER_TABLE . " WHERE ID=" . intval($userID), "username", $this->db);
 		$rcpts = array($foo); /* user names */
-		msg_new_message($rcpts, $subject, $description, $errs);
+		we_messaging_message::newMessage($rcpts, $subject, $description, $errs);
 	}
 
 	function sendMail($userID, $subject, $description, $contecttype = 'text/plain'){
@@ -99,24 +98,79 @@ class we_workflow_base{
 		}
 	}
 
+	/* generate new ToDo */
+	/* return the ID of the created ToDo, 0 on error */
+
 	function sendTodo($userID, $subject, $description, $deadline){
 		$errs = array();
-		$foo = f('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($userID), "", $this->db);
+		$foo = f('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($userID), '', $this->db);
 		$rcpts = array($foo); /* user names */
-		return msg_new_todo($rcpts, $subject, $description, $errs, "html", $deadline);
+		$m = new we_messaging_todo();
+		$m->set_login_data($_SESSION["user"]["ID"], isset($_SESSION["user"]["Name"]) ? $_SESSION["user"]["Name"] : "");
+		$data = array('subject' => $subject, 'body' => $description, 'deadline' => $deadline, 'Content_Type' => 'html', 'priority' => 5);
+
+		$res = $m->send($rcpts, $data);
+
+		if($res['err']){
+			$errs = $res['err'];
+			return 0;
+		}
+
+		return $res['id'];
 	}
+
+	/* Mark ToDo as done */
+	/* $id - value of the 'ID' field in MSG_TODO_TABLE */
 
 	function doneTodo($id){
 		$errs = '';
-		return msg_done_todo($id, $errs);
+		$m = new we_messaging_todo();
+
+		$i_headers = array('_ID' => $id);
+
+		$userid = f('SELECT UserID FROM ' . MSG_TODO_TABLE . ' WHERE ID=' . intval($id), 'UserID', new DB_WE());
+
+		$m->set_login_data($userid, isset($_SESSION["user"]["Name"]) ? $_SESSION["user"]["Name"] : "");
+		$m->init();
+
+		$data = array('todo_status' => 100);
+
+		$res = $m->update_status($data, $i_headers, $userid);
+
+		if(isset($res['msg'])){
+			$errs = $res['msg'];
+		}
+
+		return ($res['err'] == 0 ? 1 : 0);
 	}
+
+	/* remove ToDo */
+	/* $id - value of the 'ID' field in MSG_TODO_TABLE */
 
 	function removeTodo($id){
-		return msg_rm_todo($id);
+		$m = new we_messaging_todo();
+		$m->set_login_data($_SESSION["user"]["ID"], isset($_SESSION["user"]["Name"]) ? $_SESSION["user"]["Name"] : "");
+
+		$i_headers = array('_ID' => $id);
+
+		return $m->delete_items($i_headers);
 	}
 
+	/* Mark ToDo as rejected */
+	/* $id - value of the 'ID' field in MSG_TODO_TABLE */
+
 	function rejectTodo($id){
-		return msg_reject_todo($id);
+		$m = new we_messaging_todo();
+		$db = new DB_WE();
+		$userid = f('SELECT UserID FROM ' . MSG_TODO_TABLE . ' WHERE ID=' . intval($id), '', $db);
+
+		$m->set_login_data($userid, isset($_SESSION["user"]["Name"]) ? $_SESSION["user"]["Name"] : "");
+		$m->init();
+
+		$msg = array('int_hdrs' => array('_ID' => $id, '_from_userid' => $userid));
+		$data = array('body' => '');
+
+		$m->reject($msg, $data);
 	}
 
 }

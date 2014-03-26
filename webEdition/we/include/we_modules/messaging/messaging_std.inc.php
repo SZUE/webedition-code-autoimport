@@ -86,12 +86,15 @@ function arr_hash_to_wesel_hash($arr_hash, $keys){
 /* php 4.0.0 does not support array comparison using the == operator */
 
 function array_cmp(&$arr1, &$arr2){
-	if(count($arr1) != count($arr2))
+	if(count($arr1) != count($arr2)){
 		return 0;
+	}
 
-	for($i = 0; $i < count($arr1); $i++)
-		if($arr1[$i] != $arr2[$i])
+	for($i = 0; $i < count($arr1); $i++){
+		if($arr1[$i] != $arr2[$i]){
 			return 0;
+		}
+	}
 
 	return 1;
 }
@@ -126,8 +129,9 @@ function array_ksearch($key, $val, &$arr, $pos = 0){
 	$len = count($arr);
 
 	for(; $pos < $len; $pos++){
-		if($arr[$pos][$key] == $val)
+		if($arr[$pos][$key] == $val){
 			return $pos;
+		}
 	}
 
 	return -1;

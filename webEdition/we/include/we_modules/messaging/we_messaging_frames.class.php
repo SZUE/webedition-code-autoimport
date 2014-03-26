@@ -787,8 +787,7 @@ function msg_start() {
 		$this->messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 
 		if(!$this->messaging->check_folders()){
-			require_once(WE_MESSAGING_MODULE_PATH . "messaging_interfaces.inc.php");
-			if(!msg_create_folders($_SESSION["user"]["ID"])){
+			if(!we_messaging_messaging::createFolders($_SESSION["user"]["ID"])){
 				$extraHead .= we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_messaging', '[cant_create_folders]'), we_message_reporting::WE_MESSAGE_ERROR));
 			}
 		}
