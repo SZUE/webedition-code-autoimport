@@ -35,10 +35,9 @@ if(is_array($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']])){
 
 	$res = $messaging->send($arr);
 } else {
-	require_once(WE_MESSAGING_MODULE_PATH . "messaging_interfaces.inc.php");
 	$errs = array();
 	$rcpts = array(urldecode($_REQUEST['rcpts_string'])); /* user names */
-	$res = msg_new_message($rcpts, $_REQUEST['mn_subject'], $_REQUEST['mn_body'], $errs);
+	$res = we_messaging_message::newMessage($rcpts, $_REQUEST['mn_subject'], $_REQUEST['mn_body'], $errs);
 }
 
 echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[message_send]')) .

@@ -377,8 +377,7 @@ class we_todo extends we_messaging_proto {
 			$in_folder = f('SELECT ID FROM ' . $this->folder_tbl . ' WHERE obj_type=' . we_messaging_proto::FOLDER_INBOX . ' AND msg_type=' . $this->sql_class_nr . ' AND UserID=' . intval($userid), 'ID', $this->DB_WE);
 			if($in_folder == ''){
 				/* Create default Folders for target user */
-				require_once(WE_MESSAGING_MODULE_PATH . 'messaging_interfaces.inc.php');
-				if(msg_create_folders($userid) == 1){
+				if(we_messaging_messaging::createFolders($userid) == 1){
 					$in_folder = f('SELECT ID FROM ' . $this->folder_tbl . ' WHERE obj_type=' . we_messaging_proto::FOLDER_INBOX . ' AND msg_type=' . $this->sql_class_nr . ' AND UserID=' . intval($userid), 'ID', $this->DB_WE);
 					if($in_folder == ''){
 						$results['err'][] = g_l('modules_messaging', '[no_inbox_folder]');

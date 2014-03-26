@@ -269,8 +269,7 @@ class we_users_user{
 
 	function createAccount(){
 		if(defined('MESSAGING_SYSTEM')){
-			require_once(WE_MODULES_PATH . 'messaging/messaging_interfaces.inc.php');
-			msg_create_folders($this->ID);
+			we_messaging_messaging::createFolders($this->ID);
 		}
 	}
 
