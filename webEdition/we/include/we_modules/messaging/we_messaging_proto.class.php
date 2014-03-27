@@ -130,20 +130,6 @@ class we_messaging_proto extends we_class{
 		return $this->sortorder;
 	}
 
-	/* Get all values for $key in an array of hashes */
-	/* params: key, hash */
-	/* returns: array of the values for the key */
-
-	function array_get_kvals($key, $hash){
-		$ret_arr = array();
-
-		foreach($hash as $elem){
-			$ret_arr[] = $elem[$key];
-		}
-
-		return $ret_arr;
-	}
-
 	function get_subfolder_count($id){
 		$this->DB_WE->query('SELECT count(ID) as c FROM ' . $this->DB_WE->escape($this->folder_tbl) . ' WHERE ParentID=' . intval($id) . ' AND UserID=' . intval($this->userid));
 
@@ -168,7 +154,7 @@ class we_messaging_proto extends we_class{
 
 		if(isset($search_folder_ids)){
 			foreach($search_folder_ids as $elem){
-				if(in_array($elem, $this->array_get_kvals('ID', $this->available_folders))){
+				if(in_array($elem, we_messaging_messaging::array_get_kvals('ID', $this->available_folders))){
 					$this->search_folder_ids[] = $elem;
 				}
 			}
@@ -384,6 +370,19 @@ class we_messaging_proto extends we_class{
 
 	function get_count($folder_id){
 		return f('SELECT COUNT(1) AS c FROM ' . $this->table . ' WHERE ParentID=' . intval($folder_id) . ' AND obj_type=' . $this->obj_type . ' AND msg_type = ' . intval($this->sql_class_nr) . ' AND UserID = ' . intval($this->userid), 'c', $this->DB_WE);
+	}
+
+	static function arr_offset_arraysearch(&$needle, &$haystack){
+		$pos = 0;
+
+		foreach($haystack as $elem){
+			if(we_messaging_messaging::array_cmp($elem, $needle) == 1){
+				return $pos;
+			}
+			$pos++;
+		}
+
+		return -1;
 	}
 
 }
