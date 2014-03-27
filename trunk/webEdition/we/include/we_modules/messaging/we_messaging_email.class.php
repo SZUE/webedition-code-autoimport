@@ -22,8 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once(WE_MESSAGING_MODULE_PATH . "messaging_std.inc.php");
-
 /* messaging email send class */
 
 class we_messaging_email extends we_messaging_proto{
@@ -82,7 +80,7 @@ class we_messaging_email extends we_messaging_proto{
 		$results['ok'] = array();
 		$results['failed'] = array();
 
-		$from = get_nameline($this->userid, 'email');
+		$from = we_messaging_format::get_nameline($this->userid, 'email');
 		$to = array_shift($rcpts);
 		//$cc = join(',', $rcpts);
 

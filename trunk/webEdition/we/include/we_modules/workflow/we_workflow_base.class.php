@@ -36,21 +36,22 @@ class we_workflow_base{
 	var $Log;
 
 	function __construct(){
-		$this->uid = "wf_" . md5(uniqid(__FILE__, true));
+		$this->uid = 'wf_' . md5(uniqid(__FILE__, true));
 		$this->db = new DB_WE();
 		$this->Log = new we_workflow_log();
 	}
 
 	function load(){
 		$tableInfo = $this->db->metadata($this->table);
-		$this->db->query("SELECT * FROM " . $this->db->escape($this->table) . " WHERE ID=" . intval($this->ID));
-		if($this->db->next_record())
+		$this->db->query('SELECT * FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->ID));
+		if($this->db->next_record()){
 			foreach($tableInfo as $cur){
 				$fieldName = $cur["name"];
 				if(in_array($fieldName, $this->persistents)){
 					$this->$fieldName = $this->db->f($fieldName);
 				}
 			}
+		}
 	}
 
 	function save(){
@@ -90,9 +91,8 @@ class we_workflow_base{
 	}
 
 	function sendMail($userID, $subject, $description, $contecttype = 'text/plain'){
-		$errs = array();
 		$foo = f('SELECT Email FROM ' . USER_TABLE . ' WHERE ID=' . intval($userID), "", $this->db);
-		if(!empty($foo) && we_check_email($foo)){
+		if($foo && we_check_email($foo)){
 			$this_user = getHash('SELECT First,Second,Email FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION["user"]["ID"]), $this->db);
 			we_mail($foo, correctUml($subject), $description, (isset($this_user["Email"]) && $this_user["Email"] != "" ? $this_user["First"] . " " . $this_user["Second"] . " <" . $this_user["Email"] . ">" : ""));
 		}

@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once(WE_MESSAGING_MODULE_PATH . 'messaging_std.inc.php');
 require_once(WE_MESSAGING_MODULE_PATH . 'we_conf_messaging.inc.php');
 /* todo object class */
 
@@ -168,8 +167,17 @@ class we_messaging_todo extends we_messaging_proto{
 		return 1;
 	}
 
-	function history_update($id, $userid, $fromuserid, $comment, $action, $status = 'NULL'){
-		return $this->DB_WE->query('INSERT INTO ' . MSG_TODOHISTORY_TABLE . ' (ParentID, UserID, fromUserID, Comment, Created, action, status) VALUES (' . intval($id) . ', ' . intval($userid) . ', ' . $this->DB_WE->escape($fromuserid) . ', "' . $this->DB_WE->escape($comment) . '", UNIX_TIMESTAMP(), ' . $this->DB_WE->escape($action) . ', ' . $this->DB_WE->escape($status) . ')');
+	function history_update($id, $userid, $fromuserid, $comment, $action, $status = -1){
+		return $this->DB_WE->query('INSERT INTO ' . MSG_TODOHISTORY_TABLE . ' ' .
+				we_database_base::arraySetter(array(
+					'ParentID' => $id,
+					'UserID' => $userid,
+					'fromUserID' => $fromuserid,
+					'Comment' => $comment,
+					'Created' => sql_function('UNIX_TIMESTAMP()'),
+					'action' => $action,
+					'status' => ($status < 0 ? sql_function('NULL') : $status)
+		)));
 	}
 
 	function add_comment(){
@@ -335,23 +343,24 @@ class we_messaging_todo extends we_messaging_proto{
 		}
 
 		foreach($items as $item){
-			$tmp = array();
 			$row = getHash('SELECT msg_type, obj_type, headerDate, headerSubject, headerCreator, headerAssigner, headerStatus, headerDeadline, Priority, Content_Type, MessageText, seenStatus, tag FROM ' . $this->DB_WE->escape($this->table) . " WHERE ID=" . intval($item) . " AND UserID=" . intval($this->userid), $this->DB_WE);
-			$tmp['ParentID'] = $target_fid;
-			$tmp['UserID'] = $this->userid;
-			$tmp['msg_type'] = $row('msg_type');
-			$tmp['obj_type'] = $row('obj_type');
-			$tmp['headerDate'] = $row['headerDate'] != '' ? $row['headerDate'] : 'NULL';
-			$tmp['headerSubject'] = $row['headerSubject'] != '' ? $row['headerSubject'] : 'NULL';
-			$tmp['headerCreator'] = $row['headerCreator'] != '' ? $row['headerCreator'] : 'NULL';
-			$tmp['headerAssigner'] = $row['headerAssigner'] != '' ? $row['headerAssigner'] : 'NULL';
-			$tmp['headerStatus'] = $row['headerStatus'] != '' ? $row['headerStatus'] : 'NULL';
-			$tmp['headerDeadline'] = $row['headerDeadline'] != '' ? $row['headerDeadline'] : 'NULL';
-			$tmp['Priority'] = $row['Priority'] != '' ? $row['Priority'] : 'NULL';
-			$tmp['MessageText'] = $row['MessageText'];
-			$tmp['Content_Type'] = $row['Content_Type'];
-			$tmp['seenStatus'] = intval($row['seenStatus']);
-			$tmp['tag'] = $row['tag'] != '' ? $row['tag'] : '';
+			$tmp = array(
+				'ParentID' => $target_fid,
+				'UserID' => $this->userid,
+				'msg_type' => $row('msg_type'),
+				'obj_type' => $row('obj_type'),
+				'headerDate' => $row['headerDate'] ? $row['headerDate'] : sql_function('NULL'),
+				'headerSubject' => $row['headerSubject'] ? $row['headerSubject'] : sql_function('NULL'),
+				'headerCreator' => $row['headerCreator'] ? $row['headerCreator'] : sql_function('NULL'),
+				'headerAssigner' => $row['headerAssigner'] ? $row['headerAssigner'] : sql_function('NULL'),
+				'headerStatus' => $row['headerStatus'] ? $row['headerStatus'] : sql_function('NULL'),
+				'headerDeadline' => $row['headerDeadline'] ? $row['headerDeadline'] : sql_function('NULL'),
+				'Priority' => $row['Priority'] ? $row['Priority'] : sql_function('NULL'),
+				'MessageText' => $row['MessageText'],
+				'Content_Type' => $row['Content_Type'],
+				'seenStatus' => intval($row['seenStatus']),
+				'tag' => $row['tag'] ? $row['tag'] : '',
+			);
 
 			$this->DB_WE->query('INSERT INTO ' . $this->DB_WE->escape($this->table) . ' ' . we_database_base::arraySetter($tmp));
 		}
@@ -398,7 +407,7 @@ class we_messaging_todo extends we_messaging_proto{
 					'UserID' => intval($userid),
 					'msg_type' => $this->sql_class_nr,
 					'obj_type' => we_messaging_proto::TODO_NR,
-					'headerDate' => 'UNIX_TIMESTAMP()',
+					'headerDate' => sql_function('UNIX_TIMESTAMP()'),
 					'headerSubject' => $data['subject'],
 					'headerCreator' => intval(intval($this->userid) ? $this->userid : $userid),
 					'headerStatus' => 0,
@@ -406,8 +415,8 @@ class we_messaging_todo extends we_messaging_proto{
 					'Properties' => we_messaging_proto::TODO_PROP_NONE,
 					'MessageText' => $data['body'],
 					'seenStatus' => 0,
-					'Priority' => $data['priority'] ? $data['priority'] : 'NULL',
-					'Content_Type' => $data['Content_Type'] ? $data['Content_Type'] : 'NULL'
+					'Priority' => $data['priority'] ? $data['priority'] : sql_function('NULL'),
+					'Content_Type' => $data['Content_Type'] ? $data['Content_Type'] : sql_function('NULL')
 			)));
 
 			$results['id'] = $this->DB_WE->getInsertId();
@@ -423,7 +432,7 @@ class we_messaging_todo extends we_messaging_proto{
 		if(isset($criteria['search_fields'])){
 
 			$arr = array('hdrs', 'From');
-			$sf_uoff = arr_offset_arraysearch($arr, $criteria['search_fields']);
+			$sf_uoff = self::arr_offset_arraysearch($arr, $criteria['search_fields']);
 
 			if($sf_uoff > -1){
 				$sfield_cond .= 'u.username LIKE "%' . $this->DB_WE->escape($criteria['searchterm']) . '%" OR
@@ -434,7 +443,7 @@ class we_messaging_todo extends we_messaging_proto{
 			}
 
 			foreach($criteria['search_fields'] as $sf){
-				$sfield_cond .= array_key_by_val($sf, $this->sf2sqlfields) . ' LIKE "%' . $this->DB_WE->escape($criteria['searchterm']) . '%" OR ';
+				$sfield_cond .= array_search($sf, $this->sf2sqlfields) . ' LIKE "%' . $this->DB_WE->escape($criteria['searchterm']) . '%" OR ';
 			}
 
 			$sfield_cond = substr($sfield_cond, 0, -4);

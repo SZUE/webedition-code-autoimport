@@ -22,8 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once(WE_MESSAGING_MODULE_PATH . 'messaging_std.inc.php');
-
 /* message object class */
 
 class we_messaging_format extends we_class{
@@ -70,19 +68,6 @@ class we_messaging_format extends we_class{
 	function set_login_data($userid, $username){
 		$this->userid = $userid;
 		$this->username = $username;
-	}
-
-	/* Get all values for $key in an array of hashes */
-	/* params: key, hash */
-	/* returns: array of the values for the key */
-
-	function array_get_kvals($key, $hash){
-		$ret_arr = array();
-
-		foreach($hash as $elem)
-			$ret_arr[] = $elem[$key];
-
-		return $ret_arr;
 	}
 
 	/* Intialize the class. If $sessDat (array) is set, the class will be initialized from this array */
@@ -138,6 +123,23 @@ class we_messaging_format extends we_class{
 		return $ret;
 	}
 
+	static function get_nameline($id, $addr = 'username'){
+		$db2 = new DB_WE();
+		if($addr == 'username'){
+			$data = getHash('SELECT First, Second, Username FROM ' . USER_TABLE . ' WHERE ID=' . intval($id), $db2);
+			if($data){
+				return $data['Username'] . (($data['First'] || $data['Second']) ? ' (' . $data['First'] . ' ' . $data['Second'] . ')' : '');
+			}
+		} else {
+			$data = getHash('SELECT First, Second, Username, Email FROM ' . USER_TABLE . ' WHERE ID=' . intval($id), $db2);
+			if($data){
+				return $data['Email'] . ' (' . (($data['First'] || $data['Second']) ? $data['First'] . ' ' . $data['Second'] : $data['Username'] ) . ')';
+			}
+		}
+
+		return g_l('modules_messaging', '[userid_not_found]');
+	}
+
 	function get_from(){
 		$ret = '';
 
@@ -145,7 +147,7 @@ class we_messaging_format extends we_class{
 			case 'new':
 			case 'forward':
 			case 're':
-				$ret = get_nameline($this->userid);
+				$ret = self::get_nameline($this->userid);
 				break;
 			default:
 				$ret = isset($this->sel_msg['hdrs']['From']) ? $this->sel_msg['hdrs']['From'] : "";
