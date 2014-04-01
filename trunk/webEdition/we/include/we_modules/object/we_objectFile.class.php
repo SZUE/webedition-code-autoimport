@@ -2536,7 +2536,6 @@ class we_objectFile extends we_document{
 
 	function i_objectFileInit($makeSameNewFlag = false){
 		if($this->ID){
-
 			$this->setRootDirID();
 			$oldTableID = f('SELECT TableID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . $this->ID, '', $this->DB_WE);
 			if($oldTableID != $this->TableID){
@@ -2551,7 +2550,7 @@ class we_objectFile extends we_document{
 					}
 				}
 			}
-		} else if(isset($GLOBALS["we_EDITOR"]) && $GLOBALS["we_EDITOR"] && $this->DefaultInit == false && (!$this->ID)){
+		} else if(isset($GLOBALS["we_EDITOR"]) && $GLOBALS["we_EDITOR"] && $this->DefaultInit == true && (!$this->ID)){
 			if(!$this->TableID){
 				$ac = we_users_util::getAllowedClasses($this->DB_WE);
 				$this->AllowedClasses = makeCSVFromArray($ac);
