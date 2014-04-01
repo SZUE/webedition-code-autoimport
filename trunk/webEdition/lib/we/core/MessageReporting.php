@@ -28,42 +28,15 @@
  * @package    we_core
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_core_MessageReporting{
+class we_core_MessageReporting extends we_message_reporting{
 
 	// contansts for messaging!
 	// these are binray checked like permissions in unix, DON'T change indexes
-	const kMessageInfo = -1;
-	const kMessageFrontend = -2;
-	const kMessageNotice = 1;
-	const kMessageWarning = 2;
-	const kMessageError = 4;
-
-	/**
-	 * returns js-call for the showMessage function
-	 *
-	 * @param string $message
-	 * @param integer $priority
-	 * @param boolean $isJsMsg
-	 * @param boolean $isOpener
-	 * @return string
-	 */
-	static function getShowMessageCall($message, $priority, $isJsMsg = false, $isOpener = false){
-
-		if($priority == self::kMessageInfo || $priority == self::kMessageFrontend){
-
-			if($isJsMsg){ // message is build from scripts, just print it!
-				return "alert( $message );";
-			} else {
-				return 'alert("' . str_replace("'", "\'", $message) . '");';
-			}
-		} else {
-
-			if($isJsMsg){ // message is build from scripts, just print it!
-				return ($isOpener ? "top.opener." : "") . "top.we_showMessage($message, $priority, window);";
-			} else {
-				return ($isOpener ? "top.opener." : "") . "top.we_showMessage(\"" . str_replace(array("\n", '\n', '\\', '"', '###NL###'), array('###NL###', '###NL###', '\\\\', '\\"', '\n'), $message) . "\", $priority, window);";
-			}
-		}
-	}
+	const kMessageInfo = self::WE_MESSAGE_INFO;
+	const kMessageFrontend = self::WE_MESSAGE_FRONTEND;
+	const kMessageNotice = self::WE_MESSAGE_NOTICE;
+	const kMessageWarning = self::WE_MESSAGE_WARNING;
+	const kMessageError = self::WE_MESSAGE_ERROR;
 
 }
+

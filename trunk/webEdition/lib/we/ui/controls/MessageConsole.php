@@ -83,13 +83,11 @@ class we_ui_controls_MessageConsole extends we_ui_abstract_AbstractElement{
 	 * @return string
 	 */
 	protected function _renderHTML(){
-		$translate = we_core_Local::addTranslation('messageConsole.xml');
-
 		$page = we_ui_layout_HTMLPage::getInstance();
 
-		$noticeText = str_replace('"', '\"', $translate->_('New notice'));
-		$warningText = str_replace('"', '\"', $translate->_('New warning'));
-		$errorText = str_replace('"', '\"', $translate->_('New error'));
+		$noticeText = str_replace('"', '\"', g_l('messageConsole', '[iconBar][notice]'));
+		$warningText = str_replace('"', '\"', g_l('messageConsole', '[iconBar][warning]'));
+		$errorText = str_replace('"', '\"', g_l('messageConsole', '[iconBar][error]'));
 
 		$js = <<<EOS
 
