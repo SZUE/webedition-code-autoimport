@@ -81,7 +81,7 @@ function we_tag_write($attribs){
 
 			$isAdmin = $admin && isset($_SESSION['webuser'][$admin]) && $_SESSION['webuser'][$admin];
 
-			$isNew = (($GLOBALS['we_' . $type][$name]->ID == 0) ? ((!$isAdmin && $admin) ? false : true) : false); //FR #8411
+			$isNew = (($GLOBALS['we_' . $type][$name]->ID == 0) ? ($admin/* only if this field is used */ ? $isAdmin : true) : false); //FR #8411
 
 			if($isAdmin || $isNew || $isOwner || $forceedit){
 				$doWrite = true;

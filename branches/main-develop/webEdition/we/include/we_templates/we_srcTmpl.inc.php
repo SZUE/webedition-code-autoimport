@@ -194,17 +194,35 @@ switch($_SESSION['prefs']['editorMode']){
 						//this wil save content from CodeMirror2 to our original <textarea>.
 						var currentTemplateCode = editor.getValue().replace(/\r/g, "\n");
 						if (window.orignalTemplateContent != currentTemplateCode) {
-							window.orignalTemplateContent = currentTemplateCode;
 							document.getElementById("editarea").value = currentTemplateCode;
 							_EditorFrame.setEditorIsHot(true);
+						}else{
+							document.getElementById("editarea").value = currentTemplateCode;
+							_EditorFrame.setEditorIsHot(false);
 						}
 					});
-					var foldHtml = CodeMirror.newFoldFunction(CodeMirror.tagRangeFinder);
+/*					var foldHtml = CodeMirror.newFoldFunction(CodeMirror.tagRangeFinder);
 					var foldOther = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
 					editor.on("gutterClick", function(cm, n) {
 						foldHtml(cm, n);
 						foldOther(cm, n);
 					});
+					editor.on("dblclick",function(cm,e){
+						pos=cm.doc.getCursor();
+						curToken=cm.getTokenAt(cm.doc.getCursor());
+
+						if(curToken.state.overlay.insideTag){//we are inside an we-tag
+						console.log(cm.doc.getCursor());
+						console.log(
+						cm.getTokenAt(cm.doc.getCursor())
+						);
+		console.log(e.target || e.srcElement);
+		console.log(e);
+						console.log(
+						cm.getModeAt(cm.doc.getCursor())
+						);
+						}
+					});*/
 
 				} catch (e) {
 					//console.log("CM init error");

@@ -26,7 +26,6 @@ we_html_tools::protect();
 $_REQUEST['we_transaction'] = (preg_match("/^([a-f0-9]){32}$/i", $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0);
 if(is_array($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']])){
 
-	$messaging = new we_messaging_messaging($_SESSION["user"]["ID"]);
 	$messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 	$messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 	$messaging->init($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
@@ -35,16 +34,15 @@ if(is_array($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']])){
 
 	$res = $messaging->send($arr);
 } else {
-	require_once(WE_MESSAGING_MODULE_PATH . "messaging_interfaces.inc.php");
 	$errs = array();
 	$rcpts = array(urldecode($_REQUEST['rcpts_string'])); /* user names */
-	$res = msg_new_message($rcpts, $_REQUEST['mn_subject'], $_REQUEST['mn_body'], $errs);
+	$res = we_messaging_message::newMessage($rcpts, $_REQUEST['mn_subject'], $_REQUEST['mn_body'], $errs);
 }
 
 echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[message_send]')) .
  STYLESHEET;
 
-if(!empty($res['ok'])){
+if($res['ok']){
 	if(substr($_REQUEST["mode"], 0, 2) != 'u_'){
 		echo we_html_element::jsElement('
                             if (opener && opener.top && opener.top.content) {

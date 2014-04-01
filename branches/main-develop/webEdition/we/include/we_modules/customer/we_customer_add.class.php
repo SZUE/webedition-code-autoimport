@@ -24,7 +24,7 @@
  */
 abstract class we_customer_add{
 
-	static $operator = array('=', '<>', '<', '<=', '>', '>=', 'LIKE');
+	static $operators = array('=', '<>', '<', '<=', '>', '>=', 'LIKE');
 
 	static function getHTMLSortEditor(&$pob){
 		$branch = $pob->getHTMLBranchSelect();

@@ -280,7 +280,7 @@ class we_messaging_view extends weModuleView{
 				';
 
 				$aid = $this->messaging->Folder_ID;
-				$idx = array_ksearch('ID', $aid, $this->messaging->available_folders);
+				$idx = we_messaging_messaging::array_ksearch('ID', $aid, $this->messaging->available_folders);
 				if($idx > -1){
 					$js_out .= '
 					aid = ' . $aid . ';
@@ -309,7 +309,7 @@ class we_messaging_view extends weModuleView{
 				$aid = $this->messaging->Folder_ID;
 				$js_out = '
 					aid = ' . $aid . ';
-					top.content.updateEntry(aid, -1, "' . $this->messaging->available_folders[array_ksearch('ID', $aid, $this->messaging->available_folders)]['Name'] . ' - (' . $this->messaging->get_message_count($aid, '') . ')", -1, 1));
+					top.content.updateEntry(aid, -1, "' . $this->messaging->available_folders[we_messaging_messaging::array_ksearch('ID', $aid, $this->messaging->available_folders)]['Name'] . ' - (' . $this->messaging->get_message_count($aid, '') . ')", -1, 1));
 				';
 				return we_html_element::jsElement($js_out);
 				break;

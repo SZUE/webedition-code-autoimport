@@ -119,9 +119,8 @@ class we_textDocument extends we_document{
 						break;
 					case '.scss':
 						if($this->parseFile){
-							include_once(WE_LIB_PATH . 'additional/scssphp/scss.inc.php');
-							$scss = new scssc();
-							$scss->setImportPaths(array('', $_SERVER['DOCUMENT_ROOT'] . $this->getParentPath(), $_SERVER['DOCUMENT_ROOT']));
+							$scss = new we_helpers_scss();
+							$scss->setImportPaths(array_unique(array('', $_SERVER['DOCUMENT_ROOT'] . $this->getParentPath(), $_SERVER['DOCUMENT_ROOT'] . '/')));
 							try{
 								$doc = $scss->compile($doc);
 							} catch (exception $e){
@@ -130,7 +129,7 @@ class we_textDocument extends we_document{
 							}
 						}
 				}
-			//no break
+			//no break;
 			case we_base_ContentTypes::JS:
 				$doc = self::replaceWEIDs($doc);
 				break;

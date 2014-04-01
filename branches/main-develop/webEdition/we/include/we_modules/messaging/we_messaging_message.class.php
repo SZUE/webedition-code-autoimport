@@ -22,8 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once(WE_MESSAGING_MODULE_PATH . 'messaging_std.inc.php');
-
 /* message object class */
 
 class we_messaging_message extends we_messaging_proto{
@@ -66,12 +64,13 @@ class we_messaging_message extends we_messaging_proto{
 			$this->initSessionDat($sessDat);
 		}
 
-		foreach($this->default_folders as $id => $fid)
+		foreach($this->default_folders as $id => $fid){
 			if($fid == -1){
 				$init_folders[] = $id;
 			}
+		}
 
-		if(!empty($init_folders)){
+		if($init_folders){
 			$this->DB_WE->query('SELECT ID, obj_type FROM ' . MSG_FOLDERS_TABLE . ' WHERE UserID=' . intval($this->userid) . ' AND msg_type=' . $this->sql_class_nr . ' AND (obj_type=' . $this->DB_WE->escape(implode(' OR obj_type=', $init_folders)) . ')');
 			while($this->DB_WE->next_record()){
 				$this->default_folders[$this->DB_WE->f('obj_type')] = $this->DB_WE->f('ID');
@@ -81,7 +80,7 @@ class we_messaging_message extends we_messaging_proto{
 
 	//FIXME: put following 2 methods out of the class (same goes for we_todo.inc.php)
 	function username_to_userid($username){
-		$id = f('SELECT ID FROM ' . USER_TABLE . ' WHERE username="' . $this->DB_WE->escape($username) . '"', 'ID', new DB_WE());
+		$id = f('SELECT ID FROM ' . USER_TABLE . ' WHERE username="' . $this->DB_WE->escape($username) . '"', '', new DB_WE());
 		return ($id === '' ? -1 : $id);
 	}
 
@@ -137,7 +136,7 @@ class we_messaging_message extends we_messaging_proto{
 					'tag' => $tmp['tag'],
 			)));
 
-			$pending_ids[] = $this->DB_WE->getInsertId();
+			//$pending_ids[] = $this->DB_WE->getInsertId();
 		}
 
 		return 1;
@@ -162,8 +161,7 @@ class we_messaging_message extends we_messaging_proto{
 			$in_folder = f('SELECT ID FROM ' . $this->DB_WE->escape($this->folder_tbl) . ' WHERE obj_type = ' . we_messaging_proto::FOLDER_INBOX . ' AND msg_type = ' . intval($this->sql_class_nr) . ' AND UserID = ' . intval($userid), 'ID', $this->DB_WE);
 			if(!isset($in_folder) || $in_folder == ''){
 				/* Create default Folders for target user */
-				require_once(WE_MESSAGING_MODULE_PATH . "messaging_interfaces.inc.php");
-				if(msg_create_folders($userid) == 1){
+				if(we_messaging_messaging::createFolders($userid) == 1){
 					$this->DB_WE->query('SELECT ID FROM ' . $this->DB_WE->escape($this->folder_tbl) . ' WHERE obj_type = ' . we_messaging_proto::FOLDER_INBOX . ' AND msg_type = ' . intval($this->sql_class_nr) . ' AND UserID = ' . intval($userid));
 					$this->DB_WE->next_record();
 					$in_folder = $this->DB_WE->f('ID');
@@ -197,7 +195,7 @@ class we_messaging_message extends we_messaging_proto{
 
 		if(isset($criteria['search_fields'])){
 			$arr = array('hdrs', 'From');
-			$sf_uoff = arr_offset_arraysearch($arr, $criteria['search_fields']);
+			$sf_uoff = self::arr_offset_arraysearch($arr, $criteria['search_fields']);
 
 			if($sf_uoff > -1){
 				$sfield_cond .= 'u.username LIKE "%' . escape_sql_query($criteria['searchterm']) . '%" OR
@@ -230,12 +228,10 @@ class we_messaging_message extends we_messaging_proto{
 		}
 
 		$this->selected_set = array();
-		$query = 'SELECT m.ID, m.ParentID, m.headerDate, m.headerSubject, m.headerUserID, m.Priority, m.seenStatus, u.username
-		FROM ' . $this->DB_WE->escape($this->table) . ' as m, ' . USER_TABLE . ' as u
-		WHERE ((m.msg_type = ' . $this->sql_class_nr . ' AND m.obj_type = ' . we_messaging_proto::MESSAGE_NR . ') ' . ($sfield_cond == '' ? '' : " AND ($sfield_cond)") . ($folders_cond == '' ? '' : " AND (m.ParentID=$folders_cond)") . ( (!isset($message_ids_cond) || $message_ids_cond == '') ? '' : " AND (m.ID=$message_ids_cond)") . ") AND m.UserID=" . $this->userid . " AND m.headerUserID=u.ID
-		ORDER BY " . $this->sortfield . ' ' . $this->so2sqlso[$this->sortorder];
-
-		$this->DB_WE->query($query);
+		$this->DB_WE->query('SELECT m.ID, m.ParentID, m.headerDate, m.headerSubject, m.headerUserID, m.Priority, m.seenStatus, u.username
+		FROM ' . $this->DB_WE->escape($this->table) . ' AS m, ' . USER_TABLE . ' AS u
+		WHERE ((m.msg_type = ' . $this->sql_class_nr . ' AND m.obj_type = ' . we_messaging_proto::MESSAGE_NR . ') ' . ($sfield_cond == '' ? '' : " AND ($sfield_cond)") . ($folders_cond ? " AND (m.ParentID=$folders_cond)" : '') . ( isset($message_ids_cond) && $message_ids_cond ? " AND (m.ID=$message_ids_cond)" : '') . ") AND m.UserID=" . $this->userid . " AND m.headerUserID=u.ID
+		ORDER BY " . $this->sortfield . ' ' . $this->so2sqlso[$this->sortorder]);
 
 		$i = isset($criteria['start_id']) ? $criteria['start_id'] + 1 : 0;
 
@@ -260,9 +256,8 @@ class we_messaging_message extends we_messaging_proto{
 		}
 
 		/* mark selected_set messages as seen */
-		if(!empty($seen_ids)){
-			$query = 'UPDATE ' . $this->DB_WE->escape($this->table) . ' SET seenStatus = (seenStatus | ' . we_messaging_proto::STATUS_SEEN . ') WHERE (ID = ' . join(' OR ID = ', $seen_ids) . ') AND UserID = ' . $this->userid;
-			$this->DB_WE->query($query);
+		if($seen_ids){
+			$this->DB_WE->query('UPDATE ' . $this->DB_WE->escape($this->table) . ' SET seenStatus = (seenStatus | ' . we_messaging_proto::STATUS_SEEN . ') WHERE (ID = ' . join(' OR ID = ', $seen_ids) . ') AND UserID = ' . $this->userid);
 		}
 
 		return $this->selected_set;
@@ -303,12 +298,28 @@ class we_messaging_message extends we_messaging_proto{
 				'body' => array('MessageText' => $this->DB_WE->f('MessageText')));
 		}
 
-		if(!empty($read_ids)){
-			$query = 'UPDATE ' . $this->table . ' SET seenStatus = (seenStatus | ' . we_messaging_proto::STATUS_READ . ') WHERE ID IN (' . implode(', ', $read_ids) . ') AND UserID = ' . intval($this->userid);
-			$this->DB_WE->query($query);
+		if($read_ids){
+			$this->DB_WE->query('UPDATE ' . $this->table . ' SET seenStatus = (seenStatus | ' . we_messaging_proto::STATUS_READ . ') WHERE ID IN (' . implode(', ', $read_ids) . ') AND UserID = ' . intval($this->userid));
 		}
 
 		return $ret;
+	}
+
+	/* generate new webedition message */
+
+	static function newMessage(&$rcpts, $subject, $body, &$errs){
+		$m = new we_messaging_message();
+		$m->set_login_data($_SESSION["user"]["ID"], isset($_SESSION["user"]["Name"]) ? $_SESSION["user"]["Name"] : "");
+		$data = array('subject' => $subject, 'body' => $body);
+
+		$res = $m->send($rcpts, $data);
+
+		if($res['err']){
+			$errs = $res['err'];
+			return $res;
+		}
+
+		return $res;
 	}
 
 }

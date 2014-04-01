@@ -46,15 +46,13 @@ class we_core_Permissions{
 	 */
 	static function protect(){
 
-		$translate = we_core_Local::addTranslation('permissions.xml');
-
 		if(!isset($_SESSION["user"]["Username"]) || $_SESSION["user"]["Username"] == ""){
 			$page = new we_ui_layout_HTMLPage();
 			$page->addJSFile(JS_DIR . 'we_showMessage.js');
 
-			$message = we_util_Strings::quoteForJSString($translate->_('You are not permitted to perform this action! Please login again.'), false);
+			$message = we_util_Strings::quoteForJSString(g_l('alert' ,'[perms_no_permissions]'), false);
 
-			$messageCall = we_core_MessageReporting::getShowMessageCall($message, we_core_MessageReporting::kMessageNotice);
+			$messageCall = we_message_reporting::getShowMessageCall($message, we_message_reporting::WE_MESSAGE_NOTICE);
 
 			$page->addInlineJS($messageCall . 'if (opener) {top.close();} else {location="/webEdition"}');
 			print $page->getHTML();
