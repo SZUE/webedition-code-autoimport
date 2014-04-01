@@ -151,7 +151,8 @@ function we_tag_include($attribs){
 		){
 			return '';
 		} else {
-			list($realPath, $ct) = getHash('SELECT Path,ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . ' AND Published>0', null, MYSQL_NUM);
+			$tmp = getHash('SELECT Path,ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . ' AND Published>0', null, MYSQL_NUM);
+			list($realPath, $ct) = $tmp?$tmp:array('', '');
 		}
 	} else {
 		$realPath = $path;
