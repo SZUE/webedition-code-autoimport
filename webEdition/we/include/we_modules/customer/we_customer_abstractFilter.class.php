@@ -373,7 +373,7 @@ abstract class we_customer_abstractFilter{
 		$comp = str_replace('\\,', '__WE_COMMA__', $comp);
 		$arr = explode(',', $comp);
 		foreach($arr as &$cur){
-			$cur = str_replace('__WE_COMMA__', ',', $cur);
+			$cur = trim(str_replace('__WE_COMMA__', ',', $cur));
 		}
 		$value = explode(',', $value);
 		return count(array_intersect($value, $arr)) > 0;

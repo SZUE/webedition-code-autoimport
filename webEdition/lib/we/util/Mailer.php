@@ -242,7 +242,7 @@ class we_util_Mailer extends Zend_Mail{
 	}
 
 	public function buildMessage(){
-		if($this->Body != ''){
+		if($this->Body){
 			if($this->isEmbedImages){
 				preg_match_all("/(src|background)=\"(.*)\"/Ui", $this->Body, $images);
 				$images[2] = array_unique($images[2]); //entfernt doppelte Bildereinfügungen #3725
@@ -259,17 +259,17 @@ class we_util_Mailer extends Zend_Mail{
 					} elseif(preg_match('/^[A-z][A-z]*:\/\/' . $_SERVER['SERVER_NAME'] . '/', $url) || !preg_match('/^[A-z][A-z]*:\/\//', $url)){
 						$filename = basename($url);
 						$fileParts = pathinfo($filename);
-					$ext = $fileParts['extension'];
+						$ext = $fileParts['extension'];
 
 						if(in_array($ext, $this->embedImages)){
 							$directory = str_replace('..', '', dirname($url));
-							$directory = $directory == '.' ? '' : $directory;
+							$directory = ($directory == '.' ? '' : $directory);
 							if(($pos = stripos($directory, $_SERVER['SERVER_NAME']))){
 								$directory = substr($directory, (strlen($_SERVER['SERVER_NAME']) + $pos), strlen($directory));
 							}
-							$this->basedir = $this->basedir == '' ? $_SERVER['DOCUMENT_ROOT'] : $this->basedir;
-							$this->basedir .= (strlen($this->basedir) > 1 && substr($this->basedir, -1) != '/') ? '/' : '';
-							$directory .= (strlen($directory) > 1 && substr($directory, -1) != '/') ? '/' : '';
+							$this->basedir = ($this->basedir ? $this->basedir : $_SERVER['DOCUMENT_ROOT']) .
+								((strlen($this->basedir) > 1 && substr($this->basedir, -1) != '/') ? '/' : '') .
+								((strlen($directory) > 1 && substr($directory, -1) != '/') ? '/' : '');
 							$attachmentpath = $this->basedir . $directory . $filename;
 							$attachmentpath = str_replace('//', '/', $attachmentpath);
 							$cid = 'cid:' . $this->doaddAttachmentInline($attachmentpath);
@@ -301,8 +301,8 @@ class we_util_Mailer extends Zend_Mail{
 		 * Für das notwendige Konstruct siehe http://www.phpeveryday.com/articles/PHP-Email-Using-Embedded-Images-in-HTML-Email-P113.html
 		 * Das was Zend Mail da produziert entspricht nicht ganz diesen Vorgaben, scheint aber zu funktionieren
 		 */
-		if($this->Body != ''){ // es gibt einen HTML-Part
-			if(!empty($this->inlineAtt)){ // es gibt Inline-Bilder
+		if($this->Body){ // es gibt einen HTML-Part
+			if($this->inlineAtt){ // es gibt Inline-Bilder
 				$this->setType(Zend_Mime::MULTIPART_RELATED); // dann brauchen wir diesen Typ
 				foreach($this->inlineAtt as $at){
 					$this->addAttachment($at);
@@ -370,7 +370,7 @@ class we_util_Mailer extends Zend_Mail{
 	 * @return mime type of ext
 	 */
 	public function doaddAttachment($attachmentpath){
-		if($attachmentpath != ''){
+		if($attachmentpath){
 			$binarydata = we_base_file::load($attachmentpath);
 			$at = new Zend_Mime_Part($binarydata);
 			$at->disposition = Zend_Mime::DISPOSITION_ATTACHMENT;
