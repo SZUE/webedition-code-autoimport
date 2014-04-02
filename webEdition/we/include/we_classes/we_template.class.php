@@ -503,7 +503,6 @@ we_templateInit();?>';
 		$myid = $this->MasterTemplateID ? $this->MasterTemplateID : '';
 		$path = f('SELECT Path FROM ' . $this->DB_WE->escape($table) . ' WHERE ID=' . intval($myid), "Path", $this->DB_WE);
 		$alerttext = str_replace('\'', "\\\\\\'", g_l('weClass', '[same_master_template]'));
-		//javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);if(currentID==$this->ID){" . we_message_reporting::getShowMessageCall($alerttext, we_message_reporting::WE_MESSAGE_ERROR) . "opener.document.we_form.elements[\\'$idname\\'].value=\'\';opener.document.we_form.elements[\\'$textname\\'].value=\\'\\';}','".session_id()."','','text/weTmpl',1)"
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$idname'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$textname'].value");
 		$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);if(currentID==$this->ID){" . we_message_reporting::getShowMessageCall($alerttext, we_message_reporting::WE_MESSAGE_ERROR) . "opener.document.we_form.elements['$idname'].value='';opener.document.we_form.elements['$textname'].value='';}");
@@ -539,16 +538,14 @@ we_templateInit();?>';
 		if($this->ID == 0){
 			return g_l('weClass', '[no_documents]');
 		}
-		$textname = 'TemplateDocuments';
-
 		$path = $this->isUsedByDocuments();
 
 		if(empty($path)){
-			return g_l('weClass', "[no_documents]");
+			return g_l('weClass', '[no_documents]');
 		}
 
 		$button = we_html_button::create_button('open', "javascript:top.weEditorFrameController.openDocument('" . FILE_TABLE . "', document.we_form.elements['TemplateDocuments'].value, '" . we_base_ContentTypes::WEDOCUMENT . "');");
-		return we_html_tools::htmlFormElementTable($this->htmlSelect($textname, $path, 1, '', false, array(), 'value', 388), '', 'left', 'defaultfont', '', we_html_tools::getPixel(20, 4), $button);
+		return we_html_tools::htmlFormElementTable($this->htmlSelect('TemplateDocuments', $path, 1, '', false, array(), 'value', 388), '', 'left', 'defaultfont', '', we_html_tools::getPixel(20, 4), $button);
 	}
 
 	/**
