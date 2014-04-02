@@ -83,8 +83,12 @@ abstract class we_shop_variants{
 
 		foreach($elements as $element => $elemArr){
 			if(strpos($element, WE_SHOP_VARIANTS_PREFIX) !== false){
-
-				$variationElements[$element] = $elemArr;
+				//since delete might have deleted this instance, check if this id is still set
+				list($pos) = explode('_', substr($element, strlen(WE_SHOP_VARIANTS_PREFIX), 2));
+				if(isset($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'][$pos])){
+					//only add elements which are not deleted
+					$variationElements[$element] = $elemArr;
+				}
 				if($save){
 					$model->elements[$element] = null;
 					unset($model->elements[$element]);
@@ -131,36 +135,37 @@ abstract class we_shop_variants{
 
 		$elements = $model->elements;
 
-		if(isset($elements[WE_SHOP_VARIANTS_ELEMENT_NAME])){
+		if(!isset($elements[WE_SHOP_VARIANTS_ELEMENT_NAME])){
+			return;
+		}
 
-			if($unserialize){
-				$model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'] = is_array($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']) ?
-					$model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'] :
-					(
-					(substr($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'], 0, 2) == "a:") ?
-						unserialize($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']) :
-						array()
+		if($unserialize){
+			$model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'] = is_array($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']) ?
+				$model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'] :
+				(
+				(substr($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'], 0, 2) == "a:") ?
+					unserialize($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']) :
+					array()
+				);
+
+			$elements = $model->elements;
+		}
+
+		$variations = $elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'];
+		if(!$variations || !is_array($variations)){
+			return;
+		}
+		foreach($variations as $i => $variation){
+			if(is_array($variation)){
+
+				foreach($variation as $name => $varArr){
+					$model->elements[WE_SHOP_VARIANTS_PREFIX . $i] = array(
+						'type' => 'txt',
+						'dat' => $name
 					);
 
-				$elements = $model->elements;
-			}
-
-			$variations = $elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'];
-			if(empty($variations) || !is_array($variations)){
-				return;
-			}
-			foreach($variations as $i => $variation){
-				if(is_array($variation)){
-
-					foreach($variation as $name => $varArr){
-						$model->elements[WE_SHOP_VARIANTS_PREFIX . $i] = array(
-							'type' => 'txt',
-							'dat' => $name
-						);
-
-						foreach($varArr as $name => $datArr){
-							$model->elements[WE_SHOP_VARIANTS_PREFIX . $i . '_' . $name] = $datArr;
-						}
+					foreach($varArr as $name => $datArr){
+						$model->elements[WE_SHOP_VARIANTS_PREFIX . $i . '_' . $name] = $datArr;
 					}
 				}
 			}
@@ -286,7 +291,7 @@ abstract class we_shop_variants{
 
 	private static function getNameForPosition($name, $pos){
 		return WE_SHOP_VARIANTS_PREFIX . $pos .
-			(($fieldName = self::getFieldNameFromElemName($name)) == '' ? '' : '_' . self::getFieldNameFromElemName($name));
+			(($fieldName = self::getFieldNameFromElemName($name)) ? '_' . self::getFieldNameFromElemName($name) : '');
 	}
 
 	public static function removeVariant(&$model, $delPos){
@@ -301,7 +306,7 @@ abstract class we_shop_variants{
 
 		// first remove all fields from doc
 		$variationFields = we_shop_variants::getAllVariationFields($model, $delPos);
-		foreach($variationFields as $name => $dat){
+		foreach(array_keys($variationFields) as $name){
 			unset($model->elements[$name]);
 		}
 		if(is_array(($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'][$delPos]))){

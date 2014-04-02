@@ -215,6 +215,7 @@ abstract class we_class{
 				), ($value ? (oldHtmlspecialchars($value)) : ''));
 	}
 
+	//fixme: add auto-grouping, add format
 	function htmlSelect($name, array $values, $size = 1, $selectedIndex = '', $multiple = false, array $attribs = array(), $compare = 'value', $width = 0){
 		$optgroup = false;
 		$selIndex = explode(',', $selectedIndex);
