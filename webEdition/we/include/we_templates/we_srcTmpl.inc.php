@@ -186,7 +186,7 @@ switch($_SESSION['prefs']['editorMode']){
 								hlLine = editor.addLineClass(cur, "background", "activeline");
 							}
 						});
-		<?php } else { //FIX for CM which doesn't display lines beyond 27 if this line is missing....           ?>
+		<?php } else { //FIX for CM which doesn't display lines beyond 27 if this line is missing....            ?>
 						hlLine = editor.addLineClass(0, "background", "");
 
 		<?php } ?>
@@ -196,33 +196,33 @@ switch($_SESSION['prefs']['editorMode']){
 						if (window.orignalTemplateContent != currentTemplateCode) {
 							document.getElementById("editarea").value = currentTemplateCode;
 							_EditorFrame.setEditorIsHot(true);
-						}else{
+						} else {
 							document.getElementById("editarea").value = currentTemplateCode;
 							_EditorFrame.setEditorIsHot(false);
 						}
 					});
-/*					var foldHtml = CodeMirror.newFoldFunction(CodeMirror.tagRangeFinder);
-					var foldOther = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
-					editor.on("gutterClick", function(cm, n) {
-						foldHtml(cm, n);
-						foldOther(cm, n);
-					});
-					editor.on("dblclick",function(cm,e){
-						pos=cm.doc.getCursor();
-						curToken=cm.getTokenAt(cm.doc.getCursor());
+					/*					var foldHtml = CodeMirror.newFoldFunction(CodeMirror.tagRangeFinder);
+					 var foldOther = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
+					 editor.on("gutterClick", function(cm, n) {
+					 foldHtml(cm, n);
+					 foldOther(cm, n);
+					 });
+					 editor.on("dblclick",function(cm,e){
+					 pos=cm.doc.getCursor();
+					 curToken=cm.getTokenAt(cm.doc.getCursor());
 
-						if(curToken.state.overlay.insideTag){//we are inside an we-tag
-						console.log(cm.doc.getCursor());
-						console.log(
-						cm.getTokenAt(cm.doc.getCursor())
-						);
-		console.log(e.target || e.srcElement);
-		console.log(e);
-						console.log(
-						cm.getModeAt(cm.doc.getCursor())
-						);
-						}
-					});*/
+					 if(curToken.state.overlay.insideTag){//we are inside an we-tag
+					 console.log(cm.doc.getCursor());
+					 console.log(
+					 cm.getTokenAt(cm.doc.getCursor())
+					 );
+					 console.log(e.target || e.srcElement);
+					 console.log(e);
+					 console.log(
+					 cm.getModeAt(cm.doc.getCursor())
+					 );
+					 }
+					 });*/
 
 				} catch (e) {
 					//console.log("CM init error");
@@ -410,6 +410,19 @@ switch($_SESSION['prefs']['editorMode']){
 		}
 		marked.length = 0;
 	}
+
+	function cmSearch(event) {
+		if (event === null || event.keyCode === 13 || event.keyCode === 10) {
+			search(document.getElementById("query").value, !document.getElementById("caseSens").checked);
+		}
+	}
+
+	function cmReplace(event){
+			if (event === null || event.keyCode === 13 || event.keyCode === 10) {
+				myReplace(document.getElementById("query").value,document.getElementById("replace").value,!document.getElementById("caseSens").checked;
+			}
+	}
+
 	function search(text, caseIns) {
 		unmark();
 		if (!text) {
@@ -531,7 +544,7 @@ switch($_SESSION['prefs']['editorMode']){
 
 			include(WE_INCLUDES_PATH . 'we_templates/htmlTags.inc.php');
 			$allTags = array_merge($allTags, ($setting['htmlTag'] ? $html : array()), ($setting['html5Tag'] ? $html5 : array()));
-			if(empty($allTags)){
+			if(!$allTags){
 				return '';
 			}
 			$ret.='CodeMirror.weHints["<"] = ["' . implode('","', array_keys($allTags)) . '"];' . "\n";
@@ -566,7 +579,7 @@ switch($_SESSION['prefs']['editorMode']){
 						}
 					}
 				}
-				if(!empty($attribs)){
+				if($attribs){
 					$attribs = array_unique($attribs);
 					sort($attribs);
 					$ret.='CodeMirror.weHints["<' . $tagName . ' "] = [' . implode(',', $attribs) . '];' . "\n";
@@ -651,7 +664,7 @@ switch($_SESSION['prefs']['editorMode']){
 
 			$parser_css[] = 'mode/webEdition/webEdition.css';
 
-			if(!empty($parser_js)){ // CodeMirror will be used
+			if($parser_js){ // CodeMirror will be used
 				$parser_js[] = 'addon/search/searchcursor.js';
 				$maineditor = we_html_element::cssLink(WEBEDITION_DIR . 'editors/template/CodeMirror/lib/codemirror.css') .
 					we_html_element::jsScript(WEBEDITION_DIR . 'editors/template/CodeMirror/lib/codemirror.js');
@@ -745,8 +758,8 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 	    <tr>
 <td align="left" class="defaultfont">' .
 			(substr($_SESSION['prefs']['editorMode'], 0, 10) == 'codemirror' ? '
-<input type="text" style="width: 10em;float:left;" id="query"/><div style="float:left;">' . we_html_button::create_button("search", 'javascript:search(document.getElementById("query").value,!document.getElementById("caseSens").checked);') . '</div>
-<input type="text" style="margin-left:2em;width: 10em;float:left;" id="replace"/><div style="float:left;">' . we_html_button::create_button("replace", 'javascript:myReplace(document.getElementById("query").value,document.getElementById("replace").value,!document.getElementById("caseSens").checked);') . '</div>' .
+<input type="text" style="width: 10em;float:left;" id="query" onkeydown="cmSearch(event);"/><div style="float:left;">' . we_html_button::create_button("search", 'javascript:cmSearch(null);') . '</div>
+<input type="text" style="margin-left:2em;width: 10em;float:left;" id="replace" onkeydown="cmReplace(event);"/><div style="float:left;">' . we_html_button::create_button("replace", 'javascript:cmReplace(null);') . '</div>' .
 				we_html_forms::checkbox(1, 0, 'caseSens', g_l('weClass', '[caseSensitive]'), false, "defaultfont", '', false, '', 0, 0, '', 'display:inline-block;margin-left:2em;') .
 				'</div>' : ''
 			) . '
@@ -769,7 +782,7 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 			$tagGroups = weTagWizard::getWeTagGroups($allWeTags);
 
 			$groupJs = "tagGroups = new Array();\n";
-			$selectedGroup = isset($we_doc->TagWizardSelection) && !empty($we_doc->TagWizardSelection) ? $we_doc->TagWizardSelection : "alltags";
+			$selectedGroup = isset($we_doc->TagWizardSelection) && $we_doc->TagWizardSelection ? $we_doc->TagWizardSelection : "alltags";
 			$groupselect = '<select class="weSelect" style="width: 250px;" id="weTagGroupSelect" name="we_' . $we_doc->Name . '_TagWizardSelection" onchange="selectTagGroup(this.value);">
 <optgroup label="' . g_l('weCodeWizard', '[snippets]') . '">
 <option value="snippet_standard" ' . ($selectedGroup == "snippet_standard" ? "selected" : "") . '>' . g_l('weCodeWizard', '[standard_snippets]') . '</option>
