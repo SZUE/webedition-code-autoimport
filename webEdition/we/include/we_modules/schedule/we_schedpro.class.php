@@ -470,7 +470,7 @@ function checkFooter(){
 		if(isset($GLOBALS['WE_MAIN_EDITMODE']) || isset($GLOBALS['we_editmode'])){
 			$lastWEState = array(
 				'WE_MAIN_EDITMODE' => (isset($GLOBALS['WE_MAIN_EDITMODE']) ? $GLOBALS['WE_MAIN_EDITMODE'] : $GLOBALS['we_editmode']),
-				'we_editmode' => $GLOBALS['we_editmode'],
+				'we_editmode' => isset($GLOBALS['we_editmode']) ? $GLOBALS['we_editmode'] : 0,
 			);
 			$GLOBALS['WE_MAIN_EDITMODE'] = $GLOBALS['we_editmode'] = false;
 		}
