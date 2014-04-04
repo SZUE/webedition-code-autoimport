@@ -451,9 +451,9 @@ class we_banner_view extends we_banner_base {
 
 			function submitForm() {
 				var f = self.document.we_form;
-								f.target = (arguments[0]?:"edbody");
-								f.action = (arguments[1]?:"");
-								f.method = (arguments[2]?:"post");
+								f.target = (arguments[0]?arguments[0]:"edbody");
+								f.action = (arguments[1]?arguments[1]:"");
+								f.method = (arguments[2]?arguments[2]:"post");
 								f.submit();
 			}
 			function checkData() {
