@@ -447,7 +447,7 @@ class doclistView{
           row.removeChild(searchTD);
 
           var innerhtml= "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td>\n"
-              + "<input class=\"wetextinput\" name=\"search["+rowNr+"]\" size=\"58\" value=\"\"  id=\"search["+rowNr+"]\" readonly=\"1\" style=\"width: 190px;\" onblur=\"this.className=\'wetextinput\';\" onfocus=\"this.className=\'wetextinputselected\'\" type=\"text\" />\n"
+              + "<input class=\"wetextinput\" name=\"search["+rowNr+"]\" size=\"58\" value=\"\"  id=\"search["+rowNr+"]\" readonly=\"1\" style=\"width: 190px;\" type=\"text\" />\n"
               + "</td><td><input value=\"\" name=\"searchParentID["+rowNr+"]\" type=\"hidden\" /></td><td>' . addslashes(we_html_tools::getPixel(5, 4)) . '</td><td>\n"
               + "<table title=\"' . g_l('button', '[select] [value]') . '\" class=\"weBtn\" style=\"width: 70px\" onmouseout=\"weButton.out(this);\" onmousedown=\"weButton.down(this);\" onmouseup=\"if(weButton.up(this)){we_cmd(\'openCatselector\',document.we_form.elements[\'searchParentID["+rowNr+"]\'].value,\'' . CATEGORY_TABLE . '\',\'document.we_form.elements[\\\\\'searchParentID["+rowNr+"]\\\\\'].value\',\'document.we_form.elements[\\\\\'search["+rowNr+"]\\\\\'].value\',\'\',\'\',\'0\',\'\',\'\');}\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n"
               + "<tbody><tr><td class=\"weBtnLeft\"></td><td class=\"weBtnMiddle\" style=\"width: 58px\">\n"
@@ -476,7 +476,7 @@ class doclistView{
           row.removeChild(searchTD);
 
           var innerhtml= "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td>\n"
-              + "<input class=\"wetextinput\" name=\"search["+rowNr+"]\" size=\"58\" value=\"\"  id=\"search["+rowNr+"]\" readonly=\"1\" style=\"width: 190px;\" onblur=\"this.className=\'wetextinput\';\" onfocus=\"this.className=\'wetextinputselected\'\" type=\"text\" />\n"
+              + "<input class=\"wetextinput\" name=\"search["+rowNr+"]\" size=\"58\" value=\"\"  id=\"search["+rowNr+"]\" readonly=\"1\" style=\"width: 190px;\" type=\"text\" />\n"
               + "</td><td><input value=\"\" name=\"searchParentID["+rowNr+"]\" type=\"hidden\" /></td><td>' . addslashes(we_html_tools::getPixel(5, 4)) . '</td><td>\n"
               + "<table title=\"' . g_l('button', '[select][value]') . '\" class=\"weBtn\" style=\"width: 70px\" onmouseout=\"weButton.out(this);\" onmousedown=\"weButton.down(this);\" onmouseup=\"if(weButton.up(this)){we_cmd(\'openDocselector\',document.we_form.elements[\'searchParentID["+rowNr+"]\'].value,\'' . TEMPLATES_TABLE . '\',\'document.we_form.elements[\\\\\'searchParentID["+rowNr+"]\\\\\'].value\',\'document.we_form.elements[\\\\\'search["+rowNr+"]\\\\\'].value\',\'\',\'\',\'0\',\'\',\'\');}\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n"
               + "<tbody><tr><td class=\"weBtnLeft\"></td><td class=\"weBtnMiddle\" style=\"width: 58px\">\n"
@@ -578,7 +578,7 @@ class doclistView{
           row.removeChild(searchTD);
 
           var innerhtml= "<table id=\"search["+rowNr+"]_cell\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td></td><td></td><td>\n"
-              + "<input class=\"wetextinput\" name=\"search["+rowNr+"]\" size=\"55\" value=\"\" maxlength=\"10\" id=\"search["+rowNr+"]\" readonly=\"1\" style=\"width: 100px; \" onblur=\"this.className=\'wetextinput\';\" onfocus=\"this.className=\'wetextinputselected\'\" type=\"text\" />"
+              + "<input class=\"wetextinput\" name=\"search["+rowNr+"]\" size=\"55\" value=\"\" maxlength=\"10\" id=\"search["+rowNr+"]\" readonly=\"1\" style=\"width: 100px; \" type=\"text\" />"
               + "</td><td>&nbsp;</td><td><a href=\"#\">\n"
               + "<table id=\"date_picker_from"+rowNr+"\" class=\"weBtn\" onmouseout=\"weButton.out(this);\" onmousedown=\"weButton.down(this);\" onmouseup=\"if(weButton.up(this)){;}\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n"
               + "<tbody><tr><td class=\"weBtnLeft\"></td><td class=\"weBtnMiddle\"">

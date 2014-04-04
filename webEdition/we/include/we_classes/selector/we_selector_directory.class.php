@@ -203,7 +203,7 @@ function weonclick(e){
 #if(makeNewFolder){
 	<tr style="background-color:#DFE9F5;">
 		<td align="center"><img src="' . ICON_DIR . we_base_ContentTypes::FOLDER_ICON . '" width="16" height="18" border="0" /></td>
-		<td><input type="hidden" name="we_FolderText" value="' . g_l('fileselector', "[new_folder_name]") . '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' . g_l('fileselector', "[new_folder_name]") . '" class="wetextinput" onBlur="submitFolderMods(); this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" /></td>
+		<td><input type="hidden" name="we_FolderText" value="' . g_l('fileselector', "[new_folder_name]") . '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' . g_l('fileselector', "[new_folder_name]") . '" class="wetextinput" style="width:100%" /></td>
 		<td class="selector">' . date(g_l('date', '[format][default]')) . '</td>
 	</tr>
 #}
@@ -213,7 +213,7 @@ function weonclick(e){
 	<tr id="line_#\'+entries[i].ID+#\'" style="#\' + ((entries[i].ID == top.currentID && (!makeNewFolder) )  ? "background-color:#DFE9F5;" : "")+#\'cursor:pointer;" #\'+((we_editDirID || makeNewFolder) ? "" : onclick)+ (entries[i].isFolder ? ondblclick : "") + #\'>
 		<td class="selector" align="center"><img src="' . ICON_DIR . '#\'+entries[i].icon+#\'" width="16" height="18" border="0" /></td>
 #if(we_editDirID == entries[i].ID){
-		<td class="selector"><input type="hidden" name="we_FolderText" value="#\'+entries[i].text+#\'" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="#\'+entries[i].text+#\'" class="wetextinput" onBlur="submitFolderMods(); this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" />
+		<td class="selector"><input type="hidden" name="we_FolderText" value="#\'+entries[i].text+#\'" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="#\'+entries[i].text+#\'" class="wetextinput" style="width:100%" />
 #}else{
 		<td class="selector" style="" title="#\'+entries[i].text+#\'">
 			#\'+cutText(entries[i].text,30)+#\'

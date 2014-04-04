@@ -140,7 +140,7 @@ top.unselectAllFiles();') . '
 <tr style="background-color:#DFE9F5;">
 <td align="center"><img src="' . ICON_DIR . we_base_ContentTypes::FOLDER_ICON . '" width="16" height="18" border="0" /></td>
 <td><input type="hidden" name="we_FolderText" value="' . g_l("navigation", "[newFolder]") . '" />
-<input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' . g_l("navigation", "[newFolder]") . '"  class="wetextinput" onBlur="this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" /></td>
+<input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' . g_l("navigation", "[newFolder]") . '"  class="wetextinput" style="width:100%" /></td>
 </tr>
 #}
 ');
@@ -155,7 +155,7 @@ top.unselectAllFiles();') . '
 					d.writeln('</td>');
 					if (we_editDirID == entries[i].ID) {
 						d.writeln('<td class="selector">');
-						d.writeln('<input type="hidden" name="we_FolderText" value="' + entries[i].text + '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" onBlur="this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" />');
+						d.writeln('<input type="hidden" name="we_FolderText" value="' + entries[i].text + '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />');
 					} else {
 						d.writeln('<td class="selector" style="" >');
 						d.writeln(entries[i].text);

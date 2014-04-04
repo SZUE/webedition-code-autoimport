@@ -480,5 +480,5 @@ if(isset($_POST['checkLogin']) && empty($_COOKIE)){
 	$_layout = we_html_element::htmlDiv(array('style' => 'float: left;height: 50%;width: 1px;')) . we_html_element::htmlDiv(array('style' => 'clear:left;position:relative;top:-25%;'), we_html_element::htmlForm(array("action" => WEBEDITION_DIR . 'index.php', 'method' => 'post', 'name' => 'loginForm'), $_hidden_values . $dialogtable));
 
 	printHeader($login, (isset($httpCode) ? $httpCode : 401));
-	print we_html_element::htmlBody(array('style' => 'background-color:#386AAB; height:100%;', "onload" => (($login == LOGIN_OK) ? "open_we();" : "document.loginForm.username.focus();document.loginForm.username.select();")), $_layout . ((isset($_body_javascript)) ? we_html_element::jsElement($_body_javascript) : '')) . '</html>';
+	echo we_html_element::htmlBody(array('style' => 'background-color:#386AAB; height:100%;', "onload" => (($login == LOGIN_OK) ? "open_we();" : "document.loginForm.username.focus();document.loginForm.username.select();")), $_layout . ((isset($_body_javascript)) ? we_html_element::jsElement($_body_javascript) : '')) . '</html>';
 }

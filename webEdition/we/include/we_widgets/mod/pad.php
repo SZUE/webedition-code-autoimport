@@ -213,8 +213,6 @@ $oTblProps->setCol(
 		'id' => 'previewCode',
 		'style' => 'width:100%;height:60px;',
 		'class' => 'wetextinput',
-		'onblur' => 'this.className=\'wetextinput\';',
-		'onfocus' => 'this.className=\'wetextinputselected\''
 		), ""));
 $oTblProps->setCol(7, 0, null, we_html_tools::getPixel(1, 8));
 $oTblProps->setCol(8, 0, array(
