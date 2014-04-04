@@ -419,7 +419,7 @@ switch($_SESSION['prefs']['editorMode']){
 
 	function cmReplace(event){
 			if (event === null || event.keyCode === 13 || event.keyCode === 10) {
-				myReplace(document.getElementById("query").value,document.getElementById("replace").value,!document.getElementById("caseSens").checked;
+				myReplace(document.getElementById("query").value,document.getElementById("replace").value,!document.getElementById("caseSens").checked);
 			}
 	}
 
