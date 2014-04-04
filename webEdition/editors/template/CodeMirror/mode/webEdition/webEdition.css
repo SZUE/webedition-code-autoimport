@@ -35,6 +35,10 @@
 	color: #4d7dbc;
 }
 
+.CodeMirror .cm-WEID:before {
+	top:-2.6ex;
+}
+
 /* Suchbegriffe */
 .CodeMirror .searched {
 	background-color: #859900;
@@ -53,7 +57,8 @@
 .CodeMirror .weOpenTag:hover:after,
 .CodeMirror .cm-weOpenTag:hover:after,
 .CodeMirror .weTagAttribute:hover:after,
-.CodeMirror .cm-weTagAttribute:hover:after {
+.CodeMirror .cm-weTagAttribute:hover:after,
+.CodeMirror .cm-WEID:before {
 	position: absolute;
 	margin-top: -6px;
 	padding: 5px 10px;

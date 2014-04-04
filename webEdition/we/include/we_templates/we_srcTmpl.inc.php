@@ -186,7 +186,7 @@ switch($_SESSION['prefs']['editorMode']){
 								hlLine = editor.addLineClass(cur, "background", "activeline");
 							}
 						});
-		<?php } else { //FIX for CM which doesn't display lines beyond 27 if this line is missing....            ?>
+		<?php } else { //FIX for CM which doesn't display lines beyond 27 if this line is missing....                   ?>
 						hlLine = editor.addLineClass(0, "background", "");
 
 		<?php } ?>
@@ -417,10 +417,10 @@ switch($_SESSION['prefs']['editorMode']){
 		}
 	}
 
-	function cmReplace(event){
-			if (event === null || event.keyCode === 13 || event.keyCode === 10) {
-				myReplace(document.getElementById("query").value,document.getElementById("replace").value,!document.getElementById("caseSens").checked);
-			}
+	function cmReplace(event) {
+		if (event === null || event.keyCode === 13 || event.keyCode === 10) {
+			myReplace(document.getElementById("query").value, document.getElementById("replace").value, !document.getElementById("caseSens").checked);
+		}
 	}
 
 	function search(text, caseIns) {
@@ -521,6 +521,49 @@ switch($_SESSION['prefs']['editorMode']){
 					), '', $params);
 		}
 
+		function we_getCSSIds(){
+			$tp = new we_tag_tagParser($GLOBALS['we_doc']->getElement('data'));
+			$tags = $tp->getTagsWithAttributes();
+			$query = array('document' => array(), 'template' => array(), 'object' => array());
+
+			foreach($tags as $tag){
+				if(isset($tag['attribs']['id']) && intval($tag['attribs']['id'])){
+					$type = (isset($tag['attribs']['type']) ? $tag['attribs']['type'] : ($tag['name'] == 'object' ? 'object' : 'document'));
+					$query[$type][] = intval($tag['attribs']['id']);
+				}
+			}
+			foreach($query as $type => &$ids){
+				if(!$ids){
+					continue;
+				}
+				switch($type){
+					default:
+					case 'document':
+						$table = FILE_TABLE;
+						break;
+					case 'template':
+						$table = TEMPLATES_TABLE;
+						break;
+					case 'object':
+						if(!defined('OBJECT_FILES_TABLE')){
+							$ids = array();
+							continue;
+						}
+						$table = OBJECT_FILES_TABLE;
+				}
+				$GLOBALS['DB_WE']->query('SELECT ID,Path FROM ' . $table . ' WHERE ID IN (' . implode(',', array_unique($ids, SORT_NUMERIC)) . ')');
+				$ids = $GLOBALS['DB_WE']->getAllFirst(false);
+			}
+
+			$ret = '';
+			foreach($query as $type => $docs){
+				foreach($docs as $id => $path){
+					$ret.='.cm-we' . $type . 'ID-' . $id . ':hover:before {content: "' . $path . '";}';
+				}
+			}
+			return $ret;
+		}
+
 		function we_getCodeMirror2Tags($css, $weTags = true){
 			//FIXME: this should only be loaded once! not for every document opened!
 			$ret = '';
@@ -592,7 +635,6 @@ switch($_SESSION['prefs']['editorMode']){
 			$maineditor = '';
 			$parser_js = array();
 			$parser_css = array('theme/' . $_SESSION['prefs']['editorTheme'] . '.css');
-			$toolTip = false;
 			$useCompletion = false;
 			switch($GLOBALS['we_doc']->ContentType){ // Depending on content type we use different parsers and css files
 				case we_base_ContentTypes::CSS:
@@ -628,7 +670,6 @@ switch($_SESSION['prefs']['editorMode']){
 						$parser_js[] = 'addon/we/we-hint.js';
 					}
 					$parser_css[] = 'addon/hint/show-hint.css';
-					$toolTip = $_SESSION['prefs']['editorTooltips'];
 					$mode = we_base_ContentTypes::TEMPLATE;
 					$useCompletion = true;
 				case we_base_ContentTypes::HTML:
@@ -677,7 +718,10 @@ switch($_SESSION['prefs']['editorMode']){
 
 				$tmp = @unserialize($_SESSION['prefs']['editorCodecompletion']);
 				$hasCompletion = is_array($tmp) ? array_sum($tmp) : false;
-				$maineditor.=we_html_element::cssElement(($toolTip && $GLOBALS['we_doc']->ContentType == we_base_ContentTypes::TEMPLATE ? we_getCodeMirror2Tags(true) : '') . '
+				$maineditor.=we_html_element::cssElement(
+						($GLOBALS['we_doc']->ContentType == we_base_ContentTypes::TEMPLATE ?
+							($_SESSION['prefs']['editorTooltips'] ? we_getCodeMirror2Tags(true) : '') .
+							($_SESSION['prefs']['editorTooltipsIDs'] ? we_getCSSIds() : '') : '') . '
 .weSelfClose:hover:after, .cm-weSelfClose:hover:after, .weOpenTag:hover:after, .cm-weOpenTag:hover:after, .weTagAttribute:hover:after, .cm-weTagAttribute:hover:after {
 	font-family: ' . ($_SESSION['prefs']['editorTooltipFont'] && $_SESSION['prefs']['editorTooltipFontname'] ? $_SESSION['prefs']['editorTooltipFontname'] : 'sans-serif') . ';
 	font-size: ' . ($_SESSION['prefs']['editorTooltipFont'] && $_SESSION['prefs']['editorTooltipFontsize'] ? $_SESSION['prefs']['editorTooltipFontsize'] : '12') . 'px;
@@ -765,7 +809,7 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 			) . '
 					</td>
 					<td align="right" class="defaultfont">' .
-			($_useJavaEditor ? '' : we_html_forms::checkbox(1, ($_SESSION['weS']['we_wrapcheck'] == 1), 'we_wrapcheck_tmp', g_l('global', '[wrapcheck]'), false, "defaultfont", ($_SESSION['prefs']['editorMode'] == 'codemirror2' ?'editor.setOption(\'lineWrapping\',this.checked);':"we_cmd('wrap_on_off',this.checked)"), false, '', 0, 0, '', 'display:inline-block;')) .
+			($_useJavaEditor ? '' : we_html_forms::checkbox(1, ($_SESSION['weS']['we_wrapcheck'] == 1), 'we_wrapcheck_tmp', g_l('global', '[wrapcheck]'), false, "defaultfont", ($_SESSION['prefs']['editorMode'] == 'codemirror2' ? 'editor.setOption(\'lineWrapping\',this.checked);' : "we_cmd('wrap_on_off',this.checked)"), false, '', 0, 0, '', 'display:inline-block;')) .
 			(substr($_SESSION['prefs']['editorMode'], 0, 10) == 'codemirror' ? '<div id="reindentButton" style="display:inline-block;margin-left:10px;margin-top:-3px;">' . we_html_button::create_button("reindent", 'javascript:reindent();') . '</div>' : '') .
 			'</td>	</tr>
         </table></td></tr></table>';
