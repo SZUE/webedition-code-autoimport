@@ -55,7 +55,7 @@ background-color: #EEEEEE;
 
 .weMarkInputError, input:invalid {background-color: #ff8888 ! important;}
 
-.wetextinputselected {
+input.wetextinput:focus{
 color: black;
 border: #888888 solid 1px;
 background-color: #dce6f2;
@@ -76,7 +76,7 @@ font-size: <?php print (we_base_browserDetect::isMAC()) ? 11 : ((we_base_browser
 font-family: <?php print g_l('css', '[font_family]'); ?>;
 }
 
-.wetextareaselected {
+textarea.wetextarea:focus {
 color: black;
 border: #888888 solid 1px;
 background-color: #dce6f2;

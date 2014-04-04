@@ -179,7 +179,7 @@ function getCSS(){
 		font-size:' . ((we_base_browserDetect::isMAC()) ? "10px" : ((we_base_browserDetect::isUNIX()) ? "12px" : "11px")) . ';
 		font-family:' . g_l('css', '[font_family]') . ';
 	}
-	.wetextinputselected{
+	input.wetextinput:focus{
 		color:black;
 		border:#888888 solid 1px;
 		background-color:#DCE6F2;
@@ -196,7 +196,7 @@ function getCSS(){
 		font-size:" . ((we_base_browserDetect::isMAC()) ? "10px" : ((we_base_browserDetect::isUNIX()) ? "12px" : "11px")) . ";
 		font-family:" . g_l('css', '[font_family]') . ';
 	}
-	.wetextareaselected{
+	textarea.wetextarea::focus{
 		color:black;
 		border:#888888 solid 1px;
 		background-color:#DCE6F2;

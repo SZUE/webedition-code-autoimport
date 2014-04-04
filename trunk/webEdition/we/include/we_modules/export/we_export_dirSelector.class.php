@@ -140,7 +140,7 @@ top.unselectAllFiles();') . '
 				if (makeNewFolder) {
 					d.writeln('<tr style="background-color:#DFE9F5;">');
 					d.writeln('<td align="center"><img src="<?php print ICON_DIR . we_base_ContentTypes::FOLDER_ICON; ?>" width="16" height="18" border="0" /></td>');
-					d.writeln('<td><input type="hidden" name="we_FolderText" value="<?php print g_l('export', "[newFolder]") ?>" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="<?php print g_l('export', "[newFolder]") ?>"  class="wetextinput" onBlur="this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" /></td>');
+					d.writeln('<td><input type="hidden" name="we_FolderText" value="<?php print g_l('export', "[newFolder]") ?>" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="<?php print g_l('export', "[newFolder]") ?>"  class="wetextinput" style="width:100%" /></td>');
 					d.writeln('</tr>');
 				}
 				for (i = 0; i < entries.length; i++) {
@@ -152,7 +152,7 @@ top.unselectAllFiles();') . '
 					d.writeln('</td>');
 					if (we_editDirID == entries[i].ID) {
 						d.writeln('<td class="selector">');
-						d.writeln('<input type="hidden" name="we_FolderText" value="' + entries[i].text + '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" onBlur="this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" />');
+						d.writeln('<input type="hidden" name="we_FolderText" value="' + entries[i].text + '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />');
 					} else {
 						d.writeln('<td class="selector" style="" >');
 						d.writeln(cutText(entries[i].text, 24));

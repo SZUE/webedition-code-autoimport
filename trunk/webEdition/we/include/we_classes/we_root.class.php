@@ -282,8 +282,6 @@ abstract class we_root extends we_class{
 
 	function htmlTextInput_formDirChooser($attribs = array(), $addAttribs = array()){
 		$_attribs = array(
-			'onfocus' => "this.className='wetextinputselected';",
-			'onblur' => "this.className='wetextinput';",
 			'class' => 'wetextinput',
 			'size' => 30,
 			'value' => '',

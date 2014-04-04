@@ -1027,20 +1027,15 @@ function weInputInArray(arr, val) {
 					case "id":
 						$this->inputId = $key;
 						break;
-					case "onblur":
-						$_onblur = 1;
-						$this->inputAttribs .= $key . '="weInputAppendClass(this, \'wetextinput\'); weInputRemoveClass(this, \'wetextinputselected\'); ' . $val . '" ';
-						break;
-					case "onfocus":
-						$_onfocus = 1;
-						$this->inputAttribs .= $key . '="weInputAppendClass(this, \'wetextinputselected\'); weInputRemoveClass(this, \'wetextinput\'); ' . $val . '" ';
-						break;
 					case "onchange":
 						$_onchange = 1;
 						$this->inputAttribs .= $key . '="' . ($markHot ? 'if(_EditorFrame){_EditorFrame.setEditorIsHot(true);hot=1}' : '') . $val . '" ';
 						break;
 					case "class":
 						$_class = 1;
+						$val.=' wetextinput';
+					case "onblur":
+					case "onfocus":
 					default:
 						$this->inputAttribs .= $key . '="' . $val . '" ';
 				}
@@ -1048,17 +1043,11 @@ function weInputInArray(arr, val) {
 			if(!isset($_class)){
 				$this->inputAttribs .= 'class="wetextinput" ';
 			}
-			if(!isset($_onblur)){
-				$this->inputAttribs .= 'onblur="weInputAppendClass(this, \'wetextinput\'); weInputRemoveClass(this, \'wetextinputselected\');" ';
-			}
-			if(!isset($_onfocus)){
-				$this->inputAttribs .= 'onfocus="weInputAppendClass(this, \'wetextinputselected\'); weInputRemoveClass(this, \'wetextinput\');" ';
-			}
 			if(!isset($_onchange)){
 				$this->inputAttribs .= ' onchange="' . ($markHot ? 'if(_EditorFrame){_EditorFrame.setEditorIsHot(true);hot=1}; ' : '') . '" ';
 			}
 		} else {
-			$this->inputAttribs = 'class="wetextinput" onblur="weInputAppendClass(this, \'wetextinput\'); weInputRemoveClass(this, \'wetextinputselected\');" onfocus="weInputAppendClass(this, \'wetextinputselected\'); weInputRemoveClass(this, \'wetextinput\');" onchange="' . ($markHot ? 'if(_EditorFrame){_EditorFrame.setEditorIsHot(true);hot=1;}' : '') . '" ';
+			$this->inputAttribs = 'class="wetextinput" onchange="' . ($markHot ? 'if(_EditorFrame){_EditorFrame.setEditorIsHot(true);hot=1;}' : '') . '" ';
 		}
 		if($this->inputId == ''){
 			$this->setInputId();
