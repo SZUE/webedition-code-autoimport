@@ -206,7 +206,7 @@ if(!isset($tid) || !($tid)){
 
 if(!$tid){
 	$tids = makeArrayFromCSV(f('SELECT Templates FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($GLOBALS['we_obj']->TableID)));
-	if(!empty($tids)){
+	if($tids){
 		$tid = $tids[0];
 	}
 }
