@@ -42,7 +42,7 @@ echo STYLESHEET;
 
 		$headline = array(
 			array(
-				'dat' => g_l('weClass', "[variant_fields]")
+				'dat' => g_l('weClass', '[variant_fields]')
 			)
 		);
 
@@ -51,7 +51,7 @@ echo STYLESHEET;
 		foreach($fields as $ind => $field){
 			$element = $we_doc->getElement('variant_' . $field);
 			$content[$ind] = array(array(
-					'dat' => we_html_forms::checkboxWithHidden($element ? true : false, 'we_' . $we_doc->Name . "_variant[variant_$field]", $field, false, 'middlefont', '_EditorFrame.setEditorIsHot(true);')
+					'dat' => we_html_forms::checkboxWithHidden($element ? true : false, 'we_' . $we_doc->Name . '_variant[variant_' . $field . ']', $field, false, 'middlefont', '_EditorFrame.setEditorIsHot(true);')
 			));
 		}
 
@@ -70,8 +70,9 @@ echo STYLESHEET;
 			)
 		);
 
-		print we_html_multiIconBox::getHTML("template_variant", "100%", $parts, 30, '', -1, '', '', false);
+		echo we_html_multiIconBox::getHTML('template_variant', '100%', $parts, 30, '', -1, '', '', false);
 		?>
+		<input type="hidden" name="we_complete_request" value="1"/>
 	</form>
 </body>
 </html>

@@ -789,7 +789,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			$this->saveInSession($data);
 
 			if(defined('SHOP_TABLE')){
-				we_shop_variants::correctModelFields($this,true);
+				we_shop_variants::correctModelFields($this, true);
 			}
 
 			$data[0]["InWebEdition"] = false;
@@ -876,7 +876,7 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 			$_tags = we_tag_tagParser::itemize_we_tag('we:controlElement', $templatecode);
 			//	we need all given tags ...
 
-			if(!empty($_tags[0])){
+			if($_tags[0]){
 
 				if(!in_array('controlElement', $this->persistent_slots)){
 					$this->persistent_slots[] = 'controlElement';
@@ -894,18 +894,17 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 					$_hide = weTag_getAttribute('hide', $_tagAttribs, false, true);
 
 					if($_type && $_name){
-
-						if($_type == 'button'){ //	only look, if the button shall be hidden or not
-							$_ctrlArray['button'][$_name] = array('hide' => ( $_hide ? 1 : 0 ));
-						} else if($_type == 'checkbox'){
-
-							$_checked = weTag_getAttribute('checked', $_tagAttribs, false, true);
-							$_readonly = weTag_getAttribute('readonly', $_tagAttribs, true, true);
-
-							$_ctrlArray['checkbox'][$_name] = array(
-								'hide' => ( $_hide ? 1 : 0 ),
-								'readonly' => ( $_readonly ? 1 : 0 ),
-								'checked' => ( $_checked ? 1 : 0 ));
+						switch($_type){
+							case 'button': //	only look, if the button shall be hidden or not
+								$_ctrlArray['button'][$_name] = array('hide' => ( $_hide ? 1 : 0 ));
+								break;
+							case 'checkbox':
+								$_ctrlArray['checkbox'][$_name] = array(
+									'hide' => ( $_hide ? 1 : 0 ),
+									'readonly' => ( weTag_getAttribute('readonly', $_tagAttribs, true, true) ? 1 : 0 ),
+									'checked' => ( weTag_getAttribute('checked', $_tagAttribs, false, true) ? 1 : 0 )
+								);
+								break;
 						}
 					}
 				}
@@ -965,9 +964,7 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 		}
 
 		if(isset($this->hidePages) && $this->InWebEdition){
-
 			$_hidePagesArr = explode(',', $this->hidePages); //	get pages which shall be disabled
-
 
 			if(in_array('all', $_hidePagesArr)){
 				$this->EditPageNrs = array();
@@ -1043,7 +1040,7 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 			}
 			if(isset($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]) && substr($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'], 0, 2) == 'a:'){
 				$_vars = unserialize($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']);
-				$this->hasVariants = (is_array($_vars) && !empty($_vars));
+				$this->hasVariants = (is_array($_vars) && $_vars);
 			} else {
 				$this->hasVariants = false;
 			}
@@ -1080,7 +1077,7 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	}
 
 	protected function updateRemoteLang($db, $id, $lang, $type){
-		$oldLang = f('SELECT Language FROM ' . $this->Table . ' WHERE ID=' . $id, 'Language', $db);
+		$oldLang = f('SELECT Language FROM ' . $this->Table . ' WHERE ID=' . $id, '', $db);
 		if($oldLang == $lang){
 			return;
 		}
@@ -1093,7 +1090,7 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	}
 
 	public function addDocumentCss($stylesheet = ''){
-		$this->DocumentCss .= (empty($this->DocumentCss) ? '' : ',') . $stylesheet;
+		$this->DocumentCss .= ($this->DocumentCss ? ',' : '') . $stylesheet;
 	}
 
 	public function getDocumentCss(){
