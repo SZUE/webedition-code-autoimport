@@ -50,7 +50,7 @@ abstract class we_util_Strings{
 	 * @return string
 	 */
 	static function makeCSVFromArray($arr, $prePostKomma = false, $sep = ","){
-		if(empty($arr)){
+		if(!$arr){
 			return '';
 		}
 
@@ -261,17 +261,8 @@ abstract class we_util_Strings{
 	 * @param  $val
 	 * @return void
 	 */
-	static function p_r($val, $where = false){
-		if($where){
-			$out = "<pre>";
-			$out .= print_r($val, $where);
-			$out .= "</pre>";
-			return $out;
-		} else {
-			print "<pre>";
-			print_r($val, $where);
-			print "</pre>";
-		}
+	static function p_r($val, $html = true, $useTA = false){
+		return p_r($val,$html,$useTA);
 	}
 
 }

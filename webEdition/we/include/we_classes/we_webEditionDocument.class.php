@@ -802,8 +802,8 @@ $GLOBALS[\'we_ContentType\'] = \'' . we_base_ContentTypes::WEDOCUMENT . '\';
 
 if (isset($_REQUEST[\'pv_id\']) && isset($_REQUEST[\'pv_tid\'])) {
 	$_REQUEST[\'we_cmd\'] = array(
-		1 => $_REQUEST[\'pv_id\'],
-		4 => $_REQUEST[\'pv_tid\'],
+		1 => intval($_REQUEST[\'pv_id\']),
+		4 => intval($_REQUEST[\'pv_tid\']),
 	);
 } else {
 	$_REQUEST[\'we_cmd\'] = array(1 => ' . $this->ID . ');

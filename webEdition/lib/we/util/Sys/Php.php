@@ -78,7 +78,7 @@ class we_util_Sys_Php{
 	 * 			returns (bool)false if value is "0", "Off" or "false"
 	 */
 	public static function ini($var = ""){
-		if(empty($var)){
+		if(!$var){
 			return false;
 		}
 		$_value = ini_get($var);

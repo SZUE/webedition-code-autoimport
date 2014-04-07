@@ -39,15 +39,10 @@ class we_util_Sys_Server_Apache extends we_util_Sys_Server{
 	 * @return bool true/false
 	 */
 	public static function module($module = ""){
-		if(empty($module) || !function_exists("apache_get_modules")){
+		if(!$module || !function_exists("apache_get_modules")){
 			return false;
-		} else {
-			if(in_array($module, apache_get_modules())){
-				return true;
-			} else {
-				return false;
-			}
 		}
+		return in_array($module, apache_get_modules());
 	}
 
 	/**
@@ -64,11 +59,7 @@ class we_util_Sys_Server_Apache extends we_util_Sys_Server{
 	 * @return string apache version or (bool)false, if there was an error reading the version string.
 	 */
 	public static function version(){
-		if(function_exists("apache_get_version")){
-			return apache_get_version();
-		} else {
-			return false;
-		}
+		return (function_exists("apache_get_version") ? apache_get_version() : false);
 	}
 
 	/**
@@ -80,10 +71,7 @@ class we_util_Sys_Server_Apache extends we_util_Sys_Server{
 	 * @example we_util_Sys_Webedition::versionCompare("5501", "<");
 	 */
 	public static function versionCompare($reference = "", $operator = ""){
-		$version = self::version();
-		return ($version === false || empty($reference) ?
-				false :
-				parent::_versionCompare($reference, $version, $operator));
+		return parent::_versionCompare($reference, self::version(), $operator);
 	}
 
 }
