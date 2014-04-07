@@ -52,26 +52,25 @@ function we_tag_printVersion($attribs, $content){
 	}
 
 	if(isset($doc->TableID)){
-		if($triggerID){
-			$_query_string['we_objectID'] = $id;
-			$_query_string['tid'] = $tid;
-			$url = id_to_path($triggerID);
-		} else {
-			$_query_string['we_cmd[0]'] = 'preview_objectFile';
-			$_query_string['we_objectID'] = $id;
-			$_query_string['we_cmd[2]'] = $tid;
-			$url = WEBEDITION_DIR . 'we_cmd.php';
-		}
+		//objects are always shown by a dynamic page
+		$_query_string['we_objectID'] = $id;
+		$_query_string['tid'] = $tid;
+		$url = ($triggerID ? id_to_path($triggerID) : (isset($_SERVER['PHP_SELF']) ? $_SERVER['PHP_SELF'] : $_SERVER['SCRIPT_NAME']));
 	} else {
-		if($triggerID){
+		$triggerID = $triggerID ? $triggerID : ($doc->IsDynamic ? $doc->ID : 0);
+		if($triggerID || $doc->IsDynamic){
 			$_query_string['pv_id'] = $id;
 			$_query_string['pv_tid'] = $tid;
-			$url = id_to_path($triggerID);
+			$url = $triggerID ? id_to_path($triggerID) : (isset($_SERVER['PHP_SELF']) ? $_SERVER['PHP_SELF'] : $_SERVER['SCRIPT_NAME']);
 		} else {
-			$_query_string['we_cmd[0]'] = 'show';
-			$_query_string['we_cmd[1]'] = $id;
-			$_query_string['we_cmd[4]'] = $tid;
-			$url = WEBEDITION_DIR . 'we_cmd.php';
+
+			return '';
+			/*
+			  $_query_string['we_cmd[0]'] = 'show';
+			  $_query_string['we_cmd[1]'] = $id;
+			  $_query_string['we_cmd[4]'] = $tid;
+			  $url = WEBEDITION_DIR . 'we_cmd.php';
+			 */
 		}
 	}
 

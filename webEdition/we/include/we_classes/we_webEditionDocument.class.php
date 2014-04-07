@@ -793,7 +793,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			}
 
 			$data[0]["InWebEdition"] = false;
-
+//FIXME: check if we can remove pv_id, used by we:printversion
 			return '<?php
 if(!defined(\'NO_SESS\')){define(\'NO_SESS\',1);}
 $GLOBALS[\'WE_IS_DYN\'] = 1;
@@ -801,12 +801,12 @@ $GLOBALS[\'we_transaction\'] = 0;
 $GLOBALS[\'we_ContentType\'] = \'' . we_base_ContentTypes::WEDOCUMENT . '\';
 
 if (isset($_REQUEST[\'pv_id\']) && isset($_REQUEST[\'pv_tid\'])) {
-	$_REQUEST[\'we_cmd\']=array(
+	$_REQUEST[\'we_cmd\'] = array(
 		1 => $_REQUEST[\'pv_id\'],
 		4 => $_REQUEST[\'pv_tid\'],
 	);
 } else {
-	$_REQUEST[\'we_cmd\']=array(1 => ' . $this->ID . ');
+	$_REQUEST[\'we_cmd\'] = array(1 => ' . $this->ID . ');
 }
 
 $FROM_WE_SHOW_DOC = true;

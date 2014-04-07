@@ -201,12 +201,7 @@ switch($_SESSION['prefs']['editorMode']){
 							_EditorFrame.setEditorIsHot(false);
 						}
 					});
-					/*					var foldHtml = CodeMirror.newFoldFunction(CodeMirror.tagRangeFinder);
-					 var foldOther = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
-					 editor.on("gutterClick", function(cm, n) {
-					 foldHtml(cm, n);
-					 foldOther(cm, n);
-					 });
+					/*
 					 editor.on("dblclick",function(cm,e){
 					 pos=cm.doc.getCursor();
 					 curToken=cm.getTokenAt(cm.doc.getCursor());

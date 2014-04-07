@@ -434,10 +434,9 @@ if (window.screen) {
 				$this->content = @unserialize(@gzinflate(we_base_file::load($cacheFilename)));
 			}
 		}
-		if(!empty($this->content)){
-			return $this->content[$type];
-		}
-		return array();
+		return ($this->content ?
+				$this->content[$type] :
+				array());
 	}
 
 }
