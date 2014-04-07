@@ -24,7 +24,7 @@
  */
 /* a class for handling templates */
 
-class we_template extends we_document {
+class we_template extends we_document{
 
 	var $MasterTemplateID = 0;
 	var $TagWizardCode; // bugfix 1502
@@ -368,21 +368,15 @@ we_templateInit();?>';
 	function getVariantFields(){
 		$ret = array();
 		$fields = $this->getAllVariantFields();
-		if(empty($fields)){
-			return $fields;
+		if(!$fields){
+			return array();
 		}
-		$element_names = array();
-		$names = array_keys($this->elements);
-		foreach($names as $name){
-			if(substr($name, 0, 8) == 'variant_'){
-				$element_names[] = substr($name, 8);
+		foreach(array_keys($fields)as $name){
+			if($this->getElement('variant_' . $name)){
+				$ret[$name] = $fields[$name];
 			}
 		}
-		foreach($fields as $name => $value){
-			if(in_array($name, $element_names)){
-				$ret[$name] = $value;
-			}
-		}
+
 		return $ret;
 	}
 

@@ -185,11 +185,9 @@ abstract class we_shop_variants{
 	}
 
 	public static function getNumberOfVariants(&$model){
-		if(isset($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]) && is_array($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'])){
-			return count($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']);
-		}
-
-		return 0;
+		return (isset($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]) && is_array($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']) ?
+				count($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']) :
+				0);
 	}
 
 	public static function insertVariant(&$model, $position){
@@ -401,7 +399,7 @@ abstract class we_shop_variants{
 
 			for($i = 0; $i < $count; $i++){
 				$plusBut = we_html_button::create_button("image:btn_add_field", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('shop_insert_variant','" . ($i) . "');", true, 40);
-				$upbut = ($i == 0 ? we_html_button::create_button("image:btn_direction_up", "", true, 21, 22, "", "", true) : we_html_button::create_button("image:btn_direction_up", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('shop_move_variant_up','" . ($i) . "');"));
+				$upbut = ($i == 0 ? we_html_button::create_button("image:btn_direction_up", '', true, 21, 22, '', '', true) : we_html_button::create_button("image:btn_direction_up", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('shop_move_variant_up','" . ($i) . "');"));
 				$downbut = ($i == ($count - 1) ? we_html_button::create_button("image:btn_direction_down", "", true, 21, 22, "", "", true) : we_html_button::create_button("image:btn_direction_down", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('shop_move_variant_down','" . ($i) . "');"));
 				$trashbut = we_html_button::create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('shop_remove_variant','" . ($i) . "');", true, 30);
 				$previewBut = we_html_button::create_button("image:btn_function_view", "javascript:we_cmd('shop_preview_variant','" . $GLOBALS['we_transaction'] . "','" . ($model->getElement(WE_SHOP_VARIANTS_PREFIX . $i)) . "');", true, 30);

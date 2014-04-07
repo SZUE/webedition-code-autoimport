@@ -22,8 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-// check if there are variation fields defined
-$variationFields = $we_doc->getVariantFields();
 
 // need many buttons here
 // if editing data the class weShopVariants must do some stuff
