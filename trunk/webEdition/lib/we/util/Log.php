@@ -186,10 +186,7 @@ class we_util_Log{
 	 * @return bool true/false
 	 */
 	public static function isActive(){
-		if(@constant("self::ENABLE_LOGGING") === true || @constant("ENABLE_LOGGING") === true){
-			return true;
-		}
-		return false;
+		return we_util_Log::ENABLE_LOGGING;
 	}
 
 }

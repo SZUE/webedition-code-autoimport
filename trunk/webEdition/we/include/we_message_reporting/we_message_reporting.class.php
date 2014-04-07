@@ -47,7 +47,7 @@ class we_message_reporting{
 	 * @param boolean $isJsMsg
 	 * @return string
 	 */
-	static function getShowMessageCall($message, $priority, $isJsMsg = false, $isOpener = false){
+	public static function getShowMessageCall($message, $priority, $isJsMsg = false, $isOpener = false){
 		switch($priority){
 			case self::WE_MESSAGE_INFO:
 			case self::WE_MESSAGE_FRONTEND:
@@ -63,5 +63,12 @@ class we_message_reporting{
 		}
 	}
 
-}
+	public static function jsString(){
+		return we_html_element::jsElement('
+var we_string_message_reporting_notice = "' . g_l('alert', '[notice]') . '";
+var we_string_message_reporting_warning = "' . g_l('alert', '[warning]') . '";
+var we_string_message_reporting_error = "' . g_l('alert', '[error]') . '";
+');
+	}
 
+}

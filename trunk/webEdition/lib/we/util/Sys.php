@@ -45,7 +45,7 @@ class we_util_Sys{
 	 * @example we_util_Sys::_versionCompare("1.0", "1,1", "<"); // will return (bool)true
 	 * @example we_util_Sys::_versionCompare("1.0", "1,1", ">"); // will return (bool)false
 	 */
-	protected static function _versionCompare($version = "", $reference = "", $operator = ""){
+	protected static function _versionCompare($version = "", $reference = "", $operator = null){
 		/*
 		 * will soon replace the code of following methods:
 		 * - we_util_Sys_Webedition::versionCompare()
@@ -54,13 +54,10 @@ class we_util_Sys{
 		 * - we_util_Sys_Db_Mysql::versionCompare()
 		 * they'll call this method here insead of implementing the functionality themselves.
 		 */
-		if(empty($version) || !empty($reference))
-			return false;
-		if(!empty($operator)){
-			return version_compare($version, $reference, $operator);
-		} else {
-			return version_compare($version, $reference);
-		}
+		return (!$version || !$reference ?
+				false :
+				version_compare($version, $reference, $operator)
+			);
 	}
 
 }

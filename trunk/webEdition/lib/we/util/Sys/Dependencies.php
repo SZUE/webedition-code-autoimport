@@ -58,10 +58,6 @@ class we_util_Sys_Dependencies extends we_util_Sys{
 
 	private $_dependencies = array();
 
-	public function __construct(){
-
-	}
-
 	public function addDependency($class = "", $values = array("")){
 		if(empty($class) || !isset($values["operation"]) || empty($values["operation"])){
 			return false;

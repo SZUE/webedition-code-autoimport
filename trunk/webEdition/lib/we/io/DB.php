@@ -85,7 +85,7 @@ class we_io_DB{
 	 */
 	static function tableExists($tab){
 		$_db = we_io_DB::sharedAdapter();
-		return ($_db->fetchAll("SHOW TABLES LIKE '$tab';") ? true : false);
+		return ($_db->fetchAll("SHOW TABLES LIKE '$tab'") ? true : false);
 	}
 
 }
