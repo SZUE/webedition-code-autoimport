@@ -19,7 +19,8 @@
 		</script>
 
 	</head>
-	<body>
+	<!-- //WEEXT: registerWeIframe -->
+	<body onLoad="if(typeof top.WE !== 'undefined'){top.WE.app.getController('Bridge').registerWeIframe(this, true);}">
 		<img class="blank_editor_logo" src="/webEdition/images/backgrounds/blank_editor.gif" alt="logo"/>
 	</body>
 </html>

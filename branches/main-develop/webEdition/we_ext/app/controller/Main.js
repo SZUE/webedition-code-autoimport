@@ -141,6 +141,10 @@ Ext.define('WE.controller.Main', {
 	},
 				
 	doUpdateTab: function(record, action){
-		this.getMultieditor().getComponent(record.data.table + '_' + record.data.we_id).updateEditor(record, true, true);
+		if(typeof this.getMultieditor().getComponent(record.data.table + '_' + record.data.we_id) !== 'undefined'){
+			this.getMultieditor().getComponent(record.data.table + '_' + record.data.we_id).updateEditor(record, true, true);
+		} else {
+			Ext.getCmp(record.data.id).updateEditor(record, true, true);
+		}
 	}
 });

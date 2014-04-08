@@ -421,13 +421,20 @@ if($GLOBALS['we_doc']->ContentType != we_base_ContentTypes::TEMPLATE){
 </script>
 <?php
 
-function setOnload(){
+
+function setOnload($extonly = false){
 	// Don't do this with Templates and only in Preview Mode
 	// in Edit-Mode all must be reloaded !!!
 	// To remove this functionality - just use the second condition as well.
-	return ($GLOBALS['we_doc']->ContentType != we_base_ContentTypes::TEMPLATE/* && $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PREVIEW */ ?
-			'onload="if(top.edit_include){top.edit_include.close();} if(openedWithWE == 0){ checkDocument(); } setOpenedWithWE(0);"' :
-			'');
+	
+	//WEEXT: registerWeIframe
+	if($extonly){
+		return 'onload="if(typeof top.WE !== \'undefined\'){top.WE.app.getController(\'Bridge\').registerWeIframe();}"';
+	} else {
+		return ($GLOBALS['we_doc']->ContentType != we_base_ContentTypes::TEMPLATE/* && $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PREVIEW */ ?
+				'onload="if(typeof top.WE !== \'undefined\'){top.WE.app.getController(\'Bridge\').registerWeIframe(this);} if(top.edit_include){top.edit_include.close();} if(openedWithWE == 0){ checkDocument(); } setOpenedWithWE(0);"' :
+				'onload="if(typeof top.WE !== \'undefined\'){top.WE.app.getController(\'Bridge\').registerWeIframe(this);}"');
+	}
 }
 ?>
 </head>
@@ -439,7 +446,7 @@ if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 	<frameset onLoad="_EditorFrame.initEditorFrameData({'EditorIsLoading': false});" rows="1,*,0,40" framespacing="0" border="0" frameborder="NO" onunload="doUnload()">
 		<frame src="<?php echo we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_edit_header"); ?>" name="editHeader" noresize scrolling="no"/>
 		<frame <?php echo setOnload(); ?> src="<?php echo we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_editor") . (isset($parastr) ? '&' . $parastr : ''); ?>&we_complete_request=1" name="editor_<?php echo $_REQUEST["frameId"]; ?>" noresize/>
-		<frame  src="about:blank" name="contenteditor_<?php echo $_REQUEST["frameId"]; ?>" noresize/>
+		<frame <?php echo setOnload(true); ?> src="about:blank" name="contenteditor_<?php echo $_REQUEST["frameId"]; ?>" noresize/>
 		<frame src="<?php echo we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_edit_footer"); ?>&SEEM_edit_include=<?php echo ( isset($_REQUEST["SEEM_edit_include"]) && $_REQUEST["SEEM_edit_include"] ? "true" : "false") ?>" name="editFooter" scrolling=no noresize/>
 	</frameset><noframes></noframes>
 	<?php

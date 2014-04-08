@@ -1031,11 +1031,12 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 
 	// this is the clone widget
 	$oClone = we_widget::create("clone", "_reCloneType_", null, array('', ''), "white", 0, "", 100, 60);
-
+	
+	//WEEXT: registerWeIframe
 	print
 			we_html_element::htmlBody(
 					array(
-				'onload' => "_EditorFrame.initEditorFrameData({'EditorIsLoading':false});",
+				'onload' => "_EditorFrame.initEditorFrameData({'EditorIsLoading':false}); if(typeof top.WE !== 'undefined'){top.WE.app.getController('Bridge').registerWeIframe(this, true);}",
 				'style' => 'margin: 10px 10px 10px 10px',
 				'class' => "bgc_white"
 					), we_html_element::htmlForm(

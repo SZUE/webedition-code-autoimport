@@ -65,16 +65,16 @@ Ext.define('WE.controller.Bridge', {
 
 	/* ---------- add listeners to WE-iFrames when loaded -------------- */
 
-	registerWeIframe: function(frame, name) {
-		//if(name !== 'editor'){
-		frame.contentWindow.document.body.addEventListener("click", top.WE.app.getController('Bridge').closeMainMenu, false);
-		//} else{
-		/*
-		 //close menu, TODO: this works for initial load of each editor not for edbody after tab change or reload
-		 for(var i=0; i<4; i++){
-		 frame[i].document.body.addEventListener("click", top.WE.app.getController('Bridge').closeMainMenu, false);
-		 }
-		 */
+	registerWeIframe: function(elem, isBodyTag) {
+		try{
+			if(isBodyTag){
+				elem.addEventListener("click", top.WE.app.getController('Bridge').closeMainMenu, false);
+			} else{
+				elem.contentWindow.document.body.addEventListener("click", top.WE.app.getController('Bridge').closeMainMenu, false);
+			}
+		} catch(e){
+			//
+		}
 	},
 
 	/* called by we after GET: .../edit_document */
