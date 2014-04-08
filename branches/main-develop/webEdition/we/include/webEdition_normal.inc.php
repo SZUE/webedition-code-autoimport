@@ -202,14 +202,20 @@ function pWebEdition_JSwe_cmds(){
  * @desc the frameset for the SeeMode
  */
 function pWebEdition_Frameset(){
-	?>
+	//WEEXT: set menu.display: none when not wehybrid.
+	//TODO: stop creating menus as soon we can avoid js conflicts (when fns attempt to manipulate tree, eg. delete, save etc.)
+	$displayMenu = !USE_EXT || (USE_EXT && USE_EXT_WEHYBRID);
+	$menuHeight = !USE_EXT || (USE_EXT && USE_EXT_WEHYBRID) ? 32 : 0;
+
+	if($displayMenu){ ?>
 	<div style="position:absolute;top:0px;left:0px;right:0px;height:32px;border-bottom: 1px solid black;">
 		<?php we_main_header::pbody(); ?>
 	</div>
-	<div style="position:absolute;top:32px;left:0px;right:0px;bottom:0px;border: 0;">
+	<?php } ?>
+	<div style="position:absolute;top:<?php print $displayMenu ? '32px' : 0; ?>;left:0px;right:0px;bottom:0px;border: 0;">
 		<iframe frameBorder="0" src="<?php print WEBEDITION_DIR; ?>resizeframe.php" style="border:0px;width:100%;height:100%;overflow: hidden;" id="rframe" name="rframe"></iframe>
 	</div>
-	<div style="position:absolute;left:0px;right:0px;bottom:0px;height: 0px;border: 1px solid;">
+	<div style="position:absolute;left:0px;right:0px;bottom:0px;height: 0px;border: <?php print USE_EXT ? '0' : '1px solid'; ?>;">
 		<div style="height:100%;float:left;width:25%;border:0px;">
 			<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="load"></iframe>
 		</div>

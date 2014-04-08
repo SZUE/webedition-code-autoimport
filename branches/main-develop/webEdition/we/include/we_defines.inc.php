@@ -167,3 +167,9 @@ if(!defined('DATETIME_INITIALIZED')){// to prevent additional initialization if 
 	}
 	define('DATETIME_INITIALIZED', '1');
 }
+
+//WEEXT: development modi
+define('USE_EXT', true);
+define('USE_EXT_WE_NO_MULTIEDITOR_CONTENT', false);
+define('USE_EXT_EXTHYBRID', true);
+define('USE_EXT_WEHYBRID', false);

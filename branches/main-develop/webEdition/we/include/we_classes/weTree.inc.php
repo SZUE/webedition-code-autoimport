@@ -647,7 +647,9 @@ function setUnCheckNode(imgName){
 	}
 
 	function getJSDrawTree(){
-		return '
+		//WEEXT:
+		
+		return USE_EXT && !USE_EXT_WEHYBRID ? 'function drawTree(){}' : '
 
 function drawTree(){
 	try{

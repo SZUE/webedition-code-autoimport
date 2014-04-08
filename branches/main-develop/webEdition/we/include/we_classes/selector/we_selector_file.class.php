@@ -62,7 +62,7 @@ class we_selector_file{
 	var $col2js;
 	protected $title = '';
 
-	function __construct($id, $table = FILE_TABLE, $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $sessionID = '', $rootDirID = 0, $filter = ''){
+	function __construct($id, $table = FILE_TABLE, $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $sessionID = '', $rootDirID = 0, $filter = '', $extInstanceId = ''){
 
 		if(!isset($_SESSION['weS']['we_fs_lastDir'])){
 			$_SESSION['weS']['we_fs_lastDir'] = array($table => 0);
@@ -83,6 +83,7 @@ class we_selector_file{
 		$this->rootDirID = intval($rootDirID);
 		//$this->sessionID = $sessionID;
 		$this->filter = $filter;
+		$this->extInstanceId = $extInstanceId;
 		$this->setDirAndID();
 		$this->setTableLayoutInfos();
 	}
@@ -362,14 +363,21 @@ var mk=null;');
 </html>';
 	}
 
+	//WEEXT
 	function getExitOpen(){
-		$out = '
-function exit_open(){' . ($this->JSIDName ? '
+		return we_html_element::jsElement(!isset($this->extInstanceId) || !$this->extInstanceId ? 
+				$this->getExitOpenWe() : $this->getExitOpenExt());
+	}
+	
+	function getExitOpenWe(){
+			$out = '
+function exit_open(){//alert("exit_open standard on fileselector");
+	' . ($this->JSIDName ? '
 	opener.' . $this->JSIDName . '=currentID;' : '');
 
-		if($this->JSTextName){
-			$frameRef = strpos($this->JSTextName, ".document.") > 0 ? substr($this->JSTextName, 0, strpos($this->JSTextName, ".document.") + 1) : "";
-			$out .= 'opener.' . $this->JSTextName . '= currentID ? currentPath : "";
+			if($this->JSTextName){
+				$frameRef = strpos($this->JSTextName, ".document.") > 0 ? substr($this->JSTextName, 0, strpos($this->JSTextName, ".document.") + 1) : "";
+				$out .= 'opener.' . $this->JSTextName . '= currentID ? currentPath : "";
 					if((!!opener.parent) && (!!opener.parent.frames[0]) && (!!opener.parent.frames[0].setPathGroup)) {
 							if(currentType!="")	{
 								switch(currentType){
@@ -386,13 +394,30 @@ function exit_open(){' . ($this->JSIDName ? '
 					}
 					if(!!opener.' . $frameRef . 'YAHOO && !!opener.' . $frameRef . 'YAHOO.autocoml) {  opener.' . $frameRef . 'YAHOO.autocoml.selectorSetValid(opener.' . str_replace('.value', '.id', $this->JSTextName) . '); }
 					';
-		}
-		$out .= ($this->JSCommand ?
+			}
+			$out .= ($this->JSCommand ?
 				'	' . str_replace('WE_PLUS', '+', $this->JSCommand) . ';' : '') .
 			'	self.close();
-	}';
-		return we_html_element::jsElement($out);
+}';
+			return $out;
 	}
+	
+	//WEEXT
+	function getExitOpenExt(){
+					return '
+function exit_open(){alert("exit_open ext on fileselector");
+	var mainwindow = top.opener.top.opener ? top.opener.top.opener : top.opener;
+	mainwindow.WE.app.getController("Main").selectorProcessResponse({
+		selectorId : "' . $this->extInstanceId . '",
+		respId : currentID,
+		respPath : currentPath,
+		respDir : currentDir,
+		respText : currentText,
+		respType: currentType
+	});
+	self.close();
+}';
+	}	
 
 	function printFramesetJSDoClickFn(){
 		return we_html_element::jsElement('

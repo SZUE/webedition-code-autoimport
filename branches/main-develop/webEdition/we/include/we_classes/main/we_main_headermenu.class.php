@@ -123,7 +123,11 @@ top.weSidebar = weSidebar;
 	static function getMenuReloadCode($location = 'top.opener.'){
 		$menu = self::getMenu();
 		$menu = str_replace("\n", '"+"', addslashes($menu->getHTML()));
-		return $location . 'document.getElementById("nav").parentNode.innerHTML="' . $menu . '";';
+		//WEEXT
+		$out = (USE_EXT && !USE_EXT_WEHYBRID) ? '' : $location . 'document.getElementById("nav").parentNode.innerHTML="' . $menu . '";';
+		$out .= USE_EXT ? 'top.WE.app.getController("Bridge").doReloadMainMenu(); ' : '';
+
+		return $out;
 	}
 
 	static function getMenu(){

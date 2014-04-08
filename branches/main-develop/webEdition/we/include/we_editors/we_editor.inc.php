@@ -45,6 +45,16 @@ switch($_REQUEST['we_cmd'][0]){
 			$we_doc->EditPageNr = WE_EDITPAGE_CONTENT;
 			$_REQUEST['we_cmd'][1] = WE_EDITPAGE_CONTENT;
 		}
+
+		//WEEXT
+		if(USE_EXT && USE_EXT_WE_NO_MULTIEDITOR_CONTENT && (!isset($_REQUEST['we_cmd'][1]) || !$_REQUEST['we_cmd'][1])){
+			exit();
+		}
+		if(USE_EXT && isset($_REQUEST['we_cmd'][1]) && $_REQUEST['we_cmd'][1]){
+			$_SESSION['weS']['EditPageNr'] = $_REQUEST['we_cmd'][1];
+			$we_doc->EditPageNr = $_REQUEST['we_cmd'][1];
+		}
+
 		break;
 	case 'resizeImage':
 		$we_doc->resizeImage($_REQUEST['we_cmd'][1], $_REQUEST['we_cmd'][2], $_REQUEST['we_cmd'][3]);
@@ -436,6 +446,10 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 								'_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');' . $we_doc->getUpdateTreeScript() . ';'; // save/ rename a document
 							$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_save_ok]'), $we_doc->Path);
 							$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
+			
+							//WEEXT: syncExtAfterEdAction, TODO: make conditional: if USE_EXT
+							$ext_JavaScript = 'top.WE.app.getController("Bridge").syncExtAfterEdAction("save", true, "' . $we_doc->Table . '", ' . $we_doc->ID . ', "' . $we_transaction . '");';
+			
 							if($_REQUEST['we_cmd'][4]){
 // this happens when the documents which uses the templates has to be rebuilt. (if user clicks "yes" at template save question or if automatic rebuild was set)
 								if($somethingNeedsToBeResaved){
@@ -448,7 +462,12 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 							$we_JavaScript = '';
 							$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_save_notok]'), $we_doc->Path);
 							$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
+				
+							//WEEXT: syncExtAfterEdAction
+							$ext_JavaScript = 'top.WE.app.getController("Bridge").syncExtAfterEdAction("save", false, "' . $we_doc->Table . '", ' . $we_doc->ID . ', "' . $we_transaction . '");';
 						}
+						//WEEXT: add ext_Javascript if USE_EXT
+						$we_JavaScript .= USE_EXT ? $ext_JavaScript : '';
 					}
 ####TEMPLATE_SAVE_CODE2_END###
 					if(!isset($TEMPLATE_SAVE_CODE2) || !$TEMPLATE_SAVE_CODE2){
@@ -466,6 +485,9 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 						$we_JavaScript = '';
 						$we_responseText = sprintf(g_l('weEditor', '[application/*][response_save_wrongExtension]'), $we_doc->Path, $we_doc->Extension);
 						$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
+
+						//WEEXT: syncExtAfterEdAction
+						$ext_JavaScript = 'top.WE.app.getController("Bridge").syncExtAfterEdAction("save", false, "' . $we_doc->Table . '", ' . $we_doc->ID . ', "' . $we_transaction . '");';
 					} else {
 
 						$wf_flag = false;
@@ -474,12 +496,20 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 						if(!permissionhandler::hasPerm('ADMINISTRATOR') && $we_doc->ContentType != 'object' && $we_doc->ContentType != 'objectFile' && !in_workspace($we_doc->ParentID, get_ws($we_doc->Table), $we_doc->Table)){
 							$we_responseText = g_l('alert', '[' . FILE_TABLE . '][not_im_ws]');
 							$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
+
+							//WEEXT: syncExtAfterEdAction
+							$ext_JavaScript = 'top.WE.app.getController("Bridge").syncExtAfterEdAction("save", false, "' . $we_doc->Table . '", ' . $we_doc->ID . ', "' . $we_transaction . '");';
+
 							include(WE_INCLUDES_PATH . 'we_templates/we_editor_save.inc.php');
 							exit();
 						}
 						if(!$we_doc->userCanSave()){
 							$we_responseText = g_l('alert', '[access_denied]');
 							$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
+
+							//WEEXT: syncExtAfterEdAction
+							$ext_JavaScript = 'top.WE.app.getController("Bridge").syncExtAfterEdAction("save", false, "' . $we_doc->Table . '", ' . $we_doc->ID . ', "' . $we_transaction . '");';
+
 							include(WE_INCLUDES_PATH . 'we_templates/we_editor_save.inc.php');
 							exit();
 						}
@@ -495,6 +525,10 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 								$we_JavaScript .= "if(top.treeData.table=='" . OBJECT_FILES_TABLE . "'){top.we_cmd('load', 'tblObjectFiles', 0);}";
 							}
 							$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_save_ok]'), $we_doc->Path);
+
+							//WEEXT: syncExtAfterEdAction
+							$ext_JavaScript = 'top.WE.app.getController("Bridge").syncExtAfterEdAction("save", true, "' . $we_doc->Table . '", ' . $we_doc->ID . ', "' . $we_transaction . '");';
+
 							$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
 
 							if($_REQUEST['we_cmd'][5]){
@@ -514,6 +548,9 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 										}
 										$we_responseText .= ' - ' . sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_publish_ok]'), $we_doc->Path);
 										$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
+
+										//WEEXT: syncExtAfterEdAction
+										$ext_JavaScript = 'top.WE.app.getController("Bridge").syncExtAfterEdAction("publish", true, "' . $we_doc->Table . '", ' . $we_doc->ID . ', "' . $we_transaction . '");';
 // SEEM, here a doc is published
 										$GLOBALS['publish_doc'] = true;
 										if($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE && ($we_doc->EditPageNr == WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == WE_EDITPAGE_INFO || $we_doc->EditPageNr == WE_EDITPAGE_PREVIEW) && (!$_REQUEST['we_cmd'][4])){
@@ -523,6 +560,9 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 									} else {
 										$we_responseText .= ' - ' . sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_publish_notok]'), $we_doc->Path);
 										$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
+
+										//WEEXT: syncExtAfterEdAction
+										$ext_JavaScript = 'top.WE.app.getController("Bridge").syncExtAfterEdAction("publish", false, "' . $we_doc->Table . '", ' . $we_doc->ID . ', "' . $we_transaction . '");';
 									}
 								}
 							} else {
@@ -574,7 +614,12 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 							$we_JavaScript = '';
 							$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_save_notok]'), $we_doc->Path);
 							$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
+
+							//WEEXT: syncExtAfterEdAction
+							$ext_JavaScript = 'top.WE.app.getController("Bridge").syncExtAfterEdAction("save", false, "' . $we_doc->Table . '", ' . $we_doc->ID . ', "' . $we_transaction . '");';
 						}
+						//WEEXT: add ext_Javascript if USE_EXT
+						$we_JavaScript .= USE_EXT ? $ext_JavaScript : '';
 					}
 					if($_REQUEST['we_cmd'][6]){
 						$we_JavaScript .= $_REQUEST['we_cmd'][6];
@@ -630,13 +675,21 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 //	When unpublishing a document stay where u are.
 //	uncomment the following line to switch to preview page.
 					$_REQUEST['we_cmd'][5] .= '_EditorFrame.getDocumentReference().frames[3].location.reload();';
-
 					$we_JavaScript = '_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');' . $we_doc->getUpdateTreeScript() . ';'; // save/ rename a document
+
+					//WEEXT: syncExtAfterEdAction
+					$ext_JavaScript = 'top.WE.app.getController("Bridge").syncExtAfterEdAction("unpublish", true, "' . $we_doc->Table . '", ' . $we_doc->ID . ', "' . $we_transaction . '");';
 				} else {
 					$we_JavaScript = '';
 					$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_unpublish_notok]'), $we_doc->Path);
 					$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
+
+					//WEEXT: syncExtAfterEdAction
+					$ext_JavaScript = 'top.WE.app.getController("Bridge").syncExtAfterEdAction("unpublish", false, "' . $we_doc->Table . '", ' . $we_doc->ID . ', "' . $we_transaction . '");';
 				}
+				//WEEXT: add ext_Javascript if USE_EXT
+				$we_JavaScript .= USE_EXT ? $ext_JavaScript : '';
+
 				if(!isset($_REQUEST['we_complete_request'])){
 					$we_responseText = g_l('weEditor', '[incompleteRequest]');
 					$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;

@@ -336,9 +336,13 @@ if(!$wfchk){
 								' . $class_condition . '
 								) {
 								_usedEditors[frameId].setEditorIsHot(false);
-								top.weEditorFrameController.closeDocument(frameId);
+
+								//WEEXT: third param: do not hand over cmd to ext
+								top.weEditorFrameController.closeDocument(frameId, "", true);
 							}
 						}
+						//WEEXT
+						top.WE.app.getController("Bridge").deleteDocumentsTmp(_delete_table, _delete_Ids);
 					';
 					}
 

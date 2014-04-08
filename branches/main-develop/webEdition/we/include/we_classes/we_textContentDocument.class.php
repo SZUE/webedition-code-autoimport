@@ -380,7 +380,11 @@ abstract class we_textContentDocument extends we_textDocument{
 		if(!$this->ID || (file_exists($this->getRealPath(true)) && !we_util_File::deleteLocalFile($this->getRealPath(!$this->isMoved())))){
 			return false;
 		}
-		if(!$this->DB_WE->query('UPDATE ' . $this->DB_WE->escape($this->Table) . ' SET Published=0 WHERE ID=' . intval($this->ID))){
+
+		//WEEXT: Refresh ModDate on unpublish too (needed for treesync)
+		$this->ModDate = time();
+
+		if(!$this->DB_WE->query('UPDATE ' . $this->DB_WE->escape($this->Table) . ' SET Published=0, ModDate=' . $this->ModDate . ' WHERE ID=' . intval($this->ID))){
 			return false;
 		}
 

@@ -58,6 +58,10 @@ class we_messaging_headerMsg{
 		<script type="text/javascript"><!--
 
 			function header_msg_update(newmsg_count, newtodo_count) {
+				<?php
+				//WEEXT: will be obsolete, when header_msg is implemented in ext!
+				if(!USE_EXT || (USE_EXT && USE_EXT_WEHYBRID)){ 
+				?>
 				var msgTD = document.getElementById("msgCount");
 				var todoTD = document.getElementById("todoCount");
 				var changed = (newmsg_count > msgTD.firstChild.innerHTML) || (newtodo_count > todoTD.firstChild.innerHTML);
@@ -70,6 +74,7 @@ class we_messaging_headerMsg{
 				if (changed) {
 					new jsWindow("<?php echo WEBEDITION_DIR; ?>newMsg.php?msg=" + newmsg_count + "&todo=" + newtodo_count + "&omsg=" + oldMsg + "&otodo=" + oldTodo, "we_delinfo", -1, -1, 550, 200, true, true, true);
 				}
+				<?php } ?>
 			}
 		<?php
 		if(defined("MESSAGING_SYSTEM")){

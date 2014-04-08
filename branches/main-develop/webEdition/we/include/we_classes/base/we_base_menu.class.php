@@ -45,6 +45,11 @@ class we_base_menu{
 			we_html_element::jsElement('
 function menuaction(cmd) {
 	' . $this->lcmdFrame . '.location.replace("' . getServerUrl() . WEBEDITION_DIR . 'we_lcmd.php?we_cmd[0]="+cmd);
+}
+
+//WEEXT: menu integration
+function menuactionExt(cmd) {
+	top.WE.app.getController("Bridge").menuactionExt(cmd);
 }');
 	}
 
@@ -140,6 +145,32 @@ function menuaction(cmd) {
 				}
 			}
 		}
+	}
+
+	//WEEXT: get menu as JS object
+	//Important: menu items for ext menu are listed linear: ext menu builds the nestetd structure using parent-id's
+	function getJsonData(){
+		$menu = array();
+		foreach($this->entries as $id => $e){
+				$e['enabled'] = isset($e['perm']) ? self::isEnabled($e['perm']) : 1;
+				$mtext = isset($e['text']) ? $e['text'] : '';
+				$handler = isset($e['function']) ? $e['function'] : 'standardHandler';
+
+				if(!(isset($e['hide']) && $e['hide'])){
+					if((!(isset($e['cmd']) && $e['cmd'])) && $mtext){//no leaf
+						$menu[] = array('menuId' => 'm_' . $id, 'name' => $mtext, 'parent' => 'm_' . $e['parent'], 'cmd' => '', 'itemHandler' => '');
+					} else if($mtext){
+						if($e['enabled'] != 0){
+							$menu[] = array('menuId' => 'm_' . $id, 'name' => $mtext, 'parent' => 'm_' . $e['parent'], 'cmd' => $e["cmd"], 'itemHandler' => $handler);
+						}
+					} elseif($e['enabled'] != 0){//separator
+						$menu[] = array('menuId' => 'm_' . $id, 'parent' => 'm_' . $e['parent'], 'name' => '');
+					}
+				}
+			
+		}
+
+		return $menu;
 	}
 
 }

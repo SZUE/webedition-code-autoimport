@@ -48,12 +48,19 @@ function getSidebarWidth(){
 function startNormalMode(){
 	$_sidebarwidth = getSidebarWidth();
 	$_treewidth = isset($_COOKIE["treewidth_main"]) && ($_COOKIE["treewidth_main"] >= weTree::MinWidth) ? $_COOKIE["treewidth_main"] : weTree::DefaultWidth;
+
+	//WEEXT: do not display tree when USE_EXT && !USE_EXT_WEHYBRID
+	//TODO: stop caling tree-related js functions so we can throw out we_tree js
+	$_displayTree = !USE_EXT || (USE_EXT && USE_EXT_WEHYBRID);
+
 	?>
 	<div style="position:absolute;top:0px;bottom:0px;left:0px;right:0px;border: 0px;">
+		<?php if($_displayTree){ ?>
 		<div style="position:absolute;top:0px;bottom:0px;left:0px;width:<?php print $_treewidth; ?>px;border-right:1px solid black;" id="bframeDiv">
 			<?php include(WE_INCLUDES_PATH . 'baumFrame.inc.php'); ?>
 		</div>
-		<div style="position:absolute;top:0px;bottom:0px;right:<?php echo $_sidebarwidth; ?>px;left:<?php print $_treewidth; ?>px;border-left:1px solid black;overflow: hidden;" id="bm_content_frameDiv">
+		<?php } ?>
+		<div style="position:absolute;top:0px;bottom:0px;right:<?php echo $_sidebarwidth; ?>px;left:<?php print $_displayTree ? $_treewidth : 0; ?>px;border-left:<?php print USE_EXT ? '0' : '1px solid black'; ?>;overflow: hidden;" id="bm_content_frameDiv">
 			<iframe frameBorder="0" src="<?php print WEBEDITION_DIR; ?>multiContentFrame.php" name="bm_content_frame" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>
 		</div>
 		<?php if(!(SIDEBAR_DISABLED == 1)){ ?>

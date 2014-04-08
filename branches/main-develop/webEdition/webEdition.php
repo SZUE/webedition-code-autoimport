@@ -35,7 +35,7 @@ if(!isset($_SESSION['weS']['we_mode']) || $_SESSION['weS']['we_mode'] == we_base
 	include_once(WE_INCLUDES_PATH . 'webEdition_seem.inc.php');
 }
 
-
+//WEEXT
 if(!isset($SEEM_edit_include) || !$SEEM_edit_include){
 
 	if(defined("SCHEDULE_TABLE")){
@@ -1432,17 +1432,23 @@ pWebEdition_JSFunctions();
 </script>
 <?php
 we_main_header::pCSS();
-?>
-</head>
-<body style="background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;" onbeforeunload="doUnload()">
-	<?php
+
+//WEEXT
+if(defined('USE_EXT') && USE_EXT){
+	include_once(WE_INCLUDES_PATH . 'webEdition_extHeader.inc.php');
+	pWebEdition_Tree();
+	echo '</head>';
+} else {
+	echo '</head>
+	<body style="background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;" onbeforeunload="doUnload()">';
 	flush();
-//	get the frameset for the actual mode.
+	//	get the frameset for the actual mode.
 	pWebEdition_Frameset();
 	we_main_header::pJS();
 	flush();
-//	get the Treefunctions for docselector
+	//	get the Treefunctions for docselector
 	pWebEdition_Tree();
-	?>
-</body>
+	echo '</body>';
+}
+?>
 </html>

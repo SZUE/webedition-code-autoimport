@@ -251,6 +251,12 @@ if(!isset($we_doc->elements['data']['dat'])){
 			base64_decode($_REQUEST['we_cmd'][10]) :
 			we_base_ContentTypes::inst()->getDefaultCode($we_doc->ContentType));
 }
+
+//WEEXT
+if(isset($isIncTo_we_cmd_ext) && $isIncTo_we_cmd_ext){
+	// tell we_cmd_ext that nothing bad happened and let it do the rest
+	$aborted = false; 
+} else {
 echo we_html_tools::getHtmlTop();
 ?>
 <script  type="text/javascript">
@@ -261,6 +267,15 @@ echo we_html_tools::getHtmlTop();
 	var editorScrollPosLeft = 0;
 	var weAutoCompetionFields = new Array();
 	var openedInEditor = true;
+	
+	//WEEXT: Send Ajax request to open document (existing or new!) by transaction
+	//TODO: check if condition is really obsolete
+	//if(<?php print $we_doc->ID; ?> == 0){
+		var newDoc = <?php print $we_doc->ID; ?> == 0;
+		top.WE.app.getController("Bridge").loadFileToMainStore("<?php print $we_transaction; ?>", "<?php print $we_doc->Table; ?>", "<?php print $we_doc->ID; ?>", newDoc);
+	//} else {
+	//	alert("no need");
+	//}
 
 	var _EditorFrame = top.weEditorFrameController.getEditorFrame(window.name);
 	_EditorFrame.initEditorFrameData(
@@ -449,3 +464,4 @@ if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 <body>
 </body>
 </html>
+<?php } ?>

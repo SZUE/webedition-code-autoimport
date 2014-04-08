@@ -117,6 +117,9 @@ function doClick(id){
 		top.openBrowser(id);
 		setTimeout(\'wasdblclick=0;\',400);
 	} else {
+		//WEEXT: select multieditor tab
+		top.WE.app.getController("Bridge").selectMultieditorTab(table, id);
+
 		top.weEditorFrameController.openDocument(table,id,ct);
 	}
 }';
