@@ -270,7 +270,7 @@ class we_ui_controls_Select extends we_ui_abstract_AbstractFormElement{
 			}
 		}
 		$optgroups = $this->getOptGroups();
-		if(!empty($optgroups)){
+		if($optgroups){
 			foreach($optgroups as $k => $v){
 				$label = isset($v['label']) ? $v['label'] : "";
 				$out .= '<optgroup label="' . $label . '">';

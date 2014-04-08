@@ -114,9 +114,8 @@ class we_tag_tagParser{
 
 	public function parseTags(&$code, $start = 0, $ende = FALSE){
 		if(is_string($start)){//old call
-			$start = 0;
-			$ende = FALSE;
 			t_e('Tagparser called with old API - please Update your tag!');
+			return;
 		}
 		if($start == 0 && ($tmp = $this->checkOpenCloseTags($code)) !== true){
 			return $tmp;
@@ -248,6 +247,17 @@ class we_tag_tagParser{
 		return ($asArray ? $attribs : implode(',', $attribs));
 	}
 
+	public function getTagsWithAttributes(){
+		$regs = array();
+		$ret = array();
+		foreach($this->tags as $tag){
+			if(preg_match('%<we:([[:alnum:]_-]+)[ \t\n\r]*(.*)/?>?%msi', $tag, $regs)){
+				$ret[] = array('name' => $regs[1], 'attribs' => (isset($regs[2]) ? self::parseAttribs($regs[2], true) : array()));
+			}
+		}
+		return $ret;
+	}
+
 	private function parseTag(&$code, $ipos){
 		$tag = $this->tags[$ipos];
 		$regs = array();
@@ -274,10 +284,7 @@ class we_tag_tagParser{
 		preg_match('%</?we:[[:alnum:]_-]+[ \t\n\r]*(.*)' . $regs[4] . $regs[5] . '%msi', $regs[0], $regs);
 		$attr = trim($regs[1]);
 
-		$attribs = self::parseAttribs(/* (PHPLOCALSCOPE ?
-				  $attr://str_replace('\$', '$', $attr) : //#6330
-				  $attr) */ $attr
-				, true);
+		$attribs = self::parseAttribs($attr, true);
 		$attr = self::printArray($attribs);
 
 		if(isset($attribs['name'])){
@@ -383,7 +390,7 @@ class we_tag_tagParser{
 					continue;
 				default:
 					$quotes = ((strpos($val, '$') !== FALSE) || (strpos($val, '\'') !== FALSE) ? '"' : '\'');
-					$ret[] = '\'' . $key . '\'=>' . ((is_numeric($val)&&$val{0}!='+') || $val == 'true' || $val == 'false' ? $val : $quotes . $val . $quotes);
+					$ret[] = '\'' . $key . '\'=>' . ((is_numeric($val) && $val{0} != '+') || $val == 'true' || $val == 'false' ? $val : $quotes . $val . $quotes);
 			}
 		}
 		return ($ret || (!$ret && $printEmpty) ? 'array(' . implode(',', $ret) . ')' : '');

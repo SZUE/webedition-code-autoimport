@@ -49,11 +49,8 @@ class we_util_Sys_Server extends we_util_Sys{
 	public static function product(){
 		if(self::isApache()){
 			return "Apache";
-		} else if(self::isIIS()){
-			return "IIS";
-		} else {
-			return false;
 		}
+		return (self::isIIS() ? "IIS" : false);
 	}
 
 	/**
@@ -74,22 +71,17 @@ class we_util_Sys_Server extends we_util_Sys{
 	 * @return bool true/false
 	 */
 	public static function isApache($version = ""){
-		if(function_exists("apache_get_version")){
-			if(empty($version)){
-				return true;
-			} else {
-				$apacheVersion = apache_get_version();
-				if($apacheVersion === false){
-					return false;
-				} else if(stristr($version, "Apache/" . $apacheVersion)){
-					return true;
-				} else {
-					return false;
-				}
-			}
-		} else {
+		if(!function_exists("apache_get_version")){
 			return false;
 		}
+		if(!$version){
+			return true;
+		}
+		$apacheVersion = apache_get_version();
+		if($apacheVersion === false){
+			return false;
+		}
+		return (stristr($version, "Apache/" . $apacheVersion));
 	}
 
 	/**
@@ -98,11 +90,7 @@ class we_util_Sys_Server extends we_util_Sys{
 	 * @return bool true/false
 	 */
 	public static function isIIS(){
-		if(defined("IIS_RUNNING") && IIS_RUNNING === true){
-			return true;
-		} else {
-			return false;
-		}
+		return (defined("IIS_RUNNING") && IIS_RUNNING === true);
 	}
 
 	/**
@@ -140,11 +128,8 @@ class we_util_Sys_Server extends we_util_Sys{
 	 */
 	public static function getHostUri($url = ''){
 		$uri = getServerUrl();
-		if($url !== ''){
-			return $uri . '/' . ltrim($url, '/');
-		} else {
-			return $uri;
-		}
+		return $uri . ($url !== '' ?
+				'/' . ltrim($url, '/') : '');
 	}
 
 	/**
@@ -154,12 +139,11 @@ class we_util_Sys_Server extends we_util_Sys{
 	 * @author Alexander Lindenstruth
 	 */
 	public static function getDocroot(){
-		if(isset($_SERVER['DOCUMENT' . '_ROOT']) && !empty($_SERVER['DOCUMENT' . '_ROOT'])){
+		if(isset($_SERVER['DOCUMENT' . '_ROOT']) && $_SERVER['DOCUMENT' . '_ROOT']){
 			return $_SERVER['DOCUMENT' . '_ROOT'];
-		} else {
-			// mostly on Microsoft IIS servers (Windows) without DOCUMENT_ROOT:
-			return realpath(dirname(__FILE__) . "/.." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR);
 		}
+		// mostly on Microsoft IIS servers (Windows) without DOCUMENT_ROOT:
+		return realpath(dirname(__FILE__) . "/.." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR);
 	}
 
 }

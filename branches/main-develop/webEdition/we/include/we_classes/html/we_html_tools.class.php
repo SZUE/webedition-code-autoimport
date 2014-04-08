@@ -142,8 +142,7 @@ abstract class we_html_tools{
 
 		$_table->setCol(0, 0, array(
 			'class' => 'defaultfont'
-			), self::htmlTextInput(
-				$name, $size, $value, '', (!empty($onChange) ? 'onchange="' . $onChange . '"' : ''), 'text', $width, 0, '', $disabled));
+			), self::htmlTextInput($name, $size, $value, '', ($onChange ? 'onchange="' . $onChange . '"' : ''), 'text', $width, 0, '', $disabled));
 
 		$_table->setCol(0, 1, null, self::getPixel($abstand, 1));
 
@@ -159,7 +158,7 @@ abstract class we_html_tools{
 			($height ? ('height: ' . $height . (is_numeric($height) ? 'px' : '') . ';') : '') . '"') : '';
 		return '<input' . ($markHot ? ' onchange="if(_EditorFrame){_EditorFrame.setEditorIsHot(true);}' . $markHot . '.hot=1;"' : '') .
 			(strstr($attribs, "class=") ? "" : ' class="wetextinput"') . ' type="' . trim($type) . '" name="' . trim($name) .
-			'" size="' . intval($size) . '" value="' . oldHtmlspecialchars($value) . '"' . ($maxlength ? (' maxlength="' . intval($maxlength) . '"') : '') . ($attribs ? " $attribs" : '') . $style . ' onblur="this.className=\'wetextinput\';" onfocus="this.className=\'wetextinputselected\'"' . ($disabled ? (' disabled="true"') : '') . ' />';
+			'" size="' . intval($size) . '" value="' . oldHtmlspecialchars($value) . '"' . ($maxlength ? (' maxlength="' . intval($maxlength) . '"') : '') . ($attribs ? " $attribs" : '') . $style  . ($disabled ? (' disabled="true"') : '') . ' />';
 	}
 
 	static function htmlMessageBox($w, $h, $content, $headline = '', $buttons = ''){

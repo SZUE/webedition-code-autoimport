@@ -59,10 +59,8 @@ class we_util_Sys_Webedition extends we_util_Sys{
 	 * @example we_util_Sys_Webedition::versionCompare("5501");
 	 * @example we_util_Sys_Webedition::versionCompare("5501", "<");
 	 */
-	public static function versionCompare($version = "", $operator = ""){
-		$currentVersion = self::version();
-		return ($currentVersion === false || empty($version) ?
-				false : parent::_versionCompare($version, $currentVersion, $operator));
+	public static function versionCompare($version = '', $operator = ''){
+		return parent::_versionCompare($version, self::version(), $operator);
 	}
 
 	/**
@@ -123,7 +121,7 @@ class we_util_Sys_Webedition extends we_util_Sys{
 	 * @return false (not installed) or true (installed)
 	 */
 	public static function tool($property = ""){
-		if(empty($property)){
+		if(!$property){
 			return false;
 		}
 		$tooldir = WE_APPS_PATH . $property;
@@ -133,8 +131,8 @@ class we_util_Sys_Webedition extends we_util_Sys{
 			}
 		} catch (Exception $e){
 			throw new we_util_sys_Exception('The tool installation path does not exist.');
-			return false;
 		}
+		return false;
 	}
 
 	/**
@@ -157,16 +155,15 @@ class we_util_Sys_Webedition extends we_util_Sys{
 	 * @example we_util_Sys_Webedition::toolVersionCompare("5.1", "<");
 	 */
 	public static function toolVersionCompare($property = "", $reference = "", $operator = ""){
-		if(empty($property) || empty($reference)){
+		if(!$property || !$reference){
 			return false;
-		} else {
-			$version = self::toolVersion($property);
 		}
+		$version = self::toolVersion($property);
+
 		if($version === false){
 			return false;
-		} else {
-			return parent::_versionCompare($reference, $version, $operator);
 		}
+		return parent::_versionCompare($reference, $version, $operator);
 	}
 
 	public static function toolsInstalled(){

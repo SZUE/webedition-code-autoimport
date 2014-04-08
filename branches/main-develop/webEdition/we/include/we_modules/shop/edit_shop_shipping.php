@@ -149,10 +149,10 @@ $jsFunction = '
         	theNewRow.setAttribute("id", "weShippingId_" + entryId);
 
 			var cell1 = document.createElement("TD");
-			cell1.innerHTML=\'<input class="wetextinput" type="text" name="weShipping_cartValue[]" size="24" onblur="this.className=\\\'wetextinput\\\';" onfocus="this.className=\\\'wetextinputselected\\\'" />\';
+			cell1.innerHTML=\'<input class="wetextinput" type="text" name="weShipping_cartValue[]" size="24" />\';
         	var cell2 = document.createElement("TD");
 			var cell3 = document.createElement("TD");
-			cell3.innerHTML=\'<input class="wetextinput" type="text" name="weShipping_shipping[]" size="24" onblur="this.className=\\\'wetextinput\\\';" onfocus="this.className=\\\'wetextinputselected\\\'" />\';
+			cell3.innerHTML=\'<input class="wetextinput" type="text" name="weShipping_shipping[]" size="24" />\';
 			var cell4 = document.createElement("TD");
 			var cell5 = document.createElement("TD");
 

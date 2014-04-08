@@ -28,6 +28,8 @@ CodeMirror.defineMode("text/weTmpl", function(config, parserConfig) {
 			return {
 				insideTag: false,
 				tagName: "",
+				attrName: "",
+				typeName: "",
 				open: false,
 				close: false,
 				attrActive: false
@@ -40,6 +42,7 @@ CodeMirror.defineMode("text/weTmpl", function(config, parserConfig) {
 						stream.next();
 					}
 					state.insideTag = false;
+					state.typeName = "";
 					return "weCloseTag weTag";
 				}
 				if (state.open) {
@@ -49,18 +52,36 @@ CodeMirror.defineMode("text/weTmpl", function(config, parserConfig) {
 					if (state.attrActive) {
 						stream.next();//consume =
 						quot = false;
+						var value = "";
 						while ((ch = stream.next()) !== null && ch !== undefined) {
 							switch (ch) {
 								case "\\":
 									if (stream.peek() === "\"") {
 										stream.next();
 									}
+									continue;
 								case "\"":
 									if (quot) {
 										state.attrActive = false;
+										switch (state.attrName) {
+											case "id":
+												if (state.typeName == "") {
+													state.typeName = (state.tagName === "object" ? "object" : "document");
+												}
+												return ((value - 0 == value) ? ("number" + " we" + state.typeName + "ID-" + value)+" WEID" : "string");
+											case "type":
+												console.log(value);
+												state.typeName = value;
+
+												console.log(state.typeName);
+												return null;
+										}
 										return null;
 									}
 									quot = true;
+									continue;
+								default:
+									value += ch;
 							}
 						}
 					} else {
@@ -72,6 +93,7 @@ CodeMirror.defineMode("text/weTmpl", function(config, parserConfig) {
 									attrName += ch;
 									stream.eatSpace();
 									if (stream.peek() === "=") {
+										state.attrName = attrName;
 										return "weTagAttribute weTag_" + state.tagName + "_" + attrName;
 									}
 									continue;
@@ -94,7 +116,10 @@ CodeMirror.defineMode("text/weTmpl", function(config, parserConfig) {
 				state.attrActive = false;
 				if (state.open || state.close) {
 					state.insideTag = true;
-					state.tagName = '';
+					state.tagName = "";
+					state.typeName = "";
+					state.attrName = "";
+
 					while ((ch = stream.next()) !== null && ch !== undefined) {
 						switch (ch) {
 							default:

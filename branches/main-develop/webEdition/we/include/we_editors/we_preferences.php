@@ -1688,7 +1688,8 @@ if(window.onload) {
 			$_template_editor_autoIndent_code = we_html_forms::checkbox(1, get_value('editorAutoIndent'), 'editorAutoIndent', g_l('prefs', '[editor_enable]'), true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorAutoIndent]\');') .
 				we_html_tools::hidden('newconf[editorAutoIndent]', get_value('editorAutoIndent'));
 
-			$_template_editor_tooltips_code = we_html_forms::checkbox(1, get_value('editorTooltips'), 'newconf[editorTooltips]', g_l('prefs', '[editor_enable]'), true, 'defaultfont', '');
+			$_template_editor_tooltips_code = we_html_forms::checkbox(1, get_value('editorTooltips'), 'newconf[editorTooltips]', g_l('prefs', '[editorTooltips]'), true, 'defaultfont', '') .
+				we_html_forms::checkbox(1, get_value('editorTooltipsIDs'), 'newconf[editorTooltipsIDs]', g_l('prefs', '[editorTooltipsIDs]'), true, 'defaultfont', '');
 
 			$_template_editor_tooltip_font_specify = (get_value('editorTooltipFontname') != '' && get_value('editorTooltipFontname') != 'none');
 			$_template_editor_tooltip_font_size_specify = (get_value('editorTooltipFontsize') != '' && get_value('editorTooltipFontsize') != -1);

@@ -64,7 +64,7 @@ if(!isset($_REQUEST['we_cmd'][0]) || $_REQUEST['we_cmd'][0] != "edit_include_doc
 $GLOBALS['DB_WE']->query('UPDATE ' . USER_TABLE . '	SET Ping=0 WHERE Ping<UNIX_TIMESTAMP(NOW()-' . (PING_TIME + PING_TOLERANZ) . ')');
 
 
-echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION["user"]["Username"]) .
+echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username']) .
  STYLESHEET .
  we_html_element::jsScript(JS_DIR . 'windows.js') .
  we_html_element::jsScript(JS_DIR . 'weTinyMceDialogs.js') .
@@ -74,8 +74,8 @@ echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION["user"]["Username"]) 
  we_html_element::jsScript(JS_DIR . 'libs/yui/event-min.js') .
  we_html_element::jsScript(JS_DIR . 'libs/yui/connection-min.js') .
  we_html_element::jsScript(JS_DIR . 'keyListener.js') .
- we_html_element::jsScript(JS_DIR . 'messageConsole.js');
-include(JS_PATH . 'weJsStrings.inc.php');
+ we_html_element::jsScript(JS_DIR . 'messageConsole.js').
+we_message_reporting::jsString();
 ?>
 
 <script type="text/javascript"><!--

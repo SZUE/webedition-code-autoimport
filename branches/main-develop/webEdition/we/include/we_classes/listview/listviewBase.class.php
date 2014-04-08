@@ -302,8 +302,8 @@ abstract class listviewBase{
 
 	static function we_makeQueryString($queryString = '', $filter = ''){
 		$usedKeys = array();
-		//filter special variables
-		$filterArr = array(
+				//remove potential Cookies and filter from query
+		$filterArr = array_merge(array(//filter special variables
 			'edit_object',
 			'edit_document',
 			'we_editObject_ID',
@@ -315,9 +315,7 @@ abstract class listviewBase{
 			'pv_tid',
 			'bsuniquevid',
 			's'//password-form
-		);
-		//remove potential Cookies and filter from query
-		$filterArr = array_merge($filterArr, ($filter ? explode(',', $filter) : array()), array_keys($_COOKIE));
+		), ($filter ? explode(',', $filter) : array()), array_keys($_COOKIE));
 		if($queryString){
 			$foo = explode('&', $queryString);
 			$queryString = '';

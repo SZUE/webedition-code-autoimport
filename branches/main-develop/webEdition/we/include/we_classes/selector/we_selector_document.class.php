@@ -244,7 +244,7 @@ function weonclick(e){
 #if(makeNewFolder){
 	<tr>
 		<td align="center"><img src="' . ICON_DIR . we_base_ContentTypes::FOLDER_ICON . '" width="16" height="18" border="0"></td>
-		<td><input type="hidden" name="we_FolderText" value="' . g_l('fileselector', "[new_folder_name]") . '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' . g_l('fileselector', "[new_folder_name]") . '" class="wetextinput" onBlur="this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" /></td>
+		<td><input type="hidden" name="we_FolderText" value="' . g_l('fileselector', "[new_folder_name]") . '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' . g_l('fileselector', "[new_folder_name]") . '" class="wetextinput" style="width:100%" /></td>
 		<td class="selector">' . g_l('contentTypes', "[folder]") . '</td>
 		<td class="selector">' . date(g_l('date', '[format][default]')) . '</td>
 	</tr>
@@ -258,7 +258,7 @@ function weonclick(e){
 		<td class="selector"#\'+(entries[i].published==0 && entries[i].isFolder==0 ? #\' style="color: red;"#\' : "")+#\' title="#\'+entries[i].text+#\'">
 
 #	if(we_editDirID == entries[i].ID){
-			<input type="hidden" name="we_FolderText" value="#\'+entries[i].text+#\'" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="#\'+entries[i].text+#\'" class="wetextinput" onBlur="this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" />
+			<input type="hidden" name="we_FolderText" value="#\'+entries[i].text+#\'" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="#\'+entries[i].text+#\'" class="wetextinput" style="width:100%" />
 #	}else{
 			#\'+cutText(entries[i].text,25)+#\'
 #	}

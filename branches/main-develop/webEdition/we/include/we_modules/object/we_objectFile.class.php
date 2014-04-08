@@ -669,7 +669,7 @@ class we_objectFile extends we_document{
 	function formClass(){
 		return ($this->ID ?
 				'<span class="defaultfont">' . f('SELECT Text FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE) . '</span>' :
-				$this->formSelect2('', 388, 'TableID', OBJECT_TABLE, 'ID', 'Text', '', 'WHERE IsFolder=0' . ($this->AllowedClasses ? ' AND ID IN(' . $this->AllowedClasses . ')' : '') . ' ORDER BY Path ', 1, $this->TableID, false, "if(_EditorFrame.getEditorDocumentId() != 0){we_cmd('reload_editpage');}else{we_cmd('restore_defaults');};_EditorFrame.setEditorIsHot(true);"));
+				$this->formSelect2(388, 'TableID', OBJECT_TABLE, 'ID', 'Text', '', 'WHERE IsFolder=0' . ($this->AllowedClasses ? ' AND ID IN(' . $this->AllowedClasses . ')' : '') . ' ORDER BY Path ', 1, $this->TableID, false, "if(_EditorFrame.getEditorDocumentId() != 0){we_cmd('reload_editpage');}else{we_cmd('restore_defaults');};_EditorFrame.setEditorIsHot(true);"));
 	}
 
 	function formClassId(){
@@ -878,7 +878,7 @@ class we_objectFile extends we_document{
 		}
 		return ($variant ?
 				$this->htmlSelect('we_' . $this->Name . '_meta[' . $name . ']', $vals, 1, $this->getElement($name)) :
-				$this->formSelectFromArray('meta', $name, $vals, '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["meta_" . $name]["required"] ? "*" : "") . "</span>" . ( isset($this->DefArray["meta_$name"]['editdescription']) && $this->DefArray["meta_$name"]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["meta_$name"]['editdescription'] . '</div>' : we_html_element::htmlBr()), 1, '', false, 'onChange="_EditorFrame.setEditorIsHot(true);"', 'left', 'defaultfont', '', '', '', false));
+				$this->formSelectFromArray('meta', $name, $vals, '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["meta_" . $name]["required"] ? "*" : "") . "</span>" . ( isset($this->DefArray["meta_$name"]['editdescription']) && $this->DefArray["meta_$name"]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["meta_$name"]['editdescription'] . '</div>' : we_html_element::htmlBr()), 1, false, array('onchange' => '_EditorFrame.setEditorIsHot(true);')));
 	}
 
 	function getObjectFieldHTML($ObjectID, $attribs, $editable = true){

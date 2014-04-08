@@ -126,6 +126,9 @@ abstract class weTagWizard{
 		$groups = array();
 		foreach($tags as $tagname){
 			$tag = weTagData::getTagData($tagname);
+			if(!is_object($tag)){
+				continue;
+			}
 			$mod = $tag->getModule();
 			$modules[$mod][] = $tagname;
 			$groups['alltags'][] = $tagname;
