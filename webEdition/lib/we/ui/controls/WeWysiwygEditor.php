@@ -120,14 +120,14 @@ class we_ui_controls_WeWysiwygEditor extends we_ui_abstract_AbstractFormElement{
 	 *
 	 * @var string
 	 */
-	protected $_dialogWidth = '700';
+	protected $_dialogWidth = 700;
 
 	/**
 	 * dialogHeight attribute
 	 *
 	 * @var string
 	 */
-	protected $_dialogHeight = '400';
+	protected $_dialogHeight = 400;
 
 	/**
 	 * cssClasses attribute

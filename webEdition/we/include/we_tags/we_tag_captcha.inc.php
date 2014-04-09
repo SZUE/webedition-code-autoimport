@@ -36,10 +36,10 @@ function we_parse_tag_captcha($a, $c, array $attribs){
 
 	$font = weTag_getParserAttribute('font', $attribs);
 	$fontpath = weTag_getParserAttribute('fontpath', $attribs, '');
-	$fontsize = weTag_getParserAttribute('fontsize', $attribs, '14');
+	$fontsize = weTag_getParserAttribute('fontsize', $attribs, 14);
 	$fontcolor = weTag_getParserAttribute('fontcolor', $attribs, '#000000');
 
-	$angle = weTag_getParserAttribute('angle', $attribs, '0');
+	$angle = weTag_getParserAttribute('angle', $attribs, 0);
 
 	$subset = weTag_getParserAttribute('subset', $attribs, 'alphanum');
 	$case = weTag_getParserAttribute('case', $attribs, 'mix');

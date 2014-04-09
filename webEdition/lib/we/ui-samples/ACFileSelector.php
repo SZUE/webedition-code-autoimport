@@ -2,8 +2,8 @@
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-$IDValue = '0';
-if($IDValue == '0'){
+$IDValue = 0;
+if($IDValue == 0){
 	$_path = '/';
 } else {
 	$_path = we_util_Path::id2Path($IDValue, $table);

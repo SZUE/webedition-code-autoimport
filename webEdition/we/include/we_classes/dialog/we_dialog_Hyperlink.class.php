@@ -601,7 +601,7 @@ function showclasss(name, val, onCh) {' .
 	classNames = classCSV.split(/,/);' : ($this->args["editor"] == "tinyMce" ? '
 	classNames = top.opener.weclassNames_tinyMce;' : '
 	classNames = top.opener.we_classNames;')) . '
-	document.writeln(\'<select class="defaultfont" style="width:300px" name="\'+name+\'" id="\'+name+\'" size="1"\'+(onCh ? \' onChange="\'+onCh+\'"\' : \'\')+\'>\');
+	document.writeln(\'<select class="defaultfont" style="width:300px" name="\'+name+\'" id="\'+name+\'" size="1"\'+(onCh ? \' onchange="\'+onCh+\'"\' : \'\')+\'>\');
 	document.writeln(\'<option value="">' . g_l('wysiwyg', "[none]") . '\');
 	if(typeof(classNames) != "undefined"){
 		for (var i = 0; i < classNames.length; i++) {
@@ -632,7 +632,7 @@ function showanchors(name, val, onCh) {
 		}
 	}
 	if(allAnchors.length){
-		document.writeln(\'<select class="defaultfont" style="width:100px" name="\'+name+\'" id="\'+name+\'" size="1"\'+(onCh ? \' onChange="\'+onCh+\'"\' : \'\')+\'>\');
+		document.writeln(\'<select class="defaultfont" style="width:100px" name="\'+name+\'" id="\'+name+\'" size="1"\'+(onCh ? \' onchange="\'+onCh+\'"\' : \'\')+\'>\');
 		document.writeln(\'<option value="">\');
 
 		for (var i = 0; i < allAnchors.length; i++) {

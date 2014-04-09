@@ -447,7 +447,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement{
 	 *
 	 * @var string
 	 */
-	protected $_width = '150';
+	protected $_width = 150;
 
 	/**
 	 * type of button

@@ -105,7 +105,7 @@ class HttpResponse{
 
 					$body .= substr($bodyStr, (strlen($chunkhex) + strlen($lbr)), ($chunkdec));
 					$bodyStr = substr($bodyStr, ($chunkdec + strlen($chunkhex) + 2 * strlen($lbr)));
-				} while($chunkhex !== "0");
+				} while($chunkhex !== '0');
 
 				$this->http_body = $body;
 			} else {

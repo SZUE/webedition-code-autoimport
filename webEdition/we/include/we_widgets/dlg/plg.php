@@ -122,7 +122,7 @@ $_dns = explode("\n", $websites);
 
 
 $sctDns = we_html_tools::htmlFormElementTable(
-		we_html_tools::htmlSelect("sct_dns", $_dns, 1, 0, false, array('onChange' => "", 'style' => "width:300px;"), 'value'), g_l('cockpit', "[domain]"));
+		we_html_tools::htmlSelect("sct_dns", $_dns, 1, 0, false, array('onchange' => "", 'style' => "width:300px;"), 'value'), g_l('cockpit', "[domain]"));
 
 $chbxChart[0] = we_html_forms::checkbox(
 		$value = 0, $checked = 0, $name = "chbx_chart", $text = g_l('cockpit', '[visitors_data_today]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);

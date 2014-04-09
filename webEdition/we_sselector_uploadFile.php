@@ -31,7 +31,7 @@ echo we_html_tools::getHtmlTop() .
 $cpat = str_replace('//', '/', $_SERVER['DOCUMENT_ROOT'] . $_REQUEST["pat"]);
 
 function weFile($f){
-	return f("SELECT 1 FROM " . FILE_TABLE . " WHERE Path='" . $GLOBALS['DB_WE']->escape($f) . "'") === '1';
+	return f('SELECT 1 FROM ' . FILE_TABLE . " WHERE Path='" . $GLOBALS['DB_WE']->escape($f) . "'") == 1;
 }
 
 $we_alerttext = "";

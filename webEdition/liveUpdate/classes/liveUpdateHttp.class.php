@@ -113,7 +113,7 @@ class liveUpdateHttp{
 		if(defined('WE_PROXYHOST') && WE_PROXYHOST != ''){
 
 			$_proxyhost = defined('WE_PROXYHOST') ? WE_PROXYHOST : '';
-			$_proxyport = (defined('WE_PROXYPORT') && WE_PROXYPORT) ? WE_PROXYPORT : '80';
+			$_proxyport = (defined('WE_PROXYPORT') && WE_PROXYPORT) ? WE_PROXYPORT : 80;
 			$_proxy_user = defined('WE_PROXYUSER') ? WE_PROXYUSER : '';
 			$_proxy_pass = defined('WE_PROXYPASSWORD') ? WE_PROXYPASSWORD : '';
 
@@ -135,7 +135,7 @@ class liveUpdateHttp{
 
 	function getHttpOption(){
 		if(ini_get('allow_url_fopen') != 1 && strtolower(ini_get('allow_url_fopen')) != "on"){
-			@ini_set('allow_url_fopen', '1');
+			@ini_set('allow_url_fopen', 1);
 			if(ini_get('allow_url_fopen') != 1 && strtolower(ini_get('allow_url_fopen')) != "on"){
 				if(function_exists('curl_init')){
 					return 'curl';

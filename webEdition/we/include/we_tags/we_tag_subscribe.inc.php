@@ -68,7 +68,7 @@ function we_tag_subscribe($attribs){
 			$newAttribs = removeAttribs($attribs, array('name', 'type', 'value', 'checked', 'values'));
 			$newAttribs['name'] = 'we_subscribe_html__';
 			$newAttribs['type'] = 'checkbox';
-			$newAttribs['value'] = '1';
+			$newAttribs['value'] = 1;
 			if((isset($_REQUEST["we_subscribe_html__"]) && ($_REQUEST["we_subscribe_html__"] == 1 || $_REQUEST["we_subscribe_html__"] == 'on') ) || $checked){
 				$newAttribs['checked'] = 'checked';
 			}

@@ -155,7 +155,7 @@ $oDbTableType->setCol(0, 2, null, $oChbxAverageOrder . $oChbxTarget);
 $divContent = we_html_element::htmlDiv(array("style" => "display:block;"), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($name = "revenueTarget", $size = 55, $value = $sRevenueTarget, $maxlength = 255, $attribs = "", $type = "text", $width = 100, $height = 0) . "&nbsp;&euro;", '', "left", "defaultfont"));
 
 $oSctDate = new we_html_select(array(
-	"name" => "sct_date", "size" => 1, "class" => "defaultfont", "onChange" => ""
+	"name" => "sct_date", "size" => 1, "class" => "defaultfont", "onchange" => ""
 	));
 $aLangDate = array(
 	g_l('cockpit', '[today]'),

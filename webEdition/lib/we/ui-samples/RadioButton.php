@@ -3,7 +3,7 @@
 require_once ($_SERVER['DOCUMENT_ROOT']. '/webEdition/lib/we/core/autoload.inc.php');
 
 $radio = new we_ui_controls_RadioButton();
-$radio->setValue('1');
+$radio->setValue(1);
 $radio->setChecked(true);
 $radio->setName('testCheckbox');
 $radio->setLabel('Label 1');

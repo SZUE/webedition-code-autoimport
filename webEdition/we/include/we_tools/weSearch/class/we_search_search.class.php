@@ -403,7 +403,7 @@ class we_search_search extends we_search{
 		}
 
 		$i = 0;
-		if(empty($userIDs)){
+		if(!$userIDs){
 			return '0';
 		}
 

@@ -612,13 +612,13 @@ if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_
 						<td></td>
 					</tr>
 					<tr>
-						<td>' . we_html_tools::htmlTextInput("jsposx", 4, $jsposx, "", "", "text", 40) . '</td>
+						<td>' . we_html_tools::htmlTextInput('jsposx', 4, $jsposx, '', '', "text", 40) . '</td>
 						<td>' . we_html_tools::getPixel(10, 2) . '</td>
-						<td>' . we_html_tools::htmlTextInput("jsposy", 4, $jsposy, "", "", "text", 40) . '</td>
+						<td>' . we_html_tools::htmlTextInput('jsposy', 4, $jsposy, '', "", "text", 40) . '</td>
 						<td>' . we_html_tools::getPixel(10, 2) . '</td>
-						<td>' . we_html_tools::htmlTextInput("jswidth", 4, $jswidth, "", ' onChange="if(this.form.jscenter.checked && this.value==\'\'){this.value=100}"', "text", 40) . '</td>
+						<td>' . we_html_tools::htmlTextInput("jswidth", 4, $jswidth, '', ' onchange="if(this.form.jscenter.checked && this.value==\'\'){this.value=100}"', "text", 40) . '</td>
 						<td>' . we_html_tools::getPixel(10, 2) . '</td>
-						<td>' . we_html_tools::htmlTextInput("jsheight", 4, $jsheight, "", ' onChange="if(this.form.jscenter.checked && this.value==\'\'){this.value=100}"', "text", 40) . '</td>
+						<td>' . we_html_tools::htmlTextInput("jsheight", 4, $jsheight, "", ' onchange="if(this.form.jscenter.checked && this.value==\'\'){this.value=100}"', "text", 40) . '</td>
 						<td>' . we_html_tools::getPixel(10, 2) . '</td>
 					</tr>
 					<tr>

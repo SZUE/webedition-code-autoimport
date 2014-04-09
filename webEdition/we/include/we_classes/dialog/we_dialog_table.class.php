@@ -136,7 +136,7 @@ class we_dialog_table extends we_dialog_base{
 					classNames = classCSV.split(/,/);' :
 					'					classNames = top.opener.we_classNames;') .
 				'
-					document.writeln(\'<select class="defaultfont" style="width:380px" name="\'+name+\'" id="\'+name+\'" size="1"\'+(onCh ? \' onChange="\'+onCh+\'"\' : \'\')+\'>\');
+					document.writeln(\'<select class="defaultfont" style="width:380px" name="\'+name+\'" id="\'+name+\'" size="1"\'+(onCh ? \' onchange="\'+onCh+\'"\' : \'\')+\'>\');
 					document.writeln(\'<option value="">' . g_l('wysiwyg', "[none]") . '\');
 					if(typeof(classNames) != "undefined"){
 						for (var i = 0; i < classNames.length; i++) {

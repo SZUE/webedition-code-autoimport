@@ -51,15 +51,10 @@ class we_io_DB{
 			$DBpar['host'] = DB_HOST;
 		}
 		$charset = we_database_base::getCharset();
-		if($charset != ''){
-			if(strpos(strtolower($charset), 'utf') !== false){// es gibt alte sites, da steht UTF-8 drin, was aber falsch ist
-				$DBpar['charset'] = 'utf8';
-			} else {
-				$DBpar['charset'] = $charset;
-			}
-		} else {
-			$DBpar['charset'] = 'utf8';
-		}
+
+		$DBpar['charset'] = (!$charset || strpos(strtolower($charset), 'utf') !== false ? // es gibt alte sites, da steht UTF-8 drin, was aber falsch ist
+				'utf8' : $charset);
+
 
 		$db = Zend_Db::factory('Pdo_Mysql', $DBpar);
 		return $db;

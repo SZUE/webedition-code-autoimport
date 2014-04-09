@@ -171,7 +171,7 @@ function we_tag_blockControls($attribs){
 			$tabArray[] = $selectb;
 		} else {
 			$tabArray[] = we_html_button::create_button('image:btn_add_listelement', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('insert_entry_at_list','" . $attribs['name'] . "','" . $attribs['pos'] . "',1)", true, 100, 22, '', '', ($attribs['ctlShow'] > 0 ? false : true));
-			$jsSelector = '1';
+			$jsSelector = 1;
 		}
 		$tabArray[] = (($attribs['pos'] > 0) ?
 				//enabled upBtn

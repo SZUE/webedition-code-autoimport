@@ -91,7 +91,7 @@ class we_workflow_workflow extends we_workflow_base{
 		$this->Folders = ',0,';
 		$this->ObjectFileFolders = ',0,';
 		$this->FolderPath = '';
-		$this->DocType = '0';
+		$this->DocType = 0;
 		$this->Objects = '';
 		$this->Categories = '';
 		$this->ObjCategories = '';

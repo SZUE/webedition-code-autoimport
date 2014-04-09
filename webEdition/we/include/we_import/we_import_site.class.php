@@ -322,15 +322,15 @@ class we_import_site{
 			$data['valueDateFormat'] = isset($_REQUEST['dateFormat']) ? $_REQUEST['dateFormat'] : 'unix';
 			$data['valueDateFormatField'] = isset($_REQUEST['dateformatField']) ? $_REQUEST['dateformatField'] : '';
 			$data['valueTemplateName'] = 'neueVorlage';
-			$data['valueTemplateParentID'] = '0';
+			$data['valueTemplateParentID'] = 0;
 		} else {
-			$data['valueTemplateId'] = '0';
+			$data['valueTemplateId'] = 0;
 			$data['valueUseRegex'] = false;
 			$data['valueFieldValues'] = serialize(array());
 			$data['valueDateFormat'] = 'unix';
 			$data['valueDateFormatField'] = '';
 			$data['valueTemplateName'] = isset($_REQUEST['templateName']) ? $_REQUEST['templateName'] : 'neueVorlage';
-			$data['valueTemplateParentID'] = isset($_REQUEST['templateParentID']) ? $_REQUEST['templateParentID'] : '0';
+			$data['valueTemplateParentID'] = isset($_REQUEST['templateParentID']) ? $_REQUEST['templateParentID'] : 0;
 		}
 		// update session
 		$_SESSION['prefs']['siteImportPrefs'] = serialize($data);
@@ -756,7 +756,7 @@ class we_import_site{
 			"space" => 120
 		);
 
-		$content = we_html_tools::htmlAlertAttentionBox(g_l('importFiles', "[sameName_expl]"), we_html_tools::TYPE_INFO, "410") .
+		$content = we_html_tools::htmlAlertAttentionBox(g_l('importFiles', "[sameName_expl]"), we_html_tools::TYPE_INFO, 410) .
 			we_html_tools::getPixel(200, 10) .
 			we_html_forms::radiobutton("overwrite", ($this->sameName == "overwrite"), "sameName", g_l('importFiles', "[sameName_overwrite]")) .
 			we_html_forms::radiobutton("rename", ($this->sameName == "rename"), "sameName", g_l('importFiles', "[sameName_rename]")) .

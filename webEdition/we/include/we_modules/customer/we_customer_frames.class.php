@@ -672,7 +672,7 @@ failure: function(o) {
 		$select->selectOption($branch_select);
 
 		$fields = $this->getHTMLFieldsSelect($branch);
-		$fields->setAttributes(array("name" => "fields_select", "size" => 15, "onChange" => '', "style" => "width:350px;height:250px;"));
+		$fields->setAttributes(array("name" => "fields_select", "size" => 15, "onchange" => '', "style" => "width:350px;height:250px;"));
 		$hiddens = we_html_element::htmlHidden(array("name" => "field", "value" => ''));
 
 		$buttons_table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 12, 1);
@@ -1029,7 +1029,7 @@ failure: function(o) {
 		}
 
 		if(($format == '') || we_html_tools::we_getMonthPos($format) != -1){
-			$monthSelect = '<select class="weSelect" name="' . sprintf($name, "_month") . '" size="1" onChange="' . $onchange . '">';
+			$monthSelect = '<select class="weSelect" name="' . sprintf($name, "_month") . '" size="1" onchange="' . $onchange . '">';
 			for($i = 1; $i <= 12; $i++){
 				$monthSelect .= '<option' . ($time ? (($month == $i) ? ' selected="selected"' : '') : '') . '>' . sprintf("%02d", $i) . '</option>';
 			}
@@ -1039,7 +1039,7 @@ failure: function(o) {
 		}
 
 		if(($format == '') || we_html_tools::we_getYearPos($format) != -1){
-			$yearSelect = '<select class="weSelect" name="' . sprintf($name, "_year") . '" size="1" onChange="' . $onchange . '">';
+			$yearSelect = '<select class="weSelect" name="' . sprintf($name, "_year") . '" size="1" onchange="' . $onchange . '">';
 			for($i = $from_year; $i <= intval(date("Y") + 100); $i++){ //Temp-Fix 5471
 				$yearSelect .= '<option' . ($time ? (($year == $i) ? ' selected="selected"' : '') : '') . '>' . sprintf("%04d", $i) . '</option>';
 			}
@@ -1049,7 +1049,7 @@ failure: function(o) {
 		}
 
 		if(($format == '') || we_html_tools::we_getHourPos($format) != -1){
-			$hourSelect = '<select class="weSelect" name="' . sprintf($name, "_hour") . '" size="1" onChange="' . $onchange . '">';
+			$hourSelect = '<select class="weSelect" name="' . sprintf($name, "_hour") . '" size="1" onchange="' . $onchange . '">';
 			for($i = 0; $i <= 23; $i++){
 				$hourSelect .= '<option' . ($time ? (($hour == $i) ? ' selected="selected"' : '') : '') . '>' . sprintf("%02d", $i) . '</option>';
 			}
@@ -1059,7 +1059,7 @@ failure: function(o) {
 		}
 
 		if(($format == '') || we_html_tools::we_getMinutePos($format) != -1){
-			$minSelect = '<select class="weSelect" name="' . sprintf($name, "_minute") . '" size="1" onChange="' . $onchange . '">';
+			$minSelect = '<select class="weSelect" name="' . sprintf($name, "_minute") . '" size="1" onchange="' . $onchange . '">';
 			for($i = 0; $i <= 59; $i++){
 				$minSelect .= '<option' . ($time ? (($minute == $i) ? ' selected="selected"' : '') : '') . '>' . sprintf("%02d", $i) . '</option>';
 			}

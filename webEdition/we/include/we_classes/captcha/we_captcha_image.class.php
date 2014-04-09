@@ -282,7 +282,7 @@ class we_captcha_image{
 	 * @param string $angle
 	 * @return void
 	 */
-	function setAngleRange($angle = "0"){
+	function setAngleRange($angle = '0'){
 		$angles = explode(",", $angle);
 		$this->angle = array();
 		if(count($angles) > 1){

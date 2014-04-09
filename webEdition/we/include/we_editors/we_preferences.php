@@ -638,7 +638,7 @@ function build_dialog($selected_setting = 'ui'){
 			global $_languages;
 
 			if(!empty($_language)){ // Build language select box
-				$_languages = new we_html_select(array('name' => 'newconf[Language]', 'class' => 'weSelect', 'onChange' => "document.getElementById('langnote').style.display='block'"));
+				$_languages = new we_html_select(array('name' => 'newconf[Language]', 'class' => 'weSelect', 'onchange' => "document.getElementById('langnote').style.display='block'"));
 				foreach($_language as $key => $value){
 					$_languages->addOption($key, $value);
 				}
@@ -667,7 +667,7 @@ function build_dialog($selected_setting = 'ui'){
 				$_settings[] = array('headline' => g_l('prefs', '[choose_language]'), 'html' => $_languages, 'space' => 200, 'noline' => 1);
 			}
 
-			$BackendCharset = new we_html_select(array('name' => 'newconf[BackendCharset]', 'class' => 'weSelect', 'onChange' => "document.getElementById('langnote').style.display='block'"));
+			$BackendCharset = new we_html_select(array('name' => 'newconf[BackendCharset]', 'class' => 'weSelect', 'onchange' => "document.getElementById('langnote').style.display='block'"));
 			$c = we_base_charsetHandler::getAvailCharsets();
 			foreach($c as $char){
 				$BackendCharset->addOption($char, $char);
@@ -683,7 +683,7 @@ function build_dialog($selected_setting = 'ui'){
 				$charset = $GLOBALS['WE_BACKENDCHARSET'];
 				$GLOBALS['weDefaultCharset'] = get_value('DEFAULT_CHARSET');
 				$_defaultCharset = we_html_tools::htmlTextInput('newconf[DEFAULT_CHARSET]', 8, $GLOBALS['weDefaultCharset'], 255, '', 'text', 100);
-				$_defaultCharsetChooser = we_html_tools::htmlSelect('DefaultCharsetSelect', $_charsets, 1, $GLOBALS['weDefaultCharset'], false, array("onChange" => "document.forms[0].elements['newconf[DEFAULT_CHARSET]'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"), "value", 100, "defaultfont", false);
+				$_defaultCharsetChooser = we_html_tools::htmlSelect('DefaultCharsetSelect', $_charsets, 1, $GLOBALS['weDefaultCharset'], false, array("onchange" => "document.forms[0].elements['newconf[DEFAULT_CHARSET]'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"), "value", 100, "defaultfont", false);
 				$DEFAULT_CHARSET = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $_defaultCharset . '</td><td>' . $_defaultCharsetChooser . '</td></tr></table>';
 
 				$_settings[] = array(

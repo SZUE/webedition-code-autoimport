@@ -354,7 +354,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			$foo = array();
 			$wsArray = makeArrayFromCSV($ws);
 			foreach($wsArray as $wid){
-				pushChilds($foo, $wid, TEMPLATES_TABLE, "0");
+				pushChilds($foo, $wid, TEMPLATES_TABLE, 0);
 			}
 			$tlist = makeCSVFromArray($foo);
 		}
@@ -780,7 +780,6 @@ class we_webEditionDocument extends we_textContentDocument{
 
 	protected function i_getDocumentToSave(){
 		if($this->IsDynamic){
-
 			$data = array();
 
 			if(defined('SHOP_TABLE')){
@@ -792,7 +791,7 @@ class we_webEditionDocument extends we_textContentDocument{
 				we_shop_variants::correctModelFields($this, true);
 			}
 
-			$data[0]["InWebEdition"] = false;
+			$data[0]['InWebEdition'] = false;
 //FIXME: check if we can remove pv_id, used by we:printversion
 			return '<?php
 if(!defined(\'NO_SESS\')){define(\'NO_SESS\',1);}
@@ -816,26 +815,22 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 } else {
 	include($_SERVER[\'DOCUMENT_ROOT\'] . \'' . WE_INCLUDES_DIR . 'we_showDocument.inc.php\');
 }';
-		} else {
-			static $cache = array();
-			if(isset($cache[$this->ID])){
-				return $cache[$this->ID];
-			} else {
-				$doc = $this->i_getDocument();
-				$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE']);
-// --> Glossary Replacement
-				$useGlossary = ((defined('GLOSSARY_TABLE') && (!isset($GLOBALS['WE_MAIN_ID']) || $GLOBALS['WE_MAIN_ID'] == $GLOBALS['we_doc']->ID)) && (isset($we_doc->InGlossar) && $we_doc->InGlossar == 0) && we_glossary_replace::useAutomatic());
-
-				// --> Glossary Replacement
-				if($useGlossary){
-					$doc = we_glossary_replace::doReplace($doc, $this->Language);
-				}
-				if($urlReplace){
-					$doc = preg_replace($urlReplace, array_keys($urlReplace), $doc);
-				}
-				$cache[$this->ID] = $doc;
-			}
 		}
+		static $cache = array();
+		if(isset($cache[$this->ID])){
+			return $cache[$this->ID];
+		}
+		$doc = $this->i_getDocument();
+		$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE']);
+// --> Glossary Replacement
+		$useGlossary = ((defined('GLOSSARY_TABLE') && (!isset($GLOBALS['WE_MAIN_ID']) || $GLOBALS['WE_MAIN_ID'] == $GLOBALS['we_doc']->ID)) && (isset($GLOBALS['we_doc']->InGlossar) && $GLOBALS['we_doc']->InGlossar == 0) && we_glossary_replace::useAutomatic());
+
+		// --> Glossary Replacement
+		$doc = ($useGlossary ? we_glossary_replace::doReplace($doc, $this->Language) : $doc);
+		$doc = ($urlReplace ? preg_replace($urlReplace, array_keys($urlReplace), $doc) : $doc);
+
+		$cache[$this->ID] = $doc;
+
 		return $doc;
 	}
 
@@ -921,10 +916,8 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	 */
 	function setHidePages($templatecode){
 		if($this->InWebEdition){
-
 			//	delete exisiting hidePages ...
 			if(in_array('hidePages', $this->persistent_slots)){
-
 				unset($this->hidePages);
 			}
 

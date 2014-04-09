@@ -9,15 +9,15 @@ $select->setSize(3);
 $select->setHidden(false);
 $select->setDisabled(false);
 $select->setTitle('Titel');
-$select->setOnChange('alert("onChange!");');
-$select->setSelectedValue('3');
+$select->setOnChange('alert("onchange!");');
+$select->setSelectedValue(3);
 $select->setOptions(array(
-	'1' => 'Option 1',
-	'2' => 'Option 2',
-	'3' => 'Option 3',
-	'4' => 'Option 4',
-	'5' => 'Option 5',
-	'6' => 'Option 6'
+	1 => 'Option 1',
+	2 => 'Option 2',
+	3 => 'Option 3',
+	4 => 'Option 4',
+	5 => 'Option 5',
+	6 => 'Option 6'
 ));
 
 $select2 = new we_ui_controls_Select(
@@ -27,16 +27,16 @@ $select2 = new we_ui_controls_Select(
 	'size' => 3,
 	'disabled' => false,
 	'hidden' => false,
-	'onChange' => 'alert("onChange!");',
+	'onchange' => 'alert("onChange!");',
 	'title' => 'Titel 2',
 	'selectedValue' => 2,
 	'options' => array(
-		'1' => 'Option 1',
-		'2' => 'Option 2',
-		'3' => 'Option 3',
-		'4' => 'Option 4',
-		'5' => 'Option 5',
-		'6' => 'Option 6'
+		1 => 'Option 1',
+		2 => 'Option 2',
+		3 => 'Option 3',
+		4 => 'Option 4',
+		5 => 'Option 5',
+		6 => 'Option 6'
 	)
 	)
 );
@@ -55,30 +55,30 @@ $select3 = new we_ui_controls_Select(
 		array(
 			'label' => 'group 1',
 			'options' => array(
-				'7' => 'Option 7',
-				'8' => 'Option 8',
-				'9' => 'Option 9',
-				'10' => 'Option 10',
-				'11' => 'Option 11',
-				'12' => 'Option 12'
+				7 => 'Option 7',
+				8 => 'Option 8',
+				9 => 'Option 9',
+				10 => 'Option 10',
+				11 => 'Option 11',
+				12 => 'Option 12'
 			)
 		),
 		array(
 			'label' => 'group 2',
 			'options' => array(
-				'13' => 'Option 13',
-				'14' => 'Option 14',
-				'15' => 'Option 15'
+				13 => 'Option 13',
+				14 => 'Option 14',
+				15 => 'Option 15'
 			)
 		)
 	),
 	'options' => array(
-		'1' => 'Option 1',
-		'2' => 'Option 2',
-		'3' => 'Option 3',
-		'4' => 'Option 4',
-		'5' => 'Option 5',
-		'6' => 'Option 6'
+		1 => 'Option 1',
+		2 => 'Option 2',
+		3 => 'Option 3',
+		4 => 'Option 4',
+		5 => 'Option 5',
+		6 => 'Option 6'
 	)
 	)
 );
@@ -86,11 +86,11 @@ $select3 = new we_ui_controls_Select(
 $select->addOption(7, "added Option 7");
 
 $addedOptions = array(
-	'8' => 'new Option 8',
-	'9' => 'new Option 9'
+	8 => 'new Option 8',
+	9 => 'new Option 9'
 );
 
-$select->setSelectedValue("5");
+$select->setSelectedValue(5);
 
 $select->addOptions($addedOptions);
 

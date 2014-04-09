@@ -1266,7 +1266,7 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 		$_username = /* ($this->ID) ?
 			  we_html_tools::htmlFormElementTable('<b class="defaultfont">' . $this->username . '</b><input type="hidden" id="yuiAcInputPathName" value="' . ($this->username) . '">', g_l('modules_users', "[group_name]")) : */
 			$this->getUserfield("username", "group_name", "text", 255, false, 'id="yuiAcInputPathName" onblur="parent.frames[0].setPathName(this.value); parent.frames[0].setTitlePath();"');
-		$_description = '<textarea name="' . $this->Name . '_Description" cols="25" rows="5" style="width:560px" class="defaultfont" onChange="top.content.setHot();">' . $this->Description . '</textarea>';
+		$_description = '<textarea name="' . $this->Name . '_Description" cols="25" rows="5" style="width:560px" class="defaultfont" onchange="top.content.setHot();">' . $this->Description . '</textarea>';
 		$parent_name = f('SELECT Path FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->ParentID), 'Path', $this->DB_WE);
 
 		$parent_name = ($parent_name ? $parent_name : '/');
@@ -1274,7 +1274,7 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId('PathGroup');
 		$yuiSuggest->setContentType('folder');
-		$yuiSuggest->setInput($this->Name . '_ParentID_Text', $parent_name, array('onChange' => 'top.content.setHot()'));
+		$yuiSuggest->setInput($this->Name . '_ParentID_Text', $parent_name, array('onchange' => 'top.content.setHot()'));
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(false);
 		$yuiSuggest->setResult($this->Name . '_ParentID', $this->ParentID);
@@ -1291,7 +1291,7 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 		$_tableObj->setCol(3, 0, null, we_html_tools::getPixel(560, 10));
 		$_tableObj->setCol(4, 0, null, we_html_tools::htmlFormElementTable($weAcSelector, g_l('modules_users', '[group]')));
 
-		$content = '<select name="' . $this->Name . '_Users" size="8" style="width:560px" onChange="if(this.selectedIndex > -1){edit_enabled = switch_button_state(\'edit\', \'edit_enabled\', \'enabled\');}else{edit_enabled = switch_button_state(\'edit\', \'edit_enabled\', \'disabled\');}" ondblclick="top.content.we_cmd(\'display_user\',document.we_form.' . $this->Name . '_Users.value)">';
+		$content = '<select name="' . $this->Name . '_Users" size="8" style="width:560px" onchange="if(this.selectedIndex > -1){edit_enabled = switch_button_state(\'edit\', \'edit_enabled\', \'enabled\');}else{edit_enabled = switch_button_state(\'edit\', \'edit_enabled\', \'disabled\');}" ondblclick="top.content.we_cmd(\'display_user\',document.we_form.' . $this->Name . '_Users.value)">';
 		if($this->ID){
 			$this->DB_WE->query('SELECT ID,username,Text,Type FROM ' . USER_TABLE . ' WHERE Type IN (0,2) AND ParentID=' . intval($this->ID));
 			while($this->DB_WE->next_record()){
@@ -1327,7 +1327,7 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 
 	function formUserData(){
 
-		$_description = '<textarea name="' . $this->Name . '_Description" cols="25" rows="5" style="width:520px" class="defaultfont" onChange="top.content.setHot();">' . $this->Description . '</textarea>';
+		$_description = '<textarea name="' . $this->Name . '_Description" cols="25" rows="5" style="width:520px" class="defaultfont" onchange="top.content.setHot();">' . $this->Description . '</textarea>';
 		$_attr = array('border' => 0, 'cellpadding' => 2, 'cellspacing' => 0);
 		$_tableObj = new we_html_table($_attr, 12, 2);
 		$line = 0;
@@ -1376,7 +1376,7 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId('PathGroup');
 		$yuiSuggest->setContentType('folder');
-		$yuiSuggest->setInput($this->Name . '_ParentID_Text', $parent_name, array('onChange' => 'top.content.setHot()'));
+		$yuiSuggest->setInput($this->Name . '_ParentID_Text', $parent_name, array('onchange' => 'top.content.setHot()'));
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult($this->Name . '_ParentID', $this->ParentID);
@@ -1805,7 +1805,7 @@ function delElement(elvalues,elem) {
 		}
 
 
-		$_charset = new we_html_select(array('name' => $this->Name . '_Preference_BackendCharset', 'class' => 'weSelect', 'onChange' => 'top.content.setHot();'));
+		$_charset = new we_html_select(array('name' => $this->Name . '_Preference_BackendCharset', 'class' => 'weSelect', 'onchange' => 'top.content.setHot();'));
 		$c = we_base_charsetHandler::getAvailCharsets();
 		foreach($c as $char){
 			$_charset->addOption($char, $char);
@@ -1819,7 +1819,7 @@ function delElement(elvalues,elem) {
 		);
 
 		//AMOUNT Number of Columns
-		$_amount = new we_html_select(array('name' => $this->Name . '_Preference_cockpit_amount_columns', 'class' => 'weSelect', 'onChange' => "top.content.setHot();"));
+		$_amount = new we_html_select(array('name' => $this->Name . '_Preference_cockpit_amount_columns', 'class' => 'weSelect', 'onchange' => "top.content.setHot();"));
 		if($this->Preferences['cockpit_amount_columns'] == ''){
 			$this->Preferences['cockpit_amount_columns'] = 3;
 		}
@@ -2013,7 +2013,7 @@ function show_seem_chooser(val) {
 		$_value_selected = false;
 		$_tree_count = $this->Preferences['default_tree_count'];
 
-		$_file_tree_count = new we_html_select(array('name' => $this->Name . '_Preference_default_tree_count', 'class' => 'weSelect', 'onChange' => 'top.content.setHot();'));
+		$_file_tree_count = new we_html_select(array('name' => $this->Name . '_Preference_default_tree_count', 'class' => 'weSelect', 'onchange' => 'top.content.setHot();'));
 
 		$_file_tree_count->addOption(0, g_l('prefs', '[all]'));
 		if(0 == $_tree_count){
@@ -2079,8 +2079,8 @@ function show_seem_chooser(val) {
 		$_window_specify_table->setCol(1, 2, null, we_html_tools::getPixel(10, 1));
 		$_window_specify_table->setCol(3, 2, null, we_html_tools::getPixel(10, 1));
 
-		$_window_specify_table->setCol(1, 3, null, we_html_tools::htmlTextInput($this->Name . '_Preference_weWidth', 6, ($this->Preferences['weWidth'] != '' && $this->Preferences['weWidth'] != '0' ? $this->Preferences['weWidth'] : 800), 4, ($this->Preferences['sizeOpt'] == 0 ? "disabled=\"disabled\"" : "") . "onChange='top.content.setHot();'", "text", 60));
-		$_window_specify_table->setCol(3, 3, null, we_html_tools::htmlTextInput($this->Name . "_Preference_weHeight", 6, ( ($this->Preferences['weHeight'] != '' && $this->Preferences['weHeight'] != '0') ? $this->Preferences['weHeight'] : 600), 4, ($this->Preferences['sizeOpt'] == 0 ? "disabled=\"disabled\"" : "") . "onChange='top.content.setHot();'", "text", 60));
+		$_window_specify_table->setCol(1, 3, null, we_html_tools::htmlTextInput($this->Name . '_Preference_weWidth', 6, ($this->Preferences['weWidth'] != '' && $this->Preferences['weWidth'] != '0' ? $this->Preferences['weWidth'] : 800), 4, ($this->Preferences['sizeOpt'] == 0 ? "disabled=\"disabled\"" : "") . "onchange='top.content.setHot();'", "text", 60));
+		$_window_specify_table->setCol(3, 3, null, we_html_tools::htmlTextInput($this->Name . "_Preference_weHeight", 6, ( ($this->Preferences['weHeight'] != '' && $this->Preferences['weHeight'] != '0') ? $this->Preferences['weHeight'] : 600), 4, ($this->Preferences['sizeOpt'] == 0 ? "disabled=\"disabled\"" : "") . "onchange='top.content.setHot();'", "text", 60));
 
 		// Build apply current window dimension
 		$_window_current_dimension_table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 1, 2);
@@ -2157,7 +2157,7 @@ function show_seem_chooser(val) {
 		$_template_editor_font_specify_table->setCol(1, 2, null, we_html_tools::getPixel(10, 1));
 		$_template_editor_font_specify_table->setCol(3, 2, null, we_html_tools::getPixel(10, 1));
 
-		$_template_editor_font_select_box = new we_html_select(array("class" => "weSelect", "name" => $this->Name . "_Preference_editorFontname", "size" => 1, "style" => "width: 90px;", ($_template_editor_font_specify ? "enabled" : "disabled") => ($_template_editor_font_specify ? "enabled" : "disabled"), "onChange" => "top.content.setHot();"));
+		$_template_editor_font_select_box = new we_html_select(array("class" => "weSelect", "name" => $this->Name . "_Preference_editorFontname", "size" => 1, "style" => "width: 90px;", ($_template_editor_font_specify ? "enabled" : "disabled") => ($_template_editor_font_specify ? "enabled" : "disabled"), "onchange" => "top.content.setHot();"));
 
 		foreach($_template_fonts as $tf){
 			$_template_editor_font_select_box->addOption($tf, $tf);
@@ -2173,7 +2173,7 @@ function show_seem_chooser(val) {
 			}
 		}
 
-		$_template_editor_font_sizes_select_box = new we_html_select(array('class' => 'weSelect', 'name' => $this->Name . '_Preference_editorFontsize', "size" => 1, "style" => "width: 90px;", ($_template_editor_font_size_specify ? "enabled" : "disabled") => ($_template_editor_font_size_specify ? "enabled" : "disabled"), "onChange" => "top.content.setHot();"));
+		$_template_editor_font_sizes_select_box = new we_html_select(array('class' => 'weSelect', 'name' => $this->Name . '_Preference_editorFontsize', "size" => 1, "style" => "width: 90px;", ($_template_editor_font_size_specify ? "enabled" : "disabled") => ($_template_editor_font_size_specify ? "enabled" : "disabled"), "onchange" => "top.content.setHot();"));
 
 		foreach($_template_font_sizes as $tf){
 			$_template_editor_font_sizes_select_box->addOption($tf, $tf);
@@ -2222,7 +2222,7 @@ function show_seem_chooser(val) {
 
 		$yuiSuggest->setAcId("PathGroup");
 		$yuiSuggest->setContentType("folder");
-		$yuiSuggest->setInput($this->Name . '_ParentID_Text', $parent_text, array("onChange" => "top.content.setHot();"));
+		$yuiSuggest->setInput($this->Name . '_ParentID_Text', $parent_text, array("onchange" => "top.content.setHot();"));
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult($this->Name . '_ParentID', $this->ParentID);

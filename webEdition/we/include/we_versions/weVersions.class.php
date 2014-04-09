@@ -1831,7 +1831,7 @@ class weVersions{
 								$folder->Path = $folder->getPath();
 								$folder->CreatorID = isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : "";
 								$folder->ModifierID = isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : "";
-								$existsFolderPathID = f("SELECT ID FROM " . $db->escape($resetArray["documentTable"]) . " WHERE Path='" . $db->escape($folder->Path) . "' AND IsFolder='1' ", "ID", $db);
+								$existsFolderPathID = f('SELECT ID FROM ' . $db->escape($resetArray["documentTable"]) . " WHERE Path='" . $db->escape($folder->Path) . "' AND IsFolder=1 ", '', $db);
 								if(empty($existsFolderPathID)){
 									$folder->we_save();
 									$_SESSION['weS']['versions']['lastPathID'] = $folder->ID;

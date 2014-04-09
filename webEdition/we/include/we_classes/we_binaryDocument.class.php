@@ -287,7 +287,7 @@ class we_binaryDocument extends we_document{
 						break;
 
 					default:
-						$_inp = $this->formInput2(508, $_tagName, 23, "txt", ' onChange="_EditorFrame.setEditorIsHot(true);"');
+						$_inp = $this->formInput2(508, $_tagName, 23, "txt", ' onchange="_EditorFrame.setEditorIsHot(true);"');
 				}
 
 

@@ -304,7 +304,7 @@ class we_workflow_view extends we_workflow_base{
 					'align' => '',
 				),
 				array(
-					'dat' => '<table cellpadding="0" cellspacing="0"><tr><td>' . we_html_tools::getPixel(5, 7) . '</td></tr><tr valign="middle"><td class="middlefont">' . we_html_tools::htmlTextInput($this->uid . "_step" . $counter . "_Worktime", 15, $sv->Worktime, "", 'onChange="top.content.setHot();"') . '</td></tr>' .
+					'dat' => '<table cellpadding="0" cellspacing="0"><tr><td>' . we_html_tools::getPixel(5, 7) . '</td></tr><tr valign="middle"><td class="middlefont">' . we_html_tools::htmlTextInput($this->uid . "_step" . $counter . "_Worktime", 15, $sv->Worktime, "", 'onchange="top.content.setHot();"') . '</td></tr>' .
 					'<tr valign="middle"><td>' . we_html_tools::getPixel(5, $_spacer_1_height) . '</td><tr>' .
 					'<tr valign="top">' .
 					'<td class="middlefont">' . we_html_forms::checkboxWithHidden($sv->timeAction == 1, $this->uid . "_step" . $counter . "_timeAction", g_l('modules_workflow', '[go_next]'), false, "middlefont", "top.content.setHot();") . '</td>' .
@@ -329,7 +329,7 @@ class we_workflow_view extends we_workflow_base{
 
 				$yuiSuggest->setAcId('User_' . $counter . '_' . $counter1);
 				$yuiSuggest->setContentType('0,1');
-				$yuiSuggest->setInput($this->uid . '_task_' . $counter . '_' . $counter1 . '_usertext', $foo, array('onChange' => 'top.content.setHot();'));
+				$yuiSuggest->setInput($this->uid . '_task_' . $counter . '_' . $counter1 . '_usertext', $foo, array('onchange' => 'top.content.setHot();'));
 				$yuiSuggest->setMaxResults(10);
 				$yuiSuggest->setMayBeEmpty(false);
 				$yuiSuggest->setResult($this->uid . '_task_' . $counter . '_' . $counter1 . '_userid', $tv->userID);
@@ -436,7 +436,7 @@ class we_workflow_view extends we_workflow_base{
 			$t = $this->db->f('DocType');
 			$vals[$v] = $t;
 		}
-		$pop = we_html_tools::htmlSelect($this->uid . '_MYDocType[]', $vals, 6, $this->workflowDef->DocType, true, array('onChange' => "top.content.setHot();"), "value", $width, "defaultfont");
+		$pop = we_html_tools::htmlSelect($this->uid . '_MYDocType[]', $vals, 6, $this->workflowDef->DocType, true, array('onchange' => "top.content.setHot();"), "value", $width, "defaultfont");
 
 		return we_html_tools::htmlFormElementTable($pop, g_l('modules_workflow', '[doctype]'));
 	}
@@ -456,7 +456,7 @@ class we_workflow_view extends we_workflow_base{
 		$wecmdenc3 = we_cmd_enc(str_replace('\\', '', $cmd));
 
 		$button = we_html_button::create_button('select', "javascript:we_cmd('openDirselector',document.we_form.elements['$IDName'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$rootDirID')");
-		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, '', 'onChange="top.content.setHot();" readonly', "text", $width, 0), "", "left", "defaultfont", $this->htmlHidden($IDName, $IDValue), we_html_tools::getPixel(20, 4), $button);
+		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, '', 'onchange="top.content.setHot();" readonly', "text", $width, 0), "", "left", "defaultfont", $this->htmlHidden($IDName, $IDValue), we_html_tools::getPixel(20, 4), $button);
 	}
 
 	function getJSTopCode(){

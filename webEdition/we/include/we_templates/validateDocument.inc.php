@@ -62,7 +62,7 @@ $_lastArt = '';
 $_lastCat = '';
 $_hiddens = '';
 $_js = '';
-if(!empty($services)){
+if($services){
 	$_select = '<select name="service" class="weSelect" style="width:350px;" onchange="switchPredefinedService(this.options[this.selectedIndex].value);">';
 	foreach($services as $art => $arr){
 		foreach($arr as $cat => $arrServices){

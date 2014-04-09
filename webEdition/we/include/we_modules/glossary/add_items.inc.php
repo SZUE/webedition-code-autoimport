@@ -474,7 +474,7 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 					var td = document.createElement('td');
 					var html;
 
-					html = '<select class="defaultfont" name="item[' + word + '][type]" size="1" id="type_' + counter + '" onChange="disableItem(' + counter + ', this.value);" style="width: 140px">'
+					html = '<select class="defaultfont" name="item[' + word + '][type]" size="1" id="type_' + counter + '" onchange="disableItem(' + counter + ', this.value);" style="width: 140px">'
 	<?php
 	foreach($Modes as $Key => $Value){
 		echo "		+	'<option value=\"" . $Key . "\"' + (type == '" . $Key . "' ? ' selected=\"selected\"' : '') + '>" . $Value . "</option>'";

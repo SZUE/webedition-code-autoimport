@@ -3,7 +3,7 @@
 require_once ($_SERVER['DOCUMENT_ROOT']. '/webEdition/lib/we/core/autoload.inc.php');
 
 $checkbox = new we_ui_controls_Checkbox();
-$checkbox->setValue('1');
+$checkbox->setValue(1);
 $checkbox->setChecked(true);
 $checkbox->setName('test');
 $checkbox->setLabel('Label 1');

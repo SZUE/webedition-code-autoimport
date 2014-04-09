@@ -387,9 +387,9 @@ function we_tag_addDelNewsletterEmail($attribs){
 					$customerFields = $customerFields ? unserialize($customerFields) : '';
 					$updateCustomerFields = false;
 					foreach($abos as $abo){
-						if(isset($customerFields[$abo]['default']) && !empty($customerFields[$abo]['default'])){
+						if(isset($customerFields[$abo]['default']) && ($customerFields[$abo]['default'])){
 							$setVals = explode(',', $customerFields[$abo]['default']);
-						} else if(isset($customerFields['Newsletter_Ok']['default']) && !empty($customerFields[$abo]['default'])){
+						} else if(isset($customerFields['Newsletter_Ok']['default']) && ($customerFields['Newsletter_Ok']['default'])){
 							$setVals = explode(',', $customerFields['Newsletter_Ok']['default']);
 						} else {
 							$setVals = array('', '1');

@@ -443,7 +443,7 @@ abstract class we_rebuild_wizard{
 	 * @param string $folders csv value with directory IDs
 	 * @param boolean $thumnailpage if it should displayed in the thumbnails page or on an other page
 	 */
-	static function formFolders($folders, $thumnailpage = false, $width = "495"){
+	static function formFolders($folders, $thumnailpage = false, $width = 495){
 		$delallbut = we_html_button::create_button("delete_all", "javascript:" . ($thumnailpage ? "" : "document.we_form.btype[2].checked=true;") . "we_cmd('del_all_folders')");
 		$wecmdenc3 = we_cmd_enc("fillIDs();opener.we_cmd('add_folder',top.allIDs);");
 		$addbut = we_html_button::create_button("add", "javascript:" . ($thumnailpage ? "" : "document.we_form.btype[2].checked=true;") . "we_cmd('openDirselector','','" . FILE_TABLE . "','','','" . $wecmdenc3 . "','','','',1)");

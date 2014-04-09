@@ -33,9 +33,9 @@ $_iFrmPadAtts['src'] = WE_INCLUDES_DIR . 'we_widgets/mod/pad.php?' . http_build_
 $_iFrmPadAtts['id'] = 'm_' . $iCurrId . '_inline';
 $_iFrmPadAtts['style'] = 'width:' . $iWidth . 'px;height:287px';
 $_iFrmPadAtts['scrolling'] = 'no';
-$_iFrmPadAtts['marginheight'] = '0';
-$_iFrmPadAtts['marginwidth'] = '0';
-$_iFrmPadAtts['frameborder'] = '0';
+$_iFrmPadAtts['marginheight'] = 0;
+$_iFrmPadAtts['marginwidth'] = 0;
+$_iFrmPadAtts['frameborder'] = 0;
 
 $_iFrmPad = str_replace('>', ' allowtransparency="true">', getHtmlTag('iframe', $_iFrmPadAtts, '', true));
 

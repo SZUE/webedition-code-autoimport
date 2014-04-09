@@ -69,8 +69,8 @@ class we_export_view{
 		$out.=$this->htmlHidden("pnt", (isset($cmds["pnt"]) ? $cmds["pnt"] : ""));
 		$out.=$this->htmlHidden("tabnr", (isset($cmds["tabnr"]) ? $cmds["tabnr"] : ""));
 		$out.=$this->htmlHidden("table", (isset($_REQUEST["table"]) ? $_REQUEST["table"] : FILE_TABLE));
-		$out.=$this->htmlHidden("ID", (isset($this->export->ID) ? $this->export->ID : '0'));
-		$out.=$this->htmlHidden("IsFolder", (isset($this->export->IsFolder) ? $this->export->IsFolder : '0'));
+		$out.=$this->htmlHidden("ID", (isset($this->export->ID) ? $this->export->ID : 0));
+		$out.=$this->htmlHidden("IsFolder", (isset($this->export->IsFolder) ? $this->export->IsFolder : 0));
 		$out.=$this->htmlHidden("selDocs", (isset($this->export->selDocs) ? $this->export->selDocs : ''));
 		$out.=$this->htmlHidden("selTempl", (isset($this->export->selTempl) ? $this->export->selTempl : ''));
 		$out.=$this->htmlHidden("selObjs", (isset($this->export->selObjs) ? $this->export->selObjs : ''));

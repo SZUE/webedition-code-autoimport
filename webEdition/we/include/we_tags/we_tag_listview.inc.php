@@ -171,7 +171,7 @@ function we_tag_listview($attribs){
 				unset($GLOBALS['lv']);
 				return false;
 			}
-			if(f('SELECT 1  FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($class)) == '1'){
+			if(f('SELECT 1 FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($class))){
 				$GLOBALS['lv'] = new we_object_listview($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $class, $we_lv_cats, $we_lv_catOr, $cond, $triggerid, $cols, $seeMode, $we_lv_se, $we_lv_calendar, $we_lv_datefield, $we_lv_date, $we_lv_weekstart, $we_lv_categoryids, $we_lv_ws, $cfilter, $docid, $customers, $id, $predefinedSQL, $we_lv_languages, $hidedirindex, $objectseourls);
 			} else {
 				t_e('warning', 'Class with id=' . intval($class) . ' does not exist');

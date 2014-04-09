@@ -127,7 +127,7 @@ switch($_REQUEST['we_cmd'][0]){
 		$foo = makeArrayFromCSV($we_doc->Templates);
 		if($_REQUEST['we_cmd'][1] && (in_array($_REQUEST['we_cmd'][1], $foo))){
 			$pos = array_search($_REQUEST['we_cmd'][1], $foo);
-			if($pos !== false || $pos == "0"){
+			if($pos !== false || $pos == '0'){
 				array_splice($foo, $pos, 1);
 			}
 		}

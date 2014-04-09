@@ -971,7 +971,7 @@ function setState(a) {
 				$buttons = we_html_button::position_yes_no_cancel(
 						we_html_button::create_button_table(array(
 							we_html_button::create_button("back", "javascript:" . $this->bodyFrame . ".document.we_form.step.value=1;" . $this->bodyFrame . ".document.we_form.submit();"),
-							we_html_button::create_button("next", "javascript:" . $this->bodyFrame . ".document.we_form.step.value=" . ($this->exportVars["selection"] == "auto" ? "7" : "3") . ";" . $this->bodyFrame . ".document.we_form.submit();"))), we_html_button::create_button("cancel", "javascript:top.close();")
+							we_html_button::create_button("next", "javascript:" . $this->bodyFrame . ".document.we_form.step.value=" . ($this->exportVars["selection"] == "auto" ? 7 : 3) . ";" . $this->bodyFrame . ".document.we_form.submit();"))), we_html_button::create_button("cancel", "javascript:top.close();")
 				);
 				break;
 			case 3:
@@ -984,14 +984,14 @@ function setState(a) {
 			case 4:
 				$buttons = we_html_button::position_yes_no_cancel(
 						we_html_button::create_button_table(array(
-							we_html_button::create_button("back", "javascript:" . $this->bodyFrame . ".document.we_form.target='body';" . $this->bodyFrame . ".document.we_form.pnt.value='body';" . $this->bodyFrame . ".document.we_form.step.value=" . ($this->exportVars["selection"] == "auto" ? "2" : "3") . ";" . $this->bodyFrame . ".document.we_form.submit();"),
+							we_html_button::create_button("back", "javascript:" . $this->bodyFrame . ".document.we_form.target='body';" . $this->bodyFrame . ".document.we_form.pnt.value='body';" . $this->bodyFrame . ".document.we_form.step.value=" . ($this->exportVars["selection"] == "auto" ? 2 : 3) . ";" . $this->bodyFrame . ".document.we_form.submit();"),
 							we_html_button::create_button("next", "javascript:" . $this->bodyFrame . ".document.we_form.submit();"))), we_html_button::create_button("cancel", "javascript:top.close();")
 				);
 				break;
 			case 7:
 				$buttons = we_html_button::position_yes_no_cancel(
 						we_html_button::create_button_table(array(
-							we_html_button::create_button("back", "javascript:" . $this->bodyFrame . ".document.we_form.target='body';" . $this->bodyFrame . ".document.we_form.pnt.value='body';" . $this->bodyFrame . ".document.we_form.step.value=" . ($this->exportVars["selection"] == "auto" ? "2" : "3") . ";" . $this->bodyFrame . ".document.we_form.submit();"),
+							we_html_button::create_button("back", "javascript:" . $this->bodyFrame . ".document.we_form.target='body';" . $this->bodyFrame . ".document.we_form.pnt.value='body';" . $this->bodyFrame . ".document.we_form.step.value=" . ($this->exportVars["selection"] == "auto" ? 2 : 3) . ";" . $this->bodyFrame . ".document.we_form.submit();"),
 							we_html_button::create_button("next", "javascript:" . $this->bodyFrame . ".document.we_form.target='load';;" . $this->bodyFrame . ".document.we_form.pnt.value='load';" . $this->bodyFrame . ".document.we_form.submit();"))), we_html_button::create_button("cancel", "javascript:top.close();")
 				);
 				break;
@@ -1222,7 +1222,7 @@ function setState(a) {
 					if(isset($remaining_docs) && !empty($remaining_docs)){
 						$exports = count($remaining_docs);
 						$file_create = ($exports == $all);
-						$file_complete = ($exports == "1");
+						$file_complete = ($exports == 1);
 
 						we_export_functions::exportDocument($remaining_docs[0], $file_format, $filename, ($export_local ? "###temp###" : $path), $file_create, $file_complete, $cdata);
 					} else if(isset($remaining_objs) && !empty($remaining_objs)){
@@ -1425,7 +1425,7 @@ function setState(a) {
 
 		//javascript:formFileChooser('browse_server','document.we_form.elements[\\'$IDName\\'].value','$filter',document.we_form.elements['$IDName'].value);
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$IDName'].value");
-	
+
 		$button = we_html_button::create_button("select", "javascript:formFileChooser('browse_server','" . $wecmdenc1 . "','$filter',document.we_form.elements['$IDName'].value);");
 
 		return $js . we_html_tools::htmlFormElementTable(we_html_tools::getPixel(5, 5) . we_html_tools::htmlTextInput($IDName, 42, $IDValue, "", ' readonly', "text", $width, 0), "", "left", "defaultfont", "", we_html_tools::getPixel(20, 4), permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
@@ -1462,7 +1462,7 @@ function setState(a) {
 		$vals = array();
 
 		$this->db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . we_docTypes::getDoctypeQuery($this->db));
-		$select = new we_html_select(array("name" => "doctype", "size" => 1, "class" => "weSelect", "style" => "{width: $width;}", "onChange" => ""));
+		$select = new we_html_select(array("name" => "doctype", "size" => 1, "class" => "weSelect", "style" => "{width: $width;}", "onchange" => ""));
 		$first = "";
 		while($this->db->next_record()){
 			if($first == ""){
@@ -1498,7 +1498,7 @@ function setState(a) {
 		if(defined("OBJECT_FILES_TABLE")){
 			$vals = array();
 			$this->db->query("SELECT ID,Text FROM " . OBJECT_TABLE);
-			$select = new we_html_select(array("name" => "classname", "class" => "weSelect", "size" => 1, "style" => "{width: $width}", "onChange" => $this->topFrame . ".classname=document.we_form.classname.options[document.we_form.classname.selectedIndex].value;"));
+			$select = new we_html_select(array("name" => "classname", "class" => "weSelect", "size" => 1, "style" => "{width: $width}", "onchange" => $this->topFrame . ".classname=document.we_form.classname.options[document.we_form.classname.selectedIndex].value;"));
 			$first = "";
 			while($this->db->next_record()){
 				if($first == ""){
@@ -1604,7 +1604,7 @@ function setState(a) {
 	function getHTMLChooser($name, $value, $values, $title){
 		$input_size = 5;
 
-		$select = new we_html_select(array("name" => $name . "_select", "class" => "weSelect", "onChange" => "document.we_form." . $name . ".value=this.options[this.selectedIndex].value;this.selectedIndex=0", "style" => "width:200;"));
+		$select = new we_html_select(array("name" => $name . "_select", "class" => "weSelect", "onchange" => "document.we_form." . $name . ".value=this.options[this.selectedIndex].value;this.selectedIndex=0", "style" => "width:200;"));
 		$select->addOption("", "");
 		foreach($values as $k => $v)
 			$select->addOption(oldHtmlspecialchars($k), oldHtmlspecialchars($v));

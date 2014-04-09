@@ -430,7 +430,7 @@ function newinput() {
 	var searchFields = "' . str_replace(
 					"\n", '\n', addslashes(
 						we_html_tools::htmlSelect(
-							'searchFields[__we_new_id__]', $this->searchclass->getFields(), 1, "", false, array('class' => "defaultfont", 'id' => "searchFields[__we_new_id__]", 'onChange' => 'changeit(this.value, __we_new_id__);')))) . '";
+							'searchFields[__we_new_id__]', $this->searchclass->getFields(), 1, "", false, array('class' => "defaultfont", 'id' => "searchFields[__we_new_id__]", 'onchange' => 'changeit(this.value, __we_new_id__);')))) . '";
 	var locationFields = "' . str_replace(
 					"\n", '\n', addslashes(
 						we_html_tools::htmlSelect(
@@ -480,7 +480,7 @@ function changeit(value, rowNr){
 			var searchFields = "' . str_replace(
 					"\n", "\\n", addslashes(
 						we_html_tools::htmlSelect(
-							'searchFields[__we_new_id__]', $this->searchclass->getFields(), 1, "", false, array('class' => "defaultfont", 'id' => "searchFields[__we_new_id__]", 'onChange' => "changeit(this.value, __we_new_id__);")))) . '";
+							'searchFields[__we_new_id__]', $this->searchclass->getFields(), 1, "", false, array('class' => "defaultfont", 'id' => "searchFields[__we_new_id__]", 'onchange' => "changeit(this.value, __we_new_id__);")))) . '";
 			var locationFields = "' . str_replace(
 					"\n", "\\n", addslashes(
 						we_html_tools::htmlSelect(
@@ -724,7 +724,7 @@ function delRow(id) {
 				<tr id="filterRow_' . $i . '">
 					<td>' . we_html_tools::htmlSelect(
 					"searchFields[" . $i . "]", $this->searchclass->getFields(), 1, (isset($this->searchclass->searchFields) && is_array($this->searchclass->searchFields) && isset(
-						$this->searchclass->searchFields[$i]) ? $this->searchclass->searchFields[$i] : ""), false, array('class' => "defaultfont", 'id' => 'searchFields[' . $i . ']', 'onChange' => 'changeit(this.value, ' . $i . ');')) . '</td>
+						$this->searchclass->searchFields[$i]) ? $this->searchclass->searchFields[$i] : ""), false, array('class' => "defaultfont", 'id' => 'searchFields[' . $i . ']', 'onchange' => 'changeit(this.value, ' . $i . ');')) . '</td>
 					<td id="td_location[' . $i . ']">' . we_html_tools::htmlSelect(
 					"location[" . $i . "]", $this->searchclass->getLocation($handle), 1, (isset($this->searchclass->location) && is_array($this->searchclass->location) && isset(
 						$this->searchclass->location[$i]) ? $this->searchclass->location[$i] : ""), false, array('class' => "defaultfont", $locationDisabled => $locationDisabled, 'id' => 'location[' . $i . ']')) . '</td>

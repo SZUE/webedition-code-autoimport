@@ -520,7 +520,7 @@ class we_ui_controls_DateTime extends we_ui_abstract_AbstractInputElement{
 
 		$OnChange = 'we_ui_controls_DateTime.setDateTimeValueOnChange(\'' . $this->getId() . '\');';
 		$codes = array();
-		$code = '<input type="hidden" name="' . $this->getName() . '" id="' . $this->getId() . '" value="' . $this->getValue() . '"/><table cellpadding="0" cellspacing="0" border="0" id="' . $this->getContainerId() . '"' . $this->_getComputedClassAttrib($class) . $this->_getNonBooleanAttribs('onChange') . $this->_getBooleanAttribs('disabled') . ' ><tr> ';
+		$code = '<input type="hidden" name="' . $this->getName() . '" id="' . $this->getId() . '" value="' . $this->getValue() . '"/><table cellpadding="0" cellspacing="0" border="0" id="' . $this->getContainerId() . '"' . $this->_getComputedClassAttrib($class) . $this->_getNonBooleanAttribs('onchange') . $this->_getBooleanAttribs('disabled') . ' ><tr> ';
 		if($this->_getYearPos()){
 			$codes[$this->_getYearPos()] = '<td><select id="' . $this->getYearsId() . '" onchange="' . $OnChange . '" ' . $this->_getComputedClassAttrib($class) . $this->_getBooleanAttribs('disabled') . ' >';
 			for($i = $this->getMinYear(); $i <= $this->getMaxYear(); $i++){
@@ -533,47 +533,47 @@ class we_ui_controls_DateTime extends we_ui_abstract_AbstractInputElement{
 		if($this->_getMonthPos()){
 			$codes[$this->_getMonthPos()] = '<td><select id="' . $this->getMonthsId() . '" onchange="' . $OnChange . '" ' . $this->_getComputedClassAttrib($class) . $this->_getBooleanAttribs('disabled') . ' >';
 			for($i = 1; $i <= 12; $i++){
-				$codes[$this->_getMonthPos()] .='<option value="' . ($i < 10 ? '0' : '') . $i . '" ' . ($i == $stamp['mon'] ? ' selected="selected" ' : '') . '>' . ($i < 10 ? '0' : '') . $i . '</option>';
+				$codes[$this->_getMonthPos()] .='<option value="' . ($i < 10 ? 0 : '') . $i . '" ' . ($i == $stamp['mon'] ? ' selected="selected" ' : '') . '>' . ($i < 10 ? 0 : '') . $i . '</option>';
 			}
 			$codes[$this->_getMonthPos()] .='</select></td>';
 		} else {
-			$code .= '<td><input type="hidden" id="' . $this->getMonthsId() . '" value="' . ($stamp['mon'] < 10 ? '0' : '') . $stamp['mon'] . '" /></td>';
+			$code .= '<td><input type="hidden" id="' . $this->getMonthsId() . '" value="' . ($stamp['mon'] < 10 ? 0 : '') . $stamp['mon'] . '" /></td>';
 		}
 		if($this->_getDayPos()){
 			$codes[$this->_getDayPos()] = '<td><select id="' . $this->getDaysId() . '" onchange="' . $OnChange . '" ' . $this->_getComputedClassAttrib($class) . $this->_getBooleanAttribs('disabled') . ' >';
 			for($i = 1; $i <= 31; $i++){
-				$codes[$this->_getDayPos()] .='<option value="' . ($i < 10 ? '0' : '') . $i . '" ' . ($i == $stamp['mday'] ? ' selected="selected" ' : '') . '>' . ($i < 10 ? '0' : '') . $i . '</option>';
+				$codes[$this->_getDayPos()] .='<option value="' . ($i < 10 ? 0 : '') . $i . '" ' . ($i == $stamp['mday'] ? ' selected="selected" ' : '') . '>' . ($i < 10 ? 0 : '') . $i . '</option>';
 			}
 			$codes[$this->_getDayPos()] .='</select></td>';
 		} else {
-			$code .= '<td><input type="hidden" id="' . $this->getDaysId() . '" value="' . ($stamp['mday'] < 10 ? '0' : '') . $stamp['mday'] . '" /></td>';
+			$code .= '<td><input type="hidden" id="' . $this->getDaysId() . '" value="' . ($stamp['mday'] < 10 ? 0 : '') . $stamp['mday'] . '" /></td>';
 		}
 		if($this->_getHourPos()){
 			$codes[$this->_getHourPos()] = '<td>-<select id="' . $this->getHoursId() . '" onchange="' . $OnChange . '" ' . $this->_getComputedClassAttrib($class) . $this->_getBooleanAttribs('disabled') . ' >';
 			for($i = 0; $i <= 23; $i++){
-				$codes[$this->_getHourPos()] .='<option value="' . ($i < 10 ? '0' : '') . $i . '" ' . ($i == $stamp['hours'] ? ' selected="selected" ' : '') . '>' . ($i < 10 ? '0' : '') . $i . '</option>';
+				$codes[$this->_getHourPos()] .='<option value="' . ($i < 10 ? 0 : '') . $i . '" ' . ($i == $stamp['hours'] ? ' selected="selected" ' : '') . '>' . ($i < 10 ? 0 : '') . $i . '</option>';
 			}
 			$codes[$this->_getHourPos()] .='</select></td>';
 		} else {
-			$code .= '<td><input type="hidden" id="' . $this->getHoursId() . '" value="' . ($stamp['hours'] < 10 ? '0' : '') . $stamp['hours'] . '" /></td>';
+			$code .= '<td><input type="hidden" id="' . $this->getHoursId() . '" value="' . ($stamp['hours'] < 10 ? 0 : '') . $stamp['hours'] . '" /></td>';
 		}
 		if($this->_getMinutePos()){
 			$codes[$this->_getMinutePos()] = '<td>:<select id="' . $this->getMinutesId() . '" onchange="' . $OnChange . '" ' . $this->_getComputedStyleAttrib() . $this->_getComputedClassAttrib($class) . $this->_getBooleanAttribs('disabled') . ' >';
 			for($i = 0; $i <= 59; $i++){
-				$codes[$this->_getMinutePos()] .='<option value="' . ($i < 10 ? '0' : '') . $i . '" ' . ($i == $stamp['minutes'] ? ' selected="selected" ' : '') . '>' . ($i < 10 ? '0' : '') . $i . '</option>';
+				$codes[$this->_getMinutePos()] .='<option value="' . ($i < 10 ? 0 : '') . $i . '" ' . ($i == $stamp['minutes'] ? ' selected="selected" ' : '') . '>' . ($i < 10 ? 0 : '') . $i . '</option>';
 			}
 			$codes[$this->_getMinutePos()] .='</select></td>';
 		} else {
-			$code .= '<td><input type="hidden" id="' . $this->getMinutesId() . '" value="' . ($stamp['minutes'] < 10 ? '0' : '') . $stamp['minutes'] . '" /></td>';
+			$code .= '<td><input type="hidden" id="' . $this->getMinutesId() . '" value="' . ($stamp['minutes'] < 10 ? 0 : '') . $stamp['minutes'] . '" /></td>';
 		}
 		if($this->_getSecondPos()){
 			$codes[$this->_getSecondPos()] = '<td>:<select id="' . $this->getSecondsId() . '" onchange="' . $OnChange . '" ' . $this->_getComputedStyleAttrib() . $this->_getComputedClassAttrib($class) . $this->_getBooleanAttribs('disabled') . ' >';
 			for($i = 0; $i <= 59; $i++){
-				$codes[$this->_getSecondPos()] .='<option value="' . ($i < 10 ? '0' : '') . $i . '" ' . ($i == $stamp['seconds'] ? ' selected="selected" ' : '') . '>' . ($i < 10 ? '0' : '') . $i . '</option>';
+				$codes[$this->_getSecondPos()] .='<option value="' . ($i < 10 ? 0 : '') . $i . '" ' . ($i == $stamp['seconds'] ? ' selected="selected" ' : '') . '>' . ($i < 10 ? 0 : '') . $i . '</option>';
 			}
 			$codes[$this->_getSecondPos()] .='</select></td>';
 		} else {
-			$code .= '<td><input type="hidden" id="' . $this->getSecondsId() . '" value="' . ($stamp['seconds'] < 10 ? '0' : '') . $stamp['seconds'] . '" /></td>';
+			$code .= '<td><input type="hidden" id="' . $this->getSecondsId() . '" value="' . ($stamp['seconds'] < 10 ? 0 : '') . $stamp['seconds'] . '" /></td>';
 		}
 		ksort($codes);
 		foreach($codes as $value){
