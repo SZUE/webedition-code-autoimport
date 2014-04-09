@@ -468,7 +468,7 @@ function uploadFinished() {
 				"onload" => "checkButtons();"
 				), $content);
 
-		$js = $this->_getJS($fileinput) . we_html_multiIconBox::getDynJS("uploadFiles", "30");
+		$js = $this->_getJS($fileinput) . we_html_multiIconBox::getDynJS("uploadFiles", 30);
 
 		return $this->_getHtmlPage($body, $js);
 	}

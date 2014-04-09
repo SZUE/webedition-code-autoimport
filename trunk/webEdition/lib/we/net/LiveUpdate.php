@@ -69,7 +69,7 @@ class we_net_LiveUpdate{
 		$this->_response = null;
 		$this->_response = $this->_request->get();
 		error_log(print_r($this->_response, true));
-		if($this->_request->status == "200"){
+		if($this->_request->status == 200){
 			return true;
 		} else {
 			error_log("Connection check returned http status code \"" . $this->_request->status . " - " . $this->_request->statustext . "\"");

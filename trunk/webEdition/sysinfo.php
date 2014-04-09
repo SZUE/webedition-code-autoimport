@@ -57,10 +57,10 @@ function getInfoTable($_infoArr, $name){
 }
 
 function ini_get_bool($val){
-	if($val == '1'){
+	if($val == 1){
 		return true;
 	}
-	if($val == '0'){
+	if($val == 0){
 		return false;
 	}
 	switch(strtolower(ini_get($val))){
@@ -77,10 +77,10 @@ function ini_get_bool($val){
 
 function ini_get_message($val){
 	$bool = ini_get($val);
-	if($val == "1"){
+	if($val == 1){
 		return 'on';
 	}
-	if($val == "0"){
+	if($val == 0){
 		return 'off';
 	}
 	switch(strtolower($bool)){
@@ -120,7 +120,7 @@ function convertToMb($value){
 
 function getConnectionTypes(){
 	$_connectionTypes = array();
-	if(ini_get('allow_url_fopen') == "1"){
+	if(ini_get('allow_url_fopen') == 1){
 		$_connectionTypes[] = "fopen";
 		$_connectionTypeUsed = "fopen";
 	}
@@ -159,7 +159,7 @@ if(strlen($_install_dir) > 35){
 $weVersion = WE_VERSION .
 		(defined("WE_SVNREV") && WE_SVNREV != '0000' ? ' (SVN-Revision: ' . WE_SVNREV . ((defined("WE_VERSION_BRANCH") && WE_VERSION_BRANCH != 'trunk') ? '|' . WE_VERSION_BRANCH : '') . ')' : '') .
 		(defined("WE_VERSION_SUPP") && WE_VERSION_SUPP != '' ? ' ' . g_l('global', '[' . WE_VERSION_SUPP . ']') : '') .
-		(defined("WE_VERSION_SUPP_VERSION") && WE_VERSION_SUPP_VERSION != '0' ? WE_VERSION_SUPP_VERSION : '');
+		(defined("WE_VERSION_SUPP_VERSION") && WE_VERSION_SUPP_VERSION != 0 ? WE_VERSION_SUPP_VERSION : '');
 
 // GD_VERSION is more precise but only available in PHP 5.2.4 or newer
 if(is_callable("gd_info")){

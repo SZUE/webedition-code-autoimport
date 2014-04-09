@@ -182,9 +182,9 @@ class we_quicktimeDocument extends we_binaryDocument{
 	function formProperties(){
 		return '<table style="border-spacing: 0px;border-style:none" cellpadding="0">
 	<tr valign="top">
-		<td>' . $this->formInput2(155, "width", 10, "attrib", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+		<td>' . $this->formInput2(155, "width", 10, "attrib", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
 		<td>' . we_html_tools::getPixel(18, 2) . '</td>
-		<td>' . $this->formInput2(155, "height", 10, "attrib", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+		<td>' . $this->formInput2(155, "height", 10, "attrib", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
 		<td>' . we_html_tools::getPixel(18, 2) . '</td>
 		<td>' . $this->formSelectElement(
 				155, "scale", array(
@@ -201,11 +201,11 @@ class we_quicktimeDocument extends we_binaryDocument{
 		<td colspan="5">' . we_html_tools::getPixel(2, 5) . '</td>
 	</tr>
 	<tr valign="top">
-		<td>' . $this->formInput2(155, "hspace", 10, "attrib", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+		<td>' . $this->formInput2(155, "hspace", 10, "attrib", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
 		<td>' . we_html_tools::getPixel(18, 2) . '</td>
-		<td>' . $this->formInput2(155, "vspace", 10, "attrib", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+		<td>' . $this->formInput2(155, "vspace", 10, "attrib", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
 		<td>' . we_html_tools::getPixel(18, 2) . '</td>
-		<td>' . $this->formInput2(155, "name", 10, "attrib", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+		<td>' . $this->formInput2(155, "name", 10, "attrib", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
 	</tr>
 	<tr valign="top">
 		<td colspan="5">' . we_html_tools::getPixel(2, 5) . '</td>

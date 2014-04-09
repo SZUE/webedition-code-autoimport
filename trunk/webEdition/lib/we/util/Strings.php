@@ -86,7 +86,7 @@ abstract class we_util_Strings{
 		if(substr($csv, -1) == ","){
 			$csv = substr($csv, 0, strlen($csv) - 1);
 		}
-		if($csv == "" && $csv != "0"){
+		if($csv == '' && $csv != '0'){
 			$foo = array();
 		} else {
 			$foo = explode(",", $csv);
@@ -164,7 +164,7 @@ abstract class we_util_Strings{
 	 */
 	static function version2number($version, $isApp = false){
 		if($isApp){
-			if(substr($version, 0, 1) == "0"){
+			if(substr($version, 0, 1) == 0){
 				if(strlen($version) == 3){
 					$numberStr = '0.0' . substr($version, 2, 1);
 					$number = (float) $numberStr;
@@ -179,7 +179,7 @@ abstract class we_util_Strings{
 			}
 		} else {
 			$count = 3;
-			if(substr($version, 0, 1) == "6"){
+			if(substr($version, 0, 1) == 6){
 				$numberStr = str_replace('.', '', $version, $count);
 				$number = (float) $numberStr;
 			} else {

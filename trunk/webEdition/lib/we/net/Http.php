@@ -213,7 +213,7 @@ class we_net_Http{
 	 * @uses Zend_Http_Client_Adapter_Proxy
 	 */
 	public function setProxy($params = array()){
-		$this->_proxy = array('adapter' => 'Zend_Http_Client_Adapter_Proxy', 'proxy_host' => (!empty($params["proxy_host"]) ? $params["proxy_host"] : "127.0.0.1"), 'proxy_port' => (!empty($params["proxy_port"]) ? $params["proxy_port"] : "8000"), 'proxy_user' => (!empty($params["proxy_user"]) ? $params["proxy_user"] : ""), 'proxy_pass' => (!empty($params["proxy_pass"]) ? $params["proxy_pass"] : ""));
+		$this->_proxy = array('adapter' => 'Zend_Http_Client_Adapter_Proxy', 'proxy_host' => (!empty($params["proxy_host"]) ? $params["proxy_host"] : "127.0.0.1"), 'proxy_port' => (!empty($params["proxy_port"]) ? $params["proxy_port"] : 8000), 'proxy_user' => (!empty($params["proxy_user"]) ? $params["proxy_user"] : ""), 'proxy_pass' => (!empty($params["proxy_pass"]) ? $params["proxy_pass"] : ""));
 		$this->enableProxy();
 	}
 

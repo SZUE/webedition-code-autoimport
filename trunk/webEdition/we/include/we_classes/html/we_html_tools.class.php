@@ -158,7 +158,7 @@ abstract class we_html_tools{
 			($height ? ('height: ' . $height . (is_numeric($height) ? 'px' : '') . ';') : '') . '"') : '';
 		return '<input' . ($markHot ? ' onchange="if(_EditorFrame){_EditorFrame.setEditorIsHot(true);}' . $markHot . '.hot=1;"' : '') .
 			(strstr($attribs, "class=") ? "" : ' class="wetextinput"') . ' type="' . trim($type) . '" name="' . trim($name) .
-			'" size="' . intval($size) . '" value="' . oldHtmlspecialchars($value) . '"' . ($maxlength ? (' maxlength="' . intval($maxlength) . '"') : '') . ($attribs ? " $attribs" : '') . $style  . ($disabled ? (' disabled="true"') : '') . ' />';
+			'" size="' . intval($size) . '" value="' . oldHtmlspecialchars($value) . '"' . ($maxlength ? (' maxlength="' . intval($maxlength) . '"') : '') . ($attribs ? " $attribs" : '') . $style . ($disabled ? (' disabled="true"') : '') . ' />';
 	}
 
 	static function htmlMessageBox($w, $h, $content, $headline = '', $buttons = ''){
@@ -261,16 +261,39 @@ abstract class we_html_tools{
 	}
 
 	static function html_select($name, $size, $vals, $value = '', $onchange = '', array $attribs = array()){
-		$out = '';
-		foreach($vals as $v => $t){
-			$out .= '<option value="' . oldHtmlspecialchars($v) . '"' . (($v == $value) ? ' selected="selected"' : '') . '>' . $t . '</option>';
+		return self::htmlSelect($name, $vals, $size, $value, false, array_merge($attribs, array('onchange' => ($onchange ? $onchange : ''))), 'key');
+	}
+
+	static function htmlSelect($name, $values, $size = 1, $selectedIndex = '', $multiple = false, array $attribs = array(), $compare = 'value', $width = 0, $cls = 'defaultfont', $oldHtmlspecialchars = true){
+		$ret = '';
+		$selIndex = makeArrayFromCSV($selectedIndex);
+		$optgroup = false;
+		foreach($values as $value => $text){
+			if($text === self::OPTGROUP || $value === self::OPTGROUP){
+				if($optgroup){
+					$ret .= '</optgroup>';
+				}
+				$optgroup = true;
+				$ret .= '<optgroup label="' . ($oldHtmlspecialchars ? oldHtmlspecialchars($value) : $value) . '">';
+				continue;
+			}
+			$ret .= '<option value="' . ($oldHtmlspecialchars ? oldHtmlspecialchars($value) : $value) . '"' . (in_array(
+					(($compare == "value") ? $value : $text), $selIndex) ? ' selected="selected"' : '') . '>' . ($oldHtmlspecialchars ? oldHtmlspecialchars($text) : $text) . '</option>';
 		}
-		return we_html_element::htmlSelect(array_merge(array(
-				'class' => 'weSelect',
-				'name' => $name,
-				'size' => $size,
-				'onchange' => ($onchange ? $onchange : '')
-					), $attribs), $out);
+		$ret .= ($optgroup ? '</optgroup>' : '');
+
+		if(!is_array($attribs)){
+			$attribs = self::parseAttribs($attribs);
+		}
+
+		return ($name ? we_html_element::htmlSelect(array_merge(array(
+					'class' => 'weSelect ' . $cls,
+					'name' => trim($name),
+					'size' => abs($size),
+					($multiple ? 'multiple' : '') => 'multiple',
+					($width ? 'width' : '') => ($width ? $width : '')
+						), $attribs
+					), $ret) : $ret);
 	}
 
 	static function htmlInputChoiceField($name, $value, $values, $atts, $mode, $valuesIsHash = false){
@@ -432,7 +455,7 @@ abstract class we_html_tools{
 		if($style){
 			$_attsSelect['style'] = $style;
 		}
-		$_attsSelect['size'] = '1';
+		$_attsSelect['size'] = 1;
 
 		if($onchange || $setHot){
 			$_attsSelect['onchange'] = (($setHot ? '_EditorFrame.setEditorIsHot(true);' : '') . $onchange);
@@ -619,7 +642,7 @@ abstract class we_html_tools{
 			self::headerCtCharset('text/html', ($charset ? $charset : $GLOBALS['WE_BACKENDCHARSET']));
 		}
 		return we_html_element::htmlTitle($_SERVER['SERVER_NAME'] . ' ' . $title) .
-			we_html_element::htmlMeta(array('http-equiv' => 'expires', 'content' => '0')) .
+			we_html_element::htmlMeta(array('http-equiv' => 'expires', 'content' => 0)) .
 			we_html_element::htmlMeta(array('http-equiv' => 'Cache-Control', 'content' => 'no-cache')) .
 			we_html_element::htmlMeta(array('http-equiv' => 'pragma', 'content' => 'no-cache')) .
 			self::htmlMetaCtCharset('text/html', ($charset ? $charset : $GLOBALS['WE_BACKENDCHARSET'])) .
@@ -716,38 +739,6 @@ abstract class we_html_tools{
 			$attr[$match[1]] = ($match[2] == '\'' ? str_replace('"', '\"', $match[3]) : $match[3]);
 		}
 		return $attr;
-	}
-
-	static function htmlSelect($name, $values, $size = 1, $selectedIndex = '', $multiple = false, array $attribs = array(), $compare = 'value', $width = 0, $cls = 'defaultfont', $oldHtmlspecialchars = true){
-		$ret = '';
-		$selIndex = makeArrayFromCSV($selectedIndex);
-		$optgroup = false;
-		foreach($values as $value => $text){
-			if($text === self::OPTGROUP || $value === self::OPTGROUP){
-				if($optgroup){
-					$ret .= '</optgroup>';
-				}
-				$optgroup = true;
-				$ret .= '<optgroup label="' . ($oldHtmlspecialchars ? oldHtmlspecialchars($value) : $value) . '">';
-				continue;
-			}
-			$ret .= '<option value="' . ($oldHtmlspecialchars ? oldHtmlspecialchars($value) : $value) . '"' . (in_array(
-					(($compare == "value") ? $value : $text), $selIndex) ? ' selected="selected"' : '') . '>' . ($oldHtmlspecialchars ? oldHtmlspecialchars($text) : $text) . '</option>';
-		}
-		$ret .= ($optgroup ? '</optgroup>' : '');
-
-		if(!is_array($attribs)){
-			$attribs = self::parseAttribs($attribs);
-		}
-
-		return ($name ? we_html_element::htmlSelect(array_merge(array(
-					'class' => 'weSelect ' . $cls,
-					'name' => trim($name),
-					'size' => abs($size),
-					($multiple ? 'multiple' : '') => 'multiple',
-					($width ? 'width' : '') => ($width ? $width : '')
-						), $attribs
-					), $ret) : $ret);
 	}
 
 	/* displays a grey box with text and an icon

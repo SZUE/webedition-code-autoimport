@@ -175,15 +175,15 @@ $select = new we_ui_controls_Select(
 	'hidden' => false,
 	'title' => 'Titel',
 	'width' => 100,
-	'onChange' => 'alert("onChange!");',
+	'onchange' => 'alert("onChange!");',
 	'selectedValue' => 3,
 	'options' => array(
-		'1' => 'Option 1',
-		'2' => 'Option 2',
-		'3' => 'Option 3',
-		'4' => 'Option 4',
-		'5' => 'Option 5',
-		'6' => 'Option 6'
+		1 => 'Option 1',
+		2 => 'Option 2',
+		3 => 'Option 3',
+		4 => 'Option 4',
+		5 => 'Option 5',
+		6 => 'Option 6'
 	)
 	)
 );

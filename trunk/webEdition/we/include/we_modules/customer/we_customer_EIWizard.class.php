@@ -25,7 +25,7 @@
 define("CSV_DELIMITER", ";");
 define("CSV_ENCLOSE", "");
 define("CSV_LINEEND", "windows");
-define("CSV_FIELDS", "0");
+define("CSV_FIELDS", 0);
 define("THE_CHARSET", "UTF-8");
 
 class we_customer_EIWizard{
@@ -761,11 +761,11 @@ class we_customer_EIWizard{
 				}
 				if($xmlWellFormed && $hasChildNode){
 					$rcdSelect = new we_html_select(array(
-						"name" => "we_select",
-						"size" => 1,
-						"class" => "defaultfont",
+						'name' => "we_select",
+						'size' => 1,
+						'class' => 'defaultfont',
 						(($isSingleNode) ? "disabled" : "style") => "",
-						"onChange" => "this.form.elements['xml_to'].value=this.options[this.selectedIndex].value; this.form.elements['xml_from'].value=1;this.form.elements['dataset'].value=this.options[this.selectedIndex].text;" .
+						'onchange' => "this.form.elements['xml_to'].value=this.options[this.selectedIndex].value; this.form.elements['xml_from'].value=1;this.form.elements['dataset'].value=this.options[this.selectedIndex].text;" .
 						"if(this.options[this.selectedIndex].value==1) {this.form.elements['xml_from'].disabled=true;this.form.elements['xml_to'].disabled=true;} else {this.form.elements['xml_from'].disabled=false;this.form.elements['xml_to'].disabled=false;}")
 					);
 					$optid = 0;
@@ -1495,7 +1495,7 @@ class we_customer_EIWizard{
 					foreach($att_mappings as $key => $field)
 						$hiddens.=we_html_element::htmlHidden(array("name" => "att_mappings[$key]", "value" => "$field"));
 
-					if($fcount != 0 || $fcount != "0"){
+					if($fcount != 0 || $fcount != '0'){
 						$percent = (int) (($fstart / $fcount) * 100);
 						if($percent < 0){
 							$percent = 0;
@@ -1711,7 +1711,7 @@ class we_customer_EIWizard{
 
 		$input_size = 5;
 
-		$select = new we_html_select(array("name" => $name . "_select", "onChange" => "document.we_form." . $name . ".value=this.options[this.selectedIndex].value;this.selectedIndex=0", "style" => "width:200px;"));
+		$select = new we_html_select(array("name" => $name . "_select", 'onchange' => "document.we_form." . $name . ".value=this.options[this.selectedIndex].value;this.selectedIndex=0", "style" => "width:200px;"));
 		$select->addOption("", "");
 		foreach($values as $k => $v)
 			$select->addOption(oldHtmlspecialchars($k), oldHtmlspecialchars($v));
@@ -1789,7 +1789,7 @@ class we_customer_EIWizard{
 			}
 			if($i != 0){
 				$table->addRow();
-				$table->setCol($c, 0, array("colspan" => $colspan), we_html_tools::htmlSelect("filter_logic_" . $i, $logic, 1, $new["logic"], false, array(), "value", "70"));
+				$table->setCol($c, 0, array("colspan" => $colspan), we_html_tools::htmlSelect("filter_logic_" . $i, $logic, 1, $new["logic"], false, array(), "value", 70));
 				$c++;
 			} else {
 				$table->addRow();
@@ -1798,8 +1798,8 @@ class we_customer_EIWizard{
 			}
 
 			$table->addRow();
-			$table->setCol($c, 0, array(), we_html_tools::htmlSelect("filter_fieldname_" . $i, $custfields, 1, $new["fieldname"], false, array(), "value", "200"));
-			$table->setCol($c, 1, array(), we_html_tools::htmlSelect("filter_operator_" . $i, $operators, 1, $new["operator"], false, array(), "value", "70"));
+			$table->setCol($c, 0, array(), we_html_tools::htmlSelect("filter_fieldname_" . $i, $custfields, 1, $new["fieldname"], false, array(), "value", 200));
+			$table->setCol($c, 1, array(), we_html_tools::htmlSelect("filter_operator_" . $i, $operators, 1, $new["operator"], false, array(), "value", 70));
 			$table->setCol($c, 2, array(), we_html_tools::htmlTextInput("filter_fieldvalue_" . $i, 16, $new["fieldvalue"]));
 			$c++;
 		}

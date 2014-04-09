@@ -188,7 +188,7 @@ abstract class we_html_multiIconBox{
 			}');
 	}
 
-	static function getDynJS($uniqname = "", $marginLeft = "0"){
+	static function getDynJS($uniqname = '', $marginLeft = 0){
 		return we_html_element::jsElement('
 			if(navigator.product == "Gecko"){
 				var CELLPADDING = "cellpadding";

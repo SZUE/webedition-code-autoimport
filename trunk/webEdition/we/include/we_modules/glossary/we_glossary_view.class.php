@@ -476,7 +476,7 @@ class we_glossary_view{
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('modules_glossary', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
 						);
-						$_REQUEST['home'] = '1';
+						$_REQUEST['home'] = 1;
 						$_REQUEST['pnt'] = 'edbody';
 						break;
 					}
@@ -631,18 +631,16 @@ class we_glossary_view{
 
 						$message = "";
 						// Replacment of item is activated
-						if($StateBefore == 0 && $_REQUEST['Published'] == "1"){
-							$message .= sprintf(g_l('modules_glossary', "[replace_activated]"), $this->Glossary->Text);
-							$message .= "\\n";
+						if($StateBefore == 0 && $_REQUEST['Published'] == 1){
+							$message .= sprintf(g_l('modules_glossary', "[replace_activated]"), $this->Glossary->Text)."\\n";
 
 							// Replacement of item is deactivated
-						} else if($StateBefore > 0 && $_REQUEST['Published'] == "0"){
-							$message .= sprintf(g_l('modules_glossary', "[replace_deactivated]"), $this->Glossary->Text);
-							$message .= "\\n";
+						} else if($StateBefore > 0 && $_REQUEST['Published'] == 0){
+							$message .= sprintf(g_l('modules_glossary', "[replace_deactivated]"), $this->Glossary->Text)."\\n";
 						}
 						$message .= sprintf(g_l('modules_glossary', "[item_saved]"), $this->Glossary->Text);
 
-						print we_html_element::jsElement(
+						echo we_html_element::jsElement(
 								$js .
 								we_message_reporting::getShowMessageCall($message, we_message_reporting::WE_MESSAGE_NOTICE) . '
 							if(top.makeNewEntry==1) {
@@ -695,7 +693,7 @@ class we_glossary_view{
 							//
 
 							$this->Glossary = new we_glossary_glossary();
-							$_REQUEST['home'] = '1';
+							$_REQUEST['home'] = 1;
 							$_REQUEST['pnt'] = 'edbody';
 						} else {
 							print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR));
@@ -724,9 +722,9 @@ class we_glossary_view{
 			foreach($this->Glossary->persistent_slots as $val){
 				if(isset($_REQUEST[$val])){
 					if($val == "Published"){
-						if($this->Glossary->Published == 0 && $_REQUEST['Published'] == "1"){
+						if($this->Glossary->Published == 0 && $_REQUEST['Published'] == 1){
 							$this->Glossary->Published = time();
-						} elseif($_REQUEST['Published'] == "0"){
+						} elseif($_REQUEST['Published'] == 0){
 							$this->Glossary->Published = 0;
 						}
 					} else if(is_array($_REQUEST[$val])){

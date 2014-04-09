@@ -1002,7 +1002,7 @@ HTS;
 			'size' => 1,
 			'class' => 'weSelect',
 			'onClick' => (defined('OBJECT_TABLE')) ? "self.document.forms['we_form'].elements['v[import_type]'][0].checked=true;" : '',
-			'onChange' => 'this.form.doctypeChanged.value=1; weChangeDocType(this);',
+			'onchange' => 'this.form.doctypeChanged.value=1; weChangeDocType(this);',
 			'style' => 'width: 300px')
 		);
 		$optid = 0;
@@ -1037,7 +1037,7 @@ HTS;
 			'size' => 1,
 			'class' => 'weSelect',
 			'onClick' => (defined('OBJECT_TABLE')) ? "self.document.forms['we_form'].elements['v[import_type]'][0].checked=true;" : '',
-			//'onChange'  => "we_submit_form(self.document.forms['we_form'], 'wizbody', '".$this->path."');",
+			//'onchange'  => "we_submit_form(self.document.forms['we_form'], 'wizbody', '".$this->path."');",
 			'style' => 'width: 300px')
 		);
 
@@ -1242,7 +1242,7 @@ HTS;
 					'size' => 1,
 					'class' => 'weSelect',
 					(($isSingleNode) ? 'disabled' : 'style') => '',
-					'onChange' => "this.form.elements['v[to_iElem]'].value=this.options[this.selectedIndex].value; this.form.elements['v[from_iElem]'].value=1;this.form.elements['v[sct_node]'].value=this.options[this.selectedIndex].text;" .
+					'onchange' => "this.form.elements['v[to_iElem]'].value=this.options[this.selectedIndex].value; this.form.elements['v[from_iElem]'].value=1;this.form.elements['v[sct_node]'].value=this.options[this.selectedIndex].text;" .
 					"if(this.options[this.selectedIndex].value==1) {this.form.elements['v[from_iElem]'].disabled=true;this.form.elements['v[to_iElem]'].disabled=true;} else {this.form.elements['v[from_iElem]'].disabled=false;this.form.elements['v[to_iElem]'].disabled=false;}")
 				);
 				$optid = 0;
@@ -1693,7 +1693,7 @@ function handle_event(evt) {
 		$importLocs->setCol($_tblRow++, 0, array(), $importFromLocal);
 		/*		 * *************************************************************************************************************** */
 		$iptDel = we_html_tools::htmlTextInput('v[csv_seperator]', 2, (isset($v['csv_seperator']) ? (($v['csv_seperator'] != '') ? $v['csv_seperator'] : ' ') : ';'), 2, '', 'text', 20);
-		$fldDel = new we_html_select(array('name' => 'v[sct_csv_seperator]', 'size' => 1, 'class' => 'weSelect', 'onChange' => "this.form.elements['v[csv_seperator]'].value=this.options[this.selectedIndex].innerHTML.substr(0,2);this.selectedIndex=options[0];", "style" => "width: 130px"));
+		$fldDel = new we_html_select(array('name' => 'v[sct_csv_seperator]', 'size' => 1, 'class' => 'weSelect', 'onchange' => "this.form.elements['v[csv_seperator]'].value=this.options[this.selectedIndex].innerHTML.substr(0,2);this.selectedIndex=options[0];", "style" => "width: 130px"));
 		$fldDel->addOption('', '');
 		$fldDel->addOption('semicolon', g_l('import', '[semicolon]'));
 		$fldDel->addOption('comma', g_l('import', '[comma]'));
@@ -1704,7 +1704,7 @@ function handle_event(evt) {
 			$fldDel->selectOption($v['sct_csv_seperator']);
 		}
 
-		$charSet = new we_html_select(array('name' => 'v[file_format]', 'size' => 1, 'class' => 'weSelect', 'onChange' => '', 'style' => ''));
+		$charSet = new we_html_select(array('name' => 'v[file_format]', 'size' => 1, 'class' => 'weSelect', 'onchange' => '', 'style' => ''));
 		$charSet->addOption('win', 'Windows');
 		$charSet->addOption('unix', 'Unix');
 		$charSet->addOption('mac', 'Mac');
@@ -1712,7 +1712,7 @@ function handle_event(evt) {
 			$charSet->selectOption($v['file_format']);
 		}
 
-		$txtDel = new we_html_select(array('name' => 'v[csv_enclosed]', 'size' => 1, 'class' => 'weSelect', 'onChange' => '', 'style' => 'width: 300px'));
+		$txtDel = new we_html_select(array('name' => 'v[csv_enclosed]', 'size' => 1, 'class' => 'weSelect', 'onchange' => '', 'style' => 'width: 300px'));
 		$txtDel->addOption('double_quote', g_l('import', '[double_quote]'));
 		$txtDel->addOption('single_quote', g_l('import', '[single_quote]'));
 		$txtDel->addOption('none', g_l('import', '[none]'));
@@ -1966,7 +1966,7 @@ HTS;
 			'class' => 'weSelect',
 			'onclick' => (defined('OBJECT_TABLE')) ? "self.document.forms['we_form'].elements['v[import_type]'][0].checked=true;" : '',
 			'onchange' => "this.form.doctypeChanged.value=1; weChangeDocType(this);",
-			//"onChange"  => "this.form.doctypeChanged.value=1;we_submit_form(self.document.forms['we_form'], 'wizbody', '".$this->path."');",
+			//"onchange"  => "this.form.doctypeChanged.value=1;we_submit_form(self.document.forms['we_form'], 'wizbody', '".$this->path."');",
 			'style' => 'width: 300px')
 		);
 		$optid = 0;
@@ -2144,7 +2144,7 @@ HTS;
 		$specifyDoc = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 3);
 		$specifyDoc->setCol(0, 2, array("valign" => "bottom"), we_html_forms::checkbox(3, (isset($v["is_dynamic"]) ? $v["is_dynamic"] : 0), "chbxIsDynamic", g_l('import', "[isDynamic]"), true, "defaultfont", "this.form.elements['v[is_dynamic]'].value=this.checked? 1 : 0; switchExt();"));
 		$specifyDoc->setCol(0, 1, array("width" => 20), we_html_tools::getPixel(20, 1));
-		$specifyDoc->setCol(0, 0, array(), we_html_tools::htmlFormElementTable(we_html_tools::getExtensionPopup("v[we_Extension]", (isset($v["we_Extension"]) ? $v["we_Extension"] : ".html"), we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::WEDOCUMENT), "100"), g_l('import', "[extension]")));
+		$specifyDoc->setCol(0, 0, array(), we_html_tools::htmlFormElementTable(we_html_tools::getExtensionPopup("v[we_Extension]", (isset($v["we_Extension"]) ? $v["we_Extension"] : ".html"), we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::WEDOCUMENT), 100), g_l('import', "[extension]")));
 
 		if((file_exists($_SERVER['DOCUMENT_ROOT'] . $v["import_from"]) && is_readable($_SERVER['DOCUMENT_ROOT'] . $v["import_from"]))){
 			$parts = array(

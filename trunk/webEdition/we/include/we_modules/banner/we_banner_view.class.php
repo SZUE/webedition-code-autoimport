@@ -50,7 +50,7 @@ class we_banner_view extends we_banner_base {
 	}
 
 	function getHiddens(){
-		$out = $this->htmlHidden("home", "0") .
+		$out = $this->htmlHidden("home", 0) .
 			$this->htmlHidden("ncmd", "new_banner") .
 			$this->htmlHidden("ncmdvalue", "") .
 			$this->htmlHidden("bid", $this->banner->ID) .

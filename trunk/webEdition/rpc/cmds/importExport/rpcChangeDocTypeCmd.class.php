@@ -40,7 +40,7 @@ class rpcChangeDocTypeCmd extends rpcCmd{
 					"size" => 1,
 					"class" => "weSelect",
 					"onclick" => (defined("OBJECT_TABLE")) ? "self.document.forms['we_form'].elements['v[import_type]'][0].checked=true;" : "",
-					//"onChange"  => "we_submit_form(self.document.forms['we_form'], 'wizbody', '".$this->path."');",
+					//"onchange"  => "we_submit_form(self.document.forms['we_form'], 'wizbody', '".$this->path."');",
 					"style" => "width: 300px")
 				);
 				$optid = 0;

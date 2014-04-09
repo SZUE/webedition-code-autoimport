@@ -375,13 +375,13 @@ class we_version{
 	 */
 	function getIndex(){
 		$data = array();
-		if(permissionhandler::hasPerm("REBUILD_INDEX")){
-			$GLOBALS['DB_WE']->query("SELECT ID,ClassName,Path FROM " . FILE_TABLE . " WHERE Published > 0 AND IsSearchable='1' ORDER BY ID");
+		if(permissionhandler::hasPerm('REBUILD_INDEX')){
+			$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path FROM ' . FILE_TABLE . ' WHERE Published!=0 AND IsSearchable=1 ORDER BY ID');
 			while($GLOBALS['DB_WE']->next_record()){
 
 				$data[] = array(
-					"id" => $GLOBALS['DB_WE']->f("ID"),
-					"type" => "document",
+					'id' => $GLOBALS['DB_WE']->f("ID"),
+					'type' => 'document',
 					"cn" => $GLOBALS['DB_WE']->f("ClassName"),
 					"mt" => 0,
 					"tt" => 0,

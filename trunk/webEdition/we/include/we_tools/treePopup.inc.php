@@ -66,7 +66,7 @@ class treePopup{
 	function getCode($parent = 0){
 		$this->Options = "";
 		$this->pOption($parent, "", $this->filter, ($this->firstEntry ? 4 : 0));
-		return sprintf('<select' . ($this->width ? ' style="width: ' . $this->width . 'px"' : '') . ' class="defaultfont" name="%s" size="%s"%s%s>' . "\n", $this->name, $this->size, ($this->multiple ? " multiple" : ""), ($this->onChange ? (' onChange="' . $this->onChange . '"') : "")) .
+		return sprintf('<select' . ($this->width ? ' style="width: ' . $this->width . 'px"' : '') . ' class="defaultfont" name="%s" size="%s"%s%s>' . "\n", $this->name, $this->size, ($this->multiple ? " multiple" : ""), ($this->onChange ? (' onchange="' . $this->onChange . '"') : "")) .
 			($this->firstEntry ? '<option value="0">' . $this->firstEntry . "\n" : "") . $this->Options . "\n</select>\n";
 	}
 

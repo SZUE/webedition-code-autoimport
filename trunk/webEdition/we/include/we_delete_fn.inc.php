@@ -187,7 +187,7 @@ function deleteFile($id, $table, $path = '', $contentType = '', we_database_base
 
 							$obj->getContentDataFromTemporaryDocs($affectedobjectsID);
 							$oldModDate = $obj->ModDate;
-							$obj->setElement('we_object_' . $tableID, '0');
+							$obj->setElement('we_object_' . $tableID, 0);
 							$obj->we_save(0, 1);
 							if($obj->Published != 0 && $obj->Published == $oldModDate){
 								$obj->we_publish(0, 1, 1);

@@ -165,5 +165,5 @@ if(!defined('DATETIME_INITIALIZED')){// to prevent additional initialization if 
 	if(!date_default_timezone_set(@date_default_timezone_get())){
 		date_default_timezone_set('Europe/Berlin');
 	}
-	define('DATETIME_INITIALIZED', '1');
+	define('DATETIME_INITIALIZED', 1);
 }

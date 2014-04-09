@@ -75,8 +75,8 @@ class we_app_HomePage extends we_ui_layout_HTMLPage{
 	 * @param array $properties
 	 * @return void
 	 */
-	function __construct($properties = null){
-		parent::__construct($properties);
+	function __construct(){
+		parent::__construct();
 		$this->addCSSFile(we_ui_layout_Themes::computeCSSURL(__CLASS__));
 	}
 
@@ -151,5 +151,3 @@ class we_app_HomePage extends we_ui_layout_HTMLPage{
 	}
 
 }
-
-?>

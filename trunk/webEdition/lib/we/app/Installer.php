@@ -465,7 +465,7 @@ class we_app_Installer{
 				$filesNotFound++;
 			}
 		}
-		if($filesNotFound >= "1"){
+		if($filesNotFound >= 1){
 			error_log("some of the files from toc.xml could not be found.");
 			return false;
 		}

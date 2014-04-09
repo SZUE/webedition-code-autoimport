@@ -98,7 +98,7 @@ class we_ui_Client{
 	 * @param string $userAgent
 	 * @return void
 	 */
-	function __construct($userAgent = ''){
+	function __construct(){
 		$inst = we_base_browserDetect::inst();
 		$this->_version = $inst->getBrowserVersion();
 

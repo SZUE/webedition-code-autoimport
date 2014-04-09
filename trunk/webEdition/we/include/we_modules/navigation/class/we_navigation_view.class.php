@@ -786,7 +786,7 @@ function submitForm() {
 
 					$js = '';
 
-					$newone = $this->Model->ID == '0' ? true : false;
+					$newone = $this->Model->ID == 0;
 
 					$_dynamic = '';
 					if($this->Model->ID && $this->Model->IsFolder){
@@ -869,7 +869,7 @@ function submitForm() {
 
 							');
 							$this->Model = new we_navigation_navigation();
-							$_REQUEST['home'] = '1';
+							$_REQUEST['home'] = 1;
 							$_REQUEST['pnt'] = 'edbody';
 						} else {
 							print we_html_element::jsElement(

@@ -1516,7 +1516,7 @@ function set_state_edit_delete_recipient(control) {
 										top.content.deleteEntry(' . $_REQUEST["nid"] . ',"file");
 										setTimeout(\'' . we_message_reporting::getShowMessageCall(($_REQUEST["IsFolder"] == 1 ? g_l('modules_newsletter', '[delete_group_ok]') : g_l('modules_newsletter', '[delete_ok]')), we_message_reporting::WE_MESSAGE_NOTICE) . '\',500);
 								');
-								$_REQUEST['home'] = '1';
+								$_REQUEST['home'] = 1;
 								$_REQUEST['pnt'] = 'edbody';
 							} else {
 								print we_html_element::jsElement(

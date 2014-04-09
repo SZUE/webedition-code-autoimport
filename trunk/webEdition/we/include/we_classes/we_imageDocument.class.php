@@ -585,7 +585,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 		// Row 1
 		$_content->setCol(0, 0, null, $this->formInputInfo2(155, 'width', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"', "origwidth"));
 		$_content->setCol(0, 2, null, $this->formInputInfo2(155, 'height', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"', "origheight"));
-		$_content->setCol(0, 4, null, $this->formInput2(155, 'border', 10, 'attrib', 'onChange="_EditorFrame.setEditorIsHot(true);"'));
+		$_content->setCol(0, 4, null, $this->formInput2(155, 'border', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
 
 		$_content->setCol(0, 1, null, we_html_tools::getPixel(18, 1));
 		$_content->setCol(0, 3, null, we_html_tools::getPixel(18, 1));
@@ -594,9 +594,9 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 		$_content->setCol(1, 0, array('colspan' => 5), we_html_tools::getPixel(1, 5));
 
 		// Row 3
-		$_content->setCol(2, 0, null, $this->formInput2(155, 'align', 10, 'attrib', 'onChange="_EditorFrame.setEditorIsHot(true);"'));
-		$_content->setCol(2, 2, null, $this->formInput2(155, 'hspace', 10, 'attrib', 'onChange="_EditorFrame.setEditorIsHot(true);"'));
-		$_content->setCol(2, 4, null, $this->formInput2(155, 'vspace', 10, 'attrib', 'onChange="_EditorFrame.setEditorIsHot(true);"'));
+		$_content->setCol(2, 0, null, $this->formInput2(155, 'align', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
+		$_content->setCol(2, 2, null, $this->formInput2(155, 'hspace', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
+		$_content->setCol(2, 4, null, $this->formInput2(155, 'vspace', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
 
 		$_content->setCol(2, 1, null, we_html_tools::getPixel(18, 1));
 		$_content->setCol(2, 3, null, we_html_tools::getPixel(18, 1));
@@ -605,15 +605,15 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 		$_content->setCol(3, 0, array('colspan' => 5), we_html_tools::getPixel(1, 5));
 
 		// Row 5
-		$_content->setCol(4, 0, array('colspan' => 3), $this->formInput2(328, 'alt', 23, 'attrib', 'onChange="_EditorFrame.setEditorIsHot(true);"'));
+		$_content->setCol(4, 0, array('colspan' => 3), $this->formInput2(328, 'alt', 23, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
 		$_content->setCol(4, 3, null, we_html_tools::getPixel(18, 1));
-		$_content->setCol(4, 4, null, $this->formInput2(155, 'name', 10, 'attrib', 'onChange="_EditorFrame.setEditorIsHot(true);"'));
+		$_content->setCol(4, 4, null, $this->formInput2(155, 'name', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
 
 		// Row 6
 		$_content->setCol(5, 0, array('colspan' => 5), we_html_tools::getPixel(1, 5));
 
 		//	Row 7
-		$_content->setCol(6, 0, array('colspan' => 3), $this->formInput2(328, 'title', 23, 'attrib', ($this->getElement('useMetaTitle') == 1 ? "readonly='readonly'" : "") . '" onChange="_EditorFrame.setEditorIsHot(true);"', 'Title'));
+		$_content->setCol(6, 0, array('colspan' => 3), $this->formInput2(328, 'title', 23, 'attrib', ($this->getElement('useMetaTitle') == 1 ? "readonly='readonly'" : "") . '" onchange="_EditorFrame.setEditorIsHot(true);"', 'Title'));
 
 		$_content->setCol(6, 3, null, we_html_tools::getPixel(18, 1));
 		$_titleField = 'we_' . $this->Name . '_attrib[title]';
@@ -909,11 +909,11 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 
 	function formMetaInfos(){
 		return '<table style="border-spacing: 0px;border-style:none;" cellpadding="0">
-	<tr><td colspan="2">' . $this->formInputField('txt', 'Title', g_l('weClass', '[Title]'), 40, 508, '', "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>
+	<tr><td colspan="2">' . $this->formInputField('txt', 'Title', g_l('weClass', '[Title]'), 40, 508, '', "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>
 	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
-	<tr><td colspan="2">' . $this->formInputField('txt', 'Description', g_l('weClass', '[Description]'), 40, 508, '', "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>
+	<tr><td colspan="2">' . $this->formInputField('txt', 'Description', g_l('weClass', '[Description]'), 40, 508, '', "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>
 	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
-	<tr><td colspan="2">' . $this->formInputField('txt', 'Keywords', g_l('weClass', '[Keywords]'), 40, 508, '', "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>
+	<tr><td colspan="2">' . $this->formInputField('txt', 'Keywords', g_l('weClass', '[Keywords]'), 40, 508, '', "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>
 	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
 </table>' .
 			($this->ContentType == we_base_ContentTypes::IMAGE ? $this->formCharset(true) : '');

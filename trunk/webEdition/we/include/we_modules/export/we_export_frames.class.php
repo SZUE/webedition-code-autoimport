@@ -259,7 +259,7 @@ class we_export_frames extends weModuleFrames{
 		$parts = array(
 			array(
 				"headline" => g_l('export', "[property]"),
-				"html" => we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Text", '', $this->View->export->Text, '', 'style="width: ' . $this->_width_size . 'px;" id="yuiAcInputPathName" onchange="top.content.setHot();" onblur="parent.edheader.setPathName(this.value); parent.edheader.setTitlePath()" onChange="' . $this->topFrame . '.hot=1;"'), g_l('export', '[name]')) . '<br>' .
+				"html" => we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Text", '', $this->View->export->Text, '', 'style="width: ' . $this->_width_size . 'px;" id="yuiAcInputPathName" onchange="top.content.setHot();" onblur="parent.edheader.setPathName(this.value); parent.edheader.setTitlePath()" onchange="' . $this->topFrame . '.hot=1;"'), g_l('export', '[name]')) . '<br>' .
 				$this->getHTMLDirChooser(),
 				"space" => $this->_space_size)
 		);
@@ -270,7 +270,7 @@ class we_export_frames extends weModuleFrames{
 
 		$parts[] = array(
 			"headline" => g_l('export', "[export_to]"),
-			"html" => we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Filename", $this->_text_size, $this->View->export->Filename, '', 'style="width: ' . $this->_width_size . 'px;" onChange="' . $this->topFrame . '.hot=1;"'), g_l('export', "[filename]")),
+			"html" => we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Filename", $this->_text_size, $this->View->export->Filename, '', 'style="width: ' . $this->_width_size . 'px;" onchange="' . $this->topFrame . '.hot=1;"'), g_l('export', "[filename]")),
 			"space" => $this->_space_size,
 			"noline" => 1
 		);
@@ -434,7 +434,7 @@ function closeAllType(){
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId("PathGroup");
 		$yuiSuggest->setContentType("folder");
-		$yuiSuggest->setInput("ParentPath", $path, array("onChange" => $this->topFrame . '.hot=1;'));
+		$yuiSuggest->setInput("ParentPath", $path, array("onchange" => $this->topFrame . '.hot=1;'));
 		$yuiSuggest->setLabel(g_l('export', "[group]"));
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(true);
@@ -791,7 +791,7 @@ function closeAllType(){
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$IDName'].value");
 		$button = we_html_button::create_button("select", "javascript:top.content.setHot();formFileChooser('browse_server','" . $wecmdenc1 . "','$filter',document.we_form.elements['$IDName'].value);");
 
-		return $js . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 42, $IDValue, "", ' readonly onChange="' . $this->topFrame . '.hot=1;"', "text", $width, 0), "", "left", "defaultfont", "", we_html_tools::getPixel(20, 4), permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
+		return $js . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 42, $IDValue, "", ' readonly onchange="' . $this->topFrame . '.hot=1;"', "text", $width, 0), "", "left", "defaultfont", "", we_html_tools::getPixel(20, 4), permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
 	}
 
 	function formWeChooser($table = FILE_TABLE, $width = '', $rootDirID = 0, $IDName = 'ID', $IDValue = 0, $Pathname = 'Path', $Pathvalue = '/', $cmd = ''){

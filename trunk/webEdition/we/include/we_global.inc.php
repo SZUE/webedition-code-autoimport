@@ -203,7 +203,7 @@ function _weRequest(&$var, $key, array $data){
 		case 'url':
 			$var = filter_var($var, FILTER_SANITIZE_URL);
 			return;
-		case 'string':
+		case 'string'://strips tags
 			$var = filter_var($var, FILTER_SANITIZE_STRING);
 			return;
 		case 'html':
@@ -446,7 +446,7 @@ function getHashArrayFromCSV($csv, $firstEntry, we_database_base $db = null){
 	$db = $db ? $db : new DB_WE();
 	$IDArr = makeArrayFromCSV($csv);
 	$out = $firstEntry ? array(
-		'0' => $firstEntry
+		0 => $firstEntry
 		) : array();
 	foreach($IDArr as $id){
 		if(strlen($id) && ($path = id_to_path($id, FILE_TABLE, $db))){
@@ -482,7 +482,7 @@ function getPathsFromTable($table = FILE_TABLE, we_database_base $db = null, $ty
 			$query[] = ' IsFolder=1 ';
 			break;
 	}
-	$out = $first ? array('0' => $first) : array();
+	$out = $first ? array(0 => $first) : array();
 
 	$db->query('SELECT ID,Path FROM ' . $table . (count($query) ? ' WHERE ' . implode(' AND ', $query) : '') . ' ORDER BY ' . $order);
 	while($db->next_record()){
@@ -506,7 +506,7 @@ function pushChildsFromArr(&$arr, $table = FILE_TABLE, $isFolder = ''){
 function pushChilds(&$arr, $id, $table = FILE_TABLE, $isFolder = ''){
 	$db = new DB_WE();
 	$arr[] = $id;
-	$db->query('SELECT ID FROM ' . $table . ' WHERE ParentID=' . intval($id) . (($isFolder != '' || $isFolder == '0') ? (' AND IsFolder="' . $db->escape($isFolder) . '"') : ''));
+	$db->query('SELECT ID FROM ' . $table . ' WHERE ParentID=' . intval($id) . (($isFolder != '' || $isFolder == 0) ? (' AND IsFolder="' . $db->escape($isFolder) . '"') : ''));
 	while($db->next_record()){
 		pushChilds($arr, $db->f('ID'), $table, $isFolder);
 	}
@@ -540,8 +540,7 @@ function we_readParents($id, &$parentlist, $tab, $match = 'ContentType', $matchv
 		if($pid == 0){
 			$parentlist[] = $pid;
 		} else {
-			$tmp = f('SELECT 1 FROM ' . $db->escape($tab) . ' WHERE ID=' . intval($pid) . ' AND ' . $match . ' = "' . $db->escape($matchvalue) . '"', '', $db);
-			if($tmp == '1'){
+			if(f('SELECT 1 FROM ' . $db->escape($tab) . ' WHERE ID=' . intval($pid) . ' AND ' . $match . ' = "' . $db->escape($matchvalue) . '"', '', $db)){
 				$parentlist[] = $pid;
 				we_readParents($pid, $parentlist, $tab, $match, $matchvalue, $db);
 			}

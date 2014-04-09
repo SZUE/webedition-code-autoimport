@@ -158,7 +158,7 @@ class we_docTypes extends we_class{
 		$cats = makeArrayFromCSV($this->Category);
 		if(in_array($id, $cats)){
 			$pos = array_search($id, $cats);
-			if($pos !== false || $pos == "0"){
+			if($pos !== false || $pos == '0'){
 				array_splice($cats, $pos, 1);
 			}
 		}

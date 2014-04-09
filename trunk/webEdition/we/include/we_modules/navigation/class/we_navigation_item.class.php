@@ -46,8 +46,8 @@ class we_navigation_item{
 	var $current = false;
 	var $containsCurrent = false;
 	private $visible = true;
-	var $CurrentOnUrlPar = '0';
-	var $CurrentOnAnker = '0';
+	var $CurrentOnUrlPar;
+	var $CurrentOnAnker;
 	//attributes
 	var $title;
 	var $anchor;
@@ -62,7 +62,7 @@ class we_navigation_item{
 	var $customers;
 	var $items = array();
 
-	function __construct($id, $docid, $table, $text, $display, $href, $type, $icon, $attributes, $limitaccess, $customers = '', $CurrentOnUrlPar = 0, $CurrentOnAnker = '0'){
+	function __construct($id, $docid, $table, $text, $display, $href, $type, $icon, $attributes, $limitaccess, $customers = '', $CurrentOnUrlPar = 0, $CurrentOnAnker = 0){
 		$this->id = $id;
 		$this->parentid = 0;
 		$this->name = $text;

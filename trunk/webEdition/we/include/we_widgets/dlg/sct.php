@@ -105,7 +105,7 @@ $oSctPool = new we_html_select(
 	"name" => "sct_pool",
 	"size" => 1,
 	"class" => "defaultfont",
-	"onChange" => "addBtn(_fo['list11'],this.options[this.selectedIndex].text,this.options[this.selectedIndex].value,true);this.options[0].selected=true;"
+	"onchange" => "addBtn(_fo['list11'],this.options[this.selectedIndex].text,this.options[this.selectedIndex].value,true);this.options[0].selected=true;"
 	));
 $oSctPool->insertOption(0, " ", "");
 $iCurrOpt = 1;

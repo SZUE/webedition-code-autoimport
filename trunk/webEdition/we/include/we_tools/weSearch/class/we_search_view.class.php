@@ -793,7 +793,7 @@ class we_search_view extends we_tool_view{
     var searchFields = "' . str_replace(
 								"\n", '\n', addslashes(
 										we_html_tools::htmlSelect(
-												'searchFieldsAdvSearch[__we_new_id__]', $this->searchclass->getFields("__we_new_id__", ""), 1, "", false, array('class' => "defaultfont", 'id' => "searchFieldsAdvSearch[__we_new_id__]", 'onChange' => "changeit(this.value, __we_new_id__);")))) . '";
+												'searchFieldsAdvSearch[__we_new_id__]', $this->searchclass->getFields("__we_new_id__", ""), 1, "", false, array('class' => "defaultfont", 'id' => "searchFieldsAdvSearch[__we_new_id__]", 'onchange' => "changeit(this.value, __we_new_id__);")))) . '";
     var locationFields = "' . str_replace(
 								"\n", '\n', addslashes(
 										we_html_tools::htmlSelect(
@@ -860,7 +860,7 @@ class we_search_view extends we_tool_view{
     var searchFields = "' . str_replace(
 								"\n", '\n', addslashes(
 										we_html_tools::htmlSelect(
-												'searchFieldsAdvSearch[__we_new_id__]', $this->searchclass->getFields("__we_new_id__", ""), 1, "", false, array('class' => "defaultfont", 'id' => "searchFieldsAdvSearch[__we_new_id__]", 'onChange' => "changeit(this.value, __we_new_id__);")))) . '";
+												'searchFieldsAdvSearch[__we_new_id__]', $this->searchclass->getFields("__we_new_id__", ""), 1, "", false, array('class' => "defaultfont", 'id' => "searchFieldsAdvSearch[__we_new_id__]", 'onchange' => "changeit(this.value, __we_new_id__);")))) . '";
     var locationFields = "' . str_replace(
 								"\n", '\n', addslashes(
 										we_html_tools::htmlSelect(
@@ -1475,7 +1475,7 @@ class we_search_view extends we_tool_view{
 		$page = ceil($searchstart / $anzahl) * $anzahl;
 
 		$select = we_html_tools::htmlSelect(
-						"page", $pages, 1, $page, false, array("onChange" => "this.form.elements['searchstart" . $whichSearch . "'].value = this.value;search(false);"));
+						"page", $pages, 1, $page, false, array("onchange" => "this.form.elements['searchstart" . $whichSearch . "'].value = this.value;search(false);"));
 		if(!isset($_REQUEST['we_cmd']['setInputSearchstart'])){
 			if(!defined("searchstart" . $whichSearch)){
 				define("searchstart" . $whichSearch, true);
@@ -2521,7 +2521,7 @@ class we_search_view extends we_tool_view{
    <td style="font-size:12px;width:125px;">' . g_l('searchtool', "[eintraege_pro_seite]") . ':</td>
    <td class="defaultgray" style="width:60px;">
    ' . we_html_tools::htmlSelect(
-						$anzahl, $values, 1, $_anzahl, "", array('onChange' => 'this.form.elements["' . $searchstart . '"].value=0;search(false);')) . '
+						$anzahl, $values, 1, $_anzahl, "", array('onchange' => 'this.form.elements["' . $searchstart . '"].value=0;search(false);')) . '
 	 </td>
    <td style="width:400px;">' . $thisObj->getNextPrev(
 						$foundItems, $whichSearch) . '</td>
@@ -2791,7 +2791,7 @@ class we_search_view extends we_tool_view{
      <td>' . we_html_tools::hidden(
 							"hidden_searchFieldsAdvSearch[" . $i . "]", isset($this->Model->searchFieldsAdvSearch[$i]) ? $this->Model->searchFieldsAdvSearch[$i] : "") . we_html_tools::htmlSelect(
 							"searchFieldsAdvSearch[" . $i . "]", $this->searchclass->getFields($i, ""), 1, (isset($this->Model->searchFieldsAdvSearch) && is_array($this->Model->searchFieldsAdvSearch) && isset(
-									$this->Model->searchFieldsAdvSearch[$i]) ? $this->Model->searchFieldsAdvSearch[$i] : ""), false, array('class' => "defaultfont", 'id' => 'searchFieldsAdvSearch[' . $i . ']', 'onChange' => 'changeit(this.value, ' . $i . ');')) . '</td>
+									$this->Model->searchFieldsAdvSearch[$i]) ? $this->Model->searchFieldsAdvSearch[$i] : ""), false, array('class' => "defaultfont", 'id' => 'searchFieldsAdvSearch[' . $i . ']', 'onchange' => 'changeit(this.value, ' . $i . ');')) . '</td>
      <td id="td_locationAdvSearch[' . $i . ']">' . we_html_tools::htmlSelect(
 							"locationAdvSearch[" . $i . "]", $this->searchclass->getLocation($handle), 1, (isset($this->Model->locationAdvSearch) && is_array($this->Model->locationAdvSearch) && isset(
 									$this->Model->locationAdvSearch[$i]) ? $this->Model->locationAdvSearch[$i] : ""), false, array('class' => "defaultfont", $locationDisabled => $locationDisabled, 'id' => 'locationAdvSearch[' . $i . ']')) . '</td>
