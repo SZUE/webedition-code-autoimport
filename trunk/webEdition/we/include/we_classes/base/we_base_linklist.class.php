@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_base_linklist{
+class we_base_linklist {
 
 	private $name = "";
 	private $sString = "";
@@ -176,42 +176,15 @@ class we_base_linklist{
 					$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'top=' . $jswinAttribs["jsposy"] . '\';';
 				}
 			}
-			if($jswinAttribs["jswidth"] != ""){
-				$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'width=' . $jswinAttribs["jswidth"] . '\';';
-			}
-			if($jswinAttribs["jsheight"] != ""){
-				$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'height=' . $jswinAttribs["jsheight"] . '\';';
-			}
-			if($jswinAttribs["jsstatus"]){
-				$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'status=yes\';';
-			} else {
-				$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'status=no\';';
-			}
-			if($jswinAttribs["jsscrollbars"]){
-				$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'scrollbars=yes\';';
-			} else {
-				$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'scrollbars=no\';';
-			}
-			if($jswinAttribs["jsmenubar"]){
-				$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'menubar=yes\';';
-			} else {
-				$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'menubar=no\';';
-			}
-			if($jswinAttribs["jsresizable"]){
-				$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'resizable=yes\';';
-			} else {
-				$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'resizable=no\';';
-			}
-			if($jswinAttribs["jslocation"]){
-				$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'location=yes\';';
-			} else {
-				$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'location=no\';';
-			}
-			if(isset($jswinAttribs["jstoolbar"]) && $jswinAttribs["jstoolbar"]){
-				$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'toolbar=yes\';';
-			} else {
-				$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'toolbar=no\';';
-			}
+			$js.=
+				($jswinAttribs["jswidth"] != "" ? 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'width=' . $jswinAttribs["jswidth"] . '\';' : '') .
+				($jswinAttribs["jsheight"] != "" ? 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'height=' . $jswinAttribs["jsheight"] . '\';' : '') .
+				'we_winOpts += (we_winOpts ? \',\' : \'\')+\'status=' . ($jswinAttribs["jsstatus"] ? 'yes' : 'no') . '\';' .
+				'we_winOpts += (we_winOpts ? \',\' : \'\')+\'scrollbars=' . ($jswinAttribs["jsscrollbars"] ? 'yes' : 'no') . '\';' .
+				'we_winOpts += (we_winOpts ? \',\' : \'\')+\'menubar=' . ($jswinAttribs["jsmenubar"] ? 'yes' : 'no') . '\';' .
+				'we_winOpts += (we_winOpts ? \',\' : \'\')+\'resizable=' . ($jswinAttribs["jsresizable"] ? 'yes' : 'no') . '\';' .
+				'we_winOpts += (we_winOpts ? \',\' : \'\')+\'location=' . ($jswinAttribs["jslocation"] ? 'yes' : 'no') . '\';' .
+				'we_winOpts += (we_winOpts ? \',\' : \'\')+\'toolbar=' . (isset($jswinAttribs["jstoolbar"]) && $jswinAttribs["jstoolbar"] ? 'yes' : 'no') . '\';';
 			$foo = $js . "var we_win = window.open('','" . "we_ll_" . key($this->listArray) . "',we_winOpts);";
 
 			$lattribs = removeAttribs($lattribs, array(
@@ -354,7 +327,7 @@ class we_base_linklist{
 
 	function getHrefObj($nr = -1){
 		$id = $this->getObjID($nr);
-		return ($id ? f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id), 'Path', $this->db) : '');
+		return ($id && defined('OBJECT_FILES_TABLE') ? f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id), '', $this->db) : '');
 	}
 
 	function getImageSrcInt($nr = -1){
@@ -383,148 +356,99 @@ class we_base_linklist{
 	}
 
 	function setID($nr, $val){
-		if($nr == '0' || $nr){
-			$this->listArray[$nr]["id"] = $val;
-		}
+		$this->listArray[$nr]["id"] = $val;
 	}
 
 	function setObjID($nr, $val){
-		if($nr == '0' || $nr){
-			$this->listArray[$nr]["obj_id"] = $val;
-		}
+		$this->listArray[$nr]["obj_id"] = $val;
 	}
 
 	function setHref($nr, $val){
-		if($nr == '0' || $nr){
-			$this->listArray[$nr]["href"] = $val;
-		}
+		$this->listArray[$nr]["href"] = $val;
 	}
 
 	function setAnchor($nr, $val){
-		if($nr == '0' || $nr){
-			$this->listArray[$nr]["anchor"] = $val;
-		}
+		$this->listArray[$nr]["anchor"] = $val;
 	}
 
 	function setAccesskey($nr, $val){
-		if($nr == '0' || $nr){
-			$this->listArray[$nr]["accesskey"] = $val;
-		}
+		$this->listArray[$nr]["accesskey"] = $val;
 	}
 
 	function setTabindex($nr, $val){
-		if($nr == '0' || $nr){
-			$this->listArray[$nr]["tabindex"] = $val;
-		}
+		$this->listArray[$nr]["tabindex"] = $val;
 	}
 
 	function setLang($nr, $val){
-		if($nr == '0' || $nr){
-			$this->listArray[$nr]["lang"] = $val;
-		}
+		$this->listArray[$nr]["lang"] = $val;
 	}
 
 	function setRel($nr, $val){
-		if($nr == '0' || $nr){
-			$this->listArray[$nr]["rel"] = $val;
-		}
+		$this->listArray[$nr]["rel"] = $val;
 	}
 
 	function setRev($nr, $val){
-		if($nr == '0' || $nr){
-			$this->listArray[$nr]["rev"] = $val;
-		}
+		$this->listArray[$nr]["rev"] = $val;
 	}
 
 	function setHreflang($nr, $val){
-		if($nr == '0' || $nr){
-			$this->listArray[$nr]["hreflang"] = $val;
-		}
+		$this->listArray[$nr]["hreflang"] = $val;
 	}
 
 	function setParams($nr, $val){
-		if($nr == '0' || $nr){
-			$this->listArray[$nr]["params"] = $val;
-		}
+		$this->listArray[$nr]["params"] = $val;
 	}
 
 	function setAttribs($nr, $val){
-		if($nr == '0' || $nr){
-			$this->listArray[$nr]["attribs"] = $val;
-		}
+		$this->listArray[$nr]["attribs"] = $val;
 	}
 
 	function setTarget($nr, $val){
-		if($nr == '0' || $nr){
-			$this->listArray[$nr]["target"] = $val;
-		}
+		$this->listArray[$nr]["target"] = $val;
 	}
 
 	function setImageID($nr, $val){
-		if($nr == '0' || $nr){
-			$this->listArray[$nr]["img_id"] = $val;
-		}
+		$this->listArray[$nr]["img_id"] = $val;
 	}
 
 	function setTitle($nr, $val){
-		if($nr == '0' || $nr){
-			$this->listArray[$nr]["title"] = $val;
-		}
+		$this->listArray[$nr]["title"] = $val;
 	}
 
 	function setImageSrc($nr, $val){
-		if($nr == '0' || $nr){
-			$this->listArray[$nr]["img_src"] = $val;
-		}
+		$this->listArray[$nr]["img_src"] = $val;
 	}
 
 	function setText($nr, $val){
-		if($nr == '0' || $nr){
-			$this->listArray[$nr]["text"] = $val;
-		}
+		$this->listArray[$nr]["text"] = $val;
 	}
 
 	function setImageAttribs($nr, $val){
-		if($nr == '0' || $nr){
-			$this->listArray[$nr]["img_attribs"] = $val;
-		}
+		$this->listArray[$nr]["img_attribs"] = $val;
 	}
 
 	function setImageAttrib($nr, $key, $val){
-		if($nr == '0' || $nr){
-			$this->listArray[$nr]["img_attribs"][$key] = $val;
-		}
+		$this->listArray[$nr]["img_attribs"][$key] = $val;
 	}
 
 	function setJsWinAttribs($nr, $val){
-		if($nr == '0' || $nr){
-			$this->listArray[$nr]["jswin_attribs"] = $val;
-		}
+		$this->listArray[$nr]["jswin_attribs"] = $val;
 	}
 
 	function setJsWinAttrib($nr, $key, $val){
-		if($nr == '0' || $nr){
-			$this->listArray[$nr]["jswin_attribs"][$key] = $val;
-		}
+		$this->listArray[$nr]["jswin_attribs"][$key] = $val;
 	}
 
-	//added for #7269
 	function setBcc($nr, $val){
-		if($nr == '0' || $nr){
-			$this->listArray[$nr]["bcc"] = $val;
-		}
+		$this->listArray[$nr]["bcc"] = $val;
 	}
 
 	function setCc($nr, $val){
-		if($nr == '0' || $nr){
-			$this->listArray[$nr]["cc"] = $val;
-		}
+		$this->listArray[$nr]["cc"] = $val;
 	}
 
 	function setSubject($nr, $val){
-		if($nr == "0" || $nr){
-			$this->listArray[$nr]["subject"] = $val;
-		}
+		$this->listArray[$nr]["subject"] = $val;
 	}
 
 	function next(){
@@ -586,15 +510,11 @@ class we_base_linklist{
 	}
 
 	function setType($nr, $val){
-		if($nr == '0' || $nr){
-			$this->listArray[$nr]['type'] = $val;
-		}
+		$this->listArray[$nr]['type'] = $val;
 	}
 
 	function setCType($nr, $val){
-		if($nr == '0' || $nr){
-			$this->listArray[$nr]['ctype'] = $val;
-		}
+		$this->listArray[$nr]['ctype'] = $val;
 	}
 
 	function addLink(){

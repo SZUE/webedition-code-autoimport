@@ -173,7 +173,7 @@ function filterXss($var, $type = 'string'){
 /** Helper for Filtering variables (callback of array_walk)
  *
  * @param mixed $var value
- * @param string $key key
+ * @param string $key key used by array-walk - unused
  * @param array $data array pair of type & default
  * @return type
  */
@@ -185,6 +185,10 @@ function _weRequest(&$var, $key, array $data){
 			return;
 		case 'intList':
 			implode(',', array_map('intval', explode(',', $var)));
+			return;
+		case 'unit':
+			//FIMXE: check for %d[em,ex,pt,...]?
+			return;
 		case 'int':
 			$var = intval($var);
 			return;
@@ -197,8 +201,8 @@ function _weRequest(&$var, $key, array $data){
 		case 'table':
 			$var = $var && ($k = array_search($var, get_defined_constants(), true)) && (substr($k, -6) == '_TABLE') ? $var : $default;
 			return;
-		case 'email':
-			$var = filter_var($var, FILTER_SANITIZE_EMAIL);
+		case 'email'://removes mailto:
+			$var = filter_var(str_replace(we_base_link::TYPE_MAIL_PREFIX, '', $var), FILTER_SANITIZE_EMAIL);
 			return;
 		case 'url':
 			$var = filter_var($var, FILTER_SANITIZE_URL);
@@ -208,6 +212,9 @@ function _weRequest(&$var, $key, array $data){
 			return;
 		case 'html':
 			$var = filter_var($var, FILTER_SANITIZE_SPECIAL_CHARS);
+			return;
+		case 'raw':
+			//do nothing - used as placeholder for all types not yet known
 			return;
 	}
 	$var = $default;
@@ -506,7 +513,7 @@ function pushChildsFromArr(&$arr, $table = FILE_TABLE, $isFolder = ''){
 function pushChilds(&$arr, $id, $table = FILE_TABLE, $isFolder = ''){
 	$db = new DB_WE();
 	$arr[] = $id;
-	$db->query('SELECT ID FROM ' . $table . ' WHERE ParentID=' . intval($id) . (($isFolder != '' || $isFolder == 0) ? (' AND IsFolder="' . $db->escape($isFolder) . '"') : ''));
+	$db->query('SELECT ID FROM ' . $table . ' WHERE ParentID=' . intval($id) . (($isFolder != '' || $isFolder == 0) ? (' AND IsFolder=' . intval($isFolder)) : ''));
 	while($db->next_record()){
 		pushChilds($arr, $db->f('ID'), $table, $isFolder);
 	}
