@@ -22,7 +22,7 @@
  * @package    webEdition_class
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-abstract class we_textContentDocument extends we_textDocument{
+abstract class we_textContentDocument extends we_textDocument {
 	/* Doc-Type of the document */
 
 	public $DocType = '';
@@ -132,7 +132,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		$maxDB = min(1000000, getMaxAllowedPacket($this->DB_WE) - 1024);
 		return $this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter(array(
 					'DID' => intval($this->ID),
-					'Text' => substr(preg_replace(array("/\n+/", '/  +/'), ' ', trim(strip_tags($text))), 0, $maxDB),
+					'Text' => substr(preg_replace(array('/&#160;/', "/ *\n/", "/\n+/", '/  +/'), ' ', trim(strip_tags($text))), 0, $maxDB),
 					'Workspace' => $this->ParentPath,
 					'WorkspaceID' => intval($this->ParentID),
 					'Category' => $this->Category,
