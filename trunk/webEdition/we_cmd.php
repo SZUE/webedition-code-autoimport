@@ -28,7 +28,7 @@ if(!isset($_REQUEST['we_cmd'])){
 
 //start autoloader!
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.inc.php');
-
+require_once (WE_INCLUDES_PATH . 'we_global.inc.php');
 $INCLUDE = '';
 
 
