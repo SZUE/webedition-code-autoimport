@@ -4,7 +4,7 @@ $appName = Zend_Controller_Front::getInstance()->getParam('appName');
 
 $translate = we_core_Local::addTranslation('apps.xml');
 
-$activTab = isset($_REQUEST['activTab']) ? ($_REQUEST['activTab']) : 'idPropertyTab';
+$activTab = weRequest('string', 'activTab', 'idPropertyTab');
 
 $this->inputWidth = 400;
 

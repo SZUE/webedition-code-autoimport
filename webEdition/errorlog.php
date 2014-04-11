@@ -32,7 +32,7 @@ function getInfoTable($infoArr){
 		}
 		try{
 			@$tmp = htmlentities($tmp, ENT_COMPAT, $GLOBALS['WE_BACKENDCHARSET']);
-		}catch(Exception $e){
+		} catch (Exception $e){
 			//try another encoding since last conversion failed.
 			@$tmp = htmlentities($tmp, ENT_COMPAT, $GLOBALS['WE_BACKENDCHARSET'] == 'UTF-8' ? 'ISO-8859-15' : 'UTF-8');
 		}
@@ -69,23 +69,23 @@ function getNavButtons($size, $pos, $id){
 
 
 	return '<table style="margin-top: 10px;border-style:none;width:100%;" cellpadding="0" cellspacing="0"><tr><td>' .
-			we_html_button::create_button_table(array(
-				we_html_button::create_button("first", $_SERVER['SCRIPT_NAME'] . '?function=first', true, 0, 0, '', '', ($pos == 1)),
-				we_html_button::getButton("-" . $div, 'btn', "window.location.href='" . $_SERVER['SCRIPT_NAME'] . '?function=prevX&ID=' . $id . '&step=' . $div . "';", 0, '', ($pos - $div < 1)),
-				we_html_button::create_button("back", $_SERVER['SCRIPT_NAME'] . '?function=prev&ID=' . $id, true, 0, 0, "", "", ($pos == 1)),
-					), 10) .
-			'</td><td align="center">' .
-			we_html_button::create_button_table(array(
-				we_html_button::create_button("export", $_SERVER['SCRIPT_NAME'] . '?function=export&ID=' . $id, true, 0, 0),
-				we_html_button::create_button("delete", $_SERVER['SCRIPT_NAME'] . '?function=delete&ID=' . $id, true, 0, 0),
-					), 10) . '</td><td align="right">' .
-			we_html_button::create_button_table(array(
-				we_html_button::create_button("next", $_SERVER['SCRIPT_NAME'] . '?function=next&ID=' . $id, true, 0, 0, "", "", ($pos == $size)),
-				we_html_button::getButton("+" . $div, 'btn2', "window.location.href='" . $_SERVER['SCRIPT_NAME'] . '?function=nextX&ID=' . $id . '&step=' . $div . "';", 0, '', ($pos + $div > $size)),
-				we_html_button::create_button("last", $_SERVER['SCRIPT_NAME'] . '?function=last', true),
-					), 10) .
-			'</td></tr><tr><td colspan="3" align="center" class="defaultfont" width="120"><b>' . $pos . "&nbsp;" . g_l('global', '[from]') . ' ' . $size . '</b>' .
-			'</td></table>';
+		we_html_button::create_button_table(array(
+			we_html_button::create_button("first", $_SERVER['SCRIPT_NAME'] . '?function=first', true, 0, 0, '', '', ($pos == 1)),
+			we_html_button::getButton("-" . $div, 'btn', "window.location.href='" . $_SERVER['SCRIPT_NAME'] . '?function=prevX&ID=' . $id . '&step=' . $div . "';", 0, '', ($pos - $div < 1)),
+			we_html_button::create_button("back", $_SERVER['SCRIPT_NAME'] . '?function=prev&ID=' . $id, true, 0, 0, "", "", ($pos == 1)),
+			), 10) .
+		'</td><td align="center">' .
+		we_html_button::create_button_table(array(
+			we_html_button::create_button("export", $_SERVER['SCRIPT_NAME'] . '?function=export&ID=' . $id, true, 0, 0),
+			we_html_button::create_button("delete", $_SERVER['SCRIPT_NAME'] . '?function=delete&ID=' . $id, true, 0, 0),
+			), 10) . '</td><td align="right">' .
+		we_html_button::create_button_table(array(
+			we_html_button::create_button("next", $_SERVER['SCRIPT_NAME'] . '?function=next&ID=' . $id, true, 0, 0, "", "", ($pos == $size)),
+			we_html_button::getButton("+" . $div, 'btn2', "window.location.href='" . $_SERVER['SCRIPT_NAME'] . '?function=nextX&ID=' . $id . '&step=' . $div . "';", 0, '', ($pos + $div > $size)),
+			we_html_button::create_button("last", $_SERVER['SCRIPT_NAME'] . '?function=last', true),
+			), 10) .
+		'</td></tr><tr><td colspan="3" align="center" class="defaultfont" width="120"><b>' . $pos . "&nbsp;" . g_l('global', '[from]') . ' ' . $size . '</b>' .
+		'</td></table>';
 }
 
 function formatLine(&$val, $key){
@@ -113,20 +113,20 @@ function getPosData($bt){
 }
 
 $buttons = we_html_button::position_yes_no_cancel(
-				we_html_button::create_button("delete_all", $_SERVER['SCRIPT_NAME'] . "?deleteAll"), we_html_button::create_button("refresh", $_SERVER['SCRIPT_NAME']), we_html_button::create_button("close", "javascript:self.close()")
+		we_html_button::create_button("delete_all", $_SERVER['SCRIPT_NAME'] . "?deleteAll"), we_html_button::create_button("refresh", $_SERVER['SCRIPT_NAME']), we_html_button::create_button("close", "javascript:self.close()")
 );
 
 
 $db = $GLOBALS['DB_WE'];
-if(isset($_REQUEST['deleteAll'])){
+if(weRequest('bool', 'deleteAll')){
 	$db->query('TRUNCATE TABLE `' . ERROR_LOG_TABLE . '`');
 }
 
 $size = f('SELECT COUNT(1) FROM `' . ERROR_LOG_TABLE . '`');
-$id = (isset($_REQUEST['ID']) ? $_REQUEST['ID'] : 0);
-$step = (isset($_REQUEST['step']) ? $_REQUEST['step'] : 0);
+$id = weRequest('int', 'ID', 0);
+$step = weRequest('int', 'step', 0);
 
-switch(isset($_REQUEST['function']) ? $_REQUEST['function'] : 'last'){
+switch(weRequest('string', 'function', 'last')){
 	default:
 	case 'last':
 		$cur = getHash('SELECT * FROM `' . ERROR_LOG_TABLE . '` ORDER By ID DESC LIMIT 1');
@@ -151,7 +151,7 @@ switch(isset($_REQUEST['function']) ? $_REQUEST['function'] : 'last'){
 		$data.='WE-Info:
 Version: ' . WE_VERSION . '
 SVN: ' . WE_SVNREV . ' ' . WE_VERSION_BRANCH . ' ' . WE_VERSION_SUPP . $sep .
-				'System:
+			'System:
 PHP: ' . phpversion() . '
 max_execution_time: ' . ini_get('max_execution_time') . '
 memory_limit: ' . ini_get('memory_limit') . '
@@ -159,7 +159,7 @@ short_open_tag: ' . ini_get('short_open_tag') . '
 post_max_size: ' . ini_get('post_max_size') . '
 max_input_vars: ' . ini_get('max_input_vars') . '
 session.auto_start: ' . ini_get('session.auto_start') . $sep .
-				'Mysql:
+			'Mysql:
 ' . $GLOBALS['DB_WE']->getInfo(false);
 
 		echo str_replace($_SERVER['DOCUMENT_ROOT'], 'DOCUMENT_ROOT', $data);
@@ -252,8 +252,8 @@ table.error td pre{
 	<div id="info" style="display: block;">
 		<?php
 		print we_html_multiIconBox::getJS() .
-				we_html_element::htmlDiv(array('style' => 'position:absolute; top:0px; left:30px;right:30px;height:60px;'), $size && $data ? getNavButtons($size, $pos, isset($cur['ID']) ? $cur['ID'] : 0) : '') .
-				we_html_element::htmlDiv(array('style' => 'position:absolute;top:60px;bottom:0px;left:0px;right:0px;'), we_html_multiIconBox::getHTML('', 700, $_parts, 30, $buttons, -1, '', '', false, "", "", "", "auto"));
+			we_html_element::htmlDiv(array('style' => 'position:absolute; top:0px; left:30px;right:30px;height:60px;'), $size && $data ? getNavButtons($size, $pos, isset($cur['ID']) ? $cur['ID'] : 0) : '') .
+			we_html_element::htmlDiv(array('style' => 'position:absolute;top:60px;bottom:0px;left:0px;right:0px;'), we_html_multiIconBox::getHTML('', 700, $_parts, 30, $buttons, -1, '', '', false, "", "", "", "auto"));
 		?>
 	</div>
 </body>

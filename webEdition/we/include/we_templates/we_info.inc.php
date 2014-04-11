@@ -225,12 +225,12 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 
 	//	12th row
 	$_table->setCol($_actRow++, 0, array("width" => $_widthTotal, "colspan" => 3), we_html_tools::getPixel($_widthTotal, 15));
-} else if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "info"){
+} else if(weRequest('string', 'we_cmd', '', 0) == "info"){
 	$_table->addRow();
 	$_table->setCol($_actRow++, 0, array("colspan" => 3), we_html_tools::getPixel(2, 50));
 }
 
-if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "info"){
+if(weRequest('string', 'we_cmd', '', 0) == "info"){
 	echo $_table->getHtml();
 } else {
 	$_loginTable = $_table->getHtml() . we_html_tools::getPixel(1, 1);

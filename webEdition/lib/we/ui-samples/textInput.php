@@ -13,7 +13,7 @@ $but = new we_ui_controls_Button(
 	array(
 	'title' => 'This is the title of the button!',
 	'text' => 'onClick / onMouseUp',
-	'onClick' => 'alert("Hello!");',
+	'onclick' => 'alert("Hello!");',
 	'type' => 'onClick',
 	'disabled' => false,
 	'hidden' => false,

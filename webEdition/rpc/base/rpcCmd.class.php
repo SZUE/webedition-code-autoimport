@@ -111,10 +111,7 @@ class rpcCmd{
 	}
 
 	function checkParameters(){
-
-
 		foreach($this->Parameters as $par){
-
 			if(!isset($_REQUEST[$par])){
 				$this->Status = self::STATUS_REQUEST_MALFORMED;
 				return false;

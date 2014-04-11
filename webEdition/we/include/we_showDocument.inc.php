@@ -34,10 +34,10 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 //  Diese we_cmds werden auf den Seiten gespeichert und nicht übergeben!!!!!
 //  Sie kommen von showDoc.php
-$we_ID = intval(isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : 0);
-$tmplID = intval(isset($_REQUEST['we_cmd'][4]) ? $_REQUEST['we_cmd'][4] : 0);
+$we_ID = weRequest('int', 'we_cmd', 0, 1);
+$tmplID = weRequest('int', 'we_cmd', 0, 4);
 //these come from external!
-$we_editmode = addslashes(isset($_REQUEST['we_cmd'][6]) ? $_REQUEST['we_cmd'][6] : '');
+$we_editmode = weRequest('bool', 'we_cmd', false, 6);
 //$createFromTmpFile = addslashes(isset($_REQUEST['we_cmd'][7]) ? $_REQUEST['we_cmd'][7] : '');
 
 $we_Table = FILE_TABLE;

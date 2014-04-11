@@ -100,7 +100,7 @@ class we_objectFile extends we_document{
 			}
 			$GLOBALS['we_object'][$formname]->we_new();
 			if(isset($_REQUEST['we_editObject_ID']) && $_REQUEST['we_editObject_ID']){
-				$GLOBALS['we_object'][$formname]->initByID(intval($_REQUEST['we_editObject_ID']), OBJECT_FILES_TABLE);
+				$GLOBALS['we_object'][$formname]->initByID(weRequest('int', 'we_editObject_ID', 0), OBJECT_FILES_TABLE);
 			} else {
 				$GLOBALS['we_object'][$formname]->TableID = $classID;
 				$GLOBALS['we_object'][$formname]->setRootDirID(true);
@@ -128,7 +128,7 @@ class we_objectFile extends we_document{
 			}
 		} else {
 			if(isset($_REQUEST['we_editObject_ID']) && $_REQUEST['we_editObject_ID']){
-				$GLOBALS['we_object'][$formname]->initByID(intval($_REQUEST['we_editObject_ID']), OBJECT_FILES_TABLE);
+				$GLOBALS['we_object'][$formname]->initByID(weRequest('int','we_editObject_ID',0), OBJECT_FILES_TABLE);
 			} elseif($session){
 				$GLOBALS['we_object'][$formname]->we_initSessDat($_SESSION['weS']['we_object_session_' . $formname]);
 			}
@@ -935,7 +935,7 @@ class we_objectFile extends we_document{
 			return we_html_button::create_button_table(
 					array(
 						$but,
-						'<span style="cursor: pointer;" class="weObjectPreviewHeadline" id="text_' . $uniq . '" onClick="weToggleBox(\'' . $uniq . '\',\'' . $txt . '\',\'' . $txt . '\');">' . $txt . '</span>' . ($npubl ? '' : ' <span class="weObjectPreviewHeadline" style="color:red">' . g_l('modules_object', '[not_published]') . '</span>')
+						'<span style="cursor: pointer;" class="weObjectPreviewHeadline" id="text_' . $uniq . '" onclick="weToggleBox(\'' . $uniq . '\',\'' . $txt . '\',\'' . $txt . '\');">' . $txt . '</span>' . ($npubl ? '' : ' <span class="weObjectPreviewHeadline" style="color:red">' . g_l('modules_object', '[not_published]') . '</span>')
 					)
 				) .
 				'<div id="table_' . $uniq . '" style="display:block; padding: 10px 0px 20px 30px;">' .
@@ -1095,7 +1095,7 @@ class we_objectFile extends we_document{
 				$content .= we_html_button::create_button_table(
 						array(
 							$but,
-							'<span style="cursor: pointer;" class="weObjectPreviewHeadline" id="text_' . $uniq . '" onClick="weToggleBox(\'' . $uniq . '\',\'' . $txt . '\',\'' . $txt . '\');" >' . $txt . '</span>'
+							'<span style="cursor: pointer;" class="weObjectPreviewHeadline" id="text_' . $uniq . '" onclick="weToggleBox(\'' . $uniq . '\',\'' . $txt . '\',\'' . $txt . '\');" >' . $txt . '</span>'
 						)
 				);
 

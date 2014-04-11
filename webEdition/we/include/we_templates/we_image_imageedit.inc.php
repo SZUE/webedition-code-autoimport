@@ -26,8 +26,8 @@ define("WE_EDIT_IMAGE", true);
 
 echo we_html_tools::getHtmlTop();
 
-if(isset($_REQUEST['we_cmd'][0]) && substr($_REQUEST['we_cmd'][0], 0, 15) == "doImage_convert"){
-	print we_html_element::jsElement('parent.frames[0].we_setPath("' . $we_doc->Path . '","' . $we_doc->Text . '", "' . $we_doc->ID . '");');
+if(substr(weRequest('string', 'we_cmd', '', 0), 0, 15) == "doImage_convert"){
+	echo we_html_element::jsElement('parent.frames[0].we_setPath("' . $we_doc->Path . '","' . $we_doc->Text . '", "' . $we_doc->ID . '");');
 }
 
 echo we_html_element::jsScript(JS_DIR . 'windows.js');

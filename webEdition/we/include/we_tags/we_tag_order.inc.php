@@ -35,17 +35,13 @@ function we_tag_order($attribs){
 	}
 
 	$condition = weTag_getAttribute("condition", $attribs, 0);
-	$we_orderid = weTag_getAttribute("id", $attribs, 0);
+	$we_orderid = weTag_getAttribute("id", $attribs, weRequest('int', 'we_orderid', 0));
 
 	$hidedirindex = weTag_getAttribute("hidedirindex", $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, true);
 
 	if(!isset($GLOBALS["we_lv_array"])){
 		$GLOBALS["we_lv_array"] = array();
 	}
-
-
-	$we_orderid = $we_orderid ? $we_orderid : (isset($_REQUEST["we_orderid"]) ? $_REQUEST["we_orderid"] : 0);
-
 
 	$GLOBALS["lv"] = new we_shop_ordertag(intval($we_orderid), $condition, $hidedirindex);
 	if(is_array($GLOBALS["we_lv_array"])){

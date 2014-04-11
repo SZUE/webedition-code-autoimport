@@ -4,7 +4,7 @@ $translate = we_core_Local::addTranslation('apps.xml');
 
 $htmlPage = we_ui_layout_HTMLPage::getInstance();
 
-$activTab = isset($_REQUEST['activTab']) ? ($_REQUEST['activTab']) : 'idPropertyTab';
+$activTab = weRequest('string', 'activTab', 'idPropertyTab');
 
 $propertiesTitle = $translate->_('Properties');
 $newTabTitle = $translate->_('New Tab');

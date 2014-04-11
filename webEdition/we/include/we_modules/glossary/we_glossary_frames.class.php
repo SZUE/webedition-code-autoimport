@@ -59,8 +59,7 @@ class we_glossary_frames extends weModuleFrames{
 		}
 
 		if(isset($_REQUEST['cmd'])){
-			switch($_REQUEST['cmd']){
-
+			switch(weRequest('string','cmd')){
 				// Folder View
 				case 'view_folder':
 					return we_glossary_frameEditorFolder::Header($this);
@@ -98,7 +97,7 @@ class we_glossary_frames extends weModuleFrames{
 		}
 
 		if(isset($_REQUEST['cmd'])){
-			switch($_REQUEST['cmd']){
+			switch(weRequest('string','cmd')){
 
 				// Folder View
 				case 'view_folder':
@@ -137,7 +136,7 @@ class we_glossary_frames extends weModuleFrames{
 		}
 
 		if(isset($_REQUEST['cmd'])){
-			switch($_REQUEST['cmd']){
+			switch(weRequest('string','cmd')){
 
 				// Folder View
 				case 'view_folder':

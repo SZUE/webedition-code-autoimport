@@ -28,8 +28,8 @@ class rpcGetSearchResultCmd extends rpcCmd{
 
 	function execute(){
 		$resp = new rpcResponse();
-		$whichsearch = $_REQUEST['whichsearch'];
-		$setView = $_REQUEST['we_cmd']['setView' . $whichsearch . ''];
+		$whichsearch = weRequest('string', 'whichsearch', '');
+		$setView = weRequest('string', 'we_cmd', '', 'setView' . $whichsearch);
 
 		$_REQUEST['we_cmd']['obj'] = unserialize($_SESSION['weSearch_session']);
 

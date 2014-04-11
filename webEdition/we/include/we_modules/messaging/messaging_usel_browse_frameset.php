@@ -174,10 +174,10 @@ echo we_html_tools::getHtmlTop() .
 					fr.write("&nbsp;&nbsp;<A href=\"javascript:top.openClose('" + nf[ai].name + "',0)\" BORDER=0><IMG SRC=<?php print TREE_IMAGE_DIR; ?>zu" + zusatz + ".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php print g_l('tree', "[close_statustext]") ?>\"></A>");
 					var zusatz2 = "open";
 				}
-				fr.write("<a name='_" + nf[ai].name + "' href=\"javascript://\" onClick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" BORDER=0>");
+				fr.write("<a name='_" + nf[ai].name + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" BORDER=0>");
 				fr.write("<IMG SRC=<?php print ICON_DIR; ?>usergroup" + zusatz2 + ".gif WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php print g_l('tree', "[edit_statustext]"); ?>\">");
 				fr.write("</a>");
-				fr.write("<A name='_" + nf[ai].name + "' HREF=\"javascript://\" onClick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">");
+				fr.write("<A name='_" + nf[ai].name + "' HREF=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">");
 				fr.write("&nbsp;<b>" + nf[ai].text + "</b>");
 				fr.write("</a>");
 				fr.write("&nbsp;&nbsp;<BR>\n");

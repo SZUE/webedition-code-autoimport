@@ -115,27 +115,28 @@ abstract class we_tool_lookup{
 	}
 
 	static function getPhpCmdInclude(){
-
-		if(isset($_REQUEST['we_cmd'][0])){
-			//FIX for charset in tools, due to not started session
-			$tmp = explode('_', $_REQUEST['we_cmd'][0]);
-			switch(isset($tmp[1]) ? $tmp[1] : ''){
-				case 'weSearch':
-					$_REQUEST['tool'] = $tmp[1];
-					return 'we_tools/' . $tmp[1] . '/hook/we_phpCmdHook_' . $tmp[1] . '.inc.php';
-				case 'navigation':
-					//TODO: does this work after refactoring navigation as a module
-					$_REQUEST['mod'] = 'navigation';
-					return 'we_modules/navigation/hook/we_phpCmdHook_' . $tmp[1] . '.inc.php';
-			}
-			$_tools = self::getAllTools(true, true);
-			foreach($_tools as $_tool){
-				if(stripos($_REQUEST['we_cmd'][0], 'tool_' . $_tool['name'] . '_') === 0){
-					$_REQUEST['tool'] = $_tool['name'];
-					return ($_REQUEST['tool'] == 'weSearch' || $_REQUEST['tool'] == 'navigation' ?
-							'we_tools/' : 'apps/' ) .
-						$_tool['name'] . '/hook/we_phpCmdHook_' . $_tool['name'] . '.inc.php';
-				}
+		$tmp = weRequest('string', 'we_cmd', '', 0);
+		if(!$tmp){
+			return '';
+		}
+		//FIX for charset in tools, due to not started session
+		$tmp = explode('_', $tmp);
+		switch(isset($tmp[1]) ? $tmp[1] : ''){
+			case 'weSearch':
+				$_REQUEST['tool'] = $tmp[1];
+				return 'we_tools/' . $tmp[1] . '/hook/we_phpCmdHook_' . $tmp[1] . '.inc.php';
+			case 'navigation':
+				//TODO: does this work after refactoring navigation as a module
+				$_REQUEST['mod'] = 'navigation';
+				return 'we_modules/navigation/hook/we_phpCmdHook_' . $tmp[1] . '.inc.php';
+		}
+		$_tools = self::getAllTools(true, true);
+		foreach($_tools as $_tool){
+			if(stripos($_REQUEST['we_cmd'][0], 'tool_' . $_tool['name'] . '_') === 0){
+				$_REQUEST['tool'] = $_tool['name'];
+				return ($_REQUEST['tool'] == 'weSearch' || $_REQUEST['tool'] == 'navigation' ?
+						'we_tools/' : 'apps/' ) .
+					$_tool['name'] . '/hook/we_phpCmdHook_' . $_tool['name'] . '.inc.php';
 			}
 		}
 

@@ -129,7 +129,7 @@ if(($_userID != 0 && $_userID != $_SESSION['user']['ID']) || (isset($_REQUEST['w
 	$tid = isset($_REQUEST['we_cmd'][2]) ? $_REQUEST['we_cmd'][2] : (isset($we_objectTID) ? $we_objectTID : '');
 
 	$GLOBALS['we_obj'] = new we_objectFile();
-	$GLOBALS['we_obj']->initByID(intval($_REQUEST['we_objectID']), OBJECT_FILES_TABLE);
+	$GLOBALS['we_obj']->initByID(weRequest('int', 'we_objectID', 0), OBJECT_FILES_TABLE);
 	$GLOBALS['we_obj']->setTitleAndDescription();
 
 	if(!$GLOBALS['we_obj']->Published){

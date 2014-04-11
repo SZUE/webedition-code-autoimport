@@ -45,22 +45,22 @@ class we_workflow_log{
 	}
 
 	static function getLogForDocument($docID, $order = "DESC", $wfType = 0){
-
-		$offset = isset($_REQUEST["offset"]) ? abs($_REQUEST["offset"]) : 0;
+		$offset = weRequest('int', 'offset', 0);
 		$db = new DB_WE();
-		$q = "SELECT " . WORKFLOW_LOG_TABLE . ".* FROM " . WORKFLOW_LOG_TABLE . "," . WORKFLOW_DOC_TABLE . "," . WORKFLOW_TABLE . " WHERE " . WORKFLOW_DOC_TABLE . ".workflowID=" . WORKFLOW_TABLE . ".ID AND " . WORKFLOW_TABLE . ".Type IN(" . $wfType . ") AND " . WORKFLOW_LOG_TABLE . ".RefID=" . WORKFLOW_DOC_TABLE . ".ID AND  " . WORKFLOW_DOC_TABLE . ".documentID=" . intval($docID) . " ORDER BY " . WORKFLOW_LOG_TABLE . ".logDate " . $db->escape($order) . ",ID DESC";
+		$q = 'SELECT ' . WORKFLOW_LOG_TABLE . '.* FROM ' . WORKFLOW_LOG_TABLE . ',' . WORKFLOW_DOC_TABLE . ',' . WORKFLOW_TABLE . ' WHERE ' . WORKFLOW_DOC_TABLE . '.workflowID=' . WORKFLOW_TABLE . '.ID AND ' . WORKFLOW_TABLE . '.Type IN(' . $wfType . ') AND ' . WORKFLOW_LOG_TABLE . '.RefID=' . WORKFLOW_DOC_TABLE . '.ID AND  ' . WORKFLOW_DOC_TABLE . '.documentID=' . intval($docID) . ' ORDER BY ' . WORKFLOW_LOG_TABLE . '.logDate ' . $db->escape($order) . ',ID DESC';
 
 
 		$db->query($q);
 
 		$GLOBALS["ANZ_LOGS"] = $db->num_rows();
 
-		$q .= " LIMIT $offset," . self::NUMBER_LOGS;
+		$q .= ' LIMIT ' . $offset . ', ' . self::NUMBER_LOGS;
 		$db->query($q);
 
 		$hash = array();
-		while($db->next_record())
+		while($db->next_record()){
 			$hash[] = $db->Record;
+		}
 		foreach($hash as $k => $v){
 			switch($hash[$k]["Type"]){
 				case self::TYPE_APPROVE:
@@ -94,13 +94,13 @@ class we_workflow_log{
 
 	function getLogForUser($userID){
 		$db = new DB_WE();
-		$db->query("SELECT * FROM " . WORKFLOW_LOG_TABLE . " WHERE userID=" . intval($userID));
+		$db->query('SELECT * FROM ' . WORKFLOW_LOG_TABLE . ' WHERE userID=' . intval($userID));
 		return $db->Record;
 	}
 
 	function clearLog($stamp = 0){
 		$db = new DB_WE();
-		$db->query("DELETE FROM " . WORKFLOW_LOG_TABLE . " " . ($stamp ? "WHERE logDate<" . intval($stamp) : "") . ";");
+		$db->query('DELETE FROM ' . WORKFLOW_LOG_TABLE . ' ' . ($stamp ? 'WHERE logDate<' . intval($stamp) : ''));
 	}
 
 }

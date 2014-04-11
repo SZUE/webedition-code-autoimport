@@ -27,13 +27,11 @@ class rpcGetDocElementCmd extends rpcCmd{
 	var $Parameters = array('docid', 'element');
 
 	function execute(){
-
 		$resp = new rpcResponse();
-
 
 		$_doc = new we_webEditionDocument();
 
-		$_doc->initByID($_REQUEST['docid']);
+		$_doc->initByID(weRequest('int', 'docid',0));
 
 		$resp->setData($_REQUEST['element'], $_doc->getElement($_REQUEST['element']));
 

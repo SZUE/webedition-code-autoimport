@@ -28,13 +28,8 @@ class rpcGetSearchResultCmd extends rpcCmd{
 
 		$resp = new rpcResponse();
 
-		//FIXME: not needed??
-		//$we_transaction = $_REQUEST['we_cmd']['we_transaction'];
-
-		/*$mode = $_REQUEST['we_cmd']['mode'];
-		$order = $_REQUEST['we_cmd']['order'];*/
-		$anzahl = intval($_REQUEST['we_cmd']['anzahl']);
-		$searchstart = intval($_REQUEST['we_cmd']['searchstart']);
+		$anzahl = weRequest('int', 'we_cmd', 0,'anzahl');
+		$searchstart = weRequest('int', 'we_cmd', 0,'searchstart');
 
 		$_REQUEST['we_cmd']['obj'] = 1;
 		$view = new weVersionsView();

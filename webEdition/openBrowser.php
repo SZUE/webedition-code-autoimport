@@ -24,9 +24,9 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
-if(is_numeric($_REQUEST["url"])){
+if(($id = weRequest('int', 'url'))){
 	srand((double) microtime() * 1000000);
-	$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published>0 AND ID=' . intval($_REQUEST["url"]), 'Path', $DB_WE);
+	$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published>0 AND ID=' . $id);
 	if($path){
 		$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE'], true);
 		if($urlReplace){
@@ -39,7 +39,7 @@ if(is_numeric($_REQUEST["url"])){
 		$loc = getServerUrl() . WEBEDITION_DIR . 'notPublished.php';
 	}
 } else {
-	$loc = filter_var($_REQUEST["url"], FILTER_VALIDATE_URL);
+	$loc = weRequest('url', 'url', '');
 }
 header('Location: ' . $loc);
 echo we_html_tools::getHtmlTop();

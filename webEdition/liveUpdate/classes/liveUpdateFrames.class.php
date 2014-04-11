@@ -34,95 +34,69 @@ class liveUpdateFrames{
 
 	function __construct(){
 
-		if(!isset($_REQUEST['section'])){
-			$_REQUEST['section'] = 'frameset';
-		}
-
 		// depending on section variables execute different stuff to gather
 		// data for the frame
-		if(isset($_REQUEST['section'])){
 
-			$this->Section = $_REQUEST['section'];
 
-			switch($_REQUEST['section']){
+		$this->Section = weRequest('string', 'section', 'frameset');
 
-				case 'frameset':
-					// open frameset
-					if(isset($_REQUEST['active'])){
-						$this->Data['activeTab'] = $this->getValidTab($_REQUEST['active']);
-					} else {
-						$this->Data['activeTab'] = $this->getValidTab();
-					}
-					break;
+		switch($this->Section){
+			case 'frameset':
+				// open frameset
+				$this->Data['activeTab'] = (isset($_REQUEST['active']) ?
+						$this->getValidTab($_REQUEST['active']) :
+						$this->getValidTab());
+				break;
+			case 'tabs':
+				// frame with tabs
+				$this->Data['activeTab'] = $_REQUEST['active'];
+				$this->Data['allTabs'] = $this->getAllTabs();
+				break;
 
-				case 'tabs':
-					// frame with tabs
-					$this->Data['activeTab'] = $_REQUEST['active'];
-					$this->Data['allTabs'] = $this->getAllTabs();
-					break;
+			case 'update':
+				$this->processUpdateVariables();
+				break;
 
-				case 'update':
-					$this->processUpdateVariables();
-					break;
+			case 'beta':
+				$this->processBeta();
+				break;
 
-				case 'beta':
-					$this->processBeta();
-					break;
+			case 'updatelog':
+				$this->processUpdateLogVariables();
+				break;
 
-				case 'updatelog':
-					$this->processUpdateLogVariables();
-					break;
-
-				case 'languages':
-					$this->processDeleteLanguages();
-					break;
-			}
+			case 'languages':
+				$this->processDeleteLanguages();
+				break;
 		}
 	}
 
 	function getFrame(){
 
 		switch($this->Section){
-
 			case 'tabs':
 				return $this->htmlTabs();
-				break;
 			case 'frameset':
 				return $this->htmlFrameset();
-				break;
-
 			case 'upgrade':
 				return $this->htmlUpgrade();
-				break;
 			case 'beta':
 				return $this->htmlBeta();
-				break;
 			case 'update':
 				return $this->htmlUpdate();
-				break;
 			case 'modules':
 				return $this->htmlModules();
-				break;
 			case 'languages':
 				return $this->htmlLanguages();
-				break;
-
 			case 'updatelog':
 				return $this->htmlUpdatelog();
-				break;
 			case 'connect':
 				return $this->htmlConnect();
-				break;
-
-
 			case 'nextVersion':
 				return $this->htmlNextVersion();
-				break;
-
-
 			default:
-				print "Frame $this->Section is not known!";
-				break;
+				echo "Frame $this->Section is not known!";
+				return;
 		}
 	}
 
@@ -138,13 +112,12 @@ class liveUpdateFrames{
 			$conf = we_base_file::load(LIVEUPDATE_DIR . 'conf/conf.inc.php');
 
 			if(strpos($conf, '$_REQUEST[\'testUpdate\']') !== false){
-				if($_REQUEST['setTestUpdate'] == 1){
+				if(weRequest('bool', 'setTestUpdate')){
 					if(strpos($conf, '$_REQUEST[\'testUpdate\'] = 0;') !== false){
 						$conf = str_replace('$_REQUEST[\'testUpdate\'] = 0;', '$_REQUEST[\'testUpdate\'] = 1;', $conf);
 						we_base_file::save(LIVEUPDATE_DIR . 'conf/conf.inc.php', $conf);
 					}
-				}
-				if($_REQUEST['setTestUpdate'] == 0){
+				} else {
 					if(strpos($conf, '$_REQUEST[\'testUpdate\'] = 1;') !== false){
 						$conf = str_replace('$_REQUEST[\'testUpdate\'] = 1;', '$_REQUEST[\'testUpdate\'] = 0;', $conf);
 						we_base_file::save(LIVEUPDATE_DIR . 'conf/conf.inc.php', $conf);
@@ -161,28 +134,18 @@ class liveUpdateFrames{
 	function processUpdateVariables(){
 		$this->Data['lastUpdate'] = g_l('liveUpdate', '[update][neverUpdated]');
 
-		$query = "
-			SELECT DATE_FORMAT(datum, \"%d.%m.%y - %T \") AS date
-			FROM " . UPDATE_LOG_TABLE . "
-			WHERE error=0
-			ORDER BY ID DESC
-			LIMIT 0,1
-		";
-		$GLOBALS['DB_WE']->query($query);
+		$GLOBALS['DB_WE']->query("SELECT DATE_FORMAT(datum, \"%d.%m.%y - %T \") AS date FROM " . UPDATE_LOG_TABLE . ' WHERE error=0 ORDER BY ID DESC LIMIT 0,1');
 		$GLOBALS['DB_WE']->next_record();
-
-		if($date = $GLOBALS['DB_WE']->f('date')){
+		if(($date = $GLOBALS['DB_WE']->f('date'))){
 			$this->Data['lastUpdate'] = $date;
 		}
 	}
 
 	function processDeleteLanguages(){
-
 		$deletedLngs = array();
 		$notDeletedLngs = array();
 
 		if(isset($_REQUEST['deleteLanguages']) && !empty($_REQUEST['deleteLanguages'])){
-
 			// update prefs_table
 			$cond = '';
 
@@ -195,7 +158,6 @@ class liveUpdateFrames{
 			$liveUpdateFunc = new liveUpdateFunctions();
 			// delete folders
 			foreach($_REQUEST['deleteLanguages'] as $lng){
-
 				if(strpos($lng, "..") === false && $lng != ""){
 					if($liveUpdateFunc->deleteDir(LIVEUPDATE_SOFTWARE_DIR . '/webEdition/we/include/we_language/' . $lng)){
 						$deletedLngs[] = $lng;
@@ -211,53 +173,38 @@ class liveUpdateFrames{
 
 	function processUpdateLogVariables(){
 		if(!isset($_REQUEST['start'])){
-
 			$_REQUEST['messages'] = true;
 			$_REQUEST['notices'] = true;
 			$_REQUEST['errors'] = true;
+			$_REQUEST['start'] = 0;
 		}
 
-		$_REQUEST['start'] = isset($_REQUEST['start']) ? $_REQUEST['start'] : 0;
 		$this->Data['amountPerPage'] = 5;
 
-		$condition = " WHERE 1 ";
-
-		if(!isset($_REQUEST['messages'])){
-			$condition .= " AND error != 0";
-		}
-		if(!isset($_REQUEST['notices'])){
-			$condition .= " AND error != 2";
-		}
-		if(!isset($_REQUEST['errors'])){
-			$condition .= " AND error != 1";
-		}
+		$condition = ' WHERE 1 ' .
+			(!isset($_REQUEST['messages']) ? " AND error!=0" : '') .
+			(!isset($_REQUEST['notices']) ? " AND error!=2" : '') .
+			(!isset($_REQUEST['errors']) ? " AND error!=1" : '');
 
 		/*
 		 * process update_cmd
 		 */
-		if(isset($_REQUEST['log_cmd'])){
 
-			switch($_REQUEST['log_cmd']){
+		switch(weRequest('string', 'log_cmd', '')){
+			case "deleteEntries":
+				$GLOBALS['DB_WE']->query('DELETE FROM ' . UPDATE_LOG_TABLE . " $condition");
+				$_REQUEST['start'] = 0;
 
-				case "deleteEntries":
-
-					$delQuery = "DELETE FROM " . UPDATE_LOG_TABLE . " $condition";
-
-					$GLOBALS['DB_WE']->query($delQuery);
-
-					$_REQUEST['start'] = 0;
-
-					break;
-				case "nextEntries":
-					$_REQUEST['start'] += $this->Data['amountPerPage'];
-					break;
-				case "lastEntries":
-					$_REQUEST['start'] -= $this->Data['amountPerPage'];
-					break;
-				default:
-					$_REQUEST['start'] = 0;
-					break;
-			}
+				break;
+			case "nextEntries":
+				$_REQUEST['start'] += $this->Data['amountPerPage'];
+				break;
+			case "lastEntries":
+				$_REQUEST['start'] -= $this->Data['amountPerPage'];
+				break;
+			default:
+				$_REQUEST['start'] = 0;
+				break;
 		}
 
 		if($_REQUEST['start'] < 0){
@@ -268,11 +215,6 @@ class liveUpdateFrames{
 		 * Check if there are Log-Entries
 		 */
 		// complete amount
-		$queryAmount = "
-				SELECT COUNT(ID) as amount, error
-				FROM " . UPDATE_LOG_TABLE . "
-				GROUP BY error
-			";
 
 		$this->Data['amountMessages'] = 0;
 		$this->Data['amountNotices'] = 0;
@@ -282,7 +224,7 @@ class liveUpdateFrames{
 
 		$this->Data['amountEntries'] = 0;
 
-		$GLOBALS['DB_WE']->query($queryAmount);
+		$GLOBALS['DB_WE']->query('SELECT COUNT(ID) as amount, error FROM ' . UPDATE_LOG_TABLE . ' GROUP BY error');
 		while($GLOBALS['DB_WE']->next_record()){
 
 			$this->Data['allEntries'] += $GLOBALS['DB_WE']->f('amount');
@@ -313,11 +255,9 @@ class liveUpdateFrames{
 			/*
 			 * There are entries available, get them
 			 */
-			$query = "SELECT DATE_FORMAT(datum, '%d.%m.%y&nbsp;/&nbsp;%H:%i') AS date, aktion, versionsnummer, error FROM " . UPDATE_LOG_TABLE . " $condition ORDER BY datum DESC LIMIT " . abs($_REQUEST['start']) . ", " . abs($this->Data['amountPerPage']);
-
 			$this->Data['logEntries'] = array();
 
-			$GLOBALS['DB_WE']->query($query);
+			$GLOBALS['DB_WE']->query("SELECT DATE_FORMAT(datum, '%d.%m.%y&nbsp;/&nbsp;%H:%i') AS date, aktion, versionsnummer, error FROM " . UPDATE_LOG_TABLE . " $condition ORDER BY datum DESC LIMIT " . abs($_REQUEST['start']) . ", " . abs($this->Data['amountPerPage']));
 			while(($row = $GLOBALS['DB_WE']->next_record())){
 
 				$this->Data['logEntries'][] = array(

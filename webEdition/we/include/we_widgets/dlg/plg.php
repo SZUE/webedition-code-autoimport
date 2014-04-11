@@ -124,24 +124,17 @@ $_dns = explode("\n", $websites);
 $sctDns = we_html_tools::htmlFormElementTable(
 		we_html_tools::htmlSelect("sct_dns", $_dns, 1, 0, false, array('onchange' => "", 'style' => "width:300px;"), 'value'), g_l('cockpit', "[domain]"));
 
-$chbxChart[0] = we_html_forms::checkbox(
-		$value = 0, $checked = 0, $name = "chbx_chart", $text = g_l('cockpit', '[visitors_data_today]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
-$chbxChart[1] = we_html_forms::checkbox(
-		$value = 0, $checked = 0, $name = "chbx_chart", $text = g_l('cockpit', '[visitors_data_yesterday]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
-$chbxChart[2] = we_html_forms::checkbox(
-		$value = 0, $checked = 0, $name = "chbx_chart", $text = g_l('cockpit', '[visitors_data_this_month]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
-$chbxChart[3] = we_html_forms::checkbox(
-		$value = 0, $checked = 0, $name = "chbx_chart", $text = g_l('cockpit', '[visitors_behaviour_today]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
-$chbxChart[4] = we_html_forms::checkbox(
-		$value = 0, $checked = 0, $name = "chbx_chart", $text = g_l('cockpit', '[Snapshot]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
-$chbxChart[5] = we_html_forms::checkbox(
-		$value = 0, $checked = 0, $name = "chbx_chart", $text = g_l('cockpit', '[top_visiting_periods]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
-$chbxChart[6] = we_html_forms::checkbox(
-		$value = 0, $checked = 0, $name = "chbx_chart", $text = g_l('cockpit', '[visitors_forecast]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
-$chbxChart[7] = we_html_forms::checkbox(
-		$value = 0, $checked = 0, $name = "chbx_chart", $text = g_l('cockpit', '[avg_amount_visitors]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
-$chbxChart[8] = we_html_forms::checkbox(
-		$value = 0, $checked = 0, $name = "chbx_chart", $text = g_l('cockpit', '[promo_value_tai]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
+$chbxChart = array(
+	we_html_forms::checkbox(0, 0, "chbx_chart", g_l('cockpit', '[visitors_data_today]'), true, "defaultfont", "", false, "", 0, 0),
+	we_html_forms::checkbox(0, 0, "chbx_chart", g_l('cockpit', '[visitors_data_yesterday]'), true, "defaultfont", "", false, "", 0, 0),
+	we_html_forms::checkbox(0, 0, "chbx_chart", g_l('cockpit', '[visitors_data_this_month]'), true, "defaultfont", "", false, "", 0, 0),
+	we_html_forms::checkbox(0, 0, "chbx_chart", g_l('cockpit', '[visitors_behaviour_today]'), true, "defaultfont", "", false, "", 0, 0),
+	we_html_forms::checkbox(0, 0, "chbx_chart", g_l('cockpit', '[Snapshot]'), true, "defaultfont", "", false, "", 0, 0),
+	we_html_forms::checkbox(0, 0, "chbx_chart", g_l('cockpit', '[top_visiting_periods]'), true, "defaultfont", "", false, "", 0, 0),
+	we_html_forms::checkbox(0, 0, "chbx_chart", g_l('cockpit', '[visitors_forecast]'), true, "defaultfont", "", false, "", 0, 0),
+	we_html_forms::checkbox(0, 0, "chbx_chart", g_l('cockpit', '[avg_amount_visitors]'), true, "defaultfont", "", false, "", 0, 0),
+	we_html_forms::checkbox(0, 0, "chbx_chart", g_l('cockpit', '[promo_value_tai]'), true, "defaultfont", "", false, "", 0, 0)
+);
 
 $chart = new we_html_table(array(
 	"cellpadding" => 0, "cellspacing" => 0, "border" => 0

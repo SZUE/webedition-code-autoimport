@@ -25,21 +25,16 @@
 class rpcDeleteVersionCmd extends rpcCmd{
 
 	function execute(){
-		$ids = array();
-
 		we_html_tools::protect();
 
-		if(isset($_REQUEST['we_cmd']["deleteVersion"]) && $_REQUEST['we_cmd']["deleteVersion"] != ""){
+		$ids = weRequest('intList', 'we_cmd', '', 'deleteVersion');
 
-			$ids = makeArrayFromCSV($_REQUEST['we_cmd']["deleteVersion"]);
-		}
-
-		if(!empty($ids)){
+		if($ids){
 			$_SESSION['weS']['versions']['logDeleteIds'] = array();
 			foreach($ids as $v){
 				weVersions::deleteVersion($v);
 			}
-			if(!empty($_SESSION['weS']['versions']['logDeleteIds'])){
+			if($_SESSION['weS']['versions']['logDeleteIds']){
 				$versionslog = new versionsLog();
 				$versionslog->saveVersionsLog($_SESSION['weS']['versions']['logDeleteIds'], versionsLog::VERSIONS_DELETE);
 			}

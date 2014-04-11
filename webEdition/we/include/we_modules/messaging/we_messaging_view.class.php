@@ -173,7 +173,7 @@ class we_messaging_view extends weModuleView{
 		}
 
 		$out = '';
-		switch($_REQUEST["mcmd"]){
+		switch(weRequest('string',"mcmd")){
 			case 'search_messages':
 			case 'show_folder_content':
 				return $this->get_folder_content(isset($_REQUEST['id']) ? $_REQUEST['id'] : "", isset($_REQUEST['sort']) ? $_REQUEST['sort'] : "", isset($_REQUEST['entrsel']) ? $_REQUEST['entrsel'] : "", isset($_REQUEST['searchterm']) ? $_REQUEST['searchterm'] : "", 1) .

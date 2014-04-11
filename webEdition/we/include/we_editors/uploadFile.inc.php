@@ -84,7 +84,7 @@ if(!isset($_SESSION['weS']['we_data'][$we_transaction])){
 			}
 
 			$_SESSION['weS']['we_data']["tmpName"] = $we_File;
-			if(isset($_REQUEST["import_metadata"]) && !empty($_REQUEST['import_metadata'])){
+			if(weRequest('bool', 'import_metadata')){
 				$we_doc->importMetaData();
 			}
 			$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session

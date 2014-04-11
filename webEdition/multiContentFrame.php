@@ -27,7 +27,7 @@ we_html_tools::protect();
 
 $_cmd_string = '';
 
-if(isset($_REQUEST['SEEM_edit_include']) && $_REQUEST['SEEM_edit_include']){
+if(weRequest('bool', 'SEEM_edit_include')){
 	for($i = 1; $i < 4; $i++){
 		$_cmd_string .= ",'" . $_REQUEST['we_cmd'][$i] . "'";
 	}

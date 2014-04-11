@@ -490,7 +490,7 @@ abstract class we_rebuild_base{
 			);
 		}
 
-		if(isset($_REQUEST['rebuildStaticAfterNavi']) && $_REQUEST['rebuildStaticAfterNavi'] == 1){
+		if(weRequest('bool', 'rebuildStaticAfterNavi')){
 			$data2 = self::getFilteredDocuments('', '', '', '', '');
 			$data = array_merge($data, $data2);
 		}

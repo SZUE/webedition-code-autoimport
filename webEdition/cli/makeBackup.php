@@ -241,7 +241,7 @@ if(PEAR::isError($options)){
 	fwrite(STDERR, $_cliHelp . "\n");
 	exit(INVALID_OPTION);
 }
-if(!empty($args)){
+if($args){
 	$_REQUEST['compress'] = false;
 	$_REQUEST['verbose'] = false;
 	$_REQUEST['handle_extern'] = false;

@@ -29,5 +29,5 @@ function we_tag_processDateSelect($attribs){
 	$name = weTag_getAttribute("name", $attribs);
 	$endofday = weTag_getAttribute("endofday", $attribs, false, true);
 	$GLOBALS[$name] = $_REQUEST[$name] = mktime(
-		$endofday ? 23 : 0, $endofday ? 59 : 0, $endofday ? 59 : 0, isset($_REQUEST[$name . "_month"]) ? intval($_REQUEST[$name . "_month"]) : 0, isset($_REQUEST[$name . "_day"]) ? intval($_REQUEST[$name . "_day"]) : 0, isset($_REQUEST[$name . "_year"]) ? intval($_REQUEST[$name . "_year"]) : 0);
+		$endofday ? 23 : 0, $endofday ? 59 : 0, $endofday ? 59 : 0, weRequest('int', $name . "_month",0), weRequest('int', $name . "_day", 0), weRequest('int', $name . "_year",0));
 }

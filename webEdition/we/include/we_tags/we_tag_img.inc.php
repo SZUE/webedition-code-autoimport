@@ -72,11 +72,9 @@ function we_tag_img($attribs){
 	}
 
 	// images can now have custom attribs
-	if(!(isset($_REQUEST['we_cmd'][0]) &&
-		$_REQUEST['we_cmd'][0] == 'reload_editpage' &&
-		(isset($_REQUEST['we_cmd'][1]) && $name == $_REQUEST['we_cmd'][1]) &&
-		isset($_REQUEST['we_cmd'][2]) &&
-		$_REQUEST['we_cmd'][2] == 'change_image') &&
+	if(!(weRequest('string', 'we_cmd', '', 0)=='reload_editpage' &&
+		($name == weRequest('string', 'we_cmd', '', 1)) &&
+		weRequest('string', 'we_cmd', '', 2) == 'change_image') &&
 		isset($GLOBALS['we_doc']->elements[$altField])){ // if no other image is selected.
 		$alt = $GLOBALS['we_doc']->getElement($altField);
 		$title = $GLOBALS['we_doc']->getElement($titleField);

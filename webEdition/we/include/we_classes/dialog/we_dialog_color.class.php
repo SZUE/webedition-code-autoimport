@@ -43,7 +43,7 @@ for ( col in we_color2 ){
 		document.writeln(\'<tr>\');
 	}
 
-document.writeln(\'<td bgcolor="\'+col+\'"><a href="#" onClick="selectColor(\\\'\'+col+\'\\\');"><span style="display:inline-block;width:15px;height:15px" title="\'+we_color2[col]+\'"></span></a></td>\');
+document.writeln(\'<td bgcolor="\'+col+\'"><a href="#" onclick="selectColor(\\\'\'+col+\'\\\');"><span style="display:inline-block;width:15px;height:15px" title="\'+we_color2[col]+\'"></span></a></td>\');
 
 if(z==17){
 		document.writeln(\'</tr>\');

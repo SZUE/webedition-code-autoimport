@@ -53,7 +53,7 @@ abstract class we_html_multiIconBox{
 			if($i == $foldAtNr && $foldAtNr < count($content)){ // only if the folded items contain stuff.
 				$out .= we_html_button::create_button_table(array(
 						we_html_multiIconBox::_getButton($uniqname, ($delegate ? $delegate : "" ) . ";weToggleBox('$uniqname','" . addslashes($foldDown) . "','" . addslashes($foldRight) . "')", ($displayAtStartup ? "down" : "right"), g_l('global', "[openCloseBox]")),
-						'<span style="cursor: pointer;" class="defaultfont" id="text_' . $uniqname . '" onClick="' . ($delegate ? $delegate : "" ) . ';weToggleBox(\'' . $uniqname . '\',\'' . addslashes($foldDown) . '\',\'' . addslashes($foldRight) . '\');">' . ($displayAtStartup ? $foldDown : $foldRight) . '</span>'
+						'<span style="cursor: pointer;" class="defaultfont" id="text_' . $uniqname . '" onclick="' . ($delegate ? $delegate : "" ) . ';weToggleBox(\'' . $uniqname . '\',\'' . addslashes($foldDown) . '\',\'' . addslashes($foldRight) . '\');">' . ($displayAtStartup ? $foldDown : $foldRight) . '</span>'
 						), 10, array('style' => 'margin-left:' . $marginLeft . 'px;')
 					) .
 					'<br/><table id="table_' . $uniqname . '" width="100%" cellpadding="0" style="border-spacing: 0px;border-style:none;' . ($displayAtStartup ? '' : 'display:none') . '"><tr><td>';

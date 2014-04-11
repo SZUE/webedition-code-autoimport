@@ -1025,7 +1025,7 @@ _multiEditorreload = true;";
 					}
 					$this->setPreference($val, (isset($_POST[$obj]) ? $_POST[$obj] : 0));
 				}
-				switch($_REQUEST['seem_start_type']){
+				switch(weRequest('string','seem_start_type')){
 					case 'cockpit':
 						$this->setPreference('seem_start_file', 0);
 						$this->setPreference('seem_start_type', 'cockpit');

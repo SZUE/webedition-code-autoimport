@@ -31,7 +31,7 @@ class rpcGetAllDocElementsCmd extends rpcCmd{
 		$resp = new rpcResponse();
 
 		$_doc = new we_webEditionDocument();
-		$_doc->initByID($_REQUEST['docid']);
+		$_doc->initByID(weRequest('int', 'docid',0));
 
 		$resp->setData('elements', $_doc->elements);
 

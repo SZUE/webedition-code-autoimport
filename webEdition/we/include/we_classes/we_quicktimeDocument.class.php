@@ -293,13 +293,13 @@ class we_quicktimeDocument extends we_binaryDocument{
 		$webuserId = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
 		foreach($_FILES["we_ui_$formname"]["name"] as $quicktimeName => $filename){
 
-			$_quicktimeDataId = isset($_REQUEST['WE_UI_QUICKTIME_DATA_ID_' . $quicktimeName]) ? $_REQUEST['WE_UI_QUICKTIME_DATA_ID_' . $quicktimeName] : false;
+			$_quicktimeDataId = weRequest('string', 'WE_UI_QUICKTIME_DATA_ID_' . $quicktimeName);
 
 			if($_quicktimeDataId !== false && isset($_SESSION[$_quicktimeDataId])){
 
 				$_SESSION[$_quicktimeDataId]['doDelete'] = false;
 
-				if(isset($_REQUEST["WE_UI_DEL_CHECKBOX_" . $quicktimeName]) && $_REQUEST["WE_UI_DEL_CHECKBOX_" . $quicktimeName] == 1){
+				if(weRequest('bool', 'WE_UI_DEL_CHECKBOX_' . $quicktimeName)){
 					$_SESSION[$_quicktimeDataId]['doDelete'] = true;
 				} elseif($filename){
 					// file is selected, check to see if it is an image

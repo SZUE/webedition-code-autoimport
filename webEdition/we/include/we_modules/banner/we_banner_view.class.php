@@ -24,7 +24,7 @@
  */
 /* the parent class of storagable webEdition classes */
 
-class we_banner_view extends we_banner_base {
+class we_banner_view extends we_banner_base{
 
 	// settings array; format settings[setting_name]=settings_value
 	var $settings = array();
@@ -451,10 +451,10 @@ class we_banner_view extends we_banner_base {
 
 			function submitForm() {
 				var f = self.document.we_form;
-								f.target = (arguments[0]?arguments[0]:"edbody");
-								f.action = (arguments[1]?arguments[1]:"");
-								f.method = (arguments[2]?arguments[2]:"post");
-								f.submit();
+				f.target = (arguments[0] ? arguments[0] : "edbody");
+				f.action = (arguments[1] ? arguments[1] : "");
+				f.method = (arguments[2] ? arguments[2] : "post");
+				f.submit();
 			}
 			function checkData() {
 
@@ -467,246 +467,245 @@ class we_banner_view extends we_banner_base {
 	}
 
 	function processCommands(){
-		if(isset($_REQUEST["ncmd"]))
-			switch($_REQUEST["ncmd"]){
-				case "delete_stat":
-					$this->banner->views = 0;
-					$this->banner->clicks = 0;
-					$this->db->query('UPDATE ' . BANNER_TABLE . ' SET views=0,clicks=0 WHERE ID=' . intval($this->banner->ID));
-					$this->db->query('DELETE FROM ' . BANNER_CLICKS_TABLE . ' WHERE ID=' . intval($this->banner->ID));
-					$this->db->query('DELETE FROM ' . BANNER_VIEWS_TABLE . ' WHERE ID=' . intval($this->banner->ID));
-					break;
-				case "new_banner":
-					$this->page = 0;
-					$this->banner = new we_banner_banner();
-					print we_html_element::jsElement('
+		switch(weRequest('string', "ncmd")){
+			case "delete_stat":
+				$this->banner->views = 0;
+				$this->banner->clicks = 0;
+				$this->db->query('UPDATE ' . BANNER_TABLE . ' SET views=0,clicks=0 WHERE ID=' . intval($this->banner->ID));
+				$this->db->query('DELETE FROM ' . BANNER_CLICKS_TABLE . ' WHERE ID=' . intval($this->banner->ID));
+				$this->db->query('DELETE FROM ' . BANNER_VIEWS_TABLE . ' WHERE ID=' . intval($this->banner->ID));
+				break;
+			case "new_banner":
+				$this->page = 0;
+				$this->banner = new we_banner_banner();
+				print we_html_element::jsElement('
 					top.content.editor.edheader.location="edit_banner_frameset.php?pnt=edheader&page=' . $this->page . '&txt=' . $this->banner->Path . '&isFolder=' . $this->banner->IsFolder . '";
 					top.content.editor.edfooter.location="edit_banner_frameset.php?pnt=edfooter";
 					');
-					break;
-				case "new_bannergroup":
-					$this->page = 0;
-					$this->banner = new we_banner_banner(0, 1);
-					print we_html_element::jsElement('
+				break;
+			case "new_bannergroup":
+				$this->page = 0;
+				$this->banner = new we_banner_banner(0, 1);
+				print we_html_element::jsElement('
 					top.content.editor.edheader.location="edit_banner_frameset.php?pnt=edheader&page=' . $this->page . '&txt=' . $this->banner->Path . '&isFolder=' . $this->banner->IsFolder . '";
 					top.content.editor.edfooter.location="edit_banner_frameset.php?pnt=edfooter";
 					');
-					break;
-				case "reload":
-					print we_html_element::jsElement('
+				break;
+			case "reload":
+				print we_html_element::jsElement('
 					top.content.editor.edheader.location="edit_banner_frameset.php?pnt=edheader&page=' . $this->page . '&txt=' . $this->banner->Path . '&isFolder=' . $this->banner->IsFolder . '";
 					top.content.editor.edfooter.location="edit_banner_frameset.php?pnt=edfooter";') . '
 					</head>
 					<body></body>
 					</html>';
-					break;
-				case "edit_banner":
-					if(isset($_REQUEST["bid"])){
+				break;
+			case "edit_banner":
+				if(isset($_REQUEST["bid"])){
+					$this->banner = new we_banner_banner($_REQUEST["bid"]);
+				}
+				if($this->banner->IsFolder){
+					$this->page = 0;
+				}
+				$_REQUEST["ncmd"] = "reload";
+				$this->processCommands();
+
+				break;
+			case "add_cat":
+				$arr = makeArrayFromCSV($this->banner->CategoryIDs);
+				if(isset($_REQUEST["ncmdvalue"])){
+					$ids = makeArrayFromCSV($_REQUEST["ncmdvalue"]);
+					foreach($ids as $id){
+						if($id && (!in_array($id, $arr))){
+							$arr[] = $id;
+						}
+					}
+					$this->banner->CategoryIDs = makeCSVFromArray($arr, true);
+				}
+				break;
+			case "del_cat":
+				$arr = makeArrayFromCSV($this->banner->CategoryIDs);
+				if(isset($_REQUEST["ncmdvalue"])){
+					foreach($arr as $k => $v){
+						if($v == $_REQUEST["ncmdvalue"])
+							array_splice($arr, $k, 1);
+					}
+					$this->banner->CategoryIDs = makeCSVFromArray($arr, true);
+				}
+				break;
+			case "del_all_cats":
+				$this->banner->CategoryIDs = "";
+				break;
+			case "add_file":
+				$arr = makeArrayFromCSV($this->banner->FileIDs);
+				if(isset($_REQUEST["ncmdvalue"])){
+					$ids = makeArrayFromCSV($_REQUEST["ncmdvalue"]);
+					foreach($ids as $id){
+						if($id && (!in_array($id, $arr))){
+							$arr[] = $id;
+						}
+					}
+					$this->banner->FileIDs = makeCSVFromArray($arr, true);
+				}
+				break;
+			case "del_file":
+				$arr = makeArrayFromCSV($this->banner->FileIDs);
+				if(isset($_REQUEST["ncmdvalue"])){
+					foreach($arr as $k => $v){
+						if($v == $_REQUEST["ncmdvalue"])
+							array_splice($arr, $k, 1);
+					}
+					$this->banner->FileIDs = makeCSVFromArray($arr, true);
+				}
+				break;
+			case "del_all_files":
+				$this->banner->FileIDs = "";
+				break;
+			case "add_folder":
+				$arr = makeArrayFromCSV($this->banner->FolderIDs);
+				if(isset($_REQUEST["ncmdvalue"])){
+					$ids = makeArrayFromCSV($_REQUEST["ncmdvalue"]);
+					foreach($ids as $id){
+						if(strlen($id) && (!in_array($id, $arr))){
+							$arr[] = $id;
+						}
+					}
+					$this->banner->FolderIDs = makeCSVFromArray($arr, true);
+				}
+				break;
+			case "add_customer":
+				$arr = makeArrayFromCSV($this->banner->Customers);
+				if(isset($_REQUEST["ncmdvalue"])){
+					$ids = makeArrayFromCSV($_REQUEST["ncmdvalue"]);
+					foreach($ids as $id){
+						if($id && (!in_array($id, $arr))){
+							$arr[] = $id;
+						}
+					}
+					$this->banner->Customers = makeCSVFromArray($arr, true);
+				}
+				break;
+			case "del_customer":
+				$arr = makeArrayFromCSV($this->banner->Customers);
+				if(isset($_REQUEST["ncmdvalue"])){
+					foreach($arr as $k => $v){
+						if($v == $_REQUEST["ncmdvalue"])
+							array_splice($arr, $k, 1);
+					}
+					$this->banner->Customers = makeCSVFromArray($arr, true);
+				}
+				break;
+			case "del_all_customers":
+				$this->banner->Customers = "";
+				break;
+			case "del_folder":
+				$arr = makeArrayFromCSV($this->banner->FolderIDs);
+				if(isset($_REQUEST["ncmdvalue"])){
+					foreach($arr as $k => $v){
+						if($v == $_REQUEST["ncmdvalue"])
+							array_splice($arr, $k, 1);
+					}
+					$this->banner->FolderIDs = makeCSVFromArray($arr, true);
+				}
+				break;
+			case "del_all_folders":
+				$this->banner->FolderIDs = "";
+				break;
+			case "switchPage":
+				if(isset($_REQUEST["page"])){
+					$this->page = $_REQUEST["page"];
+				}
+				break;
+			case "save_banner":
+				if(isset($_REQUEST["bid"])){
+					$newone = ($this->banner->ID == 0);
+					$exist = false;
+					$double = f('SELECT COUNT(1) AS Count FROM ' . BANNER_TABLE . " WHERE Text='" . $this->db->escape($this->banner->Text) . "' AND ParentID=" . intval($this->banner->ParentID) . ($newone ? '' : ' AND ID!=' . intval($this->banner->ID)), 'Count', $this->db);
+					$acQuery = new we_selector_query();
+					if(!permissionhandler::hasPerm("EDIT_BANNER") && !permissionhandler::hasPerm("NEW_BANNER")){
+						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
+						return;
+					} elseif($newone && !permissionhandler::hasPerm("NEW_BANNER")){
+						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
+						return;
+					} elseif($this->banner->Text == ""){
+						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[no_text]'), we_message_reporting::WE_MESSAGE_ERROR));
+						return;
+					} elseif(preg_match('|[%/\\\"\']|', $this->banner->Text)){
+						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR));
+						return;
+					} elseif(!$this->banner->bannerID && !$this->banner->IsFolder){
+						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[no_bannerid]'), we_message_reporting::WE_MESSAGE_ERROR));
+						return;
+					} elseif($this->banner->ID && ($this->banner->ID == $this->banner->ParentID)){
+						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[no_group_in_group]'), we_message_reporting::WE_MESSAGE_ERROR));
+						return;
+					} elseif($double){
+						if($double){
+							print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[double_name]'), we_message_reporting::WE_MESSAGE_ERROR));
+							return;
+						}
+					}
+
+					if($this->banner->ParentID > 0){
+						$acResult = $acQuery->getItemById($this->banner->ParentID, BANNER_TABLE, "IsFolder");
+						if(!$acResult || (isset($acResult[0]['IsFolder']) && $acResult[0]['IsFolder'] == 0)){
+							print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[error_ac_field]'), we_message_reporting::WE_MESSAGE_ERROR));
+							return;
+						}
+					}
+					if($this->banner->IntHref){
+						$acResult = $acQuery->getItemById($this->banner->bannerIntID, FILE_TABLE, array("IsFolder"));
+						if(!$acResult || $acResult[0]['IsFolder'] == 1){
+							print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[error_ac_field]'), we_message_reporting::WE_MESSAGE_ERROR));
+							return;
+						}
+					}
+					if($this->banner->bannerID > 0){
+						$acResult = $acQuery->getItemById($this->banner->bannerID, FILE_TABLE, array("ContentType"));
+						if(!$acResult || $acResult[0]['ContentType'] != we_base_ContentTypes::IMAGE){
+							print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[error_ac_field]'), we_message_reporting::WE_MESSAGE_ERROR));
+							return;
+						}
+					}
+
+
+					$childs = "";
+					$message = "";
+					$this->banner->save($message);
+					echo we_html_element::jsElement(
+						($newone ?
+							'top.content.makeNewEntry("' . $this->banner->Icon . '",' . $this->banner->ID . ',' . $this->banner->ParentID . ',"' . $this->banner->Text . '",true,"' . ($this->banner->IsFolder ? 'folder' : 'file') . '","weBanner",1);' :
+							'top.content.updateEntry(' . $this->banner->ID . ',' . $this->banner->ParentID . ',"' . $this->banner->Text . '",1);') .
+						$childs .
+						we_message_reporting::getShowMessageCall(($this->banner->IsFolder ? g_l('modules_banner', '[save_group_ok]') : g_l('modules_banner', '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE));
+				}
+				break;
+			case "delete_banner":
+				if(isset($_REQUEST["bid"])){
+					if(!permissionhandler::hasPerm("DELETE_BANNER")){
+						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
+						return;
+					} else {
+
 						$this->banner = new we_banner_banner($_REQUEST["bid"]);
-					}
-					if($this->banner->IsFolder){
-						$this->page = 0;
-					}
-					$_REQUEST["ncmd"] = "reload";
-					$this->processCommands();
-
-					break;
-				case "add_cat":
-					$arr = makeArrayFromCSV($this->banner->CategoryIDs);
-					if(isset($_REQUEST["ncmdvalue"])){
-						$ids = makeArrayFromCSV($_REQUEST["ncmdvalue"]);
-						foreach($ids as $id){
-							if($id && (!in_array($id, $arr))){
-								$arr[] = $id;
-							}
-						}
-						$this->banner->CategoryIDs = makeCSVFromArray($arr, true);
-					}
-					break;
-				case "del_cat":
-					$arr = makeArrayFromCSV($this->banner->CategoryIDs);
-					if(isset($_REQUEST["ncmdvalue"])){
-						foreach($arr as $k => $v){
-							if($v == $_REQUEST["ncmdvalue"])
-								array_splice($arr, $k, 1);
-						}
-						$this->banner->CategoryIDs = makeCSVFromArray($arr, true);
-					}
-					break;
-				case "del_all_cats":
-					$this->banner->CategoryIDs = "";
-					break;
-				case "add_file":
-					$arr = makeArrayFromCSV($this->banner->FileIDs);
-					if(isset($_REQUEST["ncmdvalue"])){
-						$ids = makeArrayFromCSV($_REQUEST["ncmdvalue"]);
-						foreach($ids as $id){
-							if($id && (!in_array($id, $arr))){
-								$arr[] = $id;
-							}
-						}
-						$this->banner->FileIDs = makeCSVFromArray($arr, true);
-					}
-					break;
-				case "del_file":
-					$arr = makeArrayFromCSV($this->banner->FileIDs);
-					if(isset($_REQUEST["ncmdvalue"])){
-						foreach($arr as $k => $v){
-							if($v == $_REQUEST["ncmdvalue"])
-								array_splice($arr, $k, 1);
-						}
-						$this->banner->FileIDs = makeCSVFromArray($arr, true);
-					}
-					break;
-				case "del_all_files":
-					$this->banner->FileIDs = "";
-					break;
-				case "add_folder":
-					$arr = makeArrayFromCSV($this->banner->FolderIDs);
-					if(isset($_REQUEST["ncmdvalue"])){
-						$ids = makeArrayFromCSV($_REQUEST["ncmdvalue"]);
-						foreach($ids as $id){
-							if(strlen($id) && (!in_array($id, $arr))){
-								$arr[] = $id;
-							}
-						}
-						$this->banner->FolderIDs = makeCSVFromArray($arr, true);
-					}
-					break;
-				case "add_customer":
-					$arr = makeArrayFromCSV($this->banner->Customers);
-					if(isset($_REQUEST["ncmdvalue"])){
-						$ids = makeArrayFromCSV($_REQUEST["ncmdvalue"]);
-						foreach($ids as $id){
-							if($id && (!in_array($id, $arr))){
-								$arr[] = $id;
-							}
-						}
-						$this->banner->Customers = makeCSVFromArray($arr, true);
-					}
-					break;
-				case "del_customer":
-					$arr = makeArrayFromCSV($this->banner->Customers);
-					if(isset($_REQUEST["ncmdvalue"])){
-						foreach($arr as $k => $v){
-							if($v == $_REQUEST["ncmdvalue"])
-								array_splice($arr, $k, 1);
-						}
-						$this->banner->Customers = makeCSVFromArray($arr, true);
-					}
-					break;
-				case "del_all_customers":
-					$this->banner->Customers = "";
-					break;
-				case "del_folder":
-					$arr = makeArrayFromCSV($this->banner->FolderIDs);
-					if(isset($_REQUEST["ncmdvalue"])){
-						foreach($arr as $k => $v){
-							if($v == $_REQUEST["ncmdvalue"])
-								array_splice($arr, $k, 1);
-						}
-						$this->banner->FolderIDs = makeCSVFromArray($arr, true);
-					}
-					break;
-				case "del_all_folders":
-					$this->banner->FolderIDs = "";
-					break;
-				case "switchPage":
-					if(isset($_REQUEST["page"])){
-						$this->page = $_REQUEST["page"];
-					}
-					break;
-				case "save_banner":
-					if(isset($_REQUEST["bid"])){
-						$newone = ($this->banner->ID == 0);
-						$exist = false;
-						$double = f('SELECT COUNT(1) AS Count FROM ' . BANNER_TABLE . " WHERE Text='" . $this->db->escape($this->banner->Text) . "' AND ParentID=" . intval($this->banner->ParentID) . ($newone ? '' : ' AND ID!=' . intval($this->banner->ID)), 'Count', $this->db);
-						$acQuery = new we_selector_query();
-						if(!permissionhandler::hasPerm("EDIT_BANNER") && !permissionhandler::hasPerm("NEW_BANNER")){
-							print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
-							return;
-						} elseif($newone && !permissionhandler::hasPerm("NEW_BANNER")){
-							print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
-							return;
-						} elseif($this->banner->Text == ""){
-							print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[no_text]'), we_message_reporting::WE_MESSAGE_ERROR));
-							return;
-						} elseif(preg_match('|[%/\\\"\']|', $this->banner->Text)){
-							print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR));
-							return;
-						} elseif(!$this->banner->bannerID && !$this->banner->IsFolder){
-							print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[no_bannerid]'), we_message_reporting::WE_MESSAGE_ERROR));
-							return;
-						} elseif($this->banner->ID && ($this->banner->ID == $this->banner->ParentID)){
-							print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[no_group_in_group]'), we_message_reporting::WE_MESSAGE_ERROR));
-							return;
-						} elseif($double){
-							if($double){
-								print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[double_name]'), we_message_reporting::WE_MESSAGE_ERROR));
-								return;
-							}
-						}
-
-						if($this->banner->ParentID > 0){
-							$acResult = $acQuery->getItemById($this->banner->ParentID, BANNER_TABLE, "IsFolder");
-							if(!$acResult || (isset($acResult[0]['IsFolder']) && $acResult[0]['IsFolder'] == 0)){
-								print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[error_ac_field]'), we_message_reporting::WE_MESSAGE_ERROR));
-								return;
-							}
-						}
-						if($this->banner->IntHref){
-							$acResult = $acQuery->getItemById($this->banner->bannerIntID, FILE_TABLE, array("IsFolder"));
-							if(!$acResult || $acResult[0]['IsFolder'] == 1){
-								print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[error_ac_field]'), we_message_reporting::WE_MESSAGE_ERROR));
-								return;
-							}
-						}
-						if($this->banner->bannerID > 0){
-							$acResult = $acQuery->getItemById($this->banner->bannerID, FILE_TABLE, array("ContentType"));
-							if(!$acResult || $acResult[0]['ContentType'] != we_base_ContentTypes::IMAGE){
-								print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[error_ac_field]'), we_message_reporting::WE_MESSAGE_ERROR));
-								return;
-							}
-						}
-
-
-						$childs = "";
-						$message = "";
-						$this->banner->save($message);
-						echo we_html_element::jsElement(
-							($newone ?
-								'top.content.makeNewEntry("' . $this->banner->Icon . '",' . $this->banner->ID . ',' . $this->banner->ParentID . ',"' . $this->banner->Text . '",true,"' . ($this->banner->IsFolder ? 'folder' : 'file') . '","weBanner",1);' :
-								'top.content.updateEntry(' . $this->banner->ID . ',' . $this->banner->ParentID . ',"' . $this->banner->Text . '",1);') .
-							$childs .
-							we_message_reporting::getShowMessageCall(($this->banner->IsFolder ? g_l('modules_banner', '[save_group_ok]') : g_l('modules_banner', '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE));
-					}
-					break;
-				case "delete_banner":
-					if(isset($_REQUEST["bid"])){
-						if(!permissionhandler::hasPerm("DELETE_BANNER")){
-							print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
-							return;
-						} else {
-
-							$this->banner = new we_banner_banner($_REQUEST["bid"]);
-							if($this->banner->delete()){
-								$this->banner = new we_banner_banner(0, $this->banner->IsFolder);
-								print we_html_element::jsElement('
+						if($this->banner->delete()){
+							$this->banner = new we_banner_banner(0, $this->banner->IsFolder);
+							print we_html_element::jsElement('
 							top.content.deleteEntry(' . $_REQUEST["bid"] . ',"' . ($this->banner->IsFolder ? 'folder' : 'file') . '");
 							' . we_message_reporting::getShowMessageCall(($this->banner->IsFolder ? g_l('modules_banner', '[delete_group_ok]') : g_l('modules_banner', '[delete_ok]')), we_message_reporting::WE_MESSAGE_NOTICE) . '
 							top.content.we_cmd("new_banner");
 							');
-							} else {
-								print we_html_element::jsElement(we_message_reporting::getShowMessageCall(($this->banner->IsFolder ? g_l('modules_banner', '[delete_group_nok]') : g_l('modules_banner', '[delete_nok]')), we_message_reporting::WE_MESSAGE_ERROR));
-							}
+						} else {
+							print we_html_element::jsElement(we_message_reporting::getShowMessageCall(($this->banner->IsFolder ? g_l('modules_banner', '[delete_group_nok]') : g_l('modules_banner', '[delete_nok]')), we_message_reporting::WE_MESSAGE_ERROR));
 						}
 					}
-					break;
-				case "reload_table":
-					$this->page = 1;
-					break;
-				default:
-			}
+				}
+				break;
+			case "reload_table":
+				$this->page = 1;
+				break;
+			default:
+		}
 	}
 
 	function processVariables(){

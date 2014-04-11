@@ -26,9 +26,9 @@ class rpcResetFailedCustomerLoginsCmd extends rpcCmd{
 
 	function execute(){
 		$resp = new rpcResponse();
-		$custid = $_REQUEST['custid'];
+		$custid = weRequest('int', 'custid',0);
 		$db = $GLOBALS['DB_WE'];
-		$user = f('SELECT Username FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($custid), 'Username', $db);
+		$user = f('SELECT Username FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . $custid);
 		if($user){
 			$db->query('UPDATE ' . FAILED_LOGINS_TABLE . ' SET isValid="false" WHERE UserTable="tblWebUser" AND Username="' . $user . '"');
 			$resp->setData('data', 'true');

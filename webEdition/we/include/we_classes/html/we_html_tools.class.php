@@ -351,7 +351,7 @@ abstract class we_html_tools{
 		return ($disabled ?
 				$img : ($href ?
 					'<a href="' . $href . '" onmouseover="window.status=\'' . $alt . '\';return true;" onmouseout="window.status=\'\';return true;"' . ($onClick ? ' onclick="' . $onClick . '"' : '') . ($target ? (' target="' . $target . '"') : '') . '>' . $img . '</a>' :
-					'<input type="image" src="' . IMAGE_DIR . 'buttons/' . $name . ($language ? '_' : '') . $language . '.gif"' . ($width ? ' width="' . $width . '"' : '') . ($height ? ' height="' . $height . '"' : '') . ' border="0" alt="' . $alt . '"' . ($onClick ? ' onClick="' . $onClick . '"' : '') . ($bname ? ' name="' . $bname . '"' : '') . ' />'
+					'<input type="image" src="' . IMAGE_DIR . 'buttons/' . $name . ($language ? '_' : '') . $language . '.gif"' . ($width ? ' width="' . $width . '"' : '') . ($height ? ' height="' . $height . '"' : '') . ' border="0" alt="' . $alt . '"' . ($onClick ? ' onclick="' . $onClick . '"' : '') . ($bname ? ' name="' . $bname . '"' : '') . ' />'
 				));
 	}
 

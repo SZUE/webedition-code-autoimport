@@ -31,21 +31,8 @@ class weCodeWizard{
 	 */
 	var $SnippetPath = "";
 
-	/**
-	 * PHP 5 constructor
-	 *
-	 */
 	function __construct(){
 		$this->SnippetPath = WE_INCLUDES_PATH . 'weCodeWizard/data/';
-	}
-
-	/**
-	 * PHP 4 constructor
-	 *
-	 * @return weCodeWizard
-	 */
-	function weCodeWizard(){
-		$this->__construct();
 	}
 
 	/**
@@ -54,14 +41,10 @@ class weCodeWizard{
 	 * @return array
 	 */
 	function _getCustomSnippets(){
-
-
 		$SnippetDir = $this->SnippetPath . 'custom';
-		if(!is_dir($SnippetDir)){
-			return array();
-		} else {
-			return $this->_getSnippetsByDir('custom');
-		}
+		return (!is_dir($SnippetDir) ?
+				array() :
+				$this->_getSnippetsByDir('custom'));
 	}
 
 	/**
@@ -73,11 +56,9 @@ class weCodeWizard{
 
 		$SnippetDir = $this->SnippetPath . 'default';
 
-		if(!is_dir($SnippetDir)){
-			return array();
-		} else {
-			return $this->_getSnippetsByDir('default');
-		}
+		return (!is_dir($SnippetDir) ?
+				array() :
+				$this->_getSnippetsByDir('default'));
 	}
 
 	/**

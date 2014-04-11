@@ -28,15 +28,14 @@ class rpcSelectorGetSelectedIdView extends rpcView{
 
 		header('Content-type: text/plain');
 		$suggests = $response->getData("data");
-		$html = "";
 		if(is_array($suggests) && isset($suggests[0]['ID'])){
 			$status = "response";
-			$html .= ' "id": "' . $_REQUEST['we_cmd'][4] . '", "value": "' . $suggests[0]['ID'] . '"';
-			$html .= isset($suggests[0]['ContentType']) ? ', "contentType": "' . $suggests[0]['ContentType'] . '"' : "";
+			$html = ' "id": "' . weRequest('int','we_cmd',0,4) . '", "value": "' . $suggests[0]['ID'] . '"'.
+				isset($suggests[0]['ContentType']) ? ', "contentType": "' . $suggests[0]['ContentType'] . '"' : "";
 		} else {
 			$status = "error";
-			if(strpos($_REQUEST['we_cmd'][3], ',')){
-				switch($_REQUEST['we_cmd'][2]){
+			if(strpos(weRequest('string','we_cmd','',3), ',')){
+				switch(weRequest('table','we_cmd','',2)){
 					case FILE_TABLE:
 						$msg = g_l('weSelectorSuggest', "[no_document]");
 						break;
@@ -56,7 +55,7 @@ class rpcSelectorGetSelectedIdView extends rpcView{
 			} else {
 				$msg = g_l('weSelectorSuggest', "[no_folder]");
 			}
-			$html .= '"msg":"' . $msg . '","nr":"' . $_REQUEST['we_cmd'][2] . '"';
+			$html = '"msg":"' . $msg . '","nr":"' . weRequest('int','we_cmd',0,2) . '"';
 		}
 		return
 			'var weResponse = {

@@ -37,8 +37,8 @@ function we_tag_tracker($attribs){
 	$trackname = weTag_getAttribute("trackname", $attribs);
 
 	if($trackname == "WE_PATH"){
-		if(isset($_REQUEST['we_objectID'])){
-			$trackname = "/object" . id_to_path(intval($_REQUEST['we_objectID']), OBJECT_FILES_TABLE);
+		if(($objID=weRequest('int','we_objectID'))){
+			$trackname = "/object" . id_to_path($objID, OBJECT_FILES_TABLE);
 		} else {
 			$trackname = $GLOBALS["WE_MAIN_DOC"]->Path;
 		}

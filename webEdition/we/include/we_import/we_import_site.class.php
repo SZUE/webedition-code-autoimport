@@ -80,19 +80,19 @@ class we_import_site{
 		$this->maxSize = isset($_REQUEST['maxSize']) ? $_REQUEST['maxSize'] : $this->maxSize;
 		$this->step = isset($_REQUEST['step']) ? $_REQUEST['step'] : $this->step;
 		$this->cmd = isset($_REQUEST['cmd']) ? $_REQUEST['cmd'] : $this->cmd;
-		if(isset($_REQUEST['we_cmd'][0])){
-			switch($_REQUEST['we_cmd'][0]){
-				case 'siteImportSaveWePageSettings' :
-					$this->cmd = 'saveWePageSettings';
-					break;
-				case 'siteImportCreateWePageSettings' :
-					$this->cmd = 'createWePageSettings';
-					break;
-				case 'updateSiteImportTable' :
-					$this->cmd = 'updateSiteImportTable';
-					break;
-			}
+
+		switch(weRequest('string', 'we_cmd', '', 0)){
+			case 'siteImportSaveWePageSettings' :
+				$this->cmd = 'saveWePageSettings';
+				break;
+			case 'siteImportCreateWePageSettings' :
+				$this->cmd = 'createWePageSettings';
+				break;
+			case 'updateSiteImportTable' :
+				$this->cmd = 'updateSiteImportTable';
+				break;
 		}
+
 		$this->sameName = isset($_REQUEST['sameName']) ? $_REQUEST['sameName'] : $this->sameName;
 		$this->importMetadata = isset($_REQUEST['importMetadata']) ? $_REQUEST['importMetadata'] : $this->importMetadata;
 		$this->thumbs = isset($_REQUEST['thumbs']) ? makeCSVFromArray($_REQUEST['thumbs']) : $this->thumbs;

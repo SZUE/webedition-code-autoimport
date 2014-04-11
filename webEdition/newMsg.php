@@ -29,8 +29,8 @@ $msg_cmd = "javascript:top.opener.we_cmd('messaging_start', 'message');";
 $todo_cmd = "javascript:top.opener.we_cmd('messaging_start', 'todo');";
 
 $text = '';
-$msg = intval($_REQUEST['msg']) - intval($_REQUEST['omsg']);
-$todo = intval($_REQUEST['todo']) - intval($_REQUEST['otodo']);
+$msg = weRequest('int', 'msg', 0) - weRequest('int', 'omsg', 0);
+$todo = weRequest('int', 'todo', 0) - weRequest('int', 'otodo', 0);
 
 $text = ($msg > 0 ? sprintf(g_l('modules_messaging', '[newHeaderMsg]'), '<a href="' . $msg_cmd . '">' . $msg, '</a>') . '<br/>' : '') .
 	($todo > 0 ? sprintf(g_l('modules_messaging', '[newHeaderTodo]'), '<a href="' . $todo_cmd . '">' . $todo, '</a>') . '<br/>' : '');
@@ -44,7 +44,7 @@ $parts = array(
 
 $buttons = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0, "class" => "defaultfont", "align" => "right"), 1, 1);
 $buttons->setCol(0, 0, null, we_html_button::create_button("ok", "javascript:self.close();"));
-print we_html_element::htmlDocType() . we_html_element::htmlHtml(
+echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
 		we_html_element::htmlHead(
 			//FIXME: missing title
 			we_html_tools::getHtmlInnerHead()

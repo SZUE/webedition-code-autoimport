@@ -93,38 +93,37 @@ class weModuleView{
 	}
 
 	function processCommands(){
-		if(isset($_REQUEST['cmd'])){
-			switch($_REQUEST['cmd']){
-				case 'new_raw':
-					$this->raw = new weShop();
-					print we_html_element::jsElement(
-							$this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->raw->Text) . '";' .
-							$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";'
+		switch(weRequest('string', 'cmd', '')){
+			case 'new_raw':
+				$this->raw = new weShop();
+				echo we_html_element::jsElement(
+						$this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->raw->Text) . '";' .
+						$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";'
+				);
+				break;
+			case 'edit_raw':
+				$this->raw = new weShop(weRequest('int', 'cmdid',0));
+				echo we_html_element::jsElement(
+						$this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->raw->Text) . '";' .
+						$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";'
+				);
+				break;
+			case 'save_raw':
+				if($this->raw->filenameNotValid()){
+					echo we_html_element::jsElement(
+							we_message_reporting::getShowMessageCall(g_l('modules_shop', '[we_filename_notValid]'), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 					break;
-				case 'edit_raw':
-					$this->raw = new weShop($_REQUEST['cmdid']);
-					print we_html_element::jsElement(
-							$this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->raw->Text) . '";' .
-							$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";'
-					);
-					break;
-				case 'save_raw':
-					if($this->raw->filenameNotValid()){
-						print we_html_element::jsElement(
-								we_message_reporting::getShowMessageCall(g_l('modules_shop', '[we_filename_notValid]'), we_message_reporting::WE_MESSAGE_ERROR)
-						);
-						break;
-					}
+				}
 
-					$newone = ($this->raw->ID ? false : true);
+				$newone = ($this->raw->ID ? false : true);
 
-					$this->raw->save();
+				$this->raw->save();
 
-					//$ttrow = getHash('SELECT * FROM ' . RAW_TABLE . ' WHERE ID=' . intval($this->raw->ID), $this->db);
-					$tt = addslashes($tt != '' ? $tt : $this->raw->Text);
-					$js = ($newone ?
-							'
+				//$ttrow = getHash('SELECT * FROM ' . RAW_TABLE . ' WHERE ID=' . intval($this->raw->ID), $this->db);
+				$tt = addslashes($tt != '' ? $tt : $this->raw->Text);
+				$js = ($newone ?
+						'
 var attribs = new Array();
 attribs["icon"]="' . $this->raw->Icon . '";
 attribs["id"]="' . $this->raw->ID . '";
@@ -133,31 +132,31 @@ attribs["parentid"]="0";
 attribs["text"]="' . $tt . '";
 attribs["disable"]=0;
 attribs["tooltip"]="";' .
-							$this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node(attribs));' .
-							$this->topFrame . '.drawTree();' :
-							$this->topFrame . '.updateEntry(' . $this->raw->ID . ',"' . $tt . '");'
-						);
-					print we_html_element::jsElement(
-							$js .
-							we_message_reporting::getShowMessageCall(g_l('modules_shop', '[raw_saved_ok]'), we_message_reporting::WE_MESSAGE_NOTICE)
+						$this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node(attribs));' .
+						$this->topFrame . '.drawTree();' :
+						$this->topFrame . '.updateEntry(' . $this->raw->ID . ',"' . $tt . '");'
 					);
-					break;
-				case 'delete_raw':
-					$js = '' . $this->topFrame . '.deleteEntry(' . $this->raw->ID . ');';
+				echo we_html_element::jsElement(
+						$js .
+						we_message_reporting::getShowMessageCall(g_l('modules_shop', '[raw_saved_ok]'), we_message_reporting::WE_MESSAGE_NOTICE)
+				);
+				break;
+			case 'delete_raw':
+				$js = '' . $this->topFrame . '.deleteEntry(' . $this->raw->ID . ');';
 
-					$this->raw->delete();
-					$this->raw = new weShop();
+				$this->raw->delete();
+				$this->raw = new weShop();
 
-					print we_html_element::jsElement(
-							$js .
-							we_message_reporting::getShowMessageCall(g_l('modules_shop', '[raw_deleted]'), we_message_reporting::WE_MESSAGE_NOTICE)
-					);
-					break;
-				case 'switchPage':
-					break;
-				default:
-			}
+				echo we_html_element::jsElement(
+						$js .
+						we_message_reporting::getShowMessageCall(g_l('modules_shop', '[raw_deleted]'), we_message_reporting::WE_MESSAGE_NOTICE)
+				);
+				break;
+			case 'switchPage':
+				break;
+			default:
 		}
+
 
 		$_SESSION['weS']['raw_session'] = serialize($this->raw);
 	}
@@ -176,7 +175,7 @@ attribs["tooltip"]="";' .
 			}
 		}
 
-		if(isset($_REQUEST['page']) && isset($_REQUEST['page'])){
+		if(isset($_REQUEST['page'])){
 			$this->page = $_REQUEST['page'];
 		}
 	}

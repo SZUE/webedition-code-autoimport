@@ -48,7 +48,7 @@ oc_img="' . $this->tree_image_dir . '"+(nf[ai].open == 0?"auf":"zu")+zusatz+".gi
 oc_js=treeData.topFrame+".openClose(\'" + nf[ai].id + "\')\"";
 
 row+="&nbsp;&nbsp;<a href=\"javascript:"+oc_js+" border=0><img src="+oc_img+" width=19 height=18 align=absmiddle border=0 Alt=\"\"></a>";
-row+="<a name=\'_"+nf[ai].id+"\' href=\"javascript://\" onClick=\""+oc_js+";return true;\" border=0>";
+row+="<a name=\'_"+nf[ai].id+"\' href=\"javascript://\" onclick=\""+oc_js+";return true;\" border=0>";
 row+="<img src=' . $this->tree_image_dir . 'icons/"+nf[ai].icon+" width=16 height=18 align=absmiddle border=0 Alt=\"\">";
 row+="</a>";
 row+="<a name=\'_"+nf[ai].id+"\' href=\"javascript://\" onclick=\""+oc_js+";return true;\">";

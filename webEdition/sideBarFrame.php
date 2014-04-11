@@ -26,7 +26,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
-$what = isset($_REQUEST['pnt']) ? $_REQUEST['pnt'] : 'frameset';
+$what = weRequest('string', 'pnt', 'frameset');
 
 $weFrame = new we_sidebar_frames();
 $weFrame->getHTML($what);

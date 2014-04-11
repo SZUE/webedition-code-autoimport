@@ -44,8 +44,8 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 		$Language = implode("_", $Temp);
 		$Cache = new we_glossary_cache($Language);
 
-		if(isset($_REQUEST['do']) && isset($_REQUEST['ID']) && !empty($_REQUEST['ID'])){
-			switch($_REQUEST['do']){
+		if(isset($_REQUEST['do']) && isset($_REQUEST['ID']) && $_REQUEST['ID']){
+			switch(weRequest('string','do')){
 				case 'delete':
 					if($GLOBALS['DB_WE']->query('DELETE FROM ' . GLOSSARY_TABLE . ' WHERE ID IN (' . $GLOBALS['DB_WE']->escape(implode(',', $_REQUEST['ID'])) . ')')){
 						foreach($_REQUEST['ID'] as $_id){
