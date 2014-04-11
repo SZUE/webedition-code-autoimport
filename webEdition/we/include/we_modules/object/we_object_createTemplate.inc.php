@@ -54,13 +54,13 @@ function getMultiObjectTags($name){
 		}
 		$id = $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"][$temp . "class"]["dat"];
 	}
-
 	$tableInfo = we_objectFile::getSortedTableInfo($id, true);
 	$content = '<table cellpadding="2" cellspacing="0" border="1" width="400">';
 
+	//FIXME: causes internal server error
 	foreach($tableInfo as $cur){
 		if(preg_match('/(.+?)_(.*)/', $cur["name"], $regs)){
-			$content .= getTmplTableRow($regs[1], $regs[2], true);
+//			$content .= getTmplTableRow($regs[1], $regs[2], true);
 		}
 	}
 	$content .= '</table>';
@@ -70,27 +70,26 @@ function getMultiObjectTags($name){
 function getTemplTag($type, $name, $isField = false){
 	switch($type){
 		case 'meta':
-			return $isField ? '<we:field type="select" name="' . $name . '">' : '<we:var type="select" name="' . $name . '">';
+			return $isField ? '<we:field type="select" name="' . $name . '"/>' : '<we:var type="select" name="' . $name . '"/>';
 		default:
 		case 'input':
 		case 'text':
 		case 'int':
 		case 'float':
-			return $isField ? '<we:field name="' . $name . '">' : '<we:var name="' . $name . '">';
+			return $isField ? '<we:field name="' . $name . '"/>' : '<we:var name="' . $name . '"/>';
 		case 'link':
-			return $isField ? '<we:field type="link" name="' . $name . '">' : '<we:var type="link" name="' . $name . '">';
+			return $isField ? '<we:field type="link" name="' . $name . '"/>' : '<we:var type="link" name="' . $name . '"/>';
 		case 'href':
-			return $isField ? '<we:field type="href" name="' . $name . '">' : '<we:var type="href" name="' . $name . '">';
+			return $isField ? '<we:field type="href" name="' . $name . '"/>' : '<we:var type="href" name="' . $name . '"/>';
 		case 'img':
-			return $isField ? '<we:field type="img" name="' . $name . '">' : '<we:var type="img" name="' . $name . '">';
+			return $isField ? '<we:field type="img" name="' . $name . '"/>' : '<we:var type="img" name="' . $name . '"/>';
 		case 'checkbox':
-			return $isField ? '<we:field type="checkbox" name="' . $name . '">' : '<we:var type="checkbox" name="' . $name . '">';
+			return $isField ? '<we:field type="checkbox" name="' . $name . '"/>' : '<we:var type="checkbox" name="' . $name . '"/>';
 		case 'date':
-			return $isField ? '<we:field type="date" name="' . $name . '">' : '<we:var type="date" name="' . $name . '">';
+			return $isField ? '<we:field type="date" name="' . $name . '"/>' : '<we:var type="date" name="' . $name . '"/>';
 		case 'object':
-			if(!in_array($name, $GLOBALS["usedIDs"])){
-				return getObjectTags($name, $isField);
-			}
+			return (!in_array($name, $GLOBALS["usedIDs"]) ?
+					getObjectTags($name, $isField) : '');
 		case we_objectFile::TYPE_MULTIOBJECT:
 			return getMultiObjectTags($name);
 	}
@@ -114,7 +113,7 @@ function getTmplTableRow($type, $name, $isField = false){
 		<we:listview type="multiobject" name="' . $name . '">
 			<we:repeat>' . getTemplTag($type, $name) . '</we:repeat>
 		</we:listview>
-		<we:else>
+		<we:else/>
 			' . g_l('global', "[no_entries]") . '
 		' . $close . '
 	</td>
@@ -133,15 +132,14 @@ echo we_html_tools::getHtmlTop(g_l('weClass', '[generateTemplate]')) .
  STYLESHEET;
 
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
-
 echo '</head><body class="weDialogBody"><form name="we_form">';
 $tmpl = new we_object_createTemplate();
-$tmpl->we_new();
 
+$tmpl->we_new();
 $tmpl->Filename = isset($filename) ? $filename : "";
 $tmpl->Extension = ".tmpl";
 
-$tmpl->setParentID(isset($pid) ? $pid : "" );
+$tmpl->setParentID(isset($pid) ? $pid : 0 );
 $tmpl->Path = $tmpl->ParentPath . (isset($filename) ? $filename : "") . ".tmpl";
 
 $usedIDs = array(
@@ -150,7 +148,7 @@ $usedIDs = array(
 
 $sort = $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"]["we_sort"]["dat"];
 
-$count = (!empty($sort)) ? $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"]["Sortgesamt"]["dat"] : 0;
+$count = $sort ? $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"]["Sortgesamt"]["dat"] : 0;
 
 $content = '<html>
 	<head>
@@ -162,7 +160,7 @@ $content = '<html>
 		<table cellpadding="2" cellspacing="0" border="1" width="400">
 ';
 
-if(!empty($sort)){
+if($sort){
 	foreach($sort as $key => $val){
 		$name = $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"][$_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"]["wholename" . $key]["dat"]]["dat"];
 		$type = $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"][$_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"]["wholename" . $key]["dat"] . we_object::ELEMENT_TYPE]["dat"];
@@ -171,18 +169,16 @@ if(!empty($sort)){
 	}
 }
 
-$content .= '		</table>
-';
+$content .= '</table>';
 if($_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["ID"]){
 	$content .= '
 		<p>
 		<we:listview type="object" classid="' . $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["ID"] . '" rows="10">
 			<we:repeat>
-		<p><table cellpadding="2" cellspacing="0" border="1" width="400">
-';
+		<p><table cellpadding="2" cellspacing="0" border="1" width="400">';
 
 
-	if(!empty($sort)){
+	if($sort){
 		foreach($sort as $key => $val){
 			$name = $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"][$_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"]["wholename" . $key]["dat"]]["dat"];
 			$type = $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"][$_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"]["wholename" . $key]["dat"] . we_object::ELEMENT_TYPE]["dat"];
@@ -191,7 +187,7 @@ if($_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["ID"]){
 		}
 	}
 
-	$content .= '		</table></p>
+	$content .= '</table></p>
 			</we:repeat>
 			<we:ifFound>
 				<p><table border="0" cellpadding="0" cellspacing="0" width="400">

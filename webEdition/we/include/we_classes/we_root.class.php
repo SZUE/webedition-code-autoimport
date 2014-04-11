@@ -249,11 +249,11 @@ abstract class we_root extends we_class{
 		$path = $this->$Pathname;
 		$myid = $this->$IDName;
 
-		$_parentPathChanged = '';
-		$_parentPathChangedBlur = '';
 		if($Pathname == 'ParentPath'){
-			$_parentPathChanged = 'if (opener.pathOfDocumentChanged) { opener.pathOfDocumentChanged(); }';
-			$_parentPathChangedBlur = 'if (pathOfDocumentChanged) { pathOfDocumentChanged(); }';
+			$_parentPathChanged = 'if(opener.pathOfDocumentChanged) { opener.pathOfDocumentChanged(); }';
+			$_parentPathChangedBlur = 'if(pathOfDocumentChanged) { pathOfDocumentChanged(); }';
+		} else {
+			$_parentPathChanged = $_parentPathChangedBlur = '';
 		}
 
 		if($width){
@@ -366,7 +366,6 @@ abstract class we_root extends we_class{
 		$textname = 'OwnerNameTmp';
 		$idname = 'OwnerIDTmp';
 		$delallbut = we_html_button::create_button('delete_all', "javascript:we_cmd('del_all_owners','')", true, 0, 0, "", "", $this->Owners ? false : true);
-		//javascript:we_cmd('browse_users','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','',document.forms[0].elements['$idname'].value,'opener._EditorFrame.setEditorIsHot(true);opener.setScrollTo();fillIDs();opener.we_cmd(\\'add_owner\\',top.allIDs)','','',1);
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
 		$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$textname'].value");
 		$wecmdenc5 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.setScrollTo();fillIDs();opener.we_cmd('add_owner',top.allIDs);");

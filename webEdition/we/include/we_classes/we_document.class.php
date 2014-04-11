@@ -605,7 +605,7 @@ class we_document extends we_root{
 		if(!isset($GLOBALS['WE_IS_DYN']) && ($this->Table == FILE_TABLE || $this->Table == TEMPLATES_TABLE)){
 			if(($ws = get_ws($this->Table))){
 				$foo = makeArrayFromCSV($ws);
-				if(!empty($foo)){
+				if($foo){
 					$this->setParentID(intval($foo[0]));
 				}
 			}
