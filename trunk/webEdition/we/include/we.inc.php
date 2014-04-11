@@ -131,7 +131,7 @@ if(!isset($GLOBALS['WE_IS_DYN'])){ //only true on dynamic frontend pages
 
 
 	//send header?
-	switch(isset($_REQUEST['we_cmd'][0]) ? $_REQUEST['we_cmd'][0] : '__default__'){
+	switch(weRequest('string', 'we_cmd', '__default__')){
 		case 'edit_link':
 		case 'edit_linklist':
 		case 'show_newsletter':

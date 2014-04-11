@@ -26,7 +26,7 @@ we_html_tools::protect();
 
 $uniqid = md5(uniqid(__FILE__, true)); // #6590, changed from: uniqid(time())
 
-$we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : 0);
+$we_transaction = weRequest('transaction', 'we_cmd', 0, 1);
 
 // init document
 $we_dt = isset($_SESSION['weS']['we_data'][$we_transaction]) ? $_SESSION['weS']['we_data'][$we_transaction] : "";
@@ -50,22 +50,22 @@ document.onkeyup = function(e) {
 
 self.focus();');
 
-switch($_REQUEST['we_cmd'][0]){
+switch(weRequest('string', 'we_cmd', '', 0)){
 	case "image_resize":
-		print we_html_element::jsElement(we_getImageResizeDialogJS());
+		echo we_html_element::jsElement(we_getImageResizeDialogJS());
 		break;
 	case "image_convertJPEG":
-		print we_html_element::jsElement(we_getImageConvertDialogJS());
+		echo we_html_element::jsElement(we_getImageConvertDialogJS());
 		break;
 	case "image_rotate":
-		print we_html_element::jsElement(we_getImageRotateDialogJS());
+		echo we_html_element::jsElement(we_getImageRotateDialogJS());
 		break;
 }
 
-print STYLESHEET . "</head>";
+echo STYLESHEET . "</head>";
 
 
-switch($_REQUEST['we_cmd'][0]){
+switch(weRequest('string', 'we_cmd', '', 0)){
 	case "image_resize":
 		$_dialog = we_getImageResizeDialog();
 		break;
@@ -79,7 +79,7 @@ switch($_REQUEST['we_cmd'][0]){
 		$_dialog = '';
 }
 
-print we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form"), $_dialog)) . "</html>";
+echo we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form"), $_dialog)) . "</html>";
 
 function we_getImageResizeDialogJS(){
 	list($width, $height) = $GLOBALS['we_doc']->getOrigSize();

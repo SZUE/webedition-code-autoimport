@@ -425,7 +425,7 @@ function zeichne(startEntry, zweigEintrag) {
 				fr.write("&nbsp;&nbsp;<IMG SRC=' . TREE_IMAGE_DIR . 'kreuzung.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>");
 			}
 			if (nf[ai].name != -1) {
-				fr.write("<a name=\"_"+nf[ai].name+"\" href=\"javascript://\" onClick=\"doClick("+nf[ai].name+");return true;\" BORDER=0>");
+				fr.write("<a name=\"_"+nf[ai].name+"\" href=\"javascript://\" onclick=\"doClick("+nf[ai].name+");return true;\" BORDER=0>");
 			}
 			if (deleteMode) {
 				if(nf[ai].name != -1) {
@@ -438,12 +438,12 @@ function zeichne(startEntry, zweigEintrag) {
 					}
 				}
 			} else {
-				fr.write("<a name=\"_"+nf[ai].name+"\" href=\"javascript://\" onClick=\"doClick("+nf[ai].name+");return true;\" BORDER=0>");
+				fr.write("<a name=\"_"+nf[ai].name+"\" href=\"javascript://\" onclick=\"doClick("+nf[ai].name+");return true;\" BORDER=0>");
 				fr.write("<IMG SRC=' . ICON_DIR . '"+nf[ai].icon+" WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 alt=\"' . g_l('tree', '[edit_statustext]') . '\">");
 				fr.write("</a>");
 				trg = "doClick("+nf[ai].name+");return true;"
 			}
-			fr.write("&nbsp;<a name=\"_"+nf[ai].name+"\" href=\"javascript://\" onClick=\"" + trg + "\"><font color=\"black\">"+(parseInt(nf[ai].published) ? " <b>" : "")+ translate(nf[ai].text) +(parseInt(nf[ai].published) ? " </b>" : "")+ "</font></A>&nbsp;&nbsp;<BR>\n");
+			fr.write("&nbsp;<a name=\"_"+nf[ai].name+"\" href=\"javascript://\" onclick=\"" + trg + "\"><font color=\"black\">"+(parseInt(nf[ai].published) ? " <b>" : "")+ translate(nf[ai].text) +(parseInt(nf[ai].published) ? " </b>" : "")+ "</font></A>&nbsp;&nbsp;<BR>\n");
 		} else {
 			var newAst = zweigEintrag;
 			var zusatz = (ai == nf.laenge) ? "end" : "";
@@ -467,11 +467,11 @@ function zeichne(startEntry, zweigEintrag) {
 				trg = "doClick("+nf[ai].name+");return true;"
 			}
 
-			fr.write("<a name=\'_"+nf[ai].name+"\' href=\"javascript://\" onClick=\"" + trg + "\" BORDER=0>");
+			fr.write("<a name=\'_"+nf[ai].name+"\' href=\"javascript://\" onclick=\"" + trg + "\" BORDER=0>");
 			fr.write("<IMG SRC=' . ICON_DIR . '" + nf[ai].icon + " WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 Alt=\'' . g_l('tree', '[edit_statustext]') . '\'>");
 			fr.write("</a>");
 
-			fr.write("<A name=\"_"+nf[ai].name+"\" HREF=\"javascript://\" onClick=\"" + trg + "\">");
+			fr.write("<A name=\"_"+nf[ai].name+"\" HREF=\"javascript://\" onclick=\"" + trg + "\">");
 			fr.write("&nbsp;" + translate(nf[ai].text));
 			fr.write("</a>");
 			fr.write("&nbsp;&nbsp;<BR>\n");

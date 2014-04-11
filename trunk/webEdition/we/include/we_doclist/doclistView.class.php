@@ -74,7 +74,7 @@ class doclistView{
 			$showHideSelects = '';
 			$showSelects = '';
 		}
-		$we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0);
+		$we_transaction = weRequest('transaction', 'we_transaction', 0);
 
 		return we_html_element::jsElement('
 
@@ -829,7 +829,7 @@ class doclistView{
 			$searchInput = we_html_tools::htmlTextInput("search[" . $i . "]", 30, (isset($GLOBALS ['we_doc']->searchclassFolder->search) && is_array($GLOBALS ['we_doc']->searchclassFolder->search) && isset($GLOBALS ['we_doc']->searchclassFolder->search [$i]) ? $GLOBALS ['we_doc']->searchclassFolder->search [$i] : ''), "", " class=\"wetextinput\"  id=\"search['.$i.']\" ", "text", 190);
 
 			$locationDisabled = (isset($GLOBALS ['we_doc']->searchclassFolder->searchFields [$i]) && ($GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] == "Content" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] == "Status" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] == "Speicherart" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] == "temp_template_id" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] == "temp_doc_type" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] == "temp_category") ?
-							'disabled' : '');
+					'disabled' : '');
 
 			if(isset($GLOBALS ['we_doc']->searchclassFolder->searchFields [$i])){
 				if($GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] == "Status"){
@@ -896,7 +896,7 @@ class doclistView{
         </tr>
 
         </table>' .
-				we_html_element::jsElement('calendarSetup(' . $GLOBALS ['we_doc']->searchclassFolder->height . ');');
+			we_html_element::jsElement('calendarSetup(' . $GLOBALS ['we_doc']->searchclassFolder->height . ');');
 
 		return $out;
 	}
@@ -942,38 +942,33 @@ class doclistView{
 		$_table = FILE_TABLE;
 
 		$searchFields = (isset($_REQUEST['we_cmd'] ['searchFields']) ?
-						$_REQUEST['we_cmd'] ['searchFields'] :
-						$obj->searchclassFolder->searchFields);
+				$_REQUEST['we_cmd'] ['searchFields'] :
+				$obj->searchclassFolder->searchFields);
 
 		$searchText = (isset($_REQUEST['we_cmd'] ['search']) ?
-						$_REQUEST['we_cmd'] ['search'] :
-						$obj->searchclassFolder->search);
+				$_REQUEST['we_cmd'] ['search'] :
+				$obj->searchclassFolder->search);
 
 		$location = (isset($_REQUEST['we_cmd'] ['location']) ?
-						$_REQUEST['we_cmd'] ['location'] :
-						$obj->searchclassFolder->location);
+				$_REQUEST['we_cmd'] ['location'] :
+				$obj->searchclassFolder->location);
 
 		$_order = (isset($_REQUEST['we_cmd'] ['order']) ?
-						$_REQUEST['we_cmd'] ['order'] :
-						$obj->searchclassFolder->order);
+				$_REQUEST['we_cmd'] ['order'] :
+				$obj->searchclassFolder->order);
 
 		$_view = (isset($_REQUEST['we_cmd'] ['setView']) ?
-						$_REQUEST['we_cmd'] ['setView'] :
-						$obj->searchclassFolder->setView);
+				$_REQUEST['we_cmd'] ['setView'] :
+				$obj->searchclassFolder->setView);
 
 		$_searchstart = (isset($_REQUEST['we_cmd'] ['searchstart']) ?
-						$_REQUEST['we_cmd'] ['searchstart'] :
-						$obj->searchclassFolder->searchstart);
+				$_REQUEST['we_cmd'] ['searchstart'] :
+				$obj->searchclassFolder->searchstart);
 
-		$_anzahl = (isset($_REQUEST['we_cmd'] ['anzahl']) ?
-						intval($_REQUEST['we_cmd'] ['anzahl']) :
-						$obj->searchclassFolder->anzahl);
+		$_anzahl = weRequest('int', 'we_cmd', $obj->searchclassFolder->anzahl, 'anzahl');
 
-		for($i = 0; $i < count($searchText); $i++){
-			if(isset($searchText [$i])){
-				$searchText [$i] = trim($searchText [$i]);
-			}
-		}
+
+		$searchText=array_map('trim', $searchText);
 
 		$where = '';
 		$op = ' AND ';
@@ -1206,8 +1201,8 @@ class doclistView{
 
 				if($_result [$f] ["ContentType"] == we_base_ContentTypes::WEDOCUMENT){
 					$templateID = ($_result [$f] ["Published"] >= $_result [$f] ["ModDate"] && $_result [$f] ["Published"] != 0 ?
-									$_result [$f] ["TemplateID"] :
-									$_result [$f] ["temp_template_id"]);
+							$_result [$f] ["TemplateID"] :
+							$_result [$f] ["temp_template_id"]);
 
 					$templateText = g_l('searchtool', "[no_template]");
 					if($templateID){
@@ -1274,18 +1269,18 @@ class doclistView{
 		$mode = (isset($_REQUEST['we_cmd'] ['mode']) ? $_REQUEST['we_cmd'] ['mode'] : $GLOBALS ['we_doc']->searchclassFolder->mode);
 		$setView = (isset($_REQUEST['we_cmd'] ['setView']) ? $_REQUEST['we_cmd'] ['setView'] : $GLOBALS ['we_doc']->searchclassFolder->setView);
 		$_anzahl = (isset($_REQUEST['we_cmd'] ['anzahl']) ? $_REQUEST['we_cmd'] ['anzahl'] : $GLOBALS ['we_doc']->searchclassFolder->anzahl);
-		$id = (isset($_REQUEST['id']) ? $_REQUEST['id'] : $GLOBALS ['we_doc']->ID);
+		$id = weRequest('int','id',$GLOBALS ['we_doc']->ID);
 		$we_transaction = (isset($_REQUEST['we_cmd'] ['we_transaction']) ?
-						(preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_cmd'] ['we_transaction']) ? $_REQUEST['we_cmd'] ['we_transaction'] : 0) :
-						$GLOBALS ['we_transaction']);
+				(preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_cmd'] ['we_transaction']) ? $_REQUEST['we_cmd'] ['we_transaction'] : 0) :
+				$GLOBALS ['we_transaction']);
 
 		return
-				we_html_tools::hidden("we_transaction", $we_transaction) .
-				we_html_tools::hidden("order", $order) .
-				we_html_tools::hidden("todo", "") .
-				we_html_tools::hidden("mode", $mode) .
-				we_html_tools::hidden("setView", $setView) .
-				'<table border="0" cellpadding="0" cellspacing="0">
+			we_html_tools::hidden("we_transaction", $we_transaction) .
+			we_html_tools::hidden("order", $order) .
+			we_html_tools::hidden("todo", "") .
+			we_html_tools::hidden("mode", $mode) .
+			we_html_tools::hidden("setView", $setView) .
+			'<table border="0" cellpadding="0" cellspacing="0">
          <tr>
           <td>' . we_html_tools::getPixel(19, 12) . '</td>
           <td style="font-size:12px;width:125px;">' . g_l('searchtool', "[eintraege_pro_seite]") . ':</td>
@@ -1321,7 +1316,7 @@ class doclistView{
 		}
 
 		return
-				'<table border="0" cellpadding="0" cellspacing="0" style="margin-top:20px;">
+			'<table border="0" cellpadding="0" cellspacing="0" style="margin-top:20px;">
          <tr>
           <td>' . $publishButtonCheckboxAll . '</td>
           <td style="font-size:12px;width:125px;">' . $publishButton . '</td>
@@ -1348,19 +1343,19 @@ class doclistView{
 		}
 
 		$out = '<table cellpadding="0" cellspacing="0" border="0"><tr><td>' .
-				($searchstart ?
-						we_html_button::create_button("back", "javascript:back(" . $anzahl . ");") :
-						we_html_button::create_button("back", "", true, 100, 22, "", "", true)
-				) .
-				'</td><td>' . we_html_tools::getPixel(10, 2) . '</td>
+			($searchstart ?
+				we_html_button::create_button("back", "javascript:back(" . $anzahl . ");") :
+				we_html_button::create_button("back", "", true, 100, 22, "", "", true)
+			) .
+			'</td><td>' . we_html_tools::getPixel(10, 2) . '</td>
         <td class="defaultfont"><b>' . (($we_search_anzahl) ? $searchstart + 1 : 0) . '-' .
-				(($we_search_anzahl - $searchstart) < $anzahl ? $we_search_anzahl : $searchstart + $anzahl) .
-				' ' . g_l('global', "[from]") . ' ' . $we_search_anzahl . '</b></td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>' .
-				(($searchstart + $anzahl) < $we_search_anzahl ?
-						we_html_button::create_button("next", "javascript:next(" . $anzahl . ");") :
-						we_html_button::create_button("next", "", true, 100, 22, "", "", true)
-				) .
-				'</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>';
+			(($we_search_anzahl - $searchstart) < $anzahl ? $we_search_anzahl : $searchstart + $anzahl) .
+			' ' . g_l('global', "[from]") . ' ' . $we_search_anzahl . '</b></td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>' .
+			(($searchstart + $anzahl) < $we_search_anzahl ?
+				we_html_button::create_button("next", "javascript:next(" . $anzahl . ");") :
+				we_html_button::create_button("next", "", true, 100, 22, "", "", true)
+			) .
+			'</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>';
 
 		$pages = array();
 		for($i = 0; $i < ceil($we_search_anzahl / $anzahl); $i++){
@@ -1379,7 +1374,7 @@ class doclistView{
 		}
 
 		$out .= $select .
-				'</td></tr></table>';
+			'</td></tr></table>';
 
 		return $out;
 	}
@@ -1415,7 +1410,7 @@ class doclistView{
 			}
 
 			$out .= $rightContent .
-					'</div>' . ((we_base_browserDetect::isIE()) ? we_html_element::htmlBr() : '');
+				'</div>' . ((we_base_browserDetect::isIE()) ? we_html_element::htmlBr() : '');
 
 			if($i < (count($content) - 1) && (!isset($c ["noline"]))){
 				$out .= '<div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;"></div>';

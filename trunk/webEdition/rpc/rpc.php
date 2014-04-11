@@ -24,11 +24,7 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
-
-if(!isset($_REQUEST['protocol'])){
-	$_REQUEST['protocol'] = 'json';
-}
-
+$protocol = weRequest('string', 'protocol', 'json');
 define('RPC_DIR', str_replace('\\', '/', dirname(__FILE__)) . '/');
 define('RPC_URL', str_replace($_SERVER['DOCUMENT_ROOT'], '', RPC_DIR));
 
@@ -36,8 +32,8 @@ ini_set('include_path', ini_get('include_path') . PATH_SEPARATOR . RPC_DIR);
 
 require('base/rpcCmdShell.class.php');
 
-function dieWithError($text){
-	switch($_REQUEST['protocol']){
+function dieWithError($text, $protocol){
+	switch($protocol){
 		case 'json':
 			$resp = new rpcResponse();
 			$resp->setStatus(false);
@@ -58,16 +54,16 @@ function dieWithError($text){
 }
 
 if(!isset($_REQUEST['cmd'])){
-	dieWithError('The Request is not well formed!');
+	dieWithError('The Request is not well formed!', $protocol);
 }
 
-$_shell = new rpcCmdShell($_REQUEST, $_REQUEST['protocol']);
+$_shell = new rpcCmdShell($_REQUEST, $protocol);
 
 if($_shell->getStatus() == rpcCmd::STATUS_OK){
 	$_shell->executeCommand();
 	print $_shell->getResponse();
 } else { // there was an error in initializing the command
-	dieWithError($_shell->getErrorOut());
+	dieWithError($_shell->getErrorOut(), $protocol);
 }
 
 unset($_shell);

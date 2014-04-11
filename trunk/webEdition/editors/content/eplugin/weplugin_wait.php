@@ -25,7 +25,7 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
-$_callback = isset($_REQUEST['callback'])?$_REQUEST['callback']:'';
+$_callback = weRequest('string', 'callback');
 
 $js = we_html_element::jsElement('
 
@@ -41,7 +41,7 @@ $js = we_html_element::jsElement('
 		function checkPlugin() {
 			if(top.opener.top.plugin.isLoaded && typeof(top.opener.top.plugin.document.WePlugin)!="undefined") {
 				if(typeof(top.opener.top.plugin.document.WePlugin.isLive)!="undefined") {
-					' . (!empty($_callback) ? ('eval("top.opener.' . $_callback . '");') : '') . '
+					' . ($_callback ? ('eval("top.opener.' . $_callback . '");') : '') . '
 					self.close();
 				} else {
 					nojava();

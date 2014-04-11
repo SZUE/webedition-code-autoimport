@@ -32,7 +32,7 @@ require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.inc.
 $INCLUDE = '';
 
 
-switch($_REQUEST['we_cmd'][0]){
+switch(weRequest('string', 'we_cmd', '', 0)){
 	case 'versions_preview':
 		$INCLUDE = 'we_versions/weVersionsPreview.inc.php';
 		break;

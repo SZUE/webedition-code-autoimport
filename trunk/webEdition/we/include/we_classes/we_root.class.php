@@ -856,21 +856,21 @@ abstract class we_root extends we_class{
 
 	protected function i_setElementsFromHTTP(){
 		// do not set REQUEST VARS into the document
-		switch(isset($_REQUEST['we_cmd'][0]) ? $_REQUEST['we_cmd'][0] : ''){
+		switch(weRequest('string', 'we_cmd', '', 0)){
 			case 'switch_edit_page':
 				if(isset($_REQUEST['we_cmd'][3])){
 					return true;
 				}
 				break;
 			case 'save_document':
-				if(isset($_REQUEST['we_cmd'][7]) && $_REQUEST['we_cmd'][7] == 'save_document'){
+				if(weRequest('string', 'we_cmd', '', 7) == 'save_document'){
 					return true;
 				}
 				break;
 		}
 
 		$regs = array();
-		if(!empty($_REQUEST)){
+		if($_REQUEST){
 			$dates = array();
 			foreach($_REQUEST as $n => $v){
 				if(preg_match('/^we_' . preg_quote($this->Name) . '_([^\[]+)$/', $n, $regs)){

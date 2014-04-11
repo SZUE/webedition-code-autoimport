@@ -52,7 +52,7 @@ function getLoad(){
 	$newpasswd2 = isset($_REQUEST['newpasswd2']) ? $_REQUEST['newpasswd2'] : '';
 
 
-	if(isset($_REQUEST['cmd']) && ($_REQUEST['cmd'] == 'ok')){
+	if(weRequest('string', 'cmd') == 'ok'){
 		$userData = getHash('SELECT UseSalt,passwd FROM ' . USER_TABLE . ' WHERE username="' . $DB_WE->escape($_SESSION['user']['Username']) . '"');
 
 		if(!we_users_user::comparePasswords($userData['UseSalt'], $_SESSION['user']['Username'], $userData['passwd'], $oldpasswd)){

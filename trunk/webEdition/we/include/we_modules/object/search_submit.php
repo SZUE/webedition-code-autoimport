@@ -35,7 +35,7 @@ $we_doc->searchclass->objsearch = isset($_REQUEST['objsearch']) ? $_REQUEST['obj
 $we_doc->searchclass->objsearchField = isset($_REQUEST['objsearchField']) ? $_REQUEST['objsearchField'] : '';
 $we_doc->searchclass->objlocation = isset($_REQUEST['objlocation']) ? $_REQUEST['objlocation'] : 0;
 
-switch($_REQUEST['todo']){
+switch(weRequest('string','todo')){
 	case 'add':
 
 		$we_doc->searchclass->height++;

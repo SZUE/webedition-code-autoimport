@@ -38,7 +38,6 @@ if(isset($_REQUEST['we_transaction'])){ //  initialise Document
 
 	$content = $GLOBALS['we_doc']->getDocument();
 
-
 	$allowedHosts = array('validator.w3.org');
 
 	$GLOBALS['DB_WE']->query('SELECT host FROM ' . VALIDATION_SERVICES_TABLE);
@@ -102,7 +101,7 @@ if(isset($_REQUEST['we_transaction'])){ //  initialise Document
 
 		if($http_response->getHttp_answer('code') == 200){
 			//  change base href -> css of included page is loaded correctly
-			print str_replace('<head>', '<head><base href="http://' . $host . '" />', $http_response->http_body);
+			echo str_replace('<head>', '<head><base href="http://' . $host . '" />', $http_response->http_body);
 		} else { //  no correct answer
 			echo we_html_tools::getHtmlTop() .
 			STYLESHEET .
@@ -112,8 +111,8 @@ if(isset($_REQUEST['we_transaction'])){ //  initialise Document
 			'</body></html>';
 		}
 	} else {
-		print $http_request->errno . ": " . $http_request->errstr . "<br>";
+		echo $http_request->errno . ": " . $http_request->errstr . "<br>";
 	}
 } else {
-	print ' &hellip; ';
+	echo ' &hellip; ';
 }

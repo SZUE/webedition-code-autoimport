@@ -26,11 +26,10 @@ class rpcChangeDocTypeCmd extends rpcCmd{
 
 	function execute(){
 		$resp = new rpcResponse();
-		$categories = "<tr><td style='font-size:8px'>&nbsp;</td></tr>";
-		//$categories = "";
+		$categories = '<tr><td style="font-size:8px">&nbsp;</td></tr>';
 		if(isset($_REQUEST['docType'])){
-			if($_REQUEST['docType'] >= 0){
-				$values = getHash('SELECT * FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($_REQUEST['docType']));
+			if(($dt = weRequest('int', 'docType')) >= 0){
+				$values = getHash('SELECT * FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . $dt);
 
 				$ids_arr = makeArrayFromCSV($values["Templates"]);
 
@@ -49,11 +48,10 @@ class rpcChangeDocTypeCmd extends rpcCmd{
 					$optid++;
 				}
 				$templateElement = we_html_tools::htmlFormElementTable($TPLselect->getHTML(), g_l('import', '[template]'), "left", "defaultfont");
-				if($values["Category"] != ""){
-					$categories = $this->getCategories("doc", $values["Category"], 'v[docCategories]');
-				}
+				$categories = ($values["Category"] ? $categories : $this->getCategories("doc", $values["Category"], 'v[docCategories]'));
+
 				$categories = strtr($categories, array("\r" => "", "\n" => ""));
-				if(!empty($ids_arr)){
+				if($ids_arr){
 					$_docTypeLayerDisplay = "block";
 					$_noDocTypeLayerDisplay = "none";
 				} else {
@@ -62,7 +60,7 @@ class rpcChangeDocTypeCmd extends rpcCmd{
 				}
 				$_templateName = "";
 				if(isset($values["TemplateID"]) && $values["TemplateID"] > 0){
-					$_templateName = f("SELECT Path FROM " . TEMPLATES_TABLE . " WHERE ID=" . intval($values["TemplateID"]), "Path", $GLOBALS['DB_WE']);
+					$_templateName = f("SELECT Path FROM " . TEMPLATES_TABLE . " WHERE ID=" . intval($values["TemplateID"]));
 				}
 				$resp->setData("elements", array(
 					"self.document.forms['we_form'].elements['v[store_to_id]']" => array("value" => $values["ParentID"] | 0),

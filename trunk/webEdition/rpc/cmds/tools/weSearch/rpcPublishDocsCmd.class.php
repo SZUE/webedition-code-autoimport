@@ -33,7 +33,7 @@ class rpcPublishDocsCmd extends rpcCmd{
 		$docs = array();
 
 		$arr = $_REQUEST['we_cmd'];
-		if(!empty($arr)){
+		if($arr){
 			$allDocs = explode(",", $arr[0]);
 			foreach($allDocs as $k => $v){
 				$teile = explode("_", $v, 2);

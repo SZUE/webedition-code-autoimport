@@ -21,8 +21,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$tagName = $_REQUEST['we_cmd'][1];
-$openAtCursor = $_REQUEST['we_cmd'][2] === '1';
+$tagName = weRequest('string', 'we_cmd', '', 1);
+$openAtCursor = weRequest('bool', 'we_cmd', false, 2);
 
 we_html_tools::protect();
 
@@ -66,8 +66,8 @@ var typeAttributeRequires = new Object();';
 				$typeAttributeJs .= 'typeAttributeAllows["' . $option->getName() . '"] = new Array();';
 			} else {
 				$typeAttributeJs .= 'typeAttributeAllows["' . $option->getName() . '"] = new Array("' .
-						implode('","', $_allowedAttribs) .
-						'");';
+					implode('","', $_allowedAttribs) .
+					'");';
 			}
 
 			$_reqAttribs = $option->getRequiredAttributes($_attributes);
@@ -75,8 +75,8 @@ var typeAttributeRequires = new Object();';
 				$typeAttributeJs .= "typeAttributeRequires[\"" . $option->getName() . "\"] = new Array();";
 			} else {
 				$typeAttributeJs .= "typeAttributeRequires[\"" . $option->getName() . "\"] = new Array(\"" .
-						implode('","', $_reqAttribs) .
-						"\");";
+					implode('","', $_reqAttribs) .
+					"\");";
 			}
 		}
 
@@ -118,7 +118,7 @@ function applyOnEnter(evt) {
 }
 
 ' . $jsAllAttributes .
-		$jsReqAttributes . '
+	$jsReqAttributes . '
 
 weTagWizard = new weTagWizard("' . $weTag->getName() . '");
 weTagWizard.allAttributes = allAttributes;
@@ -139,7 +139,7 @@ function we_cmd(){
 		case "saveTag":
 
 			if (strWeTag = weTagWizard.getWeTag()) {' .
-		( $openAtCursor ? '
+	( $openAtCursor ? '
 				var contentEditor = opener.top.weEditorFrameController.getVisibleEditorFrame();
 				contentEditor.window.addCursorPosition( strWeTag );
 				self.close();;
@@ -148,7 +148,7 @@ function we_cmd(){
 				contentEditor.document.we_form.elements["tag_edit_area"].value=strWeTag;
     			contentEditor.document.we_form.elements["tag_edit_area"].select();
     			self.close();'
-		) . '
+	) . '
 			} else {
 				if (weTagWizard.missingFields.length) {
 
@@ -222,12 +222,12 @@ if($defaultValueCode){
 
 $code = '<fieldset>
 		<div class="legend"><strong>' . g_l('taged', '[description]') . '</strong></div>' .
-		($weTag->isDeprecated() ? we_html_tools::htmlAlertAttentionBox(g_l('taged', '[deprecated][description]'), we_html_tools::TYPE_ALERT, '98%') : '') . $weTag->getDescription() .
-		'</fieldset>' . $typeAttribCode . ' ' . $attributesCode . ' ' .
-		$defaultValueCode;
+	($weTag->isDeprecated() ? we_html_tools::htmlAlertAttentionBox(g_l('taged', '[deprecated][description]'), we_html_tools::TYPE_ALERT, '98%') : '') . $weTag->getDescription() .
+	'</fieldset>' . $typeAttribCode . ' ' . $attributesCode . ' ' .
+	$defaultValueCode;
 
 $_buttons = we_html_button::position_yes_no_cancel(
-				we_html_button::create_button('ok', "javascript:we_cmd('saveTag');"), null, we_html_button::create_button('cancel', "javascript:self.close();")
+		we_html_button::create_button('ok', "javascript:we_cmd('saveTag');"), null, we_html_button::create_button('cancel', "javascript:self.close();")
 );
 ?>
 <div id="divTagName">

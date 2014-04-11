@@ -37,7 +37,7 @@ include(WE_INCLUDES_PATH . '/we_editors/we_init_doc.inc.php');
 $_insertReloadFooter = '';
 $wasNew = 0;
 
-switch($_REQUEST['we_cmd'][0]){
+switch(weRequest('string', 'we_cmd', '', 0)){
 	case 'load_editor':
 // set default tab for creating new imageDocuments to "metadata":
 		if($we_doc->ContentType == we_base_ContentTypes::IMAGE && $we_doc->ID == 0){
@@ -47,10 +47,10 @@ switch($_REQUEST['we_cmd'][0]){
 		}
 		break;
 	case 'resizeImage':
-		$we_doc->resizeImage($_REQUEST['we_cmd'][1], $_REQUEST['we_cmd'][2], $_REQUEST['we_cmd'][3]);
+		$we_doc->resizeImage(weRequest('int', 'we_cmd', 0, 1), weRequest('int', 'we_cmd', 0, 2), weRequest('int', 'we_cmd', 0, 3));
 		break;
 	case 'rotateImage':
-		$we_doc->rotateImage($_REQUEST['we_cmd'][1], $_REQUEST['we_cmd'][2], $_REQUEST['we_cmd'][3], $_REQUEST['we_cmd'][4]);
+		$we_doc->rotateImage(weRequest('int', 'we_cmd', 0, 1), weRequest('int', 'we_cmd', 0, 2), weRequest('int', 'we_cmd', 0, 3), weRequest('int', 'we_cmd', 0, 4));
 		break;
 	case 'del_thumb':
 		$we_doc->del_thumbnails($_REQUEST['we_cmd'][1]);
@@ -339,7 +339,7 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 	header('Location: ' . WEBEDITION_DIR . 'showTempFile.php?file=' . $tempName);
 } else {
 	$we_JavaScript = '';
-	switch($_REQUEST['we_cmd'][0]){
+	switch(weRequest('string', 'we_cmd', '', 0)){
 		case 'save_document':
 			if(!$we_doc->ContentType){
 				exit(' ContentType Missing !!! ');
@@ -526,25 +526,26 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 									}
 								}
 							} else {
-								if(($we_doc->EditPageNr == WE_EDITPAGE_INFO && (!$_REQUEST['we_cmd'][4])) || (isset($_REQUEST['we_cmd'][7]) && $_REQUEST['we_cmd'][7])){
-									$we_responseText = (isset($_REQUEST['we_cmd'][7]) && $_REQUEST['we_cmd'][7]) ? '' : $we_responseText;
-									$we_responseTextType = (isset($_REQUEST['we_cmd'][7]) && $_REQUEST['we_cmd'][7]) ? we_message_reporting::WE_MESSAGE_ERROR : $we_responseTextType;
+								$tmp = weRequest('int', 'we_cmd', 0, 7);
+								if(($we_doc->EditPageNr == WE_EDITPAGE_INFO && (!$_REQUEST['we_cmd'][4])) || $tmp){
+									$we_responseText = $tmp ? '' : $we_responseText;
+									$we_responseTextType = $tmp ? we_message_reporting::WE_MESSAGE_ERROR : $we_responseTextType;
 									$_REQUEST['we_cmd'][5] = 'top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");';
-									if(isset($_REQUEST['we_cmd'][7])){
-										switch($_REQUEST['we_cmd'][7]){
-											case 1:
-												$we_JavaScript .= 'top.we_cmd("in_workflow","' . $we_transaction . '","' . $_REQUEST['we_cmd'][4] . '");';
-												$wf_flag = true;
-												break;
-											case 2:
-												$we_JavaScript .= 'top.we_cmd("pass","' . $we_transaction . '");';
-												$wf_flag = true;
-												break;
-											case 3:
-												$we_JavaScript .= 'top.we_cmd("decline","' . $we_transaction . '");';
-												$wf_flag = true;
-												break;
-										}
+
+									switch($tmp){
+										case 1:
+											$we_JavaScript .= 'top.we_cmd("in_workflow","' . $we_transaction . '","' . $_REQUEST['we_cmd'][4] . '");';
+											$wf_flag = true;
+											break;
+										case 2:
+											$we_JavaScript .= 'top.we_cmd("pass","' . $we_transaction . '");';
+											$wf_flag = true;
+											break;
+										case 3:
+											$we_JavaScript .= 'top.we_cmd("decline","' . $we_transaction . '");';
+											$wf_flag = true;
+											break;
+										default:
 									}
 								}
 // Bug Fix #2065 -> Reload Preview Page of other documents

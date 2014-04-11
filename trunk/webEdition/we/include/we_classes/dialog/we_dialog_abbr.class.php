@@ -34,7 +34,7 @@ class we_dialog_abbr extends we_dialog_base{
 
 	function __construct($noInternals = false){
 		parent::__construct();
-		$this->dialogTitle = g_l('wysiwyg', "[abbr_title]");
+		$this->dialogTitle = g_l('wysiwyg', '[abbr_title]');
 		$this->noInternals = $noInternals;
 		$this->defaultInit();
 	}
@@ -85,7 +85,7 @@ class we_dialog_abbr extends we_dialog_base{
 </table>';
 		if(defined("GLOSSARY_TABLE") && permissionhandler::hasPerm("NEW_GLOSSARY")){
 			$table .= we_html_tools::hidden("weSaveToGlossary", 0) .
-				we_html_tools::hidden("language", isset($_REQUEST['language']) && $_REQUEST['language'] != "" ? $_REQUEST['language'] : $GLOBALS['weDefaultFrontendLanguage']) .
+				we_html_tools::hidden("language", weRequest('string', 'language', $GLOBALS['weDefaultFrontendLanguage'])) .
 				we_html_tools::hidden("text", "");
 		}
 

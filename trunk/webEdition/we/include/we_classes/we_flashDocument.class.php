@@ -402,13 +402,13 @@ class we_flashDocument extends we_binaryDocument{
 		if(isset($_FILES["we_ui_$formname"]["name"]) && is_array($_FILES["we_ui_$formname"]["name"])){
 			foreach($_FILES["we_ui_$formname"]["name"] as $flashName => $filename){
 
-				$_flashmovieDataId = isset($_REQUEST['WE_UI_FLASHMOVIE_DATA_ID_' . $flashName]) ? $_REQUEST['WE_UI_FLASHMOVIE_DATA_ID_' . $flashName] : false;
+				$_flashmovieDataId = weRequest('string', 'WE_UI_FLASHMOVIE_DATA_ID_' . $flashName);
 
 				if($_flashmovieDataId !== false && isset($_SESSION[$_flashmovieDataId])){
 
 					$_SESSION[$_flashmovieDataId]['doDelete'] = false;
 
-					if(isset($_REQUEST["WE_UI_DEL_CHECKBOX_" . $flashName]) && $_REQUEST["WE_UI_DEL_CHECKBOX_" . $flashName] == 1){
+					if(weRequest('bool', 'WE_UI_DEL_CHECKBOX_' . $flashName)){
 						$_SESSION[$_flashmovieDataId]['doDelete'] = true;
 					} elseif($filename){
 						// file is selected, check to see if it is an image

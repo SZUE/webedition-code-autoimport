@@ -28,31 +28,31 @@ class rpcGetCategoryCmd extends rpcCmd{
 		$resp = new rpcResponse();
 		$_error = array();
 		// check for necessory params
-		if(!isset($_REQUEST['obj']) || $_REQUEST['obj'] == ""){
+		if(!($obj=weRequest('string', 'obj'))){
 			$_error[] = "Missing field obj";
 		}
-		if(!isset($_REQUEST['cats']) || $_REQUEST['cats'] == ""){
+		if(!weRequest('string', 'cats')){
 			$_error[] = "Missing field cats";
 		}
-		if(isset($_REQUEST['part']) && $_REQUEST['part'] == "table" && (!isset($_REQUEST['target']) || $_REQUEST['target'] == "")){
+		if(weRequest('string', 'part') == "table" && (!weRequest('bool', 'target'))){
 			$_error[] = "Missing target for table";
 		}
 
-		if(!empty($_error)){
+		if($_error){
 			$resp->setData("error", $_error);
 		} else {
-			$part = (isset($_REQUEST['part']) && $_REQUEST['part'] != "") ? $_REQUEST['part'] : "rows";
-			$target = (isset($_REQUEST['target']) && $_REQUEST['target'] != "") ? $_REQUEST['target'] : $_REQUEST['obj'] . "CatTable";
-			$catField = (isset($_REQUEST['catfield']) && $_REQUEST['catfield'] != "") ? $_REQUEST['catfield'] : "";
-			$categories = $this->getCategory($_REQUEST['obj'], $_REQUEST['cats'], $catField, $part);
-			$categories = strtr($categories, array("\r" => "", "\n" => ""));
+			//$part = weRequest('string', 'part',"rows");
+			$target = weRequest('string', 'target', $obj . "CatTable");
+			$catField = weRequest('string', 'catfield', '');
+			$categories = $this->getCategory($obj, weRequest('intList', 'cats', ''), $catField);
+			$categories = strtr($categories, array("\r" => '', "\n" => ''));
 			$resp->setData("elementsById", array($target => array("innerHTML" => addslashes($categories)))
 			);
 		}
 		return $resp;
 	}
 
-	function getCategory($obj, $categories, $catField = "", $as = "table"){
+	function getCategory($obj, $categories, $catField = ""){
 		$cats = new MultiDirChooser2(410, $categories, "delete_" . $obj . "Cat", "", "", "Icon,Path", CATEGORY_TABLE);
 		$cats->setRowPrefix($obj);
 		$cats->setCatField($catField);

@@ -147,25 +147,25 @@ $oPool->setCol(
 	), we_html_element::htmlA(
 		array(
 		"href" => "#",
-		"onClick" => "moveOptionUp(document.forms[0]['list11']);moveOptionUp(document.forms[0]['list21']);return false;"
+		"onclick" => "moveOptionUp(document.forms[0]['list11']);moveOptionUp(document.forms[0]['list21']);return false;"
 		), we_html_element::htmlImg(array(
 			"src" => IMAGE_DIR . "pd/arrow_up.gif", "border" => 0
 	))) . we_html_element::htmlBr() . we_html_element::htmlBr() . we_html_element::htmlA(
 		array(
 		"href" => "#",
-		"onClick" => "moveSelectedOptions(document.forms[0]['list11'],document.forms[0]['list21'],false);return false;"
+		"onclick" => "moveSelectedOptions(document.forms[0]['list11'],document.forms[0]['list21'],false);return false;"
 		), we_html_element::htmlImg(array(
 			"src" => IMAGE_DIR . "pd/arrow_right.gif", "border" => 0
 	))) . we_html_element::htmlBr() . we_html_element::htmlBr() . we_html_element::htmlA(
 		array(
 		"href" => "#",
-		"onClick" => "moveSelectedOptions(document.forms[0]['list21'],document.forms[0]['list11'],false);return false;"
+		"onclick" => "moveSelectedOptions(document.forms[0]['list21'],document.forms[0]['list11'],false);return false;"
 		), we_html_element::htmlImg(array(
 			"src" => IMAGE_DIR . "pd/arrow_left.gif", "border" => 0
 	))) . we_html_element::htmlBr() . we_html_element::htmlBr() . we_html_element::htmlA(
 		array(
 		"href" => "#",
-		"onClick" => "moveOptionDown(document.forms[0]['list11']);moveOptionDown(document.forms[0]['list21']);return false;"
+		"onclick" => "moveOptionDown(document.forms[0]['list11']);moveOptionDown(document.forms[0]['list21']);return false;"
 		), we_html_element::htmlImg(array(
 			"src" => IMAGE_DIR . "pd/arrow_down.gif", "border" => 0
 ))));

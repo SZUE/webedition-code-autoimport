@@ -290,14 +290,14 @@ foreach($options[0] as $opt){
 	}
 }
 
-switch($_REQUEST['type']){
+switch(($type=  weRequest('string', 'type'))){
 
 	case 'static':
 		$_REQUEST['type'] = "filter";
 	case 'all':
 	case 'templates':
 		$data = we_rebuild_base::getDocuments(
-				"rebuild_" . $_REQUEST['type'], $_REQUEST['categories'], $_REQUEST['catAnd'], $_REQUEST['doctypes'], $_REQUEST['directories'], $_REQUEST['rewriteMaintable'], $_REQUEST['rewriteTmptable']
+				"rebuild_" . $type, $_REQUEST['categories'], $_REQUEST['catAnd'], $_REQUEST['doctypes'], $_REQUEST['directories'], $_REQUEST['rewriteMaintable'], $_REQUEST['rewriteTmptable']
 		);
 		break;
 
@@ -318,7 +318,7 @@ switch($_REQUEST['type']){
 		$_thumbIds = array();
 		$db = new DB_WE();
 		foreach($_thumbNames as $_thumbName){
-			$_thumbIds[] = f("SELECT ID FROM " . THUMBNAILS_TABLE . " WHERE NAME='" . $db->escape($_thumbName) . "'", "ID", $db);
+			$_thumbIds[] = f('SELECT ID FROM ' . THUMBNAILS_TABLE . " WHERE NAME='" . $db->escape($_thumbName) . "'", '', $db);
 		}
 		$_thumbIds = makeCSVFromArray($_thumbIds);
 		$data = we_rebuild_base::getThumbnails($_thumbIds);

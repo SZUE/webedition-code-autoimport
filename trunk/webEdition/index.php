@@ -56,7 +56,7 @@ define('LOGIN_CREDENTIALS_INVALID', 1);
 define('LOGIN_UNKNOWN', 0);
 
 
-$ignore_browser = isset($_REQUEST['ignore_browser']) && ($_REQUEST['ignore_browser'] === 'true');
+$ignore_browser = weRequest('bool', 'ignore_browser', false);
 
 function getValueLoginMode($val){
 	$mode = isset($_COOKIE['we_mode']) ? $_COOKIE['we_mode'] : we_base_constants::MODE_NORMAL;
@@ -83,12 +83,12 @@ function printHeader($login, $status = 200){
 	we_message_reporting::jsString();
 
 	if($login != LOGIN_OK){
-		print we_html_element::linkElement(array('rel' => 'home', 'href' => WEBEDITION_DIR)) .
-			we_html_element::linkElement(array('rel' => 'author', 'href' => g_l('start', '[we_homepage]')));
+		echo we_html_element::linkElement(array('rel' => 'home', 'href' => WEBEDITION_DIR)) .
+		we_html_element::linkElement(array('rel' => 'author', 'href' => g_l('start', '[we_homepage]')));
 	}
 
-	print we_html_element::linkElement(array('rel' => 'SHORTCUT ICON', 'href' => IMAGE_DIR . 'webedition.ico')) .
-		we_html_element::jsElement('cookieBackup = document.cookie;
+	echo we_html_element::linkElement(array('rel' => 'SHORTCUT ICON', 'href' => IMAGE_DIR . 'webedition.ico')) .
+	we_html_element::jsElement('cookieBackup = document.cookie;
 	document.cookie = "cookie=yep";
 	cookieOk = document.cookie.indexOf("cookie=yep") > -1;
 	document.cookie = cookieBackup;
@@ -141,7 +141,7 @@ function showMessage(message, prio, win){
 		}
 	}
 }') .
-		'</head>';
+	'</head>';
 }
 
 /* * ***************************************************************************
@@ -191,8 +191,8 @@ if(isset($GLOBALS['userLoginDenied'])){
 	$login = LOGIN_DENIED;
 } else if(isset($_SESSION['user']['Username']) && isset($_POST['password']) && isset($_POST['username'])){
 	$login = LOGIN_OK;
-	if(isset($_REQUEST['mode'])){
-		setcookie('we_mode', $_REQUEST['mode'], time() + 2592000); //	Cookie remembers the last selected mode, it will expire in one Month !!!
+	if(($mode = weRequest('string', 'mode'))){
+		setcookie('we_mode', $mode, time() + 2592000); //	Cookie remembers the last selected mode, it will expire in one Month !!!
 	}
 	setcookie('we_popup', (isset($_REQUEST['popup']) ? 1 : 0), time() + 2592000);
 } else if(isset($_POST['password']) && isset($_POST['username'])){
@@ -326,7 +326,7 @@ if(isset($_POST['checkLogin']) && empty($_COOKIE)){
 	$_browser_table->setCol(8, 0, array('colspan' => $supportedBrowserCnt), we_html_tools::getPixel(1, 5));
 	$_browser_table->setCol(10, 0, array('colspan' => $supportedBrowserCnt), we_html_tools::getPixel(1, 50));
 
-	$_browser_table->setCol(11, 0, array('align' => 'center', 'class' => 'defaultfont', 'colspan' => $supportedBrowserCnt), we_html_element::htmlA(array('href' => WEBEDITION_DIR . 'index.php?ignore_browser=true'), g_l('start', '[ignore_browser]')));
+	$_browser_table->setCol(11, 0, array('align' => 'center', 'class' => 'defaultfont', 'colspan' => $supportedBrowserCnt), we_html_element::htmlA(array('href' => WEBEDITION_DIR . 'index.php?ignore_browser=1'), g_l('start', '[ignore_browser]')));
 
 	$_layout = new we_html_table(array('style' => 'width: 100%; height: 75%;'), 1, 1);
 
@@ -441,12 +441,12 @@ if(isset($_POST['checkLogin']) && empty($_COOKIE)){
 			}
 
 			if((WE_LOGIN_WEWINDOW == 2 || WE_LOGIN_WEWINDOW == 0 && (!isset($_REQUEST['popup'])))){
-				if(empty($_body_javascript)){
+				if($_body_javascript){
+					$_body_javascript.='top.location="' . WEBEDITION_DIR . 'webEdition.php"';
+				} else {
 					$httpCode = 303;
 					header('Location: ' . WEBEDITION_DIR . 'webEdition.php');
 					$_body_javascript = 'alert("automatic redirect disabled");';
-				} else {
-					$_body_javascript.='top.location="' . WEBEDITION_DIR . 'webEdition.php"';
 				}
 			} else {
 				$_body_javascript .= 'function open_we() {
@@ -466,7 +466,7 @@ if(isset($_POST['checkLogin']) && empty($_COOKIE)){
 					we_message_reporting::getShowMessageCall(g_l('alert', "[login_failed]"), we_message_reporting::WE_MESSAGE_ERROR));
 			break;
 		case 3:
-			$_body_javascript = we_message_reporting::getShowMessageCall(g_l('alert', "[login_failed_security]"), we_message_reporting::WE_MESSAGE_ERROR) . "document.location = '" . WEBEDITION_DIR . "index.php" . (($ignore_browser || (isset($_COOKIE["ignore_browser"]) && $_COOKIE["ignore_browser"] == "true")) ? "&ignore_browser=" . (isset($_COOKIE["ignore_browser"]) ? $_COOKIE["ignore_browser"] : ($ignore_browser ? "true" : "false")) : "") . "';";
+			$_body_javascript = we_message_reporting::getShowMessageCall(g_l('alert', "[login_failed_security]"), we_message_reporting::WE_MESSAGE_ERROR) . "document.location = '" . WEBEDITION_DIR . "index.php" . (($ignore_browser || (isset($_COOKIE["ignore_browser"]) && $_COOKIE["ignore_browser"] == "true")) ? "&ignore_browser=" . (isset($_COOKIE["ignore_browser"]) ? $_COOKIE["ignore_browser"] : ($ignore_browser ? 1 : 0)) : "") . "';";
 			break;
 		case LOGIN_DENIED:
 			$_body_javascript = we_message_reporting::getShowMessageCall(g_l('alert', "[login_denied_for_user]"), we_message_reporting::WE_MESSAGE_ERROR);

@@ -118,7 +118,7 @@ class weVersionsSearch{
 									$timestampStart = mktime(0, 0, 0, $month, $day, $year);
 									$timestampEnd = mktime(23, 59, 59, $month, $day, $year);
 
-									switch($_REQUEST['location'][$k]){
+									switch(weRequest('raw', 'location','',$k)){
 										case "IS":
 											$where .= " AND " . $v . " BETWEEN " . intval($timestampStart) . " AND " . intval($timestampEnd);
 											break;

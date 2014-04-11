@@ -113,16 +113,13 @@ function exit_close(){
 }
 ";
 
-$oRdoSort[0] = we_html_forms::radiobutton(
-		$value = 0, $checked = 0, $name = "rdo_sort", $text = g_l('cockpit', '[by_pubdate]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
-$oRdoSort[1] = we_html_forms::radiobutton(
-		$value = 1, $checked = 0, $name = "rdo_sort", $text = g_l('cockpit', '[by_valid_from]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
-$oRdoSort[2] = we_html_forms::radiobutton(
-		$value = 2, $checked = 0, $name = "rdo_sort", $text = g_l('cockpit', '[by_valid_until]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
-$oRdoSort[3] = we_html_forms::radiobutton(
-		$value = 3, $checked = 0, $name = "rdo_sort", $text = g_l('cockpit', '[by_priority]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
-$oRdoSort[4] = we_html_forms::radiobutton(
-		$value = 4, $checked = 1, $name = "rdo_sort", $text = g_l('cockpit', '[alphabetic]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
+$oRdoSort = array(
+	we_html_forms::radiobutton(0, 0, "rdo_sort", g_l('cockpit', '[by_pubdate]'), true, "defaultfont", "", false, "", 0, ""),
+	we_html_forms::radiobutton(1, 0, "rdo_sort", g_l('cockpit', '[by_valid_from]'), true, "defaultfont", "", false, "", 0, ""),
+	we_html_forms::radiobutton(2, 0, "rdo_sort", g_l('cockpit', '[by_valid_until]'), true, "defaultfont", "", false, "", 0, ""),
+	we_html_forms::radiobutton(3, 0, "rdo_sort", g_l('cockpit', '[by_priority]'), true, "defaultfont", "", false, "", 0, ""),
+	we_html_forms::radiobutton(4, 1, "rdo_sort", g_l('cockpit', '[alphabetic]'), true, "defaultfont", "", false, "", 0, "")
+);
 
 $sort = new we_html_table(array(
 	"cellpadding" => 0, "cellspacing" => 0, "border" => 0
@@ -144,10 +141,10 @@ $parts = array(
 	)
 );
 
-$oRdoDisplay[0] = we_html_forms::radiobutton(
-		$value = 0, $checked = 1, $name = "rdo_display", $text = g_l('cockpit', '[all_notes]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
-$oRdoDisplay[1] = we_html_forms::radiobutton(
-		$value = 1, $checked = 0, $name = "rdo_display", $text = g_l('cockpit', '[only_valid]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
+$oRdoDisplay = array(
+	we_html_forms::radiobutton(0, 1, "rdo_display", g_l('cockpit', '[all_notes]'), true, "defaultfont", "", false, "", 0, ""),
+	we_html_forms::radiobutton(1, 0, "rdo_display", g_l('cockpit', '[only_valid]'), true, "defaultfont", "", false, "", 0, ""),
+);
 
 $display = new we_html_table(array(
 	"cellpadding" => 0, "cellspacing" => 0, "border" => 0
@@ -164,12 +161,11 @@ $parts[] = array(
 	"headline" => g_l('cockpit', '[display]'), "html" => $display->getHTML(), "space" => 100
 );
 
-$oRdoDate[0] = we_html_forms::radiobutton(
-		$value = 0, $checked = 1, $name = "rdo_date", $text = g_l('cockpit', '[by_pubdate]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
-$oRdoDate[1] = we_html_forms::radiobutton(
-		$value = 1, $checked = 0, $name = "rdo_date", $text = g_l('cockpit', '[by_valid_from]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
-$oRdoDate[2] = we_html_forms::radiobutton(
-		$value = 2, $checked = 0, $name = "rdo_date", $text = g_l('cockpit', '[by_valid_until]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
+$oRdoDate = array(
+	we_html_forms::radiobutton(0, 1, "rdo_date", g_l('cockpit', '[by_pubdate]'), true, "defaultfont", "", false, "", 0, ""),
+	we_html_forms::radiobutton(1, 0, "rdo_date", g_l('cockpit', '[by_valid_from]'), true, "defaultfont", "", false, "", 0, ""),
+	we_html_forms::radiobutton(2, 0, "rdo_date", g_l('cockpit', '[by_valid_until]'), true, "defaultfont", "", false, "", 0, "")
+);
 
 $date = new we_html_table(array(
 	"cellpadding" => 0, "cellspacing" => 0, "border" => 0
@@ -184,12 +180,11 @@ $parts[] = array(
 	"headline" => g_l('cockpit', '[display_date]'), "html" => $date->getHTML(), "space" => 100
 );
 
-$oRdoPrio[0] = we_html_forms::radiobutton(
-		$value = 0, $checked = 0, $name = "rdo_prio", $text = g_l('cockpit', '[high]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
-$oRdoPrio[1] = we_html_forms::radiobutton(
-		$value = 1, $checked = 0, $name = "rdo_prio", $text = g_l('cockpit', '[medium]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
-$oRdoPrio[2] = we_html_forms::radiobutton(
-		$value = 2, $checked = 1, $name = "rdo_prio", $text = g_l('cockpit', '[low]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
+$oRdoPrio = array(
+	we_html_forms::radiobutton(0, 0, "rdo_prio", g_l('cockpit', '[high]'), true, "defaultfont", "", false, "", 0, ""),
+	we_html_forms::radiobutton(1, 0, "rdo_prio", g_l('cockpit', '[medium]'), true, "defaultfont", "", false, "", 0, ""),
+	we_html_forms::radiobutton(2, 1, "rdo_prio", g_l('cockpit', '[low]'), true, "defaultfont", "", false, "", 0, "")
+);
 
 $prio = new we_html_table(array(
 	"cellpadding" => 0, "cellspacing" => 0, "border" => 0

@@ -95,7 +95,7 @@ if(weRequest('bool', 'ok')){
 
 	if(strlen($params) > 0){ //	accept parameters with or without '?', when saving the link
 		//	when type=object we need a '&'
-		switch($_REQUEST['type']){
+		switch(weRequest('string', 'type')){
 			case we_base_link::TYPE_OBJ:
 				if(substr($params, 0, 1) != '&'){
 					$params = (substr($params, 0, 1) == '?' ? '&' . substr($params, 1) : '&' . $params);

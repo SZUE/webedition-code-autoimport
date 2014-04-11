@@ -354,7 +354,7 @@ class we_import_wizard extends we_import_wizardBase {
 		$inputLServer = we_html_tools::htmlTextInput("v[fserver]", 30, (isset($v["fserver"]) ? $v["fserver"] : "/"), 255, "readonly", "text", 300);
 		$importFromServer = we_html_tools::htmlFormElementTable($inputLServer, "", "left", "defaultfont", we_html_tools::getPixel(10, 1), $importFromButton, "", "", "", 0);
 
-		$inputLLocal = we_html_tools::htmlTextInput("uploaded_xml_file", 30, "", 255, "accept=\"text/xml\" onClick=\"self.document.forms['we_form'].elements['v[rdofloc]'][1].checked=true;\"", "file");
+		$inputLLocal = we_html_tools::htmlTextInput("uploaded_xml_file", 30, "", 255, "accept=\"text/xml\" onclick=\"self.document.forms['we_form'].elements['v[rdofloc]'][1].checked=true;\"", "file");
 		$importFromLocal = we_html_tools::htmlFormElementTable($inputLLocal, "", "left", "defaultfont", we_html_tools::getPixel(10, 1), "", "", "", "", 0);
 
 		$rdoLServer = we_html_forms::radiobutton("lServer", (isset($v["rdofloc"])) ? ($v["rdofloc"] == "lServer") : 1, "v[rdofloc]", g_l('import', "[fileselect_server]"));
@@ -976,7 +976,7 @@ HTS;
 		$inputLServer = we_html_tools::htmlTextInput('v[fserver]', 30, (isset($v['fserver']) ? $v['fserver'] : '/'), 255, 'readonly', 'text', 300);
 		$importFromServer = we_html_tools::htmlFormElementTable($inputLServer, '', 'left', 'defaultfont', we_html_tools::getPixel(10, 1), $importFromButton, '', '', '', 0);
 
-		$inputLLocal = we_html_tools::htmlTextInput('uploaded_xml_file', 30, '', 255, "accept=\"text/xml\" onClick=\"self.document.forms['we_form'].elements['v[rdofloc]'][1].checked=true;\"", "file");
+		$inputLLocal = we_html_tools::htmlTextInput('uploaded_xml_file', 30, '', 255, "accept=\"text/xml\" onclick=\"self.document.forms['we_form'].elements['v[rdofloc]'][1].checked=true;\"", "file");
 		$importFromLocal = we_html_tools::htmlFormElementTable($inputLLocal, '', 'left', 'defaultfont', we_html_tools::getPixel(10, 1), '', '', '', '', 0);
 
 		$rdoLServer = we_html_forms::radiobutton('lServer', (isset($v['rdofloc'])) ? ($v['rdofloc'] == 'lServer') : 1, 'v[rdofloc]', g_l('import', '[fileselect_server]'));
@@ -1001,7 +1001,7 @@ HTS;
 			'name' => 'v[docType]',
 			'size' => 1,
 			'class' => 'weSelect',
-			'onClick' => (defined('OBJECT_TABLE')) ? "self.document.forms['we_form'].elements['v[import_type]'][0].checked=true;" : '',
+			'onclick' => (defined('OBJECT_TABLE')) ? "self.document.forms['we_form'].elements['v[import_type]'][0].checked=true;" : '',
 			'onchange' => 'this.form.doctypeChanged.value=1; weChangeDocType(this);',
 			'style' => 'width: 300px')
 		);
@@ -1036,7 +1036,7 @@ HTS;
 			'name' => 'docTypeTemplateId',
 			'size' => 1,
 			'class' => 'weSelect',
-			'onClick' => (defined('OBJECT_TABLE')) ? "self.document.forms['we_form'].elements['v[import_type]'][0].checked=true;" : '',
+			'onclick' => (defined('OBJECT_TABLE')) ? "self.document.forms['we_form'].elements['v[import_type]'][0].checked=true;" : '',
 			//'onchange'  => "we_submit_form(self.document.forms['we_form'], 'wizbody', '".$this->path."');",
 			'style' => 'width: 300px')
 		);
@@ -1110,7 +1110,7 @@ HTS;
 			'name' => 'v[classID]',
 			'size' => 1,
 			'class' => 'weSelect',
-			'onClick' => "self.document.forms['we_form'].elements['v[import_type]'][1].checked=true;",
+			'onclick' => "self.document.forms['we_form'].elements['v[import_type]'][1].checked=true;",
 			'style' => 'width: 150px')
 		);
 		$optid = 0;
@@ -1465,7 +1465,7 @@ function handle_event(evt) {
 				'name' => 'we_flds[' . $record . ']',
 				'size' => 1,
 				'class' => 'weSelect',
-				'onClick' => '',
+				'onclick' => '',
 				'style' => '')
 			);
 
@@ -1503,14 +1503,14 @@ function handle_event(evt) {
 		// Associated prefix selector.
 		$asocPfx = new we_html_table(array('cellpadding' => 0, 'cellspacing' => 0, 'border' => 0), 1, 1);
 		$asocPfx->setCol(0, 0, array('class' => 'defaultfont'), g_l('import', '[pfx]') . '<br>' . we_html_tools::getPixel(1, 2) . '<br>' .
-			we_html_tools::htmlTextInput('v[asoc_prefix]', 30, (isset($v['asoc_prefix']) ? $v['asoc_prefix'] : (($v['import_type'] == 'documents') ? g_l('import', '[pfx_doc]') : g_l('import', '[pfx_obj]'))), 255, "onClick=\"self.document.forms['we_form'].elements['v[rdo_filename]'][0].checked=true;\"", "text", 150));
+			we_html_tools::htmlTextInput('v[asoc_prefix]', 30, (isset($v['asoc_prefix']) ? $v['asoc_prefix'] : (($v['import_type'] == 'documents') ? g_l('import', '[pfx_doc]') : g_l('import', '[pfx_obj]'))), 255, "onclick=\"self.document.forms['we_form'].elements['v[rdo_filename]'][0].checked=true;\"", "text", 150));
 
 		// Assigned record or attribute field selectors.
 		$rcdPfxSelect = new we_html_select(array(
 			'name' => 'v[rcd_pfx]',
 			'size' => 1,
 			'class' => 'weSelect',
-			'onClick' => "self.document.forms['we_form'].elements['v[pfx_fn]'].value=1;self.document.forms['we_form'].elements['v[rdo_filename]'][1].checked=true;",
+			'onclick' => "self.document.forms['we_form'].elements['v[pfx_fn]'].value=1;self.document.forms['we_form'].elements['v[rdo_filename]'][1].checked=true;",
 			'style' => 'width: 150px')
 		);
 		reset($val_nodes);
@@ -1523,7 +1523,7 @@ function handle_event(evt) {
 			}
 		}
 
-		$attPfxSelect = we_html_tools::htmlTextInput('v[att_pfx]', 30, (isset($v['att_pfx']) ? base64_decode($v['att_pfx']) : ''), 255, "onClick=\"self.document.forms['we_form'].elements['v[rdo_filename]'][1].checked=true;\"", "text", 100);
+		$attPfxSelect = we_html_tools::htmlTextInput('v[att_pfx]', 30, (isset($v['att_pfx']) ? base64_decode($v['att_pfx']) : ''), 255, "onclick=\"self.document.forms['we_form'].elements['v[rdo_filename]'][1].checked=true;\"", "text", 100);
 
 		$asgndFld = new we_html_table(array('cellpadding' => 0, 'cellspacing' => 0, 'border' => 0), 1, 3);
 		$asgndFld->setCol(0, 0, array('class' => 'defaultfont'), g_l('import', '[rcd_fld]') . '<br>' . we_html_tools::getPixel(1, 2) . '<br>' . $rcdPfxSelect->getHTML());
@@ -1555,7 +1555,7 @@ function handle_event(evt) {
 			$tStamp->setCol(4, 0, array('colspan' => 2), we_html_forms::radiobutton('Format', (!isset($v['rdo_timestamp']) ? 0 : ($v['rdo_timestamp'] == 'Format') ? 1 : 0), 'v[rdo_timestamp]', g_l('import', '[fts]'), true, 'defaultfont', '', 0, g_l('import', '[format_timestamp]'), 0, 384));
 			$tStamp->setCol(5, 0, array('colspan' => 2), we_html_tools::getPixel(0, 4));
 			$tStamp->setCol(6, 0, array('width' => 25), we_html_tools::getPixel(25, 0));
-			$tStamp->setCol(6, 1, array(), we_html_tools::htmlTextInput('v[timestamp]', 30, (isset($v['timestamp']) ? $v['timestamp'] : ''), '', "onClick=\"self.document.forms['we_form'].elements['v[rdo_timestamp]'][2].checked=true;\"", "text", 150));
+			$tStamp->setCol(6, 1, array(), we_html_tools::htmlTextInput('v[timestamp]', 30, (isset($v['timestamp']) ? $v['timestamp'] : ''), '', "onclick=\"self.document.forms['we_form'].elements['v[rdo_timestamp]'][2].checked=true;\"", "text", 150));
 
 			$parts[] = array(
 				'headline' => g_l('import', '[format_date]'),
@@ -1669,7 +1669,7 @@ function handle_event(evt) {
 		/*		 * *************************************************************************************************************** */
 		$wecmdenc1 = we_cmd_enc("self.wizbody.document.forms['we_form'].elements['v[fserver]'].value");
 		$importFromButton = (permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES')) ? we_html_button::create_button('select', "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', '', document.forms['we_form'].elements['v[fserver]'].value)") : "";
-		$inputLServer = we_html_tools::htmlTextInput('v[fserver]', 30, (isset($v['fserver']) ? $v['fserver'] : '/'), 255, "readonly onClick=\"self.document.forms['we_form'].elements['v[rdofloc]'][0].checked=true;\"", "text", 300);
+		$inputLServer = we_html_tools::htmlTextInput('v[fserver]', 30, (isset($v['fserver']) ? $v['fserver'] : '/'), 255, "readonly onclick=\"self.document.forms['we_form'].elements['v[rdofloc]'][0].checked=true;\"", "text", 300);
 		$importFromServer = we_html_tools::htmlFormElementTable($inputLServer, '', 'left', 'defaultfont', we_html_tools::getPixel(10, 1), $importFromButton, "", "", "", 0);
 
 		$inputLLocal = we_html_tools::htmlTextInput('uploaded_csv_file', 30, '', 255, "accept=\"text/csv\" onclick=\"" . "self.document.forms['we_form'].elements['v[rdofloc]'][1].checked=true;\"" . "\"", "file");
@@ -2002,7 +2002,7 @@ HTS;
 			"name" => "v[we_TemplateID]",
 			"size" => 1,
 			"class" => "weSelect",
-			"onClick" => "self.document.forms['we_form'].elements['v[import_type]'][0].checked=true;",
+			"onclick" => "self.document.forms['we_form'].elements['v[import_type]'][0].checked=true;",
 			"style" => "width: 300px")
 		);
 
@@ -2392,7 +2392,7 @@ function handle_event(evt) {
 		// Associated prefix selector.
 		$asocPfx = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 1);
 		$asocPfx->setCol(0, 0, array("class" => "defaultfont"), g_l('import', "[pfx]") . "<br>" . we_html_tools::getPixel(1, 2) . "<br>" .
-			we_html_tools::htmlTextInput("v[asoc_prefix]", 30, (isset($v["asoc_prefix"]) ? $v["asoc_prefix"] : (($v["import_type"] == "documents") ? g_l('import', "[pfx_doc]") : g_l('import', "[pfx_obj]"))), 255, "onClick=\"self.document.forms['we_form'].elements['v[rdo_filename]'][0].checked=true;\"", "text", 150));
+			we_html_tools::htmlTextInput("v[asoc_prefix]", 30, (isset($v["asoc_prefix"]) ? $v["asoc_prefix"] : (($v["import_type"] == "documents") ? g_l('import', "[pfx_doc]") : g_l('import', "[pfx_obj]"))), 255, "onclick=\"self.document.forms['we_form'].elements['v[rdo_filename]'][0].checked=true;\"", "text", 150));
 
 		// Assigned record or attribute field selectors.
 		$rcdPfxSelect = new we_html_select(array(
@@ -2441,7 +2441,7 @@ function handle_event(evt) {
 			$tStamp->setCol(4, 0, array("colspan" => 2), we_html_forms::radiobutton("Format", (!isset($v["rdo_timestamp"]) ? 0 : ($v["rdo_timestamp"] == "Format") ? 1 : 0), "v[rdo_timestamp]", g_l('import', "[fts]"), true, "defaultfont", "", 0, g_l('import', "[format_timestamp]"), 0, 384));
 			$tStamp->setCol(5, 0, array("colspan" => 2), we_html_tools::getPixel(0, 4));
 			$tStamp->setCol(6, 0, array("width" => 25), we_html_tools::getPixel(25, 0));
-			$tStamp->setCol(6, 1, array(), we_html_tools::htmlTextInput("v[timestamp]", 30, (isset($v["timestamp"]) ? $v["timestamp"] : ""), "", "onClick=\"self.document.forms['we_form'].elements['v[rdo_timestamp]'][2].checked=true;\"", "text", 150));
+			$tStamp->setCol(6, 1, array(), we_html_tools::htmlTextInput("v[timestamp]", 30, (isset($v["timestamp"]) ? $v["timestamp"] : ""), "", "onclick=\"self.document.forms['we_form'].elements['v[rdo_timestamp]'][2].checked=true;\"", "text", 150));
 
 			$parts[] = array(
 				"headline" => g_l('import', "[format_date]"),

@@ -198,12 +198,13 @@ function _weRequest(&$var, $key, array $data){
 		case 'bool':
 			$var = (bool) $var;
 			return;
-		case 'table':
+		case 'table': //FIXME: this doesn't hold for OBJECT_X_TABLE - make sure we don't use them in requests
 			$var = $var && ($k = array_search($var, get_defined_constants(), true)) && (substr($k, -6) == '_TABLE') ? $var : $default;
 			return;
 		case 'email'://removes mailto:
 			$var = filter_var(str_replace(we_base_link::TYPE_MAIL_PREFIX, '', $var), FILTER_SANITIZE_EMAIL);
 			return;
+		case 'file':
 		case 'url':
 			$var = filter_var($var, FILTER_SANITIZE_URL);
 			return;
@@ -228,11 +229,11 @@ function _weRequest(&$var, $key, array $data){
  * @param mixed $index optional index
  * @return mixed default, if value not set, the filtered value else
  */
-function weRequest($type, $name, $default = false, $index = ''){
-	if(!isset($_REQUEST[$name])){
+function weRequest($type, $name, $default = false, $index = null){
+	if(!isset($_REQUEST[$name]) || ($index !== null && !isset($_REQUEST[$name][$index]))){
 		return $default;
 	}
-	$var = $index === '' ? $_REQUEST[$name] : $_REQUEST[$name][$index];
+	$var = ($index === null ? $_REQUEST[$name] : $_REQUEST[$name][$index]);
 	if(is_array($var)){
 		array_walk($var, '_weRequest', array($type, $default));
 	} else {

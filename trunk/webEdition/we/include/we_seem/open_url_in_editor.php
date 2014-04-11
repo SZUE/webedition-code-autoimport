@@ -30,4 +30,4 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 //	is needed to reopen the document (if possible) with webEdition
 
 we_html_tools::protect();
-print we_html_element::jsElement(we_SEEM::getJavaScriptCommandForOneLink("<a href=\"" . $_REQUEST["we_cmd"][1] . "\">"));
+echo we_html_element::jsElement(we_SEEM::getJavaScriptCommandForOneLink("<a href=\"" . weRequest('url', 'we_cmd', '', 1) . "\">"));

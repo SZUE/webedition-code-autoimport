@@ -119,7 +119,7 @@ class we_dialog_image extends we_dialog_base{
 		$this->args['longdesc'] = $longdesc;
 		$this->args['longdescid'] = $longdescid;
 		$this->args['longdescsrc'] = ($longdesc ? $tokkens[0] : '');
-		$this->args['ratio'] = isset($_REQUEST['we_dialog_args']['ratio']) ? $_REQUEST['we_dialog_args']['ratio'] : 1;
+		$this->args['ratio'] = weRequest('int', 'we_dialog_args', 1, 'ratio');
 	}
 
 	function initByFileID($fileID, $width = 0, $height = 0, $hspace = 0, $vspace = 0, $border = 0, $alt = '', $align = '', $name = '', $thumb = '', $class = '', $title = '', $longdesc = ''){

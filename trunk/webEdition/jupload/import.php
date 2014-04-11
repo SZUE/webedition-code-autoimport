@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 if(empty($_SESSION["user"]["Username"]) && isset($_REQUEST['csid'])){
-	session_id($_REQUEST['csid']);
+	session_id(weRequest('string', 'csid'));
 }
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
@@ -36,8 +36,8 @@ if(isset($_SESSION['weS']['_we_import_files'])){
 	$import_files->loadPropsFromSession();
 }
 
-if(isset($_REQUEST['pathinfo0'])){
-	$_SESSION["prefs"]['juploadPath'] = $_REQUEST['pathinfo0'];
+if(($path = weRequest('file', 'pathinfo0'))){
+	$_SESSION["prefs"]['juploadPath'] = $path;
 }
 
 $_counter = 0;
@@ -47,7 +47,7 @@ foreach($_FILES as $_index => $_file){
 
 		$error = $import_files->importFile();
 
-		if(!empty($error)){
+		if($error){
 			if(!isset($_SESSION['weS']['WE_IMPORT_FILES_ERRORs'])){
 				$_SESSION['weS']['WE_IMPORT_FILES_ERRORs'] = array();
 			}

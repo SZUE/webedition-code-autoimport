@@ -28,14 +28,12 @@ class rpcGetSearchParametersCmd extends rpcCmd{
 
 		$resp = new rpcResponse();
 
-		$pos = $_REQUEST['position'];
+		$pos = weRequest('string', 'position', '');
 
 		$foundItems = (isset($_SESSION['weS']['weSearch']['foundItems'])) ? $_SESSION['weS']['weSearch']['foundItems'] : 0;
-		$anzahl = $_REQUEST['we_cmd']['anzahl'];
-		$searchstart = $_REQUEST['we_cmd']['searchstart'];
 
-		$_SESSION['weS']['weSearch']['anzahl'] = $anzahl;
-		$_SESSION['weS']['weSearch']['searchstart'] = $searchstart;
+		$_SESSION['weS']['weSearch']['anzahl'] = weRequest('int', 'we_cmd', 0, 'anzahl');
+		$_SESSION['weS']['weSearch']['searchstart'] = weRequest('int', 'we_cmd', 0, 'searchstart');
 
 		$_REQUEST['we_cmd']['obj'] = true;
 

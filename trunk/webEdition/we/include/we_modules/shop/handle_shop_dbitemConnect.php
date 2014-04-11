@@ -36,13 +36,11 @@ while($DB_WE->next_record()){
 }
 // print $yearTrans;
 /// config
-$DB_WE->query("SELECT strFelder from " . ANZEIGE_PREFS_TABLE . " WHERE strDateiname = 'shop_pref'");
-$DB_WE->next_record();
-$feldnamen = explode("|", $DB_WE->f("strFelder"));
+$feldnamen = explode('|', f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . " WHERE strDateiname='shop_pref'"));
 for($i = 0; $i <= 3; $i++){
 	$feldnamen[$i] = isset($feldnamen[$i]) ? $feldnamen[$i] : '';
 }
-$fe = explode(",", $feldnamen[3]);
+$fe = explode(',', $feldnamen[3]);
 if(empty($classid)){
 	$classid = $fe[0];
 }
@@ -51,4 +49,4 @@ if(empty($classid)){
 $resultO = array_shift($fe);
 
 // wether the resultset ist empty?
-$resultD = f("SELECT count(Name) as Anzahl FROM " . LINK_TABLE . ' WHERE Name ="' . WE_SHOP_TITLE_FIELD_NAME . '"', 'Anzahl', $DB_WE);
+$resultD = f('SELECT 1 FROM ' . LINK_TABLE . ' WHERE Name="' . WE_SHOP_TITLE_FIELD_NAME . '" LIMIT 1');

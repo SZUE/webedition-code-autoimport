@@ -27,10 +27,10 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 if(permissionhandler::hasPerm("administrator")){
 
-	if(isset($_REQUEST['clearlog']) && $_REQUEST['clearlog'] == 1){
+	if(weRequest('bool', 'clearlog')){
 		$GLOBALS['DB_WE']->query('TRUNCATE ' . FORMMAIL_BLOCK_TABLE);
-	} else if(isset($_REQUEST['clearEntry'])){
-		$GLOBALS['DB_WE']->query('DELETE FROM ' . FORMMAIL_BLOCK_TABLE . " WHERE id=" . intval($_REQUEST['clearEntry']));
+	} else if(($id=weRequest('bool', 'clearEntry'))){
+		$GLOBALS['DB_WE']->query('DELETE FROM ' . FORMMAIL_BLOCK_TABLE . ' WHERE id=' . $id);
 	}
 
 	$close = we_html_button::create_button("close", "javascript:self.close();");
@@ -48,10 +48,10 @@ if(permissionhandler::hasPerm("administrator")){
 	$content = array();
 
 	$count = 15;
-	$start = (isset($_REQUEST['start']) ? $_REQUEST['start'] : 0);
+	$start = weRequest('int', 'start',0);
 	$start = $start < 0 ? 0 : $start;
 
-	$num_all = f('SELECT count(1) AS num_all FROM ' . FORMMAIL_BLOCK_TABLE, "num_all", $GLOBALS['DB_WE']);
+	$num_all = f('SELECT COUNT(1) FROM ' . FORMMAIL_BLOCK_TABLE);
 
 	$GLOBALS['DB_WE']->query('SELECT * FROM ' . FORMMAIL_BLOCK_TABLE . ' ORDER BY blockedUntil DESC LIMIT ' . abs($start) . ',' . abs($count));
 	$num_rows = $GLOBALS['DB_WE']->num_rows();

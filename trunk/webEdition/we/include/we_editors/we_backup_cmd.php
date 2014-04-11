@@ -64,10 +64,8 @@ if(($_REQUEST['cmd'] == 'export' || $_REQUEST['cmd'] == 'import') && isset($_SES
 	}
 }
 
-switch($_REQUEST['cmd']){
-
+switch(weRequest('string','cmd')){
 	case 'export':
-
 		if(!isset($_SESSION['weS']['weBackupVars']) || empty($_SESSION['weS']['weBackupVars'])){
 			$_SESSION['weS']['weBackupVars'] = array();
 

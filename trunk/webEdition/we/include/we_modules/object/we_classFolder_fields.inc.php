@@ -24,35 +24,33 @@
  */
 require_once(WE_INCLUDES_PATH . 'we_delete_fn.inc.php');
 
-
-if(isset($_REQUEST['do'])){
-	switch($_REQUEST['do']){
-		case 'delete':
-			$javascript = $we_doc->deleteObjects();
-			break;
-		case 'unpublish':
-			$javascript = $we_doc->publishObjects(false);
-			break;
-		case 'publish':
-			$javascript = $we_doc->publishObjects();
-			break;
-		case 'unsearchable':
-			$javascript = $we_doc->searchableObjects(false);
-			break;
-		case 'searchable':
-			$javascript = $we_doc->searchableObjects();
-			break;
-		case 'copychar':
-			$javascript = $we_doc->copyCharsetfromClass();
-			break;
-		case 'copyws':
-			$javascript = $we_doc->copyWSfromClass();
-			break;
-		case 'copytid':
-			$javascript = $we_doc->copyTIDfromClass();
-			break;
-	}
+switch(weRequest('string','do')){
+	case 'delete':
+		$javascript = $we_doc->deleteObjects();
+		break;
+	case 'unpublish':
+		$javascript = $we_doc->publishObjects(false);
+		break;
+	case 'publish':
+		$javascript = $we_doc->publishObjects();
+		break;
+	case 'unsearchable':
+		$javascript = $we_doc->searchableObjects(false);
+		break;
+	case 'searchable':
+		$javascript = $we_doc->searchableObjects();
+		break;
+	case 'copychar':
+		$javascript = $we_doc->copyCharsetfromClass();
+		break;
+	case 'copyws':
+		$javascript = $we_doc->copyWSfromClass();
+		break;
+	case 'copytid':
+		$javascript = $we_doc->copyTIDfromClass();
+		break;
 }
+
 
 we_html_tools::protect();
 echo we_html_tools::getHtmlTop() .

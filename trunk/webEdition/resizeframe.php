@@ -135,7 +135,7 @@ function startSEEMMode(){
 <?php
 //	Here begins the controller of the page
 //  Edit an included file with SEEM.
-if(isset($_REQUEST["SEEM_edit_include"]) && $_REQUEST["SEEM_edit_include"]){
+if(weRequest('bool', 'SEEM_edit_include')){
 	startEditIncludeMode();
 
 //  We are in SEEM-Mode

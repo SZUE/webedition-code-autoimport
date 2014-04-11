@@ -364,7 +364,7 @@ function we_save() {
 		}
 
 		$pid = $_REQUEST["pid"];
-		$offset = (isset($_REQUEST["offset"]) ? $_REQUEST["offset"] : 0);
+		$offset = weRequest('int',"offset",0);
 		$_class = $this->toolClassName . 'TreeDataSource';
 
 		$_loader = new $_class($this->TreeSource);

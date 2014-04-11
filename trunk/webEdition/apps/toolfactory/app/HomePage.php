@@ -58,7 +58,7 @@ class toolfactory_app_HomePage extends we_app_HomePage{
 		$perm = 'NEW_APP_' . strtoupper($appName);
 		$newItemButton = new we_ui_controls_Button(array(
 			'text' => $translate->_('New Entry'),
-			'onClick' => 'weCmdController.fire({cmdName: "app_' . $appName . '_new"})',
+			'onclick' => 'weCmdController.fire({cmdName: "app_' . $appName . '_new"})',
 			'type' => 'onClick',
 			'disabled' => we_core_Permissions::hasPerm($perm) ? false : true,
 			'width' => 200
@@ -66,7 +66,7 @@ class toolfactory_app_HomePage extends we_app_HomePage{
 		$perm = 'GENTOC_APP_' . strtoupper($appName);
 		$regenerateTocButton = new we_ui_controls_Button(array(
 			'text' => $translate->_('Regenetrate TOC'),
-			'onClick' => 'weCmdController.fire({cmdName: "app_' . $appName . '_gentoc"})',
+			'onclick' => 'weCmdController.fire({cmdName: "app_' . $appName . '_gentoc"})',
 			'type' => 'onClick',
 			'disabled' => we_core_Permissions::hasPerm($perm) ? false : true,
 			'width' => 200,
@@ -82,7 +82,7 @@ class toolfactory_app_HomePage extends we_app_HomePage{
 		foreach($appdata as $dieApp){
 			$localInstallButton = new we_ui_controls_Button(array(
 				'text' => $translate->_('Install') . ' ' . $dieApp['classname'] . ' ' . $dieApp['version'],
-				'onClick' => 'weCmdController.fire({cmdName: "app_' . $appName . '_localInstall' . $i . '"})',
+				'onclick' => 'weCmdController.fire({cmdName: "app_' . $appName . '_localInstall' . $i . '"})',
 				'type' => 'onClick',
 				'disabled' => we_core_Permissions::hasPerm($perm) ? false : true,
 				'width' => 200,

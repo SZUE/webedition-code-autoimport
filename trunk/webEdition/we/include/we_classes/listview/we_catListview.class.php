@@ -50,9 +50,9 @@ class we_catListview extends listviewBase{
 	 * @param   cols   		  integer - to display a table this is the number of cols
 	 *
 	 */
-	function __construct($name, $rows = 999999999, $offset = 0, $order = "", $desc = false, $parentID = 0, $catID = 0, $variant = "default", $cols = "", $parentidname = 'we_parentid', $hidedirindex = false){
-		parent::__construct($name, $rows, $offset, $order, $desc, "", false, "", $cols);
-		$this->parentID = isset($_REQUEST[$parentidname]) ? intval($_REQUEST[$parentidname]) : intval($parentID);
+	function __construct($name, $rows = 999999999, $offset = 0, $order = '', $desc = false, $parentID = 0, $catID = 0, $variant = 'default', $cols = '', $parentidname = 'we_parentid', $hidedirindex = false){
+		parent::__construct($name, $rows, $offset, $order, $desc, '', false, '', $cols);
+		$this->parentID = weRequest('int', $parentidname, intval($parentID));
 		$this->catID = trim($catID);
 
 		$this->variant = $variant;

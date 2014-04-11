@@ -26,7 +26,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
 srand((double) microtime() * 1000000);
-$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published>0 AND ID=' . intval($_REQUEST["id"]));
+$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published>0 AND ID=' . weRequest('int', 'id'));
 $loc = getServerUrl() . ($path ? $path . '?r=' . microtime(): WEBEDITION_DIR . 'notPublished.php');
 
 header('Location: ' . $loc);

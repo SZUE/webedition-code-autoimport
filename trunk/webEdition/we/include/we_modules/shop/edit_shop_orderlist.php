@@ -30,9 +30,9 @@ echo we_html_tools::getHtmlTop() .
 
 $Kundenname = '';
 
-if(isset($_REQUEST["cid"])){
-	$Kundenname = f('SELECT CONCAT(Forename," ",Surname) AS Name FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($_REQUEST["cid"]));
-	$orderList = we_shop_functions::getCustomersOrderList($_REQUEST["cid"]);
+if(($cid = weRequest('int', 'cid'))){
+	$Kundenname = f('SELECT CONCAT(Forename," ",Surname) AS Name FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . $cid);
+	$orderList = we_shop_functions::getCustomersOrderList($cid);
 }else{
 	$Kundenname = $orderList='';
 }

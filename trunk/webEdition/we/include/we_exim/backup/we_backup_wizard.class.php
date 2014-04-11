@@ -1267,7 +1267,7 @@ function press_yes() {
 
 	function getHTMLCmd(){
 		if(isset($_REQUEST["operation_mode"])){
-			switch($_REQUEST["operation_mode"]){
+			switch(weRequest('string', "operation_mode")){
 				case "backup":
 					if(!is_writable($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp")){
 						print we_html_element::jsElement('

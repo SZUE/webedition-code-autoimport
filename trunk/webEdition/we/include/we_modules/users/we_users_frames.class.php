@@ -84,11 +84,11 @@ function zeichne(startEntry,zweigEintrag) {
 				fr.write("&nbsp;&nbsp;<IMG SRC=' . TREE_IMAGE_DIR . 'kreuzung.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>");
 			}
 			if(nf[ai].name != -1) {
-				fr.write("<a name=\'_"+nf[ai].name+"\' href=\"javascript://\" onClick=\"doClick("+nf[ai].name+",\'"+nf[ai].contentType+"\',\'"+nf[ai].table+"\');return true;\" BORDER=0>");
+				fr.write("<a name=\'_"+nf[ai].name+"\' href=\"javascript://\" onclick=\"doClick("+nf[ai].name+",\'"+nf[ai].contentType+"\',\'"+nf[ai].table+"\');return true;\" BORDER=0>");
 			}
 			fr.write("<IMG SRC=' . ICON_DIR . '"+nf[ai].icon+" WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 alt=\"' . g_l('tree', '[edit_statustext]') . '\">");
 			fr.write("</a>");
-			fr.write("&nbsp;<a name=\'_"+nf[ai].name+"\' href=\"javascript://\" onClick=\"doClick("+nf[ai].name+",\'"+nf[ai].contentType+"\',\'"+nf[ai].table+"\');return true;\"><font color=\""+((nf[ai].contentType=="alias") ? "#006DB8" : (parseInt(nf[ai].denied)?"red":"black")) +"\">"+(parseInt(nf[ai].published) ? "<b>" : "") + "<label title=\'"+nf[ai].name+"\'>" + nf[ai].text + "</label>" +(parseInt(nf[ai].published) ? "</b>" : "")+ "</font></A>&nbsp;&nbsp;<BR>\n");
+			fr.write("&nbsp;<a name=\'_"+nf[ai].name+"\' href=\"javascript://\" onclick=\"doClick("+nf[ai].name+",\'"+nf[ai].contentType+"\',\'"+nf[ai].table+"\');return true;\"><font color=\""+((nf[ai].contentType=="alias") ? "#006DB8" : (parseInt(nf[ai].denied)?"red":"black")) +"\">"+(parseInt(nf[ai].published) ? "<b>" : "") + "<label title=\'"+nf[ai].name+"\'>" + nf[ai].text + "</label>" +(parseInt(nf[ai].published) ? "</b>" : "")+ "</font></A>&nbsp;&nbsp;<BR>\n");
 		}
 		else {
 			var newAst = zweigEintrag;
@@ -101,10 +101,10 @@ function zeichne(startEntry,zweigEintrag) {
 				fr.write("&nbsp;&nbsp;<A href=\"javascript:top.content.openClose(\'" + nf[ai].name + "\',0)\" BORDER=0><IMG SRC=' . TREE_IMAGE_DIR . 'zu"+zusatz+".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"' . g_l('tree', '[close_statustext]') . '\"></A>");
 				var zusatz2 = "open";
 			}
-			fr.write("<a name=\'_"+nf[ai].name+"\' href=\"javascript://\" onClick=\"doClick("+nf[ai].name+",\'"+nf[ai].contentType+"\',\'"+nf[ai].table+"\');return true;\" BORDER=0>");
+			fr.write("<a name=\'_"+nf[ai].name+"\' href=\"javascript://\" onclick=\"doClick("+nf[ai].name+",\'"+nf[ai].contentType+"\',\'"+nf[ai].table+"\');return true;\" BORDER=0>");
 			fr.write("<IMG SRC=' . ICON_DIR . 'usergroup"+zusatz2+".gif WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"' . g_l('tree', '[edit_statustext]') . '\">");
 			fr.write("</a>");
-			fr.write("<A name=\'_"+nf[ai].name+"\' HREF=\"javascript://\" onClick=\"doClick("+nf[ai].name+",\'"+nf[ai].contentType+"\',\'"+nf[ai].table+"\');return true;\">");
+			fr.write("<A name=\'_"+nf[ai].name+"\' HREF=\"javascript://\" onclick=\"doClick("+nf[ai].name+",\'"+nf[ai].contentType+"\',\'"+nf[ai].table+"\');return true;\">");
 			fr.write("&nbsp;<b><label title=\'"+nf[ai].name+"\'>" + nf[ai].text + "</label></b>");
 			fr.write("</a>");
 			fr.write("&nbsp;&nbsp;<BR>\n");
@@ -377,11 +377,11 @@ self.focus();';
 		if(isset($_SESSION["user_session_data"])){
 			$user_object->setState($_SESSION["user_session_data"]);
 		}
-		print $this->View->getJSProperty();
+		echo $this->View->getJSProperty();
 
 		$_content = we_html_element::htmlHidden($attribs = array("name" => "ucmd", "value" => "",)) .
-			we_html_element::htmlHidden($attribs = array("name" => "tab", "value" => isset($_REQUEST["tab"]) ? intval($_REQUEST["tab"]) : "",)) .
-			we_html_element::htmlHidden($attribs = array("name" => "oldtab", "value" => isset($_REQUEST["tab"]) ? intval($_REQUEST["tab"]) : 0,)) .
+			we_html_element::htmlHidden($attribs = array("name" => "tab", "value" => weRequest('int', 'tab',0))) .
+			we_html_element::htmlHidden($attribs = array("name" => "oldtab", "value" => weRequest('int', 'tab',0))) .
 			we_html_element::htmlHidden($attribs = array("name" => "perm_branch", "value" => (isset($_REQUEST["perm_branch"]) && $_REQUEST["perm_branch"]) ? oldHtmlspecialchars($_REQUEST["perm_branch"]) : 0,)) .
 			we_html_element::htmlHidden($attribs = array("name" => "old_perm_branch", "value" => (isset($_REQUEST["perm_branch"]) && $_REQUEST["perm_branch"]) ? oldHtmlspecialchars($_REQUEST["perm_branch"]) : 0,)) .
 			we_html_element::htmlHidden($attribs = array("name" => "obj_name", "value" => $user_object->Name,)) .
@@ -410,7 +410,7 @@ self.focus();';
 		);
 
 		$_form = we_html_element::htmlForm($_form_attribs, $_content);
-		print we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'loaded=1;', 'onunload' => 'doUnload()'), $_form);
+		echo we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'loaded=1;', 'onunload' => 'doUnload()'), $_form);
 	}
 
 	function getHTMLEditorFooter(){

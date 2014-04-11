@@ -234,7 +234,7 @@ if(PEAR::isError($options)){
 	fwrite(STDERR, $_cliHelp . "\n");
 	exit(INVALID_OPTION);
 }
-if(!empty($args)){
+if($args){
 	$_REQUEST['verbose'] = false;
 	_checkAll(false);
 	$_REQUEST['handle_extern'] = false;

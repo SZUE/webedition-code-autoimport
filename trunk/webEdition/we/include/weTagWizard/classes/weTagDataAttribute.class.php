@@ -65,7 +65,7 @@ class weTagDataAttribute{
 		$this->Required = $required;
 		$this->Module = $module;
 		// set value occasionally
-		$this->Value = (isset($_REQUEST['attributes']) && isset($_REQUEST['attributes'][$name])) ? $_REQUEST['attributes'][$name] : false;
+		$this->Value = weRequest('string', 'attributes', false,$name);
 		$this->Description = $description;
 		$this->Deprecated = $deprecated;
 	}

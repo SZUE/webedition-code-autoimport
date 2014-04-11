@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 we_html_tools::protect();
-switch($_REQUEST['we_cmd'][1]){
+switch(weRequest('string', 'we_cmd', '', 1)){
 	case we_base_ContentTypes::IMAGE:
 		$we_doc = new we_imageDocument();
 		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][2]]);

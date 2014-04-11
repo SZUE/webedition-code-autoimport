@@ -29,8 +29,8 @@ echo we_html_tools::getHtmlTop() .
  STYLESHEET;
 
 $da = ( $GLOBALS["WE_LANGUAGE"] == "Deutsch" ) ? "%d.%m.%y" : "%m/%d/%y";
-if(isset($_REQUEST["cid"])){
-	$Kundenname = f('SELECT CONCAT(Forename," ",Surname) AS Name FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($_REQUEST["cid"]), 'Name', $DB_WE);
+if(($cid = weRequest('int', 'cid'))){
+	$Kundenname = f('SELECT CONCAT(Forename," ",Surname) AS Name FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . $cid);
 
 	$Bestelldaten = '<table border="0" cellpadding="2" cellspacing="6" width="300">
 				<tr><td class="defaultfont" colspan="2"><b>' . g_l('modules_shop', '[bestellung]') . '</b></td>
@@ -38,7 +38,7 @@ if(isset($_REQUEST["cid"])){
 				</tr>
 				<tr><td colspan=3></tr>';
 
-	$DB_WE->query("SELECT IntOrderID,DateShipping, DATE_FORMAT(DateOrder,'" . $da . "') as orddate, DATE_FORMAT(DateOrder,'%c%Y') as mdate FROM " . SHOP_TABLE . " WHERE IntCustomerID=" . abs($_REQUEST["cid"]) . " GROUP BY IntOrderID ORDER BY IntID DESC");
+	$DB_WE->query("SELECT IntOrderID,DateShipping, DATE_FORMAT(DateOrder,'" . $da . "') as orddate, DATE_FORMAT(DateOrder,'%c%Y') as mdate FROM " . SHOP_TABLE . " WHERE IntCustomerID=" . $cid . " GROUP BY IntOrderID ORDER BY IntID DESC");
 	while($DB_WE->next_record()){
 		$Bestelldaten .= "<tr><td class='defaultfont'><a href='" . WE_SHOP_MODULE_DIR . "edit_shop_frameset.php?pnt=edbody&bid=" . $DB_WE->f("IntOrderID") . "' class=\"defaultfont\"><b>" . $DB_WE->f("IntOrderID") . ".</b></a></td>
 			<td class='defaultgray'>" . g_l('modules_shop', '[bestellungvom]') . "</td>

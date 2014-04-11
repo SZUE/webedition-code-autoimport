@@ -27,18 +27,16 @@ we_html_tools::protect();
 //FIXME: send no perms img; but better an invalid picture, than access to unallowed images
 
 
-if(!isset($_REQUEST['id']) || $_REQUEST['id'] == '' ||
-	!isset($_REQUEST['path']) || $_REQUEST['path'] == '' ||
-	!isset($_REQUEST['size']) || $_REQUEST['size'] == '' ||
-	!isset($_REQUEST['extension']) || $_REQUEST['extension'] == ''){
+$imageId = weRequest('int', 'id', 0);
+$imagePath = weRequest('file', 'path', '');
+$imageSizeW = weRequest('int', 'size', 0);
+$imageSizeH = weRequest('int', 'size2', $imageSizeW);
+$extension = weRequest('string', 'extension', '');
+
+
+if(!$imageId || !$imagePath || !$imageSizeW || !$extension){
 	exit();
 }
-
-$imageId = $_REQUEST['id'];
-$imagePath = $_REQUEST['path'];
-$imageSizeW = $_REQUEST['size'];
-$imageSizeH = (isset($_REQUEST['size2']) ? $_REQUEST['size2'] : $imageSizeW);
-
 
 $whiteList = we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::IMAGE);
 
@@ -48,7 +46,7 @@ if(!in_array(strtolower($_REQUEST['extension']), $whiteList)){
 
 $imageExt = substr($_REQUEST['extension'], 1, strlen($_REQUEST['extension']));
 
-$thumbpath = we_base_imageEdit::createPreviewThumb($imagePath, $imageId, $imageSizeW, $imageSizeH, substr($_REQUEST['extension'], 1));
+$thumbpath = we_base_imageEdit::createPreviewThumb($imagePath, $imageId, $imageSizeW, $imageSizeH, substr($extension, 1));
 if(file_exists($_SERVER['DOCUMENT_ROOT'] . $thumbpath)){
 	header('Content-type: image/' . $imageExt);
 	readfile($_SERVER['DOCUMENT_ROOT'] . $thumbpath);

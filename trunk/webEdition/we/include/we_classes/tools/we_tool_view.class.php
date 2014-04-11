@@ -312,8 +312,9 @@ class we_tool_view{
 		$k = array_search($start, $ks);
 		if($k !== false){
 			$ks = array_splice($ks, $k, $len);
-			foreach($ks as $k)
+			foreach($ks as $k){
 				unset($a[$k]);
+			}
 		}
 	}
 

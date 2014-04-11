@@ -70,7 +70,7 @@ class we_ui_controls_CssMenu extends we_ui_abstract_AbstractElement{
 
 	//remove cmdTarget in 6.4 after Java Menu is removed
 	function getHTMLMenu($old = true, $cmdTarget = ''){
-		$showAltMenu = (isset($_SESSION['weS']['weShowAltMenu']) && $_SESSION['weS']['weShowAltMenu']) || (isset($_REQUEST["showAltMenu"]) && $_REQUEST["showAltMenu"]);
+		$showAltMenu = (isset($_SESSION['weS']['weShowAltMenu']) && $_SESSION['weS']['weShowAltMenu']) || weRequest('bool', 'showAltMenu');
 		$_SESSION['weS']['weShowAltMenu'] = $showAltMenu;
 		// On Mozilla OSX, when the Java Menu is loaded, it is not possible to make any text input (java steels focus from input fields or e.g) so we dont show the applet.
 		if(!$old){

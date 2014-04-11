@@ -356,7 +356,7 @@ function htmlClipElement($smalltext, $text, $content){
 			"id" => $unique,
 			"class" => "defaultfont",
 			"style" => "cursor:pointer;",
-			"onClick" => "clip_" . $unique . "();"
+			"onclick" => "clip_" . $unique . "();"
 			), addslashes($smalltext)));
 
 	return $js . $oClip->getHTML() . we_html_element::htmlDiv(array(
@@ -401,12 +401,12 @@ $rssUri = $oIptUri . we_html_tools::getPixel(1, 5) . we_html_element::htmlBr() .
 		g_l('cockpit', '[show_edit_toprssfeeds]'), g_l('cockpit', '[hide_edit_toprssfeeds]'), $oNewFeed->getHTML());
 
 $oRemRssConf = we_html_tools::htmlAlertAttentionBox(g_l('cockpit', '[rss_content_rem]'), we_html_tools::TYPE_INFO, 410);
-$oChbxContTitle = we_html_forms::checkbox($value = 0, $checked = 0, $name = "chbx_conf", $text = g_l('cockpit', '[title]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
-$oChbxContLink = we_html_forms::checkbox($value = 0, $checked = 0, $name = "chbx_conf", $text = g_l('cockpit', '[link]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
-$oChbxContDesc = we_html_forms::checkbox($value = 0, $checked = 0, $name = "chbx_conf", $text = g_l('cockpit', '[desc]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
-$oChbxContEnc = we_html_forms::checkbox($value = 0, $checked = 0, $name = "chbx_conf", $text = g_l('cockpit', '[content_encoded]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
-$oChbxContPubDate = we_html_forms::checkbox($value = 0, $checked = 0, $name = "chbx_conf", $text = g_l('cockpit', '[pubdate]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
-$oChbxContCategory = we_html_forms::checkbox($value = 0, $checked = 0, $name = "chbx_conf", $text = g_l('cockpit', '[category]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
+$oChbxContTitle = we_html_forms::checkbox(0, 0, "chbx_conf", g_l('cockpit', '[title]'), true, "defaultfont", "", false, "", 0, 0);
+$oChbxContLink = we_html_forms::checkbox(0, 0, "chbx_conf", g_l('cockpit', '[link]'), true, "defaultfont", "", false, "", 0, 0);
+$oChbxContDesc = we_html_forms::checkbox(0, 0, "chbx_conf", g_l('cockpit', '[desc]'), true, "defaultfont", "", false, "", 0, 0);
+$oChbxContEnc = we_html_forms::checkbox(0, 0, "chbx_conf", g_l('cockpit', '[content_encoded]'), true, "defaultfont", "", false, "", 0, 0);
+$oChbxContPubDate = we_html_forms::checkbox(0, 0, "chbx_conf", g_l('cockpit', '[pubdate]'), true, "defaultfont", "", false, "", 0, 0);
+$oChbxContCategory = we_html_forms::checkbox(0, 0, "chbx_conf", g_l('cockpit', '[category]'), true, "defaultfont", "", false, "", 0, 0);
 $oSctNumEntries = new we_html_select(array("name" => "sct_conf", "size" => 1, "class" => "defaultfont"));
 $oSctNumEntries->insertOption(0, 0, g_l('cockpit', '[no]'));
 

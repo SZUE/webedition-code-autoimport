@@ -41,7 +41,7 @@ $_title = base64_decode($_REQUEST['we_cmd'][4]);
 $_sObjId = $_REQUEST['we_cmd'][5];
 
 
-switch($_REQUEST['we_cmd'][2]){
+switch(weRequest('string', 'we_cmd','',2)){
 	case 'delete' :
 		$DB_WE->query('DELETE FROM ' . NOTEPAD_TABLE . ' WHERE ID=' . intval($q_Csv));
 		break;

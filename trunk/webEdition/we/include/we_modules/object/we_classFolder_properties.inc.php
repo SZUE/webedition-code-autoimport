@@ -24,8 +24,7 @@
  */
 require_once(WE_INCLUDES_PATH . 'we_delete_fn.inc.php');
 
-if(isset($_REQUEST['do'])){
-	switch($_REQUEST['do']){
+	switch(weRequest('string','do')){
 		case 'delete':
 			$javascript = $we_doc->deleteObjects();
 			break;
@@ -51,7 +50,6 @@ if(isset($_REQUEST['do'])){
 			$javascript = $we_doc->copyTIDfromClass();
 			break;
 	}
-}
 
 we_html_tools::protect();
 

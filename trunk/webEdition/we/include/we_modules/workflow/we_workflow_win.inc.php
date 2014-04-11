@@ -39,8 +39,7 @@ include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
 echo we_html_tools::getHtmlTop();
 
-switch($_REQUEST['we_cmd'][0]){
-
+switch(weRequest('string', 'we_cmd', '', 0)){
 	case "in_workflow":
 		include(WE_WORKFLOW_MODULE_PATH . "we_in_workflow.inc.php");
 		break;

@@ -8,7 +8,7 @@ $tabs->setTabs(array(
 	array(
 		'id' => 'tab1',
 		'text' => 'Click me to alert!',
-		'onClick' => 'alert("do something first!");',
+		'onclick' => 'alert("do something first!");',
 		'title' => 'Click me to alert!',
 		'reload' => true,
 		'hidden' => false
@@ -93,7 +93,7 @@ $tabs2 = new we_ui_controls_Tabs(
 		array(
 			'id' => 'tabx',
 			'text' => 'Tab x',
-			'onClick' => 'alert("tabx!");',
+			'onclick' => 'alert("tabx!");',
 			'title' => 'Tab x',
 			'hidden' => false
 		),
@@ -123,7 +123,7 @@ $tabs3 = new we_ui_controls_Tabs(
 		array(
 			'id' => 'tabr',
 			'text' => 'Tab r',
-			'onClick' => 'alert("tabr!");',
+			'onclick' => 'alert("tabr!");',
 			'title' => 'Tab r',
 			'hidden' => false,
 			'icon' => we_ui_layout_Image::kTreeIconAudio

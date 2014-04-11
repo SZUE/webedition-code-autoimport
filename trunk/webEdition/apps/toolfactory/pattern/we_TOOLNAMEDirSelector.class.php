@@ -41,7 +41,7 @@ class we_<?php print $TOOLNAME; ?>DirSelector extends we_dirSelector{
 		print '			<table style="border-spacing: 0px;border-style:none;width:550px;" cellpadding="0">
 				<tr>
 					<td>'.we_html_tools::getPixel(25,14).'</td>
-					<td class="selector"colspan="2"><b><a href="#" onClick="javascript:top.orderIt(\'IsFolder DESC, Text\');">'.g_l('tools','[name]').'</a></b></td>
+					<td class="selector"colspan="2"><b><a href="#" onclick="javascript:top.orderIt(\'IsFolder DESC, Text\');">'.g_l('tools','[name]').'</a></b></td>
 				</tr>
 				<tr>
 					<td width="25">'.we_html_tools::getPixel(25,1).'</td>
@@ -120,7 +120,7 @@ class we_<?php print $TOOLNAME; ?>DirSelector extends we_dirSelector{
 		d.writeln('</tr>');
 	}
 	for(i=0;i < entries.length; i++){
-		var onclick = ' onClick="weonclick(<?php print '<?php echo (we_base_browserDetect::isIE()?"this":"event")?>';?>);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick('+entries[i].ID+',0);}else{top.wasdblclick=0;}\',300);return true"';
+		var onclick = ' onclick="weonclick(<?php print '<?php echo (we_base_browserDetect::isIE()?"this":"event")?>';?>);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick('+entries[i].ID+',0);}else{top.wasdblclick=0;}\',300);return true"';
 		var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick('+entries[i].ID+',1);return true;"';
 		d.writeln('<tr id="line_'+entries[i].ID+'" style="' + ((entries[i].ID == top.currentID && (!makeNewFolder) )  ? 'background-color:#DFE9F5;' : '')+'cursor:pointer;'+((we_editDirID != entries[i].ID) ? '' : '' )+'"'+((we_editDirID || makeNewFolder) ? '' : onclick)+ (entries[i].isFolder ? ondblclick : '') + ' >');
 		d.writeln('<td class="selector" width="25" align="center">');
@@ -227,7 +227,7 @@ function addEntry(ID,icon,text,isFolder,path){
 		top.clearEntries();';
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = '';
-		if(isset($_REQUEST['we_FolderText_tmp'])){
+		if(weRequest('bool', 'we_FolderText_tmp')){
 			$txt = rawurldecode($_REQUEST['we_FolderText_tmp']);
 		}
 		if($txt==''){

@@ -27,7 +27,7 @@ echo we_html_tools::getHtmlTop(g_l('global', '[question]'));
 $yesCmd = "yes_cmd_pressed();";
 $cancelCmd = "self.close();";
 
-$nextCmd = $_REQUEST['we_cmd'][1];
+$nextCmd = weRequest('string', 'we_cmd', '', 1);
 
 $allowedCmds = array("dologout", "close_all_documents");
 if(!in_array($nextCmd, $allowedCmds)){

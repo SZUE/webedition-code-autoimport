@@ -29,34 +29,33 @@ we_html_tools::protect($protect);
 echo we_html_tools::getHtmlTop() .
  STYLESHEET;
 
-if(isset($_REQUEST['we_cmd'])){
-	switch($_REQUEST['we_cmd'][0]){
-		case 'saveVat':
-			$weShopVat = new we_shop_vat($_REQUEST['weShopVatId'], $_REQUEST['weShopVatText'], $_REQUEST['weShopVatVat'], $_REQUEST['weShopVatStandard']);
+switch(weRequest('string', 'we_cmd', '', 0)){
+	case 'saveVat':
+		$weShopVat = new we_shop_vat($_REQUEST['weShopVatId'], $_REQUEST['weShopVatText'], $_REQUEST['weShopVatVat'], $_REQUEST['weShopVatStandard']);
 
-			if(($newId = we_shop_vats::saveWeShopVAT($weShopVat))){
-				$weShopVat->id = $newId;
-				unset($newId);
-				$jsMessage = g_l('modules_shop', '[vat][save_success]');
-				$jsMessageType = we_message_reporting::WE_MESSAGE_NOTICE;
-			} else {
-				$jsMessage = g_l('modules_shop', '[vat][save_error]');
-				$jsMessageType = we_message_reporting::WE_MESSAGE_ERROR;
-			}
+		if(($newId = we_shop_vats::saveWeShopVAT($weShopVat))){
+			$weShopVat->id = $newId;
+			unset($newId);
+			$jsMessage = g_l('modules_shop', '[vat][save_success]');
+			$jsMessageType = we_message_reporting::WE_MESSAGE_NOTICE;
+		} else {
+			$jsMessage = g_l('modules_shop', '[vat][save_error]');
+			$jsMessageType = we_message_reporting::WE_MESSAGE_ERROR;
+		}
 
-			break;
+		break;
 
-		case 'deleteVat':
-			if(we_shop_vats::deleteVatById($_REQUEST['weShopVatId'])){
-				$jsMessage = g_l('modules_shop', '[vat][delete_success]');
-				$jsMessageType = we_message_reporting::WE_MESSAGE_NOTICE;
-			} else {
-				$jsMessage = g_l('modules_shop', '[vat][delete_error]');
-				$jsMessageType = we_message_reporting::WE_MESSAGE_ERROR;
-			}
-			break;
-	}
+	case 'deleteVat':
+		if(we_shop_vats::deleteVatById($_REQUEST['weShopVatId'])){
+			$jsMessage = g_l('modules_shop', '[vat][delete_success]');
+			$jsMessageType = we_message_reporting::WE_MESSAGE_NOTICE;
+		} else {
+			$jsMessage = g_l('modules_shop', '[vat][delete_error]');
+			$jsMessageType = we_message_reporting::WE_MESSAGE_ERROR;
+		}
+		break;
 }
+
 
 if(!isset($weShopVat)){
 	$weShopVat = new we_shop_vat(0, g_l('modules_shop', '[vat][new_vat_name]'), 19, 0);
@@ -228,9 +227,9 @@ if(!empty($allVats)){
 $plusBut = we_html_button::create_button('image:btn_function_plus', 'javascript:we_cmd(\'addVat\')');
 
 echo we_html_element::jsElement(
-		$vatJavaScript .
-		$jsFunction .
-		(isset($jsMessage) ? we_message_reporting::getShowMessageCall($jsMessage, $jsMessageType) : '')) . "
+	$vatJavaScript .
+	$jsFunction .
+	(isset($jsMessage) ? we_message_reporting::getShowMessageCall($jsMessage, $jsMessageType) : '')) . "
 	</head>
 <body class=\"weDialogBody\" onload='window.focus();'>";
 

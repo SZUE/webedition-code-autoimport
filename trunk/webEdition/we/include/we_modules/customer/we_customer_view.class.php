@@ -519,8 +519,7 @@ self.focus();' . $this->getJSSubmitFunction("customer_settings");
 	 */
 
 	function processCommands(){
-		if(isset($_REQUEST['cmd'])){
-			switch($_REQUEST['cmd']){
+			switch(weRequest('string','cmd')){
 				case 'new_customer':
 					$this->customer = new we_customer_customer();
 					$this->settings->initCustomerWithDefaults($this->customer);
@@ -925,7 +924,7 @@ self.close();';
 					break;
 				default:
 			}
-		}
+
 
 		$_SESSION['weS']['customer_session'] = serialize($this->customer);
 	}
