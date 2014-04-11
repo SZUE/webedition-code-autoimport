@@ -347,7 +347,7 @@ if(isset($GLOBALS['we_doc'])){
 			}
 		}
 
-		var contentEditor = top.weEditorFrameController.getVisibleEditorFrame();
+		var contentEditor = (top.weEditorFrameController === undefined ? opener.top : top).weEditorFrameController.getVisibleEditorFrame();
 
 		switch (arguments[0]) {
 			case "edit_link":

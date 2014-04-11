@@ -113,7 +113,7 @@ function getPosData($bt){
 }
 
 $buttons = we_html_button::position_yes_no_cancel(
-		we_html_button::create_button("delete_all", $_SERVER['SCRIPT_NAME'] . "?deleteAll"), we_html_button::create_button("refresh", $_SERVER['SCRIPT_NAME']), we_html_button::create_button("close", "javascript:self.close()")
+		we_html_button::create_button("delete_all", $_SERVER['SCRIPT_NAME'] . '?deleteAll=1'), we_html_button::create_button('refresh', $_SERVER['SCRIPT_NAME']), we_html_button::create_button("close", "javascript:self.close()")
 );
 
 
