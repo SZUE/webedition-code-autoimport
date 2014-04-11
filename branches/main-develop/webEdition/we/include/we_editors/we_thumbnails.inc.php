@@ -126,8 +126,8 @@ function save_all_values(){
 		$setArray = array('Date' => sql_function('UNIX_TIMESTAMP()'));
 		// Update settings
 		remember_value($setArray, isset($_REQUEST['thumbnail_name']) ? $_REQUEST['thumbnail_name'] : null, 'Name');
-		remember_value($setArray, isset($_REQUEST['thumbnail_width']) ? $_REQUEST['thumbnail_width'] : null, 'Width');
-		remember_value($setArray, isset($_REQUEST['thumbnail_height']) ? $_REQUEST['thumbnail_height'] : null, 'Height');
+		remember_value($setArray, weRequest('int', 'thumbnail_width', null), 'Width');
+		remember_value($setArray, weRequest('int', 'thumbnail_height', null), 'Height');
 		remember_value($setArray, isset($_REQUEST['thumbnail_quality']) ? $_REQUEST['thumbnail_quality'] : null, 'Quality');
 		remember_value($setArray, isset($_REQUEST['Ratio']) ? $_REQUEST['Ratio'] : null, 'Ratio');
 		remember_value($setArray, isset($_REQUEST['Maxsize']) ? $_REQUEST['Maxsize'] : null, 'Maxsize');
@@ -135,7 +135,7 @@ function save_all_values(){
 		remember_value($setArray, isset($_REQUEST['Fitinside']) ? $_REQUEST['Fitinside'] : null, 'Fitinside');
 		remember_value($setArray, isset($_REQUEST['Format']) ? $_REQUEST['Format'] : null, 'Format');
 
-		$DB_WE->query('UPDATE ' . THUMBNAILS_TABLE . ' SET ' . we_database_base::arraySetter($setArray) . ' WHERE ID = ' . intval($_REQUEST['edited_id']));
+		$DB_WE->query('UPDATE ' . THUMBNAILS_TABLE . ' SET ' . we_database_base::arraySetter($setArray) . ' WHERE ID=' . weRequest('int', 'edited_id', 0));
 	}
 }
 

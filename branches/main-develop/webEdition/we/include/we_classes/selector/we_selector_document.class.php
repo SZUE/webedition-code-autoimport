@@ -251,7 +251,7 @@ function weonclick(e){
 #}
 
 #	for(i=0;i < entries.length; i++){
-#		var onclick = #\' onClick="weonclick(' . (we_base_browserDetect::isIE() ? "this" : "event") . ');tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(#\'+entries[i].ID+#\',0);}else{top.wasdblclick=0;}\',300);return true"#\';
+#		var onclick = #\' onclick="weonclick(' . (we_base_browserDetect::isIE() ? "this" : "event") . ');tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(#\'+entries[i].ID+#\',0);}else{top.wasdblclick=0;}\',300);return true"#\';
 #		var ondblclick = #\' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick(#\'+entries[i].ID+#\',1);return true;"#\';
 	<tr#\' + ((entries[i].ID == top.currentID)  ? #\' style="background-color:#DFE9F5;cursor:pointer;"#\' : "") + #\' id="line_#\'+entries[i].ID+#\'" style="cursor:pointer;" #\'+((we_editDirID || makeNewFolder) ? "" : onclick)+ (entries[i].isFolder ? ondblclick : "") + #\'>
 		<td class="selector" align="center"><img src="' . ICON_DIR . '#\'+entries[i].icon+#\'" width="16" height="18" border="0" /></td>

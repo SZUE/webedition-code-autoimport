@@ -32,13 +32,13 @@ echo we_html_tools::getHtmlTop(g_l('global', '[question]'));
 // we_cmd[3] => nextCommand -> as JS-String
 
 
-$editorFrameId = $_REQUEST['we_cmd']['1'];
+$editorFrameId = $_REQUEST['we_cmd'][1];
 if(!preg_match('/^multiEditFrame_[0-9]+$/', $editorFrameId)){
 	exit('cmd[1] is not valid at we_exit_doc_question!');
 }
 
-$exitDocCt = $_REQUEST['we_cmd']['2'];
-$nextCmd = isset($_REQUEST['we_cmd']['3']) ? $_REQUEST['we_cmd']['3'] : ""; // close_all, logout, open_document, new_document(seeMode) etc.
+$exitDocCt = $_REQUEST['we_cmd'][2];
+$nextCmd = isset($_REQUEST['we_cmd'][3]) ? $_REQUEST['we_cmd'][3] : ''; // close_all, logout, open_document, new_document(seeMode) etc.
 
 $isOpenDocCmd = preg_match('/^top\.weEditorFrameController\.openDocument\("[^"]*"\s*,\s*"[^"]*"\s*,\s*"[^"]*"\s*,\s*"[^"]*"\s*,\s*"[^"]*"\s*,\s*"[^"]*"\s*,\s*"[^"]*"\s*,\s*"[^"]*"\s*,\s*"[^"]*"\s*\)\s*;\s*$/', $nextCmd);
 $isDoLogoutCmd = preg_match('/^top\.we_cmd\("dologout"\)\s*;\s*$/', $nextCmd);

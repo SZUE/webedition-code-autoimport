@@ -63,7 +63,7 @@ class we_ui_controls_JavaMenu extends we_ui_abstract_AbstractElement{
 	 */
 	protected function _renderHTML(){
 		$lang = we_core_Local::getComputedUILang();
-		$showAltMenu = (isset($_SESSION['weS']['weShowAltMenu']) && $_SESSION['weS']['weShowAltMenu']) || (isset($_REQUEST["showAltMenu"]) && $_REQUEST["showAltMenu"]);
+		$showAltMenu = (isset($_SESSION['weS']['weShowAltMenu']) && $_SESSION['weS']['weShowAltMenu']) || weRequest('bool', 'showAltMenu');
 		$_SESSION['weS']['weShowAltMenu'] = $showAltMenu;
 
 		$out = '';
@@ -109,7 +109,7 @@ class we_ui_controls_JavaMenu extends we_ui_abstract_AbstractElement{
 				if(!isset($m["cmd"])){
 					$m["cmd"] = "#";
 				}
-				$out .= '<param name="entry' . $i . '" value="' . $id . ',' . $m["parent"] . ',' . $m["cmd"] . ',' . $mtext . ',' . ((isset($m["enabled"]) && $m["enabled"]) ? $m["enabled"] : "0") . '">' . "\n";
+				$out .= '<param name="entry' . $i . '" value="' . $id . ',' . $m["parent"] . ',' . $m["cmd"] . ',' . $mtext . ',' . ((isset($m["enabled"]) && $m["enabled"]) ? $m["enabled"] : 0) . '">';
 				$i++;
 			}
 		}
@@ -131,7 +131,7 @@ class we_ui_controls_JavaMenu extends we_ui_abstract_AbstractElement{
 					$mtext = ($e["text"] ? $e["text"] : "");
 				}
 				$menus[$i]["id"] = $id;
-				$menus[$i]["code"] = '<select class="defaultfont" style="font-size: 9px;font-family:arial;" onChange="' . $onCh . '" size="1"><option value="">' . $mtext . "\n";
+				$menus[$i]["code"] = '<select class="defaultfont" style="font-size: 9px;font-family:arial;" onchange="' . $onCh . '" size="1"><option value="">' . $mtext . "\n";
 				$i++;
 			}
 		}

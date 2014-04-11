@@ -30,7 +30,7 @@ var _EditorFrameDocumentRef = _EditorFrame.getDocumentReference();' .
 		($we_responseText ?
 				we_message_reporting::getShowMessageCall($we_responseText, $we_responseTextType) :
 				'') .
-		(isset($_REQUEST['we_cmd'][5]) && $_REQUEST['we_cmd'][5] != '' ?
+		(isset($_REQUEST['we_cmd'][5]) && $_REQUEST['we_cmd'][5] ?
 				$_REQUEST['we_cmd'][5] : ''
 		)
 );

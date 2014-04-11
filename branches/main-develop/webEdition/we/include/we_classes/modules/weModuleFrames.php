@@ -156,9 +156,9 @@ class weModuleFrames{
 
 	function getHTMLResize($extraUrlParams = ''){//TODO: only customer uses param sid: handle sid with extraUrlParams
 		$_incDecTree = '
-			<img id="incBaum" src="' . BUTTONS_DIR . 'icons/function_plus.gif" width="9" height="12" style="position:absolute;bottom:53px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer; ' . ($this->treeWidth <= 30 ? 'bgcolor:grey;' : '') . '" onClick="top.content.incTree();">
-			<img id="decBaum" src="' . BUTTONS_DIR . 'icons/function_minus.gif" width="9" height="12" style="position:absolute;bottom:33px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer; ' . ($this->treeWidth <= 30 ? 'bgcolor:grey;' : '') . '" onClick="top.content.decTree();">
-			<img id="arrowImg" src="' . BUTTONS_DIR . 'icons/direction_' . ($this->treeWidth <= 30 ? 'right' : 'left') . '.gif" width="9" height="12" style="position:absolute;bottom:13px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer;" onClick="top.content.toggleTree();">
+			<img id="incBaum" src="' . BUTTONS_DIR . 'icons/function_plus.gif" width="9" height="12" style="position:absolute;bottom:53px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer; ' . ($this->treeWidth <= 30 ? 'bgcolor:grey;' : '') . '" onclick="top.content.incTree();">
+			<img id="decBaum" src="' . BUTTONS_DIR . 'icons/function_minus.gif" width="9" height="12" style="position:absolute;bottom:33px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer; ' . ($this->treeWidth <= 30 ? 'bgcolor:grey;' : '') . '" onclick="top.content.decTree();">
+			<img id="arrowImg" src="' . BUTTONS_DIR . 'icons/direction_' . ($this->treeWidth <= 30 ? 'right' : 'left') . '.gif" width="9" height="12" style="position:absolute;bottom:13px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer;" onclick="top.content.toggleTree();">
 		';
 
 		$content = we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;'), we_html_element::htmlDiv(array('id' => 'lframeDiv', 'style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;width: ' . $this->treeWidth . 'px;'), we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; width: ' . weTree::HiddenWidth . 'px; background-image: url(' . IMAGE_DIR . 'v-tabs/background.gif); background-repeat: repeat-y; border-top: 1px solid black;'), $_incDecTree) .
@@ -239,7 +239,7 @@ class weModuleFrames{
 	}
 
 	function getHTMLEditorFooter($btn_cmd, $extraHead = ''){
-		if(isset($_REQUEST['home'])){
+		if(weRequest('bool', 'home')){
 			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#EFf0EF"), ""));
 		}
 
@@ -296,7 +296,7 @@ class weModuleFrames{
 		$table->setCol(1, 1, array("valign" => "middle", "class" => "defaultgray", "align" => $headline_align), $headline);
 		$table->setCol(1, 2, array(), $pix3);
 		$table->setCol(1, 3, array("valign" => "middle", "align" => $content_align), $content);
-		if($w && $headline != ""){
+		if($w && $headline){
 			$table->setCol(2, 1, array("valign" => "top"), $pix2);
 		}
 		return $table->getHtml();

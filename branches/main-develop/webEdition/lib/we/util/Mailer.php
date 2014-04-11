@@ -152,7 +152,7 @@ class we_util_Mailer extends Zend_Mail{
 				$_to = $this->parseEmailUser($_to);
 				$this->addTo($_to['email'], $_to['name']);
 			}
-		} else if($to != ''){
+		} else if($to){
 			$_to = $this->parseEmailUser($to);
 			$this->addTo($_to['email'], $_to['name']);
 		}
@@ -162,11 +162,11 @@ class we_util_Mailer extends Zend_Mail{
 				$_reply = $this->parseEmailUser($_reply);
 				$this->setReplyTo($_reply['email'], $_reply['name']);
 			}
-		} else if($reply != ''){
+		} else if($reply){
 			$_reply = $this->parseEmailUser($reply);
 			$this->setReplyTo($_reply['email'], $_reply['name']);
 		}
-		if($sender != ''){
+		if($sender){
 			$_sender = $this->parseEmailUser($sender);
 			$this->setFrom($_sender['email'], $_sender['name']);
 		}
@@ -188,7 +188,7 @@ class we_util_Mailer extends Zend_Mail{
 	}
 
 	public function setBCC($toBCC){
-		if(empty($toBCC)){
+		if(!$toBCC){
 			return;
 		}
 		if(is_array($toBCC)){

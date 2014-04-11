@@ -25,7 +25,7 @@
 //called by old javaeditor
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
-$tagName = isset($_REQUEST['tagName']) ? $_REQUEST['tagName'] : "";
+$tagName = weRequest('string', 'tagName', '');
 
 // Remove . / \ because of security reasons
 $tagName = str_replace(array('.', '/', '\\'), '', $tagName);

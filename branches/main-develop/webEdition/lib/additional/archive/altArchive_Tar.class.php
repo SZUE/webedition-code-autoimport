@@ -293,7 +293,7 @@ class altArchive_Tar {
    * @see addModify()
    */
   function createModify($p_filelist, $p_add_dir, $p_remove_dir = '') {
-	 
+
     $v_result = true;
 
     if (!$this->_openWrite()) {
@@ -980,7 +980,7 @@ class altArchive_Tar {
 
     // ----- Calculate the stored filename
     $p_filename = $this->_translateWinPath($p_filename, true);
-	
+
     $v_stored_filename = str_replace('\\','/',$p_filename);
     if (strcmp($p_filename, $p_remove_dir) == 0) {
       return true;
@@ -989,12 +989,12 @@ class altArchive_Tar {
       if (substr($p_remove_dir, -1) != '/') {
         $p_remove_dir .= '/';
       }
-		
+
       if (substr($v_stored_filename, 0, strlen($p_remove_dir)) == $p_remove_dir) {
         $v_stored_filename = substr($v_stored_filename, strlen($p_remove_dir));
-		 
+
       }
-	 
+
     }
     $v_stored_filename = $this->_translateWinPath($v_stored_filename);
     if ($p_add_dir != '') {
@@ -1091,7 +1091,7 @@ class altArchive_Tar {
     $v_linkname = '';
 
     if (@is_link($p_filename)) {
-      $v_typeflag = '2';
+      $v_typeflag = 2;
       $v_linkname = readlink($p_filename);
       $v_size = sprintf("%11s ", DecOct(0));
     }
@@ -1168,7 +1168,7 @@ class altArchive_Tar {
       }
     }
 
-    if ($p_type == "5") {
+    if ($p_type == 5) {
       $v_size = sprintf("%11s ", DecOct(0));
     }
     else {

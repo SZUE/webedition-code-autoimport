@@ -61,11 +61,11 @@ abstract class we_customer_add{
 							g_l('modules_customer', '[common]'));
 				}
 
-				$branch->setAttributes(array("name" => "branch_" . $counter . "_" . $fcounter, "class" => "weSelect", "onChange" => "we_cmd('selectBranch')", "style" => "width:180px;"));
+				$branch->setAttributes(array("name" => "branch_" . $counter . "_" . $fcounter, "class" => "weSelect", "onchange" => "we_cmd('selectBranch')", "style" => "width:180px;"));
 				$branch->selectOption($sort["branch"]);
 
 				$field = $pob->getHTMLFieldsSelect($sort["branch"]);
-				$field->setAttributes(array("name" => "field_" . $counter . "_" . $fcounter, "style" => "width:180px;", "class" => "weSelect", "onChange" => "we_cmd('selectBranch')"));
+				$field->setAttributes(array("name" => "field_" . $counter . "_" . $fcounter, "style" => "width:180px;", "class" => "weSelect", "onchange" => "we_cmd('selectBranch')"));
 
 				$fields_names = array_keys($pob->View->customer->getFieldsNames($sort["branch"]));
 				if($sort["branch"] == g_l('modules_customer', '[common]') || $sort["branch"] == g_l('modules_customer', '[other]')){
@@ -335,12 +335,12 @@ function we_cmd(){
 			if(isset($search_arr["field_" . $i]))
 				$field->selectOption($search_arr["field_" . $i]);
 
-			$branch->setAttributes(array("name" => "branch_" . $i, "onChange" => "we_cmd('selectBranch')", "style" => "width:145px"));
-			$field->setAttributes(array("name" => "field_" . $i, "style" => "width:145px", "onChange" => "isDateField($i)"));
+			$branch->setAttributes(array("name" => "branch_" . $i, "onchange" => "we_cmd('selectBranch')", "style" => "width:145px"));
+			$field->setAttributes(array("name" => "field_" . $i, "style" => "width:145px", "onchange" => "isDateField($i)"));
 
 			if($i != 0){
 				$advsearch->addRow();
-				$advsearch->setCol($c, 0, array("colspan" => $colspan), we_html_tools::htmlSelect("logic_" . $i, $logic, 1, (isset($search_arr["logic_" . $i]) ? $search_arr["logic_" . $i] : ""), false, array(), "value", "70"));
+				$advsearch->setCol($c, 0, array("colspan" => $colspan), we_html_tools::htmlSelect("logic_" . $i, $logic, 1, (isset($search_arr["logic_" . $i]) ? $search_arr["logic_" . $i] : ""), false, array(), "value", 70));
 				++$c;
 			}
 			$value_i = we_html_tools::htmlTextInput("value_" . $i, 20, (isset($search_arr["value_" . $i]) ? $search_arr["value_" . $i] : ""), "", "id='value_$i'", "text", 185);
@@ -349,7 +349,7 @@ function we_cmd(){
 			$advsearch->addRow();
 			$advsearch->setCol($c, 0, array(), $branch->getHtml());
 			$advsearch->setCol($c, 1, array(), $field->getHtml());
-			$advsearch->setCol($c, 2, array(), we_html_tools::htmlSelect("operator_" . $i, self::$operators, 1, (isset($search_arr["operator_" . $i]) ? $search_arr["operator_" . $i] : ""), false, array(), "value", "60"));
+			$advsearch->setCol($c, 2, array(), we_html_tools::htmlSelect("operator_" . $i, self::$operators, 1, (isset($search_arr["operator_" . $i]) ? $search_arr["operator_" . $i] : ""), false, array(), "value", 60));
 			$advsearch->setCol($c, 3, array("width" => 190), "<table border='0' cellpadding='0' cellspacing='0'><tr><td>" . $value_i . $value_date_i . "</td><td>" . we_html_tools::getPixel(3, 1) . "</td><td id='dpzell_$i' style='display:none' align='right'>$btnDatePicker</td></tr></table>");
 			++$c;
 		}

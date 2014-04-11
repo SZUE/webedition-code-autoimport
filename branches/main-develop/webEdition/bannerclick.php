@@ -26,15 +26,15 @@ define("NO_SESS", 1);
 
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-$id = isset($_REQUEST["id"]) ? intval($_REQUEST["id"]) : 0;
-$did = isset($_REQUEST["did"]) ? intval($_REQUEST["did"]) : 0;
-$page = isset($_REQUEST["page"]) ? $_REQUEST["page"] : 0;
-$referer = isset($_REQUEST["referer"]) ? $_REQUEST["referer"] : 0;
-$nocount = isset($_REQUEST["nocount"]) ? $_REQUEST["nocount"] : "";
+$id = weRequest('int', 'id', 0);
+$did = weRequest('int', 'did', 0);
+$page = weRequest('string', 'page', 0);
+$referer = weRequest('url', 'referer',0);
+$nocount = weRequest('bool', 'nocount', false);
 $db = $GLOBALS['DB_WE'];
 
 if(!$id){
-	$bannername = $_REQUEST["bannername"];
+	$bannername = weRequest('string', 'bannername');
 
 	if($bannername && isset($_COOKIE['webid_' . $bannername])){
 		$id = $_COOKIE["webid_" . $bannername];
@@ -48,11 +48,11 @@ if($id && is_numeric($id) && $did > 0){
 	$url = we_banner_banner::getBannerURL($id);
 	if(!$nocount){
 		$db->query('INSERT INTO ' . BANNER_CLICKS_TABLE . ' SET ' . we_database_base::arraySetter(array(
-				'ID' => intval($id),
+				'ID' => $id,
 				'Timestamp' => sql_function('UNIX_TIMESTAMP()'),
 				'IP' => $_SERVER['REMOTE_ADDR'],
 				'Referer' => ($referer ? $referer : (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '')),
-				'DID' => intval($did),
+				'DID' => $did,
 				'Page' => $page
 		)));
 

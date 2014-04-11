@@ -27,9 +27,9 @@ $protect = we_base_moduleInfo::isActive('shop') && we_users_util::canEditModule(
 we_html_tools::protect($protect);
 
 $selectedYear = intval(isset($_REQUEST['ViewYear']) ? $_REQUEST['ViewYear'] : date('Y'));
-$selectedMonth = isset($_REQUEST['ViewMonth']) ? intval($_REQUEST['ViewMonth']) : 1;
-$orderBy = isset($_REQUEST['orderBy']) ? $_REQUEST['orderBy'] : 'IntOrderID';
-$actPage = isset($_REQUEST['actPage']) ? $_REQUEST['actPage'] : '0';
+$selectedMonth = weRequest('int', 'ViewMonth', 1);
+$orderBy = weRequest('string', 'orderBy', 'IntOrderID');
+$actPage = weRequest('int', 'actPage', 0);
 
 function orderBy($a, $b){
 	$ret = ($a[$_REQUEST['orderBy']] >= $b[$_REQUEST['orderBy']]);

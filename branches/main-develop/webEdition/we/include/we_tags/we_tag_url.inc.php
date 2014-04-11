@@ -29,7 +29,7 @@ function we_tag_url($attribs){
 	static $urls = array();
 	$type = weTag_getAttribute('type', $attribs, 'document');
 	$id = weTag_getAttribute('id', $attribs);
-	$triggerid = weTag_getAttribute('triggerid', $attribs, '0');
+	$triggerid = weTag_getAttribute('triggerid', $attribs, 0);
 	$hidedirindex = weTag_getAttribute('hidedirindex', $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, true);
 	$objectseourls = weTag_getAttribute('objectseourls', $attribs, TAGLINKS_OBJECTSEOURLS, true);
 	if(is_numeric($id) && (isset($urls[$type . $id]))){ // do only work you have never done before
@@ -44,9 +44,8 @@ function we_tag_url($attribs){
 			$testid = $doc->ID;
 			if($id == 'top'){//check for object
 				if(isset($GLOBALS['WE_MAIN_DOC']->TableID)){//ein object
-					if(!$triggerid){
-						$triggerid = $GLOBALS['WE_MAIN_DOC']->ID;
-					}
+					$triggerid = ($triggerid ? $triggerid : $GLOBALS['WE_MAIN_DOC']->ID);
+
 					$path_parts = pathinfo(id_to_path($triggerid));
 					if($objectseourls && $GLOBALS['WE_MAIN_DOC']->Url != '' && show_SeoLinks()){
 						$url = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .

@@ -31,31 +31,28 @@ echo we_html_tools::getHtmlTop() .
 
 $weShippingControl = we_shop_shippingControl::getShippingControl();
 
-if(isset($_REQUEST['we_cmd'])){
+switch(weRequest('string', 'we_cmd', '', 0)){
+	case 'newShipping':
+		$weShipping = we_shop_shippingControl::getNewEmptyShipping();
+		break;
 
-	switch($_REQUEST['we_cmd'][0]){
+	case 'editShipping':
+		$weShipping = $weShippingControl->getShippingById($_REQUEST['weShippingId']);
+		break;
 
-		case 'newShipping':
-			$weShipping = we_shop_shippingControl::getNewEmptyShipping();
-			break;
+	case 'deleteShipping':
+		$weShippingControl->delete($_REQUEST['weShippingId']);
+		break;
 
-		case 'editShipping':
+	case 'saveShipping':
+		$weShippingControl->setByRequest($_REQUEST);
+		$weShippingControl->save();
+		if(isset($_REQUEST['weShippingId'])){
 			$weShipping = $weShippingControl->getShippingById($_REQUEST['weShippingId']);
-			break;
-
-		case 'deleteShipping':
-			$weShippingControl->delete($_REQUEST['weShippingId']);
-			break;
-
-		case 'saveShipping':
-			$weShippingControl->setByRequest($_REQUEST);
-			$weShippingControl->save();
-			if(isset($_REQUEST['weShippingId'])){
-				$weShipping = $weShippingControl->getShippingById($_REQUEST['weShippingId']);
-			}
-			break;
-	}
+		}
+		break;
 }
+
 $jsFunction = '
 
 		var isGecko = ' . (we_base_browserDetect::isGecko() ? 'true' : 'false') . ';

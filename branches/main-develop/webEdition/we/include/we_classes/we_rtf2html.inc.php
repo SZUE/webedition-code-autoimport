@@ -651,7 +651,7 @@ class we_rtf2html{
 				}
 				break;
 			default:
-				if($para == "0"){
+				if($para == 0){
 					if($this->rtf_cons[$key][3] != ""){
 						$this->pasteChars($this->rtf_cons[$key][3]);
 						$this->popStack($key);

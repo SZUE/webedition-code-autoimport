@@ -75,8 +75,8 @@ class we_app_HomePage extends we_ui_layout_HTMLPage{
 	 * @param array $properties
 	 * @return void
 	 */
-	function __construct($properties = null){
-		parent::__construct($properties);
+	function __construct(){
+		parent::__construct();
 		$this->addCSSFile(we_ui_layout_Themes::computeCSSURL(__CLASS__));
 	}
 
@@ -132,10 +132,10 @@ class we_app_HomePage extends we_ui_layout_HTMLPage{
 
 		$perm = 'NEW_APP_' . strtoupper($appName);
 
-		$newItemButton = new we_ui_controls_Button(array('text' => $translate->_('New Entry'), 'onClick' => 'weCmdController.fire({cmdName: "app_' . $appName . '_new"})', 'type' => 'onClick', 'disabled' => we_core_Permissions::hasPerm($perm) ? false : true, 'width' => 200));
+		$newItemButton = new we_ui_controls_Button(array('text' => $translate->_('New Entry'), 'onclick' => 'weCmdController.fire({cmdName: "app_' . $appName . '_new"})', 'type' => 'onClick', 'disabled' => we_core_Permissions::hasPerm($perm) ? false : true, 'width' => 200));
 		$bodyDiv->addElement($newItemButton);
 
-		$newFolderButton = new we_ui_controls_Button(array('text' => $translate->_('New Folder'), 'onClick' => 'weCmdController.fire({cmdName: "app_' . $appName . '_new_folder"})', 'type' => 'onClick', 'width' => 200, 'disabled' => we_core_Permissions::hasPerm($perm) ? false : true, 'style' => 'margin:10px 0 0 0;'));
+		$newFolderButton = new we_ui_controls_Button(array('text' => $translate->_('New Folder'), 'onclick' => 'weCmdController.fire({cmdName: "app_' . $appName . '_new_folder"})', 'type' => 'onClick', 'width' => 200, 'disabled' => we_core_Permissions::hasPerm($perm) ? false : true, 'style' => 'margin:10px 0 0 0;'));
 		$bodyDiv->addElement($newFolderButton);
 
 		return $bodyDiv;
@@ -151,5 +151,3 @@ class we_app_HomePage extends we_ui_layout_HTMLPage{
 	}
 
 }
-
-?>

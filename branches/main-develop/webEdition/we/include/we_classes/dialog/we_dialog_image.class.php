@@ -119,7 +119,7 @@ class we_dialog_image extends we_dialog_base{
 		$this->args['longdesc'] = $longdesc;
 		$this->args['longdescid'] = $longdescid;
 		$this->args['longdescsrc'] = ($longdesc ? $tokkens[0] : '');
-		$this->args['ratio'] = isset($_REQUEST['we_dialog_args']['ratio']) ? $_REQUEST['we_dialog_args']['ratio'] : 1;
+		$this->args['ratio'] = weRequest('int', 'we_dialog_args', 1, 'ratio');
 	}
 
 	function initByFileID($fileID, $width = 0, $height = 0, $hspace = 0, $vspace = 0, $border = 0, $alt = '', $align = '', $name = '', $thumb = '', $class = '', $title = '', $longdesc = ''){
@@ -252,7 +252,7 @@ class we_dialog_image extends we_dialog_base{
 			$radioBut = we_html_forms::radiobutton(we_base_link::TYPE_EXT, (isset($this->args["type"]) && $this->args["type"] == we_base_link::TYPE_EXT), "we_dialog_args[type]", g_l('wysiwyg', "[external_image]"), true, "defaultfont", "imageChanged();"
 			);
 
-			$extSrc = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extSrc]", 30, (isset($this->args["extSrc"]) ? $this->args["extSrc"] : ""), "", ' onfocus="if(this.form.elements[\'we_dialog_args[type]\'][1].checked) { this.form.elements[\'we_dialog_args[type]\'][0].checked=true;imageChanged();}" onChange="this.form.elements[\'we_dialog_args[type]\'][0].checked=true;imageChanged();"', "text", 300), $radioBut, "left", "defaultfont", we_html_tools::getPixel(20, 2), $but, "", "", "", 0
+			$extSrc = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extSrc]", 30, (isset($this->args["extSrc"]) ? $this->args["extSrc"] : ""), "", ' onfocus="if(this.form.elements[\'we_dialog_args[type]\'][1].checked) { this.form.elements[\'we_dialog_args[type]\'][0].checked=true;imageChanged();}" onchange="this.form.elements[\'we_dialog_args[type]\'][0].checked=true;imageChanged();"', "text", 300), $radioBut, "left", "defaultfont", we_html_tools::getPixel(20, 2), $but, "", "", "", 0
 			);
 			$wecmdenc1 = we_cmd_enc("document.we_form.elements['we_dialog_args[fileID]'].value");
 			$wecmdenc2 = we_cmd_enc("document.we_form.elements['we_dialog_args[fileSrc]'].value");
@@ -390,8 +390,8 @@ class we_dialog_image extends we_dialog_base{
 <tr><td colspan="4">' . $_longdesc . '</td></tr>
 <tr><td colspan="4">' . we_html_tools::getPixel(150, 15) . '</td></tr>
 </table></div>' .
-				we_html_tools::hidden("imgChangedCmd", "0") . we_html_tools::hidden("wasThumbnailChange", "0") . we_html_tools::hidden("isTinyMCEInitialization", "0") .
-				we_html_tools::hidden("tinyMCEInitRatioH", "0") . we_html_tools::hidden("tinyMCEInitRatioW", "0") .
+				we_html_tools::hidden("imgChangedCmd", 0) . we_html_tools::hidden("wasThumbnailChange", 0) . we_html_tools::hidden("isTinyMCEInitialization", 0) .
+				we_html_tools::hidden("tinyMCEInitRatioH", 0) . we_html_tools::hidden("tinyMCEInitRatioW", 0) .
 				weSuggest::getYuiFiles() .
 				$yuiSuggest->getYuiCss() . $yuiSuggest->getYuiJs() . we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/weimage/js/image_init.js')),
 		);
@@ -422,8 +422,8 @@ class we_dialog_image extends we_dialog_base{
 							top.document.getElementById("selectThumbnail").style.display = "' . $this->getDisplayThumbsSel() . '";
 						} catch(err){console.log(top.document.getElementById("selectThumbnail"));}
 
-						var rh = ' . (intval($args["width"] * $args["height"]) ? ($this->args["width"] / $args["height"]) : "0") . ';
-						var rw = ' . (intval($args["width"] * $args["height"]) ? ($this->args["height"] / $args["width"]) : "0") . ';
+						var rh = ' . (intval($args["width"] * $args["height"]) ? ($this->args["width"] / $args["height"]) : 0) . ';
+						var rw = ' . (intval($args["width"] * $args["height"]) ? ($this->args["height"] / $args["width"]) : 0) . ';
 						if(typeof top.document.we_form["tinyMCEInitRatioH"] !== "undefined") top.document.we_form[["tinyMCEInitRatioH"]].value = rh;
 						if(typeof top.document.we_form["tinyMCEInitRatioW"] !== "undefined") top.document.we_form[["tinyMCEInitRatioW"]].value = rw;
 					';
@@ -493,7 +493,7 @@ function checkWidthHeight(field){
 					'					var classCSV = "' . $this->args["cssClasses"] . '";
 									classNames = classCSV.split(/,/);' : ($this->args["editor"] == "tinyMce" ? 'classNames = top.opener.weclassNames_tinyMce;' :
 						'					classNames = top.opener.we_classNames;')) . '
-					document.writeln(\'<select class="defaultfont" style="width:200px" name="\'+name+\'" id="\'+name+\'" size="1"\'+(onCh ? \' onChange="\'+onCh+\'"\' : \'\')+\'>\');
+					document.writeln(\'<select class="defaultfont" style="width:200px" name="\'+name+\'" id="\'+name+\'" size="1"\'+(onCh ? \' onchange="\'+onCh+\'"\' : \'\')+\'>\');
 					document.writeln(\'<option value="">' . g_l('wysiwyg', "[none]") . '\');
 					if(typeof(classNames) != "undefined"){
 						for (var i = 0; i < classNames.length; i++) {
@@ -506,8 +506,8 @@ function checkWidthHeight(field){
 					document.writeln(\'</select>\');
 				}
 
-var ratioh = ' . (intval($this->args["width"] * $this->args["height"]) ? ($this->args["width"] / $this->args["height"]) : "0") . ';
-var ratiow = ' . (intval($this->args["width"] * $this->args["height"]) ? ($this->args["height"] / $this->args["width"]) : "0") . ';
+var ratioh = ' . (intval($this->args["width"] * $this->args["height"]) ? ($this->args["width"] / $this->args["height"]) : 0) . ';
+var ratiow = ' . (intval($this->args["width"] * $this->args["height"]) ? ($this->args["height"] / $this->args["width"]) : 0) . ';
 
 function fsubmit(e) {
 	return false;

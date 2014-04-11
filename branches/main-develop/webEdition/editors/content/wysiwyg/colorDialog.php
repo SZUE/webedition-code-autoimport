@@ -29,7 +29,7 @@ if(!(isset($_REQUEST['we_dialog_args']) && isset($_REQUEST['we_dialog_args']['ou
 $dialog = new we_dialog_color();
 $dialog->initByHttp();
 $dialog->registerOkJsFN("weDoColorJS");
-print $dialog->getHTML();
+echo $dialog->getHTML();
 
 function weDoColorJS(){
 

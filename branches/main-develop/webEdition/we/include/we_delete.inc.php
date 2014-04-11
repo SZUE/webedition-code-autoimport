@@ -44,11 +44,9 @@ function getObjectsForDocWorkspace($id, we_database_base $db){
 	return $db->getAllFirst(false);
 }
 
-$table = $_REQUEST['we_cmd'][2];
+$table = weRequest('table', 'we_cmd', '', 2);
 $wfchk = defined('WORKFLOW_TABLE') && ($table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE)) ?
-	(isset($_REQUEST['we_cmd'][3]) ?
-		$_REQUEST['we_cmd'][3] :
-		0) :
+	weRequest('bool', 'we_cmd', 0, 3):
 	1;
 $wfchk_html = '';
 $script = '';
@@ -473,11 +471,11 @@ print we_message_reporting::getShowMessageCall(g_l('alert', "[nothing_to_delete]
 </script>
 <?php
 if(!$wfchk && $_REQUEST['we_cmd'][0] != "delete"){
-	print $wfchk_html;
+	echo $wfchk_html;
 	exit();
 }
-if($_REQUEST['we_cmd'][0] == "do_delete"){
-	print '</head><body></body></html>';
+if(weRequest('string', 'we_cmd', '', 0) == "do_delete"){
+	echo '</head><body></body></html>';
 	exit();
 }
 

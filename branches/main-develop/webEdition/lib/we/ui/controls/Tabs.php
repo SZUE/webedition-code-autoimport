@@ -160,31 +160,17 @@ class we_ui_controls_Tabs extends we_ui_abstract_AbstractElement{
 	protected function getTabAttribute($_tabArray, $_att){
 		switch($_att){
 			case "id" :
-				if(isset($_tabArray["id"]) && $_tabArray["id"] != ""){
-					return $_tabArray["id"];
-				} else {
-					return "";
-				}
-				break;
+				return (isset($_tabArray["id"]) && $_tabArray["id"] != "" ? $_tabArray["id"] : '');
 			case "active" :
 				if(isset($_tabArray["active"])){
 					return $_tabArray["active"];
 				}
 				break;
 			case "text" :
-				if(isset($_tabArray["text"])){
-					return $_tabArray["text"];
-				} else {
-					return '';
-				}
-				break;
+				return (isset($_tabArray["text"]) ? $_tabArray["text"] : '');
 			case "title" :
-				if(isset($_tabArray["title"])){
-					return $_tabArray["title"];
-				} else {
-					return '';
-				}
-				break;
+				return (isset($_tabArray["title"]) ? $_tabArray["title"] : '');
+
 			case "hidden" :
 				if(isset($_tabArray["hidden"])){
 					return $_tabArray["hidden"];
@@ -195,13 +181,10 @@ class we_ui_controls_Tabs extends we_ui_abstract_AbstractElement{
 					return $_tabArray["disabled"];
 				}
 				break;
-			case "onClick" :
-				if(isset($_tabArray["onClick"])){
-					return $_tabArray["onClick"];
-				} else {
-					return '';
-				}
-				break;
+			case "onclick" :
+				return (isset($_tabArray["onclick"]) ? $_tabArray["onclick"] : '');
+
+
 			case "bottomline" :
 				if(isset($_tabArray["bottomline"])){
 					return $_tabArray["bottomline"];
@@ -218,22 +201,12 @@ class we_ui_controls_Tabs extends we_ui_abstract_AbstractElement{
 				}
 				break;
 			case "onCloseClick" :
-				if(isset($_tabArray["onCloseClick"])){
-					return $_tabArray["onCloseClick"];
-				} else {
-					return '';
-				}
-				break;
+				return (isset($_tabArray["onCloseClick"]) ? $_tabArray["onCloseClick"] : '');
 			case "reload" :
-				if(isset($_tabArray["reload"])){
-					return $_tabArray["reload"];
-				} else {
-					return false;
-				}
-				break;
+				return (isset($_tabArray["reload"]) ? $_tabArray["reload"] : '');
 		}
 
-		return "";
+		return '';
 	}
 
 	/**
@@ -260,8 +233,8 @@ class we_ui_controls_Tabs extends we_ui_abstract_AbstractElement{
 				}
 				$class = self::kTabNormal_Class;
 				$onClick = '';
-				if($this->getTabAttribute($v, 'onClick')){
-					$onClick .= htmlentities($this->getTabAttribute($v, 'onClick'));
+				if($this->getTabAttribute($v, 'onclick')){
+					$onClick .= htmlentities($this->getTabAttribute($v, 'onclick'));
 				}
 				$submit = '';
 				if($this->getTabAttribute($v, 'reload')){
@@ -282,15 +255,15 @@ class we_ui_controls_Tabs extends we_ui_abstract_AbstractElement{
 				if($this->getTabAttribute($v, 'hidden')){
 					$hiddenStyle = 'style="display:none;"';
 				}
-				$out .= '<div ' . $hiddenStyle . ' title="' . $this->getTabAttribute($v, 'title') . '" id="Tabs_' . $id . '" onclick="' . $onClick . '" ' . $this->_getComputedClassAttrib($class) . '>';
-				$out .= '<table border="0" height="100%" cellspacing="0" cellpadding="0"><tr><td>';
-				$out .= ($this->getTabAttribute($v, 'icon') !== '') ? '<img style="width:16px;height:16px;padding-right:5px;" src="' . $this->getTabAttribute($v, 'icon') . '" border="0" /></td><td>' : '';
-				$out .= $this->getTabAttribute($v, 'text');
-				$out .= '</td>';
-				$out .= ($this->getTabAttribute($v, 'close') !== '') ? '<td><img style="width:16px;height:16px;padding-left:5px;" src="' . self::kTabCloseIconPath . '" border="0" onMouseOut="this.src=\'' . self::kTabCloseIconPath . '\'" onClick="' . htmlentities($this->getTabAttribute($v, 'onCloseClick')) . 'we_ui_controls_Tabs.close(\'' . $this->getId() . '\',\'' . $id . '\');" onMouseOver="this.src=\'' . self::kTabCloseIconMouseOverPath . '\'" /></td>' : '';
-				$out .= '</tr></table>';
-				$out .= $this->getTabImageBorder();
-				$out .= '</div>';
+				$out .= '<div ' . $hiddenStyle . ' title="' . $this->getTabAttribute($v, 'title') . '" id="Tabs_' . $id . '" onclick="' . $onClick . '" ' . $this->_getComputedClassAttrib($class) . '>' .
+					'<table border="0" height="100%" cellspacing="0" cellpadding="0"><tr><td>' .
+					($this->getTabAttribute($v, 'icon') ? '<img style="width:16px;height:16px;padding-right:5px;" src="' . $this->getTabAttribute($v, 'icon') . '" border="0" /></td><td>' : '') .
+					$this->getTabAttribute($v, 'text') .
+					'</td>' .
+					($this->getTabAttribute($v, 'close') ? '<td><img style="width:16px;height:16px;padding-left:5px;" src="' . self::kTabCloseIconPath . '" border="0" onMouseOut="this.src=\'' . self::kTabCloseIconPath . '\'" onClick="' . htmlentities($this->getTabAttribute($v, 'onCloseClick')) . 'we_ui_controls_Tabs.close(\'' . $this->getId() . '\',\'' . $id . '\');" onMouseOver="this.src=\'' . self::kTabCloseIconMouseOverPath . '\'" /></td>' : '') .
+					'</tr></table>' .
+					$this->getTabImageBorder() .
+					'</div>';
 			}
 		}
 		return $out;

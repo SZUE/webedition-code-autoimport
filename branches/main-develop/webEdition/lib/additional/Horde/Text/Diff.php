@@ -100,7 +100,7 @@ class Horde_Text_Diff
      */
     public function reverse()
     {
-        if (version_compare(zend_version(), '2', '>')) {
+        if (version_compare(zend_version(), 2, '>')) {
             $rev = clone($this);
         } else {
             $rev = $this;

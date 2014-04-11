@@ -24,8 +24,7 @@
  */
 $yuiSuggest = & weSuggest::getInstance();
 
-if(isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3]){
-
+if(weRequest('bool', 'we_cmd', false, 3)){
 	$js = we_html_element::jsScript(JS_DIR . "windows.js") .
 		we_html_element::jsElement(
 			'self.focus();
@@ -157,7 +156,7 @@ if(isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3]){
 			'</td></tr></table>';
 	}
 	copyFolderFrag::printHeader();
-	print
+	echo
 		'<body class="weDialogBody">' . $js .
 		'<form onsubmit="return fsubmit(this)" name="we_form" target="pbUpdateFrame" method="get">' .
 		we_html_tools::htmlDialogLayout(

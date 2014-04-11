@@ -173,7 +173,7 @@ function filterXss($var, $type = 'string'){
 /** Helper for Filtering variables (callback of array_walk)
  *
  * @param mixed $var value
- * @param string $key key
+ * @param string $key key used by array-walk - unused
  * @param array $data array pair of type & default
  * @return type
  */
@@ -185,6 +185,10 @@ function _weRequest(&$var, $key, array $data){
 			return;
 		case 'intList':
 			implode(',', array_map('intval', explode(',', $var)));
+			return;
+		case 'unit':
+			//FIMXE: check for %d[em,ex,pt,...]?
+			return;
 		case 'int':
 			$var = intval($var);
 			return;
@@ -194,20 +198,24 @@ function _weRequest(&$var, $key, array $data){
 		case 'bool':
 			$var = (bool) $var;
 			return;
-		case 'table':
+		case 'table': //FIXME: this doesn't hold for OBJECT_X_TABLE - make sure we don't use them in requests
 			$var = $var && ($k = array_search($var, get_defined_constants(), true)) && (substr($k, -6) == '_TABLE') ? $var : $default;
 			return;
-		case 'email':
-			$var = filter_var($var, FILTER_SANITIZE_EMAIL);
+		case 'email'://removes mailto:
+			$var = filter_var(str_replace(we_base_link::TYPE_MAIL_PREFIX, '', $var), FILTER_SANITIZE_EMAIL);
 			return;
+		case 'file':
 		case 'url':
 			$var = filter_var($var, FILTER_SANITIZE_URL);
 			return;
-		case 'string':
+		case 'string'://strips tags
 			$var = filter_var($var, FILTER_SANITIZE_STRING);
 			return;
 		case 'html':
 			$var = filter_var($var, FILTER_SANITIZE_SPECIAL_CHARS);
+			return;
+		case 'raw':
+			//do nothing - used as placeholder for all types not yet known
 			return;
 	}
 	$var = $default;
@@ -221,11 +229,11 @@ function _weRequest(&$var, $key, array $data){
  * @param mixed $index optional index
  * @return mixed default, if value not set, the filtered value else
  */
-function weRequest($type, $name, $default = false, $index = ''){
-	if(!isset($_REQUEST[$name])){
+function weRequest($type, $name, $default = false, $index = null){
+	if(!isset($_REQUEST[$name]) || ($index !== null && !isset($_REQUEST[$name][$index]))){
 		return $default;
 	}
-	$var = $index === '' ? $_REQUEST[$name] : $_REQUEST[$name][$index];
+	$var = ($index === null ? $_REQUEST[$name] : $_REQUEST[$name][$index]);
 	if(is_array($var)){
 		array_walk($var, '_weRequest', array($type, $default));
 	} else {
@@ -446,7 +454,7 @@ function getHashArrayFromCSV($csv, $firstEntry, we_database_base $db = null){
 	$db = $db ? $db : new DB_WE();
 	$IDArr = makeArrayFromCSV($csv);
 	$out = $firstEntry ? array(
-		'0' => $firstEntry
+		0 => $firstEntry
 		) : array();
 	foreach($IDArr as $id){
 		if(strlen($id) && ($path = id_to_path($id, FILE_TABLE, $db))){
@@ -482,7 +490,7 @@ function getPathsFromTable($table = FILE_TABLE, we_database_base $db = null, $ty
 			$query[] = ' IsFolder=1 ';
 			break;
 	}
-	$out = $first ? array('0' => $first) : array();
+	$out = $first ? array(0 => $first) : array();
 
 	$db->query('SELECT ID,Path FROM ' . $table . (count($query) ? ' WHERE ' . implode(' AND ', $query) : '') . ' ORDER BY ' . $order);
 	while($db->next_record()){
@@ -506,7 +514,7 @@ function pushChildsFromArr(&$arr, $table = FILE_TABLE, $isFolder = ''){
 function pushChilds(&$arr, $id, $table = FILE_TABLE, $isFolder = ''){
 	$db = new DB_WE();
 	$arr[] = $id;
-	$db->query('SELECT ID FROM ' . $table . ' WHERE ParentID=' . intval($id) . (($isFolder != '' || $isFolder == '0') ? (' AND IsFolder="' . $db->escape($isFolder) . '"') : ''));
+	$db->query('SELECT ID FROM ' . $table . ' WHERE ParentID=' . intval($id) . (($isFolder != '' || $isFolder == 0) ? (' AND IsFolder=' . intval($isFolder)) : ''));
 	while($db->next_record()){
 		pushChilds($arr, $db->f('ID'), $table, $isFolder);
 	}
@@ -540,8 +548,7 @@ function we_readParents($id, &$parentlist, $tab, $match = 'ContentType', $matchv
 		if($pid == 0){
 			$parentlist[] = $pid;
 		} else {
-			$tmp = f('SELECT 1 FROM ' . $db->escape($tab) . ' WHERE ID=' . intval($pid) . ' AND ' . $match . ' = "' . $db->escape($matchvalue) . '"', '', $db);
-			if($tmp == '1'){
+			if(f('SELECT 1 FROM ' . $db->escape($tab) . ' WHERE ID=' . intval($pid) . ' AND ' . $match . ' = "' . $db->escape($matchvalue) . '"', '', $db)){
 				$parentlist[] = $pid;
 				we_readParents($pid, $parentlist, $tab, $match, $matchvalue, $db);
 			}

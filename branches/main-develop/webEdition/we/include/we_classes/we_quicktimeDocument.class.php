@@ -182,9 +182,9 @@ class we_quicktimeDocument extends we_binaryDocument{
 	function formProperties(){
 		return '<table style="border-spacing: 0px;border-style:none" cellpadding="0">
 	<tr valign="top">
-		<td>' . $this->formInput2(155, "width", 10, "attrib", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+		<td>' . $this->formInput2(155, "width", 10, "attrib", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
 		<td>' . we_html_tools::getPixel(18, 2) . '</td>
-		<td>' . $this->formInput2(155, "height", 10, "attrib", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+		<td>' . $this->formInput2(155, "height", 10, "attrib", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
 		<td>' . we_html_tools::getPixel(18, 2) . '</td>
 		<td>' . $this->formSelectElement(
 				155, "scale", array(
@@ -201,11 +201,11 @@ class we_quicktimeDocument extends we_binaryDocument{
 		<td colspan="5">' . we_html_tools::getPixel(2, 5) . '</td>
 	</tr>
 	<tr valign="top">
-		<td>' . $this->formInput2(155, "hspace", 10, "attrib", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+		<td>' . $this->formInput2(155, "hspace", 10, "attrib", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
 		<td>' . we_html_tools::getPixel(18, 2) . '</td>
-		<td>' . $this->formInput2(155, "vspace", 10, "attrib", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+		<td>' . $this->formInput2(155, "vspace", 10, "attrib", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
 		<td>' . we_html_tools::getPixel(18, 2) . '</td>
-		<td>' . $this->formInput2(155, "name", 10, "attrib", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+		<td>' . $this->formInput2(155, "name", 10, "attrib", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
 	</tr>
 	<tr valign="top">
 		<td colspan="5">' . we_html_tools::getPixel(2, 5) . '</td>
@@ -293,13 +293,13 @@ class we_quicktimeDocument extends we_binaryDocument{
 		$webuserId = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
 		foreach($_FILES["we_ui_$formname"]["name"] as $quicktimeName => $filename){
 
-			$_quicktimeDataId = isset($_REQUEST['WE_UI_QUICKTIME_DATA_ID_' . $quicktimeName]) ? $_REQUEST['WE_UI_QUICKTIME_DATA_ID_' . $quicktimeName] : false;
+			$_quicktimeDataId = weRequest('string', 'WE_UI_QUICKTIME_DATA_ID_' . $quicktimeName);
 
 			if($_quicktimeDataId !== false && isset($_SESSION[$_quicktimeDataId])){
 
 				$_SESSION[$_quicktimeDataId]['doDelete'] = false;
 
-				if(isset($_REQUEST["WE_UI_DEL_CHECKBOX_" . $quicktimeName]) && $_REQUEST["WE_UI_DEL_CHECKBOX_" . $quicktimeName] == 1){
+				if(weRequest('bool', 'WE_UI_DEL_CHECKBOX_' . $quicktimeName)){
 					$_SESSION[$_quicktimeDataId]['doDelete'] = true;
 				} elseif($filename){
 					// file is selected, check to see if it is an image

@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_shop_frames extends weModuleFrames {
+class we_shop_frames extends weModuleFrames{
 
 	var $db;
 	var $View;
@@ -73,7 +73,7 @@ class we_shop_frames extends weModuleFrames {
 				fr.write("</head>");
 				fr.write("<body bgcolor=\"#F3F7FF\" link=\"#000000\" alink=\"#000000\" vlink=\"#000000\" leftmargin=\"5\" topmargin=\"0\" marginheight=\"0\" marginwidth=\"5\">");
 				fr.write("<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"><tr><td class=\"tree\"><nobr>");
-				fr.write("<tr><td class=\"tree\"><nobr><a href=javascript:// onClick=\"doYearClick(" + top.yearshop + ");return true;\" title=\"<?php echo g_l('modules_shop', '[treeYearClick]'); ?>\" ><?php print g_l('modules_shop', '[treeYear]'); ?>: <strong>" + top.yearshop + " </strong></a> <br/>");
+				fr.write("<tr><td class=\"tree\"><nobr><a href=javascript:// onclick=\"doYearClick(" + top.yearshop + ");return true;\" title=\"<?php echo g_l('modules_shop', '[treeYearClick]'); ?>\" ><?php print g_l('modules_shop', '[treeYear]'); ?>: <strong>" + top.yearshop + " </strong></a> <br/>");
 
 				zeichne(0, "");
 				fr.write("</nobr></td></tr></table>");
@@ -94,7 +94,7 @@ class we_shop_frames extends weModuleFrames {
 						}
 		<?php if(permissionhandler::hasPerm("EDIT_SHOP_ORDER")){ ?> // make  in tree clickable
 							if (nf[ai].name !== -1) {
-								fr.write("<a href=\"javascript://\" onClick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" BORDER=0>");
+								fr.write("<a href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" BORDER=0>");
 							}
 		<?php } ?>
 						fr.write("<IMG SRC=<?php print TREE_IMAGE_DIR; ?>icons/" + nf[ai].icon + " WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 title=\"<?php print g_l('tree', "[edit_statustext]"); ?>\">");
@@ -103,7 +103,7 @@ class we_shop_frames extends weModuleFrames {
 		<?php } ?>
 						fr.write("&nbsp;");
 		<?php if(permissionhandler::hasPerm("EDIT_SHOP_ORDER")){ ?> // make orders in tree clickable
-							fr.write("<a href=\"javascript://\" onClick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">");
+							fr.write("<a href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">");
 
 		<?php } ?>
 						//changed for #6786
@@ -125,7 +125,7 @@ class we_shop_frames extends weModuleFrames {
 							var zusatz2 = "open";
 						}
 		<?php if(permissionhandler::hasPerm("EDIT_SHOP_ORDER")){ ?>
-							fr.write("<a href=\"javascript://\" onClick=\"doFolderClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" BORDER=0>");
+							fr.write("<a href=\"javascript://\" onclick=\"doFolderClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" BORDER=0>");
 		<?php } ?>
 						fr.write("<img src=<?php print TREE_IMAGE_DIR; ?>icons/folder" + zusatz2 + ".gif WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 title=\"<?php print g_l('tree', "[edit_statustext]"); ?>\">");
 		<?php if(permissionhandler::hasPerm('EDIT_SHOP_ORDER')){ ?>
@@ -134,7 +134,7 @@ class we_shop_frames extends weModuleFrames {
 		}
 		if(permissionhandler::hasPerm("EDIT_SHOP_ORDER")){
 			?> // make the month in tree clickable
-							fr.write("<a href=\"javascript://\" onClick=\"doFolderClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">");
+							fr.write("<a href=\"javascript://\" onclick=\"doFolderClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">");
 		<?php } ?>
 						fr.write("&nbsp;" + (parseInt(nf[ai].published) ? " <b>" : "") + nf[ai].text + (parseInt(nf[ai].published) ? " </b>" : ""));
 		<?php if(permissionhandler::hasPerm('EDIT_SHOP_ORDER')){ ?>
@@ -406,9 +406,9 @@ function we_cmd() {
 
 		');
 
-		$bid = isset($_REQUEST["bid"]) ? intval($_REQUEST["bid"]) : 0;
-		$cid = f('SELECT IntCustomerID FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . $bid, 'IntCustomerID', $this->db);
-		$this->db->query("SELECT IntOrderID,DATE_FORMAT(DateOrder,'" . g_l('date', '[format][mysqlDate]') . "') as orddate FROM " . SHOP_TABLE . ' GROUP BY IntOrderID ORDER BY IntID DESC');
+		$bid = weRequest('int', 'bid', 0);
+		$cid = f('SELECT IntCustomerID FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . $bid, '', $this->db);
+		$this->db->query("SELECT IntOrderID,DATE_FORMAT(DateOrder,'" . g_l('date', '[format][mysqlDate]') . "') AS orddate FROM " . SHOP_TABLE . ' GROUP BY IntOrderID ORDER BY IntID DESC');
 
 		$headline = $this->db->next_record() ? '<a style="text-decoration: none;" href="javascript:we_cmd(\'openOrder\', ' . $this->db->f("IntOrderID") . ',\'shop\',\'' . SHOP_TABLE . '\');">' . sprintf(g_l('modules_shop', '[lastOrder]'), $this->db->f("IntOrderID"), $this->db->f("orddate")) . '</a>' : '';
 
@@ -431,7 +431,7 @@ function we_cmd() {
 		$resultO = array_shift($fe);
 
 		// wether the resultset ist empty?
-		$resultD = f("SELECT count(Name) as Anzahl FROM " . LINK_TABLE . ' WHERE Name ="' . WE_SHOP_TITLE_FIELD_NAME . '"', 'Anzahl', $this->db);
+		$resultD = f("SELECT 1 FROM " . LINK_TABLE . ' WHERE Name ="' . WE_SHOP_TITLE_FIELD_NAME . '" LIMIT 1', '', $this->db);
 
 		$c = 0;
 		$iconBarTable = new we_html_table(array("border" => 0, "cellpadding" => 6, "cellspacing" => 0, "style" => "margin-left:8px"), 1, 4);
@@ -439,7 +439,7 @@ function we_cmd() {
 		$iconBarTable->setCol(0, $c++, null, we_html_button::create_button("image:btn_shop_extArt", "javascript:top.opener.top.we_cmd('new_article')", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")));
 		$iconBarTable->setCol(0, $c++, null, we_html_button::create_button("image:btn_shop_delOrd", "javascript:top.opener.top.we_cmd('delete_shop')", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")));
 
-		if($resultD > 0){
+		if($resultD){
 			$iconBarTable->addCol();
 			$iconBarTable->setCol(0, $c++, null, we_html_button::create_button("image:btn_shop_sum", "javascript:top.content.editor.location=' edit_shop_frameset.php?pnt=editor&top=1&typ=document '", true));
 		} elseif(!empty($resultO)){
@@ -474,10 +474,10 @@ function we_cmd() {
 		//$DB_WE = $this->db; //TODO: why does it not work without this?
 		//do what have been done in edit_shop_editorFrameset before
 
-		$bid = isset($_REQUEST["bid"]) ? intval($_REQUEST["bid"]) : 0;
-		$mid = isset($_REQUEST["mid"]) ? $_REQUEST["mid"] : 0;
-		$yearView = isset($_REQUEST["ViewYear"]) ? intval($_REQUEST["ViewYear"]) : 0;
-		$home = isset($_REQUEST["home"]) ? $_REQUEST["home"] : 0;
+		$bid = weRequest('int', 'bid', 0);
+		$mid = weRequest('string', 'mid', 0);
+		$yearView = weRequest('int', 'ViewYear', 0);
+		$home = weRequest('bool', 'home');
 
 		if($home){
 			$bodyURL = WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=mod_home&mod=shop';
@@ -521,21 +521,19 @@ function we_cmd() {
 		$resultO = array_shift($fe);
 
 		// wether the resultset ist empty?
-		$resultD = f('SELECT COUNT(Name) as Anzahl FROM ' . LINK_TABLE . ' WHERE Name ="' . $DB_WE->escape(WE_SHOP_TITLE_FIELD_NAME) . '"', 'Anzahl', $DB_WE);
+		$resultD = f('SELECT 1 FROM ' . LINK_TABLE . ' WHERE Name ="' . $DB_WE->escape(WE_SHOP_TITLE_FIELD_NAME) . '" LIMIT 1', '', $DB_WE);
 
 		if($home){
 			$bodyURL = WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=mod_home&mod=shop'; //same as in getHTMLRight()
 		} elseif($mid){
 			// TODO::WANN UND VON WEM WIRD DAS AUFGERUFEN ????
 			$bodyURL = WE_SHOP_MODULE_DIR . 'edit_shop_overviewTop.php?mid=' . $mid;
-		} else {
-			if(($resultD > 0) && (empty($resultO))){ // docs but no objects
-				$bodyURL = 'edit_shop_article_extend.php?typ=document';
-			} elseif(($resultD < 1) && (!empty($resultO))){ // no docs but objects
-				$bodyURL = 'edit_shop_article_extend.php?typ=object&ViewClass=' . $classid;
-			} elseif(($resultD > 0) && (!empty($resultO))){
-				$bodyURL = 'edit_shop_article_extend.php?typ=document';
-			}
+		} elseif($resultD && !$resultO){ // docs but no objects
+			$bodyURL = 'edit_shop_article_extend.php?typ=document';
+		} elseif(!$resultD && $resultO){ // no docs but objects
+			$bodyURL = 'edit_shop_article_extend.php?typ=object&ViewClass=' . $classid;
+		} elseif($resultD && $resultO){
+			$bodyURL = 'edit_shop_article_extend.php?typ=document';
 		}
 
 		$frameset = new we_html_frameset(array("framespacing" => 0, "border" => 0, "frameborder" => "no"));
@@ -550,15 +548,15 @@ function we_cmd() {
 
 	function getHTMLEditorHeader(){
 		$DB_WE = $this->db;
-		if(isset($_REQUEST["home"]) && $_REQUEST["home"]){
+		if(weRequest('bool', 'home')){
 			return $this->getHTMLDocument('<body bgcolor="#F0EFF0"></body></html>');
 		}
 
-		if(isset($_REQUEST['top']) && $_REQUEST['top']){
+		if(weRequest('bool', 'top')){
 			return $this->getHTMLEditorHeaderTop();
 		}
 
-		$bid = isset($_REQUEST["bid"]) ? intval($_REQUEST["bid"]) : 0;
+		$bid = weRequest('int', 'bid', 0);
 
 		list($cid, $cdat) = getHash('SELECT IntCustomerID,DATE_FORMAT(DateOrder,"' . g_l('date', '[format][mysqlDate]') . '") FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . intval($bid), $DB_WE, MYSQL_NUM);
 		$order = getHash('SELECT IntOrderID,DATE_FORMAT(DateOrder,"' . g_l('date', '[format][mysqlDate]') . '") as orddate FROM ' . SHOP_TABLE . ' GROUP BY IntOrderID ORDER BY IntID DESC LIMIT 1', $DB_WE);
@@ -621,7 +619,7 @@ top.content.hloaded = 1;
 		$resultO = array_shift($fe);
 
 		// wether the resultset ist empty?
-		$resultD = f('SELECT count(Name) as Anzahl FROM ' . LINK_TABLE . ' WHERE Name ="' . WE_SHOP_TITLE_FIELD_NAME . '"', 'Anzahl', $this->db);
+		$resultD = f('SELECT 1 FROM ' . LINK_TABLE . ' WHERE Name ="' . WE_SHOP_TITLE_FIELD_NAME . '" LIMIT 1', '', $this->db);
 
 		// grep the last element from the year-set, wich is the current year
 		$yearTrans = f('SELECT DATE_FORMAT(DateOrder,"%Y") AS DateOrd FROM ' . SHOP_TABLE . ' ORDER BY DateOrd DESC LIMIT 1', 'DateOrd', $this->db);
@@ -638,12 +636,12 @@ top.content.hloaded = 1;
 		if(isset($_REQUEST["mid"]) && $_REQUEST["mid"]){
 			$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][overview]"), we_tab::ACTIVE, "//"));
 		} else {
-			if(($resultD > 0) && (!empty($resultO))){ //docs and objects
+			if($resultD && $resultO){ //docs and objects
 				$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][admin_1]"), we_tab::ACTIVE, "setTab(0);"));
 				$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][admin_2]"), we_tab::NORMAL, "setTab(1);"));
-			} elseif(($resultD > 0) && (empty($resultO))){ // docs but no objects
+			} elseif($resultD && !$resultO){ // docs but no objects
 				$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][admin_1]"), we_tab::NORMAL, "setTab(0);"));
-			} elseif(($resultD < 1) && (!empty($resultO))){ // no docs but objects
+			} elseif(!$resultD && $resultO){ // no docs but objects
 				$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][admin_2]"), we_tab::NORMAL, "setTab(1);"));
 			}
 			if(isset($yearTrans) && $yearTrans != 0){

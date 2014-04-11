@@ -25,7 +25,7 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
-switch(isset($_REQUEST["frame"]) ? $_REQUEST["frame"] : ""){
+switch(weRequest('string', 'frame','')){
 	case "main":
 		echo we_dialog_deleteProgress::main();
 		break;

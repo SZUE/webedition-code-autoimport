@@ -66,7 +66,7 @@ function we_tag_object($attribs){
 		$we_oid = isset($GLOBALS['lv']) && is_object($GLOBALS['lv']) && $GLOBALS['lv']->f($name) ? $GLOBALS['lv']->f($name) : ($we_doc->getElement($name) ? $we_doc->getElement($name) : $we_oid);
 		$rootDirID = ($classid ? f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path=(SELECT Path FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($classid) . ')', 'ID', $GLOBALS['DB_WE']) : 0);
 
-		$path = f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . $we_oid, 'Path', $GLOBALS['DB_WE']);
+		$path = f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . $we_oid);
 		$textname = 'we_' . $we_doc->Name . '_txt[' . $name . '_path]';
 		$idname = 'we_' . $we_doc->Name . '_txt[' . $name . ']';
 		$table = OBJECT_FILES_TABLE;
@@ -101,7 +101,7 @@ function we_tag_object($attribs){
 			</table><?php
 		}
 	} else {
-		$we_oid = $we_oid ? $we_oid : (isset($_REQUEST['we_oid']) ? intval($_REQUEST['we_oid']) : 0);
+		$we_oid = $we_oid ? $we_oid : weRequest('int', 'we_oid',0);
 	}
 	$GLOBALS['lv'] = new we_object_tag($classid, $we_oid, $triggerid, $searchable, $condition, $hidedirindex, $objectseourls);
 	if(is_array($GLOBALS['we_lv_array'])){

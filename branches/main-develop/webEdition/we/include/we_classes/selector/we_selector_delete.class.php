@@ -225,11 +225,11 @@ function setDir(id){
 		echo we_html_tools::getHtmlTop();
 		if(isset($_REQUEST["todel"])){
 			$_SESSION['weS']['todel'] = $_REQUEST["todel"];
-			print we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('
+			echo we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('
 top.opener.top.we_cmd("del_frag", "' . $_REQUEST["todel"] . '");
 top.close();');
 		}
-		print '</head><body></body></html>';
+		echo '</head><body></body></html>';
 	}
 
 	function printFooterTable(){

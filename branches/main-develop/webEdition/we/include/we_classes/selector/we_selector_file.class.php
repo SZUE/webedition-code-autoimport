@@ -484,7 +484,7 @@ function queryString(what,id,o){
 							if (entries[i].isFolder) {
 								link += ' onDblClick="this.blur();top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
 							}
-							link += ' onClick="this.blur();tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=0;}\',300);return true">' + "\n";
+							link += ' onclick="this.blur();tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=0;}\',300);return true">' + "\n";
 							d.writeln(link + '<img src="<?php print ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0"></a>');
 							d.writeln('</td>');
 							d.writeln('<td class="selector" title="' + entries[i].text + '">');
@@ -645,7 +645,7 @@ function selectIt(){
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
 	<tr>
 		<td>' . we_html_tools::getPixel(25, 14) . '</td>
-		<td class="selector"><b><a href="#" onClick="javascript:top.orderIt(\'IsFolder DESC, Text\');">' . g_l('fileselector', "[filename]") . '</a></b></td>
+		<td class="selector"><b><a href="#" onclick="javascript:top.orderIt(\'IsFolder DESC, Text\');">' . g_l('fileselector', "[filename]") . '</a></b></td>
 	</tr>
 	<tr>
 		<td width="25">' . we_html_tools::getPixel(25, 1) . '</td>

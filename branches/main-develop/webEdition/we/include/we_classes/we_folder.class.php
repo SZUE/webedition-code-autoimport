@@ -72,7 +72,7 @@ class we_folder extends we_root{
 		we_root::we_initSessDat($sessDat);
 
 		if($this->Table == FILE_TABLE || $this->Table == OBJECT_FILES_TABLE){
-			if($this->Language == ''){
+			if(!$this->Language){
 				$this->initLanguageFromParent();
 			}
 			if(isset($_REQUEST['we_edit_weDocumentCustomerFilter'])){
@@ -272,8 +272,8 @@ class we_folder extends we_root{
 			//FIXME:improve!
 			we_navigation_cache::clean(true);
 		}
-		if(LANGLINK_SUPPORT && isset($_REQUEST['we_' . $this->Name . '_LanguageDocID']) && $_REQUEST['we_' . $this->Name . '_LanguageDocID'] != 0){
-			$this->setLanguageLink($_REQUEST['we_' . $this->Name . '_LanguageDocID'], 'tblFile', true, (get_class($this) == 'we_class_folder'));
+		if(LANGLINK_SUPPORT && ($langid = weRequest('string', 'we_' . $this->Name . '_LanguageDocID'))){
+			$this->setLanguageLink($langid, 'tblFile', true, (get_class($this) == 'we_class_folder'));
 		} else {
 			//if language changed, we must delete eventually existing entries in tblLangLink, even if !LANGLINK_SUPPORT!
 			$this->checkRemoteLanguage($this->Table, true); //if language changed, we
@@ -480,7 +480,7 @@ class we_folder extends we_root{
 		}
 		return (!$userCanChange ? '<table border="0" cellpadding="0" cellspacing="0"><tr><td><span class="defaultfont">' . $this->Path . '</span></td></tr>' :
 				'<table border="0" cellpadding="0" cellspacing="0">
-	<tr><td class="defaultfont">' . $this->formInputField('', ($this->Table == FILE_TABLE || $this->Table == TEMPLATES_TABLE) ? 'Filename' : 'Text', g_l('weClass', '[filename]'), 50, 388, 255, 'onChange=_EditorFrame.setEditorIsHot(true);pathOfDocumentChanged();') . '</td><td></td><td></td></tr>
+	<tr><td class="defaultfont">' . $this->formInputField('', ($this->Table == FILE_TABLE || $this->Table == TEMPLATES_TABLE) ? 'Filename' : 'Text', g_l('weClass', '[filename]'), 50, 388, 255, 'onchange=_EditorFrame.setEditorIsHot(true);pathOfDocumentChanged();') . '</td><td></td><td></td></tr>
 	<tr><td>' . we_html_tools::getPixel(20, 10) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td></tr>
 	<tr><td colspan="3" class="defaultfont">' . $this->formDirChooser(388) . '</td></tr>' .
 				(defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE ?
@@ -494,7 +494,7 @@ class we_folder extends we_root{
 					'') .
 				($this->Table == FILE_TABLE && $this->ID && permissionhandler::hasPerm('ADMINISTRATOR') ? '
 	<tr><td>' . we_html_tools::getPixel(20, 10) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td></tr>
-	<tr><td class="defaultfont">' . $this->formInputField('', 'urlMap', g_l('weClass', '[urlMap]'), 50, 388, 255, 'onChange=_EditorFrame.setEditorIsHot(true); ') . '</td><td></td><td></td></tr>
+	<tr><td class="defaultfont">' . $this->formInputField('', 'urlMap', g_l('weClass', '[urlMap]'), 50, 388, 255, 'onchange=_EditorFrame.setEditorIsHot(true); ') . '</td><td></td><td></td></tr>
 ' : '')) .
 			'</table>';
 	}

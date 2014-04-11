@@ -37,7 +37,7 @@ if(isset($_REQUEST['td_deadline_hour'])){
 	$deadline = mktime($_REQUEST['td_deadline_hour'], $_REQUEST['td_deadline_minute'], 0, $_REQUEST['td_deadline_month'], $_REQUEST['td_deadline_day'], $_REQUEST['td_deadline_year']);
 }
 
-switch($_REQUEST["mode"]){
+switch(weRequest('string',"mode")){
 	case 'forward':
 		$arr = array('rcpts_string' => $_REQUEST['rcpts_string'], 'deadline' => $deadline, 'body' => $_REQUEST['mn_body']);
 		$res = $messaging->forward($arr);

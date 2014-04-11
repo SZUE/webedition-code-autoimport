@@ -53,7 +53,7 @@ define('LIVEUPDATE_TABLE_PREFIX', TBL_PREFIX);
 // liveupdater contains the following actions
 $updatecmds = array('update', 'languages', 'updatelog', 'connect', 'beta');
 //$updatecmds = array('update', 'languages', 'updatelog', 'connect');
-if(is_callable("set_time_limit") && strtolower(ini_get("safe_mode")) != "on" && ini_get("safe_mode") != "1"){
+if(is_callable("set_time_limit") && strtolower(ini_get("safe_mode")) != "on" && ini_get("safe_mode") != 1){
 	@set_time_limit(180);
 }
 

@@ -79,7 +79,7 @@ class we_messaging_view extends weModuleView{
 		$out.=$this->htmlHidden("pnt", (isset($cmds["pnt"]) ? $cmds["pnt"] : ""));
 		$out.=$this->htmlHidden("tabnr", (isset($cmds["tabnr"]) ? $cmds["tabnr"] : ""));
 		$out.=$this->htmlHidden("vernr", (isset($cmds["vernr"]) ? $cmds["vernr"] : 0));
-		$out.=$this->htmlHidden("IsFolder", (isset($this->voting->IsFolder) ? $this->voting->IsFolder : '0'));
+		$out.=$this->htmlHidden("IsFolder", (isset($this->voting->IsFolder) ? $this->voting->IsFolder : 0));
 		return $out;
 	}
 
@@ -173,7 +173,7 @@ class we_messaging_view extends weModuleView{
 		}
 
 		$out = '';
-		switch($_REQUEST["mcmd"]){
+		switch(weRequest('string',"mcmd")){
 			case 'search_messages':
 			case 'show_folder_content':
 				return $this->get_folder_content(isset($_REQUEST['id']) ? $_REQUEST['id'] : "", isset($_REQUEST['sort']) ? $_REQUEST['sort'] : "", isset($_REQUEST['entrsel']) ? $_REQUEST['entrsel'] : "", isset($_REQUEST['searchterm']) ? $_REQUEST['searchterm'] : "", 1) .

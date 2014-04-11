@@ -248,7 +248,7 @@ abstract class we_class{
 
 
 
-			$ps = $this->$name;
+		$ps = $this->$name;
 
 		$pop = $this->htmlSelect($myname . ($multiple ? 'Tmp' : ''), $vals, $size, $ps, $multiple, array_merge(array(
 			'onchange' => $onChange . ($multiple ? ";var we_sel='';for(i=0;i<this.options.length;i++){if(this.options[i].selected){we_sel += (this.options[i].value + ',');};};if(we_sel){we_sel=we_sel.substring(0,we_sel.length-1)};this.form.elements['" . $myname . "'].value=we_sel;" : '')
@@ -348,12 +348,12 @@ abstract class we_class{
 	}
 
 	protected function i_setElementsFromHTTP(){
+		if($_REQUEST){
+			// do not set REQUEST VARS into the document
+			if(($_REQUEST['we_cmd'][0] == 'switch_edit_page' && isset($_REQUEST['we_cmd'][3])) || ($_REQUEST['we_cmd'][0] == 'save_document' && isset($_REQUEST['we_cmd'][7]) && $_REQUEST['we_cmd'][7] == 'save_document')){
+				return true;
+			}
 
-		// do not set REQUEST VARS into the document
-		if(($_REQUEST['we_cmd'][0] == 'switch_edit_page' && isset($_REQUEST['we_cmd'][3])) || ($_REQUEST['we_cmd'][0] == 'save_document' && isset($_REQUEST['we_cmd'][7]) && $_REQUEST['we_cmd'][7] == 'save_document')){
-			return true;
-		}
-		if(!empty($_REQUEST)){
 			foreach($_REQUEST as $n => $v){
 				if(preg_match('#^we_' . $this->Name . '_([^\[]+)$#', $n, $regs) && in_array($regs[1], $this->persistent_slots)){
 					$this->$regs[1] = $v;

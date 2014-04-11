@@ -28,11 +28,11 @@ if(!isset($_REQUEST['we_cmd'])){
 
 //start autoloader!
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.inc.php');
-
+require_once (WE_INCLUDES_PATH . 'we_global.inc.php');
 $INCLUDE = '';
 
 
-switch($_REQUEST['we_cmd'][0]){
+switch(weRequest('string', 'we_cmd', '', 0)){
 	case 'versions_preview':
 		$INCLUDE = 'we_versions/weVersionsPreview.inc.php';
 		break;

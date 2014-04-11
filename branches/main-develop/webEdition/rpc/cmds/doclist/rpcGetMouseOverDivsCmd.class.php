@@ -30,18 +30,18 @@ class rpcGetMouseOverDivsCmd extends rpcCmd{
 
 		we_html_tools::protect();
 
-		$whichsearch = $_REQUEST['whichsearch'];
-		$setView = intval($_REQUEST['we_cmd']['setView']);
-		$anzahl = intval($_REQUEST['we_cmd']['anzahl']);
-		$searchstart = intval($_REQUEST['we_cmd']['searchstart']);
+		$whichsearch = weRequest('string', 'whichsearch', '');
+		$setView = weRequest('int', 'we_cmd', 0, 'setView');
+		$anzahl = weRequest('int', 'we_cmd', 0, 'anzahl');
+		$searchstart = weRequest('int', 'we_cmd', 0, 'searchstart');
 
-		if(isset($_REQUEST["we_transaction"])){
-			$_REQUEST['we_transaction'] = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0);
+		if(($trans = weRequest('transaction', 'we_transaction', 0))){
+			$_REQUEST['we_transaction'] = $trans;
 
-			$we_dt = isset($_SESSION['weS']['we_data'][$_REQUEST["we_transaction"]]) ? $_SESSION['weS']['we_data'][$_REQUEST["we_transaction"]] : "";
+			$we_dt = isset($_SESSION['weS']['we_data'][$trans]) ? $_SESSION['weS']['we_data'][$trans] : '';
 		}
 
-		$_document = new $_REQUEST["classname"];
+		$_document = new ${weRequest('string', 'classname')} ;
 		$_document->we_initSessDat($we_dt);
 
 		$_REQUEST['we_cmd']['obj'] = $_document;

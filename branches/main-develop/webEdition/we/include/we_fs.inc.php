@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-switch($_REQUEST['we_cmd'][0]){
+switch(weRequest('string','we_cmd','',0)){
 	case 'openCatselector' :
 		$noChoose = isset($_REQUEST['we_cmd'][8]) ? $_REQUEST['we_cmd'][8] : '';
 	case 'openDirselector' :
@@ -56,7 +56,7 @@ switch($_REQUEST['we_cmd'][0]){
 		break;
 }
 
-switch($_REQUEST['we_cmd'][0]){
+switch(weRequest('string','we_cmd','',0)){
 	case 'openDirselector' :
 		require_once (WEBEDITION_PATH . 'we_dirSelect.php');
 		break;

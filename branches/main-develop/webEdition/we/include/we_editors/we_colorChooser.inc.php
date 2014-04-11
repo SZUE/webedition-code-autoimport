@@ -33,11 +33,11 @@ echo we_html_tools::getHtmlTop(g_l('global', '[select_color]')) .
 	}
 	function setColor() {
 <?php if($_REQUEST['we_cmd'][0]){ ?>
-			opener.document.we_form.elements["<?php print $_REQUEST['we_cmd'][1]; ?>"].value = document.we_form.colorvalue.value;
+			opener.document.we_form.elements["<?php echo $_REQUEST['we_cmd'][1]; ?>"].value = document.we_form.colorvalue.value;
 
 	<?php if(isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3]){ ?>
 
-		<?php print $_REQUEST['we_cmd'][3]; ?>
+		<?php echo $_REQUEST['we_cmd'][3]; ?>
 
 	<?php } else { ?>
 
@@ -76,7 +76,7 @@ for ( col in we_color2 ){
 		document.writeln(\'<tr>\');
 	}
 
-document.writeln(\'<td bgcolor="\'+col+\'"><a href="#" onClick="selectColor(\\\'\'+col+\'\\\');"><span style="display:inline-block;width:15px;height:15px" title="\'+we_color2[col]+\'" ></span></a></td>\');
+document.writeln(\'<td bgcolor="\'+col+\'"><a href="#" onclick="selectColor(\\\'\'+col+\'\\\');"><span style="display:inline-block;width:15px;height:15px" title="\'+we_color2[col]+\'" ></span></a></td>\');
 
 if(z==17){
 		document.writeln(\'</tr>\');

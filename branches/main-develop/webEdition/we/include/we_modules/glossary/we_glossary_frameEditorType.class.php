@@ -37,48 +37,31 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 	}
 
 	function Body(&$weGlossaryFrames){
-
-		$_js = "";
+		$_js = '';
 
 		$Temp = explode("_", $_REQUEST['cmdid']);
 		$Type = array_pop($Temp);
 		$Language = implode("_", $Temp);
-
 		$Cache = new we_glossary_cache($Language);
 
-		if(isset($_REQUEST['do']) && isset($_REQUEST['ID']) && !empty($_REQUEST['ID'])){
-
-			switch($_REQUEST['do']){
-
+		if(isset($_REQUEST['do']) && isset($_REQUEST['ID']) && $_REQUEST['ID']){
+			switch(weRequest('string','do')){
 				case 'delete':
-					$query = "DELETE FROM " . GLOSSARY_TABLE . " WHERE ID IN (" . $GLOBALS['DB_WE']->escape(implode(",", $_REQUEST['ID'])) . ")";
-					if($GLOBALS['DB_WE']->query($query)){
+					if($GLOBALS['DB_WE']->query('DELETE FROM ' . GLOSSARY_TABLE . ' WHERE ID IN (' . $GLOBALS['DB_WE']->escape(implode(',', $_REQUEST['ID'])) . ')')){
 						foreach($_REQUEST['ID'] as $_id){
 							$_js .= $weGlossaryFrames->View->TopFrame . '.deleteEntry(' . $_id . ');';
 						}
-					} else {
-						$_js .= '';
 					}
 					$Cache->write();
 					break;
 
 				case 'publish':
-					$query = "UPDATE " . GLOSSARY_TABLE . " SET Published = UNIX_TIMESTAMP() WHERE ID IN (" . $GLOBALS['DB_WE']->escape(implode(",", $_REQUEST['ID'])) . ")";
-					if($GLOBALS['DB_WE']->query($query)){
-						$_js .= '';
-					} else {
-						$_js .= '';
-					}
+					$GLOBALS['DB_WE']->query('UPDATE ' . GLOSSARY_TABLE . ' SET Published=UNIX_TIMESTAMP() WHERE ID IN (' . $GLOBALS['DB_WE']->escape(implode(',', $_REQUEST['ID'])) . ')');
 					$Cache->write();
 					break;
 
 				case 'unpublish':
-					$query = "UPDATE " . GLOSSARY_TABLE . " SET Published = '0' WHERE ID IN (" . $GLOBALS['DB_WE']->escape(implode(",", $_REQUEST['ID'])) . ")";
-					if($GLOBALS['DB_WE']->query($query)){
-						$_js .= '';
-					} else {
-						$_js .= '';
-					}
+					$GLOBALS['DB_WE']->query('UPDATE ' . GLOSSARY_TABLE . ' SET Published=0 WHERE ID IN (' . $GLOBALS['DB_WE']->escape(implode(',', $_REQUEST['ID'])) . ')');
 					$Cache->write();
 					break;
 
@@ -95,7 +78,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 		$Type = $temp[2];
 
 		$Rows = isset($_REQUEST['Rows']) ? $_REQUEST['Rows'] : 10;
-		$Offset = isset($_REQUEST['Offset']) ? $_REQUEST['Offset'] >= 0 ? $_REQUEST['Offset'] : 0  : 0;
+		$Offset = isset($_REQUEST['Offset']) ? $_REQUEST['Offset'] >= 0 ? $_REQUEST['Offset'] : 0 : 0;
 		$Order = isset($_REQUEST['Order']) ? $_REQUEST['Order'] : 'Text';
 		$Sort = isset($_REQUEST['Sort']) ? $_REQUEST['Sort'] : 'ASC';
 		$Where = "Language = '" . $Language . "' AND Type = '" . $Type . "'";

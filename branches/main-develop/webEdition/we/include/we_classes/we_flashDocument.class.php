@@ -187,27 +187,27 @@ class we_flashDocument extends we_binaryDocument{
 	function formProperties(){
 		return '<table border="0" cellpadding="0" cellspacing="0">
 	<tr valign="top">
-		<td>' . $this->formInputInfo2(155, "width", 10, "attrib", "onChange=\"_EditorFrame.setEditorIsHot(true);\"", "origwidth") . '</td>
+		<td>' . $this->formInputInfo2(155, "width", 10, "attrib", "onchange=\"_EditorFrame.setEditorIsHot(true);\"", "origwidth") . '</td>
 		<td>' . we_html_tools::getPixel(18, 2) . '</td>
-		<td>' . $this->formInputInfo2(155, "height", 10, "attrib", "onChange=\"_EditorFrame.setEditorIsHot(true);\"", "origheight") . '</td>
+		<td>' . $this->formInputInfo2(155, "height", 10, "attrib", "onchange=\"_EditorFrame.setEditorIsHot(true);\"", "origheight") . '</td>
 		<td>' . we_html_tools::getPixel(18, 2) . '</td>
-		<td>' . $this->formSelectElement(155, "scale", array("" => "", "showall" => g_l('global', '[showall]'), "noborder" => g_l('global', '[noborder]'), "exactfit" => g_l('global', '[exactfit]')), "attrib", 1, array('onChange' => '_EditorFrame.setEditorIsHot(true);')) . '</td>
+		<td>' . $this->formSelectElement(155, "scale", array("" => "", "showall" => g_l('global', '[showall]'), "noborder" => g_l('global', '[noborder]'), "exactfit" => g_l('global', '[exactfit]')), "attrib", 1, array('onchange' => '_EditorFrame.setEditorIsHot(true);')) . '</td>
 	</tr>
 	<tr valign="top">
 		<td colspan="5">' . we_html_tools::getPixel(2, 5) . '</td>
 	</tr>
 	<tr valign="top">
-		<td>' . $this->formInput2(155, "hspace", 10, "attrib", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+		<td>' . $this->formInput2(155, "hspace", 10, "attrib", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
 		<td>' . we_html_tools::getPixel(18, 2) . '</td>
-		<td>' . $this->formInput2(155, "vspace", 10, "attrib", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+		<td>' . $this->formInput2(155, "vspace", 10, "attrib", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
 		<td>' . we_html_tools::getPixel(18, 2) . '</td>
-		<td>' . $this->formInput2(155, "name", 10, "attrib", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+		<td>' . $this->formInput2(155, "name", 10, "attrib", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
 	</tr>
 	<tr valign="top">
 		<td colspan="5">' . we_html_tools::getPixel(2, 5) . '</td>
 	</tr>
 	<tr valign="top">
-		<td>' . $this->formSelectElement(155, "play", array("" => g_l('global', '[true]'), "false" => g_l('global', '[false]')), "attrib", 1, array('onChange' => '_EditorFrame.setEditorIsHot(true);')) . '</td>
+		<td>' . $this->formSelectElement(155, "play", array("" => g_l('global', '[true]'), "false" => g_l('global', '[false]')), "attrib", 1, array('onchange' => '_EditorFrame.setEditorIsHot(true);')) . '</td>
 		<td>' . we_html_tools::getPixel(18, 2) . '</td>
 		<td>' . $this->formSelectElement(155, "quality", array("" => "", "low" => "low", "high" => "high", "autohigh" => "autohigh", "autolow" => "autolow", "best" => "best"), "attrib", 1, array('onchange' => '_EditorFrame.setEditorIsHot(true);')) . '</td>
 		<td>' . we_html_tools::getPixel(18, 2) . '</td>
@@ -402,13 +402,13 @@ class we_flashDocument extends we_binaryDocument{
 		if(isset($_FILES["we_ui_$formname"]["name"]) && is_array($_FILES["we_ui_$formname"]["name"])){
 			foreach($_FILES["we_ui_$formname"]["name"] as $flashName => $filename){
 
-				$_flashmovieDataId = isset($_REQUEST['WE_UI_FLASHMOVIE_DATA_ID_' . $flashName]) ? $_REQUEST['WE_UI_FLASHMOVIE_DATA_ID_' . $flashName] : false;
+				$_flashmovieDataId = weRequest('string', 'WE_UI_FLASHMOVIE_DATA_ID_' . $flashName);
 
 				if($_flashmovieDataId !== false && isset($_SESSION[$_flashmovieDataId])){
 
 					$_SESSION[$_flashmovieDataId]['doDelete'] = false;
 
-					if(isset($_REQUEST["WE_UI_DEL_CHECKBOX_" . $flashName]) && $_REQUEST["WE_UI_DEL_CHECKBOX_" . $flashName] == 1){
+					if(weRequest('bool', 'WE_UI_DEL_CHECKBOX_' . $flashName)){
 						$_SESSION[$_flashmovieDataId]['doDelete'] = true;
 					} elseif($filename){
 						// file is selected, check to see if it is an image

@@ -29,7 +29,7 @@ if(!isset($_REQUEST['we_cmd'])){
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 $INCLUDE = '';
-switch($_REQUEST['we_cmd'][0]){
+switch(weRequest('string', 'we_cmd','',0)){
 	case 'open_wysiwyg_window':
 		include(WE_INCLUDES_PATH . 'wysiwygWindow.inc.php');
 		exit();

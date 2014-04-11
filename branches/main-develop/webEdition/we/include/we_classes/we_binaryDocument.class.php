@@ -232,7 +232,7 @@ class we_binaryDocument extends we_document{
 
 	protected function i_setElementsFromHTTP(){
 		// preventing fields from override
-		if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == 'update_file'){
+		if(weRequest('string', 'we_cmd', '', 0) == 'update_file'){
 			return;
 		}
 		parent::i_setElementsFromHTTP();
@@ -287,7 +287,7 @@ class we_binaryDocument extends we_document{
 						break;
 
 					default:
-						$_inp = $this->formInput2(508, $_tagName, 23, "txt", ' onChange="_EditorFrame.setEditorIsHot(true);"');
+						$_inp = $this->formInput2(508, $_tagName, 23, "txt", ' onchange="_EditorFrame.setEditorIsHot(true);"');
 				}
 
 

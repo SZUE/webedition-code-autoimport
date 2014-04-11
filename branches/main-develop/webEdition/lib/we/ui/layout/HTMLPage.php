@@ -220,11 +220,8 @@ class we_ui_layout_HTMLPage extends we_ui_abstract_AbstractElement{
 			$js = <<<EOS
 
 function weGetTop() {
-	if (self != parent && typeof(parent.weGetTop) != "undefined") {
-		return parent.weGetTop();
-	} else {
-		return parent;
-	}
+	return  (self != parent && typeof(parent.weGetTop) != "undefined"?
+		parent.weGetTop():parent);
 }
 
 function weCC() {
@@ -301,7 +298,7 @@ EOS;
 		}
 
 		// add inline CSS
-		if(!empty($this->_inlineCSS)){
+		if($this->_inlineCSS){
 			$html .= "\t<style>\n";
 			foreach($this->_inlineCSS as $code){
 				$html .= $code . "\n";
@@ -317,12 +314,9 @@ EOS;
 		$html .= we_html_element::jsElement($js . implode('', $this->_inlineJS)) .
 			// add head end tag
 			'</head>';
-		if($this->_framesetHTML !== ''){
-			$out = $html . $this->_framesetHTML . '</html>';
-		} else {
-			$out = $html . we_xml_Tags::createStartTag('body', $this->_bodyAttributes) . $this->getBodyHTML() . '</body></html>';
-		}
-		return $out;
+		return ($this->_framesetHTML !== '' ?
+				$html . $this->_framesetHTML . '</html>' :
+				$html . we_xml_Tags::createStartTag('body', $this->_bodyAttributes) . $this->getBodyHTML() . '</body></html>');
 	}
 
 	/**

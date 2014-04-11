@@ -24,7 +24,7 @@
  */
 //TODO: do we need the other navigation cmds here?
 
-switch($_REQUEST['we_cmd'][0]){
+switch(weRequest('string','we_cmd','',0)){
 	case 'edit_navigation_ifthere':
 	case 'edit_navigation':
 		$mod = 'navigation';

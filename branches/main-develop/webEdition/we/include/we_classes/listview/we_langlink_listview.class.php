@@ -125,7 +125,7 @@ class we_langlink_listview extends listviewBase {
 			// if($this->showself == true)
 			// if($this->showself == false && $this->pagelanguage != $this->ownlanguage)
 			if($this->showself || (!$this->showself && $this->pagelanguage != $this->ownlanguage)){
-				$dt = array('DID' => $this->id, 'DLocale' => $this->ownlanguage, 'LDID' => $this->id, 'Locale' => $this->ownlanguage, 'DocumentTable' => (($this->linkType == 'tblFile') ? 'tblFile' : 'tblObjectFile'), 'IsObject' => (($this->linkType == 'tblFile') ? '0' : '1'), 'IsFolder' => 0);
+				$dt = array('DID' => $this->id, 'DLocale' => $this->ownlanguage, 'LDID' => $this->id, 'Locale' => $this->ownlanguage, 'DocumentTable' => (($this->linkType == 'tblFile') ? 'tblFile' : 'tblObjectFile'), 'IsObject' => (($this->linkType == 'tblFile') ? 0 : 1), 'IsFolder' => 0);
 				if($this->linkType == 'tblFile'){
 					$dt['Path'] = id_to_path($this->id, FILE_TABLE);
 				} else {

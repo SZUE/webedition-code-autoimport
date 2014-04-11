@@ -83,19 +83,17 @@ class we_dialog_acronym extends we_dialog_base{
 
 		$lang = $this->getLangField("lang", g_l('wysiwyg', "[language]"), 350);
 
-		$table = '<table border="0" cellpadding="0" cellspacing="0">
+		return '<table border="0" cellpadding="0" cellspacing="0">
 <tr><td>' . $title . '</td></tr>
 <tr><td>' . we_html_tools::getPixel(225, 10) . '</td></tr>
 <tr><td>' . $lang . '</td></tr>
 </table>
-';
-		if(defined("GLOSSARY_TABLE") && permissionhandler::hasPerm("NEW_GLOSSARY") && !$this->noInternals){
-			$table .= we_html_tools::hidden("weSaveToGlossary", 0);
-			$table .= we_html_tools::hidden("language", isset($_REQUEST['language']) && $_REQUEST['language'] != "" ? $_REQUEST['language'] : $GLOBALS['weDefaultFrontendLanguage']);
-			$table .= we_html_tools::hidden("text", "");
-		}
-
-		return $table;
+' .
+			(defined("GLOSSARY_TABLE") && permissionhandler::hasPerm("NEW_GLOSSARY") && !$this->noInternals ?
+				we_html_tools::hidden("weSaveToGlossary", 0) .
+				we_html_tools::hidden("language", weRequest('string', 'language', $GLOBALS['weDefaultFrontendLanguage'])) .
+				we_html_tools::hidden("text", "") :
+				'');
 	}
 
 	function getDialogButtons(){

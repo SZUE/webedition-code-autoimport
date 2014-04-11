@@ -208,7 +208,7 @@ function weonclick(e){
 	</tr>
 #}
 #for(i=0;i < entries.length; i++){
-#	var onclick = #\' onClick="weonclick(' . (we_base_browserDetect::isIE() ? "this" : "event") . ');tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(#\'+entries[i].ID+#\',0);}else{top.wasdblclick=0;}\',300);return true"#\';
+#	var onclick = #\' onclick="weonclick(' . (we_base_browserDetect::isIE() ? "this" : "event") . ');tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(#\'+entries[i].ID+#\',0);}else{top.wasdblclick=0;}\',300);return true"#\';
 #	var ondblclick = #\' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick(#\'+entries[i].ID+#\',1);return true;"#\';
 	<tr id="line_#\'+entries[i].ID+#\'" style="#\' + ((entries[i].ID == top.currentID && (!makeNewFolder) )  ? "background-color:#DFE9F5;" : "")+#\'cursor:pointer;" #\'+((we_editDirID || makeNewFolder) ? "" : onclick)+ (entries[i].isFolder ? ondblclick : "") + #\'>
 		<td class="selector" align="center"><img src="' . ICON_DIR . '#\'+entries[i].icon+#\'" width="16" height="18" border="0" /></td>
@@ -621,16 +621,16 @@ top.makeNewFolder = 0;
 top.clearEntries();';
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = $this->FolderText;
-		if($txt == ""){
-			print we_message_reporting::getShowMessageCall(g_l('weEditor', '[folder][filename_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
+		if(!$txt){
+			echo we_message_reporting::getShowMessageCall(g_l('weEditor', '[folder][filename_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
 			//}elseif(strpos($txt,".")!==false){ entfernt fuer #4333
 			//print we_message_reporting::getShowMessageCall(g_l('weEditor',"[folder][we_filename_notAllowed]"), we_message_reporting::WE_MESSAGE_ERROR);
 		} elseif(substr($txt, -1) == '.'){ // neue Version f�r 4333 testet auf "." am ende, analog zu i_filenameNotAllowed in we_root
-			print we_message_reporting::getShowMessageCall(g_l('weEditor', '[folder][we_filename_notAllowed]'), we_message_reporting::WE_MESSAGE_ERROR);
+			echo we_message_reporting::getShowMessageCall(g_l('weEditor', '[folder][we_filename_notAllowed]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} elseif(preg_match('-[<>?":|\\/*]-', $txt)){ // Test auf andere verbotene Zeichen
-			print we_message_reporting::getShowMessageCall(g_l('weEditor', '[folder][we_filename_notValid]'), we_message_reporting::WE_MESSAGE_ERROR);
-		} elseif($_REQUEST['id'] == 0 && strtolower($txt) == "webedition"){
-			print we_message_reporting::getShowMessageCall(g_l('weEditor', '[folder][we_filename_notAllowed]'), we_message_reporting::WE_MESSAGE_ERROR);
+			echo we_message_reporting::getShowMessageCall(g_l('weEditor', '[folder][we_filename_notValid]'), we_message_reporting::WE_MESSAGE_ERROR);
+		} elseif(weRequest('int', 'id', 0) == 0 && strtolower($txt) == "webedition"){
+			echo we_message_reporting::getShowMessageCall(g_l('weEditor', '[folder][we_filename_notAllowed]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
 			$folder = (defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE ? //4076
 							new we_class_folder() :

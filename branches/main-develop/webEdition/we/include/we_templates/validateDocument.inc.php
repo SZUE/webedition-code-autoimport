@@ -62,7 +62,7 @@ $_lastArt = '';
 $_lastCat = '';
 $_hiddens = '';
 $_js = '';
-if(!empty($services)){
+if($services){
 	$_select = '<select name="service" class="weSelect" style="width:350px;" onchange="switchPredefinedService(this.options[this.selectedIndex].value);">';
 	foreach($services as $art => $arr){
 		foreach($arr as $cat => $arrServices){
@@ -211,7 +211,7 @@ $parts = array(
 );
 
 $body = '<form name="we_form">'
-	. we_html_tools::hidden('we_transaction', (isset($_REQUEST['we_transaction']) && preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0))
+	. we_html_tools::hidden('we_transaction', weRequest('transaction', 'we_transaction', 0))
 	. we_html_multiIconBox::getHTML('weDocValidation', "100%", $parts, 20, '', -1, '', '', false) .
 	'</form>';
 

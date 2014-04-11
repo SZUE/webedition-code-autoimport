@@ -223,7 +223,7 @@ $oDbTableType->setCol(0, 0, null, $oChbxDocs . $oChbxTmpl);
 $oDbTableType->setCol(0, 1, null, we_html_tools::getPixel(10, 1));
 $oDbTableType->setCol(0, 2, null, $oChbxObjs . $oChbxCls);
 
-$oSctDate = new we_html_select(array("name" => "sct_date", "size" => 1, "class" => "defaultfont", "onChange" => ""));
+$oSctDate = new we_html_select(array("name" => "sct_date", "size" => 1, "class" => "defaultfont", "onchange" => ""));
 $aLangDate = array(
 	g_l('cockpit', '[all]'),
 	g_l('cockpit', '[today]'),

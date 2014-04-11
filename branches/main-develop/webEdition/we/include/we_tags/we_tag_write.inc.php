@@ -60,7 +60,7 @@ function we_tag_write($attribs){
 	$workflowuserid = weTag_getAttribute('workflowuserid', $attribs, 0);
 	$doworkflow = ($workflowname != '' && $workflowuserid != 0);
 	$searchable = weTag_getAttribute('searchable', $attribs, true, true);
-	if(isset($_REQUEST['edit_' . $type]) && $_REQUEST['edit_' . $type]){
+	if(weRequest('bool', 'edit_' . $type)){
 
 		switch($type){
 			case 'document':

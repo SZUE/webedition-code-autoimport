@@ -169,7 +169,7 @@ function _cutText($text, $l){
 					if($entry != '.' && $entry != '..'){
 						if(is_dir($dir . '/' . $entry)){
 							$arDir[] = $entry;
-							switch($_REQUEST["ord"]){
+							switch(weRequest('int', "ord")){
 								case 10:
 								case 11:
 									$ordDir[] = $entry;
@@ -189,7 +189,7 @@ function _cutText($text, $l){
 							}
 						} else {
 							$arFile[] = $entry;
-							switch($_REQUEST["ord"]){
+							switch(weRequest('int', "ord")){
 								case 10:
 								case 11:
 									$ordFile[] = $entry;
@@ -215,7 +215,7 @@ function _cutText($text, $l){
 				print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR)) . '<br><br><div class="middlefontgray" align="center">-- ' . g_l('alert', "[access_denied]") . ' --</div>';
 			}
 
-			switch($_REQUEST["ord"]){
+			switch(weRequest('int', "ord")){
 				case 10:
 				case 20:
 				case 30:
@@ -285,15 +285,15 @@ var i = 0;
 				$_cursor = "cursor:default;";
 				if(!(( isset($_REQUEST["nf"]) && ($_REQUEST["nf"] == "rename_folder" || $_REQUEST["nf"] == "rename_file")) && ($entry == $_REQUEST["sid"]) && ($isfolder))){
 					if($indb && $isfolder){
-						$onclick = ' onClick="tout=setTimeout(\'if(wasdblclick==0){doClick(\\\'' . $entry . '\\\',1,' . ($indb ? "1" : "0") . ');}else{wasdblclick=0;}\',300);return true;"';
+						$onclick = ' onclick="tout=setTimeout(\'if(wasdblclick==0){doClick(\\\'' . $entry . '\\\',1,' . ($indb ? "1" : "0") . ');}else{wasdblclick=0;}\',300);return true;"';
 						$ondblclick = ' onDblClick="wasdblclick=1;clearTimeout(tout);doClick(\'' . $entry . '\',1,' . ($indb ? "1" : "0") . ');return true;"';
 						$_cursor = "cursor:pointer;";
 					} else if(!$indb){
 						if($isfolder){
-							$onclick = ' onClick="if(old==\'' . $entry . '\') mk=setTimeout(\'if(!wasdblclick) clickEdit(old);\',500); old=\'' . $entry . '\';doSelectFolder(\'' . $entry . '\',' . ($indb ? "1" : "0") . ');"';
+							$onclick = ' onclick="if(old==\'' . $entry . '\') mk=setTimeout(\'if(!wasdblclick) clickEdit(old);\',500); old=\'' . $entry . '\';doSelectFolder(\'' . $entry . '\',' . ($indb ? "1" : "0") . ');"';
 							$ondblclick = ' onDblClick="wasdblclick=1;clearTimeout(tout);clearTimeout(mk);doClick(\'' . $entry . '\',1,0);return true;"';
 						} else {
-							$onclick = ' onClick="if(old==\'' . $entry . '\') mk=setTimeout(\'if(!wasdblclick) clickEditFile(old);\',500); old=\'' . $entry . '\';doClick(\'' . $entry . '\',0,0);return true;"';
+							$onclick = ' onclick="if(old==\'' . $entry . '\') mk=setTimeout(\'if(!wasdblclick) clickEditFile(old);\',500); old=\'' . $entry . '\';doClick(\'' . $entry . '\',0,0);return true;"';
 						}
 						$_cursor = "cursor:pointer;";
 					}

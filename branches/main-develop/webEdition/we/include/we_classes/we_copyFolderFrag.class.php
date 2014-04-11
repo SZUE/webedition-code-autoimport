@@ -27,16 +27,16 @@ class copyFolderFrag extends taskFragment{
 	var $copyToPath = "";
 
 	function init(){
-		$fromID = isset($_REQUEST["we_cmd"][1]) ? $_REQUEST["we_cmd"][1] : 0;
-		$toID = isset($_REQUEST["we_cmd"][2]) ? $_REQUEST["we_cmd"][2] : 0;
-		$table = isset($_REQUEST["we_cmd"][4]) ? $_REQUEST["we_cmd"][4] : '';
-		$OverwriteObjects = isset($_REQUEST["OverwriteObjects"]) ? $_REQUEST["OverwriteObjects"] : 'nothing';
-		$ObjectCopyNoFolders = isset($_REQUEST["DoNotCopyFolders"]) ? $_REQUEST["DoNotCopyFolders"] : 0;
-		$CreateTemplate = isset($_REQUEST["CreateTemplate"]) ? $_REQUEST["CreateTemplate"] : false;
-		$CreateDoctypes = isset($_REQUEST["CreateDoctypes"]) ? $_REQUEST["CreateDoctypes"] : false;
+		$fromID = weRequest('int', 'we_cmd', 0, 1);
+		$toID = weRequest('int', 'we_cmd', 0, 2);
+		$table = weRequest('table', 'we_cmd', '', 4);
+		$OverwriteObjects = weRequest('string', 'OverwriteObjects', 'nothing');
+		$ObjectCopyNoFolders = weRequest('bool', 'DoNotCopyFolders');
+		$CreateTemplate = weRequest('bool', 'CreateTemplate');
+		$CreateDoctypes = weRequest('bool', 'CreateDoctypes');
 
-		$CreateTemplateInFolderID = isset($_REQUEST["CreateTemplateInFolderID"]) ? $_REQUEST["CreateTemplateInFolderID"] : 0;
-		$OverwriteCategories = isset($_REQUEST["OverwriteCategories"]) ? $_REQUEST["OverwriteCategories"] : false;
+		$CreateTemplateInFolderID = weRequest('int', 'CreateTemplateInFolderID', 0);
+		$OverwriteCategories = weRequest('bool', 'OverwriteCategories', false);
 		$newCategories = array();
 		foreach($_REQUEST as $name => $val){
 			if(!is_array($val)){

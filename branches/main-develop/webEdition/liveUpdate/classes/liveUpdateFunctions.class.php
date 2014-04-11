@@ -427,7 +427,7 @@ class liveUpdateFunctions {
 				$indexType = 'PRIMARY';
 			} else if($db->f('Comment') == 'FULLTEXT' || $db->f('Index_type') == 'FULLTEXT'){// this also depends on mysqlVersion
 				$indexType = 'FULLTEXT';
-			} else if($db->f('Non_unique') == '0'){
+			} else if($db->f('Non_unique') == 0){
 				$indexType = 'UNIQUE';
 			} else {
 				$indexType = 'INDEX';
@@ -628,7 +628,7 @@ class liveUpdateFunctions {
 
 			switch($db->Errno){
 
-				case '1050': // this table already exists
+				case 1050: // this table already exists
 					// the table already exists,
 					// make tmptable and check these tables
 					$namePattern = '/CREATE TABLE (\w+) \(/';
@@ -775,7 +775,7 @@ class liveUpdateFunctions {
 						$db->query('DROP TABLE IF EXISTS ' . $db->escape($tmpName));
 					}
 					break;
-				case '1062':
+				case 1062:
 					$this->QueryLog['entryExists'][] = $db->Errno . ' ' . $db->Error . "\n<!-- $query -->";
 					return false;
 				default:

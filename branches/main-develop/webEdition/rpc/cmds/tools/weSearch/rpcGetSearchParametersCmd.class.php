@@ -31,11 +31,11 @@ class rpcGetSearchParametersCmd extends rpcCmd{
 		we_html_tools::protect();
 
 
-		$pos = $_REQUEST['position'];
-		$whichsearch = $_REQUEST['whichsearch'];
+		$pos = weRequest('string', 'position', '');
+		$whichsearch = weRequest('string', 'whichsearch', '');
 		$foundItems = $_SESSION['weS']['weSearch']['foundItems' . $whichsearch . ''];
-		$anzahl = $_REQUEST['we_cmd']['anzahl' . $whichsearch . ''];
-		$searchstart = $_REQUEST['we_cmd']['searchstart' . $whichsearch . ''];
+		$anzahl = weRequest('int', 'we_cmd', 0, 'anzahl' . $whichsearch);
+		$searchstart = weRequest('int', 'we_cmd', 0, 'searchstart' . $whichsearch);
 
 		$_SESSION['weS']['weSearch']['anzahl' . $whichsearch . ''] = $anzahl;
 		$_SESSION['weS']['weSearch']['searchstart' . $whichsearch . ''] = $searchstart;

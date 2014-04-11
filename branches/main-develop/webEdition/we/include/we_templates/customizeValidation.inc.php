@@ -77,43 +77,39 @@ echo we_html_tools::getHtmlTop() . STYLESHEET;
 	//  deal with action
 	$services = array();
 
-	if(isset($_REQUEST['we_cmd'][1])){
-
-		switch($_REQUEST['we_cmd'][1]){
-
-			case 'saveService':
-				$_service = new validationService($_REQUEST['id'], 'custom', $_REQUEST['category'], $_REQUEST['name'], $_REQUEST['host'], $_REQUEST['path'], $_REQUEST['s_method'], $_REQUEST['varname'], $_REQUEST['checkvia'], $_REQUEST['ctype'], $_REQUEST['additionalVars'], $_REQUEST['fileEndings'], $_REQUEST['active']);
-				if($selectedService = validation::saveService($_service)){
-					print we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(g_l('validation', '[edit_service][saved_success]'), we_message_reporting::WE_MESSAGE_NOTICE)
-					);
-				} else {
-					$selectedService = $_service;
-					print we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(g_l('validation', '[edit_service][saved_failure]') . (isset($GLOBALS['errorMessage']) ? '\n' . $GLOBALS['errorMessage'] : ''), we_message_reporting::WE_MESSAGE_ERROR)
-					);
-				}
-				break;
-			case 'deleteService':
-				$_service = new validationService($_REQUEST['id'], 'custom', $_REQUEST['category'], $_REQUEST['name'], $_REQUEST['host'], $_REQUEST['path'], $_REQUEST['s_method'], $_REQUEST['varname'], $_REQUEST['checkvia'], $_REQUEST['ctype'], $_REQUEST['additionalVars'], $_REQUEST['fileEndings'], $_REQUEST['active']);
-				if(validation::deleteService($_service)){
-					print we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(g_l('validation', '[edit_service][delete_success]'), we_message_reporting::WE_MESSAGE_NOTICE)
-					);
-				} else {
-					print we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(g_l('validation', '[edit_service][delete_failure]'), WE_MESSAGE_ERR
-							)
-					);
-				}
-				break;
-			case 'selectService';
-				$selectedName = $_REQUEST['validationService'];
-				break;
-			case 'newService':
-				$selectedService = new validationService(0, 'custom', 'accessible', g_l('validation', '[edit_service][new]'), 'www.example', '/path', 'get', 'varname', 'url', 'text/html', '', '.html', 1);
-				break;
-		}
+	switch(weRequest('string', 'we_cmd', '', 1)){
+		case 'saveService':
+			$_service = new validationService($_REQUEST['id'], 'custom', $_REQUEST['category'], $_REQUEST['name'], $_REQUEST['host'], $_REQUEST['path'], $_REQUEST['s_method'], $_REQUEST['varname'], $_REQUEST['checkvia'], $_REQUEST['ctype'], $_REQUEST['additionalVars'], $_REQUEST['fileEndings'], $_REQUEST['active']);
+			if($selectedService = validation::saveService($_service)){
+				print we_html_element::jsElement(
+						we_message_reporting::getShowMessageCall(g_l('validation', '[edit_service][saved_success]'), we_message_reporting::WE_MESSAGE_NOTICE)
+				);
+			} else {
+				$selectedService = $_service;
+				print we_html_element::jsElement(
+						we_message_reporting::getShowMessageCall(g_l('validation', '[edit_service][saved_failure]') . (isset($GLOBALS['errorMessage']) ? '\n' . $GLOBALS['errorMessage'] : ''), we_message_reporting::WE_MESSAGE_ERROR)
+				);
+			}
+			break;
+		case 'deleteService':
+			$_service = new validationService($_REQUEST['id'], 'custom', $_REQUEST['category'], $_REQUEST['name'], $_REQUEST['host'], $_REQUEST['path'], $_REQUEST['s_method'], $_REQUEST['varname'], $_REQUEST['checkvia'], $_REQUEST['ctype'], $_REQUEST['additionalVars'], $_REQUEST['fileEndings'], $_REQUEST['active']);
+			if(validation::deleteService($_service)){
+				print we_html_element::jsElement(
+						we_message_reporting::getShowMessageCall(g_l('validation', '[edit_service][delete_success]'), we_message_reporting::WE_MESSAGE_NOTICE)
+				);
+			} else {
+				print we_html_element::jsElement(
+						we_message_reporting::getShowMessageCall(g_l('validation', '[edit_service][delete_failure]'), WE_MESSAGE_ERR
+						)
+				);
+			}
+			break;
+		case 'selectService';
+			$selectedName = $_REQUEST['validationService'];
+			break;
+		case 'newService':
+			$selectedService = new validationService(0, 'custom', 'accessible', g_l('validation', '[edit_service][new]'), 'www.example', '/path', 'get', 'varname', 'url', 'text/html', '', '.html', 1);
+			break;
 	}
 
 	//  get all custom services from the database - new service select it
@@ -122,7 +118,7 @@ echo we_html_tools::getHtmlTop() . STYLESHEET;
 		$services[] = $selectedService;
 	}
 
-	if(!empty($services)){
+	if($services){
 		foreach($services as $service){
 
 			$selectArr[$service->getName()] = htmlentities($service->name);

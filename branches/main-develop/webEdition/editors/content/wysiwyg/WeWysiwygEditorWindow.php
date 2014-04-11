@@ -21,14 +21,13 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
-$fieldName = $_REQUEST['we_cmd'][1];
-echo we_html_tools::getHtmlTop(sprintf(g_l('wysiwyg', "[window_title]"), $fieldName), 'UTF-8');
+$fieldName = weRequest('string', 'we_cmd', '', 1);
+echo we_html_tools::getHtmlTop(sprintf(g_l('wysiwyg', '[window_title]'), $fieldName), 'UTF-8');
 
-if(isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpressed"]){
-
-
-	$newHTML = $_REQUEST[$fieldName];
-	$_SESSION['weS']['WEAPP_' . $_REQUEST['we_cmd'][0] . '_' . $_REQUEST['we_cmd'][1]] = $newHTML;
+if(isset($fieldName) && weRequest('bool', 'we_okpressed')){
+	$newHTML = weRequest('string', $fieldName, '');
+	$type = weRequest('string', 'we_cmd', '', 1);
+	$_SESSION['weS']['WEAPP_' . weRequest('string', 'we_cmd', '', 0) . '_' . $type] = $newHTML;
 	$newHTMLoldA = preg_replace('|(</?)script([^>]*>)|i', '\\1scr"+"ipt\\2', $newHTML);
 	$newHTMLoldB = preg_replace('|(</?)script([^>]*>)|i', '\\1scr"+"ipt\\2', parseInternalLinks($newHTML, 0));
 
@@ -36,11 +35,11 @@ if(isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpres
 	$newHTMLencB = base64_encode($newHTMLoldB);
 
 	echo we_html_element::jsElement('
-if (opener.document.getElementById("' . $_REQUEST["we_cmd"][1] . '")) {
-	opener.we_ui_controls_WeWysiwygEditor.setData("' . $_REQUEST["we_cmd"][1] . '", "' . $newHTMLencA . '");
+if (opener.document.getElementById("' . $type . '")) {
+	opener.we_ui_controls_WeWysiwygEditor.setData("' . $type . '", "' . $newHTMLencA . '");
 }
-if (opener.document.getElementById("' . $_REQUEST["we_cmd"][1] . '_View")) {
-	opener.we_ui_controls_WeWysiwygEditor.setDataView("' . $_REQUEST["we_cmd"][1] . '", "' . $newHTMLencB . '");
+if (opener.document.getElementById("' . $type . '_View")) {
+	opener.we_ui_controls_WeWysiwygEditor.setDataView("' . $type . '", "' . $newHTMLencB . '");
 }
 
 window.close();');
@@ -49,7 +48,6 @@ window.close();');
 	<body marginwidth="0" marginheight="0" leftmargin="0" topmargin="0">
 		<?php
 	} else {
-
 		echo STYLESHEET .
 		we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('top.focus();');
 		?>

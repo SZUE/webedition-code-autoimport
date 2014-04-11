@@ -173,7 +173,7 @@ if(isset($daten)){
 				array(0));
 
 		$menu = '<label for="' . $select_name . '">' . $label . '</label>
-<select name="' . $select_name . "\" onChange=\"document.location.href='" . $_SERVER['SCRIPT_NAME'] . "?typ=object&ViewClass='+ this.options[this.selectedIndex].value\">\n";
+<select name="' . $select_name . "\" onchange=\"document.location.href='" . $_SERVER['SCRIPT_NAME'] . "?typ=object&ViewClass='+ this.options[this.selectedIndex].value\">\n";
 
 		foreach($fe as $val){
 			if($val != ''){
@@ -195,7 +195,7 @@ if(isset($daten)){
 
 	/*	 * ******** START PROCESS THE OUTPUT IF OPTED FOR AN OBJECT *********** */
 
-	switch($_REQUEST['typ']){
+	switch(weRequest('string','typ')){
 		case "object": //start output object
 			$orderBy = isset($_REQUEST['orderBy']) ? $DB_WE->escape($_REQUEST['orderBy']) : 'obTitle';
 			$entries = 0;

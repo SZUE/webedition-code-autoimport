@@ -311,7 +311,7 @@ function we_save() {
 		return array(array(
 				'headline' => g_l('tools', '[general]'),
 				'html' => we_html_element::htmlHidden(array('name' => 'newone', 'value' => ($this->Model->ID == 0 ? 1 : 0))) .
-				we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Text', '', $this->Model->Text, '', 'style="width: ' . $this->_width_size . '" onChange="' . $this->topFrame . '.mark();"'), g_l('tools', '[name]')) .
+				we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Text', '', $this->Model->Text, '', 'style="width: ' . $this->_width_size . '" onchange="' . $this->topFrame . '.mark();"'), g_l('tools', '[name]')) .
 				$this->getHTMLChooser(g_l('tools', '[group]'), $this->Table, 0, 'ParentID', $this->Model->ParentID, 'ParentPath', 'opener.' . $this->topFrame . '.mark()', ''),
 				'space' => $this->_space_size,
 				'noline' => 1
@@ -364,7 +364,7 @@ function we_save() {
 		}
 
 		$pid = $_REQUEST["pid"];
-		$offset = (isset($_REQUEST["offset"]) ? $_REQUEST["offset"] : 0);
+		$offset = weRequest('int',"offset",0);
 		$_class = $this->toolClassName . 'TreeDataSource';
 
 		$_loader = new $_class($this->TreeSource);

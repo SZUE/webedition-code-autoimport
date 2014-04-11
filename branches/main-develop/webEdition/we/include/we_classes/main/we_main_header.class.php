@@ -39,14 +39,14 @@ class we_main_header{
 	}
 
 	private static function hasMsg(){
-		return (defined("MESSAGING_SYSTEM") && (!isset($_REQUEST["SEEM_edit_include"]) || !$_REQUEST["SEEM_edit_include"] ));
+		return (defined('MESSAGING_SYSTEM') && (!isset($_REQUEST["SEEM_edit_include"]) || !$_REQUEST["SEEM_edit_include"] ));
 	}
 
 	static function pbody(){
 		$msg = self::hasMsg();
 		?>
 		<div style="position:absolute;top:0px;left:0px;right:0px;bottom:0px;border:0px;background-color:#efefef;background-image: url(<?php print IMAGE_DIR ?>java_menu/background.gif); background-repeat: repeat-x;">
-			<div style="position:absolute;top:0px;bottom:0px;left:0px;right:<?php echo $msg ? '60' : '0' ?>px;"><?php
+			<div style="position:absolute;top:0px;bottom:0px;left:0px;right:<?php echo $msg ? 60 : 0 ?>px;"><?php
 				we_main_headermenu::pbody();
 				?>
 			</div>

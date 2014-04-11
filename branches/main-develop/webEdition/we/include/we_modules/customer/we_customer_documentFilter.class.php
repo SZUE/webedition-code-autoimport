@@ -27,7 +27,7 @@
  * Customer filter (model) for document (or object) filters
  *
  */
-class we_customer_documentFilter extends we_customer_abstractFilter {
+class we_customer_documentFilter extends we_customer_abstractFilter{
 
 	const ACCESS = 'f_1';
 	const CONTROLONTEMPLATE = 'f_2';
@@ -137,7 +137,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter {
 		} else {
 
 			return new self(
-				intval($_REQUEST['weDocumentCustomerFilter_id']), intval($model->ID), $model->ContentType, $model->Table, ($_REQUEST['wecf_accessControlOnTemplate'] == "onTemplate") ? 1 : 0, intval($_REQUEST['wecf_noLoginId']), intval($_REQUEST['wecf_noAccessId']), intval($_REQUEST['wecf_mode']), self::getSpecificCustomersFromRequest(), self::getFilterFromRequest(), self::getWhiteListFromRequest(), self::getBlackListFromRequest()
+				weRequest('int', 'weDocumentCustomerFilter_id', 0), intval($model->ID), $model->ContentType, $model->Table, (weRequest('string', 'wecf_accessControlOnTemplate') == "onTemplate") ? 1 : 0, weRequest('int', 'wecf_noLoginId', 0), weRequest('int', 'wecf_noAccessId', 0), weRequest('int', 'wecf_mode', 0), self::getSpecificCustomersFromRequest(), self::getFilterFromRequest(), self::getWhiteListFromRequest(), self::getBlackListFromRequest()
 			);
 		}
 	}

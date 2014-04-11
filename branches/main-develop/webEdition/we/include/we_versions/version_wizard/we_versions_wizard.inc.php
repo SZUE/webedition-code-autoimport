@@ -313,7 +313,7 @@ set_button_state(false);';
 			"name" => "delete_hours",
 			"style" => "",
 			"class" => "weSelect",
-			"onChange" => ""
+			"onchange" => ""
 		));
 
 		for($x = 0; $x <= 23; $x++){
@@ -332,7 +332,7 @@ set_button_state(false);';
 			"name" => "delete_minutes",
 			"style" => "",
 			"class" => "weSelect",
-			"onChange" => ""
+			"onchange" => ""
 		));
 
 		for($x = 0; $x <= 59; $x++){
@@ -351,7 +351,7 @@ set_button_state(false);';
 			"name" => "delete_seconds",
 			"style" => "",
 			"class" => "weSelect",
-			"onChange" => ""
+			"onchange" => ""
 		));
 
 		for($x = 0; $x <= 59; $x++){
@@ -551,7 +551,7 @@ set_button_state(false);';
 			"name" => "reset_hours",
 			"style" => "",
 			"class" => "weSelect",
-			"onChange" => ""
+			"onchange" => ""
 		));
 
 		for($x = 0; $x <= 23; $x++){
@@ -570,7 +570,7 @@ set_button_state(false);';
 			"name" => "reset_minutes",
 			"style" => "",
 			"class" => "weSelect",
-			"onChange" => ""
+			"onchange" => ""
 		));
 
 		for($x = 0; $x <= 59; $x++){
@@ -589,7 +589,7 @@ set_button_state(false);';
 			"name" => "reset_seconds",
 			"style" => "",
 			"class" => "weSelect",
-			"onChange" => ""
+			"onchange" => ""
 		));
 
 		for($x = 0; $x <= 59; $x++){
@@ -869,7 +869,7 @@ set_button_state(false);';
 				}
 			}
 		}
-		$whereCt = (empty($whereCt) ? '1' : " ContentType IN (" . $whereCt . ")");
+		$whereCt = ($whereCt ? " ContentType IN (" . $whereCt . ")" : '1');
 
 		$cont = array();
 		$docIds = array();

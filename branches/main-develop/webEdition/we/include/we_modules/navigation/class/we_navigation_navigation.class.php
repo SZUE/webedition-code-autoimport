@@ -347,7 +347,7 @@ class we_navigation_navigation extends weModelBase{
 	}
 
 	function pathExists($path){
-		return f('SELECT 1 FROM ' . $this->db->escape($this->table) . ' WHERE Path="' . $this->db->escape($path) . '" AND ID!=' . intval($this->ID), '', $this->db) === '1';
+		return f('SELECT 1 FROM ' . $this->db->escape($this->table) . ' WHERE Path="' . $this->db->escape($path) . '" AND ID!=' . intval($this->ID), '', $this->db) == 1;
 	}
 
 	function isSelf(){
@@ -374,7 +374,7 @@ class we_navigation_navigation extends weModelBase{
 			return true;
 		}
 		//checkWS
-		return f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . $this->ParentID . ' ' . self::getWSQuery(), '', $this->db) == '1';
+		return f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . $this->ParentID . ' ' . self::getWSQuery(), '', $this->db) == 1;
 	}
 
 	function evalPath($id = 0){
@@ -413,8 +413,8 @@ class we_navigation_navigation extends weModelBase{
 					return we_navigation_dynList::getCatgories($this->FolderID, $this->ShowCount);
 				default:
 					return $this->ClassID > 0 ?
-							we_navigation_dynList::getObjects($this->ClassID, $this->FolderID, $this->Categories, $this->CatAnd ? 'AND' : 'OR', $this->Sort, $this->ShowCount, $this->TitleField) :
-							array();
+						we_navigation_dynList::getObjects($this->ClassID, $this->FolderID, $this->Categories, $this->CatAnd ? 'AND' : 'OR', $this->Sort, $this->ShowCount, $this->TitleField) :
+						array();
 			}
 		}
 	}
@@ -508,21 +508,21 @@ class we_navigation_navigation extends weModelBase{
 		if(!$this->ID){
 			return false;
 		}
-		return f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' AND Depended=1 LIMIT 1', '', $this->db) === '1';
+		return f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' AND Depended=1 LIMIT 1', '', $this->db) == 1;
 	}
 
 	function hasAnyChilds(){
 		if(!$this->ID){
 			return false;
 		}
-		return f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' LIMIT 1', '', $this->db) === '1';
+		return f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' LIMIT 1', '', $this->db) == 1;
 	}
 
 	function hasIndependentChilds(){
 		if(!$this->ID){
 			return false;
 		}
-		return f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' AND Depended=0 LIMIT 1', '', $this->db) === '1';
+		return f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' AND Depended=0 LIMIT 1', '', $this->db) == 1;
 	}
 
 	function getDynamicPreview(&$storage, $rules = false){
@@ -583,7 +583,7 @@ class we_navigation_navigation extends weModelBase{
 
 						if($rules){
 							$_items[(count($_items) - 1)]['currentRule'] = we_navigation_rule::getWeNavigationRule(
-											'defined_' . ($_dyn['field'] ? $_dyn['field'] : $_dyn['text']), $_nav->ID, $_nav->SelectionType, $_nav->FolderID, $_nav->DocTypeID, $_nav->ClassID, $_nav->CategoryIDs, $_nav->WorkspaceID, $_href, false);
+									'defined_' . ($_dyn['field'] ? $_dyn['field'] : $_dyn['text']), $_nav->ID, $_nav->SelectionType, $_nav->FolderID, $_nav->DocTypeID, $_nav->ClassID, $_nav->CategoryIDs, $_nav->WorkspaceID, $_href, false);
 						}
 					}
 				}
@@ -665,9 +665,9 @@ class we_navigation_navigation extends weModelBase{
 					if(NAVIGATION_OBJECTSEOURLS && $objecturl != ''){
 						$path_parts = pathinfo($_path);
 						$_path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
-								(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
-										'' : $path_parts['filename'] . '/'
-								) . $objecturl;
+							(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
+								'' : $path_parts['filename'] . '/'
+							) . $objecturl;
 					}
 					break;
 			}
@@ -716,9 +716,9 @@ class we_navigation_navigation extends weModelBase{
 					if(NAVIGATION_OBJECTSEOURLS && isset($objecturl) && $objecturl != ''){
 						$path_parts = pathinfo($_path);
 						$_path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . (
-								(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))) ?
-										'' : $path_parts['filename'] . '/'
-								) . $objecturl;
+							(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))) ?
+								'' : $path_parts['filename'] . '/'
+							) . $objecturl;
 					}
 			}
 		}
@@ -727,11 +727,11 @@ class we_navigation_navigation extends weModelBase{
 			$this->Attributes = unserialize($this->Attributes);
 		}
 		$_path = str_replace(' ', '%20', trim($_path)) .
-				($_param ? ((strpos($_path, '?') === false ? '?' : '&amp;') . $_param) : '');
+			($_param ? ((strpos($_path, '?') === false ? '?' : '&amp;') . $_param) : '');
 
 		//leave this, because of strpos
 		$_path .= (($this->CurrentOnAnker && isset($this->Attributes['anchor']) && !empty($this->Attributes['anchor'])) ? ( (strpos($_path, '?') === false ? '?' : '&amp;') . 'we_anchor=' . $this->Attributes['anchor']) : '') .
-				((isset($this->Attributes['anchor']) && !empty($this->Attributes['anchor'])) ? ('#' . $this->Attributes['anchor']) : '');
+			((isset($this->Attributes['anchor']) && !empty($this->Attributes['anchor'])) ? ('#' . $this->Attributes['anchor']) : '');
 
 		$_path = str_replace(array('&amp;', '&'), array('&', '&amp;'), $_path);
 
@@ -819,22 +819,22 @@ class we_navigation_navigation extends weModelBase{
 			'|<(\/)?b>|',
 			'|<(\/)?i>|',
 			'|&([^;]+);|',
-				), array(
+			), array(
 			$open . 'br\\1' . $close,
 			$open . '\\1b' . $close,
 			$open . '\\1i' . $close,
 			$amp . '\\1;',
-				), $string);
+			), $string);
 
 		return str_replace(array(
 			$open,
 			$close,
 			$amp,
-				), array(
+			), array(
 			'<',
 			'>',
 			'&',
-				), oldHtmlspecialchars($string));
+			), oldHtmlspecialchars($string));
 	}
 
 	public static function getNavCondition($id, $table){

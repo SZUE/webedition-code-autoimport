@@ -41,7 +41,7 @@ $_title = base64_decode($_REQUEST['we_cmd'][4]);
 $_sObjId = $_REQUEST['we_cmd'][5];
 
 
-switch($_REQUEST['we_cmd'][2]){
+switch(weRequest('string', 'we_cmd','',2)){
 	case 'delete' :
 		$DB_WE->query('DELETE FROM ' . NOTEPAD_TABLE . ' WHERE ID=' . intval($q_Csv));
 		break;
@@ -123,7 +123,7 @@ if(!$bDisplay){
 // validity settings
 $sctValid = we_html_tools::htmlSelect("sct_valid", array(
 		g_l('cockpit', '[always]'), g_l('cockpit', '[from_date]'), g_l('cockpit', '[period]')
-		), 1, g_l('cockpit', '[always]'), false, array('style' => "width:100px;", 'onChange' => "toggleTblValidity()"), 'value', 100, 'middlefont');
+		), 1, g_l('cockpit', '[always]'), false, array('style' => "width:100px;", 'onchange' => "toggleTblValidity()"), 'value', 100, 'middlefont');
 $oTblValidity = new we_html_table(array(
 	"cellpadding" => 0, "cellspacing" => 0, "border" => 0, "id" => "oTblValidity"
 	), 1, 3);

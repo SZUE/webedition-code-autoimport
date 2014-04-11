@@ -74,8 +74,7 @@ class we_dialog_base{
 	}
 
 	function initByHttp(){
-		$this->tinyMCEPopupManagment = (isset($_REQUEST["tinyMCEPopupManagment"]) && $_REQUEST["tinyMCEPopupManagment"] == "n") ? false : $this->tinyMCEPopupManagment;
-		$this->what = isset($_REQUEST['we_what']) ? $_REQUEST['we_what'] : '';
+		$this->what = weRequest('string', 'we_what', '');
 		$this->we_cmd = isset($_REQUEST['we_cmd']) ? $_REQUEST['we_cmd'] : array();
 
 		if(isset($_REQUEST['we_dialog_args']) && is_array($_REQUEST['we_dialog_args'])){
@@ -342,11 +341,11 @@ self.focus();');
 	}
 
 	function formColor($size, $name, $value, $width = ""){
-		return '<input size="' . $size . '" type="text" name="' . $name . '" style="' . ($width ? 'width:' . $width . 'px;' : '') . 'background-color:' . $value . '" value="' . $value . '" onClick="openColorChooser(\'' . $name . '\',this.value);" readonly />';
+		return '<input size="' . $size . '" type="text" name="' . $name . '" style="' . ($width ? 'width:' . $width . 'px;' : '') . 'background-color:' . $value . '" value="' . $value . '" onclick="openColorChooser(\'' . $name . '\',this.value);" readonly />';
 	}
 
 	function getBodyTagHTML(){
-		return '<body ' . (!$this->tinyMCEPopupManagment ? 'id="weDialogInnerFrame" ' : '') . 'class="weDialogBody" onunload="doUnload()">';
+		return '<body class="weDialogBody" onunload="doUnload()">';
 	}
 
 	function getFooterHTML(){
@@ -360,7 +359,7 @@ self.focus();');
 	function getLangField($name, $title, $width){
 		//FIXME: these values should be obtained from global settings
 		$foo = we_html_tools::htmlTextInput("we_dialog_args[" . $name . "]", 15, (isset($this->args[$name]) ? $this->args[$name] : ""), "", '', "text", $width - 50);
-		$foo2 = '<select style="width:50px;" class="defaultfont" name="' . $name . '_select" size="1" onChange="this.form.elements[\'we_dialog_args[' . $name . ']\'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;">
+		$foo2 = '<select style="width:50px;" class="defaultfont" name="' . $name . '_select" size="1" onchange="this.form.elements[\'we_dialog_args[' . $name . ']\'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;">
 							<option value=""></option>
 							<option value="en">en</option>
 							<option value="de">de</option>

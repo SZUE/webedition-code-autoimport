@@ -81,7 +81,7 @@ abstract class listviewBase{
 		$this->maxItemsPerPage = $cols ? ($rows * $cols) : $rows;
 		$this->cols = (($cols == '' && ($calendar == 'month' || $calendar == 'month_table')) ? 7 : $cols);
 		$this->offset = abs($offset);
-		$this->start = (isset($_REQUEST['we_lv_start_' . $this->name]) && $_REQUEST['we_lv_start_' . $this->name]) ? abs($_REQUEST['we_lv_start_' . $this->name]) : 0;
+		$this->start = weRequest('int', 'we_lv_start_' . $this->name, 0);
 		if($this->start == 0){
 			$this->start += $this->offset;
 		}
@@ -231,7 +231,7 @@ abstract class listviewBase{
 			return true;
 		}
 		if($parentStart && isset($_REQUEST['we_lv_pstart_' . $this->name])){
-			return (abs($this->start) != $_REQUEST['we_lv_pstart_' . $this->name]);
+			return (abs($this->start) != weRequest('int', 'we_lv_pstart_' . $this->name, 0));
 		}
 		return (abs($this->start) != abs($this->offset));
 	}
@@ -302,7 +302,7 @@ abstract class listviewBase{
 
 	static function we_makeQueryString($queryString = '', $filter = ''){
 		$usedKeys = array();
-				//remove potential Cookies and filter from query
+		//remove potential Cookies and filter from query
 		$filterArr = array_merge(array(//filter special variables
 			'edit_object',
 			'edit_document',
@@ -315,7 +315,7 @@ abstract class listviewBase{
 			'pv_tid',
 			'bsuniquevid',
 			's'//password-form
-		), ($filter ? explode(',', $filter) : array()), array_keys($_COOKIE));
+			), ($filter ? explode(',', $filter) : array()), array_keys($_COOKIE));
 		if($queryString){
 			$foo = explode('&', $queryString);
 			$queryString = '';
@@ -525,8 +525,8 @@ abstract class listviewBase{
 				$calendar_where = ' AND (' . FILE_TABLE . '.Published>=' . $start_date . ' AND ' . FILE_TABLE . '.Published<=' . $end_date . ') ';
 			} else {
 				$field = (!empty($matrix) && in_array($this->calendar_struct['datefield'], array_keys($matrix))) ?
-						$matrix[$this->calendar_struct['datefield']]['table'] . '.' . $matrix[$this->calendar_struct['datefield']]['type'] . '_' . $this->calendar_struct['datefield'] :
-						CONTENT_TABLE . '.Dat';
+					$matrix[$this->calendar_struct['datefield']]['table'] . '.' . $matrix[$this->calendar_struct['datefield']]['type'] . '_' . $this->calendar_struct['datefield'] :
+					CONTENT_TABLE . '.Dat';
 
 				$calendar_select = ',' . $field . ' AS Calendar ';
 				$condition = ($condition == '' ? '' : $condition . ' AND ') . $this->calendar_struct['datefield'] . '>=' . $start_date . ' AND ' . $this->calendar_struct['datefield'] . '<=' . $end_date;

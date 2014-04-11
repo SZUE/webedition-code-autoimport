@@ -26,19 +26,20 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 $appendJS = "";
 
-$noInternals = false;
+
 if(!(isset($_REQUEST['we_dialog_args']) &&
-		((isset($_REQUEST['we_dialog_args']['outsideWE']) && $_REQUEST['we_dialog_args']['outsideWE'] == 1) ||
-		(isset($_REQUEST['we_dialog_args']['isFrontend']) && $_REQUEST['we_dialog_args']['isFrontend'] == 1)))){
+	((isset($_REQUEST['we_dialog_args']['outsideWE']) && $_REQUEST['we_dialog_args']['outsideWE'] == 1) ||
+	(isset($_REQUEST['we_dialog_args']['isFrontend']) && $_REQUEST['we_dialog_args']['isFrontend'] == 1)))){
 	we_html_tools::protect();
-} else{
+	$noInternals = false;
+} else {
 	$noInternals = true;
 }
 $noInternals = $noInternals || !isset($_SESSION['user']) || !isset($_SESSION['user']['Username']) || $_SESSION['user']['Username'] == '';
 
 if(defined("GLOSSARY_TABLE") && isset($_REQUEST['weSaveToGlossary']) && $_REQUEST['weSaveToGlossary'] == 1 && !$noInternals){
 	$Glossary = new we_glossary_glossary();
-	$Glossary->Language = $_REQUEST['language'];
+	$Glossary->Language = weRequest('string', 'language');
 	$Glossary->Type = we_glossary_glossary::TYPE_ABBREVATION;
 	$Glossary->Text = trim($_REQUEST['text']);
 	$Glossary->Title = trim($_REQUEST['we_dialog_args']['title']);
@@ -54,7 +55,7 @@ if(defined("GLOSSARY_TABLE") && isset($_REQUEST['weSaveToGlossary']) && $_REQUES
 		$appendJS = we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[name_empty]'), we_message_reporting::WE_MESSAGE_ERROR));
 	} else if($Glossary->pathExists($Glossary->Path)){
 		$appendJS = we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR));
-	} else{
+	} else {
 		$Glossary->save();
 
 		$Cache = new we_glossary_cache($_REQUEST['language']);
@@ -68,7 +69,7 @@ if(defined("GLOSSARY_TABLE") && isset($_REQUEST['weSaveToGlossary']) && $_REQUES
 $dialog = new we_dialog_abbr($noInternals);
 $dialog->initByHttp();
 $dialog->registerOkJsFN("weDoAbbrJS");
-print $dialog->getHTML() .
+echo $dialog->getHTML() .
 	$appendJS;
 
 function weDoAbbrJS(){

@@ -389,7 +389,7 @@ abstract class we_backup_base{
 		while($this->backup_db->next_record()){
 			$row = $this->backup_db->Record;
 			$foo .= "   $row[Field] $row[Type]";
-			if(isset($row["Default"]) && (!empty($row["Default"]) || $row["Default"] == "0")){
+			if(isset($row["Default"]) && (($row["Default"]) || $row["Default"] == '0')){
 				$foo .= " DEFAULT '$row[Default]'";
 			}
 			if($row["Null"] != "YES"){

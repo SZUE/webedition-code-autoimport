@@ -447,7 +447,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement{
 	 *
 	 * @var string
 	 */
-	protected $_width = '150';
+	protected $_width = 150;
 
 	/**
 	 * type of button
@@ -752,13 +752,10 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement{
 	public function _getWrapperStart(){
 		if($this->getType() == "href"){
 
-			if($this->getDisabled()){
-				$onClick = "return false;";
-			} else {
-				$onClick = "return true;";
-			}
+			$onClick = ($this->getDisabled() ? "return false;" : "return true;");
+
 			return '<div style="width:' . $this->getWidth() . 'px;
-			height:' . $this->getHeight() . 'px;"><a onClick="' . $onClick . '" id="a_' . $this->getId() . '" border="0" style="text-decoration:none;display:block;"  ' . $this->_getNonBooleanAttribs('href,target,title') . '>';
+			height:' . $this->getHeight() . 'px;"><a onclick="' . $onClick . '" id="a_' . $this->getId() . '" border="0" style="text-decoration:none;display:block;"  ' . $this->_getNonBooleanAttribs('href,target,title') . '>';
 		}
 		if($this->getType() == "submit"){
 			return '<div style="position:relative;z-index:1;width:' . $this->getWidth() . 'px;
@@ -897,7 +894,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement{
 			$this->_style .= 'display:none;';
 		}
 
-		return $this->_getWrapperStart() . '<div' . $this->_getNonBooleanAttribs('id,title,onClick,onMouseUp,onMouseDown,onMouseOut') . $this->_getComputedStyleAttrib() . $this->_getComputedClassAttrib($classNormal) . '>' . $this->_getButtonContent() . '</div>' . $this->_getWrapperEnd();
+		return $this->_getWrapperStart() . '<div' . $this->_getNonBooleanAttribs('id,title,onclick,onMouseUp,onMouseDown,onMouseOut') . $this->_getComputedStyleAttrib() . $this->_getComputedClassAttrib($classNormal) . '>' . $this->_getButtonContent() . '</div>' . $this->_getWrapperEnd();
 	}
 
 }

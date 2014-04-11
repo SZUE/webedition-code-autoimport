@@ -29,7 +29,7 @@ function we_tag_sendMail($attribs, $content){
 
 	if(!$GLOBALS['we_doc']->InWebEdition){
 
-		$id = weTag_getAttribute("id", $attribs, ( isset($_REQUEST["ID"]) ? intval($_REQUEST["ID"]) : ''));
+		$id = weTag_getAttribute("id", $attribs, weRequest('int', 'ID',0));
 		$from = weTag_getAttribute("from", $attribs);
 		$reply = weTag_getAttribute("reply", $attribs);
 		$recipient = weTag_getAttribute("recipient", $attribs);
@@ -48,7 +48,7 @@ function we_tag_sendMail($attribs, $content){
 		}
 		$_blocked = false;
 
-		if(!empty($id)){
+		if($id){
 
 			$to = explode(",", $recipient);
 

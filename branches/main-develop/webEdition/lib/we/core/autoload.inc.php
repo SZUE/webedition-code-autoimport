@@ -64,7 +64,7 @@ if((get_magic_quotes_gpc() == 1)){
 
 //make we_autoloader the first autoloader
 $ret = spl_autoload_register('we_autoloader::autoload', false, true);
-//workaround php 5.2
+//FIXME: remove workaround php 5.2
 if($ret != true){
 	spl_autoload_register('we_autoloader::autoload', true);
 }
@@ -77,11 +77,11 @@ $loader->suppressNotFoundWarnings(true);
 spl_autoload_register('we_autoloader::finalLoad', true);
 
 
-if(!defined("DATETIME_INITIALIZED")){// to prevent additional initialization if set somewhere else, i.e in we_conf.inc.php, this also allows later to make that an settings-item
+if(!defined('DATETIME_INITIALIZED')){// to prevent additional initialization if set somewhere else, i.e in we_conf.inc.php, this also allows later to make that an settings-item
 	if(!date_default_timezone_set(@date_default_timezone_get())){
 		date_default_timezone_set('Europe/Berlin');
 	}
-	define("DATETIME_INITIALIZED", "1");
+	define('DATETIME_INITIALIZED', 1);
 }
 if(!isset($_SERVER['TMP'])){
 	$_SERVER['TMP'] = WEBEDITION_PATH . 'we/zendcache';

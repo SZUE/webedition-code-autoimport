@@ -19,7 +19,7 @@ $buttonOnClick = new we_ui_controls_Button(
 	array(
 	'title' => 'This is the title of the button!',
 	'text' => 'onClick / onMouseUp',
-	'onClick' => 'alert("Hallo Welt!");',
+	'onclick' => 'alert("Hallo Welt!");',
 	'type' => 'onClick',
 	'disabled' => true,
 	'hidden' => false,
@@ -43,7 +43,7 @@ $buttonOnClick2 = new we_ui_controls_Button(
 	array(
 	'title' => 'This is the title of the button!',
 	'text' => 'onClick / onMouseUp 2',
-	'onClick' => 'alert("Hallo Welt!");',
+	'onclick' => 'alert("Hallo Welt!");',
 	'type' => 'onClick',
 	'disabled' => true,
 	'hidden' => false,
@@ -55,7 +55,7 @@ $buttonYes = new we_ui_controls_Button(
 	array(
 	'title' => 'This is the title of the button!',
 	'text' => 'Yes',
-	'onClick' => 'alert("yes!");',
+	'onclick' => 'alert("yes!");',
 	'type' => 'onClick',
 	'disabled' => false,
 	'hidden' => false,
@@ -67,7 +67,7 @@ $buttonNo = new we_ui_controls_Button(
 	array(
 	'title' => 'This is the title of the button!',
 	'text' => 'No',
-	'onClick' => 'alert("no!");',
+	'onclick' => 'alert("no!");',
 	'type' => 'onClick',
 	'disabled' => false,
 	'hidden' => false,
@@ -79,7 +79,7 @@ $buttonCancel = new we_ui_controls_Button(
 	array(
 	'title' => 'This is the title of the button!',
 	'text' => 'Cancel',
-	'onClick' => 'alert("cancel!");',
+	'onclick' => 'alert("cancel!");',
 	'type' => 'onClick',
 	'disabled' => false,
 	'hidden' => false,
@@ -91,7 +91,7 @@ $buttonOk = new we_ui_controls_Button(
 	array(
 	'title' => 'This is the title of the button!',
 	'text' => 'OK',
-	'onClick' => 'alert("ok!");',
+	'onclick' => 'alert("ok!");',
 	'type' => 'onClick',
 	'disabled' => false,
 	'hidden' => false,
@@ -103,7 +103,7 @@ $buttonCancel2 = new we_ui_controls_Button(
 	array(
 	'title' => 'This is the title of the button!',
 	'text' => 'Cancel',
-	'onClick' => 'alert("cancel!");',
+	'onclick' => 'alert("cancel!");',
 	'type' => 'onClick',
 	'disabled' => false,
 	'hidden' => false,
@@ -175,15 +175,15 @@ $select = new we_ui_controls_Select(
 	'hidden' => false,
 	'title' => 'Titel',
 	'width' => 100,
-	'onChange' => 'alert("onChange!");',
+	'onchange' => 'alert("onChange!");',
 	'selectedValue' => 3,
 	'options' => array(
-		'1' => 'Option 1',
-		'2' => 'Option 2',
-		'3' => 'Option 3',
-		'4' => 'Option 4',
-		'5' => 'Option 5',
-		'6' => 'Option 6'
+		1 => 'Option 1',
+		2 => 'Option 2',
+		3 => 'Option 3',
+		4 => 'Option 4',
+		5 => 'Option 5',
+		6 => 'Option 6'
 	)
 	)
 );

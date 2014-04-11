@@ -205,7 +205,7 @@ class we_document extends we_root{
 	function formExtension2(){
 		$doctype = isset($this->DocType) ? $this->DocType : '';
 
-		if($this->ID == 0 && $_REQUEST['we_cmd'][0] == 'load_editor' && $doctype == ''){ //	Neues Dokument oder Dokument ohne DocType
+		if($this->ID == 0 && weRequest('string', 'we_cmd', '', 0)== 'load_editor' && $doctype == ''){ //	Neues Dokument oder Dokument ohne DocType
 			switch($this->ContentType){
 				case we_base_ContentTypes::HTML: //	is HTML-File
 					$selected = DEFAULT_HTML_EXT;
@@ -234,7 +234,7 @@ class we_document extends we_root{
 		return $disable ? ('<span class="defaultfont">' . $this->Path . '</span>') : '
 <table border="0" cellpadding="0" cellspacing="0">
 	<tr>
-	<td>' . $this->formInputField('', 'Filename', g_l('weClass', '[filename]'), 30, 388, 255, $filenameinput . 'onChange="_EditorFrame.setEditorIsHot(true);if(self.pathOfDocumentChanged){pathOfDocumentChanged();}"') . '</td>
+	<td>' . $this->formInputField('', 'Filename', g_l('weClass', '[filename]'), 30, 388, 255, $filenameinput . 'onchange="_EditorFrame.setEditorIsHot(true);if(self.pathOfDocumentChanged){pathOfDocumentChanged();}"') . '</td>
 		<td></td>
 		<td>' . $this->formExtension2() . '</td>
 	</tr>
@@ -250,11 +250,11 @@ class we_document extends we_root{
 	function formMetaInfos(){
 		return '
 <table border="0" cellpadding="0" cellspacing="0">
-	<tr><td colspan="2">' . $this->formInputField("txt", "Title", g_l('weClass', "[Title]"), 40, 508, "", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>
+	<tr><td colspan="2">' . $this->formInputField("txt", "Title", g_l('weClass', "[Title]"), 40, 508, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>
 	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
-	<tr><td colspan="2">' . $this->formInputField("txt", "Description", g_l('weClass', "[Description]"), 40, 508, "", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>
+	<tr><td colspan="2">' . $this->formInputField("txt", "Description", g_l('weClass', "[Description]"), 40, 508, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>
 	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
-	<tr><td colspan="2">' . $this->formInputField("txt", "Keywords", g_l('weClass', "[Keywords]"), 40, 508, "", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>
+	<tr><td colspan="2">' . $this->formInputField("txt", "Keywords", g_l('weClass', "[Keywords]"), 40, 508, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>
 </table>' .
 			($this->ContentType == we_base_ContentTypes::IMAGE ? $this->formCharset(true) : '');
 	}

@@ -844,7 +844,7 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 			}
 			$groupselect .= '</optgroup></select>';
 
-			$tagselect = '<select onkeydown="evt=event?event:window.event; return openTagWizWithReturn(evt)" class="defaultfont" style="width: 250px; height: 100px;" size="7" ondblclick="edit_wetag(this.value);" name="tagSelection" id="tagSelection" onChange="weButton.enable(\'btn_direction_right_applyCode\')">';
+			$tagselect = '<select onkeydown="evt=event?event:window.event; return openTagWizWithReturn(evt)" class="defaultfont" style="width: 250px; height: 100px;" size="7" ondblclick="edit_wetag(this.value);" name="tagSelection" id="tagSelection" onchange="weButton.enable(\'btn_direction_right_applyCode\')">';
 
 			for($i = 0; $i < count($allWeTags); $i++){
 				$tagselect .= '

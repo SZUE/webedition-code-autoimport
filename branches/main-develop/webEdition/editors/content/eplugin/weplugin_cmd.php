@@ -26,35 +26,35 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
-if(isset($_REQUEST['we_cmd'][0])){
+$out = '';
 
-	$out = '';
+switch(weRequest('string', 'we_cmd', '', 0)){
+	case '':
+		exit();
+	case "editSource" :
+		$_session = session_id();
+		$_we_transaction = weRequest('transaction', 'we_cmd', 0, 2);
 
-	switch($_REQUEST['we_cmd'][0]){
-		case "editSource" :
-			$_session = session_id();
-			$_we_transaction = isset($_REQUEST['we_cmd'][2]) ? $_REQUEST['we_cmd'][2] : '';
-
-			$_filename = (isset($_SESSION['weS']['we_data'][$_we_transaction][0]['Path']) && !empty($_SESSION['weS']['we_data'][$_we_transaction][0]['Path']) ?
-							$_SESSION['weS']['we_data'][$_we_transaction][0]['Path'] :
-							(isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : '')
-					);
-
-
-			$_ct = isset($_REQUEST['we_cmd'][3]) ? $_REQUEST['we_cmd'][3] : '';
-			$_source = isset($_REQUEST['we_cmd'][4]) ? $_REQUEST['we_cmd'][4] : '###EDITORPLUGIN:EMPTYSTRING###';
-
-			if($_source == '###EDITORPLUGIN:EMPTYSTRING###'){
-				$_source = $_SESSION['weS']['we_data'][$_we_transaction][0]['elements']['data']['dat'];
-			}
-
-			// charset is necessary when encoding=true
-			$charset = (isset($_SESSION['weS']['we_data'][$_we_transaction][0]['elements']['Charset']['dat']) && !empty($_SESSION['weS']['we_data'][$_we_transaction][0]['elements']['Charset']['dat']) ?
-							$_SESSION['weS']['we_data'][$_we_transaction][0]['elements']['Charset']['dat'] :
-							$GLOBALS['WE_BACKENDCHARSET']);
+		$_filename = (isset($_SESSION['weS']['we_data'][$_we_transaction][0]['Path']) && $_SESSION['weS']['we_data'][$_we_transaction][0]['Path'] ?
+				$_SESSION['weS']['we_data'][$_we_transaction][0]['Path'] :
+				weRequest('file', 'we_cmd', '', 1)
+			);
 
 
-			$out = we_html_element::jsElement('
+		$_ct = weRequest('string', 'we_cmd', '', 3);
+		$_source = weRequest('raw', 'we_cmd', '###EDITORPLUGIN:EMPTYSTRING###', 4);
+
+		if($_source == '###EDITORPLUGIN:EMPTYSTRING###'){
+			$_source = $_SESSION['weS']['we_data'][$_we_transaction][0]['elements']['data']['dat'];
+		}
+
+		// charset is necessary when encoding=true
+		$charset = (isset($_SESSION['weS']['we_data'][$_we_transaction][0]['elements']['Charset']['dat']) && !empty($_SESSION['weS']['we_data'][$_we_transaction][0]['elements']['Charset']['dat']) ?
+				$_SESSION['weS']['we_data'][$_we_transaction][0]['elements']['Charset']['dat'] :
+				$GLOBALS['WE_BACKENDCHARSET']);
+
+
+		$out = we_html_element::jsElement('
 session = "' . session_id() . '";
 transaction = "' . str_replace('"', '', $_we_transaction) . '";
 filename = "' . addslashes($_filename) . '";
@@ -64,56 +64,56 @@ if (top.plugin.isLoaded && (typeof top.plugin.document.WePlugin.editSource == "f
 	top.plugin.document.WePlugin.editSource(session,transaction,filename,source,ct,"true","' . $charset . '");
 }');
 
-			break;
+		break;
 
-		case "editFile":
-			$_session = session_id();
-			$_we_transaction = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : '';
+	case "editFile":
+		$_session = session_id();
+		$_we_transaction = weRequest('transaction', 'we_cmd', '', 1);
 
-			$we_dt = isset($_SESSION['weS']['we_data'][$_we_transaction]) ? $_SESSION['weS']['we_data'][$_we_transaction] : "";
-			include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
+		$we_dt = isset($_SESSION['weS']['we_data'][$_we_transaction]) ? $_SESSION['weS']['we_data'][$_we_transaction] : "";
+		include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
-			$we_doc->we_initSessDat($we_dt);
+		$we_doc->we_initSessDat($we_dt);
 
-			$_filename = $we_doc->Path;
-			$we_ContentType = $we_doc->ContentType;
-
-
-			$_tmp_file = TEMP_DIR . basename($_filename);
-
-			if(file_exists($we_doc->getElement('data'))){
-				copy($we_doc->getElement('data'), $_SERVER['DOCUMENT_ROOT'] . $_tmp_file);
-			} else {
-				t_e("$_tmp_file not exists in " . __FILE__ . " on line " . __LINE__);
-			}
+		$_filename = $we_doc->Path;
+		$we_ContentType = $we_doc->ContentType;
 
 
+		$_tmp_file = TEMP_DIR . basename($_filename);
 
-			$out = we_html_element::jsElement('
+		if(file_exists($we_doc->getElement('data'))){
+			copy($we_doc->getElement('data'), $_SERVER['DOCUMENT_ROOT'] . $_tmp_file);
+		} else {
+			t_e("$_tmp_file not exists in " . __FILE__ . " on line " . __LINE__);
+		}
+
+
+
+		$out = we_html_element::jsElement('
 session = "' . session_id() . '";
 transaction = "' . $_we_transaction . '";
 siteurl="' . getServerUrl(true) . WEBEDITION_DIR . 'showTempFile.php?file=' . $_tmp_file . '";
 top.plugin.document.WePlugin.editFile(session,transaction,"' . addslashes($_filename) . '",siteurl,"' . $we_ContentType . '");');
 
-			break;
+		break;
 
-		case "setSource":
-			$transactionID = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : '';
-			if(isset($_SESSION['weS']['we_data'][$transactionID][0]["elements"]["data"]["dat"])){
-				$_SESSION['weS']['we_data'][$transactionID][0]["elements"]["data"]["dat"] = $_REQUEST['we_cmd'][2];
-				$_SESSION['weS']['we_data'][$transactionID][1]["data"]["dat"] = $_REQUEST['we_cmd'][2];
-
-				$out = we_html_element::jsElement('
-var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction("' . $transactionID . '");
-_EditorFrame.getContentFrame().reloadContent = true;');
-			}
-
-			break;
-		case "reloadContentFrame":
-
-			$_we_transaction = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : '';
+	case "setSource":
+		$transactionID = weRequest('transaction', 'we_cmd', '', 1);
+		if(isset($_SESSION['weS']['we_data'][$transactionID][0]["elements"]["data"]["dat"])){
+			$_SESSION['weS']['we_data'][$transactionID][0]["elements"]["data"]["dat"] = $_REQUEST['we_cmd'][2];
+			$_SESSION['weS']['we_data'][$transactionID][1]["data"]["dat"] = $_REQUEST['we_cmd'][2];
 
 			$out = we_html_element::jsElement('
+var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction("' . $transactionID . '");
+_EditorFrame.getContentFrame().reloadContent = true;');
+		}
+
+		break;
+	case "reloadContentFrame":
+
+		$_we_transaction = weRequest('transaction', 'we_cmd', '', 1);
+
+		$out = we_html_element::jsElement('
 var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction("' . $_we_transaction . '");
 _EditorFrame.setEditorIsHot(true);
 if (
@@ -128,56 +128,55 @@ if (
 		_EditorFrame.setEditorReloadNeeded(true);
 	}
 }');
-			break;
+		break;
 
-		case "setBinary":
-			if(isset($_FILES['uploadfile']) && isset($_REQUEST['we_transaction'])){
-				$_we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0);
-				$we_ContentType = $_REQUEST['contenttype'];
+	case "setBinary":
+		if(isset($_FILES['uploadfile']) && isset($_REQUEST['we_transaction'])){
+			$_we_transaction = weRequest('transaction', 'we_transaction', 0);
+			$we_ContentType = weRequest('string', 'contenttype');
 
-				$we_dt = isset($_SESSION['weS']['we_data'][$_we_transaction]) ? $_SESSION['weS']['we_data'][$_we_transaction] : "";
-				include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
+			$we_dt = isset($_SESSION['weS']['we_data'][$_we_transaction]) ? $_SESSION['weS']['we_data'][$_we_transaction] : "";
+			include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
-				$tempName = TEMP_PATH . '/' . we_base_file::getUniqueId();
-				move_uploaded_file($_FILES['uploadfile']["tmp_name"], $tempName);
+			$tempName = TEMP_PATH . '/' . we_base_file::getUniqueId();
+			move_uploaded_file($_FILES['uploadfile']["tmp_name"], $tempName);
 
 
-				$we_doc->we_initSessDat($we_dt);
+			$we_doc->we_initSessDat($we_dt);
 
-				if($we_ContentType == we_base_ContentTypes::IMAGE){
-					$we_doc->setElement('data', $tempName, 'image');
-					$_dim = we_thumbnail::getimagesize($tempName);
-					if(is_array($_dim) && count($_dim) > 0){
-						$we_doc->setElement('width', $_dim[0], 'dat');
-						$we_doc->setElement('height', $_dim[1], 'dat');
-					}
-				} else {
-					$we_doc->setElement('data', $tempName, 'dat');
+			if($we_ContentType == we_base_ContentTypes::IMAGE){
+				$we_doc->setElement('data', $tempName, 'image');
+				$_dim = we_thumbnail::getimagesize($tempName);
+				if(is_array($_dim) && count($_dim) > 0){
+					$we_doc->setElement('width', $_dim[0], 'dat');
+					$we_doc->setElement('height', $_dim[1], 'dat');
 				}
-
-				$we_doc->saveInSession($_SESSION['weS']['we_data'][$_we_transaction]);
+			} else {
+				$we_doc->setElement('data', $tempName, 'dat');
 			}
-			break;
 
-		default:
-			exit("command '" . $_REQUEST['we_cmd'][0] . "' not known!");
-	}
-
-
-	$charset = '';
-
-	if(isset($_we_transaction)){
-		if(isset($_SESSION['weS']['we_data'][$_we_transaction][0]['elements']['Charset']['dat'])){
-			$charset = $_SESSION['weS']['we_data'][$_we_transaction][0]['elements']['Charset']['dat'];
-			we_html_tools::headerCtCharset('text/html', $charset);
+			$we_doc->saveInSession($_SESSION['weS']['we_data'][$_we_transaction]);
 		}
-	}
+		break;
 
-	echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
-			we_html_element::htmlHead(
-					we_html_tools::htmlMetaCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET'])
-			) .
-			we_html_element::htmlBody(array('bgcolor' => 'white', 'marginwidth' => 0, 'marginheight' => 0, 'leftmargin' => 0, 'topmargin' => 0), $out
-			)
-	);
+	default:
+		exit("command '" . weRequest('string', 'we_cmd', '', 0) . "' not known!");
 }
+
+
+$charset = '';
+
+if(isset($_we_transaction)){
+	if(isset($_SESSION['weS']['we_data'][$_we_transaction][0]['elements']['Charset']['dat'])){
+		$charset = $_SESSION['weS']['we_data'][$_we_transaction][0]['elements']['Charset']['dat'];
+		we_html_tools::headerCtCharset('text/html', $charset);
+	}
+}
+
+echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
+	we_html_element::htmlHead(
+		we_html_tools::htmlMetaCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET'])
+	) .
+	we_html_element::htmlBody(array('bgcolor' => 'white', 'marginwidth' => 0, 'marginheight' => 0, 'leftmargin' => 0, 'topmargin' => 0), $out
+	)
+);

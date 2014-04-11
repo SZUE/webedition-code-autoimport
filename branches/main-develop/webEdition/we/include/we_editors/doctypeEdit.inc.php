@@ -29,7 +29,7 @@ $we_doc = new we_docTypes();
 // Initialize variables
 $we_show_response = 0;
 
-switch($_REQUEST['we_cmd'][0]){
+switch(weRequest('string', 'we_cmd', '', 0)){
 	case "save_docType":
 		if(!permissionhandler::hasPerm("EDIT_DOCTYPE")){
 			$we_responseText = g_l('weClass', "[no_perms]");
@@ -81,15 +81,16 @@ switch($_REQUEST['we_cmd'][0]){
 			$we_response_type = we_message_reporting::WE_MESSAGE_ERROR;
 			break;
 		}
-		$name = f('SELECT DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($_REQUEST['we_cmd'][1]), 'DocType', $GLOBALS['DB_WE']);
+		$id = weRequest('int', 'we_cmd', 0, 1);
+		$name = f('SELECT DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . $id);
 		$del = false;
 		if($name){
-			$GLOBALS['DB_WE']->query('SELECT 1 FROM ' . FILE_TABLE . ' WHERE DocType=' . intval($_REQUEST['we_cmd'][1]) . ' OR temp_doc_type=' . $GLOBALS['DB_WE']->escape($_REQUEST['we_cmd'][1]));
+			$GLOBALS['DB_WE']->query('SELECT 1 FROM ' . FILE_TABLE . ' WHERE DocType=' . $id . ' OR temp_doc_type=' . $id);
 			if(!$GLOBALS['DB_WE']->next_record()){
-				$GLOBALS['DB_WE']->query('DELETE FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($_REQUEST['we_cmd'][1]));
+				$GLOBALS['DB_WE']->query('DELETE FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . $id);
 
 				// Fast Fix for deleting entries from tblLangLink: #5840
-				$GLOBALS['DB_WE']->query('DELETE FROM ' . LANGLINK_TABLE . " WHERE DocumentTable='tblDocTypes' AND (DID=" . intval($_REQUEST["we_cmd"][1]) . ' OR LDID=' . intval($_REQUEST["we_cmd"][1]) . ')');
+				$GLOBALS['DB_WE']->query('DELETE FROM ' . LANGLINK_TABLE . " WHERE DocumentTable='tblDocTypes' AND (DID=" . $id . ' OR LDID=' . $id . ')');
 
 				$we_show_response = 1;
 				$we_response_type = we_message_reporting::WE_MESSAGE_NOTICE;
@@ -102,12 +103,12 @@ switch($_REQUEST['we_cmd'][0]){
 				$we_responseText = sprintf(g_l('weClass', "[doctype_delete_nok]"), $name);
 			}
 			if($del){
-				$id = f('SELECT ID FROM ' . DOC_TYPES_TABLE . " ORDER BY DocType", 'ID', $GLOBALS['DB_WE']);
+				$id = f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' ORDER BY DocType LIMIT 1');
 				if($id){
 					$we_doc->initByID($id, DOC_TYPES_TABLE);
 				}
 			} else {
-				$we_doc->initByID($_REQUEST['we_cmd'][1], DOC_TYPES_TABLE);
+				$we_doc->initByID(weRequest('int', 'we_cmd', 0, 1), DOC_TYPES_TABLE);
 			}
 		}
 		break;
@@ -127,7 +128,7 @@ switch($_REQUEST['we_cmd'][0]){
 		$foo = makeArrayFromCSV($we_doc->Templates);
 		if($_REQUEST['we_cmd'][1] && (in_array($_REQUEST['we_cmd'][1], $foo))){
 			$pos = array_search($_REQUEST['we_cmd'][1], $foo);
-			if($pos !== false || $pos == "0"){
+			if($pos !== false || $pos == '0'){
 				array_splice($foo, $pos, 1);
 			}
 		}
@@ -138,14 +139,14 @@ switch($_REQUEST['we_cmd'][0]){
 		break;
 	case "dt_add_cat":
 		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$we_transaction]);
-		if($_REQUEST['we_cmd'][1]){
-			$we_doc->addCat($_REQUEST['we_cmd'][1]);
+		if(($id=weRequest('int', 'we_cmd', 0, 1))){
+			$we_doc->addCat($id);
 		}
 		break;
 	case "dt_delete_cat":
 		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$we_transaction]);
-		if($_REQUEST['we_cmd'][1]){
-			$we_doc->delCat($_REQUEST['we_cmd'][1]);
+		if(($id=weRequest('int', 'we_cmd', 0,1))){
+			$we_doc->delCat($id);
 		}
 		break;
 	default:

@@ -254,7 +254,3 @@ abstract class we_autoloader{
 	}
 
 }
-
-/* todo:
-'DB_WE_abstract' => 'we_db.inc.php',
-*/
