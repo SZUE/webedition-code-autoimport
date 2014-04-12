@@ -809,10 +809,10 @@ class doclistView{
 				$r2[] = $GLOBALS ['we_doc']->searchclassFolder->searchFields [$k];
 			}
 		}
-		if(isset($_REQUEST['location']) && is_array($_REQUEST['location'])){
+		if(($loc = weRequest('string', 'location'))){
 			$m = 0;
 			foreach($_REQUEST['searchFields'] as $k => $v){
-				$r3[$m] = (isset($_REQUEST['location'] [$k]) ? $_REQUEST['location'] [$k] : "disabled");
+				$r3[$m] = (isset($loc[$k]) ? $loc[$k] : "disabled");
 				$m++;
 			}
 		}
@@ -968,7 +968,7 @@ class doclistView{
 		$_anzahl = weRequest('int', 'we_cmd', $obj->searchclassFolder->anzahl, 'anzahl');
 
 
-		$searchText=array_map('trim', $searchText);
+		$searchText = array_map('trim', $searchText);
 
 		$where = '';
 		$op = ' AND ';
@@ -1115,7 +1115,7 @@ class doclistView{
 	}
 
 	function getSortImage($for){
-		$order = (isset($_REQUEST['order']) ? $_REQUEST['order'] : $GLOBALS ['we_doc']->searchclassFolder->order);
+		$order = weRequest('raw', 'order', $GLOBALS ['we_doc']->searchclassFolder->order);
 
 		if(strpos($order, $for) === 0){
 			if(strpos($order, 'DESC')){
@@ -1265,11 +1265,11 @@ class doclistView{
 		$anzahl = array(10 => 10, 25 => 25, 50 => 50, 100 => 100);
 
 		$thisObj = (isset($_REQUEST['we_cmd'] ['obj']) ? new doclistView() : $this);
-		$order = (isset($_REQUEST['we_cmd'] ['order']) ? $_REQUEST['we_cmd'] ['order'] : $GLOBALS ['we_doc']->searchclassFolder->order);
-		$mode = (isset($_REQUEST['we_cmd'] ['mode']) ? $_REQUEST['we_cmd'] ['mode'] : $GLOBALS ['we_doc']->searchclassFolder->mode);
-		$setView = (isset($_REQUEST['we_cmd'] ['setView']) ? $_REQUEST['we_cmd'] ['setView'] : $GLOBALS ['we_doc']->searchclassFolder->setView);
-		$_anzahl = (isset($_REQUEST['we_cmd'] ['anzahl']) ? $_REQUEST['we_cmd'] ['anzahl'] : $GLOBALS ['we_doc']->searchclassFolder->anzahl);
-		$id = weRequest('int','id',$GLOBALS ['we_doc']->ID);
+		$order = weRequest('raw','we_cmd',$GLOBALS ['we_doc']->searchclassFolder->order,'order');
+		$mode = weRequest('raw','we_cmd',$GLOBALS ['we_doc']->searchclassFolder->mode,'mode');
+		$setView = weRequest('raw','we_cmd',$GLOBALS ['we_doc']->searchclassFolder->setView,'setView');
+		$_anzahl = weRequest('raw','we_cmd',$GLOBALS ['we_doc']->searchclassFolder->anzahl,'anzahl');
+		$id = weRequest('int', 'id', $GLOBALS ['we_doc']->ID);
 		$we_transaction = (isset($_REQUEST['we_cmd'] ['we_transaction']) ?
 				(preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_cmd'] ['we_transaction']) ? $_REQUEST['we_cmd'] ['we_transaction'] : 0) :
 				$GLOBALS ['we_transaction']);

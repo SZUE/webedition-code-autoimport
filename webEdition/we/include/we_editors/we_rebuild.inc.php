@@ -24,10 +24,7 @@
  */
 we_html_tools::protect();
 
-$fr = isset($_REQUEST["fr"]) ? $_REQUEST["fr"] : "";
-
-
-switch($fr){
+switch(weRequest('string', 'fr')){
 	case "body":
 		print we_rebuild_wizard::getBody();
 		break;

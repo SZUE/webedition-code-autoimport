@@ -914,7 +914,7 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 				$table->setCol($c, 1, array(), we_html_tools::htmlSelect("filter_operator_" . $group . "_" . $k, $operators, 1, $v["operator"], false, array('onchange' => "top.content.hot=1;"), "value", 80));
 				if($v['fieldname'] == "MemberSince" || $v['fieldname'] == "LastLogin" || $v['fieldname'] == "LastAccess"){
 					$table->setCol($c, 2, array("id" => "td_value_fields_" . $group . "_" . $k), $this->getDateSelector("", "filter_fieldvalue_" . $group . "_" . $k, "_from_" . $group . "_" . $k, isset($v["fieldvalue"]) && $v["fieldvalue"] != "" ? !stristr($v["fieldvalue"], ".") ? @date("d.m.Y", $v["fieldvalue"]) : $v["fieldvalue"] : ""));
-					$table->setCol($c, 3, array(), we_html_tools::htmlSelect("filter_hours_" . $group . "_" . $k, $hours, 1, isset($v["hours"]) ? $v["hours"] : "", false, array('onchange'=>'top.content.hot=1;')));
+					$table->setCol($c, 3, array(), we_html_tools::htmlSelect("filter_hours_" . $group . "_" . $k, $hours, 1, isset($v["hours"]) ? $v["hours"] : "", false, array('onchange' => 'top.content.hot=1;')));
 					$table->setCol($c, 4, array("class" => "defaultfont"), "&nbsp;h :");
 					$table->setCol($c, 5, array(), we_html_tools::htmlSelect("filter_minutes_" . $group . "_" . $k, $minutes, 1, isset($v["minutes"]) ? $v["minutes"] : "", false, array('onchange' => "top.content.hot=1;")));
 					$table->setCol($c, 6, array("class" => "defaultfont"), "&nbsp;m");
@@ -2388,7 +2388,7 @@ self.focus();
 		$_content = we_html_tools::htmlDialogLayout($_textarea, g_l('modules_newsletter', '[details]'), $_footer);
 
 
-		$details = (isset($_REQUEST["test"]) && $_REQUEST["test"] ? g_l('modules_newsletter', '[test_no_mail]') : g_l('modules_newsletter', '[sending]') );
+		$details = (weRequest('bool', "test") ? g_l('modules_newsletter', '[test_no_mail]') : g_l('modules_newsletter', '[sending]') );
 
 		$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), $pb->getJS() .
 					$_content

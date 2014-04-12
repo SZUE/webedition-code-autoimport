@@ -26,11 +26,9 @@ we_html_tools::protect();
 echo we_html_element::jsElement('
 var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction("' . $GLOBALS['we_transaction'] . '");
 var _EditorFrameDocumentRef = _EditorFrame.getDocumentReference();' .
-		$we_JavaScript . ';top.toggleBusy(0);' .
-		($we_responseText ?
-				we_message_reporting::getShowMessageCall($we_responseText, $we_responseTextType) :
-				'') .
-		(isset($_REQUEST['we_cmd'][5]) && $_REQUEST['we_cmd'][5] ?
-				$_REQUEST['we_cmd'][5] : ''
-		)
+	$we_JavaScript . ';top.toggleBusy(0);' .
+	($we_responseText ?
+		we_message_reporting::getShowMessageCall($we_responseText, $we_responseTextType) :
+		'') .
+	weRequest('raw', 'we_cmd', '', 5)
 );

@@ -205,7 +205,7 @@ if(weRequest('bool', 'ok')){
 	}
 } else {
 	$name = $_REQUEST['we_cmd'][1];
-	$nr = isset($_REQUEST['we_cmd'][2]) ? $_REQUEST['we_cmd'][2] : '';
+	$nr = weRequest('int','we_cmd','',2);
 	if($nr != ''){
 		$ll = new we_base_linklist($we_doc->getElement($name));
 		$href = $ll->getHref($nr);
@@ -845,7 +845,7 @@ if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_
 			<input type="hidden" name="nr" value="<?php echo weRequest('int', "nr", $nr); ?>" />
 			<input type="hidden" name="ok" value="1" />
 			<input type="hidden" name="we_transaction" value="<?php echo $we_transaction; ?>" />
-			<input type="hidden" name="we_field" value="<?php print isset($_REQUEST['we_cmd'][3]) ? $_REQUEST['we_cmd'][3] : ""; ?>" />
+			<input type="hidden" name="we_field" value="<?php echo weRequest('string','we_cmd','',3); ?>" />
 			<?php
 			echo we_html_multiIconBox::getHTML('', '100%', $_parts, 30, $buttons, -1, '', '', false, g_l('linklistEdit', '[edit_link]'), '', 671) .
 			$yuiSuggest->getYuiCss() .

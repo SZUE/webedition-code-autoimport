@@ -36,7 +36,7 @@ $noInternals = $noInternals || !isset($_SESSION['user']) || !isset($_SESSION['us
 
 $dialog = new we_dialog_image($noInternals);
 $dialog->initByHttp();
-$dialog->registerCmdFn(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] ? '' : "weDoImgCmd");
+$dialog->registerCmdFn(weRequest('bool','we_cmd',false,0) ? '' : "weDoImgCmd");
 
 echo $dialog->getHTML();
 

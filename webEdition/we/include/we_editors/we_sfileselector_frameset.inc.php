@@ -39,7 +39,7 @@ $currentDir = str_replace('\\', '/', ( isset($_REQUEST['we_cmd'][3]) ?
 				$_REQUEST['we_cmd'][3] :
 				dirname($_REQUEST['we_cmd'][3]))) :
 		''));
-$currentName = ($filter != 'folder' ? basename(isset($_REQUEST['we_cmd'][3]) ? $_REQUEST['we_cmd'][3] : '') : '');
+$currentName = ($filter != 'folder' ? basename(weRequest('file', 'we_cmd', '', 3)) : '');
 if(!file_exists($docroot . $currentDir . '/' . $currentName)){
 	$currentDir = '';
 	$currentName = '';

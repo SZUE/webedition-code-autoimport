@@ -214,6 +214,8 @@ function _weRequest(&$var, $key, array $data){
 		case 'html':
 			$var = filter_var($var, FILTER_SANITIZE_SPECIAL_CHARS);
 			return;
+		default:
+			t_e('unknown filter type '.$type);
 		case 'raw':
 			//do nothing - used as placeholder for all types not yet known
 			return;
@@ -361,7 +363,7 @@ function in_parentID($id, $pid, $table = FILE_TABLE, we_database_base $db = null
 }
 
 function in_workspace($IDs, $wsIDs, $table = FILE_TABLE, we_database_base $db = null, $objcheck = false){
-	if(empty($wsIDs) || empty($IDs)){
+	if(!$wsIDs || !$IDs){
 		return true;
 	}
 	$db = ($db ? $db : new DB_WE());
@@ -372,7 +374,7 @@ function in_workspace($IDs, $wsIDs, $table = FILE_TABLE, we_database_base $db = 
 	if(!is_array($wsIDs)){
 		$wsIDs = makeArrayFromCSV($wsIDs);
 	}
-	if(empty($wsIDs) || empty($IDs) || (in_array(0, $wsIDs))){
+	if(!$wsIDs || !$IDs || (in_array(0, $wsIDs))){
 		return true;
 	}
 	if((!$objcheck) && in_array(0, $IDs)){

@@ -1153,7 +1153,7 @@ function submitForm() {
 							AND ' . LINK_TABLE . '.CID = ' . CONTENT_TABLE . '.ID
 							AND ' . LINK_TABLE . '.Name = "' . WE_SHOP_TITLE_FIELD_NAME . '"
 							AND ' . LINK_TABLE . '.DocumentTable != "tblTemplates" ' .
-					(isset($_REQUEST['searchArticle']) && $_REQUEST['searchArticle'] ?
+					(weRequest('bool', 'searchArticle') ?
 						' AND ' . CONTENT_TABLE . '.Dat LIKE "%' . $this->db->escape($_REQUEST['searchArticle']) . '%"' :
 						'')
 				);
@@ -1170,7 +1170,7 @@ function submitForm() {
 								FROM ' . OBJECT_X_TABLE . $_classId . ', ' . OBJECT_FILES_TABLE . '
 								WHERE ' . OBJECT_X_TABLE . $_classId . '.OF_ID = ' . OBJECT_FILES_TABLE . '.ID
 									AND ' . OBJECT_X_TABLE . $_classId . '.ID = ' . OBJECT_FILES_TABLE . '.ObjectID ' .
-							(isset($_REQUEST['searchArticle']) && $_REQUEST['searchArticle'] ?
+							(weRequest('bool', 'searchArticle') ?
 								' AND ' . OBJECT_X_TABLE . $_classId . '.input_' . WE_SHOP_TITLE_FIELD_NAME . '  LIKE "%' . $this->db->escape($_REQUEST['searchArticle']) . '%"' :
 								'')
 						);

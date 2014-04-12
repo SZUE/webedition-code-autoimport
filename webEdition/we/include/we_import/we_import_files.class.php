@@ -46,39 +46,35 @@ class we_import_files{
 			$_cats = array();
 			foreach($_catarray as $_cat){
 				// bugfix Workarround #700
-				if(is_numeric($_cat)){
-					$_cats[] = $_cat;
-				} else {
-					$_cats[] = path_to_id($_cat, CATEGORY_TABLE);
-				}
+				$_cats[] = (is_numeric($_cat) ?
+						$_cat :
+						path_to_id($_cat, CATEGORY_TABLE));
 			}
 			$_REQUEST['categories'] = makeCSVFromArray($_cats);
 		}
 
-		$this->categories = isset($_REQUEST["categories"]) ? $_REQUEST["categories"] : $this->categories;
-		$this->importToID = isset($_REQUEST["importToID"]) ? $_REQUEST["importToID"] : $this->importToID;
-		$this->sameName = isset($_REQUEST["sameName"]) ? $_REQUEST["sameName"] : $this->sameName;
-		$this->importMetadata = isset($_REQUEST["importMetadata"]) ? $_REQUEST["importMetadata"] : $this->importMetadata;
-		$this->step = isset($_REQUEST["step"]) ? $_REQUEST["step"] : $this->step;
-		$this->cmd = isset($_REQUEST["cmd"]) ? $_REQUEST["cmd"] : $this->cmd;
-		$this->thumbs = isset($_REQUEST["thumbs"]) ? $_REQUEST["thumbs"] : $this->thumbs;
-		$this->width = isset($_REQUEST["width"]) ? $_REQUEST["width"] : $this->width;
-		$this->height = isset($_REQUEST["height"]) ? $_REQUEST["height"] : $this->height;
-		$this->widthSelect = isset($_REQUEST["widthSelect"]) ? $_REQUEST["widthSelect"] : $this->widthSelect;
-		$this->heightSelect = isset($_REQUEST["heightSelect"]) ? $_REQUEST["heightSelect"] : $this->heightSelect;
-		$this->keepRatio = isset($_REQUEST["keepRatio"]) ? $_REQUEST["keepRatio"] : $this->keepRatio;
-		$this->quality = isset($_REQUEST["quality"]) ? $_REQUEST["quality"] : $this->quality;
-		$this->degrees = isset($_REQUEST["degrees"]) ? $_REQUEST["degrees"] : $this->degrees;
+		$this->categories = weRequest('raw', "categories", $this->categories);
+		$this->importToID = weRequest('int', "importToID", $this->importToID);
+		$this->sameName = weRequest('raw', "sameName", $this->sameName);
+		$this->importMetadata = weRequest('raw', "importMetadata", $this->importMetadata);
+		$this->step = weRequest('int', "step", $this->step);
+		$this->cmd = weRequest('raw', "cmd", $this->cmd);
+		$this->thumbs = weRequest('raw', "thumbs", $this->thumbs);
+		$this->width = weRequest('int', "width", $this->width);
+		$this->height = weRequest('int', "height", $this->height);
+		$this->widthSelect = weRequest('bool', "widthSelect", $this->widthSelect);
+		$this->heightSelect = weRequest('bool', "heightSelect", $this->heightSelect);
+		$this->keepRatio = weRequest('bool', "keepRatio", $this->keepRatio);
+		$this->quality = weRequest('int', "quality", $this->quality);
+		$this->degrees = weRequest('int', "degrees", $this->degrees);
 	}
 
 	function getHTML(){
 		switch($this->cmd){
 			case "content" :
 				return $this->_getContent();
-				break;
 			case "buttons" :
 				return $this->_getButtons();
-				break;
 			default :
 				return $this->_getFrameset();
 		}
@@ -211,8 +207,7 @@ function uploadFinished() {
 	}
 
 	function _getContent(){
-		$_funct = isset($_REQUEST['step']) ? $_REQUEST['step'] : 1;
-		$_funct = 'getStep' . $_funct;
+		$_funct = 'getStep' . weRequest('int', 'step', 1);
 
 		return $this->$_funct();
 	}
@@ -225,7 +220,7 @@ function uploadFinished() {
 		// create Start Screen ##############################################################################
 
 		$wsA = makeArrayFromCSV(get_def_ws());
-		$ws = empty($wsA) ? 0 : $wsA[0];
+		$ws = $wsA ? $wsA[0] : 0;
 		$store_id = $this->importToID ? $this->importToID : $ws;
 
 		$path = id_to_path($store_id);
@@ -529,8 +524,8 @@ function uploadFinished() {
 		$closeButton = we_html_button::create_button("close", "javascript:top.close()");
 
 		$progressbar = '';
-		$formnum = (isset($_REQUEST["weFormNum"]) ? $_REQUEST["weFormNum"] : 0);
-		$formcount = (isset($_REQUEST["weFormCount"]) ? $_REQUEST["weFormCount"] : 0);
+		$formnum = weRequest('int', "weFormNum", 0);
+		$formcount = weRequest('int', "weFormCount", 0);
 		$js = we_html_button::create_state_changer(false) . '
 
 var weFormNum = ' . $formnum . ';
@@ -552,7 +547,7 @@ function weCheckAC(j){
 			if(feld.running) {
 				setTimeout("weCheckAC(j++)",100);
 			} else {
-				return feld.valid
+				return feld.valid;
 			}
 		} else {
 			return false;
@@ -563,7 +558,9 @@ function weCheckAC(j){
 }
 
 function next() {
-	if(!weCheckAC(1)) return false;
+	if(!weCheckAC(1)){
+		return false;
+	}
 	if (top.imgimportcontent.document.getElementById("start") && top.imgimportcontent.document.getElementById("start").style.display != "none") {
 		' . (permissionhandler::hasPerm('EDIT_KATEGORIE') ? 'top.imgimportcontent.selectCategories();' : '') . '
 		top.imgimportcontent.document.we_startform.submit();
@@ -832,7 +829,7 @@ function next() {
 	}
 
 	function _getFrameset(){
-		$_step = isset($_REQUEST['step']) ? $_REQUEST['step'] : -1;
+		$_step = weRequest('int','step',-1);
 
 		// set and return html code
 		$body = we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;')

@@ -125,15 +125,15 @@ function save_all_values(){
 	if(permissionhandler::hasPerm('ADMINISTRATOR')){
 		$setArray = array('Date' => sql_function('UNIX_TIMESTAMP()'));
 		// Update settings
-		remember_value($setArray, isset($_REQUEST['thumbnail_name']) ? $_REQUEST['thumbnail_name'] : null, 'Name');
+		remember_value($setArray, weRequest('raw', 'thumbnail_name', null), 'Name');
 		remember_value($setArray, weRequest('int', 'thumbnail_width', null), 'Width');
 		remember_value($setArray, weRequest('int', 'thumbnail_height', null), 'Height');
-		remember_value($setArray, isset($_REQUEST['thumbnail_quality']) ? $_REQUEST['thumbnail_quality'] : null, 'Quality');
-		remember_value($setArray, isset($_REQUEST['Ratio']) ? $_REQUEST['Ratio'] : null, 'Ratio');
-		remember_value($setArray, isset($_REQUEST['Maxsize']) ? $_REQUEST['Maxsize'] : null, 'Maxsize');
-		remember_value($setArray, isset($_REQUEST['Interlace']) ? $_REQUEST['Interlace'] : null, 'Interlace');
-		remember_value($setArray, isset($_REQUEST['Fitinside']) ? $_REQUEST['Fitinside'] : null, 'Fitinside');
-		remember_value($setArray, isset($_REQUEST['Format']) ? $_REQUEST['Format'] : null, 'Format');
+		remember_value($setArray, weRequest('raw', 'thumbnail_quality', null), 'Quality');
+		remember_value($setArray, weRequest('raw', 'Ratio', null), 'Ratio');
+		remember_value($setArray, weRequest('raw', 'Maxsize', null), 'Maxsize');
+		remember_value($setArray, weRequest('raw', 'Interlace', null), 'Interlace');
+		remember_value($setArray, weRequest('raw', 'Fitinside', null), 'Fitinside');
+		remember_value($setArray, weRequest('raw', 'Format', null), 'Format');
 
 		$DB_WE->query('UPDATE ' . THUMBNAILS_TABLE . ' SET ' . we_database_base::arraySetter($setArray) . ' WHERE ID=' . weRequest('int', 'edited_id', 0));
 	}

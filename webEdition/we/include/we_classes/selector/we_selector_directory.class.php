@@ -34,7 +34,7 @@ class we_selector_directory extends we_selector_multiple{
 	protected $we_editDirID = "";
 	protected $FolderText = '';
 
-	function __construct($id, $table = "", $JSIDName = "", $JSTextName = "", $JSCommand = "", $order = "", $sessionID = "", $we_editDirID = "", $FolderText = "", $rootDirID = 0, $multiple = 0, $filter = ''){
+	function __construct($id, $table = "", $JSIDName = "", $JSTextName = "", $JSCommand = "", $order = "", $sessionID = "", $we_editDirID = 0, $FolderText = "", $rootDirID = 0, $multiple = 0, $filter = ''){
 		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, $sessionID, $rootDirID, $multiple, $filter);
 		switch($this->table){
 			case FILE_TABLE:

@@ -23,8 +23,7 @@
  */
 we_html_tools::protect();
 
-$we_transaction = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : $we_transaction;
-$we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $we_transaction) ? $we_transaction : 0);
+$we_transaction = weRequest('transaction', 'we_cmd', 0, 1);
 
 // init document
 $we_dt = $_SESSION['weS']['we_data'][$we_transaction];
@@ -43,9 +42,8 @@ function getControlElement($type, $name){
 		return (isset($GLOBALS['we_doc']->controlElement[$type][$name]) ?
 				$GLOBALS['we_doc']->controlElement[$type][$name] :
 				false);
-	} else {
-		return false;
 	}
+	return false;
 }
 
 switch($we_doc->userHasAccess()){
@@ -95,7 +93,6 @@ switch($we_doc->ContentType){
 // ---> Glossary Check
 //
 // load Glossary Settings
-$showGlossaryCheck = 0;
 
 if(isset($_SESSION['prefs']['force_glossary_check']) && $_SESSION['prefs']['force_glossary_check'] == 1 && (
 	$we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT || $we_doc->ContentType == "objectFile"
@@ -220,11 +217,9 @@ if($_ctrlElem && $_ctrlElem['hide']){
 }
 
 
-if(defined("WORKFLOW_TABLE")){
-	if(inWorkflow($we_doc)){
-		if(!we_workflow_utility::canUserEditDoc($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"])){
-			$_js_weCanSave .= 'weCanSave=false;';
-		}
+if(defined("WORKFLOW_TABLE") && inWorkflow($we_doc)){
+	if(!we_workflow_utility::canUserEditDoc($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"])){
+		$_js_weCanSave .= 'weCanSave=false;';
 	}
 }
 

@@ -28,10 +28,10 @@ $wizard = new we_import_wizard();
 
 we_html_tools::protect();
 
-$what = (isset($_REQUEST["pnt"]) ? $_REQUEST["pnt"] : 'wizframeset');
-$type = (isset($_REQUEST["type"]) ? $_REQUEST["type"] : '');
-$step = intval(isset($_REQUEST["step"]) ? $_REQUEST["step"] : 0);
-$mode = intval(isset($_REQUEST["mode"]) ? $_REQUEST["mode"] : 0);
+$what = weRequest('string',"pnt",'wizframeset');
+$type = weRequest('string',"type",'');
+$step = weRequest('int',"step", 0);
+$mode = weRequest('int',"mode",0);
 
 switch($what){
 	case "wizframeset":

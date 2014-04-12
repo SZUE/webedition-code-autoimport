@@ -38,7 +38,7 @@ class rpcSelectorSuggestCmd extends rpcCmd{
 				$selectorSuggest->addCondition(array("AND", "<>", "ID", $_REQUEST['we_cmd'][5]));
 			}
 		}
-		$selectorSuggest->search($_REQUEST['we_cmd'][1], $_REQUEST['we_cmd'][2], $contentTypes, "", (isset($_REQUEST['we_cmd'][6]) ? $_REQUEST['we_cmd'][6] : ""));
+		$selectorSuggest->search($_REQUEST['we_cmd'][1], $_REQUEST['we_cmd'][2], $contentTypes, "", weRequest('raw','we_cmd','',6));
 		$resp->setData("data", $selectorSuggest->getResult());
 
 		return $resp;

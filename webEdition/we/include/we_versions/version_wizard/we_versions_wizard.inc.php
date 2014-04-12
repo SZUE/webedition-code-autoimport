@@ -153,8 +153,8 @@ abstract class we_versions_wizard{
 		);
 
 		foreach($version->contentTypes as $k){
-			$version_delete[$k] = isset($_REQUEST['version_delete_' . $k]) ? 1 : 0;
-			$version_reset[$k] = isset($_REQUEST['version_reset_' . $k]) ? 1 : 0;
+			$version_delete[$k] = weRequest('bool','version_delete_' . $k);
+			$version_reset[$k] = weRequest('bool','version_reset_' . $k);
 		}
 
 		if(isset($_REQUEST["reset_doPublish"])){
@@ -270,7 +270,7 @@ set_button_state(false);';
 		$version = new weVersions();
 		$type = isset($_REQUEST["type"]) ? $_REQUEST["type"] : self::DELETE_VERSIONS;
 
-		$versions_delete_all = isset($_REQUEST["version_delete_all"]) ? 1 : 0;
+		$versions_delete_all = weRequest('bool',"version_delete_all");
 		$version_delete_date = isset($_REQUEST["delete_date"]) ? $_REQUEST["delete_date"] : "";
 		$version_delete_hours = isset($_REQUEST["delete_hours"]) ? $_REQUEST["delete_hours"] : 0;
 		$version_delete_minutes = isset($_REQUEST["delete_minutes"]) ? $_REQUEST["delete_minutes"] : 0;
@@ -437,7 +437,7 @@ function checkAll(val) {
 
 }
 
-function checkAllRevert() {
+function checkAllRevert() {//FIXME:unused (box doesnt exist?)
 	var checkbox = document.getElementById("version_delete_all");
 	checkbox.checked = false;
 }
@@ -496,12 +496,11 @@ set_button_state(false);';
 		$version = new weVersions();
 		$type = isset($_REQUEST["type"]) ? $_REQUEST["type"] : "reset_versions";
 
-		$versions_reset_all = isset($_REQUEST["version_reset_all"]) ? 1 : 0;
-		$version_reset_date = isset($_REQUEST["reset_date"]) ? $_REQUEST["reset_date"] : "";
-		$version_reset_hours = isset($_REQUEST["reset_hours"]) ? $_REQUEST["reset_hours"] : 0;
-		$version_reset_minutes = isset($_REQUEST["reset_minutes"]) ? $_REQUEST["reset_minutes"] : 0;
-		$version_reset_seconds = isset($_REQUEST["reset_seconds"]) ? $_REQUEST["reset_seconds"] : 0;
-		$version_reset_doPublish = isset($_REQUEST["reset_doPublish"]) && $_REQUEST["reset_doPublish"] ? 1 : 0;
+		$version_reset_date = weRequest('raw', "reset_date", "");
+		$version_reset_hours = weRequest('int', "reset_hours", 0);
+		$version_reset_minutes = weRequest('int', "reset_minutes", 0);
+		$version_reset_seconds = weRequest('int', "reset_seconds", 0);
+		$version_reset_doPublish = weRequest('bool', "reset_doPublish");
 
 
 		$content = "";
@@ -684,7 +683,7 @@ set_button_state(false);';
 
 					}
 
-	            	function checkAllRevert() {
+	            	function checkAllRevert() {//FIXME:unused (box doesnt exist?)
 
 	            		var checkbox = document.getElementById("version_reset_all");
 						checkbox.checked = false;
@@ -769,8 +768,8 @@ set_button_state(false);';
 		$version_reset = array();
 
 		foreach($version->contentTypes as $k){
-			$version_delete[$k] = isset($_REQUEST["version_delete_" . $k]) ? 1 : 0;
-			$version_reset[$k] = isset($_REQUEST["version_reset_" . $k]) ? 1 : 0;
+			$version_delete[$k] = weRequest('bool',"version_delete_" . $k);
+			$version_reset[$k] = weRequest('bool',"version_reset_" . $k);
 		}
 
 		$version_delete['delete_date'] = isset($_REQUEST["delete_date"]) ? $_REQUEST["delete_date"] : "";
@@ -838,7 +837,7 @@ set_button_state(false);';
 		);
 
 		foreach($version->contentTypes as $k){
-			$version_delete[$k] = isset($_REQUEST["version_delete_" . $k]) ? 1 : 0;
+			$version_delete[$k] = weRequest('bool',"version_delete_" . $k);
 		}
 
 		$timestamp = "";
@@ -971,7 +970,7 @@ set_button_state(false);';
 		);
 
 		foreach($version->contentTypes as $k){
-			$version_reset[$k] = isset($_REQUEST["version_reset_" . $k]) ? 1 : 0;
+			$version_reset[$k] = weRequest('bool',"version_reset_" . $k);
 		}
 
 		if(isset($_REQUEST["reset_doPublish"])){
@@ -1155,7 +1154,7 @@ set_button_state(false);';
 		$act = ($action == "delete" ? 0 : 1);
 
 		$nextButton = we_html_button::create_button("go", 'javascript:parent.wizbody.handle_event("next");', true, 0, 0, "", "", $disabled, false);
-		$publish = isset($_REQUEST['reset_doPublish']) && $_REQUEST['reset_doPublish'] ? 1 : 0;
+		$publish = weRequest('bool', 'reset_doPublish');
 		$we_transaction = $GLOBALS['we_transaction'];
 		return '
 window.onload = function(){

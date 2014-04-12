@@ -170,7 +170,7 @@ if(($maxRows = f('SELECT COUNT(1) ' . $query, '', $DB_WE))){
 
 	//get table entries
 	$orderRows = array();
-	$DB_WE->query('SELECT strSerial,strSerialOrder,IntOrderID,IntCustomerID,IntArticleID,IntQuantity,(IntQuantity*Price) AS articleSum,DatePayment,DateOrder,DateCancellation,DATE_FORMAT(DateOrder, "%d.%m.%Y") AS formatDateOrder, DATE_FORMAT(DatePayment, "%d.%m.%Y") AS formatDatePayment, DATE_FORMAT(DateCancellation, "%d.%m.%Y") AS formatDateCancellation, Price ' . $query . ' ORDER BY ' . (isset($_REQUEST['orderBy']) && $_REQUEST['orderBy'] ? $_REQUEST['orderBy'] : 'IntOrderID') . ' LIMIT ' . ($actPage * $nrOfPage) . ',' . $nrOfPage);
+	$DB_WE->query('SELECT strSerial,strSerialOrder,IntOrderID,IntCustomerID,IntArticleID,IntQuantity,(IntQuantity*Price) AS articleSum,DatePayment,DateOrder,DateCancellation,DATE_FORMAT(DateOrder, "%d.%m.%Y") AS formatDateOrder, DATE_FORMAT(DatePayment, "%d.%m.%Y") AS formatDatePayment, DATE_FORMAT(DateCancellation, "%d.%m.%Y") AS formatDateCancellation, Price ' . $query . ' ORDER BY ' . (weRequest('bool', 'orderBy') ? $_REQUEST['orderBy'] : 'IntOrderID') . ' LIMIT ' . ($actPage * $nrOfPage) . ',' . $nrOfPage);
 	while($DB_WE->next_record()){
 
 		// for the articlelist, we need also all these article, so save them in array

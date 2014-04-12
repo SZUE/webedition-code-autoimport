@@ -26,7 +26,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
-$what = (isset($_REQUEST['pnt']) ? $_REQUEST['pnt'] : 'frameset');
+$what = weRequest('string','pnt','frameset');
 $step = weRequest('int','step',1);
 $weBackupWizard = new we_backup_wizard(WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php', we_backup_wizard::RECOVER);
 
