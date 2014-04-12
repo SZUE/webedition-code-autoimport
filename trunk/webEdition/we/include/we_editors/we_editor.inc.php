@@ -72,7 +72,7 @@ switch(weRequest('string', 'we_cmd', '', 0)){
 		$we_doc->removeEntryFromList($_REQUEST['we_cmd'][1], $_REQUEST['we_cmd'][2], $_REQUEST['we_cmd'][3], $_REQUEST['we_cmd'][4]);
 		break;
 	case 'insert_entry_at_list':
-		$we_doc->insertEntryAtList($_REQUEST['we_cmd'][1], $_REQUEST['we_cmd'][2], isset($_REQUEST['we_cmd'][3]) ? $_REQUEST['we_cmd'][3] : 1);
+		$we_doc->insertEntryAtList($_REQUEST['we_cmd'][1], $_REQUEST['we_cmd'][2], weRequest('raw','we_cmd',13));
 		break;
 	case 'up_entry_at_list':
 		$we_doc->upEntryAtList($_REQUEST['we_cmd'][1], $_REQUEST['we_cmd'][2]);
@@ -87,7 +87,7 @@ switch(weRequest('string', 'we_cmd', '', 0)){
 		$we_doc->downEntryAtLinklist($_REQUEST['we_cmd'][1], $_REQUEST['we_cmd'][2]);
 		break;
 	case 'add_entry_to_list':
-		$we_doc->addEntryToList($_REQUEST['we_cmd'][1], isset($_REQUEST['we_cmd'][2]) ? $_REQUEST['we_cmd'][2] : 1);
+		$we_doc->addEntryToList($_REQUEST['we_cmd'][1], weRequest('raw','we_cmd',1,2));
 		break;
 	case 'add_link_to_linklist':
 		$GLOBALS['we_list_inserted'] = $_REQUEST['we_cmd'][1];

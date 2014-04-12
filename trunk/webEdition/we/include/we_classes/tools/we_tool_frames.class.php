@@ -245,7 +245,7 @@ function setTab(tab) {
 
 	function getHTMLEditorBody(){
 
-		$hiddens = array('cmd' => 'tool_' . $this->toolName . '_edit', 'pnt' => 'edbody', 'vernr' => (isset($_REQUEST['vernr']) ? $_REQUEST['vernr'] : 0));
+		$hiddens = array('cmd' => 'tool_' . $this->toolName . '_edit', 'pnt' => 'edbody', 'vernr' => weRequest('int', 'vernr', 0));
 
 		if(isset($_REQUEST["home"]) && $_REQUEST["home"]){
 			$hiddens['cmd'] = 'home';
@@ -325,8 +325,8 @@ function we_save() {
 		$hiddens = array('cmd' => '',
 			'pnt' => 'edbody',
 			'tabnr' => $tabNr,
-			'vernr' => (isset($_REQUEST['vernr']) ? $_REQUEST['vernr'] : 0),
-			'delayParam' => (isset($_REQUEST['delayParam']) ? $_REQUEST['delayParam'] : '')
+			'vernr' => weRequest('int','vernr' , 0),
+			'delayParam' => weRequest('raw','delayParam','')
 		);
 
 		return $this->View->getCommonHiddens($hiddens) .
@@ -364,7 +364,7 @@ function we_save() {
 		}
 
 		$pid = $_REQUEST["pid"];
-		$offset = weRequest('int',"offset",0);
+		$offset = weRequest('int', "offset", 0);
 		$_class = $this->toolClassName . 'TreeDataSource';
 
 		$_loader = new $_class($this->TreeSource);

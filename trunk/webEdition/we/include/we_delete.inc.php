@@ -71,7 +71,7 @@ if(!$wfchk){
 		$script = 'top.toggleBusy(0);' . we_message_reporting::getShowMessageCall(g_l('alert', "[nothing_to_delete]"), we_message_reporting::WE_MESSAGE_WARNING);
 	}
 	$wfchk_html .= '</head><body onload="confirmDel()"><form name="we_form" method="post">' .
-		we_html_tools::hidden("sel", isset($_REQUEST["sel"]) ? $_REQUEST["sel"] : "") . "</form>";
+		we_html_tools::hidden("sel", weRequest('raw',"sel", "")) . "</form>";
 } elseif($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == 'delete_single_document'){
 	if(isset($_REQUEST["sel"]) && $_REQUEST["sel"]){
 		//	look which documents must be deleted.

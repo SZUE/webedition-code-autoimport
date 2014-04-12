@@ -194,7 +194,7 @@ if(isset($GLOBALS['userLoginDenied'])){
 	if(($mode = weRequest('string', 'mode'))){
 		setcookie('we_mode', $mode, time() + 2592000); //	Cookie remembers the last selected mode, it will expire in one Month !!!
 	}
-	setcookie('we_popup', (isset($_REQUEST['popup']) ? 1 : 0), time() + 2592000);
+	setcookie('we_popup', weRequest('bool','popup'), time() + 2592000);
 } else if(isset($_POST['password']) && isset($_POST['username'])){
 	$login = LOGIN_CREDENTIALS_INVALID;
 } else {

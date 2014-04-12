@@ -158,7 +158,7 @@ class we_import_wizard extends we_import_wizardBase {
 			}
 		}
 
-		$cmd = isset($_REQUEST['we_cmd']) ? $_REQUEST['we_cmd'] : array('import', $defaultVal);
+		$cmd = weRequest('raw','we_cmd',array('import', $defaultVal));
 		$expat = (function_exists('xml_parser_create')) ? true : false;
 
 		$tblFiles = new we_html_table(array('cellpadding' => 0, 'cellspacing' => 0, 'border' => 0), 3, 1);
@@ -258,7 +258,7 @@ class we_import_wizard extends we_import_wizardBase {
 	}
 
 	function getWXMLImportStep1(){
-		$v = isset($_REQUEST['v']) ? $_REQUEST['v'] : array();
+		$v = weRequest('raw','v',array());
 		$doc_root = get_def_ws();
 		$tmpl_root = get_def_ws(TEMPLATES_TABLE);
 		$nav_root = get_def_ws(NAVIGATION_TABLE);
@@ -804,7 +804,7 @@ function handle_event(evt) {
 	function getGXMLImportStep1(){
 		global $DB_WE;
 
-		$v = isset($_REQUEST['v']) ? $_REQUEST['v'] : array();
+		$v = weRequest('raw','v',array());
 
 		if(isset($v['docType']) && $v['docType'] != -1 && isset($_REQUEST['doctypeChanged']) && $_REQUEST['doctypeChanged']){
 			$values = getHash('SELECT * FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($v["docType"]), $GLOBALS['DB_WE']);
@@ -1339,9 +1339,9 @@ function handle_event(evt) {
 		if(isset($v['att_pfx'])){
 			$v['att_pfx'] = base64_encode($v['att_pfx']);
 		}
-		$records = (isset($_REQUEST['records'])) ? $_REQUEST['records'] : array();
-		$we_flds = (isset($_REQUEST['we_flds'])) ? $_REQUEST['we_flds'] : array();
-		$attrs = (isset($_REQUEST['attrs'])) ? $_REQUEST['attrs'] : array();
+		$records = weRequest('raw','records',array());
+		$we_flds = weRequest('raw','we_flds',array());
+		$attrs = weRequest('raw','attrs',array());
 		foreach($attrs as $name => $value){
 			$attrs[$name] = base64_encode($value);
 		}
@@ -2205,9 +2205,9 @@ HTS;
 
 		$v = $_REQUEST["v"];
 
-		$records = (isset($_REQUEST["records"])) ? $_REQUEST["records"] : array();
-		$we_flds = (isset($_REQUEST["we_flds"])) ? $_REQUEST["we_flds"] : array();
-		$attrs = (isset($_REQUEST["attrs"])) ? $_REQUEST["attrs"] : array();
+		$records = weRequest('raw',"records",array());
+		$we_flds = weRequest('raw',"we_flds",array());
+		$attrs = weRequest('raw',"attrs",array());
 
 		$csvFile = $_SERVER['DOCUMENT_ROOT'] . $v["import_from"];
 		if(file_exists($csvFile) && is_readable($csvFile)){

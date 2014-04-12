@@ -124,7 +124,7 @@ class we_customer_EIWizard{
 	}
 
 	function getHTMLExportStep1(){
-		$type = isset($_REQUEST["type"]) ? $_REQUEST["type"] : "gxml";
+		$type = weRequest('string', "type", "gxml");
 
 		$generic = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
 		$generic->setCol(0, 0, array(), we_html_forms::radiobutton("gxml", ($type == "gxml"), "type", g_l('modules_customer', '[gxml_export]'), true, "defaultfont", "if(document.we_form.type[0].checked) " . $this->topFrame . ".type='gxml';", false, g_l('modules_customer', '[txt_gxml_export]'), 0, 430));
@@ -154,7 +154,7 @@ class we_customer_EIWizard{
 	}
 
 	function getHTMLExportStep2(){
-		$selection = isset($_REQUEST["selection"]) ? $_REQUEST["selection"] : "filter";
+		$selection = weRequest('string', "selection", "filter");
 
 		$table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 2);
 		$table->setColContent(0, 0, we_html_tools::getPixel(25, 5));
@@ -225,16 +225,16 @@ class we_customer_EIWizard{
 		$parts = array();
 
 		//set defaults
-		$type = isset($_REQUEST["type"]) ? $_REQUEST["type"] : "gxml";
+		$type = weRequest('string', "type", "gxml");
 		$filename = (isset($_REQUEST["filename"]) && $_REQUEST["filename"] != "") ? $_REQUEST["filename"] : "weExport_" . time() . ($type == "csv" ? ".csv" : ".xml");
-		$export_to = isset($_REQUEST["export_to"]) ? $_REQUEST["export_to"] : "server";
-		$path = isset($_REQUEST["path"]) ? $_REQUEST["path"] : "/";
-		$cdata = (isset($_REQUEST["cdata"])) ? $_REQUEST["cdata"] : 1;
+		$export_to = weRequest('string', "export_to", "server");
+		$path = weRequest('file', "path", "/");
+		$cdata = weRequest('bool', "cdata", true);
 
-		$csv_delimiter = isset($_REQUEST["csv_delimiter"]) ? $_REQUEST["csv_delimiter"] : CSV_DELIMITER;
-		$csv_enclose = isset($_REQUEST["csv_enclose"]) ? $_REQUEST["csv_enclose"] : CSV_ENCLOSE;
-		$csv_lineend = isset($_REQUEST["csv_lineend"]) ? $_REQUEST["csv_lineend"] : CSV_LINEEND;
-		$csv_fieldnames = isset($_REQUEST["csv_fieldnames"]) ? $_REQUEST["csv_fieldnames"] : CSV_FIELDS;
+		$csv_delimiter = weRequest('raw', "csv_delimiter", CSV_DELIMITER);
+		$csv_enclose = weRequest('raw', "csv_enclose", CSV_ENCLOSE);
+		$csv_lineend = weRequest('raw', "csv_lineend", CSV_LINEEND);
+		$csv_fieldnames = weRequest('bool', "csv_fieldnames", CSV_FIELDS);
 
 		//set variables in top frame
 		$js = "";
@@ -300,7 +300,7 @@ class we_customer_EIWizard{
 	}
 
 	function getHTMLExportStep4(){
-		$export_to = isset($_REQUEST["export_to"]) ? $_REQUEST["export_to"] : "server";
+		$export_to = weRequest('string', "export_to", "server");
 		$path = isset($_REQUEST["path"]) ? urldecode($_REQUEST["path"]) : "";
 		$filename = isset($_REQUEST["filename"]) ? urldecode($_REQUEST["filename"]) : "";
 		$js = we_html_element::jsElement('
@@ -375,20 +375,20 @@ class we_customer_EIWizard{
 
 		$hiddens = "";
 		if($options["art"] == "import"){
-			$filename = isset($_REQUEST["filename"]) ? $_REQUEST["filename"] : "";
-			$import_from = isset($_REQUEST["import_from"]) ? $_REQUEST["import_from"] : "server";
-			$type = isset($_REQUEST["type"]) ? $_REQUEST["type"] : "gxml";
-			$xml_from = isset($_REQUEST["xml_from"]) ? $_REQUEST["xml_from"] : "0";
-			$xml_to = isset($_REQUEST["xml_to"]) ? $_REQUEST["xml_to"] : "1";
-			$dataset = isset($_REQUEST["dataset"]) ? $_REQUEST["dataset"] : "";
-			$csv_delimiter = isset($_REQUEST["csv_delimiter"]) ? $_REQUEST["csv_delimiter"] : CSV_DELIMITER;
-			$csv_enclose = isset($_REQUEST["csv_enclose"]) ? $_REQUEST["csv_enclose"] : CSV_ENCLOSE;
-			$csv_lineend = isset($_REQUEST["csv_lineend"]) ? $_REQUEST["csv_lineend"] : CSV_LINEEND;
-			$the_charset = isset($_REQUEST["the_charset"]) ? $_REQUEST["the_charset"] : THE_CHARSET;
+			$filename = weRequest('file', "filename", "");
+			$import_from = weRequest('string', "import_from", "server");
+			$type = weRequest('string', "type", "gxml");
+			$xml_from = weRequest('raw', "xml_from", 0);
+			$xml_to = weRequest('raw', "xml_to", 1);
+			$dataset = weRequest('raw', "dataset", "");
+			$csv_delimiter = weRequest('raw', "csv_delimiter", CSV_DELIMITER);
+			$csv_enclose = weRequest('raw', "csv_enclose", CSV_ENCLOSE);
+			$csv_lineend = weRequest('raw', "csv_lineend", CSV_LINEEND);
+			$the_charset = weRequest('raw', "the_charset", THE_CHARSET);
 
-			$csv_fieldnames = isset($_REQUEST["csv_fieldnames"]) ? 1 : 0;
+			$csv_fieldnames = weRequest('bool',"csv_fieldnames");
 
-			$source = isset($_REQUEST["source"]) ? $_REQUEST["source"] : "/";
+			$source = weRequest('file', "source", "/");
 
 			switch($options["step"]){
 				case 1:
@@ -455,21 +455,21 @@ class we_customer_EIWizard{
 
 		if($options["art"] == "export"){
 
-			$type = isset($_REQUEST["type"]) ? $_REQUEST["type"] : "gxml";
-			$selection = isset($_REQUEST["selection"]) ? $_REQUEST["selection"] : "filter";
-			$export_to = isset($_REQUEST["export_to"]) ? $_REQUEST["export_to"] : "server";
+			$type = weRequest('string', "type", "gxml");
+			$selection = weRequest('string', "selection", "filter");
+			$export_to = weRequest('string', "export_to", "server");
 			$path = isset($_REQUEST["path"]) ? urldecode($_REQUEST["path"]) : "/";
-			$filename = isset($_REQUEST["filename"]) ? $_REQUEST["filename"] : "";
-			$cdata = (isset($_REQUEST["cdata"])) ? $_REQUEST["cdata"] : 1;
+			$filename = weRequest('file', "filename", "");
+			$cdata = weRequest('raw', "cdata", 1);
 
-			$customers = isset($_REQUEST["customers"]) ? $_REQUEST["customers"] : "";
+			$customers = weRequest('raw', "customers", "");
 
-			$csv_delimiter = isset($_REQUEST["csv_delimiter"]) ? $_REQUEST["csv_delimiter"] : CSV_DELIMITER;
-			$csv_enclose = isset($_REQUEST["csv_enclose"]) ? $_REQUEST["csv_enclose"] : CSV_ENCLOSE;
-			$csv_lineend = isset($_REQUEST["csv_lineend"]) ? $_REQUEST["csv_lineend"] : CSV_LINEEND;
-			$csv_fieldnames = isset($_REQUEST["csv_fieldnames"]) ? 1 : 0;
+			$csv_delimiter = weRequest('raw', "csv_delimiter", CSV_DELIMITER);
+			$csv_enclose = weRequest('raw', "csv_enclose", CSV_ENCLOSE);
+			$csv_lineend = weRequest('raw', "csv_lineend", CSV_LINEEND);
+			$csv_fieldnames = weRequest('bool', "csv_fieldnames");
 
-			$filter_count = isset($_REQUEST["filter_count"]) ? $_REQUEST["filter_count"] : "0";
+			$filter_count = weRequest('int', "filter_count", 0);
 			$filter = "";
 			$fields_names = array("fieldname", "operator", "fieldvalue", "logic");
 			for($i = 0; $i < $filter_count; $i++){
@@ -556,7 +556,7 @@ class we_customer_EIWizard{
 	}
 
 	function getHTMLImportStep1(){
-		$type = isset($_REQUEST["type"]) ? $_REQUEST["type"] : "gxml";
+		$type = weRequest('string', "type", "gxml");
 
 		$generic = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
 		$generic->setCol(0, 0, array(), we_html_forms::radiobutton("gxml", ($type == "gxml"), "type", g_l('modules_customer', '[gxml_import]'), true, "defaultfont", "if(document.we_form.type[0].checked) " . $this->topFrame . ".type='gxml';", false, g_l('modules_customer', '[txt_gxml_import]'), 0, 430));
@@ -583,10 +583,9 @@ class we_customer_EIWizard{
 	}
 
 	function getHTMLImportStep2(){
-		$import_from = isset($_REQUEST["import_from"]) ? $_REQUEST["import_from"] : "server";
-		$source = isset($_REQUEST["source"]) ? $_REQUEST["source"] : "/";
-		//$upload = isset($_REQUEST["upload"]) ? $_REQUEST["upload"] : "";
-		$type = isset($_REQUEST["type"]) ? $_REQUEST["type"] : "";
+		$import_from = weRequest('string', "import_from", "server");
+		$source = weRequest('file', "source", "/");
+		$type = weRequest('string', "type", "");
 
 		$parts = array();
 
@@ -653,10 +652,9 @@ class we_customer_EIWizard{
 
 	function getHTMLImportStep3(){
 		$js = "";
-		$import_from = isset($_REQUEST["import_from"]) ? $_REQUEST["import_from"] : "server";
-		$source = isset($_REQUEST["source"]) ? $_REQUEST["source"] : "/";
-		$type = isset($_REQUEST["type"]) ? $_REQUEST["type"] : "";
-		$dataset = isset($_REQUEST["dataset"]) ? $_REQUEST["dataset"] : "";
+		$import_from = weRequest('string', "import_from", "server");
+		$source = weRequest('file', "source", "/");
+		$type = weRequest('string', "type", "");
 		$ext = $type == "csv" ? ".csv" : ".xml";
 
 		$filename = "";
@@ -824,19 +822,15 @@ class we_customer_EIWizard{
 	}
 
 	function getHTMLImportStep4(){
-		$filename = isset($_REQUEST["filename"]) ? $_REQUEST["filename"] : "";
-		$import_from = isset($_REQUEST["import_from"]) ? $_REQUEST["import_from"] : "";
-		$import_charset = isset($_REQUEST["import_charset"]) ? $_REQUEST["import_charset"] : "";
-		$type = isset($_REQUEST["type"]) ? $_REQUEST["type"] : "";
-		$xml_from = isset($_REQUEST["xml_from"]) ? $_REQUEST["xml_from"] : "";
-		$xml_to = isset($_REQUEST["xml_to"]) ? $_REQUEST["xml_to"] : "";
-		$dataset = isset($_REQUEST["dataset"]) ? $_REQUEST["dataset"] : "";
-		$csv_delimiter = isset($_REQUEST["csv_delimiter"]) ? $_REQUEST["csv_delimiter"] : CSV_DELIMITER;
-		$csv_enclose = isset($_REQUEST["csv_enclose"]) ? $_REQUEST["csv_enclose"] : CSV_ENCLOSE;
-		$csv_lineend = isset($_REQUEST["csv_lineend"]) ? $_REQUEST["csv_lineend"] : CSV_LINEEND;
-		$the_charset = isset($_REQUEST["the_charset"]) ? $_REQUEST["the_charset"] : THE_CHARSET;
-		$csv_fieldnames = isset($_REQUEST["csv_fieldnames"]) ? 1 : 0;
-		$same = isset($_REQUEST["same"]) ? $_REQUEST["same"] : "rename";
+		$filename = weRequest('file', "filename", "");
+		$type = weRequest('string', "type", "");
+		$dataset = weRequest('raw', "dataset", "");
+		$csv_delimiter = weRequest('raw', "csv_delimiter", CSV_DELIMITER);
+		$csv_enclose = weRequest('raw', "csv_enclose", CSV_ENCLOSE);
+		$csv_lineend = weRequest('raw', "csv_lineend", CSV_LINEEND);
+		$the_charset = weRequest('raw', "the_charset", THE_CHARSET);
+		$csv_fieldnames = weRequest('bool', "csv_fieldnames");
+		$same = weRequest('string', "same", "rename");
 
 		$field_mappings = isset($_REQUEST["field_mappings"]) ? $_REQUEST["field_mappings"] : "";
 		$att_mappings = isset($_REQUEST["att_mappings"]) ? $_REQUEST["att_mappings"] : "";
@@ -1168,7 +1162,7 @@ class we_customer_EIWizard{
 				$csv_delimiter = isset($_REQUEST["csv_delimiter"]) ? $_REQUEST["csv_delimiter"] : "";
 				$csv_enclose = isset($_REQUEST["csv_enclose"]) ? $_REQUEST["csv_enclose"] : "";
 				$csv_lineend = isset($_REQUEST["csv_lineend"]) ? $_REQUEST["csv_lineend"] : "";
-				$csv_fieldnames = isset($_REQUEST["csv_fieldnames"]) ? 1 : 0;
+				$csv_fieldnames = weRequest('bool',"csv_fieldnames");
 
 				$customers = array();
 

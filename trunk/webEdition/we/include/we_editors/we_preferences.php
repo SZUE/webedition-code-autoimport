@@ -555,15 +555,15 @@ function save_all_values(){
 			switch($name){
 				case 'global'://no settings in session
 					if(we_base_preferences::userIsAllowed($key)){
-						remember_value(isset($_REQUEST['newconf'][$key]) ? $_REQUEST['newconf'][$key] : null, $key, $default[0]);
+						remember_value(weRequest('raw', 'newconf', null, $key), $key, $default[0]);
 					}
 					break;
 				case 'user':
-					remember_value(isset($_REQUEST['newconf'][$key]) ? $_REQUEST['newconf'][$key] : null, $key);
+					remember_value(weRequest('raw', 'newconf', null, $key), $key);
 					break;
 				default:
 					if(we_base_preferences::userIsAllowed($key)){
-						remember_value(isset($_REQUEST['newconf'][$key]) ? $_REQUEST['newconf'][$key] : null, $key);
+						remember_value(weRequest('raw', 'newconf', null, $key), $key);
 					}
 					break;
 			}
@@ -3112,7 +3112,7 @@ if(isset($_REQUEST['save_settings']) && $_REQUEST['save_settings'] == 'true'){
 	$acQuery = new we_selector_query();
 
 	// check seemode start document | object
-	switch(weRequest('string', 'newconf','','seem_start_type')){
+	switch(weRequest('string', 'newconf', '', 'seem_start_type')){
 		case 'document':
 			if(empty($_REQUEST['seem_start_document'])){
 				$acError = true;

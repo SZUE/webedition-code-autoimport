@@ -276,7 +276,7 @@ function setTab(tab) {
 
 		$_parentid = (isset($this->Model->Text) && $this->Model->Text && isset($this->Model->ID) && $this->Model->ID ?
 				f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->Model->ID), 'ParentID', $this->db) :
-				(isset($_REQUEST['presetFolder']) && $_REQUEST['presetFolder'] ?
+				(weRequest('bool','presetFolder') ?
 					$this->Model->ParentID :
 					(($wq = we_navigation_navigation::getWSQuery()) ?
 						f('SELECT ID FROM ' . NAVIGATION_TABLE . ' WHERE IsFolder=1 ' . $wq . ' ORDER BY Path LIMIT 1', 'ID', $this->db) :

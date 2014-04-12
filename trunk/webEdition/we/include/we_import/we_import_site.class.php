@@ -64,22 +64,22 @@ class we_import_site{
 	public function __construct(){
 		$wsa = makeArrayFromCSV(get_def_ws());
 		$ws = (empty($wsa) ? 0 : $wsa[0]);
-		$this->from = isset($_REQUEST['from']) ? $_REQUEST['from'] : ((isset($_SESSION['prefs']['import_from']) && $_SESSION['prefs']['import_from']) ? $_SESSION['prefs']['import_from'] : $this->from);
+		$this->from = weRequest('raw', 'from', (isset($_SESSION['prefs']['import_from']) && $_SESSION['prefs']['import_from'] ? $_SESSION['prefs']['import_from'] : $this->from));
 		$_SESSION['prefs']['import_from'] = $this->from;
-		$this->to = isset($_REQUEST['to']) ? $_REQUEST['to'] : (strlen($this->to) ? $this->to : $ws);
-		$this->depth = isset($_REQUEST['depth']) ? $_REQUEST['depth'] : $this->depth;
-		$this->images = isset($_REQUEST['images']) ? $_REQUEST['images'] : $this->images;
-		$this->htmlPages = isset($_REQUEST['htmlPages']) ? $_REQUEST['htmlPages'] : $this->htmlPages;
-		$this->createWePages = isset($_REQUEST['createWePages']) ? $_REQUEST['createWePages'] : $this->createWePages;
-		$this->flashmovies = isset($_REQUEST['flashmovies']) ? $_REQUEST['flashmovies'] : $this->flashmovies;
-		$this->quicktime = isset($_REQUEST['quicktime']) ? $_REQUEST['quicktime'] : $this->quicktime;
-		$this->js = isset($_REQUEST['js']) ? $_REQUEST['js'] : $this->js;
-		$this->css = isset($_REQUEST['css']) ? $_REQUEST['css'] : $this->css;
-		$this->text = isset($_REQUEST['text']) ? $_REQUEST['text'] : $this->text;
-		$this->other = isset($_REQUEST['other']) ? $_REQUEST['other'] : $this->other;
-		$this->maxSize = isset($_REQUEST['maxSize']) ? $_REQUEST['maxSize'] : $this->maxSize;
-		$this->step = isset($_REQUEST['step']) ? $_REQUEST['step'] : $this->step;
-		$this->cmd = isset($_REQUEST['cmd']) ? $_REQUEST['cmd'] : $this->cmd;
+		$this->to = weRequest('raw', 'to', (strlen($this->to) ? $this->to : $ws));
+		$this->depth = weRequest('raw', 'depth', $this->depth);
+		$this->images = weRequest('raw', 'images', $this->images);
+		$this->htmlPages = weRequest('raw', 'htmlPages', $this->htmlPages);
+		$this->createWePages = weRequest('raw', 'createWePages', $this->createWePages);
+		$this->flashmovies = weRequest('raw', 'flashmovies', $this->flashmovies);
+		$this->quicktime = weRequest('raw', 'quicktime', $this->quicktime);
+		$this->js = weRequest('raw', 'js', $this->js);
+		$this->css = weRequest('raw', 'css', $this->css);
+		$this->text = weRequest('raw', 'text', $this->text);
+		$this->other = weRequest('raw', 'other', $this->other);
+		$this->maxSize = weRequest('raw', 'maxSize', $this->maxSize);
+		$this->step = weRequest('raw', 'step', $this->step);
+		$this->cmd = weRequest('raw', 'cmd', $this->cmd);
 
 		switch(weRequest('string', 'we_cmd', '', 0)){
 			case 'siteImportSaveWePageSettings' :
@@ -93,16 +93,16 @@ class we_import_site{
 				break;
 		}
 
-		$this->sameName = isset($_REQUEST['sameName']) ? $_REQUEST['sameName'] : $this->sameName;
-		$this->importMetadata = isset($_REQUEST['importMetadata']) ? $_REQUEST['importMetadata'] : $this->importMetadata;
+		$this->sameName = weRequest('raw', 'sameName', $this->sameName);
+		$this->importMetadata = weRequest('raw', 'importMetadata', $this->importMetadata);
 		$this->thumbs = isset($_REQUEST['thumbs']) ? makeCSVFromArray($_REQUEST['thumbs']) : $this->thumbs;
-		$this->width = isset($_REQUEST['width']) ? $_REQUEST['width'] : $this->width;
-		$this->height = isset($_REQUEST['height']) ? $_REQUEST['height'] : $this->height;
-		$this->widthSelect = isset($_REQUEST['widthSelect']) ? $_REQUEST['widthSelect'] : $this->widthSelect;
-		$this->heightSelect = isset($_REQUEST['heightSelect']) ? $_REQUEST['heightSelect'] : $this->heightSelect;
-		$this->keepRatio = isset($_REQUEST['keepRatio']) ? $_REQUEST['keepRatio'] : $this->keepRatio;
-		$this->quality = isset($_REQUEST['quality']) ? $_REQUEST['quality'] : $this->quality;
-		$this->degrees = isset($_REQUEST['degrees']) ? $_REQUEST['degrees'] : $this->degrees;
+		$this->width = weRequest('int', 'width', $this->width);
+		$this->height = weRequest('int', 'height', $this->height);
+		$this->widthSelect = weRequest('bool', 'widthSelect', $this->widthSelect);
+		$this->heightSelect = weRequest('bool', 'heightSelect', $this->heightSelect);
+		$this->keepRatio = weRequest('bool', 'keepRatio', $this->keepRatio);
+		$this->quality = weRequest('int', 'quality', $this->quality);
+		$this->degrees = weRequest('int', 'degrees', $this->degrees);
 
 		$this->_files = array();
 	}
@@ -316,11 +316,11 @@ class we_import_site{
 			'valueCreateType' => $_REQUEST['createType']
 		);
 		if($data['valueCreateType'] == 'specify'){
-			$data['valueTemplateId'] = isset($_REQUEST['templateID']) ? $_REQUEST['templateID'] : 0;
-			$data['valueUseRegex'] = isset($_REQUEST['useRegEx']) ? $_REQUEST['useRegEx'] : 0;
-			$data['valueFieldValues'] = serialize(isset($_REQUEST['fields']) ? $_REQUEST['fields'] : array());
-			$data['valueDateFormat'] = isset($_REQUEST['dateFormat']) ? $_REQUEST['dateFormat'] : 'unix';
-			$data['valueDateFormatField'] = isset($_REQUEST['dateformatField']) ? $_REQUEST['dateformatField'] : '';
+			$data['valueTemplateId'] = weRequest('int', 'templateID', 0);
+			$data['valueUseRegex'] = weRequest('bool', 'useRegEx');
+			$data['valueFieldValues'] = serialize(weRequest('raw', 'fields', array()));
+			$data['valueDateFormat'] = weRequest('string', 'dateFormat', 'unix');
+			$data['valueDateFormatField'] = weRequest('raw', 'dateformatField', '');
 			$data['valueTemplateName'] = 'neueVorlage';
 			$data['valueTemplateParentID'] = 0;
 		} else {
@@ -329,8 +329,8 @@ class we_import_site{
 			$data['valueFieldValues'] = serialize(array());
 			$data['valueDateFormat'] = 'unix';
 			$data['valueDateFormatField'] = '';
-			$data['valueTemplateName'] = isset($_REQUEST['templateName']) ? $_REQUEST['templateName'] : 'neueVorlage';
-			$data['valueTemplateParentID'] = isset($_REQUEST['templateParentID']) ? $_REQUEST['templateParentID'] : 0;
+			$data['valueTemplateName'] = weRequest('string', 'templateName', 'neueVorlage');
+			$data['valueTemplateParentID'] = weRequest('int', 'templateParentID', 0);
 		}
 		// update session
 		$_SESSION['prefs']['siteImportPrefs'] = serialize($data);

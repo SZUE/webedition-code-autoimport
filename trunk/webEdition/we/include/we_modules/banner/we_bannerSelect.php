@@ -34,6 +34,6 @@ if(isset($_REQUEST['we_cmd'])){
 }
 
 $_SERVER["SCRIPT_NAME"] = WE_MODULES_DIR . "banner/we_bannerSelect.php";
-$fs = new we_banner_selector(isset($id) ? $id : (isset($_REQUEST["id"]) ? $_REQUEST["id"] : ''), isset($JSIDName) ? $JSIDName : (isset($_REQUEST["JSIDName"]) ? $_REQUEST["JSIDName"] : ''), isset($JSTextName) ? $JSTextName : (isset($_REQUEST["JSTextName"]) ? $_REQUEST["JSTextName"] : ''), isset($JSCommand) ? $JSCommand : (isset($_REQUEST["JSCommand"]) ? $_REQUEST["JSCommand"] : ''), isset($order) ? $order : (isset($_REQUEST["order"]) ? $_REQUEST["order"] : ''));
+$fs = new we_banner_selector(isset($id) ? $id : weRequest('int', "id", 0), isset($JSIDName) ? $JSIDName : weRequest('string', "JSIDName", ''), isset($JSTextName) ? $JSTextName : weRequest('string', "JSTextName", ''), isset($JSCommand) ? $JSCommand : weRequest('raw', "JSCommand", ''), isset($order) ? $order : weRequest('raw', "order", ''));
 
-$fs->printHTML(isset($_REQUEST["what"]) ? $_REQUEST["what"] : we_selector_file::FRAMESET);
+$fs->printHTML(weRequest('int',"what",we_selector_file::FRAMESET));
