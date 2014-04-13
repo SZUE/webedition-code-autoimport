@@ -224,7 +224,7 @@ class we_export_frames extends weModuleFrames{
 		$this->SelectionTree->init($this->frameset, $this->editorBodyFrame, $this->editorBodyFrame, $this->cmdFrame);
 
 		$out = "";
-		$tabNr = isset($_REQUEST["tabnr"]) ? $_REQUEST["tabnr"] : 1;
+		$tabNr = weRequest('int', "tabnr", 1);
 
 		$out .= we_html_element::jsElement('
 
@@ -469,7 +469,7 @@ function closeAllType(){
 		switch(weRequest('string', "cmd")){
 			case "load":
 				if(isset($_REQUEST["pid"])){
-					$out = we_html_element::jsElement("self.location='" . WE_EXPORT_MODULE_DIR . "exportLoadTree.php?we_cmd[1]=" . $_REQUEST["tab"] . "&we_cmd[2]=" . $_REQUEST["pid"] . "&we_cmd[3]=" . (isset($_REQUEST["openFolders"]) ? $_REQUEST["openFolders"] : "") . "&we_cmd[4]=" . $this->editorBodyFrame . "'");
+					$out = we_html_element::jsElement("self.location='" . WE_EXPORT_MODULE_DIR . "exportLoadTree.php?we_cmd[1]=" . $_REQUEST["tab"] . "&we_cmd[2]=" . $_REQUEST["pid"] . "&we_cmd[3]=" . weRequest('raw', "openFolders", "") . "&we_cmd[4]=" . $this->editorBodyFrame . "'");
 				}
 				break;
 			case "mainload":
@@ -848,7 +848,7 @@ function closeAllType(){
 
 
 		$hiddens = we_html_element::htmlHidden(array("name" => "Categorys", "value" => $this->View->export->Categorys)) .
-			we_html_element::htmlHidden(array("name" => "cat", "value" => (isset($_REQUEST["cat"]) ? $_REQUEST["cat"] : "")));
+			we_html_element::htmlHidden(array("name" => "cat", "value" => weRequest('raw',"cat","")));
 
 
 		$delallbut = we_html_button::create_button("delete_all", "javascript:top.content.setHot(); we_cmd('del_all_cats')", true, 0, 0, "", "", (isset($this->View->export->Categorys) ? false : true));

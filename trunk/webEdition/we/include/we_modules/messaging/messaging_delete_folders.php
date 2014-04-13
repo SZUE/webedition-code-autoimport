@@ -26,8 +26,8 @@ require_once(WE_INCLUDES_PATH . 'we_delete_fn.inc.php');
 
 we_html_tools::protect();
 
-echo we_html_tools::getHtmlTop().
-		STYLESHEET;
+echo we_html_tools::getHtmlTop() .
+ STYLESHEET;
 
 if(!preg_match('|^([a-f0-9]){32}$|', $_REQUEST['we_transaction'])){
 	exit();
@@ -77,7 +77,7 @@ if(isset($_REQUEST['mcmd']) && $_REQUEST['mcmd'] == 'delete_folders'){
 			$messaging->saveInSession($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 			?>
 				top.content.cmd.location = '<?php print WE_MESSAGING_MODULE_DIR; ?>edit_messaging_frameset.php?pnt=cmd&we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mcmd=delete_folders&folders=<?php echo join(',', $v) ?>';
-					top.content.we_cmd('messaging_start_view', '', '<?php echo isset($_REQUEST['table']) ? $_REQUEST['table'] : '' ?>');
+					top.content.we_cmd('messaging_start_view', '', '<?php echo weRequest('table', 'table', ''); ?>');
 			//-->
 			</script>
 			</head>

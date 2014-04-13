@@ -26,9 +26,9 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
-$we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_cmd'][3]) ? $_REQUEST['we_cmd'][3] : '');
+$we_transaction = weRequest('transaction', 'we_cmd', 0, 3);
 
-$nr = abs($_REQUEST['we_cmd'][2]);
+$nr = weRequest('int', 'we_cmd', 0, 2);
 
 $GLOBALS['we_doc'] = new we_template();
 $GLOBALS['we_doc']->Table = TEMPLATES_TABLE;

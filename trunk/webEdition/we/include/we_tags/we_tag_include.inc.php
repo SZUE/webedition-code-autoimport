@@ -49,7 +49,7 @@ function we_setBackVar($we_unique){
 			'TITLE' => $GLOBALS['TITLE'],
 			'KEYWORDS' => $GLOBALS['KEYWORDS'],
 			'DESCRIPTION' => $GLOBALS['DESCRIPTION'],
-			'we_cmd' => isset($_REQUEST['we_cmd']) ? $_REQUEST['we_cmd'] : '',
+			'we_cmd' => weRequest('raw', 'we_cmd', ''),
 			'FROM_WE_SHOW_DOC' => isset($GLOBALS['FROM_WE_SHOW_DOC']) ? $GLOBALS['FROM_WE_SHOW_DOC'] : '',
 			'we_transaction' => isset($GLOBALS['we_transaction']) ? $GLOBALS['we_transaction'] : '',
 			'we_editmode' => isset($GLOBALS['we_editmode']) ? $GLOBALS['we_editmode'] : null,
@@ -57,7 +57,7 @@ function we_setBackVar($we_unique){
 			'postTagName' => isset($GLOBALS['postTagName']) ? $GLOBALS['postTagName'] : '',
 		),
 		'REQUEST' => array(
-			'we_cmd' => isset($_REQUEST['we_cmd']) ? $_REQUEST['we_cmd'] : '',
+			'we_cmd' => weRequest('raw', 'we_cmd', ''),
 	));
 
 	if(isset($GLOBALS['WE_IS_DYN'])){
@@ -149,7 +149,7 @@ function we_tag_include($attribs){
 			return '';
 		} else {
 			$tmp = getHash('SELECT Path,ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . ' AND Published>0', null, MYSQL_NUM);
-			list($realPath, $ct) = $tmp?$tmp:array('', '');
+			list($realPath, $ct) = $tmp ? $tmp : array('', '');
 		}
 	} else {
 		$realPath = $path;

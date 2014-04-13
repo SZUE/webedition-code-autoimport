@@ -29,11 +29,11 @@ class we_customer_copyWeDocumentFilterFrag extends taskFragment{
 		// init the fragment
 		// REQUEST[we_cmd][1] = id of folder
 		// REQUEST[we_cmd][2] = table
-		$_id = $_REQUEST['we_cmd'][1];
-		$_table = $_REQUEST['we_cmd'][2];
+		$_id = weRequest('int', 'we_cmd', 0, 1);
+		$_table = weRequest('table', 'we_cmd', FILE_TABLE, 2);
 
 		// if we_cmd 3 is set, take filters of that folder as parent!!
-		$_idForFilter = (isset($_REQUEST['we_cmd'][3]) ? $_REQUEST['we_cmd'][3] : $_id);
+		$_idForFilter = weRequest('int', 'we_cmd', $_id, 3);
 
 		if($_id == 0){
 			t_e('called function with invalid id');

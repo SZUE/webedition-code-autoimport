@@ -45,7 +45,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 		$Cache = new we_glossary_cache($Language);
 
 		if(isset($_REQUEST['do']) && isset($_REQUEST['ID']) && $_REQUEST['ID']){
-			switch(weRequest('string','do')){
+			switch(weRequest('string', 'do')){
 				case 'delete':
 					if($GLOBALS['DB_WE']->query('DELETE FROM ' . GLOSSARY_TABLE . ' WHERE ID IN (' . $GLOBALS['DB_WE']->escape(implode(',', $_REQUEST['ID'])) . ')')){
 						foreach($_REQUEST['ID'] as $_id){
@@ -77,18 +77,18 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 		$Language = $temp[0] . "_" . $temp[1];
 		$Type = $temp[2];
 
-		$Rows = isset($_REQUEST['Rows']) ? $_REQUEST['Rows'] : 10;
-		$Offset = isset($_REQUEST['Offset']) ? $_REQUEST['Offset'] >= 0 ? $_REQUEST['Offset'] : 0 : 0;
-		$Order = isset($_REQUEST['Order']) ? $_REQUEST['Order'] : 'Text';
-		$Sort = isset($_REQUEST['Sort']) ? $_REQUEST['Sort'] : 'ASC';
+		$Rows = weRequest('int', 'Rows', 10);
+		$Offset = weRequest('int', 'Offset', 0);
+		$Order = weRequest('string', 'Order', 'Text');
+		$Sort = weRequest('string', 'Sort', 'ASC');
 		$Where = "Language = '" . $Language . "' AND Type = '" . $Type . "'";
-		if(isset($_REQUEST['Keyword'])){
+		if(($kw = strtolower(weRequest('raw', 'Keyword')))){
 			$Where .= " AND ("
-				. "lcase(Text) LIKE '%" . strtolower($_REQUEST['Keyword']) . "%' OR "
-				. "lcase(Title) LIKE '%" . strtolower($_REQUEST['Keyword']) . "%' OR "
-				. "lcase(Description) LIKE '%" . strtolower($_REQUEST['Keyword']) . "%')";
+				. "lcase(Text) LIKE '%" . $kw . "%' OR "
+				. "lcase(Title) LIKE '%" . $kw . "%' OR "
+				. "lcase(Description) LIKE '%" . $kw . "%')";
 		}
-		if(isset($_REQUEST['GreenOnly']) && $_REQUEST['GreenOnly'] == 1){
+		if(weRequest('bool', 'GreenOnly')){
 			$Where .= " AND Published > 0";
 		}
 
@@ -362,7 +362,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 		</tr>
 		<tr>
 			<td class="defaultgray">' . g_l('modules_glossary', '[search]') . '</td>
-			<td colspan="2">' . we_html_tools::htmlTextInput('Keyword', 24, isset($_REQUEST['Keyword']) ? $_REQUEST['Keyword'] : '', "", "style=\"width: 430px\"") . '</td>
+			<td colspan="2">' . we_html_tools::htmlTextInput('Keyword', 24, weRequest('raw', 'Keyword', ''), "", "style=\"width: 430px\"") . '</td>
 			<td>' . we_html_tools::getPixel(18, 2) . '</td>
 			<td>' . $button . '</td>
 		</tr>

@@ -96,7 +96,7 @@ function we_tag_saveRegisteredUser($attribs){
 		}
 	} else if(isset($_REQUEST['s']['ID']) && $_REQUEST['s']['ID'] == $_SESSION['webuser']['ID'] && $_SESSION['webuser']['registered']){ // existing user
 		// existierender User (Daten werden von User geaendert)!!
-		$Username = isset($_REQUEST['s']['Username']) ? $_REQUEST['s']['Username'] : $_SESSION['webuser']['Username'];
+		$Username = weRequest('string', 's', $_SESSION['webuser']['Username'], 'Username');
 
 		if(f('SELECT 1 FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $GLOBALS["DB_WE"]->escape($Username) . '" AND ID!=' . intval($_SESSION['webuser']['ID']))){
 			$userexists = $userexists ? $userexists : g_l('customer', '[username_exists]');

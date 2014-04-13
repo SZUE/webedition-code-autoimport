@@ -762,9 +762,8 @@ class we_object extends we_document{
 	}
 
 	function addMetaToClass($name, $pos){
-
 		// get from request
-		$amount = isset($_REQUEST["amount_insert_meta_at_class_" . $name . $pos]) ? $_REQUEST["amount_insert_meta_at_class_" . $name . $pos] : 1;
+		$amount = weRequest('int', "amount_insert_meta_at_class_" . $name . $pos, 1);
 
 		// set new amount
 		$this->elements[$name . "count"]["dat"] += $amount;

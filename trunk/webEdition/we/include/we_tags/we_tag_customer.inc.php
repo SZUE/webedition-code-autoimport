@@ -83,7 +83,7 @@ function we_tag_customer($attribs){
 		}
 	} else {
 
-		$we_cid = $we_cid ? $we_cid : (isset($_REQUEST['we_cid']) ? $_REQUEST['we_cid'] : 0);
+		$we_cid = $we_cid ? $we_cid : weRequest('int', 'we_cid', 0);
 	}
 
 	$GLOBALS['lv'] = new we_customer_customertag($we_cid, $condition, $hidedirindex);

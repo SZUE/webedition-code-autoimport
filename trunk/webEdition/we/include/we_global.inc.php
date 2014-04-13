@@ -215,7 +215,7 @@ function _weRequest(&$var, $key, array $data){
 			$var = filter_var($var, FILTER_SANITIZE_SPECIAL_CHARS);
 			return;
 		default:
-			t_e('unknown filter type '.$type);
+			t_e('unknown filter type ' . $type);
 		case 'raw':
 			//do nothing - used as placeholder for all types not yet known
 			return;
@@ -239,7 +239,11 @@ function weRequest($type, $name, $default = false, $index = null){
 	if(is_array($var)){
 		array_walk($var, '_weRequest', array($type, $default));
 	} else {
+		$oldVar = $var;
 		_weRequest($var, '', array($type, $default));
+		if($var != $oldVar){
+			t_e('changed values', $oldVar, $var);
+		}
 	}
 	return $var;
 }

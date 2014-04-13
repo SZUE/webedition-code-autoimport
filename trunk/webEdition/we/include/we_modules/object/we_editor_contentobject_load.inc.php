@@ -26,9 +26,9 @@ require_once(WE_INCLUDES_PATH . 'we_tag.inc.php');
 we_html_tools::protect();
 
 
-$cmd = isset($_REQUEST['we_cmd'][0]) ? $_REQUEST['we_cmd'][0] : '';
-$we_transaction = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : '';
-$id = isset($_REQUEST['we_cmd'][2]) ? $_REQUEST['we_cmd'][2] : false;
+$cmd = weRequest('raw', 'we_cmd', '', 0);
+$we_transaction = weRequest('transaction', 'we_cmd', '', 1);
+$id = weRequest('int', 'we_cmd', false, 2);
 
 $jsGUI = new weOrderContainer('_EditorFrame.getContentEditor()', 'classEntry');
 
