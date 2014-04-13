@@ -59,7 +59,7 @@ class we_glossary_frames extends weModuleFrames{
 		}
 
 		if(isset($_REQUEST['cmd'])){
-			switch(weRequest('string','cmd')){
+			switch(weRequest('string', 'cmd')){
 				// Folder View
 				case 'view_folder':
 					return we_glossary_frameEditorFolder::Header($this);
@@ -97,7 +97,7 @@ class we_glossary_frames extends weModuleFrames{
 		}
 
 		if(isset($_REQUEST['cmd'])){
-			switch(weRequest('string','cmd')){
+			switch(weRequest('string', 'cmd')){
 
 				// Folder View
 				case 'view_folder':
@@ -136,7 +136,7 @@ class we_glossary_frames extends weModuleFrames{
 		}
 
 		if(isset($_REQUEST['cmd'])){
-			switch(weRequest('string','cmd')){
+			switch(weRequest('string', 'cmd')){
 
 				// Folder View
 				case 'view_folder':
@@ -181,32 +181,27 @@ class we_glossary_frames extends weModuleFrames{
 	}
 
 	function getHTMLCmd(){
-		$out = "";
-
-		if(isset($_REQUEST["pid"])){
-			$pid = $_REQUEST["pid"];
-		} else {
+		if(!($pid = weRequest('int', "pid"))){
 			exit;
 		}
 
-		$offset = (isset($_REQUEST["offset"]) ? $_REQUEST["offset"] : 0);
+		$offset = weRequest('int', "offset", 0);
 
 		$rootjs = "";
-		if(!$pid)
-			$rootjs.='
-		' . $this->Tree->topFrame . '.treeData.clear();
-		' . $this->Tree->topFrame . '.treeData.add(new ' . $this->Tree->topFrame . '.rootEntry(\'' . $pid . '\',\'root\',\'root\'));
-		';
-
+		if(!$pid){
+			$rootjs.=
+				$this->Tree->topFrame . '.treeData.clear();' .
+				$this->Tree->topFrame . '.treeData.add(new ' . $this->Tree->topFrame . '.rootEntry(\'' . $pid . '\',\'root\',\'root\'));';
+		}
 		$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "cmd")) .
 			we_html_element::htmlHidden(array("name" => "cmd", "value" => "no_cmd"));
 
-		$out.=we_html_element::htmlBody(array("bgcolor" => "white", "marginwidth" => 10, "marginheight" => 10, "leftmargin" => 10, "topmargin" => 10), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
-					we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree(we_glossary_treeLoader::getItems($pid, $offset, $this->Tree->default_segment, "")))
+		return $this->getHTMLDocument(
+				we_html_element::htmlBody(array("bgcolor" => "white", "marginwidth" => 10, "marginheight" => 10, "leftmargin" => 10, "topmargin" => 10), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
+						we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree(we_glossary_treeLoader::getItems($pid, $offset, $this->Tree->default_segment, "")))
+					)
 				)
 		);
-
-		return $this->getHTMLDocument($out);
 	}
 
 }

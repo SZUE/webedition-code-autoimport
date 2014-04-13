@@ -26,9 +26,9 @@ $protect = we_base_moduleInfo::isActive('shop') && we_users_util::canEditModule(
 we_html_tools::protect($protect);
 
 /* * ************ fuction for orders  ************** */
-$typeObj = isset($_REQUEST['type']) ? $_REQUEST['type'] : 'object';
-$typeDoc = isset($_REQUEST['type']) ? $_REQUEST['type'] : 'document';
-$actPage = isset($_REQUEST['actPage']) ? $_REQUEST['actPage'] : '0';
+$typeObj = weRequest('string', 'type', 'object');
+$typeDoc = weRequest('string', 'type', 'document');
+$actPage = weRequest('int', 'actPage', 0);
 
 function orderBy($a, $b){
 	return ($a[$_REQUEST['orderBy']] >= $b[$_REQUEST['orderBy']] ? (isset($_REQUEST['orderDesc']) ? false : true) : (isset($_REQUEST['orderDesc']) ? true : false));
@@ -195,7 +195,7 @@ if(isset($daten)){
 
 	/*	 * ******** START PROCESS THE OUTPUT IF OPTED FOR AN OBJECT *********** */
 
-	switch(weRequest('string','typ')){
+	switch(weRequest('string', 'typ')){
 		case "object": //start output object
 			$orderBy = isset($_REQUEST['orderBy']) ? $DB_WE->escape($_REQUEST['orderBy']) : 'obTitle';
 			$entries = 0;
@@ -344,14 +344,14 @@ if(isset($daten)){
 			/*			 * ******** START PROCESS THE OUTPUT IF OPTED FOR A DOCUMENT *********** */
 			break;
 		case "document": //start output doc
-			$orderBy = isset($_REQUEST['orderBy']) ? $_REQUEST['orderBy'] : 'sql';
-			$entries = f('SELECT count(Name) AS Anzahl FROM ' . LINK_TABLE . ' WHERE Name ="' . $DB_WE->escape(WE_SHOP_TITLE_FIELD_NAME) . '"', 'Anzahl', $DB_WE); // Pager: determine the number of records;
+			$orderBy = weRequest('raw', 'orderBy', 'sql');
+			$entries = f('SELECT COUNT(Name) FROM ' . LINK_TABLE . ' WHERE Name ="' . $DB_WE->escape(WE_SHOP_TITLE_FIELD_NAME) . '"'); // Pager: determine the number of records;
 			$active_page = !empty($_GET['page']) ? $_GET['page'] : 0; // Pager: determine the number of records;
 			$docType = we_base_ContentTypes::WEDOCUMENT; // Pager: determine the current page
-			$typeAlias = isset($typeAlias) ? $typeAlias = "document" : $typeAlias = "document"; // Pager: determine the current page
+			$typeAlias = isset($typeAlias) ? "document" : "document"; // Pager: determine the current page
 
-			if($entries != 0){ // Pager: Number of records not empty?
-				$topInfo = ($entries > 0) ? $entries : g_l('modules_shop', '[noRecord]');
+			if($entries){ // Pager: Number of records not empty?
+				$topInfo = ($entries ? $entries : g_l('modules_shop', '[noRecord]'));
 				// :: then do the query for documents
 				$queryCondition = FILE_TABLE . '.ID = ' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID = ' . CONTENT_TABLE . '.ID AND ' . LINK_TABLE . '.Name = "' . WE_SHOP_TITLE_FIELD_NAME . '" ';
 				$queryFrom = CONTENT_TABLE . ', ' . LINK_TABLE . ',' . FILE_TABLE . ' ';

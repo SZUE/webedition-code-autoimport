@@ -386,7 +386,7 @@ class we_customer_EIWizard{
 			$csv_lineend = weRequest('raw', "csv_lineend", CSV_LINEEND);
 			$the_charset = weRequest('raw', "the_charset", THE_CHARSET);
 
-			$csv_fieldnames = weRequest('bool',"csv_fieldnames");
+			$csv_fieldnames = weRequest('bool', "csv_fieldnames");
 
 			$source = weRequest('file', "source", "/");
 
@@ -832,8 +832,8 @@ class we_customer_EIWizard{
 		$csv_fieldnames = weRequest('bool', "csv_fieldnames");
 		$same = weRequest('string', "same", "rename");
 
-		$field_mappings = isset($_REQUEST["field_mappings"]) ? $_REQUEST["field_mappings"] : "";
-		$att_mappings = isset($_REQUEST["att_mappings"]) ? $_REQUEST["att_mappings"] : "";
+		$field_mappings = weRequest('raw', "field_mappings", "");
+		$att_mappings = weRequest('raw', "att_mappings", "");
 
 		$arrgs = array();
 		if($type == "csv"){
@@ -925,14 +925,14 @@ class we_customer_EIWizard{
 	}
 
 	function getHTMLImportStep5(){
-		$tmpdir = isset($_REQUEST["tmpdir"]) ? $_REQUEST["tmpdir"] : "";
-		$impno = isset($_REQUEST["impno"]) ? $_REQUEST["impno"] : "0";
+		$tmpdir = weRequest('file', "tmpdir");
+		$impno = weRequest('int', "impno", 0);
 
 		$table = new we_html_table(array("cellpadding" => 2, "cellspacing" => 2, "border" => 0), 3, 1);
 		$table->setCol(0, 0, array("class" => "defaultfont"), sprintf(g_l('modules_customer', '[import_finished_desc]'), $impno));
 
-		if($tmpdir != "" && is_file(TEMP_PATH . "/$tmpdir/$tmpdir.log") && is_readable(TEMP_PATH . "/$tmpdir/$tmpdir.log")){
-			$log = we_base_file::load(TEMP_PATH . "/$tmpdir/$tmpdir.log", 'rb');
+		if($tmpdir && is_file(TEMP_PATH . '/' . $tmpdir . '/' . $tmpdir . '.log') && is_readable(TEMP_PATH . "/$tmpdir/$tmpdir.log")){
+			$log = we_base_file::load(TEMP_PATH . '/' . $tmpdir . '/' . $tmpdir . '.log', 'rb');
 			if($log){
 
 				$table->setColContent(1, 0, we_html_tools::htmlAlertAttentionBox(g_l('modules_customer', '[show_log]'), we_html_tools::TYPE_ALERT, 550));
@@ -1152,28 +1152,28 @@ class we_customer_EIWizard{
 				break;
 			case "export":
 
-				$file_format = isset($_REQUEST["type"]) ? $_REQUEST["type"] : "gxml";
-				$file_name = isset($_REQUEST["filename"]) ? $_REQUEST["filename"] : "";
-				$export_to = isset($_REQUEST["export_to"]) ? $_REQUEST["export_to"] : "";
+				$file_format = weRequest('string', "type", "gxml");
+				$file_name = weRequest('file', "filename", "");
+				$export_to = weRequest('raw', "export_to", "");
 
-				$path = ($export_to == "server" ? (isset($_REQUEST["path"]) ? $_REQUEST["path"] : "") : rtrim(TEMP_DIR, '/'));
+				$path = ($export_to == "server" ? weRequest('file', "path", "") : rtrim(TEMP_DIR, '/'));
 
-				$cdata = isset($_REQUEST["cdata"]) ? $_REQUEST["cdata"] : "0";
-				$csv_delimiter = isset($_REQUEST["csv_delimiter"]) ? $_REQUEST["csv_delimiter"] : "";
-				$csv_enclose = isset($_REQUEST["csv_enclose"]) ? $_REQUEST["csv_enclose"] : "";
-				$csv_lineend = isset($_REQUEST["csv_lineend"]) ? $_REQUEST["csv_lineend"] : "";
-				$csv_fieldnames = weRequest('bool',"csv_fieldnames");
+				$cdata = weRequest('raw', "cdata",0);
+				$csv_delimiter = weRequest('raw', "csv_delimiter", "");
+				$csv_enclose = weRequest('raw', "csv_enclose", "");
+				$csv_lineend = weRequest('raw', "csv_lineend", "");
+				$csv_fieldnames = weRequest('bool', "csv_fieldnames");
 
 				$customers = array();
 
 				if($_REQUEST["selection"] == "manual"){
-					$customers = makeArrayFromCSV((isset($_REQUEST["customers"]) ? $_REQUEST["customers"] : ""));
+					$customers = makeArrayFromCSV(weRequest('raw', "customers", ""));
 				} else {
 
 					$filterarr = array();
 					$filtersql = "";
 
-					$filter_count = isset($_REQUEST["filter_count"]) ? $_REQUEST["filter_count"] : "0";
+					$filter_count = weRequest('int', "filter_count", 0);
 					$filter = "";
 
 					$filter_fieldname = array();
@@ -1246,7 +1246,7 @@ class we_customer_EIWizard{
 				$filename = (isset($_REQUEST["filename"]) && $_REQUEST["filename"] != "") ? $_REQUEST["filename"] : null;
 				$firstexec = (isset($_REQUEST["firstexec"]) && $_REQUEST["firstexec"] != "") ? $_REQUEST["firstexec"] : -999;
 				$all = (isset($_REQUEST["all"])) ? $_REQUEST["all"] : 0;
-				$cdata = isset($_REQUEST["cdata"]) ? $_REQUEST["cdata"] : "0";
+				$cdata = weRequest('raw', "cdata", 0);
 
 				$hiddens = we_html_element::htmlHidden(array("name" => "file_format", "value" => $file_format)) .
 					we_html_element::htmlHidden(array("name" => "filename", "value" => $filename)) .
@@ -1388,23 +1388,23 @@ class we_customer_EIWizard{
 				break;
 			case "import":
 
-				$filename = isset($_REQUEST["filename"]) ? $_REQUEST["filename"] : "";
-				$import_from = isset($_REQUEST["import_from"]) ? $_REQUEST["import_from"] : "";
-				$type = isset($_REQUEST["type"]) ? $_REQUEST["type"] : "";
-				$xml_from = isset($_REQUEST["xml_from"]) ? $_REQUEST["xml_from"] : "";
-				$xml_to = isset($_REQUEST["xml_to"]) ? $_REQUEST["xml_to"] : "";
-				$dataset = isset($_REQUEST["dataset"]) ? $_REQUEST["dataset"] : "";
-				$csv_delimiter = isset($_REQUEST["csv_delimiter"]) ? $_REQUEST["csv_delimiter"] : CSV_DELIMITER;
-				$csv_enclose = isset($_REQUEST["csv_enclose"]) ? $_REQUEST["csv_enclose"] : CSV_ENCLOSE;
-				$csv_lineend = isset($_REQUEST["csv_lineend"]) ? $_REQUEST["csv_lineend"] : CSV_LINEEND;
-				$the_charset = isset($_REQUEST["the_charset"]) ? $_REQUEST["the_charset"] : THE_CHARSET;
-				$csv_fieldnames = isset($_REQUEST["csv_fieldnames"]) ? $_REQUEST["csv_fieldnames"] : CSV_FIELDS;
+				$filename = weRequest('file', "filename", "");
+				$import_from = weRequest('raw', "import_from", "");
+				$type = weRequest('raw', "type", "");
+				$xml_from = weRequest('raw', "xml_from", "");
+				$xml_to = weRequest('raw', "xml_to", "");
+				$dataset = weRequest('raw', "dataset", "");
+				$csv_delimiter = weRequest('raw', "csv_delimiter", CSV_DELIMITER);
+				$csv_enclose = weRequest('raw', "csv_enclose", CSV_ENCLOSE);
+				$csv_lineend = weRequest('raw', "csv_lineend", CSV_LINEEND);
+				$the_charset = weRequest('raw', "the_charset", THE_CHARSET);
+				$csv_fieldnames = weRequest('raw', "csv_fieldnames", CSV_FIELDS);
 
 
-				$same = isset($_REQUEST["same"]) ? $_REQUEST["same"] : "rename";
+				$same = weRequest('raw', "same", "rename");
 
-				$field_mappings = isset($_REQUEST["field_mappings"]) ? $_REQUEST["field_mappings"] : array();
-				$att_mappings = isset($_REQUEST["att_mappings"]) ? $_REQUEST["att_mappings"] : array();
+				$field_mappings = weRequest('raw', "field_mappings", array());
+				$att_mappings = weRequest('raw', "att_mappings", array());
 
 				$options = array();
 				$options["type"] = $type;
@@ -1452,20 +1452,20 @@ class we_customer_EIWizard{
 				);
 				break;
 			case "do_import":
-				$tmpdir = isset($_REQUEST["tmpdir"]) ? $_REQUEST["tmpdir"] : "";
-				$fstart = isset($_REQUEST["fstart"]) ? $_REQUEST["fstart"] : "";
-				$fcount = isset($_REQUEST["fcount"]) ? $_REQUEST["fcount"] : "";
-				$field_mappings = isset($_REQUEST["field_mappings"]) ? $_REQUEST["field_mappings"] : array();
-				$att_mappings = isset($_REQUEST["att_mappings"]) ? $_REQUEST["att_mappings"] : array();
-				$same = isset($_REQUEST["same"]) ? $_REQUEST["same"] : "rename";
-				$impno = isset($_REQUEST["impno"]) ? $_REQUEST["impno"] : 0;
+				$tmpdir = weRequest('file', "tmpdir", "");
+				$fstart = weRequest('int', "fstart", 0);
+				$fcount = weRequest('int', "fcount", "");
+				$field_mappings = weRequest('raw', "field_mappings", array());
+				$att_mappings = weRequest('raw', "att_mappings", array());
+				$same = weRequest('raw', "same", "rename");
+				$impno = weRequest('int', "impno", 0);
 
 				if(we_customer_EI::importCustomers(array(
-						"xmlfile" => TEMP_PATH . "/$tmpdir/temp_$fstart.xml",
+						"xmlfile" => TEMP_PATH . '/' . $tmpdir . '/temp_' . $fstart . '.xml',
 						"field_mappings" => $field_mappings,
 						"att_mappings" => $att_mappings,
 						"same" => $same,
-						"logfile" => TEMP_PATH . "/$tmpdir/$tmpdir.log"
+						"logfile" => TEMP_PATH . '/' . $tmpdir . '/' . $tmpdir . '.log'
 						)
 					))
 					$impno++;
@@ -1511,8 +1511,8 @@ class we_customer_EIWizard{
 				);
 				break;
 			case "import_end":
-				$tmpdir = isset($_REQUEST["tmpdir"]) ? $_REQUEST["tmpdir"] : "";
-				$impno = isset($_REQUEST["impno"]) ? $_REQUEST["impno"] : "0";
+				$tmpdir = weRequest('file', "tmpdir", "");
+				$impno = weRequest('int', "impno", 0);
 
 				$js = we_html_element::jsElement('
 							function doNext(){
@@ -1640,6 +1640,7 @@ class we_customer_EIWizard{
 				default:
 			}
 		}
+		$customers = weRequest('raw', "customers", "");
 		$js = we_html_element::jsScript(JS_DIR . "windows.js") .
 			we_html_element::jsElement('
 			function selector_cmd(){
@@ -1659,21 +1660,16 @@ class we_customer_EIWizard{
 				}
 			}
 
-			//' . $this->topFrame . '.customers="' . (isset($_REQUEST["customers"]) ? $_REQUEST["customers"] : "") . '";
-
+			' . $this->topFrame . '.customers="' . $customers . '";
 		');
 
-
-		$js.=we_html_element::jsElement($this->topFrame . '.customers="' . (isset($_REQUEST["customers"]) ? $_REQUEST["customers"] : "") . '";');
-
 		$hiddens = we_html_element::htmlHidden(array("name" => "wcmd", "value" => "")) .
-			//we_html_element::htmlHidden(array("name"=>"customers","value"=>(isset($_REQUEST["customers"]) ? $_REQUEST["customers"] :""))).
-			we_html_element::htmlHidden(array("name" => "cus", "value" => (isset($_REQUEST["cus"]) ? $_REQUEST["cus"] : "")));
+			we_html_element::htmlHidden(array("name" => "cus", "value" => weRequest('raw', "cus", "")));
 
 
 		$delallbut = we_html_button::create_button("delete_all", "javascript:selector_cmd('del_all_customers')", true, 0, 0, "", "", (isset($_REQUEST["customers"]) ? false : true));
 		$addbut = we_html_button::create_button("add", "javascript:selector_cmd('openSelector','','" . CUSTOMER_TABLE . "','','','fillIDs();opener." . $this->bodyFrame . ".selector_cmd(\\'add_customer\\',top.allIDs);')");
-		$custs = new MultiDirChooser(400, (isset($_REQUEST["customers"]) ? $_REQUEST["customers"] : ""), "del_customer", we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", CUSTOMER_TABLE);
+		$custs = new MultiDirChooser(400, $customers, "del_customer", we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", CUSTOMER_TABLE);
 
 		if(!permissionhandler::hasPerm("EDIT_KATEGORIE")){
 			$custs->isEditable = false;
@@ -1715,7 +1711,7 @@ class we_customer_EIWizard{
 	}
 
 	function getHTMLCustomerFilter(){
-		$count = isset($_REQUEST["filter_count"]) ? $_REQUEST["filter_count"] : 0;
+		$count = weRequest('int', "filter_count", 0);
 
 		switch(weRequest('string', "fcmd")){
 			case "add_filter":

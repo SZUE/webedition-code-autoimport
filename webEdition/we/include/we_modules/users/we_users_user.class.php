@@ -745,7 +745,7 @@ _multiEditorreload = true;";
 							$_SESSION['prefs']['seem_start_type'] = 'weapp';
 							break;
 						default:
-							$_SESSION['prefs']['seem_start_file'] = isset($_REQUEST['seem_start_document']) ? $_REQUEST['seem_start_document'] : 0;
+							$_SESSION['prefs']['seem_start_file'] = weRequest('int', 'seem_start_document', 0);
 							$_SESSION['prefs']['seem_start_type'] = 'document';
 							break;
 					}
@@ -1025,7 +1025,7 @@ _multiEditorreload = true;";
 					}
 					$this->setPreference($val, (isset($_POST[$obj]) ? $_POST[$obj] : 0));
 				}
-				switch(weRequest('string','seem_start_type')){
+				switch(weRequest('string', 'seem_start_type')){
 					case 'cockpit':
 						$this->setPreference('seem_start_file', 0);
 						$this->setPreference('seem_start_type', 'cockpit');
@@ -1641,13 +1641,13 @@ function delElement(elvalues,elem) {
 
 				switch($k){
 					case (defined('NEWSLETTER_TABLE') ? NEWSLETTER_TABLE : 'NEWSLETTER_TABLE'):
-						$button = we_html_button::create_button('select', "javascript:we_cmd('openNewsletterDirselector',document.getElementsByName('" . $obj_names . "[id][" . $key . "]')[0].value,'document.getElementsByName(\'" . $obj_names . "[id][" . $key . "]\')[0].value','document.getElementsByName(\'" . $obj_names . "[Text][" . $key . "]\')[0].value','','" . session_id() . "','" . (isset($_REQUEST["rootDirID"]) ? $_REQUEST["rootDirID"] : "") . "' )");
+						$button = we_html_button::create_button('select', "javascript:we_cmd('openNewsletterDirselector',document.getElementsByName('" . $obj_names . "[id][" . $key . "]')[0].value,'document.getElementsByName(\'" . $obj_names . "[id][" . $key . "]\')[0].value','document.getElementsByName(\'" . $obj_names . "[Text][" . $key . "]\')[0].value','','" . session_id() . "','" . weRequest('int', "rootDirID", 0) . "' )");
 						break;
 					case NAVIGATION_TABLE:
-						$button = we_html_button::create_button('select', "javascript:we_cmd('openNavigationDirselector',document.getElementsByName('" . $obj_names . "[id][" . $key . "]')[0].value,'document.getElementsByName(\'" . $obj_names . "[id][" . $key . "]\')[0].value','document.getElementsByName(\'" . $obj_names . "[Text][" . $key . "]\')[0].value','','" . session_id() . "','" . (isset($_REQUEST["rootDirID"]) ? $_REQUEST["rootDirID"] : "") . "' )");
+						$button = we_html_button::create_button('select', "javascript:we_cmd('openNavigationDirselector',document.getElementsByName('" . $obj_names . "[id][" . $key . "]')[0].value,'document.getElementsByName(\'" . $obj_names . "[id][" . $key . "]\')[0].value','document.getElementsByName(\'" . $obj_names . "[Text][" . $key . "]\')[0].value','','" . session_id() . "','" . weRequest('int', "rootDirID", 0) . "' )");
 						break;
 					default:
-						$button = we_html_button::create_button('select', "javascript:we_cmd('openDirselector',document.getElementsByName('" . $obj_names . "[id][" . $key . "]')[0].value,'" . $k . "','document.getElementsByName(\'" . $obj_names . "[id][" . $key . "]\')[0].value','document.getElementsByName(\'" . $obj_names . "[Text][" . $key . "]\')[0].value','','" . session_id() . "','" . (isset($_REQUEST["rootDirID"]) ? $_REQUEST["rootDirID"] : "") . "' )");
+						$button = we_html_button::create_button('select', "javascript:we_cmd('openDirselector',document.getElementsByName('" . $obj_names . "[id][" . $key . "]')[0].value,'" . $k . "','document.getElementsByName(\'" . $obj_names . "[id][" . $key . "]\')[0].value','document.getElementsByName(\'" . $obj_names . "[Text][" . $key . "]\')[0].value','','" . session_id() . "','" . weRequest('int', "rootDirID", 0) . "' )");
 				}
 
 				$yuiSuggest->setAcId('WS' . $k . $key);

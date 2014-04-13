@@ -38,7 +38,6 @@ $we_ID = weRequest('int', 'we_cmd', 0, 1);
 $tmplID = weRequest('int', 'we_cmd', 0, 4);
 //these come from external!
 $we_editmode = weRequest('bool', 'we_cmd', false, 6);
-//$createFromTmpFile = addslashes(isset($_REQUEST['we_cmd'][7]) ? $_REQUEST['we_cmd'][7] : '');
 
 $we_Table = FILE_TABLE;
 

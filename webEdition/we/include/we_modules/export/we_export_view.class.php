@@ -68,7 +68,7 @@ class we_export_view{
 		$out.=$this->htmlHidden("cmdid", (isset($cmds["cmdid"]) ? $cmds["cmdid"] : ""));
 		$out.=$this->htmlHidden("pnt", (isset($cmds["pnt"]) ? $cmds["pnt"] : ""));
 		$out.=$this->htmlHidden("tabnr", (isset($cmds["tabnr"]) ? $cmds["tabnr"] : ""));
-		$out.=$this->htmlHidden("table", (isset($_REQUEST["table"]) ? $_REQUEST["table"] : FILE_TABLE));
+		$out.=$this->htmlHidden("table", weRequest('table', "table", FILE_TABLE));
 		$out.=$this->htmlHidden("ID", (isset($this->export->ID) ? $this->export->ID : 0));
 		$out.=$this->htmlHidden("IsFolder", (isset($this->export->IsFolder) ? $this->export->IsFolder : 0));
 		$out.=$this->htmlHidden("selDocs", (isset($this->export->selDocs) ? $this->export->selDocs : ''));
@@ -76,16 +76,16 @@ class we_export_view{
 		$out.=$this->htmlHidden("selObjs", (isset($this->export->selObjs) ? $this->export->selObjs : ''));
 		$out.=$this->htmlHidden("selClasses", (isset($this->export->selClasses) ? $this->export->selClasses : ''));
 
-		$out.=$this->htmlHidden("selDocs_open", (isset($_REQUEST["selDocs_open"]) ? $_REQUEST["selDocs_open"] : ''));
-		$out.=$this->htmlHidden("selTempl_open", (isset($_REQUEST["selTempl_open"]) ? $_REQUEST["selTempl_open"] : ''));
-		$out.=$this->htmlHidden("selObjs_open", (isset($_REQUEST["selObjs_open"]) ? $_REQUEST["selObjs_open"] : ''));
-		$out.=$this->htmlHidden("selClasses_open", (isset($_REQUEST["selClasses_open"]) ? $_REQUEST["selClasses_open"] : ''));
+		$out.=$this->htmlHidden("selDocs_open", weRequest('raw', "selDocs_open", ''));
+		$out.=$this->htmlHidden("selTempl_open", weRequest('raw', "selTempl_open", ''));
+		$out.=$this->htmlHidden("selObjs_open", weRequest('raw', "selObjs_open", ''));
+		$out.=$this->htmlHidden("selClasses_open", weRequest('raw', "selClasses_open", ''));
 
 		return $out;
 	}
 
 	function getJSTop(){
-		$mod = isset($_REQUEST['mod']) ? $_REQUEST['mod'] : '';
+		$mod = weRequest('string', 'mod', '');
 		$modData = we_base_moduleInfo::getModuleData($mod);
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 
@@ -245,7 +245,7 @@ class we_export_view{
 
 	function getJSProperty(){
 
-		$table = isset($_REQUEST["table"]) ? $_REQUEST["table"] : FILE_TABLE;
+		$table = weRequest('table', "table", FILE_TABLE);
 
 		$out = "";
 		$out.=we_html_element::jsScript(JS_DIR . "windows.js");

@@ -27,14 +27,14 @@ $protect = we_base_moduleInfo::isActive('messaging') && we_users_util::canEditMo
 we_html_tools::protect($protect);
 
 
-$what = (isset($_REQUEST["pnt"])) ? $_REQUEST["pnt"] : "frameset";
+$what = weRequest('string', "pnt", "frameset");
 
-if(!isset($we_transaction)){
+if(!isset($we_transaction)){//FIXME: can this ever be set except register globals???
 	$we_transaction = 0;
 }
-$transaction = $what == 'frameset' ? $we_transaction : (isset($_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 'no_request');
+$transaction = $what == 'frameset' ? $we_transaction : weRequest('transaction', 'we_transaction', 'no_request');
 
-$weFrame = new we_messaging_frames(WE_MESSAGING_MODULE_DIR . 'edit_messaging_frameset.php', isset($_REQUEST["viewclass"]) ? $_REQUEST["viewclass"] : 'message', isset($_REQUEST["we_transaction"]) ? $_REQUEST["we_transaction"] : 'no_request', $we_transaction);
+$weFrame = new we_messaging_frames(WE_MESSAGING_MODULE_DIR . 'edit_messaging_frameset.php', weRequest('string', "viewclass", 'message'), $we_transaction);
 echo $weFrame->getHTMLDocumentHeader();
 $weFrame->View->processVariables();
 $weFrame->View->processCommands();

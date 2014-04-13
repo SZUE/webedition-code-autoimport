@@ -27,7 +27,7 @@ we_html_tools::protect();
 
 $nr = weRequest('int', 'we_cmd', '', 1);
 $name = weRequest('string', 'we_cmd', '', 2);
-$we_transaction = weRequest('transaction', 'we_cmd', '', 3);
+$we_transaction = weRequest('transaction', 'we_cmd', $we_transaction, 3);
 
 $we_dt = isset($_SESSION['weS']['we_data'][$we_transaction]) ? $_SESSION['weS']['we_data'][$we_transaction] : "";
 include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');

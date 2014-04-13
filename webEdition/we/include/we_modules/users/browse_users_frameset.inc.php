@@ -29,8 +29,8 @@ $JSIDName = we_cmd_dec(1);
 $JSTextName = we_cmd_dec(2);
 $JSCommand = we_cmd_dec(5);
 $sessionID = 0;
-$rootDirID = isset($_REQUEST['we_cmd'][7]) ? $_REQUEST['we_cmd'][7] : 0;
+$rootDirID = weRequest('int', 'we_cmd', 0, 7);
 $filter = $_REQUEST['we_cmd'][3];
-$multiple = isset($_REQUEST['we_cmd'][8]) ? $_REQUEST['we_cmd'][8] : 0;
+$multiple = weRequest('bool', 'we_cmd', false, 8);
 
 require_once(WE_USERS_MODULE_PATH . "we_usersSelect.php");

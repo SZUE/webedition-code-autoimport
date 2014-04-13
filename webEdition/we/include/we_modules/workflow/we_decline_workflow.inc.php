@@ -23,8 +23,8 @@
  */
 we_html_tools::protect();
 if($cmd == "ok"){
-	$wf_text = $_REQUEST["wf_text"];
-	$wf_select = isset($_REQUEST["wf_select"]) ? $_REQUEST["wf_select"] : "";
+	$wf_text = weRequest('string', "wf_text");
+	$wf_select = weRequest('raw', "wf_select", "");
 	$force = (!we_workflow_utility::isUserInWorkflow($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"]));
 
 	$ok = we_workflow_utility::decline($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"], $wf_text, $force);
@@ -65,15 +65,15 @@ print STYLESHEET;
 </head>
 
 <body class="weDialogBody">
-<center>
-	<?php if($cmd != 'ok'){ ?>
-		<form action="<?php print WEBEDITION_DIR; ?>we_cmd.php" method="post">
-			<?php
-			$okbut = we_html_button::create_button("ok", "javascript:document.forms[0].submit()");
-			$cancelbut = we_html_button::create_button("cancel", "javascript:top.close()");
-			$content = '<table border="0" cellpadding="0" cellspacing="0">';
-			$wf_textarea = '<textarea name="wf_text" rows="7" cols="50" style="width:360;height:190"></textarea>';
-			$content .= '
+	<center>
+		<?php if($cmd != 'ok'){ ?>
+			<form action="<?php print WEBEDITION_DIR; ?>we_cmd.php" method="post">
+				<?php
+				$okbut = we_html_button::create_button("ok", "javascript:document.forms[0].submit()");
+				$cancelbut = we_html_button::create_button("cancel", "javascript:top.close()");
+				$content = '<table border="0" cellpadding="0" cellspacing="0">';
+				$wf_textarea = '<textarea name="wf_text" rows="7" cols="50" style="width:360;height:190"></textarea>';
+				$content .= '
 						<tr>
 							<td class="defaultfont">
 								' . g_l('modules_workflow', '[message]') . '</td>
@@ -84,17 +84,17 @@ print STYLESHEET;
 						</tr>
 					</table>';
 
-			$_button = we_html_button::position_yes_no_cancel($okbut, "", $cancelbut);
-			$frame = we_html_tools::htmlDialogLayout($content, g_l('modules_workflow', '[decline_workflow]'), $_button);
-			print $frame;
-			print '
+				$_button = we_html_button::position_yes_no_cancel($okbut, "", $cancelbut);
+				$frame = we_html_tools::htmlDialogLayout($content, g_l('modules_workflow', '[decline_workflow]'), $_button);
+				print $frame;
+				print '
 						<input type="hidden" name="cmd" value="ok" />
 						<input type="hidden" name="we_cmd[0]" value="' . $_REQUEST['we_cmd'][0] . '" />
 						<input type="hidden" name="we_cmd[1]" value="' . $we_transaction . '" />';
-			?>
-		</form>
-	<?php } ?>
-</center>
+				?>
+			</form>
+		<?php } ?>
+	</center>
 
 </body>
 

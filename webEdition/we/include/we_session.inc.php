@@ -46,8 +46,7 @@ if(!isset($_SESSION['user'])){
 	);
 }
 
-$we_transaction = isset($_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : md5(uniqID('', true));
-$we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $we_transaction) ? $we_transaction : md5(uniqID('', true)));
+$we_transaction = weRequest('transaction', 'we_transaction', md5(uniqID('', true)));
 
 if(!isset($_SESSION['weS']['we_data'])){
 	$_SESSION['weS']['we_data'] = array($we_transaction => '');

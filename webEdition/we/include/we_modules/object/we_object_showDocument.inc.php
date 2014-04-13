@@ -126,7 +126,7 @@ if(($_userID != 0 && $_userID != $_SESSION['user']['ID']) || (isset($_REQUEST['w
 	$we_dt = $_SESSION['weS']['we_data'][$we_transaction];
 	include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 } else { //	view with template
-	$tid = isset($_REQUEST['we_cmd'][2]) ? $_REQUEST['we_cmd'][2] : (isset($we_objectTID) ? $we_objectTID : '');
+	$tid = weRequest('int', 'we_cmd', (isset($we_objectTID) ? $we_objectTID : 0), 2);
 
 	$GLOBALS['we_obj'] = new we_objectFile();
 	$GLOBALS['we_obj']->initByID(weRequest('int', 'we_objectID', 0), OBJECT_FILES_TABLE);

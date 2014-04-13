@@ -27,6 +27,6 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 $_SERVER['SCRIPT_NAME'] = WE_USERS_MODULE_DIR . 'we_usersSelect.php';
 
-$fs = new we_users_selector(isset($id) ? $id : (isset($_REQUEST["id"]) ? $_REQUEST["id"] : "" ), isset($table) ? $table : (isset($_REQUEST["table"]) ? $_REQUEST["table"] : USER_TABLE), isset($JSIDName) ? $JSIDName : (isset($_REQUEST["JSIDName"]) ? $_REQUEST["JSIDName"] : "" ), isset($JSTextName) ? $JSTextName : (isset($_REQUEST["JSTextName"]) ? $_REQUEST["JSTextName"] : "" ), isset($JSCommand) ? $JSCommand : (isset($_REQUEST["JSCommand"]) ? $_REQUEST["JSCommand"] : "" ), isset($order) ? $order : (isset($_REQUEST["order"]) ? $_REQUEST["order"] : "" ), 0, isset($rootDirID) ? $rootDirID : (isset($_REQUEST["rootDirID"]) ? $_REQUEST["rootDirID"] : "" ), isset($filter) ? $filter : (isset($_REQUEST["filter"]) ? $_REQUEST["filter"] : "" ), isset($multiple) ? $multiple : (isset($_REQUEST["multiple"]) ? $_REQUEST["multiple"] : "" ));
+$fs = new we_users_selector(isset($id) ? $id : weRequest('int', "id", 0), isset($table) ? $table : weRequest('table', "table", USER_TABLE), isset($JSIDName) ? $JSIDName : weRequest('string', "JSIDName", ""), isset($JSTextName) ? $JSTextName : weRequest('string', "JSTextName", ""), isset($JSCommand) ? $JSCommand : weRequest('raw', "JSCommand", ""), isset($order) ? $order : weRequest('raw', "order", ""), 0, isset($rootDirID) ? $rootDirID : weRequest('int', "rootDirID", 0), isset($filter) ? $filter : weRequest('raw', "filter", ""), isset($multiple) ? $multiple : weRequest('bool', "multiple"));
 
-$fs->printHTML(isset($_REQUEST["what"]) ? $_REQUEST["what"] : we_selector_file::FRAMESET);
+$fs->printHTML(weRequest('int', "what", we_selector_file::FRAMESET));

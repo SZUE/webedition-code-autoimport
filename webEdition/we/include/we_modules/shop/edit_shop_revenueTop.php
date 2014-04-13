@@ -26,7 +26,7 @@ require_once ($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/util/Strings.php');
 $protect = we_base_moduleInfo::isActive('shop') && we_users_util::canEditModule('shop') ? null : array(false);
 we_html_tools::protect($protect);
 
-$selectedYear = intval(isset($_REQUEST['ViewYear']) ? $_REQUEST['ViewYear'] : date('Y'));
+$selectedYear = weRequest('int', 'ViewYear', date('Y'));
 $selectedMonth = weRequest('int', 'ViewMonth', 1);
 $orderBy = weRequest('string', 'orderBy', 'IntOrderID');
 $actPage = weRequest('int', 'actPage', 0);
@@ -64,7 +64,7 @@ function yearSelect($select_name){
 		$opts[$yearNow] = $yearNow;
 		$yearNow--;
 	}
-	return we_class::htmlSelect($select_name, $opts, 1, (isset($_REQUEST[$select_name]) ? $_REQUEST[$select_name] : ''), false, array('id' => $select_name));
+	return we_class::htmlSelect($select_name, $opts, 1, weRequest('raw', $select_name, ''), false, array('id' => $select_name));
 }
 
 function monthSelect($select_name, $selectedMonth){

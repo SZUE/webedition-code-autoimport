@@ -24,13 +24,11 @@
  */
 we_html_tools::protect();
 
-$_REQUEST['we_cmd'] = isset($_REQUEST['we_cmd']) ? $_REQUEST['we_cmd'] : "";
-$cmd = isset($_REQUEST["cmd"]) ? $_REQUEST["cmd"] : "";
-$we_transaction = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : (isset($_REQUEST["we_transaction"]) ? $_REQUEST["we_transaction"] : "");
-$we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $we_transaction) ? $we_transaction : 0);
+$cmd = weRequest('raw', "cmd", "");
+$we_transaction = weRequest('transaction', 'we_cmd', weRequest('transaction', "we_transaction", 0), 1);
 
-$wf_select = isset($_REQUEST["wf_select"]) ? $_REQUEST["wf_select"] : "";
-$wf_text = isset($_REQUEST["wf_select"]) ? $_REQUEST["wf_text"] : "";
+$wf_select = weRequest('raw', "wf_select", "");
+$wf_text = weRequest('raw', "wf_text", "");
 
 ###### init document #########
 $we_dt = $_SESSION['weS']['we_data'][$we_transaction];

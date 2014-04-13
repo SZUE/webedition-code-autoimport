@@ -28,11 +28,11 @@ if(isset($_REQUEST["startCopy"])){ // start the fragment
 	// if any childs of the folder are open - bring message to close them
 	// REQUEST[we_cmd][1] = id of folder
 	// REQUEST[we_cmd][2] = table
-	$_id = $_REQUEST['we_cmd'][1];
-	$_table = $_REQUEST['we_cmd'][2];
+	$_id = weRequest('int', 'we_cmd', 0, 1);
+	$_table = weRequest('table', 'we_cmd', FILE_TABLE, 2);
 
 	// if we_cmd 3 is set, take filters of that folder as parent!!
-	$_idForFilter = (isset($_REQUEST['we_cmd'][3]) ? $_REQUEST['we_cmd'][3] : $_id);
+	$_idForFilter = weRequest('int', 'we_cmd', $_id, 3);
 
 
 	$_theFolder = new we_folder();
@@ -102,8 +102,8 @@ if(isset($_REQUEST["startCopy"])){ // start the fragment
 
 	");
 	echo '</head><body class="weDialogBody" onload="checkForOpenChilds()">' .
-		$js . we_html_tools::htmlDialogLayout($content, g_l('modules_customerFilter', "[apply_filter]"), $buttonBar) .
-		'<div style="display: none;"> <!-- hidden -->
+	$js . we_html_tools::htmlDialogLayout($content, g_l('modules_customerFilter', "[apply_filter]"), $buttonBar) .
+	'<div style="display: none;"> <!-- hidden -->
 	<iframe style="position: absolute; top: 150; height: 1px; width: 1px;" name="iframeCopyWeDocumentCustomerFilter" id="iframeCopyWeDocumentCustomerFilter" src="about:blank"></iframe>
 </div>
 </html>';

@@ -23,8 +23,8 @@
  */
 we_html_tools::protect();
 if($cmd == "ok"){
-	$wf_text = $_REQUEST["wf_text"];
-	$wf_select = isset($_REQUEST["wf_select"]) ? $_REQUEST["wf_select"] : "";
+	$wf_text = weRequest('string', "wf_text");
+	$wf_select = weRequest('raw', "wf_select","");
 
 	$force = (!we_workflow_utility::isUserInWorkflow($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"]));
 

@@ -44,8 +44,8 @@ if(isset($_REQUEST['mcmd']) && $_REQUEST['mcmd'] == 'save_folder_settings'){
 
 		$messaging->saveInSession($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 		?>
-					top.content.cmd.location = '<?php print WE_MESSAGING_MODULE_DIR; ?>edit_messaging_frameset.php?pnt=cmd&we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mcmd=save_folder_settings&name=<?php echo $_REQUEST['folder_name'] ?>&id=<?php echo $ID ?>&mode=<?php echo $_REQUEST['mode'] ?>&parent_id=<?php echo $_REQUEST['parent_folder'] ?>&type=<?php echo $_REQUEST['foldertypes'] ?>';
-						top.content.we_cmd('messaging_start_view', '', '<?php echo isset($_REQUEST['table']) ? $_REQUEST['table'] : "" ?>');
+		top.content.cmd.location = '<?php print WE_MESSAGING_MODULE_DIR; ?>edit_messaging_frameset.php?pnt=cmd&we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mcmd=save_folder_settings&name=<?php echo $_REQUEST['folder_name'] ?>&id=<?php echo $ID ?>&mode=<?php echo $_REQUEST['mode'] ?>&parent_id=<?php echo $_REQUEST['parent_folder'] ?>&type=<?php echo $_REQUEST['foldertypes'] ?>';
+			top.content.we_cmd('messaging_start_view', '', '<?php echo weRequest('table', 'table', ""); ?>');
 		//-->
 		</script>
 		</head>
@@ -125,10 +125,10 @@ print STYLESHEET;
 	</tr>
       </table>';
 
-		$_btn_tbl = we_html_button::position_yes_no_cancel(we_html_button::create_button("save", "javascript:save()"), "", we_html_button::create_button("cancel", "javascript:top.content.we_cmd('messaging_start_view','', '" . (isset($_REQUEST["table"]) ? $_REQUEST["table"] : "") . "')")
+		$_btn_tbl = we_html_button::position_yes_no_cancel(we_html_button::create_button("save", "javascript:save()"), "", we_html_button::create_button("cancel", "javascript:top.content.we_cmd('messaging_start_view','', '" . weRequest('table', "table", "") . "')")
 			)
 		;
-		print we_html_tools::htmlDialogLayout($input_tbl, $heading, $_btn_tbl, "100%", 30, "", "none");
+		echo we_html_tools::htmlDialogLayout($input_tbl, $heading, $_btn_tbl, "100%", 30, "", "none");
 		?></td>
 </form>
 </body>

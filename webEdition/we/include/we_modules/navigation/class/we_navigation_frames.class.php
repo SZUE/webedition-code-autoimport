@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_navigation_frames extends weModuleFrames {
+class we_navigation_frames extends weModuleFrames{
 
 //class weNavigationFrames extends weToolFramesInterim {
 
@@ -90,7 +90,7 @@ class we_navigation_frames extends weModuleFrames {
 		}
 
 		$pid = $_REQUEST["pid"];
-		$offset = (isset($_REQUEST["offset"]) ? $_REQUEST["offset"] : 0);
+		$offset = weRequest('int', "offset", 0);
 
 		$_loader = new we_navigation_treeDataSource($this->TreeSource);
 
@@ -232,7 +232,7 @@ function setTab(tab) {
 
 	function getHTMLEditorBody(){
 
-		$hiddens = array('cmd' => 'tool_' . $this->toolName . '_edit', 'pnt' => 'edbody', 'vernr' => (isset($_REQUEST['vernr']) ? $_REQUEST['vernr'] : 0));
+		$hiddens = array('cmd' => 'tool_' . $this->toolName . '_edit', 'pnt' => 'edbody', 'vernr' => weRequest('int', 'vernr', 0));
 
 		if(isset($_REQUEST["home"]) && $_REQUEST["home"]){
 			$hiddens['cmd'] = 'home';
@@ -276,7 +276,7 @@ function setTab(tab) {
 
 		$_parentid = (isset($this->Model->Text) && $this->Model->Text && isset($this->Model->ID) && $this->Model->ID ?
 				f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->Model->ID), 'ParentID', $this->db) :
-				(weRequest('bool','presetFolder') ?
+				(weRequest('bool', 'presetFolder') ?
 					$this->Model->ParentID :
 					(($wq = we_navigation_navigation::getWSQuery()) ?
 						f('SELECT ID FROM ' . NAVIGATION_TABLE . ' WHERE IsFolder=1 ' . $wq . ' ORDER BY Path LIMIT 1', 'ID', $this->db) :
@@ -356,8 +356,8 @@ function setTab(tab) {
 		}
 
 		$_selection_block = $this->Model->Depended == 1 ? $this->getHTMLDependedProfile() : $this->View->htmlHidden(
-				'CategoriesControl', (isset($_REQUEST['CategoriesCount']) ? $_REQUEST['CategoriesCount'] : 0)) . $this->View->htmlHidden(
-				'SortControl', (isset($_REQUEST['SortCount']) ? $_REQUEST['SortCount'] : 0)) . $this->View->htmlHidden(
+				'CategoriesControl', weRequest('int', 'CategoriesCount', 0)) . $this->View->htmlHidden(
+				'SortControl', weRequest('int', 'SortCount', 0)) . $this->View->htmlHidden(
 				'CategoriesCount', (isset($this->Model->Categories) ? count($this->Model->Categories) : 0)) . $this->View->htmlHidden(
 				'SortCount', (isset($this->Model->Sort) ? count($this->Model->Sort) : 0)) .
 			'<div style="display: block;">' .
@@ -761,8 +761,8 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 
 		$_seltype[we_navigation_navigation::STPYE_CATEGORY] = g_l('navigation', '[categories]');
 
-		$_selection_block = $this->View->htmlHidden('CategoriesControl', (isset($_REQUEST['CategoriesCount']) ? $_REQUEST['CategoriesCount'] : 0)) .
-			$this->View->htmlHidden('SortControl', (isset($_REQUEST['SortCount']) ? $_REQUEST['SortCount'] : 0)) .
+		$_selection_block = $this->View->htmlHidden('CategoriesControl', weRequest('int', 'CategoriesCount', 0)) .
+			$this->View->htmlHidden('SortControl', weRequest('int', 'SortCount', 0)) .
 			$this->View->htmlHidden('CategoriesCount', (isset($this->Model->Categories) ? count($this->Model->Categories) : '0')) .
 			$this->View->htmlHidden('SortCount', (isset($this->Model->Sort) ? count($this->Model->Sort) : '0')) .
 			'<div style="display: block;">
@@ -1041,8 +1041,8 @@ function onSelectionClassChangeJS(value) {
 			'cmd' => '',
 			'pnt' => 'edbody',
 			'tabnr' => $tabNr,
-			'vernr' => (isset($_REQUEST['vernr']) ? $_REQUEST['vernr'] : 0),
-			'delayParam' => (isset($_REQUEST['delayParam']) ? $_REQUEST['delayParam'] : '')
+			'vernr' => weRequest('int', 'vernr', 0),
+			'delayParam' => weRequest('raw', 'delayParam', '')
 		);
 
 		$yuiSuggest = & weSuggest::getInstance();
@@ -1057,7 +1057,7 @@ function onSelectionClassChangeJS(value) {
 					), $this->View->getCommonHiddens($hiddens) .
 					$this->View->htmlHidden(
 						'IsFolder', (isset($this->Model->IsFolder) ? $this->Model->IsFolder : 0)) . $this->View->htmlHidden(
-						'presetFolder', (isset($_REQUEST['presetFolder']) ? $_REQUEST['presetFolder'] : '0')) .
+						'presetFolder', weRequest('raw', 'presetFolder', 0)) .
 					we_html_multiIconBox::getHTML(
 						'', '100%', $this->getHTMLGeneral(), 30, '', -1, '', '', false, $preselect) .
 					($this->Model->IsFolder ? we_html_multiIconBox::getHTML(
@@ -1085,7 +1085,7 @@ function onSelectionClassChangeJS(value) {
 		return '<input' . ($markHot ? ' onchange="if(_EditorFrame){_EditorFrame.setEditorIsHot(true);}' . $markHot . '.hot=1;"' : '') . (strstr(
 				$attribs, "class=") ? "" : ' class="wetextinput"') . ' type="' . trim($type) . '" name="' . trim($name) . '" size="' . abs(
 				$size) . '" value="' . oldHtmlspecialchars($value) . '"' . ($maxlength ? (' maxlength="' . abs(
-					$maxlength) . '"') : '') . ($attribs ? " $attribs" : '') . $style  . ($disabled ? (' disabled="true"') : '') . ' />';
+					$maxlength) . '"') : '') . ($attribs ? " $attribs" : '') . $style . ($disabled ? (' disabled="true"') : '') . ' />';
 	}
 
 	function getHTMLFieldChooser($title, $name, $value, $cmd, $type, $selection, $extraField = "", $extraFieldWidth = 0){
