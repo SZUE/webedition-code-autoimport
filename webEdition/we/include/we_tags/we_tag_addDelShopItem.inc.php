@@ -39,14 +39,14 @@ function we_tag_addDelShopItem($attribs){
 	$floatfilter = new Zend_Filter_LocalizedToNormalized();
 	if((isset($_REQUEST['shopname']) && $_REQUEST['shopname'] == $shopname) || !isset($_REQUEST['shopname']) || empty($_REQUEST['shopname'])){
 		if(isset($_REQUEST['shop_cart_id']) && is_array($_REQUEST['shop_cart_id'])){
-			if($_REQUEST['t'] > (isset($_SESSION['tb']) ? $_SESSION['tb'] : 0 )){
+			if(weRequest('int', 't', 0) > (isset($_SESSION['tb']) ? $_SESSION['tb'] : 0 )){
 				foreach($_REQUEST['shop_cart_id'] as $cart_id => $cart_amount){
 					$GLOBALS[$shopname]->Set_Cart_Item(filterXss($cart_id), $floatquantities ? $floatfilter->filter($cart_amount) : intval($cart_amount));
 					$_SESSION[$shopname . '_save'] = $GLOBALS[$shopname]->getCartProperties();
 				}
 			}
 		} else if(isset($_REQUEST['shop_anzahl_und_id']) && is_array($_REQUEST['shop_anzahl_und_id'])){
-			if($_REQUEST['t'] > (isset($_SESSION['tb']) ? $_SESSION['tb'] : 0 )){
+			if(weRequest('int', 't', 0) > (isset($_SESSION['tb']) ? $_SESSION['tb'] : 0 )){
 				$shop_articleid_variant = $shop_anzahl = '';
 				foreach($_REQUEST['shop_anzahl_und_id'] as $shop_articleid_variant => $shop_anzahl){
 					$articleInfo = explode('_', filterXss($shop_articleid_variant));

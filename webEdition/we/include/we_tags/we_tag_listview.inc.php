@@ -91,7 +91,7 @@ function we_tag_listview($attribs){
 	$predefinedSQL = weTag_getAttribute('predefinedSQL', $attribs);
 	$offset = weTag_getAttribute('offset', $attribs);
 	$workspaceID = weTag_getAttribute('workspaceID', $attribs, weTag_getAttribute('workspaceid', $attribs));
-	$we_lv_ws = isset($_REQUEST['we_lv_ws_' . $name]) ? filterIntVals($_REQUEST['we_lv_ws_' . $name]) : $workspaceID;
+	$we_lv_ws = weRequest('intList', 'we_lv_ws_' . $name, $workspaceID);
 
 	$orderid = weTag_getAttribute('orderid', $attribs, 0);
 
@@ -101,7 +101,7 @@ function we_tag_listview($attribs){
 
 	$triggerid = weTag_getAttribute('triggerid', $attribs, 0);
 	$docid = weTag_getAttribute('docid', $attribs, 0);
-	$customers = filterIntVals(weTag_getAttribute('customers', $attribs)); // csv value of Ids
+	$customers = weTag_getAttribute('customers', $attribs); // csv value of Ids
 	$casesensitive = weTag_getAttribute('casesensitive', $attribs, false, true);
 	$customer = weTag_getAttribute('customer', $attribs, false, true);
 	$we_lv_ct = weRequest('raw', 'we_lv_ct_' . $name, weTag_getAttribute('contenttypes', $attribs));
