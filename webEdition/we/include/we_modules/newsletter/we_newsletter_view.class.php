@@ -78,7 +78,7 @@ class we_newsletter_view{
 		return $this->htmlHidden('ncmd', (isset($predefs['ncmd']) ? $predefs['ncmd'] : 'new_newsletter')) .
 			$this->htmlHidden('we_cmd[0]', 'show_newsletter') .
 			$this->htmlHidden('nid', (isset($predefs['nid']) ? $predefs['nid'] : $this->newsletter->ID)) .
-			$this->htmlHidden('pnt', (isset($predefs['pnt']) ? $predefs['pnt'] : $_REQUEST['pnt'])) .
+			$this->htmlHidden('pnt', (isset($predefs['pnt']) ? $predefs['pnt'] : weRequest('raw', 'pnt'))) .
 			$this->htmlHidden('page', (isset($predefs['page']) ? $predefs['page'] : $this->page)) .
 			$this->htmlHidden('gview', (isset($predefs['gview']) ? $predefs['gview'] : 0)) .
 			$this->htmlHidden('hm', (isset($predefs['hm']) ? $predefs['hm'] : 0)) .

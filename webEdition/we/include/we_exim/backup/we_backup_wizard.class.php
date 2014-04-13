@@ -1030,8 +1030,8 @@ function startStep(){
 
 	function getHTMLBackupStep3(){
 		update_time_limit(0);
-		if(isset($_GET["backupfile"])){
-			$_filename = urldecode($_GET["backupfile"]);
+		if(weRequest('bool', "backupfile")){
+			$_filename = urldecode(weRequest('raw', "backupfile"));
 
 			if(file_exists($_filename) && stripos($_filename, $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR) !== false){ // Does file exist and does it saved in backup dir?
 				$_size = filesize($_filename);

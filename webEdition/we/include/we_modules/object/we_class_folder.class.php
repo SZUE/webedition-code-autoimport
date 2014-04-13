@@ -251,7 +251,6 @@ class we_class_folder extends we_folder{
 
 		$userDefaultWsID = !empty($userWSArray) ? $userWSArray[0] : 0;
 		//$userDefaultWsPath = (intval($userDefaultWsID) != 0 ? id_to_path($userDefaultWsID, FILE_TABLE, $DB_WE) : '/');
-
 		//#4076
 		$this->setClassProp();
 
@@ -342,27 +341,17 @@ class we_class_folder extends we_folder{
 	}
 
 	function searchFields(){
-
 		$DB_WE = new DB_WE();
 
-		if(!isset($_REQUEST['Order'])){
-			$_REQUEST['Order'] = (isset($this->Order) ? $this->Order : 'OF_PATH');
-		} else {
-			if(stripos($_REQUEST['Order'], "ModDate") === 0 || stripos($_REQUEST['Order'], "OF_Published") === 0){
-				$_REQUEST['Order'] = 'OF_PATH';
-			}
-			$this->searchclass->Order = $_REQUEST["Order"];
+		$order = weRequest('raw', 'Order', (isset($this->Order) ? $this->Order : 'OF_PATH'));
+		if(stripos($order, "ModDate") === 0 || stripos($order, "OF_Published") === 0){
+			$order = 'OF_PATH';
 		}
-		$this->Order = $_REQUEST["Order"];
+		$this->searchclass->Order = $order;
+		$this->Order = $order;
 
-
-		if(isset($_POST["SearchStart"])){
-			$this->searchclass->searchstart = $_POST["SearchStart"];
-		}
-
-		if(isset($_REQUEST["Anzahl"])){
-			$this->searchclass->anzahl = $_REQUEST["Anzahl"];
-		}
+		$this->searchclass->searchstart = weRequest('raw', "SearchStart", $this->searchclass->searchstart);
+		$this->searchclass->anzahl = weRequest('int', $_REQUEST["Anzahl"], $this->searchclass->anzahl);
 
 		//$this->searchclass->setlimit(1);
 		$we_obectPathLength = 32;

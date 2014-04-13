@@ -220,20 +220,20 @@ if(isset($daten)){
 				$classid = intval($classid);
 				$count_expression = 'COUNT(' . OBJECT_X_TABLE . $classid . '.OF_ID)';
 				$from_expression = OBJECT_X_TABLE . $classid;
-				$where_expression = OBJECT_X_TABLE . "$classid.OF_ID !=0";
+				$where_expression = OBJECT_X_TABLE . "$classid.OF_ID!=0";
 			}
 			$DB_WE->query('SELECT ' . $count_expression . ' AS dbEntries FROM ' . $from_expression . ' WHERE ' . $where_expression);
 			while($DB_WE->next_record()){ // Pager: determine the number of records;
 				$entries += $DB_WE->f("dbEntries");
 			}
-			$active_page = !empty($_GET['page']) ? $_GET['page'] : 0; // Pager: determine the current page
-			$docType2 = isset($docType2) ? $docType2 = "objectFile" : $docType2 = "objectFile"; // Pager: determine the current page
-			$typeAlias = isset($typeAlias) ? $typeAlias = "object" : $typeAlias = "object"; // Pager: determine the current page
+			$active_page = weRequest('raw', 'page', 0); // Pager: determine the current page
+			$docType2 = isset($docType2) ? "objectFile" : "objectFile"; // Pager: determine the current page
+			$typeAlias = isset($typeAlias) ? "object" : "object"; // Pager: determine the current page
 			if(!isset($classSelectTable)){
 				$classSelectTable = "";
 			}
 			if($entries != 0){ // Pager: Number of records not empty?
-				$topInfo = ($entries > 0) ? $entries : g_l('modules_shop', '[noRecord]');
+				$topInfo = ($entries > 0 ? $entries : g_l('modules_shop', '[noRecord]'));
 
 				$classid = abs($_REQUEST["ViewClass"]); // gets the value from the selectbox;
 
@@ -346,7 +346,7 @@ if(isset($daten)){
 		case "document": //start output doc
 			$orderBy = weRequest('raw', 'orderBy', 'sql');
 			$entries = f('SELECT COUNT(Name) FROM ' . LINK_TABLE . ' WHERE Name ="' . $DB_WE->escape(WE_SHOP_TITLE_FIELD_NAME) . '"'); // Pager: determine the number of records;
-			$active_page = !empty($_GET['page']) ? $_GET['page'] : 0; // Pager: determine the number of records;
+			$active_page = weRequest('raw', 'page', 0); // Pager: determine the number of records;
 			$docType = we_base_ContentTypes::WEDOCUMENT; // Pager: determine the current page
 			$typeAlias = isset($typeAlias) ? "document" : "document"; // Pager: determine the current page
 

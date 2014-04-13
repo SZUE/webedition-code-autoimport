@@ -355,12 +355,9 @@ class we_workflow_frames extends weModuleFrames{
 			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "F0EFF0"), ""));
 		}
 
-		$page = (isset($_GET["page"]) ? $_GET["page"] : 0);
+		$page = weRequest('int', "page", 0);
 
-		$text = g_l('modules_workflow', '[new_workflow]');
-		if(isset($_GET["txt"])){
-			$text = $_GET["txt"];
-		}
+		$text = weRequest('raw', 'txt',g_l('modules_workflow', '[new_workflow]'));
 
 		$we_tabs = new we_tabs();
 

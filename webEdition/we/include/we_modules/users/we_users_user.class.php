@@ -948,45 +948,41 @@ _multiEditorreload = true;";
 		switch($tab){
 			case self::TAB_DATA:
 				foreach($this->persistent_slots as $pkey => $pval){
-					$obj = $this->Name . '_' . $pval;
-					if(isset($_POST[$obj])){
-						$this->$pval = $_POST[$obj];
+					if(($val = weRequest('raw', $this->Name . '_' . $pval)) !== false){
+						$this->$pval = $val;
 					}
 				}
 
 				if($this->Type == self::TYPE_ALIAS){
-					$this->ParentPerms = (isset($_POST[$this->Name . '_ParentPerms'])) ? 1 : 0;
-					$this->ParentWs = (isset($_POST[$this->Name . '_ParentWs'])) ? 1 : 0;
-					$this->ParentWst = (isset($_POST[$this->Name . '_ParentWst'])) ? 1 : 0;
-					$this->ParentWso = (isset($_POST[$this->Name . '_ParentWso'])) ? 1 : 0;
-					$this->ParentWsn = (isset($_POST[$this->Name . '_ParentWsn'])) ? 1 : 0;
-					$this->ParentWsnl = (isset($_POST[$this->Name . '_ParentWsnl'])) ? 1 : 0;
-					$this->ParentWsCust = (isset($_POST[$this->Name . '_ParentWsCust'])) ? 1 : 0;
+					$this->ParentPerms = weRequest('bool', $this->Name . '_ParentPerms');
+					$this->ParentWs = weRequest('bool', $this->Name . '_ParentWs');
+					$this->ParentWst = weRequest('bool', $this->Name . '_ParentWst');
+					$this->ParentWso = weRequest('bool', $this->Name . '_ParentWso');
+					$this->ParentWsn = weRequest('bool', $this->Name . '_ParentWsn');
+					$this->ParentWsnl = weRequest('bool', $this->Name . '_ParentWsnl');
+					$this->ParentWsCust = weRequest('bool', $this->Name . '_ParentWsCust');
 				}
 				break;
 			case self::TAB_PERMISSION:
 				foreach($this->permissions_slots as $pkey => $pval){
 					foreach($pval as $k => $v){
-
-						$obj = $this->Name . '_Permission_' . $k;
-						$this->setPermission($k, (isset($_POST[$obj]) ? 1 : 0));
+						$this->setPermission($k, weRequest('bool', $this->Name . '_Permission_' . $k));
 					}
 				}
-				$obj = $this->Name . '_ParentPerms';
-				$this->ParentPerms = (isset($_POST[$obj])) ? 1 : 0;
+				$this->ParentPerms = weRequest('bool', $this->Name . '_ParentPerms');
 				break;
 			case self::TAB_WORKSPACES:
 				foreach($this->workspaces as $k => $v){
 					$obj = $this->Name . '_Workspace_' . $k;
-					if(isset($_POST[$obj]['id'])){
-						$this->workspaces[$k] = $_POST[$obj]['id'];
+					if(($val = weRequest('raw', $obj, false, 'id')) !== false){
+						$this->workspaces[$k] = $val;
 					}
 					$obj = $this->Name . '_Workspace_' . $k . '_AddDel';
-					if(isset($_POST[$obj]) && $_POST[$obj] != ''){
-						if($_POST[$obj] == 'new'){//add
+					if(($val = weRequest('raw', $obj, '')) != ''){
+						if($val == 'new'){//add
 							$this->workspaces[$k][] = 0;
 						} else {
-							unset($this->workspaces[$k][$_POST[$obj]]);
+							unset($this->workspaces[$k][$val]);
 						}
 					}
 					if(isset($_POST[$obj]['id'])){
@@ -1005,12 +1001,12 @@ _multiEditorreload = true;";
 					$this->workspaces[CUSTOMER_TABLE] = we_customer_abstractFilter::getFilterFromRequest();
 				}
 
-				$this->ParentWs = (isset($_POST[$this->Name . '_ParentWs'])) ? 1 : 0;
-				$this->ParentWst = (isset($_POST[$this->Name . '_ParentWst'])) ? 1 : 0;
-				$this->ParentWso = (isset($_POST[$this->Name . '_ParentWso'])) ? 1 : 0;
-				$this->ParentWsn = (isset($_POST[$this->Name . '_ParentWsn'])) ? 1 : 0;
-				$this->ParentWsnl = (isset($_POST[$this->Name . '_ParentWsnl'])) ? 1 : 0;
-				$this->ParentWsCust = (isset($_POST[$this->Name . '_ParentWsCust'])) ? 1 : 0;
+				$this->ParentWs = weRequest('bool', $this->Name . '_ParentWs');
+				$this->ParentWst = weRequest('bool', $this->Name . '_ParentWst');
+				$this->ParentWso = weRequest('bool', $this->Name . '_ParentWso');
+				$this->ParentWsn = weRequest('bool', $this->Name . '_ParentWsn');
+				$this->ParentWsnl = weRequest('bool', $this->Name . '_ParentWsnl');
+				$this->ParentWsCust = weRequest('bool', $this->Name . '_ParentWsCust');
 				break;
 			case self::TAB_SETTINGS:
 				foreach($this->preference_slots as $val){
@@ -1023,7 +1019,7 @@ _multiEditorreload = true;";
 						default:
 							$obj = $this->Name . '_Preference_' . $val;
 					}
-					$this->setPreference($val, (isset($_POST[$obj]) ? $_POST[$obj] : 0));
+					$this->setPreference($val, weRequest('raw', $obj, 0));
 				}
 				switch(weRequest('string', 'seem_start_type')){
 					case 'cockpit':

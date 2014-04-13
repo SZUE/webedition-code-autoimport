@@ -39,7 +39,7 @@ abstract class we_versions_wizard{
 	 * @return string
 	 */
 	static function getBody(){
-		$step = 'getStep' . (isset($_REQUEST["step"]) ? $_REQUEST["step"] : "0");
+		$step = 'getStep' . weRequest('int', "step", "0");
 		return self::getPage(self::$step());
 	}
 
@@ -49,7 +49,7 @@ abstract class we_versions_wizard{
 	 * @return string
 	 */
 	static function getBusy(){
-		$dc = isset($_REQUEST["dc"]) ? $_REQUEST["dc"] : 0;
+		$dc = weRequest('bool', "dc");
 
 		$WE_PB = new we_progressBar(0, 0, true);
 		$WE_PB->setStudLen($dc ? 490 : 200);
@@ -134,27 +134,25 @@ abstract class we_versions_wizard{
 	 * @return string
 	 */
 	static function getStep0(){
-
 		$version = new weVersions();
-
-		$type = isset($_REQUEST["type"]) ? $_REQUEST["type"] : self::DELETE_VERSIONS;
+		$type = weRequest('string', "type", self::DELETE_VERSIONS);
 
 		$version_delete = array(
-			'delete_date' => isset($_REQUEST['delete_date']) ? $_REQUEST['delete_date'] : '',
-			'delete_hours' => isset($_REQUEST['delete_hours']) ? $_REQUEST['delete_hours'] : 0,
-			'delete_minutes' => isset($_REQUEST['delete_minutes']) ? $_REQUEST['delete_minutes'] : 0,
-			'delete_seconds' => isset($_REQUEST['delete_seconds']) ? $_REQUEST['delete_seconds'] : 0,
+			'delete_date' => weRequest('raw', 'delete_date', ''),
+			'delete_hours' => weRequest('raw', 'delete_hours', 0),
+			'delete_minutes' => weRequest('raw', 'delete_minutes', 0),
+			'delete_seconds' => weRequest('raw', 'delete_seconds', 0),
 		);
 		$version_reset = array(
-			'reset_date' => isset($_REQUEST['reset_date']) ? $_REQUEST['reset_date'] : '',
-			'reset_hours' => isset($_REQUEST['reset_hours']) ? $_REQUEST['reset_hours'] : 0,
-			'reset_minutes' => isset($_REQUEST['reset_minutes']) ? $_REQUEST['reset_minutes'] : 0,
-			'reset_seconds' => isset($_REQUEST['reset_seconds']) ? $_REQUEST['reset_seconds'] : 0,
+			'reset_date' => weRequest('raw', 'reset_date', ''),
+			'reset_hours' => weRequest('raw', 'reset_hours', 0),
+			'reset_minutes' => weRequest('raw', 'reset_minutes', 0),
+			'reset_seconds' => weRequest('raw', 'reset_seconds', 0),
 		);
 
 		foreach($version->contentTypes as $k){
-			$version_delete[$k] = weRequest('bool','version_delete_' . $k);
-			$version_reset[$k] = weRequest('bool','version_reset_' . $k);
+			$version_delete[$k] = weRequest('bool', 'version_delete_' . $k);
+			$version_reset[$k] = weRequest('bool', 'version_reset_' . $k);
 		}
 
 		if(isset($_REQUEST["reset_doPublish"])){
@@ -256,7 +254,7 @@ set_button_state(false);';
 	 * @return string
 	 */
 	static function getStep1(){
-		$type = isset($_REQUEST["type"]) ? $_REQUEST["type"] : self::DELETE_VERSIONS;
+		$type = weRequest('raw', "type", self::DELETE_VERSIONS);
 
 		switch($type){
 			case self::DELETE_VERSIONS:
@@ -268,20 +266,20 @@ set_button_state(false);';
 
 	static function getDelete1(){
 		$version = new weVersions();
-		$type = isset($_REQUEST["type"]) ? $_REQUEST["type"] : self::DELETE_VERSIONS;
+		$type = weRequest('raw', "type", self::DELETE_VERSIONS);
 
-		$versions_delete_all = weRequest('bool',"version_delete_all");
-		$version_delete_date = isset($_REQUEST["delete_date"]) ? $_REQUEST["delete_date"] : "";
-		$version_delete_hours = isset($_REQUEST["delete_hours"]) ? $_REQUEST["delete_hours"] : 0;
-		$version_delete_minutes = isset($_REQUEST["delete_minutes"]) ? $_REQUEST["delete_minutes"] : 0;
-		$version_delete_seconds = isset($_REQUEST["delete_seconds"]) ? $_REQUEST["delete_seconds"] : 0;
+		$versions_delete_all = weRequest('bool', "version_delete_all");
+		$version_delete_date = weRequest('raw', "delete_date", "");
+		$version_delete_hours = weRequest('raw', "delete_hours", 0);
+		$version_delete_minutes = weRequest('raw', "delete_minutes", 0);
+		$version_delete_seconds = weRequest('raw', "delete_seconds", 0);
 
 		$content = "";
 		foreach($version->contentTypes as $k){
 			$txt = $k;
 			$name = "version_delete_" . $k;
 			$val = "version_delete_" . $k;
-			$checked = isset($_REQUEST[$k]) ? $_REQUEST[$k] : 0;
+			$checked = weRequest('raw', $k, 0);
 			if($k == "all"){
 				$jvs = "checkAll(this);";
 				$content .= we_html_forms::checkbox($val, $checked, $name, g_l('versions', '[versions_all]'), false, "defaultfont", $jvs) . "<br/>";
@@ -494,7 +492,7 @@ set_button_state(false);';
 
 	static function getReset1(){
 		$version = new weVersions();
-		$type = isset($_REQUEST["type"]) ? $_REQUEST["type"] : "reset_versions";
+		$type = weRequest('raw', "type", self::RESET_VERSIONS);
 
 		$version_reset_date = weRequest('raw', "reset_date", "");
 		$version_reset_hours = weRequest('int', "reset_hours", 0);
@@ -508,7 +506,7 @@ set_button_state(false);';
 			$txt = $k;
 			$name = "version_reset_" . $k;
 			$val = "version_reset_" . $k;
-			$checked = isset($_REQUEST[$k]) ? $_REQUEST[$k] : 0;
+			$checked = weRequest('raw', $k, 0);
 			if($k == "all"){
 				$jvs = "checkAll(this);";
 				$content .= we_html_forms::checkbox($val, $checked, $name, g_l('versions', '[versions_all]'), false, "defaultfont", $jvs) . "<br/>";
@@ -749,7 +747,7 @@ set_button_state(false);';
 	 * @return string
 	 */
 	static function getStep2(){
-		$type = isset($_REQUEST["type"]) ? $_REQUEST["type"] : self::DELETE_VERSIONS;
+		$type = weRequest('string', "type", self::DELETE_VERSIONS);
 
 		switch($type){
 			case self::DELETE_VERSIONS:
@@ -762,25 +760,25 @@ set_button_state(false);';
 	static function getStep3(){
 		$version = new weVersions();
 
-		$type = isset($_REQUEST["type"]) ? $_REQUEST["type"] : self::DELETE_VERSIONS;
+		$type = weRequest('string', "type", self::DELETE_VERSIONS);
 
 		$version_delete = array();
 		$version_reset = array();
 
 		foreach($version->contentTypes as $k){
-			$version_delete[$k] = weRequest('bool',"version_delete_" . $k);
-			$version_reset[$k] = weRequest('bool',"version_reset_" . $k);
+			$version_delete[$k] = weRequest('bool', "version_delete_" . $k);
+			$version_reset[$k] = weRequest('bool', "version_reset_" . $k);
 		}
 
-		$version_delete['delete_date'] = isset($_REQUEST["delete_date"]) ? $_REQUEST["delete_date"] : "";
-		$version_delete['delete_hours'] = isset($_REQUEST["delete_hours"]) ? $_REQUEST["delete_hours"] : 0;
-		$version_delete['delete_minutes'] = isset($_REQUEST["delete_minutes"]) ? $_REQUEST["delete_minutes"] : 0;
-		$version_delete['delete_seconds'] = isset($_REQUEST["delete_seconds"]) ? $_REQUEST["delete_seconds"] : 0;
+		$version_delete['delete_date'] = weRequest('raw', "delete_date", "");
+		$version_delete['delete_hours'] = weRequest('raw', "delete_hours", 0);
+		$version_delete['delete_minutes'] = weRequest('raw', "delete_minutes", 0);
+		$version_delete['delete_seconds'] = weRequest('raw', "delete_seconds", 0);
 
-		$version_reset['reset_date'] = isset($_REQUEST["reset_date"]) ? $_REQUEST["reset_date"] : "";
-		$version_reset['reset_hours'] = isset($_REQUEST["reset_hours"]) ? $_REQUEST["reset_hours"] : 0;
-		$version_reset['reset_minutes'] = isset($_REQUEST["reset_minutes"]) ? $_REQUEST["reset_minutes"] : 0;
-		$version_reset['reset_seconds'] = isset($_REQUEST["reset_seconds"]) ? $_REQUEST["reset_seconds"] : 0;
+		$version_reset['reset_date'] = weRequest('raw', "reset_date", "");
+		$version_reset['reset_hours'] = weRequest('raw', "reset_hours", 0);
+		$version_reset['reset_minutes'] = weRequest('raw', "reset_minutes", 0);
+		$version_reset['reset_seconds'] = weRequest('raw', "reset_seconds", 0);
 		if(isset($_REQUEST["reset_doPublish"])){
 			$version_reset['reset_doPublish'] = 1;
 		} elseif(isset($_REQUEST["type"]) && $_REQUEST["type"] == "reset_versions"){
@@ -790,7 +788,7 @@ set_button_state(false);';
 		}
 
 		$taskname = md5(session_id() . "_version_wizard");
-		$currentTask = isset($_GET["fr_" . $taskname . "_ct"]) ? $_GET["fr_" . $taskname . "_ct"] : 0;
+		$currentTask = weRequest('raw', "fr_" . $taskname . "_ct", 0);
 		$taskFilename = FRAGMENT_LOCATION . $taskname;
 
 		$js = "";
@@ -827,17 +825,17 @@ set_button_state(false);';
 	static function getDelete2(){
 		$version = new weVersions();
 
-		$type = isset($_REQUEST["type"]) ? $_REQUEST["type"] : self::DELETE_VERSIONS;
+		$type = weRequest('raw', "type", self::DELETE_VERSIONS);
 
 		$version_delete = array(
-			'delete_date' => isset($_REQUEST["delete_date"]) ? $_REQUEST["delete_date"] : "",
-			'delete_hours' => isset($_REQUEST["delete_hours"]) ? $_REQUEST["delete_hours"] : 0,
-			'delete_minutes' => isset($_REQUEST["delete_minutes"]) ? $_REQUEST["delete_minutes"] : 0,
-			'delete_seconds' => isset($_REQUEST["delete_seconds"]) ? $_REQUEST["delete_seconds"] : 0,
+			'delete_date' => weRequest('raw', "delete_date", ""),
+			'delete_hours' => weRequest('raw', "delete_hours", 0),
+			'delete_minutes' => weRequest('raw', "delete_minutes", 0),
+			'delete_seconds' => weRequest('raw', "delete_seconds", 0),
 		);
 
 		foreach($version->contentTypes as $k){
-			$version_delete[$k] = weRequest('bool',"version_delete_" . $k);
+			$version_delete[$k] = weRequest('bool', "version_delete_" . $k);
 		}
 
 		$timestamp = "";
@@ -958,19 +956,19 @@ set_button_state(false);';
 	static function getReset2(){
 		$version = new weVersions();
 
-		$type = isset($_REQUEST["type"]) ? $_REQUEST["type"] : "reset_versions";
+		$type = weRequest('raw', "type", self::RESET_VERSIONS);
 
 		$_SESSION['weS']['versions']['logResetIds'] = array();
 
 		$version_reset = array(
-			'reset_date' => isset($_REQUEST["reset_date"]) ? $_REQUEST["reset_date"] : "",
-			'reset_hours' => isset($_REQUEST["reset_hours"]) ? $_REQUEST["reset_hours"] : 0,
-			'reset_minutes' => isset($_REQUEST["reset_minutes"]) ? $_REQUEST["reset_minutes"] : 0,
-			'reset_seconds' => isset($_REQUEST["reset_seconds"]) ? $_REQUEST["reset_seconds"] : 0,
+			'reset_date' => weRequest('raw', "reset_date", ""),
+			'reset_hours' => weRequest('raw', "reset_hours", 0),
+			'reset_minutes' => weRequest('raw', "reset_minutes", 0),
+			'reset_seconds' => weRequest('raw', "reset_seconds", 0),
 		);
 
 		foreach($version->contentTypes as $k){
-			$version_reset[$k] = weRequest('bool',"version_reset_" . $k);
+			$version_reset[$k] = weRequest('bool', "version_reset_" . $k);
 		}
 
 		if(isset($_REQUEST["reset_doPublish"])){

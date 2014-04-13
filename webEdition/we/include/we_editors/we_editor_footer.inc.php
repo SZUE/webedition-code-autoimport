@@ -403,7 +403,6 @@ function showEditFooterForNormalMode($we_doc, $we_transaction, $haspermNew, $sho
 		$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
 		//}
 	}
-t_e($_SESSION['weS']['we_data']);
 	if($we_doc->ContentType == we_base_ContentTypes::TEMPLATE){
 		if(defined("VERSIONING_TEXT_WETMPL") && defined("VERSIONS_CREATE_TMPL") && VERSIONS_CREATE_TMPL && VERSIONING_TEXT_WETMPL){
 			$_normalTable->addCol(2);

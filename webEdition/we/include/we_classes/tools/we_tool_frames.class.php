@@ -325,8 +325,8 @@ function we_save() {
 		$hiddens = array('cmd' => '',
 			'pnt' => 'edbody',
 			'tabnr' => $tabNr,
-			'vernr' => weRequest('int','vernr' , 0),
-			'delayParam' => weRequest('raw','delayParam','')
+			'vernr' => weRequest('int', 'vernr', 0),
+			'delayParam' => weRequest('raw', 'delayParam', '')
 		);
 
 		return $this->View->getCommonHiddens($hiddens) .
@@ -393,13 +393,13 @@ function we_save() {
 	}
 
 	function getHTMLExitQuestion(){
-		if(isset($_REQUEST['delayCmd']) && isset($_REQUEST['delayParam'])){
+		if(($dp = weRequest('raw', 'delayParam'))){
 
 			$_frame = 'opener.' . $this->topFrame;
 			$_form = $_frame . '.document.we_form';
 
 			$_yes = $_frame . '.hot=0;' . $_frame . '.we_cmd("tool_' . $this->toolName . '_save");self.close();';
-			$_no = $_frame . '.hot=0;' . $_frame . '.we_cmd("' . $_REQUEST['delayCmd'] . '","' . $_REQUEST['delayParam'] . '");self.close();';
+			$_no = $_frame . '.hot=0;' . $_frame . '.we_cmd("' . $_REQUEST['delayCmd'] . '","' . $dp . '");self.close();';
 			$_cancel = 'self.close();';
 
 			return we_html_tools::getHtmlTop() .

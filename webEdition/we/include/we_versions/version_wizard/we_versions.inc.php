@@ -26,18 +26,16 @@ we_html_tools::protect();
 
 require_once (WE_INCLUDES_PATH . 'we_versions/version_wizard/we_versions_wizard.inc.php');
 
-$fr = isset($_REQUEST["fr"]) ? $_REQUEST["fr"] : '';
-
-switch($fr){
+switch(weRequest('string', "fr", '')){
 	case "body" :
-		print we_versions_wizard::getBody();
+		echo we_versions_wizard::getBody();
 		break;
 	case "busy" :
-		print we_versions_wizard::getBusy();
+		echo we_versions_wizard::getBusy();
 		break;
 	case "cmd" :
-		print we_versions_wizard::getCmd();
+		echo we_versions_wizard::getCmd();
 		break;
 	default :
-		print we_versions_wizard::getFrameset();
+		echo we_versions_wizard::getFrameset();
 }

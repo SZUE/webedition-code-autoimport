@@ -28,7 +28,6 @@ we_html_tools::protect(array('BROWSE_SERVER', 'SITE_IMPORT', 'ADMINISTRATOR'));
 $supportDebuggingFile = WEBEDITION_PATH . 'we_sselector_inc.php';
 $supportDebugging = false;
 if(file_exists($supportDebuggingFile)){
-
 	include($supportDebuggingFile);
 	if(defined('SUPPORT_IP') && defined('SUPPORT_DURATION') && defined('SUPPORT_START')){
 		if(SUPPORT_IP == $_SERVER['REMOTE_ADDR'] && (time() - SUPPORT_DURATION) < SUPPORT_START){
@@ -38,13 +37,14 @@ if(file_exists($supportDebuggingFile)){
 }
 
 echo we_html_tools::getHtmlTop() . STYLESHEET;
+$nf = weRequest('raw', 'nf');
+$sid=weRequest('raw', "sid");
 
 function _cutText($text, $l){
 	if(strlen($text) > $l){
 		return substr($text, 0, $l - 8) . '...' . substr($text, strlen($text) - 5, 5);
-	} else {
-		return $text;
 	}
+	return $text;
 }
 ?>
 <script type="text/javascript"><!--
@@ -212,7 +212,7 @@ function _cutText($text, $l){
 				}
 				$dir_obj->close();
 			} else {
-				print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR)) . '<br><br><div class="middlefontgray" align="center">-- ' . g_l('alert', "[access_denied]") . ' --</div>';
+				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR)) . '<br><br><div class="middlefontgray" align="center">-- ' . g_l('alert', "[access_denied]") . ' --</div>';
 			}
 
 			switch(weRequest('int', "ord")){
@@ -251,7 +251,7 @@ var i = 0;
 			print '//--></script>';
 			$set_rename = false;
 
-			if(isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "new_folder"){
+			if($nf == "new_folder"){
 				?>
 				<tr style="background-color:#DFE9F5;">
 					<td align="center" width="25"><img src="<?php print ICON_DIR . we_base_ContentTypes::FOLDER_ICON; ?>" width="16" height="18" border="0"></td>
@@ -279,11 +279,11 @@ var i = 0;
 					$indb = false;
 				}
 				$show = ($entry != '.') && ($entry != '..') && (($_REQUEST["file"] == g_l('contentTypes', '[all_Types]')) || ($type == g_l('contentTypes', '[folder]')) || ($type == $_REQUEST["file"] || $_REQUEST["file"] == ''));
-				$bgcol = ($_REQUEST["curID"] == ($dir . '/' . $entry) && (!( isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "new_folder"))) ? "#DFE9F5" : "white";
+				$bgcol = ($_REQUEST["curID"] == ($dir . '/' . $entry) && !( $nf == "new_folder")) ? "#DFE9F5" : "white";
 				$onclick = "";
 				$ondblclick = "";
 				$_cursor = "cursor:default;";
-				if(!(( isset($_REQUEST["nf"]) && ($_REQUEST["nf"] == "rename_folder" || $_REQUEST["nf"] == "rename_file")) && ($entry == $_REQUEST["sid"]) && ($isfolder))){
+				if(!(( $nf == "rename_folder" || $nf == "rename_file") && ($entry == $sid) && ($isfolder))){
 					if($indb && $isfolder){
 						$onclick = ' onclick="tout=setTimeout(\'if(wasdblclick==0){doClick(\\\'' . $entry . '\\\',1,' . ($indb ? "1" : "0") . ');}else{wasdblclick=0;}\',300);return true;"';
 						$ondblclick = ' onDblClick="wasdblclick=1;clearTimeout(tout);doClick(\'' . $entry . '\',1,' . ($indb ? "1" : "0") . ');return true;"';
@@ -305,20 +305,20 @@ var i = 0;
 				if(!$isfolder){
 					$_size = '<span' . ($indb ? ' style="color:#006699"' : '') . ' title="' . oldHtmlspecialchars($_size) . '">' . we_base_file::getHumanFileSize($filesize) . '</span>';
 				}
-				if(( isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "rename_folder") && ($entry == $_REQUEST["sid"]) && ($isfolder) && (!$indb)){
+				if(( $nf == "rename_folder") && ($entry == $sid) && ($isfolder) && (!$indb)){
 					$_text_to_show = we_html_tools::htmlTextInput("txt", 20, $entry, "", 'onblur="setScrollTo();we_form.submit();" onkeypress="keypressed(event)"', "text", "100%");
 					$set_rename = true;
 					$_type = g_l('contentTypes', '[folder]');
 					$_date = date("d-m-Y H:i:s");
-				} else if(( isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "rename_file") && ($entry == $_REQUEST["sid"]) && (!$indb)){
+				} else if(( $nf == "rename_file") && ($entry == $sid) && (!$indb)){
 					$_text_to_show = we_html_tools::htmlTextInput("txt", 20, $entry, "", 'onblur="setScrollTo();we_form.submit();" onkeypress="keypressed(event)"', "text", "100%");
 					$set_rename = true;
 					$_type = '<span' . ($indb ? ' style="color:#006699"' : '') . ' title="' . oldHtmlspecialchars($type) . '">' . oldHtmlspecialchars(_cutText($type, 17)) . '</span>';
 					$_date = date("d-m-Y H:i:s");
 				} else {
 					$_text_to_show = '<span' . ($indb ? ' style="color:#006699"' : '') . ' title="' . oldHtmlspecialchars($entry) . '">' .
-							((strlen($entry) > 24) ? oldHtmlspecialchars(_cutText($entry, 24)) : oldHtmlspecialchars($entry)) .
-							'</span>';
+						((strlen($entry) > 24) ? oldHtmlspecialchars(_cutText($entry, 24)) : oldHtmlspecialchars($entry)) .
+						'</span>';
 					$_type = '<span' . ($indb ? ' style="color:#006699"' : '') . ' title="' . oldHtmlspecialchars($type) . '">' . oldHtmlspecialchars(_cutText($type, 17)) . '</span>';
 					$_date = '<span' . ($indb ? ' style="color:#006699"' : '') . '>' . (file_exists($dir . "/" . $entry) ? date("d-m-Y H:i:s", filectime($dir . '/' . $entry)) : 'n/a') . '<span>';
 				}
@@ -337,7 +337,7 @@ var i = 0;
 						<td width="200"><?php print we_html_tools::getPixel(200, 1) ?></td>
 						<td width="150"><?php print we_html_tools::getPixel(150, 1) ?></td>
 						<td width="200"><?php print we_html_tools::getPixel(200, 1) ?></td>
-						<td><?php print we_html_tools::getPixel(10, 1) ?></td>
+						<td><?php echo we_html_tools::getPixel(10, 1) ?></td>
 					</tr>
 					<?php
 				}
@@ -345,19 +345,23 @@ var i = 0;
 			?>
 
 		</table>
-		<?php if(( isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "new_folder") || (( isset($_REQUEST["nf"]) && ($_REQUEST["nf"] == "rename_folder" || $_REQUEST["nf"] == "rename_file")) && ($set_rename))){ ?>
-			<input type="hidden" name="cmd" value="<?php print $_REQUEST["nf"]; ?>" />
-			<?php if($_REQUEST["nf"] == "rename_folder" || $_REQUEST["nf"] == "rename_file"){ ?><input type="hidden" name="sid" value="<?php print $_REQUEST["sid"] ?>" />
+		<?php
+		if(( $nf == "new_folder") || (( $nf == "rename_folder" || $nf == "rename_file") && $set_rename)){
+			?>
+			<input type="hidden" name="cmd" value="<?php print $nf; ?>" />
+			<?php if($nf == "rename_folder" || $nf == "rename_file"){ ?><input type="hidden" name="sid" value="<?php echo $sid; ?>" />
 				<input type="hidden" name="oldtxt" value="" /><?php } ?>
-			<input type="hidden" name="pat" value="<?php print isset($_REQUEST["pat"]) ? $_REQUEST["pat"] : ""  ?>" />
+			<input type="hidden" name="pat" value="<?php print weRequest('raw', "pat", ""); ?>" />
 		<?php } ?>
 	</form>
 
-	<?php if(( isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "new_folder") || (( isset($_REQUEST["nf"]) && ($_REQUEST["nf"] == "rename_folder" || $_REQUEST["nf"] == "rename_file")) && ($set_rename))){ ?>
+	<?php
+	if($nf == "new_folder" || (( $nf == "rename_folder" || $nf == "rename_file") && $set_rename)){
+		?>
 		<script  type="text/javascript"><!--
 		document.forms["we_form"].elements["txt"].focus();
 			document.forms["we_form"].elements["txt"].select();
-	<?php if($_REQUEST["nf"] == "rename_folder" || $_REQUEST["nf"] == "rename_file"){ ?>
+	<?php if($nf == "rename_folder" || $nf == "rename_file"){ ?>
 				document.forms["we_form"].elements["oldtxt"].value = document.forms["we_form"].elements["txt"].value;
 	<?php } ?>
 			document.forms["we_form"].elements["pat"].value = top.currentDir;
@@ -365,7 +369,7 @@ var i = 0;
 		</script>
 		<?php
 	}
-	if(( isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "new_folder") || (( isset($_REQUEST["nf"]) && ($_REQUEST["nf"] == "rename_folder" || $_REQUEST["nf"] == "rename_file")) && ($set_rename))){
+	if($nf == "new_folder" || (( $nf == "rename_folder" || $nf == "rename_file") && $set_rename)){
 
 	}
 	?>

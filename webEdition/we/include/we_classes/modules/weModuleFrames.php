@@ -303,11 +303,10 @@ class weModuleFrames{
 	}
 
 	function getHTMLExitQuestion(){
-		if(isset($_REQUEST['delayCmd']) && isset($_REQUEST['delayParam'])){
+		if(($dp=weRequest('raw', 'delayParam'))){
 			$_frame = 'opener.' . $this->topFrame;
-			$_form = $_frame . '.document.we_form';
 			$_yes = $_frame . '.hot=0;' . $_frame . '.we_cmd("module_' . $this->module . '_save");self.close();';
-			$_no = $_frame . '.hot=0;' . $_frame . '.we_cmd("' . $_REQUEST['delayCmd'] . '","' . $_REQUEST['delayParam'] . '");self.close();';
+			$_no = $_frame . '.hot=0;' . $_frame . '.we_cmd("' . $_REQUEST['delayCmd'] . '","' . $dp . '");self.close();';
 			$_cancel = 'self.close();';
 
 			return we_html_tools::getHtmlTop() .

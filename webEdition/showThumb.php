@@ -26,24 +26,18 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
-if(isset($_GET['u']) && isset($_GET['t']) && isset($_GET['id'])){
-	$uniqid = $_GET['u'];
-	$we_transaction = $_GET['t'];
-	$we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $we_transaction) ? $we_transaction : 0);
+if(($uniqid = weRequest('raw', 'u')) && ($we_transaction = weRequest('transaction', 't', $we_transaction)) && ($id = weRequest('intList', 'id'))){
 
 	$we_dt = isset($_SESSION['weS']['we_data'][$we_transaction]) ? $_SESSION['weS']['we_data'][$we_transaction] : '';
 	include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
-
-	$thumbIDs = makeArrayFromCSV($_GET['id']);
 
 	echo we_html_tools::getHtmlTop() .
 	STYLESHEET . "</head>";
 
 	$table = '<table border="0" cellpadding="5" cellspacing="0"><tr>';
 
-	$thumbIDs = makeArrayFromCSV($_GET['id']);
+	$thumbIDs = makeArrayFromCSV($id);
 	foreach($thumbIDs as $thumbid){
-
 		$thumbObj = new we_thumbnail();
 		$thumbObj->initByThumbID($thumbid, $we_doc->ID, $we_doc->Filename, $we_doc->Path, $we_doc->Extension, $we_doc->getElement("origwidth"), $we_doc->getElement("origheight"), $we_doc->getDocument());
 
@@ -59,12 +53,12 @@ if(isset($_GET['u']) && isset($_GET['t']) && isset($_GET['id'])){
 			$src = $thumbObj->getOutputPath(false, true);
 		} else {
 			$src = WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(
-							array(
-								'we_cmd[0]' => 'show_binaryDoc',
-								'we_cmd[1]' => $we_doc->ContentType,
-								'we_cmd[2]' => $we_transaction,
-								'we_cmd[3]' => ($useOrig ? '' : $thumbid),
-								'rand' => $randval
+					array(
+						'we_cmd[0]' => 'show_binaryDoc',
+						'we_cmd[1]' => $we_doc->ContentType,
+						'we_cmd[2]' => $we_transaction,
+						'we_cmd[3]' => ($useOrig ? '' : $thumbid),
+						'rand' => $randval
 			));
 		}
 

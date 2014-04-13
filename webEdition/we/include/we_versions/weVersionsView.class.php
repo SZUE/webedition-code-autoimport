@@ -676,7 +676,7 @@ function delRow(id) {
 		}
 		if(isset($_REQUEST['location']) && is_array($_REQUEST['location'])){
 			foreach($_REQUEST['searchFields'] as $k => $v){
-				$r3[] = (isset($_REQUEST['location'][$k]) ? $_REQUEST['location'][$k] : "disabled");
+				$r3[] = weRequest('raw', 'location', "disabled", $k);
 			}
 		}
 
@@ -761,16 +761,14 @@ function delRow(id) {
 			10 => 10, 25 => 25, 50 => 50, 100 => 100
 		);
 
-		$order = (isset($_REQUEST['we_cmd']['order']) ? $_REQUEST['we_cmd']['order'] : $this->searchclass->order);
-		$mode = (isset($_REQUEST['we_cmd']['mode']) ? $_REQUEST['we_cmd']['mode'] : $this->searchclass->mode);
-		$height = (isset($_REQUEST['we_cmd']['height']) ? $_REQUEST['we_cmd']['height'] : $this->searchclass->height);
-		$_anzahl = (isset($_REQUEST['we_cmd']['anzahl']) ? $_REQUEST['we_cmd']['anzahl'] : $this->searchclass->anzahl);
-		$we_transaction = (isset($_REQUEST['we_cmd']['we_transaction']) ?
-				(preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_cmd']['we_transaction']) ? $_REQUEST['we_cmd']['we_transaction'] : 0) :
-				$GLOBALS['we_transaction']);
-		$Text = (isset($_REQUEST['text']) ? $_REQUEST['text'] : $GLOBALS['we_doc']->Text);
-		$ID = (isset($_REQUEST['id']) ? $_REQUEST['id'] : $GLOBALS['we_doc']->ID);
-		$Path = (isset($_REQUEST['path']) ? $_REQUEST['path'] : $GLOBALS['we_doc']->Path);
+		$order = weRequest('raw', 'we_cmd', $this->searchclass->order, 'order');
+		$mode = weRequest('raw', 'we_cmd', $this->searchclass->mode, 'mode');
+		$height = weRequest('raw', 'we_cmd', $this->searchclass->height, 'height');
+		$_anzahl = weRequest('raw', 'we_cmd', $this->searchclass->anzahl, 'anzahl');
+		$we_transaction = weRequest('transaction', 'we_cmd', $GLOBALS['we_transaction'], 'we_transaction');
+		$Text = weRequest('raw', 'text', $GLOBALS['we_doc']->Text);
+		$ID = weRequest('raw', 'id', $GLOBALS['we_doc']->ID);
+		$Path = weRequest('raw', 'path', $GLOBALS['we_doc']->Path);
 
 
 		return we_html_tools::hidden("we_transaction", $we_transaction) .
@@ -881,9 +879,9 @@ function delRow(id) {
 	function getVersionsOfDoc(){
 
 		$thisObj = (isset($_REQUEST['we_cmd']['obj']) ? new weVersionsView() : $this);
-		$id = (isset($_REQUEST['id']) ? $_REQUEST['id'] : $GLOBALS['we_doc']->ID);
-		$table = (isset($_REQUEST['table']) ? $_REQUEST['table'] : $GLOBALS['we_doc']->Table);
-		$_order = (isset($_REQUEST['we_cmd']['order']) ? $_REQUEST['we_cmd']['order'] : $thisObj->searchclass->order);
+		$id = weRequest('int', 'id', $GLOBALS['we_doc']->ID);
+		$table = weRequest('table', 'table', $GLOBALS['we_doc']->Table);
+		$_order = weRequest('raw', 'we_cmd', $thisObj->searchclass->order, 'order');
 
 		$content = array();
 		$modificationText = '';
@@ -1021,7 +1019,7 @@ function delRow(id) {
 	 * @return string
 	 */
 	function getSortImage($for){
-		$order = (isset($_REQUEST['order']) ? $_REQUEST['order'] : $this->searchclass->order);
+		$order = weRequest('raw', 'order', $this->searchclass->order);
 
 		if(strpos($order, $for) === 0){
 			if(strpos($order, 'DESC')){

@@ -398,7 +398,7 @@ self.focus();';
 			if(isset($_REQUEST["seem_start_file"])){
 				$_SESSION["save_user_seem_start_file"][$_REQUEST["uid"]] = $_REQUEST["seem_start_file"];
 			}
-			$_content .= $user_object->formDefinition(weRequest('int', "tab", 0), isset($_REQUEST["perm_branch"]) ? $_REQUEST["perm_branch"] : 0);
+			$_content .= $user_object->formDefinition(weRequest('int', "tab", 0), weRequest('raw', "perm_branch", 0));
 		}
 
 		$_content .= $yuiSuggest->getYuiCss() . $yuiSuggest->getYuiJs();
