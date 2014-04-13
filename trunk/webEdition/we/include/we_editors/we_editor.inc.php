@@ -72,7 +72,7 @@ switch(weRequest('string', 'we_cmd', '', 0)){
 		$we_doc->removeEntryFromList($_REQUEST['we_cmd'][1], $_REQUEST['we_cmd'][2], $_REQUEST['we_cmd'][3], $_REQUEST['we_cmd'][4]);
 		break;
 	case 'insert_entry_at_list':
-		$we_doc->insertEntryAtList($_REQUEST['we_cmd'][1], $_REQUEST['we_cmd'][2], weRequest('raw','we_cmd',13));
+		$we_doc->insertEntryAtList($_REQUEST['we_cmd'][1], $_REQUEST['we_cmd'][2], weRequest('raw', 'we_cmd', 3));
 		break;
 	case 'up_entry_at_list':
 		$we_doc->upEntryAtList($_REQUEST['we_cmd'][1], $_REQUEST['we_cmd'][2]);
@@ -87,7 +87,7 @@ switch(weRequest('string', 'we_cmd', '', 0)){
 		$we_doc->downEntryAtLinklist($_REQUEST['we_cmd'][1], $_REQUEST['we_cmd'][2]);
 		break;
 	case 'add_entry_to_list':
-		$we_doc->addEntryToList($_REQUEST['we_cmd'][1], weRequest('raw','we_cmd',1,2));
+		$we_doc->addEntryToList($_REQUEST['we_cmd'][1], weRequest('raw', 'we_cmd', 1, 2));
 		break;
 	case 'add_link_to_linklist':
 		$GLOBALS['we_list_inserted'] = $_REQUEST['we_cmd'][1];
@@ -102,7 +102,7 @@ switch(weRequest('string', 'we_cmd', '', 0)){
 		$we_doc->insertLinkAtLinklist($_REQUEST['we_cmd'][1], $_REQUEST['we_cmd'][2]);
 		break;
 	case 'change_linklist':
-		$we_doc->changeLinklist($_REQUEST['we_cmd'][1], $_REQUEST['we_cmd'][2]);
+		$we_doc->changeLinklist($_REQUEST['we_cmd'][1]);
 		break;
 	case 'change_link':
 		$we_doc->changeLink($_REQUEST['we_cmd'][1]);
@@ -217,10 +217,10 @@ switch(weRequest('string', 'we_cmd', '', 0)){
 
 //$filename = weFile::saveTemp($we_doc->getElement('data'));
 
-		$x = $_REQUEST['we_cmd'][1];
-		$y = $_REQUEST['we_cmd'][2];
-		$width = $_REQUEST['we_cmd'][3];
-		$height = $_REQUEST['we_cmd'][4];
+		$x = weRequest('int', 'we_cmd', 0, 1);
+		$y = weRequest('int', 'we_cmd', 0, 2);
+		$width = weRequest('int', 'we_cmd', 0, 3);
+		$height = weRequest('int', 'we_cmd', 0, 4);
 
 		$img = Image_Transform::factory('GD');
 		if(PEAR::isError($stat = $img->load($filename))){

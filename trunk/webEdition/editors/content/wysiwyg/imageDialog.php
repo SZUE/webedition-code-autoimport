@@ -26,8 +26,10 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 $noInternals = false;
 if(!(isset($_REQUEST['we_dialog_args']) &&
-		((isset($_REQUEST['we_dialog_args']['outsideWE']) && $_REQUEST['we_dialog_args']['outsideWE'] == 1) ||
-		(isset($_REQUEST['we_dialog_args']['isFrontend']) && $_REQUEST['we_dialog_args']['isFrontend'] == 1)))){
+	(
+	weRequest('bool', 'we_dialog_args', false, 'outsideWE') ||
+	weRequest('bool', 'we_dialog_args', false, 'isFrontend')
+	))){
 	we_html_tools::protect();
 } else{
 	$noInternals = true;
