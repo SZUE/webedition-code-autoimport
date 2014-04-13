@@ -572,7 +572,7 @@ class we_document extends we_root{
 		$this->setElement($name, $_SESSION['weS']['WE_LINK']);
 	}
 
-	function changeLinklist($name, $linklist){
+	function changeLinklist($name){
 		$this->setElement($name, $_SESSION['weS']['WE_LINKLIST']);
 	}
 

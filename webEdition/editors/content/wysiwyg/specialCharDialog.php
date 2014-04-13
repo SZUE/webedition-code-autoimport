@@ -24,7 +24,11 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 //make sure we know which browser is used
-if(!(isset($_REQUEST['we_dialog_args']) && isset($_REQUEST['we_dialog_args']['outsideWE']) && $_REQUEST['we_dialog_args']['outsideWE']==1) ){
+if(!(isset($_REQUEST['we_dialog_args']) &&
+	(
+	weRequest('bool', 'we_dialog_args', false, 'outsideWE') ||
+	weRequest('bool', 'we_dialog_args', false, 'isFrontend')
+	))){
 	we_html_tools::protect();
 }
 $dialog = new we_dialog_specialChar();

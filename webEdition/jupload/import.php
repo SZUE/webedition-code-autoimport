@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-if(empty($_SESSION["user"]["Username"]) && isset($_REQUEST['csid'])){
+if($_SESSION["user"]["Username"] && isset($_REQUEST['csid'])){
 	session_id(weRequest('string', 'csid'));
 }
 

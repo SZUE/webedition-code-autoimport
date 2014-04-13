@@ -39,9 +39,7 @@ class we_customer_view extends weModuleView{
 	const ERR_SAVE_FIELD_NOT_EMPTY = -3;
 
 	function __construct($frameset = '', $topframe = 'top.content'){
-		$this->db = new DB_WE();
-		$this->setFramesetName($frameset);
-		$this->setTopFrame($topframe);
+		parent::__construct($frameset, $topframe);
 		$this->customer = new we_customer_customer();
 		$this->settings = new we_customer_settings();
 		$this->settings->customer = & $this->customer;
@@ -957,7 +955,7 @@ self.close();';
 			}
 		}
 
-		$this->page = weRequest('raw', 'page', $this->page);
+		//$this->page = weRequest('raw', 'page', $this->page);
 
 		if(weRequest('string', 'pnt') == 'sort_admin'){
 			$counter = weRequest('int', 'counter');
@@ -972,7 +970,7 @@ self.close();';
 							g_l('modules_customer', '[sort_name]') . '_' . $i);
 
 
-					$fcounter = weRequest('int','fcounter_' . $i, 1);
+					$fcounter = weRequest('int', 'fcounter_' . $i, 1);
 
 					if($fcounter > -1){
 						$this->settings->SortView[$sort_name] = array();
@@ -1051,13 +1049,11 @@ self.close();';
 		if($this->customer->isProperty($field) || $this->customer->isProtected($field) || $this->customer->isProperty($new_field_name) || $this->customer->isProtected($new_field_name)){
 			return self::ERR_SAVE_PROPERTY;
 		}
-		if($branch == g_l('modules_customer', '[other]')){
-			if($this->settings->isReserved($new_field_name)){
-				return self::ERR_SAVE_PROPERTY;
-			}
+		if($branch == g_l('modules_customer', '[other]') && $this->settings->isReserved($new_field_name)){
+			return self::ERR_SAVE_PROPERTY;
 		}
 
-		if(!empty($h)){
+		if($h){
 			$this->settings->removeFieldAdd($field);
 		}
 		$this->settings->storeFieldAdd($new_field_name, 'default', $field_default);
@@ -1072,7 +1068,7 @@ self.close();';
 	function deleteField($field){
 		$h = $this->customer->getFieldDbProperties($field);
 
-		if(!empty($h)){
+		if($h){
 			$this->db->query('ALTER TABLE ' . $this->customer->table . ' DROP ' . $field);
 		}
 
@@ -1144,16 +1140,18 @@ self.close();';
 			foreach($av as $value){
 				$conditionarr = array();
 				foreach($this->customer->persistent_slots as $field){
-					if(!$this->customer->isProtected($field) && $field != "Password")
+					if(!$this->customer->isProtected($field) && $field != "Password"){
 						$conditionarr[] = "$field LIKE '%$value%'";
+					}
 				}
-				$condition.=(empty($condition) ?
-						' (' . implode(' OR ', $conditionarr) . ')' :
-						' ' . $ak . ' (' . implode(' OR ', $conditionarr) . ')');
+				$condition.=($condition ?
+						' ' . $ak . ' (' . implode(' OR ', $conditionarr) . ')' :
+						' (' . implode(' OR ', $conditionarr) . ')'
+					);
 			}
 		}
 
-		$this->db->query('SELECT ID, CONCAT(Username, " (",Forename," ",Surname,")") AS user FROM ' . $this->db->escape($this->customer->table) . (empty($condition) ? '' : ' WHERE ' . $condition) . ' ORDER BY Username' . " LIMIT 0,$res_num");
+		$this->db->query('SELECT ID, CONCAT(Username, " (",Forename," ",Surname,")") AS user FROM ' . $this->db->escape($this->customer->table) . ($condition ? ' WHERE ' . $condition : '') . ' ORDER BY Username' . " LIMIT 0,$res_num");
 		return array_map('oldHtmlspecialchars', $this->db->getAllFirst(false));
 	}
 
