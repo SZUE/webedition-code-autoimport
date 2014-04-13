@@ -242,7 +242,7 @@ function weRequest($type, $name, $default = false, $index = null){
 		$oldVar = $var;
 		_weRequest($var, '', array($type, $default));
 		if($var != $oldVar){
-			t_e('changed values', $oldVar, $var);
+			t_e('notice', 'changed values', $oldVar, $var);
 		}
 	}
 	return $var;
