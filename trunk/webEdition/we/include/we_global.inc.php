@@ -184,7 +184,7 @@ function _weRequest(&$var, $key, array $data){
 			$var = (preg_match('|^([a-f0-9]){32}$|i', $var) ? $var : $default);
 			return;
 		case 'intList':
-			implode(',', array_map('intval', explode(',', $var)));
+			$var = implode(',', array_map('intval', explode(',', $var)));
 			return;
 		case 'unit':
 			//FIMXE: check for %d[em,ex,pt,...]?
@@ -246,16 +246,6 @@ function weRequest($type, $name, $default = false, $index = null){
 		}
 	}
 	return $var;
-}
-
-/**
- * makes sure a give array/list of values has only ints
- * @param mixed $val
- * @return mixed
- */
-function filterIntVals($val){
-	$vals = array_map('intval', is_array($val) ? $val : explode(',', $val));
-	return is_array($val) ? $vals : implode(',', $vals);
 }
 
 function we_makeHiddenFields($filter = ''){
