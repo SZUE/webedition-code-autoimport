@@ -26,12 +26,12 @@ echo we_html_tools::getHtmlTop(g_l('global', '[question]')) .
  STYLESHEET .
  we_html_element::jsScript(JS_DIR . 'keyListener.js');
 
-$_we_cmd6 = (isset($_REQUEST['we_cmd'][6]) ? $_REQUEST['we_cmd'][6] : '');
+$_we_cmd6 = weRequest('raw', 'we_cmd', '', 6);
 
 $alerttext = ($isTemplatesUsedByThisTemplate ?
-				g_l('alert', "[template_save_warning2]") :
-				sprintf((g_l('alert', ($nrDocsUsedByThisTemplate == 1) ? '[template_save_warning1]' : '[template_save_warning]')), $nrDocsUsedByThisTemplate)
-		);
+		g_l('alert', "[template_save_warning2]") :
+		sprintf((g_l('alert', ($nrDocsUsedByThisTemplate == 1) ? '[template_save_warning1]' : '[template_save_warning]')), $nrDocsUsedByThisTemplate)
+	);
 ?>
 <script type="text/javascript"><!--
 

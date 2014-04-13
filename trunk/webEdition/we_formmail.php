@@ -175,7 +175,7 @@ function check_captcha(){
 			false);
 }
 
-$_req = isset($_REQUEST['required']) ? $_REQUEST['required'] : '';
+$_req = weRequest('raw', 'required', '');
 
 if(!check_required($_req)){
 	error_page();
@@ -206,7 +206,7 @@ if(isset($_REQUEST['we_remove'])){
 $we_txt = '';
 $we_html = '<table>';
 
-$_order = isset($_REQUEST['order']) ? $_REQUEST['order'] : '';
+$_order = weRequest('raw', 'order', '');
 $we_orderarray = array();
 if($_order){
 	$we_orderarray = explode(',', $_order);

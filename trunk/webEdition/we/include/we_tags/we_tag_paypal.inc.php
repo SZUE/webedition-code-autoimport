@@ -167,10 +167,8 @@ function we_tag_paypal($attribs){
 		$this_script = getServerUrl() . $_SERVER['SCRIPT_NAME'];
 
 // if there is not action variable, set the default action of 'process'
-		if(empty($_GET['action']))
-			$_GET['action'] = 'process';
 
-		switch($_GET['action']){
+		switch(weRequest('raw', 'action','process')){
 
 			case 'process': // Process and order
 				// There should be no output at this point.  To process the POST data,

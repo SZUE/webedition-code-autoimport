@@ -749,8 +749,8 @@ function setState(a) {
 
 	function getHTMLStep50(){
 		$preurl = getServerUrl();
-		if(isset($_GET["exportfile"])){
-			$_filename = basename(urldecode($_GET["exportfile"]));
+		if(weRequest('bool', "exportfile")){
+			$_filename = basename(urldecode(weRequest('raw', "exportfile")));
 
 			if(file_exists(TEMP_PATH . $_filename) // Does file exist?
 				&& !preg_match('%p?html?%i', $_filename) && stripos($_filename, "inc") === false && !preg_match('%php3?%i', $_filename)){ // Security check

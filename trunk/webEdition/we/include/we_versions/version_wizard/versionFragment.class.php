@@ -36,9 +36,9 @@ class versionFragment extends taskFragment{
 	function updateProgressBar(){
 		$percent = round((100 / count($this->alldata)) * (1 + $this->currentTask));
 		print we_html_element::jsElement(
-						'if(parent.wizbusy.document.getElementById("progr")){parent.wizbusy.document.getElementById("progr").style.display="";};parent.wizbusy.setProgressText("pb1",(parent.wizbusy.document.getElementById("progr") ? "' . addslashes(
-								we_util_Strings::shortenPath($this->data["path"] . " - " . g_l('versions', '[version]') . " " . $this->data["version"], 33)) . '" : "' . "test" . addslashes(
-								we_util_Strings::shortenPath($this->data["path"] . " - " . g_l('versions', '[version]') . " " . $this->data["version"], 60)) . '") );parent.wizbusy.setProgress(' . $percent . ');');
+				'if(parent.wizbusy.document.getElementById("progr")){parent.wizbusy.document.getElementById("progr").style.display="";};parent.wizbusy.setProgressText("pb1",(parent.wizbusy.document.getElementById("progr") ? "' . addslashes(
+					we_util_Strings::shortenPath($this->data["path"] . " - " . g_l('versions', '[version]') . " " . $this->data["version"], 33)) . '" : "' . "test" . addslashes(
+					we_util_Strings::shortenPath($this->data["path"] . " - " . g_l('versions', '[version]') . " " . $this->data["version"], 60)) . '") );parent.wizbusy.setProgress(' . $percent . ');');
 	}
 
 	function finish(){
@@ -47,16 +47,17 @@ class versionFragment extends taskFragment{
 			$versionslog->saveVersionsLog($_SESSION['weS']['versions']['logResetIds'], versionsLog::VERSIONS_RESET);
 		}
 		unset($_SESSION['weS']['versions']['logResetIds']);
-		$responseText = isset($_REQUEST["responseText"]) ? $_REQUEST["responseText"] : "";
+		$responseText = weRequest('string', "responseText", "");
 		echo we_html_tools::getHtmlTop();
-		if($_REQUEST['type'] == "delete_versions"){
-			$responseText = g_l('versions', '[deleteDateVersionsOK]');
+		switch(weRequest('string', 'type')){
+			case "delete_versions":
+				$responseText = g_l('versions', '[deleteDateVersionsOK]');
+				break;
+			case "reset_versions":
+				$responseText = g_l('versions', '[resetAllVersionsOK]');
 		}
-		if($_REQUEST['type'] == "reset_versions"){
-			$responseText = g_l('versions', '[resetAllVersionsOK]');
-		}
-		print we_html_element::jsElement(we_message_reporting::getShowMessageCall(
-								addslashes($responseText ? $responseText : ""), we_message_reporting::WE_MESSAGE_NOTICE) . '
+		echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(
+				addslashes($responseText ? $responseText : ""), we_message_reporting::WE_MESSAGE_NOTICE) . '
 
 			// reload current document => reload all open Editors on demand
 
@@ -78,7 +79,7 @@ class versionFragment extends taskFragment{
 
 			top.close();
 		') .
-				'</head></html>';
+		'</head></html>';
 	}
 
 	function printHeader(){

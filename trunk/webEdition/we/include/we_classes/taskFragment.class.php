@@ -98,7 +98,7 @@ class taskFragment{
 			$this->initdata = $initdata;
 		}
 		$filename = WE_FRAGMENT_PATH . $this->name;
-		$this->currentTask = isset($_GET["fr_" . $this->name . "_ct"]) ? $_GET["fr_" . $this->name . "_ct"] : 0;
+		$this->currentTask = weRequest('raw', "fr_" . $this->name . "_ct", 0);
 		if(file_exists($filename) && $this->currentTask){
 			$ser = we_base_file::load($filename);
 			if(!$ser){

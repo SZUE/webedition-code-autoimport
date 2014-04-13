@@ -84,19 +84,19 @@ for (frameId in _usedEditors) {
 		//	JS, when not in seem
 		$isTmpl = $we_doc->ContentType == we_base_ContentTypes::TEMPLATE && (permissionhandler::hasPerm("NEW_WEBEDITIONSITE") || permissionhandler::hasPerm("ADMINISTRATOR"));
 		echo ($isTmpl ?
-				'if( _EditorFrame.getEditorMakeNewDoc() == true ) {' .
-				(isset($saveTemplate) && $saveTemplate ?
-						"	top.we_cmd('new','" . FILE_TABLE . "','','" . we_base_ContentTypes::WEDOCUMENT . "','','" . $we_doc->ID . "');" :
-						''
-				) .
-				'} else {' :
-				(($isObject = $we_doc->ContentType == 'object' && (permissionhandler::hasPerm('NEW_OBJECTFILE') || permissionhandler::hasPerm("ADMINISTRATOR"))) ?
-						"if( _EditorFrame.getEditorMakeNewDoc() == true ) {
+			'if( _EditorFrame.getEditorMakeNewDoc() == true ) {' .
+			(isset($saveTemplate) && $saveTemplate ?
+				"	top.we_cmd('new','" . FILE_TABLE . "','','" . we_base_ContentTypes::WEDOCUMENT . "','','" . $we_doc->ID . "');" :
+				''
+			) .
+			'} else {' :
+			(($isObject = $we_doc->ContentType == 'object' && (permissionhandler::hasPerm('NEW_OBJECTFILE') || permissionhandler::hasPerm("ADMINISTRATOR"))) ?
+				"if( _EditorFrame.getEditorMakeNewDoc() == true ) {
 				top.we_cmd('new','" . OBJECT_FILES_TABLE . "','','objectFile','" . $we_doc->ID . "');
 			} else {" : '')) .
 		'if ( _EditorFrame.getEditorIsInUse() ) {_EditorFrameDocumentRef.frames[0].location.reload();}' .
 		($isTmpl || $isObject ?
-				'}' : '');
+			'}' : '');
 	}
 }
 
@@ -136,9 +136,9 @@ if($we_responseText){
 			";
 		} else { //	alert when in preview mode
 			$_jsCommand .= we_message_reporting::getShowMessageCall($we_responseText, $we_responseTextType) .
-					"_EditorFrameDocumentRef.frames[0].we_cmd('switch_edit_page'," . $GLOBALS['we_doc']->EditPageNr . ",'" . $GLOBALS['we_transaction'] . "');" .
-					//	JavaScript: generated in we_editor.inc.php
-					(isset($_REQUEST['we_cmd'][5]) ? $_REQUEST['we_cmd'][5] : '' );
+				"_EditorFrameDocumentRef.frames[0].we_cmd('switch_edit_page'," . $GLOBALS['we_doc']->EditPageNr . ",'" . $GLOBALS['we_transaction'] . "');" .
+				//	JavaScript: generated in we_editor.inc.php
+				weRequest('raw', 'we_cmd', '', 5);
 		}
 
 		if(isset($GLOBALS["publish_doc"]) && $GLOBALS["publish_doc"] == true){
@@ -153,8 +153,8 @@ if($we_responseText){
 		}
 	} else { //	alert in normal mode
 		$_jsCommand .= we_message_reporting::getShowMessageCall($we_responseText, $we_responseTextType) .
-				//	JavaScript: generated in we_editor.inc.php
-				(isset($_REQUEST['we_cmd'][5]) ? $_REQUEST['we_cmd'][5] : '' );
+			//	JavaScript: generated in we_editor.inc.php
+			weRequest('raw', 'we_cmd', '', 5);
 	}
 	echo $_jsCommand;
 }

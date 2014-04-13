@@ -40,8 +40,8 @@ class rpcGetMouseOverDivsCmd extends rpcCmd{
 
 			$we_dt = isset($_SESSION['weS']['we_data'][$trans]) ? $_SESSION['weS']['we_data'][$trans] : '';
 		}
-
-		$_document = new ${weRequest('string', 'classname')} ;
+		$doc = weRequest('string', 'classname');
+		$_document = new $doc;
 		$_document->we_initSessDat($we_dt);
 
 		$_REQUEST['we_cmd']['obj'] = $_document;

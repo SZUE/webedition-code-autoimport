@@ -58,8 +58,8 @@ foreach($tbls as $table){
 		$wfDocsCSV = makeCSVFromArray($wfDocsArray);
 	}
 
-	$offset = isset($_REQUEST["offset"]) ? $_REQUEST["offset"] : 0;
-	$order = isset($_REQUEST["order"]) ? $_REQUEST["order"] : "ModDate DESC";
+	$offset = weRequest('int', "offset", 0);
+	$order = weRequest('raw', "order", "ModDate DESC");
 
 	#### get workspace query ###
 

@@ -76,40 +76,40 @@ function we_tag_ifVar($attribs){
 
 		case 'request' :
 			$name = weTag_getAttribute('_name_orig', $attribs);
-			if(isset($_REQUEST[$name])){
-				return ($size == 1 && $operator != '' && isset($_REQUEST[$name]) ?
-						_we_tag_ifVar_op($operator, $_REQUEST[$name], $match) :
-						(isset($_REQUEST[$name]) && in_array($_REQUEST[$name], $matchArray)));
+			if(!isset($_REQUEST[$name])){
+				return false;
 			}
-			return false;
+			return ($size == 1 && $operator != '' ?
+					_we_tag_ifVar_op($operator, $_REQUEST[$name], $match) :
+					( in_array($_REQUEST[$name], $matchArray)));
 
 		case 'post' :
 			$name = weTag_getAttribute('_name_orig', $attribs);
-			if(isset($_POST[$name])){
-				return ($size == 1 && $operator != '' && isset($_POST[$name]) ?
-						_we_tag_ifVar_op($operator, $_POST[$name], $match) :
-						(isset($_POST[$name]) && in_array($_POST[$name], $matchArray)));
+			if(!isset($_POST[$name])){
+				return false;
 			}
-			return false;
+			return ($size == 1 && $operator != '' ?
+					_we_tag_ifVar_op($operator, $_POST[$name], $match) :
+					( in_array($_POST[$name], $matchArray)));
 
 		case 'get' :
 			$name = weTag_getAttribute('_name_orig', $attribs);
-			if(isset($_GET[$name])){
-				return ($size == 1 && $operator != '' && isset($_GET[$name]) ?
-						_we_tag_ifVar_op($operator, $_GET[$name], $match) :
-						(isset($_GET[$name]) && in_array($_GET[$name], $matchArray)));
+			if(!isset($_GET[$name])){
+				return false;
 			}
-			return false;
+			return ($size == 1 && $operator != '' ?
+					_we_tag_ifVar_op($operator, $_GET[$name], $match) :
+					(in_array($_GET[$name], $matchArray)));
 
 		case 'session' :
 			$name = weTag_getAttribute('_name_orig', $attribs);
-			if(isset($_SESSION[$name])){
-				return ($size == 1 && $operator != '' && isset($_SESSION[$name]) ?
-						_we_tag_ifVar_op($operator, $_SESSION[$name], $match) :
-						(isset($_SESSION[$name]) && in_array($_SESSION[$name], $matchArray)));
-			} else {
+			if(!isset($_SESSION[$name])){
 				return false;
 			}
+			return ($size == 1 && $operator != '' ?
+					_we_tag_ifVar_op($operator, $_SESSION[$name], $match) :
+					(in_array($_SESSION[$name], $matchArray)));
+
 		case 'property' :
 			$name = weTag_getAttribute('_name_orig', $attribs);
 			$docAttr = weTag_getAttribute('doc', $attribs);

@@ -835,18 +835,16 @@ function submitForm() {
 						}
 					');
 
-				if(isset($_REQUEST['delayCmd']) && !empty($_REQUEST['delayCmd'])){
+				if(weRequest('bool', 'delayCmd')){
 					$js .= we_html_element::jsElement(
-							$this->topFrame . '.we_cmd("' . $_REQUEST['delayCmd'] . '"' . ((isset($_REQUEST['delayParam']) && !empty($_REQUEST['delayParam'])) ? ',"' . $_REQUEST['delayParam'] . '"' : '' ) . ');
+							$this->topFrame . '.we_cmd("' . $_REQUEST['delayCmd'] . '"' . (($dp = weRequest('raw', 'delayParam')) ? ',"' . $dp . '"' : '' ) . ');
 							'
 					);
 					$_REQUEST['delayCmd'] = '';
-					if(isset($_REQUEST['delayParam'])){
-						$_REQUEST['delayParam'] = '';
-					}
+					$_REQUEST['delayParam'] = '';
 				}
 
-				print $js;
+				echo $js;
 
 				break;
 			case 'module_navigation_delete':

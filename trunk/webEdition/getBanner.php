@@ -26,25 +26,24 @@ define('NO_SESS', 1);
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 
-$id = intval(isset($_GET["id"]) ? $_GET["id"] : 0);
-$bid = intval(isset($_GET["bid"]) ? $_GET["bid"] : 0);
-$did = intval(isset($_GET["did"]) ? $_GET["did"] : 0);
-$paths = isset($_GET["paths"]) ? $_GET["paths"] : "";
-$target = isset($_GET["target"]) ? $_GET["target"] : "";
-$height = intval(isset($_GET["height"]) ? $_GET["height"] : 0);
-$width = intval(isset($_GET["width"]) ? $_GET["width"] : 0);
-$bannerclick = isset($_GET["bannerclick"]) ? $_GET["bannerclick"] : WEBEDITION_DIR . 'bannerclick.php';
-$referer = isset($_GET["referer"]) ? $_GET["referer"] : "";
-$type = isset($_GET["type"]) ? $_GET["type"] : "";
-$cats = isset($_GET["cats"]) ? $_GET["cats"] : "";
-$dt = isset($_GET["dt"]) ? $_GET["dt"] : "";
-$link = isset($_GET["link"]) ? $_GET["link"] : 1;
-$pixel = isset($_GET["link"]) ? $_GET["link"] : 0;
-$bannername = isset($_GET["bannername"]) ? $_GET["bannername"] : "";
-$page = isset($_GET["page"]) ? $_GET["page"] : "";
-$nocount = isset($_GET["nocount"]) ? $_GET["nocount"] : false;
-$xml = (isset($_GET["xml"]) && $_GET["xml"]) ? true : false;
-$c = isset($_GET["c"]) ? $_GET["c"] : 0;
+$id = weRequest('int', "id", 0);
+$bid = weRequest('int', "bid", 0);
+$did = weRequest('int', "did", 0);
+$paths = weRequest('raw', "paths", "");
+$target = weRequest('raw', "target", "");
+$height = weRequest('int', "height", 0);
+$width = weRequest('int', "width", 0);
+$bannerclick = weRequest('url', "bannerclick", WEBEDITION_DIR . 'bannerclick.php');
+$referer = weRequest('raw', "referer", "");
+$type = weRequest('raw', "type", "");
+$cats = weRequest('raw', "cats", "");
+$dt = weRequest('raw', "dt", "");
+$link = weRequest('raw', "link", 1);
+$bannername = weRequest('raw', "bannername", "");
+$page = weRequest('raw', "page", "");
+$nocount = weRequest('bool', "nocount");
+$xml = weRequest('bool', "xml");
+$c = weRequest('raw', "c", 0);
 
 if($type && $type != "pixel"){
 	$code = we_banner_banner::getBannerCode($did, $paths, $target, $width, $height, $dt, $cats, $bannername, $link, $referer, $bannerclick, getServerUrl() . $_SERVER['SCRIPT_NAME'], $type, $page, $nocount, $xml);
@@ -68,11 +67,11 @@ switch($type){
 			$bid = $bannerData["bannerID"];
 		}
 		if(!$bid){
-			$id = f("SELECT pref_value FROM " . BANNER_PREFS_TABLE . " WHERE pref_name='DefaultBannerID'", "pref_value", $GLOBALS['DB_WE']);
-			$bid = f('SELECT bannerID FROM ' . BANNER_TABLE . ' WHERE ID=' . intval($id), "bannerID", $GLOBALS['DB_WE']);
+			$id = f("SELECT pref_value FROM " . BANNER_PREFS_TABLE . " WHERE pref_name='DefaultBannerID'");
+			$bid = f('SELECT bannerID FROM ' . BANNER_TABLE . ' WHERE ID=' . intval($id));
 		}
 
-		$bannerpath = f("SELECT Path FROM " . FILE_TABLE . " WHERE ID=" . intval($bid), "Path", $GLOBALS['DB_WE']);
+		$bannerpath = f("SELECT Path FROM " . FILE_TABLE . " WHERE ID=" . intval($bid));
 
 		if(($type == 'pixel' || (!$nocount) && $id && $c)){
 			$GLOBALS['DB_WE']->query('INSERT INTO ' . BANNER_VIEWS_TABLE . ' SET ' . we_database_base::arraySetter(array(
@@ -115,11 +114,11 @@ switch($type){
 			readfile($_SERVER['DOCUMENT_ROOT'] . $bannerpath);
 		} else {
 			header("Content-type: image/gif");
-			print chr(0x47) . chr(0x49) . chr(0x46) . chr(0x38) . chr(0x39) . chr(0x61) . chr(0x01) . chr(0x00) .
-				chr(0x01) . chr(0x00) . chr(0x80) . chr(0x00) . chr(0x00) . chr(0x04) . chr(0x02) . chr(0x04) .
-				chr(0x00) . chr(0x00) . chr(0x00) . chr(0x21) . chr(0xF9) . chr(0x04) . chr(0x01) . chr(0x00) .
-				chr(0x00) . chr(0x00) . chr(0x00) . chr(0x2C) . chr(0x00) . chr(0x00) . chr(0x00) . chr(0x00) .
-				chr(0x01) . chr(0x00) . chr(0x01) . chr(0x00) . chr(0x00) . chr(0x02) . chr(0x02) . chr(0x44) .
-				chr(0x01) . chr(0x00) . chr(0x3B);
+			echo chr(0x47) . chr(0x49) . chr(0x46) . chr(0x38) . chr(0x39) . chr(0x61) . chr(0x01) . chr(0x00) .
+			chr(0x01) . chr(0x00) . chr(0x80) . chr(0x00) . chr(0x00) . chr(0x04) . chr(0x02) . chr(0x04) .
+			chr(0x00) . chr(0x00) . chr(0x00) . chr(0x21) . chr(0xF9) . chr(0x04) . chr(0x01) . chr(0x00) .
+			chr(0x00) . chr(0x00) . chr(0x00) . chr(0x2C) . chr(0x00) . chr(0x00) . chr(0x00) . chr(0x00) .
+			chr(0x01) . chr(0x00) . chr(0x01) . chr(0x00) . chr(0x00) . chr(0x02) . chr(0x02) . chr(0x44) .
+			chr(0x01) . chr(0x00) . chr(0x3B);
 		}
 }
