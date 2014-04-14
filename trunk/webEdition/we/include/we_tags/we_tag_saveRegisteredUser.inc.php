@@ -110,7 +110,7 @@ function we_tag_saveRegisteredUser($attribs){
 			we_saveCustomerImages();
 			$set_a = we_tag_saveRegisteredUser_processRequest($protected, $allowed);
 
-			if(isset($_REQUEST['s']['Password']) && $_REQUEST['s']['Password'] != $_SESSION['webuser']['Password']){//bei Password�nderungen m�ssen die Autologins des Users gel�scht werden
+			if(isset($_REQUEST['s']['Password']) && $_REQUEST['s']['Password'] != we_customer_customer::NOPWD_CHANGE && $_REQUEST['s']['Password'] != $_SESSION['webuser']['Password']){//bei Password�nderungen m�ssen die Autologins des Users gel�scht werden
 				$GLOBALS['DB_WE']->query('DELETE FROM ' . CUSTOMER_AUTOLOGIN_TABLE . ' WHERE WebUserID=' . intval($_SESSION['webuser']['ID']));
 			}
 			if($set_a){
@@ -284,8 +284,9 @@ function we_tag_saveRegisteredUser_processRequest($protected, $allowed){
 			case 'ID':
 				break;
 			default:
-				if((!empty($protected) && in_array($name, $protected)) ||
-					(!empty($allowed) && !in_array($name, $allowed))){
+				if(($protected && in_array($name, $protected)) ||
+					($allowed && !in_array($name, $allowed)) ||
+					($name == 'Password' && $val == we_customer_customer::NOPWD_CHANGE)){
 					continue;
 				}
 				$set[$name] = ($name == 'Password' ?
