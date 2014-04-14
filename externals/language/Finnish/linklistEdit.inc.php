@@ -3,6 +3,7 @@
 $l_linklistEdit=array(
 	'accesskey'=>'Valintanäppäin',
 	'alt_text'=>'Vaihtoehtoinen teksti',
+	'anchor_invalid'=>'The given anchor is not valid. First element has to be a character. Valid characters are a-z,0-9,.,:,_,-',
 	'edit_link'=>'Muokkaa linkkiä',
 	'external_image'=>'Ulkoinen kuva',
 	'external_link'=>'Ulkoinen linkki',

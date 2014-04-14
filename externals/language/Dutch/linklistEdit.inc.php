@@ -3,6 +3,7 @@
 $l_linklistEdit=array(
 	'accesskey'=>'Toegangs sleutel',
 	'alt_text'=>'Alternatieve tekst',
+	'anchor_invalid'=>'The given anchor is not valid. First element has to be a character. Valid characters are a-z,0-9,.,:,_,-',
 	'edit_link'=>'Wijzig link',
 	'external_image'=>'Externe afbeelding',
 	'external_link'=>'Externe koppeling',

@@ -3,6 +3,7 @@
 $l_linklistEdit=array(
 	'accesskey'=>'Accesskey-Attribut',
 	'alt_text'=>'Alternativ Text',
+	'anchor_invalid'=>'Der eingegebene Anker ist ungültig! Das erste Zeichen muß ein Buchstabe sein. Zulässige Zeichen sind: a-z,0-9,.,:,_,-',
 	'edit_link'=>'Link bearbeiten',
 	'external_image'=>'Externe Grafik',
 	'external_link'=>'Externer Link',
