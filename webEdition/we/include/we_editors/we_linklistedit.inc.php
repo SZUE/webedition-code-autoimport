@@ -205,7 +205,7 @@ if(weRequest('bool', 'ok')){
 	}
 } else {
 	$name = $_REQUEST['we_cmd'][1];
-	$nr = weRequest('int','we_cmd','',2);
+	$nr = weRequest('int', 'we_cmd', '', 2);
 	if($nr != ''){
 		$ll = new we_base_linklist($we_doc->getElement($name));
 		$href = $ll->getHref($nr);
@@ -564,7 +564,7 @@ if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_
 		$cc = we_html_tools::htmlTextInput('cc', 30, $cc, '', '', 'text', 300);
 		$subject = we_html_tools::htmlTextInput('subject', 30, $subject, '', '', 'text', 300);
 
-		$anchor = we_html_tools::htmlTextInput('anchor', 30, $anchor, '', '', 'text', 300);
+		$anchor = we_html_tools::htmlTextInput('anchor', 30, $anchor, '', 'onblur="alert(this.value);if(!new RegExp(\'#?[a-z]+[a-z,0-9,_,:,.,-]*$\',\'i\').test(this.value)){alert(\'' . g_l('linklistEdit', '[anchor_invalid]') . '\');this.focus();}"', 'text', 300);
 		$accesskey = we_html_tools::htmlTextInput('accesskey', 30, $accesskey, '', '', 'text', 140);
 		$tabindex = we_html_tools::htmlTextInput('tabindex', 30, $tabindex, '', '', 'text', 140);
 		$lang = getLangField('lang', $lang, g_l('linklistEdit', '[link_language]'), 140);
@@ -845,7 +845,7 @@ if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_
 			<input type="hidden" name="nr" value="<?php echo weRequest('int', "nr", $nr); ?>" />
 			<input type="hidden" name="ok" value="1" />
 			<input type="hidden" name="we_transaction" value="<?php echo $we_transaction; ?>" />
-			<input type="hidden" name="we_field" value="<?php echo weRequest('string','we_cmd','',3); ?>" />
+			<input type="hidden" name="we_field" value="<?php echo weRequest('string', 'we_cmd', '', 3); ?>" />
 			<?php
 			echo we_html_multiIconBox::getHTML('', '100%', $_parts, 30, $buttons, -1, '', '', false, g_l('linklistEdit', '[edit_link]'), '', 671) .
 			$yuiSuggest->getYuiCss() .
