@@ -104,7 +104,7 @@ function we_tag_sessionField($attribs, $content){
 			}
 			unset($countryvalue);
 
-			if(!empty($topCountries) && !empty($shownCountries)){
+			if($topCountries && $shownCountries){
 				$content.='<option value="-" disabled="disabled">----</option>';
 			}
 			foreach($shownCountries as $countrykey2 => &$countryvalue2){
@@ -212,7 +212,7 @@ function we_tag_sessionField($attribs, $content){
 		case 'password':
 			$newAtts = removeAttribs($attribs, array('checked', 'options', 'selected', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'rows', 'cols', 'wysiwyg'));
 			$newAtts['name'] = 's[' . $name . ']';
-			$newAtts['value'] = we_customer_customer::NOPWD_CHANGE; //oldHtmlspecialchars($_SESSION['webuser']['_Password']);
+			$newAtts['value'] = isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] ? we_customer_customer::NOPWD_CHANGE : ''; //oldHtmlspecialchars($_SESSION['webuser']['_Password']);
 			return getHtmlTag('input', $newAtts);
 		case 'print':
 			$ascountry = weTag_getAttribute('ascountry', $attribs, false, true);
@@ -246,7 +246,7 @@ function we_tag_sessionField($attribs, $content){
 		case 'hidden':
 			$usevalue = weTag_getAttribute('usevalue', $attribs, false, true);
 			$languageautofill = weTag_getAttribute('languageautofill', $attribs, false, true);
-			$v=($usevalue ? $value : $orgVal);
+			$v = ($usevalue ? $value : $orgVal);
 			$_hidden = array(
 				'type' => 'hidden',
 				'name' => 's[' . $name . ']',
