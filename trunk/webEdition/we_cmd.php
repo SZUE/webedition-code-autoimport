@@ -154,7 +154,7 @@ switch(weRequest('string', 'we_cmd', '', 0)){
 		break;
 	case 'save_document':
 	case 'new_alias':
-	case 'delete_alias':
+	//case 'delete_alias':
 	case 'switch_edit_page':
 	case 'update_image':
 	case 'update_file':
