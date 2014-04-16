@@ -72,7 +72,7 @@ switch(weRequest('string', 'we_cmd', '', 0)){
 		$we_doc->removeEntryFromList($_REQUEST['we_cmd'][1], $_REQUEST['we_cmd'][2], $_REQUEST['we_cmd'][3], $_REQUEST['we_cmd'][4]);
 		break;
 	case 'insert_entry_at_list':
-		$we_doc->insertEntryAtList($_REQUEST['we_cmd'][1], $_REQUEST['we_cmd'][2], weRequest('raw', 'we_cmd', 3));
+		$we_doc->insertEntryAtList($_REQUEST['we_cmd'][1], $_REQUEST['we_cmd'][2], weRequest('raw', 'we_cmd',0, 3));
 		break;
 	case 'up_entry_at_list':
 		$we_doc->upEntryAtList($_REQUEST['we_cmd'][1], $_REQUEST['we_cmd'][2]);
