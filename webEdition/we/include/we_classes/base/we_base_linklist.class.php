@@ -540,7 +540,6 @@ class we_base_linklist {
 	function insertLink($nr){
 		$l = $this->getRawLink();
 		for($i = 0; $i < count($this->listArray); $i++){
-			$lnr = $this->listArray[$i]["nr"];
 			if(!isset($this->listArray[$i]["nr"])){
 				$this->listArray[$i]["nr"] = $i;
 			}
