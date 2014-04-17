@@ -97,7 +97,7 @@ switch(weRequest('string', 'we_cmd', '', 0)){
 		$we_doc->removeLinkFromLinklist(weRequest('string', 'we_cmd', '', 1), weRequest('int', 'we_cmd', 0, 2), weRequest('raw', 'we_cmd', '', 3));
 		break;
 	case 'insert_link_at_linklist':
-		$GLOBALS['we_list_insertedNr'] = weRequest('int', 'we_cmd', 0, 2);
+		$GLOBALS['we_list_insertedNr'] = abs(weRequest('int', 'we_cmd', 0, 2));
 		$GLOBALS['we_list_inserted'] = weRequest('string', 'we_cmd', '', 1);
 		$we_doc->insertLinkAtLinklist($GLOBALS['we_list_inserted'], $GLOBALS['we_list_insertedNr']);
 		break;
