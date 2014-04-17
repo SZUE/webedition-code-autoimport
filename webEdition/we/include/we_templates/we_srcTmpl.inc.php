@@ -1042,7 +1042,7 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 			$wepos = weGetCookieVariable("but_weTMPLDocEdit");
 			$znr = 1;
 		}
-		print we_html_multiIconBox::getJS() .
+		echo we_html_multiIconBox::getJS() .
 			'<div id="bodydiv"' . ($_SESSION['prefs']['editorMode'] == 'java' ? '' : 'style="display:none;"') . '>' . we_html_multiIconBox::getHTML("weTMPLDocEdit", "100%", $parts, 20, "", $znr, g_l('weClass', "[showTagwizard]"), g_l('weClass', "[hideTagwizard]"), ($wepos == "down"), "", 'toggleTagWizard();') . '</div>';
 		?>
 		<input type="hidden" name="we_complete_request" value="1"/>
