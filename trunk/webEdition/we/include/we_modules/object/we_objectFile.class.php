@@ -128,7 +128,7 @@ class we_objectFile extends we_document{
 			}
 		} else {
 			if(isset($_REQUEST['we_editObject_ID']) && $_REQUEST['we_editObject_ID']){
-				$GLOBALS['we_object'][$formname]->initByID(weRequest('int','we_editObject_ID',0), OBJECT_FILES_TABLE);
+				$GLOBALS['we_object'][$formname]->initByID(weRequest('int', 'we_editObject_ID', 0), OBJECT_FILES_TABLE);
 			} elseif($session){
 				$GLOBALS['we_object'][$formname]->we_initSessDat($_SESSION['weS']['we_object_session_' . $formname]);
 			}
@@ -886,6 +886,7 @@ class we_objectFile extends we_document{
 		$foo = getHash('SELECT o.Text,of.ID FROM ' . OBJECT_TABLE . ' o,' . OBJECT_FILES_TABLE . ' of WHERE of.Path=o.Path AND o.ID=' . intval($ObjectID), $db);
 		$name = isset($foo['Text']) ? $foo['Text'] : '';
 		$pid = isset($foo['ID']) ? $foo['ID'] : 0;
+		
 		$textname = 'we_' . $this->Name . '_txt[we_object_' . $ObjectID . '_path]';
 		$idname = 'we_' . $this->Name . '_object[we_object_' . $ObjectID . ']';
 		$myid = $this->getElement('we_object_' . $ObjectID);
@@ -945,10 +946,10 @@ class we_objectFile extends we_document{
 
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
 		$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$textname'].value");
-		$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd('change_objectlink','" . $GLOBALS['we_transaction'] . "','" . we_object::QUERY_PREFIX . $pid . "');");
+		$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd('change_objectlink','" . $GLOBALS['we_transaction'] . "','" . we_object::QUERY_PREFIX . $ObjectID . "');");
 
 		$_buttons = array(
-			we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$pid','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ')')
+			we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.forms['we_form'].elements['" . $idname . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','" . $pid . "','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ')')
 		);
 
 		if(($_but = $myid ? $editObjectButton : $editObjectButtonDis)){
