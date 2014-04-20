@@ -31,11 +31,10 @@ we_html_tools::protect();
 //	---> Initalize the document
 //
 
-$cmd = isset($_REQUEST['we_cmd'][0]) ? $_REQUEST['we_cmd'][0] : "";
-$we_transaction = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : "";
-$we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $we_transaction) ? $we_transaction : 0);
+$cmd = weRequest('raw', 'we_cmd', '', 0);
+$we_transaction = weRequest('transaction', 'we_cmd', $we_transaction, 1);
 
-$identifier = isset($_REQUEST['we_cmd'][2]) ? $_REQUEST['we_cmd'][2] : false;
+$identifier = weRequest('raw', 'we_cmd', false, 2);
 
 $jsGUI = new weOrderContainer("_EditorFrame.getContentEditor()", "objectEntry");
 
@@ -48,11 +47,10 @@ $we_doc->we_initSessDat($we_dt);
 //	---> Setting the Content-Type
 //
 
-if(isset($we_doc->elements["Charset"]["dat"]) && $we_doc->elements["Charset"]["dat"]){ //	send charset which might be determined in template
-	$charset = $we_doc->elements["Charset"]["dat"];
-} else {
-	$charset = DEFAULT_CHARSET;
-}
+$charset = (isset($we_doc->elements["Charset"]["dat"]) && $we_doc->elements["Charset"]["dat"] ? //	send charset which might be determined in template
+		$we_doc->elements["Charset"]["dat"] :
+		DEFAULT_CHARSET);
+
 we_html_tools::headerCtCharset('text/html', $charset);
 
 //
@@ -112,8 +110,9 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 			} elseif($cmd == "remove_image_at_object"){
 				$we_doc->remove_image($name);
 			} elseif($cmd == "delete_link_at_object"){
-				if(isset($we_doc->elements[$name]))
+				if(isset($we_doc->elements[$name])){
 					unset($we_doc->elements[$name]);
+				}
 			} elseif($cmd == "change_link_at_object"){
 				$we_doc->changeLink($name);
 			}

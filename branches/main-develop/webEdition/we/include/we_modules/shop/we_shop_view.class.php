@@ -1153,7 +1153,7 @@ function submitForm() {
 							AND ' . LINK_TABLE . '.CID = ' . CONTENT_TABLE . '.ID
 							AND ' . LINK_TABLE . '.Name = "' . WE_SHOP_TITLE_FIELD_NAME . '"
 							AND ' . LINK_TABLE . '.DocumentTable != "tblTemplates" ' .
-					(isset($_REQUEST['searchArticle']) && $_REQUEST['searchArticle'] ?
+					(weRequest('bool', 'searchArticle') ?
 						' AND ' . CONTENT_TABLE . '.Dat LIKE "%' . $this->db->escape($_REQUEST['searchArticle']) . '%"' :
 						'')
 				);
@@ -1170,7 +1170,7 @@ function submitForm() {
 								FROM ' . OBJECT_X_TABLE . $_classId . ', ' . OBJECT_FILES_TABLE . '
 								WHERE ' . OBJECT_X_TABLE . $_classId . '.OF_ID = ' . OBJECT_FILES_TABLE . '.ID
 									AND ' . OBJECT_X_TABLE . $_classId . '.ID = ' . OBJECT_FILES_TABLE . '.ObjectID ' .
-							(isset($_REQUEST['searchArticle']) && $_REQUEST['searchArticle'] ?
+							(weRequest('bool', 'searchArticle') ?
 								' AND ' . OBJECT_X_TABLE . $_classId . '.input_' . WE_SHOP_TITLE_FIELD_NAME . '  LIKE "%' . $this->db->escape($_REQUEST['searchArticle']) . '%"' :
 								'')
 						);
@@ -1188,7 +1188,7 @@ function submitForm() {
 				$MAX_PER_PAGE = 10;
 				$AMOUNT_ARTICLES = count($shopArticles);
 
-				$page = isset($_REQUEST['page']) ? $_REQUEST['page'] : 0;
+				$page = weRequest('int', 'page', 0);
 
 				$shopArticlesParts = array_chunk($shopArticles, $MAX_PER_PAGE, true);
 
@@ -1236,7 +1236,7 @@ function submitForm() {
 						'html' => '
 		<form name="we_intern_form">' . we_html_tools::hidden('bid', $_REQUEST['bid']) . we_html_tools::hidden('we_cmd[]', 'add_new_article') . '
 			<table border="0" cellpadding="0" cellspacing="0">
-			<tr><td>' . we_class::htmlSelect("add_article", $shopArticlesSelect, 15, (isset($_REQUEST['add_article']) ? $_REQUEST['add_article'] : ''), false, 'onchange="selectArticle(this.options[this.selectedIndex].value);"', 'value', '380') . '</td>
+			<tr><td>' . we_class::htmlSelect("add_article", $shopArticlesSelect, 15, weRequest('raw', 'add_article', ''), false, 'onchange="selectArticle(this.options[this.selectedIndex].value);"', 'value', '380') . '</td>
 			<td>' . we_html_tools::getPixel(10, 1) . '</td>
 			<td valign="top">' . $backBut . '<div style="margin:5px 0"></div>' . $nextBut . '</td>
 			</tr>
@@ -1260,7 +1260,7 @@ function submitForm() {
 						'space' => 100,
 						'html' => '
 			<table border="0" cellpadding="0" cellspacing="0">
-				<tr><td>' . we_class::htmlTextInput('searchArticle', 24, ( isset($_REQUEST['searchArticle']) ? $_REQUEST['searchArticle'] : ''), '', 'id="searchArticle"', 'text', 380) . '</td>
+				<tr><td>' . we_class::htmlTextInput('searchArticle', 24, weRequest('raw', 'searchArticle', ''), '', 'id="searchArticle"', 'text', 380) . '</td>
 					<td>' . we_html_tools::getPixel(10, 1) . '</td>
 					<td>' . $searchBut . '</td>
 				</tr>

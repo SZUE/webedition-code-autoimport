@@ -664,7 +664,7 @@ failure: function(o) {
 	}
 
 	function getHTMLCustomerAdmin(){
-		$branch = (isset($_REQUEST["branch"]) ? $_REQUEST["branch"] : g_l('modules_customer', '[other]'));
+		$branch = weRequest('string', "branch", g_l('modules_customer', '[other]'));
 		$branch_select = (isset($_REQUEST["branch_select"]) ? $_REQUEST["branch"] : g_l('modules_customer', '[other]'));
 
 		$select = $this->getHTMLBranchSelect(false);
@@ -719,8 +719,8 @@ failure: function(o) {
 	}
 
 	function getHTMLFieldEditor($type, $mode){
-		$field = (isset($_REQUEST["field"]) ? $_REQUEST["field"] : '');
-		$branch = (isset($_REQUEST["branch"]) ? $_REQUEST["branch"] : g_l('modules_customer', '[other]'));
+		$field = weRequest('string', "field", '');
+		$branch = weRequest('string', "branch", g_l('modules_customer', '[other]'));
 
 		$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "field_editor")) .
 			we_html_element::htmlHidden(array("name" => "cmd", "value" => "no_cmd")) .
@@ -822,7 +822,7 @@ failure: function(o) {
 	function getHTMLSearch(){//TODO: this is popup search editor: make separate frameset for popups!
 		$colspan = 4;
 
-		$mode = isset($_REQUEST['mode']) ? $_REQUEST['mode'] : 0;
+		$mode = weRequest('int', 'mode', 0);
 
 		$hiddens = we_html_element::htmlHidden(array('name' => 'pnt', 'value' => 'search')) .
 			we_html_element::htmlHidden(array('name' => 'cmd', 'value' => 'search')) .
@@ -840,7 +840,7 @@ failure: function(o) {
 		if($mode){
 			we_customer_add::getHTMLSearch($this, $search, $select);
 		} else {
-			$search->setCol(1, 0, array(), we_html_tools::htmlTextInput('keyword', 80, (isset($_REQUEST['keyword']) ? $_REQUEST['keyword'] : ''), '', 'onchange=""', 'text', '550px')
+			$search->setCol(1, 0, array(), we_html_tools::htmlTextInput('keyword', 80, weRequest('raw', 'keyword', ''), '', 'onchange=""', 'text', '550px')
 			);
 
 			$sw = we_html_button::create_button('image:btn_direction_right', "javascript:we_cmd('switchToAdvance')");
@@ -958,11 +958,11 @@ failure: function(o) {
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array("class" => "defaultfont"), $default_sort_view_select->getHtml());
 
-		$table->setCol( ++$cur, 0, array("class" => "defaultfont"), g_l('modules_customer', '[start_year]') . ":&nbsp;");
+		$table->setCol(++$cur, 0, array("class" => "defaultfont"), g_l('modules_customer', '[start_year]') . ":&nbsp;");
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array("class" => "defaultfont"), we_html_tools::htmlTextInput("start_year", 32, $this->View->settings->getSettings('start_year'), ''));
 
-		$table->setCol( ++$cur, 0, array("class" => "defaultfont"), g_l('modules_customer', '[treetext_format]') . ":&nbsp;");
+		$table->setCol(++$cur, 0, array("class" => "defaultfont"), g_l('modules_customer', '[treetext_format]') . ":&nbsp;");
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array("class" => "defaultfont"), we_html_tools::htmlTextInput("treetext_format", 32, $this->View->settings->getSettings('treetext_format'), ''));
 
@@ -975,7 +975,7 @@ failure: function(o) {
 		}
 		$default_order->selectOption($this->View->settings->getSettings('default_order'));
 
-		$table->setCol( ++$cur, 0, array('class' => 'defaultfont'), g_l('modules_customer', '[default_order]') . ':&nbsp;');
+		$table->setCol(++$cur, 0, array('class' => 'defaultfont'), g_l('modules_customer', '[default_order]') . ':&nbsp;');
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array('class' => 'defaultfont'), $default_order->getHtml());
 
@@ -984,7 +984,7 @@ failure: function(o) {
 		$default_saveRegisteredUser_register->addOption('true', 'true');
 		$default_saveRegisteredUser_register->selectOption($this->View->settings->getPref('default_saveRegisteredUser_register'));
 
-		$table->setCol( ++$cur, 0, array('class' => 'defaultfont'), '&lt;we:saveRegisteredUser register=&quot;');
+		$table->setCol(++$cur, 0, array('class' => 'defaultfont'), '&lt;we:saveRegisteredUser register=&quot;');
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array('class' => 'defaultfont'), $default_saveRegisteredUser_register->getHtml() . '&quot;/>');
 

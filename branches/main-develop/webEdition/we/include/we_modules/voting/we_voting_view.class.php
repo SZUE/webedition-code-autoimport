@@ -77,7 +77,7 @@ class we_voting_view extends weModuleView{
 	}
 
 	function getJSTop(){
-		$mod = isset($_REQUEST['mod']) ? $_REQUEST['mod'] : '';
+		$mod = weRequest('string', 'mod', '');
 		$modData = we_base_moduleInfo::getModuleData($mod);
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 

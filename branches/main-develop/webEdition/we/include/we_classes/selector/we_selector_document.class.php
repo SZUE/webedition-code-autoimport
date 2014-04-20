@@ -32,7 +32,7 @@ class we_selector_document extends we_selector_directory{
 	protected $ctp = array(we_base_ContentTypes::IMAGE => "NEW_GRAFIK", we_base_ContentTypes::QUICKTIME => "NEW_QUICKTIME", we_base_ContentTypes::FLASH => "NEW_FLASH");
 	protected $ctb = array("" => "btn_add_file", we_base_ContentTypes::IMAGE => "btn_add_image", we_base_ContentTypes::QUICKTIME => "btn_add_quicktime", we_base_ContentTypes::FLASH => "btn_add_flash");
 
-	function __construct($id, $table = '', $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $sessionID = '', $we_editDirID = '', $FolderText = '', $filter = '', $rootDirID = 0, $open_doc = 0, $multiple = 0, $canSelectDir = 0, $extInstanceId = ""){
+	function __construct($id, $table = '', $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $sessionID = '', $we_editDirID = '', $FolderText = '', $filter = '', $rootDirID = 0, $open_doc = 0, $multiple = false, $canSelectDir = false, $extInstanceId = ""){
 		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, $sessionID, $we_editDirID, $FolderText, $rootDirID, $multiple, $filter, $extInstanceId);
 		$this->fields.=',ModDate,RestrictOwners,Owners,OwnersReadOnly,CreatorID' . ($this->table == FILE_TABLE || (defined("OBJECT_FILES_TABLE") && $this->table == OBJECT_FILES_TABLE) ? ',Published' : '');
 		$this->canSelectDir = $canSelectDir;

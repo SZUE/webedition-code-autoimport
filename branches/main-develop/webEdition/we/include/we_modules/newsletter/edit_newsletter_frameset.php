@@ -26,8 +26,8 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 $protect = we_base_moduleInfo::isActive('newsletter') && we_users_util::canEditModule('newsletter') ? null : array(false);
 we_html_tools::protect($protect);
 
-$what = (isset($_REQUEST['pnt']) ? $_REQUEST['pnt'] : 'frameset');
-$mode = (isset($_REQUEST['art']) ? $_REQUEST['art'] : 0);
+$what = weRequest('string', 'pnt', 'frameset');
+$mode = weRequest('int', 'art', 0);
 
 $newsletterFrame = new we_newsletter_frames();
 echo $newsletterFrame->getHTMLDocumentHeader($what, $mode);

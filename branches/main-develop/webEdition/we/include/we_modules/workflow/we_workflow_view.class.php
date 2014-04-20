@@ -460,7 +460,7 @@ class we_workflow_view extends we_workflow_base{
 	}
 
 	function getJSTopCode(){
-		$mod = isset($_REQUEST['mod']) ? $_REQUEST['mod'] : '';
+		$mod = weRequest('string', 'mod', '');
 		$modData = we_base_moduleInfo::getModuleData($mod);
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 		?>
@@ -1501,13 +1501,12 @@ function checkData(){
 			array('dat' => g_l('modules_workflow', '[user]')),
 		);
 
-		$logs = array();
 		$logs = we_workflow_log::getLogForDocument($docID, 'DESC', $type);
 		$counter = 0;
 
-		$offset = isset($_REQUEST['offset']) ? $_REQUEST['offset'] : 0;
-		$art = isset($_REQUEST['art']) ? $_REQUEST['art'] : '';
-		$type = isset($_REQUEST['type']) ? $_REQUEST['type'] : '';
+		$offset = weRequest('int', 'offset', 0);
+		$art = weRequest('raw', 'art', '');
+		$type = weRequest('raw', 'type', '');
 		$numRows = we_workflow_log::NUMBER_LOGS;
 		$anz = $GLOBALS['ANZ_LOGS'];
 

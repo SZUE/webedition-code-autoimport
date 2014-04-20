@@ -138,9 +138,9 @@ class we_newsletter_frames extends weModuleFrames{
 			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#F0EFF0"), ""));
 		}
 
-		$group = (isset($_REQUEST["group"]) ? $_REQUEST["group"] : 0);
+		$group = weRequest('bool', "group");
 
-		$page = ($group ? 0 : (isset($_REQUEST["page"]) ? $_REQUEST["page"] : 0));
+		$page = ($group ? 0 : weRequest('int', "page", 0));
 
 
 		$textPre = g_l('modules_newsletter', ($group ? '[group]' : '[newsletter]'));
@@ -914,7 +914,7 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 				$table->setCol($c, 1, array(), we_html_tools::htmlSelect("filter_operator_" . $group . "_" . $k, $operators, 1, $v["operator"], false, array('onchange' => "top.content.hot=1;"), "value", 80));
 				if($v['fieldname'] == "MemberSince" || $v['fieldname'] == "LastLogin" || $v['fieldname'] == "LastAccess"){
 					$table->setCol($c, 2, array("id" => "td_value_fields_" . $group . "_" . $k), $this->getDateSelector("", "filter_fieldvalue_" . $group . "_" . $k, "_from_" . $group . "_" . $k, isset($v["fieldvalue"]) && $v["fieldvalue"] != "" ? !stristr($v["fieldvalue"], ".") ? @date("d.m.Y", $v["fieldvalue"]) : $v["fieldvalue"] : ""));
-					$table->setCol($c, 3, array(), we_html_tools::htmlSelect("filter_hours_" . $group . "_" . $k, $hours, 1, isset($v["hours"]) ? $v["hours"] : "", false, array('onchange'=>'top.content.hot=1;')));
+					$table->setCol($c, 3, array(), we_html_tools::htmlSelect("filter_hours_" . $group . "_" . $k, $hours, 1, isset($v["hours"]) ? $v["hours"] : "", false, array('onchange' => 'top.content.hot=1;')));
 					$table->setCol($c, 4, array("class" => "defaultfont"), "&nbsp;h :");
 					$table->setCol($c, 5, array(), we_html_tools::htmlSelect("filter_minutes_" . $group . "_" . $k, $minutes, 1, isset($v["minutes"]) ? $v["minutes"] : "", false, array('onchange' => "top.content.hot=1;")));
 					$table->setCol($c, 6, array("class" => "defaultfont"), "&nbsp;m");
@@ -987,7 +987,7 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 		$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 6, 3);
 
 		// 1. ROW: select status
-		$selectStatus = we_html_element::htmlB(g_l('modules_newsletter', '[status]')) . " " . we_html_tools::htmlSelect("weEmailStatus", array(g_l('modules_newsletter', '[statusAll]'), g_l('modules_newsletter', '[statusInvalid]')), "", (isset($_REQUEST['weEmailStatus']) ? $_REQUEST['weEmailStatus'] : 0), "", array("onchange" => "weShowMailsByStatus(this.value, $group);", 'id' => 'weViewByStatus'), "value", 150);
+		$selectStatus = we_html_element::htmlB(g_l('modules_newsletter', '[status]')) . " " . we_html_tools::htmlSelect("weEmailStatus", array(g_l('modules_newsletter', '[statusAll]'), g_l('modules_newsletter', '[statusInvalid]')), "", weRequest('raw', 'weEmailStatus', 0), "", array("onchange" => "weShowMailsByStatus(this.value, $group);", 'id' => 'weViewByStatus'), "value", 150);
 		$table->setCol(0, 0, array("valign" => "middle", "colspan" => 3, "class" => "defaultfont"), $selectStatus);
 		$table->setCol(1, 0, array("colspan" => 3), we_html_tools::getPixel(5, 10));
 
@@ -1764,8 +1764,8 @@ self.focus();
 
 		$table->setCol(2, 0, array("colspan" => 3), we_html_button::create_button_table(array($importbut, $exportbut)));
 
-		$sib = (isset($_REQUEST["sib"]) ? $_REQUEST["sib"] : 0);
-		$seb = (isset($_REQUEST["seb"]) ? $_REQUEST["seb"] : 0);
+		$sib = weRequest('raw', "sib", 0);
+		$seb = weRequest('raw', "seb", 0);
 
 		if($sib){
 			$ok = we_html_button::create_button("ok", "javascript:document.we_form.sib.value=0;we_cmd('import_black');");
@@ -1920,7 +1920,7 @@ self.focus();
 		$out = "";
 		$content = array();
 
-		$order = isset($_REQUEST["order"]) ? $_REQUEST["order"] : "";
+		$order = weRequest('raw', "order", "");
 		for($i = 0; $i < 14; $i = $i + 2){
 			$sorter_code[$i] = "<br/>" . ($order == $i ?
 					we_html_element::htmlInput(array("type" => "radio", "value" => $i, "name" => "order", "checked" => true, "onclick" => "submitForm('edit_file')")) . "&darr;" :
@@ -1945,21 +1945,21 @@ self.focus();
 		);
 
 
-		$csv_file = isset($_REQUEST['csv_file']) ? $_REQUEST['csv_file'] : '';
+		$csv_file = weRequest('file', 'csv_file', '');
 		$emails = array();
 		$emailkey = array();
 		if(strpos($csv_file, '..') === false){
 			if($csv_file){
-				$emails = we_newsletter_newsletter::getEmailsFromExtern2($csv_file, null, null, null, (isset($_REQUEST['weEmailStatus']) ? $_REQUEST['weEmailStatus'] : 0), $emailkey);
+				$emails = we_newsletter_newsletter::getEmailsFromExtern2($csv_file, null, null, null, weRequest('raw', 'weEmailStatus', 0), $emailkey);
 			}
 		} else {
-			print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[path_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR));
+			echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[path_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR));
 		}
 
-		$offset = isset($_REQUEST["offset"]) ? $_REQUEST["offset"] : 0;
-		$art = isset($_REQUEST["art"]) ? $_REQUEST["art"] : "";
+		$offset = weRequest('int', "offset", 0);
+		$art = weRequest('raw', "art", "");
 
-		$numRows = isset($_REQUEST["numRows"]) ? $_REQUEST["numRows"] : 15;
+		$numRows = weRequest('int', "numRows", 15);
 
 		$anz = count($emails);
 		$offset = ($offset < 0 ? 0 : $offset);
@@ -2201,7 +2201,7 @@ function postSelectorSelect(wePssCmd) {
 			$nextprev->setCol(0, 5, array(), we_html_tools::getPixel(20, 1));
 			$nextprev->setCol(0, 6, array("class" => "defaultfont"), we_html_element::htmlB(g_l('modules_newsletter', '[show]')) . " " . we_html_tools::htmlTextInput("numRows", 5, $numRows)
 			);
-			$selectStatus = we_html_element::htmlB(g_l('modules_newsletter', '[status]')) . " " . we_html_tools::htmlSelect("weEmailStatus", array(g_l('modules_newsletter', '[statusAll]'), g_l('modules_newsletter', '[statusInvalid]')), "", (isset($_REQUEST['weEmailStatus']) ? $_REQUEST['weEmailStatus'] : 0), "", array("onchange" => 'listFile();'), "value", 150);
+			$selectStatus = we_html_element::htmlB(g_l('modules_newsletter', '[status]')) . " " . we_html_tools::htmlSelect("weEmailStatus", array(g_l('modules_newsletter', '[statusAll]'), g_l('modules_newsletter', '[statusInvalid]')), "", weRequest('raw', 'weEmailStatus', 0), "", array("onchange" => 'listFile();'), "value", 150);
 			$nextprev->setCol(0, 7, array(), we_html_tools::getPixel(20, 1));
 			$nextprev->setCol(0, 8, array("class" => "defaultfont"), $selectStatus);
 			$nextprev->setCol(0, 9, array(), we_html_tools::getPixel(20, 1));
@@ -2220,7 +2220,7 @@ function postSelectorSelect(wePssCmd) {
 			} else {
 				if(isset($_REQUEST['weEmailStatus']) && $_REQUEST['weEmailStatus'] == 1){
 					$_nlMessage = g_l('modules_newsletter', '[file_all_ok]');
-					$selectStatus2 = "<br/>" . we_html_element::htmlB(g_l('modules_newsletter', '[status]')) . " " . we_html_tools::htmlSelect("weEmailStatus", array(g_l('modules_newsletter', '[statusAll]'), g_l('modules_newsletter', '[statusInvalid]')), "", (isset($_REQUEST['weEmailStatus']) ? $_REQUEST['weEmailStatus'] : 0), "", array("onchange" => 'listFile();'), "value", 150);
+					$selectStatus2 = "<br/>" . we_html_element::htmlB(g_l('modules_newsletter', '[status]')) . " " . we_html_tools::htmlSelect("weEmailStatus", array(g_l('modules_newsletter', '[statusAll]'), g_l('modules_newsletter', '[statusInvalid]')), "", weRequest('raw', 'weEmailStatus', 0), "", array("onchange" => 'listFile();'), "value", 150);
 				} else {
 					$_nlMessage = g_l('modules_newsletter', '[file_all_ok]');
 					$selectStatus2 = '';
@@ -2296,8 +2296,8 @@ function clearLog(){
 	}
 
 	function getHTMLSendWait(){
-		$nid = (isset($_REQUEST["nid"]) ? $_REQUEST["nid"] : 0);
-		$test = (isset($_REQUEST["test"]) ? $_REQUEST["test"] : 0);
+		$nid = weRequest('int', "nid", 0);
+		$test = weRequest('bool', "test");
 
 		$js = we_html_element::jsElement('
 			self.focus();
@@ -2317,9 +2317,9 @@ function clearLog(){
 	}
 
 	function getHTMLSendFrameset(){
-		$nid = (isset($_REQUEST["nid"]) ? $_REQUEST["nid"] : 0);
+		$nid = weRequest('int', "nid", 0);
 
-		$test = (isset($_REQUEST["test"]) ? $_REQUEST["test"] : 0);
+		$test = weRequest('bool', "test");
 
 		$this->View->newsletter = new we_newsletter_newsletter($nid);
 		$ret = $this->View->cacheNewsletter();
@@ -2373,7 +2373,7 @@ self.focus();
 
 	function getHTMLSendBody(){
 		$details = "";
-		$pro = (isset($_REQUEST["pro"]) ? $_REQUEST["pro"] : 0);
+		$pro = weRequest('int', "pro", 0);
 
 		$pb = new we_progressBar((int) $pro);
 		$pb->setStudLen(400);
@@ -2388,7 +2388,7 @@ self.focus();
 		$_content = we_html_tools::htmlDialogLayout($_textarea, g_l('modules_newsletter', '[details]'), $_footer);
 
 
-		$details = (isset($_REQUEST["test"]) && $_REQUEST["test"] ? g_l('modules_newsletter', '[test_no_mail]') : g_l('modules_newsletter', '[sending]') );
+		$details = (weRequest('bool', "test") ? g_l('modules_newsletter', '[test_no_mail]') : g_l('modules_newsletter', '[sending]') );
 
 		$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), $pb->getJS() .
 					$_content
@@ -2413,28 +2413,28 @@ self.focus();
 			return;
 		}
 
-		$test = (isset($_REQUEST["test"]) ? $_REQUEST["test"] : 0);
-		$start = (isset($_REQUEST["start"]) ? $_REQUEST["start"] : 0);
+		$test = weRequest('bool', "test");
+		$start = weRequest('int', "start", 0);
 
 		// to calc progress ------------------
 		// total number of emails
-		$ecount = (isset($_REQUEST["ecount"]) ? $_REQUEST["ecount"] : 0);
+		$ecount = weRequest('int', "ecount", 0);
 		// counter
-		$ecs = (isset($_REQUEST["ecs"]) ? $_REQUEST["ecs"] : 0);
+		$ecs = weRequest('raw', "ecs", 0);
 		//-----------------------------------
 
-		$blockcache = (isset($_REQUEST["blockcache"]) ? $_REQUEST["blockcache"] : 0);
+		$blockcache = weRequest('raw', "blockcache", 0);
 
 		// emails cache -----------------------
-		$emailcache = (isset($_REQUEST["emailcache"]) ? $_REQUEST["emailcache"] : 0);
+		$emailcache = weRequest('raw', "emailcache", 0);
 		//
-		$egc = (isset($_REQUEST["egc"]) ? $_REQUEST["egc"] : 0);
+		$egc = weRequest('raw', "egc", 0);
 		//
-		$gcount = (isset($_REQUEST["gcount"]) ? $_REQUEST["gcount"] : 0);
+		$gcount = weRequest('int', "gcount", 0);
 		//-----------------------------------
 
-		$reload = (isset($_REQUEST["reload"]) ? $_REQUEST["reload"] : 0);
-		$retry = (isset($_REQUEST["retry"]) ? $_REQUEST["retry"] : 0);
+		$reload = weRequest('bool', "reload");
+		$retry = weRequest('bool', "retry");
 
 
 		$this->View->newsletter = new we_newsletter_newsletter($nid);
@@ -2771,13 +2771,13 @@ self.focus();');
 	}
 
 	function getHTMLSendControl(){
-		$nid = (isset($_REQUEST["nid"]) ? $_REQUEST["nid"] : 0);
-		$test = (isset($_REQUEST["test"]) ? $_REQUEST["test"] : 0);
-		$gcount = (isset($_REQUEST["gcount"]) ? $_REQUEST["gcount"] : 0);
-		$ecount = (isset($_REQUEST["ecount"]) ? $_REQUEST["ecount"] : 0);
-		$blockcache = (isset($_REQUEST["blockcache"]) ? $_REQUEST["blockcache"] : 0);
-		$ecs = (isset($_REQUEST["ecs"]) ? $_REQUEST["ecs"] : 0);
-		$emailcache = (isset($_REQUEST["emailcache"]) ? $_REQUEST["emailcache"] : 0);
+		$nid = weRequest('int', "nid", 0);
+		$test = weRequest('bool', "test");
+		$gcount = weRequest('int', "gcount", 0);
+		$ecount = weRequest('int', "ecount", 0);
+		$blockcache = weRequest('raw', "blockcache", 0);
+		$ecs = weRequest('raw', "ecs", 0);
+		$emailcache = weRequest('raw', "emailcache", 0);
 
 		$to = is_numeric($this->View->settings["send_wait"]) ? $this->View->settings["send_wait"] : 0;
 		$to += 40000;

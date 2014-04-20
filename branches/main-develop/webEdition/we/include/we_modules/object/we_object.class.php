@@ -183,7 +183,7 @@ class we_object extends we_document{
 
 				$neu = explode(',', $this->elements['neuefelder']['dat']);
 				foreach($neu as $cur){
-					if(!empty($cur)){
+					if($cur){
 						$name = $this->getElement($cur . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($cur, 'dat');
 						$arrt[$name] = array(
 							'default' => isset($this->elements[$cur . 'default']['dat']) ? $this->elements[$cur . 'default']['dat'] : '',
@@ -242,6 +242,7 @@ class we_object extends we_document{
 							}
 						}
 						$q[] = '`' . $name . '` ' . $this->switchtypes($cur);
+						t_e($this);
 						//add index for complex queries
 						if($this->getElement($cur . self::ELEMENT_TYPE, 'dat') == we_objectFile::TYPE_OBJECT){
 							$indexe[] = 'KEY (`' . $name . '`)';
@@ -298,14 +299,14 @@ class we_object extends we_document{
 						} else {
 
 							$nam = $this->getElement($info['name'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($info['name'], 'dat');
-							$q [] = ' CHANGE `' . $info['name'] . '` `' . $nam . '` ' .
-								$this->switchtypes($info['name']);
 							//change from object is indexed to unindexed
-							if((strpos($info['name'], self::QUERY_PREFIX) === 0) && (strpos($nam, self::QUERY_PREFIX) !== 0) && (strpos($info['flags'], 'multiple_key') !== false)){
+							if((strpos($info['name'], self::QUERY_PREFIX) === 0) && (strpos($nam, self::QUERY_PREFIX) !== 0)){
 								$q[] = ' DROP KEY `' . $info['name'] . '` ';
-							} else if((strpos($info['name'], self::QUERY_PREFIX) !== 0) && (strpos($nam, self::QUERY_PREFIX) === 0) && (strpos($info['flags'], 'multiple_key') === false)){
-								$q[] = ' ADD INDEX (`' . $info['name'] . '`) ';
 							}
+
+							$q[] = ' CHANGE `' . $info['name'] . '` `' . $nam . '` ' . $this->switchtypes($info['name']) .
+								((strpos($info['name'], self::QUERY_PREFIX) !== 0) && (strpos($nam, self::QUERY_PREFIX) === 0) ?
+									', ADD INDEX (`' . $nam . '`) ' : '');
 
 							$arrt[$nam] = array(
 								'default' => (strpos($info['name'], 'date_') === 0 ?
@@ -495,7 +496,6 @@ class we_object extends we_document{
 	}
 
 	function switchtypes($name){
-		$def = $this->getElement($name . 'default', 'dat');
 		switch($this->getElement($name . self::ELEMENT_TYPE, 'dat')){
 			case we_objectFile::TYPE_META:
 				return ' VARCHAR(' . (($this->getElement($name . 'length', 'dat') > 0 && ($this->getElement($name . 'length', 'dat') < 255)) ? $this->getElement($name . 'length', 'dat') : 255) . ') NOT NULL ';
@@ -549,7 +549,7 @@ class we_object extends we_document{
 		if(!$this->issetElement('we_sort')){
 			$t = we_objectFile::getSortArray($this->ID, $this->DB_WE);
 			$sort = array();
-			foreach($t as $k => $v){
+			foreach($t as $v){
 				if($v < 0){
 					$v = 0;
 				}
@@ -762,9 +762,8 @@ class we_object extends we_document{
 	}
 
 	function addMetaToClass($name, $pos){
-
 		// get from request
-		$amount = isset($_REQUEST["amount_insert_meta_at_class_" . $name . $pos]) ? $_REQUEST["amount_insert_meta_at_class_" . $name . $pos] : 1;
+		$amount = weRequest('int', "amount_insert_meta_at_class_" . $name . $pos, 1);
 
 		// set new amount
 		$this->elements[$name . "count"]["dat"] += $amount;
@@ -799,12 +798,22 @@ class we_object extends we_document{
 		$this->elements[$name . "count"]["dat"] = ($this->elements[$name . "count"]["dat"] > 0) ? $this->elements[$name . "count"]["dat"] - 1 : 0;
 	}
 
+	function getEmptyDefaultFields(){
+		return '<div style="display:none">' .
+			'<input type="radio" value="0" name="we_' . $this->Name . '_input[title]" id="empty_' . $this->Name . '_input[title]"/>' .
+			// description
+			'<input type="radio" value="0" name="we_' . $this->Name . '_input[desc]" id="empty_' . $this->Name . '_input[desc]"/>' .
+			// keywords
+			'<input type="radio" value="0" name="we_' . $this->Name . '_input[keywords]" id="empty_' . $this->Name . '_input[keywords]"/>' .
+			'<input type="radio" value="0" name="we_' . $this->Name . '_input[urlfield0]" id="empty_' . $this->Name . '_input[urlfield0]"/>' .
+			'<input type="radio" value="0" name="we_' . $this->Name . '_input[urlfield1]" id="empty_' . $this->Name . '_input[urlfield1]"/>' .
+			'<input type="radio" value="0" name="we_' . $this->Name . '_input[urlfield2]" id="empty_' . $this->Name . '_input[urlfield2]"/>' .
+			'<input type="radio" value="0" name="we_' . $this->Name . '_input[urlfield3]" id="empty_' . $this->Name . '_input[urlfield3]"/>' .
+			'</div>';
+	}
+
 	function getFieldHTML($name, $identifier){
-
-		$listlen = ($this->getElement("Sortgesamt") + 1);
-		//$name = str_replace("float", "f", str_replace("int", "i",$name));
-
-		$type = ( $this->getElement($name . self::ELEMENT_TYPE, "dat") != "" ) ? $this->getElement($name . self::ELEMENT_TYPE, "dat") : we_objectFile::TYPE_INPUT;
+		$type = $this->getElement($name . self::ELEMENT_TYPE, "dat") ? $this->getElement($name . self::ELEMENT_TYPE, "dat") : we_objectFile::TYPE_INPUT;
 		$content = '<tr>
 			<td  width="100" class="weMultiIconBoxHeadline" valign="top" >' . g_l('weClass', "[name]") . '</td>
 			<td  width="170" class="defaultfont" valign="top">';
@@ -1127,10 +1136,10 @@ class we_object extends we_document{
 					$allVats = we_shop_vats::getAllShopVATs();
 					foreach($allVats as $id => $shopVat){
 						$values[$id] = $shopVat->vat . ' - ' . $shopVat->text;
-						if($shopVat->standard){
-							$standardId = $id;
-							$standardVal = $shopVat->vat;
-						}
+						/* 						if($shopVat->standard){
+						  $standardId = $id;
+						  $standardVal = $shopVat->vat;
+						  } */
 					}
 				}
 				$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[default]') . '</td>' .
@@ -1147,30 +1156,41 @@ class we_object extends we_document{
 				break;
 		}
 
-
-		if($type == we_objectFile::TYPE_TEXT || $type == we_objectFile::TYPE_INPUT || $type == we_objectFile::TYPE_META || $type == we_objectFile::TYPE_LINK || $type == we_objectFile::TYPE_HREF){
-			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin"></td>' .
-				'<td width="170" class="defaultfont">' .
-				// TITEL
-				we_html_forms::radiobutton($name, (($this->getElement("title", "dat") == $name) ? 1 : 0), "we_" . $this->Name . "_input[title]", g_l('global', "[title]"), true, "defaultfont", "if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}") .
-				// Beschreibung
-				we_html_forms::radiobutton($name, (($this->getElement("desc", "dat") == $name) ? 1 : 0), "we_" . $this->Name . "_input[desc]", g_l('global', "[description]"), true, "defaultfont", "if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}") .
-				// Keywords
-				we_html_forms::radiobutton($name, (($this->getElement("keywords", "dat") == $name) ? 1 : 0), "we_" . $this->Name . "_input[keywords]", g_l('weClass', "[Keywords]"), true, "defaultfont", "if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}") .
-				'</td></tr>';
+		switch($type){
+			case we_objectFile::TYPE_TEXT:
+			case we_objectFile::TYPE_INPUT:
+			case we_objectFile::TYPE_META:
+			case we_objectFile::TYPE_LINK:
+			case we_objectFile::TYPE_HREF:
+				$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin"></td>' .
+					'<td width="170" class="defaultfont">' .
+					// title
+					we_html_forms::radiobutton($name, ($this->getElement("title", "dat") == $name), "we_" . $this->Name . "_input[title]", g_l('global', "[title]"), true, "defaultfont", "if(this.waschecked){document.getElementById('empty_" . $this->Name . "_input[title]').checked=true;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}") .
+					// description
+					we_html_forms::radiobutton($name, ($this->getElement("desc", "dat") == $name), "we_" . $this->Name . "_input[desc]", g_l('global', "[description]"), true, "defaultfont", "if(this.waschecked){document.getElementById('empty_" . $this->Name . "_input[desc]').checked=true;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}") .
+					// keywords
+					we_html_forms::radiobutton($name, ($this->getElement("keywords", "dat") == $name), "we_" . $this->Name . "_input[keywords]", g_l('weClass', "[Keywords]"), true, "defaultfont", "if(this.waschecked){document.getElementById('empty_" . $this->Name . "_input[keywords]').checked=true;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}") .
+					'</td></tr>';
+				break;
+			default:
 		}
 
-		if($type == we_objectFile::TYPE_TEXT || $type == we_objectFile::TYPE_INPUT || $type == we_objectFile::TYPE_DATE){
-			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin"></td>' .
-				'<td width="170" class="defaultfont">';
-			if($type == we_objectFile::TYPE_DATE){
-				$content .= we_html_forms::radiobutton($name, (($this->getElement("urlfield0", "dat") == $name) ? 1 : 0), "we_" . $this->Name . "_input[urlfield0]", g_l('weClass', "[urlfield0]"), true, "defaultfont", "if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}");
-			} else {
-				$content .= we_html_forms::radiobutton($name, (($this->getElement("urlfield1", "dat") == $name) ? 1 : 0), "we_" . $this->Name . "_input[urlfield1]", g_l('weClass', "[urlfield1]"), true, "defaultfont", "if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}") .
-					we_html_forms::radiobutton($name, (($this->getElement("urlfield2", "dat") == $name) ? 1 : 0), "we_" . $this->Name . "_input[urlfield2]", g_l('weClass', "[urlfield2]"), true, "defaultfont", "if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}") .
-					we_html_forms::radiobutton($name, (($this->getElement("urlfield3", "dat") == $name) ? 1 : 0), "we_" . $this->Name . "_input[urlfield3]", g_l('weClass', "[urlfield3]"), true, "defaultfont", "if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}");
-			}
-			$content .= '</td></tr>';
+		switch($type){
+			case we_objectFile::TYPE_TEXT:
+			case we_objectFile::TYPE_INPUT:
+			case we_objectFile::TYPE_DATE:
+				$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin"></td>' .
+					'<td width="170" class="defaultfont">';
+				if($type == we_objectFile::TYPE_DATE){
+					$content .= we_html_forms::radiobutton($name, ($this->getElement("urlfield0", "dat") == $name), "we_" . $this->Name . "_input[urlfield0]", g_l('weClass', "[urlfield0]"), true, "defaultfont", "if(this.waschecked){document.getElementById('empty_" . $this->Name . "_input[urlfield0]').checked=true;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}");
+				} else {
+					$content .= we_html_forms::radiobutton($name, ($this->getElement("urlfield1", "dat") == $name), "we_" . $this->Name . "_input[urlfield1]", g_l('weClass', "[urlfield1]"), true, "defaultfont", "if(this.waschecked){document.getElementById('empty_" . $this->Name . "_input[urlfield1]').checked=true;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}") .
+						we_html_forms::radiobutton($name, ($this->getElement("urlfield2", "dat") == $name), "we_" . $this->Name . "_input[urlfield2]", g_l('weClass', "[urlfield2]"), true, "defaultfont", "if(this.waschecked){document.getElementById('empty_" . $this->Name . "_input[urlfield2]').checked=true;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}") .
+						we_html_forms::radiobutton($name, ($this->getElement("urlfield3", "dat") == $name), "we_" . $this->Name . "_input[urlfield3]", g_l('weClass', "[urlfield3]"), true, "defaultfont", "if(this.waschecked){document.getElementById('empty_" . $this->Name . "_input[urlfield3]').checked=true;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}");
+				}
+				$content .= '</td></tr>';
+				break;
+			default:
 		}
 
 
@@ -1179,11 +1199,9 @@ class we_object extends we_document{
 			$content .= '<tr valign="top"><td  width="100" class="defaultfont"></td>' .
 				'<td width="170" class="defaultfont">' .
 				we_html_forms::checkbox(1, $this->getElement($name . "required", "dat"), "we_" . $this->Name . "_input[" . $name . "required1]", g_l('global', "[required_field]"), true, "defaultfont", "if(this.checked){document.we_form.elements['" . "we_" . $this->Name . "_input[" . $name . "required]" . "'].value=1;}else{ document.we_form.elements['" . "we_" . $this->Name . "_input[" . $name . "required]" . "'].value=0;}");
-			if(defined('SHOP_TABLE')){
-				if($this->canHaveVariants() && $this->isVariantField($name)){
-					$variant = $this->getElement($name . "variant", "dat");
-					$content .= we_html_forms::checkboxWithHidden(($variant == 1 ? true : false), "we_" . $this->Name . "_variant[" . $name . "variant]", g_l('global', "[variant_field]"), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);');
-				}
+
+			if(defined('SHOP_TABLE') && $this->canHaveVariants() && $this->isVariantField($name)){
+				$content .= we_html_forms::checkboxWithHidden($this->getElement($name . "variant", "dat"), "we_" . $this->Name . "_variant[" . $name . "variant]", g_l('global', "[variant_field]"), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);');
 			}
 			$content .= '<input type=hidden name="' . "we_" . $this->Name . "_input[" . $name . "required]" . '" value="' . $this->getElement($name . "required", "dat") . '" />' .
 				'</td></tr>';
@@ -1193,8 +1211,7 @@ class we_object extends we_document{
 			$content .= '<tr valign="top"><td  width="100" class="defaultfont"></td>' .
 				'<td width="170" class="defaultfont">';
 			if($this->canHaveVariants() && $this->isVariantField($name)){
-				$variant = $this->getElement($name . "variant", "dat");
-				$content .= we_html_forms::checkboxWithHidden(($variant == 1 ? true : false), "we_" . $this->Name . "_variant[" . $name . "variant]", g_l('global', "[variant_field]"), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);');
+				$content .= we_html_forms::checkboxWithHidden($this->getElement($name . "variant", "dat"), "we_" . $this->Name . "_variant[" . $name . "variant]", g_l('global', "[variant_field]"), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);');
 			}
 			$content .= '<input type=hidden name="' . "we_" . $this->Name . "_input[" . $name . "required]" . '" value="0" />' .
 				'</td></tr>';
@@ -1235,8 +1252,6 @@ class we_object extends we_document{
 		$intID = isset($hrefArr["intID"]) ? $hrefArr["intID"] : 0;
 		$intPath = $intID ? id_to_path($intID) : "";
 		$extPath = isset($hrefArr["extPath"]) ? $hrefArr["extPath"] : "";
-//		$objID = isset($hrefArr["objID"]) ? $hrefArr["objID"] : 0;
-		//$objPath = $objID ? id_to_path($objID, OBJECT_FILES_TABLE) : "";
 		$int_elem_Name = 'we_' . $this->Name . '_href[' . $nint . ']';
 		$intPath_elem_Name = 'we_' . $this->Name . '_href[' . $nintPath . ']';
 		$intID_elem_Name = 'we_' . $this->Name . '_href[' . $nintID . ']';
@@ -1266,9 +1281,9 @@ class we_object extends we_document{
 		if(!is_array($link)){
 			$link = array();
 		}
-		if(empty($link)){
-			$link = array("ctype" => "text", "type" => we_base_link::TYPE_EXT, "href" => "#", "text" => g_l('global', "[new_link]"));
-		}
+
+		$link = $link ? $link : array("ctype" => "text", "type" => we_base_link::TYPE_EXT, "href" => "#", "text" => g_l('global', "[new_link]"));
+
 		$img = new we_imageDocument();
 		$content = parent::getLinkContent($link, $this->ParentID, $this->Path, $GLOBALS['DB_WE'], $img);
 
@@ -1323,7 +1338,7 @@ class we_object extends we_document{
 
 		  return weSuggest::getYuiFiles().$yuiSuggest->getHTML().$yuiSuggest->getYuiCode();
 		 */
-		return we_html_tools::htmlFormElementTable($this->htmlTextInput($textname, 30, $path, "", ' readonly', "text", 246, 0), "", "left", "defaultfont", $this->htmlHidden($idname, $myid), we_html_tools::getPixel(10, 4), $button, we_html_tools::getPixel(5, 4), $delbutton) . ($DoubleNames ? '<span style="color:red" >' . sprintf(g_l('modules_object', '[incObject_sameFieldname_start]'), implode(', ', $DoubleNames)) . '</span>' : '');
+		return we_html_tools::htmlFormElementTable($this->htmlTextInput($textname, 30, $path, "", ' readonly', "text", 246, 0), "", "left", "defaultfont", $this->htmlHidden($idname, $myid), we_html_tools::getPixel(10, 4), $button, we_html_tools::getPixel(5, 4), $delbutton) . ($DoubleNames ? '<span style="color:red" >' . sprintf(g_l('modules_object', '[incObject_sameFieldname]'), implode(', ', $DoubleNames)) . '</span>' : '');
 	}
 
 	function getMultiObjectFieldHTML($name, $i, $f){
@@ -1340,32 +1355,34 @@ class we_object extends we_document{
 		$rootDir = f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='$classPath'", "ID", $db);
 
 		$table = OBJECT_FILES_TABLE;
-		//javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$idname'].value,'$table','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','top.opener._EditorFrame.setEditorIsHot(true);','".session_id()."','$rootDir','objectFile',".(permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).")
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
 		$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$textname'].value");
 		$wecmdenc3 = we_cmd_enc("top.opener._EditorFrame.setEditorIsHot(true);");
 
 		$selectObject = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$rootDir','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")");
 
-		$upbut = we_html_button::create_button("image:btn_direction_up", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('up_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($i) . "','" . $name . "','" . ($f) . "')", true, 21, 22);
-		$upbutDis = we_html_button::create_button("image:btn_direction_up", "#", true, 21, 22, "", "", true);
-		$downbut = we_html_button::create_button("image:btn_direction_down", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('down_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($i) . "','" . $name . "','" . ($f) . "')", true, 21, 22);
-		$downbutDis = we_html_button::create_button("image:btn_direction_down", "#", true, 21, 22, "", "", true);
-
-		$plusbut = we_html_button::create_button("image:btn_add_listelement", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('insert_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($i) . "','" . $name . "','" . ($f) . "')", true, 40, 22);
-		$plusbutDis = we_html_button::create_button("image:btn_add_listelement", "#", true, 21, 22, "", "", true);
-		$trashbut = we_html_button::create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('delete_meta_class','" . $GLOBALS['we_transaction'] . "','" . ($i) . "','" . $name . "','" . ($f) . "')", true, 27, 22);
-		$trashbutDis = we_html_button::create_button("image:btn_function_trash", "#", true, 27, 22, "", "", true);
 		return '<tr>' .
 			'<td>' . $this->htmlTextInput($textname, 30, $path, 255, 'onchange="_EditorFrame.setEditorIsHot(true);" readonly ', "text", 146) . '</td>' .
 			'<td>' . we_html_button::create_button_table(
 				array(
 				$selectObject,
 				$this->htmlHidden($idname, $myid),
-				(($this->elements[$name . "count"]["dat"] + 1 < $this->getElement($name . "max") || $this->getElement($name . "max") == "") ? $plusbut : $plusbutDis),
-				(($f > 0) ? $upbut : $upbutDis ),
-				(($f < ($this->elements[$name . "count"]["dat"])) ? $downbut : $downbutDis),
-				($this->elements[$name . "count"]["dat"] >= 1 ? $trashbut : $trashbutDis)
+				(($this->elements[$name . "count"]["dat"] + 1 < $this->getElement($name . "max") || $this->getElement($name . "max") == "") ?
+					we_html_button::create_button("image:btn_add_listelement", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('insert_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($i) . "','" . $name . "','" . ($f) . "')", true, 40, 22) :
+					we_html_button::create_button("image:btn_add_listelement", "#", true, 21, 22, "", "", true)
+				),
+				(($f > 0) ?
+					we_html_button::create_button("image:btn_direction_up", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('up_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($i) . "','" . $name . "','" . ($f) . "')", true, 21, 22) :
+					we_html_button::create_button("image:btn_direction_up", "#", true, 21, 22, "", "", true)
+				),
+				(($f < ($this->elements[$name . "count"]["dat"])) ?
+					we_html_button::create_button("image:btn_direction_down", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('down_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($i) . "','" . $name . "','" . ($f) . "')", true, 21, 22) :
+					we_html_button::create_button("image:btn_direction_down", "#", true, 21, 22, "", "", true)
+				),
+				($this->elements[$name . "count"]["dat"] >= 1 ?
+					we_html_button::create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('delete_meta_class','" . $GLOBALS['we_transaction'] . "','" . ($i) . "','" . $name . "','" . ($f) . "')", true, 27, 22) :
+					we_html_button::create_button("image:btn_function_trash", "#", true, 27, 22, "", "", true)
+				)
 				), 5
 			) .
 			'</td></tr>';
@@ -1447,22 +1464,23 @@ class we_object extends we_document{
 	}
 
 	function formUsers($canChange = true){
-
 		$users = makeArrayFromCSV($this->Users);
 		$usersReadOnly = $this->UsersReadOnly ? unserialize($this->UsersReadOnly) : array();
 
 		$content = '<table border="0" cellpadding="0" cellspacing="0" width="388">' .
 			'<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(333, 2) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(80, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>';
-		if(empty($users)){
-			$content .= '<tr><td><img src="' . ICON_DIR . "user.gif" . '" width="16" height="18" /></td><td class="defaultfont">' . g_l('weClass', "[onlyOwner]") . '</td><td></td></tr>';
-		} else {
-			for($i = 0; $i < count($users); $i++){
-				$foo = getHash('SELECT Path,Icon FROM ' . USER_TABLE . ' WHERE ID=' . intval($users[$i]), $this->DB_WE);
-				$content .= '<tr><td>' . (empty($foo) ? '' : '<img src="' . ICON_DIR . $foo["Icon"] . '" width="16" height="18" />') . '</td><td class="defaultfont">' . (empty($foo) ? 'Unknown' : $foo["Path"]) . '</td><td>' .
+
+		if($users){
+			$this->DB_WE->query('SELECT ID,Path,Icon FROM ' . USER_TABLE . ' WHERE ID IN(' . implode(',', $users) . ')');
+			$allUsers = $this->DB_WE->getAllFirst();
+			foreach($users as $user){
+				$content .= '<tr><td>' . (isset($allUsers[$user]) ? '<img src="' . ICON_DIR . $allUsers[$user]["Icon"] . '" width="16" height="18" />' : '') . '</td><td class="defaultfont">' . (isset($allUsers[$user]) ? $allUsers[$user]["Path"] : 'Unknown' ) . '</td><td>' .
 					($canChange ?
-						$this->htmlHidden('we_users_read_only[' . $users[$i] . ']', (isset($usersReadOnly[$users[$i]]) && $usersReadOnly[$users[$i]]) ? $usersReadOnly[$users[$i]] : "" ) . '<input type="checkbox" value="1" name="wetmp_users_read_only[' . $users[$i] . ']"' . ( (isset($usersReadOnly[$users[$i]]) && $usersReadOnly[$users[$i]] ) ? ' checked' : '') . ' OnClick="this.form.elements[\'we_users_read_only[' . $users[$i] . ']\'].value=(this.checked ? 1 : 0);_EditorFrame.setEditorIsHot(true);" />' :
-						'<img src="' . TREE_IMAGE_DIR . ($usersReadOnly[$users[$i]] ? 'check1_disabled.gif' : 'check0_disabled.gif') . '" />') . '</td><td class="defaultfont">' . g_l('weClass', "[readOnly]") . '</td><td>' . ($canChange ? we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('del_user','" . $users[$i] . "');_EditorFrame.setEditorIsHot(true);") : "") . '</td></tr>';
+						$this->htmlHidden('we_users_read_only[' . $user . ']', (isset($usersReadOnly[$user]) && $usersReadOnly[$user]) ? $usersReadOnly[$user] : "" ) . '<input type="checkbox" value="1" name="wetmp_users_read_only[' . $user . ']"' . ( (isset($usersReadOnly[$user]) && $usersReadOnly[$user] ) ? ' checked' : '') . ' onclick="this.form.elements[\'we_users_read_only[' . $user . ']\'].value=(this.checked ? 1 : 0);_EditorFrame.setEditorIsHot(true);" />' :
+						'<img src="' . TREE_IMAGE_DIR . ($usersReadOnly[$user] ? 'check1_disabled.gif' : 'check0_disabled.gif') . '" />') . '</td><td class="defaultfont">' . g_l('weClass', "[readOnly]") . '</td><td>' . ($canChange ? we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('del_user','" . $user . "');_EditorFrame.setEditorIsHot(true);") : "") . '</td></tr>';
 			}
+		} else {
+			$content .= '<tr><td><img src="' . ICON_DIR . 'user.gif" width="16" height="18" /></td><td class="defaultfont">' . g_l('weClass', "[onlyOwner]") . '</td><td></td></tr>';
 		}
 		$content .= '<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(333, 2) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(80, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr></table>';
 
@@ -1966,7 +1984,7 @@ class we_object extends we_document{
 		$f = 0;
 
 		if($this->ID){
-			$rec = getHash('SELECT strOrder,DefaultCategory,DefaultValues,DefaultText,DefaultDesc,DefaultTitle,DefaultUrl,DefaultUrlfield0,DefaultUrlfield1,DefaultUrlfield2,DefaultUrlfield3,DefaultTriggerID,DefaultKeywords,DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID = ' . $this->ID, $this->DB_WE);
+			$rec = getHash('SELECT strOrder,DefaultCategory,DefaultValues,DefaultText,DefaultDesc,DefaultTitle,DefaultUrl,DefaultUrlfield0,DefaultUrlfield1,DefaultUrlfield2,DefaultUrlfield3,DefaultTriggerID,DefaultKeywords,DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . $this->ID, $this->DB_WE);
 
 			$this->strOrder = $rec["strOrder"];
 			$this->setSort();
@@ -1981,7 +1999,7 @@ class we_object extends we_document{
 					$this->CSS = $vals[$name];
 				}
 				if(isset($vals[$name]) && is_array($vals[$name])){
-					$this->elements[$name . "count"]["dat"] = (( isset($vals[$name]["meta"]) && !empty($vals[$name]["meta"])) ? (count($vals[$name]["meta"]) - 1) : "0");
+					$this->elements[$name . "count"]["dat"] = (( isset($vals[$name]["meta"]) && $vals[$name]["meta"]) ? (count($vals[$name]["meta"]) - 1) : 0);
 					if(isset($vals[$name]["meta"]) && is_array($vals[$name]["meta"])){
 						$keynames = array_keys($vals[$name]["meta"]);
 

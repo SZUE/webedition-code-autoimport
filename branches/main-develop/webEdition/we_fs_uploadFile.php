@@ -27,7 +27,7 @@ we_html_tools::protect();
 
 echo we_html_tools::getHtmlTop(g_l('newFile', '[import_File_from_hd_title]')) . STYLESHEET;
 
-$we_ContentType = isset($_REQUEST['ct']) ? $_REQUEST['ct'] : we_base_ContentTypes::IMAGE;
+$we_ContentType = weRequest('raw', 'ct', we_base_ContentTypes::IMAGE);
 
 $allowedContentTypes = '';
 

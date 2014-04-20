@@ -26,8 +26,10 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 $noInternals = false;
 if(!(isset($_REQUEST['we_dialog_args']) &&
-		((isset($_REQUEST['we_dialog_args']['outsideWE']) && $_REQUEST['we_dialog_args']['outsideWE'] == 1) ||
-		(isset($_REQUEST['we_dialog_args']['isFrontend']) && $_REQUEST['we_dialog_args']['isFrontend'] == 1)))){
+	(
+	weRequest('bool', 'we_dialog_args', false, 'outsideWE') ||
+	weRequest('bool', 'we_dialog_args', false, 'isFrontend')
+	))){
 	we_html_tools::protect();
 } else{
 	$noInternals = true;
@@ -36,7 +38,7 @@ $noInternals = $noInternals || !isset($_SESSION['user']) || !isset($_SESSION['us
 
 $dialog = new we_dialog_image($noInternals);
 $dialog->initByHttp();
-$dialog->registerCmdFn(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] ? '' : "weDoImgCmd");
+$dialog->registerCmdFn(weRequest('bool','we_cmd',false,0) ? '' : "weDoImgCmd");
 
 echo $dialog->getHTML();
 

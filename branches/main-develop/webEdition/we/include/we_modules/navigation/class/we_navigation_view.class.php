@@ -690,7 +690,7 @@ function submitForm() {
 	}
 
 	function processCommands(){
-		switch(weRequest('string','cmd')){
+		switch(weRequest('string', 'cmd')){
 			case 'module_navigation_new':
 			case 'module_navigation_new_group':
 				if(!permissionhandler::hasPerm('EDIT_NAVIGATION')){
@@ -701,7 +701,7 @@ function submitForm() {
 				}
 				$this->Model = new we_navigation_navigation();
 				$this->Model->IsFolder = ($_REQUEST['cmd'] == 'module_navigation_new_group') ? 1 : 0;
-				$this->Model->ParentID = isset($_REQUEST['ParentID']) && $_REQUEST['ParentID'] ? $_REQUEST['ParentID'] : 0;
+				$this->Model->ParentID = weRequest('int', 'ParentID', 0);
 				print we_html_element::jsElement(
 						$this->editorHeaderFrame . '.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->Model->Text) . '";' .
 						$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";');
@@ -835,18 +835,16 @@ function submitForm() {
 						}
 					');
 
-				if(isset($_REQUEST['delayCmd']) && !empty($_REQUEST['delayCmd'])){
+				if(weRequest('bool', 'delayCmd')){
 					$js .= we_html_element::jsElement(
-							$this->topFrame . '.we_cmd("' . $_REQUEST['delayCmd'] . '"' . ((isset($_REQUEST['delayParam']) && !empty($_REQUEST['delayParam'])) ? ',"' . $_REQUEST['delayParam'] . '"' : '' ) . ');
+							$this->topFrame . '.we_cmd("' . $_REQUEST['delayCmd'] . '"' . (($dp = weRequest('raw', 'delayParam')) ? ',"' . $dp . '"' : '' ) . ');
 							'
 					);
 					$_REQUEST['delayCmd'] = '';
-					if(isset($_REQUEST['delayParam'])){
-						$_REQUEST['delayParam'] = '';
-					}
+					$_REQUEST['delayParam'] = '';
 				}
 
-				print $js;
+				echo $js;
 
 				break;
 			case 'module_navigation_delete':

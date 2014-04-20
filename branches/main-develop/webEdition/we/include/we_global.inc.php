@@ -184,7 +184,7 @@ function _weRequest(&$var, $key, array $data){
 			$var = (preg_match('|^([a-f0-9]){32}$|i', $var) ? $var : $default);
 			return;
 		case 'intList':
-			implode(',', array_map('intval', explode(',', $var)));
+			$var = implode(',', array_map('intval', explode(',', $var)));
 			return;
 		case 'unit':
 			//FIMXE: check for %d[em,ex,pt,...]?
@@ -214,6 +214,8 @@ function _weRequest(&$var, $key, array $data){
 		case 'html':
 			$var = filter_var($var, FILTER_SANITIZE_SPECIAL_CHARS);
 			return;
+		default:
+			t_e('unknown filter type ' . $type);
 		case 'raw':
 			//do nothing - used as placeholder for all types not yet known
 			return;
@@ -237,19 +239,13 @@ function weRequest($type, $name, $default = false, $index = null){
 	if(is_array($var)){
 		array_walk($var, '_weRequest', array($type, $default));
 	} else {
+		$oldVar = $var;
 		_weRequest($var, '', array($type, $default));
+		if($var != $oldVar){
+			t_e('changed values', $type, $name, $index, $oldVar, $var);
+		}
 	}
 	return $var;
-}
-
-/**
- * makes sure a give array/list of values has only ints
- * @param mixed $val
- * @return mixed
- */
-function filterIntVals($val){
-	$vals = array_map('intval', is_array($val) ? $val : explode(',', $val));
-	return is_array($val) ? $vals : implode(',', $vals);
 }
 
 function we_makeHiddenFields($filter = ''){
@@ -361,7 +357,7 @@ function in_parentID($id, $pid, $table = FILE_TABLE, we_database_base $db = null
 }
 
 function in_workspace($IDs, $wsIDs, $table = FILE_TABLE, we_database_base $db = null, $objcheck = false){
-	if(empty($wsIDs) || empty($IDs)){
+	if(!$wsIDs || !$IDs){
 		return true;
 	}
 	$db = ($db ? $db : new DB_WE());
@@ -372,7 +368,7 @@ function in_workspace($IDs, $wsIDs, $table = FILE_TABLE, we_database_base $db = 
 	if(!is_array($wsIDs)){
 		$wsIDs = makeArrayFromCSV($wsIDs);
 	}
-	if(empty($wsIDs) || empty($IDs) || (in_array(0, $wsIDs))){
+	if(!$wsIDs || !$IDs || (in_array(0, $wsIDs))){
 		return true;
 	}
 	if((!$objcheck) && in_array(0, $IDs)){
@@ -433,14 +429,14 @@ function id_to_path($IDs, $table = FILE_TABLE, we_database_base $db = null, $pre
 	$foo = array();
 	foreach($IDs as $id){
 		if($id == 0){
-			$foo[] = '/';
+			$foo[$id] = '/';
 		} else {
 			$foo2 = getHash('SELECT Path,IsFolder FROM ' . $db->escape($table) . ' WHERE ID=' . intval($id) . ($isPublished ? ' AND Published>0' : ''), $db);
 			if(isset($foo2['Path'])){
 				if($endslash && $foo2['IsFolder']){
 					$foo2['Path'] .= '/';
 				}
-				$foo[] = $foo2['Path'];
+				$foo[$id] = $foo2['Path'];
 			}
 		}
 	}

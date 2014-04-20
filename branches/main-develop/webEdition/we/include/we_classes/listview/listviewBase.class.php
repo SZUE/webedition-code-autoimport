@@ -74,7 +74,7 @@ abstract class listviewBase{
 
 		$this->name = $name;
 		//? strange setting - don't know what it is supposed to be
-		$this->search = ((!isset($_REQUEST['we_lv_search_' . $this->name])) && (isset($_REQUEST['we_from_search_' . $this->name]))) ? -1 : isset($_REQUEST['we_lv_search_' . $this->name]) ? $_REQUEST['we_lv_search_' . $this->name] : '';
+		$this->search = ((!isset($_REQUEST['we_lv_search_' . $this->name])) && (isset($_REQUEST['we_from_search_' . $this->name]))) ? -1 : weRequest('raw', 'we_lv_search_' . $this->name, '');
 		$this->search = trim(str_replace(array('"', '\\"'), '', $this->search));
 		$this->DB_WE = new DB_WE();
 		$this->rows = $rows;

@@ -78,7 +78,7 @@ class we_newsletter_view{
 		return $this->htmlHidden('ncmd', (isset($predefs['ncmd']) ? $predefs['ncmd'] : 'new_newsletter')) .
 			$this->htmlHidden('we_cmd[0]', 'show_newsletter') .
 			$this->htmlHidden('nid', (isset($predefs['nid']) ? $predefs['nid'] : $this->newsletter->ID)) .
-			$this->htmlHidden('pnt', (isset($predefs['pnt']) ? $predefs['pnt'] : $_REQUEST['pnt'])) .
+			$this->htmlHidden('pnt', (isset($predefs['pnt']) ? $predefs['pnt'] : weRequest('raw', 'pnt'))) .
 			$this->htmlHidden('page', (isset($predefs['page']) ? $predefs['page'] : $this->page)) .
 			$this->htmlHidden('gview', (isset($predefs['gview']) ? $predefs['gview'] : 0)) .
 			$this->htmlHidden('hm', (isset($predefs['hm']) ? $predefs['hm'] : 0)) .
@@ -321,7 +321,7 @@ class we_newsletter_view{
 	  } */
 
 	function getJSTopCode(){
-		$mod = isset($_REQUEST['mod']) ? $_REQUEST['mod'] : '';
+		$mod = weRequest('string', 'mod', '');
 		$modData = we_base_moduleInfo::getModuleData($mod);
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 
@@ -1223,7 +1223,7 @@ function set_state_edit_delete_recipient(control) {
 	}
 
 	function processCommands(){
-		switch(weRequest('string',"ncmd")){
+		switch(weRequest('string', "ncmd")){
 			case "new_newsletter":
 				$this->newsletter = new we_newsletter_newsletter();
 				$this->newsletter->Text = g_l('modules_newsletter', '[new_newsletter]');
@@ -1618,7 +1618,7 @@ edf.populateGroups();');
 			case "save_settings":
 				foreach($this->settings as $k => $v){
 
-					$this->settings[$k] = (isset($_REQUEST[$k]) ? $_REQUEST[$k] : 0);
+					$this->settings[$k] = weRequest('raw', $k, 0);
 				}
 				$this->saveSettings();
 				break;
@@ -1810,14 +1810,14 @@ self.close();');
 				break;
 
 			case "save_email_file":
-				$csv_file = (isset($_REQUEST["csv_file"]) ? $_REQUEST["csv_file"] : '');
-				$nrid = (isset($_REQUEST["nrid"]) ? $_REQUEST["nrid"] : '');
-				$email = (isset($_REQUEST["email"]) ? $_REQUEST["email"] : '');
-				$htmlmail = (isset($_REQUEST["htmlmail"]) ? $_REQUEST["htmlmail"] : '');
-				$salutation = (isset($_REQUEST["salutation"]) ? $_REQUEST["salutation"] : '');
-				$title = (isset($_REQUEST["title"]) ? $_REQUEST["title"] : '');
-				$firstname = (isset($_REQUEST["firstname"]) ? $_REQUEST["firstname"] : '');
-				$lastname = (isset($_REQUEST["lastname"]) ? $_REQUEST["lastname"] : '');
+				$csv_file = weRequest('file', "csv_file", '');
+				$nrid = weRequest('int', "nrid", '');
+				$email = weRequest('email', "email", '');
+				$htmlmail = weRequest('raw', "htmlmail", '');
+				$salutation = weRequest('string', "salutation", '');
+				$title = weRequest('string', "title", '');
+				$firstname = weRequest('string', "firstname", '');
+				$lastname = weRequest('string', "lastname", '');
 
 				$emails = ($csv_file ? we_newsletter_newsletter::getEmailsFromExtern($csv_file) : array());
 
@@ -1834,8 +1834,8 @@ self.close();');
 				break;
 
 			case "delete_email_file":
-				$nrid = (isset($_REQUEST["nrid"]) ? $_REQUEST["nrid"] : '');
-				$csv_file = (isset($_REQUEST["csv_file"]) ? $_REQUEST["csv_file"] : '');
+				$nrid = weRequest('int', "nrid", '');
+				$csv_file = weRequest('file', "csv_file",'');
 				$emails = ($csv_file ? we_newsletter_newsletter::getEmailsFromExtern($csv_file, 2) : array());
 
 				if($nrid){
@@ -1887,7 +1887,7 @@ self.close();');
 			$this->page = $_REQUEST['page'];
 		}
 		if(isset($_REQUEST['groups'])){
-			$groups = (isset($_REQUEST['groups']) ? $_REQUEST['groups'] : 0);
+			$groups = weRequest('int', 'groups', 0);
 
 			$this->newsletter->groups = array();
 
@@ -1937,7 +1937,7 @@ self.close();');
 			unset($gval);
 		}
 		if(isset($_REQUEST['blocks'])){
-			$blocks = (isset($_REQUEST['blocks']) ? $_REQUEST['blocks'] : 0);
+			$blocks = weRequest('int', 'blocks', 0);
 
 			$this->newsletter->blocks = array();
 

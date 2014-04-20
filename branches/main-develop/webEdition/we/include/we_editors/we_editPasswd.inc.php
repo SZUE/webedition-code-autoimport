@@ -47,10 +47,9 @@ function getContent(){
 
 function getLoad(){
 	$DB_WE = $GLOBALS['DB_WE'];
-	$oldpasswd = isset($_REQUEST['oldpasswd']) ? $_REQUEST['oldpasswd'] : '';
-	$newpasswd = isset($_REQUEST['newpasswd']) ? $_REQUEST['newpasswd'] : '';
-	$newpasswd2 = isset($_REQUEST['newpasswd2']) ? $_REQUEST['newpasswd2'] : '';
-
+	$oldpasswd = weRequest('raw', 'oldpasswd', '');
+	$newpasswd = weRequest('raw', 'newpasswd', '');
+	$newpasswd2 = weRequest('raw', 'newpasswd2', '');
 
 	if(weRequest('string', 'cmd') == 'ok'){
 		$userData = getHash('SELECT UseSalt,passwd FROM ' . USER_TABLE . ' WHERE username="' . $DB_WE->escape($_SESSION['user']['Username']) . '"');

@@ -126,14 +126,14 @@ abstract class we_rebuild_wizard{
 		$categories = weRequest('string', 'categories', '');
 		$doctypes = (isset($_REQUEST["doctypes"]) && is_array($_REQUEST["doctypes"])) ? makeCSVFromArray($_REQUEST["doctypes"], true) : "";
 		$folders = weRequest('string', 'folders', ($dws ? $dws : ''));
-		$maintable = weRequest('int', 'maintable', 0);
-		$tmptable = weRequest('int', 'tmptable', 0);
+		$maintable = weRequest('bool', 'maintable');
+		$tmptable = false; //weRequest('int', 'tmptable', 0);
 		$thumbsFolders = weRequest('string', 'thumbsFolders', ($dws ? $dws : ''));
 		$thumbs = (isset($_REQUEST["thumbs"]) && is_array($_REQUEST["thumbs"])) ? makeCSVFromArray($_REQUEST["thumbs"], true) : "";
-		$catAnd = weRequest('int', 'catAnd', 0);
+		$catAnd = weRequest('bool', 'catAnd');
 		$metaFolders = weRequest('string', 'metaFolders', ($dws ? $dws : ''));
-		$metaFields = isset($_REQUEST["_field"]) ? $_REQUEST["_field"] : array();
-		$onlyEmpty = weRequest('int', 'onlyEmpty', 0);
+		$metaFields = weRequest('raw', "_field", array());
+		$onlyEmpty = weRequest('bool', 'onlyEmpty');
 
 		if(($type = weRequest('string', "type"))){
 
@@ -331,21 +331,20 @@ abstract class we_rebuild_wizard{
 	 */
 	static function getStep2(){
 		$btype = weRequest('string', "btype", "rebuild_all");
-		$categories = isset($_REQUEST["categories"]) ? $_REQUEST["categories"] : "";
+		$categories = weRequest('raw', "categories", "");
 		$doctypes = (isset($_REQUEST["doctypes"]) && is_array($_REQUEST["doctypes"])) ? makeCSVFromArray($_REQUEST["doctypes"], true) : "";
-		$folders = isset($_REQUEST["folders"]) ? $_REQUEST["folders"] : "";
-		$maintable = isset($_REQUEST["maintable"]) ? $_REQUEST["maintable"] : 0;
-		$tmptable = isset($_REQUEST["tmptable"]) ? $_REQUEST["tmptable"] : 0;
-		$thumbsFolders = isset($_REQUEST["thumbsFolders"]) ? $_REQUEST["thumbsFolders"] : "";
+		$folders = weRequest('raw', "folders", "");
+		$maintable = weRequest('raw', "maintable", 0);
+		$thumbsFolders = weRequest('raw', "thumbsFolders", "");
 		$thumbs = (isset($_REQUEST["thumbs"]) && is_array($_REQUEST["thumbs"])) ? makeCSVFromArray($_REQUEST["thumbs"], true) : "";
-		$catAnd = isset($_REQUEST["catAnd"]) ? $_REQUEST["catAnd"] : 0;
-		$templateID = isset($_REQUEST["templateID"]) ? $_REQUEST["templateID"] : 0;
-		$metaFolders = isset($_REQUEST["metaFolders"]) ? $_REQUEST["metaFolders"] : (($dws = get_def_ws()) ? $dws : "");
-		$metaFields = isset($_REQUEST["_field"]) ? $_REQUEST["_field"] : array();
-		$onlyEmpty = isset($_REQUEST["onlyEmpty"]) ? $_REQUEST["onlyEmpty"] : 0;
+		$catAnd = weRequest('bool', "catAnd");
+		$templateID = weRequest('int', "templateID", 0);
+		$metaFolders = weRequest('raw', "metaFolders", (($dws = get_def_ws()) ? $dws : ""));
+		$metaFields = weRequest('raw', "_field", array());
+		$onlyEmpty = weRequest('bool', 'onlyEmpty');
 
 		$taskname = md5(session_id() . "_rebuild");
-		$currentTask = isset($_GET["fr_" . $taskname . "_ct"]) ? $_GET["fr_" . $taskname . "_ct"] : 0;
+		$currentTask = weRequest('raw', "fr_" . $taskname . "_ct", 0);
 		$taskFilename = WE_FRAGMENT_PATH . $taskname;
 
 
@@ -361,7 +360,7 @@ abstract class we_rebuild_wizard{
 		if(!(file_exists($taskFilename) && $currentTask)){
 			switch(weRequest('string', "type", "rebuild_documents")){
 				case 'rebuild_documents':
-					$data = we_rebuild_base::getDocuments($btype, $categories, $catAnd, $doctypes, $folders, $maintable, $tmptable, $templateID);
+					$data = we_rebuild_base::getDocuments($btype, $categories, $catAnd, $doctypes, $folders, $maintable, false, $templateID);
 					break;
 				case 'rebuild_thumbnails':
 					if(!$thumbs){
@@ -505,19 +504,18 @@ abstract class we_rebuild_wizard{
 	 * @return array
 	 */
 	static function getRebuildDocuments(){
-		$thumbsFolders = isset($_REQUEST['thumbsFolders']) ? $_REQUEST['thumbsFolders'] : '';
-		$metaFolders = isset($_REQUEST['metaFolders']) ? $_REQUEST['metaFolders'] : '';
-		$metaFields = isset($_REQUEST['_field']) ? $_REQUEST['_field'] : '';
+		$thumbsFolders = weRequest('raw', 'thumbsFolders', '');
+		$metaFolders = weRequest('raw', 'metaFolders', '');
+		$metaFields = weRequest('raw', '_field', '');
 		$thumbs = (isset($_REQUEST['thumbs']) && is_array($_REQUEST['thumbs'])) ? makeCSVFromArray($_REQUEST['thumbs'], true) : '';
-		$type = isset($_REQUEST['type']) ? $_REQUEST['type'] : 'rebuild_documents';
-		$btype = isset($_REQUEST['btype']) ? $_REQUEST['btype'] : 'rebuild_all';
-		$categories = isset($_REQUEST['categories']) ? $_REQUEST['categories'] : '';
+		$type = weRequest('raw', 'type', 'rebuild_documents');
+		$btype = weRequest('raw', 'btype', 'rebuild_all');
+		$categories = weRequest('raw', 'categories', '');
 		$doctypes = (isset($_REQUEST['doctypes']) && is_array($_REQUEST['doctypes'])) ? makeCSVFromArray($_REQUEST['doctypes'], true) : '';
-		$folders = isset($_REQUEST['folders']) ? $_REQUEST['folders'] : '';
-		$maintable = isset($_REQUEST['maintable']) ? $_REQUEST['maintable'] : 0;
-		//$tmptable = isset($_REQUEST['tmptable']) ? $_REQUEST['tmptable'] : 0;
-		$catAnd = isset($_REQUEST['catAnd']) ? $_REQUEST['catAnd'] : 0;
-		$onlyEmpty = isset($_REQUEST['onlyEmpty']) ? $_REQUEST['onlyEmpty'] : 0;
+		$folders = weRequest('raw', 'folders', '');
+		$maintable = weRequest('bool', 'maintable');
+		$catAnd = weRequest('bool', 'catAnd');
+		$onlyEmpty = weRequest('bool', 'onlyEmpty', 0);
 
 
 		$ws = get_ws(FILE_TABLE, true);
@@ -526,8 +524,7 @@ abstract class we_rebuild_wizard{
 		}
 
 		$all_content = (permissionhandler::hasPerm('ADMINISTRATOR') ?
-				we_html_forms::checkbox(1, $maintable, 'maintable', g_l('rebuild', '[rebuild_maintable]'), false, 'defaultfont', 'document.we_form.btype[0].checked=true;')/* .
-				  we_forms::checkbox(1, $tmptable, 'tmptable', g_l('rebuild', '[rebuild_tmptable]'), false, 'defaultfont', 'document.we_form.btype[0].checked=true;') */ :
+				we_html_forms::checkbox(1, $maintable, 'maintable', g_l('rebuild', '[rebuild_maintable]'), false, 'defaultfont', 'document.we_form.btype[0].checked=true;') :
 				'');
 
 		$filter_content = we_rebuild_wizard::formCategory($categories, $catAnd) . '<br/>' . we_html_tools::getPixel(2, 5) . '<br/>' .
@@ -562,7 +559,7 @@ abstract class we_rebuild_wizard{
 		}
 
 		$metaFieldsHidden = '';
-		if(!empty($metaFields)){
+		if($metaFields){
 			foreach($metaFields as $_key => $_val){
 				$metaFieldsHidden .= we_html_element::htmlHidden(array('name' => '_field[' . $_key . ']', 'value' => $_val));
 			}
@@ -589,16 +586,16 @@ abstract class we_rebuild_wizard{
 	 */
 	static function getRebuildThumbnails(){
 
-		$thumbsFolders = isset($_REQUEST['thumbsFolders']) ? $_REQUEST['thumbsFolders'] : '';
-		$metaFolders = isset($_REQUEST['metaFolders']) ? $_REQUEST['metaFolders'] : '';
-		$metaFields = isset($_REQUEST['_field']) ? $_REQUEST['_field'] : array();
+		$thumbsFolders = weRequest('raw', 'thumbsFolders', '');
+		$metaFolders = weRequest('raw', 'metaFolders', '');
+		$metaFields = weRequest('raw', '_field', array());
 		$thumbs = (isset($_REQUEST['thumbs']) && is_array($_REQUEST['thumbs'])) ? makeCSVFromArray($_REQUEST['thumbs'], true) : '';
-		$type = isset($_REQUEST['type']) ? $_REQUEST['type'] : 'rebuild_documents';
-		$categories = isset($_REQUEST['categories']) ? $_REQUEST['categories'] : '';
+		$type = weRequest('raw', 'type', 'rebuild_documents');
+		$categories = weRequest('raw', 'categories', '');
 		$doctypes = (isset($_REQUEST['doctypes']) && is_array($_REQUEST['doctypes'])) ? makeCSVFromArray($_REQUEST['doctypes'], true) : '';
-		$folders = isset($_REQUEST['folders']) ? $_REQUEST['folders'] : '';
-		$catAnd = isset($_REQUEST['catAnd']) ? $_REQUEST['catAnd'] : 0;
-		$onlyEmpty = isset($_REQUEST['onlyEmpty']) ? $_REQUEST['onlyEmpty'] : 0;
+		$folders = weRequest('raw', 'folders', '');
+		$catAnd = weRequest('raw', 'catAnd', 0);
+		$onlyEmpty = weRequest('raw', 'onlyEmpty', 0);
 
 		$ws = get_ws(FILE_TABLE, true);
 
@@ -606,11 +603,11 @@ abstract class we_rebuild_wizard{
 
 		if($ws && $folders){
 			$newFolders = array();
-			$wsArray = makeArrayFromCSV($ws);
+			//$wsArray = makeArrayFromCSV($ws);
 			$foldersArray = makeArrayFromCSV($folders);
-			for($i = 0; $i < count($foldersArray); $i++){
-				if(in_workspace($foldersArray[$i], $ws)){
-					$newFolders[] = $foldersArray[$i];
+			foreach($foldersArray as $folder){
+				if(in_workspace($folder, $ws)){
+					$newFolders[] = $folder;
 				}
 			}
 			$folders = makeCSVFromArray($newFolders);
@@ -625,19 +622,16 @@ abstract class we_rebuild_wizard{
 			'<br>' . we_html_tools::getPixel(2, 15) . '<br/>' .
 			we_rebuild_wizard::formFolders($thumbsFolders, true, 520);
 
-
-
 		$parts[] = array(
 			'headline' => '',
 			'html' => $content,
 			'space' => 0
 		);
 
-
 		$dthidden = '';
 		$doctypesArray = makeArrayFromCSV($doctypes);
-		for($i = 0; $i < count($doctypesArray); $i++){
-			$dthidden .= we_html_element::htmlHidden(array('name' => 'doctypes[' . $i . ']', 'value' => $doctypesArray[$i]));
+		foreach($doctypesArray as $key => $val){
+			$dthidden .= we_html_element::htmlHidden(array('name' => 'doctypes[' . $key . ']', 'value' => $val));
 		}
 		$metaFieldsHidden = '';
 		foreach($metaFields as $_key => $_val){
@@ -661,17 +655,16 @@ abstract class we_rebuild_wizard{
 
 	static function getRebuildMetadata(){
 
-		$thumbsFolders = isset($_REQUEST['thumbsFolders']) ? $_REQUEST['thumbsFolders'] : '';
-		$metaFolders = isset($_REQUEST['metaFolders']) ? $_REQUEST['metaFolders'] : '';
-		$onlyEmpty = isset($_REQUEST['onlyEmpty']) ? $_REQUEST['onlyEmpty'] : 0;
-		$metaFields = isset($_REQUEST['_field']) ? $_REQUEST['_field'] : array();
+		$thumbsFolders = weRequest('raw', 'thumbsFolders', '');
+		$metaFolders = weRequest('raw', 'metaFolders', '');
+		$onlyEmpty = weRequest('bool', 'onlyEmpty');
+		$metaFields = weRequest('raw', '_field', array());
 		$thumbs = (isset($_REQUEST['thumbs']) && is_array($_REQUEST['thumbs'])) ? makeCSVFromArray($_REQUEST['thumbs'], true) : '';
-		$type = isset($_REQUEST['type']) ? $_REQUEST['type'] : 'rebuild_documents';
-		$categories = isset($_REQUEST['categories']) ? $_REQUEST['categories'] : '';
+		$type = weRequest('raw', 'type', 'rebuild_documents');
+		$categories = weRequest('raw', 'categories', '');
 		$doctypes = (isset($_REQUEST['doctypes']) && is_array($_REQUEST['doctypes'])) ? makeCSVFromArray($_REQUEST['doctypes'], true) : '';
-		$folders = isset($_REQUEST['folders']) ? $_REQUEST['folders'] : '';
-		//$maintable = isset($_REQUEST['maintable']) ? $_REQUEST['maintable'] : 0;
-		$catAnd = isset($_REQUEST['catAnd']) ? $_REQUEST['catAnd'] : 0;
+		$folders = weRequest('raw', 'folders', '');
+		$catAnd = weRequest('bool', 'catAnd');
 
 		$ws = get_ws(FILE_TABLE, true);
 

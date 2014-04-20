@@ -110,7 +110,7 @@ class we_export_wizard{
 			$this->exportVars = $_SESSION['weS']['exportVars'];
 		}
 		foreach($this->exportVars as $k => $v){
-			$var = isset($_REQUEST[$k]) ? $_REQUEST[$k] : null;
+			$var = weRequest('raw', $k, null);
 			if($var !== null){
 				$this->exportVars[$k] = $var;
 			}
@@ -749,8 +749,8 @@ function setState(a) {
 
 	function getHTMLStep50(){
 		$preurl = getServerUrl();
-		if(isset($_GET["exportfile"])){
-			$_filename = basename(urldecode($_GET["exportfile"]));
+		if(weRequest('bool', "exportfile")){
+			$_filename = basename(urldecode(weRequest('raw', "exportfile")));
 
 			if(file_exists(TEMP_PATH . $_filename) // Does file exist?
 				&& !preg_match('%p?html?%i', $_filename) && stripos($_filename, "inc") === false && !preg_match('%php3?%i', $_filename)){ // Security check
@@ -786,7 +786,7 @@ function setState(a) {
 	}
 
 	function getHTMLStep99(){
-		$errortype = isset($_REQUEST["error"]) ? $_REQUEST["error"] : "unknown";
+		$errortype = weRequest('string', "error", "unknown");
 
 		switch($errortype){
 			case "no_object_module":
@@ -941,8 +941,8 @@ function setState(a) {
 
 	function getHTMLFooter($step = 0){
 		$this->getExportVars();
-		$errortype = isset($_REQUEST["error"]) ? $_REQUEST["error"] : "no_error";
-		$selection = isset($_REQUEST["selection"]) ? $_REQUEST["selection"] : "auto";
+		$errortype = weRequest('string', "error", "no_error");
+		$selection = weRequest('raw', "selection", "auto");
 		$show_controls = false;
 		$js = "";
 		switch($errortype){
@@ -1057,20 +1057,19 @@ function setState(a) {
 		switch(weRequest('string', "cmd")){
 			case "load":
 				if(isset($_REQUEST["pid"])){
-					return we_html_element::jsElement("self.location='" . WE_EXPORT_MODULE_DIR . "exportLoadTree.php?we_cmd[1]=" . $_REQUEST["tab"] . "&we_cmd[2]=" . $_REQUEST["pid"] . "&we_cmd[3]=" . (isset($_REQUEST["openFolders"]) ? $_REQUEST["openFolders"] : "") . "'");
+					return we_html_element::jsElement("self.location='" . WE_EXPORT_MODULE_DIR . "exportLoadTree.php?we_cmd[1]=" . $_REQUEST["tab"] . "&we_cmd[2]=" . $_REQUEST["pid"] . "&we_cmd[3]=" . weRequest('raw', "openFolders", "") . "'");
 				}
 				break;
 			case "export":
 				$xmlExIm = new weXMLExIm();
 
-				$file_format = isset($_REQUEST["file_format"]) ? $_REQUEST["file_format"] : "";
-				//$file_name = isset($_REQUEST["filename"]) ? $_REQUEST["filename"] : "";
-				$export_to = isset($_REQUEST["export_to"]) ? $_REQUEST["export_to"] : "";
-				$path = isset($_REQUEST["path"]) ? $_REQUEST["path"] . "/" : "/";
-				$csv_delimiter = isset($_REQUEST["csv_delimiter"]) ? $_REQUEST["csv_delimiter"] : "";
-				$csv_enclose = isset($_REQUEST["csv_enclose"]) ? $_REQUEST["csv_enclose"] : "";
-				$csv_lineend = isset($_REQUEST["csv_lineend"]) ? $_REQUEST["csv_lineend"] : "";
-				$csv_fieldnames = isset($_REQUEST["csv_fieldnames"]) ? $_REQUEST["csv_fieldnames"] : "";
+				$file_format = weRequest('string', "file_format", "");
+				$export_to = weRequest('raw', "export_to", "");
+				$path = weRequest('file', "path", '') . '/';
+				$csv_delimiter = weRequest('raw', "csv_delimiter", "");
+				$csv_enclose = weRequest('raw', "csv_enclose", "");
+				$csv_lineend = weRequest('raw', "csv_lineend", "");
+				$csv_fieldnames = weRequest('raw', "csv_fieldnames", "");
 				$cdata = (isset($_REQUEST["cdata"]) && $_REQUEST["cdata"] == "false") ? false : true;
 
 				$extype = $this->exportVars["extype"];
@@ -1513,17 +1512,16 @@ function setState(a) {
 			');
 			$select->selectOption($classname);
 
-			$type = (isset($_REQUEST["type"]) ? $_REQUEST["type"] : '');
+			$type = weRequest('string', "type", '');
 
 			$radio = $showdocs ? we_html_forms::radiobutton("classname", ($type == "classname" ? true : false), "type", g_l('export', "[classname]"), true, "defaultfont", $this->topFrame . ".type='classname'") : we_html_tools::getPixel(25, 5) . g_l('export', "[classname]");
 			return $js . we_html_tools::htmlFormElementTable(we_html_tools::getPixel(25, 5) . $select->getHtml(), $radio);
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	function getHTMLCategory(){
-		switch(weRequest('string',"wcmd")){
+		switch(weRequest('string', "wcmd")){
 			case "add_cat":
 				$arr = makeArrayFromCSV($this->exportVars["categories"]);
 				if(isset($_REQUEST["cat"])){
@@ -1554,11 +1552,9 @@ function setState(a) {
 		}
 
 
-		//$js=we_html_element::jsElement($this->topFrame.'.categories="'.(isset($_REQUEST["categories"]) ? $_REQUEST["categories"] : "").'";');
-
 		$hiddens = we_html_element::htmlHidden(array("name" => "wcmd", "value" => "")) .
 			we_html_element::htmlHidden(array("name" => "categories", "value" => $this->exportVars["categories"])) .
-			we_html_element::htmlHidden(array("name" => "cat", "value" => (isset($_REQUEST["cat"]) ? $_REQUEST["cat"] : "")));
+			we_html_element::htmlHidden(array("name" => "cat", "value" => weRequest('raw', "cat", "")));
 
 
 		$delallbut = we_html_button::create_button("delete_all", "javascript:we_cmd('del_all_cats')", true, 0, 0, "", "", (isset($this->exportVars["categories"]) ? false : true));

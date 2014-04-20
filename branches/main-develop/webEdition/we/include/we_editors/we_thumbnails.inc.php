@@ -28,27 +28,27 @@ echo we_html_tools::getHtmlTop(g_l('thumbnails', '[thumbnails]'));
 $reloadUrl = getServerUrl(true) . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=editThumbs';
 
 // Check if we need to create a new thumbnail
-if(isset($_GET['newthumbnail']) && $_GET['newthumbnail'] != ''){
+if(($name = weRequest('string', 'newthumbnail'))){
 	if(permissionhandler::hasPerm('ADMINISTRATOR')){
-		$DB_WE->query('INSERT INTO ' . THUMBNAILS_TABLE . ' SET Name ="' . $DB_WE->escape($_GET['newthumbnail']) . '"');
-		$_GET['id'] = f('SELECT ID FROM ' . THUMBNAILS_TABLE . ' WHERE Name="' . $DB_WE->escape($_GET['newthumbnail']) . '"', 'ID', $DB_WE);
+		$DB_WE->query('INSERT INTO ' . THUMBNAILS_TABLE . ' SET Name="' . $DB_WE->escape($name) . '"');
+		$_GET['id'] = $DB_WE->getInsertId();
 	}
 }
 
 // Check if we need to delete a thumbnail
-if(isset($_GET['deletethumbnail']) && $_GET['deletethumbnail'] != ''){
+if(($delId = weRequest('int', 'deletethumbnail'))){
 	if(permissionhandler::hasPerm('ADMINISTRATOR')){
 		// Delete thumbnails in filesystem
-		we_thumbnail::deleteByThumbID($_GET['deletethumbnail']);
+		we_thumbnail::deleteByThumbID($delId);
 
 		// Delete entry in database
-		$DB_WE->query('DELETE FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . intval($_GET['deletethumbnail']));
+		$DB_WE->query('DELETE FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . $delId);
 	}
 }
 
 // Check which thumbnail to work with
-if(!isset($_GET['id']) || $_GET['id'] == ''){
-	$tmpid = f('SELECT ID FROM ' . THUMBNAILS_TABLE . ' ORDER BY Name LIMIT 1', 'ID', $DB_WE);
+if(!weRequest('int', 'id')){
+	$tmpid = f('SELECT ID FROM ' . THUMBNAILS_TABLE . ' ORDER BY Name LIMIT 1');
 
 	$_GET['id'] = $tmpid ? $tmpid : -1;
 }
@@ -125,15 +125,15 @@ function save_all_values(){
 	if(permissionhandler::hasPerm('ADMINISTRATOR')){
 		$setArray = array('Date' => sql_function('UNIX_TIMESTAMP()'));
 		// Update settings
-		remember_value($setArray, isset($_REQUEST['thumbnail_name']) ? $_REQUEST['thumbnail_name'] : null, 'Name');
+		remember_value($setArray, weRequest('raw', 'thumbnail_name', null), 'Name');
 		remember_value($setArray, weRequest('int', 'thumbnail_width', null), 'Width');
 		remember_value($setArray, weRequest('int', 'thumbnail_height', null), 'Height');
-		remember_value($setArray, isset($_REQUEST['thumbnail_quality']) ? $_REQUEST['thumbnail_quality'] : null, 'Quality');
-		remember_value($setArray, isset($_REQUEST['Ratio']) ? $_REQUEST['Ratio'] : null, 'Ratio');
-		remember_value($setArray, isset($_REQUEST['Maxsize']) ? $_REQUEST['Maxsize'] : null, 'Maxsize');
-		remember_value($setArray, isset($_REQUEST['Interlace']) ? $_REQUEST['Interlace'] : null, 'Interlace');
-		remember_value($setArray, isset($_REQUEST['Fitinside']) ? $_REQUEST['Fitinside'] : null, 'Fitinside');
-		remember_value($setArray, isset($_REQUEST['Format']) ? $_REQUEST['Format'] : null, 'Format');
+		remember_value($setArray, weRequest('raw', 'thumbnail_quality', null), 'Quality');
+		remember_value($setArray, weRequest('raw', 'Ratio', null), 'Ratio');
+		remember_value($setArray, weRequest('raw', 'Maxsize', null), 'Maxsize');
+		remember_value($setArray, weRequest('raw', 'Interlace', null), 'Interlace');
+		remember_value($setArray, weRequest('raw', 'Fitinside', null), 'Fitinside');
+		remember_value($setArray, weRequest('raw', 'Format', null), 'Format');
 
 		$DB_WE->query('UPDATE ' . THUMBNAILS_TABLE . ' SET ' . we_database_base::arraySetter($setArray) . ' WHERE ID=' . weRequest('int', 'edited_id', 0));
 	}
@@ -214,10 +214,10 @@ function build_dialog($selected_setting = 'ui'){
 
 					function delete_thumbnail() {" .
 				((permissionhandler::hasPerm('ADMINISTRATOR')) ?
-					"var deletion = confirm('" . sprintf(g_l('thumbnails', '[delete_prompt]'), f('SELECT Name FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . intval($_GET['id']), 'Name', $DB_WE)) . "');
+					"var deletion = confirm('" . sprintf(g_l('thumbnails', '[delete_prompt]'), f('SELECT Name FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . weRequest('int', 'id'))) . "');
 
 							if (deletion == true) {
-								self.location = '" . $GLOBALS['reloadUrl'] . "&deletethumbnail=" . $_GET['id'] . "';
+								self.location = '" . $GLOBALS['reloadUrl'] . "&deletethumbnail=" . weRequest('int', 'id') . "';
 							}" :
 					"") . "
 					}
@@ -252,18 +252,18 @@ function build_dialog($selected_setting = 'ui'){
 			$DB_WE->query('SELECT ID, Name FROM ' . THUMBNAILS_TABLE . ' ORDER BY Name');
 
 			$_thumbnail_counter_firsttime = true;
-
+			$id=weRequest('int','id');
 			while($DB_WE->next_record()){
 				$_enabled_buttons = true;
 				$_thumbnail_counter = $DB_WE->f('ID');
 
 				$_thumbnails->addOption($DB_WE->f('ID'), $DB_WE->f('Name'));
 
-				if($_thumbnail_counter_firsttime && ($_GET['id'] == -1)){
-					$_GET['id'] = $DB_WE->f('ID');
+				if($_thumbnail_counter_firsttime && $id==-1){
+					$id = $DB_WE->f('ID');
 
 					$_thumbnails->selectOption($DB_WE->f('ID'));
-				} else if($_GET['id'] == $DB_WE->f('ID')){
+				} else if($id == $DB_WE->f('ID')){
 					$_thumbnails->selectOption($DB_WE->f('ID'));
 				}
 
@@ -273,19 +273,19 @@ function build_dialog($selected_setting = 'ui'){
 			// Create thumbnails list
 			$_thumbnails_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 2, 3);
 
-			$_thumbnails_table->setCol(0, 0, null, we_html_element::htmlHidden(array('name' => 'edited_id', 'value' => $_GET['id'])) . $_thumbnails->getHtml());
+			$_thumbnails_table->setCol(0, 0, null, we_html_element::htmlHidden(array('name' => 'edited_id', 'value' => $id)) . $_thumbnails->getHtml());
 			$_thumbnails_table->setCol(0, 1, null, we_html_tools::getPixel(10, 1));
 			$_thumbnails_table->setCol(0, 2, array('valign' => 'top'), we_html_button::create_button('add', 'javascript:add_thumbnail();') . we_html_tools::getPixel(1, 10) . we_html_button::create_button('delete', 'javascript:delete_thumbnail();', true, 100, 22, '', '', !$_enabled_buttons, false));
 
 			// Build dialog
 			$_thumbs[] = array('headline' => '', 'html' => $_thumbnails_table->getHtml(), 'space' => 0);
 
-			$allData = getHash('SELECT Name,Width,Height,Quality,Ratio,Maxsize,Interlace,Fitinside,Format FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . intval($_GET['id']), $DB_WE);
+			$allData = getHash('SELECT Name,Width,Height,Quality,Ratio,Maxsize,Interlace,Fitinside,Format FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . $id);
 			if(!$allData){
 				$allData = array('Name' => '', 'Width' => '', 'Height' => '', 'Quality' => '', 'Ratio' => '', 'Maxsize' => '', 'Interlace' => '', 'Fitinside' => '', 'Format' => '');
 			}
 
-			$_thumbnail_name = ($_GET['id'] != -1) ? $allData['Name'] : -1;
+			$_thumbnail_name = ($id != -1) ? $allData['Name'] : -1;
 
 			$_thumbnail_name_input = we_html_tools::htmlTextInput('thumbnail_name', 22, ($_thumbnail_name != -1 ? $_thumbnail_name : ''), 255, ($_thumbnail_name == -1 ? 'disabled="true"' : ''), 'text', 225);
 
@@ -297,9 +297,9 @@ function build_dialog($selected_setting = 'ui'){
 			 * *************************************************************** */
 
 			// Create specify thumbnail dimension input
-			$_thumbnail_width = ($_GET['id'] != -1) ? $allData['Width'] : -1;
-			$_thumbnail_height = ($_GET['id'] != -1) ? $allData['Height'] : -1;
-			$_thumbnail_quality = ($_GET['id'] != -1) ? $allData['Quality'] : -1;
+			$_thumbnail_width = ($id != -1) ? $allData['Width'] : -1;
+			$_thumbnail_height = ($id != -1) ? $allData['Height'] : -1;
+			$_thumbnail_quality = ($id != -1) ? $allData['Quality'] : -1;
 
 			$_thumbnail_specify_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 5, 3);
 
@@ -319,10 +319,10 @@ function build_dialog($selected_setting = 'ui'){
 			$_thumbnail_specify_table->setCol(4, 2, array('class' => 'defaultfont', 'id' => 'thumbnail_quality_value_cell'), we_base_imageEdit::qualitySelect('thumbnail_quality', $_thumbnail_quality));
 
 			// Create checkboxes for options for thumbnails
-			$_thumbnail_ratio = ($_GET['id'] != -1) ? $allData['Ratio'] : -1;
-			$_thumbnail_maximize = ($_GET['id'] != -1) ? $allData['Maxsize'] : -1;
-			$_thumbnail_interlace = ($_GET['id'] != -1) ? $allData['Interlace'] : -1;
-			$_thumbnail_fitinside = ($_GET['id'] != -1) ? $allData['Fitinside'] : -1;
+			$_thumbnail_ratio = ($id != -1) ? $allData['Ratio'] : -1;
+			$_thumbnail_maximize = ($id != -1) ? $allData['Maxsize'] : -1;
+			$_thumbnail_interlace = ($id != -1) ? $allData['Interlace'] : -1;
+			$_thumbnail_fitinside = ($id != -1) ? $allData['Fitinside'] : -1;
 
 			$_thumbnail_option_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 7, 1);
 
@@ -345,7 +345,7 @@ function build_dialog($selected_setting = 'ui'){
 
 			// OUTPUT FORMAT
 
-			$_thumbnail_format = ($_GET['id'] != -1) ? $allData['Format'] : -1;
+			$_thumbnail_format = ($id != -1) ? $allData['Format'] : -1;
 
 			// Define available formats
 			$_thumbnails_formats = array('none' => g_l('thumbnails', '[format_original]'), 'gif' => g_l('thumbnails', '[format_gif]'), 'jpg' => g_l('thumbnails', '[format_jpg]'), 'png' => g_l('thumbnails', '[format_png]'));
@@ -445,7 +445,7 @@ function saveOnKeyBoard() {
 			we_html_element::htmlExIFrame('we_thumbnails_footer', getFooter(), 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden;')
 	)) . '</html>';
 } else { //  gd_lib is not installed - show error
-	print STYLESHEET . '</head><body class="weDialogBody">';
+	echo STYLESHEET . '</head><body class="weDialogBody">';
 
 
 	$parts = array(

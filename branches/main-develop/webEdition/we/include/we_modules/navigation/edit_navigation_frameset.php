@@ -26,7 +26,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 $protect = we_base_moduleInfo::isActive('navigation') && we_users_util::canEditModule('navigation') ? null : array(false);
 we_html_tools::protect($protect);
 
-$what = isset($_REQUEST["pnt"]) ? $_REQUEST["pnt"] : "frameset";
+$what = weRequest('string', "pnt", "frameset");
 
 $weFrame = new we_navigation_frames();
 echo $weFrame->getHTMLDocumentHeader();

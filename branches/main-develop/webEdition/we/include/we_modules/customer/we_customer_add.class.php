@@ -69,8 +69,10 @@ abstract class we_customer_add{
 
 				$fields_names = array_keys($pob->View->customer->getFieldsNames($sort["branch"]));
 				if($sort["branch"] == g_l('modules_customer', '[common]') || $sort["branch"] == g_l('modules_customer', '[other]')){
-					foreach($fields_names as $fnk => $fnv)
-						$fields_names[$fnk] = str_replace($sort["branch"] . "_", "", $fields_names[$fnk]);
+					foreach($fields_names as &$fnv){
+						$fnv = str_replace($sort["branch"] . "_", "", $fnv);
+					}
+					unset($fnv);
 				}
 
 				if(!isset($sort["field"])){
@@ -231,13 +233,10 @@ function doScrollTo(){
 
 function setScrollTo(){
 		opener.' . $pob->topFrame . '.scrollToVal=' . (we_base_browserDetect::isIE() ? 'document.body.scrollTop' : 'pageYOffset') . ';
-}
-
-			' . $pob->getJSSubmitFunction("sort_admin");
+}' . $pob->getJSSubmitFunction("sort_admin");
 	}
 
 	public static function getJSSearch(&$pob){
-
 		return '
 function doUnload() {
 	if (!!jsWindow_count) {
@@ -282,12 +281,11 @@ function we_cmd(){
 			}
 			eval(\'top.content.we_cmd(\'+args+\')\');
 	}
-}
-		' . $pob->getJSSubmitFunction("search");
+}' . $pob->getJSSubmitFunction("search");
 	}
 
 	public static function getHTMLSearch(&$pob, &$search, &$select){
-		$count = $_REQUEST['count'];
+		$count = weRequest('int', 'count');
 
 		$logic = array('AND' => 'AND', 'OR' => 'OR');
 
@@ -332,8 +330,9 @@ function we_cmd(){
 						$pob->getHTMLFieldsSelect($search_arr["branch_" . $i]));
 			}
 
-			if(isset($search_arr["field_" . $i]))
+			if(isset($search_arr["field_" . $i])){
 				$field->selectOption($search_arr["field_" . $i]);
+			}
 
 			$branch->setAttributes(array("name" => "branch_" . $i, "onchange" => "we_cmd('selectBranch')", "style" => "width:145px"));
 			$field->setAttributes(array("name" => "field_" . $i, "style" => "width:145px", "onchange" => "isDateField($i)"));
@@ -358,7 +357,7 @@ function we_cmd(){
 		$advsearch->setCol($c, 0, array("colspan" => $colspan), we_html_tools::getPixel(5, 5));
 
 		$advsearch->addRow();
-		$advsearch->setCol( ++$c, 0, array("colspan" => $colspan), we_html_button::create_button_table(array(
+		$advsearch->setCol(++$c, 0, array("colspan" => $colspan), we_html_button::create_button_table(array(
 				we_html_button::create_button("image:btn_function_plus", "javascript:we_cmd('add_search')"),
 				we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('del_search')")
 				)

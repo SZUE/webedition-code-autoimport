@@ -451,7 +451,7 @@ print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				)) . we_html_element::htmlHidden(
 					array(
 						"name" => "CategoriesControl",
-						"value" => (isset($_REQUEST['CategoriesCount']) ? $_REQUEST['CategoriesCount'] : 0)
+						"value" => weRequest('int', 'CategoriesCount', 0)
 				)) . $sTblWidget . we_html_element::jsElement($jsTree))));
 if($showAC){
 	print $yuiSuggest->getYuiCss();

@@ -25,8 +25,9 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
-if(!permissionhandler::hasPerm("BROWSE_SERVER"))
+if(!permissionhandler::hasPerm("BROWSE_SERVER")){
 	exit();
+}
 
 echo we_html_tools::getHtmlTop() . STYLESHEET;
 
@@ -59,7 +60,7 @@ $content = '<textarea name="editFile" id="editFile" style="width:540px;height:38
 	}
 <?php
 if(isset($we_alerttext)){
-	print we_message_reporting::getShowMessageCall($we_alerttext, we_message_reporting::WE_MESSAGE_ERROR);
+	echo we_message_reporting::getShowMessageCall($we_alerttext, we_message_reporting::WE_MESSAGE_ERROR);
 	?>
 		self.close();
 <?php } ?>

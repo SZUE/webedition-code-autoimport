@@ -26,7 +26,7 @@ require_once ($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/util/Strings.php');
 $protect = we_base_moduleInfo::isActive('shop') && we_users_util::canEditModule('shop') ? null : array(false);
 we_html_tools::protect($protect);
 
-$selectedYear = intval(isset($_REQUEST['ViewYear']) ? $_REQUEST['ViewYear'] : date('Y'));
+$selectedYear = weRequest('int', 'ViewYear', date('Y'));
 $selectedMonth = weRequest('int', 'ViewMonth', 1);
 $orderBy = weRequest('string', 'orderBy', 'IntOrderID');
 $actPage = weRequest('int', 'actPage', 0);
@@ -64,7 +64,7 @@ function yearSelect($select_name){
 		$opts[$yearNow] = $yearNow;
 		$yearNow--;
 	}
-	return we_class::htmlSelect($select_name, $opts, 1, (isset($_REQUEST[$select_name]) ? $_REQUEST[$select_name] : ''), false, array('id' => $select_name));
+	return we_class::htmlSelect($select_name, $opts, 1, weRequest('raw', $select_name, ''), false, array('id' => $select_name));
 }
 
 function monthSelect($select_name, $selectedMonth){
@@ -170,7 +170,7 @@ if(($maxRows = f('SELECT COUNT(1) ' . $query, '', $DB_WE))){
 
 	//get table entries
 	$orderRows = array();
-	$DB_WE->query('SELECT strSerial,strSerialOrder,IntOrderID,IntCustomerID,IntArticleID,IntQuantity,(IntQuantity*Price) AS articleSum,DatePayment,DateOrder,DateCancellation,DATE_FORMAT(DateOrder, "%d.%m.%Y") AS formatDateOrder, DATE_FORMAT(DatePayment, "%d.%m.%Y") AS formatDatePayment, DATE_FORMAT(DateCancellation, "%d.%m.%Y") AS formatDateCancellation, Price ' . $query . ' ORDER BY ' . (isset($_REQUEST['orderBy']) && $_REQUEST['orderBy'] ? $_REQUEST['orderBy'] : 'IntOrderID') . ' LIMIT ' . ($actPage * $nrOfPage) . ',' . $nrOfPage);
+	$DB_WE->query('SELECT strSerial,strSerialOrder,IntOrderID,IntCustomerID,IntArticleID,IntQuantity,(IntQuantity*Price) AS articleSum,DatePayment,DateOrder,DateCancellation,DATE_FORMAT(DateOrder, "%d.%m.%Y") AS formatDateOrder, DATE_FORMAT(DatePayment, "%d.%m.%Y") AS formatDatePayment, DATE_FORMAT(DateCancellation, "%d.%m.%Y") AS formatDateCancellation, Price ' . $query . ' ORDER BY ' . (weRequest('bool', 'orderBy') ? $_REQUEST['orderBy'] : 'IntOrderID') . ' LIMIT ' . ($actPage * $nrOfPage) . ',' . $nrOfPage);
 	while($DB_WE->next_record()){
 
 		// for the articlelist, we need also all these article, so save them in array

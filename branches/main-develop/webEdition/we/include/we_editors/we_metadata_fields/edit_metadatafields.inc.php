@@ -125,8 +125,8 @@ function save_all_values(){
 			foreach($_REQUEST['metadataTag'] as $key => $value){
 				$GLOBALS['DB_WE']->query('INSERT INTO ' . METADATA_TABLE . ' SET ' . we_database_base::arraySetter(array(
 						'tag' => $value,
-						'type' => (isset($_REQUEST['metadataType'][$key])) ? $_REQUEST['metadataType'][$key] : '',
-						'importFrom' => (isset($_REQUEST['metadataImportFrom'][$key])) ? $_REQUEST['metadataImportFrom'][$key] : '',
+						'type' => weRequest('string', 'metadataType', '', $key),
+						'importFrom' => weRequest('raw', 'metadataImportFrom', '', $key),
 				)));
 			}
 		}

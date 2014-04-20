@@ -27,16 +27,16 @@ echo we_html_tools::getHtmlTop(g_l('modules_banner', '[bannercode]')) .
  STYLESHEET;
 
 $code = '';
-$ok = isset($_REQUEST["ok"]) ? $_REQUEST["ok"] : "";
-$type = isset($_REQUEST["type"]) ? $_REQUEST["type"] : "";
-$tagname = isset($_REQUEST["tagname"]) ? $_REQUEST["tagname"] : "";
-$page = isset($_REQUEST["page"]) ? $_REQUEST["page"] : "";
-$target = isset($_REQUEST["target"]) ? $_REQUEST["target"] : "";
-$width = isset($_REQUEST["width"]) ? $_REQUEST["width"] : 468;
-$height = isset($_REQUEST["height"]) ? $_REQUEST["height"] : 60;
-$paths = isset($_REQUEST["paths"]) ? $_REQUEST["paths"] : "";
-$getscript = isset($_REQUEST["getscript"]) ? $_REQUEST["getscript"] : getServerUrl() . WEBEDITION_DIR . "getBanner.php";
-$clickscript = isset($_REQUEST["clickscript"]) ? $_REQUEST["clickscript"] : getServerUrl() . WEBEDITION_DIR . "bannerclick.php";
+$ok = weRequest('bool', "ok");
+$type = weRequest('string', "type");
+$tagname = weRequest('string', "tagname");
+$page = weRequest('raw', "page", "");
+$target = weRequest('raw', "target", "");
+$width = weRequest('int', "width", 468);
+$height = weRequest('int', "height", 60);
+$paths = weRequest('raw', "paths", "");
+$getscript = weRequest('url', "getscript", getServerUrl() . WEBEDITION_DIR . "getBanner.php");
+$clickscript = weRequest('url', "clickscript", getServerUrl() . WEBEDITION_DIR . "bannerclick.php");
 
 if($ok){
 //FIXME: replace by call of jsScript

@@ -21,19 +21,18 @@
  * @package    webEdition_tinymce
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
- /* last included stylesheet: visualaid- and body-background (if attibute not empty in we:textarea) must not be overwritten by document-css */
+/* last included stylesheet: visualaid- and body-background (if attibute not empty in we:textarea) must not be overwritten by document-css */
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 header("Content-type: text/css");
-
-$bgcol = preg_match('/^[a-f0-9]{6}$/i', $_REQUEST['tinyMceBackgroundColor']) ? '#' . $_REQUEST['tinyMceBackgroundColor'] : $_REQUEST['tinyMceBackgroundColor'];
+$bgcol = weRequest('string', 'tinyMceBackgroundColor');
+$bgcol = preg_match('/^[a-f0-9]{6}$/i', $bgcol) ? '#' . $bgcol : $bgcol;
 echo $bgcol ? '
 body {
 background-color: ' . $bgcol . ' !important;
 background-image: none;
 }
 ' : '';
-
 ?>
 
 

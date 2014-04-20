@@ -49,7 +49,7 @@ if(weRequest('string', 'we_cmd', '', 3) == 'download'){
 
 echo we_html_tools::getHtmlTop() .
  (substr(weRequest('string', 'we_cmd', '', 0), 0, 15) == 'doImage_convert' ?
-		we_html_element::jsElement('parent.frames[0].we_setPath("' . $we_doc->Path . '","' . $we_doc->Text . '", "' . $we_doc->ID . '");') : ''
+	we_html_element::jsElement('parent.frames[0].we_setPath("' . $we_doc->Path . '","' . $we_doc->Text . '", "' . $we_doc->ID . '");') : ''
 ) .
  we_html_element::jsScript(JS_DIR . 'windows.js');
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
@@ -81,7 +81,7 @@ echo STYLESHEET;
 
 			if($we_doc->ID){
 				$_we_transaction = weRequest('transaction', 'we_transaction', 0);
-				$link = "<a href='" . getServerUrl() . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=" . (isset($_REQUEST['we_cmd'][0]) ? $_REQUEST['we_cmd'][0] : "") . "&we_cmd[1]=" . (isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : "") . "&we_cmd[2]=" . (isset($_REQUEST['we_cmd'][2]) ? $_REQUEST['we_cmd'][2] : "") . "&we_cmd[3]=download&we_transaction=" . $_we_transaction . "'>" . $http = $we_doc->getHttpPath() . "</a>";
+				$link = "<a href='" . getServerUrl() . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=" . weRequest('raw', 'we_cmd', '', 0) . "&we_cmd[1]=" . weRequest('raw', 'we_cmd', '', 1) . "&we_cmd[2]=" . weRequest('raw', 'we_cmd', '', 2) . "&we_cmd[3]=download&we_transaction=" . $_we_transaction . "'>" . $http = $we_doc->getHttpPath() . "</a>";
 			} else {
 				$link = g_l('weClass', "[file_not_saved]");
 			}

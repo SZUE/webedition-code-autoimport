@@ -26,14 +26,14 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 $protect = we_base_moduleInfo::isActive('customer') && we_users_util::canEditModule('customer') ? null : array(false);
 we_html_tools::protect($protect);
 
-$what = isset($_REQUEST['pnt']) ? $_REQUEST['pnt'] : 'frameset';
-$mode = isset($_REQUEST['art']) ? $_REQUEST['art'] : 0;
+$what = weRequest('string', 'pnt', 'frameset');
+$mode = weRequest('int', 'art', 0);
 
 $ExImport = $weFrame = null;
 
 if($what == 'export' || $what == 'eibody' || $what == 'eifooter' || $what == 'eiload' || $what == 'import' || $what == 'eiupload'){
 	$ExImport = new we_customer_EIWizard();
-	$step = (isset($_REQUEST['step']) ? $_REQUEST['step'] : 0);
+	$step = weRequest('int','step',0);
 	echo $ExImport->getHTML($what, $mode, $step);
 } else {
 	$weFrame = new we_customer_frames();

@@ -44,7 +44,7 @@ class we_export_frames extends weModuleFrames{
 	}
 
 	function getHTMLDocumentHeader($what = '', $mode = ''){
-		if($what != "cmd" && $what != "load" && !isset($_GET["exportfile"])){
+		if($what != "cmd" && $what != "load" && !weRequest('bool', "exportfile")){
 			return parent::getHTMLDocumentHeader();
 		}
 	}
@@ -223,36 +223,28 @@ class we_export_frames extends weModuleFrames{
 	function getHTMLProperties($preselect = ""){// TODO: move to weExportView
 		$this->SelectionTree->init($this->frameset, $this->editorBodyFrame, $this->editorBodyFrame, $this->cmdFrame);
 
-		$out = "";
-		$tabNr = isset($_REQUEST["tabnr"]) ? $_REQUEST["tabnr"] : 1;
+		$tabNr = weRequest('raw', "tabnr", 1);
 
-		$out .= we_html_element::jsElement('
+		return we_html_element::jsElement('
+var log_counter=0;
+function toggle(id){
+	var elem = document.getElementById(id);
+	if(elem.style.display == "none") elem.style.display = "";
+	else elem.style.display = "none";
+}
 
-			var log_counter=0;
-			function toggle(id){
-				var elem = document.getElementById(id);
-				if(elem.style.display == "none") elem.style.display = "";
-				else elem.style.display = "none";
-			}
+function clearLog(){
+	' . $this->editorBodyFrame . '.document.getElementById("log").innerHTML = "";
+}
 
-
-			function clearLog(){
-				' . $this->editorBodyFrame . '.document.getElementById("log").innerHTML = "";
-			}
-
-			function addLog(text){
-				' . $this->editorBodyFrame . '.document.getElementById("log").innerHTML+= text;
-				' . $this->editorBodyFrame . '.document.getElementById("log").scrollTop = 50000;
-			}
-
-
-		');
-
-		$out .= we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')), we_html_multiIconBox::getHTML('', "100%", $this->getHTMLTab1(), 30, '', -1, '', '', false, $preselect)) .
+function addLog(text){
+	' . $this->editorBodyFrame . '.document.getElementById("log").innerHTML+= text;
+	' . $this->editorBodyFrame . '.document.getElementById("log").scrollTop = 50000;
+}
+') .
+			we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')), we_html_multiIconBox::getHTML('', "100%", $this->getHTMLTab1(), 30, '', -1, '', '', false, $preselect)) .
 			we_html_element::htmlDiv(array('id' => 'tab2', 'style' => ($tabNr == 2 ? '' : 'display: none')), we_html_multiIconBox::getHTML('', "100%", $this->getHTMLTab2(), 30, '', -1, '', '', false, $preselect)) .
 			we_html_element::htmlDiv(array('id' => 'tab3', 'style' => ($tabNr == 3 ? '' : 'display: none')), we_html_multiIconBox::getHTML('', "100%", $this->getHTMLTab3(), 30, '', -1, '', '', false, $preselect));
-
-		return $out;
 	}
 
 	function getHTMLTab1(){
@@ -469,7 +461,7 @@ function closeAllType(){
 		switch(weRequest('string', "cmd")){
 			case "load":
 				if(isset($_REQUEST["pid"])){
-					$out = we_html_element::jsElement("self.location='" . WE_EXPORT_MODULE_DIR . "exportLoadTree.php?we_cmd[1]=" . $_REQUEST["tab"] . "&we_cmd[2]=" . $_REQUEST["pid"] . "&we_cmd[3]=" . (isset($_REQUEST["openFolders"]) ? $_REQUEST["openFolders"] : "") . "&we_cmd[4]=" . $this->editorBodyFrame . "'");
+					$out = we_html_element::jsElement("self.location='" . WE_EXPORT_MODULE_DIR . "exportLoadTree.php?we_cmd[1]=" . $_REQUEST["tab"] . "&we_cmd[2]=" . $_REQUEST["pid"] . "&we_cmd[3]=" . weRequest('raw', "openFolders", "") . "&we_cmd[4]=" . $this->editorBodyFrame . "'");
 				}
 				break;
 			case "mainload":
@@ -725,8 +717,8 @@ function closeAllType(){
 				break;
 			case 'upload':
 				$preurl = getServerUrl();
-				if(isset($_GET["exportfile"])){
-					$_filename = basename(urldecode($_GET["exportfile"]));
+				if(weRequest('bool', "exportfile")){
+					$_filename = basename(urldecode(weRequest('raw', "exportfile")));
 
 					if(file_exists(TEMP_PATH . $_filename) // Does file exist?
 						&& !preg_match('%p?html?%i', $_filename) && stripos($_filename, "inc") === false && !preg_match('%php3?%i', $_filename)){ // Security check
@@ -848,7 +840,7 @@ function closeAllType(){
 
 
 		$hiddens = we_html_element::htmlHidden(array("name" => "Categorys", "value" => $this->View->export->Categorys)) .
-			we_html_element::htmlHidden(array("name" => "cat", "value" => (isset($_REQUEST["cat"]) ? $_REQUEST["cat"] : "")));
+			we_html_element::htmlHidden(array("name" => "cat", "value" => weRequest('raw', "cat", "")));
 
 
 		$delallbut = we_html_button::create_button("delete_all", "javascript:top.content.setHot(); we_cmd('del_all_cats')", true, 0, 0, "", "", (isset($this->View->export->Categorys) ? false : true));

@@ -1030,8 +1030,8 @@ function startStep(){
 
 	function getHTMLBackupStep3(){
 		update_time_limit(0);
-		if(isset($_GET["backupfile"])){
-			$_filename = urldecode($_GET["backupfile"]);
+		if(weRequest('bool', "backupfile")){
+			$_filename = urldecode(weRequest('raw', "backupfile"));
 
 			if(file_exists($_filename) && stripos($_filename, $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR) !== false){ // Does file exist and does it saved in backup dir?
 				$_size = filesize($_filename);
@@ -1126,11 +1126,11 @@ function startStep(){
 		if(isset($_REQUEST["operation_mode"])){
 			if($_REQUEST["operation_mode"] == "busy"){
 
-				$text = (isset($_REQUEST["current_description"]) && $_REQUEST["current_description"] ?
+				$text = (weRequest('bool', "current_description") ?
 						$_REQUEST["current_description"] :
 						g_l('backup', "[working]"));
 
-				$progress = (isset($_REQUEST["percent"]) && $_REQUEST["percent"] ? $_REQUEST["percent"] : 0);
+				$progress = weRequest('int', "percent", 0);
 
 
 				$progress = new we_progressBar($progress);
@@ -1143,7 +1143,7 @@ function startStep(){
 			}
 		}
 
-		$step = isset($_REQUEST["step"]) ? $_REQUEST["step"] : 0;
+		$step = weRequest('int', "step", 0);
 
 		if($this->mode == 1){
 			switch($step){
@@ -1281,33 +1281,33 @@ top.busy.location="' . $this->frameset . '?pnt=busy";' .
 					}
 
 					$handle_options = array(
-						"user" => (isset($_REQUEST["handle_user"]) && $_REQUEST["handle_user"]) ? 1 : 0,
-						"customer" => (isset($_REQUEST["handle_customer"]) && $_REQUEST["handle_customer"]) ? 1 : 0,
-						"shop" => (isset($_REQUEST["handle_shop"]) && $_REQUEST["handle_shop"]) ? 1 : 0,
-						"workflow" => (isset($_REQUEST["handle_workflow"]) && $_REQUEST["handle_workflow"]) ? 1 : 0,
-						"todo" => (isset($_REQUEST["handle_todo"]) && $_REQUEST["handle_todo"]) ? 1 : 0,
-						"newsletter" => (isset($_REQUEST["handle_newsletter"]) && $_REQUEST["handle_newsletter"]) ? 1 : 0,
-						"temporary" => (isset($_REQUEST["handle_temporary"]) && $_REQUEST["handle_temporary"]) ? 1 : 0,
-						"history" => (isset($_REQUEST["handle_history"]) && $_REQUEST["handle_history"]) ? 1 : 0,
-						"banner" => (isset($_REQUEST["handle_banner"]) && $_REQUEST["handle_banner"]) ? 1 : 0,
-						"core" => (isset($_REQUEST["handle_core"]) && $_REQUEST["handle_core"]) ? 1 : 0,
-						"object" => (isset($_REQUEST["handle_object"]) && $_REQUEST["handle_object"]) ? 1 : 0,
-						"schedule" => (isset($_REQUEST["handle_schedule"]) && $_REQUEST["handle_schedule"]) ? 1 : 0,
-						"settings" => (isset($_REQUEST["handle_settings"]) && $_REQUEST["handle_settings"]) ? 1 : 0,
-						"export" => (isset($_REQUEST["handle_export"]) && $_REQUEST["handle_export"]) ? 1 : 0,
-						"voting" => (isset($_REQUEST["handle_voting"]) && $_REQUEST["handle_voting"]) ? 1 : 0,
+						"user" => weRequest('bool', "handle_user"),
+						"customer" => weRequest('bool', "handle_customer"),
+						"shop" => weRequest('bool', "handle_shop"),
+						"workflow" => weRequest('bool', "handle_workflow"),
+						"todo" => weRequest('bool', "handle_todo"),
+						"newsletter" => weRequest('bool', "handle_newsletter"),
+						"temporary" => weRequest('bool', "handle_temporary"),
+						"history" => weRequest('bool', "handle_history"),
+						"banner" => weRequest('bool', "handle_banner"),
+						"core" => weRequest('bool', "handle_core"),
+						"object" => weRequest('bool', "handle_object"),
+						"schedule" => weRequest('bool', "handle_schedule"),
+						"settings" => weRequest('bool', "handle_settings"),
+						"export" => weRequest('bool', "handle_export"),
+						"voting" => weRequest('bool', "handle_voting"),
 					);
 					$we_backup_obj = new we_backup_backup($handle_options);
 					$temp_filename = (isset($_REQUEST["temp_filename"]) && $_REQUEST["temp_filename"]) ? $_REQUEST["temp_filename"] : '';
 
 					if(!$temp_filename){
-						$we_backup_obj->backup_extern = (isset($_REQUEST["handle_extern"]) && $_REQUEST["handle_extern"]) ? 1 : 0;
-						$we_backup_obj->convert_charset = (isset($_REQUEST["convert_charset"]) && $_REQUEST["convert_charset"]) ? 1 : 0;
-						$we_backup_obj->export2server = (isset($_REQUEST["export_server"]) && $_REQUEST["export_server"]) ? 1 : 0;
-						$we_backup_obj->export2send = (isset($_REQUEST["export_send"]) && $_REQUEST["export_send"]) ? 1 : 0;
-						$we_backup_obj->filename = isset($_REQUEST["filename"]) ? $_REQUEST["filename"] : "weBackup_" . time() . ".xml";
+						$we_backup_obj->backup_extern = weRequest('bool', "handle_extern");
+						$we_backup_obj->convert_charset = weRequest('bool', "convert_charset");
+						$we_backup_obj->export2server = weRequest('bool', "export_server");
+						$we_backup_obj->export2send = weRequest('bool', "export_send");
+						$we_backup_obj->filename = weRequest('file', "filename", "weBackup_" . time() . ".xml");
 						$we_backup_obj->compress = (isset($_REQUEST["compress"]) && $_REQUEST["compress"]) ? $_REQUEST["compress"] : "none";
-						$we_backup_obj->backup_binary = (isset($_REQUEST["handle_binary"]) && $_REQUEST["handle_binary"]) ? 1 : 0;
+						$we_backup_obj->backup_binary = weRequest('bool', "handle_binary");
 
 						//create file list
 						if($we_backup_obj->backup_extern){

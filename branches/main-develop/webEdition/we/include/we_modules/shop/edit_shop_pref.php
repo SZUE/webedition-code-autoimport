@@ -28,8 +28,8 @@ we_html_tools::protect($protect);
 
 function prepareFieldname($str){
 	return (strpos($str, '_') ?
-					substr_replace($str, '/', strpos($str, '_'), 1) :
-					$str);
+			substr_replace($str, '/', strpos($str, '_'), 1) :
+			$str);
 }
 
 we_html_tools::protect();
@@ -52,16 +52,16 @@ if($_REQUEST["format"]){ //	save data in arrays ..
 
 	$DB_WE->query('REPLACE ' . ANZEIGE_PREFS_TABLE . ' SET strDateiname = "shop_pref",strFelder= "' . $DB_WE->escape($_REQUEST["waehr"]) . '|' . $DB_WE->escape($_REQUEST["mwst"]) . '|' . $DB_WE->escape($_REQUEST["format"]) . '|' . $DB_WE->escape($_REQUEST["classID"]) . '|' . $DB_WE->escape($_REQUEST["pag"]) . '"');
 
-	$fields['customerFields'] = isset($_REQUEST['orderfields']) ? $_REQUEST['orderfields'] : array();
-	$fields['orderCustomerFields'] = isset($_REQUEST['ordercustomerfields']) ? $_REQUEST['ordercustomerfields'] : array();
+	$fields['customerFields'] = weRequest('raw', 'orderfields', array());
+	$fields['orderCustomerFields'] = weRequest('raw', 'ordercustomerfields', array());
 
 	// check if field exists
 	$DB_WE->query('REPLACE ' . ANZEIGE_PREFS_TABLE . ' SET strDateiname="edit_shop_properties", strFelder="' . $DB_WE->escape(serialize($fields)) . '"');
 
-	$CLFields['stateField'] = isset($_REQUEST['stateField']) ? $_REQUEST['stateField'] : '-';
-	$CLFields['stateFieldIsISO'] = isset($_REQUEST['stateFieldIsISO']) ? $_REQUEST['stateFieldIsISO'] : 0;
-	$CLFields['languageField'] = isset($_REQUEST['languageField']) ? $_REQUEST['languageField'] : '-';
-	$CLFields['languageFieldIsISO'] = isset($_REQUEST['languageFieldIsISO']) ? $_REQUEST['languageFieldIsISO'] : 0;
+	$CLFields['stateField'] = weRequest('raw', 'stateField', '-');
+	$CLFields['stateFieldIsISO'] = weRequest('string', 'stateFieldIsISO', 0);
+	$CLFields['languageField'] = weRequest('string', 'languageField', '-');
+	$CLFields['languageFieldIsISO'] = weRequest('raw', 'languageFieldIsISO', 0);
 
 	// check if field exists
 	$DB_WE->query('REPLACE ' . ANZEIGE_PREFS_TABLE . ' SET strDateiname ="shop_CountryLanguage", strFelder = "' . $DB_WE->escape(serialize($CLFields)) . '"');
@@ -97,7 +97,7 @@ $_htmlTable = new we_html_table(array(
 	'cellpadding' => 0,
 	'cellspacing' => 0,
 	'width' => 410
-		), 35, 3);
+	), 35, 3);
 
 
 //	NumberFormat - currency and taxes

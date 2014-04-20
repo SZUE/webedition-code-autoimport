@@ -48,7 +48,7 @@ class we_search_frames extends we_tool_frames{
 		}
 		$pid = $_REQUEST['pid'];
 
-		$offset = (isset($_REQUEST['offset']) ? $_REQUEST['offset'] : 0);
+		$offset = weRequest('int', 'offset', 0);
 
 		$_loader = new we_search_treeDataSource($this->TreeSource);
 
@@ -265,8 +265,8 @@ class we_search_frames extends we_tool_frames{
 			'cmd' => '',
 			'pnt' => 'edbody',
 			'tabnr' => $tabNr,
-			'vernr' => (isset($_REQUEST['vernr']) ? $_REQUEST['vernr'] : 0),
-			'delayParam' => (isset($_REQUEST['delayParam']) ? $_REQUEST['delayParam'] : '')
+			'vernr' => weRequest('int', 'vernr', 0),
+			'delayParam' => weRequest('raw', 'delayParam','')
 		);
 
 		return $this->View->getCommonHiddens($hiddens) .

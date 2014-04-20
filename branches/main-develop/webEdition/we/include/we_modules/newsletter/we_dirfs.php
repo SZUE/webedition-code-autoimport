@@ -24,14 +24,14 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-$id = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : "";
+$id = weRequest('int', 'we_cmd', 0, 1);
 
 $JSIDName = stripslashes(we_cmd_dec(2));
 $JSTextName = stripslashes(we_cmd_dec(3));
 $JSCommand = we_cmd_dec(4);
 $sessionID = 0;
-$rootDirID = isset($_REQUEST['we_cmd'][6]) ? $_REQUEST['we_cmd'][6] : "";
-$filter = isset($_REQUEST['we_cmd'][7]) ? $_REQUEST['we_cmd'][7] : "";
-$multiple = isset($_REQUEST['we_cmd'][8]) ? $_REQUEST['we_cmd'][8] : "";
+$rootDirID = weRequest('int', 'we_cmd', 0, 6);
+$filter = weRequest('raw', 'we_cmd', 7, '');
+$multiple = weRequest('bool', 'we_cmd', false, 8);
 
 require_once(WE_MODULES_PATH . 'newsletter/we_newsletterDirSelector.php');

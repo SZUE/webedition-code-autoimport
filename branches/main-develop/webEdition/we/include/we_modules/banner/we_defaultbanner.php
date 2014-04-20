@@ -26,18 +26,16 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 echo we_html_tools::getHtmlTop(g_l('modules_banner', '[defaultbanner]')) .
  STYLESHEET;
-$DefaultBannerID = 0;
 
 if(isset($_REQUEST["ok"]) && $_REQUEST["ok"]){
-	$DefaultBannerID = isset($_REQUEST["DefaultBannerID"]) ? $_REQUEST["DefaultBannerID"] : 0;
-	$GLOBALS['DB_WE']->query('REPLACE INTO ' . BANNER_PREFS_TABLE . ' SET ' . we_database_base::arraySetter(array('pref_name' => 'DefaultBannerID', 'pref_value' => $DefaultBannerID)));
+	$GLOBALS['DB_WE']->query('REPLACE INTO ' . BANNER_PREFS_TABLE . ' SET ' . we_database_base::arraySetter(array('pref_name' => 'DefaultBannerID', 'pref_value' => weRequest('int', "DefaultBannerID", 0))));
 
-	print we_html_element::jsElement('top.close();') . '</head><body></body></html>';
+	echo we_html_element::jsElement('top.close();') . '</head><body></body></html>';
 	exit();
 }
 $yuiSuggest = & weSuggest::getInstance();
 
-function formBannerChooser($width = "", $table = BANNER_TABLE, $idvalue=0, $idname='', $title = "", $cmd = ""){
+function formBannerChooser($width = "", $table = BANNER_TABLE, $idvalue = 0, $idname = '', $title = "", $cmd = ""){
 	$yuiSuggest = & weSuggest::getInstance();
 	$path = id_to_path($idvalue, $table);
 	$textname = md5(uniqid(__FUNCTION__, true));
@@ -119,7 +117,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 <body class="weDialogBody" onunload="doUnload()">
 	<form name="we_form" action="<?php print $_SERVER["SCRIPT_NAME"]; ?>" method="post"><input type="hidden" name="ok" value="1" /><input type="hidden" name="we_cmd[0]" value="<?php print $_REQUEST['we_cmd'][0]; ?>" />
 		<?php
-		$DefaultBannerID = f("SELECT pref_value FROM " . BANNER_PREFS_TABLE . " WHERE pref_name='DefaultBannerID'", "pref_value", $DB_WE);
+		$DefaultBannerID = f('SELECT pref_value FROM ' . BANNER_PREFS_TABLE . " WHERE pref_name='DefaultBannerID'");
 		$content = formBannerChooser(300, BANNER_TABLE, $DefaultBannerID, "DefaultBannerID", "");
 		$yes_button = we_html_button::create_button("save", "javascript:we_save();");
 		$cancel_button = we_html_button::create_button("cancel", "javascript:top.close();");

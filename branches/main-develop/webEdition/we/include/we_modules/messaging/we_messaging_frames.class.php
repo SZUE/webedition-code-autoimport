@@ -68,7 +68,7 @@ class we_messaging_frames extends weModuleFrames{
 
 	function getJSTreeCode(){ //TODO: move to new class weUsersTree (extends weModulesTree)
 		//TODO: title nach View->getJSTop()
-		$mod = isset($_REQUEST['mod']) ? $_REQUEST['mod'] : '';
+		$mod = weRequest('string', 'mod', '');
 		$modData = we_base_moduleInfo::getModuleData($mod);
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 
@@ -799,7 +799,7 @@ function msg_start() {
 		$this->messaging->saveInSession($_SESSION['weS']['we_data'][$this->transaction]);
 
 		//TODO: move to a better place: jsTop()
-		$mod = isset($_REQUEST['mod']) ? $_REQUEST['mod'] : '';
+		$mod = weRequest('string', 'mod', '');
 		$modData = we_base_moduleInfo::getModuleData($mod);
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 
@@ -858,7 +858,7 @@ function msg_start() {
 
 		$table->setCol(0, 0, array('class' => 'defaultfont'), g_l('modules_messaging', $searchlabel) .
 			we_html_tools::getPixel(10, 1) .
-			we_html_tools::htmlTextInput('messaging_search_keyword', 15, isset($_REQUEST['messaging_search_keyword']) ? $_REQUEST['messaging_search_keyword'] : '', 15) .
+			we_html_tools::htmlTextInput('messaging_search_keyword', 15, weRequest('raw', 'messaging_search_keyword', ''), 15) .
 			we_html_tools::getPixel(10, 1)
 		);
 

@@ -534,36 +534,31 @@ class we_document extends we_root{
 	}
 
 	function addLinkToLinklist($name){
-		$linklist = $this->getElement($name);
-		$ll = new we_base_linklist($linklist);
+		$ll = new we_base_linklist($this->getElement($name));
 		$ll->addLink();
 		$this->setElement($name, $ll->getString(), 'linklist');
 	}
 
 	function upEntryAtLinklist($name, $nr){
-		$linklist = $this->getElement($name);
-		$ll = new we_base_linklist($linklist);
+		$ll = new we_base_linklist($this->getElement($name));
 		$ll->upLink($nr);
 		$this->setElement($name, $ll->getString(), 'linklist');
 	}
 
 	function downEntryAtLinklist($name, $nr){
-		$linklist = $this->getElement($name);
-		$ll = new we_base_linklist($linklist);
+		$ll = new we_base_linklist($this->getElement($name));
 		$ll->downLink($nr);
 		$this->setElement($name, $ll->getString(), 'linklist');
 	}
 
 	function insertLinkAtLinklist($name, $nr){
-		$linklist = $this->getElement($name);
-		$ll = new we_base_linklist($linklist);
+		$ll = new we_base_linklist($this->getElement($name));
 		$ll->insertLink($nr);
 		$this->setElement($name, $ll->getString(), 'linklist');
 	}
 
 	function removeLinkFromLinklist($name, $nr, $names = ''){
-		$linklist = $this->getElement($name);
-		$ll = new we_base_linklist($linklist);
+		$ll = new we_base_linklist($this->getElement($name));
 		$ll->removeLink($nr, $names, $name);
 		$this->setElement($name, $ll->getString(), 'linklist');
 	}
@@ -572,7 +567,7 @@ class we_document extends we_root{
 		$this->setElement($name, $_SESSION['weS']['WE_LINK']);
 	}
 
-	function changeLinklist($name, $linklist){
+	function changeLinklist($name){
 		$this->setElement($name, $_SESSION['weS']['WE_LINKLIST']);
 	}
 
@@ -605,7 +600,7 @@ class we_document extends we_root{
 		if(!isset($GLOBALS['WE_IS_DYN']) && ($this->Table == FILE_TABLE || $this->Table == TEMPLATES_TABLE)){
 			if(($ws = get_ws($this->Table))){
 				$foo = makeArrayFromCSV($ws);
-				if(!empty($foo)){
+				if($foo){
 					$this->setParentID(intval($foo[0]));
 				}
 			}

@@ -24,9 +24,7 @@
  */
 we_html_tools::protect();
 
-$_REQUEST['we_cmd'] = isset($_REQUEST['we_cmd']) ? $_REQUEST['we_cmd'] : "";
-$we_transaction = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : (isset($_REQUEST["we_transaction"]) ? $_REQUEST["we_transaction"] : "");
-$we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $we_transaction) ? $we_transaction : '');
+$we_transaction = weRequest('transaction', 'we_cmd', weRequest('transaction', "we_transaction"), 1);
 
 // init document
 $we_dt = $_SESSION['weS']['we_data'][$we_transaction];

@@ -37,8 +37,7 @@ if(!preg_match('/^multiEditFrame_[0-9]+$/', $editorFrameId)){
 	exit('cmd[1] is not valid at we_exit_doc_question!');
 }
 
-$exitDocCt = $_REQUEST['we_cmd'][2];
-$nextCmd = isset($_REQUEST['we_cmd'][3]) ? $_REQUEST['we_cmd'][3] : ''; // close_all, logout, open_document, new_document(seeMode) etc.
+$nextCmd = weRequest('raw', 'we_cmd', '', 3); // close_all, logout, open_document, new_document(seeMode) etc.
 
 $isOpenDocCmd = preg_match('/^top\.weEditorFrameController\.openDocument\("[^"]*"\s*,\s*"[^"]*"\s*,\s*"[^"]*"\s*,\s*"[^"]*"\s*,\s*"[^"]*"\s*,\s*"[^"]*"\s*,\s*"[^"]*"\s*,\s*"[^"]*"\s*,\s*"[^"]*"\s*\)\s*;\s*$/', $nextCmd);
 $isDoLogoutCmd = preg_match('/^top\.we_cmd\("dologout"\)\s*;\s*$/', $nextCmd);
@@ -52,7 +51,7 @@ if(!$nextCmdOk){
 	exit('cmd[3] (nextCmd) is not valid at we_exit_doc_question!' . $nextCmd);
 }
 
-switch($exitDocCt){
+switch(weRequest('string', 'we_cmd', '', 2)){
 	case we_base_ContentTypes::TEMPLATE:
 		$_documentTable = TEMPLATES_TABLE;
 		break;
@@ -79,7 +78,7 @@ switch($exitDocCt){
 }
 
 
-print we_html_element::jsScript(JS_DIR . 'keyListener.js') . we_html_element::jsElement("
+echo we_html_element::jsScript(JS_DIR . 'keyListener.js') . we_html_element::jsElement("
 	var _nextCmd = null;
 	var _EditorFrame = top.opener.top.weEditorFrameController.getEditorFrame('$editorFrameId');
 	self.focus();
@@ -130,12 +129,12 @@ $cancelCmd = "pressed_cancel();";
 
 
 
-print STYLESHEET;
+echo STYLESHEET;
 ?>
 </head>
 
 <body onunload="window_closed();" class="weEditorBody" onload="self.focus();" onblur="self.focus();">
-	<?php print we_html_tools::htmlYesNoCancelDialog(g_l('alert', '[' . stripTblPrefix($_documentTable) . '][exit_doc_question]'), IMAGE_DIR . "alert.gif", true, true, true, $yesCmd, $noCmd, $cancelCmd); ?>
+	<?php echo we_html_tools::htmlYesNoCancelDialog(g_l('alert', '[' . stripTblPrefix($_documentTable) . '][exit_doc_question]'), IMAGE_DIR . "alert.gif", true, true, true, $yesCmd, $noCmd, $cancelCmd); ?>
 </body>
 
 </html>

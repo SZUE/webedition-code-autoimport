@@ -25,31 +25,30 @@
 we_html_tools::protect();
 
 
-$nr = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : "";
-$name = isset($_REQUEST['we_cmd'][2]) ? $_REQUEST['we_cmd'][2] : "";
-$we_transaction = isset($_REQUEST['we_cmd'][3]) ? $_REQUEST['we_cmd'][3] : "";
-$we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $we_transaction) ? $we_transaction : '');
+$nr = weRequest('int', 'we_cmd', '', 1);
+$name = weRequest('string', 'we_cmd', '', 2);
+$we_transaction = weRequest('transaction', 'we_cmd', $we_transaction, 3);
 
 $we_dt = isset($_SESSION['weS']['we_data'][$we_transaction]) ? $_SESSION['weS']['we_data'][$we_transaction] : "";
 include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
 if(isset($_REQUEST["ok"])){
-	$we_doc->elements[$name . "inlineedit"]["dat"] = isset($_REQUEST["inlineedit"]) ? $_REQUEST["inlineedit"] : "";
-	$we_doc->elements[$name . "forbidphp"]["dat"] = isset($_REQUEST["forbidphp"]) ? $_REQUEST["forbidphp"] : "";
-	$we_doc->elements[$name . "forbidhtml"]["dat"] = isset($_REQUEST["forbidhtml"]) ? $_REQUEST["forbidhtml"] : false;
-	$we_doc->elements[$name . "removefirstparagraph"]["dat"] = isset($_REQUEST["removefirstparagraph"]) ? $_REQUEST["removefirstparagraph"] : "";
-	$we_doc->elements[$name . "xml"]["dat"] = isset($_REQUEST["xml"]) ? $_REQUEST["xml"] : "";
-	$we_doc->elements[$name . "dhtmledit"]["dat"] = isset($_REQUEST["dhtmledit"]) ? $_REQUEST["dhtmledit"] : "";
-	$we_doc->elements[$name . "showmenus"]["dat"] = isset($_REQUEST["showmenus"]) ? $_REQUEST["showmenus"] : "";
-	$we_doc->elements[$name . "commands"]["dat"] = isset($_REQUEST["commands"]) ? $_REQUEST["commands"] : "";
-	$we_doc->elements[$name . "contextmenu"]["dat"] = isset($_REQUEST["contextmenu"]) ? $_REQUEST["contextmenu"] : "";
-	$we_doc->elements[$name . "height"]["dat"] = isset($_REQUEST["height"]) ? $_REQUEST["height"] : 50;
-	$we_doc->elements[$name . "width"]["dat"] = isset($_REQUEST["width"]) ? $_REQUEST["width"] : 200;
-	$we_doc->elements[$name . "bgcolor"]["dat"] = isset($_REQUEST["bgcolor"]) ? $_REQUEST["bgcolor"] : '';
-	$we_doc->elements[$name . "class"]["dat"] = isset($_REQUEST["class"]) ? $_REQUEST["class"] : '';
-	$we_doc->elements[$name . "cssClasses"]["dat"] = isset($_REQUEST["cssClasses"]) ? $_REQUEST["cssClasses"] : "";
-	$we_doc->elements[$name . "tinyparams"]["dat"] = isset($_REQUEST["tinyparams"]) ? $_REQUEST["tinyparams"] : '';
-	$we_doc->elements[$name . "templates"]["dat"] = isset($_REQUEST["templates"]) ? $_REQUEST["templates"] : '';
+	$we_doc->elements[$name . "inlineedit"]["dat"] = weRequest('bool', "inlineedit");
+	$we_doc->elements[$name . "forbidphp"]["dat"] = weRequest('bool', "forbidphp");
+	$we_doc->elements[$name . "forbidhtml"]["dat"] = weRequest('bool', "forbidhtml");
+	$we_doc->elements[$name . "removefirstparagraph"]["dat"] = weRequest('bool', "removefirstparagraph");
+	$we_doc->elements[$name . "xml"]["dat"] = weRequest('bool', "xml");
+	$we_doc->elements[$name . "dhtmledit"]["dat"] = weRequest('bool', "dhtmledit");
+	$we_doc->elements[$name . "showmenus"]["dat"] = weRequest('bool', "showmenus");
+	$we_doc->elements[$name . "commands"]["dat"] = weRequest('raw', "commands");
+	$we_doc->elements[$name . "contextmenu"]["dat"] = weRequest('raw', "contextmenu");
+	$we_doc->elements[$name . "height"]["dat"] = weRequest('int', "height", 50);
+	$we_doc->elements[$name . "width"]["dat"] = weRequest('int', "width", 200);
+	$we_doc->elements[$name . "bgcolor"]["dat"] = weRequest('string', "bgcolor", '');
+	$we_doc->elements[$name . "class"]["dat"] = weRequest('string', "class", '');
+	$we_doc->elements[$name . "cssClasses"]["dat"] = weRequest('raw', "cssClasses", "");
+	$we_doc->elements[$name . "tinyparams"]["dat"] = weRequest('raw', "tinyparams", '');
+	$we_doc->elements[$name . "templates"]["dat"] = weRequest('raw', "templates", '');
 	$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 }
 
@@ -63,8 +62,8 @@ if(isset($_REQUEST["ok"])){
 		. '}';
 }
 
-print we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead(//FIXME: missing title
-			we_html_tools::getHtmlInnerHead() . we_html_element::jsElement($js) . STYLESHEET), false);
+echo we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead(//FIXME: missing title
+		we_html_tools::getHtmlInnerHead() . we_html_element::jsElement($js) . STYLESHEET), false);
 
 $out = '<body onload="top.focus();" class="weDialogBody"><form name="we_form" method="post" action="' . $_SERVER['SCRIPT_NAME'] . '"><input type="hidden" name="ok" value="1" />';
 

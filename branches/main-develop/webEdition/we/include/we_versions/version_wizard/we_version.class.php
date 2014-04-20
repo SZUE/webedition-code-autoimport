@@ -48,7 +48,7 @@ class we_version{
 
 		switch($data["type"]){
 			case "version_reset" :
-				$publish = isset($_REQUEST['reset_doPublish']) && $_REQUEST['reset_doPublish'] ? 1 : 0;
+				$publish = weRequest('bool','reset_doPublish');
 				weVersions::resetVersion($data["ID"], $data["version"], $publish);
 
 				$_SESSION['weS']['versions']['logResetIds'][$data["ID"]]['Text'] = $data["text"];

@@ -36,12 +36,12 @@ $bDisplay = $_sInitProps{1};
 $bDate = $_sInitProps{2};
 $bPrio = $_sInitProps{3};
 $bValid = $_sInitProps{4};
-$q_Csv = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : '';
+$q_Csv = weRequest('raw', 'we_cmd', '', 1);
 $_title = base64_decode($_REQUEST['we_cmd'][4]);
 $_sObjId = $_REQUEST['we_cmd'][5];
 
 
-switch(weRequest('string', 'we_cmd','',2)){
+switch(weRequest('string', 'we_cmd', '', 2)){
 	case 'delete' :
 		$DB_WE->query('DELETE FROM ' . NOTEPAD_TABLE . ' WHERE ID=' . intval($q_Csv));
 		break;

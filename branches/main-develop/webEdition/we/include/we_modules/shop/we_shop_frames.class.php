@@ -350,7 +350,7 @@ class we_shop_frames extends weModuleFrames{
 			}
 		}
 
-		$year = (isset($_REQUEST['year']) ? $_REQUEST['year'] : date('Y'));
+		$year = weRequest('int', 'year', date('Y'));
 //unset($_SESSION['year']);
 		for($f = 12; $f > 0; $f--){
 			$r = (isset(${'v' . $f . $year}) ? ${'v' . $f . $year} : '');
@@ -502,20 +502,19 @@ function we_cmd() {
 	function getHTMLEditorTop(){// TODO: merge getHTMLRight and getHTMLRightTop
 		$DB_WE = $this->db;
 		require_once(WE_MODULES_PATH . 'shop/handle_shop_dbitemConnect.php');
-		$home = isset($_REQUEST["home"]) ? $_REQUEST["home"] : 0;
-		$mid = isset($_REQUEST["mid"]) ? $_REQUEST["mid"] : 0;
-		$bid = isset($_REQUEST["bid"]) ? $_REQUEST["bid"] : 0;
+		$home = weRequest('bool', "home");
+		$mid = weRequest('int', "mid", 0);
+		$bid = weRequest('int', "bid", 0);
 
 		// config
-		$feldnamen = explode('|', f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname = "shop_pref"', 'strFelder', $DB_WE));
+		$feldnamen = explode('|', f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname = "shop_pref"', '', $DB_WE));
 		for($i = 0; $i <= 3; $i++){
 			$feldnamen[$i] = isset($feldnamen[$i]) ? $feldnamen[$i] : '';
 		}
 		$fe = explode(',', $feldnamen[3]);
 
-		if(empty($classid)){
-			$classid = $fe[0];
-		}
+		$classid = $classid ? $classid : $fe[0];
+
 
 		// $resultO = count ($fe);
 		$resultO = array_shift($fe);

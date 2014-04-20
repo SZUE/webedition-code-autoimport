@@ -23,8 +23,7 @@
  */
 we_html_tools::protect();
 
-$we_transaction = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : $we_transaction;
-$we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $we_transaction) ? $we_transaction : 0);
+$we_transaction = weRequest('transaction', 'we_cmd', $we_transaction, 1);
 
 // init document
 $we_dt = $_SESSION['weS']['we_data'][$we_transaction];
@@ -43,9 +42,8 @@ function getControlElement($type, $name){
 		return (isset($GLOBALS['we_doc']->controlElement[$type][$name]) ?
 				$GLOBALS['we_doc']->controlElement[$type][$name] :
 				false);
-	} else {
-		return false;
 	}
+	return false;
 }
 
 switch($we_doc->userHasAccess()){
@@ -74,7 +72,7 @@ switch($we_doc->userHasAccess()){
 echo we_html_tools::getHtmlTop();
 
 $showPubl = permissionhandler::hasPerm("PUBLISH") && $we_doc->userCanSave() && $we_doc->IsTextContentDoc;
-$reloadPage = (($showPubl || $we_doc->ContentType == we_base_ContentTypes::TEMPLATE) && (!$we_doc->ID)) ? true : false;
+$reloadPage = (bool) (($showPubl || $we_doc->ContentType == we_base_ContentTypes::TEMPLATE) && (!$we_doc->ID));
 $haspermNew = false;
 
 //	Check permissions for buttons
@@ -95,7 +93,6 @@ switch($we_doc->ContentType){
 // ---> Glossary Check
 //
 // load Glossary Settings
-$showGlossaryCheck = 0;
 
 if(isset($_SESSION['prefs']['force_glossary_check']) && $_SESSION['prefs']['force_glossary_check'] == 1 && (
 	$we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT || $we_doc->ContentType == "objectFile"
@@ -107,7 +104,7 @@ if(isset($_SESSION['prefs']['force_glossary_check']) && $_SESSION['prefs']['forc
 }
 
 $_js_we_save_document = "
-    var _showGlossaryCheck = $showGlossaryCheck;
+	var _showGlossaryCheck = $showGlossaryCheck;
 	var countSaveLoop = 0;
 	function saveReload(){
 		self.location='" . we_class::url(WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=load_edit_footer') . "';
@@ -127,9 +124,7 @@ $_js_we_save_document = "
 
 		if (  _EditorFrame.getEditorPublishWhenSave() && _showGlossaryCheck) {
 			we_cmd('check_glossary', '', '" . $we_transaction . "');
-
 		} else {
-
 			acStatus = '';
 			invalidAcFields = false;
 			try{
@@ -220,11 +215,9 @@ if($_ctrlElem && $_ctrlElem['hide']){
 }
 
 
-if(defined("WORKFLOW_TABLE")){
-	if(inWorkflow($we_doc)){
-		if(!we_workflow_utility::canUserEditDoc($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"])){
-			$_js_weCanSave .= 'weCanSave=false;';
-		}
+if(defined("WORKFLOW_TABLE") && inWorkflow($we_doc)){
+	if(!we_workflow_utility::canUserEditDoc($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"])){
+		$_js_weCanSave .= 'weCanSave=false;';
 	}
 }
 
@@ -316,10 +309,7 @@ if(inWorkflow($we_doc)){
  * @return void
  * @desc Prints the footer for the normal mode
  */
-function showEditFooterForNormalMode(){
-
-	global $we_doc, $we_transaction, $haspermNew, $showPubl;
-
+function showEditFooterForNormalMode($we_doc, $we_transaction, $haspermNew, $showPubl){
 	$_normalTable = new we_html_table(array("cellpadding" => 0,
 		"cellspacing" => 0,
 		"border" => 0), 1, 1);
@@ -408,23 +398,12 @@ function showEditFooterForNormalMode(){
 	//	Save Button
 	$_ctrlElem = getControlElement('button', 'save'); //	look tag we:controlElement for details
 	if(!$_ctrlElem || !$_ctrlElem['hide']){
-
-		// show save button also for class_folder, if customer_filters are defined
-		/* 		if(isset($we_doc->IsClassFolder) && $we_doc->IsClassFolder){
-
-		  $_normalTable->addCol(2);
-		  $_normalTable->setColContent(0, $_pos++, we_button::create_button("save", "javascript:_EditorFrame.setEditorPublishWhenSave(false);we_save_document();"));
-		  $_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
-
-		  } else{ */
 		$_normalTable->addCol(2);
 		$_normalTable->setColContent(0, $_pos++, we_html_button::create_button("save", "javascript:_EditorFrame.setEditorPublishWhenSave(false);we_save_document();"));
 		$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
 		//}
 	}
-
 	if($we_doc->ContentType == we_base_ContentTypes::TEMPLATE){
-
 		if(defined("VERSIONING_TEXT_WETMPL") && defined("VERSIONS_CREATE_TMPL") && VERSIONS_CREATE_TMPL && VERSIONING_TEXT_WETMPL){
 			$_normalTable->addCol(2);
 			$_normalTable->setColContent(0, $_pos++, we_html_button::create_button("saveversion", "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
@@ -485,9 +464,7 @@ function showEditFooterForNormalMode(){
  * @return void
  * @desc prints the footer for the See-Mode
  */
-function showEditFooterForSEEMMode(){
-	global $we_doc, $we_transaction, $haspermNew, $showPubl;
-
+function showEditFooterForSEEMMode($we_doc, $we_transaction, $haspermNew, $showPubl){
 	$_seeModeTable = new we_html_table(array("cellpadding" => 0,
 		"cellspacing" => 0,
 		"border" => 0), 1, 1);
@@ -658,10 +635,10 @@ function showEditFooterForSEEMMode(){
 ?>
 
 <?php //WEEXT: registerWeIframe ?>
-<body onLoad="if(typeof top.WE !== 'undefined'){top.WE.app.getController('Bridge').registerWeIframe(this, true);}" style="background-color:#f0f0f0; background-image: url('<?php print EDIT_IMAGE_DIR ?>editfooterback.gif');background-repeat:repeat;margin:10px 0px 10px 0px">
+<body onLoad="if(typeof top.WE !== 'undefined'){top.WE.app.getController('Bridge').registerWeIframe(this, true);}" style="background-color:#f0f0f0; background-image: url('<?php echo EDIT_IMAGE_DIR ?>editfooterback.gif');background-repeat:repeat;margin:10px 0px 10px 0px">
 	<form name="we_form" action=""<?php if(isset($we_doc->IsClassFolder) && $we_doc->IsClassFolder){ ?> onsubmit="sub();
 				return false;"<?php } ?>>
-		<input type="hidden" name="sel" value="<?php print $we_doc->ID; ?>" />
+		<input type="hidden" name="sel" value="<?php echo $we_doc->ID; ?>" />
 		<?php
 		$_SESSION['weS']['seemForOpenDelSelector']['ID'] = $we_doc->ID;
 		$_SESSION['weS']['seemForOpenDelSelector']['Table'] = $we_doc->Table;
@@ -671,10 +648,10 @@ function showEditFooterForSEEMMode(){
 			switch($_SESSION['weS']['we_mode']){
 				default:
 				case we_base_constants::MODE_NORMAL: // open footer for NormalMode
-					showEditFooterForNormalMode();
+					showEditFooterForNormalMode($we_doc, $we_transaction, $haspermNew, $showPubl);
 					break;
 				case we_base_constants::MODE_SEE: // open footer for SeeMode
-					showEditFooterForSEEMMode();
+					showEditFooterForSEEMMode($we_doc, $we_transaction, $haspermNew, $showPubl);
 					break;
 			}
 		} else {
@@ -742,8 +719,8 @@ function showEditFooterForSEEMMode(){
 		}
 	}
 
-	print we_html_element::jsElement($_js_tmpl . $_js_publish . $_js_permnew .
-			"try{
+	echo we_html_element::jsElement($_js_tmpl . $_js_publish . $_js_permnew .
+		"try{
 			_EditorFrame.getDocumentReference().frames[0].we_setPath('" . $we_doc->Path . "','" . $we_doc->Text . "', '" . $we_doc->ID . "');
 			}catch(e){;}"
 	);

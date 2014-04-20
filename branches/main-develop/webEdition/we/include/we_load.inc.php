@@ -33,13 +33,12 @@ if(isset($_REQUEST['we_cmd'][5])){
 }
 
 $table = $_REQUEST['we_cmd'][1];
-$parentFolder = isset($_REQUEST['we_cmd'][2]) ? $_REQUEST['we_cmd'][2] : 0;
-$offset = isset($_REQUEST['we_cmd'][6]) ? $_REQUEST['we_cmd'][6] : 0;
+$parentFolder = weRequest('int', 'we_cmd', 0, 2);
+$offset = weRequest('int', 'we_cmd', 0, 6);
 
 
 if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "closeFolder"){
-	$table = $_REQUEST['we_cmd'][1];
-	$parentFolder = isset($_REQUEST['we_cmd'][2]) ? $_REQUEST['we_cmd'][2] : 0;
+	$table = weRequest('table', 'we_cmd', FILE_TABLE, 1);
 	$openDirs = array_flip(makeArrayFromCSV($_SESSION["prefs"]["openFolders_" . stripTblPrefix($table)]));
 	new_array_splice($openDirs, $parentFolder, 1);
 	$openDirs = array_keys($openDirs);

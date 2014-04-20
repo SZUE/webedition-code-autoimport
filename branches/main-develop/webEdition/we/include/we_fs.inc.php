@@ -22,41 +22,41 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-switch(weRequest('string','we_cmd','',0)){
+switch(weRequest('string', 'we_cmd', '', 0)){
 	case 'openCatselector' :
-		$noChoose = isset($_REQUEST['we_cmd'][8]) ? $_REQUEST['we_cmd'][8] : '';
+		$noChoose = weRequest('bool', 'we_cmd', false, 8);
 	case 'openDirselector' :
 	case 'openSelector' :
 	case 'openCatselector' :
 	case 'openDelSelector' :
-		$id = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : '';
-		$table = isset($_REQUEST['we_cmd'][2]) ? $_REQUEST['we_cmd'][2] : '';
+		$id = weRequest('int', 'we_cmd', 0, 1);
+		$table = weRequest('table', 'we_cmd', FILE_TABLE, 2);
 		$JSIDName = we_cmd_dec(3);
 		$JSTextName = we_cmd_dec(4);
 		$JSCommand = we_cmd_dec(5);
 		$sessionID = 0;
-		$rootDirID = isset($_REQUEST['we_cmd'][7]) ? $_REQUEST['we_cmd'][7] : '';
-		$filter = isset($_REQUEST['we_cmd'][8]) ? $_REQUEST['we_cmd'][8] : '';
-		$multiple = isset($_REQUEST['we_cmd'][9]) ? $_REQUEST['we_cmd'][9] : '';
+		$rootDirID = weRequest('int', 'we_cmd', 0, 7);
+		$filter = weRequest('raw', 'we_cmd', '', 8);
+		$multiple = weRequest('raw', 'we_cmd', '', 9);
 		$extInstanceId = isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3] == 'returnToExt' ? (isset($_REQUEST['we_cmd'][4]) ? $_REQUEST['we_cmd'][4] : '') : '';
 		break;
 	case 'openDocselector':
-		$id = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : '';
-		$table = isset($_REQUEST['we_cmd'][2]) ? $_REQUEST['we_cmd'][2] : '';
+		$id = weRequest('int', 'we_cmd', '', 1);
+		$table = weRequest('table', 'we_cmd', FILE_TABLE, 2);
 		$JSIDName = we_cmd_dec(3);
 		$JSTextName = we_cmd_dec(4);
 		$JSCommand = we_cmd_dec(5);
 		$sessionID = 0;
-		$rootDirID = isset($_REQUEST['we_cmd'][7]) ? $_REQUEST['we_cmd'][7] : '';
-		$filter = isset($_REQUEST['we_cmd'][8]) ? $_REQUEST['we_cmd'][8] : '';
-		$open_doc = isset($_REQUEST['we_cmd'][9]) ? $_REQUEST['we_cmd'][9] : '';
-		$multiple = isset($_REQUEST['we_cmd'][10]) ? $_REQUEST['we_cmd'][10] : '';
-		$canSelectDir = isset($_REQUEST['we_cmd'][11]) ? $_REQUEST['we_cmd'][11] : '';
+		$rootDirID = weRequest('int', 'we_cmd', 0, 7);
+		$filter = weRequest('raw', 'we_cmd', '', 8);
+		$open_doc = weRequest('bool', 'we_cmd', false, 9);
+		$multiple = weRequest('bool', 'we_cmd', false, 10);
+		$canSelectDir = weRequest('bool', 'we_cmd', false, 11);
 		$extInstanceId = isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3] == 'returnToExt' ? (isset($_REQUEST['we_cmd'][4]) ? $_REQUEST['we_cmd'][4] : '') : '';
 		break;
 }
 
-switch(weRequest('string','we_cmd','',0)){
+switch(weRequest('string', 'we_cmd', '', 0)){
 	case 'openDirselector' :
 		require_once (WEBEDITION_PATH . 'we_dirSelect.php');
 		break;

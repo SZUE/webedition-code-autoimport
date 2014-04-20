@@ -176,7 +176,7 @@ class we_search_view extends we_tool_view{
 					break;
 				}
 
-				$this->Model->activTab = isset($_REQUEST['tabnr']) ? $_REQUEST['tabnr'] : 1;
+				$this->Model->activTab = weRequest('int', 'tabnr', 1);
 
 				if(trim($this->Model->Text) == ''){
 					print
@@ -233,15 +233,12 @@ class we_search_view extends we_tool_view{
 							$this->topFrame . '.hot=0;'
 					);
 
-					if(isset($_REQUEST['delayCmd']) && !empty($_REQUEST['delayCmd'])){
+					if(weRequest('bool', 'delayCmd')){
 						$js .= we_html_element::jsElement(
-								$this->topFrame . '.we_cmd("' . $_REQUEST['delayCmd'] . '"' . ((isset(
-									$_REQUEST['delayParam']) && !empty($_REQUEST['delayParam'])) ? ',"' . $_REQUEST['delayParam'] . '"' : '') . ');'
+								$this->topFrame . '.we_cmd("' . $_REQUEST['delayCmd'] . '"' . (($dp = weRequest('raw', 'delayParam')) ? ',"' . $dp . '"' : '') . ');'
 						);
 						$_REQUEST['delayCmd'] = '';
-						if(isset($_REQUEST['delayParam'])){
-							$_REQUEST['delayParam'] = '';
-						}
+						$_REQUEST['delayParam'] = '';
 					}
 				} else {
 					$js = we_html_element::jsElement($js .
@@ -1965,7 +1962,7 @@ class we_search_view extends we_tool_view{
 			$cur = trim($cur);
 		}
 		unset($cur);
-		$tab = (isset($_REQUEST['tab']) ? $_REQUEST['tab'] : (isset($_REQUEST['tabnr']) ? $_REQUEST['tabnr'] : 1));
+		$tab = weRequest('int', 'tab',weRequest('int', 'tabnr',1));
 
 		if(isset($searchText[0]) && substr($searchText[0], 0, 4) == 'exp:'){
 

@@ -28,8 +28,10 @@ $appendJS = "";
 
 
 if(!(isset($_REQUEST['we_dialog_args']) &&
-	((isset($_REQUEST['we_dialog_args']['outsideWE']) && $_REQUEST['we_dialog_args']['outsideWE'] == 1) ||
-	(isset($_REQUEST['we_dialog_args']['isFrontend']) && $_REQUEST['we_dialog_args']['isFrontend'] == 1)))){
+	(
+	weRequest('bool', 'we_dialog_args', false, 'outsideWE') ||
+	weRequest('bool', 'we_dialog_args', false, 'isFrontend')
+	))){
 	we_html_tools::protect();
 	$noInternals = false;
 } else {
@@ -37,14 +39,14 @@ if(!(isset($_REQUEST['we_dialog_args']) &&
 }
 $noInternals = $noInternals || !isset($_SESSION['user']) || !isset($_SESSION['user']['Username']) || $_SESSION['user']['Username'] == '';
 
-if(defined("GLOSSARY_TABLE") && isset($_REQUEST['weSaveToGlossary']) && $_REQUEST['weSaveToGlossary'] == 1 && !$noInternals){
+if(defined("GLOSSARY_TABLE") && weRequest('bool', 'weSaveToGlossary') && !$noInternals){
 	$Glossary = new we_glossary_glossary();
 	$Glossary->Language = weRequest('string', 'language');
 	$Glossary->Type = we_glossary_glossary::TYPE_ABBREVATION;
-	$Glossary->Text = trim($_REQUEST['text']);
-	$Glossary->Title = trim($_REQUEST['we_dialog_args']['title']);
+	$Glossary->Text = trim(weRequest('raw', 'text'));
+	$Glossary->Title = trim(weRequest('raw', 'we_dialog_args', '', 'title'));
 	$Glossary->Published = time();
-	$Glossary->setAttribute('lang', $_REQUEST['we_dialog_args']['lang']);
+	$Glossary->setAttribute('lang', weRequest('string', 'we_dialog_args', '', 'lang'));
 	$Glossary->setPath();
 
 	if($Glossary->Title == ""){
@@ -58,7 +60,7 @@ if(defined("GLOSSARY_TABLE") && isset($_REQUEST['weSaveToGlossary']) && $_REQUES
 	} else {
 		$Glossary->save();
 
-		$Cache = new we_glossary_cache($_REQUEST['language']);
+		$Cache = new we_glossary_cache(weRequest('string', 'language'));
 		$Cache->write();
 		unset($Cache);
 
@@ -70,7 +72,7 @@ $dialog = new we_dialog_abbr($noInternals);
 $dialog->initByHttp();
 $dialog->registerOkJsFN("weDoAbbrJS");
 echo $dialog->getHTML() .
-	$appendJS;
+ $appendJS;
 
 function weDoAbbrJS(){
 	return '
