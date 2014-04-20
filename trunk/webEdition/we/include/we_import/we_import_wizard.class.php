@@ -911,7 +911,6 @@ function handle_event(evt) {
 			break;
 	}
 }";
-		$weSessionId = session_id();
 		$functions .= <<<HTS
 
 function deleteCategory(obj,cat){
@@ -959,7 +958,7 @@ var callback = {
 
 
 function weChangeDocType(f) {
-	ajaxData = 'protocol=json&cmd=ChangeDocType&cns=importExport&weSessionId={$weSessionId}&docType='+f.value;
+	ajaxData = 'protocol=json&cmd=ChangeDocType&cns=importExport&docType='+f.value;
 	_executeAjaxRequest('POST',ajaxUrl, callback, ajaxData);
 }
 
@@ -1068,7 +1067,7 @@ HTS;
 		$yuiSuggest->setInput('v[we_TemplateName]', (isset($v['we_TemplateName']) ? $v['we_TemplateName'] : ''), array('onFocus' => "self.document.forms['we_form'].elements['v[import_type]'][0].checked=true;"));
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(1);
-		$yuiSuggest->setResult(noDocTypeTemplateId, $myid);
+		$yuiSuggest->setResult('noDocTypeTemplateId', $myid);
 		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setTable(TEMPLATES_TABLE);
 		$yuiSuggest->setWidth(300);
@@ -1899,7 +1898,6 @@ function handle_event(evt) {
 	}
 }";
 
-		$weSessionId = session_id();
 		$functions .= <<<HTS
 
 function deleteCategory(obj,cat){
@@ -1945,7 +1943,7 @@ var callback = {
 
 
 function weChangeDocType(f) {
-	ajaxData = 'protocol=json&cmd=ChangeDocType&cns=importExport&weSessionId={$weSessionId}&docType='+f.value;
+	ajaxData = 'protocol=json&cmd=ChangeDocType&cns=importExport&docType='+f.value;
 	_executeAjaxRequest('POST',ajaxUrl, callback, ajaxData);
 }
 

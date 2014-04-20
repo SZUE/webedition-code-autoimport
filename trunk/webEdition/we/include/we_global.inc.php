@@ -429,14 +429,14 @@ function id_to_path($IDs, $table = FILE_TABLE, we_database_base $db = null, $pre
 	$foo = array();
 	foreach($IDs as $id){
 		if($id == 0){
-			$foo[] = '/';
+			$foo[$id] = '/';
 		} else {
 			$foo2 = getHash('SELECT Path,IsFolder FROM ' . $db->escape($table) . ' WHERE ID=' . intval($id) . ($isPublished ? ' AND Published>0' : ''), $db);
 			if(isset($foo2['Path'])){
 				if($endslash && $foo2['IsFolder']){
 					$foo2['Path'] .= '/';
 				}
-				$foo[] = $foo2['Path'];
+				$foo[$id] = $foo2['Path'];
 			}
 		}
 	}

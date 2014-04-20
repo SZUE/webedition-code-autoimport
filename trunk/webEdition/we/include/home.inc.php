@@ -768,7 +768,7 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 					//FIXME: what about all other tools?!
 			}
 			if (_cmdName) {
-				top.YAHOO.util.Connect.asyncRequest('GET', '<?php echo WEBEDITION_DIR; ?>rpc/rpc.php?cmd=' + _cmdName + '&cns=widgets' + args + '&weSessionId=<?php print session_id(); ?>', ajaxCallback);
+				top.YAHOO.util.Connect.asyncRequest('GET', '<?php echo WEBEDITION_DIR; ?>rpc/rpc.php?cmd=' + _cmdName + '&cns=widgets' + args, ajaxCallback);
 			}
 		}
 

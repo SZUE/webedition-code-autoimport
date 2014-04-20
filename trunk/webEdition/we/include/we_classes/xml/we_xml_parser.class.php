@@ -144,29 +144,27 @@ class we_xml_parser{
 		// Check if the parser object has any content.
 		if($this->parserHasContent()){
 			//addWarning(ERROR_PARSER_OBJECT_HAS_CONTENT);
-			return FALSE;
+			return false;
 		}
 		// Only permit files with the extension 'xml'.
 		if($this->xmlExt && (!isset($f['extension']) || strtolower($f['extension']) != 'xml')){
 			//$this->addWarning(ERROR_FILE_EXTENSION, __LINE__, $this->fileName, $f['extension']);
-			return FALSE;
+			return false;
 		}
 		// Check if the given parameter is a url.
 		if(preg_match("/^(((f|ht){1}tp:\/\/)" .
 				"[-a-zA-Z0-9@:%_\+.~#?&\/\/=]+)/i", $file)){
 			// Read the content of the url.
 			$data = @implode('', @file($file));
-			if(empty($data)){
+			if(!$data){
 				//$this->addWarning(ERROR_FILE_EMPTY, __LINE__, $this->fileName);
-				return FALSE;
+				return false;
 			}
-		}
-		// Check if the file exists and is readable.
-		else if(file_exists($file) && is_readable($file)){
+		} else if(file_exists($file) && is_readable($file)){// Check if the file exists and is readable.
 			// Read the file.
 			$data = implode('', file($file));
 		} else {
-			return FALSE;
+			return false;
 		}
 
 		$encoding = $this->setEncoding($force_encoding, $data);
@@ -222,10 +220,10 @@ class we_xml_parser{
 			$this->nodes['dtd-declaration'] = '';
 
 			// Add a warning and return FALSE if the parse was not successful.
-			if(!xml_parse($parser, $data, TRUE)){
+			if(!xml_parse($parser, $data, true)){
 				$this->parseError = xml_get_current_line_number($parser) .
 					xml_Error_string(xml_get_error_code($parser));
-				return FALSE;
+				return false;
 			}
 
 			// All done, clean up.
@@ -233,7 +231,7 @@ class we_xml_parser{
 		} else {
 			// Add a warning and return FALSE if the given string is empty.
 			$this->addWarning(ERROR_XML_FILE_EMPTY, $this->fileName);
-			return FALSE;
+			return false;
 		}
 	}
 

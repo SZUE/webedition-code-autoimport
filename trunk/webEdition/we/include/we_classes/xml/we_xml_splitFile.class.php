@@ -55,7 +55,7 @@ class we_xml_splitFile extends we_xml_parser{
 	 * The indentation, i.e. number of whitespaces preceding the XML elements.
 	 * @var        int
 	 */
-	var $indent = 4;
+	//var $indent = 4;
 
 	/**
 	 * Constructor of the class.
@@ -84,7 +84,7 @@ class we_xml_splitFile extends we_xml_parser{
 		// Check if a XML file was loaded, either by the constructor or by the
 		// getFile method.
 		if(!$this->parserHasContent()){
-			return FALSE;
+			return false;
 		}
 
 		// Save the path consisting of the temporary directory and a unique id.
@@ -124,11 +124,11 @@ class we_xml_splitFile extends we_xml_parser{
 	 */
 	function exportAsXML($node, $dpth, $lvl = 1){
 		// Calculate the indentation.
-		$indent = str_repeat(' ', ($lvl * $this->indent));
+		//$indent = str_repeat(' ', ($lvl * $this->indent));
 
 		// Add the start tag of the new root element.
 		$root = $this->nodes[$node];
-		$xml = $indent . '<' . $root['name'] . $this->getAttributeString($root) . ">\n";
+		$xml =  '<' . $root['name'] . $this->getAttributeString($root) . ">\n";
 
 		// Run through the child nodes.
 		foreach($this->nodes[$node]["children"] as $tagname => $id){
@@ -144,9 +144,9 @@ class we_xml_splitFile extends we_xml_parser{
 				if(!$this->hasChildNodes($absoluteXPath)){
 
 					// Add the additional indentation.
-					for($i = 0; $i < $this->indent; $i++){
+					/*for($i = 0; $i < $this->indent; $i++){
 						$xml .= ' ';
-					}
+					}*/
 					// Add the start tag of the element.
 					$xml .= '<' . $tagname . $this->getAttributeString($sibling);
 					$hasText = $this->hasCdata($absoluteXPath);
@@ -156,7 +156,7 @@ class we_xml_splitFile extends we_xml_parser{
 						// section if necessary.
 						$hasSection = $this->hasCdataSection($absoluteXPath);
 						$text = stripslashes($sibling["data"]);
-						$xml .= (!$hasSection) ? $this->replaceEntities($text) : "<![CDATA[" . $text . "]]>";
+						$xml .= (!$hasSection) ? $this->replaceEntities($text) : '<![CDATA[' . $text . ']]>';
 
 						// Add the end tag of the element.
 						if($hasText){
@@ -172,7 +172,7 @@ class we_xml_splitFile extends we_xml_parser{
 			}
 		}
 		// Add the end tag of the new root element.
-		$xml .= $indent . '</' . $root["name"] . '>';
+		$xml .=  '</' . $root["name"] . '>';
 
 		return $xml;
 	}
