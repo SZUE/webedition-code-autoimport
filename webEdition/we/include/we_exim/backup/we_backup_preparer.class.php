@@ -238,7 +238,7 @@ abstract class we_backup_preparer{
 			}
 		}
 
-		if(!empty($options['tools'])){
+		if($options['tools']){
 			foreach($options['tools'] as $_tool){
 				$tables = array_merge($tables, we_tool_lookup::getBackupTables($_tool));
 			}
