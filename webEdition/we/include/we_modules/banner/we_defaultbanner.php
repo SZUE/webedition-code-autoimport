@@ -27,7 +27,7 @@ we_html_tools::protect();
 echo we_html_tools::getHtmlTop(g_l('modules_banner', '[defaultbanner]')) .
  STYLESHEET;
 
-if(isset($_REQUEST["ok"]) && $_REQUEST["ok"]){
+if(weRequest('bool', "ok")){
 	$GLOBALS['DB_WE']->query('REPLACE INTO ' . BANNER_PREFS_TABLE . ' SET ' . we_database_base::arraySetter(array('pref_name' => 'DefaultBannerID', 'pref_value' => weRequest('int', "DefaultBannerID", 0))));
 
 	echo we_html_element::jsElement('top.close();') . '</head><body></body></html>';

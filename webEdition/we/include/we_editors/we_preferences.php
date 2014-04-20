@@ -35,16 +35,10 @@ define('secondsDay', 86400);
 define('secondsWeek', 604800);
 define('secondsYear', 31449600);
 
-
-// Check which group of settings to work with
-if(!isset($_REQUEST['setting']) || $_REQUEST['setting'] == ''){
-	$_REQUEST['setting'] = 'ui';
-}
-
 $save_javascript = '';
 $GLOBALS['editor_reloaded'] = false;
 $email_saved = true;
-$tabname = isset($_REQUEST['tabname']) && $_REQUEST['tabname'] != '' ? $_REQUEST['tabname'] : 'setting_ui';
+$tabname = weRequest('string', 'tabname', 'setting_ui');
 
 /**
  * This function returns the HTML code of a dialog.
@@ -166,11 +160,11 @@ function remember_value($settingvalue, $settingname, $comment = ''){
 		case 'seem_start_type':
 			switch($settingvalue){
 				case 'document':
-					$tmp = $_SESSION['prefs']['seem_start_file'] = $_REQUEST['seem_start_document'];
+					$tmp = $_SESSION['prefs']['seem_start_file'] = weRequest('int', 'seem_start_document');
 					$_SESSION['prefs'][$settingname] = ($tmp ? $settingvalue : 'cockpit');
 					break;
 				case 'object':
-					$tmp = $_SESSION['prefs']['seem_start_file'] = $_REQUEST['seem_start_object'];
+					$tmp = $_SESSION['prefs']['seem_start_file'] = weRequest('int', 'seem_start_object');
 					$_SESSION['prefs'][$settingname] = ($tmp ? $settingvalue : 'cockpit');
 					break;
 				default:

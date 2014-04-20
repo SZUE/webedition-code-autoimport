@@ -132,14 +132,13 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	 * @return we_customer_documentFilter
 	 */
 	static function getCustomerFilterFromRequest(&$model){
-		if($_REQUEST['wecf_mode'] == we_customer_abstractFilter::OFF){
-			return self::getEmptyDocumentCustomerFilter();
-		} else {
-
-			return new self(
+		return
+			(weRequest('int', 'wecf_mode') === we_customer_abstractFilter::OFF ?
+				self::getEmptyDocumentCustomerFilter() :
+				new self(
 				weRequest('int', 'weDocumentCustomerFilter_id', 0), intval($model->ID), $model->ContentType, $model->Table, (weRequest('string', 'wecf_accessControlOnTemplate') == "onTemplate") ? 1 : 0, weRequest('int', 'wecf_noLoginId', 0), weRequest('int', 'wecf_noAccessId', 0), weRequest('int', 'wecf_mode', 0), self::getSpecificCustomersFromRequest(), self::getFilterFromRequest(), self::getWhiteListFromRequest(), self::getBlackListFromRequest()
+				)
 			);
-		}
 	}
 
 	/**

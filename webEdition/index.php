@@ -194,7 +194,7 @@ if(isset($GLOBALS['userLoginDenied'])){
 	if(($mode = weRequest('string', 'mode'))){
 		setcookie('we_mode', $mode, time() + 2592000); //	Cookie remembers the last selected mode, it will expire in one Month !!!
 	}
-	setcookie('we_popup', weRequest('bool','popup'), time() + 2592000);
+	setcookie('we_popup', weRequest('bool', 'popup'), time() + 2592000);
 } else if(isset($_POST['password']) && isset($_POST['username'])){
 	$login = LOGIN_CREDENTIALS_INVALID;
 } else {
@@ -333,7 +333,7 @@ if(isset($_POST['checkLogin']) && empty($_COOKIE)){
 	$_layout->setCol(0, 0, array('align' => 'center', 'valign' => 'middle'), we_html_element::htmlCenter(we_html_tools::htmlMessageBox(500, 380, $_browser_table->getHtml(), g_l('start', '[cannot_start_we]'))));
 
 	printHeader($login, 400);
-	print we_html_element::htmlBody(array('style' => 'background-color:#FFFFFF;'), $_layout->getHtml()) . '</html>';
+	echo we_html_element::htmlBody(array('style' => 'background-color:#FFFFFF;'), $_layout->getHtml()) . '</html>';
 } else {
 
 	/*	 * ***************************************************************************
@@ -429,7 +429,7 @@ if(isset($_POST['checkLogin']) && empty($_COOKIE)){
 			//	Here the mode - SEEM or normal is saved in the SESSION!!!
 			//	Perhaps this must move to another place later.
 			//	Later we must check permissions as well!
-			if(!isset($_REQUEST['mode']) || $_REQUEST['mode'] == '' || $_REQUEST['mode'] == we_base_constants::MODE_NORMAL){
+			if(weRequest('string', 'mode', we_base_constants::MODE_NORMAL) == we_base_constants::MODE_NORMAL){
 				if(permissionhandler::isUserAllowedForAction('work_mode', we_base_constants::MODE_NORMAL)){
 					$_SESSION['weS']['we_mode'] = we_base_constants::MODE_NORMAL;
 				} else {
@@ -437,10 +437,10 @@ if(isset($_POST['checkLogin']) && empty($_COOKIE)){
 					$_SESSION['weS']['we_mode'] = we_base_constants::MODE_SEE;
 				}
 			} else {
-				$_SESSION['weS']['we_mode'] = $_REQUEST['mode'];
+				$_SESSION['weS']['we_mode'] = weRequest('string', 'mode');
 			}
 
-			if((WE_LOGIN_WEWINDOW == 2 || WE_LOGIN_WEWINDOW == 0 && (!isset($_REQUEST['popup'])))){
+			if((WE_LOGIN_WEWINDOW == 2 || WE_LOGIN_WEWINDOW == 0 && (!weRequest('bool', 'popup')))){
 				if($_body_javascript){
 					$_body_javascript.='top.location="' . WEBEDITION_DIR . 'webEdition.php"';
 				} else {

@@ -83,12 +83,15 @@ if($this->Data['allEntries']){ // entries exist
 
 		foreach($this->Data['logEntries'] as $logEntry){
 
-			if($logEntry['state'] == 1){
-				$classStr = ' class="logError"';
-			} else if($logEntry['state'] == 2){
-				$classStr = ' class="logNotice"';
-			} else {
-				$classStr = ' class="logMessage"';
+			switch($logEntry['state']){
+				case 1:
+					$classStr = ' class="logError"';
+					break;
+				case 2:
+					$classStr = ' class="logNotice"';
+					break;
+				default:
+					$classStr = ' class="logMessage"';
 			}
 
 			$content .= "

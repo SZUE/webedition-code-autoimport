@@ -51,13 +51,13 @@ function weDoImgCmd($args){
 		}
 	}
 
-	if(!(isset($_REQUEST['we_dialog_args']['editor']) && $_REQUEST['we_dialog_args']['editor'] == "tinyMce")){
+	if(weRequest('string', 'we_dialog_args','tinyMce','editor') != "tinyMce"){
 
 		return we_html_element::jsElement('top.opener.weWysiwygObject_' . $args["editname"] . '.insertImage("' . $args["src"] . '","' . $args["width"] . '","' . $args["height"] . '","' . $args["hspace"] . '","' . $args["vspace"] . '","' . $args["border"] . '","' . addslashes($args["alt"]) . '","' . $args["align"] . '","' . $args["name"] . '","' . $args["class"] . '","' . addslashes($args["title"]) . '","' . $args["longdesc"] . '");
 top.close();
 ');
 	} else{
-		$attribs = $_REQUEST['imgChangedCmd'] && !$_REQUEST['wasThumbnailChange'] ? $_REQUEST['we_dialog_args'] : $args;
+		$attribs = weRequest('bool', 'imgChangedCmd') && !weRequest('bool', 'wasThumbnailChange') ? $_REQUEST['we_dialog_args'] : $args;
 		return we_dialog_base::getTinyMceJS() .
 			we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/weimage/js/image_insert.js') .
 			'<form name="tiny_form">

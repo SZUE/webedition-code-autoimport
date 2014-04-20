@@ -61,8 +61,8 @@ class we_docTypes extends we_class{
 		$this->Templates = makeCSVFromArray($newIdArr);
 
 		if(LANGLINK_SUPPORT){
-			if(isset($_REQUEST["we_" . $this->Name . "_LangDocType"])){
-				$this->setLanguageLink($_REQUEST["we_" . $this->Name . "_LangDocType"], 'tblDocTypes');
+			if(($llink = weRequest('raw', "we_" . $this->Name . "_LangDocType"))){
+				$this->setLanguageLink($llink, 'tblDocTypes');
 			}
 		} else {
 			//if language changed, we must delete eventually existing entries in tblLangLink, even if !LANGLINK_SUPPORT!
@@ -258,7 +258,6 @@ class we_docTypes extends we_class{
 		$textname = 'we_' . $this->Name . '_ParentPath';
 		$idname = 'we_' . $this->Name . '_ParentID';
 
-		//javascript:we_cmd('openDirselector', document.forms['we_form'].elements['" . $idname . "'].value, '" . FILE_TABLE . "', 'document.forms[\\'we_form\\'].elements[\\'" . $idname . "\\'].value', 'document.forms[\\'we_form\\'].elements[\\'" . $textname  . "\\'].value', '', '" . session_id() . "')
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['" . $idname . "'].value");
 		$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['" . $textname . "'].value");
 		$button = we_html_button::create_button("select", "javascript:we_cmd('openDirselector', document.forms['we_form'].elements['" . $idname . "'].value, '" . FILE_TABLE . "', '" . $wecmdenc1 . "', '" . $wecmdenc2 . "', '', '" . session_id() . "')");

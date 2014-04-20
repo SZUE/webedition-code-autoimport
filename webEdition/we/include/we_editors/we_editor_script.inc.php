@@ -64,7 +64,7 @@ if(isset($GLOBALS['we_doc'])){
 }
 // Dreamweaver RPC Command ShowPreparedPreview
 // disable javascript errors
-if(isset($_REQUEST["cmd"]) && $_REQUEST['cmd'] == 'ShowPreparedPreview'){
+if(weRequest('string','cmd') == 'ShowPreparedPreview'){
 
 	echo we_html_element::jsElement('
 // overwrite/disable some functions in javascript!!!!
@@ -144,7 +144,7 @@ function seeMode_dealWithLinks() {
 
 <?php
 echo (isset($_REQUEST["we_transaction"]) ?
-	"_EditorFrame = _controller.getEditorFrameByTransaction('" . ($_we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0)) . "');" :
+	"_EditorFrame = _controller.getEditorFrameByTransaction('" . ($_we_transaction = weRequest('transaction', 'we_transaction', 0)) . "');" :
 	"_EditorFrame = _controller.getEditorFrame();");
 ?>
 

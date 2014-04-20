@@ -32,7 +32,7 @@ require_once (WE_INCLUDES_PATH . 'we_global.inc.php');
 $INCLUDE = '';
 
 
-switch(weRequest('string', 'we_cmd', '', 0)){
+switch($cmd = weRequest('string', 'we_cmd', '', 0)){
 	case 'versions_preview':
 		$INCLUDE = 'we_versions/weVersionsPreview.inc.php';
 		break;
@@ -322,10 +322,10 @@ switch(weRequest('string', 'we_cmd', '', 0)){
 		//	so we only have to use the array $_we_active_integrated_modules
 
 		$foo = false;
-		if(isset($_REQUEST['we_cmd'][0])){
+		if($cmd){
 			$mods = we_base_moduleInfo::getAllModules();
 			foreach($mods as $m){
-				if($_REQUEST['we_cmd'][0] == 'edit_' . $m['name'] . '_ifthere' && !we_base_moduleInfo::isActive($m['name'])){
+				if($cmd == 'edit_' . $m['name'] . '_ifthere' && !we_base_moduleInfo::isActive($m['name'])){
 					$foo = true;
 					$_moduleName = $m['text_short'];
 					$INCLUDE = 'messageModuleNotActivated.inc.php';
@@ -337,8 +337,8 @@ switch(weRequest('string', 'we_cmd', '', 0)){
 			//	This is ONLY used in the edit-mode of the documents.
 			//	This statement prevents the page from being reloaded.
 			echo we_html_element::jsElement('parent.openedWithWE = 1;');
-			t_e('error', 'command \'' . $_REQUEST['we_cmd'][0] . '\' not known!');
-			exit('command \'' . $_REQUEST['we_cmd'][0] . '\' not known!');
+			t_e('error', 'command \'' . $cmd . '\' not known!');
+			exit('command \'' . $cmd . '\' not known!');
 		}
 }
 
@@ -363,7 +363,7 @@ if($INCLUDE){
 	}
 	require($path . $INCLUDE);
 	//  This statement prevents the page from being reloaded
-	echo (!in_array($_REQUEST['we_cmd'][0], $cmds_no_js) ? we_html_element::jsElement('parent.openedWithWE = 1;') : '') .
-	($_REQUEST['we_cmd'][0] == 'edit_document' || $_REQUEST['we_cmd'][0] == 'switch_edit_page' || $_REQUEST['we_cmd'][0] == 'load_editor' ? we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') : '');
+	echo (!in_array($cmd, $cmds_no_js) ? we_html_element::jsElement('parent.openedWithWE = 1;') : '') .
+	(in_array($cmd, array('edit_document', 'switch_edit_page', 'load_editor')) ? we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') : '');
 }
 exit;

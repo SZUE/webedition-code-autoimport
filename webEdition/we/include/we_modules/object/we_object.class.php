@@ -1487,7 +1487,6 @@ class we_object extends we_document{
 		$textname = 'userNameTmp';
 		$idname = 'userIDTmp';
 		$delallbut = we_html_button::create_button("delete_all", "javascript:we_cmd('del_all_users','')", true, 0, 0, "", "", $this->Users ? false : true);
-		//javascript:we_cmd('browse_users','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','',document.forms[0].elements['$idname'].value,'fillIDs();opener.we_cmd(\\'add_user\\',top.allIDs)','','',1)
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
 		$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$textname'].value");
 		$wecmdenc5 = we_cmd_enc("fillIDs();opener.we_cmd('add_user',top.allIDs)");
@@ -1868,7 +1867,6 @@ class we_object extends we_document{
 	function formCopyDocument(){
 		$idname = 'we_' . $this->Name . '_CopyID';
 		$rootDIrID = 0;
-		//javascript:we_cmd('openDocselector',document.forms[0].elements['$idname'].value,'".$this->Table."','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','','opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd(\\'copyDocument\\',currentID);','".session_id()."','".$rootDIrID."','".$this->ContentType."');
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
 		$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd('copyDocument',currentID);");
 
@@ -2327,7 +2325,6 @@ class we_object extends we_document{
 		}
 		$textname = 'we_' . $this->Name . '_' . $Pathname . ($identifier != '' ? '_' . $identifier : '');
 		$idname = 'we_' . $this->Name . '_' . $IDName;
-		//javascript:we_cmd('openDirselector',document.we_form.elements['$idname'].value,'$table','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);opener.pathOfDocumentChanged();".$cmd."','".session_id()."','$rootDirID')
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$idname'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$textname'].value");
 		$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.pathOfDocumentChanged();" . str_replace('\\', '', $cmd));

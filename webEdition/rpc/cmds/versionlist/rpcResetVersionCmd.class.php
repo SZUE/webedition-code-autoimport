@@ -25,12 +25,7 @@
 class rpcResetVersionCmd extends rpcCmd{
 
 	function execute(){
-
-		$resp = new rpcResponse();
-
-		$db = $GLOBALS['DB_WE'];
-
-		$id = $_REQUEST['id'];
+		$id = weRequest('raw', 'id');
 
 		we_html_tools::protect();
 
@@ -42,7 +37,7 @@ class rpcResetVersionCmd extends rpcCmd{
 
 		$_SESSION['weS']['versions']['logResetIds'] = array();
 
-		foreach($ids as $k => $id){
+		foreach($ids as $id){
 
 			$parts = array();
 
@@ -52,15 +47,13 @@ class rpcResetVersionCmd extends rpcCmd{
 			$id = isset($parts[0]) ? $parts[0] : $id;
 			$publish = isset($parts[1]) ? $parts[1] : 0;
 
-			if(isset($_REQUEST["version"]) && $_REQUEST["version"] != 0){
-				$version = $_REQUEST["version"];
-			} else {
-				$version = f("SELECT version FROM " . VERSIONS_TABLE . " WHERE ID=" . intval($id), "version", $db);
+			if(($version = weRequest('int', "version", 0)) == 0){
+				$version = f('SELECT version FROM ' . VERSIONS_TABLE . ' WHERE ID=' . intval($id));
 			}
 
-			$docID = (isset($_REQUEST["documentID"]) && $_REQUEST["documentID"] != 0) ? $_REQUEST["documentID"] : "";
-			$docTable = (isset($_REQUEST["documentTable"]) && $_REQUEST["documentTable"] != 0) ? $_REQUEST["documentTable"] : "";
-
+			/* $docID = (isset($_REQUEST["documentID"]) && $_REQUEST["documentID"] != 0) ? $_REQUEST["documentID"] : "";
+			  $docTable = (isset($_REQUEST["documentTable"]) && $_REQUEST["documentTable"] != 0) ? $_REQUEST["documentTable"] : "";
+			 */
 			weVersions::resetVersion($id, $version, $publish);
 		}
 

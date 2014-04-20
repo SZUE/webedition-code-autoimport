@@ -32,6 +32,8 @@ if(!(isset($_REQUEST['we_dialog_args']) &&
 }
 $dialog = new we_dialog_table();
 // MS-Fix
+
+//FIXME: remove??
 if(isset($_REQUEST["we_dialog_args"]["cellPadding"])){
 	$_REQUEST["we_dialog_args"]["cellpadding"] = $_REQUEST["we_dialog_args"]["cellPadding"];
 	unset($_REQUEST["we_dialog_args"]["cellPadding"]);

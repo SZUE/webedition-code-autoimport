@@ -205,7 +205,7 @@ class we_document extends we_root{
 	function formExtension2(){
 		$doctype = isset($this->DocType) ? $this->DocType : '';
 
-		if($this->ID == 0 && weRequest('string', 'we_cmd', '', 0)== 'load_editor' && $doctype == ''){ //	Neues Dokument oder Dokument ohne DocType
+		if($this->ID == 0 && weRequest('string', 'we_cmd', '', 0) == 'load_editor' && $doctype == ''){ //	Neues Dokument oder Dokument ohne DocType
 			switch($this->ContentType){
 				case we_base_ContentTypes::HTML: //	is HTML-File
 					$selected = DEFAULT_HTML_EXT;
@@ -715,12 +715,12 @@ class we_document extends we_root{
 		parent::we_initSessDat($sessDat);
 		if(defined('SCHEDULE_TABLE')){
 			if(
-				isset($_REQUEST['we_' . $this->Name . '_From_day']) && isset($_REQUEST['we_' . $this->Name . '_From_month']) && isset($_REQUEST['we_' . $this->Name . '_From_year']) && isset($_REQUEST['we_' . $this->Name . '_From_hour']) && isset($_REQUEST['we_' . $this->Name . '_From_minute'])){
-				$this->From = mktime($_REQUEST['we_' . $this->Name . '_From_hour'], $_REQUEST['we_' . $this->Name . '_From_minute'], 0, $_REQUEST['we_' . $this->Name . '_From_month'], $_REQUEST['we_' . $this->Name . '_From_day'], $_REQUEST['we_' . $this->Name . '_From_year']);
+				($day = weRequest('int', 'we_' . $this->Name . '_From_day')) && ($month = weRequest('int', 'we_' . $this->Name . '_From_month')) && ($year = weRequest('int', 'we_' . $this->Name . '_From_year')) && ($hour = weRequest('int', 'we_' . $this->Name . '_From_hour')) !== false && ($min = weRequest('int', 'we_' . $this->Name . '_From_minute')) !== false){
+				$this->From = mktime($hour, $min, 0, $month, $day, $year);
 			}
 			if(
-				isset($_REQUEST['we_' . $this->Name . '_To_day']) && isset($_REQUEST['we_' . $this->Name . '_To_month']) && isset($_REQUEST['we_' . $this->Name . '_To_year']) && isset($_REQUEST['we_' . $this->Name . '_To_hour']) && isset($_REQUEST['we_' . $this->Name . '_To_minute'])){
-				$this->To = mktime($_REQUEST['we_' . $this->Name . '_To_hour'], $_REQUEST['we_' . $this->Name . '_To_minute'], 0, $_REQUEST['we_' . $this->Name . '_To_month'], $_REQUEST['we_' . $this->Name . '_To_day'], $_REQUEST['we_' . $this->Name . '_To_year']);
+				($day = weRequest('int', 'we_' . $this->Name . '_To_day')) && ($month = weRequest('int', 'we_' . $this->Name . '_To_month')) && ($year = weRequest('int', 'we_' . $this->Name . '_To_year')) && ($hour = weRequest('int', 'we_' . $this->Name . '_To_hour')) !== false && ($min = weRequest('int', 'we_' . $this->Name . '_To_minute')) !== false){
+				$this->To = mktime($hour, $min, 0, $month, $day, $year);
 			}
 		}
 		if(isset($sessDat[2])){
@@ -730,7 +730,7 @@ class we_document extends we_root{
 		}
 
 
-		if(isset($_REQUEST['wecf_mode'])){
+		if(weRequest('int', 'wecf_mode') !== false){
 			$this->documentCustomerFilter = we_customer_documentFilter::getCustomerFilterFromRequest($this);
 		} else if(isset($sessDat[3])){ // init webUser from session
 			$this->documentCustomerFilter = unserialize($sessDat[3]);
@@ -866,7 +866,7 @@ class we_document extends we_root{
 				if(isset($attribs['title'])){
 					$attribs['title'] = oldHtmlspecialchars($attribs['title']);
 				}
-				if(!(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == 'reload_editpage' && (isset($_REQUEST['we_cmd'][1]) && $img->Name == $_REQUEST['we_cmd'][1]) && isset($_REQUEST['we_cmd'][2]) && $_REQUEST['we_cmd'][2] == 'change_image') && isset($GLOBALS['we_doc']->elements[$altField])){
+				if(!(weRequest('string', 'we_cmd', '', 0) == 'reload_editpage' && (isset($_REQUEST['we_cmd'][1]) && $img->Name == $_REQUEST['we_cmd'][1]) && weRequest('string', 'we_cmd', '', 2) == 'change_image') && isset($GLOBALS['we_doc']->elements[$altField])){
 					if(!isset($GLOBALS['lv'])){
 						$attribs['alt'] = oldHtmlspecialchars($GLOBALS['we_doc']->getElement($altField));
 						$attribs['title'] = oldHtmlspecialchars($GLOBALS['we_doc']->getElement($titleField));
@@ -1375,7 +1375,7 @@ class we_document extends we_root{
 
 	protected function i_setElementsFromHTTP(){
 		parent::i_setElementsFromHTTP();
-		if(!empty($_REQUEST)){
+		if($_REQUEST){
 			$dates = $regs = array();
 			foreach($_REQUEST as $n => $v){
 				if(preg_match('/^we_schedule_([^\[]+)$/', $n, $regs)){

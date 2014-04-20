@@ -320,7 +320,6 @@ abstract class we_root extends we_class{
 
 			$inputFeld = $this->htmlTextInput($textname, 24, $creator, '', $attribs, '', $width);
 			$idfield = $this->htmlHidden($idname, $this->CreatorID);
-			//javascript:we_cmd('browse_users','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','user',document.forms[0].elements['$idname'].value,'opener._EditorFrame.setEditorIsHot(true);')
 			$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
 			$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$textname'].value");
 			$wecmdenc5 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);");
@@ -466,7 +465,6 @@ abstract class we_root extends we_class{
 
 	function formCopyDocument(){
 		$idname = 'we_' . $this->Name . '_CopyID';
-		//javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$idname'].value,'$table','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','top.opener._EditorFrame.setEditorIsHot(true);','".session_id()."','$rootDir','objectFile',".(permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).")
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['" . $idname . "'].value");
 		$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true); opener.top.we_cmd('copyDocument', currentID);");
 		$but = we_html_button::create_button("select", "javascript:we_cmd('openDocselector', document.forms[0].elements['" . $idname . "'].value, '" . $this->Table . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "', '0', '" . $this->ContentType . "',1);");
@@ -489,7 +487,6 @@ abstract class we_root extends we_class{
 			$username = f('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($userid), 'username', $this->DB_WE);
 		}
 
-		//javascript:we_cmd('browse_users','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','user')
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
 		$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$textname'].value");
 		return we_root::htmlFormElementTable(we_root::htmlTextInput($textname, 30, $username, '', ' readonly', 'text', $width, 0), 'User', 'left', 'defaultfont', we_root::htmlHidden($idname, $userid), we_html_tools::getPixel(20, 4), we_html_button::create_button('select', "javascript:we_cmd('browse_users','" . $wecmdenc1 . "','" . $wecmdenc2 . "','user')"));

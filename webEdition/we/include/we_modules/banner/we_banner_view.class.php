@@ -500,8 +500,8 @@ class we_banner_view extends we_banner_base{
 					</html>';
 				break;
 			case "edit_banner":
-				if(isset($_REQUEST["bid"])){
-					$this->banner = new we_banner_banner($_REQUEST["bid"]);
+				if(($id = weRequest('int', "bid"))){
+					$this->banner = new we_banner_banner($id);
 				}
 				if($this->banner->IsFolder){
 					$this->page = 0;
@@ -683,20 +683,18 @@ class we_banner_view extends we_banner_base{
 			case "delete_banner":
 				if(isset($_REQUEST["bid"])){
 					if(!permissionhandler::hasPerm("DELETE_BANNER")){
-						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
+						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
 						return;
 					} else {
 
 						$this->banner = new we_banner_banner($_REQUEST["bid"]);
 						if($this->banner->delete()){
 							$this->banner = new we_banner_banner(0, $this->banner->IsFolder);
-							print we_html_element::jsElement('
-							top.content.deleteEntry(' . $_REQUEST["bid"] . ',"' . ($this->banner->IsFolder ? 'folder' : 'file') . '");
-							' . we_message_reporting::getShowMessageCall(($this->banner->IsFolder ? g_l('modules_banner', '[delete_group_ok]') : g_l('modules_banner', '[delete_ok]')), we_message_reporting::WE_MESSAGE_NOTICE) . '
-							top.content.we_cmd("new_banner");
-							');
+							echo we_html_element::jsElement('top.content.deleteEntry(' . $_REQUEST["bid"] . ',"' .
+								($this->banner->IsFolder ? 'folder' : 'file') . '");' .
+								we_message_reporting::getShowMessageCall(g_l('modules_banner', ($this->banner->IsFolder ? '[delete_group_ok]' : '[delete_ok]')), we_message_reporting::WE_MESSAGE_NOTICE) . 'top.content.we_cmd("new_banner");');
 						} else {
-							print we_html_element::jsElement(we_message_reporting::getShowMessageCall(($this->banner->IsFolder ? g_l('modules_banner', '[delete_group_nok]') : g_l('modules_banner', '[delete_nok]')), we_message_reporting::WE_MESSAGE_ERROR));
+							echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', ($this->banner->IsFolder ? '[delete_group_nok]' : '[delete_nok]')), we_message_reporting::WE_MESSAGE_ERROR));
 						}
 					}
 				}
@@ -1095,7 +1093,6 @@ class we_banner_view extends we_banner_base{
 	</tr>
 </table>';
 
-		//javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'".FILE_TABLE."','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$Pathname\\'].value','".$cmd."','',0,'')
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$idname'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$Pathname'].value");
 		$wecmdenc3 = we_cmd_enc(str_replace('\\', '', $cmd));

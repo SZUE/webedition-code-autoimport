@@ -26,10 +26,10 @@ class rpcCopyNavigationFolderCmd extends rpcCmd{
 
 	function execute(){
 		$resp = new rpcResponse();
-		if(isset($_REQUEST['we_cmd'][0]) && !empty($_REQUEST['we_cmd'][0]) &&
-				isset($_REQUEST['we_cmd'][1]) && !empty($_REQUEST['we_cmd'][1]) &&
-				isset($_REQUEST['we_cmd'][2]) && !empty($_REQUEST['we_cmd'][2]) &&
-				isset($_REQUEST['we_cmd'][3]) && !empty($_REQUEST['we_cmd'][3]) &&
+		if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] &&
+				isset($_REQUEST['we_cmd'][1]) && $_REQUEST['we_cmd'][1] &&
+				isset($_REQUEST['we_cmd'][2]) && $_REQUEST['we_cmd'][2] &&
+				isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3] &&
 				(strpos($_REQUEST['we_cmd'][2], $_REQUEST['we_cmd'][0]) === false || strpos($_REQUEST['we_cmd'][2], $_REQUEST['we_cmd'][0]) > 0)
 		){
 
@@ -60,7 +60,7 @@ class rpcCopyNavigationFolderCmd extends rpcCmd{
 				}
 				$querySet .= ')';
 				if($row['IsFolder']){
-					if(!empty($query)){
+					if($query){
 						$db->query('INSERT INTO ' . NAVIGATION_TABLE . ' VALUES ' . $query);
 					}
 					$db->query('INSERT INTO ' . NAVIGATION_TABLE . ' VALUES ' . $querySet);

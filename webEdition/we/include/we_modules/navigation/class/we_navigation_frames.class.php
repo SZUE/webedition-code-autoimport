@@ -682,14 +682,12 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 
 		$rootDirID = 0;
 
-		//javascript:we_cmd('openDocselector',document.we_form.elements['LinkID'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'LinkID\\'].value','document.we_form.elements[\\'LinkPath\\'].value','','" . session_id() . "','$rootDirID',''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['LinkID'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['LinkPath'].value");
 		$wecmdenc3 = we_cmd_enc("opener.switch_button_state('open_navigation_doc', '', opener.document.we_form.elements['LinkID'].value>0?'enabled':'disabled');");
 
 		$_cmd_doc = "javascript:we_cmd('openDocselector',document.we_form.elements['LinkID'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','" . $rootDirID . "',''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")";
 
-		//javascript:we_cmd('openDocselector',document.we_form.elements['LinkID'].value,'" . OBJECT_FILES_TABLE . "','document.we_form.elements[\\'LinkID\\'].value','document.we_form.elements[\\'LinkPath\\'].value','opener." . $this->topFrame . ".we_cmd(\"populateWorkspaces\");','" . session_id() . "','$rootDirID',''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")" : ''
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['LinkID'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['LinkPath'].value");
 		$wecmdenc3 = we_cmd_enc('opener.' . $this->topFrame . ".we_cmd('populateWorkspaces');opener.switch_button_state('open_navigation_obj', '', opener.document.we_form.elements['LinkID'].value>0?'enabled':'disabled');");
@@ -1133,7 +1131,6 @@ function onSelectionClassChangeJS(value) {
 			$_cmd = "javascript:we_cmd('openSelector',document.we_form.elements['$IDName'].value,'$table','document.we_form.$IDName.value','document.we_form.$PathName.value','" . $cmd . "','" . session_id() . "','$rootDirID')";
 			$_selector = weSuggest::DirSelector;
 		} else {
-			//javascript:we_cmd('openDocselector',document.we_form.elements['$IDName'].value,'$table','document.we_form.$IDName.value','document.we_form.$PathName.value','" . $cmd . "','" . session_id() . "','$rootDirID','$filter'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")
 			$wecmdenc1 = we_cmd_enc("document.we_form.$IDName.value");
 			$wecmdenc2 = we_cmd_enc("document.we_form.$PathName.value");
 			$wecmdenc3 = we_cmd_enc(str_replace('\\', '', $cmd));
@@ -1367,7 +1364,6 @@ function selectItem() {
 	function getHTMLDirSelector(){
 		$rootDirID = 0;
 
-		//javascript:we_cmd('openDirselector',document.we_form.elements['FolderID'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'FolderID\\'].value','document.we_form.elements[\\'FolderPath\\'].value','opener." . $this->topFrame . ".mark();','" . session_id() . "','$rootDirID')
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['FolderID'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['FolderPath'].value");
 		$wecmdenc3 = we_cmd_enc("opener." . $this->topFrame . ".mark();");
@@ -1377,7 +1373,6 @@ function selectItem() {
 			$_classDirID = f('SELECT ' . OBJECT_FILES_TABLE . '.ID AS classDirID FROM ' . OBJECT_TABLE . ' LEFT JOIN ' . OBJECT_FILES_TABLE . ' ON (' . OBJECT_TABLE . '.Path=' . OBJECT_FILES_TABLE . '.Path) WHERE ' . OBJECT_TABLE . '.ID=' . $this->Model->ClassID . '', 'classDirID', $this->db);
 			$_countSubDirs = f('SELECT COUNT(ID) as CountSubDirs FROM ' . OBJECT_FILES_TABLE . ' WHERE ParentID=' . $_classDirID . ' AND IsFolder=1', 'CountSubDirs', $this->db);
 		}
-		//javascript:we_cmd('openDirselector',document.we_form.elements['FolderID'].value,'" . OBJECT_FILES_TABLE . "','document.we_form.elements[\\'FolderID\\'].value','document.we_form.elements[\\'FolderPath\\'].value','opener." . $this->topFrame . ".mark();','" . session_id() . "',classDirs[document.we_form.elements['ClassID'].options[document.we_form.elements['ClassID'].selectedIndex].value])
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['FolderID'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['FolderPath'].value");
 		$wecmdenc3 = we_cmd_enc("opener." . $this->topFrame . ".mark();");
@@ -1803,7 +1798,6 @@ function ' . $prefix . 'setLinkSelection(value){
 	//TODO: probably not used
 	/*
 	  function formFileChooser($width = '', $IDName = 'ParentID', $IDValue = '/', $cmd = '', $filter = ''){
-	  //javascript:we_cmd('browse_server','document.we_form.elements[\\'$IDName\\'].value','$filter',document.we_form.elements['$IDName'].value);
 	  $wecmdenc1 = we_cmd_enc("document.we_form.elements['$IDName'].value");
 	  $button = we_button::create_button('select', "javascript:we_cmd('browse_server','" . $wecmdenc1 . "','$filter',document.we_form.elements['$IDName'].value);");
 

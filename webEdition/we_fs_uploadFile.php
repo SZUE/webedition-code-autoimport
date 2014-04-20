@@ -44,10 +44,8 @@ switch($we_ContentType){
 $we_alerttext = '';
 $parts = array();
 
-if(isset($_FILES['we_uploadedFile'])){
-	if(!permissionhandler::hasPerm(we_base_ContentTypes::inst()->getPermission(getContentTypeFromFile($_FILES['we_uploadedFile']['name'])))){
-		$we_alerttext = g_l('alert', '[upload_notallowed]');
-	}
+if(isset($_FILES['we_uploadedFile']) && !permissionhandler::hasPerm(we_base_ContentTypes::inst()->getPermission(getContentTypeFromFile($_FILES['we_uploadedFile']['name'])))){
+	$we_alerttext = g_l('alert', '[upload_notallowed]');
 }
 
 if((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploadedFile']['type'] && (($allowedContentTypes == '') || (!(strpos($allowedContentTypes, $_FILES['we_uploadedFile']['type']) === false)))){
@@ -56,7 +54,7 @@ if((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploaded
 	}
 	// initializing $we_doc
 	include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
-	$pid = $_REQUEST['pid'];
+	$pid = weRequest('int', 'pid', 0);
 	$overwrite = $_REQUEST['overwrite'];
 
 	// creating a temp name and copy the file to the we tmp directory with the new temp name
@@ -74,7 +72,7 @@ if((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploaded
 	$we_doc->Path = $we_doc->getParentPath() . (($we_doc->getParentPath() != '/') ? '/' : '') . $we_doc->Text;
 
 	// if file exists we have to see if we should create a new one or overwrite it!
-	if(($file_id = f('SELECT ID FROM ' . FILE_TABLE . " WHERE Path='" . $DB_WE->escape($we_doc->Path) . "'", 'ID', $DB_WE))){
+	if(($file_id = f('SELECT ID FROM ' . FILE_TABLE . " WHERE Path='" . $DB_WE->escape($we_doc->Path) . "'"))){
 		if($overwrite == 'yes'){
 			$tmp = $we_doc->ClassName;
 			$we_doc = new $tmp();
@@ -129,7 +127,7 @@ if((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploaded
 					makeCSVFromArray($_REQUEST['Thumbnails'], true) :
 					$_REQUEST['Thumbnails']);
 		}
-		$we_doc->Table = $_REQUEST['tab'];
+		$we_doc->Table = weRequest('table', 'tab');
 		$we_doc->Published = time();
 		$we_doc->we_save();
 		$id = $we_doc->ID;

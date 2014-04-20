@@ -51,7 +51,7 @@ abstract class we_backup_preparer{
 			'offset' => 0,
 			'current_table' => '',
 			'backup_steps' => 5,
-			'backup_log' => (isset($_REQUEST['backup_log']) && $_REQUEST['backup_log']) ? $_REQUEST['backup_log'] : 0,
+			'backup_log' => weRequest('bool', 'backup_log'),
 			'backup_log_data' => '',
 			'backup_log_file' => $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'data/lastlog.php',
 			'limits' => array(
@@ -80,7 +80,7 @@ abstract class we_backup_preparer{
 		}
 		we_updater::fixInconsistentTables();
 
-		$_SESSION['weS']['weBackupVars']['protect'] = (isset($_REQUEST['protect']) && $_REQUEST['protect']) ? $_REQUEST['protect'] : 0;
+		$_SESSION['weS']['weBackupVars']['protect'] = weRequest('bool', 'protect');
 
 		$_SESSION['weS']['weBackupVars']['options']['compress'] = (isset($_REQUEST['compress']) && $_REQUEST['compress'] && we_base_file::hasCompression($_REQUEST['compress'])) ? we_backup_base::COMPRESSION : we_backup_base::NO_COMPRESSION;
 		$_SESSION['weS']['weBackupVars']['filename'] = ((isset($_REQUEST['filename']) && $_REQUEST['filename']) ? ($_REQUEST['filename']) : '') . ($_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_base::NO_COMPRESSION ? '.' . we_base_file::getZExtension(we_backup_base::COMPRESSION) : '');
@@ -178,39 +178,39 @@ abstract class we_backup_preparer{
 	static function getOptions(&$options, &$handle_options){
 
 		$options = array(
-			'backup_extern' => (isset($_REQUEST['handle_extern']) && $_REQUEST['handle_extern']) ? 1 : 0,
-			'convert_charset' => (isset($_REQUEST["convert_charset"]) && $_REQUEST["convert_charset"]) ? 1 : 0,
-			'compress' => (isset($_REQUEST['compress']) && $_REQUEST['compress']) ? we_backup_base::COMPRESSION : we_backup_base::NO_COMPRESSION,
-			'backup_binary' => (isset($_REQUEST['handle_binary']) && $_REQUEST['handle_binary']) ? 1 : 0,
-			'rebuild' => (isset($_REQUEST['rebuild']) && $_REQUEST['rebuild']) ? 1 : 0,
-			'export2server' => (isset($_REQUEST['export_server']) && $_REQUEST['export_server']) ? 1 : 0,
-			'export2send' => (isset($_REQUEST['export_send']) && $_REQUEST['export_send']) ? 1 : 0,
-			'do_import_after_backup' => (isset($_REQUEST['do_import_after_backup']) && $_REQUEST['do_import_after_backup']) ? 1 : 0,
+			'backup_extern' => weRequest('bool', 'handle_extern'),
+			'convert_charset' => weRequest('bool', "convert_charset"),
+			'compress' => weRequest('bool', 'compress') ? we_backup_base::COMPRESSION : we_backup_base::NO_COMPRESSION,
+			'backup_binary' => weRequest('bool', 'handle_binary'),
+			'rebuild' => weRequest('bool', 'rebuild'),
+			'export2server' => weRequest('bool', 'export_server'),
+			'export2send' => weRequest('bool', 'export_send'),
+			'do_import_after_backup' => weRequest('bool', 'do_import_after_backup'),
 		);
 
 		$handle_options = array(
-			'user' => (isset($_REQUEST['handle_user']) && $_REQUEST['handle_user']) ? 1 : 0,
-			'customer' => (isset($_REQUEST['handle_customer']) && $_REQUEST['handle_customer']) ? 1 : 0,
-			'shop' => (isset($_REQUEST['handle_shop']) && $_REQUEST['handle_shop']) ? 1 : 0,
-			'workflow' => (isset($_REQUEST['handle_workflow']) && $_REQUEST['handle_workflow']) ? 1 : 0,
-			'todo' => (isset($_REQUEST['handle_todo']) && $_REQUEST['handle_todo']) ? 1 : 0,
-			'newsletter' => (isset($_REQUEST['handle_newsletter']) && $_REQUEST['handle_newsletter']) ? 1 : 0,
-			'temporary' => (isset($_REQUEST['handle_temporary']) && $_REQUEST['handle_temporary']) ? 1 : 0,
-			'history' => (isset($_REQUEST['handle_history']) && $_REQUEST['handle_history']) ? 1 : 0,
-			'banner' => (isset($_REQUEST['handle_banner']) && $_REQUEST['handle_banner']) ? 1 : 0,
-			'core' => (isset($_REQUEST['handle_core']) && $_REQUEST['handle_core']) ? 1 : 0,
-			'object' => (isset($_REQUEST['handle_object']) && $_REQUEST['handle_object']) ? 1 : 0,
-			'schedule' => (isset($_REQUEST['handle_schedule']) && $_REQUEST['handle_schedule']) ? 1 : 0,
-			'settings' => (isset($_REQUEST['handle_settings']) && $_REQUEST['handle_settings']) ? 1 : 0,
-			'configuration' => (isset($_REQUEST['handle_configuration']) && $_REQUEST['handle_configuration']) ? 1 : 0,
-			'export' => (isset($_REQUEST['handle_export']) && $_REQUEST['handle_export']) ? 1 : 0,
-			'voting' => (isset($_REQUEST['handle_voting']) && $_REQUEST['handle_voting']) ? 1 : 0,
-			'spellchecker' => (isset($_REQUEST['handle_spellchecker']) && $_REQUEST['handle_spellchecker']) ? 1 : 0,
-			'versions' => (isset($_REQUEST['handle_versions']) && $_REQUEST['handle_versions']) ? 1 : 0,
-			'versions_binarys' => (isset($_REQUEST['handle_versions_binarys']) && $_REQUEST['handle_versions_binarys']) ? 1 : 0,
+			'user' => weRequest('bool', 'handle_user'),
+			'customer' => weRequest('bool', 'handle_customer'),
+			'shop' => weRequest('bool', 'handle_shop'),
+			'workflow' => weRequest('bool', 'handle_workflow'),
+			'todo' => weRequest('bool', 'handle_todo'),
+			'newsletter' => weRequest('bool', 'handle_newsletter'),
+			'temporary' => weRequest('bool', 'handle_temporary'),
+			'history' => weRequest('bool', 'handle_history'),
+			'banner' => weRequest('bool', 'handle_banner'),
+			'core' => weRequest('bool', 'handle_core'),
+			'object' => weRequest('bool', 'handle_object'),
+			'schedule' => weRequest('bool', 'handle_schedule'),
+			'settings' => weRequest('bool', 'handle_settings'),
+			'configuration' => weRequest('bool', 'handle_configuration'),
+			'export' => weRequest('bool', 'handle_export'),
+			'voting' => weRequest('bool', 'handle_voting'),
+			'spellchecker' => weRequest('bool', 'handle_spellchecker'),
+			'versions' => weRequest('bool', 'handle_versions'),
+			'versions_binarys' => weRequest('bool', 'handle_versions_binarys'),
 			'tools' => array(),
-			'spellchecker' => (isset($_REQUEST['handle_spellchecker']) && $_REQUEST['handle_spellchecker']) ? 1 : 0,
-			'glossary' => (isset($_REQUEST['handle_glossary']) && $_REQUEST['handle_glossary']) ? 1 : 0,
+			'spellchecker' => weRequest('bool', 'handle_spellchecker'),
+			'glossary' => weRequest('bool', 'handle_glossary'),
 			'backup' => $options['backup_extern'],
 		);
 
@@ -248,13 +248,12 @@ abstract class we_backup_preparer{
 	}
 
 	static function getBackupFile(){
-
-		$backup_select = (isset($_REQUEST['backup_select']) && $_REQUEST['backup_select']) ? $_REQUEST['backup_select'] : '';
-		$we_upload_file = (isset($_FILES['we_upload_file']) && $_FILES['we_upload_file']) ? $_FILES['we_upload_file'] : '';
-
-		if($backup_select){
+		if(($backup_select = weRequest('file', 'backup_select'))){
 			return $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . $backup_select;
-		} else if($we_upload_file && ($we_upload_file != 'none')){
+		}
+
+		$we_upload_file = (isset($_FILES['we_upload_file']) && $_FILES['we_upload_file']) ? $_FILES['we_upload_file'] : '';
+		if($we_upload_file && ($we_upload_file != 'none')){
 
 			$_SESSION['weS']['weBackupVars']['options']['upload'] = 1;
 

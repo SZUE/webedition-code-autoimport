@@ -29,7 +29,7 @@ class rpcSetPageNrCmd extends rpcCmd{
 	function execute(){
 		$we_transaction = weRequest('transaction', 'transaction', '');
 		if(isset($_SESSION['weS']['we_data'][$we_transaction])){
-			$_SESSION['weS']['we_data'][$we_transaction][0]['EditPageNr'] = $_REQUEST['editPageNr'];
+			$_SESSION['weS']['we_data'][$we_transaction][0]['EditPageNr'] = weRequest('raw', 'editPageNr');
 		}
 		$resp = new rpcResponse();
 		return $resp;

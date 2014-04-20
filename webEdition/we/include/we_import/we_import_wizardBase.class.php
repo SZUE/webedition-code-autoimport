@@ -247,7 +247,7 @@ function finish(rebuild) {
 }
 
 top.wizcmd.cycle();
-top.wizcmd.we_import(1,-2' . ((isset($_REQUEST['type']) && $_REQUEST['type'] == we_import_functions::TYPE_WE_XML) ? ',1' : '') . ');'
+top.wizcmd.we_import(1,-2' . ((weRequest('string', 'type') == we_import_functions::TYPE_WE_XML) ? ',1' : '') . ');'
 			);
 		}
 
@@ -289,10 +289,10 @@ top.wizcmd.we_import(1,-2' . ((isset($_REQUEST['type']) && $_REQUEST['type'] == 
 		}
 
 		if(isset($v["mode"]) && $v["mode"] == 1){
-			$records = weRequest('raw',"records", array());
-			$we_flds = weRequest('raw',"we_flds", array());
-			$attrs = weRequest('raw','attrs',array());
-			$attributes = weRequest('raw','attributes',array());
+			$records = weRequest('raw', "records", array());
+			$we_flds = weRequest('raw', "we_flds", array());
+			$attrs = weRequest('raw', 'attrs', array());
+			$attributes = weRequest('raw', 'attributes', array());
 
 			switch($v['cid']){
 				case -2:

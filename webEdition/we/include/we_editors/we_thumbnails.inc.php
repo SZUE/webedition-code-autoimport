@@ -395,7 +395,7 @@ function getFooter(){
 function we_save() {
 	top.document.getElementById("thumbnails_dialog").style.display = "none";
 	top.document.getElementById("thumbnails_save").style.display = "";
-	top.document.we_form.save_thumbnails.value = "true";
+	top.document.we_form.save_thumbnails.value = "1";
 	top.document.we_form.submit();
 }');
 
@@ -405,7 +405,7 @@ function we_save() {
 
 function getMainDialog(){
 	// Check if we need to save settings
-	if(isset($_REQUEST['save_thumbnails']) && $_REQUEST['save_thumbnails'] == 'true'){
+	if(weRequest('bool','save_thumbnails')){
 
 		if(isset($_REQUEST['thumbnail_name']) && (strpos($_REQUEST['thumbnail_name'], "'") !== false || strpos($_REQUEST['thumbnail_name'], ',') !== false)){
 			$save_javascript = we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[thumbnail_hochkomma]'), we_message_reporting::WE_MESSAGE_ERROR) .
@@ -419,7 +419,7 @@ function getMainDialog(){
 		return $save_javascript . build_dialog('saved');
 	} else {
 
-		return we_html_element::htmlForm(array('name' => 'we_form', 'method' => 'get', 'action' => $_SERVER['SCRIPT_NAME']), we_html_element::htmlHidden(array('name' => 'we_cmd[0]', 'value' => 'editThumbs')) . we_html_element::htmlHidden(array('name' => 'save_thumbnails', 'value' => 'false')) . render_dialog()) .
+		return we_html_element::htmlForm(array('name' => 'we_form', 'method' => 'get', 'action' => $_SERVER['SCRIPT_NAME']), we_html_element::htmlHidden(array('name' => 'we_cmd[0]', 'value' => 'editThumbs')) . we_html_element::htmlHidden(array('name' => 'save_thumbnails', 'value' => 0)) . render_dialog()) .
 			we_html_element::jsElement('init();');
 	}
 }

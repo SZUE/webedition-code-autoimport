@@ -72,7 +72,7 @@ if(!$wfchk){
 	}
 	$wfchk_html .= '</head><body onload="confirmDel()"><form name="we_form" method="post">' .
 		we_html_tools::hidden("sel", weRequest('raw',"sel", "")) . "</form>";
-} elseif($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == 'delete_single_document'){
+} elseif(in_array(weRequest('string', 'we_cmd','',0),array("do_delete",'delete_single_document'))){
 	if(isset($_REQUEST["sel"]) && $_REQUEST["sel"]){
 		//	look which documents must be deleted.
 		$selectedItems = explode(',', $_REQUEST["sel"]);

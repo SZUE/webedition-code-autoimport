@@ -77,12 +77,12 @@ class we_tool_frames extends weModuleFrames{
 
 		$this->Model->clearSessionVars();
 
-		if(isset($_REQUEST['modelid'])){
+		if(($modelid = weRequest('int', 'modelid'))){
 			$_class = we_tool_lookup::getModelClassName($this->toolName);
 			$this->Model = new $_class();
-			$this->Model->load($_REQUEST['modelid']);
+			$this->Model->load($modelid);
 			$this->Model->saveInSession();
-			$_SESSION['weS'][$this->toolName]["modelidForTree"] = $_REQUEST['modelid'];
+			$_SESSION['weS'][$this->toolName]["modelidForTree"] = $modelid;
 		}
 
 		$js = $this->getJSCmdCode() .
@@ -102,16 +102,15 @@ class we_tool_frames extends weModuleFrames{
 	}
 
 	function getHTMLResize(){
+		$modelid = weRequest('int', 'modelid');
+		$frameset = ((we_base_browserDetect::isGecko()) || (we_base_browserDetect::isOpera())) ?
+			new we_html_frameset(array("cols" => "200,*", "border" => 1, "id" => "resizeframeid")) :
+			new we_html_frameset(array("cols" => "200,*", "border" => 0, "frameborder" => 0, "framespacing" => 0, "id" => "resizeframeid"));
 
-		if((we_base_browserDetect::isGecko()) || (we_base_browserDetect::isOpera())){
-			$frameset = new we_html_frameset(array("cols" => "200,*", "border" => 1, "id" => "resizeframeid"));
-		} else {
-			$frameset = new we_html_frameset(array("cols" => "200,*", "border" => 0, "frameborder" => 0, "framespacing" => 0, "id" => "resizeframeid"));
-		}
 		if(we_base_browserDetect::isIE()){
-			$frameset->addFrame(array("src" => $this->frameset . "?pnt=left" . (isset($_REQUEST['modelid']) ? '&modelid=' . $_REQUEST['modelid'] : ''), "name" => "left", "scrolling" => "no", "frameborder" => "no"));
+			$frameset->addFrame(array("src" => $this->frameset . "?pnt=left" . ($modelid ? '&modelid=' . $modelid : ''), "name" => "left", "scrolling" => "no", "frameborder" => "no"));
 		} else {
-			$frameset->addFrame(array("src" => $this->frameset . "?pnt=left" . (isset($_REQUEST['modelid']) ? '&modelid=' . $_REQUEST['modelid'] : ''), "name" => "left", "scrolling" => "no"));
+			$frameset->addFrame(array("src" => $this->frameset . "?pnt=left" . ($modelid ? '&modelid=' . $modelid : ''), "name" => "left", "scrolling" => "no"));
 		}
 		$frameset->addFrame(array("src" => $this->frameset . "?pnt=right" . (isset($_REQUEST['tab']) ? '&tab=' . $_REQUEST['tab'] : '') . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : ''), "name" => "right"));
 
@@ -385,7 +384,6 @@ function we_save() {
 	}
 
 	function formFileChooser($width = '', $IDName = 'ParentID', $IDValue = '/', $cmd = '', $filter = ''){
-		//javascript:we_cmd('browse_server','document.we_form.elements[\\'$IDName\\'].value','$filter',document.we_form.elements['$IDName'].value);
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$IDName'].value");
 		$button = we_html_button::create_button('select', "javascript:we_cmd('browse_server','" . $wecmdenc1 . "','$filter',document.we_form.elements['$IDName'].value);");
 

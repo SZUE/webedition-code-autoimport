@@ -25,6 +25,7 @@ we_html_tools::protect();
 echo we_html_tools::getHtmlTop(g_l('global', '[select_color]')) .
  STYLESHEET .
  we_html_element::jsScript(JS_DIR . 'we_colors2.js');
+$isA = weRequest('bool', 'we_cmd', false, 0);
 ?>
 <script  type="text/javascript">
 
@@ -32,7 +33,7 @@ echo we_html_tools::getHtmlTop(g_l('global', '[select_color]')) .
 		document.we_form.colorvalue.value = c;
 	}
 	function setColor() {
-<?php if($_REQUEST['we_cmd'][0]){ ?>
+<?php if($isA){ ?>
 			opener.document.we_form.elements["<?php echo $_REQUEST['we_cmd'][1]; ?>"].value = document.we_form.colorvalue.value;
 
 	<?php if(isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3]){ ?>
@@ -54,19 +55,15 @@ echo we_html_tools::getHtmlTop(g_l('global', '[select_color]')) .
 	}
 	function init() {
 		top.focus();
-<?php if($_REQUEST['we_cmd'][0]){ ?>
-			document.we_form.colorvalue.value = "<?php print $_REQUEST['we_cmd'][2]; ?>";
-<?php } else { ?>
-			document.we_form.colorvalue.value = window.dialogArguments["bgcolor"];
-<?php } ?>
+		document.we_form.colorvalue.value = <?php echo ($isA ? '"' . $_REQUEST['we_cmd'][2] . '"' : 'window.dialogArguments["bgcolor"]'); ?>;
 	}
 </script>
 </head>
 
 
-<body class="weDialogBody"<?php if($_REQUEST['we_cmd'][0]){ ?> onLoad="init()"<?php } ?>>
-	<form name="we_form" action="" onsubmit="<?php if(!$_REQUEST['we_cmd'][0]){ ?>setColor();<?php } ?>return
-			false">
+<body class="weDialogBody"<?php if($isA){ ?> onload="init()"<?php } ?>>
+	<form name="we_form" action="" onsubmit="<?php if(!$isA){ ?>setColor();<?php } ?>return
+			false;">
 					<?php
 					$colortable = '<table border="1" bordercolor="SILVER" bordercolorlight="WHITE" bordercolordark="BLACK" cellspacing="0" cellpadding="0">
 <script  type="text/javascript">
@@ -98,13 +95,10 @@ if(z != 0){
 					$foo = '<input type="text" size="20" name="colorvalue" class="defaultfont" style="width:150px" />';
 					$color = we_html_tools::htmlFormElementTable($foo, g_l('wysiwyg', "[color]"));
 
-					if($_REQUEST['we_cmd'][0]){
-						$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "javascript:setColor();"), "", we_html_button::create_button("cancel", "javascript:window.close()")
+					$buttons = ($isA ?
+							we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "javascript:setColor();"), "", we_html_button::create_button("cancel", "javascript:window.close()")) :
+							we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "form:submit:we_form"), "", we_html_button::create_button("cancel", "javascript:window.close()"))
 						);
-					} else {
-						$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "form:submit:we_form"), "", we_html_button::create_button("cancel", "javascript:window.close()")
-						);
-					}
 					$table = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td>' . $colortable . '</td>
@@ -118,7 +112,7 @@ if(z != 0){
 </table>
 ';
 
-					print we_html_tools::htmlDialogLayout($table, g_l('global', '[select_color]'), $buttons);
+					echo we_html_tools::htmlDialogLayout($table, g_l('global', '[select_color]'), $buttons);
 					?>
 	</form>
 </body>
