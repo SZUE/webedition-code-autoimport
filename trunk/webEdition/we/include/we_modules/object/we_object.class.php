@@ -285,7 +285,6 @@ class we_object extends we_document{
 				$fold->initByPath($this->getPath(), OBJECT_FILES_TABLE, 1, 0, 1);
 			}
 		} else {
-
 			$ctable = OBJECT_X_TABLE . $this->ID;
 			$tableInfo = $this->DB_WE->metadata($ctable);
 			$q = $regs = array();
@@ -819,14 +818,14 @@ class we_object extends we_document{
 			<td  width="170" class="defaultfont" valign="top">';
 
 		if($type == we_objectFile::TYPE_OBJECT){
-			$vals = array();
+			$regs = $vals = array();
 			$all = $this->DB_WE->table_names(OBJECT_X_TABLE . '%');
 			$count = 0;
 			while($count < count($all)){
 				if($all[$count]["table_name"] != OBJECT_FILES_TABLE && $all[$count]["table_name"] != OBJECT_FILES_TABLE){
 					if(preg_match('/^(.+)_(\d+)$/', $all[$count]["table_name"], $regs)){
 						if($this->ID != $regs[2]){
-							$path = f('SELECT Path FROM ' . OBJECT_TABLE . ' WHERE ID=' . $regs[2], 'Path', $this->DB_WE);
+							$path = f('SELECT Path FROM ' . OBJECT_TABLE . ' WHERE ID=' . $regs[2], '', $this->DB_WE);
 							if($path !== ''){
 								$vals[$regs[2]] = $path;
 							}
