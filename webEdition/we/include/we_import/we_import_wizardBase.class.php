@@ -46,8 +46,6 @@ class we_import_wizardBase{
 
 		$addJS = (defined("OBJECT_TABLE")) ?
 			"			self.wizbody.document.forms['we_form'].elements['v[import_type]'][0].checked=true;" : "";
-		$weSessionId = session_id();
-
 
 		$ajaxJS = <<<HTS
 var ajaxUrl = "/webEdition/rpc/rpc.php";
@@ -80,7 +78,7 @@ var weGetCategoriesCallback = {
 };
 
 function weGetCategories(obj,cats,part,target) {
-	ajaxData = 'protocol=json&cmd=GetCategory&weSessionId={$weSessionId}&obj='+obj+'&cats='+cats+'&part='+part+'&targetId=docCatTable&catfield=v['+obj+'Categories]';
+	ajaxData = 'protocol=json&cmd=GetCategory&obj='+obj+'&cats='+cats+'&part='+part+'&targetId=docCatTable&catfield=v['+obj+'Categories]';
 	_executeAjaxRequest('POST',ajaxUrl, weGetCategoriesCallback, ajaxData);
 }
 
@@ -338,7 +336,10 @@ if (top.wizbody && top.wizbody.addLog){
 							break;
 						case we_import_functions::TYPE_GENERIC_XML:
 							$parse = new we_xml_splitFile($_SERVER['DOCUMENT_ROOT'] . $v["import_from"]);
-							$parse->splitFile("*/" . $v["rcd"], (isset($v["from_elem"])) ? $v["from_elem"] : FALSE, (isset($v["to_elem"])) ? $v["to_elem"] : FALSE, 1);
+							t_e("*/" . $v["rcd"]);
+							exit();
+							$parse->splitFile("*/" . $v["rcd"], (isset($v["from_elem"])) ? $v["from_elem"] : false, (isset($v["to_elem"])) ? $v["to_elem"] : false, 1);
+							exit();
 							break;
 						case we_import_functions::TYPE_CSV:
 							switch($v['csv_enclosed']){

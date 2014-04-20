@@ -235,7 +235,6 @@ class we_html_baseElement{
 					case 'readonly':
 					case 'checked':
 					case 'selected':
-						t_e($k, $v);
 						$out.=' ' . $k . '="' . $k . '"';
 						break;
 					default:

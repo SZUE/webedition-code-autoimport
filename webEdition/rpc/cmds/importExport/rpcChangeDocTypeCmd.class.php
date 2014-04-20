@@ -43,8 +43,8 @@ class rpcChangeDocTypeCmd extends rpcCmd{
 					"style" => "width: 300px")
 				);
 				$optid = 0;
-				foreach($ids_arr as $templateID){
-					$TPLselect->insertOption($optid, $templateID, $paths_arr[$optid]);
+				foreach($paths_arr as $templateID => $path){
+					$TPLselect->insertOption($optid, $templateID, $path);
 					$optid++;
 				}
 				$templateElement = we_html_tools::htmlFormElementTable($TPLselect->getHTML(), g_l('import', '[template]'), "left", "defaultfont");
