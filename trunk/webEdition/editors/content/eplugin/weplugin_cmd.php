@@ -100,8 +100,8 @@ top.plugin.document.WePlugin.editFile(session,transaction,"' . addslashes($_file
 	case "setSource":
 		$transactionID = weRequest('transaction', 'we_cmd', '', 1);
 		if(isset($_SESSION['weS']['we_data'][$transactionID][0]["elements"]["data"]["dat"])){
-			$_SESSION['weS']['we_data'][$transactionID][0]["elements"]["data"]["dat"] = $_REQUEST['we_cmd'][2];
-			$_SESSION['weS']['we_data'][$transactionID][1]["data"]["dat"] = $_REQUEST['we_cmd'][2];
+			$_SESSION['weS']['we_data'][$transactionID][0]["elements"]["data"]["dat"] = weRequest('raw', 'we_cmd','',2);
+			$_SESSION['weS']['we_data'][$transactionID][1]["data"]["dat"] = $_SESSION['weS']['we_data'][$transactionID][0]["elements"]["data"]["dat"];
 
 			$out = we_html_element::jsElement('
 var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction("' . $transactionID . '");

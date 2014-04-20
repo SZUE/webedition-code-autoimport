@@ -24,13 +24,7 @@
  */
 we_html_tools::protect();
 
-if(isset($_REQUEST['we_transaction'])){ //  initialise Document
-	if(!preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction'])){
-		exit();
-	}
-
-	$we_transaction = $_REQUEST['we_transaction'];
-
+if(($we_transaction = weRequest('transaction', 'we_transaction'))){ //  initialise Document
 	$we_dt = isset($_SESSION['weS']['we_data'][$we_transaction]) ? $_SESSION['weS']['we_data'][$we_transaction] : "";
 	include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
@@ -38,25 +32,15 @@ if(isset($_REQUEST['we_transaction'])){ //  initialise Document
 
 	$content = $GLOBALS['we_doc']->getDocument();
 
-	$allowedHosts = array('validator.w3.org');
-
-	$GLOBALS['DB_WE']->query('SELECT host FROM ' . VALIDATION_SERVICES_TABLE);
-	while($GLOBALS['DB_WE']->next_record()){
-		$allowedHosts[] = $GLOBALS['DB_WE']->f('host');
-	}
-
-
-	$host = $_REQUEST['host'];
-
-	if(!in_array($host, $allowedHosts)){
+	$host = weRequest('string', 'host');
+	if($host != 'validator.w3.org' && !f('SELECT 1 FROM ' . VALIDATION_SERVICES_TABLE . ' WHERE host="' . $GLOBALS['DB_WE']->escape($host) . '" LIMIT 1')){
 		exit($host . ' not in allowed hosts!');
 	}
 
-
-	$path = $_REQUEST['path'];
-	$s_method = $_REQUEST['s_method'];
-	$varname = $_REQUEST['varname'];
-	$contentType = $_REQUEST['ctype'];
+	$path = weRequest('file', 'path');
+	$s_method = weRequest('string', 's_method');
+	$varname = weRequest('string','varname');
+	$contentType = weRequest('string','ctype');
 
 	$http_request = new HttpRequest($path, $host, $s_method);
 	$http_request->addHeader('User-Agent', $_SERVER['HTTP_USER_AGENT']);

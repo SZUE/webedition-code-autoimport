@@ -149,7 +149,6 @@ class we_navigation_ruleFrames{
 		$yuiSuggest->setResult('FolderID');
 		$yuiSuggest->setSelector(weSuggest::DirSelector);
 		$yuiSuggest->setWidth(275);
-//javascript:we_cmd('openDirselector', document.we_form.elements['FolderID'].value, '" . FILE_TABLE . "', 'document.we_form.elements[\\'FolderID\\'].value', 'document.we_form.elements[\\'FolderIDPath\\'].value')
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['FolderID'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['FolderIDPath'].value");
 		$yuiSuggest->setSelectButton(

@@ -416,7 +416,6 @@ function closeAllType(){
 
 		$path = id_to_path($this->View->export->ParentID, EXPORT_TABLE);
 
-		//javascript:top.content.setHot();we_cmd('openExportDirselector',document.we_form.elements['ParentID'].value,'document.we_form.elements[\'ParentID\'].value','document.we_form.elements[\'ParentPath\'].value','top.hot=1;')
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['ParentID'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['ParentPath'].value");
 		$wecmdenc3 = we_cmd_enc("top.hot=1;");
@@ -787,7 +786,6 @@ function closeAllType(){
 	function formWeChooser($table = FILE_TABLE, $width = '', $rootDirID = 0, $IDName = 'ID', $IDValue = 0, $Pathname = 'Path', $Pathvalue = '/', $cmd = ''){
 		$Pathvalue = (empty($Pathvalue) ? f('SELECT Path FROM ' . $this->db->escape($table) . ' WHERE ID=' . intval($IDValue) . ";", "Path", $this->db) : $Pathvalue);
 
-		//javascript:top.content.setHot();we_cmd('openDirselector',document.we_form.elements['$IDName'].value,'$table','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','".$cmd."','".session_id()."','$rootDirID'))
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$IDName'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$Pathname'].value");
 		$wecmdenc3 = we_cmd_enc(str_replace('\\', '', $cmd));

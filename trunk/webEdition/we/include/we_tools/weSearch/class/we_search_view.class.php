@@ -2731,7 +2731,6 @@ class we_search_view extends we_tool_view{
 					$_linkPath = $this->Model->searchAdvSearch[$i];
 
 					$_rootDirID = 0;
-					//javascript:we_cmd('openDirselector',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'searchAdvSearchParentID[" . $i . "]\\'].value','document.we_form.elements[\\'searchAdvSearch[" . $i . "]\\'].value','','" . session_id() . "','$_rootDirID','','')
 					$wecmdenc1 = we_cmd_enc("document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value");
 					$wecmdenc2 = we_cmd_enc("document.we_form.elements['searchAdvSearch[" . $i . "]'].value");
 					$wecmdenc3 = '';
@@ -2750,7 +2749,6 @@ class we_search_view extends we_tool_view{
 					$_linkPath = $this->Model->searchAdvSearch[$i];
 
 					$_rootDirID = 0;
-					//javascript:we_cmd('openDocselector',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','document.we_form.elements[\\'searchAdvSearchParentID[" . $i . "]\\'].value','document.we_form.elements[\\'searchAdvSearch[" . $i . "]\\'].value','','" . session_id() . "','$_rootDirID','','text/weTmpl')
 					$wecmdenc1 = we_cmd_enc("document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value");
 					$wecmdenc2 = we_cmd_enc("document.we_form.elements['searchAdvSearch[" . $i . "]'].value");
 					$wecmdenc3 = '';
@@ -3087,7 +3085,6 @@ class we_search_view extends we_tool_view{
 		$yuiSuggest->setSelector(weSuggest::DirSelector);
 		$yuiSuggest->setTable($table);
 		$yuiSuggest->setWidth(380);
-		//javascript:we_cmd('openDirselector',document.we_form.elements['$folderID'].value,'" . $table . "','document.we_form.elements[\\'$folderID\\'].value','document.we_form.elements[\\'$folderPath\\'].value')
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$folderID'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$folderPath'].value");
 		$yuiSuggest->setSelectButton(

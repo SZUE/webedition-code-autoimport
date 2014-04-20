@@ -36,7 +36,7 @@ abstract class we_SEEM{
 	static function getClassVars($name){
 		return '';
 		//	here are all variables.
-		if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
+		/*if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
 			$vtabSrcDocs = "top.Vtabs.we_cmd('loadVTab','" . FILE_TABLE . "',0);top.we_cmd('exit_delete');";
 			if(defined("OBJECT_FILES_TABLE")){
 				$vtabSrcObjs = (permissionhandler::hasPerm("CAN_SEE_OBJECTFILES") ?
@@ -50,6 +50,7 @@ abstract class we_SEEM{
 
 
 		return (isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ? (isset($$name) ? $$name : '') : '');
+		 */
 	}
 
 	/**
@@ -337,10 +338,10 @@ abstract class we_SEEM{
 	 * @return   code           string the new code, where all seem_links are replaced with new functionality
 	 */
 	static function replaceSEEM_Links($code, $SEEM_LinkArray){
-		$mode = (isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT ? "edit" : "preview");
+	//	$mode = (isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT ? "edit" : "preview");
 
-		$_REQUEST['we_transaction'] = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0);
-		for($i = 0; $i < count($SEEM_LinkArray[0]); $i++){
+		$_REQUEST['we_transaction'] = weRequest('transaction', 'we_transaction', 0);
+		foreach($SEEM_LinkArray[0] as $i => $link){
 
 			if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE && $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT){ //	in Super-Easy-Edit-Mode only in Editmode !!!
 				switch($SEEM_LinkArray[2][$i]){
@@ -348,24 +349,24 @@ abstract class we_SEEM{
 					//  Edit an included document from webedition.
 					case "edit_image":
 						$handler = "if(top.edit_include){top.edit_include.close();}top.edit_include=window.open('" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=edit_include_document&we_cmd[1]=" . FILE_TABLE . "&we_cmd[2]=" . $SEEM_LinkArray[1][$i] . "&we_cmd[3]=" . we_base_ContentTypes::IMAGE . "&we_cmd[4]=" . FILE_TABLE . "&we_cmd[5]=" . $SEEM_LinkArray[1][$i] . "&we_cmd[6]=" . $_REQUEST["we_transaction"] . "&we_cmd[7]='" . ",'_blank','width=800,height=600,status=yes');return true;";
-						$code = str_replace($SEEM_LinkArray[0][$i] . "</a>", we_html_button::create_button("image:btn_edit_image", "javascript:$handler", true), $code);
+						$code = str_replace($link . "</a>", we_html_button::create_button("image:btn_edit_image", "javascript:$handler", true), $code);
 						break;
 					case "include" :
 						//  a new window is opened which stays as long, as the browser is closed, or the window is closed manually
 						$handler = "if(top.edit_include){top.edit_include.close();}top.edit_include=window.open('" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=edit_include_document&we_cmd[1]=" . FILE_TABLE . "&we_cmd[2]=" . $SEEM_LinkArray[1][$i] . "&we_cmd[3]=" . we_base_ContentTypes::WEDOCUMENT . "&we_cmd[4]=" . FILE_TABLE . "&we_cmd[5]=" . $SEEM_LinkArray[1][$i] . "&we_cmd[6]=" . $_REQUEST["we_transaction"] . "&we_cmd[7]='" . ",'_blank','width=800,height=600,status=yes');return true;";
-						$code = str_replace($SEEM_LinkArray[0][$i] . "</a>", we_html_button::create_button("image:btn_edit_include", "javascript:$handler", true), $code);
+						$code = str_replace($link . "</a>", we_html_button::create_button("image:btn_edit_include", "javascript:$handler", true), $code);
 						break;
 
 					case "object" :
 						$handler = "top.doClickDirect('" . $SEEM_LinkArray[1][$i] . "','objectFile','" . OBJECT_FILES_TABLE . "');";
-						$code = str_replace($SEEM_LinkArray[0][$i] . '</a>', we_html_button::create_button("image:btn_edit_object", "javascript:$handler", true) . "</a>", $code);
+						$code = str_replace($link . '</a>', we_html_button::create_button("image:btn_edit_object", "javascript:$handler", true) . "</a>", $code);
 						break;
 
 					default :
 						break;
 				}
 			} else { //	we are in normal mode, so just delete the links
-				$code = str_replace($SEEM_LinkArray[0][$i] . '</a>', "", $code);
+				$code = str_replace($link . '</a>', "", $code);
 			}
 		}
 		return $code;

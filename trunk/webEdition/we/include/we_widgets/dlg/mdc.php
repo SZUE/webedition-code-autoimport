@@ -67,16 +67,12 @@ function getHTMLDirSelector($_selType){
 	$showAC = true;
 	$rootDirID = 0;
 	$folderID = 0;
-	//javascript:we_cmd('openDirselector',document.we_form.elements['FolderID'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'FolderID\\'].value','document.we_form.elements[\\'FolderPath\\'].value','','" . session_id() . "','$rootDirID')
 	$wecmdenc1 = we_cmd_enc("document.we_form.elements['FolderID'].value");
 	$wecmdenc2 = we_cmd_enc("document.we_form.elements['FolderPath'].value");
-	$wecmdenc3 = '';
 	$_button_doc = we_html_button::create_button(
 			"select", "javascript:we_cmd('openDirselector',document.we_form.elements['FolderID'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "','$rootDirID')");
-	//javascript:we_cmd('openDirselector',document.we_form.elements['FolderID'].value,'" . OBJECT_FILES_TABLE . "','document.we_form.elements[\\'FolderID\\'].value','document.we_form.elements[\\'FolderPath\\'].value','','" . session_id() . "','$rootDirID')
 	$wecmdenc1 = we_cmd_enc("document.we_form.elements['FolderID'].value");
 	$wecmdenc2 = we_cmd_enc("document.we_form.elements['FolderPath'].value");
-	$wecmdenc3 = '';
 	$_button_obj = defined('OBJECT_TABLE') ? we_html_button::create_button(
 			"select", "javascript:we_cmd('openDirselector',document.we_form.elements['FolderID'].value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "','$rootDirID')") : '';
 
@@ -94,9 +90,7 @@ function getHTMLDirSelector($_selType){
 				)), we_html_tools::getPixel(20, 4), $_buttons));
 }
 
-$docTypes = array(
-	0 => g_l('cockpit', "[no_entry]")
-);
+$docTypes = array(0 => g_l('cockpit', "[no_entry]"));
 
 $DB_WE->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . we_docTypes::getDoctypeQuery($DB_WE));
 while($DB_WE->next_record()){

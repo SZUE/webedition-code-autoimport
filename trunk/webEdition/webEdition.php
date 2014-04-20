@@ -58,7 +58,7 @@ we_base_file::cleanTempFiles();
   }
  */
 //	unlock everything old, when a new window is opened.
-if(!isset($_REQUEST['we_cmd'][0]) || $_REQUEST['we_cmd'][0] != "edit_include_document"){
+if(weRequest('string', 'we_cmd', '', 0) != "edit_include_document"){
 	$GLOBALS['DB_WE']->query('DELETE FROM ' . LOCK_TABLE . '	WHERE lockTime<NOW()');
 }
 $GLOBALS['DB_WE']->query('UPDATE ' . USER_TABLE . '	SET Ping=0 WHERE Ping<UNIX_TIMESTAMP(NOW()-' . (PING_TIME + PING_TOLERANZ) . ')');
@@ -74,8 +74,8 @@ echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username']) 
  we_html_element::jsScript(JS_DIR . 'libs/yui/event-min.js') .
  we_html_element::jsScript(JS_DIR . 'libs/yui/connection-min.js') .
  we_html_element::jsScript(JS_DIR . 'keyListener.js') .
- we_html_element::jsScript(JS_DIR . 'messageConsole.js').
-we_message_reporting::jsString();
+ we_html_element::jsScript(JS_DIR . 'messageConsole.js') .
+ we_message_reporting::jsString();
 ?>
 
 <script type="text/javascript"><!--
@@ -1324,7 +1324,7 @@ if(defined("WE_MESSAGING_MODULE_DIR")){
 				return 0;
 				break;
 			case "open_tagreference":
-				var docupath = "http://tags.webedition.org/<?php echo ($GLOBALS['WE_LANGUAGE'] == 'Deutsch') ? 'de' : 'en'  ?>/" + arguments[1];
+				var docupath = "http://tags.webedition.org/<?php echo ($GLOBALS['WE_LANGUAGE'] == 'Deutsch') ? 'de' : 'en' ?>/" + arguments[1];
 				new jsWindow(docupath, "we_tagreference", -1, -1, 1024, 768, true, true, true);
 				break;
 <?php

@@ -311,7 +311,6 @@ class we_voting_frames extends weModuleFrames{
 		$table->setColContent(1, 1, we_html_element::htmlDiv(array('id' => 'owners', 'class' => 'blockWrapper', 'style' => 'width: ' . ($this->_width_size - 10) . 'px; height: 60px; border: #AAAAAA solid 1px;')));
 		$idname = 'owner_id';
 		$textname = 'owner_text';
-//javascript:top.content.setHot(); we_cmd('browse_users','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','',document.forms[0].elements['$idname'].value,'fillIDs();opener.we_cmd(\\'add_owner\\',top.allPaths,top.allIsFolder)','','',1);
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
 		$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$textname'].value");
 		$wecmdenc5 = we_cmd_enc("fillIDs();opener.we_cmd('add_owner',top.allPaths,top.allIsFolder);");
@@ -799,7 +798,6 @@ class we_voting_frames extends weModuleFrames{
 
 	function getHTMLDirChooser(){
 		$path = id_to_path($this->View->voting->ParentID, VOTING_TABLE);
-//javascript:top.content.setHot(); we_cmd('openVotingDirselector',document.we_form.elements['ParentID'].value,'document.we_form.elements[\'ParentID\'].value','document.we_form.elements[\'ParentPath\'].value','')"
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['ParentID'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['ParentPath'].value");
 		$wecmdenc3 = we_cmd_enc("top.opener._EditorFrame.setEditorIsHot(true);");
@@ -918,7 +916,6 @@ class we_voting_frames extends weModuleFrames{
 	}
 
 	function formFileChooser($width = "", $IDName = "ParentID", $IDValue = "/", $cmd = "", $filter = ""){
-//javascript:we_cmd('browse_server','document.we_form.elements[\\'$IDName\\'].value','$filter',document.we_form.elements['$IDName'].value);
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$IDName'].value");
 		$button = we_html_button::create_button("select", "javascript:we_cmd('browse_server','" . $wecmdenc1 . "','$filter',document.we_form.elements['$IDName'].value);");
 

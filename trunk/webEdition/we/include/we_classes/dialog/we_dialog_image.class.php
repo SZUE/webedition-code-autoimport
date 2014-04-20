@@ -182,12 +182,12 @@ class we_dialog_image extends we_dialog_base{
 					$this->initBySrc($extSrc, $width, $height, $hspace, $vspace, $border, $alt, $align, $name, $class, $title, $longdesc);
 					break;
 				case we_base_link::TYPE_INT:
-					if(isset($_REQUEST['imgChangedCmd']) && $_REQUEST['imgChangedCmd'] && $fileID){
+					if(weRequest('bool', 'imgChangedCmd') && $fileID){
 						$imgpath = $_SERVER['DOCUMENT_ROOT'] . id_to_path($fileID);
 						$imgObj = new we_imageDocument();
 						$imgObj->initByID($fileID);
 
-						$preserveData = ($_REQUEST['wasThumbnailChange'] || $_REQUEST['isTinyMCEInitialization']);
+						$preserveData = (weRequest('bool', 'wasThumbnailChange') || weRequest('bool', 'isTinyMCEInitialization'));
 						$width = $imgObj->getElement('width');
 						$height = $imgObj->getElement('height');
 						$alt = $preserveData ? $alt : $imgObj->getElement('alt');
@@ -242,7 +242,6 @@ class we_dialog_image extends we_dialog_base{
 
 			$_longdesc = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('we_dialog_args[longdesc]', 30, str_replace('"', '&quot;', (isset($this->args["longdesc"]) ? $this->args["longdesc"] : "")), "", '', "text", 520), g_l('weClass', "[longdesc_text]"));
 		} else {
-			//javascript:we_cmd('browse_server','document.we_form.elements[\\'we_dialog_args[extSrc]\\'].value','',document.we_form.elements['we_dialog_args[extSrc]'].value,'opener.document.we_form.elements[\\'we_dialog_args[type]\\'][0].checked=true;opener.imageChanged();')
 			$wecmdenc1 = we_cmd_enc("document.we_form.elements['we_dialog_args[extSrc]'].value");
 			$wecmdenc4 = we_cmd_enc("opener.document.we_form.elements['we_dialog_args[type]'][0].checked=true;opener.imageChanged();");
 			$but = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ?
@@ -291,7 +290,6 @@ class we_dialog_image extends we_dialog_base{
 			$thumbnails .= '</select>';
 			$thumbnails = '<div id="selectThumbnail" style="display: ' . $this->getDisplayThumbsSel() . '">' . we_html_tools::htmlFormElementTable($thumbnails, g_l('wysiwyg', "[thumbnail]")) . '</div>';
 
-			//javascript:we_cmd('openDocselector',document.we_form.elements['we_dialog_args[longdescid]'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'we_dialog_args[longdescid]\\'].value','document.we_form.elements[\\'we_dialog_args[longdescsrc]\\'].value','','','','',".(permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).");")
 			$wecmdenc1 = we_cmd_enc("document.we_form.elements['we_dialog_args[longdescid]'].value");
 			$wecmdenc2 = we_cmd_enc("document.we_form.elements['we_dialog_args[longdescsrc]'].value");
 

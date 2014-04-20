@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$tabname = isset($_REQUEST["tabname"]) && $_REQUEST["tabname"] != "" ? $_REQUEST["tabname"] : "setting_ui";
+$tabname = weRequest('string',"tabname","setting_ui");
 require_once(WE_INCLUDES_PATH . 'we_editors/we_preferences_config.inc.php');
 
 

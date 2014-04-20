@@ -851,7 +851,6 @@ class doclistView{
 
 					$_rootDirID = 0;
 
-					//javascript:we_cmd('openDocselector',document.we_form.elements['searchParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','document.we_form.elements[\\'searchParentID[" . $i . "]\\'].value','document.we_form.elements[\\'search[" . $i . "]\\'].value','','" . session_id () . "','$_rootDirID','','text/weTmpl')
 					$wecmdenc1 = we_cmd_enc("document.we_form.elements['searchParentID[" . $i . "]'].value");
 					$wecmdenc2 = we_cmd_enc("document.we_form.elements['search[" . $i . "]'].value");
 					$_cmd = "javascript:we_cmd('openDocselector',document.we_form.elements['searchParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "','$_rootDirID','','" . we_base_ContentTypes::TEMPLATE . "')";

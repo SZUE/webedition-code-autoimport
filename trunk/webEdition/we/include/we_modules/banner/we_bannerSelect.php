@@ -27,7 +27,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
 if(isset($_REQUEST['we_cmd'])){
-	$id = $_REQUEST['we_cmd'][1];
+	$id = weRequest('int', 'we_cmd', 0, 1);
 	$JSIDName = we_cmd_dec(2);
 	$JSTextName = we_cmd_dec(3);
 	$JSCommand = we_cmd_dec(4);
@@ -36,4 +36,4 @@ if(isset($_REQUEST['we_cmd'])){
 $_SERVER["SCRIPT_NAME"] = WE_MODULES_DIR . "banner/we_bannerSelect.php";
 $fs = new we_banner_selector(isset($id) ? $id : weRequest('int', "id", 0), isset($JSIDName) ? $JSIDName : weRequest('string', "JSIDName", ''), isset($JSTextName) ? $JSTextName : weRequest('string', "JSTextName", ''), isset($JSCommand) ? $JSCommand : weRequest('raw', "JSCommand", ''), isset($order) ? $order : weRequest('raw', "order", ''));
 
-$fs->printHTML(weRequest('int',"what",we_selector_file::FRAMESET));
+$fs->printHTML(weRequest('int', "what", we_selector_file::FRAMESET));

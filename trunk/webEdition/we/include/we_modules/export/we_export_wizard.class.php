@@ -1420,7 +1420,6 @@ function setState(a) {
 				}
 		');
 
-		//javascript:formFileChooser('browse_server','document.we_form.elements[\\'$IDName\\'].value','$filter',document.we_form.elements['$IDName'].value);
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$IDName'].value");
 
 		$button = we_html_button::create_button("select", "javascript:formFileChooser('browse_server','" . $wecmdenc1 . "','$filter',document.we_form.elements['$IDName'].value);");
@@ -1446,7 +1445,6 @@ function setState(a) {
 				}
 		');
 
-		//javascript:formDirChooser('openDirselector',document.we_form.elements['$IDName'].value,'$table','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','".$cmd."','".session_id()."','$rootDirID')
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$IDName'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$Pathname'].value");
 		$wecmdenc3 = we_cmd_enc(str_replace('\\', '', $cmd));
@@ -1575,7 +1573,6 @@ function setState(a) {
 			$Pathvalue = f('SELECT Path FROM ' . $this->db->escape($table) . ' WHERE ID=' . intval($IDValue), "Path", $this->db);
 		}
 
-		//javascript:we_cmd('openDirselector',document.we_form.elements['$IDName'].value,'$table','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','".$cmd."','".session_id()."','$rootDirID')
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$IDName'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$Pathname'].value");
 		$wecmdenc3 = we_cmd_enc(str_replace('\\', '', $cmd));

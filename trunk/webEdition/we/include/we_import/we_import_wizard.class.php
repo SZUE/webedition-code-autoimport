@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_import_wizard extends we_import_wizardBase {
+class we_import_wizard extends we_import_wizardBase{
 
 	var $TemplateID = 0;
 
@@ -158,7 +158,7 @@ class we_import_wizard extends we_import_wizardBase {
 			}
 		}
 
-		$cmd = weRequest('raw','we_cmd',array('import', $defaultVal));
+		$cmd = weRequest('raw', 'we_cmd', array('import', $defaultVal));
 		$expat = (function_exists('xml_parser_create')) ? true : false;
 
 		$tblFiles = new we_html_table(array('cellpadding' => 0, 'cellspacing' => 0, 'border' => 0), 3, 1);
@@ -258,7 +258,7 @@ class we_import_wizard extends we_import_wizardBase {
 	}
 
 	function getWXMLImportStep1(){
-		$v = weRequest('raw','v',array());
+		$v = weRequest('raw', 'v', array());
 		$doc_root = get_def_ws();
 		$tmpl_root = get_def_ws(TEMPLATES_TABLE);
 		$nav_root = get_def_ws(NAVIGATION_TABLE);
@@ -804,9 +804,9 @@ function handle_event(evt) {
 	function getGXMLImportStep1(){
 		global $DB_WE;
 
-		$v = weRequest('raw','v',array());
+		$v = weRequest('raw', 'v', array());
 
-		if(isset($v['docType']) && $v['docType'] != -1 && isset($_REQUEST['doctypeChanged']) && $_REQUEST['doctypeChanged']){
+		if(isset($v['docType']) && $v['docType'] != -1 && weRequest('bool', 'doctypeChanged')){
 			$values = getHash('SELECT * FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($v["docType"]), $GLOBALS['DB_WE']);
 			$v['store_to_id'] = $values['ParentID'];
 			$v['store_to_path'] = id_to_path($v['store_to_id']);
@@ -969,7 +969,6 @@ function _executeAjaxRequest(aMethod, aUrl, aCallback, aData){
 HTS;
 
 		$v['import_type'] = isset($v['import_type']) ? $v['import_type'] : 'documents';
-		//javascript:formFileChooser('browse_server','document.we_form.elements[\\'$IDName\\'].value','$filter',document.we_form.elements['$IDName'].value,'$cmd');
 		$wecmdenc1 = we_cmd_enc("self.wizbody.document.forms['we_form'].elements['v[fserver]'].value");
 		$importFromButton = (permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES')) ? we_html_button::create_button('select', "javascript: self.document.forms['we_form'].elements['v[rdofloc]'][0].checked=true;we_cmd('browse_server', '" . $wecmdenc1 . "', '', document.forms['we_form'].elements['v[fserver]'].value);") : "";
 		$inputLServer = we_html_tools::htmlTextInput('v[fserver]', 30, (isset($v['fserver']) ? $v['fserver'] : '/'), 255, 'readonly', 'text', 300);
@@ -1338,9 +1337,9 @@ function handle_event(evt) {
 		if(isset($v['att_pfx'])){
 			$v['att_pfx'] = base64_encode($v['att_pfx']);
 		}
-		$records = weRequest('raw','records',array());
-		$we_flds = weRequest('raw','we_flds',array());
-		$attrs = weRequest('raw','attrs',array());
+		$records = weRequest('raw', 'records', array());
+		$we_flds = weRequest('raw', 'we_flds', array());
+		$attrs = weRequest('raw', 'attrs', array());
 		foreach($attrs as $name => $value){
 			$attrs[$name] = base64_encode($value);
 		}
@@ -1784,7 +1783,7 @@ function handle_event(evt) {
 		}
 
 		if(isset($v['docType']) && $v['docType'] != -1 && isset($_REQUEST['doctypeChanged']) && $_REQUEST['doctypeChanged']){
-			$values = getHash('SELECT * FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($v['docType']), $GLOBALS['DB_WE']);
+			$values = getHash('SELECT * FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($v['docType']));
 			$v['store_to_id'] = $values['ParentID'];
 
 			$v['store_to_path'] = id_to_path($v['store_to_id']);
@@ -1964,7 +1963,6 @@ HTS;
 			'class' => 'weSelect',
 			'onclick' => (defined('OBJECT_TABLE')) ? "self.document.forms['we_form'].elements['v[import_type]'][0].checked=true;" : '',
 			'onchange' => "this.form.doctypeChanged.value=1; weChangeDocType(this);",
-			//"onchange"  => "this.form.doctypeChanged.value=1;we_submit_form(self.document.forms['we_form'], 'wizbody', '".$this->path."');",
 			'style' => 'width: 300px')
 		);
 		$optid = 0;
@@ -2203,9 +2201,9 @@ HTS;
 
 		$v = $_REQUEST["v"];
 
-		$records = weRequest('raw',"records",array());
-		$we_flds = weRequest('raw',"we_flds",array());
-		$attrs = weRequest('raw',"attrs",array());
+		$records = weRequest('raw', "records", array());
+		$we_flds = weRequest('raw', "we_flds", array());
+		$attrs = weRequest('raw', "attrs", array());
 
 		$csvFile = $_SERVER['DOCUMENT_ROOT'] . $v["import_from"];
 		if(file_exists($csvFile) && is_readable($csvFile)){

@@ -226,7 +226,7 @@ class we_customer_EIWizard{
 
 		//set defaults
 		$type = weRequest('string', "type", "gxml");
-		$filename = (isset($_REQUEST["filename"]) && $_REQUEST["filename"] != "") ? $_REQUEST["filename"] : "weExport_" . time() . ($type == "csv" ? ".csv" : ".xml");
+		$filename = weRequest('file', "filename", "weExport_" . time() . ($type == "csv" ? ".csv" : ".xml"));
 		$export_to = weRequest('string', "export_to", "server");
 		$path = weRequest('file', "path", "/");
 		$cdata = weRequest('bool', "cdata", true);
@@ -1158,7 +1158,7 @@ class we_customer_EIWizard{
 
 				$path = ($export_to == "server" ? weRequest('file', "path", "") : rtrim(TEMP_DIR, '/'));
 
-				$cdata = weRequest('raw', "cdata",0);
+				$cdata = weRequest('raw', "cdata", 0);
 				$csv_delimiter = weRequest('raw', "csv_delimiter", "");
 				$csv_enclose = weRequest('raw', "csv_enclose", "");
 				$csv_lineend = weRequest('raw', "csv_lineend", "");
@@ -1253,8 +1253,9 @@ class we_customer_EIWizard{
 					we_html_element::htmlHidden(array("name" => "export_to", "value" => $export_to)) .
 					we_html_element::htmlHidden(array("name" => "path", "value" => $path));
 
-				if($file_format == "gxml")
+				if($file_format == "gxml"){
 					$hiddens.=we_html_element::htmlHidden(array("name" => "cdata", "value" => $cdata));
+				}
 				if($file_format == "csv"){
 					$csv_delimiter = (isset($_REQUEST["csv_delimiter"]) && $_REQUEST["csv_delimiter"] != "") ? $_REQUEST["csv_delimiter"] : null;
 					$csv_enclose = (isset($_REQUEST["csv_enclose"]) && $_REQUEST["csv_enclose"] != "") ? $_REQUEST["csv_enclose"] : null;
@@ -1267,9 +1268,7 @@ class we_customer_EIWizard{
 							we_html_element::htmlHidden(array("name" => "csv_enclose", "value" => $csv_enclose))
 						) .
 						we_html_element::htmlHidden(array("name" => "csv_lineend", "value" => $csv_lineend));
-					//we_html_element::htmlHidden(array("name"=>"csv_fieldnames","value"=>$csv_fieldnames));
 				}
-
 
 				if($customers){
 					$options = array(
@@ -1576,7 +1575,6 @@ class we_customer_EIWizard{
 				}
 		');
 
-		//javascript:formFileChooser('browse_server','document.we_form.elements[\\'$IDName\\'].value','$filter',document.we_form.elements['$IDName'].value,'$cmd');
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$IDName'].value");
 		$wecmdenc4 = we_cmd_enc(str_replace('\\', '', $cmd));
 		$button = we_html_button::create_button("select", "javascript:formFileChooser('browse_server','" . $wecmdenc1 . "','$filter',document.we_form.elements['$IDName'].value,'" . $wecmdenc4 . "');");
@@ -1682,8 +1680,6 @@ class we_customer_EIWizard{
 			$Pathvalue = f("SELECT Path FROM " . $this->db->escape($table) . " WHERE ID=" . intval($IDValue) . ";", "Path", $this->db);
 		}
 
-
-		//javascript:selector_cmd('openSelector',document.we_form.elements['$IDName'].value,'$table','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','".$cmd."','".session_id()."','$rootDirID')
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$IDName'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$Pathname'].value");
 		$wecmdenc3 = we_cmd_enc(str_replace('\\', '', $cmd));

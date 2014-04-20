@@ -431,40 +431,43 @@ echo $yuiSuggest->getYuiCssFiles() .
 		}
 	}
 <?php
-$_REQUEST["we_transaction"] = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST["we_transaction"]) ? $_REQUEST["we_transaction"] : 0);
+$trans = $_REQUEST["we_transaction"] = weRequest('transaction', "we_transaction", 0);
 
-if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_link_at_class"){
+$ok = weRequest('bool', "ok");
+$cmd = weRequest('string', 'we_cmd', '', 0);
+$name = weRequest('string', 'name');
+if($ok && $cmd == "edit_link_at_class"){
 	$_SESSION['weS']['WE_LINK'] = $link;
 	//FIXME: we_field XSS
 	?>
 		opener.setScrollTo();
-		opener.we_cmd("change_link_at_class", "<?php print $_REQUEST["we_transaction"]; ?>", "<?php print $_REQUEST["we_field"]; ?>", "<?php print $_REQUEST["name"]; ?>");
+		opener.we_cmd("change_link_at_class", "<?php echo $trans; ?>", "<?php echo weRequest('string', "we_field"); ?>", "<?php echo $name; ?>");
 		top.close();
 	<?php
-} else if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_link_at_object"){
+} else if($ok && $cmd == "edit_link_at_object"){
 	$_SESSION['weS']['WE_LINK'] = $link;
 	?>
 		opener.setScrollTo();
-		opener.we_cmd("change_link_at_object", "<?php print $_REQUEST["we_transaction"]; ?>", "link_<?php print $_REQUEST["name"]; ?>");
+		opener.we_cmd("change_link_at_object", "<?php echo $trans; ?>", "link_<?php echo $name; ?>");
 		top.close();
 	<?php
-} else if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && isset($linklist) && $linklist){
+} else if($ok && isset($linklist) && $linklist){
 	$_SESSION['weS']["WE_LINKLIST"] = $linklist;
 	?>
 		opener.setScrollTo();
-		opener.we_cmd("change_linklist", "<?php print $_REQUEST["name"]; ?>", "");
+		opener.we_cmd("change_linklist", "<?php echo $name; ?>", "");
 	<?php
-} else if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && isset($link) && $link){
+} else if($ok && isset($link) && $link){
 	$_SESSION['weS']['WE_LINK'] = $link;
 	?>
 		opener.setScrollTo();
-		opener.we_cmd("change_link", "<?php print $_REQUEST["name"]; ?>", "");
+		opener.we_cmd("change_link", "<?php echo $name; ?>", "");
 	<?php
 } else {
 	?>
 		function we_cmd() {
 			var args = "";
-			var url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?";
+			var url = "<?php echo WEBEDITION_DIR; ?>we_cmd.php?";
 
 			for (var i = 0; i < arguments.length; i++) {
 				url += "we_cmd[" + i + "]=" + escape(arguments[i]);
@@ -497,7 +500,7 @@ if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_
 //-->
 </script>
 
-<?php print STYLESHEET; ?>
+<?php echo STYLESHEET; ?>
 
 </head>
 
@@ -521,7 +524,6 @@ if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_
 		$extLink = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("href", 30, $href, "", '', "text", 300), "", "left", "defaultfont", we_html_tools::getPixel($butspace, 20), $but, "", "", "", 0);
 		$emailLink = we_html_tools::htmlTextInput("emaillink", 30, $emaillink, "", '', "text", 300);
 
-		//javascript:we_cmd('openDocselector',document.forms[0].id.value,'" . FILE_TABLE . "','document.forms[\\'we_form\\'].elements[\\'id\\'].value','document.forms[\\'we_form\\'].elements[\\'href_int\\'].value','','".session_id()."',0,'',".(permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).");")
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['id'].value");
 		$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['href_int'].value");
 
@@ -539,7 +541,6 @@ if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_
 
 		$intLink = $yuiSuggest->getHTML();
 		if(defined("OBJECT_TABLE")){
-			//javascript:we_cmd('openDocselector',document.forms[0].obj_id.value,'" . OBJECT_FILES_TABLE . "','document.forms[\\'we_form\\'].elements[\\'obj_id\\'].value','document.forms[\\'we_form\\'].elements[\\'href_obj\\'].value','','".session_id()."','','objectFile',".(permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).");"
 			$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['obj_id'].value");
 			$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['href_obj'].value");
 			$wecmdenc3 = '';
@@ -578,17 +579,13 @@ if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_
 		$jsWinProps = '
 				<table cellspacing="0" cellpadding="0" border="0" width="100%">
 					<tr>
-						<td class="small">
-							' . g_l('global', '[posx]') . '</td>
+						<td class="small">' . g_l('global', '[posx]') . '</td>
 						<td></td>
-						<td class="small">
-							' . g_l('global', "[posy]") . '</td>
+						<td class="small">' . g_l('global', "[posy]") . '</td>
 						<td></td>
-						<td class="small">
-							' . g_l('global', "[width]") . '</td>
+						<td class="small">' . g_l('global', "[width]") . '</td>
 						<td></td>
-						<td class="small">
-							' . g_l('global', "[height]") . '</td>
+						<td class="small">' . g_l('global', "[height]") . '</td>
 						<td></td>
 						<td></td>
 					</tr>
@@ -648,7 +645,6 @@ if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_
 
 		$ctext = we_html_tools::htmlTextInput("text", 30, $text, "", "", "text", 300);
 
-		//javascript:we_cmd('browse_server', 'document.we_form.img_src.value', '', document.we_form.img_src.value, '')
 		$wecmdenc1 = we_cmd_enc("document.we_form.img_src.value");
 		$but = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button("select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', '', document.we_form.img_src.value, '')") : "";
 		$extImg = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("img_src", 30, $img_src, "", "", "text", 300), "", "left", "defaultfont", we_html_tools::getPixel(10, 2), $but, "", "", "", 0);
