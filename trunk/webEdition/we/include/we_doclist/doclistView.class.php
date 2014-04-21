@@ -368,7 +368,7 @@ class doclistView{
       function newinput() {
 
         var searchFields = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('searchFields[__we_new_id__]', $GLOBALS ['we_doc']->searchclassFolder->getFields("__we_new_id__", "doclist"), 1, "", false, array('class' => "defaultfont", 'id' => "searchFields[__we_new_id__]", 'onchange' => "changeit(this.value, __we_new_id__);")))) . '";
-        var locationFields = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('location[__we_new_id__]', $GLOBALS ['we_doc']->searchclassFolder->getLocation(), 1, "", false, array('class' => "defaultfont", 'id' => "location[__we_new_id__]")))) . '";
+        var locationFields = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('location[__we_new_id__]', we_search_search::getLocation(), 1, "", false, array('class' => "defaultfont", 'id' => "location[__we_new_id__]")))) . '";
         var search = "' . addslashes(we_html_tools::htmlTextInput('search[__we_new_id__]', 24, "", "", " class=\"wetextinput\" id=\"search[__we_new_id__]\" ", "text", 190)) . '";
 
         var elem = document.getElementById("filterTable");
@@ -412,7 +412,7 @@ class doclistView{
         var from = document.getElementsByName("hidden_searchFields["+rowNr+"]")[0].value;
 
         var searchFields = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('searchFields[__we_new_id__]', $GLOBALS ['we_doc']->searchclassFolder->getFields("__we_new_id__", "doclist"), 1, "", false, array('class' => "defaultfont", 'id' => "searchFields[__we_new_id__]", 'onchange' => "changeit(this.value, __we_new_id__);")))) . '";
-        var locationFields = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('location[__we_new_id__]', $GLOBALS ['we_doc']->searchclassFolder->getLocation(), 1, "", false, array('class' => "defaultfont", 'id' => "location[__we_new_id__]")))) . '";
+        var locationFields = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('location[__we_new_id__]', we_search_search::getLocation(), 1, "", false, array('class' => "defaultfont", 'id' => "location[__we_new_id__]")))) . '";
         var search = "' . addslashes(we_html_tools::htmlTextInput('search[__we_new_id__]', 24, "", "", " class=\"wetextinput\" id=\"search[__we_new_id__]\" ", "text", 190)) . '";
 
         var row = document.getElementById("filterRow_"+rowNr);
@@ -568,7 +568,7 @@ class doclistView{
 
           row.removeChild(locationTD);
 
-          locationFields = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('location[__we_new_id__]', $GLOBALS ['we_doc']->searchclassFolder->getLocation("date"), 1, "", false, array('class' => "defaultfont", 'id' => "location[__we_new_id__]")))) . '";
+          locationFields = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('location[__we_new_id__]', we_search_search::getLocation("date"), 1, "", false, array('class' => "defaultfont", 'id' => "location[__we_new_id__]")))) . '";
 
           var cell = document.createElement("TD");
             cell.setAttribute("id", "td_location["+rowNr+"]");
@@ -875,7 +875,7 @@ class doclistView{
 			$out .= '
         <tr id="filterRow_' . $i . '">
           <td>' . we_html_tools::hidden("hidden_searchFields[" . $i . "]", isset($GLOBALS ['we_doc']->searchclassFolder->searchFields[$i]) ? $GLOBALS ['we_doc']->searchclassFolder->searchFields[$i] : "" ) . '' . we_html_tools::htmlSelect("searchFields[" . $i . "]", $GLOBALS ['we_doc']->searchclassFolder->getFields($i, "doclist"), 1, (isset($GLOBALS ['we_doc']->searchclassFolder->searchFields) && is_array($GLOBALS ['we_doc']->searchclassFolder->searchFields) && isset($GLOBALS ['we_doc']->searchclassFolder->searchFields [$i]) ? $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] : ""), false, array('class' => "defaultfont", 'id' => "searchFields[' . $i . ']", 'onchange' => "changeit(this.value, ' . $i . ');")) . '</td>
-          <td id="td_location[' . $i . ']">' . we_html_tools::htmlSelect("location[" . $i . "]", $GLOBALS ['we_doc']->searchclassFolder->getLocation($handle), 1, (isset($GLOBALS ['we_doc']->searchclassFolder->location) && is_array($GLOBALS ['we_doc']->searchclassFolder->location) && isset($GLOBALS ['we_doc']->searchclassFolder->location [$i]) ? $GLOBALS ['we_doc']->searchclassFolder->location [$i] : ""), false, array('class' => "defaultfont", $locationDisabled => $locationDisabled, 'id' => "location[' . $i . ']")) . '</td>
+          <td id="td_location[' . $i . ']">' . we_html_tools::htmlSelect("location[" . $i . "]", we_search_search::getLocation($handle), 1, (isset($GLOBALS ['we_doc']->searchclassFolder->location) && is_array($GLOBALS ['we_doc']->searchclassFolder->location) && isset($GLOBALS ['we_doc']->searchclassFolder->location [$i]) ? $GLOBALS ['we_doc']->searchclassFolder->location [$i] : ""), false, array('class' => "defaultfont", $locationDisabled => $locationDisabled, 'id' => "location[' . $i . ']")) . '</td>
           <td id="td_search[' . $i . ']">' . $searchInput . '</td>
           <td id="td_delButton[' . $i . ']">' . $button . '</td>
         </tr>

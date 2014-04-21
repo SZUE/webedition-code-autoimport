@@ -67,7 +67,7 @@ class we_search{
 
 		for($i = 0; $i < count($searchfield); $i++){
 
-			if(!empty($searchname[$i])){
+			if($searchname[$i]){
 				$regs = explode('_', $searchfield[$i], 2); //bug #3694
 				if((count($regs) == 2) && $regs[0] == 'date'){ //bug #3694
 					$year = ($searchname[$i]['year'] && $searchname[$i]['year'] != '' ? $searchname[$i]['year'] : date('Y'));
@@ -151,19 +151,18 @@ class we_search{
 	function countitems($where = '', $table = ''){
 		$this->table = ($table ? $table : ($this->table ? $this->table : ''));
 
-		if(!empty($this->table)){
+		if($this->table){
 			$this->where = ($where ? $where : ($this->where ? $this->where : '1'));
 			return f('SELECT COUNT(1) as Count FROM ' . $this->db->escape($this->table) . ' WHERE ' . $this->where, 'Count', $this->db);
-		} else {
-			return -1;
 		}
+		return -1;
 	}
 
 	function searchquery($where = '', $get = '*', $table = '', $order = '', $limit = ''){
 
 		$this->table = ($table ? $table : ($this->table ? $this->table : ''));
 
-		if(!empty($this->table)){
+		if($this->table){
 			$this->where = (empty($where)) ? ((empty($this->where)) ? '' : ' WHERE ' . $this->where) : ' WHERE ' . $where;
 			$this->get = (empty($get)) ? ((empty($this->get)) ? '*' : $this->get) : $get;
 			$this->Order = (!empty($order)) ? $order : $this->Order;
@@ -218,70 +217,43 @@ class we_search{
 
 	function getJSinWEforwardbackward($name){
 		return we_html_element::jsScript(JS_DIR . 'tooltip.js') . we_html_element::jsElement('
-				_EditorFrame.setEditorIsHot(false);
+_EditorFrame.setEditorIsHot(false);
 
-			function next(){
-				document.we_form.elements[\'SearchStart\'].value = parseInt(document.we_form.elements[\'SearchStart\'].value) + ' . $this->anzahl . ';
-				top.we_cmd("reload_editpage");
-			}
-			function back(){
-				document.we_form.elements[\'SearchStart\'].value = parseInt(document.we_form.elements[\'SearchStart\'].value) - ' . $this->anzahl . ';
-				top.we_cmd("reload_editpage");
-			}');
+function next(){
+	document.we_form.elements[\'SearchStart\'].value = parseInt(document.we_form.elements[\'SearchStart\'].value) + ' . $this->anzahl . ';
+	top.we_cmd("reload_editpage");
+}
+function back(){
+	document.we_form.elements[\'SearchStart\'].value = parseInt(document.we_form.elements[\'SearchStart\'].value) - ' . $this->anzahl . ';
+	top.we_cmd("reload_editpage");
+}');
 	}
 
 	function getJSinWEorder($name){
 		return we_html_element::jsElement('
-			function setOrder(order){
+function setOrder(order){
 
-				foo = document.we_form.elements[\'Order\'].value;
+	foo = document.we_form.elements[\'Order\'].value;
 
-				if(((foo.substring(foo.length-5,foo.length) == " DESC") && (foo.substring(0,order.length-5) == order)) || foo != order){
-					document.we_form.elements[\'Order\'].value=order;
-				}else{
-					document.we_form.elements[\'Order\'].value=order+" DESC";
-				}
-				top.we_cmd("reload_editpage");
-			}');
+	if(((foo.substring(foo.length-5,foo.length) == " DESC") && (foo.substring(0,order.length-5) == order)) || foo != order){
+		document.we_form.elements[\'Order\'].value=order;
+	}else{
+		document.we_form.elements[\'Order\'].value=order+" DESC";
+	}
+	top.we_cmd("reload_editpage");
+}');
 	}
 
-	function getLocation($name = 'locationField', $select = '', $size = 1, $sprach = array()){
-		// get Class
-		$opts = '';
-		$loc = array('CONTAIN', 'IS', 'START', 'END', '<', '<=', '>=', '>');
-		foreach($loc as $l){
-			$opts .= '<option value="' . $l . '" ' . (($select == $l) ? "selected" : "") . '>'
-				. oldHtmlspecialchars((( isset($sprach[$l]) && $sprach[$l] ) ? $sprach[$l] : $l))
-				. '</option>';
-		}
-
-		return '<select name="' . $name . '" class="weSelect" size="' . $size . '">' . $opts . '</select>';
+	static function getLocation($name = 'locationField', $select = '', $size = 1){
+		return we_html_tools::htmlSelect($name, we_search_search::getLocation(), $size, $select);
 	}
 
-	function getLocationDate($name = 'locationField', $select = '', $size = 1, $sprach = array()){
-		// get Class
-		$opts = '';
-		$loc = array('IS', '<', '<=', '>=', '>');
-		foreach($loc as $l){
-			$opts .= '<option value="' . $l . '" ' . (($select == $l) ? "selected" : "") . '>'
-				. oldHtmlspecialchars((( isset($sprach[$l]) && $sprach[$l] ) ? $sprach[$l] : $l))
-				. '</option>';
-		}
-
-		return '<select name="' . $name . '" class="weSelect" size="' . $size . '">' . $opts . '</select>';
+	static function getLocationDate($name = 'locationField', $select = '', $size = 1){
+		return we_html_tools::htmlSelect($name, we_search_search::getLocation('date'), $size, $select);
 	}
 
-	function getLocationMeta($name = 'locationField', $select = '', $size = 1, $sprach = array()){
-		// get Class
-		$opts = '';
-		$loc = array('IS');
-		foreach($loc as $l){
-			$opts .= '<option value="' . $l . '" ' . (($select == $l) ? "selected" : "") . '>' .
-				oldHtmlspecialchars((( isset($sprach[$l]) && $sprach[$l] ) ? $sprach[$l] : $l)) .
-				'</option>';
-		}
-
-		return '<select name="' . $name . '" class="weSelect" size="' . $size . '">' . $opts . '</select>';
+	static function getLocationMeta($name = 'locationField', $select = '', $size = 1){
+		return we_html_tools::htmlSelect($name, we_search_search::getLocation('meta'), $size, $select);
 	}
 
 	function getNextPrev($we_search_anzahl){
