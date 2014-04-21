@@ -87,7 +87,7 @@ class we_object_listview extends listviewBase{
 
 		$where_lang = '';
 
-		if($this->languages != ''){
+		if($this->languages){
 			$where_lang = array();
 			$langArray = makeArrayFromCSV($this->languages);
 			foreach($langArray as $lang){
@@ -146,9 +146,9 @@ class we_object_listview extends listviewBase{
 			$webUserID_tail = ' AND (' . $_wsql . ') ';
 		}
 
-		if(!empty($sqlParts["tables"]) || $we_predefinedSQL != ''){
+		if($sqlParts["tables"] || $we_predefinedSQL != ''){
 
-			if($we_predefinedSQL != ""){
+			if($we_predefinedSQL){
 				$this->DB_WE->query($we_predefinedSQL);
 				$this->anz_all = $this->DB_WE->num_rows();
 				$q = $we_predefinedSQL . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . $this->maxItemsPerPage) : '');
@@ -190,7 +190,7 @@ class we_object_listview extends listviewBase{
 						$_idListArray[] = $this->DB_WE->f("OF_WebUserID");
 					}
 				}
-				if(!empty($_idListArray)){
+				if($_idListArray){
 					$_idlist = implode(',', array_unique($_idListArray));
 					$db = new DB_WE();
 					$db->query('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID IN(' . $_idlist . ')');
