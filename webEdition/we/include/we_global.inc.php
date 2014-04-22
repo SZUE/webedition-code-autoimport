@@ -232,7 +232,7 @@ function _weRequest(&$var, $key, array $data){
  * @return mixed default, if value not set, the filtered value else
  */
 function weRequest($type, $name, $default = false, $index = null){
-	if(!isset($_REQUEST[$name]) || ($index !== null && !isset($_REQUEST[$name][$index]))){
+	if(!isset($_REQUEST[$name]) || (isset($_REQUEST[$name]) && $_REQUEST[$name] === '') || ($index !== null && !isset($_REQUEST[$name][$index]))){
 		return $default;
 	}
 	$var = ($index === null ? $_REQUEST[$name] : $_REQUEST[$name][$index]);
@@ -356,8 +356,8 @@ function in_parentID($id, $pid, $table = FILE_TABLE, we_database_base $db = null
 	return false;
 }
 
-function in_workspace($IDs, $wsIDs, $table = FILE_TABLE, we_database_base $db = null, $objcheck = false){
-	if(!$wsIDs || !$IDs){
+function in_workspace($IDs, $wsIDs, $table = FILE_TABLE, we_database_base $db = null, $norootcheck = false){
+	if(!$wsIDs || $IDs === ''){
 		return true;
 	}
 	$db = ($db ? $db : new DB_WE());
@@ -371,7 +371,8 @@ function in_workspace($IDs, $wsIDs, $table = FILE_TABLE, we_database_base $db = 
 	if(!$wsIDs || !$IDs || (in_array(0, $wsIDs))){
 		return true;
 	}
-	if((!$objcheck) && in_array(0, $IDs)){
+
+	if((!$norootcheck) && in_array(0, $IDs)){
 		return false;
 	}
 	foreach($IDs as $id){
