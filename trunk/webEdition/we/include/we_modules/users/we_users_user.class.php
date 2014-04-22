@@ -945,6 +945,7 @@ _multiEditorreload = true;";
 	}
 
 	function preserveState($tab, $sub_tab){
+
 		switch($tab){
 			case self::TAB_DATA:
 				foreach($this->persistent_slots as $pkey => $pval){

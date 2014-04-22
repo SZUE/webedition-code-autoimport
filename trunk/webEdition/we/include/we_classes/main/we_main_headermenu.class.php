@@ -127,7 +127,7 @@ top.weSidebar = weSidebar;
 	}
 
 	static function getMenu(){
-		if(weRequest('bool',"SEEM_edit_include")){ // there is only a menu when not in seem_edit_include!
+		if(weRequest('bool', "SEEM_edit_include")){ // there is only a menu when not in seem_edit_include!
 			return null;
 		}
 		include(WE_INCLUDES_PATH . "java_menu/we_menu.inc.php");
@@ -137,11 +137,10 @@ top.weSidebar = weSidebar;
 
 			$jmenu = new we_base_menu($we_menu, "top.load");
 		} else { // menu for seemode
-			if(permissionhandler::isUserAllowedForAction("header", "with_java")){
-				$jmenu = new we_base_menu($we_menu, "top.load");
-			} else {
+			if(!permissionhandler::isUserAllowedForAction("header", "with_java")){
 				return null;
 			}
+			$jmenu = new we_base_menu($we_menu, "top.load");
 		}
 
 		return $jmenu;
@@ -153,7 +152,7 @@ top.weSidebar = weSidebar;
 		$jmenu = self::getMenu();
 		$navigationButtons = array();
 
-		if(!weRequest('bool','SEEM_edit_include')){ // there is only a menu when not in seem_edit_include!
+		if(!weRequest('bool', 'SEEM_edit_include')){ // there is only a menu when not in seem_edit_include!
 			if(// menu for normalmode
 				isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
 

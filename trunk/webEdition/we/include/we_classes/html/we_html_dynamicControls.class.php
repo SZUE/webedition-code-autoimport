@@ -374,7 +374,7 @@ class we_html_dynamicControls{
 								<td></td>
 									<td>' . ($parentGroups === false ? '' : '<img class="showParentPerms" src="' . IMAGE_DIR . (isset($parentGroups[$_group_item_values['perm']]) ? '/icons/valid.gif' : '/navigation/close.gif') . '"/>') . '</td>
 									<td style="padding:5px 0;">
-										' . we_html_forms::checkbox(($_group_item_value ? $_group_item_value : 0), ($_group_item_value ? true : false), $item_names . "_Permission_" . $_group_item_key, $titles[$_groups_key][$_group_item_key], false, "defaultfont", "top.content.setHot();") . '</td>
+										' . we_html_forms::checkbox(1, ($_group_item_value ? true : false), $item_names . "_Permission_" . $_group_item_key, $titles[$_groups_key][$_group_item_key], false, "defaultfont", "top.content.setHot();") . '</td>
 								<tr>
 									<td>
 										' . we_html_tools::getPixel(15, 3) . '</td>
