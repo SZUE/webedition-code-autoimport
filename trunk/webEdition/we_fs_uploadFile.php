@@ -27,26 +27,28 @@ we_html_tools::protect();
 
 echo we_html_tools::getHtmlTop(g_l('newFile', '[import_File_from_hd_title]')) . STYLESHEET;
 
-$we_ContentType = weRequest('raw', 'ct', we_base_ContentTypes::IMAGE);
-
-$allowedContentTypes = '';
+$we_ContentType = weRequest('raw', 'ct', -1);
 
 switch($we_ContentType){
+	case -1:
+		$we_ContentType = $allowedContentTypes = (isset($_FILES['we_uploadedFile']['name']) ? getContentTypeFromFile($_FILES['we_uploadedFile']['name']) : '');
+		break;
 	case we_base_ContentTypes::IMAGE;
 		$allowedContentTypes = we_base_imageEdit::IMAGE_CONTENT_TYPES;
 		break;
 	case we_base_ContentTypes::APPLICATION;
+		$allowedContentTypes = '';
 		break;
 	default:
 		$allowedContentTypes = $we_ContentType;
 }
+$pid = weRequest('int', 'pid', 0);
 
-$we_alerttext = '';
 $parts = array();
 
-if(isset($_FILES['we_uploadedFile']) && !permissionhandler::hasPerm(we_base_ContentTypes::inst()->getPermission(getContentTypeFromFile($_FILES['we_uploadedFile']['name'])))){
-	$we_alerttext = g_l('alert', '[upload_notallowed]');
-}
+$we_alerttext = (!in_workspace($pid, get_ws(FILE_TABLE), FILE_TABLE, $GLOBALS['DB_WE']) || isset($_FILES['we_uploadedFile']) && !permissionhandler::hasPerm(we_base_ContentTypes::inst()->getPermission(getContentTypeFromFile($_FILES['we_uploadedFile']['name']))) ?
+		g_l('alert', '[upload_notallowed]') :
+		'');
 
 if((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploadedFile']['type'] && (($allowedContentTypes == '') || (!(strpos($allowedContentTypes, $_FILES['we_uploadedFile']['type']) === false)))){
 	if(!$we_ContentType){
@@ -54,7 +56,7 @@ if((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploaded
 	}
 	// initializing $we_doc
 	include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
-	$pid = weRequest('int', 'pid', 0);
+
 	$overwrite = $_REQUEST['overwrite'];
 
 	// creating a temp name and copy the file to the we tmp directory with the new temp name
@@ -80,7 +82,7 @@ if((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploaded
 		} else {
 			$z = 0;
 			$footext = $we_doc->Filename . '_' . $z . $we_doc->Extension;
-			while(f('SELECT ID FROM ' . FILE_TABLE . " WHERE Text='" . $DB_WE->escape($footext) . "' AND ParentID='$pid'", 'ID', $DB_WE)){
+			while(f('SELECT ID FROM ' . FILE_TABLE . " WHERE Text='" . $DB_WE->escape($footext) . "' AND ParentID=" . $pid)){
 				$z++;
 				$footext = $we_doc->Filename . '_' . $z . $we_doc->Extension;
 			}
@@ -180,7 +182,7 @@ if($we_ContentType == we_base_ContentTypes::IMAGE){
 <script type="text/javascript"><!--
 <?php
 if($we_alerttext){
-	print we_message_reporting::getShowMessageCall($we_alerttext, we_message_reporting::WE_MESSAGE_ERROR);
+	echo we_message_reporting::getShowMessageCall($we_alerttext, we_message_reporting::WE_MESSAGE_ERROR);
 }
 if(isset($_FILES['we_uploadedFile']) && (!$we_alerttext)){
 	if($we_doc->ID){
@@ -199,7 +201,7 @@ if(isset($_FILES['we_uploadedFile']) && (!$we_alerttext)){
 		}
 		opener.top.reloadDir();
 		opener.top.unselectAllFiles();
-		opener.top.addEntry("<?php print $we_doc->ID ?>", "<?php print $we_doc->Icon ?>", "<?php print $we_doc->Text ?>", "<?php print $we_doc->IsFolder ?>", "<?php print $we_doc->Path ?>");
+		opener.top.addEntry("<?php print $we_doc->ID ?>", "<?php print $we_doc->Icon ?>", "<?php print $we_doc->Text ?>", "<?php print $we_doc->IsFolder ?>", "<?php echo $we_doc->Path ?>");
 		opener.top.doClick(<?php print $we_doc->ID; ?>, 0);
 		setTimeout('opener.top.selectFile(<?php print $we_doc->ID; ?>)', 200);
 	<?php } ?>
@@ -213,7 +215,8 @@ if(isset($_FILES['we_uploadedFile']) && (!$we_alerttext)){
 			<input type="hidden" name="table" value="<?php print $_REQUEST["tab"]; ?>" />
 			<input type="hidden" name="pid" value="<?php print $_REQUEST["dir"]; ?>" />
 			<input type="hidden" name="ct" value="<?php print $we_ContentType; ?>" />
-			<?php print we_html_multiIconBox::getHTML("", "100%", $parts, 30, $buttons, -1, "", "", false, g_l('newFile', "[import_File_from_hd_title]"), "", 560); ?>
+			<?php echo we_html_multiIconBox::getHTML("", "100%", $parts, 30, $buttons, -1, "", "", false, g_l('newFile', "[import_File_from_hd_title]"), "", 560); ?>
 		</form></center>
 </body>
 </html>
+

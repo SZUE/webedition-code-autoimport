@@ -327,17 +327,16 @@ function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 		$ret = '';
 		$this->query();
 		while($this->next_record()){
-			$title = isset($this->titles[$this->f("ID")]) ? $this->titles[$this->f("ID")] : '&nbsp;';
+
+			$title = strip_tags(str_replace(array('"', "\n\r", "\n", "\\", '°',), array('\"', ' ', ' ', "\\\\", '&deg;'), (isset($this->titles[$this->f("ID")]) ? oldHtmlspecialchars($this->titles[$this->f("ID")] ):'-')));
+
 			$published = $this->table == FILE_TABLE ? $this->f("Published") : 1;
-			$title = $title == '&nbsp;' ? '-' : oldHtmlspecialchars($title);
-			$title = strip_tags(str_replace(array('"', "\n\r", "\n", "\\", '°',), array('\"', ' ', ' ', "\\\\", '&deg;'), $title));
 			$ret.='top.addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . $this->f("Text") . '",' . $this->f("IsFolder") . ',"' . $this->f("Path") . '","' . date(g_l('date', '[format][default]'), $this->f("ModDate")) . '","' . $this->f("ContentType") . '","' . $published . '","' . $title . '");';
 		}
 
 		if($this->filter != we_base_ContentTypes::TEMPLATE && $this->filter != "object" && $this->filter != "objectFile" && $this->filter != we_base_ContentTypes::WEDOCUMENT){
-
 			$tmp = ((in_workspace($this->dir, get_ws($this->table))) && $this->userCanMakeNewFile) ? 'enable' : 'disable';
-			$ret.= 'if(top.fsheader.' . $tmp . 'NewFileBut) top.fsheader.' . $tmp . 'NewFileBut();';
+			$ret.= 'if(top.fsheader.' . $tmp . 'NewFileBut){top.fsheader.' . $tmp . 'NewFileBut();}';
 		}
 
 
