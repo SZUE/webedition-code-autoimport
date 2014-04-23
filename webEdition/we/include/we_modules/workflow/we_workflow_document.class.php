@@ -22,21 +22,21 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_workflow_document extends we_workflow_base{
+class we_workflow_document extends we_workflow_base {
 
 	const STATUS_UNKNOWN = 0;
 	const STATUS_FINISHED = 1;
 	const STATUS_CANCELED = 2;
 
 	//properties
-	var $ID;
-	var $workflowID;
-	var $documentID;
-	var $userID;
-	var $Status;
+	var $ID = 0;
+	var $workflowID = 0;
+	var $documentID = 0;
+	var $userID = 0;
+	var $Status = 0;
 	//accossiations
-	var $workflow;
-	var $document;
+	var $workflow = false;
+	var $document = false;
 	var $steps = array();
 
 	/**
@@ -47,20 +47,8 @@ class we_workflow_document extends we_workflow_base{
 		parent::__construct();
 		$this->table = WORKFLOW_DOC_TABLE;
 		$this->ClassName = __CLASS__;
-		$this->persistents[] = "ID";
-		$this->persistents[] = "workflowID";
-		$this->persistents[] = "documentID";
-		$this->persistents[] = "userID";
-		$this->persistents[] = "Status";
+		array_push($this->persistents, "ID", "workflowID", "documentID", "userID", "Status");
 
-		$this->ID = 0;
-		$this->workflowID = 0;
-		$this->documentID = 0;
-		$this->userID = 0;
-		$this->Status = 0;
-		$this->steps = array();
-		$this->document = false;
-		$this->workflow = false;
 
 		if($wfDocument){
 			$this->ID = $wfDocument;
@@ -72,16 +60,17 @@ class we_workflow_document extends we_workflow_base{
 	 * Load data from database
 	 */
 	function load($id = 0){
-		if($id)
+		if($id){
 			$this->ID = $id;
+		}
 
 		if($this->ID){
 			parent::load();
 			$this->workflow = new we_workflow_workflow($this->workflowID);
 
 			$docTable = $this->workflow->Type == we_workflow_workflow::OBJECT ? OBJECT_FILES_TABLE : FILE_TABLE;
-			$this->db->query("SELECT * FROM $docTable WHERE ID=" . intval($this->documentID));
-			if($this->db->next_record())
+			$this->db->query('SELECT * FROM ' . $docTable . ' WHERE ID=' . intval($this->documentID));
+			if($this->db->next_record()){
 				if($this->db->f("ClassName")){
 					$tmp = $this->db->f("ClassName");
 					$this->document = new $tmp();
@@ -90,6 +79,7 @@ class we_workflow_document extends we_workflow_base{
 						$this->document->we_load(we_class::LOAD_TEMP_DB);
 					}
 				}
+			}
 
 			$this->steps = we_workflow_documentStep::__getAllSteps($this->ID);
 		}
@@ -134,8 +124,9 @@ class we_workflow_document extends we_workflow_base{
 
 	function decline($uID, $desc, $force = false){
 		$i = $this->findLastActiveStep();
-		if($i < 0 && !$force)
+		if($i < 0 && !$force){
 			return false;
+		}
 		$ret = $this->steps[$i]->decline($uID, $desc, $force);
 		if($this->steps[$i]->Status == we_workflow_documentStep::STATUS_CANCELED){
 			$this->finishWorkflow(1, $uID);
@@ -152,8 +143,9 @@ class we_workflow_document extends we_workflow_base{
 	}
 
 	function restartWorkflow($desc){
-		foreach($this->steps as $k => $v)
+		foreach($this->steps as $k => $v){
 			$this->steps[$k]->delete();
+		}
 		$this->steps = we_workflow_documentStep::__createAllSteps($this->workflowID);
 		$this->steps[0]->start($desc);
 	}
@@ -172,17 +164,18 @@ class we_workflow_document extends we_workflow_base{
 		if($force){
 			$this->Status = self::STATUS_CANCELED;
 			foreach($this->steps as $sk => $sv){
-				if($this->steps[$sk]->Status == we_workflow_documentStep::STATUS_UNKNOWN)
+				if($this->steps[$sk]->Status == we_workflow_documentStep::STATUS_UNKNOWN){
 					$this->steps[$sk]->Status = we_workflow_documentStep::STATUS_CANCELED;
+				}
 				foreach($this->steps[$sk]->tasks as $tk => $tv){
-					if($this->steps[$sk]->tasks[$tk]->Status == we_workflow_documentTask::STATUS_UNKNOWN)
+					if($this->steps[$sk]->tasks[$tk]->Status == we_workflow_documentTask::STATUS_UNKNOWN){
 						$this->steps[$sk]->tasks[$tk]->Status = we_workflow_documentTask::STATUS_CANCELED;
+					}
 				}
 			}
 			//insert into document Log
 			$this->Log->logDocumentEvent($this->ID, $uID, we_workflow_log::TYPE_DOC_FINISHED_FORCE, "");
-		}
-		else {
+		}else {
 			$this->Status = self::STATUS_FINISHED;
 			$this->Log->logDocumentEvent($this->ID, $uID, we_workflow_log::TYPE_DOC_FINISHED, "");
 		}
@@ -252,7 +245,7 @@ class we_workflow_document extends we_workflow_base{
 
 	function find($documentID, $type = '0,1', $status = self::STATUS_UNKNOWN){
 		$db = new DB_WE();
-		$id = f('SELECT ' . WORKFLOW_DOC_TABLE . '.ID FROM ' . WORKFLOW_DOC_TABLE . ',' . WORKFLOW_TABLE . " WHERE " . WORKFLOW_DOC_TABLE . ".workflowID=" . WORKFLOW_TABLE . ".ID AND " . WORKFLOW_DOC_TABLE . ".documentID=" . intval($documentID) . " AND " . WORKFLOW_DOC_TABLE . ".Status IN (" . $db->escape($status) . ")" . ($type != "" ? " AND " . WORKFLOW_TABLE . ".Type IN (" . $db->escape($type) . ")" : "") . " ORDER BY " . WORKFLOW_DOC_TABLE . ".ID DESC", 'ID', $db);
+		$id = f('SELECT ' . WORKFLOW_DOC_TABLE . '.ID FROM ' . WORKFLOW_DOC_TABLE . ',' . WORKFLOW_TABLE . " WHERE " . WORKFLOW_DOC_TABLE . ".workflowID=" . WORKFLOW_TABLE . ".ID AND " . WORKFLOW_DOC_TABLE . ".documentID=" . intval($documentID) . " AND " . WORKFLOW_DOC_TABLE . ".Status IN (" . $db->escape($status) . ")" . ($type != "" ? " AND " . WORKFLOW_TABLE . ".Type IN (" . $db->escape($type) . ")" : "") . " ORDER BY " . WORKFLOW_DOC_TABLE . ".ID DESC", '', $db);
 		return ($id ? new self($id) : false);
 	}
 

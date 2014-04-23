@@ -24,14 +24,14 @@
  */
 require_once(WE_MODULES_PATH . 'workflow/we_conf_workflow.inc.php');
 
-abstract class we_workflow_utility{
+abstract class we_workflow_utility {
 
 	private static function getTypeForTable($table){
 		switch($table){
 			case FILE_TABLE:
 				return '0,1';
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : -1):
-				return '2';
+				return 2;
 			default:
 				return '0,1';
 		}
@@ -223,11 +223,12 @@ abstract class we_workflow_utility{
 	}
 
 	static function getWorkflowDocsForUser($userID, $table, $isAdmin = false, $permPublish = false, $ws = ""){
+		$db=new DB_WE();
 		if($isAdmin){
-			return self::getAllWorkflowDocs($table);
+			return self::getAllWorkflowDocs($table,$db);
 		}
 		$ids = ($permPublish ? self::getWorkflowDocsFromWorkspace($table, $ws) : array());
-		$wids = self::getAllWorkflowDocs($table);
+		$wids = self::getAllWorkflowDocs($table,$db);
 
 		foreach($wids as $id){
 			if(!in_array($id, $ids)){
@@ -240,23 +241,16 @@ abstract class we_workflow_utility{
 		return $ids;
 	}
 
-	static function getAllWorkflowDocs($table){
-		$type = self::getTypeForTable($table);
-		$db = new DB_WE();
-		$ids = array();
-		$db->query('SELECT DISTINCT ' . WORKFLOW_DOC_TABLE . '.documentID as ID FROM ' . WORKFLOW_DOC_TABLE . ',' . WORKFLOW_TABLE . ' WHERE ' . WORKFLOW_DOC_TABLE . ".workflowID=" . WORKFLOW_TABLE . '.ID AND ' . WORKFLOW_DOC_TABLE . '.Status = ' . we_workflow_document::STATUS_UNKNOWN . ' AND ' . WORKFLOW_TABLE . '.Type IN(' . $type . ')');
-		while($db->next_record()){
-			if(!in_array($db->f("ID"), $ids)){
-				$ids[] = $db->f("ID");
-			}
-		}
-		return $ids;
+	static function getAllWorkflowDocs($table, we_database_base $db=null){
+		$db = $db?:new DB_WE();
+		$db->query('SELECT DISTINCT ' . WORKFLOW_DOC_TABLE . '.documentID as ID FROM ' . WORKFLOW_DOC_TABLE . ' LEFT JOIN ' . WORKFLOW_TABLE . ' ON ' . WORKFLOW_DOC_TABLE . ".workflowID=" . WORKFLOW_TABLE . '.ID WHERE ' . WORKFLOW_DOC_TABLE . '.Status = ' . we_workflow_document::STATUS_UNKNOWN . ' AND ' . WORKFLOW_TABLE . '.Type IN(' . self::getTypeForTable($table) . ')');
+		return array_unique($db->getAll(true));
 	}
 
-	private static function getWorkflowDocsFromWorkspace($table, $ws){
+	private static function getWorkflowDocsFromWorkspace($table, $ws, we_database_base $db=null){
 		$wids = self::getAllWorkflowDocs($table);
 		$ids = array();
-		$db = new DB_WE();
+		$db = $db?:new DB_WE();
 		foreach($wids as $id){
 			if(!in_array($id, $ids)){
 				if(is_array($ws) && !empty($ws)){
@@ -296,7 +290,9 @@ abstract class we_workflow_utility{
 	static function forceOverdueDocuments($userID = 0){
 		$db = new DB_WE();
 		$ret = '';
-		$db->query('SELECT ' . WORKFLOW_DOC_TABLE . '.ID AS docID,' . WORKFLOW_DOC_STEP_TABLE . ".ID AS docstepID," . WORKFLOW_STEP_TABLE . ".ID AS stepID FROM " . WORKFLOW_DOC_TABLE . "," . WORKFLOW_DOC_STEP_TABLE . "," . WORKFLOW_STEP_TABLE . " WHERE " . WORKFLOW_DOC_TABLE . ".ID=" . WORKFLOW_DOC_STEP_TABLE . ".workflowDocID AND " . WORKFLOW_DOC_STEP_TABLE . ".workflowStepID=" . WORKFLOW_STEP_TABLE . ".ID AND " . WORKFLOW_DOC_STEP_TABLE . ".startDate<>0 AND (" . WORKFLOW_DOC_STEP_TABLE . ".startDate+ ROUND(" . WORKFLOW_STEP_TABLE . ".Worktime*3600))<" . time() . " AND " . WORKFLOW_DOC_STEP_TABLE . ".finishDate=0 AND " . WORKFLOW_DOC_STEP_TABLE . ".Status=" . we_workflow_documentStep::STATUS_UNKNOWN . " AND " . WORKFLOW_DOC_TABLE . ".Status=" . we_workflow_document::STATUS_UNKNOWN);
+		$db->query('SELECT ' . WORKFLOW_DOC_TABLE . '.ID AS docID,' . WORKFLOW_DOC_STEP_TABLE . '.ID AS docstepID,' . WORKFLOW_STEP_TABLE . '.ID AS stepID ' .
+			'FROM ' . WORKFLOW_DOC_TABLE . ' LEFT JOIN ' . WORKFLOW_DOC_STEP_TABLE . ' ON ' . WORKFLOW_DOC_TABLE . '.ID=' . WORKFLOW_DOC_STEP_TABLE . '.workflowDocID LEFT JOIN ' . WORKFLOW_STEP_TABLE . ' ON ' . WORKFLOW_DOC_STEP_TABLE . '.workflowStepID=' . WORKFLOW_STEP_TABLE . '.ID ' .
+			'WHERE ' . WORKFLOW_DOC_STEP_TABLE . '.startDate!=0 AND (' . WORKFLOW_DOC_STEP_TABLE . '.startDate+ ROUND(' . WORKFLOW_STEP_TABLE . '.Worktime*3600))<' . time() . ' AND ' . WORKFLOW_DOC_STEP_TABLE . '.finishDate=0 AND ' . WORKFLOW_DOC_STEP_TABLE . '.Status=' . we_workflow_documentStep::STATUS_UNKNOWN . ' AND ' . WORKFLOW_DOC_TABLE . '.Status=' . we_workflow_document::STATUS_UNKNOWN);
 		while($db->next_record()){
 			update_time_limit(50);
 			$workflowDocument = new we_workflow_document($db->f('docID'));
