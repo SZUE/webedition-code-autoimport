@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 /* * New Format for classes: we_Domain_specific
  * 1. ALL classes start with we_
  * 2. ALL files in one domain
@@ -42,6 +41,7 @@ abstract class we_autoloader{
 		'captcha' => 'we_classes/captcha',
 		'customer' => 'we_modules/customer',
 		'dialog' => 'we_classes/dialog',
+		'editor' => 'we_editors',
 		'export' => 'we_modules/export',
 		'glossary' => 'we_modules/glossary',
 		'helpers' => 'we_classes/helpers',

@@ -27,7 +27,7 @@
  * WorkfFlow Document Step definition
  * This class describe document step in workflow process
  */
-class we_workflow_documentStep extends we_workflow_base {
+class we_workflow_documentStep extends we_workflow_base{
 
 	const STATUS_UNKNOWN = 0;
 	const STATUS_APPROVED = 1;
@@ -103,7 +103,7 @@ class we_workflow_documentStep extends we_workflow_base {
 
 				$cur->todoID = $this->sendTodo($workflowTask->userID, g_l('modules_workflow', '[todo_subject]'), $mess . "<p>" . $path . "</p>", $deadline);
 				if($workflowTask->Mail){
-					$foo = f('SELECT Email FROM ' . USER_TABLE . ' WHERE ID=' . intval($workflowTask->userID), "Email", $this->db);
+					$foo = f('SELECT Email FROM ' . USER_TABLE . ' WHERE ID=' . intval($workflowTask->userID), "", $this->db);
 					$this_user = getHash('SELECT First,Second,Email FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION["user"]["ID"]), $this->db);
 					if($foo){
 						$desc = str_replace('<br />', "\n", $desc);
@@ -138,9 +138,9 @@ class we_workflow_documentStep extends we_workflow_base {
 		parent::save();
 
 		## save all tasks also ##
-		foreach($this->tasks as $k => $v){
-			$this->tasks[$k]->documentStepID = $this->ID;
-			$this->tasks[$k]->save();
+		foreach($this->tasks as &$v){
+			$v->documentStepID = $this->ID;
+			$v->save();
 		}
 	}
 
@@ -153,8 +153,8 @@ class we_workflow_documentStep extends we_workflow_base {
 
 	function approve($uID, $desc, $force = false){
 		if($force){
-			foreach($this->tasks as $tk => $tv){
-				$this->tasks[$tk]->approve();
+			foreach($this->tasks as &$tv){
+				$tv->approve();
 			}
 			$this->Status = self::STATUS_APPROVED;
 			$this->finishDate = time();
@@ -173,8 +173,8 @@ class we_workflow_documentStep extends we_workflow_base {
 				$num = $this->findNumOfFinishedTasks();
 				if($num == count($this->tasks)){
 					$status = true;
-					foreach($this->tasks as $k => $v){
-						$status = $status && ($v->Status == we_workflow_documentTask::STATUS_APPROVED ? true : false);
+					foreach($this->tasks as $v){
+						$status &= ($v->Status == we_workflow_documentTask::STATUS_APPROVED);
 					}
 
 					if($status){
@@ -184,9 +184,9 @@ class we_workflow_documentStep extends we_workflow_base {
 			}
 			if($this->Status == self::STATUS_APPROVED || $this->Status == self::STATUS_CANCELED){
 				$this->finishDate = time();
-				foreach($this->tasks as $tk => $tv){
+				foreach($this->tasks as &$tv){
 					if($tv->Status == we_workflow_documentTask::STATUS_UNKNOWN){
-						$this->tasks[$tk]->removeTodo();
+						$tv->removeTodo();
 					}
 				}
 			}
@@ -199,8 +199,8 @@ class we_workflow_documentStep extends we_workflow_base {
 
 	function autopublish($uID, $desc, $force = false){
 		if($force){
-			foreach($this->tasks as $tk => $tv){
-				$this->tasks[$tk]->approve();
+			foreach($this->tasks as &$tv){
+				$tv->approve();
 			}
 			$this->Status = self::STATUS_APPROVED;
 			$this->finishDate = time();
@@ -230,9 +230,9 @@ class we_workflow_documentStep extends we_workflow_base {
 			}
 			if($this->Status == self::STATUS_APPROVED || $this->Status == self::STATUS_CANCELED){
 				$this->finishDate = time();
-				foreach($this->tasks as $tk => $tv){
+				foreach($this->tasks as &$tv){
 					if($tv->Status == we_workflow_documentTask::STATUS_UNKNOWN){
-						$this->tasks[$tk]->removeTodo();
+						$tv->removeTodo();
 					}
 				}
 			}
@@ -247,7 +247,6 @@ class we_workflow_documentStep extends we_workflow_base {
 		if($force){
 			foreach($this->tasks as &$tv){
 				$tv->decline();
-				;
 			}
 			$this->Status = self::STATUS_CANCELED;
 			$this->finishDate = time();

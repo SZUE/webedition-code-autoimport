@@ -1459,7 +1459,7 @@ class we_document extends we_root{
 				$times[] = we_schedpro::getNextTimestamp($s, time());
 			}
 		}
-		if(empty($times)){
+		if(!$times){
 			return 0;
 		}
 		sort($times);
