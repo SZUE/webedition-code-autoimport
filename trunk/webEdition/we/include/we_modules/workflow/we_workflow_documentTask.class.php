@@ -29,24 +29,24 @@
  * This class describe document task in workflow process
  *
  */
-class we_workflow_documentTask extends we_workflow_base{
+class we_workflow_documentTask extends we_workflow_base {
 
 	const STATUS_UNKNOWN = 0;
 	const STATUS_APPROVED = 1;
 	const STATUS_CANCELED = 2;
 
 	// workflow document task ID
-	var $ID;
+	var $ID = 0;
 	// workflow document step ID
-	var $documentStepID;
+	var $documentStepID = 0;
 	// workflow task ID
-	var $workflowTaskID;
+	var $workflowTaskID = 0;
 	// date when task is done
-	var $Date;
+	var $Date = 0;
 	// todo id
-	var $todoID;
+	var $todoID = 0;
 	// Status of document task
-	var $Status;
+	var $Status = self::STATUS_UNKNOWN;
 
 	/**
 	 * Default Constructor
@@ -56,19 +56,7 @@ class we_workflow_documentTask extends we_workflow_base{
 		$this->table = WORKFLOW_DOC_TASK_TABLE;
 		$this->ClassName = __CLASS__;
 
-		$this->persistents[] = "ID";
-		$this->persistents[] = "documentStepID";
-		$this->persistents[] = "workflowTaskID";
-		$this->persistents[] = "Date";
-		$this->persistents[] = "todoID";
-		$this->persistents[] = "Status";
-
-		$this->ID = 0;
-		$this->documentStepID = 0;
-		$this->workflowTaskID = 0;
-		$this->Date = 0;
-		$this->todoID = 0;
-		$this->Status = self::STATUS_UNKNOWN;
+		array_push($this->persistents, "ID", "documentStepID", "workflowTaskID", "Date", "todoID", "Status");
 
 		if($wfDocumentTask){
 			$this->ID = $wfDocumentTask;
@@ -89,13 +77,15 @@ class we_workflow_documentTask extends we_workflow_base{
 	}
 
 	function removeTodo(){
-		if($this->todoID)
+		if($this->todoID){
 			parent::removeTodo($this->todoID);
+		}
 	}
 
 	function doneTodo(){
-		if($this->todoID)
+		if($this->todoID){
 			parent::doneTodo($this->todoID);
+		}
 	}
 
 	function rejectTodo(){
@@ -109,17 +99,15 @@ class we_workflow_documentTask extends we_workflow_base{
 	 * returns all tasks for workflow step
 	 *
 	 */
-	function __getAllTasks($workflowDocumentStep){
-
+	static function __getAllTasks($workflowDocumentStep){
 		$db = new DB_WE();
 
-
-		$db->query("SELECT ID FROM " . WORKFLOW_DOC_TASK_TABLE . " WHERE documentStepID =" . intval($workflowDocumentStep) . " ORDER BY ID");
+		$db->query('SELECT ID FROM ' . WORKFLOW_DOC_TASK_TABLE . " WHERE documentStepID=" . intval($workflowDocumentStep) . " ORDER BY ID");
 
 		$docTasks = array();
 
 		while($db->next_record()){
-			$docTasks[] = new we_workflow_documentTask($db->f("ID"));
+			$docTasks[] = new self($db->f("ID"));
 		}
 		return $docTasks;
 	}
@@ -128,13 +116,13 @@ class we_workflow_documentTask extends we_workflow_base{
 	 * creates all tasks for workflow step
 	 *
 	 */
-	function __createAllTasks($workflowStepID){
+	static function __createAllTasks($workflowStepID){
 		$db = new DB_WE();
 
-		$db->query("SELECT ID FROM " . WORKFLOW_TASK_TABLE . " WHERE stepID=" . intval($workflowStepID) . " ORDER BY ID");
+		$db->query('SELECT ID FROM ' . WORKFLOW_TASK_TABLE . " WHERE stepID=" . intval($workflowStepID) . ' ORDER BY ID');
 		$docTasks = array();
 		while($db->next_record()){
-			$docTasks[] = we_workflow_documentTask::__createTask($db->f("ID"));
+			$docTasks[] = self::__createTask($db->f("ID"));
 		}
 		return $docTasks;
 	}
@@ -142,29 +130,24 @@ class we_workflow_documentTask extends we_workflow_base{
 	/**
 	 * Create task
 	 */
-	function __createTask($WorkflowTask){
-		if(is_array($WorkflowTask))
-			return we_workflow_documentTask::__createTaskFromHash($WorkflowTask);
+	private static function __createTask($WorkflowTask){
+		if(is_array($WorkflowTask)){
+			return self::__createTaskFromHash($WorkflowTask);
+		}
 
 		$db = new DB_WE();
 
-		$db->query("SELECT * FROM " . WORKFLOW_TASK_TABLE . " WHERE ID=" . intval($WorkflowTask) . " ORDER BY ID");
-		if(!$db->next_record()){
-			return false;
-		}
-		return we_workflow_documentTask::__createTaskFromHash($db->Record);
+		$hash = getHash('SELECT * FROM ' . WORKFLOW_TASK_TABLE . ' WHERE ID=' . intval($WorkflowTask), $db);
+		return $hash ? false : self::__createTaskFromHash($hash);
 	}
 
 	/**
 	 * Create task from hash
 	 */
-	function __createTaskFromHash($WorkflowTaskArray){
+	private static function __createTaskFromHash($WorkflowTaskArray){
 		$docTask = new we_workflow_documentTask();
 		$docTask->workflowTaskID = $WorkflowTaskArray["ID"];
 		return $docTask;
 	}
 
-	//--------------------------------STATIC FUNCTIONS END ------------------------------
 }
-
-?>

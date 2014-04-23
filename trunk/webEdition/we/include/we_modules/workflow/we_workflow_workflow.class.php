@@ -27,7 +27,7 @@
  * General Definition of WebEdition Workflow
  *
  */
-class we_workflow_workflow extends we_workflow_base{
+class we_workflow_workflow extends we_workflow_base {
 
 	const STATE_INACTIVE = 0;
 	const STATE_ACTIVE = 1;
@@ -39,16 +39,17 @@ class we_workflow_workflow extends we_workflow_base{
 	const OBJECT = 2;
 
 	//properties
-	var $ID;
+	var $ID = 0;
 	var $Text;
-	var $Type;
-	var $Folders;
-	var $DocType;
-	var $Objects;
-	var $Categories;
-	var $ObjectFileFolders;
-	var $ObjCategories;
-	var $Status = 0;
+	var $Type = self::FOLDER;
+	var $Folders = ',0,';
+	var $FolderPath = '';
+	var $DocType = 0;
+	var $Objects = '';
+	var $Categories = '';
+	var $ObjectFileFolders = ',0,';
+	var $ObjCategories = '';
+	var $Status = self::STATE_INACTIVE;
 	var $EmailPath = 0;
 	var $LastStepAutoPublish = 0;
 
@@ -71,34 +72,9 @@ class we_workflow_workflow extends we_workflow_base{
 		parent::__construct();
 		$this->table = WORKFLOW_TABLE;
 
-		$this->persistents[] = 'ID';
-		$this->persistents[] = 'Text';
-		$this->persistents[] = 'Type';
-		$this->persistents[] = 'DocType';
-		$this->persistents[] = 'Folders';
-		$this->persistents[] = 'ObjectFileFolders';
-		$this->persistents[] = 'Objects';
-		$this->persistents[] = 'Categories';
-		$this->persistents[] = 'ObjCategories';
-		$this->persistents[] = 'Status';
-		$this->persistents[] = 'EmailPath';
-		$this->persistents[] = 'LastStepAutoPublish';
+		array_push($this->persistents, 'ID', 'Text', 'Type', 'DocType', 'Folders', 'ObjectFileFolders', 'Objects', 'Categories', 'ObjCategories', 'Status', 'EmailPath', 'LastStepAutoPublish');
 
-
-		$this->ID = 0;
 		$this->Text = g_l('modules_workflow', '[new_workflow]');
-		$this->Type = self::FOLDER;
-		$this->Folders = ',0,';
-		$this->ObjectFileFolders = ',0,';
-		$this->FolderPath = '';
-		$this->DocType = 0;
-		$this->Objects = '';
-		$this->Categories = '';
-		$this->ObjCategories = '';
-		$this->Status = self::STATE_INACTIVE;
-		$this->EmailPath = 0;
-		$this->LastStepAutoPublish = 0;
-		$this->steps = array();
 
 		$this->AddNewStep();
 		$this->AddNewTask();
@@ -182,7 +158,7 @@ class we_workflow_workflow extends we_workflow_base{
 
 
 		// !!! here we have to delete all other steps in database except this in array
-		if(!empty($stepsList)){
+		if($stepsList){
 			$this->db->query('DELETE FROM ' . WORKFLOW_STEP_TABLE . ' WHERE workflowID=' . intval($this->ID) . ' AND ID NOT IN (' . implode(',', $stepsList) . ')');
 		}
 
@@ -220,13 +196,13 @@ class we_workflow_workflow extends we_workflow_base{
 	}
 
 	static function isDocInWorkflow($docID, we_database_base $db){
-		$db->query('SELECT ID FROM ' . WORKFLOW_DOC_TABLE . ' WHERE documentID=' . intval($docID) . ' AND Type IN(0,1) AND Status=0');
-		return ($db->next_record() ? $db->f('ID') : false);
+		$id = f('SELECT ID FROM ' . WORKFLOW_DOC_TABLE . ' WHERE documentID=' . intval($docID) . ' AND Type IN(0,1) AND Status=0', '', $db);
+		return ($id ? : false);
 	}
 
 	static function isObjectInWorkflow($docID, we_database_base $db){
-		$db->query('SELECT ID FROM ' . WORKFLOW_DOC_TABLE . ' WHERE documentID=' . intval($docID) . ' AND Type=2 AND Status=0');
-		return ($db->next_record() ? $db->f('ID') : false);
+		$id = f('SELECT ID FROM ' . WORKFLOW_DOC_TABLE . ' WHERE documentID=' . intval($docID) . ' AND Type=2 AND Status=0', '', $db);
+		return ($id ? : false);
 	}
 
 	/**
@@ -255,8 +231,8 @@ class we_workflow_workflow extends we_workflow_base{
 		 */
 		if($categories){
 			$cats = makeArrayFromCSV($categories);
-			foreach($cats as $k => $v){
-				if($doctype != ''){
+			foreach($cats as $v){
+				if($doctype){
 					$db->query('SELECT ID FROM ' . WORKFLOW_TABLE . ' WHERE DocType IN (' . $doctype . ') AND Categories LIKE "%,' . $db->escape($v) . ',%" AND Type=' . self::DOCTYPE_CATEGORY . ' AND Status=' . self::STATE_ACTIVE);
 				} else {
 					$db->query('SELECT ID FROM ' . WORKFLOW_TABLE . ' WHERE Categories LIKE "%,' . $db->escape($v) . ',%" AND Type=' . self::DOCTYPE_CATEGORY . ' AND Status=' . self::STATE_ACTIVE);
@@ -278,26 +254,16 @@ class we_workflow_workflow extends we_workflow_base{
 			}
 		}
 
-		if($workflowID){ // when we have found a document type-based workflow we can return
-			return $workflowID;
-		}
-
-		$workflowID = self::findWfIdForFolder($folder);
-		/**
-		 * create workflow document
-		 */
-		return ($workflowID ? $workflowID : false);
+		return ($workflowID? // when we have found a document type-based workflow we can return
+				: (self::findWfIdForFolder($folder)? : false));
 	}
 
 	function findWfIdForFolder($folderID){
 		$db = new DB_WE();
-		$wfID = f('SELECT ID FROM ' . WORKFLOW_TABLE . ' WHERE Folders LIKE \'%,' . intval($folderID) . ',%\' AND Type=' . self::FOLDER . ' AND Status=' . self::STATE_ACTIVE, 'ID', $db);
-		if($folderID > 0 && (!$wfID)){
-			$pid = f('SELECT ParentID FROM ' . FILE_TABLE . ' WHERE ID=' . intval($folderID), 'ParentID', $db);
-			return self::findWfIdForFolder($pid);
-		} else {
-			return $wfID;
-		}
+		$wfID = f('SELECT ID FROM ' . WORKFLOW_TABLE . ' WHERE Folders LIKE "%,' . intval($folderID) . ',%" AND Type=' . self::FOLDER . ' AND Status=' . self::STATE_ACTIVE, '', $db);
+		return ($folderID > 0 && (!$wfID) ?
+				self::findWfIdForFolder(f('SELECT ParentID FROM ' . FILE_TABLE . ' WHERE ID=' . intval($folderID), '', $db)) :
+				$wfID);
 	}
 
 	/**
@@ -306,7 +272,7 @@ class we_workflow_workflow extends we_workflow_base{
 	function getObjectWorkflow($object, $categories, $folderID, we_database_base $db){
 		$workflowID = 0;
 		$wfIDs = array();
-		$tail = ($folderID != 0 ? ' AND ObjectFileFolders LIKE "%,' . intval($folderID) . ',%"' : '');
+		$tail = ($folderID ? ' AND ObjectFileFolders LIKE "%,' . intval($folderID) . ',%"' : '');
 
 		$db->query('SELECT ID FROM ' . WORKFLOW_TABLE . ' WHERE Objects LIKE "%,' . $db->escape($object) . ',%" AND Type=' . self::OBJECT . ' AND Status=' . self::STATE_ACTIVE . $tail);
 		while($db->next_record()){
@@ -342,11 +308,7 @@ class we_workflow_workflow extends we_workflow_base{
 			}
 		}
 
-
-		if($workflowID)
-			return $workflowID;
-
-		return false;
+		return ($workflowID? : false);
 	}
 
 	function addNewStep(){
@@ -354,8 +316,9 @@ class we_workflow_workflow extends we_workflow_base{
 	}
 
 	function addNewTask(){
-		foreach($this->steps as $k => $v)
+		foreach($this->steps as $k => $v){
 			$this->steps[$k]->tasks[] = new we_workflow_task();
+		}
 	}
 
 }

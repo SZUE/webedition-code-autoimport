@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 /* the parent class of storagable webEdition classes */
-class we_workflow_view extends we_workflow_base{
+class we_workflow_view extends we_workflow_base {
 
 	// workflow array; format workflow[workflowID]=workflow_name
 	var $workflows = array();
@@ -42,8 +42,6 @@ class we_workflow_view extends we_workflow_base{
 		$this->workflowDef = new we_workflow_workflow();
 		$this->documentDef = new we_workflow_document();
 		array_push($this->hiddens, 'ID', 'Type', 'Status', 'Folders', 'ObjectFileFolders', 'Categories', 'ObjCategories', 'DocType', 'Objects');
-		//$this->hiddens[]='EmailPath';
-		//$this->hiddens[]='LastStepAutoPublish';
 	}
 
 	function getHiddens(){
@@ -78,13 +76,13 @@ class we_workflow_view extends we_workflow_base{
 
 		$counter = 0;
 		$counter1 = 0;
-		foreach($this->workflowDef->steps as $sk => $sv){
+		foreach($this->workflowDef->steps as $sv){
 			$out.=$this->htmlHidden($this->uid . '_step' . $counter . '_sid', $sv->ID) .
 				$this->htmlHidden($this->uid . '_step' . $counter . '_and', $sv->stepCondition) .
 				$this->htmlHidden($this->uid . '_step' . $counter . '_Worktime', $sv->Worktime) .
 				$this->htmlHidden($this->uid . '_step' . $counter . '_timeAction', $sv->timeAction);
 			$counter1 = 0;
-			foreach($sv->tasks as $tk => $tv){
+			foreach($sv->tasks as $tv){
 				$out.=$this->htmlHidden($this->uid . '_task' . $counter . $counter1 . '_tid', $tv->ID) .
 					$this->htmlHidden($this->uid . '_task_' . $counter . '_' . $counter1 . '_userid', $tv->userID) .
 					$this->htmlHidden($this->uid . '_task_' . $counter . '_' . $counter1 . '_Edit', ($tv->Edit ? 1 : 0)) .
@@ -120,44 +118,43 @@ class we_workflow_view extends we_workflow_base{
 			ob_end_clean();
 
 			return $out;
-		} else {
-			$content = '<form name="we_form" onsubmit="return false">' .
-				$this->getHiddens();
-			if($this->show){
-				$content .=$this->getDocumentInfo();
-			} else {
-				$content .=$this->workflowHiddens();
-
-				if($this->page == 0){
-
-					$_space = 143;
-					$parts = array(
-						$this->getWorkflowHeaderMultiboxParts($_space),
-						$parts[] = array(
-						'headline' => g_l('modules_workflow', '[type]'),
-						'space' => $_space - 25,
-						'html' => $this->getWorkflowTypeHTML()),
-						array(
-							'headline' => g_l('modules_workflow', '[specials]'),
-							'space' => $_space - 25,
-							'html' => '<br/>' .
-							we_html_forms::checkboxWithHidden($this->workflowDef->EmailPath, $this->uid . '_EmailPath', g_l('modules_workflow', '[EmailPath]'), false, 'defaultfont', '', false) .
-							we_html_forms::checkboxWithHidden($this->workflowDef->LastStepAutoPublish, $this->uid . '_LastStepAutoPublish', g_l('modules_workflow', '[LastStepAutoPublish]'), false, 'defaultfont', '', false)
-						),
-					);
-					//	Workflow-Type
-					$content .= $this->getHiddensFormOverviewPage() .
-						we_html_multiIconBox::getHTML('workflowProperties', '100%', $parts, 30);
-				} else {
-					$content .= $this->getHiddensFormPropertyPage() .
-						we_html_tools::htmlDialogLayout($this->getStepsHTML(), '');
-				}
-			}
-			$content .='</form>';
-			$body = we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'loaded=1;', 'onunload' => 'doUnload()'), $content);
-
-			return we_html_tools::getHtmlTop() . STYLESHEET . $this->getPropertyJS() . '</head>' . $body . '</html>';
 		}
+		$content = '<form name="we_form" onsubmit="return false">' .
+			$this->getHiddens();
+		if($this->show){
+			$content .=$this->getDocumentInfo();
+		} else {
+			$content .=$this->workflowHiddens();
+
+			if($this->page == 0){
+
+				$_space = 143;
+				$parts = array(
+					$this->getWorkflowHeaderMultiboxParts($_space),
+					$parts[] = array(
+					'headline' => g_l('modules_workflow', '[type]'),
+					'space' => $_space - 25,
+					'html' => $this->getWorkflowTypeHTML()),
+					array(
+						'headline' => g_l('modules_workflow', '[specials]'),
+						'space' => $_space - 25,
+						'html' => '<br/>' .
+						we_html_forms::checkboxWithHidden($this->workflowDef->EmailPath, $this->uid . '_EmailPath', g_l('modules_workflow', '[EmailPath]'), false, 'defaultfont', '', false) .
+						we_html_forms::checkboxWithHidden($this->workflowDef->LastStepAutoPublish, $this->uid . '_LastStepAutoPublish', g_l('modules_workflow', '[LastStepAutoPublish]'), false, 'defaultfont', '', false)
+					),
+				);
+				//	Workflow-Type
+				$content .= $this->getHiddensFormOverviewPage() .
+					we_html_multiIconBox::getHTML('workflowProperties', '100%', $parts, 30);
+			} else {
+				$content .= $this->getHiddensFormPropertyPage() .
+					we_html_tools::htmlDialogLayout($this->getStepsHTML(), '');
+			}
+		}
+		$content .='</form>';
+		$body = we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'loaded=1;', 'onunload' => 'doUnload()'), $content);
+
+		return we_html_tools::getHtmlTop() . STYLESHEET . $this->getPropertyJS() . '</head>' . $body . '</html>';
 	}
 
 	/**
@@ -210,7 +207,6 @@ class we_workflow_view extends we_workflow_base{
 		$delallbut = we_html_button::create_button('delete_all', "javascript:top.content.setHot();we_cmd('del_all_folders');");
 		$wecmdenc3 = we_cmd_enc("fillIDs();opener.we_cmd('add_folder',top.allIDs);");
 		$addbut = we_html_button::create_button("add", "javascript:top.content.setHot();we_cmd('openDirselector','','" . FILE_TABLE . "','','','" . $wecmdenc3 . "','','','',true)");
-
 
 		$dirs = new MultiDirChooser(495, $this->workflowDef->Folders, 'del_folder', we_html_button::create_button_table(array($delallbut, $addbut)), '', 'Icon,Path', FILE_TABLE, 'defaultfont', '', "top.content.setHot();");
 
@@ -288,7 +284,7 @@ class we_workflow_view extends we_workflow_base{
 		}
 
 		/*		 * *** WORKFLOWSTEPS **** */
-		foreach($this->workflowDef->steps as $sk => $sv){
+		foreach($this->workflowDef->steps as $sv){
 			$ids.=$this->htmlHidden($this->uid . '_step' . $counter . '_sid', $sv->ID);
 			$content[$counter] = array(
 				array(
@@ -314,7 +310,7 @@ class we_workflow_view extends we_workflow_base{
 
 
 			$counter1 = 0;
-			foreach($sv->tasks as $tk => $tv){
+			foreach($sv->tasks as $tv){
 				$ids.=$this->htmlHidden($this->uid . '_task' . $counter . '_' . $counter1 . '_tid', $tv->ID);
 				$headline[$counter1 + 3] = array('dat' => g_l('modules_workflow', '[user]') . (string) ($counter1 + 1));
 
@@ -384,7 +380,7 @@ class we_workflow_view extends we_workflow_base{
 
 	function getTypeTableHTML($head, $values, $ident = 0, $textalign = "left", $textclass = "defaultfont"){
 		$out = '<table cellpadding="0" cellspacing="0" border="0">' . ($head ? '<tr><td class="' . trim($textclass) . '" align="' . trim($textalign) . '" colspan="2">' . $head . '</td></tr>' : '');
-		foreach($values as $key => $val){
+		foreach($values as $val){
 			$out.='<tr><td>' . we_html_tools::getPixel($ident, 5) . '</td><td class="' . trim($textclass) . '">' . $val . '</td></tr>';
 		}
 		$out.='</table>';
@@ -423,9 +419,6 @@ class we_workflow_view extends we_workflow_base{
 	}
 
 	function getDocTypeHTML($width = 498){
-
-		$pop = '';
-
 		$vals = array();
 		$this->db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . we_docTypes::getDoctypeQuery($this->db));
 		while($this->db->next_record()){
@@ -433,9 +426,8 @@ class we_workflow_view extends we_workflow_base{
 			$t = $this->db->f('DocType');
 			$vals[$v] = $t;
 		}
-		$pop = we_html_tools::htmlSelect($this->uid . '_MYDocType[]', $vals, 6, $this->workflowDef->DocType, true, array('onchange' => "top.content.setHot();"), "value", $width, "defaultfont");
-
-		return we_html_tools::htmlFormElementTable($pop, g_l('modules_workflow', '[doctype]'));
+		return we_html_tools::htmlFormElementTable(
+				we_html_tools::htmlSelect($this->uid . '_MYDocType[]', $vals, 6, $this->workflowDef->DocType, true, array('onchange' => "top.content.setHot();"), "value", $width, "defaultfont"), g_l('modules_workflow', '[doctype]'));
 	}
 
 	function htmlHidden($name, $value = ''){
@@ -532,11 +524,11 @@ class we_workflow_view extends we_workflow_base{
 									return;
 								num = top.content.editor.edbody.getNumOfDocs();
 								if (num > 0)
-									if (!confirm("<?php print g_l('modules_workflow', '[save_question]') ?>"))
+									if (!confirm("<?php echo g_l('modules_workflow', '[save_question]') ?>"))
 										return;
 							}
 							else {
-			<?php print we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[nothing_to_save]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
+			<?php echo we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[nothing_to_save]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 							}
 							top.content.editor.edbody.document.we_form.wcmd.value = arguments[0];
 							top.content.editor.edbody.submitForm();
@@ -555,7 +547,7 @@ class we_workflow_view extends we_workflow_base{
 						 break;
 						 */
 					case "empty_log":
-						new jsWindow("<?php print WE_WORKFLOW_MODULE_DIR ?>edit_workflow_frameset.php?pnt=qlog", "log_question", -1, -1, 360, 230, true, false, true);
+						new jsWindow("<?php echo WE_WORKFLOW_MODULE_DIR ?>edit_workflow_frameset.php?pnt=qlog", "log_question", -1, -1, 360, 230, true, false, true);
 						break;
 					default:
 						for (var i = 0; i < arguments.length; i++) {
@@ -564,7 +556,7 @@ class we_workflow_view extends we_workflow_base{
 						eval('top.opener.top.we_cmd(' + args + ')');
 				}
 			}
-		//-->
+			//-->
 		</script>
 		<?php
 	}
@@ -665,7 +657,6 @@ function submitForm(){
 	f.submit();
 }
 ' . (!$this->show ? '
-
 
 function clickCheck(a){
 	if(a.checked) a.value=1;
@@ -813,7 +804,7 @@ function checkData(){
 			case 'new_workflow':
 				$this->workflowDef = new we_workflow_workflow();
 				$this->page = 0;
-				print we_html_element::jsElement('
+				echo we_html_element::jsElement('
 					top.content.editor.edheader.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflow_frameset.php?pnt=edheader";
 					top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflow_frameset.php?pnt=edfooter";
 					');
@@ -834,8 +825,9 @@ function checkData(){
 				$arr = makeArrayFromCSV($this->workflowDef->Categories);
 				if(isset($_REQUEST['wcat'])){
 					foreach($arr as $k => $v){
-						if($v == $_REQUEST['wcat'])
+						if($v == $_REQUEST['wcat']){
 							array_splice($arr, $k, 1);
+						}
 					}
 					$this->workflowDef->Categories = makeCSVFromArray($arr, true);
 				}
@@ -859,8 +851,9 @@ function checkData(){
 				$arr = makeArrayFromCSV($this->workflowDef->ObjCategories);
 				if(isset($_REQUEST['wocat'])){
 					foreach($arr as $k => $v){
-						if($v == $_REQUEST['wocat'])
+						if($v == $_REQUEST['wocat']){
 							array_splice($arr, $k, 1);
+						}
 					}
 					$this->workflowDef->ObjCategories = makeCSVFromArray($arr, true);
 				}
@@ -1074,7 +1067,7 @@ function checkData(){
 			$this->workflowDef->addNewTask();
 		}
 
-		foreach($this->workflowDef->steps as $skey => $sval){
+		foreach(array_keys($this->workflowDef->steps) as $skey ){
 			$this->workflowDef->steps[$skey]->workflowID = $this->workflowDef->ID;
 
 			$varname = $this->uid . '_step' . $skey . '_sid';
@@ -1099,7 +1092,7 @@ function checkData(){
 				$this->workflowDef->steps[$skey]->timeAction = $_REQUEST[$varname];
 			}
 
-			foreach($this->workflowDef->steps[$skey]->tasks as $tkey => $tval){
+			foreach(array_keys($this->workflowDef->steps[$skey]->tasks) as $tkey){
 
 				$this->workflowDef->steps[$skey]->tasks[$tkey]->stepID = $this->workflowDef->steps[$skey]->ID;
 
@@ -1253,8 +1246,6 @@ function checkData(){
 			);
 		}
 
-
-
 		//	Logbook
 		$_parts[] = array(
 			'headline' => '',
@@ -1308,13 +1299,14 @@ function checkData(){
 		);
 
 		$this->db->query('SELECT First,Second,username FROM ' . USER_TABLE . ' WHERE ID=' . $this->documentDef->document->ModifierID);
-		if($this->db->next_record())
+		if($this->db->next_record()){
 			$_parts[] = array(
 				'headline' => g_l('modules_users', '[changed_by]'),
 				'html' => $this->db->f('First') . ' ' . $this->db->f('Second') . ' (' . $this->db->f('username') . ')',
 				'space' => $_space,
 				'noline' => 1
 			);
+		}
 
 		$_parts[] = array(
 			'headline' => g_l('weEditorInfo', '[lastLive]'),

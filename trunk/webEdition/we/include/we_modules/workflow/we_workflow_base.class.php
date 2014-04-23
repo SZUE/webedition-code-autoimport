@@ -85,12 +85,12 @@ class we_workflow_base{
 
 	function sendMessage($userID, $subject, $description){
 		$errs = array();
-		$foo = f("SELECT username FROM " . USER_TABLE . " WHERE ID=" . intval($userID), "username", $this->db);
+		$foo = f("SELECT username FROM " . USER_TABLE . " WHERE ID=" . intval($userID), "", $this->db);
 		$rcpts = array($foo); /* user names */
 		we_messaging_message::newMessage($rcpts, $subject, $description, $errs);
 	}
 
-	function sendMail($userID, $subject, $description, $contecttype = 'text/plain'){
+	function sendMail($userID, $subject, $description){
 		$foo = f('SELECT Email FROM ' . USER_TABLE . ' WHERE ID=' . intval($userID), "", $this->db);
 		if($foo && we_check_email($foo)){
 			$this_user = getHash('SELECT First,Second,Email FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION["user"]["ID"]), $this->db);
@@ -128,7 +128,7 @@ class we_workflow_base{
 
 		$i_headers = array('_ID' => $id);
 
-		$userid = f('SELECT UserID FROM ' . MSG_TODO_TABLE . ' WHERE ID=' . intval($id), 'UserID', new DB_WE());
+		$userid = f('SELECT UserID FROM ' . MSG_TODO_TABLE . ' WHERE ID=' . intval($id), '', new DB_WE());
 
 		$m->set_login_data($userid, isset($_SESSION["user"]["Name"]) ? $_SESSION["user"]["Name"] : "");
 		$m->init();
@@ -141,7 +141,7 @@ class we_workflow_base{
 			$errs = $res['msg'];
 		}
 
-		return ($res['err'] == 0 ? 1 : 0);
+		return ($res['err'] == 0);
 	}
 
 	/* remove ToDo */
