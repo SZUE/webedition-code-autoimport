@@ -114,8 +114,8 @@ class we_workflow_step extends we_workflow_base {
 	 */
 	function delete(){
 		if($this->ID){
-			foreach($this->tasks as $key => $val){
-				$this->tasks[$key]->delete();
+			foreach($this->tasks as &$val){
+				$val->delete();
 			}
 			parent::delete();
 			return true;

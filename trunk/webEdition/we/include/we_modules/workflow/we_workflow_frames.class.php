@@ -125,7 +125,7 @@ class we_workflow_frames extends weModuleFrames {
 					} else {
 						var newAst = zweigEintrag;
 
-						var zusatz = (ai == nf.laenge) ? "end" : "";
+						var zusatz = (ai == nf.laenge ? "end" : "");
 
 						if (nf[ai].offen == 0) {
 							fr.write("&nbsp;&nbsp;<A href=\"javascript:top.content.openClose('" + nf[ai].name + "',1)\" BORDER=0><IMG SRC=<?php print TREE_IMAGE_DIR; ?>auf" + zusatz + ".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php #print g_l('tree',"[open_statustext]")         ?>\"></A>");
@@ -182,11 +182,12 @@ class we_workflow_frames extends weModuleFrames {
 				var ai = 1;
 				var ind = 0;
 				while (ai <= menuDaten.laenge) {
-					if ((menuDaten[ai].typ == type))
+					if ((menuDaten[ai].typ == type)){
 						if (menuDaten[ai].name == id) {
 							ind = ai;
 							break;
 						}
+					}
 					ai++;
 				}
 				if (ind != 0) {
@@ -204,23 +205,25 @@ class we_workflow_frames extends weModuleFrames {
 			function openClose(name, status) {
 				var eintragsIndex = indexOfEntry(name);
 				menuDaten[eintragsIndex].offen = status;
-				if (status) {
+				/*if (status) {
 					if (!menuDaten[eintragsIndex].loaded) {
 						drawEintraege();
 					} else {
 						drawEintraege();
 					}
-				} else {
+				} else {*/
 					drawEintraege();
-				}
+				//}
 			}
 
 			function indexOfEntry(name) {
 				var ai = 1;
 				while (ai <= menuDaten.laenge) {
-					if ((menuDaten[ai].typ == 'root') || (menuDaten[ai].typ == 'folder'))
-						if (menuDaten[ai].name == name)
+					if ((menuDaten[ai].typ == 'root') || (menuDaten[ai].typ == 'folder')){
+						if (menuDaten[ai].name == name){
 							return ai;
+						}
+					}
 					ai++;
 				}
 				return -1;

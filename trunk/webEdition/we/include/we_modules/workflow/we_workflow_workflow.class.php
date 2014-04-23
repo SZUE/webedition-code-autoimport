@@ -27,7 +27,7 @@
  * General Definition of WebEdition Workflow
  *
  */
-class we_workflow_workflow extends we_workflow_base {
+class we_workflow_workflow extends we_workflow_base{
 
 	const STATE_INACTIVE = 0;
 	const STATE_ACTIVE = 1;
@@ -89,7 +89,7 @@ class we_workflow_workflow extends we_workflow_base {
 	 * Load workflow definition from database
 	 */
 	function load($id = 0){
-		$this->ID = $id ? $id : $this->ID;
+		$this->ID = $id ? : $this->ID;
 		if(!$this->ID){
 			return false;
 		}
@@ -148,12 +148,11 @@ class we_workflow_workflow extends we_workflow_base {
 
 		$stepsList = array();
 
-		reset($this->steps);
-		for($i = 0; $i < count($this->steps); $i++){
-			$this->steps[$i]->workflowID = $this->ID;
-			$this->steps[$i]->save();
+		foreach($this->steps as &$step){
+			$step->workflowID = $this->ID;
+			$step->save();
 
-			$stepsList[] = $this->steps[$i]->ID;
+			$stepsList[] = $step->ID;
 		}
 
 
@@ -163,7 +162,7 @@ class we_workflow_workflow extends we_workflow_base {
 		}
 
 		//remove all documents from workflow
-		foreach($this->documents as $k => $val){
+		foreach($this->documents as $val){
 			$this->documentDef = new we_workflow_document($val['ID']);
 			$this->documentDef->finishWorkflow(1);
 			$this->documentDef->save();
@@ -255,14 +254,13 @@ class we_workflow_workflow extends we_workflow_base {
 		}
 
 		return ($workflowID? // when we have found a document type-based workflow we can return
-				: (self::findWfIdForFolder($folder)? : false));
+				: (self::findWfIdForFolder($folder, $db)? : false));
 	}
 
-	function findWfIdForFolder($folderID){
-		$db = new DB_WE();
+	function findWfIdForFolder($folderID, we_database_base $db){
 		$wfID = f('SELECT ID FROM ' . WORKFLOW_TABLE . ' WHERE Folders LIKE "%,' . intval($folderID) . ',%" AND Type=' . self::FOLDER . ' AND Status=' . self::STATE_ACTIVE, '', $db);
 		return ($folderID > 0 && (!$wfID) ?
-				self::findWfIdForFolder(f('SELECT ParentID FROM ' . FILE_TABLE . ' WHERE ID=' . intval($folderID), '', $db)) :
+				self::findWfIdForFolder(f('SELECT ParentID FROM ' . FILE_TABLE . ' WHERE ID=' . intval($folderID), '', $db), $db) :
 				$wfID);
 	}
 

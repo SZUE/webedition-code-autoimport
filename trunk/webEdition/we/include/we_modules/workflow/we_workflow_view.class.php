@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 /* the parent class of storagable webEdition classes */
-class we_workflow_view extends we_workflow_base {
+class we_workflow_view extends we_workflow_base{
 
 	// workflow array; format workflow[workflowID]=workflow_name
 	var $workflows = array();
@@ -109,8 +109,7 @@ class we_workflow_view extends we_workflow_base {
 		if(isset($_REQUEST['home']) && $_REQUEST['home']){ //TODO: find a better solution for this!
 			$GLOBALS['we_print_not_htmltop'] = true;
 			$GLOBALS['we_head_insert'] = $this->getPropertyJS();
-			$GLOBALS['we_body_insert'] = '<form name="we_form">';
-			$GLOBALS['we_body_insert'] .= $this->getHiddens() . '</form>';
+			$GLOBALS['we_body_insert'] = '<form name="we_form">' . $this->getHiddens() . '</form>';
 			$GLOBALS['mod'] = 'workflow';
 			ob_start();
 			include(WE_MODULES_PATH . 'home.inc.php');
@@ -556,7 +555,7 @@ class we_workflow_view extends we_workflow_base {
 						eval('top.opener.top.we_cmd(' + args + ')');
 				}
 			}
-			//-->
+		//-->
 		</script>
 		<?php
 	}
@@ -1067,7 +1066,7 @@ function checkData(){
 			$this->workflowDef->addNewTask();
 		}
 
-		foreach(array_keys($this->workflowDef->steps) as $skey ){
+		foreach(array_keys($this->workflowDef->steps) as $skey){
 			$this->workflowDef->steps[$skey]->workflowID = $this->workflowDef->ID;
 
 			$varname = $this->uid . '_step' . $skey . '_sid';
@@ -1375,11 +1374,8 @@ function checkData(){
 			/* $now = date(g_l('weEditorInfo', "[date_format]"), time());
 			  $start = date(g_l('weEditorInfo', "[date_format]"), $sv->startDate);
 			 */
-			$secs = time() - $sv->startDate;
-			$elapsed = self::getTime($secs);
-
-			$secs = ($sv->startDate + round($workflowStep->Worktime * 3600)) - time();
-			$remained = self::getTime($secs);
+			$elapsed = self::getTime(time() - $sv->startDate);
+			$remained = self::getTime(($sv->startDate + round($workflowStep->Worktime * 3600)) - time());
 
 			if($remained['hour'] < 0){
 				if($sk > $current){
@@ -1543,11 +1539,9 @@ function checkData(){
 		$buttonsTable = '<table width="100%" border="0" cellpadding="0" cellspacing="0"><tr><td>' . $nextprev . '</td><td align="right">' . we_html_button::create_button("close", "javascript:self.close();") . '</td></tr></table>';
 
 
-		if(!empty($logs)){
-			return we_html_tools::htmlDialogLayout(we_html_tools::htmlDialogBorder3(580, 300, $content, $headlines), '', $buttonsTable);
-		} else {
-			return we_html_tools::htmlDialogLayout('<div style="width:500px" class="middlefontgray" align="center"><center>-- ' . g_l('modules_workflow', '[log_is_empty]') . ' --</center></div>', '', we_html_button::create_button("close", "javascript:self.close();"));
-		}
+		return ($logs ?
+				we_html_tools::htmlDialogLayout(we_html_tools::htmlDialogBorder3(580, 300, $content, $headlines), '', $buttonsTable) :
+				we_html_tools::htmlDialogLayout('<div style="width:500px" class="middlefontgray" align="center"><center>-- ' . g_l('modules_workflow', '[log_is_empty]') . ' --</center></div>', '', we_html_button::create_button("close", "javascript:self.close();")));
 	}
 
 	function getLogQuestion(){
@@ -1578,23 +1572,160 @@ function checkData(){
 				$this->htmlHidden('clear_opt', '1') .
 				'<form name="we_form">' .
 				'<table cellpading="0" cellspacing="0">' .
-				'<tr>' .
-				'<td class="defaultfont">' . g_l('modules_workflow', '[log_question_text]') . '</td>' .
-				'</tr>' .
-				'<tr>' .
-				'<td>' . we_html_tools::getPixel(10, 10) . '</td>' .
-				'</tr>' .
-				'<tr>' .
-				'<td>' . $this->getTypeTableHTML(we_html_forms::radiobutton(1, true, 'clear_time', g_l('modules_workflow', '[log_question_time]'), true, 'defaultfont', "javascript:document.we_form.clear_opt.value=1;"), $vals) . '</td>' .
-				'</tr>' .
-				'<tr>' .
-				'<td>' . we_html_tools::getPixel(22, 10) . '<br/>' . we_html_forms::radiobutton(0, false, 'clear_time', g_l('modules_workflow', '[log_question_all]'), true, 'defaultfont', "javascript:document.we_form.clear_opt.value=0;") . '</td>' .
-				'</tr>' .
-				'</tr>' .
+				'<tr><td class="defaultfont">' . g_l('modules_workflow', '[log_question_text]') . '</td></tr>' .
+				'<tr><td>' . we_html_tools::getPixel(10, 10) . '</td></tr>' .
+				'<tr><td>' . $this->getTypeTableHTML(we_html_forms::radiobutton(1, true, 'clear_time', g_l('modules_workflow', '[log_question_time]'), true, 'defaultfont', "javascript:document.we_form.clear_opt.value=1;"), $vals) . '</td></tr>' .
+				'<tr><td>' . we_html_tools::getPixel(22, 10) . '<br/>' . we_html_forms::radiobutton(0, false, 'clear_time', g_l('modules_workflow', '[log_question_all]'), true, 'defaultfont', "javascript:document.we_form.clear_opt.value=0;") . '</td></tr>' .
 				'</table>'
 				, g_l('modules_workflow', '[empty_log]'), we_html_button::position_yes_no_cancel(we_html_button::create_button('ok', 'javascript:self.clear();'), '', we_html_button::create_button('cancel', 'javascript:self.close();')
 				)
 			) . '</form>';
+	}
+
+	static function getFooter(){
+
+	}
+
+	static function showFooterForNormalMode($we_doc, $showPubl){
+		$_gap = 16;
+		$_col = 0;
+
+		$_footerTable = new we_html_table(array("cellpadding" => 0,
+			"cellspacing" => 0,
+			"border" => 0), 1, 0);
+
+		$_publishbutton = '';
+		//	decline
+		$_footerTable->addCol(2);
+		$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
+		$_footerTable->setColContent(0, $_col++, we_html_button::create_button("decline", "javascript:decline_workflow();"));
+
+		if(we_workflow_utility::isWorkflowFinished($we_doc->ID, $we_doc->Table) || ((1 + we_workflow_utility::findLastActiveStep($we_doc->ID, $we_doc->Table)) == count(we_workflow_utility::getNumberOfSteps($we_doc->ID, $we_doc->Table)) && permissionhandler::hasPerm("PUBLISH"))){
+			$_publishbutton = we_html_button::create_button("publish", "javascript:finish_workflow();");
+		} else {
+			$_footerTable->addCol(2);
+			$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
+			$_footerTable->setColContent(0, $_col++, we_html_button::create_button("forward", "javascript:pass_workflow();"));
+		}
+
+		if(we_workflow_utility::canUserEditDoc($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"]) && $we_doc->userCanSave()){
+			$_footerTable->addCol(2);
+			$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
+			$_footerTable->setColContent(0, $_col++, we_html_button::create_button("save", "javascript:_EditorFrame.setEditorPublishWhenSave(false);we_save_document();"));
+		}
+
+		if($_publishbutton){
+			$_footerTable->addCol(2);
+			$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
+			$_footerTable->setColContent(0, $_col++, $_publishbutton);
+		} elseif(we_workflow_utility::canUserEditDoc($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"]) && $we_doc->userCanSave()){
+
+			if($showPubl && (!isset($we_doc->IsClassFolder) || !$we_doc->IsClassFolder)){
+				$_footerTable->addCol(2);
+				$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
+				$_footerTable->setColContent(0, $_col++, we_html_button::create_button("publish", "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
+			}
+		}
+
+		return $_footerTable->getHtml();
+	}
+
+	static function showFooterForSEEMMode($we_doc, $showPubl){
+		$_col = 0;
+		$_gap = 16;
+		$_footerTable = new we_html_table(array("cellpadding" => 0,
+			"cellspacing" => 0,
+			"border" => 0), 1, 0);
+
+		switch($we_doc->EditPageNr){
+			case WE_EDITPAGE_PREVIEW:
+				//	Edit-Button
+				$_footerTable->addCol(2);
+				$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
+				$_footerTable->setColContent(0, $_col++, we_html_button::create_button("edit", "javascript:parent.editHeader.we_cmd('switch_edit_page'," . WE_EDITPAGE_CONTENT . ",'" . $GLOBALS["we_transaction"] . "');"));
+
+				//	Decline Workflow
+				$_footerTable->addCol(2);
+				$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
+				$_footerTable->setColContent(0, $_col++, we_html_button::create_button("decline", "javascript:decline_workflow();"));
+
+				$_footerTable->addCol(2);
+				$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
+				if(we_workflow_utility::isWorkflowFinished($we_doc->ID, $we_doc->Table) || ((1 + we_workflow_utility::findLastActiveStep($we_doc->ID, $we_doc->Table)) == count(we_workflow_utility::getNumberOfSteps($we_doc->ID, $we_doc->Table)) && permissionhandler::hasPerm("PUBLISH"))){
+					$_footerTable->setColContent(0, $_col++, we_html_button::create_button("publish", "javascript:finish_workflow();"));
+				} else {
+					$_footerTable->setColContent(0, $_col++, we_html_button::create_button("forward", "javascript:pass_workflow();"));
+				}
+				break;
+			case WE_EDITPAGE_CONTENT:
+
+				//	Preview Button
+				$_footerTable->addCol(2);
+				$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
+				$_footerTable->setColContent(0, $_col++, we_html_button::create_button("preview", "javascript:parent.editHeader.we_cmd('switch_edit_page'," . WE_EDITPAGE_PREVIEW . ",'" . $GLOBALS["we_transaction"] . "');"));
+
+				//	Propertie-button
+				$_footerTable->addCol(2);
+				$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
+				$_footerTable->setColContent(0, $_col++, we_html_button::create_button("properties", "javascript:parent.editHeader.we_cmd('switch_edit_page'," . WE_EDITPAGE_PROPERTIES . ",'" . $GLOBALS["we_transaction"] . "');"));
+
+				//	Decline Workflow
+				$_footerTable->addCol(2);
+				$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
+				$_footerTable->setColContent(0, $_col++, we_html_button::create_button("decline", "javascript:decline_workflow();"));
+
+				$_footerTable->addCol(2);
+				$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
+				$_footerTable->setColContent(0, $_col++, (we_workflow_utility::isWorkflowFinished($we_doc->ID, $we_doc->Table) || ((1 + we_workflow_utility::findLastActiveStep($we_doc->ID, $we_doc->Table)) == count(we_workflow_utility::getNumberOfSteps($we_doc->ID, $we_doc->Table)) && permissionhandler::hasPerm("PUBLISH")) ?
+						we_html_button::create_button("publish", "javascript:finish_workflow();") :
+						we_html_button::create_button("forward", "javascript:pass_workflow();"))
+				);
+
+				if(we_workflow_utility::canUserEditDoc($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"]) && $we_doc->userCanSave()){
+					$_footerTable->addCol(2);
+					$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
+					$_footerTable->setColContent(0, $_col++, we_html_button::create_button("save", "javascript:_EditorFrame.setEditorPublishWhenSave(false);we_save_document();"));
+					if($showPubl && (!isset($we_doc->IsClassFolder) || !$we_doc->IsClassFolder)){
+						$_footerTable->addCol(2);
+						$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
+						$_footerTable->setColContent(0, $_col++, we_html_button::create_button("publish", "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
+					}
+				}
+				break;
+
+			case WE_EDITPAGE_PROPERTIES:
+				$_footerTable->addCol(2);
+				$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
+				$_footerTable->setColContent(0, $_col++, we_html_button::create_button("preview", "javascript:parent.editHeader.we_cmd('switch_edit_page'," . WE_EDITPAGE_PREVIEW . ",'" . $GLOBALS["we_transaction"] . "');"));
+
+				$_footerTable->addCol(2);
+				$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
+				$_footerTable->setColContent(0, $_col++, we_html_button::create_button("preview", "javascript:parent.editHeader.we_cmd('switch_edit_page'," . WE_EDITPAGE_PREVIEW . ",'" . $GLOBALS["we_transaction"] . "');"));
+
+				$_footerTable->addCol(2);
+				$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
+				$_footerTable->setColContent(0, $_col++, we_html_button::create_button("decline", "javascript:decline_workflow();"));
+
+				$_footerTable->addCol(2);
+				$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
+				$_footerTable->setColContent(0, $_col++, (we_workflow_utility::isWorkflowFinished($we_doc->ID, $we_doc->Table) || ((1 + we_workflow_utility::findLastActiveStep($we_doc->ID, $we_doc->Table)) == count(we_workflow_utility::getNumberOfSteps($we_doc->ID, $we_doc->Table)) && permissionhandler::hasPerm("PUBLISH")) ?
+						we_html_button::create_button("publish", "javascript:finish_workflow();") :
+						we_html_button::create_button("forward", "javascript:pass_workflow();"))
+				);
+
+				if(we_workflow_utility::canUserEditDoc($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"]) && $we_doc->userCanSave()){
+					$_footerTable->addCol(2);
+					$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
+					$_footerTable->setColContent(0, $_col++, we_html_button::create_button("save", "javascript:_EditorFrame.setEditorPublishWhenSave(false);we_save_document();"));
+
+					if($showPubl && (!isset($we_doc->IsClassFolder) || !$we_doc->IsClassFolder)){
+						$_footerTable->addCol(2);
+						$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
+						$_footerTable->setColContent(0, $_col++, we_html_button::create_button("publish", "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
+					}
+				}
+		}
+		return $_footerTable->getHtml();
 	}
 
 }
