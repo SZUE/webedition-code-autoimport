@@ -75,7 +75,7 @@ function we_condition_tag_block(&$block){
 		//end of list
 		//we need a last add button in editmode
 		if($GLOBALS['we_editmode']){
-			print printElement(we_tag_blockControls($block));
+			echo printElement(we_tag_blockControls($block));
 		}
 		//reset data
 		unset($GLOBALS['we_position']['block'][$block['name']]);
@@ -126,15 +126,9 @@ function we_tag_block($attribs){
 		if($limit > 0 && $listlen > $limit){
 			$listlen = $limit;
 		}
-	} else {
-		if($limit && $limit > 0){
-			$diff = $limit - $listlen;
-			if($diff > 0){
-				$show = min($show, $diff);
-			} else {
-				$show = 0;
-			}
-		}
+	} elseif($limit && $limit > 0){
+		$diff = $limit - $listlen;
+		$show = ($diff > 0 ? min($show, $diff) : 0);
 	}
 
 	return array(
@@ -161,7 +155,7 @@ function we_tag_blockControls($attribs){
 		$tabArray = array();
 		if($attribs['ctlShowSelect'] && $attribs['ctlShow'] > 0){
 			$jsSelector = $attribs['pos'] . ",document.we_form.elements['" . $attribs['ctlName'] . "_" . $attribs['pos'] . "'].options[document.we_form.elements['" . $attribs['ctlName'] . "_" . $attribs['pos'] . "'].selectedIndex].text";
-			$tabArray[] = we_html_button::create_button('image:btn_add_listelement', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('insert_entry_at_list','" . $attribs['name'] . "'," . $jsSelector . ")", true, 100, 22, '', '', ($attribs['ctlShow'] > 0 ? false : true));
+			$tabArray[] = we_html_button::create_button('image:btn_add_listelement', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('insert_entry_at_list','" . $attribs['name'] . "'," . $jsSelector . ")", true, 100, 22, '', '', !($attribs['ctlShow'] > 0));
 
 			$selectb = '<select name="' . $attribs['ctlName'] . '_' . $attribs['pos'] . '">';
 			for($j = 0; $j < $attribs['ctlShow']; $j++){
@@ -170,7 +164,7 @@ function we_tag_blockControls($attribs){
 			$selectb .= '</select>';
 			$tabArray[] = $selectb;
 		} else {
-			$tabArray[] = we_html_button::create_button('image:btn_add_listelement', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('insert_entry_at_list','" . $attribs['name'] . "','" . $attribs['pos'] . "',1)", true, 100, 22, '', '', ($attribs['ctlShow'] > 0 ? false : true));
+			$tabArray[] = we_html_button::create_button('image:btn_add_listelement', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('insert_entry_at_list','" . $attribs['name'] . "','" . $attribs['pos'] . "',1)", true, 100, 22, '', '', !($attribs['ctlShow'] > 0));
 			$jsSelector = 1;
 		}
 		$tabArray[] = (($attribs['pos'] > 0) ?
@@ -194,11 +188,12 @@ function we_tag_blockControls($attribs){
 				$selectb .= '<option value="' . $j . '">' . $j . '</option>';
 			}
 			$selectb .= '</select>';
-			$plusbut = we_html_button::create_button('image:btn_add_listelement', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('add_entry_to_list','" . $attribs['name'] . "',document.we_form.elements['" . $attribs['ctlName'] . "_00'].options[document.we_form.elements['" . $attribs['ctlName'] . "_00'].selectedIndex].text);", true, 100, 22, '', '', ($attribs['ctlShow'] > 0 ? false : true));
-
-			$plusbut = we_html_button::create_button_table(array($plusbut, $selectb));
+			$plusbut = we_html_button::create_button_table(
+					array(
+						we_html_button::create_button('image:btn_add_listelement', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('add_entry_to_list','" . $attribs['name'] . "',document.we_form.elements['" . $attribs['ctlName'] . "_00'].options[document.we_form.elements['" . $attribs['ctlName'] . "_00'].selectedIndex].text);", true, 100, 22, '', '', !($attribs['ctlShow'] > 0)),
+						$selectb));
 		} else {
-			$plusbut = we_html_button::create_button('image:btn_add_listelement', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('add_entry_to_list','" . $attribs['name'] . "',1)", true, 100, 22, '', '', ($attribs['ctlShow'] > 0 ? false : true));
+			$plusbut = we_html_button::create_button('image:btn_add_listelement', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('add_entry_to_list','" . $attribs['name'] . "',1)", true, 100, 22, '', '', !($attribs['ctlShow'] > 0));
 		}
 
 		return '<input type="hidden" name="we_' . $GLOBALS['we_doc']->Name . '_block[' . $attribs['name'] . ']" value="' .
