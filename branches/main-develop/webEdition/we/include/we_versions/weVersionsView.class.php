@@ -434,7 +434,7 @@ function newinput() {
 	var locationFields = "' . str_replace(
 					"\n", '\n', addslashes(
 						we_html_tools::htmlSelect(
-							'location[__we_new_id__]', $this->searchclass->getLocation(), 1, "", false, array('class' => "defaultfont", 'disabled' => 'disabled', 'id' => "location[__we_new_id__]")))) . '";
+							'location[__we_new_id__]', we_search_search::getLocation(), 1, "", false, array('class' => "defaultfont", 'disabled' => 'disabled', 'id' => "location[__we_new_id__]")))) . '";
 	var search = "' . str_replace(
 					"\n", '\n', addslashes(
 						we_html_tools::htmlSelect(
@@ -484,7 +484,7 @@ function changeit(value, rowNr){
 			var locationFields = "' . str_replace(
 					"\n", "\\n", addslashes(
 						we_html_tools::htmlSelect(
-							'location[__we_new_id__]', $this->searchclass->getLocation(), 1, "", false, array('class' => "defaultfont", 'id' => "location[__we_new_id__]")))) . '";
+							'location[__we_new_id__]', we_search_search::getLocation(), 1, "", false, array('class' => "defaultfont", 'id' => "location[__we_new_id__]")))) . '";
 			var search = "' . addslashes(
 					we_html_tools::htmlTextInput(
 						'search[__we_new_id__]', 24, "", "", " class=\"wetextinput\" id=\"search[__we_new_id__]\" ", "text", 190)) . '";
@@ -524,7 +524,7 @@ function changeit(value, rowNr){
 		locationFields = "' . str_replace(
 					"\n", "\\n", addslashes(
 						we_html_tools::htmlSelect(
-							'location[__we_new_id__]', $this->searchclass->getLocation("date"), 1, "", false, array('class' => "defaultfont", 'id' => "location[__we_new_id__]")))) . '";
+							'location[__we_new_id__]', we_search_search::getLocation("date"), 1, "", false, array('class' => "defaultfont", 'id' => "location[__we_new_id__]")))) . '";
 
 		var cell = document.createElement("TD");
 		cell.setAttribute("id", "td_location["+rowNr+"]");
@@ -726,7 +726,7 @@ function delRow(id) {
 					"searchFields[" . $i . "]", $this->searchclass->getFields(), 1, (isset($this->searchclass->searchFields) && is_array($this->searchclass->searchFields) && isset(
 						$this->searchclass->searchFields[$i]) ? $this->searchclass->searchFields[$i] : ""), false, array('class' => "defaultfont", 'id' => 'searchFields[' . $i . ']', 'onchange' => 'changeit(this.value, ' . $i . ');')) . '</td>
 					<td id="td_location[' . $i . ']">' . we_html_tools::htmlSelect(
-					"location[" . $i . "]", $this->searchclass->getLocation($handle), 1, (isset($this->searchclass->location) && is_array($this->searchclass->location) && isset(
+					"location[" . $i . "]", we_search_search::getLocation($handle), 1, (isset($this->searchclass->location) && is_array($this->searchclass->location) && isset(
 						$this->searchclass->location[$i]) ? $this->searchclass->location[$i] : ""), false, array('class' => "defaultfont", $locationDisabled => $locationDisabled, 'id' => 'location[' . $i . ']')) . '</td>
 					<td id="td_search[' . $i . ']">' . $search . '</td>
 					<td id="td_delButton[' . $i . ']">' . $button . '</td>

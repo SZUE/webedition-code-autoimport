@@ -73,7 +73,7 @@ echo we_html_tools::getHtmlTop() .
 				<td colspan="5"><?php echo we_html_tools::getPixel(5, 5); ?></td>
 			</tr>
 			<?php
-			if($_REQUEST["ret"] == 1){
+			if(weRequest('bool', "ret")){
 				$cancel_button = we_html_button::create_button("cancel", "javascript:top.close();");
 				$yes_button = we_html_button::create_button("ok", "javascript:top.exit_close();");
 				$down_button = null;
@@ -84,7 +84,7 @@ echo we_html_tools::getHtmlTop() .
 				$down_button = null; //we_button::create_button("download", "javascript:downloadFile();");
 			}
 			$buttons = we_html_button::position_yes_no_cancel($yes_button, $down_button, $cancel_button);
-			if($_REQUEST["filter"] == "all_Types"){
+			if(weRequest('string', "filter") == "all_Types"){
 				?>
 				<tr>
 					<td></td>

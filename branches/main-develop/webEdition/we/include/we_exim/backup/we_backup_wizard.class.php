@@ -415,7 +415,7 @@ self.focus();
 
 		$maxsize = getUploadMaxFilesize();
 
-		if(isset($_REQUEST["import_from"]) && $_REQUEST["import_from"] == 'import_upload'){
+		if(weRequest('string', "import_from") == 'import_upload'){
 			if($maxsize){
 				$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[charset_warning]"), we_html_tools::TYPE_ALERT, 600, false), "space" => 0, "noline" => 1);
 				if(!(DEFAULT_CHARSET != '')){
@@ -528,7 +528,22 @@ extra_files_desc=new Array();';
 
 		$form_properties = array(
 			10 => "handle_core",
+			11 => defined("OBJECT_TABLE") ? 'handle_object' : '',
+			12 => "handle_versions",
+			13 => "handle_versions_binarys",
 			14 => "handle_binary",
+			20 => "handle_user",
+			25 => defined("CUSTOMER_TABLE") ? "handle_customer" : '',
+			30 => defined("SHOP_TABLE") ? "handle_shop" : '',
+			35 => defined("WORKFLOW_TABLE") ? "handle_workflow" : '',
+			40 => defined("MESSAGING_SYSTEM") ? "handle_todo" : '',
+			45 => defined("NEWSLETTER_TABLE") ? "handle_newsletter" : '',
+			50 => defined("BANNER_TABLE") ? "handle_banner" : '',
+			55 => defined("SCHEDULE_TABLE") ? "handle_schedule" : '',
+			60 => defined("EXPORT_TABLE") ? "handle_export" : '',
+			65 => defined("VOTING_TABLE") ? "handle_voting" : '',
+			70 => defined("SPELLCHECKER") ? "handle_spellchecker" : '',
+			75 => defined("GLOSSARY_TABLE") ? "handle_glossary" : '',
 			100 => "handle_settings",
 			101 => "handle_temporary",
 			102 => "handle_history",
@@ -536,46 +551,6 @@ extra_files_desc=new Array();';
 			310 => "convert_charset",
 			320 => "backup_log"
 		);
-
-		if(defined("OBJECT_TABLE")){
-			$form_properties[11] = "handle_object";
-		}
-		$form_properties[20] = "handle_user";
-		if(defined("CUSTOMER_TABLE")){
-			$form_properties[25] = "handle_customer";
-		}
-		if(defined("SHOP_TABLE")){
-			$form_properties[30] = "handle_shop";
-		}
-		if(defined("WORKFLOW_TABLE")){
-			$form_properties[35] = "handle_workflow";
-		}
-		if(defined("MESSAGING_SYSTEM")){
-			$form_properties[40] = "handle_todo";
-		}
-		if(defined("NEWSLETTER_TABLE")){
-			$form_properties[45] = "handle_newsletter";
-		}
-		if(defined("BANNER_TABLE")){
-			$form_properties[50] = "handle_banner";
-		}
-		if(defined("SCHEDULE_TABLE")){
-			$form_properties[55] = "handle_schedule";
-		}
-		if(defined("EXPORT_TABLE")){
-			$form_properties[60] = "handle_export";
-		}
-		if(defined("VOTING_TABLE")){
-			$form_properties[65] = "handle_voting";
-		}
-		if(defined("SPELLCHECKER")){
-			$form_properties[70] = "handle_spellchecker";
-		}
-		if(defined("GLOSSARY_TABLE")){
-			$form_properties[75] = "handle_glossary";
-		}
-		$form_properties[12] = "handle_versions";
-		$form_properties[13] = "handle_versions_binarys";
 
 		$i = 0;
 		$_tools = we_tool_lookup::getToolsForBackup();
@@ -594,6 +569,9 @@ extra_files_desc=new Array();';
 		$doclickall1 = "";
 		$doclickall2 = "";
 		foreach($form_properties as $k => $v){
+			if(!$v){
+				continue;
+			}
 			$docheck.='
 				case ' . $k . ':
 					document.we_form.' . $v . '.checked=true;
@@ -1093,9 +1071,7 @@ function startStep(){
 	}
 
 	function getHTMLExtern(){
-		$w = $_REQUEST["w"] ? $_REQUEST["w"] : "exp";
-
-		$txt = g_l('backup', "[extern_backup_question_" . $w . ']');
+		$txt = g_l('backup', "[extern_backup_question_" . weRequest('string', "w", "exp") . ']');
 
 		$yesCmd = "self.close();";
 		$noCmd = "top.opener.top.body.clearExtern();" . $yesCmd;
@@ -1169,8 +1145,7 @@ function doExport() {
 					$table->setCol(0, 3, null, we_html_button::create_button("cancel", "javascript:top.close();"));
 					break;
 				case 3:
-					$do_import_after_backup = (isset($_REQUEST["do_import_after_backup"]) && $_REQUEST["do_import_after_backup"]) ? 1 : 0;
-					if($do_import_after_backup == 1){
+					if(weRequest('bool',"do_import_after_backup")){
 						$body = we_html_button::create_button("next", "javascript:top.body.location='" . WE_INCLUDES_DIR . "we_editors/we_recover_backup.php?pnt=body&step=2';top.busy.location='" . WE_INCLUDES_DIR . "we_editors/we_recover_backup.php?pnt=cmd';top.cmd.location='" . WE_INCLUDES_DIR . "we_editors/we_recover_backup.php?pnt=busy';");
 					} else if(isset($_SESSION['weS']['inbackup']) && $_SESSION['weS']['inbackup']){
 						$body = we_html_button::create_button("next", "javascript:top.opener.weiter();top.close();");
@@ -1323,7 +1298,7 @@ top.busy.location="' . $this->frameset . '?pnt=busy";' .
 					$ret = $we_backup_obj->makeBackup();
 					$temp_filename = $we_backup_obj->saveState($temp_filename);
 
-					$do_import_after_backup = (isset($_REQUEST['do_import_after_backup']) && $_REQUEST['do_import_after_backup']) ? 1 : 0;
+					$do_import_after_backup = weRequest('bool','do_import_after_backup');
 
 					switch($ret){
 						case 1:

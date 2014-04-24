@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-if(isset($_REQUEST['code'])){
+if(isset($_REQUEST['code'])){ //FIXME: remove
 	exit('REQUEST[\'code\'] is forbidden!');
 }
 
@@ -31,4 +31,4 @@ we_html_tools::protect();
 
 $Tree = new weMainTree('webEdition.php', 'top', 'top.resize.left.tree', 'top.load');
 
-print $Tree->getHTMLContruct('if(top.treeResized){top.treeResized();}');
+echo $Tree->getHTMLContruct('if(top.treeResized){top.treeResized();}');

@@ -231,47 +231,14 @@ class weVersionsSearch{
 	}
 
 	/**
-	 * @abstract get location for filter-SELECT
-	 * @return array of filter locations
-	 */
-	function getLocation($whichFilterCategory = ""){
-
-		$locations = array(
-			'IS' => g_l('searchtool', '[IS]'),
-			'CONTAIN' => g_l('searchtool', '[CONTAIN]'),
-			'START' => g_l('searchtool', '[START]'),
-			'END' => g_l('searchtool', '[END]'),
-			'<' => g_l('searchtool', '[<]'),
-			'<=' => g_l('searchtool', '[<=]'),
-			'>=' => g_l('searchtool', '[>=]'),
-			'>' => g_l('searchtool', '[>]'));
-
-		if($whichFilterCategory == "date"){
-			unset($locations["CONTAIN"]);
-			unset($locations["START"]);
-			unset($locations["END"]);
-		}
-
-		return $locations;
-	}
-
-	/**
 	 * @abstract get all user for filter-SELECT in category 'modifierID'
 	 * @return array of users
 	 */
 	function getUsers(){
+		$db = new DB_WE();
 
-		$_db = new DB_WE();
-		$vals = array();
-
-		$_db->query('SELECT ID, Text FROM ' . USER_TABLE);
-		while($_db->next_record()){
-			$v = $_db->f("ID");
-			$t = $_db->f("Text");
-			$vals[$v] = $t;
-		}
-
-		return $vals;
+		$db->query('SELECT ID, Text FROM ' . USER_TABLE);
+		return $db->getAllFirst(false);
 	}
 
 	/**

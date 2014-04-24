@@ -26,13 +26,13 @@
 /**
  * General Definition of WebEdition Workflow Task
  */
-class we_workflow_task extends we_workflow_base{
+class we_workflow_task extends we_workflow_base {
 
-	var $ID;
-	var $stepID;
-	var $userID;
-	var $Edit;
-	var $Mail;
+	var $ID = 0;
+	var $stepID = 0;
+	var $userID = 0;
+	var $Edit = 0;
+	var $Mail = 0;
 
 	/**
 	 * Default Constructor
@@ -43,18 +43,7 @@ class we_workflow_task extends we_workflow_base{
 		parent::__construct();
 		$this->table = WORKFLOW_TASK_TABLE;
 
-		$this->persistents[] = "ID";
-		$this->persistents[] = "userID";
-		$this->persistents[] = "Edit";
-		$this->persistents[] = "Mail";
-		$this->persistents[] = "stepID";
-
-
-		$this->ID = 0;
-		$this->stepID = 0;
-		$this->userID = 0;
-		$this->Edit = 0;
-		$this->Mail = 0;
+		array_push($this->persistents, "ID", "userID", "Edit", "Mail", "stepID");
 
 		if($taskID > 0){
 			$this->load($taskID);
@@ -66,8 +55,7 @@ class we_workflow_task extends we_workflow_base{
 	 */
 	function getAllTasks($stepID){
 		$db = new DB_WE();
-
-		$db->query("SELECT ID FROM " . WORKFLOW_TASK_TABLE . " WHERE stepID  =" . intval($stepID) . " ORDER BY ID");
+		$db->query('SELECT ID FROM ' . WORKFLOW_TASK_TABLE . ' WHERE stepID=' . intval($stepID) . ' ORDER BY ID');
 
 		$tasks = array();
 
@@ -81,15 +69,15 @@ class we_workflow_task extends we_workflow_base{
 	 * Load task from database
 	 */
 	function load($id = 0){
-		if($id)
+		if($id){
 			$this->ID = $id;
+		}
 		if($this->ID){
 			parent::load();
 			return true;
-		} else {
-			$this->ErrorReporter->Error("No Task with ID $taskID !");
-			return false;
 		}
+		$this->ErrorReporter->Error("No Task with ID $taskID !");
+		return false;
 	}
 
 }

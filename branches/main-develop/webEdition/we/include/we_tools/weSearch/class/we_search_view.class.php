@@ -793,7 +793,7 @@ class we_search_view extends we_tool_view{
     var locationFields = "' . str_replace(
 					"\n", '\n', addslashes(
 						we_html_tools::htmlSelect(
-							'locationAdvSearch[__we_new_id__]', $this->searchclass->getLocation(), 1, "", false, array('class' => "defaultfont", 'id' => "locationAdvSearch[__we_new_id__]")))) . '";
+							'locationAdvSearch[__we_new_id__]', we_search_search::getLocation(), 1, "", false, array('class' => "defaultfont", 'id' => "locationAdvSearch[__we_new_id__]")))) . '";
     var search = "' . addslashes(
 					we_html_tools::htmlTextInput(
 						'searchAdvSearch[__we_new_id__]', 24, "", "", " class=\"wetextinput\" id=\"searchAdvSearch[__we_new_id__]\" ", "text", 170)) . '";
@@ -855,12 +855,10 @@ class we_search_view extends we_tool_view{
 
     var searchFields = "' . str_replace(
 					"\n", '\n', addslashes(
-						we_html_tools::htmlSelect(
-							'searchFieldsAdvSearch[__we_new_id__]', $this->searchclass->getFields("__we_new_id__", ""), 1, "", false, array('class' => "defaultfont", 'id' => "searchFieldsAdvSearch[__we_new_id__]", 'onchange' => "changeit(this.value, __we_new_id__);")))) . '";
+						we_html_tools::htmlSelect('searchFieldsAdvSearch[__we_new_id__]', $this->searchclass->getFields("__we_new_id__", ""), 1, "", false, array('class' => "defaultfont", 'id' => "searchFieldsAdvSearch[__we_new_id__]", 'onchange' => "changeit(this.value, __we_new_id__);")))) . '";
     var locationFields = "' . str_replace(
 					"\n", '\n', addslashes(
-						we_html_tools::htmlSelect(
-							'locationAdvSearch[__we_new_id__]', $this->searchclass->getLocation(), 1, "", false, array('class' => "defaultfont", 'id' => "locationAdvSearch[__we_new_id__]")))) . '";
+						we_html_tools::htmlSelect('locationAdvSearch[__we_new_id__]', we_search_search::getLocation(), 1, "", false, array('class' => "defaultfont", 'id' => "locationAdvSearch[__we_new_id__]")))) . '";
     var search = "' . addslashes(
 					we_html_tools::htmlTextInput(
 						'searchAdvSearch[__we_new_id__]', 24, "", "", " class=\"wetextinput\" id=\"searchAdvSearch[__we_new_id__]\" ", "text", 170)) . '";
@@ -1080,7 +1078,7 @@ class we_search_view extends we_tool_view{
      locationFields = "' . str_replace(
 					"\n", '\n', addslashes(
 						we_html_tools::htmlSelect(
-							'locationAdvSearch[__we_new_id__]', $this->searchclass->getLocation("date"), 1, "", false, array('class' => "defaultfont", 'id' => "locationAdvSearch[__we_new_id__]")))) . '";
+							'locationAdvSearch[__we_new_id__]', we_search_search::getLocation("date"), 1, "", false, array('class' => "defaultfont", 'id' => "locationAdvSearch[__we_new_id__]")))) . '";
 
      var cell = document.createElement("TD");
         cell.setAttribute("id", "td_locationAdvSearch["+rowNr+"]");
@@ -1962,7 +1960,7 @@ class we_search_view extends we_tool_view{
 			$cur = trim($cur);
 		}
 		unset($cur);
-		$tab = weRequest('int', 'tab',weRequest('int', 'tabnr',1));
+		$tab = weRequest('int', 'tab', weRequest('int', 'tabnr', 1));
 
 		if(isset($searchText[0]) && substr($searchText[0], 0, 4) == 'exp:'){
 
@@ -2731,7 +2729,6 @@ class we_search_view extends we_tool_view{
 					$_linkPath = $this->Model->searchAdvSearch[$i];
 
 					$_rootDirID = 0;
-					//javascript:we_cmd('openDirselector',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'searchAdvSearchParentID[" . $i . "]\\'].value','document.we_form.elements[\\'searchAdvSearch[" . $i . "]\\'].value','','" . session_id() . "','$_rootDirID','','')
 					$wecmdenc1 = we_cmd_enc("document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value");
 					$wecmdenc2 = we_cmd_enc("document.we_form.elements['searchAdvSearch[" . $i . "]'].value");
 					$wecmdenc3 = '';
@@ -2750,7 +2747,6 @@ class we_search_view extends we_tool_view{
 					$_linkPath = $this->Model->searchAdvSearch[$i];
 
 					$_rootDirID = 0;
-					//javascript:we_cmd('openDocselector',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','document.we_form.elements[\\'searchAdvSearchParentID[" . $i . "]\\'].value','document.we_form.elements[\\'searchAdvSearch[" . $i . "]\\'].value','','" . session_id() . "','$_rootDirID','','text/weTmpl')
 					$wecmdenc1 = we_cmd_enc("document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value");
 					$wecmdenc2 = we_cmd_enc("document.we_form.elements['searchAdvSearch[" . $i . "]'].value");
 					$wecmdenc3 = '';
@@ -2789,7 +2785,7 @@ class we_search_view extends we_tool_view{
 					"searchFieldsAdvSearch[" . $i . "]", $this->searchclass->getFields($i, ""), 1, (isset($this->Model->searchFieldsAdvSearch) && is_array($this->Model->searchFieldsAdvSearch) && isset(
 						$this->Model->searchFieldsAdvSearch[$i]) ? $this->Model->searchFieldsAdvSearch[$i] : ""), false, array('class' => "defaultfont", 'id' => 'searchFieldsAdvSearch[' . $i . ']', 'onchange' => 'changeit(this.value, ' . $i . ');')) . '</td>
      <td id="td_locationAdvSearch[' . $i . ']">' . we_html_tools::htmlSelect(
-					"locationAdvSearch[" . $i . "]", $this->searchclass->getLocation($handle), 1, (isset($this->Model->locationAdvSearch) && is_array($this->Model->locationAdvSearch) && isset(
+					"locationAdvSearch[" . $i . "]", we_search_search::getLocation($handle), 1, (isset($this->Model->locationAdvSearch) && is_array($this->Model->locationAdvSearch) && isset(
 						$this->Model->locationAdvSearch[$i]) ? $this->Model->locationAdvSearch[$i] : ""), false, array('class' => "defaultfont", $locationDisabled => $locationDisabled, 'id' => 'locationAdvSearch[' . $i . ']')) . '</td>
      <td id="td_searchAdvSearch[' . $i . ']">' . $searchInput . '</td>
      <td id="td_delButton[' . $i . ']">' . $button . '</td>
@@ -3087,7 +3083,6 @@ class we_search_view extends we_tool_view{
 		$yuiSuggest->setSelector(weSuggest::DirSelector);
 		$yuiSuggest->setTable($table);
 		$yuiSuggest->setWidth(380);
-		//javascript:we_cmd('openDirselector',document.we_form.elements['$folderID'].value,'" . $table . "','document.we_form.elements[\\'$folderID\\'].value','document.we_form.elements[\\'$folderPath\\'].value')
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$folderID'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$folderPath'].value");
 		$yuiSuggest->setSelectButton(

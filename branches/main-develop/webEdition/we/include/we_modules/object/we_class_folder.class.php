@@ -168,27 +168,20 @@ class we_class_folder extends we_folder{
 		$this->ContentType = 'folder';
 
 		switch($this->EditPageNr){
+			default:
+				$this->EditPageNr = WE_EDITPAGE_PROPERTIES;
+				$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_PROPERTIES;
+			//no break
 			case WE_EDITPAGE_PROPERTIES:
 				return 'we_templates/we_editor_properties.inc.php';
-
 			case WE_EDITPAGE_INFO:
 				return 'we_templates/we_editor_info.inc.php';
-
 			case WE_EDITPAGE_CFWORKSPACE:
 				return 'we_modules/object/we_classFolder_properties.inc.php';
 			case WE_EDITPAGE_FIELDS:
 				return 'we_modules/object/we_classFolder_fields.inc.php';
 			case WE_EDITPAGE_WEBUSER:
 				return 'we_modules/customer/editor_weDocumentCustomerFilter.inc.php';
-			/*
-			  case WE_EDITPAGE_CFSEARCH:
-			  return 'we_modules/object/we_classFolder_search.inc.php';
-			  break;
-			 */
-			default:
-				$this->EditPageNr = WE_EDITPAGE_PROPERTIES;
-				$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_PROPERTIES;
-				return 'we_templates/we_editor_properties.inc.php';
 		}
 	}
 
@@ -234,12 +227,12 @@ class we_class_folder extends we_folder{
 		}
 		$this->Order = $_REQUEST['Order'];
 
-		if(isset($_REQUEST['SearchStart'])){
-			$this->searchclass->searchstart = $_REQUEST['SearchStart'];
+		if(($start = weRequest('int', 'SearchStart'))){
+			$this->searchclass->searchstart = $start;
 		}
 
-		if(isset($_REQUEST['Anzahl'])){
-			$this->searchclass->anzahl = $_REQUEST['Anzahl'];
+		if(($anz = weRequest('int', 'Anzahl'))){
+			$this->searchclass->anzahl = $anz;
 		}
 
 		$we_obectPathLength = 32;
@@ -601,9 +594,9 @@ class we_class_folder extends we_folder{
 					//<td>'.$this->searchclass->getFields("objsearchField[".$i."]",1,$this->searchclass->objsearchField[$i],$this->Path).'</td> #4076 orig
 					. '<td>' . $this->searchclass->getFields("objsearchField[" . $i . "]", 1, $this->searchclass->objsearchField[$i], $this->ClassPath) . '</td>
 	<td>' . we_html_tools::getPixel(10, 2) . '</td>
-	<td width="50">' . $this->searchclass->getLocationMeta("objlocation[" . $i . "]", (isset($this->searchclass->objlocation[$i]) ? $this->searchclass->objlocation[$i] : '')) . '</td>
+	<td width="50">' . we_search::getLocationMeta("objlocation[" . $i . "]", (isset($this->searchclass->objlocation[$i]) ? $this->searchclass->objlocation[$i] : '')) . '</td>
 	<td>' . we_html_tools::getPixel(10, 2) . '</td>
-	<td>' . we_html_tools::htmlSelect('objsearch[' . $i . ']', $values, 1, $this->searchclass->objsearch[$i], false, '', 'value') . '</td>
+	<td>' . we_html_tools::htmlSelect('objsearch[' . $i . ']', $values, 1, $this->searchclass->objsearch[$i]) . '</td>
 	<td>' . we_html_tools::getPixel(10, 2) . '</td>
 	<td align="right">' . $button . '</td>
 </tr>';
@@ -636,7 +629,7 @@ class we_class_folder extends we_folder{
 	<td>' . we_html_tools::getPixel(5, 2) . '</td>
 	<td>' . $this->searchclass->getFields("objsearchField[" . $i . "]", 1, $this->searchclass->objsearchField[$i], $this->ClassPath) . '</td>
 	<td>' . we_html_tools::getPixel(10, 2) . '</td>
-	<td>' . $this->searchclass->getLocationDate("objlocation[" . $i . "]", (isset($this->searchclass->objlocation[$i]) ? $this->searchclass->objlocation[$i] : '')) . '</td>
+	<td>' . we_search::getLocationDate("objlocation[" . $i . "]", (isset($this->searchclass->objlocation[$i]) ? $this->searchclass->objlocation[$i] : '')) . '</td>
 	<td>' . we_html_tools::getPixel(10, 2) . '</td>
 	<td>' . we_html_tools::htmlTextInput('objsearch[' . $i . '][year]', 4, (isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]['year']) ? $this->searchclass->objsearch[$i]['year'] : date("Y")), 4) . ' - ' .
 					we_html_tools::htmlSelect('objsearch[' . $i . '][month]', $month, 1, (isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]['month']) ? $this->searchclass->objsearch[$i]['month'] : date("m"))) . ' - ' .
@@ -654,7 +647,7 @@ class we_class_folder extends we_folder{
 	<td>' . we_html_tools::getPixel(1, 2) . '</td>
 	<td>' . $this->searchclass->getFields("objsearchField[" . $i . "]", 1, (isset($this->searchclass->objsearchField) && is_array($this->searchclass->objsearchField) && isset($this->searchclass->objsearchField[$i]) ? $this->searchclass->objsearchField[$i] : ""), $this->ClassPath) . '</td>
 	<td>' . we_html_tools::getPixel(1, 2) . '</td>
-	<td>' . $this->searchclass->getLocation("objlocation[" . $i . "]", (isset($this->searchclass->objlocation[$i]) ? $this->searchclass->objlocation[$i] : '')) . '</td>
+	<td>' . we_search::getLocation("objlocation[" . $i . "]", (isset($this->searchclass->objlocation[$i]) ? $this->searchclass->objlocation[$i] : '')) . '</td>
 	<td>' . we_html_tools::getPixel(1, 2) . '</td>
 	<td>' . we_html_tools::htmlTextInput("objsearch[" . $i . "]", 30, (isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]) ? $this->searchclass->objsearch[$i] : ''), "", "", "text", 200) . '</td>
 	<td>' . we_html_tools::getPixel(1, 2) . '</td>
@@ -957,8 +950,9 @@ EOF;
 	}
 
 	function getSortImage($for){
-		if(strpos($_REQUEST['Order'], $for) === 0){
-			if(strpos($_REQUEST['Order'], 'DESC')){
+		$ord = weRequest('string', 'Order', '');
+		if(strpos($ord, $for) === 0){
+			if(strpos($ord, 'DESC')){
 				return '<img border="0" width="11" height="8" src="' . IMAGE_DIR . 'arrow_sort_desc.gif" />';
 			}
 			return '<img border="0" width="11" height="8" src="' . IMAGE_DIR . 'arrow_sort_asc.gif" />';

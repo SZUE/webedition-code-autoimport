@@ -108,7 +108,7 @@ class we_search_search extends we_search{
 			}
 		} else {
 			if(isset($_REQUEST['we_cmd']['setView']) && isset($_REQUEST['id'])){
-				$this->db->query('UPDATE ' . FILE_TABLE . ' SET listview=' . weRequest('int', 'we_cmd',0,'setView') . ' WHERE ID=' . weRequest('int', 'id'));
+				$this->db->query('UPDATE ' . FILE_TABLE . ' SET listview=' . weRequest('int', 'we_cmd', 0, 'setView') . ' WHERE ID=' . weRequest('int', 'id'));
 			}
 		}
 	}
@@ -225,25 +225,29 @@ class we_search_search extends we_search{
 		);
 	}
 
-	function getLocation($whichField = ''){
-		$locations = array(
-			'IS' => g_l('searchtool', '[IS]'),
-			'CONTAIN' => g_l('searchtool', '[CONTAIN]'),
-			'START' => g_l('searchtool', '[START]'),
-			'END' => g_l('searchtool', '[END]'),
-			'<' => g_l('searchtool', '[<]'),
-			'<=' => g_l('searchtool', '[<=]'),
-			'>=' => g_l('searchtool', '[>=]'),
-			'>' => g_l('searchtool', '[>]')
-		);
-
-		if($whichField == 'date'){
-			unset($locations['CONTAIN']);
-			unset($locations['START']);
-			unset($locations['END']);
+	static function getLocation($whichField = ''){
+		switch($whichField){
+			default:
+				return array(
+					'IS' => g_l('searchtool', '[IS]'),
+					'CONTAIN' => g_l('searchtool', '[CONTAIN]'),
+					'START' => g_l('searchtool', '[START]'),
+					'END' => g_l('searchtool', '[END]'),
+					'<' => g_l('searchtool', '[<]'),
+					'<=' => g_l('searchtool', '[<=]'),
+					'>=' => g_l('searchtool', '[>=]'),
+					'>' => g_l('searchtool', '[>]')
+				);
+			case 'date':
+				return array(
+					'<' => g_l('searchtool', '[<]'),
+					'<=' => g_l('searchtool', '[<=]'),
+					'>=' => g_l('searchtool', '[>=]'),
+					'>' => g_l('searchtool', '[>]')
+				);
+			case 'meta':
+				return array('IS' => g_l('searchtool', '[IS]'));
 		}
-
-		return $locations;
 	}
 
 	function getDoctypes(){
@@ -424,30 +428,30 @@ class we_search_search extends we_search{
 
 			case "geparkt" :
 				return ($table == VERSIONS_TABLE ?
-								"AND " . escape_sql_query($table) . ".status='unpublished'" :
-								"AND ((" . escape_sql_query($table) . ".Published=0) AND (" . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::WEDOCUMENT . "' OR " . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::HTML . "' OR " . escape_sql_query($table) . ".ContentType='objectFile'))");
+						"AND " . escape_sql_query($table) . ".status='unpublished'" :
+						"AND ((" . escape_sql_query($table) . ".Published=0) AND (" . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::WEDOCUMENT . "' OR " . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::HTML . "' OR " . escape_sql_query($table) . ".ContentType='objectFile'))");
 
 			case "veroeffentlicht" :
 				return ($table == VERSIONS_TABLE ?
-								"AND " . escape_sql_query($table) . ".status='published'" :
-								"AND ((" . escape_sql_query($table) . ".Published >= " . escape_sql_query($table) . ".ModDate AND " . escape_sql_query($table) . ".Published !=0) AND (" . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::WEDOCUMENT . "' OR " . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::HTML . "' OR " . escape_sql_query($table) . ".ContentType='objectFile'))");
+						"AND " . escape_sql_query($table) . ".status='published'" :
+						"AND ((" . escape_sql_query($table) . ".Published >= " . escape_sql_query($table) . ".ModDate AND " . escape_sql_query($table) . ".Published !=0) AND (" . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::WEDOCUMENT . "' OR " . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::HTML . "' OR " . escape_sql_query($table) . ".ContentType='objectFile'))");
 			case "geaendert" :
 				return ($table == VERSIONS_TABLE ?
-								"AND " . escape_sql_query($table) . ".status='saved'" :
-								"AND ((" . escape_sql_query($table) . ".Published < " . escape_sql_query($table) . ".ModDate AND " . escape_sql_query($table) . ".Published !=0) AND (" . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::WEDOCUMENT . "' OR " . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::HTML . "' OR " . escape_sql_query($table) . ".ContentType='objectFile'))");
+						"AND " . escape_sql_query($table) . ".status='saved'" :
+						"AND ((" . escape_sql_query($table) . ".Published < " . escape_sql_query($table) . ".ModDate AND " . escape_sql_query($table) . ".Published !=0) AND (" . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::WEDOCUMENT . "' OR " . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::HTML . "' OR " . escape_sql_query($table) . ".ContentType='objectFile'))");
 			case "veroeff_geaendert" :
 				return "AND ((" . escape_sql_query($table) . ".Published >= " . escape_sql_query($table) . ".ModDate OR " . escape_sql_query($table) . ".Published < " . escape_sql_query($table) . ".ModDate AND " . escape_sql_query($table) . ".Published !=0) AND (" . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::WEDOCUMENT . "' OR " . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::HTML . "' OR " . escape_sql_query($table) . ".ContentType='objectFile'))";
 
 			case "geparkt_geaendert" :
 				return ($table == VERSIONS_TABLE ?
-								"AND " . escape_sql_query($table) . ".status!='published'" :
-								"AND ((" . escape_sql_query($table) . ".Published=0 OR " . escape_sql_query($table) . ".Published < " . escape_sql_query($table) . ".ModDate) AND (" . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::WEDOCUMENT . "' OR " . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::HTML . "' OR " . escape_sql_query($table) . ".ContentType='objectFile'))");
+						"AND " . escape_sql_query($table) . ".status!='published'" :
+						"AND ((" . escape_sql_query($table) . ".Published=0 OR " . escape_sql_query($table) . ".Published < " . escape_sql_query($table) . ".ModDate) AND (" . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::WEDOCUMENT . "' OR " . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::HTML . "' OR " . escape_sql_query($table) . ".ContentType='objectFile'))");
 			case "dynamisch" :
 				return ($table != FILE_TABLE && $table != VERSIONS_TABLE ? '' :
-								"AND ((" . escape_sql_query($table) . ".IsDynamic=1) AND (" . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::WEDOCUMENT . "'))");
+						"AND ((" . escape_sql_query($table) . ".IsDynamic=1) AND (" . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::WEDOCUMENT . "'))");
 			case "statisch" :
 				return ($table != FILE_TABLE && $table != VERSIONS_TABLE ? '' :
-								"AND ((" . escape_sql_query($table) . ".IsDynamic=0) AND (" . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::WEDOCUMENT . "'))");
+						"AND ((" . escape_sql_query($table) . ".IsDynamic=0) AND (" . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::WEDOCUMENT . "'))");
 			case "deleted" :
 				return ($table == VERSIONS_TABLE ? "AND " . escape_sql_query($table) . ".status='deleted' " : '');
 		}
@@ -506,10 +510,10 @@ class we_search_search extends we_search{
 						}
 					}
 					$where .= ' AND ' . ($mtof ?
-									$table . '.ID IN (' . makeCSVFromArray($arr) . ') ' :
-									(!empty($_ids[0]) ?
-											$table . '.ID IN (' . makeCSVFromArray($_ids[0]) . ') ' :
-											' 0'));
+							$table . '.ID IN (' . makeCSVFromArray($arr) . ') ' :
+							(!empty($_ids[0]) ?
+								$table . '.ID IN (' . makeCSVFromArray($_ids[0]) . ') ' :
+								' 0'));
 				}
 			}
 		}
@@ -524,7 +528,7 @@ class we_search_search extends we_search{
 			case FILE_TABLE:
 			case TEMPLATES_TABLE:
 				$_db->query('SELECT a.Name, b.Dat, a.DID FROM ' . LINK_TABLE . ' a LEFT JOIN ' . CONTENT_TABLE . " b on (a.CID = b.ID) WHERE b.Dat LIKE '%" . escape_sql_query(
-								trim($keyword)) . "%' AND a.Name!='completeData' AND a.DocumentTable='" . $_db->escape(stripTblPrefix($table)) . "'");
+						trim($keyword)) . "%' AND a.Name!='completeData' AND a.DocumentTable='" . $_db->escape(stripTblPrefix($table)) . "'");
 				while($_db->next_record()){
 					$contents[] = $_db->f('DID');
 				}
@@ -544,9 +548,9 @@ class we_search_search extends we_search{
 
 					foreach($tempDoc[0]['elements'] as $k => $v){
 						if($k != "Title" &&
-								$k != "Charset" &&
-								isset($tempDoc[0]['elements'][$k]['dat']) &&
-								stristr($tempDoc[0]['elements'][$k]['dat'], $keyword)){
+							$k != "Charset" &&
+							isset($tempDoc[0]['elements'][$k]['dat']) &&
+							stristr($tempDoc[0]['elements'][$k]['dat'], $keyword)){
 							$contents[] = $_db->f('ID');
 						}
 					}
@@ -704,7 +708,7 @@ class we_search_search extends we_search{
 	function createTempTable(){
 		$this->db->query('DROP TABLE IF EXISTS SEARCH_TEMP_TABLE');
 
-		if(self::checkRightTempTable()&&self::checkRightDropTable() ){
+		if(self::checkRightTempTable() && self::checkRightDropTable()){
 			$this->db->query('CREATE TEMPORARY TABLE SEARCH_TEMP_TABLE (
 				ID BIGINT( 20 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
 				docID BIGINT( 20 ) NOT NULL ,
@@ -794,8 +798,8 @@ class we_search_search extends we_search{
 						if(($searchfield == 'temp_template_id' && $this->table == FILE_TABLE) || ($searchfield == 'TemplateID' && $this->table == VERSIONS_TABLE)){
 							if($this->table == FILE_TABLE){
 								$sql .= $this->sqlwhere($tablename . '.TemplateID', $searching, $operator . '( (Published >= ModDate AND Published !=0 AND ') .
-										$this->sqlwhere($searchfield, $searching, ' ) OR (Published < ModDate AND ') .
-										'))';
+									$this->sqlwhere($searchfield, $searching, ' ) OR (Published < ModDate AND ') .
+									'))';
 							} elseif($this->table == VERSIONS_TABLE){
 								$sql .= $this->sqlwhere($tablename . '.TemplateID', $searching, $operator . ' ');
 							}
@@ -806,8 +810,8 @@ class we_search_search extends we_search{
 						$searching = " = '" . $this->db->escape($searchname) . "' ";
 
 						$sql .= $this->sqlwhere($tablename . '.DocType', $searching, $operator . '( (Published >= ModDate AND Published !=0 AND ') .
-								$this->sqlwhere($searchfield, $searching, ' ) OR (Published < ModDate AND ') .
-								'))';
+							$this->sqlwhere($searchfield, $searching, ' ) OR (Published < ModDate AND ') .
+							'))';
 					} elseif(stristr($searchfield, '.Published') || stristr($searchfield, '.CreationDate') || stristr($searchfield, '.ModDate')){
 						if((stristr($searchfield, '.Published') && $this->table == FILE_TABLE || $this->table == OBJECT_FILES_TABLE) || !stristr($searchfield, '.Published')){
 							if($this->table == VERSIONS_TABLE && (stristr($searchfield, '.CreationDate') || stristr($searchfield, '.ModDate'))){
@@ -912,7 +916,7 @@ class we_search_search extends we_search{
 		$_SESSION['weS']['weSearch']['countChilds'][] = $folderID;
 		// doppelte Eintr�ge aus array entfernen
 		$_SESSION['weS']['weSearch']['countChilds'] = array_values(
-				array_unique($_SESSION['weS']['weSearch']['countChilds']));
+			array_unique($_SESSION['weS']['weSearch']['countChilds']));
 
 		return $_SESSION['weS']['weSearch']['countChilds'];
 	}

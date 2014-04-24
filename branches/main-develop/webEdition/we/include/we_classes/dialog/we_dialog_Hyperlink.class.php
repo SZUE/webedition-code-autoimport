@@ -352,7 +352,6 @@ class we_dialog_Hyperlink extends we_dialog_base{
 
 			// OBJECT LINK
 			if(defined("OBJECT_TABLE") && ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL || permissionhandler::hasPerm("CAN_SEE_OBJECTFILES"))){
-				//javascript:we_cmd('openDocselector', document.we_form.elements['we_dialog_args[objID]'].value, '" . OBJECT_FILES_TABLE . "', 'document.we_form.elements[\\'we_dialog_args[objID]\\'].value', 'document.we_form.elements[\\'we_dialog_args[objHref]\\'].value', '', '', '', 'objectFile',".(permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).");", false, 100, 22, "", "", !permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")
 				$wecmdenc1 = we_cmd_enc("document.we_form.elements['we_dialog_args[objID]'].value");
 				$wecmdenc2 = we_cmd_enc("document.we_form.elements['we_dialog_args[objHref]'].value");
 				$wecmdenc3 = we_cmd_enc("top.opener._EditorFrame.setEditorIsHot(true);");

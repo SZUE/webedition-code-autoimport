@@ -24,7 +24,7 @@
 we_html_tools::protect();
 
 // init document
-$we_alerttext = $allowedContentTypes = '';
+$we_alerttext = '';
 $error = false;
 
 $maxsize = getUploadMaxFilesize(false);
@@ -46,6 +46,7 @@ if(!isset($_SESSION['weS']['we_data'][$we_transaction])){
 			$allowedContentTypes = we_base_imageEdit::IMAGE_CONTENT_TYPES;
 			break;
 		case we_base_ContentTypes::APPLICATION;
+			$allowedContentTypes = '';
 			break;
 		default:
 			$allowedContentTypes = $we_doc->ContentType;

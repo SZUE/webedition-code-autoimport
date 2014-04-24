@@ -62,7 +62,7 @@ if(ini_get('session.gc_probability') != '0' && !@opendir(session_save_path())){
 }
 
 //start autoloader!
-require_once ($_SERVER['DOCUMENT_ROOT']. '/webEdition/lib/we/core/autoload.inc.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.inc.php');
 
 require_once (WE_INCLUDES_PATH . 'we_global.inc.php');
 update_mem_limit(32);
@@ -112,16 +112,16 @@ if(defined('WE_WEBUSER_LANGUAGE')){
 
 if(isset($_SESSION['prefs']['Language']) && !empty($_SESSION['prefs']['Language'])){
 	$GLOBALS['WE_LANGUAGE'] = (is_dir(WE_INCLUDES_PATH . 'we_language/' . $_SESSION['prefs']['Language']) ?
-					$_SESSION['prefs']['Language'] :
-					//  bugfix #4229
-					($_SESSION['prefs']['Language'] = WE_LANGUAGE));
+			$_SESSION['prefs']['Language'] :
+			//  bugfix #4229
+			($_SESSION['prefs']['Language'] = WE_LANGUAGE));
 } else {
 	$GLOBALS['WE_LANGUAGE'] = WE_LANGUAGE;
 }
 
 if(!isset($GLOBALS['WE_IS_DYN'])){ //only true on dynamic frontend pages
 	$GLOBALS['WE_BACKENDCHARSET'] = (isset($_SESSION['prefs']['BackendCharset']) && $_SESSION['prefs']['BackendCharset'] != '' ?
-					$_SESSION['prefs']['BackendCharset'] : 'UTF-8');
+			$_SESSION['prefs']['BackendCharset'] : 'UTF-8');
 
 	include_once (WE_INCLUDES_PATH . 'define_styles.inc.php');
 	//FIXME: remove
@@ -140,23 +140,17 @@ if(!isset($GLOBALS['WE_IS_DYN'])){ //only true on dynamic frontend pages
 			$header = false;
 			break;
 		case 'reload_editpage':
-			$header = (!($_SESSION['weS']['EditPageNr'] == WE_EDITPAGE_PREVIEW ||
-					$_SESSION['weS']['EditPageNr'] == WE_EDITPAGE_CONTENT ||
-					$_SESSION['weS']['EditPageNr'] == WE_EDITPAGE_PROPERTIES
-					));
+			$header = (!in_array($_SESSION['weS']['EditPageNr'], array(WE_EDITPAGE_CONTENT, WE_EDITPAGE_PREVIEW, WE_EDITPAGE_PROPERTIES)));
 			break;
 		case 'switch_edit_page':
-			$header = (!($_REQUEST['we_cmd'][1] == WE_EDITPAGE_CONTENT ||
-					$_REQUEST['we_cmd'][1] == WE_EDITPAGE_PREVIEW ||
-					$_REQUEST['we_cmd'][1] == WE_EDITPAGE_PROPERTIES
-					));
+			$header = (!in_array(weRequest('int', 'we_cmd', -1, 1), array(WE_EDITPAGE_CONTENT, WE_EDITPAGE_PREVIEW, WE_EDITPAGE_PROPERTIES)));
 			break;
 		case 'load_editor':
 			$header = (!(isset($_REQUEST['we_transaction']) &&
-					isset($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]) &&
-					$_SESSION['weS']['we_data'][$_REQUEST['we_transaction']][0]['Table'] == FILE_TABLE &&
-					$_SESSION['weS']['EditPageNr'] == WE_EDITPAGE_PREVIEW
-					));
+				isset($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]) &&
+				$_SESSION['weS']['we_data'][$_REQUEST['we_transaction']][0]['Table'] == FILE_TABLE &&
+				$_SESSION['weS']['EditPageNr'] == WE_EDITPAGE_PREVIEW
+				));
 			break;
 		case '__default__':
 			$header = !((isset($GLOBALS['show_stylesheet']) && $GLOBALS['show_stylesheet']));

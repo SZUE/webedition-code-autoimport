@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-if(isset($_REQUEST['code'])){
+if(isset($_REQUEST['code'])){//FIXME: remove
 	exit('REQUEST[\'code\'] is forbidden!');
 }
 

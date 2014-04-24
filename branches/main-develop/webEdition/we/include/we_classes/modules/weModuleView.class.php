@@ -97,21 +97,21 @@ class weModuleView{
 			case 'new_raw':
 				$this->raw = new weShop();
 				echo we_html_element::jsElement(
-						$this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->raw->Text) . '";' .
-						$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";'
+					$this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->raw->Text) . '";' .
+					$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";'
 				);
 				break;
 			case 'edit_raw':
-				$this->raw = new weShop(weRequest('int', 'cmdid',0));
+				$this->raw = new weShop(weRequest('int', 'cmdid', 0));
 				echo we_html_element::jsElement(
-						$this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->raw->Text) . '";' .
-						$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";'
+					$this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->raw->Text) . '";' .
+					$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";'
 				);
 				break;
 			case 'save_raw':
 				if($this->raw->filenameNotValid()){
 					echo we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(g_l('modules_shop', '[we_filename_notValid]'), we_message_reporting::WE_MESSAGE_ERROR)
+						we_message_reporting::getShowMessageCall(g_l('modules_shop', '[we_filename_notValid]'), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 					break;
 				}
@@ -137,8 +137,8 @@ attribs["tooltip"]="";' .
 						$this->topFrame . '.updateEntry(' . $this->raw->ID . ',"' . $tt . '");'
 					);
 				echo we_html_element::jsElement(
-						$js .
-						we_message_reporting::getShowMessageCall(g_l('modules_shop', '[raw_saved_ok]'), we_message_reporting::WE_MESSAGE_NOTICE)
+					$js .
+					we_message_reporting::getShowMessageCall(g_l('modules_shop', '[raw_saved_ok]'), we_message_reporting::WE_MESSAGE_NOTICE)
 				);
 				break;
 			case 'delete_raw':
@@ -148,8 +148,8 @@ attribs["tooltip"]="";' .
 				$this->raw = new weShop();
 
 				echo we_html_element::jsElement(
-						$js .
-						we_message_reporting::getShowMessageCall(g_l('modules_shop', '[raw_deleted]'), we_message_reporting::WE_MESSAGE_NOTICE)
+					$js .
+					we_message_reporting::getShowMessageCall(g_l('modules_shop', '[raw_deleted]'), we_message_reporting::WE_MESSAGE_NOTICE)
 				);
 				break;
 			case 'switchPage':
@@ -175,9 +175,7 @@ attribs["tooltip"]="";' .
 			}
 		}
 
-		if(isset($_REQUEST['page'])){
-			$this->page = $_REQUEST['page'];
-		}
+		$this->page = weRequest('int', 'page', $this->page);
 	}
 
 	function new_array_splice(&$a, $start, $len = 1){

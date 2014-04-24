@@ -28,13 +28,10 @@
  *
  */
 
-$ischecked = 0;
-
 if(defined('WE_VERSION_SUPP') && WE_VERSION_SUPP != 'release'){
 	$ischecked = 1;
-}
-if(isset($_REQUEST["setTestUpdate"])){
-	$ischecked = $_REQUEST["setTestUpdate"];
+}else{
+	$ischecked = weRequest('bool',"setTestUpdate");
 }
 $conf = we_base_file::load(LIVEUPDATE_DIR . 'conf/conf.inc.php');
 if($ischecked){

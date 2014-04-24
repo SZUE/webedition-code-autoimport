@@ -149,14 +149,6 @@ function we_tag_listview($attribs){
 	$we_offset = intval($offset);
 	$we_rows = intval($rows);
 
-
-	if($type == 'document' || $type == 'search'){
-		$we_lv_doctype = $doctype;
-		if($we_lv_doctype == 'we_doc' && $GLOBALS['we_doc']->DocType){
-			$we_lv_doctype = f('SELECT DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($GLOBALS['we_doc']->DocType), 'DocType', $GLOBALS['DB_WE']);
-		}
-	}
-
 	switch($type){
 		case 'document':
 			$GLOBALS['lv'] = new we_listview($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $doctype, $we_lv_cats, $we_lv_catOr, $casesensitive, $we_lv_ws, $we_lv_ct, $cols, $we_lv_se, $cond, $we_lv_calendar, $we_lv_datefield, $we_lv_date, $we_lv_weekstart, $we_lv_categoryids, $cfilter, $we_lv_subfolders, $customers, $id, $we_lv_languages, $we_lv_numorder, $hidedirindex, $triggerid);

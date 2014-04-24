@@ -87,7 +87,7 @@ class we_object_listview extends listviewBase{
 
 		$where_lang = '';
 
-		if($this->languages != ''){
+		if($this->languages){
 			$where_lang = array();
 			$langArray = makeArrayFromCSV($this->languages);
 			foreach($langArray as $lang){
@@ -146,9 +146,9 @@ class we_object_listview extends listviewBase{
 			$webUserID_tail = ' AND (' . $_wsql . ') ';
 		}
 
-		if(!empty($sqlParts["tables"]) || $we_predefinedSQL != ''){
+		if($sqlParts["tables"] || $we_predefinedSQL != ''){
 
-			if($we_predefinedSQL != ""){
+			if($we_predefinedSQL){
 				$this->DB_WE->query($we_predefinedSQL);
 				$this->anz_all = $this->DB_WE->num_rows();
 				$q = $we_predefinedSQL . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . $this->maxItemsPerPage) : '');
@@ -190,7 +190,7 @@ class we_object_listview extends listviewBase{
 						$_idListArray[] = $this->DB_WE->f("OF_WebUserID");
 					}
 				}
-				if(!empty($_idListArray)){
+				if($_idListArray){
 					$_idlist = implode(',', array_unique($_idListArray));
 					$db = new DB_WE();
 					$db->query('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID IN(' . $_idlist . ')');
@@ -298,7 +298,7 @@ class we_object_listview extends listviewBase{
 		$_fieldnames = getHash('SELECT DefaultDesc,DefaultTitle,DefaultKeywords,CreationDate,ModDate FROM ' . OBJECT_TABLE . ' WHERE ID=' . $classID, $this->DB_WE);
 		$_selFields = '';
 		foreach($_fieldnames as $_key => $_val){
-			if(empty($_val) || $_val == '_'){ // bug #4657
+			if(!$_val || $_val == '_'){ // bug #4657
 				continue;
 			}
 			if(!is_numeric($_key) && $_val){
@@ -380,7 +380,7 @@ class we_object_listview extends listviewBase{
 	function next_record(){
 		$count = $this->count;
 		$fetch = false;
-		if($this->calendar_struct['calendar'] != ''){
+		if($this->calendar_struct['calendar']){
 			if($this->count < $this->anz){
 				listviewBase::next_record();
 				$count = $this->calendar_struct['count'];
@@ -395,6 +395,11 @@ class we_object_listview extends listviewBase{
 			$ret = $this->DB_WE->next_record();
 
 			if($ret){
+				$tmp = getHash('SELECT * FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . $this->DB_WE->f('OF_ID'), null, MYSQL_ASSOC);
+				foreach($tmp as $key => $val){
+					$this->DB_WE->Record['we_wedoc_' . $key] = $val;
+				}
+
 				$paramName = $this->docID ? 'we_oid' : 'we_objectID';
 				$this->DB_WE->Record['we_wedoc_Path'] = $this->Path . '?' . $paramName . '=' . $this->DB_WE->Record['OF_ID'];
 				$this->DB_WE->Record['we_wedoc_WebUserID'] = isset($this->DB_WE->Record['OF_WebUserID']) ? $this->DB_WE->Record['OF_WebUserID'] : 0; // needed for ifRegisteredUserCanChange tag

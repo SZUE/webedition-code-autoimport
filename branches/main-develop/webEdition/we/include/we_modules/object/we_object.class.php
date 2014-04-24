@@ -285,7 +285,6 @@ class we_object extends we_document{
 				$fold->initByPath($this->getPath(), OBJECT_FILES_TABLE, 1, 0, 1);
 			}
 		} else {
-
 			$ctable = OBJECT_X_TABLE . $this->ID;
 			$tableInfo = $this->DB_WE->metadata($ctable);
 			$q = $regs = array();
@@ -819,14 +818,14 @@ class we_object extends we_document{
 			<td  width="170" class="defaultfont" valign="top">';
 
 		if($type == we_objectFile::TYPE_OBJECT){
-			$vals = array();
+			$regs = $vals = array();
 			$all = $this->DB_WE->table_names(OBJECT_X_TABLE . '%');
 			$count = 0;
 			while($count < count($all)){
 				if($all[$count]["table_name"] != OBJECT_FILES_TABLE && $all[$count]["table_name"] != OBJECT_FILES_TABLE){
 					if(preg_match('/^(.+)_(\d+)$/', $all[$count]["table_name"], $regs)){
 						if($this->ID != $regs[2]){
-							$path = f('SELECT Path FROM ' . OBJECT_TABLE . ' WHERE ID=' . $regs[2], 'Path', $this->DB_WE);
+							$path = f('SELECT Path FROM ' . OBJECT_TABLE . ' WHERE ID=' . $regs[2], '', $this->DB_WE);
 							if($path !== ''){
 								$vals[$regs[2]] = $path;
 							}
@@ -1487,7 +1486,6 @@ class we_object extends we_document{
 		$textname = 'userNameTmp';
 		$idname = 'userIDTmp';
 		$delallbut = we_html_button::create_button("delete_all", "javascript:we_cmd('del_all_users','')", true, 0, 0, "", "", $this->Users ? false : true);
-		//javascript:we_cmd('browse_users','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','',document.forms[0].elements['$idname'].value,'fillIDs();opener.we_cmd(\\'add_user\\',top.allIDs)','','',1)
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
 		$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$textname'].value");
 		$wecmdenc5 = we_cmd_enc("fillIDs();opener.we_cmd('add_user',top.allIDs)");
@@ -1868,7 +1866,6 @@ class we_object extends we_document{
 	function formCopyDocument(){
 		$idname = 'we_' . $this->Name . '_CopyID';
 		$rootDIrID = 0;
-		//javascript:we_cmd('openDocselector',document.forms[0].elements['$idname'].value,'".$this->Table."','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','','opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd(\\'copyDocument\\',currentID);','".session_id()."','".$rootDIrID."','".$this->ContentType."');
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
 		$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd('copyDocument',currentID);");
 
@@ -2327,7 +2324,6 @@ class we_object extends we_document{
 		}
 		$textname = 'we_' . $this->Name . '_' . $Pathname . ($identifier != '' ? '_' . $identifier : '');
 		$idname = 'we_' . $this->Name . '_' . $IDName;
-		//javascript:we_cmd('openDirselector',document.we_form.elements['$idname'].value,'$table','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);opener.pathOfDocumentChanged();".$cmd."','".session_id()."','$rootDirID')
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$idname'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$textname'].value");
 		$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.pathOfDocumentChanged();" . str_replace('\\', '', $cmd));

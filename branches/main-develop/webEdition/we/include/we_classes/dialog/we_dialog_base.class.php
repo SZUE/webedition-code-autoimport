@@ -84,9 +84,7 @@ class we_dialog_base{
 			}
 		}
 
-		if(isset($_REQUEST['we_pageNr'])){
-			$this->pageNr = $_REQUEST['we_pageNr'];
-		}
+		$this->pageNr = weRequest('int', 'we_pageNr', $this->pageNr);
 	}
 
 	function getHTML(){

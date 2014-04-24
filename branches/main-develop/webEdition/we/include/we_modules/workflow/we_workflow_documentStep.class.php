@@ -27,18 +27,19 @@
  * WorkfFlow Document Step definition
  * This class describe document step in workflow process
  */
-class we_workflow_documentStep extends we_workflow_base {
+class we_workflow_documentStep extends we_workflow_base{
 
 	const STATUS_UNKNOWN = 0;
 	const STATUS_APPROVED = 1;
 	const STATUS_CANCELED = 2;
 	const STATUS_AUTOPUBLISHED = 3;
 
-	var $ID;
-	var $workflowStepID;
-	var $startDate;
-	var $finishDate;
-	var $workflowDocID;
+	var $ID = 0;
+	var $workflowStepID = 0;
+	var $startDate = 0;
+	var $finishDate = 0;
+	var $workflowDocID = 0;
+	var $Status = self::STATUS_UNKNOWN;
 
 	/**
 	 * list of document tasks
@@ -55,21 +56,8 @@ class we_workflow_documentStep extends we_workflow_base {
 		$this->table = WORKFLOW_DOC_STEP_TABLE;
 		$this->ClassName = __CLASS__;
 
-		$this->persistents[] = "ID";
-		$this->persistents[] = "workflowDocID";
-		$this->persistents[] = "workflowStepID";
-		$this->persistents[] = "startDate";
-		$this->persistents[] = "finishDate";
-		$this->persistents[] = "Status";
+		array_psuh($this->persistents, "ID", "workflowDocID", "workflowStepID", "startDate", "finishDate", "Status");
 
-		$this->ID = 0;
-		$this->workflowDocID = 0;
-		$this->workflowStepID = 0;
-		$this->startDate = 0;
-		$this->finishDate = 0;
-		$this->Status = 0;
-
-		$this->tasks = array();
 		if($wfDocumentStep){
 			$this->ID = $wfDocumentStep;
 			$this->load();
@@ -81,8 +69,9 @@ class we_workflow_documentStep extends we_workflow_base {
 	 *
 	 */
 	function load($id = 0){
-		if($id)
+		if($id){
 			$this->ID = $id;
+		}
 
 		if($this->ID){
 			parent::load();
@@ -100,22 +89,21 @@ class we_workflow_documentStep extends we_workflow_base {
 	function start($desc = ""){
 		$this->startDate = time();
 
-
 		$workflowDoc = new we_workflow_document($this->workflowDocID);
 		$workflowStep = new we_workflow_step($this->workflowStepID);
 		$deadline = $this->startDate + round($workflowStep->Worktime * 3600);
 
 		// set all tasks to pending
-		for($i = 0; $i < count($this->tasks); $i++){
-			$workflowTask = new we_workflow_task($this->tasks[$i]->workflowTaskID);
+		foreach($this->tasks as &$cur){
+			$workflowTask = new we_workflow_task($cur->workflowTaskID);
 			if($workflowTask->userID){
 				//send todo to next user
 				$path = "<b>" . g_l('modules_workflow', '[' . stripTblPrefix($workflowDoc->document->ContentType == 'objectFile' ? OBJECT_FILES_TABLE : FILE_TABLE) . '][messagePath]') . ':</b>&nbsp;<a href="javascript:top.opener.top.weEditorFrameController.openDocument(\'' . $workflowDoc->document->Table . '\',\'' . $workflowDoc->document->ID . '\',\'' . $workflowDoc->document->ContentType . '\');");" >' . $workflowDoc->document->Path . '</a>';
 				$mess = "<p><b>" . g_l('modules_workflow', '[todo_next]') . "</b></p><p>" . $desc . "</p><p>" . $path . "</p>";
 
-				$this->tasks[$i]->todoID = $this->sendTodo($workflowTask->userID, g_l('modules_workflow', '[todo_subject]'), $mess . "<p>" . $path . "</p>", $deadline);
+				$cur->todoID = $this->sendTodo($workflowTask->userID, g_l('modules_workflow', '[todo_subject]'), $mess . "<p>" . $path . "</p>", $deadline);
 				if($workflowTask->Mail){
-					$foo = f('SELECT Email FROM ' . USER_TABLE . ' WHERE ID=' . intval($workflowTask->userID), "Email", $this->db);
+					$foo = f('SELECT Email FROM ' . USER_TABLE . ' WHERE ID=' . intval($workflowTask->userID), "", $this->db);
 					$this_user = getHash('SELECT First,Second,Email FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION["user"]["ID"]), $this->db);
 					if($foo){
 						$desc = str_replace('<br />', "\n", $desc);
@@ -147,27 +135,26 @@ class we_workflow_documentStep extends we_workflow_base {
 	 *
 	 */
 	function save(){
-		$db = new DB_WE();
-
 		parent::save();
 
 		## save all tasks also ##
-		foreach($this->tasks as $k => $v){
-			$this->tasks[$k]->documentStepID = $this->ID;
-			$this->tasks[$k]->save();
+		foreach($this->tasks as &$v){
+			$v->documentStepID = $this->ID;
+			$v->save();
 		}
 	}
 
 	function delete(){
-		foreach($this->tasks as $v)
+		foreach($this->tasks as $v){
 			$v->delete();
+		}
 		parent::delete();
 	}
 
 	function approve($uID, $desc, $force = false){
 		if($force){
-			foreach($this->tasks as $tk => $tv){
-				$this->tasks[$tk]->approve();
+			foreach($this->tasks as &$tv){
+				$tv->approve();
 			}
 			$this->Status = self::STATUS_APPROVED;
 			$this->finishDate = time();
@@ -180,25 +167,27 @@ class we_workflow_documentStep extends we_workflow_base {
 			$this->tasks[$i]->approve();
 
 			$workflowStep = new we_workflow_step($this->workflowStepID);
-			if($workflowStep->stepCondition == 0)
+			if($workflowStep->stepCondition == 0){
 				$this->Status = self::STATUS_APPROVED;
-			else {
+			} else {
 				$num = $this->findNumOfFinishedTasks();
 				if($num == count($this->tasks)){
 					$status = true;
-					foreach($this->tasks as $k => $v){
-						$status = $status && ($v->Status == we_workflow_documentTask::STATUS_APPROVED ? true : false);
+					foreach($this->tasks as $v){
+						$status &= ($v->Status == we_workflow_documentTask::STATUS_APPROVED);
 					}
 
-					if($status)
+					if($status){
 						$this->Status = self::STATUS_APPROVED;
+					}
 				}
 			}
 			if($this->Status == self::STATUS_APPROVED || $this->Status == self::STATUS_CANCELED){
 				$this->finishDate = time();
-				foreach($this->tasks as $tk => $tv){
-					if($tv->Status == we_workflow_documentTask::STATUS_UNKNOWN)
-						$this->tasks[$tk]->removeTodo();
+				foreach($this->tasks as &$tv){
+					if($tv->Status == we_workflow_documentTask::STATUS_UNKNOWN){
+						$tv->removeTodo();
+					}
 				}
 			}
 			//insert into document Log
@@ -210,8 +199,8 @@ class we_workflow_documentStep extends we_workflow_base {
 
 	function autopublish($uID, $desc, $force = false){
 		if($force){
-			foreach($this->tasks as $tk => $tv){
-				$this->tasks[$tk]->approve();
+			foreach($this->tasks as &$tv){
+				$tv->approve();
 			}
 			$this->Status = self::STATUS_APPROVED;
 			$this->finishDate = time();
@@ -224,25 +213,27 @@ class we_workflow_documentStep extends we_workflow_base {
 			$this->tasks[$i]->approve();
 
 			$workflowStep = new we_workflow_step($this->workflowStepID);
-			if($workflowStep->stepCondition == 0)
+			if($workflowStep->stepCondition == 0){
 				$this->Status = self::STATUS_APPROVED;
-			else {
+			} else {
 				$num = $this->findNumOfFinishedTasks();
 				if($num == count($this->tasks)){
 					$status = true;
-					foreach($this->tasks as $k => $v){
+					foreach($this->tasks as $v){
 						$status = $status && ($v->Status == we_workflow_documentTask::STATUS_APPROVED ? true : false);
 					}
 
-					if($status)
+					if($status){
 						$this->Status = self::STATUS_APPROVED;
+					}
 				}
 			}
 			if($this->Status == self::STATUS_APPROVED || $this->Status == self::STATUS_CANCELED){
 				$this->finishDate = time();
-				foreach($this->tasks as $tk => $tv){
-					if($tv->Status == we_workflow_documentTask::STATUS_UNKNOWN)
-						$this->tasks[$tk]->removeTodo();
+				foreach($this->tasks as &$tv){
+					if($tv->Status == we_workflow_documentTask::STATUS_UNKNOWN){
+						$tv->removeTodo();
+					}
 				}
 			}
 			//insert into document Log
@@ -254,8 +245,9 @@ class we_workflow_documentStep extends we_workflow_base {
 
 	function decline($uID, $desc, $force = false){
 		if($force){
-			foreach($this->tasks as $tk => $tv)
-				$this->tasks[$tk]->decline();;
+			foreach($this->tasks as &$tv){
+				$tv->decline();
+			}
 			$this->Status = self::STATUS_CANCELED;
 			$this->finishDate = time();
 			//insert into document Log
@@ -267,8 +259,9 @@ class we_workflow_documentStep extends we_workflow_base {
 			$this->tasks[$i]->decline();
 			$workflowStep = new we_workflow_step($this->workflowStepID);
 			$this->Status = self::STATUS_CANCELED;
-			if($this->Status == self::STATUS_APPROVED || $this->Status == self::STATUS_CANCELED)
+			if($this->Status == self::STATUS_APPROVED || $this->Status == self::STATUS_CANCELED){
 				$this->finishDate = time();
+			}
 			//insert into document Log
 			$this->Log->logDocumentEvent($this->workflowDocID, $uID, we_workflow_log::TYPE_DECLINE, $desc);
 			return true;
@@ -279,8 +272,9 @@ class we_workflow_documentStep extends we_workflow_base {
 	function findTaskByUser($uID){
 		for($i = 0; $i < count($this->tasks); $i++){
 			$workflowTask = new we_workflow_task($this->tasks[$i]->workflowTaskID);
-			if($workflowTask->userID == $uID)
+			if($workflowTask->userID == $uID){
 				return $i;
+			}
 		}
 		return -1;
 	}
@@ -288,8 +282,9 @@ class we_workflow_documentStep extends we_workflow_base {
 	function findNumOfFinishedTasks(){
 		$num = 0;
 		for($i = 0; $i < count($this->tasks); $i++){
-			if($this->tasks[$i]->Status != 0)
+			if($this->tasks[$i]->Status != 0){
 				$num++;
+			}
 		}
 		return $num;
 	}
@@ -304,7 +299,7 @@ class we_workflow_documentStep extends we_workflow_base {
 
 		$db = new DB_WE();
 
-		$db->query("SELECT ID FROM " . WORKFLOW_DOC_STEP_TABLE . " WHERE workflowDocID=" . intval($workflowDocumentID) . " ORDER BY ID");
+		$db->query('SELECT ID FROM ' . WORKFLOW_DOC_STEP_TABLE . ' WHERE workflowDocID=' . intval($workflowDocumentID) . " ORDER BY ID");
 		$docSteps = array();
 		while($db->next_record()){
 			$docSteps[] = new self($db->f("ID"));
@@ -355,5 +350,4 @@ class we_workflow_documentStep extends we_workflow_base {
 		return $docStep;
 	}
 
-	//-------------------------------STATIC FUNCTIONS END -----------------------------------
 }

@@ -313,7 +313,7 @@ class we_import_site{
 	 */
 	private function _getSaveWePageSettingsHTML(){
 		$data = array(
-			'valueCreateType' => $_REQUEST['createType']
+			'valueCreateType' => weRequest('string', 'createType')
 		);
 		if($data['valueCreateType'] == 'specify'){
 			$data['valueTemplateId'] = weRequest('int', 'templateID', 0);
@@ -573,7 +573,6 @@ class we_import_site{
 	 */
 	private function _getTemplateSelectHTML($tid){
 		$path = f('SELECT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($tid), 'Path', $GLOBALS['DB_WE']);
-		//javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','opener.displayTable();','" . session_id() . "','','text/weTmpl',1)
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['templateID'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['templateDummy'].value");
 		$wecmdenc3 = we_cmd_enc("opener.displayTable();");

@@ -56,7 +56,7 @@ function weDoLinkCmd($args){
 	$href = (strpos($args['href'], '?') !== false ? substr($args['href'], 0, strpos($args['href'], '?')) :
 			(strpos($args['href'], '#') === false ? $args['href'] : substr($args['href'], 0, strpos($args['href'], '#')))) . $param . ($anchor ? '#' . $anchor : '');
 
-	if(!(isset($_REQUEST['we_dialog_args']['editor']) && $_REQUEST['we_dialog_args']['editor'] == 'tinyMce')){
+	if(weRequest('string', 'we_dialog_args','tinyMce','editor') != "tinyMce"){
 		return we_html_element::jsElement(
 				'top.opener.weWysiwygObject_' . $args['editname'] . '.createLink("' . $href . '","' . $args['target'] . '","' . $args['class'] . '","' . $args['lang'] . '","' . $args['hreflang'] . '","' . $args['title'] . '","' . $args['accesskey'] . '","' . $args['tabindex'] . '","' . $args['rel'] . '","' . $args['rev'] . '");
 top.close();

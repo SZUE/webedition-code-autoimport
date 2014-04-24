@@ -26,13 +26,13 @@
 /**
  * General Definition of WebEdition Workflow Step
  */
-class we_workflow_step extends we_workflow_base{
+class we_workflow_step extends we_workflow_base {
 
-	var $ID;
-	var $workflowID;
-	var $Worktime;
-	var $timeAction;
-	var $stepCondition;
+	var $ID = 0;
+	var $workflowID = 0;
+	var $Worktime = 10;
+	var $timeAction = 0;
+	var $stepCondition = 0;
 	var $tasks = array(); # array of we_workflow_task objects
 
 	/**
@@ -45,20 +45,7 @@ class we_workflow_step extends we_workflow_base{
 		parent::__construct();
 		$this->table = WORKFLOW_STEP_TABLE;
 
-		$this->persistents[] = "ID";
-		$this->persistents[] = "Worktime";
-		$this->persistents[] = "timeAction";
-		$this->persistents[] = "stepCondition";
-
-		$this->persistents[] = "workflowID";
-
-		$this->ID = 0;
-		$this->workflowID = 0;
-		$this->Worktime = 10;
-		$this->timeAction = 0;
-		$this->stepCondition = 0;
-
-		$this->tasks = array();
+		array_push($this->persistents, "ID", "Worktime", "timeAction", "stepCondition", "workflowID");
 
 		if($stepID > 0){
 			$this->ID = $stepID;
@@ -72,7 +59,7 @@ class we_workflow_step extends we_workflow_base{
 	function getAllSteps($workflowID){
 		$db = new DB_WE();
 
-		$db->query("SELECT ID FROM " . WORKFLOW_STEP_TABLE . " WHERE workflowID =" . intval($workflowID) . " ORDER BY ID");
+		$db->query("SELECT ID FROM " . WORKFLOW_STEP_TABLE . " WHERE workflowID=" . intval($workflowID) . " ORDER BY ID");
 
 		$steps = array();
 
@@ -86,16 +73,16 @@ class we_workflow_step extends we_workflow_base{
 	 * Load step from database
 	 */
 	function load($id = 0){
-		if($id)
+		if($id){
 			$this->ID = $id;
+		}
 		if($this->ID){
 			parent::load();
 			## get tasks for step
 			$this->tasks = we_workflow_task::getAllTasks($this->ID);
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	/**
@@ -117,9 +104,8 @@ class we_workflow_step extends we_workflow_base{
 		}
 
 		// !!! here we have to delete all other tasks in database except this in array
-		if(!empty($tasksList)){
-			$deletequery = 'DELETE FROM ' . WORKFLOW_TASK_TABLE . ' WHERE stepID=' . intval($this->ID) . ' AND ID NOT IN (' . join(",", $tasksList) . ')';
-			$afectedRows = $db->query($deletequery);
+		if($tasksList){
+			$db->query('DELETE FROM ' . WORKFLOW_TASK_TABLE . ' WHERE stepID=' . intval($this->ID) . ' AND ID NOT IN (' . join(",", $tasksList) . ')');
 		}
 	}
 
@@ -128,8 +114,8 @@ class we_workflow_step extends we_workflow_base{
 	 */
 	function delete(){
 		if($this->ID){
-			foreach($this->tasks as $key => $val){
-				$this->tasks[$key]->delete();
+			foreach($this->tasks as &$val){
+				$val->delete();
 			}
 			parent::delete();
 			return true;
