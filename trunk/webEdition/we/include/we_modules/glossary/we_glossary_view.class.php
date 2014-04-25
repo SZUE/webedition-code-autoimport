@@ -154,7 +154,7 @@ class we_glossary_view{
 	/**
 	 * set the name of the frameset
 	 *
-	 * @param string $frameset
+	 * @param string $FrameSet
 	 */
 	function setFramesetName($FrameSet){
 
@@ -581,7 +581,7 @@ function we_cmd() {
 					break;
 				}
 
-				$oldpath = $this->Glossary->Path;
+				//$oldpath = $this->Glossary->Path;
 
 				// set the path and check it
 				$this->Glossary->setPath();

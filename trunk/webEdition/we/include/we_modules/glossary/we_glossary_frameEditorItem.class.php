@@ -177,7 +177,7 @@ function submitForm() {
 			we_html_multiIconBox::getJs();
 
 
-		$out .= we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')), we_html_multiIconBox::getHTML('weMultibox', "100%", we_glossary_frameEditorItem::getHTMLTabProperties($weGlossaryFrames), 30, '', 2, g_l('modules_glossary', '[show_extended_linkoptions]'), g_l('modules_glossary', '[hide_extended_linkoptions]'), false));
+		$out .= we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')), we_html_multiIconBox::getHTML('weMultibox', "100%", self::getHTMLTabProperties($weGlossaryFrames), 30, '', 2, g_l('modules_glossary', '[show_extended_linkoptions]'), g_l('modules_glossary', '[hide_extended_linkoptions]'), false));
 
 		$js = 'showType("' . $weGlossaryFrames->View->Glossary->Type . '");';
 		if($weGlossaryFrames->View->Glossary->Type == "link"){
@@ -280,9 +280,7 @@ function we_save() {
 			)
 		);
 
-		$parts = array_merge($parts, self::getHTMLLinkAttributes($weGlossaryFrames));
-
-		return $parts;
+		return array_merge($parts, self::getHTMLLinkAttributes($weGlossaryFrames));
 	}
 
 	function getHTMLAbbreviation(&$weGlossaryFrames){

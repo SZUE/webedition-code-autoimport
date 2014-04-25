@@ -44,7 +44,7 @@ class we_glossary_frameEditorException extends we_glossary_frameEditor{
 
 		$js = we_html_element::jsElement($_js);
 
-		$out = $js . we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')), we_html_multiIconBox::getHTML('weMultibox', "100%", we_glossary_frameEditorException::getHTMLTabProperties($weGlossaryFrames), 30, '', -1, '', '', false));
+		$out = $js . we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')), we_html_multiIconBox::getHTML('weMultibox', "100%", self::getHTMLTabProperties($weGlossaryFrames), 30, '', -1, '', '', false));
 
 		return self::buildBody($weGlossaryFrames, $out);
 	}
