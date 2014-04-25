@@ -26,7 +26,7 @@ class we_glossary_settingControl{
 
 	function processCommands(){
 		if(isset($_REQUEST['cmd'])){
-			switch(weRequest('string','cmd')){
+			switch(weRequest('string', 'cmd')){
 				case 'save_glossary_setting':
 					$html = ($this->saveSettings() ?
 							we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[preferences_saved]'), we_message_reporting::WE_MESSAGE_NOTICE)) :
@@ -35,7 +35,7 @@ class we_glossary_settingControl{
 			}
 
 			echo we_html_tools::getHtmlTop() .
-				'</head><body>' . $html . '</body></html>';
+			'</head><body>' . $html . '</body></html>';
 			exit;
 		}
 	}

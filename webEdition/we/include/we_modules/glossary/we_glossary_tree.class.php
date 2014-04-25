@@ -51,9 +51,10 @@ function openClose(id){
 	treeData[eintragsIndex].open=openstatus;
 
 	if(openstatus && treeData[eintragsIndex].loaded!=1){
-		' . $this->cmdFrame . '.location= (sort!="" ?
-			"' . $this->frameset . '?pnt=cmd&pid="+id+"&sort="+sort :
-			"' . $this->frameset . '?pnt=cmd&pid="+id);
+		' . $this->cmdFrame . '.location = "' . $this->frameset . '?pnt=cmd&pid="+id+
+			(sort!="" ?
+			("&sort="+sort) :
+			"");
 	}else{
 		drawTree();
 	}
@@ -149,12 +150,10 @@ function makeNewEntry(icon,id,pid,txt,open,ct,tab,pub){
 	}
 
 	function getJSInfo(){
-
 		return 'function info(text) {}';
 	}
 
 	function getJSShowSegment(){
-
 		return '
 function showSegment(){
 	parentnode=' . $this->topFrame . '.get(this.parentid);

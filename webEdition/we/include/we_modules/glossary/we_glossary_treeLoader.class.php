@@ -24,8 +24,7 @@
  */
 abstract class we_glossary_treeLoader{
 
-	public static function getItems($ParentId, $Offset = 0, $Segment = 500, $Sort = ''){
-
+	public static function getItems($ParentId, $Offset = 0, $Segment = 500){
 		$Types = array(
 			we_glossary_glossary::TYPE_ABBREVATION,
 			we_glossary_glossary::TYPE_ACRONYM,
@@ -40,20 +39,18 @@ abstract class we_glossary_treeLoader{
 			$Type = array_pop($Temp);
 			$Language = implode('_', $Temp);
 			return self::getItemsFromDB($Language, $Type, $Offset, $Segment);
-		} else if(in_array($ParentId, $GLOBALS['weFrontendLanguages'])){
-			return self::getTypes($ParentId);
-		} else {
-			return self::getLanguages();
 		}
+		if(in_array($ParentId, $GLOBALS['weFrontendLanguages'])){
+			return self::getTypes($ParentId);
+		}
+		return self::getLanguages();
 	}
 
 	private static function getLanguages(){
-
 		$Items = array();
 
 		foreach(getWeFrontendLanguagesForBackend() as $Key => $Val){
-
-			$Item = array(
+			$Items[] = array(
 				'id' => $Key,
 				'parentid' => 0,
 				'text' => $Val,
@@ -65,8 +62,6 @@ abstract class we_glossary_treeLoader{
 				'published' => 1,
 				'cmd' => "view_folder",
 			);
-
-			$Items[] = $Item;
 		}
 
 		return $Items;
@@ -85,8 +80,7 @@ abstract class we_glossary_treeLoader{
 		);
 
 		foreach($Types as $Key => $Val){
-
-			$Item = array(
+			$Items[] = array(
 				'id' => $Language . "_" . $Key,
 				'parentid' => $Language,
 				'text' => $Val,
@@ -98,12 +92,10 @@ abstract class we_glossary_treeLoader{
 				'published' => 1,
 				'cmd' => 'view_type',
 			);
-
-			$Items[] = $Item;
 		}
 
 		if(permissionhandler::hasPerm("EDIT_GLOSSARY_DICTIONARY")){
-			$Item = array(
+			$Items[] = array(
 				'id' => $Language . "_exception",
 				'parentid' => $Language,
 				'text' => g_l('modules_glossary', '[exception]'),
@@ -116,8 +108,6 @@ abstract class we_glossary_treeLoader{
 				'cmd' => 'view_exception',
 				'Icon' => 'prog.gif'
 			);
-
-			$Items[] = $Item;
 		}
 
 		return $Items;

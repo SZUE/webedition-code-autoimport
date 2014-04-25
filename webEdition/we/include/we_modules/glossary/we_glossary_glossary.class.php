@@ -159,8 +159,7 @@ class we_glossary_glossary extends weModelBase{
 	var $_Serialized = array();
 
 	/**
-	 * @param integer $glossaryID
-	 * @return we_glossary_glossary
+	 * @param integer $GlossaryId
 	 * @desc Could load a glossary item if $GlossaryId is not 0
 	 */
 	function __construct($GlossaryId = 0){
@@ -170,29 +169,27 @@ class we_glossary_glossary extends weModelBase{
 		if($GlossaryId){
 			$this->ID = $GlossaryId;
 			$this->load($GlossaryId);
-		} else {
-			if(isset($_REQUEST['cmd'])){
-				switch(weRequest('string','cmd')){
-					case 'new_glossary_abbreviation':
-						$this->Type = self::TYPE_ABBREVATION;
-						break;
-					case 'new_glossary_acronym':
-						$this->Type = self::TYPE_ACRONYM;
-						break;
-					case 'new_glossary_foreignword':
-						$this->Type = self::TYPE_FOREIGNWORD;
-						break;
-					case 'new_glossary_link':
-						$this->Type = self::TYPE_LINK;
-						break;
-					case 'new_glossary_textreplacement':
-						$this->Type = self::TYPE_TEXTREPLACE;
-						break;
-				}
+		} elseif(isset($_REQUEST['cmd'])){
+			switch(weRequest('string', 'cmd')){
+				case 'new_glossary_abbreviation':
+					$this->Type = self::TYPE_ABBREVATION;
+					break;
+				case 'new_glossary_acronym':
+					$this->Type = self::TYPE_ACRONYM;
+					break;
+				case 'new_glossary_foreignword':
+					$this->Type = self::TYPE_FOREIGNWORD;
+					break;
+				case 'new_glossary_link':
+					$this->Type = self::TYPE_LINK;
+					break;
+				case 'new_glossary_textreplacement':
+					$this->Type = self::TYPE_TEXTREPLACE;
+					break;
+			}
 
-				if(isset($_REQUEST['cmdid']) && !preg_match('|^[0-9]|', $_REQUEST['cmdid'])){
-					$this->Language = substr($_REQUEST['cmdid'], 0, 5);
-				}
+			if(isset($_REQUEST['cmdid']) && !preg_match('|^[0-9]|', $_REQUEST['cmdid'])){
+				$this->Language = substr($_REQUEST['cmdid'], 0, 5);
 			}
 		}
 	}
@@ -220,7 +217,7 @@ class we_glossary_glossary extends weModelBase{
 				'Title' => $GLOBALS['DB_WE']->f("Title"),
 			);
 
-			if($GLOBALS['DB_WE']->f("Type") != we_glossary_glossary::TYPE_FOREIGNWORD){
+			if($GLOBALS['DB_WE']->f("Type") != self::TYPE_FOREIGNWORD){
 				$temp = unserialize($GLOBALS['DB_WE']->f("Attributes"));
 				$Item['Lang'] = (isset($temp['lang']) ? $temp['lang'] : '');
 			} else {
@@ -319,7 +316,7 @@ class we_glossary_glossary extends weModelBase{
 	/**
 	 * set an Attribute
 	 *
-	 * @param string $Attribute
+	 * @param string $Name
 	 * @param string $Value
 	 */
 	function setAttribute($Name, $Value){
@@ -329,7 +326,7 @@ class we_glossary_glossary extends weModelBase{
 	/**
 	 * get a attribute
 	 *
-	 * @param string $Attribute
+	 * @param string $Name
 	 * @return mixed
 	 */
 	function getAttribute($Name){
@@ -362,7 +359,7 @@ class we_glossary_glossary extends weModelBase{
 	 * @return boolean
 	 */
 	function isSelf(){
-		$Text = we_glossary_glossary::escapeChars($this->Text);
+		$Text = self::escapeChars($this->Text);
 		return strpos(htmlentities(clearPath(dirname($this->Path)) . '/'), '/' . $Text . '/') !== false;
 	}
 
@@ -413,15 +410,15 @@ class we_glossary_glossary extends weModelBase{
 			return true;
 		}
 
-		$items = we_glossary_glossary::getException($language);
+		$items = self::getException($language);
 		$items[] = $entry;
 		$items = implode("\n", $items);
 
-		return we_glossary_glossary::editException($language, $items);
+		return self::editException($language, $items);
 	}
 
 	function editException($language, $entries){
-		$fileName = we_glossary_glossary::getExceptionFilename($language);
+		$fileName = self::getExceptionFilename($language);
 
 		$content = '';
 		$items = explode("\n", $entries);
@@ -437,7 +434,7 @@ class we_glossary_glossary extends weModelBase{
 	}
 
 	function getException($language){
-		$fileName = we_glossary_glossary::getExceptionFilename($language);
+		$fileName = self::getExceptionFilename($language);
 
 		if(file_exists($fileName) && is_file($fileName)){
 			return file($fileName);
