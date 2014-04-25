@@ -90,7 +90,6 @@ class we_export_frames extends weModuleFrames{
 
 		$we_tabs->onResize();
 		$tabsHead = $we_tabs->getHeader();
-		$tabsBody = $we_tabs->getJS();
 
 		$js = we_html_element::jsElement('
 				function setTab(tab) {

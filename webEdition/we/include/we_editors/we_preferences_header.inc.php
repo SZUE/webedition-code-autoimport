@@ -44,7 +44,7 @@ function getPreferencesTabsDefaultHeight(){
 }
 
 function getPreferencesJS(){
-	return $GLOBALS['we_tabs']->getJS();
+	return '';
 }
 
 function getPreferencesCSS(){

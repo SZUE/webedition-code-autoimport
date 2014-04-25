@@ -27,18 +27,6 @@
 
 class we_users_view extends weModuleView{
 
-	var $db;
-	var $frameset;
-	var $topFrame;
-	var $raw;
-
-	function __construct($frameset = '', $topframe = 'top.content'){
-		$this->db = new DB_WE();
-		$this->setFramesetName($frameset);
-		$this->setTopFrame($topframe);
-		//$this->raw = new weShop();
-	}
-
 	//----------- Utility functions ------------------
 
 	function htmlHidden($name, $value = ''){
@@ -70,211 +58,205 @@ class we_users_view extends weModuleView{
 		$modData = we_base_moduleInfo::getModuleData($mod);
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 
-		$jsCode = '
+		if(isset($_SESSION['user_session_data'])){
+			unset($_SESSION['user_session_data']);
+		}
+
+		return we_html_element::jsScript(JS_DIR . 'images.js') .
+			we_html_element::jsScript(JS_DIR . 'windows.js') .
+			we_html_element::jsScript(JS_DIR . 'md5.js') .
+			we_html_element::jsElement('
 		var loaded=0;
 		var hot=0;
 		var hloaded=0;
 
 		parent.document.title = "' . $title . '";
 
-		';
-
-		$jsCode .= '
-		var cgroup=' . ($_SESSION['user']['ID'] ? intval(f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . $_SESSION["user"]["ID"], 'ParentID', $GLOBALS['DB_WE'])) : 0) . ';';
-		if(isset($_SESSION['user_session_data'])){
-			unset($_SESSION['user_session_data']);
+		var cgroup=' . ($_SESSION['user']['ID'] ? intval(f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . $_SESSION["user"]["ID"])) : 0) . ';' .
+				'
+function doUnload(){
+	if(!!jsWindow_count){
+		for(i = 0; i < jsWindow_count; i++){
+			eval("jsWindow" + i + "Object.close()");
 		}
+	}
+}
 
-		$jsCode .= '
-		function doUnload(){
-			if(!!jsWindow_count){
-				for(i = 0; i < jsWindow_count; i++){
-					eval("jsWindow" + i + "Object.close()");
-				}
-			}
+function we_cmd() {
+	var args = "";
+	var url = "' . WEBEDITION_DIR . 'we_cmd.php?";
+
+	for(var i = 0; i < arguments.length; i++) {
+		url += "we_cmd["+i+"]="+escape(arguments[i]);
+		if(i < (arguments.length - 1)) {
+			url += "&";
 		}
+	}
 
-		function we_cmd() {
-			var args = "";
-			var url = "' . WEBEDITION_DIR . 'we_cmd.php?";
-
-			for(var i = 0; i < arguments.length; i++) {
-				url += "we_cmd["+i+"]="+escape(arguments[i]);
-				if(i < (arguments.length - 1)) {
-					url += "&";
-				}
+	if(hot == "1" && arguments[0] != "save_user") {
+		if(confirm("' . g_l('modules_users', '[save_changed_user]') . '")) {
+			arguments[0] = "save_user";
+		} else {
+			top.content.usetHot();
+		}
+	}
+	switch (arguments[0]) {
+		case "exit_users":
+			if(hot != "1") {
+				eval("top.opener.top.we_cmd(\'exit_modules\')");//imi: test
 			}
-
-			if(hot == "1" && arguments[0] != "save_user") {
-				if(confirm("' . g_l('modules_users', '[save_changed_user]') . '")) {
-					arguments[0] = "save_user";
+			break;
+		case "new_user":
+			top.content.editor.edbody.focus();
+			if(hot==1 && top.content.editor.edbody.document.we_form.ucmd) {
+				if(confirm("' . g_l('modules_users', "[save_changed_user]") . '")) {
+					top.content.editor.edbody.document.we_form.ucmd.value="save_user";
+					top.content.editor.edbody.document.we_form.sd.value=1;
 				} else {
 					top.content.usetHot();
+					top.content.editor.edbody.document.we_form.ucmd.value="new_user";
 				}
+				if(arguments[1]){
+					top.content.editor.edbody.document.we_form.uid.value=arguments[1];
+				}
+				if(arguments[2]){
+					top.content.editor.edbody.document.we_form.ctype.value=arguments[2];
+				}
+				if(arguments[3]){
+					top.content.editor.edbody.document.we_form.ctable.value=arguments[3];
+				}
+				top.content.editor.edbody.we_submitForm("cmd","' . $this->frameset . '?pnt=cmd");
+			} else {
+				top.content.cmd.location="' . $this->frameset . '?pnt=cmd&ucmd=new_user&cgroup="+cgroup;
 			}
-			switch (arguments[0]) {
-				case "exit_users":
-					if(hot != "1") {
-						eval("top.opener.top.we_cmd(\'exit_modules\')");//imi: test
-					}
-					break;
-				case "new_user":
-					top.content.editor.edbody.focus();
-					if(hot==1 && top.content.editor.edbody.document.we_form.ucmd) {
-						if(confirm("' . g_l('modules_users', "[save_changed_user]") . '")) {
-							top.content.editor.edbody.document.we_form.ucmd.value="save_user";
-							top.content.editor.edbody.document.we_form.sd.value=1;
-						} else {
-							top.content.usetHot();
-							top.content.editor.edbody.document.we_form.ucmd.value="new_user";
-						}
-						if(arguments[1]){
-							top.content.editor.edbody.document.we_form.uid.value=arguments[1];
-						}
-						if(arguments[2]){
-							top.content.editor.edbody.document.we_form.ctype.value=arguments[2];
-						}
-						if(arguments[3]){
-							top.content.editor.edbody.document.we_form.ctable.value=arguments[3];
-						}
-						top.content.editor.edbody.we_submitForm("cmd","' . $this->frameset . '?pnt=cmd");
-					} else {
-						top.content.cmd.location="' . $this->frameset . '?pnt=cmd&ucmd=new_user&cgroup="+cgroup;
-					}
-					break;
-				case "check_user_display":
-					top.content.cmd.location="' . $this->frameset . '?pnt=cmd&ucmd=check_user_display&uid="+arguments[1];
-					break;
-				case "display_user":
-					top.content.editor.edbody.focus();
-					if(hot==1 && top.content.editor.edbody.document.we_form.ucmd) {
-						if(confirm("' . g_l('modules_users', '[save_changed_user]') . '")) {
-							top.content.editor.edbody.document.we_form.ucmd.value="save_user";
-							top.content.editor.edbody.document.we_form.sd.value=1;
-						}
-						else {
-							top.content.usetHot();
-							top.content.editor.edbody.document.we_form.ucmd.value="display_user";
-						}
-						if(arguments[1])
-							top.content.editor.edbody.document.we_form.uid.value=arguments[1];
-						if(arguments[2])
-							top.content.editor.edbody.document.we_form.ctype.value=arguments[2];
-						if(arguments[3])
-							top.content.editor.edbody.document.we_form.ctable.value=arguments[3];
-						top.content.editor.edbody.we_submitForm("cmd","' . $this->frameset . '?pnt=cmd");
-					}
-					else {
-						top.content.cmd.location="' . $this->frameset . '?pnt=cmd&ucmd=display_user&uid="+arguments[1];
-					}
-					break;
-				case "display_alias":
-					top.content.editor.edbody.focus();
+			break;
+		case "check_user_display":
+			top.content.cmd.location="' . $this->frameset . '?pnt=cmd&ucmd=check_user_display&uid="+arguments[1];
+			break;
+		case "display_user":
+			top.content.editor.edbody.focus();
+			if(hot==1 && top.content.editor.edbody.document.we_form.ucmd) {
+				if(confirm("' . g_l('modules_users', '[save_changed_user]') . '")) {
+					top.content.editor.edbody.document.we_form.ucmd.value="save_user";
+					top.content.editor.edbody.document.we_form.sd.value=1;
+				}
+				else {
+					top.content.usetHot();
 					top.content.editor.edbody.document.we_form.ucmd.value="display_user";
-					if(hot==1 && top.content.editor.edbody.document.we_form.ucmd) {
-						if(confirm("' . g_l('modules_users', '[save_changed_user]') . '")) {
-							top.content.editor.edbody.document.we_form.ucmd.value="save_user";
-							top.content.editor.edbody.document.we_form.sd.value=1;
-						}
-						else {
-							top.content.usetHot();
-							top.content.editor.edbody.document.we_form.ucmd.value="display_user";
-						}
-						if(arguments[1]){
-							top.content.editor.edbody.document.we_form.uid.value=arguments[1];
-						}
-						if(arguments[2]){
-							top.content.editor.edbody.document.we_form.ctype.value=arguments[2];
-						}
-						if(arguments[3]){
-							top.content.editor.edbody.document.we_form.ctable.value=arguments[3];
-						}
-						top.content.editor.edbody.we_submitForm("cmd","' . $this->frameset . '?pnt=cmd");
-					}
-					else {
-						top.content.cmd.location="' . $this->frameset . '?pnt=cmd&ucmd=display_user&uid="+arguments[1];
-					}
-					break;
-				case "new_group":
-					if(hot==1 && top.content.editor.edbody.document.we_form.ucmd) {
-						if(confirm("' . g_l('modules_users', '[save_changed_user]') . '")) {
-							top.content.editor.edbody.document.we_form.ucmd.value="save_user";
-							top.content.editor.edbody.document.we_form.sd.value=1;
-						} else {
-							top.content.usetHot();
-							top.content.editor.edbody.document.we_form.ucmd.value="new_group";
-						}
-						if(arguments[1])
-							top.content.editor.edbody.document.we_form.uid.value=arguments[1];
-						if(arguments[2])
-							top.content.editor.edbody.document.we_form.ctype.value=arguments[2];
-						if(arguments[3])
-							top.content.editor.edbody.document.we_form.ctable.value=arguments[3];
-						top.content.editor.edbody.we_submitForm("cmd","' . $this->frameset . '?pnt=cmd");
-					} else {
-						top.content.cmd.location="' . $this->frameset . '?pnt=cmd&ucmd=new_group&cgroup="+cgroup;
-					}
-					break;
-				case "new_alias":
-					if(hot==1 && top.content.editor.edbody.document.we_form.ucmd) {
-						if(confirm("' . g_l('modules_users', "[save_changed_user]") . '")) {
-							top.content.editor.edbody.document.we_form.ucmd.value="save_user";
-							top.content.editor.edbody.document.we_form.sd.value=1;
-						} else {
-							top.content.usetHot();
-							top.content.editor.edbody.document.we_form.ucmd.value="new_alias";
-						}
-						if(arguments[1])
-							top.content.editor.edbody.document.we_form.uid.value=arguments[1];
-						if(arguments[2])
-							top.content.editor.edbody.document.we_form.ctype.value=arguments[2];
-						if(arguments[3])
-							top.content.editor.edbody.document.we_form.ctable.value=arguments[3];
-						top.content.editor.edbody.we_submitForm("cmd","' . $this->frameset . '?pnt=cmd");
-					} else {
-						top.content.cmd.location="' . $this->frameset . '?pnt=cmd&ucmd=new_alias&cgroup="+cgroup;
-					}
-					break;
-				case "save_user":
-					if(top.content.editor.edbody.document.we_form) {
-						top.content.editor.edbody.document.we_form.ucmd.value="save_user";
-						top.content.usetHot();
-						top.content.editor.edbody.we_submitForm("cmd","' . $this->frameset . '?pnt=cmd");
-					}
-					break;
-				case "delete_user":
-					top.content.cmd.location="' . $this->frameset . '?pnt=cmd&ucmd=delete_user";
-					break;
-				case "search":
-					new jsWindow("' . WE_USERS_MODULE_DIR . 'edit_users_sresults.php?kwd="+arguments[1],"customer_settings",-1,-1,580,400,true,false,true);
-					break;
-				case "new_organization":
-					var orgname = prompt("' . g_l('modules_users', "[give_org_name]") . '","");
-					if(orgname!= null) {
-						top.content.cmd.location="' . $this->frameset . '?pnt=cmd&ucmd=new_organization&orn="+orgname;
-					}
-					break;
-				default:
-					for(var i = 0; i < arguments.length; i++) {
-						args += "arguments["+i+"]" + ((i < (arguments.length-1)) ? "," : "");
-					}
-					eval("opener.top.content.we_cmd("+args+")");
+				}
+				if(arguments[1])
+					top.content.editor.edbody.document.we_form.uid.value=arguments[1];
+				if(arguments[2])
+					top.content.editor.edbody.document.we_form.ctype.value=arguments[2];
+				if(arguments[3])
+					top.content.editor.edbody.document.we_form.ctable.value=arguments[3];
+				top.content.editor.edbody.we_submitForm("cmd","' . $this->frameset . '?pnt=cmd");
 			}
-		}
+			else {
+				top.content.cmd.location="' . $this->frameset . '?pnt=cmd&ucmd=display_user&uid="+arguments[1];
+			}
+			break;
+		case "display_alias":
+			top.content.editor.edbody.focus();
+			top.content.editor.edbody.document.we_form.ucmd.value="display_user";
+			if(hot==1 && top.content.editor.edbody.document.we_form.ucmd) {
+				if(confirm("' . g_l('modules_users', '[save_changed_user]') . '")) {
+					top.content.editor.edbody.document.we_form.ucmd.value="save_user";
+					top.content.editor.edbody.document.we_form.sd.value=1;
+				}
+				else {
+					top.content.usetHot();
+					top.content.editor.edbody.document.we_form.ucmd.value="display_user";
+				}
+				if(arguments[1]){
+					top.content.editor.edbody.document.we_form.uid.value=arguments[1];
+				}
+				if(arguments[2]){
+					top.content.editor.edbody.document.we_form.ctype.value=arguments[2];
+				}
+				if(arguments[3]){
+					top.content.editor.edbody.document.we_form.ctable.value=arguments[3];
+				}
+				top.content.editor.edbody.we_submitForm("cmd","' . $this->frameset . '?pnt=cmd");
+			}
+			else {
+				top.content.cmd.location="' . $this->frameset . '?pnt=cmd&ucmd=display_user&uid="+arguments[1];
+			}
+			break;
+		case "new_group":
+			if(hot==1 && top.content.editor.edbody.document.we_form.ucmd) {
+				if(confirm("' . g_l('modules_users', '[save_changed_user]') . '")) {
+					top.content.editor.edbody.document.we_form.ucmd.value="save_user";
+					top.content.editor.edbody.document.we_form.sd.value=1;
+				} else {
+					top.content.usetHot();
+					top.content.editor.edbody.document.we_form.ucmd.value="new_group";
+				}
+				if(arguments[1])
+					top.content.editor.edbody.document.we_form.uid.value=arguments[1];
+				if(arguments[2])
+					top.content.editor.edbody.document.we_form.ctype.value=arguments[2];
+				if(arguments[3])
+					top.content.editor.edbody.document.we_form.ctable.value=arguments[3];
+				top.content.editor.edbody.we_submitForm("cmd","' . $this->frameset . '?pnt=cmd");
+			} else {
+				top.content.cmd.location="' . $this->frameset . '?pnt=cmd&ucmd=new_group&cgroup="+cgroup;
+			}
+			break;
+		case "new_alias":
+			if(hot==1 && top.content.editor.edbody.document.we_form.ucmd) {
+				if(confirm("' . g_l('modules_users', "[save_changed_user]") . '")) {
+					top.content.editor.edbody.document.we_form.ucmd.value="save_user";
+					top.content.editor.edbody.document.we_form.sd.value=1;
+				} else {
+					top.content.usetHot();
+					top.content.editor.edbody.document.we_form.ucmd.value="new_alias";
+				}
+				if(arguments[1])
+					top.content.editor.edbody.document.we_form.uid.value=arguments[1];
+				if(arguments[2])
+					top.content.editor.edbody.document.we_form.ctype.value=arguments[2];
+				if(arguments[3])
+					top.content.editor.edbody.document.we_form.ctable.value=arguments[3];
+				top.content.editor.edbody.we_submitForm("cmd","' . $this->frameset . '?pnt=cmd");
+			} else {
+				top.content.cmd.location="' . $this->frameset . '?pnt=cmd&ucmd=new_alias&cgroup="+cgroup;
+			}
+			break;
+		case "save_user":
+			if(top.content.editor.edbody.document.we_form) {
+				top.content.editor.edbody.document.we_form.ucmd.value="save_user";
+				top.content.usetHot();
+				top.content.editor.edbody.we_submitForm("cmd","' . $this->frameset . '?pnt=cmd");
+			}
+			break;
+		case "delete_user":
+			top.content.cmd.location="' . $this->frameset . '?pnt=cmd&ucmd=delete_user";
+			break;
+		case "search":
+			new jsWindow("' . WE_USERS_MODULE_DIR . 'edit_users_sresults.php?kwd="+arguments[1],"customer_settings",-1,-1,580,400,true,false,true);
+			break;
+		case "new_organization":
+			var orgname = prompt("' . g_l('modules_users', "[give_org_name]") . '","");
+			if(orgname!= null) {
+				top.content.cmd.location="' . $this->frameset . '?pnt=cmd&ucmd=new_organization&orn="+orgname;
+			}
+			break;
+		default:
+			for(var i = 0; i < arguments.length; i++) {
+				args += "arguments["+i+"]" + ((i < (arguments.length-1)) ? "," : "");
+			}
+			eval("opener.top.content.we_cmd("+args+")");
+	}
+}
 
-		function setHot() {
-			hot=1;
-		}
+function setHot() {
+	hot=1;
+}
 
-		function usetHot() {
-			hot=0;
-		}
-		';
-
-		return we_html_element::jsScript(JS_DIR . 'images.js') .
-			we_html_element::jsScript(JS_DIR . 'windows.js') .
-			we_html_element::jsScript(JS_DIR . 'md5.js') .
-			we_html_element::jsElement($jsCode);
+function usetHot() {
+	hot=0;
+}');
 	}
 
 	function getJSTop(){//TODO: is this shop-code or a copy paste from another module?

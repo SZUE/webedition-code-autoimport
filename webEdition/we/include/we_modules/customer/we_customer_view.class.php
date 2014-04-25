@@ -26,9 +26,6 @@
 
 class we_customer_view extends weModuleView{
 
-	//private $db;
-	var $frameset;
-	var $topFrame;
 	var $customer;
 	var $settings;
 

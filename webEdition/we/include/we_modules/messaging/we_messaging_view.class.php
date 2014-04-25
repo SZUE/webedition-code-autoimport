@@ -25,25 +25,12 @@
 /* the parent class of storagable webEdition classes */
 class we_messaging_view extends weModuleView{
 
-	var $db;
-	var $frameset;
-	var $topFrame;
-	//var $voting;
-	//var $editorBodyFrame;
-	//var $editorBodyForm;
-	//var $editorHeaderFrame;
-	//var $icon_pattern = "";
-	//var $item_pattern = "";
-	//var $group_pattern = "";
-
 	private $messaging = null;
 	private $transaction;
 	private $weTransaction;
 
 	function __construct($frameset = "", $topframe = "top.content", $reqTransaction = 0, &$weTransaction = 0){
-		$this->db = new DB_WE();
-		$this->setFramesetName($frameset);
-		$this->setTopFrame($topframe);
+		parent::__construct($frameset, $topframe);
 		$this->item_pattern = addslashes('<img style="vertical-align: bottom" src="' . ICON_DIR . 'user.gif" />&nbsp;');
 		$this->group_pattern = addslashes('<img style="vertical-align: bottom" src="' . ICON_DIR . we_base_ContentTypes::FOLDER_ICON . '" />&nbsp;');
 

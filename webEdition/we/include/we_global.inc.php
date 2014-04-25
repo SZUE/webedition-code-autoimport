@@ -1106,7 +1106,7 @@ function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = 
  * @param array $remove
  * @desc removes all entries of $attribs, where the key from attribs is in values of $remove
  */
-function removeAttribs($attribs, $remove = array()){
+function removeAttribs($attribs, array $remove = array()){
 	foreach($remove as $r){
 		if(array_key_exists($r, $attribs)){
 			unset($attribs[$r]);

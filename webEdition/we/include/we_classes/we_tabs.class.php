@@ -207,18 +207,6 @@ HTS;
 		return '<div id="tabContainer" name="tabContainer">' . $this->container . '</div>';
 	}
 
-	/*	 * ******************************************************************************************** */
-
-	function getJS(){
-
-	}
-
-	function getJSRebuildTabs(){
-
-	}
-
-	/*	 * ******************************************************************************************** */
-
 	function onResize(){
 		$this->JSonResize = <<<HTS
 

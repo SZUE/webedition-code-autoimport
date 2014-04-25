@@ -369,7 +369,6 @@ class we_workflow_frames extends weModuleFrames {
 
 		$we_tabs->onResize();
 		$tab_header = $we_tabs->getHeader('', 22);
-		$tab_body = $we_tabs->getJS();
 		$page = $page? : 0;
 		$textPre = ($mode == 1 ? g_l('modules_workflow', '[document]') : g_l('modules_workflow', '[workflow]'));
 		$textPost = "/" . $text;

@@ -150,7 +150,6 @@ class we_navigation_frames extends weModuleFrames{
 		}
 
 		$we_tabs->onResize();
-		//$tabsBody = $we_tabs->getJS();
 		$tabsHead = $we_tabs->getHeader() .
 			we_html_element::jsElement(
 				($this->Model->IsFolder == 0 ? '
