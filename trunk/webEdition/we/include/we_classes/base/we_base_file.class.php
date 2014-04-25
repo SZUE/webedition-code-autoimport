@@ -549,19 +549,18 @@ abstract class we_base_file{
 			case self::SZ_BYTE:
 				return $filesize . ' Byte';
 			case self::SZ_KB:
-				return round($filesize / 1024, 1) . ' KB';
+				return round($filesize / 1024, 1) . ' kB';
 			case self::SZ_MB:
 				return round($filesize / (1024 * 1024), 1) . ' MB';
 			default:
 			case self::SZ_HUMAN:
-				if($filesize >= 1024 && $filesize < (1024 * 1024)){
-					$_size = round($filesize / 1024, 1) . ' KB';
-				} else if($filesize >= (1024 * 1024)){
-					$_size = round($filesize / (1024 * 1024), 1) . ' MB';
-				} else {
-					$_size = $filesize . ' Byte';
+				if($filesize >= (1024 * 1024)){
+					return round($filesize / (1024 * 1024), 1) . ' MB';
 				}
-				return $_size;
+				if($filesize >= 1024){
+					return round($filesize / 1024, 1) . ' kB';
+				}
+				return $filesize . ' Byte';
 		}
 	}
 
