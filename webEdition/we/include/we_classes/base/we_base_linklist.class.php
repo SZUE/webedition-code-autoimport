@@ -331,7 +331,7 @@ class we_base_linklist{
 	}
 
 	function getString(){
-		return (empty($this->listArray) ? '' : serialize($this->listArray));
+		return ($this->listArray ? serialize($this->listArray) : '');
 	}
 
 	//added for #7269
