@@ -624,7 +624,7 @@ class we_base_linklist{
 	}
 
 	function mta($hash, $key){
-		return (isset($hash[$key]) && $hash[$key] != "") ? (' ' . $key . '="' . $hash[$key] . '"') : '';
+		return (isset($hash[$key]) && $hash[$key]) ? (' ' . $key . '="' . $hash[$key] . '"') : '';
 	}
 
 	function last(){

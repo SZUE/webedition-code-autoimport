@@ -204,6 +204,7 @@ if(weRequest('bool', 'ok')){
 
 		$linklist = $ll->getString();
 	} else {
+		$link['nr'] = 0;
 		$linklist = serialize(array($link));
 	}
 } else {
@@ -830,11 +831,11 @@ if($ok && $cmd == "edit_link_at_class"){
 			'space' => 150);
 		?>
 		<form name="we_form" action="<?php print WEBEDITION_DIR; ?>we_cmd.php" method="post" onsubmit="return false">
-			<input type="hidden" name="we_cmd[0]" value="<?php print $_REQUEST['we_cmd'][0]; ?>" />
+			<input type="hidden" name="we_cmd[0]" value="<?php echo $_REQUEST['we_cmd'][0]; ?>" />
 			<?php
 			if(isset($ll) && $ll){
 				?>
-				<input type="hidden" name="linklist" value="<?php print oldHtmlspecialchars($ll->getString()); ?>" />
+				<input type="hidden" name="linklist" value="<?php echo oldHtmlspecialchars($ll->getString()); ?>" />
 				<?php
 			}
 			?>
