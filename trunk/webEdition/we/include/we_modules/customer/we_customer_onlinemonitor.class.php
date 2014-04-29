@@ -49,7 +49,7 @@ class we_customer_onlinemonitor extends listviewBase{
 	 * @param   $docID	   	   string - id of a document where a we:customer tag is on
 	 *
 	 */
-	function __construct($name, $rows = 100000000, $offset = 0, $order = '', $desc = false, $condition = '', $cols = '', $docID = 0, $lastaccesslimit = '', $lastloginlimit = '', $hidedirindex = false){
+	function __construct($name, $rows, $offset, $order, $desc, $condition, $cols, $docID, $lastaccesslimit, $lastloginlimit, $hidedirindex){
 		parent::__construct($name, $rows, $offset, $order, $desc, '', false, 0, $cols);
 
 		$this->docID = $docID;

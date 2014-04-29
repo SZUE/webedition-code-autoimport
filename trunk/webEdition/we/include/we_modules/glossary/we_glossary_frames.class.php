@@ -26,15 +26,13 @@
 
 class we_glossary_frames extends weModuleFrames{
 
-	var $View;
-	var $Tree;
 	var $_space_size = 150;
 	var $_text_size = 75;
 	var $_width_size = 535;
-	public $module = "glossary";
 	protected $treeDefaultWidth = 280;
 
 	function __construct(){
+		$this->module = "glossary";
 		parent::__construct(WE_GLOSSARY_MODULE_DIR . "edit_glossary_frameset.php");
 		$this->Tree = new we_glossary_tree();
 		$this->View = new we_glossary_view(WE_GLOSSARY_MODULE_DIR . "edit_glossary_frameset.php", "top.content");
@@ -42,18 +40,16 @@ class we_glossary_frames extends weModuleFrames{
 	}
 
 	function getJSCmdCode(){
-
 		return $this->View->getJSTop() . we_html_element::jsElement($this->Tree->getJSMakeNewEntry());
 	}
 
 	function getHTMLFrameset(){
-		$extraHead = $this->Tree->getJSTreeCode() . we_html_element::jsElement($this->getJSStart());
-
-		return parent::getHTMLFrameset($extraHead);
+		return parent::getHTMLFrameset(
+				$this->Tree->getJSTreeCode() . we_html_element::jsElement($this->getJSStart())
+		);
 	}
 
 	function getHTMLEditorHeader(){
-
 		if(isset($_REQUEST['home']) && $_REQUEST["home"]){
 			return we_glossary_frameEditorHome::Header($this);
 		}
@@ -82,7 +78,6 @@ class we_glossary_frames extends weModuleFrames{
 	}
 
 	function getHTMLEditorBody(){
-
 		if(isset($_REQUEST['home']) && $_REQUEST["home"]){
 			return we_glossary_frameEditorHome::Body($this);
 		}
@@ -111,7 +106,6 @@ class we_glossary_frames extends weModuleFrames{
 	}
 
 	function getHTMLEditorFooter(){
-
 		if(isset($_REQUEST["home"])){
 			return we_glossary_frameEditorHome::Footer($this);
 		}
@@ -144,11 +138,10 @@ class we_glossary_frames extends weModuleFrames{
 	}
 
 	function getHTMLTreeFooter(){
-
-		$body = we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif", "marginwidth" => 5, "marginheight" => 0, "leftmargin" => 5, "topmargin" => 0), ""
+		return $this->getHTMLDocument(
+				we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif", "marginwidth" => 5, "marginheight" => 0, "leftmargin" => 5, "topmargin" => 0), ""
+				)
 		);
-
-		return $this->getHTMLDocument($body);
 	}
 
 	function getHTMLCmd(){
