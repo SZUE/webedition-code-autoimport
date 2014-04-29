@@ -41,7 +41,7 @@ class we_shop_listviewShopVariants extends listviewBase{
 	var $hidedirindex = false;
 	var $objectseourls = false;
 
-	function __construct($name, $rows, $defaultname = 'default', $documentid = '', $objectid = '', $offset = 0, $hidedirindex = false, $objectseourls = false, $triggerID = ""){
+	function __construct($name, $rows, $defaultname, $documentid, $objectid, $offset, $hidedirindex, $objectseourls, $triggerID){
 
 		parent::__construct($name, $rows, $offset);
 
@@ -108,7 +108,7 @@ class we_shop_listviewShopVariants extends listviewBase{
 
 				$ret[$name] = (isset($value['type']) && $value['type'] == 'img' ?
 						// there is a difference between objects and webEdition Documents
-						isset($value['bdid']) ? $value['bdid'] : $value['dat']  :
+						isset($value['bdid']) ? $value['bdid'] : $value['dat'] :
 						(isset($value['dat']) ? $value['dat'] : '')
 					);
 			}

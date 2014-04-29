@@ -65,6 +65,7 @@ $displayid = 0;
 $objectid = 0;
 $searchfor = '';
 $notfound = true;
+
 while($notfound && isset($path_parts['dirname']) && $path_parts['dirname'] != '/' && $path_parts['dirname'] != '\\'){
 	$display = $path_parts['dirname'] . DEFAULT_DYNAMIC_EXT;
 	$displayid = intval(f('SELECT ID FROM ' . FILE_TABLE . ' WHERE Published>0 AND Path="' . $db->escape($display) . '" LIMIT 1'));

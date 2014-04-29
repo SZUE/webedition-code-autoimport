@@ -537,7 +537,7 @@ function we_tag_field($attribs){
 							$_linkAttribs['href'] :
 							getHtmlTag('a', $_linkAttribs, $out, true) //  output of link-tag
 						);
-				} elseif(get_class($GLOBALS['lv']) == 'we_catListview' && we_tag('ifHasChildren', array(), '')){
+				} elseif(get_class($GLOBALS['lv']) == 'we_catListview' && we_tag('ifHasChildren')){
 					$parentidname = weTag_getAttribute('parentidname', $attribs, 'we_parentid');
 					$_linkAttribs['href'] = $_SERVER['SCRIPT_NAME'] . '?' . $parentidname . '=' . $GLOBALS['lv']->f('ID');
 
@@ -548,7 +548,6 @@ function we_tag_field($attribs){
 				} else {
 					$showlink = false;
 					switch(get_class($GLOBALS['lv'])){
-
 						case 'we_listview':
 							$triggerid = $triggerid ? $triggerid : $GLOBALS['lv']->triggerID;
 							$tailOwnId = '?we_documentID=' . $GLOBALS['lv']->f('wedoc_ID');

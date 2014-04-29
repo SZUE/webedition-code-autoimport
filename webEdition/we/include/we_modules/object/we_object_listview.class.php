@@ -66,7 +66,7 @@ class we_object_listview extends listviewBase{
 	 * @param	string        $categoryids
 	 *
 	 */
-	function __construct($name, $rows = 9999999, $offset = 0, $order = '', $desc = false, $classID = 0, $cats = '', $catOr = '', $condition = '', $triggerID = 0, $cols = 0, $seeMode = true, $searchable = true, $calendar = '', $datefield = '', $date = '', $weekstart = '', $categoryids = '', $workspaceID = '', $customerFilterType = 'false', $docID = 0, $customers = '', $id = '', $we_predefinedSQL = '', $languages = '', $hidedirindex = false, $objectseourls = false){
+	function __construct($name, $rows, $offset, $order, $desc, $classID, $cats, $catOr, $condition, $triggerID, $cols, $seeMode, $searchable, $calendar, $datefield, $date, $weekstart, $categoryids, $workspaceID, $customerFilterType, $docID, $customers, $id, $we_predefinedSQL, $languages, $hidedirindex, $objectseourls){
 		parent::__construct($name, $rows, $offset, $order, $desc, $cats, $catOr, $workspaceID, $cols, $calendar, $datefield, $date, $weekstart, $categoryids, $customerFilterType, $id);
 
 		$this->classID = $classID;

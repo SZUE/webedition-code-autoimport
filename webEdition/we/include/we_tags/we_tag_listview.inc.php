@@ -184,7 +184,7 @@ function we_tag_listview($attribs){
 					$we_lv_ownlanguage = $record['OF_Language'];
 					break;
 				default:
-					$we_lv_pagelanguage = $we_lv_pagelanguage == 'self' || $we_lv_pagelanguage == 'top' ? $we_lv_ownlanguage : we_getDocForTag($docAttr);
+					$we_lv_pagelanguage = $we_lv_pagelanguage == 'self' || $we_lv_pagelanguage == 'top' ? $we_lv_ownlanguage : we_getDocForTag($docAttr)->Language;
 
 					if(isset($we_lv_langguagesdoc->TableID) && $we_lv_langguagesdoc->TableID){
 						$we_lv_pageID = $we_lv_langguagesdoc->OF_ID;
@@ -196,7 +196,7 @@ function we_tag_listview($attribs){
 			}
 			unset($we_lv_langguagesdoc);
 
-			$GLOBALS['lv'] = new we_langlink_listview($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $we_lv_linktype, $cols, $seeMode, $we_lv_se, $cfilter, $showself, $we_lv_pageID, $we_lv_pagelanguage, $we_lv_ownlanguage, $hidedirindex, $objectseourls);
+			$GLOBALS['lv'] = new we_langlink_listview($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $we_lv_linktype, $cols,  $showself, $we_lv_pageID, $we_lv_pagelanguage, $we_lv_ownlanguage, $hidedirindex, $objectseourls);
 			break;
 		case 'customer':
 			if(!defined('CUSTOMER_TABLE')){
@@ -243,7 +243,7 @@ function we_tag_listview($attribs){
 			$path = weTag_getAttribute('path', $attribs);
 			$filterdatestart = weTag_getAttribute('filterdatestart', $attribs, '-1');
 			$filterdateend = weTag_getAttribute('filterdateend', $attribs, '-1');
-			$bannerid = f('SELECT ID FROM ' . BANNER_TABLE . ' WHERE PATH="' . $GLOBALS[DB_WE]->escape($path) . '"', 'ID', $GLOBALS['DB_WE']);
+			$bannerid = f('SELECT ID FROM ' . BANNER_TABLE . ' WHERE PATH="' . $GLOBALS[DB_WE]->escape($path) . '"');
 			if($customer && defined('CUSTOMER_TABLE') && (!we_banner_banner::customerOwnsBanner($_SESSION['webuser']['ID'], $bannerid, $GLOBALS['DB_WE']))){
 				$bannerid = 0;
 			}

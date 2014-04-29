@@ -851,12 +851,12 @@ class we_document extends we_root{
 							$titleField = (WE_SHOP_VARIANTS_PREFIX . $GLOBALS['lv']->Position . '_' . $titleField);
 							break;
 						case 'we_listview':
-							$alt = $GLOBALS['lv']->f($altField) ? $GLOBALS['lv']->f($altField) : '';
-							$title = $GLOBALS['lv']->f($titleField) ? $GLOBALS['lv']->f($titleField) : '';
+							$alt = $GLOBALS['lv']->f($altField) ? : '';
+							$title = $GLOBALS['lv']->f($titleField) ? : '';
 						case 'we_object_listview':
 						case 'we_object_listviewMultiobject':
-							$attribs['alt'] = isset($alt) && $alt ? $alt : ($img->getElement('alt') ? $img->getElement('alt') : (isset($attribs['alt']) ? $attribs['alt'] : ''));
-							$attribs['title'] = isset($title) && $title ? $title : ($img->getElement('title') ? $img->getElement('title') : (isset($attribs['title']) ? $attribs['title'] : ''));
+							$attribs['alt'] = isset($alt) && $alt ? $alt : ($img->getElement('alt') ? : (isset($attribs['alt']) ? $attribs['alt'] : ''));
+							$attribs['title'] = isset($title) && $title ? $title : ($img->getElement('title') ? : (isset($attribs['title']) ? $attribs['title'] : ''));
 							break;
 					}
 				}
@@ -866,7 +866,7 @@ class we_document extends we_root{
 				if(isset($attribs['title'])){
 					$attribs['title'] = oldHtmlspecialchars($attribs['title']);
 				}
-				if(!(weRequest('string', 'we_cmd', '', 0) == 'reload_editpage' && (isset($_REQUEST['we_cmd'][1]) && $img->Name == $_REQUEST['we_cmd'][1]) && weRequest('string', 'we_cmd', '', 2) == 'change_image') && isset($GLOBALS['we_doc']->elements[$altField])){
+				if(!(weRequest('string', 'we_cmd', '', 0) == 'reload_editpage' && ($img->Name === weRequest('string', 'we_cmd', false, 1)) && weRequest('string', 'we_cmd', '', 2) == 'change_image') && isset($GLOBALS['we_doc']->elements[$altField])){
 					if(!isset($GLOBALS['lv'])){
 						$attribs['alt'] = oldHtmlspecialchars($GLOBALS['we_doc']->getElement($altField));
 						$attribs['title'] = oldHtmlspecialchars($GLOBALS['we_doc']->getElement($titleField));
