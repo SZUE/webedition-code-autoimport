@@ -137,7 +137,6 @@ class we_base_linklist{
 		$params = $this->getParams();
 		$title = $this->getTitle();
 		$jswinAttribs = $this->getJsWinAttribs();
-		$js = "var we_winOpts = '';";
 
 		$lattribs = we_tag_tagParser::makeArrayFromAttribs($attribs);
 
@@ -164,7 +163,8 @@ class we_base_linklist{
 			$lattribs[$n] = $v;
 		}
 
-		if(isset($jswinAttribs) && is_array($jswinAttribs) && isset($jswinAttribs["jswin"])){ //popUp
+		if(isset($jswinAttribs) && is_array($jswinAttribs) && isset($jswinAttribs["jswin"]) && $jswinAttribs["jswin"]){ //popUp
+			$js = "var we_winOpts = '';";
 			if($jswinAttribs["jscenter"] && $jswinAttribs["jswidth"] && $jswinAttribs["jsheight"]){
 				$js .= 'if (window.screen) {var w = ' . $jswinAttribs["jswidth"] . ';var h = ' . $jswinAttribs["jsheight"] . ';var screen_height = screen.availHeight - 70;var screen_width = screen.availWidth-10;var w = Math.min(screen_width,w);var h = Math.min(screen_height,h);var x = (screen_width - w) / 2;var y = (screen_height - h) / 2;we_winOpts = \'left=\'+x+\',top=\'+y;}else{we_winOpts=\'\';};';
 			} elseif($jswinAttribs["jsposx"] != "" || $jswinAttribs["jsposy"] != ""){
