@@ -92,29 +92,16 @@ class we_customer_EIWizard{
 
 	function getHTMLStep($mode, $step = 0){
 		switch($mode){
-			case "export":
-				switch($step){
-					default:
-					case 0: return $this->getHTMLExportStep0();
-					case 1: return $this->getHTMLExportStep1();
-					case 2: return $this->getHTMLExportStep2();
-					case 3: return $this->getHTMLExportStep3();
-					case 4: return $this->getHTMLExportStep4();
-					case 5: return $this->getHTMLExportStep5();
-				}
-				break;
-
-			case "import":
-				switch($step){
-					default:
-					case 0: return $this->getHTMLStep0();
-					case 1: return $this->getHTMLImportStep1();
-					case 2: return $this->getHTMLImportStep2();
-					case 3: return $this->getHTMLImportStep3();
-					case 4: return $this->getHTMLImportStep4();
-					case 5: return $this->getHTMLImportStep5();
-				}
-				break;
+			case 'export':
+				$function = 'getHTMLExportStep' . intval($step);
+				return (method_exists($this, $function) ?
+						$this->$function() :
+						$this->getHTMLStep0());
+			case 'import':
+				$function = 'getHTMLImportStep' . intval($step);
+				return (method_exists($this, $function) ?
+						$this->$function() :
+						$this->getHTMLStep0());
 			default:
 				return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 						we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[export_title]'))) .
