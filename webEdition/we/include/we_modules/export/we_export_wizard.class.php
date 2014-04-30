@@ -183,8 +183,10 @@ class we_export_wizard{
 
 	function getHTMLStep($step = 0){
 		$this->getExportVars();
-		$function = "getHTMLStep" . $step;
-		return $this->$function();
+		$function = "getHTMLStep" . intval($step);
+		return (method_exists($this, $function) ?
+				$this->$function() :
+				$this->getHTMLStep0());
 	}
 
 	function getHTMLStep0(){
