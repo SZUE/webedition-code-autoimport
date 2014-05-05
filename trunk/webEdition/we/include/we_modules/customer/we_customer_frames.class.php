@@ -487,7 +487,7 @@ var ajaxCallbackResetLogins = {
 failure: function(o) {
 
 }}') . we_html_button::create_button('reset', 'javascript:' . $tmp);
-								$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('class' => 'defaultgray'), $but)));
+								$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('class' => 'defaultgray'), $but), ''));
 								break;
 							default:
 								$inputattribs = '';
@@ -958,11 +958,11 @@ failure: function(o) {
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array("class" => "defaultfont"), $default_sort_view_select->getHtml());
 
-		$table->setCol(++$cur, 0, array("class" => "defaultfont"), g_l('modules_customer', '[start_year]') . ":&nbsp;");
+		$table->setCol( ++$cur, 0, array("class" => "defaultfont"), g_l('modules_customer', '[start_year]') . ":&nbsp;");
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array("class" => "defaultfont"), we_html_tools::htmlTextInput("start_year", 32, $this->View->settings->getSettings('start_year'), ''));
 
-		$table->setCol(++$cur, 0, array("class" => "defaultfont"), g_l('modules_customer', '[treetext_format]') . ":&nbsp;");
+		$table->setCol( ++$cur, 0, array("class" => "defaultfont"), g_l('modules_customer', '[treetext_format]') . ":&nbsp;");
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array("class" => "defaultfont"), we_html_tools::htmlTextInput("treetext_format", 32, $this->View->settings->getSettings('treetext_format'), ''));
 
@@ -975,7 +975,7 @@ failure: function(o) {
 		}
 		$default_order->selectOption($this->View->settings->getSettings('default_order'));
 
-		$table->setCol(++$cur, 0, array('class' => 'defaultfont'), g_l('modules_customer', '[default_order]') . ':&nbsp;');
+		$table->setCol( ++$cur, 0, array('class' => 'defaultfont'), g_l('modules_customer', '[default_order]') . ':&nbsp;');
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array('class' => 'defaultfont'), $default_order->getHtml());
 
@@ -984,7 +984,7 @@ failure: function(o) {
 		$default_saveRegisteredUser_register->addOption('true', 'true');
 		$default_saveRegisteredUser_register->selectOption($this->View->settings->getPref('default_saveRegisteredUser_register'));
 
-		$table->setCol(++$cur, 0, array('class' => 'defaultfont'), '&lt;we:saveRegisteredUser register=&quot;');
+		$table->setCol( ++$cur, 0, array('class' => 'defaultfont'), '&lt;we:saveRegisteredUser register=&quot;');
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array('class' => 'defaultfont'), $default_saveRegisteredUser_register->getHtml() . '&quot;/>');
 
