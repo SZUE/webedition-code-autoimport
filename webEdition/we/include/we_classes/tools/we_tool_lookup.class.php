@@ -115,24 +115,24 @@ abstract class we_tool_lookup{
 	}
 
 	static function getPhpCmdInclude(){
-		$tmp = weRequest('string', 'we_cmd', '', 0);
-		if(!$tmp){
+		$cmd0 = weRequest('string', 'we_cmd', '', 0);
+		if(!$cmd0){
 			return '';
 		}
 		//FIX for charset in tools, due to not started session
-		$tmp = explode('_', $tmp);
-		switch(isset($tmp[1]) ? $tmp[1] : ''){
+		$tmps = explode('_', $cmd0);
+		switch(isset($tmps[1]) ? $tmps[1] : ''){
 			case 'weSearch':
-				$_REQUEST['tool'] = $tmp[1];
-				return 'we_tools/' . $tmp[1] . '/hook/we_phpCmdHook_' . $tmp[1] . '.inc.php';
+				$_REQUEST['tool'] = $tmps[1];
+				return 'we_tools/' . $tmps[1] . '/hook/we_phpCmdHook_' . $tmps[1] . '.inc.php';
 			case 'navigation':
 				//TODO: does this work after refactoring navigation as a module
 				$_REQUEST['mod'] = 'navigation';
-				return 'we_modules/navigation/hook/we_phpCmdHook_' . $tmp[1] . '.inc.php';
+				return 'we_modules/navigation/hook/we_phpCmdHook_' . $tmps[1] . '.inc.php';
 		}
 		$_tools = self::getAllTools(true, true);
 		foreach($_tools as $_tool){
-			if(stripos($_REQUEST['we_cmd'][0], 'tool_' . $_tool['name'] . '_') === 0){
+			if(stripos($cmd0, 'tool_' . $_tool['name'] . '_') === 0){
 				$_REQUEST['tool'] = $_tool['name'];
 				return ($_REQUEST['tool'] == 'weSearch' || $_REQUEST['tool'] == 'navigation' ?
 						'we_tools/' : 'apps/' ) .

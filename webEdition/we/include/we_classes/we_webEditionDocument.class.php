@@ -103,7 +103,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			}
 		}
 
-		if(($ret=weRequest('string', 'we_returnpage'))){
+		if(($ret = weRequest('string', 'we_returnpage'))){
 			$GLOBALS['we_document'][$formname]->setElement('we_returnpage', $ret);
 		}
 		if(isset($_REQUEST['we_ui_' . $formname]) && is_array($_REQUEST['we_ui_' . $formname])){
@@ -649,8 +649,8 @@ class we_webEditionDocument extends we_textContentDocument{
 
 		// Last step is to save the webEdition document
 		$out = parent::we_save($resave, $skipHook);
-		if(LANGLINK_SUPPORT && isset($_REQUEST['we_' . $this->Name . '_LanguageDocID']) && $_REQUEST['we_' . $this->Name . '_LanguageDocID'] != 0){
-			$this->setLanguageLink($_REQUEST['we_' . $this->Name . '_LanguageDocID'], 'tblFile', false, false); // response deactivated
+		if(LANGLINK_SUPPORT && ($docID = weRequest('int', 'we_' . $this->Name . '_LanguageDocID'))){
+			$this->setLanguageLink($docID, 'tblFile', false, false); // response deactivated
 		} else {
 			//if language changed, we must delete eventually existing entries in tblLangLink, even if !LANGLINK_SUPPORT!
 			$this->checkRemoteLanguage($this->Table, false);

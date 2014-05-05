@@ -350,10 +350,12 @@ abstract class we_class{
 	protected function i_setElementsFromHTTP(){
 		if($_REQUEST){
 			// do not set REQUEST VARS into the document
-			if(($_REQUEST['we_cmd'][0] == 'switch_edit_page' && isset($_REQUEST['we_cmd'][3])) || ($_REQUEST['we_cmd'][0] == 'save_document' && isset($_REQUEST['we_cmd'][7]) && $_REQUEST['we_cmd'][7] == 'save_document')){
+			$cmd0 = weRequest('string', 'cmd', '', 0);
+
+			if(($cmd0 == 'switch_edit_page' && isset($_REQUEST['we_cmd'][3])) || ($cmd0 == 'save_document' && weRequest('string', 'we_cmd', '', 7) == 'save_document')){
 				return true;
 			}
-
+			$regs = array();
 			foreach($_REQUEST as $n => $v){
 				if(preg_match('#^we_' . $this->Name . '_([^\[]+)$#', $n, $regs) && in_array($regs[1], $this->persistent_slots)){
 					$this->$regs[1] = $v;

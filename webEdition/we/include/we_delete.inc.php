@@ -46,15 +46,16 @@ function getObjectsForDocWorkspace($id, we_database_base $db){
 
 $table = weRequest('table', 'we_cmd', '', 2);
 $wfchk = defined('WORKFLOW_TABLE') && ($table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE)) ?
-	weRequest('bool', 'we_cmd', 0, 3):
+	weRequest('bool', 'we_cmd', 0, 3) :
 	1;
+$wecmd0=weRequest('string', 'we_cmd', '', 0);
 $wfchk_html = '';
 $script = '';
 
 if(!$wfchk){
-	if(isset($_REQUEST['sel'])){
+	if(($sel = weRequest('intList', 'sel'))){
 		$found = false;
-		$selectedItems = explode(',', $_REQUEST['sel']);
+		$selectedItems = explode(',', $sel);
 		foreach($selectedItems as $selectedItem){
 			if(we_workflow_utility::inWorkflow($selectedItem, $table)){
 				$found = true;
@@ -64,25 +65,25 @@ if(!$wfchk){
 		$wfchk_html .= we_html_element::jsElement(
 				'function confirmDel(){' .
 				($found ? 'if(confirm("' . g_l('alert', '[found_in_workflow]') . '")){' : '') .
-				'we_cmd("' . $_REQUEST['we_cmd'][0] . '","","' . $table . '",1);' .
+				'we_cmd("' . weRequest('raw', 'we_cmd', '', 0) . '","","' . $table . '",1);' .
 				($found ? '}else{ top.toggleBusy(0)}' : '') .
 				'}');
 	} else {
 		$script = 'top.toggleBusy(0);' . we_message_reporting::getShowMessageCall(g_l('alert', "[nothing_to_delete]"), we_message_reporting::WE_MESSAGE_WARNING);
 	}
 	$wfchk_html .= '</head><body onload="confirmDel()"><form name="we_form" method="post">' .
-		we_html_tools::hidden("sel", weRequest('raw',"sel", "")) . "</form>";
-} elseif(in_array(weRequest('string', 'we_cmd','',0),array("do_delete",'delete_single_document'))){
-	if(isset($_REQUEST["sel"]) && $_REQUEST["sel"]){
+		we_html_tools::hidden("sel", weRequest('raw', "sel", "")) . "</form>";
+} elseif(in_array($wecmd0, array("do_delete", 'delete_single_document'))){
+	if(($sel = weRequest('intList', "sel"))){
 		//	look which documents must be deleted.
-		$selectedItems = explode(',', $_REQUEST["sel"]);
+		$selectedItems = explode(',', $sel);
 		$retVal = 1;
 		$idInfos = array(
 			'IsFolder' => 0,
 			'Path' => '',
 			'hasFiles' => 0
 		);
-		if($_REQUEST["sel"] && $selectedItems && ($table == FILE_TABLE || $table == TEMPLATES_TABLE)){
+		if($selectedItems && ($table == FILE_TABLE || $table == TEMPLATES_TABLE)){
 			$idInfos = getHash('SELECT IsFolder, Path FROM ' . $GLOBALS['DB_WE']->escape($table) . ' WHERE ID=' . intval($selectedItems[0]));
 			if(!$idInfos){
 				t_e('ID ' . $selectedItems[0] . ' not present in table ' . $table);
@@ -393,7 +394,7 @@ if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 ?>
 <script type="text/javascript"><!--
 <?php
-if($_REQUEST['we_cmd'][0] != "delete_single_document"){ // no select mode in delete_single_document
+if($wecmd0 != "delete_single_document"){ // no select mode in delete_single_document
 	switch($table){
 		case FILE_TABLE:
 			if(permissionhandler::hasPerm("DELETE_DOC_FOLDER") && permissionhandler::hasPerm("DELETE_DOCUMENT")){
@@ -419,63 +420,61 @@ if($_REQUEST['we_cmd'][0] != "delete_single_document"){ // no select mode in del
 	}
 }
 ?>
-	if (top.treeData.table != "<?php
+if (top.treeData.table != "<?php
 echo $table;
 ?>") {
-		top.treeData.table = "<?php
+	top.treeData.table = "<?php
 echo $table;
 ?>";
-		we_cmd("load", "<?php
+	we_cmd("load", "<?php
 echo $table;
 ?>");
-	} else {
-		top.drawTree();
-	}
+} else {
+	top.drawTree();
+}
 
-	function we_submitForm(target, url) {
-		var f = self.document.we_form;
-		var sel = "";
-		for (var i = 1; i <= top.treeData.len; i++) {
-			if (top.treeData[i].checked == 1) {
-				sel += (top.treeData[i].id + ",");
-			}
+function we_submitForm(target, url) {
+	var f = self.document.we_form;
+	var sel = "";
+	for (var i = 1; i <= top.treeData.len; i++) {
+		if (top.treeData[i].checked == 1) {
+			sel += (top.treeData[i].id + ",");
 		}
-		if (!sel) {
-			top.toggleBusy(0);
+	}
+	if (!sel) {
+		top.toggleBusy(0);
 <?php
 print we_message_reporting::getShowMessageCall(g_l('alert', "[nothing_to_delete]"), we_message_reporting::WE_MESSAGE_ERROR);
 ?>
-			return;
-		}
-
-		sel = sel.substring(0, sel.length - 1);
-
-		f.sel.value = sel;
-		f.target = target;
-		f.action = url;
-		f.method = "post";
-		f.submit();
+		return;
 	}
-	function we_cmd() {
-		var args = "";
-		for (var i = 0; i < arguments.length; i++) {
-			args += 'arguments[' + i + ']' + ((i < (arguments.length - 1)) ? ',' : '');
-		}
-		eval('top.we_cmd(' + args + ')');
+
+	sel = sel.substring(0, sel.length - 1);
+
+	f.sel.value = sel;
+	f.target = target;
+	f.action = url;
+	f.method = "post";
+	f.submit();
+}
+function we_cmd() {
+	var args = "";
+	for (var i = 0; i < arguments.length; i++) {
+		args += 'arguments[' + i + ']' + ((i < (arguments.length - 1)) ? ',' : '');
 	}
+	eval('top.we_cmd(' + args + ')');
+}
 //-->
 </script>
 <?php
-if(!$wfchk && $_REQUEST['we_cmd'][0] != "delete"){
+if(!$wfchk && $wecmd0 != "delete"){
 	echo $wfchk_html;
 	exit();
 }
-if(weRequest('string', 'we_cmd', '', 0) == "do_delete"){
+if($wecmd0 == "do_delete"){
 	echo '</head><body></body></html>';
 	exit();
 }
-
-
 
 $delete_text = g_l('newFile', "[delete_text]");
 $delete_confirm = g_l('alert', "[delete]");
