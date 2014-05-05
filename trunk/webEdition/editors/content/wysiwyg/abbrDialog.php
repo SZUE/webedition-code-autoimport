@@ -27,11 +27,10 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 $appendJS = "";
 
 
-if(!(isset($_REQUEST['we_dialog_args']) &&
-	(
+if(!(
 	weRequest('bool', 'we_dialog_args', false, 'outsideWE') ||
 	weRequest('bool', 'we_dialog_args', false, 'isFrontend')
-	))){
+	)){
 	we_html_tools::protect();
 	$noInternals = false;
 } else {

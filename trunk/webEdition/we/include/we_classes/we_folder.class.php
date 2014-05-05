@@ -75,7 +75,7 @@ class we_folder extends we_root{
 			if(!$this->Language){
 				$this->initLanguageFromParent();
 			}
-			if(isset($_REQUEST['we_edit_weDocumentCustomerFilter'])){
+			if(weRequest('bool', 'we_edit_weDocumentCustomerFilter')){
 				$this->documentCustomerFilter = we_customer_documentFilter::getCustomerFilterFromRequest($this);
 			} else if(isset($sessDat[3])){ // init webUser from session
 				$this->documentCustomerFilter = unserialize($sessDat[3]);

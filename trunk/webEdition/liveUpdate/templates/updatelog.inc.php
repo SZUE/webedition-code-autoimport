@@ -38,10 +38,10 @@
  *
  * and in addition the following request variables
  *
- * $_REQUEST['start']
- * $_REQUEST['messages']
- * $_REQUEST['notices']
- * $_REQUEST['errors']
+ * 'start'
+ * 'messages'
+ * 'notices'
+ * 'errors'
  *
  */
 
@@ -53,26 +53,27 @@ $buttons = '';
  */
 if($this->Data['allEntries']){ // entries exist
 	// there are entries available -> show them in table
+	$start = weRequest('int', 'start', 0);
 	$content = '
 <form name="we_form">
-<input type="hidden" name="section" value="' . $_REQUEST['section'] . '" />
+<input type="hidden" name="section" value="' . weRequest('raw', 'section') . '" />
 <input type="hidden" name="log_cmd" value="dummy" />
-<input type="hidden" name="start" value="' . $_REQUEST['start'] . '" />
+<input type="hidden" name="start" value="' . $start . '" />
 <table class="defaultfont" width="100%">
 <tr>
 	<td>' . g_l('liveUpdate', '[updatelog][entriesTotal]') . ': ' . $this->Data['amountEntries'] . '</td>
-	<td class="alignRight">' . g_l('liveUpdate', '[updatelog][page]') . ' ' . (($_REQUEST['start'] / $this->Data['amountPerPage']) + 1) . '/ ' . ((ceil($this->Data['amountEntries'] / $this->Data['amountPerPage'])) ? ceil($this->Data['amountEntries'] / $this->Data['amountPerPage']) : 1) . '</td>
+	<td class="alignRight">' . g_l('liveUpdate', '[updatelog][page]') . ' ' . (($start / $this->Data['amountPerPage']) + 1) . '/ ' . ((ceil($this->Data['amountEntries'] / $this->Data['amountPerPage'])) ? ceil($this->Data['amountEntries'] / $this->Data['amountPerPage']) : 1) . '</td>
 </tr>
 </table>
 <div class="defaultfont">
-	' . we_html_forms::checkbox(1, isset($_REQUEST['messages']), 'messages', "<span class=\"logMessage\">" . g_l('liveUpdate', '[updatelog][legendMessages]') . " (" . $this->Data['amountMessages'] . ")</span>", false, "small", "document.we_form.submit();") . '
-	' . we_html_forms::checkbox(1, isset($_REQUEST['notices']), 'notices', "<span class=\"logNotice\">" . g_l('liveUpdate', '[updatelog][legendNotices]') . " (" . $this->Data['amountNotices'] . ")</span>", false, "small", "document.we_form.submit();") . '
-	' . we_html_forms::checkbox(1, isset($_REQUEST['errors']), 'errors', "<span class=\"logError\">" . g_l('liveUpdate', '[updatelog][legendErrors]') . " (" . $this->Data['amountErrors'] . ")</span>", false, "small", "document.we_form.submit();") . '
+	' . we_html_forms::checkbox(1, weRequest('bool', 'messages'), 'messages', "<span class=\"logMessage\">" . g_l('liveUpdate', '[updatelog][legendMessages]') . " (" . $this->Data['amountMessages'] . ")</span>", false, "small", "document.we_form.submit();") . '
+	' . we_html_forms::checkbox(1, weRequest('bool', 'notices'), 'notices', "<span class=\"logNotice\">" . g_l('liveUpdate', '[updatelog][legendNotices]') . " (" . $this->Data['amountNotices'] . ")</span>", false, "small", "document.we_form.submit();") . '
+	' . we_html_forms::checkbox(1, weRequest('bool', 'errors'), 'errors', "<span class=\"logError\">" . g_l('liveUpdate', '[updatelog][legendErrors]') . " (" . $this->Data['amountErrors'] . ")</span>", false, "small", "document.we_form.submit();") . '
 </div>
 <br />
 ';
 
-	if(!empty($this->Data['logEntries'])){ // entries match filter
+	if(($this->Data['logEntries'])){ // entries match filter
 		$content .= '
 <table width="100%" class="defaultfont updateContent" id="updateLogTable">
 <tr>
@@ -106,11 +107,11 @@ if($this->Data['allEntries']){ // entries exist
 		 * Add buttons for next, back and delete
 		 */
 
-		$backButton = ($_REQUEST['start'] > 0 ? //	backbutton
+		$backButton = ($start > 0 ? //	backbutton
 				we_html_button::create_button("back", "javascript:lastEntries();") :
 				we_html_button::create_button("back", "#", true, 100, 22, "", "", true));
 
-		$nextButton = ($this->Data['amountEntries'] <= $_REQUEST['start'] + $this->Data['amountPerPage'] ? //	next_button
+		$nextButton = ($this->Data['amountEntries'] <= $start + $this->Data['amountPerPage'] ? //	next_button
 				we_html_button::create_button("next", "#", true, 100, 22, "", "", true) :
 				we_html_button::create_button("next", "javascript:nextEntries();"));
 

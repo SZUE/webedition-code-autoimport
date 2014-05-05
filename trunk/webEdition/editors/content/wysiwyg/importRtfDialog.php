@@ -22,21 +22,19 @@
  * @package    webEdition_wysiwyg
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 //FIXME: 6.4: remove this file
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-if(!(isset($_REQUEST['we_dialog_args']) &&
-	(
+if(!(
 	weRequest('bool', 'we_dialog_args', false, 'outsideWE') ||
 	weRequest('bool', 'we_dialog_args', false, 'isFrontend')
-	))){
+	)){
 	we_html_tools::protect();
 }
 $dialog = new we_dialog_importRtf();
 $dialog->initByHttp();
 if(isset($dialog->args["ntxt"]) && $dialog->args["ntxt"]){
 	$dialog->registerOkJsFN("weDoRtfJSTxt");
-} else{
+} else {
 	$dialog->registerOkJsFN("weDoRtfJS");
 }
 print $dialog->getHTML();

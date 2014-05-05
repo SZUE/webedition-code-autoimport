@@ -50,13 +50,11 @@ class rpcCmd{
 
 	function rpcCmd($shell){
 
-		if((get_magic_quotes_gpc() == 1)){
-			if(!empty($_REQUEST)){
+		if((get_magic_quotes_gpc() == 1)){//FIXME: remove after End of php 5.3
+			if($_REQUEST){
 				rpcCmd::stripSlashes($_REQUEST);
 			}
 		}
-
-		$this->startSession();
 
 		$this->checkSession();
 
@@ -90,24 +88,12 @@ class rpcCmd{
 	}
 
 	function checkSession(){
-
-		if(!isset($_SESSION['user']['ID'])){
-
-			$this->Status = self::STATUS_NO_SESSION;
-			return false;
-		}
-
-		if(empty($_SESSION['user']['ID'])){
+		if(!isset($_SESSION['user']['ID'])||!$_SESSION['user']['ID']){
 			$this->Status = self::STATUS_NO_SESSION;
 			return false;
 		}
 
 		return true;
-	}
-
-	//FIXME: remove this - session is already started by we.inc
-	function startSession(){
-
 	}
 
 	function checkParameters(){

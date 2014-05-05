@@ -22,8 +22,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-if($_SESSION["user"]["Username"] && isset($_REQUEST['csid'])){
-	session_id(weRequest('string', 'csid'));
+if($_SESSION["user"]["Username"] && ($csid = weRequest('string', 'csid'))){
+	session_id($csid);
 }
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');

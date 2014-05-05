@@ -25,20 +25,19 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 $noInternals = false;
-if(!(isset($_REQUEST['we_dialog_args']) &&
-	(
+if(!(
 	weRequest('bool', 'we_dialog_args', false, 'outsideWE') ||
 	weRequest('bool', 'we_dialog_args', false, 'isFrontend')
-	))){
+	)){
 	we_html_tools::protect();
-} else{
+} else {
 	$noInternals = true;
 }
 $noInternals = $noInternals || !isset($_SESSION['user']) || !isset($_SESSION['user']['Username']) || $_SESSION['user']['Username'] == '';
 
 $dialog = new we_dialog_image($noInternals);
 $dialog->initByHttp();
-$dialog->registerCmdFn(weRequest('bool','we_cmd',false,0) ? '' : "weDoImgCmd");
+$dialog->registerCmdFn(weRequest('bool', 'we_cmd', false, 0) ? '' : "weDoImgCmd");
 
 echo $dialog->getHTML();
 
@@ -51,12 +50,12 @@ function weDoImgCmd($args){
 		}
 	}
 
-	if(weRequest('string', 'we_dialog_args','tinyMce','editor') != "tinyMce"){
+	if(weRequest('string', 'we_dialog_args', 'tinyMce', 'editor') != "tinyMce"){
 
 		return we_html_element::jsElement('top.opener.weWysiwygObject_' . $args["editname"] . '.insertImage("' . $args["src"] . '","' . $args["width"] . '","' . $args["height"] . '","' . $args["hspace"] . '","' . $args["vspace"] . '","' . $args["border"] . '","' . addslashes($args["alt"]) . '","' . $args["align"] . '","' . $args["name"] . '","' . $args["class"] . '","' . addslashes($args["title"]) . '","' . $args["longdesc"] . '");
 top.close();
 ');
-	} else{
+	} else {
 		$attribs = weRequest('bool', 'imgChangedCmd') && !weRequest('bool', 'wasThumbnailChange') ? $_REQUEST['we_dialog_args'] : $args;
 		return we_dialog_base::getTinyMceJS() .
 			we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/weimage/js/image_insert.js') .

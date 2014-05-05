@@ -25,10 +25,8 @@
 we_html_tools::protect();
 
 
-if(!isset($_REQUEST['csid'])){
-	$yuiSuggest = & weSuggest::getInstance();
+$yuiSuggest = & weSuggest::getInstance();
 
-	$import_object = new we_import_files();
+$import_object = new we_import_files();
 
-	echo $import_object->getHTML();
-}
+echo $import_object->getHTML();
