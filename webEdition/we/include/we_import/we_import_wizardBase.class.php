@@ -336,10 +336,7 @@ if (top.wizbody && top.wizbody.addLog){
 							break;
 						case we_import_functions::TYPE_GENERIC_XML:
 							$parse = new we_xml_splitFile($_SERVER['DOCUMENT_ROOT'] . $v["import_from"]);
-							t_e("*/" . $v["rcd"]);
-							exit();
 							$parse->splitFile("*/" . $v["rcd"], (isset($v["from_elem"])) ? $v["from_elem"] : false, (isset($v["to_elem"])) ? $v["to_elem"] : false, 1);
-							exit();
 							break;
 						case we_import_functions::TYPE_CSV:
 							switch($v['csv_enclosed']){
@@ -413,88 +410,18 @@ if (top.wizbody && top.wizbody.addLog){
 					break;
 				default:
 					$fields = array();
-					if($v["type"] == we_import_functions::TYPE_WE_XML){
+					switch($v["type"]){
+						case we_import_functions::TYPE_WE_XML:
+							$hiddens = $this->getHdns("v", $v);
 
-						$hiddens = $this->getHdns("v", $v);
-
-						if(intval($v['cid']) == 0){
-							// clear session data
-							weXMLExIm::unsetPerserves();
-						}
-
-						$ref = false;
-						if($v["cid"] >= $v["numFiles"] - 1){ // finish import
-							$xmlExIm = new we_import_updater();
-							$xmlExIm->loadPerserves();
-							$xmlExIm->setOptions(array(
-								'handle_documents' => $v['import_docs'],
-								'handle_templates' => $v['import_templ'],
-								'handle_objects' => isset($v['import_objs']) ? $v['import_objs'] : 0,
-								'handle_classes' => isset($v['import_classes']) ? $v['import_classes'] : 0,
-								'handle_doctypes' => $v['import_dt'],
-								'handle_categorys' => $v['import_ct'],
-								'handle_binarys' => $v['import_binarys'],
-								'document_path' => $v['doc_dir_id'],
-								'template_path' => $v['tpl_dir_id'],
-								'handle_collision' => $v['collision'],
-								'restore_doc_path' => $v['restore_doc_path'],
-								'restore_tpl_path' => $v['restore_tpl_path'],
-								'handle_owners' => $v['import_owners'],
-								'owners_overwrite' => $v['owners_overwrite'],
-								'owners_overwrite_id' => $v['owners_overwrite_id'],
-								'handle_navigation' => $v['import_navigation'],
-								'navigation_path' => $v['navigation_dir_id'],
-								'handle_thumbnails' => $v['import_thumbnails'],
-								'change_encoding' => $v['import_ChangeEncoding'],
-								'xml_encoding' => $v['import_XMLencoding'],
-								'target_encoding' => $v['import_TARGETencoding'],
-								'rebuild' => $v['rebuild']
-							));
-
-							if($xmlExIm->RefTable->current == 0){
-								print we_html_element::jsElement('
-										if (top.wizbody.addLog){
-											top.wizbody.addLog("' . addslashes(we_html_tools::getPixel(20, 5)) . we_html_element::htmlB(g_l('import', '[update_links]')) . '");
-										}');
-								flush();
+							if(intval($v['cid']) == 0){
+								// clear session data
+								weXMLExIm::unsetPerserves();
 							}
 
-							$ref = null;
-
-							for($i = 0; $i < $xmlExIm->UpdateItemsCount; $i++){
-								$ref = $xmlExIm->RefTable->getNext();
-								if(!empty($ref)){
-									if(isset($ref->ContentType) && isset($ref->ID)){
-										$doc = weContentProvider::getInstance($ref->ContentType, $ref->ID, $ref->Table);
-									}
-									$xmlExIm->updateObject($doc);
-								} else {
-									break;
-								}
-							}
-
-							if(!empty($ref)){
-								$xmlExIm->savePerserves(false);
-
-								$JScript = "top.wizbusy.setProgressText('pb1','" . g_l('import', '[update_links]') . $xmlExIm->RefTable->current . '/' . count($xmlExIm->RefTable->Storage) . "');
-										top.wizbusy.setProgress(Math.floor(((" . (int) ($v['cid'] + $xmlExIm->RefTable->current) . "+1)/" . (int) ($xmlExIm->RefTable->getLastCount() + $v["numFiles"]) . ")*100));";
-
-
-								$out .= we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
-										we_html_element::jsElement($JScript . "setTimeout('we_import(1," . $v['cid'] . ");',15);"));
-							} else {
-
-								$JScript = "
-top.wizbusy.finish(" . $xmlExIm->options['rebuild'] . ");
-setTimeout('we_import(1," . $v['numFiles'] . ");',15);";
-							}
-							$out .= we_html_element::htmlForm(array("name" => "we_form"), $hiddens . we_html_element::jsElement($JScript));
-
-							$xmlExIm->unsetPerserves();
-						} else { // do import
-							$xmlExIm = new weXMLImport();
-							$chunk = $v["uniquePath"] . basename($v["import_from"]) . "_" . $v["cid"];
-							if(file_exists($chunk)){
+							$ref = false;
+							if($v["cid"] >= $v["numFiles"] - 1){ // finish import
+								$xmlExIm = new we_import_updater();
 								$xmlExIm->loadPerserves();
 								$xmlExIm->setOptions(array(
 									'handle_documents' => $v['import_docs'],
@@ -520,139 +447,209 @@ setTimeout('we_import(1," . $v['numFiles'] . ");',15);";
 									'target_encoding' => $v['import_TARGETencoding'],
 									'rebuild' => $v['rebuild']
 								));
-								$imported = $xmlExIm->import($chunk);
-								$xmlExIm->savePerserves(false);
-								if($imported){
-									$ref = $xmlExIm->RefTable->getLast();
 
-									$_status = g_l('import', '[import]');
-
-									switch($ref->ContentType){
-										case 'weBinary':
-										case 'category':
-										case 'objectFile':
-											$_path_info = $ref->Path;
-											break;
-										case 'doctype':
-											$_path_info = f('SELECT DocType FROM ' . escape_sql_query($ref->Table) . ' WHERE ID = ' . intval($ref->ID), 'DocType', new DB_WE());
-											break;
-										case 'weNavigationRule':
-											$_path_info = f('SELECT NavigationName FROM ' . escape_sql_query($ref->Table) . ' WHERE ID = ' . intval($ref->ID), 'NavigationName', new DB_WE());
-											break;
-										case 'weThumbnail':
-											$_path_info = f('SELECT Name FROM ' . escape_sql_query($ref->Table) . ' WHERE ID = ' . intval($ref->ID), 'Name', new DB_WE());
-											break;
-										default:
-											$_path_info = id_to_path($ref->ID, $ref->Table);
-											break;
-									}
-									$_progress_text = we_html_element::htmlB(
-											g_l('contentTypes', '[' . $ref->ContentType . ']', true) != '' ?
-												g_l('contentTypes', '[' . $ref->ContentType . ']') :
-												(g_l('import', '[' . $ref->ContentType . ']', true) != '' ?
-													g_l('import', '[' . $ref->ContentType . ']') : ''
-												)
-										) . '  ' . $_path_info;
-
-									/* if(strlen($_progress_text) > 75){
-									  $_progress_text = addslashes(substr($_progress_text, 0, 65) . '<abbr title="' . $_path_info . '">...</abbr>' . substr($_progress_text, -10));
-									  } */
-
-									echo we_html_element::jsElement(
-										'if (top.wizbody.addLog){
-												top.wizbody.addLog("' . addslashes(we_html_tools::getPixel(50, 5) . $_progress_text) . '<br/>");
-											}');
+								if($xmlExIm->RefTable->current == 0){
+									echo we_html_element::jsElement('
+										if (top.wizbody.addLog){
+											top.wizbody.addLog("' . addslashes(we_html_tools::getPixel(20, 5)) . we_html_element::htmlB(g_l('import', '[update_links]')) . '");
+										}');
 									flush();
-								} else {
-									$_status = g_l('import', '[skip]');
 								}
 
-								$_counter_text = g_l('import', '[item]') . ' ' . $v['cid'] . '/' . ($v['numFiles'] - 2) . '';
+								$ref = null;
 
-								$JScript = "
+								for($i = 0; $i < $xmlExIm->UpdateItemsCount; $i++){
+									$ref = $xmlExIm->RefTable->getNext();
+									if(!empty($ref)){
+										if(isset($ref->ContentType) && isset($ref->ID)){
+											$doc = weContentProvider::getInstance($ref->ContentType, $ref->ID, $ref->Table);
+										}
+										$xmlExIm->updateObject($doc);
+									} else {
+										break;
+									}
+								}
+
+								if($ref){
+									$xmlExIm->savePerserves(false);
+
+									$JScript = "top.wizbusy.setProgressText('pb1','" . g_l('import', '[update_links]') . $xmlExIm->RefTable->current . '/' . count($xmlExIm->RefTable->Storage) . "');
+										top.wizbusy.setProgress(Math.floor(((" . (int) ($v['cid'] + $xmlExIm->RefTable->current) . "+1)/" . (int) ($xmlExIm->RefTable->getLastCount() + $v["numFiles"]) . ")*100));";
+
+
+									$out .= we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
+											we_html_element::jsElement($JScript . "setTimeout('we_import(1," . $v['cid'] . ");',15);"));
+								} else {
+
+									$JScript = "
+top.wizbusy.finish(" . $xmlExIm->options['rebuild'] . ");
+setTimeout('we_import(1," . $v['numFiles'] . ");',15);";
+								}
+								$out .= we_html_element::htmlForm(array("name" => "we_form"), $hiddens . we_html_element::jsElement($JScript));
+
+								$xmlExIm->unsetPerserves();
+							} else { // do import
+								$xmlExIm = new weXMLImport();
+								$chunk = $v["uniquePath"] . basename($v["import_from"]) . "_" . $v["cid"];
+								if(file_exists($chunk)){
+									$xmlExIm->loadPerserves();
+									$xmlExIm->setOptions(array(
+										'handle_documents' => $v['import_docs'],
+										'handle_templates' => $v['import_templ'],
+										'handle_objects' => isset($v['import_objs']) ? $v['import_objs'] : 0,
+										'handle_classes' => isset($v['import_classes']) ? $v['import_classes'] : 0,
+										'handle_doctypes' => $v['import_dt'],
+										'handle_categorys' => $v['import_ct'],
+										'handle_binarys' => $v['import_binarys'],
+										'document_path' => $v['doc_dir_id'],
+										'template_path' => $v['tpl_dir_id'],
+										'handle_collision' => $v['collision'],
+										'restore_doc_path' => $v['restore_doc_path'],
+										'restore_tpl_path' => $v['restore_tpl_path'],
+										'handle_owners' => $v['import_owners'],
+										'owners_overwrite' => $v['owners_overwrite'],
+										'owners_overwrite_id' => $v['owners_overwrite_id'],
+										'handle_navigation' => $v['import_navigation'],
+										'navigation_path' => $v['navigation_dir_id'],
+										'handle_thumbnails' => $v['import_thumbnails'],
+										'change_encoding' => $v['import_ChangeEncoding'],
+										'xml_encoding' => $v['import_XMLencoding'],
+										'target_encoding' => $v['import_TARGETencoding'],
+										'rebuild' => $v['rebuild']
+									));
+									$imported = $xmlExIm->import($chunk);
+									$xmlExIm->savePerserves(false);
+									if($imported){
+										$ref = $xmlExIm->RefTable->getLast();
+
+										$_status = g_l('import', '[import]');
+
+										switch($ref->ContentType){
+											case 'weBinary':
+											case 'category':
+											case 'objectFile':
+												$_path_info = $ref->Path;
+												break;
+											case 'doctype':
+												$_path_info = f('SELECT DocType FROM ' . escape_sql_query($ref->Table) . ' WHERE ID = ' . intval($ref->ID), 'DocType', new DB_WE());
+												break;
+											case 'weNavigationRule':
+												$_path_info = f('SELECT NavigationName FROM ' . escape_sql_query($ref->Table) . ' WHERE ID = ' . intval($ref->ID), 'NavigationName', new DB_WE());
+												break;
+											case 'weThumbnail':
+												$_path_info = f('SELECT Name FROM ' . escape_sql_query($ref->Table) . ' WHERE ID = ' . intval($ref->ID), 'Name', new DB_WE());
+												break;
+											default:
+												$_path_info = id_to_path($ref->ID, $ref->Table);
+												break;
+										}
+										$_progress_text = we_html_element::htmlB(
+												g_l('contentTypes', '[' . $ref->ContentType . ']', true) != '' ?
+													g_l('contentTypes', '[' . $ref->ContentType . ']') :
+													(g_l('import', '[' . $ref->ContentType . ']', true) != '' ?
+														g_l('import', '[' . $ref->ContentType . ']') : ''
+													)
+											) . '  ' . $_path_info;
+
+										/* if(strlen($_progress_text) > 75){
+										  $_progress_text = addslashes(substr($_progress_text, 0, 65) . '<abbr title="' . $_path_info . '">...</abbr>' . substr($_progress_text, -10));
+										  } */
+
+										echo we_html_element::jsElement(
+											'if (top.wizbody.addLog){
+												top.wizbody.addLog("' . addslashes(we_html_tools::getPixel(50, 5) . $_progress_text) . '<br/>");
+											}');
+										flush();
+									} else {
+										$_status = g_l('import', '[skip]');
+									}
+
+									$_counter_text = g_l('import', '[item]') . ' ' . $v['cid'] . '/' . ($v['numFiles'] - 2) . '';
+
+									$JScript = "
 top.wizbusy.setProgressText('pb1','" . $_status . " - " . $_counter_text . "');
 top.wizbusy.setProgress(Math.floor(((" . $v['cid'] . "+1)/" . (int) (2 * $v["numFiles"]) . ")*100));";
 
 
-								$out .= we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
-										we_html_element::jsElement($JScript . "setTimeout('we_import(1," . ($v["cid"] + 1) . ");',15);"));
-							}
-						}
-						break;
-					} else if($v['type'] == we_import_functions::TYPE_GENERIC_XML){
-						$hiddens = $this->getHdns('v', $v) . $this->getHdns('records', $records) . $this->getHdns("we_flds", $we_flds) . $this->getHdns("attributes", $attributes);
-						$xp = new we_xml_parser($v['uniquePath'] . '/temp_' . $v['cid'] . '.xml');
-
-						foreach($records as $record){
-							$nodeSet = $xp->evaluate($xp->root . '/' . $we_flds[$record]);
-							$xPath = '';
-							$loop = 0;
-							$firstNode = '';
-							foreach($nodeSet as $node){
-								if($loop == 0){
-									$firstNode = $node;
-									$loop++;
+									$out .= we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
+											we_html_element::jsElement($JScript . "setTimeout('we_import(1," . ($v["cid"] + 1) . ");',15);"));
 								}
-								$list = $xp->getAttributes($node);
-								$flag = true;
-								$decAttrs = we_tag_tagParser::makeArrayFromAttribs(base64_decode($attributes[$record]));
-								foreach($decAttrs as $key => $value){
-									if(!isset($list[$key]) || $list[$key] != $value){
-										$flag = false;
+							}
+							break 2;
+						case we_import_functions::TYPE_GENERIC_XML:
+							$hiddens = $this->getHdns('v', $v) . $this->getHdns('records', $records) . $this->getHdns("we_flds", $we_flds) . $this->getHdns("attributes", $attributes);
+							$xp = new we_xml_parser($v['uniquePath'] . '/temp_' . $v['cid'] . '.xml');
+							foreach($records as $record){
+								$nodeSet = $xp->evaluate($xp->root . '/' . $we_flds[$record]);
+								$xPath = '';
+								$loop = 0;
+								$firstNode = '';
+								foreach($nodeSet as $node){
+									if($loop == 0){
+										$firstNode = $node;
+										$loop++;
+									}
+									$list = $xp->getAttributes($node);
+									$flag = true;
+									$decAttrs = we_tag_tagParser::makeArrayFromAttribs(base64_decode($attributes[$record]));
+									foreach($decAttrs as $key => $value){
+										if(!isset($list[$key]) || $list[$key] != $value){
+											$flag = false;
+										}
+									}
+									if($flag){
+										$xPath = $node;
+										break;
 									}
 								}
-								if($flag){
-									$xPath = $node;
-									break;
+								if($xPath == ''){
+									$xPath = $firstNode;
+								}
+								$fields = $fields + array($record => $xp->getData($xPath));
+							}
+							if($v['pfx_fn'] == 1){
+								$v['rcd_pfx'] = $xp->getData($xp->root . '/' . $v["rcd_pfx"] . "[1]");
+								if($v['rcd_pfx'] == ''){
+									$v['rcd_pfx'] = g_l('import', ($v['import_type'] == 'documents' ? '[pfx_doc]' : '[pfx_obj]'));
 								}
 							}
-							if($xPath == ''){
-								$xPath = $firstNode;
+							break;
+						case we_import_functions::TYPE_CSV:
+							$hiddens = $this->getHdns("v", $v) . $this->getHdns("records", $records) . $this->getHdns("we_flds", $we_flds);
+							switch($v["csv_enclosed"]){
+								case 'double_quote':
+									$encl = '"';
+									break;
+								case 'single_quote':
+									$encl = "'";
+									break;
+								case 'none':
+									$encl = '';
+									break;
 							}
-							$fields = $fields + array($record => $xp->getData($xPath));
-						}
-						if($v['pfx_fn'] == 1){
-							$v['rcd_pfx'] = $xp->getData($xp->root . '/' . $v["rcd_pfx"] . "[1]");
-							if($v['rcd_pfx'] == ''){
-								$v['rcd_pfx'] = g_l('import', ($v['import_type'] == 'documents' ? '[pfx_doc]' : '[pfx_obj]'));
+							list($v["classID"]) = explode('_', $v['classID']);
+							$cp = new we_import_CSV;
+							$cp->setFile($v['uniquePath'] . '/temp_' . $v["cid"] . ".csv");
+							$cp->setDelim($v['csv_seperator']);
+							$cp->setEnclosure($encl);
+							$cp->setFromCharset($v['encoding']);
+							$cp->parseCSV();
+							$recs = array();
+							$names = array();
+							for($i = 0; $i < $cp->CSVNumFields(); $i++){
+								$names[$i] = $cp->CSVFieldName($i);
+								$recs[$names[$i]] = $cp->Fields[0][$i];
 							}
-						}
-					} else if($v["type"] == we_import_functions::TYPE_CSV){
-						$hiddens = $this->getHdns("v", $v) . $this->getHdns("records", $records) . $this->getHdns("we_flds", $we_flds);
-						switch($v["csv_enclosed"]){
-							case 'double_quote':
-								$encl = '"';
-								break;
-							case 'single_quote':
-								$encl = "'";
-								break;
-							case 'none':
-								$encl = '';
-								break;
-						}
-						list($v["classID"]) = explode('_', $v['classID']);
-						$cp = new we_import_CSV;
-						$cp->setFile($v['uniquePath'] . '/temp_' . $v["cid"] . ".csv");
-						$cp->setDelim($v['csv_seperator']);
-						$cp->setEnclosure($encl);
-						$cp->setFromCharset($v['encoding']);
-						$cp->parseCSV();
-						$recs = array();
-						$names = array();
-						for($i = 0; $i < $cp->CSVNumFields(); $i++){
-							$names[$i] = $cp->CSVFieldName($i);
-							$recs[$names[$i]] = $cp->Fields[0][$i];
-						}
-						foreach($we_flds as $name => $value){
-							$fields[$name] = (isset($recs[$value]) ? $recs[$value] : '');
-						}
-						if($v['pfx_fn'] == 1){
-							$v['rcd_pfx'] = $recs[$v['rcd_pfx']];
+							foreach($we_flds as $name => $value){
+								$fields[$name] = (isset($recs[$value]) ? $recs[$value] : '');
+							}
+							if($v['pfx_fn'] == 1){
+								$v['rcd_pfx'] = $recs[$v['rcd_pfx']];
 
-							if($v['rcd_pfx'] == ''){
-								$v['rcd_pfx'] = g_l('import', ($v['import_type'] == 'documents' ? '[pfx_doc]' : '[pfx_obj]'));
+								if($v['rcd_pfx'] == ''){
+									$v['rcd_pfx'] = g_l('import', ($v['import_type'] == 'documents' ? '[pfx_doc]' : '[pfx_obj]'));
+								}
 							}
-						}
 					}
 
 					if($v['type'] != we_import_functions::TYPE_WE_XML){
@@ -668,7 +665,7 @@ top.wizbusy.setProgress(Math.floor(((" . $v['cid'] . "+1)/" . (int) (2 * $v["num
 						$rcd_name = ($v['pfx_fn'] == 1) ? $v['rcd_pfx'] : $v['asoc_prefix'];
 						switch($v['import_type']){
 							case 'documents':
-								$IsSearchable = $v["docType"] > 0 ? (isset($v['doc_search']) && $v['doc_search']) || f('SELECT IsSearchable FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($v["docType"]), 'IsSearchable', new DB_WE()) : $v['doc_search'];
+								$IsSearchable = $v["docType"] > 0 ? (isset($v['doc_search']) && $v['doc_search']) || f('SELECT IsSearchable FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($v["docType"]), '', new DB_WE()) : false;
 								if(!we_import_functions::importDocument($v["store_to_id"], $v["we_TemplateID"], $fields, $v["docType"], $v["docCategories"], $rcd_name, $v["is_dynamic"], $v["we_Extension"], isset($v['doc_publish']) ? $v['doc_publish'] : true, $IsSearchable, isset($v['encoding']) ? DEFAULT_CHARSET : '' //if charset is set, we know csv was converted to defaultcharset
 										, $v['collision'])){
 									t_e('warning', 'import of entry failed', $fields);
