@@ -498,10 +498,10 @@ abstract class we_root extends we_class{
 		$textname = 'we_' . $this->Name . '_TriggerName';
 		if($isclass){
 			$idname = 'we_' . $this->Name . '_DefaultTriggerID';
-			$myid = $this->DefaultTriggerID ? : '';
+			$myid = $this->DefaultTriggerID ? $this->DefaultTriggerID : '';
 		} else {
 			$idname = 'we_' . $this->Name . '_TriggerID';
-			$myid = $this->TriggerID ? : '';
+			$myid = $this->TriggerID ? $this->TriggerID : '';
 		}
 		$path = f('SELECT Path FROM ' . $this->DB_WE->escape($table) . ' WHERE ID=' . intval($myid), '', $this->DB_WE);
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$idname'].value");
