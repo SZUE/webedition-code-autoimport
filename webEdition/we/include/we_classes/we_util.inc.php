@@ -252,4 +252,20 @@ abstract class we_util{
 		return $_response;
 	}
 
+	function convertDateInRequest(array &$req, $asInt){
+		$dates = $regs = array();
+
+		foreach($req as $key => $value){
+			if(preg_match('/^we_date_([a-zA-Z0-9_]+)_(day|month|year|minute|hour)$/', $key, $regs)){
+				$dates[$regs[1]][$regs[2]] = $value;
+				unset($req[$key]);
+			}
+		}
+		foreach($dates as $k => $vv){
+			$req[$k] = ($asInt ?
+					mktime($vv['hour'], $vv['minute'], 0, $vv['month'], $vv['day'], $vv['year']) :
+					sprintf('%02d-%02d-%02d %02d:%02d:00', $vv['year'], $vv['month'], $vv['day'], $vv['hour'], $vv['minute']));
+		}
+	}
+
 }

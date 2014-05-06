@@ -457,11 +457,11 @@ top.content.hloaded = 1;');
 								$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('class' => 'defaultgray'), we_html_forms::checkbox(1, $pv, 'AutoLogin', g_l('modules_customer', '[autologin_request]'), false, 'defaultfont', 'top.content.setHot();')), $this->View->settings->getPropertyTitle($pk)));
 								break;
 							case 'Password':
-								$table->setCol($c / 2, $c % 2, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($pk, 32, ($this->View->customer->ID ? we_customer_customer::NOPWD_CHANGE : ''), '', "onchange=\"top.content.setHot();\" ", 'password', "240px"), $this->View->settings->getPropertyTitle($pk)));
+								$table->setCol($c / 2, $c % 2, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($pk, 32, ($this->View->customer->ID ? we_customer_customer::NOPWD_CHANGE : ''), '', 'onchange="top.content.setHot();" ', 'password', "240px"), $this->View->settings->getPropertyTitle($pk)));
 								break;
 							case 'Username':
 								$inputattribs = ' id="yuiAcInputPathName" onblur="parent.edheader.setPathName(this.value); parent.edheader.setTitlePath()"';
-								$table->setCol($c / 2, $c % 2, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($pk, 32, $pv, '', "onchange=\"top.content.setHot();\" " . $inputattribs, "text", "240px"), $this->View->settings->getPropertyTitle($pk)));
+								$table->setCol($c / 2, $c % 2, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($pk, 32, $pv, '', 'onchange="top.content.setHot();" ' . $inputattribs, "text", "240px"), $this->View->settings->getPropertyTitle($pk)));
 								break;
 							case 'failedLogins':
 								$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('class' => 'defaultgray', 'id' => 'FailedCustomerLogins'), intval($common['failedLogins']) . ' / ' . SECURITY_LIMIT_CUSTOMER_NAME), sprintf(g_l('modules_customer', '[failedLogins]'), SECURITY_LIMIT_CUSTOMER_NAME_HOURS)));
@@ -470,7 +470,7 @@ top.content.hloaded = 1;');
 								$tmp = 'YAHOO.util.Connect.asyncRequest( "GET", "' . WEBEDITION_DIR . 'rpc/rpc.php?cmd=ResetFailedCustomerLogins&cns=customer&custid=' . $this->View->customer->ID . '", ajaxCallbackResetLogins );';
 								$but = we_html_element::jsElement('
 var ajaxCallbackResetLogins = {
-									success: function(o) {
+success: function(o) {
 	if(typeof(o.responseText) != undefined && o.responseText != "") {
 		var weResponse = false;
 		try {
