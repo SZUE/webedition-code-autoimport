@@ -107,20 +107,10 @@ class we_webEditionDocument extends we_textContentDocument{
 			$GLOBALS['we_document'][$formname]->setElement('we_returnpage', $ret);
 		}
 		if(isset($_REQUEST['we_ui_' . $formname]) && is_array($_REQUEST['we_ui_' . $formname])){
-			$dates = array();
+			we_util::convertDateInRequest($_REQUEST['we_ui_' . $formname], true);
 			foreach($_REQUEST['we_ui_' . $formname] as $n => $v){
-				if(preg_match('/^we_date_([a-zA-Z0-9_]+)_(day|month|year|minute|hour)$/', $n, $regs)){
-					$dates[$regs[1]][$regs[2]] = $v;
-				} else {
-					$v = we_util::rmPhp($v);
-					$GLOBALS['we_document'][$formname]->setElement($n, $v);
-				}
-			}
-
-			foreach($dates as $k => $v){
-				$GLOBALS['we_document'][$formname]->setElement(
-					$k, mktime(
-						$dates[$k]['hour'], $dates[$k]['minute'], 0, $dates[$k]['month'], $dates[$k]['day'], $dates[$k]['year']));
+				$v = we_util::rmPhp($v);
+				$GLOBALS['we_document'][$formname]->setElement($n, $v);
 			}
 		}
 

@@ -34,17 +34,7 @@ function we_tag_saveRegisteredUser($attribs){
 	if(isset($_REQUEST['s']['Password2'])){
 		unset($_REQUEST['s']['Password2']);
 	}
-
-	$dates = $regs = array(); //type date
-	foreach($_REQUEST['s'] as $n => $v){
-		if(preg_match('/^we_date_([a-zA-Z0-9_]+)_(day|month|year|minute|hour)$/', $n, $regs)){
-			$dates[$regs[1]][$regs[2]] = $v;
-			unset($_REQUEST['s'][$n]);
-		}
-	}
-	foreach($dates as $k => $vv){
-		$_REQUEST['s'][$k] = $vv['year'] . '-' . $vv['month'] . '-' . $vv['day'] . ' ' . $vv['hour'] . ':' . $vv['minute'] . ':00';
-	}
+	we_util::convertDateInRequest($_REQUEST['s'], false);
 
 	//register new User
 	if(isset($_REQUEST['s']['ID']) && (!isset($_SESSION['webuser']['ID'])) && weRequest('int', 's', 0, 'ID') <= 0 && $registerallowed && (!isset($_SESSION['webuser']['registered']) || !$_SESSION['webuser']['registered'])){ // neuer User
