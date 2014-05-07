@@ -1,5 +1,5 @@
-CREATE TABLE ###TBLPREFIX###tblPasswordReset {
-  ID  bigint(20) unsigned NOT NULL,
+CREATE TABLE ###TBLPREFIX###tblPasswordReset (
+  ID bigint(20) unsigned NOT NULL,
   UserTable enum('tblUser','tblWebUser') NOT NULL,
 	expires	datetime NOT NULL,
 	token char(25) NOT NULL,
@@ -7,4 +7,4 @@ CREATE TABLE ###TBLPREFIX###tblPasswordReset {
 	loginPage int(11) unsigned NOT NULL,
 	click	smallint(1) unsigned NOT NULL,
   PRIMARY KEY (ID,UserTable)
-}
+)
