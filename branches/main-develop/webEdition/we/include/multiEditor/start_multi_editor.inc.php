@@ -84,8 +84,7 @@ if(weRequest('string', 'we_cmd', '', 4) == 'SEEM_edit_include'){ // Edit-Include
 		}
 		unset($_SESSION['weS']['SEEM']['open_selected']);
 
-// normal mode, start document depends on settings
-	} else {
+	} else {// normal mode, start document depends on settings
 		switch($_SESSION['prefs']['seem_start_type']){
 			case 'object':
 				if($_SESSION['prefs']['seem_start_file'] != 0 && checkIfValidStartdocument($_SESSION['prefs']['seem_start_file'], 'object')){ //	if a stardocument is already selected - show this

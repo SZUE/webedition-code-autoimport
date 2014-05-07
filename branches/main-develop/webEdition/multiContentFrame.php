@@ -29,7 +29,7 @@ $_cmd_string = '';
 
 if(weRequest('bool', 'SEEM_edit_include')){
 	for($i = 1; $i < 4; $i++){
-		$_cmd_string .= ",'" . $_REQUEST['we_cmd'][$i] . "'";
+		$_cmd_string .= ",'" . weRequest('raw', 'we_cmd', '', $i) . "'";
 	}
 	$_cmd_string .= ",'SEEM_edit_include'";
 }

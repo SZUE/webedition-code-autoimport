@@ -47,9 +47,8 @@ foreach($mods as $_menuItem){
 
 $we_tabs->onResize('navi');
 $tab_header = $we_tabs->getHeader('_modules', 1);
-$tab_js = $we_tabs->getJS();
 
-print $tab_header .
+echo $tab_header .
 	we_html_element::jsElement('
 	var current = "' . $_REQUEST["mod"] . '";
 	function openModule(module) {
@@ -68,6 +67,6 @@ print $tab_header .
 
 		}
 
-	}' . $tab_js);
+	}');
 ?>
 <div id="main" ><?php echo $we_tabs->getHTML(); ?> </div>

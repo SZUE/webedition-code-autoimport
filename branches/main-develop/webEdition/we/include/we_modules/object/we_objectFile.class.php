@@ -149,22 +149,12 @@ class we_objectFile extends we_document{
 		}
 
 		if(isset($_REQUEST['we_ui_' . $formname]) && is_array($_REQUEST['we_ui_' . $formname])){
-			$dates = array();
-			$regs = array();
-			foreach($_REQUEST['we_ui_' . $formname] as $n => $v){
-				if(preg_match('/^we_date_([a-zA-Z0-9_]+)_(day|month|year|minute|hour)$/', $n, $regs)){
-					$dates[$regs[1]][$regs[2]] = $v;
-				} else {
-					$v = we_util::rmPhp($v);
-					$GLOBALS['we_object'][$formname]->i_convertElemFromRequest('', $v, $n);
-					$GLOBALS['we_object'][$formname]->setElement($n, $v);
-				}
-			}
+			we_util::convertDateInRequest($_REQUEST['we_ui_' . $formname], true);
 
-			foreach($dates as $k => $v){
-				$GLOBALS['we_object'][$formname]->setElement(
-					$k, mktime(
-						intval($dates[$k]['hour']), intval($dates[$k]['minute']), 0, intval($dates[$k]['month']), intval($dates[$k]['day']), intval($dates[$k]['year'])));
+			foreach($_REQUEST['we_ui_' . $formname] as $n => $v){
+				$v = we_util::rmPhp($v);
+				$GLOBALS['we_object'][$formname]->i_convertElemFromRequest('', $v, $n);
+				$GLOBALS['we_object'][$formname]->setElement($n, $v);
 			}
 		}
 		if(isset($_REQUEST['we_ui_' . $formname . '_categories'])){
@@ -886,7 +876,7 @@ class we_objectFile extends we_document{
 		$foo = getHash('SELECT o.Text,of.ID FROM ' . OBJECT_TABLE . ' o,' . OBJECT_FILES_TABLE . ' of WHERE of.Path=o.Path AND o.ID=' . intval($ObjectID), $db);
 		$name = isset($foo['Text']) ? $foo['Text'] : '';
 		$pid = isset($foo['ID']) ? $foo['ID'] : 0;
-		
+
 		$textname = 'we_' . $this->Name . '_txt[we_object_' . $ObjectID . '_path]';
 		$idname = 'we_' . $this->Name . '_object[we_object_' . $ObjectID . ']';
 		$myid = $this->getElement('we_object_' . $ObjectID);

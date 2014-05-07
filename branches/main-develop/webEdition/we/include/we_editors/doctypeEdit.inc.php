@@ -29,7 +29,7 @@ $we_doc = new we_docTypes();
 // Initialize variables
 $we_show_response = 0;
 
-switch(weRequest('string', 'we_cmd', '', 0)){
+switch(($wecmd0 = weRequest('string', 'we_cmd', '', 0))){
 	case "save_docType":
 		if(!permissionhandler::hasPerm("EDIT_DOCTYPE")){
 			$we_responseText = g_l('weClass', "[no_perms]");
@@ -139,19 +139,18 @@ switch(weRequest('string', 'we_cmd', '', 0)){
 		break;
 	case "dt_add_cat":
 		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$we_transaction]);
-		if(($id=weRequest('int', 'we_cmd', 0, 1))){
+		if(($id = weRequest('int', 'we_cmd', 0, 1))){
 			$we_doc->addCat($id);
 		}
 		break;
 	case "dt_delete_cat":
 		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$we_transaction]);
-		if(($id=weRequest('int', 'we_cmd', 0,1))){
+		if(($id = weRequest('int', 'we_cmd', 0, 1))){
 			$we_doc->delCat($id);
 		}
 		break;
 	default:
-		$id = (isset($_REQUEST['we_cmd'][1]) ?
-				$_REQUEST['we_cmd'][1] :
+		$id = ($tmp=weRequest('int', 'we_cmd', 0, 1) ? $tmp:
 				f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' ' . we_docTypes::getDoctypeQuery($GLOBALS['DB_WE'])));
 
 		if($id){
@@ -176,23 +175,24 @@ if($we_show_response){
 		print we_message_reporting::getShowMessageCall($we_responseText, $we_response_type);
 	}
 }
-if($_REQUEST['we_cmd'][0] == "deleteDocType"){
-	if(!permissionhandler::hasPerm("EDIT_DOCTYPE")){
-		print we_message_reporting::getShowMessageCall(g_l('alert', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR);
-	} else {
-		?>
-		if (confirm("<?php printf(g_l('weClass', "[doctype_delete_prompt]"), $we_doc->DocType); ?>")) {
-			we_cmd("deleteDocTypeok", "<?php print $_REQUEST['we_cmd'][1]; ?>");
+switch($wecmd0){
+	case "deleteDocType":
+		if(!permissionhandler::hasPerm("EDIT_DOCTYPE")){
+			echo we_message_reporting::getShowMessageCall(g_l('alert', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR);
+		} else {
+			?>
+			if (confirm("<?php printf(g_l('weClass', "[doctype_delete_prompt]"), $we_doc->DocType); ?>")) {
+				we_cmd("deleteDocTypeok", "<?php print $_REQUEST['we_cmd'][1]; ?>");
+			}
+			<?php
 		}
-		<?php
-	}
-}
-if($_REQUEST['we_cmd'][0] == "deleteDocTypeok"){
-	echo 'opener.top.makefocus = self;' .
-	we_main_headermenu::getMenuReloadCode();
+		break;
+	case "deleteDocTypeok":
+		echo 'opener.top.makefocus = self;' .
+		we_main_headermenu::getMenuReloadCode();
 //							opener.top.header.document.location.reload();
 
-	print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_NOTICE);
+		echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_NOTICE);
 }
 ?>
 

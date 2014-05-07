@@ -65,9 +65,8 @@ foreach($_menuItems as $_menuItem){
 
 $we_tabs->onResize('navi');
 $tab_header = $we_tabs->getHeader('_tools', 1);
-$tab_js = $we_tabs->getJS();
 
-print $tab_header;
+echo $tab_header;
 ?>
 <script type="text/javascript">
 	var current = "<?php echo $_REQUEST["tool"]; ?>";
@@ -93,7 +92,6 @@ print $tab_header;
 <body style="background: #C8D8EC url(<?php print IMAGE_DIR; ?>backgrounds/header.gif);margin: 0px 0px 0px 0px;" link="black" alink="#1559b0" vlink="black" onload="setFrameSize()" onresize="setFrameSize()">
 	<div id="main" ><?php echo $we_tabs->getHTML(); ?></div>
 	<?php
-//	print $tab_js;
 	if(isset($_REQUEST["tab"])){
 		//print we_html_element::jsElement("tabCtrl.setActiveTab(".$_REQUEST["tab"].");");
 	}

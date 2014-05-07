@@ -73,6 +73,9 @@ if(isset($we_doc->elements['Charset']['dat'])){ //	send charset which might be d
 	we_html_tools::headerCtCharset('text/html', $we_doc->elements['Charset']['dat']);
 }
 
+$name = weRequest('string', 'we_cmd', '', 1);
+$nr = weRequest('int', 'we_cmd', '-1', 2);
+
 if(weRequest('bool', 'ok')){
 	$alt = weRequest('string', 'alt', '');
 	$img_title = weRequest('string', 'img_title', '');
@@ -107,7 +110,7 @@ if(weRequest('bool', 'ok')){
 				}
 		}
 	}
-	$ln = array(
+	$link = array(
 		'id' => weRequest('int', 'id', 0),
 		'obj_id' => defined('OBJECT_TABLE') ? weRequest('int', 'obj_id', 0) : 0,
 		'anchor' => $anchor,
@@ -153,60 +156,59 @@ if(weRequest('bool', 'ok')){
 	);
 
 	if(weRequest('bool', 'linklist')){
-		$linklist = $_REQUEST['linklist'];
+		$linklist = weRequest('raw', 'linklist');
 		//  set $nr to global, because it is used everywhere;
 		$nr = weRequest('int', 'nr', 0);
 		$ll = new we_base_linklist($linklist);
-		$ll->setID($nr, $ln['id']);
-		$ll->setObjID($nr, $ln['obj_id']);
-		$ll->setHref($nr, $ln['href']);
-		$ll->setAnchor($nr, $ln['anchor']);
-		$ll->setAccesskey($nr, $ln['accesskey']);
-		$ll->setTabindex($nr, $ln['tabindex']);
-		$ll->setLang($nr, $ln['lang']);
-		$ll->setRel($nr, $ln['rel']);
-		$ll->setRev($nr, $ln['rev']);
-		$ll->setHreflang($nr, $ln['hreflang']);
-		$ll->setParams($nr, $ln['params']);
-		$ll->setAttribs($nr, $ln['attribs']);
-		$ll->setTarget($nr, $ln['target']);
-		$ll->setTitle($nr, $ln['title']);
-		$ll->setBcc($nr, $ln['bcc']);
-		$ll->setCc($nr, $ln['cc']);
-		$ll->setSubject($nr, $ln['subject']);
-		$ll->setJsWinAttrib($nr, 'jswin', $ln['jswin']);
-		$ll->setJsWinAttrib($nr, 'jscenter', $ln['jscenter']);
-		$ll->setJsWinAttrib($nr, 'jsposx', $ln['jsposx']);
-		$ll->setJsWinAttrib($nr, 'jsposy', $ln['jsposy']);
-		$ll->setJsWinAttrib($nr, 'jswidth', $ln['jswidth']);
-		$ll->setJsWinAttrib($nr, 'jsheight', $ln['jsheight']);
-		$ll->setJsWinAttrib($nr, 'jsstatus', $ln['jsstatus']);
-		$ll->setJsWinAttrib($nr, 'jsscrollbars', $ln['jsscrollbars']);
-		$ll->setJsWinAttrib($nr, 'jsmenubar', $ln['jsmenubar']);
-		$ll->setJsWinAttrib($nr, 'jstoolbar', $ln['jstoolbar']);
-		$ll->setJsWinAttrib($nr, 'jsresizable', $ln['jsresizable']);
-		$ll->setJsWinAttrib($nr, 'jslocation', $ln['jslocation']);
-		$ll->setImageID($nr, $ln['img_id']);
-		$ll->setImageSrc($nr, $ln['img_src']);
-		$ll->setText($nr, $ln['text']);
-		$ll->setType($nr, $ln['type']);
-		$ll->setCType($nr, $ln['ctype']);
-		$ll->setImageAttrib($nr, 'width', $ln['width']);
-		$ll->setImageAttrib($nr, 'height', $ln['height']);
-		$ll->setImageAttrib($nr, 'border', $ln['border']);
-		$ll->setImageAttrib($nr, 'hspace', $ln['hspace']);
-		$ll->setImageAttrib($nr, 'vspace', $ln['vspace']);
-		$ll->setImageAttrib($nr, 'align', $ln['align']);
-		$ll->setImageAttrib($nr, 'alt', $ln['alt']);
+		$ll->setID($nr, $link['id']);
+		$ll->setObjID($nr, $link['obj_id']);
+		$ll->setHref($nr, $link['href']);
+		$ll->setAnchor($nr, $link['anchor']);
+		$ll->setAccesskey($nr, $link['accesskey']);
+		$ll->setTabindex($nr, $link['tabindex']);
+		$ll->setLang($nr, $link['lang']);
+		$ll->setRel($nr, $link['rel']);
+		$ll->setRev($nr, $link['rev']);
+		$ll->setHreflang($nr, $link['hreflang']);
+		$ll->setParams($nr, $link['params']);
+		$ll->setAttribs($nr, $link['attribs']);
+		$ll->setTarget($nr, $link['target']);
+		$ll->setTitle($nr, $link['title']);
+		$ll->setBcc($nr, $link['bcc']);
+		$ll->setCc($nr, $link['cc']);
+		$ll->setSubject($nr, $link['subject']);
+		$ll->setJsWinAttrib($nr, 'jswin', $link['jswin']);
+		$ll->setJsWinAttrib($nr, 'jscenter', $link['jscenter']);
+		$ll->setJsWinAttrib($nr, 'jsposx', $link['jsposx']);
+		$ll->setJsWinAttrib($nr, 'jsposy', $link['jsposy']);
+		$ll->setJsWinAttrib($nr, 'jswidth', $link['jswidth']);
+		$ll->setJsWinAttrib($nr, 'jsheight', $link['jsheight']);
+		$ll->setJsWinAttrib($nr, 'jsstatus', $link['jsstatus']);
+		$ll->setJsWinAttrib($nr, 'jsscrollbars', $link['jsscrollbars']);
+		$ll->setJsWinAttrib($nr, 'jsmenubar', $link['jsmenubar']);
+		$ll->setJsWinAttrib($nr, 'jstoolbar', $link['jstoolbar']);
+		$ll->setJsWinAttrib($nr, 'jsresizable', $link['jsresizable']);
+		$ll->setJsWinAttrib($nr, 'jslocation', $link['jslocation']);
+		$ll->setImageID($nr, $link['img_id']);
+		$ll->setImageSrc($nr, $link['img_src']);
+		$ll->setText($nr, $link['text']);
+		$ll->setType($nr, $link['type']);
+		$ll->setCType($nr, $link['ctype']);
+		$ll->setImageAttrib($nr, 'width', $link['width']);
+		$ll->setImageAttrib($nr, 'height', $link['height']);
+		$ll->setImageAttrib($nr, 'border', $link['border']);
+		$ll->setImageAttrib($nr, 'hspace', $link['hspace']);
+		$ll->setImageAttrib($nr, 'vspace', $link['vspace']);
+		$ll->setImageAttrib($nr, 'align', $link['align']);
+		$ll->setImageAttrib($nr, 'alt', $link['alt']);
 
 		$linklist = $ll->getString();
 	} else {
-		$link = serialize($ln);
+		$link['nr'] = 0;
+		$linklist = serialize(array($link));
 	}
 } else {
-	$name = $_REQUEST['we_cmd'][1];
-	$nr = weRequest('int', 'we_cmd', '', 2);
-	if($nr != ''){
+	if($nr > -1){
 		$ll = new we_base_linklist($we_doc->getElement($name));
 		$href = $ll->getHref($nr);
 		if($href && strpos($href, we_base_link::TYPE_MAIL_PREFIX) === 0){
@@ -265,66 +267,66 @@ if(weRequest('bool', 'ok')){
 		$src_int = $ll->getImageSrcInt($nr);
 		$ctype = $ll->getCType($nr);
 	} else {
-		$ln = $we_doc->getElement($name) ? unserialize($we_doc->getElement($name)) : array();
-		$ln = ($ln ? $ln : array('ctype' => we_base_link::CONTENT_TEXT, 'type' => we_base_link::TYPE_INT, 'href' => we_base_link::EMPTY_EXT, 'text' => g_l('global', '[new_link]')));
-		$href = isset($ln['href']) ? $ln['href'] : '';
+		$link = $we_doc->getElement($name) ? unserialize($we_doc->getElement($name)) : array();
+		$link = ($link ? $link : array('ctype' => we_base_link::CONTENT_TEXT, 'type' => we_base_link::TYPE_INT, 'href' => we_base_link::EMPTY_EXT, 'text' => g_l('global', '[new_link]')));
+		$href = isset($link['href']) ? $link['href'] : '';
 		if($href && strpos($href, we_base_link::TYPE_MAIL_PREFIX) === 0){
 			$emaillink = substr($href, strlen(we_base_link::TYPE_MAIL_PREFIX));
 			$href = '';
 			$type = we_base_link::TYPE_MAIL;
 		} else {
-			$type = isset($ln['type']) ? $ln['type'] : we_base_link::TYPE_INT;
+			$type = isset($link['type']) ? $link['type'] : we_base_link::TYPE_INT;
 			$emaillink = '';
 		}
-		$attribs = isset($ln['attribs']) ? $ln['attribs'] : '';
-		$text = isset($ln['text']) ? $ln['text'] : '';
-		$anchor = isset($ln['anchor']) ? $ln['anchor'] : '';
-		$accesskey = isset($ln['accesskey']) ? $ln['accesskey'] : '';
-		$lang = isset($ln['lang']) ? $ln['lang'] : '';
-		$rel = isset($ln['rel']) ? $ln['rel'] : '';
-		$rev = isset($ln['rev']) ? $ln['rev'] : '';
-		$hreflang = isset($ln['hreflang']) ? $ln['hreflang'] : '';
-		$tabindex = isset($ln['tabindex']) ? $ln['tabindex'] : '';
-		$params = isset($ln['params']) ? $ln['params'] : '';
-		$title = isset($ln['title']) ? $ln['title'] : '';
-		$target = isset($ln['target']) ? $ln['target'] : '';
+		$attribs = isset($link['attribs']) ? $link['attribs'] : '';
+		$text = isset($link['text']) ? $link['text'] : '';
+		$anchor = isset($link['anchor']) ? $link['anchor'] : '';
+		$accesskey = isset($link['accesskey']) ? $link['accesskey'] : '';
+		$lang = isset($link['lang']) ? $link['lang'] : '';
+		$rel = isset($link['rel']) ? $link['rel'] : '';
+		$rev = isset($link['rev']) ? $link['rev'] : '';
+		$hreflang = isset($link['hreflang']) ? $link['hreflang'] : '';
+		$tabindex = isset($link['tabindex']) ? $link['tabindex'] : '';
+		$params = isset($link['params']) ? $link['params'] : '';
+		$title = isset($link['title']) ? $link['title'] : '';
+		$target = isset($link['target']) ? $link['target'] : '';
 
 		//added for #7269
-		$bcc = isset($ln['bcc']) ? $ln['bcc'] : '';
-		$cc = isset($ln['cc']) ? $ln['cc'] : '';
-		$subject = isset($ln['subject']) ? $ln['subject'] : '';
+		$bcc = isset($link['bcc']) ? $link['bcc'] : '';
+		$cc = isset($link['cc']) ? $link['cc'] : '';
+		$subject = isset($link['subject']) ? $link['subject'] : '';
 
-		$jswin = isset($ln['jswin']) && $ln['jswin'] ? $ln['jswin'] : '';
-		$jscenter = isset($ln['jscenter']) ? $ln['jscenter'] : '';
-		$jsposx = isset($ln['jsposx']) ? $ln['jsposx'] : '';
-		$jsposy = isset($ln['jsposy']) ? $ln['jsposy'] : '';
-		$jswidth = isset($ln['jswidth']) ? $ln['jswidth'] : '';
-		$jsheight = isset($ln['jsheight']) ? $ln['jsheight'] : '';
-		$jsstatus = isset($ln['jsstatus']) ? $ln['jsstatus'] : '';
-		$jsscrollbars = isset($ln['jsscrollbars']) ? $ln['jsscrollbars'] : '';
-		$jsmenubar = isset($ln['jsmenubar']) ? $ln['jsmenubar'] : '';
-		$jstoolbar = isset($ln['jstoolbar']) ? $ln['jstoolbar'] : '';
-		$jsresizable = isset($ln['jsresizable']) ? $ln['jsresizable'] : '';
-		$jslocation = isset($ln['jslocation']) ? $ln['jslocation'] : '';
+		$jswin = isset($link['jswin']) && $link['jswin'] ? $link['jswin'] : '';
+		$jscenter = isset($link['jscenter']) ? $link['jscenter'] : '';
+		$jsposx = isset($link['jsposx']) ? $link['jsposx'] : '';
+		$jsposy = isset($link['jsposy']) ? $link['jsposy'] : '';
+		$jswidth = isset($link['jswidth']) ? $link['jswidth'] : '';
+		$jsheight = isset($link['jsheight']) ? $link['jsheight'] : '';
+		$jsstatus = isset($link['jsstatus']) ? $link['jsstatus'] : '';
+		$jsscrollbars = isset($link['jsscrollbars']) ? $link['jsscrollbars'] : '';
+		$jsmenubar = isset($link['jsmenubar']) ? $link['jsmenubar'] : '';
+		$jstoolbar = isset($link['jstoolbar']) ? $link['jstoolbar'] : '';
+		$jsresizable = isset($link['jsresizable']) ? $link['jsresizable'] : '';
+		$jslocation = isset($link['jslocation']) ? $link['jslocation'] : '';
 
-		$id = isset($ln['id']) ? $ln['id'] : '';
-		$img_id = isset($ln['img_id']) ? $ln['img_id'] : '';
-		$img_src = isset($ln['img_src']) ? $ln['img_src'] : '';
-		$width = isset($ln['width']) ? $ln['width'] : '';
-		$height = isset($ln['height']) ? $ln['height'] : '';
-		$border = isset($ln['border']) ? $ln['border'] : '';
-		$hspace = isset($ln['hspace']) ? $ln['hspace'] : '';
-		$vspace = isset($ln['vspace']) ? $ln['vspace'] : '';
-		$align = isset($ln['align']) ? $ln['align'] : '';
-		$alt = isset($ln['alt']) ? $ln['alt'] : '';
-		$img_title = isset($ln['img_title']) ? $ln['img_title'] : '';
+		$id = isset($link['id']) ? $link['id'] : '';
+		$img_id = isset($link['img_id']) ? $link['img_id'] : '';
+		$img_src = isset($link['img_src']) ? $link['img_src'] : '';
+		$width = isset($link['width']) ? $link['width'] : '';
+		$height = isset($link['height']) ? $link['height'] : '';
+		$border = isset($link['border']) ? $link['border'] : '';
+		$hspace = isset($link['hspace']) ? $link['hspace'] : '';
+		$vspace = isset($link['vspace']) ? $link['vspace'] : '';
+		$align = isset($link['align']) ? $link['align'] : '';
+		$alt = isset($link['alt']) ? $link['alt'] : '';
+		$img_title = isset($link['img_title']) ? $link['img_title'] : '';
 		$href_int = (isset($id) && $id) ? f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id)) : '';
 		if(defined('OBJECT_TABLE')){
-			$obj_id = isset($ln['obj_id']) ? $ln['obj_id'] : '';
+			$obj_id = isset($link['obj_id']) ? $link['obj_id'] : '';
 			$href_obj = (isset($obj_id) && $obj_id) ? f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($obj_id)) : '';
 		}
 		$src_int = $img_id ? f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($img_id)) : '';
-		$ctype = isset($ln['ctype']) ? $ln['ctype'] : '';
+		$ctype = isset($link['ctype']) ? $link['ctype'] : '';
 	}
 }
 
@@ -435,7 +437,8 @@ $trans = $_REQUEST["we_transaction"] = weRequest('transaction', "we_transaction"
 
 $ok = weRequest('bool', "ok");
 $cmd = weRequest('string', 'we_cmd', '', 0);
-$name = weRequest('string', 'name');
+$name = weRequest('string', 'name', $name);
+
 if($ok && $cmd == "edit_link_at_class"){
 	$_SESSION['weS']['WE_LINK'] = $link;
 	//FIXME: we_field XSS
@@ -521,8 +524,8 @@ if($ok && $cmd == "edit_link_at_class"){
 		$wecmdenc1 = we_cmd_enc('document.we_form.href.value');
 		$but = permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES') ? we_html_button::create_button("select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', '', document.we_form.href.value, '')") : "";
 		$butspace = (we_base_browserDetect::isSafari() ? 8 : 10);
-		$extLink = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("href", 30, $href, "", '', "text", 300), "", "left", "defaultfont", we_html_tools::getPixel($butspace, 20), $but, "", "", "", 0);
-		$emailLink = we_html_tools::htmlTextInput("emaillink", 30, $emaillink, "", '', "text", 300);
+		$extLink = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("href", 30, $href, '', 'placeholder="http://www.example.com"', "url", 300), "", "left", "defaultfont", we_html_tools::getPixel($butspace, 20), $but, "", "", "", 0);
+		$emailLink = we_html_tools::htmlTextInput("emaillink", 30, $emaillink, "", 'placeholder="user@example.com"', "text", 300);
 
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['id'].value");
 		$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['href_int'].value");
@@ -543,7 +546,6 @@ if($ok && $cmd == "edit_link_at_class"){
 		if(defined("OBJECT_TABLE")){
 			$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['obj_id'].value");
 			$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['href_obj'].value");
-			$wecmdenc3 = '';
 			$but = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.forms[0].obj_id.value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "','','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");");
 
 			$yuiSuggest->setAcId("Obj");
@@ -577,62 +579,62 @@ if($ok && $cmd == "edit_link_at_class"){
 		$ctarget = we_html_tools::targetBox('target', 30, 300, '', $target);
 		$cattribs = we_html_tools::htmlTextInput('attribs', 30, $attribs, '', '', 'text', 300);
 		$jsWinProps = '
-				<table cellspacing="0" cellpadding="0" border="0" width="100%">
-					<tr>
-						<td class="small">' . g_l('global', '[posx]') . '</td>
-						<td></td>
-						<td class="small">' . g_l('global', "[posy]") . '</td>
-						<td></td>
-						<td class="small">' . g_l('global', "[width]") . '</td>
-						<td></td>
-						<td class="small">' . g_l('global', "[height]") . '</td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>' . we_html_tools::htmlTextInput('jsposx', 4, $jsposx, '', '', "text", 40) . '</td>
-						<td>' . we_html_tools::getPixel(10, 2) . '</td>
-						<td>' . we_html_tools::htmlTextInput('jsposy', 4, $jsposy, '', "", "text", 40) . '</td>
-						<td>' . we_html_tools::getPixel(10, 2) . '</td>
-						<td>' . we_html_tools::htmlTextInput("jswidth", 4, $jswidth, '', ' onchange="if(this.form.jscenter.checked && this.value==\'\'){this.value=100}"', "text", 40) . '</td>
-						<td>' . we_html_tools::getPixel(10, 2) . '</td>
-						<td>' . we_html_tools::htmlTextInput("jsheight", 4, $jsheight, "", ' onchange="if(this.form.jscenter.checked && this.value==\'\'){this.value=100}"', "text", 40) . '</td>
-						<td>' . we_html_tools::getPixel(10, 2) . '</td>
-					</tr>
-					<tr>
-						<td colspan="9">' . we_html_tools::getPixel(2, 2) . '</td>
-					</tr>
-					<tr>
-						<td>' . we_html_forms::checkbox(1, $jsstatus, "jsstatus", g_l('global', "[status]"), true, "small") . '</td>
-						<td></td>
-						<td>' . we_html_forms::checkbox(1, $jsscrollbars, "jsscrollbars", g_l('global', "[scrollbars]"), true, "small") . '</td>
-						<td></td>
-						<td>' . we_html_forms::checkbox(1, $jsmenubar, "jsmenubar", g_l('global', "[menubar]"), true, "small") . '</td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>' . we_html_forms::checkbox(1, $jsresizable, "jsresizable", g_l('global', "[resizable]"), true, "small") . '</td>
-						<td></td>
-						<td>' . we_html_forms::checkbox(1, $jslocation, "jslocation", g_l('global', "[location]"), true, "small") . '</td>
-						<td></td>
-						<td>' . we_html_forms::checkbox(1, $jstoolbar, "jstoolbar", g_l('global', "[toolbar]"), true, "small") . '</td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-				</table>';
+<table cellspacing="0" cellpadding="0" border="0" width="100%">
+	<tr>
+		<td class="small">' . g_l('global', '[posx]') . '</td>
+		<td></td>
+		<td class="small">' . g_l('global', "[posy]") . '</td>
+		<td></td>
+		<td class="small">' . g_l('global', "[width]") . '</td>
+		<td></td>
+		<td class="small">' . g_l('global', "[height]") . '</td>
+		<td></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>' . we_html_tools::htmlTextInput('jsposx', 4, $jsposx, '', '', "text", 40) . '</td>
+		<td>' . we_html_tools::getPixel(10, 2) . '</td>
+		<td>' . we_html_tools::htmlTextInput('jsposy', 4, $jsposy, '', "", "text", 40) . '</td>
+		<td>' . we_html_tools::getPixel(10, 2) . '</td>
+		<td>' . we_html_tools::htmlTextInput("jswidth", 4, $jswidth, '', ' onchange="if(this.form.jscenter.checked && this.value==\'\'){this.value=100}"', "text", 40) . '</td>
+		<td>' . we_html_tools::getPixel(10, 2) . '</td>
+		<td>' . we_html_tools::htmlTextInput("jsheight", 4, $jsheight, "", ' onchange="if(this.form.jscenter.checked && this.value==\'\'){this.value=100}"', "text", 40) . '</td>
+		<td>' . we_html_tools::getPixel(10, 2) . '</td>
+	</tr>
+	<tr>
+		<td colspan="9">' . we_html_tools::getPixel(2, 2) . '</td>
+	</tr>
+	<tr>
+		<td>' . we_html_forms::checkbox(1, $jsstatus, "jsstatus", g_l('global', "[status]"), true, "small") . '</td>
+		<td></td>
+		<td>' . we_html_forms::checkbox(1, $jsscrollbars, "jsscrollbars", g_l('global', "[scrollbars]"), true, "small") . '</td>
+		<td></td>
+		<td>' . we_html_forms::checkbox(1, $jsmenubar, "jsmenubar", g_l('global', "[menubar]"), true, "small") . '</td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>' . we_html_forms::checkbox(1, $jsresizable, "jsresizable", g_l('global', "[resizable]"), true, "small") . '</td>
+		<td></td>
+		<td>' . we_html_forms::checkbox(1, $jslocation, "jslocation", g_l('global', "[location]"), true, "small") . '</td>
+		<td></td>
+		<td>' . we_html_forms::checkbox(1, $jstoolbar, "jstoolbar", g_l('global', "[toolbar]"), true, "small") . '</td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+	</tr>
+</table>';
 		$foo = '
-				<table border="0" cellspacing="0" cellpadding="0">
-					<tr>
-						<td>' . we_html_forms::checkbox(1, $jswin, "jswin", g_l('global', "[open]")) . '</td>
-						<td>' . we_html_tools::getPixel(10, 2) . '</td>
-						<td>' . we_html_forms::checkbox(1, $jscenter, "jscenter", g_l('global', "[center]"), true, "defaultfont", "if(this.checked){if(this.form.jswidth.value==''){this.form.jswidth.value='100';};if(this.form.jsheight.value==''){this.form.jsheight.value='100';};}") . '</td>
-					</tr>
-				</table>';
+<table border="0" cellspacing="0" cellpadding="0">
+	<tr>
+		<td>' . we_html_forms::checkbox(1, $jswin, "jswin", g_l('global', "[open]")) . '</td>
+		<td>' . we_html_tools::getPixel(10, 2) . '</td>
+		<td>' . we_html_forms::checkbox(1, $jscenter, "jscenter", g_l('global', "[center]"), true, "defaultfont", "if(this.checked){if(this.form.jswidth.value==''){this.form.jswidth.value='100';};if(this.form.jsheight.value==''){this.form.jsheight.value='100';};}") . '</td>
+	</tr>
+</table>';
 		$jswinonoff = we_html_tools::htmlFormElementTable($jsWinProps, $foo, "left", "defaultfont", we_html_tools::getPixel(10, 2), "", "", "", "", 0);
 
 
@@ -665,51 +667,51 @@ if($ok && $cmd == "edit_link_at_class"){
 
 		$intImg = $yuiSuggest->getHTML();
 		$imgProps = '
-				<table cellspacing="0" cellpadding="0" border="0" width="100%">
-					<tr>
-						<td class="small">' . g_l('global', "[width]") . '</td>
-						<td></td>
-						<td class="small">' . g_l('global', "[height]") . '</td>
-						<td></td>
-						<td class="small">' . g_l('global', "[border]") . '</td>
-						<td></td>
-						<td class="small">' . g_l('global', "[hspace]") . '</td>
-						<td></td>
-						<td class="small">' . g_l('global', "[vspace]") . '</td>
-						<td></td>
-						<td class="small">' . g_l('global', "[align]") . '</td>
-					</tr>
-					<tr>
-						<td>' . we_html_tools::htmlTextInput("width", 4, $width, "", ' onkeypress="return IsDigitPercent(event);"', "text", 40) . '</td>
-						<td>' . we_html_tools::getPixel(10, 2) . '</td>
-						<td>' . we_html_tools::htmlTextInput("height", 4, $height, "", ' onkeypress="return IsDigitPercent(event);"', "text", 40) . '</td>
-						<td>' . we_html_tools::getPixel(10, 2) . '</td>
-						<td>' . we_html_tools::htmlTextInput("border", 4, $border, "", ' onkeypress="return IsDigit(event);"', "text", 40) . '</td>
-						<td>' . we_html_tools::getPixel(10, 2) . '</td>
-						<td>' . we_html_tools::htmlTextInput("hspace", 4, $hspace, "", ' onkeypress="return IsDigit(event);"', "text", 40) . '</td>
-						<td>' . we_html_tools::getPixel(10, 2) . '</td>
-						<td>' . we_html_tools::htmlTextInput("vspace", 4, $vspace, "", ' onkeypress="return IsDigit(event);"', "text", 40) . '</td>
-						<td>' . we_html_tools::getPixel(10, 2) . '</td>
-						<td>
-							<select class="defaultfont" name="align" size="1">
-							<option value="">Default</option>
-							<option value="top"' . (($align == "top") ? "selected" : "") . '>Top</option>
-							<option value="middle"' . (($align == "middle") ? "selected" : "") . '>Middle</option>
-							<option value="bottom"' . (($align == "bottom") ? "selected" : "") . '>Bottom</option>
-							<option value="left"' . (($align == "left") ? "selected" : "") . '>Left</option>
-							<option value="right"' . (($align == "right") ? "selected" : "") . '>Right</option>
-							<option value="texttop"' . (($align == "texttop") ? "selected" : "") . '>Text Top</option>
-							<option value="absmiddle"' . (($align == "absmiddle") ? "selected" : "") . '>Abs Middle</option>
-							<option value="baseline"' . (($align == "baseline") ? "selected" : "") . '>Baseline</option>
-							<option value="absbottom"' . (($align == "absbottom") ? "selected" : "") . '>Abs Bottom</option>
-						</select></td>
-					</tr>
-					<tr><td colspan="12">' . we_html_tools::getPixel(2, 2) . '</td></tr>
-					<tr><td colspan="12" class="small">' . g_l('linklistEdit', "[alt_text]") . '</td></tr>
-					<tr><td colspan="12">' . we_html_tools::htmlTextInput("alt", 20, $alt, "", '', "text", 300) . '</td></tr>
-          <tr><td colspan="12" class="small">' . g_l('linklistEdit', "[title]") . '</td></tr>
-					<tr><td colspan="12">' . we_html_tools::htmlTextInput("img_title", 20, $img_title, "", '', "text", 300) . '</td></tr>
-				</table>';
+<table cellspacing="0" cellpadding="0" border="0" width="100%">
+	<tr>
+		<td class="small">' . g_l('global', "[width]") . '</td>
+		<td></td>
+		<td class="small">' . g_l('global', "[height]") . '</td>
+		<td></td>
+		<td class="small">' . g_l('global', "[border]") . '</td>
+		<td></td>
+		<td class="small">' . g_l('global', "[hspace]") . '</td>
+		<td></td>
+		<td class="small">' . g_l('global', "[vspace]") . '</td>
+		<td></td>
+		<td class="small">' . g_l('global', "[align]") . '</td>
+	</tr>
+	<tr>
+		<td>' . we_html_tools::htmlTextInput("width", 4, $width, "", ' onkeypress="return IsDigitPercent(event);"', "text", 40) . '</td>
+		<td>' . we_html_tools::getPixel(10, 2) . '</td>
+		<td>' . we_html_tools::htmlTextInput("height", 4, $height, "", ' onkeypress="return IsDigitPercent(event);"', "text", 40) . '</td>
+		<td>' . we_html_tools::getPixel(10, 2) . '</td>
+		<td>' . we_html_tools::htmlTextInput("border", 4, $border, "", ' onkeypress="return IsDigit(event);"', "text", 40) . '</td>
+		<td>' . we_html_tools::getPixel(10, 2) . '</td>
+		<td>' . we_html_tools::htmlTextInput("hspace", 4, $hspace, "", ' onkeypress="return IsDigit(event);"', "text", 40) . '</td>
+		<td>' . we_html_tools::getPixel(10, 2) . '</td>
+		<td>' . we_html_tools::htmlTextInput("vspace", 4, $vspace, "", ' onkeypress="return IsDigit(event);"', "text", 40) . '</td>
+		<td>' . we_html_tools::getPixel(10, 2) . '</td>
+		<td>
+			<select class="defaultfont" name="align" size="1">
+			<option value="">Default</option>
+			<option value="top"' . (($align == "top") ? "selected" : "") . '>Top</option>
+			<option value="middle"' . (($align == "middle") ? "selected" : "") . '>Middle</option>
+			<option value="bottom"' . (($align == "bottom") ? "selected" : "") . '>Bottom</option>
+			<option value="left"' . (($align == "left") ? "selected" : "") . '>Left</option>
+			<option value="right"' . (($align == "right") ? "selected" : "") . '>Right</option>
+			<option value="texttop"' . (($align == "texttop") ? "selected" : "") . '>Text Top</option>
+			<option value="absmiddle"' . (($align == "absmiddle") ? "selected" : "") . '>Abs Middle</option>
+			<option value="baseline"' . (($align == "baseline") ? "selected" : "") . '>Baseline</option>
+			<option value="absbottom"' . (($align == "absbottom") ? "selected" : "") . '>Abs Bottom</option>
+		</select></td>
+	</tr>
+	<tr><td colspan="12">' . we_html_tools::getPixel(2, 2) . '</td></tr>
+	<tr><td colspan="12" class="small">' . g_l('linklistEdit', "[alt_text]") . '</td></tr>
+	<tr><td colspan="12">' . we_html_tools::htmlTextInput("alt", 20, $alt, "", '', "text", 300) . '</td></tr>
+	<tr><td colspan="12" class="small">' . g_l('linklistEdit', "[title]") . '</td></tr>
+	<tr><td colspan="12">' . we_html_tools::htmlTextInput("img_title", 20, $img_title, "", '', "text", 300) . '</td></tr>
+</table>';
 		$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("save", "javascript:document.forms['we_form'].submit()"), null, we_html_button::create_button("cancel", "javascript:self.close()"));
 
 		$_parts = array(
@@ -738,23 +740,23 @@ if($ok && $cmd == "edit_link_at_class"){
 				'noline' => 1),
 			array('headline' => g_l('global', "[content]"),
 				'html' => '
-				<table cellpadding="0" cellspacing="0" border="0">
-					<tr>
-						<td>' . $_content_select . '</td>
-					</tr>
-					<tr id="ctext_tr" style="display:' . (($ctype == we_base_link::CONTENT_TEXT) ? "table-row" : "none") . ';">
-						<td>' . $ctext . '</td>
-					</tr>
-					<tr id="cext_tr" style="display:' . (($ctype == we_base_link::CONTENT_EXT) ? "table-row" : "none") . ';">
-						<td>' . $extImg . '</td>
-					</tr>
-					<tr id="cint_tr" style="display:' . (($ctype == we_base_link::CONTENT_INT) ? "table-row" : "none") . ';">
-						<td>' . $intImg . '</td>
-					</tr>
-					<tr id="cimgprops_tr" style="display:' . (($ctype == we_base_link::CONTENT_TEXT) ? "none" : "table-row") . ';">
-						<td>' . we_html_tools::getPixel(10, 3) . "<br>" . $imgProps . '</td>
-					</tr>
-				</table><div></div>',
+<table cellpadding="0" cellspacing="0" border="0">
+	<tr>
+		<td>' . $_content_select . '</td>
+	</tr>
+	<tr id="ctext_tr" style="display:' . (($ctype == we_base_link::CONTENT_TEXT) ? "table-row" : "none") . ';">
+		<td>' . $ctext . '</td>
+	</tr>
+	<tr id="cext_tr" style="display:' . (($ctype == we_base_link::CONTENT_EXT) ? "table-row" : "none") . ';">
+		<td>' . $extImg . '</td>
+	</tr>
+	<tr id="cint_tr" style="display:' . (($ctype == we_base_link::CONTENT_INT) ? "table-row" : "none") . ';">
+		<td>' . $intImg . '</td>
+	</tr>
+	<tr id="cimgprops_tr" style="display:' . (($ctype == we_base_link::CONTENT_TEXT) ? "none" : "table-row") . ';">
+		<td>' . we_html_tools::getPixel(10, 3) . "<br>" . $imgProps . '</td>
+	</tr>
+</table><div></div>',
 				'space' => 150),
 			array('headline' => g_l('linklistEdit', "[link_anchor]"),
 				'html' => $anchor,
@@ -829,15 +831,15 @@ if($ok && $cmd == "edit_link_at_class"){
 			'space' => 150);
 		?>
 		<form name="we_form" action="<?php print WEBEDITION_DIR; ?>we_cmd.php" method="post" onsubmit="return false">
-			<input type="hidden" name="we_cmd[0]" value="<?php print $_REQUEST['we_cmd'][0]; ?>" />
+			<input type="hidden" name="we_cmd[0]" value="<?php echo $_REQUEST['we_cmd'][0]; ?>" />
 			<?php
 			if(isset($ll) && $ll){
 				?>
-				<input type="hidden" name="linklist" value="<?php print oldHtmlspecialchars($ll->getString()); ?>" />
+				<input type="hidden" name="linklist" value="<?php echo oldHtmlspecialchars($ll->getString()); ?>" />
 				<?php
 			}
 			?>
-			<input type="hidden" name="name" value="<?php print $name; ?>" />
+			<input type="hidden" name="name" value="<?php echo $name; ?>" />
 			<input type="hidden" name="nr" value="<?php echo weRequest('int', "nr", $nr); ?>" />
 			<input type="hidden" name="ok" value="1" />
 			<input type="hidden" name="we_transaction" value="<?php echo $we_transaction; ?>" />

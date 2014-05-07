@@ -29,10 +29,6 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 
 		$we_tabs->addTab(new we_tab("#", g_l('modules_glossary', '[overview]'), we_tab::ACTIVE, "setTab('1');"));
 
-		$title = g_l('modules_glossary', '[type]') . ":&nbsp;";
-
-		$title .= g_l('modules_glossary', '[' . array_pop(explode("_", $_REQUEST['cmdid'])) . ']');
-
 		return self::buildHeader($weGlossaryFrames, $we_tabs, g_l('modules_glossary', '[type]'), g_l('modules_glossary', '[' . array_pop(explode("_", $_REQUEST['cmdid'])) . ']'));
 	}
 
@@ -141,15 +137,12 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 		// ---> end of javascript
 		// ---> build content
 
-		$content = self::getHTMLPreferences($weGlossaryFrames, $Search, $Type, $Language);
-
-		if($Search->countItems()){
-			$content .= self::getHTMLPrevNext($weGlossaryFrames, $Search);
-			$content .= self::getHTMLSearchResult($weGlossaryFrames, $Search, $Language, $Type);
-			$content .= self::getHTMLPrevNext($weGlossaryFrames, $Search, true);
-		} else {
-			$content .= '
-		<table border="0" cellpadding="0" cellspacing="0">
+		$content = self::getHTMLPreferences($Search, $Type, $Language) .
+			($Search->countItems() ?
+				self::getHTMLPrevNext($Search) .
+				self::getHTMLSearchResult($weGlossaryFrames, $Search, $Type) .
+				self::getHTMLPrevNext($Search, true) :
+				'<table border="0" cellpadding="0" cellspacing="0">
 		<tr>
 			<td>' . we_html_tools::getPixel(5, 1) . '</td>
 			<td>' . we_html_tools::getPixel(632, 12) . '</td>
@@ -162,8 +155,8 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 			<td>' . we_html_tools::getPixel(5, 1) . '</td>
 			<td>' . we_html_tools::getPixel(632, 12) . '</td>
 		</tr>
-		</table>';
-		}
+		</table>');
+
 
 		// ---> end of uilding content
 
@@ -187,30 +180,23 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 		return self::buildFooter($weGlossaryFrames, "");
 	}
 
-	function getHTMLSearchResult(&$weGlossaryFrames, &$Search, $Language, $Type){
+	private static function getHTMLSearchResult(&$weGlossaryFrames, &$Search, $Type){
 
 		$Search->execute();
 
 		$retVal = "";
 
-		$headline = array();
-		$headline[0] = array(
-			'dat' => '',
-		);
-		$headline[1] = array(
-			'dat' => g_l('modules_glossary', '[show]'),
-		);
-		$headline[2] = array(
-			'dat' => g_l('modules_glossary', '[' . $Type . ']'),
+		$headline = array(
+			array('dat' => '',),
+			array('dat' => g_l('modules_glossary', '[show]'),),
+			array('dat' => g_l('modules_glossary', '[' . $Type . ']'),)
 		);
 
 		switch($Type){
 
 			case we_glossary_glossary::TYPE_ABBREVATION:
 			case we_glossary_glossary::TYPE_ACRONYM:
-				$headline[3] = array(
-					'dat' => g_l('modules_glossary', '[announced_word]'),
-				);
+				$headline[3] = array('dat' => g_l('modules_glossary', '[announced_word]'),);
 				break;
 
 			case we_glossary_glossary::TYPE_FOREIGNWORD:
@@ -218,20 +204,13 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 				break;
 
 			case we_glossary_glossary::TYPE_LINK:
-				$headline[3] = array(
-					'dat' => g_l('modules_glossary', '[link_mode]'),
-				);
-				$headline[4] = array(
-					'dat' => g_l('modules_glossary', '[link_url]'),
-				);
+				$headline[3] = array('dat' => g_l('modules_glossary', '[link_mode]'),);
+				$headline[4] = array('dat' => g_l('modules_glossary', '[link_url]'),);
 				break;
 		}
-		$headline[] = array(
-			'dat' => g_l('modules_glossary', '[date_published]'),
-		);
-		$headline[] = array(
-			'dat' => g_l('modules_glossary', '[date_modified]'),
-		);
+
+		$headline[] = array('dat' => g_l('modules_glossary', '[date_published]'),);
+		$headline[] = array('dat' => g_l('modules_glossary', '[date_modified]'),);
 
 		$content = array();
 		while($Search->next()){
@@ -336,7 +315,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 		return $retVal;
 	}
 
-	function getHTMLPreferences(&$weGlossaryFrames, &$Search, $Type, $Language){
+	private static function getHTMLPreferences(&$Search, $Type, $Language){
 		global $we_transaction;
 
 		$button = we_html_button::create_button("search", "javascript:SubmitForm();");
@@ -344,8 +323,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 
 		$_rows = array(10 => 10, 25 => 25, 50 => 50, 100 => 100);
 
-
-		$out = '
+		return '
 		<input type="hidden" name="we_transaction" value="' . $we_transaction . '" />
 		<input type="hidden" name="Order" value="' . $Search->Order . '" />
 		<input type="hidden" name="Offset" value="' . $Search->Offset . '" />
@@ -380,33 +358,28 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 			<td colspan="5">' . we_html_tools::getPixel(18, 12) . '</td>
 		</tr>
 		</table>';
-
-		return $out;
 	}
 
-	function getHTMLPrevNext(&$weGlossaryFrames, &$Search, $extended = false){
+	private static function getHTMLPrevNext(&$Search, $extended = false){
 
 		$sum = $Search->countItems();
 		$min = ($Search->Offset) + 1;
 		$max = min($Search->Offset + $Search->Rows, $sum);
 
-		if($Search->Offset > 0){
-			$prev = we_html_button::create_button("back", "javascript:prev();"); //bt_back
-		} else {
-			$prev = we_html_button::create_button("back", "", true, 100, 22, "", "", true);
-		}
+		$prev = ($Search->Offset > 0 ?
+				we_html_button::create_button("back", "javascript:prev();") : //bt_back
+				we_html_button::create_button("back", "", true, 100, 22, "", "", true));
 
-		if($Search->Offset + $Search->Rows >= $sum){
-			$next = we_html_button::create_button("next", "", true, 100, 22, "", "", true);
-		} else {
-			$next = we_html_button::create_button("next", "javascript:next();"); //bt_next
-		}
+		$next = ($Search->Offset + $Search->Rows >= $sum ?
+				we_html_button::create_button("next", "", true, 100, 22, "", "", true) :
+				we_html_button::create_button("next", "javascript:next();")); //bt_next
+
 
 		$pages = $Search->getPages();
 
 		$select = we_html_tools::htmlSelect("TmpOffset", $pages, 1, $Search->Offset, false, array("onchange" => "jump(this.value);"));
 
-		$out = '
+		return '
 		<table border="0" cellpadding="0" cellspacing="0">
 		<tr>
 			<td>' . we_html_tools::getPixel(5, 1) . '</td>
@@ -434,10 +407,9 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 			<td>' . we_html_tools::getPixel(195, 12) . '</td>
 			<td>' . we_html_tools::getPixel(437, 12) . '</td>
 		</tr>
-		';
-
-		if($extended){
-			$out .= '<tr>
+		' .
+			($extended ?
+				'<tr>
 			<td colspan="3">
 				<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
@@ -482,13 +454,9 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 				</tr>
 				</table>
 			</td>
-		</tr>';
-		}
-
-		$out .= '
-		</table>';
-
-		return $out;
+		</tr>' :
+				'') .
+			'</table>';
 	}
 
 }

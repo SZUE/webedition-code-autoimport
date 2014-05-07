@@ -58,7 +58,7 @@ function we_tag_link($attribs, $content){
 	}
 
 	if(is_array($link)){
-		if(empty($link)){
+		if(!$link){
 			$link = array(
 				'id' => (isset($id) ? $id : ''),
 				'width' => '',
@@ -76,7 +76,7 @@ function we_tag_link($attribs, $content){
 			);
 
 			// Link should only displayed if it's a preset link
-			if(!empty($id) || $imageid != 0 || !empty($text)){
+			if($id || $imageid != 0 || $text){
 				$_SESSION['weS']['WE_LINK'] = serialize($link);
 				$GLOBALS['we_doc']->changeLink($name);
 				$GLOBALS['we_doc']->saveInSession($_SESSION['weS']['we_data'][$GLOBALS['we_transaction']]);

@@ -27,11 +27,10 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 $appendJS = "";
 
 $noInternals = false;
-if(!(isset($_REQUEST['we_dialog_args']) &&
-	(
+if(!(
 	weRequest('bool', 'we_dialog_args', false, 'outsideWE') ||
 	weRequest('bool', 'we_dialog_args', false, 'isFrontend')
-	))){
+	)){
 	we_html_tools::protect();
 } else {
 	$noInternals = true;
@@ -59,7 +58,7 @@ if(defined("GLOSSARY_TABLE") && weRequest('bool', 'weSaveToGlossary') && !$noInt
 	} else {
 		$Glossary->save();
 
-		$Cache = new we_glossary_cache($_REQUEST['language']);
+		$Cache = new we_glossary_cache(weRequest('string','language'));
 		$Cache->write();
 		unset($Cache);
 

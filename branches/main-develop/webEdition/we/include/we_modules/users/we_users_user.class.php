@@ -2295,7 +2295,6 @@ function show_seem_chooser(val) {
 
 		$we_tabs->onResize();
 		$tab_header = $we_tabs->getHeader();
-		$tab_body = $we_tabs->getJS();
 
 		switch($this->Type){
 			case self::TYPE_USER_GROUP:
@@ -2345,8 +2344,7 @@ function resetTabs(){
 
 top.content.hloaded=1;') .
 			$tab_header .
-			'<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . str_replace(" ", "&nbsp;", $headline1) . '&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", ($this->Path ? $this->Path : $this->getPath($this->ParentID))) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) . $we_tabs->getHTML() . '</div>' .
-			$tab_body;
+			'<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . str_replace(" ", "&nbsp;", $headline1) . '&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", ($this->Path ? $this->Path : $this->getPath($this->ParentID))) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) . $we_tabs->getHTML() . '</div>' ;
 	}
 
 	public static function getUsername($id, we_database_base $db = null){

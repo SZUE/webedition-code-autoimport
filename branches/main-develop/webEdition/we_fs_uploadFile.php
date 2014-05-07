@@ -219,4 +219,3 @@ if(isset($_FILES['we_uploadedFile']) && (!$we_alerttext)){
 		</form></center>
 </body>
 </html>
-

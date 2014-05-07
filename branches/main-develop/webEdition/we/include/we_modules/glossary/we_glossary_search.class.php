@@ -127,7 +127,7 @@ class we_glossary_search{
 	/**
 	 * set the where clause
 	 *
-	 * @param string $where
+	 * @param string $having
 	 */
 	function setHaving($having = ""){
 		$this->Having = $having;
@@ -147,7 +147,7 @@ class we_glossary_search{
 	 * set the offset and the count
 	 *
 	 * @param integer $offset
-	 * @param integer $count
+	 * @param integer $rows
 	 */
 	function setLimit($offset = 0, $rows = 10){
 		$this->Offset = $offset;

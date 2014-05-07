@@ -173,11 +173,10 @@ class we_xml_parser{
 	}
 
 	function setEncoding($force_encoding, $data = ''){
-		if(empty($force_encoding)){
-			$encoding = $this->getEncoding('', $data);
-		} else {
-			$encoding = $force_encoding;
-		}
+		$encoding = ($force_encoding ?
+				$force_encoding :
+				$this->getEncoding('', $data)
+			);
 
 		$this->mainXmlEncoding = $encoding;
 		return $encoding;
@@ -193,46 +192,44 @@ class we_xml_parser{
 	 *             characterDataHandler(), defaultHandler(), addWarning()
 	 */
 	function parseXML($data, $charset = 'ISO-8859-1'){
-		if(!empty($data)){
-			// Initialize the expat parser, resource id #5.
-			$parser = xml_parser_create($charset);
-
-			// Allow the parser to skip space characters.
-			xml_parser_set_option($parser, XML_OPTION_SKIP_WHITE, 1);
-			// Disable case-folding. When it comes to XML, case-folding means
-			// uppercasing.
-			xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
-
-			// Associate the expat parser with the class.
-			xml_set_object($parser, $this);
-
-			// Set expat callback functions.
-			// Element events are issued whenever the XML parser encounters
-			// opening or closing XML tags.
-			xml_set_element_handler($parser, 'openElementHandler', 'closeElementHandler');
-			// Character data is all the non-markup contents of XML documents.
-			xml_set_character_data_handler($parser, 'characterDataHandler');
-			// What doesn't go to another handler goes to the default handler.
-			xml_set_default_handler($parser, 'defaultHandler');
-
-			// Define the array of the document node.
-			$this->nodes['xml-declaration'] = '';
-			$this->nodes['dtd-declaration'] = '';
-
-			// Add a warning and return FALSE if the parse was not successful.
-			if(!xml_parse($parser, $data, true)){
-				$this->parseError = xml_get_current_line_number($parser) .
-					xml_Error_string(xml_get_error_code($parser));
-				return false;
-			}
-
-			// All done, clean up.
-			xml_parser_free($parser);
-		} else {
+		if(!$data){
 			// Add a warning and return FALSE if the given string is empty.
 			$this->addWarning(ERROR_XML_FILE_EMPTY, $this->fileName);
 			return false;
 		}
+		// Initialize the expat parser, resource id #5.
+		$parser = xml_parser_create($charset);
+
+		// Allow the parser to skip space characters.
+		xml_parser_set_option($parser, XML_OPTION_SKIP_WHITE, 1);
+		// Disable case-folding. When it comes to XML, case-folding means
+		// uppercasing.
+		xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
+
+		// Associate the expat parser with the class.
+		xml_set_object($parser, $this);
+
+		// Set expat callback functions.
+		// Element events are issued whenever the XML parser encounters
+		// opening or closing XML tags.
+		xml_set_element_handler($parser, 'openElementHandler', 'closeElementHandler');
+		// Character data is all the non-markup contents of XML documents.
+		xml_set_character_data_handler($parser, 'characterDataHandler');
+		// What doesn't go to another handler goes to the default handler.
+		xml_set_default_handler($parser, 'defaultHandler');
+
+		// Define the array of the document node.
+		$this->nodes['xml-declaration'] = '';
+		$this->nodes['dtd-declaration'] = '';
+		// Add a warning and return FALSE if the parse was not successful.
+		if(!xml_parse($parser, $data, true)){
+			$this->parseError = xml_get_current_line_number($parser) .
+				xml_Error_string(xml_get_error_code($parser));
+			return false;
+		}
+
+		// All done, clean up.
+		xml_parser_free($parser);
 	}
 
 	/**
@@ -272,10 +269,8 @@ class we_xml_parser{
 	 * @see        parseXML(), appendData()
 	 */
 	function characterDataHandler($parser, $data){
-		// Replace the entities.
-		//$data = $this->replaceEntities($data); // auskommentiert v. Holeg
 		// Add the character data.
-		$this->appendData($this->path, addslashes(($this->mode == 'backup' ? $data : trim($data))));
+		$this->appendData($this->path, addslashes($data));
 	}
 
 	/**
@@ -691,9 +686,7 @@ class we_xml_parser{
 	 */
 	function evaluate($xPath, $context = ''){
 		// Remove slashes, single and double quotes.
-		$xPath = stripslashes($xPath);
-		$xPath = str_replace('"', '', $xPath);
-		$xPath = str_replace("'", '', $xPath);
+		$xPath = str_replace(array('"', '\''), '', stripslashes($xPath));
 
 		// Split the paths that are separated by a '|' character.
 		$xPaths = $this->splitPaths($xPath);
@@ -716,7 +709,7 @@ class we_xml_parser{
 			$steps = $this->splitSteps($xPath);
 
 			// Removes the first element if it is empty.
-			if(empty($steps[0])){
+			if(!$steps[0]){
 				array_shift($steps);
 			}
 

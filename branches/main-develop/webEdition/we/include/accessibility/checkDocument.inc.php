@@ -39,8 +39,8 @@ if(($we_transaction = weRequest('transaction', 'we_transaction'))){ //  initiali
 
 	$path = weRequest('file', 'path');
 	$s_method = weRequest('string', 's_method');
-	$varname = weRequest('string','varname');
-	$contentType = weRequest('string','ctype');
+	$varname = weRequest('string', 'varname');
+	$contentType = weRequest('string', 'ctype');
 
 	$http_request = new HttpRequest($path, $host, $s_method);
 	$http_request->addHeader('User-Agent', $_SERVER['HTTP_USER_AGENT']);
@@ -59,7 +59,7 @@ if(($we_transaction = weRequest('transaction', 'we_transaction'))){ //  initiali
 	$filename = '/' . $we_transaction . $extension;
 
 	//  check what should happen with document
-	if($_REQUEST['checkvia'] == 'fileupload'){ //  submit via fileupload
+	if(weRequest('string', 'checkvia') == 'fileupload'){ //  submit via fileupload
 		$http_request->addFileByContent($varname, $content, $contentType, $filename);
 	} else { //  submit via onlinecheck - site must be available online
 		// when it is a dynamic document, remove <?xml when short_open_tags are allowed.

@@ -60,7 +60,7 @@ class we_search_listview extends listviewBase{
 	 * @param   cols   		  integer - to display a table this is the number of cols
 	 *
 	 */
-	function __construct($name, $rows = 99999999, $offset = 0, $order = '', $desc = false, $docType = '', $class = 0, $cats = '', $catOr = false, $casesensitive = false, $workspaceID = 0, $triggerID = 0, $cols = '', $customerFilterType = 'false', $languages = '', $hidedirindex = false, $objectseourls = false){
+	function __construct($name, $rows, $offset, $order, $desc, $docType, $class, $cats, $catOr, $casesensitive, $workspaceID, $triggerID, $cols, $customerFilterType, $languages, $hidedirindex, $objectseourls){
 		parent::__construct($name, $rows, $offset, $order, $desc, $cats, $catOr, $workspaceID, $cols);
 
 		$this->customerFilterType = $customerFilterType;
@@ -236,7 +236,7 @@ class we_search_listview extends listviewBase{
 							'/' . $objectdaten['Url'] . $pidstr :
 							'/?we_objectID=' . $this->DB_WE->Record["OID"] . str_replace('?', '&amp;', $pidstr));
 				} else {
-					$this->DB_WE->Record["WE_PATH"] = ($objectdaten['Url']?
+					$this->DB_WE->Record["WE_PATH"] = ($objectdaten['Url'] ?
 							($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $path_parts['filename'] . '/' . $objectdaten['Url'] . $pidstr :
 							$_SERVER["SCRIPT_NAME"] . '?we_objectID=' . $this->DB_WE->Record["OID"] . str_replace('?', '&amp;', $pidstr));
 				}

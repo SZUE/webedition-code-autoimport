@@ -87,7 +87,6 @@ class we_voting_frames extends weModuleFrames{
 		}
 
 		$we_tabs->onResize();
-		$tabsBody = $we_tabs->getJS();
 		$tabsHead = $we_tabs->getHeader('', 22) .
 			we_html_element::jsElement('
 				function setTab(tab) {

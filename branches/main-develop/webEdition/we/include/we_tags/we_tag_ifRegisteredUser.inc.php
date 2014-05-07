@@ -39,12 +39,11 @@ function we_tag_ifRegisteredUser($attribs){
 	if(isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered']){
 		$ret = true;
 
-		if($ret && !empty($userid)){
+		if($ret && $userid){
 			if(!isset($_SESSION['webuser']['ID'])){
 				return false;
-			} else {
-				$ret &= ( in_array($_SESSION['webuser']['ID'], $userid));
 			}
+			$ret &= ( in_array($_SESSION['webuser']['ID'], $userid));
 		}
 
 		if($ret && $permission){
@@ -52,7 +51,7 @@ function we_tag_ifRegisteredUser($attribs){
 			if(!$ret){
 				return false;
 			}
-			if(!empty($match)){
+			if($match){
 				$perm = explode(',', $_SESSION['webuser'][$permission]);
 				switch($matchType){
 					case 'one':
@@ -93,10 +92,9 @@ function we_tag_ifRegisteredUser($attribs){
 			if(isset($GLOBALS['we_doc']->documentCustomerFilter) && $GLOBALS['we_doc']->documentCustomerFilter){
 				//not logged in - no filter can match
 				return false;
-			} else {
-				//not logged in - but "allow all users" is set - return depends on allowNoFilter
-				return $allowNoFilter;
 			}
+			//not logged in - but "allow all users" is set - return depends on allowNoFilter
+			return $allowNoFilter;
 		}
 	}
 	return false;

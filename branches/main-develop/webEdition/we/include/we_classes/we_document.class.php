@@ -866,7 +866,7 @@ class we_document extends we_root{
 				if(isset($attribs['title'])){
 					$attribs['title'] = oldHtmlspecialchars($attribs['title']);
 				}
-				if(!(weRequest('string', 'we_cmd', '', 0) == 'reload_editpage' && (isset($_REQUEST['we_cmd'][1]) && $img->Name == $_REQUEST['we_cmd'][1]) && weRequest('string', 'we_cmd', '', 2) == 'change_image') && isset($GLOBALS['we_doc']->elements[$altField])){
+				if(!(weRequest('string', 'we_cmd', '', 0) == 'reload_editpage' && ($img->Name === weRequest('string', 'we_cmd', false, 1)) && weRequest('string', 'we_cmd', '', 2) == 'change_image') && isset($GLOBALS['we_doc']->elements[$altField])){
 					if(!isset($GLOBALS['lv'])){
 						$attribs['alt'] = oldHtmlspecialchars($GLOBALS['we_doc']->getElement($altField));
 						$attribs['title'] = oldHtmlspecialchars($GLOBALS['we_doc']->getElement($titleField));

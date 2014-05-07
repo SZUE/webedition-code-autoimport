@@ -28,7 +28,7 @@
  * @desc    class for tag <we:listview>
  *
  */
-class we_langlink_listview extends listviewBase {
+class we_langlink_listview extends listviewBase{
 
 	var $docType = ""; /* doctype string */
 	var $IDs = array(); /* array of ids with pages which are found */
@@ -65,7 +65,7 @@ class we_langlink_listview extends listviewBase {
 	 * @param   searchable 	  boolean - if false then show also documents which are not marked as searchable
 	 * @return we_listview
 	 */
-	function __construct($name, $rows = 999999999, $offset = 0, $order = "", $desc = false, $linkType = 'tblFile', $cols = "", $seeMode = true, $searchable = true, $customerFilterType = 'false', $showself = false, $id = "", $pagelanguage = "", $ownlanguage = "", $hidedirindex = false, $objectseourls = false){
+	function __construct($name, $rows, $offset, $order, $desc, $linkType, $cols, $showself, $id, $pagelanguage, $ownlanguage, $hidedirindex, $objectseourls){
 		$id = intval($id);
 		parent::__construct($name, $rows, $offset, $order, $desc, '', false, '', $cols, '', '', '', '', '', 'off', $id);
 
@@ -214,8 +214,8 @@ class we_langlink_listview extends listviewBase {
 			$this->Record["WE_TARGETLANGUAGE"] = isset($Locale[0]) ? $Locale[0] : '';
 
 			//added for #7084
-			$this->Record['WE_TARGETLANGUAGE_NAME'] = Zend_Locale::getTranslation($this->Record["WE_TARGETLANGUAGE"], 'language', $this->Record["WE_TARGETLANGUAGE"]);
-			$this->Record['WE_TARGETCOUNTRY_NAME'] = Zend_Locale::getTranslation($this->Record["WE_TARGETCOUNTRY"], 'country', $this->Record["WE_TARGETCOUNTRY"]);
+			$this->Record['WE_TARGETLANGUAGE_NAME'] = $this->Record["WE_TARGETLANGUAGE"] ? Zend_Locale::getTranslation($this->Record["WE_TARGETLANGUAGE"], 'language', $this->Record["WE_TARGETLANGUAGE"]) : '';
+			$this->Record['WE_TARGETCOUNTRY_NAME'] = $this->Record["WE_TARGETLANGUAGE"] ? Zend_Locale::getTranslation($this->Record["WE_TARGETCOUNTRY"], 'country', $this->Record["WE_TARGETCOUNTRY"]) : '';
 
 			if($this->foundlinks[$count]['DocumentTable'] == 'tblFile'){
 				$this->Record["WE_PATH"] = $this->foundlinks[$count]["Path"];
@@ -226,7 +226,7 @@ class we_langlink_listview extends listviewBase {
 						id_to_path($this->foundlinks[$count]['TriggerID']) : $_SERVER['SCRIPT_NAME'])
 				);
 
-				$paramName = "we_object_ID";
+				$paramName = 'we_objectID';
 
 				if($this->objectseourls && $this->foundlinks[$count]['Url'] != '' && show_SeoLinks()){
 					if(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){

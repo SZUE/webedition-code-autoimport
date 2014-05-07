@@ -65,13 +65,15 @@ $displayid = 0;
 $objectid = 0;
 $searchfor = '';
 $notfound = true;
+
 while($notfound && isset($path_parts['dirname']) && $path_parts['dirname'] != '/' && $path_parts['dirname'] != '\\'){
 	$display = $path_parts['dirname'] . DEFAULT_DYNAMIC_EXT;
 	$displayid = intval(f('SELECT ID FROM ' . FILE_TABLE . ' WHERE Published>0 AND Path="' . $db->escape($display) . '" LIMIT 1'));
 	$searchfor = $path_parts['basename'] . ($searchfor ? '/' . $searchfor : '');
-	if(!$displayid && $hiddendirindex){
+	if(!$displayid && $hiddendirindex && $dirindexarray){
 		//z79
 		$display = "";
+
 		foreach($dirindexarray as $dirindex){
 			$displaytest = $path_parts['dirname'] . '/' . $dirindex;
 			$displayidtest = intval(f('SELECT ID FROM ' . FILE_TABLE . ' WHERE Published>0 AND Path="' . $db->escape($displaytest) . '" LIMIT 1'));

@@ -20,4 +20,6 @@ $this->Attributes = array(
 		new weTagDataOption('self'),
 			), false, ''),
 	new weTagData_textAttribute('max', false, ''),
+	new weTagData_textAttribute('style'),
+	new weTagData_textAttribute('class'),
 );

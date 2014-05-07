@@ -27,18 +27,25 @@ $protect = we_base_moduleInfo::isActive('customer') && we_users_util::canEditMod
 we_html_tools::protect($protect);
 
 $what = weRequest('string', 'pnt', 'frameset');
-$mode = weRequest('int', 'art', 0);
+$mode = weRequest('string', 'art');
 
 $ExImport = $weFrame = null;
 
-if($what == 'export' || $what == 'eibody' || $what == 'eifooter' || $what == 'eiload' || $what == 'import' || $what == 'eiupload'){
-	$ExImport = new we_customer_EIWizard();
-	$step = weRequest('int','step',0);
-	echo $ExImport->getHTML($what, $mode, $step);
-} else {
-	$weFrame = new we_customer_frames();
-	echo $weFrame->getHTMLDocumentHeader($what, $mode);
-	$weFrame->View->processVariables();
-	$weFrame->View->processCommands();
-	echo $weFrame->getHTML($what, $mode);
+switch($what){
+	case 'export':
+	case 'eibody':
+	case 'eifooter':
+	case 'eiload':
+	case 'import':
+	case 'eiupload':
+		$ExImport = new we_customer_EIWizard();
+		$step = weRequest('int', 'step', 0);
+		echo $ExImport->getHTML($what, $mode, $step);
+		break;
+	default:
+		$weFrame = new we_customer_frames();
+		echo $weFrame->getHTMLDocumentHeader($what, $mode);
+		$weFrame->View->processVariables();
+		$weFrame->View->processCommands();
+		echo $weFrame->getHTML($what, $mode);
 }
