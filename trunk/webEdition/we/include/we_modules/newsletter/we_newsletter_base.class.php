@@ -63,14 +63,15 @@ class we_newsletter_base{
 			return false;
 		}
 		$tableInfo = $this->db->metadata($this->table);
-		$this->db->query('SELECT * FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->ID));
-		if($this->db->next_record())
+		$hash = getHash('SELECT * FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->ID), $this->db);
+		if($hash){
 			foreach($tableInfo as $cur){
 				$fieldName = $cur['name'];
 				if(in_array($fieldName, $this->persistents)){
-					$this->$fieldName = $this->db->f($fieldName);
+					$this->$fieldName = $hash[$fieldName];
 				}
 			}
+		}
 
 		return true;
 	}
@@ -88,23 +89,21 @@ class we_newsletter_base{
 			if($val == "Filter"){
 				$value = unserialize($this->$val);
 				if(is_array($value)){
-					foreach($value as $c => $v){
-						if(isset($value[$c]['fieldname']) && ($value[$c]['fieldname'] == "MemberSince" || $value[$c]['fieldname'] == "LastAccess" || $value[$c]['fieldname'] == "LastLogin")){
-							if(isset($value[$c]['fieldvalue']) && $value[$c]['fieldvalue'] != ""){
-								if(stristr($value[$c]['fieldvalue'], '.')){
-									$date = explode(".", $value[$c]['fieldvalue']);
-									$day = $date[0];
-									$month = $date[1];
-									$year = $date[2];
-									$hour = $value[$c]['hours'];
-									$minute = $value[$c]['minutes'];
-									$timestamp = mktime($hour, $minute, 0, $month, $day, $year);
-								} else {
-									$timestamp = $value[$c]['fieldvalue'];
+					foreach($value as &$v){
+						switch(isset($v['fieldname']) ? $v['fieldname'] : ''){
+							case "MemberSince":
+							case "LastAccess":
+							case "LastLogin":
+								if(isset($v['fieldvalue']) && $v['fieldvalue'] != ""){
+									if(stristr($v['fieldvalue'], '.')){
+										$date = explode(".", $v['fieldvalue']);
+										$v['fieldvalue'] = mktime($v['hours'], $v['minutes'], 0, $date[1], $date[0], $date[2]);
+									} else {
+										$v['fieldvalue'] = $v['fieldvalue'];
+									}
+
+									$this->$val = serialize($value);
 								}
-								$value[$c]['fieldvalue'] = $timestamp;
-								$this->$val = serialize($value);
-							}
 						}
 					}
 				}
@@ -115,12 +114,12 @@ class we_newsletter_base{
 		$where = implode(',', $wheres);
 		$set = we_database_base::arraySetter($sets);
 
-		if($this->ID == 0){
+		if($this->ID){
+			$this->db->query('UPDATE ' . $this->table . ' SET ' . $set . ' WHERE ' . $where);
+		} else {
 			$this->db->query('INSERT INTO ' . $this->db->escape($this->table) . ' SET ' . $set);
 			# get ID #
 			$this->ID = $this->db->getInsertId();
-		} else {
-			$this->db->query('UPDATE ' . $this->table . ' SET ' . $set . ' WHERE ' . $where);
 		}
 	}
 
@@ -181,8 +180,8 @@ class we_newsletter_base{
 					$arr2 = explode(",", $row);
 					if(count($arr2)){
 						$ret[] = ($emails_only ?
-								$arr2[0] :
-								array($arr2[0], (isset($arr2[1]) && trim($arr2[1]) != '') ? trim($arr2[1]) : $_default_html, isset($arr2[2]) ? trim($arr2[2]) : "", isset($arr2[3]) ? $arr2[3] : "", isset($arr2[4]) ? $arr2[4] : "", isset($arr2[5]) ? $arr2[5] : "", $group, $blocks));
+										$arr2[0] :
+										array($arr2[0], (isset($arr2[1]) && trim($arr2[1]) != '') ? trim($arr2[1]) : $_default_html, isset($arr2[2]) ? trim($arr2[2]) : "", isset($arr2[3]) ? $arr2[3] : "", isset($arr2[4]) ? $arr2[4] : "", isset($arr2[5]) ? $arr2[5] : "", $group, $blocks));
 					}
 				}
 			}
@@ -207,12 +206,15 @@ class we_newsletter_base{
 							if(str_replace(" ", "", $_alldat) == ""){
 								continue;
 							}
-							if($emails_only == 1){
-								$ret[] = $dat[0];
-							} else if($emails_only == 2){
-								$ret[] = array(trim($dat[0]), (isset($dat[1]) && trim($dat[1]) != '') ? trim($dat[1]) : $_default_html, isset($dat[2]) ? trim($dat[2]) : "", isset($dat[3]) ? $dat[3] : "", isset($dat[4]) ? $dat[4] : "", isset($dat[5]) ? $dat[5] : "");
-							} else {
-								$ret[] = array(trim($dat[0]), (isset($dat[1]) && trim($dat[1]) != '') ? trim($dat[1]) : $_default_html, isset($dat[2]) ? trim($dat[2]) : "", isset($dat[3]) ? $dat[3] : "", isset($dat[4]) ? $dat[4] : "", isset($dat[5]) ? $dat[5] : "", $group, $blocks);
+							switch($emails_only){
+								case 1:
+									$ret[] = $dat[0];
+									break;
+								case 2:
+									$ret[] = array(trim($dat[0]), (isset($dat[1]) && trim($dat[1]) != '') ? trim($dat[1]) : $_default_html, isset($dat[2]) ? trim($dat[2]) : "", isset($dat[3]) ? $dat[3] : "", isset($dat[4]) ? $dat[4] : "", isset($dat[5]) ? $dat[5] : "");
+									break;
+								default:
+									$ret[] = array(trim($dat[0]), (isset($dat[1]) && trim($dat[1]) != '') ? trim($dat[1]) : $_default_html, isset($dat[2]) ? trim($dat[2]) : "", isset($dat[3]) ? $dat[3] : "", isset($dat[4]) ? $dat[4] : "", isset($dat[5]) ? $dat[5] : "", $group, $blocks);
 							}
 						}
 					}
@@ -232,7 +234,7 @@ class we_newsletter_base{
 	 * @param int $status (0=all; 1=invalid; 2=valid )
 	 * @return unknown
 	 */
-	function getEmailsFromExtern2($files, $emails_only = 0, $group = 0, $blocks = array(), $status = 0, &$emailkey){
+	function getEmailsFromExtern2($files, $emails_only = 0, $group = 0, array $blocks = array(), $status = 0, &$emailkey){
 		$ret = $arr = array();
 		$countEMails = 0;
 		$_default_html = f('SELECT pref_value FROM ' . NEWSLETTER_PREFS_TABLE . ' WHERE pref_name="default_htmlmail";', 'pref_value', new DB_WE());

@@ -139,8 +139,8 @@ class we_util_Mailer extends Zend_Mail{
 				} else {
 					$_sender = $this->parseEmailUser($sender);
 					$tr = (isset($_sender['email']) && $_sender['email'] != '' && !$safeMode && !$suhosin ?
-							new Zend_Mail_Transport_Sendmail('-f' . $_sender['email']) :
-							new Zend_Mail_Transport_Sendmail());
+									new Zend_Mail_Transport_Sendmail('-f' . $_sender['email']) :
+									new Zend_Mail_Transport_Sendmail());
 				}
 				Zend_Mail::setDefaultTransport($tr);
 				break;
@@ -244,6 +244,7 @@ class we_util_Mailer extends Zend_Mail{
 	public function buildMessage(){
 		if($this->Body){
 			if($this->isEmbedImages){
+				$binParts = $images = array();
 				preg_match_all("/(src|background)=\"(.*)\"/Ui", $this->Body, $images);
 				$images[2] = array_unique($images[2]); //entfernt doppelte Bildereinfügungen #3725
 
@@ -262,14 +263,14 @@ class we_util_Mailer extends Zend_Mail{
 						$ext = $fileParts['extension'];
 
 						if(in_array($ext, $this->embedImages)){
-							$directory = str_replace('..', '', dirname($url));
+							$directory = str_replace('..', '', dirname($url) . '/');
 							$directory = ($directory == '.' ? '' : $directory);
 							if(($pos = stripos($directory, $_SERVER['SERVER_NAME']))){
 								$directory = substr($directory, (strlen($_SERVER['SERVER_NAME']) + $pos), strlen($directory));
 							}
 							$this->basedir = ($this->basedir ? $this->basedir : $_SERVER['DOCUMENT_ROOT']) .
-								((strlen($this->basedir) > 1 && substr($this->basedir, -1) != '/') ? '/' : '') .
-								((strlen($directory) > 1 && substr($directory, -1) != '/') ? '/' : '');
+									((strlen($this->basedir) > 1 && substr($this->basedir, -1) != '/') ? '/' : '') .
+									((strlen($directory) > 1 && substr($directory, -1) != '/') ? '/' : '');
 							$attachmentpath = $this->basedir . $directory . $filename;
 							$attachmentpath = str_replace('//', '/', $attachmentpath);
 							$cid = 'cid:' . $this->doaddAttachmentInline($attachmentpath);
@@ -310,7 +311,7 @@ class we_util_Mailer extends Zend_Mail{
 			}
 			$this->setBodyHtml(trim($this->Body));
 		}
-		if($this->AltBody == ''){ //Es gibt keinen Text-Part
+		if(!$this->AltBody){ //Es gibt keinen Text-Part
 			$this->parseHtml2TextPart($this->Body);
 		}
 		$this->setBodyText(trim($this->AltBody));
@@ -340,28 +341,29 @@ class we_util_Mailer extends Zend_Mail{
 	}
 
 	public function doaddAttachmentInline($attachment, $isBinData = false, $ext = ''){
-		if($attachment != ''){
-			if($isBinData){
-				$at = new Zend_Mime_Part(base64_decode($attachment));
-				$at->id = $at->filename = str_replace('.', '', uniqid('', true));
-				$at->type = self::get_mime_type($ext, $at->filename);
-			} else {
-				$at = new Zend_Mime_Part(we_base_file::load($attachment));
-				$filename = basename($attachment);
-				$rep = str_replace($_SERVER['DOCUMENT_ROOT'], '', $attachment);
-				$at->id = md5($filename);
-				$at->filename = $filename;
-				$fileParts = pathinfo($filename);
-				$ext = $fileParts['extension'];
-				$at->type = self::get_mime_type($ext, $filename, $attachment);
-				$loc = getServerUrl() . $rep;
-				$at->location = $loc;
-			}
-			$at->disposition = Zend_Mime::DISPOSITION_INLINE;
-			$at->encoding = Zend_Mime::ENCODING_BASE64;
-			$this->inlineAtt[] = $at;
-			return $at->id;
+		if(!$attachment){
+			return;
 		}
+		if($isBinData){
+			$at = new Zend_Mime_Part(base64_decode($attachment));
+			$at->id = $at->filename = str_replace('.', '', uniqid('', true));
+			$at->type = self::get_mime_type($ext, $at->filename);
+		} else {
+			$at = new Zend_Mime_Part(we_base_file::load($attachment));
+			$filename = basename($attachment);
+			$rep = str_replace($_SERVER['DOCUMENT_ROOT'], '', $attachment);
+			$at->id = md5($filename);
+			$at->filename = $filename;
+			$fileParts = pathinfo($filename);
+			$ext = $fileParts['extension'];
+			$at->type = self::get_mime_type($ext, $filename, $attachment);
+			$loc = getServerUrl() . $rep;
+			$at->location = $loc;
+		}
+		$at->disposition = Zend_Mime::DISPOSITION_INLINE;
+		$at->encoding = Zend_Mime::ENCODING_BASE64;
+		$this->inlineAtt[] = $at;
+		return $at->id;
 	}
 
 	/**
@@ -399,7 +401,10 @@ class we_util_Mailer extends Zend_Mail{
 			$finfo = finfo_open(FILEINFO_MIME_TYPE);
 			$mime = finfo_file($finfo, $filepath);
 			finfo_close($finfo);
-			return $mime . '; name="' . $name . '"';
+			if($mime){
+				return $mime . '; name="' . $name . '"';
+			}
+			//fall back to old version
 		}
 		$mimetypes = array(
 			'hqx' => 'application/mac-binhex40',
@@ -564,7 +569,7 @@ class we_util_Mailer extends Zend_Mail{
 	public function Send(){
 		try{
 			$t = parent::send();
-		} catch (Zend_Exception $e){
+		}catch(Zend_Exception $e){
 			t_e('warning', 'Error while sending mail: ', $e);
 			return false;
 		}
