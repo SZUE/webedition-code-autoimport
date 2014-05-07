@@ -1033,26 +1033,9 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 	$oClone = we_widget::create("clone", "_reCloneType_", null, array('', ''), "white", 0, "", 100, 60);
 	
 	//WEEXT: registerWeIframe
-	print
+	echo
 		we_html_element::htmlBody(
 			array(
-			'onload' => "_EditorFrame.initEditorFrameData({'EditorIsLoading':false});",
-			'style' => 'margin: 10px 10px 10px 10px',
-			'class' => "bgc_white"
-			), we_html_element::htmlForm(
-				array(
-				"name" => "we_form"
-				), we_html_element::htmlHidden(array(
-					"name" => "we_cmd[0]", "value" => "save"
-				)) . we_html_element::htmlHidden(array(
-					"name" => "we_cmd[1]", "value" => ""
-				)) . we_html_element::htmlHidden(array(
-					"name" => "we_cmd[2]", "value" => ""
-			))) . we_html_element::htmlDiv(
-				array(
-				"id" => "rpcBusy", "style" => "display:none;"
-				), we_html_element::htmlImg(
-					array(
 				'onload' => "_EditorFrame.initEditorFrameData({'EditorIsLoading':false}); if(typeof top.WE !== 'undefined'){top.WE.app.getController('Bridge').registerWeIframe(this, true);}",
 				'style' => 'margin: 10px 10px 10px 10px',
 				'class' => "bgc_white"
