@@ -196,7 +196,7 @@ function we_tag_listview($attribs){
 			}
 			unset($we_lv_langguagesdoc);
 
-			$GLOBALS['lv'] = new we_langlink_listview($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $we_lv_linktype, $cols,  $showself, $we_lv_pageID, $we_lv_pagelanguage, $we_lv_ownlanguage, $hidedirindex, $objectseourls);
+			$GLOBALS['lv'] = new we_langlink_listview($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $we_lv_linktype, $cols,  $showself, $we_lv_pageID, $we_lv_pagelanguage, $we_lv_ownlanguage, $hidedirindex, $objectseourls, $we_lv_subfolders);
 			break;
 		case 'customer':
 			if(!defined('CUSTOMER_TABLE')){
