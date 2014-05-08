@@ -344,7 +344,7 @@ class we_class_folder extends we_folder{
 		$this->Order = $order;
 
 		$this->searchclass->searchstart = weRequest('raw', "SearchStart", $this->searchclass->searchstart);
-		$this->searchclass->anzahl = weRequest('int', $_REQUEST["Anzahl"], $this->searchclass->anzahl);
+		$this->searchclass->anzahl = weRequest('int', (isset($_REQUEST["Anzahl"]) ? isset($_REQUEST["Anzahl"] : ''), $this->searchclass->anzahl);
 
 		//$this->searchclass->setlimit(1);
 		$we_obectPathLength = 32;
