@@ -30,7 +30,7 @@ if(isset($GLOBALS['we_ContentType']) && !isset($we_ContentType)){
 	$we_ContentType = $GLOBALS['we_ContentType'];
 }
 if((!isset($we_ContentType)) && ((!isset($we_dt)) || (!is_array($we_dt)) || (!$we_dt[0]['ClassName'])) && isset($we_ID) && $we_ID && isset($we_Table) && $we_Table){
-	$we_ContentType = f('SELECT ContentType FROM ' . $GLOBALS['DB_WE']->escape($we_Table) . ' WHERE ID=' . intval($we_ID), 'ContentType', $GLOBALS['DB_WE']);
+	$we_ContentType = f('SELECT ContentType FROM ' . $GLOBALS['DB_WE']->escape($we_Table) . ' WHERE ID=' . intval($we_ID));
 }
 
 switch(isset($we_ContentType) ? $we_ContentType : ''){
@@ -69,24 +69,16 @@ switch(isset($we_ContentType) ? $we_ContentType : ''){
 		$we_doc = new we_otherDocument();
 		break;
 	case '':
-		if(isset($we_dt[0]['ClassName']) && $we_dt[0]['ClassName']){
-			$we_doc = $we_dt[0]['ClassName'];
-			$we_doc = new $we_doc();
-		} else {
-			$we_doc = new we_webEditionDocument();
-		}
+		$we_doc = (isset($we_dt[0]['ClassName']) && $we_dt[0]['ClassName'] && ($classname = $we_dt[0]['ClassName']) ?
+				new $classname() :
+				new we_webEditionDocument());
 		break;
 	default:
-		$moduleDir = we_base_moduleInfo::we_getModuleNameByContentType($we_ContentType);
-		if($moduleDir){
-			$moduleDir .= '/';
-		}
-
-		if(file_exists(WE_MODULES_PATH . $moduleDir . 'we_' . $we_ContentType . '.class.php')){
-			$we_doc = 'we_' . $we_ContentType;
-			$we_doc = new $we_doc();
+		$classname = 'we_' . $we_ContentType;
+		if(class_exists($classname)){
+			$we_doc = new $classname();
 		} else {
-			t_e('Can NOT initialize document of type -' . $we_ContentType . '- ' . WE_MODULES_PATH . $moduleDir . 'we_' . $we_ContentType . '.inc.php');
+			t_e('Can NOT initialize document of type -' . $we_ContentType . '- ' . 'we_' . $we_ContentType . '.inc.php');
 			exit(1);
 		}
 }

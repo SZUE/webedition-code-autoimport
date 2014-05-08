@@ -1682,14 +1682,14 @@ function delElement(elvalues,elem) {
 
 			if($parentWsp[$k]){
 				$this->DB_WE->query('SELECT Path FROM ' . $k . ' WHERE ID IN(' . implode(',', $parentWsp[$k]) . ')');
-				$parent = implode("\n", $this->DB_WE->getAll(true));
+				$parent = implode("<br/>", $this->DB_WE->getAll(true));
 			} else {
 				$parent = ' - ';
 			}
 
 			$parts[] = array(
 				'headline' => $title,
-				'html' => ($this->ParentID ? '<div id="info' . $setValue . '" style="' . ($showParent ? '' : 'display:none;') . '">' . we_html_tools::htmlAlertAttentionBox($parent, we_html_tools::TYPE_INFO, 600) . '</div>' : '') . $content1,
+				'html' => ($this->ParentID ? '<div id="info' . $setValue . '" style="' . ($showParent ? '' : 'display:none;') . '">' . we_html_tools::htmlAlertAttentionBox($parent, we_html_tools::TYPE_INFO, 600,false) . '</div>' : '') . $content1,
 				'space' => 200
 			);
 		}
@@ -2372,6 +2372,7 @@ top.content.hloaded=1;') .
 		if(defined('OBJECT_FILES_TABLE')){
 			$workspaces[OBJECT_FILES_TABLE] = array('key' => 'workSpaceObj', 'value' => array(), 'parent' => 0, 'parentKey' => 'ParentWso', 'keep' => false);
 		}
+		
 		if(defined('NEWSLETTER_TABLE')){
 			$workspaces[NEWSLETTER_TABLE] = array('key' => 'workSpaceNwl', 'value' => array(), 'parent' => 0, 'parentKey' => 'ParentWsnl', 'keep' => false);
 		}
@@ -2380,7 +2381,7 @@ top.content.hloaded=1;') .
 			$workspaces[CUSTOMER_TABLE] = array('key' => 'workSpaceCust', 'value' => array(), 'parent' => 0, 'parentKey' => 'ParentWsCust', 'keep' => true);
 		}
 
-
+//FIXME: onlyParent doesn't work correctly
 		$fields = array('ParentID');
 		foreach($workspaces as $cur){
 			$fields[] = $cur['key'];
