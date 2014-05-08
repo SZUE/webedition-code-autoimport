@@ -248,7 +248,7 @@ foreach($output as $n => $v){
 		$foo = replace_bad_str((get_magic_quotes_gpc() == 1) ? stripslashes($v) : $v);
 		$n = replace_bad_str($n);
 		$we_txt .= $n . ': ' . $foo . "\n" . ($foo ? '' : "\n");
-		$we_html .= '<tr><td align="right"><b>' . $n . ':</b></td><td>' . ($n == 'email' ? '<a href="mailto:' . $foo . '">' . $foo . '</a>' : $foo) . '</td></tr>';
+		$we_html .= '<tr><td valign="top" align="right"><b>' . $n . ':</b></td><td>' . ($n == 'email' ? '<a href="mailto:' . $foo . '">' . $foo . '</a>' : nl2br($foo)) . '</td></tr>';
 	}
 }
 
