@@ -75,10 +75,7 @@ echo STYLESHEET;
 			default:
 
 				$moduleDir = we_base_moduleInfo::we_getModuleNameByContentType($we_doc->ContentType);
-
-				if($moduleDir){
-					$moduleDir .= '/';
-				}
+				$moduleDir=$moduleDir?$moduleDir.'/':'';
 
 				if(file_exists(WE_MODULES_PATH . $moduleDir . 'we_' . $we_doc->ContentType . '_properties.inc.php')){
 					include(WE_MODULES_PATH . $moduleDir . 'we_' . $we_doc->ContentType . '_properties.inc.php');
