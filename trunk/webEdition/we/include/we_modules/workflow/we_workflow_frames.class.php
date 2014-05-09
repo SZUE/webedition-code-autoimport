@@ -42,6 +42,8 @@ class we_workflow_frames extends weModuleFrames {
 				return $this->getHTMLLogQuestion();
 			case "log":
 				return $this->getHTMLLog($mode, $type);
+			case 'edit':
+				return $this->getHTMLEditorBody();
 			default:
 				return parent::getHTML($what);
 		}

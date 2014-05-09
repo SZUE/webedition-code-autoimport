@@ -27,7 +27,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
 // grep the last element from the year-set, wich is the current year
-$DB_WE->query("SELECT DATE_FORMAT(DateOrder,'%Y') AS DateOrd FROM " . SHOP_TABLE . " ORDER BY DateOrd");
+$DB_WE->query("SELECT DATE_FORMAT(DateOrder,'%Y') AS DateOrd FROM " . SHOP_TABLE . ' ORDER BY DateOrd');
 while($DB_WE->next_record()){
 	if(isset($strs)){
 		$strs = array($DB_WE->f("DateOrd"));
@@ -41,7 +41,7 @@ for($i = 0; $i <= 3; $i++){
 	$feldnamen[$i] = isset($feldnamen[$i]) ? $feldnamen[$i] : '';
 }
 $fe = explode(',', $feldnamen[3]);
-$classid = $classid ? $classid : $fe[0];
+$classid = $fe[0];
 
 
 //$resultO = count($fe);

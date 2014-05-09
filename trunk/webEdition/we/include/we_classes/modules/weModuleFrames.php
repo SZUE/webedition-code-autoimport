@@ -303,7 +303,7 @@ class weModuleFrames{
 	}
 
 	function getHTMLExitQuestion(){
-		if(($dp=weRequest('raw', 'delayParam'))){
+		if(($dp = weRequest('raw', 'delayParam'))){
 			$_frame = 'opener.' . $this->topFrame;
 			$_yes = $_frame . '.hot=0;' . $_frame . '.we_cmd("module_' . $this->module . '_save");self.close();';
 			$_no = $_frame . '.hot=0;' . $_frame . '.we_cmd("' . $_REQUEST['delayCmd'] . '","' . $dp . '");self.close();';

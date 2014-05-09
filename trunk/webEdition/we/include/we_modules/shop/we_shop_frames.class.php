@@ -611,9 +611,7 @@ top.content.hloaded = 1;
 		$feldnamen = explode('|', f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="shop_pref"', 'strFelder', $DB_WE));
 		$fe = isset($feldnamen[3]) ? explode(",", $feldnamen[3]) : array(0);
 
-		if(empty($classid)){
-			$classid = $fe[0];
-		}
+		$classid = $classid ? $classid : $fe[0];
 		//$resultO = count($fe);
 		$resultO = array_shift($fe);
 
