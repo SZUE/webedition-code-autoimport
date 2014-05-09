@@ -23,8 +23,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 //session is set by zend....
-defined('NO_SESS',1);
+
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+
+we_html_tools::protect();
 
 // include configuration
 include_once('toolfactory/conf/meta.conf.php');
@@ -42,12 +44,10 @@ $controller->throwExceptions(true);
 $controller->setParam('noViewRenderer', true);
 
 // set some app specific parameter
-$controller->setParam('appDir', dirname($_SERVER['SCRIPT_NAME']));
+$controller->setParam('appDir', str_replace($_SERVER['DOCUMENT_ROOT'], '', dirname($_SERVER['SCRIPT_FILENAME'])));
 $controller->setParam('appPath', dirname($_SERVER['SCRIPT_FILENAME']));
 $controller->setParam('appName', 'toolfactory');
 
-//check permission. this has to be this late, since session is set by zend.
-we_html_tools::protect();
 
 // run!
 $controller->dispatch();
