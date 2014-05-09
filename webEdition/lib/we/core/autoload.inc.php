@@ -24,8 +24,10 @@
  * for other classes and scripts and defines
  * the __autoload() function
  */
+
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_error_handler.inc.php');
 we_error_handler(!isset($GLOBALS['WE_TEMPLATE_INIT']));
+
 
 // include configuration file of webEdition
 require_once (WE_INCLUDES_PATH . 'conf/we_conf.inc.php');
