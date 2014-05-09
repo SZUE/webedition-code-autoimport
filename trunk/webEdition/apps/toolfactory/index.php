@@ -22,12 +22,12 @@
  * @package    webEdition_toolfactory
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
+//session is set by zend....
+defined('NO_SESS',1);
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 // include configuration
 include_once('toolfactory/conf/meta.conf.php');
-we_html_tools::protect();
 
 // get controller instance
 $controller = Zend_Controller_Front::getInstance();
@@ -46,8 +46,8 @@ $controller->setParam('appDir', dirname($_SERVER['SCRIPT_NAME']));
 $controller->setParam('appPath', dirname($_SERVER['SCRIPT_FILENAME']));
 $controller->setParam('appName', 'toolfactory');
 
-// alerts a message and exits if a user is not logged in or when the session is expired
-we_core_Permissions::protect();
+//check permission. this has to be this late, since session is set by zend.
+we_html_tools::protect();
 
 // run!
 $controller->dispatch();

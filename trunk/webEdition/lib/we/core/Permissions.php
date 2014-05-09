@@ -45,19 +45,7 @@ class we_core_Permissions{
 	 * @return string
 	 */
 	static function protect(){
-
-		if(!isset($_SESSION["user"]["Username"]) || $_SESSION["user"]["Username"] == ""){
-			$page = new we_ui_layout_HTMLPage();
-			$page->addJSFile(JS_DIR . 'we_showMessage.js');
-
-			$message = we_util_Strings::quoteForJSString(g_l('alert' ,'[perms_no_permissions]'), false);
-
-			$messageCall = we_message_reporting::getShowMessageCall($message, we_message_reporting::WE_MESSAGE_NOTICE);
-
-			$page->addInlineJS($messageCall . 'if (opener) {top.close();} else {location="/webEdition"}');
-			print $page->getHTML();
-			exit();
-		}
+		we_html_tools::protect();
 	}
 
 }
