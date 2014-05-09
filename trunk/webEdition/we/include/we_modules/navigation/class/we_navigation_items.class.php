@@ -450,7 +450,7 @@ class we_navigation_items{
 	function writeNavigation($depth = false){
 		$GLOBALS['weNavigationObject'] = &$this;
 
-		if(isset($this->items['id' . $this->rootItem]) && (get_class($this->items['id' . $this->rootItem]) == 'we_navigation_item')){ //FIXME: getclass
+		if(isset($this->items['id' . $this->rootItem]) && ($this->items['id' . $this->rootItem] instanceof we_navigation_item)){
 			if($this->items['id' . $this->rootItem]->type == 'folder' && $depth !== false){
 // if initialised by id => root item is on lvl0 -> therefore decrease depth
 // this is to make it equal init by id, parentid

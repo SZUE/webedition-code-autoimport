@@ -432,7 +432,7 @@ abstract class we_editor_footer{
 		//
 		//	4. show delete button to delete this document, not in edit_include-window
 		//
-		$canDelete = ( (!isset($_REQUEST['SEEM_edit_include']) || $_REQUEST['SEEM_edit_include'] == 'false') && ((get_class($we_doc) == "we_objectFile") ? permissionhandler::hasPerm("DELETE_OBJECTFILE") : permissionhandler::hasPerm("DELETE_DOCUMENT")));
+		$canDelete = ( (!isset($_REQUEST['SEEM_edit_include']) || $_REQUEST['SEEM_edit_include'] == 'false') && (($we_doc instanceof we_objectFile) ? permissionhandler::hasPerm("DELETE_OBJECTFILE") : permissionhandler::hasPerm("DELETE_DOCUMENT")));
 		if($canDelete){
 			$_ctrlElem = getControlElement('button', 'delete'); //	look tag we:controlElement for details
 			if(!$_ctrlElem || !$_ctrlElem['hide']){

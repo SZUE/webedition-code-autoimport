@@ -28,7 +28,7 @@ function we_tag_repeat(){
 	} elseif(isset($GLOBALS['lv'])){
 		if($GLOBALS['lv']->next_record()){
 			$GLOBALS["we_lv_array"][(count($GLOBALS["we_lv_array"]) - 1)] = clone($GLOBALS["lv"]);
-			if(get_class($GLOBALS['lv']) == 'we_object_listview'){
+			if($GLOBALS['lv'] instanceof we_object_listview){
 				$GLOBALS['_we_object_listview_flag'] = true;
 			}
 			return true;

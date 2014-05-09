@@ -109,7 +109,7 @@ if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 	if(isset($_REQUEST['SEEM_edit_include']) && $_REQUEST['SEEM_edit_include'] && $we_doc->userHasAccess() == 1){ //	Open seem_edit_include pages in edit-mode
 		$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_CONTENT;
 		$we_doc->EditPageNr = WE_EDITPAGE_CONTENT;
-	} elseif(get_class($we_doc) == 'we_imageDocument'){
+	} elseif($we_doc instanceof we_imageDocument){
 		$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_CONTENT;
 		$we_doc->EditPageNr = WE_EDITPAGE_CONTENT;
 	} else {

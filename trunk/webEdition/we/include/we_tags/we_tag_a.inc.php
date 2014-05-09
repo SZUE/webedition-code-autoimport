@@ -83,19 +83,19 @@ function we_tag_a($attribs, $content){
 				return $foo;
 			}
 			$amount = weTag_getAttribute('amount', $attribs, 1);
-			$foo = (isset($GLOBALS['lv']) && get_class($GLOBALS['lv']) != 'we_object_listviewMultiobject' ? $GLOBALS['lv']->count - 1 : -1);
+			$foo = (isset($GLOBALS['lv']) && !($GLOBALS['lv'] instanceof we_object_listviewMultiobject) ? $GLOBALS['lv']->count - 1 : -1);
 
 			// get ID of element
 			$customReq = '';
-			if(isset($GLOBALS['lv']) && get_class($GLOBALS['lv']) == 'we_shop_shop'){
+			if(isset($GLOBALS['lv']) && ($GLOBALS['lv'] instanceof we_shop_shop)){
 				$idd = $GLOBALS['lv']->ActItem['id'];
 				$type = $GLOBALS['lv']->ActItem['type'];
 				$customReq = $GLOBALS['lv']->getCustomFieldsAsRequest();
 			} else {
 				//Zwei Faelle werden abgedeckt, bei denen die Objekt-ID nicht gefunden wird: (a) bei einer listview ueber shop-objekte, darin eine listview über shop-varianten, hierin der we:a-link und (b) Objekt wird ueber den objekt-tag geladen #3538
-				if((isset($GLOBALS['lv']) && get_class($GLOBALS['lv']) == 'we_shop_listviewShopVariants' && isset($GLOBALS['lv']->Model) && $GLOBALS['lv']->Model->ClassName == 'we_objectFile') || isset($GLOBALS['lv']) && get_class($GLOBALS['lv']) == 'we_object_tag'){
+				if((isset($GLOBALS['lv']) && ($GLOBALS['lv'] instanceof we_shop_listviewShopVariants) && isset($GLOBALS['lv']->Model) && $GLOBALS['lv']->Model->ClassName == 'we_objectFile') || isset($GLOBALS['lv']) && ($GLOBALS['lv'] instanceof we_object_tag)){
 					$type = we_shop_shop::OBJECT;
-					$idd = (get_class($GLOBALS['lv']) == 'we_shop_listviewShopVariants' ? $GLOBALS['lv']->Id : $GLOBALS['lv']->id);
+					$idd = ($GLOBALS['lv'] instanceof we_shop_listviewShopVariants ? $GLOBALS['lv']->Id : $GLOBALS['lv']->id);
 				} else {
 					$idd = ((isset($GLOBALS['lv']) && isset($GLOBALS['lv']->IDs[$foo])) && $GLOBALS['lv']->IDs[$foo] != '') ?
 						$GLOBALS['lv']->IDs[$foo] :
@@ -135,7 +135,7 @@ function we_tag_a($attribs, $content){
 				$foo = $GLOBALS['lv']->count - 1;
 
 				$customReq = '';
-				if(isset($GLOBALS['lv']) && get_class($GLOBALS['lv']) == 'we_shop_shop'){
+				if(isset($GLOBALS['lv']) && ($GLOBALS['lv'] instanceof we_shop_shop)){
 
 					$idd = $GLOBALS['lv']->ActItem['id'];
 					$type = $GLOBALS['lv']->ActItem['type'];

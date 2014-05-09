@@ -273,7 +273,7 @@ class we_folder extends we_root{
 			we_navigation_cache::clean(true);
 		}
 		if(LANGLINK_SUPPORT && ($langid = weRequest('string', 'we_' . $this->Name . '_LanguageDocID'))){
-			$this->setLanguageLink($langid, 'tblFile', true, (get_class($this) == 'we_class_folder'));
+			$this->setLanguageLink($langid, 'tblFile', true, ($this instanceof we_class_folder));
 		} else {
 			//if language changed, we must delete eventually existing entries in tblLangLink, even if !LANGLINK_SUPPORT!
 			$this->checkRemoteLanguage($this->Table, true); //if language changed, we

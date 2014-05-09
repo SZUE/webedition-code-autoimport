@@ -93,7 +93,7 @@ class weTagData{
 					return;
 				}
 			}
-		}catch(Exception $e){
+		} catch (Exception $e){
 			t_e('Error in TW-Tag ' . $this->Name, $e->getMessage());
 		}
 
@@ -109,7 +109,7 @@ class weTagData{
 				new weTagDataOption('block'),
 				new weTagDataOption('sessionfield'),
 				new weTagDataOption('screen'),
-					), false, false, '');
+				), false, false, '');
 			$nameto = new weTagData_textAttribute('nameto', false, '');
 		}
 
@@ -229,9 +229,9 @@ class weTagData{
 		$attribs = array();
 		foreach($this->UsedAttributes as $attrib){
 			$attribs[] = ($idPrefix ?
-							$attrib->getIdName() :
-							$attrib->getName()
-					);
+					$attrib->getIdName() :
+					$attrib->getName()
+				);
 		}
 		return $attribs;
 	}
@@ -271,8 +271,7 @@ class weTagData{
 		$attr = array();
 
 		foreach($this->UsedAttributes as $attribute){
-			$class = get_class($attribute);
-			if(!$attribute->IsDeprecated() && $attribute->useAttribute() && $class != 'weTagData_linkAttribute' && $class != 'weTagData_cmdAttribute'){
+			if(!$attribute->IsDeprecated() && $attribute->useAttribute() && !($attribute instanceof weTagData_linkAttribute) && !($attribute instanceof weTagData_cmdAttribute)){
 				$attr[] = $attribute->getName();
 			}
 		}
@@ -306,8 +305,8 @@ class weTagData{
 	function getTypeAttributeCodeForTagWizard(){
 		if($this->TypeAttribute){
 			return '<ul>' .
-					'<li>' . $this->TypeAttribute->getCodeForTagWizard() . '</li>' .
-					'</ul>';
+				'<li>' . $this->TypeAttribute->getCodeForTagWizard() . '</li>' .
+				'</ul>';
 		}
 		return '';
 	}
@@ -318,11 +317,11 @@ class weTagData{
 	function getDefaultValueCodeForTagWizard(){
 
 		return we_html_element::htmlTextArea(
-						array(
-					'name' => 'weTagData_defaultValue',
-					'id' => 'weTagData_defaultValue',
-					'class' => 'wetextinput wetextarea'
-						), $this->DefaultValue);
+				array(
+				'name' => 'weTagData_defaultValue',
+				'id' => 'weTagData_defaultValue',
+				'class' => 'wetextinput wetextarea'
+				), $this->DefaultValue);
 	}
 
 }

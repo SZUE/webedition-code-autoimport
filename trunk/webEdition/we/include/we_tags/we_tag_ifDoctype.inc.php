@@ -35,7 +35,7 @@ function we_tag_ifDoctype($attribs){
 		$doctype = $GLOBALS['lv']->f('wedoc_DocType');
 	} else {
 		$doc = we_getDocForTag($docAttr);
-		if(get_class($doc) == 'we_template'){
+		if($doc instanceof we_template){
 			return false;
 		}
 		$doctype = $doc->DocType;
