@@ -22,8 +22,8 @@
  * @package    webEdition_toolfactory
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-// include autoload function
-require_once ($_SERVER['DOCUMENT_ROOT']. '/webEdition/lib/we/core/autoload.inc.php');
+
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 // include configuration
 include_once('toolfactory/conf/meta.conf.php');
