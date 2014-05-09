@@ -25,7 +25,7 @@
 we_html_tools::protect();
 
 
-$nr = weRequest('int', 'we_cmd', '', 1);
+$nr = weRequest('string', 'we_cmd', '', 1);
 $name = weRequest('string', 'we_cmd', '', 2);
 $we_transaction = weRequest('transaction', 'we_cmd', $we_transaction, 3);
 
@@ -33,22 +33,22 @@ $we_dt = isset($_SESSION['weS']['we_data'][$we_transaction]) ? $_SESSION['weS'][
 include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
 if(isset($_REQUEST["ok"])){
-	$we_doc->elements[$name . "inlineedit"]["dat"] = weRequest('bool', "inlineedit");
-	$we_doc->elements[$name . "forbidphp"]["dat"] = weRequest('bool', "forbidphp");
-	$we_doc->elements[$name . "forbidhtml"]["dat"] = weRequest('bool', "forbidhtml");
-	$we_doc->elements[$name . "removefirstparagraph"]["dat"] = weRequest('bool', "removefirstparagraph");
-	$we_doc->elements[$name . "xml"]["dat"] = weRequest('bool', "xml");
-	$we_doc->elements[$name . "dhtmledit"]["dat"] = weRequest('bool', "dhtmledit");
-	$we_doc->elements[$name . "showmenus"]["dat"] = weRequest('bool', "showmenus");
-	$we_doc->elements[$name . "commands"]["dat"] = weRequest('raw', "commands");
-	$we_doc->elements[$name . "contextmenu"]["dat"] = weRequest('raw', "contextmenu");
-	$we_doc->elements[$name . "height"]["dat"] = weRequest('int', "height", 50);
-	$we_doc->elements[$name . "width"]["dat"] = weRequest('int', "width", 200);
-	$we_doc->elements[$name . "bgcolor"]["dat"] = weRequest('string', "bgcolor", '');
-	$we_doc->elements[$name . "class"]["dat"] = weRequest('string', "class", '');
-	$we_doc->elements[$name . "cssClasses"]["dat"] = weRequest('raw', "cssClasses", "");
-	$we_doc->elements[$name . "tinyparams"]["dat"] = weRequest('raw', "tinyparams", '');
-	$we_doc->elements[$name . "templates"]["dat"] = weRequest('raw', "templates", '');
+	$we_doc->elements[$name . 'inlineedit']['dat'] = weRequest('toggle', 'inlineedit');
+	$we_doc->elements[$name . 'forbidphp']['dat'] = weRequest('toggle', 'forbidphp');
+	$we_doc->elements[$name . 'forbidhtml']['dat'] = weRequest('toggle', 'forbidhtml');
+	$we_doc->elements[$name . 'removefirstparagraph']['dat'] = weRequest('toggle', 'removefirstparagraph');
+	$we_doc->elements[$name . 'xml']['dat'] = weRequest('toggle', 'xml');
+	$we_doc->elements[$name . 'dhtmledit']['dat'] = weRequest('toggle', 'dhtmledit');
+	$we_doc->elements[$name . 'showmenus']['dat'] = weRequest('toggle', 'showmenus');
+	$we_doc->elements[$name . 'commands']['dat'] = weRequest('raw', 'commands');
+	$we_doc->elements[$name . 'contextmenu']['dat'] = weRequest('raw', 'contextmenu');
+	$we_doc->elements[$name . 'height']['dat'] = weRequest('int', 'height', 50);
+	$we_doc->elements[$name . 'width']['dat'] = weRequest('int', 'width', 200);
+	$we_doc->elements[$name . 'bgcolor']['dat'] = weRequest('string', 'bgcolor', '');
+	$we_doc->elements[$name . 'class']['dat'] = weRequest('string', 'class', '');
+	$we_doc->elements[$name . 'cssClasses']['dat'] = weRequest('raw', 'cssClasses', '');
+	$we_doc->elements[$name . 'tinyparams']['dat'] = weRequest('raw', 'tinyparams', '');
+	$we_doc->elements[$name . 'templates']['dat'] = weRequest('raw', 'templates', '');
 	$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 }
 
