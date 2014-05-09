@@ -26,8 +26,6 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 $protect = we_base_moduleInfo::isActive('users') && we_users_util::canEditModule('users') ? null : array(false);
 we_html_tools::protect($protect);
 
-echo we_html_tools::getHtmlTop() . STYLESHEET;
-
 $what = (isset($_REQUEST["pnt"])) ? $_REQUEST["pnt"] : "frameset";
 
 $weFrame = new we_users_frames(WE_USERS_MODULE_DIR . 'edit_user_frameset.php');
