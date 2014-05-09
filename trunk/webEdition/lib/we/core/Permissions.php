@@ -45,6 +45,13 @@ class we_core_Permissions{
 	 * @return string
 	 */
 	static function protect(){
+		//correct some settings
+		if(isset($GLOBALS['controller'])){
+			$GLOBALS['controller']->setParam('appDir', str_replace($_SERVER['DOCUMENT_ROOT'], '', dirname($_SERVER['SCRIPT_FILENAME'])));
+		}
+		//make sure apps work! correct old apps!!!
+		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+
 		we_html_tools::protect();
 	}
 

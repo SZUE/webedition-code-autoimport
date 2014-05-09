@@ -129,7 +129,7 @@ class toolfactory_ui_controls_Tree extends we_ui_controls_Tree{
 	protected function _renderHTML(){
 
 		$this->setUpData();
-		$session = new Zend_Session_Namespace($this->_sessionName);
+		$session = new we_sdk_namespace($this->_sessionName);
 		if(!isset($session->openNodes)){
 			$session->openNodes = $this->getOpenNodes();
 		}

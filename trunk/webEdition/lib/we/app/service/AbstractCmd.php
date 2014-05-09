@@ -53,7 +53,7 @@ abstract class we_app_service_AbstractCmd extends we_service_AbstractService{
 
 		$controller = Zend_Controller_Front::getInstance();
 		$appName = $controller->getParam('appName');
-		$session = new Zend_Session_Namespace($appName);
+		$session = new we_sdk_namespace($appName);
 		if(!isset($session->model)){
 			throw new we_service_Exception('Model is not set in session!', we_service_ErrorCodes::kModelNotSetInSession);
 		}
@@ -128,7 +128,7 @@ abstract class we_app_service_AbstractCmd extends we_service_AbstractService{
 
 		$controller = Zend_Controller_Front::getInstance();
 		$appName = $controller->getParam('appName');
-		$session = new Zend_Session_Namespace($appName);
+		$session = new we_sdk_namespace($appName);
 		if(!isset($session->model)){
 			throw new we_service_Exception('Model is not set in session!', we_service_ErrorCodes::kModelNotSetInSession);
 		}
@@ -154,7 +154,7 @@ abstract class we_app_service_AbstractCmd extends we_service_AbstractService{
 
 		$controller = Zend_Controller_Front::getInstance();
 		$appName = $controller->getParam('appName');
-		$session = new Zend_Session_Namespace($appName);
+		$session = new we_sdk_namespace($appName);
 		if(!isset($session->model)){
 			throw new we_service_Exception('Model is not set in session!', we_service_ErrorCodes::kModelNotSetInSession);
 		}
@@ -180,7 +180,7 @@ abstract class we_app_service_AbstractCmd extends we_service_AbstractService{
 		$IdToDel = $args[0];
 		$controller = Zend_Controller_Front::getInstance();
 		$appName = $controller->getParam('appName');
-		$session = new Zend_Session_Namespace($appName);
+		$session = new we_sdk_namespace($appName);
 		if(!isset($session->model)){
 			throw new we_service_Exception('Model is not set in session!', we_service_ErrorCodes::kModelNotSetInSession);
 		}

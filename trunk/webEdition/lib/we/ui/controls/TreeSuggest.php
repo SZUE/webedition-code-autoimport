@@ -64,7 +64,7 @@ if(isset($sessionName) && $sessionName !== '' && isset($id) && $id !== ''){
 	/**
 	 * get the session data (open nodes) of the tree
 	 */
-	$session = new Zend_Session_Namespace($sessionName);
+	$session = new we_sdk_namespace($sessionName);
 
 	if(isset($close)){
 		//if id exists
