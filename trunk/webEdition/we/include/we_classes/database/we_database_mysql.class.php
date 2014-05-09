@@ -56,9 +56,9 @@ class DB_WE extends we_database_base{
 					exit('Error in DB connect');
 			}
 			if(!@mysql_select_db($Database, $this->Link_ID) &&
-					!@mysql_select_db($Database, $this->Link_ID) &&
-					!@mysql_select_db($Database, $this->Link_ID) &&
-					!@mysql_select_db($Database, $this->Link_ID)){
+				!@mysql_select_db($Database, $this->Link_ID) &&
+				!@mysql_select_db($Database, $this->Link_ID) &&
+				!@mysql_select_db($Database, $this->Link_ID)){
 				$this->halt('cannot use database ' . $this->Database);
 				return false;
 			}
@@ -81,8 +81,8 @@ class DB_WE extends we_database_base{
 
 	protected function _query($Query_String, $unbuffered = false){
 		return ($unbuffered ?
-						@mysql_unbuffered_query($Query_String, $this->Link_ID) :
-						@mysql_query($Query_String, $this->Link_ID));
+				@mysql_unbuffered_query($Query_String, $this->Link_ID) :
+				@mysql_query($Query_String, $this->Link_ID));
 	}
 
 	public function close(){

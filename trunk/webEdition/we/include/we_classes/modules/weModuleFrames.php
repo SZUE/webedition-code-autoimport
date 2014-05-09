@@ -65,7 +65,7 @@ class weModuleFrames{
 
 	function getHTMLDocumentHeader(){
 		we_html_tools::headerCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']);
-		return we_html_tools::getHtmlTop($this->module);
+		return we_html_tools::getHtmlTop($this->module) . STYLESHEET;
 	}
 
 	function getHTMLDocument($body, $extraHead = ''){
