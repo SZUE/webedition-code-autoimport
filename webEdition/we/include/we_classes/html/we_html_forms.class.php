@@ -152,10 +152,10 @@ abstract class we_html_forms{
 		$buttonBottom = false;
 
 		//first prepare stylesheets from textarea-attribute editorcss (templates) or class-css (classes): csv of ids. then (if document) get document-css, defined by we:css
-		$contentCss = (isset($GLOBALS['we_doc']) && (get_class($GLOBALS['we_doc']) == 'we_objectFile' || get_class($GLOBALS['we_doc']) == 'we_object')) ? $GLOBALS['we_doc']->CSS :
-			((isset($GLOBALS['we_doc']) && get_class($GLOBALS['we_doc']) == 'we_webEditionDocument') ? weTag_getAttribute('editorcss', $attribs) : '');
-		$contentCss = !empty($contentCss) ? implode('?' . time() . ',', id_to_path(trim($contentCss, ', '), FILE_TABLE, null, false, true)) . '?' . time() : '';
-		$contentCss = (isset($GLOBALS['we_doc']) && get_class($GLOBALS['we_doc']) == 'we_webEditionDocument' && !$ignoredocumentcss) ? trim($GLOBALS['we_doc']->getDocumentCss() . ',' . $contentCss, ',') :
+		$contentCss = (isset($GLOBALS['we_doc']) && (($GLOBALS['we_doc'] instanceof we_objectFile) || ($GLOBALS['we_doc'] instanceof we_object))) ? $GLOBALS['we_doc']->CSS :
+			((isset($GLOBALS['we_doc']) && ($GLOBALS['we_doc'] instanceof we_webEditionDocument)) ? weTag_getAttribute('editorcss', $attribs) : '');
+		$contentCss = $contentCss ? implode('?' . time() . ',', id_to_path(trim($contentCss, ', '), FILE_TABLE, null, false, true)) . '?' . time() : '';
+		$contentCss = (isset($GLOBALS['we_doc']) && ($GLOBALS['we_doc'] instanceof we_webEditionDocument) && !$ignoredocumentcss) ? trim($GLOBALS['we_doc']->getDocumentCss() . ',' . $contentCss, ',') :
 			$contentCss;
 
 		if($buttonpos){
@@ -190,7 +190,7 @@ abstract class we_html_forms{
 			}
 		}
 		$importrtf = weTag_getAttribute('importrtf', $attribs, false, true);
-		$doc = (isset($GLOBALS['we_doc']) && $GLOBALS['we_doc'] != '' && get_class($GLOBALS['we_doc']) == 'we_objectFile' ? 'we_doc' : 'WE_MAIN_DOC');
+		$doc = (isset($GLOBALS['we_doc']) && $GLOBALS['we_doc'] != '' && ($GLOBALS['we_doc'] instanceof we_objectFile) ? 'we_doc' : 'WE_MAIN_DOC');
 		$inwebedition = ($forceinwebedition ? $forceinwebedition : (isset($GLOBALS[$doc]->InWebEdition) && $GLOBALS[$doc]->InWebEdition));
 
 		$inlineedit = // we are in frontend, where default is inlineedit = true

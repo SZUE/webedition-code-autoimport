@@ -39,7 +39,7 @@ function we_tag_href($attribs){
 	$directory = weTag_getAttribute('directory', $attribs, false, true);
 	$attribs = removeAttribs($attribs, array('rootdir', 'file', 'directory'));
 
-	if(get_class($GLOBALS['we_doc']) == 'we_objectFile'){
+	if($GLOBALS['we_doc'] instanceof we_objectFile){
 		$hrefArr = $GLOBALS['we_doc']->getElement($name) ? unserialize($GLOBALS['we_doc']->getElement($name)) : array();
 		if(!is_array($hrefArr)){
 			$hrefArr = array();

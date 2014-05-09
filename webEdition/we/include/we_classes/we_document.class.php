@@ -1107,7 +1107,7 @@ class we_document extends we_root{
 				break;
 			case 'href':
 				$val = $this->getElement(isset($attribs['name']) ? $attribs['name'] : '');
-				if((isset($this->TableID) && $this->TableID) || (get_class($this) == 'we_objectFile')){
+				if((isset($this->TableID) && $this->TableID) || ($this instanceof we_objectFile)){
 					$hrefArr = $val ? unserialize($val) : array();
 					return (is_array($hrefArr) ? self::getHrefByArray($hrefArr) : '');
 				}

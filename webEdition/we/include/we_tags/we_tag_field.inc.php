@@ -152,7 +152,7 @@ function we_tag_field($attribs){
 
 	$classid = ($classid ?
 			$classid :
-			(isset($GLOBALS['lv']) ? (get_class($GLOBALS['lv']) == 'we_object_tag' && method_exists($GLOBALS['lv'], 'getObject') && isset($GLOBALS['lv']->getObject()->classID) ? $GLOBALS['lv']->getObject()->classID :
+			(isset($GLOBALS['lv']) ? (($GLOBALS['lv'] instanceof we_object_tag) && method_exists($GLOBALS['lv'], 'getObject') && isset($GLOBALS['lv']->getObject()->classID) ? $GLOBALS['lv']->getObject()->classID :
 					(method_exists($GLOBALS['lv'], 'getObject') && isset($GLOBALS['lv']->getObject()->classID) ? $GLOBALS['lv']->getObject()->classID :
 						(isset($GLOBALS['lv']->classID) ? $GLOBALS['lv']->classID : ''))) :
 				(isset($GLOBALS['we_doc']->TableID) ?
@@ -342,7 +342,7 @@ function we_tag_field($attribs){
 			// wird in den eingebundenen Objekten ueberprueft ob das Feld existiert
 
 			if($type == 'select' && $normVal == ''){
-				$dbRecord = array_keys(get_class($GLOBALS['lv']) == 'we_object_tag' ? $GLOBALS['lv']->getObject()->getDBRecord() : $GLOBALS['lv']->getDBRecord()); // bugfix #6399
+				$dbRecord = array_keys(($GLOBALS['lv'] instanceof we_object_tag) ? $GLOBALS['lv']->getObject()->getDBRecord() : $GLOBALS['lv']->getDBRecord()); // bugfix #6399
 				foreach($dbRecord as $_glob_key){
 					if(substr($_glob_key, 0, 13) == 'we_we_object_'){
 						$normVal = $GLOBALS['we_doc']->getFieldByVal($GLOBALS['lv']->f($name), ($usekey ? 'text' : 'select'), $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], substr($_glob_key, 13), 'listview'); // war '$GLOBALS['lv']->getElement', getElemet gibt es aber nicht in LVs, gefunden bei #4648
@@ -507,12 +507,12 @@ function we_tag_field($attribs){
 					$GLOBALS['lv']->tid = $tid;
 				}
 
-				if(get_class($GLOBALS['lv']) == 'we_search_listview' && $GLOBALS['lv']->f('OID')){
+				if(($GLOBALS['lv'] instanceof we_search_listview) && $GLOBALS['lv']->f('OID')){
 					$tail = ($tid ? '&amp;we_objectTID=' . $tid : '');
 
 					$path_parts = pathinfo($_SERVER['SCRIPT_NAME']);
 					if($GLOBALS['lv']->objectseourls){
-						list($objecturl, $objecttriggerid) = getHash('SELECT  Url,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($GLOBALS['lv']->f('OID')) . ' LIMIT 1', $GLOBALS['DB_WE'],MYSQL_NUM);
+						list($objecturl, $objecttriggerid) = getHash('SELECT  Url,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($GLOBALS['lv']->f('OID')) . ' LIMIT 1', $GLOBALS['DB_WE'], MYSQL_NUM);
 						if($objecttriggerid){
 							$path_parts = pathinfo(id_to_path($objecttriggerid));
 						}
@@ -537,7 +537,7 @@ function we_tag_field($attribs){
 							$_linkAttribs['href'] :
 							getHtmlTag('a', $_linkAttribs, $out, true) //  output of link-tag
 						);
-				} elseif(get_class($GLOBALS['lv']) == 'we_catListview' && we_tag('ifHasChildren')){
+				} elseif(($GLOBALS['lv'] instanceof we_catListview) && we_tag('ifHasChildren')){
 					$parentidname = weTag_getAttribute('parentidname', $attribs, 'we_parentid');
 					$_linkAttribs['href'] = $_SERVER['SCRIPT_NAME'] . '?' . $parentidname . '=' . $GLOBALS['lv']->f('ID');
 
@@ -579,9 +579,9 @@ function we_tag_field($attribs){
 					}
 
 					if($showlink){
-						$tail = ($tid && get_class($GLOBALS['lv']) == 'we_object_listview' ? '&amp;we_objectTID=' . $tid : '');
+						$tail = ($tid && ($GLOBALS['lv'] instanceof we_object_listview) ? '&amp;we_objectTID=' . $tid : '');
 
-						if((get_class($GLOBALS['we_doc']) == 'we_objectFile') && ($GLOBALS['we_doc']->InWebEdition)){
+						if((($GLOBALS['we_doc'] instanceof we_objectFile)) && ($GLOBALS['we_doc']->InWebEdition)){
 							$_linkAttribs['href'] = $GLOBALS['lv']->f('wedoc_lastPath') . $tail;
 						} else {
 							$path_parts = pathinfo($GLOBALS['lv']->f('WE_PATH'));
@@ -626,7 +626,7 @@ function we_tag_field($attribs){
 
 	//	Add a anchor to tell seeMode that this is an object.
 	if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE &&
-		(get_class($GLOBALS['lv']) == 'we_object_listview') &&
+		(($GLOBALS['lv'] instanceof we_object_listview)) &&
 		isset($GLOBALS['_we_object_listview_flag']) &&
 		$GLOBALS['_we_object_listview_flag'] &&
 		$GLOBALS['we_doc']->InWebEdition &&

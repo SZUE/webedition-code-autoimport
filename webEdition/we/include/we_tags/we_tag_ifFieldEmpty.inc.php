@@ -63,7 +63,7 @@ function we_isFieldNotEmpty($attribs){
 			return false;
 		case 'multiobject':
 			$data = (isset($GLOBALS['lv']) ?
-					(method_exists($GLOBALS['lv'], 'getObject') || get_class($GLOBALS['lv']) == 'we_shop_shop' ?
+					(method_exists($GLOBALS['lv'], 'getObject') || ($GLOBALS['lv'] instanceof we_shop_shop) ?
 						unserialize($GLOBALS['lv']->getObject()->f($orig_match)) :
 						unserialize($GLOBALS['lv']->getDBf('we_' . $orig_match))) :
 					unserialize($GLOBALS['we_doc']->getElement($orig_match)));
@@ -74,7 +74,7 @@ function we_isFieldNotEmpty($attribs){
 			}
 			return false;
 		case 'object' : //Bug 3837: erstmal die Klasse rausfinden um auf den Eintrag we_we_object_X zu kommen
-			if(get_class($GLOBALS['lv']) == 'we_listview'){ // listview/document with objects included using we:object
+			if($GLOBALS['lv'] instanceof we_listview){ // listview/document with objects included using we:object
 				return (bool) $GLOBALS['lv']->f($match);
 			}
 			$match = strpos($orig_match, '/') === false ? $orig_match : substr(strrchr($orig_match, '/'), 1);
