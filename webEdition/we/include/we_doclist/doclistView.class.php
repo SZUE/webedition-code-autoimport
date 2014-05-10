@@ -1245,7 +1245,7 @@ class doclistView{
 					10 => array("dat" => we_util_Strings::shortenPath($_result [$f] ["SiteTitle"], 45)),
 					11 => array("dat" => we_util_Strings::shortenPath($_result [$f] ["Description"], 100)),
 					12 => array("dat" => $_result [$f] ['ContentType']),
-					13 => array("dat" => shortenPath($creator, 22)),
+					13 => array("dat" => we_util_Strings::shortenPath($creator, 22)),
 					14 => array("dat" => $templateText),
 					15 => array("dat" => $metafields),
 					16 => array("dat" => $_result [$f] ["docID"]),
