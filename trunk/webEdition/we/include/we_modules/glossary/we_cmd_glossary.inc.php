@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-switch(weRequest('string','we_cmd','',0)){
+switch($cmd){
 
 	case 'edit_glossary_acronym':
 	case 'edit_glossary_abbreviation':
@@ -33,7 +33,7 @@ switch(weRequest('string','we_cmd','',0)){
 	case 'view_folder':
 	case 'view_type':
 	case 'view_exception':
-		$mod = 'glossary';
+		$GLOBALS['mod'] = 'glossary';
 		$INCLUDE = 'we_modules/show_frameset.php';
 		break;
 
@@ -46,7 +46,7 @@ switch(weRequest('string','we_cmd','',0)){
 		break;
 
 	case 'check_glossary':
-		$mod = 'glossary';
+		$GLOBALS['mod'] = 'glossary';
 		$INCLUDE = 'we_modules/glossary/add_items.inc.php';
 		break;
 }

@@ -22,10 +22,10 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-switch(weRequest('string','we_cmd','',0)){
+switch($cmd){
 	case 'edit_newsletter':
 	case 'edit_newsletter_ifthere':
-		$mod = 'newsletter';
+		$GLOBALS['mod'] = 'newsletter';
 		$INCLUDE = 'we_modules/show_frameset.php';
 		break;
 }
