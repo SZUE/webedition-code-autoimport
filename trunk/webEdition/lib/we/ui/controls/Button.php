@@ -857,19 +857,19 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement{
 			$internalName = "_$attribName";
 			switch($internalName){
 				case "_onMouseDown":
-					$attribs .= ' ' . oldHtmlspecialchars($attribName) . '="if(we_ui_controls_Button.down(&quot;' . $this->getId() . '&quot;)) {' . oldHtmlspecialchars($this->$internalName) . '}"';
+					$attribs .= ' ' . oldHtmlspecialchars($attribName) . '="if(we_ui_controls_Button.down(\'' . $this->getId() . '\')) {' . oldHtmlspecialchars($this->$internalName) . '}"';
 					break;
 				case "_onMouseUp":
-					$attribs .= ' ' . oldHtmlspecialchars($attribName) . '="if(we_ui_controls_Button.up(&quot;' . $this->getId() . '&quot;)) {' . oldHtmlspecialchars($this->$internalName) . '}"';
+					$attribs .= ' ' . oldHtmlspecialchars($attribName) . '="if(we_ui_controls_Button.up(\'' . $this->getId() . '\')) {' . oldHtmlspecialchars($this->$internalName) . '}"';
 					break;
 				case "_onMouseOut":
-					$attribs .= ' ' . oldHtmlspecialchars($attribName) . '="if(we_ui_controls_Button.out(&quot;' . $this->getId() . '&quot;)) {' . oldHtmlspecialchars($this->$internalName) . '}"';
+					$attribs .= ' ' . oldHtmlspecialchars($attribName) . '="if(we_ui_controls_Button.out(\'' . $this->getId() . '\')) {' . oldHtmlspecialchars($this->$internalName) . '}"';
 					break;
 			}
 			if(isset($this->$internalName) && $this->$internalName !== ''){
 				$attribs .= ' ' . oldHtmlspecialchars($attribName) . '="' .
 					($internalName === "_onClick" ?
-						'if(we_ui_controls_Button.up(&quot;' . $this->getId() . '&quot;)) {' . oldHtmlspecialchars($this->$internalName) . '}' :
+						'if(we_ui_controls_Button.up(\'' . $this->getId() . '\')) {' . oldHtmlspecialchars($this->$internalName) . '}' :
 						oldHtmlspecialchars($this->$internalName)) .
 					'"';
 			}
@@ -894,7 +894,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement{
 			$this->_style .= 'display:none;';
 		}
 
-		return $this->_getWrapperStart() . '<div' . $this->_getNonBooleanAttribs('id,title,onclick,onMouseUp,onMouseDown,onMouseOut') . $this->_getComputedStyleAttrib() . $this->_getComputedClassAttrib($classNormal) . '>' . $this->_getButtonContent() . '</div>' . $this->_getWrapperEnd();
+		return $this->_getWrapperStart() . '<div' . $this->_getNonBooleanAttribs('id,title,onclick,onClick,onMouseUp,onMouseDown,onMouseOut') . $this->_getComputedStyleAttrib() . $this->_getComputedClassAttrib($classNormal) . '>' . $this->_getButtonContent() . '</div>' . $this->_getWrapperEnd();
 	}
 
 }

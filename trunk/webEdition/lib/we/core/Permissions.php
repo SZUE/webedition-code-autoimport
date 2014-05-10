@@ -27,7 +27,7 @@
  * @package    we_core
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_core_Permissions{
+abstract class we_core_Permissions{
 
 	/**
 	 * check on specific permission
@@ -44,6 +44,8 @@ class we_core_Permissions{
 	 *
 	 * @return string
 	 */
+
+	//FIXME: needed for old apps!
 	static function protect(){
 		//correct some settings
 		if(!isset($GLOBALS['TOOLNAME']) && isset($GLOBALS['controller'])){

@@ -44,5 +44,3 @@ if(we_app_Common::isDeinstallable($this->model->classname)){
 		echo $dialog->getHTML();
 	}
 }
-
-

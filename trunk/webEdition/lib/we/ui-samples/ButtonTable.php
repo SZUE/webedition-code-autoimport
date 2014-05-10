@@ -19,7 +19,7 @@ $buttonOnClick = new we_ui_controls_Button(
 	array(
 	'title' => 'This is the title of the button!',
 	'text' => 'onClick / onMouseUp',
-	'onclick' => 'alert("Hallo Welt!");',
+	'onClick' => 'alert("Hallo Welt!");',
 	'type' => 'onClick',
 	'disabled' => true,
 	'hidden' => false,
@@ -43,7 +43,7 @@ $buttonOnClick2 = new we_ui_controls_Button(
 	array(
 	'title' => 'This is the title of the button!',
 	'text' => 'onClick / onMouseUp 2',
-	'onclick' => 'alert("Hallo Welt!");',
+	'onClick' => 'alert("Hallo Welt!");',
 	'type' => 'onClick',
 	'disabled' => true,
 	'hidden' => false,
@@ -55,7 +55,7 @@ $buttonYes = new we_ui_controls_Button(
 	array(
 	'title' => 'This is the title of the button!',
 	'text' => 'Yes',
-	'onclick' => 'alert("yes!");',
+	'onClick' => 'alert("yes!");',
 	'type' => 'onClick',
 	'disabled' => false,
 	'hidden' => false,
@@ -67,7 +67,7 @@ $buttonNo = new we_ui_controls_Button(
 	array(
 	'title' => 'This is the title of the button!',
 	'text' => 'No',
-	'onclick' => 'alert("no!");',
+	'onClick' => 'alert("no!");',
 	'type' => 'onClick',
 	'disabled' => false,
 	'hidden' => false,
@@ -79,7 +79,7 @@ $buttonCancel = new we_ui_controls_Button(
 	array(
 	'title' => 'This is the title of the button!',
 	'text' => 'Cancel',
-	'onclick' => 'alert("cancel!");',
+	'onClick' => 'alert("cancel!");',
 	'type' => 'onClick',
 	'disabled' => false,
 	'hidden' => false,
@@ -91,7 +91,7 @@ $buttonOk = new we_ui_controls_Button(
 	array(
 	'title' => 'This is the title of the button!',
 	'text' => 'OK',
-	'onclick' => 'alert("ok!");',
+	'onClick' => 'alert("ok!");',
 	'type' => 'onClick',
 	'disabled' => false,
 	'hidden' => false,
@@ -103,7 +103,7 @@ $buttonCancel2 = new we_ui_controls_Button(
 	array(
 	'title' => 'This is the title of the button!',
 	'text' => 'Cancel',
-	'onclick' => 'alert("cancel!");',
+	'onClick' => 'alert("cancel!");',
 	'type' => 'onClick',
 	'disabled' => false,
 	'hidden' => false,
