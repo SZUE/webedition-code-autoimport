@@ -22,10 +22,10 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-switch(weRequest('string','we_cmd','',0)){
+switch($cmd){
 	case 'edit_banner_ifthere':
 	case 'edit_banner':
-		$mod = 'banner';
+		$GLOBALS['mod'] = 'banner';
 		$INCLUDE = 'we_modules/show_frameset.php';
 		break;
 	case 'openBannerDirselector':

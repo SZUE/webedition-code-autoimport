@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-switch(weRequest('string','we_cmd','',0)){
+switch($cmd){
 	case 'add_schedule':
 	case 'del_schedule':
 	case 'add_schedcat':

@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-switch(weRequest('string','we_cmd','',0)){
+switch($cmd){
 //	case 'edit_object_ifthere':
 //	case 'edit_object':
 //		$mod='object';
