@@ -53,4 +53,3 @@ $page = we_ui_layout_HTMLPage::getInstance();
 $page->setFrameset($frameset);
 
 echo $page->getHTML();
-

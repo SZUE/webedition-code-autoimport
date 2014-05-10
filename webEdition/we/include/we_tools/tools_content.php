@@ -50,5 +50,3 @@ if(file_exists(WEBEDITION_PATH . 'apps/' . $_REQUEST['tool'] . '/index.php')){
 if($_REQUEST['tool'] == 'weSearch' || $_REQUEST['tool'] == 'navigation'){
 	require_once(WE_INCLUDES_PATH . 'we_tools/' . $_REQUEST['tool'] . '/edit_' . $_REQUEST['tool'] . '_frameset.php');
 }
-
-we_core_Permissions::protect();

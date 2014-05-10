@@ -422,7 +422,6 @@ if(defined('MESSAGING_SYSTEM')){
 	function we_cmd() {
 		var hasPerm = false;
 		var url = "<?php echo WEBEDITION_DIR; ?>we_cmd.php?";
-		var cmsurl = "<?php echo WEBEDITION_DIR; ?>cms/index.php/";
 		for (var i = 0; i < arguments.length; i++) {
 			url += "we_cmd[" + i + "]=" + escape(arguments[i]);
 			if (i < (arguments.length - 1))
