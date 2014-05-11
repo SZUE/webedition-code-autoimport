@@ -200,7 +200,7 @@ if(!isset($_REQUEST["cmd"]) || (isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] != "
 			break;
 
 		case "rename_folder":
-			if($_REQUEST["txt"] == ""){
+			if($_REQUEST["txt"] == ''){
 				echo we_message_reporting::getShowMessageCall(g_l('alert', "[we_filename_empty]"), we_message_reporting::WE_MESSAGE_ERROR) .
 				"drawDir(top.currentDir);\n";
 			} else if(preg_match('|[\'"<>/]|', $_REQUEST["txt"])){
@@ -211,17 +211,15 @@ if(!isset($_REQUEST["cmd"]) || (isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] != "
 				$new = str_replace('//', '/', $_SERVER['DOCUMENT_ROOT'] . $_REQUEST['pat'] . '/' . $_REQUEST['txt']);
 				if($old != $new){
 					if(!@is_dir($new)){
-						if(!rename($old, $new)){
-							print we_message_reporting::getShowMessageCall(g_l('alert', "[rename_folder_nok]"), we_message_reporting::WE_MESSAGE_ERROR);
-						} else {
-							print 'selectFile("' . $_REQUEST["txt"] . '");' . "\n";
-						}
+						echo (!rename($old, $new) ?
+							we_message_reporting::getShowMessageCall(g_l('alert', "[rename_folder_nok]"), we_message_reporting::WE_MESSAGE_ERROR) :
+							'selectFile("' . $_REQUEST["txt"] . '");');
 					} else {
 						$we_responseText = sprintf(g_l('alert', "[path_exists]"), str_replace($_SERVER['DOCUMENT_ROOT'], '', $new));
-						print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
+						echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 					}
 				}
-				print "drawDir(top.currentDir);\n";
+				echo 'drawDir(top.currentDir);';
 			}
 			break;
 		case "rename_file":
@@ -244,7 +242,7 @@ if(!isset($_REQUEST["cmd"]) || (isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] != "
 						echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 					}
 				}
-				print "drawDir(top.currentDir);selectFile(top.currentName);\n";
+				echo "drawDir(top.currentDir);selectFile(top.currentName);";
 			}
 			break;
 		case "delete_file":
@@ -252,18 +250,22 @@ if(!isset($_REQUEST["cmd"]) || (isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] != "
 				$foo = f("SELECT ID FROM " . FILE_TABLE . " WHERE Path='" . $DB_WE->escape($_REQUEST["fid"]) . "'");
 				if(preg_match('|' . WEBEDITION_PATH . '|', $_REQUEST["fid"]) || ($_REQUEST["fid"] == rtrim(WEBEDITION_PATH, '/')) || strpos("..", $_REQUEST["fid"]) || $foo || $_REQUEST["fid"] == $_SERVER['DOCUMENT_ROOT'] || $_REQUEST["fid"] . "/" == $_SERVER['DOCUMENT_ROOT']){
 					echo we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR);
-				} else {
-					if(is_dir($_REQUEST["fid"]) && ($_REQUEST["ask"])){
+					break;
+				}
+				if($_REQUEST["ask"]){
+					if(!is_link($_REQUEST["fid"]) && is_dir($_REQUEST["fid"])){
 						echo "if (confirm(\"" . g_l('alert', "[delete_folder]") . "\")){delFile(0);}";
-					} else if(is_file($_REQUEST["fid"]) && ($_REQUEST["ask"])){
+					} else if(is_link($_REQUEST["fid"]) || is_file($_REQUEST["fid"])){
 						echo "if (confirm(\"" . g_l('alert', "[delete]") . "\")){delFile(0);}";
-					} else if(is_dir($_REQUEST["fid"])){
+					}
+				} else {
+					if(!is_link($_REQUEST["fid"]) && is_dir($_REQUEST["fid"])){
 						delDir($_REQUEST["fid"]);
 					} else if(!@unlink($_REQUEST["fid"])){
 						echo we_message_reporting::getShowMessageCall(sprintf(g_l('alert', "[delete_nok_error]"), $_REQUEST["fid"]), we_message_reporting::WE_MESSAGE_ERROR);
 					}
-					echo "selectFile('');drawDir(top.currentDir);";
 				}
+				echo "selectFile('');drawDir(top.currentDir);";
 			}
 	}
 	?>
