@@ -7,6 +7,7 @@ $l_contentTypes=array(
 	'class_folder'=>'Директория',
 	'folder'=>'Директория',
 	'image/*'=>'Графика',
+	'link'=>'Link',
 	'objectFile'=>'Объект',
 	'object'=>'Класс',
 	'text/css'=>'Таблица стилей CSS',

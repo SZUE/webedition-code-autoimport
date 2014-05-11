@@ -7,6 +7,7 @@ $l_contentTypes=array(
 	'class_folder'=>'Katalog',
 	'folder'=>'Katalog',
 	'image/*'=>'Grafika',
+	'link'=>'Link',
 	'objectFile'=>'Obiekt',
 	'object'=>'Klasa',
 	'text/css'=>'CSS Stylesheet',

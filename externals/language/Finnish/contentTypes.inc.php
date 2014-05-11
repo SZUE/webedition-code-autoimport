@@ -7,6 +7,7 @@ $l_contentTypes=array(
 	'class_folder'=>'Hakemisto',
 	'folder'=>'Hakemisto',
 	'image/*'=>'Kuva',
+	'link'=>'Link',
 	'objectFile'=>'Objekti',
 	'object'=>'Luokka',
 	'text/css'=>'Tyylitiedosto',
