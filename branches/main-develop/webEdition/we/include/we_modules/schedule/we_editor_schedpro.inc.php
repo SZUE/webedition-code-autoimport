@@ -49,7 +49,7 @@ echo STYLESHEET .
 		}
 		$parts[] = array(
 			'headline' => '',
-			'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_schedule', '[descriptiontext]'), we_html_tools::TYPE_INFO, 700) . '<br><br>' . we_html_button::create_button('image:btn_add_schedule', "javascript:we_cmd('add_schedule')"),
+			'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_schedule', '[descriptiontext]'), we_html_tools::TYPE_INFO, 700) . '<br><br>' . we_html_button::create_button('image:btn_add_schedule', "javascript:we_cmd('schedule_add')"),
 			'space' => 0
 		);
 		echo we_html_multiIconBox::getJS() .

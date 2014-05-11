@@ -109,7 +109,7 @@ if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 	if(isset($_REQUEST['SEEM_edit_include']) && $_REQUEST['SEEM_edit_include'] && $we_doc->userHasAccess() == 1){ //	Open seem_edit_include pages in edit-mode
 		$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_CONTENT;
 		$we_doc->EditPageNr = WE_EDITPAGE_CONTENT;
-	} elseif(get_class($we_doc) == 'we_imageDocument'){
+	} elseif($we_doc instanceof we_imageDocument){
 		$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_CONTENT;
 		$we_doc->EditPageNr = WE_EDITPAGE_CONTENT;
 	} else {
@@ -438,16 +438,19 @@ function setOnload($extonly = false){
 <?php
 $we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 
-if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
-	?>
+switch($_SESSION['weS']['we_mode']){
+	case we_base_constants::MODE_SEE:
+		?>
 	<frameset onLoad="_EditorFrame.initEditorFrameData({'EditorIsLoading': false});" rows="1,*,0,40" framespacing="0" border="0" frameborder="NO" onunload="doUnload()">
 		<frame src="<?php echo we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_edit_header"); ?>" name="editHeader" noresize scrolling="no"/>
 		<frame <?php echo setOnload(); ?> src="<?php echo we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_editor") . (isset($parastr) ? '&' . $parastr : ''); ?>&we_complete_request=1" name="editor_<?php echo $_REQUEST["frameId"]; ?>" noresize/>
 		<frame <?php echo setOnload(true); ?> src="about:blank" name="contenteditor_<?php echo $_REQUEST["frameId"]; ?>" noresize/>
 		<frame src="<?php echo we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_edit_footer"); ?>&SEEM_edit_include=<?php echo ( isset($_REQUEST["SEEM_edit_include"]) && weRequest('bool', 'SEEM_edit_include') ? "true" : "false") ?>" name="editFooter" scrolling=no noresize/>
 	</frameset><noframes></noframes>
-	<?php
-} else {
+		<?php
+		break;
+	case we_base_constants::MODE_NORMAL:
+	default:
 
 	$showContentEditor = ($we_doc->EditPageNr == WE_EDITPAGE_CONTENT && substr($we_doc->ContentType, 0, 5) == 'text/' && $we_doc->ContentType != we_base_ContentTypes::WEDOCUMENT);
 	?>
@@ -457,11 +460,11 @@ if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 			<frame <?php echo setOnload(); ?> src="about:blank" name="editor_<?php echo $_REQUEST["frameId"]; ?>" noresize/>
 			<frame  src="<?php echo we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_editor") . (isset($parastr) ? '&' . $parastr : ''); ?>&we_complete_request=1" name="contenteditor_<?php echo $_REQUEST['frameId']; ?>" noresize/>
 		<?php } else { ?>
-			<frame <?php echo setOnload(); ?> src="<?php echo we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_editor") . (isset($parastr) ? '&' . $parastr : ''); ?>&we_complete_request=1" name="editor_<?php echo $_REQUEST["frameId"]; ?>" noresize/>
-			<frame  src="about:blank" name="contenteditor_<?php echo $_REQUEST["frameId"]; ?>" noresize/>
-		<?php } ?>
-		<frame src="<?php echo we_class::url(WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=load_edit_footer'); ?>" name="editFooter" scrolling=no noresize/>
-	</frameset>
+				<frame <?php echo setOnload(); ?> src="<?php echo we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_editor") . (isset($parastr) ? '&' . $parastr : ''); ?>&we_complete_request=1" name="editor_<?php echo $_REQUEST["frameId"]; ?>" noresize/>
+				<frame  src="about:blank" name="contenteditor_<?php echo $_REQUEST["frameId"]; ?>" noresize/>
+			<?php } ?>
+			<frame src="<?php echo we_class::url(WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=load_edit_footer'); ?>" name="editFooter" scrolling=no noresize/>
+		</frameset>
 	<?php
 }
 ?>

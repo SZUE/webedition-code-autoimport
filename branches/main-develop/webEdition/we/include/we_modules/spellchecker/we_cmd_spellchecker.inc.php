@@ -22,11 +22,9 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-switch(weRequest('string','we_cmd','',0)){
-	case 'edit_spellchecker_ifthere':
-	case 'edit_spellchecker':
-		$mod = 'spellchecker';
-		$INCLUDE = 'we_modules/spellchecker/weSpellcheckerAdmin.php';
-		break;
+switch($cmd){
+	case 'spellchecker_edit_ifthere':
+	case 'spellchecker_edit':
+		$GLOBALS['mod'] = 'spellchecker';
+		return 'we_modules/spellchecker/weSpellcheckerAdmin.php';
 }
-

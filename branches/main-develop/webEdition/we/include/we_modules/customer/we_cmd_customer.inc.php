@@ -22,13 +22,12 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-switch(weRequest('string','we_cmd','',0)){
-	case 'edit_customer_ifthere':
-	case 'edit_customer':
-		$mod = 'customer';
-		$INCLUDE = 'we_modules/show_frameset.php';
-		break;
-	case 'applyWeDocumentCustomerFilterFromFolder':
-		$INCLUDE = 'we_editors/we_editor.inc.php';
-		break;
+switch($cmd){
+	case 'customer_edit_ifthere':
+	case 'customer_edit':
+		$GLOBALS['mod'] = 'customer';
+		return 'we_modules/show_frameset.php';
+
+	case 'customer_applyWeDocumentCustomerFilterFromFolder':
+		return 'we_editors/we_editor.inc.php';
 }

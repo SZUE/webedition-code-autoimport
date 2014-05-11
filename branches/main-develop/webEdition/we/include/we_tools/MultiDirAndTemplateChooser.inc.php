@@ -74,9 +74,9 @@ class MultiDirAndTemplateChooser extends MultiDirChooser{
 				return MultiDirChooser::getLine($lineNr);
 			case 1:
 				if($this->create){
-					$but = we_html_button::create_button("image:btn_add_template", "javascript:we_cmd('create_tmpfromClass','0','" . $this->nr . "','" . $GLOBALS["we_transaction"] . "')");
+					$but = we_html_button::create_button("image:btn_add_template", "javascript:we_cmd('object_create_tmpfromClass','0','" . $this->nr . "','" . $GLOBALS["we_transaction"] . "')");
 				} else {
-					$but = we_html_button::create_button("image:btn_function_view", "javascript:we_cmd('preview_objectFile','0','" . (isset($this->tmplArr[$this->nr]) ? $this->tmplArr[$this->nr] : "") . "','" . $GLOBALS["we_transaction"] . "')");
+					$but = we_html_button::create_button("image:btn_function_view", "javascript:we_cmd('object_preview_objectFile','0','" . (isset($this->tmplArr[$this->nr]) ? $this->tmplArr[$this->nr] : "") . "','" . $GLOBALS["we_transaction"] . "')");
 				}
 				$path = id_to_path(isset($this->tmplArr[$this->nr]) ? $this->tmplArr[$this->nr] : "", TEMPLATES_TABLE, $this->db);
 				if($this->isEditable()){

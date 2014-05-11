@@ -166,7 +166,7 @@ if(defined("CUSTOMER_TABLE") && permissionhandler::hasPerm("CAN_SEE_CUSTOMER")){
 }
 
 $shopDashboard = "<script type='text/javascript' src='https://www.google.com/jsapi'></script>
-    <script type='text/javascript'>
+    <script type='text/javascript'><!--
       google.load('visualization', '1', {packages:['gauge']});
       google.setOnLoadCallback(drawChart);
       function drawChart() {
@@ -187,12 +187,13 @@ $shopDashboard = "<script type='text/javascript' src='https://www.google.com/jsa
         var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
         chart.draw(data, options);
       }
+			//-->
     </script>";
 
+//FIXME: deactivated JS-Kode for shop, since code is loaded from other domain
+$shopDashboard = '';
 
 $shopDashboard .= '<div style="width:60%;float:left;">';
-
-//$shopDashboard .= '<table cellspacing="0" cellpadding="0" border="0">';
 
 $shopDashboardTable = new we_html_table(array('border' => '0', 'cellpadding' => '0', 'cellspacing' => '0'), 1, 3);
 

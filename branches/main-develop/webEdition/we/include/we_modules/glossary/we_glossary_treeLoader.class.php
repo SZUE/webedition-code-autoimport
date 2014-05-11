@@ -60,7 +60,7 @@ abstract class we_glossary_treeLoader{
 				'tooltip' => $Val,
 				'offset' => 0,
 				'published' => 1,
-				'cmd' => "view_folder",
+				'cmd' => "glossary_view_folder",
 			);
 		}
 
@@ -90,7 +90,7 @@ abstract class we_glossary_treeLoader{
 				'tooltip' => $Val,
 				'offset' => 0,
 				'published' => 1,
-				'cmd' => 'view_type',
+				'cmd' => 'glossary_view_type',
 			);
 		}
 
@@ -105,7 +105,7 @@ abstract class we_glossary_treeLoader{
 				'tooltip' => g_l('modules_glossary', '[exception]'),
 				'offset' => 0,
 				'published' => 1,
-				'cmd' => 'view_exception',
+				'cmd' => 'glossary_view_exception',
 				'Icon' => 'prog.gif'
 			);
 		}
@@ -163,19 +163,19 @@ abstract class we_glossary_treeLoader{
 			switch($Type){
 
 				case we_glossary_glossary::TYPE_ABBREVATION:
-					$Item['cmd'] = "edit_glossary_abbreviation";
+					$Item['cmd'] = "glossary_edit_abbreviation";
 					break;
 				case we_glossary_glossary::TYPE_ACRONYM:
-					$Item['cmd'] = "edit_glossary_acronym";
+					$Item['cmd'] = "glossary_edit_acronym";
 					break;
 				case we_glossary_glossary::TYPE_FOREIGNWORD:
-					$Item['cmd'] = "edit_glossary_foreignword";
+					$Item['cmd'] = "glossary_edit_foreignword";
 					break;
 				case we_glossary_glossary::TYPE_LINK:
-					$Item['cmd'] = "edit_glossary_link";
+					$Item['cmd'] = "glossary_edit_link";
 					break;
 				case we_glossary_glossary::TYPE_TEXTREPLACE:
-					$Item['cmd'] = "edit_glossary_textreplacement";
+					$Item['cmd'] = "glossary_edit_textreplacement";
 					break;
 			}
 

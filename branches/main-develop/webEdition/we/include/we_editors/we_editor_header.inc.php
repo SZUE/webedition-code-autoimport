@@ -25,7 +25,7 @@ we_html_tools::protect();
 echo we_html_tools::getHtmlTop();
 
 // init document
-$we_dt = $_SESSION['weS']['we_data'][$we_transaction];
+$we_dt = $_SESSION['weS']['we_data'][$GLOBALS['we_transaction']];
 include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
 $z = 0;

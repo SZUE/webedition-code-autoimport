@@ -771,7 +771,7 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 
 		$code = $we_doc->getElement('data');
 
-		if(get_class($we_doc) == 'we_htmlDocument'){
+		if($we_doc instanceof we_htmlDocument){
 			$code = $we_doc->getDocumentCode();
 		}
 

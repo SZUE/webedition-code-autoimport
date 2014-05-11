@@ -945,7 +945,7 @@ class weVersions{
 
 		//if folder was saved don' make versions (if path was changed of folder)
 		if(isset($GLOBALS['we_doc']->ClassName)){
-			if(get_class($GLOBALS['we_doc']) == "we_folder" || get_class($GLOBALS['we_doc']) == "we_class_folder"){
+			if(($GLOBALS['we_doc'] instanceof we_folder) || ($GLOBALS['we_doc'] instanceof we_class_folder)){
 				return false;
 			}
 		}

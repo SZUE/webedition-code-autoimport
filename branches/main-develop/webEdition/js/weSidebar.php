@@ -202,7 +202,7 @@ weSidebar._open(obj);
 
 weSidebar.openNavigation = function() {
 var cmd = Array();
-cmd[0] = 'edit_navigation';
+cmd[0] = 'navigation_edit';
 top.we_cmd(cmd[0]);
 
 }

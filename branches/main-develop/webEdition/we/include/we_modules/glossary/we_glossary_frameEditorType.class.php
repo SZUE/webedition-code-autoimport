@@ -97,8 +97,8 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 		// ---> Search End
 		// ---> some javascript code
 
-		$_js .= $weGlossaryFrames->topFrame . '.editor.edheader.location="' . $weGlossaryFrames->frameset . '?pnt=edheader&cmd=view_type&cmdid=' . $_REQUEST['cmdid'] . '";
-						' . $weGlossaryFrames->topFrame . '.editor.edfooter.location="' . $weGlossaryFrames->frameset . '?pnt=edfooter&cmd=view_type&cmdid=' . $_REQUEST['cmdid'] . '";
+		$_js .= $weGlossaryFrames->topFrame . '.editor.edheader.location="' . $weGlossaryFrames->frameset . '?pnt=edheader&cmd=glossary_view_type&cmdid=' . $_REQUEST['cmdid'] . '";
+						' . $weGlossaryFrames->topFrame . '.editor.edfooter.location="' . $weGlossaryFrames->frameset . '?pnt=edfooter&cmd=glossary_view_type&cmdid=' . $_REQUEST['cmdid'] . '";
 		function AllItems()
 		{
 			if(document.we_form.selectAll.value == 0) {

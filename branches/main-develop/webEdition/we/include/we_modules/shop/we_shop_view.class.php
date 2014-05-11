@@ -579,7 +579,7 @@ function we_cmd() {
 				<td colspan="9"><a href="javascript:we_cmd(\'edit_order_customer\');">' . g_l('modules_shop', '[order][edit_order_customer]') . '</a></td>
 			</tr>
 			<tr>
-				<td colspan="9">' . (permissionhandler::hasPerm('EDIT_CUSTOMER') ? '<a href="javascript:we_cmd(\'edit_customer\');">' . g_l('modules_shop', '[order][open_customer]') . '</a>' : '') . ' </td>
+				<td colspan="9">' . (permissionhandler::hasPerm('EDIT_CUSTOMER') ? '<a href="javascript:we_cmd(\'customer_edit\');">' . g_l('modules_shop', '[order][open_customer]') . '</a>' : '') . ' </td>
 			</tr>
 		</table>';
 			//
@@ -903,7 +903,7 @@ function we_cmd() {
 			we_html_element::cssLink(JS_DIR . 'jscalendar/skins/aqua/theme.css');
 			?>
 
-			<script type="text/javascript">
+			<script type="text/javascript"><!--
 				function SendMail(was) {
 					document.location = "<?php print $_SERVER['SCRIPT_NAME'] . '?pnt=edbody&bid=' . $_REQUEST['bid']; ?>&SendMail=" + was;
 				}
@@ -940,7 +940,7 @@ function we_cmd() {
 						case "edit_order_customer":
 							var wind = new jsWindow(url + "&bid=<?php echo $_REQUEST['bid']; ?>", "edit_order_customer", -1, -1, 545, 600, true, true, true, false);
 							break;
-						case "edit_customer":
+						case "customer_edit":
 							top.document.location = '<?php print WE_MODULES_DIR; ?>show_frameset.php?mod=customer&sid=<?php print $_REQUEST['cid']; ?>';
 											break;
 										case "add_new_article":
@@ -961,9 +961,10 @@ function we_cmd() {
 										hot = 1;
 			<?php
 			if(isset($alertMessage)){
-				print we_message_reporting::getShowMessageCall($alertMessage, $alertType);
+				echo we_message_reporting::getShowMessageCall($alertMessage, $alertType);
 			}
 			?>
+//->
 			</script>
 
 			</head>

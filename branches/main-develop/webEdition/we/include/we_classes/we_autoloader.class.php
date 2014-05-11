@@ -54,6 +54,7 @@ abstract class we_autoloader{
 		'newsletter' => 'we_modules/newsletter',
 		'object' => 'we_modules/object',
 		'rebuild' => 'we_classes/rebuild',
+		'sdk' => 'we_classes/sdk',
 		'search' => 'we_tools/weSearch/class',
 		'selector' => 'we_classes/selector',
 		'sidebar' => 'we_classes/sidebar',
@@ -242,7 +243,7 @@ abstract class we_autoloader{
 				break;
 			}
 		}
-		//will try next auto-loader
+		//will try next auto-loader 
 	}
 
 	/**

@@ -150,7 +150,7 @@ if(isset($_REQUEST['we_dialog_args']['editname'])){
 
 </style>
 
-<script type="text/javascript">
+<script type="text/javascript"><!--
 
 	var orginal;
 	var editPanel;
@@ -445,7 +445,7 @@ if(isset($_REQUEST['we_dialog_args']['editname'])){
 <?php
 echo we_html_button::create_state_changer(false);
 ?>
-
+//-->
 </script>
 </head>
 

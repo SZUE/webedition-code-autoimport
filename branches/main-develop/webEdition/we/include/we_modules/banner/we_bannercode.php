@@ -66,7 +66,7 @@ document.write ("<" + "script type=\"text/javascript\" src=\"' . $getscript . '?
 }
 ?>
 
-<script type="text/javascript">
+<script type="text/javascript"><!--
 
 	self.focus();
 
@@ -110,9 +110,8 @@ document.write ("<" + "script type=\"text/javascript\" src=\"' . $getscript . '?
 		}
 		return true;
 	}
+	//-->
 </script>
-
-
 </head>
 <body class="weDialogBody"<?php if($ok){ ?> onLoad="document.we_form.code.focus();
 			document.we_form.code.select();"<?php } ?>>

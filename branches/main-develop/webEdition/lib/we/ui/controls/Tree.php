@@ -311,7 +311,7 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement{
 					'tmpNode.labelStyle = "' . $this->getTreeIconClass($v['ContentType']) . '";' .
 					($this->getTreeIconClass($v['ContentType']) !== 'folder' ? 'tmpNode.isLeaf = true;' : '');
 
-				$session = new Zend_Session_Namespace($this->_sessionName);
+				$session = new we_sdk_namespace($this->_sessionName);
 				if(in_array($v['ID'], $session->openNodes) && $v['IsFolder']){
 					$out .= 'YAHOO.widget.TreeView.getNode(\'' . $this->_id . '\',tmpNode.index).toggle();' .
 						'tmpNode.labelStyle = "' . $this->getTreeIconClass('folderOpen') . '";';
@@ -358,7 +358,7 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement{
 	protected function _renderHTML(){
 
 		$this->setUpData();
-		$session = new Zend_Session_Namespace($this->_sessionName);
+		$session = new we_sdk_namespace($this->_sessionName);
 		if(!isset($session->openNodes)){
 			$session->openNodes = $this->getOpenNodes();
 		}

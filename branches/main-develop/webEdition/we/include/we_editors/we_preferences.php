@@ -1273,7 +1273,7 @@ function build_dialog($selected_setting = 'ui'){
 
 				// Wörterbuch hinzufügen
 				if(confirm('{" . g_l('prefs', '[add_dictionary_question]') . "}')) {
-					top.opener.top.we_cmd('edit_spellchecker_ifthere');
+					top.opener.top.we_cmd('spellchecker_edit_ifthere');
 				}
 " : '') . "
 

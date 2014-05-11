@@ -27,7 +27,7 @@ echo we_html_tools::getHtmlTop(g_l('global', '[select_color]')) .
  we_html_element::jsScript(JS_DIR . 'we_colors2.js');
 $isA = weRequest('bool', 'we_cmd', false, 0);
 ?>
-<script  type="text/javascript">
+<script  type="text/javascript"><!--
 
 	function selectColor(c) {
 		document.we_form.colorvalue.value = c;
@@ -57,6 +57,7 @@ $isA = weRequest('bool', 'we_cmd', false, 0);
 		top.focus();
 		document.we_form.colorvalue.value = <?php echo ($isA ? '"' . $_REQUEST['we_cmd'][2] . '"' : 'window.dialogArguments["bgcolor"]'); ?>;
 	}
+	//-->
 </script>
 </head>
 
@@ -67,6 +68,7 @@ $isA = weRequest('bool', 'we_cmd', false, 0);
 					<?php
 					$colortable = '<table border="1" bordercolor="SILVER" bordercolorlight="WHITE" bordercolordark="BLACK" cellspacing="0" cellpadding="0">
 <script  type="text/javascript">
+<!--
 var z=0;
 for ( col in we_color2 ){
 	if(z == 0){
@@ -88,6 +90,7 @@ if(z != 0){
 	}
 	document.writeln(\'</tr>\');
 }
+//->
 </script>
 		</table>
 	';

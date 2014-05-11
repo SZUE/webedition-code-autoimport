@@ -46,7 +46,7 @@ foreach(g_l('contentTypes', '') as $key => $lng){
 $untitled = g_l('global', "[untitled]");
 
 print <<< EOFEOF
-<script type="text/javascript">
+<script type="text/javascript"><!--
 
 $ctLngs
 
@@ -105,6 +105,7 @@ function setHotDocuments() {
 		document.getElementById("ulHotDocuments").appendChild( liCtElem );
 	}
 }
+	//-->
 </script>
 <style type="text/css">
 ul {

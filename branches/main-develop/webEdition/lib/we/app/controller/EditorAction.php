@@ -140,7 +140,7 @@ class we_app_controller_EditorAction extends Zend_Controller_Action{
 	 */
 	protected function _setupModel($forceNew = false){
 		$appName = $this->getFrontController()->getParam('appName');
-		$session = new Zend_Session_Namespace($appName);
+		$session = new we_sdk_namespace($appName);
 
 		if($forceNew === false && isset($session->model)){
 			$this->_model = $session->model;

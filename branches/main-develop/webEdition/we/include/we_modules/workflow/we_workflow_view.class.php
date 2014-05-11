@@ -170,7 +170,7 @@ class we_workflow_view extends we_workflow_base{
 
 	function getWorkflowSelectHTML(){
 		$vals = we_workflow_workflow::getAllWorkflowsInfo();
-		return we_html_tools::htmlSelect('wid', $vals, 4, $this->workflowDef->ID, false, array("onclick" => "we_cmd(\"edit_workflow\")"), "value", 200);
+		return we_html_tools::htmlSelect('wid', $vals, 4, $this->workflowDef->ID, false, array("onclick" => "we_cmd(\"workflow_edit\")"), "value", 200);
 	}
 
 	function getWorkflowTypeHTML(){
@@ -534,7 +534,7 @@ class we_workflow_view extends we_workflow_base{
 							top.content.usetHot();
 		<?php } ?>
 						break;
-					case "edit_workflow":
+					case "workflow_edit":
 					case "show_document":
 						top.content.editor.edbody.document.we_form.wcmd.value = arguments[0];
 						top.content.editor.edbody.document.we_form.wid.value = arguments[1];
@@ -939,7 +939,7 @@ function checkData(){
 					top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflow_frameset.php?pnt=edfooter";
 					');
 				break;
-			case 'edit_workflow':
+			case 'workflow_edit':
 				$this->show = 0;
 				if(isset($_REQUEST['wid'])){
 					$this->workflowDef = new we_workflow_workflow($_REQUEST['wid']);
@@ -1601,7 +1601,7 @@ function checkData(){
 		$_footerTable->setColContent(0, $_col++, we_html_button::create_button("decline", "javascript:decline_workflow();"));
 
 		if(we_workflow_utility::isWorkflowFinished($we_doc->ID, $we_doc->Table) || ((1 + we_workflow_utility::findLastActiveStep($we_doc->ID, $we_doc->Table)) == count(we_workflow_utility::getNumberOfSteps($we_doc->ID, $we_doc->Table)) && permissionhandler::hasPerm("PUBLISH"))){
-			$_publishbutton = we_html_button::create_button("publish", "javascript:finish_workflow();");
+			$_publishbutton = we_html_button::create_button("publish", "javascript:workflow_finish();");
 		} else {
 			$_footerTable->addCol(2);
 			$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
@@ -1652,7 +1652,7 @@ function checkData(){
 				$_footerTable->addCol(2);
 				$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
 				if(we_workflow_utility::isWorkflowFinished($we_doc->ID, $we_doc->Table) || ((1 + we_workflow_utility::findLastActiveStep($we_doc->ID, $we_doc->Table)) == count(we_workflow_utility::getNumberOfSteps($we_doc->ID, $we_doc->Table)) && permissionhandler::hasPerm("PUBLISH"))){
-					$_footerTable->setColContent(0, $_col++, we_html_button::create_button("publish", "javascript:finish_workflow();"));
+					$_footerTable->setColContent(0, $_col++, we_html_button::create_button("publish", "javascript:workflow_finish();"));
 				} else {
 					$_footerTable->setColContent(0, $_col++, we_html_button::create_button("forward", "javascript:pass_workflow();"));
 				}
@@ -1677,7 +1677,7 @@ function checkData(){
 				$_footerTable->addCol(2);
 				$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
 				$_footerTable->setColContent(0, $_col++, (we_workflow_utility::isWorkflowFinished($we_doc->ID, $we_doc->Table) || ((1 + we_workflow_utility::findLastActiveStep($we_doc->ID, $we_doc->Table)) == count(we_workflow_utility::getNumberOfSteps($we_doc->ID, $we_doc->Table)) && permissionhandler::hasPerm("PUBLISH")) ?
-						we_html_button::create_button("publish", "javascript:finish_workflow();") :
+						we_html_button::create_button("publish", "javascript:workflow_finish();") :
 						we_html_button::create_button("forward", "javascript:pass_workflow();"))
 				);
 
@@ -1709,7 +1709,7 @@ function checkData(){
 				$_footerTable->addCol(2);
 				$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
 				$_footerTable->setColContent(0, $_col++, (we_workflow_utility::isWorkflowFinished($we_doc->ID, $we_doc->Table) || ((1 + we_workflow_utility::findLastActiveStep($we_doc->ID, $we_doc->Table)) == count(we_workflow_utility::getNumberOfSteps($we_doc->ID, $we_doc->Table)) && permissionhandler::hasPerm("PUBLISH")) ?
-						we_html_button::create_button("publish", "javascript:finish_workflow();") :
+						we_html_button::create_button("publish", "javascript:workflow_finish();") :
 						we_html_button::create_button("forward", "javascript:pass_workflow();"))
 				);
 

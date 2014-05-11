@@ -438,7 +438,7 @@ function enableNewFileBut() {
 	}
 
 	function printSetDirHTML(){
-		print '<script type="text/javascript"><!--
+		echo '<script type="text/javascript"><!--
 top.clearEntries();' .
 			$this->printCmdAddEntriesHTML() .
 			$this->printCMDWriteAndFillSelectorHTML() . '

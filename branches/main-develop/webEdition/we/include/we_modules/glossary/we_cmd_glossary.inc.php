@@ -22,31 +22,27 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-switch(weRequest('string','we_cmd','',0)){
+switch($cmd){
 
-	case 'edit_glossary_acronym':
-	case 'edit_glossary_abbreviation':
-	case 'edit_glossary_foreignword':
-	case 'edit_glossary_link':
-	case 'edit_glossary_textreplacement':
-	case 'edit_glossary_ifthere':
-	case 'view_folder':
-	case 'view_type':
-	case 'view_exception':
-		$mod = 'glossary';
-		$INCLUDE = 'we_modules/show_frameset.php';
-		break;
+	case 'glossary_edit_acronym':
+	case 'glossary_edit_abbreviation':
+	case 'glossary_edit_foreignword':
+	case 'glossary_edit_link':
+	case 'glossary_edit_textreplacement':
+	case 'glossary_edit_ifthere':
+	case 'glossary_view_folder':
+	case 'glossary_view_type':
+	case 'glossary_view_exception':
+		$GLOBALS['mod'] = 'glossary';
+		return 'we_modules/show_frameset.php';
 
 	case 'glossary_settings':
-		$INCLUDE = 'we_modules/glossary/edit_glossary_settings_frameset.php';
-		break;
+		return 'we_modules/glossary/edit_glossary_settings_frameset.php';
 
 	case 'glossary_dictionaries':
-		$INCLUDE = 'we_modules/glossary/edit_glossary_dictionaries_frameset.php';
-		break;
+		return 'we_modules/glossary/edit_glossary_dictionaries_frameset.php';
 
-	case 'check_glossary':
-		$mod = 'glossary';
-		$INCLUDE = 'we_modules/glossary/add_items.inc.php';
-		break;
+	case 'glossary_check':
+		$GLOBALS['mod'] = 'glossary';
+		return 'we_modules/glossary/add_items.inc.php';
 }

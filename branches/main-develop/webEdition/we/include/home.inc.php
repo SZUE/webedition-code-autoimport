@@ -33,8 +33,12 @@ foreach($js_load as $js){
 }
 unset($js_load);
 
-print STYLESHEET .
+echo STYLESHEET .
 	we_html_element::cssElement('
+body{
+	background: url( "/webEdition/images/backgrounds/aquaBackground.gif" )
+}
+
 .rssDiv, .rssDiv *{
 	background-color: transparent;
 	color: black;
@@ -45,6 +49,9 @@ print STYLESHEET .
 .rssDiv a {
 	color: black;
 	text-decoration:none;
+}
+#rowWidgets td div table{
+	background-color:white;
 }') . we_html_element::jsScript(JS_DIR . '/utils/prototypes.js');
 
 if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
@@ -129,7 +136,7 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 			jsCss += '.bgc_' + _cls_ + '{background-color:' + oCfg.color_scheme_[_cls_] + ';}';
 		}
 		jsCss += '.wildcard{position:relative;width:1px;height:1px;}' +
-						'.le_widget{margin-bottom:10px;background-color:' + oCfg.color_scheme_['white'] + ';}' +
+						//'.le_widget{margin-bottom:10px;background-color:' + oCfg.color_scheme_['white'] + ';}' +
 						'.label{font-family:' + oCfg.label_['font-family'] + ';font-size:' + oCfg.label_['font-size'] + 'px;color:' + oCfg.label_['color'] + ';font-weight:' + oCfg.label_['font-weight'] + ';}' +
 						'#widgets{position:absolute;top:27px;left:45px;z-index:3;}' +
 						'#le_tblWidgets{table-layout:fixed;}';
@@ -1031,14 +1038,12 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 
 	// this is the clone widget
 	$oClone = we_widget::create("clone", "_reCloneType_", null, array('', ''), "white", 0, "", 100, 60);
-	
 	//WEEXT: registerWeIframe
 	echo
 		we_html_element::htmlBody(
 			array(
 				'onload' => "_EditorFrame.initEditorFrameData({'EditorIsLoading':false}); if(typeof top.WE !== 'undefined'){top.WE.app.getController('Bridge').registerWeIframe(this, true);}",
-				'style' => 'margin: 10px 10px 10px 10px',
-				'class' => "bgc_white"
+				'style' => 'margin: 10px;',
 					), we_html_element::htmlForm(
 							array(
 						"name" => "we_form"
@@ -1066,7 +1071,7 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 						"id" => "divClone", "style" => "position:relative;display:none;"
 							), $oClone->getHtml()));
 } else { // no right to see cockpit!!!
-	print
+	echo
 		we_html_element::jsElement('
 		function isHot(){
 			return false;

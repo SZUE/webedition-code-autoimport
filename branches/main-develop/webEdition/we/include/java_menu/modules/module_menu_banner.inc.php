@@ -73,7 +73,7 @@ $we_menu_banner = array(
 	'002000' => array(
 		'text' => g_l('modules_banner', '[defaultbanner]') . '&hellip;',
 		'parent' => '002000',
-		'cmd' => 'default_banner',
+		'cmd' => 'banner_default',
 		'perm' => 'EDIT_BANNER || ADMINISTRATOR',
 		'enabled' => 0,
 	),

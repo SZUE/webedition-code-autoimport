@@ -22,13 +22,12 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-switch(weRequest('string','we_cmd','',0)){
-	case 'edit_voting_ifthere':
-	case 'edit_voting':
-		$mod = 'voting';
-		$INCLUDE = 'we_modules/show_frameset.php';
-		break;
-	case 'openVotingDirselector':
+switch($cmd){
+	case 'voting_edit_ifthere':
+	case 'voting_edit':
+		$GLOBALS['mod'] = 'voting';
+		return 'we_modules/show_frameset.php';
+	case 'voting_openDirselector':
 		//$INCLUDE = 'we_modules/voting/we_votingDirSelect.php';
-		break;
+		return '';
 }

@@ -26,7 +26,7 @@
  * @package    we_core
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-!defined('NO_SESS') && define('NO_SESS', 1);
+//!defined('NO_SESS') && define('NO_SESS', 1);
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 if(!isset($_SESSION)){
 	session_name(SESSION_NAME);
@@ -134,15 +134,15 @@ class we_core_Local{
 				if(!isset($_SERVER['TMP'])){
 					$_SERVER['TMP'] = WEBEDITION_PATH . 'we/zendcache';
 				}
-				try{
-					Zend_Session::setOptions(array('name' => SESSION_NAME));
-					Zend_Session::start();
-				} catch (Zend_Session_Exception $e){
-					t_e('Zend_Session start failed', $e);
-				}
-				if(!isset($_SESSION)){
-					t_e('Zend_Session start failed');
-				}
+				/* 				try{
+				  Zend_Session::setOptions(array('name' => SESSION_NAME));
+				  Zend_Session::start();
+				  } catch (Zend_Session_Exception $e){
+				  t_e('Zend_Session start failed', $e);
+				  }
+				  if(!isset($_SESSION)){
+				  t_e('Zend_Session start failed');
+				  } */
 			}
 
 			if(isset($_SESSION['prefs']['Language']) && $_SESSION['prefs']['Language'] !== ''){

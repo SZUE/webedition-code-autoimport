@@ -177,7 +177,7 @@ function we_tag_listview($attribs){
 			switch(isset($GLOBALS['lv']) ? get_class($GLOBALS['lv']) : ''){
 				case 'we_object_listview':
 				case 'we_object_tag':
-					$record = get_class($GLOBALS['lv']) == 'we_object_listview' ? $GLOBALS['lv']->getDBRecord() : $GLOBALS['lv']->getObject()->getDBRecord();
+					$record = $GLOBALS['lv'] instanceof we_object_listview ? $GLOBALS['lv']->getDBRecord() : $GLOBALS['lv']->getObject()->getDBRecord();
 					$we_lv_pageID = $record['OF_ID'];
 					$we_lv_linktype = 'tblObjectFile';
 					$we_lv_pagelanguage = $we_lv_pagelanguage == 'self' ? $record['OF_Language'] : ($we_lv_pagelanguage == 'top' ? $we_lv_ownlanguage : $we_lv_pagelanguage);
@@ -196,7 +196,7 @@ function we_tag_listview($attribs){
 			}
 			unset($we_lv_langguagesdoc);
 
-			$GLOBALS['lv'] = new we_langlink_listview($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $we_lv_linktype, $cols,  $showself, $we_lv_pageID, $we_lv_pagelanguage, $we_lv_ownlanguage, $hidedirindex, $objectseourls);
+			$GLOBALS['lv'] = new we_langlink_listview($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $we_lv_linktype, $cols,  $showself, $we_lv_pageID, $we_lv_pagelanguage, $we_lv_ownlanguage, $hidedirindex, $objectseourls, $we_lv_subfolders);
 			break;
 		case 'customer':
 			if(!defined('CUSTOMER_TABLE')){

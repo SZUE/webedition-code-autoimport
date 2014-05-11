@@ -1329,24 +1329,24 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 		$_tableObj = new we_html_table($_attr, 12, 2);
 		$line = 0;
 		$_tableObj->setCol($line, 0, null, $this->getUserfield('Salutation', 'salutation'));
-		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('First', 'first_name'));
+		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('First', 'first_name'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Second', 'second_name'));
-		$_tableObj->setCol(++$line, 0, array('colspan' => 2), we_html_tools::getPixel(560, 20));
-		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('Address', 'address'));
+		$_tableObj->setCol( ++$line, 0, array('colspan' => 2), we_html_tools::getPixel(560, 20));
+		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('Address', 'address'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('HouseNo', 'houseno'));
-		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('PLZ', 'PLZ', 'text', 16, true));
+		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('PLZ', 'PLZ', 'text', 16, true));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('City', 'city'));
-		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('State', 'state'));
+		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('State', 'state'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Country', 'country'));
-		$_tableObj->setCol(++$line, 0, array('colspan' => 2), we_html_tools::getPixel(560, 20));
-		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('Tel_preselection', 'tel_pre'));
+		$_tableObj->setCol( ++$line, 0, array('colspan' => 2), we_html_tools::getPixel(560, 20));
+		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('Tel_preselection', 'tel_pre'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Telephone', 'telephone'));
-		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('Fax_preselection', 'fax_pre'));
+		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('Fax_preselection', 'fax_pre'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Fax', 'fax'));
-		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('Handy', 'mobile'));
+		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('Handy', 'mobile'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Email', 'email'));
-		$_tableObj->setCol(++$line, 0, array('colspan' => 2), we_html_tools::getPixel(520, 4));
-		$_tableObj->setCol(++$line, 0, array('colspan' => 2), we_html_tools::htmlFormElementTable($_description, g_l('modules_users', '[description]')));
+		$_tableObj->setCol( ++$line, 0, array('colspan' => 2), we_html_tools::getPixel(520, 4));
+		$_tableObj->setCol( ++$line, 0, array('colspan' => 2), we_html_tools::htmlFormElementTable($_description, g_l('modules_users', '[description]')));
 
 
 		$parts = array(
@@ -1564,36 +1564,24 @@ function delElement(elvalues,elem) {
 		foreach($this->workspaces as $k => $v){
 			switch($k){
 				case TEMPLATES_TABLE:
-					if(defined('WK')){//FIXME: WTF is WK??
-						break 2;
-					}
 					$title = g_l('modules_users', '[workspace_templates]');
 					$setValue = 'TEMPLATES_TABLE';
 					$showParent = $this->ParentWst;
 					$content1 = $this->ParentID ? $this->formInherits('_ParentWst', $this->ParentWst, g_l('modules_users', '[inherit_wst]'), 'document.getElementById(\'info' . $setValue . '\').style.display=(this.checked?\'inline\':\'none\');') : '';
 					break;
 				case NAVIGATION_TABLE:
-					if(defined('WK')){
-						break 2;
-					}
 					$title = g_l('modules_users', '[workspace_navigations]');
 					$setValue = 'NAVIGATION_TABLE';
 					$showParent = $this->ParentWsn;
 					$content1 = $this->ParentID ? $this->formInherits('_ParentWsn', $this->ParentWsn, g_l('modules_users', '[inherit_wsn]'), 'document.getElementById(\'info' . $setValue . '\').style.display=(this.checked?\'inline\':\'none\');') : '';
 					break;
 				case (defined('NEWSLETTER_TABLE') ? NEWSLETTER_TABLE : 'NEWSLETTER_TABLE'):
-					if(defined('WK')){
-						break 2;
-					}
 					$title = g_l('modules_users', '[workspace_newsletter]');
 					$setValue = 'NEWSLETTER_TABLE';
 					$showParent = $this->ParentWsnl;
 					$content1 = $this->ParentID ? $this->formInherits('_ParentWsnl', $this->ParentWsnl, g_l('modules_users', '[inherit_wsnl]'), 'document.getElementById(\'info' . $setValue . '\').style.display=(this.checked?\'inline\':\'none\');') : '';
 					break;
 				case (defined('OBJECT_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-					if(defined('WK')){
-						break 2;
-					}
 					$title = g_l('modules_users', '[workspace_objects]');
 					$setValue = 'OBJECT_TABLE';
 					$showParent = $this->ParentWso;
@@ -1682,14 +1670,14 @@ function delElement(elvalues,elem) {
 
 			if($parentWsp[$k]){
 				$this->DB_WE->query('SELECT Path FROM ' . $k . ' WHERE ID IN(' . implode(',', $parentWsp[$k]) . ')');
-				$parent = implode("\n", $this->DB_WE->getAll(true));
+				$parent = implode("<br/>", $this->DB_WE->getAll(true));
 			} else {
 				$parent = ' - ';
 			}
 
 			$parts[] = array(
 				'headline' => $title,
-				'html' => ($this->ParentID ? '<div id="info' . $setValue . '" style="' . ($showParent ? '' : 'display:none;') . '">' . we_html_tools::htmlAlertAttentionBox($parent, we_html_tools::TYPE_INFO, 600) . '</div>' : '') . $content1,
+				'html' => ($this->ParentID ? '<div id="info' . $setValue . '" style="' . ($showParent ? '' : 'display:none;') . '">' . we_html_tools::htmlAlertAttentionBox($parent, we_html_tools::TYPE_INFO, 600, false) . '</div>' : '') . $content1,
 				'space' => 200
 			);
 		}
@@ -2344,7 +2332,7 @@ function resetTabs(){
 
 top.content.hloaded=1;') .
 			$tab_header .
-			'<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . str_replace(" ", "&nbsp;", $headline1) . '&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", ($this->Path ? $this->Path : $this->getPath($this->ParentID))) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) . $we_tabs->getHTML() . '</div>' ;
+			'<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . str_replace(" ", "&nbsp;", $headline1) . '&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", ($this->Path ? $this->Path : $this->getPath($this->ParentID))) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) . $we_tabs->getHTML() . '</div>';
 	}
 
 	public static function getUsername($id, we_database_base $db = null){
@@ -2364,23 +2352,24 @@ top.content.hloaded=1;') .
 
 	static function setEffectiveWorkspaces($user, we_database_base $db, $onlyParent = false){
 		$workspaces = array(
-			FILE_TABLE => array('key' => 'workSpace', 'value' => array(), 'parent' => 0, 'parentKey' => 'ParentWs', 'keep' => false),
-			TEMPLATES_TABLE => array('key' => 'workSpaceTmp', 'value' => array(), 'parent' => 0, 'parentKey' => 'ParentWst', 'keep' => false),
-			NAVIGATION_TABLE => array('key' => 'workSpaceNav', 'value' => array(), 'parent' => 0, 'parentKey' => 'ParentWsn', 'keep' => false),
+			FILE_TABLE => array('key' => 'workSpace', 'value' => array(), 'parent' => 0, 'parentKey' => 'ParentWs', 'explodeValue' => true),
+			TEMPLATES_TABLE => array('key' => 'workSpaceTmp', 'value' => array(), 'parent' => 0, 'parentKey' => 'ParentWst', 'explodeValue' => true),
+			NAVIGATION_TABLE => array('key' => 'workSpaceNav', 'value' => array(), 'parent' => 0, 'parentKey' => 'ParentWsn', 'explodeValue' => true),
 		);
 
 		if(defined('OBJECT_FILES_TABLE')){
-			$workspaces[OBJECT_FILES_TABLE] = array('key' => 'workSpaceObj', 'value' => array(), 'parent' => 0, 'parentKey' => 'ParentWso', 'keep' => false);
+			$workspaces[OBJECT_FILES_TABLE] = array('key' => 'workSpaceObj', 'value' => array(), 'parent' => 0, 'parentKey' => 'ParentWso', 'explodeValue' => true);
 		}
+
 		if(defined('NEWSLETTER_TABLE')){
-			$workspaces[NEWSLETTER_TABLE] = array('key' => 'workSpaceNwl', 'value' => array(), 'parent' => 0, 'parentKey' => 'ParentWsnl', 'keep' => false);
+			$workspaces[NEWSLETTER_TABLE] = array('key' => 'workSpaceNwl', 'value' => array(), 'parent' => 0, 'parentKey' => 'ParentWsnl', 'explodeValue' => true);
 		}
 
 		if(defined('CUSTOMER_TABLE')){
-			$workspaces[CUSTOMER_TABLE] = array('key' => 'workSpaceCust', 'value' => array(), 'parent' => 0, 'parentKey' => 'ParentWsCust', 'keep' => true);
+			$workspaces[CUSTOMER_TABLE] = array('key' => 'workSpaceCust', 'value' => array(), 'parent' => 0, 'parentKey' => 'ParentWsCust', 'explodeValue' => false);
 		}
 
-
+//FIXME: onlyParent doesn't work correctly
 		$fields = array('ParentID');
 		foreach($workspaces as $cur){
 			$fields[] = $cur['key'];
@@ -2389,35 +2378,40 @@ top.content.hloaded=1;') .
 		$fields = implode(',', $fields);
 
 		$userGroups = array(); //	Get Groups user belongs to.
-		$db_tmp = new DB_WE();
 
+		$pids = array();
 		$db->query('SELECT ' . $fields . ' FROM ' . USER_TABLE . ' WHERE ID=' . intval($user) . ($onlyParent ? '' : ' OR Alias=' . intval($user)));
 		while($db->next_record()){
-			$pid = $db->f('ParentID');
-
+			$pids[] = $db->f('ParentID');
 			foreach($workspaces as &$cur){
-				if($cur['keep']){
-					$cur['value'][] = $db->f($cur['key']);
-				} else {
+				$cur['parent'] = $db->f($cur['parentKey']);
+				if($onlyParent){//we only need parentID
+					continue;
+				}
+				if($cur['explodeValue']){
 					// get workspaces
 					$a = explode(',', trim($db->f($cur['key']), ','));
 					foreach($a as $v){
 						$cur['value'][] = $v;
 					}
+				} else {
+					$cur['value'][] = $db->f($cur['key']);
 				}
-				$cur['parent'] = $db->f($cur['parentKey']);
 			}
 			unset($cur);
+		}
+
+		foreach($pids as $pid){
 			while($pid){ //	For each group
 				$userGroups[] = $pid;
 
-				if(($row = getHash('SELECT ' . $fields . ' FROM ' . USER_TABLE . ' WHERE ID=' . intval($pid), $db_tmp))){
+				if(($row = getHash('SELECT ' . $fields . ' FROM ' . USER_TABLE . ' WHERE ID=' . intval($pid), $db))){
 					$pid = $row['ParentID'];
 					foreach($workspaces as &$cur){
 						if($cur['parent']){
 							// get workspaces
 							$a = explode(',', trim($row[$cur['key']], ','));
-							foreach($a as $k => $v){
+							foreach($a as $v){
 								$cur['value'][] = $v;
 							}
 						}
@@ -2456,7 +2450,7 @@ top.content.hloaded=1;') .
 	 *
 	 * @param type $useSalt DB-field
 	 * @param type $username DB-field
-	 * @param type $password DB-field!!! //needs to be cause of salt!
+	 * @param type $storedPassword DB-field!!! //needs to be cause of salt!
 	 * @param type $clearPassword //posted password
 	 */
 	static function comparePasswords($useSalt, $username, $storedPassword, $clearPassword){

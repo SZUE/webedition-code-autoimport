@@ -187,7 +187,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsScrip
 		}
 		?></table><?php
 		?>
-  <script type="text/javascript""><!--
+  <script type="text/javascript"><!--
 	var k;
 
 		if (NN4 == false) {

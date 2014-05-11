@@ -24,11 +24,9 @@
  */
 //TODO: do we need the other navigation cmds here?
 
-switch(weRequest('string','we_cmd','',0)){
-	case 'edit_navigation_ifthere':
-	case 'edit_navigation':
-		$mod = 'navigation';
-		$INCLUDE = 'we_modules/show_frameset.php';
-		break;
+switch($cmd){
+	case 'navigation_edit_ifthere':
+	case 'navigation_edit':
+		$GLOBALS['mod'] = 'navigation';
+		return 'we_modules/show_frameset.php';
 }
-

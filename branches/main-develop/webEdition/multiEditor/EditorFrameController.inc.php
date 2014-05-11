@@ -489,7 +489,7 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 						this.EditorFrames[frameId].getDocumentReference().closeAllModalWindows();
 					}
 					// unlock document
-					top.we_cmd('unlock', this.EditorFrames[frameId].getEditorDocumentId(), '<?php print $_SESSION["user"]["ID"]; ?>', this.EditorFrames[frameId].getEditorEditorTable(), this.EditorFrames[frameId].getEditorTransaction());
+					top.we_cmd('users_unlock', this.EditorFrames[frameId].getEditorDocumentId(), '<?php echo $_SESSION["user"]["ID"]; ?>', this.EditorFrames[frameId].getEditorEditorTable(), this.EditorFrames[frameId].getEditorTransaction());
 					top.we_cmd("remove_from_editor_plugin", this.EditorFrames[frameId].getEditorTransaction());
 
 					if (this.getEditorFrame(frameId).EditorExitDocQuestionDialog) {

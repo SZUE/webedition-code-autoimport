@@ -394,7 +394,7 @@ top.content.hloaded = 1;');
 	}
 
 	function getHTMLEditorBody(){
-		$hiddens = array('cmd' => 'edit_customer', 'pnt' => 'edbody', 'activ_sort' => 0);
+		$hiddens = array('cmd' => 'customer_edit', 'pnt' => 'edbody', 'activ_sort' => 0);
 
 		if(isset($_REQUEST['home']) && $_REQUEST['home']){
 			$hiddens['cmd'] = 'home';
@@ -835,7 +835,7 @@ failure: function(o) {
 		$search->setRow(0, array('valign' => 'top'));
 		$search->setCol(0, 0, array('class' => 'defaultfont', 'colspan' => 3, 'style' => 'padding-bottom: 3px;'), g_l('modules_customer', '[search_for]'));
 
-		$select = new we_html_select(array('name' => 'search_result', 'style' => 'width:550px;', 'onDblClick' => 'opener.' . $this->topFrame . ".we_cmd('edit_customer',document.we_form.search_result.options[document.we_form.search_result.selectedIndex].value)", "size" => 20));
+		$select = new we_html_select(array('name' => 'search_result', 'style' => 'width:550px;', 'onDblClick' => 'opener.' . $this->topFrame . ".we_cmd('customer_edit',document.we_form.search_result.options[document.we_form.search_result.selectedIndex].value)", "size" => 20));
 
 		if($mode){
 			we_customer_add::getHTMLSearch($this, $search, $select);

@@ -216,7 +216,7 @@ class toolfactory_models_Default extends we_app_Model{
 		$this->services = we_tool_lookup::getAllToolServices($myid, true);
 
 		$this->languages = we_tool_lookup::getAllToolLanguages($myid, '/lang', true);
-		if(empty($this->languages)){
+		if(!($this->languages)){
 			$this->languages = array('a', 'b');
 		}
 

@@ -179,7 +179,7 @@ class we_net_rpc_JsonRpc{
 				  return $error->getError();
 				  }
 				 */
-				$rpcSession = new Zend_Session_Namespace("we_net_rpc_JsonRpc");
+				$rpcSession = new we_sdk_namespace("we_net_rpc_JsonRpc");
 
 				/* If no referer domain has yet been saved in the session */
 				if(!isset($rpcSession->referer_domain)){
@@ -199,7 +199,7 @@ class we_net_rpc_JsonRpc{
 				/* Retrieve the referer component */
 				$refererDomain = $regs[1];
 
-				$rpcSession = new Zend_Session_Namespace("we_net_rpc_JsonRpc");
+				$rpcSession = new we_sdk_namespace("we_net_rpc_JsonRpc");
 
 				/* Is the method accessible? */
 				/* if (isset($rpcSession->referer_domain) && $refererDomain != $rpcSession->referer_domain) {

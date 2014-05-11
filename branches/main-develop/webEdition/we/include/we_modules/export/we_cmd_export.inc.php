@@ -22,16 +22,12 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-switch(weRequest('string','we_cmd','',0)){
-	case 'edit_export_ifthere':
-	case 'edit_export':
-		$mod = 'export';
-		$INCLUDE = 'we_modules/show_frameset.php';
-		break;
-	case 'openExportDirselector':
-		$INCLUDE = 'we_modules/export/we_exportDirSelectorFrameset.php';
-		break;
-		break;
+switch($cmd){
+	case 'export_edit_ifthere':
+	case 'export_edit':
+		$GLOBALS['mod'] = 'export';
+		return 'we_modules/show_frameset.php';
+
+	case 'export_openDirselector':
+		return 'we_modules/export/we_exportDirSelectorFrameset.php';
 }
-
-

@@ -53,7 +53,7 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd{
 
 		$controller = Zend_Controller_Front::getInstance();
 		$appName = $controller->getParam('appName');
-		$session = new Zend_Session_Namespace($appName);
+		$session = new we_sdk_namespace($appName);
 		if(!isset($session->model)){
 			throw new we_service_Exception(
 			'Model is not set in session!', we_service_ErrorCodes::kModelNotSetInSession);
@@ -178,7 +178,7 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd{
 		$IdToDel = $args[0];
 		$controller = Zend_Controller_Front::getInstance();
 		$appName = $controller->getParam('appName');
-		$session = new Zend_Session_Namespace($appName);
+		$session = new we_sdk_namespace($appName);
 		if(!isset($session->model)){
 			throw new we_service_Exception(
 			'Model is not set in session!', we_service_ErrorCodes::kModelNotSetInSession);
@@ -243,7 +243,7 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd{
 
 		$controller = Zend_Controller_Front::getInstance();
 		$appName = $controller->getParam('appName');
-		$session = new Zend_Session_Namespace($appName);
+		$session = new we_sdk_namespace($appName);
 		if(!isset($session->model)){
 			throw new we_service_Exception('Model is not set in session!', we_service_ErrorCodes::kModelNotSetInSession);
 		}
@@ -277,7 +277,7 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd{
 
 		$controller = Zend_Controller_Front::getInstance();
 		$appName = $controller->getParam('appName');
-		$session = new Zend_Session_Namespace($appName);
+		$session = new we_sdk_namespace($appName);
 		if(!isset($session->model)){
 			throw new we_service_Exception('Model is not set in session!', we_service_ErrorCodes::kModelNotSetInSession);
 		}
@@ -302,7 +302,7 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd{
 
 		$controller = Zend_Controller_Front::getInstance();
 		$appName = $controller->getParam('appName');
-		$session = new Zend_Session_Namespace($appName);
+		$session = new we_sdk_namespace($appName);
 		$inst = new toolfactory_service_Install();
 		$appdataArray = $inst->getApplist();
 		$appdata = $appdataArray[$args[0]];
@@ -328,7 +328,7 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd{
 		$IdToTGZ = $args[0];
 		$controller = Zend_Controller_Front::getInstance();
 		$appName = $controller->getParam('appName');
-		$session = new Zend_Session_Namespace($appName);
+		$session = new we_sdk_namespace($appName);
 		if(!isset($session->model)){
 			throw new we_service_Exception(
 			'Model is not set in session!', we_service_ErrorCodes::kModelNotSetInSession);

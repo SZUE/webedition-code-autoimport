@@ -19,26 +19,34 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_cms
+ * @package    webEdition_toolfactory
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-// include autoload function
-require_once ($_SERVER['DOCUMENT_ROOT']. '/webEdition/lib/we/core/autoload.inc.php');
+//session is set by zend....
 
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-// get controller instabce
+we_html_tools::protect();
+
+// include configuration
+include_once(WE_APPS_PATH . $TOOLNAME . '/conf/meta.conf.php');
+
+// get controller instance
 $controller = Zend_Controller_Front::getInstance();
 
-// set path fpr controller directory
+// set path for controller directory
 $controller->setControllerDirectory('./controllers');
+
+// turn on exceptions, if false implement errorAction
+$controller->throwExceptions(true);
 
 // disables automatic view rendering
 $controller->setParam('noViewRenderer', true);
 
-$controller->throwExceptions(true);
-
-// alerts a message and exits when a user is not logged in or when the session is expired
-we_core_Permissions::protect();
+// set some app specific parameter
+$controller->setParam('appDir', WE_APPS_DIR . $TOOLNAME); // dirname(str_replace($_SERVER['DOCUMENT_ROOT'], '', $_SERVER['SCRIPT_FILENAME'])));
+$controller->setParam('appPath', WE_APPS_PATH . $TOOLNAME);
+$controller->setParam('appName', $TOOLNAME);
 
 // run!
 $controller->dispatch();

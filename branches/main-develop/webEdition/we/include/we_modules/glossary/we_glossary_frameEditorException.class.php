@@ -39,8 +39,8 @@ class we_glossary_frameEditorException extends we_glossary_frameEditor{
 
 		$tabNr = isset($_REQUEST["tabnr"]) ? (($weGlossaryFrames->View->Glossary->IsFolder && $_REQUEST["tabnr"] != 1) ? 1 : $_REQUEST["tabnr"]) : 1;
 
-		$_js = $weGlossaryFrames->topFrame . '.editor.edheader.location="' . $weGlossaryFrames->frameset . '?pnt=edheader&cmd=view_exception&cmdid=' . $_REQUEST['cmdid'] . '";'
-			. $weGlossaryFrames->topFrame . '.editor.edfooter.location="' . $weGlossaryFrames->frameset . '?pnt=edfooter&cmd=view_exception&cmdid=' . $_REQUEST['cmdid'] . '"';
+		$_js = $weGlossaryFrames->topFrame . '.editor.edheader.location="' . $weGlossaryFrames->frameset . '?pnt=edheader&cmd=glossary_view_exception&cmdid=' . $_REQUEST['cmdid'] . '";'
+			. $weGlossaryFrames->topFrame . '.editor.edfooter.location="' . $weGlossaryFrames->frameset . '?pnt=edfooter&cmd=glossary_view_exception&cmdid=' . $_REQUEST['cmdid'] . '"';
 
 		$js = we_html_element::jsElement($_js);
 

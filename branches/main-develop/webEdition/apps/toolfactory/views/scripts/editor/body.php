@@ -660,4 +660,3 @@ $htmlPage->addInlineCSS($cssLoadingWheel);
 
 
 echo $htmlPage->getHTML();
-

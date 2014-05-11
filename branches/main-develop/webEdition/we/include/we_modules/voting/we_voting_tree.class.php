@@ -91,12 +91,12 @@ function doClick(id,typ){
 			top.content.we_cmd("save_voting");
 		} else {
 			top.content.usetHot();
-			cmd = "edit_voting";
+			cmd = "voting_edit";
 			var node=' . $this->topFrame . '.get(id);
 			' . $this->topFrame . '.editor.edbody.location="' . $this->frameset . '?pnt=edbody&cmd="+cmd+"&cmdid="+node.id+"&tabnr="+' . $this->topFrame . '.activ_tab;
 		}
 	} else {
-		cmd = "edit_voting";
+		cmd = "voting_edit";
 		var node=' . $this->topFrame . '.get(id);
 		' . $this->topFrame . '.editor.edbody.location="' . $this->frameset . '?pnt=edbody&cmd="+cmd+"&cmdid="+node.id+"&tabnr="+' . $this->topFrame . '.activ_tab;
 	}

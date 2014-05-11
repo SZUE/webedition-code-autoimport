@@ -579,7 +579,7 @@ abstract class we_html_tools{
 				'type' => 'hidden',
 				'name' => sprintf($name, '_hour'),
 				'id' => sprintf($name, '_hour'),
-				'value' => $hour
+				'value' => isset($hour) ? $hour : 0
 			)));
 			$_showHour = false;
 		}
@@ -599,7 +599,7 @@ abstract class we_html_tools{
 				'type' => 'hidden',
 				'name' => sprintf($name, '_minute'),
 				'id' => sprintf($name, '_minute'),
-				'value' => $minute
+				'value' => isset($minute) ? $minute : 0
 			)));
 			$_showMinute = false;
 		}
@@ -711,7 +711,7 @@ abstract class we_html_tools{
 			), $text);
 
 		return self::htmlDialogLayout(
-				(empty($script) ? '' : we_html_element::jsElement($script)) . $content->getHtml()
+				($script ? we_html_element::jsElement($script) : '') . $content->getHtml()
 				, '', we_html_button::position_yes_no_cancel($yesButton, $noButton, $cancelButton), '99%', 0);
 	}
 

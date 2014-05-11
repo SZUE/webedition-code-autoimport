@@ -22,20 +22,15 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-switch(weRequest('string', 'we_cmd', '', 0)){
-	case 'finish_workflow':
-		$INCLUDE = 'we_modules/workflow/we_finish_workflow.inc.php';
-		break;
-
-	case 'in_workflow':
-	case 'pass':
-	case 'decline':
-		$INCLUDE = 'we_modules/workflow/we_workflow_win.inc.php';
-		break;
-
-	case 'edit_workflow':
-	case 'edit_workflow_ifthere':
-		$mod = 'workflow';
-		$INCLUDE = 'we_modules/show_frameset.php';
-		break;
+switch($cmd){
+	case 'workflow_finish':
+		return 'we_modules/workflow/we_workflow_finish.inc.php';
+	case 'workflow_isIn':
+	case 'workflow_pass':
+	case 'workflow_decline':
+		return 'we_modules/workflow/we_workflow_win.inc.php';
+	case 'workflow_edit':
+	case 'workflow_edit_ifthere':
+		$GLOBALS['mod'] = 'workflow';
+		return 'we_modules/show_frameset.php';
 }

@@ -215,7 +215,7 @@ switch(weRequest('string', 'cmd', '', 0)){
 	default:
 }
 ?>
-<script type="text/javascript" >
+<script type="text/javascript" ><!--
 
 	function dispatch(cmd) {
 		document.dispatcherForm.elements["cmd[0]"].value = cmd;
@@ -224,7 +224,7 @@ switch(weRequest('string', 'cmd', '', 0)){
 		}
 		document.dispatcherForm.submit();
 	}
-
+//-->
 </script>
 </head>
 

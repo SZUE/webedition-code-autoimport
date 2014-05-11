@@ -89,7 +89,7 @@ class we_newsletter_tree extends weMainTree{
 
 				function doClick(id,typ){
 					var node=' . $this->topFrame . '.get(id);
-    				' . $this->topFrame . '.we_cmd(\'edit_newsletter\',node.id,node.typ,node.table);
+    				' . $this->topFrame . '.we_cmd(\'newsletter_edit\',node.id,node.typ,node.table);
 				}
 				' . $this->topFrame . '.loaded=1;
 			' . $this->getJSMakeNewEntry();

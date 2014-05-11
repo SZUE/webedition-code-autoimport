@@ -49,6 +49,7 @@ class we_langlink_listview extends listviewBase{
 	var $ownlanguage = ''; // effective language of document/object
 	var $dirsearchtable = '';
 	var $showself = false;
+	var $recursive = true; // #7023: search for default corresponding language link-up in parent folders
 
 	/**
 	 * we_listview()
@@ -65,11 +66,12 @@ class we_langlink_listview extends listviewBase{
 	 * @param   searchable 	  boolean - if false then show also documents which are not marked as searchable
 	 * @return we_listview
 	 */
-	function __construct($name, $rows, $offset, $order, $desc, $linkType, $cols, $showself, $id, $pagelanguage, $ownlanguage, $hidedirindex, $objectseourls){
+	function __construct($name, $rows, $offset, $order, $desc, $linkType, $cols, $showself, $id, $pagelanguage, $ownlanguage, $hidedirindex, $objectseourls, $recursive){
 		$id = intval($id);
 		parent::__construct($name, $rows, $offset, $order, $desc, '', false, '', $cols, '', '', '', '', '', 'off', $id);
 
 		$this->showself = $showself;
+		$this->recursive = $recursive;
 		$this->objectseourls = $objectseourls;
 		$this->hidedirindex = $hidedirindex;
 		$this->id = $id;
@@ -116,7 +118,7 @@ class we_langlink_listview extends listviewBase{
 					$this->DB_WE->next_record();
 					$this->foundlinks[$this->DB_WE->Record['Locale']] = $this->DB_WE->Record;
 				} else {
-					$this->getParentData($this->id, $langkey);
+					$this->recursive ? $this->getParentData($this->id, $langkey) : '';
 				}
 			}
 

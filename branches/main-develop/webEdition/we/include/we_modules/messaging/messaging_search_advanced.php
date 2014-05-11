@@ -34,8 +34,7 @@ $messaging->init($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[search_advanced]')) .
  STYLESHEET;
 ?>
-<script type="text/javascript">
-<!--
+<script type="text/javascript"><!--
 <?php
 if(isset($_REQUEST['save']) && $_REQUEST['save'] == 1){
 	$messaging->set_search_settings($_REQUEST['search_fields'], (isset($_REQUEST['search_folders']) && is_array($_REQUEST['search_folders'])) ? $_REQUEST['search_folders'] : array());

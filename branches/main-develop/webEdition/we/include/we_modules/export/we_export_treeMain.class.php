@@ -85,12 +85,12 @@ class we_export_treeMain extends weTree{
 							top.content.we_cmd("save_export");
 						} else {
 							top.content.usetHot();
-							cmd = "edit_export";
+							cmd = "export_edit";
 							var node=' . $this->topFrame . '.get(id);
 							' . $this->topFrame . '.editor.edbody.location="' . $this->frameset . '?pnt=edbody&cmd="+cmd+"&cmdid="+node.id+"&tabnr="+' . $this->topFrame . '.activ_tab;
 						}
 					} else {
-						cmd = "edit_export";
+						cmd = "export_edit";
 						var node=' . $this->topFrame . '.get(id);
 						' . $this->topFrame . '.editor.edbody.location="' . $this->frameset . '?pnt=edbody&cmd="+cmd+"&cmdid="+node.id+"&tabnr="+' . $this->topFrame . '.activ_tab;
 					}

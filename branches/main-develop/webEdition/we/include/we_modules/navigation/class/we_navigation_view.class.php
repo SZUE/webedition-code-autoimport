@@ -495,30 +495,33 @@ function closeAllStats(){
 }
 
 function setFieldValue(fieldNameTo, fieldFrom){
-	if(weNavTitleField[fieldFrom.value] != undefined){
-		eval("document.we_form."+fieldNameTo+".value=\'"+weNavTitleField[fieldFrom.value]+"\'");
-		weInputRemoveClass(fieldFrom, "weMarkInputError");
-	} else if(fieldFrom.value=="") {
-		eval("document.we_form."+fieldNameTo+".value=\'\'");
-		weInputRemoveClass(fieldFrom, "weMarkInputError");
+	if(document.we_form.SelectionType.value === "doctype" && (fieldNameTo === "TitleField" || fieldNameTo === "SorrtField")){
+			eval("document.we_form."+fieldNameTo+".value=fieldFrom.value");
+			weInputRemoveClass(fieldFrom, "weMarkInputError");
 	} else {
-		weInputAppendClass(fieldFrom, "weMarkInputError");
+		if(weNavTitleField[fieldFrom.value] != undefined){
+			eval("document.we_form."+fieldNameTo+".value=\'"+weNavTitleField[fieldFrom.value]+"\'");
+			weInputRemoveClass(fieldFrom, "weMarkInputError");
+		} else if(fieldFrom.value=="") {
+			eval("document.we_form."+fieldNameTo+".value=\'\'");
+			weInputRemoveClass(fieldFrom, "weMarkInputError");
+		} else {
+			weInputAppendClass(fieldFrom, "weMarkInputError");
+		}
 	}
-
 }
 
 function putTitleField(field){
 	' . $this->topFrame . '.mark();
 	document.we_form.TitleField.value=field;
-	document.we_form.__TitleField.value = field.substring(field.indexOf("_")+1,field.length);
+	document.we_form.__TitleField.value = document.we_form.SelectionType.value === "doctype" ? field : field.substring(field.indexOf("_")+1,field.length);
 	weInputRemoveClass(document.we_form.__TitleField, "weMarkInputError");
 }
 
 function putSortField(field){
 	' . $this->topFrame . '.mark();
-	document.we_form.SortField.value=field;
-	var __field=field.substr(field.indexOf("_")+1,field.length);
-	document.we_form.__SortField.value=__field;
+	document.we_form.SortField.value = field;
+	document.we_form.__SortField.value = document.we_form.SelectionType.value === "doctype" ? field : field.substring(field.indexOf("_")+1,field.length);
 	weInputRemoveClass(document.we_form.__SortField, "weMarkInputError");
 }
 

@@ -64,8 +64,7 @@ echo $jsGUI->getJS(JS_DIR) .
  we_html_multiIconBox::getJs();
 ?>
 
-<script type="text/javascript">
-	<!--
+<script type="text/javascript"><!--
 	function toggleObject(id) {
 		var elem = document.getElementById(id);
 		if (elem.style.display == "none") {

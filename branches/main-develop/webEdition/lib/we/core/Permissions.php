@@ -27,7 +27,7 @@
  * @package    we_core
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_core_Permissions{
+abstract class we_core_Permissions{
 
 	/**
 	 * check on specific permission
@@ -44,20 +44,17 @@ class we_core_Permissions{
 	 *
 	 * @return string
 	 */
+
+	//FIXME: needed for old apps!
 	static function protect(){
-
-		if(!isset($_SESSION["user"]["Username"]) || $_SESSION["user"]["Username"] == ""){
-			$page = new we_ui_layout_HTMLPage();
-			$page->addJSFile(JS_DIR . 'we_showMessage.js');
-
-			$message = we_util_Strings::quoteForJSString(g_l('alert' ,'[perms_no_permissions]'), false);
-
-			$messageCall = we_message_reporting::getShowMessageCall($message, we_message_reporting::WE_MESSAGE_NOTICE);
-
-			$page->addInlineJS($messageCall . 'if (opener) {top.close();} else {location="/webEdition"}');
-			print $page->getHTML();
-			exit();
+		//correct some settings
+		if(!isset($GLOBALS['TOOLNAME']) && isset($GLOBALS['controller'])){
+			$GLOBALS['controller']->setParam('appDir', str_replace($_SERVER['DOCUMENT_ROOT'], '', dirname($_SERVER['SCRIPT_FILENAME'])));
 		}
+		//make sure apps work! correct old apps!!!
+		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+
+		we_html_tools::protect();
 	}
 
 }

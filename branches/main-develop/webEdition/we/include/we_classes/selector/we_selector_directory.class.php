@@ -553,7 +553,7 @@ function setDir(id){
 	}
 
 	function printSetDirHTML(){
-		print '<script type="text/javascript"><!--
+		echo '<script type="text/javascript"><!--
 top.clearEntries();' .
 				$this->printCmdAddEntriesHTML() .
 				$this->printCMDWriteAndFillSelectorHTML() .
@@ -562,7 +562,7 @@ top.clearEntries();' .
 			if($this->id == 0){
 				$this->path = '/';
 			}
-			print '
+			echo '
 top.unselectAllFiles();
 top.currentPath = "' . $this->path . '";
 top.currentID = "' . $this->id . '";
@@ -605,7 +605,7 @@ function selectFile(id){
 	}
 
 	function printNewFolderHTML(){
-		print '<script type="text/javascript"><!--
+		echo '<script type="text/javascript"><!--
 top.clearEntries();
 top.makeNewFolder=1;' .
 				$this->printCmdAddEntriesHTML() .
@@ -709,7 +709,7 @@ var old=0;');
 
 	function printRenameFolderHTML(){
 		if(we_users_util::userIsOwnerCreatorOfParentDir($this->we_editDirID, $this->table) && in_workspace($this->we_editDirID, get_ws($this->table), $this->table, $this->db)){
-			print '<script type="text/javascript"><!--
+			echo '<script type="text/javascript"><!--
 top.clearEntries();
 top.we_editDirID=' . $this->we_editDirID . ';' .
 					$this->printCmdAddEntriesHTML() .

@@ -110,7 +110,7 @@ if($GLOBALS['we_doc']->EditPageNr != WE_EDITPAGE_WORKSPACE){
 		"forceRightHeadline" => 1
 	);
 
-	$button = we_html_button::create_button("ws_from_class", "javascript:we_cmd('ws_from_class');_EditorFrame.setEditorIsHot(true);");
+	$button = we_html_button::create_button("object_ws_from_class", "javascript:we_cmd('object_ws_from_class');_EditorFrame.setEditorIsHot(true);");
 
 	$parts[] = array(
 		"headline" => "",

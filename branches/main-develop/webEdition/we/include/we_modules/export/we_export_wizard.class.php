@@ -258,7 +258,7 @@ class we_export_wizard{
 
 		if($extype == "wxml"){
 			return we_html_element::jsElement('
-top.opener.top.we_cmd("edit_export_ifthere");
+top.opener.top.we_cmd("export_edit_ifthere");
 top.close();');
 			exit();
 		}

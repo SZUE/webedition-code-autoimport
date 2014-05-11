@@ -42,6 +42,8 @@ class we_workflow_frames extends weModuleFrames {
 				return $this->getHTMLLogQuestion();
 			case "log":
 				return $this->getHTMLLog($mode, $type);
+			case 'edit':
+				return $this->getHTMLEditorBody();
 			default:
 				return parent::getHTML($what);
 		}
@@ -61,7 +63,7 @@ class we_workflow_frames extends weModuleFrames {
 
 		// TODO: move shared code for (some of the) modules-tree (not based on weTree!!) to new weModulesTree.class
 		?>
-		<script type="text/javascript">
+		<script type="text/javascript"><!--
 
 			var loaded = 0;
 			var hot = 0;
@@ -89,7 +91,7 @@ class we_workflow_frames extends weModuleFrames {
 				fr.writeln("wasdblclick=0;");
 				fr.writeln("tout=null");
 				fr.writeln("function doClick(id,ct,table){");
-				fr.writeln("if(ct=='folder') top.content.we_cmd('edit_workflow',id,ct,table); else if(ct=='file') top.content.we_cmd('show_document',id,ct,table);");
+				fr.writeln("if(ct=='folder') top.content.we_cmd('workflow_edit',id,ct,table); else if(ct=='file') top.content.we_cmd('show_document',id,ct,table);");
 				fr.writeln("}");
 				fr.writeln("top.content.loaded=1;");
 				fr.writeln("</" + "script>");
@@ -315,6 +317,7 @@ class we_workflow_frames extends weModuleFrames {
 			var startloc = 0;
 
 			self.focus();
+			//-->
 		</script>
 		<?php
 		//end ex we_workflow_moduleFrames::getJSTreeCode()

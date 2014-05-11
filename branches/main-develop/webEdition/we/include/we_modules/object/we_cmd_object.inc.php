@@ -22,73 +22,59 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-switch(weRequest('string','we_cmd','',0)){
-//	case 'edit_object_ifthere':
-//	case 'edit_object':
-//		$mod='object';
-//		$INCLUDE = 'we_modules/show_frameset.php';
-//		break;
+switch($cmd){
+	case 'object_delete_entry_at_class':
+	case 'object_up_entry_at_class':
+	case 'object_down_entry_at_class':
+	case 'object_insert_entry_at_class':
+	case 'object_reload_entry_at_class':
+	case 'object_down_meta_at_class':
+	case 'object_insert_meta_at_class':
+	case 'object_delete_meta_class':
+	case 'object_up_meta_at_class':
+	case 'object_add_user_to_field':
+	case 'object_del_user_from_field':
+	case 'object_del_all_users':
+	case 'object_remove_image_at_class':
+	case 'object_delete_link_at_class':
+	case 'object_change_link_at_class':
+	case 'object_change_multiobject_at_class':
+		return 'we_modules/object/we_editor_contentobject_load.inc.php';
 
-	case 'delete_entry_at_class':
-	case 'up_entry_at_class':
-	case 'down_entry_at_class':
-	case 'insert_entry_at_class':
-	case 'reload_entry_at_class':
-	case 'down_meta_at_class':
-	case 'insert_meta_at_class':
-	case 'delete_meta_class':
-	case 'up_meta_at_class':
-	case 'add_user_to_field':
-	case 'del_user_from_field':
-	case 'del_all_users':
-	case 'remove_image_at_class':
-	case 'delete_link_at_class':
-	case 'change_link_at_class':
-	case 'change_multiobject_at_class':
-		$INCLUDE = 'we_modules/object/we_editor_contentobject_load.inc.php';
-		break;
+	case 'object_reload_entry_at_object':
+	case 'object_down_meta_at_object':
+	case 'object_insert_meta_at_object':
+	case 'object_delete_meta_at_object':
+	case 'object_up_meta_at_object':
+	case 'object_change_objectlink':
+	case 'object_remove_image_at_object':
+	case 'object_delete_link_at_object':
+	case 'object_change_link_at_object':
+		return 'we_modules/object/we_editor_contentobjectFile_load.inc.php';
 
-	case 'reload_entry_at_object':
-	case 'down_meta_at_object':
-	case 'insert_meta_at_object':
-	case 'delete_meta_at_object':
-	case 'up_meta_at_object':
-	case 'change_objectlink':
-	case 'remove_image_at_object':
-	case 'delete_link_at_object':
-	case 'change_link_at_object':
-		$INCLUDE = 'we_modules/object/we_editor_contentobjectFile_load.inc.php';
-		break;
-
-	case 'add_css':
-	case 'del_css':
-	case 'add_workspace':
-	case 'del_workspace':
-	case 'add_extraworkspace':
-	case 'del_extraworkspace':
-	case 'changeTempl_ob':
-	case 'ws_from_class':
+	case 'object_add_css':
+	case 'object_del_css':
+	case 'object_add_workspace':
+	case 'object_del_workspace':
+	case 'object_add_extraworkspace':
+	case 'object_del_extraworkspace':
+	case 'object_changeTempl_ob':
+	case 'object_ws_from_class':
 //	In this file we cant work with WE_OBJECT_MODULE_PATH, because a prefix is already set in : we_cmd.php
-		$INCLUDE = 'we_editors/we_editor.inc.php';
-		break;
+		return 'we_editors/we_editor.inc.php';
 
-	case 'toggleExtraWorkspace':
-		$INCLUDE = 'we_modules/object/we_object_cmds.inc.php';
-		break;
+	case 'object_toggleExtraWorkspace':
+		return 'we_modules/object/we_object_cmds.inc.php';
 
-	case 'obj_search':
-		$INCLUDE = 'we_modules/object/search_submit.php';
-		break;
+	case 'object_obj_search':
+		return 'we_modules/object/search_submit.php';
 
-	case 'preview_objectFile':
-		$INCLUDE = 'we_modules/object/we_object_showDocument.inc.php';
-		break;
+	case 'object_preview_objectFile':
+		return 'we_modules/object/we_object_showDocument.inc.php';
 
-	case 'create_tmpfromClass':
-		$INCLUDE = 'we_modules/object/we_object_createTemplate.inc.php';
-		break;
+	case 'object_create_tmpfromClass':
+		return 'we_modules/object/we_object_createTemplate.inc.php';
 
-	case 'editObjectTextArea':
-		$INCLUDE = 'we_editors/we_editta.inc.php';
-		break;
+	case 'object_editObjectTextArea':
+		return 'we_editors/we_editta.inc.php';
 }

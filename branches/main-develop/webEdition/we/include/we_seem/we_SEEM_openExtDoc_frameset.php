@@ -44,7 +44,7 @@ $newUrl = $arr["scheme"] . "://" . $arr["host"] . ( isset($arr["port"]) ? (":" .
 //	we also need some functionality here to check if the location of the doc was cahnged
 echo we_html_tools::getHtmlTop();
 ?>
-<script type="text/javascript">
+<script type="text/javascript"><!--
 
 	var _EditorFrame = top.weEditorFrameController.getEditorFrame(window.name);
 
@@ -97,6 +97,7 @@ echo we_html_tools::getHtmlTop();
 			extDocFooter.location = "<?php print WEBEDITION_DIR . "we/include/we_seem/we_SEEM_openExtDoc_footer.php" ?>";
 		}
 	}
+	//-->
 </script>
 </head>
 <frameset onLoad="_EditorFrame.initEditorFrameData({'EditorIsLoading': false});" rows="40,*,40" framespacing="0" border="0" frameborder="NO">

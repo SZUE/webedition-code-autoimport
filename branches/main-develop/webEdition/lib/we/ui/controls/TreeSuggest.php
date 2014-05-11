@@ -24,10 +24,9 @@
 /**
  * Includes autoload function
  */
-require_once ($_SERVER['DOCUMENT_ROOT']. '/webEdition/lib/we/core/autoload.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-
-we_core_Permissions::protect();
+we_html_tools::protect();
 
 /**
  * get json output
@@ -64,7 +63,7 @@ if(isset($sessionName) && $sessionName !== '' && isset($id) && $id !== ''){
 	/**
 	 * get the session data (open nodes) of the tree
 	 */
-	$session = new Zend_Session_Namespace($sessionName);
+	$session = new we_sdk_namespace($sessionName);
 
 	if(isset($close)){
 		//if id exists
@@ -92,7 +91,7 @@ if(isset($sessionName) && $sessionName !== '' && isset($id) && $id !== ''){
 		 */
 		$response = '{"ResultSet":{"Result":[';
 
-		if(!empty($nodes)){
+		if($nodes){
 			$nodesCount = count($nodes);
 
 			$m = 0;
