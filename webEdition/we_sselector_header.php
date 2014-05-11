@@ -38,11 +38,7 @@ echo we_html_tools::getHtmlTop() .
 	function addOption(txt, id) {
 		var a = document.forms["we_form"].elements["lookin"];
 		a.options[a.options.length] = new Option(txt, id);
-		if (a.options.length > 0)
-			a.selectedIndex = a.options.length - 1;
-		else
-			a.selectedIndex = 0;
-
+		a.selectedIndex = (a.options.length > 0 ? a.options.length - 1 : 0);
 	}
 
 	function openFile() {
@@ -52,7 +48,7 @@ echo we_html_tools::getHtmlTop() .
 
 	function reorder(name) {
 		var order = 0;
-		if (name == "name")
+		if (name == "name") {
 			if (name_ord == 1) {
 				order = 10;
 				name_ord = 0;
@@ -60,7 +56,8 @@ echo we_html_tools::getHtmlTop() .
 				order = 11;
 				name_ord = 1;
 			}
-		if (name == "type")
+		}
+		if (name == "type") {
 			if (type_ord == 1) {
 				order = 20;
 				type_ord = 0;
@@ -68,7 +65,8 @@ echo we_html_tools::getHtmlTop() .
 				order = 21;
 				type_ord = 1;
 			}
-		if (name == "date")
+		}
+		if (name == "date") {
 			if (date_ord == 1) {
 				order = 30;
 				date_ord = 0;
@@ -76,7 +74,8 @@ echo we_html_tools::getHtmlTop() .
 				order = 31;
 				date_ord = 1;
 			}
-		if (name == "size")
+		}
+		if (name == "size") {
 			if (size_ord == 1) {
 				order = 40;
 				size_ord = 0;
@@ -84,7 +83,7 @@ echo we_html_tools::getHtmlTop() .
 				order = 41;
 				size_ord = 1;
 			}
-
+		}
 		top.fscmd.reorderDir(top.currentDir, order);
 	}
 
@@ -153,39 +152,39 @@ echo we_html_tools::getHtmlTop() .
 					<td width="40">
 						<?php print we_html_button::create_button("image:btn_add_file", "javascript:javascript:openFile();", true, 100, 22, "", "", false, false, "_ss"); ?>
 					</td>
-					<td width="10"><?php print we_html_tools::getPixel(10, 29); ?></td>
+					<td width="10"><?php echo we_html_tools::getPixel(10, 29); ?></td>
 					<td width="25">
 						<?php print we_html_button::create_button("image:btn_function_trash", "javascript:top.fscmd.delFile();", true, 100, 22, "", "", false, false, "_ss"); ?>
 					</td>
 				<?php } ?>
-				<td width="10"><?php print we_html_tools::getPixel(10, 29); ?></td>
+				<td width="10"><?php echo we_html_tools::getPixel(10, 29); ?></td>
 			</tr>
 		</table>
 		<table border="0" cellpadding="0" cellspacing="0" width="100%">
 			<tr>
-				<td><img src="<?php print IMAGE_DIR ?>umr_h_small.gif" width="100%" height="2" border="0"></td>
+				<td><img src="<?php echo IMAGE_DIR ?>umr_h_small.gif" width="100%" height="2" border="0"></td>
 			</tr>
 		</table>
 		<table border="0" cellpadding="0" cellspacing="0" width="100%">
 			<tr>
 				<td><?php print we_html_tools::getPixel(25, 20) ?></td>
-				<td class="selector"><b><a href="#" onclick="reorder('name');"><?php print g_l('fileselector', "[filename]") ?></a></b></td>
-				<td class="selector"><b><a href="#" onclick="reorder('type');"><?php print g_l('fileselector', "[type]") ?></b></a></td>
-				<td class="selector"><b><a href="#" onclick="reorder('date');"><?php print g_l('fileselector', "[modified]") ?></b></a></td>
-				<td class="selector"><b><a href="#" onclick="reorder('size');"><?php print g_l('fileselector', "[filesize]") ?></b></a></td>
+				<td class="selector"><b><a href="#" onclick="reorder('name');"><?php echo g_l('fileselector', "[filename]") ?></a></b></td>
+				<td class="selector"><b><a href="#" onclick="reorder('type');"><?php echo g_l('fileselector', "[type]") ?></b></a></td>
+				<td class="selector"><b><a href="#" onclick="reorder('date');"><?php echo g_l('fileselector', "[modified]") ?></b></a></td>
+				<td class="selector"><b><a href="#" onclick="reorder('size');"><?php echo g_l('fileselector', "[filesize]") ?></b></a></td>
 			</tr>
 			<tr>
-				<td width="25"><?php print we_html_tools::getPixel(25, 1) ?></td>
-				<td width="200"><?php print we_html_tools::getPixel(200, 1) ?></td>
-				<td width="150"><?php print we_html_tools::getPixel(150, 1) ?></td>
-				<td width="200"><?php print we_html_tools::getPixel(200, 1) ?></td>
-				<td><?php print we_html_tools::getPixel(15, 1) ?></td>
+				<td width="25"><?php echo we_html_tools::getPixel(25, 1) ?></td>
+				<td width="200"><?php echo we_html_tools::getPixel(200, 1) ?></td>
+				<td width="150"><?php echo we_html_tools::getPixel(150, 1) ?></td>
+				<td width="200"><?php echo we_html_tools::getPixel(200, 1) ?></td>
+				<td><?php echo we_html_tools::getPixel(15, 1) ?></td>
 			</tr>
 		</table>
 
 		<table border="0" cellpadding="0" cellspacing="0" width="100%">
 			<tr>
-				<td><img src="<?php print IMAGE_DIR ?>umr_h_small.gif" width="100%" height="2" border="0"></td>
+				<td><img src="<?php echo IMAGE_DIR ?>umr_h_small.gif" width="100%" height="2" border="0"></td>
 			</tr>
 		</table>
 

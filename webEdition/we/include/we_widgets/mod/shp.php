@@ -79,11 +79,11 @@ switch($iDate){
 }
 
 // get some preferences!
-$feldnamen = explode('|', f('SELECT strFelder from ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname = "shop_pref"', 'strFelder', $DB_WE));
+$feldnamen = explode('|', f('SELECT strFelder from ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname = "shop_pref"'));
 $currency = oldHtmlspecialchars($feldnamen[0]);
 $numberformat = $feldnamen[2];
 $classid = (isset($feldnamen[3]) ? $feldnamen[3] : '');
-$defaultVat = !empty($feldnamen[1]) ? ($feldnamen[1]) : 0;
+$defaultVat = ($feldnamen[1]) ? ($feldnamen[1]) : 0;
 
 $amountCustomers = $amountOrders = $amountArticles = 0;
 
@@ -91,10 +91,10 @@ if(defined("WE_SHOP_MODULE_DIR") && permissionhandler::hasPerm("CAN_SEE_SHOP")){
 	$queryShop = ' FROM ' . SHOP_TABLE . '	WHERE ' . $queryShopDateCondtion;
 
 	$total = $payed = $unpayed = $timestampDatePayment = 0;
-	if(($maxRows = f('SELECT COUNT(1) ' . $queryShop, '', $DB_WE))){
+	if(($maxRows = f('SELECT COUNT(1) ' . $queryShop))){
 
-		$amountOrders = f('SELECT COUNT(distinct IntOrderID) ' . $queryShop, '', $DB_WE);
-		$amountArticles = f('SELECT COUNT(IntID) AS b ' . $queryShop, 'b', $DB_WE);
+		$amountOrders = f('SELECT COUNT(distinct IntOrderID) ' . $queryShop);
+		$amountArticles = f('SELECT COUNT(IntID) ' . $queryShop);
 
 		// first of all calculate complete revenue of this year -> important check vats as well.
 		$cur = 0;
@@ -103,11 +103,11 @@ if(defined("WE_SHOP_MODULE_DIR") && permissionhandler::hasPerm("CAN_SEE_SHOP")){
 			$cur+=1000;
 			while($DB_WE->next_record()){
 
-				// for the articlelist, we need also all these article, so sve them in array
+				// for the articlelist, we need also all these article, so save them in array
 				// initialize all data saved for an article
-				$shopArticleObject = @unserialize($DB_WE->f('strSerial'));
+				$shopArticleObject = unserialize($DB_WE->f('strSerial'));
 				$serialOrder = $DB_WE->f('strSerialOrder');
-				$orderData = ($serialOrder ? @unserialize($serialOrder) : array());
+				$orderData = ($serialOrder ? unserialize($serialOrder) : array());
 
 				// all data from strSerialOrders
 				// first unserialize order-data
@@ -134,7 +134,7 @@ if(defined("WE_SHOP_MODULE_DIR") && permissionhandler::hasPerm("CAN_SEE_SHOP")){
 							(isset($defaultVat) ? $defaultVat : 0)
 						);
 
-					if($articleVat > 0){
+					if($articleVat){
 						if(!isset($articleVatArray[$articleVat])){ // avoid notices
 							$articleVatArray[$articleVat] = 0;
 						}
@@ -151,7 +151,11 @@ if(defined("WE_SHOP_MODULE_DIR") && permissionhandler::hasPerm("CAN_SEE_SHOP")){
 				$total += $actPrice;
 
 				$timestampDatePayment = $DB_WE->f('payed');
-				!empty($timestampDatePayment) ? $payed += $actPrice : $unpayed += $actPrice;
+				if($timestampDatePayment){
+					$payed += $actPrice;
+				} else {
+					$unpayed += $actPrice;
+				}
 			}
 		}
 	}
@@ -160,40 +164,10 @@ if(defined("WE_SHOP_MODULE_DIR") && permissionhandler::hasPerm("CAN_SEE_SHOP")){
 if(defined("CUSTOMER_TABLE") && permissionhandler::hasPerm("CAN_SEE_CUSTOMER")){
 	$queryCustomer = ' FROM ' . CUSTOMER_TABLE . '	WHERE ' . $timestampCustomer;
 
-	if(($maxRowsCustomer = f('SELECT COUNT(1) ' . $queryCustomer, '', $DB_WE))){
-		$amountCustomers = f('SELECT COUNT(distinct Username) ' . $queryCustomer, '', $DB_WE);
+	if(($maxRowsCustomer = f('SELECT COUNT(1) ' . $queryCustomer))){
+		$amountCustomers = f('SELECT COUNT(distinct Username) ' . $queryCustomer);
 	}
 }
-
-$shopDashboard = "<script type='text/javascript' src='https://www.google.com/jsapi'></script>
-    <script type='text/javascript'><!--
-      google.load('visualization', '1', {packages:['gauge']});
-      google.setOnLoadCallback(drawChart);
-      function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['Label', 'Value'],
-          ['Ziel in " . $currency . "', " . we_util_Strings::formatNumber($total) . "],
-        ]);
-
-        var options = {
-          width: 300, height: 170,
-          max: " . ($sRevenueTarget * 2) . ",
-          redFrom: 0, redTo: " . ($sRevenueTarget * 0.9) . ",
-          yellowFrom: " . ($sRevenueTarget * 0.9) . ", yellowTo: " . ($sRevenueTarget * 1.1) . ",
-          greenFrom: " . ($sRevenueTarget * 1.1) . ", greenTo: " . ($sRevenueTarget * 2) . ",
-          minorTicks: 5
-        };
-
-        var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
-        chart.draw(data, options);
-      }
-			//-->
-    </script>";
-
-//FIXME: deactivated JS-Kode for shop, since code is loaded from other domain
-$shopDashboard = '';
-
-$shopDashboard .= '<div style="width:60%;float:left;">';
 
 $shopDashboardTable = new we_html_table(array('border' => '0', 'cellpadding' => '0', 'cellspacing' => '0'), 1, 3);
 
@@ -257,9 +231,37 @@ $shopDashboardTable->setCol(9, 0, array("class" => "middlefont"), we_html_elemen
 $shopDashboardTable->setCol(9, 1, array(), we_html_tools::getPixel(10, 1));
 $shopDashboardTable->setCol(9, 2, array("class" => "middlefont", "align" => "right"), we_html_element::htmlB(($amountCustomers > 0 ? $amountCustomers : 0)));
 
-$shopDashboard .= $shopDashboardTable->getHtml();
 
-$shopDashboard .= '</div>';
-$shopDashboard .= '<div style="width:40%;float:right;"><b>' . g_l('cockpit', '[shop_dashboard][revenue_target]') . '&nbsp;' . we_util_Strings::formatNumber($sRevenueTarget, $numberformat) . '&nbsp;' . $currency . '</b>';
-$shopDashboard .= we_html_element::htmlDiv(array("id" => "chart_div"), '');
-$shopDashboard .= '</div><br style="clear:both;"/>';
+$shopDashboard = "<script type='text/javascript' src='https://www.google.com/jsapi'></script>
+    <script type='text/javascript'><!--
+      google.load('visualization', '1', {packages:['gauge']});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Label', 'Value'],
+          ['Ziel in " . $currency . "', " . we_util_Strings::formatNumber($total) . "],
+        ]);
+
+        var options = {
+          width: 300, height: 170,
+          max: " . ($sRevenueTarget * 2) . ",
+          redFrom: 0, redTo: " . ($sRevenueTarget * 0.9) . ",
+          yellowFrom: " . ($sRevenueTarget * 0.9) . ", yellowTo: " . ($sRevenueTarget * 1.1) . ",
+          greenFrom: " . ($sRevenueTarget * 1.1) . ", greenTo: " . ($sRevenueTarget * 2) . ",
+          minorTicks: 5
+        };
+
+        var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+			//-->
+    </script>";
+
+//FIXME: deactivated JS-Kode for shop, since code is loaded from other domain
+
+$shopDashboard = '<div style="width:60%;float:left;">' .
+	$shopDashboardTable->getHtml() .
+	'</div>'
+	. '<div style="width:40%;float:right;"><b>' . g_l('cockpit', '[shop_dashboard][revenue_target]') . '&nbsp;' . we_util_Strings::formatNumber($sRevenueTarget, $numberformat) . '&nbsp;' . $currency . '</b>' .
+	we_html_element::htmlDiv(array("id" => "chart_div"), '') .
+	'</div><br style="clear:both;"/>';
