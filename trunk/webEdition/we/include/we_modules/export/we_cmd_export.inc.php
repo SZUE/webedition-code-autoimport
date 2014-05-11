@@ -23,15 +23,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 switch($cmd){
-	case 'edit_export_ifthere':
-	case 'edit_export':
+	case 'export_edit_ifthere':
+	case 'export_edit':
 		$GLOBALS['mod'] = 'export';
-		$INCLUDE = 'we_modules/show_frameset.php';
-		break;
-	case 'openExportDirselector':
-		$INCLUDE = 'we_modules/export/we_exportDirSelectorFrameset.php';
-		break;
-		break;
+		return 'we_modules/show_frameset.php';
+
+	case 'export_openDirselector':
+		return 'we_modules/export/we_exportDirSelectorFrameset.php';
 }
-
-

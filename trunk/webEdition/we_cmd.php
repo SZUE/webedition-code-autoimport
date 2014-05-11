@@ -239,14 +239,11 @@ function findInclude($cmd){
 			return 'we_templates/customizeValidation.inc.php'; //  edit parameters
 
 		default:
-			$INCLUDE = '';
 			//	In we.inc.php all names of the active modules have already been searched
 //	so we only have to use the array $GLOBALS['_we_active_integrated_modules']
-			foreach($GLOBALS['_we_active_integrated_modules'] as $m){
-				if(file_exists(WE_MODULES_PATH . $m . '/we_cmd_' . $m . '.inc.php')){
-					include_once(WE_MODULES_PATH . $m . '/we_cmd_' . $m . '.inc.php');
-				}
-				if($INCLUDE){
+			list($m) = explode('_', $cmd);
+			if(in_array($m, $GLOBALS['_we_active_integrated_modules'])){
+				if(($INCLUDE = include(WE_MODULES_PATH . $m . '/we_cmd_' . $m . '.inc.php'))){
 					return $INCLUDE;
 				}
 			}
@@ -259,7 +256,7 @@ function findInclude($cmd){
 
 			$mods = we_base_moduleInfo::getAllModules();
 			foreach($mods as $m){
-				if($cmd == 'edit_' . $m['name'] . '_ifthere' && !we_base_moduleInfo::isActive($m['name'])){
+				if($cmd == $m['name'] . '_edit_ifthere' && !we_base_moduleInfo::isActive($m['name'])){
 					$GLOBALS['moduleName'] = $m['text_short'];
 					return 'messageModuleNotActivated.inc.php';
 				}
@@ -278,7 +275,7 @@ if(($inc = findInclude($cmd = weRequest('string', 'we_cmd', '', 0)))){
 	//  reloaded. All entries in this array represent values for we_cmd[0]
 	//  when the javascript command shall NOT be inserted (p.ex while saving the file.)
 	//	This is ONLY used in the edit-mode of the documents.
-	$cmds_no_js = array('siteImport', 'mod_home', 'import_images', 'getWeDocFromID', 'rebuild', 'open_url_in_editor', 'open_form_in_editor', 'unlock', 'edit_document', 'load_editor', 'load_edit_header', 'load_edit_footer', 'exchange', 'validateDocument', 'show');
+	$cmds_no_js = array('siteImport', 'mod_home', 'import_images', 'getWeDocFromID', 'rebuild', 'open_url_in_editor', 'open_form_in_editor', 'users_unlock', 'edit_document', 'load_editor', 'load_edit_header', 'load_edit_footer', 'exchange', 'validateDocument', 'show');
 
 	require((substr($inc, 0, 5) == 'apps/' ? WEBEDITION_PATH : WE_INCLUDES_PATH) . $inc);
 	//  This statement prevents the page from being reloaded

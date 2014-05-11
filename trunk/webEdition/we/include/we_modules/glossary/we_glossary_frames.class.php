@@ -60,13 +60,13 @@ class we_glossary_frames extends weModuleFrames{
 			}
 			switch(weRequest('string', 'cmd')){
 				// Folder View
-				case 'view_folder':
+				case 'glossary_view_folder':
 					return we_glossary_frameEditorFolder::Header($this);
 				// Type View
-				case 'view_type':
+				case 'glossary_view_type':
 					return we_glossary_frameEditorType::Header($this);
 				// Exception View
-				case 'view_exception':
+				case 'glossary_view_exception':
 				case 'save_exception':
 					return we_glossary_frameEditorException::Header($this);
 				// Item View
@@ -88,13 +88,13 @@ class we_glossary_frames extends weModuleFrames{
 			}
 			switch(weRequest('string', 'cmd')){
 				// Folder View
-				case 'view_folder':
+				case 'glossary_view_folder':
 					return we_glossary_frameEditorFolder::Body($this);
 				// Type View
-				case 'view_type':
+				case 'glossary_view_type':
 					return we_glossary_frameEditorType::Body($this);
 				// Exception View
-				case 'view_exception':
+				case 'glossary_view_exception':
 				case 'save_exception':
 					return we_glossary_frameEditorException::Body($this);
 				// Item View
@@ -116,13 +116,13 @@ class we_glossary_frames extends weModuleFrames{
 			}
 			switch(weRequest('string', 'cmd')){
 				// Folder View
-				case 'view_folder':
+				case 'glossary_view_folder':
 					return we_glossary_frameEditorFolder::Footer($this);
 				// Type View
-				case 'view_type':
+				case 'glossary_view_type':
 					return we_glossary_frameEditorType::Footer($this);
 				// Exception View
-				case 'view_exception':
+				case 'glossary_view_exception':
 				case 'save_exception':
 					return we_glossary_frameEditorException::Footer($this);
 				// Item View

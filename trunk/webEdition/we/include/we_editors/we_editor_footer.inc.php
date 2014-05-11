@@ -123,7 +123,7 @@ $_js_we_save_document = "
 		}
 
 		if (  _EditorFrame.getEditorPublishWhenSave() && _showGlossaryCheck) {
-			we_cmd('check_glossary', '', '" . $we_transaction . "');
+			we_cmd('glossary_check', '', '" . $we_transaction . "');
 		} else {
 			acStatus = '';
 			invalidAcFields = false;
@@ -185,22 +185,21 @@ if(defined("WORKFLOW_TABLE")){
 			if(confirm('" . g_l('alert', '[' . stripTblPrefix($we_doc->Table) . '][in_wf_warning]') . "')) {
 				we_cmd('save_document','','','','',0,0,1);
 			}
-		}
-		else {
-			top.we_cmd('in_workflow','$we_transaction'," . ( ($we_doc->IsTextContentDoc && $haspermNew && (!inWorkflow($we_doc))) ? "( _EditorFrame.getEditorMakeSameDoc() ? 1 : 0 )" : "0" ) . ");
+		}else {
+			top.we_cmd('workflow_isIn','$we_transaction'," . ( ($we_doc->IsTextContentDoc && $haspermNew && (!inWorkflow($we_doc))) ? "( _EditorFrame.getEditorMakeSameDoc() ? 1 : 0 )" : "0" ) . ");
 		}
 	}
 
 	function pass_workflow() {
-		we_cmd('pass','" . $we_transaction . "');
+		we_cmd('workflow_pass','" . $we_transaction . "');
 	}
 
-	function finish_workflow() {
-		we_cmd('finish_workflow','" . $we_transaction . "');
+	function workflow_finish() {
+		we_cmd('workflow_finish','" . $we_transaction . "');
 	}
 
 	function decline_workflow() {
-		we_cmd('decline','" . $we_transaction . "');
+		we_cmd('workflow_decline','" . $we_transaction . "');
 	}
 ";
 }
@@ -250,16 +249,16 @@ if($we_doc->Table == TEMPLATES_TABLE){ //	Its a template
 		';
 } else { //	Its not a template
 	$_js_we_cmd .= '
-			case "check_glossary":
-				new jsWindow(url,"check_glossary",-1,-1,730,400,true,false,true);
+			case "glossary_check":
+				new jsWindow(url,"glossary_check",-1,-1,730,400,true,false,true);
 				return;
 			case "save_document":
 				top.we_cmd("save_document","' . $we_transaction . '",0,1,' . ( ($we_doc->IsTextContentDoc && $haspermNew && (!inWorkflow($we_doc))) ? '( _EditorFrame.getEditorMakeSameDoc() ? 1 : 0 )' : '0' ) . ',arguments[5] ? arguments[5] : "",arguments[6] ? arguments[6] : "",arguments[7] ? arguments[7] : "");
 				return;
 ' .
 		(isset($we_doc->IsClassFolder) ? '
-			case "obj_search":
-				top.we_cmd("obj_search","' . $we_transaction . '",document.we_form.obj_search.value,document.we_form.obj_searchField[document.we_form.obj_searchField.selectedIndex].value);
+			case "object_obj_search":
+				top.we_cmd("object_obj_search","' . $we_transaction . '",document.we_form.obj_search.value,document.we_form.obj_searchField[document.we_form.obj_searchField.selectedIndex].value);
 				return;
 ' : '');
 }

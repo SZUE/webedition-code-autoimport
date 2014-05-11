@@ -39,8 +39,8 @@ class we_glossary_frameEditorFolder extends we_glossary_frameEditor{
 
 	function Body(&$weGlossaryFrames){
 
-		$_js = $weGlossaryFrames->topFrame . '.editor.edheader.location="' . $weGlossaryFrames->frameset . '?pnt=edheader&cmd=view_folder&cmdid=' . $_REQUEST['cmdid'] . '";'
-			. $weGlossaryFrames->topFrame . '.editor.edfooter.location="' . $weGlossaryFrames->frameset . '?pnt=edfooter&cmd=view_folder&cmdid=' . $_REQUEST['cmdid'] . '"';
+		$_js = $weGlossaryFrames->topFrame . '.editor.edheader.location="' . $weGlossaryFrames->frameset . '?pnt=edheader&cmd=glossary_view_folder&cmdid=' . $_REQUEST['cmdid'] . '";'
+			. $weGlossaryFrames->topFrame . '.editor.edfooter.location="' . $weGlossaryFrames->frameset . '?pnt=edfooter&cmd=glossary_view_folder&cmdid=' . $_REQUEST['cmdid'] . '"';
 
 		$js = we_html_element::jsElement($_js);
 
@@ -100,7 +100,7 @@ class we_glossary_frameEditorFolder extends we_glossary_frameEditor{
 						</tr>
 						</table>';
 
-			$headline = '<a href="javascript://" onclick="' . $this->topFrame . '.editor.edbody.location=\'' . $weGlossaryFrames->frameset . '?pnt=edbody&cmd=view_type&cmdid=' . $_REQUEST['cmdid'] . '_' . $key . '&tabnr=\'+' . $weGlossaryFrames->topFrame . '.activ_tab;">' . g_l('modules_glossary', '[' . $key . ']') . '</a>';
+			$headline = '<a href="javascript://" onclick="' . $this->topFrame . '.editor.edbody.location=\'' . $weGlossaryFrames->frameset . '?pnt=edbody&cmd=glossary_view_type&cmdid=' . $_REQUEST['cmdid'] . '_' . $key . '&tabnr=\'+' . $weGlossaryFrames->topFrame . '.activ_tab;">' . g_l('modules_glossary', '[' . $key . ']') . '</a>';
 
 			$parts[] = array("headline" => $headline, "html" => $content, "space" => 120);
 		}

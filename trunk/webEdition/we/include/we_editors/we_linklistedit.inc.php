@@ -444,14 +444,14 @@ if($ok && $cmd == "edit_link_at_class"){
 	//FIXME: we_field XSS
 	?>
 		opener.setScrollTo();
-		opener.we_cmd("change_link_at_class", "<?php echo $trans; ?>", "<?php echo weRequest('string', "we_field"); ?>", "<?php echo $name; ?>");
+		opener.we_cmd("object_change_link_at_class", "<?php echo $trans; ?>", "<?php echo weRequest('string', "we_field"); ?>", "<?php echo $name; ?>");
 		top.close();
 	<?php
 } else if($ok && $cmd == "edit_link_at_object"){
 	$_SESSION['weS']['WE_LINK'] = $link;
 	?>
 		opener.setScrollTo();
-		opener.we_cmd("change_link_at_object", "<?php echo $trans; ?>", "link_<?php echo $name; ?>");
+		opener.we_cmd("object_change_link_at_object", "<?php echo $trans; ?>", "link_<?php echo $name; ?>");
 		top.close();
 	<?php
 } else if($ok && isset($linklist) && $linklist){

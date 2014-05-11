@@ -168,7 +168,7 @@ if(isset($GLOBALS['we_doc'])){
 							if (weResponse["data"] === "true") {
 								_question = "<?php echo ($GLOBALS['we_doc']->IsFolder ? g_l('alert', '[confirm][applyWeDocumentCustomerFiltersFolder]') : g_l('alert', '[confirm][applyWeDocumentCustomerFiltersDocument]')) ?>";
 								if (confirm(_question)) {
-									top.we_cmd("applyWeDocumentCustomerFilterFromFolder");
+									top.we_cmd("customer_applyWeDocumentCustomerFilterFromFolder");
 								}
 							}
 						}
@@ -383,7 +383,7 @@ if(isset($GLOBALS['we_doc'])){
 			case "browse_users":
 				new jsWindow(url, "browse_users", -1, -1, 500, 300, true, false, true);
 				break;
-			case "editObjectTextArea":
+			case "object_editObjectTextArea":
 				new jsWindow(url, "edit_object_text", -1, -1, 550, 455, true, false, true);
 				break;
 			case "editor_uploadFile":
@@ -402,8 +402,8 @@ if(isset($GLOBALS['we_doc'])){
 
 
 <?php if(defined("GLOSSARY_TABLE") && isset($we_doc) && ($we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT || $we_doc->ContentType == "objectFile")){ ?>
-				case "check_glossary":
-					new jsWindow(url, "check_glossary", -1, -1, 730, 400, true, false, true);
+				case "glossary_check":
+					new jsWindow(url, "glossary_check", -1, -1, 730, 400, true, false, true);
 					break;
 	<?php
 }

@@ -157,7 +157,7 @@ function we_cmd() {
 			top.content.usetHot();
 			break;
 
-		case "edit_customer":
+		case "customer_edit":
 			' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
 			' . $this->topFrame . '.editor.edbody.document.we_form.cmdid.value=arguments[1];
 			' . $this->topFrame . '.editor.edbody.submitForm();
@@ -523,7 +523,7 @@ self.focus();' . $this->getJSSubmitFunction("customer_settings");
 						$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";'
 				);
 				break;
-			case 'edit_customer':
+			case 'customer_edit':
 				$this->customer = new we_customer_customer($_REQUEST["cmdid"]);
 				print we_html_element::jsElement(
 						$this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->customer->Text) . '";' .

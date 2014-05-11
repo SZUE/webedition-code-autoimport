@@ -355,7 +355,7 @@ abstract class we_root extends we_class{
 				$_path = isset($foo['Path']) ? $foo['Path'] : '';
 				$content .= '<tr><td><img src="' . $icon . '" width="16" height="18" /></td><td class="defaultfont">' . $_path . '</td><td>' .
 					we_html_forms::checkboxWithHidden(isset($ownersReadOnly[$owner]) ? $ownersReadOnly[$owner] : '', 'we_owners_read_only[' . $owner . ']', g_l('weClass', '[readOnly]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);', !$canChange) .
-					'</td><td>' . ($canChange ? we_html_button::create_button('image:btn_function_trash', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('del_owner','" . $owner . "');") : '') . '</td></tr>';
+					'</td><td>' . ($canChange ? we_html_button::create_button('image:btn_function_trash', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('users_del_owner','" . $owner . "');") : '') . '</td></tr>';
 			}
 		} else {
 			$content .= '<tr><td><img src="' . ICON_DIR . "user.gif" . '" width="16" height="18" /></td><td class="defaultfont">' . g_l('weClass', '[onlyOwner]') . '</td><td></td><td></td></tr>';
@@ -364,10 +364,10 @@ abstract class we_root extends we_class{
 
 		$textname = 'OwnerNameTmp';
 		$idname = 'OwnerIDTmp';
-		$delallbut = we_html_button::create_button('delete_all', "javascript:we_cmd('del_all_owners','')", true, 0, 0, "", "", $this->Owners ? false : true);
+		$delallbut = we_html_button::create_button('delete_all', "javascript:we_cmd('users_del_all_owners','')", true, 0, 0, "", "", $this->Owners ? false : true);
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
 		$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$textname'].value");
-		$wecmdenc5 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.setScrollTo();fillIDs();opener.we_cmd('add_owner',top.allIDs);");
+		$wecmdenc5 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.setScrollTo();fillIDs();opener.we_cmd('users_add_owner',top.allIDs);");
 		$addbut = $canChange ?
 			$this->htmlHidden($idname, '') . $this->htmlHidden($textname, '') . we_html_button::create_button('add', "javascript:we_cmd('browse_users','" . $wecmdenc1 . "','" . $wecmdenc2 . "','',document.forms[0].elements['$idname'].value,'" . $wecmdenc5 . "','','',1);") : "";
 
@@ -396,7 +396,6 @@ abstract class we_root extends we_class{
 	}
 
 	function add_owner($id){
-
 		$owners = makeArrayFromCSV($this->Owners);
 		$ids = makeArrayFromCSV($id);
 		foreach($ids as $id){

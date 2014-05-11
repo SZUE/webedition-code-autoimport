@@ -23,21 +23,16 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 switch($cmd){
-	case 'edit_banner_ifthere':
-	case 'edit_banner':
+	case 'banner_edit_ifthere':
+	case 'banner_edit':
 		$GLOBALS['mod'] = 'banner';
-		$INCLUDE = 'we_modules/show_frameset.php';
-		break;
-	case 'openBannerDirselector':
-		$INCLUDE = 'we_modules/banner/we_bannerDirSelect.php';
-		break;
-	case 'openBannerSelector':
-		$INCLUDE = 'we_modules/banner/we_bannerSelect.php';
-		break;
-	case 'default_banner':
-		$INCLUDE = 'we_modules/banner/we_defaultbanner.php';
-		break;
+		return 'we_modules/show_frameset.php';
+	case 'banner_openDirselector':
+		return 'we_modules/banner/we_bannerDirSelect.php';
+	case 'banner_openSelector':
+		return 'we_modules/banner/we_bannerSelect.php';
+	case 'banner_default':
+		return 'we_modules/banner/we_defaultbanner.php';
 	case 'banner_code':
-		$INCLUDE = 'we_modules/banner/we_bannercode.php';
-		break;
+		return 'we_modules/banner/we_bannercode.php';
 }

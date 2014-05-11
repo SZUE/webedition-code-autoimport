@@ -158,7 +158,7 @@ function updateEntry(id,text){
 function doClick(id,typ){
 	var node=' . $this->topFrame . '.get(id);
 		if(node.typ=="item")
-		' . $this->topFrame . '.we_cmd(\'edit_customer\',node.id,node.typ,node.table);
+		' . $this->topFrame . '.we_cmd(\'customer_edit\',node.id,node.typ,node.table);
 }
 ' . $this->topFrame . '.loaded=1;';
 	}

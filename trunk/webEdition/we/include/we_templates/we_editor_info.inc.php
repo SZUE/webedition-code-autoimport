@@ -25,7 +25,7 @@ echo we_html_tools::getHtmlTop() .
  STYLESHEET .
  we_html_element::jsScript(JS_DIR . 'windows.js');
 ?>
-<script type="text/javascript">
+<script type="text/javascript"><!--
 	function revertToPublished() {
 		if (confirm("<?php print addslashes(g_l('weEditorInfo', "[revert_publish_question]")); ?>")) {
 			top.we_cmd("revert_published");
@@ -45,7 +45,7 @@ echo we_html_tools::getHtmlTop() .
 
 
 <?php } ?>
-
+//-->
 </script>
 </head>
 <body class="weEditorBody">

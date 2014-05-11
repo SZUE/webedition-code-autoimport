@@ -23,18 +23,14 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 switch($cmd){
-
-	case 'edit_shop_ifthere':
-	case 'edit_shop':
+	case 'shop_edit_ifthere':
+	case 'shop_edit':
 		$GLOBALS['mod'] = 'shop';
-		$INCLUDE = 'we_modules/show_frameset.php';
-		break;
-
+		return 'we_modules/show_frameset.php';
 	case 'shop_insert_variant':
 	case 'shop_move_variant_up':
 	case 'shop_move_variant_down':
 	case 'shop_remove_variant':
 	case 'shop_preview_variant':
-		$INCLUDE = 'we_editors/we_editor.inc.php';
-		break;
+		return 'we_editors/we_editor.inc.php';
 }

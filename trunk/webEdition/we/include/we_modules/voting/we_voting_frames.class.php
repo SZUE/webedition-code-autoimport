@@ -121,7 +121,7 @@ class we_voting_frames extends weModuleFrames{
 
 	function getHTMLEditorBody(){
 
-		$hiddens = array('cmd' => 'edit_voting', 'pnt' => 'edbody', 'vernr' => weRequest('int', 'vernr', 0));
+		$hiddens = array('cmd' => 'voting_edit', 'pnt' => 'edbody', 'vernr' => weRequest('int', 'vernr', 0));
 
 		if(isset($_REQUEST["home"]) && $_REQUEST["home"]){
 			$hiddens["cmd"] = "home";
@@ -312,7 +312,7 @@ class we_voting_frames extends weModuleFrames{
 		$textname = 'owner_text';
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
 		$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$textname'].value");
-		$wecmdenc5 = we_cmd_enc("fillIDs();opener.we_cmd('add_owner',top.allPaths,top.allIsFolder);");
+		$wecmdenc5 = we_cmd_enc("fillIDs();opener.we_cmd('users_add_owner',top.allPaths,top.allIsFolder);");
 		$table->setCol(2, 0, array('colspan' => 2, 'align' => 'right'), we_html_element::htmlHidden(array('name' => $idname, 'value' => '')) .
 			we_html_element::htmlHidden(array('name' => $textname, 'value' => '')) .
 			we_html_button::create_button("add", "javascript:top.content.setHot(); we_cmd('browse_users','" . $wecmdenc1 . "','" . $wecmdenc2 . "','',document.forms[0].elements['$idname'].value,'" . $wecmdenc5 . "','','',1);")
@@ -800,7 +800,7 @@ class we_voting_frames extends weModuleFrames{
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['ParentID'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['ParentPath'].value");
 		$wecmdenc3 = we_cmd_enc("top.opener._EditorFrame.setEditorIsHot(true);");
-		$button = we_html_button::create_button('select', "javascript:top.content.setHot(); we_cmd('openVotingDirselector',document.we_form.elements['ParentID'].value,'" . $wecmdenc1 . "','" . $wecmdenc2 . "','')");
+		$button = we_html_button::create_button('select', "javascript:top.content.setHot(); we_cmd('voting_openDirselector',document.we_form.elements['ParentID'].value,'" . $wecmdenc1 . "','" . $wecmdenc2 . "','')");
 		$width = 416;
 
 		$yuiSuggest = & weSuggest::getInstance();

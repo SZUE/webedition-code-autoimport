@@ -370,7 +370,7 @@ abstract class we_ui_abstract_AbstractElement extends we_core_AbstractObject{
 	 * Will be inserted into the header section of the document
 	 * using the <script> tag
 	 *
-	 * @param string $path path to file relative to DOCUMENT_ROOT, starting with a slash or class name of element
+	 * @param string $files path to file relative to DOCUMENT_ROOT, starting with a slash or class name of element
 	 * @return void
 	 */
 	public function addJSFiles($files){

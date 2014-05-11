@@ -38,13 +38,13 @@ include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 echo we_html_tools::getHtmlTop();
 
 switch(weRequest('string', 'we_cmd', '', 0)){
-	case "in_workflow":
+	case "workflow_isIn":
 		include(WE_WORKFLOW_MODULE_PATH . "we_in_workflow.inc.php");
 		break;
-	case "pass":
+	case "workflow_pass":
 		include(WE_WORKFLOW_MODULE_PATH . "we_pass_workflow.inc.php");
 		break;
-	case "decline":
+	case "workflow_decline":
 		include(WE_WORKFLOW_MODULE_PATH . "we_decline_workflow.inc.php");
 		break;
 }

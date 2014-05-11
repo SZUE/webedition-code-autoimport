@@ -211,7 +211,7 @@ class we_banner_view extends we_banner_base{
 
 	function getJSTopCode(){
 		?>
-		<script type="text/javascript">
+		<script type="text/javascript"><!--
 
 			var hot = 0;
 
@@ -311,7 +311,7 @@ class we_banner_view extends we_banner_base{
 		<?php } ?>
 						top.content.usetHot();
 						break;
-					case "edit_banner":
+					case "banner_edit":
 						top.content.editor.edbody.document.we_form.ncmd.value = arguments[0];
 						top.content.editor.edbody.document.we_form.bid.value = arguments[1];
 						top.content.editor.edbody.submitForm();
@@ -323,13 +323,14 @@ class we_banner_view extends we_banner_base{
 						eval('top.opener.top.we_cmd(' + args + ')');
 				}
 			}
+			//-->
 		</script>
 		<?php
 	}
 
 	function getJSFooterCode(){
 		?>
-		<script type="text/javascript">
+		<script type="text/javascript"><!--
 
 			function doUnload() {
 				if (!!jsWindow_count) {
@@ -358,19 +359,21 @@ class we_banner_view extends we_banner_base{
 						eval('parent.edbody.we_cmd(' + args + ')');
 				}
 			}
+			//-->
 		</script>
 		<?php
 	}
 
 	function getJSCmd(){
 		?>
-		<script type="text/javascript">
+		<script type="text/javascript"><!--
 			function submitForm() {
 				var f = self.document.we_form;
 				f.target = "cmd";
 				f.method = "post";
 				f.submit();
 			}
+			//-->
 		</script>
 		<?php
 	}
@@ -378,7 +381,7 @@ class we_banner_view extends we_banner_base{
 	function getJSProperty(){
 		echo we_html_element::jsScript(JS_DIR . 'windows.js');
 		?>
-		<script type="text/javascript">
+		<script type="text/javascript"><!--
 			var loaded;
 
 			function doUnload() {
@@ -411,7 +414,7 @@ class we_banner_view extends we_banner_base{
 					case "openDirselector":
 						new jsWindow(url, "we_dirselector", -1, -1,<?php echo we_selector_file::WINDOW_DIRSELECTOR_WIDTH . "," . we_selector_file::WINDOW_DIRSELECTOR_HEIGHT; ?>, true, true, true, true);
 						break;
-					case "openBannerDirselector":
+					case "banner_openDirselector":
 						new jsWindow(url, "we_bannerselector", -1, -1, 600, 350, true, true, true);
 						break;
 					case "switchPage":
@@ -462,6 +465,7 @@ class we_banner_view extends we_banner_base{
 			}
 
 			self.focus();
+			//-->
 		</script>
 		<?php
 	}
@@ -499,7 +503,7 @@ class we_banner_view extends we_banner_base{
 					<body></body>
 					</html>';
 				break;
-			case "edit_banner":
+			case "banner_edit":
 				if(($id = weRequest('int', "bid"))){
 					$this->banner = new we_banner_banner($id);
 				}
@@ -1026,7 +1030,7 @@ class we_banner_view extends we_banner_base{
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$idname'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$textname'].value");
 		$wecmdenc3 = we_cmd_enc(str_replace('\\', '', $cmd));
-		$button = we_html_button::create_button("select", "javascript:top.content.setHot();we_cmd('openBannerDirselector',document.we_form.elements['$idname'].value,'" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "')");
+		$button = we_html_button::create_button("select", "javascript:top.content.setHot();we_cmd('banner_openDirselector',document.we_form.elements['$idname'].value,'" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "')");
 
 		$yuiSuggest->setAcId($acID);
 		$yuiSuggest->setLabel($title);

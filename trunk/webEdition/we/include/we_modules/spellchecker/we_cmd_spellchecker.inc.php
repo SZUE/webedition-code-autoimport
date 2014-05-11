@@ -23,9 +23,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 switch($cmd){
-	case 'edit_spellchecker_ifthere':
-	case 'edit_spellchecker':
+	case 'spellchecker_edit_ifthere':
+	case 'spellchecker_edit':
 		$GLOBALS['mod'] = 'spellchecker';
-		$INCLUDE = 'we_modules/spellchecker/weSpellcheckerAdmin.php';
-		break;
+		return 'we_modules/spellchecker/weSpellcheckerAdmin.php';
 }
