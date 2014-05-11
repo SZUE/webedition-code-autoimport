@@ -33,7 +33,7 @@ include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 we_html_tools::protect();
 
 switch(weRequest('string','we_cmd','',0)){
-	case "toggleExtraWorkspace":
+	case "object_toggleExtraWorkspace":
 		$oid = $_REQUEST['we_cmd'][2];
 		$wsid = $_REQUEST['we_cmd'][3];
 		$wsPath = id_to_path($wsid, FILE_TABLE, $DB_WE);
@@ -57,7 +57,7 @@ switch(weRequest('string','we_cmd','',0)){
 		$of->insertAtIndex();
 		print we_html_element::jsElement('top.we_cmd("reload_editpage");');
 		break;
-	case "obj_search":
+	case "object_obj_search":
 		$we_doc->Search = $_REQUEST['we_cmd'][2];
 		$we_doc->SearchField = $_REQUEST['we_cmd'][3];
 		$we_doc->EditPageNr = WE_EDITPAGE_WORKSPACE;

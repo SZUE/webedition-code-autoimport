@@ -24,8 +24,7 @@
  */
 switch($cmd){
 	case 'messaging_start':
-	case 'edit_messaging_ifthere':
+	case 'messaging_edit_ifthere':
 		$GLOBALS['mod'] = 'messaging';
-		$INCLUDE = 'we_modules/show_frameset.php';
-		break;
+		return 'we_modules/show_frameset.php';
 }

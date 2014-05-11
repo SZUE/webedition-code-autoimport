@@ -81,8 +81,7 @@ class we_navigation_ruleControl{
 					}
 					break;
 
-				case "edit_navigation_rule" :
-
+				case "navigation_edit_rule" :
 					$this->NavigationRule = new we_navigation_rule();
 					$this->NavigationRule->initByID($_REQUEST['ID']);
 

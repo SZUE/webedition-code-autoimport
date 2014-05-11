@@ -25,7 +25,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 echo we_html_tools::getHtmlTop('command-bridge', '', 5);
 ?>
-<script  type="text/javascript">
+<script  type="text/javascript"><!--
 	// bugfix WE-356
 	self.focus();
 <?php
@@ -148,5 +148,6 @@ switch(weRequest('string', 'we_cmd', '', 0)){
 		echo 'setTimeout("top.we_cmd(' . implode(',', $arr) . ')",50);';
 }
 ?>
+	//-->
 </script>
 </head><body></body></html>

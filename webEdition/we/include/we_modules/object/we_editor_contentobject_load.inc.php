@@ -91,10 +91,10 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 				<td width="150" class = "defaultfont" valign="top">' .
 			we_html_button::create_button_table(
 				array(
-				we_html_button::create_button('image:btn_add_field', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('insert_entry_at_class','" . $we_transaction . "','" . $uniqid . "');"),
-				we_html_button::create_button('image:btn_direction_up', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('up_entry_at_class','" . $we_transaction . "','" . $uniqid . "');", true, 22, 22, "", "", false, false, "_" . $identifier),
-				we_html_button::create_button('image:btn_direction_down', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('down_entry_at_class','" . $we_transaction . "','" . $uniqid . "');", true, 22, 22, "", "", false, false, "_" . $identifier),
-				we_html_button::create_button('image:btn_function_trash', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('delete_entry_at_class','" . $we_transaction . "','" . $uniqid . "');")
+				we_html_button::create_button('image:btn_add_field', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_insert_entry_at_class','" . $we_transaction . "','" . $uniqid . "');"),
+				we_html_button::create_button('image:btn_direction_up', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_up_entry_at_class','" . $we_transaction . "','" . $uniqid . "');", true, 22, 22, "", "", false, false, "_" . $identifier),
+				we_html_button::create_button('image:btn_direction_down', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_down_entry_at_class','" . $we_transaction . "','" . $uniqid . "');", true, 22, 22, "", "", false, false, "_" . $identifier),
+				we_html_button::create_button('image:btn_function_trash', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_delete_entry_at_class','" . $we_transaction . "','" . $uniqid . "');")
 				), 5) .
 			'</td>
 			</tr>
@@ -110,7 +110,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 	switch($cmd){
 
-		case 'insert_entry_at_class':
+		case 'object_insert_entry_at_class':
 			if($id != false){
 				$after = array_pop(explode('_', $id));
 				$afterid = $id;
@@ -133,10 +133,10 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 				<td width="150" class = "defaultfont" valign="top">' .
 				we_html_button::create_button_table(
 					array(
-					we_html_button::create_button('image:btn_add_field', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('insert_entry_at_class','" . $we_transaction . "','" . $uniqid . "');"),
-					we_html_button::create_button('image:btn_direction_up', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('up_entry_at_class','" . $we_transaction . "','" . $uniqid . "');", true, 22, 22, "", "", false, false, "_" . $identifier),
-					we_html_button::create_button('image:btn_direction_down', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('down_entry_at_class','" . $we_transaction . "','" . $uniqid . "');", true, 22, 22, "", "", false, false, "_" . $identifier),
-					we_html_button::create_button('image:btn_function_trash', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('delete_entry_at_class','" . $we_transaction . "','" . $uniqid . "');")
+					we_html_button::create_button('image:btn_add_field', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_insert_entry_at_class','" . $we_transaction . "','" . $uniqid . "');"),
+					we_html_button::create_button('image:btn_direction_up', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_up_entry_at_class','" . $we_transaction . "','" . $uniqid . "');", true, 22, 22, "", "", false, false, "_" . $identifier),
+					we_html_button::create_button('image:btn_direction_down', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_down_entry_at_class','" . $we_transaction . "','" . $uniqid . "');", true, 22, 22, "", "", false, false, "_" . $identifier),
+					we_html_button::create_button('image:btn_function_trash', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_delete_entry_at_class','" . $we_transaction . "','" . $uniqid . "');")
 					), 5) .
 				'</td>
 				</tr>
@@ -150,55 +150,55 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 			$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 			break;
 
-		case 'reload_entry_at_class':
+		case 'object_reload_entry_at_class':
 			$identifier = array_pop(explode('_', $id));
 			$fieldname = $we_doc->getElement("wholename" . $identifier);
 			$we_doc->setElement($fieldname . 'default', '');
 			reloadElement($jsGUI, $we_transaction, $we_doc, $id);
 			break;
-		case 'up_meta_at_class':
+		case 'object_up_meta_at_class':
 			$we_doc->upMetaAtClass($_REQUEST['we_cmd'][3], $_REQUEST['we_cmd'][4]);
 			reloadElement($jsGUI, $we_transaction, $we_doc, $id);
 			break;
-		case 'down_meta_at_class':
+		case 'object_down_meta_at_class':
 			$we_doc->downMetaAtClass($_REQUEST['we_cmd'][3], $_REQUEST['we_cmd'][4]);
 			reloadElement($jsGUI, $we_transaction, $we_doc, $id);
 			break;
-		case 'insert_meta_at_class':
+		case 'object_insert_meta_at_class':
 			$we_doc->addMetaToClass($_REQUEST['we_cmd'][3], $_REQUEST['we_cmd'][4]);
 			reloadElement($jsGUI, $we_transaction, $we_doc, $id);
 			break;
-		case 'delete_meta_class':
+		case 'object_delete_meta_class':
 			$we_doc->removeMetaFromClass($_REQUEST['we_cmd'][3], $_REQUEST['we_cmd'][4]);
 			reloadElement($jsGUI, $we_transaction, $we_doc, $id);
 			break;
-		case 'del_all_users':
+		case 'object_del_all_users':
 			$we_doc->del_all_users($_REQUEST['we_cmd'][3]);
 			reloadElement($jsGUI, $we_transaction, $we_doc, $id);
 			break;
-		case 'add_user_to_field':
+		case 'object_add_user_to_field':
 			$we_doc->add_user_to_field($_REQUEST['we_cmd'][3], $_REQUEST['we_cmd'][4]);
 			reloadElement($jsGUI, $we_transaction, $we_doc, $id);
 			break;
-		case 'del_user_from_field':
+		case 'object_del_user_from_field':
 			$we_doc->del_user_from_field($_REQUEST['we_cmd'][3], $_REQUEST['we_cmd'][4]);
 			reloadElement($jsGUI, $we_transaction, $we_doc, $id);
 			break;
-		case 'remove_image_at_class';
+		case 'object_remove_image_at_class';
 			$we_doc->remove_image($_REQUEST['we_cmd'][3]);
 			reloadElement($jsGUI, $we_transaction, $we_doc, $id);
 			break;
-		case 'delete_link_at_class':
+		case 'object_delete_link_at_class':
 			if(isset($we_doc->elements[$_REQUEST['we_cmd'][3]])){
 				unset($we_doc->elements[$_REQUEST['we_cmd'][3]]);
 			}
 			reloadElement($jsGUI, $we_transaction, $we_doc, $id);
 			break;
-		case 'change_link_at_class':
+		case 'object_change_link_at_class':
 			$we_doc->changeLink($_REQUEST['we_cmd'][3]);
 			reloadElement($jsGUI, $we_transaction, $we_doc, $id);
 			break;
-		case 'change_multiobject_at_class':
+		case 'object_change_multiobject_at_class':
 			while($we_doc->elements[$_REQUEST['we_cmd'][3] . 'count']['dat'] > 0){
 				$we_doc->removeMetaFromClass($_REQUEST['we_cmd'][3], 0);
 			}
@@ -206,7 +206,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 			reloadElement($jsGUI, $we_transaction, $we_doc, $id);
 			break;
 
-		case 'delete_entry_at_class':
+		case 'object_delete_entry_at_class':
 			if(isset($id)){
 				$identifier = array_pop(explode('_', $id));
 				$uniqid = 'entry_' . $identifier;
@@ -216,7 +216,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 			}
 			break;
 
-		case 'up_entry_at_class':
+		case 'object_up_entry_at_class':
 			$sort = $we_doc->getElement('we_sort');
 
 			if(isset($id)){
@@ -228,7 +228,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 			}
 			break;
 
-		case 'down_entry_at_class':
+		case 'object_down_entry_at_class':
 			$sort = $we_doc->getElement('we_sort');
 
 			if(isset($id)){

@@ -218,7 +218,7 @@ echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username']) 
 			// get the EditorFrame - this is important due to edit_include_mode!!!!
 			var _ActiveEditor = top.weEditorFrameController.getActiveEditorFrame();
 			if (_ActiveEditor) {
-				top.we_cmd('unlock', _ActiveEditor.getEditorDocumentId(), '<?php echo $_SESSION["user"]["ID"]; ?>', _ActiveEditor.getEditorEditorTable(), _ActiveEditor.getEditorTransaction());
+				top.we_cmd('users_unlock', _ActiveEditor.getEditorDocumentId(), '<?php echo $_SESSION["user"]["ID"]; ?>', _ActiveEditor.getEditorEditorTable(), _ActiveEditor.getEditorTransaction());
 			}
 			top.close();
 		}
@@ -455,27 +455,30 @@ if(defined('MESSAGING_SYSTEM')){
 <?php
 //	In we.inc.php all names of the installed modules have already been searched
 //	so we only have to use the array $GLOBALS['_we_active_integrated_modules']
-
+ob_start();
 foreach($GLOBALS['_we_active_integrated_modules'] as $mod){
 	if(file_exists(WE_MODULES_PATH . $mod . '/we_webEditionCmd_' . $mod . '.inc.php')){
-		include_once(WE_MODULES_PATH . $mod . '/we_webEditionCmd_' . $mod . '.inc.php');
+		include(WE_MODULES_PATH . $mod . '/we_webEditionCmd_' . $mod . '.inc.php');
 	}
-}{ // deal with uninstalled modules
-	$mods = we_base_moduleInfo::getAllModules();
-	foreach($mods as $m){
-		echo 'case "edit_' . $m["name"] . '_ifthere":';
-	}
-	echo '
-		new jsWindow(url,"module_info",-1,-1,380,250,true,true,true);
-		break;';
 }
 
-$_jsincludes = we_tool_lookup::getJsCmdInclude();
-if(!empty($_jsincludes)){
+if(($_jsincludes = we_tool_lookup::getJsCmdInclude())){
 	foreach($_jsincludes as $_jsinclude){
-		include_once($_jsinclude);
+		include($_jsinclude);
 	}
 }
+$modSwitch = str_replace(explode("\n", we_html_element::jsElement()), '', ob_get_contents());
+ob_end_clean();
+
+echo $modSwitch . '// deal with not activated modules
+';
+
+foreach(array_diff(array_keys(we_base_moduleInfo::getAllModules()), $GLOBALS['_we_active_integrated_modules']) as $m){
+	echo 'case "' . $m . '_edit_ifthere":
+';
+}
+echo 'new jsWindow(url,"module_info",-1,-1,380,250,true,true,true);
+		break;';
 ?>
 			case "we_tracker":
 				new jsWindow("<?php echo WE_TRACKER_DIR; ?>/controlcenter.php", "we_tracker", -1, -1, 1024, 768, true, true, true);
@@ -859,11 +862,11 @@ if(!empty($_jsincludes)){
 			case "delete_cat":
 			case "add_cat":
 			case "delete_all_cats":
-			case "add_schedule":
-			case "del_schedule":
-			case "add_schedcat":
-			case "delete_all_schedcats":
-			case "delete_schedcat":
+			case "schedule_add":
+			case "schedule_del":
+			case "schedule_add_schedcat":
+			case "schedule_delete_all_schedcats":
+			case "schedule_delete_schedcat":
 			case "template_changed":
 			case "add_navi":
 			case "delete_navi":
@@ -1276,10 +1279,10 @@ if(defined("WE_MESSAGING_MODULE_DIR")){
 ?>
 				break;
 			case "edit_settings_spellchecker":
-				we_cmd("edit_spellchecker");
+				we_cmd("spellchecker_edit");
 				break;
 			case "edit_settings_banner":
-				we_cmd("default_banner");
+				we_cmd("banner_default");
 				break;
 			case "edit_settings_editor":
 				if (top.plugin.editSettings) {

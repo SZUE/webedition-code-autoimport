@@ -430,7 +430,7 @@ function we_cmd() {
 			}
 			break;
 
-		case "edit_newsletter":
+		case "newsletter_edit":
 			top.content.hot=0;
 			top.content.editor.edbody.document.we_form.ncmd.value=arguments[0];
 			top.content.editor.edbody.document.we_form.nid.value=arguments[1];
@@ -1326,7 +1326,7 @@ function set_state_edit_delete_recipient(control) {
 					');
 				break;
 
-			case "edit_newsletter":
+			case "newsletter_edit":
 
 				if(isset($_REQUEST["nid"])){
 					$this->newsletter = new we_newsletter_newsletter($_REQUEST["nid"]);

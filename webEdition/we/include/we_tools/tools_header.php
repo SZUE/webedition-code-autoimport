@@ -68,7 +68,7 @@ $tab_header = $we_tabs->getHeader('_tools', 1);
 
 echo $tab_header;
 ?>
-<script type="text/javascript">
+<script type="text/javascript"><!--
 	var current = "<?php echo $_REQUEST["tool"]; ?>";
 	function openTool(tool) {
 		if (top.content.hot == "1") {
@@ -87,6 +87,7 @@ echo $tab_header;
 		}
 
 	}
+	//-->
 </script>
 </head>
 <body style="background: #C8D8EC url(<?php print IMAGE_DIR; ?>backgrounds/header.gif);margin: 0px 0px 0px 0px;" link="black" alink="#1559b0" vlink="black" onload="setFrameSize()" onresize="setFrameSize()">

@@ -25,13 +25,12 @@ we_html_tools::protect();
 
 echo we_html_tools::getHtmlTop() . STYLESHEET;
 
-$foo = f("SELECT username FROM " . USER_TABLE . " WHERE ID=$_userID", "username", $GLOBALS['DB_WE']);
+$foo = f("SELECT username FROM " . USER_TABLE . " WHERE ID=$_userID");
 
 
 $content = "<p class='defaultfont'>" . sprintf(g_l('alert', "[temporaere_no_access_text]"), $we_doc->Text, $foo) . "</p>";
 ?>
-<script  type="text/javascript">
-	<!--
+<script  type="text/javascript"><!--
 	top.toggleBusy(0);
 //-->
 </script>

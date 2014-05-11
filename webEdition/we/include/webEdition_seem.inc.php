@@ -76,7 +76,7 @@ function pWebEdition_JSFunctions(){
 
 	if (docIds) {
 
-	top.we_cmd('unlock',docIds,'<?php print $_SESSION["user"]["ID"]; ?>',docTables);
+	top.we_cmd('users_unlock',docIds,'<?php print $_SESSION["user"]["ID"]; ?>',docTables);
 
 	if(top.opener){
 	top.opener.focus();

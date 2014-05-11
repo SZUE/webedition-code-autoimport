@@ -42,7 +42,7 @@ function formBannerChooser($width = "", $table = BANNER_TABLE, $idvalue = 0, $id
 	$wecmdenc1 = we_cmd_enc("document.we_form.elements['$idname'].value");
 	$wecmdenc2 = we_cmd_enc("document.we_form.elements['$textname'].value");
 	$wecmdenc3 = we_cmd_enc(str_replace('\\', '', $cmd));
-	$button = we_html_button::create_button('select', "javascript:we_cmd('openBannerSelector',document.we_form.elements['$idname'].value,'" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "')");
+	$button = we_html_button::create_button('select', "javascript:we_cmd('banner_openSelector',document.we_form.elements['$idname'].value,'" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "')");
 
 	$yuiSuggest->setAcId("Path");
 	$yuiSuggest->setContentType("folder");
@@ -61,7 +61,7 @@ function formBannerChooser($width = "", $table = BANNER_TABLE, $idvalue = 0, $id
 echo we_html_element::jsScript(JS_DIR . 'windows.js');
 ?>
 
-<script type="text/javascript">
+<script type="text/javascript"><!--
 	var loaded;
 	function doUnload() {
 		if (!!jsWindow_count) {
@@ -80,7 +80,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 			}
 		}
 		switch (arguments[0]) {
-			case "openBannerSelector":
+			case "banner_openSelector":
 				new jsWindow(url, "we_bannerselector", -1, -1, 650, 400, true, true, true);
 				break;
 			default:
@@ -110,6 +110,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 	}
 
 	self.focus();
+	//-->
 </script>
 <?php echo weSuggest::getYuiJsFiles(); ?>
 

@@ -23,11 +23,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 switch($cmd){
-	case 'add_schedule':
-	case 'del_schedule':
-	case 'add_schedcat':
-	case 'delete_all_schedcats':
-	case 'delete_schedcat':
-		$INCLUDE = 'we_editors/we_editor.inc.php';
-		break;
+	case 'schedule_add':
+	case 'schedule_del':
+	case 'schedule_add_schedcat':
+	case 'schedule_delete_all_schedcats':
+	case 'schedule_delete_schedcat':
+		return 'we_editors/we_editor.inc.php';
 }

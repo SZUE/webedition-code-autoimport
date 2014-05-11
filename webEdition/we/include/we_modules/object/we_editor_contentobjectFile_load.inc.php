@@ -81,40 +81,48 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 	<?php
 	switch($cmd){
-		case "reload_entry_at_object":
-		case 'up_meta_at_object':
-		case 'down_meta_at_object':
-		case 'insert_meta_at_object':
-		case 'delete_meta_at_object':
-		case 'change_objectlink':
-		case 'remove_image_at_object':
-		case 'delete_link_at_object':
-		case 'change_link_at_object':
+		case "object_reload_entry_at_object":
+		case 'object_up_meta_at_object':
+		case 'object_down_meta_at_object':
+		case 'object_insert_meta_at_object':
+		case 'object_delete_meta_at_object':
+		case 'object_change_objectlink':
+		case 'object_remove_image_at_object':
+		case 'object_delete_link_at_object':
+		case 'object_change_link_at_object':
 			$temp = explode("_", $identifier);
 			$type = array_shift($temp);
 			$name = implode("_", $temp);
 
 			$db = new DB_WE();
 			$table = OBJECT_FILES_TABLE;
-
-			if($cmd == "insert_meta_at_object"){
-				$we_doc->addMetaToObject($name, $_REQUEST['we_cmd'][3]);
-			} elseif($cmd == "delete_meta_at_object"){
-				$we_doc->removeMetaFromObject($name, $_REQUEST['we_cmd'][3]);
-			} elseif($cmd == "down_meta_at_object"){
-				$we_doc->downMetaAtObject($name, $_REQUEST['we_cmd'][3]);
-			} elseif($cmd == "up_meta_at_object"){
-				$we_doc->upMetaAtObject($name, $_REQUEST['we_cmd'][3]);
-			} elseif($cmd == "change_objectlink"){
-				$we_doc->i_getLinkedObjects();
-			} elseif($cmd == "remove_image_at_object"){
-				$we_doc->remove_image($name);
-			} elseif($cmd == "delete_link_at_object"){
-				if(isset($we_doc->elements[$name])){
-					unset($we_doc->elements[$name]);
-				}
-			} elseif($cmd == "change_link_at_object"){
-				$we_doc->changeLink($name);
+			switch($cmd){
+				case "object_insert_meta_at_object":
+					$we_doc->addMetaToObject($name, $_REQUEST['we_cmd'][3]);
+					break;
+				case "object_delete_meta_at_object":
+					$we_doc->removeMetaFromObject($name, $_REQUEST['we_cmd'][3]);
+					break;
+				case "object_down_meta_at_object":
+					$we_doc->downMetaAtObject($name, $_REQUEST['we_cmd'][3]);
+					break;
+				case "object_up_meta_at_object":
+					$we_doc->upMetaAtObject($name, $_REQUEST['we_cmd'][3]);
+					break;
+				case "object_change_objectlink":
+					$we_doc->i_getLinkedObjects();
+					break;
+				case "object_remove_image_at_object":
+					$we_doc->remove_image($name);
+					break;
+				case "object_delete_link_at_object":
+					if(isset($we_doc->elements[$name])){
+						unset($we_doc->elements[$name]);
+					}
+					break;
+				case "object_change_link_at_object":
+					$we_doc->changeLink($name);
+					break;
 			}
 
 			$content = '

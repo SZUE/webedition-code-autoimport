@@ -77,7 +77,7 @@ class we_navigation_ruleFrames{
 				'space' => 200,
 				'html' => weSuggest::getYuiJsFiles() . '<table border="0" cellpadding="0" cellspacing="0">
 										<tr><td>' . we_html_tools::htmlSelect(
-					'navigationRules', $_rules, 8, '', false, array('style' => "width: 275px;", 'onclick' => 'we_cmd(\'edit_navigation_rule\', this.value)')) . '</td>
+					'navigationRules', $_rules, 8, '', false, array('style' => "width: 275px;", 'onclick' => 'we_cmd(\'navigation_edit_rule\', this.value)')) . '</td>
 											<td>' . we_html_tools::getPixel(10, 1) . '</td>
 											<td valign="top">
 												' . we_html_button::create_button(
@@ -304,8 +304,8 @@ function we_cmd(){
 			}
 		break;
 
-		case "edit_navigation_rule":
-			weInput.setValue("cmd", "edit_navigation_rule");
+		case "navigation_edit_rule":
+			weInput.setValue("cmd", "navigation_edit_rule");
 			weInput.setValue("ID", arguments[1]);
 			document.we_form.submit();
 		break;

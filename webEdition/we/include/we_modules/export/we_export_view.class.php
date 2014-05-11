@@ -214,7 +214,7 @@ class we_export_view{
 						top.content.usetHot();
 					break;
 
-					case "edit_export":
+					case "export_edit":
 						' . (!permissionhandler::hasPerm("EDIT_EXPORT") ? we_message_reporting::getShowMessageCall(g_l('export', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR) . 'return;' : ''
 			) . '
 						' . $this->topFrame . '.hot=0;
@@ -274,7 +274,7 @@ class we_export_view{
 						document.we_form.tabnr.value=arguments[1];
 						submitForm();
 						break;
-					case "openExportDirselector":
+					case "export_openDirselector":
 						url="' . WE_MODULES_DIR . 'export/we_exportDirSelectorFrameset.php?";
 						for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 						new jsWindow(url,"we_exportselector",-1,-1,600,350,true,true,true);
@@ -422,7 +422,7 @@ class we_export_view{
 						');
 				}
 				break;
-			case "edit_export":
+			case "export_edit":
 				if(!permissionhandler::hasPerm("EDIT_EXPORT")){
 					print we_html_element::jsElement(
 							we_message_reporting::getShowMessageCall(g_l('export', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)

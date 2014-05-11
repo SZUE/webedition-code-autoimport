@@ -270,7 +270,7 @@ $we_menu = array(
 		'text' => g_l('javaMenu_global', '[move]'),
 		'parent' => 1000000,
 		'hide' => $seeMode,
-		'perm'=>'MOVE_DOCUMENT || MOVE_OBJECTFILE || MOVE_TEMPLATE || ADMINISTRATOR',
+		'perm' => 'MOVE_DOCUMENT || MOVE_OBJECTFILE || MOVE_TEMPLATE || ADMINISTRATOR',
 	),
 // File > Move > Documents
 	1090100 => array(
@@ -319,7 +319,7 @@ $we_menu = array(
 	array(
 		'text' => g_l('javaMenu_glossary', '[glossary_check]'),
 		'parent' => 1000000,
-		'cmd' => 'check_glossary',
+		'cmd' => 'glossary_check',
 		'perm' => '',
 		'hide' => !(defined('GLOSSARY_TABLE'))
 	),
@@ -786,7 +786,7 @@ foreach($allModules as $m){
 		$we_menu[$z++] = array(
 			'text' => $m['text'] . '&hellip;',
 			'parent' => 3000000,
-			'cmd' => 'edit_' . $m['name'] . '_ifthere',
+			'cmd' => $m['name'] . '_edit_ifthere',
 			'perm' => isset($m['perm']) ? $m['perm'] : '',
 		);
 	}

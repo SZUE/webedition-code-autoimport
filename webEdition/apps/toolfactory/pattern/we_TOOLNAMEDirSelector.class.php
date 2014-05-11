@@ -221,7 +221,7 @@ function printCreateFolderHTML(){
 echo we_html_tools::getHtmlTop();
 we_html_tools::protect();
 
-print '<script type="text/javascript">
+print we_html_element('<script type="text/javascript">
 <!--
 																	top.clearEntries(); ';
 																	$this - > FolderText = rawurldecode($this - > FolderText);
@@ -267,10 +267,10 @@ print '<script type="text/javascript">
 													$this - > printCmdAddEntriesHTML();
 																	$this - > printCMDWriteAndFillSelectorHTML();
 																	print 'top.makeNewFolder = 0;
-																	top.selectFile(top.currentID);//-->
+																	top.selectFile(top.currentID);
+//-->
 </script>
-';
-print '</head><body></body></html>';
+</head><body></body></html>';
 }
 
 function query(){

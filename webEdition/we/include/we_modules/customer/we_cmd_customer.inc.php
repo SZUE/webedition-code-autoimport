@@ -23,12 +23,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 switch($cmd){
-	case 'edit_customer_ifthere':
-	case 'edit_customer':
+	case 'customer_edit_ifthere':
+	case 'customer_edit':
 		$GLOBALS['mod'] = 'customer';
-		$INCLUDE = 'we_modules/show_frameset.php';
-		break;
-	case 'applyWeDocumentCustomerFilterFromFolder':
-		$INCLUDE = 'we_editors/we_editor.inc.php';
-		break;
+		return 'we_modules/show_frameset.php';
+
+	case 'customer_applyWeDocumentCustomerFilterFromFolder':
+		return 'we_editors/we_editor.inc.php';
 }

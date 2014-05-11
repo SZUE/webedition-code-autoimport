@@ -23,25 +23,18 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 switch($cmd){
-	case 'edit_users':
-	case 'edit_users_ifthere':
+	case 'users_edit':
+	case 'users_edit_ifthere':
 		$GLOBALS['mod'] = 'users';
-		$INCLUDE = 'we_modules/show_frameset.php';
-		break;
-
-	case 'unlock':
-		$INCLUDE = 'we_modules/users/we_users_unlock.inc.php';
-		break;
-
-	case 'add_owner':
-	case 'del_owner':
-	case 'del_user':
-	case 'del_all_owners':
-	case 'add_user':
-		$INCLUDE = 'we_editors/we_editor.inc.php';
-		break;
-
-	case 'changeR':
-		$INCLUDE = 'we_modules/users/changeRec_users.inc.php';
-		break;
+		return 'we_modules/show_frameset.php';
+	case 'users_unlock':
+		return 'we_modules/users/we_users_unlock.inc.php';
+	case 'users_add_owner':
+	case 'users_del_owner':
+	case 'users_del_user':
+	case 'users_del_all_owners':
+	case 'users_add_user':
+		return 'we_editors/we_editor.inc.php';
+	case 'users_changeR':
+		return 'we_modules/users/changeRec_users.inc.php';
 }

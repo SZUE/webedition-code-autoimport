@@ -136,7 +136,7 @@ class we_export_frames extends weModuleFrames{
 
 	function getHTMLEditorBody(){
 
-		$hiddens = array('cmd' => 'edit_export', 'pnt' => 'edbody');
+		$hiddens = array('cmd' => 'export_edit', 'pnt' => 'edbody');
 
 		if(isset($_REQUEST["home"]) && $_REQUEST["home"]){
 			$hiddens["cmd"] = "home";
@@ -419,7 +419,7 @@ function closeAllType(){
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['ParentPath'].value");
 		$wecmdenc3 = we_cmd_enc("top.hot=1;");
 
-		$button = we_html_button::create_button('select', "javascript:top.content.setHot();we_cmd('openExportDirselector',document.we_form.elements['ParentID'].value,'" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "')");
+		$button = we_html_button::create_button('select', "javascript:top.content.setHot();we_cmd('export_openDirselector',document.we_form.elements['ParentID'].value,'" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "')");
 
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId("PathGroup");

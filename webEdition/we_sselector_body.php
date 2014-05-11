@@ -241,12 +241,12 @@ function _cutText($text, $l){
 				$final[] = $arFile[$key];
 			}
 
-			print '<script type="text/javascript"><!--
+			echo '<script type="text/javascript"><!--
 top.allentries = new Array();
 var i = 0;
 ';
 			foreach($final as $key => $entry){
-				print 'top.allentries[i++] = "' . $entry . '";';
+				echo 'top.allentries[i++] = "' . $entry . '";';
 			}
 			print '//--></script>';
 			$set_rename = false;

@@ -30,8 +30,7 @@ $messaging->init($_SESSION['weS']['we_data']['we_messagin_setting']);
 echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[settings]')) .
  we_html_element::jsScript(JS_DIR . 'we_showMessage.js');
 ?>
-<script type="text/javascript">
-<!--
+<script type="text/javascript"><!--
 <?php
 if(isset($_REQUEST['mcmd']) && $_REQUEST['mcmd'] == 'save_settings' && isset($_REQUEST['check_step'])){
 	if($messaging->save_settings(array('check_step' => $_REQUEST['check_step']))){

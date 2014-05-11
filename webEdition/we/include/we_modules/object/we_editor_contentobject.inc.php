@@ -53,8 +53,7 @@ echo STYLESHEET;
 
 echo we_html_element::jsScript(JS_DIR . 'windows.js');
 ?>
-<script  type="text/javascript">
-	<!--
+<script  type="text/javascript"><!--
 	function we_checkObjFieldname(i) {
 		if (i.value.search(/^([a-zA-Z0-9_+-])*$/)) {
 <?php print we_message_reporting::getShowMessageCall(g_l('modules_object', '[fieldNameNotValid]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
@@ -108,7 +107,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
  <tr>
  <td valign="top"></td>
  <td class="defaultfont">' .
-		we_html_button::create_button("image:btn_add_field", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('insert_entry_at_class','" . $_REQUEST['we_transaction'] . "');") .
+		we_html_button::create_button("image:btn_add_field", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_insert_entry_at_class','" . $_REQUEST['we_transaction'] . "');") .
 		'</td>
  </tr>
  <tr>
@@ -134,10 +133,10 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 		</td>
 		<td width="150" class = "defaultfont" valign="top">' .
 			we_html_button::create_button_table(array(
-				we_html_button::create_button("image:btn_add_field", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('insert_entry_at_class','" . $we_transaction . "','" . $uniqid . "');"),
-				we_html_button::create_button("image:btn_direction_up", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('up_entry_at_class','" . $we_transaction . "','" . $uniqid . "');", true, 22, 22, "", "", false, false, "_" . $identifier),
-				we_html_button::create_button("image:btn_direction_down", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('down_entry_at_class','" . $we_transaction . "','" . $uniqid . "');", true, 22, 22, "", "", false, false, "_" . $identifier),
-				we_html_button::create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('delete_entry_at_class','" . $we_transaction . "','" . $uniqid . "');")
+				we_html_button::create_button("image:btn_add_field", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_insert_entry_at_class','" . $we_transaction . "','" . $uniqid . "');"),
+				we_html_button::create_button("image:btn_direction_up", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_up_entry_at_class','" . $we_transaction . "','" . $uniqid . "');", true, 22, 22, "", "", false, false, "_" . $identifier),
+				we_html_button::create_button("image:btn_direction_down", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_down_entry_at_class','" . $we_transaction . "','" . $uniqid . "');", true, 22, 22, "", "", false, false, "_" . $identifier),
+				we_html_button::create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_delete_entry_at_class','" . $we_transaction . "','" . $uniqid . "');")
 				), 5) .
 			'</td>
 		</tr>

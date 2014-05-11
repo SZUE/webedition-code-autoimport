@@ -24,7 +24,7 @@
  */
 class we_banner_frames extends weModuleFrames{
 
-	var $edit_cmd = "edit_banner";
+	var $edit_cmd = "banner_edit";
 	protected $useMainTree = false;
 	protected $treeDefaultWidth = 224;
 
@@ -88,7 +88,7 @@ class we_banner_frames extends weModuleFrames{
 				fr.writeln("wasdblclick=0;");
 				fr.writeln("tout=null");
 				fr.writeln("function doClick(id,ct,table){");
-				//fr.writeln("if(ct=='folder') top.content.we_cmd('edit_newsletter',id,ct,table); else if(ct=='file') top.content.we_cmd('show_document',id,ct,table);");
+				//fr.writeln("if(ct=='folder') top.content.we_cmd('newsletter_edit',id,ct,table); else if(ct=='file') top.content.we_cmd('show_document',id,ct,table);");
 				fr.writeln("top.content.we_cmd('<?php print $this->edit_cmd; ?>',id,ct,table);");
 				fr.writeln("}");
 				fr.writeln("top.content.loaded=1;");

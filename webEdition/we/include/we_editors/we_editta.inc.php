@@ -54,7 +54,7 @@ if(isset($_REQUEST["ok"])){
 
 if(isset($_REQUEST["ok"])){
 	$js = 'opener._EditorFrame.setEditorIsHot(true);'
-		. 'opener.we_cmd("reload_entry_at_class","' . $we_transaction . '", "' . $nr . '");'
+		. 'opener.we_cmd("object_reload_entry_at_class","' . $we_transaction . '", "' . $nr . '");'
 		. 'top.close();';
 } else {
 	$js = 'function okFn(){'

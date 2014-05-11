@@ -586,8 +586,7 @@ echo we_html_tools::getHtmlTop("webEdition - " . g_l('versions', '[versioning]')
  STYLESHEET;
 ?>
 
-<script type="text/javascript">
-	<!--
+<script type="text/javascript"><!--
 	var activ_tab = <?php print $activTab; ?>;
 
 	function toggle(id) {

@@ -23,9 +23,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 switch($cmd){
-	case 'edit_newsletter':
-	case 'edit_newsletter_ifthere':
+	case 'newsletter_edit':
+	case 'newsletter_edit_ifthere':
 		$GLOBALS['mod'] = 'newsletter';
-		$INCLUDE = 'we_modules/show_frameset.php';
-		break;
+		return 'we_modules/show_frameset.php';
 }

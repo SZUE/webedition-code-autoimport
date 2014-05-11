@@ -192,7 +192,7 @@ function we_cmd() {
 
 			break;
 
-		case "edit_voting":
+		case "voting_edit":
 			' . (!permissionhandler::hasPerm("EDIT_VOTING") ? we_message_reporting::getShowMessageCall(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR) . 'return;' : '') . '
 			' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
 			' . $this->topFrame . '.editor.edbody.document.we_form.cmdid.value=arguments[1];
@@ -238,7 +238,7 @@ function we_cmd() {
 			document.we_form.tabnr.value=arguments[1];
 			submitForm();
 		break;
-		case "openVotingDirselector":
+		case "voting_openDirselector":
 			url="' . WE_VOTING_MODULE_DIR . 'we_votingDirSelectorFrameset.php?";
 			for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 			new jsWindow(url,"we_votingSelector",-1,-1,600,350,true,true,true);
@@ -249,7 +249,7 @@ function we_cmd() {
 		case "browse_users":
 			new jsWindow(url,"browse_users",-1,-1,500,300,true,false,true);
 		break;
-		case "add_owner":
+		case "users_add_owner":
 			var owners = arguments[1];
 			var isfolders = arguments[2];
 
@@ -369,7 +369,7 @@ function we_cmd(){
 								' . $this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
 					');
 				break;
-			case "edit_voting":
+			case "voting_edit":
 				if(!permissionhandler::hasPerm("EDIT_VOTING")){
 					print we_html_element::jsElement(
 							we_message_reporting::getShowMessageCall(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)

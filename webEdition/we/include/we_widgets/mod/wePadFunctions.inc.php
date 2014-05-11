@@ -179,7 +179,7 @@ function getCSS(){
 		font-size:' . ((we_base_browserDetect::isMAC()) ? "10px" : ((we_base_browserDetect::isUNIX()) ? "12px" : "11px")) . ';
 		font-family:' . g_l('css', '[font_family]') . ';
 	}
-	input.wetextinput:focus{
+	input.wetextinput:focus {
 		color:black;
 		border:#888888 solid 1px;
 		background-color:#DCE6F2;
@@ -188,7 +188,7 @@ function getCSS(){
 		font-size:' . ((we_base_browserDetect::isMAC()) ? "10px" : ((we_base_browserDetect::isUNIX()) ? "12px" : "11px")) . ";
 		font-family:" . g_l('css', '[font_family]') . ';
 	}
-	.wetextarea{
+	.wetextarea {
 		color:black;
 		border:#AAAAAA solid 1px;
 		height:80px;
@@ -196,7 +196,7 @@ function getCSS(){
 		font-size:" . ((we_base_browserDetect::isMAC()) ? "10px" : ((we_base_browserDetect::isUNIX()) ? "12px" : "11px")) . ";
 		font-family:" . g_l('css', '[font_family]') . ';
 	}
-	textarea.wetextarea::focus{
+	textarea.wetextarea:focus {
 		color:black;
 		border:#888888 solid 1px;
 		background-color:#DCE6F2;

@@ -113,8 +113,7 @@ print STYLESHEET;
 
 //  js-functions for the select-men�
 ?>
-<script type="text/javascript">
-
+<script type="text/javascript"><!--
 
 	function we_submitForm(target, url) {
 		var f = self.document.we_form;
@@ -186,10 +185,10 @@ print STYLESHEET;
 			validiframe.style.height = h - 185;
 		}
 	}
-
+//-->
 </script>
 <?php
-print '</head>';
+echo '</head>';
 
 //  generate Body of page
 $parts = array(

@@ -123,23 +123,23 @@ switch(weRequest('string', 'we_cmd', '', 0)){
 		$we_doc->EditPageNr = WE_EDITPAGE_CONTENT;
 		$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_CONTENT;
 		break;
-	case 'add_owner':
+	case 'users_add_owner':
 		$we_doc->add_owner($_REQUEST['we_cmd'][1]);
 		break;
-	case 'del_owner':
+	case 'users_del_owner':
 		$we_doc->del_owner($_REQUEST['we_cmd'][1]);
 		break;
-	case 'add_user':
+	case 'users_add_user':
 		$we_doc->add_user($_REQUEST['we_cmd'][1]);
 		break;
-	case 'del_user':
+	case 'users_del_user':
 		$we_doc->del_user($_REQUEST['we_cmd'][1]);
 		break;
-	case 'del_all_owners':
+	case 'users_del_all_owners':
 		$we_doc->del_all_owners();
 		break;
 
-	case 'applyWeDocumentCustomerFilterFromFolder':
+	case 'customer_applyWeDocumentCustomerFilterFromFolder':
 		$we_doc->applyWeDocumentCustomerFilterFromFolder();
 		break;
 
@@ -147,19 +147,19 @@ switch(weRequest('string', 'we_cmd', '', 0)){
 		$we_doc->restoreDefaults();
 		break;
 
-	case 'add_workspace':
+	case 'object_add_workspace':
 		$we_doc->add_workspace($_REQUEST['we_cmd'][1]);
 		break;
-	case 'del_workspace':
+	case 'object_del_workspace':
 		$we_doc->del_workspace($_REQUEST['we_cmd'][1]);
 		break;
-	case 'add_extraworkspace':
+	case 'object_add_extraworkspace':
 		$we_doc->add_extraWorkspace($_REQUEST['we_cmd'][1]);
 		break;
-	case 'del_extraworkspace':
+	case 'object_del_extraworkspace':
 		$we_doc->del_extraWorkspace($_REQUEST['we_cmd'][1]);
 		break;
-	case 'ws_from_class':
+	case 'object_ws_from_class':
 		$we_doc->ws_from_class();
 		break;
 	case 'switch_edit_page':
@@ -180,25 +180,25 @@ switch(weRequest('string', 'we_cmd', '', 0)){
 	case 'delete_cat':
 		$we_doc->delCat($_REQUEST['we_cmd'][1]);
 		break;
-	case 'changeTempl_ob':
+	case 'object_changeTempl_ob':
 		$we_doc->changeTempl_ob($_REQUEST['we_cmd'][1], $_REQUEST['we_cmd'][2]);
 		break;
 	case 'delete_all_cats':
 		$we_doc->Category = '';
 		break;
-	case 'add_schedule':
+	case 'schedule_add_schedule':
 		$we_doc->add_schedule();
 		break;
-	case 'del_schedule':
+	case 'schedule_del':
 		$we_doc->del_schedule($_REQUEST['we_cmd'][1]);
 		break;
-	case 'delete_schedcat':
+	case 'schedule_delete_schedcat':
 		$we_doc->delete_schedcat($_REQUEST['we_cmd'][1], $_REQUEST['we_cmd'][2]);
 		break;
-	case 'delete_all_schedcats':
+	case 'schedule_delete_all_schedcats':
 		$we_doc->schedArr[$_REQUEST['we_cmd'][1]]['CategoryIDs'] = '';
 		break;
-	case 'add_schedcat':
+	case 'schedule_add_schedcat':
 		$we_doc->add_schedcat($_REQUEST['we_cmd'][1], $_REQUEST['we_cmd'][2]);
 		break;
 	case 'doImage_convertGIF':
@@ -240,10 +240,10 @@ switch(weRequest('string', 'we_cmd', '', 0)){
 		$we_doc->setElement('origheight', $height, 'attrib');
 		$we_doc->DocChanged = true;
 		break;
-	case 'add_css':
+	case 'object_add_css':
 		$we_doc->add_css($_REQUEST['we_cmd'][1]);
 		break;
-	case 'del_css':
+	case 'object_del_css':
 		$we_doc->del_css($_REQUEST['we_cmd'][1]);
 		break;
 	case 'add_navi':
@@ -534,15 +534,15 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 
 									switch($tmp){
 										case 1:
-											$we_JavaScript .= 'top.we_cmd("in_workflow","' . $we_transaction . '","' . $_REQUEST['we_cmd'][4] . '");';
+											$we_JavaScript .= 'top.we_cmd("workflow_isIn","' . $we_transaction . '","' . $_REQUEST['we_cmd'][4] . '");';
 											$wf_flag = true;
 											break;
 										case 2:
-											$we_JavaScript .= 'top.we_cmd("pass","' . $we_transaction . '");';
+											$we_JavaScript .= 'top.we_cmd("workflow_pass","' . $we_transaction . '");';
 											$wf_flag = true;
 											break;
 										case 3:
-											$we_JavaScript .= 'top.we_cmd("decline","' . $we_transaction . '");';
+											$we_JavaScript .= 'top.we_cmd("workflow_decline","' . $we_transaction . '");';
 											$wf_flag = true;
 											break;
 										default:
