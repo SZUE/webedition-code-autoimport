@@ -325,7 +325,7 @@ we_templateInit();?>';
 	function i_getDocument(){
 		$this->_updateCompleteCode();
 		/* remove unwanted/-needed start/stop parser tags (?><php) */
-		return preg_replace("/(;|{|})(\r|\n| |\t)*\?>(\r|\n|\t)*<\?php ?/si", "\\1\\2\n", $this->parseTemplate());
+		return preg_replace("/(:|;|{|})(\r|\n| |\t)*\?>(\r|\n|\t)*<\?php ?/si", "\\1\n\\2", $this->parseTemplate());
 	}
 
 	protected function i_writeSiteDir(){
