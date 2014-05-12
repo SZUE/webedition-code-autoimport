@@ -103,7 +103,8 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 			'</div>
 				</div>';
 
-		echo $jsGUI->getResponse('reload', $uniqid, $content);
+		echo $jsGUI->getResponse('reload', $uniqid, $content) .
+			we_html_element::jsElement('if(typeof tinyMceConfObject__' . $we_doc->getElement("wholename" . $identifier) . 'default === \'object\'){_EditorFrame.getContentEditor().tinyMceInitialize(tinyMceConfObject__' . $we_doc->getElement("wholename" . $identifier) . 'default)};');
 
 		$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 	}
@@ -224,6 +225,15 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 				$uniqid = 'entry_' . $identifier;
 				$we_doc->upEntryAtClass($identifier);
 				echo $jsGUI->getResponse('up', $uniqid);
+				$ret = '';
+				foreach(array_flip($sort) as $sortId){
+					$field = $we_doc->elements['wholename' . $sortId]['dat'];
+					if(strpos($field, 'text_') === 0){
+						$ret .= '_EditorFrame.getContentEditor().tinyMceInitialize(_EditorFrame.getContentEditor().tinyMceConfObject__' . $field . 'default);
+';
+					}
+				}
+				echo $ret ? we_html_element::jsElement($ret) : '';
 				$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 			}
 			break;
@@ -236,6 +246,15 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 				$uniqid = 'entry_' . $identifier;
 				$we_doc->downEntryAtClass($identifier);
 				echo $jsGUI->getResponse('down', $uniqid);
+				$ret = '';
+				foreach(array_flip($sort) as $sortId){
+					$field = $we_doc->elements['wholename' . $sortId]['dat'];
+					if(strpos($field, 'text_') === 0){
+						$ret .= '_EditorFrame.getContentEditor().tinyMceInitialize(_EditorFrame.getContentEditor().tinyMceConfObject__' . $field . 'default);
+';
+					}
+				}
+				echo $ret ? we_html_element::jsElement($ret) : '';
 				$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 			}
 			break;

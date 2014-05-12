@@ -24,6 +24,23 @@
 var tinyEditors = {};
 var tinyEditorsInPopup = {};
 
+/* Re-/Initialize TinyMCE: 
+ * param (object) confObject: initialize Tiny instance using confObject
+ *
+ * If there is allready an instance applied to the textarea defined in confObject 
+ * this editor will be removed and re-initialized
+ */
+function tinyMceInitialize(confObject){
+	if (typeof tinyMCE === 'object'){
+		if (typeof confObject === 'object'){
+			if (tinyMCE.get(confObject.elements)){
+				tinyMCE.execCommand('mceRemoveControl', false, confObject.elements);
+			}
+			tinyMCE.init(confObject);
+		}
+	}
+}
+
 function TinyWrapper(fieldname) {
 	if(!(this instanceof TinyWrapper)){
 		return new TinyWrapper(fieldname);
