@@ -1183,7 +1183,8 @@ function weWysiwygSetHiddenText(arg) {
 					' : '') . '
 
 					var weclassNames_tinyMce = new Array (' . $this->cssClassesJS . ');
-					tinyMCE.addI18n({' . $editorLang . ':{
+
+					var tinyMceTranslationObject = {' . $editorLang . ':{
 						we:{
 							"group_insert":"' . g_l('wysiwyg', "[insert]") . '",
 							"group_indent":"' . g_l('wysiwyg', "[indent]") . '",
@@ -1201,9 +1202,10 @@ function weWysiwygSetHiddenText(arg) {
 							"tt_wevisualaid":"' . g_l('wysiwyg', "[visualaid]") . '",
 							"cm_inserttable":"' . g_l('wysiwyg', "[insert_table]") . '",
 							"cm_table_props":"' . g_l('wysiwyg', "[edit_table]") . '"
-						}}});
+						}}};
 
-					tinyMCE.init({
+
+					var tinyMceConfObject__' . $this->fieldName . ' = {
 						wePluginClasses : {
 							"weadaptbold" : "' . $editorLangSuffix . 'weadaptbold",
 							"weadaptitalic" : "' . $editorLangSuffix . 'weadaptitalic",
@@ -1454,7 +1456,10 @@ function weWysiwygSetHiddenText(arg) {
 							});
 							') . '
 						}
-					});') .
+					}
+					tinyMCE.addI18n(tinyMceTranslationObject);
+					tinyMCE.init(tinyMceConfObject__' . $this->fieldName . ');
+') .
 					'
 <textarea wrap="off" style="color:#eeeeee; background-color:#eeeeee;  width:' . (max($this->width, $this->maxGroupWidth + 8)) . 'px; height:' . $this->height . 'px;" id="' . $this->name . '" name="' . $this->name . '">' . str_replace(array('\n', '&'), array('', '&amp;'), $editValue) . '</textarea>';
 
