@@ -1309,13 +1309,19 @@ function weWysiwygSetHiddenText(arg) {
 								' : '') . '
 								' . ($this->fieldName ? '
 								tinyEditors["' . $this->fieldName . '"] = ed;
+
+								var hasOpener = false;
+								try{
+									hasOpener = opener ? true : false;
+								} catch(e){}
+
 								if(typeof we_tinyMCE_' . $this->fieldName_clean . '_init != "undefined"){
 									try{
 										we_tinyMCE_' . $this->fieldName_clean . '_init(ed);
 									} catch(e){
 										//nothing
 									}
-								} else if(opener){
+								} else if(hasOpener){
 									if(opener.top.weEditorFrameController){
 										//we are in backend
 										var editor = opener.top.weEditorFrameController.ActiveEditorFrameId;
