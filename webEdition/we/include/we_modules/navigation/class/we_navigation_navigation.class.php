@@ -39,6 +39,8 @@ class we_navigation_navigation extends weModelBase{
 	const STPYE_CLASS = 'classname';
 	const STPYE_CATLINK = 'catLink';
 	const STPYE_CATEGORY = 'category';
+	const LSELECTION_INTERN = 'intern';
+	const LSELECTION_EXTERN = 'extern';
 
 	//properties
 	var $ID = 0;
@@ -735,7 +737,7 @@ class we_navigation_navigation extends weModelBase{
 
 		$_path = str_replace(array('&amp;', '&'), array('&', '&amp;'), $_path);
 
-		if(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES && $this->LinkSelection != 'extern'){
+		if(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES && $this->LinkSelection != LSELECTION_EXTERN && $this->SelectionType != STYPE_URLLINK){ //Fix #8353
 			$dirindexnames = array_map('trim', explode(',', '/' . str_replace(',', ',/', NAVIGATION_DIRECTORYINDEX_NAMES)));
 			return str_replace($dirindexnames, '/', $_path);
 		}
