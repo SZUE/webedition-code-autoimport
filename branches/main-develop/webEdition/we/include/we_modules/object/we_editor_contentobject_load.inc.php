@@ -78,6 +78,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 	function reloadElement($jsGUI, $we_transaction, $we_doc, $id){
 		$identifier = array_pop(explode('_', $id));
 		$uniqid = 'entry_' . $identifier;
+		$wholename = $we_doc->getElement("wholename" . $identifier);
 
 		$content = '<div id="' . $uniqid . '">
 				<a name="f' . $uniqid . '"></a>
@@ -85,7 +86,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 				<tr>
 					<td class="defaultfont" width="600">
 					<table cellpadding="6" cellspacing="0" border="0">' .
-			$we_doc->getFieldHTML($we_doc->getElement("wholename" . $identifier), $uniqid) .
+			$we_doc->getFieldHTML($wholename, $uniqid) .
 			'	</table>
 				</td>
 				<td width="150" class = "defaultfont" valign="top">' .
@@ -103,8 +104,18 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 			'</div>
 				</div>';
 
-		echo $jsGUI->getResponse('reload', $uniqid, $content);
-
+		echo $jsGUI->getResponse('reload', $uniqid, $content) .
+			we_html_element::jsElement('
+var target = _EditorFrame.getContentEditor(),
+	confname = "tinyMceConfObject__' . $wholename . 'default";
+if(conf = typeof tinyMceConfObject__' . $wholename . 'default === \'object\' ? tinyMceConfObject__' . $wholename . 'default : false){
+	target.tinyMceInitialize(conf);
+	target[confname] = conf;
+} else if(typeof target[confname] === \'object\'){
+	target[confname] = undefined;
+}
+');
+		
 		$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 	}
 
@@ -224,6 +235,17 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 				$uniqid = 'entry_' . $identifier;
 				$we_doc->upEntryAtClass($identifier);
 				echo $jsGUI->getResponse('up', $uniqid);
+				$ret = '';
+				foreach(array_flip($sort) as $sortId){
+					$field = $we_doc->elements['wholename' . $sortId]['dat'];
+					$ret .= '
+var target = _EditorFrame.getContentEditor(),
+	confname = "tinyMceConfObject__' . $field . 'default";
+if(typeof target[confname] === \'object\'){
+		target.tinyMceInitialize(target[confname]);
+}';
+				}
+				echo $ret ? we_html_element::jsElement($ret) : '';
 				$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 			}
 			break;
@@ -236,6 +258,17 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 				$uniqid = 'entry_' . $identifier;
 				$we_doc->downEntryAtClass($identifier);
 				echo $jsGUI->getResponse('down', $uniqid);
+				$ret = '';
+				foreach(array_flip($sort) as $sortId){
+					$field = $we_doc->elements['wholename' . $sortId]['dat'];
+					$ret .= '
+var target = _EditorFrame.getContentEditor(),
+	confname = "tinyMceConfObject__' . $field . 'default";
+if(typeof target[confname] === \'object\'){
+		target.tinyMceInitialize(target[confname]);
+}';
+				}
+				echo $ret ? we_html_element::jsElement($ret) : '';
 				$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 			}
 			break;

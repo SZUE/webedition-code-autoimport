@@ -818,17 +818,20 @@ function weGetCookieVariable($name){
 }
 
 function getContentTypeFromFile($dat){
+	if(is_link($dat)){
+		return 'link';
+	}
 	if(is_dir($dat)){
 		return 'folder';
-	} else {
-		$ext = strtolower(preg_replace('#^.*(\..+)$#', '\1', $dat));
-		if($ext){
-			$type = we_base_ContentTypes::inst()->getTypeForExtension($ext);
-			if($type){
-				return $type;
-			}
+	}
+	$ext = strtolower(preg_replace('#^.*(\..+)$#', '\1', $dat));
+	if($ext){
+		$type = we_base_ContentTypes::inst()->getTypeForExtension($ext);
+		if($type){
+			return $type;
 		}
 	}
+
 	return we_base_ContentTypes::APPLICATION;
 }
 
