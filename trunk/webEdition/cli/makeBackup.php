@@ -353,8 +353,9 @@ if(!isset($_SESSION['weS']['weBackupVars']) || empty($_SESSION['weS']['weBackupV
 		if($_SESSION['weS']['weBackupVars']['handle_options']['settings']){
 			$fh = $_SESSION['weS']['weBackupVars']['open']($_SESSION['weS']['weBackupVars']['backup_file'], 'ab');
 			if($fh){
-				$file_to_export = WE_INCLUDES_DIR . 'conf/we_conf_global.inc.php';
-				we_backup_util::exportFile($file_to_export, $fh);
+				we_backup_util::exportFile(WE_INCLUDES_DIR . 'conf/we_conf_global.inc.php', $fh);
+				we_backup_util::exportFile(WE_INCLUDES_DIR . 'conf/we_active_integrated_modules.inc.php', $fh);
+				we_backup_util::exportFile(WE_INCLUDES_DIR . 'conf/we_conf_language.inc.php', $fh);
 				$_SESSION['weS']['weBackupVars']['close']($fh);
 			}
 		}

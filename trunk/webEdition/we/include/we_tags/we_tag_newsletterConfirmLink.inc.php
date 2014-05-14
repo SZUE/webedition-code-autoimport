@@ -33,13 +33,11 @@ function we_tag_newsletterConfirmLink($attribs, $content){
 	}
 
 	if(strlen($link) > 0){
-		if(!$plain){
-			$attribs["href"] = $link;
-			return getHtmlTag("a", $attribs, $content);
-		} else {
-			return $link;
-		}
-	} else {
-		return "";
+		$attribs["href"] = $link;
+		return ($plain ?
+				$link :
+				getHtmlTag("a", $attribs, $content)
+			);
 	}
+	return "";
 }

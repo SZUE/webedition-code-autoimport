@@ -146,20 +146,21 @@ abstract class we_backup_util{
 
 	static function canImportBinary($id, $path){
 
-		if(!empty($id) && $_SESSION['weS']['weBackupVars']['options']['backup_binary']){
+		if($id && $_SESSION['weS']['weBackupVars']['options']['backup_binary']){
 			return true;
 		}
+		if(!$id){
+			if(($path == WE_INCLUDES_DIR . 'conf/we_conf_global.inc.php' || $path == WE_INCLUDES_DIR . 'conf/we_conf_language.inc.php') && $_SESSION['weS']['weBackupVars']['handle_options']['settings']){
+				return true;
+			}
 
-		if(empty($id) && ($path == WE_INCLUDES_DIR . 'conf/we_conf_global.inc.php' || $path == WE_INCLUDES_DIR . 'conf/we_conf_language.inc.php') && $_SESSION['weS']['weBackupVars']['handle_options']['settings']){
-			return true;
-		}
+			if($_SESSION['weS']['weBackupVars']['options']['backup_extern'] && ($path != WE_INCLUDES_DIR . 'conf/we_conf_global.inc.php' || $path != WE_INCLUDES_DIR . 'conf/we_conf_language.inc.php')){
+				return true;
+			}
 
-		if(empty($id) && $_SESSION['weS']['weBackupVars']['options']['backup_extern'] && ($path != WE_INCLUDES_DIR . 'conf/we_conf_global.inc.php' || $path != WE_INCLUDES_DIR . 'conf/we_conf_language.inc.php')){
-			return true;
-		}
-
-		if(empty($id) && strpos($path, WE_MODULES_DIR . 'spellchecker') === 0 && $_SESSION['weS']['weBackupVars']['handle_options']['spellchecker']){
-			return true;
+			if(strpos($path, WE_MODULES_DIR . 'spellchecker') === 0 && $_SESSION['weS']['weBackupVars']['handle_options']['spellchecker']){
+				return true;
+			}
 		}
 
 		return false;
@@ -270,7 +271,7 @@ abstract class we_backup_util{
 
 		$_part = we_base_file::loadPart($file, 0, $_part_len, $iscompr);
 
-		if($_part===false){
+		if($_part === false){
 			return 'unreadble';
 		}
 
