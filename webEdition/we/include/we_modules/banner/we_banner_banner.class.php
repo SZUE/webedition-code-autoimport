@@ -278,8 +278,7 @@ class we_banner_banner extends we_banner_base{
 		$attsImage['border'] = 0;
 		$attsImage['alt'] = '';
 
-		if($bannerData["ID"]){
-			$id = $bannerData["ID"];
+		if(($id = $bannerData["ID"])){
 			if($bannerData["bannerID"]){
 				$bannersrc = getServerUrl() . id_to_path($bannerData["bannerID"]);
 				$attsImage = array_merge($attsImage, self::getImageInfos($bannerData["bannerID"]));
@@ -291,14 +290,15 @@ class we_banner_banner extends we_banner_base{
 			}
 			$bannerlink = $bannerclick . "?" . ($nocount ? 'nocount=' . $nocount . '&amp;' : '') . "u=$uniq&amp;bannername=" . rawurlencode($bannername) . "&amp;id=" . $bannerData["ID"] . "&amp;did=" . $did . "&amp;page=" . rawurlencode($page);
 		} else {
-			$id = f('SELECT pref_value FROM ' . BANNER_PREFS_TABLE . ' WHERE pref_name="DefaultBannerID"', 'pref_value', $db);
+			$id = f('SELECT pref_value FROM ' . BANNER_PREFS_TABLE . ' WHERE pref_name="DefaultBannerID"', '', $db);
 
-			$bannerID = f('SELECT bannerID FROM ' . BANNER_TABLE . ' WHERE ID=' . intval($id), "bannerID", $db);
+			$bannerID = f('SELECT bannerID FROM ' . BANNER_TABLE . ' WHERE ID=' . intval($id), "", $db);
 			if($bannerID){
 				$bannersrc = getServerUrl() . id_to_path($bannerID);
 				$attsImage = array_merge($attsImage, self::getImageInfos($bannerID));
-				if(isset($attsImage['longdescid']))
+				if(isset($attsImage['longdescid'])){
 					unset($attsImage['longdescid']);
+				}
 			}else {
 				$bannersrc = $getbanner . "?" . ($nocount ? 'nocount=' . $nocount . '&amp;' : '') . "u=$uniq&amp;bannername=" . rawurlencode($bannername) . "&amp;id=" . $id . "&amp;bid=" . $bannerID . "&amp;did=" . $did;
 				$showlink = false;

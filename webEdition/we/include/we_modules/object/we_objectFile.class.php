@@ -1221,7 +1221,7 @@ class we_objectFile extends we_document{
 		$out = '';
 		$link = $this->getElement($n) ? unserialize($this->getElement($n)) : array();
 		if(is_array($link)){
-			if(empty($link)){
+			if(!$link){
 				$link = array("ctype" => "text", "type" => we_base_link::TYPE_EXT, "href" => "#", "text" => g_l('global', "[new_link]"));
 			}
 			$img = new we_imageDocument();
