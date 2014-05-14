@@ -27,17 +27,14 @@ function we_tag_newsletterConfirmLink($attribs, $content){
 	$plain = weTag_getAttribute("plain", $attribs, false, true);
 
 	$content = trim($content);
-	$link = isset($GLOBALS["WE_CONFIRMLINK"]) ? $GLOBALS["WE_CONFIRMLINK"] : "";
-	if(strlen($content) < 1){
-		$content = $link;
-	}
+	$link = isset($GLOBALS["WE_CONFIRMLINK"]) ? $GLOBALS["WE_CONFIRMLINK"] : '';
 
-	if(strlen($link) > 0){
+	if($link){
 		$attribs["href"] = $link;
 		return ($plain ?
 				$link :
-				getHtmlTag("a", $attribs, $content)
+				getHtmlTag('a', $attribs, $content ? $content : $link)
 			);
 	}
-	return "";
+	return '';
 }
