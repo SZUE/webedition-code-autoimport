@@ -51,7 +51,7 @@ body{
 	text-decoration:none;
 }
 #rowWidgets td div table{
-	background-color:white;
+	/*background-color:white;*/
 }') . we_html_element::jsScript(JS_DIR . '/utils/prototypes.js');
 
 if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
