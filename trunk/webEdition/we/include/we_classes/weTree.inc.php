@@ -653,7 +653,7 @@ function drawTree(){
 	try{
 		var type=typeof(' . $this->treeFrame . ');
 	}catch(e){
-		console.log("Frame not found ' . $this->treeFrame . '");
+		//console.log("Frame not found ' . $this->treeFrame . '");
 		var type="undefined";
 	}
 

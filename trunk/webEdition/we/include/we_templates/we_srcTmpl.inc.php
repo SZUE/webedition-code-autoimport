@@ -201,23 +201,6 @@ switch($_SESSION['prefs']['editorMode']){
 							_EditorFrame.setEditorIsHot(false);
 						}
 					});
-					/*
-					 editor.on("dblclick",function(cm,e){
-					 pos=cm.doc.getCursor();
-					 curToken=cm.getTokenAt(cm.doc.getCursor());
-
-					 if(curToken.state.overlay.insideTag){//we are inside an we-tag
-					 console.log(cm.doc.getCursor());
-					 console.log(
-					 cm.getTokenAt(cm.doc.getCursor())
-					 );
-					 console.log(e.target || e.srcElement);
-					 console.log(e);
-					 console.log(
-					 cm.getModeAt(cm.doc.getCursor())
-					 );
-					 }
-					 });*/
 
 				} catch (e) {
 					//console.log("CM init error");
