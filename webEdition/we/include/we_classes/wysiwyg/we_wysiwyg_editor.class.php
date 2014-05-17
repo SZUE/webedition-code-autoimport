@@ -24,7 +24,7 @@
  */
 //make sure we know which browser is used
 
-class we_wysiwyg_editor {
+class we_wysiwyg_editor{
 
 	var $name = '';
 	private $origName = '';
@@ -178,7 +178,7 @@ class we_wysiwyg_editor {
 
 	public static function getEditorCommands($isTag){
 		$commands = array(
-			'unsorted' => array('formatblock', 'fontname', 'fontsize', 'applystyle', 'caption', 'removecaption', 'importrtf', 'fullscreen', 'visibleborders', 'editsource', 'spellcheck', 'template', 'styleprops', 'ltr', 'rtl','search','replace'),
+			'unsorted' => array('formatblock', 'fontname', 'fontsize', 'applystyle', 'caption', 'removecaption', 'importrtf', 'fullscreen', 'visibleborders', 'editsource', 'spellcheck', 'template', 'styleprops', 'ltr', 'rtl', 'search', 'replace'),
 			'prop' => array('bold', 'italic', 'underline', 'subscript', 'superscript', 'strikethrough', 'removeformat', 'removetags'),
 			'xhtmlxtras' => array('abbr', 'acronym', 'lang', 'del', 'ins', 'cite'),
 			'color' => array('forecolor', 'backcolor'),
@@ -188,7 +188,7 @@ class we_wysiwyg_editor {
 			'table' => array('inserttable', 'edittable', 'editcell', 'insertcolumnright', 'insertcolumnleft', 'insertrowabove', 'insertrowbelow', 'deletecol', 'deleterow', 'increasecolspan', 'decreasecolspan', 'editrow', 'deletetable', 'increasecolspan', 'decreasecolspan'),
 			'insert' => array('insertimage', 'hr', 'inserthorizontalrule', 'insertspecialchar', 'insertbreak', 'insertdate', 'inserttime'),
 			'copypaste' => array(/* 'cut', 'copy', 'paste', */'undo', 'redo', 'pastetext', 'pasteword', 'selectall'),
-			'layer' => array('insertlayer', 'movebackward', 'moveforward','absolute'),
+			'layer' => array('insertlayer', 'movebackward', 'moveforward', 'absolute'),
 		);
 
 		$tmp = array_keys($commands);
@@ -548,7 +548,8 @@ function weWysiwygSetHiddenText(arg) {
 			"h6" => g_l('wysiwyg', "[h6]"),
 			"pre" => g_l('wysiwyg', "[pre]"),
 			"address" => g_l('wysiwyg', "[address]")
-			) : (we_base_browserDetect::isSafari() ? array(
+			) :
+			(we_base_browserDetect::isSafari() ? array(
 				"div" => g_l('wysiwyg', "[normal]"),
 				"p" => g_l('wysiwyg', "[paragraph]"),
 				"h1" => g_l('wysiwyg', "[h1]"),
@@ -560,7 +561,8 @@ function weWysiwygSetHiddenText(arg) {
 				"pre" => g_l('wysiwyg', "[pre]"),
 				"address" => g_l('wysiwyg', "[address]"),
 				"blockquote" => "blockquote"
-				) : array(
+				) :
+				array(
 				"normal" => g_l('wysiwyg', "[normal]"),
 				"p" => g_l('wysiwyg', "[paragraph]"),
 				"h1" => g_l('wysiwyg', "[h1]"),
@@ -577,22 +579,17 @@ function weWysiwygSetHiddenText(arg) {
 				"blockquote" => "blockquote"
 		));
 
-		if(self::$editorType == 'tinyMCE'){
-			$this->tinyFormatblock = implode(',', array_keys($formatblockArr));
-		}
+		$this->tinyFormatblock = implode(',', array_keys($formatblockArr));
 
 		$this->elements = array(
-			new we_wysiwyg_ToolbarSelect(
-				$this, "formatblock", g_l('wysiwyg', "[format]"), $formatblockArr, self::$editorType == 'tinyMCE' ? 92 : 120
-			)
+			new we_wysiwyg_ToolbarSelect($this, "formatblock", g_l('wysiwyg', "[format]"), $formatblockArr, 92)
 		);
-		if(self::$editorType == 'tinyMCE' && $this->width < 194){
+		if($this->width < 194){
 			$this->elements[] = new we_wysiwyg_ToolbarSeparator($this);
 		}
-		array_push($this->elements, new we_wysiwyg_ToolbarSelect(
-			$this, "fontname", g_l('wysiwyg', "[fontname]"), $this->fontnames, self::$editorType == 'tinyMCE' ? 92 : 120
-			), new we_wysiwyg_ToolbarSeparator($this), new we_wysiwyg_ToolbarSelect(
-			$this, 'fontsize', g_l('wysiwyg', '[fontsize]'), we_base_browserDetect::isSafari() ? array(
+		$this->elements[] = new we_wysiwyg_ToolbarSelect($this, "fontname", g_l('wysiwyg', "[fontname]"), $this->fontnames, 92);
+		$this->elements[] = new we_wysiwyg_ToolbarSeparator($this);
+		$this->elements[] = new we_wysiwyg_ToolbarSelect($this, 'fontsize', g_l('wysiwyg', '[fontsize]'), we_base_browserDetect::isSafari() ? array(
 				'8px' => '8px',
 				'9px' => '9px',
 				'10px' => '10px',
@@ -621,200 +618,110 @@ function weWysiwygSetHiddenText(arg) {
 				5 => 5,
 				6 => 6,
 				7 => 7
-				), self::$editorType == 'tinyMCE' ? 92 : 120
-			)
-		);
-		if(self::$editorType == 'tinyMCE' && $this->width < 194){
+				), 92);
+
+		if($this->width < 194){
 			$this->elements[] = new we_wysiwyg_ToolbarSeparator($this);
 		}
-		array_push($this->elements, new we_wysiwyg_ToolbarSelect(
-			$this, "applystyle", g_l('wysiwyg', "[css_style]"), array(), self::$editorType == 'tinyMCE' ? 92 : 120
-			), new we_wysiwyg_ToolbarSeparator($this), new we_wysiwyg_ToolbarButton(
-			$this, "bold", $this->_image_languagePath . "bold.gif", g_l('wysiwyg', "[bold]")
-			), new we_wysiwyg_ToolbarButton(
-			$this, "italic", $this->_image_languagePath . "italic.gif", g_l('wysiwyg', "[italic]")
-			), new we_wysiwyg_ToolbarButton(
-			$this, "underline", $this->_image_languagePath . "underline.gif", g_l('wysiwyg', "[underline]")
-			), new we_wysiwyg_ToolbarButton(
-			$this, "subscript", $this->_imagePath . "subscript.gif", g_l('wysiwyg', "[subscript]")
-			), new we_wysiwyg_ToolbarButton(
-			$this, "superscript", $this->_imagePath . "superscript.gif", g_l('wysiwyg', "[superscript]")
-			), new we_wysiwyg_ToolbarButton(
-			$this, "strikethrough", $this->_imagePath . "strikethrough.gif", g_l('wysiwyg', "[strikethrough]")
-			), new we_wysiwyg_ToolbarButton(
-			$this, "removeformat", $this->_imagePath . "removeformat.gif", g_l('wysiwyg', "[removeformat]")
-			), new we_wysiwyg_ToolbarButton(
-			$this, "removetags", $this->_imagePath . "removetags.gif", g_l('wysiwyg', "[removetags]")
-			), new we_wysiwyg_ToolbarSeparator($this), new we_wysiwyg_ToolbarButton(
-			$this, "cite", "", // tinyMCE only: we do not need icon or tooltip
-			""
-			), new we_wysiwyg_ToolbarButton(
-			$this, "acronym", $this->_image_languagePath . "acronym.gif", g_l('wysiwyg', "[acronym]")
-			), new we_wysiwyg_ToolbarButton(
-			$this, "abbr", $this->_image_languagePath . "abbr.gif", g_l('wysiwyg', "[abbr]")
-			), new we_wysiwyg_ToolbarButton(
-			$this, "lang", $this->_imagePath . "lang.gif", g_l('wysiwyg', "[language]")
-			), new we_wysiwyg_ToolbarButton(
-			$this, "styleprops", "", // tinyMCE only: we do not need icon or tooltip
-			""
-			), new we_wysiwyg_ToolbarSeparator($this), new we_wysiwyg_ToolbarButton(
-			$this, "del", "", // tinyMCE only: we do not need icon or tooltip
-			""
-			), new we_wysiwyg_ToolbarButton(
-			$this, "ins", "", // tinyMCE only: we do not need icon or tooltip
-			""
-			), new we_wysiwyg_ToolbarSeparator($this), new we_wysiwyg_ToolbarButton(
-			$this, "forecolor", $this->_imagePath . "setforecolor.gif", g_l('wysiwyg', "[fore_color]"), 32
-			), new we_wysiwyg_ToolbarButton(
-			$this, "backcolor", $this->_imagePath . "setbackcolor.gif", g_l('wysiwyg', "[back_color]"), 32
-			), new we_wysiwyg_ToolbarSeparator($this), new we_wysiwyg_ToolbarButton(
-			$this, "justifyleft", $this->_imagePath . "justifyleft.gif", g_l('wysiwyg', "[justify_left]")
-			), new we_wysiwyg_ToolbarButton(
-			$this, "justifycenter", $this->_imagePath . "justifycenter.gif", g_l('wysiwyg', "[justify_center]")
-			), new we_wysiwyg_ToolbarButton(
-			$this, "justifyright", $this->_imagePath . "justifyright.gif", g_l('wysiwyg', "[justify_right]")
-			), new we_wysiwyg_ToolbarButton(
-			$this, "justifyfull", $this->_imagePath . "justifyfull.gif", g_l('wysiwyg', "[justify_full]")
-			), new we_wysiwyg_ToolbarSeparator($this), new we_wysiwyg_ToolbarButton(
-			$this, "insertunorderedlist", $this->_imagePath . "unorderlist.gif", g_l('wysiwyg', "[unordered_list]"), 32
-			), new we_wysiwyg_ToolbarButton(
-			$this, "insertorderedlist", $this->_imagePath . "orderlist.gif", g_l('wysiwyg', "[ordered_list]"), 32
-			), new we_wysiwyg_ToolbarButton(
-			$this, "indent", $this->_imagePath . "indent.gif", g_l('wysiwyg', "[indent]")
-			), new we_wysiwyg_ToolbarButton(
-			$this, "outdent", $this->_imagePath . "outdent.gif", g_l('wysiwyg', "[outdent]")
-			), new we_wysiwyg_ToolbarButton(
-			$this, "blockquote", "", // tinyMCE only: we do not need icon or tooltip
-			""
-			), new we_wysiwyg_ToolbarSeparator($this), new we_wysiwyg_ToolbarButton(
-			$this, "createlink", $this->_imagePath . "hyperlink.gif", g_l('wysiwyg', "[hyperlink]")
-			), new we_wysiwyg_ToolbarButton(
-			$this, "unlink", $this->_imagePath . "unlink.gif", g_l('wysiwyg', "[unlink]")
-			), new we_wysiwyg_ToolbarButton(
-			$this, "anchor", $this->_imagePath . "anchor.gif", g_l('wysiwyg', "[insert_edit_anchor]")
-			), new we_wysiwyg_ToolbarButton(
-			$this, "insertimage", $this->_imagePath . "image.gif", g_l('wysiwyg', "[insert_edit_image]")
-			), new we_wysiwyg_ToolbarSeparator($this), new we_wysiwyg_ToolbarButton(
-			$this, "insertdate", "", // tinyMCE only: we do not need icon or tooltip
-			""
-			), new we_wysiwyg_ToolbarButton(
-			$this, "inserttime", "", // tinyMCE only: we do not need icon or tooltip
-			""
-			), new we_wysiwyg_ToolbarSeparator($this), new we_wysiwyg_ToolbarButton(
-			$this, "hr", "", // tinyMCE only: we do not need icon or tooltip
-			""
-			), new we_wysiwyg_ToolbarButton(
-			$this, "inserthorizontalrule", $this->_imagePath . "rule.gif", g_l('wysiwyg', "[inserthorizontalrule]")
-			), new we_wysiwyg_ToolbarButton(
-			$this, "insertspecialchar", $this->_imagePath . "specialchar.gif", g_l('wysiwyg', "[insertspecialchar]")
-			), new we_wysiwyg_ToolbarButton(
-			$this, "emotions", "", // tinyMCE only: we do not need icon or tooltip
-			""
-			), new we_wysiwyg_ToolbarButton(
-			$this, "nonbreaking", "", // tinyMCE only: we do not need icon or tooltip
-			""
-			), new we_wysiwyg_ToolbarButton(
-			$this, "insertbreak", $this->_imagePath . "br.gif", g_l('wysiwyg', "[insert_br]")
-			), new we_wysiwyg_ToolbarSeparator($this), new we_wysiwyg_ToolbarButton(
-			$this, "ltr", "", // tinyMCE only: we do not need icon or tooltip
-			""
-			), new we_wysiwyg_ToolbarButton(
-			$this, "rtl", "", // tinyMCE only: we do not need icon or tooltip
-			""
-			), new we_wysiwyg_ToolbarSeparator($this), new we_wysiwyg_ToolbarButton(
-			$this, "inserttable", $this->_imagePath . "inserttable.gif", g_l('wysiwyg', "[inserttable]")
-			), new we_wysiwyg_ToolbarButton(
-			$this, "edittable", $this->_imagePath . "edittable.gif", g_l('wysiwyg', "[edittable]")
-			), new we_wysiwyg_ToolbarButton(
-			$this, "editcell", $this->_imagePath . "editcell.gif", g_l('wysiwyg', "[editcell]")
-			), new we_wysiwyg_ToolbarButton(
-			$this, "editrow", "", // tinyMCE only: we do not need icon or tooltip
-			""
-			), self::$editorType == 'tinyMCE' ? new we_wysiwyg_ToolbarSeparator($this) : '', new we_wysiwyg_ToolbarButton(
-			$this, "insertcolumnleft", $this->_imagePath . "insertcol_left.gif", g_l('wysiwyg', "[insertcolumnleft]")
-			), new we_wysiwyg_ToolbarButton(
-			$this, "insertcolumnright", $this->_imagePath . "insertcol_right.gif", g_l('wysiwyg', "[insertcolumnright]")
-			), new we_wysiwyg_ToolbarButton(
-			$this, "deletecol", $this->_imagePath . "deletecols.gif", g_l('wysiwyg', "[deletecol]")
-			), self::$editorType == 'tinyMCE' ? new we_wysiwyg_ToolbarSeparator($this) : '', new we_wysiwyg_ToolbarButton(
-			$this, "insertrowabove", $this->_imagePath . "insertrow_above.gif", g_l('wysiwyg', "[insertrowabove]")
-			), new we_wysiwyg_ToolbarButton(
-			$this, "insertrowbelow", $this->_imagePath . "insertrow_below.gif", g_l('wysiwyg', "[insertrowbelow]")
-			), new we_wysiwyg_ToolbarButton(
-			$this, "deleterow", $this->_imagePath . "deleterows.gif", g_l('wysiwyg', "[deleterow]")
-			), self::$editorType == 'tinyMCE' ? new we_wysiwyg_ToolbarSeparator($this) : '', new we_wysiwyg_ToolbarButton(
-			$this, "deletetable", "", // tinyMCE only: we do not need icon or tooltip
-			""
-			),
-			//new we_wysiwyg_ToolbarSeparator($this),
-			new we_wysiwyg_ToolbarButton(
-			$this, "increasecolspan", $this->_imagePath . "inc_col.gif", g_l('wysiwyg', "[increasecolspan]")
-			), new we_wysiwyg_ToolbarButton(
-			$this, "decreasecolspan", $this->_imagePath . "dec_col.gif", g_l('wysiwyg', "[decreasecolspan]")
-			), new we_wysiwyg_ToolbarButton(
-			$this, "caption", $this->_imagePath . "caption.gif", g_l('wysiwyg', "[addcaption]")
-			), new we_wysiwyg_ToolbarButton(
-			$this, "removecaption", $this->_imagePath . "removecaption.gif", g_l('wysiwyg', "[removecaption]")
-			), new we_wysiwyg_ToolbarSeparator($this), new we_wysiwyg_ToolbarButton(
-			$this, "importrtf", $this->_imagePath . "rtf.gif", g_l('wysiwyg', "[rtf_import]")
-			), new we_wysiwyg_ToolbarSeparator($this), new we_wysiwyg_ToolbarButton(
-			$this, "selectall", "", // tinyMCE only: we do not need icon or tooltip
-			""
-			), /* new we_wysiwyg_ToolbarButton(
-			  $this, "cut", $this->_imagePath . "cut.gif", g_l('wysiwyg', "[cut]")
-			  ), new we_wysiwyg_ToolbarButton(
-			  $this, "copy", $this->_imagePath . "copy.gif", g_l('wysiwyg', "[copy]")
-			  ), new we_wysiwyg_ToolbarButton(
-			  $this, "paste", $this->_imagePath . "paste.gif", g_l('wysiwyg', "[paste]")
-			  ), */ new we_wysiwyg_ToolbarButton(
-			$this, "pastetext", "", // tinyMCE only: we do not need icon or tooltip
-			""
-			), new we_wysiwyg_ToolbarButton(
-			$this, "pasteword", "", // tinyMCE only: we do not need icon or tooltip
-			""
-			), new we_wysiwyg_ToolbarSeparator($this), new we_wysiwyg_ToolbarButton(
-			$this, "search", "", // tinyMCE only: we do not need icon or tooltip
-			""
-			), new we_wysiwyg_ToolbarButton(
-			$this, "replace", "", // tinyMCE only: we do not need icon or tooltip
-			""
-			), new we_wysiwyg_ToolbarSeparator($this), new we_wysiwyg_ToolbarButton(
-			$this, "insertlayer", "", // tinyMCE only: we do not need icon or tooltip
-			""
-			), new we_wysiwyg_ToolbarButton(
-			$this, "movebackward", "", // tinyMCE only: we do not need icon or tooltip
-			""
-			), new we_wysiwyg_ToolbarButton(
-			$this, "moveforward", "", // tinyMCE only: we do not need icon or tooltip
-			""
-			), new we_wysiwyg_ToolbarButton(
-			$this, "absolute", "", // tinyMCE only: we do not need icon or tooltip
-			""
-			), new we_wysiwyg_ToolbarSeparator($this), new we_wysiwyg_ToolbarButton(
-			$this, "undo", $this->_imagePath . "undo.gif", g_l('wysiwyg', "[undo]")
-			), new we_wysiwyg_ToolbarButton(
-			$this, "redo", $this->_imagePath . "redo.gif", g_l('wysiwyg', "[redo]")
-			), new we_wysiwyg_ToolbarSeparator($this), new we_wysiwyg_ToolbarButton(
-			$this, "visibleborders", $this->_imagePath . "visibleborders.gif", g_l('wysiwyg', "[visible_borders]")
-			)
+		$this->elements[] = new we_wysiwyg_ToolbarSelect($this, "applystyle", g_l('wysiwyg', "[css_style]"), array(), self::$editorType == 'tinyMCE' ? 92 : 120 );
+		$this->elements[] = new we_wysiwyg_ToolbarSeparator($this);
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "bold", $this->_image_languagePath . "bold.gif", g_l('wysiwyg', "[bold]"));
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "italic", $this->_image_languagePath . "italic.gif", g_l('wysiwyg', "[italic]"));
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "underline", $this->_image_languagePath . "underline.gif", g_l('wysiwyg', "[underline]"));
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "subscript", $this->_imagePath . "subscript.gif", g_l('wysiwyg', "[subscript]"));
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "superscript", $this->_imagePath . "superscript.gif", g_l('wysiwyg', "[superscript]"));
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "strikethrough", $this->_imagePath . "strikethrough.gif", g_l('wysiwyg', "[strikethrough]"));
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "removeformat", $this->_imagePath . "removeformat.gif", g_l('wysiwyg', "[removeformat]"));
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "removetags", $this->_imagePath . "removetags.gif", g_l('wysiwyg', "[removetags]"));
+		$this->elements[] = new we_wysiwyg_ToolbarSeparator($this);
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "cite", "", ""); // tinyMCE only: we do not need icon or tooltip
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "acronym", $this->_image_languagePath . "acronym.gif", g_l('wysiwyg', "[acronym]"));
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "abbr", $this->_image_languagePath . "abbr.gif", g_l('wysiwyg', "[abbr]"));
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "lang", $this->_imagePath . "lang.gif", g_l('wysiwyg', "[language]"));
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "styleprops", "", ""); // tinyMCE only: we do not need icon or tooltip
+		$this->elements[] = new we_wysiwyg_ToolbarSeparator($this);
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "del", "", ""); // tinyMCE only: we do not need icon or tooltip
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "ins", "", ""); // tinyMCE only: we do not need icon or tooltip
+		$this->elements[] = new we_wysiwyg_ToolbarSeparator($this);
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "forecolor", $this->_imagePath . "setforecolor.gif", g_l('wysiwyg', "[fore_color]"), 32);
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "backcolor", $this->_imagePath . "setbackcolor.gif", g_l('wysiwyg', "[back_color]"), 32);
+		$this->elements[] = new we_wysiwyg_ToolbarSeparator($this);
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "justifyleft", $this->_imagePath . "justifyleft.gif", g_l('wysiwyg', "[justify_left]"));
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "justifycenter", $this->_imagePath . "justifycenter.gif", g_l('wysiwyg', "[justify_center]"));
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "justifyright", $this->_imagePath . "justifyright.gif", g_l('wysiwyg', "[justify_right]"));
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "justifyfull", $this->_imagePath . "justifyfull.gif", g_l('wysiwyg', "[justify_full]"));
+		$this->elements[] = new we_wysiwyg_ToolbarSeparator($this);
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "insertunorderedlist", $this->_imagePath . "unorderlist.gif", g_l('wysiwyg', "[unordered_list]"), 32);
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "insertorderedlist", $this->_imagePath . "orderlist.gif", g_l('wysiwyg', "[ordered_list]"), 32);
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "indent", $this->_imagePath . "indent.gif", g_l('wysiwyg', "[indent]"));
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "outdent", $this->_imagePath . "outdent.gif", g_l('wysiwyg', "[outdent]"));
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "blockquote", "", "");
+		$this->elements[] = new we_wysiwyg_ToolbarSeparator($this);
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "createlink", $this->_imagePath . "hyperlink.gif", g_l('wysiwyg', "[hyperlink]"));
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "unlink", $this->_imagePath . "unlink.gif", g_l('wysiwyg', "[unlink]"));
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "anchor", $this->_imagePath . "anchor.gif", g_l('wysiwyg', "[insert_edit_anchor]"));
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "insertimage", $this->_imagePath . "image.gif", g_l('wysiwyg', "[insert_edit_image]"));
+		$this->elements[] = new we_wysiwyg_ToolbarSeparator($this);
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "insertdate", "", "");
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "inserttime", "", "");
+		$this->elements[] = new we_wysiwyg_ToolbarSeparator($this);
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "hr", "", "");
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "inserthorizontalrule", $this->_imagePath . "rule.gif", g_l('wysiwyg', "[inserthorizontalrule]"));
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "insertspecialchar", $this->_imagePath . "specialchar.gif", g_l('wysiwyg', "[insertspecialchar]"));
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "emotions", "", "");
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "nonbreaking", "", "");
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "insertbreak", $this->_imagePath . "br.gif", g_l('wysiwyg', "[insert_br]"));
+		$this->elements[] = new we_wysiwyg_ToolbarSeparator($this);
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "ltr", "", "");
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "rtl", "", "");
+		$this->elements[] = new we_wysiwyg_ToolbarSeparator($this);
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "inserttable", $this->_imagePath . "inserttable.gif", g_l('wysiwyg', "[inserttable]"));
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "edittable", $this->_imagePath . "edittable.gif", g_l('wysiwyg', "[edittable]"));
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "editcell", $this->_imagePath . "editcell.gif", g_l('wysiwyg', "[editcell]"));
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "editrow", "", "");
+		$this->elements[] = new we_wysiwyg_ToolbarSeparator($this);
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "insertcolumnleft", $this->_imagePath . "insertcol_left.gif", g_l('wysiwyg', "[insertcolumnleft]"));
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "insertcolumnright", $this->_imagePath . "insertcol_right.gif", g_l('wysiwyg', "[insertcolumnright]"));
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "deletecol", $this->_imagePath . "deletecols.gif", g_l('wysiwyg', "[deletecol]")
 		);
+		$this->elements[] = new we_wysiwyg_ToolbarSeparator($this);
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "insertrowabove", $this->_imagePath . "insertrow_above.gif", g_l('wysiwyg', "[insertrowabove]"));
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "insertrowbelow", $this->_imagePath . "insertrow_below.gif", g_l('wysiwyg', "[insertrowbelow]"));
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "deleterow", $this->_imagePath . "deleterows.gif", g_l('wysiwyg', "[deleterow]")
+		);
+		$this->elements[] = new we_wysiwyg_ToolbarSeparator($this);
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "deletetable", "", "");
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "increasecolspan", $this->_imagePath . "inc_col.gif", g_l('wysiwyg', "[increasecolspan]"));
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "decreasecolspan", $this->_imagePath . "dec_col.gif", g_l('wysiwyg', "[decreasecolspan]"));
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "caption", $this->_imagePath . "caption.gif", g_l('wysiwyg', "[addcaption]"));
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "removecaption", $this->_imagePath . "removecaption.gif", g_l('wysiwyg', "[removecaption]"));
+		$this->elements[] = new we_wysiwyg_ToolbarSeparator($this);
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "importrtf", $this->_imagePath . "rtf.gif", g_l('wysiwyg', "[rtf_import]"));
+		$this->elements[] = new we_wysiwyg_ToolbarSeparator($this);
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "selectall", "", "");
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "pastetext", "", "");
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "pasteword", "", "");
+		$this->elements[] = new we_wysiwyg_ToolbarSeparator($this);
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "search", "", "");
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "replace", "", "");
+		$this->elements[] = new we_wysiwyg_ToolbarSeparator($this);
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "insertlayer", "", "");
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "movebackward", "", "");
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "moveforward", "", "");
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "absolute", "", "");
+		$this->elements[] = new we_wysiwyg_ToolbarSeparator($this);
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "undo", $this->_imagePath . "undo.gif", g_l('wysiwyg', "[undo]"));
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "redo", $this->_imagePath . "redo.gif", g_l('wysiwyg', "[redo]"));
+		$this->elements[] = new we_wysiwyg_ToolbarSeparator($this);
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "visibleborders", $this->_imagePath . "visibleborders.gif", g_l('wysiwyg', "[visible_borders]"));
 		if(defined('SPELLCHECKER') && $this->showSpell){
-			$this->elements[] = new we_wysiwyg_ToolbarButton(
-				$this, 'spellcheck', $this->_imagePath . 'spellcheck.gif', g_l('wysiwyg', '[spellcheck]')
-			);
+			$this->elements[] = new we_wysiwyg_ToolbarButton($this, 'spellcheck', $this->_imagePath . 'spellcheck.gif', g_l('wysiwyg', '[spellcheck]'));
 		}
 		if(!$this->fullscreen){
-			$this->elements[] = new we_wysiwyg_ToolbarButton(
-				$this, "fullscreen", $this->_imagePath . "fullscreen.gif", g_l('wysiwyg', "[fullscreen]")
-			);
+			$this->elements[] = new we_wysiwyg_ToolbarButton($this, "fullscreen", $this->_imagePath . "fullscreen.gif", g_l('wysiwyg', "[fullscreen]"));
 		}
-		$this->elements[] = new we_wysiwyg_ToolbarButton(
-			$this, "editsource", $this->_imagePath . "editsourcecode.gif", g_l('wysiwyg', "[edit_sourcecode]")
-		);
-		$this->elements[] = new we_wysiwyg_ToolbarButton(
-			$this, "template", "", // tinyMCE only: we do not need icon or tooltip
-			""
-		);
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "editsource", $this->_imagePath . "editsourcecode.gif", g_l('wysiwyg', "[edit_sourcecode"));
+		$this->elements[] = new we_wysiwyg_ToolbarButton($this, "template", "", "");
 	}
 
 	function getWidthOfElem($startPos, $end){//TODO: throw out if obsolete
@@ -828,16 +735,14 @@ function weWysiwygSetHiddenText(arg) {
 	function setFilteredElements(){
 		$lastSep = true;
 		foreach($this->elements as $elem){
-			if(!is_object($elem)){
-				t_e('no object', $elem, $this->elements);
-			} else if($elem->showMe){
+			if(is_object($elem) && $elem->showMe){
 				if((!$lastSep) || ($elem->classname != "we_wysiwyg_ToolbarSeparator")){
 					$this->filteredElements[] = $elem;
 				}
 				$lastSep = ($elem->classname == "we_wysiwyg_ToolbarSeparator");
 			}
 		}
-		if(!empty($this->filteredElements)){
+		if($this->filteredElements){
 			if($this->filteredElements[count($this->filteredElements) - 1]->classname == 'we_wysiwyg_ToolbarSeparator'){
 				array_pop($this->filteredElements);
 			}
