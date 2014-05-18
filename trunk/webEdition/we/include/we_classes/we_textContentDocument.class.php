@@ -329,8 +329,6 @@ abstract class we_textContentDocument extends we_textDocument {
 			}
 		}
 		$this->oldCategory = f('SELECT Category FROM ' . $this->Table . ' WHERE ID=' . $this->ID, '', $this->DB_WE);
-		//$oldDocType = f('SELECT DocType FROM ' . $this->Table . ' WHERE ID=' . $this->ID, 'DocType', $this->DB_WE);
-
 
 		if($saveinMainDB && !we_root::we_save(1)){
 			return false; // calls the root function, so the document will be saved in main-db but it will not be written!
