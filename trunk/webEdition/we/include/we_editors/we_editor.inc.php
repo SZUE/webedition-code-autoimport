@@ -186,7 +186,7 @@ switch(weRequest('string', 'we_cmd', '', 0)){
 	case 'delete_all_cats':
 		$we_doc->Category = '';
 		break;
-	case 'schedule_add_schedule':
+	case 'schedule_add':
 		$we_doc->add_schedule();
 		break;
 	case 'schedule_del':
