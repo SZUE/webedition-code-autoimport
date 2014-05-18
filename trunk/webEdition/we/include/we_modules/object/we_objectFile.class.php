@@ -2024,7 +2024,7 @@ class we_objectFile extends we_document{
 			$text = str_replace(array(' ', '//'), array('-', '/'), $text);
 			$text = (URLENCODE_OBJECTSEOURLS) ?
 				str_replace('%2F', '/', urlencode($text)) :
-				preg_replace(array('~&(.)(uml|grave|acute|circ|tilde|ring|cedil|slash|caron);|&(..)(lig);|&#.*;~', '~[^0-9a-zA-Z/._-]~'), array('\1\3', ''), htmlentities($text));
+				preg_replace(array('~&szlig;~','~&(.)(uml|grave|acute|circ|tilde|ring|cedil|slash|caron);|&(..)(lig);|&#.*;~', '~[^0-9a-zA-Z/._-]~'), array('ss','\1\3', ''), htmlentities($text));
 			$this->Url = substr($text, 0, 256);
 		} else {
 			$this->Url = '';
