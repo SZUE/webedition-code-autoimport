@@ -128,31 +128,31 @@ class DB_WE extends DB_Sql {
 		// if union is found in query, then take a closer look
 		if(!$allowUnion && stristr($Query_String, 'union') || stristr($Query_String, '/*!')){
 
-				$queryToCheck = str_replace("\\\"", '', $Query_String);
-				$queryToCheck = str_replace("\\'", '', $queryToCheck);
+			$queryToCheck = str_replace(array("\\\"", "\\'"), '', $Query_String);
 
-				$singleQuote = false;
-				$doubleQuote = false;
+			$singleQuote = $doubleQuote = false;
 
 				$queryWithoutStrings = '';
 
 				for ($i = 0; $i < strlen($queryToCheck); $i++) {
 					$char = $queryToCheck[$i];
-					if ($char == "\"" && $doubleQuote == false && $singleQuote == false) {
+				if(!$doubleQuote && !$singleQuote){
+					if($char == '"'){
 						$doubleQuote = true;
-					} else if ($char == "'" && $doubleQuote == false && $singleQuote == false) {
+					} else if($char == '\''){
 						$singleQuote = true;
-					} else if ($char == "\"" && $doubleQuote == true) {
+					}
+				} else if($char == '"' && $doubleQuote){
 						$doubleQuote = false;
-					} else if ($char == "'" && $singleQuote == true) {
+				} else if($char == '\'' && $singleQuote){
 						$singleQuote = false;
 					}
-					if ($doubleQuote == false && $singleQuote == false && $char !== "'" && $char !== "\"") {
+				if(!$doubleQuote && !$singleQuote && $char !== '\'' && $char !== '"'){
 						$queryWithoutStrings .= $char;
 					}
 				}
 
-				if(!$allowUnion && stristr($Query_String, 'union') || stristr($Query_String, '/*!')){
+				if(!$allowUnion && stristr($queryWithoutStrings, 'union') || stristr($queryWithoutStrings, '/*!')){
 					exit();
 
 			}
