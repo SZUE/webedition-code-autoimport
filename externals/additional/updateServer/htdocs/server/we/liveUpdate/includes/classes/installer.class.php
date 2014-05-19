@@ -635,6 +635,14 @@ class installer extends installerBase {
 
 		' . updateUtil::getOverwriteClassesCode() . '
 
+		$delDir = LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/includes/";
+		if(is_file($delDir . "deleted.files")){
+			unlink($delDir . "deleted.files");
+		}
+		if(is_file($delDir . "del.files") && method_exists($liveUpdateFnc, "removeObsoleteFiles")){
+			$liveUpdateFnc->removeObsoleteFiles($delDir);
+		}
+
 		$filesDir = LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp/patches/";
 
 		$allFiles = array();

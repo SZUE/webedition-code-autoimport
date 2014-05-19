@@ -833,6 +833,30 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 		return $_installedLanguages;
 	}
 
+	function removeObsoleteFiles($path){
+		if(is_file($path . 'del.files')){
+			$all = array();
+			if($all = file($path . 'del.files', FILE_IGNORE_NEW_LINES)){
+				$delFiles=array();
+				foreach($all as $cur){
+					if(file_exists(WEBEDITION_PATH . $cur)){
+						if(is_file(WEBEDITION_PATH . $cur)){
+							$delFiles[]=$cur;
+							unlink(WEBEDITION_PATH . $cur);
+						} elseif(is_dir(WEBEDITION_PATH . $cur)){
+							$delFiles[]='Folder: '. $cur;
+							we_util_File::deleteLocalFolder(WEBEDITION_PATH . $cur, false);
+						}
+					}
+				}
+			}
+			unlink($path . 'del.files');
+			file_put_contents($path . 'deleted.files', ($all ? "Deleted Files: " . count($delFiles) . "\n\n" . implode("\n", $delFiles) : "File del.files empty"));
+		}
+
+		return true;
+	}
+
 	/**
 	 * This file sets another errorhandler - to make specific error-messages
 	 *
