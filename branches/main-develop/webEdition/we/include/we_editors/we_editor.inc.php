@@ -72,12 +72,12 @@ switch(weRequest('string', 'we_cmd', '', 0)){
 		$we_doc->copyDoc($_REQUEST['we_cmd'][1]);
 		$we_doc->InWebEdition = true;
 		break;
-	/*case 'new_alias':
-		$we_doc->newAlias();
-		break;
-	case 'delete_alias':
-		$we_doc->deleteAlias($_REQUEST['we_cmd'][1]);
-		break;*/
+	/* case 'new_alias':
+	  $we_doc->newAlias();
+	  break;
+	  case 'delete_alias':
+	  $we_doc->deleteAlias($_REQUEST['we_cmd'][1]);
+	  break; */
 	case 'delete_list':
 		$we_doc->removeEntryFromList(weRequest('string', 'we_cmd', '', 1), weRequest('int', 'we_cmd', 0, 2), weRequest('raw', 'we_cmd', '', 3), weRequest('bool', 'we_cmd', false, 4));
 		break;
@@ -196,7 +196,7 @@ switch(weRequest('string', 'we_cmd', '', 0)){
 	case 'delete_all_cats':
 		$we_doc->Category = '';
 		break;
-	case 'schedule_add_schedule':
+	case 'schedule_add':
 		$we_doc->add_schedule();
 		break;
 	case 'schedule_del':
@@ -649,7 +649,7 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 				}
 			}
 			$we_responseText.=$we_doc->getErrMsg();
-			if(!isset($_REQUEST['we_complete_request'])){
+			if($_SERVER['REQUEST_METHOD'] == 'POST' && !isset($_REQUEST['we_complete_request'])){
 				$we_responseText = g_l('weEditor', '[incompleteRequest]');
 				$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 			} else {
@@ -691,7 +691,7 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 				//WEEXT: add ext_Javascript if USE_EXT
 				$we_JavaScript .= USE_EXT ? $ext_JavaScript : '';
 
-				if(!isset($_REQUEST['we_complete_request'])){
+				if($_SERVER['REQUEST_METHOD'] == 'POST' && !isset($_REQUEST['we_complete_request'])){
 					$we_responseText = g_l('weEditor', '[incompleteRequest]');
 					$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 				} else {

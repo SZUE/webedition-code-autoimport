@@ -94,14 +94,10 @@ switch($we_doc->ContentType){
 //
 // load Glossary Settings
 
-if(isset($_SESSION['prefs']['force_glossary_check']) && $_SESSION['prefs']['force_glossary_check'] == 1 && (
+$showGlossaryCheck = (isset($_SESSION['prefs']['force_glossary_check']) && $_SESSION['prefs']['force_glossary_check'] == 1 && (
 	$we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT || $we_doc->ContentType == "objectFile"
-	)
-){
-	$showGlossaryCheck = 1;
-} else {
-	$showGlossaryCheck = 0;
-}
+	) ? 1 : 0);
+
 
 $_js_we_save_document = "
 	var _showGlossaryCheck = $showGlossaryCheck;
@@ -164,15 +160,15 @@ if($we_doc->userCanSave()){
 	}
 
 	$_js_we_save_document .= "
-		we_cmd('save_document','','','',''," . $pass_publish . ",addCmd);
-	" . ($reloadPage ? "setTimeout('saveReload()',1500);" : "");
+		we_cmd('save_document','','','',''," . $pass_publish . ',addCmd);
+	' . ($reloadPage ? "setTimeout('saveReload()',1500);" : '');
 }
 
-$_js_we_save_document .= "
-			_showGlossaryCheck = $showGlossaryCheck;
+$_js_we_save_document .= '
+			_showGlossaryCheck = ' . $showGlossaryCheck . ';
 		}
 	}
-}";
+}';
 
 //	########################	function for workflow	###########################################
 $_js_workflow_functions = "";

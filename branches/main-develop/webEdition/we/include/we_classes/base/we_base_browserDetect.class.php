@@ -68,7 +68,6 @@ class we_base_browserDetect{
 			$pre = $regs[1];
 			//$mid = $regs[2];
 			$bracket = str_replace(array('(', ')'), '', $regs[3]);
-			$brArr = explode(';', $bracket);
 			$post = $regs[4];
 
 			$tmp = explode('/', $pre);
@@ -84,13 +83,13 @@ class we_base_browserDetect{
 					if($java[0] == 'Java'){
 						self::$br = self::JAVA;
 						self::$v = $java[1];
-					} elseif(preg_match('/msie (.*)$/i', trim(isset($brArr[1]) ? $brArr[1] : $brArr[0]), $regs) && (trim($post) == '' || preg_match('/\.net/i', $post))){ //if last condition matches this will produce a notice. $regs[1] won't be defined
+					} elseif(preg_match('/msie (.*)$/i', $bracket, $regs) && (trim($post) == '' || preg_match('/\.net/i', $post)) || preg_match('/Trident.*rv:(\d+\.?\d?)/i', $bracket, $regs)){
 						self::$br = self::IE;
-						self::$v = $regs[1];
-					} elseif(preg_match('/konqueror\/(.*)$/i', trim(isset($brArr[1]) ? $brArr[1] : $brArr[0]), $regs)){
+						self::$v = isset($regs[1]) ? $regs[1] : 0;
+					} elseif(preg_match('/konqueror\/(.*)$/i', $bracket, $regs)){
 						self::$br = self::KONQUEROR;
 						self::$v = $regs[1];
-					} elseif(preg_match('/galeon\/(.*)$/i', trim(isset($brArr[1]) ? $brArr[1] : $brArr[0]), $regs)){
+					} elseif(preg_match('/galeon\/(.*)$/i', $bracket, $regs)){
 						self::$br = self::UNKNOWN;
 						self::$v = $regs[1];
 					} else {
@@ -134,7 +133,7 @@ class we_base_browserDetect{
 								self::$v = (preg_match('/version\/([^ ]+)/i', $post, $reg) ?
 										$reg[1] : $regs[1]);
 							}
-						} elseif($brArr[0] == 'compatible'){
+						} elseif(stristr($bracket, 'compatible')){
 							self::$br = self::UNKNOWN;
 							break;
 						} elseif(!stristr($bracket, 'msie')){

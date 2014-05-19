@@ -418,7 +418,9 @@ class we_dialog_image extends we_dialog_base{
 					$js .= '
 						try{
 							top.document.getElementById("selectThumbnail").style.display = "' . $this->getDisplayThumbsSel() . '";
-						} catch(err){console.log(top.document.getElementById("selectThumbnail"));}
+						} catch(err){
+						//console.log(top.document.getElementById("selectThumbnail"));
+						}
 
 						var rh = ' . (intval($args["width"] * $args["height"]) ? ($this->args["width"] / $args["height"]) : 0) . ';
 						var rw = ' . (intval($args["width"] * $args["height"]) ? ($this->args["height"] / $args["width"]) : 0) . ';

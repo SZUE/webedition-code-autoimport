@@ -1153,13 +1153,15 @@ class doclistView{
 			if($view == 0){
 				$publishCheckbox = (!$showPubCheckbox) ? (($_result[$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT || $_result[$f]["ContentType"] == we_base_ContentTypes::HTML || $_result[$f]["ContentType"] == "objectFile") && permissionhandler::hasPerm('PUBLISH')) ? we_html_forms::checkbox($_result[$f]["docID"] . "_" . $_result[$f]["docTable"], 0, "publish_docs_doclist", "", false, "middlefont", "") : we_html_tools::getPixel(20, 10) : '';
 
-				$content [$f] [0] ["dat"] = $publishCheckbox;
-				$content [$f] [1] ["dat"] = '<img src="' . ICON_DIR . $Icon . '" border="0" width="16" height="18" />';
-				$content [$f] [2] ["dat"] = '<a href="javascript:openToEdit(\'' . $_result [$f] ["docTable"] . '\',\'' . $_result [$f] ["docID"] . '\',\'' . $_result [$f] ["ContentType"] . '\')" style="text-decoration:none;color:' . $fontColor . ';" class="middlefont" title="' . $_result [$f] ["Text"] . '"><u>' . we_util_Strings::shortenPath($_result [$f] ["Text"], $we_PathLength);
-				//$content[$f][2]["dat"] = '<nobr>'. g_l('contentTypes','['.$_result[$f]['ContentType'].']') .'</nobr>';
-				$content [$f] [3] ["dat"] = '<nobr>' . we_util_Strings::shortenPath($_result [$f] ["SiteTitle"], $we_PathLength) . '</nobr>';
-				$content [$f] [4] ["dat"] = '<nobr>' . ($_result [$f] ["CreationDate"] ? date(g_l('searchtool', "[date_format]"), $_result [$f] ["CreationDate"]) : "-") . '</nobr>';
-				$content [$f] [5] ["dat"] = '<nobr>' . ($_result [$f] ["ModDate"] ? date(g_l('searchtool', "[date_format]"), $_result [$f] ["ModDate"]) : "-") . '</nobr>';
+				$content[$f] = array(
+					array("dat" => $publishCheckbox),
+					array("dat" => '<img src="' . ICON_DIR . $Icon . '" border="0" width="16" height="18" />'),
+					array("dat" => '<a href="javascript:openToEdit(\'' . $_result [$f] ["docTable"] . '\',\'' . $_result [$f] ["docID"] . '\',\'' . $_result [$f] ["ContentType"] . '\')" style="text-decoration:none;color:' . $fontColor . ';" class="middlefont" title="' . $_result [$f] ["Text"] . '"><u>' . we_util_Strings::shortenPath($_result [$f] ["Text"], $we_PathLength)),
+					array("dat" => '<nobr>' . g_l('contentTypes', '[' . $_result[$f]['ContentType'] . ']') . '</nobr>'),
+					array("dat" => '<nobr>' . we_util_Strings::shortenPath($_result [$f] ["SiteTitle"], $we_PathLength) . '</nobr>'),
+					array("dat" => '<nobr>' . ($_result [$f] ["CreationDate"] ? date(g_l('searchtool', "[date_format]"), $_result [$f] ["CreationDate"]) : "-") . '</nobr>'),
+					array("dat" => '<nobr>' . ($_result [$f] ["ModDate"] ? date(g_l('searchtool', "[date_format]"), $_result [$f] ["ModDate"]) : "-") . '</nobr>')
+				);
 			} else {
 				$fs = file_exists($_SERVER['DOCUMENT_ROOT'] . $_result [$f] ["Path"]) ? filesize($_SERVER['DOCUMENT_ROOT'] . $_result [$f] ["Path"]) : 0;
 				$filesize = we_base_file::getHumanFileSize($fs);

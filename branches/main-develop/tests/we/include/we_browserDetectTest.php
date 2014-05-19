@@ -29,6 +29,8 @@ class we_browserDetectTest extends PHPUnit_Framework_TestCase {
 			array('str' => 'Mozilla/4.0 (compatible; MSIE 4.01; Windows NT 5.0)', 'name' => 'ie', 'version' => '4.01', 'os' => 'win', 'supported'=>false),
 			array('str' => 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; GTB6.6; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.2; .NET4.0C)', 'name' => 'ie', 'version' => '8.0', 'os' => 'win', 'supported'=>true),
 			array('str' => 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.1; WOW64; Trident/4.0; GTB6.6; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.2; .NET4.0C)', 'name' => 'ie', 'version' => '7.0', 'os' => 'win', 'supported'=>true),
+			array('str'=>'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko','name'=>'ie','version'=>'11.0','os'=>'win','supported'=>true),
+
 			//Chrome
 			array('str' => 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US) AppleWebKit/534.3 (KHTML, like Gecko) Chrome/6.0.472.63 Safari/534.3', 'name' => 'chrome', 'version' => '6.0', 'os' => 'win', 'supported'=>false),
 			array('str' => 'Mozilla/5.0 (X11; U; Linux i686; en-US) AppleWebKit/532.4 (KHTML, like Gecko) Chrome/4.0.233.0 Safari/532.4', 'name' => 'chrome', 'version' => '4.0', 'os' => 'unix', 'supported'=>false),

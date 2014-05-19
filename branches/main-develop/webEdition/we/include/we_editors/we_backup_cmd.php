@@ -43,7 +43,7 @@ if(($cmd == 'export' || $cmd == 'import') && isset($_SESSION['weS']['weBackupVar
 			time() - 3);
 	$_SESSION['weS']['weBackupVars']['limits']['lastMem'] = 0;
 
-	if(weRequest('bool','reload')){
+	if(weRequest('bool', 'reload')){
 		$tmp = $_SESSION['weS']['weBackupVars']['limits']['requestTime'] - $last;
 		t_e('Backup caused reload', $last, $_SESSION['weS']['weBackupVars']['limits'], $tmp);
 		$tmp-=4;
@@ -176,6 +176,8 @@ switch(weRequest('string', 'cmd')){
 			if($_SESSION['weS']['weBackupVars']['handle_options']['settings']){
 				we_backup_util::addLog('Exporting settings');
 				$_files[] = WE_INCLUDES_DIR . 'conf/we_conf_global.inc.php';
+				$_files[] = WE_INCLUDES_DIR . 'conf/we_conf_language.inc.php';
+				$_files[] = WE_INCLUDES_DIR . 'conf/we_active_integrated_modules.inc.php';
 				$_files[] = WE_INCLUDES_DIR . 'conf/we_conf_language.inc.php';
 			}
 
