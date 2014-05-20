@@ -69,7 +69,7 @@ function we_tag_sessionField($attribs, $content){
 			$docAttr = weTag_getAttribute('doc', $attribs, 'self');
 			$doc = we_getDocForTag($docAttr);
 			$lang = $doc->Language;
-			$langcode = ($lang != '' ?
+			$langcode = ($lang ?
 					substr($lang, 0, 2) :
 					we_core_Local::weLangToLocale($GLOBALS["WE_LANGUAGE"]));
 

@@ -112,7 +112,7 @@ if($_isPrev){
 	$sJsCode = "
 	var _sObjId='" . $_REQUEST['we_cmd'][5] . "';
 	var _sType='plg';
-	var _sTb='" . g_l('cockpit', '[pagelogger]') . ($_pLogUrl != '' ? ' - ' . $_pLogUrl : $_pLogUrl) . "';
+	var _sTb='" . g_l('cockpit', '[pagelogger]') . ($_pLogUrl ? ' - ' . $_pLogUrl : $_pLogUrl) . "';
 
 	function init(){
 		parent.rpcHandleResponse(_sType,_sObjId,document.getElementById(_sType),_sTb);

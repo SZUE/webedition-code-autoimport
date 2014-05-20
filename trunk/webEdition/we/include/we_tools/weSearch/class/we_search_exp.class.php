@@ -283,7 +283,7 @@ class we_search_exp extends we_search{
 			}
 		}
 
-		return ($_condition != '' ? ' WHERE ' . $_condition . ' ' : '');
+		return ($_condition ? ' WHERE ' . $_condition . ' ' : '');
 	}
 
 }

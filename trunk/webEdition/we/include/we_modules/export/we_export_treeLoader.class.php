@@ -78,7 +78,7 @@ class we_export_treeLoader{
 				}
 			}
 
-			$fileds["text"] = trim($tt) != "" ? $tt : $db->f("Text");
+			$fileds["text"] = trim($tt) ? $tt : $db->f("Text");
 			$items[] = array_merge($fileds, $typ);
 		}
 

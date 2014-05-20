@@ -409,7 +409,7 @@ top.content.hloaded = 1;');
 			return $out;
 		}
 
-		$branch = (isset($_REQUEST['branch']) && $_REQUEST['branch'] != '' ? $_REQUEST['branch'] : g_l('modules_customer', '[common]'));
+		$branch = (isset($_REQUEST['branch']) && $_REQUEST['branch'] ? $_REQUEST['branch'] : g_l('modules_customer', '[common]'));
 
 		$body = we_html_element::htmlBody(array('class' => 'weEditorBody', 'onLoad' => 'loaded=1', 'onunload' => 'doUnload()'), we_html_element::htmlForm(array('name' => 'we_form', 'autocomplete' => 'off'), $this->View->getCommonHiddens($hiddens) . $this->getHTMLProperties($branch)));
 

@@ -283,10 +283,10 @@ class we_glossary_cache{
 					$temp['onclick'] = 'var we_winOpts = \'\';';
 
 					// popup_width
-					$width = (isset($Attributes['popup_width']) && trim($Attributes['popup_width']) != '' ? trim($Attributes['popup_width']) : 100);
+					$width = (isset($Attributes['popup_width']) && trim($Attributes['popup_width']) ? trim($Attributes['popup_width']) : 100);
 
 					// popup_height
-					$height = (isset($Attributes['popup_height']) && trim($Attributes['popup_height']) != '' ? trim($Attributes['popup_height']) : 100);
+					$height = (isset($Attributes['popup_height']) && trim($Attributes['popup_height']) ? trim($Attributes['popup_height']) : 100);
 
 
 					// popup_center

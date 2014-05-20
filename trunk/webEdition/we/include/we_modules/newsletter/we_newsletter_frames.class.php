@@ -912,7 +912,7 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 				$table->setCol($c, 0, array(), we_html_tools::htmlSelect("filter_fieldname_" . $group . "_" . $k, $custfields, 1, $v["fieldname"], false, array('onchange' => 'top.content.hot=1;changeFieldValue(this.val,\'filter_fieldvalue_' . $group . '_' . $k . '\');'), "value", 170));
 				$table->setCol($c, 1, array(), we_html_tools::htmlSelect("filter_operator_" . $group . "_" . $k, $operators, 1, $v["operator"], false, array('onchange' => "top.content.hot=1;"), "value", 80));
 				if($v['fieldname'] == "MemberSince" || $v['fieldname'] == "LastLogin" || $v['fieldname'] == "LastAccess"){
-					$table->setCol($c, 2, array("id" => "td_value_fields_" . $group . "_" . $k), $this->getDateSelector("", "filter_fieldvalue_" . $group . "_" . $k, "_from_" . $group . "_" . $k, isset($v["fieldvalue"]) && $v["fieldvalue"] != "" ? !stristr($v["fieldvalue"], ".") ? @date("d.m.Y", $v["fieldvalue"]) : $v["fieldvalue"] : ""));
+					$table->setCol($c, 2, array("id" => "td_value_fields_" . $group . "_" . $k), $this->getDateSelector("", "filter_fieldvalue_" . $group . "_" . $k, "_from_" . $group . "_" . $k, isset($v["fieldvalue"]) && $v["fieldvalue"] ? !stristr($v["fieldvalue"], ".") ? @date("d.m.Y", $v["fieldvalue"]) : $v["fieldvalue"] : ""));
 					$table->setCol($c, 3, array(), we_html_tools::htmlSelect("filter_hours_" . $group . "_" . $k, $hours, 1, isset($v["hours"]) ? $v["hours"] : "", false, array('onchange' => 'top.content.hot=1;')));
 					$table->setCol($c, 4, array("class" => "defaultfont"), "&nbsp;h :");
 					$table->setCol($c, 5, array(), we_html_tools::htmlSelect("filter_minutes_" . $group . "_" . $k, $minutes, 1, isset($v["minutes"]) ? $v["minutes"] : "", false, array('onchange' => "top.content.hot=1;")));
@@ -1573,7 +1573,7 @@ function changeFieldValue(val,valueField) {
 
 		header("Pragma: no-cache;");
 		header("Cache-Control: post-check=0, post-check=0, false");
-		we_html_tools::headerCtCharset('text/html', ($this->View->newsletter->Charset != "" ? $this->View->newsletter->Charset : $GLOBALS['WE_BACKENDCHARSET']));
+		we_html_tools::headerCtCharset('text/html', ($this->View->newsletter->Charset ? $this->View->newsletter->Charset : $GLOBALS['WE_BACKENDCHARSET']));
 
 
 		if(!$hm){
@@ -2149,7 +2149,7 @@ function postSelectorSelect(wePssCmd) {
 
 		$chooser = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 2, 1);
 		$chooser->setCol(0, 0, array(), we_html_tools::getPixel(10, 10));
-		$chooser->setCol(1, 0, array(), $this->View->formFileChooser(420, "csv_file", ($open_file != "" ? $open_file : ($csv_file ? $csv_file : "/")), "", "", 'readonly="readonly" onchange="alert(100)"'));
+		$chooser->setCol(1, 0, array(), $this->View->formFileChooser(420, "csv_file", ($open_file ? $open_file : ($csv_file ? $csv_file : "/")), "", "", 'readonly="readonly" onchange="alert(100)"'));
 		//$chooser->setCol(2,0,array(),we_html_tools::getPixel(5,15));
 		//$chooser->setCol(3,0,array(),we_button::create_button_table(array($close,$edit)));
 		//$chooser->setCol(4,0,array(),we_html_tools::getPixel(5,15));
@@ -2232,7 +2232,7 @@ function postSelectorSelect(wePssCmd) {
 		}
 
 
-		$body = we_html_element::htmlBody(array("class" => "weDialogBody", "onload" => ($open_file != "" ? "submitForm('edit_file')" : "" )), we_html_element::htmlForm(array("name" => "we_form"), $this->View->htmlHidden("ncmd", "edit_file") .
+		$body = we_html_element::htmlBody(array("class" => "weDialogBody", "onload" => ($open_file ? "submitForm('edit_file')" : "" )), we_html_element::htmlForm(array("name" => "we_form"), $this->View->htmlHidden("ncmd", "edit_file") .
 								$this->View->htmlHidden("pnt", "edit_file") .
 								$this->View->htmlHidden("order", $order) .
 								$this->View->htmlHidden("offset", $offset) .
@@ -2676,7 +2676,7 @@ self.focus();');
 				$emailName = $email;
 			}
 			$phpmail = new we_util_Mailer($emailName, $this->View->newsletter->Subject, $this->View->newsletter->Sender, $this->View->newsletter->Reply, $this->View->newsletter->isEmbedImages);
-			$phpmail->setCharSet($this->View->newsletter->Charset != "" ? $this->View->newsletter->Charset : $GLOBALS["_language"]["charset"]);
+			$phpmail->setCharSet($this->View->newsletter->Charset ? $this->View->newsletter->Charset : $GLOBALS["_language"]["charset"]);
 
 			if($htmlmail){
 				$phpmail->addHTMLPart($content);

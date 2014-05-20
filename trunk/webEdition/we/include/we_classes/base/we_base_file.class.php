@@ -284,7 +284,7 @@ abstract class we_base_file{
 		$path = str_replace('\\', '/', $path);
 		return (self::hasURL($path) ?
 				false :
-				($path != '' ? self::createLocalFolderByPath($path) : false));
+				($path ? self::createLocalFolderByPath($path) : false));
 	}
 
 	public static function insertIntoCleanUp($path, $date){

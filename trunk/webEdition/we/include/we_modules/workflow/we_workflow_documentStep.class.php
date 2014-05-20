@@ -109,7 +109,7 @@ class we_workflow_documentStep extends we_workflow_base{
 						$desc = str_replace('<br />', "\n", $desc);
 						$mess = g_l('modules_workflow', '[todo_next]') . " ID:" . $workflowDoc->document->ID . ", Pfad:" . $workflowDoc->document->Path . "\n\n" . $desc;
 
-						we_mail($foo, correctUml(g_l('modules_workflow', '[todo_next]') . ($this->EmailPath ? ' ' . $workflowDoc->document->Path : '')), $mess, (isset($this_user["Email"]) && $this_user["Email"] != "" ? $this_user["First"] . " " . $this_user["Second"] . " <" . $this_user["Email"] . ">" : ""));
+						we_mail($foo, correctUml(g_l('modules_workflow', '[todo_next]') . ($this->EmailPath ? ' ' . $workflowDoc->document->Path : '')), $mess, (isset($this_user["Email"]) && $this_user["Email"] ? $this_user["First"] . " " . $this_user["Second"] . " <" . $this_user["Email"] . ">" : ""));
 					}
 				}
 			}

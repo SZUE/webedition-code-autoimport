@@ -1158,7 +1158,7 @@ function weWysiwygSetHiddenText(arg) {
 						entity_encoding : "named",
 						entities : "160,nbsp",
 						element_format: "' . $this->xml . '",
-						body_class : "' . ($this->className != "" ? $this->className . " " : "") . 'wetextarea tiny-wetextarea wetextarea-' . $this->origName . '",
+						body_class : "' . ($this->className  ? $this->className . " " : "") . 'wetextarea tiny-wetextarea wetextarea-' . $this->origName . '",
 
 						//CallBacks
 						//file_browser_callback : "openWeFileBrowser",
@@ -1193,7 +1193,7 @@ function weWysiwygSetHiddenText(arg) {
 						skin : "o2k7",
 						skin_variant : "silver",
 
-						' . ($this->tinyParams != '' ? '//params from attribute tinyparams
+						' . ($this->tinyParams  ? '//params from attribute tinyparams
 						' . $this->tinyParams . ',' : '') . '
 
 						setup : function(ed){

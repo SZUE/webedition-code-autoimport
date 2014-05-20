@@ -358,7 +358,7 @@ class we_search_search extends we_search{
 			}
 		}
 
-		$where .= ($where != '' ? ' )' : ' 0 ');
+		$where .= ($where ? ' )' : ' 0 ');
 		return $where;
 	}
 
@@ -460,7 +460,7 @@ class we_search_search extends we_search{
 	}
 
 	function searchModifier($text, $table){
-		return ($text != '' ? ' AND ' . escape_sql_query($table) . '.modifierID = ' . intval($text) : '');
+		return ($text ? ' AND ' . escape_sql_query($table) . '.modifierID = ' . intval($text) : '');
 	}
 
 	function searchModFields($text, $table){

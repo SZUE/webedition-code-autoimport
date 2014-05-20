@@ -121,7 +121,7 @@ class weModuleView{
 				$this->raw->save();
 
 				//$ttrow = getHash('SELECT * FROM ' . RAW_TABLE . ' WHERE ID=' . intval($this->raw->ID), $this->db);
-				$tt = addslashes($tt != '' ? $tt : $this->raw->Text);
+				$tt = addslashes($tt ? $tt : $this->raw->Text);
 				$js = ($newone ?
 						'
 var attribs = new Array();

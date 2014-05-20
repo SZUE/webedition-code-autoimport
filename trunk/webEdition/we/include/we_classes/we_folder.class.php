@@ -502,7 +502,7 @@ class we_folder extends we_root{
 	function formLanguage(){
 		we_loadLanguageConfig();
 
-		$value = ($this->Language != '' ? $this->Language : $GLOBALS['weDefaultFrontendLanguage']);
+		$value = ($this->Language ? $this->Language : $GLOBALS['weDefaultFrontendLanguage']);
 
 		$inputName = 'we_' . $this->Name . '_Language';
 

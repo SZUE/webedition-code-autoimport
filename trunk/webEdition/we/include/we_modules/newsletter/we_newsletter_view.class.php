@@ -1728,7 +1728,7 @@ edf.populateGroups();');
 								}
 							}
 							fclose($fh);
-							$this->newsletter->groups[$importno]->Emails.=($this->newsletter->groups[$importno]->Emails != "" ? "\n" : '') . implode("\n", $row);
+							$this->newsletter->groups[$importno]->Emails.=($this->newsletter->groups[$importno]->Emails ? "\n" : '') . implode("\n", $row);
 						} else {
 							print we_html_element::jsElement(
 									we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[path_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR)
@@ -2309,7 +2309,7 @@ self.close();');
 		if(!$this->settings["use_base_href"]){
 			$phpmail->setIsUseBaseHref($this->settings["use_base_href"]);
 		}
-		$phpmail->setCharSet($this->newsletter->Charset != '' ? $this->newsletter->Charset : $GLOBALS['WE_BACKENDCHARSET']);
+		$phpmail->setCharSet($this->newsletter->Charset ? $this->newsletter->Charset : $GLOBALS['WE_BACKENDCHARSET']);
 		if($hm){
 			$phpmail->addHTMLPart($content);
 		}
@@ -2432,7 +2432,7 @@ self.close();');
 					$this->settings['customer_firstname_field'] . ',' .
 					$this->settings['customer_lastname_field']
 				);
-			$this->db->query('SELECT ID,' . $selectX . ' FROM ' . CUSTOMER_TABLE . ' WHERE ID IN(' . $customers . ')' . ($filtersql != '' ? ' AND (' . $filtersql . ')' : ''));
+			$this->db->query('SELECT ID,' . $selectX . ' FROM ' . CUSTOMER_TABLE . ' WHERE ID IN(' . $customers . ')' . ($filtersql ? ' AND (' . $filtersql . ')' : ''));
 			while($this->db->next_record()){
 				if($this->db->f($this->settings["customer_email_field"])){
 					$email = trim($this->db->f($this->settings["customer_email_field"]));

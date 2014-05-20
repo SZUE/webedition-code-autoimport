@@ -584,7 +584,7 @@ function we_cmd(){
 				}
 
 				$allData = $this->voting->loadDB();
-				$CSV_Charset = (isset($_REQUEST['the_charset']) && $_REQUEST['the_charset'] != '' ? $_REQUEST['the_charset'] : 'UTF-8');
+				$CSV_Charset = (isset($_REQUEST['the_charset']) && $_REQUEST['the_charset'] ? $_REQUEST['the_charset'] : 'UTF-8');
 				$content = array(
 					$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(g_l('modules_voting', '[voting-session]'))) . $enclose . $delimiter .
 					$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(g_l('modules_voting', '[voting-id]'))) . $enclose . $delimiter .

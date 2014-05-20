@@ -246,7 +246,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 				case we_glossary_glossary::TYPE_ABBREVATION:
 				case we_glossary_glossary::TYPE_ACRONYM:
 					$temp[3] = array(
-						'dat' => ($Search->getField('Title') != "" ? oldHtmlspecialchars($Search->getField('Title')) : "-"),
+						'dat' => ($Search->getField('Title') ? oldHtmlspecialchars($Search->getField('Title')) : "-"),
 						'height' => 25,
 						'align' => 'left',
 						'bgcolor' => '#ffffff',

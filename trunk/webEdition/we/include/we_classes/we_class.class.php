@@ -150,7 +150,7 @@ abstract class we_class{
 		if(!$elementtype){
 			$ps = $this->$name;
 		}
-		return we_html_tools::htmlFormElementTable($this->htmlTextInput(($elementtype ? ('we_' . $this->Name . '_' . $elementtype . '[' . $name . ']') : ('we_' . $this->Name . '_' . $name)), $size, ($elementtype && $this->getElement($name) != '' ? $this->getElement($name) : (isset($GLOBALS['meta'][$name]) ? $GLOBALS['meta'][$name]['default'] : (isset($ps) ? $ps : '') )), $maxlength, $attribs, 'text', $width), $text, $textalign, $textclass);
+		return we_html_tools::htmlFormElementTable($this->htmlTextInput(($elementtype ? ('we_' . $this->Name . '_' . $elementtype . '[' . $name . ']') : ('we_' . $this->Name . '_' . $name)), $size, ($elementtype && $this->getElement($name) ? $this->getElement($name) : (isset($GLOBALS['meta'][$name]) ? $GLOBALS['meta'][$name]['default'] : (isset($ps) ? $ps : '') )), $maxlength, $attribs, 'text', $width), $text, $textalign, $textclass);
 	}
 
 	function formTextArea($elementtype, $name, $text, $rows = 10, $cols = 30, array $attribs = array(), $textalign = 'left', $textclass = 'defaultfont'){
@@ -769,7 +769,7 @@ abstract class we_class{
 	/*	 * returns error-messages recorded during an operation, currently only save is used */
 
 	public function getErrMsg(){
-		return ($this->errMsg != '' ? '\n' . str_replace("\n", '\n', $this->errMsg) : '');
+		return ($this->errMsg ? '\n' . str_replace("\n", '\n', $this->errMsg) : '');
 	}
 
 	//FIXME: this is temporary

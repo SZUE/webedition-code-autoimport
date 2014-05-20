@@ -967,7 +967,7 @@ abstract class we_database_base{
 	public static function getCharsetCollation(){
 		$Charset = self::getCharset();
 		$Collation = self::getCollation();
-		return ($Charset != '' && $Collation != '' ? ' CHARACTER SET ' . $Charset . ' COLLATE ' . $Collation : '');
+		return ($Charset && $Collation ? ' CHARACTER SET ' . $Charset . ' COLLATE ' . $Collation : '');
 	}
 
 	public static function hasDB(){
