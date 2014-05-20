@@ -40,7 +40,7 @@ switch(weRequest('string', 'we_cmd', '', 0)){
 		$multiple = weRequest('raw', 'we_cmd', '', 9);
 		break;
 	case 'openDocselector':
-		$id = weRequest('int', 'we_cmd', '', 1);
+		$id = weRequest('int', 'we_cmd', 0, 1);
 		$table = weRequest('table', 'we_cmd', FILE_TABLE, 2);
 		$JSIDName = we_cmd_dec(3);
 		$JSTextName = we_cmd_dec(4);
