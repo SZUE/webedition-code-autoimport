@@ -148,7 +148,7 @@ abstract class we_util_Strings{
 			case 'french':
 				return number_format(floatval($number), $precision, ',', ' ');
 			case 'swiss':
-				return number_format(floatval($number), $precision, ',', "'");
+				return number_format(floatval($number), $precision, '.', "'");
 			case 'english':
 			default:
 				return number_format(floatval($number), $precision, '.', '');
