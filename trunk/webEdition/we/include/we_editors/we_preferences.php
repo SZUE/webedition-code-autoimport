@@ -1070,8 +1070,8 @@ function build_dialog($selected_setting = 'ui'){
 			$_window_specify_table->setCol(1, 2, null, we_html_tools::getPixel(10, 1));
 			$_window_specify_table->setCol(3, 2, null, we_html_tools::getPixel(10, 1));
 
-			$_window_specify_table->setCol(1, 3, null, we_html_tools::htmlTextInput('newconf[weWidth]', 6, (get_value('sizeOpt') != 0 ? get_value('weWidth') : ''), 4, (get_value('sizeOpt') == 0 ? "disabled=\"disabled\"" : ""), "text", 60));
-			$_window_specify_table->setCol(3, 3, null, we_html_tools::htmlTextInput('newconf[weHeight]', 6, (get_value('sizeOpt') != 0 ? get_value('weHeight') : ''), 4, (get_value('sizeOpt') == 0 ? "disabled=\"disabled\"" : ""), "text", 60));
+			$_window_specify_table->setCol(1, 3, null, we_html_tools::htmlTextInput('newconf[weWidth]', 6, (get_value('sizeOpt') ? get_value('weWidth') : ''), 4, (get_value('sizeOpt') == 0 ? "disabled=\"disabled\"" : ""), "text", 60));
+			$_window_specify_table->setCol(3, 3, null, we_html_tools::htmlTextInput('newconf[weHeight]', 6, (get_value('sizeOpt') ? get_value('weHeight') : ''), 4, (get_value('sizeOpt') == 0 ? "disabled=\"disabled\"" : ""), "text", 60));
 
 			// Build apply current window dimension
 			$_window_current_dimension_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 1, 2);

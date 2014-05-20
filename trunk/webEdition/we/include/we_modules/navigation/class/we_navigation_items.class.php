@@ -479,7 +479,7 @@ class we_navigation_items{
 
 		$_ids = array();
 
-		$_db->query('SELECT * FROM ' . NAVIGATION_TABLE . ' WHERE Path LIKE "' . $_db->escape($_path) . '" ' . ($id != 0 ? ' OR ID=' . intval($id) : '') . ' ORDER BY Ordn');
+		$_db->query('SELECT * FROM ' . NAVIGATION_TABLE . ' WHERE Path LIKE "' . $_db->escape($_path) . '" ' . ($id ? ' OR ID=' . intval($id) : '') . ' ORDER BY Ordn');
 		while($_db->next_record()){
 			$_tmpItem = $_db->getRecord();
 			$_tmpItem["Name"] = $_tmpItem["Text"];

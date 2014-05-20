@@ -1201,7 +1201,7 @@ class doclistView{
 				$creator = $_result [$f] ["CreatorID"] ? id_to_path($_result [$f] ["CreatorID"], USER_TABLE, $DB_WE) : g_l('searchtool', "[nobody]");
 
 				if($_result [$f] ["ContentType"] == we_base_ContentTypes::WEDOCUMENT){
-					$templateID = ($_result [$f] ["Published"] >= $_result [$f] ["ModDate"] && $_result [$f] ["Published"] != 0 ?
+					$templateID = ($_result [$f] ["Published"] >= $_result [$f] ["ModDate"] && $_result [$f] ["Published"] ?
 							$_result [$f] ["TemplateID"] :
 							$_result [$f] ["temp_template_id"]);
 

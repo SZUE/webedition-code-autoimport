@@ -570,7 +570,7 @@ function closeAllType(){
 						$xmlExIm->RefTable->reset();
 					} else {
 
-						$percent = ($all != 0 ? (($xmlExIm->RefTable->current / $all) * 100) : 0);
+						$percent = ($all ? (($xmlExIm->RefTable->current / $all) * 100) : 0);
 						$percent = ($percent < 0 ? 0 : ($percent > 100 ? 100 : $percent));
 
 						$_progress_update = we_html_element::jsElement('
@@ -648,7 +648,7 @@ function closeAllType(){
 						}
 					}
 
-					$percent = ($all != 0 ? intval(($exports / $all) * 100) : 0);
+					$percent = ($all ? intval(($exports / $all) * 100) : 0);
 					$percent = ($percent < 0 ? 0 : ($percent > 100 ? 100 : $percent));
 
 					$_progress_update .= "\n" .

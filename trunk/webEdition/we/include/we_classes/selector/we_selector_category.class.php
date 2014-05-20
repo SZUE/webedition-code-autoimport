@@ -870,7 +870,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 				}
 				$js = "top.frames['fsvalues'].document.we_form.elements['FolderID'].value = '$parentid';top.frames['fsvalues'].document.we_form.elements['FolderIDPath'].value = '$parentPath';";
 			} else {
-				$path = ($parentid != 0 ? $targetPath : '') . '/' . $category;
+				$path = ($parentid ? $targetPath : '') . '/' . $category;
 			}
 			$updateok = $db->query('UPDATE ' . CATEGORY_TABLE . ' SET ' . we_database_base::arraySetter(array(
 					'Category' => $category,

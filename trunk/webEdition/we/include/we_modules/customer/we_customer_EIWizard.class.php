@@ -1183,7 +1183,7 @@ class we_customer_EIWizard{
 
 					foreach($filter_fieldname as $k => $v){
 						$op = $this->getOperator($filter_operator[$k]);
-						$filterarr[] = ($k != 0 ? (" " . $filter_logic[$k] . " ") : "") . $filter_fieldname[$k] . " " . $op . " '" . (is_numeric($filter_fieldvalue[$k]) ? $filter_fieldvalue[$k] : $this->db->escape($filter_fieldvalue[$k])) . "'";
+						$filterarr[] = ($k ? (" " . $filter_logic[$k] . " ") : "") . $filter_fieldname[$k] . " " . $op . " '" . (is_numeric($filter_fieldvalue[$k]) ? $filter_fieldvalue[$k] : $this->db->escape($filter_fieldvalue[$k])) . "'";
 					}
 
 					$filtersql = implode(" ", $filterarr);
@@ -1295,7 +1295,7 @@ class we_customer_EIWizard{
 
 
 				$exports = count($customers);
-				$percent = ($all != 0 ? (int) ((($all - $exports + 2) / $all) * 100) : 0);
+				$percent = ($all ? (int) ((($all - $exports + 2) / $all) * 100) : 0);
 				$percent = ($percent < 0 ? 0 : ($percent > 100 ? 100 : $percent));
 
 
