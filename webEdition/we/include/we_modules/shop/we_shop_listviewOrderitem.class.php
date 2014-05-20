@@ -95,7 +95,7 @@ class we_shop_listviewOrderitem extends listviewBase{
 			$orderstring = '';
 		}
 
-		$where = ($this->orderID != 0 ?
+		$where = ($this->orderID ?
 				($this->condition ? (' WHERE IntOrderID=' . $this->name . ' AND ' . $this->condition ) : ' WHERE IntOrderID=' . $this->orderID . ' ') :
 				($this->condition ? (' WHERE ' . $this->condition ) : ' '));
 

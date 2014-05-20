@@ -159,7 +159,7 @@ if(strlen($_install_dir) > 35){
 $weVersion = WE_VERSION .
 		(defined("WE_SVNREV") && WE_SVNREV != '0000' ? ' (SVN-Revision: ' . WE_SVNREV . ((defined("WE_VERSION_BRANCH") && WE_VERSION_BRANCH != 'trunk') ? '|' . WE_VERSION_BRANCH : '') . ')' : '') .
 		(defined("WE_VERSION_SUPP") && WE_VERSION_SUPP ? ' ' . g_l('global', '[' . WE_VERSION_SUPP . ']') : '') .
-		(defined("WE_VERSION_SUPP_VERSION") && WE_VERSION_SUPP_VERSION != 0 ? WE_VERSION_SUPP_VERSION : '');
+		(defined("WE_VERSION_SUPP_VERSION") && WE_VERSION_SUPP_VERSION ? WE_VERSION_SUPP_VERSION : '');
 
 // GD_VERSION is more precise but only available in PHP 5.2.4 or newer
 if(is_callable("gd_info")){

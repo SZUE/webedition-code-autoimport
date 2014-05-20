@@ -189,7 +189,7 @@ class we_class_folder extends we_folder{
 		$userWSArray = makeArrayFromCSV(get_ws());
 
 		$userDefaultWsID = empty($userWSArray) ? 0 : $userWSArray[0];
-		return (intval($userDefaultWsID) != 0 ?
+		return (intval($userDefaultWsID) ?
 				id_to_path($userDefaultWsID, FILE_TABLE, $GLOBALS['DB_WE']) :
 				'/');
 	}
@@ -243,7 +243,7 @@ class we_class_folder extends we_folder{
 		$userWSArray = makeArrayFromCSV(get_ws());
 
 		$userDefaultWsID = !empty($userWSArray) ? $userWSArray[0] : 0;
-		//$userDefaultWsPath = (intval($userDefaultWsID) != 0 ? id_to_path($userDefaultWsID, FILE_TABLE, $DB_WE) : '/');
+		//$userDefaultWsPath = (intval($userDefaultWsID) ? id_to_path($userDefaultWsID, FILE_TABLE, $DB_WE) : '/');
 		//#4076
 		$this->setClassProp();
 
@@ -376,7 +376,7 @@ class we_class_folder extends we_folder{
 		$userWSArray = makeArrayFromCSV(get_ws());
 
 		$userDefaultWsID = !empty($userWSArray) ? $userWSArray[0] : 0;
-		//$userDefaultWsPath = (intval($userDefaultWsID) != 0 ? id_to_path($userDefaultWsID, FILE_TABLE, $DB_WE) : '/');
+		//$userDefaultWsPath = (intval($userDefaultWsID) ? id_to_path($userDefaultWsID, FILE_TABLE, $DB_WE) : '/');
 
 		$fields = '*';
 

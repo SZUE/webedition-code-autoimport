@@ -112,7 +112,7 @@ function getHTTP($server, $url, $port = '', $username = '', $password = ''){
 			return $page;
 		case 'curl':
 			$_response = we_util::getCurlHttp($server, $url, array());
-			return ($_response['status'] != 0 ? $_response['error'] : $_response['data']);
+			return ($_response['status'] ? $_response['error'] : $_response['data']);
 		default:
 			return 'Server error: Unable to open URL (php configuration directive allow_url_fopen=Off)';
 	}
@@ -245,7 +245,19 @@ function weRequest($type, $name, $default = false, $index = null){
 	} else {
 		$oldVar = $var;
 		_weRequest($var, '', array($type, $default));
-		if(($type == 'intList' ? trim($oldVar, ',') : $oldVar) != '' . $var){
+
+		switch($type){
+			case 'intList':
+				$oldVar = trim($var, ',');
+				$cmp = '' . $var;
+				break;
+			case 'bool'://bool is transfered as 0/1
+				$cmp = '' . intval($var);
+				break;
+			default:
+				$cmp = '' . $var;
+		}
+		if($oldVar != $cmp){
 			t_e('changed values', $type, $name, $index, $oldVar, $var);
 		}
 	}

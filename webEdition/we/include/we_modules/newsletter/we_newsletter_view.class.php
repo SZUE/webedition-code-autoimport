@@ -1854,7 +1854,7 @@ self.close();');
 				print we_html_element::jsScript(JS_DIR . "windows.js") .
 					we_html_element::jsElement(
 						((trim($this->newsletter->Subject) == "") ? 'if(confirm("' . g_l('modules_newsletter', '[no_subject]') . '")){' : '') . '
-							url ="' . $this->frameset . '?pnt=send&nid=' . $this->newsletter->ID . (isset($_REQUEST["test"]) && $_REQUEST["test"] != 0 ? '&test=1' : '') . '";
+							url ="' . $this->frameset . '?pnt=send&nid=' . $this->newsletter->ID . (isset($_REQUEST["test"]) && $_REQUEST["test"] ? '&test=1' : '') . '";
 							new jsWindow(url,"newsletter_send",-1,-1,600,400,true,true,true,false);
 						' . ((trim($this->newsletter->Subject) == "") ? '}' : '')
 				);
@@ -2057,7 +2057,7 @@ self.close();');
 						}
 						break;
 					case we_newsletter_block::OBJECT:
-						$path = ($block->Field != "" && $block->Field != 0 ?
+						$path = ($block->Field != "" && $block->Field ?
 								TEMPLATES_PATH . preg_replace('/\.tmpl$/i', '.php', id_to_path($block->Field, TEMPLATES_TABLE)) : '');
 
 						if($block->LinkID && $path)
@@ -2412,7 +2412,7 @@ self.close();');
 			$filtera = $this->newsletter->groups[$group - 1]->getFilter();
 			if($filtera){
 				foreach($filtera as $k => $filter){
-					$filterarr[] = ($k != 0 ? (' ' . $filter['logic'] . ' ') : ' ') . $this->getFilterSQL($filter);
+					$filterarr[] = ($k ? (' ' . $filter['logic'] . ' ') : ' ') . $this->getFilterSQL($filter);
 				}
 			}
 

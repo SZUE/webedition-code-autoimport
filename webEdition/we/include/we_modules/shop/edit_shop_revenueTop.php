@@ -357,7 +357,7 @@ if(($maxRows = f('SELECT COUNT(1) ' . $query, '', $DB_WE))){
 			array('dat' => we_util_Strings::formatNumber($orderRow['articleSum']) . $waehr),
 			array('dat' => $orderRow['formatDateOrder']),
 			array('dat' => $orderRow['IntArticleID']),
-			array('dat' => ($orderRow['DatePayment'] != 0 ? $orderRow['formatDatePayment'] : ( $orderRow['DateCancellation'] != 0 ? '<span class="npshopContentfontR">' . g_l('modules_shop', '[artCanceled]') . '</span>' : '<span class="npshopContentfontR">' . g_l('modules_shop', '[artNPay]') . '</span>'))),
+			array('dat' => ($orderRow['DatePayment'] ? $orderRow['formatDatePayment'] : ( $orderRow['DateCancellation'] ? '<span class="npshopContentfontR">' . g_l('modules_shop', '[artCanceled]') . '</span>' : '<span class="npshopContentfontR">' . g_l('modules_shop', '[artNPay]') . '</span>'))),
 		);
 	}
 

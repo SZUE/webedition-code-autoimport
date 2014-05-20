@@ -439,11 +439,11 @@ top.content.hloaded = 1;');
 				foreach($common as $pk => $pv){
 					if($this->View->customer->isInfoDate($pk)){
 						$pv = ($pv == '' || !is_numeric($pv)) ? 0 : $pv;
-						$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(($pv != 0 ? we_html_element::htmlDiv(array('class' => 'defaultgray'), date(g_l('weEditorInfo', '[date_format]'), $pv)) : '-' . we_html_tools::getPixel(100, 5)), $this->View->settings->getPropertyTitle($pk)));
+						$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(($pv ? we_html_element::htmlDiv(array('class' => 'defaultgray'), date(g_l('weEditorInfo', '[date_format]'), $pv)) : '-' . we_html_tools::getPixel(100, 5)), $this->View->settings->getPropertyTitle($pk)));
 					} else {
 						switch($pk){
 							case 'ID':
-								$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(($pv != 0 ? we_html_element::htmlDiv(array('class' => 'defaultgray'), $pv) : '-' . we_html_tools::getPixel(100, 5)), $this->View->settings->getPropertyTitle($pk)));
+								$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(($pv ? we_html_element::htmlDiv(array('class' => 'defaultgray'), $pv) : '-' . we_html_tools::getPixel(100, 5)), $this->View->settings->getPropertyTitle($pk)));
 								++$c;
 								$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), '');
 								break;

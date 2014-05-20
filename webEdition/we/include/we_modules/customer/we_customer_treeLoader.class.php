@@ -160,7 +160,7 @@ abstract class we_customer_treeLoader{
 		$db->query('SELECT ' . $settings->treeTextFormatSQL . ' AS treeFormat,ID,ParentID,Path,Text,Icon,IsFolder,LoginDenied,Forename,Surname' .
 				($select ? ',' . implode(',', $select) : '' ) . ' FROM ' . CUSTOMER_TABLE .
 				(!permissionhandler::hasPerm("ADMINISTRATOR") && $_SESSION['user']['workSpace'][CUSTOMER_TABLE] ? ' WHERE ' . $_SESSION['user']['workSpace'][CUSTOMER_TABLE] : '') .
-				' GROUP BY ' . $grp . (count($grouparr) ? ($level != 0 ? ',ID' : '') : 'ID') . (count($havingarr) ? ' HAVING ' . implode(' AND ', $havingarr) : '') . ' ORDER BY ' . implode(',', $orderarr) . self::getSortOrder($settings, ($orderarr ? ',' : '')) . (($level == $levelcount && $segment) ? ' LIMIT ' . $offset . ',' . $segment : ''));
+				' GROUP BY ' . $grp . (count($grouparr) ? ($level ? ',ID' : '') : 'ID') . (count($havingarr) ? ' HAVING ' . implode(' AND ', $havingarr) : '') . ' ORDER BY ' . implode(',', $orderarr) . self::getSortOrder($settings, ($orderarr ? ',' : '')) . (($level == $levelcount && $segment) ? ' LIMIT ' . $offset . ',' . $segment : ''));
 
 		$items = $foo = array();
 		$gname = '';
@@ -253,7 +253,7 @@ abstract class we_customer_treeLoader{
 		}
 
 		if($level == $levelcount){
-			$total = f('SELECT COUNT(ID) as total ' . (empty($select) ? '' : ',' . implode(',', $select)) . ' FROM ' . CUSTOMER_TABLE . ' GROUP BY ' . $grp . (empty($grouparr) ? 'ID' : ($level != 0 ? ',ID' : '')) . (empty($havingarr) ? '' : ' HAVING ' . implode(' AND ', $havingarr)), 'total', $db);
+			$total = f('SELECT COUNT(ID) as total ' . (empty($select) ? '' : ',' . implode(',', $select)) . ' FROM ' . CUSTOMER_TABLE . ' GROUP BY ' . $grp . (empty($grouparr) ? 'ID' : ($level ? ',ID' : '')) . (empty($havingarr) ? '' : ' HAVING ' . implode(' AND ', $havingarr)), 'total', $db);
 
 			$nextoffset = $offset + $segment;
 			if($segment && ($total > $nextoffset)){
