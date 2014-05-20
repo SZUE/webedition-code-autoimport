@@ -718,7 +718,7 @@ echo 'new jsWindow(url,"module_info",-1,-1,380,250,true,true,true);
 				new jsWindow(url, "preferences", -1, -1, 540, 670, true, true, true, true);
 				break;
 			case "editCat":
-				we_cmd("openCatselector", "", "<?php echo CATEGORY_TABLE; ?>", "", "", "", "", "", 1);
+				we_cmd("openCatselector", 0, "<?php echo CATEGORY_TABLE; ?>", "", "", "", "", "", 1);
 				break;
 			case "editThumbs":
 				new jsWindow(url, "thumbnails", -1, -1, 500, 550, true, true, true);

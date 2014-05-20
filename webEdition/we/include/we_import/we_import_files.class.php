@@ -852,7 +852,7 @@ function next() {
 		$_width_size = 300;
 
 		$addbut = we_html_button::create_button(
-				"add", "javascript:we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);')");
+				"add", "javascript:we_cmd('openCatselector',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);')");
 		$del_but = addslashes(
 			we_html_element::htmlImg(
 				array(

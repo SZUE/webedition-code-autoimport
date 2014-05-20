@@ -139,7 +139,7 @@ switch(($wecmd0 = weRequest('string', 'we_cmd', '', 0))){
 		break;
 	case "dt_add_cat":
 		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$we_transaction]);
-		if(($id = weRequest('int', 'we_cmd', 0, 1))){
+		if(($id = weRequest('intList', 'we_cmd', 0, 1))){
 			$we_doc->addCat($id);
 		}
 		break;

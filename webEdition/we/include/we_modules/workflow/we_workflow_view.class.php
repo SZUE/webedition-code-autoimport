@@ -214,7 +214,7 @@ class we_workflow_view extends we_workflow_base{
 
 	function getCategoryHTML(){
 		$delallbut = we_html_button::create_button('delete_all', "javascript:top.content.setHot();we_cmd('del_all_cats')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
-		$addbut = we_html_button::create_button('add', "javascript:top.content.setHot();we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_cat\\',top.allIDs);')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
+		$addbut = we_html_button::create_button('add', "javascript:top.content.setHot();we_cmd('openCatselector',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_cat\\',top.allIDs);')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
 
 		$cats = new MultiDirChooser(495, $this->workflowDef->Categories, 'del_cat', we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", CATEGORY_TABLE, "defaultfont", "", "top.content.setHot();");
 
@@ -223,7 +223,7 @@ class we_workflow_view extends we_workflow_base{
 
 	function getObjCategoryHTML(){
 		$delallbut = we_html_button::create_button('delete_all', "javascript:top.content.setHot();we_cmd('del_all_objcats')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
-		$addbut = we_html_button::create_button('add', "javascript:top.content.setHot();we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_objcat\\',top.allIDs);')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
+		$addbut = we_html_button::create_button('add', "javascript:top.content.setHot();we_cmd('openCatselector',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_objcat\\',top.allIDs);')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
 
 		$cats = new MultiDirChooser(495, $this->workflowDef->ObjCategories, "del_objcat", we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", CATEGORY_TABLE, "defaultfont", "", "top.content.setHot();");
 
