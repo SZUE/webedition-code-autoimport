@@ -810,7 +810,7 @@ class we_banner_view extends we_banner_base{
 	function formFiles(){
 		$delallbut = we_html_button::create_button("delete_all", "javascript:top.content.setHot(); we_cmd('del_all_files')");
 		$wecmdenc3 = we_cmd_enc("fillIDs();opener.we_cmd('add_file',top.allIDs);");
-		$addbut = we_html_button::create_button("add", "javascript:top.content.setHot(); we_cmd('openDocselector','','" . FILE_TABLE . "','','','" . $wecmdenc3 . "','','','" . we_base_ContentTypes::WEDOCUMENT . "','',1)");
+		$addbut = we_html_button::create_button("add", "javascript:top.content.setHot(); we_cmd('openDocselector',0,'" . FILE_TABLE . "','','','" . $wecmdenc3 . "','','','" . we_base_ContentTypes::WEDOCUMENT . "','',1)");
 
 		$dirs = new MultiDirChooser(495, $this->banner->FileIDs, "del_file", we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", FILE_TABLE);
 
