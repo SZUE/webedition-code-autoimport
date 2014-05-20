@@ -60,19 +60,19 @@ for($i = 1; $i < count($arr); $i++){
 $condition = "";
 foreach($array_and as $k => $value){
 	$value = $DB_WE->escape($value);
-	$condition.=($condition != "" ?
+	$condition.=($condition ?
 			" AND (First LIKE '%$value%' OR Second LIKE '%$value%' OR username LIKE '%$value%' OR Address LIKE '%$value%' OR City LIKE '%$value%' OR State LIKE '%$value%' OR Country LIKE '%$value%' OR Tel_preselection LIKE '%$value%' OR Fax_preselection LIKE '%$value%' OR Telephone LIKE '%$value%' OR Fax LIKE '%$value%' OR Description LIKE '%$value%')" :
 			" (First LIKE '%$value%' OR Second LIKE '%$value%' OR username LIKE '%$value%' OR Address LIKE '%$value%' OR City LIKE '%$value%' OR State LIKE '%$value%' OR Country LIKE '%$value%' OR Tel_preselection LIKE '%$value%' OR Fax_preselection LIKE '%$value%' OR Telephone LIKE '%$value%' OR Fax LIKE '%$value%' OR Description LIKE '%$value%')");
 }
 foreach($array_or as $k => $value){
 	$value = $DB_WE->escape($value);
-	$condition.=($condition != "" ?
+	$condition.=($condition ?
 			" OR (First LIKE '%$value%' OR Second LIKE '%$value%' OR username LIKE '%$value%' OR Address LIKE '%$value%' OR City LIKE '%$value%' OR State LIKE '%$value%' OR Country LIKE '%$value%' OR Tel_preselection LIKE '%$value%' OR Fax_preselection LIKE '%$value%' OR Telephone LIKE '%$value%' OR Fax LIKE '%$value%' OR Description LIKE '%$value%')" :
 			" (First LIKE '%$value%' OR Second LIKE '%$value%' OR username LIKE '%$value%' OR Address LIKE '%$value%' OR City LIKE '%$value%' OR State LIKE '%$value%' OR Country LIKE '%$value%' OR Tel_preselection LIKE '%$value%' OR Fax_preselection LIKE '%$value%' OR Telephone LIKE '%$value%' OR Fax LIKE '%$value%' OR Description LIKE '%$value%')");
 }
 foreach($array_not as $k => $value){
 	$value = $DB_WE->escape($value);
-	$condition.=($condition != "" ?
+	$condition.=($condition ?
 			" AND NOT (First LIKE '%$value%' OR Second LIKE '%$value%' OR username LIKE '%$value%' OR Address LIKE '%$value%' OR City LIKE '%$value%' OR State LIKE '%$value%' OR Country LIKE '%$value%' OR Tel_preselection LIKE '%$value%' OR Fax_preselection LIKE '%$value%' OR Telephone LIKE '%$value%' OR Fax LIKE '%$value%' OR Description LIKE '%$value%')" :
 			" (First LIKE '%$value%' OR Second LIKE '%$value%' OR username LIKE '%$value%' OR Address LIKE '%$value%' OR City LIKE '%$value%' OR State LIKE '%$value%' OR Country LIKE '%$value%' OR Tel_preselection LIKE '%$value%' OR Fax_preselection LIKE '%$value%' OR Telephone LIKE '%$value%' OR Fax LIKE '%$value%' OR Description LIKE '%$value%')");
 }

@@ -181,10 +181,10 @@ function submitForm() {
 
 		$js = 'showType("' . $weGlossaryFrames->View->Glossary->Type . '");';
 		if($weGlossaryFrames->View->Glossary->Type == "link"){
-			$js .= 'showLinkMode("' . ($weGlossaryFrames->View->Glossary->getAttribute('mode') != "" ? $weGlossaryFrames->View->Glossary->getAttribute('mode') : "intern") . '");';
+			$js .= 'showLinkMode("' . ($weGlossaryFrames->View->Glossary->getAttribute('mode') ? $weGlossaryFrames->View->Glossary->getAttribute('mode') : "intern") . '");';
 		}
 		if($weGlossaryFrames->View->Glossary->getAttribute('mode') == "category"){
-			$js .= 'showLinkModeCategory("' . ($weGlossaryFrames->View->Glossary->getAttribute('modeCategory') != "" ? $weGlossaryFrames->View->Glossary->getAttribute('modeCategory') : "intern") . '");';
+			$js .= 'showLinkModeCategory("' . ($weGlossaryFrames->View->Glossary->getAttribute('modeCategory') ? $weGlossaryFrames->View->Glossary->getAttribute('modeCategory') : "intern") . '");';
 		}
 
 		$out .= we_html_element::jsElement($js);
@@ -251,7 +251,7 @@ function we_save() {
 			. we_html_element::htmlHidden(array('name' => 'Published', 'id' => 'Published', 'value' => $weGlossaryFrames->View->Glossary->ID == 0 ? 1 : ($weGlossaryFrames->View->Glossary->Published > 0 ? 1 : 0)));
 
 
-		$language = ($weGlossaryFrames->View->Glossary->Language != "" ? $weGlossaryFrames->View->Glossary->Language : $GLOBALS['weDefaultFrontendLanguage']);
+		$language = ($weGlossaryFrames->View->Glossary->Language ? $weGlossaryFrames->View->Glossary->Language : $GLOBALS['weDefaultFrontendLanguage']);
 
 		$content = $hidden . '<table border="0" cellpadding="0" cellspacing="0">
 	<tr><td class="defaultfont">' . g_l('modules_glossary', '[folder]') . '</td></tr>
@@ -458,7 +458,7 @@ function we_save() {
 
 		$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][ObjectLinkPath]', 58, $_linkPath, '', 'onchange="setHot();" readonly', 'text', 400, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(array('name' => 'link[Attributes][ObjectLinkID]', "value" => $_linkID)), we_html_tools::getPixel(20, 4), $_button);
 
-		$_wsid = ($this->View->Glossary->getAttribute('ObjectLinkID') != '' ? we_navigation_dynList::getWorkspacesForObject($this->View->Glossary->getAttribute('ObjectLinkID')) : array());
+		$_wsid = ($this->View->Glossary->getAttribute('ObjectLinkID') ? we_navigation_dynList::getWorkspacesForObject($this->View->Glossary->getAttribute('ObjectLinkID')) : array());
 
 		return '<div id="mode_object" style="display: none;">
 	<table border="0" cellpadding="0" cellspacing="0">

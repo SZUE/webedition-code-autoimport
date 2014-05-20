@@ -241,7 +241,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 				}
 
 
-				$charset = isset($mywedoc->elements['Charset']['dat']) && $mywedoc->elements['Charset']['dat'] != '' ? $mywedoc->elements['Charset']['dat'] : $GLOBALS['WE_BACKENDCHARSET'];
+				$charset = isset($mywedoc->elements['Charset']['dat']) && $mywedoc->elements['Charset']['dat'] ? $mywedoc->elements['Charset']['dat'] : $GLOBALS['WE_BACKENDCHARSET'];
 				$mailtext = ($mailid > 0) && we_base_file::isWeFile($mailid, FILE_TABLE, $db) ? we_getDocumentByID($mailid, '', $db, $charset) : '';
 
 				if($f['subscribe_title']){

@@ -1187,7 +1187,7 @@ class we_customer_EIWizard{
 					}
 
 					$filtersql = implode(" ", $filterarr);
-					$this->db->query("SELECT ID FROM " . CUSTOMER_TABLE . ($filtersql != "" ? " WHERE ($filtersql)" : ""));
+					$this->db->query("SELECT ID FROM " . CUSTOMER_TABLE . ($filtersql ? " WHERE ($filtersql)" : ""));
 					while($this->db->next_record()){
 						$customers[] = $this->db->f("ID");
 					}

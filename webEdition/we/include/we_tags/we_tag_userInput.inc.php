@@ -612,7 +612,7 @@ function open_wysiwyg_win(){
 
 				$doc = we_getDocForTag($docAttr);
 				$lang = $doc->Language;
-				$langcode = ($lang != '' ?
+				$langcode = ($lang ?
 						substr($lang, 0, 2) :
 						we_core_Local::weLangToLocale($GLOBALS['WE_LANGUAGE']));
 

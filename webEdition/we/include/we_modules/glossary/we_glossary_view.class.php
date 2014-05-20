@@ -468,7 +468,7 @@ function we_cmd() {
 				break;
 
 			case 'populateWorkspaces':
-				$objectLinkID = (isset($_REQUEST['link']['Attributes']['ObjectLinkID']) && $_REQUEST['link']['Attributes']['ObjectLinkID'] != "" ? $_REQUEST['link']['Attributes']['ObjectLinkID'] : 0);
+				$objectLinkID = (isset($_REQUEST['link']['Attributes']['ObjectLinkID']) && $_REQUEST['link']['Attributes']['ObjectLinkID'] ? $_REQUEST['link']['Attributes']['ObjectLinkID'] : 0);
 				$_values = we_navigation_dynList::getWorkspacesForObject($objectLinkID);
 				$_js = '';
 

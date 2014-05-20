@@ -138,10 +138,10 @@ function we_tag_write($attribs){
 					} else {
 						switch($onpredefinedname){
 							case 'appendto':
-								$objname = ($objname != '' ? $GLOBALS['we_' . $type][$name]->Text . '_' . $objname : $GLOBALS['we_' . $type][$name]->Text);
+								$objname = ($objname ? $GLOBALS['we_' . $type][$name]->Text . '_' . $objname : $GLOBALS['we_' . $type][$name]->Text);
 								break;
 							case 'infrontof':
-								$objname .= ($objname != '' ? '_' . $GLOBALS['we_' . $type][$name]->Text : $GLOBALS['we_' . $type][$name]->Text);
+								$objname .= ($objname ? '_' . $GLOBALS['we_' . $type][$name]->Text : $GLOBALS['we_' . $type][$name]->Text);
 								break;
 							case 'overwrite':
 								if($objname == ''){

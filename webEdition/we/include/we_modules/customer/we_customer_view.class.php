@@ -962,7 +962,7 @@ self.close();';
 
 				for($i = 0; $i < $counter; $i++){
 
-					$sort_name = (isset($_REQUEST['sort_' . $i]) && $_REQUEST['sort_' . $i] != '' ?
+					$sort_name = (isset($_REQUEST['sort_' . $i]) && $_REQUEST['sort_' . $i] ?
 							$_REQUEST['sort_' . $i] :
 							g_l('modules_customer', '[sort_name]') . '_' . $i);
 

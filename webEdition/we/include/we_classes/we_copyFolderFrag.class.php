@@ -84,7 +84,7 @@ class copyFolderFrag extends taskFragment{
 					// check if the template exists
 					$TemplateExists = false;
 					if($CreateTemplate){
-						$TemplateExists = (id_to_path($db->f('TemplateID'), TEMPLATES_TABLE) != "" ? 1 : 0);
+						$TemplateExists = (id_to_path($db->f('TemplateID'), TEMPLATES_TABLE) ? 1 : 0);
 					}
 
 					$db->Record["CopyToId"] = $toID;

@@ -480,7 +480,7 @@ function we_tag_field($attribs){
 							($GLOBALS['lv']->workspaceID ? ('we_lv_ws_' . $listviewname . '=' . rawurlencode($GLOBALS['lv']->workspaceID) . '&amp;') : '') .
 							((isset($GLOBALS['lv']->searchable) && !$GLOBALS['lv']->searchable) ? ('we_lv_se_' . $listviewname . '=0&amp;') : '') .
 							('we_lv_calendar_' . $listviewname . '=' . rawurlencode($show) . '&amp;') .
-							($GLOBALS['lv']->calendar_struct['datefield'] != '' ? ('we_lv_datefield_' . $listviewname . '=' . rawurlencode($GLOBALS['lv']->calendar_struct['datefield']) . '&amp;') : '') .
+							($GLOBALS['lv']->calendar_struct['datefield'] ? ('we_lv_datefield_' . $listviewname . '=' . rawurlencode($GLOBALS['lv']->calendar_struct['datefield']) . '&amp;') : '') .
 							($GLOBALS['lv']->calendar_struct['date'] >= 0 ? ('we_lv_date_' . $listviewname . '=' . rawurlencode(date('Y-m-d', $GLOBALS['lv']->calendar_struct['date']))) : '');
 
 						$out = getHtmlTag('a', $_linkAttribs, $out, true);
@@ -495,7 +495,7 @@ function we_tag_field($attribs){
 					($GLOBALS['lv']->catOr ? ('we_lv_catOr_' . $lvname . '=' . rawurlencode($GLOBALS['lv']->catOr) . '&amp;') : '') .
 					($GLOBALS['lv']->workspaceID ? ('we_lv_ws_' . $lvname . '=' . rawurlencode($GLOBALS['lv']->workspaceID) . '&amp;') : '') .
 					((!$GLOBALS['lv']->searchable) ? ('we_lv_se_' . $lvname . '=0&amp;') : '') .
-					(isset($GLOBALS['lv']->condition) && $GLOBALS['lv']->condition != '' ? ('we_lv_condition_' . $lvname . '=' . rawurlencode($GLOBALS['lv']->condition) . '&amp;') : '') .
+					(isset($GLOBALS['lv']->condition) && $GLOBALS['lv']->condition ? ('we_lv_condition_' . $lvname . '=' . rawurlencode($GLOBALS['lv']->condition) . '&amp;') : '') .
 					'we_lv_start_' . $lvname . '=' . (($GLOBALS['lv']->count + $GLOBALS['lv']->start) - 1) .
 					'&amp;we_lv_pend_' . $lvname . '=' . ($GLOBALS['lv']->start + $GLOBALS['lv']->anz) .
 					'&amp;we_lv_pstart_' . $lvname . '=' . ($GLOBALS['lv']->start);
@@ -524,9 +524,9 @@ function we_tag_field($attribs){
 					$pidstr = '?pid=' . intval($GLOBALS['lv']->f('WorkspaceID'));
 					if(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && isset($GLOBALS['lv']->hidedirindex) && $GLOBALS['lv']->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 						$_linkAttribs['href'] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
-							($GLOBALS['lv']->objectseourls && $objecturl != '' ? $objecturl . $pidstr : '?we_objectID=' . $GLOBALS['lv']->f('OID') . str_replace('?', '&amp;', $pidstr));
+							($GLOBALS['lv']->objectseourls && $objecturl ? $objecturl . $pidstr : '?we_objectID=' . $GLOBALS['lv']->f('OID') . str_replace('?', '&amp;', $pidstr));
 					} else {
-						$_linkAttribs['href'] = ($GLOBALS['lv']->objectseourls && $objecturl != '' ?
+						$_linkAttribs['href'] = ($GLOBALS['lv']->objectseourls && $objecturl ?
 								($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $path_parts['filename'] . '/' . $objecturl . $pidstr :
 								$_SERVER['SCRIPT_NAME'] . '?we_objectID=' . $GLOBALS['lv']->f('OID') . str_replace('?', '&amp;', $pidstr)
 							);

@@ -72,7 +72,7 @@ class we_customer_onlinemonitor extends listviewBase{
 			$this->order .= ' DESC';
 		}
 
-		$orderstring = ($this->order != '' ? ' ORDER BY ' . $this->order . ' ' : '');
+		$orderstring = ($this->order ? ' ORDER BY ' . $this->order . ' ' : '');
 		$laStr = '';
 		$llStr = '';
 		if($this->lastloginlimit != ''){
@@ -82,11 +82,11 @@ class we_customer_onlinemonitor extends listviewBase{
 			$laStr = 'LastAccess > DATE_SUB(NOW(), INTERVAL ' . $this->lastaccesslimit . ' SECOND) ';
 		}
 		if($this->lastloginlimit != ''){
-			$this->condition = ($this->condition != '' ? $this->condition . ' AND ' : '') . $llStr;
+			$this->condition = ($this->condition ? $this->condition . ' AND ' : '') . $llStr;
 		}
 
 		if($this->lastaccesslimit != ''){
-			$this->condition = ($this->condition != '' ? $this->condition . ' AND ' : '') . $laStr;
+			$this->condition = ($this->condition ? $this->condition . ' AND ' : '') . $laStr;
 		}
 		$where = $this->condition ? (' WHERE ' . $this->condition) : '';
 

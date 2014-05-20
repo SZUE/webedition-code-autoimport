@@ -2097,7 +2097,7 @@ class weVersions{
 				return $fieldValueText . '<br/>';
 			//Scheduler
 			case 'task':
-				return ($v != '' ? g_l('versions', '[' . $k . '_' . $v . ']') : '');
+				return ($v ? g_l('versions', '[' . $k . '_' . $v . ']') : '');
 			case 'type':
 				return g_l('versions', '[type_' . $v . ']');
 			case 'active':

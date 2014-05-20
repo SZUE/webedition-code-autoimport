@@ -2322,7 +2322,7 @@ class we_object extends we_document{
 		if(!$table){
 			$table = $this->Table;
 		}
-		$textname = 'we_' . $this->Name . '_' . $Pathname . ($identifier != '' ? '_' . $identifier : '');
+		$textname = 'we_' . $this->Name . '_' . $Pathname . ($identifier ? '_' . $identifier : '');
 		$idname = 'we_' . $this->Name . '_' . $IDName;
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$idname'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$textname'].value");

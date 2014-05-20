@@ -157,7 +157,7 @@ class we_document extends we_root{
 		we_loadLanguageConfig();
 
 		$_defLang = self::getDefaultLanguage();
-		$value = ($this->Language != '' ? $this->Language : $_defLang);
+		$value = ($this->Language ? $this->Language : $_defLang);
 		$inputName = 'we_' . $this->Name . '_Language';
 		$_languages = getWeFrontendLanguagesForBackend();
 		$_headline = ($withHeadline ? '<tr><td class="defaultfont">' . g_l('weClass', '[language]') . '</td></tr>' : '');
@@ -351,7 +351,7 @@ class we_document extends we_root{
 				$_naviItem->SelectionType = we_navigation_navigation::STPYE_DOCTYPE;
 				$_naviItem->IsFolder = 1;
 				$charset = $_naviItem->findCharset($_naviItem->ParentID);
-				$_naviItem->Charset = ($charset != '' ? $charset : (DEFAULT_CHARSET ? DEFAULT_CHARSET : $GLOBALS['WE_BACKENDCHARSET']));
+				$_naviItem->Charset = ($charset ? $charset : (DEFAULT_CHARSET ? DEFAULT_CHARSET : $GLOBALS['WE_BACKENDCHARSET']));
 			} else {
 				$_naviItem->Selection = we_navigation_navigation::SELECTION_STATIC;
 				$_naviItem->SelectionType = we_navigation_navigation::STPYE_DOCLINK;
@@ -1338,9 +1338,9 @@ class we_document extends we_root{
 					}
 				}
 				$js.=
-					(isset($_popUpCtrl["jswidth"]) && $_popUpCtrl["jswidth"] != "" ?
+					(isset($_popUpCtrl["jswidth"]) && $_popUpCtrl["jswidth"] ?
 						'we_winOpts += (we_winOpts ? \',\' : \'\')+\'width=' . $_popUpCtrl["jswidth"] . '\';' : '') .
-					(isset($_popUpCtrl["jsheight"]) && $_popUpCtrl["jsheight"] != "" ?
+					(isset($_popUpCtrl["jsheight"]) && $_popUpCtrl["jsheight"] ?
 						'we_winOpts += (we_winOpts ? \',\' : \'\')+\'height=' . $_popUpCtrl["jsheight"] . '\';' : '') . 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'status=' . (isset($_popUpCtrl["jsstatus"]) && $_popUpCtrl["jsstatus"] ? 'yes' : 'no') . '\';' .
 					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'scrollbars=' . (isset($_popUpCtrl["jsscrollbars"]) && $_popUpCtrl["jsscrollbars"] ? 'yes' : 'no') . '\';' .
 					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'menubar=' . (isset($_popUpCtrl["jsmenubar"]) && $_popUpCtrl["jsmenubar"] ? 'yes' : 'no') . '\';' .

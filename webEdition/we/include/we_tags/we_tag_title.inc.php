@@ -36,6 +36,6 @@ function we_tag_title($attribs, $content){
 		$title = ob_get_contents();
 		ob_end_clean();
 	}
-	$title = ($prefix != '' ? $prefix . ($title != '' ? $delimiter : '') : '') . $title . ($suffix != '' ? ($title != '' ? $delimiter : ($prefix != '' ? $delimiter : '')) . $suffix : '');
+	$title = ($prefix ? $prefix . ($title ? $delimiter : '') : '') . $title . ($suffix ? ($title ? $delimiter : ($prefix ? $delimiter : '')) . $suffix : '');
 	return getHtmlTag('title', $attribs, $htmlspecialchars ? oldHtmlspecialchars(strip_tags($title)) : strip_tags($title), true) . "\n";
 }

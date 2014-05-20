@@ -228,7 +228,7 @@ function we_tag_votingField($attribs){
 				return $GLOBALS['_we_voting']->getResult($type, $num_format, $precision);
 			case 'date':
 				$format = weTag_getAttribute('format', $attribs);
-				return date(($format != '' ? $format : g_l('weEditorInfo', '[date_format]')), $GLOBALS['_we_voting']->PublishDate);
+				return date(($format ? $format : g_l('weEditorInfo', '[date_format]')), $GLOBALS['_we_voting']->PublishDate);
 		}
 	}
 	return '';

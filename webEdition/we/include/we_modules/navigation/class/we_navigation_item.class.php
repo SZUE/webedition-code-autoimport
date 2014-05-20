@@ -268,9 +268,9 @@ class we_navigation_item{
 		$_compl = weTag_getAttribute('complete', $attribs);
 		// name
 		if($fieldname){
-			$val = (isset($this->$fieldname) && $this->$fieldname != '' ?
+			$val = (isset($this->$fieldname) && $this->$fieldname ?
 							$this->$fieldname :
-							(isset($this->attributes[$fieldname]) && $this->attributes[$fieldname] != '' ?
+							(isset($this->attributes[$fieldname]) && $this->attributes[$fieldname] ?
 									$this->attributes[$fieldname] :
 									''));
 			return ($fieldname == 'title' ? oldHtmlspecialchars($val) : $val);

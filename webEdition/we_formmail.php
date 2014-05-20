@@ -310,9 +310,9 @@ if($recipient){
 	}
 
 	$recipients = makeArrayFromCSV($recipient);
-	$senderForename = isset($_REQUEST['forename']) && $_REQUEST['forename'] != '' ? $_REQUEST['forename'] : '';
-	$senderSurname = isset($_REQUEST['surname']) && $_REQUEST['surname'] != '' ? $_REQUEST['surname'] : '';
-	$sender = ($senderForename != '' || $senderSurname != '' ? $senderForename . ' ' . $senderSurname . '<' . $fromMail . '>' : $fromMail);
+	$senderForename = isset($_REQUEST['forename']) && $_REQUEST['forename'] ? $_REQUEST['forename'] : '';
+	$senderSurname = isset($_REQUEST['surname']) && $_REQUEST['surname'] ? $_REQUEST['surname'] : '';
+	$sender = ($senderForename != '' || $senderSurname ? $senderForename . ' ' . $senderSurname . '<' . $fromMail . '>' : $fromMail);
 
 	$phpmail = new we_util_Mailer('', $subject, $sender);
 	$phpmail->setCharSet($charset);

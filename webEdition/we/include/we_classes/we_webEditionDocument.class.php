@@ -418,7 +418,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			$chars = explode(',', $GLOBALS["meta"]["Charset"]["defined"]);
 
 			//	input field - check value
-			$value = ($this->getElement($name) != '' ?
+			$value = ($this->getElement($name)  ?
 					$this->getElement($name) :
 					(isset($GLOBALS["meta"][$name]) ?
 						$GLOBALS["meta"][$name]["default"] :

@@ -151,7 +151,7 @@ class we_customer_customer extends weModelBase{
 			return;
 		}
 		$orderedarray = $this->persistent_slots;
-		$sortarray = ($mysort != '' ? makeArrayFromCSV($mysort) : range(0, count($orderedarray) - 1));
+		$sortarray = ($mysort ? makeArrayFromCSV($mysort) : range(0, count($orderedarray) - 1));
 
 		if(count($sortarray) != count($orderedarray)){
 
@@ -303,7 +303,7 @@ class we_customer_customer extends weModelBase{
 
 	function customerFieldValueExist($fieldname, $value, $condition = ''){
 		$db = new DB_WE();
-		return (f('SELECT 1 FROM ' . CUSTOMER_TABLE . ' WHERE ' . $db->escape($fieldname) . '="' . $db->escape($value) . '"' . ($condition != '' ? ' AND ' . $condition : ''), '', $db) == '1');
+		return (f('SELECT 1 FROM ' . CUSTOMER_TABLE . ' WHERE ' . $db->escape($fieldname) . '="' . $db->escape($value) . '"' . ($condition ? ' AND ' . $condition : ''), '', $db) == '1');
 	}
 
 	function fieldExist($field){

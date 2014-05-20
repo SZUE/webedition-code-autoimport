@@ -66,7 +66,7 @@ function we_parse_tag_captcha($a, $c, array $attribs){
 	$php = '<?php
 require_once($_SERVER[\'DOCUMENT_ROOT\'].\'' . WE_INCLUDES_DIR . 'we.inc.php\');
 $image = new CaptchaImage(' . $width . ', ' . $height . ', ' . $maxlength . ');' .
-		($fontpath != '' ? '$image->setFontPath(\'' . $fontpath . '\');' : '') . '
+		($fontpath ? '$image->setFontPath(\'' . $fontpath . '\');' : '') . '
 $image->setFont(\'' . $font . '\', \'' . $fontsize . '\', \'' . $fontcolor . '\');
 $image->setCharacterSubset(\'' . $subset . '\', \'' . $case . '\', \'' . $skip . '\');
 $image->setAlign(\'' . $align . '\');

@@ -1772,7 +1772,7 @@ function delElement(elvalues,elem) {
 
 		if(!empty($_language)){ // Build language select box
 			$_languages = new we_html_select(array('name' => $this->Name . '_Preference_Language', 'class' => 'weSelect'));
-			$myCompLang = (isset($this->Preferences['Language']) && $this->Preferences['Language'] != '' ? $this->Preferences['Language'] : $GLOBALS['WE_LANGUAGE']);
+			$myCompLang = (isset($this->Preferences['Language']) && $this->Preferences['Language'] ? $this->Preferences['Language'] : $GLOBALS['WE_LANGUAGE']);
 
 			foreach($_language as $key => $value){
 				$_languages->addOption($key, $value);
@@ -1795,7 +1795,7 @@ function delElement(elvalues,elem) {
 		foreach($c as $char){
 			$_charset->addOption($char, $char);
 		}
-		$myCompChar = (isset($this->Preferences['BackendCharset']) && $this->Preferences['BackendCharset'] != '' ? $this->Preferences['BackendCharset'] : $GLOBALS['WE_BACKENDCHARSET']);
+		$myCompChar = (isset($this->Preferences['BackendCharset']) && $this->Preferences['BackendCharset'] ? $this->Preferences['BackendCharset'] : $GLOBALS['WE_BACKENDCHARSET']);
 		$_charset->selectOption($myCompChar);
 		$_settings[] = array(
 			'headline' => g_l('prefs', '[choose_backendcharset]'),
