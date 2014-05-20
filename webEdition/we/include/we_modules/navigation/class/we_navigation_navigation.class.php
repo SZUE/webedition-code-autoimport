@@ -737,7 +737,7 @@ class we_navigation_navigation extends weModelBase{
 
 		$_path = str_replace(array('&amp;', '&'), array('&', '&amp;'), $_path);
 
-		if(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES && $this->LinkSelection != LSELECTION_EXTERN && $this->SelectionType != STYPE_URLLINK){ //Fix #8353
+		if(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES && $this->LinkSelection != self::LSELECTION_EXTERN && $this->SelectionType != self::STYPE_URLLINK){ //Fix #8353
 			$dirindexnames = array_map('trim', explode(',', '/' . str_replace(',', ',/', NAVIGATION_DIRECTORYINDEX_NAMES)));
 			return str_replace($dirindexnames, '/', $_path);
 		}
