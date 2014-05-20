@@ -40,14 +40,18 @@ if(ini_set('include_path', WE_LIB_PATH . PATH_SEPARATOR . WE_APPS_PATH . PATH_SE
 require_once('Zend/Loader/Autoloader.php');
 
 //FIXME: remove after end of support for PHP 5.3
-function we_stripslashes(&$arr){
-	foreach($arr as $n => $v){
-		if(is_array($v)){
-			we_stripslashes($arr[$n]);
-		} else {
-			$arr[$n] = stripslashes($v);
+if(!function_exists('we_stripslashes')){
+
+	function we_stripslashes(&$arr){
+		foreach($arr as $n => $v){
+			if(is_array($v)){
+				we_stripslashes($arr[$n]);
+			} else {
+				$arr[$n] = stripslashes($v);
+			}
 		}
 	}
+
 }
 
 //FIXME: remove after end of support for PHP 5.3
