@@ -185,7 +185,7 @@ function _weRequest(&$var, $key, array $data){
 			$var = (preg_match('|^([a-f0-9]){32}$|i', $var) ? $var : $default);
 			return;
 		case 'intList':
-			$var = implode(',', array_map('intval', explode(',', $var)));
+			$var = implode(',', array_map('intval', explode(',', trim($var, ','))));
 			return;
 		case 'unit':
 			//FIMXE: check for %d[em,ex,pt,...]?
@@ -245,7 +245,7 @@ function weRequest($type, $name, $default = false, $index = null){
 	} else {
 		$oldVar = $var;
 		_weRequest($var, '', array($type, $default));
-		if($var != $oldVar){
+		if(($type == 'intList' ? trim($oldVar, ',') : $oldVar) != '' . $var){
 			t_e('changed values', $type, $name, $index, $oldVar, $var);
 		}
 	}

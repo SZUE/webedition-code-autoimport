@@ -344,7 +344,7 @@ function we_cmd(){
 	function getHTMLCategory(){
 
 		$addbut = we_html_button::create_button(
-				"add", "javascript:we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths, top.allIDs);')");
+				"add", "javascript:we_cmd('openCatselector',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths, top.allIDs);')");
 		$del_but = addslashes(
 			we_html_element::htmlImg(
 				array(
