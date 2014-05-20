@@ -236,7 +236,7 @@ function _weRequest(&$var, $key, array $data){
  * @return mixed default, if value not set, the filtered value else
  */
 function weRequest($type, $name, $default = false, $index = null){
-	if(!isset($_REQUEST[$name]) || (isset($_REQUEST[$name]) && $_REQUEST[$name] === '') || ($index !== null && !isset($_REQUEST[$name][$index]))){
+	if(!isset($_REQUEST[$name]) || (isset($_REQUEST[$name]) && $_REQUEST[$name] === '') || ($index !== null && (!isset($_REQUEST[$name][$index]) || ($_REQUEST[$name][$index] === '')))){
 		return $default;
 	}
 	$var = ($index === null ? $_REQUEST[$name] : $_REQUEST[$name][$index]);
