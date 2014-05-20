@@ -566,7 +566,7 @@ abstract class we_database_base{
 		$ret = array();
 		foreach($arr as $key => $val){
 			$escape = !(is_bool($val));
-			if(is_array($val) && $val['sqlFunction'] == 1){
+			if(is_array($val) && isset($val['sqlFunction']) && $val['sqlFunction'] == 1){
 				$val = $val['val'];
 				$escape = false;
 			} elseif(is_object($val) || is_array($val)){
@@ -693,8 +693,8 @@ abstract class we_database_base{
 			$query = array();
 			foreach($table as $key => $value){
 				$query[] = (is_numeric($key) ?
-								$value . ' ' . $mode :
-								$key . ' ' . $value);
+						$value . ' ' . $mode :
+						$key . ' ' . $value);
 			}
 			$query = implode(',', $query);
 		} else {
@@ -824,8 +824,8 @@ abstract class we_database_base{
 	function getTableCreateArray($tab){
 		$this->query('SHOW CREATE TABLE ' . $this->escape($tab));
 		return ($this->next_record()) ?
-				explode("\n", $this->f("Create Table")) :
-				false;
+			explode("\n", $this->f("Create Table")) :
+			false;
 	}
 
 	public function getTableKeyArray($tab){

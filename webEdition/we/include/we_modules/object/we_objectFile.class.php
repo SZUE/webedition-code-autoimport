@@ -1220,26 +1220,25 @@ class we_objectFile extends we_document{
 		$attribs["name"] = $n;
 		$out = '';
 		$link = $this->getElement($n) ? unserialize($this->getElement($n)) : array();
-		if(is_array($link)){
-			if(!$link){
-				$link = array("ctype" => "text", "type" => we_base_link::TYPE_EXT, "href" => "#", "text" => g_l('global', "[new_link]"));
-			}
-			$img = new we_imageDocument();
-			$content = parent::getLinkContent($link, $this->ParentID, $this->Path, $GLOBALS['DB_WE'], $img);
 
-			$startTag = $this->getLinkStartTag($link, array(), $this->ParentID, $this->Path, $GLOBALS['DB_WE'], $img);
-
-			$editbut = we_html_button::create_button("edit", "javascript:we_cmd('edit_link_at_object','" . $n . "')");
-			$delbut = we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('object_delete_link_at_object','" . $GLOBALS['we_transaction'] . "', 'link_" . $n . "')");
-			$buttons = we_html_button::create_button_table(array($editbut, $delbut));
-			if(!$content){
-				$content = g_l('global', "[new_link]");
-			}
-			$out = ($startTag ? $startTag . $content . '</a>' : $content) . ($we_editmode ? ($buttons) : "");
+		if(!$link){
+			$link = array("ctype" => "text", "type" => we_base_link::TYPE_EXT, "href" => "#", "text" => g_l('global', "[new_link]"));
 		}
+		$img = new we_imageDocument();
+		$content = parent::getLinkContent($link, $this->ParentID, $this->Path, $GLOBALS['DB_WE'], $img);
+
+		$startTag = $this->getLinkStartTag($link, array(), $this->ParentID, $this->Path, $GLOBALS['DB_WE'], $img);
+
+		$editbut = we_html_button::create_button("edit", "javascript:we_cmd('edit_link_at_object','" . $n . "')");
+		$delbut = we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('object_delete_link_at_object','" . $GLOBALS['we_transaction'] . "', 'link_" . $n . "')");
+		$buttons = we_html_button::create_button_table(array($editbut, $delbut));
+		if(!$content){
+			$content = g_l('global', "[new_link]");
+		}
+
 		return ($headline ?
 				'<span class="weObjectPreviewHeadline">' . $n . '</span>' . ( $we_editmode && isset($this->DefArray["link_" . $n]['editdescription']) && $this->DefArray["link_" . $n]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["link_" . $n]['editdescription'] . '</div>' : we_html_element::htmlBr() ) :
-				'') . $out;
+				'') . ($startTag ? $startTag . $content . '</a>' : $content) . ($we_editmode ? ($buttons) : "");
 	}
 
 	function getPreviewView($name, $content){
@@ -2024,7 +2023,7 @@ class we_objectFile extends we_document{
 			$text = str_replace(array(' ', '//'), array('-', '/'), $text);
 			$text = (URLENCODE_OBJECTSEOURLS) ?
 				str_replace('%2F', '/', urlencode($text)) :
-				preg_replace(array('~&szlig;~','~&(.)(uml|grave|acute|circ|tilde|ring|cedil|slash|caron);|&(..)(lig);|&#.*;~', '~[^0-9a-zA-Z/._-]~'), array('ss','\1\3', ''), htmlentities($text));
+				preg_replace(array('~&szlig;~', '~&(.)(uml|grave|acute|circ|tilde|ring|cedil|slash|caron);|&(..)(lig);|&#.*;~', '~[^0-9a-zA-Z/._-]~'), array('ss', '\1\3', ''), htmlentities($text));
 			$this->Url = substr($text, 0, 256);
 		} else {
 			$this->Url = '';
@@ -2842,7 +2841,7 @@ class we_objectFile extends we_document{
 
 	protected function i_setElementsFromHTTP(){
 		parent::i_setElementsFromHTTP();
-		if(!empty($_REQUEST)){
+		if($_REQUEST){
 			$regs = array();
 			$hrefFields = false;
 			$multiobjectFields = false;
@@ -2852,7 +2851,6 @@ class we_objectFile extends we_document{
 					${$regs[1] . 'Fields'}|=true;
 				}
 			}
-
 			if($hrefFields){
 				$empty = array('int' => 1, 'intID' => '', 'intPath' => '', 'extPath' => '');
 				$hrefs = $match = array();
@@ -2861,6 +2859,7 @@ class we_objectFile extends we_document{
 						$hrefs[$match[1]][$match[2]] = $val;
 					}
 				}
+
 				foreach($hrefs as $k => $v){
 					$href = array_merge($empty, $v);
 					$this->setElement($k, serialize($href), self::TYPE_HREF);
@@ -3177,6 +3176,11 @@ class we_objectFile extends we_document{
 			}
 		}
 		return '';
+	}
+
+	//FIMXE: remove, but needed, since objects still serialize links
+	function changeLink($name){
+		$this->setElement($name, serialize($_SESSION['weS']['WE_LINK']));
 	}
 
 }
