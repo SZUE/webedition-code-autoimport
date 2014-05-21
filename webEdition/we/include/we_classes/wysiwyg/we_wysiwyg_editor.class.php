@@ -1110,7 +1110,7 @@ function weWysiwygSetHiddenText(arg) {
 						}}};
 
 
-					var tinyMceConfObject__' . $this->fieldName . ' = {
+					var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 						wePluginClasses : {
 							"weadaptbold" : "' . $editorLangSuffix . 'weadaptbold",
 							"weadaptitalic" : "' . $editorLangSuffix . 'weadaptitalic",
@@ -1158,7 +1158,7 @@ function weWysiwygSetHiddenText(arg) {
 						entity_encoding : "named",
 						entities : "160,nbsp",
 						element_format: "' . $this->xml . '",
-						body_class : "' . ($this->className  ? $this->className . " " : "") . 'wetextarea tiny-wetextarea wetextarea-' . $this->origName . '",
+						body_class : "' . ($this->className ? $this->className . " " : "") . 'wetextarea tiny-wetextarea wetextarea-' . $this->origName . '",
 
 						//CallBacks
 						//file_browser_callback : "openWeFileBrowser",
@@ -1193,7 +1193,7 @@ function weWysiwygSetHiddenText(arg) {
 						skin : "o2k7",
 						skin_variant : "silver",
 
-						' . ($this->tinyParams  ? '//params from attribute tinyparams
+						' . ($this->tinyParams ? '//params from attribute tinyparams
 						' . $this->tinyParams . ',' : '') . '
 
 						setup : function(ed){
@@ -1369,7 +1369,7 @@ function weWysiwygSetHiddenText(arg) {
 						}
 					}
 					tinyMCE.addI18n(tinyMceTranslationObject);
-					tinyMCE.init(tinyMceConfObject__' . $this->fieldName . ');
+					tinyMCE.init(tinyMceConfObject__' . $this->fieldName_clean . ');
 ') .
 					'
 <textarea wrap="off" style="color:#eeeeee; background-color:#eeeeee;  width:' . (max($this->width, $this->maxGroupWidth + 8)) . 'px; height:' . $this->height . 'px;" id="' . $this->name . '" name="' . $this->name . '">' . str_replace(array('\n', '&'), array('', '&amp;'), $editValue) . '</textarea>';

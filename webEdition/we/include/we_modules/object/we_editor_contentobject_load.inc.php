@@ -78,7 +78,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 	function reloadElement($jsGUI, $we_transaction, $we_doc, $id){
 		$identifier = array_pop(explode('_', $id));
 		$uniqid = 'entry_' . $identifier;
-		$wholename = $we_doc->getElement("wholename" . $identifier);
+		$wholename = $we_doc->getElement('wholename' . $identifier);
 
 		$content = '<div id="' . $uniqid . '">
 				<a name="f' . $uniqid . '"></a>
@@ -115,7 +115,7 @@ if(conf = typeof tinyMceConfObject__' . $wholename . 'default === \'object\' ? t
 	target[confname] = undefined;
 }
 ');
-		
+
 		$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 	}
 
