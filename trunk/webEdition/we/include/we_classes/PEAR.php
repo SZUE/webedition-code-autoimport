@@ -505,12 +505,6 @@ class PEAR{
 			$ec = 'PEAR_Error';
 		}
 
-		if(intval(PHP_VERSION) < 5){
-			// little non-eval hack to fix bug #12147
-			include 'PEAR/FixPHP5PEARWarnings.php';
-			return $a;
-		}
-
 		if($skipmsg){
 			$a = new $ec($code, $mode, $options, $userinfo);
 		} else {
@@ -705,9 +699,10 @@ class PEAR{
 
 }
 
-if(PEAR_ZE2){
+/*patched in we
+ * if(PEAR_ZE2){
 	include_once 'PEAR5.php';
-}
+}*/
 
 function _PEAR_call_destructors(){
 	global $_PEAR_destructor_object_list;
