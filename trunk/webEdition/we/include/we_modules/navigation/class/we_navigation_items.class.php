@@ -394,7 +394,7 @@ class we_navigation_items{
 		if(!isset($this->templates[$item->type])){
 			return $this->getDefaultTemplate($item);
 		}
-
+		$currentPos=we_navigation_item::$currentPosition[$item->level];
 // get correct Level
 		$useTemplate = $this->templates[$item->type][(isset($this->templates[$item->type][$item->level]) ? $item->level : 'defaultLevel')];
 // get correct position
@@ -409,19 +409,19 @@ class we_navigation_items{
 // is last entry??
 		if(isset($useTemplate['last']) &&
 // check if item is last
-				((count($this->items['id' . $item->parentid]->items)) == we_navigation_item::$currentPosition)){
+				((count($this->items['id' . $item->parentid]->items)) == $currentPos)){
 			return $useTemplate['last'];
 		}
 
-		if(isset($useTemplate[we_navigation_item::$currentPosition])){
-			return $useTemplate[we_navigation_item::$currentPosition];
+		if(isset($useTemplate[$currentPos])){
+			return $useTemplate[$currentPos];
 		}
 
-		if(isset($useTemplate['odd']) && we_navigation_item::$currentPosition % 2 === 1){
+		if(isset($useTemplate['odd']) && $currentPos % 2 === 1){
 			return $useTemplate['odd'];
 		}
 
-		if(isset($useTemplate['even']) && we_navigation_item::$currentPosition % 2 === 0){
+		if(isset($useTemplate['even']) && $currentPos % 2 === 0){
 			return $useTemplate['even'];
 		}
 
