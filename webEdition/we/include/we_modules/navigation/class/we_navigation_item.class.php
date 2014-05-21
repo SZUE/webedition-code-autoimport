@@ -28,8 +28,6 @@
  */
 class we_navigation_item{
 
-	const DEFAULT_CURRENT = 'defaultCurrent';
-
 	var $id;
 	var $icon;
 	var $docid;
@@ -42,7 +40,7 @@ class we_navigation_item{
 	var $type;
 	var $level;
 	var $position;
-	static $currentPosition=array();
+	static $currentPosition = array();
 	var $current = false;
 	var $containsCurrent = false;
 	private $visible = true;
@@ -252,7 +250,7 @@ class we_navigation_item{
 		}
 		$GLOBALS['weNavigationItemArray'][] = &$this;
 		//use this since items might be invisible
-		self::$currentPosition[$this->level]++;
+		self::$currentPosition[$this->level] ++;
 		ob_start();
 		eval('?>' . $weNavigationItems->getTemplate($this));
 		$executeContent = ob_get_contents();
@@ -269,10 +267,10 @@ class we_navigation_item{
 		// name
 		if($fieldname){
 			$val = (isset($this->$fieldname) && $this->$fieldname ?
-							$this->$fieldname :
-							(isset($this->attributes[$fieldname]) && $this->attributes[$fieldname] ?
-									$this->attributes[$fieldname] :
-									''));
+					$this->$fieldname :
+					(isset($this->attributes[$fieldname]) && $this->attributes[$fieldname] ?
+						$this->attributes[$fieldname] :
+						''));
 			return ($fieldname == 'title' ? oldHtmlspecialchars($val) : $val);
 		}
 
@@ -284,8 +282,8 @@ class we_navigation_item{
 				$attribs['attributes'] = $_compl;
 				$attribs = $this->getNavigationFieldAttributes($attribs);
 				return ($_compl == 'image' ?
-								getHtmlTag('img', $attribs) :
-								(isset($attribs['href']) && !empty($attribs['href']) ? getHtmlTag('a', $attribs, $this->text) : $this->text));
+						getHtmlTag('img', $attribs) :
+						(isset($attribs['href']) && !empty($attribs['href']) ? getHtmlTag('a', $attribs, $this->text) : $this->text));
 			}
 			return '';
 		}
@@ -327,12 +325,12 @@ class we_navigation_item{
 						foreach($useFields as $field){
 							if(isset($this->$field) && $this->$field != ''){
 								$attribs[$field] = ($field == 'title' ?
-												oldHtmlspecialchars($this->$field) :
-												$this->$field);
+										oldHtmlspecialchars($this->$field) :
+										$this->$field);
 							} elseif(isset($this->attributes[$field]) && $this->attributes[$field] != ''){
 								$attribs[$field] = ($field == 'link_attribute' ? // Bug #3741
-												$this->attributes[$field] :
-												oldHtmlspecialchars($this->attributes[$field]));
+										$this->attributes[$field] :
+										oldHtmlspecialchars($this->attributes[$field]));
 							}
 						}
 
@@ -412,12 +410,12 @@ if (window.screen) {
 		}
 
 		$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'status=' . ((isset($this->attributes['popup_status']) && $this->attributes['popup_status'] != '') ? 'yes' : 'no') . '\';' .
-				'we_winOpts += \',scrollbars=' . ((isset($this->attributes['popup_scrollbars']) && $this->attributes['popup_scrollbars'] != '') ? 'yes' : 'no') . '\';' .
-				'we_winOpts += \',menubar=' . ((isset($this->attributes['popup_menubar']) && $this->attributes['popup_menubar'] != '') ? 'yes' : 'no') . '\';' .
-				'we_winOpts += \',resizable=' . ((isset($this->attributes['popup_resizable']) && $this->attributes['popup_resizable'] != '') ? 'yes' : 'no') . '\';' .
-				'we_winOpts += \',location=' . ((isset($this->attributes['popup_location']) && $this->attributes['popup_location'] != '') ? 'yes' : 'no') . '\';' .
-				'we_winOpts += \',toolbar=' . ((isset($this->attributes['popup_toolbar']) && $this->attributes['popup_toolbar'] != '') ? 'yes' : 'no') . '\';' .
-				"var we_win = window.open('" . $this->href . "','" . "we_ll_" . $this->id . "',we_winOpts);";
+			'we_winOpts += \',scrollbars=' . ((isset($this->attributes['popup_scrollbars']) && $this->attributes['popup_scrollbars'] != '') ? 'yes' : 'no') . '\';' .
+			'we_winOpts += \',menubar=' . ((isset($this->attributes['popup_menubar']) && $this->attributes['popup_menubar'] != '') ? 'yes' : 'no') . '\';' .
+			'we_winOpts += \',resizable=' . ((isset($this->attributes['popup_resizable']) && $this->attributes['popup_resizable'] != '') ? 'yes' : 'no') . '\';' .
+			'we_winOpts += \',location=' . ((isset($this->attributes['popup_location']) && $this->attributes['popup_location'] != '') ? 'yes' : 'no') . '\';' .
+			'we_winOpts += \',toolbar=' . ((isset($this->attributes['popup_toolbar']) && $this->attributes['popup_toolbar'] != '') ? 'yes' : 'no') . '\';' .
+			"var we_win = window.open('" . $this->href . "','" . "we_ll_" . $this->id . "',we_winOpts);";
 
 		$attributes = removeAttribs($attributes, array(
 			'name', 'target', 'onClick', 'onclick'
