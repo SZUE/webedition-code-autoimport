@@ -42,7 +42,7 @@ class we_navigation_item{
 	var $type;
 	var $level;
 	var $position;
-	static $currentPosition;
+	static $currentPosition=array();
 	var $current = false;
 	var $containsCurrent = false;
 	private $visible = true;
@@ -244,15 +244,15 @@ class we_navigation_item{
 	}
 
 	function writeItem(&$weNavigationItems, $depth = false){
-		if($this->position == 1){
-			self::$currentPosition = 0;
+		if(!isset(self::$currentPosition[$this->level])){
+			self::$currentPosition[$this->level] = 0;
 		}
 		if(!($depth === false || $this->level <= $depth) || !$this->isVisible()){
 			return '';
 		}
 		$GLOBALS['weNavigationItemArray'][] = &$this;
 		//use this since items might be invisible
-		self::$currentPosition++;
+		self::$currentPosition[$this->level]++;
 		ob_start();
 		eval('?>' . $weNavigationItems->getTemplate($this));
 		$executeContent = ob_get_contents();
