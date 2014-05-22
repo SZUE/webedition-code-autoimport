@@ -119,8 +119,11 @@ function we_tag_customerResetPassword(array $attribs){
 				$GLOBALS['ERROR']['customerResetPassword'] = we_customer_customer::PWD_TOKEN_INVALID;
 			}
 			//if no pwd is set, check if passwords are given by request
-			if(!$data['password'] && !checkPwds()){
-				return;
+			if(!$data['password']){
+				if(!checkPwds()){
+					return;
+				}
+				$data['password'] = we_customer_customer::cryptPassword(weRequest('string', 's', '', 'Password'));
 			}
 			//ok, we have a password, all (optional requirements are met) & token was valid
 			$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET Password="' . $GLOBALS['DB_WE']->escape($data['password']) . '" WHERE ID=' . $user);
