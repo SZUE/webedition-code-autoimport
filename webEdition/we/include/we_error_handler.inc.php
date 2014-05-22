@@ -80,14 +80,10 @@ function we_error_handler($in_webEdition = true){
 		if(!defined('WE_ERROR_HANDLER_SET')){
 			define('WE_ERROR_HANDLER_SET', 1);
 		}
-		$GLOBALS['we']['errorhandler']['warning'] = true;
+		//we want all errors inside WE
+		we_error_setHandleAll();
 	} else {
 		$GLOBALS['we']['errorhandler']['display'] = defined('WE_ERROR_SHOW') ? (WE_ERROR_SHOW == 1 ? true : false) : true;
-	}
-	// Check PHP version
-	if(version_compare(PHP_VERSION, '5.2.4') < 0){
-		display_error_message(E_ERROR, 'Unable to launch webEdition - PHP 5.2.4 or higher required!', __FILE__, __LINE__);
-		exit();
 	}
 
 	if(defined('WE_ERROR_HANDLER') && (WE_ERROR_HANDLER == 1)){
@@ -107,7 +103,7 @@ function we_error_handler($in_webEdition = true){
 			$cur_error = error_reporting();
 			if(($cur_error & (E_DEPRECATED | E_STRICT) ) > 0){
 				$new_error = $cur_error & ~(E_DEPRECATED | E_STRICT);
-				$old_error = error_reporting($new_error);
+				error_reporting($new_error);
 			}
 		}
 	}
