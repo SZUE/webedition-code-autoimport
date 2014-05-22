@@ -23,9 +23,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 we_html_tools::protect();
-$id = $_REQUEST['we_cmd'][1];
-$JSIDName = $_REQUEST['we_cmd'][2];
-$JSTextName = $_REQUEST['we_cmd'][3];
-$JSCommand = $_REQUEST['we_cmd'][4];
+$_REQUEST['id'] = $_REQUEST['we_cmd'][1];
+$_REQUEST['JSIDName'] = $_REQUEST['we_cmd'][2];
+$_REQUEST['JSTextName'] = $_REQUEST['we_cmd'][3];
+$_REQUEST['JSCommand'] = $_REQUEST['we_cmd'][4];
 
 require_once(WE_MODULES_PATH . 'raw/we_ShopDirSelect.php');

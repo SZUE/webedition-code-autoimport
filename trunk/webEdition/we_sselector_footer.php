@@ -66,12 +66,8 @@ echo we_html_tools::getHtmlTop() .
 <body background="<?php print IMAGE_DIR ?>backgrounds/radient.gif" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px" onunload="doUnload();">
 	<form name="we_form" target="fscmd">
 		<table border="0" cellpadding="0" cellspacing="0" width="100%">
-			<tr>
-				<td colspan="5"><img src="<?php echo IMAGE_DIR ?>umr_h_small.gif" width="100%" height="2" border="0"></td>
-			</tr>
-			<tr>
-				<td colspan="5"><?php echo we_html_tools::getPixel(5, 5); ?></td>
-			</tr>
+			<tr><td colspan="5"><img src="<?php echo IMAGE_DIR ?>umr_h_small.gif" width="100%" height="2" border="0"></td></tr>
+			<tr><td colspan="5"><?php echo we_html_tools::getPixel(5, 5); ?></td></tr>
 			<?php
 			if(weRequest('bool', "ret")){
 				$cancel_button = we_html_button::create_button("cancel", "javascript:top.close();");
@@ -104,7 +100,7 @@ echo we_html_tools::getHtmlTop() .
 					<td></td>
 				</tr>
 				<tr>
-					<td colspan="5"><?php print we_html_tools::getPixel(5, 5); ?></td>
+					<td colspan="5"><?php echo we_html_tools::getPixel(5, 5); ?></td>
 				</tr>
 			<?php } ?>
 			<tr>
@@ -115,7 +111,7 @@ echo we_html_tools::getHtmlTop() .
 						?></b>
 				</td>
 				<td></td>
-				<td class="defaultfont" align="left"><?php echo we_html_tools::htmlTextInput("fname", 24, $_REQUEST["currentName"], "", "style=\"width:100%\" readonly=\"readonly\""); ?>
+				<td class="defaultfont" align="left"><?php echo we_html_tools::htmlTextInput("fname", 24, weRequest('file', "currentName"), "", "style=\"width:100%\" readonly=\"readonly\""); ?>
 				</td>
 				<td></td>
 			</tr>

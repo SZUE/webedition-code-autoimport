@@ -137,24 +137,24 @@ echo we_html_tools::getHtmlTop() .
 					</select><?php print we_html_tools::getPixel(1, 1); ?></td>
 				<td width="10"><?php print we_html_tools::getPixel(10, 29); ?></td>
 				<td width="40">
-					<?php print we_html_button::create_button("root_dir", "javascript:top.fscmd.setDir('/');"); ?>
+					<?php echo we_html_button::create_button("root_dir", "javascript:top.fscmd.setDir('/');"); ?>
 				</td>
 				<td width="10"><?php print we_html_tools::getPixel(10, 29); ?></td>
 				<td width="40">
-					<?php print we_html_button::create_button("image:btn_fs_back", "javascript:top.fscmd.goUp();"); ?>
+					<?php echo we_html_button::create_button("image:btn_fs_back", "javascript:top.fscmd.goUp();"); ?>
 				</td>
-				<?php if(!$_REQUEST["ret"]){ ?>
+				<?php if(!weRequest('bool', "ret")){ ?>
 					<td width="10"><?php print we_html_tools::getPixel(10, 29); ?></td>
 					<td width="40">
-						<?php print we_html_button::create_button("image:btn_new_dir", "javascript:top.fscmd.drawNewFolder();", true, 100, 22, "", "", false, false, "_ss"); ?>
+						<?php echo we_html_button::create_button("image:btn_new_dir", "javascript:top.fscmd.drawNewFolder();", true, 100, 22, "", "", false, false, "_ss"); ?>
 					</td>
 					<td width="10"><?php print we_html_tools::getPixel(10, 29); ?></td>
 					<td width="40">
-						<?php print we_html_button::create_button("image:btn_add_file", "javascript:javascript:openFile();", true, 100, 22, "", "", false, false, "_ss"); ?>
+						<?php echo we_html_button::create_button("image:btn_add_file", "javascript:javascript:openFile();", true, 100, 22, "", "", false, false, "_ss"); ?>
 					</td>
 					<td width="10"><?php echo we_html_tools::getPixel(10, 29); ?></td>
 					<td width="25">
-						<?php print we_html_button::create_button("image:btn_function_trash", "javascript:top.fscmd.delFile();", true, 100, 22, "", "", false, false, "_ss"); ?>
+						<?php echo we_html_button::create_button("image:btn_function_trash", "javascript:top.fscmd.delFile();", true, 100, 22, "", "", false, false, "_ss"); ?>
 					</td>
 				<?php } ?>
 				<td width="10"><?php echo we_html_tools::getPixel(10, 29); ?></td>

@@ -34,8 +34,8 @@ class we_selector_category extends we_selector_multiple{
 	private $EntryText = '';
 	private $noChoose = false;
 
-	function __construct($id, $table = FILE_TABLE, $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $sessionID = '', $we_editCatID = '', $EntryText = '', $rootDirID = 0, $noChoose = false){
-		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, $sessionID, $rootDirID);
+	function __construct($id, $table = FILE_TABLE, $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $we_editCatID = '', $EntryText = '', $rootDirID = 0, $noChoose = false){
+		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, $rootDirID);
 		$this->title = g_l('fileselector', '[catSelector][title]');
 
 		$this->we_editCatID = $we_editCatID;

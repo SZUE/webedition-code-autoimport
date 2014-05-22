@@ -62,7 +62,7 @@ class we_selector_file{
 	var $col2js;
 	protected $title = '';
 
-	function __construct($id, $table = FILE_TABLE, $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $sessionID = '', $rootDirID = 0, $filter = ''){
+	function __construct($id, $table = FILE_TABLE, $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $rootDirID = 0, $filter = ''){
 
 		if(!isset($_SESSION['weS']['we_fs_lastDir'])){
 			$_SESSION['weS']['we_fs_lastDir'] = array($table => 0);
@@ -75,7 +75,7 @@ class we_selector_file{
 		$this->lastDir = isset($_SESSION['weS']['we_fs_lastDir'][$table]) ? intval($_SESSION['weS']['we_fs_lastDir'][$table]) : 0;
 //check table
 
-		$this->table = $table && in_array($table, get_defined_constants(), true) ? $table : FILE_TABLE;
+		$this->table = $table;
 
 		$this->JSIDName = $JSIDName;
 		$this->JSTextName = $JSTextName;

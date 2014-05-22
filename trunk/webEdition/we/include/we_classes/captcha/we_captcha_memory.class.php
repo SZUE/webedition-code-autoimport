@@ -24,6 +24,11 @@
  */
 class we_captcha_memory{
 
+	static function cleanup(){
+		$db = new DB_WE();
+		$db->query('DELECT FROM ' . CAPTCHA_TABLE . ' WHERE created < NOW()-INTERVAL 30 MINUTE');
+	}
+
 	/**
 	 * Save the Captcha Code to the Memory
 	 *
@@ -35,7 +40,7 @@ class we_captcha_memory{
 		$items = self::readData($file);
 
 		// delete old items
-		if(!empty($items)){
+		if($items){
 			foreach($items as $code => $item){
 				if(time() > $item['time'] || ($_SERVER['REMOTE_ADDR'] == $item['ip'] && $_SERVER['HTTP_USER_AGENT'] == $item['agent'])){
 					unset($items[$code]);

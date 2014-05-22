@@ -197,7 +197,7 @@ function _weRequest(&$var, $key, array $data){
 			$var = floatval($var);
 			return;
 		case 'bool':
-			$var = $var == 'off' ? false : (bool) $var;
+			$var = ($var == 'off' ? false : (bool) $var);
 			return;
 		case 'toggle': //FIXME: temporary type => whenever possible use 'bool'
 			$var = $var == 'on' || $var == 'off' || $var == '1' || $var == '0' ? $var : (bool) $var;

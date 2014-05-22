@@ -150,8 +150,9 @@ function showMessage(message, prio, win){
 if(is_dir(WEBEDITION_PATH . 'we/cache')){
 	we_util_File::deleteLocalFolder(WEBEDITION_PATH . 'we/cache', true);
 }
+//FIXME: remove? => updater?
 if(is_dir($_SERVER['DOCUMENT_ROOT']  . '/OnlineInstaller')){
-	we_util_File::deleteLocalFolder($_SERVER['DOCUMENT_ROOT']  . '/OnlineInstaller');
+	we_util_File::deleteLocalFolder($_SERVER['DOCUMENT_ROOT']  . '/OnlineInstaller',true);
 }
 
 we_base_file::cleanTempFiles(true);
