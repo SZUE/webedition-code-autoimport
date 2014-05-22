@@ -106,5 +106,6 @@ we_captcha_captcha::display($image, \'' . ((isset($bgcolor) && $transparent) ? '
 
 function we_tag_captcha($attribs){
 	$attribs['src'] .= "?r=" . md5(md5(time()) . session_id());
+	
 	return getHtmlTag("img", $attribs);
 }

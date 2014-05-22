@@ -169,10 +169,9 @@ function check_recipient($email){
 }
 
 function check_captcha(){
-	$name = $_REQUEST['captchaname'];
-	return (isset($_REQUEST[$name]) && !empty($_REQUEST[$name]) ?
-			we_captcha_captcha::check($_REQUEST[$name]) :
-			false);
+	return ($name = weRequest('string', weRequest('string', 'captchaname', '__NOT_SET__')) ?
+		we_captcha_captcha::check($name) :
+		false);
 }
 
 $_req = weRequest('raw', 'required', '');

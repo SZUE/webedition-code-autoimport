@@ -246,7 +246,6 @@ abstract class we_database_base{
 
 	/**
 	 * This function is a replacement for mysql_real_escape_string, which sends the string to mysql to escape it
-	 * @deprecated NOTE: this function will be removed; in future there will be a function for prepared statements
 	 * @param array/string $inp value to escape for sql-query
 	 * @return array/string
 	 */
