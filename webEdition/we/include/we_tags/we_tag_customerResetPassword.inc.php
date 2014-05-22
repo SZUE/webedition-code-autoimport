@@ -123,6 +123,7 @@ function we_tag_customerResetPassword(array $attribs){
 				if(!checkPwds()){
 					return;
 				}
+				//set password from request, pwd in db was empty
 				$data['password'] = we_customer_customer::cryptPassword(weRequest('string', 's', '', 'Password'));
 			}
 			//ok, we have a password, all (optional requirements are met) & token was valid
