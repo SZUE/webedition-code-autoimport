@@ -19,10 +19,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_customerResetPasswordLink(array $attribs, $content){
-	if(!$GLOBALS['ERROR']['customerResetPassword'] = we_customer_customer::PWD_ALL_OK){
+	if($GLOBALS['ERROR']['customerResetPassword'] != we_customer_customer::PWD_ALL_OK){
 		return '';
 	}
 
 	$attribs['params'] = '?user=' . $_SESSION['webuser']['ID'] . '&token=' . $_SESSION['webuser']['token'];
-	return we_tag('a', $attribs, $content);
+	return printElement(we_tag('a', $attribs, $content));
 }
