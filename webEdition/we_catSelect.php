@@ -28,6 +28,6 @@ we_html_tools::protect();
 $_SERVER['SCRIPT_NAME'] = WEBEDITION_DIR . 'we_catSelect.php';
 
 $fs = new we_selector_category(
-	isset($id) ? $id : weRequest('int', "id", 0), isset($table) ? $table : weRequest('table', "table", FILE_TABLE), isset($JSIDName) ? $JSIDName : weRequest('string', "JSIDName", ""), isset($JSTextName) ? $JSTextName : weRequest('string', "JSTextName", ""), isset($JSCommand) ? $JSCommand : weRequest('raw', "JSCommand", ""), isset($order) ? $order : weRequest('raw', "order", ""), 0, isset($we_editCatID) ? $we_editCatID : weRequest('int', "we_editCatID", 0), isset($we_EntryText) ? $we_EntryText : weRequest('raw', "we_EntryText", ""), isset($rootDirID) ? $rootDirID : weRequest('int', "rootDirID", 0), isset($noChoose) ? $noChoose : weRequest('bool', "noChoose"));
+	weRequest('int', "id", 0), weRequest('table', "table", FILE_TABLE), weRequest('string', "JSIDName", ""), weRequest('string', "JSTextName", ""), weRequest('raw', "JSCommand", ""), weRequest('raw', "order", ""), weRequest('int', "we_editCatID", 0), weRequest('raw', "we_EntryText", ""), weRequest('int', "rootDirID", 0), weRequest('bool', "noChoose"));
 
 $fs->printHTML(weRequest('int', "what", we_selector_file::FRAMESET));

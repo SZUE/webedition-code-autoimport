@@ -434,8 +434,7 @@ function we_cmd() {
 		case "openNewsletterDirselector":
 			if (arguments[0] == "openNewsletterDirselector") {
 				url = "' . WE_MODULES_DIR . 'newsletter/we_dirfs.php?";
-			}
-			else {
+			}else {
 				url = "' . WE_INCLUDES_DIR . 'we_modules/navigation/we_navigationDirSelect.php?";
 			}
 			for (var i = 0; i < arguments.length; i++) {

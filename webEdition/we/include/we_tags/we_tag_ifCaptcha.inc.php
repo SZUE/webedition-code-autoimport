@@ -26,15 +26,15 @@ function we_tag_ifCaptcha($attribs){
 	$name = weTag_getAttribute('name', $attribs);
 	$formname = weTag_getAttribute('formname', $attribs);
 
-	if(isset($_REQUEST[$name])){
-		if(!empty($formname) && isset($_REQUEST['we_ui_' . $formname][$name])){
-			return we_captcha_captcha::check(filterXss($_REQUEST['we_ui_' . $formname][$name]));
-		} else {
-			if(isset($_REQUEST['we_ui_we_global_form'][$name])){
-				return we_captcha_captcha::check(filterXss($_REQUEST['we_ui_we_global_form'][$name]));
-			}
-			return we_captcha_captcha::check(filterXss($_REQUEST[$name]));
+	if(($checkM = weRequest('string', $name))){
+		if($formname && ($check = weRequest('string', 'we_ui_' . $formname, '', $name))){
+			return we_captcha_captcha::check($check);
 		}
+		if(($check = weRequest('string', 'we_ui_we_global_form', '', $name))){
+			return we_captcha_captcha::check($check);
+		}
+		return we_captcha_captcha::check($checkM);
 	}
+
 	return false;
 }

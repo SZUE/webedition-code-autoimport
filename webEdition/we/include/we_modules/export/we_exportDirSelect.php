@@ -26,13 +26,13 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
 if(isset($_REQUEST['we_cmd'])){
-	$id = $_REQUEST['we_cmd'][1];
-	$JSIDName = stripslashes(we_cmd_dec(2));
-	$JSTextName = stripslashes(we_cmd_dec(3));
-	$JSCommand = stripslashes(we_cmd_dec(4));
+	$_REQUEST['id'] = $_REQUEST['we_cmd'][1];
+	$_REQUEST['JSIDName'] = stripslashes(we_cmd_dec(2));
+	$_REQUEST['JSTextName'] = stripslashes(we_cmd_dec(3));
+	$_REQUEST['JSCommand'] = stripslashes(we_cmd_dec(4));
 }
 
 $_SERVER["SCRIPT_NAME"] = WE_MODULES_DIR . "export/we_exportDirSelect.php";
-$fs = new we_export_dirSelector(isset($id) ? $id : weRequest('int', "id", 0), isset($JSIDName) ? $JSIDName : weRequest('string', "JSIDName", ''), isset($JSTextName) ? $JSTextName : weRequest('string', "JSTextName", ''), isset($JSCommand) ? $JSCommand : weRequest('raw', "JSCommand", ''), isset($order) ? $order : weRequest('raw', "order", ''), isset($we_editDirID) ? $we_editDirID : weRequest('int', "we_editDirID", ''), isset($we_FolderText) ? $we_FolderText : weRequest('string', "we_FolderText", ''));
+$fs = new we_export_dirSelector(weRequest('int', "id", 0), weRequest('string', "JSIDName", ''), weRequest('string', "JSTextName", ''), weRequest('raw', "JSCommand", ''), weRequest('raw', "order", ''), weRequest('int', "we_editDirID", ''), weRequest('string', "we_FolderText", ''));
 
 $fs->printHTML(weRequest('string', "what", we_selector_file::FRAMESET));

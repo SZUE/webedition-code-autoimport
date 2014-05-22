@@ -482,47 +482,41 @@ class we_captcha_image{
 			for($i = 0; $i < $counter; $i++){
 
 				$do = $random[rand(0, count($random) - 1)];
+				switch($do){
+					case 'fullcircle':
+						$cx = rand(0, $this->width);
+						$cy = rand(0, $this->height);
+						$w = rand(0, $this->width / 2);
+						$h = rand(0, $this->height / 2);
+						$color = $this->style['color'][rand(0, count($this->style['color']) - 1)];
 
-				if($do == 'fullcircle'){
-					$cx = rand(0, $this->width);
-					$cy = rand(0, $this->height);
-					$w = rand(0, $this->width / 2);
-					$h = rand(0, $this->height / 2);
-					$color = $this->style['color'][rand(0, count($this->style['color']) - 1)];
+						imagefilledarc($image, $cx, $cy, $w, $h, 0, 360, imagecolorallocate($image, $color[0], $color[1], $color[1]), IMG_ARC_PIE);
+						break;
+					case 'fullrectangle':
+						$x1 = rand(0, $this->width);
+						$y1 = rand(0, $this->height);
+						$x2 = rand(0, $this->width / 2);
+						$y2 = rand(0, $this->height / 2);
+						$color = $this->style['color'][rand(0, count($this->style['color']) - 1)];
 
-					imagefilledarc(
-						$image, $cx, $cy, $w, $h, 0, 360, imagecolorallocate($image, $color[0], $color[1], $color[1]), IMG_ARC_PIE
-					);
-				} elseif($do == 'fullrectangle'){
-					$x1 = rand(0, $this->width);
-					$y1 = rand(0, $this->height);
-					$x2 = rand(0, $this->width / 2);
-					$y2 = rand(0, $this->height / 2);
-					$color = $this->style['color'][rand(0, count($this->style['color']) - 1)];
+						imagefilledrectangle($image, $x1, $y1, $x2, $y2, imagecolorallocate($image, $color[0], $color[1], $color[1]));
+						break;
+					case 'outlinecircle':
+						$cx = rand(0, $this->width);
+						$cy = rand(0, $this->height);
+						$w = rand(0, $this->width / 2);
+						$h = rand(0, $this->height / 2);
+						$color = $this->style['color'][rand(0, count($this->style['color']) - 1)];
 
-					imagefilledrectangle(
-						$image, $x1, $y1, $x2, $y2, imagecolorallocate($image, $color[0], $color[1], $color[1])
-					);
-				} elseif($do == 'outlinecircle'){
-					$cx = rand(0, $this->width);
-					$cy = rand(0, $this->height);
-					$w = rand(0, $this->width / 2);
-					$h = rand(0, $this->height / 2);
-					$color = $this->style['color'][rand(0, count($this->style['color']) - 1)];
+						imagearc($image, $cx, $cy, $w, $h, 0, 360, imagecolorallocate($image, $color[0], $color[1], $color[1]));
+					case 'outlinerectangle':
+						$x1 = rand(0, $this->width);
+						$y1 = rand(0, $this->height);
+						$x2 = rand(0, $this->width / 2);
+						$y2 = rand(0, $this->height / 2);
+						$color = $this->style['color'][rand(0, count($this->style['color']) - 1)];
 
-					imagearc(
-						$image, $cx, $cy, $w, $h, 0, 360, imagecolorallocate($image, $color[0], $color[1], $color[1])
-					);
-				} elseif($do == 'outlinerectangle'){
-					$x1 = rand(0, $this->width);
-					$y1 = rand(0, $this->height);
-					$x2 = rand(0, $this->width / 2);
-					$y2 = rand(0, $this->height / 2);
-					$color = $this->style['color'][rand(0, count($this->style['color']) - 1)];
-
-					imagerectangle(
-						$image, $x1, $y1, $x2, $y2, imagecolorallocate($image, $color[0], $color[1], $color[1])
-					);
+						imagerectangle($image, $x1, $y1, $x2, $y2, imagecolorallocate($image, $color[0], $color[1], $color[1]));
 				}
 			}
 		}
@@ -540,7 +534,7 @@ class we_captcha_image{
 			$j = 0;
 			$idx1 = rand(0, count($this->charactersubset) - 1);
 			$sign = rand($this->charactersubset[$idx1][0], $this->charactersubset[$idx1][1]);
-			if(!empty($this->skip)){
+			if($this->skip){
 				while(in_array($sign, $this->skip) || $j < 100){
 					$j++;
 					$idx1 = rand(0, count($this->charactersubset) - 1);
@@ -557,8 +551,6 @@ class we_captcha_image{
 
 			// Family
 			$family = $this->font['family'][rand(0, count($this->font['family']) - 1)];
-
-			$isWindows = (stristr(php_uname(), 'wind') == true) ? true : false;
 
 			if(isset($this->fontpath) && $this->fontpath != '' && file_exists($_SERVER['DOCUMENT_ROOT'] . $this->fontpath . $family . ".ttf")){
 				$family = $_SERVER['DOCUMENT_ROOT'] . $this->fontpath . $family . ".ttf";
@@ -582,7 +574,7 @@ class we_captcha_image{
 				$coords = imagettfbbox($size, $angle, $family, $sign);
 				$width = abs(( (-1) * abs(min($coords[0], $coords[6])) ) + ( abs(max($coords[2], $coords[4])) ));
 				$height = abs(( (-1) * abs(min($coords[1], $coords[7])) ) + ( abs(max($coords[3], $coords[5])) ));
-			} else if($isWindows){
+			} else{
 				$use_fontfile = true;
 				if(isset($_ENV['windir'])){
 					$windir = substr_replace('\\', '/', $_ENV['windir']);
@@ -626,14 +618,6 @@ class we_captcha_image{
 				$coords = imagettfbbox($size, $angle, $family, $sign);
 				$width = abs(( (-1) * abs(min($coords[0], $coords[6])) ) + ( abs(max($coords[2], $coords[4])) ));
 				$height = abs(( (-1) * abs(min($coords[1], $coords[7])) ) + ( abs(max($coords[3], $coords[5])) ));
-			} else {
-				$family = 5;
-				$use_fontfile = false;
-
-				// Angle
-				$angle = 0;
-				$width = (int) imagefontwidth($family) * strlen($sign);
-				$height = (int) imagefontheight($family);
 			}
 
 
@@ -740,7 +724,7 @@ class we_captcha_image{
 					$sign['ypos'], // Y-Position
 					$sign['color'], // Fontcolor
 					$sign['family'], // Font Family (File)
-					$sign['sign']	// Text
+					$sign['sign'] // Text
 				);
 			} else {
 
