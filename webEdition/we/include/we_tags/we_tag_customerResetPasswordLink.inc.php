@@ -19,10 +19,21 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_customerResetPasswordLink(array $attribs, $content){
+	if(($foo = attributFehltError($attribs, 'id', __FUNCTION__))){
+		return $foo;
+	}
+
+
 	if($GLOBALS['ERROR']['customerResetPassword'] != we_customer_customer::PWD_ALL_OK){
 		return '';
 	}
+	$id = weTag_getAttribute('id', $attribs);
+	$host = weTag_getAttribute('host', $attribs, getServerUrl());
 
-	$attribs['params'] = '?user=' . $_SESSION['webuser']['ID'] . '&token=' . $_SESSION['webuser']['token'];
-	return printElement(we_tag('a', $attribs, $content));
+	$attribs["href"] = $host . we_tag('a', array('hrefonly' => true, 'id' => $id)) . '?user=' . $_SESSION['webuser']['ID'] . '&token=' . $_SESSION['webuser']['token'];
+
+	return (weTag_getAttribute("plain", $attribs, false, true) ?
+			$attribs["href"] :
+			getHtmlTag('a', removeAttribs($attribs, array('id', 'plain', 'host')), $content ? $content : $attribs["href"])
+		);
 }
