@@ -151,14 +151,15 @@ if(is_dir(WEBEDITION_PATH . 'we/cache')){
 	we_util_File::deleteLocalFolder(WEBEDITION_PATH . 'we/cache', true);
 }
 //FIXME: remove? => updater?
-if(is_dir($_SERVER['DOCUMENT_ROOT']  . '/OnlineInstaller')){
-	we_util_File::deleteLocalFolder($_SERVER['DOCUMENT_ROOT']  . '/OnlineInstaller',true);
+if(is_dir($_SERVER['DOCUMENT_ROOT'] . '/OnlineInstaller')){
+	we_util_File::deleteLocalFolder($_SERVER['DOCUMENT_ROOT'] . '/OnlineInstaller', true);
 }
 
 we_base_file::cleanTempFiles(true);
 cleanWEZendCache();
 we_navigation_cache::clean();
 we_updater::fixInconsistentTables();
+we_captcha_captcha::cleanup($GLOBALS['DB_WE']);
 
 //clean Error-Log-Table
 $GLOBALS['DB_WE']->query('DELETE FROM ' . ERROR_LOG_TABLE . ' WHERE `Date` < DATE_SUB(NOW(), INTERVAL ' . ERROR_LOG_HOLDTIME . ' DAY)');
