@@ -5,6 +5,5 @@ CREATE TABLE ###TBLPREFIX###tblPasswordReset (
 	token char(25) NOT NULL,
 	password varchar(255) NOT NULL default '',
 	loginPage int(11) unsigned NOT NULL,
-	click	smallint(1) unsigned NOT NULL,
   PRIMARY KEY (ID,UserTable)
 )

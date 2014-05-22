@@ -263,9 +263,9 @@ function weTag_getAttribute($name, $attribs, $default = '', $isFlag = false, $us
 			!($val === 'false' || $val === 'off' || $val === '0' || $val === 0 || $val === false)) ||
 			($val === 'true' || $val === 'on' || $val === '1' || $value === $name || $val === 1 || $val === true);
 	}
-	$value = is_array($value) || strlen($value)|| is_bool($value) ? $value : $default;
+	$value = is_array($value) || strlen($value) || is_bool($value) ? $value : $default;
 
-	return is_array($value)||is_bool($value) ? $value : htmlspecialchars_decode($value);
+	return is_array($value) || is_bool($value) ? $value : htmlspecialchars_decode($value);
 }
 
 /*
@@ -582,6 +582,10 @@ function we_tag_ifNotCat($attribs, $content){
 
 function we_tag_ifNotCaptcha($attribs, $content){
 	return !we_tag('ifCaptcha', $attribs, $content);
+}
+
+function we_tag_ifNotCustomerResetPasswordFailed($attribs, $content){
+	return !we_tag('ifCustomerResetPasswordFailed', $attribs, $content);
 }
 
 function we_tag_ifNotDeleted($attribs, $content){

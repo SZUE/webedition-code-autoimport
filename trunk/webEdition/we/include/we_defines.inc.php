@@ -113,6 +113,7 @@ define('FORMMAIL_LOG_TABLE', TBL_PREFIX . 'tblformmaillog');
 define('FORMMAIL_BLOCK_TABLE', TBL_PREFIX . 'tblformmailblock');
 define('METADATA_TABLE', TBL_PREFIX . 'tblMetadata');
 define('NOTEPAD_TABLE', TBL_PREFIX . 'tblwidgetnotepad');
+define('PWDRESET_TABLE',TBL_PREFIX. 'tblPasswordReset');
 define('VERSIONS_TABLE', TBL_PREFIX . 'tblversions');
 define('VERSIONSLOG_TABLE', TBL_PREFIX . 'tblversionslog');
 

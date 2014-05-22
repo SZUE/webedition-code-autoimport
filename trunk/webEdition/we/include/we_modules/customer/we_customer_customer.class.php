@@ -37,6 +37,13 @@ class we_customer_customer extends weModelBase{
 	const STORE_PASSWORD = 1;
 	const STORE_DBPASSWORD = 2;
 
+
+	const PWD_ALL_OK = 0;
+	const PWD_FIELD_NOT_SET = 1;
+	const PWD_NOT_MATCH = 2;
+	const PWD_NO_SUCH_USER = 3;
+	const PWD_TOKEN_INVALID = 4;
+
 	//properties
 	var $ID;
 	var $Text;
