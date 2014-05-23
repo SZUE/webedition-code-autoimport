@@ -37,7 +37,7 @@ if(isset($_REQUEST["JSCommand"]) && strpos($_REQUEST["JSCommand"], 'WECMDENC_') 
 }
 
 $fs = new we_newsletter_dirSelector(
-	isset($id) ? $id : weRequest('int', "id", 0), isset($JSIDName) ? $JSIDName : weRequest('string', "JSIDName", ''), isset($JSTextName) ? $JSTextName : weRequest('raw', "JSTextName", ''), isset($JSCommand) ? $JSCommand : weRequest('raw', "JSCommand", ''), isset($order) ? $order : weRequest('raw', "order", ''), isset($sessionID) ? $sessionID : weRequest('raw', "sessionID", ''), isset($we_editDirID) ? $we_editDirID : weRequest('int', "we_editDirID", 0), isset($we_FolderText) ? $we_FolderText : weRequest('raw', "we_FolderText", ''), isset($rootDirID) ? $rootDirID : weRequest('int', "rootDirID", 0), isset($multiple) ? $multiple : weRequest('bool', "multiple")
+	isset($id) ? $id : weRequest('int', "id", 0), weRequest('js', "JSIDName", ''), weRequest('js', "JSTextName", ''), weRequest('js', "JSCommand", ''), weRequest('raw', "order", ''), 0, weRequest('int', "we_editDirID", 0), weRequest('raw', "we_FolderText", ''), weRequest('int', "rootDirID", 0), weRequest('bool', "multiple")
 );
 
 $fs->printHTML(weRequest('int', "what", we_selector_file::FRAMESET));

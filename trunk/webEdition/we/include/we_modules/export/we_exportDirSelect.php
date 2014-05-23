@@ -33,6 +33,6 @@ if(isset($_REQUEST['we_cmd'])){
 }
 
 $_SERVER["SCRIPT_NAME"] = WE_MODULES_DIR . "export/we_exportDirSelect.php";
-$fs = new we_export_dirSelector(weRequest('int', "id", 0), weRequest('string', "JSIDName", ''), weRequest('string', "JSTextName", ''), weRequest('raw', "JSCommand", ''), weRequest('raw', "order", ''), weRequest('int', "we_editDirID", ''), weRequest('string', "we_FolderText", ''));
+$fs = new we_export_dirSelector(weRequest('int', "id", 0), weRequest('js', "JSIDName", ''), weRequest('js', "JSTextName", ''), weRequest('js', "JSCommand", ''), weRequest('raw', "order", ''), weRequest('int', "we_editDirID", ''), weRequest('string', "we_FolderText", ''));
 
 $fs->printHTML(weRequest('string', "what", we_selector_file::FRAMESET));

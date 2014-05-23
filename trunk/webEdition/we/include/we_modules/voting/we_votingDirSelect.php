@@ -25,14 +25,14 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 if(isset($_REQUEST['we_cmd'])){
-	$id = $_REQUEST['we_cmd'][1];
-	$JSIDName = we_cmd_dec(2);
-	$JSTextName = we_cmd_dec(3);
-	$JSCommand = we_cmd_dec(4);
+	$_REQUEST['id'] = $_REQUEST['we_cmd'][1];
+	$_REQUEST['JSIDName'] = we_cmd_dec(2);
+	$_REQUEST['JSTextName'] = we_cmd_dec(3);
+	$_REQUEST['JSCommand'] = we_cmd_dec(4);
 }
 
 we_html_tools::protect();
 $_SERVER["SCRIPT_NAME"] = WE_MODULES_DIR . "voting/we_votingDirSelect.php";
-$fs = new we_voting_dirSelector(isset($id) ? $id : weRequest('int', "id", 0), isset($JSIDName) ? $JSIDName : weRequest('string', "JSIDName", ''), isset($JSTextName) ? $JSTextName : weRequest('string', "JSTextName", ''), isset($JSCommand) ? $JSCommand : weRequest('raw', "JSCommand", ''), isset($order) ? $order : weRequest('raw', "order", ''), isset($we_editDirID) ? $we_editDirID : weRequest('int', "we_editDirID", 0), isset($we_FolderText) ? $we_FolderText : weRequest('raw', "we_FolderText", ''));
+$fs = new we_voting_dirSelector(weRequest('int', "id", 0),  weRequest('js', "JSIDName", ''), weRequest('js', "JSTextName", ''), weRequest('js', "JSCommand", ''), weRequest('raw', "order", ''), weRequest('int', "we_editDirID", 0), weRequest('raw', "we_FolderText", ''));
 
 $fs->printHTML(weRequest('int', "what", we_selector_file::FRAMESET));

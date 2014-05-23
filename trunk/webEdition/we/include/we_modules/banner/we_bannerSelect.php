@@ -34,6 +34,6 @@ if(isset($_REQUEST['we_cmd'])){
 }
 
 $_SERVER["SCRIPT_NAME"] = WE_MODULES_DIR . "banner/we_bannerSelect.php";
-$fs = new we_banner_selector(weRequest('int', "id", 0), weRequest('string', "JSIDName", ''), weRequest('string', "JSTextName", ''), weRequest('raw', "JSCommand", ''), weRequest('raw', "order", ''));
+$fs = new we_banner_selector(weRequest('int', "id", 0), weRequest('js', "JSIDName", ''), weRequest('js', "JSTextName", ''), weRequest('js', "JSCommand", ''), weRequest('raw', "order", ''));
 
 $fs->printHTML(weRequest('int', "what", we_selector_file::FRAMESET));

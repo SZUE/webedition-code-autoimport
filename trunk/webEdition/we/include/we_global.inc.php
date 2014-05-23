@@ -220,6 +220,7 @@ function _weRequest(&$var, $key, array $data){
 			return;
 		default:
 			t_e('unknown filter type ' . $type);
+		case 'js'://for information!
 		case 'raw':
 			//do nothing - used as placeholder for all types not yet known
 			return;
