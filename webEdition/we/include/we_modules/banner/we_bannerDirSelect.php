@@ -33,7 +33,7 @@ if(isset($_REQUEST['we_cmd'])){
 }
 
 $_SERVER["SCRIPT_NAME"] = WE_MODULES_DIR . "banner/we_bannerDirSelect.php";
-$fs = new we_banner_dirSelector(weRequest('int', "id", 0), weRequest('string', "JSIDName", ''), weRequest('string', "JSTextName", ''), weRequest('raw', "JSCommand", ''), weRequest('string', "order", ''), weRequest('int', "we_editDirID", 0), weRequest('raw', "we_FolderText", ''));
+$fs = new we_banner_dirSelector(weRequest('int', "id", 0), weRequest('js', "JSIDName", ''), weRequest('js', "JSTextName", ''), weRequest('js', "JSCommand", ''), weRequest('string', "order", ''), weRequest('int', "we_editDirID", 0), weRequest('raw', "we_FolderText", ''));
 
 $fs->printHTML(weRequest('int', "what", we_selector_file::FRAMESET));
 
