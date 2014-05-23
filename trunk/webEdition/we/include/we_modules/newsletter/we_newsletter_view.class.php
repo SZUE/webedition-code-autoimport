@@ -2521,8 +2521,9 @@ self.close();');
 		$name = $db->escape($name);
 		$value = $db->escape($value);
 		$db->query('SELECT 1 FROM ' . NEWSLETTER_PREFS_TABLE . ' WHERE pref_name="' . $name . '"');
-		if(!$db->next_record())
+		if(!$db->next_record()){
 			$db->query('INSERT INTO ' . NEWSLETTER_PREFS_TABLE . "(pref_name,pref_value) VALUES('$name','$value')");
+		}
 	}
 
 	function saveSettings(){

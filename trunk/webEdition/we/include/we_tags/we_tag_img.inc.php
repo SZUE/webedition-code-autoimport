@@ -47,7 +47,7 @@ function we_tag_img($attribs){
 	}
 
 	//look if image exists in tblfile, and is an image
-	if(f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE ContentType="' . we_base_ContentTypes::IMAGE . '" AND ID=' . intval($id)) != 1){
+	if(!f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE ContentType="' . we_base_ContentTypes::IMAGE . '" AND ID=' . intval($id))){
 		$id = 0;
 	}
 

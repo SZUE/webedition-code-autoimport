@@ -42,7 +42,7 @@ abstract class we_banner_base{
 	public function load(){
 		$tableInfo = $this->db->metadata($this->table);
 		$this->db->query('SELECT * FROM ' . $this->table . ' WHERE ID=' . intval($this->ID));
-		if($this->db->next_record())
+		if($this->db->next_record()){
 			foreach($tableInfo as $cur){
 				$fieldName = $cur["name"];
 				if(in_array($fieldName, $this->persistents)){
@@ -50,12 +50,13 @@ abstract class we_banner_base{
 					$this->{$fieldName} = $foo;
 				}
 			}
+		}
 	}
 
 	public function save(){
 		$sets = array();
 		$wheres = array();
-		foreach($this->persistents as $key => $val){
+		foreach($this->persistents as $val){
 			if($val == "ID"){
 				eval('$wheres[]="' . $val . '=\'".$this->' . $val . '."\'";');
 			}
@@ -66,9 +67,7 @@ abstract class we_banner_base{
 		if($this->ID == 0){
 			$this->db->query('INSERT INTO ' . $this->table . ' SET ' . $set);
 			# get ID #
-			$this->db->query("SELECT LAST_INSERT_ID()");
-			$this->db->next_record();
-			$this->ID = $this->db->f(0);
+			$this->ID = $this->db->getInsertId();
 		} else {
 			$query = 'UPDATE ' . $this->table . ' SET ' . $set . ' WHERE ' . $where;
 			$this->db->query($query);

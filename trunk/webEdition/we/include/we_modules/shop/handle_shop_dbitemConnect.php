@@ -47,5 +47,6 @@ $classid = $fe[0];
 //$resultO = count($fe);
 $resultO = array_shift($fe);
 
+//FIXME: this is really nonsense.
 // wether the resultset ist empty?
 $resultD = f('SELECT 1 FROM ' . LINK_TABLE . ' WHERE Name="' . WE_SHOP_TITLE_FIELD_NAME . '" LIMIT 1');

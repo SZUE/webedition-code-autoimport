@@ -1394,8 +1394,8 @@ class we_object extends we_document{
 
 	function getWysiwygArea($name){
 		$rmfp = isset($this->elements[$name . "removefirstparagraph"]["dat"]) &&
-				($this->elements[$name . "removefirstparagraph"]["dat"] == 'on' || $this->elements[$name . "removefirstparagraph"]["dat"] == 'off') ? ($this->elements[$name . "removefirstparagraph"]["dat"] == 'on' ? true : false) :
-					(defined("REMOVEFIRSTPARAGRAPH_DEFAULT") ? REMOVEFIRSTPARAGRAPH_DEFAULT : true);
+			($this->elements[$name . "removefirstparagraph"]["dat"] == 'on' || $this->elements[$name . "removefirstparagraph"]["dat"] == 'off') ? ($this->elements[$name . "removefirstparagraph"]["dat"] == 'on' ? true : false) :
+			(defined("REMOVEFIRSTPARAGRAPH_DEFAULT") ? REMOVEFIRSTPARAGRAPH_DEFAULT : true);
 		$attribs = array(
 			"removefirstparagraph" => $rmfp,
 			"xml" => isset($this->elements[$name . "xml"]["dat"]) ? $this->elements[$name . "xml"]["dat"] : "",
@@ -2379,7 +2379,7 @@ class we_object extends we_document{
 	}
 
 	static function isUsedByObjectFile($id){
-		return ($id ? f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . ' WHERE TableID=' . intval($id) . ' LIMIT 1', '', $GLOBALS['DB_WE']) == 1 : false);
+		return $id && f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . ' WHERE TableID=' . intval($id) . ' LIMIT 1');
 	}
 
 }

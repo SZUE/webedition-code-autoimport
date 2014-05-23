@@ -192,8 +192,7 @@ class we_export_export extends weModelBase{
 	}
 
 	function pathExists($path){
-		$this->db->query('SELECT 1 FROM ' . $this->table . ' WHERE Path = "' . $path . '" AND ID!=' . intval($this->ID));
-		return ($this->db->next_record() ? true : false);
+		return f('SELECT 1 FROM ' . $this->table . ' WHERE Path="' . $path . '" AND ID!=' . intval($this->ID).' LIMIT 1','',$this->db);
 	}
 
 	function isSelf(){

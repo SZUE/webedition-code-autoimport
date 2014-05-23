@@ -284,9 +284,9 @@ abstract class we_backup_base{
 	 * @return     bool
 	 */
 	function isPathExist($path){
-		$ret = f('SELECT 1  FROM ' . FILE_TABLE . " WHERE Path='" . $this->backup_db->escape($path) . "'", '', $this->backup_db) == '1';
-		$ret|=f('SELECT 1 FROM ' . TEMPLATES_TABLE . " WHERE Path='" . $this->backup_db->escape($path) . "'", '', $this->backup_db) == '1';
-		return $ret;
+		return
+			f('SELECT 1  FROM ' . FILE_TABLE . " WHERE Path='" . $this->backup_db->escape($path) . "'  LIMIT 1", '', $this->backup_db) == '1' ||
+			f('SELECT 1 FROM ' . TEMPLATES_TABLE . " WHERE Path='" . $this->backup_db->escape($path) . "'  LIMIT 1", '', $this->backup_db) == '1';
 	}
 
 	/**
