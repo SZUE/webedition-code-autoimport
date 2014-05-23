@@ -346,7 +346,7 @@ class we_navigation_navigation extends weModelBase{
 	}
 
 	function pathExists($path){
-		return f('SELECT 1 FROM ' . $this->db->escape($this->table) . ' WHERE Path="' . $this->db->escape($path) . '" AND ID!=' . intval($this->ID), '', $this->db) == 1;
+		return f('SELECT 1 FROM ' . $this->db->escape($this->table) . ' WHERE Path="' . $this->db->escape($path) . '" AND ID!=' . intval($this->ID) . ' LIMIT 1', '', $this->db);
 	}
 
 	function isSelf(){
@@ -373,7 +373,7 @@ class we_navigation_navigation extends weModelBase{
 			return true;
 		}
 		//checkWS
-		return f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . $this->ParentID . ' ' . self::getWSQuery(), '', $this->db) == 1;
+		return f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . $this->ParentID . ' ' . self::getWSQuery(), '', $this->db);
 	}
 
 	function evalPath($id = 0){
@@ -507,21 +507,21 @@ class we_navigation_navigation extends weModelBase{
 		if(!$this->ID){
 			return false;
 		}
-		return f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' AND Depended=1 LIMIT 1', '', $this->db) == 1;
+		return f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' AND Depended=1 LIMIT 1', '', $this->db);
 	}
 
 	function hasAnyChilds(){
 		if(!$this->ID){
 			return false;
 		}
-		return f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' LIMIT 1', '', $this->db) == 1;
+		return f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' LIMIT 1', '', $this->db);
 	}
 
 	function hasIndependentChilds(){
 		if(!$this->ID){
 			return false;
 		}
-		return f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' AND Depended=0 LIMIT 1', '', $this->db) == 1;
+		return f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' AND Depended=0 LIMIT 1', '', $this->db);
 	}
 
 	function getDynamicPreview(&$storage, $rules = false){

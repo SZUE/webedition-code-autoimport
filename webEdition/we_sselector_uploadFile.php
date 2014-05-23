@@ -32,7 +32,7 @@ $path=weRequest('file','pat');
 $cpat = str_replace('//', '/', $_SERVER['DOCUMENT_ROOT'] . $path);
 
 function weFile($f){
-	return f('SELECT 1 FROM ' . FILE_TABLE . " WHERE Path='" . $GLOBALS['DB_WE']->escape($f) . "'") == 1;
+	return f('SELECT 1 FROM ' . FILE_TABLE . " WHERE Path='" . $GLOBALS['DB_WE']->escape($f) . "'");
 }
 
 $we_alerttext = "";

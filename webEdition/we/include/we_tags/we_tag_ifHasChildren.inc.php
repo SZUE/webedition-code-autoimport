@@ -24,7 +24,6 @@
  */
 function we_tag_ifHasChildren(){
 
-	return (isset($GLOBALS['lv']) && (intval($GLOBALS['lv']->f('ID')) > 0)) ?
-		f('SELECT 1 AS ID FROM ' . CATEGORY_TABLE . ' WHERE ParentID=' . intval($GLOBALS["lv"]->f("ID"))) == 1 :
-		false;
+	return (isset($GLOBALS['lv']) && (intval($GLOBALS['lv']->f('ID')) > 0)) &&
+		f('SELECT 1 AS ID FROM ' . CATEGORY_TABLE . ' WHERE ParentID=' . intval($GLOBALS["lv"]->f("ID")) . ' LIMIT 1');
 }

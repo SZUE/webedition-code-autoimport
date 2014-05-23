@@ -162,7 +162,7 @@ class copyFolderFrag extends taskFragment{
 		if($path == '/'){
 			return 0;
 		}
-		return f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' . $db->escape($path) . '"', 'ID', $db);
+		return f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' . $db->escape($path) . '"', '', $db);
 	}
 
 	function copyObjects(){

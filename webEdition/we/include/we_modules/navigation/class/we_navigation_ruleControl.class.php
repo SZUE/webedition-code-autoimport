@@ -35,7 +35,7 @@ class we_navigation_ruleControl{
 		$html = '';
 
 		if(isset($_REQUEST['cmd'])){
-			switch(weRequest('string','cmd')){
+			switch(weRequest('string', 'cmd')){
 
 				case "save_navigation_rule" :
 					$isNew = $this->NavigationRule->isnew; // navigationID = 0
@@ -55,7 +55,7 @@ class we_navigation_ruleControl{
 					// 2ns check if another element has same name
 					$db = new DB_WE();
 
-					if(f('SELECT 1 FROM ' . NAVIGATION_RULE_TABLE . ' WHERE NavigationName = "' . $db->escape($this->NavigationRule->NavigationName) . '" AND ID != ' . intval($this->NavigationRule->ID), '', $db)){
+					if(f('SELECT 1 FROM ' . NAVIGATION_RULE_TABLE . ' WHERE NavigationName = "' . $db->escape($this->NavigationRule->NavigationName) . '" AND ID != ' . intval($this->NavigationRule->ID) . ' LIMIT 1', '', $db)){
 						$js = we_message_reporting::getShowMessageCall(
 								sprintf(
 									g_l('navigation', '[rules][name_exists]'), $this->NavigationRule->NavigationName), we_message_reporting::WE_MESSAGE_ERROR);
@@ -172,8 +172,8 @@ class we_navigation_ruleControl{
 			}
 
 			echo we_html_tools::getHtmlTop() .
-				we_html_element::jsElement($js) .
-				'</head><body>' . $html . '</body></html>';
+			we_html_element::jsElement($js) .
+			'</head><body>' . $html . '</body></html>';
 			exit();
 		}
 	}

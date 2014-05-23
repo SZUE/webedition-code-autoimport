@@ -36,8 +36,6 @@ class we_customer_customer extends weModelBase{
 	const REMOVE_PASSWORD = 0;
 	const STORE_PASSWORD = 1;
 	const STORE_DBPASSWORD = 2;
-
-
 	const PWD_ALL_OK = 0;
 	const PWD_FIELD_NOT_SET = 1;
 	const PWD_NOT_MATCH = 2;
@@ -305,12 +303,12 @@ class we_customer_customer extends weModelBase{
 
 	static function customerNameExist($name, we_database_base $db = null){
 		$db = $db ? $db : new DB_WE();
-		return (f('SELECT 1 FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $db->escape($name) . '"', '', $db) == '1');
+		return (f('SELECT 1 FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $db->escape($name) . '" LIMIT 1', '', $db));
 	}
 
 	function customerFieldValueExist($fieldname, $value, $condition = ''){
 		$db = new DB_WE();
-		return (f('SELECT 1 FROM ' . CUSTOMER_TABLE . ' WHERE ' . $db->escape($fieldname) . '="' . $db->escape($value) . '"' . ($condition ? ' AND ' . $condition : ''), '', $db) == '1');
+		return (f('SELECT 1 FROM ' . CUSTOMER_TABLE . ' WHERE ' . $db->escape($fieldname) . '="' . $db->escape($value) . '"' . ($condition ? ' AND ' . $condition : '') . ' LIMIT 1', '', $db));
 	}
 
 	function fieldExist($field){

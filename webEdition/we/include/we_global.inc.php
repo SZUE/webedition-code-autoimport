@@ -127,7 +127,7 @@ function getHTTP($server, $url, $port = '', $username = '', $password = ''){
 function deleteContentFromDB($id, $table, we_database_base $DB_WE = null){
 	$DB_WE = $DB_WE ? $DB_WE : new DB_WE();
 
-	if(f('SELECT 1 FROM ' . LINK_TABLE . ' WHERE DID=' . intval($id) . ' AND DocumentTable="' . $DB_WE->escape(stripTblPrefix($table)) . '" LIMIT 1', '', $DB_WE) != 1){
+	if(!f('SELECT 1 FROM ' . LINK_TABLE . ' WHERE DID=' . intval($id) . ' AND DocumentTable="' . $DB_WE->escape(stripTblPrefix($table)) . '" LIMIT 1', '', $DB_WE)){
 		return true;
 	}
 
@@ -562,7 +562,7 @@ function we_readParents($id, &$parentlist, $tab, $match = 'ContentType', $matchv
 		if($pid == 0){
 			$parentlist[] = $pid;
 		} else {
-			if(f('SELECT 1 FROM ' . $db->escape($tab) . ' WHERE ID=' . intval($pid) . ' AND ' . $match . ' = "' . $db->escape($matchvalue) . '"', '', $db)){
+			if(f('SELECT 1 FROM ' . $db->escape($tab) . ' WHERE ID=' . intval($pid) . ' AND ' . $match . ' = "' . $db->escape($matchvalue) . '" LIMIT 1', '', $db)){
 				$parentlist[] = $pid;
 				we_readParents($pid, $parentlist, $tab, $match, $matchvalue, $db);
 			}

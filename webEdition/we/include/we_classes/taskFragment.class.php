@@ -86,8 +86,8 @@ class taskFragment{
 	 *
 	 * @param      string $name
 	 * @param      int $taskPerFragment
-	 * @param      array $bodyAttributes
-	 * @param      int $pause
+	 * @param      array $pause
+	 * @param      int $bodyAttributes
 	 * @param      array $initdata
 	 */
 	function __construct($name, $taskPerFragment, $pause = 1, $bodyAttributes = "", $initdata = ""){
@@ -154,13 +154,11 @@ class taskFragment{
 					}
 					$tail .= "&" . rawurlencode($i) . "[" . rawurlencode($k) . "]=" . rawurlencode($av);
 				}
-			} else {
-				if($i != "fr_" . rawurlencode($this->name) . "_ct"){
-					if(get_magic_quotes_gpc() == 1){
-						$v = stripslashes($v);
-					}
-					$tail .= "&" . rawurlencode($i) . "=" . rawurlencode($v);
+			} elseif($i != "fr_" . rawurlencode($this->name) . "_ct"){
+				if(get_magic_quotes_gpc() == 1){
+					$v = stripslashes($v);
 				}
+				$tail .= "&" . rawurlencode($i) . "=" . rawurlencode($v);
 			}
 		}
 		foreach($_POST as $i => $v){
@@ -171,13 +169,11 @@ class taskFragment{
 					}
 					$tail .= "&" . $i . "[" . rawurlencode($k) . "]=" . rawurlencode($av);
 				}
-			} else {
-				if($i != "fr_" . rawurlencode($this->name) . "_ct"){
-					if(get_magic_quotes_gpc() == 1){
-						$v = stripslashes($v);
-					}
-					$tail .= "&" . rawurlencode($i) . "=" . rawurlencode($v);
+			} elseif($i != "fr_" . rawurlencode($this->name) . "_ct"){
+				if(get_magic_quotes_gpc() == 1){
+					$v = stripslashes($v);
 				}
+				$tail .= "&" . rawurlencode($i) . "=" . rawurlencode($v);
 			}
 		}
 
@@ -186,12 +182,12 @@ class taskFragment{
 		if($this->pause){
 			$onload = "setTimeout('" . addslashes($onload) . "'," . $this->pause . ");";
 		}
-		print "<body" .
-			$attr .
-			(($nextTask <= $this->numberOfTasks) ?
-				(' onload="' . $onload . '"') :
-				"") .
-			">";
+		echo "<body" .
+		$attr .
+		(($nextTask <= $this->numberOfTasks) ?
+			(' onload="' . $onload . '"') :
+			"") .
+		">";
 	}
 
 	/**
@@ -210,13 +206,11 @@ class taskFragment{
 					}
 					$tail .= "&" . rawurlencode($i) . "[" . rawurlencode($k) . "]=" . rawurlencode($av);
 				}
-			} else {
-				if($i != "fr_" . rawurlencode($this->name) . "_ct"){
-					if(get_magic_quotes_gpc() == 1){
-						$v = stripslashes($v);
-					}
-					$tail .= "&" . rawurlencode($i) . "=" . rawurlencode($v);
+			} elseif($i != "fr_" . rawurlencode($this->name) . "_ct"){
+				if(get_magic_quotes_gpc() == 1){
+					$v = stripslashes($v);
 				}
+				$tail .= "&" . rawurlencode($i) . "=" . rawurlencode($v);
 			}
 		}
 		foreach($_POST as $i => $v){
@@ -227,13 +221,11 @@ class taskFragment{
 					}
 					$tail .= "&" . $i . "[" . rawurlencode($k) . "]=" . rawurlencode($av);
 				}
-			} else {
-				if($i != "fr_" . rawurlencode($this->name) . "_ct"){
-					if(get_magic_quotes_gpc() == 1){
-						$v = stripslashes($v);
-					}
-					$tail .= "&" . rawurlencode($i) . "=" . rawurlencode($v);
+			} elseif($i != "fr_" . rawurlencode($this->name) . "_ct"){
+				if(get_magic_quotes_gpc() == 1){
+					$v = stripslashes($v);
 				}
+				$tail .= "&" . rawurlencode($i) . "=" . rawurlencode($v);
 			}
 		}
 
@@ -243,7 +235,7 @@ class taskFragment{
 			$onload = "setTimeout('" . addslashes($onload) . "'," . $this->pause . ");";
 		}
 		if(($nextTask <= $this->numberOfTasks)){
-			print we_html_element::jsElement($onload);
+			echo we_html_element::jsElement($onload);
 		}
 	}
 
@@ -252,7 +244,7 @@ class taskFragment{
 	 *
 	 */
 	function printFooter(){
-		print "</body>\n</html>\n";
+		echo '</body></html>';
 	}
 
 	// overwrite the following functions
@@ -263,8 +255,8 @@ class taskFragment{
 	 *
 	 */
 	function printHeader(){
-		echo we_html_tools::getHtmlTop().
-				'</head>';
+		echo we_html_tools::getHtmlTop() .
+		'</head>';
 	}
 
 	/**

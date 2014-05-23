@@ -85,7 +85,7 @@ switch(($wecmd0 = weRequest('string', 'we_cmd', '', 0))){
 		$name = f('SELECT DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . $id);
 		$del = false;
 		if($name){
-			$GLOBALS['DB_WE']->query('SELECT 1 FROM ' . FILE_TABLE . ' WHERE DocType=' . $id . ' OR temp_doc_type=' . $id);
+			$GLOBALS['DB_WE']->query('SELECT 1 FROM ' . FILE_TABLE . ' WHERE DocType=' . $id . ' OR temp_doc_type=' . $id . ' LIMIT 1');
 			if(!$GLOBALS['DB_WE']->next_record()){
 				$GLOBALS['DB_WE']->query('DELETE FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . $id);
 
@@ -151,7 +151,7 @@ switch(($wecmd0 = weRequest('string', 'we_cmd', '', 0))){
 		break;
 	default:
 		$id = (($tmp = weRequest('int', 'we_cmd', 0, 1)) ? $tmp :
-			f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' ' . we_docTypes::getDoctypeQuery($GLOBALS['DB_WE']).' LIMIT 1'));
+				f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' ' . we_docTypes::getDoctypeQuery($GLOBALS['DB_WE']) . ' LIMIT 1'));
 
 		if($id){
 			$we_doc->initByID($id, DOC_TYPES_TABLE);

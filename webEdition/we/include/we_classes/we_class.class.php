@@ -388,10 +388,8 @@ abstract class we_class{
 		$tableInfo = $this->DB_WE->metadata($this->Table);
 		$feldArr = $felder ? makeArrayFromCSV($felder) : $this->persistent_slots;
 		$fields = array();
-		if(!$this->wasUpdate && $this->insertID){
-			if(f('SELECT 1 FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($this->insertID), '', $this->DB_WE)){
-				return false;
-			}
+		if(!$this->wasUpdate && $this->insertID && f('SELECT 1 FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($this->insertID) . ' LIMIT 1', '', $this->DB_WE)){
+			return false;
 		}
 		foreach($tableInfo as $info){
 
