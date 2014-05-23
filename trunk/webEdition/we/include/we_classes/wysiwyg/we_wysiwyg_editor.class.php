@@ -1036,7 +1036,7 @@ function weWysiwygSetHiddenText(arg) {
 				$wefullscreenVars = array(
 					'outsideWE' => $this->outsideWE ? "1" : "",
 					'xml' => $this->xml ? "1" : "",
-					'removeFirstParagraph' => $this->removeFirstParagraph ? "1" : "",
+					'removeFirstParagraph' => $this->removeFirstParagraph ? "1" : "0",
 				);
 
 				$contentCss = empty($this->contentCss) ? '' : $this->contentCss . ',';
@@ -1141,6 +1141,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 	weClassNames_urlEncoded : "' . urlencode($this->cssClassesCSV) . '",
 	weIsFrontend : "' . ($this->isFrontendEdit ? 1 : 0) . '",
 	weWordCounter : 0,
+	weRemoveFirstParagraph : "' . ($this->removeFirstParagraph ? 1 : 0) . '",
 
 	language : "' . $lang . '",
 	mode : "exact",
@@ -1268,7 +1269,8 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 			if(first){
 				if(first.innerHTML == "&nbsp;" && first == c.lastChild){
 				c.innerHTML = "";
-			} ' . (!$this->removeFirstParagraph ? '' : 'else if(first.nodeName == "P"){
+			}
+			else if(ed.settings.weRemoveFirstParagraph === "1" && first.nodeName == "P"){
 				var useDiv = false, div = document.createElement("div"), attribs = ["style", "class", "dir"];
 				div.innerHTML = first.innerHTML;
 
@@ -1284,8 +1286,8 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 					c.removeChild(first);
 					c.innerHTML = first.innerHTML + c.innerHTML;
 					}
-				}') . '
 				}
+			}
 			o.content = c.innerHTML;
 		});' .($this->isFrontendEdit ? '' : '
 
