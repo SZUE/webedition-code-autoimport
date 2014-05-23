@@ -54,7 +54,11 @@ if(isset($_REQUEST["ok"])){
 
 if(isset($_REQUEST["ok"])){
 	$js = 'opener._EditorFrame.setEditorIsHot(true);'
-		. 'opener.we_cmd("object_reload_entry_at_class","' . $we_transaction . '", "' . $nr . '");'
+		. ((we_base_browserDetect::isIE() || we_base_browserDetect::isOpera()) &&
+				$we_doc->elements[$name . 'dhtmledit']['dat'] == 'on' &&
+				$we_doc->elements[$name . 'inlineedit']['dat'] == 'on' &&
+				(weRequest('toggle', 'dhtmledit_orig') == 'off' || weRequest('toggle', 'inlineedit_orig') == 'off')? 'opener.we_cmd("switch_edit_page",1,"' . $we_transaction . '");' : 
+			'opener.we_cmd("object_reload_entry_at_class","' . $we_transaction . '", "' . $nr . '");')
 		. 'top.close();';
 } else {
 	$js = 'function okFn(){'
@@ -65,7 +69,7 @@ if(isset($_REQUEST["ok"])){
 echo we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead(//FIXME: missing title
 		we_html_tools::getHtmlInnerHead() . we_html_element::jsElement($js) . STYLESHEET), false);
 
-$out = '<body onload="top.focus();" class="weDialogBody"><form name="we_form" method="post" action="' . $_SERVER['SCRIPT_NAME'] . '"><input type="hidden" name="ok" value="1" />';
+$out = '<body onload="top.focus();" class="weDialogBody"><form name="we_form" method="post" action="' . $_SERVER['SCRIPT_NAME'] . '">' . we_html_tools::hidden('ok', 1);
 
 foreach($_REQUEST['we_cmd'] as $k => $v){
 	$out .= '<input type="hidden" name="we_cmd[' . $k . ']" value="' . $v . '" />';
@@ -74,7 +78,7 @@ foreach($_REQUEST['we_cmd'] as $k => $v){
 // WYSIWYG && FORBIDHTML && FORBIDPHP
 $onOffVals = array('off' => 'false', 'on' => 'true');
 $selected = (isset($we_doc->elements[$name . "dhtmledit"]) && isset($we_doc->elements[$name . "dhtmledit"]["dat"]) && $we_doc->elements[$name . "dhtmledit"]["dat"] == "on") ? 'on' : 'off';
-$wysiwyg = we_html_tools::htmlSelect("dhtmledit", $onOffVals, 1, $selected, false, array('class' => "defaultfont"), 'value', 60);
+$wysiwyg = we_html_tools::htmlSelect("dhtmledit", $onOffVals, 1, $selected, false, array('class' => "defaultfont"), 'value', 60) . we_html_tools::hidden('dhtmledit_orig', $we_doc->elements[$name . "dhtmledit"]["dat"]);
 
 $selected = (isset($we_doc->elements[$name . "forbidhtml"]) && isset($we_doc->elements[$name . "forbidhtml"]["dat"]) && $we_doc->elements[$name . "forbidhtml"]["dat"] == "on") ? 'on' : 'off';
 $forbidhtml = we_html_tools::htmlSelect("forbidhtml", $onOffVals, 1, $selected, false, array('class' => "defaultfont"), 'value', 60);
@@ -137,7 +141,7 @@ $parts[] = array(
 
 // INLINEEDIT && SHOWMENUS
 $selected = ( (!isset($we_doc->elements[$name . "inlineedit"]["dat"])) || $we_doc->elements[$name . "inlineedit"]["dat"] == "on" ? 'on' : 'off');
-$inlineedit = we_html_tools::htmlSelect("inlineedit", $onOffVals, 1, $selected, false, array('class' => "defaultfont"), 'value', 60);
+$inlineedit = we_html_tools::htmlSelect("inlineedit", $onOffVals, 1, $selected, false, array('class' => "defaultfont"), 'value', 60) . we_html_tools::hidden('inlineedit_orig', $we_doc->elements[$name . "inlineedit"]["dat"]);
 
 $selected = ( (!isset($we_doc->elements[$name . "showmenus"]["dat"])) || $we_doc->elements[$name . "showmenus"]["dat"] == "on" ? 'on' : 'off');
 $showmenus = we_html_tools::htmlSelect("showmenus", $onOffVals, 1, $selected, false, array('class' => "defaultfont"), 'value', 60);
