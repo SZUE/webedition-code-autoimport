@@ -127,7 +127,8 @@ color: #006DB8;
 }
 
 .objectDescription {
-padding: 4px 0 4px 0;
+	padding: 4px 0 4px 0;
+	max-width:50em;
 }
 
 .npdefaultfont {
