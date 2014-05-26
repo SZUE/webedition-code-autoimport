@@ -12,7 +12,7 @@ CREATE TABLE ###TBLPREFIX###tblversions (
   Filehash char(40) NOT NULL default '',
   modifications varchar(255) NOT NULL,
   modifierID int(11) unsigned NOT NULL,
-  IP varchar(30) NOT NULL,
+  IP varchar(40) NOT NULL,
   Browser varchar(255) NOT NULL,
   ContentType enum('image/*','text/html','text/webedition','text/weTmpl','text/js','text/css','text/htaccess','text/plain','folder','class_folder','application/x-shockwave-flash','video/quicktime','application/*','text/xml','object','objectFile') NOT NULL,
   Text varchar(255) NOT NULL,

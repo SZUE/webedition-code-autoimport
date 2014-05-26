@@ -60,29 +60,23 @@ abstract class we_captcha_captcha{
 		}
 	}
 
-	/**
-	 * Clean the Memory
-	 *
-	 * @return boolean
-	 */
 	static function check($captcha){
 		$db = new DB_WE();
 		self::cleanup($db);
-		$id = f('SELECT ID FROM ' . CAPTCHA_TABLE . ' WHERE IP="' . $db->escape($_SERVER['REMOTE_ADDR']) . '" AND code="' . $db->escape($captcha) . '" AND agent="' . $_SERVER['HTTP_USER_AGENT'] . '"', '', $db);
+		$db->query('DELETE FROM ' . CAPTCHA_TABLE . ' WHERE IP=x\'' . bin2hex(inet_pton(strstr($_SERVER['REMOTE_ADDR'], ':') ? $_SERVER['REMOTE_ADDR'] : '::ffff:' . $_SERVER['REMOTE_ADDR'])) . '\' AND code="' . $db->escape($captcha) . '" AND agent="' . $_SERVER['HTTP_USER_AGENT'] . '"', '', $db);
 
-		if($id){
-			$db->query('DELETE FROM ' . CAPTCHA_TABLE . ' WHERE ID=' . $id);
+		if($db->affected_rows()){
 			return true;
 		}
 		return false;
 	}
 
 	static function cleanup(we_database_base $db){
-		$db->query('DELETE FROM ' . CAPTCHA_TABLE . ' WHERE created < NOW()-INTERVAL 30 MINUTE');
+		$db->query('DELETE FROM ' . CAPTCHA_TABLE . ' WHERE created<NOW()-INTERVAL 30 MINUTE');
 	}
 
 	/**
-	 * Save the Captcha Code to the Memory
+	 * Save the Captcha Code
 	 *
 	 * @param string $captcha
 	 * @return void
@@ -91,8 +85,8 @@ abstract class we_captcha_captcha{
 		$db = new DB_WE();
 		self::cleanup($db);
 
-		$db->query('INSERT INTO ' . CAPTCHA_TABLE . ' SET ' . we_database_base::arraySetter(array(
-				'IP' => $_SERVER['REMOTE_ADDR'],
+		$db->query('REPLACE INTO ' . CAPTCHA_TABLE . ' SET ' . we_database_base::arraySetter(array(
+				'IP' => inet_pton(strstr($_SERVER['REMOTE_ADDR'], ':') ? $_SERVER['REMOTE_ADDR'] : '::ffff:' . $_SERVER['REMOTE_ADDR']),
 				'agent' => $_SERVER['HTTP_USER_AGENT'],
 				'code' => $captcha
 		)));

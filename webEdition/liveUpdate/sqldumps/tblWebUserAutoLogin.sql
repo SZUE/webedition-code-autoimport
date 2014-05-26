@@ -4,5 +4,6 @@ CREATE TABLE ###TBLPREFIX###tblWebUserAutoLogin (
   LastIp varchar(40) NOT NULL DEFAULT '',
   LastLogin timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY  (AutoLoginID,WebUserID),
-  KEY `LastLogin` (`LastLogin`)
+  KEY `LastLogin` (`LastLogin`),
+	KEY WebUserID(WebUserID)
 ) ENGINE=MyISAM;

@@ -37,6 +37,7 @@ class we_banner_view extends we_banner_base{
 	var $FilterDateEnd = -1;
 	var $Order = "views";
 	var $pageFields = array();
+	var $uid;
 
 	public function __construct(){
 		parent::__construct();
@@ -46,7 +47,7 @@ class we_banner_view extends we_banner_base{
 		$this->pageFields[we_banner_banner::PAGE_PROPERTY] = array("Text", "ParentID", "bannerID", "bannerUrl", "bannerIntID", "IntHref", "IsDefault", "IsActive", "StartOk", "EndOk", "StartDate", "EndDate");
 		$this->pageFields[we_banner_banner::PAGE_PLACEMENT] = array("DoctypeIDs", "TagName");
 		$this->pageFields[we_banner_banner::PAGE_STATISTICS] = array();
-		$yuiSuggest = & weSuggest::getInstance();
+		$this->uid = "ba_" . md5(uniqid(__FILE__, true));
 	}
 
 	function getHiddens(){
@@ -140,7 +141,8 @@ class we_banner_view extends we_banner_base{
 					$out .= $this->htmlHidden("UseFilter", $this->UseFilter) .
 						$this->htmlHidden("FilterDate", $this->FilterDate) .
 						$this->htmlHidden("FilterDateEnd", $this->FilterDateEnd);
-					$parts = array(array(
+					$parts = array(
+						array(
 							"headline" => g_l('modules_banner', '[tagname]'),
 							"html" => $this->formTagName(),
 							"space" => 120
@@ -204,7 +206,6 @@ class we_banner_view extends we_banner_base{
 					return $img->getHTML();
 			}
 		}
-
 
 		return '';
 	}
@@ -592,8 +593,9 @@ class we_banner_view extends we_banner_base{
 				$arr = makeArrayFromCSV($this->banner->Customers);
 				if(isset($_REQUEST["ncmdvalue"])){
 					foreach($arr as $k => $v){
-						if($v == $_REQUEST["ncmdvalue"])
+						if($v == $_REQUEST["ncmdvalue"]){
 							array_splice($arr, $k, 1);
+						}
 					}
 					$this->banner->Customers = makeCSVFromArray($arr, true);
 				}
@@ -622,30 +624,35 @@ class we_banner_view extends we_banner_base{
 			case "save_banner":
 				if(isset($_REQUEST["bid"])){
 					$newone = ($this->banner->ID == 0);
-					$exist = false;
-					$double = f('SELECT COUNT(1) AS Count FROM ' . BANNER_TABLE . " WHERE Text='" . $this->db->escape($this->banner->Text) . "' AND ParentID=" . intval($this->banner->ParentID) . ($newone ? '' : ' AND ID!=' . intval($this->banner->ID)), 'Count', $this->db);
+					$double = f('SELECT COUNT(1) FROM ' . BANNER_TABLE . " WHERE Text='" . $this->db->escape($this->banner->Text) . "' AND ParentID=" . intval($this->banner->ParentID) . ($newone ? '' : ' AND ID!=' . intval($this->banner->ID)), '', $this->db);
 					$acQuery = new we_selector_query();
 					if(!permissionhandler::hasPerm("EDIT_BANNER") && !permissionhandler::hasPerm("NEW_BANNER")){
-						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
+						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
 						return;
-					} elseif($newone && !permissionhandler::hasPerm("NEW_BANNER")){
-						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
+					}
+					if($newone && !permissionhandler::hasPerm("NEW_BANNER")){
+						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
 						return;
-					} elseif($this->banner->Text == ""){
-						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[no_text]'), we_message_reporting::WE_MESSAGE_ERROR));
+					}
+					if(!$this->banner->Text){
+						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[no_text]'), we_message_reporting::WE_MESSAGE_ERROR));
 						return;
-					} elseif(preg_match('|[%/\\\"\']|', $this->banner->Text)){
-						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR));
+					}
+					if(preg_match('|[%/\\\"\']|', $this->banner->Text)){
+						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR));
 						return;
-					} elseif(!$this->banner->bannerID && !$this->banner->IsFolder){
-						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[no_bannerid]'), we_message_reporting::WE_MESSAGE_ERROR));
+					}
+					if(!$this->banner->bannerID && !$this->banner->IsFolder){
+						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[no_bannerid]'), we_message_reporting::WE_MESSAGE_ERROR));
 						return;
-					} elseif($this->banner->ID && ($this->banner->ID == $this->banner->ParentID)){
-						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[no_group_in_group]'), we_message_reporting::WE_MESSAGE_ERROR));
+					}
+					if($this->banner->ID && ($this->banner->ID == $this->banner->ParentID)){
+						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[no_group_in_group]'), we_message_reporting::WE_MESSAGE_ERROR));
 						return;
-					} elseif($double){
+					}
+					if($double){
 						if($double){
-							print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[double_name]'), we_message_reporting::WE_MESSAGE_ERROR));
+							echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[double_name]'), we_message_reporting::WE_MESSAGE_ERROR));
 							return;
 						}
 					}
@@ -653,21 +660,21 @@ class we_banner_view extends we_banner_base{
 					if($this->banner->ParentID > 0){
 						$acResult = $acQuery->getItemById($this->banner->ParentID, BANNER_TABLE, "IsFolder");
 						if(!$acResult || (isset($acResult[0]['IsFolder']) && $acResult[0]['IsFolder'] == 0)){
-							print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[error_ac_field]'), we_message_reporting::WE_MESSAGE_ERROR));
+							echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[error_ac_field]'), we_message_reporting::WE_MESSAGE_ERROR));
 							return;
 						}
 					}
 					if($this->banner->IntHref){
 						$acResult = $acQuery->getItemById($this->banner->bannerIntID, FILE_TABLE, array("IsFolder"));
 						if(!$acResult || $acResult[0]['IsFolder'] == 1){
-							print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[error_ac_field]'), we_message_reporting::WE_MESSAGE_ERROR));
+							echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[error_ac_field]'), we_message_reporting::WE_MESSAGE_ERROR));
 							return;
 						}
 					}
 					if($this->banner->bannerID > 0){
 						$acResult = $acQuery->getItemById($this->banner->bannerID, FILE_TABLE, array("ContentType"));
 						if(!$acResult || $acResult[0]['ContentType'] != we_base_ContentTypes::IMAGE){
-							print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[error_ac_field]'), we_message_reporting::WE_MESSAGE_ERROR));
+							echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[error_ac_field]'), we_message_reporting::WE_MESSAGE_ERROR));
 							return;
 						}
 					}
@@ -733,7 +740,7 @@ class we_banner_view extends we_banner_base{
 			$this->banner->Customers = $_REQUEST["Customers"];
 		}
 		if(is_array($this->banner->persistents)){
-			foreach($this->banner->persistents as $key => $val){
+			foreach($this->banner->persistents as $val){
 				$varname = $this->uid . "_" . $val;
 				if(isset($_REQUEST[$varname])){
 					$this->banner->$val = $_REQUEST[$varname];
