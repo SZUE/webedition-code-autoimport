@@ -460,6 +460,7 @@ class we_navigation_items{
 // this is to make it equal init by id, parentid
 				$depth--;
 			}
+			we_navigation_item::$currentPosition = array();
 			return $this->items['id' . $this->rootItem]->writeItem($this, $depth);
 		}
 
