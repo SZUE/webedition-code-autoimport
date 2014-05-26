@@ -55,8 +55,9 @@ session_set_cookie_params($cookie['lifetime'], $cookie['path'], $cookie['domain'
 if(!isset($GLOBALS['we'])){
 	$GLOBALS['we'] = array();
 }
-if(ini_get('session.gc_probability') != '0' && !@opendir(session_save_path())){
-	$GLOBALS['FOUND_SESSION_PROBLEM'] = ini_get('session.gc_probability');
+
+if(ini_get('session.gc_probability') != '0' /*&& !@opendir(session_save_path())*/){
+//	$GLOBALS['FOUND_SESSION_PROBLEM'] = ini_get('session.gc_probability');
 	ini_set('session.gc_probability', '0');
 	//won't work with apps like phpmyadmin session_save_path($_SERVER['DOCUMENT_ROOT'] . TEMP_DIR);
 }

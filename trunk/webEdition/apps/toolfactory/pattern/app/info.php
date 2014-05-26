@@ -99,7 +99,7 @@ if(!empty($appconfig->info->version) || !empty($appconfig->dependencies->version
 				if(!empty($appconfig->thirdparty->name)){$html .= $appconfig->thirdparty->name;} else {$html .= $appconfig->thirdparty->www;}
 				$html .= '</a>';
 		}
-		if(!empty($appconfig->thirdparty->version)){
+		if(($appconfig->thirdparty->version)){
 			$html .= ', '.$translate->_('Version'). ' '.$appconfig->thirdparty->version;
 		}
 		if(!empty($appconfig->thirdparty->license)){

@@ -66,8 +66,8 @@ class DB_WE extends we_database_base{
 
 	protected function fetch_array($resultType){
 		return (is_object($this->Query_ID)) ?
-				$this->Query_ID->fetch_array($resultType) :
-				false;
+			$this->Query_ID->fetch_array($resultType) :
+			false;
 	}
 
 	protected function _affected_rows(){
@@ -160,6 +160,7 @@ class DB_WE extends we_database_base{
 			'client' => $this->Link_ID->client_info,
 			'host' => $this->Link_ID->host_info,
 			'server' => $this->Link_ID->server_info,
+			'database' => $this->Database,
 			'encoding' => $charset->charset
 		);
 	}

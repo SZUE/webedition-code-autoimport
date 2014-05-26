@@ -20,7 +20,7 @@
  * @subpackage we_app_Installer
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-require_once ($_SERVER['DOCUMENT_ROOT']. '/webEdition/lib/we/core/autoload.inc.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.inc.php');
 
 /**
  * @see we_app_Installer
@@ -38,10 +38,9 @@ Zend_Loader::loadClass('we_app_Installer');
 class we_app_Installer_Local extends we_app_Installer{
 
 	protected function _preInstall(){
-		if(!$this->_prepareInstallationFiles($this->_source))
+		if(!$this->_prepareInstallationFiles($this->_source) || !$this->_validateInstallationFiles($this->_source)){
 			return false;
-		if(!$this->_validateInstallationFiles($this->_source))
-			return false;
+		}
 		return true;
 	}
 
@@ -51,11 +50,9 @@ class we_app_Installer_Local extends we_app_Installer{
 	 * - inserts application entry into application toc
 	 */
 	protected function _postInstall(){
-		if(!we_app_Common::rebuildAppTOC($this->_appname))
+		if(!we_app_Common::rebuildAppTOC($this->_appname) || !$this->_removeInstallationFiles()){
 			return false;
-		//if(!we_app_Common::addAppToTOC($this->_appname)) return false;
-		if(!$this->_removeInstallationFiles())
-			return false;
+		}
 		return true;
 	}
 

@@ -53,7 +53,7 @@ abstract class we_database_base{
 	public $Error = "";
 
 	/** public: connection parameters */
-	public $Database = DB_DATABASE;
+	protected $Database = DB_DATABASE;
 	private static $Trigger_cnt = 0;
 
 	/** Connects to the database, which this is done by the constructor

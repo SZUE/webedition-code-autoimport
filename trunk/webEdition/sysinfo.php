@@ -316,7 +316,7 @@ echo we_html_tools::getHtmlTop(g_l('sysinfo', '[sysinfo]'));
 </script>
 
 <?php
-print STYLESHEET;
+echo STYLESHEET;
 ?>
 
 </head>
@@ -324,7 +324,7 @@ print STYLESHEET;
 <body class="weDialogBody" style="overflow:hidden;" onLoad="self.focus();">
 	<div id="info" style="display: block;">
 		<?php
-		print we_html_multiIconBox::getJS() .
+		echo we_html_multiIconBox::getJS() .
 				we_html_multiIconBox::getHTML('', 700, $_parts, 30, $buttons, -1, '', '', false, "", "", 620, "auto");
 		?>
 	</div>
@@ -343,7 +343,7 @@ print STYLESHEET;
 			),
 		);
 
-		print we_html_multiIconBox::getHTML('', '100%', $_parts, 30, $buttons, -1, '', '', false);
+		echo we_html_multiIconBox::getHTML('', '100%', $_parts, 30, $buttons, -1, '', '', false);
 		?>
 	</div>
 </body>
