@@ -275,7 +275,7 @@ if(isset($GLOBALS['we_doc'])){
 	}
 
 	function setScrollTo() {
-		parent.scrollToVal =<?php echo (we_base_browserDetect::isIE()) ? 'document.body.scrollTop' : 'pageYOffset'; ?>;
+		parent.scrollToVal =<?php echo (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11) ? 'document.body.scrollTop' : 'pageYOffset'; ?>;
 	}
 
 	function goTemplate(tid) {

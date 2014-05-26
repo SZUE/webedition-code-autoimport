@@ -119,6 +119,7 @@ if(confObject = typeof tinyMceConfObject__' . $wholename . 'default === \'object
 		}
 		target.tinyMceInitialize(target[confName]);
 	} else {
+		setScrollTo();
 		top.we_cmd("switch_edit_page",1,"' . $we_transaction . '");
 	}' : '
 		target[confName] = confObject;
