@@ -28,14 +28,12 @@
  */
 abstract class we_banner_base{
 
-	var $uid;
-	var $db;
-	var $persistents = array();
-	var $table = "";
+	protected $db;
+	protected $persistents = array();
+	protected $table = "";
 	var $ClassName = __CLASS__;
 
 	protected function __construct(){
-		$this->uid = "ba_" . md5(uniqid(__FILE__, true));
 		$this->db = new DB_WE();
 	}
 
@@ -55,22 +53,17 @@ abstract class we_banner_base{
 
 	public function save(){
 		$sets = array();
-		$wheres = array();
 		foreach($this->persistents as $val){
-			if($val == "ID"){
-				eval('$wheres[]="' . $val . '=\'".$this->' . $val . '."\'";');
+			if($val != 'ID'){
+				$sets[$val] = $this->$val;
 			}
-			eval('$sets[]="' . $val . '=\'".$this->' . $val . '."\'";');
 		}
-		$where = implode(",", $wheres);
-		$set = implode(",", $sets);
 		if($this->ID == 0){
-			$this->db->query('INSERT INTO ' . $this->table . ' SET ' . $set);
+			$this->db->query('INSERT INTO ' . $this->table . ' SET ' . we_database_base::arraySetter($sets));
 			# get ID #
 			$this->ID = $this->db->getInsertId();
 		} else {
-			$query = 'UPDATE ' . $this->table . ' SET ' . $set . ' WHERE ' . $where;
-			$this->db->query($query);
+			$this->db->query('UPDATE ' . $this->table . ' SET ' . we_database_base::arraySetter($sets) . ' WHERE ID=' . $this->ID);
 		}
 	}
 

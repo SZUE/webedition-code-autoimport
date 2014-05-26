@@ -65,7 +65,6 @@ class we_banner_listview extends listviewBase{
 		$tempArray = array();
 		$tempArray2 = array();
 
-
 		$ord = stripos($this->order, "views") === 0 ? 'ORDER BY ' . $this->order : '';
 		$this->DB_WE->query('SELECT DID, COUNT(ID)  AS views FROM ' . BANNER_VIEWS_TABLE . ' WHERE DID!=0 AND (Page="" OR page="0") AND ID=' . intval($this->bannerID) . ' ' . ($this->UseFilter ? ' AND (Timestamp BETWEEN ' . intval($this->FilterDate) . ' AND ' . intval($this->FilterDateEnd) . ')' : '') . ' GROUP  BY DID');
 		while($this->DB_WE->next_record()){
@@ -75,13 +74,13 @@ class we_banner_listview extends listviewBase{
 			$this->allviews += intval($this->DB_WE->f("views"));
 		}
 
-		$this->DB_WE->query('SELECT DID, COUNT(ID)  AS clicks FROM ' . BANNER_CLICKS_TABLE . " WHERE DID != 0 AND (Page='' OR page='0') AND ID=" . intval($this->bannerID) . ' ' . ($this->UseFilter ? " AND (Timestamp>='" . $this->FilterDate . "' AND Timestamp<'" . ($this->FilterDateEnd) . "')" : "") . " GROUP  BY DID");
+		$this->DB_WE->query('SELECT DID,COUNT(ID) AS clicks FROM ' . BANNER_CLICKS_TABLE . " WHERE DID!=0 AND (Page='' OR page='0') AND ID=" . intval($this->bannerID) . ' ' . ($this->UseFilter ? " AND (Timestamp>='" . $this->FilterDate . "' AND Timestamp<'" . ($this->FilterDateEnd) . "')" : "") . " GROUP  BY DID");
 		while($this->DB_WE->next_record()){
 			$tempArray[$this->DB_WE->f("DID")]["clicks"] = $this->DB_WE->f("clicks");
 			$this->allclicks += intval($this->DB_WE->f("clicks"));
 		}
 
-		$this->DB_WE->query('SELECT Page, COUNT( ID )  AS views FROM ' . BANNER_VIEWS_TABLE . " WHERE  Page != '' AND Page != '0' AND ID=" . intval($this->bannerID) . " " . ($this->UseFilter ? " AND (Timestamp>='" . $this->FilterDate . "' AND Timestamp<'" . ($this->FilterDateEnd) . "')" : "") . " GROUP  BY Page");
+		$this->DB_WE->query('SELECT Page,COUNT(ID) AS views FROM ' . BANNER_VIEWS_TABLE . " WHERE  Page!='' AND Page!='0' AND ID=" . intval($this->bannerID) . ' ' . ($this->UseFilter ? ' AND (Timestamp>=' . intval($this->FilterDate) . ' AND Timestamp<' . intval($this->FilterDateEnd) . ')' : '') . ' GROUP  BY Page');
 		while($this->DB_WE->next_record()){
 
 			$tempArray2[$this->DB_WE->f("Page")] = array(
@@ -89,7 +88,7 @@ class we_banner_listview extends listviewBase{
 			);
 			$this->allviews += intval($this->DB_WE->f("views"));
 		}
-		$this->DB_WE->query('SELECT Page, COUNT( ID )  AS clicks FROM ' . BANNER_CLICKS_TABLE . " WHERE  Page != '' AND Page != '0' AND ID=" . intval($this->bannerID) . " " . ($this->UseFilter ? " AND (Timestamp>='" . $this->FilterDate . "' AND Timestamp<'" . ($this->FilterDateEnd) . "')" : "") . " GROUP  BY Page");
+		$this->DB_WE->query('SELECT Page,COUNT(ID) AS clicks FROM ' . BANNER_CLICKS_TABLE . " WHERE  Page != '' AND Page != '0' AND ID=" . intval($this->bannerID) . ' ' . ($this->UseFilter ? " AND (Timestamp>='" . $this->FilterDate . "' AND Timestamp<'" . ($this->FilterDateEnd) . "')" : "") . " GROUP  BY Page");
 		while($this->DB_WE->next_record()){
 			$tempArray2[$this->DB_WE->f("Page")]["clicks"] = $this->DB_WE->f("clicks");
 			$this->allclicks += intval($this->DB_WE->f("clicks"));
@@ -101,7 +100,12 @@ class we_banner_listview extends listviewBase{
 
 
 		foreach($tempArray as $did => $vals){
-			$this->docs[] = array("did" => $did, "views" => (isset($vals["views"]) ? $vals["views"] : 0), "clicks" => (isset($vals["clicks"]) ? $vals["clicks"] : 0), "page" => "");
+			$this->docs[] = array(
+				"did" => $did,
+				"views" => (isset($vals["views"]) ? $vals["views"] : 0),
+				"clicks" => (isset($vals["clicks"]) ? $vals["clicks"] : 0),
+				"page" => ""
+			);
 		}
 
 		foreach($tempArray2 as $page => $vals){
@@ -127,11 +131,15 @@ class we_banner_listview extends listviewBase{
 		}
 		$id = intval($this->docs[$this->count]["did"]);
 		$path = $id ? id_to_path($id, FILE_TABLE) : $this->docs[$this->count]["page"];
-		$this->Record["WE_PATH"] = $this->Record["path"] = $path;
-		$this->Record["WE_ID"] = $this->Record["id"] = $id;
-		$this->Record["views"] = abs($this->docs[$this->count]["views"]);
-		$this->Record["page"] = $this->docs[$this->count]["page"];
-		$this->Record["clicks"] = abs($this->docs[$this->count]["clicks"]);
+		$this->Record = array(
+			"WE_PATH" => $path,
+			"path" => $path,
+			"WE_ID" => $id,
+			"id" => $id,
+			"views" => abs($this->docs[$this->count]["views"]),
+			"page" => $this->docs[$this->count]["page"],
+			"clicks" => abs($this->docs[$this->count]["clicks"]),
+		);
 		$this->Record["rate"] = round($this->Record["views"] ? (100 * ($this->Record["clicks"] / $this->Record["views"])) : 0, 1);
 		$this->count++;
 		return true;

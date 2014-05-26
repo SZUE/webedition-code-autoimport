@@ -335,7 +335,6 @@ class we_banner_banner extends we_banner_base{
 		$img = getHtmlTag('img', $attsImage);
 
 		if($showlink){
-
 			$linkAtts['href'] = $bannerlink;
 			if($target){
 				$linkAtts['target'] = $target;

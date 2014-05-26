@@ -165,7 +165,12 @@ function wetagsessionStartdoLogin($persistentlogins, &$SessionAutologin){
 
 			if($persistentlogins && isset($_REQUEST['s']['AutoLogin']) && $_REQUEST['s']['AutoLogin'] && $_SESSION['webuser']['AutoLoginDenied'] != 1){
 				$_SESSION['webuser']['AutoLoginID'] = uniqid(hexdec(substr(session_id(), 0, 8)), true);
-				$GLOBALS['DB_WE']->query('INSERT INTO ' . CUSTOMER_AUTOLOGIN_TABLE . ' SET AutoLoginID="' . $GLOBALS['DB_WE']->escape(sha1($_SESSION['webuser']['AutoLoginID'])) . '", WebUserID=' . intval($_SESSION['webuser']['ID']) . ',LastIp="' . oldHtmlspecialchars((string) $_SERVER['REMOTE_ADDR']) . '"');
+				$GLOBALS['DB_WE']->query('INSERT INTO ' . CUSTOMER_AUTOLOGIN_TABLE . ' SET ' . we_database_base::arraySetter(array(
+						'AutoLoginID' => sha1($_SESSION['webuser']['AutoLoginID']),
+						'WebUserID' => $_SESSION['webuser']['ID'],
+						'LastIp' => $_SERVER['REMOTE_ADDR']
+				)));
+
 				setcookie('_we_autologin', $_SESSION['webuser']['AutoLoginID'], (time() + CUSTOMER_AUTOLOGIN_LIFETIME), '/');
 				$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET AutoLogin=1 WHERE ID=' . intval($_SESSION['webuser']['ID']));
 				$_SESSION['webuser']['AutoLogin'] = 1;
