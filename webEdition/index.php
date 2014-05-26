@@ -214,16 +214,7 @@ function getError($reason, $cookie = false){
 	if(!(is_dir($tmp) || (is_link($tmp) && is_dir(readlink($tmp))))){
 		$_error .= ++$_error_count . ' - ' . sprintf(g_l('start', '[tmp_path]'), ini_get('session.save_path')) . we_html_element::htmlBr();
 	}
-	if(isset($GLOBALS['FOUND_SESSION_PROBLEM'])){
-		$_error .= ++$_error_count . ' - ' .
-			'PHP is not allowed to write / cleanup session data correctly. Please contact your Admin. Additional Information for your Admin:' . we_html_element::htmlBr() .
-			'session.gc_probability: ' . $GLOBALS['FOUND_SESSION_PROBLEM'] . we_html_element::htmlBr() . '
- Session Path: ' . session_save_path() . we_html_element::htmlBr() . '
- Opendir: failed' . we_html_element::htmlBr() .
-			'Problem is temporary fixed by webEdition' . we_html_element::htmlBr() .
-			'<a href="' . WEBEDITION_DIR . 'index.php?skipSess=1">Click here, to start anyway</a>' . we_html_element::htmlBr();
-	}
-
+	
 	if(!ini_get('session.use_cookies')){
 		$_error .= ++$_error_count . ' - ' . g_l('start', '[use_cookies]') . we_html_element::htmlBr();
 	}
