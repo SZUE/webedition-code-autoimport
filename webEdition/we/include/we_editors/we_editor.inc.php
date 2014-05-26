@@ -703,7 +703,7 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 			if(isset($GLOBALS['we_file_to_delete_after_include'])){
 				we_util_File::deleteLocalFile($GLOBALS['we_file_to_delete_after_include']);
 			}
-			if($we_doc->EditPageNr == WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == WE_EDITPAGE_SCHEDULER || $we_doc->EditPageNr == WE_EDITPAGE_THUMBNAILS){
+			if($we_doc->EditPageNr == WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == WE_EDITPAGE_SCHEDULER || $we_doc->EditPageNr == WE_EDITPAGE_THUMBNAILS || ($we_doc->ClassName == we_object && $we_doc->EditPageNr == WE_EDITPAGE_CONTENT)){
 				echo we_html_element::jsElement('setTimeout("doScrollTo();",100);');
 			}
 	}

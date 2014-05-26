@@ -1388,7 +1388,7 @@ class we_object extends we_document{
 	}
 
 	function dhtmledit($name, $i = 0){
-		return we_html_button::create_button("attributes", "javascript:we_cmd('object_editObjectTextArea','" . $i . "','" . $name . "','" . $GLOBALS["we_transaction"] . "');") .
+		return we_html_button::create_button("attributes", "javascript:setScrollTo();we_cmd('object_editObjectTextArea','" . $i . "','" . $name . "','" . $GLOBALS["we_transaction"] . "');") .
 			$this->getWysiwygArea($name);
 	}
 
