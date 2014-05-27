@@ -64,7 +64,6 @@ class we_users_view extends weModuleView{
 
 		return we_html_element::jsScript(JS_DIR . 'images.js') .
 			we_html_element::jsScript(JS_DIR . 'windows.js') .
-			we_html_element::jsScript(JS_DIR . 'md5.js') .
 			we_html_element::jsElement('
 		var loaded=0;
 		var hot=0;
@@ -346,7 +345,6 @@ function we_cmd() {
 		return weSuggest::getYuiFiles() .
 			we_html_element::jsScript(JS_DIR . 'images.js') .
 			we_html_element::jsScript(JS_DIR . 'windows.js') .
-			we_html_element::jsScript(JS_DIR . 'md5.js') .
 			we_html_element::jsElement('
 var loaded = 0;
 function we_submitForm(target, url) {

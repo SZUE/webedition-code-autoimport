@@ -58,8 +58,7 @@ class we_workflow_frames extends weModuleFrames {
 
 		//start ex we_workflow_moduleFrames::getJSTreeCode()
 		echo we_html_element::jsScript(JS_DIR . 'images.js') .
-		we_html_element::jsScript(JS_DIR . 'windows.js') .
-		we_html_element::jsScript(JS_DIR . 'md5.js');
+		we_html_element::jsScript(JS_DIR . 'windows.js');
 
 		// TODO: move shared code for (some of the) modules-tree (not based on weTree!!) to new weModulesTree.class
 		?>

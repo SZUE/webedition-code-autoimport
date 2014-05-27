@@ -58,8 +58,7 @@ class we_banner_frames extends weModuleFrames{
 	function getJSTreeCode(){//TODO: move (as in all modules...) to some future moduleTree class
 		//start of code from ex class weModuleBannerFrames
 		echo we_html_element::jsScript(JS_DIR . 'images.js') .
-			we_html_element::jsScript(JS_DIR . 'windows.js') .
-			we_html_element::jsScript(JS_DIR . 'md5.js');
+			we_html_element::jsScript(JS_DIR . 'windows.js');
 		?>
 		<script type="text/javascript"><!--
 			var loaded = 0;
