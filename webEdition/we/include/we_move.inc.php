@@ -91,7 +91,7 @@ if($_REQUEST['we_cmd'][0] == 'do_move' || $_REQUEST['we_cmd'][0] == 'move_single
 			}
 
 			if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){ //	only update tree when in normal mode
-				$script .= moveTreeEntries($table == OBJECT_FILES_TABLE);
+				$script .= moveTreeEntries($table == (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'));
 			}
 
 			$script .= "top.toggleBusy(0);";
