@@ -150,7 +150,7 @@ top.selectFile(top.currentID);
 	function query(){
 		$this->db->query('SELECT ' . $this->db->escape($this->fields) . ' FROM ' . $this->db->escape($this->table) . ' WHERE IsFolder=1 AND ParentID=' . intval($this->dir) .
 				getWsQueryForSelector(NEWSLETTER_TABLE) .
-				($this->order ? (' ORDER BY ' . $this->order) : '')
+				($this->order ? (' ORDER BY IsFolder DESC,' . $this->order) : '')
 		);
 	}
 
@@ -186,7 +186,7 @@ top.selectFile(top.currentID);
 <table border="0" cellpadding="0" cellspacing="0" width="550">
 	<tr>
 		<td>' . we_html_tools::getPixel(25, 14) . '</td>
-		<td class="selector"colspan="2"><b><a href="#" onclick="javascript:top.orderIt(\'IsFolder DESC, Text\');">' . g_l('fileselector', "[filename]") . '</a></b></td>
+		<td class="selector"colspan="2"><b><a href="#" onclick="javascript:top.orderIt(\'Text\');">' . g_l('fileselector', "[filename]") . '</a></b></td>
 	</tr>
 	<tr>
 		<td width="25">' . we_html_tools::getPixel(25, 1) . '</td>

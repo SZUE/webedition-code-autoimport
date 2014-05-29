@@ -41,7 +41,7 @@ function printHeaderHeadlines(){
 print '			<table style="border-spacing: 0px;border-style:none;width:550px;" cellpadding="0">
 	<tr>
 		<td>'.we_html_tools::getPixel(25,14).'</td>
-		<td class="selector"colspan="2"><b><a href="#" onclick="javascript:top.orderIt(\'IsFolder DESC, Text\');">'.g_l('tools','[name]').'</a></b></td>
+		<td class="selector"colspan="2"><b><a href="#" onclick="javascript:top.orderIt(\'Text\');">'.g_l('tools','[name]').'</a></b></td>
 	</tr>
 	<tr>
 		<td width="25">'.we_html_tools::getPixel(25,1).'</td>
