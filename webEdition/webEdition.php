@@ -36,17 +36,6 @@ if(!isset($_SESSION['weS']['we_mode']) || $_SESSION['weS']['we_mode'] == we_base
 }
 
 
-if(!isset($SEEM_edit_include) || !$SEEM_edit_include){
-
-	if(defined("SCHEDULE_TABLE")){
-		// convert old schedule data to new format
-		we_schedpro::trigger_schedule();
-	}
-	// make the we_backup dir writable for all, so users can copy backupfiles with ftp in it
-	@chmod($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR, 0777);
-}
-
-
 //	check session
 we_html_tools::protect(null, WEBEDITION_DIR . 'index.php');
 
@@ -1447,3 +1436,11 @@ we_main_header::pCSS();
 	?>
 </body>
 </html>
+<?php
+flush();
+if(defined("SCHEDULE_TABLE") && (!isset($SEEM_edit_include) || !$SEEM_edit_include)){
+	// trigger scheduler
+	we_schedpro::trigger_schedule();
+	// make the we_backup dir writable for all, so users can copy backupfiles with ftp in it
+//	@chmod($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR, 0777);
+}?>
