@@ -23,16 +23,20 @@ function we_parse_tag_a($attribs, $content){
 }
 
 function we_tag_a($attribs, $content){
-	// check for id attribute
-	if(($foo = attributFehltError($attribs, 'id', __FUNCTION__))){
-		return $foo;
-	}
+	if(isset($GLOBALS['lv']) && $GLOBALS['lv'] instanceof stdClass){
+		$id = $GLOBALS['lv']->ID;
+	} else {
+		// check for id attribute
+		if(($foo = attributFehltError($attribs, 'id', __FUNCTION__))){
+			return $foo;
+		}
 
-	// get attributes
+		// get attributes
 
-	$id = weTag_getAttribute('id', $attribs);
-	if($id == 'self' && !defined('WE_REDIRECTED_SEO')){
-		$id = $GLOBALS['WE_MAIN_DOC']->ID;
+		$id = weTag_getAttribute('id', $attribs);
+		if($id == 'self' && !defined('WE_REDIRECTED_SEO')){
+			$id = $GLOBALS['WE_MAIN_DOC']->ID;
+		}
 	}
 	$confirm = weTag_getAttribute('confirm', $attribs);
 	$button = weTag_getAttribute('button', $attribs, false, true);

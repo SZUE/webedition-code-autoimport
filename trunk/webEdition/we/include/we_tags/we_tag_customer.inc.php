@@ -87,9 +87,9 @@ function we_tag_customer($attribs){
 	}
 
 	$GLOBALS['lv'] = new we_customer_customertag($we_cid, $condition, $hidedirindex);
-	$lv = clone($GLOBALS['lv']); // for backwards compatibility
-	if(is_array($GLOBALS['we_lv_array']))
+	if(is_array($GLOBALS['we_lv_array'])){
 		$GLOBALS['we_lv_array'][] = clone($GLOBALS['lv']);
+	}
 	if($GLOBALS['lv']->avail){
 //implement seem
 	}

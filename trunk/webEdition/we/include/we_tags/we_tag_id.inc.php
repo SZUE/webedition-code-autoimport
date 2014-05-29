@@ -20,5 +20,7 @@
  */
 //This is a dummy tag for listdir
 function we_tag_id(){
-	//this tag is ignored!
+	if(isset($GLOBALS['lv']) && $GLOBALS['lv'] instanceof stdClass){
+		return $GLOBALS['lv']->ID;
+	}
 }
