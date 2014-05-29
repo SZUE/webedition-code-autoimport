@@ -137,6 +137,10 @@ function we_tag_field($attribs){
 		return parseError(g_l('parser', '[field_not_in_lv]'));
 	}
 
+	if($GLOBALS['lv'] instanceof stdClass){
+		return $GLOBALS['lv']->field;
+	}
+
 	$lvname = isset($GLOBALS['lv']->name) ? $GLOBALS['lv']->name : '';
 	$alt = ($orgAlt == 'we_path' ? 'WE_PATH' : ($orgAlt == 'we_text' ? 'WE_TEXT' : $alt));
 	$name = ($orgName == 'we_path' ? 'WE_PATH' : ($orgName == 'we_text' ? 'WE_TEXT' : $name));

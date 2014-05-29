@@ -23,6 +23,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_path($attribs){
+	if(isset($GLOBALS['lv']) && $GLOBALS['lv'] instanceof stdClass){//listdir
+		return $GLOBALS['lv']->Path;
+	}
+
 	$db = $GLOBALS['DB_WE'];
 	$field = weTag_getAttribute('field', $attribs);
 	$dirfield = weTag_getAttribute('dirfield', $attribs, $field);

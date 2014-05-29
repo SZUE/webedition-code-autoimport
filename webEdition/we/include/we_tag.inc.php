@@ -815,11 +815,11 @@ function we_post_tag_listview(){
 		if(isset($GLOBALS['lv'])){
 			array_pop($GLOBALS['we_lv_array']);
 		}
-		if(empty($GLOBALS['we_lv_array'])){
+		if($GLOBALS['we_lv_array']){
+			$GLOBALS['lv'] = clone(end($GLOBALS['we_lv_array']));
+		} else {
 			unset($GLOBALS['lv']);
 			unset($GLOBALS['we_lv_array']);
-		} else {
-			$GLOBALS['lv'] = clone(end($GLOBALS['we_lv_array']));
 		}
 	}
 }
