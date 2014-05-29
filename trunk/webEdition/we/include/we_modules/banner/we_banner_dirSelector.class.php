@@ -37,7 +37,7 @@ class we_banner_dirSelector extends we_selector_directory{
 <table border="0" cellpadding="0" cellspacing="0" width="550">
 	<tr>
 		<td>' . we_html_tools::getPixel(25, 14) . '</td>
-		<td class="selector"colspan="2"><b><a href="#" onclick="javascript:top.orderIt(\'IsFolder DESC, Text\');">' . g_l('modules_banner', '[name]') . '</a></b></td>
+		<td class="selector"colspan="2"><b><a href="#" onclick="javascript:top.orderIt(\'Text\');">' . g_l('modules_banner', '[name]') . '</a></b></td>
 	</tr>
 	<tr>
 		<td width="25">' . we_html_tools::getPixel(25, 1) . '</td>
@@ -87,9 +87,9 @@ class we_banner_dirSelector extends we_selector_directory{
 	function printHeaderTableExtraCols(){
 		$makefolderState = permissionhandler::hasPerm("NEW_BANNER");
 		return '<td width="10">' . we_html_tools::getPixel(10, 10) . '</td><td width="40">' .
-				we_html_element::jsElement('makefolderState=' . $makefolderState . ';') .
-				we_html_button::create_button("image:btn_new_bannergroup", "javascript:if(makefolderState==1){top.drawNewFolder();}", true, 0, 0, "", "", $makefolderState ? false : true) .
-				'</td>';
+			we_html_element::jsElement('makefolderState=' . $makefolderState . ';') .
+			we_html_button::create_button("image:btn_new_bannergroup", "javascript:if(makefolderState==1){top.drawNewFolder();}", true, 0, 0, "", "", $makefolderState ? false : true) .
+			'</td>';
 	}
 
 	function printFramesetJSFunctioWriteBody(){
@@ -172,7 +172,7 @@ top.unselectAllFiles();') . '
 </body>'); ?>
 				d.close();
 			}
-		//-->
+			//-->
 		</script>
 		<?php
 	}
@@ -183,9 +183,9 @@ top.unselectAllFiles();') . '
 		if(!o) o=top.order;
 		if(!we_editDirID) we_editDirID="";
 		return \'' . $_SERVER["SCRIPT_NAME"] . '?what=\'+what+\'&rootDirID=' .
-						$this->rootDirID . (isset($this->open_doc) ?
-								"&open_doc=" . $this->open_doc : '') .
-						'&table=' . $this->table . '&id=\'+id+(o ? ("&order="+o) : "")+(we_editDirID ? ("&we_editDirID="+we_editDirID) : "");
+				$this->rootDirID . (isset($this->open_doc) ?
+					"&open_doc=" . $this->open_doc : '') .
+				'&table=' . $this->table . '&id=\'+id+(o ? ("&order="+o) : "")+(we_editDirID ? ("&we_editDirID="+we_editDirID) : "");
 		}');
 	}
 
@@ -270,8 +270,8 @@ top.fsfooter.document.we_form.fname.value = "' . $folder->Text . '";
 
 
 		print $this->printCmdAddEntriesHTML() .
-				$this->printCMDWriteAndFillSelectorHTML() .
-				'top.makeNewFolder = 0;
+			$this->printCMDWriteAndFillSelectorHTML() .
+			'top.makeNewFolder = 0;
 top.selectFile(top.currentID);
 //-->
 </script>
@@ -280,7 +280,7 @@ top.selectFile(top.currentID);
 	}
 
 	function query(){
-		$this->db->query("SELECT " . $this->fields . " FROM " . $this->table . " WHERE IsFolder=1 AND ParentID='" . $this->dir . "'");
+		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->table . ' WHERE IsFolder=1 AND ParentID=' . intval($this->dir));
 	}
 
 	function printDoRenameFolderHTML(){
@@ -326,8 +326,8 @@ top.fsfooter.document.we_form.fname.value = "' . $folder->Text . '";
 		}
 
 		print
-				$this->printCmdAddEntriesHTML() .
-				$this->printCMDWriteAndFillSelectorHTML() . '
+			$this->printCmdAddEntriesHTML() .
+			$this->printCMDWriteAndFillSelectorHTML() . '
 top.makeNewFolder = 0;
 top.selectFile(top.currentID);
 //-->

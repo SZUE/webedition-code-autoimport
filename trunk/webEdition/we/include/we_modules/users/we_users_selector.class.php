@@ -105,7 +105,7 @@ class we_users_selector extends we_selector_multiple{
 			$this->db->escape($this->table) .
 			' WHERE ParentID=' . intval($this->dir) .
 			($upath ? ' AND Path LIKE "' . $this->db->escape($upath) . '%" ' : '') .
-			$q . ($this->order ? (' ORDER BY ' . $this->db->escape($this->order)) : ''));
+			$q . ($this->order ? (' ORDER BY IsFolder DESC,' . $this->db->escape($this->order)) : ''));
 	}
 
 	function printFramesetJSFunctionQueryString(){

@@ -82,7 +82,7 @@ class we_selector_document extends we_selector_directory{
 			we_users_util::makeOwnersSql() . ')' .
 			$wsQuery . ')' .
 			$filterQuery . //$publ_q.
-			($this->order ? (' ORDER BY ' . $this->order) : '')
+			($this->order ? (' ORDER BY IsFolder DESC,' . $this->order) : '')
 		);
 
 		$_db = new DB_WE();
