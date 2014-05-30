@@ -81,7 +81,6 @@ class we_selector_file{
 		$this->JSTextName = $JSTextName;
 		$this->JSCommand = $JSCommand;
 		$this->rootDirID = intval($rootDirID);
-		//$this->sessionID = $sessionID;
 		$this->filter = $filter;
 		$this->setDirAndID();
 		$this->setTableLayoutInfos();

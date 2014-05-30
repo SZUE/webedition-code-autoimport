@@ -197,8 +197,24 @@ function _weRequest(&$var, $key, array $data){
 			$var = floatval($var);
 			return;
 		case 'bool':
-			$var = ($var == 'off' ? false : (bool) $var);
-			return;
+			switch($var){
+				case false:
+				case '0':
+				case 'off':
+				case 'false':
+					$var = false;
+					return;
+				case true:
+				case 'true':
+				case 'on':
+				case '1':
+					$var = true;
+					return;
+				default:
+					$var = (bool) $var;
+					return;
+			}
+
 		case 'toggle': //FIXME: temporary type => whenever possible use 'bool'
 			$var = $var == 'on' || $var == 'off' || $var == '1' || $var == '0' ? $var : (bool) $var;
 			return;
@@ -1407,11 +1423,13 @@ function we_templatePost(){
 		if(defined('DEBUG_MEM')){
 			weMemDebug();
 		}
+		flush();
 //check for Trigger
 		if(defined('SCHEDULE_TABLE') && (!$GLOBALS['WE_MAIN_DOC']->InWebEdition) &&
 			(SCHEDULER_TRIGGER == SCHEDULER_TRIGGER_POSTDOC) &&
 			(!isset($GLOBALS['we']['backVars']) || (isset($GLOBALS['we']['backVars']) && count($GLOBALS['we']['backVars']) == 0))//not inside an included Doc
 		){ //is set to Post or not set (new default)
+			session_write_close();
 			we_schedpro::trigger_schedule();
 		}
 	}

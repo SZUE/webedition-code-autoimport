@@ -1430,7 +1430,6 @@ we_main_header::pCSS();
 //	get the frameset for the actual mode.
 	pWebEdition_Frameset();
 	we_main_header::pJS();
-	flush();
 //	get the Treefunctions for docselector
 	pWebEdition_Tree();
 	?>
@@ -1439,8 +1438,9 @@ we_main_header::pCSS();
 <?php
 flush();
 if(defined("SCHEDULE_TABLE") && (!isset($SEEM_edit_include) || !$SEEM_edit_include)){
-	// trigger scheduler
+	session_write_close();
+// trigger scheduler
 	we_schedpro::trigger_schedule();
 	// make the we_backup dir writable for all, so users can copy backupfiles with ftp in it
 //	@chmod($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR, 0777);
-}?>
+}
