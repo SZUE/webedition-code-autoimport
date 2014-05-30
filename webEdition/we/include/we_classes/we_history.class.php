@@ -63,7 +63,7 @@ abstract class we_history{
 	 */
 	static function deleteFromHistory($modelIds, $table){
 		$db = new DB_WE();
-		$db->query('DELETE FROM ' . HISTORY_TABLE . ' WHERE DID IN (' . implode(', ', $modelIds) . ') AND DocumentTable = "' . stripTblPrefix($table) . '"');
+		$db->query('DELETE FROM ' . HISTORY_TABLE . ' WHERE DID IN (' . implode(', ', $modelIds) . ') AND DocumentTable="' . stripTblPrefix($table) . '"');
 	}
 
 }

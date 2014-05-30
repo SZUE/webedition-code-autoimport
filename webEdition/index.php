@@ -214,7 +214,7 @@ function getError($reason, $cookie = false){
 	if(!(is_dir($tmp) || (is_link($tmp) && is_dir(readlink($tmp))))){
 		$_error .= ++$_error_count . ' - ' . sprintf(g_l('start', '[tmp_path]'), ini_get('session.save_path')) . we_html_element::htmlBr();
 	}
-	
+
 	if(!ini_get('session.use_cookies')){
 		$_error .= ++$_error_count . ' - ' . g_l('start', '[use_cookies]') . we_html_element::htmlBr();
 	}
@@ -474,4 +474,13 @@ if(isset($_POST['checkLogin']) && empty($_COOKIE)){
 
 	printHeader($login, (isset($httpCode) ? $httpCode : 401));
 	echo we_html_element::htmlBody(array('style' => 'background-color:#386AAB; height:100%;', "onload" => (($login == LOGIN_OK) ? "open_we();" : "document.loginForm.username.focus();document.loginForm.username.select();")), $_layout . ((isset($_body_javascript)) ? we_html_element::jsElement($_body_javascript) : '')) . '</html>';
+}
+
+flush();
+if(defined("SCHEDULE_TABLE") && (!isset($SEEM_edit_include) || !$SEEM_edit_include)){
+	session_write_close();
+	// trigger scheduler
+	we_schedpro::trigger_schedule();
+	// make the we_backup dir writable for all, so users can copy backupfiles with ftp in it
+//	@chmod($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR, 0777);
 }
