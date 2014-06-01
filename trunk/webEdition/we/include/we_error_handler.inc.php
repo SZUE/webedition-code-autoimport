@@ -77,23 +77,21 @@ function we_error_handler($in_webEdition = true){
 	if(defined('NO_SESS') || $in_webEdition){
 		$GLOBALS['we']['errorhandler']['display'] = false;
 		ini_set('display_errors', false);
-		if(!defined('WE_ERROR_HANDLER_SET')){
-			define('WE_ERROR_HANDLER_SET', 1);
-		}
 		//we want all errors inside WE
 		we_error_setHandleAll();
 	} else {
 		$GLOBALS['we']['errorhandler']['display'] = defined('WE_ERROR_SHOW') ? (WE_ERROR_SHOW == 1 ? true : false) : true;
 	}
 
-	if(defined('WE_ERROR_HANDLER') && (WE_ERROR_HANDLER == 1)){
+	if((defined('WE_ERROR_HANDLER') && WE_ERROR_HANDLER == 1) || defined('NO_SESS') || $in_webEdition){
 		$_error_level = 0 +
-				((version_compare(PHP_VERSION, '5.3.0') >= 0) && $GLOBALS['we']['errorhandler']['deprecated'] && defined('E_DEPRECATED') ? E_DEPRECATED | E_USER_DEPRECATED | E_STRICT : 0) +
-				($GLOBALS['we']['errorhandler']['notice'] ? E_NOTICE | E_USER_NOTICE : 0) +
-				($GLOBALS['we']['errorhandler']['warning'] ? E_WARNING | E_CORE_WARNING | E_COMPILE_WARNING | E_USER_WARNING : 0) +
-				($GLOBALS['we']['errorhandler']['error'] ? E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR : 0);
+			((version_compare(PHP_VERSION, '5.3.0') >= 0) && $GLOBALS['we']['errorhandler']['deprecated'] && defined('E_DEPRECATED') ? E_DEPRECATED | E_USER_DEPRECATED | E_STRICT : 0) +
+			($GLOBALS['we']['errorhandler']['notice'] ? E_NOTICE | E_USER_NOTICE : 0) +
+			($GLOBALS['we']['errorhandler']['warning'] ? E_WARNING | E_CORE_WARNING | E_COMPILE_WARNING | E_USER_WARNING : 0) +
+			($GLOBALS['we']['errorhandler']['error'] ? E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR : 0);
 		error_reporting($_error_level);
-		//ini_set('display_errors', $GLOBALS['we']['errorhandler']['display']);
+		ini_set('error_reporting', $_error_level);
+
 		set_error_handler('error_handler', $_error_level);
 		register_shutdown_function('shutdown_handler');
 		set_exception_handler('we_exception_handler');
@@ -197,7 +195,7 @@ function display_error_message($type, $message, $file, $line, $skipBT = false){
 	}
 
 	// Build the error table
-	print '<br /><table align="center" bgcolor="#FFFFFF" cellpadding="4" cellspacing="0" style="border: 1px solid #265da6;" width="95%"><colgroup><col width="10%"/><col width="90%" /></colgroup>
+	echo '<br /><table align="center" bgcolor="#FFFFFF" cellpadding="4" cellspacing="0" style="border: 1px solid #265da6;" width="95%"><colgroup><col width="10%"/><col width="90%" /></colgroup>
 		<tr bgcolor="#f7f7f7" valign="top">
 			<td colspan="2" style="border-bottom: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2">An error occurred while executing this script.</font></td>
 		</tr>
@@ -351,21 +349,21 @@ function mail_error_message($type, $message, $file, $line, $skipBT = false, $ins
 
 	// Build the error table
 	$_detailedError = "An error occurred while executing a script in webEdition.\n\n\n" .
-			($insertID && function_exists('getServerUrl') ?
-					getServerUrl() . WEBEDITION_DIR . 'errorlog.php?function=pos&ID=' . $insertID . "\n\n" : '') .
+		($insertID && function_exists('getServerUrl') ?
+			getServerUrl() . WEBEDITION_DIR . 'errorlog.php?function=pos&ID=' . $insertID . "\n\n" : '') .
 // Domain
-			'webEdition address: ' . $_SERVER['SERVER_NAME'] . ",\n\n" .
-			'URI: ' . $_SERVER['REQUEST_URI'] . "\n" .
-			// Error type
-			'Error type: ' . $ttype . "\n" .
-			// Error message
-			'Error message: ' . str_replace($_SERVER['DOCUMENT_ROOT'], 'SECURITY_REPL_DOC_ROOT', $message) . "\n" .
-			// Script name
-			'Script name: ' . str_replace($_SERVER['DOCUMENT_ROOT'], 'SECURITY_REPL_DOC_ROOT', $file) . "\n" .
-			// Line
-			'Line number: ' . $line . "\n" .
-			'Caller: ' . $_caller . "\n" .
-			'Backtrace: ' . $detailedError;
+		'webEdition address: ' . $_SERVER['SERVER_NAME'] . ",\n\n" .
+		'URI: ' . $_SERVER['REQUEST_URI'] . "\n" .
+		// Error type
+		'Error type: ' . $ttype . "\n" .
+		// Error message
+		'Error message: ' . str_replace($_SERVER['DOCUMENT_ROOT'], 'SECURITY_REPL_DOC_ROOT', $message) . "\n" .
+		// Script name
+		'Script name: ' . str_replace($_SERVER['DOCUMENT_ROOT'], 'SECURITY_REPL_DOC_ROOT', $file) . "\n" .
+		// Line
+		'Line number: ' . $line . "\n" .
+		'Caller: ' . $_caller . "\n" .
+		'Backtrace: ' . $detailedError;
 
 	// Log the error
 	if(defined('WE_ERROR_MAIL_ADDRESS')){
