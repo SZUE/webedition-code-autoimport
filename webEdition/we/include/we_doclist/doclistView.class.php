@@ -1266,11 +1266,11 @@ class doclistView{
 		$anzahl = array(10 => 10, 25 => 25, 50 => 50, 100 => 100);
 
 		$thisObj = (isset($_REQUEST['we_cmd'] ['obj']) ? new doclistView() : $this);
-		$order = weRequest('raw', 'we_cmd', $GLOBALS ['we_doc']->searchclassFolder->order, 'order');
-		$mode = weRequest('raw', 'we_cmd', $GLOBALS ['we_doc']->searchclassFolder->mode, 'mode');
-		$setView = weRequest('raw', 'we_cmd', $GLOBALS ['we_doc']->searchclassFolder->setView, 'setView');
-		$_anzahl = weRequest('raw', 'we_cmd', $GLOBALS ['we_doc']->searchclassFolder->anzahl, 'anzahl');
-		$id = weRequest('int', 'id', $GLOBALS ['we_doc']->ID);
+		$order = weRequest('raw', 'we_cmd', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->searchclassFolder->order : '', 'order');
+		$mode = weRequest('raw', 'we_cmd', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->searchclassFolder->mode : '', 'mode');
+		$setView = weRequest('raw', 'we_cmd', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->searchclassFolder->setView : '', 'setView');
+		$_anzahl = weRequest('raw', 'we_cmd', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->searchclassFolder->anzahl : '', 'anzahl');
+		$id = weRequest('int', 'id', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->ID : '');
 		$we_transaction = weRequest('transaction', 'we_transaction', (isset($GLOBALS ['we_transaction']) ? $GLOBALS ['we_transaction'] : 0));
 
 		return
