@@ -353,12 +353,12 @@ if(isset($GLOBALS['we_doc'])){
 			case "edit_link":
 			case "edit_link_at_class":
 			case "edit_link_at_object":
-				new jsWindow("", "we_linkEdit", -1, -1, 615, 710, true, true, true);
+				new jsWindow("", "we_linkEdit", -1, -1, 615, 600, true, true, true);
 				if (contentEditor.we_submitForm)
 					contentEditor.we_submitForm("we_linkEdit", url);
 				break;
 			case "edit_linklist":
-				new jsWindow("", "we_linklistEdit", -1, -1, 615, 710, true, true, true);
+				new jsWindow("", "we_linklistEdit", -1, -1, 615, 600, true, true, true);
 				if (contentEditor.we_submitForm)
 					contentEditor.we_submitForm("we_linklistEdit", url);
 				break;
