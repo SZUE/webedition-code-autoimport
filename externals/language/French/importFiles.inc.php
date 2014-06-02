@@ -3,6 +3,7 @@
 $l_importFiles=array(
 	'add_description_nogdlib'=>'Pour que vous puisse profiter des fonctions des imagettes, il est nécéssaire que la GD Library soit installée!',
 	'destination_dir'=>'Répertoire cible',
+	'do_import'=>'Importing file',
 	'emptyDir'=>'The source directory is empty!',
 	'error'=>'Erreur en important!\n\nLes fichiers suivant ne pouvait pas être importés:\n%s',
 	'file'=>'Fichier',

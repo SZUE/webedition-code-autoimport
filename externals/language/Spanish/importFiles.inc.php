@@ -3,6 +3,7 @@
 $l_importFiles=array(
 	'add_description_nogdlib'=>'Para tener las funciónes gráficas a su disposición tiene que instalar la `GD Library` en el servidor!',
 	'destination_dir'=>'Destination directory',
+	'do_import'=>'Importing file',
 	'emptyDir'=>'The source directory is empty!',
 	'error'=>'Un error ocurre durante el proceso de importación!\n\nLos siguientes archivos no pudieron ser importados:\n%s',
 	'file'=>'Archivo',
