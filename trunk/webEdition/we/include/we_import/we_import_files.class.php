@@ -62,8 +62,8 @@ class we_import_files{
 		$this->thumbs = weRequest('raw', "thumbs", $this->thumbs);
 		$this->width = weRequest('int', "width", $this->width);
 		$this->height = weRequest('int', "height", $this->height);
-		$this->widthSelect = weRequest('bool', "widthSelect", $this->widthSelect);
-		$this->heightSelect = weRequest('bool', "heightSelect", $this->heightSelect);
+		$this->widthSelect = weRequest('string', "widthSelect", $this->widthSelect);
+		$this->heightSelect = weRequest('string', "heightSelect", $this->heightSelect);
 		$this->keepRatio = weRequest('bool', "keepRatio", $this->keepRatio);
 		$this->quality = weRequest('int', "quality", $this->quality);
 		$this->degrees = weRequest('int', "degrees", $this->degrees);

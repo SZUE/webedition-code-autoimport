@@ -155,8 +155,7 @@ if(weRequest('bool', 'ok')){
 		'img_title' => weRequest('string', 'img_title'),
 	);
 
-	if(weRequest('bool', 'linklist')){
-		$linklist = weRequest('raw', 'linklist');
+	if(($linklist = weRequest('raw', 'linklist'))!==false){
 		//  set $nr to global, because it is used everywhere;
 		$nr = weRequest('int', 'nr', 0);
 		$ll = new we_base_linklist($linklist);
@@ -203,10 +202,10 @@ if(weRequest('bool', 'ok')){
 		$ll->setImageAttrib($nr, 'alt', $link['alt']);
 
 		$linklist = $ll->getString();
-	} else {
+	} /*else {
 		$link['nr'] = 0;
 		$linklist = serialize(array($link));
-	}
+	}*/
 } else {
 	if($nr > -1){
 		$ll = new we_base_linklist($we_doc->getElement($name));
@@ -845,7 +844,7 @@ if($ok && $cmd == "edit_link_at_class"){
 			<input type="hidden" name="we_transaction" value="<?php echo $we_transaction; ?>" />
 			<input type="hidden" name="we_field" value="<?php echo weRequest('string', 'we_cmd', '', 3); ?>" />
 			<?php
-			echo we_html_multiIconBox::getHTML('', '100%', $_parts, 30, $buttons, -1, '', '', false, g_l('linklistEdit', '[edit_link]'), '', 671) .
+			echo we_html_multiIconBox::getHTML('', '100%', $_parts, 30, $buttons, -1, '', '', false, g_l('linklistEdit', '[edit_link]')) .
 			$yuiSuggest->getYuiCss() .
 			$yuiSuggest->getYuiJs();
 			?>
