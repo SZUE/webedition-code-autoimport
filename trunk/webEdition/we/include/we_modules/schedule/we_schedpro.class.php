@@ -423,8 +423,11 @@ function checkFooter(){
 					$callPublish = (count($schedFile['value']) > 1); //only if other operations pending
 					//don't show any output
 					ob_start();
-					//use we:include to call document. Note: editmode, inWE is already disabled
-					eval(we_tag('include', array('type' => 'document', 'id' => $id)));
+					//we can't use include-tag since we don't have a document & many warnings will occur.
+					$path = id_to_path($id, FILE_TABLE, $DB_WE);
+					if($path){
+						include($_SERVER['DOCUMENT_ROOT'] . $path);
+					}
 					ob_end_clean();
 					break;
 			}
