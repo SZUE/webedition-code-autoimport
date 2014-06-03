@@ -22,6 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 $GLOBALS['show_stylesheet'] = true;
+define('NO_SESS', 1);//no need for a session
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 //no protect, since login dialog is shown bad
 
@@ -127,8 +128,8 @@ color: #006DB8;
 }
 
 .objectDescription {
-	padding: 4px 0 4px 0;
-	max-width:50em;
+padding: 4px 0 4px 0;
+max-width:50em;
 }
 
 .npdefaultfont {
@@ -584,15 +585,15 @@ padding		: 0px;
 
 .weDocListSearchHeadline {
 color: #6078A2;
-font-size: <?php print (we_base_browserDetect::isMAC()) ? 13 : ((we_base_browserDetect::isUNIX()) ? 15 : 14); ?>px;
-font-family: <?php print g_l('css', '[font_family]'); ?>;
+font-size: <?php echo (we_base_browserDetect::isMAC()) ? 13 : ((we_base_browserDetect::isUNIX()) ? 15 : 14); ?>px;
+font-family: <?php echo g_l('css', '[font_family]'); ?>;
 font-weight: bold;
 margin-top:6px;
 }
 
 .weDocListSearchHeadlineDivs {
 color: #6078A2;
-font-size: <?php print (we_base_browserDetect::isMAC()) ? 13 : ((we_base_browserDetect::isUNIX()) ? 15 : 14); ?>px;
-font-family: <?php print g_l('css', '[font_family]'); ?>;
+font-size: <?php echo (we_base_browserDetect::isMAC()) ? 13 : ((we_base_browserDetect::isUNIX()) ? 15 : 14); ?>px;
+font-family: <?php echo g_l('css', '[font_family]'); ?>;
 font-weight: bold;
 }
