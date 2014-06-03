@@ -34,7 +34,7 @@ foreach($ct->getContentTypes() as $ctype){
 }
 
 /*
- * Browser dependences
+ * Browser dependencies
  */
 $tabContainerMargin = "0px";
 $browser = we_base_browserDetect::inst();

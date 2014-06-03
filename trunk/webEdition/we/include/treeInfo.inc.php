@@ -22,18 +22,16 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 ?>
-
-
 <div id="infoField" style="margin:5px; display: none;" class="defaultfont"></div>
 <form name="we_form" onsubmit="top.we_cmd('tool_weSearch_edit', document.we_form.keyword.value, top.treeData.table);
 		return false;">
 	<div id="search" style="margin: 10px 0 0 10px;">
 		<?php
-		print we_html_button::create_button_table(
-				array(
-					we_html_tools::htmlTextInput('keyword', 10, weRequest('string', 'keyword', ''), '', '', 'search', '120px'),
-					we_html_button::create_button('image:btn_function_search', "javascript:top.we_cmd('tool_weSearch_edit',document.we_form.keyword.value, top.treeData.table);", true, 40)
-				)
+		echo we_html_button::create_button_table(
+			array(
+				we_html_tools::htmlTextInput('keyword', 10, weRequest('string', 'keyword', ''), '', '', 'search', '120px'),
+				we_html_button::create_button('image:btn_function_search', "javascript:top.we_cmd('tool_weSearch_edit',document.we_form.keyword.value, top.treeData.table);", true, 40)
+			)
 		);
 		?>
 	</div>

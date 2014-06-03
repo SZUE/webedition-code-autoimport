@@ -187,7 +187,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	 * Form functions for generating the html of the input fields
 	 */
 
-	function formIsDynamic($leftwidth = 100, $disabled = false){
+	function formIsDynamic($disabled = false){
 		$v = $this->IsDynamic;
 		if(!$disabled){
 			$n = "we_" . $this->Name . "_IsDynamic";
@@ -234,7 +234,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		<td colspan="3">
 			<table style="border-spacing: 0px;border-style:none" cellpadding="0">
 				<tr>
-					<td>' . $this->formIsDynamic(100, $disable) . '</td>
+					<td>' . $this->formIsDynamic($disable) . '</td>
 					<td class="defaultfont">&nbsp;</td>
 					<td>' . $this->formIsSearchable() . '</td>
 				</tr>
