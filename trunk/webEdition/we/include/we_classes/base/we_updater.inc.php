@@ -264,6 +264,12 @@ class we_updater{
 				if(!$GLOBALS['DB_WE']->isKeyExistAtAll($_table, 'OF_IsSearchable')){
 					$GLOBALS['DB_WE']->addKey($_table, $key);
 				}
+				$key = 'UNIQUE KEY OF_ID (OF_ID)';
+				if(!$GLOBALS['DB_WE']->isKeyExistAtAll($_table, 'OF_ID')){
+					$GLOBALS['DB_WE']->query('DELETE FROM '.$_table.' WHERE OF_ID=0');
+					$GLOBALS['DB_WE']->addKey($_table, $key);
+					$GLOBALS['DB_WE']->query('REPLACE INTO '.$_table.' SET OF_ID=0');
+				}
 			}
 		}
 		return true;
@@ -297,7 +303,7 @@ class we_updater{
 				$db->query("INSERT INTO tmpLangLink SELECT " . LANGLINK_TABLE . ".* FROM " . LANGLINK_TABLE . ", " . OBJECT_FILES_TABLE . " WHERE " . LANGLINK_TABLE . ".DID = " . OBJECT_FILES_TABLE . ".ID AND " . LANGLINK_TABLE . ".DLocale = " . OBJECT_FILES_TABLE . ".Language AND " . LANGLINK_TABLE . ".IsObject = 1");
 
 				// copy links from doctypes to tmpLangLink only if DID and DLocale are consistent with Language in tblFile
-				$db->query("INSERT INTO tmpLangLink SELECT " . LANGLINK_TABLE . ".* FROM " . LANGLINK_TABLE . ", " . DOC_TYPES_TABLE . " WHERE " . LANGLINK_TABLE . ".DID = " . DOC_TYPES_TABLE . ".ID AND " . LANGLINK_TABLE . ".DLocale = " . DOC_TYPES_TABLE . ".Language AND " . LANGLINK_TABLE . ".DocumentTable = 'tblDocTypes'");
+				$db->query('INSERT INTO tmpLangLink SELECT ' . LANGLINK_TABLE . ".* FROM " . LANGLINK_TABLE . ", " . DOC_TYPES_TABLE . " WHERE " . LANGLINK_TABLE . ".DID = " . DOC_TYPES_TABLE . ".ID AND " . LANGLINK_TABLE . ".DLocale = " . DOC_TYPES_TABLE . ".Language AND " . LANGLINK_TABLE . ".DocumentTable = 'tblDocTypes'");
 
 				$db->query('TRUNCATE ' . LANGLINK_TABLE);
 				if(!$GLOBALS['DB_WE']->isKeyExist(LANGLINK_TABLE, "UNIQUE KEY `DID` (`DID`,`DLocale`,`IsObject`,`IsFolder`,`Locale`,`DocumentTable`)")){

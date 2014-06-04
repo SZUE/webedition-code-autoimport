@@ -667,10 +667,6 @@ class we_webEditionDocument extends we_textContentDocument{
 		return ($this->ID ? parent::we_unpublish($skipHook) : false);
 	}
 
-	public function we_delete(){
-		return ($this->ID ? we_document::we_delete() : false);
-	}
-
 	public function we_load($from = we_class::LOAD_MAID_DB){
 		switch($from){
 			case we_class::LOAD_SCHEDULE_DB:

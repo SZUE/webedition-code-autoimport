@@ -174,6 +174,7 @@ class we_object extends we_document{
 
 			$indexe = array(
 				'PRIMARY KEY (ID)',
+				'UNIQUE KEY OF_ID (OF_ID)',
 				'KEY (OF_WebUserID)',
 				'KEY `published` (`OF_ID`,`OF_Published`,`OF_IsSearchable`)',
 				'KEY (`OF_IsSearchable`)',
@@ -476,7 +477,7 @@ class we_object extends we_document{
 			}
 
 			foreach($q as $v){
-				if($v != ''){
+				if($v){
 					$this->DB_WE->query('ALTER TABLE ' . $ctable . ' ' . $v);
 				}
 			}
