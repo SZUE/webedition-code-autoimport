@@ -744,10 +744,6 @@ class we_document extends we_root{
 		}
 	}
 
-	public function we_delete(){
-		return parent::we_delete() && $this->i_deleteSiteDir() && $this->i_deleteMainDir() && $this->i_deleteNavigation();
-	}
-
 	function we_rewrite(){
 		$this->RebuildDate = time();
 		return $this->i_writeDocument();

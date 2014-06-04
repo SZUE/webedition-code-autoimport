@@ -48,7 +48,7 @@ $table = weRequest('table', 'we_cmd', '', 2);
 $wfchk = defined('WORKFLOW_TABLE') && ($table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE)) ?
 	weRequest('bool', 'we_cmd', 0, 3) :
 	1;
-$wecmd0=weRequest('string', 'we_cmd', '', 0);
+$wecmd0 = weRequest('string', 'we_cmd', '', 0);
 $wfchk_html = '';
 $script = '';
 

@@ -2501,22 +2501,6 @@ class we_objectFile extends we_document{
 		return $this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE OID=' . $this->ID);
 	}
 
-	public function we_delete(){
-		if(!$this->ID){
-			return false;
-		}
-// Bug 2892, siehe auch we_delete_fn.inc.php
-		$this->DB_WE->query('SELECT ID FROM ' . OBJECT_TABLE);
-		$foo = $this->DB_WE->getAll(true);
-		foreach($foo as $testclassID){
-			if($this->DB_WE->isColExist(OBJECT_X_TABLE . $testclassID, we_object::QUERY_PREFIX . $this->TableID)){
-				$this->DB_WE->query('UPDATE ' . OBJECT_X_TABLE . $testclassID . ' SET ' . we_object::QUERY_PREFIX . $this->TableID . '=0 WHERE ' . we_object::QUERY_PREFIX . $this->TableID . '= ' . $this->ID);
-			}
-		}
-
-		return parent::we_delete();
-	}
-
 	public function we_republish($rebuildMain = true){
 		return ($this->Published && $this->ModDate <= $this->Published ?
 				$this->we_publish(true, $rebuildMain) :

@@ -759,13 +759,6 @@ abstract class we_root extends we_class{
 		}
 	}
 
-	public function we_delete(){
-		if(!parent::we_delete()){
-			return false;
-		}
-		return deleteContentFromDB($this->ID, $this->Table, $this->DB_WE);
-	}
-
 	protected function i_getDefaultFilename(){
 		return f('SELECT MAX(ID) as ID FROM ' . $this->DB_WE->escape($this->Table), 'ID', $this->DB_WE) + 1;
 	}

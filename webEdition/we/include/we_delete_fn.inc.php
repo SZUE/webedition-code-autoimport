@@ -170,7 +170,7 @@ function deleteFile($id, $table, $path = '', $contentType = '', we_database_base
 		case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 			$DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE OID=' . intval($id));
 			$tableID = f('SELECT TableID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id), 'TableID', $DB_WE);
-			if(!empty($tableID)){
+			if($tableID){
 				$DB_WE->query('DELETE FROM ' . OBJECT_X_TABLE . $tableID . ' WHERE OF_ID=' . intval($id));
 				//Bug 2892
 				$DB_WE->query('SELECT ID FROM ' . OBJECT_TABLE);

@@ -327,26 +327,6 @@ abstract class we_class{
 		return true;
 	}
 
-	public function we_delete(){
-		if(LANGLINK_SUPPORT){
-			switch($this->ClassName){
-				case 'we_objectFile':
-					$deltype = 'tblObjectFile';
-					break;
-				case 'we_webEditionDocument':
-					$deltype = 'tblFile';
-					break;
-				case 'we_docTypes':
-					$deltype = 'tblDocTypes';
-					break;
-				default:
-					$deltype = '';
-			}
-			$this->DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . " WHERE DocumentTable='" . $deltype . "' AND (DID=" . intval($this->ID) . ' OR LDID=' . intval($this->ID) . ')');
-		}
-		return $this->DB_WE->query('DELETE FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($this->ID));
-	}
-
 	protected function i_setElementsFromHTTP(){
 		if($_REQUEST){
 			// do not set REQUEST VARS into the document
