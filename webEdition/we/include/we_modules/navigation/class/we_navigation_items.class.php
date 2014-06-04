@@ -195,7 +195,7 @@ class we_navigation_items{
 		unset($navigationRulesStorage);
 
 		foreach($this->items as &$_item){
-			if(method_exists($_item, 'isCurrent')){
+			if(is_object($_item) && method_exists($_item, 'isCurrent')){
 				$this->hasCurrent = ($_item->isCurrent($this));
 			}
 		}
