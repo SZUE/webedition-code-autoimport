@@ -222,7 +222,7 @@ function we_tag_paypal($attribs){
 
 					// correct price, if it has more than one "."
 					// bug #8717
-					$itemPrice = we_util::std_numberformat(isset($item['serial']['we_' . $pricename]) ? $item['serial']['we_' . $pricename] : $item['serial'][$pricename]);
+					$itemPrice = we_base_util::std_numberformat(isset($item['serial']['we_' . $pricename]) ? $item['serial']['we_' . $pricename] : $item['serial'][$pricename]);
 
 					//seems to be gros product prices and customer do not need pay tax
 					//so we have to calculate the correct net article price

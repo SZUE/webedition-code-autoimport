@@ -186,7 +186,7 @@ function we_redirect_tagoutput($returnvalue, $nameTo, $to = 'screen'){
 			}
 			return null;
 		case 'calculate':
-			return we_util::std_numberformat($returnvalue);
+			return we_base_util::std_numberformat($returnvalue);
 			break;
 		case 'screen':
 		default:

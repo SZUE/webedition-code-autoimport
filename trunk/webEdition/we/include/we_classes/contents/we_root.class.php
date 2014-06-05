@@ -817,12 +817,12 @@ abstract class we_root extends we_class{
 				break;
 			case 'text':
 				if($this->DefArray[$type . '_' . $k]['dhtmledit'] == 'on'){
-					$v = we_util::rmPhp($v);
+					$v = we_base_util::rmPhp($v);
 					break;
 				}
 			case 'input':
 				if($this->DefArray[$type . '_' . $k]['forbidphp'] == 'on'){
-					$v = we_util::rmPhp($v);
+					$v = we_base_util::rmPhp($v);
 				}
 				if($this->DefArray[$type . '_' . $k]['forbidhtml'] == 'on'){
 					$v = removeHTML($v);
@@ -831,7 +831,7 @@ abstract class we_root extends we_class{
 			case 'internal'://pseudo-element for i_setElementsFromHTTP
 				break;
 			default:
-				$v = removeHTML(we_util::rmPhp($v));
+				$v = removeHTML(we_base_util::rmPhp($v));
 				break;
 		}
 	}
@@ -865,7 +865,7 @@ abstract class we_root extends we_class{
 					if(is_array($v)){
 						$type = $regs[1];
 						foreach($v as $name => $v2){
-							$v2 = we_util::cleanNewLine($v2);
+							$v2 = we_base_util::cleanNewLine($v2);
 							switch($type){
 								case 'date':
 									preg_match('|(.*)_(.*)|', $name, $regs);

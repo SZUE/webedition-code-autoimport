@@ -1032,7 +1032,7 @@ class we_document extends we_root{
 					$retval = preg_replace('/#we##br([^#]*)#we##/', '<br\1>', oldHtmlspecialchars(preg_replace('/<br([^>]*)>/i', '#we##br\1#we##', $retval), ENT_QUOTES));
 				}
 				if(!weTag_getAttribute('php', $attribs, (defined('WE_PHP_DEFAULT') && WE_PHP_DEFAULT), true)){
-					$retval = we_util::rmPhp($retval);
+					$retval = we_base_util::rmPhp($retval);
 				}
 				$xml = weTag_getAttribute('xml', $attribs, (XHTML_DEFAULT), true);
 				$retval = preg_replace('-<(br|hr)([^/>]*)/? *>-i', ($xml ? '<\\1\\2/>' : '<\\1\\2>'), $retval);
@@ -1040,7 +1040,7 @@ class we_document extends we_root{
 				if(preg_match('/^[\d.,]+$/', trim($retval))){
 					$precision = isset($attribs['precision']) ? abs($attribs['precision']) : 2;
 					if(($num = weTag_getAttribute('num_format', $attribs))){
-						$retval = we_util_Strings::formatNumber(we_util::std_numberformat($retval), $num, $precision);
+						$retval = we_util_Strings::formatNumber(we_base_util::std_numberformat($retval), $num, $precision);
 					}
 				}
 				if(weTag_getAttribute('win2iso', $attribs, false, true)){

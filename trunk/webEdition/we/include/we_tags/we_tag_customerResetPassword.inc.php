@@ -66,7 +66,7 @@ function we_tag_customerResetPassword(array $attribs){
 	$required = array_unique(explode(',', weTag_getAttribute('required', $attribs)));
 
 //set dates
-	we_util::convertDateInRequest($_REQUEST['s'], false);
+	we_base_util::convertDateInRequest($_REQUEST['s'], false);
 
 	switch($type = weTag_getAttribute('type', $attribs)){
 		default:

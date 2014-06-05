@@ -129,7 +129,6 @@ abstract class we_autoloader{
 			'we_tab' => 'we_tab.class.php',
 			'weTree' => 'weTree.inc.php',
 			'we_updater' => 'we_updater.inc.php',
-			'we_util' => 'we_util.inc.php',
 			'we_widget' => 'we_widget.inc.php',
 			'XML_Parser_Error' => 'Parser.php',
 			'XML_Parser' => 'Parser.php',

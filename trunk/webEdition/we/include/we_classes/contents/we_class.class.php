@@ -316,8 +316,7 @@ abstract class we_class{
 	}
 
 	public function we_delete(){
-		require_once (WE_INCLUDES_PATH . 'we_delete_fn.inc.php');
-		deleteEntry($this->ID, $this->Table, true, false, $this->DB_WE);
+		we_base_delete::deleteEntry($this->ID, $this->Table, true, false, $this->DB_WE);
 	}
 
 	public function we_publish(/* $DoNotMark = false, $saveinMainDB = true */){

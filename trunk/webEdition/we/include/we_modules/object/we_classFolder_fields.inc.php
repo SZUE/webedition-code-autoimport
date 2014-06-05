@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once(WE_INCLUDES_PATH . 'we_delete_fn.inc.php');
 
 switch(weRequest('string','do')){
 	case 'delete':

@@ -97,11 +97,11 @@ function we_tag_position($attribs){
 	switch($format){
 
 		case 'a' :
-			return we_util::number2System($_retPos);
+			return we_base_util::number2System($_retPos);
 			break;
 
 		case 'A' :
-			return strtoupper(we_util::number2System($_retPos));
+			return strtoupper(we_base_util::number2System($_retPos));
 			break;
 
 		default :

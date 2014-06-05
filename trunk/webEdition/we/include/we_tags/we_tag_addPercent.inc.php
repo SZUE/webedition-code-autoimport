@@ -38,7 +38,7 @@ function we_tag_addPercent($attribs, $content){
 			ob_start();
 			return;
 		case 'stop':
-			$content = we_util::std_numberformat(ob_get_contents());
+			$content = we_base_util::std_numberformat(ob_get_contents());
 			ob_end_clean();
 			unset($GLOBALS['calculate']);
 			if(($foo = attributFehltError($attribs, 'percent', __FUNCTION__))){

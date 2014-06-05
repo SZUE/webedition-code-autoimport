@@ -149,10 +149,10 @@ class we_objectFile extends we_document{
 		}
 
 		if(isset($_REQUEST['we_ui_' . $formname]) && is_array($_REQUEST['we_ui_' . $formname])){
-			we_util::convertDateInRequest($_REQUEST['we_ui_' . $formname], true);
+			we_base_util::convertDateInRequest($_REQUEST['we_ui_' . $formname], true);
 
 			foreach($_REQUEST['we_ui_' . $formname] as $n => $v){
-				$v = we_util::rmPhp($v);
+				$v = we_base_util::rmPhp($v);
 				$GLOBALS['we_object'][$formname]->i_convertElemFromRequest('', $v, $n);
 				$GLOBALS['we_object'][$formname]->setElement($n, $v);
 			}
@@ -173,7 +173,7 @@ class we_objectFile extends we_document{
 		}
 		foreach($GLOBALS['we_object'][$formname]->persistent_slots as $slotname){
 			if($slotname != 'categories' && isset($_REQUEST['we_ui_' . $formname . '_' . $slotname])){
-				$v = we_util::rmPhp($_REQUEST['we_ui_' . $formname . '_' . $slotname]);
+				$v = we_base_util::rmPhp($_REQUEST['we_ui_' . $formname . '_' . $slotname]);
 				$GLOBALS['we_object'][$formname]->i_convertElemFromRequest('', $v, $slotname);
 				$GLOBALS['we_object'][$formname]->{$slotname} = $v;
 			}
