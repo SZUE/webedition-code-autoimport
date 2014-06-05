@@ -29,7 +29,7 @@ class we_base_sessionHandler{
 	}
 
 	function __destruct(){
-		if($this->enabled && $_SESSION){
+		if($this->enabled && isset($_SESSION)){
 			session_write_close();
 		}
 	}
@@ -46,8 +46,8 @@ class we_base_sessionHandler{
 	function read($sessID){
 		$sessID = $this->DB->escape($sessID);
 
-		while(!(($data = f('SELECT session_data FROM tblSessions WHERE session_id="' . $sessID . '" AND touch+INTERVAL ' . $this->lifeTime . ' second>NOW()', '', $this->DB)) &&
-		$this->DB->query('UPDATE tblSessions SET lockid="' . $this->id . '",lockTime=NOW() WHERE session_id="' . $sessID . '" AND (lockid="" OR lockid="' . $this->id . '" OR lockTime+INTERVAL ' . $this->execTime . ' second<NOW())') &&
+		while(!(($data = f('SELECT session_data FROM ' . SESSION_TABLE . ' WHERE session_id="' . $sessID . '" AND touch+INTERVAL ' . $this->lifeTime . ' second>NOW()', '', $this->DB)) &&
+		$this->DB->query('UPDATE ' . SESSION_TABLE . ' SET lockid="' . $this->id . '",lockTime=NOW() WHERE session_id="' . $sessID . '" AND (lockid="" OR lockid="' . $this->id . '" OR lockTime+INTERVAL ' . $this->execTime . ' second<NOW())') &&
 		$this->DB->affected_rows()
 		) && $data){
 			usleep(100000);
@@ -66,7 +66,7 @@ class we_base_sessionHandler{
 		}
 		$sessData = $this->crypt ? we_customer_customer::cryptData($sessData, $this->crypt) : $sessData;
 		//crypt data!!
-		$this->DB->query('REPLACE INTO tblSessions SET ' . we_database_base::arraySetter(array(
+		$this->DB->query('REPLACE INTO ' . SESSION_TABLE . ' SET ' . we_database_base::arraySetter(array(
 				'session_id' => $sessID,
 				'session_data' => gzcompress($sessData, 9),
 		)));
@@ -74,12 +74,12 @@ class we_base_sessionHandler{
 	}
 
 	function destroy($sessID){
-		$this->DB->query('DELETE FROM tblSessions WHERE session_id="' . $this->DB->escape($sessID) . '"');
+		$this->DB->query('DELETE FROM ' . SESSION_TABLE . ' WHERE session_id="' . $this->DB->escape($sessID) . '"');
 		return true;
 	}
 
 	function gc($sessMaxLifeTime){
-		$this->DB->query('DELETE FROM tblSessions WHERE touch<NOW()-INTERVAL ' . $sessMaxLifeTime . ' second');
+		$this->DB->query('DELETE FROM ' . SESSION_TABLE . ' WHERE touch<NOW()-INTERVAL ' . $sessMaxLifeTime . ' second');
 		return true;
 	}
 

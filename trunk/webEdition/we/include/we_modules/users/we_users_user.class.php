@@ -1114,7 +1114,7 @@ _multiEditorreload = true;";
 
 	function isLastAdmin(){
 		$this->ID = intval($this->ID);
-		$exist = (f('SELECT 1 FROM ' . USER_TABLE . " WHERE Permissions LIKE ('%\"ADMINISTRATOR\";i:1;%') AND ID!=" . $this->ID.' LIMIT 1', '', $this->DB_WE) == '1');
+		$exist = (f('SELECT 1 FROM ' . USER_TABLE . " WHERE Permissions LIKE ('%\"ADMINISTRATOR\";i:1;%') AND ID!=" . $this->ID . ' LIMIT 1', '', $this->DB_WE) == '1');
 		if($exist){
 			return false;
 		} else {
@@ -1329,24 +1329,24 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 		$_tableObj = new we_html_table($_attr, 12, 2);
 		$line = 0;
 		$_tableObj->setCol($line, 0, null, $this->getUserfield('Salutation', 'salutation'));
-		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('First', 'first_name'));
+		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('First', 'first_name'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Second', 'second_name'));
-		$_tableObj->setCol(++$line, 0, array('colspan' => 2), we_html_tools::getPixel(560, 20));
-		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('Address', 'address'));
+		$_tableObj->setCol( ++$line, 0, array('colspan' => 2), we_html_tools::getPixel(560, 20));
+		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('Address', 'address'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('HouseNo', 'houseno'));
-		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('PLZ', 'PLZ', 'text', 16, true));
+		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('PLZ', 'PLZ', 'text', 16, true));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('City', 'city'));
-		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('State', 'state'));
+		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('State', 'state'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Country', 'country'));
-		$_tableObj->setCol(++$line, 0, array('colspan' => 2), we_html_tools::getPixel(560, 20));
-		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('Tel_preselection', 'tel_pre'));
+		$_tableObj->setCol( ++$line, 0, array('colspan' => 2), we_html_tools::getPixel(560, 20));
+		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('Tel_preselection', 'tel_pre'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Telephone', 'telephone'));
-		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('Fax_preselection', 'fax_pre'));
+		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('Fax_preselection', 'fax_pre'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Fax', 'fax'));
-		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('Handy', 'mobile'));
+		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('Handy', 'mobile'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Email', 'email'));
-		$_tableObj->setCol(++$line, 0, array('colspan' => 2), we_html_tools::getPixel(520, 4));
-		$_tableObj->setCol(++$line, 0, array('colspan' => 2), we_html_tools::htmlFormElementTable($_description, g_l('modules_users', '[description]')));
+		$_tableObj->setCol( ++$line, 0, array('colspan' => 2), we_html_tools::getPixel(520, 4));
+		$_tableObj->setCol( ++$line, 0, array('colspan' => 2), we_html_tools::htmlFormElementTable($_description, g_l('modules_users', '[description]')));
 
 
 		$parts = array(
