@@ -315,6 +315,11 @@ abstract class we_class{
 		return $this->i_savePersistentSlotsToDB();
 	}
 
+	public function we_delete(){
+		require_once (WE_INCLUDES_PATH . 'we_delete_fn.inc.php');
+		deleteEntry($this->ID, $this->Table, true, false, $this->DB_WE);
+	}
+
 	public function we_publish(/* $DoNotMark = false, $saveinMainDB = true */){
 		return true; // overwrite
 	}
