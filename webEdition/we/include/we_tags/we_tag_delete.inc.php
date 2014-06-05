@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_delete($attribs){
+	$id = weTag_getAttribute('id', $attribs, 0);
 	$type = weTag_getAttribute('type', $attribs, 'document');
 	$userid = weTag_getAttribute('userid', $attribs); // deprecated  use protected=true instead
 	$protected = weTag_getAttribute('protected', $attribs, false, true);
@@ -37,10 +38,10 @@ function we_tag_delete($attribs){
 
 	switch($type){
 		case "document":
-			if(!isset($_REQUEST["we_delDocument_ID"])){
+			$docID = weRequest('int', 'we_delDocument_ID', $id);
+			if(!$docID){
 				return '';
 			}
-			$docID = weRequest('int', 'we_delDocument_ID');
 			$doc = new we_webEditionDocument();
 			$doc->initByID($docID);
 			$table = FILE_TABLE;
@@ -53,10 +54,10 @@ function we_tag_delete($attribs){
 			}
 			break;
 		default:
-			if(!isset($_REQUEST["we_delObject_ID"])){
+			$docID = weRequest('int', 'we_delObject_ID', $id);
+			if(!$docID){
 				return '';
 			}
-			$docID = weRequest('int', 'we_delObject_ID');
 			$doc = new we_objectFile();
 			$doc->initByID($docID, OBJECT_FILES_TABLE);
 			$table = OBJECT_FILES_TABLE;
