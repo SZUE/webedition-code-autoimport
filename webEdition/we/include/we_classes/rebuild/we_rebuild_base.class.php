@@ -379,7 +379,7 @@ abstract class we_rebuild_base{
 			$_foo = makeArrayFromCSV($folders);
 			$_foldersList = array();
 			foreach($_foo as $folderID){
-				$_foldersList[] = makeCSVFromArray(we_util::getFoldersInFolder($folderID));
+				$_foldersList[] = makeCSVFromArray(we_base_util::getFoldersInFolder($folderID));
 			}
 			$_folders_query = '( ParentID IN(' . implode(',', $_foldersList) . '))';
 		}
@@ -552,7 +552,7 @@ abstract class we_rebuild_base{
 			$_foo = makeArrayFromCSV($thumbsFolders);
 			$_foldersList = array();
 			foreach($_foo as $folderID){
-				$_foldersList[] = makeCSVFromArray(we_util::getFoldersInFolder($folderID));
+				$_foldersList[] = makeCSVFromArray(we_base_util::getFoldersInFolder($folderID));
 			}
 			$_folders_query = '( ParentID IN(' . implode(',', $_foldersList) . ') )';
 		} else {

@@ -144,7 +144,7 @@ class we_wysiwyg_editor{
 		$this->_imagePath = IMAGE_DIR . 'wysiwyg/';
 		$this->_image_languagePath = WE_INCLUDES_DIR . 'we_language/' . $GLOBALS['WE_LANGUAGE'] . '/wysiwyg/';
 
-		$this->baseHref = $baseHref ? $baseHref : we_util::getGlobalPath();
+		$this->baseHref = $baseHref ? $baseHref : we_base_util::getGlobalPath();
 		$this->charset = $charset;
 
 		$this->width = $width;

@@ -85,8 +85,7 @@ function we_tag_delete($attribs){
 
 	if($isAdmin || $isOwner || $forceedit){
 		$GLOBALS["NOT_PROTECT"] = true;
-		require_once (WE_INCLUDES_PATH . 'we_delete_fn.inc.php');
-		deleteEntry($docID, $table);
+		we_base_delete::deleteEntry($docID, $table);
 		$GLOBALS["we_" . $type . "_delete_ok"] = true;
 		if($mail){
 			if(!$mailfrom){

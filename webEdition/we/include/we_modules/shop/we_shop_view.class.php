@@ -1125,7 +1125,7 @@ function submitForm() {
 						we_database_base::arraySetter((array(
 							'IntArticleID' => $id,
 							'IntQuantity' => weRequest('float', 'anzahl', 0),
-							'Price' => we_util::std_numberformat(self::getFieldFromShoparticle($serialDoc, $pricename)),
+							'Price' => we_base_util::std_numberformat(self::getFieldFromShoparticle($serialDoc, $pricename)),
 							'IntOrderID' => $row['IntOrderID'],
 							'IntCustomerID' => $row['IntCustomerID'],
 							'DateOrder' => $row['DateOrder'],

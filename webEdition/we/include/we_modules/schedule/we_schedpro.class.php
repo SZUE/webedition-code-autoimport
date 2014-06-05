@@ -377,8 +377,7 @@ function checkFooter(){
 			switch($s['task']){
 				case self::DELETE:
 					$GLOBALS['NOT_PROTECT'] = true;
-					require_once(WE_INCLUDES_PATH . 'we_delete_fn.inc.php');
-					deleteEntry($id, $schedFile['table']);
+					we_base_delete::deleteEntry($id, $schedFile['table']);
 					$callPublish = false;
 					$changeTmpDoc = false;
 					break 2; //exit foreach

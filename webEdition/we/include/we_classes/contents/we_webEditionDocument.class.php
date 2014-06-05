@@ -107,9 +107,9 @@ class we_webEditionDocument extends we_textContentDocument{
 			$GLOBALS['we_document'][$formname]->setElement('we_returnpage', $ret);
 		}
 		if(isset($_REQUEST['we_ui_' . $formname]) && is_array($_REQUEST['we_ui_' . $formname])){
-			we_util::convertDateInRequest($_REQUEST['we_ui_' . $formname], true);
+			we_base_util::convertDateInRequest($_REQUEST['we_ui_' . $formname], true);
 			foreach($_REQUEST['we_ui_' . $formname] as $n => $v){
-				$v = we_util::rmPhp($v);
+				$v = we_base_util::rmPhp($v);
 				$GLOBALS['we_document'][$formname]->setElement($n, $v);
 			}
 		}

@@ -111,7 +111,7 @@ function getHTTP($server, $url, $port = '', $username = '', $password = ''){
 			}
 			return $page;
 		case 'curl':
-			$_response = we_util::getCurlHttp($server, $url, array());
+			$_response = we_base_util::getCurlHttp($server, $url, array());
 			return ($_response['status'] ? $_response['error'] : $_response['data']);
 		default:
 			return 'Server error: Unable to open URL (php configuration directive allow_url_fopen=Off)';
@@ -790,7 +790,7 @@ function removeHTML($val){
 }
 
 function removePHP($val){
-	return we_util::rmPhp($val);
+	return we_base_util::rmPhp($val);
 }
 
 function getMysqlVer($nodots = true){

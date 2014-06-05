@@ -27,12 +27,12 @@
  * Util Functions
  *
  * all functions in this class are static! Please use it in static form:
- *    we_util::function_name();
+ *    we_base_util::function_name();
  *
  *
  * @static
  */
-abstract class we_util{
+abstract class we_base_util{
 
 	/**
 	 * Formates a number with a country specific format into computer readable format.
@@ -50,11 +50,11 @@ abstract class we_util{
 		$match = array();
 		if(preg_match('|([0-9]*\.?[0-9]*),([0-9]*)|', $number, $match)){ // deutsche schreibweise
 			return floatval(str_replace('.', '', $match[1]) . '.' . $match[2]);
-		} else if(preg_match('|([0-9]*)\.([0-9]*)|', $number)){ // engl schreibweise
-			return floatval($number);
-		} else {
-			return floatval(str_replace(array(',', '.'), '', $number));
 		}
+		if(preg_match('|([0-9]*)\.([0-9]*)|', $number)){ // engl schreibweise
+			return floatval($number);
+		}
+		return floatval(str_replace(array(',', '.'), '', $number));
 	}
 
 	/**
