@@ -43,7 +43,7 @@ $pid = weRequest('int', 'pid', 0);
 $parts = array();
 
 $we_alerttext = (!in_workspace($pid, get_ws(FILE_TABLE), FILE_TABLE, $GLOBALS['DB_WE']) || isset($_FILES['we_uploadedFile']) && !permissionhandler::hasPerm(we_base_ContentTypes::inst()->getPermission(getContentTypeFromFile($_FILES['we_uploadedFile']['name']))) ?
-		g_l('alert', '[upload_notallowed]') :
+		g_l('alert', '[upload_targetDir_notallowed]') :
 		'');
 
 if((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploadedFile']['type'] && (($allowedContentTypes == '') || (!(strpos($allowedContentTypes, $_FILES['we_uploadedFile']['type']) === false)))){
@@ -54,6 +54,7 @@ if((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploaded
 	include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
 	$overwrite = $_REQUEST['overwrite'];
+
 
 	// creating a temp name and copy the file to the we tmp directory with the new temp name
 	$tempName = TEMP_PATH . '/' . we_base_file::getUniqueId();
@@ -177,6 +178,9 @@ if($we_ContentType == we_base_ContentTypes::IMAGE){
 <?php
 if($we_alerttext){
 	echo we_message_reporting::getShowMessageCall($we_alerttext, we_message_reporting::WE_MESSAGE_ERROR);
+	if(!isset($_FILES['we_uploadedFile'])){
+		echo 'this.close();';
+	}
 }
 if(isset($_FILES['we_uploadedFile']) && (!$we_alerttext)){
 	if($we_doc->ID){
