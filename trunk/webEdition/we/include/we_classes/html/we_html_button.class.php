@@ -82,7 +82,7 @@ abstract class we_html_button{
 
 		$_imp = $important ? ' ! important' : '';
 
-		return ' style="border-style:none; padding:0px;border-spacing:0px;' . ($width>0 ? 'width:' . $width . 'px' . $_imp . ';' : '') .
+		return ' style="border-style:none; padding:0px;border-spacing:0px;' . ($width > 0 ? 'width:' . $width . 'px' . $_imp . ';' : '') .
 			($height ? 'height:' . $height . 'px' . $_imp . ';' : '') .
 			($float ? 'float:' . $float . $_imp . ';' : '') .
 			($clear ? 'clear:' . $clear . $_imp . ';' : '') .
@@ -236,7 +236,7 @@ function switch_button_state(element, button, state, type) {
 		$title = '';
 		// Check if the button will a text button or an image button
 		if(strpos($name, self::WE_IMAGE_BUTTON_IDENTIFY) === false){ // Button will NOT be an image
-			$tmp = g_l('button', '[' . $name . '][alt]');
+			$tmp = g_l('button', '[' . $name . '][alt]', true);
 			if(!empty($tmp) && $alt){
 				$title = $tmp;
 			}
