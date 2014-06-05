@@ -163,6 +163,7 @@ $l_alert=array(
 	'thumbnail_hochkomma'=>'Invalid name! Invalid characters are ` (apostrophe) and , (comma)!',
 	'thumbnail_not_exists'=>'This thumbnail does not exist!',
 	'upload_notallowed'=>'You are not allowed to add new files on this server.',
+	'upload_targetDir_notallowed'=>'The target directory is invalid or you are not allowed to write to this directory.',
 	'warning'=>'Warning',
 	'we_backup_import_upload_err'=>'An error occured while uploading the backup file! The maximum file size for uploads is %s. If your backup file exceeds this limit, please upload it into the directory webEdition/we_Backup via FTP and choose `GL(backup[import_from_server])`',
 	'we_filename_empty'=>'No name has been entered for this document or directory!',

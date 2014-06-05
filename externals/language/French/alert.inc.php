@@ -163,6 +163,7 @@ $l_alert=array(
 	'thumbnail_hochkomma'=>'Le nom d`une imagettes ne doit pas contenir de  ` (apostroph) et pas de , (virgule)!',
 	'thumbnail_not_exists'=>'Cette imagette n`existe pas!',
 	'upload_notallowed'=>'You are not allowed to add new files on this server.',
+	'upload_targetDir_notallowed'=>'The target directory is invalid or you are not allowed to write to this directory.',
 	'warning'=>'Avertissement',
 	'we_backup_import_upload_err'=>'Erreur en téléchargant le fichier de sauvegarde! La taille de fichier maximale pour le téléchargement est %s. Si votre fichier de sauvegardes est plus grand, copier-le par FTP dans le répértoire webEdition/we_backup/ et choisissez `GL(backup[import_from_server])`!',
 	'we_filename_empty'=>'Vous n`avez pas encore saisi un nom pour ce fichier ou bien répertoire!',

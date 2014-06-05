@@ -163,6 +163,7 @@ $l_alert=array(
 	'thumbnail_hochkomma'=>'Virheellinen nimi! Virheellisiä merkkejä ovat ` (heittomerkki) and , (pilkku)!',
 	'thumbnail_not_exists'=>'Esikatselukuvaa ei ole olemassa!',
 	'upload_notallowed'=>'You are not allowed to add new files on this server.',
+	'upload_targetDir_notallowed'=>'The target directory is invalid or you are not allowed to write to this directory.',
 	'warning'=>'Varoitus',
 	'we_backup_import_upload_err'=>'Varmuuskopiotiedostoa ladattaessa tapahtui virha! Ladattavien tiedostojen maksimikoko on %s. Jos varmuuskopiotiedoston koko ylittää rajan, lataa tiedosto hakemistoon webEdition/we_backup käyttäen FTP -tiedostonsiirtoa ja valitse `GL(backup[import_from_server])`',
 	'we_filename_empty'=>'Hakemistolle tai tiedostolle ei ole annettu nimeä!',

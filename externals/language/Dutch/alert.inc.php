@@ -163,6 +163,7 @@ $l_alert=array(
 	'thumbnail_hochkomma'=>'Ongeldige naam! Ongeldige karakters zijn de ` (apostrof) en de , (komma)!',
 	'thumbnail_not_exists'=>'Deze thumbnail bestaat niet!',
 	'upload_notallowed'=>'You are not allowed to add new files on this server.',
+	'upload_targetDir_notallowed'=>'The target directory is invalid or you are not allowed to write to this directory.',
 	'warning'=>'Waarschuwing',
 	'we_backup_import_upload_err'=>'Er is een fout opgetreden tijdens het uploaden van het backup bestand! De maximale bestandsgrootte voor uploads is %s. Als uw backup bestand de limiet overschrijdt, upload het dan a.u.b. in de directory webEdition/we_Backup via FTP en kies `GL(backup[import_from_server])`',
 	'we_filename_empty'=>'Er is geen naam ingevoerd voor dit document of directory!',

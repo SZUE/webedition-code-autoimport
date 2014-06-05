@@ -163,6 +163,7 @@ $l_alert=array(
 	'thumbnail_hochkomma'=>'Der Name einer Miniaturansicht darf kein ` (Hochkomma) und kein , (Komma) enthalten!',
 	'thumbnail_not_exists'=>'Diese Miniaturansicht ist nicht vorhanden!',
 	'upload_notallowed'=>'Sie besitzen nicht das Recht Dateien auf den Server hochzuladen.',
+	'upload_targetDir_notallowed'=>'Das angegebene Zielverzeichnis ist ungültig oder Sie besitzen keine Rechte dort Dateien anzulegen.',
 	'warning'=>'Warnung',
 	'we_backup_import_upload_err'=>'Es gab einen Fehler beim Hochladen der Backup-Datei! Die maximal erlaubte Dateigrösse für Uploads beträgt %s. Wenn Ihre Backup-Datei grösser ist, dann kopieren Sie diese per FTP in das Verzeichnis webEdition/we_backup und wählen `GL(backup[import_from_server])`!',
 	'we_filename_empty'=>'Sie haben noch keinen Dateinamen für dieses Dokument bzw. Verzeichnis eingegeben!',

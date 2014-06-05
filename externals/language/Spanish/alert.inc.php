@@ -163,6 +163,7 @@ $l_alert=array(
 	'thumbnail_hochkomma'=>'Nombre inválido! Los carácteres inválidos son ` (apostrofe) y , (coma)!',
 	'thumbnail_not_exists'=>'Esta imagen en miniatura no existe!',
 	'upload_notallowed'=>'You are not allowed to add new files on this server.',
+	'upload_targetDir_notallowed'=>'The target directory is invalid or you are not allowed to write to this directory.',
 	'warning'=>'Warning',
 	'we_backup_import_upload_err'=>'Un error ocurrio mientras se cargaba el archivo de reserva! El tamaño maximo del archivo para cargar es %s. Si su archivo de reserva excede este limite, por favor, cargarlo en el directorio webEdition/we_Backup vía FTP y escoger `GL(backup[import_from_server])`',
 	'we_filename_empty'=>'Ningún nombre ha sido entrado para este documento o directorio!',
