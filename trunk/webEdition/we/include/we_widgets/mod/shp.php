@@ -232,36 +232,51 @@ $shopDashboardTable->setCol(9, 1, array(), we_html_tools::getPixel(10, 1));
 $shopDashboardTable->setCol(9, 2, array("class" => "middlefont", "align" => "right"), we_html_element::htmlB(($amountCustomers > 0 ? $amountCustomers : 0)));
 
 
-$shopDashboard = "<script type='text/javascript' src='https://www.google.com/jsapi'></script>
-    <script type='text/javascript'><!--
-      google.load('visualization', '1', {packages:['gauge']});
-      google.setOnLoadCallback(drawChart);
-      function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['Label', 'Value'],
-          ['Ziel in " . $currency . "', " . we_util_Strings::formatNumber($total) . "],
-        ]);
-
-        var options = {
-          width: 300, height: 170,
-          max: " . ($sRevenueTarget * 2) . ",
-          redFrom: 0, redTo: " . ($sRevenueTarget * 0.9) . ",
-          yellowFrom: " . ($sRevenueTarget * 0.9) . ", yellowTo: " . ($sRevenueTarget * 1.1) . ",
-          greenFrom: " . ($sRevenueTarget * 1.1) . ", greenTo: " . ($sRevenueTarget * 2) . ",
-          minorTicks: 5
-        };
-
-        var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
-        chart.draw(data, options);
-      }
-			//-->
-    </script>";
-
-//FIXME: deactivated JS-Kode for shop, since code is loaded from other domain
-
 $shopDashboard = '<div style="width:60%;float:left;">' .
 	$shopDashboardTable->getHtml() .
 	'</div>'
 	. '<div style="width:40%;float:right;"><b>' . g_l('cockpit', '[shop_dashboard][revenue_target]') . '&nbsp;' . we_util_Strings::formatNumber($sRevenueTarget, $numberformat) . '&nbsp;' . $currency . '</b>' .
-	we_html_element::htmlDiv(array("id" => "chart_div"), '') .
+	'<canvas id="chart" width="160" height="160"></canvas>' .
 	'</div><br style="clear:both;"/>';
+
+$shopDashboard .= "<script type='text/javascript' src='".WE_INCLUDES_DIR."we_widgets/dlg/shp/js/excanvas.js'></script>
+	<script type='text/javascript' src='".WE_INCLUDES_DIR."we_widgets/dlg/shp/js/gauge.min.js'></script>
+    <script type='text/javascript'>
+    	// Helper to execute a function after the window is loaded
+			// see http://www.google.com/search?q=addLoadEvent
+			function addLoadEvent(func) {
+				var oldonload = window.onload;
+				if (typeof window.onload != 'function') {
+					window.onload = func;
+				} else {
+					window.onload = function() {
+						if (oldonload) {
+							oldonload();
+						}
+						func();
+					}
+				}
+			}
+
+			addLoadEvent( function() {
+				var options;
+				
+				// Draw the gauge using custom settings
+				options = {
+					value: ". we_util_Strings::formatNumber($total) .",
+					label: 'Ziel in ". $currency ."',
+					unitsLabel: ' ". $currency ."',
+					min: 0,
+					max: " . ($sRevenueTarget * 2) . ",
+					minorTicks: 5, // small ticks inside each major tick
+					greenFrom: " . ($sRevenueTarget * 1.1) . ",
+					greenTo: " . ($sRevenueTarget * 2) . ",
+					yellowFrom: " . ($sRevenueTarget * 0.9) . ",
+					yellowTo: " . ($sRevenueTarget * 1.1) . ",
+					redFrom: 0,
+					redTo: " . ($sRevenueTarget * 0.9) . "
+				};
+				new Gauge( document.getElementById( 'chart'), options );
+			});
+    
+    </script>";
