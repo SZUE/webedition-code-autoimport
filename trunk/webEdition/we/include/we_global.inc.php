@@ -401,7 +401,7 @@ function in_workspace($IDs, $wsIDs, $table = FILE_TABLE, we_database_base $db = 
 	if(!is_array($wsIDs)){
 		$wsIDs = makeArrayFromCSV($wsIDs);
 	}
-	if(!$wsIDs || !$IDs || (in_array(0, $wsIDs))){
+	if(!$wsIDs || (in_array(0, $wsIDs))){
 		return true;
 	}
 
