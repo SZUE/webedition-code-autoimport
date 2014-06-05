@@ -244,6 +244,16 @@ function _weRequest(&$var, $key, array $data){
 	$var = $default;
 }
 
+function we_defineTables(array $tables){
+	if(!isset($GLOBALS['we']['allTables'])){
+		$GLOBALS['we']['allTables'] = array();
+	}
+	foreach($tables as $tab => $name){
+		define($tab, TBL_PREFIX . $name);
+		$GLOBALS['we']['allTables'][$tab] = TBL_PREFIX . $name;
+	}
+}
+
 /**
  * Filter an Requested variable
  * @param string $type type to filter, see list in _weGetVar

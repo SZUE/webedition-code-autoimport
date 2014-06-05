@@ -37,7 +37,7 @@ function we_tag_createShop($attribs){
 	$shopname = weTag_getAttribute('shopname', $attribs);
 
 	if(!isset($_SESSION)){
-		session_start();
+		new we_base_sessionHandler();
 	}
 
 	if(isset($_SESSION[$shopname . '_save']) && ((isset($_REQUEST['deleteshop']) && $_REQUEST['deleteshop'] == 1) && ((isset($_REQUEST['shopname']) && $_REQUEST['shopname'] === $shopname) || !isset($_REQUEST['shopname'])) || $deleteshop)){ // delete shop

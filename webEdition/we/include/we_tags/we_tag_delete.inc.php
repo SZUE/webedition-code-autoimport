@@ -48,7 +48,7 @@ function we_tag_delete($attribs){
 			if($doctype){
 				$doctypeID = f('SELECT ID FROM ' . DOC_TYPES_TABLE . " WHERE DocType LIKE '" . $GLOBALS['DB_WE']->escape($doctype) . "'");
 				if($doc->DocType != $doctypeID){
-					$GLOBALS["we_" . $type . "_delete_ok"] = false;
+					$GLOBALS['we_' . $type . '_delete_ok'] = false;
 					return '';
 				}
 			}

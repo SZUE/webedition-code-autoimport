@@ -30,7 +30,7 @@ if(isset($_SERVER['SCRIPT_NAME']) && str_replace(dirname($_SERVER['SCRIPT_NAME']
 
 if(!isset($_SESSION)){
 	session_name(SESSION_NAME);
-	session_start();
+	new we_base_sessionHandler();
 }
 
 if(!isset($_SESSION['weS'])){

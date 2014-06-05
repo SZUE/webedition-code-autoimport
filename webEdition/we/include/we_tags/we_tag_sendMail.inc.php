@@ -121,7 +121,7 @@ function we_tag_sendMail($attribs, $content){
 			exit;
 		} else {
 			if(!isset($_SESSION)){
-				session_start();
+				new we_base_sessionHandler();
 			}
 			$_SESSION['WE_SendMail'] = true;
 			$codes = ($id > 0) && we_base_file::isWeFile($id, FILE_TABLE, $GLOBALS['DB_WE']) ? we_getDocumentByID($id) : '';
