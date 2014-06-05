@@ -364,22 +364,22 @@ class we_customer_customer extends weModelBase{
 		if(!function_exists('mcrypt_create_iv')){
 			return '';
 		}
-		return bin2hex(mcrypt_create_iv($len, (runAtWin() ? MCRYPT_RAND : MCRYPT_DEV_URANDOM)));
+		return mcrypt_create_iv($len, (runAtWin() ? MCRYPT_RAND : MCRYPT_DEV_URANDOM));
 	}
 
-	public static function cryptData($data){//Note we need 4 Bytes prefix + 16 Byte IV + 1$ = 21 Bytes. The rest is avail for data, which is hex'ed, so "half" of length is available
+	public static function cryptData($data, $key = SECURITY_ENCRYPTION_KEY){//Note we need 4 Bytes prefix + 16 Byte IV + 1$ = 21 Bytes. The rest is avail for data, which is hex'ed, so "half" of length is available
 		if(function_exists('mcrypt_module_open') && ($res = mcrypt_module_open(MCRYPT_BLOWFISH, '', MCRYPT_MODE_OFB, ''))){
 			$iv = self::cryptGetIV();
-			mcrypt_generic_init($res, SECURITY_ENCRYPTION_KEY, hex2bin($iv));
+			mcrypt_generic_init($res, $key, $iv);
 			$data = mcrypt_generic($res, $data);
 			mcrypt_generic_deinit($res);
 			mcrypt_module_close($res);
-			return '$-1$' . $iv . '$' . bin2hex($data);
+			return '$-1$' . bin2hex($iv) . '$' . bin2hex($data);
 		}
 		return $data;
 	}
 
-	public static function decryptData($data){
+	public static function decryptData($data, $key = SECURITY_ENCRYPTION_KEY){
 		$matches = array();
 		if(!preg_match('|^\$([^$]*)\$([^$]*)\$(.*)$|', $data, $matches)){
 			return '';
@@ -387,7 +387,7 @@ class we_customer_customer extends weModelBase{
 		switch($matches[1]){
 			case '-1':
 				if(function_exists('mcrypt_module_open') && ($res = mcrypt_module_open(MCRYPT_BLOWFISH, '', MCRYPT_MODE_OFB, ''))){
-					mcrypt_generic_init($res, SECURITY_ENCRYPTION_KEY, hex2bin($matches[2]));
+					mcrypt_generic_init($res, $key, hex2bin($matches[2]));
 					$data = mdecrypt_generic($res, hex2bin($matches[3]));
 					mcrypt_generic_deinit($res);
 					mcrypt_module_close($res);

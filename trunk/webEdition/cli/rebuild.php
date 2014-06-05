@@ -290,7 +290,7 @@ foreach($options[0] as $opt){
 	}
 }
 
-switch(($type=  weRequest('string', 'type'))){
+switch(($type = weRequest('string', 'type'))){
 
 	case 'static':
 		$_REQUEST['type'] = "filter";
