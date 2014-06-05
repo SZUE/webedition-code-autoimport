@@ -55,7 +55,7 @@ $tabname = weRequest('string', 'tabname', 'setting_ui');
  * @return         string
  */
 function create_dialog($name, $title, $content, $expand = -1, $show_text = '', $hide_text = '', $cookie = false, $JS = ''){
-	$_output = ($JS  ? $JS : '') .
+	$_output = ($JS ? $JS : '') .
 		($expand != -1 ? we_html_multiIconBox::getJS() : '');
 
 	// Return HTML code of dialog
@@ -2172,9 +2172,6 @@ function formmailBlockOnOff() {
 				break;
 			}
 
-
-			// Build select box
-
 			$WYSIWYG_TYPE = new we_html_select(array("name" => "newconf[WYSIWYG_TYPE]", "class" => "weSelect"));
 			$_options = array('tinyMCE' => 'tinyMCE', 'default' => 'webEdition Editor (deprecated))');
 			foreach($_options as $key => $val){
@@ -2225,6 +2222,20 @@ function formmailBlockOnOff() {
 				$tmp = '<div>' . $_Schedtrigger_setting->getHtml() . '<br/>' . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[we_scheduler_trigger][description]'), we_html_tools::TYPE_INFO, 430, false) . '</div>';
 				$_settings[] = array("headline" => g_l('prefs', '[we_scheduler_trigger][head]'), "html" => $tmp, "space" => 200);
 			}
+			// Build select box
+			$NAVIGATION_ENTRIES_FROM_DOCUMENT = new we_html_select(array("name" => "newconf[NAVIGATION_ENTRIES_FROM_DOCUMENT]", "class" => "weSelect"));
+			for($i = 0; $i < 2; $i++){
+				$NAVIGATION_ENTRIES_FROM_DOCUMENT->addOption($i, $i == 0 ? g_l('prefs', '[navigation_entries_from_document_folder]') : g_l('prefs', '[navigation_entries_from_document_item]'));
+			}
+			$NAVIGATION_ENTRIES_FROM_DOCUMENT->selectOption(get_value("NAVIGATION_ENTRIES_FROM_DOCUMENT") ? 1 : 0);
+			$_settings[] = array("headline" => g_l('prefs', '[navigation_entries_from_document]'), "html" => $NAVIGATION_ENTRIES_FROM_DOCUMENT->getHtml(), "space" => 200);
+
+
+			$NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH = new we_html_select(array("name" => "newconf[NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH]", "class" => "weSelect"));
+			$NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH->addOption(0, g_l('prefs', '[no]'));
+			$NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH->addOption(1, g_l('prefs', '[yes]'));
+			$NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH->selectOption(get_value("NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH") ? 1 : 0);
+			$_settings[] = array("headline" => g_l('prefs', '[navigation_rules_continue]'), "html" => $NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH->getHtml(), "space" => 200);
 
 			return create_dialog("", g_l('prefs', '[tab][advanced]'), $_settings, -1, '', '', null, isset($_needed_JavaScript) ? $_needed_JavaScript : '');
 
@@ -2233,9 +2244,8 @@ function formmailBlockOnOff() {
 				break;
 			}
 
-			$_we_max_upload_size = abs(get_value("WE_MAX_UPLOAD_SIZE"));
 			$_we_max_upload_size = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' .
-				we_html_tools::htmlTextInput("newconf[WE_MAX_UPLOAD_SIZE]", 22, $_we_max_upload_size, "", ' onkeypress="return IsDigit(event);"', "text", 60) . '</td><td style="padding-left:20px;" class="small">' .
+				we_html_tools::htmlTextInput("newconf[WE_MAX_UPLOAD_SIZE]", 22, abs(get_value("WE_MAX_UPLOAD_SIZE")), "", ' onkeypress="return IsDigit(event);"', "text", 60) . '</td><td style="padding-left:20px;" class="small">' .
 				g_l('prefs', '[we_max_upload_size_hint]') .
 				'</td></tr></table>';
 			$_needed_JavaScript = we_html_element::jsElement('function IsDigit(e) {
@@ -2341,18 +2351,6 @@ function formmailBlockOnOff() {
 			$_inp = we_html_tools::htmlTextInput("newconf[WE_TRACKER_DIR]", 12, get_value("WE_TRACKER_DIR"), "", "", "text", 125);
 			$_we_tracker_dir = we_html_button::create_button_table(array($_inp, $_but));
 
-			// Build select box
-			$NAVIGATION_ENTRIES_FROM_DOCUMENT = new we_html_select(array("name" => "newconf[NAVIGATION_ENTRIES_FROM_DOCUMENT]", "class" => "weSelect"));
-			for($i = 0; $i < 2; $i++){
-				$NAVIGATION_ENTRIES_FROM_DOCUMENT->addOption($i, $i == 0 ? g_l('prefs', '[navigation_entries_from_document_folder]') : g_l('prefs', '[navigation_entries_from_document_item]'));
-			}
-			$NAVIGATION_ENTRIES_FROM_DOCUMENT->selectOption(get_value("NAVIGATION_ENTRIES_FROM_DOCUMENT") ? 1 : 0);
-
-
-			$NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH = new we_html_select(array("name" => "newconf[NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH]", "class" => "weSelect"));
-			$NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH->addOption(0, g_l('prefs', '[no]'));
-			$NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH->addOption(1, g_l('prefs', '[yes]'));
-			$NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH->selectOption(get_value("NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH") ? 1 : 0);
 
 			//  select if hooks can be executed
 			$EXECUTE_HOOKS = new we_html_select(array("name" => "newconf[EXECUTE_HOOKS]", "class" => "weSelect"));
@@ -2361,19 +2359,25 @@ function formmailBlockOnOff() {
 
 			$EXECUTE_HOOKS->selectOption(get_value("EXECUTE_HOOKS") ? 1 : 0);
 
-			$hooksHtml = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[hooks_information]'), we_html_tools::TYPE_INFO, 240, false) . "<br/>" .
+			$hooksHtml = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[hooks_information]'), we_html_tools::TYPE_INFO, 240, false) . '<br/>' .
 				$EXECUTE_HOOKS->getHtml();
 
-			//  select how php is parsed
-			/* $PHPLOCALSCOPE = new we_html_select(array("name" => "newconf[PHPLOCALSCOPE]", "class" => "weSelect"));
-			  $PHPLOCALSCOPE->addOption(0, g_l('prefs', '[no]'));
-			  $PHPLOCALSCOPE->addOption(1, g_l('prefs', '[yes]'));
+			$useSession = new we_html_select(array("name" => "newconf[SYSTEM_WE_SESSION]", "class" => "weSelect"));
+			$useSession->addOption(0, g_l('prefs', '[no]'));
+			$useSession->addOption(1, g_l('prefs', '[yes]'));
+			$useSession->selectOption(get_value("SYSTEM_WE_SESSION") ? 1 : 0);
 
-			  $PHPLOCALSCOPE->selectOption(get_value("PHPLOCALSCOPE") ? 1 : 0);
+			$sessionTime = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' .
+				we_html_tools::htmlTextInput("newconf[SYSTEM_WE_SESSION_TIME]", 22, abs(get_value("SYSTEM_WE_SESSION_TIME")), "", ' onkeypress="return IsDigit(event);"', "text", 60) . '</td><td style="padding-left:20px;" class="small">s</td></tr></table>';
 
-			  $phpLocalScopeHtml = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[phpLocalScope_information]'), we_html_tools::TYPE_INFO, 240, false) . "<br/>" .
-			  $PHPLOCALSCOPE->getHtml();
-			 */
+			$cryptSession = new we_html_select(array("name" => 'newconf[SYSTEM_WE_SESSION_CRYPT]', 'class' => "weSelect"));
+			$cryptSession->addOption(0, g_l('prefs', '[no]'));
+			$cryptSession->addOption(1, g_l('prefs', '[yes]'));
+			$cryptSession->selectOption(get_value('SYSTEM_WE_SESSION_CRYPT') ? 1 : 0);
+
+			$sessionHtml = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[session][information]'), we_html_tools::TYPE_INFO, 240, false) . '<br/>' .
+				$useSession->getHtml() . '<br><br>' . g_l('prefs', '[session][time]') . '<br>' . $sessionTime . '<br>' . g_l('prefs', '[session][crypt]') . '<br>' . $cryptSession->getHtml();
+
 
 			$_settings = array(
 				array("headline" => g_l('prefs', '[we_max_upload_size]'), "html" => $_we_max_upload_size, "space" => 200),
@@ -2385,10 +2389,8 @@ function formmailBlockOnOff() {
 				array("headline" => g_l('prefs', '[authpass]'), "html" => $_authpass, "space" => 200),
 				array("headline" => g_l('prefs', '[thumbnail_dir]'), "html" => $_thumbnail_dir, "space" => 200),
 				array("headline" => g_l('prefs', '[pagelogger_dir]'), "html" => $_we_tracker_dir, "space" => 200),
-				array("headline" => g_l('prefs', '[navigation_entries_from_document]'), "html" => $NAVIGATION_ENTRIES_FROM_DOCUMENT->getHtml(), "space" => 200),
-				array("headline" => g_l('prefs', '[navigation_rules_continue]'), "html" => $NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH->getHtml(), "space" => 200),
 				array("headline" => g_l('prefs', '[hooks]'), "html" => $hooksHtml, "space" => 200),
-				//array("headline" => g_l('prefs', '[phpLocalScope]'), "html" => $phpLocalScopeHtml, "space" => 200),
+				array("headline" => g_l('prefs', '[session][title]'), "html" => $sessionHtml, "space" => 200),
 			);
 			// Build dialog element if user has permission
 			return create_dialog("", g_l('prefs', '[tab][system]'), $_settings, -1, "", "", null, $_needed_JavaScript);
