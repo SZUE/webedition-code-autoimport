@@ -87,7 +87,7 @@ abstract class we_autoloader{
 			'Services_JSON_Error' => 'JSON.php',
 			'Services_JSON' => 'JSON.php',
 			'taskFragment' => 'taskFragment.class.php',
-			'weBinary' => 'base/weBinary.class.php',
+			'weBinary' => 'weBinary.class.php',
 			'we_binaryDocument' => 'we_binaryDocument.class.php',
 			'we_category' => 'we_category.class.php',
 			'we_catListview' => 'listview/we_catListview.class.php',
@@ -243,7 +243,7 @@ abstract class we_autoloader{
 				break;
 			}
 		}
-		//will try next auto-loader 
+		//will try next auto-loader
 	}
 
 	/**
