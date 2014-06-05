@@ -287,9 +287,13 @@ The difference between symmetric encryption and hash is, that it is possible to 
 	'seem_startdocument'=>'Helppokäyttötilan aloitussivu',
 	'seoinside_hideineditmode'=>'Do not use in editmode',
 	'seoinside_hideinwebedition'=>'Do not use in preview',
-	'session'=>'Sessionmanagement',
-	'session_crypt'=>'Encrypt session transparent for each user',
-	'session_information'=>'',
+	
+	'session'=>array(
+		'crypt'=>'Encrypt session transparent for each user',
+		'information'=>'Management of php sessions is also available by webEdition. Each session is written to the database and can be encrpyted (highly recommended). Please note, each change of settings causes ALL users AND customers to loose their session.',
+		'time'=>'Lifetime of the session in seconds',
+		'title'=>'Sessionmanagement',
+	),
 	'show'=>'show',
 	'show_debug_frame'=>'Näytä seuranta -kehys',
 	'show_expert'=>'Näytä asiantuntija-asetukset',
