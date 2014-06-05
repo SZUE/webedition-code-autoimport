@@ -3,10 +3,8 @@
 class we_base_sessionHandler{
 
 	private $enabled = false;
-	// session-lifetime
 	private $lifeTime;
 	private $execTime;
-	private $sessName;
 	private $DB;
 	private $id = 0;
 	private $crypt = false;
@@ -15,13 +13,13 @@ class we_base_sessionHandler{
 		if($this->enabled && !$this->id){
 			ini_set('session.gc_probability', 1);
 			ini_set('session.gc_divisor', 1000);
-			session_set_save_handler(array($this, "open"), array($this, "close"), array($this, "read"), array($this, "write"), array($this, "destroy"), array($this, "gc"));
+			session_set_save_handler(array($this, 'open'), array($this, 'close'), array($this, 'read'), array($this, 'write'), array($this, 'destroy'), array($this, 'gc'));
 			$this->DB = new DB_WE();
 			$this->lifeTime = get_cfg_var('session.gc_maxlifetime');
 			$this->execTime = get_cfg_var('max_execution_time');
 			$this->id = uniqid('', true);
 			if(!(in_array('suhosin', get_loaded_extensions()) && ini_get('suhosin.session.encrypt'))){
-				$this->crypt = hash('haval224,4', $_SERVER['DOCUMENT_ROOT'] . $_SERVER["HTTP_USER_AGENT"] . $_SERVER["HTTP_ACCEPT_LANGUAGE"] . $_SERVER["HTTP_ACCEPT_ENCODING"], true);
+				$this->crypt = hash('haval224,4', $_SERVER['DOCUMENT_ROOT'] . $_SERVER['HTTP_USER_AGENT'] . $_SERVER['HTTP_ACCEPT_LANGUAGE'] . $_SERVER['HTTP_ACCEPT_ENCODING'], true);
 				$this->crypt .=$this->crypt;
 			}
 		}
@@ -35,7 +33,6 @@ class we_base_sessionHandler{
 	}
 
 	function open($savePath, $sessName){
-		$this->sessName = $sessName;
 		return true;
 	}
 
