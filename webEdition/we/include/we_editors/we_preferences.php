@@ -2771,7 +2771,7 @@ function formmailBlockOnOff() {
 
 			$encryptinfo = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[security][encryption][hint]'), we_html_tools::TYPE_ALERT, 240, false, 40) . '<br/>';
 			$cryptkey = get_value('SECURITY_ENCRYPTION_KEY');
-			$encryptionKey = we_html_tools::htmlTextInput('newconf[SECURITY_ENCRYPTION_KEY]', 30, ($cryptkey ? $cryptkey : we_customer_customer::cryptGetIV(56)), 112) . ' (hex)'; //+Button vorhandene Passwörter convertieren
+			$encryptionKey = we_html_tools::htmlTextInput('newconf[SECURITY_ENCRYPTION_KEY]', 30, ($cryptkey ? $cryptkey : bin2hex(we_customer_customer::cryptGetIV(56))), 112) . ' (hex)'; //+Button vorhandene Passwörter convertieren
 
 			$storeSessionPassword = new we_html_select(array('name' => 'newconf[SECURITY_SESSION_PASSWORD]', 'class' => 'weSelect'));
 			$storeSessionPassword->addOption(we_customer_customer::REMOVE_PASSWORD, g_l('prefs', '[security][storeSessionPassword][type][0]'));

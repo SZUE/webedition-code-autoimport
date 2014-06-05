@@ -97,9 +97,7 @@ switch(weRequest('string', 'cmd', '', 0)){
 		} else {
 
 		}
-
 		exit();
-		break;
 
 	case 'saveSettings':
 

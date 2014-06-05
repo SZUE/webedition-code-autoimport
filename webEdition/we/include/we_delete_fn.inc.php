@@ -80,7 +80,7 @@ function deleteFolder($id, $table, $path = '', $delR = true, we_database_base $D
 	$isTemplateFolder = ($table == TEMPLATES_TABLE);
 
 	$DB_WE = ($DB_WE ? $DB_WE : new DB_WE());
-	$path = $path ? $path : f('SELECT Path FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), 'Path', $DB_WE);
+	$path = $path ? $path : f('SELECT Path FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), '', $DB_WE);
 
 	if($delR){ // recursive delete
 		$DB_WE->query('SELECT ID FROM ' . $DB_WE->escape($table) . ' WHERE ParentID=' . intval($id));
@@ -95,8 +95,8 @@ function deleteFolder($id, $table, $path = '', $delR = true, we_database_base $D
 
 	// do not delete class folder if class still exists!!!
 	if(defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE){
-		if(f('SELECT IsClassFolder FROM ' . $table . ' WHERE ID=' . intval($id), 'IsClassFolder', $DB_WE)){ // it is a class folder
-			if(f('SELECT Path FROM ' . OBJECT_TABLE . ' WHERE Path="' . $DB_WE->escape($path) . '"', 'Path', $DB_WE)){ // class still exists
+		if(f('SELECT IsClassFolder FROM ' . $table . ' WHERE ID=' . intval($id), '', $DB_WE)){ // it is a class folder
+			if(f('SELECT Path FROM ' . OBJECT_TABLE . ' WHERE Path="' . $DB_WE->escape($path) . '"', '', $DB_WE)){ // class still exists
 				return;
 			}
 		}
@@ -158,18 +158,18 @@ function deleteFile($id, $table, $path = '', $contentType = '', we_database_base
 			$DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($id));
 
 			if(we_base_moduleInfo::isActive('schedule')){ //	Delete entries from schedule as well
-				$DB_WE->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($id) . ' AND ClassName !="we_objectFile"');
+				$DB_WE->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($id) . ' AND ClassName!="we_objectFile"');
 			}
 
 			$DB_WE->query('DELETE FROM ' . NAVIGATION_TABLE . ' WHERE Selection="static" AND SelectionType="docLink" AND LinkID=' . intval($id));
 
 			// Fast Fix for deleting entries from tblLangLink: #5840
-			$DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable = "tblFile" AND IsObject = 0 AND IsFolder = 0 AND DID = ' . intval($id));
-			$DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable = "tblFile" AND LDID = ' . intval($id));
+			$DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblFile" AND IsObject=0 AND IsFolder=0 AND DID=' . intval($id));
+			$DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblFile" AND LDID=' . intval($id));
 			break;
 		case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 			$DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE OID=' . intval($id));
-			$tableID = f('SELECT TableID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id), 'TableID', $DB_WE);
+			$tableID = f('SELECT TableID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id), '', $DB_WE);
 			if($tableID){
 				$DB_WE->query('DELETE FROM ' . OBJECT_X_TABLE . $tableID . ' WHERE OF_ID=' . intval($id));
 				//Bug 2892
@@ -193,12 +193,12 @@ function deleteFile($id, $table, $path = '', $contentType = '', we_database_base
 								$obj->we_publish(0, 1, 1);
 							}
 						}
-						$DB_WE->query('UPDATE ' . OBJECT_X_TABLE . $testclassID . ' SET ' . we_object::QUERY_PREFIX . $tableID . '=0 WHERE ' . we_object::QUERY_PREFIX . $tableID . '= ' . intval($id));
+						$DB_WE->query('UPDATE ' . OBJECT_X_TABLE . $testclassID . ' SET ' . we_object::QUERY_PREFIX . $tableID . '=0 WHERE ' . we_object::QUERY_PREFIX . $tableID . '=' . intval($id));
 					}
 				}
 				// Fast Fix for deleting entries from tblLangLink: #5840
-				$DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable = "tblObjectFile" AND DID = ' . intval($id));
-				$DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable = "tblObjectFile" AND LDID = ' . intval($id));
+				$DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblObjectFile" AND DID=' . intval($id));
+				$DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblObjectFile" AND LDID=' . intval($id));
 			}
 			if(we_base_moduleInfo::isActive('schedule')){ //	Delete entries from schedule as well
 				$DB_WE->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($id) . ' AND ClassName="we_objectFile"');
@@ -208,7 +208,7 @@ function deleteFile($id, $table, $path = '', $contentType = '', we_database_base
 
 	$DB_WE->query('DELETE FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id));
 	if(defined('OBJECT_TABLE') && $table == OBJECT_TABLE){
-		$ofID = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' . $DB_WE->escape($path) . '"', 'ID', $DB_WE);
+		$ofID = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' . $DB_WE->escape($path) . '"', '', $DB_WE);
 		if($ofID){
 			deleteEntry($ofID, OBJECT_FILES_TABLE, true, 0, $DB_WE);
 		}
@@ -228,7 +228,6 @@ function deleteThumbsByThumbID($id){
 }
 
 function deleteEntry($id, $table, $delR = true, $skipHook = 0, we_database_base $DB_WE = null){
-
 	$DB_WE = ($DB_WE ? $DB_WE : new DB_WE());
 	if(defined('WORKFLOW_TABLE') && ($table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE))){
 		if(we_workflow_utility::inWorkflow($id, $table)){
@@ -264,7 +263,7 @@ function deleteEntry($id, $table, $delR = true, $skipHook = 0, we_database_base 
 		we_temporaryDocument::delete($id, $table, $DB_WE);
 
 		update_time_limit(30);
-		if(!empty($row)){
+		if($row){
 			if($row['IsFolder']){
 				deleteFolder($id, $table, $row['Path'], $delR, $DB_WE);
 			} else {
