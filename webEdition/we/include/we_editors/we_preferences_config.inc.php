@@ -88,12 +88,16 @@ $GLOBALS['configs'] = array(
 		'XHTML_DEFAULT' => array('Default setting for xml attribute', false),
 		'XHTML_DEBUG' => array('Enable XHTML debug', false),
 		'XHTML_REMOVE_WRONG' => array('Remove wrong xhtml attributes from we:tags', false),
+//system
 		'WE_MAX_UPLOAD_SIZE' => array('Maximal possible uploadsize', 0),
+		'WE_NEW_FOLDER_MOD' => array('File permissions when creating a new directory', "755"),
 		'WE_DOCTYPE_WORKSPACE_BEHAVIOR' => array('Which Doctypes should be shown for which workspace 0=normal behaviour , 1=new behaviour', 0),
 		'SCHEDULER_TRIGGER' => array('decide how the scheduler works', 1), //postdoc
+		'SYSTEM_WE_SESSION' => array('use webedition session handling', 0),
+		'SYSTEM_WE_SESSION_TIME' => array('time after which the session is killed if not active anymore', get_cfg_var('session.gc_maxlifetime')),
+		'SYSTEM_WE_SESSION_CRYPT' => array('crypt we session before save', 0),
 // accessibility
 		'SHOWINPUTS_DEFAULT' => array('Default setting for showinputs attribute', true),
-		'WE_NEW_FOLDER_MOD' => array('File permissions when creating a new directory', "755"),
 // pageLogger Dir
 		'WE_TRACKER_DIR' => array('Directory in which pageLogger is installed', '/pageLogger'),
 		'DB_SET_CHARSET' => array('connection charset to db', 'utf8'),
@@ -213,8 +217,8 @@ $GLOBALS['configs'] = array(
 		'editorHTMLAttributeFontcolor' => array(null),
 		'editorPiTagFontcolor' => array(null),
 		'editorLinenumbers' => array(1),
-		'editorTooltips' => array(0),//tags
-		'editorTooltipsIDs' => array(0),//IDS
+		'editorTooltips' => array(0), //tags
+		'editorTooltipsIDs' => array(0), //IDS
 		'editorTooltipFont' => array(null),
 		'editorTooltipFontname' => array(null),
 		'editorTooltipFontsize' => array(null),
