@@ -227,7 +227,7 @@ function deleteThumbsByThumbID($id){
 	we_thumbnail::deleteByThumbID($id);
 }
 
-function deleteEntry($id, $table, $delR = true, $skipHook = 0, we_database_base $DB_WE = null){
+function deleteEntry($id, $table, $delR = true, $skipHook = false, we_database_base $DB_WE = null){
 	$DB_WE = ($DB_WE ? $DB_WE : new DB_WE());
 	if(defined('WORKFLOW_TABLE') && ($table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE))){
 		if(we_workflow_utility::inWorkflow($id, $table)){
