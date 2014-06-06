@@ -148,7 +148,7 @@ var weUploadFiles = new Array(),
 function initFileUpload() {
 	var fileselect = document.getElementById("fileselect"),
 		filedrag = document.getElementById("filedrag"),
-		c = 0, 
+		c = 0,
 		bf = top.imgimportbuttons;
 
 	if ((!filedrag || !fileselect) && c < 100){
@@ -188,9 +188,9 @@ function FileSelectHandler(e) {
 	files = e.target.files || e.dataTransfer.files;
 	lastIndex = weUploadFiles.length;
 
-	for (var i = 0, f; f = f = files[i]; i++) {
-	
-		/* 
+	for (var i = 0, f; f = files[i]; i++) {
+
+		/*
 		//this dows not work, because FileReader and Image work asynchronously
 		//we need a call back construction!
 		if (f.type.indexOf("image") == 0) {
@@ -198,7 +198,7 @@ function FileSelectHandler(e) {
 			reader.onload = function(e) {
 				var image = new Image();
 				image.onload = function() {
-					// access image size here 
+					// access image size here
 					console.log(this.naturalWidth + "x" + this.naturalHeight + " | ");
 				}
 				image.src = e.target.result;
@@ -249,7 +249,7 @@ function ReplaceSelectHandler(e){
 function _weContainsFiles(arr){
 	for (var i = 0; i < arr.length; i++){
 		if(typeof arr[i] === "object" && arr[i] !== null){
-			return true; 
+			return true;
 		}
 	}
 	return false;
@@ -266,7 +266,7 @@ function _weContains(a, obj) {
 }
 
 function _weComputeSize(size){
-	return size = size/1024 > 1023 ? ((size/1024)/1024).toFixed(1) + \' MB\' : 
+	return size = size/1024 > 1023 ? ((size/1024)/1024).toFixed(1) + \' MB\' :
 			(size/1024).toFixed(1) + \' KB\';
 }
 
@@ -308,7 +308,7 @@ function _weAppendRow(file, index){
 	fi = fi.replace(/FILESIZE/g,(maxSize === 0 || file.size < maxSize ? _weComputeSize(file.size) : \'<span style="color:red">> ' . $this->maxUploadSizeMB . ' MB</span>\'));
 	weAppendMultiboxRow(fi,"",0,0,0,-1);
 	div = document.getElementById("div_upload_files")
-	div.scrollTop = div.scrollHeight; 
+	div.scrollTop = div.scrollHeight;
 	document.getElementById("fileInput_uploadFiles_" + index).addEventListener("change", ReplaceSelectHandler, false);
 	bf.document.getElementById("progressbar").style.display = "none";
 	bf._weSetCancelButtonText("cancel");
@@ -430,7 +430,7 @@ function setApplet() {
 	//setTimeout("document.JUpload.jsRegisterUploaded(\"refreshTree\");",3000);
 }
 ') .
-				
+
 we_html_element::jsScript(JS_DIR . "windows.js");
 	}
 
@@ -693,13 +693,13 @@ we_html_element::jsScript(JS_DIR . "windows.js");
 		$topParts[] = array("headline" => g_l('importFiles', "[select_files]"), "html" => $fileselect, "space" => 130);
 
 		$butEdit = we_html_button::create_button(
-				we_html_button::WE_IMAGE_BUTTON_IDENTIFY . 'edit_edit', 
+				we_html_button::WE_IMAGE_BUTTON_IDENTIFY . 'edit_edit',
 				'javascript:void(0)'
 		);
 		$butEdit = str_replace("\n", " ", str_replace("\r", " ", $butEdit));
-		
+
 		$butTrash = we_html_button::create_button(
-				we_html_button::WE_IMAGE_BUTTON_IDENTIFY . 'btn_function_trash', 
+				we_html_button::WE_IMAGE_BUTTON_IDENTIFY . 'btn_function_trash',
 				"javascript:_weDeleteRow(WEFORMNUM,this);"
 		);
 		$butTrash = str_replace("\n", " ", str_replace("\r", " ", $butTrash));
@@ -742,7 +742,7 @@ we_html_element::jsScript(JS_DIR . "windows.js");
 		$contentParts = array();
 
 		$content = we_html_element::htmlDiv(
-				array("id" => "forms", "style" => "display:block"), 
+				array("id" => "forms", "style" => "display:block"),
 				(getPref('use_jupload') ? we_html_element::htmlForm(array(
 						"name" => "JUploadForm"
 						), '') : '') .
@@ -910,7 +910,7 @@ we_html_element::jsScript(JS_DIR . "windows.js");
 		}
 
 		if($formcount && $this->useJsUpload){
-			$response = array('status' => '', 'tmpName' => '', 'message' => '', 'completed' => ''); 
+			$response = array('status' => '', 'tmpName' => '', 'message' => '', 'completed' => '');
 
 			if($this->partNum == $this->partCount){
 				//actual file completed
@@ -1058,7 +1058,7 @@ function _weSplitFileAndSend(file, split, dataArray){
 		cf = top.imgimportcontent;
 
 	if(split){
-		var blob, 
+		var blob,
 			p = 0,
 			blobSize = 100*1024,
 			numBlobs = Math.ceil(dataArray.length / blobSize),
@@ -1077,7 +1077,7 @@ function _weSplitFileAndSend(file, split, dataArray){
 	} else {
 		resp = _weSendPart(file, file.name, file.size, file.size, 1, 1, '');
 	}
-	
+
 	cf.document.getElementById('div_upload_files').scrollTop = cf.document.getElementById('div_uploadFiles_' + weMapFiles[weActualFile]).offsetTop - 200;
 	cf._setProgressCompleted_uploader((JSON.parse(resp).status === 'failure' ? false : true), weMapFiles[weActualFile], JSON.parse(resp).message);
 	setTimeout(function(){_weSendNextFile(resp)}, 100);
