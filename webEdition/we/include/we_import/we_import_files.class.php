@@ -238,7 +238,7 @@ function ReplaceSelectHandler(e){
 
 		weUploadFiles[index] = f
 		nameField.value = f.name;
-		sizeField.innerHTML = maxSize === 0 || f.size < maxSize ? _weComputeSize(f.size) : \'<span style="color:red">> ' . $this->maxUploadSizeMB . ' MB</span>\';
+		sizeField.innerHTML = maxSize === 0 || f.size < maxSize ? _weComputeSize(f.size) : \'<span style="color:red">&gt; ' . $this->maxUploadSizeMB . ' MB</span>\';
 		added = maxSize === 0 || f.size < maxSize ? true : false;
 	}
 	if(added){
