@@ -1029,7 +1029,7 @@ $_fileuploader_html2 = new we_html_table(array('border' => 0, 'cellpadding' => 0
 $_fileuploader_html2->setCol(0, 0, array('colspan' => 3, 'height' => 25), '');
 $_fileuploader_html2->setCol(1, 0, array('colspan' => 3, 'height' => 10), $_fileuploader_use_legacy);
 $_fileuploader_html2->setCol(2, 0, array('colspan' => 3, 'height' => 15), '');
-$_fileuploader_html2->setCol(3, 0, array('colspan' => 3, 'height' => 10), 'Neuer JavaScript File Upload:<br/>maximale FilegrÃ¶ÃŸe in MB');
+$_fileuploader_html2->setCol(3, 0, array('colspan' => 3, 'height' => 10), 'Neuer JavaScript File Upload:<br/>maximale Filegroesse in MB');
 $_fileuploader_html2->setCol(4, 0, null, $_fileuploader_max_size);
 $_fileuploader_html2->setCol(4, 1, null, we_html_tools::getPixel(10, 1));
 $_fileuploader_html2->setCol(4, 2, null, $_fileuploader_max_size_chooser);
