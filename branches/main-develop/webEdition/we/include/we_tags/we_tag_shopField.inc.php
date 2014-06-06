@@ -113,14 +113,14 @@ function we_tag_shopField($attribs){
 		case 'select':
 			return we_getSelectField($fieldname, $savedVal, $values, $atts, false);
 			break;
-			
+
 		case 'country':
 			$newAtts = removeAttribs($attribs, array('name', 'type', 'value', 'values','checked', 'mode'));
 			$newAtts['name'] = 'we_sscf[' . $name . ']';
 			$docAttr = weTag_getAttribute('doc', $attribs, 'self');
 			$doc = we_getDocForTag($docAttr);
 			$lang = $doc->Language;
-			$langcode = ($lang != '' ?
+			$langcode = ($lang ?
 					substr($lang, 0, 2) :
 					we_core_Local::weLangToLocale($GLOBALS["WE_LANGUAGE"]));
 

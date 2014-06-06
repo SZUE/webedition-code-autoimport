@@ -41,6 +41,21 @@ class we_navigation_navigation extends weModelBase{
 	const STPYE_CATEGORY = 'category';
 	const LSELECTION_INTERN = 'intern';
 	const LSELECTION_EXTERN = 'extern';
+	const defaultPreviewCode = '<we:navigation navigationname="default" parentid="@###PARENTID###@" />
+
+<we:navigationEntry type="folder" navigationname="default">
+  <li><we:navigationField name="text" />
+    <we:ifHasEntries><ul><we:navigationEntries /></ul></we:ifHasEntries>
+  </li>
+</we:navigationEntry>
+
+<we:navigationEntry type="item" navigationname="default">
+  <li><a href="<we:navigationField name="href" />"><we:navigationField name="text" /></a></li>
+</we:navigationEntry>
+
+<ul>
+<we:navigationWrite navigationname="default" />
+</ul>';
 
 	//properties
 	var $ID = 0;
@@ -75,7 +90,6 @@ class we_navigation_navigation extends weModelBase{
 	var $Url = 'http://';
 	var $UrlID = 0;
 	var $Charset = '';
-	var $defaultPreviewCode = '';
 	var $previewCode = '';
 	var $ClassName = __CLASS__;
 	var $ContentType = 'weNavigation';
@@ -93,9 +107,7 @@ class we_navigation_navigation extends weModelBase{
 	var $BlackList = array();
 	var $WhiteList = array();
 	var $UseDocumentFilter = true;
-	var $serializedFields = array(
-		'Sort', 'Attributes', 'CustomerFilter'
-	);
+	var $serializedFields = array('Sort', 'Attributes', 'CustomerFilter');
 
 	/**
 	 * Default Constructor
@@ -113,9 +125,7 @@ class we_navigation_navigation extends weModelBase{
 			$this->load($navigationID);
 		}
 
-		include (WE_INCLUDES_PATH . 'we_modules/navigation/conf/we_navigationSettings.inc.php');
-		$this->defaultPreviewCode = str_replace('@###PARENTID###@', $this->ID, $this->defaultPreviewCode);
-		$this->previewCode = $this->defaultPreviewCode;
+		$this->previewCode = str_replace('@###PARENTID###@', $this->ID, self::defaultPreviewCode);
 		$this->Charset = DEFAULT_CHARSET;
 	}
 
@@ -128,7 +138,7 @@ class we_navigation_navigation extends weModelBase{
 
 			$this->Sort = $this->Sort ? @unserialize($this->Sort) : '';
 
-			if($this->IsFolder == 0){
+			if(!$this->IsFolder){
 				$this->Charset = $this->findCharset($this->ParentID);
 			}
 			$this->Attributes = @unserialize($this->Attributes);
@@ -157,8 +167,6 @@ class we_navigation_navigation extends weModelBase{
 	}
 
 	function _getFilterOfDocument(){
-		$_id = 0;
-		$_table = "";
 		switch(($this->IsFolder ? $this->FolderSelection : $this->SelectionType)){
 			case self::STPYE_OBJLINK:
 				$_table = OBJECT_FILES_TABLE;
@@ -168,6 +176,9 @@ class we_navigation_navigation extends weModelBase{
 				$_table = FILE_TABLE;
 				$_id = $this->LinkID;
 				break;
+			default:
+				$_id = 0;
+				$_table = "";
 		}
 
 		$this->LimitAccess = 0;
@@ -185,12 +196,6 @@ class we_navigation_navigation extends weModelBase{
 	}
 
 	function save($order = true, $rebuild = false){
-		$configFile = WE_INCLUDES_PATH . 'we_modules/navigation/conf/we_conf_navigation.inc.php';
-		if(!file_exists($configFile) || !is_file($configFile)){
-			we_navigation_settingControl::saveSettings(true);
-		}
-		include ($configFile);
-
 		if(defined('CUSTOMER_TABLE') && $this->UseDocumentFilter){
 			$this->_getFilterOfDocument();
 		}
@@ -252,12 +257,10 @@ class we_navigation_navigation extends weModelBase{
 			// the entry has been moved
 			$this->reorder($_oldPid);
 			$this->reorder($this->ParentID);
+			$this->previewCode = str_replace('@###PARENTID###@', $this->ID, self::defaultPreviewCode);
 		}
 		$this->Categories = $_paths;
 		$this->Sort = $_preSort;
-		include (WE_INCLUDES_PATH . 'we_modules/navigation/conf/we_navigationSettings.inc.php');
-		$this->defaultPreviewCode = str_replace('@###PARENTID###@', $this->ID, $this->defaultPreviewCode);
-		$this->previewCode = $this->defaultPreviewCode;
 
 		if($this->IsFolder == 0){
 			$this->Charset = $_charset;
@@ -294,12 +297,6 @@ class we_navigation_navigation extends weModelBase{
 	}
 
 	function delete(){
-		$configFile = WE_INCLUDES_PATH . 'we_modules/navigation/conf/we_conf_navigation.inc.php';
-		if(!file_exists($configFile) || !is_file($configFile)){
-			we_navigation_settingControl::saveSettings(true);
-		}
-		include ($configFile);
-
 		if(!$this->ID){
 			return false;
 		}
@@ -349,7 +346,7 @@ class we_navigation_navigation extends weModelBase{
 	}
 
 	function pathExists($path){
-		return f('SELECT 1 FROM ' . $this->db->escape($this->table) . ' WHERE Path="' . $this->db->escape($path) . '" AND ID!=' . intval($this->ID), '', $this->db) == 1;
+		return f('SELECT 1 FROM ' . $this->db->escape($this->table) . ' WHERE Path="' . $this->db->escape($path) . '" AND ID!=' . intval($this->ID) . ' LIMIT 1', '', $this->db);
 	}
 
 	function isSelf(){
@@ -376,7 +373,7 @@ class we_navigation_navigation extends weModelBase{
 			return true;
 		}
 		//checkWS
-		return f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . $this->ParentID . ' ' . self::getWSQuery(), '', $this->db) == 1;
+		return f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . $this->ParentID . ' ' . self::getWSQuery(), '', $this->db);
 	}
 
 	function evalPath($id = 0){
@@ -510,21 +507,21 @@ class we_navigation_navigation extends weModelBase{
 		if(!$this->ID){
 			return false;
 		}
-		return f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' AND Depended=1 LIMIT 1', '', $this->db) == 1;
+		return f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' AND Depended=1 LIMIT 1', '', $this->db);
 	}
 
 	function hasAnyChilds(){
 		if(!$this->ID){
 			return false;
 		}
-		return f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' LIMIT 1', '', $this->db) == 1;
+		return f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' LIMIT 1', '', $this->db);
 	}
 
 	function hasIndependentChilds(){
 		if(!$this->ID){
 			return false;
 		}
-		return f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' AND Depended=0 LIMIT 1', '', $this->db) == 1;
+		return f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' AND Depended=0 LIMIT 1', '', $this->db);
 	}
 
 	function getDynamicPreview(&$storage, $rules = false){
@@ -737,7 +734,7 @@ class we_navigation_navigation extends weModelBase{
 
 		$_path = str_replace(array('&amp;', '&'), array('&', '&amp;'), $_path);
 
-		if(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES && $this->LinkSelection != LSELECTION_EXTERN && $this->SelectionType != STYPE_URLLINK){ //Fix #8353
+		if(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES && $this->LinkSelection != self::LSELECTION_EXTERN && $this->SelectionType != self::STYPE_URLLINK){ //Fix #8353
 			$dirindexnames = array_map('trim', explode(',', '/' . str_replace(',', ',/', NAVIGATION_DIRECTORYINDEX_NAMES)));
 			return str_replace($dirindexnames, '/', $_path);
 		}

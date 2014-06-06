@@ -34,9 +34,9 @@ $_blocked = false;
 
 if(FORMMAIL_LOG){
 	// insert into log
-	$GLOBALS['DB_WE']->query('INSERT INTO ' . FORMMAIL_LOG_TABLE . ' (ip, unixTime) VALUES("' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '", UNIX_TIMESTAMP())');
+	$GLOBALS['DB_WE']->query('INSERT INTO ' . FORMMAIL_LOG_TABLE . ' SET ip="' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '"');
 	if(FORMMAIL_EMPTYLOG > -1){
-		$GLOBALS['DB_WE']->query('DELETE FROM ' . FORMMAIL_LOG_TABLE . ' WHERE unixTime<(UNIX_TIMESTAMP()-' . FORMMAIL_EMPTYLOG . ')');
+		$GLOBALS['DB_WE']->query('DELETE FROM ' . FORMMAIL_LOG_TABLE . ' WHERE unixTime<(NOW() - INTERVAL ' . intval(FORMMAIL_EMPTYLOG) . ' SECOND)');
 	}
 
 	if(FORMMAIL_BLOCK){
@@ -44,11 +44,11 @@ if(FORMMAIL_LOG){
 		$GLOBALS['DB_WE']->query('DELETE FROM ' . FORMMAIL_BLOCK_TABLE . ' WHERE blockedUntil!=-1 AND blockedUntil<UNIX_TIMESTAMP()');
 
 		// check if ip is allready blocked
-		if(f('SELECT id FROM ' . FORMMAIL_BLOCK_TABLE . ' WHERE ip="' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '"')){
+		if(f('SELECT 1 FROM ' . FORMMAIL_BLOCK_TABLE . ' WHERE ip="' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '" LIMIT 1')){
 			$_blocked = true;
 		} else {
 			// ip is not blocked, so see if we need to block it
-			if(f('SELECT COUNT(1) FROM ' . FORMMAIL_LOG_TABLE . ' WHERE unixTime>(UNIX_TIMESTAMP()-' . intval(FORMMAIL_SPAN) . ') AND ip="' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '"') > FORMMAIL_TRIALS){
+			if(f('SELECT COUNT(1) FROM ' . FORMMAIL_LOG_TABLE . ' WHERE unixTime>(NOW()- INTERVAL ' . intval(FORMMAIL_SPAN) . ' SECOND) AND ip="' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '"') > FORMMAIL_TRIALS){
 				$_blocked = true;
 				// insert in block table
 				$GLOBALS['DB_WE']->query('REPLACE INTO ' . FORMMAIL_BLOCK_TABLE . ' SET ' . we_database_base::arraySetter(array(
@@ -165,14 +165,13 @@ function redirect($url, $_emosScontact = ''){
 }
 
 function check_recipient($email){
-	return (f('SELECT 1 FROM ' . RECIPIENTS_TABLE . ' WHERE Email="' . $GLOBALS['DB_WE']->escape($email) . '"') ? true : false);
+	return (f('SELECT 1 FROM ' . RECIPIENTS_TABLE . ' WHERE Email="' . $GLOBALS['DB_WE']->escape($email) . '" LIMIT 1'));
 }
 
 function check_captcha(){
-	$name = $_REQUEST['captchaname'];
-	return (isset($_REQUEST[$name]) && !empty($_REQUEST[$name]) ?
-			we_captcha_captcha::check($_REQUEST[$name]) :
-			false);
+	return ($name = weRequest('string', weRequest('string', 'captchaname', '__NOT_SET__')) ?
+		we_captcha_captcha::check($name) :
+		false);
 }
 
 $_req = weRequest('raw', 'required', '');
@@ -310,9 +309,9 @@ if($recipient){
 	}
 
 	$recipients = makeArrayFromCSV($recipient);
-	$senderForename = isset($_REQUEST['forename']) && $_REQUEST['forename'] != '' ? $_REQUEST['forename'] : '';
-	$senderSurname = isset($_REQUEST['surname']) && $_REQUEST['surname'] != '' ? $_REQUEST['surname'] : '';
-	$sender = ($senderForename != '' || $senderSurname != '' ? $senderForename . ' ' . $senderSurname . '<' . $fromMail . '>' : $fromMail);
+	$senderForename = isset($_REQUEST['forename']) && $_REQUEST['forename'] ? $_REQUEST['forename'] : '';
+	$senderSurname = isset($_REQUEST['surname']) && $_REQUEST['surname'] ? $_REQUEST['surname'] : '';
+	$sender = ($senderForename != '' || $senderSurname ? $senderForename . ' ' . $senderSurname . '<' . $fromMail . '>' : $fromMail);
 
 	$phpmail = new we_util_Mailer('', $subject, $sender);
 	$phpmail->setCharSet($charset);

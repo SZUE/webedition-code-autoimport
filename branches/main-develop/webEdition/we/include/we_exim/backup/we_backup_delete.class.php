@@ -24,7 +24,7 @@
  */
 class we_backup_delete extends taskFragment{
 
-	var $db;
+	private $db;
 
 	function __construct($name, $taskPerFragment, $pause = 0){
 		$this->db = new DB_WE();

@@ -27,8 +27,7 @@ we_html_tools::protect();
 
 $_SERVER['SCRIPT_NAME'] = WEBEDITION_DIR . 'we_delSelect.php';
 
-$fs = new we_selector_delete(
-	isset($id) ? $id : weRequest('int', "id", 0), isset($table) ? $table : weRequest('table', "table", FILE_TABLE));
+$fs = new we_selector_delete(weRequest('int', "id", 0), weRequest('table', "table", FILE_TABLE));
 
 $fs->printHTML(weRequest('int', "what", we_selector_file::FRAMESET));
 

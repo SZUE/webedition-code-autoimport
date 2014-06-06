@@ -70,14 +70,14 @@ class we_search{
 			if($searchname[$i]){
 				$regs = explode('_', $searchfield[$i], 2); //bug #3694
 				if((count($regs) == 2) && $regs[0] == 'date'){ //bug #3694
-					$year = ($searchname[$i]['year'] && $searchname[$i]['year'] != '' ? $searchname[$i]['year'] : date('Y'));
-					$month = ($searchname[$i]['month'] && $searchname[$i]['month'] != '' ? $searchname[$i]['month'] : '');
-					$day = ($searchname[$i]['day'] && $searchname[$i]['day'] != '' ? $searchname[$i]['day'] : '');
-					$hour = ($searchname[$i]['hour'] && $searchname[$i]['hour'] != '' ? $searchname[$i]['hour'] : '');
-					$minute = ($searchname[$i]['minute'] && $searchname[$i]['minute'] != '' ? $searchname[$i]['minute'] : '');
+					$year = ($searchname[$i]['year'] && $searchname[$i]['year'] ? $searchname[$i]['year'] : date('Y'));
+					$month = ($searchname[$i]['month'] && $searchname[$i]['month'] ? $searchname[$i]['month'] : '');
+					$day = ($searchname[$i]['day'] && $searchname[$i]['day'] ? $searchname[$i]['day'] : '');
+					$hour = ($searchname[$i]['hour'] && $searchname[$i]['hour'] ? $searchname[$i]['hour'] : '');
+					$minute = ($searchname[$i]['minute'] && $searchname[$i]['minute'] ? $searchname[$i]['minute'] : '');
 
-					$from = mktime(($hour != '' ? $hour : 0), ($minute != '' ? $minute : 0), 0, ($month != '' ? $month : 1), ($day != '' ? $day : 1), $year);
-					$till = mktime(($hour != '' ? $hour : 23), ($minute != '' ? $minute : 59), 59, ($month != '' ? $month : 12), ($day != '' ? $day : date('t', mktime(0, 0, 0, ($month != '' ? $month : 12), 1, $year))), $year);
+					$from = mktime(($hour ? $hour : 0), ($minute ? $minute : 0), 0, ($month ? $month : 1), ($day ? $day : 1), $year);
+					$till = mktime(($hour ? $hour : 23), ($minute ? $minute : 59), 59, ($month ? $month : 12), ($day ? $day : date('t', mktime(0, 0, 0, ($month ? $month : 12), 1, $year))), $year);
 
 					switch($searchlocation[$i]){
 						case '<':

@@ -387,17 +387,17 @@ abstract class we_export_functions{
 				}
 
 				// Generate XML output if content is given
-				return $_tabs . "<" . $tagname . ($content != "" ?
+				return $_tabs . "<" . $tagname . ($content ?
 						'>' . ($fix_content ? ($cdata ? ('<![CDATA[' . $content . "]]>") : oldHtmlspecialchars($content, ENT_QUOTES)) : $content) . "</" . $tagname . ">\n" :
 						"/>\n");
 
 			case "csv":
 				// Generate XML output if content is given
-				return ($content != "" ?
+				return ($content ?
 						self::correctCSV($content, $csv_delimiter, $csv_enclose, $csv_lineend) . $csv_delimiter : $csv_delimiter);
 			case "cdata":
 				// Generate CDATA XML output if content is given
-				return ($content != "" ? '<![CDATA[' . $content . ']]>' : '');
+				return ($content ? '<![CDATA[' . $content . ']]>' : '');
 		}
 	}
 

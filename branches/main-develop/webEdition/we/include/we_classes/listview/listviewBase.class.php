@@ -109,7 +109,7 @@ abstract class listviewBase{
 			'weekstart' => 0
 		);
 		if($calendar != ''){
-			$this->calendar_struct['datefield'] = $datefield != '' ? $datefield : '###Published###';
+			$this->calendar_struct['datefield'] = $datefield ? $datefield : '###Published###';
 			$this->calendar_struct['defaultDate'] = ($date == '' ? time() : strtotime($date));
 			if($weekstart != ''){
 				$wdays = array('sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday');

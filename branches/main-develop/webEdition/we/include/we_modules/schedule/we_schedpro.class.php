@@ -203,7 +203,7 @@ function checkFooter(){
 				break;
 			case self::CATEGORY:
 				$delallbut = we_html_button::create_button("delete_all", "javascript:we_cmd('schedule_delete_all_schedcats'," . $this->nr . ")");
-				$addbut = we_html_button::create_button("add", "javascript:we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','opener.setScrollTo();opener.top.we_cmd(\\'schedule_add_schedcat\\',top.currentID," . $this->nr . ");')");
+				$addbut = we_html_button::create_button("add", "javascript:we_cmd('openCatselector',0,'" . CATEGORY_TABLE . "','','','opener.setScrollTo();opener.top.we_cmd(\\'schedule_add_schedcat\\',top.currentID," . $this->nr . ");')");
 				$cats = new MultiDirChooser(450, $this->CategoryIDs, "schedule_delete_schedcat", we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", CATEGORY_TABLE, "defaultfont", $this->nr);
 				$cats->extraDelFn = 'setScrollTo();';
 				if(!permissionhandler::hasPerm("EDIT_KATEGORIE")){
@@ -377,8 +377,7 @@ function checkFooter(){
 			switch($s['task']){
 				case self::DELETE:
 					$GLOBALS['NOT_PROTECT'] = true;
-					require_once(WE_INCLUDES_PATH . 'we_delete_fn.inc.php');
-					deleteEntry($id, $schedFile['table']);
+					we_base_delete::deleteEntry($id, $schedFile['table']);
 					$callPublish = false;
 					$changeTmpDoc = false;
 					break 2; //exit foreach
@@ -423,8 +422,11 @@ function checkFooter(){
 					$callPublish = (count($schedFile['value']) > 1); //only if other operations pending
 					//don't show any output
 					ob_start();
-					//use we:include to call document. Note: editmode, inWE is already disabled
-					eval(we_tag('include', array('type' => 'document', 'id' => $id)));
+					//we can't use include-tag since we don't have a document & many warnings will occur.
+					$path = id_to_path($id, FILE_TABLE, $DB_WE);
+					if($path){
+						include($_SERVER['DOCUMENT_ROOT'] . $path);
+					}
 					ob_end_clean();
 					break;
 			}

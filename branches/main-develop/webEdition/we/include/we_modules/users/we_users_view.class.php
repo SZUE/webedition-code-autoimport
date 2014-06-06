@@ -64,7 +64,6 @@ class we_users_view extends weModuleView{
 
 		return we_html_element::jsScript(JS_DIR . 'images.js') .
 			we_html_element::jsScript(JS_DIR . 'windows.js') .
-			we_html_element::jsScript(JS_DIR . 'md5.js') .
 			we_html_element::jsElement('
 		var loaded=0;
 		var hot=0;
@@ -346,7 +345,6 @@ function we_cmd() {
 		return weSuggest::getYuiFiles() .
 			we_html_element::jsScript(JS_DIR . 'images.js') .
 			we_html_element::jsScript(JS_DIR . 'windows.js') .
-			we_html_element::jsScript(JS_DIR . 'md5.js') .
 			we_html_element::jsElement('
 var loaded = 0;
 function we_submitForm(target, url) {
@@ -434,8 +432,7 @@ function we_cmd() {
 		case "openNewsletterDirselector":
 			if (arguments[0] == "openNewsletterDirselector") {
 				url = "' . WE_MODULES_DIR . 'newsletter/we_dirfs.php?";
-			}
-			else {
+			}else {
 				url = "' . WE_INCLUDES_DIR . 'we_modules/navigation/we_navigationDirSelect.php?";
 			}
 			for (var i = 0; i < arguments.length; i++) {
@@ -502,7 +499,7 @@ function we_cmd(){
 
 				$_SESSION["user_session_data"] = $user_object->getState();
 
-				print we_html_element::jsElement('
+				echo we_html_element::jsElement('
 		top.content.editor.edheader.location="' . $this->frameset . '?pnt=edheader";
 		top.content.editor.edbody.location="' . $this->frameset . '?pnt=edbody";
 		top.content.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";');
@@ -596,7 +593,6 @@ function we_cmd(){
 				$isAcError = false;
 				$weAcQuery = new we_selector_query();
 
-				// bugfix #1665 for php 4.1.2: "-" moved to the end of the regex-pattern
 				if(isset($_REQUEST[$_REQUEST['obj_name'] . '_username']) && !we_users_user::filenameNotValid($_REQUEST[$_REQUEST['obj_name'] . '_username'])){
 					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('global', '[username_wrong_chars]'), we_message_reporting::WE_MESSAGE_ERROR));
 					break;
@@ -605,6 +601,7 @@ function we_cmd(){
 					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
 					break;
 				}
+
 				if(isset($_REQUEST[$_REQUEST['obj_name'] . '_ParentID']) && ($_REQUEST[$_REQUEST['obj_name'] . '_ParentID']) && $_REQUEST[$_REQUEST['obj_name'] . '_ParentID'] > 0){
 					$weAcResult = $weAcQuery->getItemById($_REQUEST[$_REQUEST['obj_name'] . '_ParentID'], USER_TABLE, array('IsFolder'), false);
 					if(!is_array($weAcResult) || $weAcResult[0]['IsFolder'] == 0){
@@ -667,9 +664,14 @@ function we_cmd(){
 				}
 				$user_object = new we_users_user();
 				$user_object->setState($_SESSION["user_session_data"]);
+				if(isset($_REQUEST['oldtab']) && isset($_REQUEST['old_perm_branch'])){
+
+					$user_object->preserveState($_REQUEST['oldtab'], $_REQUEST['old_perm_branch']);
+					$_SESSION["user_session_data"] = $user_object->getState();
+				}
 
 				if(!permissionhandler::hasPerm("ADMINISTRATOR") && $user_object->checkPermission("ADMINISTRATOR")){
-					print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR));
+					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR));
 					$user_object = new we_users_user();
 					break;
 				}
@@ -706,7 +708,7 @@ function we_cmd(){
 						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_users', "[username_empty]"), we_message_reporting::WE_MESSAGE_ERROR));
 						break;
 					}
-					$exist = (f('SELECT 1 FROM ' . USER_TABLE . ' WHERE ID!=' . intval($user_object->ID) . " AND username='" . $user_object->username . "'"));
+					$exist = (f('SELECT 1 FROM ' . USER_TABLE . ' WHERE ID!=' . intval($user_object->ID) . " AND username='" . $user_object->username . "' LIMIT 1"));
 					if($exist && $user_object->Type != we_users_user::TYPE_ALIAS){
 						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(sprintf(g_l('modules_users', "[username_exists]"), $user_object->username), we_message_reporting::WE_MESSAGE_ERROR));
 						break;
@@ -715,7 +717,6 @@ function we_cmd(){
 						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_users', "[modify_last_admin]"), we_message_reporting::WE_MESSAGE_ERROR));
 						break;
 					}
-
 					$foo = ($user_object->ID ?
 							getHash('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($user_object->ID), $user_object->DB_WE) :
 							array('ParentID' => 0));
@@ -791,16 +792,16 @@ function we_cmd(){
 					}
 
 					if(!permissionhandler::hasPerm("ADMINISTRATOR") && $user_object->checkPermission("ADMINISTRATOR")){
-						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR));
+						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR));
 						$user_object = new we_users_user();
 						break;
 					}
 					if(!permissionhandler::hasPerm("DELETE_USER") && $user_object->Type == we_users_user::TYPE_USER){
-						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR));
+						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR));
 						break;
 					}
 					if(!permissionhandler::hasPerm("DELETE_GROUP") && $user_object->Type == we_users_user::TYPE_USER_GROUP){
-						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR));
+						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR));
 						break;
 					}
 
@@ -896,7 +897,7 @@ function we_cmd(){
 		}
 
 		if(isset($this->raw) && is_array($this->raw->persistent_slots)){
-			foreach($this->raw->persistent_slots as $key => $val){
+			foreach($this->raw->persistent_slots as $val){
 				$varname = $val;
 				if(isset($_REQUEST[$varname])){
 					$this->raw->{$val} = $_REQUEST[$varname];
@@ -904,10 +905,11 @@ function we_cmd(){
 			}
 		}
 
-		if(isset($_REQUEST['page']))
+		if(isset($_REQUEST['page'])){
 			if(isset($_REQUEST['page'])){
 				$this->page = $_REQUEST['page'];
 			}
+		}
 	}
 
 	function new_array_splice(&$a, $start, $len = 1){

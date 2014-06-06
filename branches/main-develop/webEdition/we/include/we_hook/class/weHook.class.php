@@ -44,7 +44,7 @@ class weHook{
 		$this->param = $param;
 		$this->param['hookHandler'] = $this;
 		$this->findHookFile();
-		$this->func = 'weCustomHook_' . ($appName != '' ? $appName . '_' : '') . $action;
+		$this->func = 'weCustomHook_' . ($appName ? $appName . '_' : '') . $action;
 	}
 
 	function executeHook(){

@@ -246,7 +246,7 @@
 
 					} else {
 <?php
-print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_left]"), we_message_reporting::WE_MESSAGE_ERROR);
+echo we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_left]"), we_message_reporting::WE_MESSAGE_ERROR);
 ?>
 					}
 				}
@@ -382,7 +382,7 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 		 */
 		this.closeAllDocuments = function() {
 
-			if (top.we_cmd("editor_plugin_doc_count") === 0 || confirm("<?php print g_l('multiEditor', "[eplugin_exit_doc]"); ?>")) {
+			if (top.we_cmd("editor_plugin_doc_count") === 0 || confirm("<?php echo g_l('multiEditor', "[eplugin_exit_doc]"); ?>")) {
 
 				// close all none Hot Editors
 				if (this.FreeEditorFrames.length !== this.EditorWindowsAmount) {
@@ -418,7 +418,7 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 
 		this.closeAllButActiveDocument = function(activeId) {
 
-			if (top.we_cmd("editor_plugin_doc_count") === 0 || confirm("<?php print g_l('multiEditor', "[eplugin_exit_doc]"); ?>")) {
+			if (top.we_cmd("editor_plugin_doc_count") === 0 || confirm("<?php echo g_l('multiEditor', "[eplugin_exit_doc]"); ?>")) {
 
 				// only do something, if more than one editor is open
 				if ((this.EditorWindowsAmount - this.FreeEditorFrames.length) > 1) {
@@ -963,7 +963,7 @@ echo (we_base_browserDetect::isChrome() ?
 
 		this.freeEditor = function() {
 
-			this.EditorFrameWindow.location = "<?php print HTML_DIR ?>/blank_editor.html";
+			this.EditorFrameWindow.location = "<?php echo HTML_DIR ?>/blank_editor.html";
 
 			this.EditorType = null;	// model|cockpit, etc
 
@@ -1045,7 +1045,7 @@ echo (we_base_browserDetect::isChrome() ?
 		//   nothing
 		//--------------------------------------------------------------------
 		this.setEmptyEditor = function() {
-			this.EditorFrameWindow.location = "<?php print HTML_DIR ?>/blank_editor.html";
+			this.EditorFrameWindow.location = "<?php echo HTML_DIR ?>/blank_editor.html";
 		};
 
 		this.getEditorFrameWindow = function() {

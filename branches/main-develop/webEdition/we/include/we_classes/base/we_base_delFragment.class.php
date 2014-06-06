@@ -22,12 +22,11 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once(WE_INCLUDES_PATH . 'we_delete_fn.inc.php');
 
 class we_base_delFragment extends taskFragment{
 
-	var $db;
-	var $table;
+	private $db;
+	private $table;
 
 	function __construct($name, $taskPerFragment, $pause, $table){
 		$this->db = new DB_WE();
@@ -54,22 +53,22 @@ class we_base_delFragment extends taskFragment{
 		$currentParents = array();
 		we_readParents($currentID, $currentParents, $this->table);
 
-		deleteEntry($this->data, $this->table, false);
-		if(!empty($GLOBALS['we_folder_not_del'])){
+		we_base_delete::deleteEntry($this->data, $this->table, false);
+		if(($GLOBALS['we_folder_not_del'])){
 			$_SESSION['weS']['we_not_deleted_entries'][] = $GLOBALS['we_folder_not_del'][0];
 		}
 		if($this->data == $currentID){
 			$_SESSION['weS']['we_go_seem_start'] = true;
 		}
 		$percent = round((100 / count($this->alldata)) * (1 + $this->currentTask));
-		print we_html_element::jsElement('parent.delmain.setProgressText("pb1","' . sprintf(g_l('delete', '[delete_entry]'), $p) . '");parent.delmain.setProgress(' . $percent . ');');
+		echo we_html_element::jsElement('parent.delmain.setProgressText("pb1","' . sprintf(g_l('delete', '[delete_entry]'), $p) . '");parent.delmain.setProgress(' . $percent . ');');
 	}
 
 	function finish(){
-		$alert = (empty($_SESSION['weS']['we_not_deleted_entries']) ?
-				we_message_reporting::getShowMessageCall(g_l('alert', "[delete_ok]"), we_message_reporting::WE_MESSAGE_NOTICE) :
-				we_message_reporting::getShowMessageCall(makeAlertDelFolderNotEmpty($_SESSION['weS']['we_not_deleted_entries']), we_message_reporting::WE_MESSAGE_ERROR));
-		print we_html_element::jsElement($alert . (($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE && $_SESSION['weS']['we_go_seem_start']) ? 'top.opener.top.we_cmd("start_multi_editor");' : '') . 'top.close();');
+		$alert = (($_SESSION['weS']['we_not_deleted_entries']) ?
+				we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[folder_not_empty]'), implode("\n", $_SESSION['weS']['we_not_deleted_entries']) . "\n"), we_message_reporting::WE_MESSAGE_ERROR) :
+				we_message_reporting::getShowMessageCall(g_l('alert', "[delete_ok]"), we_message_reporting::WE_MESSAGE_NOTICE));
+		echo we_html_element::jsElement($alert . (($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE && $_SESSION['weS']['we_go_seem_start']) ? 'top.opener.top.we_cmd("start_multi_editor");' : '') . 'top.close();');
 		unset($_SESSION['weS']['todel']);
 		unset($_SESSION['weS']['we_not_deleted_entries']);
 		unset($_SESSION['weS']['we_go_seem_start']);

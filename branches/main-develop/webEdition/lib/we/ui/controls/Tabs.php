@@ -160,7 +160,7 @@ class we_ui_controls_Tabs extends we_ui_abstract_AbstractElement{
 	protected function getTabAttribute($_tabArray, $_att){
 		switch($_att){
 			case "id" :
-				return (isset($_tabArray["id"]) && $_tabArray["id"] != "" ? $_tabArray["id"] : '');
+				return (isset($_tabArray["id"]) && $_tabArray["id"] ? $_tabArray["id"] : '');
 			case "active" :
 				if(isset($_tabArray["active"])){
 					return $_tabArray["active"];

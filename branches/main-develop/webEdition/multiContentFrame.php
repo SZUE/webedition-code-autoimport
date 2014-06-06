@@ -46,7 +46,7 @@ echo we_html_tools::getHtmlTop();
 	}
 
 	function startMultiEditor() {
-		we_cmd('start_multi_editor'<?php print $_cmd_string; ?>);
+		we_cmd('start_multi_editor'<?php echo $_cmd_string; ?>);
 	}
 //-->
 </script>

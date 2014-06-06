@@ -57,7 +57,7 @@ function we_tag_input($attribs, $content){
 				$docAttr = weTag_getAttribute('doc', $attribs, 'self');
 				$doc = we_getDocForTag($docAttr);
 				$lang = $doc->Language;
-				$langcode = ($lang != '' ? substr($lang, 0, 2) : we_core_Local::weLangToLocale($GLOBALS['WE_LANGUAGE']));
+				$langcode = ($lang ? substr($lang, 0, 2) : we_core_Local::weLangToLocale($GLOBALS['WE_LANGUAGE']));
 
 				$orgVal = $GLOBALS['we_doc']->getElement($name);
 				if(!Zend_Locale::hasCache()){
@@ -102,7 +102,7 @@ function we_tag_input($attribs, $content){
 				$docAttr = weTag_getAttribute('doc', $attribs, 'self');
 				$doc = we_getDocForTag($docAttr);
 				$lang = $doc->Language;
-				$langcode = ($lang != '' ? substr($lang, 0, 2) : we_core_Local::weLangToLocale($GLOBALS["WE_LANGUAGE"]));
+				$langcode = ($lang ? substr($lang, 0, 2) : we_core_Local::weLangToLocale($GLOBALS["WE_LANGUAGE"]));
 
 				$frontendL = $GLOBALS['weFrontendLanguages'];
 				foreach($frontendL as &$lcvalue){

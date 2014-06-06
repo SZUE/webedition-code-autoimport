@@ -28,21 +28,22 @@ we_html_tools::protect();
 echo we_html_tools::getHtmlTop() .
  STYLESHEET;
 
-$cpat = str_replace('//', '/', $_SERVER['DOCUMENT_ROOT'] . $_REQUEST["pat"]);
+$path=weRequest('file','pat');
+$cpat = str_replace('//', '/', $_SERVER['DOCUMENT_ROOT'] . $path);
 
 function weFile($f){
-	return f('SELECT 1 FROM ' . FILE_TABLE . " WHERE Path='" . $GLOBALS['DB_WE']->escape($f) . "'") == 1;
+	return f('SELECT 1 FROM ' . FILE_TABLE . " WHERE Path='" . $GLOBALS['DB_WE']->escape($f) . "'");
 }
 
 $we_alerttext = "";
 
 if(isset($_FILES['we_uploadFile'])){
-	$overwrite = $_REQUEST["overwrite"];
+	$overwrite = weRequest('bool',"overwrite");
 	$tempName = TEMP_PATH . "/" . we_base_file::getUniqueId();
 	move_uploaded_file($_FILES['we_uploadFile']["tmp_name"], $tempName);
 	if(file_exists($cpat . "/" . $_FILES['we_uploadFile']["name"])){
-		if($overwrite == "yes"){
-			if(weFile($_REQUEST["pat"] . "/" . $_FILES['we_uploadFile']["name"])){
+		if($overwrite){
+			if(weFile($path . "/" . $_FILES['we_uploadFile']["name"])){
 				$we_alerttext = g_l('fileselector', "[can_not_overwrite_we_file]");
 			}
 		} else {
@@ -81,8 +82,8 @@ $content = '<table border="0" cellpadding="0" cellspacing="0">' .
 						sprintf(g_l('newFile', "[max_possible_size]"), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 390) . '</td></tr><tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>') : '') . '
 			<tr><td><input name="we_uploadFile" TYPE="file" size="35" /></td></tr><tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>
 			<tr><td class="defaultfont">' . g_l('newFile', '[caseFileExists]') . '</td></tr><tr><td>' .
-		we_html_forms::radiobutton("yes", true, "overwrite", g_l('newFile', '[overwriteFile]')) .
-		we_html_forms::radiobutton("no", false, "overwrite", g_l('newFile', '[renameFile]')) . '</td></tr></table>';
+		we_html_forms::radiobutton("1", true, "overwrite", g_l('newFile', '[overwriteFile]')) .
+		we_html_forms::radiobutton("0", false, "overwrite", g_l('newFile', '[renameFile]')) . '</td></tr></table>';
 
 $content = we_html_tools::htmlDialogLayout($content, g_l('newFile', '[import_File_from_hd_title]'), $buttons);
 ?>
@@ -94,16 +95,16 @@ $content = we_html_tools::htmlDialogLayout($content, g_l('newFile', '[import_Fil
 		self.close();
 	<?php
 } elseif($we_alerttext){
-	print we_message_reporting::getShowMessageCall($we_alerttext, we_message_reporting::WE_MESSAGE_ERROR);
+	echo we_message_reporting::getShowMessageCall($we_alerttext, we_message_reporting::WE_MESSAGE_ERROR);
 }
 ?>
 //-->
 </script>
 </head>
 <body class="weDialogBody" onLoad="self.focus();"><center>
-	<input type="hidden" name="pat" value="<?php print $_REQUEST["pat"]; ?>" />
+	<input type="hidden" name="pat" value="<?php echo $path; ?>" />
 	<form method="post" enctype="multipart/form-data" name="we_form">
-		<?php print $content; ?>
+		<?php echo $content; ?>
 	</form>
 </center>
 </body>

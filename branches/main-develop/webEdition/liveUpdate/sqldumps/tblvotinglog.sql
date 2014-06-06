@@ -3,7 +3,7 @@ CREATE TABLE ###TBLPREFIX###tblvotinglog (
   `votingsession` varchar(255) NOT NULL,
   `voting` bigint(20) unsigned NOT NULL,
   `time` int(11) unsigned NOT NULL,
-  `ip` varchar(255) NOT NULL,
+  `ip` varchar(40) NOT NULL,
   `agent` varchar(255) NOT NULL,
   `userid` bigint(20) unsigned NOT NULL DEFAULT '0',
   `cookie` tinyint(1) unsigned NOT NULL,

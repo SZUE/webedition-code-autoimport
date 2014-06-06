@@ -68,6 +68,24 @@ abstract class we_autoloader{
 		'xml' => 'we_classes/xml',
 	);
 	private static $classes = array(
+		'we_classes/contents' => array(
+			'we_binaryDocument' => 'we_binaryDocument.class.php',
+			'we_class' => 'we_class.class.php',
+			'we_document' => 'we_document.class.php',
+			'we_flashDocument' => 'we_flashDocument.class.php',
+			'we_folder' => 'we_folder.class.php',
+			'we_htmlDocument' => 'we_htmlDocument.class.php',
+			'we_imageDocument' => 'we_imageDocument.class.php',
+			'we_otherDocument' => 'we_otherDocument.class.php',
+			'we_quicktimeDocument' => 'we_quicktimeDocument.class.php',
+			'we_root' => 'we_root.class.php',
+			'we_template' => 'we_template.class.php',
+			'we_temporaryDocument' => 'we_temporaryDocument.class.php',
+			'we_textContentDocument' => 'we_textContentDocument.class.php',
+			'we_textDocument' => 'we_textDocument.class.php',
+			'we_thumbnail' => 'we_thumbnail.class.php',
+			'we_webEditionDocument' => 'we_webEditionDocument.class.php',
+		),
 		'we_classes' => array(
 			'Console_Getopt' => 'Getopt.php',
 			'copyFolderFinishFrag' => 'we_copyFolderFinishFrag.class.php',
@@ -87,19 +105,12 @@ abstract class we_autoloader{
 			'Services_JSON_Error' => 'JSON.php',
 			'Services_JSON' => 'JSON.php',
 			'taskFragment' => 'taskFragment.class.php',
-			'weBinary' => 'base/weBinary.class.php',
-			'we_binaryDocument' => 'we_binaryDocument.class.php',
+			'weBinary' => 'weBinary.class.php',
 			'we_category' => 'we_category.class.php',
 			'we_catListview' => 'listview/we_catListview.class.php',
-			'we_class' => 'we_class.class.php',
 			'we_docTypes' => 'we_docTypes.class.php',
-			'we_document' => 'we_document.class.php',
 			'we_element' => 'we_element.inc.php',
-			'we_flashDocument' => 'we_flashDocument.class.php',
-			'we_folder' => 'we_folder.class.php',
 			'we_history' => 'we_history.class.php',
-			'we_htmlDocument' => 'we_htmlDocument.class.php',
-			'we_imageDocument' => 'we_imageDocument.class.php',
 			'we_langlink_listview' => 'listview/we_langlink_listview.class.php',
 			'we_listview' => 'listview/we_listview.class.php',
 			'weMainTree' => 'weMainTree.inc.php',
@@ -108,10 +119,7 @@ abstract class we_autoloader{
 			'weModuleView' => 'modules/weModuleView.class.php',
 			'weModuleTree' => 'modules/weModuleTree.class.php',
 			'weOrderContainer' => 'js_gui/weOrderContainer.class.php',
-			'we_otherDocument' => 'we_otherDocument.class.php',
 			'we_progressBar' => 'we_progressBar.inc.php',
-			'we_quicktimeDocument' => 'we_quicktimeDocument.class.php',
-			'we_root' => 'we_root.class.php',
 			'we_rtf2html' => 'we_rtf2html.inc.php',
 			'we_search_listview' => 'listview/we_search_listview.class.php',
 			'we_search' => 'we_search.inc.php',
@@ -119,15 +127,8 @@ abstract class we_autoloader{
 			'weSuggest' => 'weSuggest.class.php',
 			'we_tabs' => 'we_tabs.class.php',
 			'we_tab' => 'we_tab.class.php',
-			'we_template' => 'we_template.class.php',
-			'we_temporaryDocument' => 'we_temporaryDocument.class.php',
-			'we_textContentDocument' => 'we_textContentDocument.class.php',
-			'we_textDocument' => 'we_textDocument.class.php',
-			'we_thumbnail' => 'base/we_thumbnail.class.php',
 			'weTree' => 'weTree.inc.php',
-			'we_updater' => 'base/we_updater.inc.php',
-			'we_util' => 'we_util.inc.php',
-			'we_webEditionDocument' => 'we_webEditionDocument.class.php',
+			'we_updater' => 'we_updater.inc.php',
 			'we_widget' => 'we_widget.inc.php',
 			'XML_Parser_Error' => 'Parser.php',
 			'XML_Parser' => 'Parser.php',
@@ -243,7 +244,7 @@ abstract class we_autoloader{
 				break;
 			}
 		}
-		//will try next auto-loader 
+		//will try next auto-loader
 	}
 
 	/**

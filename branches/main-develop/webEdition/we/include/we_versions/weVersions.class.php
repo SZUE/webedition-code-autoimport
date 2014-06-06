@@ -1749,7 +1749,7 @@ class weVersions{
 								$resetDoc->ID = $v;
 								break;
 							case "documentElements":
-								if($v != ""){
+								if($v){
 									$docElements = unserialize((substr_compare($v, 'a%3A', 0, 4) == 0 ?
 											html_entity_decode(urldecode($v), ENT_QUOTES) :
 											gzuncompress($v))
@@ -1758,7 +1758,7 @@ class weVersions{
 								}
 								break;
 							case 'documentScheduler':
-								if(!empty($v)){
+								if($v){
 									$docElements = unserialize((substr_compare($v, 'a%3A', 0, 4) == 0 ?
 											html_entity_decode(urldecode($v), ENT_QUOTES) :
 											gzuncompress($v))
@@ -1767,7 +1767,7 @@ class weVersions{
 								}
 								break;
 							case 'documentCustomFilter':
-								if(!empty($v)){
+								if($v){
 									$docElements = unserialize((substr_compare($v, 'a%3A', 0, 4) == 0 ?
 											html_entity_decode(urldecode($v), ENT_QUOTES) :
 											gzuncompress($v))
@@ -1793,10 +1793,10 @@ class weVersions{
 
 				$resetDoc->EditPageNr = $_SESSION['weS']['EditPageNr'];
 
-				$existsInFileTable = f('SELECT ID FROM ' . $db->escape($resetArray["documentTable"]) . ' WHERE ID=' . intval($resetDoc->ID), "ID", $db);
+				$existsInFileTable = f('SELECT ID FROM ' . $db->escape($resetArray["documentTable"]) . ' WHERE ID=' . intval($resetDoc->ID), "", $db);
 				//if document was deleted
 
-				if(empty($existsInFileTable)){
+				if(!$existsInFileTable){
 					//save this id and contenttype to turn the id for the versions
 					$oldId = $resetDoc->ID;
 					$oldCt = $resetDoc->ContentType;
@@ -1809,7 +1809,7 @@ class weVersions{
 					//if folder was deleted
 					$existsPath = f('SELECT 1 FROM ' . $db->escape($resetArray["documentTable"]) . ' WHERE ID=' . intval($resetArray["ParentID"]) . ' AND IsFolder=1', '', $db);
 
-					if(empty($existsPath)){
+					if(!$existsPath){
 						// create old folder if it does not exists
 
 						$folders = explode('/', $resetArray["Path"]);
@@ -1847,10 +1847,10 @@ class weVersions{
 					}
 				}
 
-				$existsFile = f('SELECT COUNT(1) as Count FROM ' . $db->escape($resetArray["documentTable"]) . ' WHERE ID!=' . intval($resetArray["documentID"]) . " AND Path= '" . $db->escape($resetDoc->Path) . "' ", 'Count', $db);
+				$existsFile = f('SELECT COUNT(1) as Count FROM ' . $db->escape($resetArray["documentTable"]) . ' WHERE ID!=' . intval($resetArray["documentID"]) . " AND Path= '" . $db->escape($resetDoc->Path) . "' ", '', $db);
 
 				$doPark = false;
-				if(!empty($existsFile)){
+				if($existsFile){
 					$resetDoc->Path = str_replace($resetDoc->Text, "_" . $resetArray["documentID"] . "_" . $resetDoc->Text, $resetDoc->Path);
 					$resetDoc->Text = "_" . $resetArray["documentID"] . "_" . $resetDoc->Text;
 					if(isset($resetDoc->Filename) && $resetDoc->Filename != ""){
@@ -1876,7 +1876,7 @@ class weVersions{
 				$resetDoc->ModDate = time();
 				$resetDoc->Published = $resetArray["timestamp"];
 
-				$wasPublished = f('SELECT status FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($resetArray["documentID"]) . " AND documentTable='" . $db->escape($resetArray["documentTable"]) . "' AND status='published' ORDER BY version DESC LIMIT 1", 'status', $db);
+				$wasPublished = f('SELECT status FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($resetArray["documentID"]) . " AND documentTable='" . $db->escape($resetArray["documentTable"]) . "' AND status='published' ORDER BY version DESC LIMIT 1", '', $db);
 				$publishedDoc = $_SERVER['DOCUMENT_ROOT'] . $resetDoc->Path;
 				$publishedDocExists = true;
 				if($resetArray['ContentType'] != 'objectFile'){
@@ -1907,7 +1907,7 @@ class weVersions{
 				$_SESSION['weS']['versions']['logResetIds'][$resetArray['ID']]['documentID'] = $resetArray['documentID'];
 
 				//update versions if id or path were changed
-				if(empty($existsInFileTable)){
+				if(!$existsInFileTable){
 					$db->query('UPDATE ' . VERSIONS_TABLE . ' SET documentID=' . intval($resetDoc->ID) . ',ParentID=' . intval($resetDoc->ParentID) . ',active=0 WHERE documentID=' . intval($oldId) . " AND ContentType='" . $db->escape($oldCt) . "'");
 				}
 			}
@@ -2097,7 +2097,7 @@ class weVersions{
 				return $fieldValueText . '<br/>';
 			//Scheduler
 			case 'task':
-				return ($v != '' ? g_l('versions', '[' . $k . '_' . $v . ']') : '');
+				return ($v ? g_l('versions', '[' . $k . '_' . $v . ']') : '');
 			case 'type':
 				return g_l('versions', '[type_' . $v . ']');
 			case 'active':

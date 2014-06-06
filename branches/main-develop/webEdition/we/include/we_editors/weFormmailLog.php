@@ -51,13 +51,13 @@ if(permissionhandler::hasPerm('administrator')){
 
 	$num_all = f('SELECT count(1) FROM ' . FORMMAIL_LOG_TABLE);
 
-	$GLOBALS['DB_WE']->query('SELECT * FROM ' . FORMMAIL_LOG_TABLE . ' ORDER BY unixTime DESC LIMIT ' . abs($start) . "," . abs($count));
+	$GLOBALS['DB_WE']->query('SELECT ip,DATE_FORMAT(unixTime,"' . g_l('weEditorInfo', '[mysql_date_format]') . '") AS unixTime FROM ' . FORMMAIL_LOG_TABLE . ' ORDER BY unixTime DESC LIMIT ' . abs($start) . ',' . abs($count));
 	$num_rows = $GLOBALS['DB_WE']->num_rows();
 	if($num_rows > 0){
 		while($GLOBALS['DB_WE']->next_record()){
 			$content[] = array(
 				array('dat' => $GLOBALS['DB_WE']->f("ip")),
-				array('dat' => date(g_l('weEditorInfo', "[date_format]"), $GLOBALS['DB_WE']->f("unixTime")))
+				array('dat' => $GLOBALS['DB_WE']->f("unixTime"))
 			);
 		}
 

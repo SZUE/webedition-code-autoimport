@@ -150,7 +150,7 @@ abstract class we_class{
 		if(!$elementtype){
 			$ps = $this->$name;
 		}
-		return we_html_tools::htmlFormElementTable($this->htmlTextInput(($elementtype ? ('we_' . $this->Name . '_' . $elementtype . '[' . $name . ']') : ('we_' . $this->Name . '_' . $name)), $size, ($elementtype && $this->getElement($name) != '' ? $this->getElement($name) : (isset($GLOBALS['meta'][$name]) ? $GLOBALS['meta'][$name]['default'] : (isset($ps) ? $ps : '') )), $maxlength, $attribs, 'text', $width), $text, $textalign, $textclass);
+		return we_html_tools::htmlFormElementTable($this->htmlTextInput(($elementtype ? ('we_' . $this->Name . '_' . $elementtype . '[' . $name . ']') : ('we_' . $this->Name . '_' . $name)), $size, ($elementtype && $this->getElement($name) ? $this->getElement($name) : (isset($GLOBALS['meta'][$name]) ? $GLOBALS['meta'][$name]['default'] : (isset($ps) ? $ps : '') )), $maxlength, $attribs, 'text', $width), $text, $textalign, $textclass);
 	}
 
 	function formTextArea($elementtype, $name, $text, $rows = 10, $cols = 30, array $attribs = array(), $textalign = 'left', $textclass = 'defaultfont'){
@@ -315,6 +315,10 @@ abstract class we_class{
 		return $this->i_savePersistentSlotsToDB();
 	}
 
+	public function we_delete(){
+		we_base_delete::deleteEntry($this->ID, $this->Table, true, false, $this->DB_WE);
+	}
+
 	public function we_publish(/* $DoNotMark = false, $saveinMainDB = true */){
 		return true; // overwrite
 	}
@@ -325,26 +329,6 @@ abstract class we_class{
 
 	public function we_republish(){
 		return true;
-	}
-
-	public function we_delete(){
-		if(LANGLINK_SUPPORT){
-			switch($this->ClassName){
-				case 'we_objectFile':
-					$deltype = 'tblObjectFile';
-					break;
-				case 'we_webEditionDocument':
-					$deltype = 'tblFile';
-					break;
-				case 'we_docTypes':
-					$deltype = 'tblDocTypes';
-					break;
-				default:
-					$deltype = '';
-			}
-			$this->DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . " WHERE DocumentTable='" . $deltype . "' AND (DID=" . intval($this->ID) . ' OR LDID=' . intval($this->ID) . ')');
-		}
-		return $this->DB_WE->query('DELETE FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($this->ID));
 	}
 
 	protected function i_setElementsFromHTTP(){
@@ -388,10 +372,8 @@ abstract class we_class{
 		$tableInfo = $this->DB_WE->metadata($this->Table);
 		$feldArr = $felder ? makeArrayFromCSV($felder) : $this->persistent_slots;
 		$fields = array();
-		if(!$this->wasUpdate && $this->insertID){
-			if(f('SELECT 1 FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($this->insertID), '', $this->DB_WE)){
-				return false;
-			}
+		if(!$this->wasUpdate && $this->insertID && f('SELECT 1 FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($this->insertID) . ' LIMIT 1', '', $this->DB_WE)){
+			return false;
 		}
 		foreach($tableInfo as $info){
 
@@ -769,7 +751,7 @@ abstract class we_class{
 	/*	 * returns error-messages recorded during an operation, currently only save is used */
 
 	public function getErrMsg(){
-		return ($this->errMsg != '' ? '\n' . str_replace("\n", '\n', $this->errMsg) : '');
+		return ($this->errMsg ? '\n' . str_replace("\n", '\n', $this->errMsg) : '');
 	}
 
 	//FIXME: this is temporary

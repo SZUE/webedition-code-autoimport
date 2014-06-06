@@ -32,14 +32,14 @@ class we_import_wizard extends we_import_wizardBase{
 
 	function formCategory($obj, $categories){
 		$js = (defined('OBJECT_TABLE')) ? "opener.wizbody.document.we_form.elements[\\'v[import_type]\\'][0].checked=true;" : "";
-		$addbut = we_html_button::create_button('add', "javascript:top.we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','" . $js . "fillIDs();opener.top.we_cmd(\\'add_" . $obj . "Cat\\',top.allIDs);')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
+		$addbut = we_html_button::create_button('add', "javascript:top.we_cmd('openCatselector',0,'" . CATEGORY_TABLE . "','','','" . $js . "fillIDs();opener.top.we_cmd(\\'add_" . $obj . "Cat\\',top.allIDs);')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
 		$cats = new MultiDirChooser(410, $categories, 'delete_' . $obj . 'Cat', $addbut, '', 'Icon,Path', CATEGORY_TABLE);
 		return $cats->get();
 	}
 
 	function formCategory2($obj, $categories){
 		$js = (defined('OBJECT_TABLE')) ? "opener.wizbody.document.we_form.elements[\\'v[import_type]\\'][0].checked=true;" : "";
-		$addbut = we_html_button::create_button('add', "javascript:top.we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','" . $js . "fillIDs();opener.top.we_cmd(\\'add_" . $obj . "Cat\\',top.allIDs);')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
+		$addbut = we_html_button::create_button('add', "javascript:top.we_cmd('openCatselector',0,'" . CATEGORY_TABLE . "','','','" . $js . "fillIDs();opener.top.we_cmd(\\'add_" . $obj . "Cat\\',top.allIDs);')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
 		$cats = new MultiDirChooser2(410, $categories, 'delete_' . $obj . 'Cat', $addbut, '', 'Icon,Path', CATEGORY_TABLE);
 		$cats->setRowPrefix($obj);
 		$cats->setCatField("self.document.forms['we_form'].elements['v[" . $obj . "Categories]']");
@@ -227,7 +227,10 @@ class we_import_wizard extends we_import_wizardBase{
 							if (f.type[i].checked == true) {
 								switch(f.type[i].value) {
 									case 'file_import':
-										top.location.href='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import_files';
+										var xhrTestObj = new XMLHttpRequest(),
+											xhrTest = xhrTestObj && xhrTestObj.upload ? true : false,
+											requirementTest = xhrTest && window.File && window.FileReader && window.FileList && window.Blob;
+										top.location.href='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import_files&jsRequirementsOk=' + (requirementTest ? 1 : 0);
 										break;
 									case 'site_import':
 										top.location.href='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=siteImport';

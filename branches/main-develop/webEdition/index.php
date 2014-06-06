@@ -150,14 +150,16 @@ function showMessage(message, prio, win){
 if(is_dir(WEBEDITION_PATH . 'we/cache')){
 	we_util_File::deleteLocalFolder(WEBEDITION_PATH . 'we/cache', true);
 }
-if(is_dir(WEBEDITION_DIR . 'OnlineInstaller')){
-	we_util_File::deleteLocalFolder(WEBEDITION_DIR . 'OnlineInstaller');
+//FIXME: remove? => updater?
+if(is_dir($_SERVER['DOCUMENT_ROOT'] . '/OnlineInstaller')){
+	we_util_File::deleteLocalFolder($_SERVER['DOCUMENT_ROOT'] . '/OnlineInstaller', true);
 }
 
 we_base_file::cleanTempFiles(true);
 cleanWEZendCache();
 we_navigation_cache::clean();
 we_updater::fixInconsistentTables();
+we_captcha_captcha::cleanup($GLOBALS['DB_WE']);
 
 //clean Error-Log-Table
 $GLOBALS['DB_WE']->query('DELETE FROM ' . ERROR_LOG_TABLE . ' WHERE `Date` < DATE_SUB(NOW(), INTERVAL ' . ERROR_LOG_HOLDTIME . ' DAY)');
@@ -211,15 +213,6 @@ function getError($reason, $cookie = false){
 
 	if(!(is_dir($tmp) || (is_link($tmp) && is_dir(readlink($tmp))))){
 		$_error .= ++$_error_count . ' - ' . sprintf(g_l('start', '[tmp_path]'), ini_get('session.save_path')) . we_html_element::htmlBr();
-	}
-	if(isset($GLOBALS['FOUND_SESSION_PROBLEM'])){
-		$_error .= ++$_error_count . ' - ' .
-			'PHP is not allowed to write / cleanup session data correctly. Please contact your Admin. Additional Information for your Admin:' . we_html_element::htmlBr() .
-			'session.gc_probability: ' . $GLOBALS['FOUND_SESSION_PROBLEM'] . we_html_element::htmlBr() . '
- Session Path: ' . session_save_path() . we_html_element::htmlBr() . '
- Opendir: failed' . we_html_element::htmlBr() .
-			'Problem is temporary fixed by webEdition' . we_html_element::htmlBr() .
-			'<a href="' . WEBEDITION_DIR . 'index.php?skipSess=1">Click here, to start anyway</a>' . we_html_element::htmlBr();
 	}
 
 	if(!ini_get('session.use_cookies')){
@@ -466,7 +459,7 @@ if(isset($_POST['checkLogin']) && empty($_COOKIE)){
 					we_message_reporting::getShowMessageCall(g_l('alert', "[login_failed]"), we_message_reporting::WE_MESSAGE_ERROR));
 			break;
 		case 3:
-			$_body_javascript = we_message_reporting::getShowMessageCall(g_l('alert', "[login_failed_security]"), we_message_reporting::WE_MESSAGE_ERROR) . "document.location = '" . WEBEDITION_DIR . "index.php" . (($ignore_browser || (isset($_COOKIE["ignore_browser"]) && $_COOKIE["ignore_browser"] == "true")) ? "&ignore_browser=" . (isset($_COOKIE["ignore_browser"]) ? $_COOKIE["ignore_browser"] : ($ignore_browser ? 1 : 0)) : "") . "';";
+			$_body_javascript = we_message_reporting::getShowMessageCall(g_l('alert', "[login_failed_security]"), we_message_reporting::WE_MESSAGE_ERROR) . "document.location='" . WEBEDITION_DIR . "index.php" . (($ignore_browser || (isset($_COOKIE["ignore_browser"]) && $_COOKIE["ignore_browser"] == "true")) ? "&ignore_browser=" . (isset($_COOKIE["ignore_browser"]) ? $_COOKIE["ignore_browser"] : ($ignore_browser ? 1 : 0)) : "") . "';";
 			break;
 		case LOGIN_DENIED:
 			$_body_javascript = we_message_reporting::getShowMessageCall(g_l('alert', "[login_denied_for_user]"), we_message_reporting::WE_MESSAGE_ERROR);
@@ -481,4 +474,12 @@ if(isset($_POST['checkLogin']) && empty($_COOKIE)){
 
 	printHeader($login, (isset($httpCode) ? $httpCode : 401));
 	echo we_html_element::htmlBody(array('style' => 'background-color:#386AAB; height:100%;', "onload" => (($login == LOGIN_OK) ? "open_we();" : "document.loginForm.username.focus();document.loginForm.username.select();")), $_layout . ((isset($_body_javascript)) ? we_html_element::jsElement($_body_javascript) : '')) . '</html>';
+}
+flush();
+if(defined("SCHEDULE_TABLE") && (!isset($SEEM_edit_include) || !$SEEM_edit_include)){
+	session_write_close();
+	// trigger scheduler
+	we_schedpro::trigger_schedule();
+	// make the we_backup dir writable for all, so users can copy backupfiles with ftp in it
+//	@chmod($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR, 0777);
 }

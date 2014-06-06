@@ -27,7 +27,7 @@ class rpcGetSnippetCodeCmd extends rpcCmd{
 	function execute(){
 
 		$resp = new rpcResponse();
-		if(!($file=weRequest('file', 'we_cmd', '',1))){
+		if(!($file = weRequest('file', 'we_cmd', '', 1))){
 			exit();
 		}
 

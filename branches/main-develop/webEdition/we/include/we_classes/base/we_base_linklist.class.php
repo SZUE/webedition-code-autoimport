@@ -176,8 +176,8 @@ class we_base_linklist{
 				}
 			}
 			$js.=
-				($jswinAttribs["jswidth"] != "" ? 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'width=' . $jswinAttribs["jswidth"] . '\';' : '') .
-				($jswinAttribs["jsheight"] != "" ? 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'height=' . $jswinAttribs["jsheight"] . '\';' : '') .
+				($jswinAttribs["jswidth"] ? 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'width=' . $jswinAttribs["jswidth"] . '\';' : '') .
+				($jswinAttribs["jsheight"] ? 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'height=' . $jswinAttribs["jsheight"] . '\';' : '') .
 				'we_winOpts += (we_winOpts ? \',\' : \'\')+\'status=' . ($jswinAttribs["jsstatus"] ? 'yes' : 'no') . '\';' .
 				'we_winOpts += (we_winOpts ? \',\' : \'\')+\'scrollbars=' . ($jswinAttribs["jsscrollbars"] ? 'yes' : 'no') . '\';' .
 				'we_winOpts += (we_winOpts ? \',\' : \'\')+\'menubar=' . ($jswinAttribs["jsmenubar"] ? 'yes' : 'no') . '\';' .

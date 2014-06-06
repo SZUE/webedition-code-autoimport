@@ -34,8 +34,8 @@ class we_selector_category extends we_selector_multiple{
 	private $EntryText = '';
 	private $noChoose = false;
 
-	function __construct($id, $table = FILE_TABLE, $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $sessionID = '', $we_editCatID = '', $EntryText = '', $rootDirID = 0, $noChoose = false){
-		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, $sessionID, $rootDirID);
+	function __construct($id, $table = FILE_TABLE, $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $we_editCatID = '', $EntryText = '', $rootDirID = 0, $noChoose = false){
+		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, $rootDirID);
 		$this->title = g_l('fileselector', '[catSelector][title]');
 
 		$this->we_editCatID = $we_editCatID;
@@ -349,7 +349,7 @@ var old=0;');
 			$parentPath = (!intval($this->dir)) ? '' : f('SELECT Path FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->dir), 'Path', $this->db);
 			$Path = $parentPath . '/' . $txt;
 
-			if(f('SELECT 1 FROM ' . $this->db->escape($this->table) . " WHERE Path='" . $this->db->escape($Path) . "'", '', $this->db) === '1'){
+			if(f('SELECT 1 FROM ' . $this->db->escape($this->table) . " WHERE Path='" . $this->db->escape($Path) . "' LIMIT 1", '', $this->db) === '1'){
 				$js.=we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', ($what == 1 ? '[folder][response_path_exists]' : '[category][response_path_exists]')), $Path), we_message_reporting::WE_MESSAGE_ERROR);
 			} else {
 				if(preg_match('|[\\\'"<>/]|', $txt)){
@@ -389,7 +389,7 @@ top.selectFile(top.currentID);') .
 		print '
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
 	<tr>
-		<td width="35%" class="selector" style="padding-left:10px;"><b><a href="#" onclick="javascript:top.orderIt(\'IsFolder DESC, Text\');">' . g_l('fileselector', "[catname]") . '</a></b></td>
+		<td width="35%" class="selector" style="padding-left:10px;"><b><a href="#" onclick="javascript:top.orderIt(\'Text\');">' . g_l('fileselector', "[catname]") . '</a></b></td>
 		<td width="65%" class="selector" style="padding-left:10px;"><b>' . g_l('button', '[properties][value]') . '</b></td>
 	</tr>
 	<tr>
@@ -413,7 +413,7 @@ top.selectFile(top.currentID);') .
 		} else {
 			$parentPath = (!intval($this->dir)) ? '' : f('SELECT Path FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->dir), 'Path', $this->db);
 			$Path = $parentPath . '/' . $txt;
-			if(f('SELECT 1 FROM ' . $this->db->escape($this->table) . " WHERE Path='" . $this->db->escape($Path) . "' AND ID!=" . intval($this->we_editCatID), '', $this->db) === '1'){
+			if(f('SELECT 1 FROM ' . $this->db->escape($this->table) . " WHERE Path='" . $this->db->escape($Path) . "' AND ID!=" . intval($this->we_editCatID).' LIMIT 1', '', $this->db)){
 				$js.=we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', ($what == 1 ? '[folder]' : '[category]') . '[response_path_exists]'), $Path), we_message_reporting::WE_MESSAGE_ERROR);
 			} else {
 				if(preg_match('|[\'"<>/]|', $txt)){
@@ -642,11 +642,11 @@ function setDir(id){
 		if($IsDir){
 			return $this->DirInUse($id);
 		} else {
-			if(f('SELECT 1  FROM ' . FILE_TABLE . " WHERE Category LIKE '%," . intval($id) . ",%' OR temp_category like '%," . intval($id) . ",%'", '', $db) === '1'){
+			if(f('SELECT 1  FROM ' . FILE_TABLE . " WHERE Category LIKE '%," . intval($id) . ",%' OR temp_category like '%," . intval($id) . ",%' LIMIT 1", '', $db)){
 				return true;
 			}
 			if(defined("OBJECT_TABLE")){
-				if(f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . " WHERE Category LIKE '%," . intval($id) . ",%'", '', $db) === '1'){
+				if(f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . " WHERE Category LIKE '%," . intval($id) . ",%' LIMIT 1", '', $db)){
 					return true;
 				}
 			}
@@ -870,7 +870,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 				}
 				$js = "top.frames['fsvalues'].document.we_form.elements['FolderID'].value = '$parentid';top.frames['fsvalues'].document.we_form.elements['FolderIDPath'].value = '$parentPath';";
 			} else {
-				$path = ($parentid != 0 ? $targetPath : '') . '/' . $category;
+				$path = ($parentid ? $targetPath : '') . '/' . $category;
 			}
 			$updateok = $db->query('UPDATE ' . CATEGORY_TABLE . ' SET ' . we_database_base::arraySetter(array(
 					'Category' => $category,

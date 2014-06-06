@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf.inc.php');
 
 define('WEBEDITION_DIR', '/webEdition/');
@@ -90,7 +89,9 @@ define('WE_EDITPAGE_VERSIONS', 17);
 define('FILE_ONLY', 0);
 define('FOLDER_ONLY', 1);
 
+
 define('CATEGORY_TABLE', TBL_PREFIX . 'tblCategorys');
+define('CAPTCHA_TABLE', TBL_PREFIX . 'tblCaptcha');
 define('CLEAN_UP_TABLE', TBL_PREFIX . 'tblCleanUp');
 define('CONTENT_TABLE', TBL_PREFIX . 'tblContent');
 define('DOC_TYPES_TABLE', TBL_PREFIX . 'tblDocTypes');
@@ -112,9 +113,10 @@ define('FORMMAIL_LOG_TABLE', TBL_PREFIX . 'tblformmaillog');
 define('FORMMAIL_BLOCK_TABLE', TBL_PREFIX . 'tblformmailblock');
 define('METADATA_TABLE', TBL_PREFIX . 'tblMetadata');
 define('NOTEPAD_TABLE', TBL_PREFIX . 'tblwidgetnotepad');
+define('PWDRESET_TABLE', TBL_PREFIX . 'tblPasswordReset');
 define('VERSIONS_TABLE', TBL_PREFIX . 'tblversions');
 define('VERSIONSLOG_TABLE', TBL_PREFIX . 'tblversionslog');
-
+define('SESSION_TABLE', TBL_PREFIX . 'tblSessions');
 define('NAVIGATION_TABLE', TBL_PREFIX . 'tblnavigation');
 define('NAVIGATION_RULE_TABLE', TBL_PREFIX . 'tblnavigationrules');
 

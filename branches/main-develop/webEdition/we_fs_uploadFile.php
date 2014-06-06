@@ -27,12 +27,9 @@ we_html_tools::protect();
 
 echo we_html_tools::getHtmlTop(g_l('newFile', '[import_File_from_hd_title]')) . STYLESHEET;
 
-$we_ContentType = weRequest('raw', 'ct', -1);
+$we_ContentType = weRequest('string', 'ct', (isset($_FILES['we_uploadedFile']['name']) ? getContentTypeFromFile($_FILES['we_uploadedFile']['name']) : ''));
 
 switch($we_ContentType){
-	case -1:
-		$we_ContentType = $allowedContentTypes = (isset($_FILES['we_uploadedFile']['name']) ? getContentTypeFromFile($_FILES['we_uploadedFile']['name']) : '');
-		break;
 	case we_base_ContentTypes::IMAGE;
 		$allowedContentTypes = we_base_imageEdit::IMAGE_CONTENT_TYPES;
 		break;
@@ -43,11 +40,10 @@ switch($we_ContentType){
 		$allowedContentTypes = $we_ContentType;
 }
 $pid = weRequest('int', 'pid', 0);
-
 $parts = array();
 
 $we_alerttext = (!in_workspace($pid, get_ws(FILE_TABLE), FILE_TABLE, $GLOBALS['DB_WE']) || isset($_FILES['we_uploadedFile']) && !permissionhandler::hasPerm(we_base_ContentTypes::inst()->getPermission(getContentTypeFromFile($_FILES['we_uploadedFile']['name']))) ?
-		g_l('alert', '[upload_notallowed]') :
+		g_l('alert', '[upload_targetDir_notallowed]') :
 		'');
 
 if((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploadedFile']['type'] && (($allowedContentTypes == '') || (!(strpos($allowedContentTypes, $_FILES['we_uploadedFile']['type']) === false)))){
@@ -58,6 +54,7 @@ if((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploaded
 	include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
 	$overwrite = $_REQUEST['overwrite'];
+
 
 	// creating a temp name and copy the file to the we tmp directory with the new temp name
 	$tempName = TEMP_PATH . '/' . we_base_file::getUniqueId();
@@ -99,6 +96,7 @@ if((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploaded
 	$we_doc->setElement('data', $tempName, $foo[0]);
 
 	if($we_ContentType == we_base_ContentTypes::IMAGE && !$we_doc->isSvg() && !in_array(we_base_imageEdit::detect_image_type($tempName), we_base_imageEdit::$GDIMAGE_TYPE)){
+
 		$we_alerttext = g_l('alert', '[wrong_file][' . $we_ContentType . ']');
 	} else {
 		if($we_ContentType == we_base_ContentTypes::IMAGE || $we_ContentType == we_base_ContentTypes::FLASH){
@@ -114,8 +112,6 @@ if((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploaded
 		if($we_doc->Extension == '.pdf'){
 			$we_doc->setMetaDataFromFile($tempName);
 		}
-
-
 
 		$we_doc->setElement('filesize', $_FILES['we_uploadedFile']['size'], 'attrib');
 		if(isset($_REQUEST['img_title'])){
@@ -169,7 +165,6 @@ if($we_ContentType == we_base_ContentTypes::IMAGE){
 	while($DB_WE->next_record()){
 		$_enabled_buttons = true;
 		$_thumbnail_counter = $DB_WE->f('ID');
-
 		$_thumbnails->addOption($DB_WE->f('ID'), $DB_WE->f('Name'));
 	}
 
@@ -183,27 +178,30 @@ if($we_ContentType == we_base_ContentTypes::IMAGE){
 <?php
 if($we_alerttext){
 	echo we_message_reporting::getShowMessageCall($we_alerttext, we_message_reporting::WE_MESSAGE_ERROR);
+	if(!isset($_FILES['we_uploadedFile'])){
+		echo 'this.close();';
+	}
 }
 if(isset($_FILES['we_uploadedFile']) && (!$we_alerttext)){
 	if($we_doc->ID){
 		?>
 		var ref;
-		if (opener.top.opener && opener.top.opener.top.makeNewEntry)
+		if (opener.top.opener && opener.top.opener.top.makeNewEntry) {
 			ref = opener.top.opener.top;
-		else if (opener.top.opener && opener.top.opener.top.opener && opener.top.opener.top.opener.top.makeNewEntry)
+		} else if (opener.top.opener && opener.top.opener.top.opener && opener.top.opener.top.opener.top.makeNewEntry) {
 			ref = opener.top.opener.top.opener.top;
-		else if (opener.top.opener && opener.top.opener.top.opener && opener.top.opener.top.opener.top.opener && opener.top.opener.top.opener.top.opener.top.makeNewEntry)
+		} else if (opener.top.opener && opener.top.opener.top.opener && opener.top.opener.top.opener.top.opener && opener.top.opener.top.opener.top.opener.top.makeNewEntry) {
 			ref = opener.top.opener.top.opener.top.opener.top;
-
+		}
 
 		if (ref.makeNewEntry) {
-			ref.makeNewEntry("<?php print $we_doc->Icon ?>", "<?php print $we_doc->ID ?>", "<?php print $we_doc->ParentID ?>", "<?php print $we_doc->Text ?>", 1, "<?php print $we_doc->ContentType ?>", "<?php print $we_doc->Table ?>");
+			ref.makeNewEntry(<?php echo '"' . $we_doc->Icon . '", "' . $we_doc->ID . '", "' . $we_doc->ParentID . '", "' . $we_doc->Text . '", 1, "' . $we_doc->ContentType . '", "' . $we_doc->Table . '"'; ?>);
 		}
 		opener.top.reloadDir();
 		opener.top.unselectAllFiles();
-		opener.top.addEntry("<?php print $we_doc->ID ?>", "<?php print $we_doc->Icon ?>", "<?php print $we_doc->Text ?>", "<?php print $we_doc->IsFolder ?>", "<?php echo $we_doc->Path ?>");
-		opener.top.doClick(<?php print $we_doc->ID; ?>, 0);
-		setTimeout('opener.top.selectFile(<?php print $we_doc->ID; ?>)', 200);
+		opener.top.addEntry(<?php echo '"' . $we_doc->ID . '", "' . $we_doc->Icon . '", "' . $we_doc->Text . '", "' . $we_doc->IsFolder . '", "' . $we_doc->Path . '"'; ?>);
+		opener.top.doClick(<?php echo $we_doc->ID; ?>, 0);
+		setTimeout('opener.top.selectFile(<?php echo $we_doc->ID; ?>)', 200);
 	<?php } ?>
 	setTimeout('self.close()', 250);
 <?php } ?>
@@ -212,9 +210,9 @@ if(isset($_FILES['we_uploadedFile']) && (!$we_alerttext)){
 </head>
 <body class="weDialogBody" onLoad="self.focus();" ><center>
 		<form method="post" enctype="multipart/form-data">
-			<input type="hidden" name="table" value="<?php print $_REQUEST["tab"]; ?>" />
-			<input type="hidden" name="pid" value="<?php print $_REQUEST["dir"]; ?>" />
-			<input type="hidden" name="ct" value="<?php print $we_ContentType; ?>" />
+			<input type="hidden" name="table" value="<?php echo $_REQUEST["tab"]; ?>" />
+			<input type="hidden" name="pid" value="<?php echo $_REQUEST["dir"]; ?>" />
+			<input type="hidden" name="ct" value="<?php echo $we_ContentType; ?>" />
 			<?php echo we_html_multiIconBox::getHTML("", "100%", $parts, 30, $buttons, -1, "", "", false, g_l('newFile', "[import_File_from_hd_title]"), "", 560); ?>
 		</form></center>
 </body>

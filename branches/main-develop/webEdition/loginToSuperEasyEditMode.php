@@ -27,7 +27,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_error_handle
 we_error_handler(false);
 
 if(!isset($_SESSION)){
-	session_start();
+	new we_base_sessionHandler();
 }
 
 if(isset($_POST["username"]) && isset($_POST["id"]) && isset($_POST["type"])){
@@ -39,7 +39,7 @@ if(isset($_POST["username"]) && isset($_POST["id"]) && isset($_POST["type"])){
 	//	Login
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 	we_html_tools::protect();
-	
+
 	if(isset($_SESSION["user"]["Username"])){ //	login ok!
 		//	we must give some information, that we start in Super-Easy-Edit-Mode
 		$_SESSION['weS']['we_mode'] = we_base_constants::MODE_SEE;

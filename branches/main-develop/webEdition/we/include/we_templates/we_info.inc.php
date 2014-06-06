@@ -131,7 +131,7 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 	$_loginTable->setCol($loginRow++, 0, array("width" => $_leftPart), we_html_tools::htmlTextInput('username', 25, '', 255, 'id="username" style="width: 250px;" ', 'text', 0, 0));
 	$_loginTable->setCol($loginRow++, 0, array("width" => $_leftPart), we_html_tools::getPixel(5, 5));
 	$_loginTable->setCol($loginRow++, 0, array("width" => $_leftPart, "class" => "small"), we_html_baseElement::getHtmlCode(new we_html_baseElement("label", true, array("for" => 'password'), g_l('global', '[password]'))));
-	$_loginTable->setCol($loginRow++, 0, array("width" => $_leftPart), we_html_tools::htmlTextInput('password', 25, '', 255, 'id="password" style="width: 250px;" onkeydown="if (event.keyCode == 13||event.keyCode == 10){form.submit();}"', 'password', 0, 0));
+	$_loginTable->setCol($loginRow++, 0, array("width" => $_leftPart), we_html_tools::htmlTextInput('password', 25, '', 255, 'id="password" style="width: 250px;" ', 'password', 0, 0));
 	$_loginTable->setCol($loginRow++, 0, array("width" => $_leftPart + $_logoPart, 'colspan' => 2), we_html_tools::getPixel(5, 5));
 
 
@@ -144,7 +144,7 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 	//	mode-table
 	$_modetable = new we_html_table(array("style" => 'border-style:none; padding:0px;border-spacing:0px;', "width" => $_middlePart), 1, 3);
 
-	$loginButton = we_html_button::create_button("login", "javascript:document.loginForm.submit();");
+	$loginButton = we_html_button::create_button("login", "javascript:document.loginForm.submit();").'<input style="display:none;" type="submit"/>';
 	if(!WE_SEEM){ //	deactivate See-Mode
 		if(WE_LOGIN_WEWINDOW){
 			$_modetable->setCol(0, 0, array(), '');

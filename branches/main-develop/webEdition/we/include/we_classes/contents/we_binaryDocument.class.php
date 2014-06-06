@@ -345,7 +345,7 @@ class we_binaryDocument extends we_document{
 			$this->getThumbnail() .
 			'</td></tr>
 			<tr><td colspan="2">' . we_html_tools::getPixel(4, 20) . '</td></tr>
-			<tr><td colspan="2" class="defaultfont">' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', ($GLOBALS['we_doc']->getFilesize() != 0 ? "[upload_will_replace]" : "[upload_single_files]")), we_html_tools::TYPE_ALERT, 508) . '</td></tr>
+			<tr><td colspan="2" class="defaultfont">' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', ($GLOBALS['we_doc']->getFilesize() ? "[upload_will_replace]" : "[upload_single_files]")), we_html_tools::TYPE_ALERT, 508) . '</td></tr>
 			</table>';
 	}
 

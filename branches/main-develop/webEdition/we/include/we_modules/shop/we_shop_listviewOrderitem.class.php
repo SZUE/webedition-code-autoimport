@@ -95,13 +95,12 @@ class we_shop_listviewOrderitem extends listviewBase{
 			$orderstring = '';
 		}
 
-		$where = ($this->orderID != 0 ?
+		$where = ($this->orderID ?
 				($this->condition ? (' WHERE IntOrderID=' . $this->name . ' AND ' . $this->condition ) : ' WHERE IntOrderID=' . $this->orderID . ' ') :
 				($this->condition ? (' WHERE ' . $this->condition ) : ' '));
 
 
-		$this->DB_WE->query('SELECT 1 FROM ' . SHOP_TABLE . $where);
-		$this->anz_all = $this->DB_WE->num_rows();
+		$this->anz_all = f('SELECT COUNT(1) FROM ' . SHOP_TABLE . $where,'',  $this->DB_WE);
 
 		$this->DB_WE->query('SELECT IntID as ID,IntOrderID as OrderID, IntArticleID as ArticleID, IntQuantity as Quantity, Price, strSerial FROM ' . SHOP_TABLE . $where . ' ' . $orderstring . ' ' . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . $this->maxItemsPerPage) : ''));
 		$this->anz = $this->DB_WE->num_rows();

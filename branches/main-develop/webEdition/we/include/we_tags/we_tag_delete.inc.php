@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_delete($attribs){
+	$id = weTag_getAttribute('id', $attribs, 0);
 	$type = weTag_getAttribute('type', $attribs, 'document');
 	$userid = weTag_getAttribute('userid', $attribs); // deprecated  use protected=true instead
 	$protected = weTag_getAttribute('protected', $attribs, false, true);
@@ -37,26 +38,26 @@ function we_tag_delete($attribs){
 
 	switch($type){
 		case "document":
-			if(!isset($_REQUEST["we_delDocument_ID"])){
+			$docID = $id ? $id : weRequest('int', 'we_delDocument_ID');
+			if(!$docID){
 				return '';
 			}
-			$docID = weRequest('int', 'we_delDocument_ID');
 			$doc = new we_webEditionDocument();
 			$doc->initByID($docID);
 			$table = FILE_TABLE;
 			if($doctype){
 				$doctypeID = f('SELECT ID FROM ' . DOC_TYPES_TABLE . " WHERE DocType LIKE '" . $GLOBALS['DB_WE']->escape($doctype) . "'");
 				if($doc->DocType != $doctypeID){
-					$GLOBALS["we_" . $type . "_delete_ok"] = false;
+					$GLOBALS['we_' . $type . '_delete_ok'] = false;
 					return '';
 				}
 			}
 			break;
 		default:
-			if(!isset($_REQUEST["we_delObject_ID"])){
+			$docID = $id ? $id : weRequest('int', 'we_delObject_ID', $id);
+			if(!$docID){
 				return '';
 			}
-			$docID = weRequest('int', 'we_delObject_ID');
 			$doc = new we_objectFile();
 			$doc->initByID($docID, OBJECT_FILES_TABLE);
 			$table = OBJECT_FILES_TABLE;
@@ -84,8 +85,7 @@ function we_tag_delete($attribs){
 
 	if($isAdmin || $isOwner || $forceedit){
 		$GLOBALS["NOT_PROTECT"] = true;
-		require_once (WE_INCLUDES_PATH . 'we_delete_fn.inc.php');
-		deleteEntry($docID, $table);
+		we_base_delete::deleteEntry($docID, $table);
 		$GLOBALS["we_" . $type . "_delete_ok"] = true;
 		if($mail){
 			if(!$mailfrom){

@@ -70,7 +70,7 @@ function we_tag_ifVar($attribs){
 			$name = weTag_getAttribute('_name_orig', $attribs);
 			//$name = isset($GLOBALS[$name]) ? $name : (isset($GLOBALS[$name_orig]) ? $name_orig : $name);
 			$var = getArrayValue($GLOBALS, null, $name);
-			return ($size == 1 && $operator != '' ?
+			return ($size == 1 && $operator ?
 					_we_tag_ifVar_op($operator, $var, $match) :
 					(!empty($var) && in_array($var, $matchArray)));
 
@@ -79,7 +79,7 @@ function we_tag_ifVar($attribs){
 			if(!isset($_REQUEST[$name])){
 				return false;
 			}
-			return ($size == 1 && $operator != '' ?
+			return ($size == 1 && $operator ?
 					_we_tag_ifVar_op($operator, $_REQUEST[$name], $match) :
 					( in_array($_REQUEST[$name], $matchArray)));
 
@@ -88,7 +88,7 @@ function we_tag_ifVar($attribs){
 			if(!isset($_POST[$name])){
 				return false;
 			}
-			return ($size == 1 && $operator != '' ?
+			return ($size == 1 && $operator ?
 					_we_tag_ifVar_op($operator, $_POST[$name], $match) :
 					( in_array($_POST[$name], $matchArray)));
 
@@ -97,7 +97,7 @@ function we_tag_ifVar($attribs){
 			if(!isset($_GET[$name])){
 				return false;
 			}
-			return ($size == 1 && $operator != '' ?
+			return ($size == 1 && $operator ?
 					_we_tag_ifVar_op($operator, $_GET[$name], $match) :
 					(in_array($_GET[$name], $matchArray)));
 
@@ -106,7 +106,7 @@ function we_tag_ifVar($attribs){
 			if(!isset($_SESSION[$name])){
 				return false;
 			}
-			return ($size == 1 && $operator != '' ?
+			return ($size == 1 && $operator ?
 					_we_tag_ifVar_op($operator, $_SESSION[$name], $match) :
 					(in_array($_SESSION[$name], $matchArray)));
 
@@ -125,7 +125,7 @@ function we_tag_ifVar($attribs){
 			$doc = we_getDocForTag($docAttr, true);
 			$val = $doc->getField($attribs, $type, true);
 
-			return ($size == 1 && $operator != '' ?
+			return ($size == 1 && $operator ?
 					_we_tag_ifVar_op($operator, $val, $match) :
 					in_array($val, $matchArray));
 	}

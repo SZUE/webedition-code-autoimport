@@ -24,9 +24,9 @@
  */
 class we_users_selector extends we_selector_multiple{
 
-	function __construct($id, $table = USER_TABLE, $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $sessionID = '', $rootDirID = 0, $filter = '', $multiple = true){
+	function __construct($id, $table = USER_TABLE, $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $rootDirID = 0, $filter = '', $multiple = true){
 
-		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, $sessionID, $rootDirID, $multiple, $filter);
+		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, $rootDirID, $multiple, $filter);
 		$this->title = g_l('fileselector', '[userSelector][title]');
 
 		//FIXME: fix userSelector String
@@ -105,7 +105,7 @@ class we_users_selector extends we_selector_multiple{
 			$this->db->escape($this->table) .
 			' WHERE ParentID=' . intval($this->dir) .
 			($upath ? ' AND Path LIKE "' . $this->db->escape($upath) . '%" ' : '') .
-			$q . ($this->order ? (' ORDER BY ' . $this->db->escape($this->order)) : ''));
+			$q . ($this->order ? (' ORDER BY IsFolder DESC,' . $this->db->escape($this->order)) : ''));
 	}
 
 	function printFramesetJSFunctionQueryString(){
@@ -138,7 +138,7 @@ function setDir(id){' .
 		} else {
 			$rootID = f('SELECT ParentID FROM ' . $this->table . ' WHERE ID=' . intval($_SESSION["user"]["ID"]), 'ParentID', $this->db);
 			$rootPath = f('SELECT Path FROM ' . $this->table . ' WHERE ID=' . intval($rootID), 'Path', $this->db);
-			$go = (f('SELECT 1 FROM ' . $this->table . ' WHERE ID=' . intval($this->dir) . ' AND Path LIKE "' . $rootPath . '%"', '', $this->db) == '1');
+			$go = (f('SELECT 1 FROM ' . $this->table . ' WHERE ID=' . intval($this->dir) . ' AND Path LIKE "' . $rootPath . '%"', '', $this->db));
 		}
 		if($go){
 			if($this->id == 0){

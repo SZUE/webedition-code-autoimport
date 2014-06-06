@@ -185,7 +185,7 @@ class we_base_browserDetect{
 		}
 	}
 
-	static function inst(){
+	public static function inst(){
 		static $ref = 0;
 		if(!is_object($ref)){
 			$ref = new self();
@@ -197,19 +197,19 @@ class we_base_browserDetect{
 		return self::$br;
 	}
 
-	static function isIE(){
+	public static function isIE(){
 		return self::inst()->getBrowser() == self::IE;
 	}
 
-	static function isOpera(){
+	public static function isOpera(){
 		return self::inst()->getBrowser() == self::OPERA;
 	}
 
-	static function isSafari(){
+	public static function isSafari(){
 		return self::inst()->getBrowser() == self::SAFARI;
 	}
 
-	static function isNN(){
+	public static function isNN(){
 		switch(self::inst()->getBrowser()){
 			case self::NETSCAPE:
 			case self::MOZILLA:
@@ -219,43 +219,43 @@ class we_base_browserDetect{
 		return false;
 	}
 
-	static function isFF(){
+	public static function isFF(){
 		return self::inst()->getBrowser() == self::FF;
 	}
 
-	static function isChrome(){
+	public static function isChrome(){
 		return self::inst()->getBrowser() == self::CHROME;
 	}
 
-	static function isMAC(){
+	public static function isMAC(){
 		return self::inst()->getSystem() == self::SYS_MAC;
 	}
 
-	static function isUNIX(){
+	public static function isUNIX(){
 		return self::inst()->getSystem() == self::SYS_UNIX;
 	}
 
-	static function isWin(){
+	public static function isWin(){
 		return self::inst()->getSystem() == self::SYS_WIN;
 	}
 
-	static function getIEVersion(){
+	public static function getIEVersion(){
 		return self::isIE() ? intval(trim(self::$v)) : -1;
 	}
 
-	function getBrowserVersion(){
+	public function getBrowserVersion(){
 		return trim(self::$v);
 	}
 
-	function getSystem(){
+	public function getSystem(){
 		return self::$sys;
 	}
 
-	function getUserAgent(){
+	public function getUserAgent(){
 		return self::$ua;
 	}
 
-	function getWebKitVersion(){
+	public function getWebKitVersion(){
 		$regs = array();
 		if(preg_match('#AppleWebKit/([^ ]+)#i', self::$ua, $regs)){
 			return intval($regs[1]);
@@ -263,12 +263,12 @@ class we_base_browserDetect{
 		return 0;
 	}
 
-	static function isGecko(){
+	public static function isGecko(){
 		return stristr(self::inst()->getUserAgent(), 'gecko');
 	}
 
 	//todo: implement from we_browser_check
-	static function isSupported(){
+	public static function isSupported(){
 		if(self::isGecko()){
 			return true;
 		}

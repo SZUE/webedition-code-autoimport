@@ -34,7 +34,7 @@ function we_tag_saveRegisteredUser($attribs){
 	if(isset($_REQUEST['s']['Password2'])){
 		unset($_REQUEST['s']['Password2']);
 	}
-	we_util::convertDateInRequest($_REQUEST['s'], false);
+	we_base_util::convertDateInRequest($_REQUEST['s'], false);
 
 	//register new User
 	if(isset($_REQUEST['s']['ID']) && (!isset($_SESSION['webuser']['ID'])) && weRequest('int', 's', 0, 'ID') <= 0 && $registerallowed && (!isset($_SESSION['webuser']['registered']) || !$_SESSION['webuser']['registered'])){ // neuer User
@@ -152,8 +152,7 @@ function we_saveCustomerImages(){
 						//everything ok, now delete
 
 						$GLOBALS['NOT_PROTECT'] = true;
-						require_once(WE_INCLUDES_PATH . 'we_delete_fn.inc.php');
-						deleteEntry($imgId, FILE_TABLE);
+						we_base_delete::deleteEntry($imgId, FILE_TABLE);
 						$GLOBALS['NOT_PROTECT'] = false;
 						// reset image field
 						$_SESSION['webuser'][$imgName] = 0;
@@ -263,9 +262,9 @@ function we_tag_saveRegisteredUser_processRequest($protected, $allowed){
 	foreach($_REQUEST['s'] as $name => $val){
 		switch($name){
 			case 'Username': ### QUICKFIX !!!
-				$set['Username'] = we_util::rmPhp($val);
-				$set['Path'] = '/' . we_util::rmPhp($val);
-				$set['Text'] = we_util::rmPhp($val);
+				$set['Username'] = we_base_util::rmPhp($val);
+				$set['Path'] = '/' . we_base_util::rmPhp($val);
+				$set['Text'] = we_base_util::rmPhp($val);
 				$set['Icon'] = 'customer.gif';
 				break;
 			case 'Text':
@@ -281,7 +280,7 @@ function we_tag_saveRegisteredUser_processRequest($protected, $allowed){
 				}
 				$set[$name] = ($name == 'Password' ?
 						we_customer_customer::cryptPassword($val) :
-						we_util::rmPhp($val));
+						we_base_util::rmPhp($val));
 				break;
 		}
 	}

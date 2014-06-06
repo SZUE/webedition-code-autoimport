@@ -241,7 +241,7 @@ abstract class we_backup_util{
 	}
 
 	static function getHttpLink($server, $url, $port = '', $username = '', $password = ''){
-		return getServerProtocol(true) . (($username && $password) ? "$username:$password@" : '') . $server . ($port != '' ? ':' . $port : '') . $url;
+		return getServerProtocol(true) . (($username && $password) ? "$username:$password@" : '') . $server . ($port ? ':' . $port : '') . $url;
 	}
 
 	static function getFormat($file, $iscompr = 0){

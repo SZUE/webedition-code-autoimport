@@ -420,7 +420,7 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 					$TEMPLATE_SAVE_CODE2 = true;
 					$arr = we_rebuild_base::getTemplAndDocIDsOfTemplate($we_doc->ID, true, true);
 					$nrDocsUsedByThisTemplate = count($arr['documentIDs']);
-					$isTemplatesUsedByThisTemplate = $we_doc->ID && f('SELECT 1 FROM ' . TEMPLATES_TABLE . ' WHERE MasterTemplateID=' . $we_doc->ID);
+					$isTemplatesUsedByThisTemplate = $we_doc->ID && f('SELECT 1 FROM ' . TEMPLATES_TABLE . ' WHERE MasterTemplateID=' . $we_doc->ID . ' LIMIT 1');
 					$somethingNeedsToBeResaved = ($nrDocsUsedByThisTemplate + $isTemplatesUsedByThisTemplate) > 0;
 
 					if($_REQUEST['we_cmd'][2]){
@@ -756,7 +756,7 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 			if(isset($GLOBALS['we_file_to_delete_after_include'])){
 				we_util_File::deleteLocalFile($GLOBALS['we_file_to_delete_after_include']);
 			}
-			if($we_doc->EditPageNr == WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == WE_EDITPAGE_SCHEDULER || $we_doc->EditPageNr == WE_EDITPAGE_THUMBNAILS){
+			if($we_doc->EditPageNr == WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == WE_EDITPAGE_SCHEDULER || $we_doc->EditPageNr == WE_EDITPAGE_THUMBNAILS || ($we_doc instanceof we_object && $we_doc->EditPageNr == WE_EDITPAGE_CONTENT)){
 				echo we_html_element::jsElement('setTimeout("doScrollTo();",100);');
 			}
 	}

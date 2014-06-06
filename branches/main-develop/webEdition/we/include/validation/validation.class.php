@@ -36,8 +36,8 @@ abstract class validation{
 
 	static function saveService($validationService){
 		// before saving check if another validationservice has this name
-		$exist = f('SELECT 1 as a FROM ' . VALIDATION_SERVICES_TABLE . ' WHERE name="' . $GLOBALS['DB_WE']->escape($validationService->name) . '"
-					AND PK_tblvalidationservices != ' . intval($validationService->id), 'a', $GLOBALS['DB_WE']);
+		$exist = f('SELECT 1 FROM ' . VALIDATION_SERVICES_TABLE . ' WHERE name="' . $GLOBALS['DB_WE']->escape($validationService->name) . '"
+					AND PK_tblvalidationservices != ' . intval($validationService->id).' LIMIT 1');
 
 		if($exist === '1'){
 			$GLOBALS['errorMessage'] = g_l('validation', '[edit_service][servicename_already_exists]');

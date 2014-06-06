@@ -58,25 +58,31 @@ function we_parse_tag_captcha($a, $c, array $attribs){
 	// writing the temporary document
 	$file = 'we_captcha_' . $GLOBALS['we_doc']->ID . ".php";
 	$realPath = rtrim(realpath($_SERVER['DOCUMENT_ROOT'] . $path), '/') . '/' . $file;
-	/* 	if(strpos($realPath, $_SERVER['DOCUMENT_ROOT']) === FALSE){
-	  t_e('warning', 'Acess outside document_root forbidden!', $realPath);
-	  } */
 
-
-	$php = '<?php
+	we_base_file::save($realPath, '<?php
 require_once($_SERVER[\'DOCUMENT_ROOT\'].\'' . WE_INCLUDES_DIR . 'we.inc.php\');
-$image = new CaptchaImage(' . $width . ', ' . $height . ', ' . $maxlength . ');' .
-		($fontpath != '' ? '$image->setFontPath(\'' . $fontpath . '\');' : '') . '
-$image->setFont(\'' . $font . '\', \'' . $fontsize . '\', \'' . $fontcolor . '\');
-$image->setCharacterSubset(\'' . $subset . '\', \'' . $case . '\', \'' . $skip . '\');
-$image->setAlign(\'' . $align . '\');
-$image->setVerticalAlign(\'' . $valign . '\');
-$image->setBackground(\'' . $bgcolor . '\'' . (isset($bgcolor) && $transparent ? ', true' : '') . ');' . '
-$image->setStyle(\'' . $style . '\', \'' . $stylecolor . '\', \'' . $stylenumber . '\');
-$image->setAngleRange(\'' . $angle . '\');
-Captcha::display($image, \'' . ((isset($bgcolor) && $transparent) ? 'gif' : $type) . '\');';
-
-	we_base_file::save($realPath, $php, 'w+');
+require_once(WE_INCLUDES_PATH . \'we_tag.inc.php\');
+' . we_tag_tagParser::printTag('captcha', array('_internal' => true,
+			'width' => $width,
+			'height' => $height,
+			'maxlength' => $maxlength,
+			'fontpath' => $fontpath,
+			'font' => $font,
+			'fontsize' => $fontsize,
+			'fontcolor' => $fontcolor,
+			'subset' => $subset,
+			'case' => $case,
+			'skip' => $skip,
+			'align' => $align,
+			'valign' => $valign,
+			'bgcolor' => $bgcolor,
+			'transparent' => (bool) $bgcolor && $transparent,
+			'style' => $style,
+			'stylecolor' => $stylecolor,
+			'stylenumber' => $stylenumber,
+			'angle' => $angle,
+			'type' => $bgcolor && $transparent ? 'gif' : $type
+		)) . ';', 'w+');
 
 	// clean attribs
 	$attribs = removeAttribs($attribs, array(
@@ -104,7 +110,20 @@ Captcha::display($image, \'' . ((isset($bgcolor) && $transparent) ? 'gif' : $typ
 	return '<?php printElement(' . we_tag_tagParser::printTag('captcha', $attribs) . ');?>';
 }
 
-function we_tag_captcha($attribs){
-	$attribs['src'] .= "?r=" . md5(md5(time()) . session_id());
-	return getHtmlTag("img", $attribs);
+function we_tag_captcha(array $attribs){
+	if(!isset($attribs['_internal'])){
+		return getHtmlTag("img", $attribs);
+	}
+	$image = new we_captcha_image($attribs['width'], $attribs['height'], $attribs['maxlength']);
+	if($attribs['fontpath']){
+		$image->setFontPath($attribs['fontpath']);
+	}
+	$image->setFont($attribs['font'], $attribs['fontsize'], $attribs['fontcolor']);
+	$image->setCharacterSubset($attribs['subset'], $attribs['case'], $attribs['skip']);
+	$image->setAlign($attribs['align']);
+	$image->setVerticalAlign($attribs['valign']);
+	$image->setBackground($attribs['bgcolor'], $attribs['transparent']);
+	$image->setStyle($attribs['style'], $attribs['stylecolor'], $attribs['stylenumber']);
+	$image->setAngleRange($attribs['angle']);
+	we_captcha_captcha::display($image, $attribs['type']);
 }

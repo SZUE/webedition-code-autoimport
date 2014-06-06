@@ -34,9 +34,9 @@ class we_selector_directory extends we_selector_multiple{
 	protected $we_editDirID = "";
 	protected $FolderText = '';
 
-	function __construct($id, $table = "", $JSIDName = "", $JSTextName = "", $JSCommand = "", $order = "", $sessionID = "", $we_editDirID = "", $FolderText = "", $rootDirID = 0, $multiple = 0, $filter = "", $extInstanceId = ""){
-		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, $sessionID, $rootDirID, $multiple, $filter, $extInstanceId);
 
+	function __construct($id, $table = "", $JSIDName = "", $JSTextName = "", $JSCommand = "", $order = "", $sessionID = "", $we_editDirID = 0, $FolderText = "", $rootDirID = 0, $multiple = 0, $filter = '',$extInstanceId =''){
+		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, $rootDirID, $multiple, $filter,extInstanceId);
 		switch($this->table){
 			case FILE_TABLE:
 			case TEMPLATES_TABLE:
@@ -107,7 +107,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 
 	function query(){
 		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE IsFolder=1 AND ParentID=' . intval($this->dir) . ' AND((1' . we_users_util::makeOwnersSql() . ') ' .
-				getWsQueryForSelector($this->table) . ')' . ($this->order ? (' ORDER BY ' . $this->order) : ''));
+				getWsQueryForSelector($this->table) . ')' . ($this->order ? (' ORDER BY IsFolder DESC,' . $this->order) : ''));
 	}
 
 	function setDefaultDirAndID($setLastDir){
@@ -291,8 +291,8 @@ function addEntry(ID,icon,text,isFolder,path,modDate){
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
 	<tr>
 		<td>' . we_html_tools::getPixel(25, 14) . '</td>
-		<td class="selector"><b><a href="#" onclick="javascript:top.orderIt(\'IsFolder DESC, Text\');">' . g_l('fileselector', "[filename]") . '</a></b></td>
-		<td class="selector"><b><a href="#" onclick="javascript:top.orderIt(\'IsFolder DESC, ModDate\');">' . g_l('fileselector', "[modified]") . '</a></b></td>
+		<td class="selector"><b><a href="#" onclick="javascript:top.orderIt(\'Text\');">' . g_l('fileselector', "[filename]") . '</a></b></td>
+		<td class="selector"><b><a href="#" onclick="javascript:top.orderIt(\'ModDate\');">' . g_l('fileselector', "[modified]") . '</a></b></td>
 	</tr>
 	<tr>
 		<td width="25">' . we_html_tools::getPixel(25, 1) . '</td>

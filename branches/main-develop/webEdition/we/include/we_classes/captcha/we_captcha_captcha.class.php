@@ -33,6 +33,8 @@ abstract class we_captcha_captcha{
 
 		$code = "";
 		$im = $image->get($code);
+		// save the code to the memory
+		self::save($code);
 
 		header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
 		header('Cache-Control: no-cache, must-revalidate, max-age=0');
@@ -43,48 +45,51 @@ abstract class we_captcha_captcha{
 				header("Content-type: image/jpeg");
 				imagejpeg($im);
 				imagedestroy($im);
-				break;
+				return;
 			case 'png':
 				header("Content-type: image/png");
 				imagepng($im);
 				imagedestroy($im);
-				break;
+				return;
 			case 'gif':
 			default:
-				header("Content-type: image/gif");
+				header('Content-type: image/gif');
 				imagegif($im);
 				imagedestroy($im);
-				break;
+				return;
 		}
-
-		// save the code to the memory
-		we_captcha_memory::save($code, we_captcha_captcha::getStorage());
 	}
 
-	/* end: save */
-
-	/**
-	 * Clean the Memory
-	 *
-	 * @return boolean
-	 */
 	static function check($captcha){
+		$db = new DB_WE();
+		self::cleanup($db);
+		$db->query('DELETE FROM ' . CAPTCHA_TABLE . ' WHERE IP=x\'' . bin2hex(inet_pton(strstr($_SERVER['REMOTE_ADDR'], ':') ? $_SERVER['REMOTE_ADDR'] : '::ffff:' . $_SERVER['REMOTE_ADDR'])) . '\' AND code="' . $db->escape($captcha) . '" AND agent="' . $_SERVER['HTTP_USER_AGENT'] . '"', '', $db);
 
-		return we_captcha_memory::isValid($captcha, we_captcha_captcha::getStorage());
+		if($db->affected_rows()){
+			return true;
+		}
+		return false;
 	}
 
-	/* end: check */
+	static function cleanup(we_database_base $db){
+		$db->query('DELETE FROM ' . CAPTCHA_TABLE . ' WHERE created<NOW()-INTERVAL 30 MINUTE');
+	}
 
 	/**
-	 * get the filename
+	 * Save the Captcha Code
 	 *
-	 * @return boolean
+	 * @param string $captcha
+	 * @return void
 	 */
-	static function getStorage(){
-		return TEMP_PATH . 'captchacodes.tmp';
+	function save($captcha){
+		$db = new DB_WE();
+		self::cleanup($db);
+
+		$db->query('REPLACE INTO ' . CAPTCHA_TABLE . ' SET ' . we_database_base::arraySetter(array(
+				'IP' => inet_pton(strstr($_SERVER['REMOTE_ADDR'], ':') ? $_SERVER['REMOTE_ADDR'] : '::ffff:' . $_SERVER['REMOTE_ADDR']),
+				'agent' => $_SERVER['HTTP_USER_AGENT'],
+				'code' => $captcha
+		)));
 	}
 
-	/* end: check */
 }
-
-/* end: Class */

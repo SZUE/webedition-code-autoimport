@@ -28,6 +28,10 @@
  */
 class we_navigation_items{
 
+	const TEMPLATE_DEFAULT_CURRENT = 'defaultCurrent';
+	const TEMPLATE_DEFAULT_POSITION = 'defaultPosition';
+	const TEMPLATE_DEFAULT_LEVEL = 'defaultLevel';
+
 	private static $cache = array();
 	var $items;
 	var $templates;
@@ -141,7 +145,7 @@ class we_navigation_items{
 
 				if($rules){
 					$items[(count($items) - 1)]['currentRule'] = we_navigation_rule::getWeNavigationRule(
-									'defined_' . ($_dyn['field'] ? $_dyn['field'] : $_dyn['text']), $_nav->ID, $_nav->SelectionType, $_nav->FolderID, $_nav->DocTypeID, $_nav->ClassID, $_nav->CategoryIDs, $_nav->WorkspaceID, $href, false);
+							'defined_' . ($_dyn['field'] ? $_dyn['field'] : $_dyn['text']), $_nav->ID, $_nav->SelectionType, $_nav->FolderID, $_nav->DocTypeID, $_nav->ClassID, $_nav->CategoryIDs, $_nav->WorkspaceID, $href, false);
 				}
 			}
 		}
@@ -191,7 +195,7 @@ class we_navigation_items{
 		unset($navigationRulesStorage);
 
 		foreach($this->items as &$_item){
-			if(method_exists($_item, 'isCurrent')){
+			if(is_object($_item) && method_exists($_item, 'isCurrent')){
 				$this->hasCurrent = ($_item->isCurrent($this));
 			}
 		}
@@ -211,14 +215,14 @@ class we_navigation_items{
 		$_item = $this->getItemFromPool($parentid);
 
 		$_navigation->initByRawData($_item ? $_item : array(
-					'ID' => 0, 'Path' => '/'
+				'ID' => 0, 'Path' => '/'
 		));
 
 // set defaultTemplates
 		$this->setDefaultTemplates();
 
 		$this->items['id' . $_navigation->ID] = new we_navigation_item(
-				$_navigation->ID, $_navigation->LinkID, ($_navigation->IsFolder ? ($_navigation->FolderSelection == we_navigation_navigation::STPYE_OBJLINK ? OBJECT_FILES_TABLE : FILE_TABLE) : (($_navigation->SelectionType == we_navigation_navigation::STPYE_CLASS || $_navigation->SelectionType == we_navigation_navigation::STPYE_OBJLINK) ? OBJECT_FILES_TABLE : FILE_TABLE)), $_navigation->Text, $_navigation->Display, $_navigation->getHref($this->Storage['ids']), $showRoot ? ($_navigation->ID == 0 ? 'root' : ($_navigation->IsFolder ? 'folder' : 'item')) : 'root', $this->id2path($_navigation->IconID), $_navigation->Attributes, $_navigation->LimitAccess, $this->getCustomerData($_navigation), $_navigation->CurrentOnUrlPar, $_navigation->CurrentOnAnker);
+			$_navigation->ID, $_navigation->LinkID, ($_navigation->IsFolder ? ($_navigation->FolderSelection == we_navigation_navigation::STPYE_OBJLINK ? OBJECT_FILES_TABLE : FILE_TABLE) : (($_navigation->SelectionType == we_navigation_navigation::STPYE_CLASS || $_navigation->SelectionType == we_navigation_navigation::STPYE_OBJLINK) ? OBJECT_FILES_TABLE : FILE_TABLE)), $_navigation->Text, $_navigation->Display, $_navigation->getHref($this->Storage['ids']), $showRoot ? ($_navigation->ID == 0 ? 'root' : ($_navigation->IsFolder ? 'folder' : 'item')) : 'root', $this->id2path($_navigation->IconID), $_navigation->Attributes, $_navigation->LimitAccess, $this->getCustomerData($_navigation), $_navigation->CurrentOnUrlPar, $_navigation->CurrentOnAnker);
 
 		$items = $_navigation->getDynamicPreview($this->Storage, true);
 
@@ -229,7 +233,7 @@ class we_navigation_items{
 					$_item['text'] = $_item['name'];
 				}
 				$this->items['id' . $_item['id']] = new we_navigation_item(
-						$_item['id'], $_item['docid'], $_item['table'], $_item['text'], $_item['display'], $_item['href'], $_item['type'], $_item['icon'], $_item['attributes'], $_item['limitaccess'], $_item['customers'], isset($_item['currentonurlpar']) ? $_item['currentonurlpar'] : '', isset($_item['currentonanker']) ? $_item['currentonanker'] : '');
+					$_item['id'], $_item['docid'], $_item['table'], $_item['text'], $_item['display'], $_item['href'], $_item['type'], $_item['icon'], $_item['attributes'], $_item['limitaccess'], $_item['customers'], isset($_item['currentonurlpar']) ? $_item['currentonurlpar'] : '', isset($_item['currentonanker']) ? $_item['currentonanker'] : '');
 
 				if(isset($this->items['id' . $_item['parentid']])){
 					$this->items['id' . $_item['parentid']]->addItem($this->items['id' . $_item['id']]);
@@ -272,8 +276,8 @@ class we_navigation_items{
 	}
 
 	function setCurrent($navigationID, $current){
-		if(isset($this->items['id'.$navigationID])){
-			$this->items['id'.$navigationID]->setCurrent($this, true);
+		if(isset($this->items['id' . $navigationID])){
+			$this->items['id' . $navigationID]->setCurrent($this, true);
 		}
 	}
 
@@ -382,8 +386,8 @@ class we_navigation_items{
 
 	function getItems($id = false){
 		return ($id ?
-						$this->getItemIds($id) :
-						array_keys($this->items));
+				$this->getItemIds($id) :
+				array_keys($this->items));
 	}
 
 	function getItem($id){
@@ -394,14 +398,14 @@ class we_navigation_items{
 		if(!isset($this->templates[$item->type])){
 			return $this->getDefaultTemplate($item);
 		}
-
+		$currentPos = we_navigation_item::$currentPosition[$item->level];
 // get correct Level
-		$useTemplate = $this->templates[$item->type][(isset($this->templates[$item->type][$item->level]) ? $item->level : 'defaultLevel')];
+		$useTemplate = $this->templates[$item->type][(isset($this->templates[$item->type][$item->level]) ? $item->level : self::TEMPLATE_DEFAULT_LEVEL)];
 // get correct position
 		if(isset($useTemplate[$item->current])){
 			$useTemplate = $useTemplate[$item->current];
-		} elseif(isset($useTemplate[we_navigation_item::DEFAULT_CURRENT])){
-			$useTemplate = $useTemplate[we_navigation_item::DEFAULT_CURRENT];
+		} elseif(isset($useTemplate[self::TEMPLATE_DEFAULT_CURRENT])){
+			$useTemplate = $useTemplate[self::TEMPLATE_DEFAULT_CURRENT];
 		} else {
 			return $this->getDefaultTemplate($item);
 		}
@@ -409,24 +413,24 @@ class we_navigation_items{
 // is last entry??
 		if(isset($useTemplate['last']) &&
 // check if item is last
-				((count($this->items['id' . $item->parentid]->items)) == we_navigation_item::$currentPosition)){
+			((count($this->items['id' . $item->parentid]->items)) == $currentPos)){
 			return $useTemplate['last'];
 		}
 
-		if(isset($useTemplate[we_navigation_item::$currentPosition])){
-			return $useTemplate[we_navigation_item::$currentPosition];
+		if(isset($useTemplate[$currentPos])){
+			return $useTemplate[$currentPos];
 		}
 
-		if(isset($useTemplate['odd']) && we_navigation_item::$currentPosition % 2 === 1){
+		if(isset($useTemplate['odd']) && $currentPos % 2 === 1){
 			return $useTemplate['odd'];
 		}
 
-		if(isset($useTemplate['even']) && we_navigation_item::$currentPosition % 2 === 0){
+		if(isset($useTemplate['even']) && $currentPos % 2 === 0){
 			return $useTemplate['even'];
 		}
 
-		if(isset($useTemplate['defaultPosition'])){
-			return $useTemplate['defaultPosition'];
+		if(isset($useTemplate[self::TEMPLATE_DEFAULT_POSITION])){
+			return $useTemplate[self::TEMPLATE_DEFAULT_POSITION];
 		}
 
 		return $this->getDefaultTemplate($item);
@@ -438,13 +442,13 @@ class we_navigation_items{
 //			$itemTemplate = '<li><a href="<we:navigationField name="href">"><we:navigationField name="text"></a></li>';
 //			$rootTemplate = '<we:navigationEntries />';
 
-		$this->setTemplate('<li><a href="<?php printElement( ' . we_tag_tagParser::printTag('navigationField', array("name" => "href")) . '); ?>"><?php printElement( ' . we_tag_tagParser::printTag('navigationField', array("name" => "text")) . '); ?></a><?php if(' . we_tag_tagParser::printTag('ifHasEntries') . '){ ?><ul><?php printElement( ' . we_tag_tagParser::printTag('navigationEntries') . '); ?></ul><?php } ?></li>', 'folder', 'defaultLevel', we_navigation_item::DEFAULT_CURRENT, 'defaultPosition');
-		$this->setTemplate('<li><a href="<?php printElement( ' . we_tag_tagParser::printTag('navigationField', array("name" => "href")) . '); ?>"><?php printElement( ' . we_tag_tagParser::printTag('navigationField', array("name" => "text")) . '); ?></a></li>', 'item', 'defaultLevel', we_navigation_item::DEFAULT_CURRENT, 'defaultPosition');
-		$this->setTemplate('<?php printElement( ' . we_tag_tagParser::printTag('navigationEntries') . '); ?>', 'root', 'defaultLevel', we_navigation_item::DEFAULT_CURRENT, 'defaultPosition');
+		$this->setTemplate('<li><a href="<?php printElement( ' . we_tag_tagParser::printTag('navigationField', array("name" => "href")) . '); ?>"><?php printElement( ' . we_tag_tagParser::printTag('navigationField', array("name" => "text")) . '); ?></a><?php if(' . we_tag_tagParser::printTag('ifHasEntries') . '){ ?><ul><?php printElement( ' . we_tag_tagParser::printTag('navigationEntries') . '); ?></ul><?php } ?></li>', 'folder', self::TEMPLATE_DEFAULT_LEVEL, self::TEMPLATE_DEFAULT_CURRENT, self::TEMPLATE_DEFAULT_POSITION);
+		$this->setTemplate('<li><a href="<?php printElement( ' . we_tag_tagParser::printTag('navigationField', array("name" => "href")) . '); ?>"><?php printElement( ' . we_tag_tagParser::printTag('navigationField', array("name" => "text")) . '); ?></a></li>', 'item', self::TEMPLATE_DEFAULT_LEVEL, self::TEMPLATE_DEFAULT_CURRENT, self::TEMPLATE_DEFAULT_POSITION);
+		$this->setTemplate('<?php printElement( ' . we_tag_tagParser::printTag('navigationEntries') . '); ?>', 'root', self::TEMPLATE_DEFAULT_LEVEL, self::TEMPLATE_DEFAULT_CURRENT, self::TEMPLATE_DEFAULT_POSITION);
 	}
 
 	function getDefaultTemplate($item){
-		return $this->templates[$item->type]['defaultLevel'][we_navigation_item::DEFAULT_CURRENT]['defaultPosition'];
+		return $this->templates[$item->type][self::TEMPLATE_DEFAULT_LEVEL][self::TEMPLATE_DEFAULT_CURRENT][self::TEMPLATE_DEFAULT_POSITION];
 	}
 
 	function writeNavigation($depth = false){
@@ -456,6 +460,7 @@ class we_navigation_items{
 // this is to make it equal init by id, parentid
 				$depth--;
 			}
+			we_navigation_item::$currentPosition = array();
 			return $this->items['id' . $this->rootItem]->writeItem($this, $depth);
 		}
 
@@ -479,7 +484,7 @@ class we_navigation_items{
 
 		$_ids = array();
 
-		$_db->query('SELECT * FROM ' . NAVIGATION_TABLE . ' WHERE Path LIKE "' . $_db->escape($_path) . '" ' . ($id != 0 ? ' OR ID=' . intval($id) : '') . ' ORDER BY Ordn');
+		$_db->query('SELECT * FROM ' . NAVIGATION_TABLE . ' WHERE Path LIKE "' . $_db->escape($_path) . '" ' . ($id ? ' OR ID=' . intval($id) : '') . ' ORDER BY Ordn');
 		while($_db->next_record()){
 			$_tmpItem = $_db->getRecord();
 			$_tmpItem["Name"] = $_tmpItem["Text"];

@@ -285,7 +285,7 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement{
 	 */
 	public function getNodeObjectSuggest($id, $text, $Classes = '', $Status = ''){
 		//$doOnClick = "alert(&quot;Status:-" . $Status . "- classes:" . $Classes . "-&quot;);";
-		$outClass = ($Classes != '' ? 'class=\"' . $Classes . '\"' : '');
+		$outClass = ($Classes ? 'class=\"' . $Classes . '\"' : '');
 
 		return 'var myobj = {
 			label: "<span title=\"' . $id . '\" ' . $outClass . ' id=\"spanText_' . $this->_id . '_' . $id . '\">' . $text . '</span>",

@@ -110,7 +110,7 @@ class we_ui_layout_NoteDiv extends we_ui_layout_Div{
 		}
 		return '<div' .
 			$this->_getNonBooleanAttribs('id') .
-			($_style != "" ? $this->_getComputedStyleAttrib($_style) : "") .
+			($_style ? $this->_getComputedStyleAttrib($_style) : "") .
 			$this->_getComputedClassAttrib('we_ui_layout_NoteDiv') .
 			'>' . $this->_divHTML .
 			'</div>';

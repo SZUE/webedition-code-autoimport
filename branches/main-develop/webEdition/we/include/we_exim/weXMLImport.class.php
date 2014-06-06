@@ -187,10 +187,8 @@ class weXMLImport extends weXMLExIm{
 							//dont create Path in objects if the class doesn't exist
 							$match = array();
 							preg_match('|(/+[a-zA-Z0-9_+-\.]*)|', $object->Path, $match);
-							if(isset($match[0])){
-								if(f('SELECT 1 FROM ' . OBJECT_TABLE . ' WHERE Path="' . $db->escape($match[0]) . '"', '', $db) !== '1'){
-									return false;
-								}
+							if(isset($match[0]) && !f('SELECT 1 FROM ' . OBJECT_TABLE . ' WHERE Path="' . $db->escape($match[0]) . '"  LIMIT 1', '', $db)){
+								return false;
 							}
 						}
 						$object->ParentID = makePath(dirname($object->Path), $object->Table, $pathids, $owner);

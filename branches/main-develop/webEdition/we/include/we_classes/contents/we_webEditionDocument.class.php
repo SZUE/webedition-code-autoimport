@@ -107,9 +107,9 @@ class we_webEditionDocument extends we_textContentDocument{
 			$GLOBALS['we_document'][$formname]->setElement('we_returnpage', $ret);
 		}
 		if(isset($_REQUEST['we_ui_' . $formname]) && is_array($_REQUEST['we_ui_' . $formname])){
-			we_util::convertDateInRequest($_REQUEST['we_ui_' . $formname], true);
+			we_base_util::convertDateInRequest($_REQUEST['we_ui_' . $formname], true);
 			foreach($_REQUEST['we_ui_' . $formname] as $n => $v){
-				$v = we_util::rmPhp($v);
+				$v = we_base_util::rmPhp($v);
 				$GLOBALS['we_document'][$formname]->setElement($n, $v);
 			}
 		}
@@ -187,7 +187,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	 * Form functions for generating the html of the input fields
 	 */
 
-	function formIsDynamic($leftwidth = 100, $disabled = false){
+	function formIsDynamic($disabled = false){
 		$v = $this->IsDynamic;
 		if(!$disabled){
 			$n = "we_" . $this->Name . "_IsDynamic";
@@ -234,7 +234,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		<td colspan="3">
 			<table style="border-spacing: 0px;border-style:none" cellpadding="0">
 				<tr>
-					<td>' . $this->formIsDynamic(100, $disable) . '</td>
+					<td>' . $this->formIsDynamic($disable) . '</td>
 					<td class="defaultfont">&nbsp;</td>
 					<td>' . $this->formIsSearchable() . '</td>
 				</tr>
@@ -418,7 +418,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			$chars = explode(',', $GLOBALS["meta"]["Charset"]["defined"]);
 
 			//	input field - check value
-			$value = ($this->getElement($name) != '' ?
+			$value = ($this->getElement($name)  ?
 					$this->getElement($name) :
 					(isset($GLOBALS["meta"][$name]) ?
 						$GLOBALS["meta"][$name]["default"] :
@@ -665,10 +665,6 @@ class we_webEditionDocument extends we_textContentDocument{
 
 	public function we_unpublish($skipHook = 0){
 		return ($this->ID ? parent::we_unpublish($skipHook) : false);
-	}
-
-	public function we_delete(){
-		return ($this->ID ? we_document::we_delete() : false);
 	}
 
 	public function we_load($from = we_class::LOAD_MAID_DB){
@@ -1015,7 +1011,7 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 		}
 
 		if($this->InWebEdition){
-			$this->hasVariants = (f('SELECT 1 FROM ' . LINK_TABLE . ' WHERE DID=' . intval($this->TemplateID) . ' AND DocumentTable="tblTemplates" AND Name LIKE ("variant_%") LIMIT 1', '', $this->DB_WE) == 1);
+			$this->hasVariants = (f('SELECT 1 FROM ' . LINK_TABLE . ' WHERE DID=' . intval($this->TemplateID) . ' AND DocumentTable="tblTemplates" AND Name LIKE ("variant_%") LIMIT 1', '', $this->DB_WE));
 		} else {
 			if(isset($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']) && is_array($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'])){
 				$this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'] = serialize($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']);

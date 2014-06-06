@@ -544,9 +544,9 @@ setTimeout('we_import(1," . $v['numFiles'] . ");',15);";
 												break;
 										}
 										$_progress_text = we_html_element::htmlB(
-												g_l('contentTypes', '[' . $ref->ContentType . ']', true) != '' ?
+												g_l('contentTypes', '[' . $ref->ContentType . ']', true) ?
 													g_l('contentTypes', '[' . $ref->ContentType . ']') :
-													(g_l('import', '[' . $ref->ContentType . ']', true) != '' ?
+													(g_l('import', '[' . $ref->ContentType . ']', true) ?
 														g_l('import', '[' . $ref->ContentType . ']') : ''
 													)
 											) . '  ' . $_path_info;

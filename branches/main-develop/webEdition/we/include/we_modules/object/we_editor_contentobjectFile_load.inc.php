@@ -67,10 +67,10 @@ echo we_html_tools::getHtmlTop('', $charset, 5);
 if($we_doc->CSS){
 	$cssArr = makeArrayFromCSV($we_doc->CSS);
 	foreach($cssArr as $cs){
-		print we_html_element::cssLink(id_to_path($cs));
+		echo we_html_element::cssLink(id_to_path($cs));
 	}
 }
-print STYLESHEET;
+echo STYLESHEET;
 
 
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');

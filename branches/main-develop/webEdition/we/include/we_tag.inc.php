@@ -186,7 +186,7 @@ function we_redirect_tagoutput($returnvalue, $nameTo, $to = 'screen'){
 			}
 			return null;
 		case 'calculate':
-			return we_util::std_numberformat($returnvalue);
+			return we_base_util::std_numberformat($returnvalue);
 			break;
 		case 'screen':
 		default:
@@ -263,9 +263,9 @@ function weTag_getAttribute($name, $attribs, $default = '', $isFlag = false, $us
 			!($val === 'false' || $val === 'off' || $val === '0' || $val === 0 || $val === false)) ||
 			($val === 'true' || $val === 'on' || $val === '1' || $value === $name || $val === 1 || $val === true);
 	}
-	$value = is_array($value) || strlen($value)|| is_bool($value) ? $value : $default;
+	$value = is_array($value) || strlen($value) || is_bool($value) ? $value : $default;
 
-	return is_array($value)||is_bool($value) ? $value : htmlspecialchars_decode($value);
+	return is_array($value) || is_bool($value) ? $value : htmlspecialchars_decode($value);
 }
 
 /*
@@ -584,6 +584,10 @@ function we_tag_ifNotCaptcha($attribs, $content){
 	return !we_tag('ifCaptcha', $attribs, $content);
 }
 
+function we_tag_ifNotCustomerResetPasswordFailed($attribs, $content){
+	return !we_tag('ifCustomerResetPasswordFailed', $attribs, $content);
+}
+
 function we_tag_ifNotDeleted($attribs, $content){
 	return !we_tag('ifDeleted', $attribs, $content);
 }
@@ -811,11 +815,11 @@ function we_post_tag_listview(){
 		if(isset($GLOBALS['lv'])){
 			array_pop($GLOBALS['we_lv_array']);
 		}
-		if(empty($GLOBALS['we_lv_array'])){
+		if($GLOBALS['we_lv_array']){
+			$GLOBALS['lv'] = clone(end($GLOBALS['we_lv_array']));
+		} else {
 			unset($GLOBALS['lv']);
 			unset($GLOBALS['we_lv_array']);
-		} else {
-			$GLOBALS['lv'] = clone(end($GLOBALS['we_lv_array']));
 		}
 	}
 }

@@ -27,6 +27,6 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 $_SERVER['SCRIPT_NAME'] = WE_USERS_MODULE_DIR . 'we_usersSelect.php';
 
-$fs = new we_users_selector(isset($id) ? $id : weRequest('int', "id", 0), isset($table) ? $table : weRequest('table', "table", USER_TABLE), isset($JSIDName) ? $JSIDName : weRequest('string', "JSIDName", ""), isset($JSTextName) ? $JSTextName : weRequest('string', "JSTextName", ""), isset($JSCommand) ? $JSCommand : weRequest('raw', "JSCommand", ""), isset($order) ? $order : weRequest('raw', "order", ""), 0, isset($rootDirID) ? $rootDirID : weRequest('int', "rootDirID", 0), isset($filter) ? $filter : weRequest('raw', "filter", ""), isset($multiple) ? $multiple : weRequest('bool', "multiple"));
+$fs = new we_users_selector(weRequest('int', "id", 0), weRequest('table', 'table', USER_TABLE), weRequest('js', "JSIDName", ""), weRequest('js', "JSTextName", ""), weRequest('js', "JSCommand", ""), weRequest('raw', "order", ""), weRequest('int', "rootDirID", 0), weRequest('raw', "filter", ""), weRequest('bool', "multiple"));
 
 $fs->printHTML(weRequest('int', "what", we_selector_file::FRAMESET));

@@ -160,7 +160,7 @@ class liveUpdateHttp{
 	}
 
 	function getFopenHttpResponse($server, $url, $parameters = array()){
-		return (defined("WE_PROXYHOST") && WE_PROXYHOST != "" ?
+		return (defined("WE_PROXYHOST") && WE_PROXYHOST ?
 				liveUpdateHttp::connectProxy($server, $url, $parameters) :
 				liveUpdateHttp::connectFopen($server, $url, $parameters)
 			);

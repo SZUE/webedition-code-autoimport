@@ -28,7 +28,6 @@ we_html_tools::protect();
 $_SERVER['SCRIPT_NAME'] = WEBEDITION_DIR . 'we_dirSelect.php';
 
 $fs = new we_selector_directory(
-	isset($id) ? $id : weRequest('int', "id", 0), isset($table) ? $table : weRequest('table', "table", FILE_TABLE), isset($JSIDName) ? $JSIDName : weRequest('string', "JSIDName", ''), isset($JSTextName) ? $JSTextName : weRequest('string', "JSTextName", ''), isset($JSCommand) ? $JSCommand : weRequest('raw', "JSCommand", ''), isset($order) ? $order : weRequest('raw', "order", ''), 0, isset($we_editDirID) ? $we_editDirID : weRequest('int', "we_editDirID", 0), isset($we_FolderText) ? $we_FolderText : weRequest('raw', "we_FolderText", ''), isset($rootDirID) ? $rootDirID : weRequest('int', "rootDirID", 0), isset($multiple) ? $multiple : weRequest('bool', "multiple"),'', 
-	isset($extInstanceId) ? $extInstanceId : '');
+	weRequest('int', "id", 0), weRequest('table', "table", FILE_TABLE), weRequest('js', "JSIDName", ''), weRequest('js', "JSTextName", ''), weRequest('js', "JSCommand", ''), weRequest('raw', "order", ''), 0, weRequest('int', "we_editDirID", 0), weRequest('raw', "we_FolderText", ''), weRequest('int', "rootDirID", 0), weRequest('bool', "multiple"),	isset($extInstanceId) ? $extInstanceId : '');
 
 $fs->printHTML(weRequest('int', "what", we_selector_file::FRAMESET));

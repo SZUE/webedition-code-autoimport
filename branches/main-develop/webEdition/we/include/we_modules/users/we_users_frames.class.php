@@ -391,7 +391,8 @@ self.focus();';
 			we_html_element::htmlHidden($attribs = array("name" => "sd", "value" => 0,));
 
 		if($user_object){
-			if(isset($_REQUEST['oldtab']) && isset($_REQUEST['old_perm_branch'])){ // && isset($_REQUEST["old_perm_branch"]) added for 4705
+			if(isset($_REQUEST['oldtab']) && isset($_REQUEST['old_perm_branch'])){
+				
 				$user_object->preserveState($_REQUEST['oldtab'], $_REQUEST['old_perm_branch']);
 				$_SESSION["user_session_data"] = $user_object->getState();
 			}

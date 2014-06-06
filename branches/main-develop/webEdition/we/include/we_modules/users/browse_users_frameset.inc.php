@@ -22,15 +22,14 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$id = $_REQUEST['we_cmd'][4];
-$table = USER_TABLE;
+$_REQUEST['id'] = $_REQUEST['we_cmd'][4];
+$_REQUEST['table'] = USER_TABLE;
 
-$JSIDName = we_cmd_dec(1);
-$JSTextName = we_cmd_dec(2);
-$JSCommand = we_cmd_dec(5);
-$sessionID = 0;
-$rootDirID = weRequest('int', 'we_cmd', 0, 7);
-$filter = $_REQUEST['we_cmd'][3];
-$multiple = weRequest('bool', 'we_cmd', false, 8);
+$_REQUEST['JSIDName'] = we_cmd_dec(1);
+$_REQUEST['JSTextName'] = we_cmd_dec(2);
+$_REQUEST['JSCommand'] = we_cmd_dec(5);
+$_REQUEST['rootDirID'] = weRequest('int', 'we_cmd', 0, 7);
+$_REQUEST['filter'] = $_REQUEST['we_cmd'][3];
+$_REQUEST['multiple'] = weRequest('bool', 'we_cmd', false, 8);
 
 require_once(WE_USERS_MODULE_PATH . "we_usersSelect.php");

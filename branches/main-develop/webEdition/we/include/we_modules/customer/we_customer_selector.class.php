@@ -24,10 +24,10 @@
  */
 class we_customer_selector extends we_users_selector{
 
-	function __construct($id, $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $sessionID = '', $rootDirID = 0, $filter = '', $multiple = true){
+	function __construct($id, $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $rootDirID = 0, $filter = '', $multiple = true){
 		$mid = (is_numeric($id) ? $id : 0);
 
-		parent::__construct($mid, CUSTOMER_TABLE, $JSIDName, $JSTextName, $JSCommand, $order, $sessionID, $rootDirID, $multiple, $filter);
+		parent::__construct($mid, CUSTOMER_TABLE, $JSIDName, $JSTextName, $JSCommand, $order, $rootDirID, $multiple, $filter);
 		$this->title = g_l('fileselector', '[userSelector][title]');
 		$this->canSelectDir = false;
 		$this->dir = (is_numeric($id) ? '' : $id);

@@ -111,8 +111,8 @@ function getHTTP($server, $url, $port = '', $username = '', $password = ''){
 			}
 			return $page;
 		case 'curl':
-			$_response = we_util::getCurlHttp($server, $url, array());
-			return ($_response['status'] != 0 ? $_response['error'] : $_response['data']);
+			$_response = we_base_util::getCurlHttp($server, $url, array());
+			return ($_response['status'] ? $_response['error'] : $_response['data']);
 		default:
 			return 'Server error: Unable to open URL (php configuration directive allow_url_fopen=Off)';
 	}
@@ -127,7 +127,7 @@ function getHTTP($server, $url, $port = '', $username = '', $password = ''){
 function deleteContentFromDB($id, $table, we_database_base $DB_WE = null){
 	$DB_WE = $DB_WE ? $DB_WE : new DB_WE();
 
-	if(f('SELECT 1 FROM ' . LINK_TABLE . ' WHERE DID=' . intval($id) . ' AND DocumentTable="' . $DB_WE->escape(stripTblPrefix($table)) . '" LIMIT 1', '', $DB_WE) != 1){
+	if(!f('SELECT 1 FROM ' . LINK_TABLE . ' WHERE DID=' . intval($id) . ' AND DocumentTable="' . $DB_WE->escape(stripTblPrefix($table)) . '" LIMIT 1', '', $DB_WE)){
 		return true;
 	}
 
@@ -185,7 +185,7 @@ function _weRequest(&$var, $key, array $data){
 			$var = (preg_match('|^([a-f0-9]){32}$|i', $var) ? $var : $default);
 			return;
 		case 'intList':
-			$var = implode(',', array_map('intval', explode(',', $var)));
+			$var = implode(',', array_map('intval', explode(',', trim($var, ','))));
 			return;
 		case 'unit':
 			//FIMXE: check for %d[em,ex,pt,...]?
@@ -197,8 +197,24 @@ function _weRequest(&$var, $key, array $data){
 			$var = floatval($var);
 			return;
 		case 'bool':
-			$var = $var == 'off' ? false : (bool) $var;
-			return;
+			switch($var){
+				case false:
+				case '0':
+				case 'off':
+				case 'false':
+					$var = false;
+					return;
+				case true:
+				case 'true':
+				case 'on':
+				case '1':
+					$var = true;
+					return;
+				default:
+					$var = (bool) $var;
+					return;
+			}
+
 		case 'toggle': //FIXME: temporary type => whenever possible use 'bool'
 			$var = $var == 'on' || $var == 'off' || $var == '1' || $var == '0' ? $var : (bool) $var;
 			return;
@@ -220,11 +236,22 @@ function _weRequest(&$var, $key, array $data){
 			return;
 		default:
 			t_e('unknown filter type ' . $type);
+		case 'js'://for information!
 		case 'raw':
 			//do nothing - used as placeholder for all types not yet known
 			return;
 	}
 	$var = $default;
+}
+
+function we_defineTables(array $tables){
+	if(!isset($GLOBALS['we']['allTables'])){
+		$GLOBALS['we']['allTables'] = array();
+	}
+	foreach($tables as $tab => $name){
+		define($tab, TBL_PREFIX . $name);
+		$GLOBALS['we']['allTables'][$tab] = TBL_PREFIX . $name;
+	}
 }
 
 /**
@@ -236,7 +263,7 @@ function _weRequest(&$var, $key, array $data){
  * @return mixed default, if value not set, the filtered value else
  */
 function weRequest($type, $name, $default = false, $index = null){
-	if(!isset($_REQUEST[$name]) || (isset($_REQUEST[$name]) && $_REQUEST[$name] === '') || ($index !== null && !isset($_REQUEST[$name][$index]))){
+	if(!isset($_REQUEST[$name]) || (isset($_REQUEST[$name]) && $_REQUEST[$name] === '') || ($index !== null && (!isset($_REQUEST[$name][$index]) || ($_REQUEST[$name][$index] === '')))){
 		return $default;
 	}
 	$var = ($index === null ? $_REQUEST[$name] : $_REQUEST[$name][$index]);
@@ -245,7 +272,19 @@ function weRequest($type, $name, $default = false, $index = null){
 	} else {
 		$oldVar = $var;
 		_weRequest($var, '', array($type, $default));
-		if($var != $oldVar){
+
+		switch($type){
+			case 'intList':
+				$oldVar = trim($var, ',');
+				$cmp = '' . $var;
+				break;
+			case 'bool'://bool is transfered as 0/1
+				$cmp = '' . intval($var);
+				break;
+			default:
+				$cmp = '' . $var;
+		}
+		if($oldVar != $cmp){
 			t_e('changed values', $type, $name, $index, $oldVar, $var);
 		}
 	}
@@ -372,7 +411,7 @@ function in_workspace($IDs, $wsIDs, $table = FILE_TABLE, we_database_base $db = 
 	if(!is_array($wsIDs)){
 		$wsIDs = makeArrayFromCSV($wsIDs);
 	}
-	if(!$wsIDs || !$IDs || (in_array(0, $wsIDs))){
+	if(!$wsIDs || (in_array(0, $wsIDs))){
 		return true;
 	}
 
@@ -549,7 +588,7 @@ function we_readParents($id, &$parentlist, $tab, $match = 'ContentType', $matchv
 		if($pid == 0){
 			$parentlist[] = $pid;
 		} else {
-			if(f('SELECT 1 FROM ' . $db->escape($tab) . ' WHERE ID=' . intval($pid) . ' AND ' . $match . ' = "' . $db->escape($matchvalue) . '"', '', $db)){
+			if(f('SELECT 1 FROM ' . $db->escape($tab) . ' WHERE ID=' . intval($pid) . ' AND ' . $match . ' = "' . $db->escape($matchvalue) . '" LIMIT 1', '', $db)){
 				$parentlist[] = $pid;
 				we_readParents($pid, $parentlist, $tab, $match, $matchvalue, $db);
 			}
@@ -751,7 +790,7 @@ function removeHTML($val){
 }
 
 function removePHP($val){
-	return we_util::rmPhp($val);
+	return we_base_util::rmPhp($val);
 }
 
 function getMysqlVer($nodots = true){
@@ -1115,7 +1154,7 @@ function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = 
  */
 function removeAttribs($attribs, array $remove = array()){
 	foreach($remove as $r){
-		if(array_key_exists($r, $attribs)){
+		if(isset($attribs[$r])){
 			unset($attribs[$r]);
 		}
 	}
@@ -1394,11 +1433,13 @@ function we_templatePost(){
 		if(defined('DEBUG_MEM')){
 			weMemDebug();
 		}
+		flush();
 //check for Trigger
 		if(defined('SCHEDULE_TABLE') && (!$GLOBALS['WE_MAIN_DOC']->InWebEdition) &&
 			(SCHEDULER_TRIGGER == SCHEDULER_TRIGGER_POSTDOC) &&
 			(!isset($GLOBALS['we']['backVars']) || (isset($GLOBALS['we']['backVars']) && count($GLOBALS['we']['backVars']) == 0))//not inside an included Doc
 		){ //is set to Post or not set (new default)
+			session_write_close();
 			we_schedpro::trigger_schedule();
 		}
 	}

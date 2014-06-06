@@ -276,7 +276,7 @@ top.close();');
 
 	function query(){
 		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->dir) . ' AND((1' . we_users_util::makeOwnersSql() . ')' .
-				getWsQueryForSelector($this->table, false) . ')' . ($this->order ? (' ORDER BY ' . $this->order) : '')
+				getWsQueryForSelector($this->table, false) . ')' . ($this->order ? (' ORDER BY IsFolder DESC,' . $this->order) : '')
 		);
 	}
 

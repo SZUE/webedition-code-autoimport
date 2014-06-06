@@ -53,7 +53,7 @@ abstract class we_database_base{
 	public $Error = "";
 
 	/** public: connection parameters */
-	public $Database = DB_DATABASE;
+	protected $Database = DB_DATABASE;
 	private static $Trigger_cnt = 0;
 
 	/** Connects to the database, which this is done by the constructor
@@ -246,7 +246,6 @@ abstract class we_database_base{
 
 	/**
 	 * This function is a replacement for mysql_real_escape_string, which sends the string to mysql to escape it
-	 * @deprecated NOTE: this function will be removed; in future there will be a function for prepared statements
 	 * @param array/string $inp value to escape for sql-query
 	 * @return array/string
 	 */
@@ -566,7 +565,7 @@ abstract class we_database_base{
 		$ret = array();
 		foreach($arr as $key => $val){
 			$escape = !(is_bool($val));
-			if(is_array($val) && $val['sqlFunction'] == 1){
+			if(is_array($val) && isset($val['sqlFunction']) && $val['sqlFunction'] == 1){
 				$val = $val['val'];
 				$escape = false;
 			} elseif(is_object($val) || is_array($val)){
@@ -693,8 +692,8 @@ abstract class we_database_base{
 			$query = array();
 			foreach($table as $key => $value){
 				$query[] = (is_numeric($key) ?
-								$value . ' ' . $mode :
-								$key . ' ' . $value);
+						$value . ' ' . $mode :
+						$key . ' ' . $value);
 			}
 			$query = implode(',', $query);
 		} else {
@@ -824,8 +823,8 @@ abstract class we_database_base{
 	function getTableCreateArray($tab){
 		$this->query('SHOW CREATE TABLE ' . $this->escape($tab));
 		return ($this->next_record()) ?
-				explode("\n", $this->f("Create Table")) :
-				false;
+			explode("\n", $this->f("Create Table")) :
+			false;
 	}
 
 	public function getTableKeyArray($tab){
@@ -967,7 +966,7 @@ abstract class we_database_base{
 	public static function getCharsetCollation(){
 		$Charset = self::getCharset();
 		$Collation = self::getCollation();
-		return ($Charset != '' && $Collation != '' ? ' CHARACTER SET ' . $Charset . ' COLLATE ' . $Collation : '');
+		return ($Charset && $Collation ? ' CHARACTER SET ' . $Charset . ' COLLATE ' . $Collation : '');
 	}
 
 	public static function hasDB(){

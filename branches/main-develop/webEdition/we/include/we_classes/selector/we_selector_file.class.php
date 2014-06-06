@@ -55,33 +55,32 @@ class we_selector_file{
 	protected $fields = 'ID,ParentID,Text,Path,IsFolder,Icon';
 	var $values = array();
 	var $openerFormName = 'we_form';
-	protected $order = 'IsFolder DESC, Text';
+	protected $order = 'Text';
 	protected $canSelectDir = true;
 	var $rootDirID = 0;
 	protected $filter = '';
 	var $col2js;
 	protected $title = '';
 
-	function __construct($id, $table = FILE_TABLE, $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $sessionID = '', $rootDirID = 0, $filter = '', $extInstanceId = ''){
+	function __construct($id, $table = FILE_TABLE, $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $rootDirID = 0, $filter = '', $extInstanceId = ''){
 
 		if(!isset($_SESSION['weS']['we_fs_lastDir'])){
 			$_SESSION['weS']['we_fs_lastDir'] = array($table => 0);
 		}
 
-		$this->order = ($order && strpos($order, $this->fields) !== false ? $order : $this->order);
+		$this->order = ($order ? $order : $this->order);
 
 		$this->db = new DB_WE();
 		$this->id = $id;
 		$this->lastDir = isset($_SESSION['weS']['we_fs_lastDir'][$table]) ? intval($_SESSION['weS']['we_fs_lastDir'][$table]) : 0;
 //check table
 
-		$this->table = $table && in_array($table, get_defined_constants(), true) ? $table : FILE_TABLE;
+		$this->table = $table;
 
 		$this->JSIDName = $JSIDName;
 		$this->JSTextName = $JSTextName;
 		$this->JSCommand = $JSCommand;
 		$this->rootDirID = intval($rootDirID);
-		//$this->sessionID = $sessionID;
 		$this->filter = $filter;
 		$this->extInstanceId = $extInstanceId;
 		$this->setDirAndID();
@@ -146,8 +145,8 @@ class we_selector_file{
 	function query(){
 		$wsQuery = $this->table == NAVIGATION_TABLE && get_ws($this->table) ? ' ' . getWsQueryForSelector($this->table) : '';
 		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->dir) . ' ' .
-			( ($this->filter != '' ? ($this->table == CATEGORY_TABLE ? 'AND IsFolder = "' . $this->db->escape($this->filter) . '" ' : 'AND ContentType = "' . $this->db->escape($this->filter) . '" ') : '' ) . $wsQuery ) .
-			($this->order ? (' ORDER BY ' . $this->order) : ''));
+			( ($this->filter ? ($this->table == CATEGORY_TABLE ? 'AND IsFolder = "' . $this->db->escape($this->filter) . '" ' : 'AND ContentType = "' . $this->db->escape($this->filter) . '" ') : '' ) . $wsQuery ) .
+			($this->order ? (' ORDER BY IsFolder DESC,' . $this->order) : ''));
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
 	}
 
@@ -470,34 +469,34 @@ function queryString(what,id,o){
 	function printFramesetJSFunctioWriteBody(){
 		?><script type="text/javascript"><!--
 					function writeBody(d) {
-						d.open();
+				d.open();
 		<?php
 		echo self::makeWriteDoc(we_html_tools::getHtmlTop('', '', '4Trans', true) . STYLESHEET_SCRIPT . '
 </head>
 <body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0">
 <table border="0" cellpadding="0" cellspacing="0">');
 		?>
-						for (i = 0; i < entries.length; i++) {
-							d.writeln('<tr>');
-							d.writeln('<td class="selector" align="center">');
-							var link = '<a title="' + entries[i].text + '" href="javascript://"';
-							if (entries[i].isFolder) {
-								link += ' onDblClick="this.blur();top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
-							}
-							link += ' onclick="this.blur();tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=0;}\',300);return true">' + "\n";
-							d.writeln(link + '<img src="<?php print ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0"></a>');
-							d.writeln('</td>');
-							d.writeln('<td class="selector" title="' + entries[i].text + '">');
-							d.writeln(link + cutText(entries[i].text, 70) + '</a>');
-							d.writeln('</td></tr>');
-							d.writeln('<tr>');
-							d.writeln('<td width="25"><?php print we_html_tools::getPixel(25, 2) ?></td>');
-							d.writeln('<td><?php print we_html_tools::getPixel(200, 2) ?></td></tr>');
-						}
-						d.writeln('</table></body>');
-						d.close();
+				for (i = 0; i < entries.length; i++) {
+					d.writeln('<tr>');
+					d.writeln('<td class="selector" align="center">');
+					var link = '<a title="' + entries[i].text + '" href="javascript://"';
+					if (entries[i].isFolder) {
+						link += ' onDblClick="this.blur();top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
 					}
-		//-->
+					link += ' onclick="this.blur();tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=0;}\',300);return true">' + "\n";
+					d.writeln(link + '<img src="<?php print ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0"></a>');
+					d.writeln('</td>');
+					d.writeln('<td class="selector" title="' + entries[i].text + '">');
+					d.writeln(link + cutText(entries[i].text, 70) + '</a>');
+					d.writeln('</td></tr>');
+					d.writeln('<tr>');
+					d.writeln('<td width="25"><?php print we_html_tools::getPixel(25, 2) ?></td>');
+					d.writeln('<td><?php print we_html_tools::getPixel(200, 2) ?></td></tr>');
+				}
+				d.writeln('</table></body>');
+				d.close();
+			}
+			//-->
 		</script>
 		<?php
 	}
@@ -645,7 +644,7 @@ function selectIt(){
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
 	<tr>
 		<td>' . we_html_tools::getPixel(25, 14) . '</td>
-		<td class="selector"><b><a href="#" onclick="javascript:top.orderIt(\'IsFolder DESC, Text\');">' . g_l('fileselector', "[filename]") . '</a></b></td>
+		<td class="selector"><b><a href="#" onclick="javascript:top.orderIt(\'Text\');">' . g_l('fileselector', "[filename]") . '</a></b></td>
 	</tr>
 	<tr>
 		<td width="25">' . we_html_tools::getPixel(25, 1) . '</td>
@@ -811,9 +810,9 @@ function press_ok_button() {
 				$this->tableSizer = "<td>" . we_html_tools::getPixel(25, 1) . "</td><td>" . we_html_tools::getPixel(350, 1) . "</td><td>" . we_html_tools::getPixel(70, 1) . "</td><td>" . we_html_tools::getPixel(150, 1) . "</td>";
 				$this->tableHeadlines = "
 <td></td>
-<td class='selector'><b><a href='#' onclick='javascript:top.orderIt(\"IsFolder DESC, Text\");'>" . g_l('fileselector', '[filename]') . "</a></b></td>
+<td class='selector'><b><a href='#' onclick='javascript:top.orderIt(\"Text\");'>" . g_l('fileselector', '[filename]') . "</a></b></td>
 <td class='selector'>&nbsp;<b>ID</b></td>
-<td class='selector'>&nbsp;<b><a href='#' onclick='javascript:top.orderIt(\"IsFolder DESC, ModDate\");'>" . g_l('fileselector', '[modified]') . "</a></b></td>
+<td class='selector'>&nbsp;<b><a href='#' onclick='javascript:top.orderIt(\"ModDate\");'>" . g_l('fileselector', '[modified]') . "</a></b></td>
 				";
 				break;
 			default:
@@ -821,9 +820,9 @@ function press_ok_button() {
 				$this->tableSizer = "<td>" . we_html_tools::getPixel(25, 1) . "</td><td>" . we_html_tools::getPixel(200, 1) . "</td><td>" . we_html_tools::getPixel(220, 1) . "</td><td>" . we_html_tools::getPixel(150, 1) . "</td>";
 				$this->tableHeadlines = "
 <td></td>
-<td class='selector'><b><a href='#' onclick='javascript:top.orderIt(\"IsFolder DESC, Text\");'>" . g_l('fileselector', '[filename]') . "</a></b></td>
+<td class='selector'><b><a href='#' onclick='javascript:top.orderIt(\"Text\");'>" . g_l('fileselector', '[filename]') . "</a></b></td>
 <td class='selector'><b>" . g_l('fileselector', '[title]') . "</b></td>
-<td class='selector'><b><a href='#' onclick='javascript:top.orderIt(\"IsFolder DESC, ModDate\");'>" . g_l('fileselector', '[modified]') . "</a></b></td>
+<td class='selector'><b><a href='#' onclick='javascript:top.orderIt(\"ModDate\");'>" . g_l('fileselector', '[modified]') . "</a></b></td>
 				";
 		}
 	}

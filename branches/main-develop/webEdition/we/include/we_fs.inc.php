@@ -24,34 +24,32 @@
  */
 switch(weRequest('string', 'we_cmd', '', 0)){
 	case 'openCatselector' :
-		$noChoose = weRequest('bool', 'we_cmd', false, 8);
+		$_REQUEST['noChoose'] = weRequest('bool', 'we_cmd', false, 8);
 	case 'openDirselector' :
 	case 'openSelector' :
 	case 'openCatselector' :
 	case 'openDelSelector' :
-		$id = weRequest('int', 'we_cmd', 0, 1);
-		$table = weRequest('table', 'we_cmd', FILE_TABLE, 2);
-		$JSIDName = we_cmd_dec(3);
-		$JSTextName = we_cmd_dec(4);
-		$JSCommand = we_cmd_dec(5);
-		$sessionID = 0;
-		$rootDirID = weRequest('int', 'we_cmd', 0, 7);
-		$filter = weRequest('raw', 'we_cmd', '', 8);
-		$multiple = weRequest('raw', 'we_cmd', '', 9);
+		$_REQUEST['id'] = weRequest('int', 'we_cmd', 0, 1);
+		$_REQUEST['table'] = weRequest('table', 'we_cmd', FILE_TABLE, 2);
+		$_REQUEST['JSIDName'] = we_cmd_dec(3);
+		$_REQUEST['JSTextName'] = we_cmd_dec(4);
+		$_REQUEST['JSCommand'] = we_cmd_dec(5);
+		$_REQUEST['rootDirID'] = weRequest('int', 'we_cmd', 0, 7);
+		$_REQUEST['filter'] = weRequest('raw', 'we_cmd', '', 8);
+		$_REQUEST['multiple'] = weRequest('raw', 'we_cmd', '', 9);
 		$extInstanceId = isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3] == 'returnToExt' ? (isset($_REQUEST['we_cmd'][4]) ? $_REQUEST['we_cmd'][4] : '') : '';
 		break;
 	case 'openDocselector':
-		$id = weRequest('int', 'we_cmd', '', 1);
-		$table = weRequest('table', 'we_cmd', FILE_TABLE, 2);
-		$JSIDName = we_cmd_dec(3);
-		$JSTextName = we_cmd_dec(4);
-		$JSCommand = we_cmd_dec(5);
-		$sessionID = 0;
-		$rootDirID = weRequest('int', 'we_cmd', 0, 7);
-		$filter = weRequest('raw', 'we_cmd', '', 8);
-		$open_doc = weRequest('bool', 'we_cmd', false, 9);
-		$multiple = weRequest('bool', 'we_cmd', false, 10);
-		$canSelectDir = weRequest('bool', 'we_cmd', false, 11);
+		$_REQUEST['id'] = weRequest('int', 'we_cmd', 0, 1);
+		$_REQUEST['table'] = weRequest('table', 'we_cmd', FILE_TABLE, 2);
+		$_REQUEST['JSIDName'] = we_cmd_dec(3);
+		$_REQUEST['JSTextName'] = we_cmd_dec(4);
+		$_REQUEST['JSCommand'] = we_cmd_dec(5);
+		$_REQUEST['rootDirID'] = weRequest('int', 'we_cmd', 0, 7);
+		$_REQUEST['filter'] = weRequest('raw', 'we_cmd', '', 8);
+		$_REQUEST['open_doc'] = weRequest('bool', 'we_cmd', false, 9);
+		$_REQUEST['multiple'] = weRequest('bool', 'we_cmd', false, 10);
+		$_REQUEST['canSelectDir'] = weRequest('bool', 'we_cmd', false, 11);
 		$extInstanceId = isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3] == 'returnToExt' ? (isset($_REQUEST['we_cmd'][4]) ? $_REQUEST['we_cmd'][4] : '') : '';
 		break;
 }

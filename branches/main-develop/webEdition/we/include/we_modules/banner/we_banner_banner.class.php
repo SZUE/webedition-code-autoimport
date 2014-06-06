@@ -335,7 +335,6 @@ class we_banner_banner extends we_banner_base{
 		$img = getHtmlTag('img', $attsImage);
 
 		if($showlink){
-
 			$linkAtts['href'] = $bannerlink;
 			if($target){
 				$linkAtts['target'] = $target;
@@ -354,8 +353,7 @@ class we_banner_banner extends we_banner_base{
 		return $h['IntHref'] ? getServerUrl() . id_to_path($h['bannerIntID'], FILE_TABLE) : $h['bannerURL'];
 	}
 
-	public static function customerOwnsBanner($customerID, $bannerID, we_database_base $db = null){
-		$db = ($db ?$db : new DB_WE());
+	public static function customerOwnsBanner($customerID, $bannerID, we_database_base $db){
 		$res = getHash('SELECT Customers,ParentID FROM ' . BANNER_TABLE . ' WHERE ID=' . intval($bannerID), $db);
 		if(strstr($res["Customers"], "," . $customerID . ",") != false){
 			return true;

@@ -36,17 +36,6 @@ if(!isset($_SESSION['weS']['we_mode']) || $_SESSION['weS']['we_mode'] == we_base
 }
 
 //WEEXT
-if(!isset($SEEM_edit_include) || !$SEEM_edit_include){
-
-	if(defined("SCHEDULE_TABLE")){
-		// convert old schedule data to new format
-		we_schedpro::trigger_schedule();
-	}
-	// make the we_backup dir writable for all, so users can copy backupfiles with ftp in it
-	@chmod($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR, 0777);
-}
-
-
 //	check session
 we_html_tools::protect(null, WEBEDITION_DIR . 'index.php');
 
@@ -68,7 +57,6 @@ echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username']) 
  STYLESHEET .
  we_html_element::jsScript(JS_DIR . 'windows.js') .
  we_html_element::jsScript(JS_DIR . 'weTinyMceDialogs.js') .
- we_html_element::jsScript(JS_DIR . 'md5.js') .
  we_html_element::jsScript(JS_DIR . 'weNavigationHistory.php') .
  we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
  we_html_element::jsScript(JS_DIR . 'libs/yui/event-min.js') .
@@ -652,7 +640,7 @@ echo 'new jsWindow(url,"module_info",-1,-1,380,250,true,true,true);
 				break;
 			case "open_document":
 				we_cmd("load", "<?php echo FILE_TABLE; ?>");
-				url = "<?php echo WEBEDITION_DIR; ?>we_cmd.php?we_cmd[0]=openDocselector&we_cmd[1]=&we_cmd[2]=<?php echo FILE_TABLE; ?>&we_cmd[5]=<?php echo rawurlencode("opener.top.weEditorFrameController.openDocument(table,currentID,currentType)"); ?>&we_cmd[9]=1";
+				url = "<?php echo WEBEDITION_DIR; ?>we_cmd.php?we_cmd[0]=openDocselector&we_cmd[2]=<?php echo FILE_TABLE; ?>&we_cmd[5]=<?php echo rawurlencode("opener.top.weEditorFrameController.openDocument(table,currentID,currentType)"); ?>&we_cmd[9]=1";
 				new jsWindow(url, "we_dirChooser", -1, -1,<?php echo we_selector_file::WINDOW_DOCSELECTOR_WIDTH . "," . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT; ?>, true, true, true, true);
 				break;
 			case "open_template":
@@ -718,7 +706,7 @@ echo 'new jsWindow(url,"module_info",-1,-1,380,250,true,true,true);
 				new jsWindow(url, "preferences", -1, -1, 540, 670, true, true, true, true);
 				break;
 			case "editCat":
-				we_cmd("openCatselector", "", "<?php echo CATEGORY_TABLE; ?>", "", "", "", "", "", 1);
+				we_cmd("openCatselector", 0, "<?php echo CATEGORY_TABLE; ?>", "", "", "", "", "", 1);
 				break;
 			case "editThumbs":
 				new jsWindow(url, "thumbnails", -1, -1, 500, 550, true, true, true);
@@ -1447,10 +1435,18 @@ if(defined('USE_EXT') && USE_EXT){
 	//	get the frameset for the actual mode.
 	pWebEdition_Frameset();
 	we_main_header::pJS();
-	flush();
 	//	get the Treefunctions for docselector
 	pWebEdition_Tree();
 	echo '</body>';
 }
 ?>
 </html>
+<?php
+flush();
+if(defined("SCHEDULE_TABLE") && (!isset($SEEM_edit_include) || !$SEEM_edit_include)){
+	session_write_close();
+// trigger scheduler
+	we_schedpro::trigger_schedule();
+	// make the we_backup dir writable for all, so users can copy backupfiles with ftp in it
+//	@chmod($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR, 0777);
+}

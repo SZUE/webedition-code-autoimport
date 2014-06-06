@@ -21,7 +21,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once (WE_INCLUDES_PATH . 'we_delete_fn.inc.php');
 
 we_html_tools::protect();
 echo we_html_tools::getHtmlTop() .
@@ -48,7 +47,7 @@ $table = weRequest('table', 'we_cmd', '', 2);
 $wfchk = defined('WORKFLOW_TABLE') && ($table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE)) ?
 	weRequest('bool', 'we_cmd', 0, 3) :
 	1;
-$wecmd0=weRequest('string', 'we_cmd', '', 0);
+$wecmd0 = weRequest('string', 'we_cmd', '', 0);
 $wfchk_html = '';
 $script = '';
 
@@ -131,7 +130,7 @@ if(!$wfchk){
 					break;
 				}
 
-				if(!checkDeleteEntry($selectedItem, $table)){
+				if(!we_base_delete::checkDeleteEntry($selectedItem, $table)){
 					$retVal = 0;
 					break;
 				}
@@ -273,11 +272,11 @@ if(!$wfchk){
 					$deletedItems = array();
 
 					foreach($selectedItems as $sel){
-						deleteEntry($sel, $table);
+						we_base_delete::deleteEntry($sel, $table);
 					}
 
 					if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){ //	only update tree when in normal mode
-						$script .= deleteTreeEntries(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE);
+						$script .= weTree::deleteTreeEntries(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE);
 					}
 
 					if(!empty($deletedItems)){

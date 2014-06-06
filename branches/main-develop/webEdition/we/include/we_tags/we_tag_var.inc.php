@@ -39,13 +39,13 @@ function we_tag_var($attribs){
 			$return = getArrayValue($_SESSION, null, $name_orig);
 			return $htmlspecialchars ? oldHtmlspecialchars($return) : ($format ? date($format, intval($return)) : $return);
 		case 'request' :
-			$return = filterXss(we_util::rmPhp(getArrayValue($_REQUEST, null, $name_orig)));
+			$return = filterXss(we_base_util::rmPhp(getArrayValue($_REQUEST, null, $name_orig)));
 			return $htmlspecialchars ? oldHtmlspecialchars($return) : ($format ? date($format, intval($return)) : $return);
 		case 'post' :
-			$return = we_util::rmPhp(getArrayValue($_POST, null, $name_orig));
+			$return = we_base_util::rmPhp(getArrayValue($_POST, null, $name_orig));
 			return $htmlspecialchars ? oldHtmlspecialchars($return) : ($format ? date($format, intval($return)) : $return);
 		case 'get' :
-			$return = we_util::rmPhp(getArrayValue($_GET, null, $name_orig));
+			$return = we_base_util::rmPhp(getArrayValue($_GET, null, $name_orig));
 			return $htmlspecialchars ? oldHtmlspecialchars($return) : ($format ? date($format, intval($return)) : $return);
 		case 'global' :
 			$return = getArrayValue($GLOBALS, null, $name_orig);

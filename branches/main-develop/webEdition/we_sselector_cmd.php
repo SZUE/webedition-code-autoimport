@@ -26,11 +26,12 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
 echo we_html_tools::getHtmlTop() . STYLESHEET;
+$cmd = weRequest('string', 'cmd');
 
-if(isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] == "save_last"){
+if($cmd == "save_last"){
 	$_SESSION["user"]["LastDir"] = $last;
 }
-if(!isset($_REQUEST["cmd"]) || (isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] != "save_last")){
+if(!$cmd || $cmd != "save_last"){
 	?>
 	<script type="text/javascript"><!--
 
@@ -62,9 +63,8 @@ if(!isset($_REQUEST["cmd"]) || (isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] != "
 	<?php } ?>
 				top.currentDir = dir;
 				selectDir();
-			}
-			else {
-	<?php print we_message_reporting::getShowMessageCall(g_l('fileselector', "[already_root]"), we_message_reporting::WE_MESSAGE_ERROR); ?>
+			} else {
+	<?php echo we_message_reporting::getShowMessageCall(g_l('fileselector', "[already_root]"), we_message_reporting::WE_MESSAGE_ERROR); ?>
 			}
 		}
 
@@ -73,7 +73,7 @@ if(!isset($_REQUEST["cmd"]) || (isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] != "
 			if (a.length - 2 > -1) {
 				setDir(a[a.length - 2].value);
 			} else {
-	<?php print we_message_reporting::getShowMessageCall(g_l('fileselector', '[already_root]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
+	<?php echo we_message_reporting::getShowMessageCall(g_l('fileselector', '[already_root]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 			}
 		}
 
@@ -225,10 +225,10 @@ if(!isset($_REQUEST["cmd"]) || (isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] != "
 		case "rename_file":
 			if($_REQUEST["txt"] == ""){
 				echo we_message_reporting::getShowMessageCall(g_l('alert', "[we_filename_empty]"), we_message_reporting::WE_MESSAGE_ERROR) .
-				"drawDir(top.currentDir);\n";
+				"drawDir(top.currentDir);";
 			} else if(preg_match('|[\'"<>/]|', $_REQUEST["txt"])){
 				echo we_message_reporting::getShowMessageCall(g_l('alert', "[name_nok]"), we_message_reporting::WE_MESSAGE_ERROR) .
-				"drawDir(top.currentDir);\n";
+				"drawDir(top.currentDir);";
 			} else {
 				$old = str_replace('//', '/', $_SERVER['DOCUMENT_ROOT'] . $_REQUEST["pat"] . '/' . $_REQUEST["sid"]);
 				$new = str_replace('//', '/', $_SERVER['DOCUMENT_ROOT'] . $_REQUEST["pat"] . '/' . $_REQUEST["txt"]);
@@ -236,7 +236,7 @@ if(!isset($_REQUEST["cmd"]) || (isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] != "
 					if(!file_exists($new)){
 						echo (!rename($old, $new) ?
 							we_message_reporting::getShowMessageCall(g_l('alert', "[rename_file_nok]"), we_message_reporting::WE_MESSAGE_ERROR) :
-							'selectFile("' . $_REQUEST["txt"] . '");' . "\n");
+							'selectFile("' . $_REQUEST["txt"] . '");');
 					} else {
 						$we_responseText = sprintf(g_l('alert', "[path_exists]"), str_replace($_SERVER['DOCUMENT_ROOT'], '', $new));
 						echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);

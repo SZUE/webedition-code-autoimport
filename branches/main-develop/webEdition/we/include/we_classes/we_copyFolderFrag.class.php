@@ -84,7 +84,7 @@ class copyFolderFrag extends taskFragment{
 					// check if the template exists
 					$TemplateExists = false;
 					if($CreateTemplate){
-						$TemplateExists = (id_to_path($db->f('TemplateID'), TEMPLATES_TABLE) != "" ? 1 : 0);
+						$TemplateExists = (id_to_path($db->f('TemplateID'), TEMPLATES_TABLE) ? 1 : 0);
 					}
 
 					$db->Record["CopyToId"] = $toID;
@@ -162,7 +162,7 @@ class copyFolderFrag extends taskFragment{
 		if($path == '/'){
 			return 0;
 		}
-		return f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' . $db->escape($path) . '"', 'ID', $db);
+		return f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' . $db->escape($path) . '"', '', $db);
 	}
 
 	function copyObjects(){
@@ -257,8 +257,8 @@ class copyFolderFrag extends taskFragment{
 
 					// check if we need to create a template
 					if($this->data['CreateTemplate']){
-						$CreateMasterTemplate = weRequest('bool','CreateMasterTemplate');
-						$CreateIncludedTemplate = weRequest('bool','CreateIncludedTemplate');
+						$CreateMasterTemplate = weRequest('bool', 'CreateMasterTemplate');
+						$CreateIncludedTemplate = weRequest('bool', 'CreateIncludedTemplate');
 						// check if a template was created from prior doc
 						if(!(isset($_SESSION['weS']['WE_CREATE_TEMPLATE']) && isset($_SESSION['weS']['WE_CREATE_TEMPLATE'][$GLOBALS['we_doc']->TemplateID]))){
 							$createdTemplate = $this->copyTemplate($GLOBALS['we_doc']->TemplateID, $this->data['CreateTemplateInFolderID'], $CreateMasterTemplate, $CreateIncludedTemplate);
@@ -706,7 +706,7 @@ function fsubmit(e) {
 
 	function formCreateCategoryChooser(){
 
-		$addbut = we_html_button::create_button("add", "javascript:we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);')");
+		$addbut = we_html_button::create_button("add", "javascript:we_cmd('openCatselector',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);')");
 		$del_but = addslashes(
 			we_html_element::htmlImg(
 				array(

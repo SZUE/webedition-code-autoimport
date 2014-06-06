@@ -314,7 +314,7 @@ class we_users_user{
 			$try_name = '@' . $foo['username'];
 			$try_text = $foo['username'];
 			while($search){
-				if(f('SELECT 1 FROM ' . USER_TABLE . ' WHERE ID!=' . intval($this->ID) . ' AND ID!=' . intval($uorginal) . " AND username='" . $this->DB_WE->escape($try_name) . "'", '', $this->DB_WE)){
+				if(f('SELECT 1 FROM ' . USER_TABLE . ' WHERE ID!=' . intval($this->ID) . ' AND ID!=' . intval($uorginal) . " AND username='" . $this->DB_WE->escape($try_name) . "' LIMIT 1", '', $this->DB_WE)){
 					$try_name = $try_name . '_' . ++$ount;
 				} else {
 					$search = false;
@@ -1114,7 +1114,7 @@ _multiEditorreload = true;";
 
 	function isLastAdmin(){
 		$this->ID = intval($this->ID);
-		$exist = (f('SELECT 1 FROM ' . USER_TABLE . " WHERE Permissions LIKE ('%\"ADMINISTRATOR\";i:1;%') AND ID!=" . $this->ID, '', $this->DB_WE) == '1');
+		$exist = (f('SELECT 1 FROM ' . USER_TABLE . " WHERE Permissions LIKE ('%\"ADMINISTRATOR\";i:1;%') AND ID!=" . $this->ID . ' LIMIT 1', '', $this->DB_WE) == '1');
 		if($exist){
 			return false;
 		} else {
@@ -1517,7 +1517,7 @@ function toggleRebuildPerm(disabledOnly) {';
 				$content = '
 <table cellpadding="0" cellspacing="0" border="0" width="500">
 	<tr><td>' . we_html_tools::getPixel(1, 5) . '</td></tr>
-	<tr><td>' . we_html_forms::checkbox(($v ? $v : '0'), ($v ? true : false), $this->Name . "_Permission_" . $k, $this->permissions_titles['administrator'][$k], false, 'defaultfont', ($k == 'REBUILD' ? 'setRebuidPerms();top.content.setHot();' : 'top.content.setHot();')) . '</td></tr>
+	<tr><td>' . we_html_forms::checkbox(1, $v, $this->Name . "_Permission_" . $k, $this->permissions_titles['administrator'][$k], false, 'defaultfont', ($k == 'REBUILD' ? 'setRebuidPerms();top.content.setHot();' : 'top.content.setHot();')) . '</td></tr>
 </table>';
 			}
 			$parts[] = array(
@@ -1772,7 +1772,7 @@ function delElement(elvalues,elem) {
 
 		if(!empty($_language)){ // Build language select box
 			$_languages = new we_html_select(array('name' => $this->Name . '_Preference_Language', 'class' => 'weSelect'));
-			$myCompLang = (isset($this->Preferences['Language']) && $this->Preferences['Language'] != '' ? $this->Preferences['Language'] : $GLOBALS['WE_LANGUAGE']);
+			$myCompLang = (isset($this->Preferences['Language']) && $this->Preferences['Language'] ? $this->Preferences['Language'] : $GLOBALS['WE_LANGUAGE']);
 
 			foreach($_language as $key => $value){
 				$_languages->addOption($key, $value);
@@ -1795,7 +1795,7 @@ function delElement(elvalues,elem) {
 		foreach($c as $char){
 			$_charset->addOption($char, $char);
 		}
-		$myCompChar = (isset($this->Preferences['BackendCharset']) && $this->Preferences['BackendCharset'] != '' ? $this->Preferences['BackendCharset'] : $GLOBALS['WE_BACKENDCHARSET']);
+		$myCompChar = (isset($this->Preferences['BackendCharset']) && $this->Preferences['BackendCharset'] ? $this->Preferences['BackendCharset'] : $GLOBALS['WE_BACKENDCHARSET']);
 		$_charset->selectOption($myCompChar);
 		$_settings[] = array(
 			'headline' => g_l('prefs', '[choose_backendcharset]'),

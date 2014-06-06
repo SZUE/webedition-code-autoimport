@@ -1,6 +1,6 @@
 CREATE TABLE ###TBLPREFIX###tblWebUserSessions (
   SessionID varchar(32) NOT NULL default '',
-  SessionIp varchar(40)NOT NULL DEFAULT '',
+  SessionIp varchar(40) NOT NULL DEFAULT '',
   WebUserID bigint(20) unsigned NOT NULL default '0',
   WebUserGroup varchar(255) NOT NULL DEFAULT '',
   WebUserDescription varchar(255) NOT NULL DEFAULT '',

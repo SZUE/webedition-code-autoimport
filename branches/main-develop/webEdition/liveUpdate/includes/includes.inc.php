@@ -24,31 +24,29 @@
  */
 define('LIVEUPDATE_DIR', $_SERVER['DOCUMENT_ROOT'] . '/webEdition/liveUpdate/');
 
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_defines.inc.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_error_handler.inc.php');
 if(function_exists('we_error_setHandleAll')){
 	we_error_setHandleAll();
 }
-if(!defined('WE_ERROR_HANDLER_SET')){
-	we_error_handler();
-}
+we_error_handler();
 
 if(!isset($_COOKIE[SESSION_NAME]) && isset($_REQUEST['PHPSESSID'])){
 	session_name('PHPSESSID');
-	session_id($_REQUEST['PHPSESSID']);
+	session_id('PHPSESSID');
 	unset($_REQUEST['PHPSESSID'], $_GET['PHPSESSID'], $_POST['PHPSESSID']);
 	session_start();
-	//rename session
-	session_name(SESSION_NAME);
-	define('NO_SESS', 1);
+	if(isset($_SESSION['user']['isWeSession']) && $_SESSION['user']['isWeSession']){//use this session&rename if we have a good we session found
+		setcookie('PHPSESSID', '', time() - 3600);
+		//rename session
+		session_name(SESSION_NAME);
+	}
+	session_write_close();
 }
 
 if(isset($_REQUEST[SESSION_NAME])){
 	session_name(SESSION_NAME);
 	session_id($_REQUEST[SESSION_NAME]);
 	unset($_REQUEST[SESSION_NAME], $_GET[SESSION_NAME], $_POST[SESSION_NAME]);
-	session_start();
-	define('NO_SESS', 1);
 }
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 require_once(LIVEUPDATE_DIR . 'classes/liveUpdateHttp.class.php');

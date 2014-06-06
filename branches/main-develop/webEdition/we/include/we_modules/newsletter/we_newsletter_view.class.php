@@ -1728,7 +1728,7 @@ edf.populateGroups();');
 								}
 							}
 							fclose($fh);
-							$this->newsletter->groups[$importno]->Emails.=($this->newsletter->groups[$importno]->Emails != "" ? "\n" : '') . implode("\n", $row);
+							$this->newsletter->groups[$importno]->Emails.=($this->newsletter->groups[$importno]->Emails ? "\n" : '') . implode("\n", $row);
 						} else {
 							print we_html_element::jsElement(
 									we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[path_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR)
@@ -1854,7 +1854,7 @@ self.close();');
 				print we_html_element::jsScript(JS_DIR . "windows.js") .
 					we_html_element::jsElement(
 						((trim($this->newsletter->Subject) == "") ? 'if(confirm("' . g_l('modules_newsletter', '[no_subject]') . '")){' : '') . '
-							url ="' . $this->frameset . '?pnt=send&nid=' . $this->newsletter->ID . (isset($_REQUEST["test"]) && $_REQUEST["test"] != 0 ? '&test=1' : '') . '";
+							url ="' . $this->frameset . '?pnt=send&nid=' . $this->newsletter->ID . (isset($_REQUEST["test"]) && $_REQUEST["test"] ? '&test=1' : '') . '";
 							new jsWindow(url,"newsletter_send",-1,-1,600,400,true,true,true,false);
 						' . ((trim($this->newsletter->Subject) == "") ? '}' : '')
 				);
@@ -2057,7 +2057,7 @@ self.close();');
 						}
 						break;
 					case we_newsletter_block::OBJECT:
-						$path = ($block->Field != "" && $block->Field != 0 ?
+						$path = ($block->Field != "" && $block->Field ?
 								TEMPLATES_PATH . preg_replace('/\.tmpl$/i', '.php', id_to_path($block->Field, TEMPLATES_TABLE)) : '');
 
 						if($block->LinkID && $path)
@@ -2309,7 +2309,7 @@ self.close();');
 		if(!$this->settings["use_base_href"]){
 			$phpmail->setIsUseBaseHref($this->settings["use_base_href"]);
 		}
-		$phpmail->setCharSet($this->newsletter->Charset != '' ? $this->newsletter->Charset : $GLOBALS['WE_BACKENDCHARSET']);
+		$phpmail->setCharSet($this->newsletter->Charset ? $this->newsletter->Charset : $GLOBALS['WE_BACKENDCHARSET']);
 		if($hm){
 			$phpmail->addHTMLPart($content);
 		}
@@ -2412,7 +2412,7 @@ self.close();');
 			$filtera = $this->newsletter->groups[$group - 1]->getFilter();
 			if($filtera){
 				foreach($filtera as $k => $filter){
-					$filterarr[] = ($k != 0 ? (' ' . $filter['logic'] . ' ') : ' ') . $this->getFilterSQL($filter);
+					$filterarr[] = ($k ? (' ' . $filter['logic'] . ' ') : ' ') . $this->getFilterSQL($filter);
 				}
 			}
 
@@ -2432,7 +2432,7 @@ self.close();');
 					$this->settings['customer_firstname_field'] . ',' .
 					$this->settings['customer_lastname_field']
 				);
-			$this->db->query('SELECT ID,' . $selectX . ' FROM ' . CUSTOMER_TABLE . ' WHERE ID IN(' . $customers . ')' . ($filtersql != '' ? ' AND (' . $filtersql . ')' : ''));
+			$this->db->query('SELECT ID,' . $selectX . ' FROM ' . CUSTOMER_TABLE . ' WHERE ID IN(' . $customers . ')' . ($filtersql ? ' AND (' . $filtersql . ')' : ''));
 			while($this->db->next_record()){
 				if($this->db->f($this->settings["customer_email_field"])){
 					$email = trim($this->db->f($this->settings["customer_email_field"]));
@@ -2521,8 +2521,9 @@ self.close();');
 		$name = $db->escape($name);
 		$value = $db->escape($value);
 		$db->query('SELECT 1 FROM ' . NEWSLETTER_PREFS_TABLE . ' WHERE pref_name="' . $name . '"');
-		if(!$db->next_record())
+		if(!$db->next_record()){
 			$db->query('INSERT INTO ' . NEWSLETTER_PREFS_TABLE . "(pref_name,pref_value) VALUES('$name','$value')");
+		}
 	}
 
 	function saveSettings(){

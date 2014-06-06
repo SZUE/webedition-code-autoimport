@@ -174,6 +174,7 @@ class we_object extends we_document{
 
 			$indexe = array(
 				'PRIMARY KEY (ID)',
+				'UNIQUE KEY OF_ID (OF_ID)',
 				'KEY (OF_WebUserID)',
 				'KEY `published` (`OF_ID`,`OF_Published`,`OF_IsSearchable`)',
 				'KEY (`OF_IsSearchable`)',
@@ -476,7 +477,7 @@ class we_object extends we_document{
 			}
 
 			foreach($q as $v){
-				if($v != ''){
+				if($v){
 					$this->DB_WE->query('ALTER TABLE ' . $ctable . ' ' . $v);
 				}
 			}
@@ -1388,14 +1389,16 @@ class we_object extends we_document{
 	}
 
 	function dhtmledit($name, $i = 0){
-		return we_html_button::create_button("attributes", "javascript:we_cmd('object_editObjectTextArea','" . $i . "','" . $name . "','" . $GLOBALS["we_transaction"] . "');") .
+		return we_html_button::create_button("attributes", "javascript:setScrollTo();we_cmd('object_editObjectTextArea','" . $i . "','" . $name . "','" . $GLOBALS["we_transaction"] . "');") .
 			$this->getWysiwygArea($name);
 	}
 
 	function getWysiwygArea($name){
-
+		$rmfp = isset($this->elements[$name . "removefirstparagraph"]["dat"]) &&
+			($this->elements[$name . "removefirstparagraph"]["dat"] == 'on' || $this->elements[$name . "removefirstparagraph"]["dat"] == 'off') ? ($this->elements[$name . "removefirstparagraph"]["dat"] == 'on' ? true : false) :
+			(defined("REMOVEFIRSTPARAGRAPH_DEFAULT") ? REMOVEFIRSTPARAGRAPH_DEFAULT : true);
 		$attribs = array(
-			"removefirstparagraph" => isset($this->elements[$name . "removefirstparagraph"]["dat"]) ? $this->elements[$name . "removefirstparagraph"]["dat"] : defined("REMOVEFIRSTPARAGRAPH_DEFAULT") ? REMOVEFIRSTPARAGRAPH_DEFAULT : true,
+			"removefirstparagraph" => $rmfp,
 			"xml" => isset($this->elements[$name . "xml"]["dat"]) ? $this->elements[$name . "xml"]["dat"] : "",
 			"dhtmledit" => isset($this->elements[$name . "dhtmledit"]["dat"]) ? $this->elements[$name . "dhtmledit"]["dat"] : "",
 			"wysiwyg" => isset($this->elements[$name . "dhtmledit"]["dat"]) ? $this->elements[$name . "dhtmledit"]["dat"] : "",
@@ -1420,7 +1423,7 @@ class we_object extends we_document{
 		$autobrName = 'we_' . $this->Name . '_input[' . $name . 'autobr]';
 
 		$value = $this->getElement($name . "default", "dat");
-		return we_html_forms::weTextarea("we_" . $this->Name . "_input[" . $name . "default]", $value, $attribs, $autobr, $autobrName, true, "", (($this->CSS || $attribs["classes"]) ? false : true), false, false, true, "");
+		return we_html_forms::weTextarea("we_" . $this->Name . "_input[" . $name . "default]", $value, $attribs, $autobr, $autobrName, true, "", (($this->CSS || $attribs["classes"]) ? false : true), false, false, $rmfp, "");
 	}
 
 	function add_user_to_field($id, $name){
@@ -1858,7 +1861,7 @@ class we_object extends we_document{
 		require_once(WE_INCLUDES_PATH . 'we_tools/MultiDirChooser.inc.php');
 		$wecmdenc3 = we_cmd_enc("fillIDs();opener.we_cmd('object_add_css', top.allIDs);");
 
-		$addbut = we_html_button::create_button("add", "javascript:we_cmd('openDocselector', '', '" . FILE_TABLE . "','','','" . $wecmdenc3 . "','','','" . we_base_ContentTypes::CSS . "', 1,1)");
+		$addbut = we_html_button::create_button("add", "javascript:we_cmd('openDocselector', 0, '" . FILE_TABLE . "','','','" . $wecmdenc3 . "','','','" . we_base_ContentTypes::CSS . "', 1,1)");
 		$css = new MultiDirChooser(510, $this->CSS, "object_del_css", $addbut, "", "Icon,Path", FILE_TABLE);
 		return $css->get();
 	}
@@ -2322,7 +2325,7 @@ class we_object extends we_document{
 		if(!$table){
 			$table = $this->Table;
 		}
-		$textname = 'we_' . $this->Name . '_' . $Pathname . ($identifier != '' ? '_' . $identifier : '');
+		$textname = 'we_' . $this->Name . '_' . $Pathname . ($identifier ? '_' . $identifier : '');
 		$idname = 'we_' . $this->Name . '_' . $IDName;
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$idname'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$textname'].value");
@@ -2377,7 +2380,7 @@ class we_object extends we_document{
 	}
 
 	static function isUsedByObjectFile($id){
-		return ($id ? f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . ' WHERE TableID=' . intval($id) . ' LIMIT 1', '', $GLOBALS['DB_WE']) == 1 : false);
+		return $id && f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . ' WHERE TableID=' . intval($id) . ' LIMIT 1');
 	}
 
 }

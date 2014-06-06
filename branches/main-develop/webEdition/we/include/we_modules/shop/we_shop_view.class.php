@@ -1125,7 +1125,7 @@ function submitForm() {
 						we_database_base::arraySetter((array(
 							'IntArticleID' => $id,
 							'IntQuantity' => weRequest('float', 'anzahl', 0),
-							'Price' => we_util::std_numberformat(self::getFieldFromShoparticle($serialDoc, $pricename)),
+							'Price' => we_base_util::std_numberformat(self::getFieldFromShoparticle($serialDoc, $pricename)),
 							'IntOrderID' => $row['IntOrderID'],
 							'IntCustomerID' => $row['IntCustomerID'],
 							'DateOrder' => $row['DateOrder'],
@@ -1735,7 +1735,7 @@ function submitForm() {
 				$this->raw->save();
 
 				//$ttrow = getHash('SELECT * FROM ' . RAW_TABLE . ' WHERE ID=' . intval($this->raw->ID), $this->db);
-				$tt = addslashes($tt != '' ? $tt : $this->raw->Text);
+				$tt = addslashes($tt ? $tt : $this->raw->Text);
 				$js = ($newone ?
 						'
 var attribs = new Array();

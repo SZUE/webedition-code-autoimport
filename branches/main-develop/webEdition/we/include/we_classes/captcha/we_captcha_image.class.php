@@ -172,7 +172,6 @@ class we_captcha_image{
 	 * @return void
 	 */
 	function setFont($family = "Times", $size = "15,20", $color = "#000000"){
-
 		$this->font = array();
 
 		// set the font families
@@ -190,13 +189,9 @@ class we_captcha_image{
 		$sizes = explode(",", $size);
 		$this->font['size'] = array();
 		if(count($sizes) > 1){
-			if($sizes[0] < $sizes[1]){
-				$this->font['size']['min'] = $sizes[0];
-				$this->font['size']['max'] = $sizes[1];
-			} else {
-				$this->font['size']['min'] = $sizes[1];
-				$this->font['size']['max'] = $sizes[0];
-			}
+			sort($sizes, SORT_NUMERIC);
+			$this->font['size']['min'] = $sizes[0];
+			$this->font['size']['max'] = $sizes[1];
 		} else {
 			$this->font['size']['min'] = $size;
 			$this->font['size']['max'] = $size;
@@ -205,11 +200,7 @@ class we_captcha_image{
 		// set the font colors
 		$colors = explode(",", $color);
 		$this->font['color'] = array();
-		if(count($colors) > 1){
-			foreach($colors as $idx => $color){
-				$this->font['color'][] = $this->_hex2rgb($color);
-			}
-		} else {
+		foreach($colors as $color){
 			$this->font['color'][] = $this->_hex2rgb($color);
 		}
 	}
@@ -232,7 +223,7 @@ class we_captcha_image{
 	 * Set the font family and size
 	 *
 	 * @param string $subset
-	 * @param string $casesensitivity
+	 * @param string $case
 	 * @param string $skip
 	 * @return void
 	 */
@@ -240,12 +231,15 @@ class we_captcha_image{
 		switch(strtolower($subset)){
 			case 'alpha':
 			case 'a-z':
-				if($case == "upper"){
-					$this->charactersubset = array(array(65, 90));
-				} elseif($case == "lower"){
-					$this->charactersubset = array(array(97, 122));
-				} else {
-					$this->charactersubset = array(array(65, 90), array(97, 122));
+				switch($case){
+					case "upper":
+						$this->charactersubset = array(array(65, 90));
+						break;
+					case "lower":
+						$this->charactersubset = array(array(97, 122));
+						break;
+					default:
+						$this->charactersubset = array(array(65, 90), array(97, 122));
 				}
 				break;
 			case 'num':
@@ -256,21 +250,22 @@ class we_captcha_image{
 			case 'a-z0-9':
 			case '0-9a-z':
 			default:
-				if($case == "upper"){
-					$this->charactersubset = array(array(48, 57), array(65, 90));
-				} elseif($case == "lower"){
-					$this->charactersubset = array(array(48, 57), array(97, 122));
-				} else {
-					$this->charactersubset = array(array(48, 57), array(65, 90), array(97, 122));
+				switch($case){
+					case "upper":
+						$this->charactersubset = array(array(48, 57), array(65, 90));
+						break;
+					case "lower":
+						$this->charactersubset = array(array(48, 57), array(97, 122));
+						break;
+					default:
+						$this->charactersubset = array(array(48, 57), array(65, 90), array(97, 122));
 				}
 				break;
 		}
 		$skips = explode(",", $skip);
 		$this->skip = array();
-		if(!empty($skips)){
-			foreach($skips as $idx => $skip){
-				$this->skip[] = ord($skip);
-			}
+		foreach($skips as $skip){
+			$this->skip[] = ord($skip);
 		}
 	}
 
@@ -445,7 +440,76 @@ class we_captcha_image{
 		return $rgb;
 	}
 
-	/* end: _hex2rgb */
+	private function getFont($family, $size, $sign){
+		if(isset($this->fontpath) && $this->fontpath != '' && file_exists($_SERVER['DOCUMENT_ROOT'] . $this->fontpath . $family . ".ttf")){
+			$family = $_SERVER['DOCUMENT_ROOT'] . $this->fontpath . $family . '.ttf';
+			$use_fontfile = true;
+
+			// Angle
+			$angle = rand($this->angle['left'], $this->angle['right']);
+
+			// Coordinates
+			$coords = imagettfbbox($size, $angle, $family, $sign);
+			$width = abs(( (-1) * abs(min($coords[0], $coords[6])) ) + ( abs(max($coords[2], $coords[4])) ));
+			$height = abs(( (-1) * abs(min($coords[1], $coords[7])) ) + ( abs(max($coords[3], $coords[5])) ));
+		} else if(isset($this->fontpath) && $this->fontpath != '' && file_exists($this->fontpath . $family . ".ttf")){
+			$family = $this->fontpath . $family . ".ttf";
+			$use_fontfile = true;
+
+			// Angle
+			$angle = rand($this->angle['left'], $this->angle['right']);
+
+			// Coordinates
+			$coords = imagettfbbox($size, $angle, $family, $sign);
+			$width = abs(( (-1) * abs(min($coords[0], $coords[6])) ) + ( abs(max($coords[2], $coords[4])) ));
+			$height = abs(( (-1) * abs(min($coords[1], $coords[7])) ) + ( abs(max($coords[3], $coords[5])) ));
+		} else {
+			$use_fontfile = true;
+			if(isset($_ENV['windir'])){
+				$windir = substr_replace('\\', '/', $_ENV['windir']);
+				if(file_exists($windir . "/fonts/" . $family . "ttf")){
+					$family = $windir . "/fonts/" . $family . "ttf";
+				} else if(file_exists(substr($windir, 0, 2) . "/fonts/" . $family . "ttf")){
+					$family = substr($windir, 0, 2) . "/fonts/" . $family . "ttf";
+				} else {
+					$family = WE_INCLUDES_PATH . "fonts/DejaVuSans.ttf";
+				}
+			} else if(isset($_ENV['SystemRoot'])){
+				$windir = substr_replace('\\', '/', $_ENV['SystemRoot']);
+				if(file_exists($windir . "/fonts/" . $family . "ttf")){
+					$family = $windir . "/fonts/" . $family . "ttf";
+				} else if(file_exists(substr($windir, 0, 2) . "/fonts/" . $family . "ttf")){
+					$family = substr($windir, 0, 2) . "/fonts/" . $family . "ttf";
+				} else {
+					$family = WE_INCLUDES_PATH . "fonts/DejaVuSans.ttf";
+				}
+			} else if(isset($_ENV['SystemDrive'])){
+				$windir = substr_replace('\\', '/', $_ENV['SystemDrive']);
+				if(file_exists($windir . "/windows/fonts/" . $family . "ttf")){
+					$family = $windir . "/windows/fonts/" . $family . "ttf";
+				} else if(file_exists($windir . "/winnt/fonts/" . $family . "ttf")){
+					$family = $windir . "/winnt/fonts/" . $family . "ttf";
+				} else if(file_exists($windir . "/fonts/" . $family . "ttf")){
+					$family = $windir . "/fonts/" . $family . "ttf";
+				} else {
+					$family = WE_INCLUDES_PATH . "fonts/DejaVuSans.ttf";
+				}
+			} else {
+				$use_fontfile = false;
+				$family = WE_INCLUDES_PATH . "fonts/DejaVuSans.ttf";
+			}
+			$use_fontfile = true;
+
+			// Angle
+			$angle = rand($this->angle['left'], $this->angle['right']);
+
+			// Coordinates
+			$coords = imagettfbbox($size, $angle, $family, $sign);
+			$width = abs(( (-1) * abs(min($coords[0], $coords[6])) ) + ( abs(max($coords[2], $coords[4])) ));
+			$height = abs(( (-1) * abs(min($coords[1], $coords[7])) ) + ( abs(max($coords[3], $coords[5])) ));
+		}
+		return array($use_fontfile, $family, $angle, $width, $height);
+	}
 
 	/**
 	 * Displayes the captcha image
@@ -482,47 +546,41 @@ class we_captcha_image{
 			for($i = 0; $i < $counter; $i++){
 
 				$do = $random[rand(0, count($random) - 1)];
+				switch($do){
+					case 'fullcircle':
+						$cx = rand(0, $this->width);
+						$cy = rand(0, $this->height);
+						$w = rand(0, $this->width / 2);
+						$h = rand(0, $this->height / 2);
+						$color = $this->style['color'][rand(0, count($this->style['color']) - 1)];
 
-				if($do == 'fullcircle'){
-					$cx = rand(0, $this->width);
-					$cy = rand(0, $this->height);
-					$w = rand(0, $this->width / 2);
-					$h = rand(0, $this->height / 2);
-					$color = $this->style['color'][rand(0, count($this->style['color']) - 1)];
+						imagefilledarc($image, $cx, $cy, $w, $h, 0, 360, imagecolorallocate($image, $color[0], $color[1], $color[1]), IMG_ARC_PIE);
+						break;
+					case 'fullrectangle':
+						$x1 = rand(0, $this->width);
+						$y1 = rand(0, $this->height);
+						$x2 = rand(0, $this->width / 2);
+						$y2 = rand(0, $this->height / 2);
+						$color = $this->style['color'][rand(0, count($this->style['color']) - 1)];
 
-					imagefilledarc(
-						$image, $cx, $cy, $w, $h, 0, 360, imagecolorallocate($image, $color[0], $color[1], $color[1]), IMG_ARC_PIE
-					);
-				} elseif($do == 'fullrectangle'){
-					$x1 = rand(0, $this->width);
-					$y1 = rand(0, $this->height);
-					$x2 = rand(0, $this->width / 2);
-					$y2 = rand(0, $this->height / 2);
-					$color = $this->style['color'][rand(0, count($this->style['color']) - 1)];
+						imagefilledrectangle($image, $x1, $y1, $x2, $y2, imagecolorallocate($image, $color[0], $color[1], $color[1]));
+						break;
+					case 'outlinecircle':
+						$cx = rand(0, $this->width);
+						$cy = rand(0, $this->height);
+						$w = rand(0, $this->width / 2);
+						$h = rand(0, $this->height / 2);
+						$color = $this->style['color'][rand(0, count($this->style['color']) - 1)];
 
-					imagefilledrectangle(
-						$image, $x1, $y1, $x2, $y2, imagecolorallocate($image, $color[0], $color[1], $color[1])
-					);
-				} elseif($do == 'outlinecircle'){
-					$cx = rand(0, $this->width);
-					$cy = rand(0, $this->height);
-					$w = rand(0, $this->width / 2);
-					$h = rand(0, $this->height / 2);
-					$color = $this->style['color'][rand(0, count($this->style['color']) - 1)];
+						imagearc($image, $cx, $cy, $w, $h, 0, 360, imagecolorallocate($image, $color[0], $color[1], $color[1]));
+					case 'outlinerectangle':
+						$x1 = rand(0, $this->width);
+						$y1 = rand(0, $this->height);
+						$x2 = rand(0, $this->width / 2);
+						$y2 = rand(0, $this->height / 2);
+						$color = $this->style['color'][rand(0, count($this->style['color']) - 1)];
 
-					imagearc(
-						$image, $cx, $cy, $w, $h, 0, 360, imagecolorallocate($image, $color[0], $color[1], $color[1])
-					);
-				} elseif($do == 'outlinerectangle'){
-					$x1 = rand(0, $this->width);
-					$y1 = rand(0, $this->height);
-					$x2 = rand(0, $this->width / 2);
-					$y2 = rand(0, $this->height / 2);
-					$color = $this->style['color'][rand(0, count($this->style['color']) - 1)];
-
-					imagerectangle(
-						$image, $x1, $y1, $x2, $y2, imagecolorallocate($image, $color[0], $color[1], $color[1])
-					);
+						imagerectangle($image, $x1, $y1, $x2, $y2, imagecolorallocate($image, $color[0], $color[1], $color[1]));
 				}
 			}
 		}
@@ -540,7 +598,7 @@ class we_captcha_image{
 			$j = 0;
 			$idx1 = rand(0, count($this->charactersubset) - 1);
 			$sign = rand($this->charactersubset[$idx1][0], $this->charactersubset[$idx1][1]);
-			if(!empty($this->skip)){
+			if($this->skip){
 				while(in_array($sign, $this->skip) || $j < 100){
 					$j++;
 					$idx1 = rand(0, count($this->charactersubset) - 1);
@@ -556,147 +614,51 @@ class we_captcha_image{
 			$color = $this->font['color'][rand(0, count($this->font['color']) - 1)];
 
 			// Family
-			$family = $this->font['family'][rand(0, count($this->font['family']) - 1)];
 
-			$isWindows = (stristr(php_uname(), 'wind') == true) ? true : false;
-
-			if(isset($this->fontpath) && $this->fontpath != '' && file_exists($_SERVER['DOCUMENT_ROOT'] . $this->fontpath . $family . ".ttf")){
-				$family = $_SERVER['DOCUMENT_ROOT'] . $this->fontpath . $family . ".ttf";
-				$use_fontfile = true;
-
-				// Angle
-				$angle = rand($this->angle['left'], $this->angle['right']);
-
-				// Coordinates
-				$coords = imagettfbbox($size, $angle, $family, $sign);
-				$width = abs(( (-1) * abs(min($coords[0], $coords[6])) ) + ( abs(max($coords[2], $coords[4])) ));
-				$height = abs(( (-1) * abs(min($coords[1], $coords[7])) ) + ( abs(max($coords[3], $coords[5])) ));
-			} else if(isset($this->fontpath) && $this->fontpath != '' && file_exists($this->fontpath . $family . ".ttf")){
-				$family = $this->fontpath . $family . ".ttf";
-				$use_fontfile = true;
-
-				// Angle
-				$angle = rand($this->angle['left'], $this->angle['right']);
-
-				// Coordinates
-				$coords = imagettfbbox($size, $angle, $family, $sign);
-				$width = abs(( (-1) * abs(min($coords[0], $coords[6])) ) + ( abs(max($coords[2], $coords[4])) ));
-				$height = abs(( (-1) * abs(min($coords[1], $coords[7])) ) + ( abs(max($coords[3], $coords[5])) ));
-			} else if($isWindows){
-				$use_fontfile = true;
-				if(isset($_ENV['windir'])){
-					$windir = substr_replace('\\', '/', $_ENV['windir']);
-					if(file_exists($windir . "/fonts/" . $family . "ttf")){
-						$family = $windir . "/fonts/" . $family . "ttf";
-					} else if(file_exists(substr($windir, 0, 2) . "/fonts/" . $family . "ttf")){
-						$family = substr($windir, 0, 2) . "/fonts/" . $family . "ttf";
-					} else {
-						$family = WE_INCLUDES_PATH . "fonts/DejaVuSans.ttf";
-					}
-				} else if(isset($_ENV['SystemRoot'])){
-					$windir = substr_replace('\\', '/', $_ENV['SystemRoot']);
-					if(file_exists($windir . "/fonts/" . $family . "ttf")){
-						$family = $windir . "/fonts/" . $family . "ttf";
-					} else if(file_exists(substr($windir, 0, 2) . "/fonts/" . $family . "ttf")){
-						$family = substr($windir, 0, 2) . "/fonts/" . $family . "ttf";
-					} else {
-						$family = WE_INCLUDES_PATH . "fonts/DejaVuSans.ttf";
-					}
-				} else if(isset($_ENV['SystemDrive'])){
-					$windir = substr_replace('\\', '/', $_ENV['SystemDrive']);
-					if(file_exists($windir . "/windows/fonts/" . $family . "ttf")){
-						$family = $windir . "/windows/fonts/" . $family . "ttf";
-					} else if(file_exists($windir . "/winnt/fonts/" . $family . "ttf")){
-						$family = $windir . "/winnt/fonts/" . $family . "ttf";
-					} else if(file_exists($windir . "/fonts/" . $family . "ttf")){
-						$family = $windir . "/fonts/" . $family . "ttf";
-					} else {
-						$family = WE_INCLUDES_PATH . "fonts/DejaVuSans.ttf";
-					}
-				} else {
-					$use_fontfile = false;
-					$family = WE_INCLUDES_PATH . "fonts/DejaVuSans.ttf";
-				}
-				$use_fontfile = true;
-
-				// Angle
-				$angle = rand($this->angle['left'], $this->angle['right']);
-
-				// Coordinates
-				$coords = imagettfbbox($size, $angle, $family, $sign);
-				$width = abs(( (-1) * abs(min($coords[0], $coords[6])) ) + ( abs(max($coords[2], $coords[4])) ));
-				$height = abs(( (-1) * abs(min($coords[1], $coords[7])) ) + ( abs(max($coords[3], $coords[5])) ));
-			} else {
-				$family = 5;
-				$use_fontfile = false;
-
-				// Angle
-				$angle = 0;
-				$width = (int) imagefontwidth($family) * strlen($sign);
-				$height = (int) imagefontheight($family);
-			}
+			list($use_fontfile, $family, $angle, $width, $height) = $this->getFont($this->font['family'][rand(0, count($this->font['family']) - 1)], rand($this->font['size']['min'], $this->font['size']['max']), $sign);
 
 
 			// Abstand X-Position
 			if(($xpos + $width) <= $this->width){
 
-
-				if($use_fontfile){
-					$family = file_exists($family) ? $family : WE_INCLUDES_PATH . "fonts/DejaVuSans.ttf";
-					// Y-Position
-					if($this->valign == 'top'){
-						$ypos = $height + 5;
-					} elseif($this->valign == 'bottom'){
-						$ypos = $this->height - 5;
-					} elseif($this->valign == 'middle'){
+				// Y-Position
+				switch($this->valign){
+					case 'top':
+						$ypos = ($use_fontfile ? $height + 5 : 0);
+						break;
+					case 'bottom':
+						$ypos = $this->height - ($use_fontfile ? 5 : $height);
+						break;
+					case 'middle':
 						$ypos = ($this->height / 2) + ($height / 2);
-					} elseif($this->valign == 'random'){
-						$max = $this->height - 5;
-						$min = $height + 5;
-						$ypos = rand($min, $max);
-					}
+						break;
+					case 'random':
+						$ypos = rand($this->height - ($use_fontfile ? 5 : $height), ($use_fontfile ? $height + 5 : 0));
+				}
 
-					$tmp_sign = array(
+				$signs[] = ($use_fontfile ?
+						array(
 						'size' => $size,
 						'angle' => $angle,
 						'xpos' => $xpos,
 						'ypos' => $ypos,
 						'color' => imagecolorallocate($image, $color[0], $color[1], $color[2]),
-						'family' => $family,
+						'family' => file_exists($family) ? $family : WE_INCLUDES_PATH . "fonts/DejaVuSans.ttf",
 						'sign' => $sign,
-					);
-				} else {
-
-					// Y-Position
-					if($this->valign == 'top'){
-						$ypos = 0;
-					} elseif($this->valign == 'bottom'){
-						$ypos = $this->height - $height;
-					} elseif($this->valign == 'middle'){
-						$ypos = (($this->height) / 2) - ($height / 2);
-					} elseif($this->valign == 'random'){
-						$max = $this->height - $height;
-						$min = 0;
-						$ypos = rand($min, $max);
-					}
-
-					$tmp_sign = array(
+						) :
+						array(
 						'xpos' => $xpos,
 						'ypos' => $ypos,
 						'color' => imagecolorallocate($image, $color[0], $color[1], $color[2]),
 						'family' => $family,
 						'sign' => $sign,
-					);
-				}
+				));
 
-				$signs[] = $tmp_sign;
 
 				$space = rand(round($this->font['size']['min'] / 2), round($this->font['size']['max'] / 2));
 
-
 				// X-Position
-				$xpos += round($space);
-				$xpos += $width;
+				$xpos += round($space) + $width;
 
 				$code .= $sign;
 
@@ -709,29 +671,21 @@ class we_captcha_image{
 			$this->align = $temp[rand(0, 2)];
 		}
 
-		// align
-		if($use_fontfile){
-			if($this->align == 'left'){
+		switch($this->align){
+			case 'left':
 				$xoffset = 5;
-			} elseif($this->align == 'right'){
+				break;
+			case 'right':
 				$xoffset = $this->width - $sumwidth - 5;
-			} elseif($this->align == 'center'){
-				$xoffset = ($this->width / 2) - ($sumwidth / 2);
-			}
-		} else {
-			if($this->align == 'left'){
-				$xoffset = 5;
-			} elseif($this->align == 'right'){
-				$xoffset = $this->width - $sumwidth;
-			} elseif($this->align == 'center'){
-				$xoffset = ($this->width / 2) - ($sumwidth / 2) + 3;
-			}
+				break;
+			case 'center':
+				$xoffset = ($use_fontfile ?
+						($this->width / 2) - ($sumwidth / 2) :
+						($this->width / 2) - ($sumwidth / 2) + 3);
 		}
 
 		foreach($signs as $sign){
-
 			if($use_fontfile){
-
 				imagettftext(
 					$image, // Imageressource
 					$sign['size'], // Fontsize
@@ -740,13 +694,10 @@ class we_captcha_image{
 					$sign['ypos'], // Y-Position
 					$sign['color'], // Fontcolor
 					$sign['family'], // Font Family (File)
-					$sign['sign']	// Text
+					$sign['sign'] // Text
 				);
 			} else {
-
-				imagestring(
-					$image, $sign['family'], $xoffset + $sign['xpos'], $sign['ypos'], $sign['sign'], $sign['color']
-				);
+				imagestring($image, $sign['family'], $xoffset + $sign['xpos'], $sign['ypos'], $sign['sign'], $sign['color']);
 			}
 		}
 
@@ -763,15 +714,10 @@ class we_captcha_image{
 
 			$color = $this->font['color'][rand(0, count($this->font['color']) - 1)];
 
-			imageline(
-				$image, $x1, $y1, $x2, $y2, imagecolorallocate($image, $color[0], $color[1], $color[2])
-			);
+			imageline($image, $x1, $y1, $x2, $y2, imagecolorallocate($image, $color[0], $color[1], $color[2]));
 		}
 
 		return $image;
 	}
 
-	/* end: get */
 }
-
-/* end: Class */

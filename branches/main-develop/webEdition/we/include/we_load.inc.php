@@ -103,7 +103,7 @@ if(weRequest('string', 'we_cmd', '', 0) == "closeFolder"){
 			($table == FILE_TABLE || $table == TEMPLATES_TABLE ? ",Extension" : '') .
 			($table == FILE_TABLE || $table == TEMPLATES_TABLE || (defined("OBJECT_TABLE") && $table == OBJECT_TABLE) || (defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE) ? ",ContentType" : '');
 
-		$DB_WE->query('SELECT ' . $elem . ', LOWER(Text) AS lowtext, ABS(REPLACE(Text,"info","")) AS Nr, (Text REGEXP "^[0-9]") AS isNr FROM ' . $table . ' ' . $where . ' ORDER BY IsFolder DESC,isNr DESC,Nr,lowtext' . ($segment != 0 ? ' LIMIT ' . $offset . ',' . $segment : ''));
+		$DB_WE->query('SELECT ' . $elem . ', LOWER(Text) AS lowtext, ABS(REPLACE(Text,"info","")) AS Nr, (Text REGEXP "^[0-9]") AS isNr FROM ' . $table . ' ' . $where . ' ORDER BY IsFolder DESC,isNr DESC,Nr,lowtext' . ($segment ? ' LIMIT ' . $offset . ',' . $segment : ''));
 		$ct = we_base_ContentTypes::inst();
 
 		$tree_count = 0;

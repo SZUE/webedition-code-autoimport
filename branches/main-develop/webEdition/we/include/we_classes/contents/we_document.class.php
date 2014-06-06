@@ -157,7 +157,7 @@ class we_document extends we_root{
 		we_loadLanguageConfig();
 
 		$_defLang = self::getDefaultLanguage();
-		$value = ($this->Language != '' ? $this->Language : $_defLang);
+		$value = ($this->Language ? $this->Language : $_defLang);
 		$inputName = 'we_' . $this->Name . '_Language';
 		$_languages = getWeFrontendLanguagesForBackend();
 		$_headline = ($withHeadline ? '<tr><td class="defaultfont">' . g_l('weClass', '[language]') . '</td></tr>' : '');
@@ -261,7 +261,7 @@ class we_document extends we_root{
 
 	function formCategory(){
 		$delallbut = we_html_button::create_button('delete_all', "javascript:we_cmd('delete_all_cats')", true, 0, 0, '', '', $this->Category ? false : true);
-		$addbut = we_html_button::create_button('add', "javascript:we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','opener.setScrollTo();fillIDs();opener.top.we_cmd(\\'add_cat\\',top.allIDs);')");
+		$addbut = we_html_button::create_button('add', "javascript:we_cmd('openCatselector',0,'" . CATEGORY_TABLE . "','','','opener.setScrollTo();fillIDs();opener.top.we_cmd(\\'add_cat\\',top.allIDs);')");
 		$cats = new MultiDirChooser(508, $this->Category, 'delete_cat', we_html_button::create_button_table(array($delallbut, $addbut)), '', 'Icon,Path', CATEGORY_TABLE);
 		$cats->extraDelFn = 'setScrollTo();';
 		return $cats->get();
@@ -351,7 +351,7 @@ class we_document extends we_root{
 				$_naviItem->SelectionType = we_navigation_navigation::STPYE_DOCTYPE;
 				$_naviItem->IsFolder = 1;
 				$charset = $_naviItem->findCharset($_naviItem->ParentID);
-				$_naviItem->Charset = ($charset != '' ? $charset : (DEFAULT_CHARSET ? DEFAULT_CHARSET : $GLOBALS['WE_BACKENDCHARSET']));
+				$_naviItem->Charset = ($charset ? $charset : (DEFAULT_CHARSET ? DEFAULT_CHARSET : $GLOBALS['WE_BACKENDCHARSET']));
 			} else {
 				$_naviItem->Selection = we_navigation_navigation::SELECTION_STATIC;
 				$_naviItem->SelectionType = we_navigation_navigation::STPYE_DOCLINK;
@@ -564,7 +564,7 @@ class we_document extends we_root{
 	}
 
 	function changeLink($name){
-		$this->setElement($name, $_SESSION['weS']['WE_LINK']);
+		$this->setElement($name, serialize($_SESSION['weS']['WE_LINK']));
 	}
 
 	function changeLinklist($name){
@@ -742,10 +742,6 @@ class we_document extends we_root{
 		if(empty($this->Language) && $this->Table != TEMPLATES_TABLE){
 			$this->initLanguageFromParent();
 		}
-	}
-
-	public function we_delete(){
-		return parent::we_delete() && $this->i_deleteSiteDir() && $this->i_deleteMainDir() && $this->i_deleteNavigation();
 	}
 
 	function we_rewrite(){
@@ -1036,7 +1032,7 @@ class we_document extends we_root{
 					$retval = preg_replace('/#we##br([^#]*)#we##/', '<br\1>', oldHtmlspecialchars(preg_replace('/<br([^>]*)>/i', '#we##br\1#we##', $retval), ENT_QUOTES));
 				}
 				if(!weTag_getAttribute('php', $attribs, (defined('WE_PHP_DEFAULT') && WE_PHP_DEFAULT), true)){
-					$retval = we_util::rmPhp($retval);
+					$retval = we_base_util::rmPhp($retval);
 				}
 				$xml = weTag_getAttribute('xml', $attribs, (XHTML_DEFAULT), true);
 				$retval = preg_replace('-<(br|hr)([^/>]*)/? *>-i', ($xml ? '<\\1\\2/>' : '<\\1\\2>'), $retval);
@@ -1044,7 +1040,7 @@ class we_document extends we_root{
 				if(preg_match('/^[\d.,]+$/', trim($retval))){
 					$precision = isset($attribs['precision']) ? abs($attribs['precision']) : 2;
 					if(($num = weTag_getAttribute('num_format', $attribs))){
-						$retval = we_util_Strings::formatNumber(we_util::std_numberformat($retval), $num, $precision);
+						$retval = we_util_Strings::formatNumber(we_base_util::std_numberformat($retval), $num, $precision);
 					}
 				}
 				if(weTag_getAttribute('win2iso', $attribs, false, true)){
@@ -1338,9 +1334,9 @@ class we_document extends we_root{
 					}
 				}
 				$js.=
-					(isset($_popUpCtrl["jswidth"]) && $_popUpCtrl["jswidth"] != "" ?
+					(isset($_popUpCtrl["jswidth"]) && $_popUpCtrl["jswidth"] ?
 						'we_winOpts += (we_winOpts ? \',\' : \'\')+\'width=' . $_popUpCtrl["jswidth"] . '\';' : '') .
-					(isset($_popUpCtrl["jsheight"]) && $_popUpCtrl["jsheight"] != "" ?
+					(isset($_popUpCtrl["jsheight"]) && $_popUpCtrl["jsheight"] ?
 						'we_winOpts += (we_winOpts ? \',\' : \'\')+\'height=' . $_popUpCtrl["jsheight"] . '\';' : '') . 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'status=' . (isset($_popUpCtrl["jsstatus"]) && $_popUpCtrl["jsstatus"] ? 'yes' : 'no') . '\';' .
 					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'scrollbars=' . (isset($_popUpCtrl["jsscrollbars"]) && $_popUpCtrl["jsscrollbars"] ? 'yes' : 'no') . '\';' .
 					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'menubar=' . (isset($_popUpCtrl["jsmenubar"]) && $_popUpCtrl["jsmenubar"] ? 'yes' : 'no') . '\';' .

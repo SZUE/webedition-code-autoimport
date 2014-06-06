@@ -91,7 +91,7 @@ abstract class we_temporaryDocument{
 
 	static function isInTempDB($id, $table, we_database_base $db){
 		return (intval($id) > 0 ?
-				(f('SELECT 1 FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . intval($id) . ' AND Active=1 AND  DocTable="' . $db->escape(stripTblPrefix($table)) . '"', '', $db) == '1') :
+				(f('SELECT 1 FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . intval($id) . ' AND Active=1 AND  DocTable="' . $db->escape(stripTblPrefix($table)) . '"  LIMIT 1', '', $db)) :
 				false);
 	}
 

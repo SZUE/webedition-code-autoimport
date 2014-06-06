@@ -78,7 +78,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 	function reloadElement($jsGUI, $we_transaction, $we_doc, $id){
 		$identifier = array_pop(explode('_', $id));
 		$uniqid = 'entry_' . $identifier;
-		$wholename = $we_doc->getElement("wholename" . $identifier);
+		$wholename = $we_doc->getElement('wholename' . $identifier);
 
 		$content = '<div id="' . $uniqid . '">
 				<a name="f' . $uniqid . '"></a>
@@ -107,15 +107,29 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 		echo $jsGUI->getResponse('reload', $uniqid, $content) .
 			we_html_element::jsElement('
 var target = _EditorFrame.getContentEditor(),
-	confname = "tinyMceConfObject__' . $wholename . 'default";
-if(conf = typeof tinyMceConfObject__' . $wholename . 'default === \'object\' ? tinyMceConfObject__' . $wholename . 'default : false){
-	target.tinyMceInitialize(conf);
-	target[confname] = conf;
-} else if(typeof target[confname] === \'object\'){
-	target[confname] = undefined;
+	confName = "tinyMceConfObject__' . $wholename . 'default";
+
+if(confObject = typeof tinyMceConfObject__' . $wholename . 'default === \'object\' ? tinyMceConfObject__' . $wholename . 'default : false){
+	' . (we_base_browserDetect::isIE() || we_base_browserDetect::isOpera() ? '
+	if(typeof target[confName] === \'object\'){
+		for(prop in confObject){
+			if(prop !== "setup"){
+				target[confName][prop] = confObject[prop];
+			};
+		}
+		target.tinyMceInitialize(target[confName]);
+	} else {
+		setScrollTo();
+		top.we_cmd("switch_edit_page",1,"' . $we_transaction . '");
+	}' : '
+		target[confName] = confObject;
+		target.tinyMceInitialize(target[confName]);
+	') . '
+} else if(typeof target[confName] === \'object\'){
+	target[confName] = undefined;
 }
 ');
-		
+
 		$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 	}
 
@@ -240,9 +254,9 @@ if(conf = typeof tinyMceConfObject__' . $wholename . 'default === \'object\' ? t
 					$field = $we_doc->elements['wholename' . $sortId]['dat'];
 					$ret .= '
 var target = _EditorFrame.getContentEditor(),
-	confname = "tinyMceConfObject__' . $field . 'default";
-if(typeof target[confname] === \'object\'){
-		target.tinyMceInitialize(target[confname]);
+	confName = "tinyMceConfObject__' . $field . 'default";
+if(typeof target[confName] === \'object\'){
+		target.tinyMceInitialize(target[confName]);
 }';
 				}
 				echo $ret ? we_html_element::jsElement($ret) : '';
@@ -263,9 +277,9 @@ if(typeof target[confname] === \'object\'){
 					$field = $we_doc->elements['wholename' . $sortId]['dat'];
 					$ret .= '
 var target = _EditorFrame.getContentEditor(),
-	confname = "tinyMceConfObject__' . $field . 'default";
-if(typeof target[confname] === \'object\'){
-		target.tinyMceInitialize(target[confname]);
+	confName = "tinyMceConfObject__' . $field . 'default";
+if(typeof target[confName] === \'object\'){
+		target.tinyMceInitialize(target[confName]);
 }';
 				}
 				echo $ret ? we_html_element::jsElement($ret) : '';

@@ -25,7 +25,7 @@
 function we_tag_ifEditmode($attribs){
 	switch(weTag_getAttribute('doc', $attribs)){
 		case 'self':
-			return $GLOBALS['WE_MAIN_ID'] == $GLOBALS['we_doc']->ID && isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'];
+			return isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'] && (isset($GLOBALS['WE_MAIN_ID'])) && $GLOBALS['WE_MAIN_ID'] == $GLOBALS['we_doc']->ID;
 		default:
 			return (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']) || $GLOBALS['WE_MAIN_EDITMODE']/* || (isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == 'seem') */;
 	}

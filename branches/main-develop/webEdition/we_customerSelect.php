@@ -27,6 +27,6 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 $_SERVER['SCRIPT_NAME'] = WEBEDITION_DIR . 'we_customerSelect.php';
 
-$fs = new we_customer_selector(isset($id) ? $id : weRequest('int', 'id', 0), isset($JSIDName) ? $JSIDName : weRequest('string', 'JSIDName', ''), isset($JSTextName) ? $JSTextName : weRequest('string', 'JSTextName', ''), isset($JSCommand) ? $JSCommand : weRequest('raw', 'JSCommand', ''), isset($order) ? $order : weRequest('raw', 'order', ''), isset($sessionID) ? $sessionID : weRequest('raw', 'sessionID', ''), isset($rootDirID) ? $rootDirID : weRequest('int', 'rootDirID', 0), isset($filter) ? $filter : weRequest('raw', 'filter', ''), isset($multiple) ? $multiple : weRequest('bool', 'multiple'));
+$fs = new we_customer_selector(weRequest('int', 'id', 0), weRequest('string', 'JSIDName', ''), weRequest('string', 'JSTextName', ''), weRequest('raw', 'JSCommand', ''), weRequest('raw', 'order', ''), weRequest('int', 'rootDirID', 0), weRequest('raw', 'filter', ''), weRequest('bool', 'multiple'));
 
 $fs->printHTML(weRequest('int', 'what', we_selector_file::FRAMESET));
