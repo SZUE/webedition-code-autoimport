@@ -32,6 +32,7 @@ $l_importFiles=array(
 	'sameName_rename'=>'Uudelleennimeää uuden tiedoston',
 	'same_name'=>'Virhe: file exists',
 	'save_error'=>'Virhe tallennettaessa tiedostoa',
+	'select_files'=>'Select files',
 	'step1'=>'Tuo paikallisia tiedostoja - Vaihe 1 / 3',
 	'step2'=>'Tuo paikallisia tiedostoja - Vaihe 2 / 3',
 	'step3'=>'Tuo paikallisia tiedostoja - Vaihe 3 / 3',

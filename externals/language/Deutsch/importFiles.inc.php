@@ -32,6 +32,7 @@ $l_importFiles=array(
 	'sameName_rename'=>'Neue Datei umbenennen',
 	'same_name'=>'Fehler: Datei existiert',
 	'save_error'=>'Fehler beim speichern',
+	'select_files'=>'Dateien<br/>auswählen',
 	'step1'=>'Lokale Dateien importieren - Schritt 1 von 3',
 	'step2'=>'Lokale Dateien importieren - Schritt 2 von 3',
 	'step3'=>'Lokale Dateien importieren - Schritt 3 von 3',

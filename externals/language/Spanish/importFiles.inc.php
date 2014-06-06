@@ -32,6 +32,7 @@ $l_importFiles=array(
 	'sameName_rename'=>'Renombrar el nuevo archivo',
 	'same_name'=>'Error: el archivo ya existe',
 	'save_error'=>'Error mientras salvando',
+	'select_files'=>'Select files',
 	'step1'=>'Importar archivos locales - Paso 1 de 2',
 	'step2'=>'Importar archivos locales - Paso 2 de 2',
 	'step3'=>'Import local files - Step 3 of 3',

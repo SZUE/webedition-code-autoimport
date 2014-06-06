@@ -32,6 +32,7 @@ $l_importFiles=array(
 	'sameName_rename'=>'Переименовать новый файл',
 	'same_name'=>'Ошибка: файл существует',
 	'save_error'=>'Ошибка при сохранении',
+	'select_files'=>'Select files',
 	'step1'=>'Импорт локальных файлов - шаг 1 из 2',
 	'step2'=>'Импорт локальных файлов - шаг 2 из 2',
 	'step3'=>'Import local files - Step 3 of 3',

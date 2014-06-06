@@ -32,6 +32,7 @@ $l_importFiles=array(
 	'sameName_rename'=>'Zapisać pod inna nazwą',
 	'same_name'=>'Błąd: Plik już istnieje',
 	'save_error'=>'Błąd przy zapisie',
+	'select_files'=>'Select files',
 	'step1'=>'Importownie lokalnych plików - krok 1 z 2',
 	'step2'=>'Importownie lokalnych plików - krok 2 z 2',
 	'step3'=>'Import local files - Step 3 of 3',
