@@ -87,7 +87,7 @@ abstract class we_html_multiIconBox{
 
 			$out .= $rightContent .
 				'<br style="clear:both;"/>
-					</div>' . (we_base_browserDetect::isIE() ? '<br/>' : '') .
+					</div>' . (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 10 ? '<br/>' : '') .
 				($i < (count($content) - 1) && (!isset($c["noline"])) ?
 					'<div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;"></div>' :
 					'<div style="margin:10px 0;clear:both;"></div>') .
@@ -233,7 +233,7 @@ abstract class we_html_multiIconBox{
 				mainTD.removeChild(div);
 			}
 
-			function weAppendMultiboxRow(content,headline,icon,space,insertRuleBefore){
+			function weAppendMultiboxRow(content,headline,icon,space,insertRuleBefore,insertDivAfter){
 				var lastNum = weGetLastMultiboxNr();
 				var i = (lastNum + 1);
 				icon = icon  ? (\'<img src="' . IMAGE_DIR . 'icons/\' + icon + \'" width="64" height="64" alt="" style="margin-left:20px;" />\') : "";
@@ -262,11 +262,13 @@ abstract class we_html_multiIconBox{
 				var mainTD = document.getElementById("td_' . $uniqname . '");
 				mainTD.appendChild(mainDiv);
 
-' . (we_base_browserDetect::isIE() ? 'mainTD.appendChild(document.createElement("BR"));' : '') . '
+' . (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 10 ? 'mainTD.appendChild(document.createElement("BR"));' : '') . '
 
 				var lastDiv = document.createElement("DIV");
-				lastDiv.style.cssText = "margin:10px 0;clear:both;";
-				mainTD.appendChild(lastDiv);
+				if(insertDivAfter !== -1){
+					lastDiv.style.cssText = "margin:10px 0;clear:both;";
+					mainTD.appendChild(lastDiv);
+				}
 
 				if(insertRuleBefore && (lastNum != -1)){
 					var rule = document.createElement("DIV");
