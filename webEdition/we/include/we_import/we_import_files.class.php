@@ -340,12 +340,12 @@ function _setProgress_uploader(index,progress){
 function _setProgressCompleted_uploader(success, index, message){
 	if(success){
 		_setProgress_uploader(index, 100);
-		document.images["progress_image_" + index].src = "/webEdition/images/balken_gr.gif";
+		document.images["progress_image_" + index].src = "/webEdition/images/fileUpload/balken_gr.gif";
 	} else {
 		//_setProgressText_uploader(index, "progress_text", "Abbruch");
 		document.images["alert_img_" + index].style.visibility  = "visible ";
 		document.images["alert_img_" + index].title = message;
-		document.images["progress_image_" + index].src = "/webEdition/images/balken_red.gif";
+		document.images["progress_image_" + index].src = "/webEdition/images/fileUpload/balken_red.gif";
 	}
 }
 ': '
@@ -668,7 +668,7 @@ we_html_element::jsScript(JS_DIR . "windows.js");
 			array("headline" => "", "html" => $content, "space" => 0)
 		);
 
-		$butBrowse = we_html_button::create_button('browse_hdd', 'javascript:void(0)', true, 286, 22);
+		$butBrowse = we_html_button::create_button('browse_harddisk', 'javascript:void(0)', true, 286, 22);
 		$butBrowse = str_replace("\n", " ", str_replace("\r", " ", $butBrowse));
 
 		$butReset = we_html_button::create_button('reset', 'javascript:weClearFileList()', true, 100, 22, '', '', false);
@@ -685,7 +685,7 @@ we_html_element::jsScript(JS_DIR . "windows.js");
 				<div style="vertical-align: top; display: inline-block; height: 22px">
 					' . $butReset . '
 				</div>
-				<div id="filedrag">oder ziehen Sie die Dateien hierher</div>
+				<div id="filedrag">' . g_l('importFiles', "[dragdrop_text]") . '</div>
 			</div>
 		</form>
 		</div>
