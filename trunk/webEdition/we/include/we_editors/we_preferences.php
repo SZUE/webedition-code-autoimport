@@ -973,7 +973,7 @@ function build_dialog($selected_setting = 'ui'){
 				$_sidebar_show_on_startup = we_html_forms::checkbox(1, get_value('SIDEBAR_SHOW_ON_STARTUP'), 'newconf[SIDEBAR_SHOW_ON_STARTUP]', g_l('prefs', '[sidebar_show_on_startup]'), false, 'defaultfont', '');
 
 				// Sidebar width
-				$_sidebar_width = we_html_tools::htmlTextInput('newconf[SIDEBAR_DEFAULT_WIDTH]', 8, get_value('SIDEBAR_DEFAULT_WIDTH'), 255, "onchange=\"if ( isNaN( this.value ) ||  parseInt(this.value) < 100 ) { this.value=100; };\"", 'text', 150);
+				$_sidebar_width = we_html_tools::htmlTextInput('newconf[SIDEBAR_DEFAULT_WIDTH]', 8, get_value('SIDEBAR_DEFAULT_WIDTH'), 255, "onchange=\"if ( isNaN( this.value ) ||  parseInt(this.value) < 100 ) { this.value=100; };\"", 'number', 150);
 				$_sidebar_width_chooser = we_html_tools::htmlSelect('tmp_sidebar_width', array('' => '', 100 => 100, 150 => 150, 200 => 200, 250 => 250, 300 => 300, 350 => 350, 400 => 400), 1, '', false, array("onchange" => "document.forms[0].elements['newconf[SIDEBAR_DEFAULT_WIDTH]'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"), "value", 100, "defaultfont");
 
 				// Sidebar document
@@ -1016,25 +1016,22 @@ function build_dialog($selected_setting = 'ui'){
 // FILE UPLOAD
 
 			$_fileuploader_use_jupload = we_html_tools::htmlSelect('newconf[use_jupload]', array(g_l('prefs', '[no]'), g_l('prefs', '[yes]')), 1, get_value('use_jupload'), false, array("onchange" => "document.getElementById('file_upload_options').style.display=(this.options[this.selectedIndex].value=='1'?'none':'block');"));
-//TODO: make lang entries for new prefs
-			$_fileuploader_use_legacy = we_html_forms::checkbox(1, get_value('FILE_UPLOAD_USE_LEGACY'), 'newconf[FILE_UPLOADER_USE_LEGACY]', 'bisherigen Uploader nutzen (deprecated)', false, 'defaultfont', '');
-			$_fileuploader_max_size = we_html_tools::htmlTextInput('newconf[FILE_UPLOAD_MAX_SIZE]', 8, get_value('FILE_UPLOADER_MAX_UPLOAD_SIZE'), 255, "", 'text', 150);
-			$_fileuploader_max_size_chooser = we_html_tools::htmlSelect('tmp_file_upload_max_size', array('' => '', 1 => 1, 2 => 2, 4 => 4, 8 => 8, 16 => 16, 32 => 32, 64 => 64, 128 => 128), 1, '', false, array("onchange" => "document.forms[0].elements['newconf[FILE_UPLOAD_MAX_SIZE]'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"), "value", 100, "defaultfont");
+
+			$_fileuploader_use_legacy = we_html_forms::checkbox(1, get_value('FILE_UPLOAD_USE_LEGACY'), 'newconf[FILE_UPLOADER_USE_LEGACY]',g_l('prefs','[upload][use_legacy]'), false, 'defaultfont', '');
+			$_fileuploader_max_size = we_html_tools::htmlTextInput('newconf[FILE_UPLOADER_MAX_UPLOAD_SIZE]', 8, get_value('FILE_UPLOADER_MAX_UPLOAD_SIZE'), 255, "", 'number', 150);
 
 			$_fileuploader_html1 = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 2, 1);
-			$_fileuploader_html1->setCol(0, 0, array('colspan' => 3, 'height' => 10), g_l('prefs', '[use_jupload]'));
+			$_fileuploader_html1->setCol(0, 0, array('colspan' => 3, 'height' => 10), g_l('prefs', '[upload][jupload]'));
 			$_fileuploader_html1->setCol(1, 0, null, $_fileuploader_use_jupload);
 
 			$_fileuploader_html2 = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0, 'id' => 'file_upload_options', 'style' => 'display: ' . (get_value('use_jupload') ? 'none' : 'block')), 5, 3);
 			$_fileuploader_html2->setCol(0, 0, array('colspan' => 3, 'height' => 25), '');
 			$_fileuploader_html2->setCol(1, 0, array('colspan' => 3, 'height' => 10), $_fileuploader_use_legacy);
 			$_fileuploader_html2->setCol(2, 0, array('colspan' => 3, 'height' => 15), '');
-			$_fileuploader_html2->setCol(3, 0, array('colspan' => 3, 'height' => 10), 'Neuer JavaScript File Upload:<br/>maximale Filegroesse in MB');
-			$_fileuploader_html2->setCol(4, 0, null, $_fileuploader_max_size);
-			$_fileuploader_html2->setCol(4, 1, null, we_html_tools::getPixel(10, 1));
-			$_fileuploader_html2->setCol(4, 2, null, $_fileuploader_max_size_chooser);
+			$_fileuploader_html2->setCol(3, 0, array('colspan' => 3, 'height' => 10), g_l('prefs','[upload][maxsize]'));
+			$_fileuploader_html2->setCol(4, 0, null, $_fileuploader_max_size.' MB');
 
-			$_settings[] = array('headline' => 'File Upload', 'html' => $_fileuploader_html1->getHtml() . $_fileuploader_html2->getHtml(), 'space' => 200);
+			$_settings[] = array('headline' => g_l('prefs','[upload][title]'), 'html' => $_fileuploader_html1->getHtml() . $_fileuploader_html2->getHtml(), 'space' => 200);
 
 
 			// TREE
@@ -1091,8 +1088,8 @@ function build_dialog($selected_setting = 'ui'){
 			$_window_specify_table->setCol(1, 2, null, we_html_tools::getPixel(10, 1));
 			$_window_specify_table->setCol(3, 2, null, we_html_tools::getPixel(10, 1));
 
-			$_window_specify_table->setCol(1, 3, null, we_html_tools::htmlTextInput('newconf[weWidth]', 6, (get_value('sizeOpt') ? get_value('weWidth') : ''), 4, (get_value('sizeOpt') == 0 ? "disabled=\"disabled\"" : ""), "text", 60));
-			$_window_specify_table->setCol(3, 3, null, we_html_tools::htmlTextInput('newconf[weHeight]', 6, (get_value('sizeOpt') ? get_value('weHeight') : ''), 4, (get_value('sizeOpt') == 0 ? "disabled=\"disabled\"" : ""), "text", 60));
+			$_window_specify_table->setCol(1, 3, null, we_html_tools::htmlTextInput('newconf[weWidth]', 6, (get_value('sizeOpt') ? get_value('weWidth') : ''), 4, (get_value('sizeOpt') == 0 ? "disabled=\"disabled\"" : ""), "number", 60));
+			$_window_specify_table->setCol(3, 3, null, we_html_tools::htmlTextInput('newconf[weHeight]', 6, (get_value('sizeOpt') ? get_value('weHeight') : ''), 4, (get_value('sizeOpt') == 0 ? "disabled=\"disabled\"" : ""), "number", 60));
 
 			// Build apply current window dimension
 			$_window_current_dimension_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 1, 2);
@@ -2267,7 +2264,7 @@ function formmailBlockOnOff() {
 
 			$_we_max_upload_size = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' .
 				we_html_tools::htmlTextInput("newconf[WE_MAX_UPLOAD_SIZE]", 22, abs(get_value("WE_MAX_UPLOAD_SIZE")), "", ' onkeypress="return IsDigit(event);"', "text", 60) . '</td><td style="padding-left:20px;" class="small">' .
-				g_l('prefs', '[we_max_upload_size_hint]') .
+				g_l('prefs', '[upload][we_max_size_hint]') .
 				'</td></tr></table>';
 			$_needed_JavaScript = we_html_element::jsElement('function IsDigit(e) {
 					var key =  (e != null && e.charCode?e.charCode:event.keyCode);
@@ -2401,7 +2398,7 @@ function formmailBlockOnOff() {
 
 
 			$_settings = array(
-				array("headline" => g_l('prefs', '[we_max_upload_size]'), "html" => $_we_max_upload_size, "space" => 200),
+				array("headline" => g_l('prefs', '[upload][we_max_size]'), "html" => $_we_max_upload_size, "space" => 200),
 				array("headline" => g_l('prefs', '[we_new_folder_mod]'), "html" => $_we_new_folder_mod, "space" => 200),
 				array("headline" => g_l('prefs', '[db_connect]'), "html" => $_db_connect->getHtml(), "space" => 200, "noline" => 1),
 				array("headline" => g_l('prefs', '[db_set_charset]'), "html" => $html_db_charset_information . $_db_set_charset->getHtml() . $html_db_charset_warning, "space" => 200),
