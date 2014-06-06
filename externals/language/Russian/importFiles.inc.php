@@ -11,6 +11,11 @@ $l_importFiles=array(
 	'image_options_close'=>'Скрыть функции графики',
 	'image_options_open'=>'Показывать функции графики',
 	'import_expl'=>'Нажатием на кнопку, находящуюся рядом с окном ввода, можно выбрать файл на жестком диске. После выбора появляется новое окно ввода, в котором можно выбрать следующий файл. Примите во внимание то, что в связи с ограничениями PHP максимальный размер файла составляет %s.',
+	'import_expl_js'=>'The new File Upload (beta):<br/><br/>
+
+Click on "Browse" to select files from your harddrive or drag and drop them to the field marked as drop-field. You can iterate this as long as you want. By Clicking the button "Reset" you can clean the file list. Click on "Next", to start the import. After the upload more files can be added or leave the File Upload by cklicking on "Close".',
+	'import_expl_js_limit'=>'Please note that there is a maximum filesize of  %s. The maximum filesize can now be set in the preferences.',
+	'import_expl_js_no_limit'=>'Please note that there is no maximum filesize anymore (but you can set one in the preferences)!',
 	'import_expl_jupload'=>'With the click on the button you can select more then one file from your harddrive. Alternatively the files can be selected per `Drag and Drop` from the file manager.  Please note that the maximum filesize of  %s is not to be exceeded because of restrictions by PHP!<br/><br/>Click on "Next", to start the import.',
 	'import_file'=>'Импорт файла %s',
 	'import_metadata'=>'Import meta data from file',

@@ -11,6 +11,11 @@ $l_importFiles=array(
 	'image_options_close'=>'Verberg afbeeldings functies',
 	'image_options_open'=>'Toon afbeeldings functies',
 	'import_expl'=>'Klik op de button naast het invoer veld om een bestand te selecteren vanaf uw harde schijf. Na de selectie verschijnt er een nieuw invoer veld en kunt u een nieuw bestand selecteren. Let er wel op dat de maximale bestandsgrootte van %s niet overschreden wordt vanwege restricties binnen PHP!<br/><br/>Klik op "Volgende", om te beginnen met importeren.',
+	'import_expl_js'=>'The new File Upload (beta):<br/><br/>
+
+Click on "Browse" to select files from your harddrive or drag and drop them to the field marked as drop-field. You can iterate this as long as you want. By Clicking the button "Reset" you can clean the file list. Click on "Next", to start the import. After the upload more files can be added or leave the File Upload by cklicking on "Close".',
+	'import_expl_js_limit'=>'Please note that there is a maximum filesize of  %s. The maximum filesize can now be set in the preferences.',
+	'import_expl_js_no_limit'=>'Please note that there is no maximum filesize anymore (but you can set one in the preferences)!',
 	'import_expl_jupload'=>'Met een druk op de knop kunt u meerdere bestanden selecteren vanaf uw harddisk. Daarnaast kunt u de bestanden verslepen vanaf uw desktop. Let er op dat de maximale bestandsgrootte van %s niet overschreden mag worden in verband met restricties binnen PHP!<br/><br/>Klik op "Volgende", om te beginnen met importeren.',
 	'import_file'=>'Bezig met importeren van %s',
 	'import_metadata'=>'Import meta data from file',

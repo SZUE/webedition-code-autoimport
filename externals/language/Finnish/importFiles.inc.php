@@ -11,6 +11,11 @@ $l_importFiles=array(
 	'image_options_close'=>'Piilota kuvatoiminnot',
 	'image_options_open'=>'Näytä kuvatoiminnot',
 	'import_expl'=>'Paina seuraava painiketta syöttökentässä valitaksesi tiedoston kovalevyltäsi. Valinnan jälkeen ilmestyy uusi syöttökenttä ja voit valita uuden tiedoston. Huomaa että tiedoston maksimikokoa %s ei voida ylittää johtuen PHP:n rajoituksesta!<br/><br/>Paina "Seuraava" -painiketta aloittaaksesi tuonnin.',
+	'import_expl_js'=>'The new File Upload (beta):<br/><br/>
+
+Click on "Browse" to select files from your harddrive or drag and drop them to the field marked as drop-field. You can iterate this as long as you want. By Clicking the button "Reset" you can clean the file list. Click on "Next", to start the import. After the upload more files can be added or leave the File Upload by cklicking on "Close".',
+	'import_expl_js_limit'=>'Please note that there is a maximum filesize of  %s. The maximum filesize can now be set in the preferences.',
+	'import_expl_js_no_limit'=>'Please note that there is no maximum filesize anymore (but you can set one in the preferences)!',
 	'import_expl_jupload'=>'Painiketta painamalla voit valita useampia tiedostoja kovalevyltäsi. Vaihtoehtoisesti voit valita tiedostoja `raahaamalla` niitä koneesi tiedostojenhallinnasta.  Huomioi että PHP:n rajoittamaa tiedostojen maksimikokoa %s ei saa ylittää!<br/><br/>Klikkaa "Seuraava", aloittaaksesi tuonnin.',
 	'import_file'=>'Tuodaan tiedostoa %s',
 	'import_metadata'=>'Tuo metatiedot tiedostosta',
