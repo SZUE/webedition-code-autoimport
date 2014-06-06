@@ -61,6 +61,11 @@ $l_buttons_global=array(
 		'value'=>'Selaa',
 		'width'=>100,
 	),
+	'browse_harddisk'=>array(
+		'alt'=>'Browse harddisk',
+		'value'=>'Browse harddisk',
+		'width'=>180,
+	),
 	'btn_add_cat'=>array(
 		'alt'=>'Lisää kategoria',
 	),
@@ -302,6 +307,8 @@ $l_buttons_global=array(
 		'alt'=>'download',
 		'value'=>'Download',
 	),
+	'dragdrop_text'=>'or drop files here',
+	
 	'edit'=>array(
 		'alt'=>'Muokkaa',
 		'value'=>'Muokkaa',

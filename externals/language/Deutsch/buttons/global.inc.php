@@ -61,6 +61,11 @@ $l_buttons_global=array(
 		'value'=>'Durchsuchen',
 		'width'=>100,
 	),
+	'browse_harddisk'=>array(
+		'alt'=>'Festplatte durchsuchen',
+		'value'=>'Festplatte durchsuchen',
+		'width'=>180,
+	),
 	'btn_add_cat'=>array(
 		'alt'=>'Kategorie hinzufügen',
 	),
@@ -302,6 +307,8 @@ $l_buttons_global=array(
 		'alt'=>'herunterladen',
 		'value'=>'Herunterladen',
 	),
+	'dragdrop_text'=>'oder ziehen Sie die Dateien hierher',
+	
 	'edit'=>array(
 		'alt'=>'Bearbeiten',
 		'value'=>'Bearbeiten',
