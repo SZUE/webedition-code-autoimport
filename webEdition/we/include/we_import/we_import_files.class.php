@@ -126,7 +126,7 @@ function we_cmd(){
 			new jsWindow(url,'we_catselector',-1,-1," . we_selector_file::WINDOW_CATSELECTOR_WIDTH . "," . we_selector_file::WINDOW_CATSELECTOR_HEIGHT . ",true,true,true,true);
 		break;
 	}
-}" . 'var we_fileinput = \'<form name="we_upload_form_WEFORMNUM" method="post" action="' . WEBEDITION_DIR . 'we_cmd.php" enctype="multipart/form-data" target="imgimportbuttons">' . str_replace("\n", " ", str_replace("\r", " ", $this->_getHiddens("buttons", $this->step + 1))) . $fileinput . '</form>\';
+}" . 'var we_fileinput = \'<form name="we_upload_form_WEFORMNUM" method="post" action="' . WEBEDITION_DIR . 'we_cmd.php" enctype="multipart/form-data" target="imgimportbuttons">' . str_replace(array("\n","\r"), " ", $this->_getHiddens("buttons", $this->step + 1) . $fileinput) . '</form>\';
 
 function refreshTree() {
 	//FIXME: this won\'t work in current version
