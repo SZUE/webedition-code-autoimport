@@ -4,6 +4,7 @@ $l_importFiles=array(
 	'add_description_nogdlib'=>'De GD Bibliotheek moet geïnstalleerd worden op uw server om de afbeeldings functies goed te laten functioneren.!',
 	'destination_dir'=>'Doel directorie',
 	'do_import'=>'Importing file',
+	'dragdrop_text'=>'... or drop files here!',
 	'emptyDir'=>'De bron directory is leeg!',
 	'error'=>'Er is een fout opgetreden tijdens het importeren!\n\nDe volgende bestanden konden niet geïmporteerd worden:\n%s',
 	'file'=>'Bestand',

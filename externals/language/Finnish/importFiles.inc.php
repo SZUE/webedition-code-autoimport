@@ -4,6 +4,7 @@ $l_importFiles=array(
 	'add_description_nogdlib'=>'GD -kirjasto pitää olla asennettuna palvelimelle, jotta voit käyttää kuvatoimintoja!',
 	'destination_dir'=>'Kohdehakemisto',
 	'do_import'=>'Importing file',
+	'dragdrop_text'=>'... or drop files here!',
 	'emptyDir'=>'Lähdehakemisto on tyhjä!',
 	'error'=>'Virhe tiedoston tuonnissa!\n\nSeuraavia tiedostoja ei voitu tuoda:\n%s',
 	'file'=>'Tiedosto',
