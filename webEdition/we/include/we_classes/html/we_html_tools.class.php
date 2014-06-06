@@ -794,7 +794,7 @@ abstract class we_html_tools{
 
 		if(strpos($width, '%') === false){
 			$width = intval($width);
-			if($width > 10 && !we_base_browserDetect::isIE()){
+			if($width > 10 && (!we_base_browserDetect::isIE() || (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() >= 10))){
 				$width -= 10;
 			}
 		}

@@ -227,7 +227,10 @@ class we_import_wizard extends we_import_wizardBase{
 							if (f.type[i].checked == true) {
 								switch(f.type[i].value) {
 									case 'file_import':
-										top.location.href='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import_files';
+										var xhrTestObj = new XMLHttpRequest(),
+											xhrTest = xhrTestObj && xhrTestObj.upload ? true : false,
+											requirementTest = xhrTest && window.File && window.FileReader && window.FileList && window.Blob;
+										top.location.href='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import_files&jsRequirementsOk=' + (requirementTest ? 1 : 0);
 										break;
 									case 'site_import':
 										top.location.href='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=siteImport';

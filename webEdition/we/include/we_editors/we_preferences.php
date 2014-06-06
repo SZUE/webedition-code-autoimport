@@ -1013,7 +1013,28 @@ function build_dialog($selected_setting = 'ui'){
 				$_settings[] = array('headline' => g_l('prefs', '[sidebar]'), 'html' => $_sidebar_html1->getHtml() . $_sidebar_html2->getHtml(), 'space' => 200);
 			}
 
-			$_settings[] = array('headline' => g_l('prefs', '[use_jupload]'), 'html' => we_html_tools::htmlSelect('newconf[use_jupload]', array(g_l('prefs', '[no]'), g_l('prefs', '[yes]')), 1, get_value('use_jupload'), false), 'space' => 200);
+// FILE UPLOAD
+
+$_fileuploader_use_jupload = we_html_tools::htmlSelect('newconf[use_jupload]', array(g_l('prefs', '[no]'), g_l('prefs', '[yes]')), 1, get_value('use_jupload'), false, array("onchange" => "document.getElementById('file_upload_options').style.display=(this.options[this.selectedIndex].value=='1'?'none':'block');"));
+//TODO: make lang entries for new prefs
+$_fileuploader_use_legacy = we_html_forms::checkbox(1, get_value('FILE_UPLOAD_USE_LEGACY'), 'newconf[FILE_UPLOADER_USE_LEGACY]', 'bisherigen Uploader nutzen (deprecated)', false, 'defaultfont', '');
+$_fileuploader_max_size = we_html_tools::htmlTextInput('newconf[FILE_UPLOAD_MAX_SIZE]', 8, get_value('FILE_UPLOADER_MAX_UPLOAD_SIZE'), 255, "", 'text', 150);
+$_fileuploader_max_size_chooser = we_html_tools::htmlSelect('tmp_file_upload_max_size', array('' => '', 1 => 1, 2 => 2, 4 => 4, 8 => 8, 16 => 16, 32 => 32, 64 => 64, 128 => 128), 1, '', false, array("onchange" => "document.forms[0].elements['newconf[FILE_UPLOAD_MAX_SIZE]'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"), "value", 100, "defaultfont");
+
+$_fileuploader_html1 = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 2, 1);
+$_fileuploader_html1->setCol(0, 0, array('colspan' => 3, 'height' => 10), g_l('prefs', '[use_jupload]'));
+$_fileuploader_html1->setCol(1, 0, null, $_fileuploader_use_jupload);
+
+$_fileuploader_html2 = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0, 'id' => 'file_upload_options', 'style' => 'display: ' . (get_value('use_jupload') ? 'none' : 'block')), 5, 3);
+$_fileuploader_html2->setCol(0, 0, array('colspan' => 3, 'height' => 25), '');
+$_fileuploader_html2->setCol(1, 0, array('colspan' => 3, 'height' => 10), $_fileuploader_use_legacy);
+$_fileuploader_html2->setCol(2, 0, array('colspan' => 3, 'height' => 15), '');
+$_fileuploader_html2->setCol(3, 0, array('colspan' => 3, 'height' => 10), 'Neuer JavaScript File Upload:<br/>maximale FilegrÃ¶ÃŸe in MB');
+$_fileuploader_html2->setCol(4, 0, null, $_fileuploader_max_size);
+$_fileuploader_html2->setCol(4, 1, null, we_html_tools::getPixel(10, 1));
+$_fileuploader_html2->setCol(4, 2, null, $_fileuploader_max_size_chooser);
+
+$_settings[] = array('headline' => 'File Upload', 'html' => $_fileuploader_html1->getHtml() . $_fileuploader_html2->getHtml(), 'space' => 200);
 
 
 			// TREE
