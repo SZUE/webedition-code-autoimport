@@ -48,7 +48,7 @@ class we_import_files{
 	private $partCount = 0;
 
 
-	private $showErrorAtChunkNr = 10; //Trigger an Error at 20th chunk of 100KB to demonstrate error response
+	private $showErrorAtChunkNr = -1; //Trigger an Error at n-th chunk of 100KB to demonstrate error response
 
 	function __construct(){
 		if(isset($_REQUEST['categories'])){
