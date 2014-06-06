@@ -3,7 +3,7 @@ CREATE TABLE ###TBLPREFIX###tblSessions (
   `lockTime` timestamp NULL DEFAULT NULL,
   `lockid` char(23) NOT NULL,
   `touch` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  'sessionName' varchar(15) NOT NULL,
+  `sessionName` varchar(15) NOT NULL,
   `session_data` longblob NOT NULL,
   PRIMARY KEY (`session_id`)
 ) ENGINE=MyISAM;
