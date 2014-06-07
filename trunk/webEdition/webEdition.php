@@ -1437,7 +1437,7 @@ we_main_header::pCSS();
 </html>
 <?php
 flush();
-if(defined("SCHEDULE_TABLE") && (!isset($SEEM_edit_include) || !$SEEM_edit_include)){
+if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && (!isset($SEEM_edit_include) || !$SEEM_edit_include)){
 	session_write_close();
 // trigger scheduler
 	we_schedpro::trigger_schedule();

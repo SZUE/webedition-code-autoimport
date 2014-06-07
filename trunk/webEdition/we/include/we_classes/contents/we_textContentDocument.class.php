@@ -22,7 +22,7 @@
  * @package    webEdition_class
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-abstract class we_textContentDocument extends we_textDocument {
+abstract class we_textContentDocument extends we_textDocument{
 	/* Doc-Type of the document */
 
 	public $DocType = '';
@@ -33,7 +33,7 @@ abstract class we_textContentDocument extends we_textDocument {
 		$this->persistent_slots[] = 'DocType';
 		$this->PublWhenSave = 0;
 		$this->IsTextContentDoc = true;
-		if(defined('SCHEDULE_TABLE')){
+		if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 			array_push($this->persistent_slots, 'FromOk', 'ToOk', 'From', 'To');
 		}
 		array_push($this->EditPageNrs, WE_EDITPAGE_PREVIEW, WE_EDITPAGE_SCHEDULER);
@@ -250,14 +250,17 @@ abstract class we_textContentDocument extends we_textDocument {
 			case we_class::LOAD_REVERT_DB: //we_temporaryDocument::revert gibst nicht mehr siehe #5789
 				$this->we_load(we_class::LOAD_TEMP_DB);
 				break;
-			case we_class::LOAD_SCHEDULE_DB :
-				$sessDat = f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . ' AND ClassName="' . $this->ClassName . '" AND Was=' . we_schedpro::SCHEDULE_FROM, 'SerializedData', $this->DB_WE);
-				if($sessDat &&
-					$this->i_initSerializedDat(unserialize(substr_compare($sessDat, 'a:', 0, 2) == 0 ? $sessDat : gzuncompress($sessDat)))){
-					$this->i_getPersistentSlotsFromDB('Path,Text,Filename,Extension,ParentID,Published,ModDate,CreatorID,ModifierID,Owners,RestrictOwners,WebUserID');
-					$this->OldPath = $this->Path;
-					break;
-				} // take tmp db, when doc not in schedule db
+			case we_class::LOAD_SCHEDULE_DB:
+				if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
+					$sessDat = f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . ' AND ClassName="' . $this->ClassName . '" AND Was=' . we_schedpro::SCHEDULE_FROM, 'SerializedData', $this->DB_WE);
+					if($sessDat &&
+						$this->i_initSerializedDat(unserialize(substr_compare($sessDat, 'a:', 0, 2) == 0 ? $sessDat : gzuncompress($sessDat)))){
+						$this->i_getPersistentSlotsFromDB('Path,Text,Filename,Extension,ParentID,Published,ModDate,CreatorID,ModifierID,Owners,RestrictOwners,WebUserID');
+						$this->OldPath = $this->Path;
+
+						break;
+					}// take tmp db, when doc not in schedule db
+				}
 				$this->we_load(we_class::LOAD_TEMP_DB);
 
 				break;

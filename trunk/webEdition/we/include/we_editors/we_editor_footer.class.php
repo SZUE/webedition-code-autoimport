@@ -244,7 +244,7 @@ abstract class we_editor_footer{
 		} else if($showPubl){
 			$_ctrlElem = getControlElement('button', 'publish');
 			if(!$_ctrlElem || !$_ctrlElem['hide']){
-				$text = defined('SCHEDULE_TABLE') && we_schedpro::saveInScheduler($GLOBALS['we_doc']) ? 'saveInScheduler' : 'publish';
+				$text = we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && we_schedpro::saveInScheduler($GLOBALS['we_doc']) ? 'saveInScheduler' : 'publish';
 				$_normalTable->addCol(2);
 				$_normalTable->setColAttributes(0, $_pos, array('id' => 'publish_' . $GLOBALS['we_doc']->ID));
 				$_normalTable->setColContent(0, $_pos++, we_html_button::create_button($text, "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
@@ -346,7 +346,7 @@ abstract class we_editor_footer{
 
 		//	Button scheduler
 		if(in_array(WE_EDITPAGE_SCHEDULER, $GLOBALS['we_doc']->EditPageNrs) && ($GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT || $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PROPERTIES) &&
-			defined("SCHEDULE_TABLE") && permissionhandler::hasPerm("CAN_SEE_SCHEDULER")){
+			we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && permissionhandler::hasPerm("CAN_SEE_SCHEDULER")){
 			$_seeModeTable->addCol(2);
 			$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_html_button::create_button("schedule_button", "javascript:parent.editHeader.we_cmd('switch_edit_page', " . WE_EDITPAGE_SCHEDULER . ", '" . $GLOBALS["we_transaction"] . "');"));
 			$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));

@@ -564,7 +564,7 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 							$we_JavaScript .= "_EditorFrame.getDocumentReference().frames[0].we_setPath('" . $we_doc->Path . "','" . $we_doc->Text . "', '" . $we_doc->ID . "');";
 
 
-							if(!defined('SCHEDULE_TABLE')){
+							if(!we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 								$we_JavaScript .= '_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');';
 							}
 
@@ -610,7 +610,7 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 			} else {
 				$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
 
-				if(defined('SCHEDULE_TABLE')){
+				if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 					we_schedpro::trigger_schedule();
 					$we_JavaScript .= '_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');'; // save/ rename a document
 				}

@@ -211,6 +211,17 @@ abstract class we_autoloader{
 		),
 	);
 
+	public static function loadZend($class_name){
+		//echo 'load zend beacause of'.$class_name;
+		if(!class_exists('Zend_Loader_Autoloader', false)){
+			require_once('Zend/Loader/Autoloader.php');
+			$loader = Zend_Loader_Autoloader::getInstance(); #3815
+			$loader->setFallbackAutoloader(true); #3815
+			$loader->suppressNotFoundWarnings(true);
+			spl_autoload_register('we_autoloader::finalLoad', true);
+		}
+	}
+
 	/**
 	 * default webEdition autoloader
 	 * @param type $class_name
@@ -227,23 +238,27 @@ abstract class we_autoloader{
 				} else {
 					if(file_exists(WE_INCLUDES_PATH . self::$domains[$domain] . '/' . $class_name . '.class.php')){
 						include(WE_INCLUDES_PATH . self::$domains[$domain] . '/' . $class_name . '.class.php');
-						return;
+						return true;
 					}
 				}
 				break;
 			case 'Horde':
 				include(WE_LIB_PATH . 'additional/' . str_replace('_', '/', $class_name) . '.php');
-				break;
-//			return;
+				return true;
+			case 'Zend':
+				self::loadZend($class_name);
+				return false;
 		}
 
 		foreach(self::$classes as $path => $array){
 			if(array_key_exists($class_name, $array)){
 				$path = (substr($path, 0, 1) == '/' ? $_SERVER['DOCUMENT_ROOT'] . $path : WE_INCLUDES_PATH . $path . '/');
 				include($path . $array[$class_name]);
-				break;
+				return true;
 			}
 		}
+		//might be a zend registered class:
+		self::loadZend($class_name);
 		//will try next auto-loader
 	}
 

@@ -196,7 +196,7 @@ function doClick(opt) {
 				mess+="\n-' . g_l('backup', "[" . $mode . "_banner_data]") . '";
 			}
 			') : ('')) . '
-			' . ((defined("SCHEDULE_TABLE")) ? ('
+			' . (we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) ? ('
 			if(document.forms["we_form"].elements["handle_schedule"].checked){
 				document.forms["we_form"].elements["handle_schedule"].checked=false;
 				mess+="\n-' . g_l('backup', "[" . $mode . "_schedule_data]") . '";
@@ -227,7 +227,7 @@ function doClick(opt) {
 
 			' . ((defined("OBJECT_TABLE")) ? ('
 			case 11:
-				' . ((defined("SCHEDULE_TABLE")) ? ('
+				' . (we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) ? ('
 				if(document.forms["we_form"].elements["handle_schedule"].checked){
 					document.forms["we_form"].elements["handle_schedule"].checked=false;
 					mess+="\n-' . g_l('backup', "[" . $mode . "_schedule_data]") . '";
@@ -539,7 +539,7 @@ extra_files_desc=new Array();';
 			40 => defined("MESSAGING_SYSTEM") ? "handle_todo" : '',
 			45 => defined("NEWSLETTER_TABLE") ? "handle_newsletter" : '',
 			50 => defined("BANNER_TABLE") ? "handle_banner" : '',
-			55 => defined("SCHEDULE_TABLE") ? "handle_schedule" : '',
+			55 => we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) ? "handle_schedule" : '',
 			60 => defined("EXPORT_TABLE") ? "handle_export" : '',
 			65 => defined("VOTING_TABLE") ? "handle_voting" : '',
 			70 => defined("SPELLCHECKER") ? "handle_spellchecker" : '',
@@ -813,7 +813,7 @@ self.focus();');
 		if(defined("BANNER_TABLE")){
 			$form_properties[50] = "handle_banner";
 		}
-		if(defined("SCHEDULE_TABLE")){
+		if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 			$form_properties[55] = "handle_schedule";
 		}
 		if(defined("EXPORT_TABLE")){
@@ -1145,7 +1145,7 @@ function doExport() {
 					$table->setCol(0, 3, null, we_html_button::create_button("cancel", "javascript:top.close();"));
 					break;
 				case 3:
-					if(weRequest('bool',"do_import_after_backup")){
+					if(weRequest('bool', "do_import_after_backup")){
 						$body = we_html_button::create_button("next", "javascript:top.body.location='" . WE_INCLUDES_DIR . "we_editors/we_recover_backup.php?pnt=body&step=2';top.busy.location='" . WE_INCLUDES_DIR . "we_editors/we_recover_backup.php?pnt=cmd';top.cmd.location='" . WE_INCLUDES_DIR . "we_editors/we_recover_backup.php?pnt=busy';");
 					} else if(isset($_SESSION['weS']['inbackup']) && $_SESSION['weS']['inbackup']){
 						$body = we_html_button::create_button("next", "javascript:top.opener.weiter();top.close();");
@@ -1298,7 +1298,7 @@ top.busy.location="' . $this->frameset . '?pnt=busy";' .
 					$ret = $we_backup_obj->makeBackup();
 					$temp_filename = $we_backup_obj->saveState($temp_filename);
 
-					$do_import_after_backup = weRequest('bool','do_import_after_backup');
+					$do_import_after_backup = weRequest('bool', 'do_import_after_backup');
 
 					switch($ret){
 						case 1:

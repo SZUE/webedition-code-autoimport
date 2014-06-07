@@ -115,7 +115,7 @@ abstract class we_backup_base{
 
 		$this->table_map['tbluser'] = USER_TABLE;
 
-		if(defined('SCHEDULE_TABLE')){
+		if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 			$this->table_map['tblschedule'] = SCHEDULE_TABLE;
 		}
 
