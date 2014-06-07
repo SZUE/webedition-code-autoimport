@@ -22,6 +22,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+require_once (WE_MODULES_PATH . 'schedule/we_conf_schedule.inc.php');
+
 class we_schedpro{
 
 	const SCHEDULE_FROM = 1; //publish

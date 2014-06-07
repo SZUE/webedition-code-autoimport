@@ -2231,7 +2231,7 @@ function formmailBlockOnOff() {
 				$_settings[] = array('headline' => g_l('prefs', '[login][login]'), 'html' => $_loginWEst_disabler . we_html_element::htmlBr() . g_l('prefs', '[login][windowtypes]') . we_html_element::htmlBr() . $_we_windowtypeselect->getHtml(), 'space' => 200);
 			}
 
-			if(defined('SCHEDULE_TABLE')){
+			if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 				$_Schedtrigger_setting = new we_html_select(array("name" => "newconf[SCHEDULER_TRIGGER]", "class" => "weSelect"));
 				$_Schedtrigger_setting->addOption(SCHEDULER_TRIGGER_PREDOC, g_l('prefs', '[we_scheduler_trigger][preDoc]')); //pre
 				$_Schedtrigger_setting->addOption(SCHEDULER_TRIGGER_POSTDOC, g_l('prefs', '[we_scheduler_trigger][postDoc]')); //post

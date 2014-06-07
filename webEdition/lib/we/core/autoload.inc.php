@@ -36,8 +36,6 @@ require_once(WE_INCLUDES_PATH . 'we_classes/we_autoloader.class.php');
 if(ini_set('include_path', WE_LIB_PATH . PATH_SEPARATOR . WE_APPS_PATH . PATH_SEPARATOR . ini_get('include_path')) === FALSE){
 	t_e('unable to add webEdition to include path! Expect Problems!');
 }
-// include Zend_Autoloader  #3815
-require_once('Zend/Loader/Autoloader.php');
 
 //FIXME: remove after end of support for PHP 5.3
 if(!function_exists('we_stripslashes')){
@@ -74,14 +72,6 @@ $ret = spl_autoload_register('we_autoloader::autoload', false, true);
 if($ret != true){
 	spl_autoload_register('we_autoloader::autoload', true);
 }
-
-
-$loader = Zend_Loader_Autoloader::getInstance(); #3815
-$loader->setFallbackAutoloader(true); #3815
-$loader->suppressNotFoundWarnings(true);
-
-spl_autoload_register('we_autoloader::finalLoad', true);
-
 
 if(!defined('DATETIME_INITIALIZED')){// to prevent additional initialization if set somewhere else, i.e in we_conf.inc.php, this also allows later to make that an settings-item
 	if(!date_default_timezone_set(@date_default_timezone_get())){

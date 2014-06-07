@@ -713,7 +713,7 @@ class we_document extends we_root{
 	// reverse function to saveInSession !!!
 	function we_initSessDat($sessDat){
 		parent::we_initSessDat($sessDat);
-		if(defined('SCHEDULE_TABLE')){
+		if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 			if(
 				($day = weRequest('int', 'we_' . $this->Name . '_From_day')) && ($month = weRequest('int', 'we_' . $this->Name . '_From_month')) && ($year = weRequest('int', 'we_' . $this->Name . '_From_year')) && ($hour = weRequest('int', 'we_' . $this->Name . '_From_hour')) !== false && ($min = weRequest('int', 'we_' . $this->Name . '_From_minute')) !== false){
 				$this->From = mktime($hour, $min, 0, $month, $day, $year);
@@ -1463,7 +1463,7 @@ class we_document extends we_root{
 	}
 
 	function loadSchedule(){
-		if(defined('SCHEDULE_TABLE')){
+		if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 			$this->DB_WE->query('SELECT * FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . ' AND ClassName="' . $this->DB_WE->escape($this->ClassName) . '"');
 			if($this->DB_WE->num_rows()){
 				$this->schedArr = array();

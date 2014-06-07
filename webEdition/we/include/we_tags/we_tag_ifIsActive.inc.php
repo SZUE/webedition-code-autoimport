@@ -40,7 +40,7 @@ function we_tag_ifIsActive($attribs){
 		case 'shop':
 			return defined('SHOP_TABLE');
 		case 'scheduler':
-			return defined('SCHEDULE_TABLE');
+			return we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER);
 		case 'voting':
 			return defined('VOTING_TABLE');
 		case 'workflow':

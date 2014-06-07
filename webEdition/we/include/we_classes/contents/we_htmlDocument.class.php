@@ -55,7 +55,7 @@ class we_htmlDocument extends we_textContentDocument{
 	}
 
 	function i_publInScheduleTable(){
-		return (defined('SCHEDULE_TABLE') ?
+		return (we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) ?
 				we_schedpro::publInScheduleTable($this, $this->DB_WE) :
 				false);
 	}

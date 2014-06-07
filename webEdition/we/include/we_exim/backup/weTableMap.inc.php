@@ -131,7 +131,7 @@ if(defined('BANNER_TABLE')){
 	);
 }
 
-if(defined('SCHEDULE_TABLE')){
+if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 	$tableMap['schedule'] = array(
 		strtolower(stripTblPrefix(SCHEDULE_TABLE)) => SCHEDULE_TABLE
 	);
