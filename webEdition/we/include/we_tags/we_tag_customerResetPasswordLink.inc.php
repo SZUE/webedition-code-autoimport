@@ -30,7 +30,7 @@ function we_tag_customerResetPasswordLink(array $attribs, $content){
 	$id = weTag_getAttribute('id', $attribs);
 	$host = weTag_getAttribute('host', $attribs, getServerUrl());
 
-	$attribs["href"] = $host . we_tag('a', array('hrefonly' => true, 'id' => $id)) . '?user=' . $_SESSION['webuser']['ID'] . '&token=' . $_SESSION['webuser']['token'];
+	$attribs["href"] = $host . we_tag('a', array('hrefonly' => true, 'id' => $id)) . '?user=' . $_SESSION['webuser']['ID'] . '&token=' . $_SESSION['webuser']['WE_token'];
 
 	return (weTag_getAttribute("plain", $attribs, false, true) ?
 			$attribs["href"] :
