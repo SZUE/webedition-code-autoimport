@@ -81,7 +81,7 @@ if(defined('CUSTOMER_TABLE')){
 
 if(defined('SHOP_TABLE')){
 	$tableMap['shop'] = array(
-		strtolower(stripTblPrefix(ANZEIGE_PREFS_TABLE)) => ANZEIGE_PREFS_TABLE,
+		strtolower(stripTblPrefix(WE_SHOP_PREFS_TABLE)) => WE_SHOP_PREFS_TABLE,
 		strtolower(stripTblPrefix(SHOP_TABLE)) => SHOP_TABLE,
 		strtolower(stripTblPrefix(WE_SHOP_VAT_TABLE)) => WE_SHOP_VAT_TABLE
 	);
@@ -137,7 +137,7 @@ if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 	);
 }
 
-if(defined('EXPORT_TABLE')){
+if(we_base_moduleInfo::isActive(we_base_moduleInfo::EXPORT)){
 	$tableMap['export'] = array(
 		strtolower(stripTblPrefix(EXPORT_TABLE)) => EXPORT_TABLE
 	);

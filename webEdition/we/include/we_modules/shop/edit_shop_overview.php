@@ -29,7 +29,7 @@ echo we_html_tools::getHtmlTop() .
  STYLESHEET;
 
 /// config
-$DB_WE->query('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . " WHERE strDateiname='shop_pref'");
+$DB_WE->query('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . " WHERE strDateiname='shop_pref'");
 $DB_WE->next_record();
 $feldnamen = explode("|", $DB_WE->f("strFelder"));
 

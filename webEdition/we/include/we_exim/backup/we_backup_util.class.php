@@ -90,7 +90,7 @@ abstract class we_backup_util{
 				return g_l('backup', '[' . $prefix . '_indexes]');
 			case DOC_TYPES_TABLE:
 				return g_l('backup', "[" . $prefix . '_doctypes]');
-			case (defined('USER_TABLE') ? USER_TABLE : 'USER_TABLE'):
+			case USER_TABLE:
 				return g_l('backup', "[" . $prefix . '_user_data]');
 			case (defined('CUSTOMER_TABLE') ? CUSTOMER_TABLE : 'CUSTOMER_TABLE'):
 				return g_l('backup', "[" . $prefix . '_customer_data]');

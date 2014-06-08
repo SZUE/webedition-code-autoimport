@@ -48,7 +48,7 @@ if(!defined('CONF_SAVED_VERSION') || (defined('CONF_SAVED_VERSION') && (intval(W
 	//resave config file(s)
 	we_base_preferences::check_global_config(true);
 }
-we_util_File::checkAndMakeFolder($_SERVER['DOCUMENT_ROOT'] . WE_THUMBNAIL_DIRECTORY);
+we_base_file::checkAndMakeFolder($_SERVER['DOCUMENT_ROOT'] . WE_THUMBNAIL_DIRECTORY);
 
 define('LOGIN_DENIED', 4);
 define('LOGIN_OK', 2);
@@ -142,6 +142,14 @@ function showMessage(message, prio, win){
 	}
 }') .
 	'</head>';
+}
+function cleanWEZendCache(){
+	if(file_exists(ZENDCACHE_PATH . 'clean')){
+		$cache = getWEZendCache();
+		$cache->clean(Zend_Cache::CLEANING_MODE_ALL);
+//remove file
+		unlink(ZENDCACHE_PATH . 'clean');
+	}
 }
 
 /* * ***************************************************************************

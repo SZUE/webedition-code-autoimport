@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once (WE_MODULES_PATH . 'schedule/we_conf_schedule.inc.php');
+we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER);
 
 class we_schedpro{
 

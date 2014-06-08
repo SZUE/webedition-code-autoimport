@@ -60,7 +60,6 @@ class weTagData_multiSelectorAttribute extends weTagDataAttribute{
 	 */
 	function getCodeForTagWizard(){
 		$we_cmd = 'openSelector';
-
 		switch($this->Table){
 			case USER_TABLE :
 				$we_cmd = 'browse_users';

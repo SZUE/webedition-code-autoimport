@@ -82,7 +82,7 @@ function we_tag_saferpay($attribs){
 			return;
 		}
 		/*		 * ***** get the currency ******* */
-		$feldnamen = explode("|", f("SELECT strFelder from " . ANZEIGE_PREFS_TABLE . " where strDateiname = 'shop_pref'"));
+		$feldnamen = explode("|", f("SELECT strFelder FROM " . WE_SHOP_PREFS_TABLE . " WHERE strDateiname='shop_pref'"));
 		if(isset($feldnamen[0])){ // determine the currency
 			if($feldnamen[0] == "$" || $feldnamen[0] == "USD"){
 				$currency = "USD";
@@ -103,8 +103,8 @@ function we_tag_saferpay($attribs){
 		/*		 * ***** get the currency ******* */
 
 		/*		 * **** get the preferences ***** */
-		$formField = explode("|", f("SELECT strFelder from " . ANZEIGE_PREFS_TABLE . " where strDateiname = 'payment_details'", 'strFelder', $GLOBALS['DB_WE']));
-		if($languagecode == ''){
+		$formField = explode("|", f("SELECT strFelder FROM " . WE_SHOP_PREFS_TABLE . " WHERE strDateiname='payment_details'"));
+		if(!$languagecode){
 			if(isset($formField[8])){ // determine the language
 				$langID = $formField[8];
 			}

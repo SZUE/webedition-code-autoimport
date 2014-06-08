@@ -36,7 +36,7 @@ while($DB_WE->next_record()){
 }
 // print $yearTrans;
 /// config
-$feldnamen = explode('|', f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . " WHERE strDateiname='shop_pref'"));
+$feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . " WHERE strDateiname='shop_pref'"));
 for($i = 0; $i <= 3; $i++){
 	$feldnamen[$i] = isset($feldnamen[$i]) ? $feldnamen[$i] : '';
 }

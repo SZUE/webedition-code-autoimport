@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 /* the parent class of storagable webEdition classes */
-
+we_base_moduleInfo::isActive(we_base_moduleInfo::EXPORT);
 class we_export_view{
 
 	var $db;
@@ -503,8 +503,9 @@ class we_export_view{
 					}
 
 					$newone = true;
-					if($this->export->ID)
+					if($this->export->ID){
 						$newone = false;
+					}
 
 					$this->export->save();
 

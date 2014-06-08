@@ -840,7 +840,9 @@ function runAtWin(){
 }
 
 function weMemDebug(){
-	print("Mem usage " . round(((memory_get_usage() / 1024) / 1024), 3) . ' MiB');
+	echo  "Mem usage " . round(((memory_get_usage() / 1024) / 1024), 3) . " MiB\n".
+	(microtime(true)-floatval($_SERVER['REQUEST_TIME_FLOAT'])).' '
+	;
 }
 
 function weGetCookieVariable($name){
@@ -1481,15 +1483,6 @@ function we_cmd_dec($no, $default = ''){
 
 function getWEZendCache($lifetime = 1800){
 	return Zend_Cache::factory('Core', 'File', array('lifetime' => $lifetime, 'automatic_serialization' => true), array('cache_dir' => ZENDCACHE_PATH));
-}
-
-function cleanWEZendCache(){
-	if(file_exists(ZENDCACHE_PATH . 'clean')){
-		$cache = getWEZendCache();
-		$cache->clean(Zend_Cache::CLEANING_MODE_ALL);
-//remove file
-		unlink(ZENDCACHE_PATH . 'clean');
-	}
 }
 
 function we_log_loginFailed($table, $user){

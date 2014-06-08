@@ -180,7 +180,7 @@ class altArchive_Tar {
     // ----- Look for a local copy to delete
     if ($this->_temp_tarname != '') {
       //@drupal_unlink($this->_temp_tarname);
-	  @we_util_File::delete($this->_temp_tarname);
+	  we_base_file::delete($this->_temp_tarname);
     }
 //        $this->_PEAR();
   }
@@ -762,7 +762,7 @@ class altArchive_Tar {
     // Note that it might be interesting to keep the url for a time : ToDo
     if ($this->_temp_tarname != '') {
       //@drupal_unlink($this->_temp_tarname);
-	  @we_util_File::delete($this->_temp_tarname);
+	  we_base_file::delete($this->_temp_tarname);
       $this->_temp_tarname = '';
     }
 
@@ -778,7 +778,7 @@ class altArchive_Tar {
     if ($this->_temp_tarname != '') {
       // ----- Remove the local copy but not the remote tarname
       //@drupal_unlink($this->_temp_tarname);
-	  @we_util_File::delete($this->_temp_tarname);
+	  we_base_file::delete($this->_temp_tarname);
       $this->_temp_tarname = '';
     }
     else {
@@ -1635,7 +1635,7 @@ class altArchive_Tar {
               // Drupal integration.
               // Changed the code to use drupal_mkdir() instead of mkdir().
 			  //if (!@drupal_mkdir($v_header['filename'], 0777)) {
-			  if (!@we_util_File::delete($v_header['filename'], 0777)) {
+			  if (!we_base_file::delete($v_header['filename'], 0777)) {
                 $this->_error('Unable to create directory {'
 					              . $v_header['filename'] . '}');
                 return false;
@@ -1645,7 +1645,7 @@ class altArchive_Tar {
           elseif ($v_header['typeflag'] == "2") {
             if (@file_exists($v_header['filename'])) {
               //@drupal_unlink($v_header['filename']);
-			  @we_util_File::delete($v_header['filename']);
+			  we_base_file::delete($v_header['filename']);
             }
             if (!@symlink($v_header['link'], $v_header['filename'])) {
               $this->_error('Unable to extract symbolic link {'
@@ -1791,7 +1791,7 @@ class altArchive_Tar {
       }
 
       //if (!@drupal_unlink($this->_tarname . ".tmp")) {
-	  if (!@we_util_File::delete($this->_tarname . ".tmp")) {
+	  if (!we_base_file::delete($this->_tarname . ".tmp")) {
         $this->_error('Error while deleting temporary file \''
 				              . $this->_tarname . '.tmp\'');
       }

@@ -95,15 +95,6 @@ class we_util_Sys_Webedition extends we_util_Sys{
 		return array();
 	}
 
-	/**
-	 * builds a list of all activated modules (including free and formerly non-free modules) and returns it to the caller
-	 *
-	 * @return array a list of all active webEdition modules or (bool)false, if an error occured
-	 */
-	public static function modulesActive(){
-		// not implemented yet
-		return array();
-	}
 
 	/**
 	 * builds a list of all available modules and returns it to the caller

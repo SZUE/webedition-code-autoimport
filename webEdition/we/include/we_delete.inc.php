@@ -140,7 +140,7 @@ if(!$wfchk){
 		if($retVal == 1){ // only if no error occurs
 			foreach($selectedItems as $selectedItem){
 
-				if($table == FILE_TABLE && defined('USER_TABLE')){
+				if($table == FILE_TABLE){
 					$users = we_users_util::getUsersForDocWorkspace($GLOBALS['DB_WE'], $selectedItem);
 					if(!empty($users)){
 						$retVal = -2;
@@ -163,7 +163,7 @@ if(!$wfchk){
 					}
 				}
 
-				if($table == TEMPLATES_TABLE && defined('USER_TABLE')){
+				if($table == TEMPLATES_TABLE){
 					$users = we_users_util::getUsersForDocWorkspace($GLOBALS['DB_WE'], $selectedItem, "workSpaceTmp");
 					if(!empty($users)){
 						$retVal = -2;
@@ -186,7 +186,7 @@ if(!$wfchk){
 					}
 				}
 
-				if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE && defined('USER_TABLE')){
+				if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE){
 
 					$users = we_users_util::getUsersForDocWorkspace($GLOBALS['DB_WE'], $selectedItem, "workSpaceObj");
 					if(!empty($users)){

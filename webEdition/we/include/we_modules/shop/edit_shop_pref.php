@@ -50,13 +50,13 @@ foreach($customerTableFields as $tblField){
 if($_REQUEST["format"]){ //	save data in arrays ..
 	$_REQUEST['classID'] = isset($_REQUEST['classID']) ? trim($_REQUEST['classID']) : '';
 
-	$DB_WE->query('REPLACE ' . ANZEIGE_PREFS_TABLE . ' SET strDateiname = "shop_pref",strFelder= "' . $DB_WE->escape($_REQUEST["waehr"]) . '|' . $DB_WE->escape($_REQUEST["mwst"]) . '|' . $DB_WE->escape($_REQUEST["format"]) . '|' . $DB_WE->escape($_REQUEST["classID"]) . '|' . $DB_WE->escape($_REQUEST["pag"]) . '"');
+	$DB_WE->query('REPLACE ' . WE_SHOP_PREFS_TABLE . ' SET strDateiname = "shop_pref",strFelder= "' . $DB_WE->escape($_REQUEST["waehr"]) . '|' . $DB_WE->escape($_REQUEST["mwst"]) . '|' . $DB_WE->escape($_REQUEST["format"]) . '|' . $DB_WE->escape($_REQUEST["classID"]) . '|' . $DB_WE->escape($_REQUEST["pag"]) . '"');
 
 	$fields['customerFields'] = weRequest('raw', 'orderfields', array());
 	$fields['orderCustomerFields'] = weRequest('raw', 'ordercustomerfields', array());
 
 	// check if field exists
-	$DB_WE->query('REPLACE ' . ANZEIGE_PREFS_TABLE . ' SET strDateiname="edit_shop_properties", strFelder="' . $DB_WE->escape(serialize($fields)) . '"');
+	$DB_WE->query('REPLACE ' . WE_SHOP_PREFS_TABLE . ' SET strDateiname="edit_shop_properties", strFelder="' . $DB_WE->escape(serialize($fields)) . '"');
 
 	$CLFields['stateField'] = weRequest('raw', 'stateField', '-');
 	$CLFields['stateFieldIsISO'] = weRequest('string', 'stateFieldIsISO', 0);
@@ -64,7 +64,7 @@ if($_REQUEST["format"]){ //	save data in arrays ..
 	$CLFields['languageFieldIsISO'] = weRequest('raw', 'languageFieldIsISO', 0);
 
 	// check if field exists
-	$DB_WE->query('REPLACE ' . ANZEIGE_PREFS_TABLE . ' SET strDateiname ="shop_CountryLanguage", strFelder = "' . $DB_WE->escape(serialize($CLFields)) . '"');
+	$DB_WE->query('REPLACE ' . WE_SHOP_PREFS_TABLE . ' SET strDateiname ="shop_CountryLanguage", strFelder = "' . $DB_WE->escape(serialize($CLFields)) . '"');
 	// Update Country Field in weShopVatRule
 	$weShopVatRule = we_shop_vatRule::getShopVatRule();
 	$weShopVatRule->stateField = $CLFields['stateField'];
@@ -80,7 +80,7 @@ if($_REQUEST["format"]){ //	save data in arrays ..
 	echo we_html_element::jsElement('self.close();');
 	exit;
 } else {
-	$strFelder = f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLanguage"', 'strFelder', $DB_WE);
+	$strFelder = f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLanguage"', 'strFelder', $DB_WE);
 	if($strFelder !== ''){
 		$CLFields = unserialize($strFelder);
 	} else {
@@ -101,7 +101,7 @@ $_htmlTable = new we_html_table(array(
 
 
 //	NumberFormat - currency and taxes
-$feldnamen = explode('|', f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname = "shop_pref"', 'strFelder', $DB_WE));
+$feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname = "shop_pref"', 'strFelder', $DB_WE));
 
 $fe = (isset($feldnamen[3]) ? explode(',', $feldnamen[3]) : array());
 
@@ -164,7 +164,7 @@ foreach($extraIgnore as $cur){
 
 
 //	get the already selected fields ...
-$_entry = f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="edit_shop_properties"', 'strFelder', $DB_WE);
+$_entry = f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="edit_shop_properties"', 'strFelder', $DB_WE);
 
 // ...
 if(($fields = @unserialize($_entry))){

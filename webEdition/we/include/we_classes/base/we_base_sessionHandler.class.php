@@ -12,7 +12,7 @@ class we_base_sessionHandler{
 	function __construct(){
 		if(SYSTEM_WE_SESSION && !$this->id){
 			ini_set('session.gc_probability', 1);
-			ini_set('session.gc_divisor', 1000);
+			ini_set('session.gc_divisor', 100);
 			session_set_save_handler(array($this, 'open'), array($this, 'close'), array($this, 'read'), array($this, 'write'), array($this, 'destroy'), array($this, 'gc'));
 			$this->DB = new DB_WE();
 			$this->execTime = get_cfg_var('max_execution_time');
