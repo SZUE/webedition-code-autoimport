@@ -75,7 +75,7 @@ class we_shop_view{
 		}
 		// print $yearTrans;
 		/// config
-		$feldnamen = explode('|', f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="shop_pref"', 'strFelder', $this->db));
+		$feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_pref"', 'strFelder', $this->db));
 		for($i = 0; $i <= 3; $i++){
 			$feldnamen[$i] = isset($feldnamen[$i]) ? $feldnamen[$i] : '';
 		}
@@ -309,7 +309,7 @@ function we_cmd() {
 		$weShopStatusMails = we_shop_statusMails::getShopStatusMails();
 
 		// Get Country and Lanfield Data
-		$strFelder = f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLanguage"', 'strFelder', $this->db);
+		$strFelder = f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLanguage"', 'strFelder', $this->db);
 		if($strFelder !== ''){
 			$CLFields = unserialize($strFelder);
 		} else {
@@ -320,7 +320,7 @@ function we_cmd() {
 		}
 		$this->CLFields = $CLFields; //imi
 		// config
-		$feldnamen = explode('|', f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname = "shop_pref"', 'strFelder', $this->db));
+		$feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname = "shop_pref"', 'strFelder', $this->db));
 
 		$waehr = '&nbsp;' . oldHtmlspecialchars($feldnamen[0]);
 		$dbPreisname = 'price';
@@ -363,7 +363,7 @@ function we_cmd() {
 		$_REQUEST['cid'] = f('SELECT IntCustomerID FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . $bid, '', $this->db);
 
 
-		if(($fields = @unserialize(f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="edit_shop_properties"', '', $this->db)))){
+		if(($fields = @unserialize(f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="edit_shop_properties"', '', $this->db)))){
 			// we have an array with following syntax:
 			// array ( 'customerFields' => array('fieldname ...',...)
 			//         'orderCustomerFields' => array('fieldname', ...) )

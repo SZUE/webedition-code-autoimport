@@ -261,7 +261,7 @@ abstract class we_customer_EI{
 					$unique = self::getUniqueId();
 					$path = TEMP_PATH . '/' . $unique;
 
-					we_util_File::createLocalFolder($path);
+					we_base_file::createLocalFolder($path);
 					$path.='/';
 
 					$fcount = 0;

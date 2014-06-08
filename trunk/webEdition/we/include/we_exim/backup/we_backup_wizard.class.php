@@ -540,7 +540,7 @@ extra_files_desc=new Array();';
 			45 => defined("NEWSLETTER_TABLE") ? "handle_newsletter" : '',
 			50 => defined("BANNER_TABLE") ? "handle_banner" : '',
 			55 => we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) ? "handle_schedule" : '',
-			60 => defined("EXPORT_TABLE") ? "handle_export" : '',
+			60 => we_base_moduleInfo::isActive(we_base_moduleInfo::EXPORT) ? "handle_export" : '',
 			65 => defined("VOTING_TABLE") ? "handle_voting" : '',
 			70 => defined("SPELLCHECKER") ? "handle_spellchecker" : '',
 			75 => defined("GLOSSARY_TABLE") ? "handle_glossary" : '',
@@ -816,7 +816,7 @@ self.focus();');
 		if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 			$form_properties[55] = "handle_schedule";
 		}
-		if(defined("EXPORT_TABLE")){
+		if(we_base_moduleInfo::isActive(we_base_moduleInfo::EXPORT)){
 			$form_properties[60] = "handle_export";
 		}
 		if(defined("VOTING_TABLE")){
@@ -1049,7 +1049,7 @@ function startStep(){
 		if(isset($_SESSION['weS']['weBackupVars']['backup_file']) && isset($_SESSION['weS']['weBackupVars']['options']['export2server']) &&
 			is_file($_SESSION['weS']['weBackupVars']['backup_file']) && $_SESSION['weS']['weBackupVars']['options']['export2server'] != 1){
 
-			we_util_File::insertIntoCleanUp($_SESSION['weS']['weBackupVars']['backup_file'], time());
+			we_base_file::insertIntoCleanUp($_SESSION['weS']['weBackupVars']['backup_file'], time());
 		}
 
 		if(isset($_SESSION['weS']['weBackupVars'])){
@@ -1393,7 +1393,7 @@ top.busy.location="' . $this->frameset . '?pnt=busy";' .
 										we_message_reporting::getShowMessageCall(sprintf(g_l('backup', "[cannot_save_tmpfile]"), BACKUP_DIR), we_message_reporting::WE_MESSAGE_ERROR));
 								return '';
 							}
-							we_util_File::insertIntoCleanUp($we_backup_obj->filename, time());
+							we_base_file::insertIntoCleanUp($we_backup_obj->filename, time());
 							$ok = true;
 						} else {
 							$we_alerttext = sprintf(g_l('alert', "[we_backup_import_upload_err]"), ini_get("upload_max_filesize"));

@@ -134,7 +134,7 @@ abstract class we_backup_base{
 
 		if(defined('SHOP_TABLE')){
 			$this->table_map = array_merge($this->table_map, array(
-				'tblanzeigeprefs' => ANZEIGE_PREFS_TABLE,
+				'tblanzeigeprefs' => WE_SHOP_PREFS_TABLE,
 				'tblorders' => SHOP_TABLE));
 		}
 
@@ -184,7 +184,7 @@ abstract class we_backup_base{
 				)
 			);
 		}
-		if(defined('EXPORT_TABLE')){
+		if(we_base_moduleInfo::isActive(we_base_moduleInfo::EXPORT)){
 			$this->table_map = array_merge($this->table_map, array(
 				'tblexport' => EXPORT_TABLE
 				)
@@ -245,7 +245,7 @@ abstract class we_backup_base{
 				strtolower(USER_TABLE) => g_l('backup', '[import_user_data]'),
 				defined('CUSTOMER_TABLE') ? strtolower(CUSTOMER_TABLE) : 'CUSTOMER_TABLE' => g_l('backup', '[import_customers_data]'),
 				defined('SHOP_TABLE') ? strtolower(SHOP_TABLE) : 'SHOP_TABLE' => g_l('backup', '[import_shop_data]'),
-				defined('ANZEIGE_PREFS_TABLE') ? strtolower(ANZEIGE_PREFS_TABLE) : 'ANZEIGE_PREFS_TABLE' => g_l('backup', '[import_prefs]'),
+				defined('WE_SHOP_PREFS_TABLE') ? strtolower(WE_SHOP_PREFS_TABLE) : 'WE_SHOP_PREFS_TABLE' => g_l('backup', '[import_prefs]'),
 				strtolower(TEMPLATES_TABLE) => g_l('backup', '[import_templates]'),
 				strtolower(TEMPORARY_DOC_TABLE) => g_l('backup', '[import][temporary_data]'),
 				strtolower(BACKUP_TABLE) => g_l('backup', '[external_backup]'),
@@ -259,7 +259,7 @@ abstract class we_backup_base{
 				strtolower(USER_TABLE) => g_l('backup', '[export_user_data]'),
 				defined('CUSTOMER_TABLE') ? strtolower(CUSTOMER_TABLE) : 'CUSTOMER_TABLE' => g_l('backup', '[export_customers_data]'),
 				defined('SHOP_TABLE') ? strtolower(SHOP_TABLE) : 'SHOP_TABLE' => g_l('backup', '[export_shop_data]'),
-				defined('ANZEIGE_PREFS_TABLE') ? strtolower(ANZEIGE_PREFS_TABLE) : 'ANZEIGE_PREFS_TABLE' => g_l('backup', '[export_prefs]'),
+				defined('WE_SHOP_PREFS_TABLE') ? strtolower(WE_SHOP_PREFS_TABLE) : 'WE_SHOP_PREFS_TABLE' => g_l('backup', '[export_prefs]'),
 				strtolower(TEMPLATES_TABLE) => g_l('backup', '[export_templates]'),
 				strtolower(TEMPORARY_DOC_TABLE) => g_l('backup', '[export][temporary_data]'),
 				strtolower(BACKUP_TABLE) => g_l('backup', '[external_backup]'),

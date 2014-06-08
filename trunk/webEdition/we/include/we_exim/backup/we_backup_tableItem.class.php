@@ -84,7 +84,7 @@ class we_backup_tableItem extends weModelBase{
 			$tables[OBJECT_FILES_TABLE] = array('Category');
 		}
 		if(defined("SHOP_TABLE")){
-			$tables[ANZEIGE_PREFS_TABLE] = array('strDateiname', 'strFelder');
+			$tables[WE_SHOP_PREFS_TABLE] = array('strDateiname', 'strFelder');
 			$tables[SHOP_TABLE] = array('strSerial', 'strSerialOrder');
 		}
 		return (array_key_exists($this->table, $tables) && in_array($was, $tables[$this->table]));

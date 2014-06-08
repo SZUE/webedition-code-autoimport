@@ -2,7 +2,21 @@
 
 abstract class we_base_moduleInfo{
 
+	const BANNER = 'banner';
+	const CUSTOMER = 'customer';
+	const EDITOR = 'editor';
+	const EXPORT = 'export';
+	const GLOSSARY = 'glossary';
+	const MESSAGING = 'messaging';
+	const NAVIGATION = 'navigation';
+	const NEWSLETTER = 'newsletter';
+	const OBJECT = 'object';
 	const SCHEDULER = 'schedule';
+	const SHOP = 'shop';
+	const SPELLCHECKER = 'spellchecker';
+	const USERS = 'users';
+	const VOTING = 'voting';
+	const WORKFLOW = 'workflow';
 
 	private static $we_available_modules = '';
 

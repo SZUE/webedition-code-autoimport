@@ -56,7 +56,7 @@ if(!isset($GLOBALS['we'])){
 	$GLOBALS['we'] = array();
 }
 
-if(ini_get('session.gc_probability') != '0' /*&& !@opendir(session_save_path())*/){
+if(ini_get('session.gc_probability') != '0' /* && !@opendir(session_save_path()) */){
 //	$GLOBALS['FOUND_SESSION_PROBLEM'] = ini_get('session.gc_probability');
 	ini_set('session.gc_probability', '0');
 	//won't work with apps like phpmyadmin session_save_path($_SERVER['DOCUMENT_ROOT'] . TEMP_DIR);
@@ -84,8 +84,19 @@ if(empty($GLOBALS['_we_active_integrated_modules']) || !in_array('users', $GLOBA
 //$GLOBALS['_we_active_integrated_modules'][] = 'navigation';//TODO: remove when navigation is completely implemented as a module
 //FIXME: don't include all confs!
 foreach($GLOBALS['_we_active_integrated_modules'] as $active){
-	if(file_exists(WE_MODULES_PATH . $active . '/we_conf_' . $active . '.inc.php')){
-		require_once (WE_MODULES_PATH . $active . '/we_conf_' . $active . '.inc.php');
+	switch($active){
+		case 'schedule':
+		case 'export':
+		case 'editor':
+		case 'users':
+		case 'navigation':
+			//currently we can't omit, since table checks (weRequest) depends on defined const's
+			//break;
+		default:
+
+			if(file_exists(WE_MODULES_PATH . $active . '/we_conf_' . $active . '.inc.php')){
+				require_once (WE_MODULES_PATH . $active . '/we_conf_' . $active . '.inc.php');
+			}
 	}
 }
 

@@ -23,6 +23,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 ini_set('mysqli.reconnect', 1);
+!defined('MYSQL_BOTH') && define('MYSQL_BOTH', MYSQLI_BOTH);
+!defined('MYSQL_ASSOC') && define('MYSQL_ASSOC', MYSQLI_ASSOC);
+!defined('MYSQL_NUM') && define('MYSQL_NUM', MYSQLI_NUM);
 
 class DB_WE extends we_database_base{
 

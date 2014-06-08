@@ -22,6 +22,7 @@
  * @package    webEdition_rpc
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+we_base_moduleInfo::isActive(we_base_moduleInfo::USERS);
 class rpcPingCmd extends rpcCmd{
 
 	function execute(){

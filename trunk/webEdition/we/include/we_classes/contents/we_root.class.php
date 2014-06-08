@@ -348,7 +348,7 @@ abstract class we_root extends we_class{
 
 		$content = '<table style="border-spacing: 0px;border-style:none;width:370px;" cellpadding="0">' .
 			'<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(351, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>';
-		if(!empty($owners)){
+		if($owners){
 			foreach($owners as $owner){
 				$foo = getHash('SELECT ID,Path,Icon from ' . USER_TABLE . ' WHERE ID=' . intval($owner), $this->DB_WE);
 				$icon = isset($foo['Icon']) ? ICON_DIR . $foo['Icon'] : ICON_DIR . 'user.gif';
@@ -481,7 +481,6 @@ abstract class we_root extends we_class{
 
 		$username = '';
 		$userid = $old_userID;
-
 		if(intval($userid) > 0){
 			$username = f('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($userid), 'username', $this->DB_WE);
 		}

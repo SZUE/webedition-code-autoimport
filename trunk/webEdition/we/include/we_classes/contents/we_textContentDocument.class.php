@@ -45,7 +45,6 @@ abstract class we_textContentDocument extends we_textDocument{
 				return 'we_modules/schedule/we_editor_schedpro.inc.php';
 			case WE_EDITPAGE_VALIDATION:
 				return 'we_templates/validateDocument.inc.php';
-				break;
 			default:
 				return parent::editor();
 		}
