@@ -317,7 +317,7 @@ top.wizcmd.we_import(1,-2' . ((weRequest('string', 'type') == we_import_function
 					switch($v["type"]){
 						case we_import_functions::TYPE_WE_XML:
 
-							print we_html_element::jsElement('
+							echo we_html_element::jsElement('
 if (top.wizbody && top.wizbody.addLog){
 	top.wizbody.addLog("' . addslashes(we_html_tools::getPixel(10, 10)) . '<br>");
 	top.wizbody.addLog("' . addslashes(we_html_tools::getPixel(10, 10)) . we_html_element::htmlB(g_l('import', '[start_import]') . ' - ' . date("d.m.Y H:i:s")) . '<br><br>");
@@ -460,7 +460,7 @@ if (top.wizbody && top.wizbody.addLog){
 
 								for($i = 0; $i < $xmlExIm->UpdateItemsCount; $i++){
 									$ref = $xmlExIm->RefTable->getNext();
-									if(!empty($ref)){
+									if($ref){
 										if(isset($ref->ContentType) && isset($ref->ID)){
 											$doc = we_exim_contentProvider::getInstance($ref->ContentType, $ref->ID, $ref->Table);
 										}
@@ -550,10 +550,6 @@ setTimeout('we_import(1," . $v['numFiles'] . ");',15);";
 														g_l('import', '[' . $ref->ContentType . ']') : ''
 													)
 											) . '  ' . $_path_info;
-
-										/* if(strlen($_progress_text) > 75){
-										  $_progress_text = addslashes(substr($_progress_text, 0, 65) . '<abbr title="' . $_path_info . '">...</abbr>' . substr($_progress_text, -10));
-										  } */
 
 										echo we_html_element::jsElement(
 											'if (top.wizbody.addLog){

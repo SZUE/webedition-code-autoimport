@@ -61,7 +61,7 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 			$params["ContentType"] = "doctype";
 		}
 
-		$this->RefTable->setProp($params, "Eximed", 1);
+		$this->RefTable->setProp($params, "Examined", 1);
 
 		$classname = (isset($doc->Pseudo) ? $doc->Pseudo : $doc->ClassName);
 
@@ -104,45 +104,50 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 
 	function getSelectedItems($selection, $extype, $art, $type, $doctype, $classname, $categories, $dir, &$selDocs, &$selTempl, &$selObjs, &$selClasses){
 		$this->db = new DB_WE();
-		if($selection == "manual"){
-			if($extype == "wxml"){
-				$selDocs = array_unique($this->getIDs($selDocs, FILE_TABLE, false));
-				$selTempl = array_unique($this->getIDs($selTempl, TEMPLATES_TABLE, false));
-				$selObjs = defined("OBJECT_FILES_TABLE") ? array_unique($this->getIDs($selObjs, OBJECT_FILES_TABLE, false)) : "";
-				$selClasses = defined("OBJECT_FILES_TABLE") ? array_unique($this->getIDs($selClasses, OBJECT_TABLE, false)) : "";
-			} else {
-				switch($art){
-					case "docs":
-						$selDocs = $this->getIDs($selDocs, FILE_TABLE);
-						break;
-					case "objects":
-						$selObjs = defined("OBJECT_FILES_TABLE") ? $this->getIDs($selObjs, OBJECT_FILES_TABLE) : "";
-						break;
+		switch($selection){
+			case "manual":
+				if($extype == we_import_functions::TYPE_WE_XML){
+					$selDocs = array_unique($this->getIDs($selDocs, FILE_TABLE, false));
+					$selTempl = array_unique($this->getIDs($selTempl, TEMPLATES_TABLE, false));
+					$selObjs = defined("OBJECT_FILES_TABLE") ? array_unique($this->getIDs($selObjs, OBJECT_FILES_TABLE, false)) : "";
+					$selClasses = defined("OBJECT_FILES_TABLE") ? array_unique($this->getIDs($selClasses, OBJECT_TABLE, false)) : "";
+				} else {
+					switch($art){
+						case "docs":
+							$selDocs = $this->getIDs($selDocs, FILE_TABLE);
+							break;
+						case "objects":
+							$selObjs = defined("OBJECT_FILES_TABLE") ? $this->getIDs($selObjs, OBJECT_FILES_TABLE) : "";
+							break;
+					}
 				}
-			}
-		} elseif($type == "doctype"){
-			$cat_sql = ($categories ? we_category::getCatSQLTail('', FILE_TABLE, true, $this->db, 'Category', true, $categories) : '');
-			if($dir != 0){
-				$workspace = id_to_path($dir, FILE_TABLE, $this->db);
-				$ws_where = ' AND (' . FILE_TABLE . ".Path LIKE '" . $this->db->escape($workspace) . "/%' OR " . FILE_TABLE . ".Path='" . $this->db->escape($workspace) . "')";
-			} else {
-				$ws_where = '';
-			}
+				break;
+			case "doctype":
+				$cat_sql = ($categories ? we_category::getCatSQLTail('', FILE_TABLE, true, $this->db, 'Category', true, $categories) : '');
+				if($dir != 0){
+					$workspace = id_to_path($dir, FILE_TABLE, $this->db);
+					$ws_where = ' AND (' . FILE_TABLE . ".Path LIKE '" . $this->db->escape($workspace) . "/%' OR " . FILE_TABLE . ".Path='" . $this->db->escape($workspace) . "')";
+				} else {
+					$ws_where = '';
+				}
 
-			$this->db->query('SELECT distinct ID FROM ' . FILE_TABLE . ' WHERE 1 ' . $ws_where . '  AND ' . FILE_TABLE . '.IsFolder=0 AND ' . FILE_TABLE . '.DocType="' . $this->db->escape($doctype) . '"' . $cat_sql);
-			$selDocs = $this->db->getAll(true);
-		} elseif(defined("OBJECT_FILES_TABLE")){
-			$where = $this->queryForAllowed(OBJECT_FILES_TABLE);
-			$cat_sql = ' ' . ($categories ? we_category::getCatSQLTail('', OBJECT_FILES_TABLE, true, $db, 'Category', true, $categories) : '');
+				$this->db->query('SELECT distinct ID FROM ' . FILE_TABLE . ' WHERE 1 ' . $ws_where . '  AND ' . FILE_TABLE . '.IsFolder=0 AND ' . FILE_TABLE . '.DocType="' . $this->db->escape($doctype) . '"' . $cat_sql);
+				$selDocs = $this->db->getAll(true);
+				break;
+			default:
+				if(defined("OBJECT_FILES_TABLE")){
+					$where = $this->queryForAllowed(OBJECT_FILES_TABLE);
+					$cat_sql = ' ' . ($categories ? we_category::getCatSQLTail('', OBJECT_FILES_TABLE, true, $db, 'Category', true, $categories) : '');
 
-			$this->db->query('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=0 AND TableID=' . intval($classname) . $cat_sql . $where);
-			$selObjs = $this->db->getAll(true);
+					$this->db->query('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=0 AND TableID=' . intval($classname) . $cat_sql . $where);
+					$selObjs = $this->db->getAll(true);
+				}
 		}
 
 		foreach($selDocs as $k => $v){
 			$this->RefTable->add2(array(
 				"ID" => $v,
-				"ContentType" => f('Select ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($v), "ContentType", $this->db),
+				"ContentType" => f('Select ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($v), "", $this->db),
 				"level" => 0
 				)
 			);

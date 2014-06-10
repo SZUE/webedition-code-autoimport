@@ -36,7 +36,8 @@ class we_exim_refData{
 	var $OldParentID;
 	var $OldPath;
 	var $OldTemplatePath;
-	var $Eximed = 0;
+	public $OldDocTypeName;
+	var $Examined = 0;
 	var $elements = 0;
 	var $slots = array("ID", "ParentID", "Path", "Table", "ContentType", "TemplateID", "DocType", "Category");
 
@@ -52,13 +53,12 @@ class we_exim_refData{
 	}
 
 	function match($param){
-		$match = true;
 		foreach($param as $k => $v){
-			if($k != "level" && $this->$k != $v){
-				$match = false;
+			if($k != 'level' && $this->$k != $v){
+				return false;
 			}
 		}
-		return $match;
+		return true;
 	}
 
 }

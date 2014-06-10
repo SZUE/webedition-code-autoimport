@@ -26,7 +26,7 @@ abstract class we_customer_EI{
 
 	public static function exportCustomers($options = array()){
 		$code = '';
-		if($options['format'] == 'gxml'){
+		if($options['format'] == we_import_functions::TYPE_GENERIC_XML){
 			$code = self::exportXML($options);
 		}
 		if($options['format'] == 'csv'){
@@ -40,7 +40,7 @@ abstract class we_customer_EI{
 
 	public static function getDataset($type, $filename, $arrgs = array()){
 		switch($type){
-			case 'gxml':
+			case we_import_functions::TYPE_GENERIC_XML:
 				return self::getXMLDataset($filename, $arrgs['dataset']);
 			case 'csv':
 				return self::getCSVDataset($filename, $arrgs['delimiter'], $arrgs['enclose'], $arrgs['lineend'], $arrgs['fieldnames'], $arrgs['charset']);
@@ -234,7 +234,7 @@ abstract class we_customer_EI{
 		$filename = $options['filename'];
 
 		switch($type){
-			case 'gxml':
+			case we_import_functions::TYPE_GENERIC_XML:
 				$dataset = $options['dataset'];
 				$xml_from = $options['xml_from'];
 				$xml_to = $options['xml_to'];

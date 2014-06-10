@@ -211,38 +211,6 @@ class we_exim_XMLExIm{
 		$_preparer->prepareExport($ids);
 	}
 
-	function handleTag($tag){
-		switch($tag){
-			case "we:document":
-				return $this->options["handle_documents"];
-			case "we:template":
-				return $this->options["handle_templates"];
-			case "we:class":
-				return $this->options["handle_classes"];
-			case "we:object":
-				return $this->options["handle_objects"];
-			case "we:doctype":
-				return $this->options["handle_doctypes"];
-			case "we:category":
-				return $this->options["handle_categorys"];
-			case "we:content":
-				return $this->options["handle_content"];
-			case "we:table":
-				return $this->options["handle_table"];
-			case "we:tableitem":
-				return $this->options["handle_tableitems"];
-			case "we:binary":
-				return $this->options["handle_binarys"];
-			case "we:navigation":
-				return $this->options["handle_navigation"];
-			case "we:navigationrule":
-				return $this->options["handle_navigation"];
-			case "we:thumbnail":
-				return $this->options["handle_thumbnails"];
-			default: return 1;
-		}
-	}
-
 	static function getHeader($encoding = '', $type = ''){
 		$encoding = ($encoding ? $encoding : $GLOBALS['WE_BACKENDCHARSET']);
 
@@ -319,7 +287,7 @@ class we_exim_XMLExIm{
 	function getSelectedItems($selection, $extype, $art, $type, $doctype, $classname, $categories, $dir, &$selDocs, &$selTempl, &$selObjs, &$selClasses){
 		$db = new DB_WE();
 		if($selection == 'manual'){
-			if($extype == "wxml"){
+			if($extype == we_import_functions::TYPE_WE_XML){
 				$selDocs = $this->getIDs($selDocs, FILE_TABLE, false);
 				$selTempl = $this->getIDs($selTempl, TEMPLATES_TABLE, false);
 				$selObjs = defined("OBJECT_FILES_TABLE") ? $this->getIDs($selObjs, OBJECT_FILES_TABLE, false) : '';

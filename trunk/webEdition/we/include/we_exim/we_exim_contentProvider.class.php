@@ -222,6 +222,9 @@ class we_exim_contentProvider{
 	}
 
 	static function needSerialize(&$object, $classname, $prop){
+		if(!isset($object->$prop)){
+			return false;
+		}
 		if($prop == 'schedArr' || is_array($object->$prop)){
 			return true;
 		}
@@ -233,11 +236,11 @@ class we_exim_contentProvider{
 		if($prop == 'Dat' && $classname == 'we_element' && defined('WE_SHOP_VARIANTS_ELEMENT_NAME') && $object->Name == WE_SHOP_VARIANTS_ELEMENT_NAME){
 			// exception for shop - handling arrays in the content
 			return true;
-		} else if(isset($serialize[$classname])){
-			return in_array($prop, $serialize[$classname]);
-		} else {
-			return false;
 		}
+		if(isset($serialize[$classname])){
+			return in_array($prop, $serialize[$classname]);
+		}
+		return false;
 	}
 
 	static function isExportable(&$object, $prop){
@@ -387,6 +390,8 @@ class we_exim_contentProvider{
 
 			case 'we_webEditionDocument':
 				$object->TemplatePath = clearPath('/' . str_replace($_SERVER['DOCUMENT_ROOT'], '', $object->TemplatePath));
+				$object->DocTypeName = f('SELECT DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . $object->DocType);
+				$object->persistent_slots[] = 'DocTypeName';
 				break;
 		}
 
@@ -399,14 +404,13 @@ class we_exim_contentProvider{
 			if($v == 'elements' || $v == 'usedElementNames'){
 				continue;
 			}
-			$content = (isset($object->$v) ? $object->$v : '');
-			$coding = self::CODING_NONE;
-
 			if(self::needSerialize($object, $classname, $v)){
 				$content = serialize($content);
 				$coding = array(self::CODING_ATTRIBUTE => self::CODING_SERIALIZE);
+			} else {
+				$content = (isset($object->$v) ? $object->$v : '');
+				$coding = self::CODING_NONE;
 			}
-
 			if(self::needCoding($classname, $v, $content) || self::needCdata($classname, $v, $content)){//fix for faulty parser
 				if(!is_array($content)){
 					$content = self::encode($content);

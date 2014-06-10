@@ -504,7 +504,7 @@ function closeAllType(){
 						$finalClasses = array();
 					}
 					$xmlExIm = new we_exim_XMLExport();
-					$xmlExIm->getSelectedItems($this->View->export->Selection, "wxml", "", $this->View->export->SelectionType, $this->View->export->DocType, $this->View->export->ClassName, $this->View->export->Categorys, $this->View->export->Folder, $finalDocs, $finalTempl, $finalObjs, $finalClasses);
+					$xmlExIm->getSelectedItems($this->View->export->Selection, we_import_functions::TYPE_WE_XML, "", $this->View->export->SelectionType, $this->View->export->DocType, $this->View->export->ClassName, $this->View->export->Categorys, $this->View->export->Folder, $finalDocs, $finalTempl, $finalObjs, $finalClasses);
 
 
 
