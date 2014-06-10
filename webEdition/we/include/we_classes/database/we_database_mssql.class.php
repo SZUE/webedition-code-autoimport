@@ -19,7 +19,8 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package none
+ * @package database
+ * @internal
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class DB_WE extends we_database_base{
