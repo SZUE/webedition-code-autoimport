@@ -19,10 +19,10 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weContentProvider{
+class we_exim_contentProvider{
 
 	const CODING_ENCODE = 'encode';
 	const CODING_SERIALIZE = 'serial';
@@ -56,7 +56,7 @@ class weContentProvider{
 				$we_doc->we_load($ID);
 				break;
 			case 'weThumbnail':
-				$we_doc = new we_thumbnailEx();
+				$we_doc = new we_exim_thumbnailExport();
 				$we_doc->we_load($ID);
 				break;
 			case 'we_backup_table':
@@ -222,6 +222,9 @@ class weContentProvider{
 	}
 
 	static function needSerialize(&$object, $classname, $prop){
+		if(!isset($object->$prop)){
+			return false;
+		}
 		if($prop == 'schedArr' || is_array($object->$prop)){
 			return true;
 		}
@@ -233,11 +236,11 @@ class weContentProvider{
 		if($prop == 'Dat' && $classname == 'we_element' && defined('WE_SHOP_VARIANTS_ELEMENT_NAME') && $object->Name == WE_SHOP_VARIANTS_ELEMENT_NAME){
 			// exception for shop - handling arrays in the content
 			return true;
-		} else if(isset($serialize[$classname])){
-			return in_array($prop, $serialize[$classname]);
-		} else {
-			return false;
 		}
+		if(isset($serialize[$classname])){
+			return in_array($prop, $serialize[$classname]);
+		}
+		return false;
 	}
 
 	static function isExportable(&$object, $prop){
@@ -387,6 +390,8 @@ class weContentProvider{
 
 			case 'we_webEditionDocument':
 				$object->TemplatePath = clearPath('/' . str_replace($_SERVER['DOCUMENT_ROOT'], '', $object->TemplatePath));
+				$object->DocTypeName = f('SELECT DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . $object->DocType);
+				$object->persistent_slots[] = 'DocTypeName';
 				break;
 		}
 
@@ -396,17 +401,16 @@ class weContentProvider{
 
 
 		foreach($object->persistent_slots as $v){
-			if($v == 'elements'){
+			if($v == 'elements' || $v == 'usedElementNames'){
 				continue;
 			}
-			$content = (isset($object->$v) ? $object->$v : '');
-			$coding = self::CODING_NONE;
-
 			if(self::needSerialize($object, $classname, $v)){
 				$content = serialize($content);
 				$coding = array(self::CODING_ATTRIBUTE => self::CODING_SERIALIZE);
+			} else {
+				$content = (isset($object->$v) ? $object->$v : '');
+				$coding = self::CODING_NONE;
 			}
-
 			if(self::needCoding($classname, $v, $content) || self::needCdata($classname, $v, $content)){//fix for faulty parser
 				if(!is_array($content)){
 					$content = self::encode($content);

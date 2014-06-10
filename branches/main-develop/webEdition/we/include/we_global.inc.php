@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 if(isset($_SERVER['SCRIPT_NAME']) && str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']) == str_replace(dirname(__FILE__), '', __FILE__)){
@@ -840,7 +840,9 @@ function runAtWin(){
 }
 
 function weMemDebug(){
-	print("Mem usage " . round(((memory_get_usage() / 1024) / 1024), 3) . ' MiB');
+	echo  "Mem usage " . round(((memory_get_usage() / 1024) / 1024), 3) . " MiB\n".
+	(microtime(true)-floatval($_SERVER['REQUEST_TIME_FLOAT'])).' '
+	;
 }
 
 function weGetCookieVariable($name){
@@ -1342,7 +1344,7 @@ function we_templateInit(){
 			$GLOBALS['DB_WE'] = new DB_WE();
 		}
 //check for Trigger
-		if(defined('SCHEDULE_TABLE') && (!$GLOBALS['we_doc']->InWebEdition) &&
+		if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && (!$GLOBALS['we_doc']->InWebEdition) &&
 			(SCHEDULER_TRIGGER == SCHEDULER_TRIGGER_PREDOC) &&
 			(!isset($GLOBALS['we']['backVars']) || (isset($GLOBALS['we']['backVars']) && count($GLOBALS['we']['backVars']) == 0)) //on first call this variable is unset, so we're not inside an include
 		){
@@ -1435,7 +1437,7 @@ function we_templatePost(){
 		}
 		flush();
 //check for Trigger
-		if(defined('SCHEDULE_TABLE') && (!$GLOBALS['WE_MAIN_DOC']->InWebEdition) &&
+		if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && (!$GLOBALS['WE_MAIN_DOC']->InWebEdition) &&
 			(SCHEDULER_TRIGGER == SCHEDULER_TRIGGER_POSTDOC) &&
 			(!isset($GLOBALS['we']['backVars']) || (isset($GLOBALS['we']['backVars']) && count($GLOBALS['we']['backVars']) == 0))//not inside an included Doc
 		){ //is set to Post or not set (new default)
@@ -1481,15 +1483,6 @@ function we_cmd_dec($no, $default = ''){
 
 function getWEZendCache($lifetime = 1800){
 	return Zend_Cache::factory('Core', 'File', array('lifetime' => $lifetime, 'automatic_serialization' => true), array('cache_dir' => ZENDCACHE_PATH));
-}
-
-function cleanWEZendCache(){
-	if(file_exists(ZENDCACHE_PATH . 'clean')){
-		$cache = getWEZendCache();
-		$cache->clean(Zend_Cache::CLEANING_MODE_ALL);
-//remove file
-		unlink(ZENDCACHE_PATH . 'clean');
-	}
 }
 
 function we_log_loginFailed($table, $user){

@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_class
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -60,7 +60,7 @@ abstract class we_class{
 
 	/* Flag which is set when the file is not new */
 	var $wasUpdate = 0;
-	public $InWebEdition = 0;
+	public $InWebEdition = false;
 	var $PublWhenSave = 1;
 	var $IsTextContentDoc = false;
 	public $LoadBinaryContent = false;

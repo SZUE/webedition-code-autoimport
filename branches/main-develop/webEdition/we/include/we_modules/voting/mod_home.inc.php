@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 $createVoting = we_html_button::create_button("new_voting", "javascript:top.opener.top.we_cmd('new_voting');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_VOTING"));

@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -27,6 +27,7 @@
  * General Definition of WebEdition Export
  *
  */
+we_base_moduleInfo::isActive(we_base_moduleInfo::EXPORT);
 class we_export_export extends weModelBase{
 
 	//properties

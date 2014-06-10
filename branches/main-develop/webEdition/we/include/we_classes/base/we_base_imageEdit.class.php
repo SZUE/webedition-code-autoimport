@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -572,7 +572,7 @@ abstract class we_base_imageEdit{
 		if($imagesize[0] > $width || $imagesize[1] > $height){
 			$_previewDir = WE_THUMB_PREVIEW_PATH;
 			if(!file_exists($_previewDir) || !is_dir($_previewDir)){
-				we_util_File::createLocalFolder($_previewDir);
+				we_base_file::createLocalFolder($_previewDir);
 			}
 			$_thumbSrc = ($imgID ?
 					WE_THUMB_PREVIEW_DIR . $imgID . '_' . $width . '_' . $height . strtolower($outputFormat) :

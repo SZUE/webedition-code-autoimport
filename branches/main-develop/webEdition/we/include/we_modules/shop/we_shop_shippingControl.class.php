@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_shop_shippingControl{
@@ -41,7 +41,7 @@ class we_shop_shippingControl{
 	}
 
 	function getShippingControl(){
-		$data = f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="weShippingControl"');
+		$data = f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="weShippingControl"');
 
 		if($data){
 			$shippingControl = unserialize(strtr($data, array('O:17:"weShippingControl"' => 'O:' . strlen(__CLASS__) . ':"' . __CLASS__ . '"', 'O:10:"weShipping"' => 'O:' . strlen('we_shop_shipping') . ':"we_shop_shipping"')));
@@ -86,7 +86,7 @@ class we_shop_shippingControl{
 	function save(){
 		$DB_WE = $GLOBALS['DB_WE'];
 
-		return $DB_WE->query('REPLACE INTO ' . ANZEIGE_PREFS_TABLE . ' SET ' .
+		return $DB_WE->query('REPLACE INTO ' . WE_SHOP_PREFS_TABLE . ' SET ' .
 				we_database_base::arraySetter(array(
 					'strDateiname' => 'weShippingControl',
 					'strFelder' => serialize($this)

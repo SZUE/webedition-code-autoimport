@@ -16,7 +16,7 @@
  *
  *
  * @category   we
- * @package    we_service
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
@@ -24,7 +24,7 @@
  * class for service exception
  *
  * @category   we
- * @package    we_service
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_service_Exception extends Exception{

@@ -16,7 +16,7 @@
  *
  *
  * @category   we
- * @package    we_util
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
@@ -24,7 +24,7 @@
  * Class to get informations about the system environment
  *
  * @category   we
- * @package    we_util
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_util_Sys{
@@ -83,13 +83,5 @@ if(we_util_Sys_Webedition::toolLicense("customer")) {}
 if(we_util_Sys_Php::version("customer")) {}
 if(we_util_Sys_Php::ini("customer")) {}
 if(we_util_Sys_Php::extension("customer")) {}
-
-// db checks use webEdition config in webEdition/we/include/conf/we_conf.inc.php
-if(we_util_Sys_Db::available()) {} // check if server is up and running and the webedition config is correct
-if(we_util_Sys_Db_Mysql::permission("alter")) {} // Benutzer-Berechtigungen: �berpr�ft, ob der MySQL-Benutzer aus der we_conf.inc.php ein best. Recht besitzt
-if(we_util_Sys_Db_Mysql::status("Open_tables")) {} // MySQL Laufzeit-Informationen von "SHOW STATUS LIKE ;"
-if(we_util_Sys_Db_Mysql::variable("have_innodb")) {} // MySQL Servervariablen und -einstellungen von "SHOW VARIABLES LIKE ;"
-if(we_util_Sys_Db_Mysql::plugin("innodb")) {} // �berpr�ft, ob ein MySQL plugin verf�gbar ist (SHOW PLUGIN)
-if(we_util_Sys_Db_Mysql::table("tblvoting")) {} // �berr�ft, ob eine Tabelle in der webEdition Datenbank existiert (SHOW TABLES)
 
 */

@@ -15,7 +15,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function checkPwds(){
@@ -31,7 +31,7 @@ function checkPwds(){
 	return true;
 }
 
-function checkRequired($required, $emailfield = ''){
+function checkRequired(array $required, array $loadFields, $emailfield = ''){
 	if(!$required){
 		return false;
 	}
@@ -45,7 +45,13 @@ function checkRequired($required, $emailfield = ''){
 		}
 	}
 	if(($uid = f('SELECT ID FROM ' . CUSTOMER_TABLE . ' WHERE ' . implode(' AND ', $where)))){
-		$_SESSION['webuser'] = getHash('SELECT ID,Username,Anrede_Anrede,Anrede_Titel,Forename,Surname' . ($emailfield ? ',' . $GLOBALS['DB_WE']->escape($emailfield) : '') . ' FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . $uid);
+		array_push($loadFields, 'ID', 'Username');
+		if($emailfield){
+			$loadFields[] = $emailfield;
+		}
+		$loadFields = array_unique($loadFields);
+
+		$_SESSION['webuser'] = getHash('SELECT `' . implode('`,`', $loadFields) . '` FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . $uid);
 		return $uid;
 	}
 
@@ -64,6 +70,7 @@ function we_tag_customerResetPassword(array $attribs){
 	$GLOBALS['DB_WE']->query('DELETE FROM ' . PWDRESET_TABLE . ' WHERE expires<NOW');
 
 	$required = array_unique(explode(',', weTag_getAttribute('required', $attribs)));
+	$loadFields = array_unique(explode(',', weTag_getAttribute('loadFields', $attribs)));
 
 //set dates
 	we_base_util::convertDateInRequest($_REQUEST['s'], false);
@@ -75,7 +82,7 @@ function we_tag_customerResetPassword(array $attribs){
 			if(count($required) < 2){
 				return parseError('For security reasons: in direct mode, attribute <b>required</b> needs at least two different fields!');
 			}
-			if(!checkPwds() || !($uid = checkRequired($required))){
+			if(!checkPwds() || !($uid = checkRequired($required, $loadFields))){
 				return;
 			}
 
@@ -91,11 +98,11 @@ function we_tag_customerResetPassword(array $attribs){
 				return parseError('For security reasons: in email mode, attribute <b>required</b> needs at least one field!');
 			}
 			$customerEmailField = weTag_getAttribute('customerEmailField', $attribs);
-			if(($type == 'emailPassword' && !checkPwds()) || !($uid = checkRequired($required, $customerEmailField))){
+			if(($type == 'emailPassword' && !checkPwds()) || !($uid = checkRequired($required, $loadFields, $customerEmailField))){
 				return;
 			}
 			$pwd = weRequest('string', 's', '', 'Password');
-			$_SESSION['webuser']['token'] = substr(md5(uniqid('', true)), 0, 25);
+			$_SESSION['webuser']['WE_token'] = substr(md5(uniqid('', true)), 0, 25);
 			$GLOBALS['DB_WE']->query('REPLACE INTO ' . PWDRESET_TABLE . ' SET ' . we_database_base::arraySetter(array(
 					'ID' => $uid,
 					'UserTable' => 'tblWebUser',
@@ -108,7 +115,7 @@ function we_tag_customerResetPassword(array $attribs){
 			break;
 		case 'resetFromMail':
 			//if optional required field is given, check them
-			if($required && !checkRequired($required)){
+			if($required && !checkRequired($required, $loadFields)){
 				return;
 			}
 			$user = weRequest('int', 'user');

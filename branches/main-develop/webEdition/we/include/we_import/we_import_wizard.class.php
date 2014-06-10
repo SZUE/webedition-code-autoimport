@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_import_wizard extends we_import_wizardBase{
@@ -395,7 +395,7 @@ class we_import_wizard extends we_import_wizardBase{
 
 		$wepos = weGetCookieVariable('but_wxml');
 		$znr = -1;
-		$content = $hdns . we_html_multiIconBox::getHTML('wxml', '100%', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos == 'down'), g_l('import', '[wxml_import]'));
+		$content = $hdns . we_html_multiIconBox::getHTML(we_import_functions::TYPE_WE_XML, '100%', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos == 'down'), g_l('import', '[wxml_import]'));
 		return array($functions, $content);
 	}
 
@@ -726,7 +726,7 @@ handle_event("previous");');
 						'html' => we_html_tools::htmlAlertAttentionBox(g_l('import', '[invalid_path]'), we_html_tools::TYPE_ALERT, 530),
 						'space' => 0)
 				);
-				$content = $hdns . we_html_multiIconBox::getHTML('wxml', '100%', $parts, 30, '', -1, '', '', false, g_l('import', '[warning]'));
+				$content = $hdns . we_html_multiIconBox::getHTML(we_import_functions::TYPE_WE_XML, '100%', $parts, 30, '', -1, '', '', false, g_l('import', '[warning]'));
 				return array($functions, $content);
 			}
 
@@ -760,7 +760,7 @@ handle_event("previous");');
 		}
 		$wepos = weGetCookieVariable('but_wxml');
 		$znr = -1;
-		$content = $hdns . we_html_multiIconBox::getHTML('wxml', '100%', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos == 'down'), ($we_valid) ? g_l('import', '[import_options]') : g_l('import', '[wxml_import]'));
+		$content = $hdns . we_html_multiIconBox::getHTML(we_import_functions::TYPE_WE_XML, '100%', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos == 'down'), ($we_valid) ? g_l('import', '[import_options]') : g_l('import', '[wxml_import]'));
 		return array($functions, $content);
 	}
 
@@ -794,7 +794,7 @@ function handle_event(evt) {
 				'html' => we_html_element::htmlDiv(array('class' => 'blockwrapper', 'style' => 'width: 520px; height: 400px; border:1px #dce6f2 solid;', 'id' => 'log'), ''),
 				'space' => 0)
 		);
-		$content = $hdns . we_html_multiIconBox::getHTML('wxml', '100%', $parts, 30, '', -1, '', '', false, g_l('import', '[log]'));
+		$content = $hdns . we_html_multiIconBox::getHTML(we_import_functions::TYPE_WE_XML, '100%', $parts, 30, '', -1, '', '', false, g_l('import', '[log]'));
 
 		return array($functions, $content);
 	}

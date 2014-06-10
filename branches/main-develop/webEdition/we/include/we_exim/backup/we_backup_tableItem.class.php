@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -84,7 +84,7 @@ class we_backup_tableItem extends weModelBase{
 			$tables[OBJECT_FILES_TABLE] = array('Category');
 		}
 		if(defined("SHOP_TABLE")){
-			$tables[ANZEIGE_PREFS_TABLE] = array('strDateiname', 'strFelder');
+			$tables[WE_SHOP_PREFS_TABLE] = array('strDateiname', 'strFelder');
 			$tables[SHOP_TABLE] = array('strSerial', 'strSerialOrder');
 		}
 		return (array_key_exists($this->table, $tables) && in_array($was, $tables[$this->table]));
@@ -162,7 +162,7 @@ class we_backup_tableItem extends weModelBase{
 		foreach($this as $key => &$val){
 			if($this->doConvertCharset($key)){
 				$mydata = $val;
-				if(weXMLImport::isSerialized($mydata)){ //mainly for tblcontent, where serialized data is mixed with others, but stored in backup as binary
+				if(we_exim_XMLImport::isSerialized($mydata)){ //mainly for tblcontent, where serialized data is mixed with others, but stored in backup as binary
 					$mydataUS = unserialize($mydata);
 					if(is_array($mydataUS)){
 						foreach($mydataUS as &$ad){

@@ -11,7 +11,7 @@
  * not receive this file, see http://www.horde.org/licenses/lgpl21.
  *
  * @author  Jon Parise <jon@horde.org>
- * @package Text_Diff
+ * @package none
  */
 class Horde_Text_Diff_Engine_Xdiff
 {

@@ -16,7 +16,7 @@
  *
  *
  * @category   we
- * @package    we_app
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 /**
@@ -28,7 +28,7 @@ Zend_Loader::loadClass('we_ui_layout_HTMLPage');
  * Basic Class for Home Page View of App
  *
  * @category   we
- * @package    we_app
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_app_HomePage extends we_ui_layout_HTMLPage{

@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 define("CSV_DELIMITER", ";");
@@ -111,10 +111,10 @@ class we_customer_EIWizard{
 	}
 
 	function getHTMLExportStep1(){
-		$type = weRequest('string', "type", "gxml");
+		$type = weRequest('string', "type", we_import_functions::TYPE_GENERIC_XML);
 
 		$generic = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
-		$generic->setCol(0, 0, array(), we_html_forms::radiobutton("gxml", ($type == "gxml"), "type", g_l('modules_customer', '[gxml_export]'), true, "defaultfont", "if(document.we_form.type[0].checked) " . $this->topFrame . ".type='gxml';", false, g_l('modules_customer', '[txt_gxml_export]'), 0, 430));
+		$generic->setCol(0, 0, array(), we_html_forms::radiobutton(we_import_functions::TYPE_GENERIC_XML, ($type == we_import_functions::TYPE_GENERIC_XML), "type", g_l('modules_customer', '[gxml_export]'), true, "defaultfont", "if(document.we_form.type[0].checked) " . $this->topFrame . ".type='" . we_import_functions::TYPE_GENERIC_XML . "';", false, g_l('modules_customer', '[txt_gxml_export]'), 0, 430));
 		$generic->setCol(1, 0, array(), we_html_tools::getPixel(0, 4));
 		$generic->setCol(2, 0, array(), we_html_forms::radiobutton("csv", ($type == "csv"), "type", g_l('modules_customer', '[csv_export]'), true, "defaultfont", "if(document.we_form.type[1].checked) " . $this->topFrame . ".type='csv';", false, g_l('modules_customer', '[txt_csv_export]'), 0, 430));
 
@@ -212,7 +212,7 @@ class we_customer_EIWizard{
 		$parts = array();
 
 		//set defaults
-		$type = weRequest('string', "type", "gxml");
+		$type = weRequest('string', "type", we_import_functions::TYPE_GENERIC_XML);
 		$filename = weRequest('file', "filename", "weExport_" . time() . ($type == "csv" ? ".csv" : ".xml"));
 		$export_to = weRequest('string', "export_to", "server");
 		$path = weRequest('file', "path", "/");
@@ -227,7 +227,7 @@ class we_customer_EIWizard{
 		$js = "";
 		$parts[] = array("headline" => g_l('modules_customer', '[filename]'), "html" => we_html_tools::htmlTextInput("filename", $_input_size, $filename), "space" => $_space);
 
-		if($type == "gxml"){
+		if($type == we_import_functions::TYPE_GENERIC_XML){
 			$table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
 
 			$table->setColContent(1, 0, we_html_tools::getPixel(1, 10));
@@ -364,7 +364,7 @@ class we_customer_EIWizard{
 		if($options["art"] == "import"){
 			$filename = weRequest('file', "filename", "");
 			$import_from = weRequest('string', "import_from", "server");
-			$type = weRequest('string', "type", "gxml");
+			$type = weRequest('string', "type", we_import_functions::TYPE_GENERIC_XML);
 			$xml_from = weRequest('raw', "xml_from", 0);
 			$xml_to = weRequest('raw', "xml_to", 1);
 			$dataset = weRequest('raw', "dataset", "");
@@ -442,7 +442,7 @@ class we_customer_EIWizard{
 
 		if($options["art"] == "export"){
 
-			$type = weRequest('string', "type", "gxml");
+			$type = weRequest('string', "type", we_import_functions::TYPE_GENERIC_XML);
 			$selection = weRequest('string', "selection", "filter");
 			$export_to = weRequest('string', "export_to", "server");
 			$path = isset($_REQUEST["path"]) ? urldecode($_REQUEST["path"]) : "/";
@@ -543,10 +543,10 @@ class we_customer_EIWizard{
 	}
 
 	function getHTMLImportStep1(){
-		$type = weRequest('string', "type", "gxml");
+		$type = weRequest('string', "type", we_import_functions::TYPE_GENERIC_XML);
 
 		$generic = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
-		$generic->setCol(0, 0, array(), we_html_forms::radiobutton("gxml", ($type == "gxml"), "type", g_l('modules_customer', '[gxml_import]'), true, "defaultfont", "if(document.we_form.type[0].checked) " . $this->topFrame . ".type='gxml';", false, g_l('modules_customer', '[txt_gxml_import]'), 0, 430));
+		$generic->setCol(0, 0, array(), we_html_forms::radiobutton(we_import_functions::TYPE_GENERIC_XML, ($type == we_import_functions::TYPE_GENERIC_XML), "type", g_l('modules_customer', '[gxml_import]'), true, "defaultfont", "if(document.we_form.type[0].checked) " . $this->topFrame . ".type='" . we_import_functions::TYPE_GENERIC_XML . "';", false, g_l('modules_customer', '[txt_gxml_import]'), 0, 430));
 		$generic->setCol(1, 0, array(), we_html_tools::getPixel(0, 4));
 		$generic->setCol(2, 0, array(), we_html_forms::radiobutton("csv", ($type == "csv"), "type", g_l('modules_customer', '[csv_import]'), true, "defaultfont", "if(document.we_form.type[1].checked) " . $this->topFrame . ".type='csv';", false, g_l('modules_customer', '[txt_csv_import]'), 0, 430));
 
@@ -584,7 +584,7 @@ class we_customer_EIWizard{
 				');
 
 		$tmptable = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 4, 1);
-		$tmptable->setCol(0, 0, array("valign" => "middle"), $this->formFileChooser(250, "source", $source, "opener." . $this->bodyFrame . ".document.we_form.import_from[0].checked=true;", ($type == "gxml" ? we_base_ContentTypes::XML : "")));
+		$tmptable->setCol(0, 0, array("valign" => "middle"), $this->formFileChooser(250, "source", $source, "opener." . $this->bodyFrame . ".document.we_form.import_from[0].checked=true;", ($type == we_import_functions::TYPE_GENERIC_XML ? we_base_ContentTypes::XML : "")));
 		$tmptable->setCol(1, 0, array(), we_html_tools::getPixel(2, 5));
 
 		$table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 4, 2);
@@ -836,7 +836,7 @@ class we_customer_EIWizard{
 		$nodes = we_customer_EI::getDataset($type, $filename, $arrgs);
 		$records = we_customer_EI::getCustomersFieldset();
 
-		if($type == "gxml"){
+		if($type == we_import_functions::TYPE_GENERIC_XML){
 			$tableheader = array(array("dat" => g_l('modules_customer', '[we_flds]')), array("dat" => g_l('modules_customer', '[rcd_flds]')), array("dat" => g_l('import', "[attributes]")));
 		} else {
 			$tableheader = array(array("dat" => g_l('modules_customer', '[we_flds]')), array("dat" => g_l('modules_customer', '[rcd_flds]')));
@@ -867,7 +867,7 @@ class we_customer_EIWizard{
 						$we_fields->selectOption($node);
 				}
 			}
-			if($type == "gxml"){
+			if($type == we_import_functions::TYPE_GENERIC_XML){
 				$rows[] = array(
 					array("dat" => $record),
 					array("dat" => $we_fields->getHTML()),
@@ -1139,7 +1139,7 @@ class we_customer_EIWizard{
 				break;
 			case "export":
 
-				$file_format = weRequest('string', "type", "gxml");
+				$file_format = weRequest('string', "type", we_import_functions::TYPE_GENERIC_XML);
 				$file_name = weRequest('file', "filename", "");
 				$export_to = weRequest('raw', "export_to", "");
 
@@ -1204,7 +1204,7 @@ class we_customer_EIWizard{
 					we_html_element::htmlHidden(array("name" => "cmd", "value" => "do_export")) .
 					we_html_element::htmlHidden(array("name" => "step", "value" => 4));
 
-				if($file_format == "gxml")
+				if($file_format == we_import_functions::TYPE_GENERIC_XML)
 					$hiddens.=we_html_element::htmlHidden(array("name" => "cdata", "value" => $cdata));
 
 				if($file_format == "csv")
@@ -1240,7 +1240,7 @@ class we_customer_EIWizard{
 					we_html_element::htmlHidden(array("name" => "export_to", "value" => $export_to)) .
 					we_html_element::htmlHidden(array("name" => "path", "value" => $path));
 
-				if($file_format == "gxml"){
+				if($file_format == we_import_functions::TYPE_GENERIC_XML){
 					$hiddens.=we_html_element::htmlHidden(array("name" => "cdata", "value" => $cdata));
 				}
 				if($file_format == "csv"){
@@ -1266,7 +1266,7 @@ class we_customer_EIWizard{
 						"customers" => array_splice($customers, 0, $this->exim_number),
 					);
 
-					if($file_format == "gxml"){
+					if($file_format == we_import_functions::TYPE_GENERIC_XML){
 						$options["cdata"] = $cdata;
 					}
 					if($file_format == "csv"){
@@ -1315,7 +1315,7 @@ class we_customer_EIWizard{
 				$filename = (isset($_REQUEST["filename"]) && $_REQUEST["filename"] != "") ? $_REQUEST["filename"] : null;
 				$path = (isset($_REQUEST["path"]) && $_REQUEST["path"] != "") ? $_REQUEST["path"] : null;
 
-				if($file_format == "gxml"){
+				if($file_format == we_import_functions::TYPE_GENERIC_XML){
 
 					$file_name = $_SERVER['DOCUMENT_ROOT'] . $path . '/' . $filename;
 					we_customer_EI::save2File($file_name, we_backup_backup::weXmlExImFooter);

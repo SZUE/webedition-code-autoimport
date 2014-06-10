@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class weTagData_multiSelectorAttribute extends weTagDataAttribute{
@@ -60,7 +60,6 @@ class weTagData_multiSelectorAttribute extends weTagDataAttribute{
 	 */
 	function getCodeForTagWizard(){
 		$we_cmd = 'openSelector';
-
 		switch($this->Table){
 			case USER_TABLE :
 				$we_cmd = 'browse_users';

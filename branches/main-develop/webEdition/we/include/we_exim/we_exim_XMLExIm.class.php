@@ -19,10 +19,10 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weXMLExIm{
+class we_exim_XMLExIm{
 
 	var $destination = array();
 	var $RefTable;
@@ -75,7 +75,7 @@ class weXMLExIm{
 	var $xmlBrowser;
 
 	function __construct($file = ''){
-		$this->RefTable = new RefTable();
+		$this->RefTable = new we_exim_refTable();
 		if($file){
 			$this->loadPerserves($file);
 		}
@@ -206,41 +206,9 @@ class weXMLExIm{
 
 	function prepareExport($ids){
 
-		$this->RefTable = new RefTable();
+		$this->RefTable = new we_exim_refTable();
 		$_preparer = new we_export_preparer($this->options, $this->RefTable);
 		$_preparer->prepareExport($ids);
-	}
-
-	function handleTag($tag){
-		switch($tag){
-			case "we:document":
-				return $this->options["handle_documents"];
-			case "we:template":
-				return $this->options["handle_templates"];
-			case "we:class":
-				return $this->options["handle_classes"];
-			case "we:object":
-				return $this->options["handle_objects"];
-			case "we:doctype":
-				return $this->options["handle_doctypes"];
-			case "we:category":
-				return $this->options["handle_categorys"];
-			case "we:content":
-				return $this->options["handle_content"];
-			case "we:table":
-				return $this->options["handle_table"];
-			case "we:tableitem":
-				return $this->options["handle_tableitems"];
-			case "we:binary":
-				return $this->options["handle_binarys"];
-			case "we:navigation":
-				return $this->options["handle_navigation"];
-			case "we:navigationrule":
-				return $this->options["handle_navigation"];
-			case "we:thumbnail":
-				return $this->options["handle_thumbnails"];
-			default: return 1;
-		}
 	}
 
 	static function getHeader($encoding = '', $type = ''){
@@ -286,7 +254,7 @@ class weXMLExIm{
 	function getQueryParents($path){
 		$out = array();
 		while($path != '/' && $path){
-			$out [] = 'Path="' . $path . '"';
+			$out[] = 'Path="' . $path . '"';
 			$path = dirname($path);
 		}
 		return (empty($out) ? '' : implode(' OR ', $out));
@@ -299,7 +267,7 @@ class weXMLExIm{
 		if(($ws = get_ws($table))){
 			$wsPathArray = id_to_path($ws, $table, $db, false, true);
 			foreach($wsPathArray as $path){
-				$wsQuery[] = " Path LIKE '" . $db->escape($path) . "/%' OR " . weXMLExIm::getQueryParents($path);
+				$wsQuery[] = " Path LIKE '" . $db->escape($path) . "/%' OR " . we_exim_XMLExIm::getQueryParents($path);
 				while($path != '/' && $path){
 					$parentpaths[] = $path;
 					$path = dirname($path);
@@ -319,7 +287,7 @@ class weXMLExIm{
 	function getSelectedItems($selection, $extype, $art, $type, $doctype, $classname, $categories, $dir, &$selDocs, &$selTempl, &$selObjs, &$selClasses){
 		$db = new DB_WE();
 		if($selection == 'manual'){
-			if($extype == "wxml"){
+			if($extype == we_import_functions::TYPE_WE_XML){
 				$selDocs = $this->getIDs($selDocs, FILE_TABLE, false);
 				$selTempl = $this->getIDs($selTempl, TEMPLATES_TABLE, false);
 				$selObjs = defined("OBJECT_FILES_TABLE") ? $this->getIDs($selObjs, OBJECT_FILES_TABLE, false) : '';

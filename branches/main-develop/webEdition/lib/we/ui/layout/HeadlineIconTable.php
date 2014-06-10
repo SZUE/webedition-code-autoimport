@@ -16,7 +16,7 @@
  *
  *
  * @category   we
- * @package    we_ui
+ * @package none
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
@@ -30,7 +30,7 @@ Zend_Loader::loadClass('we_ui_abstract_AbstractElement');
  * For each row an icon can be provided together with a headline (title)
  *
  * @category   we
- * @package    we_ui
+ * @package none
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */

@@ -16,14 +16,14 @@
  *
  *
  * @category   we
- * @package    we_core
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 /**
  * Base class for localisation
  *
  * @category   we
- * @package    we_core
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 //!defined('NO_SESS') && define('NO_SESS', 1);

@@ -19,11 +19,11 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 /* the parent class of storagable webEdition classes */
-
+we_base_moduleInfo::isActive(we_base_moduleInfo::EXPORT);
 class we_export_view{
 
 	var $db;
@@ -503,8 +503,9 @@ class we_export_view{
 					}
 
 					$newone = true;
-					if($this->export->ID)
+					if($this->export->ID){
 						$newone = false;
+					}
 
 					$this->export->save();
 
@@ -554,7 +555,7 @@ class we_export_view{
 
 				break;
 			case "start_export":
-				weXMLExIm::unsetPerserves();
+				we_exim_XMLExIm::unsetPerserves();
 				$_REQUEST["cmd"] = "do_export";
 				$this->export->ExportFilename = ($this->export->ExportTo == 'local' ? TEMP_PATH . "/" . $this->export->Filename : $_SERVER['DOCUMENT_ROOT'] . $this->export->ServerPath . "/" . $this->export->Filename);
 				break;

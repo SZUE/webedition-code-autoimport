@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -73,7 +73,7 @@ class we_base_version{
 				return false;
 			}
 			if(!is_dir(dirname($path))){
-				we_util_File::createLocalFolderByPath(dirname($path));
+				we_base_file::createLocalFolderByPath(dirname($path));
 			}
 			we_base_file::save($_SERVER['DOCUMENT_ROOT'] . $this->Path, $this->Data, ($this->SeqN == 0 ? 'wb' : 'ab'));
 		} else {
@@ -82,7 +82,7 @@ class we_base_version{
 				return false;
 			}
 			if(!is_dir(dirname($path))){
-				we_util_File::createLocalFolderByPath(dirname($path));
+				we_base_file::createLocalFolderByPath(dirname($path));
 			}
 			we_base_file::save($_SERVER['DOCUMENT_ROOT'] . $this->Path, $this->Data, ($this->SeqN == 0 ? 'wb' : 'ab'));
 		}

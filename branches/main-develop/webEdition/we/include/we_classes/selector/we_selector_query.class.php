@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -359,7 +359,7 @@ class we_selector_query{
 			}
 		} else {
 			switch($table){
-				case (defined('NEWSLETTER_TABLE') ? NEWSLETTER_TABLE : 'NEWSLETTER_TABLE'):
+				case (we_base_moduleInfo::isActive(we_base_moduleInfo::NEWSLETTER) ? NEWSLETTER_TABLE : 'NEWSLETTER_TABLE'):
 				case USER_TABLE:
 					break;
 				default:

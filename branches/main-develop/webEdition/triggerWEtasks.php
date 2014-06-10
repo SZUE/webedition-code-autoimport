@@ -14,14 +14,14 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 //remove all paramters in case some functions might hear to them
 unset($_REQUEST,$_GET,$_POST);
 define('SCHEDULED_BY_CRON', 1);
-if(defined('SCHEDULE_TABLE')){
+if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 	we_schedpro::trigger_schedule();
 }
 if(defined('WORKFLOW_TABLE')){

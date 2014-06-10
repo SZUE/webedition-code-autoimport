@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once(WE_MODULES_PATH . 'shop/we_conf_shop.inc.php');
@@ -173,12 +173,12 @@ function we_tag_writeShopData($attribs){
 			/*
 			 * first get the prefs for country, city, address by shop default settings and shop payment settings
 			 */
-			$shopDefaultPrefs = @unserialize(f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname = "shop_CountryLanguage"', 'strFelder', $DB_WE));
+			$shopDefaultPrefs = @unserialize(f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLanguage"'));
 			if(is_array($shopDefaultPrefs)){ // check for array
 				$fieldCountry = $shopDefaultPrefs['stateField'];
 				$emosBillingCountry = $_SESSION['webuser'][$fieldCountry];
 			}
-			$shopPaymentPrefs = explode('|', f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname = "payment_details"', 'strFelder', $DB_WE));
+			$shopPaymentPrefs = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="payment_details"'));
 			if(isset($shopPaymentPrefs[2]) && isset($shopPaymentPrefs[3]) && isset($shopPaymentPrefs[4])){
 				$emosBillingCity = substr($_SESSION['webuser'][$shopPaymentPrefs[3]], 0, 1) . "/" . substr($_SESSION['webuser'][$shopPaymentPrefs[3]], 0, 2) . "/" . $_SESSION['webuser'][$shopPaymentPrefs[4]] . "/" . $_SESSION['webuser'][$shopPaymentPrefs[3]];
 				//$emosBillingStreet = $_SESSION['webuser'][$shopPaymentPrefs[2]];

@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 /* * ***************************************************************************
@@ -48,7 +48,7 @@ if(!defined('CONF_SAVED_VERSION') || (defined('CONF_SAVED_VERSION') && (intval(W
 	//resave config file(s)
 	we_base_preferences::check_global_config(true);
 }
-we_util_File::checkAndMakeFolder($_SERVER['DOCUMENT_ROOT'] . WE_THUMBNAIL_DIRECTORY);
+we_base_file::checkAndMakeFolder($_SERVER['DOCUMENT_ROOT'] . WE_THUMBNAIL_DIRECTORY);
 
 define('LOGIN_DENIED', 4);
 define('LOGIN_OK', 2);
@@ -142,6 +142,14 @@ function showMessage(message, prio, win){
 	}
 }') .
 	'</head>';
+}
+function cleanWEZendCache(){
+	if(file_exists(ZENDCACHE_PATH . 'clean')){
+		$cache = getWEZendCache();
+		$cache->clean(Zend_Cache::CLEANING_MODE_ALL);
+//remove file
+		unlink(ZENDCACHE_PATH . 'clean');
+	}
 }
 
 /* * ***************************************************************************
@@ -476,7 +484,7 @@ if(isset($_POST['checkLogin']) && empty($_COOKIE)){
 	echo we_html_element::htmlBody(array('style' => 'background-color:#386AAB; height:100%;', "onload" => (($login == LOGIN_OK) ? "open_we();" : "document.loginForm.username.focus();document.loginForm.username.select();")), $_layout . ((isset($_body_javascript)) ? we_html_element::jsElement($_body_javascript) : '')) . '</html>';
 }
 flush();
-if(defined("SCHEDULE_TABLE") && (!isset($SEEM_edit_include) || !$SEEM_edit_include)){
+if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && (!isset($SEEM_edit_include) || !$SEEM_edit_include)){
 	session_write_close();
 	// trigger scheduler
 	we_schedpro::trigger_schedule();

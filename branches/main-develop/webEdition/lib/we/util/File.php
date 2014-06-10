@@ -16,7 +16,7 @@
  *
  *
  * @category   we
- * @package    we_util
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
@@ -190,7 +190,7 @@ abstract class we_util_File extends we_base_file{
 		return rtrim($value, '/');
 	}
 
-	public static function compressDirectoy($directoy, $destinationfile){
+	public static function compressDirectory($directoy, $destinationfile){
 		if(!is_dir($directoy)){
 			return false;
 		}
@@ -215,7 +215,7 @@ abstract class we_util_File extends we_base_file{
 		return true;
 	}
 
-	public static function decompressDirectoy($gzfile, $destination){
+	public static function decompressDirectory($gzfile, $destination){
 		if(!is_file($gzfile)){
 			return false;
 		}

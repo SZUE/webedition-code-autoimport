@@ -24,7 +24,7 @@
  * not receive this file, see http://www.horde.org/licenses/lgpl21.
  *
  * @author  Geoffrey T. Dairiki <dairiki@dairiki.org>
- * @package Text_Diff
+ * @package none
  */
 class Horde_Text_Diff_Engine_Native
 {

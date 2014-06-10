@@ -16,7 +16,7 @@
  *
  *
  * @category   we
- * @package    we_app
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 require_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we.inc.php");
@@ -25,7 +25,7 @@ require_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we.inc.php");
  * class for administrating webEdition applications (formerly known as "tools")
  *
  * @category   we
- * @package    we_app
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_app_Common{
@@ -784,10 +784,10 @@ class we_app_Common{
 				if(is_dir($path)){
 					$ACTIVECONSTANT = 'WEAPP_' . strtoupper($appname) . '_ACTIVE';
 					if(is_readable($path . "conf/define.conf.php") && is_readable($path . "conf/meta.conf.php")){
-						$dieConf = we_util_File::load($path . "conf/define.conf.php");
+						$dieConf = we_base_file::load($path . "conf/define.conf.php");
 						$dieConf = str_replace('define("' . $ACTIVECONSTANT . '",false)', 'define("' . $ACTIVECONSTANT . '",true)', $dieConf);
 						we_util_File::save($path . "conf/define.conf.php", $dieConf);
-						$dieConf2 = we_util_File::load($path . "conf/meta.conf.php");
+						$dieConf2 = we_base_file::load($path . "conf/meta.conf.php");
 						$dieConf2 = str_replace("appdisabled'=>1", "appdisabled'=>0", $dieConf2);
 						we_util_File::save($path . "conf/meta.conf.php", $dieConf2);
 						$entry["active"] = "true";
@@ -830,10 +830,10 @@ class we_app_Common{
 				if(is_dir($path)){
 					$ACTIVECONSTANT = 'WEAPP_' . strtoupper($appname) . '_ACTIVE';
 					if(is_readable($path . "conf/define.conf.php") && is_readable($path . "conf/meta.conf.php")){
-						$dieConf = we_util_File::load($path . "conf/define.conf.php");
+						$dieConf = we_base_file::load($path . "conf/define.conf.php");
 						$dieConf = str_replace('define("' . $ACTIVECONSTANT . '",true)', 'define("' . $ACTIVECONSTANT . '",false)', $dieConf);
 						we_util_File::save($path . "conf/define.conf.php", $dieConf);
-						$dieConf2 = we_util_File::load($path . "conf/meta.conf.php");
+						$dieConf2 = we_base_file::load($path . "conf/meta.conf.php");
 						$dieConf2 = str_replace("appdisabled'=>0", "appdisabled'=>1", $dieConf2);
 						we_util_File::save($path . "conf/meta.conf.php", $dieConf2);
 						$entry["active"] = "false";

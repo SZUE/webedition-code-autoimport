@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -445,7 +445,7 @@ class we_glossary_glossary extends weModelBase{
 
 	function getExceptionFilename($language){
 		$fileDir = WE_GLOSSARY_MODULE_PATH . 'dict/';
-		if(!is_dir($fileDir) && !we_util_File::createLocalFolder($fileDir)){
+		if(!is_dir($fileDir) && !we_base_file::createLocalFolder($fileDir)){
 			return false;
 		}
 

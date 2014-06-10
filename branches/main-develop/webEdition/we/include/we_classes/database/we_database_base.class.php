@@ -19,12 +19,14 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package database
+ * @internal
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 /* * this is the abstract super class for DB connections */
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf.inc.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_db_tools.inc.php');
 
 abstract class we_database_base{
 
@@ -114,36 +116,36 @@ abstract class we_database_base{
 	/** get the no of rows in the resultset
 	 * @return int row count
 	 */
-	abstract function num_rows();
+	abstract public function num_rows();
 
 	/** get the count of fields in the result-set
 	 * @return int no of fields
 	 */
-	abstract function num_fields();
+	abstract public function num_fields();
 
 	/** get the name of the field no
 	 * @param $no int field no
 	 * @return string orignal name of the field
 	 */
-	abstract function field_name($no);
+	abstract public function field_name($no);
 
 	/** get the type of the field no
 	 * @param $no int field no
 	 * @return string type of the field
 	 */
-	abstract function field_type($no);
+	abstract public function field_type($no);
 
 	/** get the name of the table field no is located
 	 * @param $no int field no
 	 * @return string orignal table location of the field
 	 */
-	abstract function field_table($no);
+	abstract public function field_table($no);
 
 	/** get the lenght of the field no
 	 * @param $no int field no
 	 * @return int length inside the tabledef. of the field
 	 */
-	abstract function field_len($no);
+	abstract public function field_len($no);
 
 	/** get the flags of the field no
 	 * @param $no int field no
@@ -185,11 +187,15 @@ abstract class we_database_base{
 
 	/**
 	 * Fill connection pool
+	 * @internal
 	 */
 	public function __destruct(){
 		$this->free();
 	}
 
+	/**
+	 * @internal
+	 */
 	private function repool(){
 		if($this->Link_ID && $this->Database == DB_DATABASE){
 			self::$pool[] = $this->Link_ID;
@@ -199,6 +205,7 @@ abstract class we_database_base{
 
 	/**
 	 * called on serialize of this class, closes db connection
+	 * @internal
 	 * @return type empty array
 	 */
 	public function __sleep(){
@@ -208,6 +215,7 @@ abstract class we_database_base{
 
 	/**
 	 * called if this class is unserialized
+	 * @internal
 	 */
 	public function __wakeup(){
 		$this->_connect();
@@ -229,7 +237,7 @@ abstract class we_database_base{
 	/**
 	 * Only for debug
 	 */
-	static function showStat(){
+	public static function showStat(){
 		echo 'tried connections: ' . self::$conCount . '<br>' . 'real connections: ' . self::$linkCount;
 	}
 
@@ -249,7 +257,7 @@ abstract class we_database_base{
 	 * @param array/string $inp value to escape for sql-query
 	 * @return array/string
 	 */
-	function escape($inp){
+	public function escape($inp){
 		return escape_sql_query($inp);
 	}
 
@@ -267,7 +275,7 @@ abstract class we_database_base{
 	 * @param bool $allowUnion this parameter is deprecated; it determines if the query is allowed to have unions
 	 * @return bool true, if the query was successfull
 	 */
-	function query($Query_String, $allowUnion = false, $unbuffered = false){
+	public function query($Query_String, $allowUnion = false, $unbuffered = false){
 		if($Query_String == ''){
 			return true;
 		}
@@ -449,7 +457,7 @@ abstract class we_database_base{
 	 * get an array with all field names from a previous query
 	 * @return array in order of the query, all fields are added with their name, having one name per row
 	 */
-	function fieldNames(){
+	public function fieldNames(){
 		$res = array();
 		if(!($this->Query_ID)){
 			return $res;
@@ -466,7 +474,7 @@ abstract class we_database_base{
 	 * @param string $like if given, make a like query, without any %
 	 * @return array all tables (named like $like)
 	 */
-	function table_names($like = ''){
+	public function table_names($like = ''){
 		$this->query('SHOW TABLES' . (($like != '') ? ' LIKE "' . $like . '"' : ''));
 		$return = array();
 		while($this->next_record()){
@@ -710,7 +718,7 @@ abstract class we_database_base{
 	/** Unlock all locked tables
 	 * @return bool true, on success
 	 */
-	function unlock(){
+	public function unlock(){
 		if(!$this->isConnected() && !$this->_connect()){
 			return false;
 		}

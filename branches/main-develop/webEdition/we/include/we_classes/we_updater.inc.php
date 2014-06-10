@@ -15,7 +15,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 //FIXME: remove this file almost complete; at least all DB queries. Replace by Update-Script calls on DB-Files.
@@ -202,7 +202,7 @@ class we_updater{
 	}
 
 	static function updateScheduler(){
-		if(defined("SCHEDULE_TABLE")){
+		if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 			we_schedpro::check_and_convert_to_sched_pro();
 		}
 		return true;
@@ -365,7 +365,7 @@ class we_updater{
 			$db->query('DELETE FROM ' . CONTENT_TABLE . ' WHERE ID IN (' . implode(',', $del) . ')');
 		}
 
-		if(defined('SCHEDULE_TABLE')){
+		if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 			$db->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE ClassName != "we_objectFile" AND DID NOT IN (SELECT ID FROM ' . FILE_TABLE . ')');
 
 			if(defined('OBJECT_FILES_TABLE')){

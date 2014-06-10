@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_import_wizardBase{
@@ -317,7 +317,7 @@ top.wizcmd.we_import(1,-2' . ((weRequest('string', 'type') == we_import_function
 					switch($v["type"]){
 						case we_import_functions::TYPE_WE_XML:
 
-							print we_html_element::jsElement('
+							echo we_html_element::jsElement('
 if (top.wizbody && top.wizbody.addLog){
 	top.wizbody.addLog("' . addslashes(we_html_tools::getPixel(10, 10)) . '<br>");
 	top.wizbody.addLog("' . addslashes(we_html_tools::getPixel(10, 10)) . we_html_element::htmlB(g_l('import', '[start_import]') . ' - ' . date("d.m.Y H:i:s")) . '<br><br>");
@@ -327,10 +327,10 @@ if (top.wizbody && top.wizbody.addLog){
 							flush();
 
 							$path = TEMP_PATH . we_base_file::getUniqueId() . '/';
-							we_util_File::createLocalFolder($path);
+							we_base_file::createLocalFolder($path);
 
 							if(is_dir($path)){
-								$num_files = weXMLImport::splitFile($_SERVER['DOCUMENT_ROOT'] . $v['import_from'], $path, 1);
+								$num_files = we_exim_XMLImport::splitFile($_SERVER['DOCUMENT_ROOT'] . $v['import_from'], $path, 1);
 								++$num_files;
 							}
 							break;
@@ -360,7 +360,7 @@ if (top.wizbody && top.wizbody.addLog){
 							$unique_id = we_base_file::getUniqueId(); // #6590, changed from: uniqid(microtime())
 
 							$path = TEMP_PATH . $unique_id;
-							we_util_File::createLocalFolder($path);
+							we_base_file::createLocalFolder($path);
 
 							if($cp->isOK()){
 								$fieldnames = ($v['csv_fieldnames']) ? 0 : 1;
@@ -416,7 +416,7 @@ if (top.wizbody && top.wizbody.addLog){
 
 							if(intval($v['cid']) == 0){
 								// clear session data
-								weXMLExIm::unsetPerserves();
+								we_exim_XMLExIm::unsetPerserves();
 							}
 
 							$ref = false;
@@ -460,9 +460,9 @@ if (top.wizbody && top.wizbody.addLog){
 
 								for($i = 0; $i < $xmlExIm->UpdateItemsCount; $i++){
 									$ref = $xmlExIm->RefTable->getNext();
-									if(!empty($ref)){
+									if($ref){
 										if(isset($ref->ContentType) && isset($ref->ID)){
-											$doc = weContentProvider::getInstance($ref->ContentType, $ref->ID, $ref->Table);
+											$doc = we_exim_contentProvider::getInstance($ref->ContentType, $ref->ID, $ref->Table);
 										}
 										$xmlExIm->updateObject($doc);
 									} else {
@@ -489,7 +489,7 @@ setTimeout('we_import(1," . $v['numFiles'] . ");',15);";
 
 								$xmlExIm->unsetPerserves();
 							} else { // do import
-								$xmlExIm = new weXMLImport();
+								$xmlExIm = new we_exim_XMLImport();
 								$chunk = $v["uniquePath"] . basename($v["import_from"]) . "_" . $v["cid"];
 								if(file_exists($chunk)){
 									$xmlExIm->loadPerserves();
@@ -550,10 +550,6 @@ setTimeout('we_import(1," . $v['numFiles'] . ");',15);";
 														g_l('import', '[' . $ref->ContentType . ']') : ''
 													)
 											) . '  ' . $_path_info;
-
-										/* if(strlen($_progress_text) > 75){
-										  $_progress_text = addslashes(substr($_progress_text, 0, 65) . '<abbr title="' . $_path_info . '">...</abbr>' . substr($_progress_text, -10));
-										  } */
 
 										echo we_html_element::jsElement(
 											'if (top.wizbody.addLog){

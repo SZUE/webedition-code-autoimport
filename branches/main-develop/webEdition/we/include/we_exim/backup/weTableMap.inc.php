@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 $tableMap = array(
@@ -81,7 +81,7 @@ if(defined('CUSTOMER_TABLE')){
 
 if(defined('SHOP_TABLE')){
 	$tableMap['shop'] = array(
-		strtolower(stripTblPrefix(ANZEIGE_PREFS_TABLE)) => ANZEIGE_PREFS_TABLE,
+		strtolower(stripTblPrefix(WE_SHOP_PREFS_TABLE)) => WE_SHOP_PREFS_TABLE,
 		strtolower(stripTblPrefix(SHOP_TABLE)) => SHOP_TABLE,
 		strtolower(stripTblPrefix(WE_SHOP_VAT_TABLE)) => WE_SHOP_VAT_TABLE
 	);
@@ -131,13 +131,13 @@ if(defined('BANNER_TABLE')){
 	);
 }
 
-if(defined('SCHEDULE_TABLE')){
+if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 	$tableMap['schedule'] = array(
 		strtolower(stripTblPrefix(SCHEDULE_TABLE)) => SCHEDULE_TABLE
 	);
 }
 
-if(defined('EXPORT_TABLE')){
+if(we_base_moduleInfo::isActive(we_base_moduleInfo::EXPORT)){
 	$tableMap['export'] = array(
 		strtolower(stripTblPrefix(EXPORT_TABLE)) => EXPORT_TABLE
 	);

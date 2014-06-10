@@ -5,7 +5,7 @@ require_once 'Zend/Controller/Action.php';
  * Base Home Controller
  * 
  * @category   app
- * @package    app_controller
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class HomeController extends Zend_Controller_Action

@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_backup_export{
@@ -48,7 +48,7 @@ abstract class we_backup_export{
 				'type' => 'create'
 			);
 
-			weContentProvider::object2xml($_object, $_fh, $_attributes, $_SESSION['weS']['weBackupVars']['write']);
+			we_exim_contentProvider::object2xml($_object, $_fh, $_attributes, $_SESSION['weS']['weBackupVars']['write']);
 
 			$_SESSION['weS']['weBackupVars']['write']($_fh, we_backup_backup::backupMarker . "\n");
 		}
@@ -100,7 +100,7 @@ abstract class we_backup_export{
 			$_object->load($_keyvalue);
 
 
-			weContentProvider::object2xml($_object, $_fh, $_attributes);
+			we_exim_contentProvider::object2xml($_object, $_fh, $_attributes);
 			fwrite($_fh, we_backup_backup::backupMarker . "\n");
 
 
@@ -112,9 +112,9 @@ abstract class we_backup_export{
 								we_backup_util::addLog(sprintf('Exporting binary data for item %s:%s', $_table, $_object->ID));
 							}
 
-							$bin = weContentProvider::getInstance('weBinary', $_object->ID);
+							$bin = we_exim_contentProvider::getInstance('weBinary', $_object->ID);
 
-							weContentProvider::binary2file($bin, $_fh, $_SESSION['weS']['weBackupVars']['write']);
+							we_exim_contentProvider::binary2file($bin, $_fh, $_SESSION['weS']['weBackupVars']['write']);
 						}
 						break;
 
@@ -123,9 +123,9 @@ abstract class we_backup_export{
 							we_backup_util::addLog(sprintf('Exporting version data for item %s:%s', $_table, $_object->ID));
 						}
 
-						$bin = weContentProvider::getInstance('weVersion', $_object->ID);
+						$bin = we_exim_contentProvider::getInstance('weVersion', $_object->ID);
 
-						weContentProvider::version2file($bin, $_fh, $_SESSION['weS']['weBackupVars']['write']);
+						we_exim_contentProvider::version2file($bin, $_fh, $_SESSION['weS']['weBackupVars']['write']);
 						break;
 				}
 			}

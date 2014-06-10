@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 //NOTE: there is no need to add any variables to we_conf_global.inc.php.default anymore.
@@ -77,10 +77,10 @@ $GLOBALS['configs'] = array(
 		'HIDENAMEATTRIBINWEFORM_DEFAULT' => array('Default setting for hide name attribute in weform output', false),
 // we_css
 		'CSSAPPLYTO_DEFAULT' => array('Default setting for we:css attribute applyto', 'around'),
+		'FILE_UPLOADER_MAX_UPLOAD_SIZE' => array('Set the maximum size a file can have', 8),
+		'FILE_UPLOAD_USE_LEGACY' => array('If the old uploader without d&d should be used (deprecated)'),
 // hooks
 		'EXECUTE_HOOKS' => array('Default setting for hook execution', false),
-// php local scope == global scope
-		'PHPLOCALSCOPE' => array('Default setting for assuming php local scope == global scope ', false),
 		'BASE_IMG' => array('url used prior all internal we:img tags', ''),
 		'BASE_CSS' => array('url used prior all we:css tags', ''),
 		'BASE_JS' => array('url used prio all we:js tags', ''),

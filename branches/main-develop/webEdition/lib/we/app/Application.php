@@ -16,7 +16,7 @@
  *
  *
  * @category   we
- * @package    we_app
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 require_once 'Zend/Config/Xml.php';
@@ -35,7 +35,7 @@ Zend_Loader::loadClass('we_app_Installer');
  * class for webEdition applications (formerly known as "tools")
  *
  * @category   we
- * @package    we_app
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  * @internal   all default properties of an applications are to be read from webEdition/lib/we/app/defaults/manifest.xml
  */

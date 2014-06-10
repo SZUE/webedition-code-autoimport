@@ -18,7 +18,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
@@ -119,7 +119,7 @@ echo we_html_tools::getHtmlTop() .
 
 
 /* * ************ some config  ************** */
-$feldnamen = explode("|", f("SELECT strFelder from " . ANZEIGE_PREFS_TABLE . " WHERE strDateiname = 'shop_pref'", "strFelder", $DB_WE));
+$feldnamen = explode("|", f("SELECT strFelder from " . WE_SHOP_PREFS_TABLE . " WHERE strDateiname = 'shop_pref'", "strFelder", $DB_WE));
 $waehr = "&nbsp;" . oldHtmlspecialchars($feldnamen[0]);
 $dbPreisname = "Preis";
 $numberformat = $feldnamen[2];

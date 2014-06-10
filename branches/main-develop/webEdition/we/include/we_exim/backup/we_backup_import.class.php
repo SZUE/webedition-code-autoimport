@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_backup_import{
@@ -28,8 +28,8 @@ class we_backup_import{
 		we_backup_util::addLog(sprintf('Reading offset %s, %s lines, Mem: %s', $offset, $lines, memory_get_usage(true)));
 		we_backup_util::writeLog();
 		$header = (isset($_SESSION['weS']['weBackupVars']['options']['convert_charset']) && $_SESSION['weS']['weBackupVars']['options']['convert_charset'] ?
-				weXMLExIm::getHeader($_SESSION['weS']['weBackupVars']['encoding'], 'backup') :
-				weXMLExIm::getHeader('', 'backup'));
+				we_exim_XMLExIm::getHeader($_SESSION['weS']['weBackupVars']['encoding'], 'backup') :
+				we_exim_XMLExIm::getHeader('', 'backup'));
 		$data = $header . we_backup_fileReader::readLine($filename, $offset, $lines, $iscompressed);
 
 		if(strlen($data) == strlen($header)){
@@ -99,11 +99,11 @@ class we_backup_import{
 					} else {
 						$attr = $parser->getNodeAttributes();
 						if(version_compare($_SESSION['weS']['weBackupVars']['weVersion'], '6.3.3.1', '>')){
-							$object->$name = weContentProvider::getDecodedData(($attr && isset($attr[weContentProvider::CODING_ATTRIBUTE]) ? $attr[weContentProvider::CODING_ATTRIBUTE] : weContentProvider::CODING_NONE), $parser->getNodeData());
+							$object->$name = we_exim_contentProvider::getDecodedData(($attr && isset($attr[we_exim_contentProvider::CODING_ATTRIBUTE]) ? $attr[we_exim_contentProvider::CODING_ATTRIBUTE] : we_exim_contentProvider::CODING_NONE), $parser->getNodeData());
 						} else {
 							// import field
-							$object->$name = (weContentProvider::needCoding($classname, $name, weContentProvider::CODING_OLD) ?
-									weContentProvider::decode($parser->getNodeData()) :
+							$object->$name = (we_exim_contentProvider::needCoding($classname, $name, we_exim_contentProvider::CODING_OLD) ?
+									we_exim_contentProvider::decode($parser->getNodeData()) :
 									$parser->getNodeData()); //original mit Bug #3412 aber diese Version l�st 4092
 						}
 

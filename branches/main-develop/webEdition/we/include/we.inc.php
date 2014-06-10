@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 // exit if script called directly
@@ -56,7 +56,7 @@ if(!isset($GLOBALS['we'])){
 	$GLOBALS['we'] = array();
 }
 
-if(ini_get('session.gc_probability') != '0' /*&& !@opendir(session_save_path())*/){
+if(ini_get('session.gc_probability') != '0' /* && !@opendir(session_save_path()) */){
 //	$GLOBALS['FOUND_SESSION_PROBLEM'] = ini_get('session.gc_probability');
 	ini_set('session.gc_probability', '0');
 	//won't work with apps like phpmyadmin session_save_path($_SERVER['DOCUMENT_ROOT'] . TEMP_DIR);
@@ -82,10 +82,21 @@ if(empty($GLOBALS['_we_active_integrated_modules']) || !in_array('users', $GLOBA
 	include_once (WE_INCLUDES_PATH . 'conf/we_active_integrated_modules.inc.php.default');
 }
 //$GLOBALS['_we_active_integrated_modules'][] = 'navigation';//TODO: remove when navigation is completely implemented as a module
-
+//FIXME: don't include all confs!
 foreach($GLOBALS['_we_active_integrated_modules'] as $active){
-	if(file_exists(WE_MODULES_PATH . $active . '/we_conf_' . $active . '.inc.php')){
-		require_once (WE_MODULES_PATH . $active . '/we_conf_' . $active . '.inc.php');
+	switch($active){
+		case 'schedule':
+		case 'export':
+		case 'editor':
+		case 'users':
+		case 'navigation':
+			//currently we can't omit, since table checks (weRequest) depends on defined const's
+			//break;
+		default:
+
+			if(file_exists(WE_MODULES_PATH . $active . '/we_conf_' . $active . '.inc.php')){
+				require_once (WE_MODULES_PATH . $active . '/we_conf_' . $active . '.inc.php');
+			}
 	}
 }
 
@@ -125,8 +136,6 @@ if(!isset($GLOBALS['WE_IS_DYN'])){ //only true on dynamic frontend pages
 			$_SESSION['prefs']['BackendCharset'] : 'UTF-8');
 
 	include_once (WE_INCLUDES_PATH . 'define_styles.inc.php');
-	//FIXME: remove
-	include_once (WE_INCLUDES_PATH . 'we_available_modules.inc.php');
 	//FIXME: needed by liveupdate, calls old protect directly remove in 6.4
 	require_once (WE_INCLUDES_PATH . 'we_perms.inc.php');
 

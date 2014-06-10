@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_objectFile extends we_document{
@@ -74,7 +74,7 @@ class we_objectFile extends we_document{
 		$this->PublWhenSave = 0;
 		$this->IsTextContentDoc = true;
 		array_push($this->persistent_slots, 'CSS', 'DefArray', 'Text', 'AllowedClasses', 'Templates', 'ExtraTemplates', 'Workspaces', 'ExtraWorkspaces', 'ExtraWorkspacesSelected', 'RootDirPath', 'rootDirID', 'TableID', 'ObjectID', 'Category', 'IsSearchable', 'Charset', 'Language', 'Url', 'TriggerID');
-		if(defined('SCHEDULE_TABLE')){
+		if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 			array_push($this->persistent_slots, 'FromOk', 'ToOk', 'From', 'To');
 		}
 		if(!isset($GLOBALS['WE_IS_DYN'])){
@@ -2351,16 +2351,18 @@ class we_objectFile extends we_document{
 	public function we_load($from = we_class::LOAD_MAID_DB){
 		switch($from){
 			case we_class::LOAD_SCHEDULE_DB:
-				$sessDat = f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . " AND ClassName='" . $this->ClassName . "' AND Was=" . we_schedpro::SCHEDULE_FROM, '', $this->DB_WE);
-				if($sessDat){
-					$this->i_getPersistentSlotsFromDB(/* "Path,Text,ParentID,CreatorID,Published,ModDate,Owners,ModifierID,RestrictOwners,OwnersReadOnly,IsSearchable,Charset,Url,TriggerID" */);
-					if($this->i_initSerializedDat(unserialize(substr_compare($sessDat, 'a:', 0, 2) == 0 ? $sessDat : gzuncompress($sessDat)))){
+				if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
+					$sessDat = f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . " AND ClassName='" . $this->ClassName . "' AND Was=" . we_schedpro::SCHEDULE_FROM, '', $this->DB_WE);
+					if($sessDat){
+						$this->i_getPersistentSlotsFromDB(/* "Path,Text,ParentID,CreatorID,Published,ModDate,Owners,ModifierID,RestrictOwners,OwnersReadOnly,IsSearchable,Charset,Url,TriggerID" */);
+						if($this->i_initSerializedDat(unserialize(substr_compare($sessDat, 'a:', 0, 2) == 0 ? $sessDat : gzuncompress($sessDat)))){
 
-						//make sure at least TableID is set from db
-						//and Published as well #5742
-						$this->i_getPersistentSlotsFromDB('TableID,Published');
-						$this->i_getUniqueIDsAndFixNames();
-						break;
+							//make sure at least TableID is set from db
+							//and Published as well #5742
+							$this->i_getPersistentSlotsFromDB('TableID,Published');
+							$this->i_getUniqueIDsAndFixNames();
+							break;
+						}
 					}
 				}
 				$from = we_class::LOAD_MAID_DB;
@@ -2711,11 +2713,11 @@ class we_objectFile extends we_document{
 	}
 
 	function i_scheduleToBeforeNow(){
-		return (defined('SCHEDULE_TABLE') && ($this->To < time() && $this->ToOk));
+		return (we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && ($this->To < time() && $this->ToOk));
 	}
 
 	function i_publInScheduleTable(){
-		return (defined('SCHEDULE_TABLE') ?
+		return (we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) ?
 				we_schedpro::publInScheduleTable($this, $this->DB_WE) :
 				false);
 	}

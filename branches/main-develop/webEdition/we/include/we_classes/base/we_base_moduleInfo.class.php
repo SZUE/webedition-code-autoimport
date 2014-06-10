@@ -2,6 +2,22 @@
 
 abstract class we_base_moduleInfo{
 
+	const BANNER = 'banner';
+	const CUSTOMER = 'customer';
+	const EDITOR = 'editor';
+	const EXPORT = 'export';
+	const GLOSSARY = 'glossary';
+	const MESSAGING = 'messaging';
+	const NAVIGATION = 'navigation';
+	const NEWSLETTER = 'newsletter';
+	const OBJECT = 'object';
+	const SCHEDULER = 'schedule';
+	const SHOP = 'shop';
+	const SPELLCHECKER = 'spellchecker';
+	const USERS = 'users';
+	const VOTING = 'voting';
+	const WORKFLOW = 'workflow';
+
 	private static $we_available_modules = '';
 
 	private static function init(){
@@ -114,8 +130,13 @@ abstract class we_base_moduleInfo{
 	}
 
 	static function isActive($modul){
-		self::init();
-		return in_array($modul, $GLOBALS['_we_active_integrated_modules']);
+		$ret = in_array($modul, $GLOBALS['_we_active_integrated_modules']);
+		if($ret){
+			if(file_exists(WE_MODULES_PATH . $modul . '/we_conf_' . $modul . '.inc.php')){
+				require_once (WE_MODULES_PATH . $modul . '/we_conf_' . $modul . '.inc.php');
+			}
+		}
+		return $ret;
 	}
 
 	static function getModuleData($module){

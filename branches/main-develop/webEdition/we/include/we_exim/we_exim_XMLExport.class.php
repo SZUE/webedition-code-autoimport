@@ -19,10 +19,10 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weXMLExport extends weXMLExIm{
+class we_exim_XMLExport extends we_exim_XMLExIm{
 
 	var $db;
 	var $prepare = true;
@@ -37,7 +37,7 @@ class weXMLExport extends weXMLExIm{
 
 	function export($id, $ct, $fname, $table = "", $export_binary = true, $compression = ""){
 		update_time_limit(0);
-		$doc = weContentProvider::getInstance($ct, $id, $table);
+		$doc = we_exim_contentProvider::getInstance($ct, $id, $table);
 		// add binary data separately to stay compatible with the new binary feature in v5.1
 		if(isset($doc->ContentType) && (
 			strpos($doc->ContentType, "image/") === 0 ||
@@ -61,7 +61,7 @@ class weXMLExport extends weXMLExIm{
 			$params["ContentType"] = "doctype";
 		}
 
-		$this->RefTable->setProp($params, "Eximed", 1);
+		$this->RefTable->setProp($params, "Examined", 1);
 
 		$classname = (isset($doc->Pseudo) ? $doc->Pseudo : $doc->ClassName);
 
@@ -80,12 +80,12 @@ class weXMLExport extends weXMLExIm{
 				}
 				break;
 			case "weBinary":
-				weContentProvider::binary2file($doc, $fh);
+				we_exim_contentProvider::binary2file($doc, $fh);
 				break;
 		}
 
 		if($classname != "weBinary"){
-			weContentProvider::object2xml($doc, $fh, $attribute);
+			we_exim_contentProvider::object2xml($doc, $fh, $attribute);
 		}
 
 		fwrite($fh, we_backup_backup::backupMarker . "\n");
@@ -93,9 +93,9 @@ class weXMLExport extends weXMLExIm{
 		if($classname == "we_backup_tableItem" && $export_binary &&
 			strtolower($doc->table) == strtolower(FILE_TABLE) &&
 			($doc->ContentType == we_base_ContentTypes::IMAGE || stripos($doc->ContentType, "application/") !== false)){
-			$bin = weContentProvider::getInstance("weBinary", $doc->ID);
+			$bin = we_exim_contentProvider::getInstance("weBinary", $doc->ID);
 			$attribute = (isset($bin->attribute_slots) ? $bin->attribute_slots : array());
-			weContentProvider::binary2file($bin, $fh);
+			we_exim_contentProvider::binary2file($bin, $fh);
 		}
 
 		fclose($fh);
@@ -104,45 +104,50 @@ class weXMLExport extends weXMLExIm{
 
 	function getSelectedItems($selection, $extype, $art, $type, $doctype, $classname, $categories, $dir, &$selDocs, &$selTempl, &$selObjs, &$selClasses){
 		$this->db = new DB_WE();
-		if($selection == "manual"){
-			if($extype == "wxml"){
-				$selDocs = array_unique($this->getIDs($selDocs, FILE_TABLE, false));
-				$selTempl = array_unique($this->getIDs($selTempl, TEMPLATES_TABLE, false));
-				$selObjs = defined("OBJECT_FILES_TABLE") ? array_unique($this->getIDs($selObjs, OBJECT_FILES_TABLE, false)) : "";
-				$selClasses = defined("OBJECT_FILES_TABLE") ? array_unique($this->getIDs($selClasses, OBJECT_TABLE, false)) : "";
-			} else {
-				switch($art){
-					case "docs":
-						$selDocs = $this->getIDs($selDocs, FILE_TABLE);
-						break;
-					case "objects":
-						$selObjs = defined("OBJECT_FILES_TABLE") ? $this->getIDs($selObjs, OBJECT_FILES_TABLE) : "";
-						break;
+		switch($selection){
+			case "manual":
+				if($extype == we_import_functions::TYPE_WE_XML){
+					$selDocs = array_unique($this->getIDs($selDocs, FILE_TABLE, false));
+					$selTempl = array_unique($this->getIDs($selTempl, TEMPLATES_TABLE, false));
+					$selObjs = defined("OBJECT_FILES_TABLE") ? array_unique($this->getIDs($selObjs, OBJECT_FILES_TABLE, false)) : "";
+					$selClasses = defined("OBJECT_FILES_TABLE") ? array_unique($this->getIDs($selClasses, OBJECT_TABLE, false)) : "";
+				} else {
+					switch($art){
+						case "docs":
+							$selDocs = $this->getIDs($selDocs, FILE_TABLE);
+							break;
+						case "objects":
+							$selObjs = defined("OBJECT_FILES_TABLE") ? $this->getIDs($selObjs, OBJECT_FILES_TABLE) : "";
+							break;
+					}
 				}
-			}
-		} elseif($type == "doctype"){
-			$cat_sql = ($categories ? we_category::getCatSQLTail('', FILE_TABLE, true, $this->db, 'Category', true, $categories) : '');
-			if($dir != 0){
-				$workspace = id_to_path($dir, FILE_TABLE, $this->db);
-				$ws_where = ' AND (' . FILE_TABLE . ".Path LIKE '" . $this->db->escape($workspace) . "/%' OR " . FILE_TABLE . ".Path='" . $this->db->escape($workspace) . "')";
-			} else {
-				$ws_where = '';
-			}
+				break;
+			case "doctype":
+				$cat_sql = ($categories ? we_category::getCatSQLTail('', FILE_TABLE, true, $this->db, 'Category', true, $categories) : '');
+				if($dir != 0){
+					$workspace = id_to_path($dir, FILE_TABLE, $this->db);
+					$ws_where = ' AND (' . FILE_TABLE . ".Path LIKE '" . $this->db->escape($workspace) . "/%' OR " . FILE_TABLE . ".Path='" . $this->db->escape($workspace) . "')";
+				} else {
+					$ws_where = '';
+				}
 
-			$this->db->query('SELECT distinct ID FROM ' . FILE_TABLE . ' WHERE 1 ' . $ws_where . '  AND ' . FILE_TABLE . '.IsFolder=0 AND ' . FILE_TABLE . '.DocType="' . $this->db->escape($doctype) . '"' . $cat_sql);
-			$selDocs = $this->db->getAll(true);
-		} elseif(defined("OBJECT_FILES_TABLE")){
-			$where = $this->queryForAllowed(OBJECT_FILES_TABLE);
-			$cat_sql = ' ' . ($categories ? we_category::getCatSQLTail('', OBJECT_FILES_TABLE, true, $db, 'Category', true, $categories) : '');
+				$this->db->query('SELECT distinct ID FROM ' . FILE_TABLE . ' WHERE 1 ' . $ws_where . '  AND ' . FILE_TABLE . '.IsFolder=0 AND ' . FILE_TABLE . '.DocType="' . $this->db->escape($doctype) . '"' . $cat_sql);
+				$selDocs = $this->db->getAll(true);
+				break;
+			default:
+				if(defined("OBJECT_FILES_TABLE")){
+					$where = $this->queryForAllowed(OBJECT_FILES_TABLE);
+					$cat_sql = ' ' . ($categories ? we_category::getCatSQLTail('', OBJECT_FILES_TABLE, true, $db, 'Category', true, $categories) : '');
 
-			$this->db->query('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=0 AND TableID=' . intval($classname) . $cat_sql . $where);
-			$selObjs = $this->db->getAll(true);
+					$this->db->query('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=0 AND TableID=' . intval($classname) . $cat_sql . $where);
+					$selObjs = $this->db->getAll(true);
+				}
 		}
 
 		foreach($selDocs as $k => $v){
 			$this->RefTable->add2(array(
 				"ID" => $v,
-				"ContentType" => f('Select ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($v), "ContentType", $this->db),
+				"ContentType" => f('Select ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($v), "", $this->db),
 				"level" => 0
 				)
 			);
@@ -187,7 +192,7 @@ class weXMLExport extends weXMLExIm{
 				if($wsQuery != ''){
 					$wsQuery .=' OR ';
 				}
-				$wsQuery .= " Path LIKE '" . $db->escape($path) . "/%' OR " . weXMLExIm::getQueryParents($path);
+				$wsQuery .= " Path LIKE '" . $db->escape($path) . "/%' OR " . we_exim_XMLExIm::getQueryParents($path);
 				while($path != "/" && $path){
 					$parentpaths[] = $path;
 					$path = dirname($path);

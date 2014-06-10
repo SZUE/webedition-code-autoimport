@@ -2,7 +2,7 @@
  * Base class for app models
  *
  * @category   app
- * @package    app_models
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 

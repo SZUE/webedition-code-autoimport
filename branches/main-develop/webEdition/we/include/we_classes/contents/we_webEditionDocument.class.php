@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_class
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_webEditionDocument extends we_textContentDocument{
@@ -418,7 +418,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			$chars = explode(',', $GLOBALS["meta"]["Charset"]["defined"]);
 
 			//	input field - check value
-			$value = ($this->getElement($name)  ?
+			$value = ($this->getElement($name) ?
 					$this->getElement($name) :
 					(isset($GLOBALS["meta"][$name]) ?
 						$GLOBALS["meta"][$name]["default"] :
@@ -670,12 +670,14 @@ class we_webEditionDocument extends we_textContentDocument{
 	public function we_load($from = we_class::LOAD_MAID_DB){
 		switch($from){
 			case we_class::LOAD_SCHEDULE_DB:
-				$sessDat = f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . " AND ClassName='" . $this->ClassName . "' AND Was=" . we_schedpro::SCHEDULE_FROM, '', $this->DB_WE);
+				if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
+					$sessDat = f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . " AND ClassName='" . $this->ClassName . "' AND Was=" . we_schedpro::SCHEDULE_FROM, '', $this->DB_WE);
 
-				if($sessDat &&
-					$this->i_initSerializedDat(unserialize(substr_compare($sessDat, 'a:', 0, 2) == 0 ? $sessDat : gzuncompress($sessDat)))){
-					$this->i_getPersistentSlotsFromDB('Path,Text,Filename,Extension,ParentID,Published,ModDate,CreatorID,ModifierID,Owners,RestrictOwners');
-					break;
+					if($sessDat &&
+						$this->i_initSerializedDat(unserialize(substr_compare($sessDat, 'a:', 0, 2) == 0 ? $sessDat : gzuncompress($sessDat)))){
+						$this->i_getPersistentSlotsFromDB('Path,Text,Filename,Extension,ParentID,Published,ModDate,CreatorID,ModifierID,Owners,RestrictOwners');
+						break;
+					}
 				}
 				$from = we_class::LOAD_TEMP_DB;
 			//no break;
@@ -687,7 +689,7 @@ class we_webEditionDocument extends we_textContentDocument{
 
 	function i_getDocument($includepath = ''){
 		$glob = array();
-		foreach($GLOBALS as $k => $v){
+		foreach(array_keys($GLOBALS) as $k){
 			if((!preg_match('|^[0-9]|', $k)) && (!preg_match('|[^a-z0-9_]|i', $k)) && $k != '_SESSION' && $k != '_GET' && $k != '_POST' && $k != '_REQUEST' && $k != '_SERVER' && $k != '_FILES' && $k != '_SESSION' && $k != '_ENV' && $k != '_COOKIE'){
 				$glob[] = '$' . $k;
 			}
@@ -744,7 +746,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	}
 
 	function i_publInScheduleTable(){
-		return (defined('SCHEDULE_TABLE') ?
+		return (we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) ?
 				we_schedpro::publInScheduleTable($this, $this->DB_WE) :
 				false);
 	}

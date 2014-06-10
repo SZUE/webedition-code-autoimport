@@ -19,32 +19,31 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifIsActive($attribs){
-	$name = weTag_getAttribute('_name_orig', $attribs);
-	switch($name){
+	switch(weTag_getAttribute('_name_orig', $attribs)){
 		case 'banner':
-			return defined('BANNER_TABLE');
+			return we_base_moduleInfo::isActive(we_base_moduleInfo::BANNER);
 		case 'customer':
-			return defined('CUSTOMER_TABLE');
+			return we_base_moduleInfo::isActive(we_base_moduleInfo::CUSTOMER);
 		case 'glossary':
-			return defined('GLOSSARY_TABLE');
+			return we_base_moduleInfo::isActive(we_base_moduleInfo::GLOSSARY);
 		case 'messaging':
-			return defined('MESSAGES_TABLE');
+			return we_base_moduleInfo::isActive(we_base_moduleInfo::MESSAGING);
 		case 'newsletter':
-			return defined('NEWSLETTER_TABLE');
+			return we_base_moduleInfo::isActive(we_base_moduleInfo::NEWSLETTER);
 		case 'object':
-			return defined('OBJECT_TABLE');
+			return we_base_moduleInfo::isActive(we_base_moduleInfo::OBJECT);
 		case 'shop':
-			return defined('SHOP_TABLE');
+			return we_base_moduleInfo::isActive(we_base_moduleInfo::SHOP);
 		case 'scheduler':
-			return defined('SCHEDULE_TABLE');
+			return we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER);
 		case 'voting':
-			return defined('VOTING_TABLE');
+			return we_base_moduleInfo::isActive(we_base_moduleInfo::VOTING);
 		case 'workflow':
-			return defined('WORKFLOW_TABLE');
+			return we_base_moduleInfo::isActive(we_base_moduleInfo::WORKFLOW);
 
 		default:
 			return false;

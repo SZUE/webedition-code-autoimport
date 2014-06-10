@@ -19,10 +19,10 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weSearchPatterns{
+class we_exim_searchPatterns{
 
 	var $doc_patterns = array("id" => array(), "path" => array());
 	var $obj_patterns = array("id" => array(), "path" => array());

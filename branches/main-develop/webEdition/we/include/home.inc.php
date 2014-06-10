@@ -18,7 +18,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 include_once (WE_INCLUDES_PATH . '/we_widgets/cfg.inc.php');
@@ -922,7 +922,7 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 			}
 		}
 	<?php
-	if(in_array_recursive('usr', $aDat) && defined('USER_TABLE')){
+	if(in_array_recursive('usr', $aDat)){
 		?>
 
 			function setUsersOnline(num) {
@@ -938,7 +938,7 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 			}
 		<?php
 	}
-	if(in_array_recursive('mfd', $aDat) && defined('USER_TABLE')){
+	if(in_array_recursive('mfd', $aDat)){
 		?>
 			function setMfdData(data) {
 				if (gel('mfd_data')) {
@@ -965,6 +965,7 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 	</script>
 	</head>
 	<?php
+	we_base_moduleInfo::isActive(we_base_moduleInfo::USERS);
 	$aCmd = explode('_', weRequest('string', 'we_cmd', '', 0));
 	if($aCmd[0] == 'new'){
 		$in = array(substr($aCmd[2], -3), 1, 1);

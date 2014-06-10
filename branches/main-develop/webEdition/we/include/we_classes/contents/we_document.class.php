@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_class
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once(WE_INCLUDES_PATH . 'we_tag.inc.php');
@@ -51,7 +51,7 @@ class we_document extends we_root{
 		array_push($this->persistent_slots, 'Extension', 'IsDynamic', 'Published', 'Category', 'IsSearchable', 'InGlossar', 'Language', 'schedArr', 'parseFile');
 		$this->Table = FILE_TABLE;
 		if(defined('WE_SIDEBAR')){
-			$this->InWebEdition = 1;
+			$this->InWebEdition = true;
 		}
 	}
 
@@ -713,7 +713,7 @@ class we_document extends we_root{
 	// reverse function to saveInSession !!!
 	function we_initSessDat($sessDat){
 		parent::we_initSessDat($sessDat);
-		if(defined('SCHEDULE_TABLE')){
+		if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 			if(
 				($day = weRequest('int', 'we_' . $this->Name . '_From_day')) && ($month = weRequest('int', 'we_' . $this->Name . '_From_month')) && ($year = weRequest('int', 'we_' . $this->Name . '_From_year')) && ($hour = weRequest('int', 'we_' . $this->Name . '_From_hour')) !== false && ($min = weRequest('int', 'we_' . $this->Name . '_From_minute')) !== false){
 				$this->From = mktime($hour, $min, 0, $month, $day, $year);
@@ -1176,7 +1176,7 @@ class we_document extends we_root{
 				if($hidedirindex && show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 					$path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 				}
-				if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->InWebEdition || f('SELECT Published FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'Published', $db)){
+				if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->InWebEdition || f('SELECT Published FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), '', $db)){
 					return $path;
 				}
 				$GLOBALS['we_link_not_published'] = 1;
@@ -1463,7 +1463,7 @@ class we_document extends we_root{
 	}
 
 	function loadSchedule(){
-		if(defined('SCHEDULE_TABLE')){
+		if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 			$this->DB_WE->query('SELECT * FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . ' AND ClassName="' . $this->DB_WE->escape($this->ClassName) . '"');
 			if($this->DB_WE->num_rows()){
 				$this->schedArr = array();

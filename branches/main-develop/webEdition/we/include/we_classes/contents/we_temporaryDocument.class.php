@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -27,7 +27,7 @@
  * Temporary document
  *
  * @static
- * @package WebEdition.Classes
+ * @package none
  */
 abstract class we_temporaryDocument{
 

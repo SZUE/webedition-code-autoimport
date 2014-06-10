@@ -19,10 +19,10 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weXMLImport extends weXMLExIm{
+class we_exim_XMLImport extends we_exim_XMLExIm{
 
 	var $nodehierarchy = array();
 
@@ -56,230 +56,224 @@ class weXMLImport extends weXMLExIm{
 
 		$save = false;
 		foreach($objects as $object){
+			$save = true;
+			$extra = array(
+				"OldID" => isset($object->ID) ? $object->ID : 0,
+				"OldParentID" => isset($object->ParentID) ? $object->ParentID : 0,
+				"OldPath" => isset($object->Path) ? $object->Path : "",
+				"OldTemplatePath" => isset($object->TemplatePath) ? $object->TemplatePath : "",
+				'OldDocTypeName' => isset($object->DocTypeName) ? $object->DocTypeName : "",
+				"Examined" => 1,
+			);
 
-			$extra = array();
-			if(!empty($object)){
+			if(isset($object->elements)){
+				$extra["elements"] = $object->elements;
+			}
 
-				$save = true;
-				$extra = array(
-					"OldID" => isset($object->ID) ? $object->ID : 0,
-					"OldParentID" => isset($object->ParentID) ? $object->ParentID : 0,
-					"OldPath" => isset($object->Path) ? $object->Path : "",
-					"OldTemplatePath" => isset($object->TemplatePath) ? $object->TemplatePath : "",
-					"Eximed" => 1,
-				);
+			$object->ID = 0;
+			$object->Table = $this->getTable($object->ClassName);
 
-				if(isset($object->elements)){
-					$extra["elements"] = $object->elements;
-				}
-
-				$object->ID = 0;
-				$object->Table = $this->getTable($object->ClassName);
-
-				switch($object->ClassName){
-					case "weModelBase":
-						$extra["ContentType"] = "category";
-						break;
-					case "we_docTypes":
-						$extra["ContentType"] = "doctype";
-						$dtid = f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType="' . $db->escape($object->DocType) . '"', '', $db);
-						if($dtid){
-							if($this->options["handle_collision"] == 'replace'){
-								$object->ID = $dtid;
-							} else if($this->options["handle_collision"] == 'rename'){
-								$this->getNewName($object, $dtid, "DocType");
-							} else {
-								$save = false;
-								continue;
-							}
-						}
-						break;
-					case "weNavigationRule":
-						$nid = f('SELECT ID FROM ' . NAVIGATION_RULE_TABLE . ' WHERE NavigationName="' . $db->escape($object->NavigationName) . '"', '', $db);
-						if($nid){
-							if($this->options["handle_collision"] == "replace"){
-								$object->ID = $nid;
-							} else if($this->options["handle_collision"] == "rename"){
-								$this->getNewName($object, $nid, "NavigationName");
-							} else {
-								$save = false;
-								continue;
-							}
-						}
-						break;
-					case "we_thumbnailEx":
-						$nid = f("SELECT ID FROM " . THUMBNAILS_TABLE . " WHERE Name='" . $db->escape($object->Name) . "'", "", $db);
-						if($nid){
-							if($this->options["handle_collision"] == "replace"){
-								$object->ID = $nid;
-							} else if($this->options["handle_collision"] == "rename"){
-								$this->getNewName($object, $nid, "Name");
-							} else {
-								$save = false;
-								continue;
-							}
-						}
-						break;
-				}
-
-				if(isset($object->Path)){
-					if(isset($object->Table) && !empty($object->Table)){
-						$prefix = '/';
-						switch($object->Table){
-							case FILE_TABLE:
-								if($this->options["document_path"]){
-									$prefix = id_to_path($this->options["document_path"], FILE_TABLE, $db);
-								}
-								$object->Path = $prefix . ($this->options["restore_doc_path"] ?
-										$object->Path :
-										"/" . $object->Text);
-								break;
-							case TEMPLATES_TABLE:
-								if($this->options["template_path"]){
-									$prefix = id_to_path($this->options["template_path"], TEMPLATES_TABLE, $db);
-								}
-								$object->Path = $prefix . ($this->options["restore_tpl_path"] ?
-										$object->Path :
-										"/" . $object->Text);
-								break;
-							case NAVIGATION_TABLE:
-								if($this->options["navigation_path"]){
-									$prefix = id_to_path($this->options["navigation_path"], NAVIGATION_TABLE, $db);
-								}
-								$object->Path = $prefix . $object->Path;
-								break;
-						}
-
-
-						$object->Path = clearPath($object->Path);
-
-						//fix Path if there is a conflict
-						$id = path_to_id($object->Path, $object->Table);
-
-						if($id){
-							if($this->options["handle_collision"] == "replace" ||
-								($object->ClassName == "we_folder" && $this->RefTable->exists(array("OldID" => $object->ID, "Table" => $object->Table)))
-							){
-								$object->ID = $id;
-								if(isset($object->isnew)){
-									$object->isnew = 0;
-								}
-							} else if($this->options["handle_collision"] == "rename"){
-								$this->getNewName($object, $id, "Path");
-							} else {
-								$save = false;
-								continue;
-							}
+			switch($object->ClassName){
+				case "weModelBase":
+					$extra["ContentType"] = "category";
+					break;
+				case "we_docTypes":
+					$extra["ContentType"] = "doctype";
+					$dtid = f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType="' . $db->escape($object->DocType) . '"', '', $db);
+					if($dtid){
+						if($this->options["handle_collision"] == 'replace'){
+							$object->ID = $dtid;
+						} else if($this->options["handle_collision"] == 'rename'){
+							$this->getNewName($object, $dtid, "DocType");
+						} else {
+							$save = false;
+							continue;
 						}
 					}
-					//fix Path ends
-					// set OldPath
-					if(isset($object->OldPath)){
-						$object->OldPath = $object->Path;
+					break;
+				case "weNavigationRule":
+					$nid = f('SELECT ID FROM ' . NAVIGATION_RULE_TABLE . ' WHERE NavigationName="' . $db->escape($object->NavigationName) . '"', '', $db);
+					if($nid){
+						if($this->options["handle_collision"] == "replace"){
+							$object->ID = $nid;
+						} else if($this->options["handle_collision"] == "rename"){
+							$this->getNewName($object, $nid, "NavigationName");
+						} else {
+							$save = false;
+							continue;
+						}
+					}
+					break;
+				case "we_thumbnailEx":
+					$nid = f("SELECT ID FROM " . THUMBNAILS_TABLE . " WHERE Name='" . $db->escape($object->Name) . "'", "", $db);
+					if($nid){
+						if($this->options["handle_collision"] == "replace"){
+							$object->ID = $nid;
+						} else if($this->options["handle_collision"] == "rename"){
+							$this->getNewName($object, $nid, "Name");
+						} else {
+							$save = false;
+							continue;
+						}
+					}
+					break;
+			}
+
+			if(isset($object->Path)){
+				if(isset($object->Table) && !empty($object->Table)){
+					$prefix = '/';
+					switch($object->Table){
+						case FILE_TABLE:
+							if($this->options["document_path"]){
+								$prefix = id_to_path($this->options["document_path"], FILE_TABLE, $db);
+							}
+							$object->Path = $prefix . ($this->options["restore_doc_path"] ?
+									$object->Path :
+									"/" . $object->Text);
+							break;
+						case TEMPLATES_TABLE:
+							if($this->options["template_path"]){
+								$prefix = id_to_path($this->options["template_path"], TEMPLATES_TABLE, $db);
+							}
+							$object->Path = $prefix . ($this->options["restore_tpl_path"] ?
+									$object->Path :
+									"/" . $object->Text);
+							break;
+						case NAVIGATION_TABLE:
+							if($this->options["navigation_path"]){
+								$prefix = id_to_path($this->options["navigation_path"], NAVIGATION_TABLE, $db);
+							}
+							$object->Path = $prefix . $object->Path;
+							break;
 					}
 
-					// assign ParentID and ParentPath based on Path
-					if(isset($object->Table)){
-						$pathids = array();
-						$_old_pid = $object->ParentID;
-						$owner = ($this->options['owners_overwrite'] && $this->options['owners_overwrite_id']) ? $this->options['owners_overwrite_id'] : 0;
-						if(defined("OBJECT_TABLE") && $object->ClassName == 'we_objectFile'){
-							//dont create Path in objects if the class doesn't exist
-							$match = array();
-							preg_match('|(/+[a-zA-Z0-9_+-\.]*)|', $object->Path, $match);
-							if(isset($match[0]) && !f('SELECT 1 FROM ' . OBJECT_TABLE . ' WHERE Path="' . $db->escape($match[0]) . '"  LIMIT 1', '', $db)){
-								return false;
-							}
-						}
-						$object->ParentID = makePath(dirname($object->Path), $object->Table, $pathids, $owner);
-						if(isset($object->ParentPath)){
-							$object->ParentPath = id_to_path($object->ParentID, $object->Table);
-						}
-						// insert new created folders in ref table
-						foreach($pathids as $pid){
 
-							$h = getHash('SELECT ParentID,Path FROM ' . $db->escape($object->Table) . ' WHERE ID=' . intval($pid), $db);
-							if(!$this->RefTable->exists(array("ID" => $pid, "ContentType" => "folder"))){
-								$this->RefTable->add2(
-									array_merge(array(
+					$object->Path = clearPath($object->Path);
+
+					//fix Path if there is a conflict
+					$id = path_to_id($object->Path, $object->Table);
+
+					if($id){
+						if($this->options["handle_collision"] == "replace" ||
+							($object->ClassName == "we_folder" && $this->RefTable->exists(array("OldID" => $object->ID, "Table" => $object->Table)))
+						){
+							$object->ID = $id;
+							if(isset($object->isnew)){
+								$object->isnew = 0;
+							}
+						} else if($this->options["handle_collision"] == "rename"){
+							$this->getNewName($object, $id, "Path");
+						} else {
+							$save = false;
+							continue;
+						}
+					}
+				}
+				//fix Path ends
+				// set OldPath
+				if(isset($object->OldPath)){
+					$object->OldPath = $object->Path;
+				}
+
+				// assign ParentID and ParentPath based on Path
+				if(isset($object->Table)){
+					$pathids = array();
+					$_old_pid = $object->ParentID;
+					$owner = ($this->options['owners_overwrite'] && $this->options['owners_overwrite_id']) ? $this->options['owners_overwrite_id'] : 0;
+					if(defined("OBJECT_TABLE") && $object->ClassName == 'we_objectFile'){
+						//dont create Path in objects if the class doesn't exist
+						$match = array();
+						preg_match('|(/+[a-zA-Z0-9_+-\.]*)|', $object->Path, $match);
+						if(isset($match[0]) && !f('SELECT 1 FROM ' . OBJECT_TABLE . ' WHERE Path="' . $db->escape($match[0]) . '"  LIMIT 1', '', $db)){
+							return false;
+						}
+					}
+					$object->ParentID = makePath(dirname($object->Path), $object->Table, $pathids, $owner);
+					if(isset($object->ParentPath)){
+						$object->ParentPath = id_to_path($object->ParentID, $object->Table);
+					}
+					// insert new created folders in ref table
+					foreach($pathids as $pid){
+
+						$h = getHash('SELECT ParentID,Path FROM ' . $db->escape($object->Table) . ' WHERE ID=' . intval($pid), $db);
+						if(!$this->RefTable->exists(array("ID" => $pid, "ContentType" => "folder"))){
+							$this->RefTable->add2(
+								array(
 									"ID" => $pid,
 									"ParentID" => $h["ParentID"],
 									"Path" => $h["Path"],
 									"Table" => $object->Table,
-									"ContentType" => "folder"
-										), array(
+									"ContentType" => "folder",
 									"OldID" => ($pid == $object->ParentID) ? $_old_pid : null,
 									"OldParentID" => null,
 									"OldPath" => null,
 									"OldTemplatePath" => null,
-									"Eximed" => 0,
-										)
-									)
-								);
-							}
-						}
-					}
-
-					if($object->ClassName == 'weBinary'){
-						if(is_file($_SERVER['DOCUMENT_ROOT'] . $object->Path)){
-							if($this->options['handle_collision'] == 'replace'){
-								$save = true;
-							} else if($this->options['handle_collision'] == 'rename'){
-								$_c = 1;
-								do{
-									$_path = $object->Path . '_' . $_c;
-									$_c++;
-								} while(is_file($_SERVER['DOCUMENT_ROOT'] . $_path));
-								$object->Path = $_path;
-								unset($_path);
-								unset($_c);
-							} else {
-								$save = false;
-							}
-						}
-
-						if($save && !$this->RefTable->exists(array('ID' => $object->ID, 'Path' => $object->Path, 'ContentType' => 'weBinary'))){
-							$this->RefTable->add2(
-								array('ID' => $object->ID,
-									'ParentID' => 0,
-									'Path' => $object->Path,
-									'Table' => $object->Table,
-									'ContentType' => 'weBinary'
+									"Examined" => 0,
 								)
 							);
 						}
 					}
 				}
 
-				if(defined("OBJECT_TABLE") && $object->ClassName == 'we_objectFile'){
-					$ref = $this->RefTable->getRef(
-						array(
-							'OldID' => $object->TableID,
-							'ContentType' => "object"
-						)
-					);
-					if($ref){
-						// assign TableID and ParentID from reference
-						$object->TableID = $ref->ID;
-					} else {
-						//assign TableID based on Path
-						// evaluate root dir for object
-						$match = array();
-						preg_match('|(/+[a-zA-Z0-9_+-\.]*)|', $object->Path, $match);
-						if(isset($match[0])){
-							$object->TableID = f('SELECT ID FROM ' . OBJECT_TABLE . ' WHERE Path="' . $db->escape($match[0]) . '"', '', $db);
+				if($object->ClassName == 'weBinary'){
+					if(is_file($_SERVER['DOCUMENT_ROOT'] . $object->Path)){
+						if($this->options['handle_collision'] == 'replace'){
+							$save = true;
+						} else if($this->options['handle_collision'] == 'rename'){
+							$_c = 1;
+							do{
+								$_path = $object->Path . '_' . $_c;
+								$_c++;
+							} while(is_file($_SERVER['DOCUMENT_ROOT'] . $_path));
+							$object->Path = $_path;
+							unset($_path);
+							unset($_c);
+						} else {
+							$save = false;
 						}
 					}
-				}
 
-				// update owners data
-				$this->refreshOwners($object);
-
-				if($save){
-					$save = $this->saveObject($object);
+					if($save && !$this->RefTable->exists(array('ID' => $object->ID, 'Path' => $object->Path, 'ContentType' => 'weBinary'))){
+						$this->RefTable->add2(
+							array('ID' => $object->ID,
+								'ParentID' => 0,
+								'Path' => $object->Path,
+								'Table' => $object->Table,
+								'ContentType' => 'weBinary'
+							)
+						);
+					}
 				}
-				$this->RefTable->add($object, $extra);
 			}
+
+			if(defined("OBJECT_TABLE") && $object->ClassName == 'we_objectFile'){
+				$ref = $this->RefTable->getRef(
+					array(
+						'OldID' => $object->TableID,
+						'ContentType' => "object"
+					)
+				);
+				if($ref){
+					// assign TableID and ParentID from reference
+					$object->TableID = $ref->ID;
+				} else {
+					//assign TableID based on Path
+					// evaluate root dir for object
+					$match = array();
+					preg_match('|(/+[a-zA-Z0-9_+-\.]*)|', $object->Path, $match);
+					if(isset($match[0])){
+						$object->TableID = f('SELECT ID FROM ' . OBJECT_TABLE . ' WHERE Path="' . $db->escape($match[0]) . '"', '', $db);
+					}
+				}
+			}
+
+			// update owners data
+			$this->refreshOwners($object);
+
+			if($save){
+				$save = $this->saveObject($object);
+			}
+			$this->RefTable->add($object, $extra);
 		}
 		return $save;
 	}
@@ -379,49 +373,55 @@ class weXMLImport extends weXMLExIm{
 						$this->xmlBrowser->gotoMark('we:content');
 						$object->elements = array_merge($object->elements, $content->getElement());
 						break;
-					default:
-						if($nodname == 'ClassName'){
-							$this->nodehierarchy[] = $noddata;
-							switch($noddata){
-								case "we_object":
-									if(defined("OBJECT_TABLE")){
-										$object = new we_object_exImport();
-									}
-									break;
-								case "we_objectFile":
-									if(defined("OBJECT_FILES_TABLE")){
-										$object = new we_objectFile();
-									}
-									break;
-								case 'we_class_folder': //Bug 3857 sonderbehandlung hinzugef�gt, da es sonst hier beim letzten else zum Absturz kommt, es wird nichts geladen, da eigentlich alles geladen ist
-									break;
-								case 'weNavigation':
-								case 'weNavigationRule':
-								case 'we_thumbnailEx':
-								case 'weBinary':
-								default:
-									$object = new $noddata();
-									break;
-							}
+					case 'ClassName':
+						$this->nodehierarchy[] = $noddata;
+						switch($noddata){
+							case "we_object":
+								if(defined("OBJECT_TABLE")){
+									$object = new we_object_exImport();
+								}
+								break;
+							case "we_objectFile":
+								if(defined("OBJECT_FILES_TABLE")){
+									$object = new we_objectFile();
+								}
+								break;
+							case 'we_class_folder': //Bug 3857 sonderbehandlung hinzugef�gt, da es sonst hier beim letzten else zum Absturz kommt, es wird nichts geladen, da eigentlich alles geladen ist
+								break;
+							case 'weNavigation':
+								$object = new we_navigation_navigation();
+								break;
+							case 'weNavigationRule':
+								$object = new we_navigation_rule();
+								break;
+							case 'we_thumbnailEx':
+								$object = new we_exim_thumbnailExport();
+								break;
+							case 'weBinary':
+							default:
+								$object = new $noddata();
+								break;
 						}
+					//no break!
+					default:
 						$node_data[$nodname] = $noddata;
-						$node_coding[$nodname] = $GLOBALS['isNewImport'] ? (isset($attributes[weContentProvider::CODING_ATTRIBUTE]) ? $attributes[weContentProvider::CODING_ATTRIBUTE] : weContentProvider::CODING_NONE) :
-							(weContentProvider::needCoding($node_data['ClassName'], $nodname, weContentProvider::CODING_OLD) ? weContentProvider::CODING_ENCODE : weContentProvider::CODING_NONE);
+						$node_coding[$nodname] = $GLOBALS['isNewImport'] ? (isset($attributes[we_exim_contentProvider::CODING_ATTRIBUTE]) ? $attributes[we_exim_contentProvider::CODING_ATTRIBUTE] : we_exim_contentProvider::CODING_NONE) :
+							(we_exim_contentProvider::needCoding($node_data['ClassName'], $nodname, we_exim_contentProvider::CODING_OLD) ? we_exim_contentProvider::CODING_ENCODE : we_exim_contentProvider::CODING_NONE);
 				}
 			}
 		}
 
-		if(!empty($object)){
+		if($object){
 			$reflect = new ReflectionClass($object);
 			$props = $reflect->getProperties(ReflectionProperty::IS_PRIVATE | ReflectionProperty::IS_PROTECTED);
 			foreach($props as $prop){
 				unset($node_data[$prop->getName()]);
 			}
 
-			weContentProvider::populateInstance($object, $node_data);
+			we_exim_contentProvider::populateInstance($object, $node_data);
 
 			foreach($node_data as $k => $v){
-				$v = weContentProvider::getDecodedData($node_coding[$k], $v);
+				$v = we_exim_contentProvider::getDecodedData($node_coding[$k], $v);
 
 				if($v != $object->$k){
 					$object->$k = $v;
@@ -564,7 +564,7 @@ class weXMLImport extends weXMLExIm{
 		$encoding = we_xml_parser::getEncoding('', $head);
 		$_SESSION['weS']['weXMLimportCharset'] = $encoding;
 		$header = ''; //weXMLExIm::getHeader($encoding);
-		$footer = weXMLExIm::getFooter();
+		$footer = we_exim_XMLExIm::getFooter();
 
 		$buff = "";
 		$filename_tmp = "";
@@ -657,6 +657,38 @@ class weXMLImport extends weXMLExIm{
 		}
 
 		return $num + 1;
+	}
+
+	private function handleTag($tag){
+		switch($tag){
+			case "we:document":
+				return $this->options["handle_documents"];
+			case "we:template":
+				return $this->options["handle_templates"];
+			case "we:class":
+				return $this->options["handle_classes"];
+			case "we:object":
+				return $this->options["handle_objects"];
+			case "we:doctype":
+				return $this->options["handle_doctypes"];
+			case "we:category":
+				return $this->options["handle_categorys"];
+			case "we:content":
+				return $this->options["handle_content"];
+			case "we:table":
+				return $this->options["handle_table"];
+			case "we:tableitem":
+				return $this->options["handle_tableitems"];
+			case "we:binary":
+				return $this->options["handle_binarys"];
+			case "we:navigation":
+				return $this->options["handle_navigation"];
+			case "we:navigationrule":
+				return $this->options["handle_navigation"];
+			case "we:thumbnail":
+				return $this->options["handle_thumbnails"];
+			default: return 1;
+		}
 	}
 
 }

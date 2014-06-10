@@ -19,18 +19,18 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_export_preparer extends weXMLExIm{
+class we_export_preparer extends we_exim_XMLExIm{
 
 	var $RefTable;
 	var $options;
 	var $PatternSearch;
 
 	function __construct(){
-		$this->RefTable = new RefTable();
-		$this->PatternSearch = new weSearchPatterns();
+		$this->RefTable = new we_exim_refTable();
+		$this->PatternSearch = new we_exim_searchPatterns();
 	}
 
 	function getDocumentIncludes($text, $level){
@@ -385,7 +385,7 @@ class we_export_preparer extends weXMLExIm{
 		while($id){
 			$serach = in_array($id->ContentType, $serachCT);
 			if($serach || $this->options["handle_owners"]){
-				$doc = weContentProvider::getInstance($id->ContentType, $id->ID);
+				$doc = we_exim_contentProvider::getInstance($id->ContentType, $id->ID);
 			}
 
 			if($serach && $this->options["export_depth"] > $id->level){

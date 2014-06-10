@@ -20,7 +20,7 @@
  *
  * @author		 Marc Krämer
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  * Filters from "tcpdf_filters.php", Nicola Asuni - Tecnick.com LTD - Manor Coach House, Church Hill, Aldershot, Hants, GU12 4RQ, UK - www.tecnick.com
  */

@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 we_html_tools::protect();
@@ -70,7 +70,7 @@ if(($we_transaction = weRequest('transaction', 'we_transaction'))){ //  initiali
 		//  save file - submit URL to service
 		$tmpFile = $_SERVER['DOCUMENT_ROOT'] . $filename;
 		we_util_File::saveFile($tmpFile, $content);
-		we_util_File::insertIntoCleanUp($tmpFile, time());
+		we_base_file::insertIntoCleanUp($tmpFile, time());
 
 		$url = getServerUrl() . $filename;
 		$http_request->addVar($varname, $url);

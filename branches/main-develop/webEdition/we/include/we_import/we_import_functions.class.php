@@ -19,13 +19,13 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_import_functions{
 
 	const TYPE_CSV = 'CSVImport';
-	const TYPE_GENERIC_XML = 'GXMLImport';
+	const TYPE_GENERIC_XML = 'gxml';
 	const TYPE_WE_XML = 'WXMLImport';
 	const TYPE_LOCAL_FILES = 'import_files';
 	const TYPE_SITE = 'siteImport';

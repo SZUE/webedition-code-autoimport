@@ -19,9 +19,10 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+we_base_moduleInfo::isActive(we_base_moduleInfo::EXPORT);
 class we_export_treeLoader{
 
 	function getItems($pid, $offset = 0, $segment = 500, $sort = ""){

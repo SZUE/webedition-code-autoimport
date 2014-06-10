@@ -16,7 +16,7 @@
  *
  *
  * @category   we
- * @package    we_net
+ * @package none
  * @subpackage we_net_rpc
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */

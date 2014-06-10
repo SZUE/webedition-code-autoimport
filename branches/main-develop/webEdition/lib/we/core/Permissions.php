@@ -16,7 +16,7 @@
  *
  *
  * @category   we
- * @package    we_core
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
@@ -24,7 +24,7 @@
  * Base class for permissions
  *
  * @category   we
- * @package    we_core
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 abstract class we_core_Permissions{

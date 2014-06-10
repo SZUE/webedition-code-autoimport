@@ -21,7 +21,7 @@
  * @abstract This class executes commands and provides views depending on requesting client.
  *
  * @category   webEdition
- * @package    webEdition_rpc
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once('base/rpcCmd.class.php');

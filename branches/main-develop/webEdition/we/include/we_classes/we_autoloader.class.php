@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 /* * New Format for classes: we_Domain_specific
@@ -42,6 +42,7 @@ abstract class we_autoloader{
 		'customer' => 'we_modules/customer',
 		'dialog' => 'we_classes/dialog',
 		'editor' => 'we_editors',
+		'exim' => 'we_exim',
 		'export' => 'we_modules/export',
 		'glossary' => 'we_modules/glossary',
 		'helpers' => 'we_classes/helpers',
@@ -172,16 +173,6 @@ abstract class we_autoloader{
 		'we_doclist' => array(
 			'doclistView' => 'doclistView.class.php',
 		),
-		'we_exim' => array(
-			'weContentProvider' => 'weContentProvider.class.php',
-			'RefData' => 'weRefTable.class.php',
-			'RefTable' => 'weRefTable.class.php',
-			'weSearchPatterns' => 'weSearchPatterns.class.php',
-			'weXMLExIm' => 'weXMLExIm.class.php',
-			'weXMLExport' => 'weXMLExport.class.php',
-			'weXMLImport' => 'weXMLImport.class.php',
-			'we_thumbnailEx' => 'we_thumbnailEx.class.php',
-		),
 		'we_logging' => array(
 			'logging' => 'logging.class.php',
 			'versionsLog' => 'versions/versionsLog.class.php',
@@ -211,11 +202,22 @@ abstract class we_autoloader{
 		),
 	);
 
+	public static function loadZend($class_name){
+		//echo 'load zend beacause of'.$class_name;
+		if(!class_exists('Zend_Loader_Autoloader', false)){
+			require_once('Zend/Loader/Autoloader.php');
+			$loader = Zend_Loader_Autoloader::getInstance(); #3815
+			$loader->setFallbackAutoloader(true); #3815
+			$loader->suppressNotFoundWarnings(true);
+			spl_autoload_register('we_autoloader::finalLoad', true);
+		}
+	}
+
 	/**
 	 * default webEdition autoloader
 	 * @param type $class_name
 	 */
-	static public function autoload($class_name){
+	public static function autoload($class_name){
 		//no we-class
 		//FIXME: this should be expected in future
 		@list($where, $domain) = explode('_', $class_name, 3);
@@ -227,23 +229,27 @@ abstract class we_autoloader{
 				} else {
 					if(file_exists(WE_INCLUDES_PATH . self::$domains[$domain] . '/' . $class_name . '.class.php')){
 						include(WE_INCLUDES_PATH . self::$domains[$domain] . '/' . $class_name . '.class.php');
-						return;
+						return true;
 					}
 				}
 				break;
 			case 'Horde':
 				include(WE_LIB_PATH . 'additional/' . str_replace('_', '/', $class_name) . '.php');
-				break;
-//			return;
+				return true;
+			case 'Zend':
+				self::loadZend($class_name);
+				return false;
 		}
 
 		foreach(self::$classes as $path => $array){
 			if(array_key_exists($class_name, $array)){
 				$path = (substr($path, 0, 1) == '/' ? $_SERVER['DOCUMENT_ROOT'] . $path : WE_INCLUDES_PATH . $path . '/');
 				include($path . $array[$class_name]);
-				break;
+				return true;
 			}
 		}
+		//might be a zend registered class:
+		self::loadZend($class_name);
 		//will try next auto-loader
 	}
 
@@ -251,7 +257,7 @@ abstract class we_autoloader{
 	 * Added after Zend-Loader to trigger not found classes
 	 * @param type $class_name
 	 */
-	static public function finalLoad($class_name){
+	public static function finalLoad($class_name){
 		t_e('info', 'we_autoloader: class ' . $class_name . ' not found');
 	}
 

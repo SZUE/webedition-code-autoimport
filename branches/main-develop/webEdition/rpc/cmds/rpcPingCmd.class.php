@@ -19,9 +19,10 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_rpc
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+we_base_moduleInfo::isActive(we_base_moduleInfo::USERS);
 class rpcPingCmd extends rpcCmd{
 
 	function execute(){

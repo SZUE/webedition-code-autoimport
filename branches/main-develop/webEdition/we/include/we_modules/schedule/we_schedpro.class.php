@@ -19,9 +19,11 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER);
+
 class we_schedpro{
 
 	const SCHEDULE_FROM = 1; //publish

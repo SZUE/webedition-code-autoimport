@@ -23,7 +23,7 @@ we_html_tools::protect();
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 header('Content-Type: text/xml');

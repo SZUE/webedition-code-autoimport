@@ -19,14 +19,14 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_toolfactory
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 /**
  * class for Services
  *
  * @category   app
- * @package    app_service
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
@@ -306,9 +306,9 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd{
 		$inst = new toolfactory_service_Install();
 		$appdataArray = $inst->getApplist();
 		$appdata = $appdataArray[$args[0]];
-		we_util_File::decompressDirectoy($appdata['source'], $_app_directory_string = WE_APPS_PATH . '/' . $appdata['classname']);
+		we_util_File::decompressDirectory($appdata['source'], $_app_directory_string = WE_APPS_PATH . '/' . $appdata['classname']);
 
-		we_util_File::delete($appdata['source']);
+		we_base_file::delete($appdata['source']);
 		$model = $session->model;
 
 		$model->ID = $appdata['classname'];
@@ -338,7 +338,7 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd{
 			throw new we_service_Exception(
 			'Security Error: Model Ids are not the same! Id must fit the id of the model stored in the session!', we_service_ErrorCodes::kModelIdsNotTheSame);
 		}
-		we_util_File::compressDirectoy(WE_APPS_PATH . $model->classname, WE_APPS_PATH . $model->classname . "_" . $model->appconfig->info->version . ".tgz");
+		we_util_File::compressDirectory(WE_APPS_PATH . $model->classname, WE_APPS_PATH . $model->classname . "_" . $model->appconfig->info->version . ".tgz");
 
 		return true;
 	}

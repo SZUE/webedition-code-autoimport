@@ -19,57 +19,17 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class RefData{
-
-	var $ID;
-	var $ParentID;
-	var $TemplateID;
-	var $Table;
-	var $Path;
-	var $ContentType;
-	var $DocType;
-	var $Category;
-	var $OldID;
-	var $OldParentID;
-	var $OldPath;
-	var $OldTemplatePath;
-	var $Eximed = 0;
-	var $elements = 0;
-	var $slots = array("ID", "ParentID", "Path", "Table", "ContentType", "TemplateID", "DocType", "Category");
-
-	function init($object, $extra = array()){
-		foreach($this->slots as $slot){
-			if(isset($object->$slot)){
-				$this->$slot = $object->$slot;
-			}
-		}
-		foreach($extra as $ek => $ev){
-			$this->$ek = $ev;
-		}
-	}
-
-	function match($param){
-		$match = true;
-		foreach($param as $k => $v)
-			if($k != "level" && $this->$k != $v){
-				$match = false;
-			}
-		return $match;
-	}
-
-}
-
-class RefTable{
+class we_exim_refTable{
 
 	var $Storage = array();
 	var $current = 0;
 	var $Users = array(); // username => id
 
 	function add($object, $extra = array()){
-		$rd = new RefData();
+		$rd = new we_exim_refData();
 		$rd->init($object, $extra);
 		if($this->hasPerms($rd)){
 			$this->Storage[] = $rd;
@@ -77,9 +37,10 @@ class RefTable{
 	}
 
 	function add2($properties){
-		$rd = new RefData();
-		foreach($properties as $k => $v)
+		$rd = new we_exim_refData();
+		foreach($properties as $k => $v){
 			$rd->$k = $v;
+		}
 		/* 			if($handle_owners){
 		  if(isset($properties['Table'])) $table = $properties['Table'];
 		  else $table = weXMLExIm::getTableForCT($properties['ContentType']);
@@ -98,7 +59,7 @@ class RefTable{
 		  }
 
 		  } */
-		$rd->Table = weXMLExIm::getTableForCT($rd->ContentType, (isset($rd->Table)) ? $rd->Table : '');
+		$rd->Table = we_exim_XMLExIm::getTableForCT($rd->ContentType, (isset($rd->Table)) ? $rd->Table : '');
 		if($this->hasPerms($rd)){
 			$this->Storage[] = $rd;
 		}
@@ -117,7 +78,7 @@ class RefTable{
 		if($rd->Table){
 			$allowed = true;
 			if($rd->Table != DOC_TYPES_TABLE && $rd->Table != CATEGORY_TABLE){
-				$q = weXMLExIm::queryForAllowed($rd->Table);
+				$q = we_exim_XMLExIm::queryForAllowed($rd->Table);
 				$id = f('SELECT ID FROM ' . escape_sql_query($rd->Table) . ' WHERE ID=' . intval($rd->ID) . ' ' . $q, 'ID', new DB_WE());
 				$allowed = $id ? true : false;
 			}
@@ -138,11 +99,14 @@ class RefTable{
 					return $allowed && permissionhandler::hasPerm('EDIT_NAVIGATION');
 			}
 		}
-		if($rd->ContentType == 'weBinary' || $rd->ContentType == 'weNavigationRule' || $rd->ContentType == 'weThumbnail'){
-			return true;
+		switch($rd->ContentType){
+			case 'weBinary':
+			case 'weNavigationRule':
+			case 'weThumbnail':
+				return true;
+			default:
+				return false;
 		}
-
-		return false;
 	}
 
 	function moveItemsToEnd($ct){
@@ -198,14 +162,13 @@ class RefTable{
 			$id = $this->current;
 			$this->current++;
 			return $this->Storage[$id];
-		} else {
-			$this->reset();
-			return null;
 		}
+		$this->reset();
+		return null;
 	}
 
 	function getLast(){
-		if(!empty($this->Storage)){
+		if($this->Storage){
 			return $this->Storage[count($this->Storage) - 1];
 		}
 		return null;
@@ -245,7 +208,7 @@ class RefTable{
 			$this->Storage = array();
 		}
 		foreach($RefArray as $ref){
-			$data = new RefData();
+			$data = new we_exim_refData();
 			foreach($ref as $k => $v){
 				$data->$k = $v;
 			}

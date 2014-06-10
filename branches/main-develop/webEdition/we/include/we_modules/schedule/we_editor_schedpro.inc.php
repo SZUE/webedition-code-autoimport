@@ -18,10 +18,10 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-if(defined("SCHEDULE_TABLE")){
+if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 	we_schedpro::trigger_schedule();
 }
 

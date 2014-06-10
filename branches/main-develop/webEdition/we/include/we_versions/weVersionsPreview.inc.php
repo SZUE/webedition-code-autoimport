@@ -18,7 +18,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 @include_once('Text/Diff.php');
@@ -273,7 +273,7 @@ if(isset($oldDoc['documentElements'])){
 		$oldDocElements = array();
 	}
 }
-if(!empty($newDocElements)){
+if($newDocElements){
 	foreach($newDocElements as $k => $v){
 		$name = ($k != "") ? $k : we_html_tools::getPixel(1, 1);
 		$oldVersion = true;
@@ -282,14 +282,13 @@ if(!empty($newDocElements)){
 			continue;
 		}
 
-		if($k == 'weInternVariantElement'){
-			$newVal = weVersions::showValue($k, $newDocElements[$k]['dat']);
-		} else {
-			$newVal = (isset($v['dat']) && $v['dat'] != "") ? $v['dat'] : we_html_tools::getPixel(1, 1);
-		}
+		$newVal = ($k == 'weInternVariantElement' ?
+				weVersions::showValue($k, $newDocElements[$k]['dat']) :
+				(isset($v['dat']) && $v['dat'] != "" ? $v['dat'] : we_html_tools::getPixel(1, 1))
+			);
 
 		$mark = "border-bottom:1px solid #B8B8B7; ";
-		if(!empty($oldDoc)){
+		if($oldDoc){
 
 			if($k == 'weInternVariantElement' && isset($oldDocElements[$k]['dat'])){
 				$oldVal = weVersions::showValue($k, $oldDocElements[$k]['dat']);
