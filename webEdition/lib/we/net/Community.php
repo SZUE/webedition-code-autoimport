@@ -16,7 +16,7 @@
  *
  *
  * @category   we
- * @package    we_net
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 include_once ('Zend/Config/Xml.php');
@@ -49,7 +49,7 @@ Zend_Loader::loadClass('we_net_Http');
  *
  *
  * @category   we
- * @package    we_net
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_net_Community{

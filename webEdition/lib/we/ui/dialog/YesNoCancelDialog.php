@@ -16,7 +16,7 @@
  *
  *
  * @category   we
- * @package    we_ui
+ * @package none
  * @subpackage we_ui_dialog
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
@@ -30,7 +30,7 @@ Zend_Loader::loadClass('we_ui_layout_Dialog');
  * The position of the buttons depends on the used OS
  *
  * @category   we
- * @package    we_ui
+ * @package none
  * @subpackage we_ui_dialog
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */

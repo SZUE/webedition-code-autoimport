@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_wysiwyg
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 //FIXME: 6.4: remove this file

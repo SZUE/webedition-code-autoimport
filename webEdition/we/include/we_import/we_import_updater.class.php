@@ -19,10 +19,10 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_import_updater extends weXMLExIm{
+class we_import_updater extends we_exim_XMLExIm{
 
 	var $RefTable;
 	var $UpdateItemsCount = 1;
@@ -46,7 +46,7 @@ class we_import_updater extends weXMLExIm{
 			}
 		}
 
-		$this->Patterns = new weSearchPatterns();
+		$this->Patterns = new we_exim_searchPatterns();
 
 		if(isset($object->MasterTemplateID) && $object->MasterTemplateID){
 			$ref = $this->RefTable->getRef(
@@ -151,7 +151,7 @@ class we_import_updater extends weXMLExIm{
 			debug("Saving object...\n");
 		}
 
-		weXMLExIm::saveObject($object);
+		we_exim_XMLExIm::saveObject($object);
 
 		if($this->debug){
 			debug("Object saved\n");

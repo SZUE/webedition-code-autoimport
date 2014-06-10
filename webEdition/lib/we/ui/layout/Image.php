@@ -16,7 +16,7 @@
  *
  *
  * @category   we
- * @package    we_ui
+ * @package none
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
@@ -25,7 +25,7 @@
  * static class with utility image functions
  *
  * @category   we
- * @package    we_ui
+ * @package none
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */

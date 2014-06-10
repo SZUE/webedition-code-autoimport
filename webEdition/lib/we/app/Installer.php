@@ -16,7 +16,7 @@
  *
  *
  * @category   we
- * @package    we_app
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 /**
@@ -53,7 +53,7 @@ Zend_Loader::loadClass('we_util_File');
  * class for installing and uninstalling webEdition applications (formerly known as "tools")
  *
  * @category   we
- * @package    we_app
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_app_Installer{

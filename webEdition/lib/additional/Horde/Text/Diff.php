@@ -12,7 +12,7 @@
  * See the enclosed file COPYING for license information (LGPL). If you did
  * not receive this file, see http://www.horde.org/licenses/lgpl21.
  *
- * @package Text_Diff
+ * @package none
  * @author  Geoffrey T. Dairiki <dairiki@dairiki.org>
  */
 class Horde_Text_Diff
@@ -188,7 +188,7 @@ class Horde_Text_Diff
      * @param string $line  The line to trim.
      * @param integer $key  The index of the line in the array. Not used.
      */
-    static public function trimNewlines(&$line, $key)
+    public static function trimNewlines(&$line, $key)
     {
         $line = str_replace(array("\n", "\r"), '', $line);
     }

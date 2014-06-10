@@ -16,7 +16,7 @@
  *
  *
  * @category   we
- * @package    we_io
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
@@ -24,7 +24,7 @@
  * Base class for data base
  *
  * @category   we
- * @package    we_io
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_io_DB{

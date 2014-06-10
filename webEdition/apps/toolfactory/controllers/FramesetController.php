@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_toolfactory
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 /*
@@ -31,7 +31,7 @@ Zend_Loader::loadClass('we_app_controller_FramesetAction');
  * Base Frameset Controller
  *
  * @category   webEdition
- * @package    webEdition_toolfactory
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class FramesetController extends we_app_controller_FramesetAction{

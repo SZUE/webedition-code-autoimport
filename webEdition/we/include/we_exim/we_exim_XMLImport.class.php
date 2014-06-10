@@ -19,10 +19,10 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weXMLImport extends weXMLExIm{
+class we_exim_XMLImport extends we_exim_XMLExIm{
 
 	var $nodehierarchy = array();
 
@@ -58,7 +58,7 @@ class weXMLImport extends weXMLExIm{
 		foreach($objects as $object){
 
 			$extra = array();
-			if(!empty($object)){
+			if($object){
 
 				$save = true;
 				$extra = array(
@@ -405,8 +405,8 @@ class weXMLImport extends weXMLExIm{
 							}
 						}
 						$node_data[$nodname] = $noddata;
-						$node_coding[$nodname] = $GLOBALS['isNewImport'] ? (isset($attributes[weContentProvider::CODING_ATTRIBUTE]) ? $attributes[weContentProvider::CODING_ATTRIBUTE] : weContentProvider::CODING_NONE) :
-							(weContentProvider::needCoding($node_data['ClassName'], $nodname, weContentProvider::CODING_OLD) ? weContentProvider::CODING_ENCODE : weContentProvider::CODING_NONE);
+						$node_coding[$nodname] = $GLOBALS['isNewImport'] ? (isset($attributes[we_exim_contentProvider::CODING_ATTRIBUTE]) ? $attributes[we_exim_contentProvider::CODING_ATTRIBUTE] : we_exim_contentProvider::CODING_NONE) :
+							(we_exim_contentProvider::needCoding($node_data['ClassName'], $nodname, we_exim_contentProvider::CODING_OLD) ? we_exim_contentProvider::CODING_ENCODE : we_exim_contentProvider::CODING_NONE);
 				}
 			}
 		}
@@ -418,10 +418,10 @@ class weXMLImport extends weXMLExIm{
 				unset($node_data[$prop->getName()]);
 			}
 
-			weContentProvider::populateInstance($object, $node_data);
+			we_exim_contentProvider::populateInstance($object, $node_data);
 
 			foreach($node_data as $k => $v){
-				$v = weContentProvider::getDecodedData($node_coding[$k], $v);
+				$v = we_exim_contentProvider::getDecodedData($node_coding[$k], $v);
 
 				if($v != $object->$k){
 					$object->$k = $v;
@@ -564,7 +564,7 @@ class weXMLImport extends weXMLExIm{
 		$encoding = we_xml_parser::getEncoding('', $head);
 		$_SESSION['weS']['weXMLimportCharset'] = $encoding;
 		$header = ''; //weXMLExIm::getHeader($encoding);
-		$footer = weXMLExIm::getFooter();
+		$footer = we_exim_XMLExIm::getFooter();
 
 		$buff = "";
 		$filename_tmp = "";

@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 /* * New Format for classes: we_Domain_specific
@@ -42,6 +42,7 @@ abstract class we_autoloader{
 		'customer' => 'we_modules/customer',
 		'dialog' => 'we_classes/dialog',
 		'editor' => 'we_editors',
+		'exim' => 'we_exim',
 		'export' => 'we_modules/export',
 		'glossary' => 'we_modules/glossary',
 		'helpers' => 'we_classes/helpers',
@@ -172,16 +173,6 @@ abstract class we_autoloader{
 		'we_doclist' => array(
 			'doclistView' => 'doclistView.class.php',
 		),
-		'we_exim' => array(
-			'weContentProvider' => 'weContentProvider.class.php',
-			'RefData' => 'weRefTable.class.php',
-			'RefTable' => 'weRefTable.class.php',
-			'weSearchPatterns' => 'weSearchPatterns.class.php',
-			'weXMLExIm' => 'weXMLExIm.class.php',
-			'weXMLExport' => 'weXMLExport.class.php',
-			'weXMLImport' => 'weXMLImport.class.php',
-			'we_thumbnailEx' => 'we_thumbnailEx.class.php',
-		),
 		'we_logging' => array(
 			'logging' => 'logging.class.php',
 			'versionsLog' => 'versions/versionsLog.class.php',
@@ -226,7 +217,7 @@ abstract class we_autoloader{
 	 * default webEdition autoloader
 	 * @param type $class_name
 	 */
-	static public function autoload($class_name){
+	public static function autoload($class_name){
 		//no we-class
 		//FIXME: this should be expected in future
 		@list($where, $domain) = explode('_', $class_name, 3);
@@ -266,7 +257,7 @@ abstract class we_autoloader{
 	 * Added after Zend-Loader to trigger not found classes
 	 * @param type $class_name
 	 */
-	static public function finalLoad($class_name){
+	public static function finalLoad($class_name){
 		t_e('info', 'we_autoloader: class ' . $class_name . ' not found');
 	}
 

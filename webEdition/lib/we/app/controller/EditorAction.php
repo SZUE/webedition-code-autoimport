@@ -15,7 +15,7 @@
  *
  *
  * @category   we
- * @package    we_app
+ * @package none
  * @subpackage we_app_controller
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
@@ -28,7 +28,7 @@ Zend_Loader::loadClass('Zend_Controller_Action');
  * Base EditorAction Controller
  *
  * @category   we
- * @package    we_app
+ * @package none
  * @subpackage we_app_controller
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */

@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 $yuiSuggest = & weSuggest::getInstance();
@@ -1063,7 +1063,7 @@ function setState(a) {
 				}
 				break;
 			case "export":
-				$xmlExIm = new weXMLExIm();
+				$xmlExIm = new we_exim_XMLExIm();
 
 				$file_format = weRequest('string', "file_format", "");
 				$export_to = weRequest('raw', "export_to", "");
@@ -1299,7 +1299,7 @@ function setState(a) {
 
 				$cdata = $this->exportVars["cdata"] == "true" ? true : false;
 
-				$xmlExIm = new weXMLExIm();
+				$xmlExIm = new we_exim_XMLExIm();
 
 				if(empty($this->exportVars["RefTable"])){
 					$finalDocs = $this->exportVars["finalDocs"];
@@ -1344,7 +1344,7 @@ function setState(a) {
 					$exports = 0;
 					$_SESSION['weS']['exportVars']["filename"] = ($export_local ? TEMP_PATH . '/' . $filename : $_SERVER['DOCUMENT_ROOT'] . $path . $filename);
 					//FIXME set export type in getHeader
-					$ret = we_base_file::save($_SESSION['weS']['exportVars']["filename"], weXMLExIm::getHeader(), "wb");
+					$ret = we_base_file::save($_SESSION['weS']['exportVars']["filename"], we_exim_XMLExIm::getHeader(), "wb");
 				} else {
 					$xmlExIm->RefTable->Array2RefTable($this->exportVars["RefTable"]);
 					$xmlExIm->RefTable->current = $this->exportVars["CurrentRef"];
@@ -1385,7 +1385,7 @@ function setState(a) {
 					);
 				}
 				if(is_writable($filename)){
-					we_base_file::save($filename, weXMLExIm::getFooter(), "ab");
+					we_base_file::save($filename, we_exim_XMLExIm::getFooter(), "ab");
 				}
 				$_progress_update = we_html_element::jsElement('if (top.footer.setProgress) top.footer.setProgress(100);');
 				return we_html_element::htmlDocType() . we_html_element::htmlHtml(

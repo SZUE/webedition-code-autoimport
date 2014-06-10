@@ -16,7 +16,7 @@
  *
  *
  * @category   we
- * @package    we_core
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 /**
@@ -28,7 +28,7 @@ Zend_Loader::loadClass('we_core_AbstractObject');
  * Base class for webEdition models
  *
  * @category   we
- * @package    we_core
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_core_AbstractModel extends we_core_AbstractObject{

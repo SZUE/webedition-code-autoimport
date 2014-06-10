@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_class
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 /* the parent class for tree-objects */
@@ -1025,7 +1025,7 @@ abstract class we_root extends we_class{
 	}
 
 	function i_pathNotValid(){
-		return strpos($this->ParentPath, '..') !== false || $this->ParentPath{0} != '/';
+		return strpos($this->ParentPath, '..') !== false || ($this->ParentPath && $this->ParentPath{0} != '/');
 	}
 
 	function i_filenameNotValid(){

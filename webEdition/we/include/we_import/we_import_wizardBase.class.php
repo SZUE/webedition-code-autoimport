@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_import_wizardBase{
@@ -330,7 +330,7 @@ if (top.wizbody && top.wizbody.addLog){
 							we_base_file::createLocalFolder($path);
 
 							if(is_dir($path)){
-								$num_files = weXMLImport::splitFile($_SERVER['DOCUMENT_ROOT'] . $v['import_from'], $path, 1);
+								$num_files = we_exim_XMLImport::splitFile($_SERVER['DOCUMENT_ROOT'] . $v['import_from'], $path, 1);
 								++$num_files;
 							}
 							break;
@@ -416,7 +416,7 @@ if (top.wizbody && top.wizbody.addLog){
 
 							if(intval($v['cid']) == 0){
 								// clear session data
-								weXMLExIm::unsetPerserves();
+								we_exim_XMLExIm::unsetPerserves();
 							}
 
 							$ref = false;
@@ -462,7 +462,7 @@ if (top.wizbody && top.wizbody.addLog){
 									$ref = $xmlExIm->RefTable->getNext();
 									if(!empty($ref)){
 										if(isset($ref->ContentType) && isset($ref->ID)){
-											$doc = weContentProvider::getInstance($ref->ContentType, $ref->ID, $ref->Table);
+											$doc = we_exim_contentProvider::getInstance($ref->ContentType, $ref->ID, $ref->Table);
 										}
 										$xmlExIm->updateObject($doc);
 									} else {
@@ -489,7 +489,7 @@ setTimeout('we_import(1," . $v['numFiles'] . ");',15);";
 
 								$xmlExIm->unsetPerserves();
 							} else { // do import
-								$xmlExIm = new weXMLImport();
+								$xmlExIm = new we_exim_XMLImport();
 								$chunk = $v["uniquePath"] . basename($v["import_from"]) . "_" . $v["cid"];
 								if(file_exists($chunk)){
 									$xmlExIm->loadPerserves();

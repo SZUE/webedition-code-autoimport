@@ -8,7 +8,7 @@
  * PHP versions 4 and 5
  *
  * @category   pear
- * @package    PEAR
+ * @package none
  * @author     Sterling Hughes <sterling@php.net>
  * @author     Stig Bakken <ssb@php.net>
  * @author     Tomas V.V.Cox <cox@idecnet.com>
@@ -72,7 +72,7 @@ $GLOBALS['_PEAR_error_handler_stack'] = array();
  * objects by reference: $obj =& new PEAR_child;
  *
  * @category   pear
- * @package    PEAR
+ * @package none
  * @author     Stig Bakken <ssb@php.net>
  * @author     Tomas V.V. Cox <cox@idecnet.com>
  * @author     Greg Beaver <cellog@php.net>
@@ -754,7 +754,7 @@ function _PEAR_call_destructors(){
  * This class is supserseded by {@link PEAR_Exception} in PHP 5
  *
  * @category   pear
- * @package    PEAR
+ * @package none
  * @author     Stig Bakken <ssb@php.net>
  * @author     Tomas V.V. Cox <cox@idecnet.com>
  * @author     Gregory Beaver <cellog@php.net>

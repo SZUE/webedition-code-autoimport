@@ -16,7 +16,7 @@
  *
  *
  * @category   we
- * @package    we_app
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 /*
@@ -28,7 +28,7 @@ Zend_Loader::loadClass('Zend_Log');
  * abstract class for hook reader classes
  *
  * @category   we
- * @package    we_app
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 abstract class we_app_Hook_Reader_Abstract{

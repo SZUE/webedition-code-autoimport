@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -162,7 +162,7 @@ class we_backup_tableItem extends weModelBase{
 		foreach($this as $key => &$val){
 			if($this->doConvertCharset($key)){
 				$mydata = $val;
-				if(weXMLImport::isSerialized($mydata)){ //mainly for tblcontent, where serialized data is mixed with others, but stored in backup as binary
+				if(we_exim_XMLImport::isSerialized($mydata)){ //mainly for tblcontent, where serialized data is mixed with others, but stored in backup as binary
 					$mydataUS = unserialize($mydata);
 					if(is_array($mydataUS)){
 						foreach($mydataUS as &$ad){

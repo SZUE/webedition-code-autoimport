@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_rpc
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class rpcPublishDocsCmd extends rpcCmd{
@@ -45,7 +45,7 @@ class rpcPublishDocsCmd extends rpcCmd{
 				if(!empty($v)){
 					foreach($v as $key => $val){
 						$ContentType = f('SELECT ContentType FROM `' . $db->escape($k) . '` WHERE ID=' . intval($val), 'ContentType', $db);
-						$object = weContentProvider::getInstance($ContentType, $val, $k);
+						$object = we_exim_contentProvider::getInstance($ContentType, $val, $k);
 						/* bugs #6189 & 4859
 						  we_temporaryDocument::delete($object->ID,$db);
 						  $object->initByID($object->ID);

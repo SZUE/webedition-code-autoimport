@@ -16,7 +16,7 @@
  *
  *
  * @category   we
- * @package    we_app
+ * @package none
  * @subpackage we_app_Hook
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
@@ -25,7 +25,7 @@ require_once 'Zend/Exception.php';
 
 /**
  * @category   we
- * @package    we_app
+ * @package none
  * @subpackage we_app_Hook
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */

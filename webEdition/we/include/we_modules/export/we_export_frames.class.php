@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 //TEST: was it ok to abandon treefooter?
@@ -503,7 +503,7 @@ function closeAllType(){
 						$finalObjs = array();
 						$finalClasses = array();
 					}
-					$xmlExIm = new weXMLExport();
+					$xmlExIm = new we_exim_XMLExport();
 					$xmlExIm->getSelectedItems($this->View->export->Selection, "wxml", "", $this->View->export->SelectionType, $this->View->export->DocType, $this->View->export->ClassName, $this->View->export->Categorys, $this->View->export->Folder, $finalDocs, $finalTempl, $finalObjs, $finalClasses);
 
 
@@ -562,9 +562,9 @@ function closeAllType(){
 									}
 								');
 						//FIXME: set export type in getHeader
-						we_base_file::save($this->View->export->ExportFilename, weXMLExIm::getHeader(), "wb");
+						we_base_file::save($this->View->export->ExportFilename, we_exim_XMLExIm::getHeader(), "wb");
 						if($this->View->export->HandleOwners){
-							we_base_file::save($this->View->export->ExportFilename, weXMLExport::exportInfoMap($xmlExIm->RefTable->Users), "ab");
+							we_base_file::save($this->View->export->ExportFilename, we_exim_XMLExport::exportInfoMap($xmlExIm->RefTable->Users), "ab");
 						}
 
 						$xmlExIm->RefTable->reset();
@@ -591,7 +591,7 @@ function closeAllType(){
 							)
 					);
 				} else {
-					$xmlExIm = new weXMLExport();
+					$xmlExIm = new we_exim_XMLExport();
 					$xmlExIm->loadPerserves();
 					$exports = 0;
 
@@ -672,7 +672,7 @@ function closeAllType(){
 						);
 					} else {
 						if(is_writable($this->View->export->ExportFilename)){
-							we_base_file::save($this->View->export->ExportFilename, weXMLExIm::getFooter(), "ab");
+							we_base_file::save($this->View->export->ExportFilename, we_exim_XMLExIm::getFooter(), "ab");
 						}
 						$_progress_update .= "\n" .
 							we_html_element::jsElement('
@@ -715,8 +715,8 @@ function closeAllType(){
 				break;
 			case 'upload':
 				$preurl = getServerUrl();
-				if(weRequest('bool', "exportfile")){
-					$_filename = basename(urldecode(weRequest('raw', "exportfile")));
+				if(($_filename = weRequest('file', "exportfile"))){
+					$_filename = basename(urldecode($_filename));
 
 					if(file_exists(TEMP_PATH . $_filename) // Does file exist?
 						&& !preg_match('%p?html?%i', $_filename) && stripos($_filename, "inc") === false && !preg_match('%php3?%i', $_filename)){ // Security check

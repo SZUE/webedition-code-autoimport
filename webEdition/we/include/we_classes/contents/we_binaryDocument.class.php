@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_class
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 /*  a class for handling binary-documents like images. */

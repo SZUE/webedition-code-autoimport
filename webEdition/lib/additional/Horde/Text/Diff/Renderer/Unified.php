@@ -10,7 +10,7 @@
  * not receive this file, see http://www.horde.org/licenses/lgpl21.
  *
  * @author  Ciprian Popovici
- * @package Text_Diff
+ * @package none
  */
 class Horde_Text_Diff_Renderer_Unified extends Horde_Text_Diff_Renderer
 {

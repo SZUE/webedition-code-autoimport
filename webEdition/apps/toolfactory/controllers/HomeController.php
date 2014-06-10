@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_toolfactory
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once 'Zend/Controller/Action.php';
@@ -28,7 +28,7 @@ require_once 'Zend/Controller/Action.php';
  * Base Home Controller
  *
  * @category   webEdition
- * @package    webEdition_toolfactory
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class HomeController extends Zend_Controller_Action{

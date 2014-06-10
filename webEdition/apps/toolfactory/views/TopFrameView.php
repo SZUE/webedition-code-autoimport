@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_toolfactory
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 /**
@@ -31,7 +31,7 @@ Zend_Loader::loadClass('we_app_TopFrameView');
  * Base class for TopFrameView
  *
  * @category   app
- * @package    app_views
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class toolfactory_views_TopFrameView extends we_app_TopFrameView{

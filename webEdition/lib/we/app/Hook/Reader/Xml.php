@@ -16,7 +16,7 @@
  *
  *
  * @category   we
- * @package    we_app
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 /**
@@ -30,7 +30,7 @@ include_once ('Zend/Log.php');
  * class for reading hook code from xml file
  *
  * @category   we
- * @package    we_app
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_app_Hook_Reader_Xml extends we_app_Hook_Reader_Abstract{

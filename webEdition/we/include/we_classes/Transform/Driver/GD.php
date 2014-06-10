@@ -14,7 +14,7 @@
  * send a note to license@php.net so we can mail you a copy immediately.
  *
  * @category   Image
- * @package    Image_Transform
+ * @package none
  * @subpackage Image_Transform_Driver_GD
  * @author     Alan Knowles <alan@akbkhome.com>
  * @author     Peter Bowyer <peter@mapledesign.co.uk>
@@ -48,14 +48,14 @@
  *    $img->free();
  *
  * @category   Image
- * @package    Image_Transform
+ * @package none
  * @subpackage Image_Transform_Driver_GD
  * @author     Alan Knowles <alan@akbkhome.com>
  * @author     Peter Bowyer <peter@mapledesign.co.uk>
  * @author     Philippe Jausions <Philippe.Jausions@11abacus.com>
  * @copyright  2002-2005 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    Release: @package_version@
+ * @version    Release:**** @package none
  * @link       http://pear.php.net/package/Image_Transform
  * @since      PHP 4.0
  */

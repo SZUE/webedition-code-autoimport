@@ -16,7 +16,7 @@
  *
  *
  * @category   we
- * @package    we_app
+ * @package none
  * @subpackage we_app_Installer
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
@@ -34,7 +34,7 @@ Zend_Loader::loadClass('we_app_Installer');
  * 		$myInstaller->getInstance()->install();
  *
  * @category   we
- * @package    we_app
+ * @package none
  * @subpackage we_app_Installer
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
