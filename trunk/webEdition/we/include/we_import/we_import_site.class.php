@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_import_site{
@@ -63,7 +63,7 @@ class we_import_site{
 	 */
 	public function __construct(){
 		$wsa = makeArrayFromCSV(get_def_ws());
-		$ws = (empty($wsa) ? 0 : $wsa[0]);
+		$ws = ($wsa ? $wsa[0] : 0);
 		$this->from = weRequest('raw', 'from', (isset($_SESSION['prefs']['import_from']) && $_SESSION['prefs']['import_from'] ? $_SESSION['prefs']['import_from'] : $this->from));
 		$_SESSION['prefs']['import_from'] = $this->from;
 		$this->to = weRequest('raw', 'to', (strlen($this->to) ? $this->to : $ws));

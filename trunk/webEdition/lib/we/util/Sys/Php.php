@@ -16,7 +16,7 @@
  *
  *
  * @category   we
- * @package    we_util
+ * @package none
  * @subpackage we_util_Sys
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
@@ -34,7 +34,7 @@ Zend_Loader::loadClass('we_util_Sys_Exception');
  * Class to check php settings
  *
  * @category   we
- * @package    we_util
+ * @package none
  * @subpackage we_util_Sys
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */

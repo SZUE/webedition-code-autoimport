@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_base_delete{
@@ -221,7 +221,7 @@ abstract class we_base_delete{
 			$ct = weVersions::getContentTypesVersioning();
 			//no need to init doc, if no version is needed or hook is executed
 			if(in_array($row['ContentType'], $ct) || !$skipHook){
-				$object = weContentProvider::getInstance($row['ContentType'], $id, $table);
+				$object = we_exim_contentProvider::getInstance($row['ContentType'], $id, $table);
 			}
 			if(in_array($row['ContentType'], $ct)){
 				$version = new weVersions();

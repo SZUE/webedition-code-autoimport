@@ -16,7 +16,7 @@
  *
  *
  * @category   we
- * @package    we_ui
+ * @package none
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
@@ -32,7 +32,7 @@ if(!defined('WE_THEME_NAME')){
  * Class to handle the themes
  *
  * @category   we
- * @package    we_ui
+ * @package none
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */

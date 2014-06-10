@@ -16,7 +16,7 @@
  *
  *
  * @category   we
- * @package    we_util
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 include_once ('Zend/Log.php');
@@ -25,7 +25,7 @@ include_once ('Zend/Log.php');
  * static logging class for logging messages
  *
  * @category   we
- * @package    we_util
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_util_Log{

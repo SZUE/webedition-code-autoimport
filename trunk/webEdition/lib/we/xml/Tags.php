@@ -16,7 +16,7 @@
  *
  *
  * @category   we
- * @package    we_xml
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
@@ -24,7 +24,7 @@
  * Utility class for creating XML Tags
  *
  * @category   we
- * @package    we_xml
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_xml_Tags{

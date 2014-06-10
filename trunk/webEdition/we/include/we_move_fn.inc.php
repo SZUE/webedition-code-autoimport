@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 $notprotect = isset($GLOBALS["NOT_PROTECT"]) && $GLOBALS["NOT_PROTECT"] && (!isset($_REQUEST["NOT_PROTECT"]));
@@ -180,7 +180,7 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems){
 
 			$version = new weVersions();
 			if(in_array($row['ContentType'], $version->contentTypes)){
-				$object = weContentProvider::getInstance($row['ContentType'], $id, $table);
+				$object = we_exim_contentProvider::getInstance($row['ContentType'], $id, $table);
 				$version_exists = $version->getLastEntry($id, $table);
 				$tempOldParentID = $object->ParentID;
 				$tempNewParentID = $parentID;
@@ -223,7 +223,7 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems){
 
 			$version = new weVersions();
 			if(in_array($row['ContentType'], $version->contentTypes)){
-				$object = weContentProvider::getInstance($row['ContentType'], $id, $table);
+				$object = we_exim_contentProvider::getInstance($row['ContentType'], $id, $table);
 				$version_exists = $version->getLastEntry($id, $table);
 				$tempOldParentID = $object->ParentID;
 				$tempNewParentID = $parentID;

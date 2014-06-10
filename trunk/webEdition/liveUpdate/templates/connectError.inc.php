@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_update
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 $errorMessage = (isset($Response) ? str_replace("</body></html>", "", stristr($Response, "<body>")) : '') .

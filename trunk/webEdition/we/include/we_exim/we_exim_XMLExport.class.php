@@ -19,10 +19,10 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weXMLExport extends weXMLExIm{
+class we_exim_XMLExport extends we_exim_XMLExIm{
 
 	var $db;
 	var $prepare = true;
@@ -37,7 +37,7 @@ class weXMLExport extends weXMLExIm{
 
 	function export($id, $ct, $fname, $table = "", $export_binary = true, $compression = ""){
 		update_time_limit(0);
-		$doc = weContentProvider::getInstance($ct, $id, $table);
+		$doc = we_exim_contentProvider::getInstance($ct, $id, $table);
 		// add binary data separately to stay compatible with the new binary feature in v5.1
 		if(isset($doc->ContentType) && (
 			strpos($doc->ContentType, "image/") === 0 ||
@@ -80,12 +80,12 @@ class weXMLExport extends weXMLExIm{
 				}
 				break;
 			case "weBinary":
-				weContentProvider::binary2file($doc, $fh);
+				we_exim_contentProvider::binary2file($doc, $fh);
 				break;
 		}
 
 		if($classname != "weBinary"){
-			weContentProvider::object2xml($doc, $fh, $attribute);
+			we_exim_contentProvider::object2xml($doc, $fh, $attribute);
 		}
 
 		fwrite($fh, we_backup_backup::backupMarker . "\n");
@@ -93,9 +93,9 @@ class weXMLExport extends weXMLExIm{
 		if($classname == "we_backup_tableItem" && $export_binary &&
 			strtolower($doc->table) == strtolower(FILE_TABLE) &&
 			($doc->ContentType == we_base_ContentTypes::IMAGE || stripos($doc->ContentType, "application/") !== false)){
-			$bin = weContentProvider::getInstance("weBinary", $doc->ID);
+			$bin = we_exim_contentProvider::getInstance("weBinary", $doc->ID);
 			$attribute = (isset($bin->attribute_slots) ? $bin->attribute_slots : array());
-			weContentProvider::binary2file($bin, $fh);
+			we_exim_contentProvider::binary2file($bin, $fh);
 		}
 
 		fclose($fh);
@@ -187,7 +187,7 @@ class weXMLExport extends weXMLExIm{
 				if($wsQuery != ''){
 					$wsQuery .=' OR ';
 				}
-				$wsQuery .= " Path LIKE '" . $db->escape($path) . "/%' OR " . weXMLExIm::getQueryParents($path);
+				$wsQuery .= " Path LIKE '" . $db->escape($path) . "/%' OR " . we_exim_XMLExIm::getQueryParents($path);
 				while($path != "/" && $path){
 					$parentpaths[] = $path;
 					$path = dirname($path);

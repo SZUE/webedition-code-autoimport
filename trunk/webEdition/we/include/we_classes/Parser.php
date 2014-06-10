@@ -28,7 +28,7 @@
  * based on the bundled expat library.
  *
  * @category XML
- * @package XML_Parser
+ * @package none
  * @author  Stig Bakken <ssb@fast.no>
  * @author  Tomas V.V.Cox <cox@idecnet.com>
  * @author  Stephan Schmidt <schst@php-tools.net>
@@ -79,7 +79,7 @@ define('XML_PARSER_ERROR_REMOTE', 205);
  *   to handle the <name></name> tags of your xml file.
  *
  * @category XML
- * @package XML_Parser
+ * @package none
  * @author  Stig Bakken <ssb@fast.no>
  * @author  Tomas V.V.Cox <cox@idecnet.com>
  * @author  Stephan Schmidt <schst@php-tools.net>
@@ -595,7 +595,7 @@ class XML_Parser extends PEAR{
  * - check for XML_Parser error, using is_a( $error, 'XML_Parser_Error' )
  * - messages can be generated from the xml_parser resource
  *
- * @package XML_Parser
+ * @package none
  * @access  public
  * @see     PEAR_Error
  */

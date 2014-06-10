@@ -16,7 +16,7 @@
  *
  *
  * @category   we
- * @package    we_net
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 /**
@@ -37,7 +37,7 @@ include_once ('Zend/Http/Client.php');
  * the source files need to be present as a zip file at a specified location
  *
  * @category   we
- * @package    we_net
+ * @package none
  * @author Alexander Lindenstruth
  *
  * @uses Zend_Http_Client
@@ -75,7 +75,7 @@ include_once ('Zend/Http/Client.php');
  *
  *
  * @category   we
- * @package    we_net
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_net_Http{

@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_newsletter_frames extends weModuleFrames{
@@ -128,7 +128,7 @@ class we_newsletter_frames extends weModuleFrames{
 	/**
 	 * Modul Header
 	 *
-	 * @package weModules
+	 *** @package none
 	 * @subpackage Newsletter
 	 * @param Integer $mode
 	 * @return String
@@ -198,7 +198,7 @@ top.content.hloaded = 1;
 	/**
 	 * Modul Body
 	 *
-	 * @package weModules
+	 *** @package none
 	 * @subpackage Newsletter
 	 * @return String
 	 */
@@ -209,7 +209,7 @@ top.content.hloaded = 1;
 	/**
 	 * Modul Footer
 	 *
-	 * @package weModules
+	 *** @package none
 	 * @subpackage Newsletter
 	 * @param Integer $mode
 	 * @return String
@@ -964,7 +964,7 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 	/**
 	 * Mailing list - block Emails
 	 *
-	 * @package weModules
+	 *** @package none
 	 * @subpackage Newsletter
 	 *
 	 * @param unknown_type $group
@@ -1271,7 +1271,7 @@ window.onload=extraInit;');
 	/**
 	 * Generates the body for modul frame
 	 *
-	 * @package weModules
+	 *** @package none
 	 * @subpackage Newsletter
 	 * @return unknown
 	 */
@@ -1910,7 +1910,7 @@ self.focus();
 	/**
 	 * Edit csv mail list
 	 *
-	 * @package weModules
+	 *** @package none
 	 * @subpackage Newsletter
 	 * @param String $open_file
 	 * @return String
@@ -2837,7 +2837,7 @@ self.focus();');
 	 * returns	a select menu within a html table. to ATTENTION this function is also used in classes object and objectFile !!!!
 	 * 			when $withHeadline is true, a table with headline is returned, default is false
 	 *
-	 * @package weModules
+	 *** @package none
 	 * @subpackage Newsletter
 	 * @return	select menue to determine charset
 	 * @param	boolean
@@ -2862,7 +2862,7 @@ self.focus();');
 	 * Ersetzt die Newsletter Platzthalter
 	 *
 	 * @author damd
-	 * @package weModules
+	 *** @package none
 	 * @subpackage Newsletter
 	 * @param String $content
 	 * @param String $content_plain

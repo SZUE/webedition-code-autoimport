@@ -16,7 +16,7 @@
  *
  *
  * @category   we
- * @package    we_net
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 /**
@@ -33,7 +33,7 @@ Zend_Loader::loadClass('we_net_LiveUpdate_Session');
  * class for liveUpdate actions
  *
  * @category   we
- * @package    we_net
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  * @uses we_net_Http
  */

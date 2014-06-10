@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_toolfactory
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 /**
@@ -31,7 +31,7 @@ Zend_Loader::loadClass('we_ui_controls_Tree');
  * Class to display a tree for toolfactory objects
  *
  * @category   toolfactory
- * @package    toolfactory_ui
+ * @package none
  * @subpackage toolfactory_ui_controls
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */

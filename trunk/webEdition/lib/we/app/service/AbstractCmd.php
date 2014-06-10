@@ -16,7 +16,7 @@
  *
  *
  * @category   we
- * @package    we_app
+ * @package none
  * @subpackage we_app_service
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
@@ -29,7 +29,7 @@ Zend_Loader::loadClass('we_service_AbstractService');
  * Abstract Class for all App Services
  *
  * @category   we
- * @package    we_app
+ * @package none
  * @subpackage we_app_service
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */

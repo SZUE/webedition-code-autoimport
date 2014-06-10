@@ -19,10 +19,10 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weContentProvider{
+class we_exim_contentProvider{
 
 	const CODING_ENCODE = 'encode';
 	const CODING_SERIALIZE = 'serial';
@@ -56,7 +56,7 @@ class weContentProvider{
 				$we_doc->we_load($ID);
 				break;
 			case 'weThumbnail':
-				$we_doc = new we_thumbnailEx();
+				$we_doc = new we_exim_thumbnailExport();
 				$we_doc->we_load($ID);
 				break;
 			case 'we_backup_table':
@@ -396,7 +396,7 @@ class weContentProvider{
 
 
 		foreach($object->persistent_slots as $v){
-			if($v == 'elements'){
+			if($v == 'elements' || $v == 'usedElementNames'){
 				continue;
 			}
 			$content = (isset($object->$v) ? $object->$v : '');

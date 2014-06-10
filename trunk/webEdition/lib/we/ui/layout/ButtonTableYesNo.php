@@ -16,7 +16,7 @@
  *
  *
  * @category   we
- * @package    we_ui
+ * @package none
  * @subpackage we_ui_controls
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
@@ -29,7 +29,7 @@ Zend_Loader::loadClass('we_ui_layout_ButtonTable');
  * Class to display a ButtonTable Yes / No / Cancel Choice
  *
  * @category   we
- * @package    we_ui
+ * @package none
  * @subpackage we_ui_controls
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */

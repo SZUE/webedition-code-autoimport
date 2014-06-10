@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -1225,7 +1225,7 @@ class doclistView{
 				for($i = 0; $i < $_fieldcount; $i++){
 					$_tagName = $_defined_fields [$i] ["tag"];
 
-					if(weContentProvider::isBinary($_result [$f] ["docID"])){
+					if(we_exim_contentProvider::isBinary($_result [$f] ["docID"])){
 						$DB_WE->query("SELECT a.ID, c.Dat FROM (" . FILE_TABLE . " a LEFT JOIN " . LINK_TABLE . " b ON (a.ID=b.DID)) LEFT JOIN " . CONTENT_TABLE . " c ON (b.CID=c.ID) WHERE b.DID=" . intval($_result [$f] ["docID"]) . " AND b.Name='" . $DB_WE->escape($_tagName) . "' AND b.DocumentTable='" . FILE_TABLE . "'");
 						$metafields [$_tagName] = "";
 						while($DB_WE->next_record()){

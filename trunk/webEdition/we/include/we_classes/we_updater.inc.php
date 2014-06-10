@@ -15,7 +15,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 //FIXME: remove this file almost complete; at least all DB queries. Replace by Update-Script calls on DB-Files.

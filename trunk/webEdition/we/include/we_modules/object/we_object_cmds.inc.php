@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 $we_transaction = $_REQUEST['we_cmd'][1] ? $_REQUEST['we_cmd'][1] : $we_transaction;

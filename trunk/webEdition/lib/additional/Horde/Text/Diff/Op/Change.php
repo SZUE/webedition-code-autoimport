@@ -9,7 +9,7 @@
  * See the enclosed file COPYING for license information (LGPL). If you did
  * not receive this file, see http://www.horde.org/licenses/lgpl21.
  *
- * @package Text_Diff
+ * @package none
  * @author  Geoffrey T. Dairiki <dairiki@dairiki.org>
  */
 class Horde_Text_Diff_Op_Change extends Horde_Text_Diff_Op_Base

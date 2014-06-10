@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_class
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_textContentDocument extends we_textDocument{
@@ -74,7 +74,7 @@ abstract class we_textContentDocument extends we_textDocument{
 
 		if($this->ContentType == we_base_ContentTypes::WEDOCUMENT){
 			$allUsedElements = $this->getUsedElements(true);
-			if(empty($allUsedElements)){//FIXME:needed for rebuild, since tags are unintialized
+			if(!$allUsedElements){//FIXME:needed for rebuild, since tags are unintialized
 				// dont save unneeded fields in index-table
 				//FIXME: it is better to use $this->getUsedElements - only we:input type="date" is not handled... => this will call the TP which is not desired since this method is called on save in frontend
 				$fieldTypes = we_webEditionDocument::getFieldTypes($this->getTemplateCode(), false);

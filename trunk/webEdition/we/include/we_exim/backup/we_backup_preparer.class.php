@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_backup_preparer{
@@ -114,7 +114,7 @@ abstract class we_backup_preparer{
 
 		//always write protect code uncompressed
 		we_base_file::save($_SESSION['weS']['weBackupVars']['backup_file'], ($_SESSION['weS']['weBackupVars']['protect'] ? we_backup_backup::weXmlExImProtectCode : ''), 'wb');
-		we_base_file::save($_SESSION['weS']['weBackupVars']['backup_file'], weXMLExIm::getHeader('', 'backup'), 'ab', $_SESSION['weS']['weBackupVars']['options']['compress']);
+		we_base_file::save($_SESSION['weS']['weBackupVars']['backup_file'], we_exim_XMLExIm::getHeader('', 'backup'), 'ab', $_SESSION['weS']['weBackupVars']['options']['compress']);
 
 		return true;
 	}

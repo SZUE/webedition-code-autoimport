@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_javamenu
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 /**
@@ -31,7 +31,7 @@ Zend_Loader::loadClass('we_ui_abstract_AbstractElement');
  * Class to display a JavaMenu
  *
  * @category   we
- * @package    we_ui
+ * @package none
  * @subpackage we_ui_controls
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */

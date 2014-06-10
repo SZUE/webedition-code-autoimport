@@ -16,7 +16,7 @@
  *
  *
  * @category   we
- * @package    we_util
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
@@ -24,7 +24,7 @@
  * Class to get informations about the system environment
  *
  * @category   we
- * @package    we_util
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_util_Sys{

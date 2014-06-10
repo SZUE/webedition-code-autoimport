@@ -16,7 +16,7 @@
  *
  *
  * @category   we
- * @package    we_app
+ * @package none
  * @subpackage we_app_Installer
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
@@ -33,7 +33,7 @@ include_once('Zend/Db.php');
  * static class for common installer activities, i.e. check routines
  *
  * @category   we
- * @package    we_app
+ * @package none
  * @subpackage we_app_Installer
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */

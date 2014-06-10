@@ -15,10 +15,10 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_thumbnailEx extends weModelBase{
+class we_exim_thumbnailExport extends weModelBase{
 
 	var $ClassName = __CLASS__;
 	var $Table = THUMBNAILS_TABLE;

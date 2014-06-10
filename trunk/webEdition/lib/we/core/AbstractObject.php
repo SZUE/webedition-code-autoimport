@@ -16,7 +16,7 @@
  *
  *
  * @category   we
- * @package    we_core
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
@@ -25,7 +25,7 @@ require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
  * Base class for all webEdition SDK classes
  *
  * @category   we
- * @package    we_core
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 abstract class we_core_AbstractObject{

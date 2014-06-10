@@ -16,7 +16,7 @@
  *
  *
  * @category   we
- * @package    we_service
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
@@ -24,7 +24,7 @@
  * class for abstract service
  *
  * @category   we
- * @package    we_service
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_service_AbstractService{

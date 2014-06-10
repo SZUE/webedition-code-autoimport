@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -135,7 +135,7 @@ class we_backup_backup extends we_backup_base{
 					$this->description["import"][strtolower($tablename)] :
 					g_l('backup', "[working]"));
 
-			$object = weContentProvider::getInstance("we_backup_table", 0, $tablename);
+			$object = we_exim_contentProvider::getInstance("we_backup_table", 0, $tablename);
 			$node_set2 = $xmlBrowser->getSet($nodeset);
 			foreach($node_set2 as $set2){
 				$node_set3 = $xmlBrowser->getSet($set2);
@@ -165,8 +165,8 @@ class we_backup_backup extends we_backup_base{
 
 		foreach($node_set2 as $nsv){
 			$index = $xmlBrowser->nodeName($nsv);
-			$content[$index] = (weContentProvider::needCoding($classname, $index, $nsv) ?
-					weContentProvider::decode($xmlBrowser->getData($nsv)) :
+			$content[$index] = (we_exim_contentProvider::needCoding($classname, $index, $nsv) ?
+					we_exim_contentProvider::decode($xmlBrowser->getData($nsv)) :
 					$xmlBrowser->getData($nsv));
 		}
 		$attributes = $xmlBrowser->getAttributes($nodeset);
@@ -175,8 +175,8 @@ class we_backup_backup extends we_backup_base{
 		if(!$this->isFixed($tablename) && $tablename != ""){
 			$tablename = $this->fixTableName($tablename);
 
-			$object = weContentProvider::getInstance($classname, 0, $tablename);
-			weContentProvider::populateInstance($object, $content);
+			$object = we_exim_contentProvider::getInstance($classname, 0, $tablename);
+			we_exim_contentProvider::populateInstance($object, $content);
 
 			$object->save(true);
 		}
@@ -185,15 +185,15 @@ class we_backup_backup extends we_backup_base{
 	function recoverBinary($nodeset, &$xmlBrowser){
 		$content = array();
 		$node_set2 = $xmlBrowser->getSet($nodeset);
-		$classname = weContentProvider::getContentTypeHandler("weBinary");
+		$classname = we_exim_contentProvider::getContentTypeHandler("weBinary");
 		foreach($node_set2 as $nsv){
 			$index = $xmlBrowser->nodeName($nsv);
-			$content[$index] = (weContentProvider::needCoding($classname, $index, $nsv) ?
-					weContentProvider::decode($xmlBrowser->getData($nsv)) :
+			$content[$index] = (we_exim_contentProvider::needCoding($classname, $index, $nsv) ?
+					we_exim_contentProvider::decode($xmlBrowser->getData($nsv)) :
 					$xmlBrowser->getData($nsv));
 		}
-		$object = weContentProvider::getInstance($classname, 0);
-		weContentProvider::populateInstance($object, $content);
+		$object = we_exim_contentProvider::getInstance($classname, 0);
+		we_exim_contentProvider::populateInstance($object, $content);
 
 		if($object->ID && $this->backup_binary){
 			$object->save(true);
@@ -276,7 +276,7 @@ class we_backup_backup extends we_backup_base{
 		}
 		$tab = $_SESSION['weS']['weBackupVars']['allTables'];
 
-		$xmlExport = new weXMLExIm();
+		$xmlExport = new we_exim_XMLExIm();
 		$xmlExport->setBackupProfile();
 
 		foreach($tab as $v){
@@ -555,10 +555,10 @@ class we_backup_backup extends we_backup_base{
 		$fh = fopen($this->dumpfilename, 'ab');
 		if($fh){
 
-			$bin = weContentProvider::getInstance('weBinary', 0);
+			$bin = we_exim_contentProvider::getInstance('weBinary', 0);
 			$bin->Path = $file;
 
-			weContentProvider::binary2file($bin, $fh);
+			we_exim_contentProvider::binary2file($bin, $fh);
 			fclose($fh);
 		}
 	}

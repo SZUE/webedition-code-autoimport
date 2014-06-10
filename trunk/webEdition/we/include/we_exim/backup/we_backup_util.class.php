@@ -19,7 +19,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_backup_util{
@@ -171,10 +171,10 @@ abstract class we_backup_util{
 	}
 
 	static function exportFile($file, $fh, $fwrite = 'fwrite'){
-		$bin = weContentProvider::getInstance('weBinary', 0);
+		$bin = we_exim_contentProvider::getInstance('weBinary', 0);
 		$bin->Path = $file;
 
-		weContentProvider::binary2file($bin, $fh, $fwrite);
+		we_exim_contentProvider::binary2file($bin, $fh, $fwrite);
 	}
 
 	static function exportFiles($to, $files){

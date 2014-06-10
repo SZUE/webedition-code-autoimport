@@ -18,7 +18,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_toolfactory
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -31,7 +31,7 @@ Zend_Loader::loadClass('we_app_HomePage');
  * Class for Home Page View of toolfactory
  * 
  * @category   toolfactory
- * @package    toolfactory_app
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class <?php print $TOOLNAME;?>_app_HomePage extends we_app_HomePage

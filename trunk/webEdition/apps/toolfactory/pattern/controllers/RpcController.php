@@ -2,7 +2,7 @@
  * Base Rpc Controller
  * 
  * @category   app
- * @package    app_controller
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class RpcController extends Zend_Controller_Action

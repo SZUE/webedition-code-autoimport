@@ -16,7 +16,7 @@
  *
  *
  * @category   we
- * @package    we_util
+ * @package none
  * @subpackage we_util_Sys
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
@@ -50,7 +50,7 @@ include_once 'webEdition/lib/we/util/Sys.php';
  * 		Server_Apache	module				mod_rewrite
  *
  * @category   we
- * @package    we_util
+ * @package none
  * @subpackage we_util_sys
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */

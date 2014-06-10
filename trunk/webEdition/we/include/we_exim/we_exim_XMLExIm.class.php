@@ -19,10 +19,10 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weXMLExIm{
+class we_exim_XMLExIm{
 
 	var $destination = array();
 	var $RefTable;
@@ -75,7 +75,7 @@ class weXMLExIm{
 	var $xmlBrowser;
 
 	function __construct($file = ''){
-		$this->RefTable = new RefTable();
+		$this->RefTable = new we_exim_refTable();
 		if($file){
 			$this->loadPerserves($file);
 		}
@@ -206,7 +206,7 @@ class weXMLExIm{
 
 	function prepareExport($ids){
 
-		$this->RefTable = new RefTable();
+		$this->RefTable = new we_exim_refTable();
 		$_preparer = new we_export_preparer($this->options, $this->RefTable);
 		$_preparer->prepareExport($ids);
 	}
@@ -286,7 +286,7 @@ class weXMLExIm{
 	function getQueryParents($path){
 		$out = array();
 		while($path != '/' && $path){
-			$out [] = 'Path="' . $path . '"';
+			$out[] = 'Path="' . $path . '"';
 			$path = dirname($path);
 		}
 		return (empty($out) ? '' : implode(' OR ', $out));
@@ -299,7 +299,7 @@ class weXMLExIm{
 		if(($ws = get_ws($table))){
 			$wsPathArray = id_to_path($ws, $table, $db, false, true);
 			foreach($wsPathArray as $path){
-				$wsQuery[] = " Path LIKE '" . $db->escape($path) . "/%' OR " . weXMLExIm::getQueryParents($path);
+				$wsQuery[] = " Path LIKE '" . $db->escape($path) . "/%' OR " . we_exim_XMLExIm::getQueryParents($path);
 				while($path != '/' && $path){
 					$parentpaths[] = $path;
 					$path = dirname($path);

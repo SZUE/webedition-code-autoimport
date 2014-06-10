@@ -16,7 +16,7 @@
  *
  *
  * @category   we
- * @package    we_app
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 include_once ('Zend/Log.php');
@@ -25,7 +25,7 @@ include_once ('Zend/Log.php');
  * class for loading and executing code execution hooks for webEdition applications
  *
  * @category   we
- * @package    we_app
+ * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_app_Hook{

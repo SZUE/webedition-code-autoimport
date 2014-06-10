@@ -16,7 +16,7 @@
  *
  *
  * @category   we
- * @package    we_app
+ * @package none
  * @subpackage we_app_Installer
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
@@ -40,7 +40,7 @@ Zend_Loader::loadClass('we_app_Installer');
  * the source files need to be present as a zip file at a specified location
  *
  * @category   we
- * @package    we_app
+ * @package none
  * @subpackage we_app_Installer
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */

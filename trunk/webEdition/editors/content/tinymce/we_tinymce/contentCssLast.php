@@ -18,7 +18,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_tinymce
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 /* last included stylesheet: visualaid- and body-background (if attibute not empty in we:textarea) must not be overwritten by document-css */
