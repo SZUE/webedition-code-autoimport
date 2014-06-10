@@ -134,14 +134,14 @@ class we_export_wizard{
 			var activetab=0;
 			var selection="auto";
 
-			var extype="wxml";
+			var extype="' . we_import_functions::TYPE_WE_XML . '";
 			var type="doctype";
 			var categories="";
 			var doctype="";
 			var classname="";
 			var dir="";
 
-			var file_format="gxml";
+			var file_format="' . we_import_functions::TYPE_GENERIC_XML . '";
 			var filename="";
 			var export_to="server";
 			var path="/";
@@ -195,9 +195,9 @@ class we_export_wizard{
 		$extype = $this->exportVars["extype"];
 
 		if(!$extype){
-			$extype = "wxml";
+			$extype = we_import_functions::TYPE_WE_XML;
 			if(!$wexpotEnabled){
-				$extype = "gxml";
+				$extype = we_import_functions::TYPE_GENERIC_XML;
 				if(!permissionhandler::hasPerm("GENERICXML_EXPORT")){
 					$extype = "csv";
 					if(!permissionhandler::hasPerm("CSV_EXPORT")){
@@ -217,18 +217,18 @@ class we_export_wizard{
 		$parts = array(
 			/* 		array_push($parts, array(
 			  "headline"	=> g_l('export',"[we_export]"),
-			  "html"		=> we_forms::radiobutton("wxml",($extype=="wxml" && permissionhandler::hasPerm("WXML_EXPORT")), "extype", g_l('export',"[wxml_export]"),true, "defaultfont", "",  !permissionhandler::hasPerm("WXML_EXPORT"), g_l('export',"[txt_wxml_export]"), 0, 384),
+			  "html"		=> we_forms::radiobutton(we_import_functions::TYPE_WE_XML,($extype=="wxml" && permissionhandler::hasPerm("WXML_EXPORT")), "extype", g_l('export',"[wxml_export]"),true, "defaultfont", "",  !permissionhandler::hasPerm("WXML_EXPORT"), g_l('export',"[txt_wxml_export]"), 0, 384),
 			  "space"		=> 120,
 			  "noline"	=> 1)
 			  ); */
 
 			array(
-				"html" => we_html_forms::radiobutton("wxml", ($extype == "wxml" && $wexpotEnabled), "extype", g_l('export', "[wxml_export]"), true, "defaultfont", "", !$wexpotEnabled, g_l('export', "[txt_wxml_export]"), 0, 500),
+				"html" => we_html_forms::radiobutton(we_import_functions::TYPE_WE_XML, ($extype == we_import_functions::TYPE_WE_XML && $wexpotEnabled), "extype", g_l('export', "[wxml_export]"), true, "defaultfont", "", !$wexpotEnabled, g_l('export', "[txt_wxml_export]"), 0, 500),
 				"space" => 0,
 				"noline" => 1
 			),
 			array(
-				"html" => we_html_forms::radiobutton("gxml", ($extype == "gxml" && permissionhandler::hasPerm("GENERICXML_EXPORT")), "extype", g_l('export', "[gxml_export]"), true, "defaultfont", "", !permissionhandler::hasPerm("GENERICXML_EXPORT"), g_l('export', "[txt_gxml_export]"), 0, 500),
+				"html" => we_html_forms::radiobutton(we_import_functions::TYPE_GENERIC_XML, ($extype == we_import_functions::TYPE_GENERIC_XML && permissionhandler::hasPerm("GENERICXML_EXPORT")), "extype", g_l('export', "[gxml_export]"), true, "defaultfont", "", !permissionhandler::hasPerm("GENERICXML_EXPORT"), g_l('export', "[txt_gxml_export]"), 0, 500),
 				"space" => 0,
 				"noline" => 1)
 		);
@@ -256,7 +256,7 @@ class we_export_wizard{
 	function getHTMLStep1(){
 		$extype = $this->exportVars["extype"];
 
-		if($extype == "wxml"){
+		if($extype == we_import_functions::TYPE_WE_XML){
 			return we_html_element::jsElement('
 top.opener.top.we_cmd("export_edit_ifthere");
 top.close();');
@@ -312,7 +312,7 @@ top.close();');
 		if($this->exportVars["selection"] == "auto"){
 			return $this->getHTMLStep2a();
 		} else if($this->exportVars["selection"] == "manual"){
-			/* if($this->exportVars["extype"]=="wxml") return $this->getHTMLStep3();
+			/* if($this->exportVars["extype"]==we_import_functions::TYPE_WE_XML) return $this->getHTMLStep3();
 			  else */
 			if($this->exportVars["extype"] == "csv"){
 				return $this->getHTMLStep1();
@@ -568,7 +568,7 @@ top.close();');
 
 
 		if($filename == ""){
-			$filename = "weExport_" . time() . ($extype == "gxml" ? ".xml" : ".csv");
+			$filename = "weExport_" . time() . ($extype == we_import_functions::TYPE_GENERIC_XML ? ".xml" : ".csv");
 		}
 
 		//set variables in top frame
@@ -670,7 +670,7 @@ function setState(a) {
 		$csv_fields = $this->exportVars["csv_fields"];
 
 		if($filename == ""){
-			$filename = "weExport_" . date('d_m_Y_H_i') . ($extype == "gxml" ? ".xml" : ".csv");
+			$filename = "weExport_" . date('d_m_Y_H_i') . ($extype == we_import_functions::TYPE_GENERIC_XML ? ".xml" : ".csv");
 		}
 
 		//set variables in top frame
@@ -702,7 +702,7 @@ function setState(a) {
 				$parts[] = array("headline" => g_l('export', "[csv_params]"), "html" => $fileformattable->getHtml(), "space" => $_space);
 				break;
 
-			case "gxml":
+			case we_import_functions::TYPE_GENERIC_XML:
 				$table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
 
 				$table->setColContent(1, 0, we_html_tools::getPixel(1, 10));
@@ -1097,7 +1097,7 @@ function setState(a) {
 				  $selTempl = makeArrayFromCSV($this->exportVars["selTempl"]);
 				  $selObjs = makeArrayFromCSV($this->exportVars["selObjs"]);
 				  $selClasses = makeArrayFromCSV($this->exportVars["selClasses"]);
-				  //if($extype=="wxml"){
+				  //if($extype==we_import_functions::TYPE_WE_XML){
 				  //	$finalDocs = $this->getIDs($selDocs,FILE_TABLE,false);
 				  //	$finalTempl = $this->getIDs($selTempl,TEMPLATES_TABLE,false);
 				  //	$finalObjs = defined("OBJECT_FILES_TABLE") ? $this->getIDs($selObjs,OBJECT_FILES_TABLE,false) : "";
@@ -1174,7 +1174,7 @@ function setState(a) {
 					$start_export = true;
 					$hiddens .= we_html_element::htmlHidden(array("name" => "all", "value" => count($finalObjs)));
 
-					/* } else if ((count($finalTempl) > 0 && $extype=="wxml") || (count($finalClasses) > 0  && $extype=="wxml")) {
+					/* } else if ((count($finalTempl) > 0 && $extype==we_import_functions::TYPE_WE_XML) || (count($finalClasses) > 0  && $extype==we_import_functions::TYPE_WE_XML)) {
 					  $start_export = true; */
 				} else {
 					$export_error = (defined("OBJECT_TABLE") ? "nothing_selected_objs" : "nothing_selected_docs");

@@ -22,7 +22,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 class we_exim_refTable{
 
 	var $Storage = array();
@@ -100,11 +99,14 @@ class we_exim_refTable{
 					return $allowed && permissionhandler::hasPerm('EDIT_NAVIGATION');
 			}
 		}
-		if($rd->ContentType == 'weBinary' || $rd->ContentType == 'weNavigationRule' || $rd->ContentType == 'weThumbnail'){
-			return true;
+		switch($rd->ContentType){
+			case 'weBinary':
+			case 'weNavigationRule':
+			case 'weThumbnail':
+				return true;
+			default:
+				return false;
 		}
-
-		return false;
 	}
 
 	function moveItemsToEnd($ct){
