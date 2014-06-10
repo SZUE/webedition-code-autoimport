@@ -19,7 +19,8 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package none
+ * @package database
+ * @internal
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 ini_set('mysqli.reconnect', 1);
