@@ -230,7 +230,7 @@ class we_shop_Basket{
 					return array();
 				}
 
-				$olv = new we_object_listview(0, 1, 0, '', false, $classArray['TableID'], '', '', ' ' . OBJECT_X_TABLE . $classArray['TableID'] . '.ID=' . $classArray['ObjectID'], 0, 0, true, false);
+				$olv = new we_object_listview(0, 1, 0, '', false, $classArray['TableID'], '', '', ' ' . OBJECT_X_TABLE . $classArray['TableID'] . '.ID=' . $classArray['ObjectID'], 0, 0, true, false, '', '', '', '', '', '', '', 0, '', '', '', '', TAGLINKS_DIRECTORYINDEX_HIDE, TAGLINKS_OBJECTSEOURLS);
 				$olv->next_record();
 
 				$Record = $olv->getDBRecord();
