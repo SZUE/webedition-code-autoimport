@@ -10,7 +10,7 @@ class we_base_sessionHandler{
 	private $crypt = false;
 
 	function __construct(){
-		if(SYSTEM_WE_SESSION && !$this->id){
+		if(defined('SYSTEM_WE_SESSION') && SYSTEM_WE_SESSION && !$this->id){
 			ini_set('session.gc_probability', 1);
 			ini_set('session.gc_divisor', 100);
 			session_set_save_handler(array($this, 'open'), array($this, 'close'), array($this, 'read'), array($this, 'write'), array($this, 'destroy'), array($this, 'gc'));
