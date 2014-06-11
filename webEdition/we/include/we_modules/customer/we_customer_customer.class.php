@@ -102,7 +102,7 @@ class we_customer_customer extends weModelBase{
 		$this->save();
 	}
 
-	function save(){
+	function save($force_new = false){
 		$this->Icon = 'customer.gif';
 		$this->IsFolder = 0;
 		$this->Text = $this->Username;
