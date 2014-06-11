@@ -214,7 +214,7 @@ function build_dialog($selected_setting = 'ui'){
 
 					function delete_thumbnail() {" .
 				((permissionhandler::hasPerm('ADMINISTRATOR')) ?
-					"var deletion = confirm('" . sprintf(g_l('thumbnails', '[delete_prompt]'), f('SELECT Name FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . weRequest('int', 'id'))) . "');
+					"var deletion = confirm('" . sprintf(g_l('thumbnails', '[delete_prompt]'), f('SELECT Name FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . weRequest('int', 'id', 0))) . "');
 
 							if (deletion == true) {
 								self.location = '" . $GLOBALS['reloadUrl'] . "&deletethumbnail=" . weRequest('int', 'id') . "';
@@ -252,14 +252,14 @@ function build_dialog($selected_setting = 'ui'){
 			$DB_WE->query('SELECT ID, Name FROM ' . THUMBNAILS_TABLE . ' ORDER BY Name');
 
 			$_thumbnail_counter_firsttime = true;
-			$id=weRequest('int','id');
+			$id = weRequest('int', 'id', -1);
 			while($DB_WE->next_record()){
 				$_enabled_buttons = true;
 				$_thumbnail_counter = $DB_WE->f('ID');
 
 				$_thumbnails->addOption($DB_WE->f('ID'), $DB_WE->f('Name'));
 
-				if($_thumbnail_counter_firsttime && $id==-1){
+				if($_thumbnail_counter_firsttime && $id == -1){
 					$id = $DB_WE->f('ID');
 
 					$_thumbnails->selectOption($DB_WE->f('ID'));
@@ -405,7 +405,7 @@ function we_save() {
 
 function getMainDialog(){
 	// Check if we need to save settings
-	if(weRequest('bool','save_thumbnails')){
+	if(weRequest('bool', 'save_thumbnails')){
 
 		if(isset($_REQUEST['thumbnail_name']) && (strpos($_REQUEST['thumbnail_name'], "'") !== false || strpos($_REQUEST['thumbnail_name'], ',') !== false)){
 			$save_javascript = we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[thumbnail_hochkomma]'), we_message_reporting::WE_MESSAGE_ERROR) .
