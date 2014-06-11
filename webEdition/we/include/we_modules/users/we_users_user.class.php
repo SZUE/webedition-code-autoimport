@@ -163,7 +163,7 @@ class we_users_user{
 	var $extensions_slots = array();
 	private $permissions_defaults = array();
 	// Preferences array
-	private $preference_slots = array('sizeOpt', 'weWidth', 'weHeight', 'usePlugin', 'autostartPlugin', 'promptPlugin', 'Language', 'BackendCharset', 'seem_start_file', 'seem_start_type', 'seem_start_weapp', 'editorSizeOpt', 'editorWidth', 'editorHeight', 'editorFontname', 'editorFontsize', 'editorFont', 'default_tree_count', 'force_glossary_action', 'force_glossary_check', 'cockpit_amount_columns', 'cockpit_amount_last_documents', 'cockpit_rss_feed_url', 'use_jupload', 'editorMode');
+	private $preference_slots = array('sizeOpt', 'weWidth', 'weHeight', 'usePlugin', 'autostartPlugin', 'promptPlugin', 'Language', 'BackendCharset', 'seem_start_file', 'seem_start_type', 'seem_start_weapp', 'editorSizeOpt', 'editorWidth', 'editorHeight', 'editorFontname', 'editorFontsize', 'editorFont', 'default_tree_count', 'force_glossary_action', 'force_glossary_check', 'cockpit_amount_columns', 'cockpit_amount_last_documents', 'cockpit_rss_feed_url', 'editorMode');
 	private $UseSalt = self::SALT_CRYPT;
 
 	// Constructor

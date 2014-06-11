@@ -90,6 +90,7 @@ $GLOBALS['configs'] = array(
 		'XHTML_REMOVE_WRONG' => array('Remove wrong xhtml attributes from we:tags', false),
 //system
 		'WE_MAX_UPLOAD_SIZE' => array('Maximal possible uploadsize', 0),
+		'USE_JUPLOAD' => array('Use Java Upload',0),//deprecated
 		'WE_NEW_FOLDER_MOD' => array('File permissions when creating a new directory', "755"),
 		'WE_DOCTYPE_WORKSPACE_BEHAVIOR' => array('Which Doctypes should be shown for which workspace 0=normal behaviour , 1=new behaviour', 0),
 		'SCHEDULER_TRIGGER' => array('decide how the scheduler works', 1), //postdoc
@@ -228,7 +229,6 @@ $GLOBALS['configs'] = array(
 		'xhtml_show_wrong_text' => array(null),
 		'xhtml_show_wrong_js' => array(null),
 		'xhtml_show_wrong_error_log' => array(null),
-		'use_jupload' => array(1),
 		'specify_jeditor_colors' => array(null),
 		'seem_start_type' => array('cockpit', 'CHANGE_START_DOCUMENT'),
 		'seem_start_file' => array(0),
