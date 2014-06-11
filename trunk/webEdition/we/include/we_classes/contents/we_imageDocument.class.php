@@ -395,6 +395,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 						// open a file
 						intval(filectime($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../'. $img_path)) > intval($thumbObj->getDate())){
 //						$create = false;
+						//picture created after thumbnail definition was changed, so all is up-to-date
 					} else {
 						$thumbObj->createThumb();
 					}
