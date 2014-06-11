@@ -483,11 +483,3 @@ if(isset($_POST['checkLogin']) && empty($_COOKIE)){
 	printHeader($login, (isset($httpCode) ? $httpCode : 401));
 	echo we_html_element::htmlBody(array('style' => 'background-color:#386AAB; height:100%;', "onload" => (($login == LOGIN_OK) ? "open_we();" : "document.loginForm.username.focus();document.loginForm.username.select();")), $_layout . ((isset($_body_javascript)) ? we_html_element::jsElement($_body_javascript) : '')) . '</html>';
 }
-flush();
-if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && (!isset($SEEM_edit_include) || !$SEEM_edit_include)){
-	session_write_close();
-	// trigger scheduler
-	we_schedpro::trigger_schedule();
-	// make the we_backup dir writable for all, so users can copy backupfiles with ftp in it
-//	@chmod($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR, 0777);
-}

@@ -96,7 +96,7 @@ $GLOBALS['configs'] = array(
 		'SCHEDULER_TRIGGER' => array('decide how the scheduler works', 1), //postdoc
 		'SYSTEM_WE_SESSION' => array('use webedition session handling', 0),
 		'SYSTEM_WE_SESSION_TIME' => array('time after which the session is killed if not active anymore', get_cfg_var('session.gc_maxlifetime')),
-		'SYSTEM_WE_SESSION_CRYPT' => array('crypt we session before save', 0),
+		'SYSTEM_WE_SESSION_CRYPT' => array('crypt we session before save', 1),
 // accessibility
 		'SHOWINPUTS_DEFAULT' => array('Default setting for showinputs attribute', true),
 // pageLogger Dir
