@@ -212,7 +212,6 @@ class we_thumbnail{
 	 * @public
 	 */
 	public function init($thumbID, $thumbWidth, $thumbHeight, $thumbRatio, $thumbMaxsize, $thumbInterlace, $thumbFitinside, $thumbFormat, $thumbName, $imageID, $imageFileName, $imagePath, $imageExtension, $imageWidth, $imageHeight, $imageData = "", $date = "", $thumbQuality = 8, $generateSmaller = false){
-
 		$this->thumbID = $thumbID;
 		$this->thumbWidth = $thumbWidth;
 		$this->thumbHeight = $thumbHeight;
@@ -275,7 +274,20 @@ class we_thumbnail{
 	 */
 	public function initByThumbName($thumbName, $imageID, $imageFileName, $imagePath, $imageExtension, $imageWidth, $imageHeight, $imageData = ''){
 		$_foo = getHash('SELECT * FROM ' . THUMBNAILS_TABLE . ' WHERE Name="' . $this->db->escape($thumbName) . '"', $this->db);
-		$this->init(isset($_foo['ID']) ? $_foo['ID'] : 0, isset($_foo['Width']) ? $_foo['Width'] : 0, isset($_foo['Height']) ? $_foo['Height'] : 0, isset($_foo['Ratio']) ? $_foo['Ratio'] : 0, isset($_foo['Maxsize']) ? $_foo['Maxsize'] : 0, isset($_foo['Interlace']) ? $_foo['Interlace'] : false, isset($_foo['Fitinside']) ? $_foo['Fitinside'] : false, isset($_foo['Format']) ? $_foo['Format'] : '', isset($_foo['Name']) ? $_foo['Name'] : '', $imageID, $imageFileName, $imagePath, $imageExtension, $imageWidth, $imageHeight, $imageData, isset($_foo['Date']) ? $_foo['Date'] : '', isset($_foo['Quality']) ? $_foo['Quality'] : '');
+		$_foo = $_foo ? $_foo : array(
+			'ID' => 0,
+			'Width' => 0,
+			'Height' => 0,
+			'Ratio' => 0,
+			'Maxsize' => 0,
+			'Interlace' => false,
+			'Fitinside' => false,
+			'Format' => '',
+			'Name' => '',
+			'Date' => '',
+			'Quality' => ''
+		);
+		$this->init($_foo['ID'], $_foo['Width'], $_foo['Height'], $_foo['Ratio'], $_foo['Maxsize'], $_foo['Interlace'], $_foo['Fitinside'], $_foo['Format'], $_foo['Name'], $imageID, $imageFileName, $imagePath, $imageExtension, $imageWidth, $imageHeight, $imageData, $_foo['Date'], $_foo['Quality']);
 		return ($this->thumbID && $this->thumbName);
 	}
 
@@ -295,8 +307,21 @@ class we_thumbnail{
 			return false;
 		}
 		$_foo = getHash('SELECT * FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . intval($thumbID), $this->db);
+		$_foo = $_foo ? $_foo : array(
+			'ID' => 0,
+			'Width' => 0,
+			'Height' => 0,
+			'Ratio' => 0,
+			'Maxsize' => 0,
+			'Interlace' => false,
+			'Fitinside' => false,
+			'Format' => '',
+			'Name' => '',
+			'Date' => '',
+			'Quality' => ''
+		);
 
-		$this->init($thumbID, isset($_foo['Width']) ? $_foo['Width'] : '', isset($_foo['Height']) ? $_foo['Height'] : '', isset($_foo['Ratio']) ? $_foo['Ratio'] : '', isset($_foo['Maxsize']) ? $_foo['Maxsize'] : '', isset($_foo['Interlace']) ? $_foo['Interlace'] : '', isset($_foo['Fitinside']) ? $_foo['Fitinside'] : '', isset($_foo['Format']) ? $_foo['Format'] : '', isset($_foo['Name']) ? $_foo['Name'] : '', $imageID, $this->imageFileName, $this->imagePath, $this->imageExtension, $this->imageWidth, $this->imageHeight, $this->imageData, isset($_foo['Date']) ? $_foo['Date'] : '' );
+		$this->init($thumbID, $_foo['Width'], $_foo['Height'], $_foo['Ratio'], $_foo['Maxsize'], $_foo['Interlace'], $_foo['Fitinside'], $_foo['Format'], $_foo['Name'], $imageID, $this->imageFileName, $this->imagePath, $this->imageExtension, $this->imageWidth, $this->imageHeight, $this->imageData, $_foo['Date']);
 		return true;
 	}
 
@@ -329,7 +354,7 @@ class we_thumbnail{
 			we_util_File::createLocalFolder($_thumbdir);
 		}
 		$quality = $this->thumbQuality < 1 ? 10 : ($this->thumbQuality > 10 ? 100 : $this->thumbQuality * 10);
-		$outarr = we_base_imageEdit::edit_image($this->imageData ? $this->imageData : $_SERVER['DOCUMENT_ROOT'] . $this->imagePath, $this->outputFormat, $_SERVER['DOCUMENT_ROOT'] . $this->outputPath, $quality, $this->thumbWidth, $this->thumbHeight, $this->thumbRatio, $this->thumbInterlace, 0, 0, -1, -1, 0, $this->thumbFitinside);
+		$outarr = we_base_imageEdit::edit_image($this->imageData ? $this->imageData : $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $this->imagePath, $this->outputFormat, $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $this->outputPath, $quality, $this->thumbWidth, $this->thumbHeight, $this->thumbRatio, $this->thumbInterlace, 0, 0, -1, -1, 0, $this->thumbFitinside);
 
 		return $outarr[0] ? self::OK : self::BUILDERROR;
 	}
@@ -373,7 +398,7 @@ class we_thumbnail{
 	 */
 	public static function getThumbDirectory($realpath = false){
 		$dir = '/' . ltrim(preg_replace('#^\.?(.*)$#', '\1', (WE_THUMBNAIL_DIRECTORY ? WE_THUMBNAIL_DIRECTORY : '_thumbnails_')), '/');
-		return ($realpath ? $_SERVER['DOCUMENT_ROOT'] : '') . $dir;
+		return ($realpath ? $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' : '') . $dir;
 	}
 
 	/**
@@ -406,7 +431,7 @@ class we_thumbnail{
 	 * @public
 	 */
 	public function getOutputPath($withDocumentRoot = false, $unique = false){
-		return ($withDocumentRoot ? $_SERVER['DOCUMENT_ROOT'] : '') . $this->outputPath . ((!$withDocumentRoot && $unique ) ? '?t=' . ($this->exists() ? filemtime($_SERVER['DOCUMENT_ROOT'] . $this->outputPath) : time()) : '');
+		return ($withDocumentRoot ? $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' : '') . $this->outputPath . ((!$withDocumentRoot && $unique ) ? '?t=' . ($this->exists() ? filemtime($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $this->outputPath) : time()) : '');
 	}
 
 	/**
@@ -578,7 +603,7 @@ class we_thumbnail{
 	 */
 	private function checkAndGetImageSizeIfNeeded(){
 		if(!($this->imageWidth && $this->imageHeight)){
-			$arr = $this->getimagesize($_SERVER['DOCUMENT_ROOT'] . $this->imagePath);
+			$arr = $this->getimagesize($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $this->imagePath);
 			if(count($arr) >= 2){
 				$this->imageWidth = $arr[0];
 				$this->imageHeight = $arr[1];
@@ -593,7 +618,7 @@ class we_thumbnail{
 	 * @private
 	 */
 	private function getBinaryData(){
-		$this->imageData = we_base_file::load($_SERVER['DOCUMENT_ROOT'] . $this->imagePath);
+		$this->imageData = we_base_file::load($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $this->imagePath);
 	}
 
 	public static function deleteByThumbID($id){

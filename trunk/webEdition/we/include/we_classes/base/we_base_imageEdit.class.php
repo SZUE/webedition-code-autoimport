@@ -565,7 +565,7 @@ abstract class we_base_imageEdit{
 		}
 		$imgSrc = '/' . ltrim($imgSrc, '/');
 
-		$_imgPath = $_SERVER['DOCUMENT_ROOT'] . $imgSrc;
+		$_imgPath = $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $imgSrc;
 		if(!file_exists($_imgPath) || !($imagesize = getimagesize($_imgPath))){
 			$imagesize = array(0, 0);
 		}
@@ -577,7 +577,7 @@ abstract class we_base_imageEdit{
 			$_thumbSrc = ($imgID ?
 					WE_THUMB_PREVIEW_DIR . $imgID . '_' . $width . '_' . $height . strtolower($outputFormat) :
 					TEMP_DIR . ($tmpName ? $tmpName : we_base_file::getUniqueId()) . '.' . strtolower($outputFormat));
-			$_thumbPath = $_SERVER['DOCUMENT_ROOT'] . $_thumbSrc;
+			$_thumbPath = $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $_thumbSrc;
 
 			$_thumbExists = file_exists($_thumbPath);
 
