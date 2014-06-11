@@ -81,7 +81,7 @@ class we_import_files{
 		$this->partCount = weRequest('int', "wePartCount", 0);
 		$this->fileNameTmp = weRequest('raw', "weFileNameTmp", '');
 		$this->maxUploadSizeB = $this->maxUploadSizeMB * 1048576;
-		$this->useJsUpload = !getPref('use_jupload') && $this->jsRequirementsOk && !$this->useLegacyUpload;
+		$this->useJsUpload = !USE_JUPLOAD && $this->jsRequirementsOk && !$this->useLegacyUpload;
 	}
 
 	function getHTML(){
@@ -743,7 +743,7 @@ we_html_element::jsScript(JS_DIR . "windows.js");
 
 		$content = we_html_element::htmlDiv(
 				array("id" => "forms", "style" => "display:block"),
-				(getPref('use_jupload') ? we_html_element::htmlForm(array(
+				(USE_JUPLOAD ? we_html_element::htmlForm(array(
 						"name" => "JUploadForm"
 						), '') : '') .
 					we_html_element::htmlForm(
@@ -822,7 +822,7 @@ we_html_element::jsScript(JS_DIR . "windows.js");
 				), $form_content);
 
 		// JUpload part0
-		if(getPref('use_jupload')){
+		if(USE_JUPLOAD){
 			$_weju = new we_import_jUpload();
 			$formhtml = $_weju->getAppletTag($formhtml, 530, 300);
 		}
@@ -832,7 +832,7 @@ we_html_element::jsScript(JS_DIR . "windows.js");
 		);
 
 		$content = we_html_element::htmlDiv(
-				array("id" => "forms", "style" => "display:block"), (getPref('use_jupload') ? we_html_element::htmlForm(array(
+				array("id" => "forms", "style" => "display:block"), (USE_JUPLOAD ? we_html_element::htmlForm(array(
 						"name" => "JUploadForm"
 						), '') : '') .
 				we_html_element::htmlForm(
@@ -983,7 +983,7 @@ function weCheckAC(j){
 }
 		';
 
-		$js .= (getPref('use_jupload') || !$this->jsRequirementsOk) ? $this->_getJsFnNextLegacy($formcount, $formcount) : "
+		$js .= (USE_JUPLOAD || !$this->jsRequirementsOk) ? $this->_getJsFnNextLegacy($formcount, $formcount) : "
 function next() {
 	var cf = top.imgimportcontent;
 
