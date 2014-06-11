@@ -89,16 +89,17 @@ function we_tag_sessionStart($attribs){
 			$doc = we_getDocForTag($docAttr, false);
 
 			$WebUserID = ($_SESSION['webuser']['registered'] ? $_SESSION['webuser']['ID'] : 0);
-			$WebUserGroup = ($_SESSION['webuser']['registered'] && !empty($monitorgroupfield) ? $_SESSION['webuser'][$monitorgroupfield] : 'we_guest');
+			$WebUserGroup = ($_SESSION['webuser']['registered'] && $monitorgroupfield ? $_SESSION['webuser'][$monitorgroupfield] : 'we_guest');
 
 			$GLOBALS['DB_WE']->query('INSERT INTO ' . CUSTOMER_SESSION_TABLE . ' SET ' .
 				we_database_base::arraySetter(array(
 					'SessionID' => session_id(),
-					'SessionIp' => (empty($_SERVER['REMOTE_ADDR']) ? '' : oldHtmlspecialchars((string) $_SERVER['REMOTE_ADDR'])), 'WebUserID' => $WebUserID,
+					'SessionIp' => $_SERVER['REMOTE_ADDR'] ? $_SERVER['REMOTE_ADDR'] : '',
+					'WebUserID' => $WebUserID,
 					'WebUserGroup' => $WebUserGroup,
 					'WebUserDescription' => '',
-					'Browser' => (!empty($_SERVER['HTTP_USER_AGENT']) ? oldHtmlspecialchars((string) $_SERVER['HTTP_USER_AGENT']) : ''),
-					'Referrer' => (!empty($_SERVER['HTTP_REFERER']) ? oldHtmlspecialchars((string) $_SERVER['HTTP_REFERER']) : ''),
+					'Browser' => $_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : '',
+					'Referrer' => $_SERVER['HTTP_REFERER'] ? oldHtmlspecialchars((string) $_SERVER['HTTP_REFERER']) : '',
 					'LastLogin' => sql_function('NOW()'),
 					'PageID' => $doc->ID,
 					'ObjectID' => 0,
