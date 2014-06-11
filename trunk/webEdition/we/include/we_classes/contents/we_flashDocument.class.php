@@ -420,8 +420,7 @@ class we_flashDocument extends we_binaryDocument{
 							$_SESSION[$_flashmovieDataId]["serverPath"] = TEMP_PATH . '/' . we_base_file::getUniqueId();
 							move_uploaded_file($_FILES["we_ui_$formname"]["tmp_name"][$flashName], $_SESSION[$_flashmovieDataId]["serverPath"]);
 
-							$tmp_Filename = $flashName . "_" . we_base_file::getUniqueId() . "_" . preg_replace(
-									'[^A-Za-z0-9._-]', '', $_FILES["we_ui_$formname"]["name"][$flashName]);
+							$tmp_Filename = $flashName . "_" . we_base_file::getUniqueId() . "_" . preg_replace('[^A-Za-z0-9._-]', '', $_FILES["we_ui_$formname"]["name"][$flashName]);
 
 							if($flashId){
 								$_SESSION[$_flashmovieDataId]["id"] = $flashId;
