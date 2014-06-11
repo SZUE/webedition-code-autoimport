@@ -63,7 +63,7 @@ abstract class we_captcha_captcha{
 	static function check($captcha){
 		$db = new DB_WE();
 		self::cleanup($db);
-		$db->query('DELETE FROM ' . CAPTCHA_TABLE . ' WHERE IP=x\'' . bin2hex(inet_pton(strstr($_SERVER['REMOTE_ADDR'], ':') ? $_SERVER['REMOTE_ADDR'] : '::ffff:' . $_SERVER['REMOTE_ADDR'])) . '\' AND code="' . $db->escape($captcha) . '" AND agent="' . $_SERVER['HTTP_USER_AGENT'] . '"', '', $db);
+		$db->query('DELETE FROM ' . CAPTCHA_TABLE . ' WHERE IP=x\'' . bin2hex(inet_pton(strstr($_SERVER['REMOTE_ADDR'], ':') ? $_SERVER['REMOTE_ADDR'] : '::ffff:' . $_SERVER['REMOTE_ADDR'])) . '\' AND code="' . $db->escape($captcha) . '" AND agent="' . $db->escape($_SERVER['HTTP_USER_AGENT']) . '"', '', $db);
 
 		if($db->affected_rows()){
 			return true;
