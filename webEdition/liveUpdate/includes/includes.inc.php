@@ -32,7 +32,7 @@ we_error_handler();
 
 if(!isset($_COOKIE[SESSION_NAME]) && isset($_REQUEST['PHPSESSID'])){
 	session_name('PHPSESSID');
-	session_id('PHPSESSID');
+	session_id($_REQUEST['PHPSESSID']);
 	unset($_REQUEST['PHPSESSID'], $_GET['PHPSESSID'], $_POST['PHPSESSID']);
 	session_start();
 	if(isset($_SESSION['user']['isWeSession']) && $_SESSION['user']['isWeSession']){//use this session&rename if we have a good we session found
