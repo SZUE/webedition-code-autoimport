@@ -56,8 +56,8 @@ window.close();');
 		<form action="<?php print $_SERVER['SCRIPT_NAME']; ?>" name="we_form" method="post">
 			<input type="hidden" name="we_okpressed" value="1" />
 			<?php
-			foreach($_REQUEST['we_cmd'] as $i => $v){
-				echo '<input type="hidden" name="we_cmd[' . $i . ']" value="' . $_REQUEST['we_cmd'][$i] . '" />';
+			foreach(weRequest('string', 'we_cmd') as $i => $v){
+				echo '<input type="hidden" name="we_cmd[' . $i . ']" value="' . $v . '" />';
 			}
 
 			/*  diese Liste ist wohl nicht ganz richtig

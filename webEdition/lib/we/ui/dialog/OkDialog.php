@@ -85,7 +85,7 @@ class we_ui_dialog_OkDialog extends we_ui_layout_Dialog{
 
 		$translate = we_core_Local::addTranslation('apps.xml');
 
-		$table = new we_ui_layout_Table(array('cellPadding' => 10));
+		$table = new we_ui_layout_Table(array('cellpadding' => 10));
 		$table->nextColumn();
 		if($this->_headline != ""){
 			$this->_bodyHTML = '<div class ="we_ui_dialog_Headline">' . nl2br($this->_headline) . "</div>" . $this->_bodyHTML;
