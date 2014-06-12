@@ -53,7 +53,7 @@ if(!function_exists('we_stripslashes')){
 }
 
 //FIXME: remove after end of support for PHP 5.3
-if((get_magic_quotes_gpc() == 1)){
+/*if((get_magic_quotes_gpc() == 1)){
 	if($_REQUEST){
 		foreach($_REQUEST as $n => $v){
 			if(is_array($v)){
@@ -64,7 +64,7 @@ if((get_magic_quotes_gpc() == 1)){
 			}
 		}
 	}
-}
+}*/
 
 //make we_autoloader the first autoloader
 $ret = spl_autoload_register('we_autoloader::autoload', false, true);

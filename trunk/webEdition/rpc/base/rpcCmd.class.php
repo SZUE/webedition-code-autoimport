@@ -50,11 +50,11 @@ class rpcCmd{
 
 	function rpcCmd($shell){
 
-		if((get_magic_quotes_gpc() == 1)){//FIXME: remove after End of php 5.3
+		/*if((get_magic_quotes_gpc() == 1)){//FIXME: remove after End of php 5.3
 			if($_REQUEST){
 				rpcCmd::stripSlashes($_REQUEST);
 			}
-		}
+		}*/
 
 		$this->checkSession();
 
