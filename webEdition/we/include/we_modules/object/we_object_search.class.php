@@ -37,7 +37,7 @@ class we_object_search extends we_search{
 			for($i = 0; $i <= count($sessDat); $i++){
 				if(isset($sessDat[$i])){
 					$v = $sessDat[$i];
-					$v = (get_magic_quotes_gpc() == 1) ? stripslashes($v) : $v;
+					//$v = (get_magic_quotes_gpc() == 1) ? stripslashes($v) : $v;
 					$this->$sessDat[$i] = $v;
 				}
 			}
@@ -48,7 +48,7 @@ class we_object_search extends we_search{
 		for($i = 0; $i <= count($sessDat); $i++){
 			if(isset($sessDat[$i])){
 				$v = $sessDat[$i];
-				$v = (get_magic_quotes_gpc() == 1) ? stripslashes($v) : $v;
+				//$v = (get_magic_quotes_gpc() == 1) ? stripslashes($v) : $v;
 				$this->$sessDat[$i] = $v;
 			}
 		}

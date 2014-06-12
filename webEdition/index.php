@@ -256,11 +256,6 @@ if(isset($_POST['checkLogin']) && empty($_COOKIE)){
 
 	printHeader($login, 503);
 	echo we_html_element::htmlBody(array('style' => 'background-color:#FFFFFF;'), $_layout->getHtml()) . '</html>';
-} elseif(!isset($_REQUEST['skipSess']) && isset($GLOBALS['FOUND_SESSION_PROBLEM'])){
-	$_layout = getError(/* g_l('start', '[cookies_disabled]') */'Session-Problem');
-
-	printHeader($login);
-	echo we_html_element::htmlBody(array('style' => 'background-color:#FFFFFF;'), $_layout->getHtml()) . '</html>';
 } else
 /* if(isset($_POST['checkLogin']) && $_POST['checkLogin'] != session_id()){
   $_layout = getError(sprintf(g_l('start', '[phpini_problems]'), (ini_get('cfg_file_path') ? ' (' . ini_get('cfg_file_path') . ')' : '')) . we_html_element::htmlBr() . we_html_element::htmlBr() .
@@ -346,9 +341,6 @@ if(isset($_POST['checkLogin']) && empty($_COOKIE)){
 
 	if($ignore_browser){
 		$_hidden_values .= we_html_element::htmlHidden(array('name' => 'ignore_browser', 'value' => 'true'));
-	}
-	if(isset($_REQUEST['skipSess'])){
-		$_hidden_values .= we_html_element::htmlHidden(array('name' => 'skipSess', 'value' => 'true'));
 	}
 
 	/*	 * ***********************************************************************

@@ -47,7 +47,7 @@ class we_search{
 		foreach($sessDat as $cur){
 			if(isset($GLOBALS['we_' . $this->Name . '_' . $cur])){
 				$v = $GLOBALS['we_' . $this->Name . '_' . $cur];
-				$v = (get_magic_quotes_gpc() == 1) ? stripslashes($v) : $v;
+				//$v = (get_magic_quotes_gpc() == 1) ? stripslashes($v) : $v;
 				$this->$cur = $v;
 			}
 		}
