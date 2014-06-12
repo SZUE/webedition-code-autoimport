@@ -42,11 +42,10 @@ function we_tag_search($attribs){
 		case 'print':
 			return $searchValue;
 		case 'textinput':
-			$atts = removeAttribs($attribs, array(
-				'type', 'onchange', 'name', 'cols', 'rows'
-			));
 			$atts = array_merge(
-				$atts, array(
+				removeAttribs($attribs, array(
+				'type', 'onchange', 'name', 'cols', 'rows'
+				)), array(
 				'name' => 'we_lv_search_' . $name,
 				'type' => 'text',
 				'value' => $searchValue,
@@ -55,12 +54,11 @@ function we_tag_search($attribs){
 			return getHtmlTag('input', $atts) . getHtmlTag('input', $attsHidden);
 
 		case 'textarea':
-			$atts = removeAttribs(
-				$attribs, array(
-				'type', 'onchange', 'name', 'size', 'maxlength', 'value'
-			));
 			$atts = array_merge(
-				$atts, array(
+				removeAttribs(
+					$attribs, array(
+				'type', 'onchange', 'name', 'size', 'maxlength', 'value'
+				)), array(
 				'class' => 'defaultfont',
 				'name' => 'we_lv_search_' . $name,
 				'xml' => $xml

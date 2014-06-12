@@ -756,7 +756,7 @@ _multiEditorreload = true;";
 						$_SESSION['prefs']['weWidth'] = 0;
 						$_SESSION['prefs']['weHeight'] = 0;
 						$_SESSION['prefs']['sizeOpt'] = 0;
-					} else if(($settingvalue == 1) && (isset($_POST['weWidth']) && is_numeric($_POST['weWidth'])) && (isset($_POST['weHeight']) && is_numeric($_POST['weHeight']))){
+					} else if(($settingvalue == 1) && (weRequest('int', 'weWidth')) && weRequest('int', 'weHeight')){
 						$_SESSION['prefs']['sizeOpt'] = 1;
 					}
 					break;
@@ -772,9 +772,10 @@ _multiEditorreload = true;";
 						$_SESSION['prefs']['weWidth'] = $settingvalue;
 
 						if($_generate_java_script){
+							$height = weRequest('int', 'weHeight');
 							$save_javascript .= '
-								top.opener.top.resizeTo(' . $settingvalue . ', ' . $_POST['weHeight'] . ');
-								top.opener.top.moveTo((screen.width / 2) - ' . ($settingvalue / 2) . ', (screen.height / 2) - ' . ($_POST['weHeight'] / 2) . ');';
+								top.opener.top.resizeTo(' . $settingvalue . ', ' . $height . ');
+								top.opener.top.moveTo((screen.width / 2) - ' . ($settingvalue / 2) . ', (screen.height / 2) - ' . ($height / 2) . ');';
 						}
 					}
 					break;
@@ -796,7 +797,7 @@ _multiEditorreload = true;";
 						$_SESSION['prefs']['editorFontname'] = 'none';
 						$_SESSION['prefs']['editorFontsize'] = -1;
 						$_SESSION['prefs']['editorFont'] = 0;
-					} else if(($settingvalue == 1) && isset($_POST['editorFontname']) && isset($_POST['editorFontsize'])){
+					} else if(($settingvalue == 1) && weRequest('string', 'editorFontname') && weRequest('int', 'editorFontsize')){
 						$_SESSION['prefs']['editorFont'] = 1;
 					}
 
@@ -838,7 +839,7 @@ _multiEditorreload = true;";
 						$_SESSION['prefs']['editorWidth'] = 0;
 						$_SESSION['prefs']['editorHeight'] = 0;
 						$_SESSION['prefs']['editorSizeOpt'] = 0;
-					} else if(($settingvalue == 1) && isset($_POST['editorWidth']) && isset($_POST['editorHeight'])){
+					} else if(($settingvalue == 1) && weRequest('int', 'editorWidth') && weRequest('int', 'editorHeight')){
 						$_SESSION['prefs']['editorSizeOpt'] = 1;
 					}
 
@@ -1329,24 +1330,24 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 		$_tableObj = new we_html_table($_attr, 12, 2);
 		$line = 0;
 		$_tableObj->setCol($line, 0, null, $this->getUserfield('Salutation', 'salutation'));
-		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('First', 'first_name'));
+		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('First', 'first_name'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Second', 'second_name'));
-		$_tableObj->setCol( ++$line, 0, array('colspan' => 2), we_html_tools::getPixel(560, 20));
-		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('Address', 'address'));
+		$_tableObj->setCol(++$line, 0, array('colspan' => 2), we_html_tools::getPixel(560, 20));
+		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('Address', 'address'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('HouseNo', 'houseno'));
-		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('PLZ', 'PLZ', 'text', 16, true));
+		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('PLZ', 'PLZ', 'text', 16, true));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('City', 'city'));
-		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('State', 'state'));
+		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('State', 'state'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Country', 'country'));
-		$_tableObj->setCol( ++$line, 0, array('colspan' => 2), we_html_tools::getPixel(560, 20));
-		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('Tel_preselection', 'tel_pre'));
+		$_tableObj->setCol(++$line, 0, array('colspan' => 2), we_html_tools::getPixel(560, 20));
+		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('Tel_preselection', 'tel_pre'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Telephone', 'telephone'));
-		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('Fax_preselection', 'fax_pre'));
+		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('Fax_preselection', 'fax_pre'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Fax', 'fax'));
-		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('Handy', 'mobile'));
+		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('Handy', 'mobile'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Email', 'email'));
-		$_tableObj->setCol( ++$line, 0, array('colspan' => 2), we_html_tools::getPixel(520, 4));
-		$_tableObj->setCol( ++$line, 0, array('colspan' => 2), we_html_tools::htmlFormElementTable($_description, g_l('modules_users', '[description]')));
+		$_tableObj->setCol(++$line, 0, array('colspan' => 2), we_html_tools::getPixel(520, 4));
+		$_tableObj->setCol(++$line, 0, array('colspan' => 2), we_html_tools::htmlFormElementTable($_description, g_l('modules_users', '[description]')));
 
 
 		$parts = array(

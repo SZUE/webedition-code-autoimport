@@ -134,7 +134,7 @@ abstract class we_tool_lookup{
 		foreach($_tools as $_tool){
 			if(stripos($cmd0, 'tool_' . $_tool['name'] . '_') === 0){
 				$_REQUEST['tool'] = $_tool['name'];
-				return ($_REQUEST['tool'] == 'weSearch' || $_REQUEST['tool'] == 'navigation' ?
+				return ($_tool['name'] == 'weSearch' || $_tool['name'] == 'navigation' ?
 						'we_tools/' : 'apps/' ) .
 					$_tool['name'] . '/hook/we_phpCmdHook_' . $_tool['name'] . '.inc.php';
 			}

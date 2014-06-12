@@ -43,13 +43,12 @@ class liveUpdateFrames{
 		switch($this->Section){
 			case 'frameset':
 				// open frameset
-				$this->Data['activeTab'] = (isset($_REQUEST['active']) ?
-						$this->getValidTab($_REQUEST['active']) :
-						$this->getValidTab());
+				$this->Data['activeTab'] = $this->getValidTab(weRequest('raw', 'active', ''));
+
 				break;
 			case 'tabs':
 				// frame with tabs
-				$this->Data['activeTab'] = $_REQUEST['active'];
+				$this->Data['activeTab'] = weRequest('raw', 'active', '');
 				$this->Data['allTabs'] = $this->getAllTabs();
 				break;
 
@@ -145,11 +144,11 @@ class liveUpdateFrames{
 		$deletedLngs = array();
 		$notDeletedLngs = array();
 
-		if(isset($_REQUEST['deleteLanguages']) && !empty($_REQUEST['deleteLanguages'])){
+		if(($langs = weRequest('string', 'deleteLanguages'))){
 			// update prefs_table
 			$cond = '';
 
-			foreach($_REQUEST['deleteLanguages'] as $lng){
+			foreach($langs as $lng){
 				$cond .= ' OR Language="' . $GLOBALS['DB_WE']->escape($lng) . '"';
 			}
 
@@ -157,7 +156,7 @@ class liveUpdateFrames{
 
 			$liveUpdateFunc = new liveUpdateFunctions();
 			// delete folders
-			foreach($_REQUEST['deleteLanguages'] as $lng){
+			foreach($langs as $lng){
 				if(strpos($lng, "..") === false && $lng != ""){
 					if($liveUpdateFunc->deleteDir(LIVEUPDATE_SOFTWARE_DIR . '/webEdition/we/include/we_language/' . $lng)){
 						$deletedLngs[] = $lng;
@@ -172,7 +171,7 @@ class liveUpdateFrames{
 	}
 
 	function processUpdateLogVariables(){
-		if(!isset($_REQUEST['start'])){
+		if(weRequest('int', 'start') === false){
 			$_REQUEST['messages'] = true;
 			$_REQUEST['notices'] = true;
 			$_REQUEST['errors'] = true;
@@ -182,9 +181,9 @@ class liveUpdateFrames{
 		$this->Data['amountPerPage'] = 5;
 
 		$condition = ' WHERE 1 ' .
-			(!isset($_REQUEST['messages']) ? " AND error!=0" : '') .
-			(!isset($_REQUEST['notices']) ? " AND error!=2" : '') .
-			(!isset($_REQUEST['errors']) ? " AND error!=1" : '');
+			(weRequest('bool', 'messages') ? '' : " AND error!=0") .
+			(weRequest('bool', 'notices') ? '' : " AND error!=2") .
+			(weRequest('bool', 'errors') ? '' : " AND error!=1");
 
 		/*
 		 * process update_cmd

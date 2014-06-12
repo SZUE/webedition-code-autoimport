@@ -171,6 +171,7 @@ class paypal_class{
 		// _POST vars into an arry so we can play with them from the calling
 		// script.
 		$post_string = '';
+		//FIXME: POST
 		foreach($_POST as $field => $value){
 			$this->ipn_data["$field"] = $value;
 			$post_string .= $field . '=' . urlencode($value) . '&';

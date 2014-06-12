@@ -58,9 +58,13 @@ if(!$cmd || $cmd != "save_last"){
 						a[j].selected = true;
 					}
 				}
-	<?php if(isset($_REQUEST["filter"]) && ($_REQUEST["filter"] == "folder" || $_REQUEST["filter"] == "filefolder")){ ?>
-					selectFile(dir);
-	<?php } ?>
+	<?php
+	switch(weRequest('string', 'filter')){
+		case 'folder':
+		case 'filefolder':
+			echo 'selectFile(dir);';
+	}
+	?>
 				top.currentDir = dir;
 				selectDir();
 			} else {
@@ -105,9 +109,6 @@ if(!$cmd || $cmd != "save_last"){
 
 		function selectDir() {
 			if (arguments[0]) {
-	<?php if(isset($_REQUEST["filter"]) && $_REQUEST["filter"] == "folder"){ ?>
-					//selectFile(arguments[0],true);
-	<?php } ?>
 				top.currentDir = top.currentDir + (top.currentDir === "/" ? "" : "/") + arguments[0];
 				top.fsheader.addOption(arguments[0], top.currentDir);
 			}

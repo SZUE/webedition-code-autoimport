@@ -51,7 +51,6 @@ class we_banner_frames extends weModuleFrames{
 	}
 
 	function getHTMLEditor(){
-
 		return parent::getHTMLEditor('&home=1');
 	}
 

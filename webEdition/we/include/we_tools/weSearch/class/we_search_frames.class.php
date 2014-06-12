@@ -311,7 +311,7 @@ class we_search_frames extends we_tool_frames{
 		$_searchField_block = '<div>' . $this->View->getSearchDialog($innerSearch) . '</div>';
 		$_searchCheckboxes_block = '<div>' . $this->View->getSearchDialogCheckboxes($innerSearch) . '</div>';
 
-		$content = $this->View->searchProperties($innerSearch);
+		$content = we_search_view::searchProperties($innerSearch);
 		$headline = $this->View->makeHeadLines($innerSearch);
 		$foundItems = $_SESSION['weS']['weSearch']['foundItems' . $innerSearch . ''];
 
@@ -348,7 +348,7 @@ class we_search_frames extends we_tool_frames{
 		$_searchDirChooser_block = '<div>' . $this->View->getDirSelector($innerSearch) . '</div>';
 		$_searchField_block = '<div>' . $this->View->getSearchDialog($innerSearch) . '</div>';
 		$_searchCheckboxes_block = '<div>' . $this->View->getSearchDialogCheckboxes($innerSearch) . '</div>';
-		$content = $this->View->searchProperties($innerSearch);
+		$content = we_search_view::searchProperties($innerSearch);
 		$headline = $this->View->makeHeadLines($innerSearch);
 		$foundItems = $_SESSION['weS']['weSearch']['foundItems' . $innerSearch . ''];
 
@@ -383,7 +383,7 @@ class we_search_frames extends we_tool_frames{
 		$innerSearch = 'AdvSearch';
 		$_searchFields_block = '<div>' . $this->View->getSearchDialogAdvSearch() . '</div>';
 		$_searchCheckboxes_block = '<div>' . $this->View->getSearchDialogCheckboxesAdvSearch() . '</div>';
-		$content = $this->View->searchProperties($innerSearch);
+		$content = we_search_view::searchProperties($innerSearch);
 		$headline = $this->View->makeHeadLines($innerSearch);
 		$foundItems = $_SESSION['weS']['weSearch']['foundItems' . $innerSearch . ''];
 

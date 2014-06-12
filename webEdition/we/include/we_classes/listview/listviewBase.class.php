@@ -73,8 +73,8 @@ abstract class listviewBase{
 	function __construct($name = 0, $rows = 999999999, $offset = 0, $order = '', $desc = false, $cats = '', $catOr = false, $workspaceID = 0, $cols = 0, $calendar = '', $datefield = '', $date = '', $weekstart = '', $categoryids = '', $customerFilterType = 'all', $id = 0){
 
 		$this->name = $name;
-		//? strange setting - don't know what it is supposed to be
-		$this->search = ((!isset($_REQUEST['we_lv_search_' . $this->name])) && (isset($_REQUEST['we_from_search_' . $this->name]))) ? -1 : weRequest('raw', 'we_lv_search_' . $this->name, '');
+		//? strange setting - comes from we_tag_search
+		$this->search = (!($val = weRequest('string', 'we_lv_search_' . $this->name, '')) && weRequest('bool', 'we_from_search_' . $this->name)) ? -1 : $val;
 		$this->search = trim(str_replace(array('"', '\\"'), '', $this->search));
 		$this->DB_WE = new DB_WE();
 		$this->rows = $rows;
@@ -213,8 +213,8 @@ abstract class listviewBase{
 		if(isset($this->calendar_struct['calendar']) && $this->calendar_struct['calendar'] != ''){
 			return true;
 		}
-		if($parentEnd && isset($_REQUEST['we_lv_pend_' . $this->name])){
-			return (($this->start + $this->anz) < $_REQUEST['we_lv_pend_' . $this->name]);
+		if($parentEnd && ($end = weRequest('int', 'we_lv_pend_' . $this->name))){
+			return (($this->start + $this->anz) < $end);
 		}
 		return (($this->start + $this->anz) < $this->anz_all);
 	}
@@ -230,8 +230,8 @@ abstract class listviewBase{
 		if(isset($this->calendar_struct['calendar']) && $this->calendar_struct['calendar'] != ''){
 			return true;
 		}
-		if($parentStart && isset($_REQUEST['we_lv_pstart_' . $this->name])){
-			return (abs($this->start) != weRequest('int', 'we_lv_pstart_' . $this->name, 0));
+		if($parentStart && ($start = weRequest('int', 'we_lv_pstart_' . $this->name, 0))){
+			return (abs($this->start) != $start);
 		}
 		return (abs($this->start) != abs($this->offset));
 	}

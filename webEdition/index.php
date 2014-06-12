@@ -143,6 +143,7 @@ function showMessage(message, prio, win){
 }') .
 	'</head>';
 }
+
 function cleanWEZendCache(){
 	if(file_exists(ZENDCACHE_PATH . 'clean')){
 		$cache = getWEZendCache();
@@ -246,7 +247,7 @@ function getError($reason, $cookie = false){
  * CHECK FOR PROBLEMS
  * *************************************************************************** */
 
-if(isset($_POST['checkLogin']) && empty($_COOKIE)){
+if(weRequest('string', 'checkLogin') && !$_COOKIE){
 	$_layout = getError(g_l('start', '[cookies_disabled]'));
 
 	printHeader($login, 400);
@@ -449,7 +450,7 @@ if(isset($_POST['checkLogin']) && empty($_COOKIE)){
 			}
 			break;
 		case LOGIN_CREDENTIALS_INVALID:
-			we_log_loginFailed('tblUser', $_POST['username']);
+			we_log_loginFailed('tblUser', weRequest('string', 'username'));
 
 			//CHECK FOR FAILED LOGIN ATTEMPTS
 			$cnt = f('SELECT COUNT(1) FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblUser" AND IP="' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '" AND LoginDate > DATE_SUB(NOW(), INTERVAL ' . intval(LOGIN_FAILED_TIME) . ' MINUTE)');

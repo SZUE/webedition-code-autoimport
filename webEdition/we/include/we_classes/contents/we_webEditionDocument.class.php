@@ -114,23 +114,16 @@ class we_webEditionDocument extends we_textContentDocument{
 			}
 		}
 
-		if(isset($_REQUEST['we_ui_' . $formname . '_categories'])){
-			$cats = $_REQUEST['we_ui_' . $formname . '_categories'];
+		if(($cats = weRequest('string', 'we_ui_' . $formname . '_categories')) !== false){
 			// Bug Fix #750
-			if(is_array($cats)){
-				$cats = implode(',', $cats);
-			}
-			$cats = makeIDsFromPathCVS($cats, CATEGORY_TABLE);
-			$GLOBALS['we_document'][$formname]->Category = $cats;
+			$GLOBALS['we_document'][$formname]->Category = makeIDsFromPathCVS(is_array($cats) ? implode(',', $cats) : $cats, CATEGORY_TABLE);
 		}
-		if(isset($_REQUEST['we_ui_' . $formname . '_Category'])){
-			$_REQUEST['we_ui_' . $formname . '_Category'] = (is_array($_REQUEST['we_ui_' . $formname . '_Category']) ?
-					makeCSVFromArray($_REQUEST['we_ui_' . $formname . '_Category'], true) :
-					makeCSVFromArray(makeArrayFromCSV($_REQUEST['we_ui_' . $formname . '_Category']), true));
+		if(($cats = weRequest('string', 'we_ui_' . $formname . '_Category')) !== false){
+			$_REQUEST['we_ui_' . $formname . '_Category'] = makeCSVFromArray((is_array($cats) ? $cats : makeArrayFromCSV($cats)), true);
 		}
 		foreach($GLOBALS['we_document'][$formname]->persistent_slots as $slotname){
-			if($slotname != 'categories' && isset($_REQUEST['we_ui_' . $formname . '_' . $slotname])){
-				$GLOBALS["we_document"][$formname]->$slotname = $_REQUEST["we_ui_" . $formname . "_" . $slotname];
+			if($slotname != 'categories' && ($slot = weRequest('string', 'we_ui_' . $formname . '_' . $slotname)) !== false){
+				$GLOBALS["we_document"][$formname]->$slotname = $slot;
 			}
 		}
 
@@ -786,7 +779,7 @@ $GLOBALS[\'WE_IS_DYN\'] = 1;
 $GLOBALS[\'we_transaction\'] = 0;
 $GLOBALS[\'we_ContentType\'] = \'' . we_base_ContentTypes::WEDOCUMENT . '\';
 
-if (isset($_REQUEST[\'pv_id\']) && isset($_REQUEST[\'pv_tid\'])) {
+if(isset($_REQUEST[\'pv_id\']) && isset($_REQUEST[\'pv_tid\'])) {
 	$_REQUEST[\'we_cmd\'] = array(
 		1 => intval($_REQUEST[\'pv_id\']),
 		4 => intval($_REQUEST[\'pv_tid\']),
@@ -797,7 +790,7 @@ if (isset($_REQUEST[\'pv_id\']) && isset($_REQUEST[\'pv_tid\'])) {
 
 $FROM_WE_SHOW_DOC = true;
 
-if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
+if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	include($_SERVER[\'DOCUMENT_ROOT\'] . \'' . WE_MODULES_DIR . 'object/we_object_showDocument.inc.php\');
 } else {
 	include($_SERVER[\'DOCUMENT_ROOT\'] . \'' . WE_INCLUDES_DIR . 'we_showDocument.inc.php\');

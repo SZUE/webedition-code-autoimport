@@ -1928,9 +1928,7 @@ class we_object extends we_document{
 	}
 
 	function del_workspace($id){
-		$this->DB_WE->query('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE TableID=' . intval($this->ID) . " AND (Workspaces LIKE '," . intval($id) . ",' OR ExtraWorkspaces LIKE '," . intval($id) . ",') LIMIT 0,1");
-
-		if($this->DB_WE->next_record()){
+		if(f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . ' WHERE TableID=' . intval($this->ID) . " AND (Workspaces LIKE '," . intval($id) . ",' OR ExtraWorkspaces LIKE '," . intval($id) . ",') LIMIT 1", '', $this->DB_WE)){
 			$GLOBALS['WE_DEL_WORKSPACE_ERROR'] = true;
 			return;
 		}

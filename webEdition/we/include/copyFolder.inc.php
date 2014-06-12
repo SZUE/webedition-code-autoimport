@@ -25,6 +25,8 @@
 $yuiSuggest = & weSuggest::getInstance();
 
 if(weRequest('bool', 'we_cmd', false, 3)){
+	$cmd1 = weRequest('int', 'we_cmd', '', 1);
+	$cmd4 = weRequest('table', 'we_cmd', '', 4);
 	$js = we_html_element::jsScript(JS_DIR . "windows.js") .
 		we_html_element::jsElement(
 			'self.focus();
@@ -125,12 +127,13 @@ if(weRequest('bool', 'we_cmd', false, 3)){
 	$buttons = '<table border="0" cellpadding="0" cellspacing="0" width="300"><tr><td align="left" id="pbTd" style="display:none;">' . $pbHTML . '</td><td align="right">' .
 		we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button) .
 		'</td></tr></table>';
-	$hidden = we_html_element::htmlHidden(array("name" => "we_cmd[0]", "value" => $_REQUEST['we_cmd'][0])) .
-		we_html_element::htmlHidden(array("name" => "we_cmd[1]", "value" => $_REQUEST['we_cmd'][1])) .
-		we_html_element::htmlHidden(array("name" => "we_cmd[2]", "value" => $_REQUEST['we_cmd'][2])) .
-		(isset($_REQUEST['we_cmd'][4]) ? we_html_element::htmlHidden(array("name" => "we_cmd[4]", "value" => $_REQUEST['we_cmd'][4])) : '');
 
-	if(isset($_REQUEST['we_cmd'][4]) && defined('OBJECT_FILES_TABLE') && $_REQUEST['we_cmd'][4] == OBJECT_FILES_TABLE){
+	$hidden = we_html_element::htmlHidden(array("name" => "we_cmd[0]", "value" => $_REQUEST['we_cmd'][0])) .
+		we_html_element::htmlHidden(array("name" => "we_cmd[1]", "value" => $cmd1)) .
+		we_html_element::htmlHidden(array("name" => "we_cmd[2]", "value" => $_REQUEST['we_cmd'][2])) .
+		($cmd4 ? we_html_element::htmlHidden(array("name" => "we_cmd[4]", "value" => $cmd4)) : '');
+
+	if(defined('OBJECT_FILES_TABLE') && $cmd4 == OBJECT_FILES_TABLE){
 		$content = g_l('copyFolder', "[object_copy]") . '<br/>' .
 			we_html_forms::checkbox(1, 0, "DoNotCopyFolders", g_l('copyFolder', "[object_copy_no_folders]")) .
 			'&nbsp;<br/>' . g_l('copyFolder', "[sameName_headline]") . '<br/>' .
@@ -142,13 +145,13 @@ if(weRequest('bool', 'we_cmd', false, 3)){
 			$hidden;
 	} else {
 		$content = '<table border="0" cellpadding="0" cellspacing="0" width="500"><tr><td>' . we_html_forms::checkbox(
-				1, 0, 'CreateTemplate', g_l('copyFolder', "[create_new_templates]"), false, "defaultfont", "toggleButton(); incTemp(this.checked)") . '
-					<div id="imTemp" style="display:block">' . we_html_forms::checkbox(
-				1, 0, 'CreateMasterTemplate', g_l('copyFolder', "[create_new_masterTemplates]"), false, "defaultfont", "", 1) . we_html_forms::checkbox(
-				1, 0, 'CreateIncludedTemplate', g_l('copyFolder', "[create_new_includedTemplates]"), false, "defaultfont", "", 1) . '
-					</div></td><td valign="top">' . we_html_forms::checkbox(
-				1, 0, 'CreateDoctypes', g_l('copyFolder', "[create_new_doctypes]")) . '
-					</td></tr>
+				1, 0, 'CreateTemplate', g_l('copyFolder', "[create_new_templates]"), false, "defaultfont", "toggleButton(); incTemp(this.checked)") .
+			'<div id="imTemp" style="display:block">' .
+			we_html_forms::checkbox(1, 0, 'CreateMasterTemplate', g_l('copyFolder', "[create_new_masterTemplates]"), false, "defaultfont", "", 1) .
+			we_html_forms::checkbox(1, 0, 'CreateIncludedTemplate', g_l('copyFolder', "[create_new_includedTemplates]"), false, "defaultfont", "", 1) .
+			'</div></td><td valign="top">' .
+			we_html_forms::checkbox(1, 0, 'CreateDoctypes', g_l('copyFolder', "[create_new_doctypes]")) .
+			'</td></tr>
 					<tr><td colspan="2">' . we_html_tools::getPixel(2, 5) . '</td></tr>
 					<tr><td colspan="2">' . copyFolderFrag::formCreateTemplateDirChooser() . '</td></tr>
 					<tr><td colspan="2">' . we_html_tools::getPixel(2, 5) . we_html_element::htmlBr() . copyFolderFrag::formCreateCategoryChooser() .
@@ -157,16 +160,16 @@ if(weRequest('bool', 'we_cmd', false, 3)){
 	}
 	copyFolderFrag::printHeader();
 	echo
-		'<body class="weDialogBody">' . $js .
-		'<form onsubmit="return fsubmit(this)" name="we_form" target="pbUpdateFrame" method="get">' .
-		we_html_tools::htmlDialogLayout(
-			$content, g_l('copyFolder', "[headline]") . ": " . we_util_Strings::shortenPath(
-				id_to_path($_REQUEST['we_cmd'][1], $_REQUEST['we_cmd'][4]), 46), $buttons
-		) .
-		'</form>' .
-		'<iframe frameborder="0" src="about:blank" name="pbUpdateFrame" width="0" height="0" id="pbUpdateFrame"></iframe>' .
-		$yuiSuggest->getYuiCss() .
-		$yuiSuggest->getYuiJs();
+	'<body class="weDialogBody">' . $js .
+	'<form onsubmit="return fsubmit(this)" name="we_form" target="pbUpdateFrame" method="get">' .
+	we_html_tools::htmlDialogLayout(
+		$content, g_l('copyFolder', "[headline]") . ": " . we_util_Strings::shortenPath(
+			id_to_path($cmd1, $cmd4), 46), $buttons
+	) .
+	'</form>' .
+	'<iframe frameborder="0" src="about:blank" name="pbUpdateFrame" width="0" height="0" id="pbUpdateFrame"></iframe>' .
+	$yuiSuggest->getYuiCss() .
+	$yuiSuggest->getYuiJs();
 	'</body></html>';
 } else {
 
@@ -177,7 +180,7 @@ if(weRequest('bool', 'we_cmd', false, 3)){
 		"leftmargin" => 15,
 		"topmargin" => 10
 	);
-	$fr = (isset($_REQUEST["finish"]) ?
+	$fr = (weRequest('bool', 'finish') ?
 			new copyFolderFinishFrag("we_copyFolderFinish", 1, 0, $bodyAttribs) :
 			new copyFolderFrag("we_copyFolder", 1, 0, $bodyAttribs)
 		);

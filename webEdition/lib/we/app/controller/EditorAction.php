@@ -131,6 +131,7 @@ class we_app_controller_EditorAction extends Zend_Controller_Action{
 	 * @return void
 	 */
 	protected function _processPostVars(){
+		//FIMXE: POST
 		$this->_model->setFields($_POST);
 	}
 

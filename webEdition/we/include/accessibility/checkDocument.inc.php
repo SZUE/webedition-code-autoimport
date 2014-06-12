@@ -46,8 +46,8 @@ if(($we_transaction = weRequest('transaction', 'we_transaction'))){ //  initiali
 	$http_request->addHeader('User-Agent', $_SERVER['HTTP_USER_AGENT']);
 
 	//  add additional parameters to the request
-	if($_REQUEST['additionalVars']){
-		$args = explode('&', $_REQUEST['additionalVars']);
+	if(($add = weRequest('string', 'additionalVars'))){
+		$args = explode('&', $add);
 		foreach($args as $pair){
 			$keyValue = explode('=', $pair);
 			$http_request->addVar($keyValue[0], $keyValue[1]);
