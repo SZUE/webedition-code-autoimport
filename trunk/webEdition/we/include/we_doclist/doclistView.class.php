@@ -904,7 +904,7 @@ class doclistView{
 	 * @abstract executes the search and writes the result into arrays
 	 * @return array with search results
 	 */
-	function searchProperties(){
+	static function searchProperties(){
 
 		$DB_WE = new DB_WE ( );
 		$content = array();
@@ -928,42 +928,21 @@ class doclistView{
 
 		if(isset($_REQUEST['we_cmd'] ['obj'])){
 			$obj = $_REQUEST['we_cmd'] ['obj'];
-			$thisObj = new doclistView ( );
+			$thisObj = new self();
 		} else {
 			$obj = $GLOBALS ['we_doc'];
 			$thisObj = $this;
 		}
 
-		if(isset($_REQUEST["searchstart"])){
-			$obj->searchclassFolder->searchstart = $_REQUEST["searchstart"];
-		}
+		$obj->searchclassFolder->searchstart = weRequest('int', "searchstart", 0);
 
 		$_table = FILE_TABLE;
-
-		$searchFields = (isset($_REQUEST['we_cmd'] ['searchFields']) ?
-				$_REQUEST['we_cmd'] ['searchFields'] :
-				$obj->searchclassFolder->searchFields);
-
-		$searchText = (isset($_REQUEST['we_cmd'] ['search']) ?
-				$_REQUEST['we_cmd'] ['search'] :
-				$obj->searchclassFolder->search);
-
-		$location = (isset($_REQUEST['we_cmd'] ['location']) ?
-				$_REQUEST['we_cmd'] ['location'] :
-				$obj->searchclassFolder->location);
-
-		$_order = (isset($_REQUEST['we_cmd'] ['order']) ?
-				$_REQUEST['we_cmd'] ['order'] :
-				$obj->searchclassFolder->order);
-
-		$_view = (isset($_REQUEST['we_cmd'] ['setView']) ?
-				$_REQUEST['we_cmd'] ['setView'] :
-				$obj->searchclassFolder->setView);
-
-		$_searchstart = (isset($_REQUEST['we_cmd'] ['searchstart']) ?
-				$_REQUEST['we_cmd'] ['searchstart'] :
-				$obj->searchclassFolder->searchstart);
-
+		$searchFields = weRequest('string', 'searchFields', $obj->searchclassFolder->searchFields);
+		$searchText = weRequest('string', 'we_cmd', $obj->searchclassFolder->search, 'search');
+		$location = weRequest('string', 'we_cmd', $obj->searchclassFolder->location, 'location');
+		$_order = weRequest('string', 'we_cmd', $obj->searchclassFolder->order, 'order');
+		$_view = weRequest('string', 'we_cmd', $obj->searchclassFolder->setView, 'setView');
+		$_searchstart = weRequest('int', 'we_cmd', $obj->searchclassFolder->searchstart, 'searchstart');
 		$_anzahl = weRequest('int', 'we_cmd', $obj->searchclassFolder->anzahl, 'anzahl');
 
 
@@ -1262,10 +1241,10 @@ class doclistView{
 	 * @abstract generates html for search result
 	 * @return string, html search result
 	 */
-	function getSearchParameterTop($foundItems){
+	static function getSearchParameterTop($foundItems){
 		$anzahl = array(10 => 10, 25 => 25, 50 => 50, 100 => 100);
 
-		$thisObj = (isset($_REQUEST['we_cmd'] ['obj']) ? new doclistView() : $this);
+		$thisObj = weRequest('bool', 'we_cmd', false, 'obj') ? new self() : $this;
 		$order = weRequest('raw', 'we_cmd', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->searchclassFolder->order : '', 'order');
 		$mode = weRequest('raw', 'we_cmd', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->searchclassFolder->mode : '', 'mode');
 		$setView = weRequest('raw', 'we_cmd', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->searchclassFolder->setView : '', 'setView');
@@ -1304,7 +1283,7 @@ class doclistView{
 	}
 
 	function getSearchParameterBottom($foundItems){
-		$thisObj = (isset($_REQUEST['we_cmd'] ['obj']) ? new doclistView () : $this);
+		$thisObj = weRequest('bool', 'we_cmd', false, 'obj') ? new self() : $this;
 
 		if(permissionhandler::hasPerm('PUBLISH')){
 			$publishButtonCheckboxAll = we_html_forms::checkbox(1, 0, "publish_all", "", false, "middlefont", "checkAllPubChecks()");
@@ -1330,9 +1309,7 @@ class doclistView{
 	 * @return string, html for paging GUI
 	 */
 	function getNextPrev($we_search_anzahl){
-
-		if(isset($_REQUEST['we_cmd'] ['obj'])){
-			$obj = $_REQUEST['we_cmd'] ['obj'];
+		if(($obj = weRequest('bool', 'we_cmd', false, 'obj'))){
 			$anzahl = $_SESSION['weS']['weSearch'] ['anzahl'];
 			$searchstart = $_SESSION['weS']['weSearch'] ['searchstart'];
 		} else {

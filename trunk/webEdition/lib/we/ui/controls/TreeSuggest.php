@@ -34,32 +34,22 @@ we_html_tools::protect();
 $type = "application/json";
 header("Content-Type: " . $type);
 $ZW = array();
-foreach($_GET as $gKey => $gValue){
+foreach($_REQUEST as $gKey => $gValue){
 	$ZW[strip_tags($gKey)] = $gValue;
 }
-$_GET = $ZW;
+$_REQUEST = $ZW;
 
-if(isset($_GET["id"])){
-	$id = urlencode($_GET["id"]);
-}
-if(isset($_GET["sessionname"])){
-	$sessionName = urlencode($_GET["sessionname"]);
-}
-if(isset($_GET["table"])){
-	$table = urlencode($_GET["table"]);
-}
-if(isset($_GET["close"])){
-	$close = urlencode($_GET["close"]);
-}
-if(isset($_GET["datasource"])){
-	$datasource = urlencode($_GET["datasource"]);
-}
-if(isset($_GET["treeclass"])){
-	$treeclass = urlencode($_GET["treeclass"]);
+$id = weRequest('int', "id");
+$sessionName = weRequest('string', "sessionname");
+$table = weRequest('table', "table");
+$close = weRequest('bool', "close");
+$datasource = weRequest('string', "datasource");
+
+if(($treeclass = weRequest('string', "treeclass"))){
 	$tree = new $treeclass();
 }
 
-if(isset($sessionName) && $sessionName !== '' && isset($id) && $id !== ''){
+if($sessionName && $id){
 	/**
 	 * get the session data (open nodes) of the tree
 	 */
@@ -82,7 +72,7 @@ if(isset($sessionName) && $sessionName !== '' && isset($id) && $id !== ''){
 		return;
 	}
 
-	if(isset($table) && $table !== '' && isset($datasource) && $datasource == 'table' && is_object($tree)){
+	if($table && $datasource == 'table' && is_object($tree)){
 
 		$nodes = $tree->doSelect($table, $id);
 

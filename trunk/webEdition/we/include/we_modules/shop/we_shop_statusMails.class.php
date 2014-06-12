@@ -83,7 +83,7 @@ class we_shop_statusMails{
 		foreach($frontendL as $langkey){
 			$documentsarray[$langkey] = $documentsarray['default'];
 		}
-		$zw = new we_shop_statusMails(
+		$zw = new self(
 			array(//Fieldshidden
 			'DateOrder' => 0,
 			'DateConfirmation' => 1,

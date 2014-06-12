@@ -37,9 +37,8 @@ $headCal = we_html_element::cssLink(JS_DIR . "jscalendar/skins/aqua/theme.css") 
 		we_html_element::jsScript(WE_INCLUDES_DIR . "we_language/" . $GLOBALS ["WE_LANGUAGE"] . "/calendar.js") .
 		we_html_element::jsScript(JS_DIR . "jscalendar/calendar-setup.js");
 
-$_view = new doclistView ( );
-
-print $headCal .
+$_view = new doclistView();
+echo $headCal .
 		$_view->getSearchJS() .
 		STYLESHEET .
 		'</head>
@@ -48,7 +47,7 @@ print $headCal .
 <div id="mouseOverDivs_doclist"></div>
 <form name="we_form" action="" onsubmit="return false;" style="padding:0px;margin:0px;">';
 
-$content = $_view->searchProperties();
+$content = doclistView::searchProperties();
 $headline = $_view->makeHeadLines();
 $foundItems = (isset($_SESSION['weS']['weSearch']['foundItems'])) ? $_SESSION['weS']['weSearch']['foundItems'] : 0;
 $_parts = array(

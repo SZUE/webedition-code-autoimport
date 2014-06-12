@@ -162,9 +162,9 @@ if(!isset($GLOBALS['WE_IS_DYN'])){ //only true on dynamic frontend pages
 			$header = (!in_array(weRequest('int', 'we_cmd', -1, 1), array(WE_EDITPAGE_CONTENT, WE_EDITPAGE_PREVIEW, WE_EDITPAGE_PROPERTIES)));
 			break;
 		case 'load_editor':
-			$header = (!(isset($_REQUEST['we_transaction']) &&
-				isset($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]) &&
-				$_SESSION['weS']['we_data'][$_REQUEST['we_transaction']][0]['Table'] == FILE_TABLE &&
+			$trans = weRequest('transaction', 'we_transaction', '__NO_TRANS__');
+			$header = (!(isset($_SESSION['weS']['we_data'][$trans]) &&
+				$_SESSION['weS']['we_data'][$trans][0]['Table'] == FILE_TABLE &&
 				$_SESSION['weS']['EditPageNr'] == WE_EDITPAGE_PREVIEW
 				));
 			break;

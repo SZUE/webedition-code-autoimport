@@ -826,7 +826,7 @@ abstract class we_root extends we_class{
 		// do not set REQUEST VARS into the document
 		switch(weRequest('string', 'we_cmd', '', 0)){
 			case 'switch_edit_page':
-				if(isset($_REQUEST['we_cmd'][3])){
+				if(weRequest('string', 'we_cmd', false, 3)){
 					return true;
 				}
 				break;

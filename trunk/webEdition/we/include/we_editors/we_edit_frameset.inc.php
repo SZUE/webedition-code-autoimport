@@ -62,14 +62,10 @@ function getTabs($classname, $predefined = 0){
 }
 
 $we_Table = weRequest('table', 'we_cmd', FILE_TABLE, 1);
+$we_ID = weRequest('int', 'we_cmd', 0, 2);
+$we_ContentType = weRequest('string', 'we_cmd', '', 3);
+$we_ContentType = $we_ContentType ? $we_ContentType : ($we_ID ? f('SELECT ContentType FROM ' . $GLOBALS['DB_WE']->escape($we_Table) . ' WHERE ID=' . $we_ID) : '');
 
-if($_REQUEST['we_cmd'][2]){
-	$we_ID = weRequest('int', 'we_cmd', 0, 2);
-}
-
-if(isset($_REQUEST['we_cmd'][3])){
-	$we_ContentType = $_REQUEST['we_cmd'][3] ? $_REQUEST['we_cmd'][3] : (isset($we_ID) ? f('SELECT ContentType FROM ' . $GLOBALS['DB_WE']->escape($we_Table) . ' WHERE ID=' . intval($we_ID)) : '');
-}
 
 if(isset($_SESSION['weS']['we_data'][$we_transaction])){
 	$we_dt = $_SESSION['weS']['we_data'][$we_transaction];
@@ -106,7 +102,7 @@ $we_doc->setDocumentControlElements();
 //	in SEEM-Mode the first page is the preview page.
 //	when editing an image-document we go to edit page
 if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
-	if(isset($_REQUEST['SEEM_edit_include']) && $_REQUEST['SEEM_edit_include'] && $we_doc->userHasAccess() == 1){ //	Open seem_edit_include pages in edit-mode
+	if(weRequest('bool', 'SEEM_edit_include') && $we_doc->userHasAccess() == 1){ //	Open seem_edit_include pages in edit-mode
 		$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_CONTENT;
 		$we_doc->EditPageNr = WE_EDITPAGE_CONTENT;
 	} elseif($we_doc instanceof we_imageDocument){
@@ -119,12 +115,12 @@ if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 }
 
 //  This code was over the comment: init document !!!!!!! (line 82?)
-if(!isset($we_ID)){
+if(!$we_ID){
 	$_SESSION['weS']['EditPageNr'] = getTabs('we_webEditionDocument', WE_EDITPAGE_PROPERTIES);
 }
 
-if((isset($_REQUEST['we_cmd'][10])) && ($we_Table == FILE_TABLE) && ($we_ContentType == we_base_ContentTypes::WEDOCUMENT)){
-	$we_doc->setTemplateID($_REQUEST['we_cmd'][10]);
+if(($tid = weRequest('int', 'we_cmd', false, 10)) !== false && ($we_Table == FILE_TABLE) && ($we_ContentType == we_base_ContentTypes::WEDOCUMENT)){
+	$we_doc->setTemplateID($tid);
 	$_SESSION['weS']['EditPageNr'] = getTabs($we_doc->ClassName, 1);
 }
 
@@ -136,10 +132,10 @@ if(weRequest('string', 'we_cmd', '', 0) == 'new_document' && ($pid = weRequest('
 }
 
 
-if((isset($_REQUEST['we_cmd'][8])) && ($we_Table == FILE_TABLE) && ($we_ContentType == we_base_ContentTypes::WEDOCUMENT)){
-	$we_doc->changeDoctype($_REQUEST['we_cmd'][8]);
+if(($doct = weRequest('int', 'we_cmd', false, 8)) !== false && ($we_Table == FILE_TABLE) && ($we_ContentType == we_base_ContentTypes::WEDOCUMENT)){
+	$we_doc->changeDoctype($doct);
 	$_SESSION['weS']['EditPageNr'] = getTabs($we_doc->ClassName, 1);
-} else if(($tid = weRequest('int', 'we_cmd', 0, 8)) && (defined('OBJECT_FILES_TABLE') && $we_Table == OBJECT_FILES_TABLE) && ($we_ContentType == 'objectFile')){
+} else if($doct !== false && (defined('OBJECT_FILES_TABLE') && $we_Table == OBJECT_FILES_TABLE) && ($we_ContentType == 'objectFile')){
 	$we_doc->TableID = $tid;
 	$we_doc->setRootDirID(true);
 	$we_doc->restoreDefaults();
@@ -191,7 +187,7 @@ if($we_doc->ID == 0){
 			getFirstValidEditPageNr($we_doc, WE_EDITPAGE_CONTENT));
 }
 
-if($we_Table == FILE_TABLE && $we_ContentType == 'folder' && isset($we_ID) && ($we_ID)){
+if($we_Table == FILE_TABLE && $we_ContentType == 'folder' && $we_ID){
 	$we_doc->EditPageNr = WE_EDITPAGE_DOCLIST;
 	$_SESSION['weS']['EditPageNr'] = getTabs($we_doc->ClassName, 16);
 }
@@ -244,8 +240,8 @@ if($we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT){
 
 // get default code
 if(!isset($we_doc->elements['data']['dat'])){
-	$we_doc->elements['data']['dat'] = (isset($_REQUEST['we_cmd'][10]) && $we_doc->ContentType == we_base_ContentTypes::TEMPLATE ?
-			base64_decode($_REQUEST['we_cmd'][10]) :
+	$we_doc->elements['data']['dat'] = (($cmd10 = weRequest('string', 'we_cmd', '', 10)) && $we_doc->ContentType == we_base_ContentTypes::TEMPLATE ?
+			base64_decode($cmd10) :
 			we_base_ContentTypes::inst()->getDefaultCode($we_doc->ContentType));
 }
 echo we_html_tools::getHtmlTop();
@@ -337,7 +333,7 @@ echo we_html_tools::getHtmlTop();
 	var openedWithWE = 1;
 
 <?php
-if(isset($_REQUEST['we_cmd'][0]) && isset($parastr) && ($_REQUEST['we_cmd'][0] == "edit_document_with_parameters")){
+if(isset($parastr) && weRequest('string', 'we_cmd', '', 0) == "edit_document_with_parameters"){
 	echo 'var parameters = "' . $parastr . '";';
 }
 

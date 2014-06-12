@@ -4221,8 +4221,8 @@ class scss_server {
 	 */
 	protected function inputName() {
 		switch (true) {
-			case isset($_GET['p']):
-				return $_GET['p'];
+/*			case isset($_GET['p']):
+				return $_GET['p'];*/
 			case isset($_SERVER['PATH_INFO']):
 				return $_SERVER['PATH_INFO'];
 			case isset($_SERVER['DOCUMENT_URI']):

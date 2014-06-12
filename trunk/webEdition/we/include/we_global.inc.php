@@ -201,14 +201,15 @@ function _weRequest(&$var, $key, array $data){
 			$var = floatval($var);
 			return;
 		case 'bool':
+			if(is_bool($var)){
+				return $var;
+			}
 			switch($var){
-				case false:
 				case '0':
 				case 'off':
 				case 'false':
 					$var = false;
 					return;
-				case true:
 				case 'true':
 				case 'on':
 				case '1':

@@ -22,9 +22,9 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_dialog_deleteProgress{
+abstract class we_dialog_deleteProgress{
 
-	function main(){
+	public static function main(){
 
 		$WE_PB = new we_progressBar(0, 0, true);
 		$WE_PB->setStudLen(490);
@@ -46,8 +46,8 @@ class we_dialog_deleteProgress{
 		);
 	}
 
-	function frameset(){
-		$body = we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;', "onload" => "delcmd.location='" . WEBEDITION_DIR . "delFrag.php?frame=cmd" . (isset($_REQUEST["table"]) ? ("&amp;table=" . rawurlencode($_REQUEST["table"])) : "") . "&currentID=" . rawurlencode($_REQUEST["currentID"]) . "';")
+	public static function frameset($table,$currentID){
+		$body = we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;', "onload" => "delcmd.location='" . WEBEDITION_DIR . "delFrag.php?frame=cmd" . ($table ? ("&amp;table=" . rawurlencode($table)) : "") . "&currentID=" . $currentID . "';")
 				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
 					, we_html_element::htmlIFrame('delmain', WEBEDITION_DIR . "delFrag.php?frame=main", 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden') .
 					we_html_element::htmlIFrame('delcmd', HTML_DIR . "white.html", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
@@ -61,7 +61,7 @@ class we_dialog_deleteProgress{
 				) . $body);
 	}
 
-	function cmd(){
+	public static function cmd(){
 		if(isset($_SESSION['weS']['backup_delete']) && $_SESSION['weS']['backup_delete']){
 			$taskname = md5(session_id() . "_backupdel");
 			new we_backup_delete($taskname, 1, 0);

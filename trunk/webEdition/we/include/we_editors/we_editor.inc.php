@@ -124,16 +124,16 @@ switch(weRequest('string', 'we_cmd', '', 0)){
 		$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_CONTENT;
 		break;
 	case 'users_add_owner':
-		$we_doc->add_owner($_REQUEST['we_cmd'][1]);
+		$we_doc->add_owner(weRequest('int','we_cmd',0,1));
 		break;
 	case 'users_del_owner':
-		$we_doc->del_owner($_REQUEST['we_cmd'][1]);
+		$we_doc->del_owner(weRequest('int','we_cmd',0,1));
 		break;
 	case 'users_add_user':
-		$we_doc->add_user($_REQUEST['we_cmd'][1]);
+		$we_doc->add_user(weRequest('int','we_cmd',0,1));
 		break;
 	case 'users_del_user':
-		$we_doc->del_user($_REQUEST['we_cmd'][1]);
+		$we_doc->del_user(weRequest('int','we_cmd',0,1));
 		break;
 	case 'users_del_all_owners':
 		$we_doc->del_all_owners();
@@ -148,16 +148,16 @@ switch(weRequest('string', 'we_cmd', '', 0)){
 		break;
 
 	case 'object_add_workspace':
-		$we_doc->add_workspace($_REQUEST['we_cmd'][1]);
+		$we_doc->add_workspace(weRequest('intList','we_cmd',0,1));
 		break;
 	case 'object_del_workspace':
-		$we_doc->del_workspace($_REQUEST['we_cmd'][1]);
+		$we_doc->del_workspace(weRequest('int','we_cmd',0,1));
 		break;
 	case 'object_add_extraworkspace':
-		$we_doc->add_extraWorkspace($_REQUEST['we_cmd'][1]);
+		$we_doc->add_extraWorkspace(weRequest('int','we_cmd',0,1));
 		break;
 	case 'object_del_extraworkspace':
-		$we_doc->del_extraWorkspace($_REQUEST['we_cmd'][1]);
+		$we_doc->del_extraWorkspace(weRequest('int','we_cmd',0,1));
 		break;
 	case 'object_ws_from_class':
 		$we_doc->ws_from_class();
@@ -287,7 +287,7 @@ if($_userID != 0 && $_userID != $_SESSION['user']['ID'] && $we_doc->ID){ // docu
 if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'publish' && $_REQUEST['we_cmd'][0] != 'unpublish') && (($we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT) && ($we_doc->EditPageNr == WE_EDITPAGE_PREVIEW || $we_doc->EditPageNr == WE_EDITPAGE_CONTENT )) || ($we_doc->ContentType == we_base_ContentTypes::HTML && $we_doc->EditPageNr == WE_EDITPAGE_PREVIEW && $_REQUEST['we_cmd'][0] != 'save_document')) && (!$we_doc->IsDynamic)){
 	$we_include = $we_doc->editor();
 	if(isset($_POST) && $_POST && !isset($_REQUEST['we_complete_request'])){
-		t_e('missing completed request');
+		t_e('missing completed request',$_POST);
 	}
 	$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
 	ob_start();

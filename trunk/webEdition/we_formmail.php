@@ -213,6 +213,7 @@ if($_order){
 	}
 }
 
+//FIXME: change
 if(isset($_GET)){
 	foreach($_GET as $n => $v){
 		if((!in_array($n, $we_reserved)) && (!in_array($n, $we_orderarray)) && (!is_array($v))){
@@ -221,6 +222,7 @@ if(isset($_GET)){
 	}
 }
 
+//FIXME: change
 if(isset($_POST)){
 	foreach($_POST as $n => $v){
 		if((!in_array($n, $we_reserved)) && (!in_array($n, $we_orderarray)) && (!is_array($v))){

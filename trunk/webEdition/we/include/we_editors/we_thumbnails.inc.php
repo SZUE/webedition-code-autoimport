@@ -31,7 +31,7 @@ $reloadUrl = getServerUrl(true) . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=editThu
 if(($name = weRequest('string', 'newthumbnail'))){
 	if(permissionhandler::hasPerm('ADMINISTRATOR')){
 		$DB_WE->query('INSERT INTO ' . THUMBNAILS_TABLE . ' SET Name="' . $DB_WE->escape($name) . '"');
-		$_GET['id'] = $DB_WE->getInsertId();
+		$_REQUEST['id'] = $DB_WE->getInsertId();
 	}
 }
 
@@ -50,7 +50,7 @@ if(($delId = weRequest('int', 'deletethumbnail'))){
 if(!weRequest('int', 'id')){
 	$tmpid = f('SELECT ID FROM ' . THUMBNAILS_TABLE . ' ORDER BY Name LIMIT 1');
 
-	$_GET['id'] = $tmpid ? $tmpid : -1;
+	$_REQUEST['id'] = $tmpid ? $tmpid : -1;
 }
 
 /**

@@ -143,13 +143,9 @@ function _cutText($text, $l){
 						$ct : '');
 			}
 
-			$arDir = array();
-			$arFile = array();
-			$ordDir = array();
-			$ordFile = array();
-			$final = array();
+			$arDir = $arFile = $ordDir = $ordFile = $final = array();
 
-			$org = ($_REQUEST["dir"] == "" ? "/" : $_REQUEST["dir"]);
+			$org = ($_REQUEST["dir"] ? $_REQUEST["dir"] : '/');
 
 
 			$dir = $_SERVER['DOCUMENT_ROOT'] . $_REQUEST["dir"];

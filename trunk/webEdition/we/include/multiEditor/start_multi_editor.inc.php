@@ -50,7 +50,7 @@ if(weRequest('string', 'we_cmd', '', 4) == 'SEEM_edit_include'){ // Edit-Include
 // in multiEditorFrameset we_cmd[1] can be set to reach this
 	$directCmd = array();
 	for($i = 1; $i < count($_REQUEST['we_cmd']) && $i < 4; $i++){
-		$directCmd[] = $_REQUEST['we_cmd'][$i];
+		$directCmd[] = weRequest('string', 'we_cmd', '', $i);
 	}
 	$jsCommand = _buildJsCommand($directCmd);
 } else { // check preferences for which document to open at startup
@@ -83,7 +83,6 @@ if(weRequest('string', 'we_cmd', '', 4) == 'SEEM_edit_include'){ // Edit-Include
 				break;
 		}
 		unset($_SESSION['weS']['SEEM']['open_selected']);
-
 	} else {// normal mode, start document depends on settings
 		switch($_SESSION['prefs']['seem_start_type']){
 			case 'object':

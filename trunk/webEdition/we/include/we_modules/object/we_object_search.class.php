@@ -28,7 +28,6 @@ class we_object_search extends we_search{
 	var $searchname;
 	var $searchlocation;
 	var $searchfield;
-	var $searchstart = 0;
 	var $show;
 
 	function __construct(){

@@ -1786,7 +1786,7 @@ class we_search_view extends we_tool_view{
     </tr></tbody></table>';
 	}
 
-	function searchProperties($whichSearch){
+	static function searchProperties($whichSearch){
 		$DB_WE = new DB_WE();
 		$workspaces = $_result = $versionsFound = $saveArrayIds = $_tables = $searchText = array();
 		$_SESSION['weS']['weSearch']['foundItems' . $whichSearch] = 0;
@@ -2873,7 +2873,7 @@ class we_search_view extends we_tool_view{
 		return $out;
 	}
 
-	function tabListContent($view = "", $content = "", $class = "", $whichSearch = ""){
+	static function tabListContent($view = "", $content = "", $class = "", $whichSearch = ""){
 		$thisObj = (isset($_REQUEST['we_cmd']['obj']) || $whichSearch == "doclist" ? new we_search_view() : $this);
 
 		$x = count($content);

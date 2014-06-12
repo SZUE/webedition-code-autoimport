@@ -53,10 +53,11 @@ function dieWithError($text, $protocol){
 	}
 }
 
-if(!isset($_REQUEST['cmd'])){
+if(!weRequest('raw', 'cmd')){
 	dieWithError('The Request is not well formed!', $protocol);
 }
 
+//FIXME: !!this is not safe at all
 $_shell = new rpcCmdShell($_REQUEST, $protocol);
 
 if($_shell->getStatus() == rpcCmd::STATUS_OK){

@@ -34,8 +34,7 @@ if(!$search || !$table){
 }
 
 $selectorSuggest = new we_selector_query();
-$contentTypes = weRequest('string', 'we_cmd', null, 3);
-$contentTypes = $contentTypes ? explode(",", $contentTypes) : null;
+$contentTypes = explode(",", weRequest('string', 'we_cmd', null, 3));
 $selectorSuggest->search($search, $table, $contentTypes);
 $suggests = $selectorSuggest->getResult();
 $return = "";
