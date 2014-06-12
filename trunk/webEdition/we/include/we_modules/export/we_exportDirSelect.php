@@ -27,9 +27,9 @@ we_html_tools::protect();
 
 if(isset($_REQUEST['we_cmd'])){
 	$_REQUEST['id'] = $_REQUEST['we_cmd'][1];
-	$_REQUEST['JSIDName'] = stripslashes(we_cmd_dec(2));
-	$_REQUEST['JSTextName'] = stripslashes(we_cmd_dec(3));
-	$_REQUEST['JSCommand'] = stripslashes(we_cmd_dec(4));
+	$_REQUEST['JSIDName'] = stripslashes(weRequest('cmd', 'we_cmd', '', 2));
+	$_REQUEST['JSTextName'] = stripslashes(weRequest('cmd', 'we_cmd', '', 3));
+	$_REQUEST['JSCommand'] = stripslashes(weRequest('cmd', 'we_cmd', '', 4));
 }
 
 $_SERVER["SCRIPT_NAME"] = WE_MODULES_DIR . "export/we_exportDirSelect.php";

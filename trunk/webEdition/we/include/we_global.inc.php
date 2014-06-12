@@ -187,6 +187,10 @@ function _weRequest(&$var, $key, array $data){
 		case 'intList':
 			$var = implode(',', array_map('intval', explode(',', trim($var, ','))));
 			return;
+		case 'cmd':
+			$var = strpos($var, 'WECMDENC_') !== false ?
+				base64_decode(urldecode(substr($var, 9))) :
+				$var;
 		case 'unit':
 			//FIMXE: check for %d[em,ex,pt,...]?
 			return;
@@ -840,8 +844,8 @@ function runAtWin(){
 }
 
 function weMemDebug(){
-	echo  "Mem usage " . round(((memory_get_usage() / 1024) / 1024), 3) . " MiB\n".
-	(microtime(true)-floatval($_SERVER['REQUEST_TIME_FLOAT'])).' '
+	echo "Mem usage " . round(((memory_get_usage() / 1024) / 1024), 3) . " MiB\n" .
+	(microtime(true) - floatval($_SERVER['REQUEST_TIME_FLOAT'])) . ' '
 	;
 }
 
@@ -1469,16 +1473,6 @@ function we_TemplateExit($param = 0){
 
 function we_cmd_enc($str){
 	return ($str ? 'WECMDENC_' . urlencode(base64_encode($str)) : '');
-}
-
-function we_cmd_dec($no, $default = ''){
-	if(isset($_REQUEST['we_cmd'][$no])){
-		if(strpos($_REQUEST['we_cmd'][$no], 'WECMDENC_') !== false){
-			$_REQUEST['we_cmd'][$no] = base64_decode(urldecode(substr($_REQUEST['we_cmd'][$no], 9)));
-		}
-		return $_REQUEST['we_cmd'][$no];
-	}
-	return $default;
 }
 
 function getWEZendCache($lifetime = 1800){
