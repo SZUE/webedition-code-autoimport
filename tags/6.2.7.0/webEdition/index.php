@@ -145,8 +145,8 @@ if (!is_dir($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/we_t
 
 cleanTempFiles(1);
 
-if(is_dir(WEBEDITION_DIR . 'OnlineInstaller')){//s1
-	deleteLocalFolder(WEBEDITION_DIR . 'OnlineInstaller');
+if(is_dir($_SERVER['DOCUMENT_ROOT'] . '/OnlineInstaller')){
+	deleteLocalFolder($_SERVER['DOCUMENT_ROOT'] . '/OnlineInstaller', true);
 }
 
 //clean Error-Log-Table
