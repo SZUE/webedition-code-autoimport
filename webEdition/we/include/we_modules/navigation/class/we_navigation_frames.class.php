@@ -978,7 +978,7 @@ function showPreview() {
 		$tp = new we_tag_tagParser($templateCode);
 
 		$tp->parseTags($templateCode);
-
+//FIXME:eval
 		eval('?>' . $templateCode);
 	}
 

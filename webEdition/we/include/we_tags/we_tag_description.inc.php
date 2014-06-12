@@ -32,6 +32,7 @@ function we_tag_description($attribs, $content){
 	$descr = isset($GLOBALS['DESCRIPTION']) && $GLOBALS['DESCRIPTION'] ? $GLOBALS['DESCRIPTION'] : '';
 	if(!$descr && $content){
 		ob_start();
+		//FIXME:eval
 		eval('?>' . $content);
 		$descr = ob_get_contents();
 		ob_end_clean();

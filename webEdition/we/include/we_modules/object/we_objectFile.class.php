@@ -2079,7 +2079,7 @@ class we_objectFile extends we_document{
 		$maxDB = min(1000000, getMaxAllowedPacket($this->DB_WE) - 1024);
 		$text = substr(preg_replace(array("/\n+/", '/  +/'), ' ', trim(strip_tags($text))), 0, $maxDB);
 
-		if(empty($text)){
+		if(!$text){
 			//no need to keep an entry without relevant data in the index
 			return true;
 		}
@@ -2091,7 +2091,7 @@ class we_objectFile extends we_document{
 		}
 		$ws = array_unique($ws);
 
-		if(empty($ws)){
+		if(!$ws){
 			return $this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter(array(
 						'OID' => $this->ID,
 						'Text' => $text,

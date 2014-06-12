@@ -378,6 +378,7 @@ class liveUpdateFunctions {
 			/** läuft nicht durch
 			  $patchSuccess = eval('?>' . escapeshellcmd($code));
 			 */
+			//FIXME:eval
 			$patchSuccess = eval('?>' . $code);
 			return ($patchSuccess === false ? false : true);
 		}

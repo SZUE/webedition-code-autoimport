@@ -315,6 +315,7 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 	we_util_File::insertIntoCleanUp($fullName, time());
 
 	ob_start();
+	//FIXME:eval
 	eval('?>' . str_replace('<?xml', '<?php print \'<?xml\'; ?>', $contents));
 	$contents = ob_get_contents();
 	ob_end_clean();

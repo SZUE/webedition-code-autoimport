@@ -232,6 +232,7 @@ if(isset($_SESSION['weS']['we_data'][$we_transaction]['0']['InWebEdition']) && $
 	$contentOrig = implode('', file(TEMPLATES_PATH . $tmplPath));
 
 	ob_start();
+	//FIXME:eval
 	eval('?>' . $contentOrig);
 	$contents = ob_get_contents();
 	ob_end_clean();

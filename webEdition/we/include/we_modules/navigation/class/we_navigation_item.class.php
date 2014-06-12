@@ -252,6 +252,7 @@ class we_navigation_item{
 		//use this since items might be invisible
 		self::$currentPosition[$this->level] ++;
 		ob_start();
+		//FIXME:eval
 		eval('?>' . $weNavigationItems->getTemplate($this));
 		$executeContent = ob_get_contents();
 		ob_end_clean();
