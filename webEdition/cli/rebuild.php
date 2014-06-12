@@ -236,7 +236,7 @@ $long_opts = array(
 );
 
 // Convert the arguments to options - check for the first argument
-if(!empty($_SERVER['argv']) && realpath($_SERVER['argv'][0]) == __FILE__){
+if($_SERVER['argv'] && realpath($_SERVER['argv'][0]) == __FILE__){
 	$options = Console_Getopt::getOpt($args, $short_opts, $long_opts);
 } else {
 	$options = Console_Getopt::getOpt2($args, $short_opts, $long_opts);
