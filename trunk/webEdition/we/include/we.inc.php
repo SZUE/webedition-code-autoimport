@@ -32,6 +32,12 @@ if(isset($_SERVER['DOCUMENT' . '_ROOT'])){ //so zerlegt stehen lassen: Bug #6318
 	$_SERVER['DOCUMENT' . '_ROOT'] = rtrim($_SERVER['DOCUMENT' . '_ROOT'], '/');
 }
 
+foreach(array('HTTP_USER_AGENT', 'PHP_SELF', 'REQUEST_URI', 'QUERY_STRING', 'REDIRECT_URL') as $cur){
+	if(isset($_SERVER[$cur])){
+		$_SERVER[$cur] = strtr($_SERVER[$cur], array('<' => '%3C', '>' => '%3E', '"' => '%22', '\'' => '%27', '`' => '%60'));
+	}
+}
+
 //due to hoster bugs (1&1) we have to ensure servername is the called url. since http-host is not safe, we do some security additions.
 if(isset($_SERVER['HTTP_HOST']) && $_SERVER['SERVER_NAME'] != $_SERVER['HTTP_HOST']){
 	//some security checks
@@ -90,8 +96,8 @@ foreach($GLOBALS['_we_active_integrated_modules'] as $active){
 		case 'editor':
 		case 'users':
 		case 'navigation':
-			//currently we can't omit, since table checks (weRequest) depends on defined const's
-			//break;
+		//currently we can't omit, since table checks (weRequest) depends on defined const's
+		//break;
 		default:
 
 			if(file_exists(WE_MODULES_PATH . $active . '/we_conf_' . $active . '.inc.php')){
