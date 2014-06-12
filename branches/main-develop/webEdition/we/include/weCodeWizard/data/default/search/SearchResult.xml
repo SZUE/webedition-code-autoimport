@@ -2,22 +2,18 @@
 <!DOCTYPE topic SYSTEM "http://docs.oasis-open.org/dita/v1.0.1/dtd/topic.dtd">
 <topic id="topic_52EC37D9C7A34C07B8A1808A4CD3E552">
 	<title>
-		<codeblock><![CDATA[<?php echo g_l('snippet','[search][SearchResult][title]');?>]]></codeblock>
+		<g_l>[search][SearchResult][title]</g_l>
 	</title>
 	<shortdesc>
-		<codeblock><![CDATA[<?php echo g_l('snippet','[search][SearchResult][desc]');?>]]></codeblock>
+		<g_l>[search][SearchResult][desc]</g_l>
 	</shortdesc>
 	<prolog>
 		<author>webEdition project</author>
 	</prolog>
 	<body>
-		<p>
-			<codeblock>
-				<![CDATA[
-<we:ifSearch name="search" set="true">
+		<p><![CDATA[<we:ifSearch name="search" set="true">
   <we:ifVarEmpty match="we_lv_search_search" doc="top" type="request">
-    <p><?php echo g_l('snippet','[search][SearchResult][noterm]');?>
-    </p>
+    <p>__GL([search][SearchResult][noterm])__</p>
   </we:ifVarEmpty>
   <we:ifVarNotEmpty match="we_lv_search_search" doc="top" type="request">
     <we:listview type="search" name="search" rows="10" order="Title">
@@ -56,9 +52,6 @@
       </we:ifNotFound>
     </we:listview>
   </we:ifVarNotEmpty>
-</we:ifSearch>
-				]]>
-			</codeblock>
-		</p>
+</we:ifSearch>]]></p>
 	</body>
 </topic>

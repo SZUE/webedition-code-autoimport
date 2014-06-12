@@ -201,6 +201,7 @@ function mta($hash, $key){
 function printElement($code){
 	if(isset($code)){
 		if(strpos($code, '<?') !== FALSE){
+			//FIXME:eval????
 			eval('?>' . str_replace(array('<?php', '?>'), array('<?php ', ' ?>'), $code));
 		} else {
 			echo $code;

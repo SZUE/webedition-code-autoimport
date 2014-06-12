@@ -2,19 +2,16 @@
 <!DOCTYPE topic SYSTEM "http://docs.oasis-open.org/dita/v1.0.1/dtd/topic.dtd">
 <topic id="topic_52EC37D9C7A34C07B8A1808A4CD3E552">
 	<title>
-		<codeblock><![CDATA[<?php echo g_l('snippet','[miscellaneous][OverviewObjects][title]');?>]]></codeblock>
+		<g_l>[miscellaneous][OverviewObjects][title]</g_l>
 	</title>
 	<shortdesc>
-		<codeblock><![CDATA[<?php echo g_l('snippet','[miscellaneous][OverviewObjects][desc]');?>]]></codeblock>
+		<g_l>[miscellaneous][OverviewObjects][desc]</g_l>
 	</shortdesc>
 	<prolog>
 		<author>webEdition project</author>
 	</prolog>
 	<body>
-		<p>
-			<codeblock>
-				<![CDATA[
-<we:listview type="object" classid="1">
+		<p><![CDATA[<we:listview type="object" classid="1">
   <we:ifFound>
     <p>
       Page: <we:listviewPageNr /> of <we:listviewPages /> |
@@ -39,9 +36,6 @@
       Sorry, no entries could be found.
     </p>
   </we:ifNotFound>
-</we:listview>
-				]]>
-			</codeblock>
-		</p>
+</we:listview>]]></p>
 	</body>
 </topic>

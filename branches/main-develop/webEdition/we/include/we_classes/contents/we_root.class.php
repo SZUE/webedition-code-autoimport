@@ -201,25 +201,6 @@ abstract class we_root extends we_class{
 		}
 	}
 
-	/** load  data in the object from $filename */
-	function loadFromFile($filename){
-		$str = we_base_file::load($filename);
-		if($str){
-			$arr = unserialize($str);
-			foreach($this->persistent_slots as $cur){
-				if(isset($arr[0][$cur])){
-					$this->{$cur} = $arr[0][$cur];
-				}
-			}
-			if(isset($arr[1])){
-				$this->elements = $arr[1];
-			}
-			return true;
-		} else {
-			return false;
-		}
-	}
-
 	/* init the object with data from the database */
 
 	function copyDoc(/* $id */){

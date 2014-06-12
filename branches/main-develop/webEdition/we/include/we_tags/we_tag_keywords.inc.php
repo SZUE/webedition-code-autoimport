@@ -31,6 +31,7 @@ function we_tag_keywords($attribs, $content){
 	$keys = isset($GLOBALS['KEYWORDS']) && $GLOBALS['KEYWORDS'] ? $GLOBALS['KEYWORDS'] : '';
 	if(!$keys && $content){
 		ob_start();
+		//FIXME:eval
 		eval('?>' . $content);
 		$keys = ob_get_contents();
 		ob_end_clean();
