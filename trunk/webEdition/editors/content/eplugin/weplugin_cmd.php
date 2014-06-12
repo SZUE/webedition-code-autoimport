@@ -100,7 +100,7 @@ top.plugin.document.WePlugin.editFile(session,transaction,"' . addslashes($_file
 	case "setSource":
 		$transactionID = weRequest('transaction', 'we_cmd', '', 1);
 		if(isset($_SESSION['weS']['we_data'][$transactionID][0]["elements"]["data"]["dat"])){
-			$_SESSION['weS']['we_data'][$transactionID][0]["elements"]["data"]["dat"] = weRequest('raw', 'we_cmd','',2);
+			$_SESSION['weS']['we_data'][$transactionID][0]["elements"]["data"]["dat"] = weRequest('raw', 'we_cmd', '', 2);
 			$_SESSION['weS']['we_data'][$transactionID][1]["data"]["dat"] = $_SESSION['weS']['we_data'][$transactionID][0]["elements"]["data"]["dat"];
 
 			$out = we_html_element::jsElement('
@@ -131,8 +131,7 @@ if (
 		break;
 
 	case "setBinary":
-		if(isset($_FILES['uploadfile']) && isset($_REQUEST['we_transaction'])){
-			$_we_transaction = weRequest('transaction', 'we_transaction', 0);
+		if(isset($_FILES['uploadfile']) && ($_we_transaction = weRequest('transaction', 'we_transaction', 0))){
 			$we_ContentType = weRequest('string', 'contenttype');
 
 			$we_dt = isset($_SESSION['weS']['we_data'][$_we_transaction]) ? $_SESSION['weS']['we_data'][$_we_transaction] : "";

@@ -32,26 +32,13 @@ if(!(
 $dialog = new we_dialog_table();
 // MS-Fix
 
-//FIXME: remove??
-if(isset($_REQUEST["we_dialog_args"]["cellPadding"])){
-	$_REQUEST["we_dialog_args"]["cellpadding"] = $_REQUEST["we_dialog_args"]["cellPadding"];
-	unset($_REQUEST["we_dialog_args"]["cellPadding"]);
-}
-if(isset($_REQUEST["we_dialog_args"]["cellSpacing"])){
-	$_REQUEST["we_dialog_args"]["cellspacing"] = $_REQUEST["we_dialog_args"]["cellSpacing"];
-	unset($_REQUEST["we_dialog_args"]["cellSpacing"]);
-}
-if(isset($_REQUEST["we_dialog_args"]["bgColor"])){
-	$_REQUEST["we_dialog_args"]["bgcolor"] = $_REQUEST["we_dialog_args"]["bgColor"];
-	unset($_REQUEST["we_dialog_args"]["bgColor"]);
-}
 $dialog->initByHttp();
 $dialog->registerOkJsFN("weDoTblJS");
 
-if(!$_REQUEST["we_dialog_args"]["edit"]){
+if(!weRequest('bool', "we_dialog_args", false, "edit")){
 	$dialog->dialogTitle = g_l('wysiwyg', "[insert_table]");
 }
-print $dialog->getHTML();
+echo $dialog->getHTML();
 
 function weDoTblJS(){
 	return '
