@@ -26,9 +26,9 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 $id = weRequest('int', 'we_cmd', 0, 1);
 
-$JSIDName = stripslashes(we_cmd_dec(2));
-$JSTextName = stripslashes(we_cmd_dec(3));
-$JSCommand = we_cmd_dec(4);
+$JSIDName = stripslashes(weRequest('cmd', 'we_cmd', '', 2));
+$JSTextName = stripslashes(weRequest('cmd', 'we_cmd', '', 3));
+$JSCommand = weRequest('cmd', 'we_cmd', '', 4);
 $sessionID = 0;
 $rootDirID = weRequest('int', 'we_cmd', 0, 6);
 $filter = weRequest('raw', 'we_cmd', 7, '');

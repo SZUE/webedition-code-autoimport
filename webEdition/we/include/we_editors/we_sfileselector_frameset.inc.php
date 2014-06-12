@@ -29,9 +29,7 @@ we_html_tools::protect(array('BROWSE_SERVER', 'SITE_IMPORT', 'ADMINISTRATOR'));
 echo we_html_tools::getHtmlTop();
 
 $docroot = str_replace('\\', '/', rtrim($_SERVER['DOCUMENT_ROOT'], '/'));
-we_cmd_dec(4);
-we_cmd_dec(1);
-$cmd1 = weRequest('raw', 'we_cmd', '', 1);
+$cmd1 = weRequest('cmd', 'we_cmd', '', 1);
 
 
 $filter = (isset($_REQUEST['we_cmd'][2]) && $_REQUEST['we_cmd'][2] != '') ? $_REQUEST['we_cmd'][2] : 'all_Types';
@@ -79,8 +77,8 @@ $rootDir = ((isset($_REQUEST['we_cmd'][5]) && $_REQUEST['we_cmd'][5] != '') ? $_
 
 	<?php
 }
-if(isset($_REQUEST['we_cmd'][4]) && $_REQUEST['we_cmd'][4] != ""){
-	echo $_REQUEST['we_cmd'][4] . ';';
+if(($cmd4 = weRequest('cmd', 'we_cmd', '', 4))){
+	echo $cmd4 . ';';
 }
 ?>
 		close();
