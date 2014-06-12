@@ -32,6 +32,7 @@ function we_tag_title($attribs, $content){
 	$title = isset($GLOBALS['TITLE']) && $GLOBALS['TITLE'] ? $GLOBALS['TITLE'] : '';
 	if(!$title && $content){
 		ob_start();
+		//FIXME:eval
 		eval('?>' . $content);
 		$title = ob_get_contents();
 		ob_end_clean();

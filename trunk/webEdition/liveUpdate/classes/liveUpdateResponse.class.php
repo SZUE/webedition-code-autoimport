@@ -79,6 +79,7 @@ class liveUpdateResponse{
 				return liveUpdateFunctionsServer::executeAllPatches();
 			case 'eval':
 				$c = strtr($this->Code, array('we_forms' => 'we_html_forms', '$we_button->' => 'we_html_button::', 'new we_button()' => '""'));
+//FIXME:eval
 				return eval('?>' . $c);
 
 			case 'state':

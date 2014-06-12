@@ -94,6 +94,7 @@ class we_tag_tagParser{
 			$tp->setAllTags($f[3]);
 			$tp->parseTags($f[3]);
 			ob_start();
+			//FIXME: eval
 			eval('?>' . $f[3]);
 			$f[3] = ob_get_contents();
 			ob_end_clean();
