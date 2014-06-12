@@ -145,9 +145,9 @@ function showMessage(message, prio, win){
 if(is_dir($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/cache')){
 	we_util_File::deleteLocalFolder($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/cache', true);
 }
-//s1
-if(is_dir(WEBEDITION_DIR . 'OnlineInstaller')){
-	we_util_File::deleteLocalFolder(WEBEDITION_DIR . 'OnlineInstaller');
+
+if(is_dir($_SERVER['DOCUMENT_ROOT'] . '/OnlineInstaller')){
+	we_util_File::deleteLocalFolder($_SERVER['DOCUMENT_ROOT'] . '/OnlineInstaller', true);
 }
 
 cleanTempFiles(true);
