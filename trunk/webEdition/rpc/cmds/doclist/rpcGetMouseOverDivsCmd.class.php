@@ -46,7 +46,6 @@ class rpcGetMouseOverDivsCmd extends rpcCmd{
 
 		$_REQUEST['we_cmd']['obj'] = $_document;
 
-		$code = "";
 		if($setView == 1){
 			$content = doclistView::searchProperties($whichsearch);
 
@@ -56,6 +55,8 @@ class rpcGetMouseOverDivsCmd extends rpcCmd{
 			}
 
 			$code = we_search_view::makeMouseOverDivs($x, $content, $whichsearch);
+		} else {
+			$code = '';
 		}
 
 		$resp->setData("data", $code);
