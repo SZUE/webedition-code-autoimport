@@ -42,7 +42,7 @@ class rpcCmdShell{
 		$this->Protocol = $protocol;
 		$this->Cmd = $this->createCmd($cmd);
 
-		if(($view=weRequest('string', 'view'))){
+		if(($view=we_base_request::_(we_base_request::STRING, 'view'))){
 			if(!$this->isViewAllowed($view)){
 				$this->Status = rpcCmd::STATUS_NOT_ALLOWED_VIEW;
 			}

@@ -98,7 +98,7 @@ class rpcCmd{
 
 	function checkParameters(){
 		foreach($this->Parameters as $par){
-			if(weRequest('string', $par) === false){
+			if(we_base_request::_(we_base_request::STRING, $par) === false){
 				$this->Status = self::STATUS_REQUEST_MALFORMED;
 				return false;
 			}

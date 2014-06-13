@@ -27,7 +27,7 @@ require_once(WE_INCLUDES_PATH . 'we_tools/weSearch/conf/define.conf.php');
 
 we_html_tools::protect();
 
-$what = weRequest('string', "pnt", "frameset");
+$what = we_base_request::_(we_base_request::STRING, "pnt", "frameset");
 
 $weFrame = new we_search_frames();
 

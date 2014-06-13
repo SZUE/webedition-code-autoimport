@@ -26,7 +26,7 @@ echo (!(isset($GLOBALS['we_print_not_htmltop']) && $GLOBALS['we_print_not_htmlto
  STYLESHEET .
  we_html_element::jsScript(JS_DIR . 'attachKeyListener.js');
 
-$mod = str_replace(array('.', '/', '\\'), '', weRequest('string', "mod", (isset($GLOBALS["mod"]) ? $GLOBALS["mod"] : "")));
+$mod = str_replace(array('.', '/', '\\'), '', we_base_request::_(we_base_request::STRING, "mod", (isset($GLOBALS["mod"]) ? $GLOBALS["mod"] : "")));
 
 $we_head_insert = isset($GLOBALS["we_head_insert"]) ? $GLOBALS["we_head_insert"] : "";
 $we_body_insert = isset($GLOBALS["we_body_insert"]) ? $GLOBALS["we_body_insert"] : "";

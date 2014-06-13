@@ -28,8 +28,8 @@ $appendJS = "";
 
 $noInternals = false;
 if(!(
-	weRequest('bool', 'we_dialog_args', false, 'outsideWE') ||
-	weRequest('bool', 'we_dialog_args', false, 'isFrontend')
+	we_base_request::_(we_base_request::BOOL, 'we_dialog_args', false, 'outsideWE') ||
+	we_base_request::_(we_base_request::BOOL, 'we_dialog_args', false, 'isFrontend')
 	)){
 	we_html_tools::protect();
 } else {
@@ -37,14 +37,14 @@ if(!(
 }
 $noInternals = $noInternals || !isset($_SESSION['user']) || !isset($_SESSION['user']['Username']) || $_SESSION['user']['Username'] == '';
 
-if(defined("GLOSSARY_TABLE") && weRequest('bool', 'weSaveToGlossary') && !$noInternals){
+if(defined("GLOSSARY_TABLE") && we_base_request::_(we_base_request::BOOL, 'weSaveToGlossary') && !$noInternals){
 	$Glossary = new we_glossary_glossary();
-	$Glossary->Language = weRequest('string', 'language');
+	$Glossary->Language = we_base_request::_(we_base_request::STRING, 'language');
 	$Glossary->Type = we_glossary_glossary::TYPE_ACRONYM;
-	$Glossary->Text = trim(weRequest('raw', 'text'));
-	$Glossary->Title = trim(weRequest('raw', 'we_dialog_args', '', 'title'));
+	$Glossary->Text = trim(we_base_request::_(we_base_request::RAW, 'text'));
+	$Glossary->Title = trim(we_base_request::_(we_base_request::RAW, 'we_dialog_args', '', 'title'));
 	$Glossary->Published = time();
-	$Glossary->setAttribute('lang', weRequest('raw', 'we_dialog_args', '', 'lang'));
+	$Glossary->setAttribute('lang', we_base_request::_(we_base_request::RAW, 'we_dialog_args', '', 'lang'));
 	$Glossary->setPath();
 
 	if($Glossary->Title == ""){
@@ -58,7 +58,7 @@ if(defined("GLOSSARY_TABLE") && weRequest('bool', 'weSaveToGlossary') && !$noInt
 	} else {
 		$Glossary->save();
 
-		$Cache = new we_glossary_cache(weRequest('string','language'));
+		$Cache = new we_glossary_cache(we_base_request::_(we_base_request::STRING,'language'));
 		$Cache->write();
 		unset($Cache);
 

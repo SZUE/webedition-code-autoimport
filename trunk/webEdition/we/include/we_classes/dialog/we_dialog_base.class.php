@@ -74,8 +74,8 @@ class we_dialog_base{
 	}
 
 	function initByHttp(){
-		$this->what = weRequest('string', 'we_what', '');
-		$this->we_cmd = weRequest('raw', 'we_cmd', array());
+		$this->what = we_base_request::_(we_base_request::STRING, 'we_what', '');
+		$this->we_cmd = we_base_request::_(we_base_request::RAW, 'we_cmd', array());
 
 		if(isset($_REQUEST['we_dialog_args']) && is_array($_REQUEST['we_dialog_args'])){
 			$this->args = $_REQUEST['we_dialog_args'];
@@ -84,7 +84,7 @@ class we_dialog_base{
 			}
 		}
 
-		$this->pageNr = weRequest('int', 'we_pageNr', $this->pageNr);
+		$this->pageNr = we_base_request::_(we_base_request::INT, 'we_pageNr', $this->pageNr);
 	}
 
 	function getHTML(){
@@ -336,7 +336,7 @@ self.focus();');
 	}
 
 	function getHttpVar($name, $alt = ""){
-		return weRequest('raw', "we_dialog_args", $alt, $name);
+		return we_base_request::_(we_base_request::RAW, "we_dialog_args", $alt, $name);
 	}
 
 	function getLangField($name, $title, $width){

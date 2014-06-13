@@ -37,7 +37,7 @@ include(WE_INCLUDES_PATH . '/we_editors/we_init_doc.inc.php');
 $_insertReloadFooter = '';
 $wasNew = 0;
 
-switch(weRequest('string', 'we_cmd', '', 0)){
+switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 	case 'load_editor':
 // set default tab for creating new imageDocuments to "metadata":
 		if($we_doc->ContentType == we_base_ContentTypes::IMAGE && $we_doc->ID == 0){
@@ -47,10 +47,10 @@ switch(weRequest('string', 'we_cmd', '', 0)){
 		}
 		break;
 	case 'resizeImage':
-		$we_doc->resizeImage(weRequest('int', 'we_cmd', 0, 1), weRequest('int', 'we_cmd', 0, 2), weRequest('int', 'we_cmd', 0, 3));
+		$we_doc->resizeImage(we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1), we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2), we_base_request::_(we_base_request::INT, 'we_cmd', 0, 3));
 		break;
 	case 'rotateImage':
-		$we_doc->rotateImage(weRequest('int', 'we_cmd', 0, 1), weRequest('int', 'we_cmd', 0, 2), weRequest('int', 'we_cmd', 0, 3), weRequest('int', 'we_cmd', 0, 4));
+		$we_doc->rotateImage(we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1), we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2), we_base_request::_(we_base_request::INT, 'we_cmd', 0, 3), we_base_request::_(we_base_request::INT, 'we_cmd', 0, 4));
 		break;
 	case 'del_thumb':
 		$we_doc->del_thumbnails($_REQUEST['we_cmd'][1]);
@@ -69,43 +69,43 @@ switch(weRequest('string', 'we_cmd', '', 0)){
 	  $we_doc->deleteAlias($_REQUEST['we_cmd'][1]);
 	  break; */
 	case 'delete_list':
-		$we_doc->removeEntryFromList(weRequest('string', 'we_cmd', '', 1), weRequest('int', 'we_cmd', 0, 2), weRequest('raw', 'we_cmd', '', 3), weRequest('bool', 'we_cmd', false, 4));
+		$we_doc->removeEntryFromList(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1), we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2), we_base_request::_(we_base_request::RAW, 'we_cmd', '', 3), we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 4));
 		break;
 	case 'insert_entry_at_list':
-		$we_doc->insertEntryAtList(weRequest('string', 'we_cmd', '', 1), weRequest('int', 'we_cmd', 0, 2), weRequest('int', 'we_cmd', 1, 3));
+		$we_doc->insertEntryAtList(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1), we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2), we_base_request::_(we_base_request::INT, 'we_cmd', 1, 3));
 		break;
 	case 'up_entry_at_list':
-		$we_doc->upEntryAtList(weRequest('string', 'we_cmd', '', 1), weRequest('int', 'we_cmd', 0, 2), weRequest('int', 'we_cmd', 1, 3));
+		$we_doc->upEntryAtList(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1), we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2), we_base_request::_(we_base_request::INT, 'we_cmd', 1, 3));
 		break;
 	case 'down_entry_at_list':
-		$we_doc->downEntryAtList(weRequest('string', 'we_cmd', '', 1), weRequest('int', 'we_cmd', 0, 2), weRequest('int', 'we_cmd', 1, 3));
+		$we_doc->downEntryAtList(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1), we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2), we_base_request::_(we_base_request::INT, 'we_cmd', 1, 3));
 		break;
 	case 'up_link_at_list':
-		$we_doc->upEntryAtLinklist(weRequest('string', 'we_cmd', '', 1), weRequest('int', 'we_cmd', 0, 2));
+		$we_doc->upEntryAtLinklist(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1), we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2));
 		break;
 	case 'down_link_at_list':
-		$we_doc->downEntryAtLinklist(weRequest('string', 'we_cmd', '', 1), weRequest('int', 'we_cmd', 0, 2));
+		$we_doc->downEntryAtLinklist(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1), we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2));
 		break;
 	case 'add_entry_to_list':
-		$we_doc->addEntryToList(weRequest('string', 'we_cmd', '', 1), weRequest('int', 'we_cmd', 1, 2));
+		$we_doc->addEntryToList(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1), we_base_request::_(we_base_request::INT, 'we_cmd', 1, 2));
 		break;
 	case 'add_link_to_linklist':
-		$GLOBALS['we_list_inserted'] = weRequest('string', 'we_cmd', '', 1);
+		$GLOBALS['we_list_inserted'] = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1);
 		$we_doc->addLinkToLinklist($GLOBALS['we_list_inserted']);
 		break;
 	case 'delete_linklist':
-		$we_doc->removeLinkFromLinklist(weRequest('string', 'we_cmd', '', 1), weRequest('int', 'we_cmd', 0, 2), weRequest('raw', 'we_cmd', '', 3));
+		$we_doc->removeLinkFromLinklist(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1), we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2), we_base_request::_(we_base_request::RAW, 'we_cmd', '', 3));
 		break;
 	case 'insert_link_at_linklist':
-		$GLOBALS['we_list_insertedNr'] = abs(weRequest('int', 'we_cmd', 0, 2));
-		$GLOBALS['we_list_inserted'] = weRequest('string', 'we_cmd', '', 1);
+		$GLOBALS['we_list_insertedNr'] = abs(we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2));
+		$GLOBALS['we_list_inserted'] = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1);
 		$we_doc->insertLinkAtLinklist($GLOBALS['we_list_inserted'], $GLOBALS['we_list_insertedNr']);
 		break;
 	case 'change_linklist':
-		$we_doc->changeLinklist(weRequest('string', 'we_cmd', '', 1));
+		$we_doc->changeLinklist(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1));
 		break;
 	case 'change_link':
-		$we_doc->changeLink(weRequest('string', 'we_cmd', '', 1));
+		$we_doc->changeLink(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1));
 		break;
 	case 'doctype_changed':
 		$we_doc->changeDoctype('', true);
@@ -116,7 +116,7 @@ switch(weRequest('string', 'we_cmd', '', 0)){
 		$_insertReloadFooter = we_html_element::jsElement('try{parent.editFooter.location.reload();parent.editHeader.location.reload();}catch(exception){};');
 		break;
 	case 'remove_image':
-		$we_doc->remove_image(weRequest('string', 'we_cmd', '', 1));
+		$we_doc->remove_image(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1));
 		break;
 	case 'wrap_on_off':
 		$_SESSION['weS']['we_wrapcheck'] = ($_REQUEST['we_cmd'][1] == 'true') ? 1 : 0;
@@ -124,16 +124,16 @@ switch(weRequest('string', 'we_cmd', '', 0)){
 		$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_CONTENT;
 		break;
 	case 'users_add_owner':
-		$we_doc->add_owner(weRequest('int','we_cmd',0,1));
+		$we_doc->add_owner(we_base_request::_(we_base_request::INT,'we_cmd',0,1));
 		break;
 	case 'users_del_owner':
-		$we_doc->del_owner(weRequest('int','we_cmd',0,1));
+		$we_doc->del_owner(we_base_request::_(we_base_request::INT,'we_cmd',0,1));
 		break;
 	case 'users_add_user':
-		$we_doc->add_user(weRequest('int','we_cmd',0,1));
+		$we_doc->add_user(we_base_request::_(we_base_request::INT,'we_cmd',0,1));
 		break;
 	case 'users_del_user':
-		$we_doc->del_user(weRequest('int','we_cmd',0,1));
+		$we_doc->del_user(we_base_request::_(we_base_request::INT,'we_cmd',0,1));
 		break;
 	case 'users_del_all_owners':
 		$we_doc->del_all_owners();
@@ -148,16 +148,16 @@ switch(weRequest('string', 'we_cmd', '', 0)){
 		break;
 
 	case 'object_add_workspace':
-		$we_doc->add_workspace(weRequest('intList','we_cmd',0,1));
+		$we_doc->add_workspace(we_base_request::_(we_base_request::INTLIST,'we_cmd',0,1));
 		break;
 	case 'object_del_workspace':
-		$we_doc->del_workspace(weRequest('int','we_cmd',0,1));
+		$we_doc->del_workspace(we_base_request::_(we_base_request::INT,'we_cmd',0,1));
 		break;
 	case 'object_add_extraworkspace':
-		$we_doc->add_extraWorkspace(weRequest('int','we_cmd',0,1));
+		$we_doc->add_extraWorkspace(we_base_request::_(we_base_request::INT,'we_cmd',0,1));
 		break;
 	case 'object_del_extraworkspace':
-		$we_doc->del_extraWorkspace(weRequest('int','we_cmd',0,1));
+		$we_doc->del_extraWorkspace(we_base_request::_(we_base_request::INT,'we_cmd',0,1));
 		break;
 	case 'object_ws_from_class':
 		$we_doc->ws_from_class();
@@ -217,10 +217,10 @@ switch(weRequest('string', 'we_cmd', '', 0)){
 
 //$filename = weFile::saveTemp($we_doc->getElement('data'));
 
-		$x = weRequest('int', 'we_cmd', 0, 1);
-		$y = weRequest('int', 'we_cmd', 0, 2);
-		$width = weRequest('int', 'we_cmd', 0, 3);
-		$height = weRequest('int', 'we_cmd', 0, 4);
+		$x = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1);
+		$y = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2);
+		$width = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 3);
+		$height = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 4);
 
 		$img = Image_Transform::factory('GD');
 		if(PEAR::isError($stat = $img->load($filename))){
@@ -340,7 +340,7 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 	header('Location: ' . WEBEDITION_DIR . 'showTempFile.php?file=' . $tempName);
 } else {
 	$we_JavaScript = '';
-	switch(weRequest('string', 'we_cmd', '', 0)){
+	switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 		case 'save_document':
 			if(!$we_doc->ContentType){
 				exit(' ContentType Missing !!! ');
@@ -527,7 +527,7 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 									}
 								}
 							} else {
-								$tmp = weRequest('int', 'we_cmd', 0, 7);
+								$tmp = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 7);
 								if(($we_doc->EditPageNr == WE_EDITPAGE_INFO && (!$_REQUEST['we_cmd'][4])) || $tmp){
 									$we_responseText = $tmp ? '' : $we_responseText;
 									$we_responseTextType = $tmp ? we_message_reporting::WE_MESSAGE_ERROR : $we_responseTextType;

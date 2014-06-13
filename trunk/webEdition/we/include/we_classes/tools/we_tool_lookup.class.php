@@ -115,7 +115,7 @@ abstract class we_tool_lookup{
 	}
 
 	static function getPhpCmdInclude(){
-		$cmd0 = weRequest('string', 'we_cmd', '', 0);
+		$cmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
 		if(!$cmd0){
 			return '';
 		}

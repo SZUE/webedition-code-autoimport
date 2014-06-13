@@ -354,7 +354,7 @@ abstract class we_root extends we_class{
 
 		$content = '<table style="border-spacing: 0px;border-style:none;width:500px;" cellpadding="0">
 <tr><td><div class="multichooser">' . $content . '</div></td></tr>
-' . ($canChange ? '<tr><td align="right">' . we_html_tools::getPixel(2, 8) . '<br>' . we_html_button::create_button_table(array($delallbut, $addbut)) . '</td></tr>' : "") . '</table>';
+' . ($canChange ? '<tr><td align="right">' . we_html_tools::getPixel(2, 8) . '<br/>' . we_html_button::create_button_table(array($delallbut, $addbut)) . '</td></tr>' : "") . '</table>';
 
 		return we_html_tools::htmlFormElementTable($content, g_l('weClass', '[otherowners]'), 'left', 'defaultfont');
 	}
@@ -824,14 +824,14 @@ abstract class we_root extends we_class{
 
 	protected function i_setElementsFromHTTP(){
 		// do not set REQUEST VARS into the document
-		switch(weRequest('string', 'we_cmd', '', 0)){
+		switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 			case 'switch_edit_page':
-				if(weRequest('string', 'we_cmd', false, 3)){
+				if(we_base_request::_(we_base_request::STRING, 'we_cmd', false, 3)){
 					return true;
 				}
 				break;
 			case 'save_document':
-				if(weRequest('string', 'we_cmd', '', 7) == 'save_document'){
+				if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 7) == 'save_document'){
 					return true;
 				}
 				break;

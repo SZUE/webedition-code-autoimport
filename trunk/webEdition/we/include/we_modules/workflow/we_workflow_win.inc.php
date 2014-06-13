@@ -24,11 +24,11 @@
  */
 we_html_tools::protect();
 
-$cmd = weRequest('raw', "cmd", "");
-$we_transaction = weRequest('transaction', 'we_cmd', weRequest('transaction', "we_transaction", 0), 1);
+$cmd = we_base_request::_(we_base_request::RAW, "cmd", "");
+$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_base_request::_(we_base_request::TRANSACTION, "we_transaction", 0), 1);
 
-$wf_select = weRequest('raw', "wf_select", "");
-$wf_text = weRequest('raw', "wf_text", "");
+$wf_select = we_base_request::_(we_base_request::RAW, "wf_select", "");
+$wf_text = we_base_request::_(we_base_request::RAW, "wf_text", "");
 
 ###### init document #########
 $we_dt = $_SESSION['weS']['we_data'][$we_transaction];
@@ -37,7 +37,7 @@ include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
 echo we_html_tools::getHtmlTop();
 
-switch(weRequest('string', 'we_cmd', '', 0)){
+switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 	case "workflow_isIn":
 		include(WE_WORKFLOW_MODULE_PATH . "we_in_workflow.inc.php");
 		break;

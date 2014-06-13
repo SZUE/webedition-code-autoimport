@@ -340,7 +340,7 @@ abstract class we_SEEM{
 	static function replaceSEEM_Links($code, $SEEM_LinkArray){
 		//	$mode = (isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT ? "edit" : "preview");
 
-		$_REQUEST['we_transaction'] = weRequest('transaction', 'we_transaction', 0);
+		$_REQUEST['we_transaction'] = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 0);
 		foreach($SEEM_LinkArray[0] as $i => $link){
 
 			if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE && $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT){ //	in Super-Easy-Edit-Mode only in Editmode !!!
@@ -574,7 +574,7 @@ abstract class we_SEEM{
 		//	Take the path of the doc to find out, if the same doc is target
 		//	or from the url of the document (only when extern)
 		//	or none, when the full path is known (getJavaScriptCommandForOneLink)
-		$tmpPath = isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Path : str_replace(getServerUrl(), "", weRequest('url', "url"));
+		$tmpPath = isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Path : str_replace(getServerUrl(), "", we_base_request::_(we_base_request::URL, "url"));
 
 		//  extern or as absolut recognized paths shall not be changed.
 		if(substr($path, 0, 1) != "/" && strpos($path, "http://") === FALSE && strpos($path, "https://") === FALSE){

@@ -26,7 +26,7 @@ abstract class we_rebuild_base{
 
 	public static function rebuild($data, $printIt = false){
 		if($printIt){
-			$_newLine = count($_SERVER['argv']) ? "\n" : "<br>\n";
+			$_newLine = count($_SERVER['argv']) ? "\n" : "<br/>\n";
 		}
 
 		switch($data['type']){
@@ -490,7 +490,7 @@ abstract class we_rebuild_base{
 			);
 		}
 
-		if(weRequest('bool', 'rebuildStaticAfterNavi')){
+		if(we_base_request::_(we_base_request::BOOL, 'rebuildStaticAfterNavi')){
 			$data2 = self::getFilteredDocuments('', '', '', '', '');
 			$data = array_merge($data, $data2);
 		}

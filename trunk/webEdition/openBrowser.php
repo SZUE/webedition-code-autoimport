@@ -24,7 +24,7 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
-if(($id = weRequest('int', 'url'))){
+if(($id = we_base_request::_(we_base_request::INT, 'url'))){
 	srand((double) microtime() * 1000000);
 	$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published>0 AND ID=' . $id);
 	if($path){
@@ -39,7 +39,7 @@ if(($id = weRequest('int', 'url'))){
 		$loc = getServerUrl() . WEBEDITION_DIR . 'notPublished.php';
 	}
 } else {
-	$loc = weRequest('url', 'url', '');
+	$loc = we_base_request::_(we_base_request::URL, 'url', '');
 }
 header('Location: ' . $loc);
 echo we_html_tools::getHtmlTop();

@@ -27,16 +27,16 @@ echo we_html_tools::getHtmlTop(g_l('modules_banner', '[bannercode]')) .
  STYLESHEET;
 
 $code = '';
-$ok = weRequest('bool', "ok");
-$type = weRequest('string', "type");
-$tagname = weRequest('string', "tagname");
-$page = weRequest('raw', "page", "");
-$target = weRequest('raw', "target", "");
-$width = weRequest('int', "width", 468);
-$height = weRequest('int', "height", 60);
-$paths = weRequest('raw', "paths", "");
-$getscript = weRequest('url', "getscript", getServerUrl() . WEBEDITION_DIR . "getBanner.php");
-$clickscript = weRequest('url', "clickscript", getServerUrl() . WEBEDITION_DIR . "bannerclick.php");
+$ok = we_base_request::_(we_base_request::BOOL, "ok");
+$type = we_base_request::_(we_base_request::STRING, "type");
+$tagname = we_base_request::_(we_base_request::STRING, "tagname");
+$page = we_base_request::_(we_base_request::RAW, "page", "");
+$target = we_base_request::_(we_base_request::RAW, "target", "");
+$width = we_base_request::_(we_base_request::INT, "width", 468);
+$height = we_base_request::_(we_base_request::INT, "height", 60);
+$paths = we_base_request::_(we_base_request::RAW, "paths", "");
+$getscript = we_base_request::_(we_base_request::URL, "getscript", getServerUrl() . WEBEDITION_DIR . "getBanner.php");
+$clickscript = we_base_request::_(we_base_request::URL, "clickscript", getServerUrl() . WEBEDITION_DIR . "bannerclick.php");
 
 if($ok){
 //FIXME: replace by call of jsScript

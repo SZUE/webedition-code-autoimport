@@ -138,7 +138,7 @@ class we_import_csvBase{
 
 	function echoCSVError(){
 		foreach($this->CSVError as $pos => $error_str){
-			echo "- " . ($pos + 1) . ". " . $error_str . "<br>";
+			echo "- " . ($pos + 1) . ". " . $error_str . "<br/>";
 		}
 	}
 

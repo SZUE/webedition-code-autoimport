@@ -415,7 +415,7 @@ self.focus();
 
 		$maxsize = getUploadMaxFilesize();
 
-		if(weRequest('string', "import_from") == 'import_upload'){
+		if(we_base_request::_(we_base_request::STRING, "import_from") == 'import_upload'){
 			if($maxsize){
 				$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[charset_warning]"), we_html_tools::TYPE_ALERT, 600, false), "space" => 0, "noline" => 1);
 				if(!(DEFAULT_CHARSET != '')){
@@ -1008,8 +1008,8 @@ function startStep(){
 
 	function getHTMLBackupStep3(){
 		update_time_limit(0);
-		if(weRequest('bool', "backupfile")){
-			$_filename = urldecode(weRequest('raw', "backupfile"));
+		if(we_base_request::_(we_base_request::BOOL, "backupfile")){
+			$_filename = urldecode(we_base_request::_(we_base_request::RAW, "backupfile"));
 
 			if(file_exists($_filename) && stripos($_filename, $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR) !== false){ // Does file exist and does it saved in backup dir?
 				$_size = filesize($_filename);
@@ -1071,7 +1071,7 @@ function startStep(){
 	}
 
 	function getHTMLExtern(){
-		$txt = g_l('backup', "[extern_backup_question_" . weRequest('string', "w", "exp") . ']');
+		$txt = g_l('backup', "[extern_backup_question_" . we_base_request::_(we_base_request::STRING, "w", "exp") . ']');
 
 		$yesCmd = "self.close();";
 		$noCmd = "top.opener.top.body.clearExtern();" . $yesCmd;
@@ -1102,11 +1102,11 @@ function startStep(){
 		if(isset($_REQUEST["operation_mode"])){
 			if($_REQUEST["operation_mode"] == "busy"){
 
-				$text = (weRequest('bool', "current_description") ?
+				$text = (we_base_request::_(we_base_request::BOOL, "current_description") ?
 						$_REQUEST["current_description"] :
 						g_l('backup', "[working]"));
 
-				$progress = weRequest('int', "percent", 0);
+				$progress = we_base_request::_(we_base_request::INT, "percent", 0);
 
 
 				$progress = new we_progressBar($progress);
@@ -1119,7 +1119,7 @@ function startStep(){
 			}
 		}
 
-		$step = weRequest('int', "step", 0);
+		$step = we_base_request::_(we_base_request::INT, "step", 0);
 
 		if($this->mode == 1){
 			switch($step){
@@ -1145,7 +1145,7 @@ function doExport() {
 					$table->setCol(0, 3, null, we_html_button::create_button("cancel", "javascript:top.close();"));
 					break;
 				case 3:
-					if(weRequest('bool', "do_import_after_backup")){
+					if(we_base_request::_(we_base_request::BOOL, "do_import_after_backup")){
 						$body = we_html_button::create_button("next", "javascript:top.body.location='" . WE_INCLUDES_DIR . "we_editors/we_recover_backup.php?pnt=body&step=2';top.busy.location='" . WE_INCLUDES_DIR . "we_editors/we_recover_backup.php?pnt=cmd';top.cmd.location='" . WE_INCLUDES_DIR . "we_editors/we_recover_backup.php?pnt=busy';");
 					} else if(isset($_SESSION['weS']['inbackup']) && $_SESSION['weS']['inbackup']){
 						$body = we_html_button::create_button("next", "javascript:top.opener.weiter();top.close();");
@@ -1242,7 +1242,7 @@ function press_yes() {
 
 	function getHTMLCmd(){
 		if(isset($_REQUEST["operation_mode"])){
-			switch(weRequest('string', "operation_mode")){
+			switch(we_base_request::_(we_base_request::STRING, "operation_mode")){
 				case "backup":
 					if(!is_writable($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp")){
 						print we_html_element::jsElement('
@@ -1256,33 +1256,33 @@ top.busy.location="' . $this->frameset . '?pnt=busy";' .
 					}
 
 					$handle_options = array(
-						"user" => weRequest('bool', "handle_user"),
-						"customer" => weRequest('bool', "handle_customer"),
-						"shop" => weRequest('bool', "handle_shop"),
-						"workflow" => weRequest('bool', "handle_workflow"),
-						"todo" => weRequest('bool', "handle_todo"),
-						"newsletter" => weRequest('bool', "handle_newsletter"),
-						"temporary" => weRequest('bool', "handle_temporary"),
-						"history" => weRequest('bool', "handle_history"),
-						"banner" => weRequest('bool', "handle_banner"),
-						"core" => weRequest('bool', "handle_core"),
-						"object" => weRequest('bool', "handle_object"),
-						"schedule" => weRequest('bool', "handle_schedule"),
-						"settings" => weRequest('bool', "handle_settings"),
-						"export" => weRequest('bool', "handle_export"),
-						"voting" => weRequest('bool', "handle_voting"),
+						"user" => we_base_request::_(we_base_request::BOOL, "handle_user"),
+						"customer" => we_base_request::_(we_base_request::BOOL, "handle_customer"),
+						"shop" => we_base_request::_(we_base_request::BOOL, "handle_shop"),
+						"workflow" => we_base_request::_(we_base_request::BOOL, "handle_workflow"),
+						"todo" => we_base_request::_(we_base_request::BOOL, "handle_todo"),
+						"newsletter" => we_base_request::_(we_base_request::BOOL, "handle_newsletter"),
+						"temporary" => we_base_request::_(we_base_request::BOOL, "handle_temporary"),
+						"history" => we_base_request::_(we_base_request::BOOL, "handle_history"),
+						"banner" => we_base_request::_(we_base_request::BOOL, "handle_banner"),
+						"core" => we_base_request::_(we_base_request::BOOL, "handle_core"),
+						"object" => we_base_request::_(we_base_request::BOOL, "handle_object"),
+						"schedule" => we_base_request::_(we_base_request::BOOL, "handle_schedule"),
+						"settings" => we_base_request::_(we_base_request::BOOL, "handle_settings"),
+						"export" => we_base_request::_(we_base_request::BOOL, "handle_export"),
+						"voting" => we_base_request::_(we_base_request::BOOL, "handle_voting"),
 					);
 					$we_backup_obj = new we_backup_backup($handle_options);
 					$temp_filename = (isset($_REQUEST["temp_filename"]) && $_REQUEST["temp_filename"]) ? $_REQUEST["temp_filename"] : '';
 
 					if(!$temp_filename){
-						$we_backup_obj->backup_extern = weRequest('bool', "handle_extern");
-						$we_backup_obj->convert_charset = weRequest('bool', "convert_charset");
-						$we_backup_obj->export2server = weRequest('bool', "export_server");
-						$we_backup_obj->export2send = weRequest('bool', "export_send");
-						$we_backup_obj->filename = weRequest('file', "filename", "weBackup_" . time() . ".xml");
+						$we_backup_obj->backup_extern = we_base_request::_(we_base_request::BOOL, "handle_extern");
+						$we_backup_obj->convert_charset = we_base_request::_(we_base_request::BOOL, "convert_charset");
+						$we_backup_obj->export2server = we_base_request::_(we_base_request::BOOL, "export_server");
+						$we_backup_obj->export2send = we_base_request::_(we_base_request::BOOL, "export_send");
+						$we_backup_obj->filename = we_base_request::_(we_base_request::FILE, "filename", "weBackup_" . time() . ".xml");
 						$we_backup_obj->compress = (isset($_REQUEST["compress"]) && $_REQUEST["compress"]) ? $_REQUEST["compress"] : "none";
-						$we_backup_obj->backup_binary = weRequest('bool', "handle_binary");
+						$we_backup_obj->backup_binary = we_base_request::_(we_base_request::BOOL, "handle_binary");
 
 						//create file list
 						if($we_backup_obj->backup_extern){
@@ -1298,7 +1298,7 @@ top.busy.location="' . $this->frameset . '?pnt=busy";' .
 					$ret = $we_backup_obj->makeBackup();
 					$temp_filename = $we_backup_obj->saveState($temp_filename);
 
-					$do_import_after_backup = weRequest('bool', 'do_import_after_backup');
+					$do_import_after_backup = we_base_request::_(we_base_request::BOOL, 'do_import_after_backup');
 
 					switch($ret){
 						case 1:

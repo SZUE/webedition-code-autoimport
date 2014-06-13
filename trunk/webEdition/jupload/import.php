@@ -25,7 +25,7 @@
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_global.inc.php');
 
-if(($csid = weRequest('string', 'csid'))){
+if(($csid = we_base_request::_(we_base_request::STRING, 'csid'))){
 	session_id($csid);
 }
 
@@ -39,7 +39,7 @@ if(isset($_SESSION['weS']['_we_import_files'])){
 	$import_files->loadPropsFromSession();
 }
 
-if(($path = weRequest('file', 'pathinfo0'))){
+if(($path = we_base_request::_(we_base_request::FILE, 'pathinfo0'))){
 	$_SESSION["prefs"]['juploadPath'] = $path;
 }
 

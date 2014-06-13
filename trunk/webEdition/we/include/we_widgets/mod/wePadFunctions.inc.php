@@ -43,18 +43,12 @@ function convertDate($date){
  */
 function getDateSelector($_label, $_name, $_btn){
 	$btnDatePicker = we_html_button::create_button("image:date_picker", "javascript:", null, null, null, null, null, null, false, $_btn);
-	$oSelector = new we_html_table(array(
-		"cellpadding" => 0, "cellspacing" => 0, "border" => 0, "id" => $_name . "_cell"
-		), 1, 5);
-	$oSelector->setCol(0, 0, array(
-		"class" => "middlefont"
-		), $_label);
+	$oSelector = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0, "id" => $_name . "_cell"), 1, 5);
+	$oSelector->setCol(0, 0, array("class" => "middlefont"), $_label);
 	$oSelector->setCol(0, 1, null, we_html_tools::getPixel(5, 1));
 	$oSelector->setCol(0, 2, null, we_html_tools::htmlTextInput($_name, 55, "", 10, 'id="' . $_name . '" readonly="1"', "text", 70, 0));
 	$oSelector->setCol(0, 3, null, we_html_tools::getPixel(5, 1));
-	$oSelector->setCol(0, 4, null, we_html_element::htmlA(array(
-			"href" => "#"
-			), $btnDatePicker));
+	$oSelector->setCol(0, 4, null, we_html_element::htmlA(array("href" => "#"), $btnDatePicker));
 	return $oSelector->getHTML();
 }
 

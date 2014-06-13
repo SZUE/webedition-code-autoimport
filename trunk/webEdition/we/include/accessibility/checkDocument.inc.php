@@ -24,7 +24,7 @@
  */
 we_html_tools::protect();
 
-if(($we_transaction = weRequest('transaction', 'we_transaction'))){ //  initialise Document
+if(($we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction'))){ //  initialise Document
 	$we_dt = isset($_SESSION['weS']['we_data'][$we_transaction]) ? $_SESSION['weS']['we_data'][$we_transaction] : "";
 	include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
@@ -32,21 +32,21 @@ if(($we_transaction = weRequest('transaction', 'we_transaction'))){ //  initiali
 
 	$content = $GLOBALS['we_doc']->getDocument();
 
-	$host = weRequest('string', 'host');
+	$host = we_base_request::_(we_base_request::STRING, 'host');
 	if($host != 'validator.w3.org' && !f('SELECT 1 FROM ' . VALIDATION_SERVICES_TABLE . ' WHERE host="' . $GLOBALS['DB_WE']->escape($host) . '" LIMIT 1')){
 		exit($host . ' not in allowed hosts!');
 	}
 
-	$path = weRequest('file', 'path');
-	$s_method = weRequest('string', 's_method');
-	$varname = weRequest('string', 'varname');
-	$contentType = weRequest('string', 'ctype');
+	$path = we_base_request::_(we_base_request::FILE, 'path');
+	$s_method = we_base_request::_(we_base_request::STRING, 's_method');
+	$varname = we_base_request::_(we_base_request::STRING, 'varname');
+	$contentType = we_base_request::_(we_base_request::STRING, 'ctype');
 
 	$http_request = new HttpRequest($path, $host, $s_method);
 	$http_request->addHeader('User-Agent', $_SERVER['HTTP_USER_AGENT']);
 
 	//  add additional parameters to the request
-	if(($add = weRequest('string', 'additionalVars'))){
+	if(($add = we_base_request::_(we_base_request::STRING, 'additionalVars'))){
 		$args = explode('&', $add);
 		foreach($args as $pair){
 			$keyValue = explode('=', $pair);
@@ -59,7 +59,7 @@ if(($we_transaction = weRequest('transaction', 'we_transaction'))){ //  initiali
 	$filename = '/' . $we_transaction . $extension;
 
 	//  check what should happen with document
-	if(weRequest('string', 'checkvia') == 'fileupload'){ //  submit via fileupload
+	if(we_base_request::_(we_base_request::STRING, 'checkvia') == 'fileupload'){ //  submit via fileupload
 		$http_request->addFileByContent($varname, $content, $contentType, $filename);
 	} else { //  submit via onlinecheck - site must be available online
 		// when it is a dynamic document, remove <?xml when short_open_tags are allowed.
@@ -95,7 +95,7 @@ if(($we_transaction = weRequest('transaction', 'we_transaction'))){ //  initiali
 			'</body></html>';
 		}
 	} else {
-		echo $http_request->errno . ": " . $http_request->errstr . "<br>";
+		echo $http_request->errno . ": " . $http_request->errstr . "<br/>";
 	}
 } else {
 	echo ' &hellip; ';

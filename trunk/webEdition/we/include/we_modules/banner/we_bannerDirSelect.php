@@ -26,14 +26,14 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
 if(isset($_REQUEST['we_cmd'])){
-	$_REQUEST['id'] = weRequest('int', 'we_cmd', 0, 1);
-	$_REQUEST['JSIDName'] = weRequest('cmd', 'we_cmd', '', 2);
-	$_REQUEST['JSTextName'] = weRequest('cmd', 'we_cmd', '', 3);
-	$_REQUEST['JSCommand'] = weRequest('cmd', 'we_cmd', '', 4);
+	$_REQUEST['id'] = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1);
+	$_REQUEST['JSIDName'] = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 2);
+	$_REQUEST['JSTextName'] = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 3);
+	$_REQUEST['JSCommand'] = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 4);
 }
 
 $_SERVER["SCRIPT_NAME"] = WE_MODULES_DIR . "banner/we_bannerDirSelect.php";
-$fs = new we_banner_dirSelector(weRequest('int', "id", 0), weRequest('js', "JSIDName", ''), weRequest('js', "JSTextName", ''), weRequest('js', "JSCommand", ''), weRequest('string', "order", ''), weRequest('int', "we_editDirID", 0), weRequest('raw', "we_FolderText", ''));
+$fs = new we_banner_dirSelector(we_base_request::_(we_base_request::INT, "id", 0), we_base_request::_(we_base_request::JS, "JSIDName", ''), we_base_request::_(we_base_request::JS, "JSTextName", ''), we_base_request::_(we_base_request::JS, "JSCommand", ''), we_base_request::_(we_base_request::STRING, "order", ''), we_base_request::_(we_base_request::INT, "we_editDirID", 0), we_base_request::_(we_base_request::RAW, "we_FolderText", ''));
 
-$fs->printHTML(weRequest('int', "what", we_selector_file::FRAMESET));
+$fs->printHTML(we_base_request::_(we_base_request::INT, "what", we_selector_file::FRAMESET));
 

@@ -134,7 +134,7 @@ function we_tag_form($attribs){
 					$ret.=getHtmlTag('form', $formAttribs, '', false, true) .
 						getHtmlTag('input', array('type' => 'hidden', 'name' => 'edit_' . $type, 'value' => 1, 'xml' => $xml)) .
 						getHtmlTag('input', array('type' => 'hidden', 'name' => 'we_edit' . $typetmp . '_ID', 'xml' => $xml,
-							'value' => weRequest('int', 'we_edit' . $typetmp . '_ID', 0),
+							'value' => we_base_request::_(we_base_request::INT, 'we_edit' . $typetmp . '_ID', 0),
 					));
 				}
 			} else {

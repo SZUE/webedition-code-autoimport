@@ -46,7 +46,7 @@ class we_net_rpc_JsonRpc{
 			 * This request was not issued with JSON-RPC so echo the error rather than
 			 * issuing a JsonRpcError response.
 			 */
-			exit("Services require JSON-RPC<br>");
+			exit("Services require JSON-RPC<br/>");
 		}
 		/* Ensure that this was a JSON-RPC service request */
 		if(!isset($phpObj) ||
@@ -58,7 +58,7 @@ class we_net_rpc_JsonRpc{
 			 * This request was not issued with JSON-RPC so echo the error rather than
 			 * issuing a JsonRpcError response.
 			 */
-			exit("JSON-RPC request expected; id, service, method or params missing<br>");
+			exit("JSON-RPC request expected; id, service, method or params missing<br/>");
 		}
 
 		/*

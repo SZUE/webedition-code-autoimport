@@ -98,7 +98,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 		$uniquename = md5(uniqid(__FILE__, true));
 		$width = 800;
 
-		$we_transaction = weRequest('transaction', 'we_transaction', 0);
+		$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 0);
 
 		echo $we_doc->getEmptyDefaultFields() . we_html_multiIconBox::_getBoxStart("100%", $uniquename) .
 		$jsGUI->getContainer(array()) .

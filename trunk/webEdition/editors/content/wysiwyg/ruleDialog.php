@@ -24,8 +24,8 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 if(!(
-	weRequest('bool', 'we_dialog_args', false, 'outsideWE') ||
-	weRequest('bool', 'we_dialog_args', false, 'isFrontend')
+	we_base_request::_(we_base_request::BOOL, 'we_dialog_args', false, 'outsideWE') ||
+	we_base_request::_(we_base_request::BOOL, 'we_dialog_args', false, 'isFrontend')
 	)){
 	we_html_tools::protect();
 }

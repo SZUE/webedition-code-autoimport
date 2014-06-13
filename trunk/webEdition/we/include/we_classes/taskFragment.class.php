@@ -98,7 +98,7 @@ class taskFragment{
 			$this->initdata = $initdata;
 		}
 		$filename = WE_FRAGMENT_PATH . $this->name;
-		$this->currentTask = weRequest('raw', "fr_" . $this->name . "_ct", 0);
+		$this->currentTask = we_base_request::_(we_base_request::RAW, "fr_" . $this->name . "_ct", 0);
 		if(file_exists($filename) && $this->currentTask){
 			$ser = we_base_file::load($filename);
 			if(!$ser){
@@ -272,8 +272,8 @@ class myFrag extends taskFragment{
 
 	function doTask(){
 		$id = $this->data;
-		print "Color:".$this->data["color"]."<br>";
-		print "Size:".$this->data["size"]."<br><br>";
+		print "Color:".$this->data["color"]."<br/>";
+		print "Size:".$this->data["size"]."<br/><br/>";
 	}
 
 	function finish(){

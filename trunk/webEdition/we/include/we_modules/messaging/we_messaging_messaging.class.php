@@ -721,7 +721,7 @@ class we_messaging_messaging extends we_class{
 				  $this->save_sortstuff($id, array_search($sortfield, $this->sf2sh), $this->sortorder); */
 
 				//		$this->ids_selected = array();
-				//		echo "ID=$id<br>\n";
+				//		echo "ID=$id<br/>\n";
 				if(self::array_ksearch('ID', $id, $this->available_folders) != "-1"){
 					$o = $this->used_msgobjs[$this->available_folders[self::array_ksearch('ID', $id, $this->available_folders)]['ClassName']];
 				} else {

@@ -63,7 +63,7 @@ class we_ui_controls_JavaMenu extends we_ui_abstract_AbstractElement{
 	 */
 	protected function _renderHTML(){
 		$lang = we_core_Local::getComputedUILang();
-		$showAltMenu = (isset($_SESSION['weS']['weShowAltMenu']) && $_SESSION['weS']['weShowAltMenu']) || weRequest('bool', 'showAltMenu');
+		$showAltMenu = (isset($_SESSION['weS']['weShowAltMenu']) && $_SESSION['weS']['weShowAltMenu']) || we_base_request::_(we_base_request::BOOL, 'showAltMenu');
 		$_SESSION['weS']['weShowAltMenu'] = $showAltMenu;
 
 		$out = '';

@@ -21,8 +21,8 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$tagName = weRequest('string', 'we_cmd', '', 1);
-$openAtCursor = weRequest('bool', 'we_cmd', false, 2);
+$tagName = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1);
+$openAtCursor = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 2);
 
 we_html_tools::protect();
 
@@ -235,7 +235,7 @@ $_buttons = we_html_button::position_yes_no_cancel(
 </div>
 <div id="divContent">
 	<?php print $code; ?>
-	<br>
+	<br/>
 </div>
 <div id="divButtons">
 	<div style="padding-top: 8px;">

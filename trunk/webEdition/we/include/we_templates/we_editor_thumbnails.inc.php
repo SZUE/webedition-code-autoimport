@@ -86,7 +86,7 @@ echo STYLESHEET .
 						);
 					}
 					$parts[] = array("headline" => "",
-						"html" => we_html_tools::htmlAlertAttentionBox(g_l('thumbnails', "[add_descriptiontext]"), we_html_tools::TYPE_INFO, 700) . '<br><br>' . we_html_button::create_button("image:btn_add_thumbnail", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('add_thumbnail','" . $we_transaction . "');"),
+						"html" => we_html_tools::htmlAlertAttentionBox(g_l('thumbnails', "[add_descriptiontext]"), we_html_tools::TYPE_INFO, 700) . '<br/><br/>' . we_html_button::create_button("image:btn_add_thumbnail", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('add_thumbnail','" . $we_transaction . "');"),
 						"space" => 0
 					);
 				} else {

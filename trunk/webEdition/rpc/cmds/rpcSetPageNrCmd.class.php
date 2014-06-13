@@ -27,9 +27,9 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 class rpcSetPageNrCmd extends rpcCmd{
 
 	function execute(){
-		$we_transaction = weRequest('transaction', 'transaction', '');
+		$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'transaction', '');
 		if(isset($_SESSION['weS']['we_data'][$we_transaction])){
-			$_SESSION['weS']['we_data'][$we_transaction][0]['EditPageNr'] = weRequest('raw', 'editPageNr');
+			$_SESSION['weS']['we_data'][$we_transaction][0]['EditPageNr'] = we_base_request::_(we_base_request::RAW, 'editPageNr');
 		}
 		$resp = new rpcResponse();
 		return $resp;

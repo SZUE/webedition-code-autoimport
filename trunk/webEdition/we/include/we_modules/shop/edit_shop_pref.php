@@ -52,16 +52,16 @@ if($_REQUEST["format"]){ //	save data in arrays ..
 
 	$DB_WE->query('REPLACE ' . WE_SHOP_PREFS_TABLE . ' SET strDateiname = "shop_pref",strFelder= "' . $DB_WE->escape($_REQUEST["waehr"]) . '|' . $DB_WE->escape($_REQUEST["mwst"]) . '|' . $DB_WE->escape($_REQUEST["format"]) . '|' . $DB_WE->escape($_REQUEST["classID"]) . '|' . $DB_WE->escape($_REQUEST["pag"]) . '"');
 
-	$fields['customerFields'] = weRequest('raw', 'orderfields', array());
-	$fields['orderCustomerFields'] = weRequest('raw', 'ordercustomerfields', array());
+	$fields['customerFields'] = we_base_request::_(we_base_request::RAW, 'orderfields', array());
+	$fields['orderCustomerFields'] = we_base_request::_(we_base_request::RAW, 'ordercustomerfields', array());
 
 	// check if field exists
 	$DB_WE->query('REPLACE ' . WE_SHOP_PREFS_TABLE . ' SET strDateiname="edit_shop_properties", strFelder="' . $DB_WE->escape(serialize($fields)) . '"');
 
-	$CLFields['stateField'] = weRequest('raw', 'stateField', '-');
-	$CLFields['stateFieldIsISO'] = weRequest('string', 'stateFieldIsISO', 0);
-	$CLFields['languageField'] = weRequest('string', 'languageField', '-');
-	$CLFields['languageFieldIsISO'] = weRequest('raw', 'languageFieldIsISO', 0);
+	$CLFields['stateField'] = we_base_request::_(we_base_request::RAW, 'stateField', '-');
+	$CLFields['stateFieldIsISO'] = we_base_request::_(we_base_request::STRING, 'stateFieldIsISO', 0);
+	$CLFields['languageField'] = we_base_request::_(we_base_request::STRING, 'languageField', '-');
+	$CLFields['languageFieldIsISO'] = we_base_request::_(we_base_request::RAW, 'languageFieldIsISO', 0);
 
 	// check if field exists
 	$DB_WE->query('REPLACE ' . WE_SHOP_PREFS_TABLE . ' SET strDateiname ="shop_CountryLanguage", strFelder = "' . $DB_WE->escape(serialize($CLFields)) . '"');

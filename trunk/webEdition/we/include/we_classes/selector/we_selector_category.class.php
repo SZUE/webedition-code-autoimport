@@ -673,7 +673,7 @@ function setDir(id){
 		we_html_tools::protect();
 		echo we_html_tools::getHtmlTop();
 
-		if(($cats = weRequest('intList', 'todel'))){
+		if(($cats = we_base_request::_(we_base_request::INTLIST, 'todel'))){
 			$finalDelete = array();
 			$catsToDel = explode(',', $cats);
 			$catlistNotDeleted = "";
@@ -824,7 +824,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 	}
 
 	function getFrameset(){
-		$isMainChooser = weRequest('string', 'we_cmd', '', 0) == 'openCatselector' && !($_REQUEST['we_cmd'][3] || $_REQUEST['we_cmd'][5]);
+		$isMainChooser = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) == 'openCatselector' && !($_REQUEST['we_cmd'][3] || $_REQUEST['we_cmd'][5]);
 		return '<frameset rows="67,*,65,0" border="0">
 	<frame src="' . $this->getFsQueryString(we_selector_file::HEADER) . '" name="fsheader" noresize scrolling="no">
 ' . ($isMainChooser ? '<frameset cols="35%,65%" border="0">' : '') . '
@@ -839,18 +839,18 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 	}
 
 	function printChangeCatHTML(){
-		if(($catId = weRequest('int', "catid"))){
+		if(($catId = we_base_request::_(we_base_request::INT, "catid"))){
 			$db = new DB_WE();
 			$result = getHash('SELECT Category,Catfields,ParentID,Path FROM ' . CATEGORY_TABLE . ' WHERE ID=' . $catId, $db);
 			$fields = isset($result["Catfields"]) ? $result["Catfields"] : "";
 			$fields = ($fields ?
 					unserialize($fields) :
 					array("default" => array("Title" => "", "Description" => "")));
-			$fields[$_SESSION['weS']["we_catVariant"]]["Title"] = weRequest('string', "catTitle",'');
-			$fields[$_SESSION['weS']["we_catVariant"]]["Description"] = weRequest('raw', "catDescription",'');
+			$fields[$_SESSION['weS']["we_catVariant"]]["Title"] = we_base_request::_(we_base_request::STRING, "catTitle",'');
+			$fields[$_SESSION['weS']["we_catVariant"]]["Description"] = we_base_request::_(we_base_request::RAW, "catDescription",'');
 			$path = $result['Path'];
-			$parentid = weRequest('int', 'FolderID', $result['ParentID']);
-			$category = weRequest('string', 'Category', $result['Category']);
+			$parentid = we_base_request::_(we_base_request::INT, 'FolderID', $result['ParentID']);
+			$category = we_base_request::_(we_base_request::STRING, 'Category', $result['Category']);
 
 			$targetPath = id_to_path($parentid, CATEGORY_TABLE);
 
@@ -892,7 +892,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 	}
 
 	function printPropertiesHTML(){
-		$showPrefs = weRequest('int', 'catid', 0);
+		$showPrefs = we_base_request::_(we_base_request::INT, 'catid', 0);
 
 		$path = '';
 		$title = '';
@@ -982,7 +982,7 @@ function we_checkName() {
 		weSuggest::getYuiFiles() .
 		'</head><body class="defaultfont" style="margin:0px;padding: 15px 0 0 10px;background-image:url(' . IMAGE_DIR . 'backgrounds/aquaBackgroundLineLeft.gif);">
 ' . ($showPrefs ? '
-	<form onsubmit="weWysiwygSetHiddenText();"; action="' . $_SERVER["SCRIPT_NAME"] . '" name="we_form" method="post" target="fscmd"><input type="hidden" name="what" value="' . self::CHANGE_CAT . '" /><input type="hidden" name="catid" value="' . weRequest('int', 'catid', 0) . '" />
+	<form onsubmit="weWysiwygSetHiddenText();"; action="' . $_SERVER["SCRIPT_NAME"] . '" name="we_form" method="post" target="fscmd"><input type="hidden" name="what" value="' . self::CHANGE_CAT . '" /><input type="hidden" name="catid" value="' . we_base_request::_(we_base_request::INT, 'catid', 0) . '" />
 		' . $table->getHtml() . "<br/>" . $ta . "<br/>" . $saveBut . '
 	</div>' : '' ) .
 		$yuiSuggest->getYuiCss() .

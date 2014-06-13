@@ -24,5 +24,5 @@
  */
 //	marked to DELETE
 print __FILE__;
-print "<br>MARKED TO delete<br>$sdafkusdflksdhg";
+print "<br/>MARKED TO delete<br/>$sdafkusdflksdhg";
 exit;

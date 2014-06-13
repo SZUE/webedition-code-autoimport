@@ -32,7 +32,7 @@ class rpcShowPreparedPreviewCmd extends rpcCmd{
 
 		$_REQUEST['we_cmd'][0] = "";
 
-		if(($dt=weRequest('string', 'we_dt', ''))){
+		if(($dt=we_base_request::_(we_base_request::STRING, 'we_dt', ''))){
 			$we_dt = isset($_SESSION['weS']['we_data'][$dt]) ? $_SESSION['weS']['we_data'][$dt] : '';
 		}
 
@@ -42,7 +42,7 @@ class rpcShowPreparedPreviewCmd extends rpcCmd{
 		$GLOBALS['we_doc']->setElement("data", stripslashes($_SESSION['weS']['rpc_previewCode']));
 		unset($_SESSION['weS']['rpc_previewCode']);
 
-		$GLOBALS['we_doc']->EditPageNr = (weRequest('string', 'mode', '')== "preview" ? WE_EDITPAGE_PREVIEW_TEMPLATE : WE_EDITPAGE_PREVIEW);
+		$GLOBALS['we_doc']->EditPageNr = (we_base_request::_(we_base_request::STRING, 'mode', '')== "preview" ? WE_EDITPAGE_PREVIEW_TEMPLATE : WE_EDITPAGE_PREVIEW);
 
 		$we_doc = $GLOBALS['we_doc'];
 

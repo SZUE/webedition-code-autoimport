@@ -25,7 +25,7 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
-switch(weRequest('string', 'frame', '')){
+switch(we_base_request::_(we_base_request::STRING, 'frame', '')){
 	case "main":
 		echo we_dialog_deleteProgress::main();
 		break;
@@ -33,5 +33,5 @@ switch(weRequest('string', 'frame', '')){
 		echo we_dialog_deleteProgress::cmd();
 		break;
 	default:
-		echo we_dialog_deleteProgress::frameset(weRequest('table', "table"), weRequest('int', "currentID", 0));
+		echo we_dialog_deleteProgress::frameset(we_base_request::_(we_base_request::TABLE, "table"), we_base_request::_(we_base_request::INT, "currentID", 0));
 }

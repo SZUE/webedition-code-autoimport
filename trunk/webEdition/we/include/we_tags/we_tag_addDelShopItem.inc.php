@@ -39,14 +39,14 @@ function we_tag_addDelShopItem($attribs){
 	$floatfilter = new Zend_Filter_LocalizedToNormalized();
 	if((isset($_REQUEST['shopname']) && $_REQUEST['shopname'] == $shopname) || !isset($_REQUEST['shopname']) || empty($_REQUEST['shopname'])){
 		if(isset($_REQUEST['shop_cart_id']) && is_array($_REQUEST['shop_cart_id'])){
-			if(weRequest('int', 't', 0) > (isset($_SESSION['tb']) ? $_SESSION['tb'] : 0 )){
+			if(we_base_request::_(we_base_request::INT, 't', 0) > (isset($_SESSION['tb']) ? $_SESSION['tb'] : 0 )){
 				foreach($_REQUEST['shop_cart_id'] as $cart_id => $cart_amount){
 					$GLOBALS[$shopname]->Set_Cart_Item(filterXss($cart_id), $floatquantities ? $floatfilter->filter($cart_amount) : intval($cart_amount));
 					$_SESSION[$shopname . '_save'] = $GLOBALS[$shopname]->getCartProperties();
 				}
 			}
 		} else if(isset($_REQUEST['shop_anzahl_und_id']) && is_array($_REQUEST['shop_anzahl_und_id'])){
-			if(weRequest('int', 't', 0) > (isset($_SESSION['tb']) ? $_SESSION['tb'] : 0 )){
+			if(we_base_request::_(we_base_request::INT, 't', 0) > (isset($_SESSION['tb']) ? $_SESSION['tb'] : 0 )){
 				$shop_articleid_variant = $shop_anzahl = '';
 				foreach($_REQUEST['shop_anzahl_und_id'] as $shop_articleid_variant => $shop_anzahl){
 					$articleInfo = explode('_', filterXss($shop_articleid_variant));
@@ -54,19 +54,19 @@ function we_tag_addDelShopItem($attribs){
 					$_SESSION[$shopname . '_save'] = $GLOBALS[$shopname]->getCartProperties();
 					unset($articleInfo);
 				}
-				$_SESSION['tb'] = weRequest('int', 't', 0);
+				$_SESSION['tb'] = we_base_request::_(we_base_request::INT, 't', 0);
 			}
-		} else if(($artID = weRequest('int', 'shop_artikelid')) && isset($_REQUEST['shop_anzahl']) && $_REQUEST['shop_anzahl'] != 0){
-			if(weRequest('int', 't', 0) > (isset($_SESSION['tb']) ? $_SESSION['tb'] : 0)){
-				$GLOBALS[$shopname]->Add_Item($artID, ($floatquantities ? $floatfilter->filter($_REQUEST['shop_anzahl']) : weRequest('int', 'shop_anzahl', 0)), filterXss($_REQUEST['type']), weRequest('raw', WE_SHOP_VARIANT_REQUEST, ''), ( ( isset($_REQUEST[WE_SHOP_ARTICLE_CUSTOM_FIELD]) && is_array($_REQUEST[WE_SHOP_ARTICLE_CUSTOM_FIELD]) ) ? filterXss($_REQUEST[WE_SHOP_ARTICLE_CUSTOM_FIELD]) : array()));
+		} else if(($artID = we_base_request::_(we_base_request::INT, 'shop_artikelid')) && isset($_REQUEST['shop_anzahl']) && $_REQUEST['shop_anzahl'] != 0){
+			if(we_base_request::_(we_base_request::INT, 't', 0) > (isset($_SESSION['tb']) ? $_SESSION['tb'] : 0)){
+				$GLOBALS[$shopname]->Add_Item($artID, ($floatquantities ? $floatfilter->filter($_REQUEST['shop_anzahl']) : we_base_request::_(we_base_request::INT, 'shop_anzahl', 0)), filterXss($_REQUEST['type']), we_base_request::_(we_base_request::RAW, WE_SHOP_VARIANT_REQUEST, ''), ( ( isset($_REQUEST[WE_SHOP_ARTICLE_CUSTOM_FIELD]) && is_array($_REQUEST[WE_SHOP_ARTICLE_CUSTOM_FIELD]) ) ? filterXss($_REQUEST[WE_SHOP_ARTICLE_CUSTOM_FIELD]) : array()));
 				$_SESSION[$shopname . '_save'] = $GLOBALS[$shopname]->getCartProperties();
-				$_SESSION['tb'] = weRequest('int', 't');
+				$_SESSION['tb'] = we_base_request::_(we_base_request::INT, 't');
 			}
-		} else if(($artID = weRequest('int', 'del_shop_artikelid'))){
-			if(weRequest('int', 't', 0) > (isset($_SESSION['tb']) ? $_SESSION['tb'] : 0 )){
+		} else if(($artID = we_base_request::_(we_base_request::INT, 'del_shop_artikelid'))){
+			if(we_base_request::_(we_base_request::INT, 't', 0) > (isset($_SESSION['tb']) ? $_SESSION['tb'] : 0 )){
 				$GLOBALS[$shopname]->Del_Item($artID, filterXss($_REQUEST['type']), (isset($_REQUEST[WE_SHOP_VARIANT_REQUEST]) ? filterXss($_REQUEST[WE_SHOP_VARIANT_REQUEST]) : ''), ( ( isset($_REQUEST[WE_SHOP_ARTICLE_CUSTOM_FIELD]) && is_array($_REQUEST[WE_SHOP_ARTICLE_CUSTOM_FIELD]) ) ? filterXss($_REQUEST[WE_SHOP_ARTICLE_CUSTOM_FIELD]) : array()));
 				$_SESSION[$shopname . '_save'] = $GLOBALS[$shopname]->getCartProperties();
-				$_SESSION['tb'] = weRequest('int', 't');
+				$_SESSION['tb'] = we_base_request::_(we_base_request::INT, 't');
 			}
 		}
 	}

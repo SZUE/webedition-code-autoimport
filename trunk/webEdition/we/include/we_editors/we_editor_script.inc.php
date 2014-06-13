@@ -64,7 +64,7 @@ if(isset($GLOBALS['we_doc'])){
 }
 // Dreamweaver RPC Command ShowPreparedPreview
 // disable javascript errors
-if(weRequest('string','cmd') == 'ShowPreparedPreview'){
+if(we_base_request::_(we_base_request::STRING,'cmd') == 'ShowPreparedPreview'){
 
 	echo we_html_element::jsElement('
 // overwrite/disable some functions in javascript!!!!
@@ -144,7 +144,7 @@ function seeMode_dealWithLinks() {
 
 <?php
 echo (isset($_REQUEST["we_transaction"]) ?
-	"_EditorFrame = _controller.getEditorFrameByTransaction('" . ($_we_transaction = weRequest('transaction', 'we_transaction', 0)) . "');" :
+	"_EditorFrame = _controller.getEditorFrameByTransaction('" . ($_we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 0)) . "');" :
 	"_EditorFrame = _controller.getEditorFrame();");
 ?>
 
@@ -191,7 +191,7 @@ if(isset($GLOBALS['we_doc'])){
 			if (_elem = document.we_form["we_<?php echo $GLOBALS['we_doc']->Name; ?>_ParentID"]) {
 				_parentid = _elem.value;
 				if (_parentid !== _oldparentid) {
-					top.YAHOO.util.Connect.asyncRequest('GET', '<?php echo WEBEDITION_DIR; ?>rpc/rpc.php?cmd=GetUpdateDocumentCustomerFilterQuestion&cns=customer&folderId=' + _parentid + '&we_transaction=<?php echo weRequest("transaction", "we_transaction", '') . '&table=' . $GLOBALS['we_doc']->Table . '&classname=' . $GLOBALS['we_doc']->ClassName; ?>', ajaxCallback);
+					top.YAHOO.util.Connect.asyncRequest('GET', '<?php echo WEBEDITION_DIR; ?>rpc/rpc.php?cmd=GetUpdateDocumentCustomerFilterQuestion&cns=customer&folderId=' + _parentid + '&we_transaction=<?php echo we_base_request::_(we_base_request::TRANSACTION, "we_transaction", '') . '&table=' . $GLOBALS['we_doc']->Table . '&classname=' . $GLOBALS['we_doc']->ClassName; ?>', ajaxCallback);
 					_oldparentid = _parentid;
 				}
 			}
@@ -296,10 +296,10 @@ if(isset($GLOBALS['we_doc'])){
 
 	}
 	function nl2br(i) {
-		i = i.replace(/\r\n/g, "<br>");
-		i = i.replace(/\n/g, "<br>");
-		i = i.replace(/\r/g, "<br>");
-		return i.replace(/<br>/g, "<br>\n");
+		i = i.replace(/\r\n/g, "<br/>");
+		i = i.replace(/\n/g, "<br/>");
+		i = i.replace(/\r/g, "<br/>");
+		return i.replace(/<br/>/g, "<br/>\n");
 	}
 	function br2nl(i) {
 		i = i.replace(/\n\r/g, "");

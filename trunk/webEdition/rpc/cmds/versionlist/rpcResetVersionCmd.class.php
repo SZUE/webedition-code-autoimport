@@ -25,7 +25,7 @@
 class rpcResetVersionCmd extends rpcCmd{
 
 	function execute(){
-		$id = weRequest('raw', 'id');
+		$id = we_base_request::_(we_base_request::RAW, 'id');
 
 		we_html_tools::protect();
 
@@ -47,7 +47,7 @@ class rpcResetVersionCmd extends rpcCmd{
 			$id = isset($parts[0]) ? $parts[0] : $id;
 			$publish = isset($parts[1]) ? $parts[1] : 0;
 
-			if(($version = weRequest('int', "version", 0)) == 0){
+			if(($version = we_base_request::_(we_base_request::INT, "version", 0)) == 0){
 				$version = f('SELECT version FROM ' . VERSIONS_TABLE . ' WHERE ID=' . intval($id));
 			}
 

@@ -31,8 +31,8 @@ class rpcGetDocElementCmd extends rpcCmd{
 
 		$_doc = new we_webEditionDocument();
 
-		$_doc->initByID(weRequest('int', 'docid', 0));
-		$what = weRequest('string', 'element');
+		$_doc->initByID(we_base_request::_(we_base_request::INT, 'docid', 0));
+		$what = we_base_request::_(we_base_request::STRING, 'element');
 		$resp->setData($what, $_doc->getElement($what));
 
 		return $resp;

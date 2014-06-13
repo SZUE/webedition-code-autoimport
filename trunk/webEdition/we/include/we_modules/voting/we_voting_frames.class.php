@@ -121,7 +121,7 @@ class we_voting_frames extends weModuleFrames{
 
 	function getHTMLEditorBody(){
 
-		$hiddens = array('cmd' => 'voting_edit', 'pnt' => 'edbody', 'vernr' => weRequest('int', 'vernr', 0));
+		$hiddens = array('cmd' => 'voting_edit', 'pnt' => 'edbody', 'vernr' => we_base_request::_(we_base_request::INT, 'vernr', 0));
 
 		if(isset($_REQUEST["home"]) && $_REQUEST["home"]){
 			$hiddens["cmd"] = "home";
@@ -238,8 +238,8 @@ class we_voting_frames extends weModuleFrames{
 				'answers_edit.delRelatedItems=true;
 				question_edit.showVariant(0);
 				answers_edit.showVariant(0);
-				question_edit.showVariant(' . weRequest('int', 'vernr', 0) . ');
-				answers_edit.showVariant(' . weRequest('int', 'vernr', 0) . ');
+				question_edit.showVariant(' . we_base_request::_(we_base_request::INT, 'vernr', 0) . ');
+				answers_edit.showVariant(' . we_base_request::_(we_base_request::INT, 'vernr', 0) . ');
 				answers_edit.SetMinCount(' . ($this->View->voting->AllowFreeText ? 1 : 2) . ');
 				answers_edit.' . ($this->View->voting->AllowImages ? 'show' : 'hide') . 'Images();
 				answers_edit.' . ($this->View->voting->AllowMedia ? 'show' : 'hide') . 'Media();
@@ -457,7 +457,7 @@ class we_voting_frames extends weModuleFrames{
 		foreach(array_keys($this->View->voting->QASet) as $variant){
 			$select->addOption($variant, g_l('modules_voting', '[variant]') . ' ' . ($variant + 1));
 		}
-		$select->selectOption(weRequest('int', 'vernr', 0));
+		$select->selectOption(we_base_request::_(we_base_request::INT, 'vernr', 0));
 
 		$table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 3);
 		$table->setColContent(0, 0, $select->getHtml());
@@ -635,7 +635,7 @@ class we_voting_frames extends weModuleFrames{
 
 		$total_score = array_sum($this->View->voting->Scores);
 
-		$version = weRequest('int', 'vernr', 0);
+		$version = we_base_request::_(we_base_request::INT, 'vernr', 0);
 
 		$table = new we_html_table(array('cellpadding' => 3, 'cellspacing' => 0, 'border' => 0, 'class' => 'defaultfont', 'style' => 'width: ' . $this->_width_size . 'px'), 1, 5);
 		if(isset($this->View->voting->QASet[$version])){
@@ -830,11 +830,11 @@ class we_voting_frames extends weModuleFrames{
 	}
 
 	function getHTMLCmd(){
-		if(($pid = weRequest('int', "pid")) === false){
+		if(($pid = we_base_request::_(we_base_request::INT, "pid")) === false){
 			exit;
 		}
 
-		$offset = weRequest('int', "offset", 0);
+		$offset = we_base_request::_(we_base_request::INT, "offset", 0);
 
 		$rootjs = '';
 		if(!$pid){
@@ -981,7 +981,7 @@ class we_voting_frames extends weModuleFrames{
 
 		if($size > 0){
 			$size--;
-			$start = weRequest('int', 'start', $size);
+			$start = we_base_request::_(we_base_request::INT, 'start', $size);
 			$start = $start < 0 ? 0 : $start;
 			$start = $start > $size ? $size : $start;
 
@@ -1103,7 +1103,7 @@ class we_voting_frames extends weModuleFrames{
 
 		if($size > 0){
 			$size--;
-			$start = weRequest('int', 'start', $size);
+			$start = we_base_request::_(we_base_request::INT, 'start', $size);
 			$start = $start < 0 ? 0 : $start;
 			$start = $start > $size ? $size : $start;
 
@@ -1237,7 +1237,7 @@ class we_voting_frames extends weModuleFrames{
 
 		if($size > 0){
 			$size--;
-			$start = weRequest('int', 'start', $size);
+			$start = we_base_request::_(we_base_request::INT, 'start', $size);
 			$start = $start < 0 ? 0 : $start;
 			$start = $start > $size ? $size : $start;
 

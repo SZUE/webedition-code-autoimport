@@ -30,7 +30,7 @@ Zend_Loader::loadClass('we_core_Local');
 
 
 $title = 'webEdition ';
-switch(weRequest('string', 'tool', '')){
+switch(we_base_request::_(we_base_request::STRING, 'tool', '')){
 	case '':
 		break;
 	case 'weSearch':
@@ -70,7 +70,7 @@ if($_REQUEST['tool'] == "weSearch"){
 		$_SESSION['weS']['weSearch']["keyword"] = $_REQUEST['we_cmd'][1];
 	}
 	//look which search is activ
-	switch(weRequest('table', 'we_cmd', 1, 2)){
+	switch(we_base_request::_(we_base_request::TABLE, 'we_cmd', 1, 2)){
 		case FILE_TABLE:
 			$tab = 1;
 			$_SESSION['weS']['weSearch']["checkWhich"] = 1;

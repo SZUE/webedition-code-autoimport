@@ -35,7 +35,7 @@ function we_tag_order($attribs){
 	}
 
 	$condition = weTag_getAttribute("condition", $attribs, 0);
-	$we_orderid = weTag_getAttribute("id", $attribs, weRequest('int', 'we_orderid', 0));
+	$we_orderid = weTag_getAttribute("id", $attribs, we_base_request::_(we_base_request::INT, 'we_orderid', 0));
 
 	$hidedirindex = weTag_getAttribute("hidedirindex", $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, true);
 

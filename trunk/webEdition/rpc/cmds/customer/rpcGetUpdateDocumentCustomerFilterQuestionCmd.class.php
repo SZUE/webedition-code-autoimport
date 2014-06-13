@@ -28,14 +28,14 @@ class rpcGetUpdateDocumentCustomerFilterQuestionCmd extends rpcCmd{
 		$resp = new rpcResponse();
 
 		// compare filter of document with fitler of folder
-		$_filterOfFolder = $this->getFilterOfFolder(weRequest('int', 'folderId', 0), weRequest('table', 'table', FILE_TABLE));
+		$_filterOfFolder = $this->getFilterOfFolder(we_base_request::_(we_base_request::INT, 'folderId', 0), we_base_request::_(we_base_request::TABLE, 'table', FILE_TABLE));
 
-		if(($trans = weRequest('transaction', 'we_transaction', ''))){
+		if(($trans = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', ''))){
 			$we_dt = isset($_SESSION['weS']['we_data'][$trans]) ? $_SESSION['weS']['we_data'][$trans] : "";
 		}
 
 		// filter of document
-		$doc = weRequest('string', 'classname');
+		$doc = we_base_request::_(we_base_request::STRING, 'classname');
 		$_document = new $doc;
 		$_document->we_initSessDat($we_dt);
 		$_filterOfDocument = $_document->documentCustomerFilter;

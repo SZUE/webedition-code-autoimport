@@ -28,7 +28,7 @@ class rpcLoginView extends rpcView{
 
 		if($response->getStatus() == rpcCmd::STATUS_OK){
 
-			$html = 'LOGIN OK<br>';
+			$html = 'LOGIN OK<br/>';
 		} else {
 
 			$html = 'LOGIN FAILED:' . $response->getReason();

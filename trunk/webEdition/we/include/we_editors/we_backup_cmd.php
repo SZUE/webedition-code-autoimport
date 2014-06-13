@@ -30,7 +30,7 @@ if(isset($_SESSION['weS']['weBackupVars']) && !empty($_SESSION['weS']['weBackupV
 	we_backup_backup::limitsReached('', 1);
 }
 
-$cmd = weRequest('string', 'cmd');
+$cmd = we_base_request::_(we_base_request::STRING, 'cmd');
 if(!$cmd){
 	t_e('called without command');
 	exit();
@@ -43,7 +43,7 @@ if(($cmd == 'export' || $cmd == 'import') && isset($_SESSION['weS']['weBackupVar
 			time() - 3);
 	$_SESSION['weS']['weBackupVars']['limits']['lastMem'] = 0;
 
-	if(weRequest('bool', 'reload')){
+	if(we_base_request::_(we_base_request::BOOL, 'reload')){
 		$tmp = $_SESSION['weS']['weBackupVars']['limits']['requestTime'] - $last;
 		t_e('Backup caused reload', $last, $_SESSION['weS']['weBackupVars']['limits'], $tmp);
 		$tmp-=4;
@@ -65,7 +65,7 @@ if(($cmd == 'export' || $cmd == 'import') && isset($_SESSION['weS']['weBackupVar
 	}
 }
 
-switch(weRequest('string', 'cmd')){
+switch(we_base_request::_(we_base_request::STRING, 'cmd')){
 	case 'export':
 		if(!isset($_SESSION['weS']['weBackupVars']) || empty($_SESSION['weS']['weBackupVars'])){
 			$_SESSION['weS']['weBackupVars'] = array();

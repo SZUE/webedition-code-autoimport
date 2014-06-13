@@ -28,6 +28,6 @@ we_html_tools::protect(/* array('BROWSE_SERVER') */);
 $_SERVER['SCRIPT_NAME'] = WEBEDITION_DIR . 'we_fs.php';
 
 $fs = new we_selector_multiple(
-	isset($id) ? $id : weRequest('int', 'id', 0), isset($table) ? $table : weRequest('table', 'table', FILE_TABLE), isset($JSIDName) ? $JSIDName : weRequest('raw', 'JSIDName', ''), isset($JSTextName) ? $JSTextName : weRequest('raw', 'JSTextName', ''), isset($JSCommand) ? $JSCommand : weRequest('raw', 'JSCommand', ''), isset($order) ? $order : weRequest('raw', 'order', ''), isset($rootDirID) ? $rootDirID : weRequest('int', 'rootDirID', 0), isset($multiple) ? $multiple : weRequest('bool', 'multiple'), isset($filter) ? $filter : weRequest('raw', 'filter', ''));
+	isset($id) ? $id : we_base_request::_(we_base_request::INT, 'id', 0), isset($table) ? $table : we_base_request::_(we_base_request::TABLE, 'table', FILE_TABLE), isset($JSIDName) ? $JSIDName : we_base_request::_(we_base_request::RAW, 'JSIDName', ''), isset($JSTextName) ? $JSTextName : we_base_request::_(we_base_request::RAW, 'JSTextName', ''), isset($JSCommand) ? $JSCommand : we_base_request::_(we_base_request::RAW, 'JSCommand', ''), isset($order) ? $order : we_base_request::_(we_base_request::RAW, 'order', ''), isset($rootDirID) ? $rootDirID : we_base_request::_(we_base_request::INT, 'rootDirID', 0), isset($multiple) ? $multiple : we_base_request::_(we_base_request::BOOL, 'multiple'), isset($filter) ? $filter : we_base_request::_(we_base_request::RAW, 'filter', ''));
 
-$fs->printHTML(weRequest('int', 'what', we_selector_file::FRAMESET));
+$fs->printHTML(we_base_request::_(we_base_request::INT, 'what', we_selector_file::FRAMESET));

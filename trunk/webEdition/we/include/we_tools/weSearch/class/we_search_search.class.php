@@ -76,7 +76,7 @@ class we_search_search extends we_search{
 				$obj->searchclassFolder->searchstart = ($_REQUEST['searchstart']);
 			}
 			if(isset($_REQUEST['setView'])){
-				$this->db->query('UPDATE ' . FILE_TABLE . ' SET listview=' . weRequest('int', 'setView') . ' WHERE ID=' . intval($obj->ID));
+				$this->db->query('UPDATE ' . FILE_TABLE . ' SET listview=' . we_base_request::_(we_base_request::INT, 'setView') . ' WHERE ID=' . intval($obj->ID));
 				$obj->searchclassFolder->setView = ($_REQUEST['setView']);
 			} else {
 				$obj->searchclassFolder->setView = f('SELECT listview FROM ' . FILE_TABLE . ' WHERE ID=' . intval($obj->ID));
@@ -108,7 +108,7 @@ class we_search_search extends we_search{
 			}
 		} else {
 			if(isset($_REQUEST['we_cmd']['setView']) && isset($_REQUEST['id'])){
-				$this->db->query('UPDATE ' . FILE_TABLE . ' SET listview=' . weRequest('int', 'we_cmd', 0, 'setView') . ' WHERE ID=' . weRequest('int', 'id'));
+				$this->db->query('UPDATE ' . FILE_TABLE . ' SET listview=' . we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'setView') . ' WHERE ID=' . we_base_request::_(we_base_request::INT, 'id'));
 			}
 		}
 	}

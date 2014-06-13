@@ -110,7 +110,7 @@ class we_export_wizard{
 			$this->exportVars = $_SESSION['weS']['exportVars'];
 		}
 		foreach($this->exportVars as $k => $v){
-			$var = weRequest('raw', $k, null);
+			$var = we_base_request::_(we_base_request::RAW, $k, null);
 			if($var !== null){
 				$this->exportVars[$k] = $var;
 			}
@@ -693,7 +693,7 @@ function setState(a) {
 				$_file_encoding->addOption("mac", g_l('export', "[mac]"));
 				$_file_encoding->selectOption($csv_lineend);
 
-				$fileformattable->setCol(0, 0, array("class" => "defaultfont"), g_l('export', "[csv_lineend]") . "<br>" . $_file_encoding->getHtml());
+				$fileformattable->setCol(0, 0, array("class" => "defaultfont"), g_l('export', "[csv_lineend]") . "<br/>" . $_file_encoding->getHtml());
 				$fileformattable->setColContent(1, 0, $this->getHTMLChooser("csv_delimiter", $csv_delimiter, array(";" => g_l('export', "[semicolon]"), "," => g_l('export', "[comma]"), ":" => g_l('export', "[colon]"), "\\t" => g_l('export', "[tab]"), " " => g_l('export', "[space]")), g_l('export', "[csv_delimiter]")));
 				$fileformattable->setColContent(2, 0, $this->getHTMLChooser("csv_enclose", $csv_enclose, array("\"" => g_l('export', "[double_quote]"), "'" => g_l('export', "[single_quote]")), g_l('export', "[csv_enclose]")));
 
@@ -735,7 +735,7 @@ function setState(a) {
 	function getHTMLStep10(){
 		$filename = isset($_REQUEST["file_name"]) ? urldecode($_REQUEST["file_name"]) : false;
 
-		$message = we_html_element::htmlSpan(array("class" => "defaultfont"), g_l('export', "[backup_finished]") . "<br><br>" .
+		$message = we_html_element::htmlSpan(array("class" => "defaultfont"), g_l('export', "[backup_finished]") . "<br/><br/>" .
 				g_l('export', "[download_starting]") .
 				we_html_element::htmlA(array("href" => $this->frameset . "?pnt=body&step=50&exportfile=" . $filename), g_l('export', "[download]")));
 
@@ -751,8 +751,8 @@ function setState(a) {
 
 	function getHTMLStep50(){
 		$preurl = getServerUrl();
-		if(weRequest('bool', "exportfile")){
-			$_filename = basename(urldecode(weRequest('raw', "exportfile")));
+		if(we_base_request::_(we_base_request::BOOL, "exportfile")){
+			$_filename = basename(urldecode(we_base_request::_(we_base_request::RAW, "exportfile")));
 
 			if(file_exists(TEMP_PATH . $_filename) // Does file exist?
 				&& !preg_match('%p?html?%i', $_filename) && stripos($_filename, "inc") === false && !preg_match('%php3?%i', $_filename)){ // Security check
@@ -788,7 +788,7 @@ function setState(a) {
 	}
 
 	function getHTMLStep99(){
-		$errortype = weRequest('string', "error", "unknown");
+		$errortype = we_base_request::_(we_base_request::STRING, "error", "unknown");
 
 		switch($errortype){
 			case "no_object_module":
@@ -817,7 +817,7 @@ function setState(a) {
 				break;
 		}
 
-		$message = we_html_element::htmlSpan(array("class" => "defaultfont"), ($returned_message[1] ? (g_l('export', "[error]") . "<br><br>") : "") . $returned_message[0]);
+		$message = we_html_element::htmlSpan(array("class" => "defaultfont"), ($returned_message[1] ? (g_l('export', "[error]") . "<br/><br/>") : "") . $returned_message[0]);
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET) .
@@ -943,8 +943,8 @@ function setState(a) {
 
 	function getHTMLFooter($step = 0){
 		$this->getExportVars();
-		$errortype = weRequest('string', "error", "no_error");
-		$selection = weRequest('raw', "selection", "auto");
+		$errortype = we_base_request::_(we_base_request::STRING, "error", "no_error");
+		$selection = we_base_request::_(we_base_request::RAW, "selection", "auto");
 		$show_controls = false;
 		$js = "";
 		switch($errortype){
@@ -1056,22 +1056,22 @@ function setState(a) {
 	function getHTMLCmd(){
 		$out = "";
 		$this->getExportVars();
-		switch(weRequest('string', "cmd")){
+		switch(we_base_request::_(we_base_request::STRING, "cmd")){
 			case "load":
 				if(isset($_REQUEST["pid"])){
-					return we_html_element::jsElement("self.location='" . WE_EXPORT_MODULE_DIR . "exportLoadTree.php?we_cmd[1]=" . $_REQUEST["tab"] . "&we_cmd[2]=" . $_REQUEST["pid"] . "&we_cmd[3]=" . weRequest('raw', "openFolders", "") . "'");
+					return we_html_element::jsElement("self.location='" . WE_EXPORT_MODULE_DIR . "exportLoadTree.php?we_cmd[1]=" . $_REQUEST["tab"] . "&we_cmd[2]=" . $_REQUEST["pid"] . "&we_cmd[3]=" . we_base_request::_(we_base_request::RAW, "openFolders", "") . "'");
 				}
 				break;
 			case "export":
 				$xmlExIm = new we_exim_XMLExIm();
 
-				$file_format = weRequest('string', "file_format", "");
-				$export_to = weRequest('raw', "export_to", "");
-				$path = weRequest('file', "path", '') . '/';
-				$csv_delimiter = weRequest('raw', "csv_delimiter", "");
-				$csv_enclose = weRequest('raw', "csv_enclose", "");
-				$csv_lineend = weRequest('raw', "csv_lineend", "");
-				$csv_fieldnames = weRequest('raw', "csv_fieldnames", "");
+				$file_format = we_base_request::_(we_base_request::STRING, "file_format", "");
+				$export_to = we_base_request::_(we_base_request::RAW, "export_to", "");
+				$path = we_base_request::_(we_base_request::FILE, "path", '') . '/';
+				$csv_delimiter = we_base_request::_(we_base_request::RAW, "csv_delimiter", "");
+				$csv_enclose = we_base_request::_(we_base_request::RAW, "csv_enclose", "");
+				$csv_lineend = we_base_request::_(we_base_request::RAW, "csv_lineend", "");
+				$csv_fieldnames = we_base_request::_(we_base_request::RAW, "csv_fieldnames", "");
 				$cdata = (isset($_REQUEST["cdata"]) && $_REQUEST["cdata"] == "false") ? false : true;
 
 				$extype = $this->exportVars["extype"];
@@ -1512,7 +1512,7 @@ function setState(a) {
 			');
 			$select->selectOption($classname);
 
-			$type = weRequest('string', "type", '');
+			$type = we_base_request::_(we_base_request::STRING, "type", '');
 
 			$radio = $showdocs ? we_html_forms::radiobutton("classname", ($type == "classname" ? true : false), "type", g_l('export', "[classname]"), true, "defaultfont", $this->topFrame . ".type='classname'") : we_html_tools::getPixel(25, 5) . g_l('export', "[classname]");
 			return $js . we_html_tools::htmlFormElementTable(we_html_tools::getPixel(25, 5) . $select->getHtml(), $radio);
@@ -1521,7 +1521,7 @@ function setState(a) {
 	}
 
 	function getHTMLCategory(){
-		switch(weRequest('string', "wcmd")){
+		switch(we_base_request::_(we_base_request::STRING, "wcmd")){
 			case "add_cat":
 				$arr = makeArrayFromCSV($this->exportVars["categories"]);
 				if(isset($_REQUEST["cat"])){
@@ -1554,7 +1554,7 @@ function setState(a) {
 
 		$hiddens = we_html_element::htmlHidden(array("name" => "wcmd", "value" => "")) .
 			we_html_element::htmlHidden(array("name" => "categories", "value" => $this->exportVars["categories"])) .
-			we_html_element::htmlHidden(array("name" => "cat", "value" => weRequest('raw', "cat", "")));
+			we_html_element::htmlHidden(array("name" => "cat", "value" => we_base_request::_(we_base_request::RAW, "cat", "")));
 
 
 		$delallbut = we_html_button::create_button("delete_all", "javascript:we_cmd('del_all_cats')", true, 0, 0, "", "", (isset($this->exportVars["categories"]) ? false : true));

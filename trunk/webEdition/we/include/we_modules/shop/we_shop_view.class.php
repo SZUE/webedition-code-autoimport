@@ -91,7 +91,7 @@ class we_shop_view{
 		$resultD = f('SELECT 1 FROM ' . LINK_TABLE . ' WHERE Name ="' . WE_SHOP_TITLE_FIELD_NAME . '" LIMIT 1', '', $this->db);
 
 
-		$mod = weRequest('string', 'mod', '');
+		$mod = we_base_request::_(we_base_request::STRING, 'mod', '');
 		$modData = we_base_moduleInfo::getModuleData($mod);
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 
@@ -337,8 +337,8 @@ function we_cmd() {
 
 		$this->processCommands(); //imi
 
-		$bid = weRequest('int', 'bid', 0);
-		if(weRequest('bool', 'deletethisorder')){
+		$bid = we_base_request::_(we_base_request::INT, 'bid', 0);
+		if(we_base_request::_(we_base_request::BOOL, 'deletethisorder')){
 			$this->db->query('DELETE FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . $bid);
 			echo we_html_element::jsElement('top.content.deleteEntry(' . $bid . ')') .
 			'</head>
@@ -351,7 +351,7 @@ function we_cmd() {
 			exit;
 		}
 
-		if(($id = weRequest('int', 'deleteaarticle'))){
+		if(($id = we_base_request::_(we_base_request::INT, 'deleteaarticle'))){
 
 			$this->db->query('DELETE FROM ' . SHOP_TABLE . ' WHERE IntID=' . $id);
 			if(f('SELECT COUNT(1) FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . $bid, '', $this->db) < 1){
@@ -372,12 +372,12 @@ function we_cmd() {
 			t_e('unsupported Shop-Settings found');
 		}
 
-		$_customer = $this->getOrderCustomerData(weRequest('int', 'bid', 0), $fields);
+		$_customer = $this->getOrderCustomerData(we_base_request::_(we_base_request::INT, 'bid', 0), $fields);
 
 		if(isset($_REQUEST['SendMail'])){
 			$weShopStatusMails->sendEMail($_REQUEST['SendMail'], $_REQUEST['bid'], $_customer);
 		}
-		$bid = weRequest('int', 'bid', 0);
+		$bid = we_base_request::_(we_base_request::INT, 'bid', 0);
 		foreach(we_shop_statusMails::$StatusFields as $field){
 			if(isset($_REQUEST[$field])){
 				list($day, $month, $year) = explode('.', $_REQUEST[$field]);
@@ -387,11 +387,11 @@ function we_cmd() {
 			}
 		}
 
-		if(($article = weRequest('int', 'article'))){
+		if(($article = we_base_request::_(we_base_request::INT, 'article'))){
 			if(isset($_REQUEST['preis'])){
-				$this->db->query('UPDATE ' . SHOP_TABLE . ' SET Price=' . abs(weRequest('float', 'preis', 0)) . ' WHERE IntID=' . $article);
+				$this->db->query('UPDATE ' . SHOP_TABLE . ' SET Price=' . abs(we_base_request::_(we_base_request::FLOAT, 'preis', 0)) . ' WHERE IntID=' . $article);
 			} else if(isset($_REQUEST['anzahl'])){
-				$this->db->query('UPDATE ' . SHOP_TABLE . ' SET IntQuantity=' . abs(weRequest('float', 'anzahl', 0)) . ' WHERE IntID=' . $article);
+				$this->db->query('UPDATE ' . SHOP_TABLE . ' SET IntQuantity=' . abs(we_base_request::_(we_base_request::FLOAT, 'anzahl', 0)) . ' WHERE IntID=' . $article);
 			} else if(isset($_REQUEST['vat'])){
 
 				$this->db->query('SELECT strSerial FROM ' . SHOP_TABLE . ' WHERE IntID=' . $article);
@@ -424,7 +424,7 @@ function we_cmd() {
 				$format[] = 'DATE_FORMAT(' . $field . ',"' . $db . '") AS ' . $field;
 			}
 
-			$this->db->query('SELECT IntID, IntCustomerID, IntArticleID, strSerial, strSerialOrder, IntQuantity, Price, ' . implode(',', $format) . '	FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . weRequest('int', 'bid', 0));
+			$this->db->query('SELECT IntID, IntCustomerID, IntArticleID, strSerial, strSerialOrder, IntQuantity, Price, ' . implode(',', $format) . '	FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . we_base_request::_(we_base_request::INT, 'bid', 0));
 
 			// loop through all articles
 			while($this->db->next_record()){
@@ -1068,12 +1068,12 @@ function submitForm() {
 	}
 
 	function processCommands(){
-		switch(weRequest('string', 'we_cmd', '', 0)){
+		switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 			case 'add_article':
-				if(weRequest('float', 'anzahl') > 0){
+				if(we_base_request::_(we_base_request::FLOAT, 'anzahl') > 0){
 
 					// add complete article / object here - inclusive request fields
-					$_strSerialOrder = $this->getFieldFromOrder(weRequest('int', 'bid'), 'strSerialOrder');
+					$_strSerialOrder = $this->getFieldFromOrder(we_base_request::_(we_base_request::INT, 'bid'), 'strSerialOrder');
 
 					$tmp = explode('_', $_REQUEST['add_article']);
 					$isObj = ($tmp[1] == we_shop_shop::OBJECT);
@@ -1120,11 +1120,11 @@ function submitForm() {
 					$orderArray = unserialize($_strSerialOrder);
 					$pricename = (isset($orderArray[WE_SHOP_PRICENAME]) ? $orderArray[WE_SHOP_PRICENAME] : 'shopprice');
 					// now insert article to order:
-					$row = getHash('SELECT IntOrderID, IntCustomerID, DateOrder, DateShipping, Datepayment, IntPayment_Type FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . weRequest('int', 'bid'), $this->db);
+					$row = getHash('SELECT IntOrderID, IntCustomerID, DateOrder, DateShipping, Datepayment, IntPayment_Type FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . we_base_request::_(we_base_request::INT, 'bid'), $this->db);
 					$this->db->query('INSERT INTO ' . SHOP_TABLE . ' SET ' .
 						we_database_base::arraySetter((array(
 							'IntArticleID' => $id,
-							'IntQuantity' => weRequest('float', 'anzahl', 0),
+							'IntQuantity' => we_base_request::_(we_base_request::FLOAT, 'anzahl', 0),
 							'Price' => we_base_util::std_numberformat(self::getFieldFromShoparticle($serialDoc, $pricename)),
 							'IntOrderID' => $row['IntOrderID'],
 							'IntCustomerID' => $row['IntCustomerID'],
@@ -1154,7 +1154,7 @@ function submitForm() {
 							AND ' . LINK_TABLE . '.CID = ' . CONTENT_TABLE . '.ID
 							AND ' . LINK_TABLE . '.Name = "' . WE_SHOP_TITLE_FIELD_NAME . '"
 							AND ' . LINK_TABLE . '.DocumentTable != "tblTemplates" ' .
-					(weRequest('bool', 'searchArticle') ?
+					(we_base_request::_(we_base_request::BOOL, 'searchArticle') ?
 						' AND ' . CONTENT_TABLE . '.Dat LIKE "%' . $this->db->escape($_REQUEST['searchArticle']) . '%"' :
 						'')
 				);
@@ -1171,7 +1171,7 @@ function submitForm() {
 								FROM ' . OBJECT_X_TABLE . $_classId . ', ' . OBJECT_FILES_TABLE . '
 								WHERE ' . OBJECT_X_TABLE . $_classId . '.OF_ID = ' . OBJECT_FILES_TABLE . '.ID
 									AND ' . OBJECT_X_TABLE . $_classId . '.ID = ' . OBJECT_FILES_TABLE . '.ObjectID ' .
-							(weRequest('bool', 'searchArticle') ?
+							(we_base_request::_(we_base_request::BOOL, 'searchArticle') ?
 								' AND ' . OBJECT_X_TABLE . $_classId . '.input_' . WE_SHOP_TITLE_FIELD_NAME . '  LIKE "%' . $this->db->escape($_REQUEST['searchArticle']) . '%"' :
 								'')
 						);
@@ -1189,7 +1189,7 @@ function submitForm() {
 				$MAX_PER_PAGE = 10;
 				$AMOUNT_ARTICLES = count($shopArticles);
 
-				$page = weRequest('int', 'page', 0);
+				$page = we_base_request::_(we_base_request::INT, 'page', 0);
 
 				$shopArticlesParts = array_chunk($shopArticles, $MAX_PER_PAGE, true);
 
@@ -1237,7 +1237,7 @@ function submitForm() {
 						'html' => '
 		<form name="we_intern_form">' . we_html_tools::hidden('bid', $_REQUEST['bid']) . we_html_tools::hidden('we_cmd[]', 'add_new_article') . '
 			<table border="0" cellpadding="0" cellspacing="0">
-			<tr><td>' . we_class::htmlSelect("add_article", $shopArticlesSelect, 15, weRequest('raw', 'add_article', ''), false, 'onchange="selectArticle(this.options[this.selectedIndex].value);"', 'value', '380') . '</td>
+			<tr><td>' . we_class::htmlSelect("add_article", $shopArticlesSelect, 15, we_base_request::_(we_base_request::RAW, 'add_article', ''), false, 'onchange="selectArticle(this.options[this.selectedIndex].value);"', 'value', '380') . '</td>
 			<td>' . we_html_tools::getPixel(10, 1) . '</td>
 			<td valign="top">' . $backBut . '<div style="margin:5px 0"></div>' . $nextBut . '</td>
 			</tr>
@@ -1261,7 +1261,7 @@ function submitForm() {
 						'space' => 100,
 						'html' => '
 			<table border="0" cellpadding="0" cellspacing="0">
-				<tr><td>' . we_class::htmlTextInput('searchArticle', 24, weRequest('raw', 'searchArticle', ''), '', 'id="searchArticle"', 'text', 380) . '</td>
+				<tr><td>' . we_class::htmlTextInput('searchArticle', 24, we_base_request::_(we_base_request::RAW, 'searchArticle', ''), '', 'id="searchArticle"', 'text', 380) . '</td>
 					<td>' . we_html_tools::getPixel(10, 1) . '</td>
 					<td>' . $searchBut . '</td>
 				</tr>
@@ -1707,7 +1707,7 @@ function submitForm() {
 	}
 
 	function processCommands_back(){
-		switch(weRequest('string', 'cmd')){
+		switch(we_base_request::_(we_base_request::STRING, 'cmd')){
 			case 'new_raw':
 				$this->raw = new weShop();
 				print we_html_element::jsElement(

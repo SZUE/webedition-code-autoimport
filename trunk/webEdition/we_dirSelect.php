@@ -28,6 +28,6 @@ we_html_tools::protect();
 $_SERVER['SCRIPT_NAME'] = WEBEDITION_DIR . 'we_dirSelect.php';
 
 $fs = new we_selector_directory(
-	weRequest('int', "id", 0), weRequest('table', "table", FILE_TABLE), weRequest('js', "JSIDName", ''), weRequest('js', "JSTextName", ''), weRequest('js', "JSCommand", ''), weRequest('raw', "order", ''), 0, weRequest('int', "we_editDirID", 0), weRequest('raw', "we_FolderText", ''), weRequest('int', "rootDirID", 0), weRequest('bool', "multiple"));
+	we_base_request::_(we_base_request::INT, "id", 0), we_base_request::_(we_base_request::TABLE, "table", FILE_TABLE), we_base_request::_(we_base_request::JS, "JSIDName", ''), we_base_request::_(we_base_request::JS, "JSTextName", ''), we_base_request::_(we_base_request::JS, "JSCommand", ''), we_base_request::_(we_base_request::RAW, "order", ''), 0, we_base_request::_(we_base_request::INT, "we_editDirID", 0), we_base_request::_(we_base_request::RAW, "we_FolderText", ''), we_base_request::_(we_base_request::INT, "rootDirID", 0), we_base_request::_(we_base_request::BOOL, "multiple"));
 
-$fs->printHTML(weRequest('int', "what", we_selector_file::FRAMESET));
+$fs->printHTML(we_base_request::_(we_base_request::INT, "what", we_selector_file::FRAMESET));

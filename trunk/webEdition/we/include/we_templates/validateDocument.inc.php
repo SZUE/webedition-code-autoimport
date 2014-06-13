@@ -210,7 +210,7 @@ $parts = array(
 );
 
 $body = '<form name="we_form">'
-	. we_html_tools::hidden('we_transaction', weRequest('transaction', 'we_transaction', 0))
+	. we_html_tools::hidden('we_transaction', we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 0))
 	. we_html_multiIconBox::getHTML('weDocValidation', "100%", $parts, 20, '', -1, '', '', false) .
 	'</form>';
 

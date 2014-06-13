@@ -43,7 +43,7 @@ $wepos = weGetCookieVariable('but_weDirProp');
 $znr = 4;
 if($we_doc->Table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $we_doc->Table == OBJECT_FILES_TABLE)){
 	$parts[] = array("icon" => "user.gif", "headline" => g_l('weClass', "[owners]")
-		, "html" => $GLOBALS['we_doc']->formCreatorOwners() . "<br>", "space" => 140, "noline" => 1);
+		, "html" => $GLOBALS['we_doc']->formCreatorOwners() . "<br/>", "space" => 140, "noline" => 1);
 	if(permissionhandler::hasPerm("ADMINISTRATOR")){
 		$parts[] = array("headline" => g_l('modules_users', "[grant_owners]"), "html" => $GLOBALS['we_doc']->formChangeOwners(), "space" => 140, "forceRightHeadline" => 1);
 	}

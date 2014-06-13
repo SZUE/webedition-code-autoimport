@@ -26,9 +26,9 @@ require_once(WE_INCLUDES_PATH . 'we_tag.inc.php');
 we_html_tools::protect();
 
 
-$cmd = weRequest('raw', 'we_cmd', '', 0);
-$we_transaction = weRequest('transaction', 'we_cmd', '', 1);
-$id = weRequest('string', 'we_cmd', false, 2);
+$cmd = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 0);
+$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', '', 1);
+$id = we_base_request::_(we_base_request::STRING, 'we_cmd', false, 2);
 
 $jsGUI = new weOrderContainer('_EditorFrame.getContentEditor()', 'classEntry');
 

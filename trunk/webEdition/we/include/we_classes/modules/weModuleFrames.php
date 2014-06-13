@@ -222,7 +222,7 @@ class weModuleFrames{
 	}
 
 	function getHTMLEditor($extraUrlParams = '', $extraHead = ''){
-		$sid = weRequest('string', 'sid');
+		$sid = we_base_request::_(we_base_request::STRING, 'sid');
 		$body = we_html_element::htmlBody(array('style' => 'position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; border: 0px none;'), we_html_element::htmlIFrame('edheader', $this->frameset . '?pnt=edheader' . ($sid !== false ? '&sid=' . $sid : '&home=1') . $extraUrlParams, 'position: absolute; top: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;', 'width: 100%; overflow: hidden') .
 				we_html_element::htmlIFrame('edbody', $this->frameset . '?pnt=edbody' . ($sid !== false ? '&sid=' . $sid : '&home=1') . $extraUrlParams, 'position: absolute; top: 40px; bottom: 40px; left: 0px; right: 0px; overflow: auto;', 'border:0px;width:100%;height:100%;overflow: auto;') .
 				we_html_element::htmlIFrame('edfooter', $this->frameset . '?pnt=edfooter' . ($sid !== false ? '&sid=' . $sid : '&home=1') . $extraUrlParams, 'position: absolute; bottom: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;', 'width: 100%; overflow: hidden')
@@ -240,7 +240,7 @@ class weModuleFrames{
 	}
 
 	function getHTMLEditorFooter($btn_cmd, $extraHead = ''){
-		if(weRequest('bool', 'home')){
+		if(we_base_request::_(we_base_request::BOOL, 'home')){
 			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#EFf0EF"), ""));
 		}
 
@@ -304,10 +304,10 @@ class weModuleFrames{
 	}
 
 	function getHTMLExitQuestion(){
-		if(($dp = weRequest('raw', 'delayParam'))){
+		if(($dp = we_base_request::_(we_base_request::RAW, 'delayParam'))){
 			$_frame = 'opener.' . $this->topFrame;
 			$_yes = $_frame . '.hot=0;' . $_frame . '.we_cmd("module_' . $this->module . '_save");self.close();';
-			$_no = $_frame . '.hot=0;' . $_frame . '.we_cmd("' . weRequest('raw', 'delayCmd') . '","' . $dp . '");self.close();';
+			$_no = $_frame . '.hot=0;' . $_frame . '.we_cmd("' . we_base_request::_(we_base_request::RAW, 'delayCmd') . '","' . $dp . '");self.close();';
 			$_cancel = 'self.close();';
 
 			return we_html_tools::getHtmlTop() .

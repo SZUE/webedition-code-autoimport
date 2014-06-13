@@ -90,7 +90,7 @@ class we_navigation_frames extends weModuleFrames{
 		}
 
 		$pid = $_REQUEST["pid"];
-		$offset = weRequest('int', "offset", 0);
+		$offset = we_base_request::_(we_base_request::INT, "offset", 0);
 
 		$_loader = new we_navigation_treeDataSource($this->TreeSource);
 
@@ -231,7 +231,7 @@ function setTab(tab) {
 
 	function getHTMLEditorBody(){
 
-		$hiddens = array('cmd' => 'tool_' . $this->toolName . '_edit', 'pnt' => 'edbody', 'vernr' => weRequest('int', 'vernr', 0));
+		$hiddens = array('cmd' => 'tool_' . $this->toolName . '_edit', 'pnt' => 'edbody', 'vernr' => we_base_request::_(we_base_request::INT, 'vernr', 0));
 
 		if(isset($_REQUEST["home"]) && $_REQUEST["home"]){
 			$hiddens['cmd'] = 'home';
@@ -275,7 +275,7 @@ function setTab(tab) {
 
 		$_parentid = (isset($this->Model->Text) && $this->Model->Text && isset($this->Model->ID) && $this->Model->ID ?
 				f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->Model->ID), 'ParentID', $this->db) :
-				(weRequest('bool', 'presetFolder') ?
+				(we_base_request::_(we_base_request::BOOL, 'presetFolder') ?
 					$this->Model->ParentID :
 					(($wq = we_navigation_navigation::getWSQuery()) ?
 						f('SELECT ID FROM ' . NAVIGATION_TABLE . ' WHERE IsFolder=1 ' . $wq . ' ORDER BY Path LIMIT 1', 'ID', $this->db) :
@@ -355,8 +355,8 @@ function setTab(tab) {
 		}
 
 		$_selection_block = $this->Model->Depended == 1 ? $this->getHTMLDependedProfile() : $this->View->htmlHidden(
-				'CategoriesControl', weRequest('int', 'CategoriesCount', 0)) . $this->View->htmlHidden(
-				'SortControl', weRequest('int', 'SortCount', 0)) . $this->View->htmlHidden(
+				'CategoriesControl', we_base_request::_(we_base_request::INT, 'CategoriesCount', 0)) . $this->View->htmlHidden(
+				'SortControl', we_base_request::_(we_base_request::INT, 'SortCount', 0)) . $this->View->htmlHidden(
 				'CategoriesCount', (isset($this->Model->Categories) ? count($this->Model->Categories) : 0)) . $this->View->htmlHidden(
 				'SortCount', (isset($this->Model->Sort) ? count($this->Model->Sort) : 0)) .
 			'<div style="display: block;">' .
@@ -758,8 +758,8 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 
 		$_seltype[we_navigation_navigation::STPYE_CATEGORY] = g_l('navigation', '[categories]');
 
-		$_selection_block = $this->View->htmlHidden('CategoriesControl', weRequest('int', 'CategoriesCount', 0)) .
-			$this->View->htmlHidden('SortControl', weRequest('int', 'SortCount', 0)) .
+		$_selection_block = $this->View->htmlHidden('CategoriesControl', we_base_request::_(we_base_request::INT, 'CategoriesCount', 0)) .
+			$this->View->htmlHidden('SortControl', we_base_request::_(we_base_request::INT, 'SortCount', 0)) .
 			$this->View->htmlHidden('CategoriesCount', (isset($this->Model->Categories) ? count($this->Model->Categories) : '0')) .
 			$this->View->htmlHidden('SortCount', (isset($this->Model->Sort) ? count($this->Model->Sort) : '0')) .
 			'<div style="display: block;">
@@ -1038,8 +1038,8 @@ function onSelectionClassChangeJS(value) {
 			'cmd' => '',
 			'pnt' => 'edbody',
 			'tabnr' => $tabNr,
-			'vernr' => weRequest('int', 'vernr', 0),
-			'delayParam' => weRequest('raw', 'delayParam', '')
+			'vernr' => we_base_request::_(we_base_request::INT, 'vernr', 0),
+			'delayParam' => we_base_request::_(we_base_request::RAW, 'delayParam', '')
 		);
 
 		$yuiSuggest = & weSuggest::getInstance();
@@ -1054,7 +1054,7 @@ function onSelectionClassChangeJS(value) {
 					), $this->View->getCommonHiddens($hiddens) .
 					$this->View->htmlHidden(
 						'IsFolder', (isset($this->Model->IsFolder) ? $this->Model->IsFolder : 0)) . $this->View->htmlHidden(
-						'presetFolder', weRequest('raw', 'presetFolder', 0)) .
+						'presetFolder', we_base_request::_(we_base_request::RAW, 'presetFolder', 0)) .
 					we_html_multiIconBox::getHTML(
 						'', '100%', $this->getHTMLGeneral(), 30, '', -1, '', '', false, $preselect) .
 					($this->Model->IsFolder ? we_html_multiIconBox::getHTML(

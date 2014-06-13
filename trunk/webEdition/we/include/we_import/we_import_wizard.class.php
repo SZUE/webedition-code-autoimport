@@ -158,7 +158,7 @@ class we_import_wizard extends we_import_wizardBase{
 			}
 		}
 
-		$cmd = weRequest('raw', 'we_cmd', array('import', $defaultVal));
+		$cmd = we_base_request::_(we_base_request::RAW, 'we_cmd', array('import', $defaultVal));
 		$expat = (function_exists('xml_parser_create')) ? true : false;
 
 		$tblFiles = new we_html_table(array('cellpadding' => 0, 'cellspacing' => 0, 'border' => 0), 3, 1);
@@ -261,7 +261,7 @@ class we_import_wizard extends we_import_wizardBase{
 	}
 
 	function getWXMLImportStep1(){
-		$v = weRequest('raw', 'v', array());
+		$v = we_base_request::_(we_base_request::RAW, 'v', array());
 		$doc_root = get_def_ws();
 		$tmpl_root = get_def_ws(TEMPLATES_TABLE);
 		$nav_root = get_def_ws(NAVIGATION_TABLE);
@@ -621,7 +621,7 @@ handle_event("previous");');
 
 
 			$parts[] = array(
-				"headline" => g_l('import', '[handle_document_options]') . '<br>' . g_l('import', '[handle_template_options]'),
+				"headline" => g_l('import', '[handle_document_options]') . '<br/>' . g_l('import', '[handle_template_options]'),
 				"html" => $tbl_extra->getHTML(),
 				"space" => 120
 			);
@@ -633,7 +633,7 @@ handle_event("previous");');
 				$tbl_extra->setCol(1, 0, null, we_html_forms::checkboxWithHidden((isset($v["import_classes"]) && $v["import_classes"]) ? true : false, "v[import_classes]", g_l('import', "[import_classes]")));
 
 				$parts[] = array(
-					"headline" => g_l('import', '[handle_object_options]') . '<br>' . g_l('import', '[handle_class_options]'),
+					"headline" => g_l('import', '[handle_object_options]') . '<br/>' . g_l('import', '[handle_class_options]'),
 					"html" => $tbl_extra->getHTML(),
 					"space" => 120
 				);
@@ -675,7 +675,7 @@ handle_event("previous");');
 			$xml_encoding = we_xml_parser::getEncoding($_import_file);
 
 			$parts[] = array(
-				"headline" => g_l('import', "[handle_doctype_options]") . '<br>' . g_l('import', "[handle_category_options]"),
+				"headline" => g_l('import', "[handle_doctype_options]") . '<br/>' . g_l('import', "[handle_category_options]"),
 				"html" => '<input type="hidden" name="v[import_XMLencoding]" value="' . $xml_encoding . '" />' . $tbl_extra->getHTML(),
 				"space" => 120
 			);
@@ -807,9 +807,9 @@ function handle_event(evt) {
 	function getGXMLImportStep1(){
 		global $DB_WE;
 
-		$v = weRequest('raw', 'v', array());
+		$v = we_base_request::_(we_base_request::RAW, 'v', array());
 
-		if(isset($v['docType']) && $v['docType'] != -1 && weRequest('bool', 'doctypeChanged')){
+		if(isset($v['docType']) && $v['docType'] != -1 && we_base_request::_(we_base_request::BOOL, 'doctypeChanged')){
 			$values = getHash('SELECT * FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($v["docType"]), $GLOBALS['DB_WE']);
 			$v['store_to_id'] = $values['ParentID'];
 			$v['store_to_path'] = id_to_path($v['store_to_id']);
@@ -1340,9 +1340,9 @@ function handle_event(evt) {
 		if(isset($v['att_pfx'])){
 			$v['att_pfx'] = base64_encode($v['att_pfx']);
 		}
-		$records = weRequest('raw', 'records', array());
-		$we_flds = weRequest('raw', 'we_flds', array());
-		$attrs = weRequest('raw', 'attrs', array());
+		$records = we_base_request::_(we_base_request::RAW, 'records', array());
+		$we_flds = we_base_request::_(we_base_request::RAW, 'we_flds', array());
+		$attrs = we_base_request::_(we_base_request::RAW, 'attrs', array());
 		foreach($attrs as $name => $value){
 			$attrs[$name] = base64_encode($value);
 		}
@@ -1503,7 +1503,7 @@ function handle_event(evt) {
 
 		// Associated prefix selector.
 		$asocPfx = new we_html_table(array('cellpadding' => 0, 'cellspacing' => 0, 'border' => 0), 1, 1);
-		$asocPfx->setCol(0, 0, array('class' => 'defaultfont'), g_l('import', '[pfx]') . '<br>' . we_html_tools::getPixel(1, 2) . '<br>' .
+		$asocPfx->setCol(0, 0, array('class' => 'defaultfont'), g_l('import', '[pfx]') . '<br/>' . we_html_tools::getPixel(1, 2) . '<br/>' .
 			we_html_tools::htmlTextInput('v[asoc_prefix]', 30, (isset($v['asoc_prefix']) ? $v['asoc_prefix'] : (($v['import_type'] == 'documents') ? g_l('import', '[pfx_doc]') : g_l('import', '[pfx_obj]'))), 255, "onclick=\"self.document.forms['we_form'].elements['v[rdo_filename]'][0].checked=true;\"", "text", 150));
 
 		// Assigned record or attribute field selectors.
@@ -1527,9 +1527,9 @@ function handle_event(evt) {
 		$attPfxSelect = we_html_tools::htmlTextInput('v[att_pfx]', 30, (isset($v['att_pfx']) ? base64_decode($v['att_pfx']) : ''), 255, "onclick=\"self.document.forms['we_form'].elements['v[rdo_filename]'][1].checked=true;\"", "text", 100);
 
 		$asgndFld = new we_html_table(array('cellpadding' => 0, 'cellspacing' => 0, 'border' => 0), 1, 3);
-		$asgndFld->setCol(0, 0, array('class' => 'defaultfont'), g_l('import', '[rcd_fld]') . '<br>' . we_html_tools::getPixel(1, 2) . '<br>' . $rcdPfxSelect->getHTML());
+		$asgndFld->setCol(0, 0, array('class' => 'defaultfont'), g_l('import', '[rcd_fld]') . '<br/>' . we_html_tools::getPixel(1, 2) . '<br/>' . $rcdPfxSelect->getHTML());
 		$asgndFld->setCol(0, 1, array('width' => 20), '');
-		$asgndFld->setCol(0, 2, array('class' => 'defaultfont'), g_l('import', '[attributes]') . '<br>' . we_html_tools::getPixel(1, 2) . '<br>' . $attPfxSelect);
+		$asgndFld->setCol(0, 2, array('class' => 'defaultfont'), g_l('import', '[attributes]') . '<br/>' . we_html_tools::getPixel(1, 2) . '<br/>' . $attPfxSelect);
 
 		// Filename selector.
 		$fn = new we_html_table(array('cellpadding' => 0, 'cellspacing' => 0, 'border' => 0), 5, 2);
@@ -1543,7 +1543,7 @@ function handle_event(evt) {
 
 		$parts = array(
 			array(
-				'html' => we_html_tools::getPixel(1, 8) . '<br>' . we_html_tools::htmlDialogBorder3(510, 255, $rows, $th, 'defaultfont'),
+				'html' => we_html_tools::getPixel(1, 8) . '<br/>' . we_html_tools::htmlDialogBorder3(510, 255, $rows, $th, 'defaultfont'),
 				'space' => 0)
 		);
 		if(!empty($dateFields)){
@@ -1724,11 +1724,11 @@ function handle_event(evt) {
 		$rowDef = we_html_forms::checkbox('', (isset($v['csv_fieldnames']) ? $v['csv_fieldnames'] : true), 'checkbox_fieldnames', g_l('import', '[contains]'), true, 'defaultfont', "this.form.elements['v[csv_fieldnames]'].value=this.checked ? 1 : 0;");
 
 		$csvSettings = new we_html_table(array('cellpadding' => 0, 'cellspacing' => 0, 'border' => 0), 7, 1);
-		$csvSettings->setCol(0, 0, array('class' => 'defaultfont'), g_l('import', '[file_format]') . '<br>' . we_html_tools::getPixel(1, 1) . '<br>' . $charSet->getHtml());
+		$csvSettings->setCol(0, 0, array('class' => 'defaultfont'), g_l('import', '[file_format]') . '<br/>' . we_html_tools::getPixel(1, 1) . '<br/>' . $charSet->getHtml());
 		$csvSettings->setCol(1, 0, array(), we_html_tools::getPixel(1, 6));
-		$csvSettings->setCol(2, 0, array('class' => 'defaultfont'), g_l('import', '[field_delimiter]') . '<br>' . we_html_tools::getPixel(1, 1) . '<br>' . $iptDel . ' ' . $fldDel->getHtml());
+		$csvSettings->setCol(2, 0, array('class' => 'defaultfont'), g_l('import', '[field_delimiter]') . '<br/>' . we_html_tools::getPixel(1, 1) . '<br/>' . $iptDel . ' ' . $fldDel->getHtml());
 		$csvSettings->setCol(3, 0, array(), we_html_tools::getPixel(1, 6));
-		$csvSettings->setCol(4, 0, array('class' => 'defaultfont'), g_l('import', '[text_delimiter]') . '<br>' . we_html_tools::getPixel(1, 1) . '<br>' . $txtDel->getHtml());
+		$csvSettings->setCol(4, 0, array('class' => 'defaultfont'), g_l('import', '[text_delimiter]') . '<br/>' . we_html_tools::getPixel(1, 1) . '<br/>' . $txtDel->getHtml());
 		$csvSettings->setCol(5, 0, array(), we_html_tools::getPixel(1, 6));
 		$csvSettings->setCol(6, 0, array(), $rowDef);
 
@@ -2204,9 +2204,9 @@ HTS;
 
 		$v = $_REQUEST["v"];
 
-		$records = weRequest('raw', "records", array());
-		$we_flds = weRequest('raw', "we_flds", array());
-		$attrs = weRequest('raw', "attrs", array());
+		$records = we_base_request::_(we_base_request::RAW, "records", array());
+		$we_flds = we_base_request::_(we_base_request::RAW, "we_flds", array());
+		$attrs = we_base_request::_(we_base_request::RAW, "attrs", array());
 
 		$csvFile = $_SERVER['DOCUMENT_ROOT'] . $v["import_from"];
 		if(file_exists($csvFile) && is_readable($csvFile)){
@@ -2390,7 +2390,7 @@ function handle_event(evt) {
 
 		// Associated prefix selector.
 		$asocPfx = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 1);
-		$asocPfx->setCol(0, 0, array("class" => "defaultfont"), g_l('import', "[pfx]") . "<br>" . we_html_tools::getPixel(1, 2) . "<br>" .
+		$asocPfx->setCol(0, 0, array("class" => "defaultfont"), g_l('import', "[pfx]") . "<br/>" . we_html_tools::getPixel(1, 2) . "<br/>" .
 			we_html_tools::htmlTextInput("v[asoc_prefix]", 30, (isset($v["asoc_prefix"]) ? $v["asoc_prefix"] : (($v["import_type"] == "documents") ? g_l('import', "[pfx_doc]") : g_l('import', "[pfx_obj]"))), 255, "onclick=\"self.document.forms['we_form'].elements['v[rdo_filename]'][0].checked=true;\"", "text", 150));
 
 		// Assigned record or attribute field selectors.
@@ -2411,7 +2411,7 @@ function handle_event(evt) {
 		}
 
 		$asgndFld = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 1);
-		$asgndFld->setCol(0, 0, array("class" => "defaultfont"), g_l('import', "[rcd_fld]") . "<br>" . we_html_tools::getPixel(1, 2) . "<br>" . $rcdPfxSelect->getHTML());
+		$asgndFld->setCol(0, 0, array("class" => "defaultfont"), g_l('import', "[rcd_fld]") . "<br/>" . we_html_tools::getPixel(1, 2) . "<br/>" . $rcdPfxSelect->getHTML());
 
 		// Filename selector.
 		$fn = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 5, 2);
@@ -2425,7 +2425,7 @@ function handle_event(evt) {
 
 		$parts = array(
 			array(
-				"html" => we_html_tools::getPixel(1, 8) . "<br>" . we_html_tools::htmlDialogBorder3(510, 255, $rows, $th, "defaultfont"),
+				"html" => we_html_tools::getPixel(1, 8) . "<br/>" . we_html_tools::htmlDialogBorder3(510, 255, $rows, $th, "defaultfont"),
 				"space" => 0)
 		);
 

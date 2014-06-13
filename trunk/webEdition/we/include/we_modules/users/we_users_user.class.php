@@ -745,7 +745,7 @@ _multiEditorreload = true;";
 							$_SESSION['prefs']['seem_start_type'] = 'weapp';
 							break;
 						default:
-							$_SESSION['prefs']['seem_start_file'] = weRequest('int', 'seem_start_document', 0);
+							$_SESSION['prefs']['seem_start_file'] = we_base_request::_(we_base_request::INT, 'seem_start_document', 0);
 							$_SESSION['prefs']['seem_start_type'] = 'document';
 							break;
 					}
@@ -756,7 +756,7 @@ _multiEditorreload = true;";
 						$_SESSION['prefs']['weWidth'] = 0;
 						$_SESSION['prefs']['weHeight'] = 0;
 						$_SESSION['prefs']['sizeOpt'] = 0;
-					} else if(($settingvalue == 1) && (weRequest('int', 'weWidth')) && weRequest('int', 'weHeight')){
+					} else if(($settingvalue == 1) && (we_base_request::_(we_base_request::INT, 'weWidth')) && we_base_request::_(we_base_request::INT, 'weHeight')){
 						$_SESSION['prefs']['sizeOpt'] = 1;
 					}
 					break;
@@ -772,7 +772,7 @@ _multiEditorreload = true;";
 						$_SESSION['prefs']['weWidth'] = $settingvalue;
 
 						if($_generate_java_script){
-							$height = weRequest('int', 'weHeight');
+							$height = we_base_request::_(we_base_request::INT, 'weHeight');
 							$save_javascript .= '
 								top.opener.top.resizeTo(' . $settingvalue . ', ' . $height . ');
 								top.opener.top.moveTo((screen.width / 2) - ' . ($settingvalue / 2) . ', (screen.height / 2) - ' . ($height / 2) . ');';
@@ -797,7 +797,7 @@ _multiEditorreload = true;";
 						$_SESSION['prefs']['editorFontname'] = 'none';
 						$_SESSION['prefs']['editorFontsize'] = -1;
 						$_SESSION['prefs']['editorFont'] = 0;
-					} else if(($settingvalue == 1) && weRequest('string', 'editorFontname') && weRequest('int', 'editorFontsize')){
+					} else if(($settingvalue == 1) && we_base_request::_(we_base_request::STRING, 'editorFontname') && we_base_request::_(we_base_request::INT, 'editorFontsize')){
 						$_SESSION['prefs']['editorFont'] = 1;
 					}
 
@@ -839,7 +839,7 @@ _multiEditorreload = true;";
 						$_SESSION['prefs']['editorWidth'] = 0;
 						$_SESSION['prefs']['editorHeight'] = 0;
 						$_SESSION['prefs']['editorSizeOpt'] = 0;
-					} else if(($settingvalue == 1) && weRequest('int', 'editorWidth') && weRequest('int', 'editorHeight')){
+					} else if(($settingvalue == 1) && we_base_request::_(we_base_request::INT, 'editorWidth') && we_base_request::_(we_base_request::INT, 'editorHeight')){
 						$_SESSION['prefs']['editorSizeOpt'] = 1;
 					}
 
@@ -950,37 +950,37 @@ _multiEditorreload = true;";
 		switch($tab){
 			case self::TAB_DATA:
 				foreach($this->persistent_slots as $pkey => $pval){
-					if(($val = weRequest('raw', $this->Name . '_' . $pval)) !== false){
+					if(($val = we_base_request::_(we_base_request::RAW, $this->Name . '_' . $pval)) !== false){
 						$this->$pval = $val;
 					}
 				}
 
 				if($this->Type == self::TYPE_ALIAS){
-					$this->ParentPerms = weRequest('bool', $this->Name . '_ParentPerms');
-					$this->ParentWs = weRequest('bool', $this->Name . '_ParentWs');
-					$this->ParentWst = weRequest('bool', $this->Name . '_ParentWst');
-					$this->ParentWso = weRequest('bool', $this->Name . '_ParentWso');
-					$this->ParentWsn = weRequest('bool', $this->Name . '_ParentWsn');
-					$this->ParentWsnl = weRequest('bool', $this->Name . '_ParentWsnl');
-					$this->ParentWsCust = weRequest('bool', $this->Name . '_ParentWsCust');
+					$this->ParentPerms = we_base_request::_(we_base_request::BOOL, $this->Name . '_ParentPerms');
+					$this->ParentWs = we_base_request::_(we_base_request::BOOL, $this->Name . '_ParentWs');
+					$this->ParentWst = we_base_request::_(we_base_request::BOOL, $this->Name . '_ParentWst');
+					$this->ParentWso = we_base_request::_(we_base_request::BOOL, $this->Name . '_ParentWso');
+					$this->ParentWsn = we_base_request::_(we_base_request::BOOL, $this->Name . '_ParentWsn');
+					$this->ParentWsnl = we_base_request::_(we_base_request::BOOL, $this->Name . '_ParentWsnl');
+					$this->ParentWsCust = we_base_request::_(we_base_request::BOOL, $this->Name . '_ParentWsCust');
 				}
 				break;
 			case self::TAB_PERMISSION:
 				foreach($this->permissions_slots as $pkey => $pval){
 					foreach($pval as $k => $v){
-						$this->setPermission($k, weRequest('bool', $this->Name . '_Permission_' . $k));
+						$this->setPermission($k, we_base_request::_(we_base_request::BOOL, $this->Name . '_Permission_' . $k));
 					}
 				}
-				$this->ParentPerms = weRequest('bool', $this->Name . '_ParentPerms');
+				$this->ParentPerms = we_base_request::_(we_base_request::BOOL, $this->Name . '_ParentPerms');
 				break;
 			case self::TAB_WORKSPACES:
 				foreach($this->workspaces as $k => $v){
 					$obj = $this->Name . '_Workspace_' . $k;
-					if(($val = weRequest('raw', $obj, false, 'id')) !== false){
+					if(($val = we_base_request::_(we_base_request::RAW, $obj, false, 'id')) !== false){
 						$this->workspaces[$k] = $val;
 					}
 					$obj = $this->Name . '_Workspace_' . $k . '_AddDel';
-					if(($val = weRequest('raw', $obj, '')) != ''){
+					if(($val = we_base_request::_(we_base_request::RAW, $obj, '')) != ''){
 						if($val == 'new'){//add
 							$this->workspaces[$k][] = 0;
 						} else {
@@ -1003,12 +1003,12 @@ _multiEditorreload = true;";
 					$this->workspaces[CUSTOMER_TABLE] = we_customer_abstractFilter::getFilterFromRequest();
 				}
 
-				$this->ParentWs = weRequest('bool', $this->Name . '_ParentWs');
-				$this->ParentWst = weRequest('bool', $this->Name . '_ParentWst');
-				$this->ParentWso = weRequest('bool', $this->Name . '_ParentWso');
-				$this->ParentWsn = weRequest('bool', $this->Name . '_ParentWsn');
-				$this->ParentWsnl = weRequest('bool', $this->Name . '_ParentWsnl');
-				$this->ParentWsCust = weRequest('bool', $this->Name . '_ParentWsCust');
+				$this->ParentWs = we_base_request::_(we_base_request::BOOL, $this->Name . '_ParentWs');
+				$this->ParentWst = we_base_request::_(we_base_request::BOOL, $this->Name . '_ParentWst');
+				$this->ParentWso = we_base_request::_(we_base_request::BOOL, $this->Name . '_ParentWso');
+				$this->ParentWsn = we_base_request::_(we_base_request::BOOL, $this->Name . '_ParentWsn');
+				$this->ParentWsnl = we_base_request::_(we_base_request::BOOL, $this->Name . '_ParentWsnl');
+				$this->ParentWsCust = we_base_request::_(we_base_request::BOOL, $this->Name . '_ParentWsCust');
 				break;
 			case self::TAB_SETTINGS:
 				foreach($this->preference_slots as $val){
@@ -1021,9 +1021,9 @@ _multiEditorreload = true;";
 						default:
 							$obj = $this->Name . '_Preference_' . $val;
 					}
-					$this->setPreference($val, weRequest('raw', $obj, 0));
+					$this->setPreference($val, we_base_request::_(we_base_request::RAW, $obj, 0));
 				}
-				switch(weRequest('string', 'seem_start_type')){
+				switch(we_base_request::_(we_base_request::STRING, 'seem_start_type')){
 					case 'cockpit':
 						$this->setPreference('seem_start_file', 0);
 						$this->setPreference('seem_start_type', 'cockpit');
@@ -1297,7 +1297,7 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 			}
 		}
 
-		$content.='</select><br/>' . we_html_tools::getPixel(5, 10) . '<br>' . we_html_button::create_button("edit", "javascript:we_cmd('display_user',document.we_form." . $this->Name . "_Users.value)", true, 0, 0, "", "", true, false);
+		$content.='</select><br/>' . we_html_tools::getPixel(5, 10) . '<br/>' . we_html_button::create_button("edit", "javascript:we_cmd('display_user',document.we_form." . $this->Name . "_Users.value)", true, 0, 0, "", "", true, false);
 
 		$parts = array(
 			array(
@@ -1627,13 +1627,13 @@ function delElement(elvalues,elem) {
 
 				switch($k){
 					case (defined('NEWSLETTER_TABLE') ? NEWSLETTER_TABLE : 'NEWSLETTER_TABLE'):
-						$button = we_html_button::create_button('select', "javascript:we_cmd('openNewsletterDirselector',document.getElementsByName('" . $obj_names . "[id][" . $key . "]')[0].value,'document.getElementsByName(\'" . $obj_names . "[id][" . $key . "]\')[0].value','document.getElementsByName(\'" . $obj_names . "[Text][" . $key . "]\')[0].value','','" . session_id() . "','" . weRequest('int', "rootDirID", 0) . "' )");
+						$button = we_html_button::create_button('select', "javascript:we_cmd('openNewsletterDirselector',document.getElementsByName('" . $obj_names . "[id][" . $key . "]')[0].value,'document.getElementsByName(\'" . $obj_names . "[id][" . $key . "]\')[0].value','document.getElementsByName(\'" . $obj_names . "[Text][" . $key . "]\')[0].value','','" . session_id() . "','" . we_base_request::_(we_base_request::INT, "rootDirID", 0) . "' )");
 						break;
 					case NAVIGATION_TABLE:
-						$button = we_html_button::create_button('select', "javascript:we_cmd('openNavigationDirselector',document.getElementsByName('" . $obj_names . "[id][" . $key . "]')[0].value,'document.getElementsByName(\'" . $obj_names . "[id][" . $key . "]\')[0].value','document.getElementsByName(\'" . $obj_names . "[Text][" . $key . "]\')[0].value','','" . session_id() . "','" . weRequest('int', "rootDirID", 0) . "' )");
+						$button = we_html_button::create_button('select', "javascript:we_cmd('openNavigationDirselector',document.getElementsByName('" . $obj_names . "[id][" . $key . "]')[0].value,'document.getElementsByName(\'" . $obj_names . "[id][" . $key . "]\')[0].value','document.getElementsByName(\'" . $obj_names . "[Text][" . $key . "]\')[0].value','','" . session_id() . "','" . we_base_request::_(we_base_request::INT, "rootDirID", 0) . "' )");
 						break;
 					default:
-						$button = we_html_button::create_button('select', "javascript:we_cmd('openDirselector',document.getElementsByName('" . $obj_names . "[id][" . $key . "]')[0].value,'" . $k . "','document.getElementsByName(\'" . $obj_names . "[id][" . $key . "]\')[0].value','document.getElementsByName(\'" . $obj_names . "[Text][" . $key . "]\')[0].value','','" . session_id() . "','" . weRequest('int', "rootDirID", 0) . "' )");
+						$button = we_html_button::create_button('select', "javascript:we_cmd('openDirselector',document.getElementsByName('" . $obj_names . "[id][" . $key . "]')[0].value,'" . $k . "','document.getElementsByName(\'" . $obj_names . "[id][" . $key . "]\')[0].value','document.getElementsByName(\'" . $obj_names . "[Text][" . $key . "]\')[0].value','','" . session_id() . "','" . we_base_request::_(we_base_request::INT, "rootDirID", 0) . "' )");
 				}
 
 				$yuiSuggest->setAcId('WS' . $k . $key);
@@ -2033,7 +2033,7 @@ function show_seem_chooser(val) {
 			$_file_tree_count->selectOption($_tree_count);
 		}
 
-		$_settings[] = array('headline' => g_l('prefs', '[tree_title]'), 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[tree_count_description]'), we_html_tools::TYPE_INFO) . '<br>' . $_file_tree_count->getHtml(), 'space' => 200);
+		$_settings[] = array('headline' => g_l('prefs', '[tree_title]'), 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[tree_count_description]'), we_html_tools::TYPE_INFO) . '<br/>' . $_file_tree_count->getHtml(), 'space' => 200);
 
 		// WINDOW DIMENSIONS
 

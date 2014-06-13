@@ -122,7 +122,7 @@ class we_workflow_frames extends weModuleFrames {
 						}
 						fr.write("<IMG SRC=<?php print TREE_IMAGE_DIR; ?>icons/" + nf[ai].icon + " WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 alt=\"<?php #print g_l('tree',"[edit_statustext]");         ?>\">");
 						fr.write("</a>");
-						fr.write("&nbsp;<a name='_" + nf[ai].name + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" + (parseInt(nf[ai].published) ? "" : "") + nf[ai].text + (parseInt(nf[ai].published) ? "" : "") + "</A>&nbsp;&nbsp;<BR>\n");
+						fr.write("&nbsp;<a name='_" + nf[ai].name + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" + (parseInt(nf[ai].published) ? "" : "") + nf[ai].text + (parseInt(nf[ai].published) ? "" : "") + "</A>&nbsp;&nbsp;<br/>\n");
 					} else {
 						var newAst = zweigEintrag;
 
@@ -141,7 +141,7 @@ class we_workflow_frames extends weModuleFrames {
 						fr.write("<A name='_" + nf[ai].name + "' HREF=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">");
 						fr.write("&nbsp;<b>" + (!parseInt(nf[ai].published) ? "<font color=\"red\">" : "") + nf[ai].text + (parseInt(nf[ai].published) ? "</font>" : "") + "</b>");
 						fr.write("</a>");
-						fr.write("&nbsp;&nbsp;<BR>\n");
+						fr.write("&nbsp;&nbsp;<br/>\n");
 						if (nf[ai].offen) {
 							if (ai == nf.laenge) {
 								newAst = newAst + "<IMG SRC=<?php print TREE_IMAGE_DIR; ?>leer.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>";
@@ -356,9 +356,9 @@ class we_workflow_frames extends weModuleFrames {
 			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "F0EFF0"), ""));
 		}
 
-		$page = weRequest('int', "page", 0);
+		$page = we_base_request::_(we_base_request::INT, "page", 0);
 
-		$text = weRequest('raw', 'txt', g_l('modules_workflow', '[new_workflow]'));
+		$text = we_base_request::_(we_base_request::RAW, 'txt', g_l('modules_workflow', '[new_workflow]'));
 
 		$we_tabs = new we_tabs();
 

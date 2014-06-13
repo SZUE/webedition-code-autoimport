@@ -569,7 +569,7 @@ function we_tag_ifLastCol(){
 
 function we_tag_ifNew($attribs){
 	$type = weTag_getAttribute('type', $attribs);
-	return !weRequest('bool', 'we_edit' . ($type == 'object' ? 'Object' : 'Document') . '_ID');
+	return !we_base_request::_(we_base_request::BOOL, 'we_edit' . ($type == 'object' ? 'Object' : 'Document') . '_ID');
 }
 
 function we_tag_ifNotNew($attribs, $content){
@@ -730,7 +730,7 @@ function we_tag_pagelogger($attribs, $content){
 }
 
 function we_tag_ifReturnPage(){
-	return weRequest('bool', 'we_returnpage');
+	return we_base_request::_(we_base_request::BOOL, 'we_returnpage');
 }
 
 function we_tag_ifUserInputNotEmpty($attribs){

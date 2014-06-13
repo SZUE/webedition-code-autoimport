@@ -25,7 +25,7 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
-$_callback = weRequest('raw', 'callback');
+$_callback = we_base_request::_(we_base_request::RAW, 'callback');
 
 $js = we_html_element::jsElement('
 var wait_count = 0;

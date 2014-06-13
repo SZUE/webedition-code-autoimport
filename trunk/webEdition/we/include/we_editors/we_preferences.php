@@ -38,7 +38,7 @@ define('secondsYear', 31449600);
 $save_javascript = '';
 $GLOBALS['editor_reloaded'] = false;
 $email_saved = true;
-$tabname = weRequest('string', 'tabname', 'setting_ui');
+$tabname = we_base_request::_(we_base_request::STRING, 'tabname', 'setting_ui');
 
 /**
  * This function returns the HTML code of a dialog.
@@ -159,11 +159,11 @@ function remember_value($settingvalue, $settingname, $comment = ''){
 		case 'seem_start_type':
 			switch($settingvalue){
 				case 'document':
-					$tmp = $_SESSION['prefs']['seem_start_file'] = weRequest('int', 'seem_start_document');
+					$tmp = $_SESSION['prefs']['seem_start_file'] = we_base_request::_(we_base_request::INT, 'seem_start_document');
 					$_SESSION['prefs'][$settingname] = ($tmp ? $settingvalue : 'cockpit');
 					break;
 				case 'object':
-					$tmp = $_SESSION['prefs']['seem_start_file'] = weRequest('int', 'seem_start_object');
+					$tmp = $_SESSION['prefs']['seem_start_file'] = we_base_request::_(we_base_request::INT, 'seem_start_object');
 					$_SESSION['prefs'][$settingname] = ($tmp ? $settingvalue : 'cockpit');
 					break;
 				default:
@@ -548,15 +548,15 @@ function save_all_values(){
 			switch($name){
 				case 'global'://no settings in session
 					if(we_base_preferences::userIsAllowed($key)){
-						remember_value(weRequest('raw', 'newconf', null, $key), $key, $default[0]);
+						remember_value(we_base_request::_(we_base_request::RAW, 'newconf', null, $key), $key, $default[0]);
 					}
 					break;
 				case 'user':
-					remember_value(weRequest('raw', 'newconf', null, $key), $key);
+					remember_value(we_base_request::_(we_base_request::RAW, 'newconf', null, $key), $key);
 					break;
 				default:
 					if(we_base_preferences::userIsAllowed($key)){
-						remember_value(weRequest('raw', 'newconf', null, $key), $key);
+						remember_value(we_base_request::_(we_base_request::RAW, 'newconf', null, $key), $key);
 					}
 					break;
 			}
@@ -651,7 +651,7 @@ function build_dialog($selected_setting = 'ui'){
 </table>
 </div>';
 				// Build dialog
-				$_settings[] = array('headline' => g_l('prefs', '[choose_language]'), 'html' => $_languages->getHtml() . '<br><br>' . $langNote, 'space' => 200, 'noline' => 1);
+				$_settings[] = array('headline' => g_l('prefs', '[choose_language]'), 'html' => $_languages->getHtml() . '<br/><br/>' . $langNote, 'space' => 200, 'noline' => 1);
 			} else { // Just one Language Installed, no select box needed
 				foreach($_language as $key => $value){
 					$_languages = $value;
@@ -666,7 +666,7 @@ function build_dialog($selected_setting = 'ui'){
 				$BackendCharset->addOption($char, $char);
 			}
 			$BackendCharset->selectOption(get_value('BackendCharset'));
-			$_settings[] = array('headline' => g_l('prefs', '[choose_backendcharset]'), 'html' => $BackendCharset->getHtml() . '<br><br>' . $langNote, 'space' => 200);
+			$_settings[] = array('headline' => g_l('prefs', '[choose_backendcharset]'), 'html' => $BackendCharset->getHtml() . '<br/><br/>' . $langNote, 'space' => 200);
 
 
 			// DEFAULT CHARSET
@@ -1485,7 +1485,7 @@ function build_dialog($selected_setting = 'ui'){
 			}
 			$_static_html_extensions->selectOption(get_value('DEFAULT_HTML_EXT'));
 
-			$_html_extensions_html = g_l('prefs', '[html]') . '<br>' . $_static_html_extensions->getHtml();
+			$_html_extensions_html = g_l('prefs', '[html]') . '<br/>' . $_static_html_extensions->getHtml();
 
 			$_settings = array(
 				array('headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[extensions_information]'), we_html_tools::TYPE_INFO, 450, false), 'space' => 0),
@@ -3127,7 +3127,7 @@ if(isset($_REQUEST['save_settings']) && $_REQUEST['save_settings'] == 'true'){
 	$acQuery = new we_selector_query();
 
 	// check seemode start document | object
-	switch(weRequest('string', 'newconf', '', 'seem_start_type')){
+	switch(we_base_request::_(we_base_request::STRING, 'newconf', '', 'seem_start_type')){
 		case 'document':
 			if(empty($_REQUEST['seem_start_document'])){
 				$acError = true;

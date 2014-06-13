@@ -62,24 +62,24 @@ class we_import_files{
 			$_REQUEST['categories'] = makeCSVFromArray($_cats);
 		}
 
-		$this->categories = weRequest('raw', "categories", $this->categories);
-		$this->importToID = weRequest('int', "importToID", $this->importToID);
-		$this->sameName = weRequest('raw', "sameName", $this->sameName);
-		$this->importMetadata = weRequest('raw', "importMetadata", $this->importMetadata);
-		$this->step = weRequest('int', "step", $this->step);
-		$this->cmd = weRequest('raw', "cmd", $this->cmd);
-		$this->thumbs = weRequest('raw', "thumbs", $this->thumbs);
-		$this->width = weRequest('int', "width", $this->width);
-		$this->height = weRequest('int', "height", $this->height);
-		$this->widthSelect = weRequest('string', "widthSelect", $this->widthSelect);
-		$this->heightSelect = weRequest('string', "heightSelect", $this->heightSelect);
-		$this->keepRatio = weRequest('bool', "keepRatio", $this->keepRatio);
-		$this->quality = weRequest('int', "quality", $this->quality);
-		$this->degrees = weRequest('int', "degrees", $this->degrees);
-		$this->jsRequirementsOk = weRequest('bool', "jsRequirementsOk", false);
-		$this->partNum = weRequest('int', "wePartNum", 0);
-		$this->partCount = weRequest('int', "wePartCount", 0);
-		$this->fileNameTmp = weRequest('raw', "weFileNameTmp", '');
+		$this->categories = we_base_request::_(we_base_request::RAW, "categories", $this->categories);
+		$this->importToID = we_base_request::_(we_base_request::INT, "importToID", $this->importToID);
+		$this->sameName = we_base_request::_(we_base_request::RAW, "sameName", $this->sameName);
+		$this->importMetadata = we_base_request::_(we_base_request::RAW, "importMetadata", $this->importMetadata);
+		$this->step = we_base_request::_(we_base_request::INT, "step", $this->step);
+		$this->cmd = we_base_request::_(we_base_request::RAW, "cmd", $this->cmd);
+		$this->thumbs = we_base_request::_(we_base_request::RAW, "thumbs", $this->thumbs);
+		$this->width = we_base_request::_(we_base_request::INT, "width", $this->width);
+		$this->height = we_base_request::_(we_base_request::INT, "height", $this->height);
+		$this->widthSelect = we_base_request::_(we_base_request::STRING, "widthSelect", $this->widthSelect);
+		$this->heightSelect = we_base_request::_(we_base_request::STRING, "heightSelect", $this->heightSelect);
+		$this->keepRatio = we_base_request::_(we_base_request::BOOL, "keepRatio", $this->keepRatio);
+		$this->quality = we_base_request::_(we_base_request::INT, "quality", $this->quality);
+		$this->degrees = we_base_request::_(we_base_request::INT, "degrees", $this->degrees);
+		$this->jsRequirementsOk = we_base_request::_(we_base_request::BOOL, "jsRequirementsOk", false);
+		$this->partNum = we_base_request::_(we_base_request::INT, "wePartNum", 0);
+		$this->partCount = we_base_request::_(we_base_request::INT, "wePartCount", 0);
+		$this->fileNameTmp = we_base_request::_(we_base_request::RAW, "weFileNameTmp", '');
 		$this->maxUploadSizeB = $this->maxUploadSizeMB * 1048576;
 		$this->useJsUpload = !USE_JUPLOAD && $this->jsRequirementsOk && !$this->useLegacyUpload;
 	}
@@ -435,7 +435,7 @@ we_html_element::jsScript(JS_DIR . "windows.js");
 	}
 
 	function _getContent(){
-		$_funct = 'getStep' . weRequest('int', 'step', 1);
+		$_funct = 'getStep' . we_base_request::_(we_base_request::INT, 'step', 1);
 
 		return $this->$_funct();
 	}
@@ -511,7 +511,7 @@ we_html_element::jsScript(JS_DIR . "windows.js");
 
 			if(we_base_imageEdit::gd_version() > 0){
 				$GLOBALS['DB_WE']->query("SELECT ID,Name FROM " . THUMBNAILS_TABLE . " Order By Name");
-				$Thselect = g_l('importFiles', "[thumbnails]") . "<br>" . we_html_tools::getPixel(1, 3) . "<br>" . '<select class="defaultfont" name="thumbs_tmp" size="5" multiple style="width: 260px" onchange="this.form.thumbs.value=\'\';for(var i=0;i<this.options.length;i++){if(this.options[i].selected){this.form.thumbs.value +=(this.options[i].value+\',\');}};this.form.thumbs.value=this.form.thumbs.value.replace(/^(.+),$/,\'$1\');">' . "\n";
+				$Thselect = g_l('importFiles', "[thumbnails]") . "<br/>" . we_html_tools::getPixel(1, 3) . "<br/>" . '<select class="defaultfont" name="thumbs_tmp" size="5" multiple style="width: 260px" onchange="this.form.thumbs.value=\'\';for(var i=0;i<this.options.length;i++){if(this.options[i].selected){this.form.thumbs.value +=(this.options[i].value+\',\');}};this.form.thumbs.value=this.form.thumbs.value.replace(/^(.+),$/,\'$1\');">' . "\n";
 
 				$thumbsArray = makeArrayFromCSV($this->thumbs);
 				while($GLOBALS['DB_WE']->next_record()){
@@ -870,7 +870,7 @@ we_html_element::jsScript(JS_DIR . "windows.js");
 			unset($_SESSION['weS']['WE_IMPORT_FILES_ERRORs']);
 
 			$parts[] = array(
-				'html' => we_html_tools::htmlAlertAttentionBox(sprintf(str_replace('\n', '<br>', g_l('importFiles', '[error]')), $filelist), we_html_tools::TYPE_ALERT, 520, false));
+				'html' => we_html_tools::htmlAlertAttentionBox(sprintf(str_replace('\n', '<br/>', g_l('importFiles', '[error]')), $filelist), we_html_tools::TYPE_ALERT, 520, false));
 		} else {
 
 			$parts[] = array(
@@ -894,8 +894,8 @@ we_html_element::jsScript(JS_DIR . "windows.js");
 	}
 
 	function _getButtons(){
-		$formnum = weRequest('int', "weFormNum", 0);
-		$formcount = weRequest('int', "weFormCount", 0);
+		$formnum = we_base_request::_(we_base_request::INT, "weFormNum", 0);
+		$formcount = we_base_request::_(we_base_request::INT, "weFormCount", 0);
 
 		$bodyAttribs = array("class" => "weDialogButtonsBody", 'style' => 'overflow:hidden;');
 		if($this->step == 1){
@@ -1316,7 +1316,7 @@ function next() {
 			if($this->partCount == 1 || ($this->partCount == $this->partNum)){
 				$tempName = $this->partCount > 1 ? TEMP_PATH . $this->fileNameTmp : $tempName;
 				$this->fileNameTmp = '';
-				$fileSize = weRequest('int', "weFileSize", $_FILES['we_File']['size']);
+				$fileSize = we_base_request::_(we_base_request::INT, "weFileSize", $_FILES['we_File']['size']);
 
 				// setting Filename, Path ...
 				$_fn = we_import_functions::correctFilename($_FILES['we_File']["name"]);
@@ -1461,7 +1461,7 @@ function next() {
 	}
 
 	function _getFrameset(){
-		$_step = weRequest('int','step',-1);
+		$_step = we_base_request::_(we_base_request::INT,'step',-1);
 
 		// set and return html code
 		$body = we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;')

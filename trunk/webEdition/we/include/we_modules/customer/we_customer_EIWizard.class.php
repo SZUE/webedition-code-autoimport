@@ -111,7 +111,7 @@ class we_customer_EIWizard{
 	}
 
 	function getHTMLExportStep1(){
-		$type = weRequest('string', "type", we_import_functions::TYPE_GENERIC_XML);
+		$type = we_base_request::_(we_base_request::STRING, "type", we_import_functions::TYPE_GENERIC_XML);
 
 		$generic = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
 		$generic->setCol(0, 0, array(), we_html_forms::radiobutton(we_import_functions::TYPE_GENERIC_XML, ($type == we_import_functions::TYPE_GENERIC_XML), "type", g_l('modules_customer', '[gxml_export]'), true, "defaultfont", "if(document.we_form.type[0].checked) " . $this->topFrame . ".type='" . we_import_functions::TYPE_GENERIC_XML . "';", false, g_l('modules_customer', '[txt_gxml_export]'), 0, 430));
@@ -141,7 +141,7 @@ class we_customer_EIWizard{
 	}
 
 	function getHTMLExportStep2(){
-		$selection = weRequest('string', "selection", "filter");
+		$selection = we_base_request::_(we_base_request::STRING, "selection", "filter");
 
 		$table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 2);
 		$table->setColContent(0, 0, we_html_tools::getPixel(25, 5));
@@ -212,16 +212,16 @@ class we_customer_EIWizard{
 		$parts = array();
 
 		//set defaults
-		$type = weRequest('string', "type", we_import_functions::TYPE_GENERIC_XML);
-		$filename = weRequest('file', "filename", "weExport_" . time() . ($type == "csv" ? ".csv" : ".xml"));
-		$export_to = weRequest('string', "export_to", "server");
-		$path = weRequest('file', "path", "/");
-		$cdata = weRequest('bool', "cdata", true);
+		$type = we_base_request::_(we_base_request::STRING, "type", we_import_functions::TYPE_GENERIC_XML);
+		$filename = we_base_request::_(we_base_request::FILE, "filename", "weExport_" . time() . ($type == "csv" ? ".csv" : ".xml"));
+		$export_to = we_base_request::_(we_base_request::STRING, "export_to", "server");
+		$path = we_base_request::_(we_base_request::FILE, "path", "/");
+		$cdata = we_base_request::_(we_base_request::BOOL, "cdata", true);
 
-		$csv_delimiter = weRequest('raw', "csv_delimiter", CSV_DELIMITER);
-		$csv_enclose = weRequest('raw', "csv_enclose", CSV_ENCLOSE);
-		$csv_lineend = weRequest('raw', "csv_lineend", CSV_LINEEND);
-		$csv_fieldnames = weRequest('bool', "csv_fieldnames", CSV_FIELDS);
+		$csv_delimiter = we_base_request::_(we_base_request::RAW, "csv_delimiter", CSV_DELIMITER);
+		$csv_enclose = we_base_request::_(we_base_request::RAW, "csv_enclose", CSV_ENCLOSE);
+		$csv_lineend = we_base_request::_(we_base_request::RAW, "csv_lineend", CSV_LINEEND);
+		$csv_fieldnames = we_base_request::_(we_base_request::BOOL, "csv_fieldnames", CSV_FIELDS);
 
 		//set variables in top frame
 		$js = "";
@@ -248,7 +248,7 @@ class we_customer_EIWizard{
 			$_file_encoding->selectOption($csv_lineend);
 
 			$fileformattable->setCol(0, 0, array("class" => "defaultfont"), we_html_tools::getPixel(10, 10));
-			$fileformattable->setCol(1, 0, array("class" => "defaultfont"), g_l('modules_customer', '[csv_lineend]') . "<br>" . $_file_encoding->getHtml());
+			$fileformattable->setCol(1, 0, array("class" => "defaultfont"), g_l('modules_customer', '[csv_lineend]') . "<br/>" . $_file_encoding->getHtml());
 			$fileformattable->setColContent(2, 0, $this->getHTMLChooser("csv_delimiter", $csv_delimiter, array("," => g_l('modules_customer', '[comma]'), ";" => g_l('modules_customer', '[semicolon]'), ":" => g_l('modules_customer', '[colon]'), "\\t" => g_l('modules_customer', '[tab]'), " " => g_l('modules_customer', '[space]')), g_l('modules_customer', '[csv_delimiter]')));
 			$fileformattable->setColContent(3, 0, $this->getHTMLChooser("csv_enclose", $csv_enclose, array("\"" => g_l('modules_customer', '[double_quote]'), "'" => g_l('modules_customer', '[single_quote]')), g_l('modules_customer', '[csv_enclose]')));
 
@@ -287,7 +287,7 @@ class we_customer_EIWizard{
 	}
 
 	function getHTMLExportStep4(){
-		$export_to = weRequest('string', "export_to", "server");
+		$export_to = we_base_request::_(we_base_request::STRING, "export_to", "server");
 		$path = isset($_REQUEST["path"]) ? urldecode($_REQUEST["path"]) : "";
 		$filename = isset($_REQUEST["filename"]) ? urldecode($_REQUEST["filename"]) : "";
 		$js = we_html_element::jsElement('
@@ -295,7 +295,7 @@ class we_customer_EIWizard{
 		');
 
 		if($export_to == "local"){
-			$message = we_html_element::htmlSpan(array("class" => "defaultfont"), g_l('modules_customer', '[export_finished]') . "<br><br>" .
+			$message = we_html_element::htmlSpan(array("class" => "defaultfont"), g_l('modules_customer', '[export_finished]') . "<br/><br/>" .
 					g_l('modules_customer', '[download_starting]') .
 					we_html_element::htmlA(array("href" => $this->frameset . "?pnt=eibody&step=5&exportfile=" . $filename), g_l('modules_customer', '[download]'))
 			);
@@ -309,8 +309,8 @@ class we_customer_EIWizard{
 					)
 			);
 		} else {
-			$message = we_html_element::htmlSpan(array("class" => "defaultfont"), g_l('modules_customer', '[export_finished]') . "<br><br>" .
-					g_l('modules_customer', '[server_finished]') . "<br>" .
+			$message = we_html_element::htmlSpan(array("class" => "defaultfont"), g_l('modules_customer', '[export_finished]') . "<br/><br/>" .
+					g_l('modules_customer', '[server_finished]') . "<br/>" .
 					($path != "/" ? $path : "") . "/" . $filename
 			);
 
@@ -325,8 +325,8 @@ class we_customer_EIWizard{
 	}
 
 	function getHTMLExportStep5(){
-		if(weRequest('bool', "exportfile")){
-			$_filename = basename(urldecode(weRequest('raw', "exportfile")));
+		if(we_base_request::_(we_base_request::BOOL, "exportfile")){
+			$_filename = basename(urldecode(we_base_request::_(we_base_request::RAW, "exportfile")));
 
 			if(file_exists(TEMP_PATH . "/" . $_filename) // Does file exist?
 				&& !preg_match('%p?html?%i', $_filename) && stripos($_filename, "inc") === false && !preg_match('%php3?%i', $_filename)){ // Security check
@@ -362,20 +362,20 @@ class we_customer_EIWizard{
 
 		$hiddens = "";
 		if($options["art"] == "import"){
-			$filename = weRequest('file', "filename", "");
-			$import_from = weRequest('string', "import_from", "server");
-			$type = weRequest('string', "type", we_import_functions::TYPE_GENERIC_XML);
-			$xml_from = weRequest('raw', "xml_from", 0);
-			$xml_to = weRequest('raw', "xml_to", 1);
-			$dataset = weRequest('raw', "dataset", "");
-			$csv_delimiter = weRequest('raw', "csv_delimiter", CSV_DELIMITER);
-			$csv_enclose = weRequest('raw', "csv_enclose", CSV_ENCLOSE);
-			$csv_lineend = weRequest('raw', "csv_lineend", CSV_LINEEND);
-			$the_charset = weRequest('raw', "the_charset", THE_CHARSET);
+			$filename = we_base_request::_(we_base_request::FILE, "filename", "");
+			$import_from = we_base_request::_(we_base_request::STRING, "import_from", "server");
+			$type = we_base_request::_(we_base_request::STRING, "type", we_import_functions::TYPE_GENERIC_XML);
+			$xml_from = we_base_request::_(we_base_request::RAW, "xml_from", 0);
+			$xml_to = we_base_request::_(we_base_request::RAW, "xml_to", 1);
+			$dataset = we_base_request::_(we_base_request::RAW, "dataset", "");
+			$csv_delimiter = we_base_request::_(we_base_request::RAW, "csv_delimiter", CSV_DELIMITER);
+			$csv_enclose = we_base_request::_(we_base_request::RAW, "csv_enclose", CSV_ENCLOSE);
+			$csv_lineend = we_base_request::_(we_base_request::RAW, "csv_lineend", CSV_LINEEND);
+			$the_charset = we_base_request::_(we_base_request::RAW, "the_charset", THE_CHARSET);
 
-			$csv_fieldnames = weRequest('bool', "csv_fieldnames");
+			$csv_fieldnames = we_base_request::_(we_base_request::BOOL, "csv_fieldnames");
 
-			$source = weRequest('file', "source", "/");
+			$source = we_base_request::_(we_base_request::FILE, "source", "/");
 
 			switch($options["step"]){
 				case 1:
@@ -442,21 +442,21 @@ class we_customer_EIWizard{
 
 		if($options["art"] == "export"){
 
-			$type = weRequest('string', "type", we_import_functions::TYPE_GENERIC_XML);
-			$selection = weRequest('string', "selection", "filter");
-			$export_to = weRequest('string', "export_to", "server");
+			$type = we_base_request::_(we_base_request::STRING, "type", we_import_functions::TYPE_GENERIC_XML);
+			$selection = we_base_request::_(we_base_request::STRING, "selection", "filter");
+			$export_to = we_base_request::_(we_base_request::STRING, "export_to", "server");
 			$path = isset($_REQUEST["path"]) ? urldecode($_REQUEST["path"]) : "/";
-			$filename = weRequest('file', "filename", "");
-			$cdata = weRequest('raw', "cdata", 1);
+			$filename = we_base_request::_(we_base_request::FILE, "filename", "");
+			$cdata = we_base_request::_(we_base_request::RAW, "cdata", 1);
 
-			$customers = weRequest('raw', "customers", "");
+			$customers = we_base_request::_(we_base_request::RAW, "customers", "");
 
-			$csv_delimiter = weRequest('raw', "csv_delimiter", CSV_DELIMITER);
-			$csv_enclose = weRequest('raw', "csv_enclose", CSV_ENCLOSE);
-			$csv_lineend = weRequest('raw', "csv_lineend", CSV_LINEEND);
-			$csv_fieldnames = weRequest('bool', "csv_fieldnames");
+			$csv_delimiter = we_base_request::_(we_base_request::RAW, "csv_delimiter", CSV_DELIMITER);
+			$csv_enclose = we_base_request::_(we_base_request::RAW, "csv_enclose", CSV_ENCLOSE);
+			$csv_lineend = we_base_request::_(we_base_request::RAW, "csv_lineend", CSV_LINEEND);
+			$csv_fieldnames = we_base_request::_(we_base_request::BOOL, "csv_fieldnames");
 
-			$filter_count = weRequest('int', "filter_count", 0);
+			$filter_count = we_base_request::_(we_base_request::INT, "filter_count", 0);
 			$filter = "";
 			$fields_names = array("fieldname", "operator", "fieldvalue", "logic");
 			for($i = 0; $i < $filter_count; $i++){
@@ -543,7 +543,7 @@ class we_customer_EIWizard{
 	}
 
 	function getHTMLImportStep1(){
-		$type = weRequest('string', "type", we_import_functions::TYPE_GENERIC_XML);
+		$type = we_base_request::_(we_base_request::STRING, "type", we_import_functions::TYPE_GENERIC_XML);
 
 		$generic = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
 		$generic->setCol(0, 0, array(), we_html_forms::radiobutton(we_import_functions::TYPE_GENERIC_XML, ($type == we_import_functions::TYPE_GENERIC_XML), "type", g_l('modules_customer', '[gxml_import]'), true, "defaultfont", "if(document.we_form.type[0].checked) " . $this->topFrame . ".type='" . we_import_functions::TYPE_GENERIC_XML . "';", false, g_l('modules_customer', '[txt_gxml_import]'), 0, 430));
@@ -570,9 +570,9 @@ class we_customer_EIWizard{
 	}
 
 	function getHTMLImportStep2(){
-		$import_from = weRequest('string', "import_from", "server");
-		$source = weRequest('file', "source", "/");
-		$type = weRequest('string', "type", "");
+		$import_from = we_base_request::_(we_base_request::STRING, "import_from", "server");
+		$source = we_base_request::_(we_base_request::FILE, "source", "/");
+		$type = we_base_request::_(we_base_request::STRING, "type", "");
 
 		$parts = array();
 
@@ -639,9 +639,9 @@ class we_customer_EIWizard{
 
 	function getHTMLImportStep3(){
 		$js = "";
-		$import_from = weRequest('string', "import_from", "server");
-		$source = weRequest('file', "source", "/");
-		$type = weRequest('string', "type", "");
+		$import_from = we_base_request::_(we_base_request::STRING, "import_from", "server");
+		$source = we_base_request::_(we_base_request::FILE, "source", "/");
+		$type = we_base_request::_(we_base_request::STRING, "type", "");
 		$ext = $type == "csv" ? ".csv" : ".xml";
 
 		$filename = "";
@@ -809,18 +809,18 @@ class we_customer_EIWizard{
 	}
 
 	function getHTMLImportStep4(){
-		$filename = weRequest('file', "filename", "");
-		$type = weRequest('string', "type", "");
-		$dataset = weRequest('raw', "dataset", "");
-		$csv_delimiter = weRequest('raw', "csv_delimiter", CSV_DELIMITER);
-		$csv_enclose = weRequest('raw', "csv_enclose", CSV_ENCLOSE);
-		$csv_lineend = weRequest('raw', "csv_lineend", CSV_LINEEND);
-		$the_charset = weRequest('raw', "the_charset", THE_CHARSET);
-		$csv_fieldnames = weRequest('bool', "csv_fieldnames");
-		$same = weRequest('string', "same", "rename");
+		$filename = we_base_request::_(we_base_request::FILE, "filename", "");
+		$type = we_base_request::_(we_base_request::STRING, "type", "");
+		$dataset = we_base_request::_(we_base_request::RAW, "dataset", "");
+		$csv_delimiter = we_base_request::_(we_base_request::RAW, "csv_delimiter", CSV_DELIMITER);
+		$csv_enclose = we_base_request::_(we_base_request::RAW, "csv_enclose", CSV_ENCLOSE);
+		$csv_lineend = we_base_request::_(we_base_request::RAW, "csv_lineend", CSV_LINEEND);
+		$the_charset = we_base_request::_(we_base_request::RAW, "the_charset", THE_CHARSET);
+		$csv_fieldnames = we_base_request::_(we_base_request::BOOL, "csv_fieldnames");
+		$same = we_base_request::_(we_base_request::STRING, "same", "rename");
 
-		$field_mappings = weRequest('raw', "field_mappings", "");
-		$att_mappings = weRequest('raw', "att_mappings", "");
+		$field_mappings = we_base_request::_(we_base_request::RAW, "field_mappings", "");
+		$att_mappings = we_base_request::_(we_base_request::RAW, "att_mappings", "");
 
 		$arrgs = array();
 		if($type == "csv"){
@@ -895,7 +895,7 @@ class we_customer_EIWizard{
 			),
 			array(
 				"headline" => g_l('modules_customer', '[import_step4]'),
-				"html" => we_html_tools::getPixel(1, 8) . "<br>" . we_html_tools::htmlDialogBorder3(510, 255, $rows, $tableheader, "defaultfont"),
+				"html" => we_html_tools::getPixel(1, 8) . "<br/>" . we_html_tools::htmlDialogBorder3(510, 255, $rows, $tableheader, "defaultfont"),
 				"space" => 150),
 		);
 
@@ -912,8 +912,8 @@ class we_customer_EIWizard{
 	}
 
 	function getHTMLImportStep5(){
-		$tmpdir = weRequest('file', "tmpdir");
-		$impno = weRequest('int', "impno", 0);
+		$tmpdir = we_base_request::_(we_base_request::FILE, "tmpdir");
+		$impno = we_base_request::_(we_base_request::INT, "impno", 0);
 
 		$table = new we_html_table(array("cellpadding" => 2, "cellspacing" => 2, "border" => 0), 3, 1);
 		$table->setCol(0, 0, array("class" => "defaultfont"), sprintf(g_l('modules_customer', '[import_finished_desc]'), $impno));
@@ -1080,7 +1080,7 @@ class we_customer_EIWizard{
 	function getHTMLLoad(){
 
 		$out = "";
-		switch(weRequest('string', "cmd")){
+		switch(we_base_request::_(we_base_request::STRING, "cmd")){
 			//------------------------ Export commands --------------------------------------------------------------
 			case "load":
 				if(isset($_REQUEST["pid"])){
@@ -1089,7 +1089,7 @@ class we_customer_EIWizard{
 				break;
 			case "export_next":
 
-				switch(weRequest('int', "step")){
+				switch(we_base_request::_(we_base_request::INT, "step")){
 					case 1:
 					case 2:
 					case 3:
@@ -1139,28 +1139,28 @@ class we_customer_EIWizard{
 				break;
 			case "export":
 
-				$file_format = weRequest('string', "type", we_import_functions::TYPE_GENERIC_XML);
-				$file_name = weRequest('file', "filename", "");
-				$export_to = weRequest('raw', "export_to", "");
+				$file_format = we_base_request::_(we_base_request::STRING, "type", we_import_functions::TYPE_GENERIC_XML);
+				$file_name = we_base_request::_(we_base_request::FILE, "filename", "");
+				$export_to = we_base_request::_(we_base_request::RAW, "export_to", "");
 
-				$path = ($export_to == "server" ? weRequest('file', "path", "") : rtrim(TEMP_DIR, '/'));
+				$path = ($export_to == "server" ? we_base_request::_(we_base_request::FILE, "path", "") : rtrim(TEMP_DIR, '/'));
 
-				$cdata = weRequest('raw', "cdata", 0);
-				$csv_delimiter = weRequest('raw', "csv_delimiter", "");
-				$csv_enclose = weRequest('raw', "csv_enclose", "");
-				$csv_lineend = weRequest('raw', "csv_lineend", "");
-				$csv_fieldnames = weRequest('bool', "csv_fieldnames");
+				$cdata = we_base_request::_(we_base_request::RAW, "cdata", 0);
+				$csv_delimiter = we_base_request::_(we_base_request::RAW, "csv_delimiter", "");
+				$csv_enclose = we_base_request::_(we_base_request::RAW, "csv_enclose", "");
+				$csv_lineend = we_base_request::_(we_base_request::RAW, "csv_lineend", "");
+				$csv_fieldnames = we_base_request::_(we_base_request::BOOL, "csv_fieldnames");
 
 				$customers = array();
 
 				if($_REQUEST["selection"] == "manual"){
-					$customers = makeArrayFromCSV(weRequest('raw', "customers", ""));
+					$customers = makeArrayFromCSV(we_base_request::_(we_base_request::RAW, "customers", ""));
 				} else {
 
 					$filterarr = array();
 					$filtersql = "";
 
-					$filter_count = weRequest('int', "filter_count", 0);
+					$filter_count = we_base_request::_(we_base_request::INT, "filter_count", 0);
 					$filter = "";
 
 					$filter_fieldname = array();
@@ -1233,7 +1233,7 @@ class we_customer_EIWizard{
 				$filename = (isset($_REQUEST["filename"]) && $_REQUEST["filename"] != "") ? $_REQUEST["filename"] : null;
 				$firstexec = (isset($_REQUEST["firstexec"]) && $_REQUEST["firstexec"] != "") ? $_REQUEST["firstexec"] : -999;
 				$all = (isset($_REQUEST["all"])) ? $_REQUEST["all"] : 0;
-				$cdata = weRequest('raw', "cdata", 0);
+				$cdata = we_base_request::_(we_base_request::RAW, "cdata", 0);
 
 				$hiddens = we_html_element::htmlHidden(array("name" => "file_format", "value" => $file_format)) .
 					we_html_element::htmlHidden(array("name" => "filename", "value" => $filename)) .
@@ -1374,23 +1374,23 @@ class we_customer_EIWizard{
 				break;
 			case "import":
 
-				$filename = weRequest('file', "filename", "");
-				$import_from = weRequest('raw', "import_from", "");
-				$type = weRequest('raw', "type", "");
-				$xml_from = weRequest('raw', "xml_from", "");
-				$xml_to = weRequest('raw', "xml_to", "");
-				$dataset = weRequest('raw', "dataset", "");
-				$csv_delimiter = weRequest('raw', "csv_delimiter", CSV_DELIMITER);
-				$csv_enclose = weRequest('raw', "csv_enclose", CSV_ENCLOSE);
-				$csv_lineend = weRequest('raw', "csv_lineend", CSV_LINEEND);
-				$the_charset = weRequest('raw', "the_charset", THE_CHARSET);
-				$csv_fieldnames = weRequest('raw', "csv_fieldnames", CSV_FIELDS);
+				$filename = we_base_request::_(we_base_request::FILE, "filename", "");
+				$import_from = we_base_request::_(we_base_request::RAW, "import_from", "");
+				$type = we_base_request::_(we_base_request::RAW, "type", "");
+				$xml_from = we_base_request::_(we_base_request::RAW, "xml_from", "");
+				$xml_to = we_base_request::_(we_base_request::RAW, "xml_to", "");
+				$dataset = we_base_request::_(we_base_request::RAW, "dataset", "");
+				$csv_delimiter = we_base_request::_(we_base_request::RAW, "csv_delimiter", CSV_DELIMITER);
+				$csv_enclose = we_base_request::_(we_base_request::RAW, "csv_enclose", CSV_ENCLOSE);
+				$csv_lineend = we_base_request::_(we_base_request::RAW, "csv_lineend", CSV_LINEEND);
+				$the_charset = we_base_request::_(we_base_request::RAW, "the_charset", THE_CHARSET);
+				$csv_fieldnames = we_base_request::_(we_base_request::RAW, "csv_fieldnames", CSV_FIELDS);
 
 
-				$same = weRequest('raw', "same", "rename");
+				$same = we_base_request::_(we_base_request::RAW, "same", "rename");
 
-				$field_mappings = weRequest('raw', "field_mappings", array());
-				$att_mappings = weRequest('raw', "att_mappings", array());
+				$field_mappings = we_base_request::_(we_base_request::RAW, "field_mappings", array());
+				$att_mappings = we_base_request::_(we_base_request::RAW, "att_mappings", array());
 
 				$options = array();
 				$options["type"] = $type;
@@ -1438,13 +1438,13 @@ class we_customer_EIWizard{
 				);
 				break;
 			case "do_import":
-				$tmpdir = weRequest('file', "tmpdir", "");
-				$fstart = weRequest('int', "fstart", 0);
-				$fcount = weRequest('int', "fcount", "");
-				$field_mappings = weRequest('raw', "field_mappings", array());
-				$att_mappings = weRequest('raw', "att_mappings", array());
-				$same = weRequest('raw', "same", "rename");
-				$impno = weRequest('int', "impno", 0);
+				$tmpdir = we_base_request::_(we_base_request::FILE, "tmpdir", "");
+				$fstart = we_base_request::_(we_base_request::INT, "fstart", 0);
+				$fcount = we_base_request::_(we_base_request::INT, "fcount", "");
+				$field_mappings = we_base_request::_(we_base_request::RAW, "field_mappings", array());
+				$att_mappings = we_base_request::_(we_base_request::RAW, "att_mappings", array());
+				$same = we_base_request::_(we_base_request::RAW, "same", "rename");
+				$impno = we_base_request::_(we_base_request::INT, "impno", 0);
 
 				if(we_customer_EI::importCustomers(array(
 						"xmlfile" => TEMP_PATH . '/' . $tmpdir . '/temp_' . $fstart . '.xml',
@@ -1497,8 +1497,8 @@ class we_customer_EIWizard{
 				);
 				break;
 			case "import_end":
-				$tmpdir = weRequest('file', "tmpdir", "");
-				$impno = weRequest('int', "impno", 0);
+				$tmpdir = we_base_request::_(we_base_request::FILE, "tmpdir", "");
+				$impno = we_base_request::_(we_base_request::INT, "impno", 0);
 
 				$js = we_html_element::jsElement('
 							function doNext(){
@@ -1596,7 +1596,7 @@ class we_customer_EIWizard{
 
 	function getHTMLCustomer(){
 		if(isset($_REQUEST["wcmd"])){
-			switch(weRequest('string', "wcmd")){
+			switch(we_base_request::_(we_base_request::STRING, "wcmd")){
 				case "add_customer":
 					$arr = makeArrayFromCSV($_REQUEST["customers"]);
 					if(isset($_REQUEST["cus"])){
@@ -1625,7 +1625,7 @@ class we_customer_EIWizard{
 				default:
 			}
 		}
-		$customers = weRequest('raw', "customers", "");
+		$customers = we_base_request::_(we_base_request::RAW, "customers", "");
 		$js = we_html_element::jsScript(JS_DIR . "windows.js") .
 			we_html_element::jsElement('
 			function selector_cmd(){
@@ -1649,7 +1649,7 @@ class we_customer_EIWizard{
 		');
 
 		$hiddens = we_html_element::htmlHidden(array("name" => "wcmd", "value" => "")) .
-			we_html_element::htmlHidden(array("name" => "cus", "value" => weRequest('raw', "cus", "")));
+			we_html_element::htmlHidden(array("name" => "cus", "value" => we_base_request::_(we_base_request::RAW, "cus", "")));
 
 
 		$delallbut = we_html_button::create_button("delete_all", "javascript:selector_cmd('del_all_customers')", true, 0, 0, "", "", (isset($_REQUEST["customers"]) ? false : true));
@@ -1694,9 +1694,9 @@ class we_customer_EIWizard{
 	}
 
 	function getHTMLCustomerFilter(){
-		$count = weRequest('int', "filter_count", 0);
+		$count = we_base_request::_(we_base_request::INT, "filter_count", 0);
 
-		switch(weRequest('string', "fcmd")){
+		switch(we_base_request::_(we_base_request::STRING, "fcmd")){
 			case "add_filter":
 				$count++;
 				break;

@@ -85,7 +85,7 @@ class we_dialog_abbr extends we_dialog_base{
 </table>';
 		if(defined("GLOSSARY_TABLE") && permissionhandler::hasPerm("NEW_GLOSSARY")){
 			$table .= we_html_tools::hidden("weSaveToGlossary", 0) .
-				we_html_tools::hidden("language", weRequest('string', 'language', $GLOBALS['weDefaultFrontendLanguage'])) .
+				we_html_tools::hidden("language", we_base_request::_(we_base_request::STRING, 'language', $GLOBALS['weDefaultFrontendLanguage'])) .
 				we_html_tools::hidden("text", "");
 		}
 

@@ -81,8 +81,8 @@ class we_sidebar_frames{
 	}
 
 	function getHTMLContent(){
-		$file = weRequest('url', 'we_cmd', '', 1);
-		$params = weRequest('string', 'we_cmd', '', 2);
+		$file = we_base_request::_(we_base_request::URL, 'we_cmd', '', 1);
+		$params = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2);
 		define('WE_SIDEBAR', true);
 
 		if(stripos($file, "http://") === 0 || stripos($file, "https://") === 0){

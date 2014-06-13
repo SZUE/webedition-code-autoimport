@@ -26,9 +26,9 @@ $protect = we_base_moduleInfo::isActive('shop') && we_users_util::canEditModule(
 we_html_tools::protect($protect);
 
 /* * ************ fuction for orders  ************** */
-$typeObj = weRequest('string', 'type', 'object');
-$typeDoc = weRequest('string', 'type', 'document');
-$actPage = weRequest('int', 'actPage', 0);
+$typeObj = we_base_request::_(we_base_request::STRING, 'type', 'object');
+$typeDoc = we_base_request::_(we_base_request::STRING, 'type', 'document');
+$actPage = we_base_request::_(we_base_request::INT, 'actPage', 0);
 
 function orderBy($a, $b){
 	return ($a[$_REQUEST['orderBy']] >= $b[$_REQUEST['orderBy']] ? (isset($_REQUEST['orderDesc']) ? false : true) : (isset($_REQUEST['orderDesc']) ? true : false));
@@ -195,7 +195,7 @@ if(isset($daten)){
 
 	/*	 * ******** START PROCESS THE OUTPUT IF OPTED FOR AN OBJECT *********** */
 
-	switch(weRequest('string', 'typ')){
+	switch(we_base_request::_(we_base_request::STRING, 'typ')){
 		case "object": //start output object
 			$orderBy = isset($_REQUEST['orderBy']) ? $DB_WE->escape($_REQUEST['orderBy']) : 'obTitle';
 			$entries = 0;
@@ -226,7 +226,7 @@ if(isset($daten)){
 			while($DB_WE->next_record()){ // Pager: determine the number of records;
 				$entries += $DB_WE->f("dbEntries");
 			}
-			$active_page = weRequest('raw', 'page', 0); // Pager: determine the current page
+			$active_page = we_base_request::_(we_base_request::RAW, 'page', 0); // Pager: determine the current page
 			$docType2 = isset($docType2) ? "objectFile" : "objectFile"; // Pager: determine the current page
 			$typeAlias = isset($typeAlias) ? "object" : "object"; // Pager: determine the current page
 			if(!isset($classSelectTable)){
@@ -344,9 +344,9 @@ if(isset($daten)){
 			/*			 * ******** START PROCESS THE OUTPUT IF OPTED FOR A DOCUMENT *********** */
 			break;
 		case "document": //start output doc
-			$orderBy = weRequest('raw', 'orderBy', 'sql');
+			$orderBy = we_base_request::_(we_base_request::RAW, 'orderBy', 'sql');
 			$entries = f('SELECT COUNT(Name) FROM ' . LINK_TABLE . ' WHERE Name ="' . $DB_WE->escape(WE_SHOP_TITLE_FIELD_NAME) . '"'); // Pager: determine the number of records;
-			$active_page = weRequest('raw', 'page', 0); // Pager: determine the number of records;
+			$active_page = we_base_request::_(we_base_request::RAW, 'page', 0); // Pager: determine the number of records;
 			$docType = we_base_ContentTypes::WEDOCUMENT; // Pager: determine the current page
 			$typeAlias = isset($typeAlias) ? "document" : "document"; // Pager: determine the current page
 

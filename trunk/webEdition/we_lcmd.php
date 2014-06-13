@@ -36,7 +36,7 @@ foreach($_REQUEST['we_cmd'] as &$cmdvalue){
 	$cmdvalue = preg_replace('/[^a-z0-9_-]/i', '', strip_tags($cmdvalue));
 }
 
-switch(weRequest('string', 'we_cmd', '', 0)){
+switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 	case "trigger_save_document":
 		echo 'if(top.weEditorFrameController.getActiveDocumentReference() && top.weEditorFrameController.getActiveDocumentReference().frames[3] && top.weEditorFrameController.getActiveDocumentReference().frames[3].weCanSave){
 	top.weEditorFrameController.getActiveEditorFrame().setEditorPublishWhenSave(false);

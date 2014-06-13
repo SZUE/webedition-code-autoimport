@@ -205,7 +205,7 @@ class we_document extends we_root{
 	function formExtension2(){
 		$doctype = isset($this->DocType) ? $this->DocType : '';
 
-		if($this->ID == 0 && weRequest('string', 'we_cmd', '', 0) == 'load_editor' && $doctype == ''){ //	Neues Dokument oder Dokument ohne DocType
+		if($this->ID == 0 && we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) == 'load_editor' && $doctype == ''){ //	Neues Dokument oder Dokument ohne DocType
 			switch($this->ContentType){
 				case we_base_ContentTypes::HTML: //	is HTML-File
 					$selected = DEFAULT_HTML_EXT;
@@ -715,11 +715,11 @@ class we_document extends we_root{
 		parent::we_initSessDat($sessDat);
 		if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 			if(
-				($day = weRequest('int', 'we_' . $this->Name . '_From_day')) && ($month = weRequest('int', 'we_' . $this->Name . '_From_month')) && ($year = weRequest('int', 'we_' . $this->Name . '_From_year')) && ($hour = weRequest('int', 'we_' . $this->Name . '_From_hour')) !== false && ($min = weRequest('int', 'we_' . $this->Name . '_From_minute')) !== false){
+				($day = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_day')) && ($month = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_month')) && ($year = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_year')) && ($hour = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_hour')) !== false && ($min = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_minute')) !== false){
 				$this->From = mktime($hour, $min, 0, $month, $day, $year);
 			}
 			if(
-				($day = weRequest('int', 'we_' . $this->Name . '_To_day')) && ($month = weRequest('int', 'we_' . $this->Name . '_To_month')) && ($year = weRequest('int', 'we_' . $this->Name . '_To_year')) && ($hour = weRequest('int', 'we_' . $this->Name . '_To_hour')) !== false && ($min = weRequest('int', 'we_' . $this->Name . '_To_minute')) !== false){
+				($day = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_day')) && ($month = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_month')) && ($year = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_year')) && ($hour = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_hour')) !== false && ($min = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_minute')) !== false){
 				$this->To = mktime($hour, $min, 0, $month, $day, $year);
 			}
 		}
@@ -730,7 +730,7 @@ class we_document extends we_root{
 		}
 
 
-		if(weRequest('int', 'wecf_mode') !== false){
+		if(we_base_request::_(we_base_request::INT, 'wecf_mode') !== false){
 			$this->documentCustomerFilter = we_customer_documentFilter::getCustomerFilterFromRequest($this);
 		} else if(isset($sessDat[3])){ // init webUser from session
 			$this->documentCustomerFilter = unserialize($sessDat[3]);
@@ -862,7 +862,7 @@ class we_document extends we_root{
 				if(isset($attribs['title'])){
 					$attribs['title'] = oldHtmlspecialchars($attribs['title']);
 				}
-				if(!(weRequest('string', 'we_cmd', '', 0) == 'reload_editpage' && ($img->Name === weRequest('string', 'we_cmd', false, 1)) && weRequest('string', 'we_cmd', '', 2) == 'change_image') && isset($GLOBALS['we_doc']->elements[$altField])){
+				if(!(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) == 'reload_editpage' && ($img->Name === we_base_request::_(we_base_request::STRING, 'we_cmd', false, 1)) && we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2) == 'change_image') && isset($GLOBALS['we_doc']->elements[$altField])){
 					if(!isset($GLOBALS['lv'])){
 						$attribs['alt'] = oldHtmlspecialchars($GLOBALS['we_doc']->getElement($altField));
 						$attribs['title'] = oldHtmlspecialchars($GLOBALS['we_doc']->getElement($titleField));
@@ -1022,7 +1022,7 @@ class we_document extends we_root{
 				$retval = preg_replace('/<\?xml[^>]+>/i', '', $val);
 
 				if(!weTag_getAttribute('html', $attribs, true, true) && !weTag_getAttribute('wysiwyg', $attribs, false, true)){
-					$retval = strip_tags($retval, '<br>,<p>');
+					$retval = strip_tags($retval, '<br/>,<p>');
 				}
 
 				$_htmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, true);

@@ -111,7 +111,7 @@ class we_shop_frames extends weModuleFrames{
 		<?php if(permissionhandler::hasPerm('EDIT_SHOP_ORDER')){ ?>
 							fr.write("</a>");
 		<?php } ?>
-						fr.write("&nbsp;&nbsp;<BR>\n");
+						fr.write("&nbsp;&nbsp;<br/>\n");
 					} else {
 						var newAst = zweigEintrag;
 
@@ -350,7 +350,7 @@ class we_shop_frames extends weModuleFrames{
 			}
 		}
 
-		$year = weRequest('int', 'year', date('Y'));
+		$year = we_base_request::_(we_base_request::INT, 'year', date('Y'));
 //unset($_SESSION['year']);
 		for($f = 12; $f > 0; $f--){
 			$r = (isset(${'v' . $f . $year}) ? ${'v' . $f . $year} : '');
@@ -406,7 +406,7 @@ function we_cmd() {
 
 		');
 
-		$bid = weRequest('int', 'bid', 0);
+		$bid = we_base_request::_(we_base_request::INT, 'bid', 0);
 		$cid = f('SELECT IntCustomerID FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . $bid, '', $this->db);
 		$this->db->query("SELECT IntOrderID,DATE_FORMAT(DateOrder,'" . g_l('date', '[format][mysqlDate]') . "') AS orddate FROM " . SHOP_TABLE . ' GROUP BY IntOrderID ORDER BY IntID DESC');
 
@@ -474,10 +474,10 @@ function we_cmd() {
 		//$DB_WE = $this->db; //TODO: why does it not work without this?
 		//do what have been done in edit_shop_editorFrameset before
 
-		$bid = weRequest('int', 'bid', 0);
-		$mid = weRequest('string', 'mid', 0);
-		$yearView = weRequest('int', 'ViewYear', 0);
-		$home = weRequest('bool', 'home');
+		$bid = we_base_request::_(we_base_request::INT, 'bid', 0);
+		$mid = we_base_request::_(we_base_request::STRING, 'mid', 0);
+		$yearView = we_base_request::_(we_base_request::INT, 'ViewYear', 0);
+		$home = we_base_request::_(we_base_request::BOOL, 'home');
 
 		if($home){
 			$bodyURL = WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=mod_home&mod=shop';
@@ -502,9 +502,9 @@ function we_cmd() {
 	function getHTMLEditorTop(){// TODO: merge getHTMLRight and getHTMLRightTop
 		$DB_WE = $this->db;
 		require_once(WE_MODULES_PATH . 'shop/handle_shop_dbitemConnect.php');
-		$home = weRequest('bool', "home");
-		$mid = weRequest('int', "mid", 0);
-		$bid = weRequest('int', "bid", 0);
+		$home = we_base_request::_(we_base_request::BOOL, "home");
+		$mid = we_base_request::_(we_base_request::INT, "mid", 0);
+		$bid = we_base_request::_(we_base_request::INT, "bid", 0);
 
 		// config
 		$feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname = "shop_pref"', '', $DB_WE));
@@ -547,15 +547,15 @@ function we_cmd() {
 
 	function getHTMLEditorHeader(){
 		$DB_WE = $this->db;
-		if(weRequest('bool', 'home')){
+		if(we_base_request::_(we_base_request::BOOL, 'home')){
 			return $this->getHTMLDocument('<body bgcolor="#F0EFF0"></body></html>');
 		}
 
-		if(weRequest('bool', 'top')){
+		if(we_base_request::_(we_base_request::BOOL, 'top')){
 			return $this->getHTMLEditorHeaderTop();
 		}
 
-		$bid = weRequest('int', 'bid', 0);
+		$bid = we_base_request::_(we_base_request::INT, 'bid', 0);
 
 		list($cid, $cdat) = getHash('SELECT IntCustomerID,DATE_FORMAT(DateOrder,"' . g_l('date', '[format][mysqlDate]') . '") FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . intval($bid), $DB_WE, MYSQL_NUM);
 		$order = getHash('SELECT IntOrderID,DATE_FORMAT(DateOrder,"' . g_l('date', '[format][mysqlDate]') . '") as orddate FROM ' . SHOP_TABLE . ' GROUP BY IntOrderID ORDER BY IntID DESC LIMIT 1', $DB_WE);

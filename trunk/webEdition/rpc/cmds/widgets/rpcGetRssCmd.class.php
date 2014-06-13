@@ -28,15 +28,15 @@ class rpcGetRssCmd extends rpcCmd{
 
 	function execute(){
 
-		$sRssUri = weRequest('url', 'we_cmd', '', 0);
-		$sCfgBinary = weRequest('string', 'we_cmd', '', 1);
+		$sRssUri = we_base_request::_(we_base_request::URL, 'we_cmd', '', 0);
+		$sCfgBinary = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1);
 		$bCfgTitle = (bool) $sCfgBinary{0};
 		$bCfgLink = (bool) $sCfgBinary{1};
 		$bCfgDesc = (bool) $sCfgBinary{2};
 		$bCfgContEnc = (bool) $sCfgBinary{3};
 		$bCfgPubDate = (bool) $sCfgBinary{4};
 		$bCfgCategory = (bool) $sCfgBinary{5};
-		$iNumItems = weRequest('int', 'we_cmd', '', 2);
+		$iNumItems = we_base_request::_(we_base_request::INT, 'we_cmd', '', 2);
 		switch($iNumItems){
 			case 11:
 				$iNumItems = 15;
@@ -51,7 +51,7 @@ class rpcGetRssCmd extends rpcCmd{
 				$iNumItems = 50;
 				break;
 		}
-		$sTbBinary = weRequest('string', 'we_cmd', '', 3);
+		$sTbBinary = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3);
 		$bTbLabel = (bool) $sTbBinary{0};
 		$bTbTitel = (bool) $sTbBinary{1};
 		$bTbDesc = (bool) $sTbBinary{2};
@@ -123,7 +123,7 @@ class rpcGetRssCmd extends rpcCmd{
 			$aTb[] = g_l('cockpit', '[rss_feed]');
 		}
 		if($bTbTitel){
-			$aTb[] = ($tmp = weRequest('string', 'we_cmd', '', 4)) ? $tmp :
+			$aTb[] = ($tmp = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 4)) ? $tmp :
 				((isset($oRssParser->channel["title"])) ? $oRssParser->channel["title"] : "");
 		}
 		if($bTbDesc){

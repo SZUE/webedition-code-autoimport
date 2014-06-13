@@ -170,7 +170,7 @@ class we_glossary_glossary extends weModelBase{
 			$this->ID = $GlossaryId;
 			$this->load($GlossaryId);
 		} elseif(isset($_REQUEST['cmd'])){
-			switch(weRequest('string', 'cmd')){
+			switch(we_base_request::_(we_base_request::STRING, 'cmd')){
 				case 'new_glossary_abbreviation':
 					$this->Type = self::TYPE_ABBREVATION;
 					break;

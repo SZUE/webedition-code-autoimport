@@ -37,7 +37,7 @@ function we_tag_saveRegisteredUser($attribs){
 	we_base_util::convertDateInRequest($_REQUEST['s'], false);
 
 	//register new User
-	if(isset($_REQUEST['s']['ID']) && (!isset($_SESSION['webuser']['ID'])) && weRequest('int', 's', 0, 'ID') <= 0 && $registerallowed && (!isset($_SESSION['webuser']['registered']) || !$_SESSION['webuser']['registered'])){ // neuer User
+	if(isset($_REQUEST['s']['ID']) && (!isset($_SESSION['webuser']['ID'])) && we_base_request::_(we_base_request::INT, 's', 0, 'ID') <= 0 && $registerallowed && (!isset($_SESSION['webuser']['registered']) || !$_SESSION['webuser']['registered'])){ // neuer User
 		if($_REQUEST['s']['Password'] && $_REQUEST['s']['Username']){ // wenn password und Username nicht leer
 			if(!we_customer_customer::customerNameExist($_REQUEST['s']['Username'], $GLOBALS['DB_WE'])){ // username existiert noch nicht!
 				$hook = new weHook('customer_preSave', '', array('customer' => &$_REQUEST['s'], 'from' => 'tag', 'type' => 'new', 'tagname' => 'saveRegisteredUser'));
@@ -86,7 +86,7 @@ function we_tag_saveRegisteredUser($attribs){
 		}
 	} else if(isset($_REQUEST['s']['ID']) && $_REQUEST['s']['ID'] == $_SESSION['webuser']['ID'] && $_SESSION['webuser']['registered']){ // existing user
 		// existierender User (Daten werden von User geaendert)!!
-		$Username = weRequest('string', 's', $_SESSION['webuser']['Username'], 'Username');
+		$Username = we_base_request::_(we_base_request::STRING, 's', $_SESSION['webuser']['Username'], 'Username');
 
 		if(f('SELECT 1 FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $GLOBALS["DB_WE"]->escape($Username) . '" AND ID!=' . intval($_SESSION['webuser']['ID']))){
 			$userexists = $userexists ? $userexists : g_l('customer', '[username_exists]');

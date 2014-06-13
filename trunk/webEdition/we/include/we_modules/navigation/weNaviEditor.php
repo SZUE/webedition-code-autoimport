@@ -29,7 +29,7 @@ we_html_tools::protect();
 $_space_size = 100;
 $_input_size = 440;
 
-$_path = weRequest('file', 'we_cmd', '', 1);
+$_path = we_base_request::_(we_base_request::FILE, 'we_cmd', '', 1);
 
 $_id = (!empty($_path)) ? path_to_id($_path, NAVIGATION_TABLE) : 0;
 
