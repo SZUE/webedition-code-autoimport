@@ -26,7 +26,7 @@ echo we_html_tools::getHtmlTop(g_l('global', '[question]')) .
  STYLESHEET .
  we_html_element::jsScript(JS_DIR . 'keyListener.js');
 
-$_we_cmd6 = weRequest('raw', 'we_cmd', '', 6);
+$_we_cmd6 = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 6);
 
 $alerttext = ($isTemplatesUsedByThisTemplate ?
 		g_l('alert', "[template_save_warning2]") :

@@ -25,7 +25,7 @@ we_html_tools::protect();
 echo we_html_tools::getHtmlTop(g_l('global', '[select_color]')) .
  STYLESHEET .
  we_html_element::jsScript(JS_DIR . 'we_colors2.js');
-$isA = weRequest('bool', 'we_cmd', false, 0);
+$isA = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 0);
 ?>
 <script  type="text/javascript"><!--
 
@@ -36,12 +36,11 @@ $isA = weRequest('bool', 'we_cmd', false, 0);
 <?php if($isA){ ?>
 			opener.document.we_form.elements["<?php echo $_REQUEST['we_cmd'][1]; ?>"].value = document.we_form.colorvalue.value;
 
-	<?php if(isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3]){ ?>
-
-		<?php echo $_REQUEST['we_cmd'][3]; ?>
-
-	<?php } else { ?>
-
+	<?php
+	if(isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3]){
+		echo $_REQUEST['we_cmd'][3];
+	} else {
+		?>
 				opener._EditorFrame.setEditorIsHot(true);
 				opener.we_cmd("reload_editpage");
 

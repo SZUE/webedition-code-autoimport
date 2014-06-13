@@ -28,8 +28,8 @@ $frames = new we_export_wizard(WE_EXPORT_MODULE_DIR . "export_frameset.php");
 we_html_tools::protect();
 //	Starting output .
 
-$what = weRequest('string', "pnt", "frameset");
-$step = weRequest('int', "step", 0);
+$what = we_base_request::_(we_base_request::STRING, "pnt", "frameset");
+$step = we_base_request::_(we_base_request::INT, "step", 0);
 
 
 switch($what){

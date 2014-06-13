@@ -138,8 +138,7 @@ function check_required($required){
 }
 
 function error_page(){
-	if($_REQUEST['error_page']){
-		$errorpage = (get_magic_quotes_gpc() == 1) ? stripslashes($_REQUEST['error_page']) : $_REQUEST['error_page'];
+	if(($errorpage = we_base_request::_(we_base_request::URL, 'error_page'))){
 		redirect($errorpage);
 	} else {
 		print_error(g_l('global', '[email_notallfields]'));
@@ -147,8 +146,7 @@ function error_page(){
 }
 
 function ok_page(){
-	if($_REQUEST['ok_page']){
-		$ok_page = (get_magic_quotes_gpc() == 1) ? stripslashes($_REQUEST['ok_page']) : $_REQUEST['ok_page'];
+	if(($ok_page = we_base_request::_(we_base_request::URL, 'ok_page'))){
 		redirect($ok_page);
 	} else {
 		echo 'Vielen Dank, Ihre Formulardaten sind bei uns angekommen! / Thank you, we received your form data!';
@@ -169,12 +167,12 @@ function check_recipient($email){
 }
 
 function check_captcha(){
-	return ($name = weRequest('string', weRequest('string', 'captchaname', '__NOT_SET__')) ?
+	return ($name = we_base_request::_(we_base_request::STRING, we_base_request::_(we_base_request::STRING, 'captchaname', '__NOT_SET__')) ?
 		we_captcha_captcha::check($name) :
 		false);
 }
 
-$_req = weRequest('raw', 'required', '');
+$_req = we_base_request::_(we_base_request::RAW, 'required', '');
 
 if(!check_required($_req)){
 	error_page();
@@ -182,8 +180,7 @@ if(!check_required($_req)){
 
 if(isset($_REQUEST['email']) && $_REQUEST['email']){
 	if(!we_check_email($_REQUEST['email'])){
-		if($_REQUEST['mail_error_page']){
-			$foo = (get_magic_quotes_gpc() == 1) ? stripslashes($_REQUEST['mail_error_page']) : $_REQUEST['mail_error_page'];
+		if(($foo = we_base_request::_(we_base_request::URL, 'mail_error_page'))){
 			redirect($foo);
 		} else {
 			print_error(g_l('global', '[email_invalid]'));
@@ -205,7 +202,7 @@ if(isset($_REQUEST['we_remove'])){
 $we_txt = '';
 $we_html = '<table>';
 
-$_order = weRequest('raw', 'order', '');
+$_order = we_base_request::_(we_base_request::RAW, 'order', '');
 $we_orderarray = array();
 if($_order){
 	$we_orderarray = explode(',', $_order);
@@ -216,6 +213,7 @@ if($_order){
 	}
 }
 
+//FIXME: change
 if(isset($_GET)){
 	foreach($_GET as $n => $v){
 		if((!in_array($n, $we_reserved)) && (!in_array($n, $we_orderarray)) && (!is_array($v))){
@@ -224,6 +222,7 @@ if(isset($_GET)){
 	}
 }
 
+//FIXME: change
 if(isset($_POST)){
 	foreach($_POST as $n => $v){
 		if((!in_array($n, $we_reserved)) && (!in_array($n, $we_orderarray)) && (!is_array($v))){
@@ -236,7 +235,7 @@ foreach($output as $n => $v){
 	if(is_array($v)){
 		foreach($v as $n2 => $v2){
 			if(!is_array($v2)){
-				$foo = replace_bad_str((get_magic_quotes_gpc() == 1) ? stripslashes($v2) : $v2);
+				$foo = replace_bad_str(/*(get_magic_quotes_gpc() == 1) ? stripslashes($v2) : */$v2);
 				$n = replace_bad_str($n);
 				$n2 = replace_bad_str($n2);
 				$we_txt .= $n . '[' . $n2 . ']: ' . $foo . "\n" . ($foo ? '' : "\n");
@@ -244,7 +243,7 @@ foreach($output as $n => $v){
 			}
 		}
 	} else {
-		$foo = replace_bad_str((get_magic_quotes_gpc() == 1) ? stripslashes($v) : $v);
+		$foo = replace_bad_str(/*(get_magic_quotes_gpc() == 1) ? stripslashes($v) :*/ $v);
 		$n = replace_bad_str($n);
 		$we_txt .= $n . ': ' . $foo . "\n" . ($foo ? '' : "\n");
 		$we_html .= '<tr><td valign="top" align="right"><b>' . $n . ':</b></td><td>' . ($n == 'email' ? '<a href="mailto:' . $foo . '">' . $foo . '</a>' : nl2br($foo)) . '</td></tr>';

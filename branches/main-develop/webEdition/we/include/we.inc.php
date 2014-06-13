@@ -147,7 +147,7 @@ if(!isset($GLOBALS['WE_IS_DYN'])){ //only true on dynamic frontend pages
 
 
 	//send header?
-	switch(weRequest('string', 'we_cmd', '__default__')){
+	switch(isset($_REQUEST['we_cmd']) && !is_array($_REQUEST['we_cmd']) ? we_base_request::_(we_base_request::STRING, 'we_cmd', '__default__') : ''){
 		case 'edit_link':
 		case 'edit_linklist':
 		case 'show_newsletter':
@@ -159,12 +159,12 @@ if(!isset($GLOBALS['WE_IS_DYN'])){ //only true on dynamic frontend pages
 			$header = (!in_array($_SESSION['weS']['EditPageNr'], array(WE_EDITPAGE_CONTENT, WE_EDITPAGE_PREVIEW, WE_EDITPAGE_PROPERTIES)));
 			break;
 		case 'switch_edit_page':
-			$header = (!in_array(weRequest('int', 'we_cmd', -1, 1), array(WE_EDITPAGE_CONTENT, WE_EDITPAGE_PREVIEW, WE_EDITPAGE_PROPERTIES)));
+			$header = (!in_array(we_base_request::_(we_base_request::INT, 'we_cmd', -1, 1), array(WE_EDITPAGE_CONTENT, WE_EDITPAGE_PREVIEW, WE_EDITPAGE_PROPERTIES)));
 			break;
 		case 'load_editor':
-			$header = (!(isset($_REQUEST['we_transaction']) &&
-				isset($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]) &&
-				$_SESSION['weS']['we_data'][$_REQUEST['we_transaction']][0]['Table'] == FILE_TABLE &&
+			$trans = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', '__NO_TRANS__');
+			$header = (!(isset($_SESSION['weS']['we_data'][$trans]) &&
+				$_SESSION['weS']['we_data'][$trans][0]['Table'] == FILE_TABLE &&
 				$_SESSION['weS']['EditPageNr'] == WE_EDITPAGE_PREVIEW
 				));
 			break;

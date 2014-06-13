@@ -48,8 +48,8 @@ class we_glossary_frameEditor{
 	function buildBody(&$weGlossaryFrames, $content = ""){
 
 		$_hidden = array(
-			'cmd' => weRequest('raw', 'cmd', ''),
-			'cmdid' => weRequest('raw', 'cmdid', ''),
+			'cmd' => we_base_request::_(we_base_request::RAW, 'cmd', ''),
+			'cmdid' => we_base_request::_(we_base_request::RAW, 'cmdid', ''),
 			'pnt' => 'edbody',
 		);
 

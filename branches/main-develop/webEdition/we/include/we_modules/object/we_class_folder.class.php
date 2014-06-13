@@ -227,11 +227,11 @@ class we_class_folder extends we_folder{
 		}
 		$this->Order = $_REQUEST['Order'];
 
-		if(($start = weRequest('int', 'SearchStart'))){
+		if(($start = we_base_request::_(we_base_request::INT, 'SearchStart'))){
 			$this->searchclass->searchstart = $start;
 		}
 
-		if(($anz = weRequest('int', 'Anzahl'))){
+		if(($anz = we_base_request::_(we_base_request::INT, 'Anzahl'))){
 			$this->searchclass->anzahl = $anz;
 		}
 
@@ -336,15 +336,15 @@ class we_class_folder extends we_folder{
 	function searchFields(){
 		$DB_WE = new DB_WE();
 
-		$order = weRequest('raw', 'Order', (isset($this->Order) ? $this->Order : 'OF_PATH'));
+		$order = we_base_request::_(we_base_request::RAW, 'Order', (isset($this->Order) ? $this->Order : 'OF_PATH'));
 		if(stripos($order, "ModDate") === 0 || stripos($order, "OF_Published") === 0){
 			$order = 'OF_PATH';
 		}
 		$this->searchclass->Order = $order;
 		$this->Order = $order;
 
-		$this->searchclass->searchstart = weRequest('raw', "SearchStart", $this->searchclass->searchstart);
-		$this->searchclass->anzahl = weRequest('int', 'Anzahl', $this->searchclass->anzahl);
+		$this->searchclass->searchstart = we_base_request::_(we_base_request::RAW, "SearchStart", $this->searchclass->searchstart);
+		$this->searchclass->anzahl = we_base_request::_(we_base_request::INT, 'Anzahl', $this->searchclass->anzahl);
 
 		//$this->searchclass->setlimit(1);
 		$we_obectPathLength = 32;
@@ -951,7 +951,7 @@ EOF;
 	}
 
 	function getSortImage($for){
-		$ord = weRequest('string', 'Order', '');
+		$ord = we_base_request::_(we_base_request::STRING, 'Order', '');
 		if(strpos($ord, $for) === 0){
 			if(strpos($ord, 'DESC')){
 				return '<img border="0" width="11" height="8" src="' . IMAGE_DIR . 'arrow_sort_desc.gif" />';

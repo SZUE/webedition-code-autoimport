@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 we_html_tools::protect();
-switch(weRequest('string', 'we_cmd', '', 1)){
+switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1)){
 	case we_base_ContentTypes::IMAGE:
 		$we_doc = new we_imageDocument();
 		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][2]]);
@@ -32,12 +32,12 @@ switch(weRequest('string', 'we_cmd', '', 1)){
 	case we_base_ContentTypes::FLASH:
 		$we_doc = new we_flashDocument();
 		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][2]]);
-		$contenttype = weRequest('string', 'we_cmd', '', 1);
+		$contenttype = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1);
 		break;
 	case we_base_ContentTypes::QUICKTIME:
 		$we_doc = new we_quicktimeDocument();
 		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][2]]);
-		$contenttype = weRequest('string', 'we_cmd', '', 1);
+		$contenttype = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1);
 		break;
 	case we_base_ContentTypes::APPLICATION:
 		$we_doc = new we_otherDocument();
@@ -77,7 +77,7 @@ header("Pragma: no-cache");
 header("Expires: 0");
 
 $dataPath = $we_doc->getElement("data");
-if(($tid = weRequest('int', 'we_cmd', 0, 3))){ // create thumbnail
+if(($tid = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 3))){ // create thumbnail
 	if(we_base_imageEdit::gd_version()){
 		$thumbObj = new we_thumbnail();
 		$thumbObj->initByThumbID($tid, $we_doc->ID, $we_doc->Filename, $we_doc->Path, $we_doc->Extension, $we_doc->getElement("origwidth"), $we_doc->getElement("origheight"), $we_doc->getDocument());

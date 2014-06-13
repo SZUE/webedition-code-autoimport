@@ -27,7 +27,7 @@ $translate = we_core_Local::addTranslation('apps.xml');
 we_core_Local::addTranslation('default.xml', 'toolfactory');
 
 
-$activTab = weRequest('string', 'activTab', 'idPropertyTab');
+$activTab = we_base_request::_(we_base_request::STRING, 'activTab', 'idPropertyTab');
 
 $this->inputWidth = 400;
 
@@ -493,7 +493,7 @@ if(!empty($this->model->ID)){
 
 $form->addElement($propertyTab);
 
-$tabNr = weRequest('int', 'tabnr', 1);
+$tabNr = we_base_request::_(we_base_request::INT, 'tabnr', 1);
 
 $htmlPage = we_ui_layout_HTMLPage::getInstance();
 

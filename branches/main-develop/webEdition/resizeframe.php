@@ -80,11 +80,10 @@ function startNormalMode(){
  * @desc	This function writes the frameset in the resizeframe for an edit-include-window
  */
 function startEditIncludeMode(){
-
 	$we_cmds = "we_cmd[0]=edit_document&";
 
-	for($i = 1; $i < count($_REQUEST['we_cmd']); $i++){
-		$we_cmds .= "we_cmd[" . $i . "]=" . $_REQUEST['we_cmd'][$i] . "&";
+	foreach(we_base_request::_(we_base_request::STRING, 'we_cmd') as $i => $v){
+		$we_cmds .= "we_cmd[" . $i . "]=" . $v . "&";
 	}
 }
 
@@ -142,7 +141,7 @@ function startSEEMMode(){
 <?php
 //	Here begins the controller of the page
 //  Edit an included file with SEEM.
-if(weRequest('bool', 'SEEM_edit_include')){
+if(we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include')){
 	startEditIncludeMode();
 
 //  We are in SEEM-Mode

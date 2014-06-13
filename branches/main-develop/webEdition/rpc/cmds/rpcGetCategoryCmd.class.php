@@ -28,23 +28,23 @@ class rpcGetCategoryCmd extends rpcCmd{
 		$resp = new rpcResponse();
 		$_error = array();
 		// check for necessory params
-		if(!($obj=weRequest('string', 'obj'))){
+		if(!($obj=we_base_request::_(we_base_request::STRING, 'obj'))){
 			$_error[] = "Missing field obj";
 		}
-		if(!weRequest('string', 'cats')){
+		if(!we_base_request::_(we_base_request::STRING, 'cats')){
 			$_error[] = "Missing field cats";
 		}
-		if(weRequest('string', 'part') == "table" && (!weRequest('bool', 'target'))){
+		if(we_base_request::_(we_base_request::STRING, 'part') == "table" && (!we_base_request::_(we_base_request::BOOL, 'target'))){
 			$_error[] = "Missing target for table";
 		}
 
 		if($_error){
 			$resp->setData("error", $_error);
 		} else {
-			//$part = weRequest('string', 'part',"rows");
-			$target = weRequest('string', 'target', $obj . "CatTable");
-			$catField = weRequest('string', 'catfield', '');
-			$categories = $this->getCategory($obj, weRequest('intList', 'cats', ''), $catField);
+			//$part = we_base_request::_(we_base_request::STRING, 'part',"rows");
+			$target = we_base_request::_(we_base_request::STRING, 'target', $obj . "CatTable");
+			$catField = we_base_request::_(we_base_request::STRING, 'catfield', '');
+			$categories = $this->getCategory($obj, we_base_request::_(we_base_request::INTLIST, 'cats', ''), $catField);
 			$categories = strtr($categories, array("\r" => '', "\n" => ''));
 			$resp->setData("elementsById", array($target => array("innerHTML" => addslashes($categories)))
 			);

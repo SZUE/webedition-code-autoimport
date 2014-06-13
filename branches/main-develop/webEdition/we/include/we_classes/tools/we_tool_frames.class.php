@@ -77,7 +77,7 @@ class we_tool_frames extends weModuleFrames{
 
 		$this->Model->clearSessionVars();
 
-		if(($modelid = weRequest('int', 'modelid'))){
+		if(($modelid = we_base_request::_(we_base_request::INT, 'modelid'))){
 			$_class = we_tool_lookup::getModelClassName($this->toolName);
 			$this->Model = new $_class();
 			$this->Model->load($modelid);
@@ -94,15 +94,15 @@ class we_tool_frames extends weModuleFrames{
 		$body = we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;', "onload" => "start();")
 				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
 					, we_html_element::htmlExIFrame('header', parent::getHTMLHeader($this->toolDir . 'conf/we_menu_' . $this->toolName . '.conf.php', $this->toolName), 'position:absolute;top:0px;height:32px;left:0px;right:0px;') .
-					we_html_element::htmlIFrame('resize', $this->frameset . '?pnt=resize' . (isset($_REQUEST['tab']) ? '&tab=' . $_REQUEST['tab'] : '') . (isset($_REQUEST['modelid']) ? '&modelid=' . $_REQUEST['modelid'] : '') . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : ''), 'position:absolute;top:32px;bottom:1px;left:0px;right:0px;overflow: hidden;') .
-					we_html_element::htmlIFrame('cmd', $this->frameset . '?pnt=cmd' . (isset($_REQUEST['modelid']) ? '&modelid=' . $_REQUEST['modelid'] : ''), 'position:absolute;bottom:0px;height:1px;left:0px;right:0px;overflow: hidden;')
+					we_html_element::htmlIFrame('resize', $this->frameset . '?pnt=resize' . (($tab = we_base_request::_(we_base_request::INT, 'tab')) ? '&tab=' . $tab : '') . ($modelid ? '&modelid=' . $modelid : '') . (($sid = we_base_request::_(we_base_request::INT, 'sid')) ? '&sid=' . $sid : ''), 'position:absolute;top:32px;bottom:1px;left:0px;right:0px;overflow: hidden;') .
+					we_html_element::htmlIFrame('cmd', $this->frameset . '?pnt=cmd' . ($modelid ? '&modelid=' . $modelid : ''), 'position:absolute;bottom:0px;height:1px;left:0px;right:0px;overflow: hidden;')
 		));
 
 		return $this->getHTMLDocument($body, $js);
 	}
 
 	function getHTMLResize(){
-		$modelid = weRequest('int', 'modelid');
+		$modelid = we_base_request::_(we_base_request::INT, 'modelid');
 		$frameset = ((we_base_browserDetect::isGecko()) || (we_base_browserDetect::isOpera())) ?
 			new we_html_frameset(array("cols" => "200,*", "border" => 1, "id" => "resizeframeid")) :
 			new we_html_frameset(array("cols" => "200,*", "border" => 0, "frameborder" => 0, "framespacing" => 0, "id" => "resizeframeid"));
@@ -112,7 +112,7 @@ class we_tool_frames extends weModuleFrames{
 		} else {
 			$frameset->addFrame(array("src" => $this->frameset . "?pnt=left" . ($modelid ? '&modelid=' . $modelid : ''), "name" => "left", "scrolling" => "no"));
 		}
-		$frameset->addFrame(array("src" => $this->frameset . "?pnt=right" . (isset($_REQUEST['tab']) ? '&tab=' . $_REQUEST['tab'] : '') . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : ''), "name" => "right"));
+		$frameset->addFrame(array("src" => $this->frameset . "?pnt=right" . (($tab = we_base_request::_(we_base_request::INT, 'tab')) ? '&tab=' . $tab : '') . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : ''), "name" => "right"));
 
 		$noframeset = new we_html_baseElement("noframes");
 
@@ -126,7 +126,7 @@ class we_tool_frames extends weModuleFrames{
 
 		$frameset = new we_html_frameset(array("framespacing" => 0, "border" => 0, "frameborder" => "no"));
 		$frameset->setAttributes(array("cols" => "*"));
-		$frameset->addFrame(array("src" => $this->frameset . "?pnt=editor" . (isset($_REQUEST['tab']) ? '&tab=' . $_REQUEST['tab'] : '') . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : ''), "name" => "editor", "noresize" => null, "scrolling" => "no"));
+		$frameset->addFrame(array("src" => $this->frameset . "?pnt=editor" . (($tab = we_base_request::_(we_base_request::INT, 'tab') ) ? '&tab=' . $tab : '') . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : ''), "name" => "editor", "noresize" => null, "scrolling" => "no"));
 		$noframeset = new we_html_baseElement("noframes");
 		// set and return html code
 		$body = $frameset->getHtml() . $noframeset->getHTML();
@@ -135,14 +135,15 @@ class we_tool_frames extends weModuleFrames{
 	}
 
 	function getHTMLEditor(){
-
+		$tab = we_base_request::_(we_base_request::INT, 'tab');
+		$sid = we_base_request::_(we_base_request::STRING, 'sid');
 		$frameset = new we_html_frameset(array("framespacing" => 0, "border" => 0, "frameborder" => "no"));
 		$noframeset = new we_html_baseElement("noframes");
 
 		$frameset->setAttributes(array("rows" => "40,*,40"));
-		$frameset->addFrame(array('src' => $this->frameset . (isset($_REQUEST['sid']) ? '?sid=' . $_REQUEST['sid'] : '?home=1') . (isset($_REQUEST['tab']) ? '&tab=' . $_REQUEST['tab'] : '') . '&pnt=edheader', 'name' => 'edheader', 'noresize' => null, 'scrolling' => 'no'));
-		$frameset->addFrame(array('src' => $this->frameset . (isset($_REQUEST['sid']) ? '?sid=' . $_REQUEST['sid'] : '?home=1') . (isset($_REQUEST['tab']) ? '&tab=' . $_REQUEST['tab'] : '') . '&pnt=edbody', 'name' => 'edbody', 'scrolling' => 'auto'));
-		$frameset->addFrame(array('src' => $this->frameset . (isset($_REQUEST['sid']) ? '?sid=' . $_REQUEST['sid'] : '?home=1') . '&pnt=edfooter', 'name' => 'edfooter', 'scrolling' => 'no'));
+		$frameset->addFrame(array('src' => $this->frameset . ($sid !== false ? '?sid=' . $sid : '?home=1') . ($tab ? '&tab=' . $tab : '') . '&pnt=edheader', 'name' => 'edheader', 'noresize' => null, 'scrolling' => 'no'));
+		$frameset->addFrame(array('src' => $this->frameset . ($sid !== false ? '?sid=' . $sid : '?home=1') . ($tab ? '&tab=' . $tab : '') . '&pnt=edbody', 'name' => 'edbody', 'scrolling' => 'auto'));
+		$frameset->addFrame(array('src' => $this->frameset . ($sid !== false ? '?sid=' . $sid : '?home=1') . '&pnt=edfooter', 'name' => 'edfooter', 'scrolling' => 'no'));
 
 		// set and return html code
 		$body = $frameset->getHtml() . $noframeset->getHTML();
@@ -184,7 +185,7 @@ class we_tool_frames extends weModuleFrames{
 	 * @return string
 	 */
 	function getHTMLEditorHeader(){
-		if(isset($_REQUEST['home'])){
+		if(we_base_request::_(we_base_request::BOOL, 'home')){
 			return $this->getHTMLDocument(we_html_element::htmlBody(array('bgcolor' => '#F0EFF0'), ''));
 		}
 
@@ -244,9 +245,9 @@ function setTab(tab) {
 
 	function getHTMLEditorBody(){
 
-		$hiddens = array('cmd' => 'tool_' . $this->toolName . '_edit', 'pnt' => 'edbody', 'vernr' => weRequest('int', 'vernr', 0));
+		$hiddens = array('cmd' => 'tool_' . $this->toolName . '_edit', 'pnt' => 'edbody', 'vernr' => we_base_request::_(we_base_request::INT, 'vernr', 0));
 
-		if(isset($_REQUEST["home"]) && $_REQUEST["home"]){
+		if(we_base_request::_(we_base_request::BOOL, "home")){
 			$hiddens['cmd'] = 'home';
 			$GLOBALS['we_print_not_htmltop'] = true;
 			$GLOBALS['we_head_insert'] = $this->View->getJSProperty();
@@ -273,7 +274,7 @@ function setTab(tab) {
 
 	function getHTMLEditorFooter(){
 
-		if(isset($_REQUEST["home"])){
+		if(we_base_request::_(we_base_request::BOOL, "home")){
 			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#F0EFF0"), ""));
 		}
 
@@ -319,13 +320,13 @@ function we_save() {
 	}
 
 	function getHTMLProperties($preselect = ''){
-		$tabNr = isset($_REQUEST['tabnr']) ? ($_REQUEST['tabnr']) : 1;
+		$tabNr = we_base_request::_(we_base_request::INT, 'tabnr', 1);
 
 		$hiddens = array('cmd' => '',
 			'pnt' => 'edbody',
 			'tabnr' => $tabNr,
-			'vernr' => weRequest('int', 'vernr', 0),
-			'delayParam' => weRequest('raw', 'delayParam', '')
+			'vernr' => we_base_request::_(we_base_request::INT, 'vernr', 0),
+			'delayParam' => we_base_request::_(we_base_request::RAW, 'delayParam', '')
 		);
 
 		return $this->View->getCommonHiddens($hiddens) .
@@ -358,12 +359,12 @@ function we_save() {
 	}
 
 	function getHTMLCmd(){
-		if(!isset($_REQUEST["pid"])){
+		$pid = we_base_request::_(we_base_request::STRING, "pid");
+		if($pid === false){
 			exit;
 		}
 
-		$pid = $_REQUEST["pid"];
-		$offset = weRequest('int', "offset", 0);
+		$offset = we_base_request::_(we_base_request::INT, "offset", 0);
 		$_class = $this->toolClassName . 'TreeDataSource';
 
 		$_loader = new $_class($this->TreeSource);
@@ -391,7 +392,7 @@ function we_save() {
 	}
 
 	function getHTMLExitQuestion(){
-		if(($dp = weRequest('raw', 'delayParam'))){
+		if(($dp = we_base_request::_(we_base_request::RAW, 'delayParam'))){
 
 			$_frame = 'opener.' . $this->topFrame;
 			$_form = $_frame . '.document.we_form';

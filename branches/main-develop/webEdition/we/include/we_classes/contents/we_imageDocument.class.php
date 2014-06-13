@@ -928,12 +928,12 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 
 			if(isset($_FILES['we_ui_' . $formname]['name']) && is_array($_FILES['we_ui_' . $formname]['name'])){
 				foreach($_FILES['we_ui_' . $formname]['name'] as $imgName => $filename){
-					$_imgDataId = weRequest('string', 'WE_UI_IMG_DATA_ID_' . $imgName);
+					$_imgDataId = we_base_request::_(we_base_request::STRING, 'WE_UI_IMG_DATA_ID_' . $imgName);
 
 					if($_imgDataId !== false && isset($_SESSION[$_imgDataId])){
 						$_SESSION[$_imgDataId]['doDelete'] = false;
 
-						if(weRequest('bool', 'WE_UI_DEL_CHECKBOX_' . $imgName)){
+						if(we_base_request::_(we_base_request::BOOL, 'WE_UI_DEL_CHECKBOX_' . $imgName)){
 							$_SESSION[$_imgDataId]['doDelete'] = true;
 						} elseif($filename){
 							// file is selected, check to see if it is an image

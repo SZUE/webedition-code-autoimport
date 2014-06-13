@@ -33,17 +33,18 @@ echo we_html_tools::getHtmlTop() . STYLESHEET;
 
 $we_fileData = "";
 
-if(isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] == "save"){
-	if(isset($_REQUEST["editFile"])){
-		we_base_file::save($_REQUEST["id"], $_REQUEST["editFile"]);
+$id = we_base_request::_(we_base_request::FILE, 'id');
+if(we_base_request::_(we_base_request::STRING, "cmd") == "save"){
+	if(($data = we_base_request::_(we_base_request::RAW, "editFile")) !== false){
+		we_base_file::save($id, $data);
 	}
 	$we_fileData = stripslashes($_REQUEST["editFile"]);
-} else if(isset($_REQUEST["id"])){
+} else if($id){
 
-	$_REQUEST["id"] = str_replace("//", "/", $_REQUEST["id"]);
-	$we_fileData = we_base_file::load($_REQUEST["id"]);
+	$id = str_replace("//", "/", $id);
+	$we_fileData = we_base_file::load($id);
 	if($we_fileData === false){
-		$we_alerttext = sprintf(g_l('alert', "[can_not_open_file]"), str_replace(str_replace("\\", "/", dirname($_REQUEST["id"])) . "/", "", $_REQUEST["id"]), 1);
+		$we_alerttext = sprintf(g_l('alert', "[can_not_open_file]"), str_replace(str_replace("\\", "/", dirname($id)) . "/", "", $id), 1);
 	}
 }
 
@@ -65,7 +66,7 @@ if(isset($we_alerttext)){
 		self.close();
 <?php } ?>
 	self.focus();
-<?php if(isset($_REQUEST["editFile"]) && (!isset($we_alerttext))){ ?>
+<?php if(isset($data) && (!isset($we_alerttext))){ ?>
 		opener.top.fscmd.selectDir();
 		self.close();
 <?php } ?>
@@ -75,7 +76,8 @@ if(isset($we_alerttext)){
 <body class="weDialogBody" onResize="setSize()" style="width:100%; height:100%"><center>
 		<form method="post">
 			<input type="hidden" name="cmd" value="save" />
-			<?php print we_html_tools::htmlDialogLayout($content, g_l('global', '[edit_file]') . ": <span class=\"weMultiIconBoxHeadline\">" . str_replace(str_replace("\\", "/", dirname($_REQUEST["id"])) . "/", "", $_REQUEST["id"]), $buttons, 1) . "</span>"; ?>
+			<?php echo we_html_tools::htmlDialogLayout($content, g_l('global', '[edit_file]') . ": <span class=\"weMultiIconBoxHeadline\">" . str_replace(str_replace("\\", "/", dirname($id)) . "/", "", $id), $buttons, 1) . "</span>"; ?>
 		</form></center>
 </body>
 </html>
+s

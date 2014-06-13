@@ -62,7 +62,7 @@ class we_selector_query{
 	 *
 	 * @return void
 	 */
-	function queryTable($search, $table, $types = null, $limit = null){
+	function queryTable($search, $table, array $types, $limit = null){
 		$search = strtr($search, array('[' => '\\[', ']' => '\\]'));
 		$userExtraSQL = $this->getUserExtraQuery($table);
 
@@ -82,33 +82,30 @@ class we_selector_query{
 				$typeField = "ContentType";
 		}
 
-		$where = "Path = '" . $this->db->escape($search) . "'";
+		$where = "Path='" . $this->db->escape($search) . "'";
 		$isFolder = 1;
 		$addCT = 0;
 
-		if(isset($types) && is_array($types)){
-			for($i = 0; $i < count($types); $i++){
-				if($types[$i] != ""){
-					$types[$i] = str_replace(" ", "", $types[$i]);
-					if($types[$i] == "folder"){
-						$where .= ($i < 1 ? " AND (" : " OR ") . "IsFolder=1";
-					} elseif(isset($typeField) && $typeField != ""){
-						$where .= ($i < 1 ? " AND (" : " OR ") . "$typeField='" . $this->db->escape($types[$i]) . "'";
-						$isFolder = 0;
-						$addCT = 1;
-					}
-					$where .= $i == (count($types) - 1) ? ")" : "";
-				}
+		$types = array_unique(array_filter($types));
+
+		$q = array();
+		foreach($types as $type){
+			$type = str_replace(" ", "", $type);
+			if($type == 'folder'){
+				$q[] = 'IsFolder=1';
+			} elseif(isset($typeField) && $typeField){
+				$q[] = $typeField . '="' . $this->db->escape($type) . '"';
+				$isFolder = 0;
+				$addCT = 1;
 			}
 		}
+		$where.=($q ? ' AND (' . implode('OR ', $q) . ')' : '');
 		if($addCT){
 			$this->addQueryField($typeField);
 		}
-		if(!empty($userExtraSQL)){
-			$where .= $userExtraSQL;
-		}
+		$where .= ($userExtraSQL ? $userExtraSQL : '');
 
-		if(!empty($this->condition)){
+		if($this->condition){
 			foreach($this->condition as $val){
 				$where .= ' ' . $val['queryOperator'] . " " . $val['field'] . $val['conditionOperator'] . "'" . $val['value'] . "'";
 			}
@@ -131,7 +128,7 @@ class we_selector_query{
 	 *
 	 * @return void
 	 */
-	function search($search, $table, $types = null, $limit = null, $rootDir = ""){
+	function search($search, $table, array $types, $limit = null, $rootDir = ""){
 		$search = strtr($search, array("[" => "\\\[", "]" => "\\\]"));
 		$userExtraSQL = $this->getUserExtraQuery($table);
 		switch($table){
@@ -157,25 +154,28 @@ class we_selector_query{
 		$isFolder = 0;
 		$addCT = 0;
 
-		if(isset($types) && is_array($types)){
-			$types = array_unique($types);
-			for($i = 0; $i < count($types); $i++){
-				if($types[$i] != ""){
-					$types[$i] = str_replace(" ", "", $types[$i]);
-					if($types[$i] == "folder"){
-						$where .= ($i < 1 ? ' AND (' : ' OR ') . 'IsFolder=1';
-						$isFolder = 1;
-					} elseif(isset($typeField) && $typeField != ""){
-						$where .= ($i < 1 ? " AND (" : " OR ") . "$typeField='" . $this->db->escape($types[$i]) . "'";
-						$addCT = 1;
-					}
-					$where .= $i == (count($types) - 1) ? ')' : '';
-				}
+
+
+
+
+
+		$types = array_unique(array_filter($types));
+
+		$q = array();
+		foreach($types as $type){
+			$type = str_replace(" ", "", $type);
+			if($type == 'folder'){
+				$q[] = 'IsFolder=1';
+			} elseif(isset($typeField) && $typeField){
+				$q[] = $typeField . '="' . $this->db->escape($type) . '"';
+				$isFolder = 0;
+				$addCT = 1;
 			}
-		} else {
+		}
+		$where.=($q ? ' AND (' . implode('OR ', $q) . ')' : '');
+		if(!$q){
 			$isFolder = 1;
 		}
-
 		if($addCT){
 			$this->addQueryField($typeField);
 		}

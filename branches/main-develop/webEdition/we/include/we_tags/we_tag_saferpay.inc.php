@@ -249,23 +249,23 @@ function we_tag_saferpay($attribs){
 
 		switch($langID){
 			case "de" :
-				$processOK = 'Bitte haben Sie einen Moment Geduld.<br>Falls sich kein Fenster &ouml;ffnet klicken Sie bitte <a href="' . $payinit_url . '" onclick="OpenSaferpayTerminal(\'' . $payinit_url . '\', this, \'LINK\');">hier</a>';
+				$processOK = 'Bitte haben Sie einen Moment Geduld.<br/>Falls sich kein Fenster &ouml;ffnet klicken Sie bitte <a href="' . $payinit_url . '" onclick="OpenSaferpayTerminal(\'' . $payinit_url . '\', this, \'LINK\');">hier</a>';
 				$processError = 'Leider gab es Probleme mit der Abbuchung. Bitte versuchen Sie es sp&auml;ter erneut.';
 				break;
 			case "en" :
-				$processOK = 'This will take some seconds.<br>If no window opens please click <a href="' . $payinit_url . '" onclick="OpenSaferpayTerminal(\'' . $payinit_url . '\', this, \'LINK\');">here</a>';
+				$processOK = 'This will take some seconds.<br/>If no window opens please click <a href="' . $payinit_url . '" onclick="OpenSaferpayTerminal(\'' . $payinit_url . '\', this, \'LINK\');">here</a>';
 				$processError = 'A major problem occured. Please try again later.';
 				break;
 			case "fr" :
-				$processOK = 'Soyez patient, cela prendra quelques secondes.<br>Si aucune  fen�tre s affiche, cliquez <a href="' . $payinit_url . '" onclick="OpenSaferpayTerminal(\'' . $payinit_url . '\', this, \'LINK\');">ici</a>';
+				$processOK = 'Soyez patient, cela prendra quelques secondes.<br/>Si aucune  fen�tre s affiche, cliquez <a href="' . $payinit_url . '" onclick="OpenSaferpayTerminal(\'' . $payinit_url . '\', this, \'LINK\');">ici</a>';
 				$processError = 'Une erreur Une erreur s est produite. S il vous pla�t, essayez de nouveau ult�rieurement..';
 				break;
 			case "it" :
-				$processOK = 'Sia prego paziente.<br>Se nessuna finestra apre, clicca <a href="' . $payinit_url . '" onclick="OpenSaferpayTerminal(\'' . $payinit_url . '\', this, \'LINK\');">prego qui</a>';
+				$processOK = 'Sia prego paziente.<br/>Se nessuna finestra apre, clicca <a href="' . $payinit_url . '" onclick="OpenSaferpayTerminal(\'' . $payinit_url . '\', this, \'LINK\');">prego qui</a>';
 				$processError = 'Un errore grave � occorso. Prego prova ancora successivamente..';
 				break;
 			default:
-				$processOK = 'Bitte haben Sie einen Moment Geduld.<br>Falls sich kein Fenster &ouml;ffnet klicken Sie bitte <a href="' . $payinit_url . '" onclick="OpenSaferpayTerminal(\'' . $payinit_url . '\', this, \'LINK\');">hier</a>';
+				$processOK = 'Bitte haben Sie einen Moment Geduld.<br/>Falls sich kein Fenster &ouml;ffnet klicken Sie bitte <a href="' . $payinit_url . '" onclick="OpenSaferpayTerminal(\'' . $payinit_url . '\', this, \'LINK\');">hier</a>';
 				$processError = 'Leider gab es Probleme mit der Abbuchung. Bitte versuchen Sie es sp&auml;ter erneut.';
 		}
 

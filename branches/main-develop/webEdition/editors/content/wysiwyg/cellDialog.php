@@ -24,29 +24,16 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 if(!(
-	weRequest('bool', 'we_dialog_args', false, 'outsideWE') ||
-	weRequest('bool', 'we_dialog_args', false, 'isFrontend')
+	we_base_request::_(we_base_request::BOOL, 'we_dialog_args', false, 'outsideWE') ||
+	we_base_request::_(we_base_request::BOOL, 'we_dialog_args', false, 'isFrontend')
 	)){
 	we_html_tools::protect();
-}
-if(isset($_REQUEST["we_dialog_args"]["vAlign"])){
-	$_REQUEST["we_dialog_args"]["valign"] = $_REQUEST["we_dialog_args"]["vAlign"];
-	unset($_REQUEST["we_dialog_args"]["vAlign"]);
-}
-if(isset($_REQUEST["we_dialog_args"]["bgColor"])){
-	$_REQUEST["we_dialog_args"]["bgcolor"] = $_REQUEST["we_dialog_args"]["bgColor"];
-	unset($_REQUEST["we_dialog_args"]["bgColor"]);
-}
-
-if(isset($_REQUEST["we_dialog_args"]["colSpan"])){
-	$_REQUEST["we_dialog_args"]["colspan"] = $_REQUEST["we_dialog_args"]["colSpan"];
-	unset($_REQUEST["we_dialog_args"]["colSpan"]);
 }
 
 $dialog = new we_dialog_cell();
 $dialog->initByHttp();
 $dialog->registerOkJsFN("weDoCellJS");
-print $dialog->getHTML();
+echo $dialog->getHTML();
 
 function weDoCellJS(){
 	return '

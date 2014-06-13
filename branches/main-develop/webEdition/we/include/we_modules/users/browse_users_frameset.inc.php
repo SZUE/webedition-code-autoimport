@@ -25,11 +25,11 @@
 $_REQUEST['id'] = $_REQUEST['we_cmd'][4];
 $_REQUEST['table'] = USER_TABLE;
 
-$_REQUEST['JSIDName'] = we_cmd_dec(1);
-$_REQUEST['JSTextName'] = we_cmd_dec(2);
-$_REQUEST['JSCommand'] = we_cmd_dec(5);
-$_REQUEST['rootDirID'] = weRequest('int', 'we_cmd', 0, 7);
+$_REQUEST['JSIDName'] = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 1);
+$_REQUEST['JSTextName'] = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 2);
+$_REQUEST['JSCommand'] = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 5);
+$_REQUEST['rootDirID'] = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 7);
 $_REQUEST['filter'] = $_REQUEST['we_cmd'][3];
-$_REQUEST['multiple'] = weRequest('bool', 'we_cmd', false, 8);
+$_REQUEST['multiple'] = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 8);
 
 require_once(WE_USERS_MODULE_PATH . "we_usersSelect.php");

@@ -37,8 +37,8 @@ if(file_exists($supportDebuggingFile)){
 }
 
 echo we_html_tools::getHtmlTop() . STYLESHEET;
-$nf = weRequest('raw', 'nf');
-$sid = weRequest('raw', "sid");
+$nf = we_base_request::_(we_base_request::RAW, 'nf');
+$sid = we_base_request::_(we_base_request::RAW, "sid");
 
 function _cutText($text, $l){
 	if(strlen($text) > $l){
@@ -143,13 +143,9 @@ function _cutText($text, $l){
 						$ct : '');
 			}
 
-			$arDir = array();
-			$arFile = array();
-			$ordDir = array();
-			$ordFile = array();
-			$final = array();
+			$arDir = $arFile = $ordDir = $ordFile = $final = array();
 
-			$org = ($_REQUEST["dir"] == "" ? "/" : $_REQUEST["dir"]);
+			$org = ($_REQUEST["dir"] ? $_REQUEST["dir"] : '/');
 
 
 			$dir = $_SERVER['DOCUMENT_ROOT'] . $_REQUEST["dir"];
@@ -167,7 +163,7 @@ function _cutText($text, $l){
 					if($entry != '.' && $entry != '..'){
 						if(is_link($dir . '/' . $entry) || is_dir($dir . '/' . $entry)){
 							$arDir[] = $entry;
-							switch(weRequest('int', "ord")){
+							switch(we_base_request::_(we_base_request::INT, "ord")){
 								case 10:
 								case 11:
 									$ordDir[] = $entry;
@@ -187,7 +183,7 @@ function _cutText($text, $l){
 							}
 						} else {
 							$arFile[] = $entry;
-							switch(weRequest('int', "ord")){
+							switch(we_base_request::_(we_base_request::INT, "ord")){
 								case 10:
 								case 11:
 									$ordFile[] = $entry;
@@ -210,10 +206,10 @@ function _cutText($text, $l){
 				}
 				$dir_obj->close();
 			} else {
-				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR)) . '<br><br><div class="middlefontgray" align="center">-- ' . g_l('alert', "[access_denied]") . ' --</div>';
+				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR)) . '<br/><br/><div class="middlefontgray" align="center">-- ' . g_l('alert', "[access_denied]") . ' --</div>';
 			}
 
-			switch(weRequest('int', "ord")){
+			switch(we_base_request::_(we_base_request::INT, "ord")){
 				case 10:
 				case 20:
 				case 30:
@@ -357,7 +353,7 @@ var i = 0;
 			<input type="hidden" name="cmd" value="<?php print $nf; ?>" />
 			<?php if($nf == "rename_folder" || $nf == "rename_file"){ ?><input type="hidden" name="sid" value="<?php echo $sid; ?>" />
 				<input type="hidden" name="oldtxt" value="" /><?php } ?>
-			<input type="hidden" name="pat" value="<?php print weRequest('raw', "pat", ""); ?>" />
+			<input type="hidden" name="pat" value="<?php print we_base_request::_(we_base_request::RAW, "pat", ""); ?>" />
 		<?php } ?>
 	</form>
 

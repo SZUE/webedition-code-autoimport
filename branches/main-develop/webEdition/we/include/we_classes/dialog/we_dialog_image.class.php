@@ -119,7 +119,7 @@ class we_dialog_image extends we_dialog_base{
 		$this->args['longdesc'] = $longdesc;
 		$this->args['longdescid'] = $longdescid;
 		$this->args['longdescsrc'] = ($longdesc ? $tokkens[0] : '');
-		$this->args['ratio'] = weRequest('int', 'we_dialog_args', 1, 'ratio');
+		$this->args['ratio'] = we_base_request::_(we_base_request::INT, 'we_dialog_args', 1, 'ratio');
 	}
 
 	function initByFileID($fileID, $width = 0, $height = 0, $hspace = 0, $vspace = 0, $border = 0, $alt = '', $align = '', $name = '', $thumb = '', $class = '', $title = '', $longdesc = ''){
@@ -182,12 +182,12 @@ class we_dialog_image extends we_dialog_base{
 					$this->initBySrc($extSrc, $width, $height, $hspace, $vspace, $border, $alt, $align, $name, $class, $title, $longdesc);
 					break;
 				case we_base_link::TYPE_INT:
-					if(weRequest('bool', 'imgChangedCmd') && $fileID){
+					if(we_base_request::_(we_base_request::BOOL, 'imgChangedCmd') && $fileID){
 						$imgpath = $_SERVER['DOCUMENT_ROOT'] . id_to_path($fileID);
 						$imgObj = new we_imageDocument();
 						$imgObj->initByID($fileID);
 
-						$preserveData = (weRequest('bool', 'wasThumbnailChange') || weRequest('bool', 'isTinyMCEInitialization'));
+						$preserveData = (we_base_request::_(we_base_request::BOOL, 'wasThumbnailChange') || we_base_request::_(we_base_request::BOOL, 'isTinyMCEInitialization'));
 						$width = $imgObj->getElement('width');
 						$height = $imgObj->getElement('height');
 						$alt = $preserveData ? $alt : $imgObj->getElement('alt');

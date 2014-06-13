@@ -51,7 +51,7 @@ abstract class we_backup_preparer{
 			'offset' => 0,
 			'current_table' => '',
 			'backup_steps' => 5,
-			'backup_log' => weRequest('bool', 'backup_log'),
+			'backup_log' => we_base_request::_(we_base_request::BOOL, 'backup_log'),
 			'backup_log_data' => '',
 			'backup_log_file' => $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'data/lastlog.php',
 			'limits' => array(
@@ -80,7 +80,7 @@ abstract class we_backup_preparer{
 		}
 		we_updater::fixInconsistentTables();
 
-		$_SESSION['weS']['weBackupVars']['protect'] = weRequest('bool', 'protect');
+		$_SESSION['weS']['weBackupVars']['protect'] = we_base_request::_(we_base_request::BOOL, 'protect');
 
 		$_SESSION['weS']['weBackupVars']['options']['compress'] = (isset($_REQUEST['compress']) && $_REQUEST['compress'] && we_base_file::hasCompression($_REQUEST['compress'])) ? we_backup_base::COMPRESSION : we_backup_base::NO_COMPRESSION;
 		$_SESSION['weS']['weBackupVars']['filename'] = ((isset($_REQUEST['filename']) && $_REQUEST['filename']) ? ($_REQUEST['filename']) : '') . ($_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_base::NO_COMPRESSION ? '.' . we_base_file::getZExtension(we_backup_base::COMPRESSION) : '');
@@ -178,39 +178,39 @@ abstract class we_backup_preparer{
 	static function getOptions(&$options, &$handle_options){
 
 		$options = array(
-			'backup_extern' => weRequest('bool', 'handle_extern'),
-			'convert_charset' => weRequest('bool', "convert_charset"),
-			'compress' => weRequest('bool', 'compress') ? we_backup_base::COMPRESSION : we_backup_base::NO_COMPRESSION,
-			'backup_binary' => weRequest('bool', 'handle_binary'),
-			'rebuild' => weRequest('bool', 'rebuild'),
-			'export2server' => weRequest('bool', 'export_server'),
-			'export2send' => weRequest('bool', 'export_send'),
-			'do_import_after_backup' => weRequest('bool', 'do_import_after_backup'),
+			'backup_extern' => we_base_request::_(we_base_request::BOOL, 'handle_extern'),
+			'convert_charset' => we_base_request::_(we_base_request::BOOL, "convert_charset"),
+			'compress' => we_base_request::_(we_base_request::BOOL, 'compress') ? we_backup_base::COMPRESSION : we_backup_base::NO_COMPRESSION,
+			'backup_binary' => we_base_request::_(we_base_request::BOOL, 'handle_binary'),
+			'rebuild' => we_base_request::_(we_base_request::BOOL, 'rebuild'),
+			'export2server' => we_base_request::_(we_base_request::BOOL, 'export_server'),
+			'export2send' => we_base_request::_(we_base_request::BOOL, 'export_send'),
+			'do_import_after_backup' => we_base_request::_(we_base_request::BOOL, 'do_import_after_backup'),
 		);
 
 		$handle_options = array(
-			'user' => weRequest('bool', 'handle_user'),
-			'customer' => weRequest('bool', 'handle_customer'),
-			'shop' => weRequest('bool', 'handle_shop'),
-			'workflow' => weRequest('bool', 'handle_workflow'),
-			'todo' => weRequest('bool', 'handle_todo'),
-			'newsletter' => weRequest('bool', 'handle_newsletter'),
-			'temporary' => weRequest('bool', 'handle_temporary'),
-			'history' => weRequest('bool', 'handle_history'),
-			'banner' => weRequest('bool', 'handle_banner'),
-			'core' => weRequest('bool', 'handle_core'),
-			'object' => weRequest('bool', 'handle_object'),
-			'schedule' => weRequest('bool', 'handle_schedule'),
-			'settings' => weRequest('bool', 'handle_settings'),
-			'configuration' => weRequest('bool', 'handle_configuration'),
-			'export' => weRequest('bool', 'handle_export'),
-			'voting' => weRequest('bool', 'handle_voting'),
-			'spellchecker' => weRequest('bool', 'handle_spellchecker'),
-			'versions' => weRequest('bool', 'handle_versions'),
-			'versions_binarys' => weRequest('bool', 'handle_versions_binarys'),
+			'user' => we_base_request::_(we_base_request::BOOL, 'handle_user'),
+			'customer' => we_base_request::_(we_base_request::BOOL, 'handle_customer'),
+			'shop' => we_base_request::_(we_base_request::BOOL, 'handle_shop'),
+			'workflow' => we_base_request::_(we_base_request::BOOL, 'handle_workflow'),
+			'todo' => we_base_request::_(we_base_request::BOOL, 'handle_todo'),
+			'newsletter' => we_base_request::_(we_base_request::BOOL, 'handle_newsletter'),
+			'temporary' => we_base_request::_(we_base_request::BOOL, 'handle_temporary'),
+			'history' => we_base_request::_(we_base_request::BOOL, 'handle_history'),
+			'banner' => we_base_request::_(we_base_request::BOOL, 'handle_banner'),
+			'core' => we_base_request::_(we_base_request::BOOL, 'handle_core'),
+			'object' => we_base_request::_(we_base_request::BOOL, 'handle_object'),
+			'schedule' => we_base_request::_(we_base_request::BOOL, 'handle_schedule'),
+			'settings' => we_base_request::_(we_base_request::BOOL, 'handle_settings'),
+			'configuration' => we_base_request::_(we_base_request::BOOL, 'handle_configuration'),
+			'export' => we_base_request::_(we_base_request::BOOL, 'handle_export'),
+			'voting' => we_base_request::_(we_base_request::BOOL, 'handle_voting'),
+			'spellchecker' => we_base_request::_(we_base_request::BOOL, 'handle_spellchecker'),
+			'versions' => we_base_request::_(we_base_request::BOOL, 'handle_versions'),
+			'versions_binarys' => we_base_request::_(we_base_request::BOOL, 'handle_versions_binarys'),
 			'tools' => array(),
-			'spellchecker' => weRequest('bool', 'handle_spellchecker'),
-			'glossary' => weRequest('bool', 'handle_glossary'),
+			'spellchecker' => we_base_request::_(we_base_request::BOOL, 'handle_spellchecker'),
+			'glossary' => we_base_request::_(we_base_request::BOOL, 'handle_glossary'),
 			'backup' => $options['backup_extern'],
 		);
 
@@ -248,7 +248,7 @@ abstract class we_backup_preparer{
 	}
 
 	static function getBackupFile(){
-		if(($backup_select = weRequest('file', 'backup_select'))){
+		if(($backup_select = we_base_request::_(we_base_request::FILE, 'backup_select'))){
 			return $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . $backup_select;
 		}
 

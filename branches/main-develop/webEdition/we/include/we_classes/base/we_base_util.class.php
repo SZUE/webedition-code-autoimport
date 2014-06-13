@@ -71,7 +71,7 @@ abstract class we_base_util{
 	}
 
 	/**
-	 * Removes from string all newlines and converts all <br> to newlines
+	 * Removes from string all newlines and converts all <br/> to newlines
 	 * Returns the converted String.
 	 *
 	 * @static
@@ -206,13 +206,13 @@ abstract class we_base_util{
 			}
 		}
 
-		if(!empty($files)){
+		if($files){
 			foreach($files as $k => $v){
 				$_params[$k] = '@' . $v;
 			}
 		}
 
-		if(!empty($_params)){
+		if($_params){
 			curl_setopt($_session, CURLOPT_POST, 1);
 			curl_setopt($_session, CURLOPT_POSTFIELDS, $_params);
 		}
@@ -243,11 +243,11 @@ abstract class we_base_util{
 			$_response['status'] = 1;
 			$_response['error'] = curl_error($_session);
 			return false;
-		} else {
-			$_response['status'] = 0;
-			$_response['data'] = $_data;
-			curl_close($_session);
 		}
+		$_response['status'] = 0;
+		$_response['data'] = $_data;
+		curl_close($_session);
+
 
 		return $_response;
 	}

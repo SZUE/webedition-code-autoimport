@@ -25,7 +25,7 @@
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 header("Content-type: text/css");
-$bgcol = weRequest('string', 'tinyMceBackgroundColor');
+$bgcol = we_base_request::_(we_base_request::STRING, 'tinyMceBackgroundColor');
 $bgcol = preg_match('/^[a-f0-9]{6}$/i', $bgcol) ? '#' . $bgcol : $bgcol;
 echo $bgcol ? '
 body {

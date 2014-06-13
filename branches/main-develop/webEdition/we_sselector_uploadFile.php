@@ -28,7 +28,7 @@ we_html_tools::protect();
 echo we_html_tools::getHtmlTop() .
  STYLESHEET;
 
-$path=weRequest('file','pat');
+$path=we_base_request::_(we_base_request::FILE,'pat');
 $cpat = str_replace('//', '/', $_SERVER['DOCUMENT_ROOT'] . $path);
 
 function weFile($f){
@@ -38,7 +38,7 @@ function weFile($f){
 $we_alerttext = "";
 
 if(isset($_FILES['we_uploadFile'])){
-	$overwrite = weRequest('bool',"overwrite");
+	$overwrite = we_base_request::_(we_base_request::BOOL,"overwrite");
 	$tempName = TEMP_PATH . "/" . we_base_file::getUniqueId();
 	move_uploaded_file($_FILES['we_uploadFile']["tmp_name"], $tempName);
 	if(file_exists($cpat . "/" . $_FILES['we_uploadFile']["name"])){

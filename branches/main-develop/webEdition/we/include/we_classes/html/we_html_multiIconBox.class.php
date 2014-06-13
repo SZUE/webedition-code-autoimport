@@ -196,8 +196,8 @@ abstract class we_html_multiIconBox{
 				var CLASSNAME = "classname";
 				var VALIGN = "valign";
 			}else{
-				var CELLPADDING = "cellPadding";
-				var CELLSPACING = "cellSpacing";
+				var CELLPADDING = "cellpadding";
+				var CELLSPACING = "cellspacing";
 				var CLASSNAME = "className";
 				var VALIGN = "vAlign";
 			}

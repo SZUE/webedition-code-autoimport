@@ -22,39 +22,39 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-switch(weRequest('string', 'we_cmd', '', 0)){
+switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 	case 'openCatselector' :
-		$_REQUEST['noChoose'] = weRequest('bool', 'we_cmd', false, 8);
+		$_REQUEST['noChoose'] = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 8);
 	case 'openDirselector' :
 	case 'openSelector' :
 	case 'openCatselector' :
 	case 'openDelSelector' :
-		$_REQUEST['id'] = weRequest('int', 'we_cmd', 0, 1);
-		$_REQUEST['table'] = weRequest('table', 'we_cmd', FILE_TABLE, 2);
-		$_REQUEST['JSIDName'] = we_cmd_dec(3);
-		$_REQUEST['JSTextName'] = we_cmd_dec(4);
-		$_REQUEST['JSCommand'] = we_cmd_dec(5);
-		$_REQUEST['rootDirID'] = weRequest('int', 'we_cmd', 0, 7);
-		$_REQUEST['filter'] = weRequest('raw', 'we_cmd', '', 8);
-		$_REQUEST['multiple'] = weRequest('raw', 'we_cmd', '', 9);
+		$_REQUEST['id'] = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1);
+		$_REQUEST['table'] = we_base_request::_(we_base_request::TABLE, 'we_cmd', FILE_TABLE, 2);
+		$_REQUEST['JSIDName'] = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 3);
+		$_REQUEST['JSTextName'] = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 4);
+		$_REQUEST['JSCommand'] = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 5);
+		$_REQUEST['rootDirID'] = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 7);
+		$_REQUEST['filter'] = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 8);
+		$_REQUEST['multiple'] = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 9);
 		$extInstanceId = isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3] == 'returnToExt' ? (isset($_REQUEST['we_cmd'][4]) ? $_REQUEST['we_cmd'][4] : '') : '';
 		break;
 	case 'openDocselector':
-		$_REQUEST['id'] = weRequest('int', 'we_cmd', 0, 1);
-		$_REQUEST['table'] = weRequest('table', 'we_cmd', FILE_TABLE, 2);
-		$_REQUEST['JSIDName'] = we_cmd_dec(3);
-		$_REQUEST['JSTextName'] = we_cmd_dec(4);
-		$_REQUEST['JSCommand'] = we_cmd_dec(5);
-		$_REQUEST['rootDirID'] = weRequest('int', 'we_cmd', 0, 7);
-		$_REQUEST['filter'] = weRequest('raw', 'we_cmd', '', 8);
-		$_REQUEST['open_doc'] = weRequest('bool', 'we_cmd', false, 9);
-		$_REQUEST['multiple'] = weRequest('bool', 'we_cmd', false, 10);
-		$_REQUEST['canSelectDir'] = weRequest('bool', 'we_cmd', false, 11);
+		$_REQUEST['id'] = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1);
+		$_REQUEST['table'] = we_base_request::_(we_base_request::TABLE, 'we_cmd', FILE_TABLE, 2);
+		$_REQUEST['JSIDName'] = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 3);
+		$_REQUEST['JSTextName'] = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 4);
+		$_REQUEST['JSCommand'] = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 5);
+		$_REQUEST['rootDirID'] = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 7);
+		$_REQUEST['filter'] = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 8);
+		$_REQUEST['open_doc'] = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 9);
+		$_REQUEST['multiple'] = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 10);
+		$_REQUEST['canSelectDir'] = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 11);
 		$extInstanceId = isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3] == 'returnToExt' ? (isset($_REQUEST['we_cmd'][4]) ? $_REQUEST['we_cmd'][4] : '') : '';
 		break;
 }
 
-switch(weRequest('string', 'we_cmd', '', 0)){
+switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 	case 'openDirselector' :
 		require_once (WEBEDITION_PATH . 'we_dirSelect.php');
 		break;

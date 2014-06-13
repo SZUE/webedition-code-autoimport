@@ -26,7 +26,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 $protect = we_base_moduleInfo::isActive('export') && we_users_util::canEditModule('export') ? null : array(false);
 we_html_tools::protect($protect);
 
-$what = weRequest('string', "pnt", "frameset");
+$what = we_base_request::_(we_base_request::STRING, "pnt", "frameset");
 
 $weFrame = new we_export_frames();
 $weFrame->getHTMLDocumentHeader($what);

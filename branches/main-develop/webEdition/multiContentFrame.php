@@ -27,9 +27,9 @@ we_html_tools::protect();
 
 $_cmd_string = '';
 
-if(weRequest('bool', 'SEEM_edit_include')){
+if(we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include')){
 	for($i = 1; $i < 4; $i++){
-		$_cmd_string .= ",'" . weRequest('raw', 'we_cmd', '', $i) . "'";
+		$_cmd_string .= ",'" . we_base_request::_(we_base_request::RAW, 'we_cmd', '', $i) . "'";
 	}
 	$_cmd_string .= ",'SEEM_edit_include'";
 }

@@ -29,7 +29,7 @@ we_html_tools::protect($protect);
 echo we_html_tools::getHtmlTop() .
  STYLESHEET;
 
-switch(weRequest('string', 'we_cmd', '', 0)){
+switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 	case 'saveVat':
 		$weShopVat = new we_shop_vat($_REQUEST['weShopVatId'], $_REQUEST['weShopVatText'], $_REQUEST['weShopVatVat'], $_REQUEST['weShopVatStandard']);
 

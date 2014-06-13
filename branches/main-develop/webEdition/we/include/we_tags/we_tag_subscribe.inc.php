@@ -78,7 +78,7 @@ function we_tag_subscribe($attribs){
 			$newAttribs = removeAttribs($attribs, array('name', 'type', 'value', 'size', 'values', 'maxlength', 'checked'));
 			$newAttribs['name'] = 'we_subscribe_html__';
 			$value = weTag_getAttribute("value", $attribs, false, true);
-			$ishtml = weRequest('bool', "we_subscribe_html__", (isset($attribs["value"]) ? $value : false));
+			$ishtml = we_base_request::_(we_base_request::BOOL, "we_subscribe_html__", (isset($attribs["value"]) ? $value : false));
 			$values = ($values ? makeArrayFromCSV($values) : array("Text", "HTML"));
 
 			if($ishtml){
@@ -96,7 +96,7 @@ function we_tag_subscribe($attribs){
 			$newAttribs['type'] = 'text';
 			$newAttribs['name'] = 'we_subscribe_firstname__';
 
-			$newAttribs['value'] = weRequest('raw', "we_subscribe_firstname__", $value);
+			$newAttribs['value'] = we_base_request::_(we_base_request::RAW, "we_subscribe_firstname__", $value);
 
 			return getHtmlTag('input', $newAttribs);
 
@@ -105,13 +105,13 @@ function we_tag_subscribe($attribs){
 			if($values){
 				$newAttribs = removeAttribs($attribs, array('name', 'type', 'value', 'values', 'maxlength', 'checked'));
 				$name = 'we_subscribe_salutation__';
-				$value = weRequest('string', "we_subscribe_salutation__", $value);
+				$value = we_base_request::_(we_base_request::STRING, "we_subscribe_salutation__", $value);
 				return we_getSelectField($name, $value, $values, $newAttribs, true); //same function like <we:sessionField type="select">
 			} else {
 				$newAttribs = removeAttribs($attribs, array('name', 'type', 'value', 'values'));
 				$newAttribs['name'] = 'we_subscribe_salutation__';
 				$newAttribs['type'] = 'text';
-				$newAttribs['value'] = weRequest('string', "we_subscribe_salutation__", $value);
+				$newAttribs['value'] = we_base_request::_(we_base_request::STRING, "we_subscribe_salutation__", $value);
 
 				return getHtmlTag('input', $newAttribs);
 			}
@@ -120,13 +120,13 @@ function we_tag_subscribe($attribs){
 			if($values){
 				$newAttribs = removeAttribs($attribs, array('name', 'type', 'value', 'values', 'maxlength', 'checked'));
 				$name = 'we_subscribe_title__';
-				$value = weRequest('string', "we_subscribe_title__", $value);
+				$value = we_base_request::_(we_base_request::STRING, "we_subscribe_title__", $value);
 				return we_getSelectField($name, $value, $values, $newAttribs, true); //same function like <we:sessionField type="select">
 			} else {
 				$newAttribs = removeAttribs($attribs, array('name', 'type', 'value', 'values'));
 				$newAttribs['name'] = 'we_subscribe_title__';
 				$newAttribs['type'] = 'text';
-				$newAttribs['value'] = weRequest('string', "we_subscribe_title__", $value);
+				$newAttribs['value'] = we_base_request::_(we_base_request::STRING, "we_subscribe_title__", $value);
 
 				return getHtmlTag('input', $newAttribs); // '<input type="text" name="we_subscribe_title__"'.($attr ? " $attr" : "").($value ? ' value="'.oldHtmlspecialchars($value).'"' : '').($xml ? ' /' : '').' />';
 			}
@@ -136,7 +136,7 @@ function we_tag_subscribe($attribs){
 
 			$newAttribs['type'] = 'text';
 			$newAttribs['name'] = 'we_subscribe_lastname__';
-			$newAttribs['value'] = weRequest('string', "we_subscribe_lastname__", $value);
+			$newAttribs['value'] = we_base_request::_(we_base_request::STRING, "we_subscribe_lastname__", $value);
 
 			return getHtmlTag('input', $newAttribs);
 
@@ -145,7 +145,7 @@ function we_tag_subscribe($attribs){
 			$newAttribs = removeAttribs($attribs, array('name', 'type', 'value', 'values'));
 			$newAttribs['type'] = 'text';
 			$newAttribs['name'] = 'we_subscribe_email__';
-			$newAttribs['value'] = weRequest('email', "we_subscribe_email__", $value);
+			$newAttribs['value'] = we_base_request::_(we_base_request::EMAIL, "we_subscribe_email__", $value);
 
 			return getHtmlTag('input', $newAttribs); // '<input type="text" name="we_subscribe_email__"'.($attr ? " $attr" : "").($value ? ' value="'.oldHtmlspecialchars($value).'"' : '').($xml ? ' /' : '').' />';
 	}

@@ -29,7 +29,7 @@ function saveSettings($default, $active, $langs = array()){
 	$_SESSION['weS']['dictLang'] = $default;
 }
 
-switch(weRequest('string', 'cmd', '', 0)){
+switch(we_base_request::_(we_base_request::STRING, 'cmd', '', 0)){
 	case 'addWord' :
 		if(isset($_REQUEST['cmd'][1])){
 

@@ -210,7 +210,7 @@ function we_cmd() {
 					we_html_element::jsElement($js)) .
 				we_html_element::htmlBody(array(
 					"class" => "weDialogBody",
-					"onload" => $doOnLoad ? "parent.wiz_next('wizbusy', '" . $this->path . "?pnt=wizbusy&mode=" . $mode . "&type=" . (weRequest('raw', 'type', '')) . "'); self.focus();" : "if(set_button_state) set_button_state();"
+					"onload" => $doOnLoad ? "parent.wiz_next('wizbusy', '" . $this->path . "?pnt=wizbusy&mode=" . $mode . "&type=" . (we_base_request::_(we_base_request::RAW, 'type', '')) . "'); self.focus();" : "if(set_button_state) set_button_state();"
 					), we_html_element::htmlForm($a, we_html_element::htmlHidden(array("name" => "pnt", "value" => "wizbody")) .
 						we_html_element::htmlHidden(array("name" => "type", "value" => $type)) .
 						we_html_element::htmlHidden(array("name" => "v[type]", "value" => $type)) .
@@ -247,7 +247,7 @@ function finish(rebuild) {
 }
 
 top.wizcmd.cycle();
-top.wizcmd.we_import(1,-2' . ((weRequest('string', 'type') == we_import_functions::TYPE_WE_XML) ? ',1' : '') . ');'
+top.wizcmd.we_import(1,-2' . ((we_base_request::_(we_base_request::STRING, 'type') == we_import_functions::TYPE_WE_XML) ? ',1' : '') . ');'
 			);
 		}
 
@@ -280,7 +280,7 @@ top.wizcmd.we_import(1,-2' . ((weRequest('string', 'type') == we_import_function
 
 	function getWizCmd($type = 'normal'){
 		$out = '';
-		$mode = weRequest('int', 'mode', 0);
+		$mode = we_base_request::_(we_base_request::INT, 'mode', 0);
 		if(isset($_REQUEST['v'])){
 			$v = $_REQUEST['v'];
 			$v["import_ChangeEncoding"] = isset($v["import_ChangeEncoding"]) ? $v["import_ChangeEncoding"] : 0;
@@ -289,10 +289,10 @@ top.wizcmd.we_import(1,-2' . ((weRequest('string', 'type') == we_import_function
 		}
 
 		if(isset($v["mode"]) && $v["mode"] == 1){
-			$records = weRequest('raw', "records", array());
-			$we_flds = weRequest('raw', "we_flds", array());
-			$attrs = weRequest('raw', 'attrs', array());
-			$attributes = weRequest('raw', 'attributes', array());
+			$records = we_base_request::_(we_base_request::RAW, "records", array());
+			$we_flds = we_base_request::_(we_base_request::RAW, "we_flds", array());
+			$attrs = we_base_request::_(we_base_request::RAW, 'attrs', array());
+			$attributes = we_base_request::_(we_base_request::RAW, 'attributes', array());
 
 			switch($v['cid']){
 				case -2:
@@ -319,10 +319,10 @@ top.wizcmd.we_import(1,-2' . ((weRequest('string', 'type') == we_import_function
 
 							echo we_html_element::jsElement('
 if (top.wizbody && top.wizbody.addLog){
-	top.wizbody.addLog("' . addslashes(we_html_tools::getPixel(10, 10)) . '<br>");
-	top.wizbody.addLog("' . addslashes(we_html_tools::getPixel(10, 10)) . we_html_element::htmlB(g_l('import', '[start_import]') . ' - ' . date("d.m.Y H:i:s")) . '<br><br>");
-	top.wizbody.addLog("' . addslashes(we_html_tools::getPixel(20, 5)) . we_html_element::htmlB(g_l('import', '[prepare]')) . '<br>");
-	top.wizbody.addLog("' . addslashes(we_html_tools::getPixel(20, 5)) . we_html_element::htmlB(g_l('import', '[import]')) . '<br>");
+	top.wizbody.addLog("' . addslashes(we_html_tools::getPixel(10, 10)) . '<br/>");
+	top.wizbody.addLog("' . addslashes(we_html_tools::getPixel(10, 10)) . we_html_element::htmlB(g_l('import', '[start_import]') . ' - ' . date("d.m.Y H:i:s")) . '<br/><br/>");
+	top.wizbody.addLog("' . addslashes(we_html_tools::getPixel(20, 5)) . we_html_element::htmlB(g_l('import', '[prepare]')) . '<br/>");
+	top.wizbody.addLog("' . addslashes(we_html_tools::getPixel(20, 5)) . we_html_element::htmlB(g_l('import', '[import]')) . '<br/>");
 }');
 							flush();
 
@@ -782,7 +782,7 @@ function we_import(mode, cid) {
 							}" .
 					($v['type'] == we_import_functions::TYPE_WE_XML ?
 						"if (top.wizbody && top.wizbody.addLog) {
-								top.wizbody.addLog(\"<br>" . addslashes(we_html_tools::getPixel(10, 10) . we_html_element::htmlB(g_l('import', '[end_import]') . " - " . date("d.m.Y H:i:s"))) . "<br><br>\");
+								top.wizbody.addLog(\"<br/>" . addslashes(we_html_tools::getPixel(10, 10) . we_html_element::htmlB(g_l('import', '[end_import]') . " - " . date("d.m.Y H:i:s"))) . "<br/><br/>\");
 								}" :
 						we_message_reporting::getShowMessageCall(g_l('import', '[finish_import]'), we_message_reporting::WE_MESSAGE_NOTICE) . 'setTimeout("top.close()",100);'
 					);

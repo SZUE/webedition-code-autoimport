@@ -44,7 +44,7 @@ class we_export_frames extends weModuleFrames{
 	}
 
 	function getHTMLDocumentHeader($what = '', $mode = ''){
-		if($what != "cmd" && $what != "load" && !weRequest('bool', "exportfile")){
+		if($what != "cmd" && $what != "load" && !we_base_request::_(we_base_request::BOOL, "exportfile")){
 			return parent::getHTMLDocumentHeader();
 		}
 	}
@@ -222,7 +222,7 @@ class we_export_frames extends weModuleFrames{
 	function getHTMLProperties($preselect = ""){// TODO: move to weExportView
 		$this->SelectionTree->init($this->frameset, $this->editorBodyFrame, $this->editorBodyFrame, $this->cmdFrame);
 
-		$tabNr = weRequest('raw', "tabnr", 1);
+		$tabNr = we_base_request::_(we_base_request::INT, "tabnr", 1);
 
 		return we_html_element::jsElement('
 var log_counter=0;
@@ -250,7 +250,7 @@ function addLog(text){
 		$parts = array(
 			array(
 				"headline" => g_l('export', "[property]"),
-				"html" => we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Text", '', $this->View->export->Text, '', 'style="width: ' . $this->_width_size . 'px;" id="yuiAcInputPathName" onchange="top.content.setHot();" onblur="parent.edheader.setPathName(this.value); parent.edheader.setTitlePath()" onchange="' . $this->topFrame . '.hot=1;"'), g_l('export', '[name]')) . '<br>' .
+				"html" => we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Text", '', $this->View->export->Text, '', 'style="width: ' . $this->_width_size . 'px;" id="yuiAcInputPathName" onchange="top.content.setHot();" onblur="parent.edheader.setPathName(this.value); parent.edheader.setTitlePath()" onchange="' . $this->topFrame . '.hot=1;"'), g_l('export', '[name]')) . '<br/>' .
 				$this->getHTMLDirChooser(),
 				"space" => $this->_space_size)
 		);
@@ -385,7 +385,7 @@ function closeAllType(){
 
 		$parts[] = array(
 			"headline" => g_l('export', "[export_depth]"),
-			"html" => we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_exportdeep_options]'), we_html_tools::TYPE_INFO, $this->_width_size) . '<br>' . we_html_element::htmlLabel(array(), g_l('export', "[to_level]")) . we_html_tools::getPixel(5, 5) . we_html_tools::htmlTextInput("ExportDepth", 10, $this->View->export->ExportDepth, "", "onBlur=\"var r=parseInt(this.value);if(isNaN(r)) this.value=" . $this->View->export->ExportDepth . "; else{ this.value=r; " . $this->topFrame . ".hot=1;}\"", "text", 50),
+			"html" => we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_exportdeep_options]'), we_html_tools::TYPE_INFO, $this->_width_size) . '<br/>' . we_html_element::htmlLabel(array(), g_l('export', "[to_level]")) . we_html_tools::getPixel(5, 5) . we_html_tools::htmlTextInput("ExportDepth", 10, $this->View->export->ExportDepth, "", "onBlur=\"var r=parseInt(this.value);if(isNaN(r)) this.value=" . $this->View->export->ExportDepth . "; else{ this.value=r; " . $this->topFrame . ".hot=1;}\"", "text", 50),
 			"space" => $this->_space_size
 		);
 
@@ -456,10 +456,10 @@ function closeAllType(){
 
 	function getHTMLCmd(){
 		$out = "";
-		switch(weRequest('string', "cmd")){
+		switch(we_base_request::_(we_base_request::STRING, "cmd")){
 			case "load":
 				if(isset($_REQUEST["pid"])){
-					$out = we_html_element::jsElement("self.location='" . WE_EXPORT_MODULE_DIR . "exportLoadTree.php?we_cmd[1]=" . $_REQUEST["tab"] . "&we_cmd[2]=" . $_REQUEST["pid"] . "&we_cmd[3]=" . weRequest('raw', "openFolders", "") . "&we_cmd[4]=" . $this->editorBodyFrame . "'");
+					$out = we_html_element::jsElement("self.location='" . WE_EXPORT_MODULE_DIR . "exportLoadTree.php?we_cmd[1]=" . $_REQUEST["tab"] . "&we_cmd[2]=" . $_REQUEST["pid"] . "&we_cmd[3]=" . we_base_request::_(we_base_request::RAW, "openFolders", "") . "&we_cmd[4]=" . $this->editorBodyFrame . "'");
 				}
 				break;
 			case "mainload":
@@ -553,12 +553,12 @@ function closeAllType(){
 
 					if(!$xmlExIm->prepare){
 						$_progress_update = we_html_element::jsElement('
-										if (' . $this->editorBodyFrame . '.addLog) ' . $this->editorBodyFrame . '.addLog("' . addslashes(we_html_tools::getPixel(10, 10) . we_html_element::htmlB(g_l('export', '[start_export]') . ' - ' . date("d.m.Y H:i:s"))) . '<br><br>");
-										if (' . $this->editorBodyFrame . '.addLog) ' . $this->editorBodyFrame . '.addLog("' . addslashes(we_html_tools::getPixel(20, 5) . we_html_element::htmlB(g_l('export', '[prepare]'))) . '<br>");
+										if (' . $this->editorBodyFrame . '.addLog) ' . $this->editorBodyFrame . '.addLog("' . addslashes(we_html_tools::getPixel(10, 10) . we_html_element::htmlB(g_l('export', '[start_export]') . ' - ' . date("d.m.Y H:i:s"))) . '<br/><br/>");
+										if (' . $this->editorBodyFrame . '.addLog) ' . $this->editorBodyFrame . '.addLog("' . addslashes(we_html_tools::getPixel(20, 5) . we_html_element::htmlB(g_l('export', '[prepare]'))) . '<br/>");
 										if (' . $this->topFrame . '.editor.edfooter.doProgress) ' . $this->topFrame . '.editor.edfooter.doProgress(0);
 										if(' . $this->topFrame . '.editor.edfooter.setProgressText) ' . $this->topFrame . '.editor.edfooter.setProgressText("current_description","' . g_l('export', '[working]') . '");
 										if(' . $this->editorBodyFrame . '.addLog){
-										' . $this->editorBodyFrame . '.addLog("' . addslashes(we_html_tools::getPixel(20, 5) . we_html_element::htmlB(g_l('export', '[export]'))) . '<br>");
+										' . $this->editorBodyFrame . '.addLog("' . addslashes(we_html_tools::getPixel(20, 5) . we_html_element::htmlB(g_l('export', '[export]'))) . '<br/>");
 									}
 								');
 						//FIXME: set export type in getHeader
@@ -611,7 +611,7 @@ function closeAllType(){
 								case 'weBinary':
 									$_progress_update .= "\n" .
 										we_html_element::jsElement('
-											if (' . $this->editorBodyFrame . '.addLog) ' . $this->editorBodyFrame . '.addLog("' . addslashes(we_html_tools::getPixel(50, 5) . we_html_element::htmlB(g_l('export', '[weBinary]'))) . '&nbsp;&nbsp;' . $ref->ID . '<br>");
+											if (' . $this->editorBodyFrame . '.addLog) ' . $this->editorBodyFrame . '.addLog("' . addslashes(we_html_tools::getPixel(50, 5) . we_html_element::htmlB(g_l('export', '[weBinary]'))) . '&nbsp;&nbsp;' . $ref->ID . '<br/>");
 										') . "\n";
 									$proceed = false;
 									break;
@@ -642,7 +642,7 @@ function closeAllType(){
 
 								$_progress_update .= "\n" .
 									we_html_element::jsElement('
-											if (' . $this->editorBodyFrame . '.addLog) ' . $this->editorBodyFrame . '.addLog("' . addslashes(we_html_tools::getPixel(50, 5) . $_progress_text) . '<br>");
+											if (' . $this->editorBodyFrame . '.addLog) ' . $this->editorBodyFrame . '.addLog("' . addslashes(we_html_tools::getPixel(50, 5) . $_progress_text) . '<br/>");
 										');
 							}
 						}
@@ -677,14 +677,14 @@ function closeAllType(){
 						$_progress_update .= "\n" .
 							we_html_element::jsElement('
 									if (' . $this->topFrame . '.editor.edfooter.doProgress) ' . $this->topFrame . '.editor.edfooter.doProgress(100);
-									if (' . $this->editorBodyFrame . '.addLog) ' . $this->editorBodyFrame . '.addLog("<br>' . addslashes(we_html_tools::getPixel(10, 10) . we_html_element::htmlB(g_l('export', '[end_export]') . ' - ' . date("d.m.Y H:i:s"))) . '<br><br>");
+									if (' . $this->editorBodyFrame . '.addLog) ' . $this->editorBodyFrame . '.addLog("<br/>' . addslashes(we_html_tools::getPixel(10, 10) . we_html_element::htmlB(g_l('export', '[end_export]') . ' - ' . date("d.m.Y H:i:s"))) . '<br/><br/>");
 							') . "\n" .
 							($this->View->export->ExportTo == 'local' ?
 								we_html_element::jsElement($this->editorBodyFrame . '.addLog(\'' .
-									we_html_element::htmlSpan(array("class" => "defaultfont"), addslashes(we_html_tools::getPixel(10, 1) . g_l('export', "[backup_finished]")) . "<br>" .
-										addslashes(we_html_tools::getPixel(10, 1)) . g_l('export', "[download_starting2]") . "<br><br>" .
-										addslashes(we_html_tools::getPixel(10, 1)) . g_l('export', "[download_starting3]") . "<br>" .
-										addslashes(we_html_tools::getPixel(10, 1)) . we_html_element::htmlB(we_html_element::htmlA(array("href" => $this->frameset . "?pnt=cmd&cmd=upload&exportfile=" . urlencode($this->View->export->ExportFilename)), g_l('export', "[download]"))) . "<br><br>"
+									we_html_element::htmlSpan(array("class" => "defaultfont"), addslashes(we_html_tools::getPixel(10, 1) . g_l('export', "[backup_finished]")) . "<br/>" .
+										addslashes(we_html_tools::getPixel(10, 1)) . g_l('export', "[download_starting2]") . "<br/><br/>" .
+										addslashes(we_html_tools::getPixel(10, 1)) . g_l('export', "[download_starting3]") . "<br/>" .
+										addslashes(we_html_tools::getPixel(10, 1)) . we_html_element::htmlB(we_html_element::htmlA(array("href" => $this->frameset . "?pnt=cmd&cmd=upload&exportfile=" . urlencode($this->View->export->ExportFilename)), g_l('export', "[download]"))) . "<br/><br/>"
 									) .
 									'\');') :
 								''
@@ -715,7 +715,7 @@ function closeAllType(){
 				break;
 			case 'upload':
 				$preurl = getServerUrl();
-				if(($_filename = weRequest('file', "exportfile"))){
+				if(($_filename = we_base_request::_(we_base_request::FILE, "exportfile"))){
 					$_filename = basename(urldecode($_filename));
 
 					if(file_exists(TEMP_PATH . $_filename) // Does file exist?
@@ -805,7 +805,7 @@ function closeAllType(){
 	}
 
 	function getHTMLCategory(){
-		switch(weRequest('string', "cmd")){
+		switch(we_base_request::_(we_base_request::STRING, "cmd")){
 			case 'add_cat':
 				$arr = makeArrayFromCSV($this->View->export->Categorys);
 				if(isset($_REQUEST["cat"])){
@@ -837,7 +837,7 @@ function closeAllType(){
 
 
 		$hiddens = we_html_element::htmlHidden(array("name" => "Categorys", "value" => $this->View->export->Categorys)) .
-			we_html_element::htmlHidden(array("name" => "cat", "value" => weRequest('raw', "cat", "")));
+			we_html_element::htmlHidden(array("name" => "cat", "value" => we_base_request::_(we_base_request::RAW, "cat", "")));
 
 
 		$delallbut = we_html_button::create_button("delete_all", "javascript:top.content.setHot(); we_cmd('del_all_cats')", true, 0, 0, "", "", (isset($this->View->export->Categorys) ? false : true));

@@ -24,7 +24,7 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
-$protocol = weRequest('string', 'protocol', 'json');
+$protocol = we_base_request::_(we_base_request::STRING, 'protocol', 'json');
 define('RPC_DIR', str_replace('\\', '/', dirname(__FILE__)) . '/');
 define('RPC_URL', str_replace($_SERVER['DOCUMENT_ROOT'], '', RPC_DIR));
 
@@ -53,10 +53,11 @@ function dieWithError($text, $protocol){
 	}
 }
 
-if(!isset($_REQUEST['cmd'])){
+if(!we_base_request::_(we_base_request::RAW, 'cmd')){
 	dieWithError('The Request is not well formed!', $protocol);
 }
 
+//FIXME: !!this is not safe at all
 $_shell = new rpcCmdShell($_REQUEST, $protocol);
 
 if($_shell->getStatus() == rpcCmd::STATUS_OK){

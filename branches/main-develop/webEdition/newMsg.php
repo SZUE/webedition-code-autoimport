@@ -29,8 +29,8 @@ $msg_cmd = "javascript:top.opener.we_cmd('messaging_start', 'message');";
 $todo_cmd = "javascript:top.opener.we_cmd('messaging_start', 'todo');";
 
 $text = '';
-$msg = weRequest('int', 'msg', 0) - weRequest('int', 'omsg', 0);
-$todo = weRequest('int', 'todo', 0) - weRequest('int', 'otodo', 0);
+$msg = we_base_request::_(we_base_request::INT, 'msg', 0) - we_base_request::_(we_base_request::INT, 'omsg', 0);
+$todo = we_base_request::_(we_base_request::INT, 'todo', 0) - we_base_request::_(we_base_request::INT, 'otodo', 0);
 
 $text = ($msg > 0 ? sprintf(g_l('modules_messaging', '[newHeaderMsg]'), '<a href="' . $msg_cmd . '">' . $msg, '</a>') . '<br/>' : '') .
 	($todo > 0 ? sprintf(g_l('modules_messaging', '[newHeaderTodo]'), '<a href="' . $todo_cmd . '">' . $todo, '</a>') . '<br/>' : '');

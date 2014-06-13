@@ -31,11 +31,11 @@ include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
 we_html_tools::protect();
 
-$we_doc->searchclass->objsearch = weRequest('raw', 'objsearch', '');
-$we_doc->searchclass->objsearchField = weRequest('raw', 'objsearchField', '');
-$we_doc->searchclass->objlocation = weRequest('raw', 'objlocation', 0);
+$we_doc->searchclass->objsearch = we_base_request::_(we_base_request::RAW, 'objsearch', '');
+$we_doc->searchclass->objsearchField = we_base_request::_(we_base_request::RAW, 'objsearchField', '');
+$we_doc->searchclass->objlocation = we_base_request::_(we_base_request::RAW, 'objlocation', 0);
 
-switch(weRequest('string', 'todo')){
+switch(we_base_request::_(we_base_request::STRING, 'todo')){
 	case 'add':
 		$we_doc->searchclass->height++;
 		$we_doc->searchclass->searchname = $we_doc->searchclass->objsearch;

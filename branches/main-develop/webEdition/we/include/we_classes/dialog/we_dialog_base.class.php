@@ -74,8 +74,8 @@ class we_dialog_base{
 	}
 
 	function initByHttp(){
-		$this->what = weRequest('string', 'we_what', '');
-		$this->we_cmd = weRequest('raw', 'we_cmd', array());
+		$this->what = we_base_request::_(we_base_request::STRING, 'we_what', '');
+		$this->we_cmd = we_base_request::_(we_base_request::RAW, 'we_cmd', array());
 
 		if(isset($_REQUEST['we_dialog_args']) && is_array($_REQUEST['we_dialog_args'])){
 			$this->args = $_REQUEST['we_dialog_args'];
@@ -84,7 +84,7 @@ class we_dialog_base{
 			}
 		}
 
-		$this->pageNr = weRequest('int', 'we_pageNr', $this->pageNr);
+		$this->pageNr = we_base_request::_(we_base_request::INT, 'we_pageNr', $this->pageNr);
 	}
 
 	function getHTML(){
@@ -127,21 +127,6 @@ class we_dialog_base{
 			return $fn();
 		}
 	}
-
-	/* function getQueryString($what = ''){
-	  $query = '';
-	  if(isset($_REQUEST['we_cmd']) && is_array($_REQUEST['we_cmd'])){
-	  foreach($_REQUEST['we_cmd'] as $k => $v){
-	  $query .= 'we_cmd[' . rawurlencode($k) . ']=' . rawurlencode($v) . '&';
-	  }
-	  }
-	  if(isset($this->args) && is_array($this->args)){
-	  foreach($this->args as $k => $v){
-	  $query .= 'we_dialog_args[' . rawurlencode($k) . ']=' . rawurlencode($v) . '&';
-	  }
-	  }
-	  return rtrim($query, '&') . ($what ? '&we_what=' . rawurlencode($what) : '');
-	  } */
 
 	function getFramesetHTML(){
 		return we_html_element::jsElement('
@@ -203,11 +188,11 @@ class we_dialog_base{
 
 	function getDialogButtons(){
 		if($this->pageNr == $this->numPages && $this->JsOnly == false){
-			$okBut = ($this->getBackBut() != '') ? we_html_button::create_button_table(array($this->getBackBut(), we_html_button::create_button('ok', 'form:we_form'))) : we_html_button::create_button('ok', 'form:we_form');
+			$okBut = ($back = $this->getBackBut() ) ? we_html_button::create_button_table(array($back, we_html_button::create_button('ok', 'form:we_form'))) : we_html_button::create_button('ok', 'form:we_form');
 		} else if($this->pageNr < $this->numPages){
-			$okBut = (($this->getBackBut() != '') && ($this->getNextBut()) != '') ? we_html_button::create_button_table(array($this->getBackBut(), $this->getNextBut())) : (($this->getBackBut() == '') ? $this->getNextBut() : $this->getBackBut());
+			$okBut = (($back = $this->getBackBut()) && ($next = $this->getNextBut())) ? we_html_button::create_button_table(array($back, $next)) : (($back == '') ? $next : $back);
 		} else {
-			$okBut = (($this->getBackBut() != '') && ($this->getOkBut()) != '') ? we_html_button::create_button_table(array($this->getBackBut(), $this->getOkBut())) : (($this->getBackBut() == '') ? $this->getOkBut() : $this->getBackBut());
+			$okBut = (($back = $this->getBackBut()) && ($ok = $this->getOkBut()) ) ? we_html_button::create_button_table(array($back, $ok)) : (($back == '') ? $ok : $back);
 		}
 		return we_html_button::position_yes_no_cancel($okBut, '', $this->getCancelBut());
 	}
@@ -351,7 +336,7 @@ self.focus();');
 	}
 
 	function getHttpVar($name, $alt = ""){
-		return weRequest('raw', "we_dialog_args", $alt, $name);
+		return we_base_request::_(we_base_request::RAW, "we_dialog_args", $alt, $name);
 	}
 
 	function getLangField($name, $title, $width){

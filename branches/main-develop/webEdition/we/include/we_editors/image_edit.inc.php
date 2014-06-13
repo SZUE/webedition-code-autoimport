@@ -26,7 +26,7 @@ we_html_tools::protect();
 
 $uniqid = md5(uniqid(__FILE__, true)); // #6590, changed from: uniqid(time())
 
-$we_transaction = weRequest('transaction', 'we_cmd', 0, 1);
+$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', 0, 1);
 
 // init document
 $we_dt = isset($_SESSION['weS']['we_data'][$we_transaction]) ? $_SESSION['weS']['we_data'][$we_transaction] : "";
@@ -50,7 +50,7 @@ document.onkeyup = function(e) {
 
 self.focus();');
 
-switch(weRequest('string', 'we_cmd', '', 0)){
+switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 	case "image_resize":
 		echo we_html_element::jsElement(we_getImageResizeDialogJS());
 		break;
@@ -65,7 +65,7 @@ switch(weRequest('string', 'we_cmd', '', 0)){
 echo STYLESHEET . "</head>";
 
 
-switch(weRequest('string', 'we_cmd', '', 0)){
+switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 	case "image_resize":
 		$_dialog = we_getImageResizeDialog();
 		break;
@@ -272,7 +272,7 @@ function we_getImageResizeDialog(){
 	</tr>
 </table>' .
 			(($GLOBALS['we_doc']->getGDType() == "jpg") ?
-					'<br><div class="defaultfont">' . g_l('weClass', "[quality]") . '</div>' . we_base_imageEdit::qualitySelect("quality") :
+					'<br/><div class="defaultfont">' . g_l('weClass', "[quality]") . '</div>' . we_base_imageEdit::qualitySelect("quality") :
 					'');
 	$_content[] = array("headline" => "", "html" => $_table, "space" => 0);
 	return we_html_multiIconBox::getHTML("", "100%", $_content, 30, $buttons, -1, "", "", false, g_l('weClass', "[resize]"));
@@ -306,7 +306,7 @@ function we_getImageRotateDialog(){
 
 	$_dialog = $_radio180 . $_radio90l . $_radio90r .
 			(($GLOBALS['we_doc']->getGDType() == "jpg") ?
-					'<br><div class="defaultfont">' . g_l('weClass', "[quality]") . '</div>' . we_base_imageEdit::qualitySelect("quality") :
+					'<br/><div class="defaultfont">' . g_l('weClass', "[quality]") . '</div>' . we_base_imageEdit::qualitySelect("quality") :
 					'');
 
 	$_content[] = array("headline" => "", "html" => $_dialog, "space" => 0);

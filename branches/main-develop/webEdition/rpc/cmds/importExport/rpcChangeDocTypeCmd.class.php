@@ -27,8 +27,8 @@ class rpcChangeDocTypeCmd extends rpcCmd{
 	function execute(){
 		$resp = new rpcResponse();
 		$categories = '<tr><td style="font-size:8px">&nbsp;</td></tr>';
-		if(isset($_REQUEST['docType'])){
-			if(($dt = weRequest('int', 'docType')) >= 0){
+		if(($dt = we_base_request::_(we_base_request::INT, 'docType')) !== false){
+			if($dt >= 0){
 				$values = getHash('SELECT * FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . $dt);
 
 				$ids_arr = makeArrayFromCSV($values["Templates"]);

@@ -26,8 +26,8 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 $noInternals = false;
 if(!(
-	weRequest('bool', 'we_dialog_args', false, 'outsideWE') ||
-	weRequest('bool', 'we_dialog_args', false, 'isFrontend')
+	we_base_request::_(we_base_request::BOOL, 'we_dialog_args', false, 'outsideWE') ||
+	we_base_request::_(we_base_request::BOOL, 'we_dialog_args', false, 'isFrontend')
 	)){
 	we_html_tools::protect();
 } else {
@@ -36,13 +36,13 @@ if(!(
 $noInternals = $noInternals || !isset($_SESSION['user']) || !isset($_SESSION['user']['Username']) || $_SESSION['user']['Username'] == '';
 
 $appendJS = "";
-if(defined("GLOSSARY_TABLE") && weRequest('bool', 'weSaveToGlossary') && !$noInternals){
+if(defined("GLOSSARY_TABLE") && we_base_request::_(we_base_request::BOOL, 'weSaveToGlossary') && !$noInternals){
 	$Glossary = new we_glossary_glossary();
-	$Glossary->Language = weRequest('string', 'language', '');
+	$Glossary->Language = we_base_request::_(we_base_request::STRING, 'language', '');
 	$Glossary->Type = we_glossary_glossary::TYPE_FOREIGNWORD;
-	$Glossary->Text = trim(weRequest('raw', 'text'));
+	$Glossary->Text = trim(we_base_request::_(we_base_request::RAW, 'text'));
 	$Glossary->Published = time();
-	$Glossary->setAttribute('lang', weRequest('string', 'we_dialog_args', '', 'lang'));
+	$Glossary->setAttribute('lang', we_base_request::_(we_base_request::STRING, 'we_dialog_args', '', 'lang'));
 	$Glossary->setPath();
 
 	if($Glossary->Text == "" || $Glossary->getAttribute('lang') == ""){

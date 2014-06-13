@@ -26,24 +26,24 @@ define('NO_SESS', 1);
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 
-$id = weRequest('int', "id", 0);
-$bid = weRequest('int', "bid", 0);
-$did = weRequest('int', "did", 0);
-$paths = weRequest('raw', "paths", "");
-$target = weRequest('raw', "target", "");
-$height = weRequest('int', "height", 0);
-$width = weRequest('int', "width", 0);
-$bannerclick = weRequest('url', "bannerclick", WEBEDITION_DIR . 'bannerclick.php');
-$referer = weRequest('raw', "referer", "");
-$type = weRequest('raw', "type", "");
-$cats = weRequest('raw', "cats", "");
-$dt = weRequest('raw', "dt", "");
-$link = weRequest('raw', "link", 1);
-$bannername = weRequest('raw', "bannername", "");
-$page = weRequest('raw', "page", "");
-$nocount = weRequest('bool', "nocount");
-$xml = weRequest('bool', "xml");
-$c = weRequest('raw', "c", 0);
+$id = we_base_request::_(we_base_request::INT, "id", 0);
+$bid = we_base_request::_(we_base_request::INT, "bid", 0);
+$did = we_base_request::_(we_base_request::INT, "did", 0);
+$paths = we_base_request::_(we_base_request::RAW, "paths", "");
+$target = we_base_request::_(we_base_request::RAW, "target", "");
+$height = we_base_request::_(we_base_request::INT, "height", 0);
+$width = we_base_request::_(we_base_request::INT, "width", 0);
+$bannerclick = we_base_request::_(we_base_request::URL, "bannerclick", WEBEDITION_DIR . 'bannerclick.php');
+$referer = we_base_request::_(we_base_request::RAW, "referer", "");
+$type = we_base_request::_(we_base_request::RAW, "type", "");
+$cats = we_base_request::_(we_base_request::RAW, "cats", "");
+$dt = we_base_request::_(we_base_request::RAW, "dt", "");
+$link = we_base_request::_(we_base_request::RAW, "link", 1);
+$bannername = we_base_request::_(we_base_request::RAW, "bannername", "");
+$page = we_base_request::_(we_base_request::RAW, "page", "");
+$nocount = we_base_request::_(we_base_request::BOOL, "nocount");
+$xml = we_base_request::_(we_base_request::BOOL, "xml");
+$c = we_base_request::_(we_base_request::RAW, "c", 0);
 
 if($type && $type != "pixel"){
 	$code = we_banner_banner::getBannerCode($did, $paths, $target, $width, $height, $dt, $cats, $bannername, $link, $referer, $bannerclick, getServerUrl() . $_SERVER['SCRIPT_NAME'], $type, $page, $nocount, $xml);

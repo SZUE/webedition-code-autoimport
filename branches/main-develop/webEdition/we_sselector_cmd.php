@@ -26,7 +26,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
 echo we_html_tools::getHtmlTop() . STYLESHEET;
-$cmd = weRequest('string', 'cmd');
+$cmd = we_base_request::_(we_base_request::STRING, 'cmd');
 
 if($cmd == "save_last"){
 	$_SESSION["user"]["LastDir"] = $last;
@@ -58,9 +58,13 @@ if(!$cmd || $cmd != "save_last"){
 						a[j].selected = true;
 					}
 				}
-	<?php if(isset($_REQUEST["filter"]) && ($_REQUEST["filter"] == "folder" || $_REQUEST["filter"] == "filefolder")){ ?>
-					selectFile(dir);
-	<?php } ?>
+	<?php
+	switch(we_base_request::_(we_base_request::STRING, 'filter')){
+		case 'folder':
+		case 'filefolder':
+			echo 'selectFile(dir);';
+	}
+	?>
 				top.currentDir = dir;
 				selectDir();
 			} else {
@@ -105,9 +109,6 @@ if(!$cmd || $cmd != "save_last"){
 
 		function selectDir() {
 			if (arguments[0]) {
-	<?php if(isset($_REQUEST["filter"]) && $_REQUEST["filter"] == "folder"){ ?>
-					//selectFile(arguments[0],true);
-	<?php } ?>
 				top.currentDir = top.currentDir + (top.currentDir === "/" ? "" : "/") + arguments[0];
 				top.fsheader.addOption(arguments[0], top.currentDir);
 			}
@@ -180,7 +181,7 @@ if(!$cmd || $cmd != "save_last"){
 		}
 	}
 
-	switch(weRequest('string', "cmd")){
+	switch(we_base_request::_(we_base_request::STRING, "cmd")){
 		case "new_folder":
 			echo 'drawDir(top.currentDir);';
 			if(!($_REQUEST["txt"])){

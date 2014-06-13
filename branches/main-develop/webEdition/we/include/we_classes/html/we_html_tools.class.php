@@ -839,4 +839,18 @@ abstract class we_html_tools{
 		}
 	}
 
+	/**
+	 * @abstract get code for calendar
+	 * @return html-code for calendar
+	 */
+	public static function getDateSelector($_name, $_btn, $value){
+		$btnDatePicker = we_html_button::create_button("image:date_picker", "javascript:", null, null, null, null, null, null, false, $_btn);
+		$oSelector = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0, "id" => $_name . "_cell"), 1, 5);
+		$oSelector->setCol(0, 2, null, we_html_tools::htmlTextInput($_name, 55, $value, 10, 'id="' . $_name . '" class="wetextinput" readonly="1"', "text", 100));
+		$oSelector->setCol(0, 3, null, "&nbsp;");
+		$oSelector->setCol(0, 4, null, we_html_element::htmlA(array("href" => "#"), $btnDatePicker));
+
+		return $oSelector->getHTML();
+	}
+
 }

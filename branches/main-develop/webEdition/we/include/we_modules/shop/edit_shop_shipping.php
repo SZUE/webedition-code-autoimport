@@ -31,7 +31,7 @@ echo we_html_tools::getHtmlTop() .
 
 $weShippingControl = we_shop_shippingControl::getShippingControl();
 
-switch(weRequest('string', 'we_cmd', '', 0)){
+switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 	case 'newShipping':
 		$weShipping = we_shop_shippingControl::getNewEmptyShipping();
 		break;
@@ -246,7 +246,7 @@ $parts[] = array(
 	'space' => 200,
 	'html' => '<table border="0" cellpadding="0" cellpsacing="0" class="defaultfont">
 	<tr>
-		<td>' . we_class::htmlSelect('editShipping', $selectFields, 4, weRequest('raw', 'weShippingId', ''), false, array('onchange' => 'document.location=\'' . $_SERVER['SCRIPT_NAME'] . '?we_cmd[0]=editShipping&weShippingId=\' + this.options[this.selectedIndex].value;'), 'value', 200) . '</td>
+		<td>' . we_class::htmlSelect('editShipping', $selectFields, 4, we_base_request::_(we_base_request::RAW, 'weShippingId', ''), false, array('onchange' => 'document.location=\'' . $_SERVER['SCRIPT_NAME'] . '?we_cmd[0]=editShipping&weShippingId=\' + this.options[this.selectedIndex].value;'), 'value', 200) . '</td>
 		<td width="10"></td>
 		<td valign="top">'
 	. we_html_button::create_button("new_entry", 'javascript:we_cmd(\'newEntry\');') .

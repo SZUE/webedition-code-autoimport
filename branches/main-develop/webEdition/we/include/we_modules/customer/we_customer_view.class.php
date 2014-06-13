@@ -62,11 +62,11 @@ class we_customer_view extends weModuleView{
 			$this->htmlHidden('pnt', (isset($cmds['pnt']) ? $cmds['pnt'] : '')) .
 			$this->htmlHidden('cmdid', (isset($cmds['cmdid']) ? $cmds['cmdid'] : '')) .
 			$this->htmlHidden('activ_sort', (isset($cmds['activ_sort']) ? $cmds['activ_sort'] : '')) .
-			$this->htmlHidden('branch', weRequest('string', 'branch', g_l('modules_customer', '[common]')));
+			$this->htmlHidden('branch', we_base_request::_(we_base_request::STRING, 'branch', g_l('modules_customer', '[common]')));
 	}
 
 	function getJSTop(){
-		$mod = weRequest('string', 'mod', '');
+		$mod = we_base_request::_(we_base_request::STRING, 'mod', '');
 		$modData = we_base_moduleInfo::getModuleData($mod);
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 
@@ -514,7 +514,7 @@ self.focus();' . $this->getJSSubmitFunction("customer_settings");
 	 */
 
 	function processCommands(){
-		switch(weRequest('string', 'cmd')){
+		switch(we_base_request::_(we_base_request::STRING, 'cmd')){
 			case 'new_customer':
 				$this->customer = new we_customer_customer();
 				$this->settings->initCustomerWithDefaults($this->customer);
@@ -773,8 +773,8 @@ attribs["tooltip"]="' . (($this->customer->Forename != "" || $this->customer->Su
 
 				break;
 			case 'save_branch':
-				$branch_new = weRequest('string', 'name', '');
-				$branch_old = weRequest('string', 'branch', '');
+				$branch_new = we_base_request::_(we_base_request::STRING, 'name', '');
+				$branch_old = we_base_request::_(we_base_request::STRING, 'branch', '');
 
 				if($branch_new == g_l('modules_customer', '[common]') || $branch_new == g_l('modules_customer', '[other]') || $branch_new == g_l('modules_customer', '[all]')){
 					print we_html_element::jsElement(
@@ -952,10 +952,10 @@ self.close();';
 			}
 		}
 
-		//$this->page = weRequest('raw', 'page', $this->page);
+		//$this->page = we_base_request::_(we_base_request::RAW, 'page', $this->page);
 
-		if(weRequest('string', 'pnt') == 'sort_admin'){
-			$counter = weRequest('int', 'counter');
+		if(we_base_request::_(we_base_request::STRING, 'pnt') == 'sort_admin'){
+			$counter = we_base_request::_(we_base_request::INT, 'counter');
 
 			if($counter !== false){
 				$this->settings->SortView = array();
@@ -967,7 +967,7 @@ self.close();';
 							g_l('modules_customer', '[sort_name]') . '_' . $i);
 
 
-					$fcounter = weRequest('int', 'fcounter_' . $i, 1);
+					$fcounter = we_base_request::_(we_base_request::INT, 'fcounter_' . $i, 1);
 
 					if($fcounter > -1){
 						$this->settings->SortView[$sort_name] = array();

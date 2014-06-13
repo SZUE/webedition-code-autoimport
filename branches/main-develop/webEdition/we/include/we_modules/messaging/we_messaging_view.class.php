@@ -160,10 +160,10 @@ class we_messaging_view extends weModuleView{
 		}
 
 		$out = '';
-		switch(weRequest('string', "mcmd")){
+		switch(we_base_request::_(we_base_request::STRING, "mcmd")){
 			case 'search_messages':
 			case 'show_folder_content':
-				return $this->get_folder_content(weRequest('int', 'id', 0), weRequest('string', 'sort', ""), weRequest('raw', 'entrsel', ""), weRequest('raw', 'searchterm', ""), 1) .
+				return $this->get_folder_content(we_base_request::_(we_base_request::INT, 'id', 0), we_base_request::_(we_base_request::STRING, 'sort', ""), we_base_request::_(we_base_request::RAW, 'entrsel', ""), we_base_request::_(we_base_request::RAW, 'searchterm', ""), 1) .
 					$this->print_fc_html() .
 					$this->update_treeview();
 			case 'launch':
@@ -271,7 +271,7 @@ class we_messaging_view extends weModuleView{
 				$this->messaging->set_ids_selected($_REQUEST['entrsel']);
 				$this->messaging->delete_items();
 				$this->messaging->reset_ids_selected();
-				$this->messaging->get_fc_data(weRequest('int', 'id', 0), weRequest('string', 'sort', ''), weRequest('raw', 'searchterm', ''), 1);
+				$this->messaging->get_fc_data(we_base_request::_(we_base_request::INT, 'id', 0), we_base_request::_(we_base_request::STRING, 'sort', ''), we_base_request::_(we_base_request::RAW, 'searchterm', ''), 1);
 
 				$this->messaging->saveInSession($_SESSION['weS']['we_data'][$this->transaction]);
 
@@ -312,7 +312,7 @@ class we_messaging_view extends weModuleView{
 			case 'edit_folder':
 				if($_REQUEST['mode'] == 'new' || ($_REQUEST['mode'] == 'edit')){
 					$out .= we_html_element::jsElement('
-					top.content.editor.location = "' . WE_MESSAGING_MODULE_DIR . 'messaging_edit_folder.php?we_transaction=' . $this->transaction . '&mode=' . $_REQUEST['mode'] . '&fid=' . weRequest('int', 'fid', -1) . '";
+					top.content.editor.location = "' . WE_MESSAGING_MODULE_DIR . 'messaging_edit_folder.php?we_transaction=' . $this->transaction . '&mode=' . $_REQUEST['mode'] . '&fid=' . we_base_request::_(we_base_request::INT, 'fid', -1) . '";
 					');
 				}
 				return $out;
@@ -406,7 +406,7 @@ top.content.drawEintraege();
 				top.close();
 				');
 			default:
-				return 'mcmd=' . $_REQUEST['mcmd'] . '<br>';
+				return 'mcmd=' . $_REQUEST['mcmd'] . '<br/>';
 		}
 	}
 

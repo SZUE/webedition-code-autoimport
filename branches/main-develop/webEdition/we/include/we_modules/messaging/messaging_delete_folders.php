@@ -76,7 +76,7 @@ if(isset($_REQUEST['mcmd']) && $_REQUEST['mcmd'] == 'delete_folders'){
 			$messaging->saveInSession($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 			?>
 				top.content.cmd.location = '<?php print WE_MESSAGING_MODULE_DIR; ?>edit_messaging_frameset.php?pnt=cmd&we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mcmd=delete_folders&folders=<?php echo join(',', $v) ?>';
-					top.content.we_cmd('messaging_start_view', '', '<?php echo weRequest('table', 'table', ''); ?>');
+					top.content.we_cmd('messaging_start_view', '', '<?php echo we_base_request::_(we_base_request::TABLE, 'table', ''); ?>');
 			//-->
 			</script>
 			</head>

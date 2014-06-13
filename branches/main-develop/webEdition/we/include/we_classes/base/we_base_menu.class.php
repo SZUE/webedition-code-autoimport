@@ -54,7 +54,7 @@ function menuactionExt(cmd) {
 	}
 
 	public function getHTML(){
-		$showAltMenu = (isset($_SESSION['weS']['weShowAltMenu']) && $_SESSION['weS']['weShowAltMenu']) || weRequest('bool', 'showAltMenu');
+		$showAltMenu = (isset($_SESSION['weS']['weShowAltMenu']) && $_SESSION['weS']['weShowAltMenu']) || we_base_request::_(we_base_request::BOOL, 'showAltMenu');
 		$_SESSION['weS']['weShowAltMenu'] = $showAltMenu;
 
 		$out = '<span class="preload1"></span><span class="preload2"></span><span class="preload3"></span><span class="preload4"></span>' .

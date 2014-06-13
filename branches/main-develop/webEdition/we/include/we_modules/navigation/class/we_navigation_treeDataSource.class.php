@@ -102,7 +102,7 @@ class we_navigation_treeDataSource extends we_tool_treeDataSource{
 			}
 			$_textUncleaned = $db->f('Text');
 			$_textUncleaned = strtr($_textUncleaned, array(
-				"<br>" => " ", "<br/>" => " ", "<br />" => " "
+				"<br/>" => " ", "<br/>" => " ", "<br />" => " "
 			));
 
 			$_text = str_replace('&amp;', '&', strip_tags($_textUncleaned));

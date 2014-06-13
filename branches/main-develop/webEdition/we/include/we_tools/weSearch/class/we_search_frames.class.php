@@ -48,7 +48,7 @@ class we_search_frames extends we_tool_frames{
 		}
 		$pid = $_REQUEST['pid'];
 
-		$offset = weRequest('int', 'offset', 0);
+		$offset = we_base_request::_(we_base_request::INT, 'offset', 0);
 
 		$_loader = new we_search_treeDataSource($this->TreeSource);
 
@@ -265,8 +265,8 @@ class we_search_frames extends we_tool_frames{
 			'cmd' => '',
 			'pnt' => 'edbody',
 			'tabnr' => $tabNr,
-			'vernr' => weRequest('int', 'vernr', 0),
-			'delayParam' => weRequest('raw', 'delayParam','')
+			'vernr' => we_base_request::_(we_base_request::INT, 'vernr', 0),
+			'delayParam' => we_base_request::_(we_base_request::RAW, 'delayParam', '')
 		);
 
 		return $this->View->getCommonHiddens($hiddens) .
@@ -311,14 +311,13 @@ class we_search_frames extends we_tool_frames{
 		$_searchField_block = '<div>' . $this->View->getSearchDialog($innerSearch) . '</div>';
 		$_searchCheckboxes_block = '<div>' . $this->View->getSearchDialogCheckboxes($innerSearch) . '</div>';
 
-		$content = $this->View->searchProperties($innerSearch);
+		$content = $this->View->searchProperties($innerSearch); 
 		$headline = $this->View->makeHeadLines($innerSearch);
 		$foundItems = $_SESSION['weS']['weSearch']['foundItems' . $innerSearch . ''];
 
 		$_searchResult_block = '<div>
       <div id=\'parametersTop_' . $innerSearch . '\'>' . $this->View->getSearchParameterTop(
-				$foundItems, $innerSearch) . '</div>' . $this->View->tblList($content, $headline, $innerSearch) . '<div id=\'parametersBottom_' . $innerSearch . '\'>' . $this->View->getSearchParameterBottom(
-				$foundItems, $innerSearch) . '</div>
+				$foundItems, $innerSearch) . '</div>' . $this->View->tblList($content, $headline, $innerSearch) . '<div id=\'parametersBottom_' . $innerSearch . '\'>' . $this->View->getSearchParameterBottom($foundItems, $innerSearch) . '</div>
       </div>';
 
 		return array(
@@ -354,8 +353,7 @@ class we_search_frames extends we_tool_frames{
 
 		$_searchResult_block = '<div>
       <div id="parametersTop_' . $innerSearch . '">' . $this->View->getSearchParameterTop(
-				$foundItems, $innerSearch) . '</div>' . $this->View->tblList($content, $headline, $innerSearch) . '<div id="parametersBottom_' . $innerSearch . '">' . $this->View->getSearchParameterBottom(
-				$foundItems, $innerSearch) . '</div>
+				$foundItems, $innerSearch) . '</div>' . $this->View->tblList($content, $headline, $innerSearch) . '<div id="parametersBottom_' . $innerSearch . '">' . $this->View->getSearchParameterBottom($foundItems, $innerSearch) . '</div>
       </div>';
 
 		return array(
@@ -389,8 +387,7 @@ class we_search_frames extends we_tool_frames{
 
 		$_searchResult_block = '<div>
       <div id=\'parametersTop_' . $innerSearch . '\'>' . $this->View->getSearchParameterTop(
-				$foundItems, $innerSearch) . '</div>' . $this->View->tblList($content, $headline, $innerSearch) . '<div id=\'parametersBottom_' . $innerSearch . '\'>' . $this->View->getSearchParameterBottom(
-				$foundItems, $innerSearch) . '</div>
+				$foundItems, $innerSearch) . '</div>' . $this->View->tblList($content, $headline, $innerSearch) . '<div id=\'parametersBottom_' . $innerSearch . '\'>' . $this->View->getSearchParameterBottom($foundItems, $innerSearch) . '</div>
       </div>';
 
 		return array(

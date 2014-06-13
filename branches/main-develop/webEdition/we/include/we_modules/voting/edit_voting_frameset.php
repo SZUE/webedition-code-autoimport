@@ -26,7 +26,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 $protect = we_base_moduleInfo::isActive('voting') && we_users_util::canEditModule('voting') ? null : array(false);
 we_html_tools::protect($protect);
 
-$what = weRequest('string', "pnt", "frameset");
+$what = we_base_request::_(we_base_request::STRING, "pnt", "frameset");
 
 $weFrame = new we_voting_frames();
 echo $weFrame->getHTMLDocumentHeader();

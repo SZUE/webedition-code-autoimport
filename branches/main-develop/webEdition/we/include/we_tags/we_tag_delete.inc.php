@@ -38,7 +38,7 @@ function we_tag_delete($attribs){
 
 	switch($type){
 		case "document":
-			$docID = $id ? $id : weRequest('int', 'we_delDocument_ID');
+			$docID = $id ? $id : we_base_request::_(we_base_request::INT, 'we_delDocument_ID');
 			if(!$docID){
 				return '';
 			}
@@ -54,7 +54,7 @@ function we_tag_delete($attribs){
 			}
 			break;
 		default:
-			$docID = $id ? $id : weRequest('int', 'we_delObject_ID', $id);
+			$docID = $id ? $id : we_base_request::_(we_base_request::INT, 'we_delObject_ID', $id);
 			if(!$docID){
 				return '';
 			}

@@ -26,19 +26,22 @@ class rpcSelectorSuggestCmd extends rpcCmd{
 
 	function execute(){
 		$resp = new rpcResponse();
-
-		if(!isset($_REQUEST['we_cmd'][1]) || !isset($_REQUEST['we_cmd'][2])){
+		$cmd1 = we_base_request::_(we_base_request::STRING, 'we_cmd', false, 1);
+		$cmd2 = we_base_request::_(we_base_request::TABLE, 'we_cmd', false, 2);
+		if(!$cmd1 || !$cmd2){
 			exit();
 		}
 
 		$selectorSuggest = new we_selector_query();
-		$contentTypes = isset($_REQUEST['we_cmd'][3]) ? explode(",", $_REQUEST['we_cmd'][3]) : null;
-		if(isset($_REQUEST['we_cmd'][4]) && !empty($_REQUEST['we_cmd'][4]) && isset($_REQUEST['we_cmd'][5]) && !empty($_REQUEST['we_cmd'][5])){
-			if($_REQUEST['we_cmd'][2] == "tblTemplates" && $_REQUEST['we_cmd'][4] == we_base_ContentTypes::TEMPLATE){
-				$selectorSuggest->addCondition(array("AND", "<>", "ID", $_REQUEST['we_cmd'][5]));
+		$contentTypes = explode(",", we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3));
+		$cmd4 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 4);
+		$cmd5 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 5);
+		if($cmd4 && $cmd5){
+			if($cmd2 == (defined('TEMPLATES_TABLE') ? TEMPLATES_TABLE : '-1') && $cmd4 == we_base_ContentTypes::TEMPLATE){
+				$selectorSuggest->addCondition(array("AND", "<>", "ID", $cmd5));
 			}
 		}
-		$selectorSuggest->search($_REQUEST['we_cmd'][1], $_REQUEST['we_cmd'][2], $contentTypes, "", weRequest('raw','we_cmd','',6));
+		$selectorSuggest->search($cmd1, $cmd2, $contentTypes, "", we_base_request::_(we_base_request::FILE, 'we_cmd', '', 6));
 		$resp->setData("data", $selectorSuggest->getResult());
 
 		return $resp;

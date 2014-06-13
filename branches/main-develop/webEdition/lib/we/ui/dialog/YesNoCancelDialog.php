@@ -80,7 +80,7 @@ class we_ui_dialog_YesNoCancelDialog extends we_ui_layout_Dialog{
 
 		$translate = we_core_Local::addTranslation('apps.xml');
 
-		$table = new we_ui_layout_Table(array('cellPadding' => 10));
+		$table = new we_ui_layout_Table(array('cellpadding' => 10));
 		$table->addHTML('<img src="' . IMAGE_DIR . 'alert.gif" alt="" />');
 		$table->nextColumn();
 		$table->addHTML('<div>' . nl2br($this->_encodeMessage ? oldHtmlspecialchars($this->_message) : $this->_message) . '</div>');

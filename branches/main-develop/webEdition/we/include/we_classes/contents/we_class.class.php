@@ -334,9 +334,9 @@ abstract class we_class{
 	protected function i_setElementsFromHTTP(){
 		if($_REQUEST){
 			// do not set REQUEST VARS into the document
-			$cmd0 = weRequest('string', 'cmd', '', 0);
+			$cmd0 = we_base_request::_(we_base_request::STRING, 'cmd', '', 0);
 
-			if(($cmd0 == 'switch_edit_page' && isset($_REQUEST['we_cmd'][3])) || ($cmd0 == 'save_document' && weRequest('string', 'we_cmd', '', 7) == 'save_document')){
+			if(($cmd0 == 'switch_edit_page' && we_base_request::_(we_base_request::STRING, 'we_cmd', false, 3)) || ($cmd0 == 'save_document' && we_base_request::_(we_base_request::STRING, 'we_cmd', '', 7) == 'save_document')){
 				return true;
 			}
 			$regs = array();
@@ -430,11 +430,10 @@ abstract class we_class{
 	 * if so, we must delete eventual netries in tblLangLink (entered before LANGLINK_SUPPORT wa stopped. <= TODO: Merge this with next method!
 	 */
 	protected function checkRemoteLanguage($table, $isfolder = false){
-		if(isset($_REQUEST['we_' . $this->Name . '_Language']) && $_REQUEST['we_' . $this->Name . '_Language'] != ''){
+		if(($newLang = we_base_request::_(we_base_request::STRING, 'we_' . $this->Name . '_Language'))){
 			$type = stripTblPrefix($table);
 			$isobject = ($type == 'tblObjectFile') ? 1 : 0;
 			$type = ($isfolder && $isobject) ? 'tblFile' : ($isobject ? 'tblObjectFile' : $type);
-			$newLang = $_REQUEST['we_' . $this->Name . '_Language'];
 
 			$this->DB_WE->query('SELECT * FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $type . '" AND IsObject = ' . intval($isobject) . ' AND IsFolder = ' . intval($isfolder) . ' AND DID=' . intval($this->ID));
 			//$langChange = false;
@@ -460,15 +459,14 @@ abstract class we_class{
 			return true;
 		}
 		$newLang = $oldLang = '';
-		if(isset($_REQUEST['we_' . $this->Name . '_Language']) && $_REQUEST['we_' . $this->Name . '_Language'] != ''){
-			$newLang = $_REQUEST['we_' . $this->Name . '_Language'];
+		if(($newLang = we_base_request::_(we_base_request::STRING, 'we_' . $this->Name . '_Language'))){
 			$db = new DB_WE();
 			$documentTable = ($type == 'tblObjectFile') ? 'tblObjectFiles' : $type;
 			$ownDocumentTable = ($isfolder && $isobject) ? FILE_TABLE : addTblPrefix($documentTable);
 			$origLinks = array();
 
 			if(!$isfolder){
-				$oldLang = f('SELECT Language FROM ' . $ownDocumentTable . ' WHERE ID=' . intval($this->ID), 'Language', $db);
+				$oldLang = f('SELECT Language FROM ' . $ownDocumentTable . ' WHERE ID=' . intval($this->ID), '', $db);
 				if($newLang != $oldLang){// language changed
 					// what langs where linked before document-language changed?
 					$origLangs = array();

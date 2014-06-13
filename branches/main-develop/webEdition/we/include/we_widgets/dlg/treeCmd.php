@@ -24,7 +24,8 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
-switch(weRequest('string', "cmd")){
+
+switch(we_base_request::_(we_base_request::STRING, "cmd")){
 	case "load" :
 		if(isset($_REQUEST["pid"])){
 			echo

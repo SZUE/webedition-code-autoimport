@@ -187,12 +187,12 @@ class we_otherDocument extends we_binaryDocument{
 
 			if(isset($_FILES["we_ui_$formname"]["name"]) && is_array($_FILES["we_ui_$formname"]["name"])){
 				foreach($_FILES["we_ui_$formname"]["name"] as $binaryName => $filename){
-					$_binaryDataId = weRequest('string', 'WE_UI_BINARY_DATA_ID_' . $binaryName);
+					$_binaryDataId = we_base_request::_(we_base_request::STRING, 'WE_UI_BINARY_DATA_ID_' . $binaryName);
 
 					if($_binaryDataId !== false && isset($_SESSION[$_binaryDataId])){
 						$_SESSION[$_binaryDataId]['doDelete'] = false;
 
-						if(weRequest('bool', 'WE_UI_DEL_CHECKBOX_' . $binaryName)){
+						if(we_base_request::_(we_base_request::BOOL, 'WE_UI_DEL_CHECKBOX_' . $binaryName)){
 							$_SESSION[$_binaryDataId]['doDelete'] = true;
 						} elseif($filename){
 							// file is selected, check to see if it is an image

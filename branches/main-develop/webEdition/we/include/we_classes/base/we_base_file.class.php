@@ -243,7 +243,7 @@ abstract class we_base_file{
 					$buff.=$line;
 					$write = false;
 
-					//print substr($buff,(0-($marker_size+1)))."<br>\n";
+					//print substr($buff,(0-($marker_size+1)))."<br/>\n";
 
 					if($marker_size){
 						$write = ((substr($buff, (0 - ($marker_size + 1))) == $marker . "\n") || (substr($buff, (0 - ($marker_size + 2))) == $marker . "\r\n"));
@@ -252,7 +252,7 @@ abstract class we_base_file{
 					}
 
 					if($write){
-						//print "WRITE<br>\n";
+						//print "WRITE<br/>\n";
 						$fsize+=strlen($buff);
 						fwrite($fh_temp, $buff);
 						if(($split_size && $fsize > $split_size) || ($marker_size)){

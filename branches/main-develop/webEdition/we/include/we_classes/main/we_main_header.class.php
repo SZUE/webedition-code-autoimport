@@ -39,7 +39,7 @@ class we_main_header{
 	}
 
 	private static function hasMsg(){
-		return (defined('MESSAGING_SYSTEM') && !weRequest('bool', "SEEM_edit_include"));
+		return (defined('MESSAGING_SYSTEM') && !we_base_request::_(we_base_request::BOOL, "SEEM_edit_include"));
 	}
 
 	static function pbody(){

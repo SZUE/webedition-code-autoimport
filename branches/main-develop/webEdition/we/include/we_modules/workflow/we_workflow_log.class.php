@@ -45,7 +45,7 @@ class we_workflow_log{
 	}
 
 	static function getLogForDocument($docID, $order = "DESC", $wfType = 0){
-		$offset = weRequest('int', 'offset', 0);
+		$offset = we_base_request::_(we_base_request::INT, 'offset', 0);
 		$db = new DB_WE();
 		$q = 'SELECT ' . WORKFLOW_LOG_TABLE . '.* FROM ' . WORKFLOW_LOG_TABLE . ',' . WORKFLOW_DOC_TABLE . ',' . WORKFLOW_TABLE . ' WHERE ' . WORKFLOW_DOC_TABLE . '.workflowID=' . WORKFLOW_TABLE . '.ID AND ' . WORKFLOW_TABLE . '.Type IN(' . $wfType . ') AND ' . WORKFLOW_LOG_TABLE . '.RefID=' . WORKFLOW_DOC_TABLE . '.ID AND  ' . WORKFLOW_DOC_TABLE . '.documentID=' . intval($docID) . ' ORDER BY ' . WORKFLOW_LOG_TABLE . '.logDate ' . $db->escape($order) . ',ID DESC';
 

@@ -21,13 +21,13 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
-$fieldName = weRequest('string', 'we_cmd', '', 1);
+$fieldName = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1);
 echo we_html_tools::getHtmlTop(sprintf(g_l('wysiwyg', '[window_title]'), $fieldName), 'UTF-8');
 
-if(isset($fieldName) && weRequest('bool', 'we_okpressed')){
-	$newHTML = weRequest('string', $fieldName, '');
-	$type = weRequest('string', 'we_cmd', '', 1);
-	$_SESSION['weS']['WEAPP_' . weRequest('string', 'we_cmd', '', 0) . '_' . $type] = $newHTML;
+if(isset($fieldName) && we_base_request::_(we_base_request::BOOL, 'we_okpressed')){
+	$newHTML = we_base_request::_(we_base_request::STRING, $fieldName, '');
+	$type = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1);
+	$_SESSION['weS']['WEAPP_' . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) . '_' . $type] = $newHTML;
 	$newHTMLoldA = preg_replace('|(</?)script([^>]*>)|i', '\\1scr"+"ipt\\2', $newHTML);
 	$newHTMLoldB = preg_replace('|(</?)script([^>]*>)|i', '\\1scr"+"ipt\\2', parseInternalLinks($newHTML, 0));
 
@@ -56,8 +56,8 @@ window.close();');
 		<form action="<?php print $_SERVER['SCRIPT_NAME']; ?>" name="we_form" method="post">
 			<input type="hidden" name="we_okpressed" value="1" />
 			<?php
-			foreach($_REQUEST['we_cmd'] as $i => $v){
-				echo '<input type="hidden" name="we_cmd[' . $i . ']" value="' . $_REQUEST['we_cmd'][$i] . '" />';
+			foreach(we_base_request::_(we_base_request::STRING, 'we_cmd') as $i => $v){
+				echo '<input type="hidden" name="we_cmd[' . $i . ']" value="' . $v . '" />';
 			}
 
 			/*  diese Liste ist wohl nicht ganz richtig
@@ -83,24 +83,24 @@ window.close();');
 			 */
 
 			$e = new we_wysiwyg_editor(
-				$_REQUEST['we_cmd'][1], //$name,
-				$_REQUEST['we_cmd'][2], //$width,
-				$_REQUEST['we_cmd'][3], //$height
-				$_SESSION['weS']['WEAPP_' . $_REQUEST['we_cmd'][0] . '_' . $_REQUEST['we_cmd'][1]], //value
-				$_REQUEST['we_cmd'][5], //$propstring
-				$_REQUEST['we_cmd'][13], //$bgcol
+				we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1), //$name,
+				we_base_request::_(we_base_request::INT, 'we_cmd', '', 2), //$width,
+				we_base_request::_(we_base_request::INT, 'we_cmd', '', 3), //$height
+				$_SESSION['weS']['WEAPP_' . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) . '_' . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1)], //value
+				we_base_request::_(we_base_request::STRING, 'we_cmd', '', 5), //$propstring
+				we_base_request::_(we_base_request::STRING, 'we_cmd', '', 13), //$bgcol
 				"", //$fullscreen
-				$_REQUEST['we_cmd'][6], //$className
-				'arial; helvetica; sans-serif,courier new; courier; mono,geneva; arial; helvetica; sans-serif,georgia; times new roman; times; serif,tahoma,times new roman; times; serif,verdana; arial; helvetica; sans-serif,wingdings', //$_REQUEST['we_cmd'][7], fontnames ,
-				$_REQUEST['we_cmd'][8], //$outsideWE=false
+				we_base_request::_(we_base_request::STRING, 'we_cmd', '', 6), //$className
+				'arial; helvetica; sans-serif,courier new; courier; mono,geneva; arial; helvetica; sans-serif,georgia; times new roman; times; serif,tahoma,times new roman; times; serif,verdana; arial; helvetica; sans-serif,wingdings', //7, fontnames ,
+				we_base_request::_(we_base_request::BOOL, 'we_cmd', '', 8), //$outsideWE=false
 				true, //dies ist xml
 				false, //$removeFirstParagraph=true
 				true, //$inlineedit=true
 				'', //$baseHref
-				'UTF-8', $_REQUEST["we_cmd"][14], //$cssClasses
-				'', // $_REQUEST["we_cmd"][15], $Language=""
+				'UTF-8', we_base_request::_(we_base_request::STRING, 'we_cmd', '', 14), //$cssClasses
+				'', // 15, $Language=""
 				'', //test
-				$_REQUEST["we_cmd"][17], //$spell
+				we_base_request::_(we_base_request::BOOL, 'we_cmd', '', 17), //$spell
 				false //frontendEdit
 			);
 

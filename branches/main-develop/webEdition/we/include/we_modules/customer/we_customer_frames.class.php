@@ -664,7 +664,7 @@ failure: function(o) {
 	}
 
 	function getHTMLCustomerAdmin(){
-		$branch = weRequest('string', "branch", g_l('modules_customer', '[other]'));
+		$branch = we_base_request::_(we_base_request::STRING, "branch", g_l('modules_customer', '[other]'));
 		$branch_select = (isset($_REQUEST["branch_select"]) ? $_REQUEST["branch"] : g_l('modules_customer', '[other]'));
 
 		$select = $this->getHTMLBranchSelect(false);
@@ -719,8 +719,8 @@ failure: function(o) {
 	}
 
 	function getHTMLFieldEditor($type, $mode){
-		$field = weRequest('string', "field", '');
-		$branch = weRequest('string', "branch", g_l('modules_customer', '[other]'));
+		$field = we_base_request::_(we_base_request::STRING, "field", '');
+		$branch = we_base_request::_(we_base_request::STRING, "branch", g_l('modules_customer', '[other]'));
 
 		$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "field_editor")) .
 			we_html_element::htmlHidden(array("name" => "cmd", "value" => "no_cmd")) .
@@ -822,7 +822,7 @@ failure: function(o) {
 	function getHTMLSearch(){//TODO: this is popup search editor: make separate frameset for popups!
 		$colspan = 4;
 
-		$mode = weRequest('int', 'mode', 0);
+		$mode = we_base_request::_(we_base_request::INT, 'mode', 0);
 
 		$hiddens = we_html_element::htmlHidden(array('name' => 'pnt', 'value' => 'search')) .
 			we_html_element::htmlHidden(array('name' => 'cmd', 'value' => 'search')) .
@@ -840,7 +840,7 @@ failure: function(o) {
 		if($mode){
 			we_customer_add::getHTMLSearch($this, $search, $select);
 		} else {
-			$search->setCol(1, 0, array(), we_html_tools::htmlTextInput('keyword', 80, weRequest('raw', 'keyword', ''), '', 'onchange=""', 'text', '550px')
+			$search->setCol(1, 0, array(), we_html_tools::htmlTextInput('keyword', 80, we_base_request::_(we_base_request::RAW, 'keyword', ''), '', 'onchange=""', 'text', '550px')
 			);
 
 			$sw = we_html_button::create_button('image:btn_direction_right', "javascript:we_cmd('switchToAdvance')");

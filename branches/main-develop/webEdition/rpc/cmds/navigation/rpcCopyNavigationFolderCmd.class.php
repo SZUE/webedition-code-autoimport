@@ -26,11 +26,13 @@ class rpcCopyNavigationFolderCmd extends rpcCmd{
 
 	function execute(){
 		$resp = new rpcResponse();
-		if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] &&
-			($folder=  weRequest('int', 'we_cmd',0,1)) &&
-			($path = weRequest('file', 'we_cmd', '', 2)) &&
-			isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3] &&
-			(strpos($path, $_REQUEST['we_cmd'][0]) === false || strpos($path, $_REQUEST['we_cmd'][0]) > 0)
+		$cmd0 = we_base_request::_(we_base_request::FILE, 'cmd', false, 0);
+		$cmd3 = we_base_request::_(we_base_request::INT, 'cmd', 0, 3);
+		if($cmd0 &&
+			($folder = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1)) &&
+			($path = we_base_request::_(we_base_request::FILE, 'we_cmd', '', 2)) &&
+			$cmd3 &&
+			(strpos($path, $cmd0) === false || strpos($path, $cmd0) > 0)
 		){
 
 			$db = $GLOBALS['DB_WE'];
@@ -39,7 +41,7 @@ class rpcCopyNavigationFolderCmd extends rpcCmd{
 			$querySet = '';
 			$query = '';
 			$folders = array($folder);
-			$mapedId = array($_REQUEST['we_cmd'][3] => $folder);
+			$mapedId = array($cmd3 => $folder);
 			foreach($result as $row){
 				$querySet = '(';
 				foreach($row as $key => $val){
@@ -48,7 +50,7 @@ class rpcCopyNavigationFolderCmd extends rpcCmd{
 							$querySet .= "''";
 							break;
 						case "Path" :
-							$path = str_replace($path, $_REQUEST['we_cmd'][0], $val);
+							$path = str_replace($path, $cmd0, $val);
 							$querySet .= ", '" . $db->escape($path) . "'";
 							break;
 						case "ParentID" :

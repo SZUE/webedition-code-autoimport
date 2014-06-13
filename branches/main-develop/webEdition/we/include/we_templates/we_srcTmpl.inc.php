@@ -776,7 +776,7 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
          </tr>
          <tr>
             <td align="left">' .
-			we_html_tools::getPixel(2, 10) . '<br><table cellspacing="0" style="border:0px;width:100%;padding:0px;">
+			we_html_tools::getPixel(2, 10) . '<br/><table cellspacing="0" style="border:0px;width:100%;padding:0px;">
 	    <tr>
 <td align="left" class="defaultfont">' .
 			(substr($_SESSION['prefs']['editorMode'], 0, 10) == 'codemirror' ? '

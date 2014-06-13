@@ -68,7 +68,7 @@ class we_export_view{
 		$out.=$this->htmlHidden("cmdid", (isset($cmds["cmdid"]) ? $cmds["cmdid"] : ""));
 		$out.=$this->htmlHidden("pnt", (isset($cmds["pnt"]) ? $cmds["pnt"] : ""));
 		$out.=$this->htmlHidden("tabnr", (isset($cmds["tabnr"]) ? $cmds["tabnr"] : ""));
-		$out.=$this->htmlHidden("table", weRequest('table', "table", FILE_TABLE));
+		$out.=$this->htmlHidden("table", we_base_request::_(we_base_request::TABLE, "table", FILE_TABLE));
 		$out.=$this->htmlHidden("ID", (isset($this->export->ID) ? $this->export->ID : 0));
 		$out.=$this->htmlHidden("IsFolder", (isset($this->export->IsFolder) ? $this->export->IsFolder : 0));
 		$out.=$this->htmlHidden("selDocs", (isset($this->export->selDocs) ? $this->export->selDocs : ''));
@@ -76,16 +76,16 @@ class we_export_view{
 		$out.=$this->htmlHidden("selObjs", (isset($this->export->selObjs) ? $this->export->selObjs : ''));
 		$out.=$this->htmlHidden("selClasses", (isset($this->export->selClasses) ? $this->export->selClasses : ''));
 
-		$out.=$this->htmlHidden("selDocs_open", weRequest('raw', "selDocs_open", ''));
-		$out.=$this->htmlHidden("selTempl_open", weRequest('raw', "selTempl_open", ''));
-		$out.=$this->htmlHidden("selObjs_open", weRequest('raw', "selObjs_open", ''));
-		$out.=$this->htmlHidden("selClasses_open", weRequest('raw', "selClasses_open", ''));
+		$out.=$this->htmlHidden("selDocs_open", we_base_request::_(we_base_request::RAW, "selDocs_open", ''));
+		$out.=$this->htmlHidden("selTempl_open", we_base_request::_(we_base_request::RAW, "selTempl_open", ''));
+		$out.=$this->htmlHidden("selObjs_open", we_base_request::_(we_base_request::RAW, "selObjs_open", ''));
+		$out.=$this->htmlHidden("selClasses_open", we_base_request::_(we_base_request::RAW, "selClasses_open", ''));
 
 		return $out;
 	}
 
 	function getJSTop(){
-		$mod = weRequest('string', 'mod', '');
+		$mod = we_base_request::_(we_base_request::STRING, 'mod', '');
 		$modData = we_base_moduleInfo::getModuleData($mod);
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 
@@ -181,7 +181,7 @@ class we_export_view{
 								if (' . $this->topFrame . '.editor.edheader.setTab) ' . $this->topFrame . '.editor.edheader.setTab(3);
 								if (' . $this->topFrame . '.editor.edfooter.doProgress) ' . $this->topFrame . '.editor.edfooter.doProgress(0);
 								if (' . $this->editorBodyFrame . '.clearLog) ' . $this->editorBodyFrame . '.clearLog();
-								if (' . $this->editorBodyFrame . '.addLog) ' . $this->editorBodyFrame . '.addLog("' . addslashes(we_html_tools::getPixel(10, 10)) . '<br>");
+								if (' . $this->editorBodyFrame . '.addLog) ' . $this->editorBodyFrame . '.addLog("' . addslashes(we_html_tools::getPixel(10, 10)) . '<br/>");
 					case "save_export":
 						' . (!permissionhandler::hasPerm("NEW_EXPORT") ? we_message_reporting::getShowMessageCall(g_l('export', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR) . 'return;' : ''
 			) . '
@@ -245,7 +245,7 @@ class we_export_view{
 
 	function getJSProperty(){
 
-		$table = weRequest('table', "table", FILE_TABLE);
+		$table = we_base_request::_(we_base_request::TABLE, "table", FILE_TABLE);
 
 		$out = "";
 		$out.=we_html_element::jsScript(JS_DIR . "windows.js");
@@ -390,7 +390,7 @@ class we_export_view{
 	}
 
 	function processCommands(){
-		switch(weRequest('string', "cmd")){
+		switch(we_base_request::_(we_base_request::STRING, "cmd")){
 			case "new_export":
 				if(!permissionhandler::hasPerm("NEW_EXPORT")){
 					print we_html_element::jsElement(

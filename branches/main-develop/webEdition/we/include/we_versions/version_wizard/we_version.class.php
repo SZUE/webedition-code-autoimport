@@ -29,7 +29,7 @@ class we_version{
 		$db = new DB_WE();
 
 		if($printIt){
-			$_newLine = count($_SERVER['argv']) ? "\n" : "<br>\n";
+			$_newLine = count($_SERVER['argv']) ? "\n" : "<br/>\n";
 		}
 
 		//		if($data["type"] == "version_delete"){
@@ -48,7 +48,7 @@ class we_version{
 
 		switch($data["type"]){
 			case "version_reset" :
-				$publish = weRequest('bool','reset_doPublish');
+				$publish = we_base_request::_(we_base_request::BOOL,'reset_doPublish');
 				weVersions::resetVersion($data["ID"], $data["version"], $publish);
 
 				$_SESSION['weS']['versions']['logResetIds'][$data["ID"]]['Text'] = $data["text"];

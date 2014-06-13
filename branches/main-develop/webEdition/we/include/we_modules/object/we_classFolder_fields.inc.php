@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-switch(weRequest('string','do')){
+switch(we_base_request::_(we_base_request::STRING,'do')){
 	case 'delete':
 		$javascript = $we_doc->deleteObjects();
 		break;

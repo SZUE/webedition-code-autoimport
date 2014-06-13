@@ -31,7 +31,7 @@ we_html_tools::protect(null, WEBEDITION_DIR . 'index.php');
 $GLOBALS['isIncluded'] = true;
 include(WE_INCLUDES_PATH . 'we_logout.inc.php');
 
-if(weRequest('bool', 'isopener')){
+if(we_base_request::_(we_base_request::BOOL, 'isopener')){
 	header('location: ' . WEBEDITION_DIR . 'index.php');
 }
 ?>

@@ -49,16 +49,9 @@ class weVersionsSearch{
 	 * @abstract initialize data from $_REQUEST
 	 */
 	function initData(){
-
-		if(isset($_REQUEST["mode"])){
-			$this->mode = ($_REQUEST["mode"]);
-		}
-		if(isset($_REQUEST["order"])){
-			$this->order = ($_REQUEST["order"]);
-		}
-		if(isset($_REQUEST["anzahl"])){
-			$this->anzahl = ($_REQUEST["anzahl"]);
-		}
+		$this->mode = we_base_request::_(we_base_request::INT, "mode", $this->mode);
+		$this->order = we_base_request::_(we_base_request::STRING, "order", $this->order);
+		$this->anzahl = we_base_request::_(we_base_request::INT, "anzahl", $this->anzahl);
 		if(isset($_REQUEST["searchFields"])){
 			$this->searchFields = ($_REQUEST["searchFields"]);
 			$this->height = count($this->searchFields);
@@ -81,7 +74,7 @@ class weVersionsSearch{
 		$where = "";
 		$modConst = array();
 
-		if(($this->mode != 0) || (isset($_REQUEST['we_cmd']["mode"]) && $_REQUEST['we_cmd']["mode"] != 0)){
+		if(($this->mode) || we_base_request::_(we_base_request::INT, 'we_cmd', 0, "mode")){
 
 			foreach($_REQUEST['we_cmd'] as $k => $v){
 				if(stristr($k, 'searchFields[')){
@@ -118,7 +111,7 @@ class weVersionsSearch{
 									$timestampStart = mktime(0, 0, 0, $month, $day, $year);
 									$timestampEnd = mktime(23, 59, 59, $month, $day, $year);
 
-									switch(weRequest('raw', 'location','',$k)){
+									switch(we_base_request::_(we_base_request::RAW, 'location', '', $k)){
 										case "IS":
 											$where .= " AND " . $v . " BETWEEN " . intval($timestampStart) . " AND " . intval($timestampEnd);
 											break;
@@ -252,22 +245,6 @@ class weVersionsSearch{
 			"saved" => g_l('versions', '[saved]'),
 			"deleted" => g_l('versions', '[deleted]'),
 		);
-	}
-
-	/**
-	 * @abstract get code for calendar
-	 * @return html-code for calendar
-	 */
-	function getDateSelector($_label, $_name, $_btn, $value){
-
-		$btnDatePicker = we_html_button::create_button("image:date_picker", "javascript:", null, null, null, null, null, null, false, $_btn);
-
-		$oSelector = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0, "id" => $_name . "_cell"), 1, 5);
-		$oSelector->setCol(0, 2, null, we_html_tools::htmlTextInput($name = $_name, $size = 55, $value, $maxlength = 10, $attribs = 'id="' . $_name . '" class="wetextinput" readonly="1"', $type = "text", $width = 100));
-		$oSelector->setCol(0, 3, null, "&nbsp;");
-		$oSelector->setCol(0, 4, null, we_html_element::htmlA(array("href" => "#"), $btnDatePicker));
-
-		return $oSelector->getHTML();
 	}
 
 }

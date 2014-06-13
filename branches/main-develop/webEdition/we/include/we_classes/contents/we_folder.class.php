@@ -75,7 +75,7 @@ class we_folder extends we_root{
 			if(!$this->Language){
 				$this->initLanguageFromParent();
 			}
-			if(weRequest('bool', 'we_edit_weDocumentCustomerFilter')){
+			if(we_base_request::_(we_base_request::BOOL, 'we_edit_weDocumentCustomerFilter')){
 				$this->documentCustomerFilter = we_customer_documentFilter::getCustomerFilterFromRequest($this);
 			} else if(isset($sessDat[3])){ // init webUser from session
 				$this->documentCustomerFilter = unserialize($sessDat[3]);
@@ -272,7 +272,7 @@ class we_folder extends we_root{
 			//FIXME:improve!
 			we_navigation_cache::clean(true);
 		}
-		if(LANGLINK_SUPPORT && ($langid = weRequest('string', 'we_' . $this->Name . '_LanguageDocID'))){
+		if(LANGLINK_SUPPORT && ($langid = we_base_request::_(we_base_request::STRING, 'we_' . $this->Name . '_LanguageDocID'))){
 			$this->setLanguageLink($langid, 'tblFile', true, ($this instanceof we_class_folder));
 		} else {
 			//if language changed, we must delete eventually existing entries in tblLangLink, even if !LANGLINK_SUPPORT!

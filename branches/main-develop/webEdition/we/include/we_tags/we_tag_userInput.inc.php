@@ -97,7 +97,7 @@ function we_tag_userInput($attribs, $content){
 		switch($type){
 			case 'img' :
 
-				$_imgDataId = weRequest('raw', 'WE_UI_IMG_DATA_ID_' . $name, md5(uniqid(__FUNCTION__, true)));
+				$_imgDataId = we_base_request::_(we_base_request::RAW, 'WE_UI_IMG_DATA_ID_' . $name, md5(uniqid(__FUNCTION__, true)));
 
 				if($editable){
 					if(($foo = attributFehltError($attribs, 'parentid', __FUNCTION__))){
@@ -186,7 +186,7 @@ function we_tag_userInput($attribs, $content){
 					}
 				}
 			case 'flashmovie' :
-				$_flashmovieDataId = weRequest('raw', 'WE_UI_FLASHMOVIE_DATA_ID_' . $name, md5(uniqid(__FUNCTION__, true)));
+				$_flashmovieDataId = we_base_request::_(we_base_request::RAW, 'WE_UI_FLASHMOVIE_DATA_ID_' . $name, md5(uniqid(__FUNCTION__, true)));
 
 				if($editable){
 					if(($foo = attributFehltError($attribs, 'parentid', __FUNCTION__))){
@@ -275,7 +275,7 @@ function we_tag_userInput($attribs, $content){
 					}
 				}
 			case 'quicktime' :
-				$_quicktimeDataId = weRequest('raw', 'WE_UI_QUICKTIME_DATA_ID_' . $name, md5(uniqid(__FUNCTION__, true)));
+				$_quicktimeDataId = we_base_request::_(we_base_request::RAW, 'WE_UI_QUICKTIME_DATA_ID_' . $name, md5(uniqid(__FUNCTION__, true)));
 
 
 				if($editable){
@@ -362,7 +362,7 @@ function we_tag_userInput($attribs, $content){
 					}
 				}
 			case 'binary' :
-				$_binaryDataId = weRequest('raw', 'WE_UI_BINARY_DATA_ID_' . $name, md5(uniqid(__FUNCTION__, true)));
+				$_binaryDataId = we_base_request::_(we_base_request::RAW, 'WE_UI_BINARY_DATA_ID_' . $name, md5(uniqid(__FUNCTION__, true)));
 
 				if($editable){
 					if(($foo = attributFehltError($attribs, 'parentid', __FUNCTION__))){

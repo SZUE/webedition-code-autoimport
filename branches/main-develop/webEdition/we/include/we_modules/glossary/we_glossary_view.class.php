@@ -88,7 +88,7 @@ class we_glossary_view{
 		$this->Glossary = new we_glossary_glossary();
 
 		if(isset($_REQUEST['cmd'])){
-			switch(weRequest('string', 'cmd')){
+			switch(we_base_request::_(we_base_request::STRING, 'cmd')){
 
 				case 'new_glossary_abbreviation':
 					$this->Glossary->Type = we_glossary_glossary::TYPE_ABBREVATION;
@@ -176,7 +176,7 @@ class we_glossary_view{
 	}
 
 	function getJSTop(){
-		$modData = we_base_moduleInfo::getModuleData(weRequest('string', 'mod', ''));
+		$modData = we_base_moduleInfo::getModuleData(we_base_request::_(we_base_request::STRING, 'mod', ''));
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 		$js = '
 var get_focus = 1;
@@ -424,7 +424,7 @@ function we_cmd() {
 	}
 
 	function processCommands(){
-		switch(weRequest('string', "cmd")){
+		switch(we_base_request::_(we_base_request::STRING, "cmd")){
 
 			case "new_glossary_acronym":
 			case "new_glossary_abbreviation":

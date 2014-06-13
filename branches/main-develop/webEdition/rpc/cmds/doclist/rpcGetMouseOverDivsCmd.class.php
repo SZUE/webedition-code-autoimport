@@ -30,23 +30,20 @@ class rpcGetMouseOverDivsCmd extends rpcCmd{
 
 		we_html_tools::protect();
 
-		$whichsearch = weRequest('string', 'whichsearch', '');
-		$setView = weRequest('int', 'we_cmd', 0, 'setView');
-		$anzahl = weRequest('int', 'we_cmd', 0, 'anzahl');
-		$searchstart = weRequest('int', 'we_cmd', 0, 'searchstart');
+		$whichsearch = we_base_request::_(we_base_request::STRING, 'whichsearch', '');
+		$setView = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'setView');
+		$anzahl = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'anzahl');
+		$searchstart = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'searchstart');
 
-		if(($trans = weRequest('transaction', 'we_transaction', 0))){
-			$_REQUEST['we_transaction'] = $trans;
-
+		if(($trans = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 0))){
 			$we_dt = isset($_SESSION['weS']['we_data'][$trans]) ? $_SESSION['weS']['we_data'][$trans] : '';
 		}
-		$doc = weRequest('string', 'classname');
+		$doc = we_base_request::_(we_base_request::STRING, 'classname');
 		$_document = new $doc;
 		$_document->we_initSessDat($we_dt);
 
 		$_REQUEST['we_cmd']['obj'] = $_document;
 
-		$code = "";
 		if($setView == 1){
 			$content = doclistView::searchProperties($whichsearch);
 
@@ -56,6 +53,8 @@ class rpcGetMouseOverDivsCmd extends rpcCmd{
 			}
 
 			$code = we_search_view::makeMouseOverDivs($x, $content, $whichsearch);
+		} else {
+			$code = '';
 		}
 
 		$resp->setData("data", $code);

@@ -24,7 +24,7 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
-switch(weRequest('string', 'we_cmd','',0)){
+switch(we_base_request::_(we_base_request::STRING, 'we_cmd','',0)){
 	case 'save' :
 		setUserPref('cockpit_dat', $_REQUEST['we_cmd'][1]);
 		setUserPref('cockpit_rss', $_REQUEST['we_cmd'][2]);

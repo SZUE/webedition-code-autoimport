@@ -43,16 +43,16 @@ function getObjectsForDocWorkspace($id, we_database_base $db){
 	return $db->getAllFirst(false);
 }
 
-$table = weRequest('table', 'we_cmd', '', 2);
+$table = we_base_request::_(we_base_request::TABLE, 'we_cmd', '', 2);
 $wfchk = defined('WORKFLOW_TABLE') && ($table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE)) ?
-	weRequest('bool', 'we_cmd', 0, 3) :
+	we_base_request::_(we_base_request::BOOL, 'we_cmd', 0, 3) :
 	1;
-$wecmd0 = weRequest('string', 'we_cmd', '', 0);
+$wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
 $wfchk_html = '';
 $script = '';
 
 if(!$wfchk){
-	if(($sel = weRequest('intList', 'sel'))){
+	if(($sel = we_base_request::_(we_base_request::INTLIST, 'sel'))){
 		$found = false;
 		$selectedItems = explode(',', $sel);
 		foreach($selectedItems as $selectedItem){
@@ -64,16 +64,16 @@ if(!$wfchk){
 		$wfchk_html .= we_html_element::jsElement(
 				'function confirmDel(){' .
 				($found ? 'if(confirm("' . g_l('alert', '[found_in_workflow]') . '")){' : '') .
-				'we_cmd("' . weRequest('raw', 'we_cmd', '', 0) . '","","' . $table . '",1);' .
+				'we_cmd("' . we_base_request::_(we_base_request::RAW, 'we_cmd', '', 0) . '","","' . $table . '",1);' .
 				($found ? '}else{ top.toggleBusy(0)}' : '') .
 				'}');
 	} else {
 		$script = 'top.toggleBusy(0);' . we_message_reporting::getShowMessageCall(g_l('alert', "[nothing_to_delete]"), we_message_reporting::WE_MESSAGE_WARNING);
 	}
 	$wfchk_html .= '</head><body onload="confirmDel()"><form name="we_form" method="post">' .
-		we_html_tools::hidden("sel", weRequest('raw', "sel", "")) . "</form>";
+		we_html_tools::hidden("sel", we_base_request::_(we_base_request::RAW, "sel", "")) . "</form>";
 } elseif(in_array($wecmd0, array("do_delete", 'delete_single_document'))){
-	if(($sel = weRequest('intList', "sel"))){
+	if(($sel = we_base_request::_(we_base_request::INTLIST, "sel"))){
 		//	look which documents must be deleted.
 		$selectedItems = explode(',', $sel);
 		$retVal = 1;

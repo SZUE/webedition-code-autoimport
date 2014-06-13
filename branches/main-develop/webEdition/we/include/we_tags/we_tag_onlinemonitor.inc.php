@@ -34,7 +34,7 @@ function we_tag_onlinemonitor($attribs){
 		return false;
 	}
 	$condition = weTag_getAttribute("condition", $attribs, 0);
-	$we_omid = weTag_getAttribute("id", $attribs, weRequest('int', 'we_omid', 0));
+	$we_omid = weTag_getAttribute("id", $attribs, we_base_request::_(we_base_request::INT, 'we_omid', 0));
 
 
 	if(!isset($GLOBALS["we_lv_array"])){

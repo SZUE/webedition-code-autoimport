@@ -50,11 +50,11 @@ class rpcCmd{
 
 	function rpcCmd($shell){
 
-		if((get_magic_quotes_gpc() == 1)){//FIXME: remove after End of php 5.3
-			if($_REQUEST){
-				rpcCmd::stripSlashes($_REQUEST);
-			}
-		}
+		/* if((get_magic_quotes_gpc() == 1)){//FIXME: remove after End of php 5.3
+		  if($_REQUEST){
+		  rpcCmd::stripSlashes($_REQUEST);
+		  }
+		  } */
 
 		$this->checkSession();
 
@@ -88,7 +88,7 @@ class rpcCmd{
 	}
 
 	function checkSession(){
-		if(!isset($_SESSION['user']['ID'])||!$_SESSION['user']['ID']){
+		if(!isset($_SESSION['user']['ID']) || !$_SESSION['user']['ID']){
 			$this->Status = self::STATUS_NO_SESSION;
 			return false;
 		}
@@ -98,7 +98,7 @@ class rpcCmd{
 
 	function checkParameters(){
 		foreach($this->Parameters as $par){
-			if(!isset($_REQUEST[$par])){
+			if(we_base_request::_(we_base_request::STRING, $par) === false){
 				$this->Status = self::STATUS_REQUEST_MALFORMED;
 				return false;
 			}

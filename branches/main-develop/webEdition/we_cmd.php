@@ -105,7 +105,7 @@ function findInclude($cmd){
 		case 'open_extern_document'; // wird ben�tigt um ein externes Dokument aufzurufen
 			return '/we_seem/we_SEEM_openExtDoc_frameset.php';
 		case 'edit_document_with_parameters':
-			$GLOBALS['parastr'] = weRequest('raw', 'we_cmd', '', 4);
+			$GLOBALS['parastr'] = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 4);
 		case 'edit_document':
 		case 'new_document':
 		case 'new_folder':
@@ -180,9 +180,9 @@ function findInclude($cmd){
 		case 'showLoadInfo':
 			return 'we_loadInfo.inc.php';
 		case 'delete':
-			return (weRequest('bool', 'we_cmd', false, 1) ? 'we_delete.inc.php' : 'home.inc.php');
+			return (we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 1) ? 'we_delete.inc.php' : 'home.inc.php');
 		case 'move':
-			return (weRequest('bool', 'we_cmd', false, 1) ? 'we_move.inc.php' : 'home.inc.php');
+			return (we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 1) ? 'we_move.inc.php' : 'home.inc.php');
 		case 'do_delete':
 		case 'delete_single_document':
 			return 'we_delete.inc.php';
@@ -269,7 +269,7 @@ function findInclude($cmd){
 	}
 }
 
-if(($inc = findInclude($cmd = weRequest('string', 'we_cmd', '', 0)))){
+if(($inc = findInclude($cmd = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))){
 	//  When pressing a link in edit-mode, the page is being reloaded from
 	//  webedition. If a webedition link was pressed this page shall not be
 	//  reloaded. All entries in this array represent values for we_cmd[0]

@@ -69,7 +69,7 @@ echo we_html_tools::getHtmlTop() .
 			<tr><td colspan="5"><img src="<?php echo IMAGE_DIR ?>umr_h_small.gif" width="100%" height="2" border="0"></td></tr>
 			<tr><td colspan="5"><?php echo we_html_tools::getPixel(5, 5); ?></td></tr>
 			<?php
-			if(weRequest('bool', "ret")){
+			if(we_base_request::_(we_base_request::BOOL, "ret")){
 				$cancel_button = we_html_button::create_button("cancel", "javascript:top.close();");
 				$yes_button = we_html_button::create_button("ok", "javascript:top.exit_close();");
 				$down_button = null;
@@ -80,7 +80,7 @@ echo we_html_tools::getHtmlTop() .
 				$down_button = null; //we_button::create_button("download", "javascript:downloadFile();");
 			}
 			$buttons = we_html_button::position_yes_no_cancel($yes_button, $down_button, $cancel_button);
-			if(weRequest('string', "filter") == "all_Types"){
+			if(we_base_request::_(we_base_request::STRING, "filter") == "all_Types"){
 				?>
 				<tr>
 					<td></td>
@@ -111,7 +111,7 @@ echo we_html_tools::getHtmlTop() .
 						?></b>
 				</td>
 				<td></td>
-				<td class="defaultfont" align="left"><?php echo we_html_tools::htmlTextInput("fname", 24, weRequest('file', "currentName"), "", "style=\"width:100%\" readonly=\"readonly\""); ?>
+				<td class="defaultfont" align="left"><?php echo we_html_tools::htmlTextInput("fname", 24, we_base_request::_(we_base_request::FILE, "currentName"), "", "style=\"width:100%\" readonly=\"readonly\""); ?>
 				</td>
 				<td></td>
 			</tr>

@@ -73,32 +73,32 @@ if(isset($we_doc->elements['Charset']['dat'])){ //	send charset which might be d
 	we_html_tools::headerCtCharset('text/html', $we_doc->elements['Charset']['dat']);
 }
 
-$name = weRequest('string', 'we_cmd', '', 1);
-$nr = weRequest('int', 'we_cmd', '-1', 2);
+$name = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1);
+$nr = we_base_request::_(we_base_request::INT, 'we_cmd', '-1', 2);
 
-if(weRequest('bool', 'ok')){
-	$alt = weRequest('string', 'alt', '');
-	$img_title = weRequest('string', 'img_title', '');
-	$text = weRequest('string', 'text', '');
-	$attribs = weRequest('raw', 'attribs', '');
-	$href = weRequest('url', 'href', '');
-	$anchor = trim(weRequest('string', 'anchor', ''));
-	$tabindex = weRequest('int', 'tabindex', '');
-	$accesskey = weRequest('string', 'accesskey', '');
-	$lang = weRequest('string', 'lang', '');
-	$rel = weRequest('string', 'rel', '');
-	$rev = weRequest('string', 'rev', '');
-	$hreflang = weRequest('string', 'hreflang', '');
+if(we_base_request::_(we_base_request::BOOL, 'ok')){
+	$alt = we_base_request::_(we_base_request::STRING, 'alt', '');
+	$img_title = we_base_request::_(we_base_request::STRING, 'img_title', '');
+	$text = we_base_request::_(we_base_request::STRING, 'text', '');
+	$attribs = we_base_request::_(we_base_request::RAW, 'attribs', '');
+	$href = we_base_request::_(we_base_request::URL, 'href', '');
+	$anchor = trim(we_base_request::_(we_base_request::STRING, 'anchor', ''));
+	$tabindex = we_base_request::_(we_base_request::INT, 'tabindex', '');
+	$accesskey = we_base_request::_(we_base_request::STRING, 'accesskey', '');
+	$lang = we_base_request::_(we_base_request::STRING, 'lang', '');
+	$rel = we_base_request::_(we_base_request::STRING, 'rel', '');
+	$rev = we_base_request::_(we_base_request::STRING, 'rev', '');
+	$hreflang = we_base_request::_(we_base_request::STRING, 'hreflang', '');
 	$params = $_REQUEST['params'];
-	$title = weRequest('string', 'title', '');
-	$type = weRequest('string', 'type');
+	$title = we_base_request::_(we_base_request::STRING, 'title', '');
+	$type = we_base_request::_(we_base_request::STRING, 'type');
 
 	//	accept anchor with or without '#', when saving the link
 	$anchor = (!$anchor || $anchor{0} == '#' ? $anchor : '#' . $anchor);
 
 	if(strlen($params) > 0){ //	accept parameters with or without '?', when saving the link
 		//	when type=object we need a '&'
-		switch(weRequest('string', 'type')){
+		switch(we_base_request::_(we_base_request::STRING, 'type')){
 			case we_base_link::TYPE_OBJ:
 				if(substr($params, 0, 1) != '&'){
 					$params = (substr($params, 0, 1) == '?' ? '&' . substr($params, 1) : '&' . $params);
@@ -111,8 +111,8 @@ if(weRequest('bool', 'ok')){
 		}
 	}
 	$link = array(
-		'id' => weRequest('int', 'id', 0),
-		'obj_id' => defined('OBJECT_TABLE') ? weRequest('int', 'obj_id', 0) : 0,
+		'id' => we_base_request::_(we_base_request::INT, 'id', 0),
+		'obj_id' => defined('OBJECT_TABLE') ? we_base_request::_(we_base_request::INT, 'obj_id', 0) : 0,
 		'anchor' => $anchor,
 		'accesskey' => $accesskey,
 		'tabindex' => $tabindex,
@@ -122,42 +122,42 @@ if(weRequest('bool', 'ok')){
 		'hreflang' => $hreflang,
 		'params' => $params,
 		'title' => $title,
-		'bcc' => weRequest('email', 'bcc', ''),
-		'cc' => weRequest('email', 'cc', ''),
-		'subject' => weRequest('string', 'subject', ''),
-		'href' => ($type == we_base_link::TYPE_MAIL ? we_base_link::TYPE_MAIL_PREFIX . weRequest('email', 'emaillink', '') : weRequest('url', 'href', '')),
+		'bcc' => we_base_request::_(we_base_request::EMAIL, 'bcc', ''),
+		'cc' => we_base_request::_(we_base_request::EMAIL, 'cc', ''),
+		'subject' => we_base_request::_(we_base_request::STRING, 'subject', ''),
+		'href' => ($type == we_base_link::TYPE_MAIL ? we_base_link::TYPE_MAIL_PREFIX . we_base_request::_(we_base_request::EMAIL, 'emaillink', '') : we_base_request::_(we_base_request::URL, 'href', '')),
 		'attribs' => $attribs,
-		'target' => weRequest('string', 'target', ''),
-		'jswin' => weRequest('bool', 'jswin'),
-		'jscenter' => weRequest('bool', 'jscenter'),
-		'jsposx' => weRequest('unit', 'jsposx'),
-		'jsposy' => weRequest('unit', 'jsposy'),
-		'jswidth' => weRequest('unit', 'jswidth'),
-		'jsheight' => weRequest('unit', 'jsheight'),
-		'jsstatus' => weRequest('bool', 'jsstatus'),
-		'jsscrollbars' => weRequest('bool', 'jsscrollbars'),
-		'jsmenubar' => weRequest('bool', 'jsmenubar'),
-		'jstoolbar' => weRequest('bool', 'jstoolbar'),
-		'jsresizable' => weRequest('bool', 'jsresizable'),
-		'jslocation' => weRequest('bool', 'jslocation'),
-		'img_id' => weRequest('int', 'img_id', 0),
-		'img_src' => weRequest('url', 'img_src', ''),
-		'text' => weRequest('string', 'text'),
+		'target' => we_base_request::_(we_base_request::STRING, 'target', ''),
+		'jswin' => we_base_request::_(we_base_request::BOOL, 'jswin'),
+		'jscenter' => we_base_request::_(we_base_request::BOOL, 'jscenter'),
+		'jsposx' => we_base_request::_(we_base_request::UNIT, 'jsposx'),
+		'jsposy' => we_base_request::_(we_base_request::UNIT, 'jsposy'),
+		'jswidth' => we_base_request::_(we_base_request::UNIT, 'jswidth'),
+		'jsheight' => we_base_request::_(we_base_request::UNIT, 'jsheight'),
+		'jsstatus' => we_base_request::_(we_base_request::BOOL, 'jsstatus'),
+		'jsscrollbars' => we_base_request::_(we_base_request::BOOL, 'jsscrollbars'),
+		'jsmenubar' => we_base_request::_(we_base_request::BOOL, 'jsmenubar'),
+		'jstoolbar' => we_base_request::_(we_base_request::BOOL, 'jstoolbar'),
+		'jsresizable' => we_base_request::_(we_base_request::BOOL, 'jsresizable'),
+		'jslocation' => we_base_request::_(we_base_request::BOOL, 'jslocation'),
+		'img_id' => we_base_request::_(we_base_request::INT, 'img_id', 0),
+		'img_src' => we_base_request::_(we_base_request::URL, 'img_src', ''),
+		'text' => we_base_request::_(we_base_request::STRING, 'text'),
 		'type' => ($type == we_base_link::TYPE_MAIL) ? we_base_link::TYPE_INT : $type,
-		'ctype' => weRequest('string', 'ctype'),
-		'width' => weRequest('unit', 'width'),
-		'height' => weRequest('unit', 'height'),
-		'border' => weRequest('int', 'border'),
-		'hspace' => weRequest('int', 'hspace'),
-		'vspace' => weRequest('int', 'vspace'),
-		'align' => weRequest('string', 'align'),
+		'ctype' => we_base_request::_(we_base_request::STRING, 'ctype'),
+		'width' => we_base_request::_(we_base_request::UNIT, 'width'),
+		'height' => we_base_request::_(we_base_request::UNIT, 'height'),
+		'border' => we_base_request::_(we_base_request::INT, 'border'),
+		'hspace' => we_base_request::_(we_base_request::INT, 'hspace'),
+		'vspace' => we_base_request::_(we_base_request::INT, 'vspace'),
+		'align' => we_base_request::_(we_base_request::STRING, 'align'),
 		'alt' => $alt,
-		'img_title' => weRequest('string', 'img_title'),
+		'img_title' => we_base_request::_(we_base_request::STRING, 'img_title'),
 	);
 
-	if(($linklist = weRequest('raw', 'linklist'))!==false){
+	if(($linklist = we_base_request::_(we_base_request::RAW, 'linklist'))!==false){
 		//  set $nr to global, because it is used everywhere;
-		$nr = weRequest('int', 'nr', 0);
+		$nr = we_base_request::_(we_base_request::INT, 'nr', 0);
 		$ll = new we_base_linklist($linklist);
 		$ll->setID($nr, $link['id']);
 		$ll->setObjID($nr, $link['obj_id']);
@@ -432,18 +432,18 @@ echo $yuiSuggest->getYuiCssFiles() .
 		}
 	}
 <?php
-$trans = $_REQUEST["we_transaction"] = weRequest('transaction', "we_transaction", 0);
+$trans = $_REQUEST["we_transaction"] = we_base_request::_(we_base_request::TRANSACTION, "we_transaction", 0);
 
-$ok = weRequest('bool', "ok");
-$cmd = weRequest('string', 'we_cmd', '', 0);
-$name = weRequest('string', 'name', $name);
+$ok = we_base_request::_(we_base_request::BOOL, "ok");
+$cmd = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
+$name = we_base_request::_(we_base_request::STRING, 'name', $name);
 
 if($ok && $cmd == "edit_link_at_class"){
 	$_SESSION['weS']['WE_LINK'] = $link;
 	//FIXME: we_field XSS
 	?>
 		opener.setScrollTo();
-		opener.we_cmd("object_change_link_at_class", "<?php echo $trans; ?>", "<?php echo weRequest('string', "we_field"); ?>", "<?php echo $name; ?>");
+		opener.we_cmd("object_change_link_at_class", "<?php echo $trans; ?>", "<?php echo we_base_request::_(we_base_request::STRING, "we_field"); ?>", "<?php echo $name; ?>");
 		top.close();
 	<?php
 } else if($ok && $cmd == "edit_link_at_object"){
@@ -753,7 +753,7 @@ if($ok && $cmd == "edit_link_at_class"){
 		<td>' . $intImg . '</td>
 	</tr>
 	<tr id="cimgprops_tr" style="display:' . (($ctype == we_base_link::CONTENT_TEXT) ? "none" : "table-row") . ';">
-		<td>' . we_html_tools::getPixel(10, 3) . "<br>" . $imgProps . '</td>
+		<td>' . we_html_tools::getPixel(10, 3) . "<br/>" . $imgProps . '</td>
 	</tr>
 </table><div></div>',
 				'space' => 150),
@@ -839,10 +839,10 @@ if($ok && $cmd == "edit_link_at_class"){
 			}
 			?>
 			<input type="hidden" name="name" value="<?php echo $name; ?>" />
-			<input type="hidden" name="nr" value="<?php echo weRequest('int', "nr", $nr); ?>" />
+			<input type="hidden" name="nr" value="<?php echo we_base_request::_(we_base_request::INT, "nr", $nr); ?>" />
 			<input type="hidden" name="ok" value="1" />
 			<input type="hidden" name="we_transaction" value="<?php echo $we_transaction; ?>" />
-			<input type="hidden" name="we_field" value="<?php echo weRequest('string', 'we_cmd', '', 3); ?>" />
+			<input type="hidden" name="we_field" value="<?php echo we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3); ?>" />
 			<?php
 			echo we_html_multiIconBox::getHTML('', '100%', $_parts, 30, $buttons, -1, '', '', false, g_l('linklistEdit', '[edit_link]')) .
 			$yuiSuggest->getYuiCss() .

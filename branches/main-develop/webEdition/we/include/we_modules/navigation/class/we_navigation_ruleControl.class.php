@@ -35,7 +35,7 @@ class we_navigation_ruleControl{
 		$html = '';
 
 		if(isset($_REQUEST['cmd'])){
-			switch(weRequest('string', 'cmd')){
+			switch(we_base_request::_(we_base_request::STRING, 'cmd')){
 
 				case "save_navigation_rule" :
 					$isNew = $this->NavigationRule->isnew; // navigationID = 0

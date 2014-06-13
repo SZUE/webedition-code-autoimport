@@ -137,7 +137,7 @@ if($we_responseText){
 			$_jsCommand .= we_message_reporting::getShowMessageCall($we_responseText, $we_responseTextType) .
 				"_EditorFrameDocumentRef.frames[0].we_cmd('switch_edit_page'," . $GLOBALS['we_doc']->EditPageNr . ",'" . $GLOBALS['we_transaction'] . "');" .
 				//	JavaScript: generated in we_editor.inc.php
-				weRequest('raw', 'we_cmd', '', 5);
+				we_base_request::_(we_base_request::RAW, 'we_cmd', '', 5);
 		}
 
 		if(isset($GLOBALS["publish_doc"]) && $GLOBALS["publish_doc"] == true){
@@ -153,7 +153,7 @@ if($we_responseText){
 	} else { //	alert in normal mode
 		$_jsCommand .= we_message_reporting::getShowMessageCall($we_responseText, $we_responseTextType) .
 			//	JavaScript: generated in we_editor.inc.php
-			weRequest('raw', 'we_cmd', '', 5);
+			we_base_request::_(we_base_request::RAW, 'we_cmd', '', 5);
 	}
 	echo $_jsCommand;
 }

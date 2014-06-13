@@ -72,7 +72,7 @@ class we_voting_view extends weModuleView{
 	}
 
 	function getJSTop(){
-		$mod = weRequest('string', 'mod', '');
+		$mod = we_base_request::_(we_base_request::STRING, 'mod', '');
 		$modData = we_base_moduleInfo::getModuleData($mod);
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 
@@ -348,7 +348,7 @@ function we_cmd(){
 	 */
 
 	function processCommands(){
-		switch(weRequest('string', "cmd")){
+		switch(we_base_request::_(we_base_request::STRING, "cmd")){
 			case "resetscores":
 				foreach($this->voting->arr_Scores as $key => $val){
 					$this->voting->arr_Scores[$key] = 0;
@@ -540,7 +540,7 @@ function we_cmd(){
 
 				$enclose = isset($_REQUEST['csv_enclose']) ? ($_REQUEST['csv_enclose'] == 0 ? '"' : '\'') : '"';
 				$delimiter = isset($_REQUEST['csv_delimiter']) ? ($_REQUEST['csv_delimiter'] == '\t' ? "\t" : $_REQUEST['csv_delimiter']) : ';';
-				switch(weRequest('string', 'csv_lineend')){
+				switch(we_base_request::_(we_base_request::STRING, 'csv_lineend')){
 					default:
 					case 'windows':
 						$lineend = "\r\n";
@@ -570,7 +570,7 @@ function we_cmd(){
 
 				$enclose = isset($_REQUEST['csv_enclose']) ? ($_REQUEST['csv_enclose'] == 0 ? '"' : '\'') : '"';
 				$delimiter = isset($_REQUEST['csv_delimiter']) ? ($_REQUEST['csv_delimiter'] == '\t' ? "\t" : $_REQUEST['csv_delimiter']) : ';';
-				switch(weRequest('string', 'csv_lineend')){
+				switch(we_base_request::_(we_base_request::STRING, 'csv_lineend')){
 					default:
 					case 'windows':
 						$lineend = "\r\n";

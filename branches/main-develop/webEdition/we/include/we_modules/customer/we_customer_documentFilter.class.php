@@ -133,10 +133,10 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	 */
 	static function getCustomerFilterFromRequest(&$model){
 		return
-			(weRequest('int', 'wecf_mode') === we_customer_abstractFilter::OFF ?
+			(we_base_request::_(we_base_request::INT, 'wecf_mode') === we_customer_abstractFilter::OFF ?
 				self::getEmptyDocumentCustomerFilter() :
 				new self(
-				weRequest('int', 'weDocumentCustomerFilter_id', 0), intval($model->ID), $model->ContentType, $model->Table, (weRequest('string', 'wecf_accessControlOnTemplate') == "onTemplate") ? 1 : 0, weRequest('int', 'wecf_noLoginId', 0), weRequest('int', 'wecf_noAccessId', 0), weRequest('int', 'wecf_mode', 0), self::getSpecificCustomersFromRequest(), self::getFilterFromRequest(), self::getWhiteListFromRequest(), self::getBlackListFromRequest()
+				we_base_request::_(we_base_request::INT, 'weDocumentCustomerFilter_id', 0), intval($model->ID), $model->ContentType, $model->Table, (we_base_request::_(we_base_request::STRING, 'wecf_accessControlOnTemplate') == "onTemplate") ? 1 : 0, we_base_request::_(we_base_request::INT, 'wecf_noLoginId', 0), we_base_request::_(we_base_request::INT, 'wecf_noAccessId', 0), we_base_request::_(we_base_request::INT, 'wecf_mode', 0), self::getSpecificCustomersFromRequest(), self::getFilterFromRequest(), self::getWhiteListFromRequest(), self::getBlackListFromRequest()
 				)
 			);
 	}

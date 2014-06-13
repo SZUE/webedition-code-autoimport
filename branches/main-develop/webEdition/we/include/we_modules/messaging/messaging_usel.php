@@ -83,7 +83,7 @@ if(!empty($t_arr)){
 }
 
 $rcpts_str = '';
-$rcpts = explode(',', weRequest('raw', "rs", ''));
+$rcpts = explode(',', we_base_request::_(we_base_request::RAW, "rs", ''));
 $db = new DB_WE();
 foreach($rcpts as $rcpt){
 	if(($uid = we_users_user::getUserID($rcpt, $db)) != -1){

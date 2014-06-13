@@ -29,9 +29,7 @@ we_html_tools::protect(array('BROWSE_SERVER', 'SITE_IMPORT', 'ADMINISTRATOR'));
 echo we_html_tools::getHtmlTop();
 
 $docroot = str_replace('\\', '/', rtrim($_SERVER['DOCUMENT_ROOT'], '/'));
-we_cmd_dec(4);
-we_cmd_dec(1);
-$cmd1 = weRequest('raw', 'we_cmd', '', 1);
+$cmd1 = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 1);
 
 
 $filter = (isset($_REQUEST['we_cmd'][2]) && $_REQUEST['we_cmd'][2] != '') ? $_REQUEST['we_cmd'][2] : 'all_Types';
@@ -41,7 +39,7 @@ $currentDir = str_replace('\\', '/', ( isset($_REQUEST['we_cmd'][3]) ?
 				$_REQUEST['we_cmd'][3] :
 				dirname($_REQUEST['we_cmd'][3]))) :
 		''));
-$currentName = ($filter != 'folder' ? basename(weRequest('file', 'we_cmd', '', 3)) : '');
+$currentName = ($filter != 'folder' ? basename(we_base_request::_(we_base_request::FILE, 'we_cmd', '', 3)) : '');
 if(!file_exists($docroot . $currentDir . '/' . $currentName)){
 	$currentDir = '';
 	$currentName = '';
@@ -79,8 +77,8 @@ $rootDir = ((isset($_REQUEST['we_cmd'][5]) && $_REQUEST['we_cmd'][5] != '') ? $_
 
 	<?php
 }
-if(isset($_REQUEST['we_cmd'][4]) && $_REQUEST['we_cmd'][4] != ""){
-	echo $_REQUEST['we_cmd'][4] . ';';
+if(($cmd4 = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 4))){
+	echo $cmd4 . ';';
 }
 ?>
 		close();
@@ -98,7 +96,7 @@ if(isset($_REQUEST['we_cmd'][4]) && $_REQUEST['we_cmd'][4] != ""){
 echo we_html_element::jsScript(JS_DIR . 'keyListener.js');
 ?>
 </head>
-<frameset rows="73,*,<?php echo (weRequest('bool', 'we_cmd', false, 2) ? 60 : 90); ?>,0" border="0" onload="top.fscmd.selectDir()">
+<frameset rows="73,*,<?php echo (we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 2) ? 60 : 90); ?>,0" border="0" onload="top.fscmd.selectDir()">
   <frame src="we_sselector_header.php?ret=<?php echo ($cmd1 ? 1 : 0); ?>&filter=<?php echo $filter; ?>&currentDir=<?php echo $currentDir; ?>" name="fsheader" noresize scrolling="no">
 	<frame src="<?php echo HTML_DIR; ?>white.html" name="fsbody" noresize scrolling="auto">
 	<frame  src="we_sselector_footer.php?ret=<?php echo ($cmd1 ? 1 : 0); ?>&filter=<?php echo $filter; ?>&currentName=<?php echo $currentName; ?>" name="fsfooter" noresize scrolling="no">

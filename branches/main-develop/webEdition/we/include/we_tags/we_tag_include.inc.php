@@ -49,7 +49,7 @@ function we_setBackVar($we_unique){
 			'TITLE' => $GLOBALS['TITLE'],
 			'KEYWORDS' => $GLOBALS['KEYWORDS'],
 			'DESCRIPTION' => $GLOBALS['DESCRIPTION'],
-			'we_cmd' => weRequest('raw', 'we_cmd', ''),
+			'we_cmd' => we_base_request::_(we_base_request::RAW, 'we_cmd', ''),
 			'FROM_WE_SHOW_DOC' => isset($GLOBALS['FROM_WE_SHOW_DOC']) ? $GLOBALS['FROM_WE_SHOW_DOC'] : '',
 			'we_transaction' => isset($GLOBALS['we_transaction']) ? $GLOBALS['we_transaction'] : '',
 			'we_editmode' => isset($GLOBALS['we_editmode']) ? $GLOBALS['we_editmode'] : null,
@@ -57,7 +57,7 @@ function we_setBackVar($we_unique){
 			'postTagName' => isset($GLOBALS['postTagName']) ? $GLOBALS['postTagName'] : '',
 		),
 		'REQUEST' => array(
-			'we_cmd' => weRequest('raw', 'we_cmd', ''),
+			'we_cmd' => we_base_request::_(we_base_request::RAW, 'we_cmd', ''),
 	));
 
 	if(isset($GLOBALS['WE_IS_DYN'])){
