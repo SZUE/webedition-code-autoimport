@@ -27,7 +27,7 @@ we_html_tools::protect();
 
 echo we_html_tools::getHtmlTop(g_l('newFile', '[import_File_from_hd_title]')) . STYLESHEET;
 
-$we_ContentType = weRequest('string', 'ct', (isset($_FILES['we_uploadedFile']['name']) ? getContentTypeFromFile($_FILES['we_uploadedFile']['name']) : ''));
+$we_ContentType = we_base_request::_(we_base_request::STRING, 'ct', (isset($_FILES['we_uploadedFile']['name']) ? getContentTypeFromFile($_FILES['we_uploadedFile']['name']) : ''));
 
 switch($we_ContentType){
 	case we_base_ContentTypes::IMAGE;
@@ -39,7 +39,7 @@ switch($we_ContentType){
 	default:
 		$allowedContentTypes = $we_ContentType;
 }
-$pid = weRequest('int', 'pid', 0);
+$pid = we_base_request::_(we_base_request::INT, 'pid', 0);
 $parts = array();
 
 $we_alerttext = (!in_workspace($pid, get_ws(FILE_TABLE), FILE_TABLE, $GLOBALS['DB_WE']) || isset($_FILES['we_uploadedFile']) && !permissionhandler::hasPerm(we_base_ContentTypes::inst()->getPermission(getContentTypeFromFile($_FILES['we_uploadedFile']['name']))) ?
@@ -125,7 +125,7 @@ if((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploaded
 					makeCSVFromArray($_REQUEST['Thumbnails'], true) :
 					$_REQUEST['Thumbnails']);
 		}
-		$we_doc->Table = weRequest('table', 'tab');
+		$we_doc->Table = we_base_request::_(we_base_request::TABLE, 'tab');
 		$we_doc->Published = time();
 		$we_doc->we_save();
 		$id = $we_doc->ID;
@@ -151,7 +151,7 @@ if($maxsize){
 }
 
 $parts[] = array('headline' => '', 'html' => '<input name="we_uploadedFile" TYPE="file"' . ($allowedContentTypes ? ' ACCEPT="' . $allowedContentTypes . '"' : '') . ' size="35" />', "space" => 0);
-$parts[] = array('headline' => '', 'html' => g_l('newFile', '[caseFileExists]') . '<br>' . we_html_forms::radiobutton('yes', true, 'overwrite', g_l('newFile', '[overwriteFile]')) .
+$parts[] = array('headline' => '', 'html' => g_l('newFile', '[caseFileExists]') . '<br/>' . we_html_forms::radiobutton('yes', true, 'overwrite', g_l('newFile', '[overwriteFile]')) .
 	we_html_forms::radiobutton('no', false, 'overwrite', g_l('newFile', '[renameFile]')), 'space' => 0);
 
 if($we_ContentType == we_base_ContentTypes::IMAGE){
@@ -169,9 +169,9 @@ if($we_ContentType == we_base_ContentTypes::IMAGE){
 	}
 
 	$parts[] = array('headline' => '', 'html' => we_html_forms::checkbox(1, true, 'import_metadata', g_l('metadata', '[import_metadata_at_upload]')), 'space' => 0);
-	$parts[] = array('headline' => '', 'html' => g_l('thumbnails', '[create_thumbnails]') . '<br>' . $_thumbnails->getHtml(), 'space' => 0);
-	$parts[] = array('headline' => '', 'html' => g_l('global', '[title]') . '<br>' . we_html_tools::htmlTextInput('img_title', 24, '', '', '', 'text', 330), 'space' => 0);
-	$parts[] = array('headline' => '', 'html' => g_l('weClass', '[alt]') . '<br>' . we_html_tools::htmlTextInput('img_alt', 24, '', '', '', 'text', 330), 'space' => 0);
+	$parts[] = array('headline' => '', 'html' => g_l('thumbnails', '[create_thumbnails]') . '<br/>' . $_thumbnails->getHtml(), 'space' => 0);
+	$parts[] = array('headline' => '', 'html' => g_l('global', '[title]') . '<br/>' . we_html_tools::htmlTextInput('img_title', 24, '', '', '', 'text', 330), 'space' => 0);
+	$parts[] = array('headline' => '', 'html' => g_l('weClass', '[alt]') . '<br/>' . we_html_tools::htmlTextInput('img_alt', 24, '', '', '', 'text', 330), 'space' => 0);
 }
 ?>
 <script type="text/javascript"><!--

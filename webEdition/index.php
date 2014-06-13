@@ -56,7 +56,7 @@ define('LOGIN_CREDENTIALS_INVALID', 1);
 define('LOGIN_UNKNOWN', 0);
 
 
-$ignore_browser = weRequest('bool', 'ignore_browser', false);
+$ignore_browser = we_base_request::_(we_base_request::BOOL, 'ignore_browser', false);
 
 function getValueLoginMode($val){
 	$mode = isset($_COOKIE['we_mode']) ? $_COOKIE['we_mode'] : we_base_constants::MODE_NORMAL;
@@ -202,10 +202,10 @@ if(isset($GLOBALS['userLoginDenied'])){
 	$login = LOGIN_DENIED;
 } else if(isset($_SESSION['user']['Username']) && isset($_POST['password']) && isset($_POST['username'])){
 	$login = LOGIN_OK;
-	if(($mode = weRequest('string', 'mode'))){
+	if(($mode = we_base_request::_(we_base_request::STRING, 'mode'))){
 		setcookie('we_mode', $mode, time() + 2592000); //	Cookie remembers the last selected mode, it will expire in one Month !!!
 	}
-	setcookie('we_popup', weRequest('bool', 'popup'), time() + 2592000);
+	setcookie('we_popup', we_base_request::_(we_base_request::BOOL, 'popup'), time() + 2592000);
 } else if(isset($_POST['password']) && isset($_POST['username'])){
 	$login = LOGIN_CREDENTIALS_INVALID;
 } else {
@@ -247,7 +247,7 @@ function getError($reason, $cookie = false){
  * CHECK FOR PROBLEMS
  * *************************************************************************** */
 
-if(weRequest('string', 'checkLogin') && !$_COOKIE){
+if(we_base_request::_(we_base_request::STRING, 'checkLogin') && !$_COOKIE){
 	$_layout = getError(g_l('start', '[cookies_disabled]'));
 
 	printHeader($login, 400);
@@ -423,7 +423,7 @@ if(weRequest('string', 'checkLogin') && !$_COOKIE){
 			//	Here the mode - SEEM or normal is saved in the SESSION!!!
 			//	Perhaps this must move to another place later.
 			//	Later we must check permissions as well!
-			if(weRequest('string', 'mode', we_base_constants::MODE_NORMAL) == we_base_constants::MODE_NORMAL){
+			if(we_base_request::_(we_base_request::STRING, 'mode', we_base_constants::MODE_NORMAL) == we_base_constants::MODE_NORMAL){
 				if(permissionhandler::isUserAllowedForAction('work_mode', we_base_constants::MODE_NORMAL)){
 					$_SESSION['weS']['we_mode'] = we_base_constants::MODE_NORMAL;
 				} else {
@@ -431,10 +431,10 @@ if(weRequest('string', 'checkLogin') && !$_COOKIE){
 					$_SESSION['weS']['we_mode'] = we_base_constants::MODE_SEE;
 				}
 			} else {
-				$_SESSION['weS']['we_mode'] = weRequest('string', 'mode');
+				$_SESSION['weS']['we_mode'] = we_base_request::_(we_base_request::STRING, 'mode');
 			}
 
-			if((WE_LOGIN_WEWINDOW == 2 || WE_LOGIN_WEWINDOW == 0 && (!weRequest('bool', 'popup')))){
+			if((WE_LOGIN_WEWINDOW == 2 || WE_LOGIN_WEWINDOW == 0 && (!we_base_request::_(we_base_request::BOOL, 'popup')))){
 				if($_body_javascript){
 					$_body_javascript.='top.location="' . WEBEDITION_DIR . 'webEdition.php"';
 				} else {
@@ -450,7 +450,7 @@ if(weRequest('string', 'checkLogin') && !$_COOKIE){
 			}
 			break;
 		case LOGIN_CREDENTIALS_INVALID:
-			we_log_loginFailed('tblUser', weRequest('string', 'username'));
+			we_log_loginFailed('tblUser', we_base_request::_(we_base_request::STRING, 'username'));
 
 			//CHECK FOR FAILED LOGIN ATTEMPTS
 			$cnt = f('SELECT COUNT(1) FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblUser" AND IP="' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '" AND LoginDate > DATE_SUB(NOW(), INTERVAL ' . intval(LOGIN_FAILED_TIME) . ' MINUTE)');

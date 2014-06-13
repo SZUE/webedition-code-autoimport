@@ -26,7 +26,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
 echo we_html_tools::getHtmlTop() . STYLESHEET;
-$cmd = weRequest('string', 'cmd');
+$cmd = we_base_request::_(we_base_request::STRING, 'cmd');
 
 if($cmd == "save_last"){
 	$_SESSION["user"]["LastDir"] = $last;
@@ -59,7 +59,7 @@ if(!$cmd || $cmd != "save_last"){
 					}
 				}
 	<?php
-	switch(weRequest('string', 'filter')){
+	switch(we_base_request::_(we_base_request::STRING, 'filter')){
 		case 'folder':
 		case 'filefolder':
 			echo 'selectFile(dir);';
@@ -181,7 +181,7 @@ if(!$cmd || $cmd != "save_last"){
 		}
 	}
 
-	switch(weRequest('string', "cmd")){
+	switch(we_base_request::_(we_base_request::STRING, "cmd")){
 		case "new_folder":
 			echo 'drawDir(top.currentDir);';
 			if(!($_REQUEST["txt"])){

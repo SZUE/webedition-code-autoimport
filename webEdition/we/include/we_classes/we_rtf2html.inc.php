@@ -75,7 +75,7 @@ class we_rtf2html{
 	}
 
 	function correctLists(){
-		$this->htmlOut = str_replace(array("\n", "\r", '</li><br><li>', '<br><li>', '</li><br>'), array('', '', '</li><li>', '<ul><li>', '</li></ul>'), $this->htmlOut);
+		$this->htmlOut = str_replace(array("\n", "\r", '</li><br/><li>', '<br/><li>', '</li><br/>'), array('', '', '</li><li>', '<ul><li>', '</li></ul>'), $this->htmlOut);
 	}
 
 	function initControlTable(){
@@ -110,7 +110,7 @@ class we_rtf2html{
 		$this->rtf_cons[29] = array("pgnstart", "property", "", "");
 		$this->rtf_cons[30] = array("facingp", "property", "", "");
 		$this->rtf_cons[41] = array("landscape", "property", "", "");
-		$this->rtf_cons[42] = array("par", "property", "<br>\n");
+		$this->rtf_cons[42] = array("par", "property", "<br/>\n");
 		$this->rtf_cons[43] = array("\0x0a", "spec_char", "\n");
 		$this->rtf_cons[44] = array("\0x0d", "spec_char", "\r");
 		$this->rtf_cons[45] = array("tab", "spec_char", "\t");
@@ -157,7 +157,7 @@ class we_rtf2html{
 		$this->rtf_cons[86] = array("\\", "spec_char", '\\');
 		$this->rtf_cons[87] = array("f", "property", "<font face=\"%s\">", "</font>");
 		$this->rtf_cons[88] = array("pntext", "property", "<li>", "</li>");
-		$this->rtf_cons[89] = array("line", "property", "<br>", "");
+		$this->rtf_cons[89] = array("line", "property", "<br/>", "");
 		$this->rtf_cons[90] = array("pict", "jump", "", "");
 		$this->rtf_cons[91] = array("ulnone", "property", "</u>", "");
 		$this->rtf_cons[92] = array("pntxta", "jump", "", "");
@@ -171,8 +171,8 @@ class we_rtf2html{
 		$this->rtf_cons[100] = array("'e", "special", "", "");
 		$this->rtf_cons[101] = array("'f", "special", "", "");
 		$this->rtf_cons[104] = array("u", "special", "", "");
-		$this->rtf_cons[105] = array("\r", "spec_char", "<br>\n", "");
-		$this->rtf_cons[106] = array("\n", "spec_char", "<br>\n", "");
+		$this->rtf_cons[105] = array("\r", "spec_char", "<br/>\n", "");
+		$this->rtf_cons[106] = array("\n", "spec_char", "<br/>\n", "");
 		$this->rtf_cons[107] = array("panose", "special", "", "");
 	}
 

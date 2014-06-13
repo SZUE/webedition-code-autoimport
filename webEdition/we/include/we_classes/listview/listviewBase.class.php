@@ -74,14 +74,14 @@ abstract class listviewBase{
 
 		$this->name = $name;
 		//? strange setting - comes from we_tag_search
-		$this->search = (!($val = weRequest('string', 'we_lv_search_' . $this->name, '')) && weRequest('bool', 'we_from_search_' . $this->name)) ? -1 : $val;
+		$this->search = (!($val = we_base_request::_(we_base_request::STRING, 'we_lv_search_' . $this->name, '')) && we_base_request::_(we_base_request::BOOL, 'we_from_search_' . $this->name)) ? -1 : $val;
 		$this->search = trim(str_replace(array('"', '\\"'), '', $this->search));
 		$this->DB_WE = new DB_WE();
 		$this->rows = $rows;
 		$this->maxItemsPerPage = $cols ? ($rows * $cols) : $rows;
 		$this->cols = (($cols == '' && ($calendar == 'month' || $calendar == 'month_table')) ? 7 : $cols);
 		$this->offset = abs($offset);
-		$this->start = weRequest('int', 'we_lv_start_' . $this->name, 0);
+		$this->start = we_base_request::_(we_base_request::INT, 'we_lv_start_' . $this->name, 0);
 		if($this->start == 0){
 			$this->start += $this->offset;
 		}
@@ -213,7 +213,7 @@ abstract class listviewBase{
 		if(isset($this->calendar_struct['calendar']) && $this->calendar_struct['calendar'] != ''){
 			return true;
 		}
-		if($parentEnd && ($end = weRequest('int', 'we_lv_pend_' . $this->name))){
+		if($parentEnd && ($end = we_base_request::_(we_base_request::INT, 'we_lv_pend_' . $this->name))){
 			return (($this->start + $this->anz) < $end);
 		}
 		return (($this->start + $this->anz) < $this->anz_all);
@@ -230,7 +230,7 @@ abstract class listviewBase{
 		if(isset($this->calendar_struct['calendar']) && $this->calendar_struct['calendar'] != ''){
 			return true;
 		}
-		if($parentStart && ($start = weRequest('int', 'we_lv_pstart_' . $this->name, 0))){
+		if($parentStart && ($start = we_base_request::_(we_base_request::INT, 'we_lv_pstart_' . $this->name, 0))){
 			return (abs($this->start) != $start);
 		}
 		return (abs($this->start) != abs($this->offset));

@@ -334,9 +334,9 @@ abstract class we_class{
 	protected function i_setElementsFromHTTP(){
 		if($_REQUEST){
 			// do not set REQUEST VARS into the document
-			$cmd0 = weRequest('string', 'cmd', '', 0);
+			$cmd0 = we_base_request::_(we_base_request::STRING, 'cmd', '', 0);
 
-			if(($cmd0 == 'switch_edit_page' && weRequest('string', 'we_cmd', false, 3)) || ($cmd0 == 'save_document' && weRequest('string', 'we_cmd', '', 7) == 'save_document')){
+			if(($cmd0 == 'switch_edit_page' && we_base_request::_(we_base_request::STRING, 'we_cmd', false, 3)) || ($cmd0 == 'save_document' && we_base_request::_(we_base_request::STRING, 'we_cmd', '', 7) == 'save_document')){
 				return true;
 			}
 			$regs = array();
@@ -430,7 +430,7 @@ abstract class we_class{
 	 * if so, we must delete eventual netries in tblLangLink (entered before LANGLINK_SUPPORT wa stopped. <= TODO: Merge this with next method!
 	 */
 	protected function checkRemoteLanguage($table, $isfolder = false){
-		if(($newLang = weRequest('string', 'we_' . $this->Name . '_Language'))){
+		if(($newLang = we_base_request::_(we_base_request::STRING, 'we_' . $this->Name . '_Language'))){
 			$type = stripTblPrefix($table);
 			$isobject = ($type == 'tblObjectFile') ? 1 : 0;
 			$type = ($isfolder && $isobject) ? 'tblFile' : ($isobject ? 'tblObjectFile' : $type);
@@ -459,7 +459,7 @@ abstract class we_class{
 			return true;
 		}
 		$newLang = $oldLang = '';
-		if(($newLang = weRequest('string', 'we_' . $this->Name . '_Language'))){
+		if(($newLang = we_base_request::_(we_base_request::STRING, 'we_' . $this->Name . '_Language'))){
 			$db = new DB_WE();
 			$documentTable = ($type == 'tblObjectFile') ? 'tblObjectFiles' : $type;
 			$ownDocumentTable = ($isfolder && $isobject) ? FILE_TABLE : addTblPrefix($documentTable);

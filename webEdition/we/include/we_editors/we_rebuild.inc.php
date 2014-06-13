@@ -24,7 +24,7 @@
  */
 we_html_tools::protect();
 
-switch(weRequest('string', 'fr')){
+switch(we_base_request::_(we_base_request::STRING, 'fr')){
 	case "body":
 		print we_rebuild_wizard::getBody();
 		break;

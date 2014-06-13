@@ -57,7 +57,7 @@ function we_tag_sendMail($attribs, $content){
 		return;
 	}
 
-	$id = weTag_getAttribute("id", $attribs, weRequest('int', 'ID', 0));
+	$id = weTag_getAttribute("id", $attribs, we_base_request::_(we_base_request::INT, 'ID', 0));
 	$from = weTag_getAttribute("from", $attribs);
 	$reply = weTag_getAttribute("reply", $attribs);
 	$recipient = weTag_getAttribute("recipient", $attribs);
@@ -144,7 +144,7 @@ function we_tag_sendMail($attribs, $content){
 			}
 			$phpmail->setCharSet($charset);
 			if($mimetype != 'text/html'){
-				$phpmail->addTextPart(strip_tags(str_replace("&nbsp;", " ", str_replace("<br />", "\n", str_replace("<br>", "\n", $codes)))));
+				$phpmail->addTextPart(strip_tags(str_replace("&nbsp;", " ", str_replace("<br />", "\n", str_replace("<br/>", "\n", $codes)))));
 			} else {
 				$phpmail->addHTMLPart($codes);
 			}

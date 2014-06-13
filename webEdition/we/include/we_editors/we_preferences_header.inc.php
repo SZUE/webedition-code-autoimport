@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$tabname = weRequest('string',"tabname","setting_ui");
+$tabname = we_base_request::_(we_base_request::STRING,"tabname","setting_ui");
 require_once(WE_INCLUDES_PATH . 'we_editors/we_preferences_config.inc.php');
 
 

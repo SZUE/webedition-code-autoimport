@@ -33,7 +33,7 @@ echo we_html_tools::getHtmlTop() .
 	}
 
 
-<?php if(weRequest('string', 'we_cmd', '', 0) == 'revert_published'){ ?>
+<?php if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) == 'revert_published'){ ?>
 
 		var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction("<?php print $GLOBALS['we_transaction']; ?>");
 

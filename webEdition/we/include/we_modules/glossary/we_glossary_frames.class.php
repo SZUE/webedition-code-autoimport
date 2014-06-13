@@ -58,7 +58,7 @@ class we_glossary_frames extends weModuleFrames{
 			if(isset($_REQUEST['cmdid']) && !preg_match('|^[0-9]|', $_REQUEST['cmdid'])){
 				$this->View->Glossary->Language = substr($_REQUEST['cmdid'], 0, 5);
 			}
-			switch(weRequest('string', 'cmd')){
+			switch(we_base_request::_(we_base_request::STRING, 'cmd')){
 				// Folder View
 				case 'glossary_view_folder':
 					return we_glossary_frameEditorFolder::Header($this);
@@ -86,7 +86,7 @@ class we_glossary_frames extends weModuleFrames{
 			if(isset($_REQUEST['cmdid']) && !preg_match('|^[0-9]|', $_REQUEST['cmdid'])){
 				$this->View->Glossary->Language = substr($_REQUEST['cmdid'], 0, 5);
 			}
-			switch(weRequest('string', 'cmd')){
+			switch(we_base_request::_(we_base_request::STRING, 'cmd')){
 				// Folder View
 				case 'glossary_view_folder':
 					return we_glossary_frameEditorFolder::Body($this);
@@ -114,7 +114,7 @@ class we_glossary_frames extends weModuleFrames{
 			if(isset($_REQUEST['cmdid']) && !preg_match('|^[0-9]|', $_REQUEST['cmdid'])){
 				$this->View->Glossary->Language = substr($_REQUEST['cmdid'], 0, 5);
 			}
-			switch(weRequest('string', 'cmd')){
+			switch(we_base_request::_(we_base_request::STRING, 'cmd')){
 				// Folder View
 				case 'glossary_view_folder':
 					return we_glossary_frameEditorFolder::Footer($this);
@@ -145,11 +145,11 @@ class we_glossary_frames extends weModuleFrames{
 	}
 
 	function getHTMLCmd(){
-		if(($pid = weRequest('raw', "pid")) === false){
+		if(($pid = we_base_request::_(we_base_request::RAW, "pid")) === false){
 			exit;
 		}
 
-		$offset = weRequest('int', "offset", 0);
+		$offset = we_base_request::_(we_base_request::INT, "offset", 0);
 
 		$rootjs = "";
 		if(!$pid){

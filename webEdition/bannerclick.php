@@ -26,15 +26,15 @@ define("NO_SESS", 1);
 
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-$id = weRequest('int', 'id', 0);
-$did = weRequest('int', 'did', 0);
-$page = weRequest('string', 'page', 0);
-$referer = weRequest('url', 'referer',0);
-$nocount = weRequest('bool', 'nocount', false);
+$id = we_base_request::_(we_base_request::INT, 'id', 0);
+$did = we_base_request::_(we_base_request::INT, 'did', 0);
+$page = we_base_request::_(we_base_request::STRING, 'page', 0);
+$referer = we_base_request::_(we_base_request::URL, 'referer',0);
+$nocount = we_base_request::_(we_base_request::BOOL, 'nocount', false);
 $db = $GLOBALS['DB_WE'];
 
 if(!$id){
-	$bannername = weRequest('string', 'bannername');
+	$bannername = we_base_request::_(we_base_request::STRING, 'bannername');
 
 	if($bannername && isset($_COOKIE['webid_' . $bannername])){
 		$id = $_COOKIE["webid_" . $bannername];

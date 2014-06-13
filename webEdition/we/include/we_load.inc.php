@@ -28,12 +28,12 @@ if(isset($_REQUEST['we_cmd'][5])){
 	$_SESSION["prefs"]["FileFilter"] = $_REQUEST['we_cmd'][5];
 }
 
-$table = weRequest('table', 'we_cmd', FILE_TABLE, 1);
-$parentFolder = weRequest('int', 'we_cmd', 0, 2);
-$offset = weRequest('int', 'we_cmd', 0, 6);
+$table = we_base_request::_(we_base_request::TABLE, 'we_cmd', FILE_TABLE, 1);
+$parentFolder = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2);
+$offset = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 6);
 
 
-if(weRequest('string', 'we_cmd', '', 0) == "closeFolder"){
+if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) == "closeFolder"){
 	$openDirs = array_flip(makeArrayFromCSV($_SESSION["prefs"]["openFolders_" . stripTblPrefix($table)]));
 	new_array_splice($openDirs, $parentFolder, 1);
 	$openDirs = array_keys($openDirs);

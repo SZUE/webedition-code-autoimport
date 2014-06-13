@@ -25,30 +25,30 @@
 we_html_tools::protect();
 
 
-$nr = weRequest('string', 'we_cmd', '', 1);
-$name = weRequest('string', 'we_cmd', '', 2);
-$we_transaction = weRequest('transaction', 'we_cmd', $we_transaction, 3);
+$nr = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1);
+$name = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2);
+$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', $we_transaction, 3);
 
 $we_dt = isset($_SESSION['weS']['we_data'][$we_transaction]) ? $_SESSION['weS']['we_data'][$we_transaction] : "";
 include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
 if(isset($_REQUEST["ok"])){
-	$we_doc->elements[$name . 'inlineedit']['dat'] = weRequest('toggle', 'inlineedit');
-	$we_doc->elements[$name . 'forbidphp']['dat'] = weRequest('toggle', 'forbidphp');
-	$we_doc->elements[$name . 'forbidhtml']['dat'] = weRequest('toggle', 'forbidhtml');
-	$we_doc->elements[$name . 'removefirstparagraph']['dat'] = weRequest('toggle', 'removefirstparagraph');
-	$we_doc->elements[$name . 'xml']['dat'] = weRequest('toggle', 'xml');
-	$we_doc->elements[$name . 'dhtmledit']['dat'] = weRequest('toggle', 'dhtmledit');
-	$we_doc->elements[$name . 'showmenus']['dat'] = weRequest('toggle', 'showmenus');
-	$we_doc->elements[$name . 'commands']['dat'] = weRequest('raw', 'commands');
-	$we_doc->elements[$name . 'contextmenu']['dat'] = weRequest('raw', 'contextmenu');
-	$we_doc->elements[$name . 'height']['dat'] = weRequest('int', 'height', 50);
-	$we_doc->elements[$name . 'width']['dat'] = weRequest('int', 'width', 200);
-	$we_doc->elements[$name . 'bgcolor']['dat'] = weRequest('string', 'bgcolor', '');
-	$we_doc->elements[$name . 'class']['dat'] = weRequest('string', 'class', '');
-	$we_doc->elements[$name . 'cssClasses']['dat'] = weRequest('raw', 'cssClasses', '');
-	$we_doc->elements[$name . 'tinyparams']['dat'] = weRequest('raw', 'tinyparams', '');
-	$we_doc->elements[$name . 'templates']['dat'] = weRequest('raw', 'templates', '');
+	$we_doc->elements[$name . 'inlineedit']['dat'] = we_base_request::_(we_base_request::TOGGLE, 'inlineedit');
+	$we_doc->elements[$name . 'forbidphp']['dat'] = we_base_request::_(we_base_request::TOGGLE, 'forbidphp');
+	$we_doc->elements[$name . 'forbidhtml']['dat'] = we_base_request::_(we_base_request::TOGGLE, 'forbidhtml');
+	$we_doc->elements[$name . 'removefirstparagraph']['dat'] = we_base_request::_(we_base_request::TOGGLE, 'removefirstparagraph');
+	$we_doc->elements[$name . 'xml']['dat'] = we_base_request::_(we_base_request::TOGGLE, 'xml');
+	$we_doc->elements[$name . 'dhtmledit']['dat'] = we_base_request::_(we_base_request::TOGGLE, 'dhtmledit');
+	$we_doc->elements[$name . 'showmenus']['dat'] = we_base_request::_(we_base_request::TOGGLE, 'showmenus');
+	$we_doc->elements[$name . 'commands']['dat'] = we_base_request::_(we_base_request::RAW, 'commands');
+	$we_doc->elements[$name . 'contextmenu']['dat'] = we_base_request::_(we_base_request::RAW, 'contextmenu');
+	$we_doc->elements[$name . 'height']['dat'] = we_base_request::_(we_base_request::INT, 'height', 50);
+	$we_doc->elements[$name . 'width']['dat'] = we_base_request::_(we_base_request::INT, 'width', 200);
+	$we_doc->elements[$name . 'bgcolor']['dat'] = we_base_request::_(we_base_request::STRING, 'bgcolor', '');
+	$we_doc->elements[$name . 'class']['dat'] = we_base_request::_(we_base_request::STRING, 'class', '');
+	$we_doc->elements[$name . 'cssClasses']['dat'] = we_base_request::_(we_base_request::RAW, 'cssClasses', '');
+	$we_doc->elements[$name . 'tinyparams']['dat'] = we_base_request::_(we_base_request::RAW, 'tinyparams', '');
+	$we_doc->elements[$name . 'templates']['dat'] = we_base_request::_(we_base_request::RAW, 'templates', '');
 	$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 }
 
@@ -57,7 +57,7 @@ if(isset($_REQUEST["ok"])){
 		. ((we_base_browserDetect::isIE() || we_base_browserDetect::isOpera()) &&
 				$we_doc->elements[$name . 'dhtmledit']['dat'] == 'on' &&
 				$we_doc->elements[$name . 'inlineedit']['dat'] == 'on' &&
-				(weRequest('toggle', 'dhtmledit_orig') == 'off' || weRequest('toggle', 'inlineedit_orig') == 'off')? 'opener.we_cmd("switch_edit_page",1,"' . $we_transaction . '");' : 
+				(we_base_request::_(we_base_request::TOGGLE, 'dhtmledit_orig') == 'off' || we_base_request::_(we_base_request::TOGGLE, 'inlineedit_orig') == 'off')? 'opener.we_cmd("switch_edit_page",1,"' . $we_transaction . '");' :
 			'opener.we_cmd("object_reload_entry_at_class","' . $we_transaction . '", "' . $nr . '");')
 		. 'top.close();';
 } else {
@@ -236,7 +236,7 @@ $table = '<table border="0" cellpadding="0" cellspacing="0">
 		<td>' . we_html_tools::getPixel(395, 10) . '</td>
 	</tr>
 	<tr>
-		<td class="defaultfont" valign="top" align="right">contextmenu&nbsp;</td><td colspan="5">' . $select_cm . '<br>' . we_class::htmlTextArea("contextmenu", 3, 30, oldHtmlspecialchars((isset($we_doc->elements[$name . "contextmenu"]["dat"]) ? $we_doc->elements[$name . "contextmenu"]["dat"] : "")), array('id' => "contextmenu", 'style' => "width:415px;height:50px")) . '</td>
+		<td class="defaultfont" valign="top" align="right">contextmenu&nbsp;</td><td colspan="5">' . $select_cm . '<br/>' . we_class::htmlTextArea("contextmenu", 3, 30, oldHtmlspecialchars((isset($we_doc->elements[$name . "contextmenu"]["dat"]) ? $we_doc->elements[$name . "contextmenu"]["dat"] : "")), array('id' => "contextmenu", 'style' => "width:415px;height:50px")) . '</td>
 	</tr>
 	<tr>
 		<td>' . we_html_tools::getPixel(90, 1) . '</td>

@@ -24,7 +24,7 @@
  */
 require(WE_INCLUDES_PATH . 'we_tools/weSearch/conf/meta.conf.php');
 
-switch(weRequest('string', 'we_cmd','',0)){
+switch(we_base_request::_(we_base_request::STRING, 'we_cmd','',0)){
 	case 'tool_weSearch_edit' :
 		$toolInclude = 'tools_frameset.php';
 		break;

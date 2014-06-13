@@ -27,9 +27,9 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 if(permissionhandler::hasPerm("administrator")){
 
-	if(weRequest('bool', 'clearlog')){
+	if(we_base_request::_(we_base_request::BOOL, 'clearlog')){
 		$GLOBALS['DB_WE']->query('TRUNCATE ' . FORMMAIL_BLOCK_TABLE);
-	} else if(($id=weRequest('bool', 'clearEntry'))){
+	} else if(($id=we_base_request::_(we_base_request::BOOL, 'clearEntry'))){
 		$GLOBALS['DB_WE']->query('DELETE FROM ' . FORMMAIL_BLOCK_TABLE . ' WHERE id=' . $id);
 	}
 
@@ -48,7 +48,7 @@ if(permissionhandler::hasPerm("administrator")){
 	$content = array();
 
 	$count = 15;
-	$start = weRequest('int', 'start',0);
+	$start = we_base_request::_(we_base_request::INT, 'start',0);
 	$start = $start < 0 ? 0 : $start;
 
 	$num_all = f('SELECT COUNT(1) FROM ' . FORMMAIL_BLOCK_TABLE);

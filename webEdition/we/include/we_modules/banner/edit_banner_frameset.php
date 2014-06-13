@@ -27,8 +27,8 @@ $protect = we_base_moduleInfo::isActive('banner') && we_users_util::canEditModul
 we_html_tools::protect($protect);
 
 
-$what = weRequest('string', "pnt", "frameset");
-$mode = weRequest('int', "art", 0);
+$what = we_base_request::_(we_base_request::STRING, "pnt", "frameset");
+$mode = we_base_request::_(we_base_request::INT, "art", 0);
 
 $weFrame = new we_banner_frames(WEBEDITION_DIR . 'we/include/we_modules/banner/edit_banner_frameset.php');
 echo $weFrame->getHTMLDocumentHeader();

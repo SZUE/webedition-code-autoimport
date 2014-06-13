@@ -37,7 +37,7 @@ if(!preg_match('/^multiEditFrame_[0-9]+$/', $editorFrameId)){
 	exit('cmd[1] is not valid at we_exit_doc_question!');
 }
 
-$nextCmd = weRequest('raw', 'we_cmd', '', 3); // close_all, logout, open_document, new_document(seeMode) etc.
+$nextCmd = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 3); // close_all, logout, open_document, new_document(seeMode) etc.
 
 $isOpenDocCmd = preg_match('/^top\.weEditorFrameController\.openDocument\("[^"]*"\s*,\s*"[^"]*"\s*,\s*"[^"]*"\s*,\s*"[^"]*"\s*,\s*"[^"]*"\s*,\s*"[^"]*"\s*,\s*"[^"]*"\s*,\s*"[^"]*"\s*,\s*"[^"]*"\s*\)\s*;\s*$/', $nextCmd);
 $isDoLogoutCmd = preg_match('/^top\.we_cmd\("dologout"\)\s*;\s*$/', $nextCmd);
@@ -51,7 +51,7 @@ if(!$nextCmdOk){
 	exit('cmd[3] (nextCmd) is not valid at we_exit_doc_question!' . $nextCmd);
 }
 
-switch(weRequest('string', 'we_cmd', '', 2)){
+switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2)){
 	case we_base_ContentTypes::TEMPLATE:
 		$_documentTable = TEMPLATES_TABLE;
 		break;

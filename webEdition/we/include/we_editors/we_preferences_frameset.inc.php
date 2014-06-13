@@ -33,7 +33,7 @@ we_html_tools::protect();
 echo we_html_tools::getHtmlTop() .
  STYLESHEET . getPreferencesCSS();
 
-$tabname = weRequest('string', "tabname", weRequest('string', 'we_cmd', "setting_ui", 1));
+$tabname = we_base_request::_(we_base_request::STRING, "tabname", we_base_request::_(we_base_request::STRING, 'we_cmd', "setting_ui", 1));
 
 // Define needed JS
 $_javascript = <<< END_OF_SCRIPT

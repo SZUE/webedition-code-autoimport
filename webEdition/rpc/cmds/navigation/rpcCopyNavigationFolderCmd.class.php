@@ -26,11 +26,11 @@ class rpcCopyNavigationFolderCmd extends rpcCmd{
 
 	function execute(){
 		$resp = new rpcResponse();
-		$cmd0 = weRequest('file', 'cmd', false, 0);
-		$cmd3 = weRequest('int', 'cmd', 0, 3);
+		$cmd0 = we_base_request::_(we_base_request::FILE, 'cmd', false, 0);
+		$cmd3 = we_base_request::_(we_base_request::INT, 'cmd', 0, 3);
 		if($cmd0 &&
-			($folder = weRequest('int', 'we_cmd', 0, 1)) &&
-			($path = weRequest('file', 'we_cmd', '', 2)) &&
+			($folder = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1)) &&
+			($path = we_base_request::_(we_base_request::FILE, 'we_cmd', '', 2)) &&
 			$cmd3 &&
 			(strpos($path, $cmd0) === false || strpos($path, $cmd0) > 0)
 		){

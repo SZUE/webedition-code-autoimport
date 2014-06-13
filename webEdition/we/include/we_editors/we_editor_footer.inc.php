@@ -23,7 +23,7 @@
  */
 we_html_tools::protect();
 
-$we_transaction = weRequest('transaction', 'we_cmd', $we_transaction, 1);
+$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', $we_transaction, 1);
 
 // init document
 $we_dt = $_SESSION['weS']['we_data'][$we_transaction];

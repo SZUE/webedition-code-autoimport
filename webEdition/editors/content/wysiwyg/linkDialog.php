@@ -26,8 +26,8 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 $noInternals = false;
 if(!(
-	weRequest('bool', 'we_dialog_args', false, 'outsideWE') ||
-	weRequest('bool', 'we_dialog_args', false, 'isFrontend')
+	we_base_request::_(we_base_request::BOOL, 'we_dialog_args', false, 'outsideWE') ||
+	we_base_request::_(we_base_request::BOOL, 'we_dialog_args', false, 'isFrontend')
 	)){
 	we_html_tools::protect();
 } else {
@@ -55,7 +55,7 @@ function weDoLinkCmd($args){
 	$href = (strpos($args['href'], '?') !== false ? substr($args['href'], 0, strpos($args['href'], '?')) :
 			(strpos($args['href'], '#') === false ? $args['href'] : substr($args['href'], 0, strpos($args['href'], '#')))) . $param . ($anchor ? '#' . $anchor : '');
 
-	if(weRequest('string', 'we_dialog_args', 'tinyMce', 'editor') != "tinyMce"){
+	if(we_base_request::_(we_base_request::STRING, 'we_dialog_args', 'tinyMce', 'editor') != "tinyMce"){
 		return we_html_element::jsElement(
 				'top.opener.weWysiwygObject_' . $args['editname'] . '.createLink("' . $href . '","' . $args['target'] . '","' . $args['class'] . '","' . $args['lang'] . '","' . $args['hreflang'] . '","' . $args['title'] . '","' . $args['accesskey'] . '","' . $args['tabindex'] . '","' . $args['rel'] . '","' . $args['rev'] . '");
 top.close();

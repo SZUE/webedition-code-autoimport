@@ -52,7 +52,7 @@ class we_catListview extends listviewBase{
 	 */
 	function __construct($name, $rows, $offset, $order, $desc, $parentID, $catID, $variant, $cols, $parentidname, $hidedirindex){
 		parent::__construct($name, $rows, $offset, $order, $desc, '', false, '', $cols);
-		$this->parentID = weRequest('int', $parentidname, intval($parentID));
+		$this->parentID = we_base_request::_(we_base_request::INT, $parentidname, intval($parentID));
 		$this->catID = trim($catID);
 
 		$this->variant = $variant;

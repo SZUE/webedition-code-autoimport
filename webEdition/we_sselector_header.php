@@ -143,7 +143,7 @@ echo we_html_tools::getHtmlTop() .
 				<td width="40">
 					<?php echo we_html_button::create_button("image:btn_fs_back", "javascript:top.fscmd.goUp();"); ?>
 				</td>
-				<?php if(!weRequest('bool', "ret")){ ?>
+				<?php if(!we_base_request::_(we_base_request::BOOL, "ret")){ ?>
 					<td width="10"><?php print we_html_tools::getPixel(10, 29); ?></td>
 					<td width="40">
 						<?php echo we_html_button::create_button("image:btn_new_dir", "javascript:top.fscmd.drawNewFolder();", true, 100, 22, "", "", false, false, "_ss"); ?>

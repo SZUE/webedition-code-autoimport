@@ -27,12 +27,12 @@ class rpcSelectorGetSelectedIdCmd extends rpcCmd{
 	function execute(){
 		$resp = new rpcResponse();
 
-		if(!($search = weRequest('string', 'we_cmd', '', 1)) || !($table = weRequest('table', 'we_cmd', false, 2))){
+		if(!($search = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1)) || !($table = we_base_request::_(we_base_request::TABLE, 'we_cmd', false, 2))){
 			exit();
 		}
 
 		$selectorSuggest = new we_selector_query();
-		$contentTypes = explode(',', weRequest('string', 'we_cmd', '', 3));
+		$contentTypes = explode(',', we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3));
 		$selectorSuggest->queryTable($search, $table, $contentTypes);
 		$resp->setData("data", $selectorSuggest->getResult());
 

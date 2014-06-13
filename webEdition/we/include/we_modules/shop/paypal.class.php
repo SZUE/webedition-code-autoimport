@@ -264,7 +264,7 @@ class paypal_class{
 			echo "<tr><td>$key</td><td>" . urldecode($value) . "&nbsp;</td></tr>";
 		}
 
-		echo "</table><br>";
+		echo "</table><br/>";
 	}
 
 }

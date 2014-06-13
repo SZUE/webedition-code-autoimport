@@ -30,20 +30,20 @@ we_html_tools::protect();
  * Table with the notes
  * @var string
  */
-$_sInitProps = substr(weRequest('string', 'we_cmd', '', 0), -5);
+$_sInitProps = substr(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0), -5);
 $bSort = $_sInitProps{0};
 $bDisplay = $_sInitProps{1};
 $bDate = $_sInitProps{2};
 $bPrio = $_sInitProps{3};
 $bValid = $_sInitProps{4};
-$q_Csv = weRequest('raw', 'we_cmd', '', 1);
-$_title = base64_decode(weRequest('raw', 'we_cmd', '', 4));
-$_sObjId = weRequest('int', 'we_cmd', 0, 5);
-$type = weRequest('string', 'we_cmd', 0, 6);
+$q_Csv = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 1);
+$_title = base64_decode(we_base_request::_(we_base_request::RAW, 'we_cmd', '', 4));
+$_sObjId = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 5);
+$type = we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 6);
 
-switch(weRequest('string', 'we_cmd', '', 2)){
+switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2)){
 	case 'delete' :
-		$q_Csv = weRequest('int', 'we_cmd', 0, 1);
+		$q_Csv = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1);
 		$DB_WE->query('DELETE FROM ' . NOTEPAD_TABLE . ' WHERE ID=' . $q_Csv);
 		break;
 	case 'update' :

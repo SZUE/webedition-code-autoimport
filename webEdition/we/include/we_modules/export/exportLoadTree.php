@@ -24,11 +24,11 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
-$_SESSION["prefs"]["FileFilter"] = weRequest('raw', 'we_cmd', $_SESSION["prefs"]["FileFilter"], 5);
+$_SESSION["prefs"]["FileFilter"] = we_base_request::_(we_base_request::RAW, 'we_cmd', $_SESSION["prefs"]["FileFilter"], 5);
 
-$topFrame = weRequest('string', 'we_cmd', "top", 4);
+$topFrame = we_base_request::_(we_base_request::STRING, 'we_cmd', "top", 4);
 
-$table = weRequest('table', 'we_cmd', FILE_TABLE, 1);
+$table = we_base_request::_(we_base_request::TABLE, 'we_cmd', FILE_TABLE, 1);
 
 if($table == FILE_TABLE && !permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
 	if(permissionhandler::hasPerm("CAN_SEE_TEMPLATES")){
@@ -40,7 +40,7 @@ if($table == FILE_TABLE && !permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
 	}
 }
 
-$parentFolder = weRequest('int', 'we_cmd', 0, 2);
+$parentFolder = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2);
 
 $GLOBALS["OBJECT_FILES_TREE_COUNT"] = 20;
 $counts = array();
@@ -85,7 +85,7 @@ function getQueryParents($path){
 
 function getItems($ParentID){
 	if($GLOBALS['table'] == ''){
-		$GLOBALS['table'] = weRequest('table', 'we_cmd', FILE_TABLE, 1);
+		$GLOBALS['table'] = we_base_request::_(we_base_request::TABLE, 'we_cmd', FILE_TABLE, 1);
 	}
 
 	switch($GLOBALS['table']){

@@ -75,7 +75,7 @@ class we_webEditionDocument extends we_textContentDocument{
 				$_SESSION['weS']['we_document_session_' . $formname] = array();
 			}
 			$GLOBALS['we_document'][$formname]->we_new();
-			if(($id = weRequest('int', 'we_editDocument_ID', 0))){
+			if(($id = we_base_request::_(we_base_request::INT, 'we_editDocument_ID', 0))){
 				$GLOBALS['we_document'][$formname]->initByID($id, FILE_TABLE);
 			} else {
 				$dt = f('SELECT ID FROM ' . DOC_TYPES_TABLE . " WHERE DocType LIKE '" . $GLOBALS['we_document'][$formname]->DB_WE->escape($doctype) . "'", '', $GLOBALS['we_document'][$formname]->DB_WE);
@@ -92,7 +92,7 @@ class we_webEditionDocument extends we_textContentDocument{
 				$GLOBALS['we_document'][$formname]->saveInSession($_SESSION['weS']['we_document_session_' . $formname]);
 			}
 		} else {
-			if(($id = weRequest('string', 'we_editDocument_ID'))){
+			if(($id = we_base_request::_(we_base_request::STRING, 'we_editDocument_ID'))){
 				$GLOBALS['we_document'][$formname]->initByID($id, FILE_TABLE);
 			} elseif($session){
 				$GLOBALS['we_document'][$formname]->we_initSessDat($_SESSION['weS']['we_document_session_' . $formname]);
@@ -103,7 +103,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			}
 		}
 
-		if(($ret = weRequest('string', 'we_returnpage'))){
+		if(($ret = we_base_request::_(we_base_request::STRING, 'we_returnpage'))){
 			$GLOBALS['we_document'][$formname]->setElement('we_returnpage', $ret);
 		}
 		if(isset($_REQUEST['we_ui_' . $formname]) && is_array($_REQUEST['we_ui_' . $formname])){
@@ -114,15 +114,15 @@ class we_webEditionDocument extends we_textContentDocument{
 			}
 		}
 
-		if(($cats = weRequest('string', 'we_ui_' . $formname . '_categories')) !== false){
+		if(($cats = we_base_request::_(we_base_request::STRING, 'we_ui_' . $formname . '_categories')) !== false){
 			// Bug Fix #750
 			$GLOBALS['we_document'][$formname]->Category = makeIDsFromPathCVS(is_array($cats) ? implode(',', $cats) : $cats, CATEGORY_TABLE);
 		}
-		if(($cats = weRequest('string', 'we_ui_' . $formname . '_Category')) !== false){
+		if(($cats = we_base_request::_(we_base_request::STRING, 'we_ui_' . $formname . '_Category')) !== false){
 			$_REQUEST['we_ui_' . $formname . '_Category'] = makeCSVFromArray((is_array($cats) ? $cats : makeArrayFromCSV($cats)), true);
 		}
 		foreach($GLOBALS['we_document'][$formname]->persistent_slots as $slotname){
-			if($slotname != 'categories' && ($slot = weRequest('string', 'we_ui_' . $formname . '_' . $slotname)) !== false){
+			if($slotname != 'categories' && ($slot = we_base_request::_(we_base_request::STRING, 'we_ui_' . $formname . '_' . $slotname)) !== false){
 				$GLOBALS["we_document"][$formname]->$slotname = $slot;
 			}
 		}
@@ -632,7 +632,7 @@ class we_webEditionDocument extends we_textContentDocument{
 
 		// Last step is to save the webEdition document
 		$out = parent::we_save($resave, $skipHook);
-		if(LANGLINK_SUPPORT && ($docID = weRequest('int', 'we_' . $this->Name . '_LanguageDocID'))){
+		if(LANGLINK_SUPPORT && ($docID = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_LanguageDocID'))){
 			$this->setLanguageLink($docID, 'tblFile', false, false); // response deactivated
 		} else {
 			//if language changed, we must delete eventually existing entries in tblLangLink, even if !LANGLINK_SUPPORT!

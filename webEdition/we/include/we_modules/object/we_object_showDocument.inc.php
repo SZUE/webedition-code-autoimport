@@ -126,10 +126,10 @@ if(($_userID && $_userID != $_SESSION['user']['ID']) || (isset($_REQUEST['we_cmd
 	$we_dt = $_SESSION['weS']['we_data'][$we_transaction];
 	include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 } else { //	view with template
-	$tid = weRequest('int', 'we_cmd', (isset($we_objectTID) ? $we_objectTID : 0), 2);
+	$tid = we_base_request::_(we_base_request::INT, 'we_cmd', (isset($we_objectTID) ? $we_objectTID : 0), 2);
 
 	$GLOBALS['we_obj'] = new we_objectFile();
-	$GLOBALS['we_obj']->initByID(weRequest('int', 'we_objectID', 0), OBJECT_FILES_TABLE);
+	$GLOBALS['we_obj']->initByID(we_base_request::_(we_base_request::INT, 'we_objectID', 0), OBJECT_FILES_TABLE);
 	$GLOBALS['we_obj']->setTitleAndDescription();
 
 	if(!$GLOBALS['we_obj']->Published){

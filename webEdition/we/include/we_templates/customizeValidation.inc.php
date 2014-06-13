@@ -77,7 +77,7 @@ echo we_html_tools::getHtmlTop() . STYLESHEET;
 	//  deal with action
 	$services = array();
 
-	switch(weRequest('string', 'we_cmd', '', 1)){
+	switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1)){
 		case 'saveService':
 			$_service = new validationService($_REQUEST['id'], 'custom', $_REQUEST['category'], $_REQUEST['name'], $_REQUEST['host'], $_REQUEST['path'], $_REQUEST['s_method'], $_REQUEST['varname'], $_REQUEST['checkvia'], $_REQUEST['ctype'], $_REQUEST['additionalVars'], $_REQUEST['fileEndings'], $_REQUEST['active']);
 			if($selectedService = validation::saveService($_service)){

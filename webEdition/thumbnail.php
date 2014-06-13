@@ -27,11 +27,11 @@ we_html_tools::protect();
 //FIXME: send no perms img; but better an invalid picture, than access to unallowed images
 
 
-$imageId = weRequest('int', 'id', 0);
-$imagePath = weRequest('file', 'path', '');
-$imageSizeW = weRequest('int', 'size', 0);
-$imageSizeH = weRequest('int', 'size2', $imageSizeW);
-$extension = weRequest('string', 'extension', '');
+$imageId = we_base_request::_(we_base_request::INT, 'id', 0);
+$imagePath = we_base_request::_(we_base_request::FILE, 'path', '');
+$imageSizeW = we_base_request::_(we_base_request::INT, 'size', 0);
+$imageSizeH = we_base_request::_(we_base_request::INT, 'size2', $imageSizeW);
+$extension = we_base_request::_(we_base_request::STRING, 'extension', '');
 
 
 if(!$imageId || !$imagePath || !$imageSizeW || !$extension){
@@ -40,7 +40,7 @@ if(!$imageId || !$imagePath || !$imageSizeW || !$extension){
 
 $whiteList = we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::IMAGE);
 
-if(!in_array(strtolower($imageExt = weRequest('string', 'extension')), $whiteList)){
+if(!in_array(strtolower($imageExt = we_base_request::_(we_base_request::STRING, 'extension')), $whiteList)){
 	exit();
 }
 

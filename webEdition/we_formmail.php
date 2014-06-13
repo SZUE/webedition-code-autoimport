@@ -138,7 +138,7 @@ function check_required($required){
 }
 
 function error_page(){
-	if(($errorpage = weRequest('url', 'error_page'))){
+	if(($errorpage = we_base_request::_(we_base_request::URL, 'error_page'))){
 		redirect($errorpage);
 	} else {
 		print_error(g_l('global', '[email_notallfields]'));
@@ -146,7 +146,7 @@ function error_page(){
 }
 
 function ok_page(){
-	if(($ok_page = weRequest('url', 'ok_page'))){
+	if(($ok_page = we_base_request::_(we_base_request::URL, 'ok_page'))){
 		redirect($ok_page);
 	} else {
 		echo 'Vielen Dank, Ihre Formulardaten sind bei uns angekommen! / Thank you, we received your form data!';
@@ -167,12 +167,12 @@ function check_recipient($email){
 }
 
 function check_captcha(){
-	return ($name = weRequest('string', weRequest('string', 'captchaname', '__NOT_SET__')) ?
+	return ($name = we_base_request::_(we_base_request::STRING, we_base_request::_(we_base_request::STRING, 'captchaname', '__NOT_SET__')) ?
 		we_captcha_captcha::check($name) :
 		false);
 }
 
-$_req = weRequest('raw', 'required', '');
+$_req = we_base_request::_(we_base_request::RAW, 'required', '');
 
 if(!check_required($_req)){
 	error_page();
@@ -180,7 +180,7 @@ if(!check_required($_req)){
 
 if(isset($_REQUEST['email']) && $_REQUEST['email']){
 	if(!we_check_email($_REQUEST['email'])){
-		if(($foo = weRequest('url', 'mail_error_page'))){
+		if(($foo = we_base_request::_(we_base_request::URL, 'mail_error_page'))){
 			redirect($foo);
 		} else {
 			print_error(g_l('global', '[email_invalid]'));
@@ -202,7 +202,7 @@ if(isset($_REQUEST['we_remove'])){
 $we_txt = '';
 $we_html = '<table>';
 
-$_order = weRequest('raw', 'order', '');
+$_order = we_base_request::_(we_base_request::RAW, 'order', '');
 $we_orderarray = array();
 if($_order){
 	$we_orderarray = explode(',', $_order);

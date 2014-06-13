@@ -26,22 +26,22 @@ class rpcSelectorSuggestCmd extends rpcCmd{
 
 	function execute(){
 		$resp = new rpcResponse();
-		$cmd1 = weRequest('string', 'we_cmd', false, 1);
-		$cmd2 = weRequest('table', 'we_cmd', false, 2);
+		$cmd1 = we_base_request::_(we_base_request::STRING, 'we_cmd', false, 1);
+		$cmd2 = we_base_request::_(we_base_request::TABLE, 'we_cmd', false, 2);
 		if(!$cmd1 || !$cmd2){
 			exit();
 		}
 
 		$selectorSuggest = new we_selector_query();
-		$contentTypes = explode(",", weRequest('string', 'we_cmd', '', 3));
-		$cmd4 = weRequest('string', 'we_cmd', '', 4);
-		$cmd5 = weRequest('string', 'we_cmd', '', 5);
+		$contentTypes = explode(",", we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3));
+		$cmd4 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 4);
+		$cmd5 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 5);
 		if($cmd4 && $cmd5){
 			if($cmd2 == (defined('TEMPLATES_TABLE') ? TEMPLATES_TABLE : '-1') && $cmd4 == we_base_ContentTypes::TEMPLATE){
 				$selectorSuggest->addCondition(array("AND", "<>", "ID", $cmd5));
 			}
 		}
-		$selectorSuggest->search($cmd1, $cmd2, $contentTypes, "", weRequest('file', 'we_cmd', '', 6));
+		$selectorSuggest->search($cmd1, $cmd2, $contentTypes, "", we_base_request::_(we_base_request::FILE, 'we_cmd', '', 6));
 		$resp->setData("data", $selectorSuggest->getResult());
 
 		return $resp;

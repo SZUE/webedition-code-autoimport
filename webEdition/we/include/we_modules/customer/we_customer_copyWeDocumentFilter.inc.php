@@ -28,11 +28,11 @@ if(isset($_REQUEST["startCopy"])){ // start the fragment
 	// if any childs of the folder are open - bring message to close them
 	// REQUEST[we_cmd][1] = id of folder
 	// REQUEST[we_cmd][2] = table
-	$_id = weRequest('int', 'we_cmd', 0, 1);
-	$_table = weRequest('table', 'we_cmd', FILE_TABLE, 2);
+	$_id = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1);
+	$_table = we_base_request::_(we_base_request::TABLE, 'we_cmd', FILE_TABLE, 2);
 
 	// if we_cmd 3 is set, take filters of that folder as parent!!
-	$_idForFilter = weRequest('int', 'we_cmd', $_id, 3);
+	$_idForFilter = we_base_request::_(we_base_request::INT, 'we_cmd', $_id, 3);
 
 
 	$_theFolder = new we_folder();

@@ -29,7 +29,7 @@ $we_doc = new we_docTypes();
 // Initialize variables
 $we_show_response = 0;
 
-switch(($wecmd0 = weRequest('string', 'we_cmd', '', 0))){
+switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0))){
 	case "save_docType":
 		if(!permissionhandler::hasPerm("EDIT_DOCTYPE")){
 			$we_responseText = g_l('weClass', "[no_perms]");
@@ -81,7 +81,7 @@ switch(($wecmd0 = weRequest('string', 'we_cmd', '', 0))){
 			$we_response_type = we_message_reporting::WE_MESSAGE_ERROR;
 			break;
 		}
-		$id = weRequest('int', 'we_cmd', 0, 1);
+		$id = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1);
 		$name = f('SELECT DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . $id);
 		$del = false;
 		if($name){
@@ -108,7 +108,7 @@ switch(($wecmd0 = weRequest('string', 'we_cmd', '', 0))){
 					$we_doc->initByID($id, DOC_TYPES_TABLE);
 				}
 			} else {
-				$we_doc->initByID(weRequest('int', 'we_cmd', 0, 1), DOC_TYPES_TABLE);
+				$we_doc->initByID(we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1), DOC_TYPES_TABLE);
 			}
 		}
 		break;
@@ -139,18 +139,18 @@ switch(($wecmd0 = weRequest('string', 'we_cmd', '', 0))){
 		break;
 	case "dt_add_cat":
 		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$we_transaction]);
-		if(($id = weRequest('intList', 'we_cmd', 0, 1))){
+		if(($id = we_base_request::_(we_base_request::INTLIST, 'we_cmd', 0, 1))){
 			$we_doc->addCat($id);
 		}
 		break;
 	case "dt_delete_cat":
 		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$we_transaction]);
-		if(($id = weRequest('int', 'we_cmd', 0, 1))){
+		if(($id = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1))){
 			$we_doc->delCat($id);
 		}
 		break;
 	default:
-		$id = (($tmp = weRequest('int', 'we_cmd', 0, 1)) ? $tmp :
+		$id = (($tmp = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1)) ? $tmp :
 				f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' ' . we_docTypes::getDoctypeQuery($GLOBALS['DB_WE']) . ' LIMIT 1'));
 
 		if($id){

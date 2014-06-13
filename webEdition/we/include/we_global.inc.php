@@ -171,94 +171,6 @@ function filterXss($var, $type = 'string'){
 	return $ret;
 }
 
-/** Helper for Filtering variables (callback of array_walk)
- *
- * @param mixed $var value
- * @param string $key key used by array-walk - unused
- * @param array $data array pair of type & default
- * @return type
- */
-function _weRequest(&$var, $key, array $data){
-	list($type, $default) = $data;
-	switch($type){
-		case 'transaction':
-			$var = (preg_match('|^([a-f0-9]){32}$|i', $var) ? $var : $default);
-			return;
-		case 'intList':
-			$var = implode(',', array_map('intval', explode(',', trim($var, ','))));
-			return;
-		case 'cmd':
-			$var = strpos($var, 'WECMDENC_') !== false ?
-				base64_decode(urldecode(substr($var, 9))) :
-				$var;
-		case 'unit':
-			//FIMXE: check for %d[em,ex,pt,...]?
-			return;
-		case 'int':
-			$var = intval($var);
-			return;
-		case 'float':
-			$var = floatval($var);
-			return;
-		case 'bool':
-			if(is_bool($var)){
-				return $var;
-			}
-			switch($var){
-				case '0':
-				case 'off':
-				case 'false':
-					$var = false;
-					return;
-				case 'true':
-				case 'on':
-				case '1':
-					$var = true;
-					return;
-				default:
-					$var = (bool) $var;
-					return;
-			}
-
-		case 'toggle': //FIXME: temporary type => whenever possible use 'bool'
-			$var = $var == 'on' || $var == 'off' || $var == '1' || $var == '0' ? $var : (bool) $var;
-			return;
-		case 'table': //FIXME: this doesn't hold for OBJECT_X_TABLE - make sure we don't use them in requests
-			$var = $var && ($k = array_search($var, get_defined_constants(), true)) && (substr($k, -6) == '_TABLE') ? $var : $default;
-			return;
-		case 'email'://removes mailto:
-			$var = filter_var(str_replace(we_base_link::TYPE_MAIL_PREFIX, '', $var), FILTER_SANITIZE_EMAIL);
-			return;
-		case 'file':
-		case 'url':
-			$var = filter_var($var, FILTER_SANITIZE_URL);
-			return;
-		case 'string'://strips tags
-			$var = filter_var($var, FILTER_SANITIZE_STRING);
-			return;
-		case 'html':
-			$var = filter_var($var, FILTER_SANITIZE_SPECIAL_CHARS);
-			return;
-		default:
-			t_e('unknown filter type ' . $type);
-		case 'js'://for information!
-		case 'raw':
-			//do nothing - used as placeholder for all types not yet known
-			return;
-	}
-	$var = $default;
-}
-
-function we_defineTables(array $tables){
-	if(!isset($GLOBALS['we']['allTables'])){
-		$GLOBALS['we']['allTables'] = array();
-	}
-	foreach($tables as $tab => $name){
-		define($tab, TBL_PREFIX . $name);
-		$GLOBALS['we']['allTables'][$tab] = TBL_PREFIX . $name;
-	}
-}
-
 /**
  * Filter an Requested variable
  * @param string $type type to filter, see list in _weGetVar
@@ -268,32 +180,7 @@ function we_defineTables(array $tables){
  * @return mixed default, if value not set, the filtered value else
  */
 function weRequest($type, $name, $default = false, $index = null){
-	if(!isset($_REQUEST[$name]) || (isset($_REQUEST[$name]) && $_REQUEST[$name] === '') || ($index !== null && (!isset($_REQUEST[$name][$index]) || ($_REQUEST[$name][$index] === '')))){
-		return $default;
-	}
-	$var = ($index === null ? $_REQUEST[$name] : $_REQUEST[$name][$index]);
-	if(is_array($var)){
-		array_walk($var, '_weRequest', array($type, $default));
-	} else {
-		$oldVar = $var;
-		_weRequest($var, '', array($type, $default));
-
-		switch($type){
-			case 'intList':
-				$oldVar = trim($var, ',');
-				$cmp = '' . $var;
-				break;
-			case 'bool'://bool is transfered as 0/1
-				$cmp = '' . intval($var);
-				break;
-			default:
-				$cmp = '' . $var;
-		}
-		if($oldVar != $cmp){
-			t_e('changed values', $type, $name, $index, $oldVar, $var);
-		}
-	}
-	return $var;
+	return we_base_request::_($type, $name, $default, $index);
 }
 
 function we_makeHiddenFields($filter = ''){

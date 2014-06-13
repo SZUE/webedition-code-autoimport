@@ -41,7 +41,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 		$Cache = new we_glossary_cache($Language);
 
 		if(isset($_REQUEST['do']) && isset($_REQUEST['ID']) && $_REQUEST['ID']){
-			switch(weRequest('string', 'do')){
+			switch(we_base_request::_(we_base_request::STRING, 'do')){
 				case 'delete':
 					if($GLOBALS['DB_WE']->query('DELETE FROM ' . GLOSSARY_TABLE . ' WHERE ID IN (' . $GLOBALS['DB_WE']->escape(implode(',', $_REQUEST['ID'])) . ')')){
 						foreach($_REQUEST['ID'] as $_id){
@@ -73,18 +73,18 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 		$Language = $temp[0] . "_" . $temp[1];
 		$Type = $temp[2];
 
-		$Rows = weRequest('int', 'Rows', 10);
-		$Offset = weRequest('int', 'Offset', 0);
-		$Order = weRequest('string', 'Order', 'Text');
-		$Sort = weRequest('string', 'Sort', 'ASC');
+		$Rows = we_base_request::_(we_base_request::INT, 'Rows', 10);
+		$Offset = we_base_request::_(we_base_request::INT, 'Offset', 0);
+		$Order = we_base_request::_(we_base_request::STRING, 'Order', 'Text');
+		$Sort = we_base_request::_(we_base_request::STRING, 'Sort', 'ASC');
 		$Where = "Language = '" . $Language . "' AND Type = '" . $Type . "'";
-		if(($kw = strtolower(weRequest('raw', 'Keyword')))){
+		if(($kw = strtolower(we_base_request::_(we_base_request::RAW, 'Keyword')))){
 			$Where .= " AND ("
 				. "lcase(Text) LIKE '%" . $kw . "%' OR "
 				. "lcase(Title) LIKE '%" . $kw . "%' OR "
 				. "lcase(Description) LIKE '%" . $kw . "%')";
 		}
-		if(weRequest('bool', 'GreenOnly')){
+		if(we_base_request::_(we_base_request::BOOL, 'GreenOnly')){
 			$Where .= " AND Published > 0";
 		}
 
@@ -340,7 +340,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 		</tr>
 		<tr>
 			<td class="defaultgray">' . g_l('modules_glossary', '[search]') . '</td>
-			<td colspan="2">' . we_html_tools::htmlTextInput('Keyword', 24, weRequest('raw', 'Keyword', ''), "", "style=\"width: 430px\"") . '</td>
+			<td colspan="2">' . we_html_tools::htmlTextInput('Keyword', 24, we_base_request::_(we_base_request::RAW, 'Keyword', ''), "", "style=\"width: 430px\"") . '</td>
 			<td>' . we_html_tools::getPixel(18, 2) . '</td>
 			<td>' . $button . '</td>
 		</tr>

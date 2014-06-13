@@ -26,15 +26,15 @@ header('Content-type: text/plain');
 
 
 we_html_tools::protect();
-$table = weRequest('table', 'we_cmd', FILE_TABLE, 2);
-$search = weRequest('string', 'we_cmd', '', 1);
+$table = we_base_request::_(we_base_request::TABLE, 'we_cmd', FILE_TABLE, 2);
+$search = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1);
 
 if(!$search || !$table){
 	exit();
 }
 
 $selectorSuggest = new we_selector_query();
-$contentTypes = explode(",", weRequest('string', 'we_cmd', null, 3));
+$contentTypes = explode(",", we_base_request::_(we_base_request::STRING, 'we_cmd', null, 3));
 $selectorSuggest->search($search, $table, $contentTypes);
 $suggests = $selectorSuggest->getResult();
 $return = "";

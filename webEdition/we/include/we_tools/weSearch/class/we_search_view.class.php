@@ -105,7 +105,7 @@ class we_search_view extends we_tool_view{
 	}
 
 	function processCommands(){
-		switch(weRequest('string', 'cmd')){
+		switch(we_base_request::_(we_base_request::STRING, 'cmd')){
 			case 'tool_weSearch_new' :
 			case 'tool_weSearch_new_forDocuments' :
 			case 'tool_weSearch_new_forTemplates' :
@@ -176,7 +176,7 @@ class we_search_view extends we_tool_view{
 					break;
 				}
 
-				$this->Model->activTab = weRequest('int', 'tabnr', 1);
+				$this->Model->activTab = we_base_request::_(we_base_request::INT, 'tabnr', 1);
 
 				if(trim($this->Model->Text) == ''){
 					print
@@ -233,9 +233,9 @@ class we_search_view extends we_tool_view{
 							$this->topFrame . '.hot=0;'
 					);
 
-					if(weRequest('bool', 'delayCmd')){
+					if(we_base_request::_(we_base_request::BOOL, 'delayCmd')){
 						$js .= we_html_element::jsElement(
-								$this->topFrame . '.we_cmd("' . $_REQUEST['delayCmd'] . '"' . (($dp = weRequest('raw', 'delayParam')) ? ',"' . $dp . '"' : '') . ');'
+								$this->topFrame . '.we_cmd("' . $_REQUEST['delayCmd'] . '"' . (($dp = we_base_request::_(we_base_request::RAW, 'delayParam')) ? ',"' . $dp . '"' : '') . ');'
 						);
 						$_REQUEST['delayCmd'] = '';
 						$_REQUEST['delayParam'] = '';
@@ -476,7 +476,7 @@ class we_search_view extends we_tool_view{
 
 		$objectFilesTable = defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : "";
 
-		$tab = weRequest('int', 'tab', weRequest('int', 'tabnr', 1));
+		$tab = we_base_request::_(we_base_request::INT, 'tab', we_base_request::_(we_base_request::INT, 'tabnr', 1));
 
 		$showHideSelects = '';
 		$showSelects = '';
@@ -1477,7 +1477,7 @@ class we_search_view extends we_tool_view{
 	}
 
 	function getSortImage($for, $whichSearch){
-		$ord = weRequest('string', 'Order' . $whichSearch);
+		$ord = we_base_request::_(we_base_request::STRING, 'Order' . $whichSearch);
 		if($ord){
 			if(strpos($ord, $for) === 0){
 				if(strpos($ord, 'DESC')){
@@ -1616,7 +1616,7 @@ class we_search_view extends we_tool_view{
 			$this->Model->search_tables_advSearch[OBJECT_TABLE] = 0;
 		}
 
-		if(weRequest('string', 'cmd') == "tool_weSearch_new_forObjects"){
+		if(we_base_request::_(we_base_request::STRING, 'cmd') == "tool_weSearch_new_forObjects"){
 			$this->Model->search_tables_advSearch[FILE_TABLE] = 0;
 			$this->Model->search_tables_advSearch[VERSIONS_TABLE] = 0;
 		}
@@ -1708,7 +1708,7 @@ class we_search_view extends we_tool_view{
 					$this->Model->searchFieldsDocSearch[] = "Content";
 				}
 
-				if((isset($_SESSION['weS']['weSearch']["keyword"]) && $_SESSION['weS']['weSearch']["keyword"] != "") && weRequest('int', "tab") == 1){
+				if((isset($_SESSION['weS']['weSearch']["keyword"]) && $_SESSION['weS']['weSearch']["keyword"] != "") && we_base_request::_(we_base_request::INT, "tab") == 1){
 					$this->Model->searchDocSearch[0] = ($_SESSION['weS']['weSearch']["keyword"]);
 					if($GLOBALS['WE_BACKENDCHARSET'] == "UTF-8"){
 						$this->Model->searchDocSearch[0] = utf8_encode($this->Model->searchDocSearch[0]);
@@ -1746,7 +1746,7 @@ class we_search_view extends we_tool_view{
 					$this->Model->searchFieldsTmplSearch[] = "Content";
 				}
 
-				if((isset($_SESSION['weS']['weSearch']["keyword"]) && $_SESSION['weS']['weSearch']["keyword"] != "") && weRequest('int', "tab") == 2){
+				if((isset($_SESSION['weS']['weSearch']["keyword"]) && $_SESSION['weS']['weSearch']["keyword"] != "") && we_base_request::_(we_base_request::INT, "tab") == 2){
 					$this->Model->searchTmplSearch[0] = $_SESSION['weS']['weSearch']["keyword"];
 					if($GLOBALS['WE_BACKENDCHARSET'] == "UTF-8"){
 						$this->Model->searchTmplSearch[0] = utf8_encode($this->Model->searchTmplSearch[0]);
@@ -1782,7 +1782,7 @@ class we_search_view extends we_tool_view{
     </tr></tbody></table>';
 	}
 
-	static function searchProperties($whichSearch){
+	function searchProperties($whichSearch){
 		$DB_WE = new DB_WE();
 		$workspaces = $_result = $versionsFound = $saveArrayIds = $_tables = $searchText = array();
 		$_SESSION['weS']['weSearch']['foundItems' . $whichSearch] = 0;
@@ -1791,8 +1791,7 @@ class we_search_view extends we_tool_view{
 			$thisObj = new we_search_view();
 			$obj = $_REQUEST['we_cmd']['obj'];
 
-			$searchFields = array();
-			$location = array();
+			$searchFields = $location = array();
 
 			foreach($_REQUEST['we_cmd'] as $k => $v){
 				if(stristr($k, 'searchFields' . $whichSearch . '[') && !stristr($k, 'hidden_')){
@@ -1809,7 +1808,7 @@ class we_search_view extends we_tool_view{
 			switch($whichSearch){
 				case 'DocSearch':
 					$_tables[0] = FILE_TABLE;
-					$folderID = weRequest('int', 'we_cmd', 0, 'folderIDDoc');
+					$folderID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'folderIDDoc');
 					foreach($_REQUEST['we_cmd'] as $k => $v){
 						if(is_string($v) && $v == 1){
 							switch($k){
@@ -1828,7 +1827,7 @@ class we_search_view extends we_tool_view{
 					break;
 				case 'TmplSearch':
 					$_tables[0] = TEMPLATES_TABLE;
-					$folderID = weRequest('int', 'we_cmd', 0, 'folderIDTmpl');
+					$folderID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'folderIDTmpl');
 					foreach($_REQUEST['we_cmd'] as $k => $v){
 						if(is_string($v) && $v == 1){
 							switch($k){
@@ -1864,9 +1863,9 @@ class we_search_view extends we_tool_view{
 					break;
 			}
 
-			$searchFields = weRequest('string', 'we_cmd', '', 'searchFields' . $whichSearch);
-			$location = weRequest('string', 'we_cmd', '', 'location' . $whichSearch);
-			$searchText = weRequest('string', 'we_cmd', '', 'search' . $whichSearch);
+			$searchFields = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'searchFields' . $whichSearch);
+			$location = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'location' . $whichSearch);
+			$searchText = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 'search' . $whichSearch);//allow to search for tags
 
 			$_order = $_REQUEST['we_cmd']['Order' . $whichSearch];
 			$_view = $_REQUEST['we_cmd']['setView' . $whichSearch];
@@ -1898,7 +1897,6 @@ class we_search_view extends we_tool_view{
 					if(isset($_REQUEST["searchstartTmplSearch"])){
 						$obj->searchstartTmplSearch = $_REQUEST["searchstartTmplSearch"];
 					}
-
 					$_table = TEMPLATES_TABLE;
 					$_tables[0] = $_table;
 
@@ -1950,7 +1948,7 @@ class we_search_view extends we_tool_view{
 			$cur = trim($cur);
 		}
 		unset($cur);
-		$tab = weRequest('int', 'tab', weRequest('int', 'tabnr', 1));
+		$tab = we_base_request::_(we_base_request::INT, 'tab', we_base_request::_(we_base_request::INT, 'tabnr', 1));
 
 		if(isset($searchText[0]) && substr($searchText[0], 0, 4) == 'exp:'){
 
@@ -1974,7 +1972,7 @@ class we_search_view extends we_tool_view{
 		} elseif(
 			($obj->IsFolder != 1 && ( ($whichSearch == 'DocSearch' && $tab == 1) || ($whichSearch == 'TmplSearch' && $tab == 2) || ($whichSearch == 'AdvSearch' && $tab == 3)) ) ||
 			(isset($_REQUEST['cmdid']) && $_REQUEST['cmdid']) ||
-			(($view = weRequest('string', 'view')) == "GetSearchResult" || $view == "GetMouseOverDivs")
+			(($view = we_base_request::_(we_base_request::STRING, 'view')) == "GetSearchResult" || $view == "GetMouseOverDivs")
 		){
 
 			if(!we_search_search::checkRightTempTable() && !we_search_search::checkRightDropTable()){
@@ -2704,8 +2702,7 @@ class we_search_view extends we_tool_view{
 
 				if($this->Model->searchFieldsAdvSearch[$i] == "Published" || $this->Model->searchFieldsAdvSearch[$i] == "CreationDate" || $this->Model->searchFieldsAdvSearch[$i] == "ModDate"){
 					$handle = "date";
-					$searchInput = $this->getDateSelector(
-						"", "searchAdvSearch[" . $i . "]", "_from" . $i, $this->Model->searchAdvSearch[$i]);
+					$searchInput = we_html_tools::getDateSelector("searchAdvSearch[" . $i . "]", "_from" . $i, $this->Model->searchAdvSearch[$i]);
 				}
 
 				if($this->Model->searchFieldsAdvSearch[$i] == "temp_doc_type"){
@@ -2797,26 +2794,7 @@ class we_search_view extends we_tool_view{
 		return $out;
 	}
 
-	function getDateSelector($_label, $_name, $_btn, $value){
-		$btnDatePicker = we_html_button::create_button(
-				"image:date_picker", "javascript:", null, null, null, null, null, null, false, $_btn);
-		$oSelector = new we_html_table(array(
-			"cellpadding" => 0,
-			"cellspacing" => 0,
-			"border" => 0,
-			"id" => $_name . "_cell"
-			), 1, 5);
-		$oSelector->setCol(0, 2, null, we_html_tools::htmlTextInput($name = $_name, $size = 55, $value, $maxlength = 10, $attribs = 'id="' . $_name . '" class="wetextinput" readonly="1"', $type = "text", $width = 100));
-		$oSelector->setCol(0, 3, null, "&nbsp;");
-		$oSelector->setCol(0, 4, null, we_html_element::htmlA(array(
-				"href" => "#"
-				), $btnDatePicker));
-
-		return $oSelector->getHTML();
-	}
-
 	function tblList($content, $headline, $whichSearch){
-
 		$class = "middlefont";
 		$view = 0;
 
@@ -2857,13 +2835,13 @@ class we_search_view extends we_tool_view{
 		$out .= '</tr></table>' .
 			//FIXME: realize with tbody?
 			'<div id="scrollContent_' . $whichSearch . '" style="overflow-y:auto;background-color:#fff;width:100%">' .
-			we_search_view::tabListContent($view, $content, $class, $whichSearch) .
+			$this->tabListContent($view, $content, $class, $whichSearch) .
 			'</div>';
 
 		return $out;
 	}
 
-	static function tabListContent($view = "", $content = "", $class = "", $whichSearch = ""){
+	function tabListContent($view = "", $content = "", $class = "", $whichSearch = ""){
 		$thisObj = (isset($_REQUEST['we_cmd']['obj']) || $whichSearch == "doclist" ? new we_search_view() : $this);
 
 		$x = count($content);

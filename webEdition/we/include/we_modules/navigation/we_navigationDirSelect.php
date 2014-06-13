@@ -25,6 +25,6 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 $_SERVER['SCRIPT_NAME'] = WE_INCLUDES_DIR . 'we_modules/navigation/we_navigationDirSelect.php';
-$fs = new we_navigation_dirSelector(weRequest('int', 'id', weRequest('int', 'we_cmd', 0, 1)), weRequest('string', 'JSIDName', weRequest('string', 'we_cmd', '', 2)), weRequest('raw', 'JSTextName', weRequest('raw', 'we_cmd', '', 3)), weRequest('raw', 'JSCommand', weRequest('raw', 'we_cmd', '', 4)), weRequest('raw', 'order', ''), weRequest('int', 'we_editDirID', 0), weRequest('raw', 'we_FolderText', ''));
+$fs = new we_navigation_dirSelector(we_base_request::_(we_base_request::INT, 'id', we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1)), we_base_request::_(we_base_request::STRING, 'JSIDName', we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2)), we_base_request::_(we_base_request::RAW, 'JSTextName', we_base_request::_(we_base_request::RAW, 'we_cmd', '', 3)), we_base_request::_(we_base_request::RAW, 'JSCommand', we_base_request::_(we_base_request::RAW, 'we_cmd', '', 4)), we_base_request::_(we_base_request::RAW, 'order', ''), we_base_request::_(we_base_request::INT, 'we_editDirID', 0), we_base_request::_(we_base_request::RAW, 'we_FolderText', ''));
 
-$fs->printHTML(weRequest('int', 'what', we_selector_file::FRAMESET));
+$fs->printHTML(we_base_request::_(we_base_request::INT, 'what', we_selector_file::FRAMESET));

@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 // force the download of this document
-if(weRequest('string', 'we_cmd', '', 3) == 'download'){
+if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3) == 'download'){
 	$file = (file_exists($_SERVER['DOCUMENT_ROOT'] . $we_doc->Path) ? $_SERVER['DOCUMENT_ROOT'] . $we_doc->Path : $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $we_doc->Path);
 	$_filename = $we_doc->Filename . $we_doc->Extension;
 	if(file_exists($file)){
@@ -48,7 +48,7 @@ if(weRequest('string', 'we_cmd', '', 3) == 'download'){
 
 
 echo we_html_tools::getHtmlTop() .
- (substr(weRequest('string', 'we_cmd', '', 0), 0, 15) == 'doImage_convert' ?
+ (substr(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0), 0, 15) == 'doImage_convert' ?
 	we_html_element::jsElement('parent.frames[0].we_setPath("' . $we_doc->Path . '","' . $we_doc->Text . '", "' . $we_doc->ID . '");') : ''
 ) .
  we_html_element::jsScript(JS_DIR . 'windows.js');
@@ -84,8 +84,8 @@ echo STYLESHEET.we_html_element::cssElement('
 			);
 
 			if($we_doc->ID){
-				$_we_transaction = weRequest('transaction', 'we_transaction', 0);
-				$link = "<a href='" . getServerUrl() . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=" . weRequest('raw', 'we_cmd', '', 0) . "&we_cmd[1]=" . weRequest('raw', 'we_cmd', '', 1) . "&we_cmd[2]=" . weRequest('raw', 'we_cmd', '', 2) . "&we_cmd[3]=download&we_transaction=" . $_we_transaction . "'>" . $http = $we_doc->getHttpPath() . "</a>";
+				$_we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 0);
+				$link = "<a href='" . getServerUrl() . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=" . we_base_request::_(we_base_request::RAW, 'we_cmd', '', 0) . "&we_cmd[1]=" . we_base_request::_(we_base_request::RAW, 'we_cmd', '', 1) . "&we_cmd[2]=" . we_base_request::_(we_base_request::RAW, 'we_cmd', '', 2) . "&we_cmd[3]=download&we_transaction=" . $_we_transaction . "'>" . $http = $we_doc->getHttpPath() . "</a>";
 			} else {
 				$link = g_l('weClass', "[file_not_saved]");
 			}

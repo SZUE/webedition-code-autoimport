@@ -68,7 +68,7 @@ class we_messaging_frames extends weModuleFrames{
 
 	function getJSTreeCode(){ //TODO: move to new class weUsersTree (extends weModulesTree)
 		//TODO: title nach View->getJSTop()
-		$mod = weRequest('string', 'mod', '');
+		$mod = we_base_request::_(we_base_request::STRING, 'mod', '');
 		$modData = we_base_moduleInfo::getModuleData($mod);
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 
@@ -443,7 +443,7 @@ function zeichne(startEntry, zweigEintrag) {
 				fr.write("</a>");
 				trg = "doClick("+nf[ai].name+");return true;"
 			}
-			fr.write("&nbsp;<a name=\"_"+nf[ai].name+"\" href=\"javascript://\" onclick=\"" + trg + "\"><font color=\"black\">"+(parseInt(nf[ai].published) ? " <b>" : "")+ translate(nf[ai].text) +(parseInt(nf[ai].published) ? " </b>" : "")+ "</font></A>&nbsp;&nbsp;<BR>\n");
+			fr.write("&nbsp;<a name=\"_"+nf[ai].name+"\" href=\"javascript://\" onclick=\"" + trg + "\"><font color=\"black\">"+(parseInt(nf[ai].published) ? " <b>" : "")+ translate(nf[ai].text) +(parseInt(nf[ai].published) ? " </b>" : "")+ "</font></A>&nbsp;&nbsp;<br/>\n");
 		} else {
 			var newAst = zweigEintrag;
 			var zusatz = (ai == nf.laenge) ? "end" : "";
@@ -474,7 +474,7 @@ function zeichne(startEntry, zweigEintrag) {
 			fr.write("<A name=\"_"+nf[ai].name+"\" HREF=\"javascript://\" onclick=\"" + trg + "\">");
 			fr.write("&nbsp;" + translate(nf[ai].text));
 			fr.write("</a>");
-			fr.write("&nbsp;&nbsp;<BR>\n");
+			fr.write("&nbsp;&nbsp;<br/>\n");
 			if (nf[ai].offen) {
 				if(ai == nf.laenge) {
 					newAst = newAst + "<IMG SRC=' . TREE_IMAGE_DIR . 'leer.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>";
@@ -799,7 +799,7 @@ function msg_start() {
 		$this->messaging->saveInSession($_SESSION['weS']['we_data'][$this->transaction]);
 
 		//TODO: move to a better place: jsTop()
-		$mod = weRequest('string', 'mod', '');
+		$mod = we_base_request::_(we_base_request::STRING, 'mod', '');
 		$modData = we_base_moduleInfo::getModuleData($mod);
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 
@@ -858,7 +858,7 @@ function msg_start() {
 
 		$table->setCol(0, 0, array('class' => 'defaultfont'), g_l('modules_messaging', $searchlabel) .
 			we_html_tools::getPixel(10, 1) .
-			we_html_tools::htmlTextInput('messaging_search_keyword', 15, weRequest('raw', 'messaging_search_keyword', ''), 15) .
+			we_html_tools::htmlTextInput('messaging_search_keyword', 15, we_base_request::_(we_base_request::RAW, 'messaging_search_keyword', ''), 15) .
 			we_html_tools::getPixel(10, 1)
 		);
 

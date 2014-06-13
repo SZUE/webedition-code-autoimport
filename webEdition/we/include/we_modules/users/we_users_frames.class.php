@@ -88,7 +88,7 @@ function zeichne(startEntry,zweigEintrag) {
 			}
 			fr.write("<IMG SRC=' . ICON_DIR . '"+nf[ai].icon+" WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 alt=\"' . g_l('tree', '[edit_statustext]') . '\">");
 			fr.write("</a>");
-			fr.write("&nbsp;<a name=\'_"+nf[ai].name+"\' href=\"javascript://\" onclick=\"doClick("+nf[ai].name+",\'"+nf[ai].contentType+"\',\'"+nf[ai].table+"\');return true;\"><font color=\""+((nf[ai].contentType=="alias") ? "#006DB8" : (parseInt(nf[ai].denied)?"red":"black")) +"\">"+(parseInt(nf[ai].published) ? "<b>" : "") + "<label title=\'"+nf[ai].name+"\'>" + nf[ai].text + "</label>" +(parseInt(nf[ai].published) ? "</b>" : "")+ "</font></A>&nbsp;&nbsp;<BR>\n");
+			fr.write("&nbsp;<a name=\'_"+nf[ai].name+"\' href=\"javascript://\" onclick=\"doClick("+nf[ai].name+",\'"+nf[ai].contentType+"\',\'"+nf[ai].table+"\');return true;\"><font color=\""+((nf[ai].contentType=="alias") ? "#006DB8" : (parseInt(nf[ai].denied)?"red":"black")) +"\">"+(parseInt(nf[ai].published) ? "<b>" : "") + "<label title=\'"+nf[ai].name+"\'>" + nf[ai].text + "</label>" +(parseInt(nf[ai].published) ? "</b>" : "")+ "</font></A>&nbsp;&nbsp;<br/>\n");
 		}
 		else {
 			var newAst = zweigEintrag;
@@ -107,7 +107,7 @@ function zeichne(startEntry,zweigEintrag) {
 			fr.write("<A name=\'_"+nf[ai].name+"\' HREF=\"javascript://\" onclick=\"doClick("+nf[ai].name+",\'"+nf[ai].contentType+"\',\'"+nf[ai].table+"\');return true;\">");
 			fr.write("&nbsp;<b><label title=\'"+nf[ai].name+"\'>" + nf[ai].text + "</label></b>");
 			fr.write("</a>");
-			fr.write("&nbsp;&nbsp;<BR>\n");
+			fr.write("&nbsp;&nbsp;<br/>\n");
 			if (nf[ai].offen) {
 				if(ai == nf.laenge){
 					newAst = newAst + "<IMG SRC=' . TREE_IMAGE_DIR . 'leer.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>";
@@ -367,7 +367,7 @@ self.focus();';
 		} else {
 			$user_object = new we_users_user();
 			$user_object->setState($_SESSION["user_session_data"]);
-			print we_html_element::htmlBody(array('onresize' => 'setFrameSize()', 'onload' => 'setFrameSize()', 'style' => 'background:white url(' . IMAGE_DIR . 'backgrounds/header_with_black_line.gif); margin-top: 0; margin-left: 0;'), $user_object->formHeader(weRequest('int', "tab", 0)));
+			print we_html_element::htmlBody(array('onresize' => 'setFrameSize()', 'onload' => 'setFrameSize()', 'style' => 'background:white url(' . IMAGE_DIR . 'backgrounds/header_with_black_line.gif); margin-top: 0; margin-left: 0;'), $user_object->formHeader(we_base_request::_(we_base_request::INT, "tab", 0)));
 		}
 	}
 
@@ -380,8 +380,8 @@ self.focus();';
 		echo $this->View->getJSProperty();
 
 		$_content = we_html_element::htmlHidden($attribs = array("name" => "ucmd", "value" => "",)) .
-			we_html_element::htmlHidden($attribs = array("name" => "tab", "value" => weRequest('int', 'tab', 0))) .
-			we_html_element::htmlHidden($attribs = array("name" => "oldtab", "value" => weRequest('int', 'tab', 0))) .
+			we_html_element::htmlHidden($attribs = array("name" => "tab", "value" => we_base_request::_(we_base_request::INT, 'tab', 0))) .
+			we_html_element::htmlHidden($attribs = array("name" => "oldtab", "value" => we_base_request::_(we_base_request::INT, 'tab', 0))) .
 			we_html_element::htmlHidden($attribs = array("name" => "perm_branch", "value" => (isset($_REQUEST["perm_branch"]) && $_REQUEST["perm_branch"]) ? oldHtmlspecialchars($_REQUEST["perm_branch"]) : 0,)) .
 			we_html_element::htmlHidden($attribs = array("name" => "old_perm_branch", "value" => (isset($_REQUEST["perm_branch"]) && $_REQUEST["perm_branch"]) ? oldHtmlspecialchars($_REQUEST["perm_branch"]) : 0,)) .
 			we_html_element::htmlHidden($attribs = array("name" => "obj_name", "value" => $user_object->Name,)) .
@@ -399,7 +399,7 @@ self.focus();';
 			if(isset($_REQUEST["seem_start_file"])){
 				$_SESSION["save_user_seem_start_file"][$_REQUEST["uid"]] = $_REQUEST["seem_start_file"];
 			}
-			$_content .= $user_object->formDefinition(weRequest('int', "tab", 0), weRequest('raw', "perm_branch", 0));
+			$_content .= $user_object->formDefinition(we_base_request::_(we_base_request::INT, "tab", 0), we_base_request::_(we_base_request::RAW, "perm_branch", 0));
 		}
 
 		$_content .= $yuiSuggest->getYuiCss() . $yuiSuggest->getYuiJs();

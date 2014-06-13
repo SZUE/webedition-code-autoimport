@@ -24,9 +24,9 @@
  */
 $yuiSuggest = & weSuggest::getInstance();
 
-if(weRequest('bool', 'we_cmd', false, 3)){
-	$cmd1 = weRequest('int', 'we_cmd', '', 1);
-	$cmd4 = weRequest('table', 'we_cmd', '', 4);
+if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 3)){
+	$cmd1 = we_base_request::_(we_base_request::INT, 'we_cmd', '', 1);
+	$cmd4 = we_base_request::_(we_base_request::TABLE, 'we_cmd', '', 4);
 	$js = we_html_element::jsScript(JS_DIR . "windows.js") .
 		we_html_element::jsElement(
 			'self.focus();
@@ -180,7 +180,7 @@ if(weRequest('bool', 'we_cmd', false, 3)){
 		"leftmargin" => 15,
 		"topmargin" => 10
 	);
-	$fr = (weRequest('bool', 'finish') ?
+	$fr = (we_base_request::_(we_base_request::BOOL, 'finish') ?
 			new copyFolderFinishFrag("we_copyFolderFinish", 1, 0, $bodyAttribs) :
 			new copyFolderFrag("we_copyFolder", 1, 0, $bodyAttribs)
 		);

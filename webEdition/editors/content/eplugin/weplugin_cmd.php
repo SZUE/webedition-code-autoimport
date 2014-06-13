@@ -28,21 +28,21 @@ we_html_tools::protect();
 
 $out = '';
 
-switch(weRequest('string', 'we_cmd', '', 0)){
+switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 	case '':
 		exit();
 	case "editSource" :
 		$_session = session_id();
-		$_we_transaction = weRequest('transaction', 'we_cmd', 0, 2);
+		$_we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', 0, 2);
 
 		$_filename = (isset($_SESSION['weS']['we_data'][$_we_transaction][0]['Path']) && $_SESSION['weS']['we_data'][$_we_transaction][0]['Path'] ?
 				$_SESSION['weS']['we_data'][$_we_transaction][0]['Path'] :
-				weRequest('file', 'we_cmd', '', 1)
+				we_base_request::_(we_base_request::FILE, 'we_cmd', '', 1)
 			);
 
 
-		$_ct = weRequest('string', 'we_cmd', '', 3);
-		$_source = weRequest('raw', 'we_cmd', '###EDITORPLUGIN:EMPTYSTRING###', 4);
+		$_ct = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3);
+		$_source = we_base_request::_(we_base_request::RAW, 'we_cmd', '###EDITORPLUGIN:EMPTYSTRING###', 4);
 
 		if($_source == '###EDITORPLUGIN:EMPTYSTRING###'){
 			$_source = $_SESSION['weS']['we_data'][$_we_transaction][0]['elements']['data']['dat'];
@@ -68,7 +68,7 @@ if (top.plugin.isLoaded && (typeof top.plugin.document.WePlugin.editSource == "f
 
 	case "editFile":
 		$_session = session_id();
-		$_we_transaction = weRequest('transaction', 'we_cmd', '', 1);
+		$_we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', '', 1);
 
 		$we_dt = isset($_SESSION['weS']['we_data'][$_we_transaction]) ? $_SESSION['weS']['we_data'][$_we_transaction] : "";
 		include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
@@ -98,9 +98,9 @@ top.plugin.document.WePlugin.editFile(session,transaction,"' . addslashes($_file
 		break;
 
 	case "setSource":
-		$transactionID = weRequest('transaction', 'we_cmd', '', 1);
+		$transactionID = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', '', 1);
 		if(isset($_SESSION['weS']['we_data'][$transactionID][0]["elements"]["data"]["dat"])){
-			$_SESSION['weS']['we_data'][$transactionID][0]["elements"]["data"]["dat"] = weRequest('raw', 'we_cmd', '', 2);
+			$_SESSION['weS']['we_data'][$transactionID][0]["elements"]["data"]["dat"] = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 2);
 			$_SESSION['weS']['we_data'][$transactionID][1]["data"]["dat"] = $_SESSION['weS']['we_data'][$transactionID][0]["elements"]["data"]["dat"];
 
 			$out = we_html_element::jsElement('
@@ -111,7 +111,7 @@ _EditorFrame.getContentFrame().reloadContent = true;');
 		break;
 	case "reloadContentFrame":
 
-		$_we_transaction = weRequest('transaction', 'we_cmd', '', 1);
+		$_we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', '', 1);
 
 		$out = we_html_element::jsElement('
 var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction("' . $_we_transaction . '");
@@ -131,8 +131,8 @@ if (
 		break;
 
 	case "setBinary":
-		if(isset($_FILES['uploadfile']) && ($_we_transaction = weRequest('transaction', 'we_transaction', 0))){
-			$we_ContentType = weRequest('string', 'contenttype');
+		if(isset($_FILES['uploadfile']) && ($_we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 0))){
+			$we_ContentType = we_base_request::_(we_base_request::STRING, 'contenttype');
 
 			$we_dt = isset($_SESSION['weS']['we_data'][$_we_transaction]) ? $_SESSION['weS']['we_data'][$_we_transaction] : "";
 			include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
@@ -159,7 +159,7 @@ if (
 		break;
 
 	default:
-		exit("command '" . weRequest('string', 'we_cmd', '', 0) . "' not known!");
+		exit("command '" . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) . "' not known!");
 }
 
 

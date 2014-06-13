@@ -67,7 +67,7 @@ abstract class we_dialog_deleteProgress{
 			new we_backup_delete($taskname, 1, 0);
 		} else {
 			$taskname = md5(session_id() . "_del");
-			$table = weRequest('table', "table", FILE_TABLE);
+			$table = we_base_request::_(we_base_request::TABLE, "table", FILE_TABLE);
 			new we_base_delFragment($taskname, 1, 0, $table);
 		}
 	}

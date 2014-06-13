@@ -447,7 +447,7 @@ class we_workflow_view extends we_workflow_base{
 	}
 
 	function getJSTopCode(){
-		$mod = weRequest('string', 'mod', '');
+		$mod = we_base_request::_(we_base_request::STRING, 'mod', '');
 		$modData = we_base_moduleInfo::getModuleData($mod);
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 		?>
@@ -799,7 +799,7 @@ function checkData(){
 
 	function processCommands(){
 
-		switch(weRequest('string', 'wcmd', '')){
+		switch(we_base_request::_(we_base_request::STRING, 'wcmd', '')){
 			case 'new_workflow':
 				$this->workflowDef = new we_workflow_workflow();
 				$this->page = 0;
@@ -1048,9 +1048,9 @@ function checkData(){
 			}
 		}
 
-		$wsteps = weRequest('int', 'wsteps', 0);
-		$wtasks = weRequest('int', 'wtasks', 0);
-		$this->page = weRequest('int', 'page', 0);
+		$wsteps = we_base_request::_(we_base_request::INT, 'wsteps', 0);
+		$wtasks = we_base_request::_(we_base_request::INT, 'wtasks', 0);
+		$this->page = we_base_request::_(we_base_request::INT, 'page', 0);
 
 
 		$this->workflowDef->steps = array();
@@ -1488,9 +1488,9 @@ function checkData(){
 		$logs = we_workflow_log::getLogForDocument($docID, 'DESC', $type);
 		$counter = 0;
 
-		$offset = weRequest('int', 'offset', 0);
-		$art = weRequest('raw', 'art', '');
-		$type = weRequest('raw', 'type', '');
+		$offset = we_base_request::_(we_base_request::INT, 'offset', 0);
+		$art = we_base_request::_(we_base_request::RAW, 'art', '');
+		$type = we_base_request::_(we_base_request::RAW, 'type', '');
 		$numRows = we_workflow_log::NUMBER_LOGS;
 		$anz = $GLOBALS['ANZ_LOGS'];
 

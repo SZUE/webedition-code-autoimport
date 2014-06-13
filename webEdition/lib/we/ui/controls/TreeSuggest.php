@@ -39,13 +39,13 @@ foreach($_REQUEST as $gKey => $gValue){
 }
 $_REQUEST = $ZW;
 
-$id = weRequest('int', "id");
-$sessionName = weRequest('string', "sessionname");
-$table = weRequest('table', "table");
-$close = weRequest('bool', "close");
-$datasource = weRequest('string', "datasource");
+$id = we_base_request::_(we_base_request::INT, "id");
+$sessionName = we_base_request::_(we_base_request::STRING, "sessionname");
+$table = we_base_request::_(we_base_request::TABLE, "table");
+$close = we_base_request::_(we_base_request::BOOL, "close");
+$datasource = we_base_request::_(we_base_request::STRING, "datasource");
 
-if(($treeclass = weRequest('string', "treeclass"))){
+if(($treeclass = we_base_request::_(we_base_request::STRING, "treeclass"))){
 	$tree = new $treeclass();
 }
 

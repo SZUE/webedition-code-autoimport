@@ -26,8 +26,8 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 $protect = we_base_moduleInfo::isActive('customer') && we_users_util::canEditModule('customer') ? null : array(false);
 we_html_tools::protect($protect);
 
-$what = weRequest('string', 'pnt', 'frameset');
-$mode = weRequest('string', 'art');
+$what = we_base_request::_(we_base_request::STRING, 'pnt', 'frameset');
+$mode = we_base_request::_(we_base_request::STRING, 'art');
 
 $ExImport = $weFrame = null;
 
@@ -39,7 +39,7 @@ switch($what){
 	case 'import':
 	case 'eiupload':
 		$ExImport = new we_customer_EIWizard();
-		$step = weRequest('int', 'step', 0);
+		$step = we_base_request::_(we_base_request::INT, 'step', 0);
 		echo $ExImport->getHTML($what, $mode, $step);
 		break;
 	default:

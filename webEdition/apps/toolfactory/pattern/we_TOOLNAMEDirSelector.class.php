@@ -226,8 +226,8 @@ print we_html_element('<script type="text/javascript">
 																	top.clearEntries(); ';
 																	$this - > FolderText = rawurldecode($this - > FolderText);
 																	$txt = '';
-																	if (weRequest('bool', 'we_FolderText_tmp')){
-													$txt = rawurldecode(weRequest('raw', 'we_FolderText_tmp'));
+																	if (we_base_request::_(we_base_request::BOOL, 'we_FolderText_tmp')){
+													$txt = rawurldecode(we_base_request::_(we_base_request::RAW, 'we_FolderText_tmp'));
 																	}
 													if ($txt == ''){
 													print we_message_reporting::getShowMessageCall(g_l('tools', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);

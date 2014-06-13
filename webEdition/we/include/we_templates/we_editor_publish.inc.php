@@ -30,5 +30,5 @@ var _EditorFrameDocumentRef = _EditorFrame.getDocumentReference();' .
 	($we_responseText ?
 		we_message_reporting::getShowMessageCall($we_responseText, $we_responseTextType) :
 		'') .
-	weRequest('raw', 'we_cmd', '', 5)
+	we_base_request::_(we_base_request::RAW, 'we_cmd', '', 5)
 );

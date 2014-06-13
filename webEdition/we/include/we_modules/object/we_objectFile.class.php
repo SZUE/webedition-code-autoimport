@@ -100,7 +100,7 @@ class we_objectFile extends we_document{
 			}
 			$GLOBALS['we_object'][$formname]->we_new();
 			if(isset($_REQUEST['we_editObject_ID']) && $_REQUEST['we_editObject_ID']){
-				$GLOBALS['we_object'][$formname]->initByID(weRequest('int', 'we_editObject_ID', 0), OBJECT_FILES_TABLE);
+				$GLOBALS['we_object'][$formname]->initByID(we_base_request::_(we_base_request::INT, 'we_editObject_ID', 0), OBJECT_FILES_TABLE);
 			} else {
 				$GLOBALS['we_object'][$formname]->TableID = $classID;
 				$GLOBALS['we_object'][$formname]->setRootDirID(true);
@@ -128,7 +128,7 @@ class we_objectFile extends we_document{
 			}
 		} else {
 			if(isset($_REQUEST['we_editObject_ID']) && $_REQUEST['we_editObject_ID']){
-				$GLOBALS['we_object'][$formname]->initByID(weRequest('int', 'we_editObject_ID', 0), OBJECT_FILES_TABLE);
+				$GLOBALS['we_object'][$formname]->initByID(we_base_request::_(we_base_request::INT, 'we_editObject_ID', 0), OBJECT_FILES_TABLE);
 			} elseif($session){
 				$GLOBALS['we_object'][$formname]->we_initSessDat($_SESSION['weS']['we_object_session_' . $formname]);
 			}

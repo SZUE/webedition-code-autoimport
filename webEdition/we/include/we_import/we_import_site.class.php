@@ -64,24 +64,24 @@ class we_import_site{
 	public function __construct(){
 		$wsa = makeArrayFromCSV(get_def_ws());
 		$ws = ($wsa ? $wsa[0] : 0);
-		$this->from = weRequest('raw', 'from', (isset($_SESSION['prefs']['import_from']) && $_SESSION['prefs']['import_from'] ? $_SESSION['prefs']['import_from'] : $this->from));
+		$this->from = we_base_request::_(we_base_request::RAW, 'from', (isset($_SESSION['prefs']['import_from']) && $_SESSION['prefs']['import_from'] ? $_SESSION['prefs']['import_from'] : $this->from));
 		$_SESSION['prefs']['import_from'] = $this->from;
-		$this->to = weRequest('raw', 'to', (strlen($this->to) ? $this->to : $ws));
-		$this->depth = weRequest('raw', 'depth', $this->depth);
-		$this->images = weRequest('raw', 'images', $this->images);
-		$this->htmlPages = weRequest('raw', 'htmlPages', $this->htmlPages);
-		$this->createWePages = weRequest('raw', 'createWePages', $this->createWePages);
-		$this->flashmovies = weRequest('raw', 'flashmovies', $this->flashmovies);
-		$this->quicktime = weRequest('raw', 'quicktime', $this->quicktime);
-		$this->js = weRequest('raw', 'js', $this->js);
-		$this->css = weRequest('raw', 'css', $this->css);
-		$this->text = weRequest('raw', 'text', $this->text);
-		$this->other = weRequest('raw', 'other', $this->other);
-		$this->maxSize = weRequest('raw', 'maxSize', $this->maxSize);
-		$this->step = weRequest('raw', 'step', $this->step);
-		$this->cmd = weRequest('raw', 'cmd', $this->cmd);
+		$this->to = we_base_request::_(we_base_request::RAW, 'to', (strlen($this->to) ? $this->to : $ws));
+		$this->depth = we_base_request::_(we_base_request::RAW, 'depth', $this->depth);
+		$this->images = we_base_request::_(we_base_request::RAW, 'images', $this->images);
+		$this->htmlPages = we_base_request::_(we_base_request::RAW, 'htmlPages', $this->htmlPages);
+		$this->createWePages = we_base_request::_(we_base_request::RAW, 'createWePages', $this->createWePages);
+		$this->flashmovies = we_base_request::_(we_base_request::RAW, 'flashmovies', $this->flashmovies);
+		$this->quicktime = we_base_request::_(we_base_request::RAW, 'quicktime', $this->quicktime);
+		$this->js = we_base_request::_(we_base_request::RAW, 'js', $this->js);
+		$this->css = we_base_request::_(we_base_request::RAW, 'css', $this->css);
+		$this->text = we_base_request::_(we_base_request::RAW, 'text', $this->text);
+		$this->other = we_base_request::_(we_base_request::RAW, 'other', $this->other);
+		$this->maxSize = we_base_request::_(we_base_request::RAW, 'maxSize', $this->maxSize);
+		$this->step = we_base_request::_(we_base_request::RAW, 'step', $this->step);
+		$this->cmd = we_base_request::_(we_base_request::RAW, 'cmd', $this->cmd);
 
-		switch(weRequest('string', 'we_cmd', '', 0)){
+		switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 			case 'siteImportSaveWePageSettings' :
 				$this->cmd = 'saveWePageSettings';
 				break;
@@ -93,16 +93,16 @@ class we_import_site{
 				break;
 		}
 
-		$this->sameName = weRequest('raw', 'sameName', $this->sameName);
-		$this->importMetadata = weRequest('raw', 'importMetadata', $this->importMetadata);
+		$this->sameName = we_base_request::_(we_base_request::RAW, 'sameName', $this->sameName);
+		$this->importMetadata = we_base_request::_(we_base_request::RAW, 'importMetadata', $this->importMetadata);
 		$this->thumbs = isset($_REQUEST['thumbs']) ? makeCSVFromArray($_REQUEST['thumbs']) : $this->thumbs;
-		$this->width = weRequest('int', 'width', $this->width);
-		$this->height = weRequest('int', 'height', $this->height);
-		$this->widthSelect = weRequest('bool', 'widthSelect', $this->widthSelect);
-		$this->heightSelect = weRequest('bool', 'heightSelect', $this->heightSelect);
-		$this->keepRatio = weRequest('bool', 'keepRatio', $this->keepRatio);
-		$this->quality = weRequest('int', 'quality', $this->quality);
-		$this->degrees = weRequest('int', 'degrees', $this->degrees);
+		$this->width = we_base_request::_(we_base_request::INT, 'width', $this->width);
+		$this->height = we_base_request::_(we_base_request::INT, 'height', $this->height);
+		$this->widthSelect = we_base_request::_(we_base_request::BOOL, 'widthSelect', $this->widthSelect);
+		$this->heightSelect = we_base_request::_(we_base_request::BOOL, 'heightSelect', $this->heightSelect);
+		$this->keepRatio = we_base_request::_(we_base_request::BOOL, 'keepRatio', $this->keepRatio);
+		$this->quality = we_base_request::_(we_base_request::INT, 'quality', $this->quality);
+		$this->degrees = we_base_request::_(we_base_request::INT, 'degrees', $this->degrees);
 
 		$this->_files = array();
 	}
@@ -313,14 +313,14 @@ class we_import_site{
 	 */
 	private function _getSaveWePageSettingsHTML(){
 		$data = array(
-			'valueCreateType' => weRequest('string', 'createType')
+			'valueCreateType' => we_base_request::_(we_base_request::STRING, 'createType')
 		);
 		if($data['valueCreateType'] == 'specify'){
-			$data['valueTemplateId'] = weRequest('int', 'templateID', 0);
-			$data['valueUseRegex'] = weRequest('bool', 'useRegEx');
-			$data['valueFieldValues'] = serialize(weRequest('raw', 'fields', array()));
-			$data['valueDateFormat'] = weRequest('string', 'dateFormat', 'unix');
-			$data['valueDateFormatField'] = weRequest('raw', 'dateformatField', '');
+			$data['valueTemplateId'] = we_base_request::_(we_base_request::INT, 'templateID', 0);
+			$data['valueUseRegex'] = we_base_request::_(we_base_request::BOOL, 'useRegEx');
+			$data['valueFieldValues'] = serialize(we_base_request::_(we_base_request::RAW, 'fields', array()));
+			$data['valueDateFormat'] = we_base_request::_(we_base_request::STRING, 'dateFormat', 'unix');
+			$data['valueDateFormatField'] = we_base_request::_(we_base_request::RAW, 'dateformatField', '');
 			$data['valueTemplateName'] = 'neueVorlage';
 			$data['valueTemplateParentID'] = 0;
 		} else {
@@ -329,8 +329,8 @@ class we_import_site{
 			$data['valueFieldValues'] = serialize(array());
 			$data['valueDateFormat'] = 'unix';
 			$data['valueDateFormatField'] = '';
-			$data['valueTemplateName'] = weRequest('string', 'templateName', 'neueVorlage');
-			$data['valueTemplateParentID'] = weRequest('int', 'templateParentID', 0);
+			$data['valueTemplateName'] = we_base_request::_(we_base_request::STRING, 'templateName', 'neueVorlage');
+			$data['valueTemplateParentID'] = we_base_request::_(we_base_request::INT, 'templateParentID', 0);
 		}
 		// update session
 		$_SESSION['prefs']['siteImportPrefs'] = serialize($data);

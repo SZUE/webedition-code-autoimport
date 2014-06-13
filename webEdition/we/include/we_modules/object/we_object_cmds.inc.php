@@ -32,7 +32,7 @@ include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
 we_html_tools::protect();
 
-switch(weRequest('string','we_cmd','',0)){
+switch(we_base_request::_(we_base_request::STRING,'we_cmd','',0)){
 	case "object_toggleExtraWorkspace":
 		$oid = $_REQUEST['we_cmd'][2];
 		$wsid = $_REQUEST['we_cmd'][3];

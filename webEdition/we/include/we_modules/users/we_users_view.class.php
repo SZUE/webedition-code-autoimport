@@ -54,7 +54,7 @@ class we_users_view extends weModuleView{
 	}
 
 	function getJSTop_tmp(){
-		$mod = weRequest('string', 'mod', '');
+		$mod = we_base_request::_(we_base_request::STRING, 'mod', '');
 		$modData = we_base_moduleInfo::getModuleData($mod);
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 
@@ -479,7 +479,7 @@ function we_cmd(){
 	}
 
 	function processCommands(){
-		switch(weRequest('string', "ucmd")){
+		switch(we_base_request::_(we_base_request::STRING, "ucmd")){
 			case "new_group":
 				if(!permissionhandler::hasPerm("NEW_GROUP")){
 					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR));
@@ -695,7 +695,7 @@ function we_cmd(){
 						break;
 					}
 					if(isset($_REQUEST['oldtab'])){
-						$user_object->preserveState(weRequest('int', 'oldtab'), $_REQUEST['old_perm_branch']);
+						$user_object->preserveState(we_base_request::_(we_base_request::INT, 'oldtab'), $_REQUEST['old_perm_branch']);
 					}
 
 					$id = $user_object->ID;
@@ -740,7 +740,7 @@ function we_cmd(){
 								$seem_start_file = $_SESSION['save_user_seem_start_file'][$_REQUEST["uid"]];
 							}
 
-							$tmp->query('REPLACE INTO ' . PREFS_TABLE . ' SET userID=' . weRequest('int', 'uid', 0) . ',`key`="seem_start_file",`value`="' . $tmp->escape($seem_start_file) . '"');
+							$tmp->query('REPLACE INTO ' . PREFS_TABLE . ' SET userID=' . we_base_request::_(we_base_request::INT, 'uid', 0) . ',`key`="seem_start_file",`value`="' . $tmp->escape($seem_start_file) . '"');
 							unset($tmp);
 							unset($seem_start_file);
 							if(isset($_SESSION['save_user_seem_start_file'][$_REQUEST["uid"]])){
@@ -861,7 +861,7 @@ function we_cmd(){
 			case 'check_user_display':
 				if($_REQUEST['uid']){
 					$mpid = f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION["user"]["ID"]), '', $this->db);
-					$pid = f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . weRequest('int', 'uid', 0), '', $this->db);
+					$pid = f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . we_base_request::_(we_base_request::INT, 'uid', 0), '', $this->db);
 
 					$search = true;
 					$found = false;

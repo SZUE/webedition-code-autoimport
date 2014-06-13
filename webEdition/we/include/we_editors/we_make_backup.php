@@ -26,9 +26,9 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
-$what = weRequest('string',"pnt",'frameset');
+$what = we_base_request::_(we_base_request::STRING,"pnt",'frameset');
 
-$step = weRequest('int',"step",1);
+$step = we_base_request::_(we_base_request::INT,"step",1);
 
 $weBackupWizard = new we_backup_wizard(WE_INCLUDES_DIR . 'we_editors/we_make_backup.php', we_backup_wizard::BACKUP);
 

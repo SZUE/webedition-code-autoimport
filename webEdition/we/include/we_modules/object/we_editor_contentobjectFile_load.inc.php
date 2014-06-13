@@ -31,10 +31,10 @@ we_html_tools::protect();
 //	---> Initalize the document
 //
 
-$cmd = weRequest('raw', 'we_cmd', '', 0);
-$we_transaction = weRequest('transaction', 'we_cmd', $we_transaction, 1);
+$cmd = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 0);
+$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', $we_transaction, 1);
 
-$identifier = weRequest('raw', 'we_cmd', false, 2);
+$identifier = we_base_request::_(we_base_request::RAW, 'we_cmd', false, 2);
 
 $jsGUI = new weOrderContainer("_EditorFrame.getContentEditor()", "objectEntry");
 

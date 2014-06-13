@@ -54,7 +54,7 @@ row+="</a>";
 row+="<a name=\'_"+nf[ai].id+"\' href=\"javascript://\" onclick=\""+oc_js+";return true;\">";
 row+="<label style=\"cursor:pointer\" id=\"lab_"+nf[ai].id+"\" class=\""+treeData.node_layout[nf[ai].state]+"\">&nbsp;" + nf[ai].text+"</label>";
 row+="</a>";
-row+="&nbsp;&nbsp;<br>\n";
+row+="&nbsp;&nbsp;<br/>\n";
 
 if (nf[ai].open){
 	newAst = newAst + "<img src=' . $this->tree_image_dir . '"+(ai == nf.laenge?"leer.gif":"strich2.gif")+" width=19 height=18 align=absmiddle border=0>";
@@ -92,7 +92,7 @@ row+="<label style=\"cursor:pointer;\" id=\"lab_"+nf[ai].id+"\" class=\""+nf[ai]
 if(nf[ai].disabled!=1){
 	row+="</a>";
 }
-row+="&nbsp;&nbsp;<br>\n";
+row+="&nbsp;&nbsp;<br/>\n";
 if (nf[ai].open==1){
 	newAst = newAst + "<img src=' . $this->tree_image_dir . '"+(ai == nf.len?"leer.gif":"strich2.gif")+" width=19 height=18 align=absmiddle border=0>";
 	row+=draw(nf[ai].id,newAst);

@@ -26,7 +26,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
-if(($uniqid = weRequest('raw', 'u')) && ($we_transaction = weRequest('transaction', 't', $we_transaction)) && ($id = weRequest('intList', 'id'))){
+if(($uniqid = we_base_request::_(we_base_request::RAW, 'u')) && ($we_transaction = we_base_request::_(we_base_request::TRANSACTION, 't', $we_transaction)) && ($id = we_base_request::_(we_base_request::INTLIST, 'id'))){
 
 	$we_dt = isset($_SESSION['weS']['we_data'][$we_transaction]) ? $_SESSION['weS']['we_data'][$we_transaction] : '';
 	include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');

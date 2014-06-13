@@ -47,9 +47,9 @@ class versionFragment extends taskFragment{
 			$versionslog->saveVersionsLog($_SESSION['weS']['versions']['logResetIds'], versionsLog::VERSIONS_RESET);
 		}
 		unset($_SESSION['weS']['versions']['logResetIds']);
-		$responseText = weRequest('string', "responseText", "");
+		$responseText = we_base_request::_(we_base_request::STRING, "responseText", "");
 		echo we_html_tools::getHtmlTop();
-		switch(weRequest('string', 'type')){
+		switch(we_base_request::_(we_base_request::STRING, 'type')){
 			case "delete_versions":
 				$responseText = g_l('versions', '[deleteDateVersionsOK]');
 				break;

@@ -33,29 +33,28 @@ echo we_html_tools::getHtmlTop() .
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 $headCal = we_html_element::cssLink(JS_DIR . "jscalendar/skins/aqua/theme.css") .
-		we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
-		we_html_element::jsScript(WE_INCLUDES_DIR . "we_language/" . $GLOBALS ["WE_LANGUAGE"] . "/calendar.js") .
-		we_html_element::jsScript(JS_DIR . "jscalendar/calendar-setup.js");
+	we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
+	we_html_element::jsScript(WE_INCLUDES_DIR . "we_language/" . $GLOBALS ["WE_LANGUAGE"] . "/calendar.js") .
+	we_html_element::jsScript(JS_DIR . "jscalendar/calendar-setup.js");
 
-$_view = new doclistView();
 echo $headCal .
-		$_view->getSearchJS() .
-		STYLESHEET .
-		'</head>
+ doclistView::getSearchJS() .
+ STYLESHEET .
+ '</head>
 
 <body class="weEditorBody" onunload="doUnload()" onkeypress="javascript:if(event.keyCode==\'13\' || event.keyCode==\'3\') search(true);" onLoad="setTimeout(\'init();\',200)" onresize="sizeScrollContent();">
 <div id="mouseOverDivs_doclist"></div>
 <form name="we_form" action="" onsubmit="return false;" style="padding:0px;margin:0px;">';
 
 $content = doclistView::searchProperties();
-$headline = $_view->makeHeadLines();
+$headline = doclistView::makeHeadLines();
 $foundItems = (isset($_SESSION['weS']['weSearch']['foundItems'])) ? $_SESSION['weS']['weSearch']['foundItems'] : 0;
 $_parts = array(
-	array("html" => $_view->getSearchDialog()),
-	array("html" => "<div id='parametersTop'>" . $_view->getSearchParameterTop($foundItems) . "</div>" . we_search_view::tblList($content, $headline, "doclist") . "<div id='parametersBottom'>" . $_view->getSearchParameterBottom($foundItems) . "</div>"),
+	array("html" => doclistView::getSearchDialog()),
+	array("html" => "<div id='parametersTop'>" . doclistView::getSearchParameterTop($foundItems) . "</div>" . we_search_view::tblList($content, $headline, "doclist") . "<div id='parametersBottom'>" . doclistView::getSearchParameterBottom($foundItems) . "</div>"),
 );
 
-echo $_view->getHTMLforDoclist($_parts) . '
+echo doclistView::getHTMLforDoclist($_parts) . '
 <input type="hidden" name="we_complete_request" value="1"/>
 </form>
 </body>

@@ -26,9 +26,9 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 $protect = we_base_moduleInfo::isActive('workflow') && we_users_util::canEditModule('workflow') ? null : array(false);
 we_html_tools::protect($protect);
 
-$what = weRequest('raw', 'pnt','frameset');
-$mode = weRequest('raw', 'art', 0);
-$type = weRequest('raw', 'type', 0);
+$what = we_base_request::_(we_base_request::RAW, 'pnt','frameset');
+$mode = we_base_request::_(we_base_request::RAW, 'art', 0);
+$type = we_base_request::_(we_base_request::RAW, 'type', 0);
 
 $weFrame = new we_workflow_frames();
 echo $weFrame->getHTMLDocumentHeader();

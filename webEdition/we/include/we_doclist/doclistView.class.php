@@ -74,7 +74,7 @@ class doclistView{
 			$showHideSelects = '';
 			$showSelects = '';
 		}
-		$we_transaction = weRequest('transaction', 'we_transaction', 0);
+		$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 0);
 
 		return we_html_element::jsElement('
 
@@ -809,7 +809,7 @@ class doclistView{
 				$r2[] = $GLOBALS ['we_doc']->searchclassFolder->searchFields [$k];
 			}
 		}
-		if(($loc = weRequest('string', 'location'))){
+		if(($loc = we_base_request::_(we_base_request::STRING, 'location'))){
 			$m = 0;
 			foreach($_REQUEST['searchFields'] as $k => $v){
 				$r3[$m] = (isset($loc[$k]) ? $loc[$k] : "disabled");
@@ -840,7 +840,7 @@ class doclistView{
 				}
 				if($GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] == "Published" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] == "CreationDate" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] == "ModDate"){
 					$handle = "date";
-					$searchInput = $this->getDateSelector("", "search[" . $i . "]", "_from" . $i, $GLOBALS ['we_doc']->searchclassFolder->search [$i]);
+					$searchInput = we_html_tools::getDateSelector("search[" . $i . "]", "_from" . $i, $GLOBALS ['we_doc']->searchclassFolder->search [$i]);
 				}
 				if($GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] == "temp_doc_type"){
 					$searchInput = we_html_tools::htmlSelect("search[" . $i . "]", $GLOBALS ['we_doc']->searchclassFolder->getDocTypes(), 1, (isset($GLOBALS ['we_doc']->searchclassFolder->search) && is_array($GLOBALS ['we_doc']->searchclassFolder->search) && isset($GLOBALS ['we_doc']->searchclassFolder->search [$i]) ? $GLOBALS ['we_doc']->searchclassFolder->search [$i] : ""), false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[' . $i . ']"));
@@ -934,16 +934,16 @@ class doclistView{
 			$thisObj = $this;
 		}
 
-		$obj->searchclassFolder->searchstart = weRequest('int', "searchstart", 0);
+		$obj->searchclassFolder->searchstart = we_base_request::_(we_base_request::INT, "searchstart", 0);
 
 		$_table = FILE_TABLE;
-		$searchFields = weRequest('string', 'searchFields', $obj->searchclassFolder->searchFields);
-		$searchText = weRequest('string', 'we_cmd', $obj->searchclassFolder->search, 'search');
-		$location = weRequest('string', 'we_cmd', $obj->searchclassFolder->location, 'location');
-		$_order = weRequest('string', 'we_cmd', $obj->searchclassFolder->order, 'order');
-		$_view = weRequest('string', 'we_cmd', $obj->searchclassFolder->setView, 'setView');
-		$_searchstart = weRequest('int', 'we_cmd', $obj->searchclassFolder->searchstart, 'searchstart');
-		$_anzahl = weRequest('int', 'we_cmd', $obj->searchclassFolder->anzahl, 'anzahl');
+		$searchFields = we_base_request::_(we_base_request::STRING, 'searchFields', $obj->searchclassFolder->searchFields);
+		$searchText = we_base_request::_(we_base_request::STRING, 'we_cmd', $obj->searchclassFolder->search, 'search');
+		$location = we_base_request::_(we_base_request::STRING, 'we_cmd', $obj->searchclassFolder->location, 'location');
+		$_order = we_base_request::_(we_base_request::STRING, 'we_cmd', $obj->searchclassFolder->order, 'order');
+		$_view = we_base_request::_(we_base_request::STRING, 'we_cmd', $obj->searchclassFolder->setView, 'setView');
+		$_searchstart = we_base_request::_(we_base_request::INT, 'we_cmd', $obj->searchclassFolder->searchstart, 'searchstart');
+		$_anzahl = we_base_request::_(we_base_request::INT, 'we_cmd', $obj->searchclassFolder->anzahl, 'anzahl');
 
 
 		$searchText = array_map('trim', $searchText);
@@ -1093,7 +1093,7 @@ class doclistView{
 	}
 
 	function getSortImage($for){
-		$order = weRequest('raw', 'order', $GLOBALS ['we_doc']->searchclassFolder->order);
+		$order = we_base_request::_(we_base_request::RAW, 'order', $GLOBALS ['we_doc']->searchclassFolder->order);
 
 		if(strpos($order, $for) === 0){
 			if(strpos($order, 'DESC')){
@@ -1244,13 +1244,13 @@ class doclistView{
 	static function getSearchParameterTop($foundItems){
 		$anzahl = array(10 => 10, 25 => 25, 50 => 50, 100 => 100);
 
-		$thisObj = weRequest('bool', 'we_cmd', false, 'obj') ? new self() : $this;
-		$order = weRequest('raw', 'we_cmd', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->searchclassFolder->order : '', 'order');
-		$mode = weRequest('raw', 'we_cmd', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->searchclassFolder->mode : '', 'mode');
-		$setView = weRequest('raw', 'we_cmd', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->searchclassFolder->setView : '', 'setView');
-		$_anzahl = weRequest('raw', 'we_cmd', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->searchclassFolder->anzahl : '', 'anzahl');
-		$id = weRequest('int', 'id', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->ID : '');
-		$we_transaction = weRequest('transaction', 'we_transaction', (isset($GLOBALS ['we_transaction']) ? $GLOBALS ['we_transaction'] : 0));
+		$thisObj = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 'obj') ? new self() : $this;
+		$order = we_base_request::_(we_base_request::RAW, 'we_cmd', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->searchclassFolder->order : '', 'order');
+		$mode = we_base_request::_(we_base_request::RAW, 'we_cmd', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->searchclassFolder->mode : '', 'mode');
+		$setView = we_base_request::_(we_base_request::RAW, 'we_cmd', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->searchclassFolder->setView : '', 'setView');
+		$_anzahl = we_base_request::_(we_base_request::RAW, 'we_cmd', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->searchclassFolder->anzahl : '', 'anzahl');
+		$id = we_base_request::_(we_base_request::INT, 'id', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->ID : '');
+		$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', (isset($GLOBALS ['we_transaction']) ? $GLOBALS ['we_transaction'] : 0));
 
 		return
 			we_html_tools::hidden("we_transaction", $we_transaction) .
@@ -1283,7 +1283,7 @@ class doclistView{
 	}
 
 	function getSearchParameterBottom($foundItems){
-		$thisObj = weRequest('bool', 'we_cmd', false, 'obj') ? new self() : $this;
+		$thisObj = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 'obj') ? new self() : $this;
 
 		if(permissionhandler::hasPerm('PUBLISH')){
 			$publishButtonCheckboxAll = we_html_forms::checkbox(1, 0, "publish_all", "", false, "middlefont", "checkAllPubChecks()");
@@ -1309,7 +1309,7 @@ class doclistView{
 	 * @return string, html for paging GUI
 	 */
 	function getNextPrev($we_search_anzahl){
-		if(($obj = weRequest('bool', 'we_cmd', false, 'obj'))){
+		if(($obj = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 'obj'))){
 			$anzahl = $_SESSION['weS']['weSearch'] ['anzahl'];
 			$searchstart = $_SESSION['weS']['weSearch'] ['searchstart'];
 		} else {
@@ -1395,15 +1395,4 @@ class doclistView{
 
 		return $out . '</td></tr></table>';
 	}
-
-	function getDateSelector($_label, $_name, $_btn, $value){
-		$btnDatePicker = we_html_button::create_button("image:date_picker", "javascript:", null, null, null, null, null, null, false, $_btn);
-		$oSelector = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0, "id" => $_name . "_cell"), 1, 5);
-		$oSelector->setCol(0, 2, null, we_html_tools::htmlTextInput($name = $_name, $size = 55, $value, $maxlength = 10, $attribs = 'id="' . $_name . '" class="wetextinput" readonly="1"', $type = "text", $width = 100));
-		$oSelector->setCol(0, 3, null, "&nbsp;");
-		$oSelector->setCol(0, 4, null, we_html_element::htmlA(array("href" => "#"), $btnDatePicker));
-
-		return $oSelector->getHTML();
-	}
-
 }

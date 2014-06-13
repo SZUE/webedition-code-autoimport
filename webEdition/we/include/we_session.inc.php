@@ -46,7 +46,7 @@ if(!isset($_SESSION['user'])){
 	);
 }
 
-$we_transaction = weRequest('transaction', 'we_transaction', md5(uniqID('', true)));
+$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', md5(uniqID('', true)));
 
 if(!isset($_SESSION['weS']['we_data'])){
 	$_SESSION['weS']['we_data'] = array($we_transaction => '');

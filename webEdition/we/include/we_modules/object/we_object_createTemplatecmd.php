@@ -26,9 +26,9 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
-$we_transaction = weRequest('transaction', 'we_cmd', 0, 3);
+$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', 0, 3);
 
-$nr = weRequest('int', 'we_cmd', 0, 2);
+$nr = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2);
 
 $GLOBALS['we_doc'] = new we_template();
 $GLOBALS['we_doc']->Table = TEMPLATES_TABLE;

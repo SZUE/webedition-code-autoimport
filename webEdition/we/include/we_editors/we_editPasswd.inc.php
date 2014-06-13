@@ -47,11 +47,11 @@ function getContent(){
 
 function getLoad(){
 	$DB_WE = $GLOBALS['DB_WE'];
-	$oldpasswd = weRequest('raw', 'oldpasswd', '');
-	$newpasswd = weRequest('raw', 'newpasswd', '');
-	$newpasswd2 = weRequest('raw', 'newpasswd2', '');
+	$oldpasswd = we_base_request::_(we_base_request::RAW, 'oldpasswd', '');
+	$newpasswd = we_base_request::_(we_base_request::RAW, 'newpasswd', '');
+	$newpasswd2 = we_base_request::_(we_base_request::RAW, 'newpasswd2', '');
 
-	if(weRequest('string', 'cmd') == 'ok'){
+	if(we_base_request::_(we_base_request::STRING, 'cmd') == 'ok'){
 		$userData = getHash('SELECT UseSalt,passwd FROM ' . USER_TABLE . ' WHERE username="' . $DB_WE->escape($_SESSION['user']['Username']) . '"');
 
 		if(!we_users_user::comparePasswords($userData['UseSalt'], $_SESSION['user']['Username'], $userData['passwd'], $oldpasswd)){

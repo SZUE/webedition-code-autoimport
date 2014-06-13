@@ -75,7 +75,7 @@ function startNormalMode(){
 function startEditIncludeMode(){
 	$we_cmds = "we_cmd[0]=edit_document&";
 
-	foreach(weRequest('string', 'we_cmd') as $i => $v){
+	foreach(we_base_request::_(we_base_request::STRING, 'we_cmd') as $i => $v){
 		$we_cmds .= "we_cmd[" . $i . "]=" . $v . "&";
 	}
 }
@@ -134,7 +134,7 @@ function startSEEMMode(){
 <?php
 //	Here begins the controller of the page
 //  Edit an included file with SEEM.
-if(weRequest('bool', 'SEEM_edit_include')){
+if(we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include')){
 	startEditIncludeMode();
 
 //  We are in SEEM-Mode

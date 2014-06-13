@@ -59,7 +59,7 @@ function we_tag_customer($attribs){
 		$we_doc = $GLOBALS['we_doc'];
 		$we_cid = intval($we_doc->getElement($name) ? $we_doc->getElement($name) : $we_cid);
 
-		$we_cid = $we_cid ? $we_cid : weRequest('int', 'we_cid', 0);
+		$we_cid = $we_cid ? $we_cid : we_base_request::_(we_base_request::INT, 'we_cid', 0);
 		$path = f('SELECT Path FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . $we_cid);
 		$textname = 'we_' . $we_doc->Name . '_txt[' . $name . '_path]';
 		$idname = 'we_' . $we_doc->Name . '_txt[' . $name . ']';
@@ -83,7 +83,7 @@ function we_tag_customer($attribs){
 		}
 	} else {
 
-		$we_cid = $we_cid ? $we_cid : weRequest('int', 'we_cid', 0);
+		$we_cid = $we_cid ? $we_cid : we_base_request::_(we_base_request::INT, 'we_cid', 0);
 	}
 
 	$GLOBALS['lv'] = new we_customer_customertag($we_cid, $condition, $hidedirindex);

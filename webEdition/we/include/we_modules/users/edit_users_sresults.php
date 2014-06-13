@@ -27,7 +27,7 @@ we_html_tools::protect($protect);
 
 echo we_html_tools::getHtmlTop(g_l('modules_users', "[search_result]"), $GLOBALS['WE_BACKENDCHARSET']) . STYLESHEET;
 
-$_kwd = weRequest('raw', "kwd", "");
+$_kwd = we_base_request::_(we_base_request::RAW, "kwd", "");
 $arr = explode(" ", strToLower($_kwd));
 $sWhere = "";
 $ranking = "0";

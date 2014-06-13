@@ -44,7 +44,7 @@ if(isset($_REQUEST['we_cmd'][15])){
 }
 
 we_html_tools::headerCtCharset('text/html', ($_REQUEST['we_cmd'][15] ? $_REQUEST['we_cmd'][15] : DEFAULT_CHARSET));
-$cmd4 = weRequest('cmd', 'we_cmd', '', 4);
+$cmd4 = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 4);
 
 if(!(isset($_REQUEST['we_cmd'][23]) && $_REQUEST['we_cmd'][23] == 1 && $cmd4 == 'frontend')){
 	we_html_tools::protect();
@@ -149,7 +149,7 @@ top.close();');
 			 */
 
 			$e = new we_wysiwyg_editor(
-				$_REQUEST['we_cmd'][1], $_REQUEST['we_cmd'][2], $_REQUEST['we_cmd'][3], $GLOBALS['cmd4'], $_REQUEST['we_cmd'][5], $_REQUEST['we_cmd'][13], '', $_REQUEST['we_cmd'][6], $_REQUEST['we_cmd'][7], $_REQUEST['we_cmd'][8], $_REQUEST['we_cmd'][11], $_REQUEST['we_cmd'][12], true, $_REQUEST['we_cmd'][14], $_REQUEST['we_cmd'][15], $_REQUEST['we_cmd'][16], $_REQUEST['we_cmd'][17], '', true, $_REQUEST['we_cmd'][23], 'top', true, weRequest('cmd', 'we_cmd', '', 18), weRequest('cmd', 'we_cmd', '', 19), weRequest('cmd', 'we_cmd', '', 20), weRequest('cmd', 'we_cmd', '', 21), true, $_REQUEST['we_cmd'][24]
+				$_REQUEST['we_cmd'][1], $_REQUEST['we_cmd'][2], $_REQUEST['we_cmd'][3], $GLOBALS['cmd4'], $_REQUEST['we_cmd'][5], $_REQUEST['we_cmd'][13], '', $_REQUEST['we_cmd'][6], $_REQUEST['we_cmd'][7], $_REQUEST['we_cmd'][8], $_REQUEST['we_cmd'][11], $_REQUEST['we_cmd'][12], true, $_REQUEST['we_cmd'][14], $_REQUEST['we_cmd'][15], $_REQUEST['we_cmd'][16], $_REQUEST['we_cmd'][17], '', true, $_REQUEST['we_cmd'][23], 'top', true, we_base_request::_(we_base_request::CMD, 'we_cmd', '', 18), we_base_request::_(we_base_request::CMD, 'we_cmd', '', 19), we_base_request::_(we_base_request::CMD, 'we_cmd', '', 20), we_base_request::_(we_base_request::CMD, 'we_cmd', '', 21), true, $_REQUEST['we_cmd'][24]
 			);
 
 

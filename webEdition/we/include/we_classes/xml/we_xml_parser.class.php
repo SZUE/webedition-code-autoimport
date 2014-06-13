@@ -2480,7 +2480,7 @@ class we_xml_parser{
 		}
 
 		// show error message
-		//echo "<pre><br><b>XML error</b>: ".$errtxt."</pre>";
+		//echo "<pre><br/><b>XML error</b>: ".$errtxt."</pre>";
 		// exit the script
 		exit;
 	}

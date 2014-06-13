@@ -224,7 +224,7 @@ class we_banner_view extends we_banner_base{
 				}
 			}
 		<?php
-		$mod = weRequest('string', 'mod', '');
+		$mod = we_base_request::_(we_base_request::STRING, 'mod', '');
 		$modData = we_base_moduleInfo::getModuleData($mod);
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 		?>
@@ -472,7 +472,7 @@ class we_banner_view extends we_banner_base{
 	}
 
 	function processCommands(){
-		switch(weRequest('string', "ncmd")){
+		switch(we_base_request::_(we_base_request::STRING, "ncmd")){
 			case "delete_stat":
 				$this->banner->views = 0;
 				$this->banner->clicks = 0;
@@ -505,7 +505,7 @@ class we_banner_view extends we_banner_base{
 					</html>';
 				break;
 			case "banner_edit":
-				if(($id = weRequest('int', "bid"))){
+				if(($id = we_base_request::_(we_base_request::INT, "bid"))){
 					$this->banner = new we_banner_banner($id);
 				}
 				if($this->banner->IsFolder){
@@ -914,7 +914,7 @@ class we_banner_view extends we_banner_base{
 		$table = we_html_tools::htmlDialogBorder3(650, 0, $rows, $headline, $class);
 		$delbut = we_html_button::create_button("delete", "javascript:top.content.setHot();we_cmd('delete_stat')");
 
-		return $content . we_html_tools::getPixel(2, 10) . $table . we_html_tools::getPixel(2, 10) . "<br>" . $delbut;
+		return $content . we_html_tools::getPixel(2, 10) . $table . we_html_tools::getPixel(2, 10) . "<br/>" . $delbut;
 	}
 
 	function formBanner($leftsize = 120){

@@ -138,7 +138,7 @@ class we_banner_frames extends weModuleFrames{
 						fr.write("<a name='_" + nf[ai].name + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">");
 						fr.write("&nbsp;<b>" + nf[ai].text + "</b>");
 						fr.write("</a>");
-						fr.write("&nbsp;&nbsp;<BR>\n");
+						fr.write("&nbsp;&nbsp;<br/>\n");
 						if (nf[ai].offen) {
 							if (ai == nf.laenge) {
 								newAst = newAst + "<IMG SRC=<?php print TREE_IMAGE_DIR; ?>leer.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>";
@@ -348,12 +348,12 @@ class we_banner_frames extends weModuleFrames{
 			return $this->getHTMLDocument(we_html_element::htmlBody(array('bgcolor' => '#F0EFF0'), ''));
 		}
 
-		$isFolder = weRequest('bool', "isFolder");
+		$isFolder = we_base_request::_(we_base_request::BOOL, "isFolder");
 
-		$page = weRequest('int', "page", 0);
+		$page = we_base_request::_(we_base_request::INT, "page", 0);
 
 		$headline1 = ($isFolder) ? g_l('modules_banner', '[group]') : g_l('modules_banner', '[banner]');
-		$text = weRequest('raw', "txt", ($isFolder ? g_l('modules_banner', '[newbannergroup]') : g_l('modules_banner', '[newbanner]')));
+		$text = we_base_request::_(we_base_request::RAW, "txt", ($isFolder ? g_l('modules_banner', '[newbannergroup]') : g_l('modules_banner', '[newbanner]')));
 
 		$we_tabs = new we_tabs();
 

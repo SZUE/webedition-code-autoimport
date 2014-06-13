@@ -26,7 +26,7 @@ class rpcResetFailedCustomerLoginsCmd extends rpcCmd{
 
 	function execute(){
 		$resp = new rpcResponse();
-		$custid = weRequest('int', 'custid', 0);
+		$custid = we_base_request::_(we_base_request::INT, 'custid', 0);
 		$db = $GLOBALS['DB_WE'];
 		$user = f('SELECT Username FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . $custid);
 		if($user){

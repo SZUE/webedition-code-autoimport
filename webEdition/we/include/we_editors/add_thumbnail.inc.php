@@ -26,7 +26,7 @@ we_html_tools::protect();
 
 $uniqid = md5(uniqid(__FILE__, true)); // #6590, changed from: uniqid(time())
 
-$we_transaction = weRequest('transaction', 'we_cmd', '', 1);
+$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', '', 1);
 
 // init document
 $we_dt = isset($_SESSION['weS']['we_data'][$we_transaction]) ? $_SESSION['weS']['we_data'][$we_transaction] : "";

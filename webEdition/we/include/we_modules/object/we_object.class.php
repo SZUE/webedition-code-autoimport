@@ -763,7 +763,7 @@ class we_object extends we_document{
 
 	function addMetaToClass($name, $pos){
 		// get from request
-		$amount = weRequest('int', "amount_insert_meta_at_class_" . $name . $pos, 1);
+		$amount = we_base_request::_(we_base_request::INT, "amount_insert_meta_at_class_" . $name . $pos, 1);
 
 		// set new amount
 		$this->elements[$name . "count"]["dat"] += $amount;
@@ -1108,7 +1108,7 @@ class we_object extends we_document{
 							), 5
 						) .
 						'</td></tr>';
-					//$content.="test<br>test<input type='text'>".$upbut."test<br>";
+					//$content.="test<br/>test<input type='text'>".$upbut."test<br/>";
 				}
 				$content .= '</table></td></tr>';
 				break;
@@ -1497,7 +1497,7 @@ class we_object extends we_document{
 
 		$content = '<table border="0" cellpadding="0" cellspacing="0">
 <tr><td><div style="width:506px;" class="multichooser">' . $content . '</div></td></tr>' .
-			($canChange ? '<tr><td align="right">' . we_html_tools::getPixel(2, 6) . '<br>' . we_html_button::create_button_table(array($delallbut, $addbut)) . '</td></tr>' : "") . '</table>';
+			($canChange ? '<tr><td align="right">' . we_html_tools::getPixel(2, 6) . '<br/>' . we_html_button::create_button_table(array($delallbut, $addbut)) . '</td></tr>' : "") . '</table>';
 
 		return we_html_tools::htmlFormElementTable($content, g_l('weClass', "[otherowners]"), "left", "defaultfont");
 	}

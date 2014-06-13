@@ -161,7 +161,7 @@ echo we_html_tools::getHtmlTop() .
 				}
 
 				fr.write("<a href=\"javascript:top.check('" + nf[ai].name + '&' + nf[ai].text + "')\"><img src=\"<?php echo TREE_IMAGE_DIR ?>" + checkpic + "\" \"width=\"16\" height=\"18\" align=\"absmiddle\" border=\"0\" alt=\"\" name=\"img_" + nf[ai].name + "\" /></a>");
-				fr.write("&nbsp;<a name='_" + nf[ai].name + "' href=\"javascript:top.check('" + nf[ai].name + '&' + nf[ai].text + "')\"><span id=\"" + nf[ai].name + '&' + nf[ai].text + "\" class=\"u_tree_entry\">" + (parseInt(nf[ai].published) ? " <b>" : "") + nf[ai].text + (parseInt(nf[ai].published) ? " </b>" : "") + "</span></A>&nbsp;&nbsp;<BR>\n");
+				fr.write("&nbsp;<a name='_" + nf[ai].name + "' href=\"javascript:top.check('" + nf[ai].name + '&' + nf[ai].text + "')\"><span id=\"" + nf[ai].name + '&' + nf[ai].text + "\" class=\"u_tree_entry\">" + (parseInt(nf[ai].published) ? " <b>" : "") + nf[ai].text + (parseInt(nf[ai].published) ? " </b>" : "") + "</span></A>&nbsp;&nbsp;<br/>\n");
 			} else {
 				var newAst = zweigEintrag;
 
@@ -180,7 +180,7 @@ echo we_html_tools::getHtmlTop() .
 				fr.write("<A name='_" + nf[ai].name + "' HREF=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">");
 				fr.write("&nbsp;<b>" + nf[ai].text + "</b>");
 				fr.write("</a>");
-				fr.write("&nbsp;&nbsp;<BR>\n");
+				fr.write("&nbsp;&nbsp;<br/>\n");
 				if (nf[ai].offen) {
 					if (ai == nf.laenge) {
 						newAst = newAst + "<IMG SRC=<?php print TREE_IMAGE_DIR; ?>leer.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>";

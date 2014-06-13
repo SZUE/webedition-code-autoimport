@@ -118,15 +118,15 @@ $buttons = we_html_button::position_yes_no_cancel(
 
 
 $db = $GLOBALS['DB_WE'];
-if(weRequest('bool', 'deleteAll')){
+if(we_base_request::_(we_base_request::BOOL, 'deleteAll')){
 	$db->query('TRUNCATE TABLE `' . ERROR_LOG_TABLE . '`');
 }
 
 $size = f('SELECT COUNT(1) FROM `' . ERROR_LOG_TABLE . '`');
-$id = weRequest('int', 'ID', 0);
-$step = weRequest('int', 'step', 0);
+$id = we_base_request::_(we_base_request::INT, 'ID', 0);
+$step = we_base_request::_(we_base_request::INT, 'step', 0);
 
-switch(weRequest('string', 'function', 'last')){
+switch(we_base_request::_(we_base_request::STRING, 'function', 'last')){
 	default:
 	case 'last':
 		$cur = getHash('SELECT * FROM `' . ERROR_LOG_TABLE . '` ORDER By ID DESC LIMIT 1');

@@ -27,16 +27,16 @@ class copyFolderFrag extends taskFragment{
 	var $copyToPath = "";
 
 	function init(){
-		$fromID = weRequest('int', 'we_cmd', 0, 1);
-		$toID = weRequest('int', 'we_cmd', 0, 2);
-		$table = weRequest('table', 'we_cmd', '', 4);
-		$OverwriteObjects = weRequest('string', 'OverwriteObjects', 'nothing');
-		$ObjectCopyNoFolders = weRequest('bool', 'DoNotCopyFolders');
-		$CreateTemplate = weRequest('bool', 'CreateTemplate');
-		$CreateDoctypes = weRequest('bool', 'CreateDoctypes');
+		$fromID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1);
+		$toID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2);
+		$table = we_base_request::_(we_base_request::TABLE, 'we_cmd', '', 4);
+		$OverwriteObjects = we_base_request::_(we_base_request::STRING, 'OverwriteObjects', 'nothing');
+		$ObjectCopyNoFolders = we_base_request::_(we_base_request::BOOL, 'DoNotCopyFolders');
+		$CreateTemplate = we_base_request::_(we_base_request::BOOL, 'CreateTemplate');
+		$CreateDoctypes = we_base_request::_(we_base_request::BOOL, 'CreateDoctypes');
 
-		$CreateTemplateInFolderID = weRequest('int', 'CreateTemplateInFolderID', 0);
-		$OverwriteCategories = weRequest('bool', 'OverwriteCategories', false);
+		$CreateTemplateInFolderID = we_base_request::_(we_base_request::INT, 'CreateTemplateInFolderID', 0);
+		$OverwriteCategories = we_base_request::_(we_base_request::BOOL, 'OverwriteCategories', false);
 		$newCategories = array();
 		foreach($_REQUEST as $name => $val){
 			if(!is_array($val)){
@@ -257,8 +257,8 @@ class copyFolderFrag extends taskFragment{
 
 					// check if we need to create a template
 					if($this->data['CreateTemplate']){
-						$CreateMasterTemplate = weRequest('bool', 'CreateMasterTemplate');
-						$CreateIncludedTemplate = weRequest('bool', 'CreateIncludedTemplate');
+						$CreateMasterTemplate = we_base_request::_(we_base_request::BOOL, 'CreateMasterTemplate');
+						$CreateIncludedTemplate = we_base_request::_(we_base_request::BOOL, 'CreateIncludedTemplate');
 						// check if a template was created from prior doc
 						if(!(isset($_SESSION['weS']['WE_CREATE_TEMPLATE']) && isset($_SESSION['weS']['WE_CREATE_TEMPLATE'][$GLOBALS['we_doc']->TemplateID]))){
 							$createdTemplate = $this->copyTemplate($GLOBALS['we_doc']->TemplateID, $this->data['CreateTemplateInFolderID'], $CreateMasterTemplate, $CreateIncludedTemplate);

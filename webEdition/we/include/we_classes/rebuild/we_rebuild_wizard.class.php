@@ -36,7 +36,7 @@ abstract class we_rebuild_wizard{
 	 * @return string
 	 */
 	static function getBody(){
-		$step = 'getStep' . weRequest('int', 'step', 0);
+		$step = 'getStep' . we_base_request::_(we_base_request::INT, 'step', 0);
 		return self::getPage(self::$step());
 	}
 
@@ -46,7 +46,7 @@ abstract class we_rebuild_wizard{
 	 * @return string
 	 */
 	static function getBusy(){
-		$dc = weRequest('int', 'dc', 0);
+		$dc = we_base_request::_(we_base_request::INT, 'dc', 0);
 
 		$WE_PB = new we_progressBar(0, 0, true);
 		$WE_PB->setStudLen($dc ? 490 : 200);
@@ -122,20 +122,20 @@ abstract class we_rebuild_wizard{
 	 */
 	static function getStep0(){
 		$dws = get_def_ws();
-		$btype = weRequest('string', 'btype', "rebuild_all");
-		$categories = weRequest('string', 'categories', '');
-		$doctypes = (isset($_REQUEST["doctypes"]) && is_array($_REQUEST["doctypes"])) ? makeCSVFromArray($_REQUEST["doctypes"], true) : "";
-		$folders = weRequest('string', 'folders', ($dws ? $dws : ''));
-		$maintable = weRequest('bool', 'maintable');
-		$tmptable = false; //weRequest('int', 'tmptable', 0);
-		$thumbsFolders = weRequest('string', 'thumbsFolders', ($dws ? $dws : ''));
-		$thumbs = (isset($_REQUEST["thumbs"]) && is_array($_REQUEST["thumbs"])) ? makeCSVFromArray($_REQUEST["thumbs"], true) : "";
-		$catAnd = weRequest('bool', 'catAnd');
-		$metaFolders = weRequest('string', 'metaFolders', ($dws ? $dws : ''));
-		$metaFields = weRequest('raw', "_field", array());
-		$onlyEmpty = weRequest('bool', 'onlyEmpty');
+		$btype = we_base_request::_(we_base_request::STRING, 'btype', "rebuild_all");
+		$categories = we_base_request::_(we_base_request::STRING, 'categories', '');
+		$doctypes = makeCSVFromArray(we_base_request::_(we_base_request::STRING, "doctypes", ''), true);
+		$folders = we_base_request::_(we_base_request::STRING, 'folders', ($dws ? $dws : ''));
+		$maintable = we_base_request::_(we_base_request::BOOL, 'maintable');
+		$tmptable = false; //we_base_request::_(we_base_request::INT, 'tmptable', 0);
+		$thumbsFolders = we_base_request::_(we_base_request::STRING, 'thumbsFolders', ($dws ? $dws : ''));
+		$thumbs = makeCSVFromArray(we_base_request::_(we_base_request::STRING, "thumbs", ''), true);
+		$catAnd = we_base_request::_(we_base_request::BOOL, 'catAnd');
+		$metaFolders = we_base_request::_(we_base_request::STRING, 'metaFolders', ($dws ? $dws : ''));
+		$metaFields = we_base_request::_(we_base_request::RAW, "_field", array());
+		$onlyEmpty = we_base_request::_(we_base_request::BOOL, 'onlyEmpty');
 
-		if(($type = weRequest('string', "type"))){
+		if(($type = we_base_request::_(we_base_request::STRING, "type"))){
 
 		} elseif(permissionhandler::hasPerm("REBUILD_ALL") || permissionhandler::hasPerm("REBUILD_FILTERD")){
 			$type = "rebuild_documents";
@@ -314,7 +314,7 @@ abstract class we_rebuild_wizard{
 	 * @return string
 	 */
 	static function getStep1(){
-		switch(weRequest('string', "type", "rebuild_documents")){
+		switch(we_base_request::_(we_base_request::STRING, "type", "rebuild_documents")){
 			case "rebuild_documents":
 				return we_rebuild_wizard::getRebuildDocuments();
 			case "rebuild_thumbnails":
@@ -330,21 +330,21 @@ abstract class we_rebuild_wizard{
 	 * @return string
 	 */
 	static function getStep2(){
-		$btype = weRequest('string', "btype", "rebuild_all");
-		$categories = weRequest('raw', "categories", "");
-		$doctypes = (isset($_REQUEST["doctypes"]) && is_array($_REQUEST["doctypes"])) ? makeCSVFromArray($_REQUEST["doctypes"], true) : "";
-		$folders = weRequest('raw', "folders", "");
-		$maintable = weRequest('raw', "maintable", 0);
-		$thumbsFolders = weRequest('raw', "thumbsFolders", "");
-		$thumbs = (isset($_REQUEST["thumbs"]) && is_array($_REQUEST["thumbs"])) ? makeCSVFromArray($_REQUEST["thumbs"], true) : "";
-		$catAnd = weRequest('bool', "catAnd");
-		$templateID = weRequest('int', "templateID", 0);
-		$metaFolders = weRequest('raw', "metaFolders", (($dws = get_def_ws()) ? $dws : ""));
-		$metaFields = weRequest('raw', "_field", array());
-		$onlyEmpty = weRequest('bool', 'onlyEmpty');
+		$btype = we_base_request::_(we_base_request::STRING, "btype", "rebuild_all");
+		$categories = we_base_request::_(we_base_request::RAW, "categories", "");
+		$doctypes = makeCSVFromArray(we_base_request::_(we_base_request::STRING, "doctypes", ''), true);
+		$folders = we_base_request::_(we_base_request::RAW, "folders", "");
+		$maintable = we_base_request::_(we_base_request::RAW, "maintable", 0);
+		$thumbsFolders = we_base_request::_(we_base_request::RAW, "thumbsFolders", "");
+		$thumbs = makeCSVFromArray(we_base_request::_(we_base_request::STRING, "thumbs", ''), true);
+		$catAnd = we_base_request::_(we_base_request::BOOL, "catAnd");
+		$templateID = we_base_request::_(we_base_request::INT, "templateID", 0);
+		$metaFolders = we_base_request::_(we_base_request::RAW, "metaFolders", (($dws = get_def_ws()) ? $dws : ""));
+		$metaFields = we_base_request::_(we_base_request::RAW, "_field", array());
+		$onlyEmpty = we_base_request::_(we_base_request::BOOL, 'onlyEmpty');
 
 		$taskname = md5(session_id() . "_rebuild");
-		$currentTask = weRequest('raw', "fr_" . $taskname . "_ct", 0);
+		$currentTask = we_base_request::_(we_base_request::RAW, "fr_" . $taskname . "_ct", 0);
 		$taskFilename = WE_FRAGMENT_PATH . $taskname;
 
 
@@ -358,7 +358,7 @@ abstract class we_rebuild_wizard{
 			}
 			set_button_state();';
 		if(!(file_exists($taskFilename) && $currentTask)){
-			switch(weRequest('string', "type", "rebuild_documents")){
+			switch(we_base_request::_(we_base_request::STRING, "type", "rebuild_documents")){
 				case 'rebuild_documents':
 					$data = we_rebuild_base::getDocuments($btype, $categories, $catAnd, $doctypes, $folders, $maintable, false, $templateID);
 					break;
@@ -422,7 +422,7 @@ abstract class we_rebuild_wizard{
 	static function formDoctypes($doctypes){
 
 		$GLOBALS['DB_WE']->query("SELECT ID,DocType FROM " . DOC_TYPES_TABLE . " Order By DocType");
-		$DTselect = g_l('global', "[doctypes]") . "<br>" . we_html_tools::getPixel(1, 3) . "<br>" . '<select class="defaultfont" name="doctypes[]" size="5" multiple style="width: 495px" onchange="document.we_form.btype[2].checked=true;">' . "\n";
+		$DTselect = g_l('global', "[doctypes]") . "<br/>" . we_html_tools::getPixel(1, 3) . "<br/>" . '<select class="defaultfont" name="doctypes[]" size="5" multiple style="width: 495px" onchange="document.we_form.btype[2].checked=true;">' . "\n";
 
 		$doctypesArray = makeArrayFromCSV($doctypes);
 		while($GLOBALS['DB_WE']->next_record()){
@@ -446,7 +446,7 @@ abstract class we_rebuild_wizard{
 
 		$dirs = new MultiDirChooser($width, $folders, "del_folder", we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", FILE_TABLE);
 
-		return ($thumnailpage ? g_l('rebuild', "[thumbdirs]") : g_l('rebuild', "[dirs]")) . "<br>" . we_html_tools::getPixel(1, 3) . "<br>" . $dirs->get();
+		return ($thumnailpage ? g_l('rebuild', "[thumbdirs]") : g_l('rebuild', "[dirs]")) . "<br/>" . we_html_tools::getPixel(1, 3) . "<br/>" . $dirs->get();
 	}
 
 	/**
@@ -457,7 +457,7 @@ abstract class we_rebuild_wizard{
 	 */
 	static function formThumbs($thumbs){
 		$GLOBALS['DB_WE']->query("SELECT ID,Name FROM " . THUMBNAILS_TABLE . " Order By Name");
-		$Thselect = g_l('rebuild', "[thumbnails]") . "<br>" . we_html_tools::getPixel(1, 3) . "<br>" .
+		$Thselect = g_l('rebuild', "[thumbnails]") . "<br/>" . we_html_tools::getPixel(1, 3) . "<br/>" .
 			'<select class="defaultfont" name="thumbs[]" size="10" multiple style="width: 520px">' . "\n";
 
 		$thumbsArray = makeArrayFromCSV($thumbs);
@@ -504,18 +504,18 @@ abstract class we_rebuild_wizard{
 	 * @return array
 	 */
 	static function getRebuildDocuments(){
-		$thumbsFolders = weRequest('raw', 'thumbsFolders', '');
-		$metaFolders = weRequest('raw', 'metaFolders', '');
-		$metaFields = weRequest('raw', '_field', '');
+		$thumbsFolders = we_base_request::_(we_base_request::RAW, 'thumbsFolders', '');
+		$metaFolders = we_base_request::_(we_base_request::RAW, 'metaFolders', '');
+		$metaFields = we_base_request::_(we_base_request::RAW, '_field', '');
 		$thumbs = (isset($_REQUEST['thumbs']) && is_array($_REQUEST['thumbs'])) ? makeCSVFromArray($_REQUEST['thumbs'], true) : '';
-		$type = weRequest('raw', 'type', 'rebuild_documents');
-		$btype = weRequest('raw', 'btype', 'rebuild_all');
-		$categories = weRequest('raw', 'categories', '');
+		$type = we_base_request::_(we_base_request::RAW, 'type', 'rebuild_documents');
+		$btype = we_base_request::_(we_base_request::RAW, 'btype', 'rebuild_all');
+		$categories = we_base_request::_(we_base_request::RAW, 'categories', '');
 		$doctypes = (isset($_REQUEST['doctypes']) && is_array($_REQUEST['doctypes'])) ? makeCSVFromArray($_REQUEST['doctypes'], true) : '';
-		$folders = weRequest('raw', 'folders', '');
-		$maintable = weRequest('bool', 'maintable');
-		$catAnd = weRequest('bool', 'catAnd');
-		$onlyEmpty = weRequest('bool', 'onlyEmpty', 0);
+		$folders = we_base_request::_(we_base_request::RAW, 'folders', '');
+		$maintable = we_base_request::_(we_base_request::BOOL, 'maintable');
+		$catAnd = we_base_request::_(we_base_request::BOOL, 'catAnd');
+		$onlyEmpty = we_base_request::_(we_base_request::BOOL, 'onlyEmpty', 0);
 
 
 		$ws = get_ws(FILE_TABLE, true);
@@ -586,16 +586,16 @@ abstract class we_rebuild_wizard{
 	 */
 	static function getRebuildThumbnails(){
 
-		$thumbsFolders = weRequest('raw', 'thumbsFolders', '');
-		$metaFolders = weRequest('raw', 'metaFolders', '');
-		$metaFields = weRequest('raw', '_field', array());
+		$thumbsFolders = we_base_request::_(we_base_request::RAW, 'thumbsFolders', '');
+		$metaFolders = we_base_request::_(we_base_request::RAW, 'metaFolders', '');
+		$metaFields = we_base_request::_(we_base_request::RAW, '_field', array());
 		$thumbs = (isset($_REQUEST['thumbs']) && is_array($_REQUEST['thumbs'])) ? makeCSVFromArray($_REQUEST['thumbs'], true) : '';
-		$type = weRequest('raw', 'type', 'rebuild_documents');
-		$categories = weRequest('raw', 'categories', '');
+		$type = we_base_request::_(we_base_request::RAW, 'type', 'rebuild_documents');
+		$categories = we_base_request::_(we_base_request::RAW, 'categories', '');
 		$doctypes = (isset($_REQUEST['doctypes']) && is_array($_REQUEST['doctypes'])) ? makeCSVFromArray($_REQUEST['doctypes'], true) : '';
-		$folders = weRequest('raw', 'folders', '');
-		$catAnd = weRequest('raw', 'catAnd', 0);
-		$onlyEmpty = weRequest('raw', 'onlyEmpty', 0);
+		$folders = we_base_request::_(we_base_request::RAW, 'folders', '');
+		$catAnd = we_base_request::_(we_base_request::RAW, 'catAnd', 0);
+		$onlyEmpty = we_base_request::_(we_base_request::RAW, 'onlyEmpty', 0);
 
 		$ws = get_ws(FILE_TABLE, true);
 
@@ -619,7 +619,7 @@ abstract class we_rebuild_wizard{
 		$parts = array();
 
 		$content = we_rebuild_wizard::formThumbs($thumbs) .
-			'<br>' . we_html_tools::getPixel(2, 15) . '<br/>' .
+			'<br/>' . we_html_tools::getPixel(2, 15) . '<br/>' .
 			we_rebuild_wizard::formFolders($thumbsFolders, true, 520);
 
 		$parts[] = array(
@@ -655,16 +655,16 @@ abstract class we_rebuild_wizard{
 
 	static function getRebuildMetadata(){
 
-		$thumbsFolders = weRequest('raw', 'thumbsFolders', '');
-		$metaFolders = weRequest('raw', 'metaFolders', '');
-		$onlyEmpty = weRequest('bool', 'onlyEmpty');
-		$metaFields = weRequest('raw', '_field', array());
+		$thumbsFolders = we_base_request::_(we_base_request::RAW, 'thumbsFolders', '');
+		$metaFolders = we_base_request::_(we_base_request::RAW, 'metaFolders', '');
+		$onlyEmpty = we_base_request::_(we_base_request::BOOL, 'onlyEmpty');
+		$metaFields = we_base_request::_(we_base_request::RAW, '_field', array());
 		$thumbs = (isset($_REQUEST['thumbs']) && is_array($_REQUEST['thumbs'])) ? makeCSVFromArray($_REQUEST['thumbs'], true) : '';
-		$type = weRequest('raw', 'type', 'rebuild_documents');
-		$categories = weRequest('raw', 'categories', '');
+		$type = we_base_request::_(we_base_request::RAW, 'type', 'rebuild_documents');
+		$categories = we_base_request::_(we_base_request::RAW, 'categories', '');
 		$doctypes = (isset($_REQUEST['doctypes']) && is_array($_REQUEST['doctypes'])) ? makeCSVFromArray($_REQUEST['doctypes'], true) : '';
-		$folders = weRequest('raw', 'folders', '');
-		$catAnd = weRequest('bool', 'catAnd');
+		$folders = we_base_request::_(we_base_request::RAW, 'folders', '');
+		$catAnd = we_base_request::_(we_base_request::BOOL, 'catAnd');
 
 		$ws = get_ws(FILE_TABLE, true);
 

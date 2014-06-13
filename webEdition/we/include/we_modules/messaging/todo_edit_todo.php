@@ -29,8 +29,8 @@ $messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$_REQUEST['w
 $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 $messaging->init($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 
-$mode = weRequest('string', "mode", '');
-if(!weRequest('transaction', 'we_transaction')){
+$mode = we_base_request::_(we_base_request::STRING, "mode", '');
+if(!we_base_request::_(we_base_request::TRANSACTION, 'we_transaction')){
 	exit();
 }
 

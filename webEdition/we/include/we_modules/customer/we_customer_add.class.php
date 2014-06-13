@@ -285,7 +285,7 @@ function we_cmd(){
 	}
 
 	public static function getHTMLSearch(&$pob, &$search, &$select){
-		$count = weRequest('int', 'count');
+		$count = we_base_request::_(we_base_request::INT, 'count');
 
 		$logic = array('AND' => 'AND', 'OR' => 'OR');
 

@@ -28,7 +28,7 @@ echo we_html_tools::getHtmlTop(g_l('thumbnails', '[thumbnails]'));
 $reloadUrl = getServerUrl(true) . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=editThumbs';
 
 // Check if we need to create a new thumbnail
-if(($name = weRequest('string', 'newthumbnail'))){
+if(($name = we_base_request::_(we_base_request::STRING, 'newthumbnail'))){
 	if(permissionhandler::hasPerm('ADMINISTRATOR')){
 		$DB_WE->query('INSERT INTO ' . THUMBNAILS_TABLE . ' SET Name="' . $DB_WE->escape($name) . '"');
 		$_REQUEST['id'] = $DB_WE->getInsertId();
@@ -36,7 +36,7 @@ if(($name = weRequest('string', 'newthumbnail'))){
 }
 
 // Check if we need to delete a thumbnail
-if(($delId = weRequest('int', 'deletethumbnail'))){
+if(($delId = we_base_request::_(we_base_request::INT, 'deletethumbnail'))){
 	if(permissionhandler::hasPerm('ADMINISTRATOR')){
 		// Delete thumbnails in filesystem
 		we_thumbnail::deleteByThumbID($delId);
@@ -47,7 +47,7 @@ if(($delId = weRequest('int', 'deletethumbnail'))){
 }
 
 // Check which thumbnail to work with
-if(!weRequest('int', 'id')){
+if(!we_base_request::_(we_base_request::INT, 'id')){
 	$tmpid = f('SELECT ID FROM ' . THUMBNAILS_TABLE . ' ORDER BY Name LIMIT 1');
 
 	$_REQUEST['id'] = $tmpid ? $tmpid : -1;
@@ -125,17 +125,17 @@ function save_all_values(){
 	if(permissionhandler::hasPerm('ADMINISTRATOR')){
 		$setArray = array('Date' => sql_function('UNIX_TIMESTAMP()'));
 		// Update settings
-		remember_value($setArray, weRequest('raw', 'thumbnail_name', null), 'Name');
-		remember_value($setArray, weRequest('int', 'thumbnail_width', null), 'Width');
-		remember_value($setArray, weRequest('int', 'thumbnail_height', null), 'Height');
-		remember_value($setArray, weRequest('raw', 'thumbnail_quality', null), 'Quality');
-		remember_value($setArray, weRequest('raw', 'Ratio', null), 'Ratio');
-		remember_value($setArray, weRequest('raw', 'Maxsize', null), 'Maxsize');
-		remember_value($setArray, weRequest('raw', 'Interlace', null), 'Interlace');
-		remember_value($setArray, weRequest('raw', 'Fitinside', null), 'Fitinside');
-		remember_value($setArray, weRequest('raw', 'Format', null), 'Format');
+		remember_value($setArray, we_base_request::_(we_base_request::RAW, 'thumbnail_name', null), 'Name');
+		remember_value($setArray, we_base_request::_(we_base_request::INT, 'thumbnail_width', null), 'Width');
+		remember_value($setArray, we_base_request::_(we_base_request::INT, 'thumbnail_height', null), 'Height');
+		remember_value($setArray, we_base_request::_(we_base_request::RAW, 'thumbnail_quality', null), 'Quality');
+		remember_value($setArray, we_base_request::_(we_base_request::RAW, 'Ratio', null), 'Ratio');
+		remember_value($setArray, we_base_request::_(we_base_request::RAW, 'Maxsize', null), 'Maxsize');
+		remember_value($setArray, we_base_request::_(we_base_request::RAW, 'Interlace', null), 'Interlace');
+		remember_value($setArray, we_base_request::_(we_base_request::RAW, 'Fitinside', null), 'Fitinside');
+		remember_value($setArray, we_base_request::_(we_base_request::RAW, 'Format', null), 'Format');
 
-		$DB_WE->query('UPDATE ' . THUMBNAILS_TABLE . ' SET ' . we_database_base::arraySetter($setArray) . ' WHERE ID=' . weRequest('int', 'edited_id', 0));
+		$DB_WE->query('UPDATE ' . THUMBNAILS_TABLE . ' SET ' . we_database_base::arraySetter($setArray) . ' WHERE ID=' . we_base_request::_(we_base_request::INT, 'edited_id', 0));
 	}
 }
 
@@ -214,10 +214,10 @@ function build_dialog($selected_setting = 'ui'){
 
 					function delete_thumbnail() {" .
 				((permissionhandler::hasPerm('ADMINISTRATOR')) ?
-					"var deletion = confirm('" . sprintf(g_l('thumbnails', '[delete_prompt]'), f('SELECT Name FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . weRequest('int', 'id', 0))) . "');
+					"var deletion = confirm('" . sprintf(g_l('thumbnails', '[delete_prompt]'), f('SELECT Name FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . we_base_request::_(we_base_request::INT, 'id', 0))) . "');
 
 							if (deletion == true) {
-								self.location = '" . $GLOBALS['reloadUrl'] . "&deletethumbnail=" . weRequest('int', 'id') . "';
+								self.location = '" . $GLOBALS['reloadUrl'] . "&deletethumbnail=" . we_base_request::_(we_base_request::INT, 'id') . "';
 							}" :
 					"") . "
 					}
@@ -252,7 +252,7 @@ function build_dialog($selected_setting = 'ui'){
 			$DB_WE->query('SELECT ID, Name FROM ' . THUMBNAILS_TABLE . ' ORDER BY Name');
 
 			$_thumbnail_counter_firsttime = true;
-			$id = weRequest('int', 'id', -1);
+			$id = we_base_request::_(we_base_request::INT, 'id', -1);
 			while($DB_WE->next_record()){
 				$_enabled_buttons = true;
 				$_thumbnail_counter = $DB_WE->f('ID');
@@ -405,7 +405,7 @@ function we_save() {
 
 function getMainDialog(){
 	// Check if we need to save settings
-	if(weRequest('bool', 'save_thumbnails')){
+	if(we_base_request::_(we_base_request::BOOL, 'save_thumbnails')){
 
 		if(isset($_REQUEST['thumbnail_name']) && (strpos($_REQUEST['thumbnail_name'], "'") !== false || strpos($_REQUEST['thumbnail_name'], ',') !== false)){
 			$save_javascript = we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[thumbnail_hochkomma]'), we_message_reporting::WE_MESSAGE_ERROR) .

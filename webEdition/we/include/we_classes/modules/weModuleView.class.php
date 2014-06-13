@@ -93,7 +93,7 @@ class weModuleView{
 	}
 
 	function processCommands(){
-		switch(weRequest('string', 'cmd', '')){
+		switch(we_base_request::_(we_base_request::STRING, 'cmd', '')){
 			case 'new_raw':
 				$this->raw = new weShop();
 				echo we_html_element::jsElement(
@@ -102,7 +102,7 @@ class weModuleView{
 				);
 				break;
 			case 'edit_raw':
-				$this->raw = new weShop(weRequest('int', 'cmdid', 0));
+				$this->raw = new weShop(we_base_request::_(we_base_request::INT, 'cmdid', 0));
 				echo we_html_element::jsElement(
 					$this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->raw->Text) . '";' .
 					$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";'
@@ -175,7 +175,7 @@ attribs["tooltip"]="";' .
 			}
 		}
 
-		$this->page = weRequest('int', 'page', $this->page);
+		$this->page = we_base_request::_(we_base_request::INT, 'page', $this->page);
 	}
 
 	function new_array_splice(&$a, $start, $len = 1){

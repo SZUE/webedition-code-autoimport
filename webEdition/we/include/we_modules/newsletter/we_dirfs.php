@@ -24,14 +24,14 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-$id = weRequest('int', 'we_cmd', 0, 1);
+$id = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1);
 
-$JSIDName = stripslashes(weRequest('cmd', 'we_cmd', '', 2));
-$JSTextName = stripslashes(weRequest('cmd', 'we_cmd', '', 3));
-$JSCommand = weRequest('cmd', 'we_cmd', '', 4);
+$JSIDName = stripslashes(we_base_request::_(we_base_request::CMD, 'we_cmd', '', 2));
+$JSTextName = stripslashes(we_base_request::_(we_base_request::CMD, 'we_cmd', '', 3));
+$JSCommand = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 4);
 $sessionID = 0;
-$rootDirID = weRequest('int', 'we_cmd', 0, 6);
-$filter = weRequest('raw', 'we_cmd', 7, '');
-$multiple = weRequest('bool', 'we_cmd', false, 8);
+$rootDirID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 6);
+$filter = we_base_request::_(we_base_request::RAW, 'we_cmd', 7, '');
+$multiple = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 8);
 
 require_once(WE_MODULES_PATH . 'newsletter/we_newsletterDirSelector.php');
