@@ -476,12 +476,7 @@ class we_search_view extends we_tool_view{
 
 		$objectFilesTable = defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : "";
 
-		$tab = 1;
-		if(isset($_REQUEST['tab'])){
-			$tab = $_REQUEST['tab'];
-		} elseif(isset($_REQUEST['tabnr'])){
-			$tab = $_REQUEST['tabnr'];
-		}
+		$tab = weRequest('int', 'tab', weRequest('int', 'tabnr', 1));
 
 		$showHideSelects = '';
 		$showSelects = '';
@@ -1482,9 +1477,10 @@ class we_search_view extends we_tool_view{
 	}
 
 	function getSortImage($for, $whichSearch){
-		if(isset($_REQUEST['Order' . $whichSearch])){
-			if(strpos($_REQUEST['Order' . $whichSearch], $for) === 0){
-				if(strpos($_REQUEST['Order' . $whichSearch], 'DESC')){
+		$ord = weRequest('string', 'Order' . $whichSearch);
+		if($ord){
+			if(strpos($ord, $for) === 0){
+				if(strpos($ord, 'DESC')){
 					return '<img border="0" width="11" height="8" src="' . IMAGE_DIR . 'arrow_sort_desc.gif" />';
 				}
 				return '<img border="0" width="11" height="8" src="' . IMAGE_DIR . 'arrow_sort_asc.gif" />';
@@ -1620,7 +1616,7 @@ class we_search_view extends we_tool_view{
 			$this->Model->search_tables_advSearch[OBJECT_TABLE] = 0;
 		}
 
-		if(isset($_REQUEST['cmd']) && $_REQUEST['cmd'] == "tool_weSearch_new_forObjects"){
+		if(weRequest('string', 'cmd') == "tool_weSearch_new_forObjects"){
 			$this->Model->search_tables_advSearch[FILE_TABLE] = 0;
 			$this->Model->search_tables_advSearch[VERSIONS_TABLE] = 0;
 		}
@@ -1712,7 +1708,7 @@ class we_search_view extends we_tool_view{
 					$this->Model->searchFieldsDocSearch[] = "Content";
 				}
 
-				if((isset($_SESSION['weS']['weSearch']["keyword"]) && $_SESSION['weS']['weSearch']["keyword"] != "") && (isset($_REQUEST["tab"]) && $_REQUEST["tab"] == 1)){
+				if((isset($_SESSION['weS']['weSearch']["keyword"]) && $_SESSION['weS']['weSearch']["keyword"] != "") && weRequest('int', "tab") == 1){
 					$this->Model->searchDocSearch[0] = ($_SESSION['weS']['weSearch']["keyword"]);
 					if($GLOBALS['WE_BACKENDCHARSET'] == "UTF-8"){
 						$this->Model->searchDocSearch[0] = utf8_encode($this->Model->searchDocSearch[0]);
@@ -1750,7 +1746,7 @@ class we_search_view extends we_tool_view{
 					$this->Model->searchFieldsTmplSearch[] = "Content";
 				}
 
-				if((isset($_SESSION['weS']['weSearch']["keyword"]) && $_SESSION['weS']['weSearch']["keyword"] != "") && (isset($_REQUEST["tab"]) && $_REQUEST["tab"] == 2)){
+				if((isset($_SESSION['weS']['weSearch']["keyword"]) && $_SESSION['weS']['weSearch']["keyword"] != "") && weRequest('int', "tab") == 2){
 					$this->Model->searchTmplSearch[0] = $_SESSION['weS']['weSearch']["keyword"];
 					if($GLOBALS['WE_BACKENDCHARSET'] == "UTF-8"){
 						$this->Model->searchTmplSearch[0] = utf8_encode($this->Model->searchTmplSearch[0]);
@@ -1813,7 +1809,7 @@ class we_search_view extends we_tool_view{
 			switch($whichSearch){
 				case 'DocSearch':
 					$_tables[0] = FILE_TABLE;
-					$folderID = $_REQUEST['we_cmd']['folderIDDoc'];
+					$folderID = weRequest('int', 'we_cmd', 0, 'folderIDDoc');
 					foreach($_REQUEST['we_cmd'] as $k => $v){
 						if(is_string($v) && $v == 1){
 							switch($k){
@@ -1832,7 +1828,7 @@ class we_search_view extends we_tool_view{
 					break;
 				case 'TmplSearch':
 					$_tables[0] = TEMPLATES_TABLE;
-					$folderID = $_REQUEST['we_cmd']['folderIDTmpl'];
+					$folderID = weRequest('int', 'we_cmd', 0, 'folderIDTmpl');
 					foreach($_REQUEST['we_cmd'] as $k => $v){
 						if(is_string($v) && $v == 1){
 							switch($k){
@@ -1868,15 +1864,9 @@ class we_search_view extends we_tool_view{
 					break;
 			}
 
-			if(isset($_REQUEST['we_cmd']['searchFields' . $whichSearch])){
-				$searchFields = $_REQUEST['we_cmd']['searchFields' . $whichSearch];
-			}
-			if(isset($_REQUEST['we_cmd']['location' . $whichSearch])){
-				$location = $_REQUEST['we_cmd']['location' . $whichSearch];
-			}
-			if(isset($_REQUEST['we_cmd']['search' . $whichSearch])){
-				$searchText = $_REQUEST['we_cmd']['search' . $whichSearch];
-			}
+			$searchFields = weRequest('string', 'we_cmd', '', 'searchFields' . $whichSearch);
+			$location = weRequest('string', 'we_cmd', '', 'location' . $whichSearch);
+			$searchText = weRequest('string', 'we_cmd', '', 'search' . $whichSearch);
 
 			$_order = $_REQUEST['we_cmd']['Order' . $whichSearch];
 			$_view = $_REQUEST['we_cmd']['setView' . $whichSearch];
@@ -1925,10 +1915,10 @@ class we_search_view extends we_tool_view{
 					if(isset($_REQUEST["searchstartAdvSearch"])){
 						$obj->searchstartAdvSearch = $_REQUEST["searchstartAdvSearch"];
 					}
-					if(empty($obj->searchFieldsAdvSearch)){
+					if(!($obj->searchFieldsAdvSearch)){
 						$obj->searchFieldsAdvSearch[0] = "ID";
 					}
-					if(empty($obj->locationAdvSearch)){
+					if(!($obj->locationAdvSearch)){
 						$obj->locationAdvSearch[0] = "CONTAIN";
 					}
 					$searchFields = $obj->searchFieldsAdvSearch;
@@ -1983,8 +1973,8 @@ class we_search_view extends we_tool_view{
 			$_SESSION['weS']['weSearch']['foundItems' . $whichSearch] = count($_result);
 		} elseif(
 			($obj->IsFolder != 1 && ( ($whichSearch == 'DocSearch' && $tab == 1) || ($whichSearch == 'TmplSearch' && $tab == 2) || ($whichSearch == 'AdvSearch' && $tab == 3)) ) ||
-			(isset($_REQUEST['cmdid']) && $_REQUEST['cmdid'] != "") ||
-			(isset($_REQUEST['view']) && ($_REQUEST['view'] == "GetSearchResult" || $_REQUEST['view'] == "GetMouseOverDivs"))
+			(isset($_REQUEST['cmdid']) && $_REQUEST['cmdid']) ||
+			(($view = weRequest('string', 'view')) == "GetSearchResult" || $view == "GetMouseOverDivs")
 		){
 
 			if(!we_search_search::checkRightTempTable() && !we_search_search::checkRightDropTable()){

@@ -222,7 +222,7 @@ class we_export_frames extends weModuleFrames{
 	function getHTMLProperties($preselect = ""){// TODO: move to weExportView
 		$this->SelectionTree->init($this->frameset, $this->editorBodyFrame, $this->editorBodyFrame, $this->cmdFrame);
 
-		$tabNr = weRequest('raw', "tabnr", 1);
+		$tabNr = weRequest('int', "tabnr", 1);
 
 		return we_html_element::jsElement('
 var log_counter=0;

@@ -54,7 +54,11 @@ echo we_html_tools::getHtmlTop() .
  we_html_element::jsScript(JS_DIR . 'windows.js');
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
-echo STYLESHEET;
+echo STYLESHEET.we_html_element::cssElement('
+	html,body,form,#previewDiv,iframe{
+	height:100%;
+	}
+	');
 ?>
 </head>
 
@@ -73,7 +77,7 @@ echo STYLESHEET;
 		}
 
 		if($previewAvailable && $we_doc->ID){
-			echo we_html_element::htmlIFrame('preview', $we_doc->Path, '');
+			echo we_html_element::htmlIFrame('preview', $we_doc->Path);
 		} else {
 			$parts = array(
 				array("headline" => g_l('weClass', "[preview]"), "html" => we_html_tools::htmlAlertAttentionBox(g_l('weClass', "[no_preview_available]"), we_html_tools::TYPE_ALERT), "space" => 120)

@@ -49,16 +49,9 @@ class weVersionsSearch{
 	 * @abstract initialize data from $_REQUEST
 	 */
 	function initData(){
-
-		if(isset($_REQUEST["mode"])){
-			$this->mode = ($_REQUEST["mode"]);
-		}
-		if(isset($_REQUEST["order"])){
-			$this->order = ($_REQUEST["order"]);
-		}
-		if(isset($_REQUEST["anzahl"])){
-			$this->anzahl = ($_REQUEST["anzahl"]);
-		}
+		$this->mode = weRequest('int', "mode", $this->mode);
+		$this->order = weRequest('string', "order", $this->order);
+		$this->anzahl = weRequest('int', "anzahl", $this->anzahl);
 		if(isset($_REQUEST["searchFields"])){
 			$this->searchFields = ($_REQUEST["searchFields"]);
 			$this->height = count($this->searchFields);
@@ -81,7 +74,7 @@ class weVersionsSearch{
 		$where = "";
 		$modConst = array();
 
-		if(($this->mode != 0) || (isset($_REQUEST['we_cmd']["mode"]) && $_REQUEST['we_cmd']["mode"] != 0)){
+		if(($this->mode) || weRequest('int', 'we_cmd', 0, "mode")){
 
 			foreach($_REQUEST['we_cmd'] as $k => $v){
 				if(stristr($k, 'searchFields[')){
@@ -118,7 +111,7 @@ class weVersionsSearch{
 									$timestampStart = mktime(0, 0, 0, $month, $day, $year);
 									$timestampEnd = mktime(23, 59, 59, $month, $day, $year);
 
-									switch(weRequest('raw', 'location','',$k)){
+									switch(weRequest('raw', 'location', '', $k)){
 										case "IS":
 											$where .= " AND " . $v . " BETWEEN " . intval($timestampStart) . " AND " . intval($timestampEnd);
 											break;
