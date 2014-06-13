@@ -77,8 +77,8 @@ class we_dialog_base{
 		$this->what = we_base_request::_(we_base_request::STRING, 'we_what', '');
 		$this->we_cmd = we_base_request::_(we_base_request::RAW, 'we_cmd', array());
 
-		if(isset($_REQUEST['we_dialog_args']) && is_array($_REQUEST['we_dialog_args'])){
-			$this->args = $_REQUEST['we_dialog_args'];
+		if(($args = we_base_request::_(we_base_request::STRING, 'we_dialog_args'))){//assume no tags are allowed
+			$this->args = $args;
 			foreach($this->args as $key => $value){
 				$this->args[$key] = urldecode($value);
 			}
@@ -199,8 +199,8 @@ class we_dialog_base{
 
 	function getFormHTML(){
 		$hiddens = "";
-		if(isset($_REQUEST['we_cmd']) && is_array($_REQUEST['we_cmd'])){
-			foreach($_REQUEST['we_cmd'] as $k => $v){
+		if(($cmd = we_base_request::_(we_base_request::STRING, 'we_cmd'))){
+			foreach($cmd as $k => $v){
 				//TODO: why should we loop this commands through?
 				$hiddens .= "<input type=\"hidden\" name=\"we_cmd[$k]\" value=\"" . rawurlencode($v) . "\" />";
 			}

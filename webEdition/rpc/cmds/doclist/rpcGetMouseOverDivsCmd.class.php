@@ -42,7 +42,7 @@ class rpcGetMouseOverDivsCmd extends rpcCmd{
 		$_document = new $doc;
 		$_document->we_initSessDat($we_dt);
 
-		$_REQUEST['we_cmd']['obj'] = $_document;
+		$GLOBALS['we_cmd_obj'] = $_document;
 
 		if($setView == 1){
 			$content = doclistView::searchProperties($whichsearch);

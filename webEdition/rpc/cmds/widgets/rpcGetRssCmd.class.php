@@ -148,7 +148,7 @@ class rpcGetRssCmd extends rpcCmd{
 		}
 		$resp->setData('titel', $_title);
 		$resp->setData('widgetType', "rss");
-		$resp->setData('widgetId', $_REQUEST['we_cmd'][5]);
+		$resp->setData('widgetId', weRequest('int', 'we_cmd', 0, 5));
 
 		return $resp;
 	}

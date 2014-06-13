@@ -49,23 +49,12 @@ class rpcCmd{
 	var $Parameters = array();
 
 	function rpcCmd($shell){
-
-		/* if((get_magic_quotes_gpc() == 1)){//FIXME: remove after End of php 5.3
-		  if($_REQUEST){
-		  rpcCmd::stripSlashes($_REQUEST);
-		  }
-		  } */
-
 		$this->checkSession();
-
 		$this->checkParameters();
 
-		if(!empty($this->Permissions)){
-
-			foreach($this->Permissions as $perm){
-				if(!permissionhandler::hasPerm($perm)){
-					$this->Status = self::STATUS_NO_PERMISSION;
-				}
+		foreach($this->Permissions as $perm){
+			if(!permissionhandler::hasPerm($perm)){
+				$this->Status = self::STATUS_NO_PERMISSION;
 			}
 		}
 

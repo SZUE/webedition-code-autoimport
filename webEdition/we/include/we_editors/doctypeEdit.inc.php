@@ -70,8 +70,8 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 		}
 		break;
 	case "newDocType":
-		if($_REQUEST['we_cmd'][1]){
-			$we_doc->DocType = urldecode($_REQUEST['we_cmd'][1]);
+		if(($dt = we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 1))){
+			$we_doc->DocType = urldecode($dt);
 			$we_doc->we_save();
 		}
 		break;
@@ -115,7 +115,7 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 	case 'add_dt_template':
 		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$we_transaction]);
 		$foo = makeArrayFromCSV($we_doc->Templates);
-		$ids = makeArrayFromCSV($_REQUEST['we_cmd'][1]);
+		$ids = makeArrayFromCSV(we_base_request::_(we_base_request::INTLIST, 'we_cmd', '', 1));
 		foreach($ids as $id){
 			if(!in_array($id, $foo)){
 				$foo[] = $id;
@@ -126,14 +126,15 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 	case 'delete_dt_template':
 		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$we_transaction]);
 		$foo = makeArrayFromCSV($we_doc->Templates);
-		if($_REQUEST['we_cmd'][1] && (in_array($_REQUEST['we_cmd'][1], $foo))){
-			$pos = array_search($_REQUEST['we_cmd'][1], $foo);
+		$cmd1 = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1);
+		if($cmd1 && (in_array($cmd1, $foo))){
+			$pos = array_search($cmd1, $foo);
 			if($pos !== false || $pos == '0'){
 				array_splice($foo, $pos, 1);
 			}
 		}
-		if($we_doc->TemplateID == $_REQUEST['we_cmd'][1]){
-			$we_doc->TemplateID = (!empty($foo) ? $foo[0] : 0);
+		if($we_doc->TemplateID == $cmd1){
+			$we_doc->TemplateID = ($foo ? $foo[0] : 0);
 		}
 		$we_doc->Templates = makeCSVFromArray($foo);
 		break;
@@ -167,7 +168,7 @@ echo weSuggest::getYuiFiles() .
 <script type="text/javascript"><!--
 <?php
 if($we_show_response){
-	print $we_JavaScript . ';';
+	echo $we_JavaScript . ';';
 	if($we_responseText){
 		?>
 		opener.top.toggleBusy(0);
@@ -182,7 +183,7 @@ switch($wecmd0){
 		} else {
 			?>
 			if (confirm("<?php printf(g_l('weClass', "[doctype_delete_prompt]"), $we_doc->DocType); ?>")) {
-				we_cmd("deleteDocTypeok", "<?php print $_REQUEST['we_cmd'][1]; ?>");
+				we_cmd("deleteDocTypeok", "<?php echo we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1); ?>");
 			}
 			<?php
 		}

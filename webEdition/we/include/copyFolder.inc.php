@@ -128,9 +128,9 @@ if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 3)){
 		we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button) .
 		'</td></tr></table>';
 
-	$hidden = we_html_element::htmlHidden(array("name" => "we_cmd[0]", "value" => $_REQUEST['we_cmd'][0])) .
+	$hidden = we_html_element::htmlHidden(array("name" => "we_cmd[0]", "value" => we_base_request::_(we_base_request::RAW,'we_cmd','',0))) .
 		we_html_element::htmlHidden(array("name" => "we_cmd[1]", "value" => $cmd1)) .
-		we_html_element::htmlHidden(array("name" => "we_cmd[2]", "value" => $_REQUEST['we_cmd'][2])) .
+		we_html_element::htmlHidden(array("name" => "we_cmd[2]", "value" => we_base_request::_(we_base_request::RAW,'we_cmd','',2))) .
 		($cmd4 ? we_html_element::htmlHidden(array("name" => "we_cmd[4]", "value" => $cmd4)) : '');
 
 	if(defined('OBJECT_FILES_TABLE') && $cmd4 == OBJECT_FILES_TABLE){

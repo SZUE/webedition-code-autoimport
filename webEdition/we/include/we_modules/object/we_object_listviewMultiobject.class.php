@@ -373,7 +373,7 @@ class we_object_listviewMultiobject extends listviewBase{
 			$out['fields'] .= ',RAND() AS RANDOM ';
 		}
 		foreach($tb as $t){
-			$out["publ_cond"] [] = ' (' . $t . '.OF_Published>0 OR ' . $t . '.OF_ID=0) ';
+			$out["publ_cond"][] = ' (' . $t . '.OF_Published>0 OR ' . $t . '.OF_ID=0) ';
 		}
 		$out["publ_cond"] = implode(' AND ', $out["publ_cond"]);
 		if($out["publ_cond"]){

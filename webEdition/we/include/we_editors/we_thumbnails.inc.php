@@ -399,21 +399,23 @@ function we_save() {
 	top.document.we_form.submit();
 }');
 
+	$close = we_base_request::_(we_base_request::JS, "closecmd");
+
 	return $_javascript .
-		we_html_element::htmlDiv(array('class' => 'weDialogButtonsBody', 'style' => 'height:100%'), we_html_button::position_yes_no_cancel(we_html_button::create_button('save', 'javascript:we_save();'), '', we_html_button::create_button("close", "javascript:" . ((isset($_REQUEST["closecmd"]) && $_REQUEST["closecmd"]) ? ($_REQUEST["closecmd"] . ';') : '') . 'top.close()'), 10, '', '', 0));
+		we_html_element::htmlDiv(array('class' => 'weDialogButtonsBody', 'style' => 'height:100%'), we_html_button::position_yes_no_cancel(we_html_button::create_button('save', 'javascript:we_save();'), '', we_html_button::create_button("close", "javascript:" . ($close ? $close . ';' : '') . 'top.close()'), 10, '', '', 0));
 }
 
 function getMainDialog(){
 	// Check if we need to save settings
 	if(we_base_request::_(we_base_request::BOOL, 'save_thumbnails')){
-
-		if(isset($_REQUEST['thumbnail_name']) && (strpos($_REQUEST['thumbnail_name'], "'") !== false || strpos($_REQUEST['thumbnail_name'], ',') !== false)){
+		$tn = we_base_request::_(we_base_request::STRING, 'thumbnail_name');
+		if((strpos($tn, "'") !== false || strpos($tn, ',') !== false)){
 			$save_javascript = we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[thumbnail_hochkomma]'), we_message_reporting::WE_MESSAGE_ERROR) .
 					'history.back()');
 		} else {
 			save_all_values();
 			$save_javascript = we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('thumbnails', '[saved]'), we_message_reporting::WE_MESSAGE_NOTICE) .
-					"self.location = '" . $GLOBALS['reloadUrl'] . "&id=" . $_REQUEST["edited_id"] . "';");
+					"self.location = '" . $GLOBALS['reloadUrl'] . "&id=" . we_base_request::_(we_base_request::INT, "edited_id", 0) . "';");
 		}
 
 		return $save_javascript . build_dialog('saved');

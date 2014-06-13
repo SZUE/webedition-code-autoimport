@@ -449,7 +449,7 @@ class doclistView{
           var innerhtml= "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td>\n"
               + "<input class=\"wetextinput\" name=\"search["+rowNr+"]\" size=\"58\" value=\"\"  id=\"search["+rowNr+"]\" readonly=\"1\" style=\"width: 190px;\" type=\"text\" />\n"
               + "</td><td><input value=\"\" name=\"searchParentID["+rowNr+"]\" type=\"hidden\" /></td><td>' . addslashes(we_html_tools::getPixel(5, 4)) . '</td><td>\n"
-              + "<table title=\"' . g_l('button', '[select] [value]') . '\" class=\"weBtn\" style=\"width: 70px\" onmouseout=\"weButton.out(this);\" onmousedown=\"weButton.down(this);\" onmouseup=\"if(weButton.up(this)){we_cmd(\'openCatselector\',document.we_form.elements[\'searchParentID["+rowNr+"]\'].value,\'' . CATEGORY_TABLE . '\',\'document.we_form.elements[\\\\\'searchParentID["+rowNr+"]\\\\\'].value\',\'document.we_form.elements[\\\\\'search["+rowNr+"]\\\\\'].value\',\'\',\'\',\'0\',\'\',\'\');}\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n"
+              + "<table title=\"' . g_l('button', '[select][value]') . '\" class=\"weBtn\" style=\"width: 70px\" onmouseout=\"weButton.out(this);\" onmousedown=\"weButton.down(this);\" onmouseup=\"if(weButton.up(this)){we_cmd(\'openCatselector\',document.we_form.elements[\'searchParentID["+rowNr+"]\'].value,\'' . CATEGORY_TABLE . '\',\'document.we_form.elements[\\\\\'searchParentID["+rowNr+"]\\\\\'].value\',\'document.we_form.elements[\\\\\'search["+rowNr+"]\\\\\'].value\',\'\',\'\',\'0\',\'\',\'\');}\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n"
               + "<tbody><tr><td class=\"weBtnLeft\"></td><td class=\"weBtnMiddle\" style=\"width: 58px\">\n"
               + "' . g_l('button', '[select][value]') . '\n"
               + "</td><td class=\"weBtnRight\"></td></tr></tbody></table></td></tr></tbody></table>\n";
@@ -906,28 +906,28 @@ class doclistView{
 	 */
 	static function searchProperties(){
 
-		$DB_WE = new DB_WE ( );
+		$DB_WE = new DB_WE();
 		$content = array();
 		$foundItems = 0;
 		$_result = array();
 		$saveArrayIds = array();
 		$searchText = array();
-		$_SESSION['weS']['weSearch'] ['foundItems'] = 0;
+		$_SESSION['weS']['weSearch']['foundItems'] = 0;
 
 		foreach($_REQUEST['we_cmd'] as $k => $v){
 			if(stristr($k, 'searchFields[') && !stristr($k, 'hidden_')){
-				$_REQUEST['we_cmd'] ['searchFields'] [] = $v;
+				$_REQUEST['we_cmd']['searchFields'][] = $v;
 			}
 			if(stristr($k, 'location[')){
-				$_REQUEST['we_cmd'] ['location'] [] = $v;
+				$_REQUEST['we_cmd']['location'][] = $v;
 			}
 			if(stristr($k, 'search[')){
-				$_REQUEST['we_cmd'] ['search'] [] = $v;
+				$_REQUEST['we_cmd']['search'][] = $v;
 			}
 		}
 
-		if(isset($_REQUEST['we_cmd'] ['obj'])){
-			$obj = $_REQUEST['we_cmd'] ['obj'];
+		if(isset($GLOBALS['we_cmd_obj'])){
+			$obj = $GLOBALS['we_cmd_obj'];
 			$thisObj = new self();
 		} else {
 			$obj = $GLOBALS ['we_doc'];
@@ -1041,36 +1041,36 @@ class doclistView{
 
 				$foundItems = $obj->searchclassFolder->countitems($whereQuery, $_table);
 
-				$_SESSION['weS']['weSearch'] ['foundItems'] = $foundItems;
+				$_SESSION['weS']['weSearch']['foundItems'] = $foundItems;
 
 				$obj->searchclassFolder->selectFromTempTable($_searchstart, $_anzahl, $_order);
 
 				while($obj->searchclassFolder->next_record()){
-					if(!isset($saveArrayIds [$obj->searchclassFolder->Record ['ContentType']] [$obj->searchclassFolder->Record ['ID']])){
-						$saveArrayIds [$obj->searchclassFolder->Record ['ContentType']] [$obj->searchclassFolder->Record ['ID']] = $obj->searchclassFolder->Record ['ID'];
+					if(!isset($saveArrayIds [$obj->searchclassFolder->Record ['ContentType']][$obj->searchclassFolder->Record ['ID']])){
+						$saveArrayIds [$obj->searchclassFolder->Record ['ContentType']][$obj->searchclassFolder->Record ['ID']] = $obj->searchclassFolder->Record ['ID'];
 						$_result [] = array_merge(array('Table' => $_table), $obj->searchclassFolder->Record);
 					}
 				}
 			}
 		}
 
-		if($_SESSION['weS']['weSearch'] ['foundItems'] > 0){
+		if($_SESSION['weS']['weSearch']['foundItems'] > 0){
 			$_db2 = new DB_WE();
 			$_db2->query('DROP TABLE IF EXISTS SEARCH_TEMP_TABLE');
 
 			foreach($_result as $k => $v){
-				$_result [$k] ["Description"] = "";
-				if($_result [$k] ["Table"] == FILE_TABLE && $_result [$k] ['Published'] >= $_result [$k] ['ModDate'] && $_result [$k] ['Published'] != 0){
-					$DB_WE->query("SELECT a.ID, c.Dat FROM (" . FILE_TABLE . " a LEFT JOIN " . LINK_TABLE . " b ON (a.ID=b.DID)) LEFT JOIN " . CONTENT_TABLE . " c ON (b.CID=c.ID) WHERE a.ID='" . abs($_result [$k] ["ID"]) . "' AND b.Name='Description' AND b.DocumentTable='" . FILE_TABLE . "'");
+				$_result [$k]["Description"] = "";
+				if($_result [$k]["Table"] == FILE_TABLE && $_result [$k]['Published'] >= $_result [$k]['ModDate'] && $_result [$k]['Published'] != 0){
+					$DB_WE->query("SELECT a.ID, c.Dat FROM (" . FILE_TABLE . " a LEFT JOIN " . LINK_TABLE . " b ON (a.ID=b.DID)) LEFT JOIN " . CONTENT_TABLE . " c ON (b.CID=c.ID) WHERE a.ID='" . abs($_result [$k]["ID"]) . "' AND b.Name='Description' AND b.DocumentTable='" . FILE_TABLE . "'");
 					while($DB_WE->next_record()){
-						$_result [$k] ["Description"] = $DB_WE->f('Dat');
+						$_result [$k]["Description"] = $DB_WE->f('Dat');
 					}
 				} else {
-					$_db2->query("SELECT DocumentObject  FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID = " . intval($_result [$k] ["ID"]) . " AND DocTable = 'tblFile' AND Active = 1");
+					$_db2->query("SELECT DocumentObject  FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID = " . intval($_result [$k]["ID"]) . " AND DocTable = 'tblFile' AND Active = 1");
 					while($_db2->next_record()){
 						$tempDoc = unserialize($_db2->f('DocumentObject'));
-						if(isset($tempDoc [0] ['elements'] ['Description']) && $tempDoc [0] ['elements'] ['Description'] ['dat'] != ""){
-							$_result [$k] ["Description"] = $tempDoc [0] ['elements'] ['Description'] ['dat'];
+						if(isset($tempDoc [0]['elements']['Description']) && $tempDoc [0]['elements']['Description']['dat'] != ""){
+							$_result [$k]["Description"] = $tempDoc [0]['elements']['Description']['dat'];
 						}
 					}
 				}
@@ -1105,7 +1105,7 @@ class doclistView{
 	}
 
 	function makeContent($_result, $view){
-		$DB_WE = new DB_WE ( );
+		$DB_WE = new DB_WE();
 
 		$we_PathLength = 30;
 
@@ -1113,10 +1113,10 @@ class doclistView{
 
 		for($f = 0; $f < $resultCount; $f++){
 			$fontColor = "black";
-			if(isset($_result [$f] ["Published"])){
-				$published = ((($_result [$f] ["Published"] != 0) && ($_result [$f] ["Published"] < $_result [$f] ["ModDate"]) && ($_result [$f] ["ContentType"] == we_base_ContentTypes::HTML || $_result [$f] ["ContentType"] == we_base_ContentTypes::WEDOCUMENT || $_result [$f] ["ContentType"] == "objectFile")) ? - 1 : $_result [$f] ["Published"]);
+			if(isset($_result [$f]["Published"])){
+				$published = ((($_result [$f]["Published"] != 0) && ($_result [$f]["Published"] < $_result [$f]["ModDate"]) && ($_result [$f]["ContentType"] == we_base_ContentTypes::HTML || $_result [$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT || $_result [$f]["ContentType"] == "objectFile")) ? - 1 : $_result [$f]["Published"]);
 				$showPubCheckbox = true;
-				if($_result [$f] ["ContentType"] != "folder"){
+				if($_result [$f]["ContentType"] != "folder"){
 					if($published == 0){
 						$fontColor = "red";
 						$showPubCheckbox = false;
@@ -1126,8 +1126,8 @@ class doclistView{
 					}
 				}
 			}
-			$ext = isset($_result [$f] ["Extension"]) ? $_result [$f] ["Extension"] : "";
-			$Icon = we_base_ContentTypes::inst()->getIcon($_result [$f] ["ContentType"], we_base_ContentTypes::LINK_ICON, $ext);
+			$ext = isset($_result [$f]["Extension"]) ? $_result [$f]["Extension"] : "";
+			$Icon = we_base_ContentTypes::inst()->getIcon($_result [$f]["ContentType"], we_base_ContentTypes::LINK_ICON, $ext);
 
 			if($view == 0){
 				$publishCheckbox = (!$showPubCheckbox) ? (($_result[$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT || $_result[$f]["ContentType"] == we_base_ContentTypes::HTML || $_result[$f]["ContentType"] == "objectFile") && permissionhandler::hasPerm('PUBLISH')) ? we_html_forms::checkbox($_result[$f]["docID"] . "_" . $_result[$f]["docTable"], 0, "publish_docs_doclist", "", false, "middlefont", "") : we_html_tools::getPixel(20, 10) : '';
@@ -1135,33 +1135,33 @@ class doclistView{
 				$content[$f] = array(
 					array("dat" => $publishCheckbox),
 					array("dat" => '<img src="' . ICON_DIR . $Icon . '" border="0" width="16" height="18" />'),
-					array("dat" => '<a href="javascript:openToEdit(\'' . $_result [$f] ["docTable"] . '\',\'' . $_result [$f] ["docID"] . '\',\'' . $_result [$f] ["ContentType"] . '\')" style="text-decoration:none;color:' . $fontColor . ';" class="middlefont" title="' . $_result [$f] ["Text"] . '"><u>' . we_util_Strings::shortenPath($_result [$f] ["Text"], $we_PathLength)),
+					array("dat" => '<a href="javascript:openToEdit(\'' . $_result [$f]["docTable"] . '\',\'' . $_result [$f]["docID"] . '\',\'' . $_result [$f]["ContentType"] . '\')" style="text-decoration:none;color:' . $fontColor . ';" class="middlefont" title="' . $_result [$f]["Text"] . '"><u>' . we_util_Strings::shortenPath($_result [$f]["Text"], $we_PathLength)),
 					array("dat" => '<nobr>' . g_l('contentTypes', '[' . $_result[$f]['ContentType'] . ']') . '</nobr>'),
-					array("dat" => '<nobr>' . we_util_Strings::shortenPath($_result [$f] ["SiteTitle"], $we_PathLength) . '</nobr>'),
-					array("dat" => '<nobr>' . ($_result [$f] ["CreationDate"] ? date(g_l('searchtool', "[date_format]"), $_result [$f] ["CreationDate"]) : "-") . '</nobr>'),
-					array("dat" => '<nobr>' . ($_result [$f] ["ModDate"] ? date(g_l('searchtool', "[date_format]"), $_result [$f] ["ModDate"]) : "-") . '</nobr>')
+					array("dat" => '<nobr>' . we_util_Strings::shortenPath($_result [$f]["SiteTitle"], $we_PathLength) . '</nobr>'),
+					array("dat" => '<nobr>' . ($_result [$f]["CreationDate"] ? date(g_l('searchtool', "[date_format]"), $_result [$f]["CreationDate"]) : "-") . '</nobr>'),
+					array("dat" => '<nobr>' . ($_result [$f]["ModDate"] ? date(g_l('searchtool', "[date_format]"), $_result [$f]["ModDate"]) : "-") . '</nobr>')
 				);
 			} else {
-				$fs = file_exists($_SERVER['DOCUMENT_ROOT'] . $_result [$f] ["Path"]) ? filesize($_SERVER['DOCUMENT_ROOT'] . $_result [$f] ["Path"]) : 0;
+				$fs = file_exists($_SERVER['DOCUMENT_ROOT'] . $_result [$f]["Path"]) ? filesize($_SERVER['DOCUMENT_ROOT'] . $_result [$f]["Path"]) : 0;
 				$filesize = we_base_file::getHumanFileSize($fs);
 
-				if($_result [$f] ["ContentType"] == we_base_ContentTypes::IMAGE){
+				if($_result [$f]["ContentType"] == we_base_ContentTypes::IMAGE){
 					$smallSize = 64;
 					$bigSize = 140;
 
 					if($fs > 0){
-						$imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $_result [$f] ["Path"]);
-						if(file_exists(WE_THUMB_PREVIEW_PATH . $_result [$f] ["docID"] . "_'.$smallSize.'_'.$smallSize.'" . strtolower($_result [$f] ["Extension"]))){
-							$thumbpath = WE_THUMB_PREVIEW_DIR . $_result [$f] ["docID"] . "_'.$smallSize.'_'.$smallSize.'" . strtolower($_result [$f] ["Extension"]);
+						$imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $_result [$f]["Path"]);
+						if(file_exists(WE_THUMB_PREVIEW_PATH . $_result [$f]["docID"] . "_'.$smallSize.'_'.$smallSize.'" . strtolower($_result [$f]["Extension"]))){
+							$thumbpath = WE_THUMB_PREVIEW_DIR . $_result [$f]["docID"] . "_'.$smallSize.'_'.$smallSize.'" . strtolower($_result [$f]["Extension"]);
 							$imageView = "<img src='$thumbpath' border='0' /></a>";
 						} else {
-							$imageView = "<img src='" . WEBEDITION_DIR . "thumbnail.php?id=" . $_result [$f] ["docID"] . "&size=" . $smallSize . "&path=" . $_result [$f] ["Path"] . "&extension=" . $_result [$f] ["Extension"] . "' border='0' /></a>";
+							$imageView = "<img src='" . WEBEDITION_DIR . "thumbnail.php?id=" . $_result [$f]["docID"] . "&size=" . $smallSize . "&path=" . $_result [$f]["Path"] . "&extension=" . $_result [$f]["Extension"] . "' border='0' /></a>";
 						}
-						if(file_exists(WE_THUMB_PREVIEW_PATH . $_result [$f] ["docID"] . "_'.$bigSize.'_'.$bigSize.'" . strtolower($_result [$f] ["Extension"]))){
-							$thumbpathPopup = WE_THUMB_PREVIEW_DIR . $_result [$f] ["docID"] . "_'.$bigSize.'_'.$bigSize.'" . strtolower($_result [$f] ["Extension"]);
+						if(file_exists(WE_THUMB_PREVIEW_PATH . $_result [$f]["docID"] . "_'.$bigSize.'_'.$bigSize.'" . strtolower($_result [$f]["Extension"]))){
+							$thumbpathPopup = WE_THUMB_PREVIEW_DIR . $_result [$f]["docID"] . "_'.$bigSize.'_'.$bigSize.'" . strtolower($_result [$f]["Extension"]);
 							$imageViewPopup = "<img src='$thumbpathPopup' border='0' /></a>";
 						} else {
-							$imageViewPopup = "<img src='" . WEBEDITION_DIR . "thumbnail.php?id=" . $_result [$f] ["docID"] . "&size=" . $bigSize . "&path=" . $_result [$f] ["Path"] . "&extension=" . $_result [$f] ["Extension"] . "' border='0' /></a>";
+							$imageViewPopup = "<img src='" . WEBEDITION_DIR . "thumbnail.php?id=" . $_result [$f]["docID"] . "&size=" . $bigSize . "&path=" . $_result [$f]["Path"] . "&extension=" . $_result [$f]["Extension"] . "' border='0' /></a>";
 						}
 					} else {
 						$imagesize = array(0, 0);
@@ -1175,14 +1175,14 @@ class doclistView{
 					$imageViewPopup = '<img src="' . IMAGE_DIR . "icons/doclist/" . $Icon . '" border="0" width="64" height="64" />';
 				}
 
-				$content [$f] [0] ["dat"] = '<a href="javascript:openToEdit(\'' . $_result [$f] ["docTable"] . '\',\'' . $_result [$f] ["docID"] . '\',\'' . $_result [$f] ["ContentType"] . '\')" style="text-decoration:none" class="middlefont" title="' . $_result [$f] ["Text"] . '">' . $imageView . '</a>';
+				$content [$f][0]["dat"] = '<a href="javascript:openToEdit(\'' . $_result [$f]["docTable"] . '\',\'' . $_result [$f]["docID"] . '\',\'' . $_result [$f]["ContentType"] . '\')" style="text-decoration:none" class="middlefont" title="' . $_result [$f]["Text"] . '">' . $imageView . '</a>';
 
-				$creator = $_result [$f] ["CreatorID"] ? id_to_path($_result [$f] ["CreatorID"], USER_TABLE, $DB_WE) : g_l('searchtool', "[nobody]");
+				$creator = $_result [$f]["CreatorID"] ? id_to_path($_result [$f]["CreatorID"], USER_TABLE, $DB_WE) : g_l('searchtool', "[nobody]");
 
-				if($_result [$f] ["ContentType"] == we_base_ContentTypes::WEDOCUMENT){
-					$templateID = ($_result [$f] ["Published"] >= $_result [$f] ["ModDate"] && $_result [$f] ["Published"] ?
-							$_result [$f] ["TemplateID"] :
-							$_result [$f] ["temp_template_id"]);
+				if($_result [$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT){
+					$templateID = ($_result [$f]["Published"] >= $_result [$f]["ModDate"] && $_result [$f]["Published"] ?
+							$_result [$f]["TemplateID"] :
+							$_result [$f]["temp_template_id"]);
 
 					$templateText = g_l('searchtool', "[no_template]");
 					if($templateID){
@@ -1202,10 +1202,10 @@ class doclistView{
 					$_fieldcount = 6;
 				}
 				for($i = 0; $i < $_fieldcount; $i++){
-					$_tagName = $_defined_fields [$i] ["tag"];
+					$_tagName = $_defined_fields [$i]["tag"];
 
-					if(we_exim_contentProvider::isBinary($_result [$f] ["docID"])){
-						$DB_WE->query("SELECT a.ID, c.Dat FROM (" . FILE_TABLE . " a LEFT JOIN " . LINK_TABLE . " b ON (a.ID=b.DID)) LEFT JOIN " . CONTENT_TABLE . " c ON (b.CID=c.ID) WHERE b.DID=" . intval($_result [$f] ["docID"]) . " AND b.Name='" . $DB_WE->escape($_tagName) . "' AND b.DocumentTable='" . FILE_TABLE . "'");
+					if(we_exim_contentProvider::isBinary($_result [$f]["docID"])){
+						$DB_WE->query("SELECT a.ID, c.Dat FROM (" . FILE_TABLE . " a LEFT JOIN " . LINK_TABLE . " b ON (a.ID=b.DID)) LEFT JOIN " . CONTENT_TABLE . " c ON (b.CID=c.ID) WHERE b.DID=" . intval($_result [$f]["docID"]) . " AND b.Name='" . $DB_WE->escape($_tagName) . "' AND b.DocumentTable='" . FILE_TABLE . "'");
 						$metafields [$_tagName] = "";
 						while($DB_WE->next_record()){
 							$metafields [$_tagName] = we_util_Strings::shortenPath($DB_WE->f('Dat'), 45);
@@ -1214,22 +1214,22 @@ class doclistView{
 				}
 
 				$content[$f] = array(
-					1 => array("dat" => we_util_Strings::shortenPath($_result [$f] ["SiteTitle"], 17)),
-					2 => array("dat" => '<a href="javascript:openToEdit(\'' . $_result [$f] ["docTable"] . '\',\'' . $_result [$f] ["docID"] . '\',\'' . $_result [$f] ["ContentType"] . '\')" style="text-decoration:none;color:' . $fontColor . ';"  title="' . $_result [$f] ["Text"] . '"><u>' . we_util_Strings::shortenPath($_result [$f] ["Text"], 17) . '</u></a>'),
-					3 => array("dat" => '<nobr>' . ($_result [$f] ["CreationDate"] ? date(g_l('searchtool', "[date_format]"), $_result [$f] ["CreationDate"]) : "-") . '</nobr>'),
-					4 => array("dat" => '<nobr>' . ($_result [$f] ["ModDate"] ? date(g_l('searchtool', "[date_format]"), $_result [$f] ["ModDate"]) : "-") . '</nobr>'),
-					5 => array("dat" => '<a href="javascript:openToEdit(\'' . $_result [$f] ["docTable"] . '\',\'' . $_result [$f] ["docID"] . '\',\'' . $_result [$f] ["ContentType"] . '\')" style="text-decoration:none;" class="middlefont" title="' . $_result [$f] ["Text"] . '">' . $imageViewPopup . '</a>'),
+					1 => array("dat" => we_util_Strings::shortenPath($_result [$f]["SiteTitle"], 17)),
+					2 => array("dat" => '<a href="javascript:openToEdit(\'' . $_result [$f]["docTable"] . '\',\'' . $_result [$f]["docID"] . '\',\'' . $_result [$f]["ContentType"] . '\')" style="text-decoration:none;color:' . $fontColor . ';"  title="' . $_result [$f]["Text"] . '"><u>' . we_util_Strings::shortenPath($_result [$f]["Text"], 17) . '</u></a>'),
+					3 => array("dat" => '<nobr>' . ($_result [$f]["CreationDate"] ? date(g_l('searchtool', "[date_format]"), $_result [$f]["CreationDate"]) : "-") . '</nobr>'),
+					4 => array("dat" => '<nobr>' . ($_result [$f]["ModDate"] ? date(g_l('searchtool', "[date_format]"), $_result [$f]["ModDate"]) : "-") . '</nobr>'),
+					5 => array("dat" => '<a href="javascript:openToEdit(\'' . $_result [$f]["docTable"] . '\',\'' . $_result [$f]["docID"] . '\',\'' . $_result [$f]["ContentType"] . '\')" style="text-decoration:none;" class="middlefont" title="' . $_result [$f]["Text"] . '">' . $imageViewPopup . '</a>'),
 					6 => array("dat" => $filesize),
 					7 => array("dat" => $imagesize [0] . " x " . $imagesize [1]),
-					8 => array("dat" => we_util_Strings::shortenPath(g_l('contentTypes', '[' . ($_result [$f] ['ContentType']) . ']'), 22)),
-					9 => array("dat" => '<span style="color:' . $fontColor . ';">' . we_util_Strings::shortenPath($_result [$f] ["Text"], 30) . '</span>'),
-					10 => array("dat" => we_util_Strings::shortenPath($_result [$f] ["SiteTitle"], 45)),
-					11 => array("dat" => we_util_Strings::shortenPath($_result [$f] ["Description"], 100)),
-					12 => array("dat" => $_result [$f] ['ContentType']),
+					8 => array("dat" => we_util_Strings::shortenPath(g_l('contentTypes', '[' . ($_result [$f]['ContentType']) . ']'), 22)),
+					9 => array("dat" => '<span style="color:' . $fontColor . ';">' . we_util_Strings::shortenPath($_result [$f]["Text"], 30) . '</span>'),
+					10 => array("dat" => we_util_Strings::shortenPath($_result [$f]["SiteTitle"], 45)),
+					11 => array("dat" => we_util_Strings::shortenPath($_result [$f]["Description"], 100)),
+					12 => array("dat" => $_result [$f]['ContentType']),
 					13 => array("dat" => we_util_Strings::shortenPath($creator, 22)),
 					14 => array("dat" => $templateText),
 					15 => array("dat" => $metafields),
-					16 => array("dat" => $_result [$f] ["docID"]),
+					16 => array("dat" => $_result [$f]["docID"]),
 				);
 			}
 		}
@@ -1310,8 +1310,8 @@ class doclistView{
 	 */
 	function getNextPrev($we_search_anzahl){
 		if(($obj = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 'obj'))){
-			$anzahl = $_SESSION['weS']['weSearch'] ['anzahl'];
-			$searchstart = $_SESSION['weS']['weSearch'] ['searchstart'];
+			$anzahl = $_SESSION['weS']['weSearch']['anzahl'];
+			$searchstart = $_SESSION['weS']['weSearch']['searchstart'];
 		} else {
 			$obj = $GLOBALS ['we_doc'];
 			$anzahl = $obj->searchclassFolder->anzahl;
@@ -1342,7 +1342,7 @@ class doclistView{
 
 		$select = we_html_tools::htmlSelect("page", $pages, 1, $page, false, array("onchange" => "this.form.elements['searchstart'].value = this.value; search(false);"));
 
-		if(!isset($_REQUEST['we_cmd'] ['setInputSearchstart'])){
+		if(!we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 'setInputSearchstart')){
 			if(!defined("searchstart")){
 				define("searchstart", true);
 				$out .= we_html_tools::hidden("searchstart", $searchstart);
@@ -1395,4 +1395,5 @@ class doclistView{
 
 		return $out . '</td></tr></table>';
 	}
+
 }

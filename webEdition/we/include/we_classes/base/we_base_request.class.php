@@ -168,8 +168,20 @@ class we_base_request{
 					break;
 				case self::RAW:
 				case self::STRING:
-					if($var && $var == ('' . intval($oldVar))){
-						t_e('notice', 'variable could be int', $name, $index, $var);
+					if($var){
+						if($var == ('' . intval($oldVar))){
+							t_e('notice', 'variable could be int', $name, $index, $var);
+						} elseif($var == ('' . floatval($oldVar))){
+							t_e('notice', 'variable could be float', $name, $index, $var);
+						} elseif(strpos($var, '@')){
+							t_e('notice', 'variable could be mail', $name, $index, $var);
+						} elseif(strpos($var, '://')){
+							t_e('notice', 'variable could be url', $name, $index, $var);
+						} elseif(strpos($var, '/') === 0){
+							t_e('notice', 'variable could be file', $name, $index, $var);
+						} elseif(count(explode(',', $var)) > 2){
+							t_e('notice', 'variable could be list', $name, $index, $var);
+						}
 					}
 				//no break;
 				default:

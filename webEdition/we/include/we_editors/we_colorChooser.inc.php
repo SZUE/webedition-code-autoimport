@@ -34,11 +34,11 @@ $isA = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 0);
 	}
 	function setColor() {
 <?php if($isA){ ?>
-			opener.document.we_form.elements["<?php echo $_REQUEST['we_cmd'][1]; ?>"].value = document.we_form.colorvalue.value;
+			opener.document.we_form.elements["<?php echo we_base_request::_(we_base_request::RAW, 'we_cmd', 0, 1); ?>"].value = document.we_form.colorvalue.value;
 
 	<?php
-	if(isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3]){
-		echo $_REQUEST['we_cmd'][3];
+	if(($js = we_base_request::_(we_base_request::JS, 'we_cmd', '', 3))){
+		echo $js;
 	} else {
 		?>
 				opener._EditorFrame.setEditorIsHot(true);
@@ -54,20 +54,18 @@ $isA = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 0);
 	}
 	function init() {
 		top.focus();
-		document.we_form.colorvalue.value = <?php echo ($isA ? '"' . $_REQUEST['we_cmd'][2] . '"' : 'window.dialogArguments["bgcolor"]'); ?>;
+		document.we_form.colorvalue.value = <?php echo ($isA ? '"' . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2) . '"' : 'window.dialogArguments["bgcolor"]'); ?>;
 	}
 	//-->
 </script>
 </head>
-
 
 <body class="weDialogBody"<?php if($isA){ ?> onload="init()"<?php } ?>>
 	<form name="we_form" action="" onsubmit="<?php if(!$isA){ ?>setColor();<?php } ?>return
 			false;">
 					<?php
 					$colortable = '<table border="1" bordercolor="SILVER" bordercolorlight="WHITE" bordercolordark="BLACK" cellspacing="0" cellpadding="0">
-<script  type="text/javascript">
-<!--
+<script  type="text/javascript"><!--
 var z=0;
 for ( col in we_color2 ){
 	if(z == 0){
