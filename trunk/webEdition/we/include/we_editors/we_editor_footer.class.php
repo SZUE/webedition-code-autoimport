@@ -32,9 +32,8 @@ abstract class we_editor_footer{
 			"cellpadding" => 0,
 			"cellspacing" => 0), 2, 6);
 
-		$refreshButton = (!isset($_REQUEST["SEEM_edit_include"]) || $_REQUEST["SEEM_edit_include"] == "false" ?
-				we_html_button::create_button("refresh", "javascript:top.weNavigationHistory.navigateReload();") :
-				'');
+		$refreshButton = (we_base_request::_(we_base_request::BOOL, "SEEM_edit_include") ? '' :
+				we_html_button::create_button("refresh", "javascript:top.weNavigationHistory.navigateReload();"));
 
 //	spaceholder
 		$_messageTbl->setColContent(0, 0, we_html_tools::getPixel(20, 7));
@@ -432,7 +431,7 @@ abstract class we_editor_footer{
 		//
 		//	4. show delete button to delete this document, not in edit_include-window
 		//
-		$canDelete = ( (!isset($_REQUEST['SEEM_edit_include']) || $_REQUEST['SEEM_edit_include'] == 'false') && (($we_doc instanceof we_objectFile) ? permissionhandler::hasPerm("DELETE_OBJECTFILE") : permissionhandler::hasPerm("DELETE_DOCUMENT")));
+		$canDelete = ( (!we_base_request::_(we_base_request::BOOL,'SEEM_edit_include')) && (($we_doc instanceof we_objectFile) ? permissionhandler::hasPerm("DELETE_OBJECTFILE") : permissionhandler::hasPerm("DELETE_DOCUMENT")));
 		if($canDelete){
 			$_ctrlElem = getControlElement('button', 'delete'); //	look tag we:controlElement for details
 			if(!$_ctrlElem || !$_ctrlElem['hide']){

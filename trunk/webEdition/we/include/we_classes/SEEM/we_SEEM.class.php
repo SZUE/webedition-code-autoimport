@@ -340,7 +340,7 @@ abstract class we_SEEM{
 	static function replaceSEEM_Links($code, $SEEM_LinkArray){
 		//	$mode = (isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT ? "edit" : "preview");
 
-		$_REQUEST['we_transaction'] = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 0);
+		$trans = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 0);
 		foreach($SEEM_LinkArray[0] as $i => $link){
 
 			if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE && $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT){ //	in Super-Easy-Edit-Mode only in Editmode !!!
@@ -348,12 +348,12 @@ abstract class we_SEEM{
 
 					//  Edit an included document from webedition.
 					case "edit_image":
-						$handler = "if(top.edit_include){top.edit_include.close();}top.edit_include=window.open('" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=edit_include_document&we_cmd[1]=" . FILE_TABLE . "&we_cmd[2]=" . $SEEM_LinkArray[1][$i] . "&we_cmd[3]=" . we_base_ContentTypes::IMAGE . "&we_cmd[4]=" . FILE_TABLE . "&we_cmd[5]=" . $SEEM_LinkArray[1][$i] . "&we_cmd[6]=" . $_REQUEST["we_transaction"] . "&we_cmd[7]='" . ",'_blank','width=800,height=600,status=yes');return true;";
+						$handler = "if(top.edit_include){top.edit_include.close();}top.edit_include=window.open('" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=edit_include_document&we_cmd[1]=" . FILE_TABLE . "&we_cmd[2]=" . $SEEM_LinkArray[1][$i] . "&we_cmd[3]=" . we_base_ContentTypes::IMAGE . "&we_cmd[4]=" . FILE_TABLE . "&we_cmd[5]=" . $SEEM_LinkArray[1][$i] . "&we_cmd[6]=" . $trans . "&we_cmd[7]='" . ",'_blank','width=800,height=600,status=yes');return true;";
 						$code = str_replace($link . "</a>", we_html_button::create_button("image:btn_edit_image", "javascript:$handler", true), $code);
 						break;
 					case "include" :
 						//  a new window is opened which stays as long, as the browser is closed, or the window is closed manually
-						$handler = "if(top.edit_include){top.edit_include.close();}top.edit_include=window.open('" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=edit_include_document&we_cmd[1]=" . FILE_TABLE . "&we_cmd[2]=" . $SEEM_LinkArray[1][$i] . "&we_cmd[3]=" . we_base_ContentTypes::WEDOCUMENT . "&we_cmd[4]=" . FILE_TABLE . "&we_cmd[5]=" . $SEEM_LinkArray[1][$i] . "&we_cmd[6]=" . $_REQUEST["we_transaction"] . "&we_cmd[7]='" . ",'_blank','width=800,height=600,status=yes');return true;";
+						$handler = "if(top.edit_include){top.edit_include.close();}top.edit_include=window.open('" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=edit_include_document&we_cmd[1]=" . FILE_TABLE . "&we_cmd[2]=" . $SEEM_LinkArray[1][$i] . "&we_cmd[3]=" . we_base_ContentTypes::WEDOCUMENT . "&we_cmd[4]=" . FILE_TABLE . "&we_cmd[5]=" . $SEEM_LinkArray[1][$i] . "&we_cmd[6]=" . $trans . "&we_cmd[7]='" . ",'_blank','width=800,height=600,status=yes');return true;";
 						$code = str_replace($link . "</a>", we_html_button::create_button("image:btn_edit_include", "javascript:$handler", true), $code);
 						break;
 
@@ -721,7 +721,7 @@ abstract class we_SEEM{
 			$theAttribs = self::getAttributesFromTag($formArray[0][$i]);
 			$thePaths[$i] = (isset($theAttribs["action"]) ?
 					$theAttribs["action"] :
-					(isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Path : $_REQUEST["filepath"]));
+					(isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Path : we_base_request::_(we_base_request::FILE, "filepath")));
 		}
 		return $thePaths;
 	}

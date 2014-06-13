@@ -317,10 +317,10 @@ function render_dialog(){
 
 function getMainDialog(){
 	// Check if we need to save settings
-	if(isset($_REQUEST['save_metadatafields']) && $_REQUEST['save_metadatafields'] == 'true'){
+	if(we_base_request::_(we_base_request::BOOL, 'save_metadatafields')){
 		$save_javascript = '';
-
-		if(isset($_REQUEST['metadatafields_name']) && (strpos($_REQUEST['metadatafields_name'], "'") !== false || strpos($_REQUEST['metadatafields_name'], ',') !== false)){
+		$name=we_base_request::_(we_base_request::STRING,'metadatafields_name');
+		if((strpos($name, "'") !== false || strpos($name, ',') !== false)){
 			$save_javascript = we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[metadatafields_hochkomma]'), we_message_reporting::WE_MESSAGE_ERROR) .
 					'history.back()');
 		} else {

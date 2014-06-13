@@ -52,20 +52,6 @@ if(!function_exists('we_stripslashes')){
 
 }
 
-//FIXME: remove after end of support for PHP 5.3
-/*if((get_magic_quotes_gpc() == 1)){
-	if($_REQUEST){
-		foreach($_REQUEST as $n => $v){
-			if(is_array($v)){
-				we_stripslashes($v);
-				$_REQUEST[$n] = $v;
-			} else {
-				$_REQUEST[$n] = stripslashes($v);
-			}
-		}
-	}
-}*/
-
 //make we_autoloader the first autoloader
 $ret = spl_autoload_register('we_autoloader::autoload', false, true);
 //FIXME: remove workaround php 5.2

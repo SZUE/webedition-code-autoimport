@@ -20,13 +20,13 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package none
+ * @package deprecated
  * @deprecated since version 6.3.9
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 t_e('deprecated', 'call of ' . __FILE__ . ' is deprecated and will be removed');
-$notprotect = isset($GLOBALS['NOT_PROTECT']) && $GLOBALS['NOT_PROTECT'] && (!isset($_REQUEST['NOT_PROTECT']));
+$notprotect = isset($GLOBALS['NOT_PROTECT']) && $GLOBALS['NOT_PROTECT'] && (!we_base_request::_(we_base_request::BOOL, 'NOT_PROTECT'));
 
 //this file is only existent for compatibility reasons
 

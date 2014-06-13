@@ -400,11 +400,11 @@ class we_import_wizard extends we_import_wizardBase{
 	}
 
 	function getWXMLImportStep2(){
-		$v = $_REQUEST['v'];
+		$v = we_base_request::_(we_base_request::STRING, 'v');
 		$_upload_error = false;
 
 		if($v['rdofloc'] == 'lLocal' && (isset($_FILES['uploaded_xml_file']))){
-			if(empty($_FILES['uploaded_xml_file']['tmp_name']) || $_FILES['uploaded_xml_file']['error']){
+			if(!($_FILES['uploaded_xml_file']['tmp_name']) || $_FILES['uploaded_xml_file']['error']){
 
 				$_upload_error = true;
 			} else {
@@ -1198,7 +1198,7 @@ HTS;
 	function getGXMLImportStep2(){
 		$parts = array();
 		$hdns = "\n";
-		$v = $_REQUEST['v'];
+		$v = we_base_request::_(we_base_request::STRING, 'v');
 
 		if($v['rdofloc'] == 'lLocal' && (isset($_FILES['uploaded_xml_file']) and $_FILES['uploaded_xml_file']['size'])){
 			$uniqueId = we_base_file::getUniqueId(); // #6590, changed from: uniqid(microtime())
@@ -1336,7 +1336,7 @@ function handle_event(evt) {
 	}
 
 	function getGXMLImportStep3(){
-		$v = $_REQUEST['v'];
+		$v = we_base_request::_(we_base_request::STRING, 'v');
 		if(isset($v['att_pfx'])){
 			$v['att_pfx'] = base64_encode($v['att_pfx']);
 		}
@@ -1359,7 +1359,7 @@ function handle_event(evt) {
 		$functions = "
 function set_button_state() {
 	top.wizbusy.back_enabled = top.wizbusy.switch_button_state('back', 'back_enabled', 'enabled');
-	top.wizbusy.next_enabled = top.wizbusy.switch_button_state('next', 'next_enabled', " . (($_REQUEST['mode'] != 1) ? "'enabled'" : "'disabled'") . ");
+	top.wizbusy.next_enabled = top.wizbusy.switch_button_state('next', 'next_enabled', " . ((we_base_request::_(we_base_request::INT, 'mode') != 1) ? "'enabled'" : "'disabled'") . ");
 }
 function we_submit_form(f, target, url) {
 	f.target = target;
@@ -1602,7 +1602,7 @@ function handle_event(evt) {
 
 	function getCSVImportStep1(){
 		global $DB_WE;
-		$v = $_REQUEST['v'];
+		$v = we_base_request::_(we_base_request::STRING, 'v');
 
 		$functions = we_html_button::create_state_changer(false) . "
 function we_cmd() {
@@ -1757,7 +1757,7 @@ function handle_event(evt) {
 
 	function getCSVImportStep2(){
 		global $DB_WE;
-		$v = $_REQUEST['v'];
+		$v = we_base_request::_(we_base_request::STRING, 'v');
 		if(((isset($_FILES['uploaded_csv_file']) and $_FILES['uploaded_csv_file']['size'])) || $v['file_format'] == 'mac'){
 			$uniqueId = we_base_file::getUniqueId(); // #6590, changed from: uniqid(microtime())
 
@@ -1785,7 +1785,7 @@ function handle_event(evt) {
 			}
 		}
 
-		if(isset($v['docType']) && $v['docType'] != -1 && isset($_REQUEST['doctypeChanged']) && $_REQUEST['doctypeChanged']){
+		if(isset($v['docType']) && $v['docType'] != -1 && we_base_request::_(we_base_request::BOOL, 'doctypeChanged')){
 			$values = getHash('SELECT * FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($v['docType']));
 			$v['store_to_id'] = $values['ParentID'];
 
@@ -2228,7 +2228,7 @@ HTS;
 		$functions = "
 function set_button_state() {
 				top.wizbusy.back_enabled = top.wizbusy.switch_button_state('back', 'back_enabled', 'enabled');
-				top.wizbusy.next_enabled = top.wizbusy.switch_button_state('next', 'next_enabled', " . (($_REQUEST["mode"] != 1) ? "'enabled'" : "'disabled'") . ");
+				top.wizbusy.next_enabled = top.wizbusy.switch_button_state('next', 'next_enabled', " . (we_base_request::_(we_base_request::INT, "mode") != 1 ? "'enabled'" : "'disabled'") . ");
 }
 function we_submit_form(f, target, url) {
 	f.target = target;

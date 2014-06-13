@@ -89,7 +89,7 @@ if(we_base_request::_(we_base_request::BOOL, 'ok')){
 	$rel = we_base_request::_(we_base_request::STRING, 'rel', '');
 	$rev = we_base_request::_(we_base_request::STRING, 'rev', '');
 	$hreflang = we_base_request::_(we_base_request::STRING, 'hreflang', '');
-	$params = $_REQUEST['params'];
+	$params = we_base_request::_(we_base_request::STRING, 'params');
 	$title = we_base_request::_(we_base_request::STRING, 'title', '');
 	$type = we_base_request::_(we_base_request::STRING, 'type');
 
@@ -155,7 +155,7 @@ if(we_base_request::_(we_base_request::BOOL, 'ok')){
 		'img_title' => we_base_request::_(we_base_request::STRING, 'img_title'),
 	);
 
-	if(($linklist = we_base_request::_(we_base_request::RAW, 'linklist'))!==false){
+	if(($linklist = we_base_request::_(we_base_request::RAW, 'linklist')) !== false){
 		//  set $nr to global, because it is used everywhere;
 		$nr = we_base_request::_(we_base_request::INT, 'nr', 0);
 		$ll = new we_base_linklist($linklist);
@@ -202,10 +202,10 @@ if(we_base_request::_(we_base_request::BOOL, 'ok')){
 		$ll->setImageAttrib($nr, 'alt', $link['alt']);
 
 		$linklist = $ll->getString();
-	} /*else {
-		$link['nr'] = 0;
-		$linklist = serialize(array($link));
-	}*/
+	} /* else {
+	  $link['nr'] = 0;
+	  $linklist = serialize(array($link));
+	  } */
 } else {
 	if($nr > -1){
 		$ll = new we_base_linklist($we_doc->getElement($name));
@@ -432,7 +432,7 @@ echo $yuiSuggest->getYuiCssFiles() .
 		}
 	}
 <?php
-$trans = $_REQUEST["we_transaction"] = we_base_request::_(we_base_request::TRANSACTION, "we_transaction", 0);
+$trans = we_base_request::_(we_base_request::TRANSACTION, "we_transaction", 0);
 
 $ok = we_base_request::_(we_base_request::BOOL, "ok");
 $cmd = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
@@ -508,7 +508,7 @@ if($ok && $cmd == "edit_link_at_class"){
 
 <body class="weDialogBody" style="overflow:hidden;">
 	<?php
-	if(!isset($_REQUEST["ok"]) || !$_REQUEST["ok"]){
+	if(!we_base_request::_(we_base_request::BOOL, "ok")){
 
 		$_select_type = '<select name="type" size="1" style="margin-bottom:5px;width:300px;" onchange="changeTypeSelect(this);" class="big">
 <option value="' . we_base_link::TYPE_EXT . '"' . (($type == we_base_link::TYPE_EXT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[external_link]") . '</option>
@@ -830,7 +830,7 @@ if($ok && $cmd == "edit_link_at_class"){
 			'space' => 150);
 		?>
 		<form name="we_form" action="<?php print WEBEDITION_DIR; ?>we_cmd.php" method="post" onsubmit="return false">
-			<input type="hidden" name="we_cmd[0]" value="<?php echo $_REQUEST['we_cmd'][0]; ?>" />
+			<input type="hidden" name="we_cmd[0]" value="<?php echo we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0); ?>" />
 			<?php
 			if(isset($ll) && $ll){
 				?>
@@ -856,6 +856,6 @@ if($ok && $cmd == "edit_link_at_class"){
 
 </html>
 <?php
-if(!isset($_REQUEST['ok']) || !$_REQUEST['ok']){
+if(!we_base_request::_(we_base_request::BOOL, 'ok')){
 	$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 }

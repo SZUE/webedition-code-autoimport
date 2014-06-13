@@ -82,8 +82,8 @@ abstract class we_backup_preparer{
 
 		$_SESSION['weS']['weBackupVars']['protect'] = we_base_request::_(we_base_request::BOOL, 'protect');
 
-		$_SESSION['weS']['weBackupVars']['options']['compress'] = (isset($_REQUEST['compress']) && $_REQUEST['compress'] && we_base_file::hasCompression($_REQUEST['compress'])) ? we_backup_base::COMPRESSION : we_backup_base::NO_COMPRESSION;
-		$_SESSION['weS']['weBackupVars']['filename'] = ((isset($_REQUEST['filename']) && $_REQUEST['filename']) ? ($_REQUEST['filename']) : '') . ($_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_base::NO_COMPRESSION ? '.' . we_base_file::getZExtension(we_backup_base::COMPRESSION) : '');
+		$_SESSION['weS']['weBackupVars']['options']['compress'] = (we_base_file::hasCompression(we_base_request::_(we_base_request::BOOL, 'compress'))) ? we_backup_base::COMPRESSION : we_backup_base::NO_COMPRESSION;
+		$_SESSION['weS']['weBackupVars']['filename'] = we_base_request::_(we_base_request::FILE, 'filename') . ($_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_base::NO_COMPRESSION ? '.' . we_base_file::getZExtension(we_backup_base::COMPRESSION) : '');
 		$_SESSION['weS']['weBackupVars']['backup_file'] = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . $_SESSION['weS']['weBackupVars']['filename'];
 		$prefix = we_base_file::getComPrefix($_SESSION['weS']['weBackupVars']['options']['compress']);
 		$_SESSION['weS']['weBackupVars']['open'] = $prefix . 'open';
@@ -214,8 +214,8 @@ abstract class we_backup_preparer{
 			'backup' => $options['backup_extern'],
 		);
 
-		if(isset($_REQUEST['handle_tool'])){
-			foreach(array_keys($_REQUEST['handle_tool']) as $tool){
+		if(($tools = we_base_request::_(we_base_request::BOOL, 'handle_tool'))){
+			foreach(array_keys($tools) as $tool){
 				if(we_tool_lookup::isTool($tool)){
 					$handle_options['tools'][] = $tool;
 				}

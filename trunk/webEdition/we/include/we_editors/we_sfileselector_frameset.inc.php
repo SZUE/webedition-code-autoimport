@@ -32,12 +32,13 @@ $docroot = str_replace('\\', '/', rtrim($_SERVER['DOCUMENT_ROOT'], '/'));
 $cmd1 = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 1);
 
 
-$filter = (isset($_REQUEST['we_cmd'][2]) && $_REQUEST['we_cmd'][2] != '') ? $_REQUEST['we_cmd'][2] : 'all_Types';
-$currentDir = str_replace('\\', '/', ( isset($_REQUEST['we_cmd'][3]) ?
-		($_REQUEST['we_cmd'][3] == '/' ? '' :
-			( parse_url($_REQUEST['we_cmd'][3]) === FALSE && is_dir($docroot . $_REQUEST['we_cmd'][3]) ?
-				$_REQUEST['we_cmd'][3] :
-				dirname($_REQUEST['we_cmd'][3]))) :
+$filter = we_base_request::_(we_base_request::STRING, 'we_cmd', 'all_Types', 2);
+$url = we_base_request::_(we_base_request::URL, 'we_cmd', '', 3);
+$currentDir = str_replace('\\', '/', ( $url ?
+		($url == '/' ? '' :
+			( parse_url($url) === FALSE && is_dir($docroot . $url) ?
+				$url :
+				dirname($url))) :
 		''));
 $currentName = ($filter != 'folder' ? basename(we_base_request::_(we_base_request::FILE, 'we_cmd', '', 3)) : '');
 if(!file_exists($docroot . $currentDir . '/' . $currentName)){
@@ -49,7 +50,7 @@ $currentID = $docroot . $currentDir . ($filter == 'folder' || $filter == 'filefo
 
 $currentID = str_replace('\\', '/', $currentID);
 
-$rootDir = ((isset($_REQUEST['we_cmd'][5]) && $_REQUEST['we_cmd'][5] != '') ? $_REQUEST['we_cmd'][5] : '');
+$rootDir = we_base_request::_(we_base_request::FILE, 'we_cmd', '', 5);
 ?>
 <script type="text/javascript"><!--
 	var rootDir = "<?php echo $rootDir; ?>";

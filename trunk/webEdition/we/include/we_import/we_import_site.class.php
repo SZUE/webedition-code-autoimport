@@ -247,7 +247,7 @@ class we_import_site{
 	 */
 	private function _updateSiteImportTable(){
 
-		$_templateFields = self::_getFieldsFromTemplate($_REQUEST["tid"]);
+		$_templateFields = self::_getFieldsFromTemplate(we_base_request::_(we_base_request::INT, "tid"));
 		$hasDateFields = false;
 
 		$values = array();

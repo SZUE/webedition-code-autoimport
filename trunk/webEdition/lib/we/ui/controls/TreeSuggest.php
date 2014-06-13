@@ -33,11 +33,6 @@ we_html_tools::protect();
  */
 $type = "application/json";
 header("Content-Type: " . $type);
-$ZW = array();
-foreach($_REQUEST as $gKey => $gValue){
-	$ZW[strip_tags($gKey)] = $gValue;
-}
-$_REQUEST = $ZW;
 
 $id = we_base_request::_(we_base_request::INT, "id");
 $sessionName = we_base_request::_(we_base_request::STRING, "sessionname");

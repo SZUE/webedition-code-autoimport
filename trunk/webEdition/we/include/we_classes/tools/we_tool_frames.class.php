@@ -112,7 +112,7 @@ class we_tool_frames extends weModuleFrames{
 		} else {
 			$frameset->addFrame(array("src" => $this->frameset . "?pnt=left" . ($modelid ? '&modelid=' . $modelid : ''), "name" => "left", "scrolling" => "no"));
 		}
-		$frameset->addFrame(array("src" => $this->frameset . "?pnt=right" . (($tab = we_base_request::_(we_base_request::INT, 'tab')) ? '&tab=' . $tab : '') . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : ''), "name" => "right"));
+		$frameset->addFrame(array("src" => $this->frameset . "?pnt=right" . (($tab = we_base_request::_(we_base_request::INT, 'tab')) ? '&tab=' . $tab : '') . (($sid = we_base_request::_(we_base_request::INT, 'sid')) ? '&sid=' . $sid : ''), "name" => "right"));
 
 		$noframeset = new we_html_baseElement("noframes");
 
@@ -126,7 +126,7 @@ class we_tool_frames extends weModuleFrames{
 
 		$frameset = new we_html_frameset(array("framespacing" => 0, "border" => 0, "frameborder" => "no"));
 		$frameset->setAttributes(array("cols" => "*"));
-		$frameset->addFrame(array("src" => $this->frameset . "?pnt=editor" . (($tab = we_base_request::_(we_base_request::INT, 'tab') ) ? '&tab=' . $tab : '') . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : ''), "name" => "editor", "noresize" => null, "scrolling" => "no"));
+		$frameset->addFrame(array("src" => $this->frameset . "?pnt=editor" . (($tab = we_base_request::_(we_base_request::INT, 'tab') ) ? '&tab=' . $tab : '') . (($sid = we_base_request::_(we_base_request::INT, 'sid')) ? '&sid=' . $sid : ''), "name" => "editor", "noresize" => null, "scrolling" => "no"));
 		$noframeset = new we_html_baseElement("noframes");
 		// set and return html code
 		$body = $frameset->getHtml() . $noframeset->getHTML();
@@ -339,7 +339,7 @@ function we_save() {
 		$frameset->setAttributes(array("rows" => "1,*,40"));
 		$frameset->addFrame(array("src" => HTML_DIR . "white.html", "name" => "treeheader", "noresize" => null, "scrolling" => "no"));
 
-		$frameset->addFrame(array("src" => $this->frameset . "?pnt=treeconst" . (isset($_REQUEST['modelid']) ? '&modelid=' . $_REQUEST['modelid'] : ''), "name" => "tree", "noresize" => null, "scrolling" => "auto"));
+		$frameset->addFrame(array("src" => $this->frameset . "?pnt=treeconst" . (($mid = we_base_request::_(we_base_request::INT, 'modelid')) ? '&modelid=' . $mid : ''), "name" => "tree", "noresize" => null, "scrolling" => "auto"));
 		$frameset->addFrame(array("src" => $this->frameset . "?pnt=treefooter", "name" => "treefooter", "noresize" => null, "scrolling" => "no"));
 
 		// set and return html code
@@ -398,7 +398,7 @@ function we_save() {
 			$_form = $_frame . '.document.we_form';
 
 			$_yes = $_frame . '.hot=0;' . $_frame . '.we_cmd("tool_' . $this->toolName . '_save");self.close();';
-			$_no = $_frame . '.hot=0;' . $_frame . '.we_cmd("' . $_REQUEST['delayCmd'] . '","' . $dp . '");self.close();';
+			$_no = $_frame . '.hot=0;' . $_frame . '.we_cmd("' . we_base_request::_(we_base_request::RAW, 'delayCmd') . '","' . $dp . '");self.close();';
 			$_cancel = 'self.close();';
 
 			return we_html_tools::getHtmlTop() .

@@ -1405,7 +1405,7 @@ class we_search_view extends we_tool_view{
 		$anzahl = 1;
 		$searchstart = 0;
 
-		if(isset($_REQUEST['we_cmd']['obj'])){
+		if(isset($GLOBALS['we_cmd_obj'])){
 			$anzahl = $_SESSION['weS']['weSearch']['anzahl' . $whichSearch];
 			$searchstart = $_SESSION['weS']['weSearch']['searchstart' . $whichSearch];
 		} else {
@@ -1465,7 +1465,7 @@ class we_search_view extends we_tool_view{
 
 		$select = we_html_tools::htmlSelect(
 				"page", $pages, 1, $page, false, array("onchange" => "this.form.elements['searchstart" . $whichSearch . "'].value = this.value;search(false);"));
-		if(!isset($_REQUEST['we_cmd']['setInputSearchstart'])){
+		if(!isset($GLOBALS['setInputSearchstart'])){
 			if(!defined("searchstart" . $whichSearch)){
 				define("searchstart" . $whichSearch, true);
 				$out .= we_html_tools::hidden("searchstart" . $whichSearch, $searchstart);
@@ -1787,9 +1787,9 @@ class we_search_view extends we_tool_view{
 		$workspaces = $_result = $versionsFound = $saveArrayIds = $_tables = $searchText = array();
 		$_SESSION['weS']['weSearch']['foundItems' . $whichSearch] = 0;
 
-		if(isset($_REQUEST['we_cmd']['obj'])){
+		if(isset($GLOBALS['we_cmd_obj'])){
 			$thisObj = new we_search_view();
-			$obj = $_REQUEST['we_cmd']['obj'];
+			$obj = $GLOBALS['we_cmd_obj'];
 
 			$searchFields = $location = array();
 
@@ -2131,7 +2131,7 @@ class we_search_view extends we_tool_view{
 							$whereQuery .= ' AND ((' . escape_sql_query($_table) . '.RestrictUsers=0 OR ' . escape_sql_query($_table) . ".RestrictUsers=" . intval($_SESSION["user"]["ID"]) . ") OR (" . escape_sql_query($_table) . ".Users LIKE '%," . intval($_SESSION["user"]["ID"]) . ",%')) ";
 							break;
 						case VERSIONS_TABLE:
-							if(isset($_REQUEST['we_cmd']['obj'])){
+							if(isset($GLOBALS['we_cmd_obj'])){
 								$isCheckedFileTable = $_REQUEST['we_cmd']['search_tables_advSearch[' . FILE_TABLE];
 								$isCheckedObjFileTable = (defined("OBJECT_FILES_TABLE")) ? $_REQUEST['we_cmd']['search_tables_advSearch[' . OBJECT_FILES_TABLE] : 1;
 							} else {
@@ -2443,7 +2443,7 @@ class we_search_view extends we_tool_view{
 
 	function getSearchParameterTop($foundItems, $whichSearch){
 
-		if(isset($_REQUEST['we_cmd']['obj'])){
+		if(isset($GLOBALS['we_cmd_obj'])){
 			$thisObj = new we_search_view();
 
 			$_view = $_REQUEST['we_cmd']['setView' . $whichSearch];
@@ -2522,7 +2522,7 @@ class we_search_view extends we_tool_view{
 	}
 
 	function getSearchParameterBottom($foundItems, $whichSearch){
-		if(isset($_REQUEST['we_cmd']['obj'])){
+		if(isset($GLOBALS['we_cmd_obj'])){
 			$thisObj = new we_search_view();
 		} else {
 			$thisObj = $this;
@@ -2842,7 +2842,7 @@ class we_search_view extends we_tool_view{
 	}
 
 	function tabListContent($view = "", $content = "", $class = "", $whichSearch = ""){
-		$thisObj = (isset($_REQUEST['we_cmd']['obj']) || $whichSearch == "doclist" ? new we_search_view() : $this);
+		$thisObj = (isset($GLOBALS['we_cmd_obj']) || $whichSearch == "doclist" ? new we_search_view() : $this);
 
 		$x = count($content);
 		if($view == 0){

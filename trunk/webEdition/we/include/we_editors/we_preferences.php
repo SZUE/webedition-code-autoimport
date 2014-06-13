@@ -176,7 +176,7 @@ function remember_value($settingvalue, $settingname, $comment = ''){
 				$_SESSION['prefs']['weWidth'] = 0;
 				$_SESSION['prefs']['weHeight'] = 0;
 				$_SESSION['prefs']['sizeOpt'] = 0;
-			} else if(($settingvalue == 1) && (isset($_REQUEST['newconf']['weWidth']) && is_numeric($_REQUEST['newconf']['weWidth'])) && (isset($_REQUEST['newconf']['weHeight']) && is_numeric($_REQUEST['newconf']['weHeight']))){
+			} else if(($settingvalue == 1) && we_base_request::_(we_base_request::INT, 'newconf', false, 'weWidth') !== false && we_base_request::_(we_base_request::INT, 'newconf', false, 'weHeight') !== false){
 				$_SESSION['prefs']['sizeOpt'] = 1;
 			}
 
@@ -189,9 +189,10 @@ function remember_value($settingvalue, $settingname, $comment = ''){
 				$_SESSION['prefs']['weWidth'] = $settingvalue;
 
 				if($_generate_java_script){
+					$height = we_base_request::_(we_base_request::INT, 'newconf', 0, "weHeight");
 					$save_javascript .= "
-							parent.opener.top.resizeTo(" . $settingvalue . ", " . $_REQUEST['newconf']["weHeight"] . ");
-							parent.opener.top.moveTo((screen.width / 2) - " . ($settingvalue / 2) . ", (screen.height / 2) - " . ($_REQUEST['newconf']["weHeight"] / 2) . ");
+							parent.opener.top.resizeTo(" . $settingvalue . ", " . $height . ");
+							parent.opener.top.moveTo((screen.width / 2) - " . ($settingvalue / 2) . ", (screen.height / 2) - " . ($height / 2) . ");
 						";
 				}
 			}
@@ -208,7 +209,7 @@ function remember_value($settingvalue, $settingname, $comment = ''){
 				$_SESSION['prefs']['editorFontname'] = 'none';
 				$_SESSION['prefs']['editorFontsize'] = -1;
 				$_SESSION['prefs']['editorFont'] = 0;
-			} else if(($settingvalue == 1) && isset($_REQUEST['newconf']['editorFontname']) && isset($_REQUEST['newconf']['editorFontsize'])){
+			} else if(($settingvalue == 1) && we_base_request::_(we_base_request::STRING, 'newconf', '', 'editorFontname') && we_base_request::_(we_base_request::INT, 'newconf', 0, 'editorFontsize')){
 				$_SESSION['prefs']['editorFont'] = 1;
 			}
 
@@ -254,7 +255,7 @@ function remember_value($settingvalue, $settingname, $comment = ''){
 				$_SESSION['prefs']['editorTooltipFontname'] = 'none';
 				$_SESSION['prefs']['editorTooltipFontsize'] = -1;
 				$_SESSION['prefs']['editorTooltipFont'] = 0;
-			} else if(($settingvalue == 1) && isset($_REQUEST['newconf']['editorTooltipFontname']) && isset($_REQUEST['newconf']['editorTooltipFontsize'])){
+			} else if(($settingvalue == 1) && we_base_request::_(we_base_request::STRING, 'newconf', '', 'editorTooltipFontname') && we_base_request::_(we_base_request::INT, 'newconf', 0, 'editorTooltipFontsize')){
 				$_SESSION['prefs']['editorTooltipFont'] = 1;
 			}
 
@@ -288,10 +289,10 @@ function remember_value($settingvalue, $settingname, $comment = ''){
 
 		case 'Language': //Handle both
 			$_SESSION['prefs'][$settingname] = $settingvalue;
-			$_SESSION['prefs']['BackendCharset'] = $_REQUEST['newconf']['BackendCharset'];
+			$_SESSION['prefs']['BackendCharset'] = we_base_request::_(we_base_request::STRING, 'newconf', '', 'BackendCharset');
 
 
-			if($settingvalue != $GLOBALS['WE_LANGUAGE'] || $_REQUEST['newconf']['BackendCharset'] != $GLOBALS['WE_BACKENDCHARSET']){
+			if($settingvalue != $GLOBALS['WE_LANGUAGE'] || $_SESSION['prefs']['BackendCharset'] != $GLOBALS['WE_BACKENDCHARSET']){
 
 				// complete webEdition reload: anpassen nach Wegfall der Frames
 				$save_javascript .= "
@@ -313,8 +314,8 @@ function remember_value($settingvalue, $settingname, $comment = ''){
 		case 'locale_locales':
 			return;
 		case 'locale_default':
-			if(isset($_REQUEST['newconf']['locale_locales']) && isset($_REQUEST['newconf']['locale_default'])){
-				we_writeLanguageConfig($_REQUEST['newconf']['locale_default'], explode(',', $_REQUEST['newconf']['locale_locales']));
+			if(($loc = we_base_request::_(we_base_request::STRING, 'newconf', '', 'locale_locales')) && ($def = we_base_request::_(we_base_request::STRING, 'newconf', '', 'locale_default'))){
+				we_writeLanguageConfig($def, explode(',', $loc));
 			}
 			return;
 
@@ -354,17 +355,17 @@ function remember_value($settingvalue, $settingname, $comment = ''){
 				$_file = we_base_preferences::changeSourceCode('define', $_file, 'SIDEBAR_DISABLED', $settingvalue, true, $comment);
 			}
 
-			$_sidebar_show_on_startup = ((isset($_REQUEST['newconf']['SIDEBAR_SHOW_ON_STARTUP']) && $_REQUEST['newconf']['SIDEBAR_SHOW_ON_STARTUP'] != null) ? $_REQUEST['newconf']['SIDEBAR_SHOW_ON_STARTUP'] : 0);
+			$_sidebar_show_on_startup = we_base_request::_(we_base_request::BOOL, 'newconf', false, 'SIDEBAR_SHOW_ON_STARTUP');
 			if(SIDEBAR_SHOW_ON_STARTUP != $_sidebar_show_on_startup){
 				$_file = we_base_preferences::changeSourceCode('define', $_file, 'newconf[SIDEBAR_SHOW_ON_STARTUP]', $_sidebar_show_on_startup);
 			}
 
-			$_sidebar_document = ((isset($_REQUEST['newconf']['newconf[SIDEBAR_DEFAULT_DOCUMENT]']) && $_REQUEST['newconf']['SIDEBAR_DEFAULT_DOCUMENT'] != null) ? $_REQUEST['newconf']['SIDEBAR_DEFAULT_DOCUMENT'] : 0);
+			$_sidebar_document = we_base_request::_(we_base_request::INT, 'newconf', 0, 'SIDEBAR_DEFAULT_DOCUMENT');
 			if(SIDEBAR_DEFAULT_DOCUMENT != $_sidebar_document){
 				$_file = we_base_preferences::changeSourceCode('define', $_file, 'newconf[SIDEBAR_DEFAULT_DOCUMENT]', $_sidebar_document);
 			}
 
-			$_sidebar_width = ((isset($_REQUEST['newconf']['SIDEBAR_DEFAULT_WIDTH']) && $_REQUEST['newconf']['SIDEBAR_DEFAULT_WIDTH'] != null) ? $_REQUEST['newconf']['SIDEBAR_DEFAULT_WIDTH'] : 0);
+			$_sidebar_width = we_base_request::_(we_base_request::INT, 'newconf', 0, 'SIDEBAR_DEFAULT_WIDTH');
 			if(SIDEBAR_DEFAULT_WIDTH != $_sidebar_width){
 				$_file = we_base_preferences::changeSourceCode('define', $_file, 'newconf[SIDEBAR_DEFAULT_WIDTH]', $_sidebar_width);
 			}
@@ -382,10 +383,10 @@ function remember_value($settingvalue, $settingname, $comment = ''){
 
 		//FORMMAIL RECIPIENTS
 		case 'formmail_values':
-			if((isset($_REQUEST['newconf']['formmail_values']) && $_REQUEST['newconf']['formmail_values'] != '') || (isset($_REQUEST['newconf']['formmail_deleted']) && $_REQUEST['newconf']['formmail_deleted'] != '')){
-				$_recipients = explode('<##>', $_REQUEST['newconf']['formmail_values']);
-				if(!empty($_recipients)){
-					foreach($_recipients as $i => $_recipient){
+			if($settingvalue){
+				$_recipients = explode('<##>', $v);
+				if($_recipients){
+					foreach($_recipients as $_recipient){
 						$_single_recipient = explode('<#>', $_recipient);
 
 						if(isset($_single_recipient[0]) && ($_single_recipient[0] == '#')){
@@ -404,8 +405,8 @@ function remember_value($settingvalue, $settingname, $comment = ''){
 			return;
 
 		case 'formmail_deleted':
-			if(isset($_REQUEST['newconf'][$settingname]) && $_REQUEST['newconf'][$settingname] != ''){
-				$_formmail_deleted = explode(',', $_REQUEST['newconf'][$settingname]);
+			if($settingvalue){
+				$_formmail_deleted = explode(',', $settingvalue);
 				foreach($_formmail_deleted as $del){
 					$DB_WE->query('DELETE FROM ' . RECIPIENTS_TABLE . ' WHERE ID=' . intval($del));
 				}
@@ -415,18 +416,22 @@ function remember_value($settingvalue, $settingname, $comment = ''){
 		case 'active_integrated_modules':
 			$GLOBALS['config_files']['active_integrated_modules']['content'] = '<?php
 $GLOBALS[\'_we_active_integrated_modules\'] = array(
-\'' . implode("',\n'", $_REQUEST['newconf']['active_integrated_modules']) . '\'
+\'' . implode("',\n'", we_base_request::_(we_base_request::STRING, 'newconf', array(), 'active_integrated_modules')) . '\'
 );';
 			return;
 
 		case 'useproxy':
 			if($settingvalue == 1){
 				// Create/overwrite proxy settings file
+				$host = we_base_request::_(we_base_request::STRING, 'newconf', '', "proxyhost");
+				$port = we_base_request::_(we_base_request::INT, 'newconf', '', "proxyport");
+				$user = we_base_request::_(we_base_request::STRING, 'newconf', '', "proxyuser");
+				$pass = we_base_request::_(we_base_request::RAW, 'newconf', '', "proxypass");
 				we_base_preferences::setConfigContent('proxysettings', '<?php
-	define(\'WE_PROXYHOST\', "' . ((isset($_REQUEST['newconf']["proxyhost"]) && $_REQUEST['newconf']["proxyhost"] != null) ? $_REQUEST['newconf']["proxyhost"] : '') . '");
-	define(\'WE_PROXYPORT\', "' . ((isset($_REQUEST['newconf']["proxyport"]) && $_REQUEST['newconf']["proxyport"] != null) ? $_REQUEST['newconf']["proxyport"] : '') . '");
-	define(\'WE_PROXYUSER\', "' . ((isset($_REQUEST['newconf']["proxyuser"]) && $_REQUEST['newconf']["proxyuser"] != null) ? $_REQUEST['newconf']["proxyuser"] : '') . '");
-	define(\'WE_PROXYPASSWORD\', "' . ((isset($_REQUEST['newconf']["proxypass"]) && $_REQUEST['newconf']["proxypass"] != null) ? $_REQUEST['newconf']["proxypass"] : '') . '");'
+	define(\'WE_PROXYHOST\', "' . $host . '");
+	define(\'WE_PROXYPORT\', ' . $port . ');
+	define(\'WE_PROXYUSER\', "' . $user . '");
+	define(\'WE_PROXYPASSWORD\', "' . str_replace('"', '', $pass) . '");'
 				);
 			} else {
 				// Delete proxy settings file
@@ -468,10 +473,12 @@ $GLOBALS[\'_we_active_integrated_modules\'] = array(
 
 				$un = defined('HTTP_USERNAME') ? HTTP_USERNAME : '';
 				$pw = defined('HTTP_PASSWORD') ? HTTP_PASSWORD : '';
-				if($un != $_REQUEST['newconf']['HTTP_USERNAME'] || $pw != $_REQUEST['newconf']['HTTP_PASSWORD']){
+				$un1 = we_base_request::_(we_base_request::STRING, 'newconf', '', 'HTTP_USERNAME');
+				$pw1 = we_base_request::_(we_base_request::STRING, 'newconf', '', 'HTTP_PASSWORD');
+				if($un != $un1 || $pw != $pw1){
 
-					$_file = we_base_preferences::changeSourceCode('define', $_file, 'HTTP_USERNAME', ((isset($_REQUEST['newconf']['HTTP_USERNAME']) && $_REQUEST['newconf']['HTTP_USERNAME'] != null) ? $_REQUEST['newconf']['HTTP_USERNAME'] : ''));
-					$_file = we_base_preferences::changeSourceCode('define', $_file, 'HTTP_PASSWORD', ((isset($_REQUEST['newconf']['HTTP_PASSWORD']) && $_REQUEST['newconf']['HTTP_PASSWORD'] != null) ? $_REQUEST['newconf']['HTTP_PASSWORD'] : ''));
+					$_file = we_base_preferences::changeSourceCode('define', $_file, 'HTTP_USERNAME', $un1);
+					$_file = we_base_preferences::changeSourceCode('define', $_file, 'HTTP_PASSWORD', $pw1);
 				}
 			} else {
 				// disable
@@ -3123,17 +3130,18 @@ $doSave = false;
 $acError = false;
 $acErrorMsg = '';
 // Check if we need to save settings
-if(isset($_REQUEST['save_settings']) && $_REQUEST['save_settings'] == 'true'){
+if(we_base_request::_(we_base_request::BOOL, 'save_settings')){
 	$acQuery = new we_selector_query();
 
 	// check seemode start document | object
 	switch(we_base_request::_(we_base_request::STRING, 'newconf', '', 'seem_start_type')){
 		case 'document':
-			if(empty($_REQUEST['seem_start_document'])){
+			$doc = we_base_request::_(we_base_request::INT, 'seem_start_document', 0);
+			if(!$doc){
 				$acError = true;
 				$acErrorMsg = sprintf(g_l('alert', '[field_in_tab_notvalid]'), g_l('prefs', '[seem_startdocument]'), g_l('prefs', '[tab][ui]')) . "\\n";
 			} else {
-				$acResponse = $acQuery->getItemById($_REQUEST['seem_start_document'], FILE_TABLE, array('IsFolder'));
+				$acResponse = $acQuery->getItemById($doc, FILE_TABLE, array('IsFolder'));
 				if(!$acResponse || $acResponse[0]['IsFolder'] == 1){
 					$acError = true;
 					$acErrorMsg = sprintf(g_l('alert', '[field_in_tab_notvalid]'), g_l('prefs', '[seem_startdocument]'), g_l('prefs', '[tab][ui]')) . "\\n";
@@ -3141,17 +3149,19 @@ if(isset($_REQUEST['save_settings']) && $_REQUEST['save_settings'] == 'true'){
 			}
 			break;
 		case 'weapp':
-			if(empty($_REQUEST['newconf']['seem_start_weapp'])){
+			$app = we_base_request::_(we_base_request::STRING, 'newconf', '', 'seem_start_weapp');
+			if(!$app){
 				$acError = true;
 				$acErrorMsg = sprintf(g_l('alert', '[field_in_tab_notvalid]'), g_l('prefs', '[seem_startdocument]'), g_l('prefs', '[tab][ui]')) . "\\n";
 			}
 			break;
 		case 'object':
-			if(empty($_REQUEST['seem_start_object'])){
+			$obj = we_base_request::_(we_base_request::INT, 'seem_start_object', 0);
+			if(!$obj){
 				$acError = true;
 				$acErrorMsg = sprintf(g_l('alert', '[field_in_tab_notvalid]'), g_l('prefs', '[seem_startdocument]'), g_l('prefs', '[tab][ui]')) . "\\n";
 			} else {
-				$acResponse = $acQuery->getItemById($_REQUEST['seem_start_object'], OBJECT_FILES_TABLE, array('IsFolder'));
+				$acResponse = $acQuery->getItemById($obj, OBJECT_FILES_TABLE, array('IsFolder'));
 				if(!$acResponse || $acResponse[0]['IsFolder'] == 1){
 					$acError = true;
 					$acErrorMsg = sprintf(g_l('alert', '[field_in_tab_notvalid]'), g_l('prefs', '[seem_startdocument]'), g_l('prefs', '[tab][ui]')) . "\\n";
@@ -3160,24 +3170,24 @@ if(isset($_REQUEST['save_settings']) && $_REQUEST['save_settings'] == 'true'){
 			break;
 	}
 	// check sidebar document
-	if((isset($_REQUEST['newconf']['SIDEBAR_DISABLED']) && !$_REQUEST['newconf']['SIDEBAR_DISABLED'] && $_REQUEST['ui_sidebar_file_name']) != ''){
-		$acResponse = $acQuery->getItemById($_REQUEST['newconf']['newconf[SIDEBAR_DEFAULT_DOCUMENT]'], FILE_TABLE, array('IsFolder'));
+	if(!we_base_request::_(we_base_request::BOOL, 'newconf', false, 'SIDEBAR_DISABLED') && we_base_request::_(we_base_request::FILE, 'ui_sidebar_file_name')){
+		$acResponse = $acQuery->getItemById(we_base_request::_(we_base_request::INT, 'newconf', 0, '[SIDEBAR_DEFAULT_DOCUMENT]'), FILE_TABLE, array('IsFolder'));
 		if(!$acResponse || $acResponse[0]['IsFolder'] == 1){
 			$acError = true;
 			$acErrorMsg .= sprintf(g_l('alert', '[field_in_tab_notvalid]'), g_l('prefs', '[sidebar]') . ' / ' . g_l('prefs', '[sidebar_document]'), g_l('prefs', '[tab][ui]')) . "\\n";
 		}
 	}
 	// check doc for error on none existing objects
-	if(isset($_REQUEST['error_document_no_objectfile_text']) && $_REQUEST['error_document_no_objectfile_text'] != ''){
-		$acResponse = $acQuery->getItemById($_REQUEST['newconf']['ERROR_DOCUMENT_NO_OBJECTFILE'], FILE_TABLE, array('IsFolder'));
+	if(we_base_request::_(we_base_request::STRING, 'error_document_no_objectfile_text')){
+		$acResponse = $acQuery->getItemById(we_base_request::_(we_base_request::INT, 'newconf', 0, 'ERROR_DOCUMENT_NO_OBJECTFILE'), FILE_TABLE, array('IsFolder'));
 		if(!$acResponse || $acResponse[0]['IsFolder'] == 1){
 			$acError = true;
 			$acErrorMsg .= sprintf(g_l('alert', '[field_in_tab_notvalid]'), g_l('prefs', '[error_no_object_found]'), g_l('prefs', '[tab][error_handling]')) . "\\n";
 		}
 	}
 	// check if versioning number is correct
-	if(isset($_REQUEST['newconf']['VERSIONS_ANZAHL']) && $_REQUEST['newconf']['VERSIONS_ANZAHL'] != ''){
-		if(!(abs($_REQUEST['newconf']['VERSIONS_ANZAHL']) == $_REQUEST['newconf']['VERSIONS_ANZAHL'] && $_REQUEST['newconf']['VERSIONS_ANZAHL'] > 0)){
+	if(($cnt = we_base_request::_(we_base_request::INT, 'newconf', 0, 'VERSIONS_ANZAHL'))){
+		if(!(abs($cnt) == $cnt && $cnt > 0)){
 			$acError = true;
 			$acErrorMsg .= sprintf(g_l('alert', '[field_in_tab_notvalid]'), g_l('prefs', '[versioning_anzahl]'), g_l('prefs', '[tab][versions]')) . "\\n";
 		}

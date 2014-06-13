@@ -75,7 +75,7 @@ function deleteEntry(){
 		for	(var i=0;i < entries.length; i++){
 			if(isFileSelected(entries[i].ID)){
 				todel += entries[i].ID + ",";' .
-						($tmp ? '
+				($tmp ? '
 						if(entries[i].ID=="' . $_SESSION['weS']['seemForOpenDelSelector']['ID'] . '") {
 							docIsOpen = true;
 						}' : '') . '
@@ -143,9 +143,9 @@ function doClick(id,ct){
 	function printCmdHTML(){
 		print we_html_element::jsElement('
 top.clearEntries();' .
-						$this->printCmdAddEntriesHTML() .
-						$this->printCMDWriteAndFillSelectorHTML() .
-						(intval($this->dir) == 0 ? '
+				$this->printCmdAddEntriesHTML() .
+				$this->printCMDWriteAndFillSelectorHTML() .
+				(intval($this->dir) == 0 ? '
 top.fsheader.disableRootDirButs();
 top.fsfooter.disableDelBut();' : '
 top.fsheader.enableRootDirButs();
@@ -208,13 +208,14 @@ function setDir(id){
 	}
 
 	function renameChildrenPath($id){
+		//FIXME: this can be done with one db connection!
 		$db = new DB_WE();
 		$db2 = new DB_WE();
-		$db->query("SELECT ID,IsFolder,Text FROM " . $db->escape($this->table) . " WHERE ParentID=" . intval($id));
+		$db->query('SELECT ID,IsFolder,Text FROM ' . $db->escape($this->table) . ' WHERE ParentID=' . intval($id));
 		while($db->next_record()){
-			$newPath = f("SELECT Path FROM " . $db->escape($this->table) . " WHERE ID=" . intval($id), "Path", $db2) . "/" . $db->f("Text");
-			$db2->query("UPDATE " . $db->escape($this->table) . " SET Path='" . $db->escape($newPath) . "' WHERE ID=" . intval($db->f("ID")));
-			if($db->f("IsFolder")){
+			$newPath = f('SELECT Path FROM ' . $db->escape($this->table) . ' WHERE ID=' . intval($id), "", $db2) . '/' . $db->f('Text');
+			$db2->query('UPDATE ' . $db->escape($this->table) . " SET Path='" . $db->escape($newPath) . "' WHERE ID=" . intval($db->f('ID')));
+			if($db->f('IsFolder')){
 				$this->renameChildrenPath($db->f("ID"));
 			}
 		}
@@ -223,10 +224,10 @@ function setDir(id){
 	function printDoDelEntryHTML(){
 		we_html_tools::protect();
 		echo we_html_tools::getHtmlTop();
-		if(isset($_REQUEST["todel"])){
-			$_SESSION['weS']['todel'] = $_REQUEST["todel"];
+		if(($del = we_base_request::_(we_base_request::RAW, "todel"))){
+			$_SESSION['weS']['todel'] = $del;
 			echo we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('
-top.opener.top.we_cmd("del_frag", "' . $_REQUEST["todel"] . '");
+top.opener.top.we_cmd("del_frag", "' . $del . '");
 top.close();');
 		}
 		echo '</head><body></body></html>';
@@ -276,7 +277,7 @@ top.close();');
 
 	function query(){
 		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->dir) . ' AND((1' . we_users_util::makeOwnersSql() . ')' .
-				getWsQueryForSelector($this->table, false) . ')' . ($this->order ? (' ORDER BY IsFolder DESC,' . $this->order) : '')
+			getWsQueryForSelector($this->table, false) . ')' . ($this->order ? (' ORDER BY IsFolder DESC,' . $this->order) : '')
 		);
 	}
 

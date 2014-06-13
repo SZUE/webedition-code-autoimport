@@ -51,9 +51,6 @@ class rpcResetVersionCmd extends rpcCmd{
 				$version = f('SELECT version FROM ' . VERSIONS_TABLE . ' WHERE ID=' . intval($id));
 			}
 
-			/* $docID = (isset($_REQUEST["documentID"]) && $_REQUEST["documentID"] != 0) ? $_REQUEST["documentID"] : "";
-			  $docTable = (isset($_REQUEST["documentTable"]) && $_REQUEST["documentTable"] != 0) ? $_REQUEST["documentTable"] : "";
-			 */
 			weVersions::resetVersion($id, $version, $publish);
 		}
 

@@ -190,9 +190,6 @@ class weModuleFrames{
 	//TODO: we do not abandon the two tree types because trees will be re-implemented anyway
 	function getHTMLTree(){
 		if($this->useMainTree){
-			if(isset($_REQUEST['code'])){
-				//return('REQUEST[\'code\'] is forbidden!');
-			}
 			$Tree = new weMainTree('webEdition.php', 'top', 'top', 'top.load'); //IMI: FOR MODULES WE NEED top.tree NOT top.left.tree!!!
 
 			return we_html_element::htmlDiv(array(
