@@ -48,14 +48,14 @@ $alerttext = ($isTemplatesUsedByThisTemplate ?
 	}
 
 	function pressed_yes_button() {
-		opener.top.we_cmd('save_document', '<?php echo $we_transaction; ?>', 0, 1, 1, '<?php echo str_replace("'", "\\'", $_REQUEST['we_cmd'][5]); ?>', "<?php echo $_we_cmd6; ?>");
+		opener.top.we_cmd('save_document', '<?php echo $we_transaction; ?>', 0, 1, 1, '<?php echo str_replace("'", "\\'", $GLOBALS['we_responseJS']); ?>', "<?php echo $_we_cmd6; ?>");
 		opener.top.toggleBusy(1);
 		self.close();
 
 	}
 
 	function pressed_no_button() {
-		opener.top.we_cmd('save_document', '<?php echo $we_transaction; ?>', 0, 1, 0, '<?php echo str_replace("'", "\\'", $_REQUEST['we_cmd'][5]) ?>', "<?php echo $_we_cmd6; ?>");
+		opener.top.we_cmd('save_document', '<?php echo $we_transaction; ?>', 0, 1, 0, '<?php echo str_replace("'", "\\'", $GLOBALS['we_responseJS']) ?>', "<?php echo $_we_cmd6; ?>");
 		opener.top.toggleBusy(1);
 		self.close();
 
