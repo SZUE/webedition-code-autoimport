@@ -122,8 +122,8 @@ switch(we_base_request::_(we_base_request::STRING, 'cmd', '', 0)){
 		$_content = $_REQUEST['defaultDict'];
 		we_base_file::save(WE_SPELLCHECKER_MODULE_PATH . 'dict/default.inc.php', $_content);
 
-		print we_html_element::jsElement(
-				we_message_reporting::getShowMessageCall(g_l('modules_spellchecker', '[save_settings]'), we_message_reporting::WE_MESSAGE_NOTICE)
+		echo we_html_element::jsElement(
+			we_message_reporting::getShowMessageCall(g_l('modules_spellchecker', '[save_settings]'), we_message_reporting::WE_MESSAGE_NOTICE)
 		);
 
 		break;

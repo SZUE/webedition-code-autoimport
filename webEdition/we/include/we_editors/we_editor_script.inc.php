@@ -143,9 +143,9 @@ function seeMode_dealWithLinks() {
 	if (!_EditorFrame) {
 
 <?php
-echo ($_we_transaction = we_base_request::_(we_base_request::TRANSACTION, "we_transaction", 0) ?
- "_EditorFrame = _controller.getEditorFrameByTransaction('" . $_we_transaction . "');" :
- "_EditorFrame = _controller.getEditorFrame();");
+echo (($_we_transaction = we_base_request::_(we_base_request::TRANSACTION, "we_transaction", 0)) ?
+	"_EditorFrame = _controller.getEditorFrameByTransaction('" . $_we_transaction . "');" :
+	"_EditorFrame = _controller.getEditorFrame();");
 ?>
 
 	}
@@ -292,21 +292,14 @@ if(isset($GLOBALS['we_doc'])){
 		t = f.elements[n];
 		check = f.elements[n2].value;
 
-		t.value = (check == "on") ? br2nl(t.value) : nl2br(t.value);
+		t.value = (check === "on") ? br2nl(t.value) : nl2br(t.value);
 
 	}
 	function nl2br(i) {
-		i = i.replace(/\r\n/g, "<br/>");
-		i = i.replace(/\n/g, "<br/>");
-		i = i.replace(/\r/g, "<br/>");
-		return i.replace(/<br/ > /g, "<br/ > \n");
+		return i.replace(/\r\n/g, "<br/>").replace(/\n/g, "<br/>").replace(/\r/g, "<br/>").replace(/<br\/>/g, "<br/>\n");
 	}
 	function br2nl(i) {
-		i = i.replace(/\n\r/g, "");
-		i = i.replace(/\r\n/g, "");
-		i = i.replace(/\n/g, "");
-		i = i.replace(/\r/g, "");
-		return i.replace(/<br ?\/?>/gi, "\n");
+		return i.replace(/\n\r/g, "").replace(/\r\n/g, "").replace(/\n/g, "").replace(/\r/g, "").replace(/<br ?\/?>/gi, "\n");
 	}
 	function we_submitForm(target, url) {
 		var f = self.document.we_form;

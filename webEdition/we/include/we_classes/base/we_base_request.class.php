@@ -165,6 +165,7 @@ class we_base_request{
 			self::_weRequest($var, '', array($type, $default));
 
 			switch($type){
+				case self::CMD://this must change&is ok!
 				case self::RAW_CHECKED:
 					//we didn't change anything.
 					return $var;
@@ -173,6 +174,7 @@ class we_base_request{
 					$cmp = '' . $var;
 					break;
 				case self::BOOL://bool is transfered as 0/1
+
 					$cmp = '' . intval($var);
 					break;
 				case self::RAW:
@@ -197,7 +199,7 @@ class we_base_request{
 					$cmp = '' . $var;
 			}
 			if($oldVar != $cmp){
-				t_e('changed values', $type, $name, $index, $oldVar, $var, gettype($var));
+				t_e('changed values', $type, $name, $index, $oldVar, $var, gettype($oldVar));
 				//don't break we
 				if(REQUEST_SIMULATION){
 					return $oldVar;

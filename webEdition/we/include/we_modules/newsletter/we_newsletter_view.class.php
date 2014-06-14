@@ -1614,9 +1614,8 @@ edf.populateGroups();');
 				}
 				break;
 
-			case "save_settings":
+			case 'save_settings':
 				foreach($this->settings as $k => $v){
-
 					$this->settings[$k] = we_base_request::_(we_base_request::RAW, $k, 0);
 				}
 				$this->saveSettings();

@@ -49,7 +49,7 @@ function we_save() {
 	}
 
 	document.getElementById('content').contentDocument.getElementById('setting_save').style.display = '';
-	document.getElementById('content').contentDocument.we_form.save_settings.value = 'true';
+	document.getElementById('content').contentDocument.we_form.save_settings.value = 1;
 
 	document.getElementById('content').contentDocument.we_form.submit();
 }
