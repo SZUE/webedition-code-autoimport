@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-if($we_doc->EditPageNr != WE_EDITPAGE_WORKSPACE){
+if($we_doc->EditPageNr != we_base_constants::WE_EDITPAGE_WORKSPACE){
 	$parts = array(
 		array(
 			'headline' => g_l('weClass', '[path]'),

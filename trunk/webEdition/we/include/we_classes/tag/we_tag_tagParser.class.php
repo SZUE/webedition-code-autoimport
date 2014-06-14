@@ -98,7 +98,7 @@ class we_tag_tagParser{
 			eval('?>' . $f[3]);
 			$f[3] = ob_get_contents();
 			ob_end_clean();
-			if($GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PROPERTIES && $GLOBALS['we_doc']->InWebEdition){ //	normally meta tags are edited on property page
+			if($GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES && $GLOBALS['we_doc']->InWebEdition){ //	normally meta tags are edited on property page
 				$f[1][0] = strtoupper($f[1][0]);
 				$GLOBALS['meta'][$f[1]]['default'] = str_replace('"', '\"', $f[3]);
 				if($f[1] == 'Charset'){

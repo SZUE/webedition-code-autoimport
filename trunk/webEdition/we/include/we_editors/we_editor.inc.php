@@ -41,9 +41,9 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 	case 'load_editor':
 // set default tab for creating new imageDocuments to "metadata":
 		if($we_doc->ContentType == we_base_ContentTypes::IMAGE && $we_doc->ID == 0){
-			$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_CONTENT;
-			$we_doc->EditPageNr = WE_EDITPAGE_CONTENT;
-			$_REQUEST['we_cmd'][1] = WE_EDITPAGE_CONTENT;
+			$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_CONTENT;
+			$we_doc->EditPageNr = we_base_constants::WE_EDITPAGE_CONTENT;
+			$_REQUEST['we_cmd'][1] = we_base_constants::WE_EDITPAGE_CONTENT;
 		}
 		break;
 	case 'resizeImage':
@@ -120,8 +120,8 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 		break;
 	case 'wrap_on_off':
 		$_SESSION['weS']['we_wrapcheck'] = we_base_request::_(we_base_request::BOO, 'we_cmd', false, 1);
-		$we_doc->EditPageNr = WE_EDITPAGE_CONTENT;
-		$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_CONTENT;
+		$we_doc->EditPageNr = we_base_constants::WE_EDITPAGE_CONTENT;
+		$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_CONTENT;
 		break;
 	case 'users_add_owner':
 		$we_doc->add_owner(we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1));
@@ -264,14 +264,14 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 //	if document is locked - only Preview mode is possible. otherwise show warning.
 $_userID = $we_doc->isLockedByUser();
 if($_userID != 0 && $_userID != $_SESSION['user']['ID'] && $we_doc->ID){ // document is locked
-	if(in_array(WE_EDITPAGE_PREVIEW, $we_doc->EditPageNrs)){
-		$we_doc->EditPageNr = WE_EDITPAGE_PREVIEW;
-		$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_PREVIEW;
+	if(in_array(we_base_constants::WE_EDITPAGE_PREVIEW, $we_doc->EditPageNrs)){
+		$we_doc->EditPageNr = we_base_constants::WE_EDITPAGE_PREVIEW;
+		$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_PREVIEW;
 	} else {
 		require_once(WE_USERS_MODULE_PATH . 'we_users_lockmessage.inc.php');
 		exit;
 	}
-} elseif($_userID != $_SESSION['user']['ID'] && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE && $we_doc->EditPageNr != WE_EDITPAGE_PREVIEW){
+} elseif($_userID != $_SESSION['user']['ID'] && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE && $we_doc->EditPageNr != we_base_constants::WE_EDITPAGE_PREVIEW){
 // lock document, if in seeMode and EditMode !!, don't lock when already locked
 	$we_doc->lockDocument();
 }
@@ -285,7 +285,7 @@ if($_userID != 0 && $_userID != $_SESSION['user']['ID'] && $we_doc->ID){ // docu
  * This is only done when the IsDynamic - PersistantSlot is false.
  */
 $cmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
-if((($cmd0 != 'save_document' && $cmd0 != 'publish' && $cmd0 != 'unpublish') && (($we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT) && ($we_doc->EditPageNr == WE_EDITPAGE_PREVIEW || $we_doc->EditPageNr == WE_EDITPAGE_CONTENT )) || ($we_doc->ContentType == we_base_ContentTypes::HTML && $we_doc->EditPageNr == WE_EDITPAGE_PREVIEW && $cmd != 'save_document')) && (!$we_doc->IsDynamic)){
+if((($cmd0 != 'save_document' && $cmd0 != 'publish' && $cmd0 != 'unpublish') && (($we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT) && ($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW || $we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT )) || ($we_doc->ContentType == we_base_ContentTypes::HTML && $we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW && $cmd != 'save_document')) && (!$we_doc->IsDynamic)){
 	$we_include = $we_doc->editor();
 	if(isset($_POST) && $_POST && !we_base_request::_(we_base_request::BOOL, 'we_complete_request')){
 		t_e('missing completed request', $_POST);
@@ -518,7 +518,7 @@ if((($cmd0 != 'save_document' && $cmd0 != 'publish' && $cmd0 != 'unpublish') && 
 										$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
 // SEEM, here a doc is published
 										$GLOBALS['publish_doc'] = true;
-										if($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE && ($we_doc->EditPageNr == WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == WE_EDITPAGE_INFO || $we_doc->EditPageNr == WE_EDITPAGE_PREVIEW) && (!we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 4))){
+										if($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE && ($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_INFO || $we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW) && (!we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 4))){
 											$_REQUEST['we_cmd'][5] = 'top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");
 _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the footer with the buttons
 										}
@@ -529,7 +529,7 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 								}
 							} else {
 								$tmp = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 7);
-								if(($we_doc->EditPageNr == WE_EDITPAGE_INFO && (!we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 4))) || $tmp){
+								if(($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_INFO && (!we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 4))) || $tmp){
 									$we_responseText = $tmp ? '' : $we_responseText;
 									$we_responseTextType = $tmp ? we_message_reporting::WE_MESSAGE_ERROR : $we_responseTextType;
 									$_REQUEST['we_cmd'][5] = 'top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");';
@@ -551,7 +551,7 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 									}
 								}
 // Bug Fix #2065 -> Reload Preview Page of other documents
-								elseif($we_doc->EditPageNr == WE_EDITPAGE_PREVIEW && $we_doc->ContentType == we_base_ContentTypes::APPLICATION){
+								elseif($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW && $we_doc->ContentType == we_base_ContentTypes::APPLICATION){
 									$we_JavaScript .= 'top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");';
 								}
 							}
@@ -592,7 +592,7 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 						switch($_SESSION['weS']['we_mode']){
 							case we_base_constants::MODE_SEE:
 								$_showAlert = true; //	don't show confirm box in editor_save.inc
-								$_REQUEST['we_cmd'][5] = 'top.we_cmd("switch_edit_page","' . (permissionhandler::hasPerm('CAN_SEE_PROPERTIES') ? WE_EDITPAGE_PROPERTIES : $we_doc->EditPageNr) . '","' . $we_transaction . '");';
+								$_REQUEST['we_cmd'][5] = 'top.we_cmd("switch_edit_page","' . (permissionhandler::hasPerm('CAN_SEE_PROPERTIES') ? we_base_constants::WE_EDITPAGE_PROPERTIES : $we_doc->EditPageNr) . '","' . $we_transaction . '");';
 								break;
 							case we_base_constants::MODE_NORMAL:
 								$_REQUEST['we_cmd'][5] = 'top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");';
@@ -624,7 +624,7 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 				if($we_doc->we_unpublish()){
 					$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_unpublish_ok]'), $we_doc->Path);
 					$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
-					if($we_doc->EditPageNr == WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == WE_EDITPAGE_INFO){
+					if($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_INFO){
 						$_REQUEST['we_cmd'][5] = 'top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");'; // wird in Templ eingef?gt
 					}
 					if(!isset($_REQUEST['we_cmd'][5])){
@@ -681,7 +681,7 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 
 //  SEEM the file
 //  but only, if we are not in the template-editor
-				if($we_doc->ContentType != we_base_ContentTypes::TEMPLATE || ($we_doc->ContentType == we_base_ContentTypes::TEMPLATE && $we_doc->EditPageNr == WE_EDITPAGE_PREVIEW_TEMPLATE)){
+				if($we_doc->ContentType != we_base_ContentTypes::TEMPLATE || ($we_doc->ContentType == we_base_ContentTypes::TEMPLATE && $we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW_TEMPLATE)){
 					$tmpCntnt = we_SEEM::parseDocument($contents);
 
 // insert $_reloadFooter at right place
@@ -705,7 +705,7 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 			if(isset($GLOBALS['we_file_to_delete_after_include'])){
 				we_util_File::deleteLocalFile($GLOBALS['we_file_to_delete_after_include']);
 			}
-			if($we_doc->EditPageNr == WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == WE_EDITPAGE_SCHEDULER || $we_doc->EditPageNr == WE_EDITPAGE_THUMBNAILS || ($we_doc instanceof we_object && $we_doc->EditPageNr == WE_EDITPAGE_CONTENT)){
+			if($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_SCHEDULER || $we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_THUMBNAILS || ($we_doc instanceof we_object && $we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT)){
 				echo we_html_element::jsElement('setTimeout("doScrollTo();",100);');
 			}
 	}

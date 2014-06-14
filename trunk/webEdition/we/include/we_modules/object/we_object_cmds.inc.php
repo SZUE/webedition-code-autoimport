@@ -60,9 +60,9 @@ switch(we_base_request::_(we_base_request::STRING,'we_cmd','',0)){
 	case "object_obj_search":
 		$we_doc->Search = $_REQUEST['we_cmd'][2];
 		$we_doc->SearchField = $_REQUEST['we_cmd'][3];
-		$we_doc->EditPageNr = WE_EDITPAGE_WORKSPACE;
-		$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_WORKSPACE;
+		$we_doc->EditPageNr = we_base_constants::WE_EDITPAGE_WORKSPACE;
+		$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_WORKSPACE;
 		$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
-		print we_html_element::jsElement('top.we_cmd("switch_edit_page",' . WE_EDITPAGE_WORKSPACE . ',"' . $_REQUEST['we_cmd'][1] . '");');
+		print we_html_element::jsElement('top.we_cmd("switch_edit_page",' . we_base_constants::WE_EDITPAGE_WORKSPACE . ',"' . $_REQUEST['we_cmd'][1] . '");');
 		break;
 }

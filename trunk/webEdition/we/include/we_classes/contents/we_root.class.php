@@ -76,7 +76,7 @@ abstract class we_root extends we_class{
 	private $wasMoved = false;
 
 	/* Number of the EditPage when editor() is called */
-	public $EditPageNr = WE_EDITPAGE_CONTENT;
+	public $EditPageNr = we_base_constants::WE_EDITPAGE_CONTENT;
 	var $CopyID;
 	var $EditPageNrs = array();
 	var $Owners = '';
@@ -1203,8 +1203,8 @@ abstract class we_root extends we_class{
 	function lockDocument(){
 		if($_SESSION['user']['ID'] && $this->ID){ // only if user->id != 0
 			//if lock is used by other user and time is up, update table
-			$this->DB_WE->query('INSERT INTO ' . LOCK_TABLE . ' SET ID=' . intval($this->ID) . ',UserID=' . intval($_SESSION['user']['ID']) . ',tbl="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) . '",sessionID="' . session_id() . '",lockTime=NOW()+INTERVAL ' . (PING_TIME + PING_TOLERANZ) . ' SECOND
-				ON DUPLICATE KEY UPDATE UserID=' . intval($_SESSION['user']['ID']) . ',sessionID="' . session_id() . '",lockTime= NOW() + INTERVAL ' . (PING_TIME + PING_TOLERANZ) . ' SECOND');
+			$this->DB_WE->query('INSERT INTO ' . LOCK_TABLE . ' SET ID=' . intval($this->ID) . ',UserID=' . intval($_SESSION['user']['ID']) . ',tbl="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) . '",sessionID="' . session_id() . '",lockTime=NOW()+INTERVAL ' . (we_base_constants::PING_TIME + we_base_constants::PING_TOLERANZ) . ' SECOND
+				ON DUPLICATE KEY UPDATE UserID=' . intval($_SESSION['user']['ID']) . ',sessionID="' . session_id() . '",lockTime= NOW() + INTERVAL ' . (we_base_constants::PING_TIME + we_base_constants::PING_TOLERANZ) . ' SECOND');
 		}
 	}
 

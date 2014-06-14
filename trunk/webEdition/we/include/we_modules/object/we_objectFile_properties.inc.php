@@ -25,7 +25,7 @@
 $wepos = "";
 $parts = array();
 
-if($GLOBALS['we_doc']->EditPageNr != WE_EDITPAGE_WORKSPACE){
+if($GLOBALS['we_doc']->EditPageNr != we_base_constants::WE_EDITPAGE_WORKSPACE){
 	$parts[] = array(
 		"headline" => g_l('weClass', "[path]"),
 		"html" => $GLOBALS['we_doc']->formPath(),

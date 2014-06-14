@@ -33,7 +33,9 @@ class we_otherDocument extends we_binaryDocument{
 				$this->Icon = 'pdf.gif';
 				break;
 		}
-		$this->EditPageNrs[] = WE_EDITPAGE_PREVIEW;
+		if(isWE()){
+			$this->EditPageNrs[] = we_base_constants::WE_EDITPAGE_PREVIEW;
+		}
 		$this->ContentType = we_base_ContentTypes::APPLICATION;
 	}
 
@@ -41,7 +43,7 @@ class we_otherDocument extends we_binaryDocument{
 
 	function editor(){
 		switch($this->EditPageNr){
-			case WE_EDITPAGE_PREVIEW:
+			case we_base_constants::WE_EDITPAGE_PREVIEW:
 				return 'we_templates/we_editor_other_preview.inc.php';
 			default:
 				return parent::editor();

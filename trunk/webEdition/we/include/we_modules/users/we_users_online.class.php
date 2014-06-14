@@ -40,7 +40,7 @@ class we_users_online{
 		$colors = array('red', 'blue', 'green', 'orange');
 		$i = -1;
 
-		$DB_WE->query('SELECT ID,username,Ping  FROM ' . USER_TABLE . ' WHERE Ping>UNIX_TIMESTAMP(DATE_SUB(NOW(),INTERVAL ' . (PING_TIME + PING_TOLERANZ) . ' second )) ORDER BY Ping DESC');
+		$DB_WE->query('SELECT ID,username,Ping  FROM ' . USER_TABLE . ' WHERE Ping>UNIX_TIMESTAMP(DATE_SUB(NOW(),INTERVAL ' . (we_base_constants::PING_TIME + we_base_constants::PING_TOLERANZ) . ' second )) ORDER BY Ping DESC');
 		$colorCount = count($colors);
 		while($DB_WE->next_record()){
 			$this->num_uo++;

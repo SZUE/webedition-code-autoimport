@@ -112,9 +112,8 @@ function get_value($settingname){
 					//handle subkey
 					$tmp = @unserialize(isset($_SESSION['prefs'][$settingname]) ? $_SESSION['prefs'][$settingname] : $GLOBALS['configs']['user'][$settingname][0]);
 					return isset($tmp[$all[1]]) ? $tmp[$all[1]] : 0;
-				} else {
-					return (isset($_SESSION['prefs'][$settingname]) ? $_SESSION['prefs'][$settingname] : $GLOBALS['configs']['user'][$settingname][0]);
 				}
+				return (isset($_SESSION['prefs'][$settingname]) ? $_SESSION['prefs'][$settingname] : $GLOBALS['configs']['user'][$settingname][0]);
 			}
 
 			//if not found in global_config or other config - simply return '' - this should not happen - should we return something more error-specific?
@@ -223,7 +222,7 @@ function remember_value($settingvalue, $settingname, $comment = ''){
 							for (frameId in _usedEditors) {
 
 								if ( (_usedEditors[frameId].getEditorEditorTable() == "' . TEMPLATES_TABLE . '" || _usedEditors[frameId].getEditorEditorTable() == "' . FILE_TABLE . '") &&
-									_usedEditors[frameId].getEditorEditPageNr() == ' . WE_EDITPAGE_CONTENT . ' ) {
+									_usedEditors[frameId].getEditorEditPageNr() == ' . we_base_constants::WE_EDITPAGE_CONTENT . ' ) {
 
 									if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
 										_usedEditors[frameId].setEditorReloadNeeded(true);
@@ -269,7 +268,7 @@ function remember_value($settingvalue, $settingname, $comment = ''){
 							for (frameId in _usedEditors) {
 
 								if ( (_usedEditors[frameId].getEditorEditorTable() == "' . TEMPLATES_TABLE . '" || _usedEditors[frameId].getEditorEditorTable() == "' . FILE_TABLE . '") &&
-									_usedEditors[frameId].getEditorEditPageNr() == ' . WE_EDITPAGE_CONTENT . ' ) {
+									_usedEditors[frameId].getEditorEditPageNr() == ' . we_base_constants::WE_EDITPAGE_CONTENT . ' ) {
 
 									if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
 										_usedEditors[frameId].setEditorReloadNeeded(true);
@@ -842,7 +841,7 @@ function build_dialog($selected_setting = 'ui'){
 						$_seem_start_type = 'object';
 						if(get_value('seem_start_file') != 0){
 							$_object_id = get_value('seem_start_file');
-							$_get_object_paths = getPathsFromTable(OBJECT_FILES_TABLE, null, FILE_ONLY, $_object_id);
+							$_get_object_paths = getPathsFromTable(OBJECT_FILES_TABLE, null, we_base_constants::FILE_ONLY, $_object_id);
 
 							if(isset($_get_object_paths[$_object_id])){ //	seeMode start file exists
 								$_object_path = $_get_object_paths[$_object_id];
@@ -861,7 +860,7 @@ function build_dialog($selected_setting = 'ui'){
 						$_seem_start_type = 'document';
 						if(get_value('seem_start_file') != 0){
 							$_document_id = get_value('seem_start_file');
-							$_get_document_paths = getPathsFromTable(FILE_TABLE, null, FILE_ONLY, $_document_id);
+							$_get_document_paths = getPathsFromTable(FILE_TABLE, null, we_base_constants::FILE_ONLY, $_document_id);
 
 							if(isset($_get_document_paths[$_document_id])){ //	seeMode start file exists
 								$_document_path = $_get_document_paths[$_document_id];
@@ -966,7 +965,7 @@ function build_dialog($selected_setting = 'ui'){
 				$_sidebar_show = ($_sidebar_disable) ? 'none' : 'block';
 
 				$_sidebar_id = get_value('SIDEBAR_DEFAULT_DOCUMENT');
-				$_sidebar_paths = getPathsFromTable(FILE_TABLE, null, FILE_ONLY, $_sidebar_id);
+				$_sidebar_paths = getPathsFromTable(FILE_TABLE, null, we_base_constants::FILE_ONLY, $_sidebar_id);
 				$_sidebar_path = '';
 				if(isset($_sidebar_paths[$_sidebar_id])){
 					$_sidebar_path = $_sidebar_paths[$_sidebar_id];
@@ -3134,7 +3133,7 @@ if(we_base_request::_(we_base_request::BOOL, 'save_settings')){
 	$acQuery = new we_selector_query();
 
 	// check seemode start document | object
-	switch(we_base_request::_(we_base_request::STRING, 'newconf', '', 'seem_start_type')){
+	switch(we_base_request::_(we_base_request::STRING, 'seem_start_type')){
 		case 'document':
 			$doc = we_base_request::_(we_base_request::INT, 'seem_start_document', 0);
 			if(!$doc){
@@ -3171,7 +3170,7 @@ if(we_base_request::_(we_base_request::BOOL, 'save_settings')){
 	}
 	// check sidebar document
 	if(!we_base_request::_(we_base_request::BOOL, 'newconf', false, 'SIDEBAR_DISABLED') && we_base_request::_(we_base_request::FILE, 'ui_sidebar_file_name')){
-		$acResponse = $acQuery->getItemById(we_base_request::_(we_base_request::INT, 'newconf', 0, '[SIDEBAR_DEFAULT_DOCUMENT]'), FILE_TABLE, array('IsFolder'));
+		$acResponse = $acQuery->getItemById(we_base_request::_(we_base_request::INT, 'newconf', 0, 'SIDEBAR_DEFAULT_DOCUMENT'), FILE_TABLE, array('IsFolder'));
 		if(!$acResponse || $acResponse[0]['IsFolder'] == 1){
 			$acError = true;
 			$acErrorMsg .= sprintf(g_l('alert', '[field_in_tab_notvalid]'), g_l('prefs', '[sidebar]') . ' / ' . g_l('prefs', '[sidebar_document]'), g_l('prefs', '[tab][ui]')) . "\\n";
@@ -3198,13 +3197,13 @@ if(we_base_request::_(we_base_request::BOOL, 'save_settings')){
 if($doSave && !$acError){
 	save_all_values();
 
-	print STYLESHEET .
-		we_html_element::jsElement('
+	echo STYLESHEET .
+	we_html_element::jsElement('
 							function doClose() {
 
 								var _multiEditorreload = false;
 							   ' . $save_javascript .
-			(!$email_saved ? we_message_reporting::getShowMessageCall(g_l('prefs', '[error_mail_not_saved]'), we_message_reporting::WE_MESSAGE_ERROR) : we_message_reporting::getShowMessageCall(g_l('prefs', '[saved]'), we_message_reporting::WE_MESSAGE_NOTICE)) . '
+		(!$email_saved ? we_message_reporting::getShowMessageCall(g_l('prefs', '[error_mail_not_saved]'), we_message_reporting::WE_MESSAGE_ERROR) : we_message_reporting::getShowMessageCall(g_l('prefs', '[saved]'), we_message_reporting::WE_MESSAGE_NOTICE)) . '
 var childs=top.document.getElementById("tabContainer").children;
 childs[0].className="tabActive";
 for(i=1;i<childs.length;++i){
@@ -3219,8 +3218,8 @@ setTimeout(function(){
 
 							}
 					   ') .
-		'</head>' .
-		we_html_element::htmlBody(array('class' => 'weDialogBody', 'onload' => 'doClose()'), build_dialog('saved')) . '</html>';
+	'</head>' .
+	we_html_element::htmlBody(array('class' => 'weDialogBody', 'onload' => 'doClose()'), build_dialog('saved')) . '</html>';
 } else {
 	$_form = we_html_element::htmlForm(array('onSubmit' => 'return false;', 'name' => 'we_form', 'method' => 'post', 'action' => $_SERVER['SCRIPT_NAME']), we_html_element::htmlHidden(array('name' => 'save_settings', 'value' => 'false')) . render_dialog());
 
@@ -3260,10 +3259,10 @@ function setColorField(name) {
 }' . ($acError ? we_message_reporting::getShowMessageCall(g_l('alert', '[field_in_tab_notvalid_pre]') . "\\n\\n" . $acErrorMsg . "\\n" . g_l('alert', '[field_in_tab_notvalid_post]'), we_message_reporting::WE_MESSAGE_ERROR) : ""));
 
 
-	print STYLESHEET .
-		$_we_cmd_js . we_html_element::jsScript(JS_DIR . 'windows.js') . weSuggest::getYuiFiles() . '</head>' .
-		we_html_element::htmlBody(array('class' => 'weDialogBody'), $_form) .
-		$yuiSuggest->getYuiCss() .
-		$yuiSuggest->getYuiJs() .
-		'</html>';
+	echo STYLESHEET .
+	$_we_cmd_js . we_html_element::jsScript(JS_DIR . 'windows.js') . weSuggest::getYuiFiles() . '</head>' .
+	we_html_element::htmlBody(array('class' => 'weDialogBody'), $_form) .
+	$yuiSuggest->getYuiCss() .
+	$yuiSuggest->getYuiJs() .
+	'</html>';
 }

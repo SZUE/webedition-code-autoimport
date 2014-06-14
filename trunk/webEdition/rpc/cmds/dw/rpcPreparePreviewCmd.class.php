@@ -26,7 +26,7 @@ class rpcPreparePreviewCmd extends rpcCmd{
 
 	function execute(){
 
-		$_SESSION['weS']['rpc_previewCode'] = weRequest('raw', "source", '');
+		$_SESSION['weS']['rpc_previewCode'] = we_base_request::_(we_base_request::RAW, "source", '');
 
 		// an empty rpcResponse is enough
 		$resp = new rpcResponse();

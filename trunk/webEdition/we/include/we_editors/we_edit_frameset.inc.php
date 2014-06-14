@@ -103,20 +103,20 @@ $we_doc->setDocumentControlElements();
 //	when editing an image-document we go to edit page
 if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 	if(we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include') && $we_doc->userHasAccess() == 1){ //	Open seem_edit_include pages in edit-mode
-		$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_CONTENT;
-		$we_doc->EditPageNr = WE_EDITPAGE_CONTENT;
+		$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_CONTENT;
+		$we_doc->EditPageNr = we_base_constants::WE_EDITPAGE_CONTENT;
 	} elseif($we_doc instanceof we_imageDocument){
-		$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_CONTENT;
-		$we_doc->EditPageNr = WE_EDITPAGE_CONTENT;
+		$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_CONTENT;
+		$we_doc->EditPageNr = we_base_constants::WE_EDITPAGE_CONTENT;
 	} else {
-		$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_PREVIEW;
-		$we_doc->EditPageNr = WE_EDITPAGE_PREVIEW;
+		$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_PREVIEW;
+		$we_doc->EditPageNr = we_base_constants::WE_EDITPAGE_PREVIEW;
 	}
 }
 
 //  This code was over the comment: init document !!!!!!! (line 82?)
 if(!$we_ID){
-	$_SESSION['weS']['EditPageNr'] = getTabs('we_webEditionDocument', WE_EDITPAGE_PROPERTIES);
+	$_SESSION['weS']['EditPageNr'] = getTabs('we_webEditionDocument', we_base_constants::WE_EDITPAGE_PROPERTIES);
 }
 
 if(($tid = we_base_request::_(we_base_request::INT, 'we_cmd', false, 10)) !== false && ($we_Table == FILE_TABLE) && ($we_ContentType == we_base_ContentTypes::WEDOCUMENT)){
@@ -139,7 +139,7 @@ if(($doct = we_base_request::_(we_base_request::INT, 'we_cmd', false, 8)) !== fa
 	$we_doc->TableID = $tid;
 	$we_doc->setRootDirID(true);
 	$we_doc->restoreDefaults();
-	$_SESSION['weS']['EditPageNr'] = getTabs($we_doc->ClassName, WE_EDITPAGE_CONTENT);
+	$_SESSION['weS']['EditPageNr'] = getTabs($we_doc->ClassName, we_base_constants::WE_EDITPAGE_CONTENT);
 }
 
 
@@ -153,7 +153,7 @@ if($we_doc->ID){
 					exit();
 				case FILE_TABLE: //	only preview mode allowed for docs
 					//	MUST change to Preview-Mode
-					$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_PREVIEW;
+					$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_PREVIEW;
 					break;
 			}
 		}
@@ -161,7 +161,7 @@ if($we_doc->ID){
 	$_access = $we_doc->userHasAccess();
 	if(($_access !== we_root::USER_HASACCESS && $_access !== we_root::FILE_LOCKED)){ //   user has no access to object/document - bugfix #2481
 		if($we_ContentType != 'object'){
-			$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_PREVIEW;
+			$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_PREVIEW;
 		} else {
 			include(WE_USERS_MODULE_PATH . 'we_users_permmessage.inc.php');
 			exit();
@@ -175,7 +175,7 @@ if(isset($we_sess_folderID) && is_array($we_sess_folderID) && (!$we_doc->ID) && 
 }
 
 if($we_doc->ID == 0){
-	$we_doc->EditPageNr = getTabs($we_doc->ClassName, WE_EDITPAGE_PROPERTIES);
+	$we_doc->EditPageNr = getTabs($we_doc->ClassName, we_base_constants::WE_EDITPAGE_PROPERTIES);
 } else if(isset($_SESSION['weS']['EditPageNr'])){
 	if(defined('SHOP_TABLE')){
 		$we_doc->checkTabs();
@@ -184,11 +184,11 @@ if($we_doc->ID == 0){
 	$we_doc->EditPageNr = (in_array($_SESSION['weS']['EditPageNr'], $we_doc->EditPageNrs) ?
 			getTabs($we_doc->ClassName, $_SESSION['weS']['EditPageNr']) :
 			//	Here we must get the first valid EDIT_PAGE
-			getFirstValidEditPageNr($we_doc, WE_EDITPAGE_CONTENT));
+			getFirstValidEditPageNr($we_doc, we_base_constants::WE_EDITPAGE_CONTENT));
 }
 
 if($we_Table == FILE_TABLE && $we_ContentType == 'folder' && $we_ID){
-	$we_doc->EditPageNr = WE_EDITPAGE_DOCLIST;
+	$we_doc->EditPageNr = we_base_constants::WE_EDITPAGE_DOCLIST;
 	$_SESSION['weS']['EditPageNr'] = getTabs($we_doc->ClassName, 16);
 }
 
@@ -210,7 +210,7 @@ if(!isset($we_doc->IsClassFolder)){
 	//update already offline users
 
 	$_userID = $we_doc->isLockedByUser(); //	Check if file is locked.
-	$GLOBALS['DB_WE']->query('UPDATE ' . USER_TABLE . ' SET Ping=0 WHERE Ping<UNIX_TIMESTAMP(NOW()-' . (PING_TIME + PING_TOLERANZ) . ')');
+	$GLOBALS['DB_WE']->query('UPDATE ' . USER_TABLE . ' SET Ping=0 WHERE Ping<UNIX_TIMESTAMP(NOW()-' . (we_base_constants::PING_TIME + we_base_constants::PING_TOLERANZ) . ')');
 
 	$_filelocked = ($_userID != 0 && $_userID != $_SESSION['user']['ID']);
 
@@ -218,7 +218,7 @@ if(!isset($we_doc->IsClassFolder)){
 		//	#####	Lock the new file
 		//	before lock - check if user can edit the file.
 		if($we_doc->userHasAccess() == we_root::USER_HASACCESS){ //	only when user has access to file
-			if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL || $we_doc->EditPageNr != WE_EDITPAGE_PREVIEW){
+			if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL || $we_doc->EditPageNr != we_base_constants::WE_EDITPAGE_PREVIEW){
 				$we_doc->lockDocument();
 			}
 		}
@@ -318,7 +318,7 @@ echo we_html_tools::getHtmlTop();
 		}
 	<?php
 	if(is_a($we_doc, 'we_binaryDocument')){
-		$we_doc->EditPageNr = WE_EDITPAGE_CONTENT;
+		$we_doc->EditPageNr = we_base_constants::WE_EDITPAGE_CONTENT;
 	}
 }
 ?>
@@ -403,7 +403,7 @@ function setOnload(){
 	// Don't do this with Templates and only in Preview Mode
 	// in Edit-Mode all must be reloaded !!!
 	// To remove this functionality - just use the second condition as well.
-	return ($GLOBALS['we_doc']->ContentType != we_base_ContentTypes::TEMPLATE/* && $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PREVIEW */ ?
+	return ($GLOBALS['we_doc']->ContentType != we_base_ContentTypes::TEMPLATE/* && $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW */ ?
 			'onload="if(top.edit_include){top.edit_include.close();} if(openedWithWE == 0){ checkDocument(); } setOpenedWithWE(0);"' :
 			'');
 }
@@ -425,7 +425,7 @@ switch($_SESSION['weS']['we_mode']){
 		break;
 	case we_base_constants::MODE_NORMAL:
 	default:
-		$showContentEditor = ($we_doc->EditPageNr == WE_EDITPAGE_CONTENT && substr($we_doc->ContentType, 0, 5) == 'text/' && $we_doc->ContentType != we_base_ContentTypes::WEDOCUMENT);
+		$showContentEditor = ($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT && substr($we_doc->ContentType, 0, 5) == 'text/' && $we_doc->ContentType != we_base_ContentTypes::WEDOCUMENT);
 		?>
 		<frameset onload="_EditorFrame.initEditorFrameData({'EditorIsLoading': false});" rows="39,<?php echo $showContentEditor ? "0,*" : "*,0"; ?>,40" framespacing="0" border="0" frameborder="NO" onunload="doUnload();">
 			<frame src="<?php echo we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_edit_header"); ?>" name="editHeader" noresize scrolling="no"/>

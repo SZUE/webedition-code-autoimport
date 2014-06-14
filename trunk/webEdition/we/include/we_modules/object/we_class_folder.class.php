@@ -44,7 +44,9 @@ class we_class_folder extends we_folder{
 	function __construct(){
 		parent::__construct();
 		array_push($this->persistent_slots, 'searchclass', 'searchclass_class', 'TriggerID');
-		array_push($this->EditPageNrs, WE_EDITPAGE_PROPERTIES, WE_EDITPAGE_CFWORKSPACE, WE_EDITPAGE_FIELDS, WE_EDITPAGE_INFO);
+		if(isWE()){
+			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_CFWORKSPACE, we_base_constants::WE_EDITPAGE_FIELDS, we_base_constants::WE_EDITPAGE_INFO);
+		}
 		$this->Icon = we_base_ContentTypes::CLASS_FOLDER_ICON;
 		$this->ContentType = 'folder';
 	}
@@ -84,7 +86,7 @@ class we_class_folder extends we_folder{
 		}
 
 		if(empty($this->EditPageNr)){
-			$this->EditPageNr = WE_EDITPAGE_PROPERTIES;
+			$this->EditPageNr = we_base_constants::WE_EDITPAGE_PROPERTIES;
 		}
 		$this->setClassProp();
 	}
@@ -169,18 +171,18 @@ class we_class_folder extends we_folder{
 
 		switch($this->EditPageNr){
 			default:
-				$this->EditPageNr = WE_EDITPAGE_PROPERTIES;
-				$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_PROPERTIES;
+				$this->EditPageNr = we_base_constants::WE_EDITPAGE_PROPERTIES;
+				$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_PROPERTIES;
 			//no break
-			case WE_EDITPAGE_PROPERTIES:
+			case we_base_constants::WE_EDITPAGE_PROPERTIES:
 				return 'we_templates/we_editor_properties.inc.php';
-			case WE_EDITPAGE_INFO:
+			case we_base_constants::WE_EDITPAGE_INFO:
 				return 'we_templates/we_editor_info.inc.php';
-			case WE_EDITPAGE_CFWORKSPACE:
+			case we_base_constants::WE_EDITPAGE_CFWORKSPACE:
 				return 'we_modules/object/we_classFolder_properties.inc.php';
-			case WE_EDITPAGE_FIELDS:
+			case we_base_constants::WE_EDITPAGE_FIELDS:
 				return 'we_modules/object/we_classFolder_fields.inc.php';
-			case WE_EDITPAGE_WEBUSER:
+			case we_base_constants::WE_EDITPAGE_WEBUSER:
 				return 'we_modules/customer/editor_weDocumentCustomerFilter.inc.php';
 		}
 	}

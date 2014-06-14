@@ -48,7 +48,9 @@ class we_object extends we_document{
 	function __construct(){
 		parent::__construct();
 		array_push($this->persistent_slots, 'WorkspaceFlag', 'RestrictUsers', 'UsersReadOnly', 'Text', 'SerializedArray', 'Templates', 'Workspaces', 'DefaultWorkspaces', 'ID', 'Users', 'strOrder', 'Category', 'DefaultCategory', 'DefaultText', 'DefaultValues', 'DefaultTitle', 'DefaultKeywords', 'DefaultUrl', 'DefaultUrlfield0', 'DefaultUrlfield1', 'DefaultUrlfield2', 'DefaultUrlfield3', 'DefaultTriggerID', 'DefaultDesc', 'CSS');
-		array_push($this->EditPageNrs, WE_EDITPAGE_PROPERTIES, WE_EDITPAGE_WORKSPACE, WE_EDITPAGE_INFO, WE_EDITPAGE_CONTENT); // ,WE_EDITPAGE_PREVIEW
+		if(isWE()){
+			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_WORKSPACE, we_base_constants::WE_EDITPAGE_INFO, we_base_constants::WE_EDITPAGE_CONTENT); // ,we_base_constants::WE_EDITPAGE_PREVIEW
+		}
 		$this->elements['Charset']['dat'] = DEFAULT_CHARSET;
 		$this->Icon = 'object.gif';
 		$this->Table = OBJECT_TABLE;
@@ -570,16 +572,16 @@ class we_object extends we_document{
 			return 'we_templates/we_editor_save.inc.php';
 		}
 		switch($this->EditPageNr){
-			case WE_EDITPAGE_PROPERTIES:
-			case WE_EDITPAGE_WORKSPACE:
+			case we_base_constants::WE_EDITPAGE_PROPERTIES:
+			case we_base_constants::WE_EDITPAGE_WORKSPACE:
 				return 'we_templates/we_editor_properties.inc.php';
-			case WE_EDITPAGE_INFO:
+			case we_base_constants::WE_EDITPAGE_INFO:
 				return 'we_modules/object/we_editor_info_object.inc.php';
-			case WE_EDITPAGE_CONTENT:
+			case we_base_constants::WE_EDITPAGE_CONTENT:
 				return 'we_modules/object/we_editor_contentobject.inc.php';
 			default:
-				$this->EditPageNr = WE_EDITPAGE_PROPERTIES;
-				$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_PROPERTIES;
+				$this->EditPageNr = we_base_constants::WE_EDITPAGE_PROPERTIES;
+				$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_PROPERTIES;
 				return 'we_templates/we_editor_properties.inc.php';
 		}
 	}
@@ -1904,7 +1906,7 @@ class we_object extends we_document{
 					}
 				}
 			}
-			$this->EditPageNr = WE_EDITPAGE_PROPERTIES;
+			$this->EditPageNr = we_base_constants::WE_EDITPAGE_PROPERTIES;
 			$this->Category = $doc->Category;
 		}
 	}

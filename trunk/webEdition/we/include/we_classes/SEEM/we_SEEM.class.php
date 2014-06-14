@@ -83,13 +83,13 @@ abstract class we_SEEM{
 		//  All these informations are needed to replace the old link with a new one
 		$linkArray = self::getAllHrefs($code);
 
-		if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT && !defined('WE_SIDEBAR')){
+		if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT && !defined('WE_SIDEBAR')){
 
 			//  The edit-mode only changes SEEM-links
 			$code = self::parseLinksForEditMode($code, $linkArray);
 		}
 
-		if(!isset($GLOBALS['we_doc']) || $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PREVIEW || $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PREVIEW_TEMPLATE || defined('WE_SIDEBAR')){
+		if(!isset($GLOBALS['we_doc']) || $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW || $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW_TEMPLATE || defined('WE_SIDEBAR')){
 
 			//  in the preview mode all found links in the document shall be changed
 			$code = self::parseLinksForPreviewMode($code, $linkArray);
@@ -105,11 +105,11 @@ abstract class we_SEEM{
 
 		$allForms = self::getAllForms($code);
 		//  if in editMode, remove all forms but the "we_form"
-		if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT && !defined("WE_SIDEBAR")){
+		if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT && !defined("WE_SIDEBAR")){
 			return self::parseFormsForEditMode($code, $allForms);
 		}
 		//  we are in preview mode or open an extern document - parse all found forms
-		if(!isset($GLOBALS['we_doc']) || $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PREVIEW || defined("WE_SIDEBAR")){
+		if(!isset($GLOBALS['we_doc']) || $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW || defined("WE_SIDEBAR")){
 			return self::parseFormsForPreviewMode($code, $allForms);
 		}
 
@@ -338,12 +338,12 @@ abstract class we_SEEM{
 	 * @return   code           string the new code, where all seem_links are replaced with new functionality
 	 */
 	static function replaceSEEM_Links($code, $SEEM_LinkArray){
-		//	$mode = (isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT ? "edit" : "preview");
+		//	$mode = (isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT ? "edit" : "preview");
 
 		$trans = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 0);
 		foreach($SEEM_LinkArray[0] as $i => $link){
 
-			if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE && $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT){ //	in Super-Easy-Edit-Mode only in Editmode !!!
+			if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE && $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT){ //	in Super-Easy-Edit-Mode only in Editmode !!!
 				switch($SEEM_LinkArray[2][$i]){
 
 					//  Edit an included document from webedition.
@@ -1006,7 +1006,7 @@ abstract class we_SEEM{
 	 */
 	static function addEditButtonToTag($which = "edit"){
 		return '';
-		/* 		if($GLOBALS["we_transaction"] != "" && $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PREVIEW && isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == "seem"){
+		/* 		if($GLOBALS["we_transaction"] != "" && $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW && isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == "seem"){
 		  return "";
 		  } else{
 		  return "";

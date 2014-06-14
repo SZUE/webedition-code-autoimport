@@ -32,7 +32,7 @@ class rpcPublishDocsCmd extends rpcCmd{
 
 		$docs = array();
 
-		$arr = weRequest('string', 'we_cmd', '', 0);
+		$arr = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
 		if($arr){
 			$allDocs = explode(",", $arr);
 			foreach($allDocs as $k => $v){

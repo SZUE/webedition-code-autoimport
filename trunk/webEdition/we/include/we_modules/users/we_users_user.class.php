@@ -808,7 +808,7 @@ if ( !_multiEditorreload ) {
 		for (frameId in _usedEditors) {
 
 			if ( (_usedEditors[frameId].getEditorEditorTable() == \"" . TEMPLATES_TABLE . "\" || " . (defined("OBJECT_TABLE") ? " _usedEditors[frameId].getEditorEditorTable() == \"" . OBJECT_FILES_TABLE . "\" || " : "") . " _usedEditors[frameId].getEditorEditorTable() == \"" . FILE_TABLE . "\") &&
-				_usedEditors[frameId].getEditorEditPageNr() == " . WE_EDITPAGE_CONTENT . " ) {
+				_usedEditors[frameId].getEditorEditPageNr() == " . we_base_constants::WE_EDITPAGE_CONTENT . " ) {
 
 				if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
 					_usedEditors[frameId].setEditorReloadNeeded(true);
@@ -853,7 +853,7 @@ if ( !_multiEditorreload ) {
 		for (frameId in _usedEditors) {
 
 			if ( (_usedEditors[frameId].getEditorEditorTable() == \"" . TEMPLATES_TABLE . "\" || " . (defined("OBJECT_TABLE") ? " _usedEditors[frameId].getEditorEditorTable() == \"" . OBJECT_FILES_TABLE . "\" || " : "") . " _usedEditors[frameId].getEditorEditorTable() == \"" . FILE_TABLE . "\") &&
-				_usedEditors[frameId].getEditorEditPageNr() == " . WE_EDITPAGE_CONTENT . " ) {
+				_usedEditors[frameId].getEditorEditPageNr() == " . we_base_constants::WE_EDITPAGE_CONTENT . " ) {
 
 				if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
 					_usedEditors[frameId].setEditorReloadNeeded(true);
@@ -915,7 +915,7 @@ if ( !_multiEditorreload ) {
 		for (frameId in _usedEditors) {
 
 			if ( (_usedEditors[frameId].getEditorEditorTable() == \"" . TEMPLATES_TABLE . "\" || " . (defined("OBJECT_TABLE") ? " _usedEditors[frameId].getEditorEditorTable() == \"" . OBJECT_FILES_TABLE . "\" || " : "") . " _usedEditors[frameId].getEditorEditorTable() == \"" . FILE_TABLE . "\") &&
-				_usedEditors[frameId].getEditorEditPageNr() == " . WE_EDITPAGE_CONTENT . " ) {
+				_usedEditors[frameId].getEditorEditPageNr() == " . we_base_constants::WE_EDITPAGE_CONTENT . " ) {
 
 				if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
 					_usedEditors[frameId].setEditorReloadNeeded(true);
@@ -1895,7 +1895,7 @@ function show_seem_chooser(val) {
 				$_seem_start_type = 'object';
 				if($this->Preferences['seem_start_file'] != 0){
 					$_object_id = $this->Preferences['seem_start_file'];
-					$_get_object_paths = getPathsFromTable(OBJECT_FILES_TABLE, null, FILE_ONLY, $_object_id);
+					$_get_object_paths = getPathsFromTable(OBJECT_FILES_TABLE, null, we_base_constants::FILE_ONLY, $_object_id);
 
 					if(isset($_get_object_paths[$_object_id])){ //	seeMode start file exists
 						$_object_path = $_get_object_paths[$_object_id];
@@ -1913,7 +1913,7 @@ function show_seem_chooser(val) {
 				$_seem_start_type = 'document';
 				if($this->Preferences['seem_start_file'] != 0){
 					$_document_id = $this->Preferences['seem_start_file'];
-					$_get_document_paths = getPathsFromTable(FILE_TABLE, null, FILE_ONLY, $_document_id);
+					$_get_document_paths = getPathsFromTable(FILE_TABLE, null, we_base_constants::FILE_ONLY, $_document_id);
 
 					if(isset($_get_document_paths[$_document_id])){ //	seeMode start file exists
 						$_document_path = $_get_document_paths[$_document_id];

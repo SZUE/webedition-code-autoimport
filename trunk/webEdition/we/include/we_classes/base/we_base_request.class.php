@@ -24,6 +24,8 @@
  */
 class we_base_request{
 
+	private static $allTables = array();
+
 	const TRANSACTION = 'transaction';
 	const INTLIST = 'intList';
 	const CMD = 'cmd';
@@ -40,6 +42,7 @@ class we_base_request{
 	const EMAIL = 'email';
 	const JS = 'js';
 	const RAW = 'raw';
+	const RAW_CHECKED = 'rawC';
 
 	/** Helper for Filtering variables (callback of array_walk)
 	 *
@@ -94,7 +97,7 @@ class we_base_request{
 				$var = $var == 'on' || $var == 'off' || $var == '1' || $var == '0' ? $var : (bool) $var;
 				return;
 			case self::TABLE: //FIXME: this doesn't hold for OBJECT_X_TABLE - make sure we don't use them in requests
-				$var = $var && ($k = array_search($var, get_defined_constants(), true)) && (substr($k, -6) == '_TABLE') ? $var : $default;
+				$var = $var && in_array($var, self::$allTables) ? $var : $default;
 				return;
 			case self::EMAIL://removes mailto:
 				$var = filter_var(str_replace(we_base_link::TYPE_MAIL_PREFIX, '', $var), FILTER_SANITIZE_EMAIL);
@@ -113,6 +116,7 @@ class we_base_request{
 				t_e('unknown filter type ' . $type);
 			case self::JS://for information!
 			case self::RAW:
+			case self::RAW_CHECKED:
 				//do nothing - used as placeholder for all types not yet known
 				return;
 		}
@@ -152,13 +156,18 @@ class we_base_request{
 			$oldVar = $var;
 			array_walk($var, 'we_base_request::_weRequest', array($type, $default));
 			if($oldVar != $var){
-				t_e('array changed', $type, $name, $index, $oldVar, $var);
+				if(REQUEST_SIMULATION){
+					t_e('array changed', $type, $name, $index, $oldVar, $var);
+				}
 			}
 		} else {
 			$oldVar = $var;
 			self::_weRequest($var, '', array($type, $default));
 
 			switch($type){
+				case self::RAW_CHECKED:
+					//we didn't change anything.
+					return $var;
 				case self::INTLIST:
 					$oldVar = trim($var, ',');
 					$cmp = '' . $var;
@@ -188,12 +197,18 @@ class we_base_request{
 					$cmp = '' . $var;
 			}
 			if($oldVar != $cmp){
-				t_e('changed values', $type, $name, $index, $oldVar, $var);
+				t_e('changed values', $type, $name, $index, $oldVar, $var, gettype($var));
 				//don't break we
-				return $oldVar;
+				if(REQUEST_SIMULATION){
+					return $oldVar;
+				}
 			}
 		}
 		return $var;
+	}
+
+	static function registerTables(array $tables){
+		self::$allTables = array_merge(self::$allTables, $tables);
 	}
 
 }

@@ -46,14 +46,15 @@ class we_webEditionDocument extends we_textContentDocument{
 
 	function __construct(){
 		parent::__construct();
-		if(defined('SHOP_TABLE')){
-			$this->EditPageNrs[] = WE_EDITPAGE_VARIANTS;
-		}
+		if(isWE()){
+			if(defined('SHOP_TABLE')){
+				$this->EditPageNrs[] = we_base_constants::WE_EDITPAGE_VARIANTS;
+			}
 
-		if(defined('CUSTOMER_TABLE') && (permissionhandler::hasPerm('CAN_EDIT_CUSTOMERFILTER') || permissionhandler::hasPerm('CAN_CHANGE_DOCS_CUSTOMER'))){
-			$this->EditPageNrs[] = WE_EDITPAGE_WEBUSER;
+			if(defined('CUSTOMER_TABLE') && (permissionhandler::hasPerm('CAN_EDIT_CUSTOMERFILTER') || permissionhandler::hasPerm('CAN_CHANGE_DOCS_CUSTOMER'))){
+				$this->EditPageNrs[] = we_base_constants::WE_EDITPAGE_WEBUSER;
+			}
 		}
-
 		if(isset($_SESSION['prefs']['DefaultTemplateID'])){
 			$this->TemplateID = $_SESSION['prefs']['DefaultTemplateID'];
 		}
@@ -150,25 +151,25 @@ class we_webEditionDocument extends we_textContentDocument{
 
 	function editor(){
 		switch($this->EditPageNr){
-			case WE_EDITPAGE_PROPERTIES:
+			case we_base_constants::WE_EDITPAGE_PROPERTIES:
 				return 'we_templates/we_editor_properties.inc.php';
-			case WE_EDITPAGE_INFO:
+			case we_base_constants::WE_EDITPAGE_INFO:
 				if(isset($GLOBALS['WE_MAIN_DOC'])){
 					$GLOBALS["WE_MAIN_DOC"]->InWebEdition = true; //Bug 3417
 				}
 				return 'we_templates/we_editor_info.inc.php';
 
-			case WE_EDITPAGE_CONTENT:
+			case we_base_constants::WE_EDITPAGE_CONTENT:
 				$GLOBALS['we_editmode'] = true;
 				break;
-			case WE_EDITPAGE_PREVIEW:
+			case we_base_constants::WE_EDITPAGE_PREVIEW:
 				$GLOBALS['we_editmode'] = false;
 				break;
-			case WE_EDITPAGE_VALIDATION:
+			case we_base_constants::WE_EDITPAGE_VALIDATION:
 				return 'we_templates/validateDocument.inc.php';
-			case WE_EDITPAGE_VARIANTS:
+			case we_base_constants::WE_EDITPAGE_VARIANTS:
 				return 'we_templates/we_editor_variants.inc.php';
-			case WE_EDITPAGE_WEBUSER:
+			case we_base_constants::WE_EDITPAGE_WEBUSER:
 				return 'we_modules/customer/editor_weDocumentCustomerFilter.inc.php';
 			default:
 				return parent::editor();
@@ -691,7 +692,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		$editpageSave = $this->EditPageNr;
 		$inWebEditonSave = $this->InWebEdition;
 		$this->InWebEdition = false;
-		$this->EditPageNr = WE_EDITPAGE_PREVIEW;
+		$this->EditPageNr = we_base_constants::WE_EDITPAGE_PREVIEW;
 		$we_include = $includepath ? $includepath : $this->editor();
 		ob_start();
 		if(is_file($we_include)){
@@ -927,13 +928,13 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	 */
 	function disableHidePages(){
 		$MNEMONIC_EDITPAGES = array(
-			WE_EDITPAGE_PROPERTIES => 'properties', WE_EDITPAGE_CONTENT => 'edit', WE_EDITPAGE_INFO => 'information', WE_EDITPAGE_PREVIEW => 'preview', WE_EDITPAGE_SCHEDULER => 'schedpro', WE_EDITPAGE_VALIDATION => 'validation', WE_EDITPAGE_VERSIONS => 'versions'
+			we_base_constants::WE_EDITPAGE_PROPERTIES => 'properties', we_base_constants::WE_EDITPAGE_CONTENT => 'edit', we_base_constants::WE_EDITPAGE_INFO => 'information', we_base_constants::WE_EDITPAGE_PREVIEW => 'preview', we_base_constants::WE_EDITPAGE_SCHEDULER => 'schedpro', we_base_constants::WE_EDITPAGE_VALIDATION => 'validation', we_base_constants::WE_EDITPAGE_VERSIONS => 'versions'
 		);
 		if(we_base_moduleInfo::isActive('shop')){
-			$MNEMONIC_EDITPAGES[WE_EDITPAGE_VARIANTS] = 'variants';
+			$MNEMONIC_EDITPAGES[we_base_constants::WE_EDITPAGE_VARIANTS] = 'variants';
 		}
 		if(we_base_moduleInfo::isActive('customer')){
-			$MNEMONIC_EDITPAGES[WE_EDITPAGE_WEBUSER] = 'customer';
+			$MNEMONIC_EDITPAGES[we_base_constants::WE_EDITPAGE_WEBUSER] = 'customer';
 		}
 
 		if(isset($this->hidePages) && $this->InWebEdition){
