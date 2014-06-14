@@ -209,7 +209,7 @@ class we_base_request{
 					$cmp = '' . $var;
 			}
 			if($oldVar != $cmp){
-				t_e('changed values', $type, $name, $index, $oldVar, $var, gettype($oldVar));
+				t_e('changed values', $type, $name, $index, $oldVar, $var);
 				//don't break we
 				if(REQUEST_SIMULATION){
 					return $oldVar;
