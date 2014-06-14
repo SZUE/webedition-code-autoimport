@@ -132,8 +132,13 @@ abstract class we_base_moduleInfo{
 	static function isActive($modul){
 		$ret = in_array($modul, $GLOBALS['_we_active_integrated_modules']);
 		if($ret){
-			if(file_exists(WE_MODULES_PATH . $modul . '/we_conf_' . $modul . '.inc.php')){
-				require_once (WE_MODULES_PATH . $modul . '/we_conf_' . $modul . '.inc.php');
+			switch($modul){
+				case 'users'://removed config
+					break;
+				default:
+					if(file_exists(WE_MODULES_PATH . $modul . '/we_conf_' . $modul . '.inc.php')){
+						require_once (WE_MODULES_PATH . $modul . '/we_conf_' . $modul . '.inc.php');
+					}
 			}
 		}
 		return $ret;
