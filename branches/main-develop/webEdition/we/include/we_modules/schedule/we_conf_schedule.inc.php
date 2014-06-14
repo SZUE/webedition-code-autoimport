@@ -26,3 +26,5 @@ define('SCHEDULE_TABLE', TBL_PREFIX . 'tblSchedule');
 define('SCHEDULER_TRIGGER_PREDOC', 0);
 define('SCHEDULER_TRIGGER_POSTDOC', 1);
 define('SCHEDULER_TRIGGER_CRON', 2);
+
+we_base_request::registerTables(array(SCHEDULE_TABLE));

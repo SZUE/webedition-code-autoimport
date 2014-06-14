@@ -23,25 +23,26 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 we_html_tools::protect();
+$cmd2 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2);
 switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1)){
 	case we_base_ContentTypes::IMAGE:
 		$we_doc = new we_imageDocument();
-		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][2]]);
+		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$cmd2]);
 		$contenttype = $we_doc->getElement("type");
 		break;
 	case we_base_ContentTypes::FLASH:
 		$we_doc = new we_flashDocument();
-		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][2]]);
+		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$cmd2]);
 		$contenttype = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1);
 		break;
 	case we_base_ContentTypes::QUICKTIME:
 		$we_doc = new we_quicktimeDocument();
-		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][2]]);
+		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$cmd2]);
 		$contenttype = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1);
 		break;
 	case we_base_ContentTypes::APPLICATION:
 		$we_doc = new we_otherDocument();
-		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][2]]);
+		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$cmd2]);
 		switch($we_doc->Extension){
 			case ".zip":
 				$contenttype = "application/zip";

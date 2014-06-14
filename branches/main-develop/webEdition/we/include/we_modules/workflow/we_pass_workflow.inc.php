@@ -36,12 +36,12 @@ if($cmd == "ok"){
 
 		//	in SEEM-Mode back to Preview page
 		if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
-			$script = "opener.top.we_cmd('switch_edit_page'," . WE_EDITPAGE_PREVIEW . ",'" . $we_transaction . "');";
+			$script = "opener.top.we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_PREVIEW . ",'" . $we_transaction . "');";
 		} else if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
 			$script = 'opener.top.weEditorFrameController.getActiveDocumentReference().frames[3].location.reload();';
 		}
 
-		if(($we_doc->EditPageNr == WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == WE_EDITPAGE_INFO)){
+		if(($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_INFO)){
 			$script .= 'opener.top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");'; // wird in Templ eingef�gt
 		}
 	} else {
@@ -50,7 +50,7 @@ if($cmd == "ok"){
 		//	in SEEM-Mode back to Preview page
 		if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 
-			$script = "opener.top.we_cmd('switch_edit_page'," . WE_EDITPAGE_PREVIEW . ",'" . $we_transaction . "');";
+			$script = "opener.top.we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_PREVIEW . ",'" . $we_transaction . "');";
 		} else if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
 
 			$script = '';

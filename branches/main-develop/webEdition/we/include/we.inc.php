@@ -70,6 +70,10 @@ if(ini_get('session.gc_probability') != '0' /* && !@opendir(session_save_path())
 
 //start autoloader!
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.inc.php');
+//register all used tables.
+we_base_request::registerTables(array(
+	CATEGORY_TABLE, CAPTCHA_TABLE, CLEAN_UP_TABLE, CONTENT_TABLE, DOC_TYPES_TABLE, ERROR_LOG_TABLE, FAILED_LOGINS_TABLE, FILE_TABLE, INDEX_TABLE, LINK_TABLE, LANGLINK_TABLE, PREFS_TABLE, RECIPIENTS_TABLE, TEMPLATES_TABLE, TEMPORARY_DOC_TABLE, UPDATE_LOG_TABLE, THUMBNAILS_TABLE, VALIDATION_SERVICES_TABLE, HISTORY_TABLE, FORMMAIL_LOG_TABLE, FORMMAIL_BLOCK_TABLE, METADATA_TABLE, NOTEPAD_TABLE, PWDRESET_TABLE, VERSIONS_TABLE, VERSIONSLOG_TABLE, SESSION_TABLE, NAVIGATION_TABLE, NAVIGATION_RULE_TABLE, USER_TABLE, LOCK_TABLE,
+));
 
 require_once (WE_INCLUDES_PATH . 'we_global.inc.php');
 update_mem_limit(32);
@@ -91,6 +95,8 @@ if(empty($GLOBALS['_we_active_integrated_modules']) || !in_array('users', $GLOBA
 //FIXME: don't include all confs!
 foreach($GLOBALS['_we_active_integrated_modules'] as $active){
 	switch($active){
+		case 'users'://removed config
+			continue;
 		case 'schedule':
 		case 'export':
 		case 'editor':
@@ -99,7 +105,6 @@ foreach($GLOBALS['_we_active_integrated_modules'] as $active){
 		//currently we can't omit, since table checks (weRequest) depends on defined const's
 		//break;
 		default:
-
 			if(file_exists(WE_MODULES_PATH . $active . '/we_conf_' . $active . '.inc.php')){
 				require_once (WE_MODULES_PATH . $active . '/we_conf_' . $active . '.inc.php');
 			}
@@ -156,16 +161,16 @@ if(!isset($GLOBALS['WE_IS_DYN'])){ //only true on dynamic frontend pages
 			$header = false;
 			break;
 		case 'reload_editpage':
-			$header = (!in_array($_SESSION['weS']['EditPageNr'], array(WE_EDITPAGE_CONTENT, WE_EDITPAGE_PREVIEW, WE_EDITPAGE_PROPERTIES)));
+			$header = (!in_array($_SESSION['weS']['EditPageNr'], array(we_base_constants::WE_EDITPAGE_CONTENT, we_base_constants::WE_EDITPAGE_PREVIEW, we_base_constants::WE_EDITPAGE_PROPERTIES)));
 			break;
 		case 'switch_edit_page':
-			$header = (!in_array(we_base_request::_(we_base_request::INT, 'we_cmd', -1, 1), array(WE_EDITPAGE_CONTENT, WE_EDITPAGE_PREVIEW, WE_EDITPAGE_PROPERTIES)));
+			$header = (!in_array(we_base_request::_(we_base_request::INT, 'we_cmd', -1, 1), array(we_base_constants::WE_EDITPAGE_CONTENT, we_base_constants::WE_EDITPAGE_PREVIEW, we_base_constants::WE_EDITPAGE_PROPERTIES)));
 			break;
 		case 'load_editor':
 			$trans = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', '__NO_TRANS__');
 			$header = (!(isset($_SESSION['weS']['we_data'][$trans]) &&
 				$_SESSION['weS']['we_data'][$trans][0]['Table'] == FILE_TABLE &&
-				$_SESSION['weS']['EditPageNr'] == WE_EDITPAGE_PREVIEW
+				$_SESSION['weS']['EditPageNr'] == we_base_constants::WE_EDITPAGE_PREVIEW
 				));
 			break;
 		case '__default__':

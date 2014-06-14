@@ -47,7 +47,9 @@ class we_folder extends we_root{
 	function __construct(){
 		parent::__construct();
 		array_push($this->persistent_slots, 'SearchStart', 'SearchField', 'Search', 'Order', 'GreenOnly', 'IsClassFolder', 'IsNotEditable', 'WorkspacePath', 'WorkspaceID', 'Language', 'TriggerID', 'searchclassFolder', 'searchclassFolder_class', 'urlMap');
-		array_push($this->EditPageNrs, WE_EDITPAGE_PROPERTIES, WE_EDITPAGE_INFO);
+		if(isWE()){
+			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_INFO);
+		}
 		$this->Table = FILE_TABLE;
 		$this->ContentType = 'folder';
 		$this->Icon = we_base_ContentTypes::FOLDER_ICON;
@@ -99,14 +101,17 @@ class we_folder extends we_root{
 	 * adjust EditPageNrs for CUSTOMERFILTER AND DOCLIST
 	 */
 	function adjustEditPageNr(){
-		if(defined('CUSTOMER_TABLE') && (permissionhandler::hasPerm('CAN_EDIT_CUSTOMERFILTER') || permissionhandler::hasPerm('CAN_CHANGE_DOCS_CUSTOMER'))){
+		if(isWE()){
+			if(defined('CUSTOMER_TABLE') && (permissionhandler::hasPerm('CAN_EDIT_CUSTOMERFILTER') || permissionhandler::hasPerm('CAN_CHANGE_DOCS_CUSTOMER'))){
 
-			if($this->Table == FILE_TABLE || $this->Table == OBJECT_FILES_TABLE){
-				array_push($this->EditPageNrs, WE_EDITPAGE_WEBUSER);
+				if($this->Table == FILE_TABLE || $this->Table == OBJECT_FILES_TABLE){
+					array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_WEBUSER);
+				}
 			}
-		}
-		if($this->Table == FILE_TABLE){
-			array_push($this->EditPageNrs, WE_EDITPAGE_DOCLIST);
+
+			if($this->Table == FILE_TABLE){
+				$this->EditPageNrs[] = we_base_constants::WE_EDITPAGE_DOCLIST;
+			}
 		}
 	}
 
@@ -451,17 +456,17 @@ class we_folder extends we_root{
 
 	function editor(){
 		switch($this->EditPageNr){
-			case WE_EDITPAGE_PROPERTIES:
+			case we_base_constants::WE_EDITPAGE_PROPERTIES:
 				return 'we_templates/we_editor_properties.inc.php';
-			case WE_EDITPAGE_INFO:
+			case we_base_constants::WE_EDITPAGE_INFO:
 				return 'we_templates/we_editor_info.inc.php';
-			case WE_EDITPAGE_WEBUSER:
+			case we_base_constants::WE_EDITPAGE_WEBUSER:
 				return 'we_modules/customer/editor_weDocumentCustomerFilter.inc.php';
-			case WE_EDITPAGE_DOCLIST:
+			case we_base_constants::WE_EDITPAGE_DOCLIST:
 				return 'we_doclist/we_editor_doclist.inc.php';
 			default:
-				$this->EditPageNr = WE_EDITPAGE_PROPERTIES;
-				$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_PROPERTIES;
+				$this->EditPageNr = we_base_constants::WE_EDITPAGE_PROPERTIES;
+				$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_PROPERTIES;
 				return 'we_templates/we_editor_properties.inc.php';
 		}
 	}

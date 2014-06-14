@@ -33,17 +33,19 @@ abstract class we_textContentDocument extends we_textDocument{
 		$this->persistent_slots[] = 'DocType';
 		$this->PublWhenSave = 0;
 		$this->IsTextContentDoc = true;
-		if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
-			array_push($this->persistent_slots, 'FromOk', 'ToOk', 'From', 'To');
+		if(isWE()){
+			if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
+				array_push($this->persistent_slots, 'FromOk', 'ToOk', 'From', 'To');
+			}
+			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PREVIEW, we_base_constants::WE_EDITPAGE_SCHEDULER);
 		}
-		array_push($this->EditPageNrs, WE_EDITPAGE_PREVIEW, WE_EDITPAGE_SCHEDULER);
 	}
 
 	function editor(){
 		switch($this->EditPageNr){
-			case WE_EDITPAGE_SCHEDULER:
+			case we_base_constants::WE_EDITPAGE_SCHEDULER:
 				return 'we_modules/schedule/we_editor_schedpro.inc.php';
-			case WE_EDITPAGE_VALIDATION:
+			case we_base_constants::WE_EDITPAGE_VALIDATION:
 				return 'we_templates/validateDocument.inc.php';
 			default:
 				return parent::editor();

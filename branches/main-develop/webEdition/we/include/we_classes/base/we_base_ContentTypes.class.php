@@ -269,7 +269,7 @@ class we_base_ContentTypes{
 	}
 
 	public function getExtension($name){
-		return isset($this->ct[$name]) && !$this->ct[$name] ['ExtensionIsFilename'] ? $this->ct[$name]['Extension'] : '';
+		return isset($this->ct[$name]) && !$this->ct[$name]['ExtensionIsFilename'] ? $this->ct[$name]['Extension'] : '';
 	}
 
 	public function isWEFile($name){

@@ -53,9 +53,11 @@ class we_binaryDocument extends we_document{
 	function __construct($LoadBinaryContent = true){
 		parent::__construct();
 		array_push($this->persistent_slots, 'html', 'DocChanged');
-		array_push($this->EditPageNrs, WE_EDITPAGE_PROPERTIES, WE_EDITPAGE_INFO, WE_EDITPAGE_CONTENT, WE_EDITPAGE_VERSIONS);
-		if(defined('CUSTOMER_TABLE') && (permissionhandler::hasPerm('CAN_EDIT_CUSTOMERFILTER') || permissionhandler::hasPerm('CAN_CHANGE_DOCS_CUSTOMER'))){
-			$this->EditPageNrs[] = WE_EDITPAGE_WEBUSER;
+		if(isWE()){
+			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_INFO, we_base_constants::WE_EDITPAGE_CONTENT, we_base_constants::WE_EDITPAGE_VERSIONS);
+			if(defined('CUSTOMER_TABLE') && (permissionhandler::hasPerm('CAN_EDIT_CUSTOMERFILTER') || permissionhandler::hasPerm('CAN_CHANGE_DOCS_CUSTOMER'))){
+				$this->EditPageNrs[] = we_base_constants::WE_EDITPAGE_WEBUSER;
+			}
 		}
 		$this->LoadBinaryContent = $LoadBinaryContent;
 	}
@@ -64,22 +66,22 @@ class we_binaryDocument extends we_document{
 
 	function editor(){
 		switch($this->EditPageNr){
-			case WE_EDITPAGE_PROPERTIES:
+			case we_base_constants::WE_EDITPAGE_PROPERTIES:
 				return 'we_templates/we_editor_properties.inc.php';
-			case WE_EDITPAGE_IMAGEEDIT:
+			case we_base_constants::WE_EDITPAGE_IMAGEEDIT:
 				return 'we_templates/we_image_imageedit.inc.php';
-			case WE_EDITPAGE_INFO:
+			case we_base_constants::WE_EDITPAGE_INFO:
 				return 'we_templates/we_editor_info.inc.php';
-			case WE_EDITPAGE_CONTENT:
+			case we_base_constants::WE_EDITPAGE_CONTENT:
 				return 'we_templates/we_editor_binaryContent.inc.php';
-			case WE_EDITPAGE_WEBUSER:
+			case we_base_constants::WE_EDITPAGE_WEBUSER:
 				return 'we_modules/customer/editor_weDocumentCustomerFilter.inc.php';
-			case WE_EDITPAGE_VERSIONS:
+			case we_base_constants::WE_EDITPAGE_VERSIONS:
 				return 'we_versions/we_editor_versions.inc.php';
 				break;
 			default:
-				$this->EditPageNr = WE_EDITPAGE_PROPERTIES;
-				$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_PROPERTIES;
+				$this->EditPageNr = we_base_constants::WE_EDITPAGE_PROPERTIES;
+				$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_PROPERTIES;
 				return 'we_templates/we_editor_properties.inc.php';
 		}
 	}

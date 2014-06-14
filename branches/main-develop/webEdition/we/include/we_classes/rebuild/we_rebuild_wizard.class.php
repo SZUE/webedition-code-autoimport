@@ -507,11 +507,11 @@ abstract class we_rebuild_wizard{
 		$thumbsFolders = we_base_request::_(we_base_request::RAW, 'thumbsFolders', '');
 		$metaFolders = we_base_request::_(we_base_request::RAW, 'metaFolders', '');
 		$metaFields = we_base_request::_(we_base_request::RAW, '_field', '');
-		$thumbs = (isset($_REQUEST['thumbs']) && is_array($_REQUEST['thumbs'])) ? makeCSVFromArray($_REQUEST['thumbs'], true) : '';
+		$thumbs = makeCSVFromArray(we_base_request::_(we_base_request::RAW, 'thumbs', array()), true);
 		$type = we_base_request::_(we_base_request::RAW, 'type', 'rebuild_documents');
 		$btype = we_base_request::_(we_base_request::RAW, 'btype', 'rebuild_all');
 		$categories = we_base_request::_(we_base_request::RAW, 'categories', '');
-		$doctypes = (isset($_REQUEST['doctypes']) && is_array($_REQUEST['doctypes'])) ? makeCSVFromArray($_REQUEST['doctypes'], true) : '';
+		$doctypes = makeCSVFromArray(we_base_request::_(we_base_request::RAW, 'doctypes', array()), true);
 		$folders = we_base_request::_(we_base_request::RAW, 'folders', '');
 		$maintable = we_base_request::_(we_base_request::BOOL, 'maintable');
 		$catAnd = we_base_request::_(we_base_request::BOOL, 'catAnd');
@@ -589,10 +589,10 @@ abstract class we_rebuild_wizard{
 		$thumbsFolders = we_base_request::_(we_base_request::RAW, 'thumbsFolders', '');
 		$metaFolders = we_base_request::_(we_base_request::RAW, 'metaFolders', '');
 		$metaFields = we_base_request::_(we_base_request::RAW, '_field', array());
-		$thumbs = (isset($_REQUEST['thumbs']) && is_array($_REQUEST['thumbs'])) ? makeCSVFromArray($_REQUEST['thumbs'], true) : '';
+		$thumbs = makeCSVFromArray(we_base_request::_(we_base_request::RAW, 'thumbs', array()), true);
 		$type = we_base_request::_(we_base_request::RAW, 'type', 'rebuild_documents');
 		$categories = we_base_request::_(we_base_request::RAW, 'categories', '');
-		$doctypes = (isset($_REQUEST['doctypes']) && is_array($_REQUEST['doctypes'])) ? makeCSVFromArray($_REQUEST['doctypes'], true) : '';
+		$doctypes = makeCSVFromArray(we_base_request::_(we_base_request::RAW, 'doctypes', array()), true);
 		$folders = we_base_request::_(we_base_request::RAW, 'folders', '');
 		$catAnd = we_base_request::_(we_base_request::RAW, 'catAnd', 0);
 		$onlyEmpty = we_base_request::_(we_base_request::RAW, 'onlyEmpty', 0);
@@ -659,10 +659,10 @@ abstract class we_rebuild_wizard{
 		$metaFolders = we_base_request::_(we_base_request::RAW, 'metaFolders', '');
 		$onlyEmpty = we_base_request::_(we_base_request::BOOL, 'onlyEmpty');
 		$metaFields = we_base_request::_(we_base_request::RAW, '_field', array());
-		$thumbs = (isset($_REQUEST['thumbs']) && is_array($_REQUEST['thumbs'])) ? makeCSVFromArray($_REQUEST['thumbs'], true) : '';
+		$thumbs = makeCSVFromArray(we_base_request::_(we_base_request::RAW, 'thumbs', array()), true);
 		$type = we_base_request::_(we_base_request::RAW, 'type', 'rebuild_documents');
 		$categories = we_base_request::_(we_base_request::RAW, 'categories', '');
-		$doctypes = (isset($_REQUEST['doctypes']) && is_array($_REQUEST['doctypes'])) ? makeCSVFromArray($_REQUEST['doctypes'], true) : '';
+		$doctypes = makeCSVFromArray(we_base_request::_(we_base_request::RAW, 'doctypes', array()), true);
 		$folders = we_base_request::_(we_base_request::RAW, 'folders', '');
 		$catAnd = we_base_request::_(we_base_request::BOOL, 'catAnd');
 
@@ -730,11 +730,16 @@ abstract class we_rebuild_wizard{
 	 * @return string
 	 */
 	static function getFrameset(){
-		$tail = (isset($_REQUEST['btype']) ? '&amp;btype=' . rawurlencode($_REQUEST['btype']) : '') .
-			(isset($_REQUEST['type']) ? '&amp;type=' . rawurlencode($_REQUEST['type']) : '') .
-			(isset($_REQUEST['templateID']) ? '&amp;templateID=' . rawurlencode($_REQUEST['templateID']) : '') .
-			(isset($_REQUEST['step']) ? '&amp;step=' . rawurlencode($_REQUEST['step']) : '') .
-			(isset($_REQUEST['responseText']) ? '&amp;responseText=' . rawurlencode($_REQUEST['responseText']) : '');
+		$btype = we_base_request::_(we_base_request::RAW, 'bytpe');
+		$type = we_base_request::_(we_base_request::RAW, 'type');
+		$tid = we_base_request::_(we_base_request::INT, 'templateID');
+		$step = we_base_request::_(we_base_request::INT, 'step');
+		$resp = we_base_request::_(we_base_request::STRING, 'responseText');
+		$tail = ($btype ? '&amp;btype=' . rawurlencode($btype) : '') .
+			($type ? '&amp;type=' . rawurlencode($type) : '') .
+			($tid ? '&amp;templateID=' . $tid : '') .
+			($step ? '&amp;step=' . $step : '') .
+			($resp ? '&amp;responseText=' . rawurlencode($resp) : '');
 
 		$taskname = md5(session_id() . '_rebuild');
 		$taskFilename = WE_FRAGMENT_PATH . $taskname;

@@ -86,7 +86,7 @@ class we_document extends we_root{
 			foreach($this->elements as $n => $e){
 				$this->elements[$n]['cid'] = 0;
 			}
-			$this->EditPageNr = WE_EDITPAGE_PROPERTIES;
+			$this->EditPageNr = we_base_constants::WE_EDITPAGE_PROPERTIES;
 			$this->InWebEdition = true;
 			if(isset($this->documentCustomerFilter)){
 				$this->documentCustomerFilter = $doc->documentCustomerFilter;
@@ -131,7 +131,7 @@ class we_document extends we_root{
 		list($_userLanguage) = explode('_', isset($_SESSION['prefs']['Language']) ? $_SESSION['prefs']['Language'] : '');
 
 		// trying to get locale string out of interface language
-		$_key = array_search($_userLanguage, $GLOBALS['WE_LANGS']);
+		$_key = array_search($_userLanguage, getWELangs());
 
 		$_defLang = $GLOBALS['weDefaultFrontendLanguage'];
 
@@ -1534,7 +1534,7 @@ class we_document extends we_root{
 	function checkTabs(){
 		if(!$this->canHaveVariants(true)){
 
-			$ind = array_search(WE_EDITPAGE_VARIANTS, $this->EditPageNrs);
+			$ind = array_search(we_base_constants::WE_EDITPAGE_VARIANTS, $this->EditPageNrs);
 			if(!empty($ind)){
 				array_splice($this->EditPageNrs, $ind, 1);
 			}

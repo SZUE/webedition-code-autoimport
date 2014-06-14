@@ -31,7 +31,7 @@ if($cmd == 'ok'){
 		$msg = g_l('modules_workflow', '[' . stripTblPrefix($we_doc->Table) . '][in_workflow_ok]');
 		$msgType = we_message_reporting::WE_MESSAGE_NOTICE;
 		if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
-			$script = "opener.top.we_cmd('switch_edit_page'," . WE_EDITPAGE_PREVIEW . ",'" . $we_transaction . "');";
+			$script = "opener.top.we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_PREVIEW . ",'" . $we_transaction . "');";
 		} else if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
 			$script = 'opener.top.weEditorFrameController.getActiveDocumentReference().frames[3].location.reload();';
 		}
@@ -40,14 +40,14 @@ if($cmd == 'ok'){
 			$we_doc->makeSameNew();
 			$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
 			$script .= 'opener.top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");'; // wird in Templ eingef�gt
-		} elseif(($we_doc->EditPageNr == WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == WE_EDITPAGE_INFO)){
+		} elseif(($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_INFO)){
 			$script .= 'opener.top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");'; // wird in Templ eingef�gt
 		}
 	} else {
 		$msg = g_l('modules_workflow', '[' . stripTblPrefix($we_doc->Table) . '][in_workflow_notok]');
 		$msgType = we_message_reporting::WE_MESSAGE_ERROR;
 		if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
-			$script = "opener.top.we_cmd('switch_edit_page'," . WE_EDITPAGE_PREVIEW . ",'" . $we_transaction . "');";
+			$script = "opener.top.we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_PREVIEW . ",'" . $we_transaction . "');";
 		} else if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
 			$script = '';
 		}

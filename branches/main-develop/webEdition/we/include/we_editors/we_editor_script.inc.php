@@ -56,7 +56,7 @@ we_html_tools::protect();
 </style>
 <?php
 if(isset($GLOBALS['we_doc'])){
-	if($GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT && $GLOBALS['we_doc']->ContentType == we_base_ContentTypes::TEMPLATE){
+	if($GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT && $GLOBALS['we_doc']->ContentType == we_base_ContentTypes::TEMPLATE){
 		//no wyswyg
 	} else {
 		echo we_wysiwyg_editor::getHeaderHTML();
@@ -64,7 +64,7 @@ if(isset($GLOBALS['we_doc'])){
 }
 // Dreamweaver RPC Command ShowPreparedPreview
 // disable javascript errors
-if(we_base_request::_(we_base_request::STRING,'cmd') == 'ShowPreparedPreview'){
+if(we_base_request::_(we_base_request::STRING, 'cmd') == 'ShowPreparedPreview'){
 
 	echo we_html_element::jsElement('
 // overwrite/disable some functions in javascript!!!!
@@ -91,9 +91,9 @@ echo we_html_element::jsScript(JS_DIR . 'we_textarea.js');
 
 if(isset($GLOBALS['we_doc'])){
 	$useSeeModeJS = array(
-		we_base_ContentTypes::WEDOCUMENT => array(WE_EDITPAGE_CONTENT),
-		we_base_ContentTypes::TEMPLATE => array(WE_EDITPAGE_PREVIEW, WE_EDITPAGE_PREVIEW_TEMPLATE),
-		"objectFile" => array(WE_EDITPAGE_CONTENT, WE_EDITPAGE_PREVIEW)
+		we_base_ContentTypes::WEDOCUMENT => array(we_base_constants::WE_EDITPAGE_CONTENT),
+		we_base_ContentTypes::TEMPLATE => array(we_base_constants::WE_EDITPAGE_PREVIEW, we_base_constants::WE_EDITPAGE_PREVIEW_TEMPLATE),
+		"objectFile" => array(we_base_constants::WE_EDITPAGE_CONTENT, we_base_constants::WE_EDITPAGE_PREVIEW)
 	);
 
 
@@ -143,8 +143,8 @@ function seeMode_dealWithLinks() {
 	if (!_EditorFrame) {
 
 <?php
-echo (isset($_REQUEST["we_transaction"]) ?
-	"_EditorFrame = _controller.getEditorFrameByTransaction('" . ($_we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 0)) . "');" :
+echo (($_we_transaction = we_base_request::_(we_base_request::TRANSACTION, "we_transaction", 0)) ?
+	"_EditorFrame = _controller.getEditorFrameByTransaction('" . $_we_transaction . "');" :
 	"_EditorFrame = _controller.getEditorFrame();");
 ?>
 
@@ -231,7 +231,7 @@ if(isset($GLOBALS['we_doc'])){
 				_filepath += _filetext;
 				parent.frames[0].we_setPath(_filepath, _filetext, -1);
 	<?php
-	if(defined("CUSTOMER_TABLE") && in_array(WE_EDITPAGE_WEBUSER, $GLOBALS['we_doc']->EditPageNrs) && isset($GLOBALS['we_doc']->documentCustomerFilter)){
+	if(defined("CUSTOMER_TABLE") && in_array(we_base_constants::WE_EDITPAGE_WEBUSER, $GLOBALS['we_doc']->EditPageNrs) && isset($GLOBALS['we_doc']->documentCustomerFilter)){
 		// only use this when customer filters are possible
 		?>
 					updateCustomerFilterIfNeeded();
@@ -292,21 +292,14 @@ if(isset($GLOBALS['we_doc'])){
 		t = f.elements[n];
 		check = f.elements[n2].value;
 
-		t.value = (check == "on") ? br2nl(t.value) : nl2br(t.value);
+		t.value = (check === "on") ? br2nl(t.value) : nl2br(t.value);
 
 	}
 	function nl2br(i) {
-		i = i.replace(/\r\n/g, "<br/>");
-		i = i.replace(/\n/g, "<br/>");
-		i = i.replace(/\r/g, "<br/>");
-		return i.replace(/<br/>/g, "<br/>\n");
+		return i.replace(/\r\n/g, "<br/>").replace(/\n/g, "<br/>").replace(/\r/g, "<br/>").replace(/<br\/>/g, "<br/>\n");
 	}
 	function br2nl(i) {
-		i = i.replace(/\n\r/g, "");
-		i = i.replace(/\r\n/g, "");
-		i = i.replace(/\n/g, "");
-		i = i.replace(/\r/g, "");
-		return i.replace(/<br ?\/?>/gi, "\n");
+		return i.replace(/\n\r/g, "").replace(/\r\n/g, "").replace(/\n/g, "").replace(/\r/g, "").replace(/<br ?\/?>/gi, "\n");
 	}
 	function we_submitForm(target, url) {
 		var f = self.document.we_form;

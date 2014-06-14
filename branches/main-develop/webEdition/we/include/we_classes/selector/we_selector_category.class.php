@@ -271,7 +271,7 @@ if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles
 				d.writeln('</body>');
 				d.close();
 			}
-		//-->
+			//-->
 		</script>
 		<?php
 	}
@@ -413,7 +413,7 @@ top.selectFile(top.currentID);') .
 		} else {
 			$parentPath = (!intval($this->dir)) ? '' : f('SELECT Path FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->dir), 'Path', $this->db);
 			$Path = $parentPath . '/' . $txt;
-			if(f('SELECT 1 FROM ' . $this->db->escape($this->table) . " WHERE Path='" . $this->db->escape($Path) . "' AND ID!=" . intval($this->we_editCatID).' LIMIT 1', '', $this->db)){
+			if(f('SELECT 1 FROM ' . $this->db->escape($this->table) . " WHERE Path='" . $this->db->escape($Path) . "' AND ID!=" . intval($this->we_editCatID) . ' LIMIT 1', '', $this->db)){
 				$js.=we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', ($what == 1 ? '[folder]' : '[category]') . '[response_path_exists]'), $Path), we_message_reporting::WE_MESSAGE_ERROR);
 			} else {
 				if(preg_match('|[\'"<>/]|', $txt)){
@@ -824,7 +824,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 	}
 
 	function getFrameset(){
-		$isMainChooser = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) == 'openCatselector' && !($_REQUEST['we_cmd'][3] || $_REQUEST['we_cmd'][5]);
+		$isMainChooser = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) == 'openCatselector' && !(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 3) || we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 5));
 		return '<frameset rows="67,*,65,0" border="0">
 	<frame src="' . $this->getFsQueryString(we_selector_file::HEADER) . '" name="fsheader" noresize scrolling="no">
 ' . ($isMainChooser ? '<frameset cols="35%,65%" border="0">' : '') . '
@@ -846,8 +846,8 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 			$fields = ($fields ?
 					unserialize($fields) :
 					array("default" => array("Title" => "", "Description" => "")));
-			$fields[$_SESSION['weS']["we_catVariant"]]["Title"] = we_base_request::_(we_base_request::STRING, "catTitle",'');
-			$fields[$_SESSION['weS']["we_catVariant"]]["Description"] = we_base_request::_(we_base_request::RAW, "catDescription",'');
+			$fields[$_SESSION['weS']["we_catVariant"]]["Title"] = we_base_request::_(we_base_request::STRING, "catTitle", '');
+			$fields[$_SESSION['weS']["we_catVariant"]]["Description"] = we_base_request::_(we_base_request::RAW, "catDescription", '');
 			$path = $result['Path'];
 			$parentid = we_base_request::_(we_base_request::INT, 'FolderID', $result['ParentID']);
 			$category = we_base_request::_(we_base_request::STRING, 'Category', $result['Category']);

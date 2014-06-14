@@ -23,7 +23,7 @@
  */
 $yuiSuggest = & weSuggest::getInstance();
 
-if($we_doc->EditPageNr == WE_EDITPAGE_PROPERTIES){
+if($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES){
 	//	send charset, if one is set:
 	$charset = $we_doc->getElement('Charset');
 	$charset = $charset ? $charset : DEFAULT_CHARSET;

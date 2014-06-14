@@ -177,6 +177,7 @@ function filterXss($var, $type = 'string'){
  * @param string $name name of variable in Request array
  * @param mixed $default default value
  * @param mixed $index optional index
+ * @deprecated since version 6.3.8
  * @return mixed default, if value not set, the filtered value else
  */
 function weRequest($type, $name, $default = false, $index = null){
@@ -396,7 +397,7 @@ function getHashArrayFromCSV($csv, $firstEntry, we_database_base $db = null){
 	return $out;
 }
 
-function getPathsFromTable($table = FILE_TABLE, we_database_base $db = null, $type = FILE_ONLY, $wsIDs = '', $order = 'Path', $limitCSV = '', $first = ''){
+function getPathsFromTable($table = FILE_TABLE, we_database_base $db = null, $type = we_base_constants::FILE_ONLY, $wsIDs = '', $order = 'Path', $limitCSV = '', $first = ''){
 	$db = ($db ? $db : new DB_WE());
 	$limitCSV = trim($limitCSV, ',');
 	$query = array();
@@ -415,10 +416,10 @@ function getPathsFromTable($table = FILE_TABLE, we_database_base $db = null, $ty
 		$query[] = ' (' . implode(' OR ', $qfoo) . ' )';
 	}
 	switch($type){
-		case FILE_ONLY :
+		case we_base_constants::FILE_ONLY :
 			$query[] = ' IsFolder=0 ';
 			break;
-		case FOLDER_ONLY :
+		case we_base_constants::FOLDER_ONLY :
 			$query[] = ' IsFolder=1 ';
 			break;
 	}
@@ -1389,7 +1390,10 @@ function implodeJS($js){
 	return preg_replace('|' . preg_quote($post, '|') . '[\n\t ]*' . preg_quote($pre, '|') . '|', "\n", $js);
 }
 
-//FIXME: remove this function and all calls to it
+/**
+ *
+ * @deprecated since version 6.3.0
+ */
 function update_time_limit($newLimit){
 	if($newLimit == 0 || intval(ini_get('memory_limit')) < $newLimit){
 		@set_time_limit($newLimit);
@@ -1397,8 +1401,46 @@ function update_time_limit($newLimit){
 }
 
 //FIXME: remove this function & all calls to it
+/**
+ *
+ * @deprecated since version 6.3.0
+ */
 function update_mem_limit($newLimit){
 	if(intval(ini_get('memory_limit')) < $newLimit){
 		@ini_set('memory_limit', $newLimit . 'M');
 	}
+}
+
+/**
+ *
+ * @return bool true if inside WE
+ */
+function isWE(){
+	return isset($_SESSION['user']['isWeSession']) && $_SESSION['user']['isWeSession'];
+}
+
+function getWELangs(){
+	return array(
+		'de' => 'Deutsch',
+		'en' => 'English',
+		'nl' => 'Dutch',
+		'fi' => 'Finnish',
+		'ru' => 'Russian',
+		'es' => 'Spanish',
+		'pl' => 'Polish',
+		'fr' => 'French'
+	);
+}
+
+function getWECountries(){
+	return array(
+		'DE' => 'de',
+		'GB' => 'en',
+		'NL' => 'nl',
+		'FI' => 'fi',
+		'RU' => 'ru',
+		'ES' => 'es',
+		'PL' => 'pl',
+		'FR' => 'fr'
+	);
 }

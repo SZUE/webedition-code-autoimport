@@ -365,7 +365,7 @@ function switchExt(){
 		$ws = get_ws(FILE_TABLE);
 		if($ws){
 			$b = makeArrayFromCSV($ws);
-			if(WE_DOCTYPE_WORKSPACE_BEHAVIOR == 0){
+			if(!WE_DOCTYPE_WORKSPACE_BEHAVIOR){
 				foreach($b as $k => $v){
 					$db->query('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($v));
 					while($db->next_record()){

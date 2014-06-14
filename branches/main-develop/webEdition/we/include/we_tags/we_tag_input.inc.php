@@ -185,7 +185,7 @@ function we_tag_input($attribs, $content){
 				$langcode = substr($lang, 0, 2);
 				if($lang == ''){
 					$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
-					$langcode = array_search($lang[0], $GLOBALS['WE_LANGS']);
+					$langcode = array_search($lang[0], getWELangs());
 				}
 				if($GLOBALS['we_doc']->getElement($name) == '--'){
 					return '';
@@ -205,7 +205,7 @@ function we_tag_input($attribs, $content){
 				$langcode = substr($lang, 0, 2);
 				if($lang == ''){
 					$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
-					$langcode = array_search($lang[0], $GLOBALS['WE_LANGS']);
+					$langcode = array_search($lang[0], getWELangs());
 				}
 				if(!Zend_Locale::hasCache()){
 					Zend_Locale::setCache(getWEZendCache());

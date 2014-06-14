@@ -81,10 +81,12 @@ class we_objectFile extends we_document{
 			$ac = we_users_util::getAllowedClasses($this->DB_WE);
 			$this->AllowedClasses = makeCSVFromArray($ac);
 		}
-		if(defined('CUSTOMER_TABLE') && permissionhandler::hasPerm('CAN_EDIT_CUSTOMERFILTER')){
-			$this->EditPageNrs[] = WE_EDITPAGE_WEBUSER;
+		if(isWE()){
+			if(defined('CUSTOMER_TABLE') && permissionhandler::hasPerm('CAN_EDIT_CUSTOMERFILTER')){
+				$this->EditPageNrs[] = we_base_constants::WE_EDITPAGE_WEBUSER;
+			}
+			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_INFO, we_base_constants::WE_EDITPAGE_CONTENT, we_base_constants::WE_EDITPAGE_WORKSPACE, we_base_constants::WE_EDITPAGE_PREVIEW, we_base_constants::WE_EDITPAGE_VARIANTS, we_base_constants::WE_EDITPAGE_VERSIONS, we_base_constants::WE_EDITPAGE_SCHEDULER);
 		}
-		array_push($this->EditPageNrs, WE_EDITPAGE_PROPERTIES, WE_EDITPAGE_INFO, WE_EDITPAGE_CONTENT, WE_EDITPAGE_WORKSPACE, WE_EDITPAGE_PREVIEW, WE_EDITPAGE_VARIANTS, WE_EDITPAGE_VERSIONS, WE_EDITPAGE_SCHEDULER);
 	}
 
 	public static function initObject($classID, $formname = 'we_global_form', $categories = '', $parentid = 0, $wewrite = false){
@@ -331,7 +333,7 @@ class we_objectFile extends we_document{
 		foreach(array_keys($this->elements) as $n){
 			$this->elements[$n]['cid'] = 0;
 		}
-		$this->EditPageNr = WE_EDITPAGE_PROPERTIES;
+		$this->EditPageNr = we_base_constants::WE_EDITPAGE_PROPERTIES;
 		$this->Category = $doc->Category;
 		$this->documentCustomerFilter = $doc->documentCustomerFilter;
 	}
@@ -560,33 +562,33 @@ class we_objectFile extends we_document{
 
 	function editor(){
 		switch($this->EditPageNr){
-			case WE_EDITPAGE_PROPERTIES:
-			case WE_EDITPAGE_WORKSPACE:
+			case we_base_constants::WE_EDITPAGE_PROPERTIES:
+			case we_base_constants::WE_EDITPAGE_WORKSPACE:
 				return 'we_templates/we_editor_properties.inc.php';
-			case WE_EDITPAGE_INFO:
+			case we_base_constants::WE_EDITPAGE_INFO:
 				return 'we_modules/object/we_editor_info_objectFile.inc.php';
-			case WE_EDITPAGE_CONTENT:
+			case we_base_constants::WE_EDITPAGE_CONTENT:
 				return 'we_modules/object/we_editor_contentobjectFile.inc.php';
-			case WE_EDITPAGE_PREVIEW:
+			case we_base_constants::WE_EDITPAGE_PREVIEW:
 				return 'we_modules/object/we_object_showDocument.inc.php';
-			case WE_EDITPAGE_SCHEDULER:
+			case we_base_constants::WE_EDITPAGE_SCHEDULER:
 				return 'we_modules/schedule/we_editor_schedpro.inc.php';
-			case WE_EDITPAGE_VARIANTS:
+			case we_base_constants::WE_EDITPAGE_VARIANTS:
 				return 'we_templates/we_editor_variants.inc.php';
-			case WE_EDITPAGE_WEBUSER:
+			case we_base_constants::WE_EDITPAGE_WEBUSER:
 				return 'we_modules/customer/editor_weDocumentCustomerFilter.inc.php';
-			case WE_EDITPAGE_VERSIONS:
+			case we_base_constants::WE_EDITPAGE_VERSIONS:
 				return 'we_versions/we_editor_versions.inc.php';
 			default:
-				$this->EditPageNr = WE_EDITPAGE_PROPERTIES;
-				$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_PROPERTIES;
+				$this->EditPageNr = we_base_constants::WE_EDITPAGE_PROPERTIES;
+				$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_PROPERTIES;
 				return 'we_templates/we_editor_properties.inc.php';
 		}
 	}
 
 	function publishFromInsideDocument(){
 		$this->publish();
-		if($this->EditPageNr == WE_EDITPAGE_PROPERTIES || $this->EditPageNr == WE_EDITPAGE_INFO){
+		if($this->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES || $this->EditPageNr == we_base_constants::WE_EDITPAGE_INFO){
 			$_REQUEST['we_cmd'][5] = 'top.we_cmd("switch_edit_page",' . $this->EditPageNr . ',"' . $GLOBALS["we_transaction"] . '");';
 		}
 		$GLOBALS['we_JavaScript'] = "_EditorFrame.setEditorDocumentId(" . $this->ID . ");" . $this->getUpdateTreeScript();
@@ -594,7 +596,7 @@ class we_objectFile extends we_document{
 
 	function unpublishFromInsideDocument(){
 		$this->unpublish();
-		if($this->EditPageNr == WE_EDITPAGE_PROPERTIES || $this->EditPageNr == WE_EDITPAGE_INFO){
+		if($this->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES || $this->EditPageNr == we_base_constants::WE_EDITPAGE_INFO){
 			$_REQUEST['we_cmd'][5] = 'top.we_cmd("switch_edit_page",' . $this->EditPageNr . ',"' . $GLOBALS["we_transaction"] . '");';
 		}
 		$GLOBALS["we_JavaScript"] = "_EditorFrame.setEditorDocumentId(" . $this->ID . ");" . $this->getUpdateTreeScript();
@@ -1263,7 +1265,7 @@ class we_objectFile extends we_document{
 		}
 
 		$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
-		$langcode = array_search($lang[0], $GLOBALS['WE_LANGS']);
+		$langcode = array_search($lang[0], getWELangs());
 
 		if(!$editable){
 			return '<div class="weObjectPreviewHeadline">' . $name . '</div>' .
@@ -1271,7 +1273,7 @@ class we_objectFile extends we_document{
 					'');
 		}
 
-		$countrycode = array_search($langcode, $GLOBALS['WE_LANGS_COUNTRIES']);
+		$countrycode = array_search($langcode, getWECountries());
 		$countryselect = new we_html_select(array("name" => "we_" . $this->Name . "_language[$name]", "size" => 1, "style" => "width:620;", "class" => "wetextinput", "onchange" => "_EditorFrame.setEditorIsHot(true);"));
 
 		$topCountries = array_flip(explode(',', WE_COUNTRIES_TOP));

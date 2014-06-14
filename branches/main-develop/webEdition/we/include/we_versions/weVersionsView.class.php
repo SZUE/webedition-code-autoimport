@@ -824,7 +824,7 @@ function delRow(id) {
 	 */
 	function getNextPrev($we_search_anzahl){
 
-		if(isset($_REQUEST['we_cmd']['obj'])){
+		if(isset($GLOBALS['we_cmd_obj'])){
 			$thisObj = new weVersionsView();
 			$anzahl = $_SESSION['weS']['versions']['anzahl'];
 			$searchstart = $_SESSION['weS']['versions']['searchstart'];
@@ -858,7 +858,7 @@ function delRow(id) {
 
 		$select = we_html_tools::htmlSelect('page', $pages, 1, $page, false, array('id' => 'pageselect', 'onchange' => 'this.form.elements[\'searchstart\'].value=this.value;search(false);'));
 
-		if(!isset($_REQUEST['we_cmd']['setInputSearchstart'])){
+		if(!isset($GLOBALS['setInputSearchstart'])){
 			if(!defined("searchstart")){
 				define('searchstart', true);
 				$out .= we_html_tools::hidden("searchstart", $searchstart);
@@ -877,7 +877,7 @@ function delRow(id) {
 	 */
 	function getVersionsOfDoc(){
 
-		$thisObj = (isset($_REQUEST['we_cmd']['obj']) ? new weVersionsView() : $this);
+		$thisObj = (isset($GLOBALS['we_cmd_obj']) ? new weVersionsView() : $this);
 		$id = we_base_request::_(we_base_request::INT, 'id', $GLOBALS['we_doc']->ID);
 		$table = we_base_request::_(we_base_request::TABLE, 'table', $GLOBALS['we_doc']->Table);
 		$_order = we_base_request::_(we_base_request::RAW, 'we_cmd', $thisObj->searchclass->order, 'order');

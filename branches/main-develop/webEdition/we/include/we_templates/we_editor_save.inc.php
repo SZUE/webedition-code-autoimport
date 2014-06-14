@@ -121,11 +121,11 @@ if($we_responseText){
 			}';
 		}
 
-		if(in_array(WE_EDITPAGE_PREVIEW, $GLOBALS['we_doc']->EditPageNrs) && $GLOBALS['we_doc']->EditPageNr != WE_EDITPAGE_PREVIEW){ //	alert or confirm
+		if(in_array(we_base_constants::WE_EDITPAGE_PREVIEW, $GLOBALS['we_doc']->EditPageNrs) && $GLOBALS['we_doc']->EditPageNr != we_base_constants::WE_EDITPAGE_PREVIEW){ //	alert or confirm
 			$_jsCommand .= "
 			if(!showAlert){
 				if(confirm(\"" . $we_responseText . "\\n\\n" . g_l('SEEM', "[confirm][change_to_preview]") . "\")){
-					_EditorFrameDocumentRef.frames[0].we_cmd('switch_edit_page'," . WE_EDITPAGE_PREVIEW . ",'" . $GLOBALS['we_transaction'] . "');
+					_EditorFrameDocumentRef.frames[0].we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_PREVIEW . ",'" . $GLOBALS['we_transaction'] . "');
 				} else {
 					_EditorFrameDocumentRef.frames[0].we_cmd('switch_edit_page'," . $GLOBALS['we_doc']->EditPageNr . ",'" . $GLOBALS['we_transaction'] . "');
 				}

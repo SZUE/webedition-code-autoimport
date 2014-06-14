@@ -43,7 +43,9 @@ class we_template extends we_document{
 
 		array_push($this->persistent_slots, 'MasterTemplateID', 'IncludedTemplates', 'TagWizardCode', 'TagWizardSelection');
 		$this->elements['Charset']['dat'] = DEFAULT_CHARSET;
-		array_push($this->EditPageNrs, WE_EDITPAGE_PROPERTIES, WE_EDITPAGE_INFO, WE_EDITPAGE_CONTENT, WE_EDITPAGE_PREVIEW, WE_EDITPAGE_PREVIEW_TEMPLATE, WE_EDITPAGE_VARIANTS, WE_EDITPAGE_VERSIONS);
+		if(isWE()){
+			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_INFO, we_base_constants::WE_EDITPAGE_CONTENT, we_base_constants::WE_EDITPAGE_PREVIEW, we_base_constants::WE_EDITPAGE_PREVIEW_TEMPLATE, we_base_constants::WE_EDITPAGE_VARIANTS, we_base_constants::WE_EDITPAGE_VERSIONS);
+		}
 		$this->Published = 1;
 		$this->InWebEdition = true;
 		$this->ContentType = we_base_ContentTypes::TEMPLATE;
@@ -76,7 +78,7 @@ class we_template extends we_document{
 		while((list($k, $v) = $temp->nextElement('txt'))){
 			$this->setElement($k, $temp->getElement($k), 'txt');
 		}
-		$this->EditPageNr = WE_EDITPAGE_PROPERTIES;
+		$this->EditPageNr = we_base_constants::WE_EDITPAGE_PROPERTIES;
 		echo we_html_element::jsElement('
 var _currentEditorRootFrame = top.weEditorFrameController.getActiveDocumentReference();
 _currentEditorRootFrame.frames[2].reloadContent = true;');
@@ -86,31 +88,31 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 
 	function editor(){
 		switch($this->EditPageNr){
-			case WE_EDITPAGE_PROPERTIES:
+			case we_base_constants::WE_EDITPAGE_PROPERTIES:
 				return "we_templates/we_editor_properties.inc.php";
-			case WE_EDITPAGE_INFO:
+			case we_base_constants::WE_EDITPAGE_INFO:
 				return "we_templates/we_editor_info.inc.php";
-			case WE_EDITPAGE_CONTENT:
+			case we_base_constants::WE_EDITPAGE_CONTENT:
 				$GLOBALS["we_editmode"] = true;
 				return "we_templates/we_srcTmpl.inc.php";
-			case WE_EDITPAGE_PREVIEW:
+			case we_base_constants::WE_EDITPAGE_PREVIEW:
 				$GLOBALS["we_editmode"] = true;
 				$GLOBALS["we_file_to_delete_after_include"] = TEMP_PATH . '/' . we_base_file::getUniqueId();
 				we_util_File::saveFile($GLOBALS["we_file_to_delete_after_include"], $this->i_getDocument());
 				return $GLOBALS["we_file_to_delete_after_include"];
-			case WE_EDITPAGE_PREVIEW_TEMPLATE:
+			case we_base_constants::WE_EDITPAGE_PREVIEW_TEMPLATE:
 				$GLOBALS["we_editmode"] = false;
 				$GLOBALS["we_file_to_delete_after_include"] = TEMP_PATH . '/' . we_base_file::getUniqueId();
 				we_util_File::saveFile($GLOBALS["we_file_to_delete_after_include"], $this->i_getDocument());
 				return $GLOBALS["we_file_to_delete_after_include"];
-			case WE_EDITPAGE_VARIANTS:
+			case we_base_constants::WE_EDITPAGE_VARIANTS:
 				$GLOBALS["we_editmode"] = true;
 				return 'we_templates/we_editor_variants.inc.php';
-			case WE_EDITPAGE_VERSIONS:
+			case we_base_constants::WE_EDITPAGE_VERSIONS:
 				return "we_versions/we_editor_versions.inc.php";
 			default:
-				$this->EditPageNr = WE_EDITPAGE_PROPERTIES;
-				$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_PROPERTIES;
+				$this->EditPageNr = we_base_constants::WE_EDITPAGE_PROPERTIES;
+				$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_PROPERTIES;
 				return "we_templates/we_editor_properties.inc.php";
 		}
 	}

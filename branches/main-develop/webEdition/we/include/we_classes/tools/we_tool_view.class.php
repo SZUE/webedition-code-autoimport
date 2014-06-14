@@ -299,9 +299,9 @@ class we_tool_view{
 		}
 
 		if(is_array($this->Model->persistent_slots)){
-			foreach($this->Model->persistent_slots as $key => $val){
-				if(isset($_REQUEST[$val])){
-					$this->Model->$val = $_REQUEST[$val];
+			foreach($this->Model->persistent_slots as $val){
+				if(($tmp = we_base_request::_(we_base_request::STRING, $val))){
+					$this->Model->$val = $tmp;
 				}
 			}
 		}

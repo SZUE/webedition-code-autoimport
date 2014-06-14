@@ -98,10 +98,10 @@ class we_base_preferences{
 		foreach($values as $define => $value){
 			if(!preg_match('/define\(["\']' . $define . '["\'],/', $content)){
 				// Add needed variable
-				$content = self::changeSourceCode('add', $content, $define, $value[1], true, $value[0]);
+				$content = self::changeSourceCode('add', $content, $define, $value[2], true, $value[0]);
 				//define it in running session
 				if(!defined($define)){
-					define($define, $value[1]);
+					define($define, $value[2]);
 				}
 			}
 		}
@@ -144,11 +144,11 @@ class we_base_preferences{
 			if(isset($config[$setting])){
 				switch($name){
 					case 'global':
-						return (isset($config[$setting][2]) ? permissionhandler::hasPerm($config[$setting][2]) : permissionhandler::hasPerm('ADMINISTRATOR'));
+						return (isset($config[$setting][3]) ? permissionhandler::hasPerm($config[$setting][3]) : permissionhandler::hasPerm('ADMINISTRATOR'));
 					case 'user':
 						return true;
 					default:
-						return (isset($config[$setting][1]) ? permissionhandler::hasPerm($config[$setting][1]) : permissionhandler::hasPerm('ADMINISTRATOR'));
+						return (isset($config[$setting][2]) ? permissionhandler::hasPerm($config[$setting][2]) : permissionhandler::hasPerm('ADMINISTRATOR'));
 				}
 			}
 		}

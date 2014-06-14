@@ -23,7 +23,7 @@
  */
 if($_SESSION["user"]["ID"]){
 	$GLOBALS['DB_WE']->query("UPDATE " . USER_TABLE . " SET Ping=UNIX_TIMESTAMP(NOW()) WHERE ID=" . $_SESSION["user"]["ID"]);
-	$GLOBALS['DB_WE']->query('UPDATE ' . LOCK_TABLE . ' SET lockTime=NOW() + INTERVAL ' . (PING_TIME + PING_TOLERANZ) . ' SECOND WHERE UserID=' . intval($_SESSION["user"]["ID"]) . ' AND sessionID="' . session_id() . '"');
+	$GLOBALS['DB_WE']->query('UPDATE ' . LOCK_TABLE . ' SET lockTime=NOW() + INTERVAL ' . (we_base_constants::PING_TIME + we_base_constants::PING_TOLERANZ) . ' SECOND WHERE UserID=' . intval($_SESSION["user"]["ID"]) . ' AND sessionID="' . session_id() . '"');
 }
 
 echo we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
@@ -87,9 +87,9 @@ echo we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
 
 	function YUIdoAjax() {
 		YAHOO.util.Connect.asyncRequest('POST', ajaxURL, ajaxCallback, 'protocol=json&cmd=Ping');
-		setTimeout("YUIdoAjax()",<?php print PING_TIME; ?> * 1000);
+		setTimeout("YUIdoAjax()",<?php echo we_base_constants::PING_TIME; ?> * 1000);
 	}
 
-	setTimeout("YUIdoAjax()",<?php print PING_TIME; ?> * 1000);
+	setTimeout("YUIdoAjax()",<?php echo we_base_constants::PING_TIME; ?> * 1000);
 //-->
 </script>

@@ -50,7 +50,7 @@ we_base_file::cleanTempFiles();
 if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) != "edit_include_document"){
 	$GLOBALS['DB_WE']->query('DELETE FROM ' . LOCK_TABLE . '	WHERE lockTime<NOW()');
 }
-$GLOBALS['DB_WE']->query('UPDATE ' . USER_TABLE . '	SET Ping=0 WHERE Ping<UNIX_TIMESTAMP(NOW()-' . (PING_TIME + PING_TOLERANZ) . ')');
+$GLOBALS['DB_WE']->query('UPDATE ' . USER_TABLE . '	SET Ping=0 WHERE Ping<UNIX_TIMESTAMP(NOW()-' . (we_base_constants::PING_TIME + we_base_constants::PING_TOLERANZ) . ')');
 
 
 echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username']) .
@@ -928,8 +928,8 @@ echo 'new jsWindow(url,"module_info",-1,-1,380,250,true,true,true);
 				var _isEditpageContent = _visibleEditorFrame === _currentEditorRootFrame.frames[2];
 				//var _isEditpageContent = _visibleEditorFrame == _currentEditorRootFrame.document.getElementsByTagName("div")[2].getElementsByTagName("iframe")[0];
 
-				// if we switch from WE_EDITPAGE_CONTENT to another page
-				if (_isEditpageContent && arguments[1] !== <?php echo WE_EDITPAGE_CONTENT; ?>) {
+				// if we switch from we_base_constants::WE_EDITPAGE_CONTENT to another page
+				if (_isEditpageContent && arguments[1] !== <?php echo we_base_constants::WE_EDITPAGE_CONTENT; ?>) {
 					// clean body to avoid flickering
 					try {
 						_currentEditorRootFrame.frames[1].document.body.innerHTML = "";
@@ -945,8 +945,8 @@ echo 'new jsWindow(url,"module_info",-1,-1,380,250,true,true,true);
 					// set flag to false
 					_isEditpageContent = false;
 
-					// if we switch to WE_EDITPAGE_CONTENT from another page
-				} else if (!_isEditpageContent && arguments[1] === <?php echo WE_EDITPAGE_CONTENT; ?>) {
+					// if we switch to we_base_constants::WE_EDITPAGE_CONTENT from another page
+				} else if (!_isEditpageContent && arguments[1] === <?php echo we_base_constants::WE_EDITPAGE_CONTENT; ?>) {
 					// switch to content editor frame
 					top.weEditorFrameController.switchToContentEditor();
 					// set var to new active editor frame

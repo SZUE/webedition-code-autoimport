@@ -50,11 +50,13 @@ class we_imageDocument extends we_binaryDocument{
 		$this->persistent_slots[] = 'Thumbs';
 		$this->Icon = we_base_ContentTypes::IMAGE_ICON;
 		$this->ContentType = we_base_ContentTypes::IMAGE;
-		array_push($this->EditPageNrs, WE_EDITPAGE_IMAGEEDIT, WE_EDITPAGE_THUMBNAILS);
+		if(isWE()){
+			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_IMAGEEDIT, we_base_constants::WE_EDITPAGE_THUMBNAILS);
+			/* 		if(defined("CUSTOMER_TABLE")){
+			  array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_WEBUSER);
+			  } */
+		}
 		self::$imgCnt++;
-		/* 		if(defined("CUSTOMER_TABLE")){
-		  array_push($this->EditPageNrs, WE_EDITPAGE_WEBUSER);
-		  } */
 	}
 
 	/**
@@ -106,7 +108,7 @@ class we_imageDocument extends we_binaryDocument{
 			} else {
 				// we have to calculate the path, because maybe the document was renamed
 				$path = $this->getParentPath() . '/' . $this->Filename . $this->Extension;
-				return we_thumbnail::getimagesize($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../'. (($useOldPath && $this->OldPath) ? $this->OldPath : $this->Path));
+				return we_thumbnail::getimagesize($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . (($useOldPath && $this->OldPath) ? $this->OldPath : $this->Path));
 			}
 		} else if(isset($this->elements['data']['dat']) && $this->elements['data']['dat']){
 			$arr = we_thumbnail::getimagesize($this->elements['data']['dat']);
@@ -147,7 +149,7 @@ class we_imageDocument extends we_binaryDocument{
 	 */
 	function editor(){
 		switch($this->EditPageNr){
-			case WE_EDITPAGE_THUMBNAILS:
+			case we_base_constants::WE_EDITPAGE_THUMBNAILS:
 				return 'we_templates/we_editor_thumbnails.inc.php';
 
 			default:
@@ -223,11 +225,11 @@ class we_imageDocument extends we_binaryDocument{
 
 	private function checkDisableEditpages(){
 		if($this->isSvg()){
-			$pos = array_search(WE_EDITPAGE_IMAGEEDIT, $this->EditPageNrs);
+			$pos = array_search(we_base_constants::WE_EDITPAGE_IMAGEEDIT, $this->EditPageNrs);
 			if($pos !== false){
 				unset($this->EditPageNrs[$pos]);
 			}
-			$pos = array_search(WE_EDITPAGE_THUMBNAILS, $this->EditPageNrs);
+			$pos = array_search(we_base_constants::WE_EDITPAGE_THUMBNAILS, $this->EditPageNrs);
 			if($pos !== false){
 				unset($this->EditPageNrs[$pos]);
 			}
@@ -393,7 +395,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 //						$create = false;
 					} elseif((!$thumbObj->isOriginal()) && file_exists($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $img_path) &&
 						// open a file
-						intval(filectime($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../'. $img_path)) > intval($thumbObj->getDate())){
+						intval(filectime($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $img_path)) > intval($thumbObj->getDate())){
 //						$create = false;
 						//picture created after thumbnail definition was changed, so all is up-to-date
 					} else {

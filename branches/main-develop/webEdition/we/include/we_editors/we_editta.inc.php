@@ -32,7 +32,7 @@ $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', $we
 $we_dt = isset($_SESSION['weS']['we_data'][$we_transaction]) ? $_SESSION['weS']['we_data'][$we_transaction] : "";
 include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
-if(isset($_REQUEST["ok"])){
+if(we_base_request::_(we_base_request::BOOL, "ok")){
 	$we_doc->elements[$name . 'inlineedit']['dat'] = we_base_request::_(we_base_request::TOGGLE, 'inlineedit');
 	$we_doc->elements[$name . 'forbidphp']['dat'] = we_base_request::_(we_base_request::TOGGLE, 'forbidphp');
 	$we_doc->elements[$name . 'forbidhtml']['dat'] = we_base_request::_(we_base_request::TOGGLE, 'forbidhtml');
@@ -50,14 +50,12 @@ if(isset($_REQUEST["ok"])){
 	$we_doc->elements[$name . 'tinyparams']['dat'] = we_base_request::_(we_base_request::RAW, 'tinyparams', '');
 	$we_doc->elements[$name . 'templates']['dat'] = we_base_request::_(we_base_request::RAW, 'templates', '');
 	$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
-}
 
-if(isset($_REQUEST["ok"])){
 	$js = 'opener._EditorFrame.setEditorIsHot(true);'
 		. ((we_base_browserDetect::isIE() || we_base_browserDetect::isOpera()) &&
-				$we_doc->elements[$name . 'dhtmledit']['dat'] == 'on' &&
-				$we_doc->elements[$name . 'inlineedit']['dat'] == 'on' &&
-				(we_base_request::_(we_base_request::TOGGLE, 'dhtmledit_orig') == 'off' || we_base_request::_(we_base_request::TOGGLE, 'inlineedit_orig') == 'off')? 'opener.we_cmd("switch_edit_page",1,"' . $we_transaction . '");' :
+		$we_doc->elements[$name . 'dhtmledit']['dat'] == 'on' &&
+		$we_doc->elements[$name . 'inlineedit']['dat'] == 'on' &&
+		(we_base_request::_(we_base_request::TOGGLE, 'dhtmledit_orig') == 'off' || we_base_request::_(we_base_request::TOGGLE, 'inlineedit_orig') == 'off') ? 'opener.we_cmd("switch_edit_page",1,"' . $we_transaction . '");' :
 			'opener.we_cmd("object_reload_entry_at_class","' . $we_transaction . '", "' . $nr . '");')
 		. 'top.close();';
 } else {

@@ -32,35 +32,33 @@ class rpcPublishDocsCmd extends rpcCmd{
 
 		$docs = array();
 
-		$arr = $_REQUEST['we_cmd'];
+		$arr = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
 		if($arr){
-			$allDocs = explode(",", $arr[0]);
+			$allDocs = explode(",", $arr);
 			foreach($allDocs as $k => $v){
 				$teile = explode("_", $v, 2);
 				$docs[$teile[1]][] = $teile[0];
 			}
 		}
-		if(!empty($docs)){
-			foreach($docs as $k => $v){
-				if(!empty($v)){
-					foreach($v as $key => $val){
-						$ContentType = f('SELECT ContentType FROM `' . $db->escape($k) . '` WHERE ID=' . intval($val), 'ContentType', $db);
-						$object = we_exim_contentProvider::getInstance($ContentType, $val, $k);
-						/* bugs #6189 & 4859
-						  we_temporaryDocument::delete($object->ID,$db);
-						  $object->initByID($object->ID);
-						  $object->ModDate = $object->Published;
-						 */
-						$_SESSION['weS']['versions']['doPublish'] = true;
-						$object->we_save();
-						$object->we_publish();
-						if(defined("WORKFLOW_TABLE") && $object->ContentType == we_base_ContentTypes::WEDOCUMENT){
-							if(we_workflow_utility::inWorkflow($object->ID, $object->Table)){
-								we_workflow_utility::removeDocFromWorkflow($object->ID, $object->Table, $_SESSION["user"]["ID"], "");
-							}
+		foreach($docs as $k => $v){
+			if(!empty($v)){
+				foreach($v as $key => $val){
+					$ContentType = f('SELECT ContentType FROM `' . $db->escape($k) . '` WHERE ID=' . intval($val), 'ContentType', $db);
+					$object = we_exim_contentProvider::getInstance($ContentType, $val, $k);
+					/* bugs #6189 & 4859
+					  we_temporaryDocument::delete($object->ID,$db);
+					  $object->initByID($object->ID);
+					  $object->ModDate = $object->Published;
+					 */
+					$_SESSION['weS']['versions']['doPublish'] = true;
+					$object->we_save();
+					$object->we_publish();
+					if(defined("WORKFLOW_TABLE") && $object->ContentType == we_base_ContentTypes::WEDOCUMENT){
+						if(we_workflow_utility::inWorkflow($object->ID, $object->Table)){
+							we_workflow_utility::removeDocFromWorkflow($object->ID, $object->Table, $_SESSION["user"]["ID"], "");
 						}
-						unset($_SESSION['weS']['versions']['doPublish']);
 					}
+					unset($_SESSION['weS']['versions']['doPublish']);
 				}
 			}
 		}

@@ -46,12 +46,11 @@ class we_import_files{
 	private $fileNameTmp = '';
 	private $partNum = 0;
 	private $partCount = 0;
-
 	private $showErrorAtChunkNr = -1; //Trigger an Error at n-th chunk of 100KB to demonstrate error response
 
 	function __construct(){
-		if(isset($_REQUEST['categories'])){
-			$_catarray = makeArrayFromCSV($_REQUEST['categories']);
+		if(($cats = we_base_request::_(we_base_request::STRING, 'categories'))){
+			$_catarray = makeArrayFromCSV($cats);
 			$_cats = array();
 			foreach($_catarray as $_cat){
 				// bugfix Workarround #700
@@ -126,7 +125,7 @@ function we_cmd(){
 			new jsWindow(url,'we_catselector',-1,-1," . we_selector_file::WINDOW_CATSELECTOR_WIDTH . "," . we_selector_file::WINDOW_CATSELECTOR_HEIGHT . ",true,true,true,true);
 		break;
 	}
-}" . 'var we_fileinput = \'<form name="we_upload_form_WEFORMNUM" method="post" action="' . WEBEDITION_DIR . 'we_cmd.php" enctype="multipart/form-data" target="imgimportbuttons">' . str_replace(array("\n","\r"), " ", $this->_getHiddens("buttons", $this->step + 1) . $fileinput) . '</form>\';
+}" . 'var we_fileinput = \'<form name="we_upload_form_WEFORMNUM" method="post" action="' . WEBEDITION_DIR . 'we_cmd.php" enctype="multipart/form-data" target="imgimportbuttons">' . str_replace(array("\n", "\r"), " ", $this->_getHiddens("buttons", $this->step + 1) . $fileinput) . '</form>\';
 
 function refreshTree() {
 	//FIXME: this won\'t work in current version
@@ -138,8 +137,7 @@ function uploadFinished() {
 	' . we_message_reporting::getShowMessageCall(
 					g_l('importFiles', "[finished]"), we_message_reporting::WE_MESSAGE_NOTICE) . '
 }') .
-
-we_html_element::jsElement($this->useJsUpload ? '
+			we_html_element::jsElement($this->useJsUpload ? '
 //JS for new HTML5-d&d-Uploader
 var weUploadFiles = new Array(),
 	weNextTitleNr = 1,
@@ -347,7 +345,7 @@ function _setProgressCompleted_uploader(success, index, message){
 		document.images["progress_image_" + index].src = "/webEdition/images/fileUpload/balken_red.gif";
 	}
 }
-': '
+' : '
 function checkFileinput(){
 	var prefix =  "trash_";
 	var imgs = document.getElementsByTagName("IMG");
@@ -430,8 +428,7 @@ function setApplet() {
 	//setTimeout("document.JUpload.jsRegisterUploaded(\"refreshTree\");",3000);
 }
 ') .
-
-we_html_element::jsScript(JS_DIR . "windows.js");
+			we_html_element::jsScript(JS_DIR . "windows.js");
 	}
 
 	function _getContent(){
@@ -693,14 +690,12 @@ we_html_element::jsScript(JS_DIR . "windows.js");
 		$topParts[] = array("headline" => g_l('importFiles', "[select_files]"), "html" => $fileselect, "space" => 130);
 
 		$butEdit = we_html_button::create_button(
-				we_html_button::WE_IMAGE_BUTTON_IDENTIFY . 'edit_edit',
-				'javascript:void(0)'
+				we_html_button::WE_IMAGE_BUTTON_IDENTIFY . 'edit_edit', 'javascript:void(0)'
 		);
 		$butEdit = str_replace("\n", " ", str_replace("\r", " ", $butEdit));
 
 		$butTrash = we_html_button::create_button(
-				we_html_button::WE_IMAGE_BUTTON_IDENTIFY . 'btn_function_trash',
-				"javascript:_weDeleteRow(WEFORMNUM,this);"
+				we_html_button::WE_IMAGE_BUTTON_IDENTIFY . 'btn_function_trash', "javascript:_weDeleteRow(WEFORMNUM,this);"
 		);
 		$butTrash = str_replace("\n", " ", str_replace("\r", " ", $butTrash));
 
@@ -742,18 +737,17 @@ we_html_element::jsScript(JS_DIR . "windows.js");
 		$contentParts = array();
 
 		$content = we_html_element::htmlDiv(
-				array("id" => "forms", "style" => "display:block"),
-				(USE_JUPLOAD ? we_html_element::htmlForm(array(
+				array("id" => "forms", "style" => "display:block"), (USE_JUPLOAD ? we_html_element::htmlForm(array(
 						"name" => "JUploadForm"
 						), '') : '') .
-					we_html_element::htmlForm(
-						array(
-						"action" => WEBEDITION_DIR . "we_cmd.php",
-						"name" => "we_startform",
-						"method" => "post"
-						), $this->_getHiddens()) .
-					'<div style="overflow:hidden; padding-bottom: 10px">' . we_html_multiIconBox::getHTML("selectFiles", "100%", $topParts, 30, "", -1, "", "", "", g_l('importFiles', "[step2]"), "", 0, "hidden") . '</div>' .
-					'<div id="div_upload_files" style="height:310px; width: 100%; overflow:auto">' . we_html_multiIconBox::getHTML("uploadFiles", "100%", $contentParts, 30, "", -1, "", "", "", "") . '</div>'
+				we_html_element::htmlForm(
+					array(
+					"action" => WEBEDITION_DIR . "we_cmd.php",
+					"name" => "we_startform",
+					"method" => "post"
+					), $this->_getHiddens()) .
+				'<div style="overflow:hidden; padding-bottom: 10px">' . we_html_multiIconBox::getHTML("selectFiles", "100%", $topParts, 30, "", -1, "", "", "", g_l('importFiles', "[step2]"), "", 0, "hidden") . '</div>' .
+				'<div id="div_upload_files" style="height:310px; width: 100%; overflow:auto">' . we_html_multiIconBox::getHTML("uploadFiles", "100%", $contentParts, 30, "", -1, "", "", "", "") . '</div>'
 		);
 
 		$body = we_html_element::htmlBody(
@@ -1125,7 +1119,7 @@ function _weSendPart(part, fileName, fileSize, partSize, partNum, totalParts, fi
 	//code executed when response arrived: manage per file progress bars here!
 	weActualWeight += partSize;
 	if(partNum == 1){
-		setProgressText('progress_title', '" . g_l('importFiles', "[do_import]") . " " . g_l('importFiles', "[file]") ." ' + (weActualFile+1));
+		setProgressText('progress_title', '" . g_l('importFiles', "[do_import]") . " " . g_l('importFiles', "[file]") . " ' + (weActualFile+1));
 	}
 	setProgress(parseInt((100 / weTotalWeight) * weActualWeight));
 	cf._setProgress_uploader(weMapFiles[weActualFile], (100 / totalParts)*partNum);
@@ -1286,7 +1280,7 @@ function next() {
 		if(isset($_FILES['we_File']) && strlen($_FILES['we_File']["tmp_name"])){
 			$we_ContentType = getContentTypeFromFile($_FILES['we_File']["name"]);
 			if(!permissionhandler::hasPerm(we_base_ContentTypes::inst()->getPermission($we_ContentType)) || $this->partNum == $this->showErrorAtChunkNr){
-			//if(!permissionhandler::hasPerm(we_base_ContentTypes::inst()->getPermission($we_ContentType))){
+				//if(!permissionhandler::hasPerm(we_base_ContentTypes::inst()->getPermission($we_ContentType))){
 
 				return array(
 					'filename' => $_FILES['we_File']['name'], 'error' => 'no_perms'
@@ -1461,7 +1455,7 @@ function next() {
 	}
 
 	function _getFrameset(){
-		$_step = we_base_request::_(we_base_request::INT,'step',-1);
+		$_step = we_base_request::_(we_base_request::INT, 'step', -1);
 
 		// set and return html code
 		$body = we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;')

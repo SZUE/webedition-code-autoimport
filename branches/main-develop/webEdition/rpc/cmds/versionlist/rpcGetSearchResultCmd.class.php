@@ -31,7 +31,7 @@ class rpcGetSearchResultCmd extends rpcCmd{
 		$anzahl = we_base_request::_(we_base_request::INT, 'we_cmd', 0,'anzahl');
 		$searchstart = we_base_request::_(we_base_request::INT, 'we_cmd', 0,'searchstart');
 
-		$_REQUEST['we_cmd']['obj'] = 1;
+		$GLOBALS['we_cmd_obj'] = 1;
 		$view = new weVersionsView();
 		$content = $view->getVersionsOfDoc();
 
