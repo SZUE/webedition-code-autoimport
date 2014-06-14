@@ -50,7 +50,7 @@ $GLOBALS['configs'] = array(
 	'global' => array(
 //key => comment, default, changed right (default Admin)
 // Variables for SEEM
-		'WE_SEEM' => array('Enable seeMode', we_base_request::BOOL, 1),
+		'WE_SEEM' => array('Enable seeMode', 1),
 // Variables for LogIn
 		'WE_LOGIN_HIDEWESTATUS' => array('Hide if webEdition is Nightly or Alpha or.. Release Version', 1),
 		'WE_LOGIN_WEWINDOW' => array('Decide how WE opens: 0 allow both, 1 POPUP only, 2 same Window only', 0),
