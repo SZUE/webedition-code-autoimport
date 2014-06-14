@@ -46,7 +46,8 @@ function we_tag_repeatShopItem($attribs){
 				print $foo;
 				return;
 			}
-			require_once(WE_MODULES_PATH . 'shop/we_conf_shop.inc.php');
+			we_base_moduleInfo::isActive('shop');
+
 			$_SESSION["we_shopname"] = $shopname;
 
 			if(!isset($GLOBALS[$shopname]) || empty($GLOBALS[$shopname])){

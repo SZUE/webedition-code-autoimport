@@ -22,7 +22,8 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once(WE_MODULES_PATH . 'workflow/we_conf_workflow.inc.php');
+
+we_base_moduleInfo::isActive('workflow');
 
 abstract class we_workflow_utility {
 

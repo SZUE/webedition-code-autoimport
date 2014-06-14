@@ -94,21 +94,7 @@ if(empty($GLOBALS['_we_active_integrated_modules']) || !in_array('users', $GLOBA
 //$GLOBALS['_we_active_integrated_modules'][] = 'navigation';//TODO: remove when navigation is completely implemented as a module
 //FIXME: don't include all confs!
 foreach($GLOBALS['_we_active_integrated_modules'] as $active){
-	switch($active){
-		case 'users'://removed config
-			continue;
-		case 'schedule':
-		case 'export':
-		case 'editor':
-		case 'users':
-		case 'navigation':
-		//currently we can't omit, since table checks (weRequest) depends on defined const's
-		//break;
-		default:
-			if(file_exists(WE_MODULES_PATH . $active . '/we_conf_' . $active . '.inc.php')){
-				require_once (WE_MODULES_PATH . $active . '/we_conf_' . $active . '.inc.php');
-			}
-	}
+	we_base_moduleInfo::isActive($active);
 }
 
 if(!isset($GLOBALS['DB_WE'])){

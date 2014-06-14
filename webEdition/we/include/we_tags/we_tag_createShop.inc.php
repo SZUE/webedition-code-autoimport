@@ -22,7 +22,8 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once(WE_MODULES_PATH . 'shop/we_conf_shop.inc.php');
+we_base_moduleInfo::isActive('shop');
+
 
 function we_tag_createShop($attribs){
 	if(($foo = attributFehltError($attribs, 'shopname', __FUNCTION__))){

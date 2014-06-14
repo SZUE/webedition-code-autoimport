@@ -33,6 +33,10 @@ class we_base_request{
 	const INT = 'int';
 	const FLOAT = 'float';
 	const BOOL = 'bool';
+
+	/**
+	 * @internal
+	 */
 	const TOGGLE = 'toggle';
 	const TABLE = 'table';
 	const FILE = 'file';
@@ -42,6 +46,10 @@ class we_base_request{
 	const EMAIL = 'email';
 	const JS = 'js';
 	const RAW = 'raw';
+
+	/**
+	 * @internal
+	 */
 	const RAW_CHECKED = 'rawC';
 
 	/** Helper for Filtering variables (callback of array_walk)
@@ -225,7 +233,7 @@ class we_base_request{
 	 * @return type
 	 */
 	public static function encCmd($str){
-	return ($str ? 'WECMDENC_' . urlencode(base64_encode($str)) : '');
-}
+		return ($str ? 'WECMDENC_' . urlencode(base64_encode($str)) : '');
+	}
 
 }

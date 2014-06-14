@@ -75,7 +75,7 @@ class we_banner_view extends we_banner_base{
 
 	function getProperties(){
 		$yuiSuggest = & weSuggest::getInstance();
-		if(isset($_REQUEST["home"]) && $_REQUEST["home"]){
+		if(we_base_request::_(we_base_request::BOOL, "home")){
 			$GLOBALS["we_print_not_htmltop"] = true;
 			$GLOBALS["we_head_insert"] = $this->getJSProperty();
 			$GLOBALS["we_body_insert"] = '<form name="we_form">' . "\n";
@@ -517,8 +517,8 @@ class we_banner_view extends we_banner_base{
 				break;
 			case "add_cat":
 				$arr = makeArrayFromCSV($this->banner->CategoryIDs);
-				if(isset($_REQUEST["ncmdvalue"])){
-					$ids = makeArrayFromCSV($_REQUEST["ncmdvalue"]);
+				if(($ids = we_base_request::_(we_base_request::INTLIST, "ncmdvalue"))){
+					$ids = makeArrayFromCSV($ids);
 					foreach($ids as $id){
 						if($id && (!in_array($id, $arr))){
 							$arr[] = $id;
@@ -529,10 +529,11 @@ class we_banner_view extends we_banner_base{
 				break;
 			case "del_cat":
 				$arr = makeArrayFromCSV($this->banner->CategoryIDs);
-				if(isset($_REQUEST["ncmdvalue"])){
+				if(($id = we_base_request::_(we_base_request::INT, "ncmdvalue"))){
 					foreach($arr as $k => $v){
-						if($v == $_REQUEST["ncmdvalue"])
+						if($v == $id){
 							array_splice($arr, $k, 1);
+						}
 					}
 					$this->banner->CategoryIDs = makeCSVFromArray($arr, true);
 				}
@@ -542,9 +543,8 @@ class we_banner_view extends we_banner_base{
 				break;
 			case "add_file":
 				$arr = makeArrayFromCSV($this->banner->FileIDs);
-				if(isset($_REQUEST["ncmdvalue"])){
-					$ids = makeArrayFromCSV($_REQUEST["ncmdvalue"]);
-					foreach($ids as $id){
+				if(($ids = we_base_request::_(we_base_request::INTLIST, "ncmdvalue"))){
+					foreach(makeArrayFromCSV($ids) as $id){
 						if($id && (!in_array($id, $arr))){
 							$arr[] = $id;
 						}
@@ -554,10 +554,11 @@ class we_banner_view extends we_banner_base{
 				break;
 			case "del_file":
 				$arr = makeArrayFromCSV($this->banner->FileIDs);
-				if(isset($_REQUEST["ncmdvalue"])){
+				if(($id = we_base_request::_(we_base_request::INT, "ncmdvalue"))){
 					foreach($arr as $k => $v){
-						if($v == $_REQUEST["ncmdvalue"])
+						if($v == $id){
 							array_splice($arr, $k, 1);
+						}
 					}
 					$this->banner->FileIDs = makeCSVFromArray($arr, true);
 				}
@@ -567,9 +568,8 @@ class we_banner_view extends we_banner_base{
 				break;
 			case "add_folder":
 				$arr = makeArrayFromCSV($this->banner->FolderIDs);
-				if(isset($_REQUEST["ncmdvalue"])){
-					$ids = makeArrayFromCSV($_REQUEST["ncmdvalue"]);
-					foreach($ids as $id){
+				if(($ids = we_base_request::_(we_base_request::INTLIST, "ncmdvalue"))){
+					foreach(makeArrayFromCSV($ids) as $id){
 						if(strlen($id) && (!in_array($id, $arr))){
 							$arr[] = $id;
 						}
@@ -579,9 +579,8 @@ class we_banner_view extends we_banner_base{
 				break;
 			case "add_customer":
 				$arr = makeArrayFromCSV($this->banner->Customers);
-				if(isset($_REQUEST["ncmdvalue"])){
-					$ids = makeArrayFromCSV($_REQUEST["ncmdvalue"]);
-					foreach($ids as $id){
+				if(($ids = we_base_request::_(we_base_request::INTLIST, "ncmdvalue"))){
+					foreach(makeArrayFromCSV($ids) as $id){
 						if($id && (!in_array($id, $arr))){
 							$arr[] = $id;
 						}
@@ -591,9 +590,9 @@ class we_banner_view extends we_banner_base{
 				break;
 			case "del_customer":
 				$arr = makeArrayFromCSV($this->banner->Customers);
-				if(isset($_REQUEST["ncmdvalue"])){
+				if(($id = we_base_request::_(we_base_request::INT, "ncmdvalue"))){
 					foreach($arr as $k => $v){
-						if($v == $_REQUEST["ncmdvalue"]){
+						if($v == $id){
 							array_splice($arr, $k, 1);
 						}
 					}
@@ -605,10 +604,11 @@ class we_banner_view extends we_banner_base{
 				break;
 			case "del_folder":
 				$arr = makeArrayFromCSV($this->banner->FolderIDs);
-				if(isset($_REQUEST["ncmdvalue"])){
+				if(($id = we_base_request::_(we_base_request::INT, "ncmdvalue"))){
 					foreach($arr as $k => $v){
-						if($v == $_REQUEST["ncmdvalue"])
+						if($v == $id){
 							array_splice($arr, $k, 1);
+						}
 					}
 					$this->banner->FolderIDs = makeCSVFromArray($arr, true);
 				}
@@ -617,12 +617,10 @@ class we_banner_view extends we_banner_base{
 				$this->banner->FolderIDs = "";
 				break;
 			case "switchPage":
-				if(isset($_REQUEST["page"])){
-					$this->page = $_REQUEST["page"];
-				}
+				$this->page = we_base_request::_(we_base_request::INT, "page", $this->page);
 				break;
 			case "save_banner":
-				if(isset($_REQUEST["bid"])){
+				if(we_base_request::_(we_base_request::INT, "bid") !== false){
 					$newone = ($this->banner->ID == 0);
 					$double = f('SELECT COUNT(1) FROM ' . BANNER_TABLE . " WHERE Text='" . $this->db->escape($this->banner->Text) . "' AND ParentID=" . intval($this->banner->ParentID) . ($newone ? '' : ' AND ID!=' . intval($this->banner->ID)), '', $this->db);
 					$acQuery = new we_selector_query();
@@ -719,49 +717,40 @@ class we_banner_view extends we_banner_base{
 	}
 
 	function processVariables(){
-		if(isset($_REQUEST["bname"])){
-			$this->uid = $_REQUEST["bname"];
-		}
+		$this->uid = we_base_request::_(we_base_request::STRING, "bname", $this->uid);
 		$this->banner->ID = we_base_request::_(we_base_request::INT, "bid", $this->banner->ID);
+		$this->page = we_base_request::_(we_base_request::INT, "page", $this->page);
+		$this->Order = we_base_request::_(we_base_request::STRING, "order", $this->Order);
+		$this->UseFilter = we_base_request::_(we_base_request::BOOL, "UseFilter", $this->UseFilter);
+		$this->banner->Customers = we_base_request::_(we_base_request::RAW, "Customers", $this->banner->Customers);
 
-		if(isset($_REQUEST["page"])){
-			$this->page = $_REQUEST["page"];
+		if(($ids = we_base_request::_(we_base_request::INT, "DoctypeIDs")) !== false){
+			$this->banner->DoctypeIDs = makeCSVFromArray($ids, true);
 		}
-		if(isset($_REQUEST["order"])){
-			$this->Order = $_REQUEST["order"];
-		}
-		if(isset($_REQUEST["DoctypeIDs"]) && is_array($_REQUEST["DoctypeIDs"])){
-			$this->banner->DoctypeIDs = makeCSVFromArray($_REQUEST["DoctypeIDs"], true);
-		}
-		if(isset($_REQUEST["UseFilter"])){
-			$this->UseFilter = $_REQUEST["UseFilter"];
-		}
-		if(isset($_REQUEST["Customers"])){
-			$this->banner->Customers = $_REQUEST["Customers"];
-		}
+
 		if(is_array($this->banner->persistents)){
 			foreach($this->banner->persistents as $val){
 				$varname = $this->uid . "_" . $val;
-				if(isset($_REQUEST[$varname])){
-					$this->banner->$val = $_REQUEST[$varname];
+				if(($value = we_base_request::_(we_base_request::STRING, $varname)) !== false){
+					$this->banner->$val = $value;
 				}
 			}
 		}
 
-		if(isset($_REQUEST["dateFilter_day"])){
-			$this->FilterDate = mktime(0, 0, 0, $_REQUEST["dateFilter_month"], $_REQUEST["dateFilter_day"], $_REQUEST["dateFilter_year"]);
-		} else if(isset($_REQUEST["FilterDate"])){
-			$this->FilterDate = $_REQUEST["FilterDate"];
+		if(($day = we_base_request::_(we_base_request::INT, "dateFilter_day"))){
+			$this->FilterDate = mktime(0, 0, 0, we_base_request::_(we_base_request::INT, "dateFilter_month"), $day, we_base_request::_(we_base_request::INT, "dateFilter_year"));
+		} else if(($date = we_base_request::_(we_base_request::STRING, "FilterDate"))){
+			$this->FilterDate = $date;
 		}
-		if(isset($_REQUEST["dateFilter2_day"])){
-			$this->FilterDateEnd = mktime(0, 0, 0, $_REQUEST["dateFilter2_month"], $_REQUEST["dateFilter2_day"], $_REQUEST["dateFilter2_year"]);
-		} else if(isset($_REQUEST["FilterDateEnd"])){
-			$this->FilterDateEnd = $_REQUEST["FilterDateEnd"];
+		if(($day = we_base_request::_(we_base_request::INT, "dateFilter2_day"))){
+			$this->FilterDateEnd = mktime(0, 0, 0, we_base_request::_(we_base_request::INT, "dateFilter2_month"), $day, we_base_request::_(we_base_request::INT, "dateFilter2_year"));
+		} else if(($date = we_base_request::_(we_base_request::STRING, "FilterDateEnd"))){
+			$this->FilterDateEnd = $date;
 		}
 
-		if(isset($_REQUEST["we__From_day"])){
-			$this->banner->StartDate = mktime($_REQUEST["we__From_hour"], $_REQUEST["we__From_minute"], 0, $_REQUEST["we__From_month"], $_REQUEST["we__From_day"], $_REQUEST["we__From_year"]);
-			$this->banner->EndDate = mktime($_REQUEST["we__To_hour"], $_REQUEST["we__To_minute"], 0, $_REQUEST["we__To_month"], $_REQUEST["we__To_day"], $_REQUEST["we__To_year"]);
+		if(($day = we_base_request::_(we_base_request::INT, "we__From_day"))){
+			$this->banner->StartDate = mktime(we_base_request::_(we_base_request::INT, "we__From_hour"), we_base_request::_(we_base_request::INT, "we__From_minute"), 0, we_base_request::_(we_base_request::INT, "we__From_month"), $day, we_base_request::_(we_base_request::INT, "we__From_year"));
+			$this->banner->EndDate = mktime(we_base_request::_(we_base_request::INT, "we__To_hour"), we_base_request::_(we_base_request::INT, "we__To_minute"), 0, we_base_request::_(we_base_request::INT, "we__To_month"), we_base_request::_(we_base_request::INT, "we__To_day"), we_base_request::_(we_base_request::INT, "we__To_year"));
 		}
 	}
 

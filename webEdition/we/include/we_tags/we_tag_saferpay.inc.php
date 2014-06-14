@@ -22,7 +22,8 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once(WE_MODULES_PATH . 'shop/we_conf_shop.inc.php');
+we_base_moduleInfo::isActive('shop');
+
 
 /**
  * This function writes the shop data (order) to the database and send values to saferpay

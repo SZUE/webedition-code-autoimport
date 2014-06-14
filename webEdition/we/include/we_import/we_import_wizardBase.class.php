@@ -32,8 +32,8 @@ class we_import_wizardBase{
 
 	function getWizFrameset(){
 		$args = "pnt=wizbody";
-		if(isset($_REQUEST['we_cmd'][1])){
-			$args .= "&we_cmd[1]=" . $_REQUEST['we_cmd'][1];
+		if(($cmd1 = we_base_request::_(we_base_request::STRING, 'we_cmd', false, 1))){
+			$args .= "&we_cmd[1]=" . $cmd1;
 		}
 
 		$body = we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;', "onload" => "wiz_next('wizbody', '" . $this->path . "?" . $args . "');")
@@ -202,7 +202,7 @@ function we_cmd() {
 		}
 		$_step = 'get' . $type . 'Step' . $step;
 		list($js, $content) = $this->$_step();
-		$doOnLoad = isset($_REQUEST['noload']) ? false : true;
+		$doOnLoad = !we_base_request::_(we_base_request::BOOL, 'noload');
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(
 					STYLESHEET .
@@ -225,7 +225,7 @@ function we_cmd() {
 
 	function getWizBusy(){
 		$pb = $js = '';
-		if(isset($_REQUEST["mode"]) && $_REQUEST["mode"] == 1){
+		if(we_base_request::_(we_base_request::INT, "mode") == 1){
 			$WE_PB = new we_progressBar(0, 0, true);
 			$WE_PB->setStudLen(200);
 			$WE_PB->addText($text = g_l('import', "[import_progress]"), 0, "pb1");
@@ -281,12 +281,10 @@ top.wizcmd.we_import(1,-2' . ((we_base_request::_(we_base_request::STRING, 'type
 	function getWizCmd($type = 'normal'){
 		$out = '';
 		$mode = we_base_request::_(we_base_request::INT, 'mode', 0);
-		if(isset($_REQUEST['v'])){
-			$v = $_REQUEST['v'];
-			$v["import_ChangeEncoding"] = isset($v["import_ChangeEncoding"]) ? $v["import_ChangeEncoding"] : 0;
-			$v["import_XMLencoding"] = isset($v["import_XMLencoding"]) ? $v["import_XMLencoding"] : '';
-			$v["import_TARGETencoding"] = isset($v["import_TARGETencoding"]) ? $v["import_TARGETencoding"] : '';
-		}
+		$v = we_base_request::_(we_base_request::STRING, 'v');
+		$v["import_ChangeEncoding"] = isset($v["import_ChangeEncoding"]) ? $v["import_ChangeEncoding"] : 0;
+		$v["import_XMLencoding"] = isset($v["import_XMLencoding"]) ? $v["import_XMLencoding"] : '';
+		$v["import_TARGETencoding"] = isset($v["import_TARGETencoding"]) ? $v["import_TARGETencoding"] : '';
 
 		if(isset($v["mode"]) && $v["mode"] == 1){
 			$records = we_base_request::_(we_base_request::RAW, "records", array());
