@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once(WE_MESSAGING_MODULE_PATH . 'we_conf_messaging.inc.php');
+we_base_moduleInfo::isActive('messaging');
 /* todo object class */
 
 class we_messaging_todo extends we_messaging_proto{

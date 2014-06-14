@@ -134,7 +134,7 @@ abstract class we_base_moduleInfo{
 		if($ret){
 			switch($modul){
 				case 'users'://removed config
-					break;
+					return $ret;
 				default:
 					if(file_exists(WE_MODULES_PATH . $modul . '/we_conf_' . $modul . '.inc.php')){
 						require_once (WE_MODULES_PATH . $modul . '/we_conf_' . $modul . '.inc.php');

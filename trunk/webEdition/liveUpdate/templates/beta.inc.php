@@ -31,7 +31,7 @@
 if(defined('WE_VERSION_SUPP') && WE_VERSION_SUPP != 'release'){
 	$ischecked = 1;
 }else{
-	$ischecked = weRequest('bool',"setTestUpdate");
+	$ischecked = we_base_request::_(we_base_request::BOOL,"setTestUpdate");
 }
 $conf = we_base_file::load(LIVEUPDATE_DIR . 'conf/conf.inc.php');
 if($ischecked){

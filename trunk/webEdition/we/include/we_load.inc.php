@@ -24,7 +24,7 @@
  */
 we_html_tools::protect();
 
-if(isset($_REQUEST['we_cmd'][5])){
+if(isset($_REQUEST['we_cmd'][5])){//FIXME:???
 	$_SESSION["prefs"]["FileFilter"] = $_REQUEST['we_cmd'][5];
 }
 
@@ -175,13 +175,11 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) == "closeFolder"
 		}
 	}
 
-	$wsQuery = (empty($wspaces) ?
-			' OR RestrictOwners=0 ' :
-			' AND (' . implode(' OR ', $wspaces) . ') ' );
+	$wsQuery = ($wspaces ? ' AND (' . implode(' OR ', $wspaces) . ') ' : ' OR RestrictOwners=0 ' );
 
-	if(isset($_REQUEST['we_cmd'][3])){
-		$openFolders = explode(',', $_REQUEST['we_cmd'][3]);
-		$_SESSION["prefs"]["openFolders_" . stripTblPrefix($_REQUEST['we_cmd'][4])] = $_REQUEST['we_cmd'][3];
+	if(($of = we_base_request::_(we_base_request::INTLIST, 'we_cmd', '', 3))){
+		$openFolders = explode(',', $of);
+		$_SESSION["prefs"]["openFolders_" . stripTblPrefix(we_base_request::_(we_base_request::TABLE, 'we_cmd', '', 4))] = $of;
 	}
 
 	$openFolders = (isset($_SESSION["prefs"]["openFolders_" . stripTblPrefix($table)]) ?

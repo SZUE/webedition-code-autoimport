@@ -184,8 +184,8 @@ class liveUpdateHttp{
 <body onload="document.getElementById(\'liveUpdateForm\').submit();">
 <form id="liveUpdateForm" action="http://' . LIVEUPDATE_SERVER . LIVEUPDATE_SERVER_SCRIPT . '" method="post">
 	<input type="hidden" name="update_cmd" value="startSession" /><br />
-	<input type="hidden" name="next_cmd" value="' . $_REQUEST['update_cmd'] . '" />
-	<input type="hidden" name="detail" value="' . $_REQUEST['detail'] . '" />
+	<input type="hidden" name="next_cmd" value="' . we_base_request::_(we_base_request::STRING, 'update_cmd') . '" />
+	<input type="hidden" name="detail" value="' . we_base_request::_(we_base_request::STRING, 'detail') . '" />
 	' . $params . '
 </form>
 </body>
