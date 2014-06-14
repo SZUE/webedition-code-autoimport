@@ -118,35 +118,6 @@ function convertToMb($value){
 	return we_base_file::getHumanFileSize($value, we_base_file::SZ_MB);
 }
 
-function getMysqlVer($nodots = true){
-	$DB_WE = new DB_WE();
-	$res = f('SELECT VERSION()', '', $DB_WE);
-
-	if($res){
-		$res = explode('-', $res);
-	} else {
-		$res = f('SHOW VARIABLES LIKE "version"', 'Value', $DB_WE);
-		if($res){
-			$res = explode('-', $res);
-		}
-	}
-	if(isset($res)){
-		if($nodots){
-			$strver = substr(str_replace('.', '', $res[0]), 0, 4);
-			$ver = (int) $strver;
-			if(strlen($ver) < 4){
-				$ver = sprintf('%04d', $ver);
-				if(substr($ver, 0, 1) == '0'){
-					$ver = (int) (substr($ver, 1) . '0');
-				}
-			}
-
-			return $ver;
-		}
-		return $res[0];
-	}
-	return '';
-}
 
 function getConnectionTypes(){
 	$_connectionTypes = array();
@@ -276,7 +247,7 @@ $_info = array(
 		'display_errors' => (ini_get_bool('display_errors')) ? getWarning(g_l('sysinfo', '[display_errors warning]'), 'on') : getOK('', ini_get_message('off')),
 	),
 	'MySql' => array(
-		g_l('sysinfo', '[mysql_version]') => (version_compare("5.0.0", getMysqlVer(false)) > 1) ? getWarning(sprintf(g_l('sysinfo', "[dbversion warning]"), getMysqlVer(false)), getMysqlVer(false)) : getOK('', getMysqlVer(false)),
+		g_l('sysinfo', '[mysql_version]') => (version_compare("5.0.0", we_database_base::getMysqlVer(false)) > 1) ? getWarning(sprintf(g_l('sysinfo', "[dbversion warning]"), we_database_base::getMysqlVer(false)), we_database_base::getMysqlVer(false)) : getOK('', we_database_base::getMysqlVer(false)),
 		'max_allowed_packet' => getMaxAllowedPacket($GLOBALS['DB_WE']),
 		'lock tables' => ($lockTables ? getOK('', g_l('sysinfo', '[available]')) : getWarning('', '-')),
 		'create temporary tables' => ($allowTempTables ? getOK('', g_l('sysinfo', '[available]')) : getWarning('', '-')),
