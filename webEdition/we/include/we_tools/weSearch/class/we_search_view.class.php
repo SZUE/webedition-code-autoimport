@@ -2715,8 +2715,8 @@ class we_search_view extends we_tool_view{
 					$_linkPath = $this->Model->searchAdvSearch[$i];
 
 					$_rootDirID = 0;
-					$wecmdenc1 = we_cmd_enc("document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value");
-					$wecmdenc2 = we_cmd_enc("document.we_form.elements['searchAdvSearch[" . $i . "]'].value");
+					$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value");
+					$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['searchAdvSearch[" . $i . "]'].value");
 					$wecmdenc3 = '';
 					$_cmd = "javascript:we_cmd('openDirselector',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "','$_rootDirID','','')";
 					$_button = we_html_button::create_button('select', $_cmd, true, 70, 22, '', '', false);
@@ -2733,8 +2733,8 @@ class we_search_view extends we_tool_view{
 					$_linkPath = $this->Model->searchAdvSearch[$i];
 
 					$_rootDirID = 0;
-					$wecmdenc1 = we_cmd_enc("document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value");
-					$wecmdenc2 = we_cmd_enc("document.we_form.elements['searchAdvSearch[" . $i . "]'].value");
+					$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value");
+					$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['searchAdvSearch[" . $i . "]'].value");
 					$wecmdenc3 = '';
 					$_cmd = "javascript:we_cmd('openDocselector',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "','$_rootDirID','','" . we_base_ContentTypes::TEMPLATE . "')";
 					$_button = we_html_button::create_button('select', $_cmd, true, 70, 22, '', '', false);
@@ -3050,8 +3050,8 @@ class we_search_view extends we_tool_view{
 		$yuiSuggest->setSelector(weSuggest::DirSelector);
 		$yuiSuggest->setTable($table);
 		$yuiSuggest->setWidth(380);
-		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$folderID'].value");
-		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$folderPath'].value");
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['$folderID'].value");
+		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['$folderPath'].value");
 		$yuiSuggest->setSelectButton(
 			we_html_button::create_button(
 				"select", "javascript:we_cmd('openDirselector',document.we_form.elements['$folderID'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "')"));

@@ -92,7 +92,7 @@ abstract class we_base_delete{
 			$DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $DB_WE->escape($table) . '" AND IsObject=' . ($table == FILE_TABLE ? 0 : 1) . ' AND IsFolder=1 AND DID=' . intval($id));
 		}
 
-		deleteContentFromDB($id, $table, $DB_WE);
+		self::deleteContentFromDB($id, $table, $DB_WE);
 		if(substr($path, 0, 3) == '/..'){
 			return;
 		}
@@ -123,7 +123,7 @@ abstract class we_base_delete{
 		$isTemplateFile = ($table == TEMPLATES_TABLE);
 
 		$path = $path ? $path : f('SELECT Path FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), 'Path', $DB_WE);
-		deleteContentFromDB($id, $table);
+		self::deleteContentFromDB($id, $table);
 
 		$file = ((!$isTemplateFile) ? $_SERVER['DOCUMENT_ROOT'] : TEMPLATES_PATH) . $path;
 
@@ -250,6 +250,24 @@ abstract class we_base_delete{
 			}
 			$GLOBALS['deletedItems'][] = $id;
 		}
+	}
+
+	/**
+	 * @internal
+	 * @param type $id
+	 * @param type $table
+	 * @return bool true on success, or if not in DB
+	 */
+	public static function deleteContentFromDB($id, $table, we_database_base $DB_WE = null){
+		$DB_WE = $DB_WE ? $DB_WE : new DB_WE();
+
+		if(!f('SELECT 1 FROM ' . LINK_TABLE . ' WHERE DID=' . intval($id) . ' AND DocumentTable="' . $DB_WE->escape(stripTblPrefix($table)) . '" LIMIT 1', '', $DB_WE)){
+			return true;
+		}
+
+		$DB_WE->query('DELETE FROM ' . CONTENT_TABLE . ' WHERE ID IN (
+		SELECT CID FROM ' . LINK_TABLE . ' WHERE DID=' . intval($id) . ' AND DocumentTable="' . $DB_WE->escape(stripTblPrefix($table)) . '")');
+		return $DB_WE->query('DELETE FROM ' . LINK_TABLE . ' WHERE DID=' . intval($id) . ' AND DocumentTable="' . $DB_WE->escape(stripTblPrefix($table)) . '"');
 	}
 
 }

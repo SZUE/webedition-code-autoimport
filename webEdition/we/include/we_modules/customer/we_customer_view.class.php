@@ -829,8 +829,9 @@ new jsWindow(url,"sort_admin",-1,-1,750,500,true,true,true,true);';
 
 				break;
 			case 'del_sort':
-				if(isset($_REQUEST['sortindex']))
-					$this->new_array_splice($this->settings->SortView, $_REQUEST['sortindex'], 1);
+				if(isset($_REQUEST['sortindex'])){
+					we_base_util::new_array_splice($this->settings->SortView, $_REQUEST['sortindex'], 1);
+				}
 				break;
 			case 'add_sort_field':
 				if(isset($_REQUEST['sortindex'])){
@@ -1090,17 +1091,6 @@ self.close();';
 
 		$this->settings->renameFieldAdds($old_branch, $new_branch);
 		$this->settings->save();
-	}
-
-	function new_array_splice(&$a, $start, $len = 1){
-		$ks = array_keys($a);
-		$k = array_search($start, $ks);
-		if($k !== false){
-			$ks = array_splice($ks, $k, $len);
-			foreach($ks as $k){
-				unset($a[$k]);
-			}
-		}
 	}
 
 	function getSearchResults($keyword, $res_num = 0){

@@ -812,9 +812,9 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 	}
 
 	function getHTMLCopy(){
-		$wecmdenc1 = we_cmd_enc("document.we_form.elements['copyid'].value");
-		$wecmdenc2 = we_cmd_enc("document.we_form.elements['copyid_text'].value");
-		$wecmdenc3 = we_cmd_enc("opener.we_cmd('copy_newsletter');");
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['copyid'].value");
+		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['copyid_text'].value");
+		$wecmdenc3 = we_base_request::encCmd("opener.we_cmd('copy_newsletter');");
 
 		return $this->View->htmlHidden('copyid', 0) .
 			$this->View->htmlHidden('copyid_text', "") .
@@ -841,7 +841,7 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 
 	function getHTMLExtern($group){
 		$delallbut = we_html_button::create_button("delete_all", "javascript:we_cmd('del_all_files'," . $group . ")");
-		$wecmdenc4 = we_cmd_enc("opener.we_cmd('add_file',top.currentID,$group);");
+		$wecmdenc4 = we_base_request::encCmd("opener.we_cmd('add_file',top.currentID,$group);");
 		$addbut = we_html_button::create_button("add", "javascript:we_cmd('browse_server','fileselect','','/','" . $wecmdenc4 . "');");
 
 

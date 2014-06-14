@@ -544,7 +544,7 @@ abstract class we_export_functions{
 								}
 							} else { // is a normal text field
 								$_tag_name = self::correctTagname($k, 'text', $_tag_counter);
-								$_file .= self::formatOutput($_tag_name, parseInternalLinks($we_doc->elements[$k]["dat"], $we_doc->ParentID, '', false), $format, 2, $cdata, $format == we_import_functions::TYPE_GENERIC_XML);
+								$_file .= self::formatOutput($_tag_name, we_document::parseInternalLinks($we_doc->elements[$k]["dat"], $we_doc->ParentID, '', false), $format, 2, $cdata, $format == we_import_functions::TYPE_GENERIC_XML);
 
 								// Remove tagname from array
 								if(isset($_records)){
@@ -654,12 +654,12 @@ abstract class we_export_functions{
 						case we_import_functions::TYPE_GENERIC_XML:
 							$_tag_name = self::correctTagname($field["name"], "value", $i);
 							$_content = $we_obj->getElementByType($field["name"], $field["type"], $dv[$realName]);
-							$_file .= self::formatOutput($_tag_name, parseInternalLinks($_content, 0, '', false), $format, 2, $cdata, (($format == we_import_functions::TYPE_GENERIC_XML) && ($field["type"] != "date") && ($field["type"] != "int") && ($field["type"] != "float")));
+							$_file .= self::formatOutput($_tag_name, we_document::parseInternalLinks($_content, 0, '', false), $format, 2, $cdata, (($format == we_import_functions::TYPE_GENERIC_XML) && ($field["type"] != "date") && ($field["type"] != "int") && ($field["type"] != "float")));
 
 							break;
 						case 'csv':
 							$_content = $we_obj->getElementByType($field["name"], $field["type"], $dv[$realName]);
-							$_file .= self::formatOutput("", parseInternalLinks($_content, 0, '', false), $format, 2, false, (($format == we_import_functions::TYPE_GENERIC_XML) && ($field["type"] != "date") && ($field["type"] != "int") && ($field["type"] != "float")), $csv_delimiter, $csv_enclose, $csv_lineend);
+							$_file .= self::formatOutput("", we_document::parseInternalLinks($_content, 0, '', false), $format, 2, false, (($format == we_import_functions::TYPE_GENERIC_XML) && ($field["type"] != "date") && ($field["type"] != "int") && ($field["type"] != "float")), $csv_delimiter, $csv_enclose, $csv_lineend);
 
 							break;
 					}

@@ -39,9 +39,9 @@ function formBannerChooser($width = "", $table = BANNER_TABLE, $idvalue = 0, $id
 	$yuiSuggest = & weSuggest::getInstance();
 	$path = id_to_path($idvalue, $table);
 	$textname = md5(uniqid(__FUNCTION__, true));
-	$wecmdenc1 = we_cmd_enc("document.we_form.elements['$idname'].value");
-	$wecmdenc2 = we_cmd_enc("document.we_form.elements['$textname'].value");
-	$wecmdenc3 = we_cmd_enc(str_replace('\\', '', $cmd));
+	$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['$idname'].value");
+	$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['$textname'].value");
+	$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
 	$button = we_html_button::create_button('select', "javascript:we_cmd('banner_openSelector',document.we_form.elements['$idname'].value,'" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "')");
 
 	$yuiSuggest->setAcId("Path");

@@ -289,8 +289,8 @@ function populateDate_' . $field . '(){
 			case 'password':
 				return we_html_tools::htmlTextInput($field, 32, $value, 32, 'onchange="top.content.setHot();" style="width:240px;" autocomplete="off" ', 'password');
 			case 'img':
-				$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['" . $field . "'].value");
-				$wecmdenc3 = we_cmd_enc("opener.refreshForm()");
+				$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['" . $field . "'].value");
+				$wecmdenc3 = we_base_request::encCmd("opener.refreshForm()");
 				$imgId = intval($value);
 				$img = new we_imageDocument();
 

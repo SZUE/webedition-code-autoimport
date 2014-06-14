@@ -148,7 +148,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 					}
 
 
-					$object->Path = clearPath($object->Path);
+					$object->Path = we_base_file::clearPath($object->Path);
 
 					//fix Path if there is a conflict
 					$id = path_to_id($object->Path, $object->Table);
@@ -188,7 +188,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 							return false;
 						}
 					}
-					$object->ParentID = makePath(dirname($object->Path), $object->Table, $pathids, $owner);
+					$object->ParentID = self::makePath(dirname($object->Path), $object->Table, $pathids, $owner);
 					if(isset($object->ParentPath)){
 						$object->ParentPath = id_to_path($object->ParentID, $object->Table);
 					}
@@ -301,7 +301,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 					$newid = f('SELECT ID FROM ' . THUMBNAILS_TABLE . " WHERE Name='" . escape_sql_query($newname) . "'", "", new DB_WE());
 					break;
 				default:
-					$newid = path_to_id(clearPath(dirname($object->Path) . "/" . $newname), $object->Table);
+					$newid = path_to_id(we_base_file::clearPath(dirname($object->Path) . "/" . $newname), $object->Table);
 			}
 		} while($newid);
 		$this->renameObject($object, $newname);
@@ -332,7 +332,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 				$object->ParentID = $_ref->ID;
 				$object->Path = $_ref->Path . '/' . $new_name;
 			} else {
-				$object->Path = clearPath(dirname($object->Path) . '/' . $new_name);
+				$object->Path = we_base_file::clearPath(dirname($object->Path) . '/' . $new_name);
 			}
 		}
 		if(isset($object->Text)){
@@ -689,6 +689,48 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 				return $this->options["handle_thumbnails"];
 			default: return 1;
 		}
+	}
+
+	/**
+	 * This function creates the given path in the repository and returns the id of the last created folder
+	 *
+	 * @param          string				$path
+	 * @param          string				$table
+	 * @param          array				$pathids
+	 *
+	 * @return         string
+	 */
+	private static function makePath($path, $table, &$pathids, $owner = 0){
+		$path = str_replace('\\', '/', $path);
+		$patharr = explode('/', $path);
+		$mkpath = '';
+		$pid = 0;
+		foreach($patharr as $elem){
+			if($elem != '' && $elem != '/'){
+				$mkpath .= '/' . $elem;
+				$id = path_to_id($mkpath, $table);
+				if(!$id){
+					$new = new we_folder();
+					$new->Text = $elem;
+					$new->Filename = $elem;
+					$new->ParentID = $pid;
+					$new->Path = $mkpath;
+					$new->Table = $table;
+					$new->CreatorID = $owner;
+					$new->ModifierID = $owner;
+					$new->Owners = ',' . $owner . ',';
+					$new->OwnersReadOnly = serialize(array(
+						$owner => 0
+					));
+					$new->we_save();
+					$id = $new->ID;
+					$pathids[] = $id;
+				}
+				$pid = $id;
+			}
+		}
+
+		return $pid;
 	}
 
 }

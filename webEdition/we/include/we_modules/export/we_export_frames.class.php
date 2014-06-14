@@ -415,9 +415,9 @@ function closeAllType(){
 
 		$path = id_to_path($this->View->export->ParentID, EXPORT_TABLE);
 
-		$wecmdenc1 = we_cmd_enc("document.we_form.elements['ParentID'].value");
-		$wecmdenc2 = we_cmd_enc("document.we_form.elements['ParentPath'].value");
-		$wecmdenc3 = we_cmd_enc("top.hot=1;");
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['ParentID'].value");
+		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['ParentPath'].value");
+		$wecmdenc3 = we_base_request::encCmd("top.hot=1;");
 
 		$button = we_html_button::create_button('select', "javascript:top.content.setHot();we_cmd('export_openDirselector',document.we_form.elements['ParentID'].value,'" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "')");
 
@@ -776,7 +776,7 @@ function closeAllType(){
 				}
 		');
 
-		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$IDName'].value");
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['$IDName'].value");
 		$button = we_html_button::create_button("select", "javascript:top.content.setHot();formFileChooser('browse_server','" . $wecmdenc1 . "','$filter',document.we_form.elements['$IDName'].value);");
 
 		return $js . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 42, $IDValue, "", ' readonly onchange="' . $this->topFrame . '.hot=1;"', "text", $width, 0), "", "left", "defaultfont", "", we_html_tools::getPixel(20, 4), permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
@@ -785,9 +785,9 @@ function closeAllType(){
 	function formWeChooser($table = FILE_TABLE, $width = '', $rootDirID = 0, $IDName = 'ID', $IDValue = 0, $Pathname = 'Path', $Pathvalue = '/', $cmd = ''){
 		$Pathvalue = (empty($Pathvalue) ? f('SELECT Path FROM ' . $this->db->escape($table) . ' WHERE ID=' . intval($IDValue) . ";", "Path", $this->db) : $Pathvalue);
 
-		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$IDName'].value");
-		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$Pathname'].value");
-		$wecmdenc3 = we_cmd_enc(str_replace('\\', '', $cmd));
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['$IDName'].value");
+		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['$Pathname'].value");
+		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
 		$button = we_html_button::create_button("select", "javascript:top.content.setHot();we_cmd('openDirselector',document.we_form.elements['$IDName'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$rootDirID')");
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId('SelPath');

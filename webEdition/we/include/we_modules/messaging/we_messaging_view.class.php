@@ -133,23 +133,12 @@ class we_messaging_view extends weModuleView{
 		//
 	}
 
-	function new_array_splice(&$a, $start, $len = 1){
-		$ks = array_keys($a);
-		$k = array_search($start, $ks);
-		if($k !== false){
-			$ks = array_splice($ks, $k, $len);
-			foreach($ks as $k)
-				unset($a[$k]);
-		}
-	}
-
 	function processCommands(){
+		$this->transaction = ($this->transaction == 'no_request' ?
+				$this->weTransaction :
+				(preg_match('|^([a-f0-9]){32}$|i', $this->transaction) ? $this->transaction : 0)
+			);
 
-		if($this->transaction == 'no_request'){
-			$this->transaction = $this->weTransaction;
-		} else {
-			$this->transaction = (preg_match('|^([a-f0-9]){32}$|i', $this->transaction) ? $this->transaction : 0);
-		}
 
 		$this->messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$this->transaction]);
 		$this->messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);

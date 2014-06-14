@@ -851,8 +851,8 @@ class doclistView{
 
 					$_rootDirID = 0;
 
-					$wecmdenc1 = we_cmd_enc("document.we_form.elements['searchParentID[" . $i . "]'].value");
-					$wecmdenc2 = we_cmd_enc("document.we_form.elements['search[" . $i . "]'].value");
+					$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['searchParentID[" . $i . "]'].value");
+					$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['search[" . $i . "]'].value");
 					$_cmd = "javascript:we_cmd('openDocselector',document.we_form.elements['searchParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "','$_rootDirID','','" . we_base_ContentTypes::TEMPLATE . "')";
 					$_button = we_html_button::create_button('select', $_cmd, true, 70, 22, '', '', false);
 					$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('search[' . $i . ']', 58, $_linkPath, '', 'readonly ', 'text', 190, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(array('name' => 'searchParentID[' . $i . ']', "value" => "")), we_html_tools::getPixel(5, 4), $_button);
@@ -1245,7 +1245,7 @@ class doclistView{
 		$anzahl = array(10 => 10, 25 => 25, 50 => 50, 100 => 100);
 
 		$thisObj = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 'obj') ? new self() : $this;
-		$order = we_base_request::_(we_base_request::RAW, 'we_cmd', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->searchclassFolder->order : '', 'order');
+		$order = we_base_request::_(we_base_request::STRING, 'we_cmd', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->searchclassFolder->order : '', 'order');
 		$mode = we_base_request::_(we_base_request::RAW, 'we_cmd', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->searchclassFolder->mode : '', 'mode');
 		$setView = we_base_request::_(we_base_request::RAW, 'we_cmd', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->searchclassFolder->setView : '', 'setView');
 		$_anzahl = we_base_request::_(we_base_request::RAW, 'we_cmd', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->searchclassFolder->anzahl : '', 'anzahl');

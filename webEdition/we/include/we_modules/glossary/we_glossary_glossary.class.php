@@ -360,7 +360,7 @@ class we_glossary_glossary extends weModelBase{
 	 */
 	function isSelf(){
 		$Text = self::escapeChars($this->Text);
-		return strpos(htmlentities(clearPath(dirname($this->Path)) . '/'), '/' . $Text . '/') !== false;
+		return strpos(htmlentities(we_base_file::clearPath(dirname($this->Path)) . '/'), '/' . $Text . '/') !== false;
 	}
 
 	//FIXME: some signs are broken due to utf-8

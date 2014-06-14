@@ -573,9 +573,9 @@ class we_import_site{
 	 */
 	private function _getTemplateSelectHTML($tid){
 		$path = f('SELECT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($tid), 'Path', $GLOBALS['DB_WE']);
-		$wecmdenc1 = we_cmd_enc("document.we_form.elements['templateID'].value");
-		$wecmdenc2 = we_cmd_enc("document.we_form.elements['templateDummy'].value");
-		$wecmdenc3 = we_cmd_enc("opener.displayTable();");
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['templateID'].value");
+		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['templateDummy'].value");
+		$wecmdenc3 = we_base_request::encCmd("opener.displayTable();");
 
 		$button = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['templateID'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','" . we_base_ContentTypes::TEMPLATE . "',1)");
 
@@ -591,7 +591,7 @@ class we_import_site{
 	 */
 	private function _getContentHTML(){
 		// Suorce Directory
-		$wecmdenc1 = we_cmd_enc("document.we_form.elements['from'].value");
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['from'].value");
 		$_from_button = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button(
 				"select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "','folder',document.we_form.elements['from'].value)") : "";
 
@@ -601,8 +601,8 @@ class we_import_site{
 				$_input, g_l('siteimport', "[importFrom]"), "left", "defaultfont", we_html_tools::getPixel(10, 1), $_from_button, "", "", "", 0);
 
 		// Destination Directory
-		$wecmdenc1 = we_cmd_enc("document.we_form.elements['to'].value");
-		$wecmdenc2 = we_cmd_enc("document.we_form.elements['toPath'].value");
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['to'].value");
+		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['toPath'].value");
 		$_to_button = we_html_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['to'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','0')");
 
 		//$_hidden = we_html_tools::hidden("to",$this->to);
@@ -1049,8 +1049,8 @@ class we_import_site{
 	 */
 	private static function _formPathHTML($templateName = "neueVorlage", $myid = 0){
 		$path = id_to_path($myid, TEMPLATES_TABLE);
-		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['templateParentID'].value");
-		$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['templateDirName'].value");
+		$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['templateParentID'].value");
+		$wecmdenc2 = we_base_request::encCmd("document.forms['we_form'].elements['templateDirName'].value");
 		$button = we_html_button::create_button("select", "javascript:we_cmd('openDirselector',document.forms['we_form'].elements['templateParentID'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "')");
 
 		$yuiSuggest = & weSuggest::getInstance();

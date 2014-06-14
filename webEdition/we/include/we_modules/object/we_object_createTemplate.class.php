@@ -32,8 +32,8 @@ class we_object_createTemplate extends we_template {
 		$idname = 'we_' . $this->Name . '_' . $IDName;
 		$path = $this->$Pathname;
 		$myid = $this->$IDName;
-		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
-		$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$textname'].value");
+		$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['$idname'].value");
+		$wecmdenc2 = we_base_request::encCmd("document.forms['we_form'].elements['$textname'].value");
 		$button = we_html_button::create_button("select", "javascript:we_cmd('openDirselector',document.forms['we_form'].elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "')");
 		return we_html_tools::htmlFormElementTable($this->htmlTextInput($textname, 30, $path, "", ' readonly', "text", $width, 0), g_l('weClass', "[dir]"), "left", "defaultfont", $this->htmlHidden($idname, 0), //$myid
 				we_html_tools::getPixel(20, 4), $button);

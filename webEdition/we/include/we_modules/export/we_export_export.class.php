@@ -197,7 +197,7 @@ class we_export_export extends weModelBase{
 	}
 
 	function isSelf(){
-		return strpos(clearPath(dirname($this->Path) . '/'), '/' . $this->Text . '/') !== false;
+		return strpos(we_base_file::clearPath(dirname($this->Path) . '/'), '/' . $this->Text . '/') !== false;
 	}
 
 	function evalPath($id = 0){

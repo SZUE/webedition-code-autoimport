@@ -179,4 +179,38 @@ class we_base_preferences{
 		return str_replace(array("\\", '"', "\$"), array("\\\\", '\"', "\\\$"), $in);
 	}
 
+	/**
+	 * This function returns preference for given name; Checks first the users preferences and then global
+	 *
+	 * @param          string                                  $name
+	 *
+	 * @see            getAllGlobalPrefs()
+	 *
+	 * @return         string
+	 */
+	public function getUserPref($name){
+		return (isset($_SESSION['prefs'][$name]) ?
+				$_SESSION['prefs'][$name] :
+				(defined($name) ? constant($name) : ''));
+	}
+
+	/**
+	 * The function saves the user pref in the session and the database; The function works with user preferences only
+	 *
+	 * @param          string                                  $name
+	 * @param          string                                  $value
+	 *
+	 * @see            setUserPref()
+	 *
+	 * @return         boolean
+	 */
+	public function setUserPref($name, $value){
+		if(isset($_SESSION['prefs'][$name]) && isset($_SESSION['prefs']['userID']) && $_SESSION['prefs']['userID']){
+			$_SESSION['prefs'][$name] = $value;
+			we_users_user::writePrefs($_SESSION['prefs']['userID'], new DB_WE());
+			return true;
+		}
+		return false;
+	}
+
 }

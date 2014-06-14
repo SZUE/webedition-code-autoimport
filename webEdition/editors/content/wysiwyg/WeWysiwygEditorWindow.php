@@ -29,7 +29,7 @@ if(isset($fieldName) && we_base_request::_(we_base_request::BOOL, 'we_okpressed'
 	$type = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1);
 	$_SESSION['weS']['WEAPP_' . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) . '_' . $type] = $newHTML;
 	$newHTMLoldA = preg_replace('|(</?)script([^>]*>)|i', '\\1scr"+"ipt\\2', $newHTML);
-	$newHTMLoldB = preg_replace('|(</?)script([^>]*>)|i', '\\1scr"+"ipt\\2', parseInternalLinks($newHTML, 0));
+	$newHTMLoldB = preg_replace('|(</?)script([^>]*>)|i', '\\1scr"+"ipt\\2', we_document::parseInternalLinks($newHTML, 0));
 
 	$newHTMLencA = base64_encode(oldHtmlspecialchars($newHTMLoldA));
 	$newHTMLencB = base64_encode($newHTMLoldB);

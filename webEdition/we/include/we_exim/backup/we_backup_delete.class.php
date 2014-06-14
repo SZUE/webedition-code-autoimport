@@ -61,7 +61,7 @@ class we_backup_delete extends taskFragment{
 			}
 		}
 		$percent = round((100 / count($this->alldata)) * (1 + $this->currentTask));
-		$text = str_replace($_SERVER['DOCUMENT_ROOT'], "", clearPath($item[0]));
+		$text = str_replace($_SERVER['DOCUMENT_ROOT'], "", we_base_file::clearPath($item[0]));
 		if(strlen($text) > 75){
 			$text = addslashes(substr($text, 0, 65) . '&hellip;' . substr($text, -10));
 		}

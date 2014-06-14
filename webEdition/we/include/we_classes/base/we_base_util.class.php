@@ -268,4 +268,27 @@ abstract class we_base_util{
 		}
 	}
 
+	/**
+	 * This function works in very same way as the standard array_splice function
+	 * except the second parametar is the array index and not just offset
+	 * The functions modifies the array that has been passed by reference as the first function parametar
+	 *
+	 * @param          array                                  $a
+	 * @param          interger                                $start
+	 * @param          integer                                 $len
+	 *
+	 *
+	 * @return         none
+	 */
+	public static function new_array_splice(&$a, $start, $len = 1){
+		$ks = array_keys($a);
+		$k = array_search($start, $ks);
+		if($k !== false){
+			$ks = array_splice($ks, $k, $len);
+			foreach($ks as $k){
+				unset($a[$k]);
+			}
+		}
+	}
+
 }
