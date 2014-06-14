@@ -1184,8 +1184,8 @@ function build_dialog($selected_setting = 'ui'){
 			$_countries_default = we_html_tools::htmlTextInput('newconf[WE_COUNTRIES_DEFAULT]', 22, get_value('WE_COUNTRIES_DEFAULT'), '', '', 'text', 225);
 
 			$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
-			$langcode = array_search($lang[0], $GLOBALS['WE_LANGS']);
-			$countrycode = array_search($langcode, $GLOBALS['WE_LANGS_COUNTRIES']);
+			$langcode = array_search($lang[0], getWELangs());
+			$countrycode = array_search($langcode, getWECountries());
 			$zendsupported = Zend_Locale::getTranslationList('territory', $langcode, 2);
 			$oldLocale = setlocale(LC_ALL, NULL);
 			setlocale(LC_ALL, $langcode . '_' . $countrycode . '.UTF-8');

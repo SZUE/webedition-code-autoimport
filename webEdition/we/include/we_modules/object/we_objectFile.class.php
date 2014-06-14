@@ -1265,7 +1265,7 @@ class we_objectFile extends we_document{
 		}
 
 		$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
-		$langcode = array_search($lang[0], $GLOBALS['WE_LANGS']);
+		$langcode = array_search($lang[0], getWELangs());
 
 		if(!$editable){
 			return '<div class="weObjectPreviewHeadline">' . $name . '</div>' .
@@ -1273,7 +1273,7 @@ class we_objectFile extends we_document{
 					'');
 		}
 
-		$countrycode = array_search($langcode, $GLOBALS['WE_LANGS_COUNTRIES']);
+		$countrycode = array_search($langcode, getWECountries());
 		$countryselect = new we_html_select(array("name" => "we_" . $this->Name . "_language[$name]", "size" => 1, "style" => "width:620;", "class" => "wetextinput", "onchange" => "_EditorFrame.setEditorIsHot(true);"));
 
 		$topCountries = array_flip(explode(',', WE_COUNTRIES_TOP));

@@ -176,7 +176,7 @@ class we_customer_frames extends weModuleFrames{
 			case 'country':
 				$langcode = we_core_Local::weLangToLocale($GLOBALS["WE_LANGUAGE"]);
 
-				$countrycode = array_search($langcode, $GLOBALS['WE_LANGS_COUNTRIES']);
+				$countrycode = array_search($langcode, getWECountries());
 				$countryselect = new we_html_select(array('name' => $field, 'size' => 1, 'style' => 'width:240px;', 'class' => 'wetextinput', 'id' => ($field == 'Gruppe' ? 'yuiAcInputPathGroupX' : ''), 'onchange' => ($field == 'Gruppe' ? 'top.content.setHot();' : 'top.content.setHot();')));
 
 				$topCountries = array_flip(explode(',', WE_COUNTRIES_TOP));

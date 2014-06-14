@@ -131,7 +131,7 @@ class we_document extends we_root{
 		list($_userLanguage) = explode('_', isset($_SESSION['prefs']['Language']) ? $_SESSION['prefs']['Language'] : '');
 
 		// trying to get locale string out of interface language
-		$_key = array_search($_userLanguage, $GLOBALS['WE_LANGS']);
+		$_key = array_search($_userLanguage, getWELangs());
 
 		$_defLang = $GLOBALS['weDefaultFrontendLanguage'];
 

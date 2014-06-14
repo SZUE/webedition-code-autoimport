@@ -1410,10 +1410,37 @@ function update_mem_limit($newLimit){
 		@ini_set('memory_limit', $newLimit . 'M');
 	}
 }
+
 /**
- * 
+ *
  * @return bool true if inside WE
  */
 function isWE(){
 	return isset($_SESSION['user']['isWeSession']) && $_SESSION['user']['isWeSession'];
+}
+
+function getWELangs(){
+	return array(
+		'de' => 'Deutsch',
+		'en' => 'English',
+		'nl' => 'Dutch',
+		'fi' => 'Finnish',
+		'ru' => 'Russian',
+		'es' => 'Spanish',
+		'pl' => 'Polish',
+		'fr' => 'French'
+	);
+}
+
+function getWECountries(){
+	return array(
+		'DE' => 'de',
+		'GB' => 'en',
+		'NL' => 'nl',
+		'FI' => 'fi',
+		'RU' => 'ru',
+		'ES' => 'es',
+		'PL' => 'pl',
+		'FR' => 'fr'
+	);
 }
