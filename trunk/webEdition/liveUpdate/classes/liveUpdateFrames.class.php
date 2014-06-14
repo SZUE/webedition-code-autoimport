@@ -107,23 +107,16 @@ class liveUpdateFrames{
 	}
 
 	function processBeta(){
-		if(isset($_REQUEST['setTestUpdate'])){
+		if(($setTestUpdate = weRequest('bool', 'setTestUpdate', '-1')) !== '-1'){
 			$conf = we_base_file::load(LIVEUPDATE_DIR . 'conf/conf.inc.php');
 
 			if(strpos($conf, '$_REQUEST[\'testUpdate\']') !== false){
-				if(weRequest('bool', 'setTestUpdate')){
-					if(strpos($conf, '$_REQUEST[\'testUpdate\'] = 0;') !== false){
-						$conf = str_replace('$_REQUEST[\'testUpdate\'] = 0;', '$_REQUEST[\'testUpdate\'] = 1;', $conf);
-						we_base_file::save(LIVEUPDATE_DIR . 'conf/conf.inc.php', $conf);
-					}
-				} else {
-					if(strpos($conf, '$_REQUEST[\'testUpdate\'] = 1;') !== false){
-						$conf = str_replace('$_REQUEST[\'testUpdate\'] = 1;', '$_REQUEST[\'testUpdate\'] = 0;', $conf);
-						we_base_file::save(LIVEUPDATE_DIR . 'conf/conf.inc.php', $conf);
-					}
+				if(strpos($conf, '$_REQUEST[\'testUpdate\'] = ' . intval(!$setTestUpdate) . ';') !== false){
+					$conf = str_replace('$_REQUEST[\'testUpdate\'] = ' . intval(!$setTestUpdate) . ';', '$_REQUEST[\'testUpdate\'] = ' . intval($setTestUpdate) . ';', $conf);
+					we_base_file::save(LIVEUPDATE_DIR . 'conf/conf.inc.php', $conf);
 				}
 			} else {
-				$conf.='$_REQUEST[\'testUpdate\'] = ' . $_REQUEST['setTestUpdate'] . ';';
+				$conf.='$_REQUEST[\'testUpdate\'] = ' . intval($setTestUpdate) . ';';
 				we_base_file::save(LIVEUPDATE_DIR . 'conf/conf.inc.php', $conf);
 			}
 			$_REQUEST['testUpdate'] = $_REQUEST['setTestUpdate'];
@@ -133,9 +126,7 @@ class liveUpdateFrames{
 	function processUpdateVariables(){
 		$this->Data['lastUpdate'] = g_l('liveUpdate', '[update][neverUpdated]');
 
-		$GLOBALS['DB_WE']->query("SELECT DATE_FORMAT(datum, \"%d.%m.%y - %T \") AS date FROM " . UPDATE_LOG_TABLE . ' WHERE error=0 ORDER BY ID DESC LIMIT 0,1');
-		$GLOBALS['DB_WE']->next_record();
-		if(($date = $GLOBALS['DB_WE']->f('date'))){
+		if(($date = f('SELECT DATE_FORMAT(datum, "%d.%m.%y - %T ") FROM ' . UPDATE_LOG_TABLE . ' WHERE error=0 ORDER BY ID DESC LIMIT 1'))){
 			$this->Data['lastUpdate'] = $date;
 		}
 	}
