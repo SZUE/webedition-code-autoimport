@@ -230,7 +230,7 @@ function we_tag_sessionField($attribs, $content){
 				$langcode = substr($lang, 0, 2);
 				if($lang == ''){
 					$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
-					$langcode = array_search($lang[0], $GLOBALS['WE_LANGS']);
+					$langcode = array_search($lang[0], getWELangs());
 				}
 				return ($ascountry && $orgVal == '--' ? '' : CheckAndConvertISOfrontend(Zend_Locale::getTranslation($orgVal, ($ascountry ? 'territory' : 'language'), $langcode)));
 			}

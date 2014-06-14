@@ -105,7 +105,7 @@ define('LOCK_TABLE', TBL_PREFIX . 'tblLock');
 //NOTE: you have to register the tables at we.inc!
 
 define('SESSION_NAME', 'WESESSION');
-define('REQUEST_SIMULATION',0);
+define('REQUEST_SIMULATION', 0);
 
 /**
  * Fix the none existing $_SERVER['REQUEST_URI'] on IIS
@@ -116,28 +116,7 @@ if(!isset($_SERVER['REQUEST_URI'])){
 			(isset($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : '');
 	}
 }
-//FIMXE: remove
-$GLOBALS['WE_LANGS'] = array(
-	'de' => 'Deutsch',
-	'en' => 'English',
-	'nl' => 'Dutch',
-	'fi' => 'Finnish',
-	'ru' => 'Russian',
-	'es' => 'Spanish',
-	'pl' => 'Polish',
-	'fr' => 'French'
-);
-//FIMXE: remove
-$GLOBALS['WE_LANGS_COUNTRIES'] = array(
-	'DE' => 'de',
-	'GB' => 'en',
-	'NL' => 'nl',
-	'FI' => 'fi',
-	'RU' => 'ru',
-	'ES' => 'es',
-	'PL' => 'pl',
-	'FR' => 'fr'
-);
+
 if(!defined('DATETIME_INITIALIZED')){// to prevent additional initialization if set somewhere else, i.e in autoload, this also allows later to make that an settings-item
 	if(!date_default_timezone_set(@date_default_timezone_get())){
 		date_default_timezone_set('Europe/Berlin');

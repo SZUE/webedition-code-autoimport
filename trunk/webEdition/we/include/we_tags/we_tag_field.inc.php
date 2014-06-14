@@ -256,7 +256,7 @@ function we_tag_field($attribs){
 			$langcode = substr($lang, 0, 2);
 			if($lang == ''){
 				$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
-				$langcode = array_search($lang[0], $GLOBALS['WE_LANGS']);
+				$langcode = array_search($lang[0], getWELangs());
 			}
 			if(WE_COUNTRIES_DEFAULT != '' && $GLOBALS['lv']->f($name) == '--'){
 				$out = WE_COUNTRIES_DEFAULT;
@@ -277,7 +277,7 @@ function we_tag_field($attribs){
 			$langcode = substr($lang, 0, 2);
 			if($lang == ''){
 				$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
-				$langcode = array_search($lang[0], $GLOBALS['WE_LANGS']);
+				$langcode = array_search($lang[0], getWELangs());
 			}
 			if(!Zend_Locale::hasCache()){
 				Zend_Locale::setCache(getWEZendCache());

@@ -1594,8 +1594,8 @@ function submitForm() {
 					if(!in_array($k, $dontEdit) && !is_numeric($k)){
 						if(isset($this->CLFields['stateField']) && isset($this->CLFields['stateFieldIsISO']) && $k == $this->CLFields['stateField'] && $this->CLFields['stateFieldIsISO']){
 							$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
-							$langcode = array_search($lang[0], $GLOBALS['WE_LANGS']);
-							$countrycode = array_search($langcode, $GLOBALS['WE_LANGS_COUNTRIES']);
+							$langcode = array_search($lang[0], getWELangs());
+							$countrycode = array_search($langcode, getWECountries());
 							$countryselect = new we_html_select(array('name' => "weCustomerOrder[$k]", 'size' => 1, 'style' => '{width:280;}', 'class' => 'wetextinput'));
 
 							$topCountries = array_flip(explode(',', WE_COUNTRIES_TOP));
