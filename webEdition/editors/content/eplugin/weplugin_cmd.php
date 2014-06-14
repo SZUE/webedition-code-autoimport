@@ -117,9 +117,9 @@ _EditorFrame.getContentFrame().reloadContent = true;');
 var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction("' . $_we_transaction . '");
 _EditorFrame.setEditorIsHot(true);
 if (
-	_EditorFrame.getEditorEditPageNr() == ' . WE_EDITPAGE_CONTENT . ' ||
-	_EditorFrame.getEditorEditPageNr() == ' . WE_EDITPAGE_PREVIEW . ' ||
-	_EditorFrame.getEditorEditPageNr() == ' . WE_EDITPAGE_PREVIEW_TEMPLATE . '
+	_EditorFrame.getEditorEditPageNr() == ' . we_base_constants::WE_EDITPAGE_CONTENT . ' ||
+	_EditorFrame.getEditorEditPageNr() == ' . we_base_constants::WE_EDITPAGE_PREVIEW . ' ||
+	_EditorFrame.getEditorEditPageNr() == ' . we_base_constants::WE_EDITPAGE_PREVIEW_TEMPLATE . '
 ) {
 	if ( _EditorFrame.getEditorIsActive() ) { // reload active editor
 		_EditorFrame.setEditorReloadNeeded(true);

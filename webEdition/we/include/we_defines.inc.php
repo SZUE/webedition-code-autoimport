@@ -43,6 +43,7 @@ define('VERSION_DIR', WEBEDITION_DIR . 'we/versions/');
 define('LIB_DIR', WEBEDITION_DIR . 'lib/');
 define('WE_THUMB_PREVIEW_DIR', WEBEDITION_DIR . 'preview/');
 define('TINYMCE_JS_DIR', WEBEDITION_DIR . 'editors/content/tinymce/jscripts/tiny_mce/');
+define('WE_USERS_MODULE_DIR', WE_MODULES_DIR . 'users/');
 
 define('TREE_IMAGE_DIR', IMAGE_DIR . 'tree/');
 define('ICON_DIR', TREE_IMAGE_DIR . 'icons/');
@@ -60,35 +61,13 @@ define('JS_PATH', $_SERVER['DOCUMENT_ROOT'] . JS_DIR);
 define('WE_LIB_PATH', $_SERVER['DOCUMENT_ROOT'] . LIB_DIR);
 define('WE_MODULES_PATH', $_SERVER['DOCUMENT_ROOT'] . WE_MODULES_DIR);
 define('WE_THUMB_PREVIEW_PATH', $_SERVER['DOCUMENT_ROOT'] . WE_THUMB_PREVIEW_DIR);
+define('WE_USERS_MODULE_PATH', $_SERVER['DOCUMENT_ROOT'] . WE_USERS_MODULE_DIR);
 
 //paths without "DIRS"
 define('WE_FRAGMENT_PATH', WEBEDITION_PATH . 'fragments/');
 define('ZENDCACHE_PATH', WEBEDITION_PATH . 'we/zendcache/');
 
 include_once (WE_INCLUDES_PATH . 'we_version.php');
-
-define('WE_EDITPAGE_PROPERTIES', 0);
-define('WE_EDITPAGE_CONTENT', 1);
-define('WE_EDITPAGE_INFO', 2);
-define('WE_EDITPAGE_PREVIEW', 3);
-define('WE_EDITPAGE_WORKSPACE', 4);
-define('WE_EDITPAGE_METAINFO', 5);
-define('WE_EDITPAGE_FIELDS', 6);
-define('WE_EDITPAGE_SEARCH', 7);
-define('WE_EDITPAGE_SCHEDULER', 8);
-define('WE_EDITPAGE_THUMBNAILS', 9);
-define('WE_EDITPAGE_VALIDATION', 10);
-define('WE_EDITPAGE_VARIANTS', 11);
-define('WE_EDITPAGE_PREVIEW_TEMPLATE', 12);
-define('WE_EDITPAGE_CFWORKSPACE', 13);
-define('WE_EDITPAGE_WEBUSER', 14);
-define('WE_EDITPAGE_IMAGEEDIT', 15);
-define('WE_EDITPAGE_DOCLIST', 16);
-define('WE_EDITPAGE_VERSIONS', 17);
-
-define('FILE_ONLY', 0);
-define('FOLDER_ONLY', 1);
-
 
 define('CATEGORY_TABLE', TBL_PREFIX . 'tblCategorys');
 define('CAPTCHA_TABLE', TBL_PREFIX . 'tblCaptcha');
@@ -119,19 +98,14 @@ define('VERSIONSLOG_TABLE', TBL_PREFIX . 'tblversionslog');
 define('SESSION_TABLE', TBL_PREFIX . 'tblSessions');
 define('NAVIGATION_TABLE', TBL_PREFIX . 'tblnavigation');
 define('NAVIGATION_RULE_TABLE', TBL_PREFIX . 'tblnavigationrules');
+define('USER_TABLE', TBL_PREFIX . 'tblUser');
+define('LOCK_TABLE', TBL_PREFIX . 'tblLock');
+
+
+//NOTE: you have to register the tables at we.inc!
 
 define('SESSION_NAME', 'WESESSION');
-
-(!defined('LOGIN_FAILED_TIME')) && define('LOGIN_FAILED_TIME', 2); // in minutes
-
-(!defined('LOGIN_FAILED_NR')) && define('LOGIN_FAILED_NR', 3);
-
-(!defined('LOGIN_FAILED_HOLDTIME')) && define('LOGIN_FAILED_HOLDTIME', 30); // in days
-//define how long Errors hold in DB
-define('ERROR_LOG_HOLDTIME', 30); // in days
-define('ERROR_LOG_MAX_ITEM_COUNT', 10000);
-define('ERROR_LOG_MAX_ITEM_THRESH', 9800);
-
+define('REQUEST_SIMULATION',0);
 
 /**
  * Fix the none existing $_SERVER['REQUEST_URI'] on IIS
@@ -142,7 +116,7 @@ if(!isset($_SERVER['REQUEST_URI'])){
 			(isset($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : '');
 	}
 }
-
+//FIMXE: remove
 $GLOBALS['WE_LANGS'] = array(
 	'de' => 'Deutsch',
 	'en' => 'English',
@@ -153,6 +127,7 @@ $GLOBALS['WE_LANGS'] = array(
 	'pl' => 'Polish',
 	'fr' => 'French'
 );
+//FIMXE: remove
 $GLOBALS['WE_LANGS_COUNTRIES'] = array(
 	'DE' => 'de',
 	'GB' => 'en',

@@ -28,7 +28,9 @@ class we_textDocument extends we_document{
 
 	function __construct(){
 		parent::__construct();
-		array_push($this->EditPageNrs, WE_EDITPAGE_PROPERTIES, WE_EDITPAGE_INFO, WE_EDITPAGE_CONTENT, WE_EDITPAGE_VALIDATION, WE_EDITPAGE_VERSIONS);
+		if(isWE()){
+			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_INFO, we_base_constants::WE_EDITPAGE_CONTENT, we_base_constants::WE_EDITPAGE_VALIDATION, we_base_constants::WE_EDITPAGE_VERSIONS);
+		}
 		$this->elements['Charset']['dat'] = DEFAULT_CHARSET;
 		$this->Icon = we_base_ContentTypes::LINK_ICON;
 	}
@@ -38,14 +40,14 @@ class we_textDocument extends we_document{
 	function editor(){
 
 		switch($this->EditPageNr){
-			case WE_EDITPAGE_PROPERTIES:
+			case we_base_constants::WE_EDITPAGE_PROPERTIES:
 				return 'we_templates/we_editor_properties.inc.php';
-			case WE_EDITPAGE_INFO:
+			case we_base_constants::WE_EDITPAGE_INFO:
 				return 'we_templates/we_editor_info.inc.php';
-			case WE_EDITPAGE_CONTENT:
+			case we_base_constants::WE_EDITPAGE_CONTENT:
 				$GLOBALS['we_editmode'] = true;
 				return 'we_templates/we_srcTmpl.inc.php';
-			case WE_EDITPAGE_PREVIEW:
+			case we_base_constants::WE_EDITPAGE_PREVIEW:
 				if($GLOBALS['we_EDITOR']){
 					$GLOBALS['we_file_to_delete_after_include'] = TEMP_PATH . '/' . we_base_file::getUniqueId() . $this->Extension;
 					we_util_File::saveFile($GLOBALS['we_file_to_delete_after_include'], $this->i_getDocument());
@@ -54,13 +56,13 @@ class we_textDocument extends we_document{
 					$GLOBALS['we_editmode'] = false;
 					return 'we_templates/we_srcTmpl.inc.php';
 				}
-			case WE_EDITPAGE_VALIDATION:
+			case we_base_constants::WE_EDITPAGE_VALIDATION:
 				return 'we_templates/validateDocument.inc.php';
-			case WE_EDITPAGE_VERSIONS:
+			case we_base_constants::WE_EDITPAGE_VERSIONS:
 				return 'we_versions/we_editor_versions.inc.php';
 			default:
-				$this->EditPageNr = WE_EDITPAGE_PROPERTIES;
-				$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_PROPERTIES;
+				$this->EditPageNr = we_base_constants::WE_EDITPAGE_PROPERTIES;
+				$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_PROPERTIES;
 				return 'we_templates/we_editor_properties.inc.php';
 		}
 		return $this->TemplatePath;
@@ -72,7 +74,7 @@ class we_textDocument extends we_document{
 	}
 
 	function isValidEditPage($editPageNr){
-		if($editPageNr == WE_EDITPAGE_VALIDATION){
+		if($editPageNr == we_base_constants::WE_EDITPAGE_VALIDATION){
 			return ($this->ContentType == we_base_ContentTypes::CSS);
 		}
 

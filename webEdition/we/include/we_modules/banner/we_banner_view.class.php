@@ -55,7 +55,7 @@ class we_banner_view extends we_banner_base{
 			$this->htmlHidden("ncmd", "new_banner") .
 			$this->htmlHidden("ncmdvalue", "") .
 			$this->htmlHidden("bid", $this->banner->ID) .
-			$this->htmlHidden("pnt", $_REQUEST["pnt"]) .
+			$this->htmlHidden("pnt", we_base_request::_(we_base_request::STRING, "pnt")) .
 			$this->htmlHidden("page", $this->page) .
 			$this->htmlHidden("bname", $this->uid) .
 			$this->htmlHidden("order", $this->Order) .
@@ -692,16 +692,17 @@ class we_banner_view extends we_banner_base{
 				}
 				break;
 			case "delete_banner":
-				if(isset($_REQUEST["bid"])){
+				$bid = we_base_request::_(we_base_request::INT, 'bid');
+				if($bid){
 					if(!permissionhandler::hasPerm("DELETE_BANNER")){
 						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
 						return;
 					} else {
 
-						$this->banner = new we_banner_banner($_REQUEST["bid"]);
+						$this->banner = new we_banner_banner($bid);
 						if($this->banner->delete()){
 							$this->banner = new we_banner_banner(0, $this->banner->IsFolder);
-							echo we_html_element::jsElement('top.content.deleteEntry(' . $_REQUEST["bid"] . ',"' .
+							echo we_html_element::jsElement('top.content.deleteEntry(' . $bid . ',"' .
 								($this->banner->IsFolder ? 'folder' : 'file') . '");' .
 								we_message_reporting::getShowMessageCall(g_l('modules_banner', ($this->banner->IsFolder ? '[delete_group_ok]' : '[delete_ok]')), we_message_reporting::WE_MESSAGE_NOTICE) . 'top.content.we_cmd("new_banner");');
 						} else {
@@ -721,9 +722,8 @@ class we_banner_view extends we_banner_base{
 		if(isset($_REQUEST["bname"])){
 			$this->uid = $_REQUEST["bname"];
 		}
-		if(isset($_REQUEST["bid"])){
-			$this->banner->ID = $_REQUEST["bid"];
-		}
+		$this->banner->ID = we_base_request::_(we_base_request::INT, "bid", $this->banner->ID);
+
 		if(isset($_REQUEST["page"])){
 			$this->page = $_REQUEST["page"];
 		}

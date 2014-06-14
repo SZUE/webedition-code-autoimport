@@ -31,7 +31,9 @@ class we_flashDocument extends we_binaryDocument{
 
 	function __construct(){
 		parent::__construct();
-		$this->EditPageNrs[] = WE_EDITPAGE_PREVIEW;
+		if(isWE()){
+			$this->EditPageNrs[] = we_base_constants::WE_EDITPAGE_PREVIEW;
+		}
 		$this->ContentType = we_base_ContentTypes::FLASH;
 	}
 
@@ -39,7 +41,7 @@ class we_flashDocument extends we_binaryDocument{
 
 	function editor(){
 		switch($this->EditPageNr){
-			case WE_EDITPAGE_PREVIEW:
+			case we_base_constants::WE_EDITPAGE_PREVIEW:
 				return 'we_templates/we_editor_flash_preview.inc.php';
 			default:
 				return parent::editor();

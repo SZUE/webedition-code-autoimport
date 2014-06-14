@@ -357,7 +357,7 @@ if(inWorkflow($we_doc)){
 	}
 
 	if($we_doc->IsTextContentDoc && $haspermNew){ //	$_js_permnew
-		if($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE || $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT){ // not in SeeMode or in editmode
+		if($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE || $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT){ // not in SeeMode or in editmode
 			$_ctrlElem = getControlElement('checkbox', 'makeSameDoc');
 			if(!$_ctrlElem){ //	changes for we:controlElement
 				$_js_permnew = ($we_doc->ID ? '

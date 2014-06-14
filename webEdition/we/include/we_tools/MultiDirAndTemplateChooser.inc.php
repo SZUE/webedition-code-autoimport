@@ -42,7 +42,7 @@ class MultiDirAndTemplateChooser extends MultiDirChooser{
 		$this->mustTemplateIDs = $mustTemplateIDs;
 		$this->mustTemplateIDsArr = makeArrayFromCSV($this->mustTemplateIDs);
 		$this->tmplArr = makeArrayFromCSV($this->tmplcsv);
-		$this->tmplValsArr = getPathsFromTable(TEMPLATES_TABLE, $this->db, FILE_ONLY, get_ws(TEMPLATES_TABLE), "Path");
+		$this->tmplValsArr = getPathsFromTable(TEMPLATES_TABLE, $this->db, we_base_constants::FILE_ONLY, get_ws(TEMPLATES_TABLE), "Path");
 		$this->tmplWs = $tmplWs;
 		$this->mustPaths = makeArrayFromCSV(id_to_path($this->mustTemplateIDsArr, TEMPLATES_TABLE, $this->db));
 		foreach($this->mustTemplateIDsArr as $i => $id){

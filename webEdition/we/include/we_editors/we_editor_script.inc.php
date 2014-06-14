@@ -56,7 +56,7 @@ we_html_tools::protect();
 </style>
 <?php
 if(isset($GLOBALS['we_doc'])){
-	if($GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT && $GLOBALS['we_doc']->ContentType == we_base_ContentTypes::TEMPLATE){
+	if($GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT && $GLOBALS['we_doc']->ContentType == we_base_ContentTypes::TEMPLATE){
 		//no wyswyg
 	} else {
 		echo we_wysiwyg_editor::getHeaderHTML();
@@ -91,9 +91,9 @@ echo we_html_element::jsScript(JS_DIR . 'we_textarea.js');
 
 if(isset($GLOBALS['we_doc'])){
 	$useSeeModeJS = array(
-		we_base_ContentTypes::WEDOCUMENT => array(WE_EDITPAGE_CONTENT),
-		we_base_ContentTypes::TEMPLATE => array(WE_EDITPAGE_PREVIEW, WE_EDITPAGE_PREVIEW_TEMPLATE),
-		"objectFile" => array(WE_EDITPAGE_CONTENT, WE_EDITPAGE_PREVIEW)
+		we_base_ContentTypes::WEDOCUMENT => array(we_base_constants::WE_EDITPAGE_CONTENT),
+		we_base_ContentTypes::TEMPLATE => array(we_base_constants::WE_EDITPAGE_PREVIEW, we_base_constants::WE_EDITPAGE_PREVIEW_TEMPLATE),
+		"objectFile" => array(we_base_constants::WE_EDITPAGE_CONTENT, we_base_constants::WE_EDITPAGE_PREVIEW)
 	);
 
 
@@ -231,7 +231,7 @@ if(isset($GLOBALS['we_doc'])){
 				_filepath += _filetext;
 				parent.frames[0].we_setPath(_filepath, _filetext, -1);
 	<?php
-	if(defined("CUSTOMER_TABLE") && in_array(WE_EDITPAGE_WEBUSER, $GLOBALS['we_doc']->EditPageNrs) && isset($GLOBALS['we_doc']->documentCustomerFilter)){
+	if(defined("CUSTOMER_TABLE") && in_array(we_base_constants::WE_EDITPAGE_WEBUSER, $GLOBALS['we_doc']->EditPageNrs) && isset($GLOBALS['we_doc']->documentCustomerFilter)){
 		// only use this when customer filters are possible
 		?>
 					updateCustomerFilterIfNeeded();

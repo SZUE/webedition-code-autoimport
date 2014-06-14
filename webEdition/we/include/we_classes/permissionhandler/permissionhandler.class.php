@@ -65,7 +65,7 @@ abstract class permissionhandler{
 
 		  here are two example usages:
 
-		  $knownActions["switch_edit_page"]["WE_EDITPAGE_PROPERTIES"] = array("CAN_SEE_PROPERTIES");
+		  $knownActions["switch_edit_page"]["we_base_constants::WE_EDITPAGE_PROPERTIES"] = array("CAN_SEE_PROPERTIES");
 		  action: switch editPage to property-page - needed right is "CAN_SEE_PROPERTIES"
 
 		  $knownActions["another_action"]["another_para"] = array("Right1","Right2,Right3");
@@ -75,11 +75,11 @@ abstract class permissionhandler{
 		//	The first entries are no we_cmd[0], but sometimes needed.
 		$knownActions = array(
 			"switch_edit_page" => array(
-				"WE_EDITPAGE_PROPERTIES" => array("CAN_SEE_PROPERTIES"),
+				"we_base_constants::WE_EDITPAGE_PROPERTIES" => array("CAN_SEE_PROPERTIES"),
 				0 => array("CAN_SEE_PROPERTIES"),
-				"WE_EDITPAGE_INFO" => array("CAN_SEE_INFO"),
+				"we_base_constants::WE_EDITPAGE_INFO" => array("CAN_SEE_INFO"),
 				2 => array("CAN_SEE_INFO"),
-				"WE_EDITPAGE_VALIDATION" => array("CAN_SEE_VALIDATION"),
+				"we_base_constants::WE_EDITPAGE_VALIDATION" => array("CAN_SEE_VALIDATION"),
 				10 => array("CAN_SEE_VALIDATION"),
 			)
 		);

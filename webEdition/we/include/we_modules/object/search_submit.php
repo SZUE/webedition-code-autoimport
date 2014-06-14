@@ -114,7 +114,7 @@ switch(we_base_request::_(we_base_request::STRING, 'todo')){
 			//echo $obj_searchField."-_".$obj_search;
 			$we_doc->searchclass->height = 0;
 			$we_doc->searchclass->show = 'AB';
-			$go = WE_EDITPAGE_CFWORKSPACE;
+			$go = we_base_constants::WE_EDITPAGE_CFWORKSPACE;
 
 			$we_doc->searchclass->searchname = array(0 => $_REQUEST['obj_search']);
 			$we_doc->searchclass->searchfield = array(0 => $_REQUEST['obj_searchField']);

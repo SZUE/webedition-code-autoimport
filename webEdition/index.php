@@ -171,23 +171,23 @@ we_updater::fixInconsistentTables();
 we_captcha_captcha::cleanup($GLOBALS['DB_WE']);
 
 //clean Error-Log-Table
-$GLOBALS['DB_WE']->query('DELETE FROM ' . ERROR_LOG_TABLE . ' WHERE `Date` < DATE_SUB(NOW(), INTERVAL ' . ERROR_LOG_HOLDTIME . ' DAY)');
+$GLOBALS['DB_WE']->query('DELETE FROM ' . ERROR_LOG_TABLE . ' WHERE `Date` < DATE_SUB(NOW(), INTERVAL ' . we_base_constants::ERROR_LOG_HOLDTIME . ' DAY)');
 $cnt = f('SELECT COUNT(1) FROM ' . ERROR_LOG_TABLE);
 
-if($cnt > ERROR_LOG_MAX_ITEM_COUNT){
-	$GLOBALS['DB_WE']->query('DELETE  FROM ' . ERROR_LOG_TABLE . ' WHERE 1 ORDER BY Date LIMIT ' . ($cnt - ERROR_LOG_MAX_ITEM_THRESH));
+if($cnt > we_base_constants::ERROR_LOG_MAX_ITEM_COUNT){
+	$GLOBALS['DB_WE']->query('DELETE  FROM ' . ERROR_LOG_TABLE . ' WHERE 1 ORDER BY Date LIMIT ' . ($cnt - we_base_constants::ERROR_LOG_MAX_ITEM_THRESH));
 }
 
 
 //CHECK FOR FAILED LOGIN ATTEMPTS
-$GLOBALS['DB_WE']->query('DELETE FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblUser" AND LoginDate < DATE_SUB(NOW(), INTERVAL ' . LOGIN_FAILED_HOLDTIME . ' DAY)');
+$GLOBALS['DB_WE']->query('DELETE FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblUser" AND LoginDate < DATE_SUB(NOW(), INTERVAL ' . we_base_constants::LOGIN_FAILED_HOLDTIME . ' DAY)');
 
-$count = f('SELECT COUNT(1) FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblUser" AND IP="' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '" AND LoginDate > DATE_SUB(NOW(), INTERVAL ' . intval(LOGIN_FAILED_TIME) . ' MINUTE)');
+$count = f('SELECT COUNT(1) FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblUser" AND IP="' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '" AND LoginDate > DATE_SUB(NOW(), INTERVAL ' . intval(we_base_constants::LOGIN_FAILED_TIME) . ' MINUTE)');
 
-if($count >= LOGIN_FAILED_NR){
+if($count >= we_base_constants::LOGIN_FAILED_NR){
 	echo we_html_tools::getHtmlTop('webEdition ') .
 	we_html_element::jsElement(
-		we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[3timesLoginError]'), LOGIN_FAILED_NR, LOGIN_FAILED_TIME), we_message_reporting::WE_MESSAGE_ERROR)
+		we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[3timesLoginError]'), we_base_constants::LOGIN_FAILED_NR, we_base_constants::LOGIN_FAILED_TIME), we_message_reporting::WE_MESSAGE_ERROR)
 	) .
 	'</html>';
 	exit();
@@ -453,10 +453,10 @@ if(we_base_request::_(we_base_request::STRING, 'checkLogin') && !$_COOKIE){
 			we_log_loginFailed('tblUser', we_base_request::_(we_base_request::STRING, 'username'));
 
 			//CHECK FOR FAILED LOGIN ATTEMPTS
-			$cnt = f('SELECT COUNT(1) FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblUser" AND IP="' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '" AND LoginDate > DATE_SUB(NOW(), INTERVAL ' . intval(LOGIN_FAILED_TIME) . ' MINUTE)');
+			$cnt = f('SELECT COUNT(1) FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblUser" AND IP="' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '" AND LoginDate > DATE_SUB(NOW(), INTERVAL ' . intval(we_base_constants::LOGIN_FAILED_TIME) . ' MINUTE)');
 
-			$_body_javascript = ($cnt >= LOGIN_FAILED_NR ?
-					we_message_reporting::getShowMessageCall(sprintf(g_l('alert', "[3timesLoginError]"), LOGIN_FAILED_NR, LOGIN_FAILED_TIME), we_message_reporting::WE_MESSAGE_ERROR) :
+			$_body_javascript = ($cnt >= we_base_constants::LOGIN_FAILED_NR ?
+					we_message_reporting::getShowMessageCall(sprintf(g_l('alert', "[3timesLoginError]"), we_base_constants::LOGIN_FAILED_NR, we_base_constants::LOGIN_FAILED_TIME), we_message_reporting::WE_MESSAGE_ERROR) :
 					we_message_reporting::getShowMessageCall(g_l('alert', "[login_failed]"), we_message_reporting::WE_MESSAGE_ERROR));
 			break;
 		case 3:

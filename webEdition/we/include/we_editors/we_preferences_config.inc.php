@@ -50,7 +50,7 @@ $GLOBALS['configs'] = array(
 	'global' => array(
 //key => comment, default, changed right (default Admin)
 // Variables for SEEM
-		'WE_SEEM' => array('Enable seeMode', 1),
+		'WE_SEEM' => array('Enable seeMode', we_base_request::BOOL, 1),
 // Variables for LogIn
 		'WE_LOGIN_HIDEWESTATUS' => array('Hide if webEdition is Nightly or Alpha or.. Release Version', 1),
 		'WE_LOGIN_WEWINDOW' => array('Decide how WE opens: 0 allow both, 1 POPUP only, 2 same Window only', 0),
@@ -90,7 +90,7 @@ $GLOBALS['configs'] = array(
 		'XHTML_REMOVE_WRONG' => array('Remove wrong xhtml attributes from we:tags', false),
 //system
 		'WE_MAX_UPLOAD_SIZE' => array('Maximal possible uploadsize', 0),
-		'USE_JUPLOAD' => array('Use Java Upload',0),//deprecated
+		'USE_JUPLOAD' => array('Use Java Upload', 0), //deprecated
 		'WE_NEW_FOLDER_MOD' => array('File permissions when creating a new directory', "755"),
 		'WE_DOCTYPE_WORKSPACE_BEHAVIOR' => array('Which Doctypes should be shown for which workspace 0=normal behaviour , 1=new behaviour', 0),
 		'SCHEDULER_TRIGGER' => array('decide how the scheduler works', 1), //postdoc
@@ -267,7 +267,7 @@ $GLOBALS['configs'] = array(
 		'useauth' => array(''), //pseudo element
 		'HTTP_USERNAME' => array(''),
 		'HTTP_PASSWORD' => array(''),
-		'locale_default' => array(''),
-		'locale_locales' => array(''),
+		'locale_default' => array('de_DE'),
+		'locale_locales' => array('de_DE'),
 	),
 );

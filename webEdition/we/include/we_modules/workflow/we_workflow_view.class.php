@@ -1638,11 +1638,11 @@ function checkData(){
 			"border" => 0), 1, 0);
 
 		switch($we_doc->EditPageNr){
-			case WE_EDITPAGE_PREVIEW:
+			case we_base_constants::WE_EDITPAGE_PREVIEW:
 				//	Edit-Button
 				$_footerTable->addCol(2);
 				$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
-				$_footerTable->setColContent(0, $_col++, we_html_button::create_button("edit", "javascript:parent.editHeader.we_cmd('switch_edit_page'," . WE_EDITPAGE_CONTENT . ",'" . $GLOBALS["we_transaction"] . "');"));
+				$_footerTable->setColContent(0, $_col++, we_html_button::create_button("edit", "javascript:parent.editHeader.we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_CONTENT . ",'" . $GLOBALS["we_transaction"] . "');"));
 
 				//	Decline Workflow
 				$_footerTable->addCol(2);
@@ -1657,17 +1657,17 @@ function checkData(){
 					$_footerTable->setColContent(0, $_col++, we_html_button::create_button("forward", "javascript:pass_workflow();"));
 				}
 				break;
-			case WE_EDITPAGE_CONTENT:
+			case we_base_constants::WE_EDITPAGE_CONTENT:
 
 				//	Preview Button
 				$_footerTable->addCol(2);
 				$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
-				$_footerTable->setColContent(0, $_col++, we_html_button::create_button("preview", "javascript:parent.editHeader.we_cmd('switch_edit_page'," . WE_EDITPAGE_PREVIEW . ",'" . $GLOBALS["we_transaction"] . "');"));
+				$_footerTable->setColContent(0, $_col++, we_html_button::create_button("preview", "javascript:parent.editHeader.we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_PREVIEW . ",'" . $GLOBALS["we_transaction"] . "');"));
 
 				//	Propertie-button
 				$_footerTable->addCol(2);
 				$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
-				$_footerTable->setColContent(0, $_col++, we_html_button::create_button("properties", "javascript:parent.editHeader.we_cmd('switch_edit_page'," . WE_EDITPAGE_PROPERTIES . ",'" . $GLOBALS["we_transaction"] . "');"));
+				$_footerTable->setColContent(0, $_col++, we_html_button::create_button("properties", "javascript:parent.editHeader.we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_PROPERTIES . ",'" . $GLOBALS["we_transaction"] . "');"));
 
 				//	Decline Workflow
 				$_footerTable->addCol(2);
@@ -1693,14 +1693,14 @@ function checkData(){
 				}
 				break;
 
-			case WE_EDITPAGE_PROPERTIES:
+			case we_base_constants::WE_EDITPAGE_PROPERTIES:
 				$_footerTable->addCol(2);
 				$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
-				$_footerTable->setColContent(0, $_col++, we_html_button::create_button("preview", "javascript:parent.editHeader.we_cmd('switch_edit_page'," . WE_EDITPAGE_PREVIEW . ",'" . $GLOBALS["we_transaction"] . "');"));
+				$_footerTable->setColContent(0, $_col++, we_html_button::create_button("preview", "javascript:parent.editHeader.we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_PREVIEW . ",'" . $GLOBALS["we_transaction"] . "');"));
 
 				$_footerTable->addCol(2);
 				$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
-				$_footerTable->setColContent(0, $_col++, we_html_button::create_button("preview", "javascript:parent.editHeader.we_cmd('switch_edit_page'," . WE_EDITPAGE_PREVIEW . ",'" . $GLOBALS["we_transaction"] . "');"));
+				$_footerTable->setColContent(0, $_col++, we_html_button::create_button("preview", "javascript:parent.editHeader.we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_PREVIEW . ",'" . $GLOBALS["we_transaction"] . "');"));
 
 				$_footerTable->addCol(2);
 				$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
