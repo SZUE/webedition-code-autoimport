@@ -816,7 +816,7 @@ class we_banner_view extends we_banner_base{
 
 	function formFiles(){
 		$delallbut = we_html_button::create_button("delete_all", "javascript:top.content.setHot(); we_cmd('del_all_files')");
-		$wecmdenc3 = we_cmd_enc("fillIDs();opener.we_cmd('add_file',top.allIDs);");
+		$wecmdenc3 = we_base_request::encCmd("fillIDs();opener.we_cmd('add_file',top.allIDs);");
 		$addbut = we_html_button::create_button("add", "javascript:top.content.setHot(); we_cmd('openDocselector',0,'" . FILE_TABLE . "','','','" . $wecmdenc3 . "','','','" . we_base_ContentTypes::WEDOCUMENT . "','',1)");
 
 		$dirs = new MultiDirChooser(495, $this->banner->FileIDs, "del_file", we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", FILE_TABLE);
@@ -826,7 +826,7 @@ class we_banner_view extends we_banner_base{
 
 	function formFolders(){
 		$delallbut = we_html_button::create_button("delete_all", "javascript:top.content.setHot();we_cmd('del_all_folders')");
-		$wecmdenc3 = we_cmd_enc("fillIDs();opener.we_cmd('add_folder',top.allIDs);");
+		$wecmdenc3 = we_base_request::encCmd("fillIDs();opener.we_cmd('add_folder',top.allIDs);");
 		$addbut = we_html_button::create_button("add", "javascript:top.content.setHot();we_cmd('openDirselector','','" . FILE_TABLE . "','','','" . $wecmdenc3 . "','','','',1)");
 
 		$dirs = new MultiDirChooser(495, $this->banner->FolderIDs, "del_folder", we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", FILE_TABLE);
@@ -1011,9 +1011,9 @@ class we_banner_view extends we_banner_base{
 		$yuiSuggest = & weSuggest::getInstance();
 		$Pathvalue = $IDValue ? id_to_path($IDValue, FILE_TABLE, $this->db) : '';
 		$Pathname = md5(uniqid(__FUNCTION__, true));
-		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$IDName'].value");
-		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$Pathname'].value");
-		$wecmdenc3 = we_cmd_enc(str_replace('\\', '', $cmd));
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['$IDName'].value");
+		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['$Pathname'].value");
+		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
 		$button = we_html_button::create_button("select", "javascript:top.content.setHot();we_cmd('openDocselector',((document.we_form.elements['$IDName'].value != 0) ? document.we_form.elements['$IDName'].value : ''),'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0,'" . we_base_ContentTypes::IMAGE . "')");
 
 		$yuiSuggest->setAcId("Image");
@@ -1034,9 +1034,9 @@ class we_banner_view extends we_banner_base{
 		$yuiSuggest = & weSuggest::getInstance();
 		$path = id_to_path($idvalue, $table, $this->db);
 		$textname = md5(uniqid(__FUNCTION__, true));
-		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$idname'].value");
-		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$textname'].value");
-		$wecmdenc3 = we_cmd_enc(str_replace('\\', '', $cmd));
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['$idname'].value");
+		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['$textname'].value");
+		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
 		$button = we_html_button::create_button("select", "javascript:top.content.setHot();we_cmd('banner_openDirselector',document.we_form.elements['$idname'].value,'" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "')");
 
 		$yuiSuggest->setAcId($acID);
@@ -1104,9 +1104,9 @@ class we_banner_view extends we_banner_base{
 	</tr>
 </table>';
 
-		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$idname'].value");
-		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$Pathname'].value");
-		$wecmdenc3 = we_cmd_enc(str_replace('\\', '', $cmd));
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['$idname'].value");
+		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['$Pathname'].value");
+		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
 		$button = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0,'')");
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId("InternalURL");

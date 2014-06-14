@@ -71,40 +71,25 @@ class we_search_search extends we_search{
 	function initSearchData(){
 		if(isset($GLOBALS['we_doc'])){
 			$obj = $GLOBALS['we_doc'];
+			$obj->searchclassFolder->searchstart = we_base_request::_(we_base_request::INT, 'searchstart', $obj->searchclassFolder->searchstart);
+			$obj->searchclassFolder->mode = we_base_request::_(we_base_request::BOOL, 'mode', $obj->searchclassFolder->mode);
+			$obj->searchclassFolder->order = we_base_request::_(we_base_request::STRING, 'order', $obj->searchclassFolder->order);
+			$obj->searchclassFolder->anzahl = we_base_request::_(we_base_request::INT, 'anzahl', $obj->searchclassFolder->anzahl);
+			$obj->searchclassFolder->location = we_base_request::_(we_base_request::STRING, 'location', $obj->searchclassFolder->location);
+			$obj->searchclassFolder->search = we_base_request::_(we_base_request::STRING, 'search', $obj->searchclassFolder->search);
 
-			if(isset($_REQUEST['searchstart'])){
-				$obj->searchclassFolder->searchstart = ($_REQUEST['searchstart']);
-			}
-			if(isset($_REQUEST['setView'])){
-				$this->db->query('UPDATE ' . FILE_TABLE . ' SET listview=' . we_base_request::_(we_base_request::INT, 'setView') . ' WHERE ID=' . intval($obj->ID));
-				$obj->searchclassFolder->setView = ($_REQUEST['setView']);
+			if(($view = we_base_request::_(we_base_request::INT, 'setView')) !== false){
+				$this->db->query('UPDATE ' . FILE_TABLE . ' SET listview=' . $view . ' WHERE ID=' . intval($obj->ID));
+				$obj->searchclassFolder->setView = $view;
 			} else {
 				$obj->searchclassFolder->setView = f('SELECT listview FROM ' . FILE_TABLE . ' WHERE ID=' . intval($obj->ID));
 			}
-			if(isset($_REQUEST['mode'])){
-				$obj->searchclassFolder->mode = ($_REQUEST['mode']);
-			}
-			if(isset($_REQUEST['order'])){
-				$obj->searchclassFolder->order = ($_REQUEST['order']);
-			}
-			if(isset($_REQUEST['anzahl'])){
-				$obj->searchclassFolder->anzahl = ($_REQUEST['anzahl']);
-			}
+
 			if(isset($_REQUEST['searchFields'])){
 				$obj->searchclassFolder->searchFields = ($_REQUEST['searchFields']);
 				$obj->searchclassFolder->height = count($_REQUEST['searchFields']);
-			} elseif(!isset($_REQUEST['searchFields']) && isset($_REQUEST['searchstart'])){
-				$obj->searchclassFolder->height = 0;
-			} elseif(!isset($_REQUEST['searchFields']) && !isset($_REQUEST['searchstart'])){
-				$obj->searchclassFolder->height = 1;
 			} else {
-				$obj->searchclassFolder->height = 1;
-			}
-			if(isset($_REQUEST['location'])){
-				$obj->searchclassFolder->location = ($_REQUEST['location']);
-			}
-			if(isset($_REQUEST['search'])){
-				$obj->searchclassFolder->search = ($_REQUEST['search']);
+				$obj->searchclassFolder->height = (isset($_REQUEST['searchstart']) ? 0 : 1);
 			}
 		} else {
 			if(isset($_REQUEST['we_cmd']['setView']) && isset($_REQUEST['id'])){

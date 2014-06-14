@@ -48,7 +48,7 @@ class rpcPingCmd extends rpcCmd{
 		$resp->setData('users', $users_online->getUsers());
 		$resp->setData('num_users', $users_online->getNumUsers());
 
-		$aDatTblPref = getPref('cockpit_dat'); // array as saved in the prefs
+		$aDatTblPref = we_base_preferences::getUserPref('cockpit_dat'); // array as saved in the prefs
 		$aDat = $aDatTblPref ? unserialize($aDatTblPref) : array();
 		foreach($aDat as $d){
 			foreach($d as $aProps){

@@ -103,6 +103,8 @@ class we_base_request{
 				$var = filter_var(str_replace(we_base_link::TYPE_MAIL_PREFIX, '', $var), FILTER_SANITIZE_EMAIL);
 				return;
 			case self::FILE:
+				$var = str_replace(array('../', '//'), '', filter_var($var, FILTER_SANITIZE_URL));
+				return;
 			case self::URL:
 				$var = filter_var($var, FILTER_SANITIZE_URL);
 				return;
@@ -209,8 +211,21 @@ class we_base_request{
 		return $var;
 	}
 
-	static function registerTables(array $tables){
+	/**
+	 * @internal
+	 * @param array $tables
+	 */
+	public static function registerTables(array $tables){
 		self::$allTables = array_merge(self::$allTables, $tables);
 	}
+
+	/**
+	 * @internal
+	 * @param type $str
+	 * @return type
+	 */
+	public static function encCmd($str){
+	return ($str ? 'WECMDENC_' . urlencode(base64_encode($str)) : '');
+}
 
 }

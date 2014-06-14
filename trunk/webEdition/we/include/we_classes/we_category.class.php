@@ -135,7 +135,7 @@ class we_category extends weModelBase{
 				if($data['Catfields']){
 					$_arr = unserialize($data['Catfields']);
 					if(empty($onlyindir) || strpos($data['Path'], $onlyindir) === 0){
-						$cats[] = ($field == 'Description') ? parseInternalLinks($_arr['default'][$field], 0) : $_arr['default'][$field];
+						$cats[] = ($field == 'Description') ? we_document::parseInternalLinks($_arr['default'][$field], 0) : $_arr['default'][$field];
 					}
 				} elseif(empty($onlyindir) || strpos($data['Path'], $onlyindir) === 0){
 					$cats[] = '';

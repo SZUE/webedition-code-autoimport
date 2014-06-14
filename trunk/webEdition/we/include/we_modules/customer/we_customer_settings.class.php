@@ -310,29 +310,19 @@ class we_customer_settings{
 	}
 
 	function removeFieldAdd($fieldName){
-		$this->new_array_splice($this->FieldAdds, $fieldName);
+		we_base_util::new_array_splice($this->FieldAdds, $fieldName);
 	}
 
 	function renameFieldAdds($old, $new){
 		foreach($this->FieldAdds as $k => $v){
 			if($k == $old){
 				$tmp = $this->FieldAdds[$k];
-				$this->new_array_splice($this->FieldAdds, $k);
+				we_base_util::new_array_splice($this->FieldAdds, $k);
 				$this->FieldAdds[$new] = $tmp;
 			}
 		}
 	}
 
-	//field adds operations ends
-	private function new_array_splice(&$a, $start, $len = 1){
-		$ks = array_keys($a);
-		$k = array_search($start, $ks);
-		if($k !== false){
-			$ks = array_splice($ks, $k, $len);
-			foreach($ks as $k)
-				unset($a[$k]);
-		}
-	}
 
 	function getMaxSearchResults(){
 		return $this->MaxSearchResults;

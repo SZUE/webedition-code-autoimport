@@ -230,11 +230,11 @@ abstract class we_html_forms{
 					$previewDivContent = str_replace(array("##|r##", "##|n##"), array("\r", "\n"), (
 						isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->ClassName != 'we_objectFile' && $GLOBALS['we_doc']->ClassName != 'we_object' ?
 							$GLOBALS['we_doc']->getField($attribs) :
-							parseInternalLinks($value, 0)
+							we_document::parseInternalLinks($value, 0)
 						)
 					);
 				} else {//we are in frontend
-					$hiddenTextareaContent = str_replace(array("##|r##", "##|n##"), array("\r", "\n"), parseInternalLinks($value, 0));
+					$hiddenTextareaContent = str_replace(array("##|r##", "##|n##"), array("\r", "\n"), we_document::parseInternalLinks($value, 0));
 					$previewDivContent = $hiddenTextareaContent;
 				}
 

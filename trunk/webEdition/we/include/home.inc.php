@@ -59,8 +59,8 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 	$bResetProps = (we_base_request::_(we_base_request::STRING, 'we_cmd') == "reset_home") ? true : false;
 	if(!$bResetProps && $iLayoutCols){
 
-		$aDatTblPref = getPref('cockpit_dat'); // array as saved in the prefs
-		$aTrf = getPref('cockpit_rss');
+		$aDatTblPref = we_base_preferences::getUserPref('cockpit_dat'); // array as saved in the prefs
+		$aTrf = we_base_preferences::getUserPref('cockpit_rss');
 		$aDat = (!empty($aDatTblPref)) ? @unserialize($aDatTblPref) : $aCfgProps; //
 		$aDat = $aDat ? $aDat : $aCfgProps;
 		$aTrf = empty($aTrf) ? array_pop($aDat) : @unserialize($aTrf);
@@ -72,17 +72,17 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 					$aDat[count($aDat) - 1][] = $aShiftWidget;
 				}
 			}
-			setUserPref('cockpit_dat', serialize($aDat));
-			setUserPref('cockpit_rss', serialize($aTrf));
+			we_base_preferences::setUserPref('cockpit_dat', serialize($aDat));
+			we_base_preferences::setUserPref('cockpit_rss', serialize($aTrf));
 		}
 		$iDatLen = count($aDat);
 	} else {
 		$iLayoutCols = $iDefCols;
 		$_SESSION['prefs']['cockpit_amount_columns'] = $iDefCols;
 
-		setUserPref('cockpit_amount_columns', $iDefCols);
-		setUserPref('cockpit_dat', serialize($aCfgProps));
-		setUserPref('cockpit_rss', serialize($aTopRssFeeds));
+		we_base_preferences::setUserPref('cockpit_amount_columns', $iDefCols);
+		we_base_preferences::setUserPref('cockpit_dat', serialize($aCfgProps));
+		we_base_preferences::setUserPref('cockpit_rss', serialize($aTopRssFeeds));
 		$aDat = $aCfgProps;
 		$aTrf = $aTopRssFeeds;
 		$iDatLen = count($aDat);

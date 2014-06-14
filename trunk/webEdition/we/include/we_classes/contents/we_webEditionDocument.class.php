@@ -255,9 +255,9 @@ class we_webEditionDocument extends we_textContentDocument{
 		}
 		$myid = $this->TemplateID ? $this->TemplateID : '';
 		$path = f('SELECT Path FROM ' . $this->DB_WE->escape($table) . ' WHERE ID=' . intval($myid), '', $this->DB_WE);
-		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$idname'].value");
-		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$textname'].value");
-		$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd('reload_editpage');");
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['$idname'].value");
+		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['$textname'].value");
+		$wecmdenc3 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd('reload_editpage');");
 
 		$button = we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','" . we_base_ContentTypes::TEMPLATE . "',1)");
 		$yuiSuggest->setAcId('Template');
@@ -641,9 +641,9 @@ class we_webEditionDocument extends we_textContentDocument{
 		}
 
 		if($resave == 0){
-			$hy = unserialize(getPref('History'));
+			$hy = unserialize(we_base_preferences::getUserPref('History'));
 			$hy['doc'][$this->ID] = array('Table' => $this->Table, 'ModDate' => $this->ModDate);
-			setUserPref('History', serialize($hy));
+			we_base_preferences::setUserPref('History', serialize($hy));
 		}
 		return $out;
 	}

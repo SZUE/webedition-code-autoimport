@@ -118,6 +118,36 @@ function convertToMb($value){
 	return we_base_file::getHumanFileSize($value, we_base_file::SZ_MB);
 }
 
+function getMysqlVer($nodots = true){
+	$DB_WE = new DB_WE();
+	$res = f('SELECT VERSION()', '', $DB_WE);
+
+	if($res){
+		$res = explode('-', $res);
+	} else {
+		$res = f('SHOW VARIABLES LIKE "version"', 'Value', $DB_WE);
+		if($res){
+			$res = explode('-', $res);
+		}
+	}
+	if(isset($res)){
+		if($nodots){
+			$strver = substr(str_replace('.', '', $res[0]), 0, 4);
+			$ver = (int) $strver;
+			if(strlen($ver) < 4){
+				$ver = sprintf('%04d', $ver);
+				if(substr($ver, 0, 1) == '0'){
+					$ver = (int) (substr($ver, 1) . '0');
+				}
+			}
+
+			return $ver;
+		}
+		return $res[0];
+	}
+	return '';
+}
+
 function getConnectionTypes(){
 	$_connectionTypes = array();
 	if(ini_get('allow_url_fopen') == 1){
@@ -157,9 +187,9 @@ if(strlen($_install_dir) > 35){
 }
 
 $weVersion = WE_VERSION .
-		(defined("WE_SVNREV") && WE_SVNREV != '0000' ? ' (SVN-Revision: ' . WE_SVNREV . ((defined("WE_VERSION_BRANCH") && WE_VERSION_BRANCH != 'trunk') ? '|' . WE_VERSION_BRANCH : '') . ')' : '') .
-		(defined("WE_VERSION_SUPP") && WE_VERSION_SUPP ? ' ' . g_l('global', '[' . WE_VERSION_SUPP . ']') : '') .
-		(defined("WE_VERSION_SUPP_VERSION") && WE_VERSION_SUPP_VERSION ? WE_VERSION_SUPP_VERSION : '');
+	(defined("WE_SVNREV") && WE_SVNREV != '0000' ? ' (SVN-Revision: ' . WE_SVNREV . ((defined("WE_VERSION_BRANCH") && WE_VERSION_BRANCH != 'trunk') ? '|' . WE_VERSION_BRANCH : '') . ')' : '') .
+	(defined("WE_VERSION_SUPP") && WE_VERSION_SUPP ? ' ' . g_l('global', '[' . WE_VERSION_SUPP . ']') : '') .
+	(defined("WE_VERSION_SUPP_VERSION") && WE_VERSION_SUPP_VERSION ? WE_VERSION_SUPP_VERSION : '');
 
 // GD_VERSION is more precise but only available in PHP 5.2.4 or newer
 if(is_callable("gd_info")){
@@ -247,7 +277,7 @@ $_info = array(
 	),
 	'MySql' => array(
 		g_l('sysinfo', '[mysql_version]') => (version_compare("5.0.0", getMysqlVer(false)) > 1) ? getWarning(sprintf(g_l('sysinfo', "[dbversion warning]"), getMysqlVer(false)), getMysqlVer(false)) : getOK('', getMysqlVer(false)),
-		'max_allowed_packet' => getMaxAllowedPacket(),
+		'max_allowed_packet' => getMaxAllowedPacket($GLOBALS['DB_WE']),
 		'lock tables' => ($lockTables ? getOK('', g_l('sysinfo', '[available]')) : getWarning('', '-')),
 		'create temporary tables' => ($allowTempTables ? getOK('', g_l('sysinfo', '[available]')) : getWarning('', '-')),
 		'Info' => $GLOBALS['DB_WE']->getInfo(),
@@ -276,7 +306,7 @@ $_types = array(
 );
 
 $buttons = we_html_button::position_yes_no_cancel(
-				we_html_button::create_button("close", "javascript:self.close()"), '', ''
+		we_html_button::create_button("close", "javascript:self.close()"), '', ''
 );
 
 
@@ -325,7 +355,7 @@ echo STYLESHEET;
 	<div id="info" style="display: block;">
 		<?php
 		echo we_html_multiIconBox::getJS() .
-				we_html_multiIconBox::getHTML('', 700, $_parts, 30, $buttons, -1, '', '', false, "", "", 620, "auto");
+		we_html_multiIconBox::getHTML('', 700, $_parts, 30, $buttons, -1, '', '', false, "", "", 620, "auto");
 		?>
 	</div>
 	<div id="more" style="display:none;">

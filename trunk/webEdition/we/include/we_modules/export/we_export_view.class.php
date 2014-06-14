@@ -24,6 +24,7 @@
  */
 /* the parent class of storagable webEdition classes */
 we_base_moduleInfo::isActive(we_base_moduleInfo::EXPORT);
+
 class we_export_view{
 
 	var $db;
@@ -583,19 +584,10 @@ class we_export_view{
 			}
 		}
 
-		if(isset($_REQUEST["page"]))
+		if(isset($_REQUEST["page"])){
 			if(isset($_REQUEST["page"])){
 				$this->page = $_REQUEST["page"];
 			}
-	}
-
-	function new_array_splice(&$a, $start, $len = 1){
-		$ks = array_keys($a);
-		$k = array_search($start, $ks);
-		if($k !== false){
-			$ks = array_splice($ks, $k, $len);
-			foreach($ks as $k)
-				unset($a[$k]);
 		}
 	}
 

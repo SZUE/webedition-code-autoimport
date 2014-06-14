@@ -449,8 +449,8 @@ function setApplet() {
 		$store_id = $this->importToID ? $this->importToID : $ws;
 
 		$path = id_to_path($store_id);
-		$wecmdenc1 = we_cmd_enc('document.we_startform.importToID.value');
-		$wecmdenc2 = we_cmd_enc('document.we_startform.egal.value');
+		$wecmdenc1 = we_base_request::encCmd('document.we_startform.importToID.value');
+		$wecmdenc2 = we_base_request::encCmd('document.we_startform.egal.value');
 		$button = we_html_button::create_button('select', "javascript:we_cmd('openDirselector',document.we_startform.importToID.value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','0')");
 
 		$yuiSuggest->setAcId('Dir');
