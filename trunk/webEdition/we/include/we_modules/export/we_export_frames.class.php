@@ -456,18 +456,19 @@ function closeAllType(){
 				}
 				break;
 			case "mainload":
-				if(($pid = we_base_request::_(we_base_request::INT, "pid"))){
+				if(($pid = we_base_request::_(we_base_request::INT, "pid")) !== false){
 					$treeItems = we_export_treeLoader::getItems($pid);
 					$js = 'if(!' . $this->Tree->topFrame . '.treeData) {
 								' . we_message_reporting::getShowMessageCall("A fatal Error ocured", we_message_reporting::WE_MESSAGE_ERROR) . '
 							}';
-				} else {
-					$js.=$this->Tree->topFrame . '.treeData.clear();' .
-						$this->Tree->topFrame . '.treeData.add(new ' . $this->Tree->topFrame . '.rootEntry(\'' . $_REQUEST["pid"] . '\',\'root\',\'root\'));';
-				}
-				$js.=$this->Tree->getJSLoadTree($treeItems);
-				$out = we_html_element::jsElement($js);
 
+					if(!$pid){
+						$js.=$this->Tree->topFrame . '.treeData.clear();' .
+							$this->Tree->topFrame . '.treeData.add(new ' . $this->Tree->topFrame . '.rootEntry(\'' . $_REQUEST["pid"] . '\',\'root\',\'root\'));';
+					}
+					$js.=$this->Tree->getJSLoadTree($treeItems);
+					$out = we_html_element::jsElement($js);
+				}
 				break;
 			case "do_export":
 				if(!permissionhandler::hasPerm("MAKE_EXPORT")){
@@ -809,7 +810,7 @@ function closeAllType(){
 				break;
 			case 'del_cat':
 				$arr = makeArrayFromCSV($this->View->export->Categorys);
-				if(($cat=we_base_request::_(we_base_request::INT,"cat"))){
+				if(($cat = we_base_request::_(we_base_request::INT, "cat"))){
 					foreach($arr as $k => $v){
 						if($v == $cat){
 							array_splice($arr, $k, 1);

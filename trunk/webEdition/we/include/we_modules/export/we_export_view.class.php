@@ -34,6 +34,7 @@ class we_export_view{
 	var $editorBodyFrame;
 	var $editorBodyDoc;
 	var $editorBodyForm;
+	private $page;
 
 	function __construct($frameset = "", $topframe = "top.content"){
 		$this->db = new DB_WE();
