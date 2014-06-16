@@ -740,7 +740,7 @@ abstract class we_root extends we_class{
 	}
 
 	protected function i_getDefaultFilename(){
-		return f('SELECT MAX(ID) as ID FROM ' . $this->DB_WE->escape($this->Table), 'ID', $this->DB_WE) + 1;
+		return f('SELECT MAX(ID) FROM ' . $this->DB_WE->escape($this->Table), '', $this->DB_WE) + 1;
 	}
 
 	function we_initSessDat($sessDat){
@@ -965,8 +965,7 @@ abstract class we_root extends we_class{
 						$this->DB_WE->query('REPLACE INTO ' . CONTENT_TABLE . ' SET ' . $data);
 						$cid = $cid ? $cid : $this->DB_WE->getInsertId();
 						$this->elements[$k]['id'] = $cid; // update Object itself
-						$q = 'REPLACE INTO ' . LINK_TABLE . " (DID,CID,Name,Type,DocumentTable) VALUES ('" . intval($this->ID) . "'," . $cid . ",'" . $this->DB_WE->escape($k) . "','" . $this->DB_WE->escape($v["type"]) . "','" . $this->DB_WE->escape(stripTblPrefix($this->Table)) . "')";
-						if(!$cid || !$this->DB_WE->query($q)){
+						if(!$cid || !$this->DB_WE->query('REPLACE INTO ' . LINK_TABLE . " (DID,CID,Name,Type,DocumentTable) VALUES ('" . intval($this->ID) . "'," . $cid . ",'" . $this->DB_WE->escape($k) . "','" . $this->DB_WE->escape($v["type"]) . "','" . $this->DB_WE->escape(stripTblPrefix($this->Table)) . "')")){
 							//this should never happen
 							return false;
 						}
@@ -1035,7 +1034,7 @@ abstract class we_root extends we_class{
 	}
 
 	function i_filenameDouble(){
-		return f('SELECT ID FROM ' . $this->Table . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Filename="' . escape_sql_query($this->Filename) . '" AND ID != ' . intval($this->ID), 'ID', $this->DB_WE);
+		return f('SELECT 1 FROM ' . $this->Table . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Filename="' . escape_sql_query($this->Filename) . '" AND ID != ' . intval($this->ID), '', $this->DB_WE);
 	}
 
 	function i_urlDouble(){

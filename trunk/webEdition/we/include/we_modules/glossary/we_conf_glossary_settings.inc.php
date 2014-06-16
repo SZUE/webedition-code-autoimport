@@ -22,4 +22,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+
+//FIXME: mv to tblSettings
 $GLOBALS['weGlossaryAutomaticReplacement'] = true;

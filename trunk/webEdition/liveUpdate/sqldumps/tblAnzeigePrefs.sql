@@ -1,3 +1,4 @@
+/*FIXME: mv to tblSettings*/
 ###UPDATEDROPCOL(ID,###TBLPREFIX###tblAnzeigePrefs)###
 /* query separator */
 CREATE TABLE ###TBLPREFIX###tblAnzeigePrefs (

@@ -39,6 +39,8 @@ class we_base_sessionHandler{
 	}
 
 	function close(){
+		//make sure every access will be an error after close
+		unset($_SESSION);
 		return true;
 	}
 

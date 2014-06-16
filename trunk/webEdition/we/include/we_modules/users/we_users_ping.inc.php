@@ -41,7 +41,7 @@ echo we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
 					eval("var result=" + o.responseText);
 				} catch (exp) {
 					try {
-						console.log(exp + " " + o.responseText);
+						//console.log(exp + " " + o.responseText);
 					} catch (ex) {
 
 					}

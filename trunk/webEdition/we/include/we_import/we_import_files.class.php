@@ -197,7 +197,7 @@ function FileSelectHandler(e) {
 				var image = new Image();
 				image.onload = function() {
 					// access image size here
-					console.log(this.naturalWidth + "x" + this.naturalHeight + " | ");
+					//console.log(this.naturalWidth + "x" + this.naturalHeight + " | ");
 				}
 				image.src = e.target.result;
 			}

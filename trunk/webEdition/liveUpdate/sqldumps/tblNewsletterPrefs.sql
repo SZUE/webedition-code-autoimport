@@ -1,3 +1,4 @@
+/*FIXME: mv to tblSettings*/
 ###UPDATEONLY###CREATE TEMPORARY TABLE IF NOT EXISTS _newNewsPref(
   pref_name varchar(30) NOT NULL default '',
   pref_value longtext NOT NULL,

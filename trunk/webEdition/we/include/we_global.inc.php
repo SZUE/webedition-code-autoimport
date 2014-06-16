@@ -1087,7 +1087,7 @@ function we_templatePostContent($force = false, $fullPoster = false){//force on 
 }
 
 function we_templatePost(){
-	if(--$GLOBALS['WE_TEMPLATE_INIT'] == 0){
+	if(--$GLOBALS['WE_TEMPLATE_INIT'] == 0 && !isWE()){
 		if(isset($_SESSION) && isset($_SESSION['webuser']) && isset($_SESSION['webuser']['loginfailed'])){
 			unset($_SESSION['webuser']['loginfailed']);
 		}
