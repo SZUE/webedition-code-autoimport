@@ -25,31 +25,26 @@
 class we_glossary_frameEditorDictionary extends we_glossary_frameEditor{
 
 	function Header(&$weGlossaryFrames){
-
+		$cmdid = substr(we_base_request::_(we_base_request::STRING, 'cmdid'), 0, 5);
 
 		$we_tabs = new we_tabs();
-		t_e('notice', 'cmdid', $_REQUEST['cmdid']);
 		$we_tabs->addTab(new we_tab("#", g_l('modules_glossary', '[dictionary]'), we_tab::ACTIVE, "setTab('1');"));
 
 		$frontendL = getWeFrontendLanguagesForBackend();
-		$title = g_l('modules_glossary', '[dictionary]') . ":&nbsp;" . $frontendL[substr($_REQUEST['cmdid'], 0, 5)];
+		$title = g_l('modules_glossary', '[dictionary]') . ":&nbsp;" . $frontendL[$cmdid];
 
-		return self::buildHeader($weGlossaryFrames, $we_tabs, g_l('modules_glossary', '[dictionary]'), $frontendL[substr($_REQUEST['cmdid'], 0, 5)]);
+		return self::buildHeader($weGlossaryFrames, $we_tabs, g_l('modules_glossary', '[dictionary]'), $frontendL[$cmdid]);
 	}
 
 	function Body(&$weGlossaryFrames){
+		$cmdid = we_base_request::_(we_base_request::STRING, 'cmdid');
+		$tabNr = we_base_request::_(we_base_request::INT, 'tabnr', 1);
+		$tabNr = ($weGlossaryFrames->View->Glossary->IsFolder && $tabNr != 1) ? 1 : $tabNr;
 
-		$tabNr = isset($_REQUEST["tabnr"]) ? (($weGlossaryFrames->View->Glossary->IsFolder && $_REQUEST["tabnr"] != 1) ? 1 : $_REQUEST["tabnr"]) : 1;
-
-
-		$_js = $weGlossaryFrames->topFrame . '.editor.edheader.location="' . $weGlossaryFrames->frameset . '?pnt=edheader&cmd=view_dictionary&cmdid=' . $_REQUEST['cmdid'] . '";'
-			. $weGlossaryFrames->topFrame . '.editor.edfooter.location="' . $weGlossaryFrames->frameset . '?pnt=edfooter&cmd=view_dictionary&cmdid=' . $_REQUEST['cmdid'] . '"';
-
-		$js = we_html_element::jsElement($_js);
-
-		$out = $js . we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')), we_html_multiIconBox::getHTML('weMultibox', "100%", self::getHTMLTabProperties($weGlossaryFrames), 30, '', -1, '', '', false));
-
-		return self::buildBody($weGlossaryFrames, $out);
+		return self::buildBody($weGlossaryFrames, we_html_element::jsElement($weGlossaryFrames->topFrame . '.editor.edheader.location="' . $weGlossaryFrames->frameset . '?pnt=edheader&cmd=view_dictionary&cmdid=' . $cmdid . '";' .
+					$weGlossaryFrames->topFrame . '.editor.edfooter.location="' . $weGlossaryFrames->frameset . '?pnt=edfooter&cmd=view_dictionary&cmdid=' . $cmdid . '"') .
+				we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')), we_html_multiIconBox::getHTML('weMultibox', "100%", self::getHTMLTabProperties($weGlossaryFrames), 30, '', -1, '', '', false))
+		);
 	}
 
 	function Footer(&$weGlossaryFrames){
@@ -69,34 +64,21 @@ class we_glossary_frameEditorDictionary extends we_glossary_frameEditor{
 	}
 
 	function getHTMLTabProperties(&$weGlossaryFrames){
-
-		$parts = array();
-
-		$language = substr($_REQUEST['cmdid'], 0, 5);
+		$language = substr(we_base_request::_(we_base_request::STRING, 'cmdid'), 0, 5);
 
 		$content = '<table border="0" cellpadding="0" cellspacing="0">
-					<tr>
-						<td>
-							' . we_html_tools::htmlAlertAttentionBox(g_l('modules_glossary', '[hint_dictionary]'), we_html_tools::TYPE_INFO, 520, true, 0) . '</td>
-					</tr>
-					<tr>
-						<td>
-							' . we_html_tools::getPixel(2, 4) . '</td>
-					</tr>
-					<tr>
-						<td>
-							' . we_html_element::htmlTextarea(array('name' => 'Dictionary', 'cols' => 60, 'rows' => 20, 'style' => 'width:520px;'), implode("\n", we_glossary_glossary::getDictionary($language))) . '</td>
-					</tr>
+					<tr><td>' . we_html_tools::htmlAlertAttentionBox(g_l('modules_glossary', '[hint_dictionary]'), we_html_tools::TYPE_INFO, 520, true, 0) . '</td></tr>
+					<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+					<tr><td>' . we_html_element::htmlTextarea(array('name' => 'Dictionary', 'cols' => 60, 'rows' => 20, 'style' => 'width:520px;'), implode("\n", we_glossary_glossary::getDictionary($language))) . '</td></tr>
 				</table>';
 
-		$item = array(
-			"headline" => g_l('modules_glossary', '[dictionary]'),
-			"html" => $content,
-			"space" => 120
+		return array(
+			array(
+				"headline" => g_l('modules_glossary', '[dictionary]'),
+				"html" => $content,
+				"space" => 120
+			)
 		);
-		$parts[] = $item;
-
-		return $parts;
 	}
 
 }

@@ -25,19 +25,17 @@
 class we_glossary_settingControl{
 
 	function processCommands(){
-		if(isset($_REQUEST['cmd'])){
-			switch(we_base_request::_(we_base_request::STRING, 'cmd')){
-				case 'save_glossary_setting':
-					$html = ($this->saveSettings() ?
-							we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[preferences_saved]'), we_message_reporting::WE_MESSAGE_NOTICE)) :
-							we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[preferences_not_saved]'), we_message_reporting::WE_MESSAGE_ERROR)));
-					break;
-			}
-
-			echo we_html_tools::getHtmlTop() .
-			'</head><body>' . $html . '</body></html>';
-			exit;
+		switch(we_base_request::_(we_base_request::STRING, 'cmd')){
+			case 'save_glossary_setting':
+				$html = ($this->saveSettings() ?
+						we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[preferences_saved]'), we_message_reporting::WE_MESSAGE_NOTICE)) :
+						we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[preferences_not_saved]'), we_message_reporting::WE_MESSAGE_ERROR)));
+				break;
 		}
+
+		echo we_html_tools::getHtmlTop() .
+		'</head><body>' . $html . '</body></html>';
+		exit;
 	}
 
 	function processVariables(){
@@ -45,25 +43,8 @@ class we_glossary_settingControl{
 	}
 
 	function saveSettings($default = false){
-
-		if($default){
-			$GlossaryAutomaticReplacement = 'false';
-		} else {
-
-			$GlossaryAutomaticReplacement = 'false';
-			if(isset($_REQUEST['GlossaryAutomaticReplacement']) && $_REQUEST['GlossaryAutomaticReplacement'] == 1){
-				$GlossaryAutomaticReplacement = 'true';
-			}
-		}
-
-		$code = <<<EOF
-<?php
-
-\$GLOBALS['weGlossaryAutomaticReplacement'] = {$GlossaryAutomaticReplacement};
-
-EOF;
-
-		return we_base_file::save(WE_GLOSSARY_MODULE_PATH . we_glossary_replace::configFile, $code, 'w+');
+		$db = new DB_WE();
+		$db->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET tool="glossary",pref_name="GlossaryAutomaticReplacement",pref_value=' . intval($default ? 1 : we_base_request::_(we_base_request::BOOL, 'GlossaryAutomaticReplacement')));
 	}
 
 }

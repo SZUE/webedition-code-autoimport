@@ -27,13 +27,7 @@ abstract class we_glossary_replace{
 	const configFile = 'we_conf_glossary_settings.inc.php';
 
 	public static function useAutomatic(){
-		$configFile = WE_GLOSSARY_MODULE_PATH . self::configFile;
-		if(!file_exists($configFile) || !is_file($configFile)){
-			we_glossary_settingControl::saveSettings(true);
-		}
-		include_once($configFile);
-
-		return (isset($GLOBALS['weGlossaryAutomaticReplacement']) && $GLOBALS['weGlossaryAutomaticReplacement']);
+		return f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="glossary" AND pref_name="GlossaryAutomaticReplacement"', '', new DB_WE(), 1);
 	}
 
 	/**
@@ -43,16 +37,9 @@ abstract class we_glossary_replace{
 	 * @param unknown_type $language
 	 */
 	public static function replace($content, $language){
-		$configFile = WE_GLOSSARY_MODULE_PATH . self::configFile;
-		if(!file_exists($configFile) || !is_file($configFile)){
-			we_glossary_settingControl::saveSettings(true);
-		}
-		include_once($configFile);
-
-		if(isset($GLOBALS['weGlossaryAutomaticReplacement']) && $GLOBALS['weGlossaryAutomaticReplacement']){
-			return self::doReplace($content, $language);
-		}
-		return $content;
+		return (self::useAutomatic() ?
+				self::doReplace($content, $language) :
+				$content);
 	}
 
 	/**
@@ -62,6 +49,7 @@ abstract class we_glossary_replace{
 	 * @param string $src
 	 * @param string $language
 	 * @return string
+	 * @internal
 	 */
 	public static function doReplace($src, $language){
 		if($language == ''){

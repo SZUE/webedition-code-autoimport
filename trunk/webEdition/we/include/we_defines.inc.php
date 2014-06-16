@@ -100,7 +100,7 @@ define('NAVIGATION_TABLE', TBL_PREFIX . 'tblnavigation');
 define('NAVIGATION_RULE_TABLE', TBL_PREFIX . 'tblnavigationrules');
 define('USER_TABLE', TBL_PREFIX . 'tblUser');
 define('LOCK_TABLE', TBL_PREFIX . 'tblLock');
-
+define('SETTINGS_TABLE', TBL_PREFIX . 'tblSettings');
 
 //NOTE: you have to register the tables at we.inc!
 

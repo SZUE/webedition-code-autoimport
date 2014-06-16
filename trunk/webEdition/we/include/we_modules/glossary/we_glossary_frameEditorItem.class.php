@@ -52,8 +52,8 @@ class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 	}
 
 	function Body(&$weGlossaryFrames){
-
-		$tabNr = isset($_REQUEST["tabnr"]) ? (($weGlossaryFrames->View->Glossary->IsFolder && $_REQUEST["tabnr"] != 1) ? 1 : $_REQUEST["tabnr"]) : 1;
+		$tabNr = we_base_request::_(we_base_request::INT, 'tabnr', 1);
+		$tabNr = ($weGlossaryFrames->View->Glossary->IsFolder && $tabNr != 1) ? 1 : $tabNr;
 
 		$out = we_html_element::jsElement('
 var table = "' . GLOSSARY_TABLE . '";
