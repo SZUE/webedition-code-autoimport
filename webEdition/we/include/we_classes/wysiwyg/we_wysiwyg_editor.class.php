@@ -1074,8 +1074,8 @@ function we_tinyMCE_' . $this->fieldName_clean . '_init(ed){
 	//example of adding event listener
 	var this_editor = TinyWrapper("' . $this->fieldName . '");
 	this_editor.on("KeyPress", function(ed, event){
-			console.log(ed.editorId);
-			console.log(event.charCode);
+			//console.log(ed.editorId);
+			//console.log(event.charCode);
 	});
 }
 */

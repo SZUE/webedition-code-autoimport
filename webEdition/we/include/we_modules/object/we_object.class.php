@@ -2143,7 +2143,7 @@ class we_object extends we_document{
 	}
 
 	function i_filenameDouble(){
-		return f('SELECT ID FROM ' . $this->Table . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Text="' . $this->DB_WE->escape($this->Text) . '" AND ID != ' . intval($this->ID), 'ID', $this->DB_WE);
+		return f('SELECT 1 FROM ' . $this->Table . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Text="' . $this->DB_WE->escape($this->Text) . '" AND ID!=' . intval($this->ID), '', $this->DB_WE);
 	}
 
 	function i_checkPathDiffAndCreate(){

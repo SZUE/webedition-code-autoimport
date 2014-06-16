@@ -174,7 +174,7 @@ if(isset($GLOBALS['we_doc'])){
 						}
 					} catch (exc) {
 						try {
-							console.log('error in return of GetUpdateDocumentCustomerFilterQuestion' + o.responseText);
+							//console.log('error in return of GetUpdateDocumentCustomerFilterQuestion' + o.responseText);
 						} catch (ex) {
 
 						}

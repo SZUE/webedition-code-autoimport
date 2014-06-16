@@ -282,4 +282,5 @@ if(($inc = findInclude($cmd = we_base_request::_(we_base_request::STRING, 'we_cm
 	echo (!in_array($cmd, $cmds_no_js) ? we_html_element::jsElement('parent.openedWithWE = 1;') : '') .
 	(in_array($cmd, array('edit_document', 'switch_edit_page', 'load_editor')) ? we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') : '');
 }
+
 exit();

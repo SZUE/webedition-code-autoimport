@@ -29,7 +29,6 @@ we_html_tools::protect();
 $perms = $_SESSION['perms'];
 // init document
 
-
 $we_dt = isset($_SESSION['weS']['we_data'][$we_transaction]) ? $_SESSION['weS']['we_data'][$we_transaction] : '';
 
 include(WE_INCLUDES_PATH . '/we_editors/we_init_doc.inc.php');

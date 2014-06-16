@@ -621,7 +621,7 @@ class we_users_user{
 		}
 		if($isnew){
 			$updt['userID'] = intval($this->ID);
-			$updt['FileFilter'] = '0';
+			//$updt['FileFilter'] = '0';
 			$updt['openFolders_tblFile'] = '';
 			$updt['openFolders_tblTemplates'] = '';
 			$updt['DefaultTemplateID'] = '0';
@@ -639,7 +639,8 @@ class we_users_user{
 
 					if($settingvalue != $GLOBALS['WE_LANGUAGE']){
 						$save_javascript .= "
-if (top.frames[0]) {console.log(top.frames[0].name);
+if (top.frames[0]) {
+//console.log(top.frames[0].name);
 	top.frames[0].location.reload();
 }
 

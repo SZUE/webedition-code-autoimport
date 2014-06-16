@@ -393,7 +393,7 @@ abstract class we_class{
 				}
 			}
 		}
-		if(!empty($fields)){
+		if($fields){
 			$where = ($this->wasUpdate ? ' WHERE ID=' . intval($this->ID) : '');
 			$ret = (bool) ($this->DB_WE->query(($this->wasUpdate ? 'UPDATE ' : 'INSERT INTO ') . $this->DB_WE->escape($this->Table) . ' SET ' . we_database_base::arraySetter($fields) . $where));
 			$this->ID = ($this->wasUpdate ? $this->ID : $this->DB_WE->getInsertId());

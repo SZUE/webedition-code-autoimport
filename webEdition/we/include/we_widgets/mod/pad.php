@@ -30,7 +30,7 @@ we_html_tools::protect();
  * Table with the notes
  * @var string
  */
-$_sInitProps = substr(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0), -5);
+$_sInitProps = substr(we_base_request::_(we_base_request::RAW_CHECKED, 'we_cmd', '', 0), -5);
 $bSort = $_sInitProps{0};
 $bDisplay = $_sInitProps{1};
 $bDate = $_sInitProps{2};
@@ -38,7 +38,6 @@ $bPrio = $_sInitProps{3};
 $bValid = $_sInitProps{4};
 $q_Csv = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 1);
 $_title = base64_decode(we_base_request::_(we_base_request::RAW, 'we_cmd', '', 4));
-$_sObjId = we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 5);
 $type = we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 6);
 
 switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2)){
@@ -305,7 +304,7 @@ print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 			we_html_element::jsScript(JS_DIR . "jscalendar/calendar-setup.js") .
 			we_html_button::create_state_changer() . we_html_element::jsElement(
 				(($type == "pad/pad") ? "
-			var _sObjId='" . $_sObjId . "';
+			var _sObjId='" . we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 5) . "';
 			var _sCls_=parent.gel(_sObjId+'_cls').value;
 			var _sType='pad';
 			var _sTb='" . g_l('cockpit', '[notes]') . " - " . $_title . "';
@@ -313,7 +312,7 @@ print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				parent.rpcHandleResponse(_sType,_sObjId,document.getElementById(_sType),_sTb);
 			}
 			" : "
-			var _sObjId='m_" . $_sObjId . "';
+			var _sObjId='m_" . we_base_request::_(we_base_request::INT, 'we_cmd', 0, 5) . "';
 			var _sTb='" . $_title . "';
 			var _sInitProps='" . $_sInitProps . "';") . "
 			var _ttlB64Esc='';
