@@ -27,15 +27,14 @@ class we_glossary_settingControl{
 	function processCommands(){
 		switch(we_base_request::_(we_base_request::STRING, 'cmd')){
 			case 'save_glossary_setting':
-				$html = ($this->saveSettings() ?
-						we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[preferences_saved]'), we_message_reporting::WE_MESSAGE_NOTICE)) :
-						we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[preferences_not_saved]'), we_message_reporting::WE_MESSAGE_ERROR)));
+				echo we_html_tools::getHtmlTop() .
+				'</head><body>' . ($this->saveSettings() ?
+					we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[preferences_saved]'), we_message_reporting::WE_MESSAGE_NOTICE) . 'top.window.close();') :
+					we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[preferences_not_saved]'), we_message_reporting::WE_MESSAGE_ERROR)))
+				. '</body></html>';
+
 				break;
 		}
-
-		echo we_html_tools::getHtmlTop() .
-		'</head><body>' . $html . '</body></html>';
-		exit;
 	}
 
 	function processVariables(){
@@ -44,7 +43,7 @@ class we_glossary_settingControl{
 
 	function saveSettings($default = false){
 		$db = new DB_WE();
-		$db->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET tool="glossary",pref_name="GlossaryAutomaticReplacement",pref_value=' . intval($default ? 1 : we_base_request::_(we_base_request::BOOL, 'GlossaryAutomaticReplacement')));
+		return $db->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET tool="glossary",pref_name="GlossaryAutomaticReplacement",pref_value=' . intval($default ? 1 : we_base_request::_(we_base_request::BOOL, 'GlossaryAutomaticReplacement')));
 	}
 
 }
