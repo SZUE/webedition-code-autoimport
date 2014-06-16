@@ -41,7 +41,6 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
  * @param    msg		string
  */
 function showContent(){
-
 	$_previewMode = 1;
 	require_once(WE_OBJECT_MODULE_PATH . 'we_editor_contentobjectFile.inc.php');
 	exit;
@@ -253,7 +252,7 @@ if(isset($_SESSION['weS']['we_data'][$we_transaction]['0']['InWebEdition']) && $
 		$content = ob_get_contents();
 		ob_end_clean();
 		if($useGlossary){
-			$content = we_glossary_replace::doReplace($content, $GLOBALS['we_doc']->Language);
+			$content = we_glossary_replace::replace($content, $GLOBALS['we_doc']->Language);
 		}
 		if($urlReplace){
 			$content = preg_replace($urlReplace, array_keys($urlReplace), $content);

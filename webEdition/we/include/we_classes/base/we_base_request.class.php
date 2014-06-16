@@ -28,6 +28,8 @@ class we_base_request{
 
 	const TRANSACTION = 'transaction';
 	const INTLIST = 'intList';
+	/* converts an csv of ints to an array */
+	const INTLISTA = 'intListA';
 	const CMD = 'cmd';
 	const UNIT = 'unit';
 	const INT = 'int';
@@ -65,6 +67,10 @@ class we_base_request{
 			case self::TRANSACTION:
 				$var = (preg_match('|^([a-f0-9]){32}$|i', $var) ? $var : $default);
 				return;
+			case self::INTLISTA:
+				$var = array_map('intval', explode(',', trim($var, ',')));
+				return;
+
 			case self::INTLIST:
 				$var = implode(',', array_map('intval', explode(',', trim($var, ','))));
 				return;
@@ -145,29 +151,38 @@ class we_base_request{
 
 	/**
 	 * Filter an Requested variable
+	 * Note: every parameter after default is an optional index
 	 * @param string $type type to filter, see list in _weGetVar
 	 * @param string $name name of variable in Request array
 	 * @param mixed $default default value
-	 * @param mixed $index optional index
+
 	 * @return mixed default, if value not set, the filtered value else
 	 */
-	public static function _($type, $name, $default = false, $index = null){
+	public static function _($type, $name, $default = false){
 		/* static $requests = array();
 		  if(isset($requests[$name][$index])){
-		  t_e('rerequest ', $name, $index, $requests[$name][$index]);
+		  t_e('rerequest ', $args, $requests[$name][$index]);
 		  } else {
 		  $requests[$name][$index] = debug_backtrace();
 		  } */
-		if(!isset($_REQUEST[$name]) || (isset($_REQUEST[$name]) && $_REQUEST[$name] === '') || ($index !== null && (!isset($_REQUEST[$name][$index]) || ($_REQUEST[$name][$index] === '')))){
-			return $default;
+
+
+		$var = $_REQUEST;
+		$args = func_get_args();
+		unset($args[0], $args[2]);
+		foreach($args as $arg){
+			if(!isset($var[$arg])){
+				return $default;
+			}
+			$var = $var[$arg];
 		}
-		$var = ($index === null ? $_REQUEST[$name] : $_REQUEST[$name][$index]);
+
 		if(is_array($var)){
 			$oldVar = $var;
 			array_walk($var, 'we_base_request::_weRequest', array($type, $default));
 			if($oldVar != $var){
 				if(REQUEST_SIMULATION){
-					t_e('array changed', $type, $name, $index, $oldVar, $var);
+					t_e('array changed', $type, $args, $oldVar, $var);
 				}
 			}
 		} else {
@@ -191,17 +206,17 @@ class we_base_request{
 				case self::STRING:
 					if($var){
 						if($var == ('' . intval($oldVar))){
-							t_e('notice', 'variable could be int', $name, $index, $var);
+							t_e('notice', 'variable could be int', $args, $var);
 						} elseif($var == ('' . floatval($oldVar))){
-							t_e('notice', 'variable could be float', $name, $index, $var);
+							t_e('notice', 'variable could be float', $args, $var);
 						} elseif(strpos($var, '@')){
-							t_e('notice', 'variable could be mail', $name, $index, $var);
+							t_e('notice', 'variable could be mail', $args, $var);
 						} elseif(strpos($var, '://')){
-							t_e('notice', 'variable could be url', $name, $index, $var);
+							t_e('notice', 'variable could be url', $args, $var);
 						} elseif(strpos($var, '/') === 0){
-							t_e('notice', 'variable could be file', $name, $index, $var);
+							t_e('notice', 'variable could be file', $args, $var);
 						} elseif(count(explode(',', $var)) > 2){
-							t_e('notice', 'variable could be list', $name, $index, $var);
+							t_e('notice', 'variable could be list', $args, $var);
 						}
 					}
 				//no break;
@@ -209,7 +224,7 @@ class we_base_request{
 					$cmp = '' . $var;
 			}
 			if($oldVar != $cmp){
-				t_e('changed values', $type, $name, $index, $oldVar, $var);
+				t_e('changed values', $type, $args, $oldVar, $var);
 				//don't break we
 				if(REQUEST_SIMULATION){
 					return $oldVar;

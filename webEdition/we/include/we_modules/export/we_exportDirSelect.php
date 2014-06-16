@@ -25,8 +25,8 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
-if(isset($_REQUEST['we_cmd'])){
-	$_REQUEST['id'] = $_REQUEST['we_cmd'][1];
+if(($id = we_base_request::_(we_base_request::INT, 'we_cmd', false, 1)) !== false){
+	$_REQUEST['id'] = $id;
 	$_REQUEST['JSIDName'] = stripslashes(we_base_request::_(we_base_request::CMD, 'we_cmd', '', 2));
 	$_REQUEST['JSTextName'] = stripslashes(we_base_request::_(we_base_request::CMD, 'we_cmd', '', 3));
 	$_REQUEST['JSCommand'] = stripslashes(we_base_request::_(we_base_request::CMD, 'we_cmd', '', 4));

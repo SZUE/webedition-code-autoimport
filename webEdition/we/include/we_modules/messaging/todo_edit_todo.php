@@ -24,10 +24,14 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
+$transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction');
+if(!$transaction){
+	exit();
+}
 
-$messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
+$messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$transaction]);
 $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
-$messaging->init($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
+$messaging->init($_SESSION['weS']['we_data'][$transaction]);
 
 $mode = we_base_request::_(we_base_request::STRING, "mode", '');
 if(!we_base_request::_(we_base_request::TRANSACTION, 'we_transaction')){
@@ -51,7 +55,7 @@ echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[wintitle]')) .
 
 		var rs = escape(document.compose_form.mn_recipients.value);
 
-		new jsWindow("<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_usel.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&maxsel=1&rs=" + rs, "messaging_usel", -1, -1, 530, 420, true, false, true, false);
+		new jsWindow("<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_usel.php?we_transaction=<?php echo $transaction; ?>&maxsel=1&rs=" + rs, "messaging_usel", -1, -1, 530, 420, true, false, true, false);
 	}
 
 	function do_send() {
@@ -89,7 +93,7 @@ echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[wintitle]')) .
 	?>
 	<form action="<?php print WE_MESSAGING_MODULE_DIR; ?>todo_send_ntodo.php" name="compose_form" method="post">
 		<?php
-		echo we_html_tools::hidden('we_transaction', $_REQUEST['we_transaction']);
+		echo we_html_tools::hidden('we_transaction', $transaction);
 		echo we_html_tools::hidden('rcpts_string', '');
 		echo we_html_tools::hidden('mode', $mode);
 

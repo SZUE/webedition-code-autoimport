@@ -173,10 +173,10 @@ function cb_incstate() {
 		loadData();
 		';
 
-		if(isset($_REQUEST['msg_param'])){
-			if($_REQUEST['msg_param'] == 'todo'){
+		if(($param = we_base_request::_(we_base_request::STRING, 'msg_param'))){
+			if($param == 'todo'){
 				$f = $this->messaging->get_inbox_folder('we_todo');
-			} else if($_REQUEST['msg_param'] == 'message'){
+			} else if($param == 'message'){
 				$f = $this->messaging->get_inbox_folder('we_message');
 			}
 			$jsOut .= '
@@ -901,7 +901,7 @@ function msg_start() {
 			we_html_element::cssElement('.defaultfont a {color:black; text-decoration:none}
 		');
 
-		$colsArray = !isset($_REQUEST["viewclass"]) || $_REQUEST["viewclass"] != "todo" ? array(
+		$colsArray = we_base_request::_(we_base_request::STRING, "viewclass") != "todo" ? array(
 			array(200, 'subject', '[subject]'),
 			array(170, 'date', '[date]'),
 			array(120, 'sender', '[from]'),
@@ -923,7 +923,7 @@ function msg_start() {
 		$table->setCol(0, 0, array('width' => 18), we_html_tools::pPixel(18, 1));
 		for($i = 0; $i < count($colsArray); $i++){
 			$table->setCol(0, $i + 1, array('class' => 'defaultfont', 'width' => $colsArray[$i][0]), '<a href="javascript:doSort(\'' . $colsArray[$i][1] . '\');"><b>' . g_l('modules_messaging', $colsArray[$i][2]) .
-				'</b>&nbsp;' . ((isset($_REQUEST["si"]) && $_REQUEST["si"] == $colsArray[$i][1]) ? $this->sort_arrow("arrow_sortorder_" . $_REQUEST['so'], "") : we_html_tools::getPixel(1, 1)) . '</a>'
+				'</b>&nbsp;' . (we_base_request::_(we_base_request::STRING, "si") == $colsArray[$i][1] ? $this->sort_arrow("arrow_sortorder_" . we_base_request::_(we_base_request::STRING, 'so'), "") : we_html_tools::getPixel(1, 1)) . '</a>'
 			);
 		}
 

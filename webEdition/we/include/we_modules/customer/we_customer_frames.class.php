@@ -79,7 +79,8 @@ class we_customer_frames extends weModuleFrames{
 			we_html_element::jsElement($this->getJSStart()) .
 			we_html_element::jsElement($this->View->getJSTreeHeader());
 
-		$extraUrlParams = isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : '';
+		$sid = we_base_request::_(we_base_request::RAW, 'sid', false);
+		$extraUrlParams = $sid !== false ? '&sid=' . $sid : '';
 
 		return parent::getHTMLFrameset($extraHead, $extraUrlParams);
 	}
@@ -780,10 +781,11 @@ failure: function(o) {
 	}
 
 	function getHTMLCmd(){
-		if(isset($_REQUEST["pid"])){
+		$p = we_base_request::_(we_base_request::RAW, 'pid');
+		if($p !== false){
 			$pid = ($GLOBALS['WE_BACKENDCHARSET'] == 'UTF-8') ?
-				utf8_encode($_REQUEST["pid"]) :
-				$_REQUEST["pid"];
+				utf8_encode($p) :
+				$p;
 		} else {
 			exit;
 		}
@@ -797,7 +799,7 @@ failure: function(o) {
 			$sort = 0;
 		}
 
-		$offset = (isset($_REQUEST["offset"])) ? $_REQUEST["offset"] : 0;
+		$offset = we_base_request::_(we_base_request::INT, "offset", 0);
 
 		$rootjs = (!$pid ?
 				$this->Tree->topFrame . '.treeData.clear();' .
@@ -857,8 +859,8 @@ failure: function(o) {
 
 			$max_res = $this->View->settings->getMaxSearchResults();
 			$result = array();
-			if(isset($_REQUEST['keyword']) && isset($_REQUEST['search']) && $_REQUEST['keyword'] && $_REQUEST['search']){
-				$result = $this->View->getSearchResults($_REQUEST['keyword'], $max_res);
+			if(($k = we_base_request::_(we_base_request::STRING, 'keyword')) && we_base_request::_(we_base_request::STRING, 'search')){
+				$result = $this->View->getSearchResults($k, $max_res);
 			}
 			foreach($result as $id => $text){
 				$select->addOption($id, $text);
@@ -934,13 +936,13 @@ failure: function(o) {
 							$table->getHtml(), g_l('modules_customer', '[search]'), we_html_button::position_yes_no_cancel(null, we_html_button::create_button("close", "javascript:self.close();")), "100%", 30, 558
 						)
 					) .
-					((isset($_REQUEST['mode']) && $_REQUEST['mode']) ? we_html_element::jsElement("setTimeout('lookForDateFields()', 1);") : '')
+					(we_base_request::_(we_base_request::BOOL, 'mode') ? we_html_element::jsElement("setTimeout('lookForDateFields()', 1);") : '')
 				)
 		);
 	}
 
 	function getHTMLSettings(){
-		if(isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] == "save_settings"){
+		if(we_base_request::_(we_base_request::STRING, "cmd") == "save_settings"){
 			$this->View->processCommands();
 			$closeflag = true;
 		} else {

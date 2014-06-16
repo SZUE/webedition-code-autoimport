@@ -21,20 +21,18 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-if(!preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction'])){
-	exit();
-}
-
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
-$messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
-$messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
-$messaging->init($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
-
-
-if(!preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction'])){
+$transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction');
+if(!$transaction){
 	exit();
 }
+
+$messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$transaction]);
+$messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
+$messaging->init($_SESSION['weS']['we_data'][$transaction]);
+
+
 echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[sel_rcpts]')) .
  we_html_element::jsScript(JS_DIR . 'windows.js') .
  we_html_element::jsScript(JS_DIR . 'messaging_std.js') .
@@ -42,12 +40,13 @@ echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[sel_rcpts]')) .
 ?>
 <script type="text/javascript"><!--
 <?php
-if(!empty($_REQUEST['mode']) && ($_REQUEST['mode'] == 'save_addrbook')){
+if(we_base_request::_(we_base_request::STRING, 'mode') == 'save_addrbook'){
 	$addrbook = array();
 	$t_arr = array();
-	$addrbook_arr = $_REQUEST['addrbook_arr'];
-	if($addrbook_arr != '')
+	$addrbook_arr = we_base_request::_(we_base_request::STRING, 'addrbook_arr');
+	if($addrbook_arr != ''){
 		$t_arr = explode("\t", $addrbook_arr);
+	}
 	$i = 0;
 	foreach($t_arr as $elem){
 		$addrbook[$i] = array();
@@ -112,7 +111,7 @@ function init() {
 }
 
 function browse_users_window() {
-	new jsWindow("<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_usel_browse_frameset.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>", "messaging_usel_browse", -1, -1, 350, 330, true, false, true, false);
+	new jsWindow("<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_usel_browse_frameset.php?we_transaction=<?php echo $transaction; ?>", "messaging_usel_browse", -1, -1, 350, 330, true, false, true, false);
 		}
 
 		function save_addrbook() {
@@ -157,14 +156,15 @@ function browse_users_window() {
 			var opt;
 			var tarr;
 <?php
-if(isset($_REQUEST['maxsel'])){
+$maxsel = we_base_request::_(we_base_request::INT, 'maxsel');
+if($maxsel){
 	/* 		echo "if (current_sel.length < $maxsel) {
 	  var len = $maxsel - current_sel.length;
 	  } else {
 	  return;
 	  }\n"; */
 } else {
-	echo "var len=delta_sel.length\n";
+	echo "var len=delta_sel.length";
 }
 ?>
 			var len = delta_sel.length;
@@ -231,9 +231,9 @@ if(isset($_REQUEST['maxsel'])){
 			var sel_elems = get_sel_elems(document.usel.usel_addrbook);
 			var i;
 <?php
-if(isset($_REQUEST['maxsel'])){
-	echo "if (current_sel.length < " . $_REQUEST['maxsel'] . ") {
-		var len = " . $_REQUEST['maxsel'] . " - current_sel.length;
+if($maxsel){
+	echo "if (current_sel.length < " . $maxsel . ") {
+		var len = " . $maxsel . " - current_sel.length;
 				} else {
 		return;
 				}\n";
@@ -309,9 +309,9 @@ if(isset($_REQUEST['maxsel'])){
 	</form>
 	<form action="<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_usel.php" method="post" name="addrbook_data">
 		<?php
-		echo we_html_tools::hidden('mode', 'save_addrbook');
-		echo we_html_tools::hidden('we_transaction', $_REQUEST['we_transaction']);
-		echo we_html_tools::hidden('addrbook_arr', '');
+		echo we_html_tools::hidden('mode', 'save_addrbook').
+			we_html_tools::hidden('we_transaction', $transaction).
+			we_html_tools::hidden('addrbook_arr', '');
 		?>
 	</form><?php echo we_html_element::jsElement('init();'); ?>
 </body>
