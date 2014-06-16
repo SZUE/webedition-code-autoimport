@@ -87,31 +87,29 @@ class we_glossary_view{
 		$this->Db = new DB_WE();
 		$this->Glossary = new we_glossary_glossary();
 
-		if(isset($_REQUEST['cmd'])){
-			switch(we_base_request::_(we_base_request::STRING, 'cmd')){
+		switch(we_base_request::_(we_base_request::STRING, 'cmd')){
 
-				case 'new_glossary_abbreviation':
-					$this->Glossary->Type = we_glossary_glossary::TYPE_ABBREVATION;
-					break;
+			case 'new_glossary_abbreviation':
+				$this->Glossary->Type = we_glossary_glossary::TYPE_ABBREVATION;
+				break;
 
-				case 'new_glossary_acronym':
-					$this->Glossary->Type = we_glossary_glossary::TYPE_ACRONYM;
-					break;
+			case 'new_glossary_acronym':
+				$this->Glossary->Type = we_glossary_glossary::TYPE_ACRONYM;
+				break;
 
-				case 'new_glossary_foreignword':
-					$this->Glossary->Type = we_glossary_glossary::TYPE_FOREIGNWORD;
-					break;
+			case 'new_glossary_foreignword':
+				$this->Glossary->Type = we_glossary_glossary::TYPE_FOREIGNWORD;
+				break;
 
-				case 'new_glossary_link':
-					$this->Glossary->Type = we_glossary_glossary::TYPE_LINK;
-					break;
+			case 'new_glossary_link':
+				$this->Glossary->Type = we_glossary_glossary::TYPE_LINK;
+				break;
 
-				case 'new_glossary_textreplacement':
-					$this->Glossary->Type = we_glossary_glossary::TYPE_TEXTREPLACE;
-					break;
-			}
-		} elseif(isset($_REQUEST['type'])){
-			$this->Glossary->Type = $_REQUEST['type'];
+			case 'new_glossary_textreplacement':
+				$this->Glossary->Type = we_glossary_glossary::TYPE_TEXTREPLACE;
+				break;
+			default:
+				$this->Glossary->Type = we_base_request::_(we_base_request::STRING, 'type', $this->Glossary->Type);
 		}
 
 		$this->setFramesetName($FrameSet);
@@ -424,7 +422,8 @@ function we_cmd() {
 	}
 
 	function processCommands(){
-		switch(we_base_request::_(we_base_request::STRING, "cmd")){
+		$cmdid = we_base_request::_(we_base_request::STRING, "cmdid");
+		switch(($cmd = we_base_request::_(we_base_request::STRING, "cmd"))){
 
 			case "new_glossary_acronym":
 			case "new_glossary_abbreviation":
@@ -432,15 +431,15 @@ function we_cmd() {
 			case "new_glossary_link":
 			case "new_glossary_textreplacement":
 				if(!permissionhandler::hasPerm("NEW_GLOSSARY")){
-					print we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(g_l('modules_glossary', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
+					echo we_html_element::jsElement(
+						we_message_reporting::getShowMessageCall(g_l('modules_glossary', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 					break;
 				}
 				$this->Glossary = new we_glossary_glossary();
-				$this->Glossary->Type = array_pop(explode("_", $_REQUEST["cmd"], 4));
+				$this->Glossary->Type = array_pop(explode("_", we_base_request::_(we_base_request::STRING, "cmd", '', 4)));
 
-				print we_html_element::jsElement('
+				echo we_html_element::jsElement('
 							' . $this->TopFrame . '.editor.edheader.location="' . $this->FrameSet . '?pnt=edheader&text=' . urlencode($this->Glossary->Text) . '";
 							' . $this->TopFrame . '.editor.edfooter.location="' . $this->FrameSet . '?pnt=edfooter";
 					');
@@ -459,7 +458,7 @@ function we_cmd() {
 					$_REQUEST['pnt'] = 'edbody';
 					break;
 				}
-				$this->Glossary = new we_glossary_glossary($_REQUEST["cmdid"]);
+				$this->Glossary = new we_glossary_glossary($cmdid);
 
 				echo we_html_element::jsElement('
 						' . $this->TopFrame . '.editor.edheader.location="' . $this->FrameSet . '?pnt=edheader&text=' . urlencode($this->Glossary->Text) . '";
@@ -468,7 +467,7 @@ function we_cmd() {
 				break;
 
 			case 'populateWorkspaces':
-				$objectLinkID = (isset($_REQUEST['link']['Attributes']['ObjectLinkID']) && $_REQUEST['link']['Attributes']['ObjectLinkID'] ? $_REQUEST['link']['Attributes']['ObjectLinkID'] : 0);
+				$objectLinkID = we_base_request::_(we_base_request::INT, 'link', 0, 'Attributes', 'ObjectLinkID');
 				$_values = we_navigation_dynList::getWorkspacesForObject($objectLinkID);
 				$_js = '';
 
@@ -503,13 +502,13 @@ function we_cmd() {
 				break;
 
 			case 'save_exception':
-				if(!isset($_REQUEST['cmdid']) || !isset($_REQUEST['Exception'])){
+				if(!$cmdid || ($exception = we_base_request::_(we_base_request::STRING, 'Exception'))){
 					break;
 				}
 
-				$language = substr($_REQUEST['cmdid'], 0, 5);
+				$language = substr($cmdid, 0, 5);
 
-				we_glossary_glossary::editException($language, $_REQUEST['Exception']);
+				we_glossary_glossary::editException($language, $exception);
 
 				echo we_html_element::jsElement(
 					we_message_reporting::getShowMessageCall(g_l('modules_glossary', "[save_ok]"), we_message_reporting::WE_MESSAGE_NOTICE)
@@ -518,19 +517,18 @@ function we_cmd() {
 				break;
 
 			case "save_glossary":
-				if(isset($_REQUEST['Exception'])){
-					$language = substr($_REQUEST['cmdid'], 0, 5);
+				if(($exception = we_base_request::_(we_base_request::STRING, 'Exception'))){
+					$language = substr($cmdid, 0, 5);
 
-					we_glossary_glossary::editException($language, $_REQUEST['Exception']);
+					we_glossary_glossary::editException($language, $exception);
 					break;
 				}
-				$this->Glossary->Text = $_REQUEST[$_REQUEST['Type']]['Text'];
+				$type = we_base_request::_(we_base_request::STRING, 'Type');
+				$this->Glossary->Text = we_base_request::_(we_base_request::STRING, $type, '', 'Text');
 				if($this->Glossary->Type != we_glossary_glossary::TYPE_FOREIGNWORD){
-					$this->Glossary->Title = $_REQUEST[$_REQUEST['Type']]['Title'];
+					$this->Glossary->Title = we_base_request::_(we_base_request::STRING, $type, '', 'Title');
 				}
-				$this->Glossary->Attributes = (isset($_REQUEST[$_REQUEST['Type']]['Attributes']) ?
-						$_REQUEST[$_REQUEST['Type']]['Attributes'] :
-						'');
+				$this->Glossary->Attributes = we_base_request::_(we_base_request::STRING, $type, '', 'Attributes');
 
 				if(!permissionhandler::hasPerm("NEW_GLOSSARY") && !permissionhandler::hasPerm("EDIT_GLOSSARY")){
 					echo we_html_element::jsElement(
@@ -600,12 +598,13 @@ function we_cmd() {
 					$this->Glossary->Title = html_entity_decode($this->Glossary->Title, ENT_QUOTES);
 
 					$message = "";
+					$pub = we_base_request::_(we_base_request::BOOL, 'Published');
 					// Replacment of item is activated
-					if($StateBefore == 0 && $_REQUEST['Published'] == 1){
+					if($StateBefore == 0 && $pub){
 						$message .= sprintf(g_l('modules_glossary', "[replace_activated]"), $this->Glossary->Text) . "\\n";
 
 						// Replacement of item is deactivated
-					} else if($StateBefore > 0 && $_REQUEST['Published'] == 0){
+					} else if($StateBefore > 0 && !$pub){
 						$message .= sprintf(g_l('modules_glossary', "[replace_deactivated]"), $this->Glossary->Text) . "\\n";
 					}
 					$message .= sprintf(g_l('modules_glossary', "[item_saved]"), $this->Glossary->Text);
@@ -692,10 +691,7 @@ function we_cmd() {
 				}
 			}
 		}
-
-		if(isset($_REQUEST["page"])){
-			$this->page = $_REQUEST["page"];
-		}
+		$this->page = we_base_request::_(we_base_request::INT, 'page', $this->page);
 	}
 
 }

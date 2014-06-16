@@ -28,14 +28,15 @@ we_html_tools::protect();
 echo we_html_tools::getHtmlTop() .
  STYLESHEET;
 
-if(!preg_match('|^([a-f0-9]){32}$|', $_REQUEST['we_transaction'])){
+$transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction');
+if(!$transaction){
 	exit();
 }
 
 
-$messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
+$messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$transaction]);
 $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
-$messaging->init($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
+$messaging->init($_SESSION['weS']['we_data'][$transaction]);
 ?>
 <script type="text/javascript"><!--
 	function we_submitForm(target, url) {
@@ -64,8 +65,8 @@ $messaging->init($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 	}
 
 <?php
-if(isset($_REQUEST['mcmd']) && $_REQUEST['mcmd'] == 'delete_folders'){
-	$folders = explode(',', $_REQUEST['folders']);
+if(we_base_request::_(we_base_request::STRING, 'mcmd') == 'delete_folders'){
+	$folders = explode(',', we_base_request::_(we_base_request::INTLIST, 'folders'));
 
 	if($folders[0] != ""){
 
@@ -73,11 +74,11 @@ if(isset($_REQUEST['mcmd']) && $_REQUEST['mcmd'] == 'delete_folders'){
 		$v = array_shift($res);
 		if($v > 0){
 
-			$messaging->saveInSession($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
+			$messaging->saveInSession($_SESSION['weS']['we_data'][$transaction]);
 			?>
-				top.content.cmd.location = '<?php print WE_MESSAGING_MODULE_DIR; ?>edit_messaging_frameset.php?pnt=cmd&we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mcmd=delete_folders&folders=<?php echo join(',', $v) ?>';
+				top.content.cmd.location = '<?php print WE_MESSAGING_MODULE_DIR; ?>edit_messaging_frameset.php?pnt=cmd&we_transaction=<?php echo $transaction ?>&mcmd=delete_folders&folders=<?php echo implode(',', $v) ?>';
 					top.content.we_cmd('messaging_start_view', '', '<?php echo we_base_request::_(we_base_request::TABLE, 'table', ''); ?>');
-			//-->
+					//-->
 			</script>
 			</head>
 			<body></body>
@@ -98,7 +99,7 @@ if(isset($_REQUEST['mcmd']) && $_REQUEST['mcmd'] == 'delete_folders'){
 $content = "<span class=\"defaultfont\">" . g_l('modules_messaging', '[deltext]') . "</span>";
 
 $form = '<form name="we_form" method="post">' .
-	we_html_tools::hidden('we_transaction', $_REQUEST['we_transaction']) .
+	we_html_tools::hidden('we_transaction', $transaction) .
 	we_html_tools::hidden('folders', '') .
 	we_html_tools::hidden('mcmd', 'delete_folders')
 	.

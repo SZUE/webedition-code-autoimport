@@ -25,9 +25,11 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 echo we_html_tools::getHtmlTop() .
  STYLESHEET;
+we_html_tools::protect();
 
 $browser = we_base_browserDetect::inst();
-if(!preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction'])){
+$transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction');
+if(!$transaction){
 	exit();
 }
 echo we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsScript(JS_DIR . 'messaging_std.js');
@@ -49,7 +51,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsScrip
 	passed_dls = new Array();
 
 	function showContent(id) {
-		top.content.editor.edbody.msg_mfv.messaging_msg_view.location = "<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_message_view.php?id=" + id + "&we_transaction=<?php echo $_REQUEST['we_transaction'] ?>";
+		top.content.editor.edbody.msg_mfv.messaging_msg_view.location = "<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_message_view.php?id=" + id + "&we_transaction=<?php echo $transaction; ?>";
 	}
 
 	function check(elem, groupSel) {
@@ -144,7 +146,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsScrip
 	}
 
 	function newMessage(username) {
-		new jsWindow('<?php echo WE_MESSAGING_MODULE_DIR; ?>messaging_newmessage.php?we_transaction=<?php echo $_REQUEST['we_transaction']; ?>&mode=u_' + escape(username), 'messaging_new_message', -1, -1, 670, 530, true, false, true, false);
+		new jsWindow('<?php echo WE_MESSAGING_MODULE_DIR; ?>messaging_newmessage.php?we_transaction=<?php echo $transaction; ?>&mode=u_' + escape(username), 'messaging_new_message', -1, -1, 670, 530, true, false, true, false);
 	}
 //-->
 </script>
@@ -152,9 +154,9 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsScrip
 </head>
 <body leftmargin="7" topmargin="5" marginwidth="7" marginheight="5" bgcolor="#ffffff">
 	<?php
-	$messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
+	$messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$transaction]);
 	$messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
-	$messaging->init($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
+	$messaging->init($_SESSION['weS']['we_data'][$transaction]);
 	?><table width="99%" cellpadding="0" cellspacing="0" border="0"><?php
 		$passed_dls = array();
 		foreach($messaging->selected_set as $key => $val){

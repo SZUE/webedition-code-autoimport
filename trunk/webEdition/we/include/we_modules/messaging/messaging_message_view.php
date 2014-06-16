@@ -22,19 +22,21 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-require_once(WE_MESSAGING_MODULE_PATH . "msg_html_tools.inc.php");
+we_html_tools::protect();
 
-if(!preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction'])){
+require_once(WE_MESSAGING_MODULE_PATH . "msg_html_tools.inc.php");
+$transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction');
+if(!$transaction){
 	exit();
 }
 
-$messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
+$messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$transaction]);
 $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
-$messaging->init($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
-$messaging->get_mv_data($_REQUEST["id"]);
-$messaging->saveInSession($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
+$messaging->init($_SESSION['weS']['we_data'][$transaction]);
+$messaging->get_mv_data(we_base_request::_(we_base_request::INT, 'id'));
+$messaging->saveInSession($_SESSION['weS']['we_data'][$transaction]);
 
-if(empty($messaging->selected_message)){
+if(!($messaging->selected_message)){
 	exit;
 }
 
@@ -54,7 +56,7 @@ echo we_html_tools::getHtmlTop() .
 </style>
 <script type="text/javascript"><!--
 	function todo_markdone() {
-		top.content.cmd.location = '<?php print WE_MESSAGING_MODULE_DIR; ?>edit_messaging_frameset.php?pnt=cmd&mcmd=todo_markdone&we_transaction=<?php echo $_REQUEST['we_transaction'] ?>';
+		top.content.cmd.location = '<?php print WE_MESSAGING_MODULE_DIR; ?>edit_messaging_frameset.php?pnt=cmd&mcmd=todo_markdone&we_transaction=<?php echo $transaction; ?>';
 			}
 //-->
 </script>
@@ -77,7 +79,7 @@ echo we_html_tools::getHtmlTop() .
 			array("headline" => g_l('modules_messaging', '[status]'),
 				"html" => '<table border="0" cellpadding="0" cellspacing="0"><tr><td class="defaultfont">' . $messaging->selected_message['hdrs']['status'] . '%</td><td>' . we_html_tools::getPixel(20, 2) .
 				(($messaging->selected_message['hdrs']['status'] < 100) ? '<td>' . we_html_button::create_button(
-								"percent100", "javascript:todo_markdone()") . '</td>' : '') . '</tr></table>',
+						"percent100", "javascript:todo_markdone()") . '</td>' : '') . '</tr></table>',
 				"noline" => 1,
 				"space" => 140
 			),
@@ -142,7 +144,7 @@ echo we_html_tools::getHtmlTop() .
 	}
 
 	print we_html_multiIconBox::getJS() .
-			we_html_multiIconBox::getHTML("weMessageView", "100%", $parts, 30, "", -1, "", "", false, (isset($messaging->selected_message['hdrs']['ClassName']) && $messaging->selected_message['hdrs']['ClassName'] == 'we_todo' ? g_l('modules_messaging', "[type_todo]") : g_l('modules_messaging', "[type_message]")));
+		we_html_multiIconBox::getHTML("weMessageView", "100%", $parts, 30, "", -1, "", "", false, (isset($messaging->selected_message['hdrs']['ClassName']) && $messaging->selected_message['hdrs']['ClassName'] == 'we_todo' ? g_l('modules_messaging', "[type_todo]") : g_l('modules_messaging', "[type_message]")));
 	?>
 </body>
 </html>

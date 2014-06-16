@@ -803,7 +803,7 @@ class we_messaging_messaging extends we_class{
 		$ret = array();
 
 		/* Sanity Checks */
-		if(empty($type) || !isset($this->used_msgobjs[$type])){
+		if(!$type || !isset($this->used_msgobjs[$type])){
 			$ret[] = -1;
 			$ret[] = g_l('modules_messaging', '[msg_type_not_found]');
 			return $ret;

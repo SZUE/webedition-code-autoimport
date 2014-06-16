@@ -24,6 +24,7 @@
  */
 //TEST: was it ok to abandon treefooter?
 we_base_moduleInfo::isActive(we_base_moduleInfo::EXPORT);
+
 class we_export_frames extends weModuleFrames{
 
 	var $SelectionTree;
@@ -77,7 +78,7 @@ class we_export_frames extends weModuleFrames{
 	}
 
 	function getHTMLEditorHeader(){
-		if(isset($_REQUEST["home"])){
+		if(we_base_request::_(we_base_request::BOOL, "home")){
 			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#F0EFF0"), ""));
 		}
 
@@ -138,7 +139,7 @@ class we_export_frames extends weModuleFrames{
 
 		$hiddens = array('cmd' => 'export_edit', 'pnt' => 'edbody');
 
-		if(isset($_REQUEST["home"]) && $_REQUEST["home"]){
+		if(we_base_request::_(we_base_request::BOOL, "home")){
 			$hiddens["cmd"] = "home";
 			$GLOBALS["we_print_not_htmltop"] = true;
 			$GLOBALS["we_head_insert"] = $this->View->getJSProperty();
@@ -158,7 +159,7 @@ class we_export_frames extends weModuleFrames{
 	}
 
 	function getHTMLEditorFooter(){
-		if(isset($_REQUEST["home"])){
+		if(we_base_request::_(we_base_request::BOOL, "home")){
 			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#EFF0EF"), ""));
 		}
 
@@ -196,16 +197,8 @@ class we_export_frames extends weModuleFrames{
 
 		');
 
-		$text = g_l('export', '[working]');
-		$progress = 0;
-
-		if(isset($_REQUEST["current_description"]) && $_REQUEST["current_description"]){
-			$text = $_REQUEST["current_description"];
-		}
-
-		if(isset($_REQUEST["percent"]) && $_REQUEST["percent"]){
-			$progress = $_REQUEST["percent"];
-		}
+		$text = we_base_request::_(we_base_request::STRING, "current_description", g_l('export', '[working]'));
+		$progress = we_base_request::_(we_base_request::INT, "percent", 0);
 
 		$progressbar = new we_progressBar($progress);
 		$progressbar->setStudLen(200);
@@ -458,26 +451,23 @@ function closeAllType(){
 		$out = "";
 		switch(we_base_request::_(we_base_request::STRING, "cmd")){
 			case "load":
-				if(isset($_REQUEST["pid"])){
-					$out = we_html_element::jsElement("self.location='" . WE_EXPORT_MODULE_DIR . "exportLoadTree.php?we_cmd[1]=" . $_REQUEST["tab"] . "&we_cmd[2]=" . $_REQUEST["pid"] . "&we_cmd[3]=" . we_base_request::_(we_base_request::RAW, "openFolders", "") . "&we_cmd[4]=" . $this->editorBodyFrame . "'");
+				if(($pid = we_base_request::_(we_base_request::INT, "pid"))){
+					$out = we_html_element::jsElement("self.location='" . WE_EXPORT_MODULE_DIR . "exportLoadTree.php?we_cmd[1]=" . we_base_request::_(we_base_request::INT, "tab") . "&we_cmd[2]=" . $pid . "&we_cmd[3]=" . we_base_request::_(we_base_request::INTLIST, "openFolders", "") . "&we_cmd[4]=" . $this->editorBodyFrame . "'");
 				}
 				break;
 			case "mainload":
-				if(isset($_REQUEST["pid"])){
-
-					$treeItems = we_export_treeLoader::getItems($_REQUEST["pid"]);
-
+				if(($pid = we_base_request::_(we_base_request::INT, "pid"))){
+					$treeItems = we_export_treeLoader::getItems($pid);
 					$js = 'if(!' . $this->Tree->topFrame . '.treeData) {
 								' . we_message_reporting::getShowMessageCall("A fatal Error ocured", we_message_reporting::WE_MESSAGE_ERROR) . '
 							}';
-
-					if(!$_REQUEST["pid"])
-						$js.=$this->Tree->topFrame . '.treeData.clear();' .
-							$this->Tree->topFrame . '.treeData.add(new ' . $this->Tree->topFrame . '.rootEntry(\'' . $_REQUEST["pid"] . '\',\'root\',\'root\'));';
-
-					$js.=$this->Tree->getJSLoadTree($treeItems);
-					$out = we_html_element::jsElement($js);
+				} else {
+					$js.=$this->Tree->topFrame . '.treeData.clear();' .
+						$this->Tree->topFrame . '.treeData.add(new ' . $this->Tree->topFrame . '.rootEntry(\'' . $_REQUEST["pid"] . '\',\'root\',\'root\'));';
 				}
+				$js.=$this->Tree->getJSLoadTree($treeItems);
+				$out = we_html_element::jsElement($js);
+
 				break;
 			case "do_export":
 				if(!permissionhandler::hasPerm("MAKE_EXPORT")){
@@ -808,9 +798,8 @@ function closeAllType(){
 		switch(we_base_request::_(we_base_request::STRING, "cmd")){
 			case 'add_cat':
 				$arr = makeArrayFromCSV($this->View->export->Categorys);
-				if(isset($_REQUEST["cat"])){
-					$ids = makeArrayFromCSV($_REQUEST["cat"]);
-					foreach($ids as $id){
+				if(($cat = we_base_request::_(we_base_request::INTLIST, "cat"))){
+					foreach(makeArrayFromCSV($cat) as $id){
 						if(strlen($id) && (!in_array($id, $arr))){
 							$arr[] = $id;
 						}
@@ -820,10 +809,11 @@ function closeAllType(){
 				break;
 			case 'del_cat':
 				$arr = makeArrayFromCSV($this->View->export->Categorys);
-				if(isset($_REQUEST["cat"])){
+				if(($cat=we_base_request::_(we_base_request::INT,"cat"))){
 					foreach($arr as $k => $v){
-						if($v == $_REQUEST["cat"])
+						if($v == $cat){
 							array_splice($arr, $k, 1);
+						}
 					}
 					$this->View->export->Categorys = makeCSVFromArray($arr, true);
 				}

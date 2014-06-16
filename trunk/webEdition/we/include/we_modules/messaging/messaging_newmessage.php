@@ -24,14 +24,14 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
-
-if(!preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction'])){
+$transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction');
+if(!$transaction){
 	exit();
 }
 
-$messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
+$messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$transaction]);
 $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
-$messaging->init($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
+$messaging->init($_SESSION['weS']['we_data'][$transaction]);
 
 
 echo we_html_tools::getHtmlTop('Messaging System - ' . g_l('modules_messaging', '[new_message]')) .
@@ -58,7 +58,7 @@ echo we_html_tools::getHtmlTop('Messaging System - ' . g_l('modules_messaging', 
 	function selectRecipient() {
 		var rs = escape(document.compose_form.mn_recipients.value);
 
-		new jsWindow("<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_usel.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&rs=" + rs, "messaging_usel", -1, -1, 530, 420, true, false, true, false);
+		new jsWindow("<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_usel.php?we_transaction=<?php echo $transaction; ?>&rs=" + rs, "messaging_usel", -1, -1, 530, 420, true, false, true, false);
 		//	    opener.top.add_win(msg_usel);
 	}
 
@@ -82,12 +82,13 @@ echo we_html_tools::getHtmlTop('Messaging System - ' . g_l('modules_messaging', 
 
 <body class="weDialogBody" onload="document.compose_form.mn_body.focus()" onunload="doUnload();">
 	<?php
-	if($_REQUEST["mode"] == 're'){
+	$mode = we_base_request::_(we_base_request::STRING, 'mode');
+	if($mode == 're'){
 		$compose = new we_messaging_format('re', $messaging->selected_message);
 		$heading = g_l('modules_messaging', '[reply_message]');
 	} else {
-		if(substr($_REQUEST["mode"], 0, 2) == 'u_'){
-			$_u = str_replace(substr($_REQUEST["mode"], 0, 2), '', $_REQUEST["mode"]);
+		if(substr($mode, 0, 2) == 'u_'){
+			$_u = str_replace(substr($mode, 0, 2), '', $mode);
 		}
 		$compose = new we_messaging_format('new');
 		$heading = g_l('modules_messaging', '[new_message]');
@@ -97,9 +98,9 @@ echo we_html_tools::getHtmlTop('Messaging System - ' . g_l('modules_messaging', 
 	?>
   <form action="<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_send_nm.php" name="compose_form" method="post">
 		<?php
-		echo we_html_tools::hidden('we_transaction', $_REQUEST['we_transaction']);
-		echo we_html_tools::hidden('rcpts_string', '');
-		echo we_html_tools::hidden('mode', $_REQUEST["mode"]);
+		echo we_html_tools::hidden('we_transaction', $transaction) .
+		we_html_tools::hidden('rcpts_string', '') .
+		we_html_tools::hidden('mode', $mode);
 
 		$tbl = '<table align="center" cellpadding="6" width="100%">
       <tr><td class="defaultgray">' . g_l('modules_messaging', '[from]') . ':</td><td class="defaultfont">' . $compose->get_from() . '</td></tr>

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -23,6 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 we_base_moduleInfo::isActive(we_base_moduleInfo::EXPORT);
+
 class we_export_dirSelector extends we_selector_directory{
 
 	function __construct($id, $JSIDName = "", $JSTextName = "", $JSCommand = "", $order = "", $we_editDirID = "", $FolderText = ""){
@@ -231,12 +231,9 @@ top.unselectAllFiles();') . '
 top.clearEntries();
 ';
 		$this->FolderText = rawurldecode($this->FolderText);
-		$txt = '';
-		if(isset($_REQUEST['we_FolderText_tmp'])){
-			$txt = rawurldecode($_REQUEST['we_FolderText_tmp']);
-		}
-		if($txt == ""){
-			print we_message_reporting::getShowMessageCall(g_l('export', "[wrongtext]"), we_message_reporting::WE_MESSAGE_ERROR);
+		$txt = rawurldecode(we_base_request::_(we_base_request::STRING, 'we_FolderText_tmp', ''));
+		if(!$txt){
+			echo we_message_reporting::getShowMessageCall(g_l('export', "[wrongtext]"), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
 			$folder = new we_folder();
 			$folder->we_new();
@@ -245,32 +242,29 @@ top.clearEntries();
 			$folder->Icon = we_base_ContentTypes::FOLDER_ICON;
 			$folder->Text = $txt;
 			$folder->Path = $folder->getPath();
-			$this->db->query("SELECT ID FROM " . $this->db->escape($this->table) . " WHERE Path='" . $this->db->escape($folder->Path) . "'");
-			if($this->db->next_record()){
-				print we_message_reporting::getShowMessageCall(g_l('export', "[folder_path_exists]"), we_message_reporting::WE_MESSAGE_ERROR);
+			if(f('SELECT 1 FROM ' . $this->db->escape($this->table) . " WHERE Path='" . $this->db->escape($folder->Path) . "'", '', $this->db)){
+				echo we_message_reporting::getShowMessageCall(g_l('export', "[folder_path_exists]"), we_message_reporting::WE_MESSAGE_ERROR);
+			} elseif(we_export_export::filenameNotValid($folder->Text)){
+				echo we_message_reporting::getShowMessageCall(g_l('export', "[wrongtext]"), we_message_reporting::WE_MESSAGE_ERROR);
 			} else {
-				if(we_export_export::filenameNotValid($folder->Text)){
-					print we_message_reporting::getShowMessageCall(g_l('export', "[wrongtext]"), we_message_reporting::WE_MESSAGE_ERROR);
-				} else {
-					$folder->we_save();
-					print 'var ref;
+				$folder->we_save();
+				echo 'var ref;
 if(top.opener.top.content.makeNewEntry){
 	ref = top.opener.top.content;
 	ref.makeNewEntry("' . we_base_ContentTypes::FOLDER_ICON . '",' . $folder->ID . ',"' . $folder->ParentID . '","' . $txt . '",1,"folder","' . $this->table . '",1);
 }
 ';
-					if($this->canSelectDir){
-						print 'top.currentPath = "' . $folder->Path . '";
+				if($this->canSelectDir){
+					echo 'top.currentPath = "' . $folder->Path . '";
 top.currentID = "' . $folder->ID . '";
 top.fsfooter.document.we_form.fname.value = "' . $folder->Text . '";
 ';
-					}
 				}
 			}
 		}
 
 
-		print $this->printCmdAddEntriesHTML() .
+		echo $this->printCmdAddEntriesHTML() .
 			$this->printCMDWriteAndFillSelectorHTML() .
 			'top.makeNewFolder = 0;
 top.selectFile(top.currentID);

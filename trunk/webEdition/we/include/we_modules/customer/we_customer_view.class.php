@@ -518,24 +518,24 @@ self.focus();' . $this->getJSSubmitFunction("customer_settings");
 			case 'new_customer':
 				$this->customer = new we_customer_customer();
 				$this->settings->initCustomerWithDefaults($this->customer);
-				print we_html_element::jsElement(
-						$this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->customer->Text) . '";' .
-						$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";'
+				echo we_html_element::jsElement(
+					$this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->customer->Text) . '";' .
+					$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";'
 				);
 				break;
 			case 'customer_edit':
-				$this->customer = new we_customer_customer($_REQUEST["cmdid"]);
-				print we_html_element::jsElement(
-						$this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->customer->Text) . '";' .
-						$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";'
+				$this->customer = new we_customer_customer(we_base_request::_(we_base_request::INT, "cmdid"));
+				echo we_html_element::jsElement(
+					$this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->customer->Text) . '";' .
+					$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";'
 				);
 				break;
 			case 'save_customer':
 				$js = '';
 				$this->customer->Username = trim($this->customer->Username);
 				if($this->customer->Username == ''){
-					print we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(g_l('modules_customer', '[username_empty]'), we_message_reporting::WE_MESSAGE_ERROR)
+					echo we_html_element::jsElement(
+						we_message_reporting::getShowMessageCall(g_l('modules_customer', '[username_empty]'), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 					break;
 				}
@@ -614,11 +614,11 @@ attribs["tooltip"]="' . (($this->customer->Forename != "" || $this->customer->Su
 					we_html_element::jsElement($js);
 				break;
 			case 'save_field':
-				$branch = $_REQUEST['branch'];
-				$field = $_REQUEST['field'];
-				$field_name = $_REQUEST['name'];
-				$field_type = $_REQUEST['field_type'];
-				$field_default = $_REQUEST['field_default'];
+				$branch = we_base_request::_(we_base_request::STRING, 'branch');
+				$field = we_base_request::_(we_base_request::STRING, 'field');
+				$field_name = we_base_request::_(we_base_request::STRING, 'name');
+				$field_type = we_base_request::_(we_base_request::STRING, 'field_type');
+				$field_default = we_base_request::_(we_base_request::STRING, 'field_default');
 
 				$saveret = $this->saveField($field, $branch, $field_name, $field_type, $field_default);
 
@@ -672,7 +672,7 @@ attribs["tooltip"]="' . (($this->customer->Forename != "" || $this->customer->Su
 
 				break;
 			case 'delete_field':
-				$field = $_REQUEST['fields_select'];
+				$field = we_base_request::_(we_base_request::STRING, 'fields_select');
 
 				$sort = $this->settings->getEditSort();
 				$sortarray = makeArrayFromCSV($sort);
@@ -714,7 +714,7 @@ attribs["tooltip"]="' . (($this->customer->Forename != "" || $this->customer->Su
 				$this->settings->save();
 				break;
 			case 'move_field_up':
-				$field = $_REQUEST['fields_select'];
+				$field = we_base_request::_(we_base_request::STRING, 'fields_select');
 				$sort = $this->settings->getEditSort();
 				$sortarray = makeArrayFromCSV($sort);
 				$orderedarray = $this->customer->persistent_slots;
@@ -744,7 +744,7 @@ attribs["tooltip"]="' . (($this->customer->Forename != "" || $this->customer->Su
 
 				break;
 			case 'move_field_down':
-				$field = $_REQUEST['fields_select'];
+				$field = we_base_request::_(we_base_request::STRING, 'fields_select');
 				$sort = $this->settings->getEditSort();
 				$sortarray = makeArrayFromCSV($sort);
 				$orderedarray = $this->customer->persistent_slots;
@@ -829,19 +829,21 @@ new jsWindow(url,"sort_admin",-1,-1,750,500,true,true,true,true);';
 
 				break;
 			case 'del_sort':
-				if(isset($_REQUEST['sortindex'])){
-					we_base_util::new_array_splice($this->settings->SortView, $_REQUEST['sortindex'], 1);
+				if(($i = we_base_request::_(we_base_request::INT, 'sortindex')) !== false){
+					we_base_util::new_array_splice($this->settings->SortView, $i, 1);
 				}
 				break;
 			case 'add_sort_field':
-				if(isset($_REQUEST['sortindex'])){
-					$this->settings->SortView[$_REQUEST['sortindex']][] = array('branch' => '', 'field' => '', 'order' => '');
+				if(($i = we_base_request::_(we_base_request::INT, 'sortindex')) !== false){
+					$this->settings->SortView[$i][] = array('branch' => '', 'field' => '', 'order' => '');
 				}
 				break;
 			case 'del_sort_field':
-				if(isset($_REQUEST['sortindex']))
-					if(isset($_REQUEST['fieldindex']))
-						array_splice($this->settings->SortView[$_REQUEST['sortindex']], $_REQUEST['fieldindex'], 1);
+				if(($i = we_base_request::_(we_base_request::INT, 'sortindex')) !== false &&
+					($j = we_base_request::_(we_base_request::INT, 'fieldindex')) !== false){
+
+					array_splice($this->settings->SortView[$i], $j, 1);
+				}
 				break;
 			case 'save_sort':
 
@@ -864,61 +866,52 @@ if(selected<opener.' . $this->topFrame . '.document.we_form_treeheader.sort.opti
 
 opener.' . $this->topFrame . '.applySort();
 self.close();';
-				print we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
-					we_html_element::jsElement($js);
+				echo we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
+				we_html_element::jsElement($js);
 				break;
 			case 'applySort':
-				$js = $this->topFrame . '.clearTree();';
-				print we_html_element::jsElement($js);
+				echo we_html_element::jsElement($$this->topFrame . '.clearTree();');
 				break;
 			case 'show_search':
-				$js = '
-						url ="' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=search&search=1&keyword=' . $_REQUEST["keyword"] . '";
-						new jsWindow(url,"search",-1,-1,650,600,true,true,true,false);';
-				print we_html_element::jsScript(JS_DIR . "windows.js") .
-					we_html_element::jsElement($js);
+				echo we_html_element::jsScript(JS_DIR . "windows.js") .
+				we_html_element::jsElement('url ="' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=search&search=1&keyword=' . we_base_request::_(we_base_request::STRING, "keyword") . '";
+						new jsWindow(url,"search",-1,-1,650,600,true,true,true,false);');
 				break;
 			case 'show_customer_settings':
-				$js = '
-						url ="' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=settings";
-						new jsWindow(url,"customer_settings",-1,-1,550,250,true,true,true,false);
-					';
-				print we_html_element::jsScript(JS_DIR . "windows.js") .
-					we_html_element::jsElement($js);
+				echo we_html_element::jsScript(JS_DIR . "windows.js") .
+				we_html_element::jsElement('url ="' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=settings";
+						new jsWindow(url,"customer_settings",-1,-1,550,250,true,true,true,false);');
 				break;
 			case 'import_customer':
-				$js = 'url ="' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=import";
-						new jsWindow(url,"import_customer",-1,-1,640,600,true,true,true,false);';
-				print we_html_element::jsScript(JS_DIR . "windows.js") .
-					we_html_element::jsElement($js);
+				echo we_html_element::jsScript(JS_DIR . "windows.js") .
+				we_html_element::jsElement('url ="' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=import";
+						new jsWindow(url,"import_customer",-1,-1,640,600,true,true,true,false);');
 				break;
 			case 'export_customer':
-				$js = 'url ="' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=export";
-						new jsWindow(url,"export_customer",-1,-1,640,600,true,true,true,false);';
-				print we_html_element::jsScript(JS_DIR . "windows.js") .
-					we_html_element::jsElement($js);
+				echo we_html_element::jsScript(JS_DIR . "windows.js") .
+				we_html_element::jsElement('url ="' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=export";
+						new jsWindow(url,"export_customer",-1,-1,640,600,true,true,true,false);');
 				break;
 			case 'save_settings':
 
 				foreach($this->settings->getAllSettings() as $k => $v){
-					if(isset($_REQUEST[$k])){
-						$this->settings->setSettings($k, $_REQUEST[$k]);
+					$set = we_base_request::_(we_base_request::STRING, $k);
+					if($set !== false){
+						$this->settings->setSettings($k, $set);
 					}
 				}
 				foreach($this->settings->properties as $k => $v){
-					if(isset($_REQUEST[$k])){
-						$this->settings->properties[$k] = $_REQUEST[$k];
+					$set = we_base_request::_(we_base_request::STRING, $k);
+					if($set !== false){
+						$this->settings->properties[$k] = $set;
 					}
 				}
-
-				if($this->settings->save()){
-					$js = we_message_reporting::getShowMessageCall(g_l('modules_customer', '[settings_saved]'), we_message_reporting::WE_MESSAGE_NOTICE) .
-						'self.close();';
-				} else {
-					$js = we_message_reporting::getShowMessageCall(g_l('modules_customer', '[settings_not_saved]'), we_message_reporting::WE_MESSAGE_NOTICE);
-				}
 				echo we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
-				we_html_element::jsElement($js);
+				we_html_element::jsElement(
+					$this->settings->save() ?
+						we_message_reporting::getShowMessageCall(g_l('modules_customer', '[settings_saved]'), we_message_reporting::WE_MESSAGE_NOTICE) . 'self.close();' :
+						we_message_reporting::getShowMessageCall(g_l('modules_customer', '[settings_not_saved]'), we_message_reporting::WE_MESSAGE_NOTICE)
+				);
 				break;
 			default:
 		}
@@ -931,31 +924,35 @@ self.close();';
 		if(isset($_SESSION['weS']['customer_session'])){
 			$this->customer = unserialize($_SESSION['weS']['customer_session']);
 		}
-
-		if(isset($_REQUEST['sid'])){
-			$this->customer = new we_customer_customer(addslashes($_REQUEST['sid']));
+		if(($sid = we_base_request::_(we_base_request::INT, 'sid'))){
+			$this->customer = new we_customer_customer($sid);
 			$_SESSION['weS']['customer_session'] = serialize($this->customer);
 		}
 		if(is_array($this->customer->persistent_slots)){
 			foreach($this->customer->persistent_slots as $val){
 				$varname = $val;
-				if($varname == 'LoginDenied'){
-					if(isset($_REQUEST[$varname])){
-						$this->customer->{$val} = '1';
-					} elseif(isset($_REQUEST['Username'])){
-						$this->customer->{$val} = '0';
-					}
-				} elseif($varname == 'Password' && isset($_REQUEST[$varname])){
-					if($_REQUEST[$varname] != we_customer_customer::NOPWD_CHANGE){//keep old pwd
-						$this->customer->{$val} = we_customer_customer::cryptPassword($_REQUEST[$varname]);
-					}
-				} elseif(isset($_REQUEST[$varname])){
-					$this->customer->{$val} = $_REQUEST[$varname];
+				switch($varname){
+					case 'LoginDenied':
+						if(we_base_request::_(we_base_request::BOOL, 'LoginDenied')){
+							$this->customer->LoginDenied = 1;
+						} elseif(we_base_request::_(we_base_request::STRING, 'Username')){
+							$this->customer->LoginDenied = 0;
+						}
+						break;
+					case 'Password':
+						$pw = we_base_request::_(we_base_request::RAW, 'Password');
+						if($pw && $pw != we_customer_customer::NOPWD_CHANGE){//keep old pwd
+							$this->customer->Password = we_customer_customer::cryptPassword($pw);
+						}
+						break;
+					default:
+						if(($v = we_base_request::_(we_base_request::STRING, $varname))){
+							$this->customer->{$val} = $v;
+						}
 				}
 			}
 		}
 
-		//$this->page = we_base_request::_(we_base_request::RAW, 'page', $this->page);
 
 		if(we_base_request::_(we_base_request::STRING, 'pnt') == 'sort_admin'){
 			$counter = we_base_request::_(we_base_request::INT, 'counter');
@@ -965,9 +962,8 @@ self.close();';
 
 				for($i = 0; $i < $counter; $i++){
 
-					$sort_name = (isset($_REQUEST['sort_' . $i]) && $_REQUEST['sort_' . $i] ?
-							$_REQUEST['sort_' . $i] :
-							g_l('modules_customer', '[sort_name]') . '_' . $i);
+					$sort_name = we_base_request::_(we_base_request::STRING, 'sort_' . $i);
+					$sort_name = $sort_name ? $sort_name : g_l('modules_customer', '[sort_name]') . '_' . $i;
 
 
 					$fcounter = we_base_request::_(we_base_request::INT, 'fcounter_' . $i, 1);
@@ -977,19 +973,19 @@ self.close();';
 					}
 					for($j = 0; $j < $fcounter; $j++){
 						$new = array();
-						if(isset($_REQUEST['branch_' . $i . '_' . $j])){
-							$new['branch'] = $_REQUEST['branch_' . $i . '_' . $j];
+						if(($b = we_base_request::_(we_base_request::STRING, 'branch_' . $i . '_' . $j))){
+							$new['branch'] = $b;
 						}
-						if(isset($_REQUEST['field_' . $i . '_' . $j])){
+						if(($field = we_base_request::_(we_base_request::STRING, 'field_' . $i . '_' . $j))){
 							$new['field'] = ($new['branch'] == g_l('modules_customer', '[common]') ?
-									str_replace(g_l('modules_customer', '[common]') . '_', '', $_REQUEST['field_' . $i . '_' . $j]) :
-									$_REQUEST['field_' . $i . '_' . $j]);
+									str_replace(g_l('modules_customer', '[common]') . '_', '', $field) :
+									$field);
 						}
-						if(isset($_REQUEST['function_' . $i . '_' . $j])){
-							$new['function'] = $_REQUEST['function_' . $i . '_' . $j];
+						if(($func = we_base_request::_(we_base_request::STRING, 'function_' . $i . '_' . $j))){
+							$new['function'] = $func;
 						}
-						if(isset($_REQUEST['order_' . $i . '_' . $j])){
-							$new['order'] = $_REQUEST['order_' . $i . '_' . $j];
+						if(($ord = we_base_request::_(we_base_request::STRING, 'order_' . $i . '_' . $j))){
+							$new['order'] = $ord;
 						}
 						$this->settings->SortView[$sort_name][$j] = $new;
 					}

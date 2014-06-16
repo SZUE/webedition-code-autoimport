@@ -23,36 +23,34 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-if(!preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction'])){
-	exit();
-}
-
 we_html_tools::protect();
 
+$transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction');
+if(!$transaction){
+	exit();
+}
 $heading = 'ToDo Status-update ...';
+$arr = array('deadline' => mktime(we_base_request::_(we_base_request::INT, 'td_deadline_hour'), we_base_request::_(we_base_request::INT, 'td_deadline_minute'), 0, we_base_request::_(we_base_request::INT, 'td_deadline_month'), we_base_request::_(we_base_request::INT, 'td_deadline_day'), we_base_request::_(we_base_request::INT, 'td_deadline_year')));
 
-$deadline = mktime($_REQUEST['td_deadline_hour'], $_REQUEST['td_deadline_minute'], 0, $_REQUEST['td_deadline_month'], $_REQUEST['td_deadline_day'], $_REQUEST['td_deadline_year']);
-$arr = array('deadline' => $deadline);
-
-$messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
+$messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$transaction]);
 $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
-$messaging->init($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
+$messaging->init($_SESSION['weS']['we_data'][$transaction]);
 
-if($_REQUEST['todo_status'] != $messaging->selected_message['hdrs']['status']){
-	$arr['todo_status'] = $_REQUEST['todo_status'];
+if(($stat = we_base_request::_(we_base_request::INT, 'todo_status')) != $messaging->selected_message['hdrs']['status']){
+	$arr['todo_status'] = $stat;
 }
 
-if(!empty($_REQUEST['todo_comment'])){
-	$arr['todo_comment'] = $_REQUEST['todo_comment'];
+if(($com = we_base_request::_(we_base_request::STRING, 'todo_comment'))){
+	$arr['todo_comment'] = $com;
 }
 
-$arr['todo_priority'] = $_REQUEST['todo_priority'];
+$arr['todo_priority'] = we_base_request::_(we_base_request::INT, 'todo_priority');
 
 $res = $messaging->used_msgobjs['we_todo']->update_status($arr, $messaging->selected_message['int_hdrs']);
 
 $messaging->get_fc_data($messaging->Folder_ID, '', '', 0);
 
-$messaging->saveInSession($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
+$messaging->saveInSession($_SESSION['weS']['we_data'][$transaction]);
 echo we_html_tools::getHtmlTop($heading) .
  STYLESHEET . we_html_element::jsElement('
 			if (opener && opener.top && opener.top.content) {

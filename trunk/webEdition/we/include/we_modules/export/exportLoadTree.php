@@ -70,11 +70,10 @@ if(($ws = get_ws($table))){
 	}
 }
 
-$wsQuery = ' ' . (empty($wsQuery) ? '' : ' OR (' . implode(' OR ', $wsQuery) . ')');
-$openFolders = (isset($_REQUEST['we_cmd'][3]) ? explode(",", $_REQUEST['we_cmd'][3]) : array());
+$wsQuery = ' ' . ($wsQuery ? ' OR (' . implode(' OR ', $wsQuery) . ')' : '');
+$openFolders = array_filter(explode(',', we_base_request::_(we_base_request::INTLIST, 'we_cmd', '', 3)));
 
 function getQueryParents($path){
-
 	$out = array();
 	while($path != '/' && $path){
 		$out[] = 'Path="' . $path . '"';

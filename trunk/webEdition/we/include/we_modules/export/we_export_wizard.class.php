@@ -121,8 +121,8 @@ class we_export_wizard{
 	function getHTMLFrameset(){
 		$args = "";
 		$_SESSION['weS']['exportVars'] = array();
-		if(isset($_REQUEST['we_cmd'][1])){
-			$args .= "&we_cmd[1]=" . $_REQUEST['we_cmd'][1];
+		if(($cmd1 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1))){
+			$args .= "&we_cmd[1]=" . $cmd1;
 		}
 		$this->Tree = new we_export_tree(WE_EXPORT_MODULE_DIR . "export_frameset.php", $this->topFrame, $this->bodyFrame, $this->loadFrame);
 
@@ -733,7 +733,7 @@ function setState(a) {
 	}
 
 	function getHTMLStep10(){
-		$filename = isset($_REQUEST["file_name"]) ? urldecode($_REQUEST["file_name"]) : false;
+		$filename = urldecode(we_base_request::_(we_base_request::FILE, "file_name"));
 
 		$message = we_html_element::htmlSpan(array("class" => "defaultfont"), g_l('export', "[backup_finished]") . "<br/><br/>" .
 				g_l('export', "[download_starting]") .
@@ -1017,17 +1017,9 @@ function setState(a) {
 				);
 		}
 
-		if(isset($_REQUEST["mode"]) && $_REQUEST["mode"] == "progress"){
-			$text = g_l('backup', "[working]");
-			$progress = 0;
-
-			if(isset($_REQUEST["current_description"]) && $_REQUEST["current_description"]){
-				$text = $_REQUEST["current_description"];
-			}
-
-			if(isset($_REQUEST["percent"]) && $_REQUEST["percent"]){
-				$progress = $_REQUEST["percent"];
-			}
+		if(we_base_request::_(we_base_request::STRING, "mode") == "progress"){
+			$text = we_base_request::_(we_base_request::STRING, "current_description", g_l('backup', "[working]"));
+			$progress = we_base_request::_(we_base_request::INT, 'percent', 0);
 
 			$progressbar = new we_progressBar($progress);
 			$progressbar->setStudLen(200);
@@ -1058,25 +1050,25 @@ function setState(a) {
 		$this->getExportVars();
 		switch(we_base_request::_(we_base_request::STRING, "cmd")){
 			case "load":
-				if(isset($_REQUEST["pid"])){
-					return we_html_element::jsElement("self.location='" . WE_EXPORT_MODULE_DIR . "exportLoadTree.php?we_cmd[1]=" . $_REQUEST["tab"] . "&we_cmd[2]=" . $_REQUEST["pid"] . "&we_cmd[3]=" . we_base_request::_(we_base_request::RAW, "openFolders", "") . "'");
+				if(($pid = we_base_request::_(we_base_request::INT, "pid"))){
+					return we_html_element::jsElement("self.location='" . WE_EXPORT_MODULE_DIR . "exportLoadTree.php?we_cmd[1]=" . we_base_request::_(we_base_request::INT, "tab") . "&we_cmd[2]=" . $pid . "&we_cmd[3]=" . we_base_request::_(we_base_request::INTLIST, "openFolders", "") . "'");
 				}
 				break;
 			case "export":
 				$xmlExIm = new we_exim_XMLExIm();
 
 				$file_format = we_base_request::_(we_base_request::STRING, "file_format", "");
-				$export_to = we_base_request::_(we_base_request::RAW, "export_to", "");
+				//$export_to = we_base_request::_(we_base_request::RAW, "export_to", "");
 				$path = we_base_request::_(we_base_request::FILE, "path", '') . '/';
-				$csv_delimiter = we_base_request::_(we_base_request::RAW, "csv_delimiter", "");
-				$csv_enclose = we_base_request::_(we_base_request::RAW, "csv_enclose", "");
-				$csv_lineend = we_base_request::_(we_base_request::RAW, "csv_lineend", "");
-				$csv_fieldnames = we_base_request::_(we_base_request::RAW, "csv_fieldnames", "");
-				$cdata = (isset($_REQUEST["cdata"]) && $_REQUEST["cdata"] == "false") ? false : true;
+				//$csv_delimiter = we_base_request::_(we_base_request::RAW, "csv_delimiter", "");
+				//$csv_enclose = we_base_request::_(we_base_request::RAW, "csv_enclose", "");
+				//$csv_lineend = we_base_request::_(we_base_request::RAW, "csv_lineend", "");
+				//$csv_fieldnames = we_base_request::_(we_base_request::RAW, "csv_fieldnames", "");
+				//$cdata = we_base_request::_(we_base_request::BOOL, "cdata");
 
 				$extype = $this->exportVars["extype"];
 				$filename = $this->exportVars["filename"];
-				$export_to = $this->exportVars["export_to"];
+				//$export_to = $this->exportVars["export_to"];
 				$path = $this->exportVars["path"];
 				$csv_delimiter = $this->exportVars["csv_delimiter"];
 				$csv_enclose = $this->exportVars["csv_enclose"];
@@ -1090,60 +1082,6 @@ function setState(a) {
 				$finalClasses = makeArrayFromCSV($this->exportVars["selClasses"]);
 
 				$xmlExIm->getSelectedItems($this->exportVars["selection"], $extype, $this->exportVars["art"], $this->exportVars["type"], $this->exportVars["doctype"], $this->exportVars["classname"], $this->exportVars["categories"], $this->exportVars["dir"], $finalDocs, $finalTempl, $finalObjs, $finalClasses);
-
-
-				/* if ($this->exportVars["selection"]=="manual"){
-				  $selDocs = makeArrayFromCSV($this->exportVars["selDocs"]);
-				  $selTempl = makeArrayFromCSV($this->exportVars["selTempl"]);
-				  $selObjs = makeArrayFromCSV($this->exportVars["selObjs"]);
-				  $selClasses = makeArrayFromCSV($this->exportVars["selClasses"]);
-				  //if($extype==we_import_functions::TYPE_WE_XML){
-				  //	$finalDocs = $this->getIDs($selDocs,FILE_TABLE,false);
-				  //	$finalTempl = $this->getIDs($selTempl,TEMPLATES_TABLE,false);
-				  //	$finalObjs = defined("OBJECT_FILES_TABLE") ? $this->getIDs($selObjs,OBJECT_FILES_TABLE,false) : "";
-				  //	$finalClasses = defined("OBJECT_FILES_TABLE") ? $this->getIDs($selClasses,OBJECT_TABLE,false) : "";
-				  //}
-				  else{
-				  if($this->exportVars["art"]=="docs") $finalDocs = $this->getIDs($selDocs,FILE_TABLE);
-				  else if($this->exportVars["art"]=="objects") $finalObjs = defined("OBJECT_FILES_TABLE") ? $this->getIDs($selObjs,OBJECT_FILES_TABLE) : "";
-				  //}
-
-				  }
-				  else{
-				  if ($this->exportVars["type"]=="doctype"){
-				  $doctypename=f("SELECT DocType FROM ".DOC_TYPES_TABLE." WHERE ID='".$this->exportVars["doctype"]."';","DocType",$this->db);
-
-				  $catss="";
-				  if ($this->exportVars["categories"]){
-				  $catids=makeCSVFromArray(makeArrayFromCSV($this->exportVars["categories"]));
-				  $this->db->query("SELECT Category FROM ".CATEGORY_TABLE." WHERE ID IN (".$catids.");");
-				  while($this->db->next_record()){
-				  $cats[]=$this->db->f("Category");
-				  }
-				  $catss=makeCSVFromArray($cats);
-				  }
-				  $lv=new we_listview("export_docs",999999999,0,"",false, $doctypename, $catss,false,false,$this->exportVars["dir"]);
-				  while($lv->DB_WE->next_record()){
-				  $finalDocs[]=$lv->DB_WE->f("ID");
-				  }
-				  }
-				  else {
-				  if (defined("OBJECT_FILES_TABLE")) {
-
-				  $catss = "";
-
-				  if ($this->exportVars["categories"]) {
-				  $catss=$this->exportVars["categories"];
-				  }
-
-				  $this->db->query("SELECT ID FROM ".OBJECT_FILES_TABLE." WHERE IsFolder=0 AND TableID='".$this->exportVars["classname"]."'".($catss!="" ? " AND Category IN (".$catss.");" : ";"));
-
-				  while($this->db->next_record()){
-				  $finalObjs[]=$this->db->f("ID");
-				  }
-				  }
-				  }
-				  } */
 
 				$_SESSION['weS']['exportVars']["finalDocs"] = $finalDocs;
 				$_SESSION['weS']['exportVars']["finalTempl"] = $finalTempl;
@@ -1215,7 +1153,7 @@ function setState(a) {
 				$cdata = $this->exportVars["cdata"] == "true" ? true : false;
 
 
-				$all = (isset($_REQUEST["all"]) && $_REQUEST["all"] > 0) ? $_REQUEST["all"] : 0;
+				$all = abs(we_base_request::_(we_base_request::INT, "all", 0));
 				$exports = 0;
 
 				if(isset($remaining_docs) && !empty($remaining_docs)){
@@ -1524,9 +1462,8 @@ function setState(a) {
 		switch(we_base_request::_(we_base_request::STRING, "wcmd")){
 			case "add_cat":
 				$arr = makeArrayFromCSV($this->exportVars["categories"]);
-				if(isset($_REQUEST["cat"])){
-					$ids = makeArrayFromCSV($_REQUEST["cat"]);
-					foreach($ids as $id){
+				if(($cat = we_base_request::_(we_base_request::INTLIST, "cat"))){
+					foreach(makeArrayFromCSV($cat) as $id){
 						if(strlen($id) && (!in_array($id, $arr))){
 							$arr[] = $id;
 						}
@@ -1536,9 +1473,9 @@ function setState(a) {
 				break;
 			case "del_cat":
 				$arr = makeArrayFromCSV($this->exportVars["categories"]);
-				if(isset($_REQUEST["cat"])){
+				if(($cat = we_base_request::_(we_base_request::INT, "cat"))){
 					foreach($arr as $k => $v){
-						if($v == $_REQUEST["cat"]){
+						if($v == $cat){
 							array_splice($arr, $k, 1);
 						}
 					}

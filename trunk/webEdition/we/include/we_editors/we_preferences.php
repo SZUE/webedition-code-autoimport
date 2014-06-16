@@ -570,7 +570,7 @@ function save_all_values(){
 	}
 	if(isset($_SESSION['weS']['versions']) && isset($_SESSION['weS']['versions']['logPrefs'])){
 		$_SESSION['weS']['versions']['logPrefsChanged'] = array();
-		foreach($_SESSION['weS']['versions']['logPrefs'] as $k => $v){
+		foreach(array_keys($_SESSION['weS']['versions']['logPrefs']) as $k){
 			if(isset($_REQUEST['newconf'][$k])){
 				if($_SESSION['weS']['versions']['logPrefs'][$k] != $_REQUEST['newconf'][$k]){
 					$_SESSION['weS']['versions']['logPrefsChanged'][$k] = $_REQUEST['newconf'][$k];
