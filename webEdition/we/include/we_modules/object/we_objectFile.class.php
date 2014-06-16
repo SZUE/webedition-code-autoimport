@@ -340,7 +340,7 @@ class we_objectFile extends we_document{
 
 	function restoreWorkspaces(){
 		if(!$this->TableID){ // WORKARROUND for bug 4631
-			$ac = makeCSVFromArray(getAllowedClasses($this->DB_WE));
+			$ac = makeCSVFromArray(we_users_util::getAllowedClasses($this->DB_WE));
 			$this->TableID = count($ac) ? $ac[0] : 0;
 		}
 		$foo = getHash('SELECT Workspaces,DefaultWorkspaces,Templates FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), $this->DB_WE);
