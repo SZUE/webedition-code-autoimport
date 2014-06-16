@@ -39,14 +39,14 @@ class we_import_files{
 	var $degrees = 0;
 	var $categories = '';
 	private $jsRequirementsOk = false;
-	private $useLegacyUpload = false; //TODO: replace by FILE_UPLOADER_USE_LEGACY
+	private $useLegacyUpload = false;
 	private $useJsUpload = false;
-	private $maxUploadSizeMB = 8; //TODO: replace by FILE_UPLOADER_MAX_UPLOAD_SIZE
+	private $maxUploadSizeMB = 8;
 	private $maxUploadSizeB = 0;
 	private $fileNameTmp = '';
 	private $partNum = 0;
 	private $partCount = 0;
-	private $showErrorAtChunkNr = -1; //Trigger an Error at n-th chunk of 100KB to demonstrate error response
+	private $showErrorAtChunkNr = -1; //Trigger an Error at n-th chunk of 100KB to demonstrate error response. TODO: Use this construct to abort on Max_FILE_SIZE!!
 
 	function __construct(){
 		if(($cats = we_base_request::_(we_base_request::STRING, 'categories'))){
@@ -79,7 +79,9 @@ class we_import_files{
 		$this->partNum = we_base_request::_(we_base_request::INT, "wePartNum", 0);
 		$this->partCount = we_base_request::_(we_base_request::INT, "wePartCount", 0);
 		$this->fileNameTmp = we_base_request::_(we_base_request::RAW, "weFileNameTmp", '');
+		$this->maxUploadSizeMB = defined('FILE_UPLOAD_MAX_UPLOAD_SIZE') ? FILE_UPLOAD_MAX_UPLOAD_SIZE : 8;
 		$this->maxUploadSizeB = $this->maxUploadSizeMB * 1048576;
+		$this->useLegacyUpload = defined('FILE_UPLOAD_USE_LEGACY') ? FILE_UPLOAD_USE_LEGACY : false;
 		$this->useJsUpload = !USE_JUPLOAD && $this->jsRequirementsOk && !$this->useLegacyUpload;
 	}
 
@@ -163,7 +165,7 @@ function initFileUpload() {
 	filedrag.addEventListener("dragleave", FileDragHover, false);
 	filedrag.addEventListener("drop", FileSelectHandler, false);
 	filedrag.style.display = "block";
-
+	bf.document.getElementById("next").getElementsByTagName("td")[1].innerHTML = "' . g_l('button', "[upload][value]") . '";
 	bf.next_enabled = bf.switch_button_state("next", "next_enabled", "disabled");
 }
 
@@ -642,8 +644,6 @@ function setApplet() {
 				top: 0;
 				right: 0;
 				width: 286px;
-				/*This makes the button huge so that it can be clicked on*/
-				/*font-size:50px;*/
 			}
 			.fileInputHidden {
 				/*Opacity settings for all browsers*/
@@ -934,7 +934,7 @@ function setApplet() {
 			exit();
 		}
 
-		$cancelButton = we_html_button::create_button("cancel", "javascript:top.close()");
+		$cancelButton = '<div id="div_cancelButton">' . we_html_button::create_button("cancel", "javascript:top.close()") . '</div>';
 		$closeButton = we_html_button::create_button("close", "javascript:top.close()");
 		$progressbar = '';
 
@@ -1152,7 +1152,7 @@ function _weSetCancelButtonText(text){
 		replace = (text === 'close' ? close : (text === 'cancel' ? cancel : ''));
 
 	if(replace){
-		document.getElementById('normButton').getElementsByTagName('table')[4].getElementsByTagName('td')[1].innerHTML = replace;
+		document.getElementById('div_cancelButton').getElementsByTagName('td')[1].innerHTML = replace;
 	}
 }
 ";
