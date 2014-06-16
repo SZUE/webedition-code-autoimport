@@ -40,7 +40,7 @@ class we_glossary_frameEditorException extends we_glossary_frameEditor{
 		$cmdid = we_base_request::_(we_base_request::STRING, 'cmdid');
 
 		return self::buildBody($weGlossaryFrames, we_html_element::jsElement($weGlossaryFrames->topFrame . '.editor.edheader.location="' . $weGlossaryFrames->frameset . '?pnt=edheader&cmd=glossary_view_exception&cmdid=' . $cmdid . '";'
-					. $weGlossaryFrames->topFrame . '.editor.edfooter.location="' . $weGlossaryFrames->frameset . '?pnt=edfooter&cmd=glossary_view_exception&cmdid=' . $cmdid . '"'), we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')), we_html_multiIconBox::getHTML('weMultibox', "100%", self::getHTMLTabProperties($weGlossaryFrames), 30, '', -1, '', '', false)));
+					. $weGlossaryFrames->topFrame . '.editor.edfooter.location="' . $weGlossaryFrames->frameset . '?pnt=edfooter&cmd=glossary_view_exception&cmdid=' . $cmdid . '"'). we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')), we_html_multiIconBox::getHTML('weMultibox', "100%", self::getHTMLTabProperties($weGlossaryFrames), 30, '', -1, '', '', false)));
 	}
 
 	function Footer(&$weGlossaryFrames){
@@ -66,18 +66,9 @@ class we_glossary_frameEditorException extends we_glossary_frameEditor{
 		$language = substr(we_base_request::_(we_base_request::STRING, 'cmdid'), 0, 5);
 
 		$content = '<table border="0" cellpadding="0" cellspacing="0">
-					<tr>
-						<td>
-							' . we_html_tools::htmlAlertAttentionBox(g_l('modules_glossary', '[hint_exception]'), we_html_tools::TYPE_INFO, 520, true, 0) . '</td>
-					</tr>
-					<tr>
-						<td>
-							' . we_html_tools::getPixel(2, 4) . '</td>
-					</tr>
-					<tr>
-						<td>
-							' . we_html_element::htmlTextarea(array('name' => 'Exception', 'cols' => 60, 'rows' => 20, 'style' => 'width:520px;'), implode("", we_glossary_glossary::getException($language))) . '</td>
-					</tr>
+					<tr><td>' . we_html_tools::htmlAlertAttentionBox(g_l('modules_glossary', '[hint_exception]'), we_html_tools::TYPE_INFO, 520, true, 0) . '</td></tr>
+					<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+					<tr><td>' . we_html_element::htmlTextarea(array('name' => 'Exception', 'cols' => 60, 'rows' => 20, 'style' => 'width:520px;'), implode("", we_glossary_glossary::getException($language))) . '</td></tr>
 				</table>';
 
 		$item = array(
