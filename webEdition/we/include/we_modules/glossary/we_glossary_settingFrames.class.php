@@ -65,7 +65,7 @@ class we_glossary_settingFrames{
 		include($configFile);
 
 		// Automatic Replacement
-		$content = we_html_forms::checkboxWithHidden($GLOBALS['weGlossaryAutomaticReplacement'], 'GlossaryAutomaticReplacement', g_l('modules_glossary', '[enable_replacement]'));
+		$content = we_html_forms::checkboxWithHidden(we_glossary_replace::useAutomatic(), 'GlossaryAutomaticReplacement', g_l('modules_glossary', '[enable_replacement]'));
 
 		$parts = array(
 			array(
