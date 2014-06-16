@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . WE_MESSAGING_MODULE_DIR . "msg_html_tools.inc.php");
+
 we_html_tools::protect();
 $transaction = $_REQUEST['we_transaction'] = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', $we_transaction);
 
@@ -44,16 +44,16 @@ $so = we_base_request::_(we_base_request::STRING, 'so');
 		<tr>
 			<?php if(we_base_request::_(we_base_request::STRING, "viewclass") != "todo"){ ?>
 				<td width="18"><?php we_html_tools::pPixel(18, 1) ?></td>
-				<td class="defaultfont" width="200"><a href="javascript:doSort('subject');"><b><?php echo g_l('modules_messaging', '[subject]') ?></b>&nbsp;<?php echo ( $si == 'subject' ? sort_arrow("arrow_sortorder_" . $so, "") : we_html_tools::getPixel(1, 1)) ?></a></td>
-				<td class="defaultfont" width="170"><a href="javascript:doSort('date');"><b><?php echo g_l('modules_messaging', '[date]') ?></b>&nbsp;<?php echo (($si == 'date') ? sort_arrow("arrow_sortorder_" . $so, "") : we_html_tools::getPixel(1, 1)) ?></a></td>
-				<td class="defaultfont" width="120"><a href="javascript:doSort('sender');"><b><?php echo g_l('modules_messaging', '[from]') ?></b>&nbsp;<?php echo ($si == 'sender' ? sort_arrow("arrow_sortorder_" . $so, "") : we_html_tools::getPixel(1, 1)) ?></a></td>
-				<td class="defaultfont" width="70"><a href="javascript:doSort('isread');"><b><?php echo g_l('modules_messaging', '[is_read]') ?></b>&nbsp;<?php echo ($si == 'isread' ? sort_arrow("arrow_sortorder_" . $so, "") : we_html_tools::getPixel(1, 1)) ?></a></td>
+				<td class="defaultfont" width="200"><a href="javascript:doSort('subject');"><b><?php echo g_l('modules_messaging', '[subject]') ?></b>&nbsp;<?php echo ( $si == 'subject' ? we_messaging_frames::sort_arrow("arrow_sortorder_" . $so, "") : we_html_tools::getPixel(1, 1)) ?></a></td>
+				<td class="defaultfont" width="170"><a href="javascript:doSort('date');"><b><?php echo g_l('modules_messaging', '[date]') ?></b>&nbsp;<?php echo (($si == 'date') ? we_messaging_frames::sort_arrow("arrow_sortorder_" . $so, "") : we_html_tools::getPixel(1, 1)) ?></a></td>
+				<td class="defaultfont" width="120"><a href="javascript:doSort('sender');"><b><?php echo g_l('modules_messaging', '[from]') ?></b>&nbsp;<?php echo ($si == 'sender' ? we_messaging_frames::sort_arrow("arrow_sortorder_" . $so, "") : we_html_tools::getPixel(1, 1)) ?></a></td>
+				<td class="defaultfont" width="70"><a href="javascript:doSort('isread');"><b><?php echo g_l('modules_messaging', '[is_read]') ?></b>&nbsp;<?php echo ($si == 'isread' ? we_messaging_frames::sort_arrow("arrow_sortorder_" . $so, "") : we_html_tools::getPixel(1, 1)) ?></a></td>
 			<?php } else { ?>
 				<td width="18"><?php we_html_tools::pPixel(18, 1) ?></td>
-				<td class="defaultfont" width="200"><a href="javascript:doSort('subject');"><b><?php echo g_l('modules_messaging', '[subject]') ?></b>&nbsp;<?php echo ($si == 'subject' ? sort_arrow("arrow_sortorder_" . $so, "") : we_html_tools::getPixel(1, 1)) ?></a></td>
-				<td class="defaultfont" width="170"><a href="javascript:doSort('deadline');"><b><?php echo g_l('modules_messaging', '[deadline]') ?></b>&nbsp;<?php echo ($si == 'deadline' ? sort_arrow("arrow_sortorder_" . $so, "") : we_html_tools::getPixel(1, 1)) ?></a></td>
-				<td class="defaultfont" width="120"><a href="javascript:doSort('priority');"><b><?php echo g_l('modules_messaging', '[priority]') ?></b>&nbsp;<?php echo ($si == 'priority' ? sort_arrow("arrow_sortorder_" . $so, "") : we_html_tools::getPixel(1, 1)) ?></a></td>
-				<td class="defaultfont" width="70"><a href="javascript:doSort('status');"><b><?php echo g_l('modules_messaging', '[status]') ?></b>&nbsp;<?php echo ($si == 'status' ? sort_arrow("arrow_sortorder_" . $so, "") : we_html_tools::getPixel(1, 1)) ?></a></td>
+				<td class="defaultfont" width="200"><a href="javascript:doSort('subject');"><b><?php echo g_l('modules_messaging', '[subject]') ?></b>&nbsp;<?php echo ($si == 'subject' ? we_messaging_frames::sort_arrow("arrow_sortorder_" . $so, "") : we_html_tools::getPixel(1, 1)) ?></a></td>
+				<td class="defaultfont" width="170"><a href="javascript:doSort('deadline');"><b><?php echo g_l('modules_messaging', '[deadline]') ?></b>&nbsp;<?php echo ($si == 'deadline' ? we_messaging_frames::sort_arrow("arrow_sortorder_" . $so, "") : we_html_tools::getPixel(1, 1)) ?></a></td>
+				<td class="defaultfont" width="120"><a href="javascript:doSort('priority');"><b><?php echo g_l('modules_messaging', '[priority]') ?></b>&nbsp;<?php echo ($si == 'priority' ? we_messaging_frames::sort_arrow("arrow_sortorder_" . $so, "") : we_html_tools::getPixel(1, 1)) ?></a></td>
+				<td class="defaultfont" width="70"><a href="javascript:doSort('status');"><b><?php echo g_l('modules_messaging', '[status]') ?></b>&nbsp;<?php echo ($si == 'status' ? we_messaging_frames::sort_arrow("arrow_sortorder_" . $so, "") : we_html_tools::getPixel(1, 1)) ?></a></td>
 						<?php } ?>
 		</tr>
 	</table>
