@@ -817,7 +817,8 @@ row+="&nbsp;&nbsp;<br/>";'
 	}
 
 	function setItemsCount($count){
-		$this->default_segment = $count;
+		$count = intval($count);
+		$this->default_segment = ($count ? $count : 30);
 	}
 
 	static function deleteTreeEntries($dontDeleteClassFolders = false){
