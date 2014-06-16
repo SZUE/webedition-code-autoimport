@@ -1194,3 +1194,7 @@ function getWECountries(){
 		'FR' => 'fr'
 	);
 }
+
+function getMysqlVer($nodots=true){
+	return we_database_base::getMysqlVer($nodots);
+}

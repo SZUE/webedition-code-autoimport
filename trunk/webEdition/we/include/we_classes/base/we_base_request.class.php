@@ -169,6 +169,11 @@ class we_base_request{
 
 		$var = $_REQUEST;
 		$args = func_get_args();
+		/* fixme temporary until 6.3.9 release */
+		if(func_num_args()==4 && $args[3] === null){
+			unset($args[3]);
+		}
+		/* end fix */
 		unset($args[0], $args[2]);
 		foreach($args as $arg){
 			if(!isset($var[$arg])){
