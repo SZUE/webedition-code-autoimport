@@ -2500,7 +2500,7 @@ top.content.hloaded=1;') .
 		$ret = array('userID' => $id);
 		require_once(WE_INCLUDES_PATH . 'we_editors/we_preferences_config.inc.php');
 		foreach($GLOBALS['configs']['user'] as $key => $vals){
-			$ret[$key] = $vals[0];
+			$ret[$key] = $vals[1];
 		}
 		if($login){
 			$db->query('DELETE FROM ' . PREFS_TABLE . ' WHERE `key` NOT IN("' . implode('","', array_keys($GLOBALS['configs']['user'])) . '")');
