@@ -2260,8 +2260,8 @@ function formmailBlockOnOff() {
 			// FILE UPLOAD
 			$_fileuploader_use_jupload = we_html_tools::htmlSelect('newconf[USE_JUPLOAD]', array(g_l('prefs', '[no]'), g_l('prefs', '[yes]')), 1, get_value('USE_JUPLOAD'), false, array("onchange" => "document.getElementById('file_upload_options').style.display=(this.options[this.selectedIndex].value=='1'?'none':'block');"));
 
-			$_fileuploader_use_legacy = we_html_forms::checkbox(1, get_value('FILE_UPLOAD_USE_LEGACY'), 'newconf[FILE_UPLOADER_USE_LEGACY]', g_l('prefs', '[upload][use_legacy]'), false, 'defaultfont', '');
-			$_fileuploader_max_size = we_html_tools::htmlTextInput('newconf[FILE_UPLOADER_MAX_UPLOAD_SIZE]', 8, get_value('FILE_UPLOADER_MAX_UPLOAD_SIZE'), 255, "", 'number', 150);
+			$_fileuploader_use_legacy = we_html_forms::checkbox(1, get_value('FILE_UPLOAD_USE_LEGACY'), 'newconf[FILE_UPLOAD_USE_LEGACY]', g_l('prefs', '[upload][use_legacy]'), false, 'defaultfont', '');
+			$_fileuploader_max_size = we_html_tools::htmlTextInput('newconf[FILE_UPLOAD_MAX_UPLOAD_SIZE]', 8, get_value('FILE_UPLOAD_MAX_UPLOAD_SIZE'), 255, "", 'number', 150);
 
 			$_fileuploader_html1 = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 2, 1);
 			$_fileuploader_html1->setCol(0, 0, array('colspan' => 3, 'height' => 10), g_l('prefs', '[upload][jupload]'));

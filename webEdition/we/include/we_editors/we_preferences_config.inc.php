@@ -87,7 +87,7 @@ $GLOBALS['configs'] = array(
 		'XHTML_REMOVE_WRONG' => array('Remove wrong xhtml attributes from we:tags', we_base_request::BOOL, false),
 //system
 		'WE_MAX_UPLOAD_SIZE' => array('Maximal possible uploadsize', we_base_request::INT, 0),
-		'FILE_UPLOADER_MAX_UPLOAD_SIZE' => array('Set the maximum size a file can have', we_base_request::INT, 8),
+		'FILE_UPLOAD_MAX_UPLOAD_SIZE' => array('Set the maximum size a file can have', we_base_request::INT, 8),
 		'FILE_UPLOAD_USE_LEGACY' => array('If the old uploader without d&d should be used (deprecated)', we_base_request::BOOL, false),
 		'USE_JUPLOAD' => array('Use Java Upload', we_base_request::BOOL, false), //deprecated
 		'WE_NEW_FOLDER_MOD' => array('File permissions when creating a new directory', we_base_request::INT, 755),//this should be string but deny access by user doesn't make sense
@@ -247,7 +247,7 @@ $GLOBALS['configs'] = array(
 		'openFolders_tblObjectFiles' => array(we_base_request::INTLIST, ''),
 		'openFolders_tblTemplates' => array(we_base_request::INTLIST, ''),
 		'promptPlugin' => array(we_base_request::BOOL, false),
-		'siteImportPrefs' => array('we_base_request::STRING,'),
+		'siteImportPrefs' => array(we_base_request::STRING, ''),
 		'usePlugin' => array(we_base_request::BOOL, false),
 		'editorShowTab' => array(we_base_request::BOOL, true),
 		'editorTabSize' => array(we_base_request::INT, 2),
