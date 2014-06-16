@@ -24,7 +24,6 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
-require_once(WE_MESSAGING_MODULE_PATH . "msg_html_tools.inc.php");
 $transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction');
 if(!$transaction){
 	exit();
