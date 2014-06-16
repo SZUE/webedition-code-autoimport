@@ -770,11 +770,11 @@ function weWysiwygSetHiddenText(arg) {
 			$fns .= str_replace(",", ";", $fn) . ",";
 		}
 		$js_function = $this->isFrontendEdit ? 'open_wysiwyg_win' : 'we_cmd';
-		$param4 = !$this->isFrontendEdit ? (self::$editorType !== 'tinyMCE' ? we_cmd_enc($value) : '') : we_cmd_enc('frontend');
+		$param4 = !$this->isFrontendEdit ? (self::$editorType !== 'tinyMCE' ? we_base_request::encCmd($value) : '') : we_base_request::encCmd('frontend');
 
 		return we_html_button::create_button("image:btn_edit_edit", "javascript:" . $js_function . "('open_wysiwyg_window', '" . $this->name . "','" . max(220, $this->width) . "', '" . $this->height . "','" . $param4 . "','" . $this->propstring . "','" . $this->className . "','" . rtrim($fns, ',') . "',
-			'" . $this->outsideWE . "','" . $tbwidth . "','" . $tbheight . "','" . $this->xml . "','" . $this->removeFirstParagraph . "','" . $this->bgcol . "','" . $this->baseHref . "','" . $this->charset . "','" . $this->cssClassesCSV . "','" . $this->Language . "','" . we_cmd_enc($this->contentCss) . "',
-			'" . $this->origName . "','" . we_cmd_enc($this->tinyParams) . "','" . we_cmd_enc($this->restrictContextmenu) . "', 'true', '" . $this->isFrontendEdit . "','" . $this->templates . "');", true, 25);
+			'" . $this->outsideWE . "','" . $tbwidth . "','" . $tbheight . "','" . $this->xml . "','" . $this->removeFirstParagraph . "','" . $this->bgcol . "','" . $this->baseHref . "','" . $this->charset . "','" . $this->cssClassesCSV . "','" . $this->Language . "','" . we_base_request::encCmd($this->contentCss) . "',
+			'" . $this->origName . "','" . we_base_request::encCmd($this->tinyParams) . "','" . we_base_request::encCmd($this->restrictContextmenu) . "', 'true', '" . $this->isFrontendEdit . "','" . $this->templates . "');", true, 25);
 	}
 
 	function parseInternalImageSrc($value){
@@ -1074,8 +1074,8 @@ function we_tinyMCE_' . $this->fieldName_clean . '_init(ed){
 	//example of adding event listener
 	var this_editor = TinyWrapper("' . $this->fieldName . '");
 	this_editor.on("KeyPress", function(ed, event){
-			console.log(ed.editorId);
-			console.log(event.charCode);
+			//console.log(ed.editorId);
+			//console.log(event.charCode);
 	});
 }
 */

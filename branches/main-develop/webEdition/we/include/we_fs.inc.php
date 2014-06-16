@@ -30,13 +30,13 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 	case 'openCatselector' :
 	case 'openDelSelector' :
 		$_REQUEST['id'] = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1);
-		$_REQUEST['table'] = we_base_request::_(we_base_request::TABLE, 'we_cmd', FILE_TABLE, 2);
+		$table = $_REQUEST['table'] = we_base_request::_(we_base_request::TABLE, 'we_cmd', FILE_TABLE, 2);
 		$_REQUEST['JSIDName'] = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 3);
 		$_REQUEST['JSTextName'] = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 4);
 		$_REQUEST['JSCommand'] = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 5);
 		$_REQUEST['rootDirID'] = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 7);
 		$_REQUEST['filter'] = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 8);
-		$_REQUEST['multiple'] = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 9);
+		$_REQUEST['multiple'] = we_base_request::_(we_base_request::BOOL, 'we_cmd', '', 9);
 		$extInstanceId = isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3] == 'returnToExt' ? (isset($_REQUEST['we_cmd'][4]) ? $_REQUEST['we_cmd'][4] : '') : '';
 		break;
 	case 'openDocselector':

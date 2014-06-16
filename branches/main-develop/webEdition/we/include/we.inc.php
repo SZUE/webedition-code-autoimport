@@ -72,7 +72,7 @@ if(ini_get('session.gc_probability') != '0' /* && !@opendir(session_save_path())
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.inc.php');
 //register all used tables.
 we_base_request::registerTables(array(
-	CATEGORY_TABLE, CAPTCHA_TABLE, CLEAN_UP_TABLE, CONTENT_TABLE, DOC_TYPES_TABLE, ERROR_LOG_TABLE, FAILED_LOGINS_TABLE, FILE_TABLE, INDEX_TABLE, LINK_TABLE, LANGLINK_TABLE, PREFS_TABLE, RECIPIENTS_TABLE, TEMPLATES_TABLE, TEMPORARY_DOC_TABLE, UPDATE_LOG_TABLE, THUMBNAILS_TABLE, VALIDATION_SERVICES_TABLE, HISTORY_TABLE, FORMMAIL_LOG_TABLE, FORMMAIL_BLOCK_TABLE, METADATA_TABLE, NOTEPAD_TABLE, PWDRESET_TABLE, VERSIONS_TABLE, VERSIONSLOG_TABLE, SESSION_TABLE, NAVIGATION_TABLE, NAVIGATION_RULE_TABLE, USER_TABLE, LOCK_TABLE,
+	CATEGORY_TABLE, CAPTCHA_TABLE, CLEAN_UP_TABLE, CONTENT_TABLE, DOC_TYPES_TABLE, ERROR_LOG_TABLE, FAILED_LOGINS_TABLE, FILE_TABLE, INDEX_TABLE, LINK_TABLE, LANGLINK_TABLE, PREFS_TABLE, RECIPIENTS_TABLE, TEMPLATES_TABLE, TEMPORARY_DOC_TABLE, UPDATE_LOG_TABLE, THUMBNAILS_TABLE, VALIDATION_SERVICES_TABLE, HISTORY_TABLE, FORMMAIL_LOG_TABLE, FORMMAIL_BLOCK_TABLE, METADATA_TABLE, NOTEPAD_TABLE, PWDRESET_TABLE, VERSIONS_TABLE, VERSIONSLOG_TABLE, SESSION_TABLE, NAVIGATION_TABLE, NAVIGATION_RULE_TABLE, USER_TABLE, LOCK_TABLE, SETTINGS_TABLE
 ));
 
 require_once (WE_INCLUDES_PATH . 'we_global.inc.php');
@@ -94,21 +94,7 @@ if(empty($GLOBALS['_we_active_integrated_modules']) || !in_array('users', $GLOBA
 //$GLOBALS['_we_active_integrated_modules'][] = 'navigation';//TODO: remove when navigation is completely implemented as a module
 //FIXME: don't include all confs!
 foreach($GLOBALS['_we_active_integrated_modules'] as $active){
-	switch($active){
-		case 'users'://removed config
-			continue;
-		case 'schedule':
-		case 'export':
-		case 'editor':
-		case 'users':
-		case 'navigation':
-		//currently we can't omit, since table checks (weRequest) depends on defined const's
-		//break;
-		default:
-			if(file_exists(WE_MODULES_PATH . $active . '/we_conf_' . $active . '.inc.php')){
-				require_once (WE_MODULES_PATH . $active . '/we_conf_' . $active . '.inc.php');
-			}
-	}
+	we_base_moduleInfo::isActive($active);
 }
 
 if(!isset($GLOBALS['DB_WE'])){

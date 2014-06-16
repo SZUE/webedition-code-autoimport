@@ -21,32 +21,38 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-if(!preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction'])){
+$transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction');
+if(!$transaction){
 	exit();
 }
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+we_html_tools::protect();
 
-$messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
+$messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$transaction]);
 $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
-$messaging->init($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
+$messaging->init($_SESSION['weS']['we_data'][$transaction]);
 echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[folder_settings]'));
 ?>
 <script type="text/javascript"><!--
 <?php
-if(isset($_REQUEST['mcmd']) && $_REQUEST['mcmd'] == 'save_folder_settings'){
-	if($_REQUEST['mode'] == 'new'){
-		$res = $messaging->create_folder($_REQUEST['folder_name'], $_REQUEST['parent_folder'], $_REQUEST['foldertypes']);
-	} elseif($_REQUEST["mode"] == 'edit'){
-		$res = $messaging->modify_folder($_REQUEST['fid'], $_REQUEST['folder_name'], $_REQUEST['parent_folder']);
+$mode = we_base_request::_(we_base_request::STRING, 'mode');
+if(we_base_request::_(we_base_request::STRING, 'mcmd') == 'save_folder_settings'){
+	$foldername = we_base_request::_(we_base_request::FILE, 'folder_name');
+	$parentfolder = we_base_request::_(we_base_request::INT, 'parent_folder');
+	$types = we_base_request::_(we_base_request::STRING, 'foldertypes');
+	if($mode == 'new'){
+		$res = $messaging->create_folder($foldername, $parentfolder, $types);
+	} elseif($mode == 'edit'){
+		$res = $messaging->modify_folder(we_base_request::_(we_base_request::INT, 'fid'), $foldername, $parentfolder);
 	}
 	$ID = array_shift($res);
 	if($ID >= 0){
 
-		$messaging->saveInSession($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
+		$messaging->saveInSession($_SESSION['weS']['we_data'][$transaction]);
 		?>
-		top.content.cmd.location = '<?php print WE_MESSAGING_MODULE_DIR; ?>edit_messaging_frameset.php?pnt=cmd&we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mcmd=save_folder_settings&name=<?php echo $_REQUEST['folder_name'] ?>&id=<?php echo $ID ?>&mode=<?php echo $_REQUEST['mode'] ?>&parent_id=<?php echo $_REQUEST['parent_folder'] ?>&type=<?php echo $_REQUEST['foldertypes'] ?>';
+		top.content.cmd.location = '<?php echo WE_MESSAGING_MODULE_DIR; ?>edit_messaging_frameset.php?pnt=cmd&we_transaction=<?php echo $transaction ?>&mcmd=save_folder_settings&name=<?php echo $foldername; ?>&id=<?php echo $ID ?>&mode=<?php echo $mode; ?>&parent_id=<?php echo $parentfolder; ?>&type=<?php echo $types; ?>';
 			top.content.we_cmd('messaging_start_view', '', '<?php echo we_base_request::_(we_base_request::TABLE, 'table', ""); ?>');
-		//-->
+			//-->
 		</script>
 		</head>
 		<body></body>
@@ -68,29 +74,29 @@ document.edit_folder.submit();
 <?php
 we_html_tools::protect();
 
-print STYLESHEET;
+echo STYLESHEET;
 ?>
 <body class="weDialogBody" style="border-top: 1px solid black;">
 	<form name="edit_folder" action="<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_edit_folder.php" method="post">
 		<?php
-		echo we_html_tools::hidden('we_transaction', $_REQUEST['we_transaction']);
+		echo we_html_tools::hidden('we_transaction', $transaction);
 		echo we_html_tools::hidden('mcmd', 'save_folder_settings');
-		echo we_html_tools::hidden('mode', $_REQUEST['mode']);
+		echo we_html_tools::hidden('mode', $mode);
 
-		if(isset($_REQUEST['fid'])){
+		if(($fid = we_base_request::_(we_base_request::INT, 'fid')) !== false){
 
-			echo we_html_tools::hidden('fid', $_REQUEST['fid']);
+			echo we_html_tools::hidden('fid', $fid);
 		}
 
-		if($_REQUEST["mode"] == 'new'){
-
-			$heading = g_l('modules_messaging', '[new_folder]');
-			$acc_html = we_html_tools::html_select('foldertypes', 1, $messaging->get_wesel_folder_types(), "", "top.content.setHot();");
-		} elseif($_REQUEST["mode"] == 'edit'){
-
-			$heading = g_l('modules_messaging', '[change_folder_settings]');
-			$finf = $messaging->get_folder_info($_REQUEST['fid']);
-			$acc_html = we_html_tools::html_select('foldertypes', 1, $messaging->get_wesel_folder_types(), $finf['ClassName'], "top.content.setHot();");
+		switch($mode){
+			case 'new':
+				$heading = g_l('modules_messaging', '[new_folder]');
+				$acc_html = we_html_tools::html_select('foldertypes', 1, $messaging->get_wesel_folder_types(), "", "top.content.setHot();");
+				break;
+			case 'edit':
+				$heading = g_l('modules_messaging', '[change_folder_settings]');
+				$finf = $messaging->get_folder_info($fid);
+				$acc_html = we_html_tools::html_select('foldertypes', 1, $messaging->get_wesel_folder_types(), $finf['ClassName'], "top.content.setHot();");
 		}
 
 		$n = isset($finf) ? $finf['Name'] : '';

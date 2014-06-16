@@ -53,10 +53,10 @@ $buttons = '';
  */
 if($this->Data['allEntries']){ // entries exist
 	// there are entries available -> show them in table
-	$start = weRequest('int', 'start', 0);
+	$start = we_base_request::_(we_base_request::INT, 'start', 0);
 	$content = '
 <form name="we_form">
-<input type="hidden" name="section" value="' . weRequest('raw', 'section') . '" />
+<input type="hidden" name="section" value="' . we_base_request::_(we_base_request::STRING, 'section') . '" />
 <input type="hidden" name="log_cmd" value="dummy" />
 <input type="hidden" name="start" value="' . $start . '" />
 <table class="defaultfont" width="100%">
@@ -66,9 +66,9 @@ if($this->Data['allEntries']){ // entries exist
 </tr>
 </table>
 <div class="defaultfont">
-	' . we_html_forms::checkbox(1, weRequest('bool', 'messages'), 'messages', "<span class=\"logMessage\">" . g_l('liveUpdate', '[updatelog][legendMessages]') . " (" . $this->Data['amountMessages'] . ")</span>", false, "small", "document.we_form.submit();") . '
-	' . we_html_forms::checkbox(1, weRequest('bool', 'notices'), 'notices', "<span class=\"logNotice\">" . g_l('liveUpdate', '[updatelog][legendNotices]') . " (" . $this->Data['amountNotices'] . ")</span>", false, "small", "document.we_form.submit();") . '
-	' . we_html_forms::checkbox(1, weRequest('bool', 'errors'), 'errors', "<span class=\"logError\">" . g_l('liveUpdate', '[updatelog][legendErrors]') . " (" . $this->Data['amountErrors'] . ")</span>", false, "small", "document.we_form.submit();") . '
+	' . we_html_forms::checkbox(1, we_base_request::_(we_base_request::BOOL, 'messages'), 'messages', "<span class=\"logMessage\">" . g_l('liveUpdate', '[updatelog][legendMessages]') . " (" . $this->Data['amountMessages'] . ")</span>", false, "small", "document.we_form.submit();") . '
+	' . we_html_forms::checkbox(1, we_base_request::_(we_base_request::BOOL, 'notices'), 'notices', "<span class=\"logNotice\">" . g_l('liveUpdate', '[updatelog][legendNotices]') . " (" . $this->Data['amountNotices'] . ")</span>", false, "small", "document.we_form.submit();") . '
+	' . we_html_forms::checkbox(1, we_base_request::_(we_base_request::BOOL, 'errors'), 'errors', "<span class=\"logError\">" . g_l('liveUpdate', '[updatelog][legendErrors]') . " (" . $this->Data['amountErrors'] . ")</span>", false, "small", "document.we_form.submit();") . '
 </div>
 <br />
 ';

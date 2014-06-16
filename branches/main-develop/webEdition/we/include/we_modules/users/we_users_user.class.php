@@ -621,7 +621,7 @@ class we_users_user{
 		}
 		if($isnew){
 			$updt['userID'] = intval($this->ID);
-			$updt['FileFilter'] = '0';
+			//$updt['FileFilter'] = '0';
 			$updt['openFolders_tblFile'] = '';
 			$updt['openFolders_tblTemplates'] = '';
 			$updt['DefaultTemplateID'] = '0';
@@ -639,7 +639,8 @@ class we_users_user{
 
 					if($settingvalue != $GLOBALS['WE_LANGUAGE']){
 						$save_javascript .= "
-if (top.frames[0]) {console.log(top.frames[0].name);
+if (top.frames[0]) {
+//console.log(top.frames[0].name);
 	top.frames[0].location.reload();
 }
 
@@ -1330,24 +1331,24 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 		$_tableObj = new we_html_table($_attr, 12, 2);
 		$line = 0;
 		$_tableObj->setCol($line, 0, null, $this->getUserfield('Salutation', 'salutation'));
-		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('First', 'first_name'));
+		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('First', 'first_name'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Second', 'second_name'));
-		$_tableObj->setCol(++$line, 0, array('colspan' => 2), we_html_tools::getPixel(560, 20));
-		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('Address', 'address'));
+		$_tableObj->setCol( ++$line, 0, array('colspan' => 2), we_html_tools::getPixel(560, 20));
+		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('Address', 'address'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('HouseNo', 'houseno'));
-		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('PLZ', 'PLZ', 'text', 16, true));
+		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('PLZ', 'PLZ', 'text', 16, true));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('City', 'city'));
-		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('State', 'state'));
+		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('State', 'state'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Country', 'country'));
-		$_tableObj->setCol(++$line, 0, array('colspan' => 2), we_html_tools::getPixel(560, 20));
-		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('Tel_preselection', 'tel_pre'));
+		$_tableObj->setCol( ++$line, 0, array('colspan' => 2), we_html_tools::getPixel(560, 20));
+		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('Tel_preselection', 'tel_pre'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Telephone', 'telephone'));
-		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('Fax_preselection', 'fax_pre'));
+		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('Fax_preselection', 'fax_pre'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Fax', 'fax'));
-		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('Handy', 'mobile'));
+		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('Handy', 'mobile'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Email', 'email'));
-		$_tableObj->setCol(++$line, 0, array('colspan' => 2), we_html_tools::getPixel(520, 4));
-		$_tableObj->setCol(++$line, 0, array('colspan' => 2), we_html_tools::htmlFormElementTable($_description, g_l('modules_users', '[description]')));
+		$_tableObj->setCol( ++$line, 0, array('colspan' => 2), we_html_tools::getPixel(520, 4));
+		$_tableObj->setCol( ++$line, 0, array('colspan' => 2), we_html_tools::htmlFormElementTable($_description, g_l('modules_users', '[description]')));
 
 
 		$parts = array(
@@ -2499,7 +2500,7 @@ top.content.hloaded=1;') .
 		$ret = array('userID' => $id);
 		require_once(WE_INCLUDES_PATH . 'we_editors/we_preferences_config.inc.php');
 		foreach($GLOBALS['configs']['user'] as $key => $vals){
-			$ret[$key] = $vals[0];
+			$ret[$key] = $vals[1];
 		}
 		if($login){
 			$db->query('DELETE FROM ' . PREFS_TABLE . ' WHERE `key` NOT IN("' . implode('","', array_keys($GLOBALS['configs']['user'])) . '")');
@@ -2558,6 +2559,23 @@ top.content.hloaded=1;') .
 		if(isset($_SESSION['apps'])){
 			unset($_SESSION['apps']);
 		}
+	}
+
+	/**
+	 * @internal
+	 * @param type $table
+	 * @param type $user
+	 */
+	public static function logLoginFailed($table, $user){
+		$db = $GLOBALS['DB_WE'];
+		$db->query('INSERT INTO ' . FAILED_LOGINS_TABLE . ' SET ' . we_database_base::arraySetter(array(
+				'UserTable' => $table,
+				'Username' => $user,
+				'IP' => $_SERVER['REMOTE_ADDR'],
+				'Servername' => $_SERVER['SERVER_NAME'],
+				'Port' => $_SERVER['SERVER_PORT'],
+				'Script' => $_SERVER['SCRIPT_NAME']
+		)));
 	}
 
 }

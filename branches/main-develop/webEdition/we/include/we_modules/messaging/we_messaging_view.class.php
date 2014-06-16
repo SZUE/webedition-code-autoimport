@@ -133,23 +133,12 @@ class we_messaging_view extends weModuleView{
 		//
 	}
 
-	function new_array_splice(&$a, $start, $len = 1){
-		$ks = array_keys($a);
-		$k = array_search($start, $ks);
-		if($k !== false){
-			$ks = array_splice($ks, $k, $len);
-			foreach($ks as $k)
-				unset($a[$k]);
-		}
-	}
-
 	function processCommands(){
+		$this->transaction = ($this->transaction == 'no_request' ?
+				$this->weTransaction :
+				(preg_match('|^([a-f0-9]){32}$|i', $this->transaction) ? $this->transaction : 0)
+			);
 
-		if($this->transaction == 'no_request'){
-			$this->transaction = $this->weTransaction;
-		} else {
-			$this->transaction = (preg_match('|^([a-f0-9]){32}$|i', $this->transaction) ? $this->transaction : 0);
-		}
 
 		$this->messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$this->transaction]);
 		$this->messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
@@ -167,9 +156,10 @@ class we_messaging_view extends weModuleView{
 					$this->print_fc_html() .
 					$this->update_treeview();
 			case 'launch':
-				if($_REQUEST['mode'] == 'todo'){
+				$mode = we_base_request::_(we_base_request::STRING, 'mode');
+				if($mode == 'todo'){
 					$f = $this->messaging->get_inbox_folder('we_todo');
-				} elseif($_REQUEST['mode'] == 'message'){
+				} elseif($mode == 'message'){
 					$f = $this->messaging->get_inbox_folder('we_message');
 				} else {
 					break;
@@ -179,8 +169,8 @@ class we_messaging_view extends weModuleView{
 					$this->print_fc_html() .
 					$this->update_treeview() .
 					we_html_element::jsElement('
-					if (top.content.viewclass != "' . $_REQUEST['mode'] . '") {
-						top.content.set_frames("' . $_REQUEST['mode'] . '");
+					if (top.content.viewclass != "' . $mode . '") {
+						top.content.set_frames("' . $mode . '");
 					}
 					');
 			case 'refresh_mwork':
@@ -197,7 +187,7 @@ class we_messaging_view extends weModuleView{
 			case 'new_message':
 				return we_html_element::jsScript(JS_DIR . 'windows.js') .
 					we_html_element::jsElement('
-				new jsWindow("' . WE_MESSAGING_MODULE_DIR . 'messaging_newmessage.php?we_transaction=' . $this->transaction . '&mode=' . $_REQUEST['mode'] . '", "messaging_new_message",-1,-1,670,530,true,false,true,false);
+				new jsWindow("' . WE_MESSAGING_MODULE_DIR . 'messaging_newmessage.php?we_transaction=' . $this->transaction . '&mode=' . we_base_request::_(we_base_request::STRING, 'mode') . '", "messaging_new_message",-1,-1,670,530,true,false,true,false);
 				');
 			case 'new_todo':
 				return we_html_element::jsScript(JS_DIR . 'windows.js') .
@@ -235,11 +225,11 @@ class we_messaging_view extends weModuleView{
 				$this->messaging->saveInSession($_SESSION['weS']['we_data'][$this->transaction]);
 				return $out;
 			case 'copy_msg':
-				$this->messaging->set_clipboard($_REQUEST['entrsel'], 'copy');
+				$this->messaging->set_clipboard(we_base_request::_(we_base_request::INTLIST, 'entrsel'), 'copy');
 				$this->messaging->saveInSession($_SESSION['weS']['we_data'][$this->transaction]);
 				break;
 			case 'cut_msg':
-				$this->messaging->set_clipboard($_REQUEST['entrsel'], 'cut');
+				$this->messaging->set_clipboard(we_base_request::_(we_base_request::INTLIST, 'entrsel'), 'cut');
 				$this->messaging->saveInSession($_SESSION['weS']['we_data'][$this->transaction]);
 				break;
 			case 'paste_msg':
@@ -268,7 +258,7 @@ class we_messaging_view extends weModuleView{
 
 				return we_html_element::jsElement($js_out) . $this->update_treeview();
 			case 'delete_msg':
-				$this->messaging->set_ids_selected($_REQUEST['entrsel']);
+				$this->messaging->set_ids_selected(we_base_request::_(we_base_request::INTLIST, 'entrsel'));
 				$this->messaging->delete_items();
 				$this->messaging->reset_ids_selected();
 				$this->messaging->get_fc_data(we_base_request::_(we_base_request::INT, 'id', 0), we_base_request::_(we_base_request::STRING, 'sort', ''), we_base_request::_(we_base_request::RAW, 'searchterm', ''), 1);
@@ -299,20 +289,20 @@ class we_messaging_view extends weModuleView{
 				$id = $this->messaging->Folder_ID;
 				$blank = isset($blank) ? $blank : true;
 				if(($this->messaging->cont_from_folder != 1) && ($id != -1)){
-					if(isset($_REQUEST['entrsel']) && $_REQUEST['entrsel'] != ''){
-						$this->messaging->set_ids_selected($_REQUEST['entrsel']);
+					if(($ids = we_base_request::_(we_base_request::INTLIST, 'entrsel'))){
+						$this->messaging->set_ids_selected($ids);
 					}
 
-					$this->messaging->get_fc_data($id, empty($_REQUEST['sort']) ? '' : $_REQUEST['sort'], '', 0);
+					$this->messaging->get_fc_data($id, we_base_request::_(we_base_request::STRING, 'sort', ''), '', 0);
 
 					$this->messaging->saveInSession($_SESSION['weS']['we_data'][$this->transaction]);
 					$out .= $this->print_fc_html($blank);
 				}
 				return $out;
 			case 'edit_folder':
-				if($_REQUEST['mode'] == 'new' || ($_REQUEST['mode'] == 'edit')){
+				if(($mode=we_base_request::_(we_base_request::STRING,'mode')) == 'edit'){
 					$out .= we_html_element::jsElement('
-					top.content.editor.location = "' . WE_MESSAGING_MODULE_DIR . 'messaging_edit_folder.php?we_transaction=' . $this->transaction . '&mode=' . $_REQUEST['mode'] . '&fid=' . we_base_request::_(we_base_request::INT, 'fid', -1) . '";
+					top.content.editor.location = "' . WE_MESSAGING_MODULE_DIR . 'messaging_edit_folder.php?we_transaction=' . $this->transaction . '&mode=' . $mode . '&fid=' . we_base_request::_(we_base_request::INT, 'fid', -1) . '";
 					');
 				}
 				return $out;

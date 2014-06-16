@@ -169,7 +169,7 @@ class we_glossary_glossary extends weModelBase{
 		if($GlossaryId){
 			$this->ID = $GlossaryId;
 			$this->load($GlossaryId);
-		} elseif(isset($_REQUEST['cmd'])){
+		} else {
 			switch(we_base_request::_(we_base_request::STRING, 'cmd')){
 				case 'new_glossary_abbreviation':
 					$this->Type = self::TYPE_ABBREVATION;
@@ -187,9 +187,9 @@ class we_glossary_glossary extends weModelBase{
 					$this->Type = self::TYPE_TEXTREPLACE;
 					break;
 			}
-
-			if(isset($_REQUEST['cmdid']) && !preg_match('|^[0-9]|', $_REQUEST['cmdid'])){
-				$this->Language = substr($_REQUEST['cmdid'], 0, 5);
+			$cmdid = we_base_request::_(we_base_request::STRING, 'cmdid');
+			if($cmdid && !preg_match('|^[0-9]|', $cmdid)){
+				$this->View->Glossary->Language = substr($cmdid, 0, 5);
 			}
 		}
 	}
@@ -360,7 +360,7 @@ class we_glossary_glossary extends weModelBase{
 	 */
 	function isSelf(){
 		$Text = self::escapeChars($this->Text);
-		return strpos(htmlentities(clearPath(dirname($this->Path)) . '/'), '/' . $Text . '/') !== false;
+		return strpos(htmlentities(we_base_file::clearPath(dirname($this->Path)) . '/'), '/' . $Text . '/') !== false;
 	}
 
 	//FIXME: some signs are broken due to utf-8

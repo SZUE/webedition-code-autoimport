@@ -50,87 +50,78 @@ class we_glossary_frames extends weModuleFrames{
 	}
 
 	function getHTMLEditorHeader(){
-		if(isset($_REQUEST['home']) && $_REQUEST["home"]){
+		if(we_base_request::_(we_base_request::BOOL, "home")){
 			return we_glossary_frameEditorHome::Header($this);
 		}
-
-		if(isset($_REQUEST['cmd'])){
-			if(isset($_REQUEST['cmdid']) && !preg_match('|^[0-9]|', $_REQUEST['cmdid'])){
-				$this->View->Glossary->Language = substr($_REQUEST['cmdid'], 0, 5);
-			}
-			switch(we_base_request::_(we_base_request::STRING, 'cmd')){
-				// Folder View
-				case 'glossary_view_folder':
-					return we_glossary_frameEditorFolder::Header($this);
-				// Type View
-				case 'glossary_view_type':
-					return we_glossary_frameEditorType::Header($this);
-				// Exception View
-				case 'glossary_view_exception':
-				case 'save_exception':
-					return we_glossary_frameEditorException::Header($this);
-				// Item View
-				default:
-					return we_glossary_frameEditorItem::Header($this);
-			}
+		$cmdid = we_base_request::_(we_base_request::STRING, 'cmdid');
+		if($cmdid && !preg_match('|^[0-9]|', $cmdid)){
+			$this->View->Glossary->Language = substr($cmdid, 0, 5);
 		}
-		return we_glossary_frameEditorItem::Header($this);
+		switch(we_base_request::_(we_base_request::STRING, 'cmd')){
+			// Folder View
+			case 'glossary_view_folder':
+				return we_glossary_frameEditorFolder::Header($this);
+			// Type View
+			case 'glossary_view_type':
+				return we_glossary_frameEditorType::Header($this);
+			// Exception View
+			case 'glossary_view_exception':
+			case 'save_exception':
+				return we_glossary_frameEditorException::Header($this);
+			// Item View
+			default:
+				return we_glossary_frameEditorItem::Header($this);
+		}
 	}
 
 	function getHTMLEditorBody(){
-		if(isset($_REQUEST['home']) && $_REQUEST["home"]){
+		if(we_base_request::_(we_base_request::BOOL, "home")){
 			return we_glossary_frameEditorHome::Body($this);
 		}
-
-		if(isset($_REQUEST['cmd'])){
-			if(isset($_REQUEST['cmdid']) && !preg_match('|^[0-9]|', $_REQUEST['cmdid'])){
-				$this->View->Glossary->Language = substr($_REQUEST['cmdid'], 0, 5);
-			}
-			switch(we_base_request::_(we_base_request::STRING, 'cmd')){
-				// Folder View
-				case 'glossary_view_folder':
-					return we_glossary_frameEditorFolder::Body($this);
-				// Type View
-				case 'glossary_view_type':
-					return we_glossary_frameEditorType::Body($this);
-				// Exception View
-				case 'glossary_view_exception':
-				case 'save_exception':
-					return we_glossary_frameEditorException::Body($this);
-				// Item View
-				default:
-					return we_glossary_frameEditorItem::Body($this);
-			}
+		$cmdid = we_base_request::_(we_base_request::STRING, 'cmdid');
+		if($cmdid && !preg_match('|^[0-9]|', $cmdid)){
+			$this->View->Glossary->Language = substr($cmdid, 0, 5);
 		}
-		return we_glossary_frameEditorItem::Body($this);
+		switch(we_base_request::_(we_base_request::STRING, 'cmd')){
+			// Folder View
+			case 'glossary_view_folder':
+				return we_glossary_frameEditorFolder::Body($this);
+			// Type View
+			case 'glossary_view_type':
+				return we_glossary_frameEditorType::Body($this);
+			// Exception View
+			case 'glossary_view_exception':
+			case 'save_exception':
+				return we_glossary_frameEditorException::Body($this);
+			// Item View
+			default:
+				return we_glossary_frameEditorItem::Body($this);
+		}
 	}
 
 	function getHTMLEditorFooter(){
-		if(isset($_REQUEST["home"])){
+		if(we_base_request::_(we_base_request::BOOL, "home")){
 			return we_glossary_frameEditorHome::Footer($this);
 		}
-
-		if(isset($_REQUEST['cmd'])){
-			if(isset($_REQUEST['cmdid']) && !preg_match('|^[0-9]|', $_REQUEST['cmdid'])){
-				$this->View->Glossary->Language = substr($_REQUEST['cmdid'], 0, 5);
-			}
-			switch(we_base_request::_(we_base_request::STRING, 'cmd')){
-				// Folder View
-				case 'glossary_view_folder':
-					return we_glossary_frameEditorFolder::Footer($this);
-				// Type View
-				case 'glossary_view_type':
-					return we_glossary_frameEditorType::Footer($this);
-				// Exception View
-				case 'glossary_view_exception':
-				case 'save_exception':
-					return we_glossary_frameEditorException::Footer($this);
-				// Item View
-				default:
-					return we_glossary_frameEditorItem::Footer($this);
-			}
+		$cmdid = we_base_request::_(we_base_request::STRING, 'cmdid');
+		if($cmdid && !preg_match('|^[0-9]|', $cmdid)){
+			$this->View->Glossary->Language = substr($cmdid, 0, 5);
 		}
-		return we_glossary_frameEditorItem::Footer($this);
+		switch(we_base_request::_(we_base_request::STRING, 'cmd')){
+			// Folder View
+			case 'glossary_view_folder':
+				return we_glossary_frameEditorFolder::Footer($this);
+			// Type View
+			case 'glossary_view_type':
+				return we_glossary_frameEditorType::Footer($this);
+			// Exception View
+			case 'glossary_view_exception':
+			case 'save_exception':
+				return we_glossary_frameEditorException::Footer($this);
+			// Item View
+			default:
+				return we_glossary_frameEditorItem::Footer($this);
+		}
 	}
 
 	function getHTMLTreeHeader(){

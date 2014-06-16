@@ -179,9 +179,9 @@ class we_newsletter_view{
 	function formDocChooser($width = '', $rootDirID = 0, $Pathname = 'ParentPath', $Pathvalue = '/', $IDName = 'ParentID', $IDValue = 0, $cmd = ''){
 		$Pathvalue = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($IDValue), 'Path', $this->db);
 
-		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$IDName'].value");
-		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$Pathname'].value");
-		$wecmdenc3 = we_cmd_enc(str_replace('\\', '', $cmd));
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['$IDName'].value");
+		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['$Pathname'].value");
+		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
 		$button = we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['$IDName'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$rootDirID',''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")");
 
 		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, '', ' readonly', 'text', $width, 0), '', 'left', 'defaultfont', $this->htmlHidden($IDName, $IDValue), we_html_tools::getPixel(20, 4), $button);
@@ -190,7 +190,7 @@ class we_newsletter_view{
 	/* creates the FileChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
 
 	function formFileChooser($width = '', $IDName = 'ParentID', $IDValue = '/', $cmd = '', $filter = '', $acObject = null, $contentType = ''){
-		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$IDName'].value");
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['$IDName'].value");
 		$button = we_html_button::create_button('select', "javascript:we_cmd('browse_server','" . $wecmdenc1 . "','$filter',document.we_form.elements['$IDName'].value);");
 
 		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 30, $IDValue, '', 'readonly', 'text', $width, 0), '', 'left', 'defaultfont', '', we_html_tools::getPixel(20, 4), permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES') ? $button : '');
@@ -201,9 +201,9 @@ class we_newsletter_view{
 			$Pathvalue = f('SELECT Path FROM ' . $this->db->escape($table) . ' WHERE ID=' . intval($IDValue), 'Path', $this->db);
 		}
 
-		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$IDName'].value");
-		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$Pathname'].value");
-		$wecmdenc3 = we_cmd_enc(str_replace('\\', '', $cmd));
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['$IDName'].value");
+		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['$Pathname'].value");
+		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
 		$button = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$IDName'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$rootDirID','','$open_doc')");
 		if(is_object($acObject)){
 
@@ -229,9 +229,9 @@ class we_newsletter_view{
 			$Pathvalue = f('SELECT Path FROM ' . $this->db->escape($table) . ' WHERE ID=' . intval($IDValue), 'Path', $this->db);
 		}
 
-		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$IDName'].value");
-		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$Pathname'].value");
-		$wecmdenc3 = we_cmd_enc(str_replace('\\', '', $cmd));
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['$IDName'].value");
+		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['$Pathname'].value");
+		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
 
 		$button = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$IDName'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$rootDirID','$filter'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")");
 		if(is_object($acObject)){
@@ -259,9 +259,9 @@ class we_newsletter_view{
 			$Pathvalue = f('SELECT Path FROM ' . $this->db->escape($table) . ' WHERE ID=' . intval($IDValue), 'Path', $this->db);
 		}
 
-		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$IDName'].value");
-		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$Pathname'].value");
-		$wecmdenc3 = we_cmd_enc(str_replace('\\', '', $cmd));
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['$IDName'].value");
+		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['$Pathname'].value");
+		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
 
 		$button = we_html_button::create_button('select', "javascript:we_cmd('openNewsletterDirselector',document.we_form.elements['$IDName'].value,'" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$rootDirID')");
 		if(is_object($acObject)){
@@ -2155,7 +2155,7 @@ self.close();');
 			if($hm){
 				if($block->Type != we_newsletter_block::URL){
 					$spacer = '[\040|\n|\t|\r]*';
-					parseInternalLinks($content, 0);
+					we_document::parseInternalLinks($content, 0);
 
 					$content = preg_replace(array(
 						'-(<[^>]+src' . $spacer . '=' . $spacer . '[\'"]?)(/)-i',

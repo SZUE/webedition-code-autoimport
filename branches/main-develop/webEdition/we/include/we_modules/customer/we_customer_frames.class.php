@@ -40,7 +40,7 @@ class we_customer_frames extends weModuleFrames{
 
 	function getHTMLDocumentHeader($what = '', $mode = ''){
 		//We need to set this (and in corresponding frames, since the data in database is formated this way
-		if(!($mode == 'export' && isset($_REQUEST["step"]) && $_REQUEST["step"] == 5)){
+		if(!($mode == 'export' && we_base_request::_(we_base_request::INT, "step") == 5)){
 			return we_html_tools::headerCtCharset('text/html', DEFAULT_CHARSET) .
 				we_html_tools::getHtmlTop('', DEFAULT_CHARSET);
 		}
@@ -79,7 +79,8 @@ class we_customer_frames extends weModuleFrames{
 			we_html_element::jsElement($this->getJSStart()) .
 			we_html_element::jsElement($this->View->getJSTreeHeader());
 
-		$extraUrlParams = isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : '';
+		$sid = we_base_request::_(we_base_request::RAW, 'sid', false);
+		$extraUrlParams = $sid !== false ? '&sid=' . $sid : '';
 
 		return parent::getHTMLFrameset($extraHead, $extraUrlParams);
 	}
@@ -289,8 +290,8 @@ function populateDate_' . $field . '(){
 			case 'password':
 				return we_html_tools::htmlTextInput($field, 32, $value, 32, 'onchange="top.content.setHot();" style="width:240px;" autocomplete="off" ', 'password');
 			case 'img':
-				$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['" . $field . "'].value");
-				$wecmdenc3 = we_cmd_enc("opener.refreshForm()");
+				$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['" . $field . "'].value");
+				$wecmdenc3 = we_base_request::encCmd("opener.refreshForm()");
 				$imgId = intval($value);
 				$img = new we_imageDocument();
 
@@ -317,8 +318,7 @@ function populateDate_' . $field . '(){
 	function getHTMLEditorHeader(){
 		$extraJS = 'var aTabs=new Array;';
 
-
-		if(isset($_REQUEST['home'])){
+		if(we_base_request::_(we_base_request::BOOL, 'home')){
 			return $this->getHTMLDocument(we_html_element::htmlBody(array('bgcolor' => '#F0EFF0'), ''));
 		}
 
@@ -396,7 +396,7 @@ top.content.hloaded = 1;');
 	function getHTMLEditorBody(){
 		$hiddens = array('cmd' => 'customer_edit', 'pnt' => 'edbody', 'activ_sort' => 0);
 
-		if(isset($_REQUEST['home']) && $_REQUEST['home']){
+		if(we_base_request::_(we_base_request::BOOL, 'home')){
 			$hiddens['cmd'] = 'home';
 			$GLOBALS['we_print_not_htmltop'] = true;
 			$GLOBALS['we_head_insert'] = $this->View->getJSProperty();
@@ -409,7 +409,7 @@ top.content.hloaded = 1;');
 			return $out;
 		}
 
-		$branch = (isset($_REQUEST['branch']) && $_REQUEST['branch'] ? $_REQUEST['branch'] : g_l('modules_customer', '[common]'));
+		$branch = we_base_request::_(we_base_request::STRING, 'branch', g_l('modules_customer', '[common]'));
 
 		$body = we_html_element::htmlBody(array('class' => 'weEditorBody', 'onLoad' => 'loaded=1', 'onunload' => 'doUnload()'), we_html_element::htmlForm(array('name' => 'we_form', 'autocomplete' => 'off'), $this->View->getCommonHiddens($hiddens) . $this->getHTMLProperties($branch)));
 
@@ -665,7 +665,7 @@ failure: function(o) {
 
 	function getHTMLCustomerAdmin(){
 		$branch = we_base_request::_(we_base_request::STRING, "branch", g_l('modules_customer', '[other]'));
-		$branch_select = (isset($_REQUEST["branch_select"]) ? $_REQUEST["branch"] : g_l('modules_customer', '[other]'));
+		$branch_select = we_base_request::_(we_base_request::STRING, "branch", g_l('modules_customer', '[other]'));
 
 		$select = $this->getHTMLBranchSelect(false);
 		$select->setAttributes(array("name" => "branch_select", "class" => 'weSelect', 'onchange' => "selectBranch()", "style" => "width:150px;"));
@@ -781,10 +781,11 @@ failure: function(o) {
 	}
 
 	function getHTMLCmd(){
-		if(isset($_REQUEST["pid"])){
+		$p = we_base_request::_(we_base_request::RAW, 'pid');
+		if($p !== false){
 			$pid = ($GLOBALS['WE_BACKENDCHARSET'] == 'UTF-8') ?
-				utf8_encode($_REQUEST["pid"]) :
-				$_REQUEST["pid"];
+				utf8_encode($p) :
+				$p;
 		} else {
 			exit;
 		}
@@ -798,7 +799,7 @@ failure: function(o) {
 			$sort = 0;
 		}
 
-		$offset = (isset($_REQUEST["offset"])) ? $_REQUEST["offset"] : 0;
+		$offset = we_base_request::_(we_base_request::INT, "offset", 0);
 
 		$rootjs = (!$pid ?
 				$this->Tree->topFrame . '.treeData.clear();' .
@@ -858,8 +859,8 @@ failure: function(o) {
 
 			$max_res = $this->View->settings->getMaxSearchResults();
 			$result = array();
-			if(isset($_REQUEST['keyword']) && isset($_REQUEST['search']) && $_REQUEST['keyword'] && $_REQUEST['search']){
-				$result = $this->View->getSearchResults($_REQUEST['keyword'], $max_res);
+			if(($k = we_base_request::_(we_base_request::STRING, 'keyword')) && we_base_request::_(we_base_request::STRING, 'search')){
+				$result = $this->View->getSearchResults($k, $max_res);
 			}
 			foreach($result as $id => $text){
 				$select->addOption($id, $text);
@@ -935,13 +936,13 @@ failure: function(o) {
 							$table->getHtml(), g_l('modules_customer', '[search]'), we_html_button::position_yes_no_cancel(null, we_html_button::create_button("close", "javascript:self.close();")), "100%", 30, 558
 						)
 					) .
-					((isset($_REQUEST['mode']) && $_REQUEST['mode']) ? we_html_element::jsElement("setTimeout('lookForDateFields()', 1);") : '')
+					(we_base_request::_(we_base_request::BOOL, 'mode') ? we_html_element::jsElement("setTimeout('lookForDateFields()', 1);") : '')
 				)
 		);
 	}
 
 	function getHTMLSettings(){
-		if(isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] == "save_settings"){
+		if(we_base_request::_(we_base_request::STRING, "cmd") == "save_settings"){
 			$this->View->processCommands();
 			$closeflag = true;
 		} else {
@@ -958,11 +959,11 @@ failure: function(o) {
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array("class" => "defaultfont"), $default_sort_view_select->getHtml());
 
-		$table->setCol(++$cur, 0, array("class" => "defaultfont"), g_l('modules_customer', '[start_year]') . ":&nbsp;");
+		$table->setCol( ++$cur, 0, array("class" => "defaultfont"), g_l('modules_customer', '[start_year]') . ":&nbsp;");
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array("class" => "defaultfont"), we_html_tools::htmlTextInput("start_year", 32, $this->View->settings->getSettings('start_year'), ''));
 
-		$table->setCol(++$cur, 0, array("class" => "defaultfont"), g_l('modules_customer', '[treetext_format]') . ":&nbsp;");
+		$table->setCol( ++$cur, 0, array("class" => "defaultfont"), g_l('modules_customer', '[treetext_format]') . ":&nbsp;");
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array("class" => "defaultfont"), we_html_tools::htmlTextInput("treetext_format", 32, $this->View->settings->getSettings('treetext_format'), ''));
 
@@ -975,7 +976,7 @@ failure: function(o) {
 		}
 		$default_order->selectOption($this->View->settings->getSettings('default_order'));
 
-		$table->setCol(++$cur, 0, array('class' => 'defaultfont'), g_l('modules_customer', '[default_order]') . ':&nbsp;');
+		$table->setCol( ++$cur, 0, array('class' => 'defaultfont'), g_l('modules_customer', '[default_order]') . ':&nbsp;');
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array('class' => 'defaultfont'), $default_order->getHtml());
 
@@ -984,7 +985,7 @@ failure: function(o) {
 		$default_saveRegisteredUser_register->addOption('true', 'true');
 		$default_saveRegisteredUser_register->selectOption($this->View->settings->getPref('default_saveRegisteredUser_register'));
 
-		$table->setCol(++$cur, 0, array('class' => 'defaultfont'), '&lt;we:saveRegisteredUser register=&quot;');
+		$table->setCol( ++$cur, 0, array('class' => 'defaultfont'), '&lt;we:saveRegisteredUser register=&quot;');
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array('class' => 'defaultfont'), $default_saveRegisteredUser_register->getHtml() . '&quot;/>');
 

@@ -24,6 +24,7 @@
  */
 /* the parent class of storagable webEdition classes */
 we_base_moduleInfo::isActive(we_base_moduleInfo::EXPORT);
+
 class we_export_view{
 
 	var $db;
@@ -316,11 +317,11 @@ class we_export_view{
 		foreach($arr as $table => $elem){
 			$items = makeArrayFromCSV($this->export->$elem);
 			foreach($items as $item){
-				$selected .= 'SelectedItems["' . $table . '"].push("' . $item . '");' . "\n";
+				$selected .= 'SelectedItems["' . $table . '"].push("' . $item . '");';
 			}
 
-			if(isset($_REQUEST[$elem . '_open']) && !empty($_REQUEST[$elem . '_open'])){
-				$opened .= 'openFolders["' . $table . '"]="' . $_REQUEST[$elem . '_open'] . '";' . "\n";
+			if(($open = we_base_request::_(we_base_request::STRING, $elem . '_open'))){
+				$opened .= 'openFolders["' . $table . '"]="' . $open . '";';
 			}
 		}
 
@@ -416,7 +417,7 @@ class we_export_view{
 					$this->export = new we_export_export();
 					$this->export->Text = g_l('export', '[newFolder]');
 					$this->export->IsFolder = 1;
-					print we_html_element::jsElement('
+					echo we_html_element::jsElement('
 								' . $this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->export->Text) . '";
 								' . $this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
 						');
@@ -424,112 +425,112 @@ class we_export_view{
 				break;
 			case "export_edit":
 				if(!permissionhandler::hasPerm("EDIT_EXPORT")){
-					print we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(g_l('export', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
+					echo we_html_element::jsElement(
+						we_message_reporting::getShowMessageCall(g_l('export', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 					break;
-				} else {
-					$this->export = new we_export_export($_REQUEST["cmdid"]);
-					print we_html_element::jsElement('
+				}
+				$this->export = new we_export_export(we_base_request::_(we_base_request::INT, "cmdid"));
+				echo we_html_element::jsElement('
 								' . $this->topFrame . '.hot=0;
 								' . $this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->export->Text) . '";
 								' . $this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
 						');
-				}
+
 				break;
 			case "save_export":
 				if(!permissionhandler::hasPerm("NEW_EXPORT")){
-					print we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(g_l('export', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
+					echo we_html_element::jsElement(
+						we_message_reporting::getShowMessageCall(g_l('export', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 					break;
-				} else {
-					$js = "";
-					if($this->export->filenameNotValid($this->export->Text)){
+				}
+				$js = "";
+				if($this->export->filenameNotValid($this->export->Text)){
+					echo we_html_element::jsElement(
+						we_message_reporting::getShowMessageCall(g_l('export', "[wrongtext]"), we_message_reporting::WE_MESSAGE_ERROR)
+					);
+					break;
+				}
+				// check if filename is valid.
+				if($this->export->exportToFilenameValid($this->export->Filename)){
+					print we_html_element::jsElement(
+							we_message_reporting::getShowMessageCall(g_l('export', "[wrongfilename]"), we_message_reporting::WE_MESSAGE_ERROR)
+					);
+					break;
+				}
+
+				if(trim($this->export->Text) == ''){
+					print we_html_element::jsElement(
+							we_message_reporting::getShowMessageCall(g_l('export', "[name_empty]"), we_message_reporting::WE_MESSAGE_ERROR)
+					);
+					break;
+				}
+				$oldpath = $this->export->Path;
+				// set the path and check it
+				$this->export->setPath();
+				if($this->export->pathExists($this->export->Path)){
+					print we_html_element::jsElement(
+							we_message_reporting::getShowMessageCall(g_l('export', "[name_exists]"), we_message_reporting::WE_MESSAGE_ERROR)
+					);
+					break;
+				}
+				if($this->export->isSelf()){
+					print we_html_element::jsElement(
+							we_message_reporting::getShowMessageCall(g_l('export', "[path_nok]"), we_message_reporting::WE_MESSAGE_ERROR)
+					);
+					break;
+				}
+
+				if($this->export->ParentID > 0){
+					$weAcQuery = new we_selector_query();
+					$weAcResult = $weAcQuery->getItemById($this->export->ParentID, EXPORT_TABLE, array("IsFolder"));
+					if(!is_array($weAcResult) || $weAcResult[0]['IsFolder'] == 0){
 						print we_html_element::jsElement(
-								we_message_reporting::getShowMessageCall(g_l('export', "[wrongtext]"), we_message_reporting::WE_MESSAGE_ERROR)
+								we_message_reporting::getShowMessageCall(g_l('export', '[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR)
 						);
 						break;
 					}
-					// check if filename is valid.
-					if($this->export->exportToFilenameValid($this->export->Filename)){
+				}
+				if(isset($this->export->Folder) && !empty($this->export->Folder) && $this->export->ParentID > 0){
+					$weAcQuery = new we_selector_query();
+					$weAcResult = $weAcQuery->getItemById($this->export->Folder, FILE_TABLE, array("IsFolder"));
+					if(!is_array($weAcResult) || $weAcResult[0]['IsFolder'] == 0){
 						print we_html_element::jsElement(
-								we_message_reporting::getShowMessageCall(g_l('export', "[wrongfilename]"), we_message_reporting::WE_MESSAGE_ERROR)
+								we_message_reporting::getShowMessageCall(g_l('export', '[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR)
 						);
 						break;
 					}
+				}
 
-					if(trim($this->export->Text) == ''){
-						print we_html_element::jsElement(
-								we_message_reporting::getShowMessageCall(g_l('export', "[name_empty]"), we_message_reporting::WE_MESSAGE_ERROR)
-						);
-						break;
-					}
-					$oldpath = $this->export->Path;
-					// set the path and check it
-					$this->export->setPath();
-					if($this->export->pathExists($this->export->Path)){
-						print we_html_element::jsElement(
-								we_message_reporting::getShowMessageCall(g_l('export', "[name_exists]"), we_message_reporting::WE_MESSAGE_ERROR)
-						);
-						break;
-					}
-					if($this->export->isSelf()){
-						print we_html_element::jsElement(
-								we_message_reporting::getShowMessageCall(g_l('export', "[path_nok]"), we_message_reporting::WE_MESSAGE_ERROR)
-						);
-						break;
-					}
+				$newone = true;
+				if($this->export->ID){
+					$newone = false;
+				}
 
-					if($this->export->ParentID > 0){
-						$weAcQuery = new we_selector_query();
-						$weAcResult = $weAcQuery->getItemById($this->export->ParentID, EXPORT_TABLE, array("IsFolder"));
-						if(!is_array($weAcResult) || $weAcResult[0]['IsFolder'] == 0){
-							print we_html_element::jsElement(
-									we_message_reporting::getShowMessageCall(g_l('export', '[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR)
-							);
-							break;
-						}
-					}
-					if(isset($this->export->Folder) && !empty($this->export->Folder) && $this->export->ParentID > 0){
-						$weAcQuery = new we_selector_query();
-						$weAcResult = $weAcQuery->getItemById($this->export->Folder, FILE_TABLE, array("IsFolder"));
-						if(!is_array($weAcResult) || $weAcResult[0]['IsFolder'] == 0){
-							print we_html_element::jsElement(
-									we_message_reporting::getShowMessageCall(g_l('export', '[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR)
-							);
-							break;
-						}
-					}
+				$this->export->save();
 
-					$newone = true;
-					if($this->export->ID){
-						$newone = false;
+				if($this->export->IsFolder && $oldpath != '' && $oldpath != '/' && $oldpath != $this->export->Path){
+					$db_tmp = new DB_WE();
+					$this->db->query('SELECT ID FROM ' . EXPORT_TABLE . ' WHERE Path LIKE \'' . $this->db->escape($oldpath) . '%\' AND ID!=' . intval($this->export->ID) . ';');
+					while($this->db->next_record()){
+						$db_tmp->query('UPDATE ' . EXPORT_TABLE . ' SET Path=\'' . $this->export->evalPath($this->db->f("ID")) . '\' WHERE ID=' . $this->db->f("ID") . ';');
 					}
+				}
 
-					$this->export->save();
-
-					if($this->export->IsFolder && $oldpath != '' && $oldpath != '/' && $oldpath != $this->export->Path){
-						$db_tmp = new DB_WE();
-						$this->db->query('SELECT ID FROM ' . EXPORT_TABLE . ' WHERE Path LIKE \'' . $this->db->escape($oldpath) . '%\' AND ID!=' . intval($this->export->ID) . ';');
-						while($this->db->next_record()){
-							$db_tmp->query('UPDATE ' . EXPORT_TABLE . ' SET Path=\'' . $this->export->evalPath($this->db->f("ID")) . '\' WHERE ID=' . $this->db->f("ID") . ';');
-						}
-					}
-
-					if($newone){
-						$js = '
+				if($newone){
+					$js = '
 									' . $this->topFrame . '.makeNewEntry(\'' . $this->export->Icon . '\',\'' . $this->export->ID . '\',\'' . $this->export->ParentID . '\',\'' . $this->export->Text . '\',0,\'' . ($this->export->IsFolder ? 'folder' : 'item') . '\',\'' . EXPORT_TABLE . '\');
 							' . $this->topFrame . '.drawTree();';
-					} else {
-						$js = '' . $this->topFrame . '.updateEntry(' . $this->export->ID . ',"' . $this->export->Text . '","' . $this->export->ParentID . '");' . "\n";
-					}
-					print we_html_element::jsElement($js . '
+				} else {
+					$js = '' . $this->topFrame . '.updateEntry(' . $this->export->ID . ',"' . $this->export->Text . '","' . $this->export->ParentID . '");' . "\n";
+				}
+				print we_html_element::jsElement($js . '
 							' . $this->editorHeaderFrame . '.location.reload();
 							' . we_message_reporting::getShowMessageCall(($this->export->IsFolder == 1 ? g_l('export', "[save_group_ok]") : g_l('export', "[save_ok]")), we_message_reporting::WE_MESSAGE_NOTICE)
-							. $this->topFrame . '.hot=0;
+						. $this->topFrame . '.hot=0;
 						');
-				}
+
 				break;
 			case "delete_export":
 				if(!permissionhandler::hasPerm("DELETE_EXPORT")){
@@ -572,31 +573,18 @@ class we_export_view{
 			$this->export = $_SESSION['weS']['ExportSession'];
 		}
 
-		if(isset($_SESSION['weS']['exportVars']))
+		if(isset($_SESSION['weS']['exportVars'])){
 			unset($_SESSION['weS']['exportVars']);
+		}
 
 		if(is_array($this->export->persistent_slots)){
 			foreach($this->export->persistent_slots as $varname){
-				if(isset($_REQUEST[$varname])){
-					$this->export->{$varname} = $_REQUEST[$varname];
+				if(($v = we_base_request::_(we_base_request::STRING, $varname))){
+					$this->export->{$varname} = $v;
 				}
 			}
 		}
-
-		if(isset($_REQUEST["page"]))
-			if(isset($_REQUEST["page"])){
-				$this->page = $_REQUEST["page"];
-			}
-	}
-
-	function new_array_splice(&$a, $start, $len = 1){
-		$ks = array_keys($a);
-		$k = array_search($start, $ks);
-		if($k !== false){
-			$ks = array_splice($ks, $k, $len);
-			foreach($ks as $k)
-				unset($a[$k]);
-		}
+		$this->page = we_base_request::_(we_base_request::INT, 'page', $this->page);
 	}
 
 }

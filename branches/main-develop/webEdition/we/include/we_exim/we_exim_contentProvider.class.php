@@ -389,7 +389,7 @@ class we_exim_contentProvider{
 			// fix ends -----------------------------------------------------------
 
 			case 'we_webEditionDocument':
-				$object->TemplatePath = clearPath('/' . str_replace($_SERVER['DOCUMENT_ROOT'], '', $object->TemplatePath));
+				$object->TemplatePath = we_base_file::clearPath('/' . str_replace($_SERVER['DOCUMENT_ROOT'], '', $object->TemplatePath));
 				$object->DocTypeName = f('SELECT DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . $object->DocType);
 				$object->persistent_slots[] = 'DocTypeName';
 				break;

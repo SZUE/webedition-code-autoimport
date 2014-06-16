@@ -499,9 +499,9 @@ we_templateInit();?>';
 		$myid = $this->MasterTemplateID ? $this->MasterTemplateID : '';
 		$path = f('SELECT Path FROM ' . $this->DB_WE->escape($table) . ' WHERE ID=' . intval($myid), "Path", $this->DB_WE);
 		$alerttext = str_replace('\'', "\\\\\\'", g_l('weClass', '[same_master_template]'));
-		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$idname'].value");
-		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$textname'].value");
-		$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);if(currentID==$this->ID){" . we_message_reporting::getShowMessageCall($alerttext, we_message_reporting::WE_MESSAGE_ERROR) . "opener.document.we_form.elements['$idname'].value='';opener.document.we_form.elements['$textname'].value='';}");
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['$idname'].value");
+		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['$textname'].value");
+		$wecmdenc3 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);if(currentID==$this->ID){" . we_message_reporting::getShowMessageCall($alerttext, we_message_reporting::WE_MESSAGE_ERROR) . "opener.document.we_form.elements['$idname'].value='';opener.document.we_form.elements['$textname'].value='';}");
 
 		$button = we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','" . we_base_ContentTypes::TEMPLATE . "',1)");
 		$openButton = we_html_button::create_button('edit', 'javascript:goTemplate(document.we_form.elements[\'we_' . $GLOBALS['we_doc']->Name . '_MasterTemplateID\'].value)');

@@ -39,9 +39,9 @@ function formBannerChooser($width = "", $table = BANNER_TABLE, $idvalue = 0, $id
 	$yuiSuggest = & weSuggest::getInstance();
 	$path = id_to_path($idvalue, $table);
 	$textname = md5(uniqid(__FUNCTION__, true));
-	$wecmdenc1 = we_cmd_enc("document.we_form.elements['$idname'].value");
-	$wecmdenc2 = we_cmd_enc("document.we_form.elements['$textname'].value");
-	$wecmdenc3 = we_cmd_enc(str_replace('\\', '', $cmd));
+	$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['$idname'].value");
+	$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['$textname'].value");
+	$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
 	$button = we_html_button::create_button('select', "javascript:we_cmd('banner_openSelector',document.we_form.elements['$idname'].value,'" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "')");
 
 	$yuiSuggest->setAcId("Path");
@@ -116,7 +116,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 
 </head>
 <body class="weDialogBody" onunload="doUnload()">
-	<form name="we_form" action="<?php print $_SERVER["SCRIPT_NAME"]; ?>" method="post"><input type="hidden" name="ok" value="1" /><input type="hidden" name="we_cmd[0]" value="<?php print $_REQUEST['we_cmd'][0]; ?>" />
+	<form name="we_form" action="<?php print $_SERVER["SCRIPT_NAME"]; ?>" method="post"><input type="hidden" name="ok" value="1" /><input type="hidden" name="we_cmd[0]" value="<?php echo we_base_request::_(we_base_request::STRING,'we_cmd','',0); ?>" />
 		<?php
 		$DefaultBannerID = f('SELECT pref_value FROM ' . BANNER_PREFS_TABLE . " WHERE pref_name='DefaultBannerID'");
 		$content = formBannerChooser(300, BANNER_TABLE, $DefaultBannerID, "DefaultBannerID", "");

@@ -131,7 +131,7 @@ if((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploaded
 		$id = $we_doc->ID;
 	}
 } else if(isset($_FILES['we_uploadedFile'])){
-	$we_alerttext = (we_filenameNotValid($_FILES['we_uploadedFile']['name']) ?
+	$we_alerttext = (we_base_file::we_filenameNotValid($_FILES['we_uploadedFile']['name']) ?
 			g_l('alert', '[we_filename_notValid]') :
 			g_l('alert', '[wrong_file][' . ($we_ContentType ? $we_ContentType : 'other') . ']'));
 }

@@ -29,22 +29,22 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 
 		$we_tabs->addTab(new we_tab("#", g_l('modules_glossary', '[overview]'), we_tab::ACTIVE, "setTab('1');"));
 
-		return self::buildHeader($weGlossaryFrames, $we_tabs, g_l('modules_glossary', '[type]'), g_l('modules_glossary', '[' . array_pop(explode("_", $_REQUEST['cmdid'])) . ']'));
+		return self::buildHeader($weGlossaryFrames, $we_tabs, g_l('modules_glossary', '[type]'), g_l('modules_glossary', '[' . array_pop(explode("_", we_base_request::_(we_base_request::STRING, 'cmdid'))) . ']'));
 	}
 
 	function Body(&$weGlossaryFrames){
 		$_js = '';
 
-		$Temp = explode("_", $_REQUEST['cmdid']);
-		$Type = array_pop($Temp);
-		$Language = implode("_", $Temp);
+		$Temp = explode("_", we_base_request::_(we_base_request::STRING, 'cmdid'));
+		$Language = $Temp[0] . "_" . $Temp[1];
+		$Type = $Temp[2];
 		$Cache = new we_glossary_cache($Language);
-
-		if(isset($_REQUEST['do']) && isset($_REQUEST['ID']) && $_REQUEST['ID']){
+		$id = isset($_REQUEST['ID']) && $_REQUEST['ID'] ? filterXss($_REQUEST['ID'], 'int') : 0;
+		if($id){
 			switch(we_base_request::_(we_base_request::STRING, 'do')){
 				case 'delete':
-					if($GLOBALS['DB_WE']->query('DELETE FROM ' . GLOSSARY_TABLE . ' WHERE ID IN (' . $GLOBALS['DB_WE']->escape(implode(',', $_REQUEST['ID'])) . ')')){
-						foreach($_REQUEST['ID'] as $_id){
+					if($GLOBALS['DB_WE']->query('DELETE FROM ' . GLOSSARY_TABLE . ' WHERE ID IN (' . implode(',', $id) . ')')){
+						foreach($id as $_id){
 							$_js .= $weGlossaryFrames->View->TopFrame . '.deleteEntry(' . $_id . ');';
 						}
 					}
@@ -52,12 +52,12 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 					break;
 
 				case 'publish':
-					$GLOBALS['DB_WE']->query('UPDATE ' . GLOSSARY_TABLE . ' SET Published=UNIX_TIMESTAMP() WHERE ID IN (' . $GLOBALS['DB_WE']->escape(implode(',', $_REQUEST['ID'])) . ')');
+					$GLOBALS['DB_WE']->query('UPDATE ' . GLOSSARY_TABLE . ' SET Published=UNIX_TIMESTAMP() WHERE ID IN (' . implode(',', $id) . ')');
 					$Cache->write();
 					break;
 
 				case 'unpublish':
-					$GLOBALS['DB_WE']->query('UPDATE ' . GLOSSARY_TABLE . ' SET Published=0 WHERE ID IN (' . $GLOBALS['DB_WE']->escape(implode(',', $_REQUEST['ID'])) . ')');
+					$GLOBALS['DB_WE']->query('UPDATE ' . GLOSSARY_TABLE . ' SET Published=0 WHERE ID IN (' . implode(',', $id) . ')');
 					$Cache->write();
 					break;
 
@@ -68,10 +68,6 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 		unset($Cache);
 
 		// ---> Search Start
-
-		$temp = explode("_", $_REQUEST['cmdid']);
-		$Language = $temp[0] . "_" . $temp[1];
-		$Type = $temp[2];
 
 		$Rows = we_base_request::_(we_base_request::INT, 'Rows', 10);
 		$Offset = we_base_request::_(we_base_request::INT, 'Offset', 0);
@@ -96,11 +92,11 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 
 		// ---> Search End
 		// ---> some javascript code
+		$cmdid = we_base_request::_(we_base_request::STRING, 'cmdid');
 
-		$_js .= $weGlossaryFrames->topFrame . '.editor.edheader.location="' . $weGlossaryFrames->frameset . '?pnt=edheader&cmd=glossary_view_type&cmdid=' . $_REQUEST['cmdid'] . '";
-						' . $weGlossaryFrames->topFrame . '.editor.edfooter.location="' . $weGlossaryFrames->frameset . '?pnt=edfooter&cmd=glossary_view_type&cmdid=' . $_REQUEST['cmdid'] . '";
-		function AllItems()
-		{
+		$_js .= $weGlossaryFrames->topFrame . '.editor.edheader.location="' . $weGlossaryFrames->frameset . '?pnt=edheader&cmd=glossary_view_type&cmdid=' . $cmdid . '";
+						' . $weGlossaryFrames->topFrame . '.editor.edfooter.location="' . $weGlossaryFrames->frameset . '?pnt=edfooter&cmd=glossary_view_type&cmdid=' . $cmdid . '";
+		function AllItems(){
 			if(document.we_form.selectAll.value == 0) {
 				temp = true;
 				document.we_form.selectAll.value = 1;
@@ -350,7 +346,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 		<tr>
 			<td class="defaultgray">' . g_l('modules_glossary', '[view]') . '</td>
 			<td>' . we_html_tools::htmlSelect("Rows", $_rows, 1, $Search->Rows, "", array('onchange' => "SubmitForm();")) . '</td>
-			<td>' . we_html_forms::checkboxWithHidden(isset($_REQUEST['GreenOnly']) && $_REQUEST['GreenOnly'] == 1 ? true : false, "GreenOnly", g_l('modules_glossary', '[show_only_visible_items]'), false, "defaultfont", "jump(0);") . '</td>
+			<td>' . we_html_forms::checkboxWithHidden(we_base_request::_(we_base_request::BOOL,'GreenOnly'), "GreenOnly", g_l('modules_glossary', '[show_only_visible_items]'), false, "defaultfont", "jump(0);") . '</td>
 			<td>' . we_html_tools::getPixel(18, 2) . '</td>
 			<td>' . $newButton . '</td>
 		</tr>

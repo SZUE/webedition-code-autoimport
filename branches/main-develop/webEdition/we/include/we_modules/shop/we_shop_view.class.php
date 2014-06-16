@@ -1794,16 +1794,6 @@ attribs["tooltip"]="";' .
 			}
 	}
 
-	function new_array_splice(&$a, $start, $len = 1){
-		$ks = array_keys($a);
-		$k = array_search($start, $ks);
-		if($k !== false){
-			$ks = array_splice($ks, $k, $len);
-			foreach($ks as $k)
-				unset($a[$k]);
-		}
-	}
-
 	//some functions from edit_shop_properties
 
 	private static function getFieldFromShoparticle(array $array, $name, $length = 0){

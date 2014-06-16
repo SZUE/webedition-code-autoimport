@@ -295,23 +295,14 @@ function we_cmd(){
 		$colspan = 4;
 
 		for($i = 0; $i < $count; $i++){
-			if(isset($_REQUEST['branch_' . $i])){
-				$search_arr['branch_' . $i] = $_REQUEST['branch_' . $i];
-			}
-			if(isset($_REQUEST['field_' . $i])){
-				$search_arr['field_' . $i] = $_REQUEST['field_' . $i];
-			}
-			if(isset($_REQUEST['operator_' . $i])){
-				$search_arr['operator_' . $i] = $_REQUEST['operator_' . $i];
-			}
-			if(isset($_REQUEST['value_' . $i])){
-				$search_arr['value_' . $i] = $_REQUEST['value_' . $i];
-			}
-			if(isset($_REQUEST['logic_' . $i])){
-				$search_arr['logic_' . $i] = $_REQUEST['logic_' . $i];
+			if(($logic = we_base_request::_(we_base_request::STRING, 'logic_' . $i))){
+				$search_arr['logic_' . $i] = $logic;
+				$search_arr['branch_' . $i] = we_base_request::_(we_base_request::STRING, 'branch_' . $i);
+				$search_arr['field_' . $i] = we_base_request::_(we_base_request::STRING, 'field_' . $i);
+				$search_arr['operator_' . $i] = we_base_request::_(we_base_request::STRING, 'operator_' . $i);
+				$search_arr['value_' . $i] = we_base_request::_(we_base_request::STRING, 'value_' . $i);
 			}
 		}
-
 
 		$advsearch = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 3), 1, 4);
 		$branch = $pob->getHTMLBranchSelect();
@@ -377,7 +368,7 @@ function we_cmd(){
 			) . '</td><td>&nbsp;</td></tr></table>'
 		);
 		$max_res = $pob->View->settings->getMaxSearchResults();
-		$result = ($search_arr && $_REQUEST['search'] ? self::getAdvSearchResults($pob->db, $search_arr, $count, $max_res) : array());
+		$result = ($search_arr && we_base_request::_(we_base_request::BOOL,'search') ? self::getAdvSearchResults($pob->db, $search_arr, $count, $max_res) : array());
 
 		foreach($result as $id => $text){
 			$select->addOption($id, $text);

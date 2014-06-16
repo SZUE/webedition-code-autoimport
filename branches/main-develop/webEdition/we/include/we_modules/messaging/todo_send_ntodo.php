@@ -21,25 +21,25 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-if(!preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction'])){
-	exit();
-}
-
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
-
-$messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
-$messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
-$messaging->init($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
-
-if(isset($_REQUEST['td_deadline_hour'])){
-	$deadline = mktime($_REQUEST['td_deadline_hour'], $_REQUEST['td_deadline_minute'], 0, $_REQUEST['td_deadline_month'], $_REQUEST['td_deadline_day'], $_REQUEST['td_deadline_year']);
+$transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction');
+if(!$transaction){
+	exit();
 }
 
-switch(we_base_request::_(we_base_request::STRING,"mode")){
+$messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$transaction]);
+$messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
+$messaging->init($_SESSION['weS']['we_data'][$transaction]);
+
+if(($hour = we_base_request::_(we_base_request::INT, 'td_deadline_hour')) !== false){
+	$deadline = mktime($hour, we_base_request::_(we_base_request::INT, 'td_deadline_minute'), 0, we_base_request::_(we_base_request::INT, 'td_deadline_month'), we_base_request::_(we_base_request::INT, 'td_deadline_day'), we_base_request::_(we_base_request::INT, 'td_deadline_year'));
+}
+
+switch(we_base_request::_(we_base_request::STRING, "mode")){
 	case 'forward':
-		$arr = array('rcpts_string' => $_REQUEST['rcpts_string'], 'deadline' => $deadline, 'body' => $_REQUEST['mn_body']);
+		$arr = array('rcpts_string' => we_base_request::_(we_base_request::STRING, 'rcpts_string'), 'deadline' => $deadline, 'body' => we_base_request::_(we_base_request::STRING, 'mn_body'));
 		$res = $messaging->forward($arr);
 		$heading = g_l('modules_messaging', '[forwarding_todo]');
 		$action = g_l('modules_messaging', '[forwarded_to]');
@@ -47,7 +47,7 @@ switch(we_base_request::_(we_base_request::STRING,"mode")){
 		$n_action = g_l('modules_messaging', '[todo_n_forwarded]');
 		break;
 	case 'reject':
-		$arr = array('body' => $_REQUEST['mn_body']);
+		$arr = array('body' => we_base_request::_(we_base_request::STRING, 'mn_body'));
 		$res = $messaging->reject($arr);
 		$heading = g_l('modules_messaging', '[rejecting_todo]');
 		$action = g_l('modules_messaging', '[rejected_to]');
@@ -55,7 +55,7 @@ switch(we_base_request::_(we_base_request::STRING,"mode")){
 		$n_action = g_l('modules_messaging', '[todo_n_rejected]');
 		break;
 	default:
-		$arr = array('rcpts_string' => $_REQUEST['rcpts_string'], 'subject' => $_REQUEST['mn_subject'], 'body' => $_REQUEST['mn_body'], 'deadline' => $deadline, 'status' => 0, 'priority' => $_REQUEST['mn_priority']);
+		$arr = array('rcpts_string' => we_base_request::_(we_base_request::STRING, 'rcpts_string'), 'subject' => we_base_request::_(we_base_request::STRING, 'mn_subject'), 'body' => we_base_request::_(we_base_request::STRING, 'mn_body'), 'deadline' => $deadline, 'status' => 0, 'priority' => we_base_request::_(we_base_request::INT, 'mn_priority'));
 		$res = $messaging->send($arr, "we_todo");
 		$heading = g_l('modules_messaging', '[creating_todo]');
 		$s_action = g_l('modules_messaging', '[todo_s_created]');
@@ -90,7 +90,7 @@ if(!empty($res['ok'])){
 		        <td class="defaultfont" valign="top">' . $n_action . ':</td>
 		        <td class="defaultfont"><ul><li>' . implode("</li>\n<li>", $res['failed']) . '</li></ul></td>
 		    </tr>') .
-			(empty($res['err']) ? '' : '<tr>
+		(empty($res['err']) ? '' : '<tr>
 		        <td class="defaultfont" valign="top">' . g_l('modules_messaging', '[occured_errs]') . ':</td>
 		        <td class="defaultfont"><ul><li>' . implode('</li><li>', $res['err']) . '</li></ul></td>
 		    </tr>') . '

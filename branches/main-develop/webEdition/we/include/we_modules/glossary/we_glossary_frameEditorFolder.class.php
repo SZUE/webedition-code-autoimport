@@ -25,30 +25,19 @@
 class we_glossary_frameEditorFolder extends we_glossary_frameEditor{
 
 	function Header(&$weGlossaryFrames){
-
 		$we_tabs = new we_tabs();
 		$we_tabs->addTab(new we_tab("#", g_l('modules_glossary', '[overview]'), we_tab::ACTIVE, "setTab('1');"));
-
 		$frontendL = getWeFrontendLanguagesForBackend();
-		$title = g_l('modules_glossary', '[folder]') . ":&nbsp;";
 
-		$title .= $frontendL[substr($_REQUEST['cmdid'], 0, 5)];
-
-		return self::buildHeader($weGlossaryFrames, $we_tabs, g_l('modules_glossary', '[folder]'), $frontendL[substr($_REQUEST['cmdid'], 0, 5)]);
+		return self::buildHeader($weGlossaryFrames, $we_tabs, g_l('modules_glossary', '[folder]'), $frontendL[substr(we_base_request::_(we_base_request::STRING, 'cmdid'), 0, 5)]);
 	}
 
 	function Body(&$weGlossaryFrames){
-
-		$_js = $weGlossaryFrames->topFrame . '.editor.edheader.location="' . $weGlossaryFrames->frameset . '?pnt=edheader&cmd=glossary_view_folder&cmdid=' . $_REQUEST['cmdid'] . '";'
-			. $weGlossaryFrames->topFrame . '.editor.edfooter.location="' . $weGlossaryFrames->frameset . '?pnt=edfooter&cmd=glossary_view_folder&cmdid=' . $_REQUEST['cmdid'] . '"';
-
-		$js = we_html_element::jsElement($_js);
-
-		$out = we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ''), we_html_multiIconBox::getHTML('', "100%", self::getHTMLOverview($weGlossaryFrames), 30, '', -1, '', '', false));
-
-		$content = $js . $out;
-
-		return self::buildBody($weGlossaryFrames, $content);
+		$cmdid = we_base_request::_(we_base_request::STRING, 'cmdid');
+		return self::buildBody($weGlossaryFrames, we_html_element::jsElement(
+					$weGlossaryFrames->topFrame . '.editor.edheader.location="' . $weGlossaryFrames->frameset . '?pnt=edheader&cmd=glossary_view_folder&cmdid=' . $cmdid . '";'
+					. $weGlossaryFrames->topFrame . '.editor.edfooter.location="' . $weGlossaryFrames->frameset . '?pnt=edfooter&cmd=glossary_view_folder&cmdid=' . $cmdid . '"') .
+				we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ''), we_html_multiIconBox::getHTML('', "100%", self::getHTMLOverview($weGlossaryFrames), 30, '', -1, '', '', false)));
 	}
 
 	function Footer(&$weGlossaryFrames){
@@ -57,52 +46,34 @@ class we_glossary_frameEditorFolder extends we_glossary_frameEditor{
 	}
 
 	function getHTMLOverview(&$weGlossaryFrames){
-
+		$cmdid = we_base_request::_(we_base_request::STRING, 'cmdid');
 		$_list = array(
-			we_glossary_glossary::TYPE_ABBREVATION => g_l('modules_glossary', '[abbreviation]'),
-			we_glossary_glossary::TYPE_ACRONYM => g_l('modules_glossary', '[acronym]'),
-			we_glossary_glossary::TYPE_FOREIGNWORD => g_l('modules_glossary', '[foreignword]'),
-			we_glossary_glossary::TYPE_LINK => g_l('modules_glossary', '[link]'),
-			we_glossary_glossary::TYPE_TEXTREPLACE => g_l('modules_glossary', '[textreplacement]'),
+			we_glossary_glossary::TYPE_ABBREVATION,
+			we_glossary_glossary::TYPE_ACRONYM,
+			we_glossary_glossary::TYPE_FOREIGNWORD,
+			we_glossary_glossary::TYPE_LINK,
+			we_glossary_glossary::TYPE_TEXTREPLACE,
 		);
 
-		$language = substr($_REQUEST['cmdid'], 0, 5);
+		$language = $GLOBALS['DB_WE']->escape(substr(we_base_request::_(we_base_request::STRING, 'cmdid'), 0, 5));
 
 		$parts = array();
 
+		foreach($_list as $key){
+			$items = f('SELECT count(1) FROM ' . GLOSSARY_TABLE . " WHERE Language='" . $language . "' AND Type='" . $key . "'");
+//FIXME createbuttontable?
+			$button = we_html_button::create_button("new_glossary_" . $key, "javascript:top.opener.top.we_cmd('new_glossary_" . $key . "', '" . $cmdid . "');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_GLOSSARY"));
 
-		foreach($_list as $key => $value){
-
-			$query = "SELECT count(1) as items FROM " . GLOSSARY_TABLE . " WHERE Language = '" . $GLOBALS['DB_WE']->escape($language) . "' AND Type = '" . $key . "'";
-			$items = f($query, "items", $GLOBALS['DB_WE']);
-
-			$button = we_html_button::create_button("new_glossary_" . $key, "javascript:top.opener.top.we_cmd('new_glossary_" . $key . "', '" . $_REQUEST['cmdid'] . "');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_GLOSSARY"));
-
-			$content = '<table width="550" border="0" cellpadding="0" cellspacing="0" class="defaultfont">
-						<tr>
-							<td>
-								' . g_l('modules_glossary', '[' . $key . '_description]') . '</td>
-						</tr>
-						<tr>
-							<td>
-								' . we_html_tools::getPixel(2, 4) . '</td>
-						<tr>
-							<td>
-								' . g_l('modules_glossary', '[number_of_entries]') . ': ' . $items . '</td>
-						</tr>
-						<tr>
-							<td>
-								' . we_html_tools::getPixel(2, 4) . '</td>
-						</tr>
-						<tr>
-							<td align="right">
-								' . $button . '</td>
-						</tr>
-						</table>';
-
-			$headline = '<a href="javascript://" onclick="' . $this->topFrame . '.editor.edbody.location=\'' . $weGlossaryFrames->frameset . '?pnt=edbody&cmd=glossary_view_type&cmdid=' . $_REQUEST['cmdid'] . '_' . $key . '&tabnr=\'+' . $weGlossaryFrames->topFrame . '.activ_tab;">' . g_l('modules_glossary', '[' . $key . ']') . '</a>';
-
-			$parts[] = array("headline" => $headline, "html" => $content, "space" => 120);
+			$parts[] = array(
+				"headline" => '<a href="javascript://" onclick="' . $this->topFrame . '.editor.edbody.location=\'' . $weGlossaryFrames->frameset . '?pnt=edbody&cmd=glossary_view_type&cmdid=' . $cmdid . '_' . $key . '&tabnr=\'+' . $weGlossaryFrames->topFrame . '.activ_tab;">' . g_l('modules_glossary', '[' . $key . ']') . '</a>',
+				"html" => '<table width="550" border="0" cellpadding="0" cellspacing="0" class="defaultfont">
+						<tr><td>' . g_l('modules_glossary', '[' . $key . '_description]') . '</td></tr>
+						<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+						<tr><td>' . g_l('modules_glossary', '[number_of_entries]') . ': ' . $items . '</td></tr>
+						<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+						<tr><td align="right">' . $button . '</td></tr>
+						</table>',
+				"space" => 120);
 		}
 
 		return $parts;

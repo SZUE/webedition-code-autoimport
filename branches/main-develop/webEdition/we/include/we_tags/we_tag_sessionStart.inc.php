@@ -120,7 +120,7 @@ function wetagsessionHandleFailedLogin(){
 		'registered' => false, 'loginfailed' => we_users_user::INVALID_CREDENTIALS
 	);
 	if(!isset($GLOBALS['WE_LOGIN_DENIED'])){
-		we_log_loginFailed('tblWebUser', $_REQUEST['s']['Username']);
+		we_users_user::logLoginFailed('tblWebUser', $_REQUEST['s']['Username']);
 	}
 	sleep(SECURITY_DELAY_FAILED_LOGIN);
 

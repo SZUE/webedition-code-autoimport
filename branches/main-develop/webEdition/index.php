@@ -450,7 +450,7 @@ if(we_base_request::_(we_base_request::STRING, 'checkLogin') && !$_COOKIE){
 			}
 			break;
 		case LOGIN_CREDENTIALS_INVALID:
-			we_log_loginFailed('tblUser', we_base_request::_(we_base_request::STRING, 'username'));
+			we_users_user::logLoginFailed('tblUser', we_base_request::_(we_base_request::STRING, 'username'));
 
 			//CHECK FOR FAILED LOGIN ATTEMPTS
 			$cnt = f('SELECT COUNT(1) FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblUser" AND IP="' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '" AND LoginDate > DATE_SUB(NOW(), INTERVAL ' . intval(we_base_constants::LOGIN_FAILED_TIME) . ' MINUTE)');

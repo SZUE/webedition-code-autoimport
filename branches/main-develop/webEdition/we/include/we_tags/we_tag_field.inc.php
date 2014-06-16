@@ -515,7 +515,9 @@ function we_tag_field($attribs){
 
 					$path_parts = pathinfo($_SERVER['SCRIPT_NAME']);
 					if($GLOBALS['lv']->objectseourls){
-						list($objecturl, $objecttriggerid) = getHash('SELECT  Url,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($GLOBALS['lv']->f('OID')) . ' LIMIT 1', $GLOBALS['DB_WE'], MYSQL_NUM);
+						$h = getHash('SELECT  Url,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($GLOBALS['lv']->f('OID')) . ' LIMIT 1');
+						$objecttriggerid = $h['TriggerID'];
+						$objecturl = $h['Url'];
 						if($objecttriggerid){
 							$path_parts = pathinfo(id_to_path($objecttriggerid));
 						}

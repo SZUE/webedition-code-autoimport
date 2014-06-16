@@ -904,7 +904,6 @@ class weVersions{
 	 * 3. if document / object is saved, published or unpublished
 	 */
 	public function save($docObj, $status = "saved"){
-
 		if(isset($_SESSION["user"]["ID"])){
 			$_SESSION['weS']['versions']['fromImport'] = 0;
 

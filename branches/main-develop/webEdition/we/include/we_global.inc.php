@@ -119,24 +119,6 @@ function getHTTP($server, $url, $port = '', $username = '', $password = ''){
 }
 
 /**
- *
- * @param type $id
- * @param type $table
- * @return bool true on success, or if not in DB
- */
-function deleteContentFromDB($id, $table, we_database_base $DB_WE = null){
-	$DB_WE = $DB_WE ? $DB_WE : new DB_WE();
-
-	if(!f('SELECT 1 FROM ' . LINK_TABLE . ' WHERE DID=' . intval($id) . ' AND DocumentTable="' . $DB_WE->escape(stripTblPrefix($table)) . '" LIMIT 1', '', $DB_WE)){
-		return true;
-	}
-
-	$DB_WE->query('DELETE FROM ' . CONTENT_TABLE . ' WHERE ID IN (
-		SELECT CID FROM ' . LINK_TABLE . ' WHERE DID=' . intval($id) . ' AND DocumentTable="' . $DB_WE->escape(stripTblPrefix($table)) . '")');
-	return $DB_WE->query('DELETE FROM ' . LINK_TABLE . ' WHERE DID=' . intval($id) . ' AND DocumentTable="' . $DB_WE->escape(stripTblPrefix($table)) . '"');
-}
-
-/**
  * Strips off the table prefix - this function is save of calling multiple times
  * @param string $table
  * @return string stripped tablename
@@ -158,6 +140,7 @@ function oldHtmlspecialchars($string, $flags = -1, $encoding = 'ISO-8859-1', $do
 /**
  * filter all bad Xss attacks from var. Arrays can be used.
  * @param mixed $var
+ * @deprecated since version 6.3.9
  * @return mixed
  */
 function filterXss($var, $type = 'string'){
@@ -173,12 +156,7 @@ function filterXss($var, $type = 'string'){
 
 /**
  * Filter an Requested variable
- * @param string $type type to filter, see list in _weGetVar
- * @param string $name name of variable in Request array
- * @param mixed $default default value
- * @param mixed $index optional index
  * @deprecated since version 6.3.8
- * @return mixed default, if value not set, the filtered value else
  */
 function weRequest($type, $name, $default = false, $index = null){
 	return we_base_request::_($type, $name, $default, $index);
@@ -622,98 +600,18 @@ function t_e($type = 'warning'){
 	}
 }
 
-function parseInternalLinks(&$text, $pid, $path = '', $doBaseReplace = true){
-	$doBaseReplace&=we_isHttps();
-	$DB_WE = new DB_WE();
-	$regs = array();
-	if(preg_match_all('/(href|src)="' . we_base_link::TYPE_INT_PREFIX . '(\\d+)(&amp;|&)?("|[^"]+")/i', $text, $regs, PREG_SET_ORDER)){
-		foreach($regs as $reg){
-
-			$foo = getHash('SELECT Path,(ContentType="' . we_base_ContentTypes::IMAGE . '") AS isImage  FROM ' . FILE_TABLE . ' WHERE ID=' . intval($reg[2]) . (isset($GLOBALS['we_doc']->InWebEdition) && $GLOBALS['we_doc']->InWebEdition ? '' : ' AND Published>0'), $DB_WE);
-
-			if($foo && $foo['Path']){
-				$path_parts = pathinfo($foo['Path']);
-				if(show_SeoLinks() && WYSIWYGLINKS_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
-					$foo['Path'] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
-				}
-				$text = str_replace($reg[1] . '="' . we_base_link::TYPE_INT_PREFIX . $reg[2] . $reg[3] . $reg[4], $reg[1] . '="' . ($doBaseReplace && $foo['isImage'] ? BASE_IMG : '') . $foo['Path'] . ($reg[3] ? '?' : '') . $reg[4], $text);
-			} else {
-				$text = preg_replace(array(
-					'|<a [^>]*href="' . we_base_link::TYPE_INT_PREFIX . $reg[2] . '"[^>]*>(.*)</a>|Ui', '|<a [^>]*href="' . we_base_link::TYPE_INT_PREFIX . $reg[2] . '"[^>]*>|Ui', '|<img [^>]*src="' . we_base_link::TYPE_INT_PREFIX . $reg[2] . '"[^>]*>|Ui'), array(
-					'\1', '', ''), $text);
-			}
-		}
-	}
-	if(preg_match_all('/src="' . we_base_link::TYPE_THUMB_PREFIX . '([^" ]+)"/i', $text, $regs, PREG_SET_ORDER)){
-		foreach($regs as $reg){
-			list($imgID, $thumbID) = explode(',', $reg[1]);
-			$thumbObj = new we_thumbnail();
-			if($thumbObj->initByImageIDAndThumbID($imgID, $thumbID)){
-				$text = str_replace('src="' . we_base_link::TYPE_THUMB_PREFIX . $reg[1] . '"', 'src="' . ($doBaseReplace ? BASE_IMG : '') . $thumbObj->getOutputPath(false, true) . '"', $text);
-			} else {
-				$text = preg_replace('|<img[^>]+src="' . we_base_link::TYPE_THUMB_PREFIX . $reg[1] . '[^>]+>|Ui', '', $text);
-			}
-		}
-	}
-	if(defined('OBJECT_TABLE')){
-		if(preg_match_all('/href="' . we_base_link::TYPE_OBJ_PREFIX . '(\d+)(\??)("|[^"]+")/i', $text, $regs, PREG_SET_ORDER)){
-			foreach($regs as $reg){
-				$href = we_objectFile::getObjectHref($reg[1], $pid, $path, null, WYSIWYGLINKS_DIRECTORYINDEX_HIDE, WYSIWYGLINKS_OBJECTSEOURLS);
-				if(isset($GLOBALS['we_link_not_published'])){
-					unset($GLOBALS['we_link_not_published']);
-				}
-				if($href){
-					$text = ($reg[2] == '?' ?
-							str_replace('href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '?', 'href="' . $href . '&amp;', $text) :
-							str_replace('href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . $reg[2] . $reg[3], 'href="' . $href . $reg[2] . $reg[3], $text));
-				} else {
-					$text = preg_replace(array('|<a [^>]*href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '"[^>]*>(.*)</a>|Ui',
-						'|<a [^>]*href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '"[^>]*>|Ui',), array('\1'), $text);
-				}
-			}
-		}
-	}
-
-	return preg_replace('/\<a>(.*)\<\/a>/siU', '\1', $text);
-}
-
 function removeHTML($val){
 	$val = preg_replace(array('%<br ?/?>%i', '/<[^><]+>/'), array('###BR###', ''), str_replace(array('<?', '?>'), array('###?###', '###/?###'), $val));
 	return str_replace(array('###BR###', '###?###', '###/?###'), array('<br/>', '<?', '?>'), $val);
 }
 
+/**
+ * @deprecated since version 6.3.0
+ * @param type $val
+ * @return type
+ */
 function removePHP($val){
 	return we_base_util::rmPhp($val);
-}
-
-function getMysqlVer($nodots = true){
-	$DB_WE = new DB_WE();
-	$res = f('SELECT VERSION()', '', $DB_WE);
-
-	if($res){
-		$res = explode('-', $res);
-	} else {
-		$res = f('SHOW VARIABLES LIKE "version"', 'Value', $DB_WE);
-		if($res){
-			$res = explode('-', $res);
-		}
-	}
-	if(isset($res)){
-		if($nodots){
-			$strver = substr(str_replace('.', '', $res[0]), 0, 4);
-			$ver = (int) $strver;
-			if(strlen($ver) < 4){
-				$ver = sprintf('%04d', $ver);
-				if(substr($ver, 0, 1) == '0'){
-					$ver = (int) (substr($ver, 1) . '0');
-				}
-			}
-
-			return $ver;
-		}
-		return $res[0];
-	}
-	return '';
 }
 
 function we_mail($recipient, $subject, $txt, $from = ''){
@@ -734,8 +632,7 @@ function runAtWin(){
 
 function weMemDebug(){
 	echo "Mem usage " . round(((memory_get_usage() / 1024) / 1024), 3) . " MiB\n" .
-	(microtime(true) - floatval($_SERVER['REQUEST_TIME_FLOAT'])) . ' '
-	;
+	(microtime(true) - floatval($_SERVER['REQUEST_TIME_FLOAT'])) . ' ';
 }
 
 function weGetCookieVariable($name){
@@ -775,14 +672,12 @@ function getUploadMaxFilesize($mysql = false, we_database_base $db = null){
 	$upload_max_filesize = we_convertIniSizes(ini_get('upload_max_filesize'));
 	$min = min($post_max_size, $upload_max_filesize, ($mysql ? getMaxAllowedPacket($db) : PHP_INT_MAX));
 
-	if(intval(WE_MAX_UPLOAD_SIZE) == 0){
-		return $min;
-	} else {
-		return min(WE_MAX_UPLOAD_SIZE * 1024 * 1024, $min);
-	}
+	return (intval(WE_MAX_UPLOAD_SIZE) == 0 ?
+			$min :
+			min(WE_MAX_UPLOAD_SIZE * 1024 * 1024, $min));
 }
 
-function getMaxAllowedPacket(we_database_base $db = null){
+function getMaxAllowedPacket(we_database_base $db){
 	return f('SHOW VARIABLES LIKE "max_allowed_packet"', 'Value', ($db ? $db : new DB_WE()));
 }
 
@@ -866,108 +761,6 @@ function we_check_email($email){ // Zend validates only the pure address
 		$email = substr($email, $pos, strrpos($email, '>') - $pos);
 	}
 	return (filter_var($email, FILTER_VALIDATE_EMAIL) !== false);
-}
-
-/* function getRequestVar($name, $default, $yescode = '', $nocode = ''){
-  if(isset($_REQUEST[$name])){
-  if($yescode){
-  eval($yescode);
-  }
-  return $_REQUEST[$name];
-  } else {
-  if($nocode){
-  eval($nocode);
-  }
-  return $default;
-  }
-  } */
-
-/**
- * This function returns preference for given name; Checks first the users preferences and then global
- *
- * @param          string                                  $name
- *
- * @see            getAllGlobalPrefs()
- *
- * @return         string
- */
-function getPref($name){
-	return (isset($_SESSION['prefs'][$name]) ?
-			$_SESSION['prefs'][$name] :
-			(defined($name) ? constant($name) : ''));
-}
-
-/**
- * The function saves the user pref in the session and the database; The function works with user preferences only
- *
- * @param          string                                  $name
- * @param          string                                  $value
- *
- * @see            setUserPref()
- *
- * @return         boolean
- */
-function setUserPref($name, $value){
-	if(isset($_SESSION['prefs'][$name]) && isset($_SESSION['prefs']['userID']) && $_SESSION['prefs']['userID']){
-		$_SESSION['prefs'][$name] = $value;
-		we_users_user::writePrefs($_SESSION['prefs']['userID'], new DB_WE());
-		return true;
-	}
-	return false;
-}
-
-/**
- * This function creates the given path in the repository and returns the id of the last created folder
- *
- * @param          string				$path
- * @param          string				$table
- * @param          array				$pathids
- *
- * @return         string
- */
-function makePath($path, $table, &$pathids, $owner = 0){
-	$path = str_replace('\\', '/', $path);
-	$patharr = explode('/', $path);
-	$mkpath = '';
-	$pid = 0;
-	foreach($patharr as $elem){
-		if($elem != '' && $elem != '/'){
-			$mkpath .= '/' . $elem;
-			$id = path_to_id($mkpath, $table);
-			if(!$id){
-				$new = new we_folder();
-				$new->Text = $elem;
-				$new->Filename = $elem;
-				$new->ParentID = $pid;
-				$new->Path = $mkpath;
-				$new->Table = $table;
-				$new->CreatorID = $owner;
-				$new->ModifierID = $owner;
-				$new->Owners = ',' . $owner . ',';
-				$new->OwnersReadOnly = serialize(array(
-					$owner => 0
-				));
-				$new->we_save();
-				$id = $new->ID;
-				$pathids[] = $id;
-			}
-			$pid = $id;
-		}
-	}
-
-	return $pid;
-}
-
-/**
- * This function clears path from double slashes and back slashes
- *
- * @param          string                                  $path
- *
- *
- * @return         string
- */
-function clearPath($path){
-	return preg_replace('#/+#', '/', str_replace('\\', '/', $path));
 }
 
 /** This function should be used ONLY in generating code for the FRONTEND
@@ -1056,29 +849,6 @@ function removeAttribs($attribs, array $remove = array()){
 	return $attribs;
 }
 
-/**
- * This function works in very same way as the standard array_splice function
- * except the second parametar is the array index and not just offset
- * The functions modifies the array that has been passed by reference as the first function parametar
- *
- * @param          array                                  $a
- * @param          interger                                $start
- * @param          integer                                 $len
- *
- *
- * @return         none
- */
-function new_array_splice(&$a, $start, $len = 1){
-	$ks = array_keys($a);
-	$k = array_search($start, $ks);
-	if($k !== false){
-		$ks = array_splice($ks, $k, $len);
-		foreach($ks as $k){
-			unset($a[$k]);
-		}
-	}
-}
-
 function we_loadLanguageConfig(){
 	$file = WE_INCLUDES_PATH . 'conf/we_conf_language.inc.php';
 	if(!file_exists($file) || !is_file($file)){
@@ -1118,10 +888,6 @@ $GLOBALS[\'weFrontendLanguages\'] = array(
 $GLOBALS[\'weDefaultFrontendLanguage\'] = \'' . $default . '\';'
 			, 'w+'
 	);
-}
-
-function we_filenameNotValid($filename, $isIso = false){
-	return (substr($filename, 0, 2) === '..') || preg_match('![<>?":|\\/*' . ($isIso ? '\x00-\x20\x7F-\xFF' : '') . ']!', $filename);
 }
 
 function we_isHttps(){
@@ -1321,7 +1087,7 @@ function we_templatePostContent($force = false, $fullPoster = false){//force on 
 }
 
 function we_templatePost(){
-	if(--$GLOBALS['WE_TEMPLATE_INIT'] == 0){
+	if(--$GLOBALS['WE_TEMPLATE_INIT'] == 0 && !isWE()){
 		if(isset($_SESSION) && isset($_SESSION['webuser']) && isset($_SESSION['webuser']['loginfailed'])){
 			unset($_SESSION['webuser']['loginfailed']);
 		}
@@ -1360,24 +1126,8 @@ function we_TemplateExit($param = 0){
 	}
 }
 
-function we_cmd_enc($str){
-	return ($str ? 'WECMDENC_' . urlencode(base64_encode($str)) : '');
-}
-
 function getWEZendCache($lifetime = 1800){
 	return Zend_Cache::factory('Core', 'File', array('lifetime' => $lifetime, 'automatic_serialization' => true), array('cache_dir' => ZENDCACHE_PATH));
-}
-
-function we_log_loginFailed($table, $user){
-	$db = $GLOBALS['DB_WE'];
-	$db->query('INSERT INTO ' . FAILED_LOGINS_TABLE . ' SET ' . we_database_base::arraySetter(array(
-			'UserTable' => $table,
-			'Username' => $user,
-			'IP' => $_SERVER['REMOTE_ADDR'],
-			'Servername' => $_SERVER['SERVER_NAME'],
-			'Port' => $_SERVER['SERVER_PORT'],
-			'Script' => $_SERVER['SCRIPT_NAME']
-	)));
 }
 
 /**

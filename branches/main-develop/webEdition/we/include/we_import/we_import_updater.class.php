@@ -85,7 +85,7 @@ class we_import_updater extends we_exim_XMLExIm{
 					)
 				);
 				if($ref && isset($ref->OldTemplatePath)){
-					$tpath = clearPath(preg_replace('|^.+' . ltrim(TEMPLATES_DIR, '/') . '|i', '', $ref->OldTemplatePath));
+					$tpath = we_base_file::clearPath(preg_replace('|^.+' . ltrim(TEMPLATES_DIR, '/') . '|i', '', $ref->OldTemplatePath));
 					$id = path_to_id($tpath, TEMPLATES_TABLE);
 					if($id){
 						$object->TemplateID = $id;

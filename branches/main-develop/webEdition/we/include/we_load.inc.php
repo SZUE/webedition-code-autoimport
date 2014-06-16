@@ -28,9 +28,9 @@ $loadExtTree = isset($loadExtTree) ? $loadExtTree : false;
 $timestamp = time();
 $compareStamp = isset($_REQUEST['timestamp']) ? $_REQUEST['timestamp'] : 0;
 
-if(isset($_REQUEST['we_cmd'][5])){
+/*if(isset($_REQUEST['we_cmd'][5])){
 	$_SESSION["prefs"]["FileFilter"] = $_REQUEST['we_cmd'][5];
-}
+}*/
 
 $table = we_base_request::_(we_base_request::TABLE, 'we_cmd', FILE_TABLE, 1);
 $parentFolder = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2);
@@ -39,7 +39,7 @@ $offset = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 6);
 
 if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) == "closeFolder"){
 	$openDirs = array_flip(makeArrayFromCSV($_SESSION["prefs"]["openFolders_" . stripTblPrefix($table)]));
-	new_array_splice($openDirs, $parentFolder, 1);
+	we_base_util::new_array_splice($openDirs, $parentFolder, 1);
 	$openDirs = array_keys($openDirs);
 	$_SESSION["prefs"]["openFolders_" . stripTblPrefix($table)] = makeCSVFromArray($openDirs);
 } else {
@@ -283,13 +283,11 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) == "closeFolder"
 		}
 	}
 
-	$wsQuery = (empty($wspaces) ?
-			' OR RestrictOwners=0 ' :
-			' AND (' . implode(' OR ', $wspaces) . ') ' );
+	$wsQuery = ($wspaces ? ' AND (' . implode(' OR ', $wspaces) . ') ' : ' OR RestrictOwners=0 ' );
 
-	if(isset($_REQUEST['we_cmd'][3])){
-		$openFolders = explode(',', $_REQUEST['we_cmd'][3]);
-		$_SESSION["prefs"]["openFolders_" . stripTblPrefix($_REQUEST['we_cmd'][4])] = $_REQUEST['we_cmd'][3];
+	if(($of = we_base_request::_(we_base_request::INTLIST, 'we_cmd', '', 3))){
+		$openFolders = explode(',', $of);
+		$_SESSION["prefs"]["openFolders_" . stripTblPrefix(we_base_request::_(we_base_request::TABLE, 'we_cmd', '', 4))] = $of;
 	}
 
 	$openFolders = (isset($_SESSION["prefs"]["openFolders_" . stripTblPrefix($table)]) ?

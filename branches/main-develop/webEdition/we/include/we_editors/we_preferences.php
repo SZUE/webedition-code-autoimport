@@ -320,12 +320,12 @@ function remember_value($settingvalue, $settingname, $comment = ''){
 
 		case 'WE_COUNTRIES_TOP':
 			$_file = &$GLOBALS['config_files']['conf_global']['content'];
-			$_file = we_base_preferences::changeSourceCode('define', $_file, $settingname, implode(',', array_keys($_REQUEST['newconf']['countries'], 2)), true, $comment);
+			$_file = we_base_preferences::changeSourceCode('define', $_file, $settingname, implode(',', array_keys(we_base_request::_(we_base_request::INT, 'newconf', 0, 'countries'), 2)), true, $comment);
 			return;
 
 		case 'WE_COUNTRIES_SHOWN':
 			$_file = &$GLOBALS['config_files']['conf_global']['content'];
-			$_file = we_base_preferences::changeSourceCode('define', $_file, $settingname, implode(',', array_keys($_REQUEST['newconf']['countries'], 1)), true, $comment);
+			$_file = we_base_preferences::changeSourceCode('define', $_file, $settingname, implode(',', array_keys(we_base_request::_(we_base_request::INT, 'newconf', 0, 'countries'), 1)), true, $comment);
 			return;
 
 		case 'WE_SEEM':
@@ -570,7 +570,7 @@ function save_all_values(){
 	}
 	if(isset($_SESSION['weS']['versions']) && isset($_SESSION['weS']['versions']['logPrefs'])){
 		$_SESSION['weS']['versions']['logPrefsChanged'] = array();
-		foreach($_SESSION['weS']['versions']['logPrefs'] as $k => $v){
+		foreach(array_keys($_SESSION['weS']['versions']['logPrefs']) as $k){
 			if(isset($_REQUEST['newconf'][$k])){
 				if($_SESSION['weS']['versions']['logPrefs'][$k] != $_REQUEST['newconf'][$k]){
 					$_SESSION['weS']['versions']['logPrefsChanged'][$k] = $_REQUEST['newconf'][$k];
@@ -580,7 +580,7 @@ function save_all_values(){
 			}
 		}
 
-		if(!empty($_SESSION['weS']['versions']['logPrefsChanged'])){
+		if(($_SESSION['weS']['versions']['logPrefsChanged'])){
 			$versionslog = new versionsLog();
 			$versionslog->saveVersionsLog($_SESSION['weS']['versions']['logPrefsChanged'], versionsLog::VERSIONS_PREFS);
 		}
@@ -2260,8 +2260,8 @@ function formmailBlockOnOff() {
 			// FILE UPLOAD
 			$_fileuploader_use_jupload = we_html_tools::htmlSelect('newconf[USE_JUPLOAD]', array(g_l('prefs', '[no]'), g_l('prefs', '[yes]')), 1, get_value('USE_JUPLOAD'), false, array("onchange" => "document.getElementById('file_upload_options').style.display=(this.options[this.selectedIndex].value=='1'?'none':'block');"));
 
-			$_fileuploader_use_legacy = we_html_forms::checkbox(1, get_value('FILE_UPLOAD_USE_LEGACY'), 'newconf[FILE_UPLOADER_USE_LEGACY]', g_l('prefs', '[upload][use_legacy]'), false, 'defaultfont', '');
-			$_fileuploader_max_size = we_html_tools::htmlTextInput('newconf[FILE_UPLOADER_MAX_UPLOAD_SIZE]', 8, get_value('FILE_UPLOADER_MAX_UPLOAD_SIZE'), 255, "", 'number', 150);
+			$_fileuploader_use_legacy = we_html_forms::checkbox(1, get_value('FILE_UPLOAD_USE_LEGACY'), 'newconf[FILE_UPLOAD_USE_LEGACY]', g_l('prefs', '[upload][use_legacy]'), false, 'defaultfont', '');
+			$_fileuploader_max_size = we_html_tools::htmlTextInput('newconf[FILE_UPLOAD_MAX_UPLOAD_SIZE]', 8, get_value('FILE_UPLOAD_MAX_UPLOAD_SIZE'), 255, "", 'number', 150);
 
 			$_fileuploader_html1 = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 2, 1);
 			$_fileuploader_html1->setCol(0, 0, array('colspan' => 3, 'height' => 10), g_l('prefs', '[upload][jupload]'));
@@ -2353,7 +2353,7 @@ function formmailBlockOnOff() {
 
 
 			if(we_base_imageEdit::gd_version() > 0){ //  gd lib ist installiert
-				$wecmdenc1 = we_cmd_enc("document.forms[0].elements['newconf[WE_THUMBNAIL_DIRECTORY]'].value");
+				$wecmdenc1 = we_base_request::encCmd("document.forms[0].elements['newconf[WE_THUMBNAIL_DIRECTORY]'].value");
 				$wecmdenc4 = '';
 				$_but = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button("select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', 'folder', document.forms[0].elements['newconf[WE_THUMBNAIL_DIRECTORY]'].value, '')") : "";
 				$_inp = we_html_tools::htmlTextInput("newconf[WE_THUMBNAIL_DIRECTORY]", 12, get_value("WE_THUMBNAIL_DIRECTORY"), "", "", "text", 125);
@@ -2367,7 +2367,7 @@ function formmailBlockOnOff() {
 			/**
 			 * set pageLogger dir
 			 */
-			$wecmdenc1 = we_cmd_enc("document.forms[0].elements['newconf[WE_TRACKER_DIR]'].value");
+			$wecmdenc1 = we_base_request::encCmd("document.forms[0].elements['newconf[WE_TRACKER_DIR]'].value");
 			$wecmdenc4 = '';
 			$_but = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button("select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', 'folder', document.forms[0].elements['newconf[WE_TRACKER_DIR]'].value, '')") : "";
 			$_inp = we_html_tools::htmlTextInput("newconf[WE_TRACKER_DIR]", 12, get_value("WE_TRACKER_DIR"), "", "", "text", 125);
@@ -2503,8 +2503,8 @@ function formmailBlockOnOff() {
 			$SEOINSIDE_HIDEINWEBEDITION->selectOption(get_value("SEOINSIDE_HIDEINWEBEDITION"));
 			$_settings[] = array("headline" => g_l('prefs', '[seoinside_hideinwebedition]'), "html" => $SEOINSIDE_HIDEINWEBEDITION->getHtml(), "space" => 200);
 
-			$wecmdenc1 = we_cmd_enc("document.forms[0].elements['newconf[ERROR_DOCUMENT_NO_OBJECTFILE]'].value");
-			$wecmdenc2 = we_cmd_enc("document.forms[0].elements['error_document_no_objectfile_text'].value");
+			$wecmdenc1 = we_base_request::encCmd("document.forms[0].elements['newconf[ERROR_DOCUMENT_NO_OBJECTFILE]'].value");
+			$wecmdenc2 = we_base_request::encCmd("document.forms[0].elements['error_document_no_objectfile_text'].value");
 			$_acButton1 = we_html_button::create_button('select', "javascript:we_cmd('openDocselector', document.forms[0].elements['newconf[ERROR_DOCUMENT_NO_OBJECTFILE]'].value, '" . FILE_TABLE . "', '" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "','', '" . we_base_ContentTypes::WEDOCUMENT . "," . we_base_ContentTypes::HTML . "', 1)");
 			$_acButton2 = we_html_button::create_button('image:btn_function_trash', 'javascript:document.forms[0].elements[\'newconf[ERROR_DOCUMENT_NO_OBJECTFILE]\'].value = 0;document.forms[0].elements[\'error_document_no_objectfile_text\'].value = \'\'');
 
@@ -2759,8 +2759,8 @@ function formmailBlockOnOff() {
 
 			$customer_table->setCol(4, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][errorPage]'));
 
-			$wecmdenc1 = we_cmd_enc("document.forms[0].elements['newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]'].value");
-			$wecmdenc2 = we_cmd_enc("document.forms[0].elements['SECURITY_LIMIT_CUSTOMER_REDIRECT_text'].value");
+			$wecmdenc1 = we_base_request::encCmd("document.forms[0].elements['newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]'].value");
+			$wecmdenc2 = we_base_request::encCmd("document.forms[0].elements['SECURITY_LIMIT_CUSTOMER_REDIRECT_text'].value");
 
 			$yuiSuggest->setAcId('SECURITY_LIMIT_CUSTOMER_REDIRECT_doc');
 			$yuiSuggest->setContentType('folder,' . we_base_ContentTypes::WEDOCUMENT . ',' . we_base_ContentTypes::HTML);

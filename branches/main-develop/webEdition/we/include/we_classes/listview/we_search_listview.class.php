@@ -222,7 +222,7 @@ class we_search_listview extends listviewBase{
 			if($this->DB_WE->Record['OID'] && $this->objectseourls && show_SeoLinks()){
 				$db = new DB_WE();
 				$path_parts = pathinfo($_SERVER["SCRIPT_NAME"]);
-				$objectdaten = getHash('SELECT  Url,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->DB_WE->Record["OID"]) . " LIMIT 1", $db);
+				$objectdaten = getHash('SELECT Url,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->DB_WE->Record["OID"]) . ' LIMIT 1', $db);
 				$objecttriggerid = ($this->triggerID ? $this->triggerID : $objectdaten['TriggerID']);
 
 				if($objecttriggerid){

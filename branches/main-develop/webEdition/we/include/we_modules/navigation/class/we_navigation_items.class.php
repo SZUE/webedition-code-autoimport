@@ -480,7 +480,7 @@ class we_navigation_items{
 
 		$_db = new DB_WE();
 
-		$_path = clearPath($_path . '/%');
+		$_path = we_base_file::clearPath($_path . '/%');
 
 		$_ids = array();
 

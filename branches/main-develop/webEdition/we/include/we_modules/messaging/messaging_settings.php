@@ -32,11 +32,11 @@ echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[settings]')) .
 ?>
 <script type="text/javascript"><!--
 <?php
-if(isset($_REQUEST['mcmd']) && $_REQUEST['mcmd'] == 'save_settings' && isset($_REQUEST['check_step'])){
-	if($messaging->save_settings(array('check_step' => $_REQUEST['check_step']))){
+if(we_base_request::_(we_base_request::STRING, 'mcmd') == 'save_settings' && ($cstep = we_base_request::_(we_base_request::STRING, 'check_step'))){
+	if($messaging->save_settings(array('check_step' => $cstep))){
 		print we_message_reporting::getShowMessageCall(g_l('modules_messaging', '[saved]'), we_message_reporting::WE_MESSAGE_NOTICE);
 		?>
-			window.close();
+		window.close();
 		//-->
 		</script>
 		</head>
@@ -56,15 +56,14 @@ document.settings.submit();
 <?php
 we_html_tools::protect();
 
-print STYLESHEET;
+echo STYLESHEET;
 ?>
 
 <body class="weDialogBody">
 	<form name="settings" action="<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_settings.php" method="post">
 		<?php
-		if(isset($_REQUEST['we_transaction'])){
-			$_REQUEST['we_transaction'] = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0);
-			echo we_html_tools::hidden('we_transaction', $_REQUEST['we_transaction']);
+		if(($transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction'))){
+			echo we_html_tools::hidden('we_transaction', $transaction);
 		}
 		echo we_html_tools::hidden('mcmd', 'save_settings');
 
@@ -82,7 +81,7 @@ print STYLESHEET;
 </table>';
 
 		$_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("save", "javascript:save()"), "", we_html_button::create_button("cancel", "javascript:window.close();")
-				)
+			)
 		;
 
 		echo we_html_tools::htmlDialogLayout($input_tbl, $heading, $_buttons);

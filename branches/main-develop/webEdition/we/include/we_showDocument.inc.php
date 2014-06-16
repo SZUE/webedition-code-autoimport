@@ -117,7 +117,7 @@ if(($we_include = $we_doc->editor())){
 			$content = ob_get_contents();
 			ob_end_clean();
 			if($useGlossary){
-				$content = we_glossary_replace::doReplace($content, $GLOBALS['we_doc']->Language);
+				$content = we_glossary_replace::replace($content, $GLOBALS['we_doc']->Language);
 			}
 			if($urlReplace){
 				$content = preg_replace($urlReplace, array_keys($urlReplace), $content);

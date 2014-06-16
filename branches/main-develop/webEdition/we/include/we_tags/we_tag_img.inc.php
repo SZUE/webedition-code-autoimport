@@ -72,7 +72,7 @@ function we_tag_img($attribs){
 	}
 
 	// images can now have custom attribs
-	if(!(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)=='reload_editpage' &&
+	if(!$GLOBALS['we_editmode'] || !(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) == 'reload_editpage' &&
 		($name == we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1)) &&
 		we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2) == 'change_image') &&
 		isset($GLOBALS['we_doc']->elements[$altField])){ // if no other image is selected.
@@ -88,8 +88,14 @@ function we_tag_img($attribs){
 	} elseif(isset($GLOBALS['we_doc'])){
 		$alt = $GLOBALS['we_doc']->getElement($altField);
 		$title = $GLOBALS['we_doc']->getElement($titleField);
-		$tagAttribs['alt'] = $alt ? $alt : (isset($tagAttribs['alt']) ? $tagAttribs['alt'] : '');
-		$tagAttribs['title'] = $title ? $title : (isset($tagAttribs['title']) ? $tagAttribs['title'] : '');
+		if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2) == 'change_image'){
+			//in case of changed images give them priority to already set text
+			$tagAttribs['alt'] = (isset($tagAttribs['alt']) && $tagAttribs['alt'] ? $tagAttribs['alt'] : $alt);
+			$tagAttribs['title'] = (isset($tagAttribs['title']) && $tagAttribs['title'] ? $tagAttribs['title'] : $title);
+		} else {
+			$tagAttribs['alt'] = $alt ? $alt : (isset($tagAttribs['alt']) ? $tagAttribs['alt'] : '');
+			$tagAttribs['title'] = $title ? $title : (isset($tagAttribs['title']) ? $tagAttribs['title'] : '');
+		}
 		if($showThumb){
 			$thumbattr = $GLOBALS['we_doc']->getElement($thumbField);
 			$tagAttribs['thumbnail'] = $thumbattr;
@@ -185,8 +191,8 @@ function we_tag_img($attribs){
 				//	we use hardcoded Content-Type - because it must be an image -> <we:img  >
 				we_html_button::create_button("image:btn_edit_image", "javascript:top.doClickDirect($id,'" . we_base_ContentTypes::IMAGE . "', '" . FILE_TABLE . "'  )"));
 
-		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['" . $fname . "'].value");
-		$wecmdenc3 = we_cmd_enc("opener.setScrollTo(); opener._EditorFrame.setEditorIsHot(true); opener.top.we_cmd('reload_editpage','" . $name . "','change_image'); opener.top.hot = 1;");
+		$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['" . $fname . "'].value");
+		$wecmdenc3 = we_base_request::encCmd("opener.setScrollTo(); opener._EditorFrame.setEditorIsHot(true); opener.top.we_cmd('reload_editpage','" . $name . "','change_image'); opener.top.hot = 1;");
 
 		$out .= we_html_button::create_button_table(
 				array(

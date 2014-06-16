@@ -84,9 +84,7 @@ if(isset($fieldName) && isset($_REQUEST['we_okpressed']) && $_REQUEST['we_okpres
 		"\xe2\x80\xa9" => '',
 	);
 	$taValue = strtr($value, $replacements);
-	$divValue = isset($writeToFrontend) ? $taValue : strtr(parseInternalLinks($value, 0), $replacements);
-
-
+	$divValue = isset($writeToFrontend) ? $taValue : strtr(we_document::parseInternalLinks($value, 0), $replacements);
 
 	echo we_html_element::jsElement('
 try{

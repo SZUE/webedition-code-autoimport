@@ -241,76 +241,73 @@ abstract class we_customer_abstractFilter{
 	 * @return array
 	 */
 	static function getFilterFromRequest(){
+		if(we_base_request::_(we_base_request::STRING, 'filterSelect_0') === false){
+			return array();
+		}
+
+		$count = 0;
 		$filter = array();
+		while(true){
+			if(($field = we_base_request::_(we_base_request::STRING, 'filterSelect_' . $count))){
 
-		if(isset($_REQUEST['filterSelect_0'])){
-			$parse = true;
-			$count = 0;
-
-			while($parse){
-				if(isset($_REQUEST['filterSelect_' . $count])){
-
-					if(isset($_REQUEST['filterValue_' . $count]) && trim($_REQUEST['filterValue_' . $count]) != ''){
-						$filter[] = array(
-							'logic' => (isset($_REQUEST['filterLogic_' . $count]) && $_REQUEST['filterLogic_' . $count] == 'OR' ? 'OR' : 'AND'),
-							'field' => $_REQUEST['filterSelect_' . $count],
-							'operation' => $_REQUEST['filterOperation_' . $count],
-							'value' => $_REQUEST['filterValue_' . $count]
-						);
-					}
-					$count++;
-				} else {
-					$parse = false;
+				if(trim(($val = we_base_request::_(we_base_request::STRING, 'filterValue_' . $count)))){
+					$filter[] = array(
+						'logic' => (we_base_request::_(we_base_request::STRING, 'filterLogic_' . $count) == 'OR' ? 'OR' : 'AND'),
+						'field' => $field,
+						'operation' => we_base_request::_(we_base_request::INT, 'filterOperation_' . $count),
+						'value' => $val
+					);
 				}
+				$count++;
+			} else {
+				return $filter;
 			}
 		}
-		return $filter;
 	}
 
 	/**
-	 * Creates and returns the specificCustomers array from $_REQUEST
+	 * Creates and returns the specificCustomers array from
 	 *
 	 * @static
 	 * @return array
 	 */
 	static function getSpecificCustomersFromRequest(){
+		if(!($name = we_base_request::_(we_base_request::STRING, 'specificCustomersEditControl'))){
+			return array();
+		}
 		$customers = array();
-
-		if(isset($_REQUEST['specificCustomersEditControl'])){
-			$i = 0;
-			while(true){
-				if(isset($_REQUEST[$_REQUEST['specificCustomersEditControl'] . '_variant0_' . $_REQUEST['specificCustomersEditControl'] . '_item' . $i])){
-					$customers[] = $_REQUEST[$_REQUEST['specificCustomersEditControl'] . '_variant0_' . $_REQUEST['specificCustomersEditControl'] . '_item' . $i];
-					$i++;
-				} else {
-					break;
-				}
+		$i = 0;
+		while(true){
+			if(($val = we_base_request::_(we_base_request::STRING, $name . '_variant0_' . $name . '_item' . $i))){
+				$customers[] = $val;
+				$i++;
+			} else {
+				return weConvertToIds($customers, CUSTOMER_TABLE);
 			}
 		}
-		return weConvertToIds($customers, CUSTOMER_TABLE);
 	}
 
 	/**
-	 * Creates and returns the black list array from $_REQUEST
+	 * Creates and returns the black list array from
 	 *
 	 * @static
 	 * @return array
 	 */
 	static function getBlackListFromRequest(){
+		if(!($name = we_base_request::_(we_base_request::STRING, 'blackListEditControl'))){
+			return array();
+		}
 		$blackList = array();
 
-		if(isset($_REQUEST['blackListEditControl'])){
-			$i = 0;
-			while(true){
-				if(isset($_REQUEST[$_REQUEST['blackListEditControl'] . '_variant0_' . $_REQUEST['blackListEditControl'] . '_item' . $i])){
-					$blackList[] = $_REQUEST[$_REQUEST['blackListEditControl'] . '_variant0_' . $_REQUEST['blackListEditControl'] . '_item' . $i];
-					$i++;
-				} else {
-					break;
-				}
+		$i = 0;
+		while(true){
+			if(($val = we_base_request::_(we_base_request::STRING, $name . '_variant0_' . $name . '_item' . $i))){
+				$blackList[] = $val;
+				$i++;
+			} else {
+				return weConvertToIds($blackList, CUSTOMER_TABLE);
 			}
 		}
-		return weConvertToIds($blackList, CUSTOMER_TABLE);
 	}
 
 	/**
@@ -320,20 +317,19 @@ abstract class we_customer_abstractFilter{
 	 * @return array
 	 */
 	static function getWhiteListFromRequest(){
+		if(($name = we_base_request::_(we_base_request::STRING, 'whiteListEditControl'))){
+			return array();
+		}
 		$whiteList = array();
-
-		if(isset($_REQUEST['whiteListEditControl'])){
-			$i = 0;
-			while(true){
-				if(isset($_REQUEST[$_REQUEST['whiteListEditControl'] . '_variant0_' . $_REQUEST['whiteListEditControl'] . '_item' . $i])){
-					$whiteList[] = $_REQUEST[$_REQUEST['whiteListEditControl'] . '_variant0_' . $_REQUEST['whiteListEditControl'] . '_item' . $i];
-					$i++;
-				} else {
-					break;
-				}
+		$i = 0;
+		while(true){
+			if(($val = we_base_request::_(we_base_request::STRING, $name . '_variant0_' . $name . '_item' . $i))){
+				$whiteList[] = $val;
+				$i++;
+			} else {
+				return weConvertToIds($whiteList, CUSTOMER_TABLE);
 			}
 		}
-		return weConvertToIds($whiteList, CUSTOMER_TABLE);
 	}
 
 	/**

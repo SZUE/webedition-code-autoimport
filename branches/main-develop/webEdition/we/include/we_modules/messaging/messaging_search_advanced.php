@@ -24,23 +24,24 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
-if(!preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction'])){
+$transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction');
+if(!$transaction){
 	exit();
 }
 
-$messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
+$messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$transaction]);
 $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
-$messaging->init($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
+$messaging->init($_SESSION['weS']['we_data'][$transaction]);
 echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[search_advanced]')) .
  STYLESHEET;
 ?>
 <script type="text/javascript"><!--
 <?php
-if(isset($_REQUEST['save']) && $_REQUEST['save'] == 1){
-	$messaging->set_search_settings($_REQUEST['search_fields'], (isset($_REQUEST['search_folders']) && is_array($_REQUEST['search_folders'])) ? $_REQUEST['search_folders'] : array());
-	$messaging->saveInSession($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
+if(we_base_request::_(we_base_request::BOOL, 'save')){
+	$messaging->set_search_settings(we_base_request::_(we_base_request::STRING, 'search_fields'), we_base_request::_(we_base_request::INT, 'search_folders', array()));
+	$messaging->saveInSession($_SESSION['weS']['we_data'][$transaction]);
 	?>
-		self.close();
+	self.close();
 	//-->
 	</script>
 	</head>

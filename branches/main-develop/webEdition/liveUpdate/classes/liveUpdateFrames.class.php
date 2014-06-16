@@ -38,17 +38,17 @@ class liveUpdateFrames{
 		// data for the frame
 
 
-		$this->Section = weRequest('string', 'section', 'frameset');
+		$this->Section = we_base_request::_(we_base_request::STRING, 'section', 'frameset');
 
 		switch($this->Section){
 			case 'frameset':
 				// open frameset
-				$this->Data['activeTab'] = $this->getValidTab(weRequest('raw', 'active', ''));
+				$this->Data['activeTab'] = $this->getValidTab(we_base_request::_(we_base_request::INT, 'active', ''));
 
 				break;
 			case 'tabs':
 				// frame with tabs
-				$this->Data['activeTab'] = weRequest('raw', 'active', '');
+				$this->Data['activeTab'] = we_base_request::_(we_base_request::INT, 'active', '');
 				$this->Data['allTabs'] = $this->getAllTabs();
 				break;
 
@@ -106,24 +106,17 @@ class liveUpdateFrames{
 		}
 	}
 
-	function processBeta(){
-		if(isset($_REQUEST['setTestUpdate'])){
+	function processBeta(){//FIXME: don't use request
+		if(($setTestUpdate = we_base_request::_(we_base_request::BOOL, 'setTestUpdate', '-1')) !== '-1'){
 			$conf = we_base_file::load(LIVEUPDATE_DIR . 'conf/conf.inc.php');
 
 			if(strpos($conf, '$_REQUEST[\'testUpdate\']') !== false){
-				if(weRequest('bool', 'setTestUpdate')){
-					if(strpos($conf, '$_REQUEST[\'testUpdate\'] = 0;') !== false){
-						$conf = str_replace('$_REQUEST[\'testUpdate\'] = 0;', '$_REQUEST[\'testUpdate\'] = 1;', $conf);
-						we_base_file::save(LIVEUPDATE_DIR . 'conf/conf.inc.php', $conf);
-					}
-				} else {
-					if(strpos($conf, '$_REQUEST[\'testUpdate\'] = 1;') !== false){
-						$conf = str_replace('$_REQUEST[\'testUpdate\'] = 1;', '$_REQUEST[\'testUpdate\'] = 0;', $conf);
-						we_base_file::save(LIVEUPDATE_DIR . 'conf/conf.inc.php', $conf);
-					}
+				if(strpos($conf, '$_REQUEST[\'testUpdate\'] = ' . intval(!$setTestUpdate) . ';') !== false){
+					$conf = str_replace('$_REQUEST[\'testUpdate\'] = ' . intval(!$setTestUpdate) . ';', '$_REQUEST[\'testUpdate\'] = ' . intval($setTestUpdate) . ';', $conf);
+					we_base_file::save(LIVEUPDATE_DIR . 'conf/conf.inc.php', $conf);
 				}
 			} else {
-				$conf.='$_REQUEST[\'testUpdate\'] = ' . $_REQUEST['setTestUpdate'] . ';';
+				$conf.='$_REQUEST[\'testUpdate\'] = ' . intval($setTestUpdate) . ';';
 				we_base_file::save(LIVEUPDATE_DIR . 'conf/conf.inc.php', $conf);
 			}
 			$_REQUEST['testUpdate'] = $_REQUEST['setTestUpdate'];
@@ -133,9 +126,7 @@ class liveUpdateFrames{
 	function processUpdateVariables(){
 		$this->Data['lastUpdate'] = g_l('liveUpdate', '[update][neverUpdated]');
 
-		$GLOBALS['DB_WE']->query("SELECT DATE_FORMAT(datum, \"%d.%m.%y - %T \") AS date FROM " . UPDATE_LOG_TABLE . ' WHERE error=0 ORDER BY ID DESC LIMIT 0,1');
-		$GLOBALS['DB_WE']->next_record();
-		if(($date = $GLOBALS['DB_WE']->f('date'))){
+		if(($date = f('SELECT DATE_FORMAT(datum, "%d.%m.%y - %T ") FROM ' . UPDATE_LOG_TABLE . ' WHERE error=0 ORDER BY ID DESC LIMIT 1'))){
 			$this->Data['lastUpdate'] = $date;
 		}
 	}
@@ -144,7 +135,7 @@ class liveUpdateFrames{
 		$deletedLngs = array();
 		$notDeletedLngs = array();
 
-		if(($langs = weRequest('string', 'deleteLanguages'))){
+		if(($langs = we_base_request::_(we_base_request::STRING, 'deleteLanguages'))){
 			// update prefs_table
 			$cond = '';
 
@@ -171,25 +162,21 @@ class liveUpdateFrames{
 	}
 
 	function processUpdateLogVariables(){
-		if(weRequest('int', 'start') === false){
-			$_REQUEST['messages'] = true;
-			$_REQUEST['notices'] = true;
-			$_REQUEST['errors'] = true;
-			$_REQUEST['start'] = 0;
-		}
 
 		$this->Data['amountPerPage'] = 5;
-
+		$showMsg = we_base_request::_(we_base_request::BOOL, 'messages', true);
+		$showNotice = we_base_request::_(we_base_request::BOOL, 'notices', true);
+		$showErr = we_base_request::_(we_base_request::BOOL, 'errors', true);
 		$condition = ' WHERE 1 ' .
-			(weRequest('bool', 'messages') ? '' : " AND error!=0") .
-			(weRequest('bool', 'notices') ? '' : " AND error!=2") .
-			(weRequest('bool', 'errors') ? '' : " AND error!=1");
+			($showMsg ? '' : " AND error!=0") .
+			($showNotice ? '' : " AND error!=2") .
+			($showErr ? '' : " AND error!=1");
 
 		/*
 		 * process update_cmd
 		 */
 
-		switch(weRequest('string', 'log_cmd', '')){
+		switch(we_base_request::_(we_base_request::STRING, 'log_cmd', '')){
 			case "deleteEntries":
 				$GLOBALS['DB_WE']->query('DELETE FROM ' . UPDATE_LOG_TABLE . " $condition");
 				$_REQUEST['start'] = 0;
@@ -230,19 +217,19 @@ class liveUpdateFrames{
 
 			if($GLOBALS['DB_WE']->f('error') == 0){
 				$this->Data['amountMessages'] = $GLOBALS['DB_WE']->f('amount');
-				if(isset($_REQUEST['messages'])){
+				if($showMsg){
 					$this->Data['amountEntries'] += $GLOBALS['DB_WE']->f('amount');
 				}
 			}
 			if($GLOBALS['DB_WE']->f('error') == 1){
 				$this->Data['amountErrors'] = $GLOBALS['DB_WE']->f('amount');
-				if(isset($_REQUEST['errors'])){
+				if($showErr){
 					$this->Data['amountEntries'] += $GLOBALS['DB_WE']->f('amount');
 				}
 			}
 			if($GLOBALS['DB_WE']->f('error') == 2){
 				$this->Data['amountNotices'] = $GLOBALS['DB_WE']->f('amount');
-				if(isset($_REQUEST['notices'])){
+				if($showNotice){
 					$this->Data['amountEntries'] += $GLOBALS['DB_WE']->f('amount');
 				}
 			}

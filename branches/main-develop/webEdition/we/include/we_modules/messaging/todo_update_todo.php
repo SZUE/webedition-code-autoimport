@@ -21,18 +21,17 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-if(!preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction'])){
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+
+we_html_tools::protect();
+$transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction');
+if(!$transaction){
 	exit();
 }
 
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-require_once(WE_MESSAGING_MODULE_PATH . "msg_html_tools.inc.php");
-
-we_html_tools::protect();
-
-$messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
+$messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$transaction]);
 $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
-$messaging->init($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
+$messaging->init($_SESSION['weS']['we_data'][$transaction]);
 
 echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[wintitle]') . ' - Update Status') .
  STYLESHEET;
@@ -60,9 +59,9 @@ function do_confirm() {
 	?>
 	<form action="<?php print WE_MESSAGING_MODULE_DIR; ?>todo_update.php" name="update_todo_form" method="post">
 		<?php
-		echo we_html_tools::hidden('we_transaction', $_REQUEST['we_transaction']) .
+		echo we_html_tools::hidden('we_transaction', $transaction) .
 		we_html_tools::hidden('rcpts_string', '') .
-		we_html_tools::hidden('mode', $_REQUEST['mode']);
+		we_html_tools::hidden('mode', we_base_request::_(we_base_request::STRING,'mode'));
 
 		$prio = $compose->get_priority();
 		$parts = array(

@@ -288,11 +288,9 @@ class we_customer_EIWizard{
 
 	function getHTMLExportStep4(){
 		$export_to = we_base_request::_(we_base_request::STRING, "export_to", "server");
-		$path = isset($_REQUEST["path"]) ? urldecode($_REQUEST["path"]) : "";
-		$filename = isset($_REQUEST["filename"]) ? urldecode($_REQUEST["filename"]) : "";
-		$js = we_html_element::jsElement('
-			' . $this->footerFrame . '.location="' . $this->frameset . '?pnt=eifooter&step=5";
-		');
+		$path = urldecode(we_base_request::_(we_base_request::FILE, "path", ''));
+		$filename = urldecode(we_base_request::_(we_base_request::FILE, "filename", ''));
+		$js = we_html_element::jsElement($this->footerFrame . '.location="' . $this->frameset . '?pnt=eifooter&step=5";');
 
 		if($export_to == "local"){
 			$message = we_html_element::htmlSpan(array("class" => "defaultfont"), g_l('modules_customer', '[export_finished]') . "<br/><br/>" .
@@ -445,7 +443,7 @@ class we_customer_EIWizard{
 			$type = we_base_request::_(we_base_request::STRING, "type", we_import_functions::TYPE_GENERIC_XML);
 			$selection = we_base_request::_(we_base_request::STRING, "selection", "filter");
 			$export_to = we_base_request::_(we_base_request::STRING, "export_to", "server");
-			$path = isset($_REQUEST["path"]) ? urldecode($_REQUEST["path"]) : "/";
+			$path = urldecode(we_base_request::_(we_base_request::FILE, "path", "/"));
 			$filename = we_base_request::_(we_base_request::FILE, "filename", "");
 			$cdata = we_base_request::_(we_base_request::RAW, "cdata", 1);
 
@@ -463,8 +461,8 @@ class we_customer_EIWizard{
 				$new = array("fieldname" => "", "operator" => "", "fieldvalue" => "", "logic" => "");
 				foreach($fields_names as $field){
 					$varname = "filter_" . $field . "_" . $i;
-					if(isset($_REQUEST[$varname])){
-						$filter.=we_html_element::htmlHidden(array("name" => $varname, "value" => $_REQUEST[$varname]));
+					if(($f = we_base_request::_(we_base_request::STRING, $varname)) !== false){
+						$filter.=we_html_element::htmlHidden(array("name" => $varname, "value" => $f));
 					}
 				}
 			}
@@ -1083,8 +1081,8 @@ class we_customer_EIWizard{
 		switch(we_base_request::_(we_base_request::STRING, "cmd")){
 			//------------------------ Export commands --------------------------------------------------------------
 			case "load":
-				if(isset($_REQUEST["pid"])){
-					$out = we_html_element::jsElement("self.location='" . WE_EXPORT_MODULE_DIR . "exportLoadTree.php?we_cmd[1]=" . $_REQUEST["tab"] . "&we_cmd[2]=" . $_REQUEST["pid"] . "&we_cmd[3]=" . $_REQUEST["openFolders"] . "'");
+				if(($pid = we_base_request::_(we_base_request::INT, "pid"))){
+					$out = we_html_element::jsElement("self.location='" . WE_EXPORT_MODULE_DIR . "exportLoadTree.php?we_cmd[1]=" . we_base_request::_(we_base_request::INT, "tab") . "&we_cmd[2]=" . $pid . "&we_cmd[3]=" . we_base_request::_(we_base_request::STRING, "openFolders") . "'");
 				}
 				break;
 			case "export_next":
@@ -1153,7 +1151,7 @@ class we_customer_EIWizard{
 
 				$customers = array();
 
-				if($_REQUEST["selection"] == "manual"){
+				if(we_base_request::_(we_base_request::STRING, "selection") == "manual"){
 					$customers = makeArrayFromCSV(we_base_request::_(we_base_request::RAW, "customers", ""));
 				} else {
 
@@ -1174,9 +1172,8 @@ class we_customer_EIWizard{
 						foreach($fields_names as $field){
 							$var = "filter_" . $field;
 							$varname = $var . "_" . $i;
-							if(isset($_REQUEST[$varname])){
-								${$var}[] = $_REQUEST[$varname];
-								//ex: eval('$' . $var . '[]=$_REQUEST["' . $varname . '"];');
+							if(($val = we_base_request::_(we_base_request::STRING, $varname))){
+								${$var}[] = $val;
 							}
 						}
 					}
@@ -1226,13 +1223,13 @@ class we_customer_EIWizard{
 				break;
 			case "do_export":
 
-				$customers = (isset($_REQUEST["customers"]) && $_REQUEST["customers"] != "") ? makeArrayFromCSV($_REQUEST["customers"]) : null;
-				$file_format = (isset($_REQUEST["file_format"]) && $_REQUEST["file_format"] != "") ? $_REQUEST["file_format"] : null;
-				$export_to = (isset($_REQUEST["export_to"]) && $_REQUEST["export_to"] != "") ? $_REQUEST["export_to"] : null;
-				$path = (isset($_REQUEST["path"]) && $_REQUEST["path"] != "") ? $_REQUEST["path"] : null;
-				$filename = (isset($_REQUEST["filename"]) && $_REQUEST["filename"] != "") ? $_REQUEST["filename"] : null;
-				$firstexec = (isset($_REQUEST["firstexec"]) && $_REQUEST["firstexec"] != "") ? $_REQUEST["firstexec"] : -999;
-				$all = (isset($_REQUEST["all"])) ? $_REQUEST["all"] : 0;
+				$customers = makeArrayFromCSV(we_base_request::_(we_base_request::INTLIST, "customers"));
+				$file_format = we_base_request::_(we_base_request::STRING, "file_format", '');
+				$export_to = we_base_request::_(we_base_request::STRING, "export_to", '');
+				$path = we_base_request::_(we_base_request::FILE, "path", '');
+				$filename = we_base_request::_(we_base_request::FILE, "filename", '');
+				$firstexec = we_base_request::_(we_base_request::INT, "firstexec", -999);
+				$all = we_base_request::_(we_base_request::INT, "all", 0);
 				$cdata = we_base_request::_(we_base_request::RAW, "cdata", 0);
 
 				$hiddens = we_html_element::htmlHidden(array("name" => "file_format", "value" => $file_format)) .
@@ -1243,11 +1240,11 @@ class we_customer_EIWizard{
 				if($file_format == we_import_functions::TYPE_GENERIC_XML){
 					$hiddens.=we_html_element::htmlHidden(array("name" => "cdata", "value" => $cdata));
 				}
-				if($file_format == "csv"){
-					$csv_delimiter = (isset($_REQUEST["csv_delimiter"]) && $_REQUEST["csv_delimiter"] != "") ? $_REQUEST["csv_delimiter"] : null;
-					$csv_enclose = (isset($_REQUEST["csv_enclose"]) && $_REQUEST["csv_enclose"] != "") ? $_REQUEST["csv_enclose"] : null;
-					$csv_lineend = (isset($_REQUEST["csv_lineend"]) && $_REQUEST["csv_lineend"] != "") ? $_REQUEST["csv_lineend"] : null;
-					$csv_fieldnames = (isset($_REQUEST["csv_fieldnames"]) && $_REQUEST["csv_fieldnames"] != "") ? $_REQUEST["csv_fieldnames"] : null;
+				if($file_format == 'csv'){
+					$csv_delimiter = we_base_request::_(we_base_request::RAW, "csv_delimiter", '');
+					$csv_enclose = we_base_request::_(we_base_request::RAW, "csv_enclose", '');
+					$csv_lineend = we_base_request::_(we_base_request::RAW, "csv_lineend", '');
+					$csv_fieldnames = we_base_request::_(we_base_request::STRING, "csv_fieldnames", '');
 
 					$hiddens.=we_html_element::htmlHidden(array("name" => "csv_delimiter", "value" => $csv_delimiter)) .
 						($csv_enclose == '"' ?
@@ -1279,7 +1276,7 @@ class we_customer_EIWizard{
 				}
 
 				$hiddens.=we_html_element::htmlHidden(array("name" => "art", "value" => "export")) .
-					(!empty($customers) ?
+					($customers ?
 						(
 						we_html_element::htmlHidden(array("name" => "pnt", "value" => "eiload")) .
 						we_html_element::htmlHidden(array("name" => "cmd", "value" => "do_export")) .
@@ -1310,10 +1307,10 @@ class we_customer_EIWizard{
 
 				break;
 			case 'end_export':
-				$export_to = (isset($_REQUEST["export_to"]) && $_REQUEST["export_to"] != "") ? $_REQUEST["export_to"] : "server";
-				$file_format = (isset($_REQUEST["file_format"]) && $_REQUEST["file_format"] != "") ? $_REQUEST["file_format"] : null;
-				$filename = (isset($_REQUEST["filename"]) && $_REQUEST["filename"] != "") ? $_REQUEST["filename"] : null;
-				$path = (isset($_REQUEST["path"]) && $_REQUEST["path"] != "") ? $_REQUEST["path"] : null;
+				$export_to = we_base_request::_(we_base_request::FILE, "export_to", "server");
+				$file_format = we_base_request::_(we_base_request::STRING, "file_format", '');
+				$filename = we_base_request::_(we_base_request::FILE, "filename", '');
+				$path = we_base_request::_(we_base_request::FILE, "path", '');
 
 				if($file_format == we_import_functions::TYPE_GENERIC_XML){
 
@@ -1335,7 +1332,7 @@ class we_customer_EIWizard{
 				break;
 			//------------------------ Import commands --------------------------------------------------------------
 			case "import_next":
-				if(isset($_REQUEST["step"])){
+				if(we_base_request::_(we_base_request::INT, "step") !== false){
 					$js = we_html_element::jsElement('
 									function doNext(){
 										' . $this->bodyFrame . '.document.we_form.step.value++;
@@ -1562,8 +1559,8 @@ class we_customer_EIWizard{
 				}
 		');
 
-		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$IDName'].value");
-		$wecmdenc4 = we_cmd_enc(str_replace('\\', '', $cmd));
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['$IDName'].value");
+		$wecmdenc4 = we_base_request::encCmd(str_replace('\\', '', $cmd));
 		$button = we_html_button::create_button("select", "javascript:formFileChooser('browse_server','" . $wecmdenc1 . "','$filter',document.we_form.elements['$IDName'].value,'" . $wecmdenc4 . "');");
 
 		return $js . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 30, $IDValue, "", ' readonly', "text", $width, 0), "", "left", "defaultfont", "", we_html_tools::getPixel(20, 4), permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
@@ -1587,43 +1584,42 @@ class we_customer_EIWizard{
 				}
 		');
 
-		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$IDName'].value");
-		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$Pathname'].value");
-		$wecmdenc3 = we_cmd_enc(str_replace('\\', '', $cmd));
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['$IDName'].value");
+		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['$Pathname'].value");
+		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
 		$button = we_html_button::create_button("select", "javascript:formDirChooser('openDirselector',document.we_form.elements['$IDName'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$rootDirID')");
 		return $js . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, "", ' readonly', "text", $width, 0), "", "left", "defaultfont", we_html_element::htmlHidden(array("name" => $IDName, "value" => $IDValue)), we_html_tools::getPixel(20, 4), $button);
 	}
 
 	function getHTMLCustomer(){
-		if(isset($_REQUEST["wcmd"])){
-			switch(we_base_request::_(we_base_request::STRING, "wcmd")){
-				case "add_customer":
-					$arr = makeArrayFromCSV($_REQUEST["customers"]);
-					if(isset($_REQUEST["cus"])){
-						$ids = makeArrayFromCSV($_REQUEST["cus"]);
-						foreach($ids as $id){
-							if(strlen($id) && (!in_array($id, $arr))){
-								$arr[] = $id;
-							}
+
+		switch(we_base_request::_(we_base_request::STRING, "wcmd")){
+			case "add_customer":
+				$arr = makeArrayFromCSV(we_base_request::_(we_base_request::INTLIST, "customers"));
+				if(($ids = we_base_request::_(we_base_request::INTLIST, "cus"))){
+					foreach(makeArrayFromCSV($ids) as $id){
+						if(strlen($id) && (!in_array($id, $arr))){
+							$arr[] = $id;
 						}
-						$_REQUEST["customers"] = makeCSVFromArray($arr, true);
 					}
-					break;
-				case "del_customer":
-					$arr = makeArrayFromCSV($_REQUEST["customers"]);
-					if(isset($_REQUEST["cus"])){
-						foreach($arr as $k => $v){
-							if($v == $_REQUEST["cus"])
-								array_splice($arr, $k, 1);
+					$_REQUEST["customers"] = makeCSVFromArray($arr, true);
+				}
+				break;
+			case "del_customer":
+				$arr = makeArrayFromCSV(we_base_request::_(we_base_request::INTLIST, "customers"));
+				if(($id = we_base_request::_(we_base_request::INT, "cus"))){
+					foreach($arr as $k => $v){
+						if($v == $id){
+							array_splice($arr, $k, 1);
 						}
-						$_REQUEST["customers"] = makeCSVFromArray($arr, true);
 					}
-					break;
-				case "del_all_customers":
-					$_REQUEST["customers"] = "";
-					break;
-				default:
-			}
+					$_REQUEST["customers"] = makeCSVFromArray($arr, true);
+				}
+				break;
+			case "del_all_customers":
+				$_REQUEST["customers"] = "";
+				break;
+			default:
 		}
 		$customers = we_base_request::_(we_base_request::RAW, "customers", "");
 		$js = we_html_element::jsScript(JS_DIR . "windows.js") .
@@ -1652,7 +1648,7 @@ class we_customer_EIWizard{
 			we_html_element::htmlHidden(array("name" => "cus", "value" => we_base_request::_(we_base_request::RAW, "cus", "")));
 
 
-		$delallbut = we_html_button::create_button("delete_all", "javascript:selector_cmd('del_all_customers')", true, 0, 0, "", "", (isset($_REQUEST["customers"]) ? false : true));
+		$delallbut = we_html_button::create_button("delete_all", "javascript:selector_cmd('del_all_customers')", true, 0, 0, "", "", (we_base_request::_(we_base_request::STRING, "customers") ? false : true));
 		$addbut = we_html_button::create_button("add", "javascript:selector_cmd('openSelector','','" . CUSTOMER_TABLE . "','','','fillIDs();opener." . $this->bodyFrame . ".selector_cmd(\\'add_customer\\',top.allIDs);')");
 		$custs = new MultiDirChooser(400, $customers, "del_customer", we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", CUSTOMER_TABLE);
 
@@ -1667,9 +1663,9 @@ class we_customer_EIWizard{
 			$Pathvalue = f("SELECT Path FROM " . $this->db->escape($table) . " WHERE ID=" . intval($IDValue) . ";", "Path", $this->db);
 		}
 
-		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$IDName'].value");
-		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$Pathname'].value");
-		$wecmdenc3 = we_cmd_enc(str_replace('\\', '', $cmd));
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['$IDName'].value");
+		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['$Pathname'].value");
+		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
 		$button = we_html_button::create_button("select", "javascript:selector_cmd('openSelector',document.we_form.elements['$IDName'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$rootDirID')");
 
 		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, "", 'readonly', "text", $width, 0), "", "left", "defaultfont", we_html_element::htmlHidden(array("name" => $IDName, "value" => $IDValue)), we_html_tools::getPixel(20, 4), $button);
@@ -1749,9 +1745,8 @@ class we_customer_EIWizard{
 		for($i = 0; $i < $count; $i++){
 			$new = array("fieldname" => "", "operator" => "", "fieldvalue" => "", "logic" => "");
 			foreach($fields_names as $field){
-				$varname = "filter_" . $field . "_" . $i;
-				if(isset($_REQUEST[$varname])){
-					$new[$field] = $_REQUEST[$varname];
+				if(($val = we_base_request::_(we_base_request::STRING, "filter_" . $field . "_" . $i))){
+					$new[$field] = $val;
 				}
 			}
 			if($i != 0){

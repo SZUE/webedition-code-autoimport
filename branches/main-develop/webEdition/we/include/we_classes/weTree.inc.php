@@ -83,7 +83,7 @@ class weTree{
 			'.selected_group a { text-decoration:none;}',
 		));
 
-		$this->setItemsCount(getPref('default_tree_count'));
+		$this->setItemsCount(we_base_preferences::getUserPref('default_tree_count'));
 	}
 
 	function init($frameset, $topFrame, $treeFrame, $cmdFrame){
@@ -819,7 +819,8 @@ row+="&nbsp;&nbsp;<br/>";'
 	}
 
 	function setItemsCount($count){
-		$this->default_segment = $count;
+		$count = intval($count);
+		$this->default_segment = ($count ? $count : 30);
 	}
 
 	static function deleteTreeEntries($dontDeleteClassFolders = false){

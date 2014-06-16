@@ -45,7 +45,7 @@ class copyFolderFrag extends taskFragment{
 				}
 			}
 		}
-		$newCategories = implode(",", $newCategories);
+		$newCategories = implode(',', $newCategories);
 
 		if(isset($_SESSION['weS']['WE_CREATE_DOCTYPE'])){
 			unset($_SESSION['weS']['WE_CREATE_DOCTYPE']);
@@ -611,7 +611,8 @@ class copyFolderFrag extends taskFragment{
 		$we_doc->i_setDocument($doc);
 	}
 
-	function parseInternalLinks(&$text, we_database_base $DB_WE){
+	//FIXME: check why this is different to we_document::parseInternalLinks
+	private function parseInternalLinks(&$text, we_database_base $DB_WE){
 		$regs = array();
 		if(preg_match_all('/(href|src)="' . we_base_link::TYPE_INT_PREFIX . '([^" ]+)/i', $text, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
@@ -696,9 +697,9 @@ function fsubmit(e) {
 		$yuiSuggest->setSelector(weSuggest::DirSelector);
 		$yuiSuggest->setTable(TEMPLATES_TABLE);
 		$yuiSuggest->setWidth(370);
-		$wecmdenc1 = we_cmd_enc("document.we_form.elements['CreateTemplateInFolderID'].value");
-		$wecmdenc2 = we_cmd_enc("document.we_form.elements['foo'].value");
-		$wecmdenc3 = we_cmd_enc("opener.document.we_form.CreateTemplate.checked=true;");
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['CreateTemplateInFolderID'].value");
+		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['foo'].value");
+		$wecmdenc3 = we_base_request::encCmd("opener.document.we_form.CreateTemplate.checked=true;");
 		$yuiSuggest->setSelectButton(we_html_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['CreateTemplateInFolderID'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "')", true, 100, 22, "", "", true, false));
 
 		return $yuiSuggest->getHTML();
