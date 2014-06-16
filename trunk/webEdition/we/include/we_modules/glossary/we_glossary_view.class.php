@@ -78,6 +78,7 @@ class we_glossary_view{
 	 * @var string
 	 */
 	var $GroupPattern = "";
+	private $page=0;
 
 	/**
 	 * @param string $FrameSet
@@ -502,7 +503,7 @@ function we_cmd() {
 				break;
 
 			case 'save_exception':
-				if(!$cmdid || ($exception = we_base_request::_(we_base_request::STRING, 'Exception'))){
+				if(!$cmdid || !($exception = we_base_request::_(we_base_request::STRING, 'Exception'))){
 					break;
 				}
 
