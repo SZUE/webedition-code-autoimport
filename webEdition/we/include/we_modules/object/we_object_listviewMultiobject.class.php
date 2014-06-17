@@ -277,10 +277,7 @@ class we_object_listviewMultiobject extends listviewBase{
 
 	function makeSQLParts($matrix, $classID, $order, $cond){
 		//FIXME: order ist totaler nonsense - das geht deutlich einfacher
-		$from = array();
-		$orderArr = array();
-		$descArr = array();
-		$ordertmp = array();
+		$from = $orderArr = $descArr = $ordertmp = array();
 
 		$cond = ' ' . preg_replace_callback("/'([^']*)'/", 'we_object_listview::encodeEregString', strtr($cond, array('&gt;' => '>', '&lt;' => '<'))) . ' ';
 
@@ -298,7 +295,7 @@ class we_object_listviewMultiobject extends listviewBase{
 		$_fieldnames = getHash('SELECT DefaultDesc,DefaultTitle,DefaultKeywords,CreationDate,ModDate FROM ' . OBJECT_TABLE . ' WHERE ID=' . $classID, $this->DB_WE);
 		$_selFields = '';
 		foreach($_fieldnames as $_key => $_val){
-			if(empty($_val) || $_val == '_'){ // bug #4657
+			if(!$_val || $_val == '_'){ // bug #4657
 				continue;
 			}
 			if(!is_numeric($_key) && $_val){
