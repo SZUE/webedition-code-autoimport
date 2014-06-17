@@ -43,12 +43,12 @@ class liveUpdateFrames{
 		switch($this->Section){
 			case 'frameset':
 				// open frameset
-				$this->Data['activeTab'] = $this->getValidTab(we_base_request::_(we_base_request::INT, 'active', ''));
+				$this->Data['activeTab'] = $this->getValidTab(we_base_request::_(we_base_request::STRING, 'active', ''));
 
 				break;
 			case 'tabs':
 				// frame with tabs
-				$this->Data['activeTab'] = we_base_request::_(we_base_request::INT, 'active', '');
+				$this->Data['activeTab'] = we_base_request::_(we_base_request::STRING, 'active', '');
 				$this->Data['allTabs'] = $this->getAllTabs();
 				break;
 
