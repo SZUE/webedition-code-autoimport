@@ -278,7 +278,7 @@ abstract class we_customer_abstractFilter{
 		$customers = array();
 		$i = 0;
 		while(true){
-			if(($val = we_base_request::_(we_base_request::STRING, $name . '_variant0_' . $name . '_item' . $i))){
+			if(($val = we_base_request::_(we_base_request::STRINGC, $name . '_variant0_' . $name . '_item' . $i))){
 				$customers[] = $val;
 				$i++;
 			} else {
@@ -301,7 +301,7 @@ abstract class we_customer_abstractFilter{
 
 		$i = 0;
 		while(true){
-			if(($val = we_base_request::_(we_base_request::STRING, $name . '_variant0_' . $name . '_item' . $i))){
+			if(($val = we_base_request::_(we_base_request::STRINGC, $name . '_variant0_' . $name . '_item' . $i))){
 				$blackList[] = $val;
 				$i++;
 			} else {
@@ -317,13 +317,13 @@ abstract class we_customer_abstractFilter{
 	 * @return array
 	 */
 	static function getWhiteListFromRequest(){
-		if(($name = we_base_request::_(we_base_request::STRING, 'whiteListEditControl'))){
+		if(!($name = we_base_request::_(we_base_request::STRING, 'whiteListEditControl'))){
 			return array();
 		}
 		$whiteList = array();
 		$i = 0;
 		while(true){
-			if(($val = we_base_request::_(we_base_request::STRING, $name . '_variant0_' . $name . '_item' . $i))){
+			if(($val = we_base_request::_(we_base_request::STRINGC, $name . '_variant0_' . $name . '_item' . $i))){
 				$whiteList[] = $val;
 				$i++;
 			} else {
