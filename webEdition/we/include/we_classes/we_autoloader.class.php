@@ -47,6 +47,7 @@ abstract class we_autoloader{
 		'glossary' => 'we_modules/glossary',
 		'helpers' => 'we_classes/helpers',
 		'html' => 'we_classes/html',
+		'http' => 'we_classes/http',
 		'import' => 'we_import',
 		'main' => 'we_classes/main',
 		'messaging' => 'we_modules/messaging',
@@ -92,8 +93,6 @@ abstract class we_autoloader{
 			'copyFolderFinishFrag' => 'we_copyFolderFinishFrag.class.php',
 			'copyFolderFrag' => 'we_copyFolderFrag.class.php',
 			'DB_WE' => 'database/DB_WE.inc.php', //pseudo-element which loads a wrapper, doesn't contain a real class!
-			'HttpRequest' => 'http/HttpRequest.class.php',
-			'HttpResponse' => 'http/HttpResponse.class.php',
 			'Image_IPTC' => 'weMetaData/lib/PEAR_IPTC.php',
 			'Image_Transform_Driver_GD' => 'Transform/Driver/GD.php',
 			'Image_Transform' => 'Transform.php',
