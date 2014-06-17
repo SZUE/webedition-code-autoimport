@@ -27,7 +27,7 @@
  * This class can create a HTTP Request. It is possible to submit data to a certain web-site
  * via POST or GET.
  */
-class HttpRequest{
+class we_http_request{
 
 	var $http_path = '';
 	var $http_host = '';

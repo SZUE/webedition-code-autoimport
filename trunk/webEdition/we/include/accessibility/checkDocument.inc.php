@@ -42,7 +42,7 @@ if(($we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_trans
 	$varname = we_base_request::_(we_base_request::STRING, 'varname');
 	$contentType = we_base_request::_(we_base_request::STRING, 'ctype');
 
-	$http_request = new HttpRequest($path, $host, $s_method);
+	$http_request = new we_http_request($path, $host, $s_method);
 	$http_request->addHeader('User-Agent', $_SERVER['HTTP_USER_AGENT']);
 
 	//  add additional parameters to the request
@@ -81,7 +81,7 @@ if(($we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_trans
 	//  check if all worked well..
 	if(!$http_request->error){
 
-		$http_response = new HttpResponse($http_request->getHttpResponseStr());
+		$http_response = new we_http_response($http_request->getHttpResponseStr());
 
 		if($http_response->getHttp_answer('code') == 200){
 			//  change base href -> css of included page is loaded correctly
