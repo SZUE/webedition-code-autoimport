@@ -379,7 +379,9 @@ class we_objectFile extends we_document{
 
 	function setRootDirID($doit = false){
 		if($this->InWebEdition || $doit){
-			list($this->RootDirPath, $this->rootDirID) = getHash('SELECT o.Path,of.ID FROM ' . OBJECT_FILES_TABLE . ' of, ' . OBJECT_TABLE . ' o WHERE o.Path=of.Path AND o.ID=' . intval($this->TableID), $this->DB_WE, MYSQL_NUM);
+			$hash = getHash('SELECT o.Path,of.ID FROM ' . OBJECT_FILES_TABLE . ' of, ' . OBJECT_TABLE . ' o WHERE o.Path=of.Path AND o.ID=' . intval($this->TableID), $this->DB_WE);
+			$this->RootDirPath = $hash['Path'];
+			$this->rootDirID = $hash['ID'];
 		}
 	}
 
@@ -883,9 +885,9 @@ class we_objectFile extends we_document{
 		$idname = 'we_' . $this->Name . '_object[we_object_' . $ObjectID . ']';
 		$myid = $this->getElement('we_object_' . $ObjectID);
 		$path = $this->getElement('we_object_' . $ObjectID . '_path');
-		$tmp = getHash('SELECT Path,Published FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($myid), $db, MYSQL_NUM);
-		if($tmp){
-			list($path, $npubl) = $tmp;
+		if(($tmp = getHash('SELECT Path,Published FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($myid), $db))){
+			$path = $tmp['Path'];
+			$npubl = $tmp['Published'];
 		}
 		if($path == ''){
 			$myid = 0;
@@ -1644,7 +1646,9 @@ class we_objectFile extends we_document{
 	}
 
 	function formWorkspaces(){
-		list($ws, $ts) = getHash('SELECT Workspaces,Templates FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), $this->DB_WE, MYSQL_NUM);
+		$hash = getHash('SELECT Workspaces,Templates FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), $this->DB_WE);
+		$ws = $hash['Workspaces'];
+		$ts = $hash['Templates'];
 
 		$values = getHashArrayFromCSV($this->getPossibleWorkspaces($ws), '', $this->DB_WE);
 		foreach($values as $id => $val){
@@ -1773,8 +1777,9 @@ class we_objectFile extends we_document{
 	}
 
 	function formExtraWorkspaces(){
-		list($ws, $ts) = getHash('SELECT Workspaces,Templates FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), $this->DB_WE, MYSQL_NUM);
-
+		$hash = getHash('SELECT Workspaces,Templates FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), $this->DB_WE);
+		$ws = $hash['Workspaces'];
+		$ts = $hash['Templates'];
 
 // values bekommen aller workspaces, welche hinzugef�gt werden d�rfen.
 		$values = getHashArrayFromCSV($this->getPossibleWorkspaces($ws, true), '', $this->DB_WE);
@@ -3041,7 +3046,9 @@ class we_objectFile extends we_document{
 	}
 
 	protected function updateRemoteLang($db, $id, $lang, $type){
-		list($oldLang, $tid) = getHash('SELECT Language,TableID FROM ' . $this->Table . ' WHERE ID=' . $id, $db, MYSQL_NUM);
+		$hash = getHash('SELECT Language,TableID FROM ' . $this->Table . ' WHERE ID=' . $id, $db);
+		$oldLang = $hash['Language'];
+		$tid = $hash['TableID'];
 		if($oldLang == $lang){
 			return;
 		}

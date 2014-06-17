@@ -568,8 +568,9 @@ we_templateInit();?>';
 	}
 
 	static function getUsedTemplatesOfTemplate($id, &$arr){
-		$hash = getHash('SELECT IncludedTemplates, MasterTemplateID FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($id), null, MYSQL_NUM);
-		list($_tmplCSV, $_masterTemplateID) = ($hash ? $hash : array('', 0));
+		$hash = getHash('SELECT IncludedTemplates, MasterTemplateID FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($id));
+		$_tmplCSV = ($hash ? $hash['IncludedTemplates'] : '');
+		$_masterTemplateID = ($hash ? $hash['MasterTemplateID'] : 0);
 
 		$_tmpArr = makeArrayFromCSV($_tmplCSV);
 		foreach($_tmpArr as $_tid){

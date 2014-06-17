@@ -319,7 +319,9 @@ class we_webEditionDocument extends we_textContentDocument{
 
 		$fieldname = 'we_' . $this->Name . '_TemplateID';
 
-		list($TID, $Templates) = getHash('SELECT TemplateID,Templates FROM ' . DOC_TYPES_TABLE . ' WHERE ID =' . intval($this->DocType), $this->DB_WE, MYSQL_NUM);
+		$hash = getHash('SELECT TemplateID,Templates FROM ' . DOC_TYPES_TABLE . ' WHERE ID =' . intval($this->DocType), $this->DB_WE);
+		$TID = $hash['TemplateID'];
+		$Templates = $hash['Templates'];
 		$tlist = '';
 		if($TID != ''){
 			$tlist = $TID;
