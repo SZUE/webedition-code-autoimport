@@ -225,7 +225,7 @@ class we_version{
 				foreach($_foo as $catID){
 					$tmp[] = " Category LIKE '%," . intval($catID) . ",%'";
 				}
-				$_cat_query = '(' . implode(' ' . ($catAnd ? 'AND' : 'OR') . ' ', $tmp) . ')';
+				$_cat_query = '(' . implode(' ' . ($catAnd ? ' AND ' : ' OR ') . ' ', $tmp) . ')';
 			}
 			if($doctypes){
 				$_foo = makeArrayFromCSV($doctypes);
