@@ -21,6 +21,9 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+exit();
+//currently unused
+
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
@@ -69,8 +72,7 @@ echo STYLESHEET;
 
 		$heading = g_l('modules_messaging', '[settings]');
 		$t_vals = array('-1' => 0, '1' => 1, '2' => 2, '3' => 3, '4' => 4, '5' => 5, '10' => 10, '15' => 15, '30' => 30, '45' => 45, '60' => 60);
-		$settings = $messaging->get_settings();
-		$check_step = isset($settings['check_step']) ? $settings['check_step'] : "";
+		$check_step = $messaging->get_settings();
 
 		$input_tbl = '<table>
 <tr>

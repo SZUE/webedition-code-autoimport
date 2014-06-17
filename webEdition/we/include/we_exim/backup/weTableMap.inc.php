@@ -107,7 +107,6 @@ if(defined('MSG_TODO_TABLE')){
 		strtolower(stripTblPrefix(MSG_ACCOUNTS_TABLE)) => MSG_ACCOUNTS_TABLE,
 		strtolower(stripTblPrefix(MSG_ADDRBOOK_TABLE)) => MSG_ADDRBOOK_TABLE,
 		strtolower(stripTblPrefix(MSG_FOLDERS_TABLE)) => MSG_FOLDERS_TABLE,
-		strtolower(stripTblPrefix(MSG_SETTINGS_TABLE)) => MSG_SETTINGS_TABLE
 	);
 }
 
