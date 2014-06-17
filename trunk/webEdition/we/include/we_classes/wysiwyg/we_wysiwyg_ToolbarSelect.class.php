@@ -32,10 +32,12 @@ class we_wysiwyg_ToolbarSelect extends we_wysiwyg_ToolbarElement{
 
 	function hasProp($cmd = '', $contextMenu = false){
 		switch($this->cmd){
-			case "fontname":
-			case "fontsize":
-			case "formatblock":
-				return parent::hasProp() || parent::hasProp('font');
+			case 'fontname':
+			case 'fontsize':
+				return parent::hasProp('', $contextMenu) || parent::hasProp('font', $contextMenu);
+			case 'formatblock':
+			case 'applystyle':
+				return parent::hasProp('', $contextMenu) || parent::hasProp('prop', $contextMenu);				
 			default:
 				return parent::hasProp();
 		}

@@ -21,10 +21,12 @@
 class we_wysiwyg_ToolbarSeparator extends we_wysiwyg_ToolbarElement{
 
 	var $classname = __CLASS__;
+	public $conditional = false;
 
-	function __construct($editor, $width = 3, $height = 22){
-		$width = we_wysiwyg_editor::$editorType == 'tinyMCE' ? 5 : $width; //TinyMCE: 3px separator + 1px block-border on both sides
-		parent::__construct($editor, "", $width, $height);
+	function __construct($editor, $conditional = false, $width = 3, $height = 22){
+		$width = $conditional ? 0 : (we_wysiwyg_editor::$editorType == 'tinyMCE' ? 5 : $width);//TinyMCE: 3px separator + 1px block-border on both sides
+		parent::__construct($editor, '', $width, $height);
+		$this->conditional = $conditional;
 	}
 
 	function getHTML(){

@@ -162,15 +162,19 @@
 
 			var groups = {
 					'top' : [m,'',''],
-					'justify' : [null,'contextmenu.align','top'], 
-					'format' : [null,'advanced.style_select','top'],
-					'layer' : [null,'we.group_layer','top'],
-					'xhtml' : [null,'we.group_xhtml','top'],
-					'insert' : [null,'we.group_insert','top'],
-					'edit' : [null,'we.group_edit','top'],
-					'indent' : [null,'we.group_indent','top'],
+					//font: not in cm
+					'prop' : [null,'advanced.style_select','top'],
+					'xhtmlxtras' : [null,'we.group_xhtml','top'],
+					//color: not in cm
+					'justify' : [null,'contextmenu.align','top'],
+					'list' : [null,'we.group_indent','top'],
+					'link' : [null,'we.group_link','top'],
 					'table' : [null,'we.group_table','top'],
-					'view' : [null,'we.group_view','top'],
+					'insert' : [null,'we.group_insert','top'],
+					'copypaste' : [null,'we.group_copypaste','top'],
+					'layer' : [null,'we.group_layer','top'],
+					//'essential' : [null,'we.group_essential','top'],//on top
+					'advanced' : [null,'we.group_advanced','top'],
 					'table_cell' : [null,'table.cell','table'],
 					'table_row' : [null,'table.row','table'],
 					'table_col' : [null,'table.col','table']
@@ -178,73 +182,50 @@
 
 			var langSuffix = ed.settings.language === 'de' ? 'de_' : '';
 
-			var items = new Array(
-				['selectall','selectall','edit']
-			);
-			if(tinymce.isIE){
-				items.push(
-					['cut','cut','edit'],
-					['copy','copy','edit'],
-					['paste','paste','edit']
-				);
-			}
+			var items = new Array();
 			items.push(
-				['pastetext','pastetext','edit'],
-				['pasteword','pasteword','edit'],
-				['undo','undo','edit'],
-				['redo','redo','edit'],
-				['replace','replace','edit'],
-				['cleanup','cleanup','edit'],
-				['separator','','top',false,true],
+				['weadaptbold',ed.settings.wePluginClasses.weadaptbold,'prop'],
+				['weadaptitalic',ed.settings.wePluginClasses.weadaptitalic,'prop'],
+				['underline','underline','prop'],
+				['strikethrough','strikethrough','prop'],
+				['separator','','prop',true,true],
+				['sub','sub','prop'],
+				['sup','sup','prop'],
+				['separator','','prop',true,true],
+				['styleprops','styleprops','prop'],
+				['removeformat','removeformat','prop'],
+				['cleanup','cleanup','prop'],
+				['separator','','prop',false,true],
 
-				['weadaptbold',ed.settings.wePluginClasses.weadaptbold,'format'],
-				['weadaptitalic',ed.settings.wePluginClasses.weadaptitalic,'format'],
-				['underline','underline','format'],
-				['strikethrough','strikethrough','format'],
-				['separator','','format',true,true],
-				['sub','sub','format'],
-				['sup','sup','format'],
-				['separator','','format',true,true],
-				['styleprops','styleprops','format'],
-				['removeformat','removeformat','format'],
-				['separator','','top',false,true],
+				['cite','cite','xhtmlxtras'],
+				['weacronym',ed.settings.wePluginClasses.weacronym,'xhtmlxtras'],
+				['weabbr',ed.settings.wePluginClasses.weabbr,'xhtmlxtras'],
+				['welang','welang','xhtmlxtras'],
+				['separator','','xhtmlxtras',true,true],
+				['del','del','xhtmlxtras'],
+				['ins','ins','xhtmlxtras'],
+				['separator','','xhtmlxtras',true,true],
+				['ltr','ltr','xhtmlxtras'],
+				['rtl','rtl','xhtmlxtras'],
+				['separator','','xhtmlxtras',false,true],
 
 				['justifyleft','justifyleft','justify'],
 				['justifycenter','justifycenter','justify'],
 				['justifyright','justifyright','justify'],
 				['justifyfull','justifyfull','justify'],
+				['separator','','justify',false,true],
 
-				['indent','indent','indent'],
-				['outdent','outdent','indent'],
-				['blockquote','blockquote','indent'],
+				//['insertunorderedlist','insertunorderedlist','list'],
+				//['insertorderedlist','insertorderedlist','list'],
+				['indent','indent','list'],
+				['outdent','outdent','list'],
+				['blockquote','blockquote','list'],
+				['separator','','list',false,true],
 
-				['cite','cite','xhtml'],
-				['weacronym',ed.settings.wePluginClasses.weacronym,'xhtml'],
-				['weabbr',ed.settings.wePluginClasses.weabbr,'xhtml'],
-				['welang','welang','xhtml'],
-				['del','del','xhtml'],
-				['ins','ins','xhtml'],
-
-				['welink','welink','insert'],
-				['weadaptunlink','unlink','insert'],
-				['anchor','anchor','insert'],
-				['weimage','weimage','insert'],
-				['separator','','insert',true,true],
-				['insertdate','insertdate','insert'],
-				['inserttime','inserttime','insert'],
-				['separator','','insert',true,true],
-				['hr','hr','insert'],
-				['advhr','advhr', 'insert'],
-				['separator','','insert',true,true],
-				['charmap','charmap','insert'],
-				['nonbreaking','nonbreaking','insert'],
-				['weinsertbreak','weinsertbreak', 'insert'],
-
-				['insertlayer','insertlayer','layer'],
-				['absolute','absolute','layer'],
-				['movebackward','backward','layer'],
-				['moveforward','forward','layer'],
-				['separator','','insert',false,true],
+				['welink','welink','link'],
+				['weadaptunlink','unlink','link'],
+				['anchor','anchor','link'],
+				['separator','','link',false,true],
 
 				['table','table','table','we.cm_inserttable',{action:'insert'}],
 				['table','table_props','table','we.cm_table_props'],
@@ -262,12 +243,41 @@
 				['col_before','col_before','table_col'],
 				['col_after','col_after','table_col'],
 				['delete_col','delete_col','table_col'],
+				['separator','','table',false,true],
 
+				['weimage','weimage','insert'],
+				['separator','','insert',true,true],
+				['hr','hr','insert'],
+				['advhr','advhr', 'insert'],
+				['separator','','insert',true,true],
+				['charmap','charmap','insert'],
+				['weinsertbreak','weinsertbreak', 'insert'],
+				['separator','','insert',true,true],
+				['insertdate','insertdate','insert'],
+				['inserttime','inserttime','insert'],
+				['separator','','insert',false,true],
+
+				['pastetext','pastetext','copypaste'],
+				['pasteword','pasteword','copypaste'],
+				['separator','','copypaste',false,true],
+
+				['insertlayer','insertlayer','layer'],
+				['absolute','absolute','layer'],
+				['movebackward','backward','layer'],
+				['moveforward','forward','layer'],
 				['separator','','top',true,true],
 
-				['code','code','top'],
-				['wevisualaid','wevisualaid','top'],
-				['wefullscreen','wefullscreen','top']
+				['code','code','advanced'],
+				['template','template','advanced'],
+				['wevisualaid','wevisualaid','advanced'],
+				['wefullscreen','wefullscreen','advanced'],
+				['separator','','top',true,true],
+
+				['undo','undo','top'],
+				['redo','redo','top'],
+				['selectall','selectall','top'],
+				['replace','replace','top'],
+				['separator','','top',false,true]
 			);
 
 			//verify commands, restrict cm-items when param we_restrict_contextmenu not empty, and count cm-items
