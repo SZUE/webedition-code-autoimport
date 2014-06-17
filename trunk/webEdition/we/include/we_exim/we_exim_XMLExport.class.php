@@ -209,7 +209,7 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 			}
 		}
 
-		return we_users_util::makeOwnersSql() . ( $wsQuery ? 'OR (' . $wsQuery . ')' : '');
+		return we_users_util::makeOwnersSql() . ( $wsQuery ? ' OR (' . $wsQuery . ')' : '');
 	}
 
 	function getIDs($selIDs, $table, $with_dirs = false){

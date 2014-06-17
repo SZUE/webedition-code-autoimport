@@ -252,7 +252,7 @@ abstract class we_customer_abstractFilter{
 
 				if(trim(($val = we_base_request::_(we_base_request::STRING, 'filterValue_' . $count)))){
 					$filter[] = array(
-						'logic' => (we_base_request::_(we_base_request::STRING, 'filterLogic_' . $count) == 'OR' ? 'OR' : 'AND'),
+						'logic' => (we_base_request::_(we_base_request::STRING, 'filterLogic_' . $count) == 'OR' ? ' OR ' : ' AND '),
 						'field' => $field,
 						'operation' => we_base_request::_(we_base_request::INT, 'filterOperation_' . $count),
 						'value' => $val

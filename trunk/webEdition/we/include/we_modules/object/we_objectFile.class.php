@@ -866,12 +866,12 @@ class we_objectFile extends we_document{
 
 	function getMetaFieldHTML($name, $attribs, $editable = true, $variant = false){
 		$vals = ($variant ? $attribs['meta'] : $this->DefArray['meta_' . $name]['meta']);
-
+		$element = $this->getElement($name);
 		if(!$editable){
-			return $this->getPreviewView($name, $vals[$this->getElement($name)]);
+			return $this->getPreviewView($name, isset($vals[$element]) ? $vals[$element] : '');
 		}
 		return ($variant ?
-				$this->htmlSelect('we_' . $this->Name . '_meta[' . $name . ']', $vals, 1, $this->getElement($name)) :
+				$this->htmlSelect('we_' . $this->Name . '_meta[' . $name . ']', $vals, 1, $element) :
 				$this->formSelectFromArray('meta', $name, $vals, '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["meta_" . $name]["required"] ? "*" : "") . "</span>" . ( isset($this->DefArray["meta_$name"]['editdescription']) && $this->DefArray["meta_$name"]['editdescription'] ? '<div class="objectDescription">' . str_replace("\n", we_html_element::htmlBr(), $this->DefArray["meta_$name"]['editdescription']) . '</div>' : we_html_element::htmlBr()), 1, false, array('onchange' => '_EditorFrame.setEditorIsHot(true);')));
 	}
 

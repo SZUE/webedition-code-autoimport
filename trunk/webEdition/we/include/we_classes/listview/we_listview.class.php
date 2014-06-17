@@ -104,7 +104,7 @@ class we_listview extends listviewBase{
 			$langArray = makeArrayFromCSV($this->languages);
 			$where_lang .= FILE_TABLE . '.Language = "" ';
 			for($i = 0; $i < count($langArray); $i++){
-				$where_lang .= 'OR ' . FILE_TABLE . '.Language = "' . $langArray[$i] . '" ';
+				$where_lang .= ' OR ' . FILE_TABLE . '.Language = "' . $langArray[$i] . '" ';
 			}
 
 			$where_lang .= ' ) ';

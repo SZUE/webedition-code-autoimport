@@ -74,8 +74,8 @@ function we_tag($name, $attribs = array(), $content = ''){
 		$nameTo = '';
 		$to = 'screen';
 	} else {
-		$nameTo = weTag_getAttribute('nameto', $attribs);
 		$to = weTag_getAttribute('to', $attribs, 'screen');
+		$nameTo = weTag_getAttribute('nameto', $attribs, isset($attribs['name']) ? $attribs['name'] : '');
 		$attribs = removeAttribs($attribs, array('cachelifetime', 'comment', 'to', 'nameto', 'user'));
 
 		/* if to attribute is set, output of the tag is redirected to a variable
