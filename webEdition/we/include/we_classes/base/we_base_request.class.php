@@ -170,7 +170,7 @@ class we_base_request{
 		$var = $_REQUEST;
 		$args = func_get_args();
 		/* fixme temporary until 6.3.9 release */
-		if(func_num_args()==4 && $args[3] === null){
+		if(func_num_args() == 4 && $args[3] === null){
 			unset($args[3]);
 		}
 		/* end fix */
@@ -201,6 +201,12 @@ class we_base_request{
 					return $var;
 				case self::INTLIST:
 					$oldVar = trim($var, ',');
+					$cmp = '' . $var;
+					break;
+				case self::INT:
+					if($oldVar === ''){//treat empty as 0
+						return $var;
+					}
 					$cmp = '' . $var;
 					break;
 				case self::BOOL://bool is transfered as 0/1
