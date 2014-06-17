@@ -113,7 +113,7 @@ $_we_available_modules = array(
 		'perm' => '',
 		'inModuleMenu' => true,
 		'integrated' => true,
-		'hasSettings' => true,
+		'hasSettings' => false, //the only setting was not used
 		'dependson' => '',
 		'childmodule' => 'workflow'
 	),

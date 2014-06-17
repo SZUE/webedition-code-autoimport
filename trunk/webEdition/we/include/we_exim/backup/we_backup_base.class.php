@@ -159,7 +159,6 @@ abstract class we_backup_base{
 				'tblmsgaccounts' => MSG_ACCOUNTS_TABLE,
 				'tblmsgaddrbook' => MSG_ADDRBOOK_TABLE,
 				'tblmsgfolders' => MSG_FOLDERS_TABLE,
-				'tblmsgsettings' => MSG_SETTINGS_TABLE
 				)
 			);
 		}
