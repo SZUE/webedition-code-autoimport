@@ -147,10 +147,10 @@ function we_tag_include($attribs){
 			$GLOBALS['we_doc']->ContentType != we_base_ContentTypes::WEDOCUMENT //don't include any unknown document
 		){
 			return '';
-		} else {
-			$tmp = getHash('SELECT Path,ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . ' AND Published>0', null, MYSQL_NUM);
-			list($realPath, $ct) = $tmp ? $tmp : array('', '');
 		}
+		$tmp = getHash('SELECT Path,ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . ' AND Published>0', null);
+		$realPath = $tmp ? $tmp['Path'] : '';
+		$ct = $tmp ? $tmp['ContentType'] : '';
 	} else {
 		$realPath = $path;
 	}

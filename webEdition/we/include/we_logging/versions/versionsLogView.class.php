@@ -265,9 +265,9 @@ class versionsLogView{
 	}
 
 	function handleData($logId, $start, $anzahl){
-		list($data, $action) = getHash('SELECT data,action FROM `' . VERSIONSLOG_TABLE . '` WHERE ID=' . intval($logId), new DB_WE(),MYSQL_NUM);
-
-		$data = unserialize($data);
+		$hash = getHash('SELECT data,action FROM `' . VERSIONSLOG_TABLE . '` WHERE ID=' . intval($logId), new DB_WE());
+		$action = $hash['action'];
+		$data = unserialize($hash['data']);
 
 		$out = '';
 

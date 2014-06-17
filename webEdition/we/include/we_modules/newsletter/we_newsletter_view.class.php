@@ -53,6 +53,7 @@ class we_newsletter_view{
 		$this->newsletter = new we_newsletter_newsletter();
 		$this->frameset = WE_NEWSLETTER_MODULE_DIR . 'edit_newsletter_frameset.php';
 		$this->settings = self::getSettings();
+		//FIXME: add types for settings
 
 		if(defined('CUSTOMER_TABLE')){
 			$this->customers_fields = array();

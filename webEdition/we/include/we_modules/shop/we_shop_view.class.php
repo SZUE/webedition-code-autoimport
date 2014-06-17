@@ -964,7 +964,7 @@ function we_cmd() {
 				echo we_message_reporting::getShowMessageCall($alertMessage, $alertType);
 			}
 			?>
-//->
+			//->
 			</script>
 
 			</head>
@@ -1805,7 +1805,9 @@ attribs["tooltip"]="";' .
 	}
 
 	private function getOrderCustomerData($orderId, array $strFelder = array()){
-		list($customerId, $tmp) = getHash('SELECT IntCustomerID,strSerialOrder FROM ' . SHOP_TABLE . '	WHERE IntOrderID=' . intval($orderId), $this->db, MYSQL_NUM);
+		$hash = getHash('SELECT IntCustomerID,strSerialOrder FROM ' . SHOP_TABLE . '	WHERE IntOrderID=' . intval($orderId), $this->db);
+		$customerId = $hash['IntCustomerID'];
+		$tmp = $hash['strSerialOrder'];
 		// get Customer
 		$customerDb = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($customerId), $this->db, MYSQL_ASSOC);
 
