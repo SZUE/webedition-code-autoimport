@@ -175,7 +175,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 		}
 		break;
 	case 'add_cat':
-		$we_doc->addCat(we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1));
+		$we_doc->addCat(we_base_request::_(we_base_request::INTLIST, 'we_cmd', 0, 1));
 		break;
 	case 'delete_cat':
 		$we_doc->delCat(we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1));

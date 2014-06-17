@@ -826,7 +826,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 	}
 
 	function getFrameset(){
-		$isMainChooser = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) == 'openCatselector' && !(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 3) || we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 5));
+		$isMainChooser = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) == 'openCatselector' && !(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 3) || we_base_request::_(we_base_request::JS, 'we_cmd', false, 5));
 		return '<frameset rows="67,*,65,0" border="0">
 	<frame src="' . $this->getFsQueryString(we_selector_file::HEADER) . '" name="fsheader" noresize scrolling="no">
 ' . ($isMainChooser ? '<frameset cols="35%,65%" border="0">' : '') . '
