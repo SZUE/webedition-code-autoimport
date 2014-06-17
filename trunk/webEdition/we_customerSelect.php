@@ -27,6 +27,6 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 $_SERVER['SCRIPT_NAME'] = WEBEDITION_DIR . 'we_customerSelect.php';
 
-$fs = new we_customer_selector(we_base_request::_(we_base_request::INT, 'id', 0), we_base_request::_(we_base_request::STRING, 'JSIDName', ''), we_base_request::_(we_base_request::STRING, 'JSTextName', ''), we_base_request::_(we_base_request::RAW, 'JSCommand', ''), we_base_request::_(we_base_request::RAW, 'order', ''), we_base_request::_(we_base_request::INT, 'rootDirID', 0), we_base_request::_(we_base_request::RAW, 'filter', ''), we_base_request::_(we_base_request::BOOL, 'multiple'));
+$fs = new we_customer_selector(we_base_request::_(we_base_request::STRING, 'id', 0), we_base_request::_(we_base_request::STRING, 'JSIDName', ''), we_base_request::_(we_base_request::STRING, 'JSTextName', ''), we_base_request::_(we_base_request::RAW, 'JSCommand', ''), we_base_request::_(we_base_request::RAW, 'order', ''), we_base_request::_(we_base_request::INT, 'rootDirID', 0), '', we_base_request::_(we_base_request::BOOL, 'multiple'));
 
 $fs->printHTML(we_base_request::_(we_base_request::INT, 'what', we_selector_file::FRAMESET));
