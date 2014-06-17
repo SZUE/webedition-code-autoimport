@@ -44,6 +44,7 @@ $tableMap = array(
 		strtolower(stripTblPrefix(PREFS_TABLE)) => PREFS_TABLE,
 		strtolower(stripTblPrefix(RECIPIENTS_TABLE)) => RECIPIENTS_TABLE,
 		strtolower(stripTblPrefix(VALIDATION_SERVICES_TABLE)) => VALIDATION_SERVICES_TABLE,
+		strtolower(stripTblPrefix(SETTINGS_TABLE)) => SETTINGS_TABLE,
 	),
 	'user' => array(
 		strtolower(stripTblPrefix(USER_TABLE)) => USER_TABLE
@@ -66,7 +67,7 @@ if(defined('OBJECT_TABLE')){
 	$tableMap['object'] = array(
 		strtolower(stripTblPrefix(OBJECT_TABLE)) => OBJECT_TABLE,
 		strtolower(stripTblPrefix(OBJECT_FILES_TABLE)) => OBJECT_FILES_TABLE,
-		'tblobject_' => OBJECT_X_TABLE
+		strtolower(stripTblPrefix(OBJECT_X_TABLE)) => OBJECT_X_TABLE,
 	);
 }
 
