@@ -606,6 +606,10 @@ class we_search_search extends we_search{
 			$sortIsNr = '';
 			$sortNr = 'DESC';
 		}
+		if(!$sortierung[0]){
+			t_e('query in temp will fail', $order);
+			return;
+		}
 
 		$this->db->query('SELECT SEARCH_TEMP_TABLE.*,LOWER(' . $sortierung[0] . ') AS lowtext, ABS(' . $sortierung[0] . ') as Nr, (' . $sortierung[0] . " REGEXP '^[0-9]') as isNr  FROM SEARCH_TEMP_TABLE  ORDER BY IsFolder DESC, isNr " . $sortIsNr . ',Nr ' . $sortNr . ',lowtext ' . $sortNr . ', ' . $order . '  LIMIT ' . $searchstart . "," . $anzahl);
 	}

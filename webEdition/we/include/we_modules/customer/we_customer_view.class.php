@@ -935,7 +935,7 @@ self.close();';
 					case 'LoginDenied':
 						if(we_base_request::_(we_base_request::BOOL, 'LoginDenied')){
 							$this->customer->LoginDenied = 1;
-						} elseif(we_base_request::_(we_base_request::STRING, 'Username')){
+						} elseif(we_base_request::_(we_base_request::STRINGC, 'Username')){
 							$this->customer->LoginDenied = 0;
 						}
 						break;
@@ -946,7 +946,7 @@ self.close();';
 						}
 						break;
 					default:
-						if(($v = we_base_request::_(we_base_request::STRING, $varname))){
+						if(($v = we_base_request::_(we_base_request::STRINGC, $varname))){
 							$this->customer->{$val} = $v;
 						}
 				}
