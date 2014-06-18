@@ -1375,26 +1375,15 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 				weEditorFrameIsHot = true;
 			}
 		});
-		/*
+
 		ed.onNodeChange.add(function(ed, cm, n) {
-			var sel = ed.selection.getSel();
-			//console.log(sel.anchorOffset);
 			var td = ed.dom.getParent(n, "td");
 			if(typeof td === "object" && td && td.getElementsByTagName("p").length === 1){
-				var bm = ed.selection.getBookmark();
-				console.log(td.innerHTML);
-				td.innerHTML = td.getElementsByTagName("p")[0].innerHTML;
-				console.log(td.innerHTML);
-				//if(td.innerHTML.search(bm.id) == -1) td.innerHTML = td.innerHTML + "<span id=\"" + bm.id + "\"></span>";
-				//ed.selection.collapse(true);
-				ed.selection.moveToBookmark(bm);
-				console.log(td.innerHTML);
-				//sel = ed.selection.getSel();
-				//console.log(sel);
-				
+				var inner = td.getElementsByTagName("p")[0].innerHTML;
+				td.innerHTML = "";
+				ed.selection.setContent(inner)
 			}
 		});
-		*/
 
 		ed.onClick.add(function(ed) {
 			if(!weEditorFrameIsHot && editorLevel == "inline" && ed.isDirty()){
