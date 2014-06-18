@@ -870,7 +870,7 @@ self.close();';
 				we_html_element::jsElement($js);
 				break;
 			case 'applySort':
-				echo we_html_element::jsElement($$this->topFrame . '.clearTree();');
+				echo we_html_element::jsElement($this->topFrame . '.clearTree();');
 				break;
 			case 'show_search':
 				echo we_html_element::jsScript(JS_DIR . "windows.js") .
