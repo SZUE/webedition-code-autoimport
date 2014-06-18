@@ -244,6 +244,9 @@ define("INLINEEDIT_DEFAULT", 0);
 // Default setting for removeparagraph attribute
 define("REMOVEFIRSTPARAGRAPH_DEFAULT", 0);
 
+// Default setting for commands attribute
+define("COMMANDS_DEFAULT", '');
+
 // Default setting for hide name attribute in weimg output
 define("HIDENAMEATTRIBINWEIMG_DEFAULT", 0);
 
