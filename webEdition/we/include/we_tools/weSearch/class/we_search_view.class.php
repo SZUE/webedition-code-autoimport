@@ -2795,6 +2795,7 @@ class we_search_view extends we_tool_view{
 	}
 
 	function tblList($content, $headline, $whichSearch){
+		$thisObj = (isset($GLOBALS['we_cmd_obj']) || $whichSearch == "doclist" ? new we_search_view() : $this);
 		$class = "middlefont";
 		$view = 0;
 
@@ -2835,7 +2836,7 @@ class we_search_view extends we_tool_view{
 		$out .= '</tr></table>' .
 			//FIXME: realize with tbody?
 			'<div id="scrollContent_' . $whichSearch . '" style="overflow-y:auto;background-color:#fff;width:100%">' .
-			$this->tabListContent($view, $content, $class, $whichSearch) .
+			$thisObj->tabListContent($view, $content, $class, $whichSearch) .
 			'</div>';
 
 		return $out;
