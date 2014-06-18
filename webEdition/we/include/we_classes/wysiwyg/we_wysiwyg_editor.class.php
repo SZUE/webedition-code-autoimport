@@ -972,7 +972,7 @@ function weWysiwygSetHiddenText(arg) {
 			'template' => 'template',
 			'editrow' => 'row_props',
 			'deletetable' => 'delete_table'
-			
+
 			// table controlls are not mapped from wysiwyg to tinyMCE:
 			//'notmapped1' => 'attribs',
 			//'notmapped2' => 'insertimage', // replaced by weimage
@@ -1116,7 +1116,7 @@ var weclassNames_tinyMce = new Array (' . $this->cssClassesJS . ');
 var tinyMceTranslationObject = {' . $editorLang . ':{
 	we:{
 		"group_link":"' . g_l('wysiwyg', "[links]") . '",//(insert_hyperlink)
-		"group_copypaste":"' . g_l('wysiwyg', "[insert_text]") . '",
+		"group_copypaste":"' . g_l('wysiwyg', "[import_text]") . '",
 		"group_advanced":"' . g_l('wysiwyg', "[advanced]") . '",
 		"group_insert":"' . g_l('wysiwyg', "[insert]") . '",
 		"group_indent":"' . g_l('wysiwyg', "[indent]") . '",
