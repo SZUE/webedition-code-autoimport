@@ -36,12 +36,12 @@ class we_workflow_log{
 
 	function logDocumentEvent($workflowDocID, $userID, $type, $description){
 		$db = new DB_WE();
-		$db->query('INSERT INTO ' . WORKFLOW_LOG_TABLE . " (ID, RefID, docTable, userID, logDate, Type, Description) VALUES ('', " . intval($workflowDocID) . ", '" . WORKFLOW_TABLE . "', " . intval($userID) . ", UNIX_TIMESTAMP(), " . intval($type) . ", '" . $db->escape($description) . "');");
+		$db->query('INSERT INTO ' . WORKFLOW_LOG_TABLE . " (ID, RefID, userID, logDate, Type, Description) VALUES ('', " . intval($workflowDocID) . ", " . intval($userID) . ", UNIX_TIMESTAMP(), " . intval($type) . ", '" . $db->escape($description) . "');");
 	}
 
 	function logWorkflowEvent($workflowID, $userID, $type, $description){
 		$db = new DB_WE();
-		$db->query('INSERT INTO ' . WORKFLOW_LOG_TABLE . " (ID, RefID, docTable, userID, logDate, Type, Description) VALUES ('', " . intval($workflowDocID) . ", '" . WORKFLOW_TABLE . "', " . intval($userID) . ", UNIX_TIMESTAMP(), " . intval($type) . ", '" . $db->escape($description) . "');");
+		$db->query('INSERT INTO ' . WORKFLOW_LOG_TABLE . " (ID, RefID, userID, logDate, Type, Description) VALUES ('', " . intval($workflowID) . ", " . intval($userID) . ", UNIX_TIMESTAMP(), " . intval($type) . ", '" . $db->escape($description) . "');");
 	}
 
 	static function getLogForDocument($docID, $order = "DESC", $wfType = 0){
