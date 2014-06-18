@@ -517,7 +517,7 @@ extra_files_desc=new Array();';
 			$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[old_backups_warning]"), we_html_tools::TYPE_ALERT, 600, false), "space" => 0, "noline" => 1);
 			$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[select_server_file]"), we_html_tools::TYPE_INFO, 600, false), "space" => 0, "noline" => 1);
 			$parts[] = array("headline" => "", "html" => $select->getHtml(), "space" => 0, "noline" => 1);
-			//$parts[] =array("headline"=>"","html"=>we_forms::checkbox(1, false, "show_all", g_l('backup',"[show_all]"), false, "defaultfont", "showAll()"),"space"=>0,"noline"=>1);
+			//$parts[] =array("headline"=>"","html"=>we_html_forms::checkbox(1, false, "show_all", g_l('backup',"[show_all]"), false, "defaultfont", "showAll()"),"space"=>0,"noline"=>1);
 			$parts[] = array("headline" => "", "html" => we_html_button::create_button("delete_backup", "javascript:delSelected();", true, 100, 22, '', '', false, false), "space" => 0);
 		}
 

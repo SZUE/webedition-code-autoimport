@@ -217,7 +217,7 @@ class we_export_wizard{
 		$parts = array(
 			/* 		array_push($parts, array(
 			  "headline"	=> g_l('export',"[we_export]"),
-			  "html"		=> we_forms::radiobutton(we_import_functions::TYPE_WE_XML,($extype=="wxml" && permissionhandler::hasPerm("WXML_EXPORT")), "extype", g_l('export',"[wxml_export]"),true, "defaultfont", "",  !permissionhandler::hasPerm("WXML_EXPORT"), g_l('export',"[txt_wxml_export]"), 0, 384),
+			  "html"		=> we_html_forms::radiobutton(we_import_functions::TYPE_WE_XML,($extype=="wxml" && permissionhandler::hasPerm("WXML_EXPORT")), "extype", g_l('export',"[wxml_export]"),true, "defaultfont", "",  !permissionhandler::hasPerm("WXML_EXPORT"), g_l('export',"[txt_wxml_export]"), 0, 384),
 			  "space"		=> 120,
 			  "noline"	=> 1)
 			  ); */
@@ -629,7 +629,7 @@ function setState(a) {
 		$formattable = new we_html_table(array("cellpadding" => 2, "cellspacing" => 2, "border" => 0), 3, 1);
 		$formattable->setCol(0, 0, array("colspan" => 2), we_html_forms::checkboxWithHidden(($handle_def_classes ? true : false), "handle_def_classes", g_l('export', "[handle_def_classes]")));
 		$formattable->setCol(1, 0, null, we_html_forms::checkboxWithHidden(($handle_object_embeds ? true : false), "handle_object_embeds", g_l('export', "[handle_object_embeds]")));
-		//$formattable->setCol(2,0,null,we_forms::checkboxWithHidden(($handle_class_defs ? true : false),"handle_class_defs",g_l('export',"[handle_class_defs]")));
+		//$formattable->setCol(2,0,null,we_html_forms::checkboxWithHidden(($handle_class_defs ? true : false),"handle_class_defs",g_l('export',"[handle_class_defs]")));
 
 		$parts[] = array("headline" => g_l('export', "[handle_object_options]") . we_html_element::htmlBr() . g_l('export', "[handle_classes_options]"), "html" => $formattable->getHtml(), "space" => $_space);
 
