@@ -63,9 +63,10 @@ function we_tag_href($attribs){
 				$intID = intval(weTag_getAttribute('startid', $attribs));
 			}
 			if($intID){
-				$foo = getHash('SELECT Path,ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($intID), $GLOBALS['DB_WE'], MYSQL_NUM);
-				if(!empty($foo)){
-					list($intPath, $ct) = $foo;
+				$foo = getHash('SELECT Path,ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($intID), $GLOBALS['DB_WE']);
+				if($foo){
+					$intPath = $foo['Path'];
+					$ct = $foo['ContentType'];
 				}
 			}
 

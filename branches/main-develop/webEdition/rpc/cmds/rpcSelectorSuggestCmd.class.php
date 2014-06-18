@@ -26,7 +26,7 @@ class rpcSelectorSuggestCmd extends rpcCmd{
 
 	function execute(){
 		$resp = new rpcResponse();
-		$cmd1 = we_base_request::_(we_base_request::STRING, 'we_cmd', false, 1);
+		$cmd1 = we_base_request::_(we_base_request::FILE, 'we_cmd', false, 1);
 		$cmd2 = we_base_request::_(we_base_request::TABLE, 'we_cmd', false, 2);
 		if(!$cmd1 || !$cmd2){
 			exit();
@@ -35,10 +35,10 @@ class rpcSelectorSuggestCmd extends rpcCmd{
 		$selectorSuggest = new we_selector_query();
 		$contentTypes = explode(",", we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3));
 		$cmd4 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 4);
-		$cmd5 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 5);
+		$cmd5 = we_base_request::_(we_base_request::INT, 'we_cmd', '', 5);
 		if($cmd4 && $cmd5){
 			if($cmd2 == (defined('TEMPLATES_TABLE') ? TEMPLATES_TABLE : '-1') && $cmd4 == we_base_ContentTypes::TEMPLATE){
-				$selectorSuggest->addCondition(array("AND", "<>", "ID", $cmd5));
+				$selectorSuggest->addCondition(array('AND', '!=', 'ID', $cmd5));
 			}
 		}
 		$selectorSuggest->search($cmd1, $cmd2, $contentTypes, "", we_base_request::_(we_base_request::FILE, 'we_cmd', '', 6));

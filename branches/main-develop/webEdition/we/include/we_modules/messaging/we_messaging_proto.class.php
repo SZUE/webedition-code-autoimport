@@ -286,7 +286,7 @@ class we_messaging_proto extends we_class{
 		if(empty($rm_folders)){
 			return $ret;
 		} else {
-			$query = 'DELETE FROM ' . $this->DB_WE->escape($this->folder_tbl) . ' WHERE (ID=' . join(' OR ID=', $rm_folders) . ') AND UserID=' . intval($this->userid);
+			$query = 'DELETE FROM ' . $this->DB_WE->escape($this->folder_tbl) . ' WHERE (ID=' . implode(' OR ID=', $rm_folders) . ') AND UserID=' . intval($this->userid);
 			$this->DB_WE->query($query);
 		}
 

@@ -99,11 +99,11 @@ class we_category extends weModelBase{
 
 		$where = array();
 		if(!empty($idarray)){
-			$where[] = $pre . implode($post . ($catOr ? 'OR' : 'AND') . $pre, array_unique($idarray)) . $post;
+			$where[] = $pre . implode($post . ($catOr ? ' OR ' : ' AND ') . $pre, array_unique($idarray)) . $post;
 		}
 		if(!empty($folders)){
 			foreach($folders as &$cur){
-				$where[] = '(' . $pre . implode($post . 'OR' . $pre, $cur) . $post . ')';
+				$where[] = '(' . $pre . implode($post . ' OR ' . $pre, $cur) . $post . ')';
 			}
 			unset($cur);
 		}

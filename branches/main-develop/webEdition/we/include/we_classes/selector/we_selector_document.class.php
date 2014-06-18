@@ -50,7 +50,7 @@ class we_selector_document extends we_selector_directory{
 				$contentTypes = explode(',', $this->filter);
 				$filterQuery .= ' AND (  ';
 				foreach($contentTypes as $ct){
-					$filterQuery .= 'ContentType="' . $this->db->escape($ct) . '" OR ';
+					$filterQuery .= ' ContentType="' . $this->db->escape($ct) . '" OR ';
 				}
 				$filterQuery .= ' isFolder=1)';
 			} else {

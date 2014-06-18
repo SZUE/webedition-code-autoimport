@@ -44,6 +44,7 @@ class we_base_request{
 	const FILE = 'file';
 	const URL = 'url';
 	const STRING = 'string';
+	const STRINGC = 'stringC';
 	const HTML = 'html';
 	const EMAIL = 'email';
 	const JS = 'js';
@@ -122,6 +123,7 @@ class we_base_request{
 			case self::URL:
 				$var = filter_var($var, FILTER_SANITIZE_URL);
 				return;
+			case self::STRINGC:
 			case self::STRING://strips tags
 				$var = filter_var($var, FILTER_SANITIZE_STRING);
 				return;
@@ -169,6 +171,11 @@ class we_base_request{
 
 		$var = $_REQUEST;
 		$args = func_get_args();
+		/* fixme temporary until 6.3.9 release */
+		if(func_num_args() == 4 && $args[3] === null){
+			unset($args[3]);
+		}
+		/* end fix */
 		unset($args[0], $args[2]);
 		foreach($args as $arg){
 			if(!isset($var[$arg])){
@@ -192,14 +199,23 @@ class we_base_request{
 			switch($type){
 				case self::CMD://this must change&is ok!
 				case self::RAW_CHECKED:
+				case self::STRINGC:
 					//we didn't change anything.
 					return $var;
 				case self::INTLIST:
 					$oldVar = trim($var, ',');
 					$cmp = '' . $var;
 					break;
+				case self::INT:
+					if($oldVar === ''){//treat empty as 0
+						return $var;
+					}
+					$cmp = '' . $var;
+					break;
 				case self::BOOL://bool is transfered as 0/1
-
+					if($oldVar === ''){//treat empty as 0
+						$oldVar = 0;
+					}
 					$cmp = '' . intval($var);
 					break;
 				case self::RAW:

@@ -29,7 +29,7 @@ class rpcGetRssCmd extends rpcCmd{
 	function execute(){
 
 		$sRssUri = we_base_request::_(we_base_request::URL, 'we_cmd', '', 0);
-		$sCfgBinary = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1);
+		$sCfgBinary = we_base_request::_(we_base_request::RAW_CHECKED, 'we_cmd', '', 1);
 		$bCfgTitle = (bool) $sCfgBinary{0};
 		$bCfgLink = (bool) $sCfgBinary{1};
 		$bCfgDesc = (bool) $sCfgBinary{2};
@@ -62,14 +62,14 @@ class rpcGetRssCmd extends rpcCmd{
 		//Bug 6119: Keine Unterstützung für curl in der XML_RSS Klasse
 		//daher Umstellung den Inhalt des Feeds selbst zu holen
 		$parsedurl = parse_url($sRssUri);
-		$http_request = new HttpRequest($parsedurl['path'], $parsedurl['host'], 'GET');
+		$http_request = new we_http_request($parsedurl['path'], $parsedurl['host'], 'GET');
 		$http_request->executeHttpRequest();
-		$http_response = new HttpResponse($http_request->getHttpResponseStr());
+		$http_response = new we_http_response($http_request->getHttpResponseStr());
 		if(isset($http_response->http_headers['Location'])){//eine Weiterleitung ist aktiv
 			$parsedurl = parse_url($http_response->http_headers['Location']);
-			$http_request = new HttpRequest($parsedurl['path'], $parsedurl['host'], 'GET');
+			$http_request = new we_http_request($parsedurl['path'], $parsedurl['host'], 'GET');
 			$http_request->executeHttpRequest();
-			$http_response = new HttpResponse($http_request->getHttpResponseStr());
+			$http_response = new we_http_response($http_request->getHttpResponseStr());
 		}
 		$feeddata = $http_response->http_body;
 		$oRssParser = new we_xml_rss($feeddata, null, $GLOBALS['WE_BACKENDCHARSET']); // Umstellung in der XML_RSS-Klasse: den string, und nicht die url weiterzugeben
@@ -148,7 +148,7 @@ class rpcGetRssCmd extends rpcCmd{
 		}
 		$resp->setData('titel', $_title);
 		$resp->setData('widgetType', "rss");
-		$resp->setData('widgetId', we_base_request::_(we_base_request::INT, 'we_cmd', 0, 5));
+		$resp->setData('widgetId', we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 5));
 
 		return $resp;
 	}

@@ -30,14 +30,14 @@ echo we_html_tools::getHtmlTop() .
 //Bug 6119: Keine Unterstützung für curl in der XML_RSS Klasse
 //daher Umstellung den Inhalt des Feeds selbst zu holen
 $parsedurl = parse_url($_SESSION["prefs"]["cockpit_rss_feed_url"]);
-$http_request = new HttpRequest($parsedurl['path'], $parsedurl['host'], 'GET');
+$http_request = new we_http_request($parsedurl['path'], $parsedurl['host'], 'GET');
 $http_request->executeHttpRequest();
-$http_response = new HttpResponse($http_request->getHttpResponseStr());
+$http_response = new we_http_response($http_request->getHttpResponseStr());
 if(isset($http_response->http_headers['Location'])){//eine Weiterleitung ist aktiv
 	$parsedurl = parse_url($http_response->http_headers['Location']);
-	$http_request = new HttpRequest($parsedurl['path'], $parsedurl['host'], 'GET');
+	$http_request = new we_http_request($parsedurl['path'], $parsedurl['host'], 'GET');
 	$http_request->executeHttpRequest();
-	$http_response = new HttpResponse($http_request->getHttpResponseStr());
+	$http_response = new we_http_response($http_request->getHttpResponseStr());
 }
 $feeddata = $http_response->http_body;
 

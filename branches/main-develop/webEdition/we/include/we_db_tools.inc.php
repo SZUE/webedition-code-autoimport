@@ -33,10 +33,12 @@ function getHash($query = '', we_database_base $DB_WE = NULL, $resultType = MYSQ
 		return $cache;
 	}
 	$hash = md5($query, true);
-	if(!isset($cache[$hash])){
+	if($resultType == MYSQL_NUM || !isset($cache[$hash])){
 		$DB_WE = $DB_WE ? $DB_WE : $GLOBALS['DB_WE'];
 		$DB_WE->query($query);
-		$cache[$hash] = ($DB_WE->next_record($resultType) ? $DB_WE->Record : array());
+		if($resultType != MYSQL_NUM){
+			$cache[$hash] = ($DB_WE->next_record($resultType) ? $DB_WE->Record : array());
+		}
 		$DB_WE->free();
 	}
 	return $cache[$hash];

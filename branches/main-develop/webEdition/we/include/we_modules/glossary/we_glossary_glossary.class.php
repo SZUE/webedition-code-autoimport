@@ -186,10 +186,11 @@ class we_glossary_glossary extends weModelBase{
 				case 'new_glossary_textreplacement':
 					$this->Type = self::TYPE_TEXTREPLACE;
 					break;
-			}
-			$cmdid = we_base_request::_(we_base_request::STRING, 'cmdid');
-			if($cmdid && !preg_match('|^[0-9]|', $cmdid)){
-				$this->View->Glossary->Language = substr($cmdid, 0, 5);
+
+					$cmdid = we_base_request::_(we_base_request::STRING, 'cmdid');
+					if($cmdid && !preg_match('|^[0-9]|', $cmdid)){
+						$this->View->Glossary->Language = substr($cmdid, 0, 5);
+					}
 			}
 		}
 	}

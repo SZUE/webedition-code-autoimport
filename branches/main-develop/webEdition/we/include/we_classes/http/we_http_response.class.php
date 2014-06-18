@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class HttpResponse{
+class we_http_response{
 
 	var $response = ""; // raw response, containing all headers and body
 	var $http_answer = array(

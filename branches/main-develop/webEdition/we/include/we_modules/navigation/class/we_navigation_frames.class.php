@@ -75,7 +75,9 @@ class we_navigation_frames extends weModuleFrames{
 			we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
 			we_main_headermenu::css();
 
-		$extraUrlParams = isset($_REQUEST['tab']) ? '&tab=' . $_REQUEST['tab'] : '' . isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : '';
+		$tab = we_base_request::_(we_base_request::STRING, 'tab');
+		$sid = we_base_request::_(we_base_request::STRING, 'sid');
+		$extraUrlParams = $tab !== false ? '&tab=' . $tab : '' . $sid !== false ? '&sid=' . $sid : '';
 
 		return parent::getHTMLFrameset($extraHead, $extraUrlParams);
 	}
@@ -85,13 +87,12 @@ class we_navigation_frames extends weModuleFrames{
 	}
 
 	function getHTMLCmd(){
-		if(!isset($_REQUEST["pid"])){
+		$pid = we_base_request::_(we_base_request::INT, 'pid');
+		if($pid === false){
 			exit;
 		}
 
-		$pid = $_REQUEST["pid"];
 		$offset = we_base_request::_(we_base_request::INT, "offset", 0);
-
 		$_loader = new we_navigation_treeDataSource($this->TreeSource);
 
 		$rootjs = (!$pid ?
@@ -126,7 +127,7 @@ class we_navigation_frames extends weModuleFrames{
 	 * @return string
 	 */
 	function getHTMLEditorHeader(){
-		if(isset($_REQUEST['home'])){
+		if(we_base_request::_(we_base_request::BOOL, 'home')){
 			return $this->getHTMLDocument(
 					we_html_element::htmlBody(
 						array(
@@ -233,7 +234,7 @@ function setTab(tab) {
 
 		$hiddens = array('cmd' => 'tool_' . $this->toolName . '_edit', 'pnt' => 'edbody', 'vernr' => we_base_request::_(we_base_request::INT, 'vernr', 0));
 
-		if(isset($_REQUEST["home"]) && $_REQUEST["home"]){
+		if(we_base_request::_(we_base_request::BOOL, "home")){
 			$hiddens['cmd'] = 'home';
 			$GLOBALS['we_print_not_htmltop'] = true;
 			$GLOBALS['we_head_insert'] = $this->View->getJSProperty();
@@ -983,7 +984,7 @@ function showPreview() {
 	}
 
 	function getHTMLProperties($preselect = ''){
-		$tabNr = isset($_REQUEST['tabnr']) ? ($_REQUEST['tabnr']) : 1;
+		$tabNr = we_base_request::_(we_base_request::INT, 'tabnr', 1);
 
 		if($this->Model->IsFolder == 0 && $tabNr != 1 && $tabNr != 3){
 			$tabNr = 1;
@@ -1274,10 +1275,10 @@ function addCat(paths){
 	}
 
 	function getHTMLFieldSelector(){
-		$_type = $_REQUEST['type']; // doctype || class
-		$_selection = $_REQUEST['selection']; // templateid or classid
-		$_cmd = $_REQUEST['cmd']; // js command
-		$_multi = $_REQUEST['multi']; // js command
+		$_type = we_base_request::_(we_base_request::STRING, 'type'); // doctype || class
+		$_selection = we_base_request::_(we_base_request::INT, 'selection'); // templateid or classid
+		$_cmd = we_base_request::_(we_base_request::JS, 'cmd'); // js command
+		$_multi = we_base_request::_(we_base_request::JS, 'multi'); // js command
 		$_js = we_html_button::create_state_changer(false) . '
 function setFields() {
 	var list = document.we_form.fields.options;
@@ -1753,7 +1754,7 @@ function ' . $prefix . 'setLinkSelection(value){
 	}
 
 	function getHTMLEditorFooter(){
-		if(isset($_REQUEST["home"])){
+		if(we_base_request::_(we_base_request::BOOL, "home")){
 			return $this->getHTMLDocument(we_html_element::htmlBody(array(
 						"bgcolor" => "#F0EFF0"
 						), ""));

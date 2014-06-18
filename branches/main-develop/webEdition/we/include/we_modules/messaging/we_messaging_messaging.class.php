@@ -367,19 +367,14 @@ class we_messaging_messaging extends we_class{
 	function save_settings($settings){
 		if(isset($settings['check_step'])){
 			//  Check if there are already saved settings for this user in the DB
-			if($this->DB_WE->num_rows($this->DB_WE->query("SELECT * FROM " . MSG_SETTINGS_TABLE . " WHERE strKey=\"check_step\" AND UserID=\"" . $this->userid . "\"")) > 0){
-				$this->DB_WE->query('UPDATE ' . MSG_SETTINGS_TABLE . ' SET strVal="' . $this->DB_WE->escape($settings['check_step']) . '" WHERE strKey="check_step" AND UserID=' . intval($this->userid) . ' LIMIT 1');
-			} else {
-				$this->DB_WE->query('INSERT INTO ' . MSG_SETTINGS_TABLE . ' (UserID, strKey, strVal) VALUES(' . intval($this->userid) . ", 'check_step', '" . $settings['check_step'] . "')");
-			}
+			$this->DB_WE->query('REPLACE INTO ' . PREFS_TABLE . ' SET userID=' . intval($this->userid) . ',strKey="check_step",strVal=' . intval($settings['check_step']));
 		}
 
 		return 1;
 	}
 
 	function get_settings(){
-		$this->DB_WE->query('SELECT strKey, strVal FROM ' . MSG_SETTINGS_TABLE . ' WHERE UserID=' . intval($this->userid));
-		return $this->DB_WE->getAllFirst(false);
+		return f('SELECT strVal FROM ' . PREFS_TABLE . ' WHERE userID=' . intval($this->userid) . ' AND strKey="check_step"', '', $this->DB_WE, 10);
 	}
 
 	function get_subfolder_count($id, $classname = ''){

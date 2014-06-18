@@ -29,6 +29,5 @@ var _EditorFrameDocumentRef = _EditorFrame.getDocumentReference();' .
 	$we_JavaScript . ';top.toggleBusy(0);' .
 	($we_responseText ?
 		we_message_reporting::getShowMessageCall($we_responseText, $we_responseTextType) :
-		'') .
-	we_base_request::_(we_base_request::RAW, 'we_cmd', '', 5)
+		'') .$GLOBALS['we_responseJS']
 );

@@ -99,7 +99,7 @@ class we_selector_query{
 				$addCT = 1;
 			}
 		}
-		$where.=($q ? ' AND (' . implode('OR ', $q) . ')' : '');
+		$where.=($q ? ' AND (' . implode(' OR ', $q) . ')' : '');
 		if($addCT){
 			$this->addQueryField($typeField);
 		}
@@ -172,7 +172,7 @@ class we_selector_query{
 				$addCT = 1;
 			}
 		}
-		$where.=($q ? ' AND (' . implode('OR ', $q) . ')' : '');
+		$where.=($q ? ' AND (' . implode(' OR ', $q) . ')' : '');
 		if(!$q){
 			$isFolder = 1;
 		}
@@ -215,7 +215,7 @@ class we_selector_query{
 		$ctntQuery = ' OR ( 0 ';
 		if($types){
 			foreach($types as $type){
-				$ctntQuery .= ' OR ContentType = "' . $type . '"';
+				$ctntQuery .= ' OR ContentType= "' . $type . '"';
 			}
 		}
 		$ctntQuery .= ' ) ';

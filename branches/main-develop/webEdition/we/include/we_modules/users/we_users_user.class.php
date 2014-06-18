@@ -281,7 +281,6 @@ class we_users_user{
 			$this->DB_WE->query('DELETE FROM ' . MSG_TODOHISTORY_TABLE . ' WHERE UserID=' . $this->ID);
 			$this->DB_WE->query('DELETE FROM ' . MSG_FOLDERS_TABLE . ' WHERE UserID=' . $this->ID);
 			$this->DB_WE->query('DELETE FROM ' . MSG_ACCOUNTS_TABLE . ' WHERE UserID=' . $this->ID);
-			$this->DB_WE->query('DELETE FROM ' . MSG_SETTINGS_TABLE . ' WHERE UserID=' . $this->ID);
 		}
 	}
 
@@ -2528,7 +2527,7 @@ top.content.hloaded=1;') .
 			$old = array('userID' => $id);
 			require_once(WE_INCLUDES_PATH . 'we_editors/we_preferences_config.inc.php');
 			foreach($GLOBALS['configs']['user'] as $key => $vals){
-				$old[$key] = $vals[0];
+				$old[$key] = $vals[1];
 			}
 		} else {
 			$old = self::readPrefs($id, $db);

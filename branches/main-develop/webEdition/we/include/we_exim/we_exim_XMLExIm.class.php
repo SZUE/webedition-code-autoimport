@@ -281,7 +281,7 @@ class we_exim_XMLExIm{
 			}
 		}
 
-		return 'AND (1 ' . we_users_util::makeOwnersSql() . ( $wsQuery ? 'OR (' . implode(' OR ', $wsQuery) . ')' : '') . ')';
+		return ' AND (1 ' . we_users_util::makeOwnersSql() . ( $wsQuery ? ' OR (' . implode(' OR ', $wsQuery) . ')' : '') . ')';
 	}
 
 	function getSelectedItems($selection, $extype, $art, $type, $doctype, $classname, $categories, $dir, &$selDocs, &$selTempl, &$selObjs, &$selClasses){

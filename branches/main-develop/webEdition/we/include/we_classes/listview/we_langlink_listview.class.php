@@ -66,6 +66,7 @@ class we_langlink_listview extends listviewBase{
 	 * @param   searchable 	  boolean - if false then show also documents which are not marked as searchable
 	 * @return we_listview
 	 */
+
 	function __construct($name, $rows, $offset, $order, $desc, $linkType, $cols, $showself, $id, $pagelanguage, $ownlanguage, $hidedirindex, $objectseourls, $recursive){
 		$id = intval($id);
 		parent::__construct($name, $rows, $offset, $order, $desc, '', false, '', $cols, '', '', '', '', '', 'off', $id);
@@ -132,7 +133,9 @@ class we_langlink_listview extends listviewBase{
 					$dt['Path'] = id_to_path($this->id, FILE_TABLE);
 				} else {
 					$dt['Path'] = id_to_path($this->id, OBJECT_FILES_TABLE);
-					list($dt['Url'], $dt['TriggerID']) = getHash('SELECT Url,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->id), $this->DB_WE, MYSQL_NUM);
+					$hash = getHash('SELECT Url,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->id), $this->DB_WE);
+					$dt['Url'] = $hash['Url'];
+					$dt['TriggerID'] = $hash['TriggerID'];
 				}
 				$this->foundlinks[$this->ownlanguage] = $dt;
 			}

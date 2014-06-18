@@ -107,8 +107,9 @@ class we_docTypes extends we_class{
 				we_loadLanguageConfig();
 				$this->Language = ($GLOBALS['weDefaultFrontendLanguage'] ? $GLOBALS['weDefaultFrontendLanguage'] : 'de_DE');
 			} else {
-				if(($h = getHash('SELECT Language, ParentID FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($ParentID), $this->DB_WE, MYSQL_NUM))){
-					list($this->Language, $ParentID) = $h;
+				if(($h = getHash('SELECT Language,ParentID FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($ParentID), $this->DB_WE))){
+					$this->Language=$h['Language'];
+					$ParentID = $h['ParentID'];
 				}
 			}
 			$i++;
