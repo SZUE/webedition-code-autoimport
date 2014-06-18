@@ -55,6 +55,7 @@ $l_prefs=array(
 	'clear_block_entry_question'=>'Do you really want to unblock the IP %s ?',
 	'clear_log_question'=>'Do you really want to clear the log?',
 	'cockpit_amount_columns'=>'Columns in the cockpit',
+	'commands_default'=>'Default value for the<br/><em>commands</em> attribute in<br/>&lt;we:textarea&gt;',
 	'confirm_install_plugin'=>'El Mozilla ActiveX PlugIn le permite correr los controles ActiveX en el navegador Mozilla . Después de la instalación, Ud debe reiniciar su navegador.\n\nNota: ActiveX puede ser un riesgo de seguridad!\n\nContinuar la instalación?',
 	'countries_country'=>'Country',
 	'countries_default'=>'Default value',

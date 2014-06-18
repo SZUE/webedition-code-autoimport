@@ -55,6 +55,7 @@ $l_prefs=array(
 	'clear_block_entry_question'=>'Haluatko varmasti purkaa eston IP-osoitteilta: %s ?',
 	'clear_log_question'=>'Halutako varmasti tyhjentää lokin?',
 	'cockpit_amount_columns'=>'Sarakkeita pika-aloituksessa',
+	'commands_default'=>'Default value for the<br/><em>commands</em> attribute in<br/>&lt;we:textarea&gt;',
 	'confirm_install_plugin'=>'Mozillan ActiveX PlugIn sallii Mozillan käyttävän ActiveX -laajennuksia. Asennuksen jälkeen selain on suljettava ja avattava uudelleen.\n\nHuomautus: ActiveX voi olla turvallisuusriski!\n\nJatketaanko asennusta?',
 	'countries_country'=>'Country',
 	'countries_default'=>'Default value',

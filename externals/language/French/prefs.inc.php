@@ -55,6 +55,7 @@ $l_prefs=array(
 	'clear_block_entry_question'=>'Voulez-vous vraiment débloquer le IP %s ?',
 	'clear_log_question'=>'Voulez-vous vraiment vider l`historique ?',
 	'cockpit_amount_columns'=>'Colonnes du cockpit',
+	'commands_default'=>'Default value for the<br/><em>commands</em> attribute in<br/>&lt;we:textarea&gt;',
 	'confirm_install_plugin'=>'Le PlugIn ActiveX pour Mozilla , permet d`intégrer des Controles ActiveX dans le navigateur Mozilla. Le navigateur doit être redémarré après l`installation .\n\nConsidérez: ActiveX peut-être un risque pour la sécurité!\n\nContinuer avec l`installation?',
 	'countries_country'=>'Pays',
 	'countries_default'=>'Valeur par défaut',
