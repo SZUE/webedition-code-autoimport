@@ -684,13 +684,8 @@ class we_webEditionDocument extends we_textContentDocument{
 	}
 
 	function i_getDocument($includepath = ''){
-		$glob = array();
-		foreach(array_keys($GLOBALS) as $k){
-			if((!preg_match('|^[0-9]|', $k)) && (!preg_match('|[^a-z0-9_]|i', $k)) && $k != '_SESSION' && $k != '_GET' && $k != '_POST' && $k != '_REQUEST' && $k != '_SERVER' && $k != '_FILES' && $k != '_SESSION' && $k != '_ENV' && $k != '_COOKIE'){
-				$glob[] = '$' . $k;
-			}
-		}
-		eval('global ' . implode(',', $glob) . ';'); // globalen Namensraum herstellen.
+		extract($GLOBALS, EXTR_SKIP); // globalen Namensraum herstellen.
+
 		$editpageSave = $this->EditPageNr;
 		$inWebEditonSave = $this->InWebEdition;
 		$this->InWebEdition = false;
@@ -749,13 +744,6 @@ class we_webEditionDocument extends we_textContentDocument{
 
 	// returns the filesize of the document
 	function getFilesize(){
-		/* dies führt bei manchen dokumenten zum absturz in i_getDocument, und zwar dort beim include innerhalb von ob_start
-		  $filename = TEMP_PATH."/".md5(uniqid(rand()));
-		  saveFile($filename,$this->i_getDocument($includepath));
-		  $fs = filesize($filename);
-		  unlink($filename);
-		  return $fs;
-		 */
 		return (file_exists($_SERVER['DOCUMENT_ROOT'] . $this->Path) ?
 				filesize($_SERVER['DOCUMENT_ROOT'] . $this->Path) : //das ist ungenau
 				0);
