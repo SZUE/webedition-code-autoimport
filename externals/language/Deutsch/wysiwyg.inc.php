@@ -116,6 +116,7 @@ $l_wysiwyg=array(
 	'language'=>'Sprache',
 	'language_title'=>'Sprache bearbeiten',
 	'layer'=>'Ebenen (DIVs)',
+	'link'=>'Links',
 	'link_lang'=>'Link',
 	'links'=>'Links',
 	'merge_cells2'=>'Zellen verbinden',
@@ -171,5 +172,4 @@ $l_wysiwyg=array(
 	'width'=>'Breite',
 	'window_title'=>'Feld `%s` bearbeiten',
 	'xhtml_extras'=>'XHTML Extras',
-	''=>'Links',
-;
+);

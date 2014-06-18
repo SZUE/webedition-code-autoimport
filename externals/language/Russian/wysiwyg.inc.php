@@ -116,6 +116,7 @@ $l_wysiwyg=array(
 	'language'=>'Язык',
 	'language_title'=>'Редактировать язык',
 	'layer'=>'Layers (DIVs)',
+	'link'=>'delete this!',
 	'link_lang'=>'Ссылка',
 	'links'=>'Links',
 	'merge_cells2'=>'Слить ячейки',
@@ -171,5 +172,4 @@ $l_wysiwyg=array(
 	'width'=>'Ширина',
 	'window_title'=>'Редактировать поле %s`',
 	'xhtml_extras'=>'XHTML Extras',
-	''=>'delete this!',
-;
+);

@@ -116,6 +116,7 @@ $l_wysiwyg=array(
 	'language'=>'Idioma',
 	'language_title'=>'Editar Idioma',
 	'layer'=>'Layers (DIVs)',
+	'link'=>'delete this!',
 	'link_lang'=>'Vínculo',
 	'links'=>'Links',
 	'merge_cells2'=>'Reunir celdas',
@@ -171,5 +172,4 @@ $l_wysiwyg=array(
 	'width'=>'Ancho',
 	'window_title'=>'Editar campo `%s`',
 	'xhtml_extras'=>'XHTML Extras',
-	''=>'delete this!',
-;
+);

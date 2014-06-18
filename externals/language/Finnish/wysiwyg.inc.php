@@ -116,6 +116,7 @@ $l_wysiwyg=array(
 	'language'=>'Kieli',
 	'language_title'=>'Muokkaa kielta',
 	'layer'=>'Layers (DIVs)',
+	'link'=>'delete this!',
 	'link_lang'=>'Linkki',
 	'links'=>'Links',
 	'merge_cells2'=>'Yhdistä soluja',
@@ -171,5 +172,4 @@ $l_wysiwyg=array(
 	'width'=>'Leveys',
 	'window_title'=>'Muokkaa kenttää `%s`',
 	'xhtml_extras'=>'XHTML Extras',
-	''=>'delete this!',
-;
+);

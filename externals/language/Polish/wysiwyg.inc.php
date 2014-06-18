@@ -116,6 +116,7 @@ $l_wysiwyg=array(
 	'language'=>'Język',
 	'language_title'=>'Edytuj język',
 	'layer'=>'Layers (DIVs)',
+	'link'=>'delete this!',
 	'link_lang'=>'Link',
 	'links'=>'Links',
 	'merge_cells2'=>'Scal komórki',
@@ -171,5 +172,4 @@ $l_wysiwyg=array(
 	'width'=>'Szerokość',
 	'window_title'=>'Edytuj pole `%s`',
 	'xhtml_extras'=>'XHTML Extras',
-	''=>'delete this!',
-;
+);

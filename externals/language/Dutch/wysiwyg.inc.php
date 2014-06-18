@@ -116,6 +116,7 @@ $l_wysiwyg=array(
 	'language'=>'Taal',
 	'language_title'=>'Wijzig Taal',
 	'layer'=>'Layers (DIVs)',
+	'link'=>'delete this!',
 	'link_lang'=>'Koppeling',
 	'links'=>'Links',
 	'merge_cells2'=>'Verenig cellen',
@@ -171,5 +172,4 @@ $l_wysiwyg=array(
 	'width'=>'Breedte',
 	'window_title'=>'Wijzig veld `%s`',
 	'xhtml_extras'=>'XHTML Extras',
-	''=>'delete this!',
-;
+);
