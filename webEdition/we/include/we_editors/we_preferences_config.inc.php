@@ -71,6 +71,7 @@ $GLOBALS['configs'] = array(
 // inlineedit default value
 		'INLINEEDIT_DEFAULT' => array('Default setting for inlineedit attribute', we_base_request::BOOL, true),
 		'WE_PHP_DEFAULT' => array('Default setting for php attribute', we_base_request::BOOL, false),
+		'COMMANDS_DEFAULT' => array('Default setting for commands attribute', we_base_request::STRING, ''),
 		'REMOVEFIRSTPARAGRAPH_DEFAULT' => array('Default setting for removeparagraph attribute', we_base_request::BOOL, false),
 		'HIDENAMEATTRIBINWEIMG_DEFAULT' => array('Default setting for hide name attribute in weimg output', we_base_request::BOOL, false),
 		'HIDENAMEATTRIBINWEFORM_DEFAULT' => array('Default setting for hide name attribute in weform output', we_base_request::BOOL, false),
