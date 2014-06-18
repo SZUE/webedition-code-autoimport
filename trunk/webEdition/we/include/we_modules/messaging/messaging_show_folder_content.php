@@ -35,7 +35,6 @@ if(!$transaction){
 echo we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsScript(JS_DIR . 'messaging_std.js');
 ?>
 <script type="text/javascript"><!--
-	NN4 = <?php echo $browser->getBrowser() == 'nn' && $browser->getBrowserVersion() < 5 ? 'true' : 'false' ?>;
 	check0_img = new Image();
 	check1_img = new Image();
 	check0_img.src = "<?php echo TREE_IMAGE_DIR ?>check0.gif";
@@ -132,8 +131,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsScrip
 		var arr1, arr2;
 		var location;
 
-		if (NN4 == false)
-			highlight_TR(id, default_color, default_text_color);
+		highlight_TR(id, default_color, default_text_color);
 
 		parent.parent.entries_selected = array_rm_elem(parent.parent.entries_selected, id, -1);
 		//document.images["img_" + id].src = check0_img.src;
@@ -192,17 +190,15 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsScrip
   <script type="text/javascript"><!--
 	var k;
 
-		if (NN4 == false) {
-			for (k = 0; k < parent.parent.entries_selected.length; k++) {
-				highlight_TR(parent.parent.entries_selected[k], sel_color, sel_text_color);
-			}
+		for (k = 0; k < parent.parent.entries_selected.length; k++) {
+			highlight_TR(parent.parent.entries_selected[k], sel_color, sel_text_color);
 		}
 
 		if (parent.parent.entries_selected.length > 0)
 			showContent(parent.parent.entries_selected[parent.parent.entries_selected.length - 1]);
 
 <?php
-echo 'passed_dls = new Array(String(' . join('), String(', $passed_dls) . '));';
+echo 'passed_dls = new Array(String(' . implode('), String(', $passed_dls) . '));';
 ?>
 //-->
 	</script>

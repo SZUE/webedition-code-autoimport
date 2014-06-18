@@ -39,7 +39,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 		$Language = $Temp[0] . "_" . $Temp[1];
 		$Type = $Temp[2];
 		$Cache = new we_glossary_cache($Language);
-		$id = isset($_REQUEST['ID']) && $_REQUEST['ID'] ? filterXss($_REQUEST['ID'], 'int') : 0;
+		$id = we_base_request::_(we_base_request::INT, 'ID', 0);
 		if($id){
 			switch(we_base_request::_(we_base_request::STRING, 'do')){
 				case 'delete':
@@ -346,7 +346,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 		<tr>
 			<td class="defaultgray">' . g_l('modules_glossary', '[view]') . '</td>
 			<td>' . we_html_tools::htmlSelect("Rows", $_rows, 1, $Search->Rows, "", array('onchange' => "SubmitForm();")) . '</td>
-			<td>' . we_html_forms::checkboxWithHidden(we_base_request::_(we_base_request::BOOL,'GreenOnly'), "GreenOnly", g_l('modules_glossary', '[show_only_visible_items]'), false, "defaultfont", "jump(0);") . '</td>
+			<td>' . we_html_forms::checkboxWithHidden(we_base_request::_(we_base_request::BOOL, 'GreenOnly'), "GreenOnly", g_l('modules_glossary', '[show_only_visible_items]'), false, "defaultfont", "jump(0);") . '</td>
 			<td>' . we_html_tools::getPixel(18, 2) . '</td>
 			<td>' . $newButton . '</td>
 		</tr>

@@ -268,7 +268,7 @@ class we_messaging_format extends we_class{
 
 				$lines = explode("\n", oldHtmlspecialchars($this->sel_msg['body']['MessageText']));
 
-				$ret .= (!empty($lines) ? oldHtmlspecialchars($this->quoting_prefix) : '') . join("\n" . oldHtmlspecialchars($this->quoting_prefix), $lines) . "\n\n";
+				$ret .= (!empty($lines) ? oldHtmlspecialchars($this->quoting_prefix) : '') . implode("\n" . oldHtmlspecialchars($this->quoting_prefix), $lines) . "\n\n";
 				break;
 			case 'view':
 			case 'update':

@@ -144,12 +144,8 @@ class we_messaging_view extends weModuleView{
 		$this->messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 		$this->messaging->init($_SESSION['weS']['we_data'][$this->transaction]);
 
-		if(!isset($_REQUEST["mcmd"])){
-			$_REQUEST["mcmd"] = "goToDefaultCase";
-		}
-
 		$out = '';
-		switch(we_base_request::_(we_base_request::STRING, "mcmd")){
+		switch(($mcmd = we_base_request::_(we_base_request::STRING, "mcmd", "goToDefaultCase"))){
 			case 'search_messages':
 			case 'show_folder_content':
 				return $this->get_folder_content(we_base_request::_(we_base_request::INT, 'id', 0), we_base_request::_(we_base_request::STRING, 'sort', ""), we_base_request::_(we_base_request::RAW, 'entrsel', ""), we_base_request::_(we_base_request::RAW, 'searchterm', ""), 1) .
@@ -300,19 +296,21 @@ class we_messaging_view extends weModuleView{
 				}
 				return $out;
 			case 'edit_folder':
-				if(($mode=we_base_request::_(we_base_request::STRING,'mode')) == 'edit'){
-					$out .= we_html_element::jsElement('
+				return (($mode = we_base_request::_(we_base_request::STRING, 'mode')) == 'edit' ?
+						we_html_element::jsElement('
 					top.content.editor.location = "' . WE_MESSAGING_MODULE_DIR . 'messaging_edit_folder.php?we_transaction=' . $this->transaction . '&mode=' . $mode . '&fid=' . we_base_request::_(we_base_request::INT, 'fid', -1) . '";
-					');
-				}
-				return $out;
+					') :
+						'');
+
 			case 'save_folder_settings':
-				if(isset($_REQUEST['id'])){
-					$mcount = $_REQUEST['mode'] == 'new' ? 0 : $this->messaging->get_message_count($_REQUEST['id'], '');
-					if($_REQUEST["mode"] == 'new'){
+				if(($id = we_base_request::_(we_base_request::INT, 'id')) !== false){
+					//$mcount = $_REQUEST['mode'] == 'new' ? 0 : $this->messaging->get_message_count($_REQUEST['id'], '');
+					if(($mode = we_base_request::_(we_base_request::STRING, "mode")) == 'new'){
+						$parent = we_base_request::_(we_base_request::INT, 'parent_id', 0);
+						$type = we_base_request::_(we_base_request::STRING, 'type');
 						$out .= we_html_element::jsElement('
-top.content.folder_added(' . $_REQUEST['parent_id'] . ');
-top.content.menuDaten.add(new top.content.urlEntry("' . ($_REQUEST['type'] == 'we_todo' ? 'todo_folder' : 'msg_folder') . '.gif", "' . $_REQUEST['id'] . '", "' . $_REQUEST['parent_id'] . '", "' . $_REQUEST['name'] . ' - (0)", "leaf_Folder", "' . MESSAGES_TABLE . '", "' . ($_REQUEST['type'] == 'we_todo' ? 'todo_folder' : 'msg_folder') . '"));' .
+top.content.folder_added(' . $parent . ');
+top.content.menuDaten.add(new top.content.urlEntry("' . ($type == 'we_todo' ? 'todo_folder' : 'msg_folder') . '.gif", "' . $id . '", "' . $parent . '", "' . we_base_request::_(we_base_request::STRING, 'name') . ' - (0)", "leaf_Folder", "' . MESSAGES_TABLE . '", "' . ($type == 'we_todo' ? 'todo_folder' : 'msg_folder') . '"));' .
 								we_message_reporting::getShowMessageCall(g_l('modules_messaging', '[folder_created]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
 top.content.drawEintraege();
 						');
@@ -324,8 +322,7 @@ top.content.menuDaten.add(new top.content.self.rootEntry(0,"root","root"));';
 
 						foreach($this->messaging->available_folders as $folder){
 							if(($sf_cnt = $this->messaging->get_subfolder_count($folder['ID'], '')) >= 0){
-								$js_out = '
-top.content.menuDaten.add(
+								$js_out .= 'top.content.menuDaten.add(
 	new top.content.dirEntry(
 		"' . ($folder['ClassName'] == 'we_todo' ? 'todo_folder' : 'msg_folder') . '.gif",
 		"' . $folder['ID'] . '","' . $folder['ParentID'] . '",
@@ -336,11 +333,9 @@ top.content.menuDaten.add(
 		' . $sf_cnt . ',
 		"' . ($folder['ClassName'] == 'we_todo' ? 'todo_folder' : 'msg_folder') . '"
 	)
-);
-								';
+);';
 							} else {
-								$js_out = '
-top.content.menuDaten.add(
+								$js_out .= 'top.content.menuDaten.add(
 	new top.content.urlEntry(
 		"' . ($folder['ClassName'] == 'we_todo' ? 'todo_folder' : 'msg_folder') . '.gif",
 		"' . $folder['ID'] . '",
@@ -350,13 +345,12 @@ top.content.menuDaten.add(
 		"' . MESSAGES_TABLE . '",
 		"' . ($folder['ClassName'] == 'we_todo' ? 'todo_folder' : 'msg_folder') . '"
 	)
-);
-								';
+);';
 							}
 						}
 
 						$this->messaging->saveInSession($_SESSION['weS']['we_data'][$this->transaction]);
-						$js_out = '
+						$js_out .= '
 top.content.drawEintraege();
 						';
 
@@ -365,12 +359,11 @@ top.content.drawEintraege();
 				}
 				return $out;
 			case 'delete_folders':
-				if($_REQUEST['folders']){
-					$folders = explode(',', $_REQUEST['folders']);
+				if(($folders = we_base_request::_(we_base_request::INTLISTA, 'folders'))){
 
 					$out .= we_html_element::jsElement('
-					top.content.delete_menu_entries(new Array(String(' . join('), String(', $folders) . ')));
-					top.content.folders_removed(new Array(String(' . join('), String(', $folders) . ')));
+					top.content.delete_menu_entries(new Array(String(' . implode('), String(', $folders) . ')));
+					top.content.folders_removed(new Array(String(' . implode('), String(', $folders) . ')));
 					top.content.drawEintraege();
 					');
 				}
@@ -385,18 +378,16 @@ top.content.drawEintraege();
 					if($this->messaging->save_settings(array('update_interval' => $ui))){
 						$out .= we_html_element::jsScript(JS_DIR . 'messaging_std.js') .
 							we_html_element::jsElement(
-								we_message_reporting::getShowMessageCall(g_l('modules_messaging', '[saved]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
-						close_win("messaging_settings");
-						');
+								we_message_reporting::getShowMessageCall(g_l('modules_messaging', '[saved]'), we_message_reporting::WE_MESSAGE_NOTICE) .
+								'close_win("messaging_settings");'
+						);
 					}
 				}
 				return $out;
 			case 'messaging_close':
-				return we_html_element::jsElement('
-				top.close();
-				');
+				return we_html_element::jsElement('top.close();');
 			default:
-				return 'mcmd=' . $_REQUEST['mcmd'] . '<br/>';
+				return 'mcmd=' . $mcmd . '<br/>';
 		}
 	}
 
@@ -414,8 +405,8 @@ if (top.content.editor.edbody.msg_mfv.messaging_messages_overview) {
 	}
 
 	private function refresh_work($blank = false){
-		if(isset($_REQUEST["entrsel"]) && $_REQUEST["entrsel"] != ''){
-			$this->messaging->set_ids_selected($_REQUEST["entrsel"]);
+		if(($eSel=we_base_request::_(we_base_request::STRING,"entrsel"))){
+			$this->messaging->set_ids_selected($eSel);
 		}
 
 		$this->messaging->get_fc_data($this->messaging->Folder_ID, '', '', 0);
