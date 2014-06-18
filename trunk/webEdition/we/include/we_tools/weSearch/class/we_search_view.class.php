@@ -1788,7 +1788,6 @@ class we_search_view extends we_tool_view{
 		$_SESSION['weS']['weSearch']['foundItems' . $whichSearch] = 0;
 
 		if(isset($GLOBALS['we_cmd_obj'])){
-			$thisObj = new we_search_view();
 			$obj = $GLOBALS['we_cmd_obj'];
 
 			$searchFields = $location = array();
@@ -1874,7 +1873,6 @@ class we_search_view extends we_tool_view{
 			$_anzahl = $_REQUEST['we_cmd']['anzahl' . $whichSearch];
 		} else {
 			$obj = $this->Model;
-			$thisObj = $this;
 
 			switch($whichSearch){
 				case 'DocSearch':
@@ -1952,7 +1950,7 @@ class we_search_view extends we_tool_view{
 
 		if(isset($searchText[0]) && substr($searchText[0], 0, 4) == 'exp:'){
 
-			$_result = $thisObj->searchclassExp->getSearchResults($searchText[0], $_tables);
+			$_result = $this->searchclassExp->getSearchResults($searchText[0], $_tables);
 			if(!empty($_result)){
 				foreach($_result as $k => $v){
 					foreach($v as $key => $val){
@@ -1979,12 +1977,12 @@ class we_search_view extends we_tool_view{
 				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('searchtool', '[noTempTableRightsSearch]'), we_message_reporting::WE_MESSAGE_NOTICE));
 				return;
 			}
-			$thisObj->searchclass->createTempTable();
+			$this->searchclass->createTempTable();
 			$op = ($whichSearch == "AdvSearch" ? ' AND ' : ' OR ');
 
 			foreach($_tables as $_table){
 				$where = '';
-				$thisObj->searchclass->settable($_table);
+				$this->searchclass->settable($_table);
 
 				if(!defined('OBJECT_TABLE') || (defined('OBJECT_TABLE') && $_table != OBJECT_TABLE)){
 					$workspaces = makeArrayFromCSV(get_ws($_table, true));
@@ -2014,7 +2012,7 @@ class we_search_view extends we_tool_view{
 								case "temp_category":
 									break;
 								default:
-									$where .= $thisObj->searchclass->searchfor($searchString, $searchFields[$i], $location[$i], $_table);
+									$where .= $this->searchclass->searchfor($searchString, $searchFields[$i], $location[$i], $_table);
 							}
 						}
 						switch($searchFields[$i]){
@@ -2023,7 +2021,7 @@ class we_search_view extends we_tool_view{
 								if($objectTable != "" && $_table == $objectTable){
 
 								} else {
-									$w = $thisObj->searchclass->searchContent($searchString, $_table);
+									$w = $this->searchclass->searchContent($searchString, $_table);
 									if($where == '' && $w == ''){
 										$where .= ' AND 0 ';
 									} elseif($where == '' && $w != ''){
@@ -2036,20 +2034,20 @@ class we_search_view extends we_tool_view{
 
 							case 'modifierID':
 								if($_table == VERSIONS_TABLE){
-									$w .= $thisObj->searchclass->searchModifier($searchString, $_table);
+									$w .= $this->searchclass->searchModifier($searchString, $_table);
 									$where .= $w;
 								}
 								break;
 
 							case 'allModsIn':
 								if($_table == VERSIONS_TABLE){
-									$w .= $thisObj->searchclass->searchModFields($searchString, $_table);
+									$w .= $this->searchclass->searchModFields($searchString, $_table);
 									$where .= $w;
 								}
 								break;
 
 							case 'Title':
-								$w = $thisObj->searchclass->searchInTitle($searchString, $_table);
+								$w = $this->searchclass->searchInTitle($searchString, $_table);
 
 								if($where == '' && $w == ''){
 									$where .= ' AND 0 ';
@@ -2062,7 +2060,7 @@ class we_search_view extends we_tool_view{
 							case 'Status':
 							case 'Speicherart':
 								if($_table == FILE_TABLE || $_table == VERSIONS_TABLE || $_table == OBJECT_FILES_TABLE){
-									$w = $thisObj->searchclass->getStatusFiles($searchString, $_table);
+									$w = $this->searchclass->getStatusFiles($searchString, $_table);
 									if($_table == VERSIONS_TABLE){
 										$docTableChecked = (in_array(FILE_TABLE, $_tables)) ? true : false;
 										$objTableChecked = (defined('OBJECT_FILES_TABLE') && (in_array(OBJECT_FILES_TABLE, $_tables))) ? true : false;
@@ -2080,17 +2078,17 @@ class we_search_view extends we_tool_view{
 							case 'CreatorName':
 							case 'WebUserName':
 								if(isset($searchFields[$i]) && isset($location[$i])){
-									$w = $thisObj->searchclass->searchSpecial($searchString, $searchFields[$i], $location[$i]);
+									$w = $this->searchclass->searchSpecial($searchString, $searchFields[$i], $location[$i]);
 									$where .= ' AND ' . $w;
 								}
 								break;
 							case 'temp_category':
-								$w = $thisObj->searchclass->searchCategory($searchString, $_table, $searchFields[$i]);
+								$w = $this->searchclass->searchCategory($searchString, $_table, $searchFields[$i]);
 								$where .= $w;
 								break;
 							default:
 								if($whichSearch != "AdvSearch"){
-									$where .= $thisObj->searchclass->searchfor($searchString, $searchFields[$i], $location[$i], $_table);
+									$where .= $this->searchclass->searchfor($searchString, $searchFields[$i], $location[$i], $_table);
 								}
 						}
 					}
@@ -2099,7 +2097,7 @@ class we_search_view extends we_tool_view{
 				if($where != ''){
 
 					if(isset($folderID) && ($folderID != '' && $folderID != 0)){
-						$where = ' AND (1 ' . $where . ')' . $thisObj->searchclass->ofFolderAndChildsOnly($folderID, $_table);
+						$where = ' AND (1 ' . $where . ')' . $this->searchclass->ofFolderAndChildsOnly($folderID, $_table);
 					}
 
 					if($_table == VERSIONS_TABLE){
@@ -2110,7 +2108,7 @@ class we_search_view extends we_tool_view{
 					}
 
 					if(!empty($workspaces)){
-						$where = ' AND (1 ' . $where . ')' . $thisObj->searchclass->ofFolderAndChildsOnly($workspaces, $_table);
+						$where = ' AND (1 ' . $where . ')' . $this->searchclass->ofFolderAndChildsOnly($workspaces, $_table);
 					}
 
 					$whereQuery = '1 ' . $where;
@@ -2135,8 +2133,8 @@ class we_search_view extends we_tool_view{
 								$isCheckedFileTable = $_REQUEST['we_cmd']['search_tables_advSearch[' . FILE_TABLE];
 								$isCheckedObjFileTable = (defined("OBJECT_FILES_TABLE")) ? $_REQUEST['we_cmd']['search_tables_advSearch[' . OBJECT_FILES_TABLE] : 1;
 							} else {
-								$isCheckedFileTable = $thisObj->Model->search_tables_advSearch[FILE_TABLE];
-								$isCheckedObjFileTable = (defined("OBJECT_FILES_TABLE")) ? $thisObj->Model->search_tables_advSearch[OBJECT_FILES_TABLE] : 1;
+								$isCheckedFileTable = $this->Model->search_tables_advSearch[FILE_TABLE];
+								$isCheckedObjFileTable = (defined("OBJECT_FILES_TABLE")) ? $this->Model->search_tables_advSearch[OBJECT_FILES_TABLE] : 1;
 							}
 							$_SESSION['weS']['weSearch']['onlyObjects'] = true;
 							$_SESSION['weS']['weSearch']['onlyDocs'] = true;
@@ -2144,10 +2142,10 @@ class we_search_view extends we_tool_view{
 							$_SESSION['weS']['weSearch']['onlyObjectsRestrUsersWhere'] = ' AND ((' . OBJECT_FILES_TABLE . '.RestrictOwners=0 OR ' . OBJECT_FILES_TABLE . '.RestrictOwners= ' . intval($_SESSION["user"]["ID"]) . ') OR (' . OBJECT_FILES_TABLE . ".Owners LIKE '%," . $_SESSION["user"]["ID"] . ",%'))";
 							$_SESSION['weS']['weSearch']['onlyDocsRestrUsersWhere'] = ' AND ((' . FILE_TABLE . '.RestrictOwners=0 OR ' . FILE_TABLE . '.RestrictOwners= ' . intval($_SESSION["user"]["ID"]) . ') OR (' . FILE_TABLE . ".Owners LIKE '%," . $_SESSION["user"]["ID"] . ",%'))";
 							if(!empty($workspacesTblFile)){
-								$_SESSION['weS']['weSearch']['onlyDocsRestrUsersWhere'] .= $where = ' ' . $thisObj->searchclass->ofFolderAndChildsOnly($workspacesTblFile[0], $_table);
+								$_SESSION['weS']['weSearch']['onlyDocsRestrUsersWhere'] .= $where = ' ' . $this->searchclass->ofFolderAndChildsOnly($workspacesTblFile[0], $_table);
 							}
 							if(isset($workspacesObjFile) && !empty($workspacesObjFile)){
-								$_SESSION['weS']['weSearch']['onlyObjectsRestrUsersWhere'] .= $where = " " . $thisObj->searchclass->ofFolderAndChildsOnly($workspacesObjFile[0], $_table);
+								$_SESSION['weS']['weSearch']['onlyObjectsRestrUsersWhere'] .= $where = " " . $this->searchclass->ofFolderAndChildsOnly($workspacesObjFile[0], $_table);
 							}
 
 							if(!$isCheckedFileTable && $isCheckedObjFileTable){
@@ -2163,27 +2161,27 @@ class we_search_view extends we_tool_view{
 							break;
 					}
 
-					$thisObj->searchclass->setwhere($whereQuery);
+					$this->searchclass->setwhere($whereQuery);
 
-					$thisObj->searchclass->insertInTempTable($whereQuery, $_table);
+					$this->searchclass->insertInTempTable($whereQuery, $_table);
 				}
 			}
 
-			$thisObj->searchclass->selectFromTempTable($_searchstart, $_anzahl, $_order);
+			$this->searchclass->selectFromTempTable($_searchstart, $_anzahl, $_order);
 
-			while($thisObj->searchclass->next_record()){
-				if(isset($thisObj->searchclass->Record['VersionID']) && $thisObj->searchclass->Record['VersionID'] != 0){
+			while($this->searchclass->next_record()){
+				if(isset($this->searchclass->Record['VersionID']) && $this->searchclass->Record['VersionID'] != 0){
 
 					$versionsFound[] = array(
-						$thisObj->searchclass->Record['ContentType'],
-						$thisObj->searchclass->Record['docID'],
-						$thisObj->searchclass->Record['VersionID']
+						$this->searchclass->Record['ContentType'],
+						$this->searchclass->Record['docID'],
+						$this->searchclass->Record['VersionID']
 					);
 				}
-				if(!isset($saveArrayIds[$thisObj->searchclass->Record['ContentType']][$thisObj->searchclass->Record['docID']])){
-					$saveArrayIds[$thisObj->searchclass->Record['ContentType']][$thisObj->searchclass->Record['docID']] = $thisObj->searchclass->Record['docID'];
+				if(!isset($saveArrayIds[$this->searchclass->Record['ContentType']][$this->searchclass->Record['docID']])){
+					$saveArrayIds[$this->searchclass->Record['ContentType']][$this->searchclass->Record['docID']] = $this->searchclass->Record['docID'];
 
-					$_result[] = array_merge(array('Table' => $_table), array('foundInVersions' => ""), $thisObj->searchclass->Record);
+					$_result[] = array_merge(array('Table' => $_table), array('foundInVersions' => ""), $this->searchclass->Record);
 				}
 			}
 
@@ -2198,18 +2196,18 @@ class we_search_view extends we_tool_view{
 					}
 				}
 
-				$thisObj->searchclass->selectFromTempTable($_searchstart, $_anzahl, $_order);
-				while($thisObj->searchclass->next_record()){
+				$this->searchclass->selectFromTempTable($_searchstart, $_anzahl, $_order);
+				while($this->searchclass->next_record()){
 					if(!isset(
-							$saveArrayIds[$thisObj->searchclass->Record['ContentType']][$thisObj->searchclass->Record['docID']])){
-						$saveArrayIds[$thisObj->searchclass->Record['ContentType']][$thisObj->searchclass->Record['docID']] = $thisObj->searchclass->Record['docID'];
+							$saveArrayIds[$this->searchclass->Record['ContentType']][$this->searchclass->Record['docID']])){
+						$saveArrayIds[$this->searchclass->Record['ContentType']][$this->searchclass->Record['docID']] = $this->searchclass->Record['docID'];
 						$_result[] = array_merge(array(
 							'Table' => $_table
-							), $thisObj->searchclass->Record);
+							), $this->searchclass->Record);
 					}
 				}
 			}
-			$_SESSION['weS']['weSearch']['foundItems' . $whichSearch] = $thisObj->searchclass->getResultCount();
+			$_SESSION['weS']['weSearch']['foundItems' . $whichSearch] = $this->searchclass->getResultCount();
 		}
 
 		if($_SESSION['weS']['weSearch']['foundItems' . $whichSearch] == 0){
@@ -2236,7 +2234,7 @@ class we_search_view extends we_tool_view{
 			}
 		}
 
-		return $thisObj->makeContent($_result, $_view, $whichSearch);
+		return $this->makeContent($_result, $_view, $whichSearch);
 	}
 
 	function makeHeadLines($whichSearch){
@@ -2444,8 +2442,6 @@ class we_search_view extends we_tool_view{
 	function getSearchParameterTop($foundItems, $whichSearch){
 
 		if(isset($GLOBALS['we_cmd_obj'])){
-			$thisObj = new we_search_view();
-
 			$_view = $_REQUEST['we_cmd']['setView' . $whichSearch];
 			$view = "setView" . $whichSearch;
 			$_order = $_REQUEST['we_cmd']['Order' . $whichSearch];
@@ -2454,7 +2450,6 @@ class we_search_view extends we_tool_view{
 			$anzahl = "anzahl" . $whichSearch;
 			$searchstart = "searchstart" . $whichSearch;
 		} else {
-			$thisObj = $this;
 
 			switch($whichSearch){
 				case "DocSearch" :
@@ -2504,7 +2499,7 @@ class we_search_view extends we_tool_view{
    ' . we_html_tools::htmlSelect(
 				$anzahl, $values, 1, $_anzahl, "", array('onchange' => 'this.form.elements["' . $searchstart . '"].value=0;search(false);')) . '
 	 </td>
-   <td style="width:400px;">' . $thisObj->getNextPrev(
+   <td style="width:400px;">' . $this->getNextPrev(
 				$foundItems, $whichSearch) . '</td>
    <td style="width:35px;">
    ' . we_html_button::create_button(
@@ -2522,12 +2517,6 @@ class we_search_view extends we_tool_view{
 	}
 
 	function getSearchParameterBottom($foundItems, $whichSearch){
-		if(isset($GLOBALS['we_cmd_obj'])){
-			$thisObj = new we_search_view();
-		} else {
-			$thisObj = $this;
-		}
-
 		$resetButton = "";
 		$publishButton = "";
 		$publishButtonCheckboxAll = "";
@@ -2554,7 +2543,7 @@ class we_search_view extends we_tool_view{
      <td>' . we_html_tools::getPixel(19, 12) . '</td>
      <td style="font-size:12px;width:140px;">' . we_html_tools::getPixel(30, 12) . '</td>
      <td class="defaultgray" style="width:60px;">' . we_html_tools::getPixel(30, 12) . '</td>
-     <td style="width:400px;">' . $thisObj->getNextPrev(
+     <td style="width:400px;">' . $this->getNextPrev(
 				$foundItems, $whichSearch) . '</td>
     </tr>
     </table>';
@@ -2795,7 +2784,6 @@ class we_search_view extends we_tool_view{
 	}
 
 	function tblList($content, $headline, $whichSearch){
-		$thisObj = (isset($GLOBALS['we_cmd_obj']) || $whichSearch == "doclist" ? new we_search_view() : $this);
 		$class = "middlefont";
 		$view = 0;
 
@@ -2836,15 +2824,13 @@ class we_search_view extends we_tool_view{
 		$out .= '</tr></table>' .
 			//FIXME: realize with tbody?
 			'<div id="scrollContent_' . $whichSearch . '" style="overflow-y:auto;background-color:#fff;width:100%">' .
-			$thisObj->tabListContent($view, $content, $class, $whichSearch) .
+			$this->tabListContent($view, $content, $class, $whichSearch) .
 			'</div>';
 
 		return $out;
 	}
 
 	function tabListContent($view = "", $content = "", $class = "", $whichSearch = ""){
-		$thisObj = (isset($GLOBALS['we_cmd_obj']) || $whichSearch == "doclist" ? new we_search_view() : $this);
-
 		$x = count($content);
 		if($view == 0){
 			$out = '<table style="table-layout:fixed;white-space:nowrap;border:0px;width:100%;padding:0 0 0 0;margin:0 0 0 0;">
@@ -2859,7 +2845,7 @@ class we_search_view extends we_tool_view{
 
 			for($m = 0; $m < $x; $m++){
 				$out .= '<tr>' . ($whichSearch != "doclist" ?
-						$thisObj->tblListRow($content[$m]) :
+						$this->tblListRow($content[$m]) :
 						we_search_view::tblListRow($content[$m])) . '</tr>';
 			}
 			$out .= '</tbody></table>';
@@ -2869,7 +2855,7 @@ class we_search_view extends we_tool_view{
 			for($m = 0; $m < $x; $m++){
 				$out .= '<div style="float:left;width:180px;height:100px;margin:20px 0px 0px 20px;z-index:1;">' .
 					($whichSearch != "doclist" ?
-						$thisObj->tblListRowIconView($content[$m], $class, $m, $whichSearch) :
+						$this->tblListRowIconView($content[$m], $class, $m, $whichSearch) :
 						we_search_view::tblListRowIconView($content[$m], $class, $m, $whichSearch)
 					) . '</div>';
 			}
@@ -2877,7 +2863,7 @@ class we_search_view extends we_tool_view{
 			$out .= '</td></tr></table>';
 
 			$allDivs = ($whichSearch != "doclist" ?
-					$thisObj->makeMouseOverDivs($x, $content, $whichSearch) :
+					$this->makeMouseOverDivs($x, $content, $whichSearch) :
 					we_search_view::makeMouseOverDivs($x, $content, $whichSearch));
 
 
@@ -2938,7 +2924,7 @@ class we_search_view extends we_tool_view{
 			}
 			$outDivs .= '</div>
 				</div>';
-			if(!empty($content[$n][15]["dat"])){
+			if($content[$n][15]["dat"]){
 				$outDivs .= '<div style="width:100%;position:relative;top:0px;height:1px;overflow:hidden;background-color:#DDDDDD;">
 					</div>
 					<div style="width:100%;position:relative;top:0px;height:1px;overflow:hidden;background-color:#FFF;">
