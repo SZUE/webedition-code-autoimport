@@ -184,7 +184,7 @@ class we_messaging_message extends we_messaging_proto{
 		if(!isset($this->default_folders[we_messaging_proto::FOLDER_SENT]) || $this->default_folders[we_messaging_proto::FOLDER_SENT] < 0){
 			$this->default_folders[we_messaging_proto::FOLDER_SENT] = f('SELECT ID FROM ' . $this->DB_WE->escape($this->folder_tbl) . ' WHERE obj_type = ' . we_messaging_proto::FOLDER_SENT . ' AND msg_type = ' . $this->sql_class_nr . ' AND UserID = ' . intval($_SESSION["user"]["ID"]), 'ID', $this->DB_WE);
 		}
-		$to_str = join(', ', $rcpts);
+		$to_str = implode(', ', $rcpts);
 		$this->DB_WE->query('INSERT INTO ' . $this->table . ' (ParentID, UserID, msg_type, obj_type, headerDate, headerSubject, headerUserID, headerTo, Priority, MessageText, seenStatus) VALUES (' . $this->default_folders[we_messaging_proto::FOLDER_SENT] . ', ' . intval($this->userid) . ', ' . $this->sql_class_nr . ', ' . we_messaging_proto::MESSAGE_NR . ', UNIX_TIMESTAMP(NOW()), "' . $this->DB_WE->escape($data['subject']) . '", ' . intval($this->userid) . ', "' . $this->DB_WE->escape(strlen($to_str) > 60 ? substr($to_str, 0, 60) . '...' : $to_str) . '", 0, "' . $this->DB_WE->escape($data['body']) . '", 0)');
 
 		return $results;
@@ -211,7 +211,7 @@ class we_messaging_message extends we_messaging_proto{
 
 			$sfield_cond = substr($sfield_cond, 0, -3);
 
-			$folders_cond = join(' OR m.ParentID = ', $criteria['search_folder_ids']);
+			$folders_cond = implode(' OR m.ParentID = ', $criteria['search_folder_ids']);
 		} else if(isset($criteria['folder_id'])){
 
 			$folders_cond = $criteria['folder_id'];
@@ -224,7 +224,7 @@ class we_messaging_message extends we_messaging_proto{
 		}
 
 		if(isset($criteria['message_ids'])){
-			$message_ids_cond = join(' OR m.ID = ', $criteria['message_ids']);
+			$message_ids_cond = implode(' OR m.ID = ', $criteria['message_ids']);
 		}
 
 		$this->selected_set = array();
@@ -257,7 +257,7 @@ class we_messaging_message extends we_messaging_proto{
 
 		/* mark selected_set messages as seen */
 		if($seen_ids){
-			$this->DB_WE->query('UPDATE ' . $this->DB_WE->escape($this->table) . ' SET seenStatus = (seenStatus | ' . we_messaging_proto::STATUS_SEEN . ') WHERE (ID = ' . join(' OR ID = ', $seen_ids) . ') AND UserID = ' . $this->userid);
+			$this->DB_WE->query('UPDATE ' . $this->DB_WE->escape($this->table) . ' SET seenStatus = (seenStatus | ' . we_messaging_proto::STATUS_SEEN . ') WHERE (ID = ' . implode(' OR ID = ', $seen_ids) . ') AND UserID = ' . $this->userid);
 		}
 
 		return $this->selected_set;

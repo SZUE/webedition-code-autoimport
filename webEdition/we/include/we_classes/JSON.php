@@ -442,7 +442,7 @@ class Services_JSON{
 						}
 					}
 
-					return '{' . join(',', $properties) . '}';
+					return '{' . implode(',', $properties) . '}';
 				}
 
 				// treat it like a regular array
@@ -454,7 +454,7 @@ class Services_JSON{
 					}
 				}
 
-				return '[' . join(',', $elements) . ']';
+				return '[' . implode(',', $elements) . ']';
 
 			case 'object':
 
@@ -483,7 +483,7 @@ class Services_JSON{
 					}
 				}
 
-				return '{' . join(',', $properties) . '}';
+				return '{' . implode(',', $properties) . '}';
 
 			default:
 				return ($this->use & SERVICES_JSON_SUPPRESS_ERRORS) ? 'null' : new Services_JSON_Error(gettype($var) . " can not be encoded as JSON string");
