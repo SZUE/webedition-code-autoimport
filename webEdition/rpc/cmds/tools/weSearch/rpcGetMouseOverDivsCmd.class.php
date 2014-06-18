@@ -36,9 +36,10 @@ class rpcGetMouseOverDivsCmd extends rpcCmd{
 		$searchstart = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'searchstart' . $whichsearch);
 
 		$GLOBALS['we_cmd_obj'] = unserialize($_SESSION['weSearch_session']);
+		$sview = new we_search_view();
 
 		if($setView == 1){
-			$content = we_search_view::searchProperties($whichsearch);
+			$content = $sview->searchProperties($whichsearch);
 
 			$x = $searchstart + $anzahl;
 			if($x > count($content)){

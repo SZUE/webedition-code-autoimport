@@ -36,14 +36,14 @@ class rpcGetSearchParametersCmd extends rpcCmd{
 		$_SESSION['weS']['versions']['searchstart'] = we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 'searchstart');
 
 		$GLOBALS['we_cmd_obj'] = 1;
-
+		$vview = new weVersionsView();
 		if($pos == "top"){
-			$code = weVersionsView::getParameterTop($foundItems);
+			$code = $vview->getParameterTop($foundItems);
 		}
 
 		if($pos == "bottom"){
 			$GLOBALS['setInputSearchstart'] = 1;
-			$code = weVersionsView::getParameterBottom($foundItems);
+			$code = $vview->getParameterBottom($foundItems);
 		}
 
 		$resp->setData("data", $code);
