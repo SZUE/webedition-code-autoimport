@@ -829,17 +829,17 @@ new jsWindow(url,"sort_admin",-1,-1,750,500,true,true,true,true);';
 
 				break;
 			case 'del_sort':
-				if(($i = we_base_request::_(we_base_request::INT, 'sortindex')) !== false){
+				if(($i = we_base_request::_(we_base_request::STRING, 'sortindex')) !== false){
 					we_base_util::new_array_splice($this->settings->SortView, $i, 1);
 				}
 				break;
 			case 'add_sort_field':
-				if(($i = we_base_request::_(we_base_request::INT, 'sortindex')) !== false){
+				if(($i = we_base_request::_(we_base_request::STRING, 'sortindex')) !== false){
 					$this->settings->SortView[$i][] = array('branch' => '', 'field' => '', 'order' => '');
 				}
 				break;
 			case 'del_sort_field':
-				if(($i = we_base_request::_(we_base_request::INT, 'sortindex')) !== false &&
+				if(($i = we_base_request::_(we_base_request::STRING, 'sortindex')) !== false &&
 					($j = we_base_request::_(we_base_request::INT, 'fieldindex')) !== false){
 
 					array_splice($this->settings->SortView[$i], $j, 1);
