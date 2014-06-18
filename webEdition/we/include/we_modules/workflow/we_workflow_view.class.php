@@ -975,8 +975,8 @@ function checkData(){
 					foreach($this->workflowDef->documents as $k => $v){
 						$childs.="top.content.deleteEntry(" . $v["ID"] . ",'file');\n";
 					}
-					if(is_array($_REQUEST[$this->uid . '_MYDocType']) && !empty($_REQUEST[$this->uid . '_MYDocType'])){
-						$this->workflowDef->DocType = makeCSVFromArray($_REQUEST[$this->uid . '_MYDocType'], true);
+					if(($dts = we_base_request::_(we_base_request::INT, $_REQUEST[$this->uid . '_MYDocType'])) !== false){
+						$this->workflowDef->DocType = makeCSVFromArray($dts, true);
 					}
 
 					$this->workflowDef->save();
