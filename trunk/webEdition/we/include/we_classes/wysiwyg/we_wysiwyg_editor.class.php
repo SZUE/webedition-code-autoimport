@@ -1224,6 +1224,17 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 	' . ($this->tinyParams ? '//params from attribute tinyparams
 	' . $this->tinyParams . ',' : '') . '
 
+	//Fix: ad attribute id to anchor
+	init_instance_callback: function(ed) {
+		ed.serializer.addNodeFilter("a", function(nodes) {
+			tinymce.each(nodes, function(node) {
+				if(!node.attr("href")){
+					node.attr("id", node.attr("name"));
+				}
+			});
+		});
+	},
+
 	setup : function(ed){
 
 		ed.settings.language = "' . we_core_Local::weLangToLocale($GLOBALS['WE_LANGUAGE']) . '";
