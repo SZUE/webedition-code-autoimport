@@ -904,7 +904,7 @@ class doclistView{
 	 * @abstract executes the search and writes the result into arrays
 	 * @return array with search results
 	 */
-	static function searchProperties(){
+	function searchProperties(){
 
 		$DB_WE = new DB_WE();
 		$content = array();
@@ -926,7 +926,7 @@ class doclistView{
 			}
 		}
 
-		if(isset($GLOBALS['we_cmd_obj'])){
+		if(isset($GLOBALS['we_cmd_obj']) && is_object($GLOBALS['we_cmd_obj'])){
 			$obj = $GLOBALS['we_cmd_obj'];
 			$thisObj = new self();
 		} else {
@@ -1241,7 +1241,7 @@ class doclistView{
 	 * @abstract generates html for search result
 	 * @return string, html search result
 	 */
-	static function getSearchParameterTop($foundItems){
+	function getSearchParameterTop($foundItems){
 		$anzahl = array(10 => 10, 25 => 25, 50 => 50, 100 => 100);
 
 		$thisObj = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 'obj') ? new self() : $this;
