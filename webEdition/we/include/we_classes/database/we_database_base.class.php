@@ -301,26 +301,40 @@ abstract class we_database_base{
 // if union is found in query, then take a closer look
 		if(!$allowUnion && stristr($Query_String, 'union') || stristr($Query_String, '/*!')){
 
-			$queryToCheck = str_replace(array("\\\"", "\\'"), '', $Query_String);
+			$queryToCheck = str_replace(array("\\\"", "\\'", '\\\`'), '', $Query_String);
 
-			$singleQuote = $doubleQuote = false;
+			$singleQuote = $doubleQuote = $field = false;
 
 			$queryWithoutStrings = '';
 
 			for($i = 0; $i < strlen($queryToCheck); $i++){
 				$char = $queryToCheck[$i];
-				if(!$doubleQuote && !$singleQuote){
-					if($char == '"'){
-						$doubleQuote = true;
-					} else if($char == '\''){
-						$singleQuote = true;
+				if(!$doubleQuote && !$singleQuote && !$field){
+					switch($char){
+						case '"':
+							$doubleQuote = true;
+							break;
+						case '`':
+							$field = true;
+							break;
+						case '\'':
+							$singleQuote = true;
+							break;
 					}
-				} else if($char == '"' && $doubleQuote){
-					$doubleQuote = false;
-				} else if($char == '\'' && $singleQuote){
-					$singleQuote = false;
+				} else {
+					switch($char){
+						case '"':
+							$doubleQuote = !$doubleQuote;
+							break;
+						case '`':
+							$field = !$field;
+							break;
+						case '\'':
+							$singleQuote = !$singleQuote;
+							break;
+					}
 				}
-				if(!$doubleQuote && !$singleQuote && $char !== '\'' && $char !== '"'){
+				if(!$doubleQuote && !$singleQuote && !$field && $char !== '\'' && $char !== '"' && $char !== '`'){
 					$queryWithoutStrings .= $char;
 				}
 			}
