@@ -1228,7 +1228,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 	init_instance_callback: function(ed) {
 		ed.serializer.addNodeFilter("a", function(nodes) {
 			tinymce.each(nodes, function(node) {
-				if(!node.attr("href")){
+				if(!node.attr("href") && !node.attr("id")){
 					node.attr("id", node.attr("name"));
 				}
 			});
@@ -1375,7 +1375,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 				weEditorFrameIsHot = true;
 			}
 		});
-
+		/*
 		ed.onNodeChange.add(function(ed, cm, n) {
 			var sel = ed.selection.getSel();
 			//console.log(sel.anchorOffset);
@@ -1394,6 +1394,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 				
 			}
 		});
+		*/
 
 		ed.onClick.add(function(ed) {
 			if(!weEditorFrameIsHot && editorLevel == "inline" && ed.isDirty()){
