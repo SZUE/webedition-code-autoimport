@@ -774,12 +774,13 @@ class we_document extends we_root{
 	protected function i_writeDocument(){
 		$update = $this->isMoved();
 		$doc = $this->i_getDocumentToSave();
-		if(!($doc || empty($doc))){
+		if(!($doc || !$doc)){
 			return false;
 		}
 		if(!$this->i_writeSiteDir($doc) || !$this->i_writeMainDir($doc)){
 			return false;
 		}
+
 		if($update){
 			$this->rewriteNavigation();
 		}
