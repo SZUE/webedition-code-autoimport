@@ -522,8 +522,11 @@ abstract class we_base_file{
 		if(!is_link($link)){
 			$cnt = substr_count(str_replace($_SERVER['DOCUMENT_ROOT'], '', $link), '/') - 1;
 			$destination = str_repeat('../', $cnt) . basename($destinationPath);
-			symlink($destination, $link);
+			if(!symlink($destination, $link)){
+				t_e('error in making symlink from ' . $link . ' to ' . $destination);
+			}
 		}
+		return false;
 	}
 
 	static function lock($id){
