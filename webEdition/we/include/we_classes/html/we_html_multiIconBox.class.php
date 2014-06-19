@@ -37,7 +37,7 @@ abstract class we_html_multiIconBox{
 	 * @param	$headline			string
 	 * @return	string
 	 */
-	static function getHTML($name, $width, $content, $marginLeft = 0, $buttons = '', $foldAtNr = -1, $foldRight = '', $foldDown = '', $displayAtStartup = false, $headline = "", $delegate = "", $height = 0, $overflow = "auto"){
+	static function getHTML($name, $width, array $content, $marginLeft = 0, $buttons = '', $foldAtNr = -1, $foldRight = '', $foldDown = '', $displayAtStartup = false, $headline = "", $delegate = "", $height = 0, $overflow = "auto"){
 		$uniqname = $name ? $name : md5(uniqid(__FILE__, true));
 
 		$out = (isset($headline) && $headline != '') ?

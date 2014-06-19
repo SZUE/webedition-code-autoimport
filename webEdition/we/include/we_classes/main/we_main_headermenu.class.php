@@ -127,10 +127,10 @@ top.weSidebar = weSidebar;
 	}
 
 	static function getMenu(){
-		if(we_base_request::_(we_base_request::BOOL, "SEEM_edit_include")){ // there is only a menu when not in seem_edit_include!
+		if(we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include')){ // there is only a menu when not in seem_edit_include!
 			return null;
 		}
-		include(WE_INCLUDES_PATH . "java_menu/we_menu.inc.php");
+		include(WE_INCLUDES_PATH . 'menu/we_menu.inc.php');
 		ksort($we_menu);
 		if(// menu for normalmode
 			isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){

@@ -25,17 +25,16 @@ function we_parse_tag_repeat($attribs, $content){
 function we_tag_repeat(){
 	if(isset($GLOBALS['_we_voting_list'])){
 		return $GLOBALS['_we_voting_list']->getNext();
-	} elseif(isset($GLOBALS['lv'])){
+	}
+	if(isset($GLOBALS['lv'])){
 		if($GLOBALS['lv']->next_record()){
 			$GLOBALS["we_lv_array"][(count($GLOBALS["we_lv_array"]) - 1)] = clone($GLOBALS["lv"]);
 			if($GLOBALS['lv'] instanceof we_object_listview){
 				$GLOBALS['_we_object_listview_flag'] = true;
 			}
 			return true;
-		} else { //last entry
-			unset($GLOBALS['_we_object_listview_flag']);
-			return false;
-		}
+		} //last entry
+		unset($GLOBALS['_we_object_listview_flag']);
 	}
 
 	return false;
