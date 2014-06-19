@@ -747,6 +747,8 @@ we_templateInit();?>';
 			if(file_exists($tmplPathWithTmplExt)){
 				unlink($tmplPathWithTmplExt);
 			}
+		} else {
+			t_e('save template failed', $this->Path);
 		}
 		if(defined('SHOP_TABLE')){
 			$this->elements['allVariants']['dat'] = unserialize($this->elements['allVariants']['dat']);

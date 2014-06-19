@@ -381,18 +381,16 @@ abstract class we_rebuild_wizard{
 					$data = we_rebuild_base::getMetadata($metaFields, $onlyEmpty, $metaFolders);
 					break;
 			}
-			if(!empty($data)){
+			if($data){
 				$fr = new we_rebuild_fragment($taskname, 1, 0, array(), $data);
 
 				return array();
-			} else {
-				return array($js . we_message_reporting::getShowMessageCall(g_l('rebuild', '[nothing_to_rebuild]'), we_message_reporting::WE_MESSAGE_ERROR) . 'top.wizbusy.showPrevNextButton();', "");
 			}
-		} else {
-			$fr = new we_rebuild_fragment($taskname, 1, 0, array());
-
-			return array();
+			return array($js . we_message_reporting::getShowMessageCall(g_l('rebuild', '[nothing_to_rebuild]'), we_message_reporting::WE_MESSAGE_ERROR) . 'top.wizbusy.showPrevNextButton();', "");
 		}
+		$fr = new we_rebuild_fragment($taskname, 1, 0, array());
+
+		return array();
 	}
 
 	/**
