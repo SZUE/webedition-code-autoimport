@@ -34,19 +34,21 @@ foreach($tools as $k => $v){
 		$whiteList[] = $v['name'];
 	}
 }
-
-if(!isset($_REQUEST['tool']) || $_REQUEST['tool'] == '' || !in_array($_REQUEST['tool'], $whiteList)){
+$tool = we_base_request::_(we_base_request::STRING, 'tool');
+if(!$tool || !in_array($tool, $whiteList)){
 	exit();
 }
 
 //check if bootstrap file exists of specific app
-if(file_exists(WEBEDITION_PATH . 'apps/' . $_REQUEST['tool'] . '/index.php')){
+if(file_exists(WEBEDITION_PATH . 'apps/' . $tool . '/index.php')){
 
-	header('Location: ' . WEBEDITION_DIR . 'apps/' . $_REQUEST['tool'] . '/index.php/frameset/index' .
+	header('Location: ' . WEBEDITION_DIR . 'apps/' . $tool . '/index.php/frameset/index' .
 		(isset($REQUEST['modelid']) ? '/modelId/' . intval($REQUEST['modelid']) : '') .
 		(isset($REQUEST['tab']) ? '/tab/' . intval($REQUEST['tab']) : ''));
 	exit();
 }
-if($_REQUEST['tool'] == 'weSearch' || $_REQUEST['tool'] == 'navigation'){
-	require_once(WE_INCLUDES_PATH . 'we_tools/' . $_REQUEST['tool'] . '/edit_' . $_REQUEST['tool'] . '_frameset.php');
+switch($tool){
+	case 'weSearch':
+	case 'navigation':
+		require_once(WE_INCLUDES_PATH . 'we_tools/' . $tool . '/edit_' . $tool . '_frameset.php');
 }

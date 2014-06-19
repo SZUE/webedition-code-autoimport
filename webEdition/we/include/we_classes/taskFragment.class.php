@@ -149,15 +149,9 @@ class taskFragment{
 		foreach($_REQUEST as $i => $v){
 			if(is_array($v)){
 				foreach($v as $k => $av){
-					/*if(get_magic_quotes_gpc() == 1){
-						$av = stripslashes($av);
-					}*/
 					$tail .= "&" . rawurlencode($i) . "[" . rawurlencode($k) . "]=" . rawurlencode($av);
 				}
 			} elseif($i != "fr_" . rawurlencode($this->name) . "_ct"){
-				/*if(get_magic_quotes_gpc() == 1){
-					$v = stripslashes($v);
-				}*/
 				$tail .= "&" . rawurlencode($i) . "=" . rawurlencode($v);
 			}
 		}
@@ -186,15 +180,9 @@ class taskFragment{
 		foreach($_REQUEST as $i => $v){
 			if(is_array($v)){
 				foreach($v as $k => $av){
-					/*if(get_magic_quotes_gpc() == 1){
-						$av = stripslashes($av);
-					}*/
 					$tail .= "&" . rawurlencode($i) . "[" . rawurlencode($k) . "]=" . rawurlencode($av);
 				}
 			} elseif($i != "fr_" . rawurlencode($this->name) . "_ct"){
-				/*if(get_magic_quotes_gpc() == 1){
-					$v = stripslashes($v);
-				}*/
 				$tail .= "&" . rawurlencode($i) . "=" . rawurlencode($v);
 			}
 		}

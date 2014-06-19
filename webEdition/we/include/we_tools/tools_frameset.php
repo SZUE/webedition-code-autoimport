@@ -27,10 +27,9 @@ we_html_tools::protect();
 
 Zend_Loader::loadClass('we_core_Local');
 
-
-
 $title = 'webEdition ';
-switch(we_base_request::_(we_base_request::STRING, 'tool', '')){
+$tool = we_base_request::_(we_base_request::STRING, 'tool');
+switch($tool){
 	case '':
 		break;
 	case 'weSearch':
@@ -41,8 +40,8 @@ switch(we_base_request::_(we_base_request::STRING, 'tool', '')){
 		break;
 	default:
 		$translate = we_core_Local::addTranslation('apps.xml');
-		we_core_Local::addTranslation('default.xml', $_REQUEST['tool']);
-		$title .= $translate->_('Applications') . ' - ' . $translate->_($_REQUEST['tool']);
+		we_core_Local::addTranslation('default.xml', $tool);
+		$title .= $translate->_('Applications') . ' - ' . $translate->_($tool);
 		break;
 }
 
@@ -65,12 +64,12 @@ echo we_html_tools::getHtmlTop($title) .
 	}
 ');
 
-if($_REQUEST['tool'] == "weSearch"){
-	if(isset($_REQUEST['we_cmd'][1])){
-		$_SESSION['weS']['weSearch']["keyword"] = $_REQUEST['we_cmd'][1];
+if($tool == "weSearch"){
+	if(($cmd1 = we_base_request::_(we_base_request::STRING, 'we_cmd', false, 1))){
+		$_SESSION['weS']['weSearch']["keyword"] = $cmd1;
 	}
 	//look which search is activ
-	switch(we_base_request::_(we_base_request::TABLE, 'we_cmd', 1, 2)){
+	switch(($cmd2 = we_base_request::_(we_base_request::TABLE, 'we_cmd', 1, 2))){
 		case FILE_TABLE:
 			$tab = 1;
 			$_SESSION['weS']['weSearch']["checkWhich"] = 1;
@@ -89,13 +88,12 @@ if($_REQUEST['tool'] == "weSearch"){
 			break;
 
 		default:
-			$tab = $_REQUEST['we_cmd'][2];
+			$tab = $cmd2;
 	}
 
-
-	if(isset($_REQUEST['we_cmd'][3])){
-		$modelid = $_REQUEST['we_cmd'][3];
-	}
+	$modelid = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 3);
+} else {
+	$tab = $modelid = false;
 }
 
 print we_html_element::jsScript(JS_DIR . "keyListener.js") .
@@ -105,9 +103,9 @@ print we_html_element::jsScript(JS_DIR . "keyListener.js") .
 ?>
 </head>
 <frameset rows="26,*" border="0" framespacing="0" frameborder="no">');
-	<frame src="<?php echo WE_INCLUDES_DIR; ?>we_tools/tools_header.php?tool=<?php echo $_REQUEST['tool']; ?>" name="navi" noresize scrolling="no"/>
+	<frame src="<?php echo WE_INCLUDES_DIR; ?>we_tools/tools_header.php?tool=<?php echo $tool; ?>" name="navi" noresize scrolling="no"/>
 	<frame src="<?php echo WE_INCLUDES_DIR; ?>we_tools/tools_content.php?tool=<?php
-	echo $_REQUEST['tool'] . (isset($modelid) ? ('&modelid=' . $modelid) : '') . (isset($tab) ? ('&tab=' . $tab) : '');
+	echo $tool . ($modelid ? ('&modelid=' . $modelid) : '') . ($tab ? ('&tab=' . $tab) : '');
 	?>" name="content" noresize scrolling="no"/>
 </frameset>
 <body bgcolor="#ffffff"></body>

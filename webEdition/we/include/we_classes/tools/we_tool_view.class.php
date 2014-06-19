@@ -300,7 +300,7 @@ class we_tool_view{
 
 		if(is_array($this->Model->persistent_slots)){
 			foreach($this->Model->persistent_slots as $val){
-				if(($tmp = we_base_request::_(we_base_request::STRING, $val))){
+				if(($tmp = we_base_request::_(we_base_request::STRINGC, $val))){
 					$this->Model->$val = $tmp;
 				}
 			}

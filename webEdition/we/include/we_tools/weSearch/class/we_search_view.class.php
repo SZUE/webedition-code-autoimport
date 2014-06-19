@@ -105,7 +105,8 @@ class we_search_view extends we_tool_view{
 	}
 
 	function processCommands(){
-		switch(we_base_request::_(we_base_request::STRING, 'cmd')){
+		$cmdid = we_base_request::_(we_base_request::INT, 'cmdid');
+		switch(($cmd = we_base_request::_(we_base_request::STRING, 'cmd'))){
 			case 'tool_weSearch_new' :
 			case 'tool_weSearch_new_forDocuments' :
 			case 'tool_weSearch_new_forTemplates' :
@@ -113,35 +114,32 @@ class we_search_view extends we_tool_view{
 			case 'tool_weSearch_new_advSearch' :
 			case 'tool_weSearch_new_group' :
 				$this->Model = new we_search_model();
-				$this->Model->setIsFolder($_REQUEST['cmd'] == 'tool_weSearch_new_group' ? 1 : 0);
+				$this->Model->setIsFolder($cmd == 'tool_weSearch_new_group' ? 1 : 0);
+				$tab = we_base_request::_(we_base_request::INT, 'tabnr');
 
-				print
-					we_html_element::jsElement(
-						$this->editorHeaderFrame . '.location="' . $this->frameset . '?pnt=edheader' .
-						(isset($_REQUEST['tabnr']) ? '&tab=' . $_REQUEST['tabnr'] : '') .
-						'&text=' . urlencode($this->Model->Text) . '";' .
-						$this->topFrame . '.resize.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";');
+				echo we_html_element::jsElement(
+					$this->editorHeaderFrame . '.location="' . $this->frameset . '?pnt=edheader' .
+					($tab !== false ? '&tab=' . $tab : '') .
+					'&text=' . urlencode($this->Model->Text) . '";' .
+					$this->topFrame . '.resize.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";');
 				break;
 
 			case 'tool_weSearch_edit' :
-				$this->Model = new we_search_model($_REQUEST['cmdid']);
+				$this->Model = new we_search_model($cmdid);
 
 				if(!$this->Model->isAllowedForUser()){
-					print
-						we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(
-								g_l('tools', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
+					echo we_html_element::jsElement(
+						we_message_reporting::getShowMessageCall(
+							g_l('tools', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
 					$this->Model = new we_search_model();
 					$_REQUEST['home'] = true;
 					break;
 				}
-				print
-					we_html_element::jsElement(
-						'
-        ' . $this->editorHeaderFrame . '.location="' . $this->frameset . '?pnt=edheader' . (isset(
-							$_REQUEST['cmdid']) ? '&cmdid=' . $_REQUEST['cmdid'] : '') . '&text=' . urlencode(
-							$this->Model->Text) . '";
-        ' . $this->topFrame . '.resize.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
+				echo we_html_element::jsElement(
+					$this->editorHeaderFrame . '.location="' . $this->frameset . '?pnt=edheader' .
+					($cmdid !== false ? '&cmdid=' . $cmdid : '') . '&text=' .
+					urlencode($this->Model->Text) . '";' .
+					$this->topFrame . '.resize.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
         if(' . $this->topFrame . '.treeData){
          ' . $this->topFrame . '.treeData.unselectnode();
          ' . $this->topFrame . '.treeData.selectnode("' . $this->Model->ID . '");
@@ -150,62 +148,42 @@ class we_search_view extends we_tool_view{
 				break;
 
 			case 'tool_weSearch_save' :
-				if(isset($_REQUEST['savedSearchName'])){
-					$this->Model->Text = $_REQUEST['savedSearchName'];
-				}
+				$this->Model->Text = we_base_request::_(we_base_request::STRING, 'savedSearchName', $this->Model->Text);
 				if(strlen($this->Model->Text) > 30){
-					print
-						we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(
-								g_l('searchtool', "[nameTooLong]"), we_message_reporting::WE_MESSAGE_ERROR));
+					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('searchtool', "[nameTooLong]"), we_message_reporting::WE_MESSAGE_ERROR));
 					break;
 				}
 				if(stristr($this->Model->Text, "'") || stristr($this->Model->Text, '"')){
-					print
-						we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(
-								g_l('searchtool', "[no_hochkomma]"), we_message_reporting::WE_MESSAGE_ERROR));
+					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('searchtool', "[no_hochkomma]"), we_message_reporting::WE_MESSAGE_ERROR));
 					break;
 				}
 
 				if($this->Model->filenameNotValid($this->Model->Text)){
-					print
-						we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(
-								g_l('tools', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR));
+					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('tools', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR));
 					break;
 				}
 
 				$this->Model->activTab = we_base_request::_(we_base_request::INT, 'tabnr', 1);
 
 				if(trim($this->Model->Text) == ''){
-					print
-						we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(
-								g_l('tools', '[name_empty]'), we_message_reporting::WE_MESSAGE_ERROR));
+					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('tools', '[name_empty]'), we_message_reporting::WE_MESSAGE_ERROR));
 					break;
 				}
 				$oldpath = $this->Model->Path;
 				// set the path and check it
 				$this->Model->setPath();
 				if($this->Model->pathExists($this->Model->Path)){
-					print
-						we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(
-								g_l('tools', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR));
+					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('tools', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR));
 					break;
 				}
 				if($this->Model->isSelf()){
-					print
-						we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(
-								g_l('tools', '[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR));
+					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('tools', '[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR));
 					break;
 				}
 
 				$js = '';
 
-				$newone = $this->Model->ID == '0' ? true : false;
+				$newone = $this->Model->ID == '0';
 
 				$this->Model->searchDocSearch = serialize($this->Model->searchDocSearch);
 				$this->Model->searchTmplSearch = serialize($this->Model->searchTmplSearch);
@@ -235,7 +213,7 @@ class we_search_view extends we_tool_view{
 
 					if(we_base_request::_(we_base_request::BOOL, 'delayCmd')){
 						$js .= we_html_element::jsElement(
-								$this->topFrame . '.we_cmd("' . $_REQUEST['delayCmd'] . '"' . (($dp = we_base_request::_(we_base_request::RAW, 'delayParam')) ? ',"' . $dp . '"' : '') . ');'
+								$this->topFrame . '.we_cmd("' . we_base_request::_(we_base_request::STRING, 'delayCmd') . '"' . (($dp = we_base_request::_(we_base_request::RAW, 'delayParam')) ? ',"' . $dp . '"' : '') . ');'
 						);
 						$_REQUEST['delayCmd'] = '';
 						$_REQUEST['delayParam'] = '';
@@ -248,9 +226,7 @@ class we_search_view extends we_tool_view{
 					);
 				}
 
-
-
-				print $js;
+				echo $js;
 				$this->Model->searchDocSearch = unserialize($this->Model->searchDocSearch);
 				$this->Model->searchTmplSearch = unserialize($this->Model->searchTmplSearch);
 				$this->Model->searchAdvSearch = unserialize($this->Model->searchAdvSearch);
@@ -272,7 +248,6 @@ class we_search_view extends we_tool_view{
 								($this->Model->IsFolder == 1 ? g_l('tools', '[group_deleted]') : g_l('tools', '[item_deleted]')), we_message_reporting::WE_MESSAGE_NOTICE) . '\',500);'
 					);
 					$this->Model = new we_search_model();
-					//$_REQUEST['home'] = '0';
 					$_REQUEST['pnt'] = 'edbody';
 
 					print we_html_element::jsElement($this->topFrame . '.we_cmd("tool_weSearch_edit");');
@@ -417,23 +392,21 @@ class we_search_view extends we_tool_view{
 	}
 
 	function getSearchJS($whichSearch){
-		if($whichSearch == "AdvSearch"){
-			$h = (we_base_browserDetect::isIE() ? 125 : 140);
-		} else {
-			$h = (we_base_browserDetect::isIE() ? 155 : 170);
-		}
-
-		$addinputRows = "";
-
-		//add height of each input row to calculate the scrollContent-height
-		if($whichSearch == "AdvSearch"){
-			$addinputRows = 'for(i=1;i<newID;i++) {
+		switch($whichSearch){
+			case "AdvSearch":
+				$h = (we_base_browserDetect::isIE() ? 125 : 140);
+				//add height of each input row to calculate the scrollContent-height
+				$addinputRows = 'for(i=1;i<newID;i++) {
         //scrollheight = scrollheight + 28;
        }';
+				break;
+			default:
+				$h = (we_base_browserDetect::isIE() ? 155 : 170);
+				$addinputRows = "";
 		}
 
-		if($this->Model->IsFolder == 0){
-			$scrollContentFunction = '
+
+		$scrollContentFunction = ($this->Model->IsFolder == 0 ? '
     if (' . $this->editorBodyFrame . '.loaded) {
      var elem = document.getElementById("filterTableAdvSearch");
      newID = elem.rows.length-1;
@@ -455,12 +428,8 @@ class we_search_view extends we_tool_view{
     }
     else {
      setTimeout(\'sizeScrollContent();\', 1000);
-    }';
-		} else {
-			$scrollContentFunction = "";
-		}
-
-		$anzahl = 0;
+    }' :
+				'');
 
 		switch($whichSearch){
 			case "DocSearch" :
@@ -472,14 +441,15 @@ class we_search_view extends we_tool_view{
 			case "AdvSearch" :
 				$anzahl = $this->Model->anzahlAdvSearch;
 				break;
+			default:
+				$anzahl = 0;
 		}
 
 		$objectFilesTable = defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : "";
 
 		$tab = we_base_request::_(we_base_request::INT, 'tab', we_base_request::_(we_base_request::INT, 'tabnr', 1));
 
-		$showHideSelects = '';
-		$showSelects = '';
+		$showHideSelects = $showSelects = '';
 
 
 		$_js = we_html_element::jsElement('
@@ -530,7 +500,6 @@ class we_search_view extends we_tool_view{
 
 
    function search(newSearch) {
-
    		if(' . intval(!we_search_search::checkRightTempTable() && !we_search_search::checkRightDropTable()) . ') {
    			' . we_message_reporting::getShowMessageCall(
 					g_l('searchtool', "[noTempTableRightsSearch]"), we_message_reporting::WE_MESSAGE_NOTICE) . '
@@ -660,7 +629,6 @@ class we_search_view extends we_tool_view{
     elem = document.getElementById(picID);
     elem.style.visibility = "hidden";
     elem.style.left = "-9999px";
-
     ' . $showSelects . '
    }
 
@@ -691,7 +659,6 @@ class we_search_view extends we_tool_view{
        else if((h-y)<250) {
         elem.style.top = (y - elemHeight - 10) + "px";
        }
-
        ' . $showHideSelects . '
     }
    }
@@ -764,9 +731,7 @@ class we_search_view extends we_tool_view{
    }
 
    function sizeScrollContent() {
-
     ' . $scrollContentFunction . '
-
    }
 
    function init() {
@@ -781,17 +746,9 @@ class we_search_view extends we_tool_view{
 
    function newinputAdvSearch() {
 
-    var searchFields = "' . str_replace(
-					"\n", '\n', addslashes(
-						we_html_tools::htmlSelect(
-							'searchFieldsAdvSearch[__we_new_id__]', $this->searchclass->getFields("__we_new_id__", ""), 1, "", false, array('class' => "defaultfont", 'id' => "searchFieldsAdvSearch[__we_new_id__]", 'onchange' => "changeit(this.value, __we_new_id__);")))) . '";
-    var locationFields = "' . str_replace(
-					"\n", '\n', addslashes(
-						we_html_tools::htmlSelect(
-							'locationAdvSearch[__we_new_id__]', we_search_search::getLocation(), 1, "", false, array('class' => "defaultfont", 'id' => "locationAdvSearch[__we_new_id__]")))) . '";
-    var search = "' . addslashes(
-					we_html_tools::htmlTextInput(
-						'searchAdvSearch[__we_new_id__]', 24, "", "", " class=\"wetextinput\" id=\"searchAdvSearch[__we_new_id__]\" ", "text", 170)) . '";
+    var searchFields = "' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('searchFieldsAdvSearch[__we_new_id__]', $this->searchclass->getFields("__we_new_id__", ""), 1, "", false, array('class' => "defaultfont", 'id' => "searchFieldsAdvSearch[__we_new_id__]", 'onchange' => "changeit(this.value, __we_new_id__);")))) . '";
+    var locationFields = "' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('locationAdvSearch[__we_new_id__]', we_search_search::getLocation(), 1, "", false, array('class' => "defaultfont", 'id' => "locationAdvSearch[__we_new_id__]")))) . '";
+    var search = "' . addslashes(we_html_tools::htmlTextInput('searchAdvSearch[__we_new_id__]', 24, "", "", " class=\"wetextinput\" id=\"searchAdvSearch[__we_new_id__]\" ", "text", 170)) . '";
 
     var elem = document.getElementById("filterTableAdvSearch");
     newID = elem.rows.length-1;
@@ -848,15 +805,9 @@ class we_search_view extends we_tool_view{
    	var setValue = document.getElementsByName("searchAdvSearch["+rowNr+"]")[0].value;
     var from = document.getElementsByName("hidden_searchFieldsAdvSearch["+rowNr+"]")[0].value;
 
-    var searchFields = "' . str_replace(
-					"\n", '\n', addslashes(
-						we_html_tools::htmlSelect('searchFieldsAdvSearch[__we_new_id__]', $this->searchclass->getFields("__we_new_id__", ""), 1, "", false, array('class' => "defaultfont", 'id' => "searchFieldsAdvSearch[__we_new_id__]", 'onchange' => "changeit(this.value, __we_new_id__);")))) . '";
-    var locationFields = "' . str_replace(
-					"\n", '\n', addslashes(
-						we_html_tools::htmlSelect('locationAdvSearch[__we_new_id__]', we_search_search::getLocation(), 1, "", false, array('class' => "defaultfont", 'id' => "locationAdvSearch[__we_new_id__]")))) . '";
-    var search = "' . addslashes(
-					we_html_tools::htmlTextInput(
-						'searchAdvSearch[__we_new_id__]', 24, "", "", " class=\"wetextinput\" id=\"searchAdvSearch[__we_new_id__]\" ", "text", 170)) . '";
+    var searchFields = "' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('searchFieldsAdvSearch[__we_new_id__]', $this->searchclass->getFields("__we_new_id__", ""), 1, "", false, array('class' => "defaultfont", 'id' => "searchFieldsAdvSearch[__we_new_id__]", 'onchange' => "changeit(this.value, __we_new_id__);")))) . '";
+    var locationFields = "' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('locationAdvSearch[__we_new_id__]', we_search_search::getLocation(), 1, "", false, array('class' => "defaultfont", 'id' => "locationAdvSearch[__we_new_id__]")))) . '";
+    var search = "' . addslashes(we_html_tools::htmlTextInput('searchAdvSearch[__we_new_id__]', 24, "", "", " class=\"wetextinput\" id=\"searchAdvSearch[__we_new_id__]\" ", "text", 170)) . '";
 
     var row = document.getElementById("filterRow_"+rowNr);
     var locationTD = document.getElementById("td_locationAdvSearch["+rowNr+"]");
@@ -1567,8 +1518,8 @@ class we_search_view extends we_tool_view{
 			}
 		}
 
-		if(isset($_REQUEST['table'])){
-			$search_tables_advSearch = $_REQUEST['table'];
+		if(($table = we_base_request::_(we_base_request::TABLE, 'table'))){
+			$search_tables_advSearch = $table;
 			$this->Model->search_tables_advSearch[$search_tables_advSearch] = 1;
 		}
 
@@ -1686,11 +1637,10 @@ class we_search_view extends we_tool_view{
 
 		switch($whichSearch){
 			case "DocSearch" :
-				if(isset($_REQUEST["locationDocSearch"])){
-					$this->Model->locationDocSearch = $_REQUEST["locationDocSearch"];
-				} else {
-					$this->Model->locationDocSearch[0] = "CONTAIN";
-				}
+				$this->Model->locationDocSearch = (($op = we_base_request::_(we_base_request::STRING, "locationDocSearch")) ?
+						$op :
+						array("CONTAIN"));
+
 				$this->Model->searchFieldsDocSearch = array();
 				$locationName = "locationDocSearch[0]";
 				$searchTextName = "searchDocSearch[0]";
@@ -1727,11 +1677,9 @@ class we_search_view extends we_tool_view{
 
 				break;
 			case "TmplSearch" :
-				if(isset($_REQUEST["locationTmplSearch"])){
-					$this->Model->locationTmplSearch = $_REQUEST["locationTmplSearch"];
-				} else {
-					$this->Model->locationTmplSearch[0] = "CONTAIN";
-				}
+				$this->Model->locationTmplSearch = (($op = we_base_request::_(we_base_request::STRING, "locationTmplSearch")) ?
+						$op :
+						array("CONTAIN"));
 
 				$this->Model->searchFieldsTmplSearch = array();
 				$locationName = "locationTmplSearch[0]";
@@ -1792,7 +1740,7 @@ class we_search_view extends we_tool_view{
 
 			$searchFields = $location = array();
 
-			foreach($_REQUEST['we_cmd'] as $k => $v){
+			foreach(we_base_request::_(we_base_request::STRING, 'we_cmd') as $k => $v){
 				if(stristr($k, 'searchFields' . $whichSearch . '[') && !stristr($k, 'hidden_')){
 					$_REQUEST['we_cmd']['searchFields' . $whichSearch][] = $v;
 				}
@@ -1808,7 +1756,7 @@ class we_search_view extends we_tool_view{
 				case 'DocSearch':
 					$_tables[0] = FILE_TABLE;
 					$folderID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'folderIDDoc');
-					foreach($_REQUEST['we_cmd'] as $k => $v){
+					foreach(we_base_request::_(we_base_request::STRING, 'we_cmd') as $k => $v){
 						if(is_string($v) && $v == 1){
 							switch($k){
 								case 'searchForTextDocSearch':
@@ -1827,7 +1775,7 @@ class we_search_view extends we_tool_view{
 				case 'TmplSearch':
 					$_tables[0] = TEMPLATES_TABLE;
 					$folderID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'folderIDTmpl');
-					foreach($_REQUEST['we_cmd'] as $k => $v){
+					foreach(we_base_request::_(we_base_request::STRING, 'we_cmd') as $k => $v){
 						if(is_string($v) && $v == 1){
 							switch($k){
 								case 'searchForTextTmplSearch':
@@ -1844,7 +1792,7 @@ class we_search_view extends we_tool_view{
 					$objectFilesTable = defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : '--';
 					$objectTable = defined("OBJECT_TABLE") ? OBJECT_TABLE : '--';
 
-					foreach($_REQUEST['we_cmd'] as $k => $v){
+					foreach(we_base_request::_(we_base_request::STRING, 'we_cmd') as $k => $v){
 						if(is_string($v) && $v == 1){
 							if(stristr($k, 'search_tables_advSearch[' . FILE_TABLE) && $k{0} != "_"){
 								$_tables[] = FILE_TABLE;
@@ -1864,21 +1812,19 @@ class we_search_view extends we_tool_view{
 
 			$searchFields = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'searchFields' . $whichSearch);
 			$location = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'location' . $whichSearch);
-			$searchText = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 'search' . $whichSearch);//allow to search for tags
+			$searchText = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 'search' . $whichSearch); //allow to search for tags
 
-			$_order = $_REQUEST['we_cmd']['Order' . $whichSearch];
-			$_view = $_REQUEST['we_cmd']['setView' . $whichSearch];
+			$_order = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'Order' . $whichSearch);
+			$_view = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'setView' . $whichSearch);
 
-			$_searchstart = $_REQUEST['we_cmd']['searchstart' . $whichSearch];
-			$_anzahl = $_REQUEST['we_cmd']['anzahl' . $whichSearch];
+			$_searchstart = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'searchstart' . $whichSearch);
+			$_anzahl = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'anzahl' . $whichSearch);
 		} else {
 			$obj = $this->Model;
 
 			switch($whichSearch){
 				case 'DocSearch':
-					if(isset($_REQUEST["searchstartDocSearch"])){
-						$obj->searchstartDocSearch = $_REQUEST["searchstartDocSearch"];
-					}
+					$obj->searchstartDocSearch = we_base_request::_(we_base_request::STRING, "searchstartDocSearch", $obj->searchstartDocSearch);
 					$_table = FILE_TABLE;
 					$_tables[0] = $_table;
 					$searchFields = $obj->searchFieldsDocSearch;
@@ -1892,9 +1838,7 @@ class we_search_view extends we_tool_view{
 
 					break;
 				case 'TmplSearch':
-					if(isset($_REQUEST["searchstartTmplSearch"])){
-						$obj->searchstartTmplSearch = $_REQUEST["searchstartTmplSearch"];
-					}
+					$obj->searchstartTmplSearch = we_base_request::_(we_base_request::INT, "searchstartTmplSearch", $obj->searchstartTmplSearch);
 					$_table = TEMPLATES_TABLE;
 					$_tables[0] = $_table;
 
@@ -1908,14 +1852,12 @@ class we_search_view extends we_tool_view{
 					$_anzahl = $obj->anzahlTmplSearch;
 					break;
 				case 'AdvSearch':
-					if(isset($_REQUEST["searchstartAdvSearch"])){
-						$obj->searchstartAdvSearch = $_REQUEST["searchstartAdvSearch"];
-					}
+					$obj->searchstartAdvSearch = we_base_request::_(we_base_request::STRING, "searchstartAdvSearch", $obj->searchstartAdvSearch);
 					if(!($obj->searchFieldsAdvSearch)){
-						$obj->searchFieldsAdvSearch[0] = "ID";
+						$obj->searchFieldsAdvSearch = array("ID");
 					}
 					if(!($obj->locationAdvSearch)){
-						$obj->locationAdvSearch[0] = "CONTAIN";
+						$obj->locationAdvSearch = array("CONTAIN");
 					}
 					$searchFields = $obj->searchFieldsAdvSearch;
 					$searchText = $obj->searchAdvSearch;
@@ -1951,7 +1893,7 @@ class we_search_view extends we_tool_view{
 		if(isset($searchText[0]) && substr($searchText[0], 0, 4) == 'exp:'){
 
 			$_result = $this->searchclassExp->getSearchResults($searchText[0], $_tables);
-			if(!empty($_result)){
+			if($_result){
 				foreach($_result as $k => $v){
 					foreach($v as $key => $val){
 						if($key == "Table"){
@@ -1965,11 +1907,11 @@ class we_search_view extends we_tool_view{
 					}
 					$_result[$k]['SiteTitle'] = "";
 				}
+				$_SESSION['weS']['weSearch']['foundItems' . $whichSearch] = count($_result);
 			}
-			$_SESSION['weS']['weSearch']['foundItems' . $whichSearch] = count($_result);
 		} elseif(
 			($obj->IsFolder != 1 && ( ($whichSearch == 'DocSearch' && $tab == 1) || ($whichSearch == 'TmplSearch' && $tab == 2) || ($whichSearch == 'AdvSearch' && $tab == 3)) ) ||
-			(isset($_REQUEST['cmdid']) && $_REQUEST['cmdid']) ||
+			(we_base_request::_(we_base_request::STRING, 'cmdid')) ||
 			(($view = we_base_request::_(we_base_request::STRING, 'view')) == "GetSearchResult" || $view == "GetMouseOverDivs")
 		){
 
@@ -1991,13 +1933,11 @@ class we_search_view extends we_tool_view{
 				for($i = 0; $i < count($searchFields); $i++){
 					$w = '';
 					if(isset($searchText[0])){
-						if($whichSearch == 'AdvSearch' && isset($searchText[$i])){
-							$searchString = ($GLOBALS['WE_BACKENDCHARSET'] == "UTF-8" ? utf8_encode($searchText[$i]) : $searchText[$i]);
-						} else {
-							$searchString = ($GLOBALS['WE_BACKENDCHARSET'] == "UTF-8" ? utf8_encode($searchText[0]) : $searchText[0]);
-						}
+						$searchString = ($whichSearch == 'AdvSearch' && isset($searchText[$i]) ?
+								($GLOBALS['WE_BACKENDCHARSET'] == "UTF-8" ? utf8_encode($searchText[$i]) : $searchText[$i]) :
+								($GLOBALS['WE_BACKENDCHARSET'] == "UTF-8" ? utf8_encode($searchText[0]) : $searchText[0]));
 					}
-					if(isset($searchString) && $searchString != ''){
+					if(isset($searchString) && $searchString){
 						if($searchFields[$i] != "temp_doc_type" && $searchFields[$i] != "Status" && $searchFields[$i] != "Speicherart"){
 							$searchString = str_replace(array('\\', '_', '%'), array('\\\\', '\_', '\%'), $searchString);
 						}
@@ -2107,7 +2047,7 @@ class we_search_view extends we_tool_view{
 						}
 					}
 
-					if(!empty($workspaces)){
+					if($workspaces){
 						$where = ' AND (1 ' . $where . ')' . $this->searchclass->ofFolderAndChildsOnly($workspaces, $_table);
 					}
 
@@ -2126,12 +2066,12 @@ class we_search_view extends we_tool_view{
 							break;
 
 						case (defined("OBJECT_TABLE") ? OBJECT_TABLE : -2):
-							$whereQuery .= ' AND ((' . escape_sql_query($_table) . '.RestrictUsers=0 OR ' . escape_sql_query($_table) . ".RestrictUsers=" . intval($_SESSION["user"]["ID"]) . ") OR (" . escape_sql_query($_table) . ".Users LIKE '%," . intval($_SESSION["user"]["ID"]) . ",%')) ";
+							$whereQuery .= ' AND ((' . $this->db->escape($_table) . '.RestrictUsers=0 OR ' . $this->db->escape($_table) . ".RestrictUsers=" . intval($_SESSION["user"]["ID"]) . ") OR (" . $this->db->escape($_table) . ".Users LIKE '%," . intval($_SESSION["user"]["ID"]) . ",%')) ";
 							break;
 						case VERSIONS_TABLE:
 							if(isset($GLOBALS['we_cmd_obj'])){
-								$isCheckedFileTable = $_REQUEST['we_cmd']['search_tables_advSearch[' . FILE_TABLE];
-								$isCheckedObjFileTable = (defined("OBJECT_FILES_TABLE")) ? $_REQUEST['we_cmd']['search_tables_advSearch[' . OBJECT_FILES_TABLE] : 1;
+								$isCheckedFileTable = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'search_tables_advSearch', FILE_TABLE);
+								$isCheckedObjFileTable = (defined("OBJECT_FILES_TABLE")) ? we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'search_tables_advSearch', OBJECT_FILES_TABLE) : 1;
 							} else {
 								$isCheckedFileTable = $this->Model->search_tables_advSearch[FILE_TABLE];
 								$isCheckedObjFileTable = (defined("OBJECT_FILES_TABLE")) ? $this->Model->search_tables_advSearch[OBJECT_FILES_TABLE] : 1;
@@ -2442,11 +2382,11 @@ class we_search_view extends we_tool_view{
 	function getSearchParameterTop($foundItems, $whichSearch){
 
 		if(isset($GLOBALS['we_cmd_obj'])){
-			$_view = $_REQUEST['we_cmd']['setView' . $whichSearch];
+			$_view = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'setView' . $whichSearch);
 			$view = "setView" . $whichSearch;
-			$_order = $_REQUEST['we_cmd']['Order' . $whichSearch];
+			$_order = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'Order' . $whichSearch);
 			$order = "Order" . $whichSearch;
-			$_anzahl = $_REQUEST['we_cmd']['anzahl' . $whichSearch];
+			$_anzahl = we_base_request::_(we_base_request::INT, 'we_cmd', '', 'anzahl' . $whichSearch);
 			$anzahl = "anzahl" . $whichSearch;
 			$searchstart = "searchstart" . $whichSearch;
 		} else {
@@ -2562,8 +2502,7 @@ class we_search_view extends we_tool_view{
 			$this->Model->searchAdvSearch = unserialize($this->Model->searchAdvSearch);
 		}
 
-		if((isset($_SESSION['weS']['weSearch']["keyword"]) && $_SESSION['weS']['weSearch']["keyword"] != "") && (isset(
-				$_REQUEST["tab"]) && $_REQUEST["tab"] == 3)){
+		if((isset($_SESSION['weS']['weSearch']["keyword"]) && $_SESSION['weS']['weSearch']["keyword"] != "") && (we_base_request::_(we_base_request::INT, "tab") == 3)){
 			$this->Model->searchAdvSearch[0] = $_SESSION['weS']['weSearch']["keyword"];
 			if($GLOBALS['WE_BACKENDCHARSET'] == "UTF-8"){
 				$this->Model->searchAdvSearch[0] = utf8_encode($this->Model->searchAdvSearch[0]);
@@ -2573,34 +2512,31 @@ class we_search_view extends we_tool_view{
 
 		$this->searchclass->height = count($this->Model->searchFieldsAdvSearch);
 
+		$cmd = we_base_request::_(we_base_request::STRING, 'cmd');
+		$cmdid = we_base_request::_(we_base_request::STRING, 'cmdid');
+
 		if(isset($_REQUEST["searchFieldsAdvSearch"])){
-			if(isset($_REQUEST["cmdid"])){
-				if($_REQUEST["cmdid"] != ""){
+			if($cmdid !== false){
+				if($cmdid != ""){
 					$this->searchclass->height = count($this->Model->searchFieldsAdvSearch);
-				} elseif($_REQUEST["cmd"] != "" && $_REQUEST["cmd"] != "tool_weSearch_save"){
+				} elseif($cmd != "" && $cmd != "tool_weSearch_save"){
 					$this->searchclass->height = 1;
 				}
 			} else {
 				$this->searchclass->height = count($_REQUEST["searchFieldsAdvSearch"]);
 			}
 		} else {
-			if(isset($_REQUEST["cmdid"])){
-				if($_REQUEST["cmdid"] != ""){
+			if($cmdid !== false){
+				if($cmdid){
 					$this->searchclass->height = count($this->Model->searchFieldsAdvSearch);
-				}
-				if($_REQUEST["cmdid"] == ""){
-					if($_REQUEST["cmd"] == ""){
-						$this->searchclass->height = 0;
-					} elseif($_REQUEST["cmd"] != "tool_weSearch_save"){
-						$this->searchclass->height = 1;
-					}
+				} elseif(!$cmd){
+					$this->searchclass->height = 0;
+				} elseif($cmd != "tool_weSearch_save"){
+					$this->searchclass->height = 1;
 				}
 			} else {
-				if(!isset($this->Model->searchFieldsAdvSearch[0])){
-					$this->searchclass->height = 1;
-				} else {
-					$this->searchclass->height = count($this->Model->searchFieldsAdvSearch);
-				}
+				$this->searchclass->height = (isset($this->Model->searchFieldsAdvSearch[0]) ?
+						count($this->Model->searchFieldsAdvSearch) : 1);
 			}
 		}
 		//if own search was saved without fields
@@ -2619,41 +2555,13 @@ class we_search_view extends we_tool_view{
 
      </tr>';
 
-		$r = array();
-		$r2 = array();
-		$r3 = array();
-		if(isset($this->Model->searchAdvSearch) && is_array($this->Model->searchAdvSearch)){
-			foreach($this->Model->searchAdvSearch as $k => $v){
-				$r[] = $this->Model->searchAdvSearch[$k];
-			}
-		}
+		$locationAdvSearch = we_base_request::_(we_base_request::STRING, 'locationAdvSearch');
+		$this->Model->locationAdvSearch = ($locationAdvSearch && is_array($locationAdvSearch) ?
+				$locationAdvSearch :
+				array_values($this->Model->locationAdvSearch));
 
-		if(isset($this->Model->searchFieldsAdvSearch) && is_array($this->Model->searchFieldsAdvSearch)){
-			foreach($this->Model->searchFieldsAdvSearch as $k => $v){
-				$r2[] = $this->Model->searchFieldsAdvSearch[$k];
-			}
-		}
-
-		if(isset($_REQUEST['locationAdvSearch']) && is_array($_REQUEST['locationAdvSearch'])){
-			$m = 0;
-			foreach($_REQUEST['locationAdvSearch'] as $k => $v){
-				if(isset($_REQUEST['locationAdvSearch'][$k])){
-					$r3[$m] = $_REQUEST['locationAdvSearch'][$k];
-				} else {
-					$r3[$m] = "disabled";
-				}
-				$m++;
-			}
-		} else {
-			if(isset($this->Model->locationAdvSearch) && is_array($this->Model->locationAdvSearch)){
-				foreach($this->Model->locationAdvSearch as $k => $v){
-					$r3[] = $this->Model->locationAdvSearch[$k];
-				}
-			}
-		}
-		$this->Model->searchAdvSearch = $r;
-		$this->Model->searchFieldsAdvSearch = $r2;
-		$this->Model->locationAdvSearch = $r3;
+		$this->Model->searchAdvSearch = array_values($this->Model->searchAdvSearch);
+		$this->Model->searchFieldsAdvSearch = array_values($this->Model->searchFieldsAdvSearch);
 
 		for($i = 0; $i < $this->searchclass->height; $i++){
 			$button = we_html_button::create_button(
