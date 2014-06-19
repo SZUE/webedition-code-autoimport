@@ -26,14 +26,14 @@ we_html_tools::protect();
 
 switch(we_base_request::_(we_base_request::STRING, 'fr')){
 	case "body":
-		print we_rebuild_wizard::getBody();
+		echo we_rebuild_wizard::getBody();
 		break;
 	case "busy":
-		print we_rebuild_wizard::getBusy();
+		echo we_rebuild_wizard::getBusy();
 		break;
 	case "cmd":
-		print we_rebuild_wizard::getCmd();
+		echo we_rebuild_wizard::getCmd();
 		break;
 	default:
-		print we_rebuild_wizard::getFrameset();
+		echo we_rebuild_wizard::getFrameset();
 }
