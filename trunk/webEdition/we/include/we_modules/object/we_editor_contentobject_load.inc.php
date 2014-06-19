@@ -109,6 +109,9 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 var target = _EditorFrame.getContentEditor(),
 	confName = "tinyMceConfObject__' . $wholename . 'default";
 
+/* if tinyMCE-field: re-write confObject on visible field and re-init editor
+ * ff and chrome only: on ie and opera we reload edit tab when saving properties
+ */
 if(confObject = typeof tinyMceConfObject__' . $wholename . 'default === \'object\' ? tinyMceConfObject__' . $wholename . 'default : false){
 	' . (we_base_browserDetect::isIE() || we_base_browserDetect::isOpera() ? '
 	if(typeof target[confName] === \'object\'){
