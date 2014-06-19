@@ -235,7 +235,7 @@ foreach($output as $n => $v){
 	if(is_array($v)){
 		foreach($v as $n2 => $v2){
 			if(!is_array($v2)){
-				$foo = replace_bad_str(/*(get_magic_quotes_gpc() == 1) ? stripslashes($v2) : */$v2);
+				$foo = replace_bad_str($v2);
 				$n = replace_bad_str($n);
 				$n2 = replace_bad_str($n2);
 				$we_txt .= $n . '[' . $n2 . ']: ' . $foo . "\n" . ($foo ? '' : "\n");
@@ -243,7 +243,7 @@ foreach($output as $n => $v){
 			}
 		}
 	} else {
-		$foo = replace_bad_str(/*(get_magic_quotes_gpc() == 1) ? stripslashes($v) :*/ $v);
+		$foo = replace_bad_str($v);
 		$n = replace_bad_str($n);
 		$we_txt .= $n . ': ' . $foo . "\n" . ($foo ? '' : "\n");
 		$we_html .= '<tr><td valign="top" align="right"><b>' . $n . ':</b></td><td>' . ($n == 'email' ? '<a href="mailto:' . $foo . '">' . $foo . '</a>' : nl2br($foo)) . '</td></tr>';

@@ -43,13 +43,11 @@ class we_search_frames extends we_tool_frames{
 	}
 
 	function getHTMLCmd(){
-		if(!isset($_REQUEST['pid'])){
+		if(($pid = we_base_request::_(we_base_request::STRING, 'pid')) === false){
 			exit();
 		}
-		$pid = $_REQUEST['pid'];
 
 		$offset = we_base_request::_(we_base_request::INT, 'offset', 0);
-
 		$_loader = new we_search_treeDataSource($this->TreeSource);
 
 		$rootjs = (!$pid ?
@@ -220,16 +218,17 @@ class we_search_frames extends we_tool_frames{
 	}
 
 	function getTab(){
-		$cmdid = isset($_REQUEST['cmdid']) ? ($_REQUEST['cmdid']) : '';
+		$cmdid = we_base_request::_(we_base_request::STRING, 'cmdid', '');
 		if($cmdid != ''){
 			$_REQUEST['searchstartAdvSearch'] = 0;
 		}
-		if(isset($_REQUEST['tab']) && $_REQUEST['tab'] != ''){
-			return $_REQUEST['tab'];
-		} elseif($cmdid != ''){
+		if(($tab = we_base_request::_(we_base_request::INT, 'tab'))){
+			return $tab;
+		}
+		if($cmdid != ''){
 			return $this->Model->activTab;
 		}
-		return isset($_REQUEST['tabnr']) ? ($_REQUEST['tabnr']) : 1;
+		return we_base_request::_(we_base_request::INT, 'tabnr', 1);
 	}
 
 	function getHTMLEditorFooter(){
@@ -311,7 +310,7 @@ class we_search_frames extends we_tool_frames{
 		$_searchField_block = '<div>' . $this->View->getSearchDialog($innerSearch) . '</div>';
 		$_searchCheckboxes_block = '<div>' . $this->View->getSearchDialogCheckboxes($innerSearch) . '</div>';
 
-		$content = $this->View->searchProperties($innerSearch); 
+		$content = $this->View->searchProperties($innerSearch);
 		$headline = $this->View->makeHeadLines($innerSearch);
 		$foundItems = $_SESSION['weS']['weSearch']['foundItems' . $innerSearch . ''];
 

@@ -1018,7 +1018,7 @@ class doclistView{
 				}
 			}
 
-			$where .= $obj->searchclassFolder->ofFolderOnly($obj->ID);
+			$where .= ' AND ParentID = ' . intval($obj->ID);
 
 			if($where != ""){
 				$whereQuery = "1 " . $where;
@@ -1038,7 +1038,6 @@ class doclistView{
 				$obj->searchclassFolder->insertInTempTable($whereQuery, $_table, $obj->Path . '/');
 
 				$foundItems = $obj->searchclassFolder->countitems($whereQuery, $_table);
-
 				$_SESSION['weS']['weSearch']['foundItems'] = $foundItems;
 
 				$obj->searchclassFolder->selectFromTempTable($_searchstart, $_anzahl, $_order);
