@@ -194,7 +194,7 @@ abstract class we_root extends we_class{
 			$_tmpFolder->initByID($this->ParentID, $this->Table);
 			$this->documentCustomerFilter = $_tmpFolder->documentCustomerFilter;
 
-			if($this->IsFolder){
+			if($this->IsFolder && $this->ID != 0){
 				$this->ApplyWeDocumentCustomerFiltersToChilds = true;
 			}
 			unset($_tmpFolder);
