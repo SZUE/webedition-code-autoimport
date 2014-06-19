@@ -50,7 +50,7 @@ if(!function_exists('we_stripslashes')){
 		}
 	}
 }
-//FIXME: remove with PHP 5.5....
+//FIXME: remove with PHP 5.5.... but currently some hosters have this still enabled.
 if(get_magic_quotes_gpc()) {
     $process = array(&$_GET, &$_POST, &$_COOKIE, &$_REQUEST);
     while (list($key, $val) = each($process)) {

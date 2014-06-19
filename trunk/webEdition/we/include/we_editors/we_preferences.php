@@ -54,7 +54,7 @@ $tabname = we_base_request::_(we_base_request::STRING, 'tabname', 'setting_ui');
  *
  * @return         string
  */
-function create_dialog($name, $title, $content, $expand = -1, $show_text = '', $hide_text = '', $cookie = false, $JS = ''){
+function create_dialog($name, $title, array $content, $expand = -1, $show_text = '', $hide_text = '', $cookie = false, $JS = ''){
 	$_output = ($JS ? $JS : '') .
 		($expand != -1 ? we_html_multiIconBox::getJS() : '');
 
@@ -1163,7 +1163,7 @@ function build_dialog($selected_setting = 'ui'){
 				array('headline' => g_l('prefs', '[default_php_setting]'), 'html' => $WE_PHP_DEFAULT->getHtml(), 'space' => 200),
 				array('headline' => g_l('prefs', '[xhtml_default]'), 'html' => $_xhtml_setting->getHtml(), 'space' => 200),
 				array('headline' => g_l('prefs', '[inlineedit_default]'), 'html' => $INLINEEDIT_DEFAULT->getHtml(), 'space' => 200),
-				array('headline' => g_l('prefs', '[inlineedit_default]'), 'html' => '<div>' . $commands_default_tmp . '</div><div style="margin-top:4px">' . $COMMANDS_DEFAULT . '</div>', 'space' => 200),				
+				array('headline' => g_l('prefs', '[inlineedit_default]'), 'html' => '<div>' . $commands_default_tmp . '</div><div style="margin-top:4px">' . $COMMANDS_DEFAULT . '</div>', 'space' => 200),
 				array('headline' => g_l('prefs', '[removefirstparagraph_default]'), 'html' => $REMOVEFIRSTPARAGRAPH_DEFAULT->getHtml(), 'space' => 200),
 				array('headline' => g_l('prefs', '[showinputs_default]'), 'html' => $SHOWINPUTS_DEFAULT->getHtml(), 'space' => 200),
 				array('headline' => g_l('prefs', '[hidenameattribinweimg_default]'), 'html' => $HIDENAMEATTRIBINWEIMG_DEFAULT->getHtml(), 'space' => 200),
@@ -2226,7 +2226,7 @@ function formmailBlockOnOff() {
 				$_Schedtrigger_setting->addOption(SCHEDULER_TRIGGER_POSTDOC, g_l('prefs', '[we_scheduler_trigger][postDoc]')); //post
 				$_Schedtrigger_setting->addOption(SCHEDULER_TRIGGER_CRON, g_l('prefs', '[we_scheduler_trigger][cron]')); //cron
 				$_Schedtrigger_setting->selectOption(get_value("SCHEDULER_TRIGGER"));
-				$tmp = '<div>' . $_Schedtrigger_setting->getHtml() . '<br/>' . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[we_scheduler_trigger][description]'), we_html_tools::TYPE_INFO, 430, false) . '</div>';
+				$tmp = $_Schedtrigger_setting->getHtml() .'<br style="clear:both;"/>' . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[we_scheduler_trigger][description]'), we_html_tools::TYPE_INFO, 430, false);
 				$_settings[] = array("headline" => g_l('prefs', '[we_scheduler_trigger][head]'), "html" => $tmp, "space" => 200);
 			}
 			// Build select box
