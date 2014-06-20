@@ -626,22 +626,5 @@ function we_tag_field($attribs){
 		}
 	}
 
-	if($isImageDoc && isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE && $GLOBALS['we_doc']->InWebEdition && $GLOBALS['we_doc']->ContentType != we_base_ContentTypes::TEMPLATE){
-		$out .= '<a href="' . $GLOBALS['lv']->f('WE_ID') . '" seem="edit_image"></a>';
-	}
-
-	//	Add a anchor to tell seeMode that this is an object.
-	if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE &&
-		(($GLOBALS['lv'] instanceof we_object_listview)) &&
-		isset($GLOBALS['_we_object_listview_flag']) &&
-		$GLOBALS['_we_object_listview_flag'] &&
-		$GLOBALS['we_doc']->InWebEdition &&
-		$GLOBALS['we_doc']->ContentType != we_base_ContentTypes::TEMPLATE &&
-		$GLOBALS['lv']->seeMode &&
-		$seeMode){
-
-		$GLOBALS['_we_object_listview_flag'] = false;
-		$out = '<a href="' . $GLOBALS['lv']->getDBf('OF_ID') . '" seem="object"></a>' . $out;
-	}
 	return $out;
 }
