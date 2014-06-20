@@ -1012,5 +1012,23 @@ abstract class we_SEEM{
 		  return "";
 		  } */
 	}
+	
+	static function getSeemAnchors($id = 0, $seem = ''){
+			//return anchor defined by params
+			if($id && $seem){
+				return '<a href="' . $id . '" seem="' . $seem . '"></a>';
+			}
 
+			//find out what anchor is needed by examining context
+			if(isset($GLOBALS['lv']) && isset($GLOBALS['lv']->ClassName) && $GLOBALS['we_doc']->InWebEdition && $GLOBALS['we_doc']->ContentType != we_base_ContentTypes::TEMPLATE){
+				if($GLOBALS['lv']->ClassName == 'we_object_listview'){
+					return '<a href="' . $GLOBALS['lv']->getDBf('OF_ID') . '" seem="object"></a>';
+				}
+				if((isset($GLOBALS['lv']->Record['wedoc_ContentType']) && $GLOBALS['lv']->Record['wedoc_ContentType'] == we_base_ContentTypes::IMAGE)){
+					return '<a href="' . $GLOBALS['lv']->f('WE_ID') . '" seem="edit_image"></a>';
+				}
+			}
+
+			return '';
+	}
 }

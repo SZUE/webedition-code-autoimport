@@ -197,12 +197,8 @@ function we_tag_include($attribs){
 	return 'we_setBackVar(' . $we_unique . ');' .
 		($isSeemode ? //extra stuff in seemode
 			'eval(\'?>' . addcslashes(preg_replace('|< */? *form[^>]*>|i', '', $content), '\'') .
-			($seeMode ? //	only show link to seeMode, when id is given
-				($id ?
-					'<a href="' . $id . '" seem="include"></a>' :
-					($path ? '<a href="' . path_to_id($path) . '" seem="include"></a>' :
-						'')) : '')
-			. '\');' :
+			($seeMode && ($id || $path) ? we_SEEM::getSeemAnchors(($id ? $id : path_to_id($path)), $seem) : '') .
+			'\');' :
 			//no seemode
 			$content
 		) .
