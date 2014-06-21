@@ -477,6 +477,7 @@ class we_document extends we_root{
 	function upEntryAtList($name, $nr, $number = 1){
 		$list = $this->getElement($name);
 		if(!$list){
+			t_e('failed');
 			return;
 		}
 		$listarray = unserialize($list);

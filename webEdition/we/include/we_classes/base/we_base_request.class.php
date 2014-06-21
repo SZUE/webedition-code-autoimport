@@ -239,7 +239,11 @@ class we_base_request{
 				default:
 					$cmp = '' . $var;
 			}
+/*if(isset($_REQUEST['we_cmd'][0])&& $_REQUEST['we_cmd'][0]=='up_entry_at_list'){
+	t_e($oldVar,$cmp,  func_get_args());
+}*/
 			if($oldVar != $cmp){
+
 				t_e('changed values', $type, $args, $oldVar, $var);
 				//don't break we
 				if(REQUEST_SIMULATION){
