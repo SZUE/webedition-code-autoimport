@@ -24,19 +24,21 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
-switch(we_base_request::_(we_base_request::STRING, 'we_cmd','',0)){
+$cmd1 = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 1);
+$cmd2 = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 2);
+switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 	case 'save' :
-		we_base_preferences::setUserPref('cockpit_dat', $_REQUEST['we_cmd'][1]);
-		we_base_preferences::setUserPref('cockpit_rss', $_REQUEST['we_cmd'][2]);
+		we_base_preferences::setUserPref('cockpit_dat', $cmd1);
+		we_base_preferences::setUserPref('cockpit_rss', $cmd2);
 		break;
 	case 'add' :
 		include_once(WE_INCLUDES_PATH . 'we_widgets/cfg.inc.php');
 
 		$aProps = array(
-			$_REQUEST['we_cmd'][1],
-			$aPrefs[$_REQUEST['we_cmd'][1]]['cls'],
-			$aPrefs[$_REQUEST['we_cmd'][1]]['res'],
-			$aPrefs[$_REQUEST['we_cmd'][1]]['csv'],
+			$cmd1,
+			$aPrefs[$cmd1]['cls'],
+			$aPrefs[$cmd1]['res'],
+			$aPrefs[$cmd1]['csv'],
 		);
 		foreach($aCfgProps as $a){
 			foreach($a as $arr){
@@ -46,8 +48,8 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd','',0)){
 				}
 			}
 		}
-		$iCurrId = str_replace('m_', '', $_REQUEST['we_cmd'][2]);
-		$newSCurrId = $_REQUEST['we_cmd'][2];
+		$iCurrId = str_replace('m_', '', $cmd2);
+		$newSCurrId = $cmd2;
 		$iWidth = $aPrefs[$aProps[0]]['width'];
 		if($aProps[0] != 'rss' && $aProps[0] != 'pad'){
 			if($aProps[0] == 'msg'){

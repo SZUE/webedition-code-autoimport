@@ -26,7 +26,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 include_once (WE_INCLUDES_PATH . 'we_widgets/dlg/prefs.inc.php');
 we_html_tools::protect();
 
-list($sType, $iDate, $iAmountEntries, $sDisplayOpt, $sUsers) = explode(";", $_REQUEST['we_cmd'][1]);
+list($sType, $iDate, $iAmountEntries, $sDisplayOpt, $sUsers) = explode(";", we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1));
 
 $jsCode = "
 var _oCsv_;
@@ -144,7 +144,7 @@ function preview(){
 		refresh(true);
 	} else {
 		" . we_message_reporting::getShowMessageCall(
-				g_l('cockpit', '[no_type_selected]'), we_message_reporting::WE_MESSAGE_ERROR) . "
+		g_l('cockpit', '[no_type_selected]'), we_message_reporting::WE_MESSAGE_ERROR) . "
 	}
 }
 
@@ -163,10 +163,10 @@ $textname = 'UserNameTmp';
 $idname = 'UserIDTmp';
 $users = makeArrayFromCSV($sUsers);
 
-
-$wecmdenc1 = we_base_request::encCmd("top.weEditorFrameController.getActiveDocumentReference()._propsDlg['" . $_REQUEST['we_cmd'][0] . "'].document.forms[0].elements['UserIDTmp'].value");
-$wecmdenc2 = we_base_request::encCmd("top.weEditorFrameController.getActiveDocumentReference()._propsDlg['" . $_REQUEST['we_cmd'][0] . "'].document.forms[0].elements['UserNameTmp'].value");
-$wecmdenc5 = we_base_request::encCmd("opener.top.weEditorFrameController.getActiveDocumentReference()._propsDlg['" . $_REQUEST['we_cmd'][0] . "'].addUserToField();");
+$cmd0=we_base_request::_(we_base_request::STRING,'we_cmd','',0);
+$wecmdenc1 = we_base_request::encCmd("top.weEditorFrameController.getActiveDocumentReference()._propsDlg['" . $cmd0 . "'].document.forms[0].elements['UserIDTmp'].value");
+$wecmdenc2 = we_base_request::encCmd("top.weEditorFrameController.getActiveDocumentReference()._propsDlg['" . $cmd0 . "'].document.forms[0].elements['UserNameTmp'].value");
+$wecmdenc5 = we_base_request::encCmd("opener.top.weEditorFrameController.getActiveDocumentReference()._propsDlg['" . $cmd0 . "'].addUserToField();");
 
 $content = '<table border="0" cellpadding="0" cellspacing="0" width="300">
 <tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(254, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>';
@@ -183,17 +183,17 @@ if(permissionhandler::hasPerm('EDIT_MFD_USER') && $users){
 $content .= '<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(254, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr></table>';
 
 $sUsrContent = '<table border="0" cellpadding="0" cellspacing="0" width="300"><tr><td>' . we_html_element::htmlDiv(
-				array("class" => "multichooser"), $content) . we_html_element::htmlHidden(array(
-			"name" => "UserNameTmp",
-			"value" => ""
-		)) . we_html_element::htmlHidden(array(
-			"name" => "UserIDTmp",
-			"value" => ""
-		)) . '</td></tr>' . (permissionhandler::hasPerm('EDIT_MFD_USER') ? '<tr><td align="right">' . we_html_tools::getPixel(2, 8) . we_html_element::htmlBr() . we_html_button::create_button_table(
-						array(
-							we_html_button::create_button('delete_all', "javascript:delUser(-1)", true, -1, -1, "", "", (count($users)) ? false : true),
-							we_html_button::create_button('add', "javascript:opener.getUser('browse_users','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $wecmdenc5 . "','','',1);")
-				)) . '</td></tr>' : '') . '</table>';
+		array("class" => "multichooser"), $content) . we_html_element::htmlHidden(array(
+		"name" => "UserNameTmp",
+		"value" => ""
+	)) . we_html_element::htmlHidden(array(
+		"name" => "UserIDTmp",
+		"value" => ""
+	)) . '</td></tr>' . (permissionhandler::hasPerm('EDIT_MFD_USER') ? '<tr><td align="right">' . we_html_tools::getPixel(2, 8) . we_html_element::htmlBr() . we_html_button::create_button_table(
+			array(
+				we_html_button::create_button('delete_all', "javascript:delUser(-1)", true, -1, -1, "", "", (count($users)) ? false : true),
+				we_html_button::create_button('add', "javascript:opener.getUser('browse_users','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $wecmdenc5 . "','','',1);")
+		)) . '</td></tr>' : '') . '</table>';
 
 $oShowUser = we_html_tools::htmlFormElementTable($sUsrContent, g_l('cockpit', '[following_users]'), "left", "defaultfont");
 
@@ -206,17 +206,17 @@ if($sType{0} == '0' && $sType{1} == '0' && $sType{2} == '0' && $sType{3} == '0')
 }
 
 $oChbxDocs = (permissionhandler::hasPerm('CAN_SEE_DOCUMENTS') ?
-				we_html_forms::checkbox(1, $sType{0}, "chbx_type", g_l('cockpit', '[documents]'), true, "defaultfont", "", !(defined('FILE_TABLE') && permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")), '', 0, 0) :
-				'');
+		we_html_forms::checkbox(1, $sType{0}, "chbx_type", g_l('cockpit', '[documents]'), true, "defaultfont", "", !(defined('FILE_TABLE') && permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")), '', 0, 0) :
+		'');
 $oChbxTmpl = (permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE ?
-				we_html_forms::checkbox(1, $sType{1}, "chbx_type", g_l('cockpit', '[templates]'), true, "defaultfont", "", !(defined("TEMPLATES_TABLE") && permissionhandler::hasPerm('CAN_SEE_TEMPLATES')), "", 0, 0) :
-				'');
+		we_html_forms::checkbox(1, $sType{1}, "chbx_type", g_l('cockpit', '[templates]'), true, "defaultfont", "", !(defined("TEMPLATES_TABLE") && permissionhandler::hasPerm('CAN_SEE_TEMPLATES')), "", 0, 0) :
+		'');
 $oChbxObjs = (permissionhandler::hasPerm('CAN_SEE_OBJECTS') ?
-				we_html_forms::checkbox(1, $sType{2}, "chbx_type", g_l('cockpit', '[objects]'), true, "defaultfont", "", !(defined("OBJECT_FILES_TABLE") && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES')), "", 0, 0) :
-				'');
+		we_html_forms::checkbox(1, $sType{2}, "chbx_type", g_l('cockpit', '[objects]'), true, "defaultfont", "", !(defined("OBJECT_FILES_TABLE") && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES')), "", 0, 0) :
+		'');
 $oChbxCls = (permissionhandler::hasPerm('CAN_SEE_CLASSES') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE ?
-				we_html_forms::checkbox(1, $sType{3}, "chbx_type", g_l('cockpit', '[classes]'), true, "defaultfont", "", !(defined("OBJECT_TABLE") && permissionhandler::hasPerm('CAN_SEE_OBJECTS')), "", 0, 0) :
-				'');
+		we_html_forms::checkbox(1, $sType{3}, "chbx_type", g_l('cockpit', '[classes]'), true, "defaultfont", "", !(defined("OBJECT_TABLE") && permissionhandler::hasPerm('CAN_SEE_OBJECTS')), "", 0, 0) :
+		'');
 
 $oDbTableType = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 1, 3);
 $oDbTableType->setCol(0, 0, null, $oChbxDocs . $oChbxTmpl);
@@ -270,12 +270,12 @@ $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button,
 $sTblWidget = we_html_multiIconBox::getHTML("mfdProps", "100%", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[last_modified]'), "", 390);
 
 print we_html_element::htmlDocType() . we_html_element::htmlHtml(
-				we_html_element::htmlHead(
-						we_html_tools::getHtmlInnerHead(g_l('cockpit', '[last_modified]')) . STYLESHEET . we_html_element::cssElement(
-								"select{border:#AAAAAA solid 1px}") . we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
-						we_html_element::jsElement(
-								$jsPrefs . $jsCode . we_html_button::create_state_changer(false))) .
-				we_html_element::htmlBody(
-						array(
-					"class" => "weDialogBody", "onload" => "init();"
-						), we_html_element::htmlForm("", $sTblWidget)));
+		we_html_element::htmlHead(
+			we_html_tools::getHtmlInnerHead(g_l('cockpit', '[last_modified]')) . STYLESHEET . we_html_element::cssElement(
+				"select{border:#AAAAAA solid 1px}") . we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
+			we_html_element::jsElement(
+				$jsPrefs . $jsCode . we_html_button::create_state_changer(false))) .
+		we_html_element::htmlBody(
+			array(
+			"class" => "weDialogBody", "onload" => "init();"
+			), we_html_element::htmlForm("", $sTblWidget)));

@@ -730,7 +730,7 @@ function we_tag_pagelogger($attribs, $content){
 }
 
 function we_tag_ifReturnPage(){
-	return we_base_request::_(we_base_request::BOOL, 'we_returnpage');
+	return we_base_request::_(we_base_request::RAW_CHECKED, 'we_returnpage') !== false;
 }
 
 function we_tag_ifUserInputNotEmpty($attribs){

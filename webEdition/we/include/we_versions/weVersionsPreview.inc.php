@@ -26,17 +26,15 @@
 
 $_db = $GLOBALS['DB_WE'];
 
-$ID = $_REQUEST['we_cmd'][1];
+$ID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1);
 
 $newDoc = weVersions::loadVersion(' WHERE ID=' . intval($ID));
 
-$compareID = "";
-if(isset($_REQUEST['we_cmd'][2])){
-	$compareID = $_REQUEST['we_cmd'][2];
-	$oldDoc = weVersions::loadVersion(' WHERE ID=' . intval($compareID));
-} else {
-	$oldDoc = weVersions::loadVersion(' WHERE version < ' . intval($newDoc['version']) . ' AND documentTable="' . $_db->escape($newDoc['documentTable']) . '" AND documentID=' . intval($newDoc['documentID']) . ' ORDER BY version DESC LIMIT 1');
-}
+$compareID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2);
+$oldDoc = weVersions::loadVersion(($compareID ?
+			' WHERE ID=' . $compareID :
+			' WHERE version<' . intval($newDoc['version']) . ' AND documentTable="' . $_db->escape($newDoc['documentTable']) . '" AND documentID=' . intval($newDoc['documentID']) . ' ORDER BY version DESC LIMIT 1'));
+
 
 $isObj = false;
 $isTempl = false;

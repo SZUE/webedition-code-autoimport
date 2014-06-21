@@ -32,7 +32,7 @@ $_url = getServerUrl() . WE_INCLUDES_DIR . 'we_widgets/inc/plg/';
 
 $_isPrev = !isset($aProps);
 
-list($_pLogCsv, $_pLogUrl64) = explode(";", (($_isPrev) ? $_REQUEST['we_cmd'][0] : $aProps[3]));
+list($_pLogCsv, $_pLogUrl64) = explode(";", (($_isPrev) ? we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) : $aProps[3]));
 $_pLogUrl = base64_decode($_pLogUrl64);
 $_pLog_[] = array(
 	'visitors_data_today',
@@ -110,7 +110,7 @@ for($i = 0; $i <= 10; $i++){
 
 if($_isPrev){
 	$sJsCode = "
-	var _sObjId='" . $_REQUEST['we_cmd'][5] . "';
+	var _sObjId='" . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 5) . "';
 	var _sType='plg';
 	var _sTb='" . g_l('cockpit', '[pagelogger]') . ($_pLogUrl ? ' - ' . $_pLogUrl : $_pLogUrl) . "';
 

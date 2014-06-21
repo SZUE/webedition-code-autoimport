@@ -220,7 +220,7 @@ $parts[] = array(
 	"headline" => g_l('cockpit', '[default_validity]'), "html" => $oSctValid, "space" => 100
 );
 
-list($pad_header_enc, ) = explode(',', $_REQUEST['we_cmd'][1]);
+list($pad_header_enc, ) = explode(',', we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1));
 $pad_header = base64_decode($pad_header_enc);
 $DB_WE = new DB_WE();
 $DB_WE->query('SELECT	distinct(WidgetName) FROM ' . NOTEPAD_TABLE . ' WHERE UserID=' . intval($_SESSION['user']['ID']));

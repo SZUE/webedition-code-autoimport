@@ -24,7 +24,7 @@
  */
 // widget LAST MODIFIED
 //$aCols = $_REQUEST['we_cmd'];
-$newSCurrId = $_REQUEST['we_cmd'][5];
+$newSCurrId = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 5);
 require_once('../../mod/fdl.php');
 
 $sJsCode = "

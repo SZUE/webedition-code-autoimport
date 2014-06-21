@@ -484,14 +484,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 		}
 	}
 
-	unset($_REQUEST['we_unsubscribe_email__']);
-	unset($_REQUEST['we_subscribe_email__']);
-	unset($_REQUEST['we_subscribe_html__']);
-	unset($_REQUEST['we_subscribe_title__']);
-	unset($_REQUEST['we_subscribe_salutation__']);
-	unset($_REQUEST['we_subscribe_firstname__']);
-	unset($_REQUEST['we_subscribe_lastname__']);
-	unset($_REQUEST['we_subscribe_list__']);
+	unset($_REQUEST['we_unsubscribe_email__'], $_REQUEST['we_subscribe_email__'], $_REQUEST['we_subscribe_html__'], $_REQUEST['we_subscribe_title__'], $_REQUEST['we_subscribe_salutation__'], $_REQUEST['we_subscribe_firstname__'], $_REQUEST['we_subscribe_lastname__'], $_REQUEST['we_subscribe_list__']);
 }
 
 function we_unsubscribeNL($db, $customer, $_customerFieldPrefs, $abos, $paths){

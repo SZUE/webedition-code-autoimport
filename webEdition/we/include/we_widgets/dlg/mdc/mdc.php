@@ -24,20 +24,21 @@
  */
 // widget MY DOCUMENTS
 
-list($dir, $dt_tid, $cats) = explode(";", $_REQUEST['we_cmd'][1]);
+list($dir, $dt_tid, $cats) = explode(";", we_base_request::_(we_base_request::RAW, 'we_cmd', '', 1));
 $aCsv = array(
 	0, //unused - compatibility
-	$_REQUEST['we_cmd'][0],
+	we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0),
 	$dir,
 	$dt_tid,
 	$cats
 );
 require_once('../../mod/mdc.php');
+$cmd4 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 4);
 
 $js = "
-var _sObjId='" . $_REQUEST['we_cmd'][5] . "';
+var _sObjId='" . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 5) . "';
 var _sType='mdc';
-var _sTb='" . ($_REQUEST['we_cmd'][4] == "" ? (($_binary{1}) ? g_l('cockpit', '[my_objects]') : g_l('cockpit', '[my_documents]')) : $_REQUEST['we_cmd'][4]) . "';
+var _sTb='" . ($cmd4 ? $cmd4 : (($_binary{1}) ? g_l('cockpit', '[my_objects]') : g_l('cockpit', '[my_documents]'))) . "';
 
 function init(){
 	parent.rpcHandleResponse(_sType,_sObjId,document.getElementById(_sType),_sTb);

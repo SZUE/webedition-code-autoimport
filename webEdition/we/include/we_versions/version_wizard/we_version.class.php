@@ -360,7 +360,7 @@ class we_version{
 			);
 		}
 
-		if(isset($_REQUEST['rebuildStaticAfterNavi']) && $_REQUEST['rebuildStaticAfterNavi'] == 1){
+		if(we_base_request::_(we_base_request::BOOL,'rebuildStaticAfterNavi')){
 			$data2 = we_version::getFilteredDocuments('', '', '', '', '');
 			$data = array_merge($data, $data2);
 		}

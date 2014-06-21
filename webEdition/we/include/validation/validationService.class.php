@@ -38,7 +38,7 @@ class validationService{
 	var $fileEndings;
 	var $active;
 
-	function validationService($id = 0, $art = "", $category = "", $name = "", $host = "", $path = "", $method = "", $varname = "", $checkvia = "", $ctype = "", $additionalVars = "", $fileEndings = "", $active = 1){
+	function __construct($id = 0, $art = "", $category = "", $name = "", $host = "", $path = "", $method = "", $varname = "", $checkvia = "", $ctype = "", $additionalVars = "", $fileEndings = "", $active = true){
 
 		$this->id = $id;	//  id to edit this service
 

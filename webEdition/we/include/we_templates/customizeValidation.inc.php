@@ -74,38 +74,35 @@ echo we_html_tools::getHtmlTop() . STYLESHEET;
 </head>
 <body class="weDialogBody" style="overflow:hidden;">
 	<?php
-	//  deal with action
-	$services = array();
-
 	switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1)){
 		case 'saveService':
-			$_service = new validationService($_REQUEST['id'], 'custom', $_REQUEST['category'], $_REQUEST['name'], $_REQUEST['host'], $_REQUEST['path'], $_REQUEST['s_method'], $_REQUEST['varname'], $_REQUEST['checkvia'], $_REQUEST['ctype'], $_REQUEST['additionalVars'], $_REQUEST['fileEndings'], $_REQUEST['active']);
-			if($selectedService = validation::saveService($_service)){
-				print we_html_element::jsElement(
-						we_message_reporting::getShowMessageCall(g_l('validation', '[edit_service][saved_success]'), we_message_reporting::WE_MESSAGE_NOTICE)
+			$_service = new validationService(we_base_request::_(we_base_request::INT, 'id'), 'custom', we_base_request::_(we_base_request::STRING, 'category'), we_base_request::_(we_base_request::STRING, 'name'), we_base_request::_(we_base_request::STRING, 'host'), we_base_request::_(we_base_request::FILE, 'path'), we_base_request::_(we_base_request::STRING, 's_method'), we_base_request::_(we_base_request::STRING, 'varname'), we_base_request::_(we_base_request::STRING, 'checkvia'), we_base_request::_(we_base_request::STRING, 'ctype'), we_base_request::_(we_base_request::STRING, 'additionalVars'), we_base_request::_(we_base_request::STRING, 'fileEndings'), we_base_request::_(we_base_request::BOOL, 'active'));
+			if(($selectedService = validation::saveService($_service))){
+				echo we_html_element::jsElement(
+					we_message_reporting::getShowMessageCall(g_l('validation', '[edit_service][saved_success]'), we_message_reporting::WE_MESSAGE_NOTICE)
 				);
 			} else {
 				$selectedService = $_service;
-				print we_html_element::jsElement(
-						we_message_reporting::getShowMessageCall(g_l('validation', '[edit_service][saved_failure]') . (isset($GLOBALS['errorMessage']) ? '\n' . $GLOBALS['errorMessage'] : ''), we_message_reporting::WE_MESSAGE_ERROR)
+				echo we_html_element::jsElement(
+					we_message_reporting::getShowMessageCall(g_l('validation', '[edit_service][saved_failure]') . (isset($GLOBALS['errorMessage']) ? '\n' . $GLOBALS['errorMessage'] : ''), we_message_reporting::WE_MESSAGE_ERROR)
 				);
 			}
 			break;
 		case 'deleteService':
-			$_service = new validationService($_REQUEST['id'], 'custom', $_REQUEST['category'], $_REQUEST['name'], $_REQUEST['host'], $_REQUEST['path'], $_REQUEST['s_method'], $_REQUEST['varname'], $_REQUEST['checkvia'], $_REQUEST['ctype'], $_REQUEST['additionalVars'], $_REQUEST['fileEndings'], $_REQUEST['active']);
+			$_service = new validationService(we_base_request::_(we_base_request::INT, 'id'), 'custom', we_base_request::_(we_base_request::STRING, 'category'), we_base_request::_(we_base_request::STRING, 'name'), we_base_request::_(we_base_request::STRING, 'host'), we_base_request::_(we_base_request::FILE, 'path'), we_base_request::_(we_base_request::STRING, 's_method'), we_base_request::_(we_base_request::STRING, 'varname'), we_base_request::_(we_base_request::STRING, 'checkvia'), we_base_request::_(we_base_request::STRING, 'ctype'), we_base_request::_(we_base_request::STRING, 'additionalVars'), we_base_request::_(we_base_request::STRING, 'fileEndings'), we_base_request::_(we_base_request::BOOL, 'active'));
 			if(validation::deleteService($_service)){
-				print we_html_element::jsElement(
-						we_message_reporting::getShowMessageCall(g_l('validation', '[edit_service][delete_success]'), we_message_reporting::WE_MESSAGE_NOTICE)
+				echo we_html_element::jsElement(
+					we_message_reporting::getShowMessageCall(g_l('validation', '[edit_service][delete_success]'), we_message_reporting::WE_MESSAGE_NOTICE)
 				);
 			} else {
-				print we_html_element::jsElement(
-						we_message_reporting::getShowMessageCall(g_l('validation', '[edit_service][delete_failure]'), WE_MESSAGE_ERR
-						)
+				echo we_html_element::jsElement(
+					we_message_reporting::getShowMessageCall(g_l('validation', '[edit_service][delete_failure]'), WE_MESSAGE_ERR
+					)
 				);
 			}
 			break;
 		case 'selectService';
-			$selectedName = $_REQUEST['validationService'];
+			$selectedName = we_base_request::_(we_base_request::STRING, 'validationService');
 			break;
 		case 'newService':
 			$selectedService = new validationService(0, 'custom', 'accessible', g_l('validation', '[edit_service][new]'), 'www.example', '/path', 'get', 'varname', 'url', 'text/html', '', '.html', 1);
@@ -114,7 +111,7 @@ echo we_html_tools::getHtmlTop() . STYLESHEET;
 
 	//  get all custom services from the database - new service select it
 	$services = validation::getValidationServices('edit');
-	if(isset($_REQUEST['we_cmd'][1]) && $_REQUEST['we_cmd'][1] == 'newService' && $selectedService){
+	if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1) == 'newService' && $selectedService){
 		$services[] = $selectedService;
 	}
 

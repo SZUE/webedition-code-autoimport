@@ -1232,7 +1232,7 @@ function set_state_edit_delete_recipient(control) {
 				$this->newsletter->Test = $this->settings["test_account"];
 				$this->newsletter->isEmbedImages = $this->settings['isEmbedImages'];
 
-				print we_html_element::jsElement('
+				echo we_html_element::jsElement('
 							top.content.editor.edheader.location="' . $this->frameset . '?pnt=edheader' . (isset($_REQUEST["page"]) ? ("&page=" . $_REQUEST["page"]) : ("")) . '";
 							top.content.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
 					');
