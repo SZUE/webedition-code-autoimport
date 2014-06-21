@@ -907,12 +907,14 @@ class weVersions{
 		if(isset($_SESSION["user"]["ID"])){
 			$_SESSION['weS']['versions']['fromImport'] = 0;
 
+			$cmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
+			$cmd = we_base_request::_(we_base_request::STRING, 'cmd');
 			//import
-			if(isset($_REQUEST["jupl"]) && $_REQUEST["jupl"]){
+			if(we_base_request::_(we_base_request::BOOL, "jupl")){
 				$_SESSION['weS']['versions']['fromImport'] = 1;
 				$this->saveVersion($docObj);
-			} elseif(isset($_REQUEST["pnt"]) && $_REQUEST["pnt"] == "wizcmd"){
-				if($_REQUEST["v"]["type"] == we_import_functions::TYPE_CSV || $_REQUEST["v"]["type"] == we_import_functions::TYPE_GENERIC_XML){
+			} elseif(we_base_request::_(we_base_request::STRING, "pnt") == "wizcmd"){
+				if($_REQUEST["v"]["type"] == we_import_functions::TYPE_CSV || we_base_request::_(we_base_request::STRING, "v", '', "type") == we_import_functions::TYPE_GENERIC_XML){
 					$_SESSION['weS']['versions']['fromImport'] = 1;
 					$this->saveVersion($docObj);
 				} elseif(isset($_SESSION['weS']['ExImRefTable'])){
@@ -923,11 +925,11 @@ class weVersions{
 						}
 					}
 				}
-			} elseif(isset($_REQUEST['we_cmd'][0]) && ($_REQUEST['we_cmd'][0] == "siteImport" || $_REQUEST['we_cmd'][0] == "import_files")){
+			} elseif($cmd0 == "siteImport" || $cmd0 == "import_files"){
 				$_SESSION['weS']['versions']['fromImport'] = 1;
 				$this->saveVersion($docObj);
 			} else {
-				if((isset($_SESSION['weS']['versions']['fromScheduler']) && $_SESSION['weS']['versions']['fromScheduler']) || (isset($_REQUEST['we_cmd'][0]) && ($_REQUEST['we_cmd'][0] == "save_document" || $_REQUEST['we_cmd'][0] == "unpublish" || $_REQUEST['we_cmd'][0] == "revert_published")) || (isset($_REQUEST["cmd"]) && ($_REQUEST["cmd"] == "ResetVersion" || $_REQUEST["cmd"] == "PublishDocs" || $_REQUEST["cmd"] == "ResetVersionsWizard")) || (isset($_REQUEST["type"]) && $_REQUEST["type"] == "reset_versions") || (isset($_SESSION['weS']['versions']['initialVersions']) && $_SESSION['weS']['versions']['initialVersions'])){
+				if((isset($_SESSION['weS']['versions']['fromScheduler']) && $_SESSION['weS']['versions']['fromScheduler']) || ($cmd0 == "save_document" || $cmd0 == "unpublish" || $cmd0 == "revert_published") || $cmd == "ResetVersion" || $cmd == "PublishDocs" || $cmd == "ResetVersionsWizard" || (we_base_request::_(we_base_request::STRING, "type") == "reset_versions") || (isset($_SESSION['weS']['versions']['initialVersions']) && $_SESSION['weS']['versions']['initialVersions'])){
 					if(isset($_SESSION['weS']['versions']['initialVersions'])){
 						unset($_SESSION['weS']['versions']['initialVersions']);
 					}
@@ -1054,8 +1056,8 @@ class weVersions{
 				$writeVersion = false;
 			}
 
-			if((isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "save_document") &&
-				isset($_REQUEST['we_cmd'][5]) && $_REQUEST['we_cmd'][5]){
+			if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) == "save_document" &&
+				we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 5)){
 				$status = "published";
 			}
 
@@ -1072,10 +1074,10 @@ class weVersions{
 			}
 
 			if($document["ContentType"] == "objectFile" || $document["ContentType"] == we_base_ContentTypes::WEDOCUMENT || $document["ContentType"] == we_base_ContentTypes::HTML || ($document["ContentType"] == we_base_ContentTypes::TEMPLATE && defined("VERSIONS_CREATE_TMPL") && VERSIONS_CREATE_TMPL)){
-				if($document["ContentType"] != we_base_ContentTypes::TEMPLATE && (defined("VERSIONS_CREATE") && VERSIONS_CREATE) && $status != "published" && isset($_REQUEST['we_cmd'][5]) && !$_REQUEST['we_cmd'][5]){
+				if($document["ContentType"] != we_base_ContentTypes::TEMPLATE && (defined("VERSIONS_CREATE") && VERSIONS_CREATE) && $status != "published" && !we_base_request::_(we_base_request::BOOL, 'we_cmd', true, 5)){
 					$writeVersion = false;
 				}
-				if($document["ContentType"] == we_base_ContentTypes::TEMPLATE && (defined("VERSIONS_CREATE_TMPL") && VERSIONS_CREATE_TMPL) && $status != "published" && isset($_REQUEST['we_cmd'][5]) && !$_REQUEST['we_cmd'][5]){
+				if($document["ContentType"] == we_base_ContentTypes::TEMPLATE && (defined("VERSIONS_CREATE_TMPL") && VERSIONS_CREATE_TMPL) && $status != "published" && !we_base_request::_(we_base_request::BOOL, 'we_cmd', true, 5)){
 					$writeVersion = false;
 				}
 			}
@@ -1704,10 +1706,8 @@ class weVersions{
 			$tblFields = array();
 			$tableInfo = $db->metadata(VERSIONS_TABLE);
 
-			$we_transaction = (isset($_REQUEST["we_transaction"]) ?
-					(preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0) :
-					$GLOBALS["we_transaction"]);
-
+			$we_transaction = we_base_request::_(we_base_request::TRANSACTION, "we_transaction", 0);
+			
 			foreach($tableInfo as $cur){
 				$tblFields[] = $cur["name"];
 			}

@@ -126,10 +126,10 @@ function we_tag_a($attribs, $content){
 					(isset($GLOBALS['lv']) && $GLOBALS['lv']->f('WE_VARIANT') ?
 						'&' . WE_SHOP_VARIANT_REQUEST . '=' . $GLOBALS['lv']->f('WE_VARIANT') :
 						''));
-
+			$trans = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction');
 			//	preview mode in seem
-			if(isset($_REQUEST['we_transaction']) && isset(
-					$_SESSION['weS']['we_data'][$_REQUEST['we_transaction']][0]['ClassName']) && $_SESSION['weS']['we_data'][$_REQUEST['we_transaction']][0]['ClassName'] == 'we_objectFile'){
+			if($trans && isset(
+					$_SESSION['weS']['we_data'][$trans][0]['ClassName']) && $_SESSION['weS']['we_data'][$trans][0]['ClassName'] == 'we_objectFile'){
 				$type = we_shop_shop::OBJECT;
 			}
 
@@ -163,8 +163,9 @@ function we_tag_a($attribs, $content){
 								we_shop_shop::DOCUMENT));
 				}
 				//	preview mode in seem
-				if(isset($_REQUEST['we_transaction']) && isset(
-						$_SESSION['weS']['we_data'][$_REQUEST['we_transaction']][0]['ClassName']) && $_SESSION['weS']['we_data'][$_REQUEST['we_transaction']][0]['ClassName'] == 'we_objectFile'){
+				$trans = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction');
+				if($trans && isset(
+						$_SESSION['weS']['we_data'][$trans][0]['ClassName']) && $_SESSION['weS']['we_data'][$trans][0]['ClassName'] == 'we_objectFile'){
 					$type = we_shop_shop::OBJECT;
 				}
 				$param[] = 'del_shop_artikelid=' . $idd . '&type=' . $type . '&t=' . time() . $variant . $customReq . $ifShopname;
