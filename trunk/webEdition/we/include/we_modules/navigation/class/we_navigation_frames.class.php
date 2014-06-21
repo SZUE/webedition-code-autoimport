@@ -276,10 +276,10 @@ function setTab(tab) {
 
 		$_parentid = (isset($this->Model->Text) && $this->Model->Text && isset($this->Model->ID) && $this->Model->ID ?
 				f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->Model->ID), 'ParentID', $this->db) :
-				(we_base_request::_(we_base_request::BOOL, 'presetFolder') ?
+				(we_base_request::_(we_base_request::STRING, 'presetFolder') ?
 					$this->Model->ParentID :
 					(($wq = we_navigation_navigation::getWSQuery()) ?
-						f('SELECT ID FROM ' . NAVIGATION_TABLE . ' WHERE IsFolder=1 ' . $wq . ' ORDER BY Path LIMIT 1', 'ID', $this->db) :
+						f('SELECT ID FROM ' . NAVIGATION_TABLE . ' WHERE IsFolder=1 ' . $wq . ' ORDER BY Path LIMIT 1', '', $this->db) :
 						0)
 				));
 
@@ -1040,7 +1040,7 @@ function onSelectionClassChangeJS(value) {
 			'pnt' => 'edbody',
 			'tabnr' => $tabNr,
 			'vernr' => we_base_request::_(we_base_request::INT, 'vernr', 0),
-			'delayParam' => we_base_request::_(we_base_request::RAW, 'delayParam', '')
+			'delayParam' => we_base_request::_(we_base_request::INT, 'delayParam', 0)
 		);
 
 		$yuiSuggest = & weSuggest::getInstance();
@@ -1055,7 +1055,7 @@ function onSelectionClassChangeJS(value) {
 					), $this->View->getCommonHiddens($hiddens) .
 					$this->View->htmlHidden(
 						'IsFolder', (isset($this->Model->IsFolder) ? $this->Model->IsFolder : 0)) . $this->View->htmlHidden(
-						'presetFolder', we_base_request::_(we_base_request::RAW, 'presetFolder', 0)) .
+						'presetFolder', we_base_request::_(we_base_request::STRING, 'presetFolder','')) .
 					we_html_multiIconBox::getHTML(
 						'', '100%', $this->getHTMLGeneral(), 30, '', -1, '', '', false, $preselect) .
 					($this->Model->IsFolder ? we_html_multiIconBox::getHTML(

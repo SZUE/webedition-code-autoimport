@@ -301,7 +301,7 @@ class weModuleFrames{
 	}
 
 	function getHTMLExitQuestion(){
-		if(($dp = we_base_request::_(we_base_request::RAW, 'delayParam'))){
+		if(($dp = we_base_request::_(we_base_request::INT, 'delayParam'))){
 			$_frame = 'opener.' . $this->topFrame;
 			$_yes = $_frame . '.hot=0;' . $_frame . '.we_cmd("module_' . $this->module . '_save");self.close();';
 			$_no = $_frame . '.hot=0;' . $_frame . '.we_cmd("' . we_base_request::_(we_base_request::RAW, 'delayCmd') . '","' . $dp . '");self.close();';

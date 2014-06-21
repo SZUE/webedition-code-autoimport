@@ -30,7 +30,7 @@ require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_db_tools.in
 
 abstract class we_database_base{
 
-	private static $pool = array();
+	private static $pool = array();//fixme: don't repool temporary tables - they require the same connection
 	protected static $conCount = 0;
 	protected static $linkCount = 0;
 	//states if we have lost connection and try again
