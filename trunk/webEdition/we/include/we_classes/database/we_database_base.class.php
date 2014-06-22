@@ -587,7 +587,7 @@ abstract class we_database_base{
 		$ret = array();
 		foreach($arr as $key => $val){
 			$escape = !(is_bool($val));
-			if(is_array($val) && isset($val['sqlFunction']) && $val['sqlFunction'] == 1){
+			if(is_array($val) && sql_function($val)){
 				$val = $val['val'];
 				$escape = false;
 			} elseif(is_object($val) || is_array($val)){
@@ -596,23 +596,6 @@ abstract class we_database_base{
 
 			$val = (is_bool($val) ? intval($val) : $val);
 			//we must escape int-values since the value might be an enum element
-			//FIXME: remove this code after 6.3.9!!
-			if($escape){
-				switch($val){
-					case 0:
-						break;
-					case 'NOW()':
-					case 'UNIX_TIMESTAMP()':
-					case 'CURDATE()':
-					case 'CURRENT_DATE()':
-					case 'CURRENT_TIME()':
-					case 'CURRENT_TIMESTAMP()':
-					case 'CURTIME()':
-					case 'NULL':
-						$escape = false;
-						t_e('deprecated', 'deprecated db call detected', $key, $val, $arr);
-				}
-			}
 			$ret[] = '`' . $key . '`=' . ($escape ? '"' . escape_sql_query($val) . '"' : $val);
 		}
 		return implode($imp, $ret);
