@@ -72,7 +72,12 @@ function escape_sql_query($inp){
 }
 
 function sql_function($name){
-	return array('sqlFunction' => true, 'val' => $name);
+	static $data = 0;
+	if(!$data){
+		$data = md5(uniqid(__FUNCTION__, true));
+	}
+	return (is_array($name) ? isset($name['sqlFunction']) && $name['sqlFunction'] == $data :
+			array('sqlFunction' => $data, 'val' => $name));
 }
 
 //unused
