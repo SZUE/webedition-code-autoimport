@@ -684,7 +684,8 @@ class we_folder extends we_root{
 				}
 				if(!$isTemplFolder && $this->urlMap){
 					we_base_file::makeSymbolicLink(WEBEDITION_PATH, $_SERVER['DOCUMENT_ROOT'] . $path . rtrim(WEBEDITION_DIR, '/'));
-
+					//make sure we have a symbolic dir
+					we_base_file::checkAndMakeFolder($_SERVER['DOCUMENT_ROOT'] . WE_THUMBNAIL_DIRECTORY);
 					if(WE_THUMBNAIL_DIRECTORY){
 						we_base_file::makeSymbolicLink($_SERVER['DOCUMENT_ROOT'] . WE_THUMBNAIL_DIRECTORY, $_SERVER['DOCUMENT_ROOT'] . $path . WE_THUMBNAIL_DIRECTORY);
 					}

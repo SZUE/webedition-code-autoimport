@@ -1399,13 +1399,15 @@ class we_object extends we_document{
 		$rmfp = isset($this->elements[$name . "removefirstparagraph"]["dat"]) &&
 			($this->elements[$name . "removefirstparagraph"]["dat"] == 'on' || $this->elements[$name . "removefirstparagraph"]["dat"] == 'off') ? ($this->elements[$name . "removefirstparagraph"]["dat"] == 'on' ? true : false) :
 			(defined("REMOVEFIRSTPARAGRAPH_DEFAULT") ? REMOVEFIRSTPARAGRAPH_DEFAULT : true);
+		$commands = isset($this->elements[$name . "commands"]["dat"]) && $this->elements[$name . "commands"]["dat"] ? $this->elements[$name . "commands"]["dat"] :
+			(defined("COMMANDS_DEFAULT") ? COMMANDS_DEFAULT : '');
 		$attribs = array(
 			"removefirstparagraph" => $rmfp,
 			"xml" => isset($this->elements[$name . "xml"]["dat"]) ? $this->elements[$name . "xml"]["dat"] : "",
 			"dhtmledit" => isset($this->elements[$name . "dhtmledit"]["dat"]) ? $this->elements[$name . "dhtmledit"]["dat"] : "",
 			"wysiwyg" => isset($this->elements[$name . "dhtmledit"]["dat"]) ? $this->elements[$name . "dhtmledit"]["dat"] : "",
 			"showmenus" => isset($this->elements[$name . "showmenus"]["dat"]) ? $this->elements[$name . "showmenus"]["dat"] : "off",
-			"commands" => isset($this->elements[$name . "commands"]["dat"]) ? $this->elements[$name . "commands"]["dat"] : "",
+			"commands" => $commands,
 			"contextmenu" => isset($this->elements[$name . "contextmenu"]["dat"]) ? $this->elements[$name . "contextmenu"]["dat"] : "",
 			"classes" => isset($this->elements[$name . "cssClasses"]["dat"]) ? $this->elements[$name . "cssClasses"]["dat"] : "",
 			"width" => 386, //isset($this->elements[$name."width"]["dat"]) ? $this->elements[$name."width"]["dat"] : 618,

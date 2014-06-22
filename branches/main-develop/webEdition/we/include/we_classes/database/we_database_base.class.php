@@ -30,7 +30,7 @@ require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_db_tools.in
 
 abstract class we_database_base{
 
-	private static $pool = array();
+	private static $pool = array(); //fixme: don't repool temporary tables - they require the same connection
 	protected static $conCount = 0;
 	protected static $linkCount = 0;
 	//states if we have lost connection and try again
@@ -301,36 +301,50 @@ abstract class we_database_base{
 // if union is found in query, then take a closer look
 		if(!$allowUnion && stristr($Query_String, 'union') || stristr($Query_String, '/*!')){
 
-			$queryToCheck = str_replace(array("\\\"", "\\'"), '', $Query_String);
+			$queryToCheck = str_replace(array('\\\\'/*escape for mysql connection */,'\\"', "\\'", '\\\`'), array('','', '', ''), $Query_String);
 
-			$singleQuote = $doubleQuote = false;
+			$quotes = array('\'' => false, '"' => false, '`' => false, '/*' => false);
 
 			$queryWithoutStrings = '';
 
 			for($i = 0; $i < strlen($queryToCheck); $i++){
 				$char = $queryToCheck[$i];
-				if(!$doubleQuote && !$singleQuote){
-					if($char == '"'){
-						$doubleQuote = true;
-					} else if($char == '\''){
-						$singleQuote = true;
-					}
-				} else if($char == '"' && $doubleQuote){
-					$doubleQuote = false;
-				} else if($char == '\'' && $singleQuote){
-					$singleQuote = false;
+				$active = !empty(array_filter($quotes));
+				switch($char){
+					case '/':
+						if(!$active && $queryToCheck[$i + 1] == '*'){
+							$quotes['/*'] = true;
+							$i++;
+							continue;
+						}
+						break;
+					case '*':
+						if($quotes['/*'] && $queryToCheck[$i + 1] == '/'){//no nested comments
+							$quotes['/*'] = false;
+							$i++;
+							continue;
+						}
+						break;
+					case '"':
+					case '`':
+					case '\'':
+						if(!$quotes['/*']){
+							$quotes[$char] = !$quotes[$char];
+							$active = true;
+						}
+						break;
 				}
-				if(!$doubleQuote && !$singleQuote && $char !== '\'' && $char !== '"'){
+				if(!$active){
 					$queryWithoutStrings .= $char;
 				}
 			}
 
-			if(!$allowUnion && stristr($queryWithoutStrings, 'union') || stristr($queryWithoutStrings, '/*!')){
-				if((defined('ERROR_LOG_TABLE') && strpos($Query_String, ERROR_LOG_TABLE) === false || !defined('ERROR_LOG_TABLE'))){
-					t_e('Attempt to execute union statement/injection', $Query_String);
+			if(!$allowUnion && stristr($queryWithoutStrings, 'union') || stristr($queryWithoutStrings, '/*') || stristr($queryWithoutStrings, '*/')){
+				if(defined('ERROR_LOG_TABLE')){
+					t_e('error', 'Attempt to execute union statement/injection', $Query_String);
 				}
 				//be quiet, no need to give more information
-				exit();
+				return;
 			}
 		}
 
@@ -573,7 +587,7 @@ abstract class we_database_base{
 		$ret = array();
 		foreach($arr as $key => $val){
 			$escape = !(is_bool($val));
-			if(is_array($val) && isset($val['sqlFunction']) && $val['sqlFunction'] == 1){
+			if(is_array($val) && sql_function($val)){
 				$val = $val['val'];
 				$escape = false;
 			} elseif(is_object($val) || is_array($val)){
@@ -582,23 +596,6 @@ abstract class we_database_base{
 
 			$val = (is_bool($val) ? intval($val) : $val);
 			//we must escape int-values since the value might be an enum element
-			//FIXME: remove this code after 6.3.9!!
-			if($escape){
-				switch($val){
-					case 0:
-						break;
-					case 'NOW()':
-					case 'UNIX_TIMESTAMP()':
-					case 'CURDATE()':
-					case 'CURRENT_DATE()':
-					case 'CURRENT_TIME()':
-					case 'CURRENT_TIMESTAMP()':
-					case 'CURTIME()':
-					case 'NULL':
-						$escape = false;
-						t_e('deprecated', 'deprecated db call detected', $key, $val, $arr);
-				}
-			}
 			$ret[] = '`' . $key . '`=' . ($escape ? '"' . escape_sql_query($val) . '"' : $val);
 		}
 		return implode($imp, $ret);

@@ -143,7 +143,7 @@ class we_navigation_customerFilter extends we_customer_abstractFilter{
 	}
 
 	static function getUseDocumentFilterFromRequest(){
-		return we_base_request::_(we_base_request::RAW, 'wecf_useDocumentFilter');
+		return we_base_request::_(we_base_request::BOOL, 'wecf_useDocumentFilter');
 	}
 
 	function translateModeToNavModel($mode, &$model){

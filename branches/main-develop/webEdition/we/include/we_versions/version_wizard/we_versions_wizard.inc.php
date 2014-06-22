@@ -74,36 +74,27 @@ abstract class we_versions_wizard{
 			$prevButton = we_html_button::create_button("back", "javascript:parent.wizbody.handle_event('previous');", true, 0, 0, "", "", true, false);
 			$nextButton = we_html_button::create_button("next", "javascript:parent.wizbody.handle_event('next');", true, 0, 0, "", "", $nextbutdisabled, false);
 
-			$content2 = new we_html_table(array(
-				"border" => 0, "cellpadding" => 0, "cellspacing" => 0
-				), 1, 4);
-			$content2->setCol(
-				0, 0, array(
+			$content2 = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 1, 4);
+			$content2->setCol(0, 0, array(
 				"id" => "prev",
 				"style" => "display:table-cell; padding-left:10px;",
 				"align" => "right"
 				), $prevButton);
-			$content2->setCol(
-				0, 1, array(
+			$content2->setCol(0, 1, array(
 				"id" => "nextCell",
 				"style" => "display:table-cell; padding-left:10px;",
 				"align" => "right"
 				), $nextButton);
-			$content2->setCol(
-				0, 2, array(
+			$content2->setCol(0, 2, array(
 				"id" => "refresh", "style" => "display:none; padding-left:10px;", "align" => "right"
 				), $refreshButton);
-			$content2->setCol(
-				0, 3, array(
+			$content2->setCol(0, 3, array(
 				"id" => "cancel",
 				"style" => "display:table-cell; padding-left:10px;",
 				"align" => "right"
 				), $cancelButton);
 
-			$content = new we_html_table(
-				array(
-				"border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => "100%"
-				), 1, 2);
+			$content = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => "100%"), 1, 2);
 			$content->setCol(0, 0, array(
 				"id" => "progr", "style" => "display:none", "align" => "left"
 				), $pb);
@@ -155,14 +146,8 @@ abstract class we_versions_wizard{
 			$version_reset[$k] = we_base_request::_(we_base_request::BOOL, 'version_reset_' . $k);
 		}
 
-		if(isset($_REQUEST["reset_doPublish"])){
-			$version_reset['reset_doPublish'] = 1;
-		} elseif(isset($_REQUEST["type"]) && $_REQUEST["type"] == "reset_versions"){
-			$version_reset['reset_doPublish'] = 0;
-		} else {
-			$version_reset['reset_doPublish'] = 1;
-		}
-
+		$def = (we_base_request::_(we_base_request::STRING, 'type') == 'reset_versions');
+		$version_reset['reset_doPublish'] = we_base_request::_(we_base_request::BOOL, 'reset_doPublish', $def);
 
 		$parts = array(
 			array(
@@ -779,13 +764,9 @@ set_button_state(false);';
 		$version_reset['reset_hours'] = we_base_request::_(we_base_request::RAW, "reset_hours", 0);
 		$version_reset['reset_minutes'] = we_base_request::_(we_base_request::RAW, "reset_minutes", 0);
 		$version_reset['reset_seconds'] = we_base_request::_(we_base_request::RAW, "reset_seconds", 0);
-		if(isset($_REQUEST["reset_doPublish"])){
-			$version_reset['reset_doPublish'] = 1;
-		} elseif(isset($_REQUEST["type"]) && $_REQUEST["type"] == "reset_versions"){
-			$version_reset['reset_doPublish'] = 0;
-		} else {
-			$version_reset['reset_doPublish'] = 1;
-		}
+
+		$def = (we_base_request::_(we_base_request::STRING, 'type') == 'reset_versions');
+		$version_reset['reset_doPublish'] = we_base_request::_(we_base_request::BOOL, 'reset_doPublish', $def);
 
 		$taskname = md5(session_id() . "_version_wizard");
 		$currentTask = we_base_request::_(we_base_request::RAW, "fr_" . $taskname . "_ct", 0);
@@ -841,10 +822,10 @@ set_button_state(false);';
 		$timestamp = "";
 		$timestampWhere = 1;
 		if($version_delete['delete_date'] != ""){
-			$date = explode(".", $_REQUEST["delete_date"]);
-			$day = $date[0];
-			$month = $date[1];
-			$year = $date[2];
+			$date = explode(".", we_base_request::_(we_base_request::STRING, "delete_date"));
+			$day = intval($date[0]);
+			$month = intval($date[1]);
+			$year = intval($date[2]);
 			$hour = $version_delete['delete_hours'];
 			$minutes = $version_delete['delete_minutes'];
 			$seconds = $version_delete['delete_seconds'];
@@ -971,20 +952,16 @@ set_button_state(false);';
 			$version_reset[$k] = we_base_request::_(we_base_request::BOOL, "version_reset_" . $k);
 		}
 
-		if(isset($_REQUEST["reset_doPublish"])){
-			$version_reset['reset_doPublish'] = 1;
-		} elseif(isset($_REQUEST["type"]) && $_REQUEST["type"] == "reset_versions"){
-			$version_reset['reset_doPublish'] = 0;
-		} else {
-			$version_reset['reset_doPublish'] = 1;
-		}
+		$def = (we_base_request::_(we_base_request::STRING, 'type') == 'reset_versions');
+		$version_reset['reset_doPublish'] = we_base_request::_(we_base_request::BOOL, 'reset_doPublish', $def);
+
 		$timestamp = "";
 		$timestampWhere = 1;
 		if($version_reset['reset_date'] != ""){
-			$date = explode(".", $_REQUEST["reset_date"]);
-			$day = $date[0];
-			$month = $date[1];
-			$year = $date[2];
+			$date = explode(".", we_base_request::_(we_base_request::STRING, "reset_date"));
+			$day = intval($date[0]);
+			$month = intval($date[1]);
+			$year = intval($date[2]);
 			$hour = $version_reset['reset_hours'];
 			$minutes = $version_reset['reset_minutes'];
 			$seconds = $version_reset['reset_seconds'];
@@ -1091,20 +1068,20 @@ set_button_state(false);';
 	 */
 	static function getFrameset(){
 		$query = array();
-		if(isset($_REQUEST["btype"])){
-			$query['btype'] = $_REQUEST["btype"];
+		if(($btype = we_base_request::_(we_base_request::STRING, "btype")) !== false){
+			$query['btype'] = $btype;
 		}
-		if(isset($_REQUEST["type"])){
-			$query['type'] = $_REQUEST["type"];
+		if(($type = we_base_request::_(we_base_request::STRING, "type"))){
+			$query['type'] = $type;
 		}
-		if(isset($_REQUEST["templateID"])){
-			$query['templateID'] = $_REQUEST["templateID"];
+		if(($tid = we_base_request::_(we_base_request::INT, "templateID")) !== false){
+			$query['templateID'] = $tid;
 		}
-		if(isset($_REQUEST["step"])){
-			$query['step'] = $_REQUEST["step"];
+		if(($step = we_base_request::_(we_base_request::INT, "step")) !== false){
+			$query['step'] = $step;
 		}
-		if(isset($_REQUEST["responseText"])){
-			$query['responseText'] = $_REQUEST["responseText"];
+		if(($text = we_base_request::_(we_base_request::STRING, "responseText")) !== false){
+			$query['responseText'] = $text;
 		}
 
 		$taskname = md5(session_id() . "_version_wizard");
@@ -1113,7 +1090,7 @@ set_button_state(false);';
 			we_base_file::delete($taskFilename);
 		}
 
-		if(!empty($query)){
+		if($query){
 			$query['we_cmd[0]'] = 'versions_wizard';
 			$query['fr'] = 'body';
 			//maybe restore of a given version?

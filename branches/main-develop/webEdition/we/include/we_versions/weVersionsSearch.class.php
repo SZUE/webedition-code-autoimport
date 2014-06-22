@@ -52,18 +52,14 @@ class weVersionsSearch{
 		$this->mode = we_base_request::_(we_base_request::INT, "mode", $this->mode);
 		$this->order = we_base_request::_(we_base_request::STRING, "order", $this->order);
 		$this->anzahl = we_base_request::_(we_base_request::INT, "anzahl", $this->anzahl);
-		if(isset($_REQUEST["searchFields"])){
-			$this->searchFields = ($_REQUEST["searchFields"]);
+		if(($sf = we_base_request::_(we_base_request::STRING, "searchFields"))){
+			$this->searchFields = $sf;
 			$this->height = count($this->searchFields);
-		} elseif(!isset($_REQUEST["searchFields"]) && isset($_REQUEST["searchstart"])){
+		} elseif(we_base_request::_(we_base_request::INT, "searchstart") !== false){
 			$this->height = 0;
 		}
-		if(isset($_REQUEST["location"])){
-			$this->location = ($_REQUEST["location"]);
-		}
-		if(isset($_REQUEST["search"])){
-			$this->search = ($_REQUEST["search"]);
-		}
+		$this->location = we_base_request::_(we_base_request::STRING, "location", $this->location);
+		$this->search = we_base_request::_(we_base_request::STRING, "search", $this->search);
 	}
 
 	/**
@@ -75,8 +71,8 @@ class weVersionsSearch{
 		$modConst = array();
 
 		if(($this->mode) || we_base_request::_(we_base_request::INT, 'we_cmd', 0, "mode")){
-
-			foreach($_REQUEST['we_cmd'] as $k => $v){
+			$_REQUEST['searchFields'] = array();
+			foreach(we_base_request::_(we_base_request::STRING, 'we_cmd') as $k => $v){//FIXME: this must be rewritten to real arrays
 				if(stristr($k, 'searchFields[')){
 					$_REQUEST['searchFields'][] = $v;
 				}
@@ -89,56 +85,54 @@ class weVersionsSearch{
 			}
 			if(isset($_REQUEST['searchFields'])){
 				foreach($_REQUEST['searchFields'] as $k => $v){
-					if(isset($_REQUEST['searchFields'][$k])){
-						switch($v){
-							case "modifierID":
-								if(isset($_REQUEST['search'][$k])){
-									$where .= " AND " . $v . " = '" . escape_sql_query($_REQUEST['search'][$k]) . "'";
-								}
-								break;
-							case "status":
-								if(isset($_REQUEST['search'][$k])){
-									$where .= " AND " . $v . " = '" . escape_sql_query($_REQUEST['search'][$k]) . "'";
-								}
-								break;
-							case "timestamp":
-								if($_REQUEST['location'][$k] && isset($_REQUEST['search'][$k]) && $_REQUEST['search'][$k] != ""){
+					switch($v){
+						case "modifierID":
+							if(isset($_REQUEST['search'][$k])){
+								$where .= " AND " . $v . " = '" . escape_sql_query($_REQUEST['search'][$k]) . "'";
+							}
+							break;
+						case "status":
+							if(isset($_REQUEST['search'][$k])){
+								$where .= " AND " . $v . " = '" . escape_sql_query($_REQUEST['search'][$k]) . "'";
+							}
+							break;
+						case "timestamp":
+							if($_REQUEST['location'][$k] && isset($_REQUEST['search'][$k]) && $_REQUEST['search'][$k] != ""){
 
-									$date = explode(".", $_REQUEST['search'][$k]);
-									$day = $date[0];
-									$month = $date[1];
-									$year = $date[2];
-									$timestampStart = mktime(0, 0, 0, $month, $day, $year);
-									$timestampEnd = mktime(23, 59, 59, $month, $day, $year);
+								$date = explode(".", $_REQUEST['search'][$k]);
+								$day = $date[0];
+								$month = $date[1];
+								$year = $date[2];
+								$timestampStart = mktime(0, 0, 0, $month, $day, $year);
+								$timestampEnd = mktime(23, 59, 59, $month, $day, $year);
 
-									switch(we_base_request::_(we_base_request::RAW, 'location', '', $k)){
-										case "IS":
-											$where .= " AND " . $v . " BETWEEN " . intval($timestampStart) . " AND " . intval($timestampEnd);
-											break;
-										case "<":
-											$where .= " AND " . $v . $_REQUEST['location'][$k] . ' ' . intval($timestampStart);
-											break;
-										case "<=":
-											$where .= " AND " . $v . $_REQUEST['location'][$k] . ' ' . intval($timestampEnd);
-											break;
-										case ">":
-											$where .= " AND " . $v . $_REQUEST['location'][$k] . ' ' . intval($timestampEnd);
-											break;
-										case ">=":
-											$where .= " AND " . $v . $_REQUEST['location'][$k] . ' ' . intval($timestampStart);
-											break;
-									}
+								switch(we_base_request::_(we_base_request::RAW, 'location', '', $k)){
+									case "IS":
+										$where .= " AND " . $v . " BETWEEN " . intval($timestampStart) . " AND " . intval($timestampEnd);
+										break;
+									case "<":
+										$where .= " AND " . $v . $_REQUEST['location'][$k] . ' ' . intval($timestampStart);
+										break;
+									case "<=":
+										$where .= " AND " . $v . $_REQUEST['location'][$k] . ' ' . intval($timestampEnd);
+										break;
+									case ">":
+										$where .= " AND " . $v . $_REQUEST['location'][$k] . ' ' . intval($timestampEnd);
+										break;
+									case ">=":
+										$where .= " AND " . $v . $_REQUEST['location'][$k] . ' ' . intval($timestampStart);
+										break;
 								}
-								break;
-							case "allModsIn":
-								if(isset($_REQUEST['search'][$k])){
-									$modConst[] = $this->version->modFields[$_REQUEST['search'][$k]]['const'];
-								}
-								break;
-						}
+							}
+							break;
+						case "allModsIn":
+							if(isset($_REQUEST['search'][$k])){
+								$modConst[] = $this->version->modFields[$_REQUEST['search'][$k]]['const'];
+							}
+							break;
 					}
 				}
-				if(!empty($modConst)){
+				if($modConst){
 					$ids = array();
 					$_ids = array();
 					$this->db->query('SELECT ID, modifications FROM ' . VERSIONS_TABLE . ' WHERE modifications!=""');

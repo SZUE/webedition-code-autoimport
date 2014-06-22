@@ -24,11 +24,11 @@
  */
 // widget LAST MODIFIED
 
-$aCols = $_REQUEST['we_cmd'];
+$aCols = we_base_request::_(we_base_request::STRING, 'we_cmd');
 require_once('../../mod/mfd.php');
 
 $sJsCode = "
-var _sObjId='" . $_REQUEST['we_cmd'][5] . "';
+var _sObjId='" . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 5) . "';
 var _sType='mfd';
 var _sTb='" . g_l('cockpit', '[last_modified]') . "';
 

@@ -27,11 +27,10 @@ we_html_tools::protect();
 
 switch(we_base_request::_(we_base_request::STRING, "cmd")){
 	case "load" :
-		if(isset($_REQUEST["pid"])){
+		if(($pid = we_base_request::_(we_base_request::INT, "pid"))){
 			echo
-				we_html_element::jsElement(
-					"self.location='" . WE_EXPORT_MODULE_DIR . "exportLoadTree.php?we_cmd[1]=" . $_REQUEST["tab"] . "&we_cmd[2]=" . $_REQUEST["pid"] . "&we_cmd[3]=" . (isset(
-						$_REQUEST["openFolders"]) ? $_REQUEST["openFolders"] : "") . "&we_cmd[4]=top'");
+			we_html_element::jsElement(
+				"self.location='" . WE_EXPORT_MODULE_DIR . "exportLoadTree.php?we_cmd[1]=" . we_base_request::_(we_base_request::INT, "tab") . "&we_cmd[2]=" . $pid . "&we_cmd[3]=" . (($of = we_base_request::_(we_base_request::STRING, 'openFolders')) ? $of : "") . "&we_cmd[4]=top'");
 		}
 		break;
 }

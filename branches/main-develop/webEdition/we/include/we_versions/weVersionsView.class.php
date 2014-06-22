@@ -793,7 +793,7 @@ function delRow(id) {
 			we_html_tools::htmlSelect('anzahl', $anzahl_all, 1, $_anzahl, "", array('id' => "anzahl", 'onchange' => 'this.form.elements[\'searchstart\'].value=0;search(false);')) . '
 	</td>
 	<td class="defaultfont" id="eintraege">' . g_l('versions', '[eintraege]') . '</td>
-	<td>' . self::getNextPrev($foundItems) . '</td>
+	<td>' . $this->getNextPrev($foundItems) . '</td>
 	<td id="print" class="defaultfont">' . we_html_tools::getPixel(
 				10, 12) . '<a href="javascript:printScreen();">' . g_l('versions', '[printPage]') . '</a></td>
 </tr>
@@ -813,7 +813,7 @@ function delRow(id) {
  <td>' . we_html_tools::getPixel(19, 12) . '</td>
  <td style="font-size:12px;width:130px;">' . we_html_tools::getPixel(30, 12) . '</td>
  <td class="defaultgray" style="width:70px;">' . we_html_tools::getPixel(30, 12) . '</td>
- <td style="width:370px;" id="bottom">' . self::getNextPrev($foundItems) . '</td>
+ <td style="width:370px;" id="bottom">' . $this->getNextPrev($foundItems) . '</td>
 </tr>
 </table>';
 	}
@@ -825,13 +825,11 @@ function delRow(id) {
 	function getNextPrev($we_search_anzahl){
 
 		if(isset($GLOBALS['we_cmd_obj'])){
-			$thisObj = new weVersionsView();
 			$anzahl = $_SESSION['weS']['versions']['anzahl'];
 			$searchstart = $_SESSION['weS']['versions']['searchstart'];
 		} else {
-			$thisObj = $this;
-			$anzahl = $thisObj->searchclass->anzahl;
-			$searchstart = $thisObj->searchclass->searchstart;
+			$anzahl = $this->searchclass->anzahl;
+			$searchstart = $this->searchclass->searchstart;
 		}
 
 		$out = '<table cellpadding="0" cellspacing="0" border="0"><tr><td id="zurueck">' .
@@ -877,16 +875,15 @@ function delRow(id) {
 	 */
 	function getVersionsOfDoc(){
 
-		$thisObj = (isset($GLOBALS['we_cmd_obj']) ? new weVersionsView() : $this);
 		$id = we_base_request::_(we_base_request::INT, 'id', $GLOBALS['we_doc']->ID);
 		$table = we_base_request::_(we_base_request::TABLE, 'table', $GLOBALS['we_doc']->Table);
-		$_order = we_base_request::_(we_base_request::RAW, 'we_cmd', $thisObj->searchclass->order, 'order');
+		$_order = we_base_request::_(we_base_request::RAW, 'we_cmd', $this->searchclass->order, 'order');
 
 		$content = array();
 		$modificationText = '';
 
-		$where = $thisObj->searchclass->getWhere();
-		$_versions = $thisObj->version->loadVersionsOfId($id, $table, $where);
+		$where = $this->searchclass->getWhere();
+		$_versions = $this->version->loadVersionsOfId($id, $table, $where);
 		$resultCount = count($_versions);
 		$_SESSION['weS']['versions']['foundItems'] = $resultCount;
 
@@ -898,7 +895,7 @@ function delRow(id) {
 			}
 
 			if($sortierung[0] == "modifierID"){
-				usort($_Result, array($thisObj, 'sortResultListUser' . (isset($sortierung[1]) ? 'DESC' : 'ASC')));
+				usort($_Result, array($this, 'sortResultListUser' . (isset($sortierung[1]) ? 'DESC' : 'ASC')));
 			} else {
 				$sortText = $sortierung[0];
 				$sortHow = SORT_ASC;
@@ -918,7 +915,7 @@ function delRow(id) {
 
 		for($f = 0; $f < $resultCount; $f++){
 
-			$modificationText = $thisObj->getTextForMod($_versions[$f]["modifications"], $_versions[$f]["status"]);
+			$modificationText = $this->getTextForMod($_versions[$f]["modifications"], $_versions[$f]["status"]);
 			$user = $_versions[$f]["modifierID"] ? id_to_path($_versions[$f]["modifierID"], USER_TABLE, $this->db) : g_l('versions', '[unknown]');
 			$vers = $_versions[$f]["version"];
 			$disabledReset = ($_versions[$f]["active"] == 1) ? true : false;

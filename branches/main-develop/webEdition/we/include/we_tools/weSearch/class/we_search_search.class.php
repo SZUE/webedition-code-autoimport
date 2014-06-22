@@ -69,6 +69,7 @@ class we_search_search extends we_search{
 	 * @abstract get data from fields, used in the doclistsearch
 	 */
 	function initSearchData(){
+		$view = we_base_request::_(we_base_request::INT, 'setView');
 		if(isset($GLOBALS['we_doc'])){
 			$obj = $GLOBALS['we_doc'];
 			$obj->searchclassFolder->searchstart = we_base_request::_(we_base_request::INT, 'searchstart', $obj->searchclassFolder->searchstart);
@@ -78,23 +79,22 @@ class we_search_search extends we_search{
 			$obj->searchclassFolder->location = we_base_request::_(we_base_request::STRING, 'location', $obj->searchclassFolder->location);
 			$obj->searchclassFolder->search = we_base_request::_(we_base_request::STRING, 'search', $obj->searchclassFolder->search);
 
-			if(($view = we_base_request::_(we_base_request::INT, 'setView')) !== false){
+			if($view !== false){
 				$this->db->query('UPDATE ' . FILE_TABLE . ' SET listview=' . $view . ' WHERE ID=' . intval($obj->ID));
 				$obj->searchclassFolder->setView = $view;
 			} else {
 				$obj->searchclassFolder->setView = f('SELECT listview FROM ' . FILE_TABLE . ' WHERE ID=' . intval($obj->ID));
 			}
 
-			if(isset($_REQUEST['searchFields'])){
-				$obj->searchclassFolder->searchFields = ($_REQUEST['searchFields']);
-				$obj->searchclassFolder->height = count($_REQUEST['searchFields']);
+			$searchFields = we_base_request::_(we_base_request::STRING, 'searchFields');
+			if($searchFields){
+				$obj->searchclassFolder->searchFields = $searchFields;
+				$obj->searchclassFolder->height = count($searchFields);
 			} else {
-				$obj->searchclassFolder->height = (isset($_REQUEST['searchstart']) ? 0 : 1);
+				$obj->searchclassFolder->height = (we_base_request::_(we_base_request::INT, 'searchstart') !== false ? 0 : 1);
 			}
-		} else {
-			if(isset($_REQUEST['we_cmd']['setView']) && isset($_REQUEST['id'])){
-				$this->db->query('UPDATE ' . FILE_TABLE . ' SET listview=' . we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'setView') . ' WHERE ID=' . we_base_request::_(we_base_request::INT, 'id'));
-			}
+		} elseif($view !== false && ($id = we_base_request::_(we_base_request::INT, 'id')) !== false){
+			$this->db->query('UPDATE ' . FILE_TABLE . ' SET listview=' . $view . ' WHERE ID=' . $id);
 		}
 	}
 
@@ -396,9 +396,9 @@ class we_search_search extends we_search{
 			return '0';
 		}
 
-		$where = "";
+		$where = '';
 		foreach($userIDs as $id){
-			$where .= ($i > 0 ? " OR " : " (") . $fieldFileTable . " = " . intval($id) . ' ';
+			$where .= ($i > 0 ? ' OR ' : ' (') . $fieldFileTable . '=' . intval($id) . ' ';
 			$i++;
 		}
 		$where .= ')';
@@ -409,43 +409,43 @@ class we_search_search extends we_search{
 	function getStatusFiles($status, $table){
 		switch($status){
 			case "jeder" :
-				return "AND (" . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::WEDOCUMENT . "' OR " . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::HTML . "' OR " . escape_sql_query($table) . ".ContentType='objectFile')";
+				return "AND (" . $this->db->escape($table) . ".ContentType='" . we_base_ContentTypes::WEDOCUMENT . "' OR " . $this->db->escape($table) . ".ContentType='" . we_base_ContentTypes::HTML . "' OR " . $this->db->escape($table) . ".ContentType='objectFile')";
 
 			case "geparkt" :
 				return ($table == VERSIONS_TABLE ?
-						"AND " . escape_sql_query($table) . ".status='unpublished'" :
-						"AND ((" . escape_sql_query($table) . ".Published=0) AND (" . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::WEDOCUMENT . "' OR " . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::HTML . "' OR " . escape_sql_query($table) . ".ContentType='objectFile'))");
+						"AND " . VERSIONS_TABLE . ".status='unpublished'" :
+						"AND ((" . $this->db->escape($table) . ".Published=0) AND (" . $this->db->escape($table) . ".ContentType='" . we_base_ContentTypes::WEDOCUMENT . "' OR " . $this->db->escape($table) . ".ContentType='" . we_base_ContentTypes::HTML . "' OR " . $this->db->escape($table) . ".ContentType='objectFile'))");
 
 			case "veroeffentlicht" :
 				return ($table == VERSIONS_TABLE ?
-						"AND " . escape_sql_query($table) . ".status='published'" :
-						"AND ((" . escape_sql_query($table) . ".Published >= " . escape_sql_query($table) . ".ModDate AND " . escape_sql_query($table) . ".Published !=0) AND (" . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::WEDOCUMENT . "' OR " . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::HTML . "' OR " . escape_sql_query($table) . ".ContentType='objectFile'))");
+						"AND " . VERSIONS_TABLE . ".status='published'" :
+						"AND ((" . $this->db->escape($table) . ".Published >= " . $this->db->escape($table) . ".ModDate AND " . $this->db->escape($table) . ".Published !=0) AND (" . $this->db->escape($table) . ".ContentType='" . we_base_ContentTypes::WEDOCUMENT . "' OR " . $this->db->escape($table) . ".ContentType='" . we_base_ContentTypes::HTML . "' OR " . $this->db->escape($table) . ".ContentType='objectFile'))");
 			case "geaendert" :
 				return ($table == VERSIONS_TABLE ?
-						"AND " . escape_sql_query($table) . ".status='saved'" :
-						"AND ((" . escape_sql_query($table) . ".Published < " . escape_sql_query($table) . ".ModDate AND " . escape_sql_query($table) . ".Published !=0) AND (" . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::WEDOCUMENT . "' OR " . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::HTML . "' OR " . escape_sql_query($table) . ".ContentType='objectFile'))");
+						"AND " . VERSIONS_TABLE . ".status='saved'" :
+						"AND ((" . $this->db->escape($table) . ".Published < " . $this->db->escape($table) . ".ModDate AND " . $this->db->escape($table) . ".Published !=0) AND (" . $this->db->escape($table) . ".ContentType='" . we_base_ContentTypes::WEDOCUMENT . "' OR " . $this->db->escape($table) . ".ContentType='" . we_base_ContentTypes::HTML . "' OR " . $this->db->escape($table) . ".ContentType='objectFile'))");
 			case "veroeff_geaendert" :
-				return "AND ((" . escape_sql_query($table) . ".Published >= " . escape_sql_query($table) . ".ModDate OR " . escape_sql_query($table) . ".Published < " . escape_sql_query($table) . ".ModDate AND " . escape_sql_query($table) . ".Published !=0) AND (" . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::WEDOCUMENT . "' OR " . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::HTML . "' OR " . escape_sql_query($table) . ".ContentType='objectFile'))";
+				return "AND ((" . $this->db->escape($table) . ".Published >= " . $this->db->escape($table) . ".ModDate OR " . $this->db->escape($table) . ".Published < " . $this->db->escape($table) . ".ModDate AND " . $this->db->escape($table) . ".Published !=0) AND (" . $this->db->escape($table) . ".ContentType='" . we_base_ContentTypes::WEDOCUMENT . "' OR " . $this->db->escape($table) . ".ContentType='" . we_base_ContentTypes::HTML . "' OR " . $this->db->escape($table) . ".ContentType='objectFile'))";
 
 			case "geparkt_geaendert" :
 				return ($table == VERSIONS_TABLE ?
-						"AND " . escape_sql_query($table) . ".status!='published'" :
-						"AND ((" . escape_sql_query($table) . ".Published=0 OR " . escape_sql_query($table) . ".Published < " . escape_sql_query($table) . ".ModDate) AND (" . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::WEDOCUMENT . "' OR " . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::HTML . "' OR " . escape_sql_query($table) . ".ContentType='objectFile'))");
+						"AND " . VERSIONS_TABLE . ".status!='published'" :
+						"AND ((" . $this->db->escape($table) . ".Published=0 OR " . $this->db->escape($table) . ".Published < " . $this->db->escape($table) . ".ModDate) AND (" . $this->db->escape($table) . ".ContentType='" . we_base_ContentTypes::WEDOCUMENT . "' OR " . $this->db->escape($table) . ".ContentType='" . we_base_ContentTypes::HTML . "' OR " . $this->db->escape($table) . ".ContentType='objectFile'))");
 			case "dynamisch" :
 				return ($table != FILE_TABLE && $table != VERSIONS_TABLE ? '' :
-						"AND ((" . escape_sql_query($table) . ".IsDynamic=1) AND (" . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::WEDOCUMENT . "'))");
+						"AND ((" . $this->db->escape($table) . ".IsDynamic=1) AND (" . $this->db->escape($table) . ".ContentType='" . we_base_ContentTypes::WEDOCUMENT . "'))");
 			case "statisch" :
 				return ($table != FILE_TABLE && $table != VERSIONS_TABLE ? '' :
-						"AND ((" . escape_sql_query($table) . ".IsDynamic=0) AND (" . escape_sql_query($table) . ".ContentType='" . we_base_ContentTypes::WEDOCUMENT . "'))");
+						"AND ((" . $this->db->escape($table) . ".IsDynamic=0) AND (" . $this->db->escape($table) . ".ContentType='" . we_base_ContentTypes::WEDOCUMENT . "'))");
 			case "deleted" :
-				return ($table == VERSIONS_TABLE ? "AND " . escape_sql_query($table) . ".status='deleted' " : '');
+				return ($table == VERSIONS_TABLE ? "AND " . VERSIONS_TABLE . ".status='deleted' " : '');
 		}
 
 		return '';
 	}
 
 	function searchModifier($text, $table){
-		return ($text ? ' AND ' . escape_sql_query($table) . '.modifierID = ' . intval($text) : '');
+		return ($text ? ' AND ' . $this->db->escape($table) . '.modifierID = ' . intval($text) : '');
 	}
 
 	function searchModFields($text, $table){
@@ -456,10 +456,8 @@ class we_search_search extends we_search{
 		$modConst[] = $versions->modFields[$text]['const'];
 
 		if(!empty($modConst)){
-			$modifications = array();
-			$ids = array();
-			$_ids = array();
-			$db->query('SELECT ID, modifications FROM ' . VERSIONS_TABLE . ' WHERE modifications != ""');
+			$modifications = $ids = $_ids = array();
+			$db->query('SELECT ID, modifications FROM ' . VERSIONS_TABLE . ' WHERE modifications!=""');
 
 			while($db->next_record()){
 				$modifications[$db->f('ID')] = makeArrayFromCSV($db->f('modifications'));
@@ -474,7 +472,7 @@ class we_search_search extends we_search{
 				$m++;
 			}
 
-			if(!empty($ids)){
+			if($ids){
 				foreach($ids as $key => $val){
 					$_ids[] = $val;
 				}
@@ -512,14 +510,14 @@ class we_search_search extends we_search{
 		switch($table){
 			case FILE_TABLE:
 			case TEMPLATES_TABLE:
-				$_db->query('SELECT a.Name, b.Dat, a.DID FROM ' . LINK_TABLE . ' a LEFT JOIN ' . CONTENT_TABLE . " b on (a.CID = b.ID) WHERE b.Dat LIKE '%" . escape_sql_query(
+				$_db->query('SELECT a.Name, b.Dat, a.DID FROM ' . LINK_TABLE . ' a LEFT JOIN ' . CONTENT_TABLE . " b on (a.CID = b.ID) WHERE b.Dat LIKE '%" . $this->db->escape(
 						trim($keyword)) . "%' AND a.Name!='completeData' AND a.DocumentTable='" . $_db->escape(stripTblPrefix($table)) . "'");
 				while($_db->next_record()){
 					$contents[] = $_db->f('DID');
 				}
 
 				if($table == FILE_TABLE){
-					$_db->query('SELECT DocumentID, DocumentObject  FROM ' . TEMPORARY_DOC_TABLE . " WHERE DocumentObject LIKE '%" . $_db->escape(trim($keyword)) . "%' AND DocTable = '" . escape_sql_query(stripTblPrefix($table)) . "' AND Active = 1");
+					$_db->query('SELECT DocumentID, DocumentObject  FROM ' . TEMPORARY_DOC_TABLE . " WHERE DocumentObject LIKE '%" . $_db->escape(trim($keyword)) . "%' AND DocTable = '" . $this->db->escape(stripTblPrefix($table)) . "' AND Active = 1");
 					while($_db->next_record()){
 						$contents[] = $_db->f('DocumentID');
 					}
@@ -581,7 +579,7 @@ class we_search_search extends we_search{
 						$where .= $v . " LIKE '%" . $_db->escape(trim($keyword)) . "%' ";
 					}
 
-					$_db->query('SELECT ' . escape_sql_query($_obj_table) . '.OF_ID FROM ' . $_db->escape($_obj_table) . ' WHERE ' . $where);
+					$_db->query('SELECT ' . $this->db->escape($_obj_table) . '.OF_ID FROM ' . $_db->escape($_obj_table) . ' WHERE ' . $where);
 					while($_db->next_record()){
 						$Ids[] = $_db->f('OF_ID');
 					}
@@ -605,6 +603,10 @@ class we_search_search extends we_search{
 		if(isset($sortierung[1])){
 			$sortIsNr = '';
 			$sortNr = 'DESC';
+		}
+		if(!$sortierung[0]){
+			t_e('query in temp will fail', $order);
+			return;
 		}
 
 		$this->db->query('SELECT SEARCH_TEMP_TABLE.*,LOWER(' . $sortierung[0] . ') AS lowtext, ABS(' . $sortierung[0] . ') as Nr, (' . $sortierung[0] . " REGEXP '^[0-9]') as isNr  FROM SEARCH_TEMP_TABLE  ORDER BY IsFolder DESC, isNr " . $sortIsNr . ',Nr ' . $sortNr . ',lowtext ' . $sortNr . ', ' . $order . '  LIMIT ' . $searchstart . "," . $anzahl);
@@ -660,20 +662,14 @@ class we_search_search extends we_search{
 					}
 					$this->db->query($query);
 				}
-				if(defined('OBJECT_FILES_TABLE')){
-					if($_SESSION['weS']['weSearch']['onlyObjects'] || $_SESSION['weS']['weSearch']['ObjectsAndDocs']){
-						$query = "INSERT INTO SEARCH_TEMP_TABLE SELECT ''," . VERSIONS_TABLE . ".documentID," . VERSIONS_TABLE . ".documentTable," . VERSIONS_TABLE . ".Text," . VERSIONS_TABLE . ".Path," . VERSIONS_TABLE . ".ParentID,'',''," . VERSIONS_TABLE . ".TemplateID," . VERSIONS_TABLE . ".ContentType,''," . VERSIONS_TABLE . ".timestamp," . VERSIONS_TABLE . ".modifierID,'',''," . VERSIONS_TABLE . ".Extension," . VERSIONS_TABLE . ".TableID," . VERSIONS_TABLE . ".ID FROM " . VERSIONS_TABLE . " LEFT JOIN " . OBJECT_FILES_TABLE . " ON " . VERSIONS_TABLE . ".documentID = " . OBJECT_FILES_TABLE . ".ID " . $this->where . " " . $_SESSION['weS']['weSearch']['onlyObjectsRestrUsersWhere'] . " ";
-						if(stristr($query, VERSIONS_TABLE . ".status='deleted'")){
-							$query = str_replace(OBJECT_FILES_TABLE . ".", VERSIONS_TABLE . ".", $query);
-						}
-						$this->db->query($query);
+				if(defined('OBJECT_FILES_TABLE') && ($_SESSION['weS']['weSearch']['onlyObjects'] || $_SESSION['weS']['weSearch']['ObjectsAndDocs'])){
+					$query = "INSERT INTO SEARCH_TEMP_TABLE SELECT ''," . VERSIONS_TABLE . ".documentID," . VERSIONS_TABLE . ".documentTable," . VERSIONS_TABLE . ".Text," . VERSIONS_TABLE . ".Path," . VERSIONS_TABLE . ".ParentID,'',''," . VERSIONS_TABLE . ".TemplateID," . VERSIONS_TABLE . ".ContentType,''," . VERSIONS_TABLE . ".timestamp," . VERSIONS_TABLE . ".modifierID,'',''," . VERSIONS_TABLE . ".Extension," . VERSIONS_TABLE . ".TableID," . VERSIONS_TABLE . ".ID FROM " . VERSIONS_TABLE . " LEFT JOIN " . OBJECT_FILES_TABLE . " ON " . VERSIONS_TABLE . ".documentID = " . OBJECT_FILES_TABLE . ".ID " . $this->where . " " . $_SESSION['weS']['weSearch']['onlyObjectsRestrUsersWhere'] . " ";
+					if(stristr($query, VERSIONS_TABLE . ".status='deleted'")){
+						$query = str_replace(OBJECT_FILES_TABLE . ".", VERSIONS_TABLE . ".", $query);
 					}
+					$this->db->query($query);
 				}
-				unset($_SESSION['weS']['weSearch']['onlyObjects']);
-				unset($_SESSION['weS']['weSearch']['onlyDocs']);
-				unset($_SESSION['weS']['weSearch']['ObjectsAndDocs']);
-				unset($_SESSION['weS']['weSearch']['onlyObjectsRestrUsersWhere']);
-				unset($_SESSION['weS']['weSearch']['onlyDocsRestrUsersWhere']);
+				unset($_SESSION['weS']['weSearch']['onlyObjects'], $_SESSION['weS']['weSearch']['onlyDocs'], $_SESSION['weS']['weSearch']['ObjectsAndDocs'], $_SESSION['weS']['weSearch']['onlyObjectsRestrUsersWhere'], $_SESSION['weS']['weSearch']['onlyDocsRestrUsersWhere']);
 				break;
 
 			case TEMPLATES_TABLE:
@@ -695,25 +691,26 @@ class we_search_search extends we_search{
 
 		if(self::checkRightTempTable() && self::checkRightDropTable()){
 			$this->db->query('CREATE TEMPORARY TABLE SEARCH_TEMP_TABLE (
-				ID BIGINT( 20 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-				docID BIGINT( 20 ) NOT NULL ,
-				docTable VARCHAR( 32 ) NOT NULL ,
-				Text VARCHAR( 255 ) NOT NULL ,
-				Path VARCHAR( 255 ) NOT NULL ,
-				ParentID BIGINT( 20 ) NOT NULL ,
-				IsFolder TINYINT( 1 ) NOT NULL ,
-				temp_template_id INT( 11 ) NOT NULL ,
-				TemplateID INT( 11 ) NOT NULL ,
-				ContentType VARCHAR( 32 ) NOT NULL ,
-				SiteTitle VARCHAR( 255 ) NOT NULL ,
-				CreationDate INT( 11 ) NOT NULL ,
-				CreatorID BIGINT( 20 ) NOT NULL ,
-				ModDate INT( 11 ) NOT NULL ,
-				Published INT( 11 ) NOT NULL ,
-				Extension VARCHAR( 16 ) NOT NULL ,
-				TableID INT( 11 ) NOT NULL,
-				VersionID BIGINT( 20 ) NOT NULL
-				) ENGINE = MEMORY' . we_database_base::getCharsetCollation());
+ID BIGINT( 20 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+docID BIGINT( 20 ) NOT NULL ,
+docTable VARCHAR( 32 ) NOT NULL ,
+Text VARCHAR( 255 ) NOT NULL ,
+Path VARCHAR( 255 ) NOT NULL ,
+ParentID BIGINT( 20 ) NOT NULL ,
+IsFolder TINYINT( 1 ) NOT NULL ,
+temp_template_id INT( 11 ) NOT NULL ,
+TemplateID INT( 11 ) NOT NULL ,
+ContentType VARCHAR( 32 ) NOT NULL ,
+SiteTitle VARCHAR( 255 ) NOT NULL ,
+CreationDate INT( 11 ) NOT NULL ,
+CreatorID BIGINT( 20 ) NOT NULL ,
+ModDate INT( 11 ) NOT NULL ,
+Published INT( 11 ) NOT NULL ,
+Extension VARCHAR( 16 ) NOT NULL ,
+TableID INT( 11 ) NOT NULL,
+VersionID BIGINT( 20 ) NOT NULL,
+UNIQUE KEY k (docID,docTable)
+) ENGINE = MEMORY' . we_database_base::getCharsetCollation());
 		}
 	}
 
@@ -763,7 +760,7 @@ class we_search_search extends we_search{
 			if($searchfield == $tableInfo[$y]['name']){
 				$searchfield = $tablename . '.' . $tableInfo[$y]['name'];
 
-				if(isset($searchname) && $searchname != '')
+				if(isset($searchname) && $searchname != ''){
 					if(($whatParentID == 'ParentIDDoc' && ($this->table == FILE_TABLE || $this->table == VERSIONS_TABLE)) || ($whatParentID == 'ParentIDObj' && ($this->table == OBJECT_FILES_TABLE || $this->table == VERSIONS_TABLE)) || ($whatParentID == 'ParentIDTmpl' && $this->table == TEMPLATES_TABLE)){
 						if($this->table == VERSIONS_TABLE){
 							if($whatParentID == 'ParentIDDoc'){
@@ -774,11 +771,11 @@ class we_search_search extends we_search{
 							}
 						}
 						$searchname = path_to_id($searchname, $this->table);
-						$searching = " = '" . escape_sql_query($searchname) . "' ";
+						$searching = " = '" . $this->db->escape($searchname) . "' ";
 						$sql .= $this->sqlwhere($searchfield, $searching, $operator);
 					} elseif(($searchfield == TEMPLATES_TABLE . '.MasterTemplateID' && $this->table == TEMPLATES_TABLE) || ($searchfield == FILE_TABLE . '.temp_template_id' && $this->table == FILE_TABLE) || ($searchfield == VERSIONS_TABLE . '.TemplateID' && $this->table == VERSIONS_TABLE)){
 						$searchname = path_to_id($searchname, TEMPLATES_TABLE);
-						$searching = " = '" . escape_sql_query($searchname) . "' ";
+						$searching = " = '" . $this->db->escape($searchname) . "' ";
 
 						if(($searchfield == 'temp_template_id' && $this->table == FILE_TABLE) || ($searchfield == 'TemplateID' && $this->table == VERSIONS_TABLE)){
 							if($this->table == FILE_TABLE){
@@ -834,35 +831,34 @@ class we_search_search extends we_search{
 								}
 							}
 						}
-					} else {
-						if(isset($searchlocation)){
-							switch($searchlocation){
-								case 'END':
-									$searching = " LIKE '%" . escape_sql_query($searchname) . "' ";
-									$sql .= $this->sqlwhere($searchfield, $searching, $operator);
-									break;
-								case 'START':
-									$searching = " LIKE '" . escape_sql_query($searchname) . "%' ";
-									$sql .= $this->sqlwhere($searchfield, $searching, $operator);
-									break;
-								case 'IS':
-									$searching = "='" . escape_sql_query($searchname) . "' ";
-									$sql .= $this->sqlwhere($searchfield, $searching, $operator);
-									break;
-								case '<':
-								case '<=':
-								case '>':
-								case '>=':
-									$searching = ' ' . $searchlocation . " '" . escape_sql_query($searchname) . "' ";
-									$sql .= $this->sqlwhere($searchfield, $searching, $operator);
-									break;
-								default :
-									$searching = " LIKE '%" . escape_sql_query($searchname) . "%' ";
-									$sql .= $this->sqlwhere($searchfield, $searching, $operator);
-									break;
-							}
+					} elseif(isset($searchlocation)){
+						switch($searchlocation){
+							case 'END':
+								$searching = " LIKE '%" . $this->db->escape($searchname) . "' ";
+								$sql .= $this->sqlwhere($searchfield, $searching, $operator);
+								break;
+							case 'START':
+								$searching = " LIKE '" . $this->db->escape($searchname) . "%' ";
+								$sql .= $this->sqlwhere($searchfield, $searching, $operator);
+								break;
+							case 'IS':
+								$searching = "='" . $this->db->escape($searchname) . "' ";
+								$sql .= $this->sqlwhere($searchfield, $searching, $operator);
+								break;
+							case '<':
+							case '<=':
+							case '>':
+							case '>=':
+								$searching = ' ' . $searchlocation . " '" . $this->db->escape($searchname) . "' ";
+								$sql .= $this->sqlwhere($searchfield, $searching, $operator);
+								break;
+							default :
+								$searching = " LIKE '%" . $this->db->escape($searchname) . "%' ";
+								$sql .= $this->sqlwhere($searchfield, $searching, $operator);
+								break;
 						}
 					}
+				}
 			}
 		}
 
@@ -874,7 +870,7 @@ class we_search_search extends we_search{
 		$childsOfFolderId = array();
 		//fix #2940
 		if(is_array($folderID)){
-			if(!empty($folderID)){
+			if($folderID){
 				foreach($folderID as $k){
 					$childsOfFolderId = $this->getChildsOfParentId($k, $table);
 					$ids = makeCSVFromArray($childsOfFolderId);
@@ -889,13 +885,15 @@ class we_search_search extends we_search{
 		}
 	}
 
-	function getChildsOfParentId($folderID, $table){
-		$DB_WE = new DB_WE();
+	function getChildsOfParentId($folderID, $table, we_database_base $DB_WE = null){
+		$DB_WE = $DB_WE ? $DB_WE : new DB_WE();
 
 		$DB_WE->query('SELECT ID FROM ' . $DB_WE->escape($table) . ' WHERE ParentID=' . intval($folderID) . ' AND IsFolder=1');
-		while($DB_WE->next_record()){
-			$_SESSION['weS']['weSearch']['countChilds'][] = $DB_WE->f('ID');
-			$this->getChildsOfParentId($DB_WE->f('ID'), $table);
+		$ids = $DB_WE->getAll(true);
+		$_SESSION['weS']['weSearch']['countChilds'] = array_merge($_SESSION['weS']['weSearch']['countChilds'], $ids);
+
+		foreach($ids as $id){
+			$this->getChildsOfParentId($id, $table, $DB_WE);
 		}
 
 		$_SESSION['weS']['weSearch']['countChilds'][] = $folderID;
@@ -906,14 +904,10 @@ class we_search_search extends we_search{
 		return $_SESSION['weS']['weSearch']['countChilds'];
 	}
 
-	function ofFolderOnly($folderID){
-		return ' AND ParentID = ' . intval($folderID);
-	}
-
 	static function checkRightTempTable(){
 		$db = new DB_WE();
 		$db->query('CREATE TEMPORARY TABLE test_SEARCH_TEMP_TABLE (
-				`test` VARCHAR( 1 ) NOT NULL
+				`test` VARCHAR(1) NOT NULL
 				) ENGINE=MEMORY' . we_database_base::getCharsetCollation());
 
 		$db->next_record();
@@ -939,7 +933,7 @@ class we_search_search extends we_search{
 	}
 
 	function getResultCount(){
-		return f('SELECT COUNT(1) AS Count FROM SEARCH_TEMP_TABLE', 'Count', $this->db);
+		return f('SELECT COUNT(1) AS Count FROM SEARCH_TEMP_TABLE', '', $this->db);
 	}
 
 }

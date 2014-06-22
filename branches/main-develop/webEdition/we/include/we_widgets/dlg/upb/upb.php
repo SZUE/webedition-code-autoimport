@@ -26,14 +26,14 @@ $aProps = array(
 	0,
 	0,
 	0,
-	$_REQUEST['we_cmd'][0]
+	we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)
 );
 require_once('../../mod/upb.php');
 
 $sTb = ($bTypeDoc && $bTypeObj) ? g_l('cockpit', "[upb_docs_and_objs]") : (($bTypeDoc) ? g_l('cockpit', "[upb_docs]") : (($bTypeObj) ? g_l('cockpit', "[upb_objs]") : g_l('cockpit', "[upb_docs_and_objs]")));
 
 $jsCode = "
-var _sObjId='" . $_REQUEST['we_cmd'][5] . "';
+var _sObjId='" . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 5) . "';
 var _sType='upb';
 var _sTb='" . $sTb . "';
 

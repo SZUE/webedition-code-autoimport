@@ -555,7 +555,7 @@ class we_workflow_view extends we_workflow_base{
 						eval('top.opener.top.we_cmd(' + args + ')');
 				}
 			}
-		//-->
+			//-->
 		</script>
 		<?php
 	}
@@ -961,33 +961,33 @@ function checkData(){
 					if(!permissionhandler::hasPerm('EDIT_WORKFLOW') && !permissionhandler::hasPerm('NEW_WORKFLOW')){
 						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
 						return;
-					} else if($newone && !permissionhandler::hasPerm('NEW_WORKFLOW')){
+					}
+					if($newone && !permissionhandler::hasPerm('NEW_WORKFLOW')){
 						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
 						return;
-					} else {
-						if($double){
-							echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[double_name]'), we_message_reporting::WE_MESSAGE_ERROR));
-							return;
-						}
-						$childs = '';
-						$this->workflowDef->loadDocuments();
-						foreach($this->workflowDef->documents as $k => $v){
-							$childs.="top.content.deleteEntry(" . $v["ID"] . ",'file');\n";
-						}
-						if(is_array($_REQUEST[$this->uid . '_MYDocType']) && !empty($_REQUEST[$this->uid . '_MYDocType'])){
-							$this->workflowDef->DocType = makeCSVFromArray($_REQUEST[$this->uid . '_MYDocType'], true);
-						}
-
-						$this->workflowDef->save();
-						echo we_html_element::jsElement(
-							($newone ?
-								'top.content.makeNewEntry("workflow_folder",' . $this->workflowDef->ID . ',0,"' . $this->workflowDef->Text . '",true,"folder","we_workflow_workflowDef","' . $this->workflowDef->Status . '");' :
-								'top.content.updateEntry(' . $this->workflowDef->ID . ',0,"' . $this->workflowDef->Text . '","' . $this->workflowDef->Status . '");'
-							) . $childs .
-							'top.content.editor.edheader.document.getElementById("headrow").innerHTML="' . we_html_element::htmlB(g_l('modules_workflow', '[workflow]') . ': ' . oldHtmlspecialchars($this->workflowDef->Text)) . '";' .
-							we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[save_ok]'), we_message_reporting::WE_MESSAGE_NOTICE)
-						);
 					}
+					if($double){
+						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[double_name]'), we_message_reporting::WE_MESSAGE_ERROR));
+						return;
+					}
+					$childs = '';
+					$this->workflowDef->loadDocuments();
+					foreach($this->workflowDef->documents as $k => $v){
+						$childs.="top.content.deleteEntry(" . $v["ID"] . ",'file');\n";
+					}
+					if(($dts = we_base_request::_(we_base_request::INT, $_REQUEST[$this->uid . '_MYDocType'])) !== false){
+						$this->workflowDef->DocType = makeCSVFromArray($dts, true);
+					}
+
+					$this->workflowDef->save();
+					echo we_html_element::jsElement(
+						($newone ?
+							'top.content.makeNewEntry("workflow_folder",' . $this->workflowDef->ID . ',0,"' . $this->workflowDef->Text . '",true,"folder","we_workflow_workflowDef","' . $this->workflowDef->Status . '");' :
+							'top.content.updateEntry(' . $this->workflowDef->ID . ',0,"' . $this->workflowDef->Text . '","' . $this->workflowDef->Status . '");'
+						) . $childs .
+						'top.content.editor.edheader.document.getElementById("headrow").innerHTML="' . we_html_element::htmlB(g_l('modules_workflow', '[workflow]') . ': ' . oldHtmlspecialchars($this->workflowDef->Text)) . '";' .
+						we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[save_ok]'), we_message_reporting::WE_MESSAGE_NOTICE)
+					);
 				}
 				break;
 			case 'show_document':

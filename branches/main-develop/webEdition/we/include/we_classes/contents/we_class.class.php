@@ -302,7 +302,7 @@ abstract class we_class{
 	 * is called from "we_textContentDocument::we_load"
 	 * @see we_textContentDocument::we_load
 	 */
-	function initWeDocumentCustomerFilterFromDB(){
+	protected function initWeDocumentCustomerFilterFromDB(){
 		$this->documentCustomerFilter = we_customer_documentFilter::getFilterOfDocument($this);
 	}
 

@@ -382,8 +382,8 @@ function modulFehltError($modul, $tag){
 	return parseError(sprintf(g_l('parser', '[module_missing]'), $modul, $tag));
 }
 
-function parseError($text){
-	t_e('warning', html_entity_decode($text, ENT_QUOTES, $GLOBALS['WE_BACKENDCHARSET']), g_l('weClass', '[template]') . ': ' . we_tag_tagParser::$curFile);
+function parseError($text, $extra = ''){
+	t_e('warning', html_entity_decode($text, ENT_QUOTES, $GLOBALS['WE_BACKENDCHARSET']), g_l('weClass', '[template]') . ': ' . we_tag_tagParser::$curFile, $extra);
 	return '<b>' . g_l('parser', '[error_in_template]') . ':</b>' . $text . "<br/>\n" . g_l('weClass', '[template]') . ': ' . we_tag_tagParser::$curFile;
 }
 
@@ -730,7 +730,7 @@ function we_tag_pagelogger($attribs, $content){
 }
 
 function we_tag_ifReturnPage(){
-	return we_base_request::_(we_base_request::BOOL, 'we_returnpage');
+	return we_base_request::_(we_base_request::RAW_CHECKED, 'we_returnpage') !== false;
 }
 
 function we_tag_ifUserInputNotEmpty($attribs){

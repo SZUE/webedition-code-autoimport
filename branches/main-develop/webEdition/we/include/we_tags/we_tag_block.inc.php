@@ -169,14 +169,14 @@ function we_tag_blockControls($attribs){
 		}
 		$tabArray[] = (($attribs['pos'] > 0) ?
 				//enabled upBtn
-				we_html_button::create_button('image:btn_direction_up', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('up_entry_at_list','" . $attribs['name'] . "'," . $jsSelector . ")") :
+				we_html_button::create_button('image:btn_direction_up', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('up_entry_at_list','" . $attribs['name'] . "','" . $attribs['pos'] . "'," . $jsSelector . ")") :
 				//disabled upBtn
 				we_html_button::create_button('image:btn_direction_up', '', true, 0, 0, '', '', true));
 		$tabArray[] = (($attribs['pos'] == $attribs['listSize'] - 1) ?
 				//disabled downBtn
 				we_html_button::create_button('image:btn_direction_down', '', true, 0, 0, '', '', true) :
 				//enabled downBtn
-				we_html_button::create_button('image:btn_direction_down', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('down_entry_at_list','" . $attribs['name'] . "'," . $jsSelector . ")"));
+				we_html_button::create_button('image:btn_direction_down', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('down_entry_at_list','" . $attribs['name'] . "','" . $attribs['pos'] . "'," . $jsSelector . ")"));
 		$tabArray[] = we_html_button::create_button('image:btn_function_trash', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('delete_list','" . $attribs['name'] . "','" . $attribs['pos'] . "','" . $GLOBALS['postTagName'] . "',1)");
 
 		return we_html_button::create_button_table($tabArray, 5);

@@ -972,7 +972,7 @@ function weWysiwygSetHiddenText(arg) {
 			'template' => 'template',
 			'editrow' => 'row_props',
 			'deletetable' => 'delete_table'
-			
+
 			// table controlls are not mapped from wysiwyg to tinyMCE:
 			//'notmapped1' => 'attribs',
 			//'notmapped2' => 'insertimage', // replaced by weimage
@@ -1116,7 +1116,7 @@ var weclassNames_tinyMce = new Array (' . $this->cssClassesJS . ');
 var tinyMceTranslationObject = {' . $editorLang . ':{
 	we:{
 		"group_link":"' . g_l('wysiwyg', "[links]") . '",//(insert_hyperlink)
-		"group_copypaste":"' . g_l('wysiwyg', "[insert_text]") . '",
+		"group_copypaste":"' . g_l('wysiwyg', "[import_text]") . '",
 		"group_advanced":"' . g_l('wysiwyg', "[advanced]") . '",
 		"group_insert":"' . g_l('wysiwyg', "[insert]") . '",
 		"group_indent":"' . g_l('wysiwyg', "[indent]") . '",
@@ -1223,6 +1223,17 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 
 	' . ($this->tinyParams ? '//params from attribute tinyparams
 	' . $this->tinyParams . ',' : '') . '
+
+	//Fix: ad attribute id to anchor
+	init_instance_callback: function(ed) {
+		ed.serializer.addNodeFilter("a", function(nodes) {
+			tinymce.each(nodes, function(node) {
+				if(!node.attr("href") && !node.attr("id")){
+					node.attr("id", node.attr("name"));
+				}
+			});
+		});
+	},
 
 	setup : function(ed){
 
@@ -1366,21 +1377,11 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 		});
 
 		ed.onNodeChange.add(function(ed, cm, n) {
-			var sel = ed.selection.getSel();
-			//console.log(sel.anchorOffset);
 			var td = ed.dom.getParent(n, "td");
 			if(typeof td === "object" && td && td.getElementsByTagName("p").length === 1){
-				var bm = ed.selection.getBookmark();
-				console.log(td.innerHTML);
-				td.innerHTML = td.getElementsByTagName("p")[0].innerHTML;
-				console.log(td.innerHTML);
-				//if(td.innerHTML.search(bm.id) == -1) td.innerHTML = td.innerHTML + "<span id=\"" + bm.id + "\"></span>";
-				//ed.selection.collapse(true);
-				ed.selection.moveToBookmark(bm);
-				console.log(td.innerHTML);
-				//sel = ed.selection.getSel();
-				//console.log(sel);
-				
+				var inner = td.getElementsByTagName("p")[0].innerHTML;
+				td.innerHTML = "";
+				ed.selection.setContent(inner)
 			}
 		});
 

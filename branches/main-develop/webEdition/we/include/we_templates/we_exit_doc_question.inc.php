@@ -32,7 +32,7 @@ echo we_html_tools::getHtmlTop(g_l('global', '[question]'));
 // we_cmd[3] => nextCommand -> as JS-String
 
 
-$editorFrameId = $_REQUEST['we_cmd'][1];
+$editorFrameId = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1);
 if(!preg_match('/^multiEditFrame_[0-9]+$/', $editorFrameId)){
 	exit('cmd[1] is not valid at we_exit_doc_question!');
 }

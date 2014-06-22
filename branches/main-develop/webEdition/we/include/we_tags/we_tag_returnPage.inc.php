@@ -27,9 +27,8 @@ function we_tag_returnPage($attribs){
 	$xml = weTag_getAttribute("xml", $attribs, XHTML_DEFAULT, true);
 
 	//FIXME: XSS - howto???
-	return isset($_REQUEST["we_returnpage"]) ?
-		($xml ?
-			oldHtmlspecialchars($_REQUEST["we_returnpage"]) :
-			$_REQUEST["we_returnpage"]) :
-		"";
+	$ret = we_base_request::_(we_base_request::URL, 'we_returnpage', '');
+	return ($xml ?
+			oldHtmlspecialchars($ret) :
+			$ret);
 }

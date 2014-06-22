@@ -149,11 +149,12 @@ class we_customer_frames extends weModuleFrames{
 	}
 
 	//TODO: move editor-body relatetd stuff to weCustomerView!
-	function getHTMLFieldControl($field, $value = null){
+	function getHTMLFieldControl($field, $value = null){ //Code used, when data is in session, not intial/DB
 		$props = $this->View->getFieldProperties($field);
 		if(!($props['type'] == 'select' || $props['type'] == 'multiselect') && !$this->View->customer->ID && $value == null){
 			$value = $props['default'];
 		}
+
 		switch($props['type']){
 			case 'input':
 				return we_html_tools::htmlTextInput($field, 32, $value, '', "onchange=\"top.content.setHot();\" style='width:240px;'");
@@ -411,7 +412,7 @@ top.content.hloaded = 1;');
 
 		$branch = we_base_request::_(we_base_request::STRING, 'branch', g_l('modules_customer', '[common]'));
 
-		$body = we_html_element::htmlBody(array('class' => 'weEditorBody', 'onLoad' => 'loaded=1', 'onunload' => 'doUnload()'), we_html_element::htmlForm(array('name' => 'we_form', 'autocomplete' => 'off'), $this->View->getCommonHiddens($hiddens) . $this->getHTMLProperties($branch)));
+		$body = we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'loaded=1', 'onunload' => 'doUnload()'), we_html_element::htmlForm(array('name' => 'we_form', 'autocomplete' => 'off'), $this->View->getCommonHiddens($hiddens) . $this->getHTMLProperties($branch)));
 
 		return $this->getHTMLDocument($body, $this->View->getJSProperty());
 	}
@@ -457,7 +458,7 @@ top.content.hloaded = 1;');
 								$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('class' => 'defaultgray'), we_html_forms::checkbox(1, $pv, 'AutoLogin', g_l('modules_customer', '[autologin_request]'), false, 'defaultfont', 'top.content.setHot();')), $this->View->settings->getPropertyTitle($pk)));
 								break;
 							case 'Password':
-								$table->setCol($c / 2, $c % 2, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($pk, 32, ($this->View->customer->ID ? we_customer_customer::NOPWD_CHANGE : ''), '', 'onchange="top.content.setHot();" ', 'password', "240px"), $this->View->settings->getPropertyTitle($pk)));
+								$table->setCol($c / 2, $c % 2, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($pk, 32, ($this->View->customer->ID ? we_customer_customer::NOPWD_CHANGE : ''), '', 'onchange="top.content.setHot();" autocomplete="off" ', 'password', "240px"), $this->View->settings->getPropertyTitle($pk)));
 								break;
 							case 'Username':
 								$inputattribs = ' id="yuiAcInputPathName" onblur="parent.edheader.setPathName(this.value); parent.edheader.setTitlePath()"';
@@ -609,8 +610,9 @@ failure: function(o) {
 
 		foreach($branches as $bk => $branch){
 			if($preselect != '' && $preselect != g_l('modules_customer', '[all]')){
-				if($bk != $preselect)
+				if($bk != $preselect){
 					continue;
+				}
 			}
 			$table = new we_html_table(array("width" => 500, "height" => 50, "cellpadding" => 10, "cellspacing" => 0, "border" => 0), 1, 2);
 			$r = 0;

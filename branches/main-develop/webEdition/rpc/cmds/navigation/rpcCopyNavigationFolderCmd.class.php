@@ -26,8 +26,8 @@ class rpcCopyNavigationFolderCmd extends rpcCmd{
 
 	function execute(){
 		$resp = new rpcResponse();
-		$cmd0 = we_base_request::_(we_base_request::FILE, 'cmd', false, 0);
-		$cmd3 = we_base_request::_(we_base_request::INT, 'cmd', 0, 3);
+		$cmd0 = we_base_request::_(we_base_request::FILE, 'we_cmd', false, 0);
+		$cmd3 = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 3);
 		if($cmd0 &&
 			($folder = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1)) &&
 			($path = we_base_request::_(we_base_request::FILE, 'we_cmd', '', 2)) &&
@@ -42,6 +42,7 @@ class rpcCopyNavigationFolderCmd extends rpcCmd{
 			$query = '';
 			$folders = array($folder);
 			$mapedId = array($cmd3 => $folder);
+
 			foreach($result as $row){
 				$querySet = '(';
 				foreach($row as $key => $val){
@@ -54,7 +55,7 @@ class rpcCopyNavigationFolderCmd extends rpcCmd{
 							$querySet .= ", '" . $db->escape($path) . "'";
 							break;
 						case "ParentID" :
-							$querySet .= ', ' . intval($mapedId[$val]);
+							$querySet .= ', ' . intval(isset($mapedId[$val]) ? $mapedId[$val] : 0);
 							break;
 						default :
 							$querySet .= ", '$val'";

@@ -19,23 +19,26 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_parse_tag_repeat($attribs, $content){
-	return '<?php while(' . we_tag_tagParser::printTag('repeat', $attribs) . '){?>' . $content . '<?php }?>';
+	return '<?php while(' . we_tag_tagParser::printTag('repeat', $attribs) . '){
+	if(isset($_SESSION[\'weS\'][\'we_mode\']) && $_SESSION[\'weS\'][\'we_mode\'] == we_base_constants::MODE_SEE){
+		print we_SEEM::getSeemAnchors();
+	}?>' . 
+	$content . '<?php }?>';
 }
 
 function we_tag_repeat(){
 	if(isset($GLOBALS['_we_voting_list'])){
 		return $GLOBALS['_we_voting_list']->getNext();
-	} elseif(isset($GLOBALS['lv'])){
+	}
+	if(isset($GLOBALS['lv'])){
 		if($GLOBALS['lv']->next_record()){
 			$GLOBALS["we_lv_array"][(count($GLOBALS["we_lv_array"]) - 1)] = clone($GLOBALS["lv"]);
 			if($GLOBALS['lv'] instanceof we_object_listview){
 				$GLOBALS['_we_object_listview_flag'] = true;
 			}
 			return true;
-		} else { //last entry
-			unset($GLOBALS['_we_object_listview_flag']);
-			return false;
-		}
+		} //last entry
+		unset($GLOBALS['_we_object_listview_flag']);
 	}
 
 	return false;

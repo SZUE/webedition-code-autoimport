@@ -2152,7 +2152,6 @@ lib/we/util/Sys/Db/Adapter
 lib/we/util/Sys/Db.php
 lib/we/util/Sys/Db
 lib/we/ui/controls/WeWysiwygEditorWindow.php
-lib/we/core/autoload.php
 lib/phpMailer/language/phpmailer.lang-tr.php
 lib/phpMailer/language/phpmailer.lang-se.php
 lib/phpMailer/language/phpmailer.lang-ru.php

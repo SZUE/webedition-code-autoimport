@@ -41,8 +41,8 @@ function we_tag_sessionStart($attribs){
 		if(isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] && isset($_SESSION['webuser']['ID']) && $_SESSION['webuser']['ID'] && ( (isset($_REQUEST['s']['AutoLogin']) && !$_REQUEST['s']['AutoLogin']) || (isset($_SESSION['webuser']['AutoLogin']) && !$_SESSION['webuser']['AutoLogin'])) && isset($_SESSION['webuser']['AutoLoginID'])){
 			$GLOBALS['DB_WE']->query('DELETE FROM ' . CUSTOMER_AUTOLOGIN_TABLE . ' WHERE AutoLoginID="' . $GLOBALS['DB_WE']->escape(sha1($_SESSION['webuser']['AutoLoginID'])) . '"');
 			setcookie('_we_autologin', '', (time() - 3600), '/');
-			$GLOBALS['WE_LOGOUT'] = true;
 		}
+		$GLOBALS['WE_LOGOUT'] = true;
 		unset($_SESSION['s'], $_REQUEST['s']);
 		$_SESSION['webuser'] = array('registered' => false);
 	} else {

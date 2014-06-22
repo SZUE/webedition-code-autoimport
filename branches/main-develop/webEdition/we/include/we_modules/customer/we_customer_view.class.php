@@ -829,17 +829,17 @@ new jsWindow(url,"sort_admin",-1,-1,750,500,true,true,true,true);';
 
 				break;
 			case 'del_sort':
-				if(($i = we_base_request::_(we_base_request::INT, 'sortindex')) !== false){
+				if(($i = we_base_request::_(we_base_request::STRING, 'sortindex')) !== false){
 					we_base_util::new_array_splice($this->settings->SortView, $i, 1);
 				}
 				break;
 			case 'add_sort_field':
-				if(($i = we_base_request::_(we_base_request::INT, 'sortindex')) !== false){
+				if(($i = we_base_request::_(we_base_request::STRING, 'sortindex')) !== false){
 					$this->settings->SortView[$i][] = array('branch' => '', 'field' => '', 'order' => '');
 				}
 				break;
 			case 'del_sort_field':
-				if(($i = we_base_request::_(we_base_request::INT, 'sortindex')) !== false &&
+				if(($i = we_base_request::_(we_base_request::STRING, 'sortindex')) !== false &&
 					($j = we_base_request::_(we_base_request::INT, 'fieldindex')) !== false){
 
 					array_splice($this->settings->SortView[$i], $j, 1);
@@ -870,7 +870,7 @@ self.close();';
 				we_html_element::jsElement($js);
 				break;
 			case 'applySort':
-				echo we_html_element::jsElement($$this->topFrame . '.clearTree();');
+				echo we_html_element::jsElement($this->topFrame . '.clearTree();');
 				break;
 			case 'show_search':
 				echo we_html_element::jsScript(JS_DIR . "windows.js") .
@@ -935,7 +935,7 @@ self.close();';
 					case 'LoginDenied':
 						if(we_base_request::_(we_base_request::BOOL, 'LoginDenied')){
 							$this->customer->LoginDenied = 1;
-						} elseif(we_base_request::_(we_base_request::STRING, 'Username')){
+						} elseif(we_base_request::_(we_base_request::STRINGC, 'Username')){
 							$this->customer->LoginDenied = 0;
 						}
 						break;
@@ -946,7 +946,7 @@ self.close();';
 						}
 						break;
 					default:
-						if(($v = we_base_request::_(we_base_request::STRING, $varname))){
+						if(($v = we_base_request::_(we_base_request::STRINGC, $varname))){
 							$this->customer->{$val} = $v;
 						}
 				}

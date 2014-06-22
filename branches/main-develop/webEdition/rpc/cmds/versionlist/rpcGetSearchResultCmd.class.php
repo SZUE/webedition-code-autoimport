@@ -28,14 +28,14 @@ class rpcGetSearchResultCmd extends rpcCmd{
 
 		$resp = new rpcResponse();
 
-		$anzahl = we_base_request::_(we_base_request::INT, 'we_cmd', 0,'anzahl');
-		$searchstart = we_base_request::_(we_base_request::INT, 'we_cmd', 0,'searchstart');
+		$anzahl = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'anzahl');
+		$searchstart = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'searchstart');
 
 		$GLOBALS['we_cmd_obj'] = 1;
 		$view = new weVersionsView();
 		$content = $view->getVersionsOfDoc();
-
-		$code = weVersionsView::tabListContent($searchstart, $anzahl, $content);
+		$sview = new we_search_view();
+		$code = $sview->tabListContent($searchstart, $anzahl, $content);
 
 		$resp->setData("data", $code);
 

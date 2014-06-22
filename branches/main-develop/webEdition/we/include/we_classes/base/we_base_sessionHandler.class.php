@@ -28,7 +28,7 @@ class we_base_sessionHandler{
 	}
 
 	function __destruct(){
-		if(SYSTEM_WE_SESSION && isset($_SESSION)){
+		if(defined('SYSTEM_WE_SESSION') && SYSTEM_WE_SESSION && isset($_SESSION)){
 			session_write_close();
 		}
 	}

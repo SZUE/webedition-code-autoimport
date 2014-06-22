@@ -46,12 +46,14 @@ echo $headCal .
 <div id="mouseOverDivs_doclist"></div>
 <form name="we_form" action="" onsubmit="return false;" style="padding:0px;margin:0px;">';
 
-$content = doclistView::searchProperties();
-$headline = doclistView::makeHeadLines();
+$docl = new doclistView();
+$view = new we_search_view();
+$content = $docl->searchProperties();
+$headline = $docl->makeHeadLines();
 $foundItems = (isset($_SESSION['weS']['weSearch']['foundItems'])) ? $_SESSION['weS']['weSearch']['foundItems'] : 0;
 $_parts = array(
 	array("html" => doclistView::getSearchDialog()),
-	array("html" => "<div id='parametersTop'>" . doclistView::getSearchParameterTop($foundItems) . "</div>" . we_search_view::tblList($content, $headline, "doclist") . "<div id='parametersBottom'>" . doclistView::getSearchParameterBottom($foundItems) . "</div>"),
+	array("html" => "<div id='parametersTop'>" . $docl->getSearchParameterTop($foundItems) . "</div>" . $view->tblList($content, $headline, "doclist") . "<div id='parametersBottom'>" . $docl->getSearchParameterBottom($foundItems) . "</div>"),
 );
 
 echo doclistView::getHTMLforDoclist($_parts) . '

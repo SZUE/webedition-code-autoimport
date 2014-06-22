@@ -904,7 +904,7 @@ class doclistView{
 	 * @abstract executes the search and writes the result into arrays
 	 * @return array with search results
 	 */
-	static function searchProperties(){
+	function searchProperties(){
 
 		$DB_WE = new DB_WE();
 		$content = array();
@@ -926,12 +926,10 @@ class doclistView{
 			}
 		}
 
-		if(isset($GLOBALS['we_cmd_obj'])){
+		if(isset($GLOBALS['we_cmd_obj']) && is_object($GLOBALS['we_cmd_obj'])){
 			$obj = $GLOBALS['we_cmd_obj'];
-			$thisObj = new self();
 		} else {
 			$obj = $GLOBALS ['we_doc'];
-			$thisObj = $this;
 		}
 
 		$obj->searchclassFolder->searchstart = we_base_request::_(we_base_request::INT, "searchstart", 0);
@@ -1020,7 +1018,7 @@ class doclistView{
 				}
 			}
 
-			$where .= $obj->searchclassFolder->ofFolderOnly($obj->ID);
+			$where .= ' AND ParentID = ' . intval($obj->ID);
 
 			if($where != ""){
 				$whereQuery = "1 " . $where;
@@ -1040,7 +1038,6 @@ class doclistView{
 				$obj->searchclassFolder->insertInTempTable($whereQuery, $_table, $obj->Path . '/');
 
 				$foundItems = $obj->searchclassFolder->countitems($whereQuery, $_table);
-
 				$_SESSION['weS']['weSearch']['foundItems'] = $foundItems;
 
 				$obj->searchclassFolder->selectFromTempTable($_searchstart, $_anzahl, $_order);
@@ -1077,7 +1074,7 @@ class doclistView{
 			}
 
 
-			$content = $thisObj->makeContent($_result, $_view);
+			$content = $this->makeContent($_result, $_view);
 		}
 
 		return $content;
@@ -1241,10 +1238,9 @@ class doclistView{
 	 * @abstract generates html for search result
 	 * @return string, html search result
 	 */
-	static function getSearchParameterTop($foundItems){
+	function getSearchParameterTop($foundItems){
 		$anzahl = array(10 => 10, 25 => 25, 50 => 50, 100 => 100);
 
-		$thisObj = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 'obj') ? new self() : $this;
 		$order = we_base_request::_(we_base_request::STRING, 'we_cmd', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->searchclassFolder->order : '', 'order');
 		$mode = we_base_request::_(we_base_request::RAW, 'we_cmd', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->searchclassFolder->mode : '', 'mode');
 		$setView = we_base_request::_(we_base_request::RAW, 'we_cmd', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->searchclassFolder->setView : '', 'setView');
@@ -1264,7 +1260,7 @@ class doclistView{
           <td style="font-size:12px;width:125px;">' . g_l('searchtool', "[eintraege_pro_seite]") . ':</td>
           <td class="defaultgray" style="width:60px;">' . we_html_tools::htmlSelect("anzahl", $anzahl, 1, $_anzahl, "", array('onchange' => 'this.form.elements[\'searchstart\'].value=0;search(false);')) . '
           </td>
-          <td>' . $thisObj->getNextPrev($foundItems) . '</td>
+          <td>' . $this->getNextPrev($foundItems) . '</td>
           <td>' . we_html_tools::getPixel(10, 12) . '</td>
           <td style="width:50px;">
           ' . we_html_button::create_button("image:btn_new_dir", "javascript:top.we_cmd('new_document','" . FILE_TABLE . "','','folder','','" . $id . "')", true, 40, "", "", "", false) . '
@@ -1283,8 +1279,6 @@ class doclistView{
 	}
 
 	function getSearchParameterBottom($foundItems){
-		$thisObj = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 'obj') ? new self() : $this;
-
 		if(permissionhandler::hasPerm('PUBLISH')){
 			$publishButtonCheckboxAll = we_html_forms::checkbox(1, 0, "publish_all", "", false, "middlefont", "checkAllPubChecks()");
 			$publishButton = we_html_button::create_button("publish", "javascript:publishDocs();", true, 100, 22, "", "");
@@ -1299,7 +1293,7 @@ class doclistView{
           <td>' . $publishButtonCheckboxAll . '</td>
           <td style="font-size:12px;width:125px;">' . $publishButton . '</td>
           <td class="defaultgray" style="width:60px;" id="resetBusy">' . we_html_tools::getPixel(30, 12) . '</td>
-          <td style="width:370px;">' . $thisObj->getNextPrev($foundItems) . '</td>
+          <td style="width:370px;">' . $this->getNextPrev($foundItems) . '</td>
         </tr>
         </table>';
 	}

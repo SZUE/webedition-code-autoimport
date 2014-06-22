@@ -84,24 +84,12 @@ abstract class we_rebuild_base{
 			default:
 				switch($data['type']){
 					case 'document':
-						if(!file_exists(WE_INCLUDES_PATH . 'we_classes/' . $data['cn'] . '.inc.php')){
-							// it has to be an object
-							return false;
-						}
 						$table = FILE_TABLE;
 						break;
 					case 'template':
-						if(!file_exists(WE_INCLUDES_PATH . 'we_classes/' . $data['cn'] . '.inc.php')){
-							// it has to be an object
-							return false;
-						}
 						$table = TEMPLATES_TABLE;
 						break;
 					case 'object':
-						if(!file_exists(WE_MODULES_PATH . 'object/' . $data['cn'] . '.inc.php')){
-							// it has to be an object
-							return false;
-						}
 						$table = OBJECT_FILES_TABLE;
 						break;
 					default:
@@ -131,11 +119,12 @@ abstract class we_rebuild_base{
 						$GLOBALS['we_doc']->Path = $tmpPath;
 					}
 
-					if($table == TEMPLATES_TABLE){
-						// templates has to be treated differently
-						$GLOBALS['we_doc']->we_save(1);
-					} else {
-						$GLOBALS['we_doc']->we_resaveMainTable();
+					$ret = ($table == TEMPLATES_TABLE ?
+							// templates has to be treated differently
+							$GLOBALS['we_doc']->we_save(1) :
+							$GLOBALS['we_doc']->we_resaveMainTable());
+					if(!$ret){
+						t_e('error writing ' . $GLOBALS['we_doc']->Path);
 					}
 				}
 				if($data['it']){

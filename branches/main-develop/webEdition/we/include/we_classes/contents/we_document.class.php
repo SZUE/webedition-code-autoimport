@@ -421,13 +421,10 @@ class we_document extends we_root{
 		$list = $this->getElement($name);
 
 		$listarray = $list ? unserialize($list) : array();
+		$listarray = is_array($listarray) ? $listarray : array();
 
-		if(!is_array($listarray)){
-			$listarray = array();
-		} //bug #4079
 		for($f = 0; $f < $number; $f++){
 			$content = $this->getElement($name, 'content');
-
 			$new_nr = $this->getMaxListArrayNr($listarray) + 1;
 
 			// clear value
@@ -442,7 +439,7 @@ class we_document extends we_root{
 		$this->setElement($name, serialize(array_values($listarray)), 'block');
 	}
 
-	function getMaxListArrayNr($la){
+	function getMaxListArrayNr(array $la){
 		$maxnr = 0;
 		foreach($la as $val){
 			$nr = intval(str_replace('_', '', $val));
@@ -455,6 +452,7 @@ class we_document extends we_root{
 		$list = $this->getElement($name);
 
 		$listarray = $list ? unserialize($list) : array();
+		$listarray = is_array($listarray) ? $listarray : array();
 
 		for($f = 0; $f < $number; $f++){
 
@@ -479,6 +477,7 @@ class we_document extends we_root{
 	function upEntryAtList($name, $nr, $number = 1){
 		$list = $this->getElement($name);
 		if(!$list){
+			t_e('failed');
 			return;
 		}
 		$listarray = unserialize($list);
@@ -512,7 +511,7 @@ class we_document extends we_root{
 	function removeEntryFromList($name, $nr, $names = '', $isBlock = false){
 		$list = $this->getElement($name);
 		$listarray = $list ? unserialize($list) : array();
-		if($list){
+		if(is_array($listarray)){
 			if($isBlock){
 				foreach(array_keys($this->elements) as $key){
 					if(preg_match('/' . $names . '(__.*)*$/', $key)){// # Bug 6904
@@ -528,6 +527,8 @@ class we_document extends we_root{
 			if(is_array($listarray)){// Bug #4079
 				unset($listarray[$nr]);
 			}
+		} else {
+			$listarray = array();
 		}
 
 		$this->setElement($name, serialize(array_values($listarray)), 'block');
@@ -607,7 +608,7 @@ class we_document extends we_root{
 		}
 	}
 
-	function i_setExtensions(){
+	private function i_setExtensions(){
 		if($this->ContentType){
 			$exts = we_base_ContentTypes::inst()->getExtension($this->ContentType);
 			$this->Extensions = is_array($exts) ? $exts : array($exts);
@@ -700,7 +701,7 @@ class we_document extends we_root{
 	 * is called from "we_textContentDocument::we_load"
 	 * @see we_textContentDocument::we_load
 	 */
-	function initWeDocumentCustomerFilterFromDB(){
+	protected function initWeDocumentCustomerFilterFromDB(){
 		$this->documentCustomerFilter = we_customer_documentFilter::getFilterOfDocument($this);
 	}
 
@@ -771,23 +772,16 @@ class we_document extends we_root{
 		return we_util_File::saveFile($this->getRealPath(), $doc);
 	}
 
-	private function i_deleteSiteDir(){
-		return we_util_File::deleteLocalFile($this->getSitePath());
-	}
-
-	private function i_deleteMainDir(){
-		return we_util_File::deleteLocalFile($this->getRealPath());
-	}
-
 	protected function i_writeDocument(){
 		$update = $this->isMoved();
 		$doc = $this->i_getDocumentToSave();
-		if(!($doc || empty($doc))){
+		if(!($doc || !$doc)){
 			return false;
 		}
 		if(!$this->i_writeSiteDir($doc) || !$this->i_writeMainDir($doc)){
 			return false;
 		}
+
 		if($update){
 			$this->rewriteNavigation();
 		}

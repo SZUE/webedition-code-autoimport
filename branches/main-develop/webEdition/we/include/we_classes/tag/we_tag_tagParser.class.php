@@ -277,7 +277,7 @@ class we_tag_tagParser{
 
 		//@Lukas: =>384
 		if(!$gt){
-			return parseError(sprintf(g_l('parser', '[incompleteTag]'), $tagname));
+			return parseError(sprintf(g_l('parser', '[incompleteTag]'), $tagname), $tag);
 		}
 		//tags which need an endtag are not allowed to be selfclosing
 		//FIXME: ok or not?
@@ -291,9 +291,9 @@ class we_tag_tagParser{
 		if(isset($attribs['name'])){
 			$len = strlen($attribs['name']);
 			if($len == 0){
-				print parseError(sprintf(g_l('parser', '[name_empty]'), $tagname));
+				return parseError(sprintf(g_l('parser', '[name_empty]'), $tagname), $tag);
 			} elseif($len > 255){
-				print parseError(sprintf(g_l('parser', '[name_to_long]'), $tagname));
+				return parseError(sprintf(g_l('parser', '[name_to_long]'), $tagname), $tag);
 			}
 		}
 
@@ -336,7 +336,7 @@ class we_tag_tagParser{
 					//don't break for now.
 					parseError(sprintf('Compatibility MODE of parser - Note this will soon be removed!' . "\n" . g_l('parser', '[start_endtag_missing]'), $tagname));
 				} else {
-					return parseError(sprintf(g_l('parser', '[start_endtag_missing]'), $tagname));
+					return parseError(sprintf(g_l('parser', '[start_endtag_missing]'), $tagname), $tag);
 				}
 			}
 		}
@@ -354,7 +354,7 @@ class we_tag_tagParser{
 				substr($code, (isset($endeEndTagPos) ? $endeEndTagPos : $endeStartTag));
 		} elseif(substr($tagname, 0, 2) == 'if' && $tagname != 'ifNoJavaScript'){
 			if(!isset($endeEndTagPos)){
-				return parseError(sprintf(g_l('parser', '[selfclosingIf]'), $tagname));
+				return parseError(sprintf(g_l('parser', '[selfclosingIf]'), $tagname), $tag);
 			}
 			$code = substr($code, 0, $tagPos) .
 				'<?php if(' . self::printTag($tagname, $attr) . '){ ?>' .

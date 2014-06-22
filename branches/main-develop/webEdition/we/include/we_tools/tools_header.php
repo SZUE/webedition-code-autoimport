@@ -30,38 +30,40 @@ $we_tabs = new we_tabs();
 $name = array();
 
 $_menuItems = we_tool_lookup::getAllTools(true, true);
-
+$tool = we_base_request::_(we_base_request::STRING, 'tool');
 
 foreach($_menuItems as $_menuItem){
 	$text = $_menuItem["text"];
 	if($_menuItem["name"] == 'toolfactory'){
 		if(permissionhandler::hasPerm($_menuItem['startpermission'])){
-			$we_tabs->addTab(new we_tab("#", $text, ( isset($_REQUEST['tool']) && $_REQUEST['tool'] == $_menuItem["name"] ? we_tab::ACTIVE : we_tab::NORMAL), "openTool('" . $_menuItem["name"] . "');", array("id" => $_menuItem["name"])));
+			$we_tabs->addTab(new we_tab("#", $text, ($tool == $_menuItem["name"] ? we_tab::ACTIVE : we_tab::NORMAL), "openTool('" . $_menuItem["name"] . "');", array("id" => $_menuItem["name"])));
 		}
 	}
 }
 
 foreach($_menuItems as $_menuItem){
-	$text = $_menuItem["text"];
-
-	if($_menuItem["name"] == "weSearch"){
-		$text = g_l('searchtool', "[weSearch]");
-	} else if($_menuItem["name"] == "navigation"){
-		$text = g_l('navigation', "[navigation]");
-	}
-	if($_REQUEST["tool"] == "weSearch"){
-		$we_tabs->heightPlus = -30;
-	} else if($_REQUEST["tool"] == "navigation"){
-		$we_tabs->heightPlus = -30;
-	} else {
-		if($text != g_l('searchtool', "[weSearch]") && $text != g_l('navigation', "[navigation]") && $_menuItem["name"] != 'toolfactory'){
+	switch($_menuItem["name"]){
+		case "weSearch":
+			$text = g_l('searchtool', "[weSearch]");
+			break;
+		case "navigation":
+			$text = g_l('navigation', "[navigation]");
+			break;
+		case 'toolfactory':
+			$text = $_menuItem["text"];
+			break;
+		default:
+			$text = $_menuItem["text"];
 			if(permissionhandler::hasPerm($_menuItem['startpermission'])){
-				$we_tabs->addTab(new we_tab("#", $text, ( isset($_REQUEST['tool']) && $_REQUEST['tool'] == $_menuItem["name"] ? we_tab::ACTIVE : we_tab::NORMAL), "openTool('" . $_menuItem["name"] . "');", array("id" => $_menuItem["name"])));
+				$we_tabs->addTab(new we_tab("#", $text, ($tool == $_menuItem["name"] ? we_tab::ACTIVE : we_tab::NORMAL), "openTool('" . $_menuItem["name"] . "');", array("id" => $_menuItem["name"])));
 			}
-		}
 	}
 }
-
+switch($tool){
+	case "weSearch":
+		$we_tabs->heightPlus = -30;
+		break;
+}
 
 $we_tabs->onResize('navi');
 $tab_header = $we_tabs->getHeader('_tools', 1);
@@ -69,7 +71,7 @@ $tab_header = $we_tabs->getHeader('_tools', 1);
 echo $tab_header;
 ?>
 <script type="text/javascript"><!--
-	var current = "<?php echo $_REQUEST["tool"]; ?>";
+	var current = "<?php echo $tool; ?>";
 	function openTool(tool) {
 		if (top.content.hot == "1") {
 			if (confirm("<?php print g_l('alert', '[discard_changed_data]') ?>")) {
@@ -92,10 +94,5 @@ echo $tab_header;
 </head>
 <body style="background: #C8D8EC url(<?php print IMAGE_DIR; ?>backgrounds/header.gif);margin: 0px 0px 0px 0px;" link="black" alink="#1559b0" vlink="black" onload="setFrameSize()" onresize="setFrameSize()">
 	<div id="main" ><?php echo $we_tabs->getHTML(); ?></div>
-	<?php
-	if(isset($_REQUEST["tab"])){
-		//print we_html_element::jsElement("tabCtrl.setActiveTab(".$_REQUEST["tab"].");");
-	}
-	?>
 </body>
 </html>

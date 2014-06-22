@@ -85,7 +85,6 @@ function findInclude($cmd){
 		case 'rebuild':
 			return 'we_editors/we_rebuild.inc.php';
 		case 'help':
-			#$INCLUDE = 'we_help.php';
 			return '';
 		case 'info':
 			return 'we_show_info.inc.php';

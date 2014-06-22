@@ -3,9 +3,9 @@
 /**
  * webEdition CMS
  *
- * $Rev: 7705 $
- * $Author: mokraemer $
- * $Date: 2014-06-10 21:46:56 +0200 (Di, 10. Jun 2014) $
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -115,6 +115,12 @@ class we_base_request{
 				$var = $var && in_array($var, self::$allTables) ? $var : $default;
 				return;
 			case self::EMAIL://removes mailto:
+				//FIXME: add email format
+			/*		if(($pos = strpos($email, '<'))){// format "xxx xx" <test@test.de>
+		++$pos;
+		$email = substr($email, $pos, strrpos($email, '>') - $pos);
+	}
+	return (filter_var($email, FILTER_VALIDATE_EMAIL) !== false);*/
 				$var = filter_var(str_replace(we_base_link::TYPE_MAIL_PREFIX, '', $var), FILTER_SANITIZE_EMAIL);
 				return;
 			case self::FILE:
@@ -239,7 +245,11 @@ class we_base_request{
 				default:
 					$cmp = '' . $var;
 			}
+/*if(isset($_REQUEST['we_cmd'][0])&& $_REQUEST['we_cmd'][0]=='up_entry_at_list'){
+	t_e($oldVar,$cmp,  func_get_args());
+}*/
 			if($oldVar != $cmp){
+
 				t_e('changed values', $type, $args, $oldVar, $var);
 				//don't break we
 				if(REQUEST_SIMULATION){
