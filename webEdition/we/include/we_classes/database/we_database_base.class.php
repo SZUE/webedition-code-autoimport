@@ -30,7 +30,7 @@ require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_db_tools.in
 
 abstract class we_database_base{
 
-	private static $pool = array();//fixme: don't repool temporary tables - they require the same connection
+	private static $pool = array(); //fixme: don't repool temporary tables - they require the same connection
 	protected static $conCount = 0;
 	protected static $linkCount = 0;
 	//states if we have lost connection and try again
@@ -301,50 +301,50 @@ abstract class we_database_base{
 // if union is found in query, then take a closer look
 		if(!$allowUnion && stristr($Query_String, 'union') || stristr($Query_String, '/*!')){
 
-			$queryToCheck = str_replace(array("\\\"", "\\'", '\\\`'), '', $Query_String);
+			$queryToCheck = str_replace(array('\\\\'/*escape for mysql connection */,'\\"', "\\'", '\\\`'), array('','', '', ''), $Query_String);
 
-			$singleQuote = $doubleQuote = $field = false;
+			$quotes = array('\'' => false, '"' => false, '`' => false, '/*' => false);
 
 			$queryWithoutStrings = '';
 
 			for($i = 0; $i < strlen($queryToCheck); $i++){
 				$char = $queryToCheck[$i];
-				if(!$doubleQuote && !$singleQuote && !$field){
-					switch($char){
-						case '"':
-							$doubleQuote = true;
-							break;
-						case '`':
-							$field = true;
-							break;
-						case '\'':
-							$singleQuote = true;
-							break;
-					}
-				} else {
-					switch($char){
-						case '"':
-							$doubleQuote = !$doubleQuote;
-							break;
-						case '`':
-							$field = !$field;
-							break;
-						case '\'':
-							$singleQuote = !$singleQuote;
-							break;
-					}
+				$active = !empty(array_filter($quotes));
+				switch($char){
+					case '/':
+						if(!$active && $queryToCheck[$i + 1] == '*'){
+							$quotes['/*'] = true;
+							$i++;
+							continue;
+						}
+						break;
+					case '*':
+						if($quotes['/*'] && $queryToCheck[$i + 1] == '/'){//no nested comments
+							$quotes['/*'] = false;
+							$i++;
+							continue;
+						}
+						break;
+					case '"':
+					case '`':
+					case '\'':
+						if(!$quotes['/*']){
+							$quotes[$char] = !$quotes[$char];
+							$active = true;
+						}
+						break;
 				}
-				if(!$doubleQuote && !$singleQuote && !$field && $char !== '\'' && $char !== '"' && $char !== '`'){
+				if(!$active){
 					$queryWithoutStrings .= $char;
 				}
 			}
 
-			if(!$allowUnion && stristr($queryWithoutStrings, 'union') || stristr($queryWithoutStrings, '/*!')){
-				if((defined('ERROR_LOG_TABLE') && strpos($Query_String, ERROR_LOG_TABLE) === false || !defined('ERROR_LOG_TABLE'))){
-					t_e('Attempt to execute union statement/injection', $Query_String);
+			if(!$allowUnion && stristr($queryWithoutStrings, 'union') || stristr($queryWithoutStrings, '/*') || stristr($queryWithoutStrings, '*/')){
+				if(defined('ERROR_LOG_TABLE')){
+					t_e('error', 'Attempt to execute union statement/injection', $Query_String);
 				}
 				//be quiet, no need to give more information
-				exit();
+				return;
 			}
 		}
 

@@ -37,19 +37,6 @@ if(ini_set('include_path', WE_LIB_PATH . PATH_SEPARATOR . WE_APPS_PATH . PATH_SE
 	t_e('unable to add webEdition to include path! Expect Problems!');
 }
 
-//FIXME: remove after end of support for PHP 5.3
-if(!function_exists('we_stripslashes')){
-
-	function we_stripslashes(&$arr){
-		foreach($arr as $n => $v){
-			if(is_array($v)){
-				we_stripslashes($arr[$n]);
-			} else {
-				$arr[$n] = stripslashes($v);
-			}
-		}
-	}
-}
 //FIXME: remove with PHP 5.5.... but currently some hosters have this still enabled.
 if(get_magic_quotes_gpc()) {
     $process = array(&$_GET, &$_POST, &$_COOKIE, &$_REQUEST);
