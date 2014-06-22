@@ -301,9 +301,9 @@ abstract class we_database_base{
 // if union is found in query, then take a closer look
 		if(!$allowUnion && stristr($Query_String, 'union') || stristr($Query_String, '/*!')){
 
-			$queryToCheck = str_replace(array('\\\\'/*escape for mysql connection */,'\\"', "\\'", '\\\`'), array('','', '', ''), $Query_String);
+			$queryToCheck = str_replace(array('\\\\'/* escape for mysql connection */, '\\"', "\\'", '\\\`'), array('', '', '', ''), $Query_String);
 
-			$quotes = array('\'' => false, '"' => false, '`' => false, '/*' => false);
+			$quotes = array('\'' => false, '"' => false, '`' => false, '/*' => false, '--' => false, '#' => false);
 
 			$queryWithoutStrings = '';
 
@@ -312,7 +312,7 @@ abstract class we_database_base{
 				$active = !empty(array_filter($quotes));
 				switch($char){
 					case '/':
-						if(!$active && $queryToCheck[$i + 1] == '*'){
+						if(!$active && $queryToCheck[$i + 1] == '*' && $queryToCheck[$i + 2] != '!'/* mysql specific code */){
 							$quotes['/*'] = true;
 							$i++;
 							continue;
@@ -325,10 +325,29 @@ abstract class we_database_base{
 							continue;
 						}
 						break;
+					case "\n":
+						if($active && $quotes['#']){
+							$quotes['#'] = false;
+						}
+					case '-':
+						if(!$active && $queryToCheck[$i + 1] == '-'){
+							$quotes['#'] = true;
+							$active = true;
+							$i++;
+							continue;
+						}
+						break;
+					case '#':
+						if(!$active){
+							$quotes['#'] = true;
+							$active = true;
+							continue;
+						}
+						break;
 					case '"':
 					case '`':
 					case '\'':
-						if(!$quotes['/*']){
+						if(($active && $quotes[$char]) || !$active){//if active close only corresponding pair
 							$quotes[$char] = !$quotes[$char];
 							$active = true;
 						}
