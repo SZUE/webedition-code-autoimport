@@ -310,6 +310,7 @@ abstract class we_database_base{
 			for($i = 0; $i < strlen($queryToCheck); $i++){
 				$char = $queryToCheck[$i];
 				$active = array_filter($quotes);
+				//support old php 5.3
 				$active = !empty($active);
 				switch($char){
 					case '/':
