@@ -246,7 +246,7 @@ abstract class we_database_base{
 	 */
 	protected function _setup(){
 // deactivate MySQL strict mode; don't use query function (error logging)
-		$this->_query('SET SESSION sql_mode=""');
+		$this->_query('SET SESSION sql_mode="NO_ZERO_DATE,NO_ZERO_IN_DATE,ERROR_FOR_DIVISION_BY_ZERO"');
 		if(defined('DB_SET_CHARSET') && DB_SET_CHARSET != ''){
 			$this->_setCharset(DB_SET_CHARSET);
 		}
@@ -309,7 +309,8 @@ abstract class we_database_base{
 
 			for($i = 0; $i < strlen($queryToCheck); $i++){
 				$char = $queryToCheck[$i];
-				$active = !empty(array_filter($quotes));
+				$active = array_filter($quotes);
+				$active = !empty($active);
 				switch($char){
 					case '/':
 						if(!$active && $queryToCheck[$i + 1] == '*' && $queryToCheck[$i + 2] != '!'/* mysql specific code */){
