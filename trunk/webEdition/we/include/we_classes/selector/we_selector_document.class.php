@@ -186,7 +186,7 @@ function showPreview(id) {
 }
 
 function newFile() {
-	url="we_fs_uploadFile.php?dir="+top.currentDir+"&tab="+top.table+"&ct=' . rawurlencode($this->filter) . '";
+	url="we_fs_uploadFile.php?pid="+top.currentDir+"&tab="+top.table+"&ct=' . rawurlencode($this->filter) . '";
 	new jsWindow(url,"we_fsuploadFile",-1,-1,450,590,true,false,true);
 }
 
