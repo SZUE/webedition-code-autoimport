@@ -42,9 +42,8 @@ $buttonpos = new weTagData_choiceAttribute('buttonpos', array(new weTagDataOptio
 $win2iso = new weTagData_selectAttribute('win2iso', weTagData_selectAttribute::getTrueFalse(), false, '');
 $classes = new weTagData_textAttribute('classes', false, '');
 $spellcheck = new weTagData_selectAttribute('spellcheck', weTagData_selectAttribute::getTrueFalse(), false, 'spellchecker');
-$templates = new weTagData_textAttribute('tinyparams', false, '');
-$tinyparams = new weTagData_textAttribute('templates', false, '');
-//$this->Attributes[] = new weTagData_textAttribute('cachelifetime', false, '');
+$tinyparams = new weTagData_textAttribute('tinyparams', false, '');
+$templates = new weTagData_textAttribute('templates', false, '');
 
 $this->TypeAttribute = new weTagData_typeAttribute('wysiwyg', array(
 	new weTagDataOption('true', false, '', array($name, $cols, $rows, $autobr, $width, $height, $class, $bgcolor, $editorcss, $ignoredocumentcss, $htmlspecialchars, $commands, $contextmenu, $fontnames, $abbr, $removefirstparagraph, $inlineedit, $buttonpos, $win2iso, $classes, $spellcheck, $templates, $tinyparams), array($name)),

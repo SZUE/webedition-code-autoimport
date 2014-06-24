@@ -1149,13 +1149,11 @@ function submitForm() {
 				$searchBut = we_html_button::create_button('search', 'javascript:searchArticles();');
 
 				// first get all shop documents
-				$this->db->query('SELECT ' . CONTENT_TABLE . '.dat AS shopTitle, ' . LINK_TABLE . '.DID AS documentId FROM ' . CONTENT_TABLE . ', ' . LINK_TABLE . ', ' . FILE_TABLE .
-					' WHERE ' . FILE_TABLE . '.ID = ' . LINK_TABLE . '.DID
-							AND ' . LINK_TABLE . '.CID = ' . CONTENT_TABLE . '.ID
-							AND ' . LINK_TABLE . '.Name = "' . WE_SHOP_TITLE_FIELD_NAME . '"
-							AND ' . LINK_TABLE . '.DocumentTable != "tblTemplates" ' .
+				$this->db->query('SELECT c.dat AS shopTitle, ' . LINK_TABLE . '.DID AS documentId FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID JOIN ' . FILE_TABLE . ' f ON f.ID=l.DID' .
+					' WHERE l.Name = "' . WE_SHOP_TITLE_FIELD_NAME . '"
+							AND l.DocumentTable!=s"tblTemplates" ' .
 					(we_base_request::_(we_base_request::BOOL, 'searchArticle') ?
-						' AND ' . CONTENT_TABLE . '.Dat LIKE "%' . $this->db->escape($_REQUEST['searchArticle']) . '%"' :
+						' AND c.Dat LIKE "%' . $this->db->escape($_REQUEST['searchArticle']) . '%"' :
 						'')
 				);
 

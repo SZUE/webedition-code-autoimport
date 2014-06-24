@@ -31,13 +31,12 @@ class we_element{
 	var $CID = 0;
 	var $BDID = 0;
 	var $Dat = '';
-	var $IsBinary = 0;
 	var $AutoBR = 0;
 	var $LangugeID = 0;
 	var $Len = 0;
 	var $link_attribs = array('DID', 'Name', 'Type');
-	var $content_attribs = array('CID', 'BDID', 'Dat', 'IsBinary', 'AutoBR', 'LanguageID');
-	var $persistent_slots = array('ClassName', 'Name', 'Type', 'BDID', 'Dat', 'IsBinary', 'AutoBR', 'LanguageID');
+	var $content_attribs = array('CID', 'BDID', 'Dat', 'AutoBR', 'LanguageID');
+	var $persistent_slots = array('ClassName', 'Name', 'Type', 'BDID', 'Dat', 'AutoBR', 'LanguageID');
 	var $Link;
 	var $Content;
 	var $linked = false;
@@ -116,7 +115,7 @@ class we_element{
 		$this->CID = &$this->Content->CID;
 		$this->BDID = &$this->Content->BDID;
 		$this->Dat = &$this->Content->Dat;
-		$this->IsBinary = &$this->Content->CID;
+//		$this->IsBinary = &$this->Content->CID;
 		$this->AutoBR = &$this->Content->AutoBR;
 		$this->LanguageID = &$this->Content->LanguageID;
 	}
@@ -128,7 +127,7 @@ class we_element{
 				$this->Name => array(
 					"id" => $this->CID,
 					"bdid" => $this->BDID,
-					"isbinary" => $this->IsBinary,
+					//"isbinary" => $this->IsBinary,
 					"autobr" => $this->AutoBR,
 					"languageid" => $this->LanguageID,
 					"cid" => $this->CID,

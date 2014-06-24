@@ -192,7 +192,7 @@ class we_shop_Basket{
 			case we_shop_shop::DOCUMENT:
 				// unfortunately this is not made with initDocById,
 				// but its much faster -> so we use it
-				$DB_WE->query('SELECT ' . CONTENT_TABLE . '.BDID as BDID, ' . CONTENT_TABLE . '.Dat as Dat, ' . LINK_TABLE . '.Name as Name FROM ' . LINK_TABLE . ',' . CONTENT_TABLE . ' WHERE ' . LINK_TABLE . '.DID=' . intval($id) . ' AND ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID AND ' . LINK_TABLE . '.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
+				$DB_WE->query('SELECT c.BDID,c.Dat ,l.Name FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE l.DID=' . intval($id) . ' AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
 				while($DB_WE->next_record()){
 					$tmp = $DB_WE->f('BDID');
 					$Record[$DB_WE->f('Name')] = $tmp ? $tmp : $DB_WE->f('Dat');

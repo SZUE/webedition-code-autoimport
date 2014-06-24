@@ -63,7 +63,6 @@ abstract class we_class{
 	public $InWebEdition = false;
 	var $PublWhenSave = 1;
 	var $IsTextContentDoc = false;
-	public $LoadBinaryContent = false;
 	var $fileExists = 1;
 	protected $errMsg = '';
 

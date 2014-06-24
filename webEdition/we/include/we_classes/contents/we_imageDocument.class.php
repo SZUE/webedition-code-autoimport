@@ -45,8 +45,8 @@ class we_imageDocument extends we_binaryDocument{
 	 *
 	 * @return we_imageDocument
 	 */
-	function __construct($LoadBinaryContent = true){
-		parent::__construct($LoadBinaryContent);
+	function __construct(){
+		parent::__construct();
 		$this->persistent_slots[] = 'Thumbs';
 		$this->Icon = we_base_ContentTypes::IMAGE_ICON;
 		$this->ContentType = we_base_ContentTypes::IMAGE;

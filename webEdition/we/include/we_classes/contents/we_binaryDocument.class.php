@@ -50,7 +50,7 @@ class we_binaryDocument extends we_document{
 	 * @return we_binaryDocument
 	 * @desc Constructor for we_binaryDocument
 	 */
-	function __construct($LoadBinaryContent = true){
+	function __construct(){
 		parent::__construct();
 		array_push($this->persistent_slots, 'html', 'DocChanged');
 		if(isWE()){
@@ -59,7 +59,6 @@ class we_binaryDocument extends we_document{
 				$this->EditPageNrs[] = we_base_constants::WE_EDITPAGE_WEBUSER;
 			}
 		}
-		$this->LoadBinaryContent = $LoadBinaryContent;
 	}
 
 	/* must be called from the editor-script. Returns a filename which has to be included from the global-Script */
@@ -87,7 +86,7 @@ class we_binaryDocument extends we_document{
 	}
 
 	protected function i_getContentData(){
-		parent::i_getContentData(true);
+		parent::i_getContentData();
 		$_sitePath = $this->getSitePath();
 		$_realPath = $this->getRealPath();
 		if(!file_exists($_sitePath) && file_exists($_realPath)){

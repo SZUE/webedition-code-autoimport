@@ -109,7 +109,7 @@ abstract class we_navigation_dynList{
 		return $_ids;
 	}
 
-	private function getDocData($select = array(), $doctype, $dirpath = '/', $categories = array(), $catlogic = 'AND', $condition = array(), $order = array(), $offset = 0, $count = 999999999){
+	private function getDocData(array $select, $doctype, $dirpath = '/', $categories = array(), $catlogic = 'AND', $condition = array(), $order = array(), $offset = 0, $count = 999999999){
 
 		$_db = new DB_WE();
 		$categories = is_array($categories) ? $categories : makeArrayFromCSV($categories);
@@ -121,7 +121,7 @@ abstract class we_navigation_dynList{
 
 		$dirpath = we_base_file::clearPath($dirpath . '/');
 
-		$_db->query('SELECT ' . implode(',', $select) . ' FROM ' . FILE_TABLE . ',' . LINK_TABLE . ', ' . CONTENT_TABLE . ' WHERE (' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID)  AND (' . FILE_TABLE . '.IsFolder=0 AND ' . FILE_TABLE . '.Published>0) ' . ($doctype ? ' AND ' . FILE_TABLE . '.DocType=' . $_db->escape($doctype) : '') . (count(
+		$_db->query('SELECT ' . implode(',', $select) . ' FROM ' . FILE_TABLE . ' JOIN ' . LINK_TABLE . ' ON '.FILE_TABLE . '.ID=' . LINK_TABLE . '.DID JOIN ' . CONTENT_TABLE . ' ON '.LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID WHERE (' . FILE_TABLE . '.IsFolder=0 AND ' . FILE_TABLE . '.Published>0) ' . ($doctype ? ' AND ' . FILE_TABLE . '.DocType=' . $_db->escape($doctype) : '') . (count(
 						$_cats) ? (' AND (' . implode(" $catlogic ", $_cats) . ')') : '') . ($dirpath != '/' ? (' AND Path LIKE "' . $_db->escape($dirpath) . '%"') : '') . ' ' . ($condition ? (' AND ' . implode(
 								' AND ', $condition)) : '') . ' ' . ($order ? (' ORDER BY ' . $order) : '') . '  LIMIT ' . $offset . ',' . $count);
 

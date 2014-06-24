@@ -296,7 +296,6 @@ function populateDate_' . $field . '(){
 				$imgId = intval($value);
 				$img = new we_imageDocument();
 
-				$img->LoadBinaryContent = false;
 				$img->initByID($imgId, FILE_TABLE);
 				return '
 <table cellpadding="2" cellspacing="2" style="border: solid #006DB8 1px;background-image:url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">
@@ -572,20 +571,16 @@ failure: function(o) {
 				break;
 			case g_l('modules_customer', '[documentTab]'):
 				$DB_WE = new DB_WE();
-				$DB_WE->query('SELECT ID,Path,ContentType,Text,Published,ModDate FROM ' . FILE_TABLE . ' WHERE ' . FILE_TABLE . '.WebUserID = ' . $this->View->customer->ID . ' ORDER BY ' . FILE_TABLE . '.Path');
+				$DB_WE->query('SELECT ID,Path,ContentType,Text,Published,ModDate,' .
+					'(SELECT c.Dat  FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE l.Name="Title" AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND l.DID=f.ID) AS title,' .
+					' (SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID  WHERE l.Name="Description" AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND l.DID=f.ID) AS description' .
+					' FROM ' . FILE_TABLE . ' f WHERE f.WebUserID = ' . $this->View->customer->ID . ' ORDER BY f.Path');
 				$documentStr = '';
 				if($DB_WE->num_rows()){
 					$documentStr.='<table class="defaultfont" width="600">' .
 						'<tr><td>&nbsp;</td> <td><b>' . g_l('modules_customer', '[ID]') . '</b></td><td><b>' . g_l('modules_customer', '[filename]') . '</b></td><td><b>' . g_l('modules_customer', '[Aenderungsdatum]') . '</b></td><td><b>' . g_l('modules_customer', '[Titel]') . '</b></td>' .
 						'</tr>';
-					$db_we2 = new DB_WE();
 					while($DB_WE->next_record()){
-						$titel = f('SELECT ' . CONTENT_TABLE . '.Dat AS Inhalt FROM ' . FILE_TABLE . ', ' . LINK_TABLE . ',' . CONTENT_TABLE . ' WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID AND ' . LINK_TABLE . ".Name='Title' AND " .
-							LINK_TABLE . ".DocumentTable='" . FILE_TABLE . "' AND " . FILE_TABLE . '.ID=' . $DB_WE->f('ID'), 'Inhalt', $db_we2);
-
-						$beschreibung = f('SELECT ' . CONTENT_TABLE . '.Dat AS Inhalt FROM ' . FILE_TABLE . ', ' . LINK_TABLE . ',' . CONTENT_TABLE . ' WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID AND ' . LINK_TABLE . ".Name='Description' AND " .
-							LINK_TABLE . ".DocumentTable='" . FILE_TABLE . "' AND " . FILE_TABLE . '.ID=' . $DB_WE->f('ID'), 'Inhalt', $db_we2);
-
 						$documentStr.='<tr>' .
 							'<td>' . we_html_button::create_button('image:btn_edit_edit', "javascript: if(top.opener.top.doClickDirect){top.opener.top.doClickDirect(" . $DB_WE->f('ID') . ",'" . $DB_WE->f('ContentType') . "','" . FILE_TABLE . "'); }") . '</td>' .
 							'<td>' . $DB_WE->f('ID') . '</td>' .
@@ -593,7 +588,7 @@ failure: function(o) {
 							'<td class="' .
 							($DB_WE->f('Published') ? ($DB_WE->f('ModDate') > $DB_WE->f('Published') ? 'changeddefaultfont' : 'defaultfont') : 'npdefaultfont')
 							. '">' . date('d.m.Y H:i', $DB_WE->f('ModDate')) . '</td>' .
-							'<td title="' . $beschreibung . '">' . $titel . '</td>' .
+							'<td title="' . $DB_WE->f('description') . '">' . $DB_WE->f('title') . '</td>' .
 							'</tr>';
 					}
 					$documentStr.='</table>';
@@ -961,11 +956,11 @@ failure: function(o) {
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array("class" => "defaultfont"), $default_sort_view_select->getHtml());
 
-		$table->setCol( ++$cur, 0, array("class" => "defaultfont"), g_l('modules_customer', '[start_year]') . ":&nbsp;");
+		$table->setCol(++$cur, 0, array("class" => "defaultfont"), g_l('modules_customer', '[start_year]') . ":&nbsp;");
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array("class" => "defaultfont"), we_html_tools::htmlTextInput("start_year", 32, $this->View->settings->getSettings('start_year'), ''));
 
-		$table->setCol( ++$cur, 0, array("class" => "defaultfont"), g_l('modules_customer', '[treetext_format]') . ":&nbsp;");
+		$table->setCol(++$cur, 0, array("class" => "defaultfont"), g_l('modules_customer', '[treetext_format]') . ":&nbsp;");
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array("class" => "defaultfont"), we_html_tools::htmlTextInput("treetext_format", 32, $this->View->settings->getSettings('treetext_format'), ''));
 
@@ -978,7 +973,7 @@ failure: function(o) {
 		}
 		$default_order->selectOption($this->View->settings->getSettings('default_order'));
 
-		$table->setCol( ++$cur, 0, array('class' => 'defaultfont'), g_l('modules_customer', '[default_order]') . ':&nbsp;');
+		$table->setCol(++$cur, 0, array('class' => 'defaultfont'), g_l('modules_customer', '[default_order]') . ':&nbsp;');
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array('class' => 'defaultfont'), $default_order->getHtml());
 
@@ -987,7 +982,7 @@ failure: function(o) {
 		$default_saveRegisteredUser_register->addOption('true', 'true');
 		$default_saveRegisteredUser_register->selectOption($this->View->settings->getPref('default_saveRegisteredUser_register'));
 
-		$table->setCol( ++$cur, 0, array('class' => 'defaultfont'), '&lt;we:saveRegisteredUser register=&quot;');
+		$table->setCol(++$cur, 0, array('class' => 'defaultfont'), '&lt;we:saveRegisteredUser register=&quot;');
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array('class' => 'defaultfont'), $default_saveRegisteredUser_register->getHtml() . '&quot;/>');
 

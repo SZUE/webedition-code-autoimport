@@ -1393,8 +1393,7 @@ function handle_event(evt) {
 		$dateFields = array();
 
 		if($v['import_type'] == 'documents'){
-			$templateCode = f('SELECT ' . CONTENT_TABLE . '.Dat as Dat FROM ' . CONTENT_TABLE . ',' . LINK_TABLE . ' WHERE ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID AND ' .
-				LINK_TABLE . '.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND ' . LINK_TABLE . '.DID=' . intval($v['we_TemplateID']) . ' AND ' . LINK_TABLE . '.Name="completeData"', "Dat", $db);
+			$templateCode = f('SELECT c.Dat FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID WHERE l.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND l.DID=' . intval($v['we_TemplateID']) . ' AND l.Name="completeData"', '', $db);
 			$tp = new we_tag_tagParser($templateCode);
 			$tags = $tp->getAllTags();
 			$regs = array();
@@ -2263,8 +2262,7 @@ function handle_event(evt) {
 		$records = $dateFields = array();
 
 		if(we_base_request::_(we_base_request::STRING, 'v', '', "import_type") == "documents"){
-			$templateCode = f('SELECT ' . CONTENT_TABLE . '.Dat as Dat FROM ' . CONTENT_TABLE . ' LEFT JOIN ' . LINK_TABLE . ' ON ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID  WHERE ' .
-				LINK_TABLE . ".DocumentTable='" . stripTblPrefix(TEMPLATES_TABLE) . "' AND " . LINK_TABLE . '.DID=' . we_base_request::_(we_base_request::INT, 'v', 0, 'we_TemplateID') . ' AND ' . LINK_TABLE . ".Name='completeData'", '', $db);
+			$templateCode = f('SELECT c.Dat FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID  WHERE l.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND l.DID=' . we_base_request::_(we_base_request::INT, 'v', 0, 'we_TemplateID') . ' AND l.Name="completeData"', '', $db);
 			$tp = new we_tag_tagParser($templateCode);
 
 			$tags = $tp->getAllTags();
