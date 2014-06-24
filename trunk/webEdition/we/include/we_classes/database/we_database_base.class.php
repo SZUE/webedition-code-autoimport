@@ -314,10 +314,18 @@ abstract class we_database_base{
 				$active = !empty($active);
 				switch($char){
 					case '/':
-						if(!$active && $queryToCheck[$i + 1] == '*' && $queryToCheck[$i + 2] != '!'/* mysql specific code */){
-							$quotes['/*'] = true;
-							$i++;
-							continue;
+						if(!$active && $queryToCheck[$i + 1] == '*'){
+							if($queryToCheck[$i + 2] == '!'){/* mysql specific code */
+								if(defined('ERROR_LOG_TABLE')){
+									t_e('error', 'No MySQL specific syntax allowed!', $Query_String);
+								}
+								//be quiet, no need to give more information
+								return;
+							} else {
+								$quotes['/*'] = true;
+								$i++;
+								continue;
+							}
 						}
 						break;
 					case '*':
