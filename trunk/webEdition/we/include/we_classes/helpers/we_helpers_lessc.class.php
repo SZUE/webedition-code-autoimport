@@ -144,7 +144,7 @@ class we_helpers_lessc extends lessc {
 
 	private static function getContent($file){
 		if(is_numeric($file)){
-			return f('SELECT c.Dat FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE l.Type="txt" AND l.Name="data" AND l.DocumentTable="tblFile" AND l.DID=' . intval($file));
+			return f('SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE l.Type="txt" AND l.Name="data" AND l.DocumentTable="tblFile" AND l.DID=' . intval($file));
 		} else {
 			return file_get_contents($file);
 		}

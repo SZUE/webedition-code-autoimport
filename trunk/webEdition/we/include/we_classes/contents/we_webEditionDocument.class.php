@@ -514,7 +514,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	 * @desc this function returns the code of the template this document bases on
 	 */
 	function getTemplateCode($completeCode = true){
-		return f('SELECT ' . CONTENT_TABLE . '.Dat FROM ' . CONTENT_TABLE . ',' . LINK_TABLE . ' WHERE ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID AND ' . LINK_TABLE . '.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND ' . LINK_TABLE . '.DID=' . intval($this->TemplateID) . ' AND ' . LINK_TABLE . '.Name="' . ($completeCode ? 'completeData' : 'data') . '"', '', $this->DB_WE);
+		return f('SELECT c.Dat FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON c.ID=l.CID WHERE l.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND l.DID=' . intval($this->TemplateID) . ' AND l.Name="' . ($completeCode ? 'completeData' : 'data') . '"', '', $this->DB_WE);
 	}
 
 	function getFieldTypes($templateCode, $useTextarea = false){
@@ -968,8 +968,8 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	 * called when document is initialized from outside webEdition
 	 * @param mixed $loadBinary
 	 */
-	protected function i_getContentData($loadBinary = 0){
-		parent::i_getContentData($loadBinary);
+	protected function i_getContentData(){
+		parent::i_getContentData();
 		if(defined('SHOP_TABLE')){
 			if($this->canHaveVariants()){ // article variants
 				$this->initVariantDataFromDb();

@@ -2643,7 +2643,7 @@ class we_objectFile extends we_document{
 		}
 	}
 
-	protected function i_getContentData(/* $loadBinary = 0 */){
+	protected function i_getContentData(){
 		if(!$this->TableID){
 			return;
 		}

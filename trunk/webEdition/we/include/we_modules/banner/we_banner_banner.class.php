@@ -266,7 +266,7 @@ class we_banner_banner extends we_banner_base{
 
 	private static function getImageInfos($fileID){
 		$db = new DB_WE();
-		$db->query('SELECT l.Name AS Name, c.Dat AS Dat FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' AS c ON l.CID=c.ID WHERE l.Type="attrib" AND l.DID=' . intval($fileID));
+		$db->query('SELECT l.Name AS Name, c.Dat AS Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE l.Type="attrib" AND l.DID=' . intval($fileID));
 		return $db->getAllFirst(false);
 	}
 

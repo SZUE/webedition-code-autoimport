@@ -459,10 +459,10 @@ abstract class we_export_functions{
 		if($we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT){
 			$DB_WE = new DB_WE();
 
-			$_template_code = f('SELECT ' . CONTENT_TABLE . '.Dat as Dat FROM ' . CONTENT_TABLE . ',' . LINK_TABLE . ' WHERE ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID AND ' . LINK_TABLE . ".DocumentTable='" . stripTblPrefix(TEMPLATES_TABLE) . "' AND " . LINK_TABLE . ".DID=" . intval($we_doc->TemplateID) . ' AND ' . LINK_TABLE . ".Name='completeData'", 'Dat', $DB_WE);
+			$_template_code = f('SELECT c.Dat FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID WHERE l.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND l.DID=' . intval($we_doc->TemplateID) . ' AND l.Name="completeData"', '', $DB_WE);
 			$_tag_parser = new we_tag_tagParser($_template_code);
 			$_tags = $_tag_parser->getAllTags();
-			$_records = array();
+			$_regs = $_records = array();
 
 			foreach($_tags as $_tag){
 				if(preg_match('|<we:([^> /]+)|i', $_tag, $_regs)){

@@ -89,7 +89,7 @@ class we_selector_document extends we_selector_directory{
 		switch($this->table){
 			case FILE_TABLE:
 
-				$_db->query('SELECT a.ID, c.Dat FROM (' . FILE_TABLE . ' a LEFT JOIN ' . LINK_TABLE . ' b ON (a.ID=b.DID)) LEFT JOIN ' . CONTENT_TABLE . ' c ON (b.CID=c.ID) WHERE a.ParentID=' . intval($this->dir) . ' AND b.Name="Title"');
+				$_db->query('SELECT f.ID, c.Dat FROM (' . FILE_TABLE . ' f JOIN ' . LINK_TABLE . ' l ON (f.ID=l.DID)) JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE f.ParentID=' . intval($this->dir) . ' AND l.Name="Title"');
 
 				while($_db->next_record()){
 					$this->titles[$_db->f('ID')] = $_db->f('Dat');
@@ -596,7 +596,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 			} else {
 				switch($this->table){
 					case FILE_TABLE:
-						$this->db->query('SELECT a.Name, b.Dat FROM ' . LINK_TABLE . ' a LEFT JOIN ' . CONTENT_TABLE . ' b on (a.CID = b.ID) WHERE a.DID=' . intval($this->id) . " AND NOT a.DocumentTable='tblTemplates'");
+						$this->db->query('SELECT l.Name, c.Dat FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c on (l.CID = c.ID) WHERE l.DID=' . intval($this->id) . " AND l.DocumentTable!='tblTemplates'");
 						$metainfos = $this->db->getAllFirst(false);
 						break;
 					case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):

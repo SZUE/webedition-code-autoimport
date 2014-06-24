@@ -189,7 +189,7 @@ class we_import_site{
 	 * @return	array
 	 */
 	private static function _getFieldsFromTemplate($tid){
-		$sql_select = 'SELECT ' . CONTENT_TABLE . '.Dat as Dat FROM ' . CONTENT_TABLE . ',' . LINK_TABLE . ' WHERE ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . ".ID AND " . LINK_TABLE . ".DocumentTable='" . stripTblPrefix(TEMPLATES_TABLE) . "' AND " . LINK_TABLE . ".DID='" . intval($tid) . "' AND " . LINK_TABLE . ".Name='completeData'";
+		$sql_select = 'SELECT c.Dat FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID WHERE l.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND l.DID=' . intval($tid) . ' AND l.Name="completeData"';
 
 		$templateCode = f($sql_select, 'Dat', $GLOBALS['DB_WE']);
 		$tp = new we_tag_tagParser($templateCode);
@@ -1309,8 +1309,8 @@ class we_import_site{
 		// check if there is allready a template with the same content
 
 
-		$newTemplateID = f('SELECT ' . LINK_TABLE . '.DID AS DID FROM ' . LINK_TABLE . ',' . CONTENT_TABLE . ' WHERE ' . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " . CONTENT_TABLE . ".Dat='" . $GLOBALS['DB_WE']->escape(
-				$templateCode) . "' AND " . LINK_TABLE . ".DocumentTable='" . stripTblPrefix(TEMPLATES_TABLE) . "'", "DID", $GLOBALS['DB_WE']);
+		$newTemplateID = f('SELECT l.DID FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE c.Dat="' . $GLOBALS['DB_WE']->escape(
+				$templateCode) . '" AND l.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '"');
 
 		if(!$newTemplateID){
 			// create Template

@@ -1982,7 +1982,7 @@ class we_object extends we_document{
 		$this->setSort();
 	}
 
-	protected function i_getContentData($loadBinary = 0){
+	protected function i_getContentData(){
 		$f = 0;
 
 		if($this->ID){

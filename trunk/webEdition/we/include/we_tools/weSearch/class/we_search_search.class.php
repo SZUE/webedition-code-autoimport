@@ -245,7 +245,7 @@ class we_search_search extends we_search{
 	function searchInTitle($keyword, $table){
 		$_db2 = new DB_WE();
 		//first check published documents
-		$_db2->query('SELECT a.DID FROM ' . LINK_TABLE . ' a LEFT JOIN ' . CONTENT_TABLE . " b on (a.CID = b.ID) WHERE a.Name='Title' AND b.Dat LIKE '%" . $_db2->escape(trim($keyword)) . "%' AND NOT a.DocumentTable!='" . TEMPLATES_TABLE . "'");
+		$_db2->query('SELECT l.DID FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . " c on (l.CID = c.ID) WHERE l.Name='Title' AND c.Dat LIKE '%" . $_db2->escape(trim($keyword)) . "%' AND NOT l.DocumentTable!='" . TEMPLATES_TABLE . "'");
 		$titles = $_db2->getAll(true);
 
 		//check unpublished documents
@@ -510,8 +510,8 @@ class we_search_search extends we_search{
 		switch($table){
 			case FILE_TABLE:
 			case TEMPLATES_TABLE:
-				$_db->query('SELECT a.Name, b.Dat, a.DID FROM ' . LINK_TABLE . ' a LEFT JOIN ' . CONTENT_TABLE . " b on (a.CID = b.ID) WHERE b.Dat LIKE '%" . $this->db->escape(
-						trim($keyword)) . "%' AND a.Name!='completeData' AND a.DocumentTable='" . $_db->escape(stripTblPrefix($table)) . "'");
+				$_db->query('SELECT l.Name, c.Dat, l.DID FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . " c on (l.CID = c.ID) WHERE c.Dat LIKE '%" . $this->db->escape(
+						trim($keyword)) . "%' AND l.Name!='completeData' AND l.DocumentTable='" . $_db->escape(stripTblPrefix($table)) . "'");
 				while($_db->next_record()){
 					$contents[] = $_db->f('DID');
 				}
@@ -633,7 +633,7 @@ class we_search_search extends we_search{
 
 				$titles = array();
 				//first check published documents
-				$this->db->query('SELECT a.Name, b.Dat, a.DID FROM `' . LINK_TABLE . '` a LEFT JOIN `' . CONTENT_TABLE . '` b on (a.CID = b.ID) WHERE a.Name="Title" AND NOT a.DocumentTable="' . TEMPLATES_TABLE . '"');
+				$this->db->query('SELECT l.Name, c.Dat, l.DID FROM `' . LINK_TABLE . '` l JOIN `' . CONTENT_TABLE . '` c on (l.CID = c.ID) WHERE l.Name="Title" AND l.DocumentTable!="' . TEMPLATES_TABLE . '"');
 				while($this->db->next_record()){
 					$titles[$this->db->f('DID')] = $this->db->f('Dat');
 				}

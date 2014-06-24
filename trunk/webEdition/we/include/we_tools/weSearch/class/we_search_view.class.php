@@ -2157,7 +2157,7 @@ class we_search_view extends we_tool_view{
 		foreach($_result as $k => $v){
 			$_result[$k]["Description"] = '';
 			if($_result[$k]['docTable'] == FILE_TABLE && $_result[$k]['Published'] >= $_result[$k]['ModDate'] && $_result[$k]['Published'] != 0){
-				$DB_WE->query('SELECT a.ID, c.Dat FROM (' . FILE_TABLE . ' a LEFT JOIN ' . LINK_TABLE . ' b ON (a.ID=b.DID)) LEFT JOIN ' . CONTENT_TABLE . ' c ON (b.CID=c.ID) WHERE a.ID=' . intval($_result[$k]["docID"]) . ' AND b.Name="Description" AND b.DocumentTable="' . FILE_TABLE . '"');
+				$DB_WE->query('SELECT l.DID, c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE f.ID=' . intval($_result[$k]["docID"]) . ' AND l.Name="Description" AND l.DocumentTable="' . FILE_TABLE . '"');
 				while($DB_WE->next_record()){
 					$_result[$k]["Description"] = $DB_WE->f('Dat');
 				}
