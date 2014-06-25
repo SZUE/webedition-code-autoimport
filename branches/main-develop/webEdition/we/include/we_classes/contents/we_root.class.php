@@ -706,7 +706,7 @@ abstract class we_root extends we_class{
 	public function we_load($from = we_class::LOAD_MAID_DB){
 		parent::we_load($from);
 
-		$this->i_getContentData($this->LoadBinaryContent);
+		$this->i_getContentData();
 		$this->OldPath = $this->Path;
 	}
 
@@ -889,12 +889,12 @@ abstract class we_root extends we_class{
 		return true; // overwrite
 	}
 
-	protected function i_getContentData($loadBinary = 0){
+	protected function i_getContentData(){
 
-		$this->DB_WE->query('SELECT * FROM ' . CONTENT_TABLE . ',' . LINK_TABLE . ' WHERE ' . LINK_TABLE . '.DID=' . intval($this->ID) .
-			' AND ' . LINK_TABLE . '.DocumentTable="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) .
-			'" AND ' . CONTENT_TABLE . '.ID=' . LINK_TABLE . '.CID ' .
-			($loadBinary ? '' : ' AND ' . CONTENT_TABLE . '.IsBinary=0'));
+		$this->DB_WE->query('SELECT * FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON c.ID=l.CID ' .
+			'WHERE l.DID=' . intval($this->ID) .
+			' AND l.DocumentTable="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) . '"'
+		);
 		$filter = array('Name', 'DID', 'Ord');
 		while($this->DB_WE->next_record()){
 			$Name = $this->DB_WE->f('Name');

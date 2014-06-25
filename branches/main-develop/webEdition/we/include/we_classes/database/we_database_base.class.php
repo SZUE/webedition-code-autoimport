@@ -54,6 +54,9 @@ abstract class we_database_base{
 	/*	 * current Error text */
 	public $Error = "";
 
+	/* true, if a temporary table was created */
+	private $hasTempTable = false;
+
 	/** public: connection parameters */
 	protected $Database = DB_DATABASE;
 	private static $Trigger_cnt = 0;
@@ -197,7 +200,7 @@ abstract class we_database_base{
 	 * @internal
 	 */
 	private function repool(){
-		if($this->Link_ID && $this->Database == DB_DATABASE){
+		if($this->Link_ID && $this->Database == DB_DATABASE && !$this->hasTempTable){
 			self::$pool[] = $this->Link_ID;
 			$this->Link_ID = 0;
 		}
@@ -246,7 +249,7 @@ abstract class we_database_base{
 	 */
 	protected function _setup(){
 // deactivate MySQL strict mode; don't use query function (error logging)
-		$this->_query('SET SESSION sql_mode=""');
+		$this->_query('SET SESSION sql_mode="NO_ZERO_DATE,NO_ZERO_IN_DATE,ERROR_FOR_DIVISION_BY_ZERO"');
 		if(defined('DB_SET_CHARSET') && DB_SET_CHARSET != ''){
 			$this->_setCharset(DB_SET_CHARSET);
 		}
@@ -301,21 +304,31 @@ abstract class we_database_base{
 // if union is found in query, then take a closer look
 		if(!$allowUnion && stristr($Query_String, 'union') || stristr($Query_String, '/*!')){
 
-			$queryToCheck = str_replace(array('\\\\'/*escape for mysql connection */,'\\"', "\\'", '\\\`'), array('','', '', ''), $Query_String);
+			$queryToCheck = str_replace(array('\\\\'/* escape for mysql connection */, '\\"', "\\'", '\\\`'), array('', '', '', ''), $Query_String);
 
-			$quotes = array('\'' => false, '"' => false, '`' => false, '/*' => false);
+			$quotes = array('\'' => false, '"' => false, '`' => false, '/*' => false, '--' => false, '#' => false);
 
 			$queryWithoutStrings = '';
 
 			for($i = 0; $i < strlen($queryToCheck); $i++){
 				$char = $queryToCheck[$i];
-				$active = !empty(array_filter($quotes));
+				$active = array_filter($quotes);
+				//support old php 5.3
+				$active = !empty($active);
 				switch($char){
 					case '/':
 						if(!$active && $queryToCheck[$i + 1] == '*'){
-							$quotes['/*'] = true;
-							$i++;
-							continue;
+							if($queryToCheck[$i + 2] == '!'){/* mysql specific code */
+								if(defined('ERROR_LOG_TABLE')){
+									t_e('error', 'No MySQL specific syntax allowed!', $Query_String);
+								}
+								//be quiet, no need to give more information
+								return;
+							} else {
+								$quotes['/*'] = true;
+								$i++;
+								continue;
+							}
 						}
 						break;
 					case '*':
@@ -325,10 +338,29 @@ abstract class we_database_base{
 							continue;
 						}
 						break;
+					case "\n":
+						if($active && $quotes['#']){
+							$quotes['#'] = false;
+						}
+					case '-':
+						if(!$active && $queryToCheck[$i + 1] == '-'){
+							$quotes['#'] = true;
+							$active = true;
+							$i++;
+							continue;
+						}
+						break;
+					case '#':
+						if(!$active){
+							$quotes['#'] = true;
+							$active = true;
+							continue;
+						}
+						break;
 					case '"':
 					case '`':
 					case '\'':
-						if(!$quotes['/*']){
+						if(($active && $quotes[$char]) || !$active){//if active close only corresponding pair
 							$quotes[$char] = !$quotes[$char];
 							$active = true;
 						}
@@ -354,8 +386,9 @@ abstract class we_database_base{
 		$this->Errno = $this->errno();
 		$this->Error = $this->error();
 
-		if(!$this->Query_ID && preg_match('/alter table|drop table/i', $Query_String)){
+		if(!$this->Query_ID && preg_match('/alter\stable|drop\stable/i', $Query_String)){
 			$this->_query('FLUSH TABLES');
+			$this->hasTempTable = false;
 			$repool = true;
 		} elseif(preg_match('/insert\s|delete\s|update\s|replace\s/i', $Query_String)){
 			$this->Insert_ID = $this->_getInsertId();
@@ -363,6 +396,10 @@ abstract class we_database_base{
 // delete getHash DB Cache
 			getHash();
 			$repool = true;
+		} elseif(preg_match('/CREATE TEMPORARY/i', $Query_String)){
+			//we have to keep this DB connection with that temp table, since tables are connection dependend
+			$this->hasTempTable = true;
+			$repool = false;
 		}
 		$matches = array();
 		if(preg_match('/^[[:space:]]*alter[[:space:]]*table[[:space:]]*(`?([[:alpha:]]|[[:punct:]])+`?)[[:space:]]*(add|change|modify|drop)/i', $Query_String, $matches)){
@@ -433,6 +470,7 @@ abstract class we_database_base{
 
 	public function free(){
 		$this->_free();
+		$this->hasTempTable = false;
 		$this->repool();
 		$this->Query_ID = 0;
 		$this->Record = array();

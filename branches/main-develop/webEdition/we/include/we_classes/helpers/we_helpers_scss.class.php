@@ -36,7 +36,7 @@ class we_helpers_scss extends scssc {
 		if(isset($this->importCache[$path])){
 			$tree = $this->importCache[$path];
 		} else {
-			$code = f('SELECT c.Dat FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE l.Type="txt" AND l.Name="data" AND l.DocumentTable="tblFile" AND l.DID=' . intval($path));
+			$code = f('SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE l.Type="txt" AND l.Name="data" AND l.DocumentTable="tblFile" AND l.DID=' . intval($path));
 			$parser = new scss_parser($fname, false);
 			$tree = $parser->parse($code);
 			$this->parsedFiles[] = $fname;

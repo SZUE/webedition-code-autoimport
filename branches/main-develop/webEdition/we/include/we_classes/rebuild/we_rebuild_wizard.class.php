@@ -506,8 +506,8 @@ abstract class we_rebuild_wizard{
 		$metaFolders = we_base_request::_(we_base_request::RAW, 'metaFolders', '');
 		$metaFields = we_base_request::_(we_base_request::RAW, '_field', '');
 		$thumbs = makeCSVFromArray(we_base_request::_(we_base_request::RAW, 'thumbs', array()), true);
-		$type = we_base_request::_(we_base_request::RAW, 'type', 'rebuild_documents');
-		$btype = we_base_request::_(we_base_request::RAW, 'btype', 'rebuild_all');
+		$type = we_base_request::_(we_base_request::STRING, 'type', 'rebuild_documents');
+		$btype = we_base_request::_(we_base_request::STRING, 'btype', 'rebuild_all');
 		$categories = we_base_request::_(we_base_request::RAW, 'categories', '');
 		$doctypes = makeCSVFromArray(we_base_request::_(we_base_request::RAW, 'doctypes', array()), true);
 		$folders = we_base_request::_(we_base_request::RAW, 'folders', '');
@@ -588,7 +588,7 @@ abstract class we_rebuild_wizard{
 		$metaFolders = we_base_request::_(we_base_request::RAW, 'metaFolders', '');
 		$metaFields = we_base_request::_(we_base_request::RAW, '_field', array());
 		$thumbs = makeCSVFromArray(we_base_request::_(we_base_request::RAW, 'thumbs', array()), true);
-		$type = we_base_request::_(we_base_request::RAW, 'type', 'rebuild_documents');
+		$type = we_base_request::_(we_base_request::STRING, 'type', 'rebuild_documents');
 		$categories = we_base_request::_(we_base_request::RAW, 'categories', '');
 		$doctypes = makeCSVFromArray(we_base_request::_(we_base_request::RAW, 'doctypes', array()), true);
 		$folders = we_base_request::_(we_base_request::RAW, 'folders', '');
@@ -658,7 +658,7 @@ abstract class we_rebuild_wizard{
 		$onlyEmpty = we_base_request::_(we_base_request::BOOL, 'onlyEmpty');
 		$metaFields = we_base_request::_(we_base_request::RAW, '_field', array());
 		$thumbs = makeCSVFromArray(we_base_request::_(we_base_request::RAW, 'thumbs', array()), true);
-		$type = we_base_request::_(we_base_request::RAW, 'type', 'rebuild_documents');
+		$type = we_base_request::_(we_base_request::STRING, 'type', 'rebuild_documents');
 		$categories = we_base_request::_(we_base_request::RAW, 'categories', '');
 		$doctypes = makeCSVFromArray(we_base_request::_(we_base_request::RAW, 'doctypes', array()), true);
 		$folders = we_base_request::_(we_base_request::RAW, 'folders', '');
@@ -728,8 +728,8 @@ abstract class we_rebuild_wizard{
 	 * @return string
 	 */
 	static function getFrameset(){
-		$btype = we_base_request::_(we_base_request::RAW, 'bytpe');
-		$type = we_base_request::_(we_base_request::RAW, 'type');
+		$btype = we_base_request::_(we_base_request::STRING, 'btype');
+		$type = we_base_request::_(we_base_request::STRING, 'type');
 		$tid = we_base_request::_(we_base_request::INT, 'templateID');
 		$step = we_base_request::_(we_base_request::INT, 'step');
 		$resp = we_base_request::_(we_base_request::STRING, 'responseText');

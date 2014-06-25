@@ -68,9 +68,9 @@ function we_tag_path($attribs){
 		$fileID = $db->f('ID');
 		$filePath = $db->f('Path');
 		if($fileID){
-			$show = f('SELECT ' . CONTENT_TABLE . '.Dat FROM ' . LINK_TABLE . ',' . CONTENT_TABLE . ' WHERE ' . LINK_TABLE . '.DID=' . intval($fileID) . ' AND ' . LINK_TABLE . '.Name="' . $db->escape($dirfield) . '" AND ' . CONTENT_TABLE . '.ID=' . LINK_TABLE . '.CID');
+			$show = f('SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON c.ID=l.CID WHERE l.DID=' . intval($fileID) . ' AND l.Name="' . $db->escape($dirfield) . '"');
 			if(!$show && $fieldforfolder){
-				$show = f('SELECT ' . CONTENT_TABLE . '.Dat FROM ' . LINK_TABLE . ',' . CONTENT_TABLE . ' WHERE ' . LINK_TABLE . '.DID=' . intval($fileID) . ' AND ' . LINK_TABLE . '.Name="' . $db->escape($field) . '" AND ' . CONTENT_TABLE . '.ID=' . LINK_TABLE . '.CID');
+				$show = f('SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON c.ID=l.CID  WHERE l.DID=' . intval($fileID) . ' AND l.Name="' . $db->escape($field) . '"');
 			}
 			if(!$show){
 				$show = f('SELECT Text FROM ' . FILE_TABLE . ' WHERE ID=' . intval($pID));
@@ -101,7 +101,7 @@ function we_tag_path($attribs){
 	$filePath = ($hash ? $hash['Path'] : '');
 
 	if($fileID){
-		$show = f('SELECT ' . CONTENT_TABLE . '.Dat as Dat FROM ' . LINK_TABLE . ',' . CONTENT_TABLE . ' WHERE ' . LINK_TABLE . '.DID=' . intval($fileID) . ' AND ' . LINK_TABLE . '.Name="' . $db->escape($field) . '" AND ' . CONTENT_TABLE . '.ID = ' . LINK_TABLE . '.CID');
+		$show = f('SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON c.ID=l.CID WHERE l.DID=' . intval($fileID) . ' AND l.Name="' . $db->escape($field) . '"');
 		if(!$show){
 			$show = $home;
 		}

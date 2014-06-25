@@ -100,26 +100,14 @@ class liveUpdateFrames{
 	}
 
 	function getData($name){
-
 		if(isset($this->Data[$name])){
 			return $this->Data[$name];
 		}
 	}
 
-	function processBeta(){//FIXME: don't use request
+	function processBeta(){
 		if(($setTestUpdate = we_base_request::_(we_base_request::BOOL, 'setTestUpdate', '-1')) !== '-1'){
-			$conf = we_base_file::load(LIVEUPDATE_DIR . 'conf/conf.inc.php');
-
-			if(strpos($conf, '$_REQUEST[\'testUpdate\']') !== false){
-				if(strpos($conf, '$_REQUEST[\'testUpdate\'] = ' . intval(!$setTestUpdate) . ';') !== false){
-					$conf = str_replace('$_REQUEST[\'testUpdate\'] = ' . intval(!$setTestUpdate) . ';', '$_REQUEST[\'testUpdate\'] = ' . intval($setTestUpdate) . ';', $conf);
-					we_base_file::save(LIVEUPDATE_DIR . 'conf/conf.inc.php', $conf);
-				}
-			} else {
-				$conf.='$_REQUEST[\'testUpdate\'] = ' . intval($setTestUpdate) . ';';
-				we_base_file::save(LIVEUPDATE_DIR . 'conf/conf.inc.php', $conf);
-			}
-			$_REQUEST['testUpdate'] = $_REQUEST['setTestUpdate'];
+			$_SESSION['weS']['testUpdate'] = $setTestUpdate;
 		}
 	}
 

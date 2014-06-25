@@ -41,7 +41,6 @@ switch($we_ContentType){
 }
 $pid = we_base_request::_(we_base_request::INT, 'pid', 0);
 $parts = array();
-
 $we_alerttext = (!in_workspace($pid, get_ws(FILE_TABLE), FILE_TABLE, $GLOBALS['DB_WE']) || isset($_FILES['we_uploadedFile']) && !permissionhandler::hasPerm(we_base_ContentTypes::inst()->getPermission(getContentTypeFromFile($_FILES['we_uploadedFile']['name']))) ?
 		g_l('alert', '[upload_targetDir_notallowed]') :
 		'');

@@ -95,7 +95,7 @@ function we_tag_listdir($attribs){
 function _listdir_getSortField($sort, $id, $text){
 	if($sort){
 		$db = $GLOBALS['DB_WE'];
-		$dat = f('SELECT ' . CONTENT_TABLE . '.Dat as Dat FROM ' . LINK_TABLE . ',' . CONTENT_TABLE . ' WHERE ' . LINK_TABLE . '.DID=' . intval($id) . ' AND ' . LINK_TABLE . '.Name="' . $db->escape($sort) . '" AND ' . CONTENT_TABLE . '.ID=' . LINK_TABLE . '.CID', '', $db);
+		$dat = f('SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON c.ID=l.CID WHERE l.DID=' . intval($id) . ' AND l.Name="' . $db->escape($sort) . '"', '', $db);
 		return $dat ? $dat : $text;
 	}
 	return $text;
@@ -104,7 +104,7 @@ function _listdir_getSortField($sort, $id, $text){
 function _listdir_getNameField($dirfield, $id, $text){
 	if($dirfield){
 		$db = $GLOBALS['DB_WE'];
-		$dat = f('SELECT ' . CONTENT_TABLE . '.Dat as Dat FROM ' . LINK_TABLE . ',' . CONTENT_TABLE . ' WHERE ' . LINK_TABLE . '.DID=' . intval($id) . ' AND ' . LINK_TABLE . '.Name="' . $db->escape($dirfield) . '" AND ' . CONTENT_TABLE . '.ID=' . LINK_TABLE . '.CID', 'Dat', $db);
+		$dat = f('SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON c.ID=l.CID WHERE l.DID=' . intval($id) . ' AND l.Name="' . $db->escape($dirfield) . '"', '', $db);
 		return $dat ? $dat : $text;
 	}
 	return $text;

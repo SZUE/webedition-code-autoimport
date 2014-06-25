@@ -569,9 +569,8 @@ class we_thumbnail{
 	 * @private
 	 */
 	private function getImageData($getBinary = false){
-
-		$this->db->query('SELECT ' . LINK_TABLE . '.Name as Name,' . CONTENT_TABLE . '.Dat as Dat  FROM ' . CONTENT_TABLE . ',' . LINK_TABLE . ' WHERE ' . LINK_TABLE . '.DID=' . intval($this->imageID) .
-			' AND ' . LINK_TABLE . '.DocumentTable="tblFile" AND ' . CONTENT_TABLE . '.ID=' . LINK_TABLE . '.CID  AND ' . CONTENT_TABLE . '.IsBinary=0');
+		$this->db->query('SELECT l.Name,c.Dat FROM ' . CONTENT_TABLE . ' c  JOIN ' . LINK_TABLE . ' l ON c.ID=l.CID WHERE l.DID=' . intval($this->imageID) .
+			' AND l.DocumentTable="tblFile"');
 
 		while($this->db->next_record()){
 			if($this->db->f('Name') == 'origwidth'){
