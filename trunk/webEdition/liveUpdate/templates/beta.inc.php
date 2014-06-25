@@ -28,23 +28,7 @@
  *
  */
 
-if(defined('WE_VERSION_SUPP') && WE_VERSION_SUPP != 'release'){
-	$ischecked = 1;
-}else{
-	$ischecked = we_base_request::_(we_base_request::BOOL,"setTestUpdate");
-}
-$conf = we_base_file::load(LIVEUPDATE_DIR . 'conf/conf.inc.php');
-if($ischecked){
-	if(strpos($conf, '$' . "_REQUEST['testUpdate'] = 0;") !== false){
-		$conf = str_replace('$' . "_REQUEST['testUpdate'] = 0;", '$' . "_REQUEST['testUpdate'] = 1;", $conf);
-		we_base_file::save(LIVEUPDATE_DIR . 'conf/conf.inc.php', $conf);
-	}
-} else {
-	if(strpos($conf, '$' . "_REQUEST['testUpdate'] = 1;") !== false){
-		$conf = str_replace('$' . "_REQUEST['testUpdate'] = 1;", '$' . "_REQUEST['testUpdate'] = 0;", $conf);
-		we_base_file::save(LIVEUPDATE_DIR . 'conf/conf.inc.php', $conf);
-	}
-}
+$_SESSION['weS']['testUpdate'] = we_base_request::_(we_base_request::BOOL, "setTestUpdate", isset($_SESSION['weS']['testUpdate']) ? $_SESSION['weS']['testUpdate'] : false);
 
 $content = '
 <table class="defaultfont" width="100%">
@@ -63,7 +47,7 @@ $content = '
 	</td>
 </tr>
 <tr>
-	<td></td><td><form name="betaform" action="' . $_SERVER['SCRIPT_NAME'] . '?section=beta" method="post">' . we_html_forms::checkboxWithHidden($ischecked, 'setTestUpdate', $GLOBALS['l_liveUpdate']['beta']['lookForUpdate'], '', 'defaultfont', 'betaform.submit()') . '</form>
+	<td></td><td><form name="betaform" action="' . $_SERVER['SCRIPT_NAME'] . '?section=beta" method="post">' . we_html_forms::checkboxWithHidden($_SESSION['weS']['testUpdate'], 'setTestUpdate', $GLOBALS['l_liveUpdate']['beta']['lookForUpdate'], '', 'defaultfont', 'betaform.submit()') . '</form>
 		<br />
 		<br />
 	</td>

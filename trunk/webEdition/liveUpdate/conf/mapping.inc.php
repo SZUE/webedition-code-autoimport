@@ -41,7 +41,7 @@ $LU_Variables = array(
 	'clientDBcharset' => we_database_base::getCharset(),
 	'clientDBcollation' => we_database_base::getCollation(),
 	'clientServerSoftware' => $_SERVER['SERVER_SOFTWARE'],
-	'clientUid' => (defined('UID') ? UID : false), 
+	'clientUid' => (defined('UID') ? UID : false),
 	'clientSyslng' => WE_LANGUAGE,
 	'clientLng' => $GLOBALS['WE_LANGUAGE'] . ($GLOBALS['WE_BACKENDCHARSET'] == 'UTF-8' ? '_UTF-8' : ''),
 	'clientExtension' => '.php',
@@ -54,11 +54,9 @@ $LU_Variables = array(
 	'clientContent' => false,
 	'clientEncoding' => 'none',
 	'clientSessionName' => session_name(),
-	'clientSessionID' => session_id()
+	'clientSessionID' => session_id(),
+	'testUpdate' => $_SESSION['weS']['testUpdate']
 );
-if(defined('WE_VERSION_SUPP') && WE_VERSION_SUPP != 'release'){
-	$LU_Variables['testUpdate'] = 1;
-}
 
 // These request variables listed here are NOT submitted to the server - fill it
 // to keep requests small

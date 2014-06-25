@@ -54,6 +54,9 @@ abstract class we_database_base{
 	/*	 * current Error text */
 	public $Error = "";
 
+	/* true, if a temporary table was created */
+	private $hasTempTable = false;
+
 	/** public: connection parameters */
 	protected $Database = DB_DATABASE;
 	private static $Trigger_cnt = 0;
@@ -197,7 +200,7 @@ abstract class we_database_base{
 	 * @internal
 	 */
 	private function repool(){
-		if($this->Link_ID && $this->Database == DB_DATABASE){
+		if($this->Link_ID && $this->Database == DB_DATABASE && !$this->hasTempTable){
 			self::$pool[] = $this->Link_ID;
 			$this->Link_ID = 0;
 		}
@@ -383,8 +386,9 @@ abstract class we_database_base{
 		$this->Errno = $this->errno();
 		$this->Error = $this->error();
 
-		if(!$this->Query_ID && preg_match('/alter table|drop table/i', $Query_String)){
+		if(!$this->Query_ID && preg_match('/alter\stable|drop\stable/i', $Query_String)){
 			$this->_query('FLUSH TABLES');
+			$this->hasTempTable = false;
 			$repool = true;
 		} elseif(preg_match('/insert\s|delete\s|update\s|replace\s/i', $Query_String)){
 			$this->Insert_ID = $this->_getInsertId();
@@ -392,6 +396,10 @@ abstract class we_database_base{
 // delete getHash DB Cache
 			getHash();
 			$repool = true;
+		} elseif(preg_match('/CREATE TEMPORARY/i', $Query_String)){
+			//we have to keep this DB connection with that temp table, since tables are connection dependend
+			$this->hasTempTable = true;
+			$repool = false;
 		}
 		$matches = array();
 		if(preg_match('/^[[:space:]]*alter[[:space:]]*table[[:space:]]*(`?([[:alpha:]]|[[:punct:]])+`?)[[:space:]]*(add|change|modify|drop)/i', $Query_String, $matches)){
@@ -462,6 +470,7 @@ abstract class we_database_base{
 
 	public function free(){
 		$this->_free();
+		$this->hasTempTable = false;
 		$this->repool();
 		$this->Query_ID = 0;
 		$this->Record = array();
