@@ -456,7 +456,7 @@ we_templateInit();?>';
 							$spacer = "[\040|\n|\t|\r]*";
 							$selregs = array();
 							//FIXME: this regex is not correct [^name] will not match any of those chars
-							if(preg_match('-(<we:select [^name]*name' . $spacer . '[\=\"|\=\'|\=\\\\|\=]*' . $spacer . $att['name'] . '[\'\"]*[^>]*>)(.*)<' . $spacer . '/' . $spacer . 'we:select' . $spacer . '>-i', $templateCode, $selregs)){
+							if(preg_match('-(<we:select [^name]*name' . $spacer . '[\=\"|\=\'|\=\\\\|\=]*' . $spacer . preg_quote($att['name'],'-') . '[\'\"]*[^>]*>)(.*)<' . $spacer . '/' . $spacer . 'we:select' . $spacer . '>-i', $templateCode, $selregs)){
 								$out[$name]['content'] = $selregs[2];
 							}
 						}
