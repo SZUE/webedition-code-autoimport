@@ -118,7 +118,6 @@ function convertToMb($value){
 	return we_base_file::getHumanFileSize($value, we_base_file::SZ_MB);
 }
 
-
 function getConnectionTypes(){
 	$_connectionTypes = array();
 	if(ini_get('allow_url_fopen') == 1){
@@ -216,7 +215,7 @@ if(in_array('suhosin', get_loaded_extensions())){
 
 $lockTables = $GLOBALS['DB_WE']->hasLock();
 $allowTempTables = we_search_search::checkRightTempTable();
-
+$ver = phpversion();
 $_info = array(
 	'webEdition' => array(
 		g_l('sysinfo', '[we_version]') => $weVersion,
@@ -227,7 +226,7 @@ $_info = array(
 		g_l('sysinfo', '[we_max_upload_size]') => getUploadMaxFilesize()
 	),
 	'<a href="javascript:showPhpInfo();">PHP</a>' => array(
-		g_l('sysinfo', '[php_version]') => phpversion(),
+		g_l('sysinfo', '[php_version]') => version_compare($ver, '5.3.8', '<') ? getWarning('>5.3.8', $ver) : $ver,
 		g_l('sysinfo', '[zendframework_version]') => (Zend_Version::VERSION != WE_ZFVERSION) ? getWarning(sprintf(g_l('sysinfo', "[zend_framework warning]"), WE_ZFVERSION), Zend_Version::VERSION) : Zend_Version::VERSION,
 		'register_globals' => (ini_get_bool('register_globals')) ? getWarning(g_l('sysinfo', "[register_globals warning]"), ini_get('register_globals')) : getOK('', ini_get_message('register_globals')),
 		'max_execution_time' => ini_get('max_execution_time'),
@@ -256,7 +255,7 @@ $_info = array(
 	'System' => array(
 		g_l('sysinfo', '[connection_types]') => implode(', ', getConnectionTypes()),
 		g_l('sysinfo', '[mbstring]') => (is_callable('mb_get_info') ? g_l('sysinfo', '[available]') : '-'),
-		g_l('sysinfo', '[gdlib]') => (!empty($gdVersion) ? g_l('sysinfo', '[version]') . ' ' . $gdVersion : '-'),
+		g_l('sysinfo', '[gdlib]') => ($gdVersion ? g_l('sysinfo', '[version]') . ' ' . $gdVersion : '-'),
 		g_l('sysinfo', '[exif]') => (is_callable('exif_imagetype') ? g_l('sysinfo', '[available]') : getWarning(g_l('sysinfo', '[exif warning]'), '-')),
 		g_l('sysinfo', '[pcre]') => ((defined('PCRE_VERSION')) ? ( (substr(PCRE_VERSION, 0, 1) < 7) ? getWarning(g_l('sysinfo', '[pcre warning]'), g_l('sysinfo', '[version]') . ' ' . PCRE_VERSION) : g_l('sysinfo', '[version]') . ' ' . PCRE_VERSION ) : getWarning(g_l('sysinfo', '[available]'), g_l('sysinfo', "[pcre_unkown]"))),
 		g_l('sysinfo', '[sdk_db]') => $phpextensionsSDK_DB,
