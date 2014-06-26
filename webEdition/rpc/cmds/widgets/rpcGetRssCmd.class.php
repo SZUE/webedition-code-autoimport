@@ -51,7 +51,7 @@ class rpcGetRssCmd extends rpcCmd{
 				$iNumItems = 50;
 				break;
 		}
-		$sTbBinary = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3);
+		$sTbBinary = we_base_request::_(we_base_request::STRINGC, 'we_cmd', '', 3);
 		$bTbLabel = (bool) $sTbBinary{0};
 		$bTbTitel = (bool) $sTbBinary{1};
 		$bTbDesc = (bool) $sTbBinary{2};

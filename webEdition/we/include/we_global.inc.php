@@ -859,6 +859,9 @@ function we_loadLanguageConfig(){
 
 function getWeFrontendLanguagesForBackend(){
 	$la = array();
+	if(!isset($GLOBALS['weFrontendLanguages'])){
+		return array();
+	}
 	$targetLang = we_core_Local::weLangToLocale($GLOBALS['WE_LANGUAGE']);
 	if(!Zend_Locale::hasCache()){
 		Zend_Locale::setCache(getWEZendCache());
@@ -1195,6 +1198,6 @@ function getWECountries(){
 	);
 }
 
-function getMysqlVer($nodots=true){
+function getMysqlVer($nodots = true){
 	return we_database_base::getMysqlVer($nodots);
 }
