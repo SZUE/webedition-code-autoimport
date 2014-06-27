@@ -1055,7 +1055,7 @@ function onSelectionClassChangeJS(value) {
 					), $this->View->getCommonHiddens($hiddens) .
 					$this->View->htmlHidden(
 						'IsFolder', (isset($this->Model->IsFolder) ? $this->Model->IsFolder : 0)) . $this->View->htmlHidden(
-						'presetFolder', we_base_request::_(we_base_request::STRING, 'presetFolder','')) .
+						'presetFolder', we_base_request::_(we_base_request::STRING, 'presetFolder', '')) .
 					we_html_multiIconBox::getHTML(
 						'', '100%', $this->getHTMLGeneral(), 30, '', -1, '', '', false, $preselect) .
 					($this->Model->IsFolder ? we_html_multiIconBox::getHTML(
@@ -1393,7 +1393,7 @@ function selectItem() {
 		}
 
 		$yuiSuggest = & weSuggest::getInstance();
-		$yuiSuggest->setAcId("FolderPath", $_table == OBJECT_FILES_TABLE ? id_to_path($this->Model->ClassID, OBJECT_FILES_TABLE) : "");
+		$yuiSuggest->setAcId("FolderPath", defined('OBJECT_FILES_TABLE') && $_table == OBJECT_FILES_TABLE ? id_to_path($this->Model->ClassID, OBJECT_FILES_TABLE) : "");
 		$yuiSuggest->setContentType("folder");
 		$yuiSuggest->setInput('FolderPath', $_path, $_attribs);
 		$yuiSuggest->setMaxResults(50);
