@@ -64,7 +64,7 @@ class we_glossary_frameEditor{
 
 		$_body = array(
 			'class' => 'weEditorBody',
-			'onLoad' => 'loaded=1;',
+			'onload' => 'loaded=1;',
 			'onunload' => "doUnload()"
 		);
 

@@ -124,7 +124,7 @@ echo we_html_tools::getHtmlTop() .
 //-->
 </script>
 </head>
-<body background="<?php print IMAGE_DIR ?>backgrounds/radient.gif" LINK="#000000" ALINK="#000000" VLINK="#000000" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px" onLoad="setLookin();
+<body background="<?php print IMAGE_DIR ?>backgrounds/radient.gif" LINK="#000000" ALINK="#000000" VLINK="#000000" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px" onload="setLookin();
 		self.focus()">
 	<form name="we_form" method="post">
 		<table border="0" cellpadding="0" cellspacing="0" width="100%">

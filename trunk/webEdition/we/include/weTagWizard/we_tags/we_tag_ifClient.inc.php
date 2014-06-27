@@ -32,5 +32,7 @@ $this->Attributes[] = new weTagData_choiceAttribute('system', array(
 	new weTagDataOption('win'),
 	new weTagDataOption('mac'),
 	new weTagDataOption('unix'),
+	new weTagDataOption('android'),
+	new weTagDataOption('iphone'),
 	new weTagDataOption('unknown'),
 	), false, false, '');

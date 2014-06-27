@@ -68,7 +68,7 @@ class we_glossary_frameEditorHome{
 			'marginheight' => 15,
 			'leftmargin' => 15,
 			'topmargin' => 15,
-			'onLoad' => 'loaded=1;',
+			'onload' => 'loaded=1;',
 		);
 
 		return $weGlossaryFrames->getHTMLDocument(we_html_element::htmlBody($_body, $content), "");

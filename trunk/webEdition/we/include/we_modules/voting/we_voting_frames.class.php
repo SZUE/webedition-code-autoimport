@@ -141,7 +141,7 @@ class we_voting_frames extends weModuleFrames{
 			') . $out;
 		}
 
-		$body = we_html_element::htmlBody(array("class" => "weEditorBody", "onLoad" => "loaded=1;setMultiEdits();", "onunload" => "doUnload()"), we_html_element::htmlForm(array("name" => "we_form", "onsubmit" => "return false"), $this->View->getCommonHiddens($hiddens) . $this->getHTMLProperties()));
+		$body = we_html_element::htmlBody(array("class" => "weEditorBody", "onload" => "loaded=1;setMultiEdits();", "onunload" => "doUnload()"), we_html_element::htmlForm(array("name" => "we_form", "onsubmit" => "return false"), $this->View->getCommonHiddens($hiddens) . $this->getHTMLProperties()));
 
 		return $this->getHTMLDocument($body, $this->View->getJSProperty());
 	}

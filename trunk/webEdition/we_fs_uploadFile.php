@@ -207,7 +207,7 @@ if(isset($_FILES['we_uploadedFile']) && (!$we_alerttext)){
 //-->
 </script>
 </head>
-<body class="weDialogBody" onLoad="self.focus();" ><center>
+<body class="weDialogBody" onload="self.focus();" ><center>
 		<form method="post" enctype="multipart/form-data">
 			<input type="hidden" name="table" value="<?php echo $_REQUEST["tab"]; ?>" />
 			<input type="hidden" name="pid" value="<?php echo $_REQUEST["dir"]; ?>" />

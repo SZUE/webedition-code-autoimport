@@ -870,7 +870,7 @@ failure: function(o) {
 		$table->setCol(2, 0, array(), $select->getHtml());
 
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody(array('class' => 'weDialogBody', 'onLoad' => ($mode ? '' : 'document.we_form.keyword.focus();')), we_html_element::linkElement(array('rel' => 'stylesheet', 'type' => 'text/css', 'href' => JS_DIR . 'jscalendar/skins/aqua/theme.css', 'title' => 'Aqua')) .
+				we_html_element::htmlBody(array('class' => 'weDialogBody', 'onload' => ($mode ? '' : 'document.we_form.keyword.focus();')), we_html_element::linkElement(array('rel' => 'stylesheet', 'type' => 'text/css', 'href' => JS_DIR . 'jscalendar/skins/aqua/theme.css', 'title' => 'Aqua')) .
 					we_html_element::jsScript(JS_DIR . 'utils/weDate.js') .
 					we_html_element::jsScript(JS_DIR . 'jscalendar/calendar.js') .
 					we_html_element::jsScript(JS_DIR . 'jscalendar/calendar-setup.js') .

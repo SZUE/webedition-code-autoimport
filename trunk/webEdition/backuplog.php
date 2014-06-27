@@ -66,7 +66,7 @@ echo we_html_tools::getHtmlTop(g_l('backup', "[view_log]")) .
 
 </head>
 
-<body class="weDialogBody" style="overflow:hidden;" onLoad="self.focus();">
+<body class="weDialogBody" style="overflow:hidden;" onload="self.focus();">
 	<div id="info" style="display: block;">
 		<?php
 		$buttons = we_html_button::position_yes_no_cancel(

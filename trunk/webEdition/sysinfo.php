@@ -320,7 +320,7 @@ echo STYLESHEET;
 
 </head>
 
-<body class="weDialogBody" style="overflow:hidden;" onLoad="self.focus();">
+<body class="weDialogBody" style="overflow:hidden;" onload="self.focus();">
 	<div id="info" style="display: block;">
 		<?php
 		echo we_html_multiIconBox::getJS() .

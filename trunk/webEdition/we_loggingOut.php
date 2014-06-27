@@ -45,7 +45,7 @@ if(we_base_request::_(we_base_request::BOOL, 'isopener')){
 //-->
 		</script>
 	</head>
-	<body onLoad="self.setTimeout(closeIt, 1000);" style="background-color:#386AAB;color:white">
+	<body onload="self.setTimeout(closeIt, 1000);" style="background-color:#386AAB;color:white">
 		<?php echo g_l('global', "[irregular_logout]"); ?>
 	</body>
 </html>

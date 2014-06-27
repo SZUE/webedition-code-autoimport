@@ -449,7 +449,7 @@ echo we_html_button::create_state_changer(false);
 </script>
 </head>
 
-<body class="weDialogBody" onLoad="setDialog()"><?php
+<body class="weDialogBody" onload="setDialog()"><?php
 $_preview = '<div id="preview" class="defaultfont"></div>';
 
 

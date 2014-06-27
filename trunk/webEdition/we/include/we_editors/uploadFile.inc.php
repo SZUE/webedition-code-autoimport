@@ -134,7 +134,7 @@ if(isset($we_File) && (!$we_alerttext)){
 </script>
 </head>
 
-<body class="weDialogBody" onLoad="self.focus();">
+<body class="weDialogBody" onload="self.focus();">
 	<center>
 		<form method="post" enctype="multipart/form-data">
 			<input type="hidden" name="we_transaction" value="<?php print $we_transaction ?>" />
