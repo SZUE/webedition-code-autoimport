@@ -130,7 +130,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		}
 
 
-		$maxDB = min(1000000, getMaxAllowedPacket($this->DB_WE) - 1024);
+		$maxDB = min(1000000, $this->DB_WE->getMaxAllowedPacket() - 1024);
 		return $this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter(array(
 					'DID' => intval($this->ID),
 					'Text' => substr(preg_replace(array('/(&#160;|&nbsp;)/', "/ *[\r\n]+/", '/  +/'), ' ', trim(strip_tags($text))), 0, $maxDB),

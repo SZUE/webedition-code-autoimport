@@ -2083,7 +2083,7 @@ class we_objectFile extends we_document{
 				}
 			}
 		}
-		$maxDB = min(1000000, getMaxAllowedPacket($this->DB_WE) - 1024);
+		$maxDB = min(1000000, $this->DB_WE->getMaxAllowedPacket() - 1024);
 		$text = substr(preg_replace(array("/\n+/", '/  +/'), ' ', trim(strip_tags($text))), 0, $maxDB);
 
 		if(!$text){

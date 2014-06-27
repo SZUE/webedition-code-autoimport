@@ -1085,4 +1085,12 @@ abstract class we_database_base{
 		return '';
 	}
 
+	/**
+	 * get the maximum size a db query could be
+	 * @return int
+	 */
+	public function getMaxAllowedPacket(){
+		return f('SHOW VARIABLES LIKE "max_allowed_packet"', 'Value', $this);
+	}
+
 }

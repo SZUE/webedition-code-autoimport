@@ -139,7 +139,7 @@ class we_otherDocument extends we_binaryDocument{
 		$content = preg_replace('/[\x00-\x1F]/', '', $content);
 		$text.= ' ' . trim($content);
 
-		$maxDB = min(1000000, getMaxAllowedPacket($this->DB_WE) - 1024);
+		$maxDB = min(1000000, $this->DB_WE->getMaxAllowedPacket() - 1024);
 		$text = substr(preg_replace(array("/\n+/", '/  +/'), ' ', $text), 0, $maxDB);
 
 		$set = array(

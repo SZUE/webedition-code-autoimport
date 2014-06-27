@@ -670,15 +670,21 @@ function getContentTypeFromFile($dat){
 function getUploadMaxFilesize($mysql = false, we_database_base $db = null){
 	$post_max_size = we_convertIniSizes(ini_get('post_max_size'));
 	$upload_max_filesize = we_convertIniSizes(ini_get('upload_max_filesize'));
-	$min = min($post_max_size, $upload_max_filesize, ($mysql ? getMaxAllowedPacket($db) : PHP_INT_MAX));
+	$min = min($post_max_size, $upload_max_filesize, ($mysql ? $db->getMaxAllowedPacket() : PHP_INT_MAX));
 
 	return (intval(WE_MAX_UPLOAD_SIZE) == 0 ?
 			$min :
 			min(WE_MAX_UPLOAD_SIZE * 1024 * 1024, $min));
 }
 
+/**
+ *
+ * @param we_database_base $db
+ * @return type
+ * @deprecated since version 6.3.8
+ */
 function getMaxAllowedPacket(we_database_base $db){
-	return f('SHOW VARIABLES LIKE "max_allowed_packet"', 'Value', ($db ? $db : new DB_WE()));
+	return $db->getMaxAllowedPacket();
 }
 
 function we_convertIniSizes($in){
