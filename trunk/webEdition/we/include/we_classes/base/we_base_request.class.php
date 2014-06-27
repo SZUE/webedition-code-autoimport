@@ -116,11 +116,11 @@ class we_base_request{
 				return;
 			case self::EMAIL://removes mailto:
 				//FIXME: add email format
-			/*		if(($pos = strpos($email, '<'))){// format "xxx xx" <test@test.de>
-		++$pos;
-		$email = substr($email, $pos, strrpos($email, '>') - $pos);
-	}
-	return (filter_var($email, FILTER_VALIDATE_EMAIL) !== false);*/
+				/* 		if(($pos = strpos($email, '<'))){// format "xxx xx" <test@test.de>
+				  ++$pos;
+				  $email = substr($email, $pos, strrpos($email, '>') - $pos);
+				  }
+				  return (filter_var($email, FILTER_VALIDATE_EMAIL) !== false); */
 				$var = filter_var(str_replace(we_base_link::TYPE_MAIL_PREFIX, '', $var), FILTER_SANITIZE_EMAIL);
 				return;
 			case self::FILE:
@@ -222,6 +222,19 @@ class we_base_request{
 					if($oldVar === ''){//treat empty as 0
 						$oldVar = 0;
 					}
+					if(is_string($var)){
+						switch($var){
+							case 'false':
+								$cmp = 0;
+								break 2;
+							case 'true':
+								$cmp = 1;
+								break 2;
+						}
+					} elseif(is_bool($var)){
+						$cmp = $var;
+						break;
+					}
 					$cmp = '' . intval($var);
 					break;
 				case self::RAW:
@@ -245,9 +258,9 @@ class we_base_request{
 				default:
 					$cmp = '' . $var;
 			}
-/*if(isset($_REQUEST['we_cmd'][0])&& $_REQUEST['we_cmd'][0]=='up_entry_at_list'){
-	t_e($oldVar,$cmp,  func_get_args());
-}*/
+			/* if(isset($_REQUEST['we_cmd'][0])&& $_REQUEST['we_cmd'][0]=='up_entry_at_list'){
+			  t_e($oldVar,$cmp,  func_get_args());
+			  } */
 			if($oldVar != $cmp){
 
 				t_e('changed values', $type, $args, $oldVar, $var);
