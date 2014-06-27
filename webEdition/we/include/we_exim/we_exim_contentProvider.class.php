@@ -267,7 +267,7 @@ class we_exim_contentProvider{
 				if(self::needCoding($object->ClassName, $v, $content) || self::needCdata($object->ClassName, $v, $content)){//fix for faulty parser
 					$content = self::getCDATA(self::encode($content));
 					$coding = array(self::CODING_ATTRIBUTE => self::CODING_ENCODE);
-				} else if(self::needCdata($object->ClassName, $v, $content)){
+				} else if(self::needSerialize($object->ClassName, $v, $content)){
 					$content = self::getCDATA($content);
 				}
 				$attribs .= we_xml_composer::we_xmlElement($v, $content, $coding);
