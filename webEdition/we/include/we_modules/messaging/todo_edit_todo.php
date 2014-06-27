@@ -77,7 +77,7 @@ echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[wintitle]')) .
 </script>
 </head>
 
-<body class="weDialogBody" <?php echo ($mode == 'reject' ? '' : 'onLoad="document.compose_form.mn_subject.focus()"') ?> onunload="doUnload();">
+<body class="weDialogBody" <?php echo ($mode == 'reject' ? '' : 'onload="document.compose_form.mn_subject.focus()"') ?> onunload="doUnload();">
 	<?php
 	if($mode == 'forward'){
 		$compose = new we_messaging_format('forward', $messaging->selected_message);

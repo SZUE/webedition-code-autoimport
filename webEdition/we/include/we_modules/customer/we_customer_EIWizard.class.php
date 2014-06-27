@@ -1110,7 +1110,7 @@ class we_customer_EIWizard{
 						$head = we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[export_title]')) . $js;
 						$out = we_html_element::htmlDocType() . we_html_element::htmlHtml(
 								we_html_element::htmlHead($head) .
-								we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => 5, "marginheight" => 5, "leftmargin" => 5, "topmargin" => 5, "onLoad" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "action" => $this->frameset), "")
+								we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => 5, "marginheight" => 5, "leftmargin" => 5, "topmargin" => 5, "onload" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "action" => $this->frameset), "")
 								)
 						);
 						break;
@@ -1130,7 +1130,7 @@ class we_customer_EIWizard{
 				$head = we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[export_title]')) . $js;
 				$out = we_html_element::htmlDocType() . we_html_element::htmlHtml(
 						we_html_element::htmlHead($head) .
-						we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => 5, "marginheight" => 5, "leftmargin" => 5, "topmargin" => 5, "onLoad" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "action" => $this->frameset), "")
+						we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => 5, "marginheight" => 5, "leftmargin" => 5, "topmargin" => 5, "onload" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "action" => $this->frameset), "")
 						)
 				);
 
@@ -1216,7 +1216,7 @@ class we_customer_EIWizard{
 				$head = we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[export_title]')) . STYLESHEET;
 				$out = we_html_element::htmlDocType() . we_html_element::htmlHtml(
 						we_html_element::htmlHead($head) .
-						we_html_element::htmlBody(array("onLoad" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "load", "action" => $this->frameset), $hiddens)
+						we_html_element::htmlBody(array("onload" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "load", "action" => $this->frameset), $hiddens)
 						)
 				);
 
@@ -1301,7 +1301,7 @@ class we_customer_EIWizard{
 				$head = we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[export_title]')) . STYLESHEET . $progressjs;
 				$out = we_html_element::htmlDocType() . we_html_element::htmlHtml(
 						we_html_element::htmlHead($head) .
-						we_html_element::htmlBody(array("onLoad" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "load", "action" => $this->frameset), $hiddens)
+						we_html_element::htmlBody(array("onload" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "load", "action" => $this->frameset), $hiddens)
 						)
 				);
 
@@ -1321,7 +1321,7 @@ class we_customer_EIWizard{
 				$head = we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[export_title]')) . STYLESHEET;
 				$out = we_html_element::htmlDocType() . we_html_element::htmlHtml(
 						we_html_element::htmlHead($head) .
-						we_html_element::htmlBody(array("onLoad" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "action" => $this->frameset), we_html_element::htmlHidden(array("name" => "pnt", "value" => "eibody")) .
+						we_html_element::htmlBody(array("onload" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "action" => $this->frameset), we_html_element::htmlHidden(array("name" => "pnt", "value" => "eibody")) .
 								we_html_element::htmlHidden(array("name" => "step", "value" => 4)) .
 								we_html_element::htmlHidden(array("name" => "export_to", "value" => $export_to)) .
 								we_html_element::htmlHidden(array("name" => "filename", "value" => $filename)) .
@@ -1347,7 +1347,7 @@ class we_customer_EIWizard{
 					$head = we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[import_title]')) . $js;
 					$out = we_html_element::htmlDocType() . we_html_element::htmlHtml(
 							we_html_element::htmlHead($head) .
-							we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => 5, "marginheight" => 5, "leftmargin" => 5, "topmargin" => 5, "onLoad" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "action" => $this->frameset), "")
+							we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => 5, "marginheight" => 5, "leftmargin" => 5, "topmargin" => 5, "onload" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "action" => $this->frameset), "")
 							)
 					);
 				}
@@ -1364,7 +1364,7 @@ class we_customer_EIWizard{
 				$head = we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[import_title]')) . $js;
 				$out = we_html_element::htmlDocType() . we_html_element::htmlHtml(
 						we_html_element::htmlHead($head) .
-						we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => 5, "marginheight" => 5, "leftmargin" => 5, "topmargin" => 5, "onLoad" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "action" => $this->frameset), "")
+						we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => 5, "marginheight" => 5, "leftmargin" => 5, "topmargin" => 5, "onload" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "action" => $this->frameset), "")
 						)
 				);
 
@@ -1430,7 +1430,7 @@ class we_customer_EIWizard{
 				$head = we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[import_title]')) . $js;
 				$out = we_html_element::htmlDocType() . we_html_element::htmlHtml(
 						we_html_element::htmlHead($head) .
-						we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => 5, "marginheight" => 5, "leftmargin" => 5, "topmargin" => 5, "onLoad" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "load", "action" => $this->frameset), $hiddens)
+						we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => 5, "marginheight" => 5, "leftmargin" => 5, "topmargin" => 5, "onload" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "load", "action" => $this->frameset), $hiddens)
 						)
 				);
 				break;
@@ -1488,7 +1488,7 @@ class we_customer_EIWizard{
 				$head = we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[import_title]')) . $js;
 				return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 						we_html_element::htmlHead($head) .
-						we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => 5, "marginheight" => 5, "leftmargin" => 5, "topmargin" => 5, "onLoad" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "load", "action" => $this->frameset), $hiddens
+						we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => 5, "marginheight" => 5, "leftmargin" => 5, "topmargin" => 5, "onload" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "load", "action" => $this->frameset), $hiddens
 							)
 						)
 				);
@@ -1507,7 +1507,7 @@ class we_customer_EIWizard{
 				$head = we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[import_title]')) . $js;
 				return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 						we_html_element::htmlHead($head) .
-						we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => 5, "marginheight" => 5, "leftmargin" => 5, "topmargin" => 5, "onLoad" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "action" => $this->frameset), we_html_element::htmlHidden(array("name" => "tmpdir", "value" => $tmpdir)) .
+						we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => 5, "marginheight" => 5, "leftmargin" => 5, "topmargin" => 5, "onload" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "action" => $this->frameset), we_html_element::htmlHidden(array("name" => "tmpdir", "value" => $tmpdir)) .
 								we_html_element::htmlHidden(array("name" => "impno", "value" => $impno)) .
 								we_html_element::htmlHidden(array("name" => "pnt", "value" => "eibody")) .
 								we_html_element::htmlHidden(array("name" => "art", "value" => "import")) .

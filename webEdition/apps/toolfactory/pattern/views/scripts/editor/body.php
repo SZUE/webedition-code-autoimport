@@ -172,7 +172,7 @@ YAHOO.util.Event.addListener(window, "unload", function(e){
 $htmlPage->addElement($form);
 
 $htmlPage->addInlineJS($js);
-$htmlPage->setBodyAttributes(array('class' => 'weEditorBody', 'onLoad' => 'loaded=1;'));
+$htmlPage->setBodyAttributes(array('class' => 'weEditorBody', 'onload' => 'loaded=1;'));
 $htmlPage->addJSFile(JS_DIR.'we_showMessage.js');
 
 echo $htmlPage->getHTML();

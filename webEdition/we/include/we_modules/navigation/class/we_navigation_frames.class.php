@@ -251,7 +251,7 @@ function setTab(tab) {
 			') . $out;
 		}
 
-		$body = we_html_element::htmlBody(array("class" => "weEditorBody", 'onLoad' => 'loaded=1;'), we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js?' . WE_VERSION) .
+		$body = we_html_element::htmlBody(array("class" => "weEditorBody", 'onload' => 'loaded=1;'), we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js?' . WE_VERSION) .
 				we_html_element::htmlForm(array('name' => 'we_form', 'onsubmit' => 'return false'), $this->getHTMLProperties()
 				)
 		);
@@ -1345,7 +1345,7 @@ function selectItem() {
 
 		$_body = we_html_element::htmlBody(
 				array(
-				"class" => "weDialogBody", "onLoad" => "loaded=1;"
+				"class" => "weDialogBody", "onload" => "loaded=1;"
 				), we_html_element::htmlForm(
 					array(
 					"name" => "we_form", "onsubmit" => "return false"
@@ -1785,7 +1785,7 @@ function ' . $prefix . 'setLinkSelection(value){
 					"marginheight" => 0,
 					"leftmargin" => 0,
 					"topmargin" => 0,
-					"onLoad" => "document.we_form.makeNewDoc.checked=" . $this->topFrame . ".makeNewDoc;"
+					"onload" => "document.we_form.makeNewDoc.checked=" . $this->topFrame . ".makeNewDoc;"
 					), we_html_element::htmlForm(array(), $table2->getHtml())));
 	}
 

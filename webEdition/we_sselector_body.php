@@ -131,7 +131,7 @@ function _cutText($text, $l){
 </script>
 
 </head>
-<body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" onLoad="doScrollTo();">
+<body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" onload="doScrollTo();">
 	<form name="we_form" target="fscmd" action="we_sselector_cmd.php" method="post" onsubmit="return false;">
 		<table border="0" cellpadding="0" cellspacing="0" width="100%">
 

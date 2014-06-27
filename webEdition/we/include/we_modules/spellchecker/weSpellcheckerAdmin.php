@@ -321,7 +321,7 @@ $_applet_code2 = we_html_element::htmlApplet(array(
 
 </head>
 
-<body onLoad="loadTable()" class="weDialogBody">
+<body onload="loadTable()" class="weDialogBody">
 
 	<?php print $tabsBody; ?>
 

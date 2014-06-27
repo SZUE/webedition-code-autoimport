@@ -100,7 +100,7 @@ echo we_html_tools::getHtmlTop();
 	//-->
 </script>
 </head>
-<frameset onLoad="_EditorFrame.initEditorFrameData({'EditorIsLoading': false});" rows="40,*,40" framespacing="0" border="0" frameborder="NO">
+<frameset onload="_EditorFrame.initEditorFrameData({'EditorIsLoading': false});" rows="40,*,40" framespacing="0" border="0" frameborder="NO">
 
 	<frame src="<?php print WEBEDITION_DIR . "we/include/we_seem/"; ?>we_SEEM_openExtDoc_header.php?filepath=<?php print urlencode($_url); ?>&url=<?php print $newUrl ?>" name="extDocHeader" noresize scrolling="no">
 	<frame onload="if (openedWithWE == 0) {

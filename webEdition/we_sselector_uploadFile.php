@@ -101,7 +101,7 @@ $content = we_html_tools::htmlDialogLayout($content, g_l('newFile', '[import_Fil
 //-->
 </script>
 </head>
-<body class="weDialogBody" onLoad="self.focus();"><center>
+<body class="weDialogBody" onload="self.focus();"><center>
 	<input type="hidden" name="pat" value="<?php echo $path; ?>" />
 	<form method="post" enctype="multipart/form-data" name="we_form">
 		<?php echo $content; ?>

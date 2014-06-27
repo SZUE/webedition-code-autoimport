@@ -352,7 +352,7 @@ function startStep(){
 	top.busy.location="' . $this->frameset . '?pnt=busy&step=1";
 }');
 
-		$body = we_html_element::htmlBody(array("class" => "weDialogBody", "onLoad" => "startStep()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_multiIconBox::getHTML("backup_options", "100%", $parts, 30, "", -1, "", "", false, g_l('backup', "[step1]"))
+		$body = we_html_element::htmlBody(array("class" => "weDialogBody", "onload" => "startStep()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_multiIconBox::getHTML("backup_options", "100%", $parts, 30, "", -1, "", "", false, g_l('backup', "[step1]"))
 				)
 		);
 		$head = we_html_tools::getHtmlInnerHead(g_l('backup', "[wizard_title]")) . $js . STYLESHEET;
@@ -387,7 +387,7 @@ self.focus();
 			array("headline" => "", "html" => we_html_forms::radiobutton("import_upload", false, "import_from", g_l('backup', "[import_from_local]")), "space" => 0, "noline" => 1)
 		);
 
-		$body = we_html_element::htmlBody(array("class" => "weDialogBody", "onLoad" => "startStep();"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHidden(array("name" => "pnt", "value" => "body")) .
+		$body = we_html_element::htmlBody(array("class" => "weDialogBody", "onload" => "startStep();"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHidden(array("name" => "pnt", "value" => "body")) .
 					we_html_element::htmlHidden(array("name" => "step", "value" => 3)) .
 					we_html_multiIconBox::getHTML("backup_options", "100%", $parts, 30, "", -1, "", "", false, g_l('backup', "[step2]"))
 				)
@@ -712,7 +712,7 @@ self.focus();');
 				array("name" => "we_form", "method" => "post", "action" => $this->frameset, "target" => "cmd")
 			);
 
-		$body = we_html_element::htmlBody(array("class" => "weDialogBody", "onLoad" => "startStep();"), we_html_element::htmlForm($form_attribs, we_html_element::htmlHidden(array("name" => "pnt", "value" => "cmd")) .
+		$body = we_html_element::htmlBody(array("class" => "weDialogBody", "onload" => "startStep();"), we_html_element::htmlForm($form_attribs, we_html_element::htmlHidden(array("name" => "pnt", "value" => "cmd")) .
 					we_html_element::htmlHidden(array("name" => "cmd", "value" => "import")) .
 					we_html_element::htmlHidden(array("name" => "step", "value" => 3)) .
 					we_html_element::htmlHidden(array("name" => "MAX_FILE_SIZE", "value" => $maxsize)) .
@@ -995,7 +995,7 @@ function startStep(){
 }');
 
 		$head = we_html_tools::getHtmlInnerHead(g_l('backup', "[wizard_title_export]")) . $js . STYLESHEET;
-		$body = we_html_element::htmlBody(array('class' => 'weDialogBody', 'onLoad' => 'startStep();'), we_html_element::htmlForm(array('name' => 'we_form', 'method' => 'post'), we_html_tools::htmlDialogLayout($content, g_l('backup', '[export_step2]'))
+		$body = we_html_element::htmlBody(array('class' => 'weDialogBody', 'onload' => 'startStep();'), we_html_element::htmlForm(array('name' => 'we_form', 'method' => 'post'), we_html_tools::htmlDialogLayout($content, g_l('backup', '[export_step2]'))
 				)
 		);
 
