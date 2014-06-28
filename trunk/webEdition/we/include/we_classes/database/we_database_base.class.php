@@ -624,6 +624,9 @@ abstract class we_database_base{
 	static function arraySetter(array $arr, $imp = ','){
 		$ret = array();
 		foreach($arr as $key => $val){
+			if($key === ''){
+				continue;
+			}
 			$escape = !(is_bool($val));
 			if(is_array($val) && sql_function($val)){
 				$val = $val['val'];
