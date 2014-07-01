@@ -39,7 +39,10 @@ class weTagData_choiceAttribute extends weTagDataAttribute{
 	 * @param array $options
 	 * @param boolean $required
 	 */
-	function __construct($name, array $options = array(), $required = false, $multiple = true, $module = '', $description = '', $deprecated = false){
+	function __construct($name, $options = array(), $required = false, $multiple = true, $module = '', $description = '', $deprecated = false){
+		if(!is_array($options)){
+			return;
+		}
 
 		parent::__construct($name, $required, $module, $description, $deprecated);
 		$this->Options = parent::getUseOptions($options);
