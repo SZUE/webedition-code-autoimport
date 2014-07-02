@@ -270,11 +270,12 @@ class we_document extends we_root{
 	function formNavigation(){
 		$isSee = $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE;
 		$navItems = $this->getNavigationItems();
+		$addbut = we_html_button::create_button('add', "javascript:we_cmd('module_navigation_edit_navi',0)", true, 100, 22, '', '', (permissionhandler::hasPerm('EDIT_NAVIGATION') && $this->ID && $this->Published) ? false : true, false);
+
 		if(permissionhandler::hasPerm('EDIT_NAVIGATION') && $isSee){
 			$delallbut = we_html_button::create_button('delete_all', "javascript:if(confirm('" . g_l('navigation', '[dellall_question]') . "')) we_cmd('delete_all_navi')", true, 0, 0, "", "", (permissionhandler::hasPerm('EDIT_NAVIGATION') && $navItems) ? false : true);
-			$addbut = we_html_button::create_button('add', "javascript:we_cmd('module_navigation_edit_navi',0)", true, 100, 22, '', '', (permissionhandler::hasPerm('EDIT_NAVIGATION') && $this->ID && $this->Published) ? false : true, false);
 		} else {
-			$addbut = $delallbut = '';
+			$delallbut = '';
 		}
 		$navis = new MultiFileChooser(508, $navItems, 'delete_navi', we_html_button::create_button_table(array($delallbut, $addbut)), "module_navigation_edit_navi", "Icon,Path", NAVIGATION_TABLE);
 		$navis->extraDelFn = 'setScrollTo();';
@@ -365,17 +366,17 @@ class we_document extends we_root{
 			$_naviItem->save();
 			$_naviItem->setOrdn($_ord);
 			// replace or set new item in the multi selector
-			/*if($id && !$rename){
-				foreach($navis as $_k => $_v){
-					if($_old_path == $_v){
-						$navis[$_k] = $_new_path;
-					}
-				}
-			} else {
-				$navis[] = $_new_path;
-			}
+			/* if($id && !$rename){
+			  foreach($navis as $_k => $_v){
+			  if($_old_path == $_v){
+			  $navis[$_k] = $_new_path;
+			  }
+			  }
+			  } else {
+			  $navis[] = $_new_path;
+			  }
 
-			$this->NavigationItems = makeCSVFromArray($navis, true);*/
+			  $this->NavigationItems = makeCSVFromArray($navis, true); */
 		}
 	}
 
@@ -410,7 +411,7 @@ class we_document extends we_root{
 			}
 		}
 
-	//	$this->NavigationItems = makeCSVFromArray($navis, true);
+		//	$this->NavigationItems = makeCSVFromArray($navis, true);
 	}
 
 	/*
