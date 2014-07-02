@@ -255,7 +255,7 @@ $GLOBALS['configs'] = array(
 		'editorAutoIndent' => array(we_base_request::BOOL, true),
 	),
 	'other' => array(
-		'formmail_values' => array(we_base_request::RAW, '', 'FORMMAIL'),
+		'formmail_values' => array(we_base_request::RAW_CHECKED, '', 'FORMMAIL'),
 		'formmail_deleted' => array(we_base_request::RAW, '', 'FORMMAIL'),
 		'useproxy' => array(we_base_request::BOOL, false),
 		'proxyhost' => array(we_base_request::URL, ''),
