@@ -582,9 +582,6 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 					} else if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 4) && (!$wf_flag)){
 
 						$we_doc->makeSameNew();
-						if(isset($we_doc->NavigationItems)){
-							$we_doc->NavigationItems = '';
-						}
 						$we_JavaScript .= "_EditorFrame.getDocumentReference().frames[0].we_setPath('" . $we_doc->Path . "','" . $we_doc->Text . "', '" . $we_doc->ID . "');";
 //	switch to propertiy page, when user is allowed to do so.
 						switch($_SESSION['weS']['we_mode']){

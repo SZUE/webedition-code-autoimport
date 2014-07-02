@@ -94,7 +94,7 @@ if($_needPerm && !permissionhandler::hasPerm($_needPerm)){
 }
 
 $we_doc->InWebEdition = true;
-$we_doc->i_loadNavigationItems();
+//$we_doc->i_loadNavigationItems();
 
 //	check template for hidePages
 $we_doc->setDocumentControlElements();
