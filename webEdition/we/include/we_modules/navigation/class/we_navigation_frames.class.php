@@ -76,9 +76,9 @@ class we_navigation_frames extends weModuleFrames{
 			we_main_headermenu::css();
 
 		$tab = we_base_request::_(we_base_request::STRING, 'tab');
-		$sid = we_base_request::_(we_base_request::STRING, 'sid');
-		$extraUrlParams = $tab !== false ? '&tab=' . $tab : '' . $sid !== false ? '&sid=' . $sid : '';
-
+		$sid = we_base_request::_(we_base_request::STRING, 'sid', false);
+		$extraUrlParams = ($tab !== false ? '&tab=' . $tab : '' ) . ($sid !== false ? '&sid=' . $sid : '');
+		
 		return parent::getHTMLFrameset($extraHead, $extraUrlParams);
 	}
 
