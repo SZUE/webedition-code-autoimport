@@ -42,7 +42,7 @@ class we_document extends we_root{
 	protected $oldCategory = '';
 	var $IsSearchable = 0;
 	var $InGlossar = 0;
-	var $NavigationItems = '';
+	//var $NavigationItems = '';
 	private $DocStream = '';
 	public $parseFile = 1;
 
@@ -269,16 +269,16 @@ class we_document extends we_root{
 
 	function formNavigation(){
 		$isSee = $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE;
-
+		$navItems = $this->getNavigationItems();
 		if(permissionhandler::hasPerm('EDIT_NAVIGATION') && $isSee){
-			$delallbut = we_html_button::create_button('delete_all', "javascript:if(confirm('" . g_l('navigation', '[dellall_question]') . "')) we_cmd('delete_all_navi')", true, 0, 0, "", "", (permissionhandler::hasPerm('EDIT_NAVIGATION') && $this->NavigationItems) ? false : true);
+			$delallbut = we_html_button::create_button('delete_all', "javascript:if(confirm('" . g_l('navigation', '[dellall_question]') . "')) we_cmd('delete_all_navi')", true, 0, 0, "", "", (permissionhandler::hasPerm('EDIT_NAVIGATION') && $navItems) ? false : true);
 			$addbut = we_html_button::create_button('add', "javascript:we_cmd('module_navigation_edit_navi',0)", true, 100, 22, '', '', (permissionhandler::hasPerm('EDIT_NAVIGATION') && $this->ID && $this->Published) ? false : true, false);
 		} else {
 			$addbut = $delallbut = '';
 		}
-		$navis = new MultiFileChooser(508, $this->NavigationItems, 'delete_navi', we_html_button::create_button_table(array($delallbut, $addbut)), "module_navigation_edit_navi", "Icon,Path", NAVIGATION_TABLE);
+		$navis = new MultiFileChooser(508, $navItems, 'delete_navi', we_html_button::create_button_table(array($delallbut, $addbut)), "module_navigation_edit_navi", "Icon,Path", NAVIGATION_TABLE);
 		$navis->extraDelFn = 'setScrollTo();';
-		$NoDelNavis = makeArrayFromCSV($this->NavigationItems);
+		$NoDelNavis = $navItems;
 		foreach($NoDelNavis as $_path){
 			$_id = path_to_id($_path, NAVIGATION_TABLE);
 			$_naviItem = new we_navigation_navigation($_id);
@@ -325,7 +325,7 @@ class we_document extends we_root{
 	function addNavi($id, $text, $parentid, $ordn){
 		$text = urldecode($text); //Bug #3769
 		if($this->ID){
-			$navis = makeArrayFromCSV($this->NavigationItems);
+			//$navis = $this->getNavigationItems();
 
 			if(is_numeric($ordn)){
 				$ordn--;
@@ -365,7 +365,7 @@ class we_document extends we_root{
 			$_naviItem->save();
 			$_naviItem->setOrdn($_ord);
 			// replace or set new item in the multi selector
-			if($id && !$rename){
+			/*if($id && !$rename){
 				foreach($navis as $_k => $_v){
 					if($_old_path == $_v){
 						$navis[$_k] = $_new_path;
@@ -375,13 +375,13 @@ class we_document extends we_root{
 				$navis[] = $_new_path;
 			}
 
-			$this->NavigationItems = makeCSVFromArray($navis, true);
+			$this->NavigationItems = makeCSVFromArray($navis, true);*/
 		}
 	}
 
 	function delNavi($path){
 		$path = urldecode($path); //Bug #3816
-		$navis = makeArrayFromCSV($this->NavigationItems);
+		$navis = $this->getNavigationItems();
 		if(in_array($path, $navis)){
 			$pos = array_search($path, $navis);
 			if($pos !== false || $pos == '0'){
@@ -393,11 +393,11 @@ class we_document extends we_root{
 				}
 			}
 		}
-		$this->NavigationItems = makeCSVFromArray($navis, true);
+		//$this->NavigationItems = makeCSVFromArray($navis, true);
 	}
 
 	function delAllNavi(){
-		$navis = makeArrayFromCSV($this->NavigationItems);
+//		$navis = makeArrayFromCSV($this->NavigationItems);
 		foreach($navis as $_path){
 			$_id = path_to_id($_path, NAVIGATION_TABLE);
 			$_naviItem = new we_navigation_navigation($_id);
@@ -410,7 +410,7 @@ class we_document extends we_root{
 			}
 		}
 
-		$this->NavigationItems = makeCSVFromArray($navis, true);
+	//	$this->NavigationItems = makeCSVFromArray($navis, true);
 	}
 
 	/*
@@ -713,7 +713,7 @@ class we_document extends we_root{
 	// reverse function to we_init_sessDat
 	function saveInSession(&$save){
 		parent::saveInSession($save);
-		$save[2] = $this->NavigationItems;
+		//$save[2] = $this->NavigationItems;
 	}
 
 	// reverse function to saveInSession !!!
@@ -729,11 +729,11 @@ class we_document extends we_root{
 				$this->To = mktime($hour, $min, 0, $month, $day, $year);
 			}
 		}
-		if(isset($sessDat[2])){
-			$this->NavigationItems = $sessDat[2];
-		} else {
-			$this->i_loadNavigationItems();
-		}
+		/* if(isset($sessDat[2])){
+		  $this->NavigationItems = $sessDat[2];
+		  } else {
+		  $this->i_loadNavigationItems();
+		  } */
 
 
 		if(we_base_request::_(we_base_request::INT, 'wecf_mode') !== false){
@@ -1625,6 +1625,14 @@ class we_document extends we_root{
 		}
 
 		return preg_replace('/\<a>(.*)\<\/a>/siU', '\1', $text);
+	}
+
+	private function getNavigationItems(){
+		if($this->Table == FILE_TABLE && $this->ID && $this->InWebEdition){
+			$this->DB_WE->query('SELECT Path FROM ' . NAVIGATION_TABLE . ' WHERE ((Selection="' . we_navigation_navigation::SELECTION_STATIC . '" AND SelectionType="' . we_navigation_navigation::STPYE_DOCLINK . '") OR (IsFolder=1)) AND LinkID=' . intval($this->ID));
+			return $this->DB_WE->getAll(true);
+		}
+		return array();
 	}
 
 }

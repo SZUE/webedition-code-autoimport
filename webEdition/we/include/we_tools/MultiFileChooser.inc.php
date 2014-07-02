@@ -47,8 +47,7 @@ class MultiFileChooser extends MultiDirChooser{
 
 
 		$this->nr = 0;
-		$ids = (substr($this->ids, 0, 1) == ",") ? substr($this->ids, 1, strlen($this->ids) - 2) : $this->ids;
-		$idArr = makeArrayFromCSV($this->ids);
+		$idArr = (is_array($this->ids) ? $this->ids : explode(',', trim($this->ids, ',')));
 		$c = 1;
 		if($idArr){
 			foreach($idArr as $id){
@@ -82,12 +81,11 @@ class MultiFileChooser extends MultiDirChooser{
 						$table->setCol($c, 0, array(), we_html_element::htmlImg(array("src" => ICON_DIR . (@is_dir($id) ? "folder" : "link") . ".gif", "width" => 16, "height" => 18)));
 						$table->setCol($c, 1, array("class" => $this->css), $id);
 					}
-				}else{
-						$trash = '';
+				} else {
+					$trash = '';
 
-						$table->setCol($c, 0, array(), we_html_element::htmlImg(array("src" => ICON_DIR . (@is_dir($id) ? "folder" : "link") . ".gif", "width" => 16, "height" => 18)));
-						$table->setCol($c, 1, array("class" => $this->css), $id);
-
+					$table->setCol($c, 0, array(), we_html_element::htmlImg(array("src" => ICON_DIR . (@is_dir($id) ? "folder" : "link") . ".gif", "width" => 16, "height" => 18)));
+					$table->setCol($c, 1, array("class" => $this->css), $id);
 				}
 
 

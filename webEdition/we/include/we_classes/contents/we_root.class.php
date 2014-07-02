@@ -773,11 +773,11 @@ abstract class we_root extends we_class{
 		if(isset($sessDat[1])){
 			$this->elements = $sessDat[1];
 		}
-		if(isset($sessDat[2])){
+/*		if(isset($sessDat[2])){
 			$this->NavigationItems = $sessDat[2];
 		} else {
 			$this->i_loadNavigationItems();
-		}
+		}*/
 
 		$this->Name = md5(uniqid(__FUNCTION__, true));
 		return true;
@@ -1209,13 +1209,7 @@ abstract class we_root extends we_class{
 		}
 	}
 
-	function i_loadNavigationItems(){
-		if($this->Table == FILE_TABLE && $this->ID && $this->InWebEdition){
-			$this->DB_WE->query('SELECT Path FROM ' . NAVIGATION_TABLE . ' WHERE ((Selection="static" AND SelectionType="docLink") OR (IsFolder=1)) AND LinkID=' . intval($this->ID));
-			$this->NavigationItems = makeCSVFromArray($this->DB_WE->getAll(true), true);
-		}
-	}
-
+	
 	/**
 	 * Gets the navigation folders for the current document
 	 *
