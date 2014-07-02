@@ -132,6 +132,7 @@ abstract class we_autoloader{
 			'we_widget' => 'we_widget.inc.php',
 			'XML_Parser_Error' => 'Parser.php',
 			'XML_Parser' => 'Parser.php',
+			'weToolLookup' => 'tools/we_tool_lookup.class.php',
 		),
 		'we_modules' => array(
 			'we_class_folder' => 'object/we_class_folder.class.php',
