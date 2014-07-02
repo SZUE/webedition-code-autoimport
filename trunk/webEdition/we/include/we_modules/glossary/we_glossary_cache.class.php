@@ -394,8 +394,8 @@ if (window.screen) {
 				}
 			}
 			//make sure we found a whole word!
-			if($full){
-				$content[$Type]['-(^|\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~])(' . preg_quote($Text, '-') . ')(\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~]|$)-'] = '${1}' . $prefix . ($Tag ? '${2}' : '') . $postfix . '${3}';
+			if($full){//no quotes - they're used for attributes
+				$content[$Type]['-(^|\s|[!#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~])(' . preg_quote($Text, '-') . ')(\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~]|$)-'] = '${1}' . $prefix . ($Tag ? '${2}' : '') . $postfix . '${3}';
 			} else {
 				$content[$Type]['-(' . preg_quote($Text, '-') . ')-'] = $prefix . ($Tag ? '${2}' : '') . $postfix;
 			}
@@ -419,7 +419,7 @@ if (window.screen) {
 	 * @return array
 	 */
 	function get($type){
-		if(empty($this->content)){
+		if(!$this->content){
 			$cacheFilename = self::cacheIdToFilename($this->_cacheId);
 
 			if(!file_exists($cacheFilename) || !is_file($cacheFilename)){
