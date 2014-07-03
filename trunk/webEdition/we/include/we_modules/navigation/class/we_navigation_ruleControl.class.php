@@ -81,7 +81,7 @@ class we_navigation_ruleControl{
 
 			case "navigation_edit_rule" :
 				$this->NavigationRule = new we_navigation_rule();
-				$this->NavigationRule->initByID($_REQUEST['ID']);
+				$this->NavigationRule->initByID(we_base_request::_(we_base_request::INT, 'ID'));
 
 				$FolderIDPath = ($this->NavigationRule->FolderID ? id_to_path($this->NavigationRule->FolderID, FILE_TABLE) : '');
 				$ClassIDPath = (defined('OBJECT_TABLE') && $this->NavigationRule->ClassID ? id_to_path($this->NavigationRule->ClassID, OBJECT_TABLE) : '');
@@ -150,8 +150,8 @@ class we_navigation_ruleControl{
 
 			case "get_workspaces" :
 
-				if(defined('OBJECT_TABLE') && $_REQUEST['ClassID']){
-					$_workspaces = $this->getWorkspacesByClassID($_REQUEST['ClassID']);
+				if(defined('OBJECT_TABLE') && ($classid = we_base_request::_(we_base_request::INT, 'ClassID'))){
+					$_workspaces = $this->getWorkspacesByClassID($classid);
 					$optionList = 'optionList.push({"text":"' . g_l('navigation', '[no_entry]') . '","value":"0"});';
 
 					foreach($_workspaces as $key => $value){
@@ -188,13 +188,13 @@ class we_navigation_ruleControl{
 	}
 
 	function processVariables(){
-		if(isset($_REQUEST['CategoriesControl']) && isset($_REQUEST['CategoriesCount'])){
+		if(($name = we_base_request::_(we_base_request::STRING, 'CategoriesControl')) && ($cnt = we_base_request::_(we_base_request::INT, 'CategoriesCount')) !== false){
 			$_categories = array();
 
-			for($i = 0; $i < $_REQUEST['CategoriesCount']; $i++){
-				if(isset($_REQUEST[$_REQUEST['CategoriesControl'] . '_variant0_' . $_REQUEST['CategoriesControl'] . '_item' . $i])){
+			for($i = 0; $i < $cnt; $i++){
+				if(isset($_REQUEST[$name . '_variant0_' . $name . '_item' . $i])){
 
-					$_categories[] = $_REQUEST[$_REQUEST['CategoriesControl'] . '_variant0_' . $_REQUEST['CategoriesControl'] . '_item' . $i];
+					$_categories[] = $_REQUEST[$name . '_variant0_' . $name . '_item' . $i];
 				}
 			}
 
