@@ -32,8 +32,8 @@ $mode = we_base_request::_(we_base_request::INT, 'art', 0);
 $newsletterFrame = new we_newsletter_frames();
 echo $newsletterFrame->getHTMLDocumentHeader($what, $mode);
 
-if(isset($_REQUEST['inid'])){
-	$newsletterFrame->View->newsletter = new we_newsletter_newsletter($_REQUEST['inid']);
+if(($id = we_base_request::_(we_base_request::INT, 'inid')) !== false){
+	$newsletterFrame->View->newsletter = new we_newsletter_newsletter($id);
 } else {
 	switch($what){
 		case 'export_csv_mes':

@@ -1131,7 +1131,7 @@ class we_document extends we_root{
 		$nint = $n . we_base_link::MAGIC_INT_LINK;
 		if($this->getValFromSrc($fn, $nint)){
 			$intID = $this->getValFromSrc($fn, $n . we_base_link::MAGIC_INT_LINK_ID);
-			return f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($intID), 'Path', $db);
+			return f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($intID), '', $db);
 		}
 		return $this->getValFromSrc($fn, $n);
 	}
@@ -1171,7 +1171,7 @@ class we_document extends we_root{
 				if(empty($id)){
 					return '';
 				}
-				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'Path', $db);
+				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), '', $db);
 				$path_parts = pathinfo($path);
 				if($hidedirindex && show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 					$path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';

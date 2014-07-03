@@ -60,7 +60,7 @@ abstract class we_glossary_replace{
 		// get the words to replace
 		$cache = new we_glossary_cache($language);
 		$replace = array(
-			'' => $cache->get(we_glossary_glossary::TYPE_TEXTREPLACE),//text replacement must come first, since othe might generate iritation annotations
+			'' => $cache->get(we_glossary_glossary::TYPE_TEXTREPLACE), //text replacement must come first, since othe might generate iritation annotations
 			'<span ' => $cache->get(we_glossary_glossary::TYPE_FOREIGNWORD),
 			'<abbr ' => $cache->get(we_glossary_glossary::TYPE_ABBREVATION),
 			'<acronym ' => $cache->get(we_glossary_glossary::TYPE_ACRONYM),
@@ -95,7 +95,7 @@ abstract class we_glossary_replace{
 		$replBody = '';
 		$before = '';
 		foreach($pieces as $piece){
-			if($piece[0] != '<' && stripos($before, '<script') === FALSE){
+			if($piece && $piece[0] != '<' && stripos($before, '<script') === FALSE){
 				//this will generate invalid code: $piece = str_replace('&quot;', '"', $piece);
 				foreach($replace as $tag => $words){
 					if($tag == '' || stripos($before, $tag) === FALSE){

@@ -134,7 +134,7 @@ class we_newsletter_frames extends weModuleFrames{
 	 * @return String
 	 */
 	function getHTMLEditorHeader($mode = 0){
-		if(isset($_REQUEST["home"])){
+		if(we_base_request::_(we_base_request::BOOL, "home")){
 			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#F0EFF0"), ""));
 		}
 
@@ -145,10 +145,7 @@ class we_newsletter_frames extends weModuleFrames{
 
 		$textPre = g_l('modules_newsletter', ($group ? '[group]' : '[newsletter]'));
 
-		$textPost = (isset($_REQUEST["txt"]) ?
-				$_REQUEST["txt"] :
-				g_l('modules_newsletter', ($group ? '[new_newsletter_group]' : '[new_newsletter]'))
-			);
+		$textPost = we_base_request::_(we_base_request::STRING, "txt", g_l('modules_newsletter', ($group ? '[new_newsletter_group]' : '[new_newsletter]')));
 
 		$js = we_html_element::jsElement('
 function setTab(tab) {
@@ -215,14 +212,11 @@ top.content.hloaded = 1;
 	 * @return String
 	 */
 	function getHTMLEditorFooter($mode = 0){
-		if(isset($_REQUEST['home'])){
+		if(we_base_request::_(we_base_request::BOOL, 'home')){
 			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#EFF0EF"), ""));
 		}
 
-		$group = 0;
-		if(isset($_REQUEST["group"])){
-			$group = $_REQUEST["group"];
-		}
+		$group = we_base_request::_(we_base_request::INT, "group", 0);
 
 		$js = $this->View->getJSFooterCode() .
 			we_html_element::jsElement('
@@ -348,7 +342,10 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 
 	function getHTMLLog(){
 		$content = "";
-		$this->View->db->query('SELECT * FROM ' . NEWSLETTER_LOG_TABLE . ' WHERE NewsletterID=' . $this->View->newsletter->ID . ((isset($_REQUEST['newsletterStatus']) && $_REQUEST['newsletterStatus'] != "") ? ' AND Log =' . $_REQUEST['newsletterStatus'] : '') . ((isset($_REQUEST['newsletterStartTime']) && isset($_REQUEST['newsletterEndTime']) && $_REQUEST['newsletterStartTime'] > 0 && $_REQUEST['newsletterEndTime'] > 0) ? ' AND LogTime BETWEEN ' . $_REQUEST['newsletterStartTime'] . ' AND ' . $_REQUEST['newsletterEndTime'] : '') . ' ORDER BY LogTime DESC');
+		$start = we_base_request::_(we_base_request::INT, 'newsletterStartTime', 0);
+		$end = we_base_request::_(we_base_request::INT, 'newsletterEndTime', 0);
+		$status = we_base_request::_(we_base_request::INT, 'newsletterStatus');
+		$this->View->db->query('SELECT * FROM ' . NEWSLETTER_LOG_TABLE . ' WHERE NewsletterID=' . $this->View->newsletter->ID . ($status !== false ? ' AND Log=' . $status : '') . ($start && $end ? ' AND LogTime BETWEEN ' . $start . ' AND ' . $end : '') . ' ORDER BY LogTime DESC');
 
 		while($this->View->db->next_record()){
 			$log = g_l('modules_newsletter', '[' . $this->View->db->f("Log") . ']');
@@ -479,9 +476,8 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 	}
 
 	function getHTMLCmd(){
-		if(isset($_REQUEST["pid"])){
-			$pid = $_REQUEST["pid"];
-		} else {
+		$pid = we_base_request::_(we_base_request::INT, 'pid');
+		if($pid === false){
 			exit;
 		}
 
@@ -616,12 +612,9 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 
 		$closeflag = false;
 
-		if(isset($_REQUEST["ncmd"])){
-
-			if($_REQUEST["ncmd"] == "save_settings"){
-				$this->View->processCommands();
-				$closeflag = true;
-			}
+		if(we_base_request::_(we_base_request::STRING, "ncmd") == "save_settings"){
+			$this->View->processCommands();
+			$closeflag = true;
 		}
 
 
@@ -1258,7 +1251,7 @@ window.onload=extraInit;');
 	 * @return unknown
 	 */
 	function getHTMLProperties(){
-		if(isset($_REQUEST['home']) && $_REQUEST['home']){
+		if(we_base_request::_(we_base_request::BOOL, 'home')){
 			$GLOBALS['we_print_not_htmltop'] = true;
 			$GLOBALS['we_head_insert'] = $this->View->getJSProperty();
 			$GLOBALS['we_body_insert'] = we_html_element::htmlForm(array('name' => 'we_form'), $this->View->getHiddens(array('ncmd' => 'home')) . $this->View->htmlHidden("home", 0));
@@ -1445,7 +1438,7 @@ function changeFieldValue(val,valueField) {
 			$$v = (isset($_REQUEST[$k]) ?
 					$_REQUEST[$k] :
 					($v == "htmlmail" ?
-						f('SELECT  pref_value FROM ' . NEWSLETTER_PREFS_TABLE . " WHERE pref_name='default_htmlmail'", 'pref_value', $this->db) :
+						f('SELECT  pref_value FROM ' . NEWSLETTER_PREFS_TABLE . " WHERE pref_name='default_htmlmail'", '', $this->db) :
 						''));
 		}
 
@@ -1535,17 +1528,8 @@ function changeFieldValue(val,valueField) {
 	}
 
 	function getHTMLPreview(){
-		$gview = 0;
-
-		if(isset($_REQUEST["gview"])){
-			$gview = $_REQUEST["gview"];
-		}
-
-		$hm = 0;
-
-		if(isset($_REQUEST["hm"])){
-			$hm = $_REQUEST["hm"];
-		}
+		$gview = we_base_request::_(we_base_request::INT, "gview", 0);
+		$hm = we_base_request::_(we_base_request::INT, "hm", 0);
 
 		$content = '';
 		$count = count($this->View->newsletter->blocks);
@@ -1559,12 +1543,12 @@ function changeFieldValue(val,valueField) {
 
 
 		if(!$hm){
-			print '<html><head></head><body><form>
+			echo '<html><head></head><body><form>
 							<textarea name="foo" style="width:100%;height:95%" cols="80" rows="40">' .
 				oldHtmlspecialchars(trim($content)) .
 				'</textarea></form></body></html>';
 		} else {
-			print $content;
+			echo $content;
 		}
 	}
 
