@@ -787,11 +787,12 @@ failure: function(o) {
 			exit;
 		}
 
-		if(isset($_REQUEST['sort'])){
-			$sort = ($_REQUEST['sort'] == g_l('modules_customer', '[no_sort]') ? 0 : 1);
+		$sortField = we_base_request::_(we_base_request::STRING, 'sort');
+		if($sortField !== false){
+			$sort = ($sortField == g_l('modules_customer', '[no_sort]') ? 0 : 1);
 		} elseif($this->View->settings->getSettings("default_sort_view") != g_l('modules_customer', '[no_sort]')){
 			$sort = 1;
-			$_REQUEST["sort"] = $this->View->settings->getSettings('default_sort_view');
+			$sortField = $this->View->settings->getSettings('default_sort_view');
 		} else {
 			$sort = 0;
 		}
@@ -807,7 +808,7 @@ failure: function(o) {
 
 		return $this->getHTMLDocument(
 				we_html_element::htmlBody(array("bgcolor" => "white", "marginwidth" => 10, "marginheight" => 10, "leftmargin" => 10, "topmargin" => 10), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
-						we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree(we_customer_treeLoader::getItems($pid, $offset, $this->Tree->default_segment, ($sort ? $_REQUEST["sort"] : ''))))
+						we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree(we_customer_treeLoader::getItems($pid, $offset, $this->Tree->default_segment, ($sort ? $sortField : ''))))
 					)
 				)
 		);
@@ -956,11 +957,11 @@ failure: function(o) {
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array("class" => "defaultfont"), $default_sort_view_select->getHtml());
 
-		$table->setCol(++$cur, 0, array("class" => "defaultfont"), g_l('modules_customer', '[start_year]') . ":&nbsp;");
+		$table->setCol( ++$cur, 0, array("class" => "defaultfont"), g_l('modules_customer', '[start_year]') . ":&nbsp;");
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array("class" => "defaultfont"), we_html_tools::htmlTextInput("start_year", 32, $this->View->settings->getSettings('start_year'), ''));
 
-		$table->setCol(++$cur, 0, array("class" => "defaultfont"), g_l('modules_customer', '[treetext_format]') . ":&nbsp;");
+		$table->setCol( ++$cur, 0, array("class" => "defaultfont"), g_l('modules_customer', '[treetext_format]') . ":&nbsp;");
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array("class" => "defaultfont"), we_html_tools::htmlTextInput("treetext_format", 32, $this->View->settings->getSettings('treetext_format'), ''));
 
@@ -973,7 +974,7 @@ failure: function(o) {
 		}
 		$default_order->selectOption($this->View->settings->getSettings('default_order'));
 
-		$table->setCol(++$cur, 0, array('class' => 'defaultfont'), g_l('modules_customer', '[default_order]') . ':&nbsp;');
+		$table->setCol( ++$cur, 0, array('class' => 'defaultfont'), g_l('modules_customer', '[default_order]') . ':&nbsp;');
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array('class' => 'defaultfont'), $default_order->getHtml());
 
@@ -982,7 +983,7 @@ failure: function(o) {
 		$default_saveRegisteredUser_register->addOption('true', 'true');
 		$default_saveRegisteredUser_register->selectOption($this->View->settings->getPref('default_saveRegisteredUser_register'));
 
-		$table->setCol(++$cur, 0, array('class' => 'defaultfont'), '&lt;we:saveRegisteredUser register=&quot;');
+		$table->setCol( ++$cur, 0, array('class' => 'defaultfont'), '&lt;we:saveRegisteredUser register=&quot;');
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array('class' => 'defaultfont'), $default_saveRegisteredUser_register->getHtml() . '&quot;/>');
 

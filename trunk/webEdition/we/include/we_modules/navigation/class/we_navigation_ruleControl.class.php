@@ -114,38 +114,37 @@ class we_navigation_ruleControl{
 				}
 
 				$js = "
-						doc = top.frames['content'];
-						doc.clearNavigationForm();
+doc = top.frames['content'];
+doc.clearNavigationForm();
 
-						doc.weInput.setValue('ID', " . $this->NavigationRule->ID . ");
-						doc.weInput.setValue('NavigationName', '" . $this->NavigationRule->NavigationName . "');
+doc.weInput.setValue('ID', " . $this->NavigationRule->ID . ");
+doc.weInput.setValue('NavigationName', '" . $this->NavigationRule->NavigationName . "');
 
-						doc.weInput.setValue('NavigationID', '" . $this->NavigationRule->NavigationID . "');
-						doc.weInput.setValue('NavigationIDPath', '" . $NavigationIDPath . "');
+doc.weInput.setValue('NavigationID', '" . $this->NavigationRule->NavigationID . "');
+doc.weInput.setValue('NavigationIDPath', '" . $NavigationIDPath . "');
 
-						doc.weInput.setValue('FolderID', '" . $this->NavigationRule->FolderID . "');
-						doc.weInput.setValue('FolderIDPath', '" . $FolderIDPath . "');
-
-
-						doc.weSelect.selectOption('SelectionType', '" . $this->NavigationRule->SelectionType . "');
-						doc.switchType('" . $this->NavigationRule->SelectionType . "');
-
-						doc.weInput.setValue('DoctypeID', '" . $this->NavigationRule->DoctypeID . "');
-
-						doc.weInput.setValue('ClassID', '" . $this->NavigationRule->ClassID . "');
-						doc.weInput.setValue('ClassIDPath', '" . $ClassIDPath . "');
-
-						doc.removeAllCats();
-						$catJs
-						doc.categories_edit.showVariant(0);
-						doc.weInput.setValue('CategoriesCount', doc.categories_edit.itemCount);
+doc.weInput.setValue('FolderID', '" . $this->NavigationRule->FolderID . "');
+doc.weInput.setValue('FolderIDPath', '" . $FolderIDPath . "');
 
 
-						var optionList = new Array();
-						$_workspaceList
-						doc.weSelect.setOptions('WorkspaceID', optionList);
-						$_selectWorkspace
-						";
+doc.weSelect.selectOption('SelectionType', '" . $this->NavigationRule->SelectionType . "');
+doc.switchType('" . $this->NavigationRule->SelectionType . "');
+
+doc.weInput.setValue('DoctypeID', '" . $this->NavigationRule->DoctypeID . "');
+
+doc.weInput.setValue('ClassID', '" . $this->NavigationRule->ClassID . "');
+doc.weInput.setValue('ClassIDPath', '" . $ClassIDPath . "');
+
+doc.removeAllCats();
+$catJs
+doc.categories_edit.showVariant(0);
+doc.weInput.setValue('CategoriesCount', doc.categories_edit.itemCount);
+
+
+var optionList = new Array();
+$_workspaceList
+doc.weSelect.setOptions('WorkspaceID', optionList);
+$_selectWorkspace";
 				break;
 
 			case "get_workspaces" :
@@ -192,17 +191,16 @@ class we_navigation_ruleControl{
 			$_categories = array();
 
 			for($i = 0; $i < $cnt; $i++){
-				if(isset($_REQUEST[$name . '_variant0_' . $name . '_item' . $i])){
-
-					$_categories[] = $_REQUEST[$name . '_variant0_' . $name . '_item' . $i];
+				if(($cat = we_base_request::_(we_base_request::STRING, $name . '_variant0_' . $name . '_item' . $i)) !== false){
+					$_categories[] = $cat;
 				}
 			}
 
 			$categoryIds = array();
 
-			for($i = 0; $i < count($_categories); $i++){
-				if(($path = path_to_id($_categories[$i], CATEGORY_TABLE))){
-					$categoryIds[] = path_to_id($_categories[$i], CATEGORY_TABLE);
+			foreach($_categories as $cat){
+				if(($path = path_to_id($cat, CATEGORY_TABLE))){
+					$categoryIds[] = $path;
 				}
 			}
 			$categoryIds = array_unique($categoryIds);

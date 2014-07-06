@@ -371,7 +371,7 @@ top.content.drawEintraege();
 			case 'edit_settings':
 				return we_html_element::jsScript(JS_DIR . 'windows.js') .
 					we_html_element::jsElement('
-					new jsWindow("' . WE_MESSAGING_MODULE_DIR . 'messaging_settings.php?we_transaction=' . $this->transaction . '&mode=' . $_REQUEST['mode'] . '", "messaging_settings",-1,-   1,280,200,true,false,true,false);
+					new jsWindow("' . WE_MESSAGING_MODULE_DIR . 'messaging_settings.php?we_transaction=' . $this->transaction . '&mode=' . we_base_request::_(we_base_request::STRING,'mode') . '", "messaging_settings",-1,-   1,280,200,true,false,true,false);
 					');
 			case 'save_settings':
 				if($ui){

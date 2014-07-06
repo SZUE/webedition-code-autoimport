@@ -56,7 +56,7 @@ switch(we_base_request::_(we_base_request::STRING, 'todo')){
 			$we_doc->searchclass->objsearchField = '';
 			$we_doc->searchclass->objlocation = '';
 		} else {
-			$we_doc->searchclass->removeFilter($_REQUEST['position']);
+			$we_doc->searchclass->removeFilter(we_base_request::_(we_base_request::INT, 'position'));
 		}
 
 		$we_doc->searchclass->searchname = $we_doc->searchclass->objsearch;
@@ -102,29 +102,29 @@ switch(we_base_request::_(we_base_request::STRING, 'todo')){
 	case 'quickchangedate':
 		$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 
-		echo we_html_element::jsElement('top.weEditorFrameController.getDocumentReferenceByTransaction("' . $_SESSION['weS']['we_data'][$we_transaction] . '").frames["3"].location.replace("' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=load_edit_footer&we_transaction=' . $we_transaction . '&we_cmd[7]=' . $_REQUEST["obj_searchField"] . '&we_cmd[6]=' . $obj_search . '");');
+		echo we_html_element::jsElement('top.weEditorFrameController.getDocumentReferenceByTransaction("' . $_SESSION['weS']['we_data'][$we_transaction] . '").frames["3"].location.replace("' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=load_edit_footer&we_transaction=' . $we_transaction . '&we_cmd[7]=' . we_base_request::_(we_base_request::STRING, "obj_searchField") . '&we_cmd[6]=' . $obj_search . '");');
 		break;
 	case 'quickcheckbox':
 		$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 
-		echo we_html_element::jsElement('top.weEditorFrameController.getDocumentReferenceByTransaction("' . $_SESSION['weS']['we_data'][$we_transaction] . '").frames["3"].location.replace("' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=load_edit_footer&we_transaction=' . $we_transaction . '&we_cmd[7]=' . $_REQUEST["obj_searchField"] . '&we_cmd[6]=' . $obj_search . '");');
+		echo we_html_element::jsElement('top.weEditorFrameController.getDocumentReferenceByTransaction("' . $_SESSION['weS']['we_data'][$we_transaction] . '").frames["3"].location.replace("' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=load_edit_footer&we_transaction=' . $we_transaction . '&we_cmd[7]=' . we_base_request::_(we_base_request::STRING, "obj_searchField") . '&we_cmd[6]=' . $obj_search . '");');
 		break;
 	default:
-		if(isset($_REQUEST['obj_searchField'])){
+		if(($objsf = we_base_request::_(we_base_request::STRING, 'obj_searchField')) !== false){
 			//echo $obj_searchField."-_".$obj_search;
 			$we_doc->searchclass->height = 0;
 			$we_doc->searchclass->show = 'AB';
 			$go = we_base_constants::WE_EDITPAGE_CFWORKSPACE;
-
-			$we_doc->searchclass->searchname = array(0 => $_REQUEST['obj_search']);
-			$we_doc->searchclass->searchfield = array(0 => $_REQUEST['obj_searchField']);
+			$obj_search = we_base_request::_(we_base_request::STRING, 'obj_search');
+			$we_doc->searchclass->searchname = array(0 => $obj_search);
+			$we_doc->searchclass->searchfield = array(0 => $objsf);
 			$we_doc->searchclass->searchlocation = ((!empty($objlocation)) ? array(0 => $objlocation) : array(0 => 'CONTAIN'));
 			$we_doc->searchclass->start = 0;
 			$we_doc->searchclass->searchstart = 0;
 			$we_doc->searchclass->setLimit();
 
-			$we_doc->searchclass->objsearch = array(0 => $_REQUEST['obj_search']);
-			$we_doc->searchclass->objsearchField = array(0 => $_REQUEST['obj_searchField']);
+			$we_doc->searchclass->objsearch = array(0 => $obj_search);
+			$we_doc->searchclass->objsearchField = array(0 => $objsf);
 			$we_doc->searchclass->objlocation = ((!empty($objlocation)) ? array(0 => $objlocation) : array(0 => 'CONTAIN'));
 
 			$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
