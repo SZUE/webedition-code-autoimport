@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
+switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){//FIMXE most of the stuff can be handled via session! transfer is a bit complicated due to elements inside documents
 	case 'openCatselector' :
 		$_REQUEST['noChoose'] = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 8);
 	case 'openDirselector' :

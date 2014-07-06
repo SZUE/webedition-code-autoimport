@@ -464,7 +464,7 @@ function closeAllType(){
 
 					if(!$pid){
 						$js.=$this->Tree->topFrame . '.treeData.clear();' .
-							$this->Tree->topFrame . '.treeData.add(new ' . $this->Tree->topFrame . '.rootEntry(\'' . $_REQUEST["pid"] . '\',\'root\',\'root\'));';
+							$this->Tree->topFrame . '.treeData.add(new ' . $this->Tree->topFrame . '.rootEntry(\'' . we_base_request::_(we_base_request::STRING,"pid") . '\',\'root\',\'root\'));';
 					}
 					$js.=$this->Tree->getJSLoadTree($treeItems);
 					$out = we_html_element::jsElement($js);

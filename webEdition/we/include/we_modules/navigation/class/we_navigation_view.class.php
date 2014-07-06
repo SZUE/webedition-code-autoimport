@@ -840,7 +840,7 @@ function submitForm() {
 
 				if(we_base_request::_(we_base_request::BOOL, 'delayCmd')){
 					$js .= we_html_element::jsElement(
-							$this->topFrame . '.we_cmd("' . $_REQUEST['delayCmd'] . '"' . (($dp = we_base_request::_(we_base_request::RAW, 'delayParam')) ? ',"' . $dp . '"' : '' ) . ');
+							$this->topFrame . '.we_cmd("' . we_base_request::_(we_base_request::JS, 'delayCmd') . '"' . (($dp = we_base_request::_(we_base_request::RAW, 'delayParam')) ? ',"' . $dp . '"' : '' ) . ');
 							'
 					);
 					$_REQUEST['delayCmd'] = '';
@@ -1091,8 +1091,8 @@ function submitForm() {
 
 		if(($name = we_base_request::_(we_base_request::STRING, 'CategoriesControl')) && ($cnt = we_base_request::_(we_base_request::INT, 'CategoriesCount')) !== false){
 			for($i = 0; $i < $cnt; $i++){
-				if(isset($_REQUEST[$name . '_variant0_' . $name . '_item' . $i])){
-					$_categories[] = $_REQUEST[$name . '_variant0_' . $name . '_item' . $i];
+				if(($cat = we_base_request::_(we_base_request::STRING, $name . '_variant0_' . $name . '_item' . $i)) !== false){
+					$_categories[] = $cat;
 				}
 			}
 			$this->Model->Categories = $_categories;
@@ -1121,12 +1121,12 @@ function submitForm() {
 
 		if($this->Model->Selection == we_navigation_navigation::SELECTION_DYNAMIC){
 
-			if(isset($_REQUEST['WorkspaceIDClass'])){
-				$this->Model->WorkspaceID = $_REQUEST['WorkspaceIDClass'];
+			if(($wid = we_base_request::_(we_base_request::INT, 'WorkspaceIDClass')) !== false){
+				$this->Model->WorkspaceID = $wid;
 			}
 
-			if(isset($_REQUEST['dynamic_Parameter'])){
-				$this->Model->Parameter = $_REQUEST['dynamic_Parameter'];
+			if(($par = we_base_request::_(we_base_request::URL, 'dynamic_Parameter')) !== false){
+				$this->Model->Parameter = $par;
 			}
 
 			if($this->Model->SelectionType == we_navigation_navigation::STPYE_CATEGORY && isset($_REQUEST['dynamic_Url'])){
@@ -1147,11 +1147,7 @@ function submitForm() {
 
 		if(($page = we_base_request::_(we_base_request::INT, "page")) !== false){
 
-			if($this->Model->IsFolder && $page != 1 && $page != 3){
-				$this->page = 1;
-			} else {
-				$this->page = $page;
-			}
+			$this->page = ($this->Model->IsFolder && $page != 1 && $page != 3 ? 1 : $page);
 		}
 	}
 

@@ -810,10 +810,8 @@ class doclistView{
 			}
 		}
 		if(($loc = we_base_request::_(we_base_request::STRING, 'location'))){
-			$m = 0;
 			foreach($_REQUEST['searchFields'] as $k => $v){
-				$r3[$m] = (isset($loc[$k]) ? $loc[$k] : "disabled");
-				$m++;
+				$r3[] = (isset($loc[$k]) ? $loc[$k] : "disabled");
 			}
 		}
 

@@ -222,11 +222,8 @@ class we_class_folder extends we_folder{
 	function searchProperties(){
 		$DB_WE = new DB_WE();
 
-		if(!isset($_REQUEST['Order'])){
-			$_REQUEST['Order'] = (isset($this->Order) ? $this->Order : 'ModDate DESC');
-		} else {
-			$this->searchclass->Order = $_REQUEST['Order'];
-		}
+		$this->searchclass->Order = we_base_request::_(we_base_request::STRING, 'Order', (isset($this->Order) ? $this->Order : 'ModDate DESC'));
+
 		$this->Order = $_REQUEST['Order'];
 
 		if(($start = we_base_request::_(we_base_request::INT, 'SearchStart'))){

@@ -86,7 +86,7 @@ class taskFragment{
 	 *
 	 * @param      string $name
 	 * @param      int $taskPerFragment
-	 * @param      array $pause
+	 * @param      int $pause
 	 * @param      int $bodyAttributes
 	 * @param      array $initdata
 	 */
@@ -145,7 +145,7 @@ class taskFragment{
 				$attr .= " $k=\"$v\"";
 			}
 		}
-		$tail = "";
+		$tail = "";//FIXME: make this a post request
 		foreach($_REQUEST as $i => $v){
 			if(is_array($v)){
 				foreach($v as $k => $av){
@@ -176,7 +176,7 @@ class taskFragment{
 	 */
 	function printJSReload(){
 		$nextTask = $this->currentTask + $this->taskPerFragment;
-		$tail = "";
+		$tail = "";//FIXME: make this a post request
 		foreach($_REQUEST as $i => $v){
 			if(is_array($v)){
 				foreach($v as $k => $av){
