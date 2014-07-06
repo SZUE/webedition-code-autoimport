@@ -60,7 +60,7 @@ $jsFunction = '
 	}';
 
 // initialise the shopStatusMails Object
-if(isset($_REQUEST['we_cmd']) && $_REQUEST['we_cmd'][0] == 'saveShopStatusMails'){
+if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) == 'saveShopStatusMails'){
 	//p_r($_REQUEST);
 	// initialise the vatRule by request
 	$weShopStatusMails = we_shop_statusMails::initByRequest($_REQUEST);

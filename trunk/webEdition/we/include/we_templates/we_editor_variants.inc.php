@@ -38,11 +38,8 @@ echo STYLESHEET;
 
 		switch($we_doc->ContentType){
 			case we_base_ContentTypes::WEDOCUMENT:
-				include(WE_MODULES_PATH . 'shop/we_editor_variants_webEditionDocument.inc.php');
-				break;
-
 			case 'objectFile':
-				include(WE_MODULES_PATH . 'shop/we_editor_variants_objectFile.inc.php');
+				we_shop_variants::edit(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0),$we_doc);
 				break;
 
 			case we_base_ContentTypes::TEMPLATE:

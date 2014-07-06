@@ -26,7 +26,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 $protect = we_base_moduleInfo::isActive('shop') && we_users_util::canEditModule('shop') ? null : array(false);
 we_html_tools::protect($protect);
 
-$what = (isset($_REQUEST["pnt"])) ? $_REQUEST["pnt"] : "frameset";
+$what = we_base_request::_(we_base_request::STRING,"pnt","frameset");
 
 $weFrame = new we_shop_frames(WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php');
 echo $weFrame->getHTMLDocumentHeader();

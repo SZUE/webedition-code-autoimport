@@ -29,22 +29,18 @@ we_html_tools::protect();
 $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', 0, 3);
 
 $nr = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2);
+$sid = we_base_request::_(we_base_request::STRING, 'SID');
 
 $GLOBALS['we_doc'] = new we_template();
 $GLOBALS['we_doc']->Table = TEMPLATES_TABLE;
 $GLOBALS['we_doc']->we_new();
 
-$filename = 'we_' . $_REQUEST['SID'] . '_Filename';
-$filename = $_REQUEST[$filename];
-
-$ParentID = 'we_' . $_REQUEST['SID'] . '_ParentID';
-$ParentID = $_REQUEST[$ParentID];
-
+$filename = we_base_request::_(we_base_request::FILE, 'we_' . $sid . '_Filename');
 
 $GLOBALS['we_doc']->Filename = $filename;
 $GLOBALS['we_doc']->Extension = '.tmpl';
 $GLOBALS['we_doc']->Icon = 'prog.gif';
-$GLOBALS['we_doc']->setParentID($ParentID);
+$GLOBALS['we_doc']->setParentID(we_base_request::_(we_base_request::INT, 'we_' . $sid . '_ParentID'));
 $GLOBALS['we_doc']->Path = $GLOBALS['we_doc']->ParentPath . (($GLOBALS['we_doc']->ParentPath != '/') ? '/' : '') . $filename . '.tmpl';
 $GLOBALS['we_doc']->ContentType = we_base_ContentTypes::TEMPLATE;
 

@@ -37,18 +37,18 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 		break;
 
 	case 'editShipping':
-		$weShipping = $weShippingControl->getShippingById($_REQUEST['weShippingId']);
+		$weShipping = $weShippingControl->getShippingById(we_base_request::_(we_base_request::STRING,'weShippingId'));
 		break;
 
 	case 'deleteShipping':
-		$weShippingControl->delete($_REQUEST['weShippingId']);
+		$weShippingControl->delete(we_base_request::_(we_base_request::STRING,'weShippingId'));
 		break;
 
 	case 'saveShipping':
 		$weShippingControl->setByRequest($_REQUEST);
 		$weShippingControl->save();
-		if(isset($_REQUEST['weShippingId'])){
-			$weShipping = $weShippingControl->getShippingById($_REQUEST['weShippingId']);
+		if(($sid=we_base_request::_(we_base_request::STRING,'weShippingId'))!==false){
+			$weShipping = $weShippingControl->getShippingById($sid);
 		}
 		break;
 }
@@ -72,7 +72,6 @@ $jsFunction = '
 
 		function IsDigit(e) {
 			var key;
-
 ' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'key = e.charCode;' : 'key = event.keyCode;') . '
 
 			return ( (key == 46) || ((key >= 48) && (key <= 57)) || (key == 0) || (key == 13)  || (key == 8) || (key <= 63235 && key >= 63232) || (key == 63272));
@@ -87,48 +86,47 @@ $jsFunction = '
 		}
 
 		function we_cmd(){
+		var args = "";
+		var url = "' . WEBEDITION_DIR . 'we_cmd.php?";
+		for(var i = 0; i < arguments.length; i++){
+				url += "we_cmd["+i+"]="+escape(arguments[i]);
+				if(i < (arguments.length - 1)){
+						url += "&";
+				}
+		}
 
-            var args = "";
-            var url = "' . WEBEDITION_DIR . 'we_cmd.php?";
-            for(var i = 0; i < arguments.length; i++){
-                url += "we_cmd["+i+"]="+escape(arguments[i]);
-                if(i < (arguments.length - 1)){
-                    url += "&";
-                }
-            }
+		switch (arguments[0]) {
 
-            switch (arguments[0]) {
+			case "save":
+				we_submitForm("' . $_SERVER['SCRIPT_NAME'] . '");
+			break;
 
-            	case "save":
-            		we_submitForm("' . $_SERVER['SCRIPT_NAME'] . '");
-            	break;
+			case "close":
+				window.close();
+			break;
 
-            	case "close":
-            		window.close();
-            	break;
+			case "delete":
+				if (confirm("' . g_l('modules_shop', '[delete][shipping]') . '")) {
+					var we_cmd_field = document.getElementById("we_cmd_field");
+					we_cmd_field.value = "deleteShipping";
+					we_submitForm("' . $_SERVER['SCRIPT_NAME'] . '");
 
-            	case "delete":
-            		if (confirm("' . g_l('modules_shop', '[delete][shipping]') . '")) {
-            			var we_cmd_field = document.getElementById("we_cmd_field");
-            			we_cmd_field.value = "deleteShipping";
-            			we_submitForm("' . $_SERVER['SCRIPT_NAME'] . '");
+				}
+			break;
 
-            		}
-            	break;
+			case "newEntry":
+				document.location = "' . $_SERVER['SCRIPT_NAME'] . '?we_cmd[0]=newShipping";
+			break;
 
-            	case "newEntry":
-            		document.location = "' . $_SERVER['SCRIPT_NAME'] . '?we_cmd[0]=newShipping";
-            	break;
+			case "addShippingCostTableRow":
+				addShippingCostTableRow();
+			break;
 
-            	case "addShippingCostTableRow":
-            		addShippingCostTableRow();
-            	break;
+			case "deleteShippingCostTableRow":
+				deleteShippingCostTableRow(arguments[1]);
+			break;
 
-            	case "deleteShippingCostTableRow":
-            		deleteShippingCostTableRow(arguments[1]);
-            	break;
-
-            	default :
+			default :
 				break;
             }
         }

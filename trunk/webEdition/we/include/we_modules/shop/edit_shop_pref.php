@@ -50,13 +50,19 @@ foreach($customerTableFields as $tblField){
 if($_REQUEST["format"]){ //	save data in arrays ..
 	$_REQUEST['classID'] = isset($_REQUEST['classID']) ? trim($_REQUEST['classID']) : '';
 
-	$DB_WE->query('REPLACE ' . WE_SHOP_PREFS_TABLE . ' SET strDateiname = "shop_pref",strFelder= "' . $DB_WE->escape($_REQUEST["waehr"]) . '|' . $DB_WE->escape($_REQUEST["mwst"]) . '|' . $DB_WE->escape($_REQUEST["format"]) . '|' . $DB_WE->escape($_REQUEST["classID"]) . '|' . $DB_WE->escape($_REQUEST["pag"]) . '"');
+	$DB_WE->query('REPLACE ' . WE_SHOP_PREFS_TABLE . ' SET ' . we_database_base::arraySetter(array(
+			'strDateiname' => "shop_pref",
+			'strFelder' => we_base_request::_(we_base_request::STRING, "waehr") . '|' . we_base_request::_(we_base_request::STRING, "mwst") . '|' . we_base_request::_(we_base_request::RAW, "format") . '|' . we_base_request::_(we_base_request::INT, "classID") . '|' . we_base_request::_(we_base_request::STRING, "pag")
+	)));
 
-	$fields['customerFields'] = we_base_request::_(we_base_request::RAW, 'orderfields', array());
-	$fields['orderCustomerFields'] = we_base_request::_(we_base_request::RAW, 'ordercustomerfields', array());
+	$fields['customerFields'] = we_base_request::_(we_base_request::STRING, 'orderfields', array());
+	$fields['orderCustomerFields'] = we_base_request::_(we_base_request::STRING, 'ordercustomerfields', array());
 
 	// check if field exists
-	$DB_WE->query('REPLACE ' . WE_SHOP_PREFS_TABLE . ' SET strDateiname="edit_shop_properties", strFelder="' . $DB_WE->escape(serialize($fields)) . '"');
+	$DB_WE->query('REPLACE ' . WE_SHOP_PREFS_TABLE . ' SET ' . we_database_base::arraySetter(array(
+			'strDateiname' => "edit_shop_properties",
+			'strFelder' => serialize($fields)
+	)));
 
 	$CLFields['stateField'] = we_base_request::_(we_base_request::RAW, 'stateField', '-');
 	$CLFields['stateFieldIsISO'] = we_base_request::_(we_base_request::STRING, 'stateFieldIsISO', 0);

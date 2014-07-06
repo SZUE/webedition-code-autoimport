@@ -190,8 +190,7 @@ abstract class we_shop_variants{
 				0);
 	}
 
-	public static function insertVariant(&$model, $position){
-
+	private static function insertVariant(&$model, $position){
 		$amount = we_shop_variants::getNumberOfVariants($model);
 
 		// init model->elements if neccessary
@@ -246,7 +245,7 @@ abstract class we_shop_variants{
 		}
 	}
 
-	public static function moveVariant(&$model, $pos, $direction){
+	private static function moveVariant(&$model, $pos, $direction){
 		// check if a move is possible
 		self::changeVariantPosition($pos, ($pos + ($direction == 'up' ? -1 : 1)), $model);
 	}
@@ -292,7 +291,7 @@ abstract class we_shop_variants{
 			(($fieldName = self::getFieldNameFromElemName($name)) ? '_' . self::getFieldNameFromElemName($name) : '');
 	}
 
-	public static function removeVariant(&$model, $delPos){
+	private static function removeVariant(&$model, $delPos){
 		$total = we_shop_variants::getNumberOfVariants($model);
 
 		$lastPos = $total - 1;
@@ -580,11 +579,36 @@ abstract class we_shop_variants{
 					$fieldArr = array_merge($modelelemets, $fieldArr);
 				}
 			}
-			unset($varArr);
-			unset($fieldArr);
+			unset($varArr, $fieldArr);
 		}
 		//
 		return $elements;
+	}
+
+	public static function edit($command, $we_doc){
+		switch($command){
+			case 'shop_insert_variant':
+				self::insertVariant($we_doc, we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1));
+				break;
+			case "shop_move_variant_up":
+				self::moveVariant($we_doc, we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1), 'up');
+				break;
+			case "shop_move_variant_down":
+				self::moveVariant($we_doc, we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1), 'down');
+				break;
+			case "shop_remove_variant":
+				self::removeVariant($we_doc, we_base_request::_(we_base_request::STRING . 'we_cmd', '', 1));
+				break;
+			case "shop_preview_variant":
+				self::correctModelFields($we_doc, false);
+				self::useVariant($we_doc, we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2));
+
+				echo $we_doc->getDocument();
+				exit;
+		}
+		$GLOBALS['we_editmode'] = true;
+
+		echo we_html_multiIconBox::getHTML('', '100%', we_shop_variants::getVariantsEditorMultiBoxArrayObjectFile($we_doc), 30, '', -1, '', '', false);
 	}
 
 }

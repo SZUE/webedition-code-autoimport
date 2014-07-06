@@ -1129,11 +1129,11 @@ function submitForm() {
 				$this->Model->Parameter = $par;
 			}
 
-			if($this->Model->SelectionType == we_navigation_navigation::STPYE_CATEGORY && isset($_REQUEST['dynamic_Url'])){
-				$this->Model->Url = $_REQUEST['dynamic_Url'];
+			if($this->Model->SelectionType == we_navigation_navigation::STPYE_CATEGORY && ($url=we_base_request::_(we_base_request::URL,'dynamic_Url'))!==false){
+				$this->Model->Url = $url;
 				$this->Model->UrlID = we_base_request::_(we_base_request::INT, 'dynamic_UrlID', 0);
-				$this->Model->LinkSelection = $_REQUEST['dynamic_LinkSelection'];
-				$this->Model->CatParameter = $_REQUEST['dynamic_CatParameter'];
+				$this->Model->LinkSelection = we_base_request::_(we_base_request::STRING,'dynamic_LinkSelection');
+				$this->Model->CatParameter = we_base_request::_(we_base_request::STRING,'dynamic_CatParameter');
 			}
 		}
 

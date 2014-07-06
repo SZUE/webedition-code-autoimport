@@ -101,8 +101,8 @@ class we_objectFile extends we_document{
 				$_SESSION['weS']['we_object_session_' . $formname] = array();
 			}
 			$GLOBALS['we_object'][$formname]->we_new();
-			if(isset($_REQUEST['we_editObject_ID']) && $_REQUEST['we_editObject_ID']){
-				$GLOBALS['we_object'][$formname]->initByID(we_base_request::_(we_base_request::INT, 'we_editObject_ID', 0), OBJECT_FILES_TABLE);
+			if(($id = we_base_request::_(we_base_request::INT, 'we_editObject_ID', 0))){
+				$GLOBALS['we_object'][$formname]->initByID($id, OBJECT_FILES_TABLE);
 			} else {
 				$GLOBALS['we_object'][$formname]->TableID = $classID;
 				$GLOBALS['we_object'][$formname]->setRootDirID(true);
@@ -129,8 +129,8 @@ class we_objectFile extends we_document{
 				$GLOBALS['we_object'][$formname]->saveInSession($_SESSION['weS']['we_object_session_' . $formname]);
 			}
 		} else {
-			if(isset($_REQUEST['we_editObject_ID']) && $_REQUEST['we_editObject_ID']){
-				$GLOBALS['we_object'][$formname]->initByID(we_base_request::_(we_base_request::INT, 'we_editObject_ID', 0), OBJECT_FILES_TABLE);
+			if(($id = we_base_request::_(we_base_request::INT, 'we_editObject_ID', 0))){
+				$GLOBALS['we_object'][$formname]->initByID($id, OBJECT_FILES_TABLE);
 			} elseif($session){
 				$GLOBALS['we_object'][$formname]->we_initSessDat($_SESSION['weS']['we_object_session_' . $formname]);
 			}
@@ -146,8 +146,8 @@ class we_objectFile extends we_document{
 		$GLOBALS['we_object'][$formname]->DefArray = empty($GLOBALS['we_object'][$formname]->DefArray) ? $GLOBALS['we_object'][$formname]->getDefaultValueArray() :
 			$GLOBALS['we_object'][$formname]->DefArray; //bug #7426
 
-		if(isset($_REQUEST['we_returnpage'])){
-			$GLOBALS['we_object'][$formname]->setElement('we_returnpage', $_REQUEST['we_returnpage']);
+		if(($ret = we_base_request::_(we_base_request::URL, 'we_returnpage'))){
+			$GLOBALS['we_object'][$formname]->setElement('we_returnpage', $ret);
 		}
 
 		if(isset($_REQUEST['we_ui_' . $formname]) && is_array($_REQUEST['we_ui_' . $formname])){
@@ -2303,8 +2303,8 @@ class we_objectFile extends we_document{
 			$version = new weVersions();
 			$version->save($this);
 		}
-		if(LANGLINK_SUPPORT && isset($_REQUEST["we_" . $this->Name . "_LanguageDocID"]) && $_REQUEST["we_" . $this->Name . "_LanguageDocID"] != 0){
-			$this->setLanguageLink($_REQUEST["we_" . $this->Name . "_LanguageDocID"], 'tblObjectFile', false, true);
+		if(LANGLINK_SUPPORT && ($docid=we_base_request::_(we_base_request::INT,"we_" . $this->Name . "_LanguageDocID"))){
+			$this->setLanguageLink($docid, 'tblObjectFile', false, true);
 		} else {
 			//if language changed, we must delete eventually existing entries in tblLangLink, even if !LANGLINK_SUPPORT!
 			$this->checkRemoteLanguage($this->Table, false);

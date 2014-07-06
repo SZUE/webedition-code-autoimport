@@ -224,7 +224,7 @@ class we_class_folder extends we_folder{
 
 		$this->searchclass->Order = we_base_request::_(we_base_request::STRING, 'Order', (isset($this->Order) ? $this->Order : 'ModDate DESC'));
 
-		$this->Order = $_REQUEST['Order'];
+		$this->Order = we_base_request::_(we_base_request::STRING,'Order');
 
 		if(($start = we_base_request::_(we_base_request::INT, 'SearchStart'))){
 			$this->searchclass->searchstart = $start;
@@ -356,7 +356,7 @@ class we_class_folder extends we_folder{
 		// get Class
 		$classArray = getHash('SELECT * FROM ' . OBJECT_TABLE . ' WHERE Path="' . $DB_WE->escape($this->ClassPath) . '"', $DB_WE);
 
-		if(isset($_REQUEST["do"]) && $_REQUEST["do"] == 'delete'){
+		if(we_base_request::_(we_base_request::STRING,"do") == 'delete'){
 			foreach(array_keys($_REQUEST) as $f){
 				if(substr($f, 0, 3) == "weg"){
 					//$this->query("");
@@ -990,7 +990,7 @@ EOF;
 		foreach(array_keys($_REQUEST) as $f){
 			if(substr($f, 0, 3) == 'weg'){
 				$tid = intval(substr($f, 3));
-				$ofid = f('SELECT OF_ID FROM ' . OBJECT_X_TABLE . intval($classArray['ID']) . ' WHERE ID=' . $tid, 'OF_ID', $DB_WE);
+				$ofid = f('SELECT OF_ID FROM ' . OBJECT_X_TABLE . intval($classArray['ID']) . ' WHERE ID=' . $tid, '', $DB_WE);
 				if(permissionhandler::checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE, $DB_WE)){
 					$DB_WE->query('DELETE FROM ' . OBJECT_X_TABLE . intval($classArray['ID']) . ' WHERE ID=' . $tid);
 					$DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE OID=' . intval($ofid));
@@ -1033,7 +1033,7 @@ for ( frameId in _usedEditors ) {
 
 		foreach(array_keys($_REQUEST) as $f){
 			if(substr($f, 0, 3) == "weg"){
-				$ofid = f('SELECT OF_ID FROM ' . OBJECT_X_TABLE . $this->ClassID . ' WHERE ID=' . substr($f, 3), 'OF_ID', $DB_WE);
+				$ofid = f('SELECT OF_ID FROM ' . OBJECT_X_TABLE . $this->ClassID . ' WHERE ID=' . substr($f, 3), '', $DB_WE);
 				if(permissionhandler::checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE, $DB_WE)){
 					$obj = new we_objectFile();
 					$obj->initByID($ofid, OBJECT_FILES_TABLE);
@@ -1064,7 +1064,7 @@ for ( frameId in _usedEditors ) {
 		$classArray = getHash('SELECT * FROM ' . OBJECT_TABLE . " WHERE Path='" . $this->ClassPath . "'", $DB_WE);
 		foreach(array_keys($_REQUEST) as $f){
 			if(substr($f, 0, 3) == "weg"){
-				$ofid = f('SELECT OF_ID FROM ' . OBJECT_X_TABLE . $classArray['ID'] . ' WHERE ID=' . substr($f, 3), 'OF_ID', $DB_WE);
+				$ofid = f('SELECT OF_ID FROM ' . OBJECT_X_TABLE . $classArray['ID'] . ' WHERE ID=' . substr($f, 3), '', $DB_WE);
 				if(permissionhandler::checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE, $DB_WE)){
 					$obj = new we_objectFile();
 					$obj->initByID($ofid, OBJECT_FILES_TABLE);

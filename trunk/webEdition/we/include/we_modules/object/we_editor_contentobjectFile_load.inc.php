@@ -98,16 +98,16 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 			$table = OBJECT_FILES_TABLE;
 			switch($cmd){
 				case "object_insert_meta_at_object":
-					$we_doc->addMetaToObject($name, $_REQUEST['we_cmd'][3]);
+					$we_doc->addMetaToObject($name, we_base_request::_(we_base_request::INT,'we_cmd',0,3));
 					break;
 				case "object_delete_meta_at_object":
-					$we_doc->removeMetaFromObject($name, $_REQUEST['we_cmd'][3]);
+					$we_doc->removeMetaFromObject($name, we_base_request::_(we_base_request::INT,'we_cmd',0,3));
 					break;
 				case "object_down_meta_at_object":
-					$we_doc->downMetaAtObject($name, $_REQUEST['we_cmd'][3]);
+					$we_doc->downMetaAtObject($name, we_base_request::_(we_base_request::INT,'we_cmd',0,3));
 					break;
 				case "object_up_meta_at_object":
-					$we_doc->upMetaAtObject($name, $_REQUEST['we_cmd'][3]);
+					$we_doc->upMetaAtObject($name, we_base_request::_(we_base_request::INT,'we_cmd',3));
 					break;
 				case "object_change_objectlink":
 					$we_doc->i_getLinkedObjects();

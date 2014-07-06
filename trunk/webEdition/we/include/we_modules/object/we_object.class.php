@@ -564,7 +564,7 @@ class we_object extends we_document{
 	/* must be called from the editor-script. Returns a filename which has to be included from the global-Script */
 
 	function editor(){
-		if($_REQUEST['we_cmd'][0] == "save_document"){
+		if(we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 0) == "save_document"){
 			$GLOBALS['we_JavaScript'] = '';
 			$this->save();
 			$GLOBALS['we_responseText'] = sprintf(g_l('weClass', "[response_save_ok]"), $this->Path);
@@ -2206,7 +2206,7 @@ class we_object extends we_document{
 
 	protected function i_setElementsFromHTTP(){
 		parent::i_setElementsFromHTTP();
-		if(!empty($_REQUEST)){
+		if($_REQUEST){
 			$regs = array();
 			$hrefFields = false;
 

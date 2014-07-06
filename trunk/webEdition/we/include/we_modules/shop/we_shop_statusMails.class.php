@@ -258,8 +258,7 @@ class we_shop_statusMails{
 				$attachmentA = $maildoc->getElement($this->EMailData['DocumentAttachmentFieldA']);
 				$codes = $codes . $attachmentA;
 			}
-			unset($_REQUEST['we_orderid']);
-			unset($_SESSION['WE_SendMail']);
+			unset($_REQUEST['we_orderid'],$_SESSION['WE_SendMail']);
 		} else {
 			t_e('Document to send as status mail is empty! ID: ' . $docID, $field);
 			return false;

@@ -1438,7 +1438,7 @@ function changeFieldValue(val,valueField) {
 			$$v = (isset($_REQUEST[$k]) ?
 					$_REQUEST[$k] :
 					($v == "htmlmail" ?
-						f('SELECT  pref_value FROM ' . NEWSLETTER_PREFS_TABLE . " WHERE pref_name='default_htmlmail'", '', $this->db) :
+						f('SELECT pref_value FROM ' . NEWSLETTER_PREFS_TABLE . " WHERE pref_name='default_htmlmail'", '', $this->db) :
 						''));
 		}
 
@@ -1553,9 +1553,7 @@ function changeFieldValue(val,valueField) {
 	}
 
 	function getHTMLBlackList(){
-		if(isset($_REQUEST["black_list"])){
-			$this->View->settings["black_list"] = $_REQUEST["black_list"];
-		}
+		$this->View->settings["black_list"] = we_base_request::_(we_base_request::STRING, "black_list", $this->View->settings["black_list"]);
 
 		if(($ncmd = we_base_request::_(we_base_request::STRING, 'ncmd'))){
 			if($ncmd == "save_black"){
@@ -2246,8 +2244,9 @@ function clearLog(){
 		}
 
 		$link = BACKUP_DIR . "download/log_" . time() . ".csv";
-		if(!we_base_file::save($_SERVER['DOCUMENT_ROOT'] . $link, $csv))
+		if(!we_base_file::save($_SERVER['DOCUMENT_ROOT'] . $link, $csv)){
 			$link = "";
+		}
 
 		$_REQUEST["lnk"] = $link;
 

@@ -1380,7 +1380,7 @@ function set_state_edit_delete_recipient(control) {
 								$acErrorField = '';
 						}
 						if(!empty($acTable)){
-							$weAcResult = $weAcQuery->getItemById($_REQUEST['block' . $i . '_LinkID'], $acTable, array('IsFolder'));
+							$weAcResult = $weAcQuery->getItemById(we_base_request::_(we_base_request::STRING, 'block' . $i . '_LinkID'), $acTable, array('IsFolder'));
 
 							if(!is_array($weAcResult) || count($weAcResult) < 1 || $weAcResult[0]['IsFolder'] == 1){
 								print we_html_element::jsElement(
@@ -1812,9 +1812,7 @@ self.close();');
 
 		if(is_array($this->newsletter->persistents)){
 			foreach($this->newsletter->persistents as $val){
-				if(isset($_REQUEST[$val])){
-					$this->newsletter->$val = $_REQUEST[$val];
-				}
+				$this->newsletter->$val = we_base_request::_(we_base_request::STRING, $val, $this->newsletter->$val);
 			}
 		}
 
@@ -1845,10 +1843,7 @@ self.close();');
 
 				foreach($gval->persistents as $per){
 					$varname = 'group' . $gkey . '_' . $per;
-
-					if(isset($_REQUEST[$varname])){
-						$gval->$per = $_REQUEST[$varname];
-					}
+					$gval->$per = we_base_request::_(we_base_request::STRING, $varname, $gval->$per);
 				}
 
 				// Filter
@@ -1891,10 +1886,7 @@ self.close();');
 
 				foreach($sval->persistents as $per){
 					$varname = 'block' . $skey . '_' . $per;
-
-					if(isset($_REQUEST[$varname])){
-						$sval->$per = $_REQUEST[$varname];
-					}
+					$sval->$per = we_base_request::_(we_base_request::STRING, $varname, $sval->$per);
 				}
 			}
 			unset($gval);
