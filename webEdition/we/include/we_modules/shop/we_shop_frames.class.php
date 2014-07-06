@@ -367,7 +367,7 @@ class we_shop_frames extends weModuleFrames{
 				drawEintraege();
 			}
 			self.focus();
-		//-->
+			//-->
 		</script>
 		<?php
 	}
@@ -467,7 +467,7 @@ function we_cmd() {
 	}
 
 	function getHTMLEditor(){//TODO: maybe abandon the split between former Top- and other editor files
-		if(isset($_REQUEST['top']) && $_REQUEST['top'] == 1){//doing what have been done in edit_shop_editorFramesetTop before
+		if(we_base_request::_(we_base_request::BOOL, 'top')){//doing what have been done in edit_shop_editorFramesetTop before
 			return $this->getHTMLEditorTop();
 		}
 
@@ -603,8 +603,8 @@ top.content.hloaded = 1;
 		$DB_WE = $this->db;
 		require_once(WE_MODULES_PATH . 'shop/handle_shop_dbitemConnect.php'); //TODO: make function out of this: do we need it or does the following code the same?
 
-		$yid = isset($_REQUEST["ViewYear"]) ? abs($_REQUEST["ViewYear"]) : date("Y");
-		$bid = isset($_REQUEST["bid"]) ? abs($_REQUEST["bid"]) : 0;
+		$yid = we_base_request::_(we_base_request::INT, "ViewYear", date("Y"));
+		$bid = we_base_request::_(we_base_request::INT, "bid", 0);
 		$cid = f('SELECT IntCustomerID FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . intval($bid), "IntCustomerID", $this->db);
 		$this->db->query("SELECT IntOrderID,DATE_FORMAT(DateOrder,'" . g_l('date', '[format][mysqlDate]') . "') AS orddate FROM " . SHOP_TABLE . ' GROUP BY IntOrderID ORDER BY IntID DESC');
 		$headline = ($this->db->next_record() ? sprintf(g_l('modules_shop', '[lastOrder]'), $this->db->f("IntOrderID"), $this->db->f("orddate")) : '');

@@ -40,7 +40,7 @@ function getMultiObjectTags($name){
 		$id = $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"][we_objectFile::TYPE_MULTIOBJECT . '_' . $name . "class"]["dat"];
 	} else {
 		return '';
-		$newfields = explode(',', $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"]["neuefelder"]["dat"]);
+		/*$newfields = explode(',', $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"]["neuefelder"]["dat"]);
 		foreach($newfields as $tempname){
 			if($tempname != ""){
 				if($_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"][$tempname]["dat"] == $name){
@@ -53,6 +53,8 @@ function getMultiObjectTags($name){
 			return '';
 		}
 		$id = $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"][$temp . "class"]["dat"];
+		 
+		 */
 	}
 	$tableInfo = we_objectFile::getSortedTableInfo($id, true);
 	$content = '<table cellpadding="2" cellspacing="0" border="1" width="400">';

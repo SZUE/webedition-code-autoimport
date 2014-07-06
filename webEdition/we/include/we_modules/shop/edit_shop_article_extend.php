@@ -175,11 +175,12 @@ if(isset($daten)){
 		$menu = '<label for="' . $select_name . '">' . $label . '</label>
 <select name="' . $select_name . "\" onchange=\"document.location.href='" . $_SERVER['SCRIPT_NAME'] . "?typ=object&ViewClass='+ this.options[this.selectedIndex].value\">\n";
 
+		$selVal == we_base_request::_(we_base_request::STRING, $select_name);
 		foreach($fe as $val){
 			if($val != ''){
 				$menu .= "  <option value=\"" . $val . "\"" .
-					((isset($_REQUEST[$select_name]) && $val == $_REQUEST[$select_name]) ? " selected=\"selected\"" : "") . '>' .
-					f('SELECT ' . OBJECT_TABLE . '.Text as ClassIDName FROM ' . OBJECT_TABLE . ' WHERE ' . OBJECT_TABLE . '.ID = ' . intval($val), 'ClassIDName', $GLOBALS['DB_WE']) .
+					(($val == $selVal) ? " selected=\"selected\"" : "") . '>' .
+					f('SELECT ' . OBJECT_TABLE . '.Text as ClassIDName FROM ' . OBJECT_TABLE . ' WHERE ' . OBJECT_TABLE . '.ID = ' . intval($val), ' ', $GLOBALS['DB_WE']) .
 					'</option>';
 			}
 		}
@@ -235,7 +236,7 @@ if(isset($daten)){
 			if($entries != 0){ // Pager: Number of records not empty?
 				$topInfo = ($entries > 0 ? $entries : g_l('modules_shop', '[noRecord]'));
 
-				$classid = abs($_REQUEST["ViewClass"]); // gets the value from the selectbox;
+				$classid = abs(we_base_request::_(we_base_request::INT,"ViewClass")); // gets the value from the selectbox;
 
 				$classSelectTable .= '<table cellpadding="2" cellspacing="0" width="600" border="0">
     <tr>
@@ -283,7 +284,7 @@ if(isset($daten)){
 
 				// we need functionalitty to order these
 
-				if(isset($_REQUEST['orderBy']) && $_REQUEST['orderBy']){
+				if(we_base_request::_(we_base_request::BOOL,'orderBy')){
 					usort($orderRows, 'orderBy');
 				}
 
@@ -386,7 +387,7 @@ if(isset($daten)){
 
 				// we need functionalitty to order these
 
-				if(isset($_REQUEST['orderBy']) && $_REQUEST['orderBy']){
+				if(we_base_request::_(we_base_request::BOOL,'orderBy')){
 					usort($orderRows, 'orderBy');
 				}
 
