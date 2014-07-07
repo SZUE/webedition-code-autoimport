@@ -577,7 +577,7 @@ weFU.reset = function(){
 		$fileNameTemp = we_base_request::_(we_base_request::STRING, 'weFileNameTmp', '');
 		$fileName = we_base_request::_(we_base_request::STRING, 'weFileName', '');
 		$fileCt = we_base_request::_(we_base_request::STRING, 'weFileCt', '');
-		
+
 		//FIXME: do we really need so much vars for execution control?
 		$isUploadComplete = we_base_request::_(we_base_request::BOOL, 'weIsUploadComplete', false);
 		$isUploading = we_base_request::_(we_base_request::BOOL, 'weIsUploading', false);//FIXME: weHtmlInputFile

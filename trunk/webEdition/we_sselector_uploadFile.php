@@ -25,7 +25,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
-$inputTypeFile = new we_fileupload_uploader_include('we_uploadFile', 'top', '', 330, true, true);
+$inputTypeFile = new we_fileupload_uploader_include('we_uploadFile', 'top', '', 330, true, false);
 $inputTypeFile->setExternalProgressbar(true, 'progressbar', true, 'top.', 120, '');
 $tempName = $inputTypeFile->processFileRequest();
 

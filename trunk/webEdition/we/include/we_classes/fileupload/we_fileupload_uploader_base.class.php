@@ -47,9 +47,9 @@ abstract class we_fileupload_uploader_base {
 	function __construct($name, $width = 400, $maxUploadSize = -1) {
 		$this->name = $name;
 		$this->dimensions['width'] = $width;
-		$this->maxUploadSizeMBytes = $maxUploadSize != -1 ? $maxUploadSize : (defined('FILE_UPLOAD_MAX_UPLOAD_SIZE') ? FILE_UPLOAD_MAX_UPLOAD_SIZE : 0);
+		$this->maxUploadSizeMBytes = intval($maxUploadSize != -1 ? $maxUploadSize : (defined('FILE_UPLOAD_MAX_UPLOAD_SIZE') ? FILE_UPLOAD_MAX_UPLOAD_SIZE : 0));
 		$this->maxUploadSizeBytes = $this->maxUploadSizeMBytes * 1048576;
-		$this->maxChunkCount = ($this->maxUploadSizeMBytes) * 1024 / self::CHUNK_SIZE;
+		$this->maxChunkCount = $this->maxUploadSizeMBytes * 1024 / self::CHUNK_SIZE;
 		$this->useLegacy = defined('FILE_UPLOAD_USE_LEGACY') ? FILE_UPLOAD_USE_LEGACY : false;
 	}
 
@@ -258,7 +258,7 @@ weFU.processResponse = function(resp, args){
 	var cur = weFU.currentFile;
 
 	cur.fileNameTemp = resp.fileNameTemp;
-	cur.mimePHP = resp.mimePHP;
+	cur.mimePHP = resp.mimePhp;
 	cur.currentWeightFile += args.partSize;
 	weFU.currentWeight += args.partSize;
 
