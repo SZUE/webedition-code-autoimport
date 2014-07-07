@@ -7,6 +7,7 @@ $l_importFiles=array(
 	'dragdrop_text'=>'... or drop files here!',
 	'emptyDir'=>'The source directory is empty!',
 	'error'=>'Un error ocurre durante el proceso de importación!\n\nLos siguientes archivos no pudieron ser importados:\n%s',
+	'fallback_text'=>'Fallback!<br/>The new Fileuploader is not supported by your Browser. You need support for the following JavaScript objects: File, FileReader, FileList, Blob, and XMLHttpRequest.',
 	'file'=>'Archivo',
 	'finished'=>'La importación fue exitosa!',
 	'image_options_close'=>'Ocultar opciones de imagen',

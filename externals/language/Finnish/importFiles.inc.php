@@ -7,6 +7,7 @@ $l_importFiles=array(
 	'dragdrop_text'=>'... or drop files here!',
 	'emptyDir'=>'Lähdehakemisto on tyhjä!',
 	'error'=>'Virhe tiedoston tuonnissa!\n\nSeuraavia tiedostoja ei voitu tuoda:\n%s',
+	'fallback_text'=>'Fallback!<br/>The new Fileuploader is not supported by your Browser. You need support for the following JavaScript objects: File, FileReader, FileList, Blob, and XMLHttpRequest.',
 	'file'=>'Tiedosto',
 	'finished'=>'Tuonti onnistui!',
 	'image_options_close'=>'Piilota kuvatoiminnot',

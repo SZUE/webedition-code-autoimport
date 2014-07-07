@@ -7,6 +7,7 @@ $l_importFiles=array(
 	'dragdrop_text'=>'... oder ziehen Sie die Dateien hierher!',
 	'emptyDir'=>'Das Quellverzeichnis ist leer!',
 	'error'=>'Es sind Fehler beim Import aufgetreten!\n\nFolgende Dateien konnten nicht importiert werden:\n%s',
+	'fallback_text'=>'Fallback!<br/>Der neue Uploader kann nicht ausgespielt werden, weil Ihr Browser nicht alle benötigten JavaScript-Objekte unterstützt: File, FileReader, FileList, Blob und XMLHttpRequest.',
 	'file'=>'Datei',
 	'finished'=>'Der Import wurde erfolgreich beendet!',
 	'image_options_close'=>'Grafikfunktionen ausblenden',
