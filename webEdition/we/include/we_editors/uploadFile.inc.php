@@ -48,7 +48,7 @@ switch($contentType){
 		$allowedContentTypes = $contentType;
 }
 
-$inputTypeFile = new we_fileupload_uploader_include('we_File', 'top', '', 330, true, true, array(), $allowedContentTypes, '', '', '', array(), -1);
+$inputTypeFile = new we_fileupload_uploader_include('we_File', 'top', '', 330, true, true, $allowedContentTypes, '', '', '', array(), -1);
 //$inputTypeFile->setExternalProgressbar(true, 'progressbar', true, 'top.', 120, '');
 $we_File = $inputTypeFile->processFileRequest();
 
@@ -120,7 +120,7 @@ if($we_doc->ContentType == we_base_ContentTypes::IMAGE){
 $content .= '</table>';
 
 
-$_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("upload", "javascript:" . we_fileupload_uploader_include::getJsSubmitCall("top", 0, "document.forms[0].submit()")), "", we_html_button::create_button("cancel", "javascript:self.close();"));
+$_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("upload", "javascript:" . we_fileupload_uploader_include::getJsSubmitCallStatic("top", 0, "document.forms[0].submit()")), "", we_html_button::create_button("cancel", "javascript:self.close();"));
 ?>
 
 <script type="text/javascript"><!--
