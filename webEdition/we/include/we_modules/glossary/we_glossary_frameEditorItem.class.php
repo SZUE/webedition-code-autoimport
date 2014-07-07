@@ -46,7 +46,6 @@ class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 				$title = g_l('modules_glossary', '[textreplacement]');
 				break;
 		}
-t_e($weGlossaryFrames->View->Glossary->Type);
 
 		return self::buildHeader($weGlossaryFrames, $we_tabs, $title, ($weGlossaryFrames->View->Glossary->ID ? oldHtmlspecialchars($weGlossaryFrames->View->Glossary->Text) : g_l('modules_glossary', '[menu_new]')) . '<div id="mark" style="display: none;">*</div>');
 	}
@@ -174,20 +173,17 @@ function submitForm() {
 }' .
 				$weGlossaryFrames->topFrame . '.editor.edheader.location="' . $weGlossaryFrames->frameset . '?pnt=edheader";' .
 				$weGlossaryFrames->topFrame . '.editor.edfooter.location="' . $weGlossaryFrames->frameset . '?pnt=edfooter"') .
-			we_html_multiIconBox::getJs();
-
-
-		$out .= we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')), we_html_multiIconBox::getHTML('weMultibox', "100%", self::getHTMLTabProperties($weGlossaryFrames), 30, '', 2, g_l('modules_glossary', '[show_extended_linkoptions]'), g_l('modules_glossary', '[hide_extended_linkoptions]'), false));
-
-		$js = 'showType("' . $weGlossaryFrames->View->Glossary->Type . '");';
-		if($weGlossaryFrames->View->Glossary->Type == "link"){
-			$js .= 'showLinkMode("' . ($weGlossaryFrames->View->Glossary->getAttribute('mode') ? $weGlossaryFrames->View->Glossary->getAttribute('mode') : "intern") . '");';
-		}
-		if($weGlossaryFrames->View->Glossary->getAttribute('mode') == "category"){
-			$js .= 'showLinkModeCategory("' . ($weGlossaryFrames->View->Glossary->getAttribute('modeCategory') ? $weGlossaryFrames->View->Glossary->getAttribute('modeCategory') : "intern") . '");';
-		}
-
-		$out .= we_html_element::jsElement($js);
+			we_html_multiIconBox::getJs() .
+			we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')), we_html_multiIconBox::getHTML('weMultibox', "100%", self::getHTMLTabProperties($weGlossaryFrames), 30, '', 2, g_l('modules_glossary', '[show_extended_linkoptions]'), g_l('modules_glossary', '[hide_extended_linkoptions]'), false)) .
+			we_html_element::jsElement(
+				$js = 'showType("' . $weGlossaryFrames->View->Glossary->Type . '");' .
+				($weGlossaryFrames->View->Glossary->Type == "link" ?
+					'showLinkMode("' . ($weGlossaryFrames->View->Glossary->getAttribute('mode') ? $weGlossaryFrames->View->Glossary->getAttribute('mode') : "intern") . '");' :
+					'') .
+				($weGlossaryFrames->View->Glossary->getAttribute('mode') == "category" ?
+					'showLinkModeCategory("' . ($weGlossaryFrames->View->Glossary->getAttribute('modeCategory') ? $weGlossaryFrames->View->Glossary->getAttribute('modeCategory') : "intern") . '");' :
+					'')
+		);
 
 		return self::buildBody($weGlossaryFrames, $out);
 	}

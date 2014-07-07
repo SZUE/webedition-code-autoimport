@@ -184,7 +184,7 @@ class we_base_request{
 		/* end fix */
 		unset($args[0], $args[2]);
 		foreach($args as $arg){
-			if(!isset($var[$arg])){
+			if(is_string($var) || !isset($var[$arg])){
 				return $default;
 			}
 			$var = $var[$arg];

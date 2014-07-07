@@ -905,11 +905,8 @@ class doclistView{
 	function searchProperties(){
 
 		$DB_WE = new DB_WE();
-		$content = array();
 		$foundItems = 0;
-		$_result = array();
-		$saveArrayIds = array();
-		$searchText = array();
+		$content = $_result = $saveArrayIds = $searchText = array();
 		$_SESSION['weS']['weSearch']['foundItems'] = 0;
 
 		foreach($_REQUEST['we_cmd'] as $k => $v){
