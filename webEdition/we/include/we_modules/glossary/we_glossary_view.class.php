@@ -89,7 +89,6 @@ class we_glossary_view{
 		$this->Glossary = new we_glossary_glossary();
 
 		switch(we_base_request::_(we_base_request::STRING, 'cmd')){
-
 			case 'new_glossary_abbreviation':
 				$this->Glossary->Type = we_glossary_glossary::TYPE_ABBREVATION;
 				break;

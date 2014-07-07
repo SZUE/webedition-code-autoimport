@@ -55,7 +55,7 @@ $LU_Variables = array(
 	'clientEncoding' => 'none',
 	'clientSessionName' => session_name(),
 	'clientSessionID' => session_id(),
-	'testUpdate' => $_SESSION['weS']['testUpdate']
+	'testUpdate' => isset($_SESSION['weS']['testUpdate']) ? $_SESSION['weS']['testUpdate'] : 0,
 );
 
 // These request variables listed here are NOT submitted to the server - fill it

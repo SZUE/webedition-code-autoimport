@@ -46,7 +46,7 @@ class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 				$title = g_l('modules_glossary', '[textreplacement]');
 				break;
 		}
-
+t_e($weGlossaryFrames->View->Glossary->Type);
 
 		return self::buildHeader($weGlossaryFrames, $we_tabs, $title, ($weGlossaryFrames->View->Glossary->ID ? oldHtmlspecialchars($weGlossaryFrames->View->Glossary->Text) : g_l('modules_glossary', '[menu_new]')) . '<div id="mark" style="display: none;">*</div>');
 	}

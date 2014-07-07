@@ -78,7 +78,7 @@ class we_glossary_frames extends weModuleFrames{
 		if(we_base_request::_(we_base_request::BOOL, "home")){
 			return we_glossary_frameEditorHome::Body($this);
 		}
-		$cmdid = we_base_request::_(we_base_request::INT, 'cmdid');
+		$cmdid = we_base_request::_(we_base_request::STRING, 'cmdid');
 		if($cmdid && !preg_match('|^[0-9]|', $cmdid)){
 			$this->View->Glossary->Language = substr($cmdid, 0, 5);
 		}

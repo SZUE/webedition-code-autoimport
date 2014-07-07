@@ -72,6 +72,10 @@ class we_base_sessionHandler{
 		}
 		$sessData = SYSTEM_WE_SESSION_CRYPT && $this->crypt ? we_customer_customer::cryptData($sessData, $this->crypt) : $sessData;
 
+		$sessID = preg_match('|^([a-f0-9]){32,40}$|i', $sessID) ? $sessID : '';
+		if(!$sessID && session_regenerate_id()){
+			$sessID = session_id();
+		}
 		$this->DB->query('REPLACE INTO ' . SESSION_TABLE . ' SET ' . we_database_base::arraySetter(array(
 				'session_id' => sql_function('x\'' . $sessID . '\''),
 				'session_data' => gzcompress($sessData, 9),
