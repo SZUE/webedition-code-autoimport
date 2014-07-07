@@ -172,7 +172,7 @@ class we_search_frames extends we_tool_frames{
 				array(
 				'class' => 'weEditorBody',
 				'onkeypress' => 'javascript:if(event.keyCode==\'13\' || event.keyCode==\'3\') search(true);',
-				'onLoad' => 'loaded=1;setTimeout(\'init()\',200);',
+				'onload' => 'loaded=1;setTimeout(\'init()\',200);',
 				'onresize' => 'sizeScrollContent();'
 				), we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
 				we_html_element::htmlForm(

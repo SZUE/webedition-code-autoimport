@@ -32,12 +32,12 @@ include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
 we_html_tools::protect();
 
-switch(we_base_request::_(we_base_request::STRING,'we_cmd','',0)){
+switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 	case "object_toggleExtraWorkspace":
-		$oid = $_REQUEST['we_cmd'][2];
-		$wsid = $_REQUEST['we_cmd'][3];
+		$oid = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2);
+		$wsid = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 3);
 		$wsPath = id_to_path($wsid, FILE_TABLE, $DB_WE);
-		$tableID = $_REQUEST['we_cmd'][4];
+		$tableID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 4);
 		$ofID = f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE ObjectID='$oid' AND TableID=" . intval($tableID), "ID", $DB_WE);
 		$foo = f("SELECT OF_ExtraWorkspacesSelected FROM " . OBJECT_X_TABLE . intval($tableID) . " WHERE ID='" . $oid . "'", "OF_ExtraWorkspacesSelected", $DB_WE);
 		if(strstr($foo, "," . $wsid . ",")){
@@ -58,11 +58,11 @@ switch(we_base_request::_(we_base_request::STRING,'we_cmd','',0)){
 		print we_html_element::jsElement('top.we_cmd("reload_editpage");');
 		break;
 	case "object_obj_search":
-		$we_doc->Search = $_REQUEST['we_cmd'][2];
-		$we_doc->SearchField = $_REQUEST['we_cmd'][3];
+		$we_doc->Search = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2);
+		$we_doc->SearchField = we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 3);
 		$we_doc->EditPageNr = we_base_constants::WE_EDITPAGE_WORKSPACE;
 		$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_WORKSPACE;
 		$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
-		print we_html_element::jsElement('top.we_cmd("switch_edit_page",' . we_base_constants::WE_EDITPAGE_WORKSPACE . ',"' . $_REQUEST['we_cmd'][1] . '");');
+		echo we_html_element::jsElement('top.we_cmd("switch_edit_page",' . we_base_constants::WE_EDITPAGE_WORKSPACE . ',"' . $_REQUEST['we_cmd'][1] . '");');
 		break;
 }

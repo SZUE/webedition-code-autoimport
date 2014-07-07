@@ -242,7 +242,7 @@ abstract class we_customer_EI{
 				$parse = new we_xml_splitFile($_SERVER['DOCUMENT_ROOT'] . $filename);
 				$parse->splitFile('*/' . $dataset, $xml_from, $xml_to);
 
-				$ret['tmp_dir'] = str_replace(TEMP_PATH . '/', '', $parse->path);
+				$ret['tmp_dir'] = str_replace(TEMP_PATH, '', $parse->path);
 				$ret['file_count'] = $parse->fileId;
 				break;
 
@@ -259,7 +259,7 @@ abstract class we_customer_EI{
 
 					// create temp dir
 					$unique = self::getUniqueId();
-					$path = TEMP_PATH . '/' . $unique;
+					$path = TEMP_PATH . $unique;
 
 					we_base_file::createLocalFolder($path);
 					$path.='/';

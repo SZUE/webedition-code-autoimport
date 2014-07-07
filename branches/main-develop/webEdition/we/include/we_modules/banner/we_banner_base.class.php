@@ -39,7 +39,7 @@ abstract class we_banner_base{
 
 	public function load(){
 		$tableInfo = $this->db->metadata($this->table);
-		$this->db->query('SELECT * FROM ' . $this->table . ' WHERE ID=' . intval($this->ID));
+		$this->db->query('SELECT * FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->ID));
 		if($this->db->next_record()){
 			foreach($tableInfo as $cur){
 				$fieldName = $cur["name"];
@@ -59,11 +59,11 @@ abstract class we_banner_base{
 			}
 		}
 		if($this->ID == 0){
-			$this->db->query('INSERT INTO ' . $this->table . ' SET ' . we_database_base::arraySetter($sets));
+			$this->db->query('INSERT INTO ' . $this->db->escape($this->table) . ' SET ' . we_database_base::arraySetter($sets));
 			# get ID #
 			$this->ID = $this->db->getInsertId();
 		} else {
-			$this->db->query('UPDATE ' . $this->table . ' SET ' . we_database_base::arraySetter($sets) . ' WHERE ID=' . $this->ID);
+			$this->db->query('UPDATE ' . $this->db->escape($this->table) . ' SET ' . we_database_base::arraySetter($sets) . ' WHERE ID=' . intval($this->ID));
 		}
 	}
 
@@ -71,7 +71,7 @@ abstract class we_banner_base{
 		if(!$this->ID){
 			return false;
 		}
-		$this->db->query('DELETE FROM ' . $this->table . ' WHERE ID=' . intval($this->ID));
+		$this->db->query('DELETE FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->ID));
 		return true;
 	}
 

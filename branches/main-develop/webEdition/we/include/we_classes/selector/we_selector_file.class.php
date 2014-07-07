@@ -547,7 +547,7 @@ function clearEntries(){
 
 	function printBodyHTML(){
 		print we_html_element::htmlDocType() . '<html><head></head>
-				<body bgcolor="white" onLoad="top.writeBody(self.document);"></body></html>';
+				<body bgcolor="white" onload="top.writeBody(self.document);"></body></html>';
 	}
 
 	function printHeaderHTML(){

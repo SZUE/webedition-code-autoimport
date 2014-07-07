@@ -703,7 +703,7 @@ function submitForm() {
 					break;
 				}
 				$this->Model = new we_navigation_navigation();
-				$this->Model->IsFolder = ($_REQUEST['cmd'] == 'module_navigation_new_group') ? 1 : 0;
+				$this->Model->IsFolder = we_base_request::_(we_base_request::STRING, 'cmd') == 'module_navigation_new_group' ? 1 : 0;
 				$this->Model->ParentID = we_base_request::_(we_base_request::INT, 'ParentID', 0);
 				print we_html_element::jsElement(
 						$this->editorHeaderFrame . '.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->Model->Text) . '";' .
@@ -717,7 +717,7 @@ function submitForm() {
 					break;
 				}
 
-				$this->Model = new we_navigation_navigation($_REQUEST['cmdid']);
+				$this->Model = new we_navigation_navigation(we_base_request::_(we_base_request::INT, 'cmdid'));
 
 				if(!$this->Model->isAllowedForUser()){
 					print we_html_element::jsElement(
@@ -840,7 +840,7 @@ function submitForm() {
 
 				if(we_base_request::_(we_base_request::BOOL, 'delayCmd')){
 					$js .= we_html_element::jsElement(
-							$this->topFrame . '.we_cmd("' . $_REQUEST['delayCmd'] . '"' . (($dp = we_base_request::_(we_base_request::RAW, 'delayParam')) ? ',"' . $dp . '"' : '' ) . ');
+							$this->topFrame . '.we_cmd("' . we_base_request::_(we_base_request::JS, 'delayCmd') . '"' . (($dp = we_base_request::_(we_base_request::RAW, 'delayParam')) ? ',"' . $dp . '"' : '' ) . ');
 							'
 					);
 					$_REQUEST['delayCmd'] = '';
@@ -1077,10 +1077,8 @@ function submitForm() {
 		}
 
 		if(defined('CUSTOMER_TABLE')){
-
-			if(isset($_REQUEST['wecf_mode'])){
-
-				we_navigation_customerFilter::translateModeToNavModel($_REQUEST['wecf_mode'], $this->Model);
+			if(($mode = we_base_request::_(we_base_request::INT, 'wecf_mode')) !== false){
+				we_navigation_customerFilter::translateModeToNavModel($mode, $this->Model);
 			}
 			$this->Model->Customers = we_customer_abstractFilter::getSpecificCustomersFromRequest();
 			$this->Model->BlackList = we_customer_abstractFilter::getBlackListFromRequest();
@@ -1091,21 +1089,21 @@ function submitForm() {
 
 		$_categories = array();
 
-		if(isset($_REQUEST['CategoriesControl']) && isset($_REQUEST['CategoriesCount'])){
-			for($i = 0; $i < $_REQUEST['CategoriesCount']; $i++){
-				if(isset($_REQUEST[$_REQUEST['CategoriesControl'] . '_variant0_' . $_REQUEST['CategoriesControl'] . '_item' . $i])){
-					$_categories[] = $_REQUEST[$_REQUEST['CategoriesControl'] . '_variant0_' . $_REQUEST['CategoriesControl'] . '_item' . $i];
+		if(($name = we_base_request::_(we_base_request::STRING, 'CategoriesControl')) && ($cnt = we_base_request::_(we_base_request::INT, 'CategoriesCount')) !== false){
+			for($i = 0; $i < $cnt; $i++){
+				if(($cat = we_base_request::_(we_base_request::STRING, $name . '_variant0_' . $name . '_item' . $i)) !== false){
+					$_categories[] = $cat;
 				}
 			}
 			$this->Model->Categories = $_categories;
 		}
 
-		if(isset($_REQUEST['SortField'])){
-			if($_REQUEST['SortField'] !== ""){
+		if(($field = we_base_request::_(we_base_request::STRING, 'SortField')) !== false){
+			if($field){
 				$this->Model->Sort = array(
 					array(
-						'field' => $_REQUEST['SortField'],
-						'order' => $_REQUEST['SortOrder']
+						'field' => $field,
+						'order' => we_base_request::_(we_base_request::STRING, 'SortOrder')
 					)
 				);
 			} else {
@@ -1123,19 +1121,19 @@ function submitForm() {
 
 		if($this->Model->Selection == we_navigation_navigation::SELECTION_DYNAMIC){
 
-			if(isset($_REQUEST['WorkspaceIDClass'])){
-				$this->Model->WorkspaceID = $_REQUEST['WorkspaceIDClass'];
+			if(($wid = we_base_request::_(we_base_request::INT, 'WorkspaceIDClass')) !== false){
+				$this->Model->WorkspaceID = $wid;
 			}
 
-			if(isset($_REQUEST['dynamic_Parameter'])){
-				$this->Model->Parameter = $_REQUEST['dynamic_Parameter'];
+			if(($par = we_base_request::_(we_base_request::URL, 'dynamic_Parameter')) !== false){
+				$this->Model->Parameter = $par;
 			}
 
-			if($this->Model->SelectionType == we_navigation_navigation::STPYE_CATEGORY && isset($_REQUEST['dynamic_Url'])){
-				$this->Model->Url = $_REQUEST['dynamic_Url'];
-				$this->Model->UrlID = $_REQUEST['dynamic_UrlID'];
-				$this->Model->LinkSelection = $_REQUEST['dynamic_LinkSelection'];
-				$this->Model->CatParameter = $_REQUEST['dynamic_CatParameter'];
+			if($this->Model->SelectionType == we_navigation_navigation::STPYE_CATEGORY && ($url=we_base_request::_(we_base_request::URL,'dynamic_Url'))!==false){
+				$this->Model->Url = $url;
+				$this->Model->UrlID = we_base_request::_(we_base_request::INT, 'dynamic_UrlID', 0);
+				$this->Model->LinkSelection = we_base_request::_(we_base_request::STRING,'dynamic_LinkSelection');
+				$this->Model->CatParameter = we_base_request::_(we_base_request::STRING,'dynamic_CatParameter');
 			}
 		}
 
@@ -1143,17 +1141,13 @@ function submitForm() {
 			$this->Model->Charset = $this->Model->findCharset($this->Model->ParentID | 0);
 		}
 
-		if(isset($_REQUEST['previewCode'])){
-			$this->Model->previewCode = $_REQUEST["previewCode"];
+		if(($code = we_base_request::_(we_base_request::RAW_CHECKED, 'previewCode'))){
+			$this->Model->previewCode = $code;
 		}
 
-		if(isset($_REQUEST["page"])){
+		if(($page = we_base_request::_(we_base_request::INT, "page")) !== false){
 
-			if($this->Model->IsFolder && $_REQUEST["page"] != 1 && $_REQUEST["page"] != 3){
-				$this->page = 1;
-			} else {
-				$this->page = $_REQUEST["page"];
-			}
+			$this->page = ($this->Model->IsFolder && $page != 1 && $page != 3 ? 1 : $page);
 		}
 	}
 

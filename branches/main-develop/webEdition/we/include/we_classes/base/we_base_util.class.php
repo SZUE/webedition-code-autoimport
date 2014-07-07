@@ -33,6 +33,106 @@
  * @static
  */
 abstract class we_base_util{
+	
+	const MIME_BY_EXTENSION = 1;
+	const MIME_BY_HEAD = 2;
+	const MIME_BY_HEAD_THEN_EXTENSION = 0;
+
+	//FIXME: add more extensions
+	//NOTICE: WE contenttypes differ strongly from the following mime types!
+	private static $mimetypes = array(
+		'hqx' => 'application/mac-binhex40',
+		'cpt' => 'application/mac-compactpro',
+		'doc' => 'application/msword',
+		'bin' => 'application/macbinary',
+		'dms' => 'application/octet-stream',
+		'lha' => 'application/octet-stream',
+		'lzh' => 'application/octet-stream',
+		'exe' => 'application/octet-stream',
+		'class' => 'application/octet-stream',
+		'psd' => 'application/octet-stream',
+		'so' => 'application/octet-stream',
+		'sea' => 'application/octet-stream',
+		'dll' => 'application/octet-stream',
+		'oda' => 'application/oda',
+		'pdf' => 'application/pdf',
+		'ai' => 'application/postscript',
+		'eps' => 'application/postscript',
+		'ps' => 'application/postscript',
+		'smi' => 'application/smil',
+		'smil' => 'application/smil',
+		'mif' => 'application/vnd.mif',
+		'xls' => 'application/vnd.ms-excel',
+		'ppt' => 'application/vnd.ms-powerpoint',
+		'wbxml' => 'application/vnd.wap.wbxml',
+		'wmlc' => 'application/vnd.wap.wmlc',
+		'dcr' => 'application/x-director',
+		'dir' => 'application/x-director',
+		'dxr' => 'application/x-director',
+		'dvi' => 'application/x-dvi',
+		'gtar' => 'application/x-gtar',
+		'php' => 'application/x-httpd-php',//in WE this is text/html?
+		'php4' => 'application/x-httpd-php',
+		'php3' => 'application/x-httpd-php',
+		'phtml' => 'application/x-httpd-php',
+		'phps' => 'application/x-httpd-php-source',
+		'js' => 'application/x-javascript',
+		'swf' => 'application/x-shockwave-flash',
+		'sit' => 'application/x-stuffit',
+		'tar' => 'application/x-tar',
+		'tgz' => 'application/x-tar',
+		'xhtml' => 'application/xhtml+xml',
+		'xht' => 'application/xhtml+xml',
+		'zip' => 'application/zip',
+		'mid' => 'audio/midi',
+		'midi' => 'audio/midi',
+		'mpga' => 'audio/mpeg',
+		'mp2' => 'audio/mpeg',
+		'mp3' => 'audio/mpeg',
+		'aif' => 'audio/x-aiff',
+		'aiff' => 'audio/x-aiff',
+		'aifc' => 'audio/x-aiff',
+		'ram' => 'audio/x-pn-realaudio',
+		'rm' => 'audio/x-pn-realaudio',
+		'rpm' => 'audio/x-pn-realaudio-plugin',
+		'ra' => 'audio/x-realaudio',
+		'rv' => 'video/vnd.rn-realvideo',
+		'wav' => 'audio/x-wav',
+		'bmp' => 'image/bmp',
+		'gif' => 'image/gif',
+		'jpeg' => 'image/jpeg',
+		'jpg' => 'image/jpeg',
+		'jpe' => 'image/jpeg',
+		'png' => 'image/png',
+		'tiff' => 'image/tiff',
+		'tif' => 'image/tiff',
+		'css' => 'text/css',
+		'html' => 'text/html',
+		'htm' => 'text/html',
+		'shtml' => 'text/html',
+		'txt' => 'text/plain',
+		'text' => 'text/plain',
+		'log' => 'text/plain',
+		'rtx' => 'text/richtext',
+		'rtf' => 'text/rtf',
+		'xml' => 'text/xml',
+		'xsl' => 'text/xml',
+		'mpeg' => 'video/mpeg',
+		'mpg' => 'video/mpeg',
+		'mpe' => 'video/mpeg',
+		'qt' => 'video/quicktime',
+		'mov' => 'video/quicktime',
+		'avi' => 'video/x-msvideo',
+		'movie' => 'video/x-sgi-movie',
+		'doc' => 'application/msword',
+		'word' => 'application/msword',
+		'xl' => 'application/excel',
+		'eml' => 'message/rfc822',
+
+		'svg' => 'image/svg+xml',
+		'svgz' => 'image/svg+xml',
+		'shtm' => 'text/html'
+	);
 
 	/**
 	 * Formates a number with a country specific format into computer readable format.
@@ -291,4 +391,57 @@ abstract class we_base_util{
 		}
 	}
 
+	public static function getMimeType($ext, $filepath = '', $method = 0){
+		if($method == self::MIME_BY_HEAD || $method == self::MIME_BY_HEAD_THEN_EXTENSION){
+			if($filepath && function_exists('finfo_open')){
+				$finfo = finfo_open(FILEINFO_MIME_TYPE);
+				$mime = finfo_file($finfo, $filepath);
+				finfo_close($finfo);
+
+				return $mime ? $mime : false;
+			} else if($filepath && function_exists('mime_content_type')){
+				return $mime = mime_content_type($filepath) ? $mime : false;
+			}
+		}
+		if($method == self::MIME_BY_EXTENSION || $method == self::MIME_BY_HEAD_THEN_EXTENSION){
+			return (!isset(self::$mimetypes[strtolower($ext)])) ? 'application/octet-stream' : self::$mimetypes[strtolower($ext)];
+		}
+
+		//false means: no info about MIME type can be determined
+		return false;
+	}
+
+	public static function extension2mime($ext){
+		return isset(self::$mimetypes[strtolower($ext)]) ? self::$mimetypes[strtolower($ext)] : false;
+	}
+
+	public static function mime2extensions($mime, $retCsv = false){
+		$mime = str_replace('/*', '/', trim($mime));
+		$extensions = array();
+		foreach(self::$mimetypes as $k => $v){
+			if(strpos($v, $mime) === 0){
+				$extensions[] = $k;
+			}
+		}
+
+		return $retCsv ? implode(',', $extensions) : $extensions;
+	}
+
+	public static function mimegroup2mimes($mimegroup, $retCsv = false){
+		$mimegroup = str_replace('/*', '/', trim($mimegroup));
+		$mimes = array();
+		foreach(self::$mimetypes as $v){
+			if(strpos($v, $mimegroup) === 0 && !in_array($v, $mimes)){
+				$mimes[] = $v;
+			}
+		}
+
+		return $retCsv ? implode(',', $mimes) : $mimes;
+	}
+
+	public static function isExtensionMime($ext, $mime){
+		$mime = str_replace('/*', '/', trim($mime));
+
+		return strpos(self::$mimetypes[$ext], $mime) === false ? false : true;
+	}
 }

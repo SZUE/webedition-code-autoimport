@@ -71,11 +71,11 @@ class we_ui_layout_Frameset extends we_ui_abstract_AbstractElement{
 	protected $_cols;
 
 	/**
-	 * _onLoad attribute
+	 * _onload attribute
 	 *
 	 * @var string
 	 */
-	protected $_onLoad;
+	protected $_onload;
 
 	/**
 	 * _frames attribute
@@ -111,15 +111,15 @@ class we_ui_layout_Frameset extends we_ui_abstract_AbstractElement{
 	 */
 	protected function _renderHTML($isTopFrame = false, $appName = ''){
 		if(!$isTopFrame || !$appName || we_app_Common::isJMenu($appName)){
-			$html = '<frameset' . $this->_getNonBooleanAttribs('id,framespacing,border,frameborder,rows,cols,onLoad') . ">\n";
+			$html = '<frameset' . $this->_getNonBooleanAttribs('id,framespacing,border,frameborder,rows,cols,onload') . '>';
 			foreach($this->_frames as $frame){
 				if($frame instanceof we_ui_layout_Frameset){
-					$html .= $frame->getHTML() . "\n";
+					$html .= $frame->getHTML();
 				} else {
-					$html .= we_xml_Tags::createStartTag('frame', $frame, NULL, true) . "\n";
+					$html .= we_xml_Tags::createStartTag('frame', $frame, NULL, true);
 				}
 			}
-			$html .= '</frameset>' . "\n";
+			$html .= '</frameset>';
 		} else {
 
 			$isToolbar = false;
@@ -207,12 +207,12 @@ class we_ui_layout_Frameset extends we_ui_abstract_AbstractElement{
 	}
 
 	/**
-	 * retrieve onLoad
+	 * retrieve onload
 	 *
 	 * @return string
 	 */
 	public function getOnLoad(){
-		return $this->_onLoad;
+		return $this->_onload;
 	}
 
 	/**
@@ -236,10 +236,10 @@ class we_ui_layout_Frameset extends we_ui_abstract_AbstractElement{
 	/**
 	 * set onLoad
 	 *
-	 * @param string $onLoad
+	 * @param string $onload
 	 */
-	public function setOnLoad($onLoad){
-		$this->_onLoad = $onLoad;
+	public function setOnLoad($onload){
+		$this->_onload = $onload;
 	}
 
 	/**

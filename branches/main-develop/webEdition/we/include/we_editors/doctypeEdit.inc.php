@@ -352,7 +352,7 @@ function disableLangDefault(allnames, allvalues, deselect) {
 <?php print STYLESHEET; ?>
 </head>
 
-<body class="weDialogBody" style="overflow:hidden;" onunload="doUnload()" onLoad="self.focus();">
+<body class="weDialogBody" style="overflow:hidden;" onunload="doUnload()" onload="self.focus();">
 	<form name="we_form" action="" method="post" onsubmit="return false">
 		<?php
 		echo we_class::hiddenTrans();

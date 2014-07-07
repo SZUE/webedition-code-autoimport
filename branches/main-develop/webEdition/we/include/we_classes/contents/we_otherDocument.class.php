@@ -139,7 +139,7 @@ class we_otherDocument extends we_binaryDocument{
 		$content = preg_replace('/[\x00-\x1F]/', '', $content);
 		$text.= ' ' . trim($content);
 
-		$maxDB = min(1000000, getMaxAllowedPacket($this->DB_WE) - 1024);
+		$maxDB = min(1000000, $this->DB_WE->getMaxAllowedPacket() - 1024);
 		$text = substr(preg_replace(array("/\n+/", '/  +/'), ' ', $text), 0, $maxDB);
 
 		$set = array(
@@ -203,7 +203,7 @@ class we_otherDocument extends we_binaryDocument{
 								$binaryId = intval($GLOBALS[$key][$formname]->getElement($binaryName));
 
 								// move document from upload location to tmp dir
-								$_SESSION[$_binaryDataId]['serverPath'] = TEMP_PATH . '/' . we_base_file::getUniqueId();
+								$_SESSION[$_binaryDataId]['serverPath'] = TEMP_PATH . we_base_file::getUniqueId();
 								move_uploaded_file(
 									$_FILES["we_ui_$formname"]['tmp_name'][$binaryName], $_SESSION[$_binaryDataId]['serverPath']);
 

@@ -101,8 +101,8 @@ class we_objectFile extends we_document{
 				$_SESSION['weS']['we_object_session_' . $formname] = array();
 			}
 			$GLOBALS['we_object'][$formname]->we_new();
-			if(isset($_REQUEST['we_editObject_ID']) && $_REQUEST['we_editObject_ID']){
-				$GLOBALS['we_object'][$formname]->initByID(we_base_request::_(we_base_request::INT, 'we_editObject_ID', 0), OBJECT_FILES_TABLE);
+			if(($id = we_base_request::_(we_base_request::INT, 'we_editObject_ID', 0))){
+				$GLOBALS['we_object'][$formname]->initByID($id, OBJECT_FILES_TABLE);
 			} else {
 				$GLOBALS['we_object'][$formname]->TableID = $classID;
 				$GLOBALS['we_object'][$formname]->setRootDirID(true);
@@ -129,8 +129,8 @@ class we_objectFile extends we_document{
 				$GLOBALS['we_object'][$formname]->saveInSession($_SESSION['weS']['we_object_session_' . $formname]);
 			}
 		} else {
-			if(isset($_REQUEST['we_editObject_ID']) && $_REQUEST['we_editObject_ID']){
-				$GLOBALS['we_object'][$formname]->initByID(we_base_request::_(we_base_request::INT, 'we_editObject_ID', 0), OBJECT_FILES_TABLE);
+			if(($id = we_base_request::_(we_base_request::INT, 'we_editObject_ID', 0))){
+				$GLOBALS['we_object'][$formname]->initByID($id, OBJECT_FILES_TABLE);
 			} elseif($session){
 				$GLOBALS['we_object'][$formname]->we_initSessDat($_SESSION['weS']['we_object_session_' . $formname]);
 			}
@@ -146,8 +146,8 @@ class we_objectFile extends we_document{
 		$GLOBALS['we_object'][$formname]->DefArray = empty($GLOBALS['we_object'][$formname]->DefArray) ? $GLOBALS['we_object'][$formname]->getDefaultValueArray() :
 			$GLOBALS['we_object'][$formname]->DefArray; //bug #7426
 
-		if(isset($_REQUEST['we_returnpage'])){
-			$GLOBALS['we_object'][$formname]->setElement('we_returnpage', $_REQUEST['we_returnpage']);
+		if(($ret = we_base_request::_(we_base_request::URL, 'we_returnpage'))){
+			$GLOBALS['we_object'][$formname]->setElement('we_returnpage', $ret);
 		}
 
 		if(isset($_REQUEST['we_ui_' . $formname]) && is_array($_REQUEST['we_ui_' . $formname])){
@@ -225,8 +225,8 @@ class we_objectFile extends we_document{
 	function we_rewrite(){
 		$this->setLanguage();
 		$this->setUrl();
-		if(!$this->DB_WE->query('UPDATE ' . $this->Table . ' SET Url="' . $this->DB_WE->escape($this->Url) . '" WHERE ID=' . intval($this->ID)) ||
-			!$this->DB_WE->query('UPDATE ' . OBJECT_X_TABLE . $this->TableID . ' SET OF_Url="' . $this->DB_WE->escape($this->Url) . '" WHERE OF_ID=' . intval($this->ID))){
+		if(!$this->DB_WE->query('UPDATE ' . $this->DB_WE->escape($this->Table) . ' SET Url="' . $this->DB_WE->escape($this->Url) . '" WHERE ID=' . intval($this->ID)) ||
+			!$this->DB_WE->query('UPDATE ' . OBJECT_X_TABLE . intval($this->TableID) . ' SET OF_Url="' . $this->DB_WE->escape($this->Url) . '" WHERE OF_ID=' . intval($this->ID))){
 			return false;
 		}
 
@@ -675,7 +675,7 @@ class we_objectFile extends we_document{
 			return array();
 		}
 		$order = makeArrayFromCSV(f('SELECT strOrder FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($tableID), '', $db));
-		$ctable = OBJECT_X_TABLE . $tableID;
+		$ctable = OBJECT_X_TABLE . intval($tableID);
 		$tableInfo = $db->metadata($ctable);
 		$fields = $regs = array();
 		foreach($tableInfo as $info){
@@ -990,7 +990,7 @@ class we_objectFile extends we_document{
 				$rootDir = f('SELECT oft.ID FROM ' . OBJECT_FILES_TABLE . ' oft LEFT JOIN ' . OBJECT_TABLE . ' ot ON oft.Path=ot.Path WHERE oft.IsClassFolder=1 AND ot.ID=' . intval($classid), '', $db);
 				$path = $this->getElement('we_object_' . $name . '_path');
 				if(($myid = intval($objects[$f]))){
-					$path = $path ? $path : f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . $myid, '', $db);
+					$path = $path ? $path : f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($myid), '', $db);
 				}
 
 				if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
@@ -1546,7 +1546,7 @@ class we_objectFile extends we_document{
 			return;
 		}
 		$ID = $this->ObjectID;
-		$DataTable = OBJECT_X_TABLE . $this->TableID;
+		$DataTable = OBJECT_X_TABLE . intval($this->TableID);
 		$db = $this->DB_WE;
 		$tableInfo = $this->getSortedTableInfo($this->TableID, false, $db);
 
@@ -1598,7 +1598,7 @@ class we_objectFile extends we_document{
 				if(is_array($paths)){
 					foreach($paths as $path){
 						if($path != '/'){
-							$where[] = 'Path LIKE "' . $path . '/%" OR Path = "' . $path . '"';
+							$where[] = 'Path LIKE "' . $this->DB_WE->escape($path) . '/%" OR Path = "' . $this->DB_WE->escape($path) . '"';
 						}
 					}
 				}
@@ -2039,7 +2039,7 @@ class we_objectFile extends we_document{
 
 	function insertAtIndex(){
 		if(!($this->IsSearchable && $this->Published)){
-			$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE OID=' . $this->ID);
+			$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE OID=' . intval($this->ID));
 			return true;
 		}
 
@@ -2083,7 +2083,7 @@ class we_objectFile extends we_document{
 				}
 			}
 		}
-		$maxDB = min(1000000, getMaxAllowedPacket($this->DB_WE) - 1024);
+		$maxDB = min(1000000, $this->DB_WE->getMaxAllowedPacket() - 1024);
 		$text = substr(preg_replace(array("/\n+/", '/  +/'), ' ', trim(strip_tags($text))), 0, $maxDB);
 
 		if(!$text){
@@ -2140,14 +2140,14 @@ class we_objectFile extends we_document{
 
 	function setLanguage($language = ''){
 		$this->Language = $language ? $language : $this->Language;
-		$this->DB_WE->query('UPDATE ' . OBJECT_X_TABLE . $this->TableID . ' SET OF_Language="' . $this->Language . '" WHERE OF_ID=' . intval($this->ID));
+		$this->DB_WE->query('UPDATE ' . OBJECT_X_TABLE . intval($this->TableID) . ' SET OF_Language="' . $this->DB_WE->escape($this->Language) . '" WHERE OF_ID=' . intval($this->ID));
 	}
 
 	private function setPublishTime($time){
 		$this->Published = $time;
 		return
 			$this->DB_WE->query('UPDATE ' . OBJECT_FILES_TABLE . ' SET Published=' . $time . ' WHERE ID=' . $this->ID) &&
-			$this->DB_WE->query('UPDATE ' . OBJECT_X_TABLE . $this->TableID . ' SET OF_Published=' . $time . ' WHERE OF_ID=' . $this->ID);
+			$this->DB_WE->query('UPDATE ' . OBJECT_X_TABLE . intval($this->TableID) . ' SET OF_Published=' . intval($time) . ' WHERE OF_ID=' . intval($this->ID));
 	}
 
 	function markAsPublished(){
@@ -2303,8 +2303,8 @@ class we_objectFile extends we_document{
 			$version = new weVersions();
 			$version->save($this);
 		}
-		if(LANGLINK_SUPPORT && isset($_REQUEST["we_" . $this->Name . "_LanguageDocID"]) && $_REQUEST["we_" . $this->Name . "_LanguageDocID"] != 0){
-			$this->setLanguageLink($_REQUEST["we_" . $this->Name . "_LanguageDocID"], 'tblObjectFile', false, true);
+		if(LANGLINK_SUPPORT && ($docid=we_base_request::_(we_base_request::INT,"we_" . $this->Name . "_LanguageDocID"))){
+			$this->setLanguageLink($docid, 'tblObjectFile', false, true);
 		} else {
 			//if language changed, we must delete eventually existing entries in tblLangLink, even if !LANGLINK_SUPPORT!
 			$this->checkRemoteLanguage($this->Table, false);
@@ -2339,7 +2339,7 @@ class we_objectFile extends we_document{
 
 	function setTypeAndLength(){
 		if($this->TableID){
-			$DataTable = OBJECT_X_TABLE . $this->TableID;
+			$DataTable = OBJECT_X_TABLE . intval($this->TableID);
 			$db = $this->DB_WE;
 			$tableInfo = $db->metadata($DataTable);
 			$regs = array();
@@ -2359,7 +2359,7 @@ class we_objectFile extends we_document{
 		switch($from){
 			case we_class::LOAD_SCHEDULE_DB:
 				if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
-					$sessDat = f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . " AND ClassName='" . $this->ClassName . "' AND Was=" . we_schedpro::SCHEDULE_FROM, '', $this->DB_WE);
+					$sessDat = f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . " AND ClassName='" . $this->DB_WE->escape($this->ClassName) . "' AND Was=" . we_schedpro::SCHEDULE_FROM, '', $this->DB_WE);
 					if($sessDat){
 						$this->i_getPersistentSlotsFromDB(/* "Path,Text,ParentID,CreatorID,Published,ModDate,Owners,ModifierID,RestrictOwners,OwnersReadOnly,IsSearchable,Charset,Url,TriggerID" */);
 						if($this->i_initSerializedDat(unserialize(substr_compare($sessDat, 'a:', 0, 2) == 0 ? $sessDat : gzuncompress($sessDat)))){
@@ -2450,9 +2450,9 @@ class we_objectFile extends we_document{
 			}
 		}
 		$old = $this->Published;
-		$oldUrl = f('SELECT Url FROM ' . $this->Table . ' WHERE ID=' . $this->ID, '', $this->DB_WE);
+		$oldUrl = f('SELECT Url FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($this->ID), '', $this->DB_WE);
 		$wasPublished = $this->Published > 0;
-		$this->oldCategory = f('SELECT Category FROM ' . $this->Table . ' WHERE ID=' . $this->ID, '', $this->DB_WE);
+		$this->oldCategory = f('SELECT Category FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($this->ID), '', $this->DB_WE);
 
 		if($saveinMainDB && !we_root::we_save(1)){
 			return false;
@@ -2507,24 +2507,24 @@ class we_objectFile extends we_document{
 		//	weNavigationCache::clean(true);
 		$this->rewriteNavigation();
 
-		return $this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE OID=' . $this->ID);
+		return $this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE OID=' . intval($this->ID));
 	}
 
 	public function we_republish($rebuildMain = true){
 		return ($this->Published && $this->ModDate <= $this->Published ?
 				$this->we_publish(true, $rebuildMain) :
-				$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE OID=' . $this->ID)
+				$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE OID=' . intval($this->ID))
 			);
 	}
 
 	function i_objectFileInit($makeSameNewFlag = false){
 		if($this->ID){
 			$this->setRootDirID();
-			$oldTableID = f('SELECT TableID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . $this->ID, '', $this->DB_WE);
+			$oldTableID = f('SELECT TableID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->ID), '', $this->DB_WE);
 			if($oldTableID != $this->TableID){
 				$this->resetParentID();
 			}
-			$this->DB_WE->query('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . $this->TableID);
+			$this->DB_WE->query('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID));
 			if($this->DB_WE->next_record()){
 				if($this->DB_WE->f("DefaultValues")){
 					$vals = unserialize($this->DB_WE->f("DefaultValues"));
@@ -2648,11 +2648,11 @@ class we_objectFile extends we_document{
 			return;
 		}
 		$ID = $this->ObjectID;
-		$DataTable = OBJECT_X_TABLE . $this->TableID;
+		$DataTable = OBJECT_X_TABLE . intval($this->TableID);
 		$db = $this->DB_WE;
 		$tableInfo = $this->getSortedTableInfo($this->TableID, false, $db);
 
-		$db->query('SELECT * FROM ' . $DataTable . ' WHERE ID=' . $ID);
+		$db->query('SELECT * FROM ' . $DataTable . ' WHERE ID=' . intval($ID));
 		if($db->next_record()){
 			foreach($tableInfo as $cur){
 				$regs = explode('_', $cur["name"], 2);
@@ -2707,12 +2707,14 @@ class we_objectFile extends we_document{
 	}
 
 	function i_filenameDouble(){
-		return f('SELECT 1 FROM ' . $this->Table . ' WHERE ParentID=' . $this->ParentID . " AND Text='" . escape_sql_query($this->Text) . "' AND ID!=" . intval($this->ID), '', $this->DB_WE);
+		return f('SELECT 1 FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ParentID=' . intval($this->ParentID) . " AND Text='" . $this->DB_WE->escape($this->Text) . "' AND ID!=" . intval($this->ID), '', $this->DB_WE);
 	}
 
 	function i_urlDouble(){
 		$this->setUrl();
-		return ($this->Url ? f('SELECT ID FROM ' . $this->Table . " WHERE Url='" . escape_sql_query($this->Url) . "' AND ID!=" . intval($this->ID), '', new DB_WE()) : false);
+		$db = new DB_WE();
+
+		return ($this->Url ? f('SELECT ID FROM ' . $db->escape($this->Table) . " WHERE Url='" . $db->escape($this->Url) . "' AND ID!=" . intval($this->ID), '', $db) : false);
 	}
 
 	function i_checkPathDiffAndCreate(){
@@ -2747,7 +2749,7 @@ class we_objectFile extends we_document{
 		if(intval($this->TableID) == 0){
 			return false;
 		}
-		$ctable = OBJECT_X_TABLE . $this->TableID;
+		$ctable = OBJECT_X_TABLE . intval($this->TableID);
 
 		$tableInfo = $this->DB_WE->metadata($ctable);
 
@@ -2795,7 +2797,7 @@ class we_objectFile extends we_document{
 			}
 		}
 		if($this->ID){
-			$this->DB_WE->query('UPDATE ' . OBJECT_X_TABLE . $this->TableID . " SET OF_TEXT='" . $this->Text . "',OF_PATH='" . $this->Path . "' WHERE OF_ID=" . $this->ID);
+			$this->DB_WE->query('UPDATE ' . OBJECT_X_TABLE . intval($this->TableID) . " SET OF_TEXT='" . $this->DB_WE->escape($this->Text) . "',OF_PATH='" . $this->DB_WE->escape($this->Path) . "' WHERE OF_ID=" . intval($this->ID));
 		}
 		return $this->i_savePersistentSlotsToDB('Path,Text,ParentID,CreatorID,ModifierID,RestrictOwners,Owners,OwnersReadOnly,Published,ModDate,ObjectID,IsSearchable,Charset,Url,TriggerID');
 	}
@@ -3040,19 +3042,19 @@ class we_objectFile extends we_document{
 	}
 
 	protected function updateRemoteLang($db, $id, $lang, $type){
-		$hash = getHash('SELECT Language,TableID FROM ' . $this->Table . ' WHERE ID=' . $id, $db);
+		$hash = getHash('SELECT Language,TableID FROM ' . $db->escape($this->Table) . ' WHERE ID=' . intval($id), $db);
 		$oldLang = $hash['Language'];
 		$tid = $hash['TableID'];
 		if($oldLang == $lang){
 			return;
 		}
 //update Lang of doc
-		$db->query('UPDATE ' . $this->Table . ' SET Language="' . $lang . '" WHERE ID=' . $id);
-		$db->query('UPDATE ' . OBJECT_X_TABLE . $tid . 'SET OF_Language="' . $lang . '" WHERE ID=' . $id);
+		$db->query('UPDATE ' . $db->escape($this->Table) . ' SET Language="' . $db->escape($lang) . '" WHERE ID=' . intval($id));
+		$db->query('UPDATE ' . OBJECT_X_TABLE . intval($tid) . 'SET OF_Language="' . $db->escape($lang) . '" WHERE ID=' . intval($id));
 //update LangLink:
-		$db->query('UPDATE ' . LANGLINK_TABLE . ' SET DLocale="' . $lang . '" WHERE DID=' . $id . ' AND DocumentTable="' . $type . '"');
+		$db->query('UPDATE ' . LANGLINK_TABLE . ' SET DLocale="' . $db->escape($lang) . '" WHERE DID=' . intval($id) . ' AND DocumentTable="' . $db->escape($type) . '"');
 //drop invalid entries => is this safe???
-		$db->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DID=' . $id . ' AND DocumentTable="' . $type . '" AND Locale!="' . $lang . '"');
+		$db->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DID=' . intval($id) . ' AND DocumentTable="' . $db->escape($type) . '" AND Locale!="' . $db->escape($lang) . '"');
 	}
 
 	protected function getNavigationFoldersForDoc(){

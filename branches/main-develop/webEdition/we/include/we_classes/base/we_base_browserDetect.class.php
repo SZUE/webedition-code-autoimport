@@ -39,6 +39,8 @@ class we_base_browserDetect{
 	const SYS_MAC = 'mac';
 	const SYS_WIN = 'win';
 	const SYS_UNIX = 'unix';
+	const SYS_ANDROID = 'android';
+	const SYS_IPHONE = 'iphone';
 
 	///Browser
 	protected static $br = self::UNKNOWN;
@@ -180,6 +182,10 @@ class we_base_browserDetect{
 			self::$sys = self::SYS_MAC;
 		} elseif(stristr($bracket, 'win')){
 			self::$sys = self::SYS_WIN;
+		} elseif(stristr($bracket, 'android')){
+			self::$sys = self::SYS_ANDROID;
+		} elseif(stristr($bracket, 'iPhone')){
+			self::$sys = self::SYS_IPHONE;
 		} elseif(stristr($bracket, 'linux') || stristr($bracket, 'x11') || stristr($bracket, 'sun')){
 			self::$sys = self::SYS_UNIX;
 		}

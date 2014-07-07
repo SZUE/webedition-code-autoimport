@@ -76,9 +76,9 @@ class we_navigation_frames extends weModuleFrames{
 			we_main_headermenu::css();
 
 		$tab = we_base_request::_(we_base_request::STRING, 'tab');
-		$sid = we_base_request::_(we_base_request::STRING, 'sid');
-		$extraUrlParams = $tab !== false ? '&tab=' . $tab : '' . $sid !== false ? '&sid=' . $sid : '';
-
+		$sid = we_base_request::_(we_base_request::STRING, 'sid', false);
+		$extraUrlParams = ($tab !== false ? '&tab=' . $tab : '' ) . ($sid !== false ? '&sid=' . $sid : '');
+		
 		return parent::getHTMLFrameset($extraHead, $extraUrlParams);
 	}
 
@@ -251,7 +251,7 @@ function setTab(tab) {
 			') . $out;
 		}
 
-		$body = we_html_element::htmlBody(array("class" => "weEditorBody", 'onLoad' => 'loaded=1;'), we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js?' . WE_VERSION) .
+		$body = we_html_element::htmlBody(array("class" => "weEditorBody", 'onload' => 'loaded=1;'), we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js?' . WE_VERSION) .
 				we_html_element::htmlForm(array('name' => 'we_form', 'onsubmit' => 'return false'), $this->getHTMLProperties()
 				)
 		);
@@ -1055,7 +1055,7 @@ function onSelectionClassChangeJS(value) {
 					), $this->View->getCommonHiddens($hiddens) .
 					$this->View->htmlHidden(
 						'IsFolder', (isset($this->Model->IsFolder) ? $this->Model->IsFolder : 0)) . $this->View->htmlHidden(
-						'presetFolder', we_base_request::_(we_base_request::STRING, 'presetFolder','')) .
+						'presetFolder', we_base_request::_(we_base_request::STRING, 'presetFolder', '')) .
 					we_html_multiIconBox::getHTML(
 						'', '100%', $this->getHTMLGeneral(), 30, '', -1, '', '', false, $preselect) .
 					($this->Model->IsFolder ? we_html_multiIconBox::getHTML(
@@ -1345,7 +1345,7 @@ function selectItem() {
 
 		$_body = we_html_element::htmlBody(
 				array(
-				"class" => "weDialogBody", "onLoad" => "loaded=1;"
+				"class" => "weDialogBody", "onload" => "loaded=1;"
 				), we_html_element::htmlForm(
 					array(
 					"name" => "we_form", "onsubmit" => "return false"
@@ -1393,7 +1393,7 @@ function selectItem() {
 		}
 
 		$yuiSuggest = & weSuggest::getInstance();
-		$yuiSuggest->setAcId("FolderPath", $_table == OBJECT_FILES_TABLE ? id_to_path($this->Model->ClassID, OBJECT_FILES_TABLE) : "");
+		$yuiSuggest->setAcId("FolderPath", defined('OBJECT_FILES_TABLE') && $_table == OBJECT_FILES_TABLE ? id_to_path($this->Model->ClassID, OBJECT_FILES_TABLE) : "");
 		$yuiSuggest->setContentType("folder");
 		$yuiSuggest->setInput('FolderPath', $_path, $_attribs);
 		$yuiSuggest->setMaxResults(50);
@@ -1785,7 +1785,7 @@ function ' . $prefix . 'setLinkSelection(value){
 					"marginheight" => 0,
 					"leftmargin" => 0,
 					"topmargin" => 0,
-					"onLoad" => "document.we_form.makeNewDoc.checked=" . $this->topFrame . ".makeNewDoc;"
+					"onload" => "document.we_form.makeNewDoc.checked=" . $this->topFrame . ".makeNewDoc;"
 					), we_html_element::htmlForm(array(), $table2->getHtml())));
 	}
 

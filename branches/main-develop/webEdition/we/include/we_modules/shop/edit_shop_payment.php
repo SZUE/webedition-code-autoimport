@@ -29,8 +29,11 @@ we_html_tools::protect($protect);
 echo we_html_tools::getHtmlTop() .
  STYLESHEET;
 
-if(($_REQUEST["fieldForname"])){ //	save data in arrays ..
-	$DB_WE->query('REPLACE INTO ' . WE_SHOP_PREFS_TABLE . " SET strFelder= '" . $DB_WE->escape($_REQUEST["fieldForname"]) . "|" . $DB_WE->escape($_REQUEST["fieldSurname"]) . "|" . $DB_WE->escape($_REQUEST["fieldStreet"]) . "|" . $DB_WE->escape($_REQUEST["fieldZip"]) . "|" . $DB_WE->escape($_REQUEST["fieldCity"]) . "|" . $DB_WE->escape($_REQUEST["lc"]) . "|" . $DB_WE->escape($_REQUEST["ppB"]) . "|" . $DB_WE->escape($_REQUEST["psb"]) . "|" . $DB_WE->escape($_REQUEST["lcS"]) . "|" . $DB_WE->escape($_REQUEST["spAID"]) . "|" . $DB_WE->escape($_REQUEST["spB"]) . "|" . $DB_WE->escape($_REQUEST["spC"]) . "|" . $DB_WE->escape($_REQUEST["spD"]) . "|" . $DB_WE->escape($_REQUEST["spCo"]) . "|" . $DB_WE->escape($_REQUEST["spPS"]) . "|" . $DB_WE->escape($_REQUEST["spcmdP"]) . "|" . $DB_WE->escape($_REQUEST["spconfP"]) . "|" . $DB_WE->escape($_REQUEST["spdesc"]) . "|" . $DB_WE->escape($_REQUEST["fieldEmail"]) . "' ,strDateiname='payment_details'");
+if(($fname = we_base_request::_(we_base_request::STRING, "fieldForname"))){ //	save data in arrays ..
+	$DB_WE->query('REPLACE INTO ' . WE_SHOP_PREFS_TABLE . " SET " . we_database_base::arraySetter(array(
+			'strFelder' => $fname . "|" . we_base_request::_(we_base_request::STRING, "fieldSurname") . "|" . we_base_request::_(we_base_request::STRING, "fieldStreet") . "|" . we_base_request::_(we_base_request::INT, "fieldZip") . "|" . we_base_request::_(we_base_request::STRING, "fieldCity") . "|" . we_base_request::_(we_base_request::STRING, "lc") . "|" . we_base_request::_(we_base_request::STRING, "ppB") . "|" . we_base_request::_(we_base_request::STRING, "psb") . "|" . we_base_request::_(we_base_request::STRING, "lcS") . "|" . we_base_request::_(we_base_request::STRING, "spAID") . "|" . we_base_request::_(we_base_request::STRING, "spB") . "|" . we_base_request::_(we_base_request::STRING, "spC") . "|" . we_base_request::_(we_base_request::STRING, "spD") . "|" . we_base_request::_(we_base_request::STRING, "spCo") . "|" . we_base_request::_(we_base_request::STRING, "spPS") . "|" . we_base_request::_(we_base_request::STRING, "spcmdP") . "|" . we_base_request::_(we_base_request::STRING, "spconfP") . "|" . we_base_request::_(we_base_request::STRING, "spdesc") . "|" . we_base_request::_(we_base_request::STRING, "fieldEmail"),
+			'strDateiname' => 'payment_details',
+	)));
 
 
 	//	Close window when finished

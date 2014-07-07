@@ -345,9 +345,7 @@ class we_glossary_glossary extends weModelBase{
 	 * @return boolean
 	 */
 	function pathExists($Path){
-		$table = $this->db->escape($this->table);
-		$Path = $this->db->escape($Path);
-		return (f('SELECT 1 FROM ' . $table . " WHERE Path Like Binary '" . $Path . "'" . ($this->ID ? ' AND ID != ' . intval($this->ID) : '') . ' LIMIT 1', '', $this->db));
+		return (f('SELECT 1 FROM ' . $this->db->escape($this->table) . " WHERE Path Like Binary '" . $this->db->escape($Path) . "'" . ($this->ID ? ' AND ID != ' . intval($this->ID) : '') . ' LIMIT 1', '', $this->db));
 	}
 
 	function getIDByPath($Path){
@@ -387,11 +385,8 @@ class we_glossary_glossary extends weModelBase{
 	 * @return boolean
 	 */
 	function saveField($Name){
-		$table = $this->db->escape($this->table);
-		$Name = $this->db->escape($Name);
 		$value = (in_array($Name, $this->_Serialized) ? unserialize($this->$Name) : $this->$Name);
-
-		$this->db->query('UPDATE ' . $table . ' SET ' . $Name . "='" . $this->db->escape($value) . "' WHERE ID=" . intval($this->ID));
+		$this->db->query('UPDATE ' . $this->db->escape($this->table) . ' SET ' . $this->db->escape($Name) . "='" . $this->db->escape($value) . "' WHERE ID=" . intval($this->ID));
 
 		return $this->db->affected_rows();
 	}

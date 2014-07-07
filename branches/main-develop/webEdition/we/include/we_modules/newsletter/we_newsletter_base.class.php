@@ -115,7 +115,7 @@ class we_newsletter_base{
 		$set = we_database_base::arraySetter($sets);
 
 		if($this->ID){
-			$this->db->query('UPDATE ' . $this->table . ' SET ' . $set . ' WHERE ' . $where);
+			$this->db->query('UPDATE ' . $this->db->escape($this->table) . ' SET ' . $set . ' WHERE ' . $where);
 		} else {
 			$this->db->query('INSERT INTO ' . $this->db->escape($this->table) . ' SET ' . $set);
 			# get ID #
@@ -130,7 +130,7 @@ class we_newsletter_base{
 		if(!$this->ID){
 			return false;
 		}
-		$this->db->query('DELETE FROM ' . $this->db->escape($this->table) . ' WHERE ID="' . $this->ID . '"');
+		$this->db->query('DELETE FROM ' . $this->db->escape($this->table) . ' WHERE ID="' . intval($this->ID) . '"');
 		return true;
 	}
 

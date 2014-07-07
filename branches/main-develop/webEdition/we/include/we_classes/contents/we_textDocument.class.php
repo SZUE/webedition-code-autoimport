@@ -49,7 +49,7 @@ class we_textDocument extends we_document{
 				return 'we_templates/we_srcTmpl.inc.php';
 			case we_base_constants::WE_EDITPAGE_PREVIEW:
 				if($GLOBALS['we_EDITOR']){
-					$GLOBALS['we_file_to_delete_after_include'] = TEMP_PATH . '/' . we_base_file::getUniqueId() . $this->Extension;
+					$GLOBALS['we_file_to_delete_after_include'] = TEMP_PATH . we_base_file::getUniqueId() . $this->Extension;
 					we_util_File::saveFile($GLOBALS['we_file_to_delete_after_include'], $this->i_getDocument());
 					return $GLOBALS['we_file_to_delete_after_include'];
 				} else {
@@ -83,19 +83,20 @@ class we_textDocument extends we_document{
 
 	private static function replaceWEIDs($doc){
 		$matches = array();
-		preg_match_all('|#WE:(\d+)#|', $doc, $matches);
-		$matches = array_unique($matches[1], SORT_NUMERIC);
-		if(!$matches){
-			return $doc;
-		}
-		$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE'], true);
-		foreach($matches as $match){
-			$path = id_to_path($match, FILE_TABLE, $GLOBALS['DB_WE']);
-			if($urlReplace){
-				$http = preg_replace($urlReplace, array_keys($urlReplace), $path, -1, $cnt);
-				$path = ($cnt ? 'http:' : getServerUrl()) . $http;
+		if(preg_match_all('|#WE:(\d+)#|', $doc, $matches)){
+			$matches = array_unique($matches[1], SORT_NUMERIC);
+			if(!$matches){
+				return $doc;
 			}
-			$doc = str_replace('#WE:' . $match . '#', $path, $doc);
+			$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE'], true);
+			foreach($matches as $match){
+				$path = id_to_path($match, FILE_TABLE, $GLOBALS['DB_WE']);
+				if($urlReplace){
+					$http = preg_replace($urlReplace, array_keys($urlReplace), $path, -1, $cnt);
+					$path = ($cnt ? 'http:' : getServerUrl()) . $http;
+				}
+				$doc = str_replace('#WE:' . $match . '#', $path, $doc);
+			}
 		}
 		return $doc;
 	}

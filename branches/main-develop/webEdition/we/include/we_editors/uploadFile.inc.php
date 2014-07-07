@@ -27,35 +27,47 @@ we_html_tools::protect();
 $we_alerttext = '';
 $error = false;
 
-$maxsize = getUploadMaxFilesize(false);
+if(isset($_SESSION['weS']['we_data'][$we_transaction])){
+	$we_dt = $_SESSION['weS']['we_data'][$we_transaction];
+	include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
+	$isWeDoc = true;
+	$contentType = $we_doc->ContentType;
+} else {
+	$isWeDoc = false;
+	$contentType = weRequest('raw', 'we_cmd', '', 1);
+}
+
+switch($contentType){
+	case we_base_ContentTypes::IMAGE;
+		$allowedContentTypes = we_base_imageEdit::IMAGE_CONTENT_TYPES;
+		break;
+	case we_base_ContentTypes::APPLICATION;
+		$allowedContentTypes = '';
+		break;
+	default:
+		$allowedContentTypes = $contentType;
+}
+
+$inputTypeFile = new we_fileupload_uploader_include('we_File', 'top', '', 330, true, false, $allowedContentTypes, '', '', '', array(), -1);
+$inputTypeFile->setExternalProgressbar(true, 'progressbar', true, 'top.', 120, '');
+$we_File = $inputTypeFile->processFileRequest();
+
+$maxsize = $inputTypeFile->getMaxUploadSize();
 $we_maxfilesize_text = sprintf(g_l('newFile', '[max_possible_size]'), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB));
 
 echo we_html_tools::getHtmlTop(g_l('newFile', "[import_File_from_hd_title]")) .
- STYLESHEET;
+ STYLESHEET . $inputTypeFile->getJS() . $inputTypeFile->getCss();
 
-if(!isset($_SESSION['weS']['we_data'][$we_transaction])){
+if(!$isWeDoc){
 	$we_alerttext = $we_maxfilesize_text;
 	$error = true;
 } else {
-
-	$we_dt = $_SESSION['weS']['we_data'][$we_transaction];
-	include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
-
-	switch($we_doc->ContentType){
-		case we_base_ContentTypes::IMAGE;
-			$allowedContentTypes = we_base_imageEdit::IMAGE_CONTENT_TYPES;
-			break;
-		case we_base_ContentTypes::APPLICATION;
-			$allowedContentTypes = '';
-			break;
-		default:
-			$allowedContentTypes = $we_doc->ContentType;
-	}
-
 	if(isset($_FILES['we_File']) && ($_FILES['we_File']['name']) && $_FILES['we_File']['type'] && ((empty($allowedContentTypes)) || (!(strpos($allowedContentTypes, $_FILES['we_File']['type']) === false)))){
 		$we_doc->Extension = strtolower((strpos($_FILES['we_File']['name'], '.') > 0) ? preg_replace('/^.+(\..+)$/', "\\1", $_FILES['we_File']['name']) : ''); //strtolower for feature 3764
-		$we_File = TEMP_PATH . '/' . we_base_file::getUniqueId() . $we_doc->Extension;
-		move_uploaded_file($_FILES['we_File']['tmp_name'], $we_File);
+		if(!isset($we_File) || !$we_File){
+			$we_File = TEMP_PATH . we_base_file::getUniqueId() . $we_doc->Extension;
+			move_uploaded_file($_FILES['we_File']['tmp_name'], $we_File);
+		}
 		if((!$we_doc->Filename) || (!$we_doc->ID)){
 			// Bug Fix #6284
 			$we_doc->Filename = preg_replace('/[^A-Za-z0-9._-]/', '', $_FILES["we_File"]["name"]);
@@ -100,17 +112,19 @@ if(!isset($_SESSION['weS']['we_data'][$we_transaction])){
 $content = '<table border="0" cellpadding="0" cellspacing="0">' .
 	($maxsize ? ('<tr><td>' . we_html_tools::htmlAlertAttentionBox(
 			$we_maxfilesize_text, we_html_tools::TYPE_ALERT, 390) . '</td></tr><tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>') : '') . '
-				<tr><td><input name="we_File" TYPE="file"' . ($allowedContentTypes ? ' ACCEPT="' . $allowedContentTypes . '"' : '') . ' size="35" /></td></tr>
+				<tr><td>' . $inputTypeFile->getHtml() . '</td></tr>
 				<tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>';
 if($we_doc->ContentType == we_base_ContentTypes::IMAGE){
 	$content .= '<tr><td>' . we_html_forms::checkbox(1, true, "import_metadata", g_l('metadata', "[import_metadata_at_upload]")) . '</td></tr>';
 }
 $content .= '</table>';
 
-
-$_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("upload", "javascript:document.forms[0].submit();"), "", we_html_button::create_button("cancel", "javascript:self.close();"));
+$_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("upload", "javascript:" . we_fileupload_uploader_include::getJsSubmitCallStatic("top", 0, "document.forms[0].submit()")), "", we_html_button::create_button("cancel", "javascript:self.close();"));
+$buttonsTable = new we_html_table(array('cellspacing' => 0, 'cellpadding' => 0, 'style' => 'border-width:0px;width:100%;'), 1, 2);
+$buttonsTable->setCol(0, 0, $attribs = array(), we_html_element::htmlDiv(array('id' => 'progressbar', 'style' => 'display:none;padding-left:10px')));
+$buttonsTable->setCol(0, 1, $attribs = array('align' => 'right'), $_buttons);
+$_buttons = $buttonsTable->getHtml();
 ?>
-
 
 <script type="text/javascript"><!--
 <?php
@@ -123,7 +137,7 @@ if($we_alerttext){
 	}
 }
 
-if(isset($we_File) && (!$we_alerttext)){
+if(isset($we_File) && $we_File && !$we_alerttext){
 	?>
 	opener.we_cmd("update_file");
 	_EditorFrame = opener.top.weEditorFrameController.getActiveEditorFrame();
@@ -134,7 +148,7 @@ if(isset($we_File) && (!$we_alerttext)){
 </script>
 </head>
 
-<body class="weDialogBody" onLoad="self.focus();">
+<body class="weDialogBody" onload="self.focus();">
 	<center>
 		<form method="post" enctype="multipart/form-data">
 			<input type="hidden" name="we_transaction" value="<?php print $we_transaction ?>" />

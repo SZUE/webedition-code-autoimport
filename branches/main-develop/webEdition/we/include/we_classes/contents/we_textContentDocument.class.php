@@ -130,7 +130,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		}
 
 
-		$maxDB = min(1000000, getMaxAllowedPacket($this->DB_WE) - 1024);
+		$maxDB = min(1000000, $this->DB_WE->getMaxAllowedPacket() - 1024);
 		return $this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter(array(
 					'DID' => intval($this->ID),
 					'Text' => substr(preg_replace(array('/(&#160;|&nbsp;)/', "/ *[\r\n]+/", '/  +/'), ' ', trim(strip_tags($text))), 0, $maxDB),
@@ -253,7 +253,7 @@ abstract class we_textContentDocument extends we_textDocument{
 				break;
 			case we_class::LOAD_SCHEDULE_DB:
 				if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
-					$sessDat = f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . ' AND ClassName="' . $this->ClassName . '" AND Was=' . we_schedpro::SCHEDULE_FROM, 'SerializedData', $this->DB_WE);
+					$sessDat = f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . ' AND ClassName="' . $this->DB_WE->escape($this->ClassName) . '" AND Was=' . we_schedpro::SCHEDULE_FROM, 'SerializedData', $this->DB_WE);
 					if($sessDat &&
 						$this->i_initSerializedDat(unserialize(substr_compare($sessDat, 'a:', 0, 2) == 0 ? $sessDat : gzuncompress($sessDat)))){
 						$this->i_getPersistentSlotsFromDB('Path,Text,Filename,Extension,ParentID,Published,ModDate,CreatorID,ModifierID,Owners,RestrictOwners,WebUserID');
@@ -332,7 +332,7 @@ abstract class we_textContentDocument extends we_textDocument{
 				return false;
 			}
 		}
-		$this->oldCategory = f('SELECT Category FROM ' . $this->Table . ' WHERE ID=' . $this->ID, '', $this->DB_WE);
+		$this->oldCategory = f('SELECT Category FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($this->ID), '', $this->DB_WE);
 
 		if($saveinMainDB && !we_root::we_save(1)){
 			return false; // calls the root function, so the document will be saved in main-db but it will not be written!

@@ -36,8 +36,8 @@ class we_object_tag{
 
 	function __construct($class = '', $id = 0, $triggerID = 0, $searchable = true, $condition = '', $hidedirindex = false, $objectseourls = false){
 		$this->id = $id;
-		if(!$this->id && isset($_REQUEST['we_objectID']) && $_REQUEST['we_objectID']){
-			!$this->id = $_REQUEST['we_objectID'];
+		if(!$this->id && ($oid=we_base_request::_(we_base_request::INT,'we_objectID'))){
+			$this->id = $oid;
 		}
 		if(!$this->id){
 			return;

@@ -373,7 +373,7 @@ class we_navigation_navigation extends weModelBase{
 			return true;
 		}
 		//checkWS
-		return f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . $this->ParentID . ' ' . self::getWSQuery(), '', $this->db);
+		return f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->ParentID) . ' ' . self::getWSQuery(), '', $this->db);
 	}
 
 	function evalPath($id = 0){
@@ -399,7 +399,7 @@ class we_navigation_navigation extends weModelBase{
 	}
 
 	function saveField($name, $serialize = false){
-		$this->db->query('UPDATE ' . $this->db->escape($this->table) . ' SET ' . $name . '="' . $this->db->escape(($serialize ? serialize($this->$name) : $this->$name)) . '" WHERE ID=' . intval($this->ID));
+		$this->db->query('UPDATE ' . $this->db->escape($this->table) . ' SET ' . $this->db->escape($name) . '="' . $this->db->escape(($serialize ? serialize($this->$name) : $this->$name)) . '" WHERE ID=' . intval($this->ID));
 		return $this->db->affected_rows();
 	}
 

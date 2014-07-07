@@ -78,7 +78,7 @@ class we_glossary_view{
 	 * @var string
 	 */
 	var $GroupPattern = "";
-	private $page=0;
+	private $page = 0;
 
 	/**
 	 * @param string $FrameSet
@@ -89,7 +89,6 @@ class we_glossary_view{
 		$this->Glossary = new we_glossary_glossary();
 
 		switch(we_base_request::_(we_base_request::STRING, 'cmd')){
-
 			case 'new_glossary_abbreviation':
 				$this->Glossary->Type = we_glossary_glossary::TYPE_ABBREVATION;
 				break;
@@ -674,18 +673,16 @@ function we_cmd() {
 		if(isset($_SESSION['weS']['weGlossarySession'])){
 			$this->Glossary = unserialize($_SESSION['weS']['weGlossarySession']);
 		}
-
+		$isPublished = we_base_request::_(we_base_request::BOOL, 'Published');
 		if(is_array($this->Glossary->persistent_slots)){
 			foreach($this->Glossary->persistent_slots as $val){
 				if(isset($_REQUEST[$val])){
 					if($val == "Published"){
-						if($this->Glossary->Published == 0 && $_REQUEST['Published'] == 1){
+						if($this->Glossary->Published == 0 && $isPublished){
 							$this->Glossary->Published = time();
-						} elseif($_REQUEST['Published'] == 0){
+						} elseif(!$isPublished){
 							$this->Glossary->Published = 0;
 						}
-					} else if(is_array($_REQUEST[$val])){
-						$this->Glossary->$val = $_REQUEST[$val];
 					} else {
 						$this->Glossary->$val = $_REQUEST[$val];
 					}

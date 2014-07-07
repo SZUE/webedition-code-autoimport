@@ -175,11 +175,12 @@ if(isset($daten)){
 		$menu = '<label for="' . $select_name . '">' . $label . '</label>
 <select name="' . $select_name . "\" onchange=\"document.location.href='" . $_SERVER['SCRIPT_NAME'] . "?typ=object&ViewClass='+ this.options[this.selectedIndex].value\">\n";
 
+		$selVal == we_base_request::_(we_base_request::STRING, $select_name);
 		foreach($fe as $val){
 			if($val != ''){
 				$menu .= "  <option value=\"" . $val . "\"" .
-					((isset($_REQUEST[$select_name]) && $val == $_REQUEST[$select_name]) ? " selected=\"selected\"" : "") . '>' .
-					f('SELECT ' . OBJECT_TABLE . '.Text as ClassIDName FROM ' . OBJECT_TABLE . ' WHERE ' . OBJECT_TABLE . '.ID = ' . intval($val), 'ClassIDName', $GLOBALS['DB_WE']) .
+					(($val == $selVal) ? " selected=\"selected\"" : "") . '>' .
+					f('SELECT ' . OBJECT_TABLE . '.Text as ClassIDName FROM ' . OBJECT_TABLE . ' WHERE ' . OBJECT_TABLE . '.ID = ' . intval($val), ' ', $GLOBALS['DB_WE']) .
 					'</option>';
 			}
 		}
@@ -206,12 +207,13 @@ if(isset($daten)){
 				$fe_count = 0;
 
 				foreach($fe as $clId){
+					$clId = intval($clId);
 					if($fe_count > 0){
 						$count_expression .= ' + ';
 						$from_expression .= ', ';
 						$where_expression .= ' AND ';
 					}
-					$count_expression .= 'COUNT(DISTINCT ' . OBJECT_X_TABLE . intval($clId) . '.OF_ID)';
+					$count_expression .= 'COUNT(DISTINCT ' . OBJECT_X_TABLE . $clId . '.OF_ID)';
 					$from_expression .= OBJECT_X_TABLE . $clId;
 					$where_expression .= OBJECT_X_TABLE . $clId . '.OF_ID !=0';
 					$fe_count++;
@@ -220,7 +222,7 @@ if(isset($daten)){
 				$classid = intval($classid);
 				$count_expression = 'COUNT(' . OBJECT_X_TABLE . $classid . '.OF_ID)';
 				$from_expression = OBJECT_X_TABLE . $classid;
-				$where_expression = OBJECT_X_TABLE . "$classid.OF_ID!=0";
+				$where_expression = OBJECT_X_TABLE . $classid . ".OF_ID!=0";
 			}
 			$DB_WE->query('SELECT ' . $count_expression . ' AS dbEntries FROM ' . $from_expression . ' WHERE ' . $where_expression);
 			while($DB_WE->next_record()){ // Pager: determine the number of records;
@@ -235,7 +237,7 @@ if(isset($daten)){
 			if($entries != 0){ // Pager: Number of records not empty?
 				$topInfo = ($entries > 0 ? $entries : g_l('modules_shop', '[noRecord]'));
 
-				$classid = abs($_REQUEST["ViewClass"]); // gets the value from the selectbox;
+				$classid = abs(we_base_request::_(we_base_request::INT,"ViewClass")); // gets the value from the selectbox;
 
 				$classSelectTable .= '<table cellpadding="2" cellspacing="0" width="600" border="0">
     <tr>
@@ -283,7 +285,7 @@ if(isset($daten)){
 
 				// we need functionalitty to order these
 
-				if(isset($_REQUEST['orderBy']) && $_REQUEST['orderBy']){
+				if(we_base_request::_(we_base_request::BOOL,'orderBy')){
 					usort($orderRows, 'orderBy');
 				}
 
@@ -386,7 +388,7 @@ if(isset($daten)){
 
 				// we need functionalitty to order these
 
-				if(isset($_REQUEST['orderBy']) && $_REQUEST['orderBy']){
+				if(we_base_request::_(we_base_request::BOOL,'orderBy')){
 					usort($orderRows, 'orderBy');
 				}
 

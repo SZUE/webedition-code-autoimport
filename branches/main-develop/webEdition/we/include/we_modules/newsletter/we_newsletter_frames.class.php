@@ -134,7 +134,7 @@ class we_newsletter_frames extends weModuleFrames{
 	 * @return String
 	 */
 	function getHTMLEditorHeader($mode = 0){
-		if(isset($_REQUEST["home"])){
+		if(we_base_request::_(we_base_request::BOOL, "home")){
 			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#F0EFF0"), ""));
 		}
 
@@ -145,10 +145,7 @@ class we_newsletter_frames extends weModuleFrames{
 
 		$textPre = g_l('modules_newsletter', ($group ? '[group]' : '[newsletter]'));
 
-		$textPost = (isset($_REQUEST["txt"]) ?
-				$_REQUEST["txt"] :
-				g_l('modules_newsletter', ($group ? '[new_newsletter_group]' : '[new_newsletter]'))
-			);
+		$textPost = we_base_request::_(we_base_request::STRING, "txt", g_l('modules_newsletter', ($group ? '[new_newsletter_group]' : '[new_newsletter]')));
 
 		$js = we_html_element::jsElement('
 function setTab(tab) {
@@ -215,14 +212,11 @@ top.content.hloaded = 1;
 	 * @return String
 	 */
 	function getHTMLEditorFooter($mode = 0){
-		if(isset($_REQUEST['home'])){
+		if(we_base_request::_(we_base_request::BOOL, 'home')){
 			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#EFF0EF"), ""));
 		}
 
-		$group = 0;
-		if(isset($_REQUEST["group"])){
-			$group = $_REQUEST["group"];
-		}
+		$group = we_base_request::_(we_base_request::INT, "group", 0);
 
 		$js = $this->View->getJSFooterCode() .
 			we_html_element::jsElement('
@@ -348,7 +342,10 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 
 	function getHTMLLog(){
 		$content = "";
-		$this->View->db->query('SELECT * FROM ' . NEWSLETTER_LOG_TABLE . ' WHERE NewsletterID=' . $this->View->newsletter->ID . ((isset($_REQUEST['newsletterStatus']) && $_REQUEST['newsletterStatus'] != "") ? ' AND Log =' . $_REQUEST['newsletterStatus'] : '') . ((isset($_REQUEST['newsletterStartTime']) && isset($_REQUEST['newsletterEndTime']) && $_REQUEST['newsletterStartTime'] > 0 && $_REQUEST['newsletterEndTime'] > 0) ? ' AND LogTime BETWEEN ' . $_REQUEST['newsletterStartTime'] . ' AND ' . $_REQUEST['newsletterEndTime'] : '') . ' ORDER BY LogTime DESC');
+		$start = we_base_request::_(we_base_request::INT, 'newsletterStartTime', 0);
+		$end = we_base_request::_(we_base_request::INT, 'newsletterEndTime', 0);
+		$status = we_base_request::_(we_base_request::INT, 'newsletterStatus');
+		$this->View->db->query('SELECT * FROM ' . NEWSLETTER_LOG_TABLE . ' WHERE NewsletterID=' . $this->View->newsletter->ID . ($status !== false ? ' AND Log=' . $status : '') . ($start && $end ? ' AND LogTime BETWEEN ' . $start . ' AND ' . $end : '') . ' ORDER BY LogTime DESC');
 
 		while($this->View->db->next_record()){
 			$log = g_l('modules_newsletter', '[' . $this->View->db->f("Log") . ']');
@@ -479,9 +476,8 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 	}
 
 	function getHTMLCmd(){
-		if(isset($_REQUEST["pid"])){
-			$pid = $_REQUEST["pid"];
-		} else {
+		$pid = we_base_request::_(we_base_request::INT, 'pid');
+		if($pid === false){
 			exit;
 		}
 
@@ -616,12 +612,9 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 
 		$closeflag = false;
 
-		if(isset($_REQUEST["ncmd"])){
-
-			if($_REQUEST["ncmd"] == "save_settings"){
-				$this->View->processCommands();
-				$closeflag = true;
-			}
+		if(we_base_request::_(we_base_request::STRING, "ncmd") == "save_settings"){
+			$this->View->processCommands();
+			$closeflag = true;
 		}
 
 
@@ -1258,7 +1251,7 @@ window.onload=extraInit;');
 	 * @return unknown
 	 */
 	function getHTMLProperties(){
-		if(isset($_REQUEST['home']) && $_REQUEST['home']){
+		if(we_base_request::_(we_base_request::BOOL, 'home')){
 			$GLOBALS['we_print_not_htmltop'] = true;
 			$GLOBALS['we_head_insert'] = $this->View->getJSProperty();
 			$GLOBALS['we_body_insert'] = we_html_element::htmlForm(array('name' => 'we_form'), $this->View->getHiddens(array('ncmd' => 'home')) . $this->View->htmlHidden("home", 0));
@@ -1445,7 +1438,7 @@ function changeFieldValue(val,valueField) {
 			$$v = (isset($_REQUEST[$k]) ?
 					$_REQUEST[$k] :
 					($v == "htmlmail" ?
-						f('SELECT  pref_value FROM ' . NEWSLETTER_PREFS_TABLE . " WHERE pref_name='default_htmlmail'", 'pref_value', $this->db) :
+						f('SELECT pref_value FROM ' . NEWSLETTER_PREFS_TABLE . " WHERE pref_name='default_htmlmail'", '', $this->db) :
 						''));
 		}
 
@@ -1535,17 +1528,8 @@ function changeFieldValue(val,valueField) {
 	}
 
 	function getHTMLPreview(){
-		$gview = 0;
-
-		if(isset($_REQUEST["gview"])){
-			$gview = $_REQUEST["gview"];
-		}
-
-		$hm = 0;
-
-		if(isset($_REQUEST["hm"])){
-			$hm = $_REQUEST["hm"];
-		}
+		$gview = we_base_request::_(we_base_request::INT, "gview", 0);
+		$hm = we_base_request::_(we_base_request::INT, "hm", 0);
 
 		$content = '';
 		$count = count($this->View->newsletter->blocks);
@@ -1559,22 +1543,20 @@ function changeFieldValue(val,valueField) {
 
 
 		if(!$hm){
-			print '<html><head></head><body><form>
+			echo '<html><head></head><body><form>
 							<textarea name="foo" style="width:100%;height:95%" cols="80" rows="40">' .
-				oldHtmlspecialchars(trim($content)) .
-				'</textarea></form></body></html>';
+			oldHtmlspecialchars(trim($content)) .
+			'</textarea></form></body></html>';
 		} else {
-			print $content;
+			echo $content;
 		}
 	}
 
 	function getHTMLBlackList(){
-		if(isset($_REQUEST["black_list"])){
-			$this->View->settings["black_list"] = $_REQUEST["black_list"];
-		}
+		$this->View->settings["black_list"] = we_base_request::_(we_base_request::STRING, "black_list", $this->View->settings["black_list"]);
 
-		if(isset($_REQUEST["ncmd"])){
-			if($_REQUEST["ncmd"] == "save_black"){
+		if(($ncmd = we_base_request::_(we_base_request::STRING, 'ncmd'))){
+			if($ncmd == "save_black"){
 				$this->View->processCommands();
 			}
 			$close = true;
@@ -1668,11 +1650,11 @@ function set_export(val) {
 self.focus();
 ');
 
-		if(isset($_REQUEST["ncmd"])){
-			if($_REQUEST["ncmd"] == "import_black"){
-				$filepath = $_REQUEST["csv_file"];
-				$delimiter = $_REQUEST["csv_delimiter"];
-				$col = $_REQUEST["csv_col"];
+		switch(we_base_request::_(we_base_request::STRING, "ncmd")){
+			case "import_black":
+				$filepath = we_base_request::_(we_base_request::FILE, "csv_file");
+				$delimiter = we_base_request::_(we_base_request::RAW_CHECKED, "csv_delimiter");
+				$col = we_base_request::_(we_base_request::INT, "csv_col", 0);
 
 				if($col){
 					$col--;
@@ -1708,18 +1690,16 @@ self.focus();
 						);
 					}
 				}
-			}
-		}
-
-		if(isset($_REQUEST["ncmd"])){
-			if($_REQUEST["ncmd"] == "export_black"){
-				$fname = ($_REQUEST["csv_dir"] == "/" ? '' : $_REQUEST["csv_dir"]) . "/blacklist_export_" . time() . ".csv";
+				break;
+			case "export_black":
+				$fname = rtrim(we_base_request::_(we_base_request::FILE, "csv_dir", ''), '/') . '/blacklist_export_' . time() . '.csv';
 				we_base_file::save($_SERVER['DOCUMENT_ROOT'] . $fname, str_replace(",", "\n", $this->View->settings["black_list"]));
 
 				$js.=we_html_element::jsScript(JS_DIR . "windows.js") .
 					we_html_element::jsElement('new jsWindow("' . $this->frameset . '?pnt=export_csv_mes&lnk=' . $fname . '","edit_email",-1,-1,440,250,true,true,true,true);');
-			}
+				break;
 		}
+
 
 		$arr = makeArrayFromCSV($this->View->settings["black_list"]);
 
@@ -1843,50 +1823,49 @@ self.focus();
 	}
 
 	function getHTMLExportCsvMessage($mode = 0){
-		if(isset($_REQUEST["lnk"])){
-			$link = $_REQUEST["lnk"];
+		$link = we_base_request::_(we_base_request::URL, 'lnk');
+		if($link === false){
+			return;
 		}
 
-		if(isset($link)){
-			$down = getServerUrl() . $link;
+		$down = getServerUrl() . $link;
 
-			$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 7, 1);
+		$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 7, 1);
 
-			$table->setCol(0, 0, array(), we_html_tools::getPixel(5, 5));
-			$table->setCol(1, 0, array("class" => "defaultfont"), sprintf(g_l('modules_newsletter', '[csv_export]'), $link));
-			$table->setCol(2, 0, array(), we_html_tools::getPixel(5, 10));
-			$table->setCol(3, 0, array("class" => "defaultfont"), we_backup_wizard::getDownloadLinkText());
-			$table->setCol(4, 0, array(), we_html_tools::getPixel(5, 10));
-			$table->setCol(5, 0, array("class" => "defaultfont"), we_html_element::htmlA(array("href" => $down), g_l('modules_newsletter', '[csv_download]')));
-			$table->setCol(6, 0, array(), we_html_tools::getPixel(100, 5));
+		$table->setCol(0, 0, array(), we_html_tools::getPixel(5, 5));
+		$table->setCol(1, 0, array("class" => "defaultfont"), sprintf(g_l('modules_newsletter', '[csv_export]'), $link));
+		$table->setCol(2, 0, array(), we_html_tools::getPixel(5, 10));
+		$table->setCol(3, 0, array("class" => "defaultfont"), we_backup_wizard::getDownloadLinkText());
+		$table->setCol(4, 0, array(), we_html_tools::getPixel(5, 10));
+		$table->setCol(5, 0, array("class" => "defaultfont"), we_html_element::htmlA(array("href" => $down), g_l('modules_newsletter', '[csv_download]')));
+		$table->setCol(6, 0, array(), we_html_tools::getPixel(100, 5));
 
-			if($mode == 1){
-				$table->addRow(3);
-				$table->setCol(7, 0, array(), we_html_tools::getPixel(100, 10));
-				$table->setCol(8, 0, array("class" => "defaultfont"), we_html_element::htmlB(g_l('modules_newsletter', '[clearlog_note]')));
-				$table->setCol(9, 0, array(), we_html_tools::getPixel(100, 15));
-				$cancel = we_html_button::create_button("cancel", "javascript:self.close();");
-				$ok = we_html_button::create_button("ok", "javascript:clearLog();");
-			} else {
-				$close = we_html_button::create_button("close", "javascript:self.close();");
-			}
-
-
-			$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHidden(array("name" => "group", "value" => (isset($group) ? $group : ""))) .
-						(($mode == 1) ?
-							$this->View->htmlHidden("pnt", "clear_log") .
-							$this->View->htmlHidden("ncmd", "do_clear_log") .
-							we_html_tools::htmlDialogLayout(
-								$table->getHtml(), g_l('modules_newsletter', '[clear_log]'), we_html_button::position_yes_no_cancel($ok, null, $cancel), "100%", 30, "", "hidden") :
-							we_html_tools::htmlDialogLayout(
-								$table->getHtml(), g_l('modules_newsletter', '[csv_download]'), we_html_button::position_yes_no_cancel(null, $close, null), "100%", 30, "", "hidden")
-						) .
-						we_html_element::jsElement("self.focus();")
-					)
-			);
-
-			return ($mode == 1 ? $body : $this->getHTMLDocument($body));
+		if($mode == 1){
+			$table->addRow(3);
+			$table->setCol(7, 0, array(), we_html_tools::getPixel(100, 10));
+			$table->setCol(8, 0, array("class" => "defaultfont"), we_html_element::htmlB(g_l('modules_newsletter', '[clearlog_note]')));
+			$table->setCol(9, 0, array(), we_html_tools::getPixel(100, 15));
+			$cancel = we_html_button::create_button("cancel", "javascript:self.close();");
+			$ok = we_html_button::create_button("ok", "javascript:clearLog();");
+		} else {
+			$close = we_html_button::create_button("close", "javascript:self.close();");
 		}
+
+
+		$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHidden(array("name" => "group", "value" => (isset($group) ? $group : ""))) .
+					(($mode == 1) ?
+						$this->View->htmlHidden("pnt", "clear_log") .
+						$this->View->htmlHidden("ncmd", "do_clear_log") .
+						we_html_tools::htmlDialogLayout(
+							$table->getHtml(), g_l('modules_newsletter', '[clear_log]'), we_html_button::position_yes_no_cancel($ok, null, $cancel), "100%", 30, "", "hidden") :
+						we_html_tools::htmlDialogLayout(
+							$table->getHtml(), g_l('modules_newsletter', '[csv_download]'), we_html_button::position_yes_no_cancel(null, $close, null), "100%", 30, "", "hidden")
+					) .
+					we_html_element::jsElement("self.focus();")
+				)
+		);
+
+		return ($mode == 1 ? $body : $this->getHTMLDocument($body));
 	}
 
 	/**
@@ -2199,7 +2178,7 @@ function postSelectorSelect(wePssCmd) {
 				$_nlMessage = g_l('modules_newsletter', '[no_file_selected]');
 				$selectStatus2 = '';
 			} else {
-				if(isset($_REQUEST['weEmailStatus']) && $_REQUEST['weEmailStatus'] == 1){
+				if(we_base_request::_(we_base_request::INT, 'weEmailStatus') == 1){
 					$_nlMessage = g_l('modules_newsletter', '[file_all_ok]');
 					$selectStatus2 = "<br/>" . we_html_element::htmlB(g_l('modules_newsletter', '[status]')) . " " . we_html_tools::htmlSelect("weEmailStatus", array(g_l('modules_newsletter', '[statusAll]'), g_l('modules_newsletter', '[statusInvalid]')), "", we_base_request::_(we_base_request::RAW, 'weEmailStatus', 0), "", array("onchange" => 'listFile();'), "value", 150);
 				} else {
@@ -2239,17 +2218,14 @@ function postSelectorSelect(wePssCmd) {
 	function getHTMLClearLog(){
 		we_html_tools::protect();
 
-
-		if(isset($_REQUEST["ncmd"])){
-			if($_REQUEST["ncmd"] == "do_clear_log"){
-				$this->View->db->query("DELETE FROM " . NEWSLETTER_LOG_TABLE);
-				return
-					we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
-					we_html_element::jsElement(
-						we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[log_is_clear]'), we_message_reporting::WE_MESSAGE_NOTICE)
-						. 'self.close();'
-				);
-			}
+		if(we_base_request::_(we_base_request::STRING, "ncmd") == "do_clear_log"){
+			$this->View->db->query("DELETE FROM " . NEWSLETTER_LOG_TABLE);
+			return
+				we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
+				we_html_element::jsElement(
+					we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[log_is_clear]'), we_message_reporting::WE_MESSAGE_NOTICE)
+					. 'self.close();'
+			);
 		}
 
 		$js = we_html_element::jsElement('
@@ -2268,8 +2244,9 @@ function clearLog(){
 		}
 
 		$link = BACKUP_DIR . "download/log_" . time() . ".csv";
-		if(!we_base_file::save($_SERVER['DOCUMENT_ROOT'] . $link, $csv))
+		if(!we_base_file::save($_SERVER['DOCUMENT_ROOT'] . $link, $csv)){
 			$link = "";
+		}
 
 		$_REQUEST["lnk"] = $link;
 
@@ -2342,7 +2319,7 @@ self.focus();
 		$frameset = new we_html_frameset(array("framespacing" => 0, "border" => 0, "frameborder" => "no"));
 		$noframeset = new we_html_baseElement("noframes");
 
-		$frameset->setAttributes(array("rows" => "*,0,0", "onLoad" => (($this->View->newsletter->Step != 0 || $this->View->newsletter->Offset != 0) ? "ask(" . $this->View->newsletter->Step . "," . $this->View->newsletter->Offset . ");" : "no();")));
+		$frameset->setAttributes(array("rows" => "*,0,0", "onload" => (($this->View->newsletter->Step != 0 || $this->View->newsletter->Offset != 0) ? "ask(" . $this->View->newsletter->Step . "," . $this->View->newsletter->Offset . ");" : "no();")));
 		$frameset->addFrame(array("src" => $this->frameset . "?pnt=send_body&test=$test", "name" => "send_body", "scrolling" => "no", "noresize" => null));
 		$frameset->addFrame(array("src" => $this->frameset . "?pnt=send_cmd", "name" => "send_cmd", "scrolling" => "no"));
 		$frameset->addFrame(array("src" => $this->frameset . "?pnt=send_control&nid=$nid&test=$test&blockcache=" . $ret["blockcache"] . "&emailcache=" . $ret["emailcache"] . "&ecount=" . $ret["ecount"] . "&gcount=" . $ret["gcount"], "name" => "send_control", "scrolling" => "no"));
@@ -2384,13 +2361,9 @@ self.focus();
 		return $this->getHTMLDocument($body);
 	}
 
-	//---------------------------------------------------------------------------------------
-
-
 	function getHTMLSendCmd(){
-		if(isset($_REQUEST["nid"])){
-			$nid = $_REQUEST["nid"];
-		} else {
+		$nid = we_base_request::_(we_base_request::INT, 'nid');
+		if($nid === false){
 			return;
 		}
 
@@ -2409,7 +2382,7 @@ self.focus();
 		// emails cache -----------------------
 		$emailcache = we_base_request::_(we_base_request::RAW, "emailcache", 0);
 		//
-		$egc = we_base_request::_(we_base_request::RAW, "egc", 0);
+		$egc = we_base_request::_(we_base_request::INT, "egc", 0);
 		//
 		$gcount = we_base_request::_(we_base_request::INT, "gcount", 0);
 		//-----------------------------------
@@ -2446,7 +2419,7 @@ function initControl(){
 
 self.focus();');
 
-		$body = we_html_element::htmlBody(array("marginwidth" => 10, "marginheight" => 10, "leftmargin" => 10, "topmargin" => 10, "onLoad" => "initControl()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHidden(array("name" => "nid", "value" => $nid)) .
+		$body = we_html_element::htmlBody(array("marginwidth" => 10, "marginheight" => 10, "leftmargin" => 10, "topmargin" => 10, "onload" => "initControl()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHidden(array("name" => "nid", "value" => $nid)) .
 					we_html_element::htmlHidden(array("name" => "pnt", "value" => "send_cmd")) .
 					we_html_element::htmlHidden(array("name" => "test", "value" => $test)) .
 					we_html_element::htmlHidden(array("name" => "blockcache", "value" => $blockcache)) .
@@ -2724,25 +2697,25 @@ self.focus();');
 			}
 			$ecs++;
 
-			print we_html_element::jsElement('
+			echo we_html_element::jsElement('
 				document.we_form.ecs.value=' . $ecs . ';
 				top.send_control.document.we_form.ecs.value=' . $ecs . ';
 			');
 
 			$pro = ($ecount ? ($ecs / $ecount) * 100 : 0);
 
-			print we_html_element::jsElement('top.send_body.setProgress(' . ((int) $pro) . ');');
+			echo we_html_element::jsElement('top.send_body.setProgress(' . ((int) $pro) . ');');
 			flush();
 		}
 
 		we_base_file::delete(WE_NEWSLETTER_CACHE_DIR . $emailcache . "_" . $egc);
-		$laststep = ceil($_REQUEST["ecount"] / $this->View->settings["send_step"]);
-		if(isset($this->View->settings["send_wait"]) && is_numeric($this->View->settings["send_wait"]) && $this->View->settings["send_wait"] && $_REQUEST['egc'] > 0 && isset($this->View->settings["send_step"]) && is_numeric($this->View->settings["send_step"]) && $_REQUEST['egc'] < ceil($_REQUEST["ecount"] / $this->View->settings["send_step"])){
-			print we_html_element::jsElement('
+		$laststep = ceil(we_base_request::_(we_base_request::INT, "ecount", 0) / $this->View->settings["send_step"]);
+		if(isset($this->View->settings["send_wait"]) && is_numeric($this->View->settings["send_wait"]) && $this->View->settings["send_wait"] && $egc > 0 && isset($this->View->settings["send_step"]) && is_numeric($this->View->settings["send_step"]) && $egc < ceil($ecount / $this->View->settings["send_step"])){
+			echo we_html_element::jsElement('
 				setTimeout("document.we_form.submit()",' . $this->View->settings["send_wait"] . ');
 			');
 		} else {
-			print we_html_element::jsElement('
+			echo we_html_element::jsElement('
 				document.we_form.submit();
 			');
 		}
@@ -2799,7 +2772,7 @@ self.focus();');
 			self.focus();
 		');
 
-		$body = we_html_element::htmlBody(array("marginwidth" => 10, "marginheight" => 10, "leftmargin" => 10, "topmargin" => 10, "onLoad" => "startTimeout()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "send_cmd", "action" => $this->frameset), we_html_element::htmlHidden(array("name" => "nid", "value" => $nid)) .
+		$body = we_html_element::htmlBody(array("marginwidth" => 10, "marginheight" => 10, "leftmargin" => 10, "topmargin" => 10, "onload" => "startTimeout()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "send_cmd", "action" => $this->frameset), we_html_element::htmlHidden(array("name" => "nid", "value" => $nid)) .
 					we_html_element::htmlHidden(array("name" => "pnt", "value" => "send_cmd")) .
 					we_html_element::htmlHidden(array("name" => "retry", "value" => 1)) .
 					we_html_element::htmlHidden(array("name" => "test", "value" => 0)) .

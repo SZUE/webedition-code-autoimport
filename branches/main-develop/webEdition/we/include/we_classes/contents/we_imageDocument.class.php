@@ -293,7 +293,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 			return false;
 		}
 		$quality = ($quality > 10 ? 10 : ($quality < 0 ? 0 : $quality)) * 10;
-		$dataPath = TEMP_PATH . '/' . we_base_file::getUniqueId();
+		$dataPath = TEMP_PATH . we_base_file::getUniqueId();
 		$_resized_image = we_base_imageEdit::edit_image($this->getElement('data'), $this->getGDType(), $dataPath, $quality, $width, $height, $ratio);
 		if(!$_resized_image[0]){
 			return false;
@@ -325,7 +325,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 		}
 		$quality = max(min($quality, 10), 0) * 10;
 
-		$dataPath = TEMP_PATH . '/' . we_base_file::getUniqueId();
+		$dataPath = TEMP_PATH . we_base_file::getUniqueId();
 		$_resized_image = we_base_imageEdit::edit_image($this->getElement('data'), $this->getGDType(), $dataPath, $quality, $width, $height, false, true, 0, 0, -1, -1, $rotation);
 
 		if(!$_resized_image[0]){
@@ -682,7 +682,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 		list($width, $height) = $this->getOrigSize();
 		$quality = max(min($quality, 10), 0) * 10;
 
-		$dataPath = TEMP_PATH . '/' . we_base_file::getUniqueId();
+		$dataPath = TEMP_PATH . we_base_file::getUniqueId();
 		we_base_imageEdit::edit_image($this->getElement('data'), $type, $dataPath, $quality, $width, $height, false);
 
 		$this->setElement('data', $dataPath);
@@ -944,7 +944,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 								$imgId = intval($GLOBALS[$key][$formname]->getElement($imgName));
 
 								// move document from upload location to tmp dir
-								$_SESSION[$_imgDataId]['serverPath'] = TEMP_PATH . '/' . we_base_file::getUniqueId();
+								$_SESSION[$_imgDataId]['serverPath'] = TEMP_PATH . we_base_file::getUniqueId();
 								move_uploaded_file($_FILES['we_ui_' . $formname]['tmp_name'][$imgName], $_SESSION[$_imgDataId]['serverPath']);
 
 								$we_size = we_thumbnail::getimagesize($_SESSION[$_imgDataId]['serverPath']);

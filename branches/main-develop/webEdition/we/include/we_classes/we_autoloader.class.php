@@ -44,6 +44,7 @@ abstract class we_autoloader{
 		'editor' => 'we_editors',
 		'exim' => 'we_exim',
 		'export' => 'we_modules/export',
+		'fileupload' => 'we_classes/fileupload',
 		'glossary' => 'we_modules/glossary',
 		'helpers' => 'we_classes/helpers',
 		'html' => 'we_classes/html',
@@ -132,6 +133,7 @@ abstract class we_autoloader{
 			'we_widget' => 'we_widget.inc.php',
 			'XML_Parser_Error' => 'Parser.php',
 			'XML_Parser' => 'Parser.php',
+			'weToolLookup' => 'tools/we_tool_lookup.class.php',
 		),
 		'we_modules' => array(
 			'we_class_folder' => 'object/we_class_folder.class.php',

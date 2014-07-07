@@ -46,8 +46,10 @@ class we_import_files{
 	private $fileNameTmp = '';
 	private $partNum = 0;
 	private $partCount = 0;
-	private $showErrorAtChunkNr = -1; //Trigger an Error at n-th chunk of 100KB to demonstrate error response. TODO: Use this construct to abort on Max_FILE_SIZE!!
+	private $showErrorAtChunkNr = 0; //Trigger an Error at n-th chunk of 100KB to demonstrate error response. TODO: Use this construct to abort on Max_FILE_SIZE!!
 
+	const CHUNK_SIZE = 256;
+	
 	function __construct(){
 		if(($cats = we_base_request::_(we_base_request::STRING, 'categories'))){
 			$_catarray = makeArrayFromCSV($cats);
@@ -64,7 +66,7 @@ class we_import_files{
 		$this->categories = we_base_request::_(we_base_request::RAW, "categories", $this->categories);
 		$this->importToID = we_base_request::_(we_base_request::INT, "importToID", $this->importToID);
 		$this->sameName = we_base_request::_(we_base_request::RAW, "sameName", $this->sameName);
-		$this->importMetadata = we_base_request::_(we_base_request::RAW, "importMetadata", $this->importMetadata);
+		$this->importMetadata = we_base_request::_(we_base_request::INT, "importMetadata", $this->importMetadata);
 		$this->step = we_base_request::_(we_base_request::INT, "step", $this->step);
 		$this->cmd = we_base_request::_(we_base_request::RAW, "cmd", $this->cmd);
 		$this->thumbs = we_base_request::_(we_base_request::RAW, "thumbs", $this->thumbs);
@@ -147,7 +149,7 @@ var weUploadFiles = new Array(),
 
 function initFileUpload() {
 	var fileselect = document.getElementById("fileselect"),
-		filedrag = document.getElementById("filedrag"),
+		filedrag = document.getElementById("div_we_File_fileDrag"),
 		c = 0,
 		bf = top.imgimportbuttons;
 
@@ -311,17 +313,16 @@ function _weAppendRow(file, index){
 	div.scrollTop = div.scrollHeight;
 	document.getElementById("fileInput_uploadFiles_" + index).addEventListener("change", ReplaceSelectHandler, false);
 	bf.document.getElementById("progressbar").style.display = "none";
-	bf._weSetCancelButtonText("cancel");
+	bf.weFU.setCancelButtonText("cancel");
 }
 
 function weClearFileList(){
 	var bf = top.imgimportbuttons;
-
 	weUploadFiles = new Array();
-	bf._weResetUploader();
+	weNextTitleNr = 1;
+	//bf.weFU.cleanAll();
 	document.getElementById("td_uploadFiles").innerHTML = "";
 	bf.next_enabled = bf.switch_button_state("next", "next_enabled", "disabled");
-	//switch_button_state("reset", "reset_enabled", "disabled");
 }
 
 function _setProgressText_uploader(index,name,text){
@@ -333,7 +334,7 @@ function _setProgress_uploader(index,progress){
 	koef = 90 / 100;
 	document.images["progress_image_" + index].width=koef*progress;
 	document.images["progress_image_bg_" + index].width=(koef*100)-(koef*progress);
-	_setProgressText_uploader(index, "progress_text", parseInt(progress) + "%");
+	_setProgressText_uploader(index, "progress_text", progress + "%");
 }
 
 function _setProgressCompleted_uploader(success, index, message){
@@ -609,52 +610,12 @@ function setApplet() {
 			return $this->getStep2Legacy();
 		}
 
-		$css = we_html_element::cssElement('
-			#filedrag{
-				display: none;
-				font-weight: bold;
-				text-align: center;
-				padding-top: 18px;
-				margin: 1em 0;
-				color: #555;
-				border: 2px dashed #555;
-				border-radius: 7px;
-				cursor: default;
-				height: 44px;
-				background-color: white;
-			}
-			#filedrag.hover{
-				color: #00cc00;
-				border-color: #00cc00;
-				border-style: solid;
-				box-shadow: inset 0 3px 4px #888;
-				background-color: rgb(243, 247, 255);
-			}
-			.fileInputWrapper {
-				overflow: hidden;
-				position: relative;
-				cursor: pointer;
-				/*Using a background color, but you can use a background image to represent a button*/
-				background-color: #DDF;
-			}
-			.fileInput {
-				cursor: pointer;
-				height: 100%;
-				position:absolute;
-				top: 0;
-				right: 0;
-				width: 286px;
-			}
-			.fileInputHidden {
-				/*Opacity settings for all browsers*/
-				opacity: 0;
-				-moz-opacity: 0;
-				filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0)
-			}
-		');
-
 		// create Second Screen ##############################################################################
-		$maxUploadSizeB = $this->maxUploadSizeMB * 1048576;
+
+		$uploader = new we_fileupload_uploader_importfile('we_File');
+		$uploader->getCss();
+		$maxUploadSizeB = $uploader->getMaxUploadSize();
+		//TODO: get more parts of setp2 from we_fileupload_uploader_base / we_fileupload_uploader_importfile
 
 		$content = we_html_tools::hidden('we_cmd[0]', 'import_files') .
 			we_html_tools::hidden('cmd', 'content') . we_html_tools::hidden('step', 2) .
@@ -674,14 +635,14 @@ function setApplet() {
 		<div style="float:left;">
 		<form id="filechooser" action="" method="" enctype="multipart/form-data">
 			<div style="">
-				<div class="fileInputWrapper" style="vertical-align: top; display: inline-block; height: 22px;">
+				<div id="div_' . $uploader->getName() . '_fileInputWrapper" style="vertical-align: top; display: inline-block; height: 22px;">
 					<input class="fileInput fileInputHidden" type="file" id="fileselect" name="fileselect[]" multiple="multiple" />
 					' . $butBrowse . '
 				</div>
 				<div style="vertical-align: top; display: inline-block; height: 22px">
 					' . $butReset . '
 				</div>
-				<div id="filedrag">' . g_l('importFiles', "[dragdrop_text]") . '</div>
+				<div id="div_' . $uploader->getName() . '_fileDrag">' . g_l('importFiles', "[dragdrop_text]") . '</div>
 			</div>
 		</form>
 		</div>
@@ -757,7 +718,7 @@ function setApplet() {
 				), $content);
 
 		$js = $this->_getJS($fileinput, $this->maxUploadSizeMB, $maxUploadSizeB) . we_html_multiIconBox::getDynJS("uploadFiles", 30);
-		$head = we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET . $css . $js;
+		$head = we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET . $uploader->getCss() . $js;
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead($head) . $body);
 	}
@@ -787,6 +748,7 @@ function setApplet() {
 		$content = we_html_tools::hidden('we_cmd[0]', 'import_files') .
 			we_html_tools::hidden('cmd', 'content') . we_html_tools::hidden('step', 2) .
 			we_html_element::htmlDiv(array('id' => 'desc'), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('importFiles', "[import_expl]"), $maxsize), we_html_tools::TYPE_INFO, 520, false)) .
+			(!$this->useLegacyUpload && !USE_JUPLOAD ? we_html_element::htmlDiv(array('id' => 'desc', 'style' => 'margin-top: 4px;'), we_html_tools::htmlAlertAttentionBox(g_l('importFiles', "[fallback_text]"), we_html_tools::TYPE_ALERT, 520, false)) : '') .
 			we_html_element::htmlDiv(array('id' => 'descJupload', 'style' => 'display:none;'), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('importFiles', "[import_expl_jupload]"), $maxsize), we_html_tools::TYPE_INFO, 520, false));
 
 		$parts = array(
@@ -904,7 +866,7 @@ function setApplet() {
 		}
 
 		if($formcount && $this->useJsUpload){
-			$response = array('status' => '', 'tmpName' => '', 'message' => '', 'completed' => '');
+			$response = array('status' => '', 'fileNameTmp' => '', 'mimePhp' => 'none', 'message' => '', 'completed' => '');
 
 			if($this->partNum == $this->partCount){
 				//actual file completed
@@ -925,7 +887,7 @@ function setApplet() {
 					}
 				}
 			} else {
-				$response['tmpName'] = $this->fileNameTmp;
+				$response['fileNameTmp'] = $this->fileNameTmp;
 				//TODO: if we have a message here, we can stop uloading chunks of this file!
 				$response['status'] = empty($error) ? 'continue' : 'failure';
 				$response['message'] = empty($error) ? '' : g_l('importFiles', "[" . $error['error'] . "]");
@@ -941,15 +903,6 @@ function setApplet() {
 		$js = we_html_button::create_state_changer(false) . '
 var weFormNum = ' . $formnum . ';
 var weFormCount = ' . $formcount . ';
-
-var weUploadFilesClean = new Array();
-var weMapFiles = new Array();
-
-var weUploadFilesClean = new Array();
-var weTotalFiles = 0;
-var weActualFile = -1;
-var weTotalWeight = 0;
-var weActualWeight = 0;
 
 function back() {
 	if(top.imgimportcontent.document.we_startform.step.value=="2") {
@@ -977,7 +930,7 @@ function weCheckAC(j){
 }
 		';
 
-		$js .= (USE_JUPLOAD || !$this->jsRequirementsOk) ? $this->_getJsFnNextLegacy($formcount, $formcount) : "
+		$js .= (USE_JUPLOAD || FILE_UPLOAD_USE_LEGACY || !$this->jsRequirementsOk) ? $this->_getJsFnNextLegacy($formcount, $formcount) : "
 function next() {
 	var cf = top.imgimportcontent;
 
@@ -986,178 +939,14 @@ function next() {
 		cf.document.we_startform.jsRequirementsOk.value = " . ($this->jsRequirementsOk ? 1 : 0) . ";
 		cf.document.we_startform.submit();
 	} else {
-		//prepare editor for upload
-		if(weActualFile === -1){
-
-			//clean out deleted files from weUploadFiles
-			var filesTmp = cf.weUploadFiles;
-
-			for(var i=0; i < filesTmp.length; i++){
-				if(typeof filesTmp[i] === 'object' && filesTmp[i] !== null){
-					weUploadFilesClean.push(filesTmp[i]);
-					weMapFiles.push(i);
-					weTotalWeight += filesTmp[i].size;
-					cf.document.getElementById('div_rowButtons_' + i).style.display = 'none';
-					cf.document.getElementById('div_rowProgress_' + i).style.display = '';
-				}
-			}
-			weTotalFiles = weUploadFilesClean.length;
-
-			//set buttons' state and show initial progress bar
-			back_enabled = switch_button_state('back', 'back_enabled', 'disabled');
-			next_enabled = switch_button_state('next', 'next_enabled', 'disabled');
-			document.getElementById('progressbar').style.display = '';
-			setProgressText('progress_title', '" . g_l('importFiles', "[do_import]") . " " . g_l('importFiles', "[file]") . " 1');
-
-			//scroll to top of files' list
-			cf.document.getElementById('div_upload_files').scrollTop = 0;
-
-			//let's go
-			setTimeout(function(){_weSendNextFile()},100);
-
-			return;
-		}
+		upload();
 	}
-}
-
-function _weSendNextFile(resp){
-	var f;
-
-	weActualFile++;
-	if(f = weUploadFilesClean.shift()){
-		if(f.size <= 100*1024){
-			resp = _weSplitFileAndSend(f, false);
-		} else {
-			var fr = new FileReader();
-			fr.onload = function(e){
-				resp = _weSplitFileAndSend(f, true, new Uint8Array(e.target.result));
-			};
-			fr.readAsArrayBuffer(f);
-		}
-	} else {
-		setProgress(100);
-		setProgressText('progress_title', '');
-		top.opener.top.we_cmd('load','" . FILE_TABLE . "');
-
-		eval(JSON.parse(resp).completed);
-
-		//reinitialize some vars to add and upload more files
-		_weResetUploader();
-		_weSetCancelButtonText('close');
-	}
-}
-
-function _weSplitFileAndSend(file, split, dataArray){
-	var resp = '',
-		cf = top.imgimportcontent;
-
-	if(split){
-		var blob,
-			p = 0,
-			blobSize = 100*1024,
-			numBlobs = Math.ceil(dataArray.length / blobSize),
-			lastSize = dataArray.length % blobSize;
-
-		for (var i = 0; i < dataArray.length; i += blobSize) {
-			blob = new Blob([dataArray.subarray(i, i + blobSize)]);
-			p++;
-			resp = _weSendPart(blob, file.name, file.size, p === numBlobs ? lastSize : blobSize, p, numBlobs, p === 1 ? '' : JSON.parse(resp).tmpName);
-
-			//if one chunk failed we stop uploading this file
-			if(JSON.parse(resp).status === 'failure'){
-				break;
-			}
-		}
-	} else {
-		resp = _weSendPart(file, file.name, file.size, file.size, 1, 1, '');
-	}
-
-	cf.document.getElementById('div_upload_files').scrollTop = cf.document.getElementById('div_uploadFiles_' + weMapFiles[weActualFile]).offsetTop - 200;
-	cf._setProgressCompleted_uploader((JSON.parse(resp).status === 'failure' ? false : true), weMapFiles[weActualFile], JSON.parse(resp).message);
-	setTimeout(function(){_weSendNextFile(resp)}, 100);
-}
-
-function _weSendPart(part, fileName, fileSize, partSize, partNum, totalParts, fileNameTemp){
-	var xhr = new XMLHttpRequest(),
-		fd = new FormData(),
-		cf = top.imgimportcontent,
-		sf = cf.document.we_startform;
-
-	fd.append('we_cmd[0]', 'import_files');
-	fd.append('cmd', 'buttons');
-	fd.append('jsRequirementsOk', 1);
-	fd.append('step', 1);
-	fd.append('importToID', sf.importToID.value);
-
-	fd.append('weFormNum', weActualFile+1);
-	fd.append('weFormCount', weTotalFiles);
-	fd.append('wePartNum', partNum);
-	fd.append('wePartCount', totalParts);
-
-	fd.append('weFileName', fileName);
-	fd.append('weFileSize', fileSize);
-	fd.append('weFileNameTmp', fileNameTemp);
-	fd.append('we_File', part, fileName);
-
-	" . ((we_base_imageEdit::gd_version() > 0) ? "
-	if(partNum === totalParts){
-		fd.append('thumbs', sf.thumbs.value);
-		fd.append('width', sf.width.value);
-		fd.append('height', sf.height.value);
-		fd.append('widthSelect', sf.widthSelect.value);
-		fd.append('heightSelect', sf.heightSelect.value);
-		fd.append('keepRatio', sf.keepRatio.value);
-		fd.append('quality', sf.quality.value);
-		fd.append('sameName', sf.sameName.value);
-		fd.append('degrees', sf.degrees.value);
-	}
-	" : "") . "
-
-	xhr.open('POST', '" . WEBEDITION_DIR . "we_cmd.php', false);
-	xhr.send(fd);
-
-	//code executed when response arrived: manage per file progress bars here!
-	weActualWeight += partSize;
-	if(partNum == 1){
-		setProgressText('progress_title', '" . g_l('importFiles', "[do_import]") . " " . g_l('importFiles', "[file]") . " ' + (weActualFile+1));
-	}
-	setProgress(parseInt((100 / weTotalWeight) * weActualWeight));
-	cf._setProgress_uploader(weMapFiles[weActualFile], (100 / totalParts)*partNum);
-
-	//return response to caller: _weSplitFileAndSend()
-	return xhr.responseText;
-}
-
-function _weResetUploader(){
-	var cf = top.imgimportcontent,
-		l = cf.weUploadFiles.length;
-
-	for(var i = 0; i < l; i++){
-		cf.weUploadFiles[i] = null;
-	}
-
-	weMapFiles = new Array();
-	weUploadFilesClean = new Array();
-	weTotalFiles = 0;
-	weActualFile = -1;
-	weTotalWeight = 0;
-	weActualWeight = 0;
-
-	document.getElementById('progressbar').style.display = 'none';
-}
-
-function _weSetCancelButtonText(text){
-	var close = '" . g_l('button', '[close][value]') . "',
-		cancel = '" . g_l('button', '[cancel][value]') . "',
-		replace = (text === 'close' ? close : (text === 'cancel' ? cancel : ''));
-
-	if(replace){
-		document.getElementById('div_cancelButton').getElementsByTagName('td')[1].innerHTML = replace;
-	}
-}
-";
+}";
 
 		$js = we_html_element::jsElement($js);
+		$we_uploader = new we_fileupload_uploader_importfile('we_File');
+		$js .= $we_uploader->getJs(true, false, true);
+	
 
 		$prevButton = we_html_button::create_button("back", "javascript:back();", true, 0, 0, "", "", false);
 		$prevButton2 = we_html_button::create_button("back", "javascript:back();", true, 0, 0, "", "", false, false);

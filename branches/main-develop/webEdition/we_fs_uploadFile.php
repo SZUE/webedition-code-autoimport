@@ -23,12 +23,7 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-we_html_tools::protect();
-
-echo we_html_tools::getHtmlTop(g_l('newFile', '[import_File_from_hd_title]')) . STYLESHEET;
-
 $we_ContentType = we_base_request::_(we_base_request::STRING, 'ct', (isset($_FILES['we_uploadedFile']['name']) ? getContentTypeFromFile($_FILES['we_uploadedFile']['name']) : ''));
-
 switch($we_ContentType){
 	case we_base_ContentTypes::IMAGE;
 		$allowedContentTypes = we_base_imageEdit::IMAGE_CONTENT_TYPES;
@@ -39,6 +34,14 @@ switch($we_ContentType){
 	default:
 		$allowedContentTypes = $we_ContentType;
 }
+
+$inputTypeFile = new we_fileupload_uploader_include('we_uploadedFile', 'top', '', 330, true, false, $allowedContentTypes, '', '', 'php, php4, php5, htaccess', array(), -1);
+$inputTypeFile->setExternalProgressbar(true, 'progressbar', true, 'top.', 120, '');
+$tempName = $inputTypeFile->processFileRequest();
+
+we_html_tools::protect();
+echo we_html_tools::getHtmlTop(g_l('newFile', '[import_File_from_hd_title]')) . STYLESHEET;
+
 $pid = we_base_request::_(we_base_request::INT, 'pid', 0);
 $parts = array();
 $we_alerttext = (!in_workspace($pid, get_ws(FILE_TABLE), FILE_TABLE, $GLOBALS['DB_WE']) || isset($_FILES['we_uploadedFile']) && !permissionhandler::hasPerm(we_base_ContentTypes::inst()->getPermission(getContentTypeFromFile($_FILES['we_uploadedFile']['name']))) ?
@@ -53,11 +56,12 @@ if((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploaded
 	include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
 	$overwrite = $_REQUEST['overwrite'];
+	$overwritten = false;
 
-
-	// creating a temp name and copy the file to the we tmp directory with the new temp name
-	$tempName = TEMP_PATH . '/' . we_base_file::getUniqueId();
-	move_uploaded_file($_FILES['we_uploadedFile']['tmp_name'], $tempName);
+	if(!$tempName){
+		$tempName = TEMP_PATH . we_base_file::getUniqueId();
+		move_uploaded_file($_FILES['we_uploadedFile']['tmp_name'], $tempName);
+	}
 
 	$tmp_Filename = preg_replace('/[^A-Za-z0-9._-]/', '', $_FILES['we_uploadedFile']['name']);
 
@@ -75,6 +79,7 @@ if((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploaded
 			$tmp = $we_doc->ClassName;
 			$we_doc = new $tmp();
 			$we_doc->initByID($file_id, FILE_TABLE);
+			$overwritten = true;
 		} else {
 			$z = 0;
 			$footext = $we_doc->Filename . '_' . $z . $we_doc->Extension;
@@ -136,28 +141,27 @@ if((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploaded
 }
 
 // find out the smallest possible upload size
-
 $maxsize = getUploadMaxFilesize(false);
 
-
-$yes_button = we_html_button::create_button('upload', 'javascript:document.forms[0].submit();');
+$yes_button = we_html_button::create_button('upload', 'javascript:' . we_fileupload_uploader_include::getJsSubmitCallStatic("top", 0, "document.forms[0].submit()"));
 $cancel_button = we_html_button::create_button('cancel', 'javascript:self.close();');
 $buttons = we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button);
+$buttonsTable = new we_html_table(array('cellspacing' => 0, 'cellpadding' => 0, 'style' => 'border-width:0px;width:100%;'), 1, 2);
+$buttonsTable->setCol(0, 0, $attribs = array(), we_html_element::htmlDiv(array('id' => 'progressbar', 'style' => 'display:none;padding-left:10px')));
+$buttonsTable->setCol(0, 1, $attribs = array('align' => 'right'), $buttons);
+$buttons = $buttonsTable->getHtml();
 
-if($maxsize){
-	$parts[] = array('headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(
-			sprintf(g_l('newFile', '[max_possible_size]'), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 390), 'space' => 0, 'noline' => 1);
-}
+$parts[] = array('headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox($inputTypeFile->getMaxtUploadSizeText(), we_html_tools::TYPE_ALERT, 390), 'space' => 0, 'noline' => 1);
+echo $inputTypeFile->getJS() . $inputTypeFile->getCss();
+$parts[] = array('headline' => '', 'html' => $inputTypeFile->getHtml(), "space" => 0);
 
-$parts[] = array('headline' => '', 'html' => '<input name="we_uploadedFile" TYPE="file"' . ($allowedContentTypes ? ' ACCEPT="' . $allowedContentTypes . '"' : '') . ' size="35" />', "space" => 0);
+//$parts[] = array('headline' => '', 'html' => '<input name="we_uploadedFile" TYPE="file"' . ($allowedContentTypes ? ' ACCEPT="' . $allowedContentTypes . '"' : '') . ' size="35" />', "space" => 0);
 $parts[] = array('headline' => '', 'html' => g_l('newFile', '[caseFileExists]') . '<br/>' . we_html_forms::radiobutton('yes', true, 'overwrite', g_l('newFile', '[overwriteFile]')) .
 	we_html_forms::radiobutton('no', false, 'overwrite', g_l('newFile', '[renameFile]')), 'space' => 0);
 
 if($we_ContentType == we_base_ContentTypes::IMAGE){
 	$_thumbnails = new we_html_select(array('multiple' => 'multiple', 'name' => 'Thumbnails[]', 'id' => 'Thumbnails', 'class' => 'defaultfont', 'size' => 6, 'style' => 'width: 330px;'));
 	$DB_WE->query('SELECT ID,Name FROM ' . THUMBNAILS_TABLE . ' ORDER BY Name');
-
-
 
 	$selectedID = 0;
 	$_enabled_buttons = false;
@@ -178,11 +182,12 @@ if($we_ContentType == we_base_ContentTypes::IMAGE){
 if($we_alerttext){
 	echo we_message_reporting::getShowMessageCall($we_alerttext, we_message_reporting::WE_MESSAGE_ERROR);
 	if(!isset($_FILES['we_uploadedFile'])){
-		echo 'this.close();';
+		//echo 'this.close();';
 	}
 }
-if(isset($_FILES['we_uploadedFile']) && (!$we_alerttext)){
+if(isset($_FILES['we_uploadedFile']) && (!$we_alerttext) ){
 	if($we_doc->ID){
+		if(!$overwritten){
 		?>
 		var ref;
 		if (opener.top.opener && opener.top.opener.top.makeNewEntry) {
@@ -192,10 +197,12 @@ if(isset($_FILES['we_uploadedFile']) && (!$we_alerttext)){
 		} else if (opener.top.opener && opener.top.opener.top.opener && opener.top.opener.top.opener.top.opener && opener.top.opener.top.opener.top.opener.top.makeNewEntry) {
 			ref = opener.top.opener.top.opener.top.opener.top;
 		}
-
 		if (ref.makeNewEntry) {
 			ref.makeNewEntry(<?php echo '"' . $we_doc->Icon . '", "' . $we_doc->ID . '", "' . $we_doc->ParentID . '", "' . $we_doc->Text . '", 1, "' . $we_doc->ContentType . '", "' . $we_doc->Table . '"'; ?>);
 		}
+		<?php
+		}
+		?>
 		opener.top.reloadDir();
 		opener.top.unselectAllFiles();
 		opener.top.addEntry(<?php echo '"' . $we_doc->ID . '", "' . $we_doc->Icon . '", "' . $we_doc->Text . '", "' . $we_doc->IsFolder . '", "' . $we_doc->Path . '"'; ?>);
@@ -207,12 +214,12 @@ if(isset($_FILES['we_uploadedFile']) && (!$we_alerttext)){
 //-->
 </script>
 </head>
-<body class="weDialogBody" onLoad="self.focus();" ><center>
+<body class="weDialogBody" onload="self.focus();" ><center>
 		<form method="post" enctype="multipart/form-data">
 			<input type="hidden" name="table" value="<?php echo $_REQUEST["tab"]; ?>" />
 			<input type="hidden" name="pid" value="<?php echo $_REQUEST["dir"]; ?>" />
 			<input type="hidden" name="ct" value="<?php echo $we_ContentType; ?>" />
-			<?php echo we_html_multiIconBox::getHTML("", "100%", $parts, 30, $buttons, -1, "", "", false, g_l('newFile', "[import_File_from_hd_title]"), "", 560); ?>
+			<?php echo we_html_multiIconBox::getHTML("", "100%", $parts, 30, $buttons, -1, "", "", false, g_l('newFile', "[import_File_from_hd_title]"), "", 620); ?>
 		</form></center>
 </body>
 </html>

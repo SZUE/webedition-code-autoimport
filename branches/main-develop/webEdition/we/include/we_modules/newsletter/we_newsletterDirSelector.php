@@ -26,14 +26,14 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
 $_SERVER["SCRIPT_NAME"] = WE_MODULES_DIR . "newsletter/we_newsletterDirSelector.php";
-if(isset($_REQUEST["JSIDName"]) && strpos($_REQUEST["JSIDName"], 'WECMDENC_') !== false){
-	$_REQUEST["JSIDName"] = base64_decode(urldecode(substr($_REQUEST["JSIDName"], 9)));
+if(isset($_REQUEST["JSIDName"])){
+	$_REQUEST["JSIDName"] = we_base_request::_(we_base_request::CMD, "JSIDName");
 }
-if(isset($_REQUEST["JSTextName"]) && strpos($_REQUEST["JSTextName"], 'WECMDENC_') !== false){
-	$_REQUEST["JSTextName"] = base64_decode(urldecode(substr($_REQUEST["JSTextName"], 9)));
+if(isset($_REQUEST["JSTextName"])){
+	$_REQUEST["JSTextName"] = we_base_request::_(we_base_request::CMD, "JSTextName");
 }
-if(isset($_REQUEST["JSCommand"]) && strpos($_REQUEST["JSCommand"], 'WECMDENC_') !== false){
-	$_REQUEST["JSCommand"] = base64_decode(urldecode(substr($_REQUEST["JSCommand"], 9)));
+if(isset($_REQUEST["JSCommand"])){
+	$_REQUEST["JSCommand"] = we_base_request::_(we_base_request::CMD, "JSCommand");
 }
 
 $fs = new we_newsletter_dirSelector(

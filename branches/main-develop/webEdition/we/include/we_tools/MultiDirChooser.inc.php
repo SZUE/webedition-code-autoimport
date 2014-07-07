@@ -108,7 +108,7 @@ class MultiDirChooser{
 	<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(abs($this->width - 66), 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>';
 
 		$this->nr = 0;
-		$idArr = makeArrayFromCSV($this->ids);
+		$idArr = is_array($this->ids) ? $this->ids : makeArrayFromCSV($this->ids);
 
 		foreach($idArr as $id){
 			$this->Record = getHash('SELECT ID,' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($id), $this->db);

@@ -46,19 +46,19 @@ function makePIDTail($pid, $cid, we_database_base $db = null, $table = FILE_TABL
 	$pid = intval($pid);
 	$parentIDs[] = $pid;
 	while($pid != 0){
-		$pid = f('SELECT ParentID FROM ' . FILE_TABLE . ' WHERE ID=' . $pid, '', $db);
+		$pid = f('SELECT ParentID FROM ' . FILE_TABLE . ' WHERE ID=' . intval($pid), '', $db);
 		$parentIDs[] = $pid;
 	}
 	$cid = intval($cid);
-	$foo = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . $cid, '', $db);
+	$foo = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($cid), '', $db);
 	$fooArr = unserialize($foo);
 	$flag = (isset($fooArr['WorkspaceFlag']) ? $fooArr['WorkspaceFlag'] : 1);
 	$pid_tail = array();
 	if($flag){
-		$pid_tail[] = OBJECT_X_TABLE . $cid . '.OF_Workspaces=""';
+		$pid_tail[] = OBJECT_X_TABLE . intval($cid) . '.OF_Workspaces=""';
 	}
 	foreach($parentIDs as $pid){
-		$pid_tail[] = OBJECT_X_TABLE . $cid . '.OF_Workspaces LIKE "%,' . $pid . ',%" OR ' . OBJECT_X_TABLE . $cid . '.OF_ExtraWorkspacesSelected LIKE "%,' . $pid . ',%"';
+		$pid_tail[] = OBJECT_X_TABLE . intval($cid) . '.OF_Workspaces LIKE "%,' . intval($pid) . ',%" OR ' . OBJECT_X_TABLE . intval($cid) . '.OF_ExtraWorkspacesSelected LIKE "%,' . intval($pid) . ',%"';
 	}
 	return ($pid_tail ? ' (' . implode(' OR ', $pid_tail) . ') ' : 1);
 }
@@ -73,7 +73,7 @@ function makeIDsFromPathCVS($paths, $table = FILE_TABLE){
 	foreach($foo as &$path){
 		$path = '"' . $db->escape('/' . ltrim(trim($path), '/')) . '"';
 	}
-	$db->query('SELECT ID FROM ' . $table . ' WHERE PATH IN (' . implode(',', $foo) . ')');
+	$db->query('SELECT ID FROM ' . $db->escape($table) . ' WHERE PATH IN (' . implode(',', $foo) . ')');
 	$outArray = $db->getAll(true);
 
 	return implode(',', $outArray);
@@ -206,7 +206,7 @@ function we_hasPerm($perm){
 
 function we_getParentIDs($table, $id, &$ids, we_database_base $db = null){
 	$db = $db ? $db : new DB_WE();
-	while(($pid = f('SELECT ParentID FROM ' . $table . ' WHERE ID=' . intval($id), '', $db)) > 0){
+	while(($pid = f('SELECT ParentID FROM ' . $db->escape($table) . ' WHERE ID=' . intval($id), '', $db)) > 0){
 		$id = $pid; // #5836
 		$ids[] = $id;
 	}
@@ -266,7 +266,7 @@ function in_parentID($id, $pid, $table = FILE_TABLE, we_database_base $db = null
 			return false;
 		}
 		$found[] = $p;
-	} while(($p = f('SELECT ParentID FROM ' . $table . ' WHERE ID=' . intval($p), '', $db)));
+	} while(($p = f('SELECT ParentID FROM ' . $db->escape($table) . ' WHERE ID=' . intval($p), '', $db)));
 	return false;
 }
 
@@ -403,7 +403,7 @@ function getPathsFromTable($table = FILE_TABLE, we_database_base $db = null, $ty
 	}
 	$out = $first ? array(0 => $first) : array();
 
-	$db->query('SELECT ID,Path FROM ' . $table . (count($query) ? ' WHERE ' . implode(' AND ', $query) : '') . ' ORDER BY ' . $order);
+	$db->query('SELECT ID,Path FROM ' . $db->escape($table) . (count($query) ? ' WHERE ' . implode(' AND ', $query) : '') . ' ORDER BY ' . $order);
 	while($db->next_record()){
 		$out[$db->f('ID')] = $db->f('Path');
 	}
@@ -425,7 +425,7 @@ function pushChildsFromArr(&$arr, $table = FILE_TABLE, $isFolder = ''){
 function pushChilds(&$arr, $id, $table = FILE_TABLE, $isFolder = ''){
 	$db = new DB_WE();
 	$arr[] = $id;
-	$db->query('SELECT ID FROM ' . $table . ' WHERE ParentID=' . intval($id) . (($isFolder != '' || $isFolder == 0) ? (' AND IsFolder=' . intval($isFolder)) : ''));
+	$db->query('SELECT ID FROM ' . $db->escape($table) . ' WHERE ParentID=' . intval($id) . (($isFolder != '' || $isFolder == 0) ? (' AND IsFolder=' . intval($isFolder)) : ''));
 	while($db->next_record()){
 		pushChilds($arr, $db->f('ID'), $table, $isFolder);
 	}
@@ -459,7 +459,7 @@ function we_readParents($id, &$parentlist, $tab, $match = 'ContentType', $matchv
 		if($pid == 0){
 			$parentlist[] = $pid;
 		} else {
-			if(f('SELECT 1 FROM ' . $db->escape($tab) . ' WHERE ID=' . intval($pid) . ' AND ' . $match . ' = "' . $db->escape($matchvalue) . '" LIMIT 1', '', $db)){
+			if(f('SELECT 1 FROM ' . $db->escape($tab) . ' WHERE ID=' . intval($pid) . ' AND ' . $db->escape($match) . ' = "' . $db->escape($matchvalue) . '" LIMIT 1', '', $db)){
 				$parentlist[] = $pid;
 				we_readParents($pid, $parentlist, $tab, $match, $matchvalue, $db);
 			}
@@ -670,15 +670,21 @@ function getContentTypeFromFile($dat){
 function getUploadMaxFilesize($mysql = false, we_database_base $db = null){
 	$post_max_size = we_convertIniSizes(ini_get('post_max_size'));
 	$upload_max_filesize = we_convertIniSizes(ini_get('upload_max_filesize'));
-	$min = min($post_max_size, $upload_max_filesize, ($mysql ? getMaxAllowedPacket($db) : PHP_INT_MAX));
+	$min = min($post_max_size, $upload_max_filesize, ($mysql ? $db->getMaxAllowedPacket() : PHP_INT_MAX));
 
 	return (intval(WE_MAX_UPLOAD_SIZE) == 0 ?
 			$min :
 			min(WE_MAX_UPLOAD_SIZE * 1024 * 1024, $min));
 }
 
+/**
+ *
+ * @param we_database_base $db
+ * @return type
+ * @deprecated since version 6.3.8
+ */
 function getMaxAllowedPacket(we_database_base $db){
-	return f('SHOW VARIABLES LIKE "max_allowed_packet"', 'Value', ($db ? $db : new DB_WE()));
+	return $db->getMaxAllowedPacket();
 }
 
 function we_convertIniSizes($in){
@@ -859,6 +865,9 @@ function we_loadLanguageConfig(){
 
 function getWeFrontendLanguagesForBackend(){
 	$la = array();
+	if(!isset($GLOBALS['weFrontendLanguages'])){
+		return array();
+	}
 	$targetLang = we_core_Local::weLangToLocale($GLOBALS['WE_LANGUAGE']);
 	if(!Zend_Locale::hasCache()){
 		Zend_Locale::setCache(getWEZendCache());
@@ -1195,6 +1204,6 @@ function getWECountries(){
 	);
 }
 
-function getMysqlVer($nodots=true){
+function getMysqlVer($nodots = true){
 	return we_database_base::getMysqlVer($nodots);
 }

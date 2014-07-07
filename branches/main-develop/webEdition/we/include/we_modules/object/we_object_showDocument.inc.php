@@ -48,7 +48,7 @@ function showContent(){
 
 $_userID = (isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->isLockedByUser() : 0);
 
-if(($_userID && $_userID != $_SESSION['user']['ID']) || (isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == 'switch_edit_page' || (isset($_SESSION['weS']['EditPageNr']) && $_SESSION['weS']['EditPageNr'] == we_base_constants::WE_EDITPAGE_PREVIEW))){ //	Preview-Mode of Tabs
+if(($_userID && $_userID != $_SESSION['user']['ID']) || (we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 0) == 'switch_edit_page' || (isset($_SESSION['weS']['EditPageNr']) && $_SESSION['weS']['EditPageNr'] == we_base_constants::WE_EDITPAGE_PREVIEW))){ //	Preview-Mode of Tabs
 	//	We must choose the right template to show the object.
 	//	Therefore we must look, if $_SESSION['weS']['SEEM']['lastPath'] exists to check the workspace.
 	//	First check the workspaces for the document.
@@ -142,7 +142,7 @@ if(($_userID && $_userID != $_SESSION['user']['ID']) || (isset($_REQUEST['we_cmd
 	}
 
 	$GLOBALS['we_doc'] = new we_webEditionDocument();
-	$GLOBALS['we_doc']->initByID($_REQUEST['we_cmd'][1], FILE_TABLE);
+	$GLOBALS['we_doc']->initByID(we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1), FILE_TABLE);
 	$GLOBALS['we_doc']->elements = $GLOBALS['we_obj']->elements;
 	$GLOBALS['we_doc']->Templates = $GLOBALS['we_obj']->Templates;
 	$GLOBALS['we_doc']->ExtraTemplates = $GLOBALS['we_obj']->ExtraTemplates;

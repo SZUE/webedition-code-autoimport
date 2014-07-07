@@ -25,10 +25,15 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
-echo we_html_tools::getHtmlTop() .
- STYLESHEET;
+$inputTypeFile = new we_fileupload_uploader_include('we_uploadFile', 'top', '', 330, true, false);
+$inputTypeFile->setExternalProgressbar(true, 'progressbar', true, 'top.', 120, '');
+$tempName = $inputTypeFile->processFileRequest();
 
-$path=we_base_request::_(we_base_request::FILE,'pat');
+echo we_html_tools::getHtmlTop() .
+	STYLESHEET .
+	$inputTypeFile->getCss() . $inputTypeFile->getJs();
+
+$path = we_base_request::_(we_base_request::FILE,'pat');
 $cpat = str_replace('//', '/', $_SERVER['DOCUMENT_ROOT'] . $path);
 
 function weFile($f){
@@ -39,8 +44,12 @@ $we_alerttext = "";
 
 if(isset($_FILES['we_uploadFile'])){
 	$overwrite = we_base_request::_(we_base_request::BOOL,"overwrite");
-	$tempName = TEMP_PATH . "/" . we_base_file::getUniqueId();
-	move_uploaded_file($_FILES['we_uploadFile']["tmp_name"], $tempName);
+
+	if(!$tempName){
+		$tempName = TEMP_PATH . we_base_file::getUniqueId();
+		move_uploaded_file($_FILES['we_uploadedFile']['tmp_name'], $tempName);
+	}
+
 	if(file_exists($cpat . "/" . $_FILES['we_uploadFile']["name"])){
 		if($overwrite){
 			if(weFile($path . "/" . $_FILES['we_uploadFile']["name"])){
@@ -73,19 +82,21 @@ if(isset($_FILES['we_uploadFile'])){
 $maxsize = getUploadMaxFilesize(false);
 
 
-$yes_button = we_html_button::create_button("upload", "javascript:if(!document.forms['we_form'].elements['we_uploadFile'].value) { " . we_message_reporting::getShowMessageCall(g_l('fileselector', "[edit_file_nok]"), we_message_reporting::WE_MESSAGE_ERROR) . "} else document.forms['we_form'].submit();");
+$yes_button = we_html_button::create_button("upload", "javascript:if(!document.forms['we_form'].elements['we_uploadFile'].value) { " . we_message_reporting::getShowMessageCall(g_l('fileselector', "[edit_file_nok]"), we_message_reporting::WE_MESSAGE_ERROR) . "} else {" . we_fileupload_uploader_include::getJsSubmitCallStatic("top", "we_form", "document.forms['we_form'].submit()") . "}");
 $cancel_button = we_html_button::create_button("cancel", "javascript:self.close();");
 $buttons = we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button);
+$buttonsTable = new we_html_table(array('cellspacing' => 0, 'cellpadding' => 0, 'style' => 'border-width:0px;width:100%;'), 1, 2);
+$buttonsTable->setCol(0, 0, $attribs = array(), we_html_element::htmlDiv(array('id' => 'progressbar', 'style' => 'display:none;padding-left:10px')));
+$buttonsTable->setCol(0, 1, $attribs = array('align' => 'right'), $buttons);
 
 $content = '<table border="0" cellpadding="0" cellspacing="0">' .
-		($maxsize ? ('<tr><td>' . we_html_tools::htmlAlertAttentionBox(
-						sprintf(g_l('newFile', "[max_possible_size]"), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 390) . '</td></tr><tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>') : '') . '
-			<tr><td><input name="we_uploadFile" TYPE="file" size="35" /></td></tr><tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>
+		($maxsize ? ('<tr><td>' . we_html_tools::htmlAlertAttentionBox($inputTypeFile->getMaxtUploadSizeText(), we_html_tools::TYPE_ALERT, 390) . '</td></tr><tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>') : '') . '
+			<tr><td>' . $inputTypeFile->getHTML() . '</td></tr><tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>
 			<tr><td class="defaultfont">' . g_l('newFile', '[caseFileExists]') . '</td></tr><tr><td>' .
 		we_html_forms::radiobutton("1", true, "overwrite", g_l('newFile', '[overwriteFile]')) .
 		we_html_forms::radiobutton("0", false, "overwrite", g_l('newFile', '[renameFile]')) . '</td></tr></table>';
 
-$content = we_html_tools::htmlDialogLayout($content, g_l('newFile', '[import_File_from_hd_title]'), $buttons);
+$content = we_html_tools::htmlDialogLayout($content, g_l('newFile', '[import_File_from_hd_title]'), $buttonsTable->getHTML());
 ?>
 <script type="text/javascript"><!--
 	self.focus();
@@ -101,7 +112,7 @@ $content = we_html_tools::htmlDialogLayout($content, g_l('newFile', '[import_Fil
 //-->
 </script>
 </head>
-<body class="weDialogBody" onLoad="self.focus();"><center>
+<body class="weDialogBody" onload="self.focus();"><center>
 	<input type="hidden" name="pat" value="<?php echo $path; ?>" />
 	<form method="post" enctype="multipart/form-data" name="we_form">
 		<?php echo $content; ?>

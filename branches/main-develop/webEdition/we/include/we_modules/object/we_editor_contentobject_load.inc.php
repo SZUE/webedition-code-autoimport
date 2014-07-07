@@ -105,7 +105,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 				</div>';
 
 		echo $jsGUI->getResponse('reload', $uniqid, $content) .
-			we_html_element::jsElement('
+		we_html_element::jsElement('
 var target = _EditorFrame.getContentEditor(),
 	confName = "tinyMceConfObject__' . $wholename . 'default";
 
@@ -185,52 +185,54 @@ if(confObject = typeof tinyMceConfObject__' . $wholename . 'default === \'object
 			reloadElement($jsGUI, $we_transaction, $we_doc, $id);
 			break;
 		case 'object_up_meta_at_class':
-			$we_doc->upMetaAtClass($_REQUEST['we_cmd'][3], $_REQUEST['we_cmd'][4]);
+			$we_doc->upMetaAtClass(we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 3), we_base_request::_(we_base_request::INT, 'we_cmd', 0, 4));
 			reloadElement($jsGUI, $we_transaction, $we_doc, $id);
 			break;
 		case 'object_down_meta_at_class':
-			$we_doc->downMetaAtClass($_REQUEST['we_cmd'][3], $_REQUEST['we_cmd'][4]);
+			$we_doc->downMetaAtClass(we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 3), we_base_request::_(we_base_request::INT, 'we_cmd', 0, 4));
 			reloadElement($jsGUI, $we_transaction, $we_doc, $id);
 			break;
 		case 'object_insert_meta_at_class':
-			$we_doc->addMetaToClass($_REQUEST['we_cmd'][3], $_REQUEST['we_cmd'][4]);
+			$we_doc->addMetaToClass(we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 3), we_base_request::_(we_base_request::INT, 'we_cmd', 0, 4));
 			reloadElement($jsGUI, $we_transaction, $we_doc, $id);
 			break;
 		case 'object_delete_meta_class':
-			$we_doc->removeMetaFromClass($_REQUEST['we_cmd'][3], $_REQUEST['we_cmd'][4]);
+			$we_doc->removeMetaFromClass(we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 3), we_base_request::_(we_base_request::INT, 'we_cmd', 0, 4));
 			reloadElement($jsGUI, $we_transaction, $we_doc, $id);
 			break;
 		case 'object_del_all_users':
-			$we_doc->del_all_users($_REQUEST['we_cmd'][3]);
+			$we_doc->del_all_users(we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 3));
 			reloadElement($jsGUI, $we_transaction, $we_doc, $id);
 			break;
 		case 'object_add_user_to_field':
-			$we_doc->add_user_to_field($_REQUEST['we_cmd'][3], $_REQUEST['we_cmd'][4]);
+			$we_doc->add_user_to_field(we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 3), we_base_request::_(we_base_request::INT, 'we_cmd', 0, 4));
 			reloadElement($jsGUI, $we_transaction, $we_doc, $id);
 			break;
 		case 'object_del_user_from_field':
-			$we_doc->del_user_from_field($_REQUEST['we_cmd'][3], $_REQUEST['we_cmd'][4]);
+			$we_doc->del_user_from_field(we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 3), we_base_request::_(we_base_request::INT, 'we_cmd', 0, 4));
 			reloadElement($jsGUI, $we_transaction, $we_doc, $id);
 			break;
 		case 'object_remove_image_at_class';
-			$we_doc->remove_image($_REQUEST['we_cmd'][3]);
+			$we_doc->remove_image(we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 3));
 			reloadElement($jsGUI, $we_transaction, $we_doc, $id);
 			break;
 		case 'object_delete_link_at_class':
-			if(isset($we_doc->elements[$_REQUEST['we_cmd'][3]])){
-				unset($we_doc->elements[$_REQUEST['we_cmd'][3]]);
+			$name = we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 3);
+			if(isset($we_doc->elements[$name])){
+				unset($we_doc->elements[$name]);
 			}
 			reloadElement($jsGUI, $we_transaction, $we_doc, $id);
 			break;
 		case 'object_change_link_at_class':
-			$we_doc->changeLink($_REQUEST['we_cmd'][3]);
+			$we_doc->changeLink(we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 3));
 			reloadElement($jsGUI, $we_transaction, $we_doc, $id);
 			break;
 		case 'object_change_multiobject_at_class':
-			while($we_doc->elements[$_REQUEST['we_cmd'][3] . 'count']['dat'] > 0){
-				$we_doc->removeMetaFromClass($_REQUEST['we_cmd'][3], 0);
+			$name=we_base_request::_(we_base_request::STRING,'we_cmd',0,3);
+			while($we_doc->elements[$name . 'count']['dat'] > 0){
+				$we_doc->removeMetaFromClass($name, 0);
 			}
-			$we_doc->removeMetaFromClass($_REQUEST['we_cmd'][3], 0);
+			$we_doc->removeMetaFromClass($name, 0);
 			reloadElement($jsGUI, $we_transaction, $we_doc, $id);
 			break;
 

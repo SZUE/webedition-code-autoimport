@@ -43,7 +43,7 @@ echo we_html_tools::getHtmlTop() .
 
 	function openFile() {
 		url = "we_sselector_uploadFile.php?pat=" + top.currentDir;
-		new jsWindow(url, "we_fsuploadImage", -1, -1, 450, 240, true, false, true);
+		new jsWindow(url, "we_fsuploadImage", -1, -1, 450, 340, true, false, true);
 	}
 
 	function reorder(name) {
@@ -124,7 +124,7 @@ echo we_html_tools::getHtmlTop() .
 //-->
 </script>
 </head>
-<body background="<?php print IMAGE_DIR ?>backgrounds/radient.gif" LINK="#000000" ALINK="#000000" VLINK="#000000" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px" onLoad="setLookin();
+<body background="<?php print IMAGE_DIR ?>backgrounds/radient.gif" LINK="#000000" ALINK="#000000" VLINK="#000000" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px" onload="setLookin();
 		self.focus()">
 	<form name="we_form" method="post">
 		<table border="0" cellpadding="0" cellspacing="0" width="100%">

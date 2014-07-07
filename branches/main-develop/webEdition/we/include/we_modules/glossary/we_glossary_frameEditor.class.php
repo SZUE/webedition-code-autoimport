@@ -49,7 +49,7 @@ class we_glossary_frameEditor{
 
 		$_hidden = array(
 			'cmd' => we_base_request::_(we_base_request::RAW, 'cmd', ''),
-			'cmdid' => we_base_request::_(we_base_request::RAW, 'cmdid', ''),
+			'cmdid' => we_base_request::_(we_base_request::STRING, 'cmdid', ''),
 			'pnt' => 'edbody',
 		);
 
@@ -64,7 +64,7 @@ class we_glossary_frameEditor{
 
 		$_body = array(
 			'class' => 'weEditorBody',
-			'onLoad' => 'loaded=1;',
+			'onload' => 'loaded=1;',
 			'onunload' => "doUnload()"
 		);
 

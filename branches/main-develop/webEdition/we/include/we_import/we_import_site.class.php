@@ -95,7 +95,7 @@ class we_import_site{
 
 		$this->sameName = we_base_request::_(we_base_request::RAW, 'sameName', $this->sameName);
 		$this->importMetadata = we_base_request::_(we_base_request::RAW, 'importMetadata', $this->importMetadata);
-		$this->thumbs = isset($_REQUEST['thumbs']) ? makeCSVFromArray($_REQUEST['thumbs']) : $this->thumbs;
+		$this->thumbs = ($thumbs = we_base_request::_(we_base_request::RAW, 'thumbs')) !== false ? makeCSVFromArray($thumbs) : $this->thumbs;
 		$this->width = we_base_request::_(we_base_request::INT, 'width', $this->width);
 		$this->height = we_base_request::_(we_base_request::INT, 'height', $this->height);
 		$this->widthSelect = we_base_request::_(we_base_request::BOOL, 'widthSelect', $this->widthSelect);
@@ -682,7 +682,7 @@ class we_import_site{
 				), 1, $this->depth, false, array(), "value", 150);
 
 		$_depth = we_html_tools::htmlFormElementTable($_select, g_l('siteimport', "[depth]"));
-		$maxallowed = round(getMaxAllowedPacket($GLOBALS['DB_WE']) / (1024 * 1024));
+		$maxallowed = round($GLOBALS['DB_WE']->getMaxAllowedPacket() / (1024 * 1024));
 		$maxallowed = $maxallowed ? $maxallowed : 20;
 		$maxarray = array(
 			"0" => g_l('siteimport', "[nolimit]"), "0.5" => "0.5"

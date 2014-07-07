@@ -383,7 +383,7 @@ function remember_value($settingvalue, $settingname, $comment = ''){
 		//FORMMAIL RECIPIENTS
 		case 'formmail_values':
 			if($settingvalue){
-				$_recipients = explode('<##>', $v);
+				$_recipients = explode('<##>', $settingvalue);
 				if($_recipients){
 					foreach($_recipients as $_recipient){
 						$_single_recipient = explode('<#>', $_recipient);

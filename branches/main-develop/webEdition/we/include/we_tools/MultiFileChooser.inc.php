@@ -24,7 +24,7 @@
  */
 class MultiFileChooser extends MultiDirChooser{
 
-	private $disabledDelItems = '';
+	private $disabledDelItems = array();
 	private $disabledDelReason = '';
 
 	function __construct($width, $ids, $cmd_del, $addbut, $cmd_edit){
@@ -32,7 +32,7 @@ class MultiFileChooser extends MultiDirChooser{
 		$this->cmd_edit = $cmd_edit;
 	}
 
-	public function setDisabledDelItems($items, $reason){
+	public function setDisabledDelItems(array $items, $reason){
 		$this->disabledDelItems = $items;
 		$this->disabledDelReason = $reason;
 	}
@@ -47,23 +47,23 @@ class MultiFileChooser extends MultiDirChooser{
 
 
 		$this->nr = 0;
-		$ids = (substr($this->ids, 0, 1) == ",") ? substr($this->ids, 1, strlen($this->ids) - 2) : $this->ids;
-		$idArr = makeArrayFromCSV($this->ids);
+		$idArr = (is_array($this->ids) ? $this->ids : explode(',', trim($this->ids, ',')));
 		$c = 1;
-		if(!empty($idArr)){
+		if($idArr){
 			foreach($idArr as $id){
 				$table->addRow();
 
 				$edit = null;
 				$trash = null;
 
-				if($this->isEditable() && $this->cmd_edit)
+				if($this->isEditable() && $this->cmd_edit){
 					$edit = we_html_button::create_button("image:btn_edit_edit", "javascript:if(typeof(_EditorFrame)!='undefined') _EditorFrame.setEditorIsHot(true);we_cmd('" . $this->cmd_edit . "','$id');");
+				}
 
 				if(($this->isEditable() && $this->cmd_del) || $this->CanDelete){
 
-					if($this->disabledDelItems != ''){
-						$DisArr = makeArrayFromCSV($this->disabledDelItems);
+					if($this->disabledDelItems){
+						$DisArr = $this->disabledDelItems;
 						if(in_array($id, $DisArr)){
 							$trash = we_html_button::create_button("image:btn_function_trash", "javascript:if(typeof(_EditorFrame)!='undefined')_EditorFrame.setEditorIsHot(true);" . ($this->extraDelFn ? $this->extraDelFn : "") . ";we_cmd('" . $this->cmd_del . "','$id');", true, 100, 22, "", "", true);
 
@@ -81,6 +81,11 @@ class MultiFileChooser extends MultiDirChooser{
 						$table->setCol($c, 0, array(), we_html_element::htmlImg(array("src" => ICON_DIR . (@is_dir($id) ? "folder" : "link") . ".gif", "width" => 16, "height" => 18)));
 						$table->setCol($c, 1, array("class" => $this->css), $id);
 					}
+				} else {
+					$trash = '';
+
+					$table->setCol($c, 0, array(), we_html_element::htmlImg(array("src" => ICON_DIR . (@is_dir($id) ? "folder" : "link") . ".gif", "width" => 16, "height" => 18)));
+					$table->setCol($c, 1, array("class" => $this->css), $id);
 				}
 
 

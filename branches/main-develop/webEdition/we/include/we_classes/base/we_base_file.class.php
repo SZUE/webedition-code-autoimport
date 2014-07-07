@@ -175,7 +175,7 @@ abstract class we_base_file{
 		if($filename == ''){
 			$filename = self::getUniqueId();
 		}
-		$filename = TEMP_PATH . '/' . $filename;
+		$filename = TEMP_PATH . $filename;
 		return (self::save($filename, $content, $flags) ? $filename : false);
 	}
 
@@ -530,7 +530,7 @@ abstract class we_base_file{
 	}
 
 	static function lock($id){
-		$path = TEMP_PATH . '/' . $id . '.lck';
+		$path = TEMP_PATH . $id . '.lck';
 		$fp = fopen($path, 'c');
 
 		//we can't cleanup file, since another instance might already access this lockfile
@@ -599,7 +599,7 @@ abstract class we_base_file{
 		$d = dir(TEMP_PATH);
 		while(false !== ($entry = $d->read())){
 			if($entry != '.' && $entry != '..'){
-				$foo = TEMP_PATH . '/' . $entry;
+				$foo = TEMP_PATH . $entry;
 				if(filemtime($foo) <= (time() - 300)){
 					if(is_dir($foo)){
 						we_util_File::deleteLocalFolder($foo, 1);

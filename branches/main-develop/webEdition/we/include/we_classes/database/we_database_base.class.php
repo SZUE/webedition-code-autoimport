@@ -306,7 +306,7 @@ abstract class we_database_base{
 
 			$queryToCheck = str_replace(array('\\\\'/* escape for mysql connection */, '\\"', "\\'", '\\\`'), array('', '', '', ''), $Query_String);
 
-			$quotes = array('\'' => false, '"' => false, '`' => false, '/*' => false, '--' => false, '#' => false);
+			$quotes = array('\'' => false, '"' => false, '`' => false, '/*' => false, '#' => false);
 
 			$queryWithoutStrings = '';
 
@@ -624,6 +624,9 @@ abstract class we_database_base{
 	static function arraySetter(array $arr, $imp = ','){
 		$ret = array();
 		foreach($arr as $key => $val){
+			if($key === ''){
+				continue;
+			}
 			$escape = !(is_bool($val));
 			if(is_array($val) && sql_function($val)){
 				$val = $val['val'];
@@ -1083,6 +1086,14 @@ abstract class we_database_base{
 			return $res[0];
 		}
 		return '';
+	}
+
+	/**
+	 * get the maximum size a db query could be
+	 * @return int
+	 */
+	public function getMaxAllowedPacket(){
+		return f('SHOW VARIABLES LIKE "max_allowed_packet"', 'Value', $this);
 	}
 
 }

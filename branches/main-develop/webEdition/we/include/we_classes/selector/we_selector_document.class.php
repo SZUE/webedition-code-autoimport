@@ -104,7 +104,7 @@ class we_selector_document extends we_selector_directory{
 				$_cid = f('SELECT ID FROM ' . OBJECT_TABLE . " WHERE Path='" . $_db->escape($_path) . "'", 'ID', $_db);
 				$this->titleName = f('SELECT DefaultTitle FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($_cid), 'DefaultTitle', $_db);
 				if($this->titleName && strpos($this->titleName, '_')){
-					$_db->query('SELECT OF_ID, ' . $this->titleName . ' FROM ' . OBJECT_X_TABLE . $_cid . ' WHERE OF_ParentID=' . intval($this->dir));
+					$_db->query('SELECT OF_ID, ' . $this->titleName . ' FROM ' . OBJECT_X_TABLE . intval($_cid) . ' WHERE OF_ParentID=' . intval($this->dir));
 					while($_db->next_record()){
 						$this->titles[$_db->f('OF_ID')] = $_db->f($this->titleName);
 					}
@@ -188,7 +188,7 @@ function showPreview(id) {
 
 function newFile() {
 	url="we_fs_uploadFile.php?pid="+top.currentDir+"&tab="+top.table+"&ct=' . rawurlencode($this->filter) . '";
-	new jsWindow(url,"we_fsuploadFile",-1,-1,450,590,true,false,true);
+	new jsWindow(url,"we_fsuploadFile",-1,-1,450,630,true,false,true);
 }
 
 function reloadDir() {
@@ -626,7 +626,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 						}
 						if($_selFields){
 							$_selFields = substr($_selFields, 0, strlen($_selFields) - 1);
-							$metainfos = getHash('SELECT ' . $_selFields . ' FROM ' . OBJECT_X_TABLE . $result['TableID'] . ' WHERE OF_ID=' . intval($result["ID"]), $this->db);
+							$metainfos = getHash('SELECT ' . $_selFields . ' FROM ' . OBJECT_X_TABLE . intval($result['TableID']) . ' WHERE OF_ID=' . intval($result["ID"]), $this->db);
 						}
 				}
 			}

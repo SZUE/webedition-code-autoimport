@@ -40,9 +40,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 	case 'load_editor':
 // set default tab for creating new imageDocuments to "metadata":
 		if($we_doc->ContentType == we_base_ContentTypes::IMAGE && $we_doc->ID == 0){
-			$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_CONTENT;
-			$we_doc->EditPageNr = we_base_constants::WE_EDITPAGE_CONTENT;
-			$_REQUEST['we_cmd'][1] = we_base_constants::WE_EDITPAGE_CONTENT;
+			$_SESSION['weS']['EditPageNr'] = $we_doc->EditPageNr = $_REQUEST['we_cmd'][1] = we_base_constants::WE_EDITPAGE_CONTENT;
 		}
 
 		//WEEXT
@@ -71,12 +69,6 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 		$we_doc->copyDoc(we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1));
 		$we_doc->InWebEdition = true;
 		break;
-	/* case 'new_alias':
-	  $we_doc->newAlias();
-	  break;
-	  case 'delete_alias':
-	  $we_doc->deleteAlias($_REQUEST['we_cmd'][1]);
-	  break; */
 	case 'delete_list':
 		$we_doc->removeEntryFromList(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1), we_base_request::_(we_base_request::STRINGC, 'we_cmd', 0, 2), we_base_request::_(we_base_request::RAW, 'we_cmd', '', 3), we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 4));
 		break;
@@ -221,7 +213,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 		$we_doc->convert('jpg', we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1));
 		break;
 	case 'doImage_crop':
-		$filename = TEMP_PATH . '/' . we_base_file::getUniqueId();
+		$filename = TEMP_PATH . we_base_file::getUniqueId();
 		copy($we_doc->getElement('data'), $filename);
 
 
@@ -341,12 +333,6 @@ if((($cmd0 != 'save_document' && $cmd0 != 'publish' && $cmd0 != 'unpublish') && 
 
 	we_util_File::saveFile($fullName, $contents);
 
-//  we need to add the parameters at the urls
-//  we_cmds are deleted.
-//  in which case??
-//	parastr isn't greater than 255 letters.
-	//$parastr = we_SEEM::arrayToParameters($_REQUEST, '', array('we_cmd'));
-//	header('Location: ' . $_url . '/' . session_id() . $we_ext . '?r=' . $r);
 	header('Location: ' . WEBEDITION_DIR . 'showTempFile.php?file=' . $tempName);
 } else {
 	$we_JavaScript = '';
@@ -627,9 +613,6 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 					} else if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 4) && (!$wf_flag)){
 
 						$we_doc->makeSameNew();
-						if(isset($we_doc->NavigationItems)){
-							$we_doc->NavigationItems = '';
-						}
 						$we_JavaScript .= "_EditorFrame.getDocumentReference().frames[0].we_setPath('" . $we_doc->Path . "','" . $we_doc->Text . "', '" . $we_doc->ID . "');";
 //	switch to propertiy page, when user is allowed to do so.
 						switch($_SESSION['weS']['we_mode']){

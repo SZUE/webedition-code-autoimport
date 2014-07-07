@@ -537,7 +537,8 @@ abstract class we_root extends we_class{
 		$trashButton = we_html_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['$idname'].value='-1';document.we_form.elements['$textname'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInput" . $ackeyshort . "');_EditorFrame.setEditorIsHot(true);", true, 27, 22);
 		$openbutton = we_html_button::create_button("image:edit_edit", "javascript:if(document.we_form.elements['$idname'].value){top.doClickDirect(document.we_form.elements['$idname'].value,'" . $ctype . "','" . $etype . "'); }");
 		if(isset($this->DocType) && $this->DocType && permissionhandler::hasPerm("NEW_WEBEDITIONSITE")){
-			$LDcoType = f('SELECT LDID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblDocTypes" AND DID=' . $this->DocType . ' AND Locale="' . $langkey . '"', '', new DB_WE());
+			$db = new DB_WE();
+			$LDcoType = f('SELECT LDID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblDocTypes" AND DID=' . $this->DocType . ' AND Locale="' . $db->escape($langkey) . '"', '', $db);
 			if($LDcoType){
 				$createbutton = we_html_button::create_button("image:add_doc", "javascript:top.we_cmd('new','" . FILE_TABLE . "','','" . we_base_ContentTypes::WEDOCUMENT . "','" . $LDcoType . "');");
 				$yuiSuggest->setCreateButton($createbutton);
@@ -773,11 +774,11 @@ abstract class we_root extends we_class{
 		if(isset($sessDat[1])){
 			$this->elements = $sessDat[1];
 		}
-		if(isset($sessDat[2])){
+/*		if(isset($sessDat[2])){
 			$this->NavigationItems = $sessDat[2];
 		} else {
 			$this->i_loadNavigationItems();
-		}
+		}*/
 
 		$this->Name = md5(uniqid(__FUNCTION__, true));
 		return true;
@@ -917,7 +918,7 @@ abstract class we_root extends we_class{
 	}
 
 	private function getLinkReplaceArray(){
-		$this->DB_WE->query('SELECT CONCAT_WS("_",Type,Name) AS Name,CID FROM ' . LINK_TABLE . ' WHERE DID=' . $this->ID . ' AND DocumentTable="' . stripTblPrefix($this->Table) . '"');
+		$this->DB_WE->query('SELECT CONCAT_WS("_",Type,Name) AS Name,CID FROM ' . LINK_TABLE . ' WHERE DID=' . intval($this->ID) . ' AND DocumentTable="' . stripTblPrefix($this->Table) . '"');
 		return $this->DB_WE->getAllFirst(false);
 	}
 
@@ -1036,7 +1037,7 @@ abstract class we_root extends we_class{
 	}
 
 	function i_filenameDouble(){
-		return f('SELECT 1 FROM ' . $this->Table . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Filename="' . escape_sql_query($this->Filename) . '" AND ID != ' . intval($this->ID), '', $this->DB_WE);
+		return f('SELECT 1 FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Filename="' . $this->DB_WE->escape($this->Filename) . '" AND ID != ' . intval($this->ID), '', $this->DB_WE);
 	}
 
 	function i_urlDouble(){
@@ -1209,13 +1210,7 @@ abstract class we_root extends we_class{
 		}
 	}
 
-	function i_loadNavigationItems(){
-		if($this->Table == FILE_TABLE && $this->ID && $this->InWebEdition){
-			$this->DB_WE->query('SELECT Path FROM ' . NAVIGATION_TABLE . ' WHERE ((Selection="static" AND SelectionType="docLink") OR (IsFolder=1)) AND LinkID=' . intval($this->ID));
-			$this->NavigationItems = makeCSVFromArray($this->DB_WE->getAll(true), true);
-		}
-	}
-
+	
 	/**
 	 * Gets the navigation folders for the current document
 	 *

@@ -44,7 +44,7 @@ function we_tag_href($attribs){
 		if(!is_array($hrefArr)){
 			$hrefArr = array();
 		}
-		return (!empty($hrefArr) ? we_document::getHrefByArray($hrefArr) : '');
+		return ($hrefArr ? we_document::getHrefByArray($hrefArr) : '');
 	}
 
 	$nint = $name . we_base_link::MAGIC_INT_LINK;

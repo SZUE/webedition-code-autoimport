@@ -653,7 +653,7 @@ $containerDiv->addElement($form);
 $htmlPage->addElement($containerDiv);
 
 $htmlPage->addInlineJS($js);
-$htmlPage->setBodyAttributes(array('class' => 'weEditorBody', 'onLoad' => 'loaded=1;'));
+$htmlPage->setBodyAttributes(array('class' => 'weEditorBody', 'onload' => 'loaded=1;'));
 $htmlPage->addJSFile(JS_DIR . 'we_showMessage.js');
 
 $htmlPage->addInlineCSS($cssLoadingWheel);

@@ -114,7 +114,7 @@ class paypal_class{
 	function submit_paypal_post($formTagOnly, $messageAuto = '', $messageMan = ''){
 		// this function actually generates an entire HTML page consisting of
 		// a form with hidden elements which is submitted to paypal via the
-		// BODY element's onLoad attribute.  We do this so that you can validate
+		// BODY element's onload attribute.  We do this so that you can validate
 		// any POST vars from you custom form before submitting to paypal.  So
 		// basically, you'll have your own form which is submitted to your script
 		// to validate the data, which in turn calls this function to create
