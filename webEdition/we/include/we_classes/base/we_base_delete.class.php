@@ -81,7 +81,7 @@ abstract class we_base_delete{
 
 		// do not delete class folder if class still exists!!!
 		if(defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE){
-			if(f('SELECT IsClassFolder FROM ' . $table . ' WHERE ID=' . intval($id), '', $DB_WE)){ // it is a class folder
+			if(f('SELECT IsClassFolder FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), '', $DB_WE)){ // it is a class folder
 				if(f('SELECT Path FROM ' . OBJECT_TABLE . ' WHERE Path="' . $DB_WE->escape($path) . '"', '', $DB_WE)){ // class still exists
 					return;
 				}
@@ -157,7 +157,7 @@ abstract class we_base_delete{
 				$DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE OID=' . intval($id));
 				$tableID = f('SELECT TableID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id), '', $DB_WE);
 				if($tableID){
-					$DB_WE->query('DELETE FROM ' . OBJECT_X_TABLE . $tableID . ' WHERE OF_ID=' . intval($id));
+					$DB_WE->query('DELETE FROM ' . OBJECT_X_TABLE . intval($tableID) . ' WHERE OF_ID=' . intval($id));
 					//Bug 2892
 					$DB_WE->query('SELECT ID FROM ' . OBJECT_TABLE);
 					$foo = $DB_WE->getAll(true);
@@ -165,7 +165,7 @@ abstract class we_base_delete{
 						if($DB_WE->isColExist(OBJECT_X_TABLE . $testclassID, we_object::QUERY_PREFIX . $tableID)){
 
 							//das loeschen in der DB wirkt sich nicht auf die Objekte aus, die noch nicht publiziert sind
-							$DB_WE->query('SELECT OF_ID FROM ' . OBJECT_X_TABLE . $testclassID . ' WHERE ' . we_object::QUERY_PREFIX . $tableID . '= ' . intval($id));
+							$DB_WE->query('SELECT OF_ID FROM ' . OBJECT_X_TABLE . intval($testclassID) . ' WHERE ' . we_object::QUERY_PREFIX . $tableID . '= ' . intval($id));
 							$foos = $DB_WE->getAll(true);
 							foreach($foos as $affectedobjectsID){
 								$obj = new we_objectFile();
@@ -179,7 +179,7 @@ abstract class we_base_delete{
 									$obj->we_publish(0, 1, 1);
 								}
 							}
-							$DB_WE->query('UPDATE ' . OBJECT_X_TABLE . $testclassID . ' SET ' . we_object::QUERY_PREFIX . $tableID . '=0 WHERE ' . we_object::QUERY_PREFIX . $tableID . '=' . intval($id));
+							$DB_WE->query('UPDATE ' . OBJECT_X_TABLE . intval($testclassID) . ' SET ' . we_object::QUERY_PREFIX . $tableID . '=0 WHERE ' . we_object::QUERY_PREFIX . $tableID . '=' . intval($id));
 						}
 					}
 					// Fast Fix for deleting entries from tblLangLink: #5840

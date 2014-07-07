@@ -179,7 +179,7 @@ abstract class we_navigation_dynList{
 			$_where[] = 'OF_Path LIKE "' . $_db->escape($dirpath) . '%"';
 		}
 		$_where[] = 'OF_Published>0'; // Bug #4797
-		$_db->query('SELECT ' . implode(',', $select) . ' FROM ' . OBJECT_X_TABLE . $classid . ' WHERE OF_ID!=0 ' .
+		$_db->query('SELECT ' . implode(',', $select) . ' FROM ' . OBJECT_X_TABLE . intval($classid) . ' WHERE OF_ID!=0 ' .
 				($_where ? ('AND ' . implode(' AND ', $_where)) : '') .
 				($order ? (' ORDER BY ' . implode(',', $order)) : '') . ' LIMIT ' . $offset . ',' . $count);
 

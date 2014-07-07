@@ -337,7 +337,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	function deleteForModel(&$model, we_database_base $db = null){
 		if($model->ID){
 			$_db = ($db ? $db : new DB_WE());
-			$_db->query('DELETE FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelId=' . $model->ID . ' AND modelType="' . $model->ContentType . '" AND modelTable="' . stripTblPrefix($model->Table) . '"');
+			$_db->query('DELETE FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelId=' . intval($model->ID) . ' AND modelType="' . $db->escape($model->ContentType) . '" AND modelTable="' . stripTblPrefix($model->Table) . '"');
 		}
 	}
 
@@ -350,11 +350,11 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 
 		if($webUser->ID){
 			$_db = new DB_WE();
-			$_db->query('UPDATE ' . CUSTOMER_FILTER_TABLE . ' SET specificCustomers=REPLACE(specificCustomers,",' . $webUser->ID . ',",",") WHERE specificCustomers LIKE "%,' . $webUser->ID . ',%"');
+			$_db->query('UPDATE ' . CUSTOMER_FILTER_TABLE . ' SET specificCustomers=REPLACE(specificCustomers,",' . intval($webUser->ID) . ',",",") WHERE specificCustomers LIKE "%,' . intval($webUser->ID) . ',%"');
 			$_db->query('UPDATE ' . CUSTOMER_FILTER_TABLE . ' SET specificCustomers="" WHERE specificCustomers=","');
-			$_db->query('UPDATE ' . CUSTOMER_FILTER_TABLE . ' SET whiteList=REPLACE(whiteList,",' . $webUser->ID . ',",",") WHERE whiteList LIKE "%,' . $webUser->ID . ',%"');
+			$_db->query('UPDATE ' . CUSTOMER_FILTER_TABLE . ' SET whiteList=REPLACE(whiteList,",' . intval($webUser->ID) . ',",",") WHERE whiteList LIKE "%,' . intval($webUser->ID) . ',%"');
 			$_db->query('UPDATE ' . CUSTOMER_FILTER_TABLE . ' SET whiteList="" WHERE whiteList=","');
-			$_db->query('UPDATE ' . CUSTOMER_FILTER_TABLE . ' SET blackList=REPLACE(blackList,",' . $webUser->ID . ',",",") WHERE blackList LIKE "%,' . $webUser->ID . ',%"');
+			$_db->query('UPDATE ' . CUSTOMER_FILTER_TABLE . ' SET blackList=REPLACE(blackList,",' . intval($webUser->ID) . ',",",") WHERE blackList LIKE "%,' . intval($webUser->ID) . ',%"');
 			$_db->query('UPDATE ' . CUSTOMER_FILTER_TABLE . ' SET blackList="" WHERE blackList=","');
 			unset($_db);
 		}
@@ -367,7 +367,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	function deleteModel(array $modelIds, $table){
 		if(!empty($modelIds)){
 			$_db = new DB_WE();
-			$_db->query('DELETE FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE	modelId IN (' . implode(', ', $modelIds) . ')	AND modelTable = "' . $table . '"');
+			$_db->query('DELETE FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE	modelId IN (' . implode(', ', $modelIds) . ')	AND modelTable = "' . $_db->escape($table) . '"');
 			unset($_db);
 		}
 	}

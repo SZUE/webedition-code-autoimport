@@ -95,7 +95,7 @@ function doUpdateQuery(we_database_base $DB_WE, $table, $hash, $where){
 			$fn[$fieldName] = $hash[$fieldName];
 		}
 	}
-	return $DB_WE->query('UPDATE `' . $table . '` SET ' . we_database_base::arraySetter($fn) . ' ' . $where);
+	return $DB_WE->query('UPDATE `' . $DB_WE->escape($table) . '` SET ' . we_database_base::arraySetter($fn) . ' ' . $where);
 }
 
 //unused
@@ -107,5 +107,5 @@ function doInsertQuery(we_database_base $DB_WE, $table, $hash){
 		$fn[$fieldName] = isset($hash[$fieldName . '_autobr']) ? nl2br($hash[$fieldName]) : $hash[$fieldName];
 	}
 
-	return $DB_WE->query('INSERT INTO `' . $table . '` SET ' . we_database_base::arraySetter($fn));
+	return $DB_WE->query('INSERT INTO `' . $DB_WE->escape($table) . '` SET ' . we_database_base::arraySetter($fn));
 }

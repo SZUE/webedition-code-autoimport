@@ -207,12 +207,13 @@ if(isset($daten)){
 				$fe_count = 0;
 
 				foreach($fe as $clId){
+					$clId = intval($clId);
 					if($fe_count > 0){
 						$count_expression .= ' + ';
 						$from_expression .= ', ';
 						$where_expression .= ' AND ';
 					}
-					$count_expression .= 'COUNT(DISTINCT ' . OBJECT_X_TABLE . intval($clId) . '.OF_ID)';
+					$count_expression .= 'COUNT(DISTINCT ' . OBJECT_X_TABLE . $clId . '.OF_ID)';
 					$from_expression .= OBJECT_X_TABLE . $clId;
 					$where_expression .= OBJECT_X_TABLE . $clId . '.OF_ID !=0';
 					$fe_count++;
@@ -221,7 +222,7 @@ if(isset($daten)){
 				$classid = intval($classid);
 				$count_expression = 'COUNT(' . OBJECT_X_TABLE . $classid . '.OF_ID)';
 				$from_expression = OBJECT_X_TABLE . $classid;
-				$where_expression = OBJECT_X_TABLE . "$classid.OF_ID!=0";
+				$where_expression = OBJECT_X_TABLE . $classid . ".OF_ID!=0";
 			}
 			$DB_WE->query('SELECT ' . $count_expression . ' AS dbEntries FROM ' . $from_expression . ' WHERE ' . $where_expression);
 			while($DB_WE->next_record()){ // Pager: determine the number of records;

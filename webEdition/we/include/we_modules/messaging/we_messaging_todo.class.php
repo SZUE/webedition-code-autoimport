@@ -74,7 +74,7 @@ class we_messaging_todo extends we_messaging_proto{
 			}
 
 		if(!empty($init_folders)){
-			$this->DB_WE->query('SELECT ID, obj_type FROM ' . MSG_FOLDERS_TABLE . ' WHERE UserID=' . intval($this->userid) . ' AND msg_type=' . $this->sql_class_nr . ' AND (obj_type=' . $this->DB_WE->escape(implode(' OR obj_type=', $init_folders)) . ')');
+			$this->DB_WE->query('SELECT ID, obj_type FROM ' . MSG_FOLDERS_TABLE . ' WHERE UserID=' . intval($this->userid) . ' AND msg_type=' . intval($this->sql_class_nr) . ' AND (obj_type=' . $this->DB_WE->escape(implode(' OR obj_type=', $init_folders)) . ')');
 			while($this->DB_WE->next_record()){
 				$this->default_folders[$this->DB_WE->f('obj_type')] = $this->DB_WE->f('ID');
 			}
@@ -116,11 +116,11 @@ class we_messaging_todo extends we_messaging_proto{
 	/* Getters And Setters */
 
 	function get_newmsg_count(){
-		return intval(f('SELECT COUNT(1) AS c FROM ' . $this->table . ' WHERE (seenStatus & ' . we_messaging_proto::STATUS_READ . '=0) AND obj_type=' . we_messaging_proto::TODO_NR . ' AND msg_type=' . $this->sql_class_nr . ' AND ParentID=' . $this->default_folders[we_messaging_proto::FOLDER_INBOX] . ' AND UserID=' . intval($this->userid), 'c', $this->DB_WE));
+		return intval(f('SELECT COUNT(1) AS c FROM ' . $this->DB_WE->escape($this->table) . ' WHERE (seenStatus & ' . we_messaging_proto::STATUS_READ . '=0) AND obj_type=' . we_messaging_proto::TODO_NR . ' AND msg_type=' . intval($this->sql_class_nr) . ' AND ParentID=' . $this->default_folders[we_messaging_proto::FOLDER_INBOX] . ' AND UserID=' . intval($this->userid), 'c', $this->DB_WE));
 	}
 
 	function get_count($folder_id){
-		$cnt = f('SELECT COUNT(1) AS c FROM ' . $this->DB_WE->escape($this->table) . ' WHERE ParentID=' . intval($folder_id) . ' AND obj_type=' . we_messaging_proto::TODO_NR . ' AND msg_type=' . $this->sql_class_nr . ' AND UserID=' . intval($this->userid), 'c', $this->DB_WE);
+		$cnt = f('SELECT COUNT(1) AS c FROM ' . $this->DB_WE->escape($this->table) . ' WHERE ParentID=' . intval($folder_id) . ' AND obj_type=' . we_messaging_proto::TODO_NR . ' AND msg_type=' . intval($this->sql_class_nr) . ' AND UserID=' . intval($this->userid), 'c', $this->DB_WE);
 		return $cnt === '' ? -1 : $cnt;
 	}
 
@@ -138,7 +138,7 @@ class we_messaging_todo extends we_messaging_proto{
 	function &get_f_children($id){
 		$fids = array();
 
-		$this->DB_WE->query('SELECT ID FROM ' . $this->folder_tbl . ' WHERE ParentID=' . intval($id) . ' AND UserID=' . $this->userid);
+		$this->DB_WE->query('SELECT ID FROM ' . $this->DB_WE->escape($this->folder_tbl) . ' WHERE ParentID=' . intval($id) . ' AND UserID=' . intval($this->userid));
 		while($this->DB_WE->next_record()){
 			$fids[] = $this->DB_WE->f('ID');
 		}
@@ -162,7 +162,7 @@ class we_messaging_todo extends we_messaging_proto{
 
 		$cond = substr($cond, 0, -4);
 
-		$this->DB_WE->query('DELETE FROM ' . $this->DB_WE->escape($this->table) . ' WHERE (' . $this->DB_WE->escape($cond) . ') AND obj_type=' . we_messaging_proto::TODO_NR . " AND UserID=" . $this->userid);
+		$this->DB_WE->query('DELETE FROM ' . $this->DB_WE->escape($this->table) . ' WHERE (' . $this->DB_WE->escape($cond) . ') AND obj_type=' . we_messaging_proto::TODO_NR . " AND UserID=" . intval($this->userid));
 
 		return 1;
 	}
@@ -230,7 +230,7 @@ class we_messaging_todo extends we_messaging_proto{
 					$set_query['ParentID'] = $this->default_folders[we_messaging_proto::FOLDER_DONE];
 				}
 			} else {
-				if(f('SELECT ParentID FROM ' . $this->table . ' WHERE ID=' . $msg['_ID'], 'ParentID', $this->DB_WE) == $this->default_folders[we_messaging_proto::FOLDER_DONE]){
+				if(f('SELECT ParentID FROM ' . $this->DB_WE->escape($this->table) . ' WHERE ID=' . intval($msg['_ID']), 'ParentID', $this->DB_WE) == $this->default_folders[we_messaging_proto::FOLDER_DONE]){
 					$set_query['ParentID'] = $this->default_folders[we_messaging_proto::FOLDER_INBOX];
 				}
 			}
@@ -276,7 +276,7 @@ class we_messaging_todo extends we_messaging_proto{
 			return $results;
 		}
 
-		$in_folder = f('SELECT ID FROM ' . $this->folder_tbl . ' WHERE obj_type=' . we_messaging_proto::FOLDER_INBOX . ' AND msg_type=' . $this->sql_class_nr . ' AND UserID=' . intval($userid), 'ID', $this->DB_WE);
+		$in_folder = f('SELECT ID FROM ' . $this->DB_WE->escape($this->folder_tbl) . ' WHERE obj_type=' . we_messaging_proto::FOLDER_INBOX . ' AND msg_type=' . intval($this->sql_class_nr) . ' AND UserID=' . intval($userid), 'ID', $this->DB_WE);
 		if($in_folder == ''){
 			$results['err'][] = g_l('modules_messaging', '[no_inbox_folder]');
 			$results['failed'][] = $rcpt;
@@ -284,7 +284,7 @@ class we_messaging_todo extends we_messaging_proto{
 		}
 
 		if($this->history_update($msg['int_hdrs']['_ID'], $userid, $this->userid, $data['body'], we_messaging_proto::ACTION_FORWARD) == 1){
-			$this->DB_WE->query('UPDATE ' . $this->table . " SET ParentID=$in_folder, UserID=" . intval($userid) . ', seenStatus=0, headerAssigner=' . intval($this->userid) . " WHERE ID=" . intval($msg['int_hdrs']['_ID']) . ' AND UserID=' . intval($this->userid));
+			$this->DB_WE->query('UPDATE ' . $this->DB_WE->escape($this->table) . " SET ParentID=" . intval($in_folder) . ", UserID=" . intval($userid) . ', seenStatus=0, headerAssigner=' . intval($this->userid) . " WHERE ID=" . intval($msg['int_hdrs']['_ID']) . ' AND UserID=' . intval($this->userid));
 			$results['ok'][] = $rcpt;
 		} else {
 			$results['err'][] = g_l('modules_messaging', '[todo_err_history_update]');
@@ -385,11 +385,11 @@ class we_messaging_todo extends we_messaging_proto{
 				continue;
 			}
 
-			$in_folder = f('SELECT ID FROM ' . $this->folder_tbl . ' WHERE obj_type=' . we_messaging_proto::FOLDER_INBOX . ' AND msg_type=' . $this->sql_class_nr . ' AND UserID=' . intval($userid), 'ID', $this->DB_WE);
+			$in_folder = f('SELECT ID FROM ' . $this->DB_WE->escape($this->folder_tbl) . ' WHERE obj_type=' . we_messaging_proto::FOLDER_INBOX . ' AND msg_type=' . intval($this->sql_class_nr) . ' AND UserID=' . intval($userid), 'ID', $this->DB_WE);
 			if($in_folder == ''){
 				/* Create default Folders for target user */
 				if(we_messaging_messaging::createFolders($userid) == 1){
-					$in_folder = f('SELECT ID FROM ' . $this->folder_tbl . ' WHERE obj_type=' . we_messaging_proto::FOLDER_INBOX . ' AND msg_type=' . $this->sql_class_nr . ' AND UserID=' . intval($userid), 'ID', $this->DB_WE);
+					$in_folder = f('SELECT ID FROM ' . $this->DB_WE->escape($this->folder_tbl) . ' WHERE obj_type=' . we_messaging_proto::FOLDER_INBOX . ' AND msg_type=' . intval($this->sql_class_nr) . ' AND UserID=' . intval($userid), 'ID', $this->DB_WE);
 					if($in_folder == ''){
 						$results['err'][] = g_l('modules_messaging', '[no_inbox_folder]');
 						$results['failed'][] = $rcpt;
@@ -402,7 +402,7 @@ class we_messaging_todo extends we_messaging_proto{
 				}
 			}
 
-			$this->DB_WE->query('INSERT INTO ' . $this->table . ' SET ' . we_database_base::arraySetter(array(
+			$this->DB_WE->query('INSERT INTO ' . $this->DB_WE->escape($this->table) . ' SET ' . we_database_base::arraySetter(array(
 					'ParentID' => intval($in_folder),
 					'UserID' => intval($userid),
 					'msg_type' => $this->sql_class_nr,
@@ -466,7 +466,7 @@ class we_messaging_todo extends we_messaging_proto{
 		$this->selected_set = array();
 		$query = 'SELECT m.ID, m.ParentID, m.headerDeadline, m.headerSubject, m.headerCreator, m.Priority, m.seenStatus, m.headerStatus, u.username
 		FROM ' . $this->table . ' as m, ' . USER_TABLE . ' as u
-		WHERE ((m.msg_type=' . $this->sql_class_nr . ' AND m.obj_type=' . we_messaging_proto::TODO_NR . ') ' . ($sfield_cond == '' ? '' : " AND ($sfield_cond)") . ($folders_cond == '' ? '' : " AND (m.ParentID=$folders_cond)") . ( (!isset($message_ids_cond) || $message_ids_cond == '') ? '' : " AND (m.ID=$message_ids_cond)") . ") AND m.UserID=" . $this->userid . " AND m.headerCreator=u.ID
+		WHERE ((m.msg_type=' . intval($this->sql_class_nr) . ' AND m.obj_type=' . we_messaging_proto::TODO_NR . ') ' . ($sfield_cond == '' ? '' : " AND ($sfield_cond)") . ($folders_cond == '' ? '' : " AND (m.ParentID=$folders_cond)") . ( (!isset($message_ids_cond) || $message_ids_cond == '') ? '' : " AND (m.ID=$message_ids_cond)") . ") AND m.UserID=" . $this->userid . " AND m.headerCreator=u.ID
 		ORDER BY " . $this->sortfield . ' ' . $this->so2sqlso[$this->sortorder];
 		$this->DB_WE->query($query);
 
@@ -516,7 +516,7 @@ class we_messaging_todo extends we_messaging_proto{
 			$id_str .= 'm.ID=' . intval($ih['_ID']);
 		}
 
-		$this->DB_WE->query('SELECT m.ID, m.headerDate, m.headerSubject, m.headerCreator, m.headerAssigner, m.headerStatus, m.headerDeadline, m.Priority, m.MessageText, m.Content_Type, m.seenStatus, u.username, u.First, u.Second FROM ' . $this->table . " as m, " . USER_TABLE . " as u WHERE ($id_str) AND u.ID=m.headerCreator AND m.UserID=" . intval($this->userid));
+		$this->DB_WE->query('SELECT m.ID, m.headerDate, m.headerSubject, m.headerCreator, m.headerAssigner, m.headerStatus, m.headerDeadline, m.Priority, m.MessageText, m.Content_Type, m.seenStatus, u.username, u.First, u.Second FROM ' . $this->DB_WE->escape($this->table) . " as m, " . USER_TABLE . " as u WHERE ($id_str) AND u.ID=m.headerCreator AND m.UserID=" . intval($this->userid));
 
 		$db2 = new DB_WE();
 

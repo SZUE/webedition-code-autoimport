@@ -243,7 +243,7 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems){
 
 			// update table
 			$DB_WE->query('UPDATE ' . $DB_WE->escape($table) . ' SET ParentID=' . intval($parentID) . ", Path='" . $DB_WE->escape($newPath . '/' . $fileName) . "' WHERE ID=" . intval($id));
-			$DB_WE->query('UPDATE ' . OBJECT_X_TABLE . $tableID . ' SET OF_ParentID=' . intval($parentID) . ", OF_Path='" . $DB_WE->escape($newPath . '/' . $fileName) . "' WHERE OF_ID=" . intval($id));
+			$DB_WE->query('UPDATE ' . OBJECT_X_TABLE . intval($tableID) . ' SET OF_ParentID=' . intval($parentID) . ", OF_Path='" . $DB_WE->escape($newPath . '/' . $fileName) . "' WHERE OF_ID=" . intval($id));
 
 			return true;
 	}
