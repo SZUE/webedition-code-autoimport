@@ -220,7 +220,7 @@ class we_voting_voting extends weModelBase{
 
 	function saveField($name, $serialize = false){
 		$field = ($serialize ? serialize($this->$name) : $this->$name);
-		return $this->db->query('UPDATE ' . $this->table . ' SET ' . $this->db->escape($name) . '="' . $this->db->escape($field) . '" WHERE ID=' . intval($this->ID) . ';');
+		return $this->db->query('UPDATE ' . $this->db->escape($this->table) . ' SET ' . $this->db->escape($name) . '="' . $this->db->escape($field) . '" WHERE ID=' . intval($this->ID) . ';');
 	}
 
 	function delete(){
@@ -562,7 +562,7 @@ class we_voting_voting extends weModelBase{
 		} else {
 			$testtime = ($this->RevoteTime < 0 ? 0 : time() - $this->RevoteTime);
 
-			if(f('SELECT 1 FROM `' . VOTING_LOG_TABLE . '` WHERE `' . VOTING_LOG_TABLE . '`.`voting` = ' . $this->ID . ' AND `' . VOTING_LOG_TABLE . '`.`userid` = ' . $userid . ' AND `' . VOTING_LOG_TABLE . '`.`time` > ' . $testtime.' LIMIT 1', '', $this->db)){
+			if(f('SELECT 1 FROM `' . VOTING_LOG_TABLE . '` WHERE `' . VOTING_LOG_TABLE . '`.`voting` = ' . intval($this->ID) . ' AND `' . VOTING_LOG_TABLE . '`.`userid` = ' . intval($userid) . ' AND `' . VOTING_LOG_TABLE . '`.`time` > ' . intval($testtime) .' LIMIT 1', '', $this->db)){
 				return self::ERROR_REVOTE;
 			}
 			return self::SUCCESS;
@@ -643,7 +643,7 @@ class we_voting_voting extends weModelBase{
 	}
 
 	function deleteGroupLogData(){
-		$this->db->query('SELECT ID FROM ' . VOTING_TABLE . " WHERE `Path` LIKE '" . $this->Path . "%'");
+		$this->db->query('SELECT ID FROM ' . VOTING_TABLE . " WHERE `Path` LIKE '" . $this->db->escape($this->Path) . "%'");
 		while($this->db->next_record()){
 			$child = new we_voting_voting($this->db->f('ID'));
 			$child->deleteLogDataDB();
@@ -671,9 +671,9 @@ class we_voting_voting extends weModelBase{
 	function loadDB($id = '0'){
 
 		if($this->IsFolder){
-			$logQuery = 'SELECT A.*, B.* FROM `' . VOTING_TABLE . '` A, `' . VOTING_LOG_TABLE . "` B WHERE A.Path LIKE '" . $this->Path . "%' AND A.IsFolder = '0' AND A.ID = B.voting ORDER BY B.time";
+			$logQuery = 'SELECT A.*, B.* FROM `' . VOTING_TABLE . '` A, `' . VOTING_LOG_TABLE . "` B WHERE A.Path LIKE '" . $this->db->escape($this->Path) . "%' AND A.IsFolder = '0' AND A.ID = B.voting ORDER BY B.time";
 		} else {
-			$logQuery = 'SELECT * FROM `' . VOTING_LOG_TABLE . '` WHERE `' . VOTING_LOG_TABLE . '`.`voting` = ' . $id . ' ORDER BY time';
+			$logQuery = 'SELECT * FROM `' . VOTING_LOG_TABLE . '` WHERE `' . VOTING_LOG_TABLE . '`.`voting` = ' . intval($id) . ' ORDER BY time';
 		}
 
 		$this->db->query($logQuery);
@@ -744,7 +744,7 @@ class we_voting_voting extends weModelBase{
 	 * @since 5.1.1.2 - 02.05.2008
 	 */
 	function deleteLogDataDB(){
-		$this->db->query('DELETE FROM `' . VOTING_LOG_TABLE . '` WHERE `' . VOTING_LOG_TABLE . '`.`voting` = ' . $this->ID);
+		$this->db->query('DELETE FROM `' . VOTING_LOG_TABLE . '` WHERE `' . VOTING_LOG_TABLE . '`.`voting` = ' . intval($this->ID));
 		return true;
 	}
 

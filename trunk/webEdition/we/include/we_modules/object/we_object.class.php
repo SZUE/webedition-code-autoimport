@@ -274,7 +274,7 @@ class we_object extends we_document{
 			$this->DefaultCategory = $this->Category;
 			$this->i_savePersistentSlotsToDB();
 
-			$ctable = OBJECT_X_TABLE . ($this->ID);
+			$ctable = OBJECT_X_TABLE . intval($this->ID);
 
 			$this->DB_WE->delTable($ctable);
 			$this->DB_WE->query('CREATE TABLE ' . $ctable . ' (' . implode(',', $q) . ', ' . implode(',', $indexe) . ') ENGINE = MYISAM ' . we_database_base::getCharsetCollation());
@@ -288,7 +288,7 @@ class we_object extends we_document{
 				$fold->initByPath($this->getPath(), OBJECT_FILES_TABLE, 1, 0, 1);
 			}
 		} else {
-			$ctable = OBJECT_X_TABLE . $this->ID;
+			$ctable = OBJECT_X_TABLE . intval($this->ID);
 			$tableInfo = $this->DB_WE->metadata($ctable);
 			$q = $regs = array();
 			$fieldsToDelete = isset($this->elements['felderloeschen']['dat']) ? explode(',', $this->elements['felderloeschen']['dat']) : array();
@@ -2035,7 +2035,7 @@ class we_object extends we_document{
 			$this->elements["triggerid"]["dat"] = $rec["DefaultTriggerID"];
 			$this->DefaultTriggerID = $rec["DefaultTriggerID"];
 
-			$ctable = OBJECT_X_TABLE . $this->ID;
+			$ctable = OBJECT_X_TABLE . intval($this->ID);
 			$tableInfo = $this->DB_WE->metadata($ctable);
 			$fields = array(
 				'max' => '',

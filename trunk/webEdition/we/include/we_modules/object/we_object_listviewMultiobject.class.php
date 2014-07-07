@@ -120,7 +120,7 @@ class we_object_listviewMultiobject extends listviewBase{
 		}
 		$this->objects = $objects;
 
-		$this->classID = $data['class'];
+		$this->classID = intval($data['class']);
 		$this->triggerID = $triggerID;
 		$this->condition = $condition;
 		$this->searchable = $searchable;
@@ -176,7 +176,7 @@ class we_object_listviewMultiobject extends listviewBase{
 				'');
 
 		if($sqlParts["tables"]){
-			$this->DB_WE->query('SELECT ' . $_obxTable . '.ID as ID ' . $calendar_select . ' FROM ' . $sqlParts['tables'] . ' WHERE ' . (!empty($this->objects) ? OBJECT_X_TABLE . $this->classID . '.OF_ID IN (' . implode(',', $this->objects) . ') AND ' : '') . ($this->searchable ? ' ' . OBJECT_X_TABLE . $this->classID . '.OF_IsSearchable=1 AND' : '') . ' ' . $pid_tail . $where_lang . ' AND ' . OBJECT_X_TABLE . $this->classID . '.OF_ID!=0 ' . ($join ? ' AND (' . $join . ') ' : '') . $cat_tail . ' ' . ($sqlParts["publ_cond"] ? (' AND ' . $sqlParts["publ_cond"]) : '') . ' ' . ($sqlParts["cond"] ? (' AND (' . $sqlParts["cond"] . ') ') : '') . $calendar_where . $weDocumentCustomerFilter_tail . $sqlParts['groupBy']);
+			$this->DB_WE->query('SELECT ' . $this->DB_WE->escape($_obxTable) . '.ID as ID ' . $calendar_select . ' FROM ' . $sqlParts['tables'] . ' WHERE ' . (!empty($this->objects) ? OBJECT_X_TABLE . $this->classID . '.OF_ID IN (' . implode(',', $this->objects) . ') AND ' : '') . ($this->searchable ? ' ' . OBJECT_X_TABLE . $this->classID . '.OF_IsSearchable=1 AND' : '') . ' ' . $pid_tail . $where_lang . ' AND ' . OBJECT_X_TABLE . $this->classID . '.OF_ID!=0 ' . ($join ? ' AND (' . $join . ') ' : '') . $cat_tail . ' ' . ($sqlParts["publ_cond"] ? (' AND ' . $sqlParts["publ_cond"]) : '') . ' ' . ($sqlParts["cond"] ? (' AND (' . $sqlParts["cond"] . ') ') : '') . $calendar_where . $weDocumentCustomerFilter_tail . $sqlParts['groupBy']);
 			$mapping = array(); // KEY = ID -> VALUE = ROWID
 			$i = 0;
 			while($this->DB_WE->next_record()){
@@ -234,7 +234,7 @@ class we_object_listviewMultiobject extends listviewBase{
 	}
 
 	function tableInMatrix($matrix, $table){
-		if(OBJECT_X_TABLE . $this->classID == $table){
+		if(OBJECT_X_TABLE . intval($this->classID) == $table){
 			return true;
 		}
 		foreach($matrix as $foo){
@@ -247,7 +247,7 @@ class we_object_listviewMultiobject extends listviewBase{
 
 	function fillMatrix(&$matrix, $classID, we_database_base $db = null){
 		$db = $db ? $db : new DB_WE();
-		$table = OBJECT_X_TABLE . $classID;
+		$table = OBJECT_X_TABLE . intval($classID);
 		$joinWhere = array();
 		$tableInfo = we_objectFile::getSortedTableInfo($classID, true, $db);
 		foreach($tableInfo as $fieldInfo){
@@ -260,7 +260,7 @@ class we_object_listviewMultiobject extends listviewBase{
 						$matrix["we_object_" . $name]["table"] = $table;
 						$matrix["we_object_" . $name]["classID"] = $classID;
 						$foo = $this->fillMatrix($matrix, $name, $db);
-						$joinWhere[] = OBJECT_X_TABLE . $classID . '.' . we_object::QUERY_PREFIX . $name . '=' . OBJECT_X_TABLE . $name . '.OF_ID';
+						$joinWhere[] = OBJECT_X_TABLE . intval($classID) . '.' . we_object::QUERY_PREFIX . $name . '=' . OBJECT_X_TABLE . $name . '.OF_ID';
 						if($foo){
 							$joinWhere[] = $foo;
 						}
@@ -279,6 +279,7 @@ class we_object_listviewMultiobject extends listviewBase{
 		//FIXME: order ist totaler nonsense - das geht deutlich einfacher
 		$from = $orderArr = $descArr = $ordertmp = array();
 
+		$classID = intval($classID);
 		$cond = ' ' . preg_replace_callback("/'([^']*)'/", 'we_object_listview::encodeEregString', strtr($cond, array('&gt;' => '>', '&lt;' => '<'))) . ' ';
 
 		if($order && ($order != 'random()')){

@@ -228,7 +228,7 @@ class we_folder extends we_root{
 				if($this->ID == $pid){
 					return true;
 				}
-				$pid = f('SELECT ParentID FROM ' . $this->Table . '  WHERE ID=' . intval($pid), 'ParentID', $db);
+				$pid = f('SELECT ParentID FROM ' . $db->escape($this->Table) . '  WHERE ID=' . intval($pid), 'ParentID', $db);
 			}
 		}
 		return false;
@@ -314,7 +314,7 @@ class we_folder extends we_root{
 				$documentTable = ($DB_WE->escape($this->Table) == FILE_TABLE) ? 'tblFile' : 'tblObjectFile';
 				$existLangLinks = false;
 				$deleteLangLinks = false;
-				if($DB_WE2->query('SELECT LDID, Locale FROM ' . LANGLINK_TABLE . ' WHERE DID = ' . intval($DB_WE->Record['ID']) . ' AND DocumentTable = "' . $documentTable . '"')){
+				if($DB_WE2->query('SELECT LDID, Locale FROM ' . LANGLINK_TABLE . ' WHERE DID = ' . intval($DB_WE->Record['ID']) . ' AND DocumentTable = "' . $DB_WE2->escape($documentTable) . '"')){
 					$ldidArray = array();
 					while($DB_WE2->next_record()){
 						$existLangLinks = true;
@@ -329,10 +329,10 @@ class we_folder extends we_root{
 							foreach($ldidArray as $ldid){
 								$didCondition .= ' OR DID = ' . intval($ldid);
 							}
-							$DB_WE3->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE (' . $didCondition . ')  AND DocumentTable = "' . $documentTable . '"');
+							$DB_WE3->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE (' . $didCondition . ')  AND DocumentTable = "' . $DB_WE3->escape($documentTable) . '"');
 						} else {
-							$DB_WE3->query('UPDATE ' . LANGLINK_TABLE . ' SET DLOCALE = "' . $language . '" WHERE DID = ' . intval($DB_WE->Record['ID']));
-							$DB_WE3->query('UPDATE ' . LANGLINK_TABLE . ' SET LOCALE = "' . $language . '" WHERE LDID = ' . intval($DB_WE->Record['ID']));
+							$DB_WE3->query('UPDATE ' . LANGLINK_TABLE . ' SET DLOCALE = "' . $DB_WE3->escape($language) . '" WHERE DID = ' . intval($DB_WE->Record['ID']));
+							$DB_WE3->query('UPDATE ' . LANGLINK_TABLE . ' SET LOCALE = "' . $DB_WE3->escape($language) . '" WHERE LDID = ' . intval($DB_WE->Record['ID']));
 						}
 					}
 				}
@@ -345,8 +345,8 @@ class we_folder extends we_root{
 		}
 		while($DB_WE->next_record()){
 			$documentTable = 'tblFile';
-			$DB_WE2->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DID = ' . intval($DB_WE->Record['ID']) . ' AND DocumentTable = "' . $documentTable . '" AND IsFolder > 0 AND Locale = "' . $language . '"');
-			$DB_WE2->query('UPDATE ' . LANGLINK_TABLE . ' SET DLOCALE = "' . $language . '" WHERE DID = ' . intval($DB_WE->Record['ID']) . ' AND DocumentTable = "' . $documentTable . '" AND IsFolder > 0');
+			$DB_WE2->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DID = ' . intval($DB_WE->Record['ID']) . ' AND DocumentTable = "' . $DB_WE2->escape($documentTable) . '" AND IsFolder > 0 AND Locale = "' . $DB_WE2->escape($language) . '"');
+			$DB_WE2->query('UPDATE ' . LANGLINK_TABLE . ' SET DLOCALE = "' . $DB_WE2->escape($language) . '" WHERE DID = ' . intval($DB_WE->Record['ID']) . ' AND DocumentTable = "' . $DB_WE2->escape($documentTable) . '" AND IsFolder > 0');
 		}
 
 		// Change language of published documents, objects
@@ -377,7 +377,7 @@ class we_folder extends we_root{
 			// Klasse feststellen
 			$ClassPathArray = explode('/', $this->Path);
 			$ClassPath = '/' . $ClassPathArray[1];
-			$q = 'SELECT ID FROM ' . OBJECT_TABLE . ' WHERE Path = "' . $ClassPath . '"';
+			$q = 'SELECT ID FROM ' . OBJECT_TABLE . ' WHERE Path = "' . $DB_WE->escape($ClassPath) . '"';
 			$cid = $pid = f($q, 'ID', $DB_WE);
 			$_obxTable = OBJECT_X_TABLE . $cid;
 
@@ -438,7 +438,7 @@ class we_folder extends we_root{
 	}
 
 	function i_filenameDouble(){
-		return f('SELECT 1 FROM ' . escape_sql_query($this->Table) . ' WHERE Path="' . escape_sql_query($this->Path) . '" AND ID != ' . intval($this->ID), '', $this->DB_WE);
+		return f('SELECT 1 FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE Path="' . $this->DB_WE->escape($this->Path) . '" AND ID != ' . intval($this->ID), '', $this->DB_WE);
 	}
 
 	function i_filenameEmpty(){
@@ -516,7 +516,7 @@ class we_folder extends we_root{
 			$htmlzw = '';
 			$isobject = (defined('OBJECT_FILES_TABLE') && ($this->Table == OBJECT_FILES_TABLE) ? 1 : 0);
 			foreach($_languages as $langkey => $lang){
-				$LDID = f('SELECT LDID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblFile" AND IsObject=' . intval($isobject) . ' AND DID=' . intval($this->ID) . ' AND Locale="' . $langkey . '"', 'LDID', $this->DB_WE);
+				$LDID = f('SELECT LDID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblFile" AND IsObject=' . intval($isobject) . ' AND DID=' . intval($this->ID) . ' AND Locale="' . $this->DB_WE->escape($langkey) . '"', 'LDID', $this->DB_WE);
 				if(!$LDID){
 					$LDID = 0;
 				}
@@ -598,7 +598,7 @@ class we_folder extends we_root{
 
 	function modifyLinks(){
 		if($this->Table == FILE_TABLE || $this->Table == TEMPLATES_TABLE){
-			$this->DB_WE->query('UPDATE ' . $this->Table . ' SET Path=CONCAT("' . $this->Path . '",SUBSTRING(Path,' . (strlen($this->OldPath) + 1) . ')) WHERE Path LIKE "' . $this->OldPath . '/%" OR Path="' . $this->OldPath . '"');
+			$this->DB_WE->query('UPDATE ' . $this->DB_WE->escape($this->Table) . ' SET Path=CONCAT("' . $this->DB_WE->escape($this->Path) . '",SUBSTRING(Path,' . (strlen($this->OldPath) + 1) . ')) WHERE Path LIKE "' . $this->DB_WE->escape($this->OldPath) . '/%" OR Path="' . $this->DB_WE->escape($this->OldPath) . '"');
 		}
 	}
 
@@ -718,16 +718,16 @@ class we_folder extends we_root{
 	}
 
 	protected function updateRemoteLang($db, $id, $lang, $type){
-		$oldLang = f('SELECT Language FROM ' . $this->Table . ' WHERE ID=' . $id, 'Language', $db);
+		$oldLang = f('SELECT Language FROM ' . $db->escape($this->Table) . ' WHERE ID=' . intval($id), 'Language', $db);
 		if($oldLang == $lang){
 			return;
 		}
 		//update Lang of doc
-		$db->query('UPDATE ' . $this->Table . ' SET Language="' . $lang . '" WHERE ID=' . $id);
+		$db->query('UPDATE ' . $db->escape($this->Table) . ' SET Language="' . $db->escape($lang) . '" WHERE ID=' . intval($id));
 		//update LangLink:
-		$db->query('UPDATE ' . LANGLINK_TABLE . ' SET DLocale="' . $lang . '" WHERE DID=' . $id . ' AND DocumentTable="' . $type . '"');
+		$db->query('UPDATE ' . LANGLINK_TABLE . ' SET DLocale="' . $db->escape($lang) . '" WHERE DID=' . intval($id) . ' AND DocumentTable="' . $db->escape($type) . '"');
 		//drop invalid entries => is this safe???
-		$db->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DID=' . $id . ' AND DocumentTable="' . $type . '" AND DLocale!="' . $lang . '"');
+		$db->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DID=' . intval($id) . ' AND DocumentTable="' . $db->escape($type) . '" AND DLocale!="' . $db->escape($lang) . '"');
 	}
 
 	public static function getUrlReplacements(we_database_base $db, $onlyUrl = false){

@@ -83,7 +83,7 @@ class we_object_listview extends listviewBase{
 		$this->objectseourls = $objectseourls;
 		$this->hidedirindex = $hidedirindex;
 
-		$_obxTable = OBJECT_X_TABLE . $this->classID;
+		$_obxTable = OBJECT_X_TABLE . intval($this->classID);
 
 		$where_lang = '';
 
@@ -225,7 +225,7 @@ class we_object_listview extends listviewBase{
 
 	function fillMatrix(&$matrix, $classID, we_database_base $db = null){
 		$db = ($db ? $db : new DB_WE());
-		$table = OBJECT_X_TABLE . $classID;
+		$table = OBJECT_X_TABLE . intval($classID);
 		$joinWhere = array();
 		$regs = array();
 		$tableInfo = we_objectFile::getSortedTableInfo($classID, true, $db, true);
@@ -240,7 +240,7 @@ class we_object_listview extends listviewBase{
 						$matrix['we_object_' . $name]['table2'] = OBJECT_X_TABLE . $name;
 						$matrix['we_object_' . $name]['classID'] = $classID;
 						$foo = $this->fillMatrix($matrix, $name, $db);
-						$joinWhere[] = OBJECT_X_TABLE . $classID . '.' . we_object::QUERY_PREFIX . $name . '=' . OBJECT_X_TABLE . $name . '.OF_ID';
+						$joinWhere[] = OBJECT_X_TABLE . intval($classID) . '.' . we_object::QUERY_PREFIX . $name . '=' . OBJECT_X_TABLE . $name . '.OF_ID';
 						if($foo){
 							$joinWhere[] = $foo;
 						}
@@ -297,6 +297,7 @@ class we_object_listview extends listviewBase{
 		//BugFix #4629
 		$_fieldnames = getHash('SELECT DefaultDesc,DefaultTitle,DefaultKeywords,CreationDate,ModDate FROM ' . OBJECT_TABLE . ' WHERE ID=' . $classID, $this->DB_WE);
 		$_selFields = '';
+		$classID = intval($classID);
 		foreach($_fieldnames as $_key => $_val){
 			if(!$_val || $_val == '_'){ // bug #4657
 				continue;

@@ -549,7 +549,7 @@ class we_search_search extends we_search{
 
 				//published objects
 				foreach($_classes as $i){
-					$_obj_table = OBJECT_X_TABLE . $i;
+					$_obj_table = OBJECT_X_TABLE . intval($i);
 					//$_obj_table = strtolower($_obj_table);
 					$tableInfo = $_db->metadata($_obj_table);
 					$fields = array();

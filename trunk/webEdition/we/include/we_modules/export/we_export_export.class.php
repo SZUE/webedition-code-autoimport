@@ -124,7 +124,7 @@ class we_export_export extends weModelBase{
 			}
 			return $ret;
 		} else {
-			return $this->db->query('UPDATE ' . $this->table . ' SET ' . $set . ' WHERE ' . $where);
+			return $this->db->query('UPDATE ' . $this->db->escape($this->table) . ' SET ' . $set . ' WHERE ' . $where);
 		}
 
 		return false;
@@ -188,12 +188,12 @@ class we_export_export extends weModelBase{
 	}
 
 	function setPath(){
-		$ppath = f('SELECT Path FROM ' . EXPORT_TABLE . ' WHERE ID=' . $this->ParentID . ';', 'Path', $this->db);
+		$ppath = f('SELECT Path FROM ' . EXPORT_TABLE . ' WHERE ID=' . intval($this->ParentID) . ';', 'Path', $this->db);
 		$this->Path = $ppath . "/" . $this->Text;
 	}
 
 	function pathExists($path){
-		return f('SELECT 1 FROM ' . $this->table . ' WHERE Path="' . $path . '" AND ID!=' . intval($this->ID).' LIMIT 1','',$this->db);
+		return f('SELECT 1 FROM ' . $this->db->escape($this->table) . ' WHERE Path="' . $this->db->escape($path) . '" AND ID!=' . intval($this->ID).' LIMIT 1','',$this->db);
 	}
 
 	function isSelf(){

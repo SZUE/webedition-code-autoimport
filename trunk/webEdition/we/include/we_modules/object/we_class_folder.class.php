@@ -360,10 +360,10 @@ class we_class_folder extends we_folder{
 			foreach(array_keys($_REQUEST) as $f){
 				if(substr($f, 0, 3) == "weg"){
 					//$this->query("");
-					$ofid = f('SELECT OF_ID FROM ' . OBJECT_X_TABLE . intval($classArray["ID"]) . ' WHERE ID=' . intval(substr($f, 3)), '', $DB_WE);
+					$ofid = f('SELECT OF_ID FROM ' . OBJECT_X_TABLE . $classArray["ID"] . ' WHERE ID=' . intval(substr($f, 3)), '', $DB_WE);
 
 					if(permissionhandler::checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE, $DB_WE)){
-						$DB_WE->query('DELETE FROM ' . OBJECT_X_TABLE . intval($classArray["ID"]) . ' WHERE ID=' . intval(substr($f, 3)));
+						$DB_WE->query('DELETE FROM ' . OBJECT_X_TABLE . $classArray["ID"] . ' WHERE ID=' . intval(substr($f, 3)));
 						$DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE OID=' . intval($ofid));
 						$DB_WE->query('DELETE FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($ofid));
 						we_temporaryDocument::delete($ofid, OBJECT_FILES_TABLE, $DB_WE);
@@ -505,7 +505,7 @@ class we_class_folder extends we_folder{
 								$class = $temp['class'];
 								$content[$f][$i + 5]['dat'] = '<ul>';
 								foreach($objects as $id){
-									$content[$f][$i + 5]['dat'] .= '<li><a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $id . ',\'objectFile\');" class="defaultfont" title="' . f("SELECT OF_Path FROM " . OBJECT_X_TABLE . $class . " WHERE OF_ID='" . $id . "'", "", $DB_WE) . '">' . we_util_Strings::shortenPath(f('SELECT OF_Path FROM ' . OBJECT_X_TABLE . $class . ' WHERE OF_ID=' . intval($id), '', $DB_WE), $we_obectPathLength) . '.</a></li>';
+									$content[$f][$i + 5]['dat'] .= '<li><a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $id . ',\'objectFile\');" class="defaultfont" title="' . f("SELECT OF_Path FROM " . OBJECT_X_TABLE . intval($class) . " WHERE OF_ID='" . $id . "'", "", $DB_WE) . '">' . we_util_Strings::shortenPath(f('SELECT OF_Path FROM ' . OBJECT_X_TABLE . intval($class) . ' WHERE OF_ID=' . intval($id), '', $DB_WE), $we_obectPathLength) . '.</a></li>';
 								}
 								$content[$f][$i + 5]['dat'] .= '</ul>';
 							} else {
@@ -992,7 +992,7 @@ EOF;
 				$tid = intval(substr($f, 3));
 				$ofid = f('SELECT OF_ID FROM ' . OBJECT_X_TABLE . intval($classArray['ID']) . ' WHERE ID=' . $tid, '', $DB_WE);
 				if(permissionhandler::checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE, $DB_WE)){
-					$DB_WE->query('DELETE FROM ' . OBJECT_X_TABLE . intval($classArray['ID']) . ' WHERE ID=' . $tid);
+					$DB_WE->query('DELETE FROM ' . OBJECT_X_TABLE . $classArray['ID'] . ' WHERE ID=' . $tid);
 					$DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE OID=' . intval($ofid));
 					$DB_WE->query('DELETE FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($ofid));
 
@@ -1033,7 +1033,7 @@ for ( frameId in _usedEditors ) {
 
 		foreach(array_keys($_REQUEST) as $f){
 			if(substr($f, 0, 3) == "weg"){
-				$ofid = f('SELECT OF_ID FROM ' . OBJECT_X_TABLE . $this->ClassID . ' WHERE ID=' . substr($f, 3), '', $DB_WE);
+				$ofid = f('SELECT OF_ID FROM ' . OBJECT_X_TABLE . intval($this->ClassID) . ' WHERE ID=' . substr($f, 3), 'OF_ID', $DB_WE);
 				if(permissionhandler::checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE, $DB_WE)){
 					$obj = new we_objectFile();
 					$obj->initByID($ofid, OBJECT_FILES_TABLE);
