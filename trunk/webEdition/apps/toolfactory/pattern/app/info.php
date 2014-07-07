@@ -74,7 +74,7 @@ if(!empty($appconfig->info->version) || !empty($appconfig->dependencies->version
 			} else {
 				$html .= $translate->_('AppStatusActive');
 			}
-			$html . ='</strong>';
+			$html .='</strong>';
 		}
 
 		$rowVersion->addHTML($html);
