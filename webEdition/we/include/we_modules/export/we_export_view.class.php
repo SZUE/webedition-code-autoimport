@@ -559,7 +559,7 @@ class we_export_view{
 			case "start_export":
 				we_exim_XMLExIm::unsetPerserves();
 				$_REQUEST["cmd"] = "do_export";
-				$this->export->ExportFilename = ($this->export->ExportTo == 'local' ? TEMP_PATH . "/" . $this->export->Filename : $_SERVER['DOCUMENT_ROOT'] . $this->export->ServerPath . "/" . $this->export->Filename);
+				$this->export->ExportFilename = ($this->export->ExportTo == 'local' ? TEMP_PATH . $this->export->Filename : $_SERVER['DOCUMENT_ROOT'] . $this->export->ServerPath . "/" . $this->export->Filename);
 				break;
 			default:
 		}

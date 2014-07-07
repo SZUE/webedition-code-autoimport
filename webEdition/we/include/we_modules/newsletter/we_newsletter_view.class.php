@@ -1712,7 +1712,7 @@ edf.populateGroups();');
 
 				if(isset($we_File)){
 					$unique = we_base_file::getUniqueId();
-					$tempName = TEMP_PATH . "/" . $unique;
+					$tempName = TEMP_PATH . $unique;
 
 					if(move_uploaded_file($we_File["tmp_name"], $tempName)){
 						$tempName = str_replace($_SERVER['DOCUMENT_ROOT'], "", $tempName);
@@ -1733,7 +1733,7 @@ self.close();');
 					$we_File = $_FILES["we_File"];
 				if(isset($we_File)){
 					$unique = we_base_file::getUniqueId();
-					$tempName = TEMP_PATH . "/" . $unique;
+					$tempName = TEMP_PATH  . $unique;
 
 					if(move_uploaded_file($we_File["tmp_name"], $tempName)){
 						$tempName = str_replace($_SERVER['DOCUMENT_ROOT'], "", $tempName);

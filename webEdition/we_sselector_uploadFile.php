@@ -30,7 +30,7 @@ $inputTypeFile->setExternalProgressbar(true, 'progressbar', true, 'top.', 120, '
 $tempName = $inputTypeFile->processFileRequest();
 
 echo we_html_tools::getHtmlTop() .
-	STYLESHEET . 
+	STYLESHEET .
 	$inputTypeFile->getCss() . $inputTypeFile->getJs();
 
 $path = we_base_request::_(we_base_request::FILE,'pat');
@@ -46,7 +46,7 @@ if(isset($_FILES['we_uploadFile'])){
 	$overwrite = we_base_request::_(we_base_request::BOOL,"overwrite");
 
 	if(!$tempName){
-		$tempName = TEMP_PATH . '/' . we_base_file::getUniqueId();
+		$tempName = TEMP_PATH . we_base_file::getUniqueId();
 		move_uploaded_file($_FILES['we_uploadedFile']['tmp_name'], $tempName);
 	}
 

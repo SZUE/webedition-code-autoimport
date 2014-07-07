@@ -1280,7 +1280,7 @@ function setState(a) {
 					$_SESSION['weS']['exportVars']["RefTable"] = $xmlExIm->RefTable->RefTable2Array();
 					$all = count($xmlExIm->RefTable);
 					$exports = 0;
-					$_SESSION['weS']['exportVars']["filename"] = ($export_local ? TEMP_PATH . '/' . $filename : $_SERVER['DOCUMENT_ROOT'] . $path . $filename);
+					$_SESSION['weS']['exportVars']["filename"] = ($export_local ? TEMP_PATH . $filename : $_SERVER['DOCUMENT_ROOT'] . $path . $filename);
 					//FIXME set export type in getHeader
 					$ret = we_base_file::save($_SESSION['weS']['exportVars']["filename"], we_exim_XMLExIm::getHeader(), "wb");
 				} else {

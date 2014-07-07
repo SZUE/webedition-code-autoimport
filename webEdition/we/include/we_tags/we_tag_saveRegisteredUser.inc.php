@@ -164,7 +164,7 @@ function we_saveCustomerImages(){
 				$ct = getContentTypeFromFile($filename);
 				if($ct == we_base_ContentTypes::IMAGE){
 
-					$_serverPath = TEMP_PATH . '/' . we_base_file::getUniqueId();
+					$_serverPath = TEMP_PATH . we_base_file::getUniqueId();
 					move_uploaded_file($_FILES['WE_SF_IMG_DATA']['tmp_name'][$imgName], $_serverPath);
 
 					$we_size = we_thumbnail::getimagesize($_serverPath);

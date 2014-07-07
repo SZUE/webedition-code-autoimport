@@ -45,7 +45,7 @@ class we_export_frames extends weModuleFrames{
 	}
 
 	function getHTMLDocumentHeader($what = '', $mode = ''){
-		if($what != "cmd" && $what != "load" && !we_base_request::_(we_base_request::BOOL, "exportfile")){
+		if($what != "cmd" && $what != "load" && !we_base_request::_(we_base_request::FILE, "exportfile")){
 			return parent::getHTMLDocumentHeader();
 		}
 	}

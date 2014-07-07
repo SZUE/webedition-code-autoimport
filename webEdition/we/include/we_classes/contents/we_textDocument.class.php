@@ -49,7 +49,7 @@ class we_textDocument extends we_document{
 				return 'we_templates/we_srcTmpl.inc.php';
 			case we_base_constants::WE_EDITPAGE_PREVIEW:
 				if($GLOBALS['we_EDITOR']){
-					$GLOBALS['we_file_to_delete_after_include'] = TEMP_PATH . '/' . we_base_file::getUniqueId() . $this->Extension;
+					$GLOBALS['we_file_to_delete_after_include'] = TEMP_PATH . we_base_file::getUniqueId() . $this->Extension;
 					we_util_File::saveFile($GLOBALS['we_file_to_delete_after_include'], $this->i_getDocument());
 					return $GLOBALS['we_file_to_delete_after_include'];
 				} else {
