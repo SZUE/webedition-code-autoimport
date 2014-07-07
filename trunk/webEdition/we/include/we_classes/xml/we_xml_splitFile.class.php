@@ -88,7 +88,7 @@ class we_xml_splitFile extends we_xml_parser{
 		}
 
 		// Save the path consisting of the temporary directory and a unique id.
-		$this->path = TEMP_PATH . '/' . $this->getUniqueId();
+		$this->path = TEMP_PATH . $this->getUniqueId();
 
 		// Make the current directory.
 		we_util_File::createLocalFolder($this->path);

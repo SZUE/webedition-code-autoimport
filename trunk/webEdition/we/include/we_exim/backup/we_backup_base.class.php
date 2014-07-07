@@ -519,9 +519,9 @@ abstract class we_backup_base{
 	 */
 	function setTmpFilename($filename){
 		if($this->isFileInTmpDir($filename)){
-			if(is_file(TEMP_PATH . '/' . $filename)){
+			if(is_file(TEMP_PATH . $filename)){
 				$this->tempfilename = $filename;
-				$this->dumpfilename = TEMP_PATH . '/' . $filename;
+				$this->dumpfilename = TEMP_PATH . $filename;
 				return true;
 			}
 		}
@@ -535,7 +535,7 @@ abstract class we_backup_base{
 	 * directory used for backups.
 	 */
 	function isFileInTmpDir($file_name){
-		$dir = TEMP_PATH . '/';
+		$dir = TEMP_PATH;
 		$d = @dir($dir);
 		$ret = false;
 		if($d){

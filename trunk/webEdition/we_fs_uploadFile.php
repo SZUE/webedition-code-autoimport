@@ -59,7 +59,7 @@ if((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploaded
 	$overwritten = false;
 
 	if(!$tempName){
-		$tempName = TEMP_PATH . '/' . we_base_file::getUniqueId();
+		$tempName = TEMP_PATH . we_base_file::getUniqueId();
 		move_uploaded_file($_FILES['we_uploadedFile']['tmp_name'], $tempName);
 	}
 

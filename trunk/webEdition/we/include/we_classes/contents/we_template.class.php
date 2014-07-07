@@ -97,12 +97,12 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 				return "we_templates/we_srcTmpl.inc.php";
 			case we_base_constants::WE_EDITPAGE_PREVIEW:
 				$GLOBALS["we_editmode"] = true;
-				$GLOBALS["we_file_to_delete_after_include"] = TEMP_PATH . '/' . we_base_file::getUniqueId();
+				$GLOBALS["we_file_to_delete_after_include"] = TEMP_PATH . we_base_file::getUniqueId();
 				we_util_File::saveFile($GLOBALS["we_file_to_delete_after_include"], $this->i_getDocument());
 				return $GLOBALS["we_file_to_delete_after_include"];
 			case we_base_constants::WE_EDITPAGE_PREVIEW_TEMPLATE:
 				$GLOBALS["we_editmode"] = false;
-				$GLOBALS["we_file_to_delete_after_include"] = TEMP_PATH . '/' . we_base_file::getUniqueId();
+				$GLOBALS["we_file_to_delete_after_include"] = TEMP_PATH . we_base_file::getUniqueId();
 				we_util_File::saveFile($GLOBALS["we_file_to_delete_after_include"], $this->i_getDocument());
 				return $GLOBALS["we_file_to_delete_after_include"];
 			case we_base_constants::WE_EDITPAGE_VARIANTS:
