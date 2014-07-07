@@ -9,7 +9,7 @@ $controller = Zend_Controller_Front::getInstance();
 $appName = $controller->getParam('appName');
 
 $_tool = we_tool_lookup::getToolProperties($appName);
-$we_menu_<?php print $TOOLNAME; ?>= array(
+$we_menu_<?php echo $TOOLNAME; ?>= array(
 	100 => array(
 		'text' => we_util_Strings::shortenPath($_tool['text'], 40),
 		'parent' => 0,
@@ -26,28 +26,28 @@ $we_menu_<?php print $TOOLNAME; ?>= array(
 		'text' => $translate->_('New Entry'),
 		'parent' => 200,
 		'cmd' => 'app_' . $appName . '_new',
-		'perm' => 'NEW_APP_<?php print strtoupper($TOOLNAME); ?> || ADMINISTRATOR',
+		'perm' => 'NEW_APP_<?php echo strtoupper($TOOLNAME); ?> || ADMINISTRATOR',
 		'enabled' => 1,
 	),
 	array(
 		'text' => $translate->_('New Folder'),
 		'parent' => 200,
 		'cmd' => 'app_' . $appName . '_new_folder',
-		'perm' => 'NEW_APP_<?php print strtoupper($TOOLNAME); ?> || ADMINISTRATOR',
+		'perm' => 'NEW_APP_<?php echo strtoupper($TOOLNAME); ?> || ADMINISTRATOR',
 		'enabled' => 1,
 	),
 	array(
 		'text' => $translate->_('Save'),
 		'parent' => 100,
 		'cmd' => 'app_' . $appName . '_save',
-		'perm' => 'EDIT_APP_<?php print strtoupper($TOOLNAME); ?> || ADMINISTRATOR',
+		'perm' => 'EDIT_APP_<?php echo strtoupper($TOOLNAME); ?> || ADMINISTRATOR',
 		'enabled' => 1,
 	),
 	array(
 		'text' => $translate->_('Delete'),
 		'parent' => 100,
 		'cmd' => 'app_' . $appName . '_delete',
-		'perm' => 'DELETE_APP_<?php print strtoupper($TOOLNAME); ?> || ADMINISTRATOR',
+		'perm' => 'DELETE_APP_<?php echo strtoupper($TOOLNAME); ?> || ADMINISTRATOR',
 		'enabled' => 1,
 	),
 	array(
