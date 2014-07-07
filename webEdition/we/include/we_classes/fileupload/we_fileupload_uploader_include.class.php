@@ -22,8 +22,8 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+class we_fileupload_uploader_include extends we_fileupload_uploader_base{
 
-class we_fileupload_uploader_include extends we_fileupload_uploader_base {
 	protected $callback = '';
 	protected $formFrame = '';
 	protected $drop = true;
@@ -31,7 +31,7 @@ class we_fileupload_uploader_include extends we_fileupload_uploader_base {
 	protected $isUploadComplete = false;
 	protected $onclick = '';
 	protected $fileNameTempParts = array(
-		'path' => TEMP_PATH, 
+		'path' => TEMP_PATH,
 		'prefix' => '',
 		'postfix' => '',
 		'missingDocRoot' => false,
@@ -45,20 +45,20 @@ class we_fileupload_uploader_include extends we_fileupload_uploader_base {
 		'width' => 200,
 		'name' => '',
 		'additionalParams' => array()
-		);
+	);
 	protected $typeCondition = array(
 		'accepted' => array(
 			'mime' => array(),
 			//'mimeGroups' => array(),
 			'extensions' => array(),
 			'all' => array()
-			),
+		),
 		'forbidden' => array(
 			'mime' => array(),
 			//'mimeGroups' => array(),
 			'extensions' => array(),
 			'all' => array()
-			)
+		)
 	);
 
 	const GET_PATH_ONLY = 1;
@@ -67,7 +67,7 @@ class we_fileupload_uploader_include extends we_fileupload_uploader_base {
 	const MISSING_DOC_ROOT = true;
 	const USE_FILENAME_FROM_UPLOAD = true;
 
-	function __construct($name, $formFrame = 'top', $onclick = '', $width = 400, $drop = true, $progress = true, $acceptedMime = '', $acceptedExt = '', $forbiddenMime = '', $forbiddenExt = '', $externalProgress = array(), $maxUploadSize = -1) {
+	function __construct($name, $formFrame = 'top', $onclick = '', $width = 400, $drop = true, $progress = true, $acceptedMime = '', $acceptedExt = '', $forbiddenMime = '', $forbiddenExt = '', $externalProgress = array(), $maxUploadSize = -1){
 		parent::__construct($name, $width, $maxUploadSize);
 
 		$this->formFrame = $formFrame;
@@ -83,16 +83,16 @@ class we_fileupload_uploader_include extends we_fileupload_uploader_base {
 
 	public function setFileNameTemp($parts = array(), $useFilenameFromUpload = false){
 		$this->fileNameTempParts = array(
-			'prefix' => isset($parts['prefix']) ? $parts['prefix'] : $this->fileNameTempParts['prefix'], 
+			'prefix' => isset($parts['prefix']) ? $parts['prefix'] : $this->fileNameTempParts['prefix'],
 			'postfix' => isset($parts['postfix']) ? $parts['postfix'] : $this->fileNameTempParts['postfix'],
-			'path' => isset($parts['path']) ? $parts['path'] : $this->fileNameTempParts['path'], 
+			'path' => isset($parts['path']) ? $parts['path'] : $this->fileNameTempParts['path'],
 			'missingDocRoot' => isset($parts['missingDocRoot']) ? $parts['missingDocRoot'] : $this->fileNameTempParts['missingDocRoot'],
 			'useFilenameFromUpload' => $useFilenameFromUpload
 		);
 	}
 
 	public function setTypeCondition($field, $mime = '', $ext = ''){
-		$tmp = array(); 
+		$tmp = array();
 		$mime = trim(str_replace(' ', '', strtolower($mime)), ', ');
 		$ext = trim(str_replace(' ', '', strtolower($ext)), ', ');
 
@@ -134,11 +134,11 @@ class we_fileupload_uploader_include extends we_fileupload_uploader_base {
 		$butReset = str_replace("\n", " ", str_replace("\r", " ", $butReset));
 
 		$fileInput = we_html_element::htmlInput(array(
-			'class' => 'fileInput fileInputHidden',
-			'type' => 'file',
-			'name' => $this->name,
-			'id' => $this->name,
-			'accept' => implode(',', $this->typeCondition['accepted']['mime']))
+				'class' => 'fileInput fileInputHidden',
+				'type' => 'file',
+				'name' => $this->name,
+				'id' => $this->name,
+				'accept' => implode(',', $this->typeCondition['accepted']['mime']))
 		);
 
 		return !$this->useLegacy ? ('
@@ -164,13 +164,13 @@ class we_fileupload_uploader_include extends we_fileupload_uploader_base {
 	</div>
 </div>
 ' .
-		we_html_tools::hidden('weFileNameTmp', '') .
-		we_html_tools::hidden('weFileName', '') .
-		we_html_tools::hidden('weFileCt', '') .
-		we_html_tools::hidden('weIsUploadComplete', 0) .
-		we_html_tools::hidden('weIsUploading', 1) .
-		we_html_tools::hidden('weIsFileInLegacy', 0)) : (
-		we_html_element::htmlInput(array('type' => 'file', 'name' => $this->name)));
+			we_html_tools::hidden('weFileNameTmp', '') .
+			we_html_tools::hidden('weFileName', '') .
+			we_html_tools::hidden('weFileCt', '') .
+			we_html_tools::hidden('weIsUploadComplete', 0) .
+			we_html_tools::hidden('weIsUploading', 1) .
+			we_html_tools::hidden('weIsFileInLegacy', 0)) : (
+			we_html_element::htmlInput(array('type' => 'file', 'name' => $this->name)));
 	}
 
 	private function getProgressHTML(){
@@ -201,15 +201,13 @@ class we_fileupload_uploader_include extends we_fileupload_uploader_base {
 		switch($type){
 			case self::GET_NAME_ONLY:
 				return $filename;
-				break;
 			case self::GET_PATH_ONLY:
 				return $docRoot . $this->fileNameTempParts['path'];
-				break;
-			default: 
+			default:
 				return $docRoot . $this->fileNameTempParts['path'] . $filename;
 		}
 	}
-	
+
 	protected function _getInitJS(){
 		if($this->useLegacy){
 			return we_html_element::jsElement('
@@ -242,7 +240,7 @@ function weFU(){
 		action = "' . $this->action . '",
 		callback = null,
 		error = "";
-		
+
 	//vars to be set when using updater
 	var originalFiles = null,
 		preparedFiles = null,
@@ -295,7 +293,7 @@ function weFU(){
 		}
 
 		' . ($createExternalProgress ?
-				'
+					'
 		if(' . $this->externalProgress['frame'] . 'document && ' . $this->externalProgress['frame'] . 'document.getElementById("' . $this->externalProgress['parentElemId'] . '")){
 			var externalProgressDocument = ' . $this->externalProgress['frame'] . 'document;
 			weFU.elems.externalProgressDiv = externalProgressDocument.getElementById("' . $this->externalProgress['parentElemId'] . '");
@@ -303,7 +301,7 @@ function weFU(){
 			weFU.isExternalProgress = true;
 		}
 				' : '') .
-		'
+				'
 	}
 
 };
@@ -379,7 +377,7 @@ weFU.fileSelectHandler = function(e){
 	fileSizeOk = newFile.file.size <= ' . $this->maxUploadSizeBytes . ';
 	fileTypeOk = weFU.checkFileType(tmpFileType, newFile.file.name);
 
-	sizeText = fileSizeOk ? weFU.gl.sizeTextOk + weFU.weComputeSize(newFile.file.size) + ", ": 
+	sizeText = fileSizeOk ? weFU.gl.sizeTextOk + weFU.weComputeSize(newFile.file.size) + ", ":
 		\'<span style="color:red;">\' + weFU.gl.sizeTextNok + \'</span>\';
 	typeText = fileTypeOk ? weFU.gl.typeTextOk + tmpFileType :
 		\'<span style="color:red;">\' + weFU.gl.typeTextNok + tmpFileType + \'</span>\';
@@ -421,12 +419,12 @@ weFU.checkFileType = function(type, name){
 		return false;
 	}
 	if(tc.accepted.all && tc.accepted.all.length > 0 &&
-			!weFU.inArray(type, tc.accepted.all) && 
+			!weFU.inArray(type, tc.accepted.all) &&
 			!weFU.inArray(typeGroup, tc.accepted.all) &&
 			!weFU.inArray(ext, tc.accepted.all)){
 		return false;
 	}
-	if(tc.forbidden.all && tc.forbidden.all.length > 0 && 
+	if(tc.forbidden.all && tc.forbidden.all.length > 0 &&
 			(weFU.inArray(type, tc.forbidden.all) ||
 				weFU.inArray(typeGroup, tc.forbidden.all) ||
 				weFU.inArray(ext, tc.forbidden.all))){
@@ -474,7 +472,7 @@ weFU.upload = function(form, callback){
 		callback();
 		return;
 	}
-	
+
 	weFU.totalFiles = weFU.preparedFiles.length;
 	weFU.currentWeight = 0;
 
@@ -540,7 +538,7 @@ weFU.repaintGUI = function(arg){
 
 weFU.processError = function(arg){
 	switch(arg.from){
-		case "gui": 
+		case "gui":
 			top.we_showMessage(arg.msg, 4, window);
 		case "request":
 			weFU.repaintGUI({"what" : "fileNOK"});
@@ -557,7 +555,6 @@ weFU.reset = function(){
 	weFU.elems.message.innerHTML.display = "none";
 };
 		');
-		
 	}
 
 	public function getJsSubmitCall($callback = ''){
@@ -580,7 +577,7 @@ weFU.reset = function(){
 
 		//FIXME: do we really need so much vars for execution control?
 		$isUploadComplete = we_base_request::_(we_base_request::BOOL, 'weIsUploadComplete', false);
-		$isUploading = we_base_request::_(we_base_request::BOOL, 'weIsUploading', false);//FIXME: weHtmlInputFile
+		$isUploading = we_base_request::_(we_base_request::BOOL, 'weIsUploading', false); //FIXME: weHtmlInputFile
 		$error = '';
 
 		if($isUploading){//FIXME: change to $isHtmlInputFile
@@ -590,12 +587,12 @@ weFU.reset = function(){
 					$tempName = $partNum == 1 ? $this->_getfileNameTemp(self::GET_NAME_ONLY) : we_base_file::getUniqueId();
 					$tempPath = $this->_getfileNameTemp(self::GET_PATH_ONLY, self::FORCE_DOC_ROOT);
 					$error = !$tempName ? 'no_filename_error' : $error;
-					$error = !@move_uploaded_file($_FILES[$this->name]["tmp_name"], $tempPath . $tempName) ? 'move_file_error'  : $error;
+					$error = !@move_uploaded_file($_FILES[$this->name]["tmp_name"], $tempPath . $tempName) ? 'move_file_error' : $error;
 					$error = $partNum > $this->maxChunkCount ? 'oversized_error' : $error;
 
 					//check mime type integrity when receiving first chunk
 					if($partNum == 1){
-						if($mime = we_base_util::getMimeType('', $tempPath . $tempName, we_base_util::MIME_BY_HEAD)){
+						if(($mime = we_base_util::getMimeType('', $tempPath . $tempName, we_base_util::MIME_BY_HEAD))){
 							//IMPORTANT: finfo_file returns text/plain where FILE returns ""!
 							if($mime !== $fileCt){
 								t_e("Mime type determined by finfo_file differ from type detemined by JS File", $mime, $fileCt);
@@ -613,8 +610,8 @@ weFU.reset = function(){
 					} else {
 						$fileNameTemp = $partNum == 1 ? $tempName : $fileNameTemp;
 						if($partCount > 1 && $partNum > 1){
-								file_put_contents($tempPath . $fileNameTemp, file_get_contents($tempPath . $tempName), FILE_APPEND);
-								unlink($tempPath . $tempName);
+							file_put_contents($tempPath . $fileNameTemp, file_get_contents($tempPath . $tempName), FILE_APPEND);
+							unlink($tempPath . $tempName);
 						}
 						$response = array('status' => ($partNum == $partCount ? 'success' : 'continue'), 'fileNameTemp' => $fileNameTemp, 'mimePhp' => (isset($mime) && $mime ? $mime : $fileCt), 'message' => '', 'completed' => ($partNum == $partCount ? 1 : 0), 'finished' => '');
 					}
@@ -626,17 +623,17 @@ weFU.reset = function(){
 				//all chunks are done, check integrity, set some vars and continue within editor context
 				if($fileNameTemp && $isUploadComplete){
 
-					//weFileCt could be manipulated or extension not alloud: make integrity test once again! 
+					//weFileCt could be manipulated or extension not alloud: make integrity test once again!
 					if(!$this->IsFileExtensionOk($fileName)){
 						$error = 'extension_not_ok_error';
 						$response = array('status' => 'failure', 'fileNameTemp' => $fileNameTemp, 'message' => $error, 'completed' => 1, 'finished' => '');
 					}
-	/*FIXME
-					if($mime = we_base_util::getMimeType('', TEMP_PATH . $fileNameTemp, we_base_util::MIME_BY_HEAD) && $mime !== $fileCt){
-						$message = 'mime != weFileCT_error';
-						$response = array('status' => 'failure', 'fileNameTemp' => $fileNameTemp, 'message' => $message, 'completed' => 1, 'finished' => '');
-					}
-	*/
+					/* FIXME
+					  if($mime = we_base_util::getMimeType('', TEMP_PATH . $fileNameTemp, we_base_util::MIME_BY_HEAD) && $mime !== $fileCt){
+					  $message = 'mime != weFileCT_error';
+					  $response = array('status' => 'failure', 'fileNameTemp' => $fileNameTemp, 'message' => $message, 'completed' => 1, 'finished' => '');
+					  }
+					 */
 					if($error){
 						if($retFalseOnFinalError){
 							return false;
@@ -645,14 +642,15 @@ weFU.reset = function(){
 						die();
 					}
 
-					$_FILES[$this->name] = array();
-					$_FILES[$this->name]['type'] = $fileCt;
-					$_FILES[$this->name]['tmp_name'] = 'notempty';
-					$_FILES[$this->name]['name'] = $fileName;
-					$_FILES[$this->name]['size'] = 1;
-					$_FILES[$this->name]['error'] = UPLOAD_ERR_OK;
+					$_FILES[$this->name] = array(
+						'type' => $fileCt,
+						'tmp_name' => 'notempty',
+						'name' => $fileName,
+						'size' => 1,
+						'error' => UPLOAD_ERR_OK,
+					);
 					//FIXME: make some integrity test for the whole and for every chunk (md5)
-					
+
 					return $this->_getfileNameTemp(self::GET_PATH_ONLY) . $fileNameTemp;
 				}
 				return '';
@@ -665,7 +663,7 @@ weFU.reset = function(){
 	private function checkFileType($mime = '', $fileName = '', $mode = ''){
 		$tc = $this->typeCondition;
 		$fileInfo = pathinfo($fileName);
-		
+
 		switch($mode){
 			case 'ext':
 				$ext = $fileInfo['extension'];
@@ -695,18 +693,18 @@ weFU.reset = function(){
 
 		if($tc['accepted']['all']){
 			if(in_array($mime, $tc['accepted']['all']) ||
-					in_array($mimeGroup, $tc['accepted']['all']) ||
-					in_array($ext, $tc['accepted']['all'])){
+				in_array($mimeGroup, $tc['accepted']['all']) ||
+				in_array($ext, $tc['accepted']['all'])){
 				//true
 			} else {
 				return false;
 			}
 		}
 
-		if($tc['forbidden']['all'] && 
-				(in_array($mime, $tc['forbidden']['all']) ||
-					in_array($mimeGroup, $tc['forbidden']['all']) ||
-					in_array($ext, $tc['forbidden']['all']))){
+		if($tc['forbidden']['all'] &&
+			(in_array($mime, $tc['forbidden']['all']) ||
+			in_array($mimeGroup, $tc['forbidden']['all']) ||
+			in_array($ext, $tc['forbidden']['all']))){
 			return false;
 		}
 
@@ -720,4 +718,5 @@ weFU.reset = function(){
 	private function isFileMimeOk($mime){
 		return $this->checkFileType($mime, '', 'mime');
 	}
+
 }
