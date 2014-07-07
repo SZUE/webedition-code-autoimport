@@ -396,7 +396,12 @@ class we_util_Mailer extends Zend_Mail{
 	 * Replacement for  finfo_file, available only for >= PHP 5.3
 	 * Da Zend Mail keinen name="yxz" übergibt, kann man den hier einfach anhängen
 	 */
-	public static function get_mime_type($ext, $name = '', $filepath = ''){
+	public static function get_mime_type($ext, $name = '', $filepath = '', $useLegacy = false){
+		if(!$useLegacy){
+			return we_base_util::getMimeType($ext, $filepath = '', we_base_util::MIME_BY_HEAD_THEN_EXTENSION);
+		}
+
+		//keep legacy function for test purposes. FIXME: throw it out as soon as possible
 		if($filepath && function_exists('finfo_open')){
 			$finfo = finfo_open(FILEINFO_MIME_TYPE);
 			$mime = finfo_file($finfo, $filepath);

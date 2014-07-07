@@ -43,7 +43,7 @@ echo we_html_tools::getHtmlTop() .
 
 	function openFile() {
 		url = "we_sselector_uploadFile.php?pat=" + top.currentDir;
-		new jsWindow(url, "we_fsuploadImage", -1, -1, 450, 240, true, false, true);
+		new jsWindow(url, "we_fsuploadImage", -1, -1, 450, 340, true, false, true);
 	}
 
 	function reorder(name) {
