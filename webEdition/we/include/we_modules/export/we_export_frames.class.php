@@ -262,7 +262,7 @@ function addLog(text){
 		$table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
 		$table->setColContent(0, 0, we_html_tools::htmlSelect('ExportTo', array('local' => g_l('export', '[export_to_local]'), "server" => g_l('export', "[export_to_server]")), 1, $this->View->export->ExportTo, false, array('onchange' => 'toggle(\'save_to\');' . $this->topFrame . '.hot=1;'), 'value', $this->_width_size));
 		$table->setColContent(1, 0, we_html_tools::getPixel(10, 10));
-		$table->setCol(2, 0, array("id" => "save_to", "style" => ($this->View->export->ExportTo == 'server' ? 'display: ""' : 'display: none')), we_html_tools::htmlFormElementTable($this->formFileChooser(($this->_width_size - 120), "ServerPath", $this->View->export->ServerPath, "", "folder"), g_l('export', "[save_to]")));
+		$table->setCol(2, 0, array("id" => "save_to", "style" => ($this->View->export->ExportTo == 'server' ? 'display:block' : 'display: none')), we_html_tools::htmlFormElementTable($this->formFileChooser(($this->_width_size - 120), "ServerPath", $this->View->export->ServerPath, "", "folder"), g_l('export', "[save_to]")));
 
 
 		$parts[] = array(
@@ -305,11 +305,11 @@ function closeAllType(){
 
 		$table->setColContent(0, 0, we_html_tools::htmlSelect('SelectionType', $seltype, 1, $this->View->export->SelectionType, false, array('onchange' => "closeAllType();toggle(this.value);' . $this->topFrame . '.hot=1;"), 'value', $this->_width_size));
 		$table->setColContent(1, 0, we_html_tools::getPixel(5, 5));
-		$table->setCol(2, 0, array("id" => "doctype", "style" => ($this->View->export->SelectionType == 'doctype' ? 'display: ""' : 'display: none')), we_html_tools::htmlSelect('DocType', $docTypes, 1, $this->View->export->DocType, false, array('onchange' => $this->topFrame . '.hot=1;'), 'value', $this->_width_size) .
+		$table->setCol(2, 0, array("id" => "doctype", "style" => ($this->View->export->SelectionType == 'doctype' ? 'display:block' : 'display: none')), we_html_tools::htmlSelect('DocType', $docTypes, 1, $this->View->export->DocType, false, array('onchange' => $this->topFrame . '.hot=1;'), 'value', $this->_width_size) .
 			we_html_tools::htmlFormElementTable($this->formWeChooser(FILE_TABLE, ($this->_width_size - 120), 0, 'Folder', $this->View->export->Folder, 'FolderPath', $FolderPath), g_l('export', '[dir]'))
 		);
 		if(defined("OBJECT_TABLE")){
-			$table->setCol(3, 0, array("id" => "classname", "style" => ($this->View->export->SelectionType == "classname" ? "display: ''" : "display: none")), we_html_tools::htmlSelect('ClassName', $classNames, 1, $this->View->export->ClassName, false, array('onchange' => $this->topFrame . '.hot=1;'), 'value', $this->_width_size)
+			$table->setCol(3, 0, array("id" => "classname", "style" => ($this->View->export->SelectionType == "classname" ? "display:block" : "display: none")), we_html_tools::htmlSelect('ClassName', $classNames, 1, $this->View->export->ClassName, false, array('onchange' => $this->topFrame . '.hot=1;'), 'value', $this->_width_size)
 			);
 		}
 
@@ -320,11 +320,11 @@ function closeAllType(){
 		$table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 4, 1);
 		$table->setColContent(0, 0, we_html_tools::htmlSelect('Selection', array('auto' => g_l('export', "[auto_selection]"), "manual" => g_l('export', "[manual_selection]")), 1, $this->View->export->Selection, false, array('onchange' => 'closeAllSelection();toggle(this.value);closeAllType();toggle(\'doctype\');' . $this->topFrame . '.hot=1;'), 'value', $this->_width_size));
 		$table->setColContent(1, 0, we_html_tools::getPixel(5, 5));
-		$table->setCol(2, 0, array('id' => 'auto', 'style' => ($this->View->export->Selection == 'auto' ? 'display: ""' : 'display: none')), we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_auto_selection]'), we_html_tools::TYPE_INFO, $this->_width_size) .
+		$table->setCol(2, 0, array('id' => 'auto', 'style' => ($this->View->export->Selection == 'auto' ? 'display:block' : 'display: none')), we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_auto_selection]'), we_html_tools::TYPE_INFO, $this->_width_size) .
 			$selectionTypeHtml
 		);
 
-		$table->setCol(3, 0, array('id' => 'manual', "style" => ($this->View->export->Selection == 'manual' ? "display: ''" : "display: none")), we_html_tools::htmlAlertAttentionBox(g_l('export', "[txt_manual_selection]") . " " . g_l('export', "[select_export]"), we_html_tools::TYPE_INFO, $this->_width_size) .
+		$table->setCol(3, 0, array('id' => 'manual', "style" => ($this->View->export->Selection == 'manual' ? "display:block" : "display: none")), we_html_tools::htmlAlertAttentionBox(g_l('export', "[txt_manual_selection]") . " " . g_l('export', "[select_export]"), we_html_tools::TYPE_INFO, $this->_width_size) .
 			$this->SelectionTree->getHTMLMultiExplorer($this->_width_size, 200)
 		);
 
@@ -451,7 +451,7 @@ function closeAllType(){
 		$out = "";
 		switch(we_base_request::_(we_base_request::STRING, "cmd")){
 			case "load":
-				if(($pid = we_base_request::_(we_base_request::INT, "pid"))){
+				if(($pid = we_base_request::_(we_base_request::INT, "pid"))!==false){
 					$out = we_html_element::jsElement("self.location='" . WE_EXPORT_MODULE_DIR . "exportLoadTree.php?we_cmd[1]=" . we_base_request::_(we_base_request::INT, "tab") . "&we_cmd[2]=" . $pid . "&we_cmd[3]=" . we_base_request::_(we_base_request::INTLIST, "openFolders", "") . "&we_cmd[4]=" . $this->editorBodyFrame . "'");
 				}
 				break;
@@ -590,7 +590,7 @@ function closeAllType(){
 
 					$ref = $xmlExIm->RefTable->getNext();
 
-					if(!empty($ref->ID) && !empty($ref->ContentType)){
+					if($ref->ID && $ref->ContentType){
 						$table = $this->db->escape($ref->Table);
 						$exists = ($ref->ContentType == 'weBinary') || f('SELECT 1 FROM ' . $table . ' WHERE ID=' . intval($ref->ID), '', $this->db);
 
