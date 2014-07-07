@@ -43,14 +43,8 @@ if($table == FILE_TABLE && !permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
 $parentFolder = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2);
 
 $GLOBALS["OBJECT_FILES_TREE_COUNT"] = 20;
-$counts = array();
-$parents = array();
-$childs = array();
-$parentlist = "";
-$childlist = "";
-$wsQuery = array();
-
-$parentpaths = array();
+$parentpaths = $counts = $parents = $childs = $wsQuery = array();
+$parentlist = $childlist = "";
 
 if(($ws = get_ws($table))){
 	$wsPathArray = id_to_path($ws, $table, $DB_WE, false, true);
@@ -79,7 +73,7 @@ function getQueryParents($path){
 		$out[] = 'Path="' . $path . '"';
 		$path = dirname($path);
 	}
-	return empty($out) ? '' : implode(' OR ', $out);
+	return $out ? implode(' OR ', $out) : '';
 }
 
 function getItems($ParentID){
@@ -192,7 +186,7 @@ if(!' . $Tree->topFrame . '.treeData) {' .
 );
 
 
-print we_html_element::htmlDocType() . we_html_element::htmlHtml(
+echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
 		we_html_element::htmlHead(we_html_tools::getHtmlInnerHead() . $js) .
 		we_html_element::htmlBody(array("bgcolor" => "#ffffff"))
 );
