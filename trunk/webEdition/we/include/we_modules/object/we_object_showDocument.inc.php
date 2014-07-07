@@ -46,21 +46,16 @@ function showContent(){
 	exit;
 }
 
-$_userID = (isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->isLockedByUser() : 0);
+$_userID = (isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->InWebEdition ? $GLOBALS['we_doc']->isLockedByUser() : 0);
 
-if(($_userID && $_userID != $_SESSION['user']['ID']) || (we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 0) == 'switch_edit_page' || (isset($_SESSION['weS']['EditPageNr']) && $_SESSION['weS']['EditPageNr'] == we_base_constants::WE_EDITPAGE_PREVIEW))){ //	Preview-Mode of Tabs
+if(($_userID && $_userID != $_SESSION['user']['ID']) || (we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) == 'switch_edit_page' || (isset($_SESSION['weS']['EditPageNr']) && $_SESSION['weS']['EditPageNr'] == we_base_constants::WE_EDITPAGE_PREVIEW))){ //	Preview-Mode of Tabs
 	//	We must choose the right template to show the object.
 	//	Therefore we must look, if $_SESSION['weS']['SEEM']['lastPath'] exists to check the workspace.
 	//	First check the workspaces for the document.
 	//	choose the template matching to the actual workspace.
 	//	If wrong workspace or no template can be found, just show the name/value pairs.
 	// init document
-	if(isset($_REQUEST['we_transaction'])){
-		$we_transaction = $_REQUEST['we_transaction'];
-		if(!preg_match('|^([a-f0-9]){32}$|i', $we_transaction)){
-			exit();
-		}
-	} else {
+	if(!we_base_request::_(we_base_request::TRANSACTION, 'we_transaction')){
 		exit();
 	}
 

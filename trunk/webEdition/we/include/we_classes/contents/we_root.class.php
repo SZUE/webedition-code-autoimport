@@ -1199,7 +1199,7 @@ abstract class we_root extends we_class{
 	 */
 	function isLockedByUser(){
 		//select only own ID if not in same session
-		return intval(f('SELECT UserID FROM ' . LOCK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND tbl="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) . '" AND sessionID!="' . session_id() . '" AND lockTime>NOW()', 'UserID', $this->DB_WE));
+		return intval(f('SELECT UserID FROM ' . LOCK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND tbl="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) . '" AND sessionID!="' . session_id() . '" AND lockTime>NOW()', '', $this->DB_WE));
 	}
 
 	function lockDocument(){
@@ -1210,7 +1210,7 @@ abstract class we_root extends we_class{
 		}
 	}
 
-	
+
 	/**
 	 * Gets the navigation folders for the current document
 	 *

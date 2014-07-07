@@ -38,7 +38,7 @@ $bPrio = $_sInitProps{3};
 $bValid = $_sInitProps{4};
 $q_Csv = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 1);
 $_title = base64_decode(we_base_request::_(we_base_request::RAW, 'we_cmd', '', 4));
-$type = we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 6);
+$type = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 6);
 
 switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2)){
 	case 'delete' :
