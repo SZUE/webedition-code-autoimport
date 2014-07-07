@@ -124,7 +124,7 @@ class we_base_request{
 				$var = filter_var(str_replace(we_base_link::TYPE_MAIL_PREFIX, '', $var), FILTER_SANITIZE_EMAIL);
 				return;
 			case self::FILE:
-				$var = str_replace(array('../', '//'), '', filter_var($var, FILTER_SANITIZE_URL));
+				$var = str_replace(array('../', '//'), array('', '/'), filter_var($var, FILTER_SANITIZE_URL));
 				return;
 			case self::URL:
 				$var = filter_var($var, FILTER_SANITIZE_URL);
