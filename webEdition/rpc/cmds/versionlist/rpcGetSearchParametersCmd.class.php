@@ -33,7 +33,7 @@ class rpcGetSearchParametersCmd extends rpcCmd{
 		$foundItems = (isset($_SESSION['weS']['versions']['foundItems'])) ? $_SESSION['weS']['versions']['foundItems'] : 0;
 
 		$_SESSION['weS']['versions']['anzahl'] = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'anzahl');
-		$_SESSION['weS']['versions']['searchstart'] = we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 'searchstart');
+		$_SESSION['weS']['versions']['searchstart'] = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'searchstart');
 
 		$GLOBALS['we_cmd_obj'] = 1;
 		$vview = new weVersionsView();

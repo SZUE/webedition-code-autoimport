@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-switch(we_base_request::_(we_base_request::STRING,'we_cmd',0)){
+switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '')){
 	case 'module_navigation_rules':
 		$toolInclude = 'navigation/edit_navigation_rules_frameset.php';
 		break;
