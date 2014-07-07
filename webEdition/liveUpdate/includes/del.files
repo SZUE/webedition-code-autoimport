@@ -2393,3 +2393,6 @@ lib/we/ui-samples/WeWysiwygEditor.php
 lib/we/ui-samples/Checkbox.php
 lib/we/ui-samples/Table.php
 lib/we/ui-samples
+we/include/we_modules/shop/we_editor_variants_webEditionDocument.inc.php
+we/include/we_modules/shop/show_variant.inc.php
+we/include/we_modules/shop/we_editor_variants_objectFile.inc.php
