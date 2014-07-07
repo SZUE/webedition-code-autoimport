@@ -25,6 +25,7 @@
 class we_import_wizardBase{
 
 	var $path = '';
+	public $fileUploader = null;
 
 	function __construct(){
 		$this->path = WE_INCLUDES_DIR . 'we_import/we_wiz_frameset.php';
@@ -191,6 +192,10 @@ function we_cmd() {
 	}
 
 	function getWizBody($type = '', $step = 0, $mode = 0){
+		if($this->fileUploader){
+			$this->fileUploader->processFileRequest();
+		}
+
 		$a = array(
 			'name' => 'we_form'
 		);
@@ -206,6 +211,7 @@ function we_cmd() {
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(
 					STYLESHEET .
+					($this->fileUploader ? $this->fileUploader->getCss() . $this->fileUploader->getJs() : '') .
 					we_html_element::jsScript(JS_DIR . "windows.js") .
 					we_html_element::jsElement($js)) .
 				we_html_element::htmlBody(array(

@@ -44,6 +44,7 @@ abstract class we_autoloader{
 		'editor' => 'we_editors',
 		'exim' => 'we_exim',
 		'export' => 'we_modules/export',
+		'fileupload' => 'we_classes/fileupload',
 		'glossary' => 'we_modules/glossary',
 		'helpers' => 'we_classes/helpers',
 		'html' => 'we_classes/html',

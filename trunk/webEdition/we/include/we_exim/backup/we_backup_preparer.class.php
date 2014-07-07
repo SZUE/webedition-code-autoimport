@@ -257,13 +257,20 @@ abstract class we_backup_preparer{
 
 			$_SESSION['weS']['weBackupVars']['options']['upload'] = 1;
 
+			$isFileAllreadyHere = false;
+			if((!defined('FILE_UPLOAD_USE_LEGACY') || FILE_UPLOAD_USE_LEGACY == false)){
+				$uploader = new we_fileupload_uploader_include('we_upload_file');
+				$uploader->setTypeCondition('accepted', '', 'xml, gz, tgz, zip');
+				$uploader->setFileNameTemp(array('path' => $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/'), we_fileupload_uploader_include::USE_FILENAME_FROM_UPLOAD);
+				$isFileAllreadyHere = $uploader->processFileRequest(we_fileupload_uploader_include::ON_ERROR_RETURN);
+			}
+
 			if(empty($_FILES['we_upload_file']['tmp_name']) || $_FILES['we_upload_file']['error']){
 				return false;
 			}
 
 			$filename = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . $_FILES['we_upload_file']['name'];
-
-			if(move_uploaded_file($_FILES['we_upload_file']['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . $_FILES['we_upload_file']['name'])){
+			if($isFileAllreadyHere || move_uploaded_file($_FILES['we_upload_file']['tmp_name'], $filename)){
 				we_util_File::insertIntoCleanUp($filename, time());
 				return $filename;
 			}

@@ -50,18 +50,19 @@ class we_progressBar{
 		$this->showProgressText = $showProgressText;
 	}
 
-	function getJS(){
-		print $this->getJSCode();
+	function getJS($pgFrame = ''){
+		print $this->getJSCode($pgFrame);
 	}
 
-	function getJSCode(){
+	function getJSCode($pgFrame = ''){
+		$frame = $pgFrame ? $pgFrame . '.' : '';
 		$out = '<script type="text/javascript"><!--
 					function setProgressText' . $this->name . '(name,text){
-						if(document.getElementById){
-							var div = document.getElementById(name);
+						if(' . $frame . 'document.getElementById){
+							var div = ' . $frame . 'document.getElementById(name);
 							div.innerHTML = text;
-						}else if(document.all){
-							var div = document.all[name];
+						}else if(' . $frame . 'document.all){
+							var div = ' . $frame . 'document.all[name];
 							div.innerHTML = text;
 						}
 					}
@@ -70,17 +71,17 @@ class we_progressBar{
 						var koef=' . ($this->stud_len / 100) . ';
 				';
 		if($this->orientation == 1){
-			$out .= 'document.images["progress_image' . $this->name . '"].height=koef*progress;
+			$out .= $frame . 'document.images["progress_image' . $this->name . '"].height=koef*progress;
 					';
 			if($this->showBack){
-				$out .= 'document.images["progress_image_bg' . $this->name . '"].height=(koef*100)-(koef*progress);
+				$out .= $frame . 'document.images["progress_image_bg' . $this->name . '"].height=(koef*100)-(koef*progress);
 						';
 			}
 		} else {
-			$out .= 'document.images["progress_image' . $this->name . '"].width=koef*progress;
+			$out .= $frame . 'document.images["progress_image' . $this->name . '"].width=koef*progress;
 					';
 			if($this->showBack){
-				$out .= 'document.images["progress_image_bg' . $this->name . '"].width=(koef*100)-(koef*progress);
+				$out .= $frame . 'document.images["progress_image_bg' . $this->name . '"].width=(koef*100)-(koef*progress);
 						';
 			}
 		}

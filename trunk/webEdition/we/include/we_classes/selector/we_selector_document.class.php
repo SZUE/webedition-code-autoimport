@@ -187,7 +187,7 @@ function showPreview(id) {
 
 function newFile() {
 	url="we_fs_uploadFile.php?pid="+top.currentDir+"&tab="+top.table+"&ct=' . rawurlencode($this->filter) . '";
-	new jsWindow(url,"we_fsuploadFile",-1,-1,450,590,true,false,true);
+	new jsWindow(url,"we_fsuploadFile",-1,-1,450,630,true,false,true);
 }
 
 function reloadDir() {
