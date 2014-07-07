@@ -69,6 +69,7 @@ class we_base_request{
 				$var = (preg_match('|^([a-f0-9]){32}$|i', $var) ? $var : $default);
 				return;
 			case self::INTLISTA:
+				t_e(trim($var, ','), explode(',', trim($var, ',')), array_map('intval', explode(',', trim($var, ','))));
 				$var = array_map('intval', explode(',', trim($var, ',')));
 				return;
 
@@ -206,6 +207,7 @@ class we_base_request{
 				case self::CMD://this must change&is ok!
 				case self::RAW_CHECKED:
 				case self::STRINGC:
+				case self::INTLISTA:
 					//we didn't change anything.
 					return $var;
 				case self::INTLIST:
