@@ -356,7 +356,7 @@ Zur Umstellung auf den Standard "nein" ersetzen Sie in allen Vorlagen einfach in
 	
 	'upload'=>array(
 		'jupload'=>'Java-Upload benutzen',
-		'maxsize'=>'Neuer File Upload:<br/>Maximale Filegröße in MB',
+		'maxsize'=>'Neuer File Upload:<br/>Maximale Filegröße in MB (0 = unbegrenzt)',
 		'title'=>'Datei-Upload',
 		'use_legacy'=>'bisherigen Uploader nutzen (deprecated)',
 		'we_max_size'=>'Maximale Upload Größe<br/>in Hinweistexten',

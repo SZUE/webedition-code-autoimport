@@ -356,7 +356,7 @@ The difference between symmetric encryption and hash is, that it is possible to 
 	
 	'upload'=>array(
 		'jupload'=>'Gebruik java upload',
-		'maxsize'=>'New File Upload:<br/>Maximum filesize',
+		'maxsize'=>'New File Upload:<br/>Maximum filesize (0 = no limit)',
 		'title'=>'File upload',
 		'use_legacy'=>'use legacy HTML File Upload',
 		'we_max_size'=>'Max Upload Grootte<br/>weergave in hints',
