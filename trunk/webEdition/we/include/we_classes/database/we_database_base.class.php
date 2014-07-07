@@ -306,7 +306,7 @@ abstract class we_database_base{
 
 			$queryToCheck = str_replace(array('\\\\'/* escape for mysql connection */, '\\"', "\\'", '\\\`'), array('', '', '', ''), $Query_String);
 
-			$quotes = array('\'' => false, '"' => false, '`' => false, '/*' => false, '--' => false, '#' => false);
+			$quotes = array('\'' => false, '"' => false, '`' => false, '/*' => false, '#' => false);
 
 			$queryWithoutStrings = '';
 

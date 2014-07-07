@@ -63,6 +63,8 @@ class we_base_sessionHandler{
 			$data = $data && $data[0] == '$' && $this->crypt ? we_customer_customer::decryptData($data, $this->crypt) : $data;
 			return $data;
 		}
+		//if we don't find valid data, generate a new ID because of session stealing
+		session_regenerate_id();
 		return '';
 	}
 
