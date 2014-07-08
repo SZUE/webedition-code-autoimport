@@ -420,3 +420,4 @@ class we_updater{
 	}
 
 }
+

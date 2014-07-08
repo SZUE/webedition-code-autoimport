@@ -34,7 +34,7 @@ $imageSizeH = we_base_request::_(we_base_request::INT, 'size2', $imageSizeW);
 $extension = we_base_request::_(we_base_request::STRING, 'extension', '');
 
 
-if(!$imageId && !$imagePath && !$imageSizeW && !$extension){
+if(!($imageId || $imagePath) && !$imageSizeW && !$extension){
 	exit();
 }
 
