@@ -43,7 +43,7 @@ abstract class we_banner_base{
 		if($this->db->next_record()){
 			foreach($tableInfo as $cur){
 				$fieldName = $cur["name"];
-				if(in_array($fieldName, $this->persistents)){
+				if(isset($this->persistents[$fieldName])){
 					$foo = $this->db->f($fieldName);
 					$this->{$fieldName} = $foo;
 				}
@@ -53,7 +53,7 @@ abstract class we_banner_base{
 
 	public function save(){
 		$sets = array();
-		foreach($this->persistents as $val){
+		foreach(array_keys($this->persistents) as $val){
 			if($val != 'ID'){
 				$sets[$val] = $this->$val;
 			}

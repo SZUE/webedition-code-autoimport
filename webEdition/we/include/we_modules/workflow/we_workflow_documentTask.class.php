@@ -29,7 +29,7 @@
  * This class describe document task in workflow process
  *
  */
-class we_workflow_documentTask extends we_workflow_base {
+class we_workflow_documentTask extends we_workflow_base{
 
 	const STATUS_UNKNOWN = 0;
 	const STATUS_APPROVED = 1;
@@ -56,7 +56,14 @@ class we_workflow_documentTask extends we_workflow_base {
 		$this->table = WORKFLOW_DOC_TASK_TABLE;
 		$this->ClassName = __CLASS__;
 
-		array_push($this->persistents, "ID", "documentStepID", "workflowTaskID", "Date", "todoID", "Status");
+		$this->persistents = array(
+			"ID" => we_base_request::INT,
+			"documentStepID" => we_base_request::INT,
+			"workflowTaskID" => we_base_request::INT,
+			"Date" => we_base_request::INT,
+			"todoID" => we_base_request::INT,
+			"Status" => we_base_request::RAW,
+		);
 
 		if($wfDocumentTask){
 			$this->ID = $wfDocumentTask;

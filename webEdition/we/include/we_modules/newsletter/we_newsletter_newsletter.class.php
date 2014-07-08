@@ -77,7 +77,22 @@ class we_newsletter_newsletter extends we_newsletter_base{
 		parent::__construct();
 
 		$this->table = NEWSLETTER_TABLE;
-		array_push($this->persistents, 'ID', 'ParentID', 'Text', 'Path', 'Icon', 'Subject', 'Sender', 'Reply', 'Test', 'Step', 'Offset', 'IsFolder', 'Charset', 'isEmbedImages');
+		$this->persistents = array(
+			'ID' => we_base_request::INT,
+			'ParentID' => we_base_request::INT,
+			'Text' => we_base_request::STRING,
+			'Path' => we_base_request::FILE,
+			'Icon' => we_base_request::STRING,
+			'Subject' => we_base_request::STRING,
+			'Sender' => we_base_request::EMAIL,
+			'Reply' => we_base_request::EMAIL,
+			'Test' => we_base_request::EMAIL,
+			'Step' => we_base_request::RAW,
+			'Offset' => we_base_request::RAW,
+			'IsFolder' => we_base_request::RAW,
+			'Charset' => we_base_request::RAW,
+			'isEmbedImages' => we_base_request::RAW,
+		);
 		$this->Charset = $GLOBALS['WE_BACKENDCHARSET'];
 
 		$this->addBlock();

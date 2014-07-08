@@ -90,7 +90,7 @@ class we_newsletter_view{
 	function newsletterHiddens(){
 		$out = '';
 		foreach($this->hiddens as $val){
-			$out .= $this->htmlHidden($val, (in_array($val, $this->newsletter->persistents) ?
+			$out .= $this->htmlHidden($val, (isset($this->newsletter->persistents[$val]) ?
 					$this->newsletter->$val : $this->$val)
 			);
 		}
@@ -105,7 +105,7 @@ class we_newsletter_view{
 
 		foreach($this->newsletter->groups as $group){
 
-			foreach($group->persistents as $per){
+			foreach(array_keys($group->persistents) as $per){
 				$val = $group->$per;
 				$out .= $this->htmlHidden('group' . $counter . '_' . $per, $val);
 			}
@@ -158,7 +158,7 @@ class we_newsletter_view{
 
 		foreach($this->newsletter->blocks as $bk => $bv){
 
-			foreach($this->newsletter->blocks[$bk]->persistents as $per){
+			foreach(array_keys($this->newsletter->blocks[$bk]->persistents) as $per){
 				$out .= $this->htmlHidden('block' . $counter . '_' . $per, $bv->$per);
 			}
 
@@ -1810,14 +1810,12 @@ self.close();');
 			$this->uid = $uid;
 		}
 
-		if(is_array($this->newsletter->persistents)){
-			foreach($this->newsletter->persistents as $val){
-				$this->newsletter->$val = we_base_request::_(we_base_request::STRING, $val, $this->newsletter->$val);
-			}
+		foreach($this->newsletter->persistents as $val => $type){
+			$this->newsletter->$val = we_base_request::_($type, $val, $this->newsletter->$val);
 		}
 
 		if($this->newsletter->ParentID){
-			$this->newsletter->Path = f('SELECT Path FROM ' . NEWSLETTER_TABLE . ' WHERE ID=' . $this->newsletter->ParentID, 'Path', $this->db) . '/' . $this->newsletter->Text;
+			$this->newsletter->Path = f('SELECT Path FROM ' . NEWSLETTER_TABLE . ' WHERE ID=' . $this->newsletter->ParentID, '', $this->db) . '/' . $this->newsletter->Text;
 		} elseif(!$this->newsletter->filenameNotValid($this->newsletter->Text)){
 			$this->newsletter->Path = '/' . $this->newsletter->Text;
 		}
@@ -1841,9 +1839,9 @@ self.close();');
 				// persistens
 				$gval->NewsletterID = $this->newsletter->ID;
 
-				foreach($gval->persistents as $per){
+				foreach($gval->persistents as $per => $type){
 					$varname = 'group' . $gkey . '_' . $per;
-					$gval->$per = we_base_request::_(we_base_request::RAW, $varname, $gval->$per);
+					$gval->$per = we_base_request::_($type, $varname, $gval->$per);
 				}
 
 				// Filter
@@ -1884,9 +1882,9 @@ self.close();');
 			foreach($this->newsletter->blocks as $skey => &$sval){
 				$sval->NewsletterID = $this->newsletter->ID;
 
-				foreach($sval->persistents as $per){
+				foreach($sval->persistents as $per => $type){
 					$varname = 'block' . $skey . '_' . $per;
-					$sval->$per = we_base_request::_(we_base_request::STRING, $varname, $sval->$per);
+					$sval->$per = we_base_request::_($type, $varname, $sval->$per);
 				}
 			}
 			unset($gval);

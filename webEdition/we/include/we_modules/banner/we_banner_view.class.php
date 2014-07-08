@@ -60,7 +60,7 @@ class we_banner_view extends we_banner_base{
 			$this->htmlHidden("bname", $this->uid) .
 			$this->htmlHidden("order", $this->Order) .
 			$this->htmlHidden($this->uid . "_IsFolder", $this->banner->IsFolder);
-		foreach($this->banner->persistents as $p){
+		foreach(array_keys($this->banner->persistents) as $p){
 			if(!in_array($p, $this->pageFields[$this->page])){
 				$v = $this->banner->{$p};
 				$out.=$this->htmlHidden($this->uid . "_$p", $v);
@@ -728,12 +728,10 @@ class we_banner_view extends we_banner_base{
 			$this->banner->DoctypeIDs = makeCSVFromArray($ids, true);
 		}
 
-		if(is_array($this->banner->persistents)){
-			foreach($this->banner->persistents as $val){
-				$varname = $this->uid . "_" . $val;
-				if(($value = we_base_request::_(we_base_request::STRING, $varname)) !== false){
-					$this->banner->$val = $value;
-				}
+		foreach($this->banner->persistents as $val => $type){
+			$varname = $this->uid . "_" . $val;
+			if(($value = we_base_request::_($type, $varname)) !== false){
+				$this->banner->$val = $value;
 			}
 		}
 
