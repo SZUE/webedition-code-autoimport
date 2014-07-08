@@ -54,6 +54,7 @@ class weJavaMenu{
 	}
 
 	function getJS(){
+		//location.replace("' . getServerUrl() . WEBEDITION_DIR . 'we_lcmd.php?we_cmd[0]="+cmd): cut 'getServerUrl()' for test purposes
 		return we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') .
 			we_html_element::jsElement('
 				function menuaction(cmd) {
