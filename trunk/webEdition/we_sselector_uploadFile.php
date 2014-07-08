@@ -25,7 +25,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
-$inputTypeFile = new we_fileupload_uploader_include('we_uploadFile', 'top', '', 330, true, false);
+$inputTypeFile = new we_fileupload_include('we_uploadFile', 'top', '', 330, true, false);
 $inputTypeFile->setExternalProgressbar(true, 'progressbar', true, 'top.', 120, '');
 $tempName = $inputTypeFile->processFileRequest();
 
@@ -82,7 +82,7 @@ if(isset($_FILES['we_uploadFile'])){
 $maxsize = getUploadMaxFilesize(false);
 
 
-$yes_button = we_html_button::create_button("upload", "javascript:if(!document.forms['we_form'].elements['we_uploadFile'].value) { " . we_message_reporting::getShowMessageCall(g_l('fileselector', "[edit_file_nok]"), we_message_reporting::WE_MESSAGE_ERROR) . "} else {" . we_fileupload_uploader_include::getJsSubmitCallStatic("top", "we_form", "document.forms['we_form'].submit()") . "}");
+$yes_button = we_html_button::create_button("upload", "javascript:if(!document.forms['we_form'].elements['we_uploadFile'].value) { " . we_message_reporting::getShowMessageCall(g_l('fileselector', "[edit_file_nok]"), we_message_reporting::WE_MESSAGE_ERROR) . "} else {" . we_fileupload_include::getJsSubmitCallStatic("top", "we_form", "document.forms['we_form'].submit()") . "}");
 $cancel_button = we_html_button::create_button("cancel", "javascript:self.close();");
 $buttons = we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button);
 $buttonsTable = new we_html_table(array('cellspacing' => 0, 'cellpadding' => 0, 'style' => 'border-width:0px;width:100%;'), 1, 2);

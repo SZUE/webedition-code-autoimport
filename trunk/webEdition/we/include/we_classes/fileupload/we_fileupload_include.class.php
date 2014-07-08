@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_fileupload_uploader_include extends we_fileupload_uploader_base{
+class we_fileupload_include extends we_fileupload_base{
 
 	protected $callback = '';
 	protected $formFrame = '';
@@ -565,7 +565,7 @@ weFU.reset = function(){
 	public static function getJsSubmitCallStatic($formFrame = 'top', $formName = 0, $callback = 'document.forms[0].submit()'){
 		$quotes = is_int($formName) ? '' : '"';
 		$call = $formFrame . '.weFU.upload(' . $formFrame . '.document.forms[' . $quotes . $formName . $quotes . '], function(){' . $callback . '})';
-		return 'if(' . $formFrame . '.weFU.legacyMode){' . $callback . ';}else{' . $call . ';}';
+		return 'if(typeof ' . $formFrame . '.weFU === "undefined" || (' . $formFrame . '.weFU.legacyMode)){alert("beatolino");' . $callback . ';}else{' . $call . ';}';
 	}
 
 	public function processFileRequest($retFalseOnFinalError = false){
