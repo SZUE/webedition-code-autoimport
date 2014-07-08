@@ -2336,37 +2336,6 @@ class we_object extends we_document{
 		return we_html_tools::htmlFormElementTable($this->htmlTextInput($textname, 30, $path, "", ' readonly', "text", $width, 0), "", "left", "defaultfont", $this->htmlHidden($idname, $pathID), we_html_tools::getPixel(20, 4), $button);
 	}
 
-	function userHasAccess(){
-		$uid = $this->isLockedByUser();
-		if($uid > 0 && $uid != $_SESSION['user']['ID'] && $GLOBALS['we_doc']->ID){ // file is locked
-			return self::FILE_LOCKED;
-		}
-
-		if(!$this->userHasPerms()){ //	File is restricted !!!!!
-			return self::USER_NO_PERM;
-		}
-
-		if(!$this->userCanSave()){ //	user has no right to save.
-			return self::USER_NO_SAVE;
-		}
-
-		if($this->RestrictUsers && !(we_users_util::isOwner($this->CreatorID) || we_users_util::isOwner($this->Users))){ //	user is creator of doc - all is allowed.
-			return self::USER_NO_PERM;
-		}
-
-		if($this->userHasPerms()){ //	access to doc is not restricted, check workspaces of user
-			if($GLOBALS['we_doc']->ID){ //	userModule installed
-				$ws = get_ws($GLOBALS['we_doc']->Table);
-				if($ws){ //	doc has workspaces
-					if(!(in_workspace($GLOBALS['we_doc']->ID, $ws, $GLOBALS['we_doc']->Table, $GLOBALS['DB_WE']))){
-						return self::FILE_NOT_IN_USER_WORKSPACE;
-					}
-				}
-			}
-			return self::USER_HASACCESS;
-		}
-	}
-
 	function userCanSave(){
 		if(permissionhandler::hasPerm('ADMINISTRATOR')){
 			return true;
