@@ -160,6 +160,7 @@ function showMessage(message, prio, win){
 if(is_dir(WEBEDITION_PATH . 'we/cache')){
 	we_util_File::deleteLocalFolder(WEBEDITION_PATH . 'we/cache', true);
 }
+
 if(is_dir($_SERVER['DOCUMENT_ROOT'] . '/OnlineInstaller')){
 	we_util_File::deleteLocalFolder($_SERVER['DOCUMENT_ROOT'] . '/OnlineInstaller', true);
 }
@@ -271,7 +272,7 @@ if(isset($_POST['checkLogin']) && empty($_COOKIE)){
 
 	printHeader($login);
 	print we_html_element::htmlBody(array('style' => 'background-color:#FFFFFF;'), $_layout->getHtml()) . '</html>';
-} else 
+} else
 /* if(isset($_POST['checkLogin']) && $_POST['checkLogin'] != session_id()){
   $_layout = getError(sprintf(g_l('start', '[phpini_problems]'), (ini_get('cfg_file_path') ? ' (' . ini_get('cfg_file_path') . ')' : '')) . we_html_element::htmlBr() . we_html_element::htmlBr() .
   'Debug-Info:' . we_html_element::htmlBr() .
