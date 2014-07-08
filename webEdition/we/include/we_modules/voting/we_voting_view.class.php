@@ -350,15 +350,15 @@ function we_cmd(){
 	function processCommands(){
 		switch(we_base_request::_(we_base_request::STRING, "cmd")){
 			case "resetscores":
-				foreach($this->voting->arr_Scores as $key => $val){
-					$this->voting->arr_Scores[$key] = 0;
+				foreach($this->voting->arr_Scores as &$val){
+					$val = 0;
 				}
 				break;
 			case "new_voting":
 			case "new_voting_group":
 				if(!permissionhandler::hasPerm("NEW_VOTING")){
-					print we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
+					echo we_html_element::jsElement(
+						we_message_reporting::getShowMessageCall(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 					break;
 				}
@@ -371,8 +371,8 @@ function we_cmd(){
 				break;
 			case "voting_edit":
 				if(!permissionhandler::hasPerm("EDIT_VOTING")){
-					print we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
+					echo we_html_element::jsElement(
+						we_message_reporting::getShowMessageCall(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 					$_REQUEST['home'] = '1';
 					$_REQUEST['pnt'] = 'edbody';
@@ -382,8 +382,8 @@ function we_cmd(){
 				$this->voting = new we_voting_voting($_REQUEST["cmdid"]);
 
 				if(!$this->voting->isAllowedForUser()){
-					print we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
+					echo we_html_element::jsElement(
+						we_message_reporting::getShowMessageCall(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 					$this->voting = new we_voting_voting();
 					$_REQUEST["home"] = true;
@@ -428,14 +428,14 @@ function we_cmd(){
 				$this->voting->setPath();
 
 				if($this->voting->pathExists($this->voting->Path)){
-					print we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(g_l('modules_voting', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR)
+					echo we_html_element::jsElement(
+						we_message_reporting::getShowMessageCall(g_l('modules_voting', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 					break;
 				}
 				if($this->voting->isSelf()){
-					print we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(g_l('modules_voting', '[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR)
+					echo we_html_element::jsElement(
+						we_message_reporting::getShowMessageCall(g_l('modules_voting', '[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 					break;
 				}
@@ -520,15 +520,15 @@ function we_cmd(){
 					return;
 				} else {
 					if($this->voting->delete()){
-						print we_html_element::jsElement(
-								$this->topFrame . '.deleteEntry(' . $this->voting->ID . ');
+						echo we_html_element::jsElement(
+							$this->topFrame . '.deleteEntry(' . $this->voting->ID . ');
 									setTimeout(\'' . we_message_reporting::getShowMessageCall(($this->voting->IsFolder == 1 ? g_l('modules_voting', '[group_deleted]') : g_l('modules_voting', '[voting_deleted]')), we_message_reporting::WE_MESSAGE_NOTICE) . '\',500);');
 						$this->voting = new we_voting_voting();
 						$_REQUEST['home'] = '1';
 						$_REQUEST['pnt'] = 'edbody';
 					} else {
-						print we_html_element::jsElement(
-								we_message_reporting::getShowMessageCall(g_l('modules_voting', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR)
+						echo we_html_element::jsElement(
+							we_message_reporting::getShowMessageCall(g_l('modules_voting', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR)
 						);
 					}
 				}
@@ -554,12 +554,14 @@ function we_cmd(){
 				}
 
 				$content = array();
-				if(isset($_REQUEST['question_name']) && isset($_REQUEST[$_REQUEST['question_name'] . '_item0']))
+				if(isset($_REQUEST['question_name']) && isset($_REQUEST[$_REQUEST['question_name'] . '_item0'])){
 					$content[] = $enclose . addslashes($_REQUEST[$_REQUEST['question_name'] . '_item0']) . $enclose . $delimiter;
+				}
 				if(isset($_REQUEST['answers_name']) && isset($_REQUEST['item_count'])){
 					for($i = 0; $i < $_REQUEST['item_count']; $i++){
-						if(isset($_REQUEST[$_REQUEST['answers_name'] . '_item' . $i]))
+						if(isset($_REQUEST[$_REQUEST['answers_name'] . '_item' . $i])){
 							$content[] = $enclose . addslashes($_REQUEST[$_REQUEST['answers_name'] . '_item' . $i]) . $enclose . $delimiter . $this->voting->Scores[$i];
+						}
 					}
 				}
 				we_base_file::save($_SERVER['DOCUMENT_ROOT'] . $fname, implode($lineend, $content));
@@ -678,13 +680,13 @@ function we_cmd(){
 			}
 		}
 
-		if(isset($_REQUEST["page"]))
+		if(isset($_REQUEST["page"])){
 			if(isset($_REQUEST["page"])){
 				$this->page = $_REQUEST["page"];
 			}
+		}
 
-		$qaset = array();
-		$qaADDset = array();
+		$qaset = $qaADDset = array();
 		if(isset($_REQUEST['question_name']) && isset($_REQUEST['variant_count']) && isset($_REQUEST['answers_name']) && isset($_REQUEST['item_count'])){
 			for($i = 0; $i < $_REQUEST['variant_count']; $i++){
 				if(isset($_REQUEST[$_REQUEST['question_name'] . '_variant' . $i . '_' . $_REQUEST['question_name'] . '_item0'])){
@@ -754,8 +756,9 @@ function we_cmd(){
 		if(isset($_REQUEST['scores_0']) && isset($_REQUEST['item_count']) && isset($_REQUEST['scores_changed']) && $_REQUEST['scores_changed']){
 			$this->voting->Scores = array();
 			for($j = 0; $j < $_REQUEST['item_count']; $j++){
-				if(isset($_REQUEST['scores_' . $j]))
+				if(isset($_REQUEST['scores_' . $j])){
 					$this->voting->Scores[] = $_REQUEST['scores_' . $j];
+				}
 			}
 		}
 	}

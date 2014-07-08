@@ -40,29 +40,29 @@ class we_voting_tree extends weMainTree{
 
 	function getJSOpenClose(){
 		return '
-  			function openClose(id){
-				var sort="";
-				if(id=="") return;
-				var eintragsIndex = indexOfEntry(id);
-				var openstatus;
+function openClose(id){
+	var sort="";
+	if(id=="") return;
+	var eintragsIndex = indexOfEntry(id);
+	var openstatus;
 
 
-				if(treeData[eintragsIndex].open==0) openstatus=1;
-				else openstatus=0;
+	if(treeData[eintragsIndex].open==0) openstatus=1;
+	else openstatus=0;
 
-				treeData[eintragsIndex].open=openstatus;
+	treeData[eintragsIndex].open=openstatus;
 
-				if(openstatus && treeData[eintragsIndex].loaded!=1){
-					if(sort!=""){
-						' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&pid="+id+"&sort="+sort;
-					}else{
-						' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&pid="+id;
-					}
-				}else{
-					drawTree();
-				}
-				if(openstatus==1) treeData[eintragsIndex].loaded=1;
- 			}';
+	if(openstatus && treeData[eintragsIndex].loaded!=1){
+		if(sort!=""){
+			' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&pid="+id+"&sort="+sort;
+		}else{
+			' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&pid="+id;
+		}
+	}else{
+		drawTree();
+	}
+	if(openstatus==1) treeData[eintragsIndex].loaded=1;
+}';
 	}
 
 	function getJSUpdateItem(){
