@@ -69,6 +69,9 @@ function we_parse_tag_block($attribs, $content, array $arr){
 }
 
 function we_condition_tag_block(&$block){
+	if(!is_array($block)){
+		return false;
+	}
 	//go to next element
 	++$block['pos'];
 	if($block['pos'] >= $block['listSize']){
