@@ -128,12 +128,12 @@ function save_all_values(){
 		remember_value($setArray, we_base_request::_(we_base_request::STRING, 'thumbnail_name', null), 'Name');
 		remember_value($setArray, we_base_request::_(we_base_request::INT, 'thumbnail_width', null), 'Width');
 		remember_value($setArray, we_base_request::_(we_base_request::INT, 'thumbnail_height', null), 'Height');
-		remember_value($setArray, we_base_request::_(we_base_request::RAW, 'thumbnail_quality', null), 'Quality');
-		remember_value($setArray, we_base_request::_(we_base_request::RAW, 'Ratio', null), 'Ratio');
-		remember_value($setArray, we_base_request::_(we_base_request::RAW, 'Maxsize', null), 'Maxsize');
-		remember_value($setArray, we_base_request::_(we_base_request::RAW, 'Interlace', null), 'Interlace');
-		remember_value($setArray, we_base_request::_(we_base_request::RAW, 'Fitinside', null), 'Fitinside');
-		remember_value($setArray, we_base_request::_(we_base_request::RAW, 'Format', null), 'Format');
+		remember_value($setArray, we_base_request::_(we_base_request::INT, 'thumbnail_quality', null), 'Quality');
+		remember_value($setArray, we_base_request::_(we_base_request::BOOL, 'Ratio', null), 'Ratio');
+		remember_value($setArray, we_base_request::_(we_base_request::BOOL, 'Maxsize', null), 'Maxsize');
+		remember_value($setArray, we_base_request::_(we_base_request::BOOL, 'Interlace', null), 'Interlace');
+		remember_value($setArray, we_base_request::_(we_base_request::BOOL, 'Fitinside', null), 'Fitinside');
+		remember_value($setArray, we_base_request::_(we_base_request::STRING, 'Format', null), 'Format');
 
 		$DB_WE->query('UPDATE ' . THUMBNAILS_TABLE . ' SET ' . we_database_base::arraySetter($setArray) . ' WHERE ID=' . we_base_request::_(we_base_request::INT, 'edited_id', 0));
 	}

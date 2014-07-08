@@ -133,16 +133,9 @@ class we_metadata_metaData{
 	 * @return array of all valid metadata types or false if there are none
 	 */
 	function getImplementations(){
-		if(!$this->_valid){
-			return false;
-			if(empty($this->datatype)){
-				return false;
-			}
-			if(empty($this->datatype)){
-				return false;
-			}
-			return $this->datatype;
-		}
+		return (!$this->_valid || !$this->datatype ?
+				false :
+				$this->datatype);
 	}
 
 	function getMetaData($selection = ''){

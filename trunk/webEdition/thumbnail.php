@@ -34,7 +34,7 @@ $imageSizeH = we_base_request::_(we_base_request::INT, 'size2', $imageSizeW);
 $extension = we_base_request::_(we_base_request::STRING, 'extension', '');
 
 
-if(!$imageId || !$imagePath || !$imageSizeW || !$extension){
+if(!$imageId && !$imagePath && !$imageSizeW && !$extension){
 	exit();
 }
 
@@ -44,9 +44,9 @@ if(!in_array(strtolower($imageExt = we_base_request::_(we_base_request::STRING, 
 	exit();
 }
 
-$imageExt = substr($imageExt, 1, strlen($imageExt));
-
+$imageExt = substr($imageExt, 1);
 $thumbpath = we_base_imageEdit::createPreviewThumb($imagePath, $imageId, $imageSizeW, $imageSizeH, substr($extension, 1));
+
 if(file_exists($_SERVER['DOCUMENT_ROOT'] . $thumbpath)){
 	header('Content-type: image/' . $imageExt);
 	readfile($_SERVER['DOCUMENT_ROOT'] . $thumbpath);
