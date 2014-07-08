@@ -95,14 +95,13 @@ if($_needPerm && !permissionhandler::hasPerm($_needPerm)){
 
 $we_doc->InWebEdition = true;
 //$we_doc->i_loadNavigationItems();
-
 //	check template for hidePages
 $we_doc->setDocumentControlElements();
 
 //	in SEEM-Mode the first page is the preview page.
 //	when editing an image-document we go to edit page
 if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
-	if(we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include') && $we_doc->userHasAccess() == 1){ //	Open seem_edit_include pages in edit-mode
+	if(we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include') && $we_doc->userHasAccess() == we_root::USER_HASACCESS){ //	Open seem_edit_include pages in edit-mode
 		$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_CONTENT;
 		$we_doc->EditPageNr = we_base_constants::WE_EDITPAGE_CONTENT;
 	} elseif($we_doc instanceof we_imageDocument){

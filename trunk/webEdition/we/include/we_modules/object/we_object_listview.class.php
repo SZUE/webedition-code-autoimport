@@ -360,7 +360,7 @@ class we_object_listview extends listviewBase{
 
 		$publ_cond = array();
 		foreach($tb as &$t){
-			$t='`'.$t.'`';
+			$t = '`' . $t . '`';
 			$publ_cond [] = '(' . $t . '.OF_Published>0 OR ' . $t . '.OF_ID=0)';
 		}
 
