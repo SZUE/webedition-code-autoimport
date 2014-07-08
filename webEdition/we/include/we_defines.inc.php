@@ -131,6 +131,7 @@ define('FILE_ONLY', 0);
 define('FOLDER_ONLY', 1);
 
 define('CATEGORY_TABLE', TBL_PREFIX . 'tblCategorys');
+define('CAPTCHA_TABLE', TBL_PREFIX . 'tblCaptcha');
 define('CLEAN_UP_TABLE', TBL_PREFIX . 'tblCleanUp');
 define('CONTENT_TABLE', TBL_PREFIX . 'tblContent');
 define('DOC_TYPES_TABLE', TBL_PREFIX . 'tblDocTypes');
