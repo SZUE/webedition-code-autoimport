@@ -58,10 +58,13 @@ $we_maxfilesize_text = sprintf(g_l('newFile', '[max_possible_size]'), we_base_fi
 echo we_html_tools::getHtmlTop(g_l('newFile', "[import_File_from_hd_title]")) .
  STYLESHEET . $inputTypeFile->getJS() . $inputTypeFile->getCss();
 
-if(!$isWeDoc){
+if(!isset($_SESSION['weS']['we_data'][$we_transaction])){
 	$we_alerttext = $we_maxfilesize_text;
 	$error = true;
 } else {
+	$we_dt = $_SESSION['weS']['we_data'][$we_transaction];
+	include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
+
 	if(isset($_FILES['we_File']) && ($_FILES['we_File']['name']) && $_FILES['we_File']['type'] && ((empty($allowedContentTypes)) || (!(strpos($allowedContentTypes, $_FILES['we_File']['type']) === false)))){
 		$we_doc->Extension = strtolower((strpos($_FILES['we_File']['name'], '.') > 0) ? preg_replace('/^.+(\..+)$/', "\\1", $_FILES['we_File']['name']) : ''); //strtolower for feature 3764
 		if(!isset($we_File) || !$we_File){
