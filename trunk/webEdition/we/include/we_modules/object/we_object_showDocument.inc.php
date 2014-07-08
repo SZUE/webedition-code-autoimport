@@ -114,7 +114,7 @@ if(($_userID && $_userID != $_SESSION['user']['ID']) || (we_base_request::_(we_b
 } else if(isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3]){
 
 	$tid = $_REQUEST['we_cmd'][2];
-	$we_transaction = $_REQUEST['we_cmd'][3];
+	$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', '', 3);
 
 	// init document
 	$we_dt = $_SESSION['weS']['we_data'][$we_transaction];

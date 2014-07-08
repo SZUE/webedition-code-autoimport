@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 we_html_tools::protect();
-$cmd2 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2);
+$cmd2 = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', '', 2);
 switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1)){
 	case we_base_ContentTypes::IMAGE:
 		$we_doc = new we_imageDocument();

@@ -89,6 +89,7 @@ abstract class we_root extends we_class{
 	/* ID of the user who last modify the document */
 	var $ModifierID = 0;
 	var $RestrictOwners = 0;
+	protected $LockUser = 0;
 
 	/* Constructor */
 
@@ -96,7 +97,7 @@ abstract class we_root extends we_class{
 		parent::__construct();
 		$this->CreationDate = time();
 		$this->ModDate = time();
-		array_push($this->persistent_slots, 'OwnersReadOnly', 'ParentID', 'ParentPath', 'Text', 'Filename', 'Path', 'Filehash', 'OldPath', 'CreationDate', 'ModDate', 'RebuildDate', 'IsFolder', 'ContentType', 'Icon', 'elements', 'EditPageNr', 'CopyID', 'Owners', 'CreatorID', 'ModifierID', 'RestrictOwners', 'WebUserID');
+		array_push($this->persistent_slots, 'OwnersReadOnly', 'ParentID', 'ParentPath', 'Text', 'Filename', 'Path', 'Filehash', 'OldPath', 'CreationDate', 'ModDate', 'RebuildDate', 'IsFolder', 'ContentType', 'Icon', 'elements', 'EditPageNr', 'CopyID', 'Owners', 'CreatorID', 'ModifierID', 'RestrictOwners', 'WebUserID', 'LockUser');
 	}
 
 	function makeSameNew(){
@@ -774,12 +775,11 @@ abstract class we_root extends we_class{
 		if(isset($sessDat[1])){
 			$this->elements = $sessDat[1];
 		}
-/*		if(isset($sessDat[2])){
-			$this->NavigationItems = $sessDat[2];
-		} else {
-			$this->i_loadNavigationItems();
-		}*/
-
+		/* 		if(isset($sessDat[2])){
+		  $this->NavigationItems = $sessDat[2];
+		  } else {
+		  $this->i_loadNavigationItems();
+		  } */
 		$this->Name = md5(uniqid(__FUNCTION__, true));
 		return true;
 	}
@@ -1164,7 +1164,11 @@ abstract class we_root extends we_class{
 	function userHasAccess(){
 		$uid = $this->isLockedByUser();
 		if($uid > 0 && $uid != $_SESSION['user']['ID'] && $GLOBALS['we_doc']->ID){ // file is locked
+			$this->LockUser = $uid;
+			$this->saveInSession($_SESSION['weS']['we_data'][$GLOBALS['we_transaction']]);
 			return self::FILE_LOCKED;
+		} elseif($this->LockUser != 0 && $this->LockUser != $_SESSION['user']['ID'] && $uid == 0){
+			$this->we_load(self::LOAD_TEMP_DB);
 		}
 
 		if(!$this->userHasPerms()){ //	File is restricted !!!!!
@@ -1175,8 +1179,16 @@ abstract class we_root extends we_class{
 			return self::USER_NO_SAVE;
 		}
 
-		if(we_users_util::isOwner($this->CreatorID) || we_users_util::isOwner($this->Owners)){ //	user is creator/owner of doc - all is allowed.
-			return self::USER_HASACCESS;
+		if($this instanceof we_object){
+			if($this->RestrictUsers && !(we_users_util::isOwner($this->CreatorID) || we_users_util::isOwner($this->Users))){ //	user is creator of doc - all is allowed.
+				return self::USER_NO_PERM;
+			}
+		} else {
+			if(we_users_util::isOwner($this->CreatorID) || we_users_util::isOwner($this->Owners)){ //	user is creator/owner of doc - all is allowed.
+				$this->lockDocument();
+				$this->saveInSession($_SESSION['weS']['we_data'][$GLOBALS['we_transaction']]);
+				return self::USER_HASACCESS;
+			}
 		}
 
 		if($this->userHasPerms()){ //	access to doc is not restricted, check workspaces of user
@@ -1188,6 +1200,8 @@ abstract class we_root extends we_class{
 					}
 				}
 			}
+			$this->lockDocument();
+			$this->saveInSession($_SESSION['weS']['we_data'][$GLOBALS['we_transaction']]);
 			return self::USER_HASACCESS;
 		}
 	}
@@ -1207,9 +1221,9 @@ abstract class we_root extends we_class{
 			//if lock is used by other user and time is up, update table
 			$this->DB_WE->query('INSERT INTO ' . LOCK_TABLE . ' SET ID=' . intval($this->ID) . ',UserID=' . intval($_SESSION['user']['ID']) . ',tbl="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) . '",sessionID="' . session_id() . '",lockTime=NOW()+INTERVAL ' . (we_base_constants::PING_TIME + we_base_constants::PING_TOLERANZ) . ' SECOND
 				ON DUPLICATE KEY UPDATE UserID=' . intval($_SESSION['user']['ID']) . ',sessionID="' . session_id() . '",lockTime= NOW() + INTERVAL ' . (we_base_constants::PING_TIME + we_base_constants::PING_TOLERANZ) . ' SECOND');
+			$this->LockUser = intval($_SESSION['user']['ID']);
 		}
 	}
-
 
 	/**
 	 * Gets the navigation folders for the current document

@@ -259,8 +259,7 @@ if($_userID != 0 && $_userID != $_SESSION['user']['ID'] && $we_doc->ID){ // docu
 		$we_doc->EditPageNr = we_base_constants::WE_EDITPAGE_PREVIEW;
 		$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_PREVIEW;
 	} else {
-		require_once(WE_USERS_MODULE_PATH . 'we_users_lockmessage.inc.php');
-		exit;
+		$we_doc->showLockedWarning($_userID);
 	}
 } elseif($_userID != $_SESSION['user']['ID'] && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE && $we_doc->EditPageNr != we_base_constants::WE_EDITPAGE_PREVIEW){
 // lock document, if in seeMode and EditMode !!, don't lock when already locked

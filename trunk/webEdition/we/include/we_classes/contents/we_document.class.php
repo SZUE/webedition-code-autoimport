@@ -712,10 +712,10 @@ class we_document extends we_root{
 	}
 
 	// reverse function to we_init_sessDat
-	function saveInSession(&$save){
+	/*function saveInSession(&$save){
 		parent::saveInSession($save);
 		//$save[2] = $this->NavigationItems;
-	}
+	}*/
 
 	// reverse function to saveInSession !!!
 	function we_initSessDat($sessDat){
@@ -746,7 +746,7 @@ class we_document extends we_root{
 
 		$this->i_setExtensions();
 
-		if(empty($this->Language) && $this->Table != TEMPLATES_TABLE){
+		if(!($this->Language) && $this->Table != TEMPLATES_TABLE){
 			$this->initLanguageFromParent();
 		}
 	}
@@ -1634,6 +1634,18 @@ class we_document extends we_root{
 			return $this->DB_WE->getAll(true);
 		}
 		return array();
+	}
+
+	public function showLockedWarning($userID){
+		echo we_html_tools::getHtmlTop() . STYLESHEET .
+		we_html_element::jsElement('top.toggleBusy(0);') .
+		'</head>' . we_html_element::htmlBody(array('class' => 'weDialogBody'), we_html_tools::htmlDialogLayout('<p class="defaultfont">' . sprintf(g_l('alert', "[temporaere_no_access_text]"), $this->Text, f('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($userID))) . '</p>', g_l('alert', "[temporaere_no_access]")) .
+//	For SEEM-Mode
+			($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE ?
+				'<a href="javascript://" style="text-decoration:none" onclick="top.weNavigationHistory.navigateReload()" >' . g_l('SEEM', "[try_doc_again]") . '</a>' : '')
+		) .
+		'</html>';
+		exit();
 	}
 
 }
