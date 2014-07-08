@@ -37,8 +37,14 @@ if(file_exists($filename)){
 			}
 		}
 	}
-	if($mimetype && $mimetype != 'text/plain'){ //let the browser decide
-		header('Content-Type: ' . $mimetype);
+	if($mimetype){
+		switch($mimetype){
+			case 'text/plain': //let the browser decide
+			case 'application/x-empty':
+				break;
+			default:
+				header('Content-Type: ' . $mimetype);
+		}
 	}
 
 	if($isCompressed){
