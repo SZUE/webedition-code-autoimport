@@ -257,12 +257,15 @@ abstract class we_backup_preparer{
 
 			$_SESSION['weS']['weBackupVars']['options']['upload'] = 1;
 
-			$isFileAllreadyHere = false;
-			if((!defined('FILE_UPLOAD_USE_LEGACY') || FILE_UPLOAD_USE_LEGACY == false)){
-				$uploader = new we_fileupload_include('we_upload_file');
-				$uploader->setTypeCondition('accepted', '', 'xml, gz, tgz, zip');
-				$uploader->setFileNameTemp(array('path' => $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/'), we_fileupload_include::USE_FILENAME_FROM_UPLOAD);
-				$isFileAllreadyHere = $uploader->processFileRequest(we_fileupload_include::ON_ERROR_RETURN);
+			//FIXME: delete condition when new uploader is stable
+			if(!we_fileupload_include::USE_LEGACY_FOR_BACKUP){
+				$isFileAllreadyHere = false;
+				if((!defined('FILE_UPLOAD_USE_LEGACY') || FILE_UPLOAD_USE_LEGACY == false)){
+					$uploader = new we_fileupload_include('we_upload_file');
+					$uploader->setTypeCondition('accepted', '', 'xml, gz, tgz, zip');
+					$uploader->setFileNameTemp(array('path' => $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/'), we_fileupload_include::USE_FILENAME_FROM_UPLOAD);
+					$isFileAllreadyHere = $uploader->processFileRequest(we_fileupload_include::ON_ERROR_RETURN);
+				}
 			}
 
 			if(empty($_FILES['we_upload_file']['tmp_name']) || $_FILES['we_upload_file']['error']){
@@ -270,9 +273,18 @@ abstract class we_backup_preparer{
 			}
 
 			$filename = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . $_FILES['we_upload_file']['name'];
-			if($isFileAllreadyHere || move_uploaded_file($_FILES['we_upload_file']['tmp_name'], $filename)){
-				we_util_File::insertIntoCleanUp($filename, time());
-				return $filename;
+
+			//FIXME: delete condition when new uploader is stable
+			if(!we_fileupload_include::USE_LEGACY_FOR_BACKUP){
+				if($isFileAllreadyHere || move_uploaded_file($_FILES['we_upload_file']['tmp_name'], $filename)){
+					we_util_File::insertIntoCleanUp($filename, time());
+					return $filename;
+				}
+			} else {
+				if(move_uploaded_file($_FILES['we_upload_file']['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . $_FILES['we_upload_file']['name'])){
+					we_util_File::insertIntoCleanUp($filename, time());
+					return $filename;
+				}
 			}
 		}
 
