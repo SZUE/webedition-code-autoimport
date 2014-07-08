@@ -31,10 +31,10 @@ $step = we_base_request::_(we_base_request::INT,'step',1);
 $weBackupWizard = new we_backup_wizard(WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php', we_backup_wizard::RECOVER);
 
 if((!defined('FILE_UPLOAD_USE_LEGACY') || FILE_UPLOAD_USE_LEGACY == false) && ($what == 'cmd' || (($what == 'body' || $what == 'busy')&& $step == 3))){
-	$fileUploader = new we_fileupload_uploader_include('we_upload_file', 'top.body', '', 400, true, true, '', 'xml, gz, tgz');
+	$fileUploader = new we_fileupload_include('we_upload_file', 'top.body', '', 400, true, true, '', 'xml, gz, tgz');
 	$fileUploader->setAction($weBackupWizard->frameset . '?pnt=cmd&operation_mode=import');
 	$fileUploader->setDimensions(array('width' => 500, 'dragHeight' => 60, 'progressWidth' => 300, 'marginTop' => 5));
-	$fileUploader->setFileNameTemp(array('path' => $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/'), we_fileupload_uploader_include::USE_FILENAME_FROM_UPLOAD);
+	$fileUploader->setFileNameTemp(array('path' => $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/'), we_fileupload_include::USE_FILENAME_FROM_UPLOAD);
 	$weBackupWizard->setFileUploader($fileUploader);
 }
 

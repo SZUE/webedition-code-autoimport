@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-abstract class we_fileupload_uploader_base {
+abstract class we_fileupload_base {
 
 	protected $name = 'weFileSelect';
 	protected $dimensions = array(

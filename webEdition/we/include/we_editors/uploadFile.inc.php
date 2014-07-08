@@ -48,7 +48,7 @@ switch($contentType){
 		$allowedContentTypes = $contentType;
 }
 
-$inputTypeFile = new we_fileupload_uploader_include('we_File', 'top', '', 330, true, false, $allowedContentTypes, '', '', '', array(), -1);
+$inputTypeFile = new we_fileupload_include('we_File', 'top', '', 330, true, false, $allowedContentTypes, '', '', '', array(), -1);
 $inputTypeFile->setExternalProgressbar(true, 'progressbar', true, 'top.', 120, '');
 $we_File = $inputTypeFile->processFileRequest();
 
@@ -119,7 +119,7 @@ if($we_doc->ContentType == we_base_ContentTypes::IMAGE){
 }
 $content .= '</table>';
 
-$_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("upload", "javascript:" . we_fileupload_uploader_include::getJsSubmitCallStatic("top", 0, "document.forms[0].submit()")), "", we_html_button::create_button("cancel", "javascript:self.close();"));
+$_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("upload", "javascript:" . we_fileupload_include::getJsSubmitCallStatic("top", 0, "document.forms[0].submit()")), "", we_html_button::create_button("cancel", "javascript:self.close();"));
 $buttonsTable = new we_html_table(array('cellspacing' => 0, 'cellpadding' => 0, 'style' => 'border-width:0px;width:100%;'), 1, 2);
 $buttonsTable->setCol(0, 0, $attribs = array(), we_html_element::htmlDiv(array('id' => 'progressbar', 'style' => 'display:none;padding-left:10px')));
 $buttonsTable->setCol(0, 1, $attribs = array('align' => 'right'), $_buttons);

@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-class we_fileupload_uploader_importfile extends we_fileupload_uploader_base {
+class we_fileupload_importFiles extends we_fileupload_base {
 
 	private $jsRequirementsOk = false;
 

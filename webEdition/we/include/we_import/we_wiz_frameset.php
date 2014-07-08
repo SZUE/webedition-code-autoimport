@@ -38,24 +38,24 @@ if($type && (!defined('FILE_UPLOAD_USE_LEGACY') || FILE_UPLOAD_USE_LEGACY == fal
 
 	switch($type){
 		case we_import_functions::TYPE_GENERIC_XML:
-			$fileNameTempGxml = array('prefix' => 'we_xml_', 'postfix' => '.xml', 'path' => TEMP_DIR, 'missingDocRoot' => we_fileupload_uploader_include::MISSING_DOC_ROOT);
+			$fileNameTempGxml = array('prefix' => 'we_xml_', 'postfix' => '.xml', 'path' => TEMP_DIR, 'missingDocRoot' => we_fileupload_include::MISSING_DOC_ROOT);
 		case we_import_functions::TYPE_WE_XML: 
 			$name = 'uploaded_xml_file';
 			$acceptedMime = 'text/xml';
 			$acceptedExt = 'xml';
-			$fileNameTemp = array('prefix' => '', 'postfix' => '_w.xml', 'path' => TEMP_DIR, 'missingDocRoot' => we_fileupload_uploader_include::MISSING_DOC_ROOT);
+			$fileNameTemp = array('prefix' => '', 'postfix' => '_w.xml', 'path' => TEMP_DIR, 'missingDocRoot' => we_fileupload_include::MISSING_DOC_ROOT);
 			break;
 		case we_import_functions::TYPE_CSV:
 			$name = 'uploaded_csv_file';
 			$acceptedMime = '';
 			$acceptedExt = 'csv';
-			$fileNameTemp = array('prefix' => 'we_csv_', 'postfix' => '.csv', 'path' => TEMP_DIR, 'missingDocRoot' => we_fileupload_uploader_include::MISSING_DOC_ROOT);
+			$fileNameTemp = array('prefix' => 'we_csv_', 'postfix' => '.csv', 'path' => TEMP_DIR, 'missingDocRoot' => we_fileupload_include::MISSING_DOC_ROOT);
 			break;
 		default:
 			break;
 	}
 
-	$wizard->fileUploader = new we_fileupload_uploader_include($name, 'top.wizbody', "self.document.forms['we_form'].elements['v[rdofloc]'][1].checked=true;", 330, true, true, $acceptedMime, $acceptedExt, '', '', array(), -1);
+	$wizard->fileUploader = new we_fileupload_include($name, 'top.wizbody', "self.document.forms['we_form'].elements['v[rdofloc]'][1].checked=true;", 330, true, true, $acceptedMime, $acceptedExt, '', '', array(), -1);
 	$wizard->fileUploader->setAction($wizard->path . '?pnt=wizbody&step=1&type=' . $type);
 	$wizard->fileUploader->setFileNameTemp($type == we_import_functions::TYPE_GENERIC_XML ? $fileNameTempGxml : $fileNameTemp);
 }

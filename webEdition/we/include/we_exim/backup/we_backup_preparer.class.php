@@ -259,10 +259,10 @@ abstract class we_backup_preparer{
 
 			$isFileAllreadyHere = false;
 			if((!defined('FILE_UPLOAD_USE_LEGACY') || FILE_UPLOAD_USE_LEGACY == false)){
-				$uploader = new we_fileupload_uploader_include('we_upload_file');
+				$uploader = new we_fileupload_include('we_upload_file');
 				$uploader->setTypeCondition('accepted', '', 'xml, gz, tgz, zip');
-				$uploader->setFileNameTemp(array('path' => $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/'), we_fileupload_uploader_include::USE_FILENAME_FROM_UPLOAD);
-				$isFileAllreadyHere = $uploader->processFileRequest(we_fileupload_uploader_include::ON_ERROR_RETURN);
+				$uploader->setFileNameTemp(array('path' => $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/'), we_fileupload_include::USE_FILENAME_FROM_UPLOAD);
+				$isFileAllreadyHere = $uploader->processFileRequest(we_fileupload_include::ON_ERROR_RETURN);
 			}
 
 			if(empty($_FILES['we_upload_file']['tmp_name']) || $_FILES['we_upload_file']['error']){
