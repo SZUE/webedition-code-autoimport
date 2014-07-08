@@ -47,7 +47,7 @@ class we_workflow_base{
 		if($this->db->next_record()){
 			foreach($tableInfo as $cur){
 				$fieldName = $cur["name"];
-				if(in_array($fieldName, $this->persistents)){
+				if(isset($this->persistents[$fieldName])){
 					$this->$fieldName = $this->db->f($fieldName);
 				}
 			}
@@ -55,13 +55,13 @@ class we_workflow_base{
 	}
 
 	function save(){
-		$sets = array();
-		$wheres = array();
-		foreach($this->persistents as $val){
+		$sets = $wheres = array();
+		foreach(array_keys($this->persistents) as $val){
 			if($val == "ID"){
-				$wheres[] = $val . '="' . $this->{$val} . '"';
+				$wheres[] = $val . '=' . intval($this->{$val});
+			} else {
+				$sets[$val] = $this->{$val};
 			}
-			$sets[$val] = $this->{$val};
 		}
 		$where = implode(',', $wheres);
 		$set = we_database_base::arraySetter($sets);

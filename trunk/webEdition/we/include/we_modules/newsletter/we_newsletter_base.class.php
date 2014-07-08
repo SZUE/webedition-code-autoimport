@@ -66,7 +66,7 @@ class we_newsletter_base{
 		if($hash){
 			foreach($tableInfo as $cur){
 				$fieldName = $cur['name'];
-				if(in_array($fieldName, $this->persistents)){
+				if(isset($this->persistents[$fieldName])){
 					$this->$fieldName = $hash[$fieldName];
 				}
 			}
@@ -80,31 +80,33 @@ class we_newsletter_base{
 	 */
 	function save(){
 		$sets = $wheres = array();
-		foreach($this->persistents as $val){
-			if($val == "ID"){
-				$wheres[] = $val . "='" . $this->db->escape($this->$val) . "'";
-			}
-			if($val == "Filter"){
-				$value = unserialize($this->$val);
-				if(is_array($value)){
-					foreach($value as &$v){
-						switch(isset($v['fieldname']) ? $v['fieldname'] : ''){
-							case "MemberSince":
-							case "LastAccess":
-							case "LastLogin":
-								if(isset($v['fieldvalue']) && $v['fieldvalue'] != ""){
-									if(stristr($v['fieldvalue'], '.')){
-										$date = explode(".", $v['fieldvalue']);
-										$v['fieldvalue'] = mktime($v['hours'], $v['minutes'], 0, $date[1], $date[0], $date[2]);
-									} else {
-										$v['fieldvalue'] = $v['fieldvalue'];
-									}
+		foreach(array_keys($this->persistents) as $val){
+			switch($val){
+				case "ID":
+					$wheres[] = 'ID=' . intval($this->$val);
+					break;
+				case "Filter":
+					$value = unserialize($this->$val);
+					if(is_array($value)){
+						foreach($value as &$v){
+							switch(isset($v['fieldname']) ? $v['fieldname'] : ''){
+								case "MemberSince":
+								case "LastAccess":
+								case "LastLogin":
+									if(isset($v['fieldvalue']) && $v['fieldvalue'] != ""){
+										if(stristr($v['fieldvalue'], '.')){
+											$date = explode(".", $v['fieldvalue']);
+											$v['fieldvalue'] = mktime($v['hours'], $v['minutes'], 0, $date[1], $date[0], $date[2]);
+										} else {
+											$v['fieldvalue'] = $v['fieldvalue'];
+										}
 
-									$this->$val = serialize($value);
-								}
+										$this->$val = serialize($value);
+									}
+							}
 						}
 					}
-				}
+					break;
 			}
 
 			$sets[$val] = $this->$val;
@@ -169,18 +171,20 @@ class we_newsletter_base{
 	}
 
 	function getEmailsFromList($emails, $emails_only = 0, $group = 0, $blocks = array()){
+		$arr = explode("\n", $emails);
+		if(!$arr){
+			return array();
+		}
 		$ret = array();
 		$_default_html = f('SELECT pref_value FROM ' . NEWSLETTER_PREFS_TABLE . ' WHERE pref_name="default_htmlmail";', 'pref_value', new DB_WE());
-		$arr = explode("\n", $emails);
-		if(!empty($arr)){
-			foreach($arr as $row){
-				if($row != ""){
-					$arr2 = explode(",", $row);
-					if(count($arr2)){
-						$ret[] = ($emails_only ?
-								$arr2[0] :
-								array($arr2[0], (isset($arr2[1]) && trim($arr2[1]) != '') ? trim($arr2[1]) : $_default_html, isset($arr2[2]) ? trim($arr2[2]) : "", isset($arr2[3]) ? $arr2[3] : "", isset($arr2[4]) ? $arr2[4] : "", isset($arr2[5]) ? $arr2[5] : "", $group, $blocks));
-					}
+
+		foreach($arr as $row){
+			if($row != ""){
+				$arr2 = explode(",", $row);
+				if(count($arr2)){
+					$ret[] = ($emails_only ?
+							$arr2[0] :
+							array($arr2[0], (isset($arr2[1]) && trim($arr2[1]) != '') ? trim($arr2[1]) : $_default_html, isset($arr2[2]) ? trim($arr2[2]) : "", isset($arr2[3]) ? $arr2[3] : "", isset($arr2[4]) ? $arr2[4] : "", isset($arr2[5]) ? $arr2[5] : "", $group, $blocks));
 				}
 			}
 		}

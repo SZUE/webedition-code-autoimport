@@ -72,7 +72,20 @@ class we_workflow_workflow extends we_workflow_base{
 		parent::__construct();
 		$this->table = WORKFLOW_TABLE;
 
-		array_push($this->persistents, 'ID', 'Text', 'Type', 'DocType', 'Folders', 'ObjectFileFolders', 'Objects', 'Categories', 'ObjCategories', 'Status', 'EmailPath', 'LastStepAutoPublish');
+		$this->persistents = array(
+			'ID' => we_base_request::INT,
+			'Text' => we_base_request::STRING,
+			'Type' => we_base_request::INT,
+			'DocType' => we_base_request::INT,
+			'Folders' => we_base_request::INTLIST,
+			'ObjectFileFolders' => we_base_request::INTLIST,
+			'Objects' => we_base_request::INTLIST,
+			'Categories' => we_base_request::INTLIST,
+			'ObjCategories' => we_base_request::INTLIST,
+			'Status' => we_base_request::INT,
+			'EmailPath' => we_base_request::BOOL,
+			'LastStepAutoPublish' => we_base_request::BOOL,
+		);
 
 		$this->Text = g_l('modules_workflow', '[new_workflow]');
 
@@ -89,7 +102,7 @@ class we_workflow_workflow extends we_workflow_base{
 	 * Load workflow definition from database
 	 */
 	function load($id = 0){
-		$this->ID = $id ? $id: $this->ID;
+		$this->ID = $id ? $id : $this->ID;
 		if(!$this->ID){
 			return false;
 		}
@@ -196,12 +209,12 @@ class we_workflow_workflow extends we_workflow_base{
 
 	static function isDocInWorkflow($docID, we_database_base $db){
 		$id = f('SELECT ID FROM ' . WORKFLOW_DOC_TABLE . ' WHERE documentID=' . intval($docID) . ' AND Type IN(0,1) AND Status=0', '', $db);
-		return ($id ? $id: false);
+		return ($id ? $id : false);
 	}
 
 	static function isObjectInWorkflow($docID, we_database_base $db){
 		$id = f('SELECT ID FROM ' . WORKFLOW_DOC_TABLE . ' WHERE documentID=' . intval($docID) . ' AND Type=2 AND Status=0', '', $db);
-		return ($id ? $id: false);
+		return ($id ? $id : false);
 	}
 
 	/**
@@ -254,7 +267,7 @@ class we_workflow_workflow extends we_workflow_base{
 		}
 
 		return ($workflowID? // when we have found a document type-based workflow we can return
-				: ($tmp=self::findWfIdForFolder($folder, $db)? $tmp: false));
+				: ($tmp = self::findWfIdForFolder($folder, $db) ? $tmp : false));
 	}
 
 	function findWfIdForFolder($folderID, we_database_base $db){
@@ -306,7 +319,7 @@ class we_workflow_workflow extends we_workflow_base{
 			}
 		}
 
-		return ($workflowID? $workflowID: false);
+		return ($workflowID ? $workflowID : false);
 	}
 
 	function addNewStep(){

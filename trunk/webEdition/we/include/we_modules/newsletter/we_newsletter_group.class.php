@@ -52,7 +52,14 @@ class we_newsletter_group extends we_newsletter_base{
 		parent::__construct();
 		$this->table = NEWSLETTER_GROUP_TABLE;
 
-		array_push($this->persistents, 'NewsletterID', 'Emails', 'Extern', 'Customers', 'SendAll', 'Filter');
+		$this->persistents = array(
+			'NewsletterID' => we_base_request::INT,
+			'Emails' => we_base_request::RAW_CHECKED,
+			'Extern' => we_base_request::FILELIST,
+			'Customers' => we_base_request::RAW,
+			'SendAll' => we_base_request::BOOL,
+			'Filter' => we_base_request::RAW
+		);
 
 		$this->settings = self::getSettings();
 		$this->Extern = isset($this->settings['global_mailing_list']) ? $this->settings['global_mailing_list'] : '';

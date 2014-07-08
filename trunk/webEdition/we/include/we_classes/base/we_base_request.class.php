@@ -42,6 +42,7 @@ class we_base_request{
 	const TOGGLE = 'toggle';
 	const TABLE = 'table';
 	const FILE = 'file';
+	const FILELIST = 'filelist';
 	const URL = 'url';
 	const STRING = 'string';
 	const STRINGC = 'stringC';
@@ -69,10 +70,8 @@ class we_base_request{
 				$var = (preg_match('|^([a-f0-9]){32}$|i', $var) ? $var : $default);
 				return;
 			case self::INTLISTA:
-				t_e(trim($var, ','), explode(',', trim($var, ',')), array_map('intval', explode(',', trim($var, ','))));
 				$var = array_map('intval', explode(',', trim($var, ',')));
 				return;
-
 			case self::INTLIST:
 				$var = implode(',', array_map('intval', explode(',', trim($var, ','))));
 				return;
@@ -123,6 +122,13 @@ class we_base_request{
 				  }
 				  return (filter_var($email, FILTER_VALIDATE_EMAIL) !== false); */
 				$var = filter_var(str_replace(we_base_link::TYPE_MAIL_PREFIX, '', $var), FILTER_SANITIZE_EMAIL);
+				return;
+			case self::FILELIST:
+				$var = explode(',', trim(str_replace(array('../', '//'), array('', '/'), $var), ','));
+				foreach($var as &$cur){
+					$cur = filter_var($cur, FILTER_SANITIZE_URL);
+				}
+				$var = implode(',', $var);
 				return;
 			case self::FILE:
 				$var = str_replace(array('../', '//'), array('', '/'), filter_var($var, FILTER_SANITIZE_URL));
@@ -185,7 +191,7 @@ class we_base_request{
 		/* end fix */
 		unset($args[0], $args[2]);
 		foreach($args as $arg){
-			if(is_string($var) || !isset($var[$arg])){
+			if(is_string($var) || !is_array($var) || !isset($var[$arg])){
 				return $default;
 			}
 			$var = $var[$arg];

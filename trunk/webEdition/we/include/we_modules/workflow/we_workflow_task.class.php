@@ -26,7 +26,7 @@
 /**
  * General Definition of WebEdition Workflow Task
  */
-class we_workflow_task extends we_workflow_base {
+class we_workflow_task extends we_workflow_base{
 
 	var $ID = 0;
 	var $stepID = 0;
@@ -43,7 +43,13 @@ class we_workflow_task extends we_workflow_base {
 		parent::__construct();
 		$this->table = WORKFLOW_TASK_TABLE;
 
-		array_push($this->persistents, "ID", "userID", "Edit", "Mail", "stepID");
+		$this->persistents = array(
+			"ID" => we_base_request::INT,
+			"userID" => we_base_request::INT,
+			"Edit" => we_base_request::RAW,
+			"Mail" => we_base_request::RAW,
+			"stepID" => we_base_request::RAW,
+		);
 
 		if($taskID > 0){
 			$this->load($taskID);
