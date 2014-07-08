@@ -585,7 +585,7 @@ abstract class we_base_imageEdit{
 			$_thumbCreationDate = $_thumbExists ? filemtime($_thumbPath) : 0;
 
 			if(!$_thumbExists || ($_imageCreationDate > $_thumbCreationDate)){
-				$thumb = self::edit_image($_imgPath, $outputFormat, $_thumbPath, $outputQuality, $width, $height);
+				self::edit_image($_imgPath, $outputFormat, $_thumbPath, $outputQuality, $width, $height);
 			}
 			return $_thumbSrc;
 		}
