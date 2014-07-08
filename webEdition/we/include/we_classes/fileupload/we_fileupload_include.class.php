@@ -565,7 +565,7 @@ weFU.reset = function(){
 	public static function getJsSubmitCallStatic($formFrame = 'top', $formName = 0, $callback = 'document.forms[0].submit()'){
 		$quotes = is_int($formName) ? '' : '"';
 		$call = $formFrame . '.weFU.upload(' . $formFrame . '.document.forms[' . $quotes . $formName . $quotes . '], function(){' . $callback . '})';
-		return 'if(typeof ' . $formFrame . '.weFU === "undefined" || (' . $formFrame . '.weFU.legacyMode)){alert("beatolino");' . $callback . ';}else{' . $call . ';}';
+		return 'if(typeof ' . $formFrame . '.weFU === "undefined" || (' . $formFrame . '.weFU.legacyMode)){' . $callback . ';}else{' . $call . ';}';
 	}
 
 	public function processFileRequest($retFalseOnFinalError = false){
@@ -586,18 +586,19 @@ weFU.reset = function(){
 
 					$tempName = $partNum == 1 ? $this->_getfileNameTemp(self::GET_NAME_ONLY) : we_base_file::getUniqueId();
 					$tempPath = $this->_getfileNameTemp(self::GET_PATH_ONLY, self::FORCE_DOC_ROOT);
-					$error = !$tempName ? 'no_filename_error' : $error;
-					$error = !@move_uploaded_file($_FILES[$this->name]["tmp_name"], $tempPath . $tempName) ? 'move_file_error' : $error;
-					$error = $partNum > $this->maxChunkCount ? 'oversized_error' : $error;
+
+					$error = !$tempName ? 'no_filename_error' : '';
+					$error = $error ? $error : ($partNum > $this->maxChunkCount ? 'oversized_error' : '');
+					$error = $error ? $error : (!@move_uploaded_file($_FILES[$this->name]["tmp_name"], $tempPath . $tempName) ? 'move_file_error' : '');
 
 					//check mime type integrity when receiving first chunk
-					if($partNum == 1){
+					if($partNum == 1 && !$error){
 						if(($mime = we_base_util::getMimeType('', $tempPath . $tempName, we_base_util::MIME_BY_HEAD))){
 							//IMPORTANT: finfo_file returns text/plain where FILE returns ""!
 							if($mime !== $fileCt){
 								t_e("Mime type determined by finfo_file differ from type detemined by JS File", $mime, $fileCt);
 							} else {
-								$error = !$this->checkFileType($mime, $fileName) ? 'mime_or extension_not_ok_error' : $error;
+								$error = !$this->checkFileType($mime, $fileName) ? 'mime_or extension_not_ok_error' : '';
 							}
 						} else {
 							t_e("No Mime type could be determined by finfo_file or mime_content_type");
@@ -624,7 +625,7 @@ weFU.reset = function(){
 				if($fileNameTemp && $isUploadComplete){
 
 					//weFileCt could be manipulated or extension not alloud: make integrity test once again!
-					if(!$this->IsFileExtensionOk($fileName)){
+					if(!$this->isFileExtensionOk($fileName)){
 						$error = 'extension_not_ok_error';
 						$response = array('status' => 'failure', 'fileNameTemp' => $fileNameTemp, 'message' => $error, 'completed' => 1, 'finished' => '');
 					}
@@ -650,7 +651,6 @@ weFU.reset = function(){
 						'error' => UPLOAD_ERR_OK,
 					);
 					//FIXME: make some integrity test for the whole and for every chunk (md5)
-
 					return $this->_getfileNameTemp(self::GET_PATH_ONLY) . $fileNameTemp;
 				}
 				return '';
@@ -711,7 +711,7 @@ weFU.reset = function(){
 		return true;
 	}
 
-	private function IsFileExtensionOk($fileName){
+	private function isFileExtensionOk($fileName){
 		return $this->checkFileType('', $fileName, 'ext');
 	}
 
