@@ -25,10 +25,11 @@
 /* * this is the abstract super class for DB connections */
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf.inc.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_db_tools.inc.php');
 
 abstract class we_database_base{
 
-	private static $pool = array();
+	private static $pool = array(); //fixme: don't repool temporary tables - they require the same connection
 	protected static $conCount = 0;
 	protected static $linkCount = 0;
 	//states if we have lost connection and try again
@@ -37,6 +38,8 @@ abstract class we_database_base{
 	protected $Link_ID = 0;
 	/* query handles */
 	protected $Query_ID = 0;
+	private $Insert_ID = 0;
+	private $Affected_Rows = 0;
 	/*	 * true, if first query failed due to some server conditions */
 
 	/** result array */
@@ -50,8 +53,10 @@ abstract class we_database_base{
 	/*	 * current Error text */
 	public $Error = "";
 
+	/* true, if a temporary table was created */
+	private $hasTempTable = false;
 	/** public: connection parameters */
-	public $Database = DB_DATABASE;
+	protected $Database = DB_DATABASE;
 	private static $Trigger_cnt = 0;
 
 	/** Connects to the database, which this is done by the constructor
@@ -282,38 +287,85 @@ abstract class we_database_base{
 // if union is found in query, then take a closer look
 		if(!$allowUnion && stristr($Query_String, 'union') || stristr($Query_String, '/*!')){
 
-				$queryToCheck = str_replace(array("\\\"", "\\'"), '', $Query_String);
+			$queryToCheck = str_replace(array('\\\\'/* escape for mysql connection */, '\\"', "\\'", '\\\`'), array('', '', '', ''), $Query_String);
 
-				$singleQuote = false;
-				$doubleQuote = false;
+			$quotes = array('\'' => false, '"' => false, '`' => false, '/*' => false, '#' => false);
 
 				$queryWithoutStrings = '';
 
 				for($i = 0; $i < strlen($queryToCheck); $i++){
 					$char = $queryToCheck[$i];
-					if($char == '"' && $doubleQuote == false && $singleQuote == false){
-						$doubleQuote = true;
-					} else if($char == '\'' && $doubleQuote == false && $singleQuote == false){
-						$singleQuote = true;
-					} else if($char == '"' && $doubleQuote == true){
-						$doubleQuote = false;
-					} else if($char == '\'' && $singleQuote == true){
-						$singleQuote = false;
+				$active = array_filter($quotes);
+				//support old php 5.3
+				$active = !empty($active);
+				switch($char){
+					case '/':
+						if(!$active && $queryToCheck[$i + 1] == '*'){
+							if($queryToCheck[$i + 2] == '!'){/* mysql specific code */
+								if(defined('ERROR_LOG_TABLE')){
+									t_e('error', 'No MySQL specific syntax allowed!', $Query_String);
 					}
-					if($doubleQuote == false && $singleQuote == false && $char !== '\'' && $char !== '"'){
+								//be quiet, no need to give more information
+								return;
+							} else {
+								$quotes['/*'] = true;
+								$i++;
+								continue;
+							}
+						}
+						break;
+					case '*':
+						if($quotes['/*'] && $queryToCheck[$i + 1] == '/'){//no nested comments
+							$quotes['/*'] = false;
+							$i++;
+							continue;
+						}
+						break;
+					case "\n":
+						if($active && $quotes['#']){
+							$quotes['#'] = false;
+						}
+					case '-':
+						if(!$active && $queryToCheck[$i + 1] == '-'){
+							$quotes['#'] = true;
+							$active = true;
+							$i++;
+							continue;
+						}
+						break;
+					case '#':
+						if(!$active){
+							$quotes['#'] = true;
+							$active = true;
+							continue;
+						}
+						break;
+					case '"':
+					case '`':
+					case '\'':
+						if(($active && $quotes[$char]) || !$active){//if active close only corresponding pair
+							$quotes[$char] = !$quotes[$char];
+							$active = true;
+						}
+						break;
+				}
+				if(!$active){
 						$queryWithoutStrings .= $char;
 					}
 				}
 
-				if(!$allowUnion && stristr($queryWithoutStrings, 'union') || stristr($queryWithoutStrings, '/*!')){
-				if((defined('ERROR_LOG_TABLE') && strpos($Query_String, ERROR_LOG_TABLE) === false || !defined('ERROR_LOG_TABLE'))){
-					t_e('Attempt to execute union statement/injection', $Query_String);
+			if(!$allowUnion && stristr($queryWithoutStrings, 'union') || stristr($queryWithoutStrings, '/*') || stristr($queryWithoutStrings, '*/')){
+				if(defined('ERROR_LOG_TABLE')){
+					t_e('error', 'Attempt to execute union statement/injection', $Query_String);
 				}
-					exit();
+				//be quiet, no need to give more information
+				return;
 
 			}
 		}
 
+		$this->Insert_ID = 0;
+		$this->Affected_Rows = 0;
 # New query, discard previous result.
 		if($this->Query_ID){
 			$this->free();
@@ -373,8 +425,9 @@ abstract class we_database_base{
 						$this->retry = false;
 						return $tmp;
 					}
-				case 0:
-					//don't know why, but ignore this
+				case 1062://ignore as error - duplicate entry
+					return false;
+				case 0:// ignore this
 					return true;
 				default:
 					trigger_error('MYSQL-ERROR' . "\nFehler: " . $this->Errno . "\nDetail: " . $this->Error . "\nInfo:" . $this->info() . "\nQuery: " . $Query_String, E_USER_WARNING);
@@ -413,7 +466,7 @@ abstract class we_database_base{
 	 * @return mixed returns the value or '' if not present
 	 */
 	public function f($Name){
-		return isset($this->Record[$Name]) ? $this->Record[$Name] : "";
+		return isset($this->Record[$Name]) ? $this->Record[$Name] : '';
 	}
 
 	/**
@@ -526,9 +579,9 @@ abstract class we_database_base{
 		return $ret;
 	}
 
-	public function getAllFirst($useArray = true){
+	public function getAllFirst($useArray = true, $resultType = MYSQL_NUM){
 		$ret = array();
-		while($this->next_record(MYSQL_NUM)){
+		while($this->next_record($resultType)){
 			$ret[array_shift($this->Record)] = ($useArray ? $this->Record : current($this->Record));
 		}
 		return $ret;
@@ -541,8 +594,11 @@ abstract class we_database_base{
 	static function arraySetter(array $arr, $imp = ','){
 		$ret = array();
 		foreach($arr as $key => $val){
-			$escape = !(is_int($val) || is_float($val));
-			if(is_array($val) && $val['sqlFunction'] == 1){
+			if($key === ''){
+				continue;
+			}
+			$escape = !(is_bool($val));
+			if(is_array($val) && sql_function($val)){
 				$val = $val['val'];
 				$escape = false;
 			} elseif(is_object($val) || is_array($val)){
@@ -564,6 +620,7 @@ abstract class we_database_base{
 						t_e('deprecated','deprecated db call detected');
 				}
 			}
+			$val = (is_bool($val) ? intval($val) : $val);
 			$ret[] = '`' . $key . '`=' . ($escape ? '"' . escape_sql_query($val) . '"' : $val);
 		}
 		return implode($imp, $ret);
@@ -639,13 +696,17 @@ abstract class we_database_base{
 	/*	 * checks if this DB connection with this user is allowed to lock a table */
 
 	public function hasLock(){
+		static $lock = -1;
+		if(is_bool($lock)){
+			return $lock;
+		}
 //lock table
 		$this->lock(VALIDATION_SERVICES_TABLE, 'read');
-//select from an not locked table - must fail
-		$this->_query('SELECT 1 FROM ' . FILE_TABLE);
-		$ret = ($this->errno() > 0);
+//if lock unavailable this will generate an error 1044 - access denied
+
+		$lock = ($this->errno() == 0);
 		$this->unlock();
-		return $ret;
+		return $lock;
 	}
 
 	/**
