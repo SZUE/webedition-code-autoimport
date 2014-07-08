@@ -244,7 +244,7 @@ class we_shop_statusMails{
 
 		$docID = intval($docID);
 
-		if($docID && we_base_file::isWeFile($docID)){
+		if($docID && we_base_file::isWeFile($docID, FILE_TABLE, $DB_WE)){
 			$_SESSION['WE_SendMail'] = true;
 			$_REQUEST['we_orderid'] = $order;
 			$_REQUEST['we_userlanguage'] = $UserLang;
@@ -258,7 +258,7 @@ class we_shop_statusMails{
 				$attachmentA = $maildoc->getElement($this->EMailData['DocumentAttachmentFieldA']);
 				$codes = $codes . $attachmentA;
 			}
-			unset($_REQUEST['we_orderid'],$_SESSION['WE_SendMail']);
+			unset($_REQUEST['we_orderid'], $_SESSION['WE_SendMail']);
 		} else {
 			t_e('Document to send as status mail is empty! ID: ' . $docID, $field);
 			return false;

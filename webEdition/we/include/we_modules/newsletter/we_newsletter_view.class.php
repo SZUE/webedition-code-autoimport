@@ -1733,7 +1733,7 @@ self.close();');
 					$we_File = $_FILES["we_File"];
 				if(isset($we_File)){
 					$unique = we_base_file::getUniqueId();
-					$tempName = TEMP_PATH  . $unique;
+					$tempName = TEMP_PATH . $unique;
 
 					if(move_uploaded_file($we_File["tmp_name"], $tempName)){
 						$tempName = str_replace($_SERVER['DOCUMENT_ROOT'], "", $tempName);
@@ -1843,7 +1843,7 @@ self.close();');
 
 				foreach($gval->persistents as $per){
 					$varname = 'group' . $gkey . '_' . $per;
-					$gval->$per = we_base_request::_(we_base_request::STRING, $varname, $gval->$per);
+					$gval->$per = we_base_request::_(we_base_request::RAW, $varname, $gval->$per);
 				}
 
 				// Filter
@@ -1971,13 +1971,14 @@ self.close();');
 						if($block->Field != "" && $block->Field != 0){
 							$path = TEMPLATES_PATH . preg_replace('/\.tmpl$/i', '.php', id_to_path($block->Field, TEMPLATES_TABLE));
 						} else if($block->LinkID){
-							$p = f('SELECT t.Path FROM ' . FILE_TABLE . ' f LEFT JOIN ' . TEMPLATES_TABLE . ' t ON f.TemplateID=t.ID WHERE f.ID=' . intval($block->LinkID), "Path", $this->db);
+							$p = f('SELECT t.Path FROM ' . FILE_TABLE . ' f LEFT JOIN ' . TEMPLATES_TABLE . ' t ON f.TemplateID=t.ID WHERE f.ID=' . intval($block->LinkID), "", $this->db);
 							$path = TEMPLATES_PATH . preg_replace('/\.tmpl$/i', '.php', $p);
 						} else {
 							$path = "";
 						}
-						if($block->LinkID && $path)
-							$content .= ($block->LinkID > 0) && we_base_file::isWeFile($block->LinkID) ? we_getDocumentByID($block->LinkID, $path) : 'No such File';
+						if($block->LinkID && $path){
+							$content .= ($block->LinkID > 0) && we_base_file::isWeFile($block->LinkID, FILE_TABLE, $this->db) ? we_getDocumentByID($block->LinkID, $path) : 'No such File';
+						}
 						break;
 					case we_newsletter_block::DOCUMENT_FIELD:
 						if($block->LinkID){
