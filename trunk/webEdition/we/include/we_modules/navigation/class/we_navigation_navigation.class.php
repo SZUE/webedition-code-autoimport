@@ -619,8 +619,8 @@ class we_navigation_navigation extends weModelBase{
 
 	function reorderDown(){
 		if($this->ID){
-			$_parentid = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->ID), 'ParentID', $this->db);
-			$_num = f('SELECT COUNT(ID) as OrdCount FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($_parentid), 'OrdCount', $this->db);
+			$_parentid = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->ID), '', $this->db);
+			$_num = f('SELECT COUNT(ID) as OrdCount FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($_parentid), '', $this->db);
 			if($this->Ordn < ($_num - 1)){
 				$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . abs($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . abs($this->Ordn + 1));
 				$this->Ordn++;
@@ -650,10 +650,10 @@ class we_navigation_navigation extends weModelBase{
 							$objecturl = isset($objectdaten['Url']) ? $objectdaten['Url'] : '';
 							$objecttriggerid = isset($objectdaten['TriggerID']) ? $objectdaten['TriggerID'] : 0;
 							if($objecturl == ''){
-								$_param = 'we_objectID=' . $this->LinkID . (!empty($_param) ? '&' : '') . $_param;
+								$_param = 'we_objectID=' . $this->LinkID . ($_param ? '&' : '') . $_param;
 							}
 						} else {
-							$_param = 'we_objectID=' . $this->LinkID . (!empty($_param) ? '&' : '') . $_param;
+							$_param = 'we_objectID=' . $this->LinkID . ($_param ? '&' : '') . $_param;
 						}
 						$_id = ($objecttriggerid ? $objecttriggerid : we_navigation_dynList::getFirstDynDocument($this->FolderWsID));
 					} else {

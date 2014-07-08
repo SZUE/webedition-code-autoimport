@@ -942,15 +942,14 @@ function submitForm() {
 				$this->Model->saveField('Selection');
 				break;
 			case 'dyn_preview':
-
-				print we_html_element::jsScript(JS_DIR . "windows.js") .
+				echo we_html_element::jsScript(JS_DIR . "windows.js") .
 					we_html_element::jsElement('
 						url = "' . WE_INCLUDES_DIR . 'we_modules/navigation/edit_navigation_frameset.php?pnt=dyn_preview";
 						new jsWindow(url,"we_navigation_dyn_preview",-1,-1,480,350,true,true,true);'
 				);
 				break;
 			case 'create_template':
-				print we_html_element::jsElement(
+				echo we_html_element::jsElement(
 						$this->topFrame . '.opener.top.we_cmd("new","' . TEMPLATES_TABLE . '","","' . we_base_ContentTypes::TEMPLATE . '","","' . base64_encode($this->Model->previewCode) . '");
 					');
 				break;
@@ -959,37 +958,35 @@ function submitForm() {
 				$_values = we_navigation_dynList::getWorkspacesForObject($this->Model->LinkID);
 				$_js = '';
 
-				if(!empty($_values)){
+				if($_values){
 
 					foreach($_values as $_id => $_path){
 						$_js .= $this->editorBodyForm . '.FolderWsID.options[' . $this->editorBodyForm . '.FolderWsID.options.length] = new Option("' . $_path . '",' . $_id . ');
 							';
 					}
-					print we_html_element::jsElement(
-							$this->editorBodyFrame . '.setVisible("objLinkFolderWorkspace",true);
+					echo we_html_element::jsElement(
+						$this->editorBodyFrame . '.setVisible("objLinkFolderWorkspace",true);
 							' . $this->editorBodyForm . '.FolderWsID.options.length = 0;
 							' . $_js . '
 						');
-				} else {
-
-					if(we_navigation_dynList::getWorkspaceFlag($this->Model->LinkID)){
-						print we_html_element::jsElement(
-								$this->editorBodyForm . '.FolderWsID.options.length = 0;
+				} elseif(we_navigation_dynList::getWorkspaceFlag($this->Model->LinkID)){
+					echo we_html_element::jsElement(
+						$this->editorBodyForm . '.FolderWsID.options.length = 0;
 								' . $this->editorBodyForm . '.FolderWsID.options[' . $this->editorBodyForm . '.FolderWsID.options.length] = new Option("/",0);
 								' . $this->editorBodyForm . '.FolderWsID.selectedIndex = 0;
 								' . $this->editorBodyFrame . '.setVisible("objLinkFolderWorkspace",true);'
-						);
-					} else {
-						print we_html_element::jsElement(
-								$this->editorBodyFrame . '.setVisible("objLinkFolderWorkspace' . $_prefix . '",false);
+					);
+				} else {
+					echo we_html_element::jsElement(
+						$this->editorBodyFrame . '.setVisible("objLinkFolderWorkspace' . $_prefix . '",false);
 								' . $this->editorBodyForm . '.FolderWsID.options.length = 0;
 								' . $this->editorBodyForm . '.FolderWsID.options[' . $this->editorBodyForm . '.FolderWsID.options.length] = new Option("-1",-1);
 								' . $this->editorBodyForm . '.LinkID.value = "";
 								' . $this->editorBodyForm . '.LinkPath.value = "";
 								' . we_message_reporting::getShowMessageCall(g_l('navigation', '[no_workspace]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 							');
-					}
 				}
+
 				break;
 			case 'populateWorkspaces':
 
@@ -1019,32 +1016,30 @@ function submitForm() {
 
 				$_js = '';
 
-				if(!empty($_values)){ // if the class has workspaces
+				if($_values){ // if the class has workspaces
 					foreach($_values as $_id => $_path){
 						$_js .= $this->editorBodyForm . '.WorkspaceID' . $_prefix . '.options[' . $this->editorBodyForm . '.WorkspaceID' . $_prefix . '.options.length] = new Option("' . $_path . '",' . $_id . ');
 							';
 					}
-					$out = we_html_element::jsElement(
-							$_objFields .
-							$this->editorBodyFrame . '.setVisible("objLinkWorkspace' . $_prefix . '",true);
+					echo we_html_element::jsElement(
+						$_objFields .
+						$this->editorBodyFrame . '.setVisible("objLinkWorkspace' . $_prefix . '",true);
 							' . $this->editorBodyForm . '.WorkspaceID' . $_prefix . '.options.length = 0;
 							' . $_js . '
 						');
-					print $out;
 				} else { // if the class has no workspaces
 					if(we_navigation_dynList::getWorkspaceFlag($this->Model->LinkID)){
-						$out = we_html_element::jsElement(
-								$_objFields .
-								$this->editorBodyForm . '.WorkspaceID' . $_prefix . '.options.length = 0;
+						echo we_html_element::jsElement(
+							$_objFields .
+							$this->editorBodyForm . '.WorkspaceID' . $_prefix . '.options.length = 0;
 								' . $this->editorBodyForm . '.WorkspaceID' . $_prefix . '.options[' . $this->editorBodyForm . '.WorkspaceID' . $_prefix . '.options.length] = new Option("/",0);
 								' . $this->editorBodyForm . '.WorkspaceID' . $_prefix . '.selectedIndex = 0;
 								//' . $this->editorBodyFrame . '.setVisible("objLinkWorkspace' . $_prefix . '",false);'
 						);
-						print $out;
 					} else {
-						print we_html_element::jsElement(
-								$_objFields .
-								$this->editorBodyFrame . '.setVisible("objLinkWorkspace' . $_prefix . '",false);
+						echo we_html_element::jsElement(
+							$_objFields .
+							$this->editorBodyFrame . '.setVisible("objLinkWorkspace' . $_prefix . '",false);
 								' . $this->editorBodyForm . '.WorkspaceID' . $_prefix . '.options.length = 0;
 								' . $this->editorBodyForm . '.WorkspaceID' . $_prefix . '.options[' . $this->editorBodyForm . '.WorkspaceID' . $_prefix . '.options.length] = new Option("-1",-1);
 								' . $this->editorBodyForm . '.LinkID.value = "";
@@ -1055,7 +1050,7 @@ function submitForm() {
 				}
 				break;
 			case 'populateText':
-				if(empty($this->Model->Text) && $this->Model->Selection == 'static' && $this->Model->SelectionType == we_navigation_navigation::STPYE_CATLINK){
+				if(!$this->Model->Text && $this->Model->Selection == we_navigation_navigation::SELECTION_STATIC && $this->Model->SelectionType == we_navigation_navigation::STPYE_CATLINK){
 					$_cat = new we_category();
 					$_cat->load($this->Model->LinkID);
 					$_cat->Catfields = unserialize($_cat->Catfields);
@@ -1129,11 +1124,11 @@ function submitForm() {
 				$this->Model->Parameter = $par;
 			}
 
-			if($this->Model->SelectionType == we_navigation_navigation::STPYE_CATEGORY && ($url=we_base_request::_(we_base_request::URL,'dynamic_Url'))!==false){
+			if($this->Model->SelectionType == we_navigation_navigation::STPYE_CATEGORY && ($url = we_base_request::_(we_base_request::URL, 'dynamic_Url')) !== false){
 				$this->Model->Url = $url;
 				$this->Model->UrlID = we_base_request::_(we_base_request::INT, 'dynamic_UrlID', 0);
-				$this->Model->LinkSelection = we_base_request::_(we_base_request::STRING,'dynamic_LinkSelection');
-				$this->Model->CatParameter = we_base_request::_(we_base_request::STRING,'dynamic_CatParameter');
+				$this->Model->LinkSelection = we_base_request::_(we_base_request::STRING, 'dynamic_LinkSelection');
+				$this->Model->CatParameter = we_base_request::_(we_base_request::STRING, 'dynamic_CatParameter');
 			}
 		}
 

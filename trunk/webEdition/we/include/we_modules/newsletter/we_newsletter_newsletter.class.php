@@ -101,9 +101,7 @@ class we_newsletter_newsletter extends we_newsletter_base{
 		$this->Subject = stripslashes($this->Subject);
 		$this->groups = we_newsletter_group::__getAllGroups($newsletterID, $this->db);
 		$this->blocks = we_newsletter_block::__getAllBlocks($newsletterID, $this->db);
-		if(empty($this->Charset)){
-			$this->Charset = $GLOBALS['WE_BACKENDCHARSET'];
-		}
+		$this->Charset = $this->Charset ? $this->Charset : $GLOBALS['WE_BACKENDCHARSET'];
 	}
 
 	/**
@@ -227,13 +225,14 @@ class we_newsletter_newsletter extends we_newsletter_base{
 			} else {
 				$temp = array();
 				foreach($this->blocks as $k => $v){
-					if($k == $where)
+					if($k == $where){
 						$temp[] = new we_newsletter_block();
+					}
 					$temp[] = $v;
 				}
 				$this->blocks = $temp;
 			}
-		}else {
+		} else {
 			$this->blocks[] = new we_newsletter_block();
 		}
 	}

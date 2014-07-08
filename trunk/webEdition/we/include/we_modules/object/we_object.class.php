@@ -1826,7 +1826,7 @@ class we_object extends we_document{
 
 		//    check if workspace exists - correct templates if neccessary !!
 		for($i = 0; $i < count($arr); $i++){
-			if(we_base_file::isWeFile($arr[$i])){
+			if(we_base_file::isWeFile($arr[$i], FILE_TABLE, $this->DB_WE)){
 				$newArr[] = $arr[$i];
 				if(in_array($arr[$i], $_defaultArr)){
 					$_newDefaultArr[] = $arr[$i];

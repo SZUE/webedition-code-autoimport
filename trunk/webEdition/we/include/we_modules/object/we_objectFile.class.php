@@ -1652,7 +1652,7 @@ class we_objectFile extends we_document{
 
 		$values = getHashArrayFromCSV($this->getPossibleWorkspaces($ws), '', $this->DB_WE);
 		foreach($values as $id => $val){
-			if(!we_base_file::isWeFile($id)){
+			if(!we_base_file::isWeFile($id, FILE_TABLE, $this->DB_WE)){
 				unset($values[$id]);
 			}
 		}
@@ -1664,7 +1664,7 @@ class we_objectFile extends we_document{
 		$newTmpls = array();
 //$newDefaultArr = array();
 		foreach($arr as $nr => $id){
-			if(we_base_file::isWeFile($id)){
+			if(we_base_file::isWeFile($id, FILE_TABLE, $this->DB_WE)){
 				$newArr[] = $id;
 				$newTmpls[] = (isset($tmpls[$nr]) ? $tmpls[$nr] : '');
 			}
@@ -1676,7 +1676,7 @@ class we_objectFile extends we_document{
 		$arr = makeArrayFromCSV($this->ExtraWorkspaces);
 		$newArr = array();
 		foreach($arr as $nr => $id){
-			if(we_base_file::isWeFile($id))
+			if(we_base_file::isWeFile($id, FILE_TABLE, $this->DB_WE))
 				$newArr[] = $id;
 		}
 		$this->ExtraWorkspaces = makeCSVFromArray($newArr, true);
@@ -1784,14 +1784,14 @@ class we_objectFile extends we_document{
 // values bekommen aller workspaces, welche hinzugef�gt werden d�rfen.
 		$values = getHashArrayFromCSV($this->getPossibleWorkspaces($ws, true), '', $this->DB_WE);
 		foreach($values as $id => $val){
-			if(!we_base_file::isWeFile($id)){
+			if(!we_base_file::isWeFile($id, FILE_TABLE, $this->DB_WE)){
 				unset($values[$id]);
 			}
 		}
 
 		$arr = makeArrayFromCSV($this->ExtraWorkspaces);
 		foreach($arr as $id){
-			if(isset($values[$id]) || (!we_base_file::isWeFile($id)))
+			if(isset($values[$id]) || (!we_base_file::isWeFile($id, FILE_TABLE, $this->DB_WE)))
 				unset($values[$id]);
 		}
 
@@ -2303,7 +2303,7 @@ class we_objectFile extends we_document{
 			$version = new weVersions();
 			$version->save($this);
 		}
-		if(LANGLINK_SUPPORT && ($docid=we_base_request::_(we_base_request::INT,"we_" . $this->Name . "_LanguageDocID"))){
+		if(LANGLINK_SUPPORT && ($docid = we_base_request::_(we_base_request::INT, "we_" . $this->Name . "_LanguageDocID"))){
 			$this->setLanguageLink($docid, 'tblObjectFile', false, true);
 		} else {
 			//if language changed, we must delete eventually existing entries in tblLangLink, even if !LANGLINK_SUPPORT!

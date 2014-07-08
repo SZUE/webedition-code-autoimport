@@ -46,7 +46,6 @@ class we_newsletter_base{
 	 */
 	function __construct(){
 		$this->db = new DB_WE();
-		$this->persistents = array();
 	}
 
 	/**
@@ -80,8 +79,7 @@ class we_newsletter_base{
 	 * save entry in database
 	 */
 	function save(){
-		$sets = array();
-		$wheres = array();
+		$sets = $wheres = array();
 		foreach($this->persistents as $val){
 			if($val == "ID"){
 				$wheres[] = $val . "='" . $this->db->escape($this->$val) . "'";
@@ -180,8 +178,8 @@ class we_newsletter_base{
 					$arr2 = explode(",", $row);
 					if(count($arr2)){
 						$ret[] = ($emails_only ?
-										$arr2[0] :
-										array($arr2[0], (isset($arr2[1]) && trim($arr2[1]) != '') ? trim($arr2[1]) : $_default_html, isset($arr2[2]) ? trim($arr2[2]) : "", isset($arr2[3]) ? $arr2[3] : "", isset($arr2[4]) ? $arr2[4] : "", isset($arr2[5]) ? $arr2[5] : "", $group, $blocks));
+								$arr2[0] :
+								array($arr2[0], (isset($arr2[1]) && trim($arr2[1]) != '') ? trim($arr2[1]) : $_default_html, isset($arr2[2]) ? trim($arr2[2]) : "", isset($arr2[3]) ? $arr2[3] : "", isset($arr2[4]) ? $arr2[4] : "", isset($arr2[5]) ? $arr2[5] : "", $group, $blocks));
 					}
 				}
 			}
@@ -191,36 +189,38 @@ class we_newsletter_base{
 	}
 
 	function getEmailsFromExtern($files, $emails_only = 0, $group = 0, $blocks = array()){
-		$ret = array();
-		$_default_html = f('SELECT pref_value FROM ' . NEWSLETTER_PREFS_TABLE . ' WHERE pref_name="default_htmlmail";', 'pref_value', new DB_WE());
 		$arr = makeArrayFromCSV($files);
-		if(!empty($arr)){
-			foreach($arr as $file){
-				if(strpos($file, '..') === false){
-					$data = str_replace("\r\n", "\n", we_base_file::load($_SERVER['DOCUMENT_ROOT'] . $file));
-					$dataArr = explode("\n", $data);
-					if(!empty($dataArr)){
-						foreach($dataArr as $value){
-							$dat = makeArrayFromCSV($value);
-							$_alldat = implode("", $dat);
-							if(str_replace(" ", "", $_alldat) == ""){
-								continue;
-							}
-							switch($emails_only){
-								case 1:
-									$ret[] = $dat[0];
-									break;
-								case 2:
-									$ret[] = array(trim($dat[0]), (isset($dat[1]) && trim($dat[1]) != '') ? trim($dat[1]) : $_default_html, isset($dat[2]) ? trim($dat[2]) : "", isset($dat[3]) ? $dat[3] : "", isset($dat[4]) ? $dat[4] : "", isset($dat[5]) ? $dat[5] : "");
-									break;
-								default:
-									$ret[] = array(trim($dat[0]), (isset($dat[1]) && trim($dat[1]) != '') ? trim($dat[1]) : $_default_html, isset($dat[2]) ? trim($dat[2]) : "", isset($dat[3]) ? $dat[3] : "", isset($dat[4]) ? $dat[4] : "", isset($dat[5]) ? $dat[5] : "", $group, $blocks);
-							}
+		if(!$arr){
+			return array();
+		}
+		$_default_html = f('SELECT pref_value FROM ' . NEWSLETTER_PREFS_TABLE . ' WHERE pref_name="default_htmlmail"');
+		$ret = array();
+		foreach($arr as $file){
+			if(strpos($file, '..') === false){
+				$data = str_replace("\r\n", "\n", we_base_file::load($_SERVER['DOCUMENT_ROOT'] . $file));
+				$dataArr = explode("\n", $data);
+				if(!empty($dataArr)){
+					foreach($dataArr as $value){
+						$dat = makeArrayFromCSV($value);
+						$_alldat = implode("", $dat);
+						if(str_replace(" ", "", $_alldat) == ""){
+							continue;
+						}
+						switch($emails_only){
+							case 1:
+								$ret[] = $dat[0];
+								break;
+							case 2:
+								$ret[] = array(trim($dat[0]), (isset($dat[1]) && trim($dat[1]) != '') ? trim($dat[1]) : $_default_html, isset($dat[2]) ? trim($dat[2]) : "", isset($dat[3]) ? $dat[3] : "", isset($dat[4]) ? $dat[4] : "", isset($dat[5]) ? $dat[5] : "");
+								break;
+							default:
+								$ret[] = array(trim($dat[0]), (isset($dat[1]) && trim($dat[1]) != '') ? trim($dat[1]) : $_default_html, isset($dat[2]) ? trim($dat[2]) : "", isset($dat[3]) ? $dat[3] : "", isset($dat[4]) ? $dat[4] : "", isset($dat[5]) ? $dat[5] : "", $group, $blocks);
 						}
 					}
 				}
 			}
 		}
+
 		return $ret;
 	}
 
@@ -235,44 +235,46 @@ class we_newsletter_base{
 	 * @return unknown
 	 */
 	function getEmailsFromExtern2($files, $emails_only = 0, $group = 0, array $blocks = array(), $status = 0, &$emailkey){
-		$ret = $arr = array();
-		$countEMails = 0;
-		$_default_html = f('SELECT pref_value FROM ' . NEWSLETTER_PREFS_TABLE . ' WHERE pref_name="default_htmlmail";', 'pref_value', new DB_WE());
 		$arr = makeArrayFromCSV($files);
-		if(!empty($arr)){
-			foreach($arr as $file){
-				if(strpos($file, '..') === false){
-					$data = str_replace("\r\n", "\n", we_base_file::load($_SERVER['DOCUMENT_ROOT'] . $file));
-					$dataArr = explode("\n", $data);
-					if(!empty($dataArr)){
-						foreach($dataArr as $value){
-							$dat = makeArrayFromCSV($value);
-							$_alldat = implode("", $dat);
-							if(str_replace(" ", "", $_alldat) == ""){
-								continue;
-							}
-							$countEMails++;
-							if($status == 1 && we_check_email($dat[0])){
-								continue;
-							} elseif($status == 2 && !we_check_email($dat[0])){
-								continue;
-							}
-							$emailkey[] = $countEMails - 1;
-							switch($emails_only){
-								case 1:
-									$ret[] = $dat[0];
-									break;
-								case 2:
-									$ret[] = array(trim($dat[0]), (isset($dat[1]) && trim($dat[1]) != '') ? trim($dat[1]) : $_default_html, isset($dat[2]) ? trim($dat[2]) : "", isset($dat[3]) ? $dat[3] : "", isset($dat[4]) ? $dat[4] : "", isset($dat[5]) ? $dat[5] : "");
-									break;
-								default:
-									$ret[] = array(trim($dat[0]), (isset($dat[1]) && trim($dat[1]) != '') ? trim($dat[1]) : $_default_html, isset($dat[2]) ? trim($dat[2]) : "", isset($dat[3]) ? $dat[3] : "", isset($dat[4]) ? $dat[4] : "", isset($dat[5]) ? $dat[5] : "", $group, $blocks);
-							}
+		if(!$arr){
+			return array();
+		}
+		$ret = array();
+		$countEMails = 0;
+		$_default_html = f('SELECT pref_value FROM ' . NEWSLETTER_PREFS_TABLE . ' WHERE pref_name="default_htmlmail"');
+		foreach($arr as $file){
+			if(strpos($file, '..') === false){
+				$data = str_replace("\r\n", "\n", we_base_file::load($_SERVER['DOCUMENT_ROOT'] . $file));
+				$dataArr = explode("\n", $data);
+				if(!empty($dataArr)){
+					foreach($dataArr as $value){
+						$dat = makeArrayFromCSV($value);
+						$_alldat = implode("", $dat);
+						if(str_replace(" ", "", $_alldat) == ""){
+							continue;
+						}
+						$countEMails++;
+						if($status == 1 && we_check_email($dat[0])){
+							continue;
+						} elseif($status == 2 && !we_check_email($dat[0])){
+							continue;
+						}
+						$emailkey[] = $countEMails - 1;
+						switch($emails_only){
+							case 1:
+								$ret[] = $dat[0];
+								break;
+							case 2:
+								$ret[] = array(trim($dat[0]), (isset($dat[1]) && trim($dat[1]) != '') ? trim($dat[1]) : $_default_html, isset($dat[2]) ? trim($dat[2]) : "", isset($dat[3]) ? $dat[3] : "", isset($dat[4]) ? $dat[4] : "", isset($dat[5]) ? $dat[5] : "");
+								break;
+							default:
+								$ret[] = array(trim($dat[0]), (isset($dat[1]) && trim($dat[1]) != '') ? trim($dat[1]) : $_default_html, isset($dat[2]) ? trim($dat[2]) : "", isset($dat[3]) ? $dat[3] : "", isset($dat[4]) ? $dat[4] : "", isset($dat[5]) ? $dat[5] : "", $group, $blocks);
 						}
 					}
 				}
 			}
 		}
+
 		return $ret;
 	}
 
