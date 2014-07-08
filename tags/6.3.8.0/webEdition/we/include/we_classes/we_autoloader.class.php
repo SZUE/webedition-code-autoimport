@@ -39,6 +39,7 @@ abstract class we_autoloader{
 	private static $domains = array(
 		'base' => 'we_classes/base',
 		'database' => 'we_classes/database',
+		'captcha' => 'we_classes/captcha',
 		'customer' => 'we_modules/customer',
 		'helpers' => 'we_classes/helpers',
 		'html' => 'we_classes/html',
@@ -54,9 +55,6 @@ abstract class we_autoloader{
 	);
 	private static $classes = array(
 		'we_classes' => array(
-			'Captcha' => 'captcha/captcha.class.php',
-			'CaptchaImage' => 'captcha/captchaImage.class.php',
-			'CaptchaMemory' => 'captcha/captchaMemory.class.php',
 			'charsetHandler' => 'charsetHandler.class.php',
 			'Console_Getopt' => 'Getopt.php',
 			'copyFolderFinishFrag' => 'we_copyFolderFinishFrag.class.php',
