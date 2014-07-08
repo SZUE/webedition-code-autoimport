@@ -68,6 +68,7 @@ class we_fileupload_include extends we_fileupload_base{
 	const USE_FILENAME_FROM_UPLOAD = true;
 
 	const USE_LEGACY_FOR_BACKUP = true;
+	const USE_LEGACY_FOR_WEIMPORT = true;
 
 	function __construct($name, $formFrame = 'top', $onclick = '', $width = 400, $drop = true, $progress = true, $acceptedMime = '', $acceptedExt = '', $forbiddenMime = '', $forbiddenExt = '', $externalProgress = array(), $maxUploadSize = -1){
 		parent::__construct($name, $width, $maxUploadSize);
