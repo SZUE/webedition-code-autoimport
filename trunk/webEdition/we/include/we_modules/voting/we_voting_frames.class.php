@@ -48,10 +48,10 @@ class we_voting_frames extends weModuleFrames{
 			case "reset_logdata":
 				return $this->getHTMLResetLogData();
 			case "show_log":
-				if($this->View->voting->LogDB){
-					return $this->getHTMLShowLogNew();
-				}
-				return $this->getHTMLShowLogOld();
+				return ($this->View->voting->LogDB ?
+						$this->getHTMLShowLogNew() :
+						$this->getHTMLShowLogOld()
+					);
 			case "delete_log":
 				return $this->getHTMLDeleteLog();
 			default:
@@ -82,8 +82,9 @@ class we_voting_frames extends weModuleFrames{
 			$we_tabs->addTab(new we_tab("#", g_l('modules_voting', '[inquiry]'), '((' . $this->topFrame . '.activ_tab==2) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('2');", array("id" => "tab_2")));
 			$we_tabs->addTab(new we_tab("#", g_l('modules_voting', '[options]'), '((' . $this->topFrame . '.activ_tab==3) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('3');", array("id" => "tab_3")));
 
-			if($this->View->voting->ID)
+			if($this->View->voting->ID){
 				$we_tabs->addTab(new we_tab("#", g_l('modules_voting', '[result]'), '((' . $this->topFrame . '.activ_tab==4) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('4');", array("id" => "tab_4")));
+			}
 		}
 
 		$we_tabs->onResize();
@@ -582,47 +583,46 @@ class we_voting_frames extends weModuleFrames{
 		$parts[] = array(
 			'headline' => '',
 			'html' => we_html_element::jsElement('
+function removeAll(){
+	for(var i=0;i<iptable_label.itemCount+1;i++){
+		iptable_label.delItem(i);
+	}
+}
 
-							function removeAll(){
-								for(var i=0;i<iptable_label.itemCount+1;i++){
-									iptable_label.delItem(i);
-								}
-							}
-
-							function newIp(){
-								var ip = prompt("' . g_l('modules_voting', '[new_ip_add]') . '","");
+function newIp(){
+	var ip = prompt("' . g_l('modules_voting', '[new_ip_add]') . '","");
 
 
-								var re = new RegExp("[a-zA-Z|,]");
-								var m = ip.match(re);
-								if(m != null){
-									' . we_message_reporting::getShowMessageCall(g_l('modules_voting', '[not_valid_ip]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-									return;
-								}
+	var re = new RegExp("[a-zA-Z|,]");
+	var m = ip.match(re);
+	if(m != null){
+		' . we_message_reporting::getShowMessageCall(g_l('modules_voting', '[not_valid_ip]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+		return;
+	}
 
-								var re = new RegExp("^(([0-2|\*]?[0-9|\*]{1,2}\.){3}[0-2|\*]?[0-9|\*]{1,2})");
+	var re = new RegExp("^(([0-2|\*]?[0-9|\*]{1,2}\.){3}[0-2|\*]?[0-9|\*]{1,2})");
 
-								var m = ip.match(re);
+	var m = ip.match(re);
 
-								if(m != null){
+	if(m != null){
 
-									var p = ip.split(".");
-									for (var i = 0; i < p.length; i++) {
-								      var t = p[i];
-								      t.replace("*","");
-								      if(parseInt(t)>255) {
-								      	' . we_message_reporting::getShowMessageCall(g_l('modules_voting', '[not_valid_ip]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-								      	return false;
-								      }
-								    }
+		var p = ip.split(".");
+		for (var i = 0; i < p.length; i++) {
+				var t = p[i];
+				t.replace("*","");
+				if(parseInt(t)>255) {
+					' . we_message_reporting::getShowMessageCall(g_l('modules_voting', '[not_valid_ip]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+					return false;
+				}
+			}
 
-									iptable_label.addItem();
-									iptable_label.setItem(0,(iptable_label.itemCount-1),ip);
-									iptable_label.showVariant(0);
-								} else {
-									' . we_message_reporting::getShowMessageCall(g_l('modules_voting', '[not_valid_ip]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-								}
-							}
+		iptable_label.addItem();
+		iptable_label.setItem(0,(iptable_label.itemCount-1),ip);
+		iptable_label.showVariant(0);
+	} else {
+		' . we_message_reporting::getShowMessageCall(g_l('modules_voting', '[not_valid_ip]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+	}
+}
 					') . $table->getHtml(),
 			'space' => $this->_space_size
 		);
