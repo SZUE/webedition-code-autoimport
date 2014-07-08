@@ -192,8 +192,11 @@ function we_cmd() {
 	}
 
 	function getWizBody($type = '', $step = 0, $mode = 0){
-		if($this->fileUploader){
-			$this->fileUploader->processFileRequest();
+		//FIXME: delete condition and else branch when new uploader is stable
+		if(!we_fileupload_include::USE_LEGACY_FOR_WEIMPORT){
+			if($this->fileUploader){
+				$this->fileUploader->processFileRequest();
+			}
 		}
 
 		$a = array(
@@ -211,7 +214,8 @@ function we_cmd() {
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(
 					STYLESHEET .
-					($this->fileUploader ? $this->fileUploader->getCss() . $this->fileUploader->getJs() : '') .
+					//FIXME: delete condition and else branch when new uploader is stable
+					(!we_fileupload_include::USE_LEGACY_FOR_WEIMPORT && $this->fileUploader ? $this->fileUploader->getCss() . $this->fileUploader->getJs() : '') .
 					we_html_element::jsScript(JS_DIR . "windows.js") .
 					we_html_element::jsElement($js)) .
 				we_html_element::htmlBody(array(
