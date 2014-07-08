@@ -5,4 +5,4 @@ define('WE_ZFVERSION','1.12.1'); // recommended version of the Zend Framework (b
 define("WE_SVNREV","6985");
 define("WE_VERSION_SUPP_VERSION","0");
 define("WE_VERSION_BRANCH","trunk");
-define("WE_VERSION_NAME","6.3.8-s1");
+define("WE_VERSION_NAME","6.3.8-s2");
