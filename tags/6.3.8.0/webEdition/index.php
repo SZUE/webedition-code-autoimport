@@ -42,8 +42,8 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 if(isset($_SESSION['perms']['ADMINISTRATOR']) && $_SESSION['perms']['ADMINISTRATOR']){
 	$suhosinMsg = (in_array('suhosin', get_loaded_extensions()) && !in_array(ini_get('suhosin.simulation'), array(1, 'on', 'yes', 'true', true))) ? 'suhosin=on\n' : '';
 
-	$maxInputMsg = !ini_get('max_input_vars') ? 'max_input_vars = 1000 (PHP default value)' :
-		(ini_get('max_input_vars') < 2000 ? 'max_input_vars = ' . ini_get('max_input_vars') : '');
+	$maxInputMsg = (version_compare(PHP_VERSION, '5.3.0', '>=') ? !ini_get('max_input_vars') ? 'max_input_vars = 1000 (PHP default value)' :
+				(ini_get('max_input_vars') < 2000 ? 'max_input_vars = ' . ini_get('max_input_vars') : '') : '');
 	$maxInputMsg .= $maxInputMsg ? ': >= 2000 is recommended' : $maxInputMsg;
 
 	$criticalPhpMsg = trim($maxInputMsg . $suhosinMsg);
@@ -93,11 +93,11 @@ function printHeader($login, $status = 200){
 	include(JS_PATH . 'weJsStrings.inc.php');
 
 	if($login != LOGIN_OK){
-		print we_html_element::linkElement(array('rel' => 'home', 'href' => WEBEDITION_DIR)) .
+		echo we_html_element::linkElement(array('rel' => 'home', 'href' => WEBEDITION_DIR)) .
 			we_html_element::linkElement(array('rel' => 'author', 'href' => g_l('start', '[we_homepage]')));
 	}
 
-	print we_html_element::linkElement(array('rel' => 'SHORTCUT ICON', 'href' => IMAGE_DIR . 'webedition.ico')) .
+	echo we_html_element::linkElement(array('rel' => 'SHORTCUT ICON', 'href' => IMAGE_DIR . 'webedition.ico')) .
 		we_html_element::jsElement('cookieBackup = document.cookie;
 	document.cookie = "cookie=yep";
 	cookieOk = document.cookie.indexOf("cookie=yep") > -1;
@@ -224,15 +224,6 @@ function getError($reason, $cookie = false){
 		$_error .= ++$_error_count . ' - ' . sprintf(g_l('start', '[tmp_path]'), ini_get('session.save_path')) . we_html_element::htmlBr();
 	}
 
-	if(isset($GLOBALS['FOUND_SESSION_PROBLEM'])){
-		$_error .= ++$_error_count . ' - ' .
-			'PHP is not allowed to write / cleanup session data correctly. Please contact your Admin. Additional Information for your Admin:' . we_html_element::htmlBr() .
-			'session.gc_probability: ' . $GLOBALS['FOUND_SESSION_PROBLEM'] . we_html_element::htmlBr() . '
- Session Path: ' . session_save_path() . we_html_element::htmlBr() . '
- Opendir: failed' . we_html_element::htmlBr() .
-			'Problem is temporary fixed by webEdition' . we_html_element::htmlBr() .
-			'<a href="' . WEBEDITION_DIR . 'index.php?skipSess=1">Click here, to start anyway</a>' . we_html_element::htmlBr();
-	}
 
 	if(!ini_get('session.use_cookies')){
 		$_error .= ++$_error_count . ' - ' . g_l('start', '[use_cookies]') . we_html_element::htmlBr();

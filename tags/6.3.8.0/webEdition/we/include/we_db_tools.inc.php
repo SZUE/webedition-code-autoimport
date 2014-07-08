@@ -26,7 +26,7 @@
 /**
   @param $query: SQL query; an empty query resets the cache
  */
-function getHash($query, we_database_base $DB_WE = NULL, $resultType = MYSQL_BOTH){
+function getHash($query = '', we_database_base $DB_WE = NULL, $resultType = MYSQL_BOTH){
 	static $cache = array();
 	if($query == ''){
 		$cache = array();
@@ -46,6 +46,33 @@ function f($query, $field = -1, we_database_base $DB_WE = NULL){
 	return ($field == -1 ? current($h) : (isset($h[$field]) ? $h[$field] : ''));
 }
 
+function escape_sql_query($inp){
+	if(is_array($inp)){
+		return array_map(__METHOD__, $inp);
+	}
+
+	return ($inp && is_string($inp) ?
+			strtr($inp, array(
+				'\\' => '\\\\',
+				"\0" => '\\0',
+				"\n" => '\\n',
+				"\r" => '\\r',
+				"'" => "\\'",
+				'"' => '\\"',
+				"\x1a" => '\\Z'
+			)) :
+			$inp);
+}
+
+function sql_function($name){
+	static $data = 0;
+	if(!$data){
+		$data = md5(uniqid(__FUNCTION__, true));
+	}
+	return (is_array($name) ? isset($name['sqlFunction']) && $name['sqlFunction'] == $data :
+			array('sqlFunction' => $data, 'val' => $name));
+}
+
 function doUpdateQuery(we_database_base $DB_WE, $table, $hash, $where){
 	if(empty($hash)){
 		return;
@@ -58,23 +85,9 @@ function doUpdateQuery(we_database_base $DB_WE, $table, $hash, $where){
 			$fn[$fieldName] = $hash[$fieldName];
 		}
 	}
-	return $DB_WE->query('UPDATE `' . $table . '` SET ' . we_database_base::arraySetter($fn) . ' ' . $where);
+	return $DB_WE->query('UPDATE `' . $DB_WE->escape($table) . '` SET ' . we_database_base::arraySetter($fn) . ' ' . $where);
 }
 
-function escape_sql_query($inp){
-	if(is_array($inp)){
-		return array_map(__METHOD__, $inp);
-	}
-
-	if(!empty($inp) && is_string($inp)){
-		return str_replace(array('\\', "\0", "\n", "\r", "'", '"', "\x1a"), array('\\\\', '\\0', '\\n', '\\r', "\\'", '\\"', '\\Z'), $inp);
-	}
-	return $inp;
-}
-
-function sql_function($name){
-	return array('sqlFunction' => true, 'val' => $name);
-}
 
 function doInsertQuery(we_database_base $DB_WE, $table, $hash){
 	$tableInfo = $DB_WE->metadata($table);
