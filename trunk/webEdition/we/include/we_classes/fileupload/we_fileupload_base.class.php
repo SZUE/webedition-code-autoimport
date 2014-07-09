@@ -30,6 +30,7 @@ abstract class we_fileupload_base {
 		'width' => 400,
 		'dragHeight' => 30,
 		'progressWidth' => 200,
+		'alertBoxWidth' => 390,
 		'marginTop' => 0,
 		'marginBottom' => 0
 	);
@@ -64,6 +65,7 @@ abstract class we_fileupload_base {
 			'width' => isset($args['width']) ? $args['width'] : $this->dimensions['width'],
 			'dragHeight' => isset($args['dragHeight']) ? $args['dragHeight'] : $this->dimensions['dragHeight'],
 			'progressWidth' => isset($args['progressWidth']) ? $args['progressWidth'] : $this->dimensions['progressWidth'],
+			'alertBoxWidth' => isset($args['alertBoxWidth']) ? $args['alertBoxWidth'] : $this->dimensions['alertBoxWidth'],
 			'marginTop' => isset($args['marginTop']) ? $args['marginTop'] : $this->dimensions['marginTop'],
 			'marginBottom' => isset($args['marginBottom']) ? $args['marginBottom'] : $this->dimensions['marginBottom']
 		);
@@ -83,13 +85,29 @@ abstract class we_fileupload_base {
 	}
 
 	public function getMaxUploadSize(){
-		return $this->maxUploadSizeBytes;
+		return $this->useLegacy ? getUploadMaxFilesize(false) : $this->maxUploadSizeBytes;
 	}
 
 	public function getMaxtUploadSizeText(){
-		$field = $this->useLegacy ? '[max_possible_size]' : ($this->getmaxUploadSize()? '[size_limit_set_to]' : '[no_size_limit]');
+		$field = $this->useLegacy ? '[max_possible_size]' : ($this->getMaxUploadSize()? '[size_limit_set_to]' : '[no_size_limit]');
 		return $field == '[no_size_limit]' ? g_l('newFile', $field) : 
-			sprintf(g_l('newFile', $field), we_base_file::getHumanFileSize($this->getmaxUploadSize(), we_base_file::SZ_MB));
+			sprintf(g_l('newFile', $field), we_base_file::getHumanFileSize($this->getMaxUploadSize(), we_base_file::SZ_MB));
+	}
+
+	public function getHtmlMaxUploadSizeAlert($width = -1){
+		$width = $width == -1 ? $this->dimensions['alertBoxWidth'] : $width;
+		$type = $this->useLegacy ? we_html_tools::TYPE_ALERT : we_html_tools::TYPE_INFO;
+
+		return '
+			<div id="div_' . $this->name . '_alert_legacy" style="display:none">' .
+				we_html_tools::htmlAlertAttentionBox(sprintf(g_l('newFile', '[max_possible_size]'), we_base_file::getHumanFileSize(getUploadMaxFilesize(false), we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, $width) .
+				'<div style="margin-top: 4px"></div>' .
+				we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[fallback_text]'), we_html_tools::TYPE_ALERT, $width, false, 9) .
+			'</div>
+			<div id="div_' . $this->name . '_alert">' .
+				we_html_tools::htmlAlertAttentionBox($this->getMaxtUploadSizeText(), $type, $width) .
+			'</div>';
+
 	}
 
 	public function getCss(){

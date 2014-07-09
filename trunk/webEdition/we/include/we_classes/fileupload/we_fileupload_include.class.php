@@ -30,6 +30,7 @@ class we_fileupload_include extends we_fileupload_base{
 	protected $progress = true;
 	protected $isUploadComplete = false;
 	protected $onclick = '';
+	protected $fileNameTemp = "";
 	protected $fileNameTempParts = array(
 		'path' => TEMP_PATH,
 		'prefix' => '',
@@ -192,7 +193,11 @@ class we_fileupload_include extends we_fileupload_base{
 ';
 	}
 
-	private function _getFileNameTemp($type = 0, $forceDocRoot = false){
+	public function getFileNameTemp(){
+		return $this->fileNameTemp;
+	}
+
+	private function _makeFileNameTemp($type = 0, $forceDocRoot = false){
 		$docRoot = $forceDocRoot && $this->fileNameTempParts['missingDocRoot'] ? $_SERVER['DOCUMENT_ROOT'] : '';
 		$filename = !$this->fileNameTempParts['useFilenameFromUpload'] ? $this->fileNameTempParts['prefix'] . we_base_file::getUniqueId() . $this->fileNameTempParts['postfix'] :
 			($_FILES[$this->name] && $_FILES[$this->name]['name'] ? $_FILES[$this->name]['name'] : we_base_request::_(we_base_request::STRING, 'weFileName', ''));
@@ -257,13 +262,22 @@ function weFU(){
 			_init();
 		} else {
 			var fileselect = document.getElementById("' . $this->name . '"),
-				fileselectLegacy = document.getElementById("' . $this->name . '_legacy");
+				fileselectLegacy = document.getElementById("' . $this->name . '_legacy"),
+				alertbox = document.getElementById("div_' . $this->name . '_alert"),
+				alertboxLegacy = document.getElementById("div_' . $this->name . '_alert_legacy");
 
 			fileselect.id = fileselect.name = "' . $this->name . '_alt";
 			fileselectLegacy.id = fileselectLegacy.name = "' . $this->name . '";
 			document.getElementById("div_' . $this->name . '").style.display = "none";
 			document.getElementById("div_' . $this->name . '_legacy").style.display = "";
+			if(typeof alertbox !== "undefined" && typeof alertboxLegacy !== "undefined"){
+				alertbox.style.display = "none";
+				alertboxLegacy.style.display = "";
+			}
 			weFU.legacyMode = true;
+			' . $this->formFrame . '.document.forms[0].weIsFileInLegacy.value = 1;
+			' . $this->formFrame . '.document.forms[0].weIsUploading.value = 0;
+			//FIXME: change state of hidden fiels weIsFileInLegacy and weIsUploading
 		}
 	});
 
@@ -587,8 +601,8 @@ weFU.reset = function(){
 			if($partCount){
 				if(isset($_FILES[$this->name]) && strlen($_FILES[$this->name]["tmp_name"])){
 
-					$tempName = $partNum == 1 ? $this->_getfileNameTemp(self::GET_NAME_ONLY) : we_base_file::getUniqueId();
-					$tempPath = $this->_getfileNameTemp(self::GET_PATH_ONLY, self::FORCE_DOC_ROOT);
+					$tempName = $partNum == 1 ? $this->_makeFileNameTemp(self::GET_NAME_ONLY) : we_base_file::getUniqueId();
+					$tempPath = $this->_makeFileNameTemp(self::GET_PATH_ONLY, self::FORCE_DOC_ROOT);
 
 					$error = !$tempName ? 'no_filename_error' : '';
 					$error = $error ? $error : ($partNum > $this->maxChunkCount ? 'oversized_error' : '');
@@ -599,12 +613,12 @@ weFU.reset = function(){
 						if(($mime = we_base_util::getMimeType('', $tempPath . $tempName, we_base_util::MIME_BY_HEAD))){
 							//IMPORTANT: finfo_file returns text/plain where FILE returns ""!
 							if($mime !== $fileCt){
-								t_e("Mime type determined by finfo_file differ from type detemined by JS File", $mime, $fileCt);
+								//t_e("Mime type determined by finfo_file differ from type detemined by JS File", $mime, $fileCt);
 							} else {
 								$error = !$this->checkFileType($mime, $fileName) ? 'mime_or extension_not_ok_error' : '';
 							}
 						} else {
-							t_e("No Mime type could be determined by finfo_file or mime_content_type");
+							//t_e("No Mime type could be determined by finfo_file or mime_content_type");
 							//we ignore this and test against extension when file is completed
 						}
 					}
@@ -621,7 +635,7 @@ weFU.reset = function(){
 					}
 
 					echo json_encode($response);
-					die();
+					return false; //do not continue after return
 				}
 			} else {
 				//all chunks are done, check integrity, set some vars and continue within editor context
@@ -643,7 +657,7 @@ weFU.reset = function(){
 							return false;
 						}
 						echo json_encode($response);
-						die();
+						return false; // do not continue after return
 					}
 
 					$_FILES[$this->name] = array(
@@ -654,12 +668,14 @@ weFU.reset = function(){
 						'error' => UPLOAD_ERR_OK,
 					);
 					//FIXME: make some integrity test for the whole and for every chunk (md5)
-					return $this->_getfileNameTemp(self::GET_PATH_ONLY) . $fileNameTemp;
+
+					$this->fileNameTemp = $this->_makeFileNameTemp(self::GET_PATH_ONLY) . $fileNameTemp;
+					return true;
 				}
-				return '';
+				return true;
 			}
 		} else {
-			return '';
+			return true;
 		}
 	}
 
@@ -691,7 +707,7 @@ weFU.reset = function(){
 				$mimeGroup = substr($mime, 0, strpos($mime, '/') + 1) . '*';
 		}
 		if($alert){
-			t_e($alert);
+			//t_e($alert);
 		}
 
 		if($tc['accepted']['all']){
@@ -710,7 +726,6 @@ weFU.reset = function(){
 			in_array($ext, $tc['forbidden']['all']))){
 			return false;
 		}
-
 		return true;
 	}
 
