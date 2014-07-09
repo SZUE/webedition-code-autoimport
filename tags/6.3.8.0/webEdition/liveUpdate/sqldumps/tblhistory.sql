@@ -1,3 +1,5 @@
+###UPDATEDROPCOL(ID,###TBLPREFIX###tblhistory)###
+/* query separator */
 CREATE TABLE ###TBLPREFIX###tblhistory (
   DID bigint(20) unsigned NOT NULL default '0',
   DocumentTable enum('tblFile','tblObject','tblTemplates','tblObjectFiles') NOT NULL,
