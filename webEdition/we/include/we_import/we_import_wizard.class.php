@@ -344,7 +344,7 @@ function handle_eventNext(){
 		fs = f.elements['v[fserver]'].value,
 		ext = '',
 		fl = f.elements['uploaded_xml_file'].value;
-		" . ($this->fileUploader ? "fl = weFileUpload && !weFileUpload.legacyMode ? 'dummy.xml' : fl" : "") . "
+		" . ($this->fileUploader ? "fl = weFU && !weFU.legacyMode ? 'dummy.xml' : fl" : "") . "
 
 	if (f.elements['v[rdofloc]'][0].checked==true && fs!='/') {
 		if (fs.match(/\.\./)=='..') { " . (we_message_reporting::getShowMessageCall(g_l('import', "[invalid_path]"), we_message_reporting::WE_MESSAGE_ERROR)) . "; return; }
@@ -421,7 +421,8 @@ function handle_event(evt) {
 
 		//FIXME: delete condition and else branch when new uploader is stable
 		if(!we_fileupload_include::USE_LEGACY_FOR_WEIMPORT){
-			$importLocs->setCol(4, 0, array(), we_html_tools::htmlAlertAttentionBox($this->fileUploader ? $this->fileUploader->getMaxtUploadSizeText() : sprintf(g_l('import', "[filesize_local]"), we_base_file::getHumanFileSize(getUploadMaxFilesize(false), we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 410));
+			$importLocs->setCol($_tblRow++, 0, array(), $this->fileUploader ? $this->fileUploader->getHtmlMaxUploadSizeAlert(410) :
+				we_html_tools::htmlAlertAttentionBox(sprintf(g_l('import', '[filesize_local]'), we_base_file::getHumanFileSize(getUploadMaxFilesize(false), we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 410));
 		} else {
 			$maxsize = getUploadMaxFilesize(false);
 			$importLocs->setCol(4, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('import', "[filesize_local]"), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 410));
@@ -466,8 +467,8 @@ function handle_event(evt) {
 
 				//FIXME: delete condition and else branch when new uploader is stable
 				if(!we_fileupload_include::USE_LEGACY_FOR_WEIMPORT){
-					if($this->fileUploader){
-						$v['import_from'] = $this->fileUploader->processFileRequest();
+					if($this->fileUploader && $this->fileUploader->processFileRequest()){
+						$v['import_from'] = $this->fileUploader->getFileNameTemp();
 					} else {
 						$v['import_from'] = TEMP_DIR . we_base_file::getUniqueId() . '_w.xml';
 						move_uploaded_file($_FILES['uploaded_xml_file']['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . $v['import_from']);
@@ -975,7 +976,7 @@ function handle_eventNext(){
 	var fs = f.elements['v[fserver]'].value;
 	var fl = f.elements['uploaded_xml_file'].value,
 		ext = '';
-	" . ($this->fileUploader ? "fl = weFileUpload && !weFileUpload.legacyMode ? 'dummy.xml' : fl" : "") . "
+	" . ($this->fileUploader ? "fl = weFU && !weFU.legacyMode ? 'dummy.xml' : fl" : "") . "
 
 	if ((f.elements['v[rdofloc]'][0].checked==true) && fs!='/') {
 		if (fs.match(/\.\./)=='..') {
@@ -1133,7 +1134,8 @@ HTS;
 
 		//FIXME: delete condition and else branch when new uploader is stable
 		if(!we_fileupload_include::USE_LEGACY_FOR_WEIMPORT){
-			$importLocs->setCol($_tblRow++, 0, array(), we_html_tools::htmlAlertAttentionBox($this->fileUploader ? $this->fileUploader->getMaxtUploadSizeText() : sprintf(g_l('import', '[filesize_local]'), we_base_file::getHumanFileSize(getUploadMaxFilesize(false), we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 410));
+			$importLocs->setCol($_tblRow++, 0, array(), $this->fileUploader ? $this->fileUploader->getHtmlMaxUploadSizeAlert(410) :
+				we_html_tools::htmlAlertAttentionBox(sprintf(g_l('import', '[filesize_local]'), we_base_file::getHumanFileSize(getUploadMaxFilesize(false), we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 410));
 		} else {
 			$maxsize = getUploadMaxFilesize(false);
 			$importLocs->setCol($_tblRow++, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('import', '[filesize_local]'), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 410));
@@ -1349,8 +1351,8 @@ HTS;
 
 			//FIXME: delete condition and else branch when new uploader is stable
 			if(!we_fileupload_include::USE_LEGACY_FOR_WEIMPORT){			
-				if($this->fileUploader){
-					$v['import_from'] = $this->fileUploader->processFileRequest();
+				if($this->fileUploader && $this->fileUploader->processFileRequest()){
+					$v['import_from'] = $this->getFileNameTemp();
 				} else {
 					$v['import_from'] = TEMP_DIR . 'we_xml_' . $uniqueId . '.xml';
 					move_uploaded_file($_FILES['uploaded_xml_file']['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . $v['import_from']);
@@ -1813,7 +1815,7 @@ function handle_eventNext(){
 		fs = f.elements['v[fserver]'].value,
 		fl = f.elements['uploaded_csv_file'].value,
 		ext = '';
-		" . ($this->fileUploader ? "fl = weFileUpload && !weFileUpload.legacyMode ? 'dummy.xml' : fl" : "") . "
+		" . ($this->fileUploader ? "fl = weFU && !weFU.legacyMode ? 'dummy.xml' : fl" : "") . "
 
 	if ((f.elements['v[rdofloc]'][0].checked==true) && fs!='/') {
 		if (fs.match(/\.\./)=='..') { " . we_message_reporting::getShowMessageCall(g_l('import', "[invalid_path]"), we_message_reporting::WE_MESSAGE_ERROR) . " return; }
@@ -1895,7 +1897,8 @@ function handle_event(evt) {
 
 		//FIXME: delete condition and else branch when new uploader is stable
 		if(!we_fileupload_include::USE_LEGACY_FOR_WEIMPORT){
-			$importLocs->setCol($_tblRow++, 0, array(), we_html_tools::htmlAlertAttentionBox($this->fileUploader ? $this->fileUploader->getMaxtUploadSizeText() : sprintf(g_l('import', '[filesize_local]'), we_base_file::getHumanFileSize(getUploadMaxFilesize(false), we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 410));
+			$importLocs->setCol($_tblRow++, 0, array(), $this->fileUploader ? $this->fileUploader->getHtmlMaxUploadSizeAlert(410) :
+				we_html_tools::htmlAlertAttentionBox(sprintf(g_l('import', '[filesize_local]'), we_base_file::getHumanFileSize(getUploadMaxFilesize(false), we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 410));
 		} else {
 			$maxsize = getUploadMaxFilesize(false);
 			$importLocs->setCol($_tblRow++, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('import', '[filesize_local]'), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 410));
@@ -1978,8 +1981,8 @@ function handle_event(evt) {
 
 						//FIXME: delete condition and else branch when new uploader is stable
 						if(!we_fileupload_include::USE_LEGACY_FOR_WEIMPORT){
-							if($this->fileUploader){
-								$v['import_from'] = $this->fileUploader->processFileRequest();
+							if($this->fileUploader && $this->fileUploader->processFileRequest()){
+								$v['import_from'] = $this->fileUploader->getFileNameTemp();
 							} else {
 								$v['import_from'] = TEMP_DIR . 'we_csv_' . $uniqueId . '.csv';
 								move_uploaded_file($_FILES['uploaded_csv_file']['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . $v['import_from']);
