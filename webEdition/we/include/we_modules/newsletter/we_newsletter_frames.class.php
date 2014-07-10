@@ -1910,7 +1910,7 @@ self.focus();
 		$emailkey = array();
 		if(strpos($csv_file, '..') === false){
 			if($csv_file){
-				$emails = we_newsletter_newsletter::getEmailsFromExtern2($csv_file, null, null, null, we_base_request::_(we_base_request::RAW, 'weEmailStatus', 0), $emailkey);
+				$emails = we_newsletter_newsletter::getEmailsFromExtern2($csv_file, null, null, array(), we_base_request::_(we_base_request::RAW, 'weEmailStatus', 0), $emailkey);
 			}
 		} else {
 			echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[path_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR));
