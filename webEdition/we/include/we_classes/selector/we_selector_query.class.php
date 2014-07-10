@@ -253,7 +253,7 @@ class we_selector_query{
 				$this->addQueryField($val);
 			}
 		}
-		$this->db->query('SELECT ' . implode(',', $this->fields) . ' FROM ' . $this->db->escape($table) . " WHERE ID = " . intval($id) . ' ' . $userExtraSQL);
+		$this->db->query('SELECT ' . implode(',', $this->fields) . ' FROM ' . $this->db->escape($table) . ' WHERE ID=' . intval($id) . ' ' . $userExtraSQL);
 		return $this->getResult();
 	}
 

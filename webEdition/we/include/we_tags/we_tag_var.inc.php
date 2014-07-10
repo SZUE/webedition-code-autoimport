@@ -34,6 +34,11 @@ function we_tag_var($attribs){
 	$format = weTag_getAttribute('format', $attribs);
 	$doc = we_getDocForTag($docAttr, false);
 
+	if(!is_object($doc)){
+		t_e('no doc for var tag found');
+		return '';
+	}
+
 	switch($type){
 		case 'session' :
 			$return = getArrayValue($_SESSION, null, $name_orig);

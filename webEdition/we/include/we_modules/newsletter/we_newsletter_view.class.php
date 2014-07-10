@@ -1364,7 +1364,7 @@ function set_state_edit_delete_recipient(control) {
 
 				if(isset($_REQUEST['blocks'])){
 					for($i = 0; $i < $_REQUEST['blocks']; $i++){
-						switch(we_base_request::_(we_base_request::STRING, 'block' . $i . '_Type')){
+						switch(we_base_request::_(we_base_request::INT, 'block' . $i . '_Type')){
 							case we_newsletter_block::DOCUMENT:
 							case we_newsletter_block::DOCUMENT_FIELD:
 								$acTable = FILE_TABLE;
@@ -1379,20 +1379,20 @@ function set_state_edit_delete_recipient(control) {
 								$acTable = '';
 								$acErrorField = '';
 						}
-						if(!empty($acTable)){
-							$weAcResult = $weAcQuery->getItemById(we_base_request::_(we_base_request::STRING, 'block' . $i . '_LinkID'), $acTable, array('IsFolder'));
+						if($acTable){
+							$weAcResult = $weAcQuery->getItemById(we_base_request::_(we_base_request::INT, 'block' . $i . '_LinkID'), $acTable, array('IsFolder'));
 
 							if(!is_array($weAcResult) || count($weAcResult) < 1 || $weAcResult[0]['IsFolder'] == 1){
-								print we_html_element::jsElement(
+								echo we_html_element::jsElement(
 										we_message_reporting::getShowMessageCall(sprintf(g_l('modules_newsletter', '[blockFieldError]'), ($i + 1), $acErrorField), we_message_reporting::WE_MESSAGE_ERROR)
 								);
 								return;
 							}
-							if(($field = we_base_request::_(we_base_request::INT, 'block' . $i . '_Field'))){
+							if(($field = intval(we_base_request::_(we_base_request::STRING, 'block' . $i . '_Field')))){
 								$weAcResult = $weAcQuery->getItemById($field, TEMPLATES_TABLE, array("IsFolder"));
-								if(!is_array($weAcResult) || $weAcResult[0]['IsFolder'] == 1){
-									print we_html_element::jsElement(
-											we_message_reporting::getShowMessageCall(sprintf(g_l('modules_newsletter', '[blockFieldError]'), $i, g_l('modules_newsletter', '[block_template]')), we_message_reporting::WE_MESSAGE_ERROR)
+								if(!is_array($weAcResult) || !$weAcResult || $weAcResult[0]['IsFolder'] == 1){
+									echo we_html_element::jsElement(
+										we_message_reporting::getShowMessageCall(sprintf(g_l('modules_newsletter', '[blockFieldError]'), $i, g_l('modules_newsletter', '[block_template]')), we_message_reporting::WE_MESSAGE_ERROR)
 									);
 									return;
 								}
