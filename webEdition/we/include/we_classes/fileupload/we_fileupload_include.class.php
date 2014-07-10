@@ -331,11 +331,11 @@ weFU.gl = {
 	sizeTextNok: "' . g_l('newFile', '[file_size]') . ': &gt; ' . $this->maxUploadSizeMBytes . ' MB, ",
 	typeTextOk: "' . g_l('newFile', '[file_type]') . ': ",
 	typeTextNok: "' . g_l('newFile', '[file_type_forbidden]') . ': ",
-	//FIXME: g_l()
-	errorNoFileSelected: "Sie haben keine Datei ausgewaehlt.",
-	errorFileSize: "Die ausgewaehlte Datei ist zu gross um hochgeladen zu werden.",
-	errorFileType: "Die ausgewaehlte entspricht nicht den zugelassenen Dateitypen.",
-	errorFileSizeType: "Die ausgewaehlte Datei ist zu gross um hochgeladen zu werden und entspricht nicht den zugelassenen Dateitypen.",
+
+	errorNoFileSelected: "' . g_l('newFile', '[error_no_file]') . '",
+	errorFileSize: "' . g_l('newFile', '[error_file_size]') . '",
+	errorFileType: "' . g_l('newFile', '[error_file_type]') . '",
+	errorFileSizeType: "' . g_l('newFile', '[error_size_type]') . '"
 };
 		') . ($createExternalProgress ? $pb->getJS() : '');
 	}
@@ -565,9 +565,14 @@ weFU.processError = function(arg){
 
 weFU.reset = function(){
 	weFU.file = null;
+	weFU.preparedFiles = new Array();
 	weFU.uploadConditionsOk = false;
-	weFU.elems.fileDrag.innerHTML = weFU.gl.dropText;
-	weFU.elems.progress.style.display = "none";
+	if(weFU.elems.fileDrag){
+		weFU.elems.fileDrag.innerHTML = weFU.gl.dropText;
+	}
+	if(weFU.elems.progress){
+		weFU.elems.progress.style.display = "none";
+	}
 	weFU.elems.message.innerHTML = "";
 	weFU.elems.message.innerHTML.display = "none";
 };
