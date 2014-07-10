@@ -120,7 +120,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	function getFilterByDbHash(&$hash){
 		$f = $hash['filter'] ? unserialize($hash['filter']) : array();
 		return new self(
-			intval($hash['id']), intval($hash['modelId']), $hash['modelType'], $hash['modelTable'], intval($hash['accessControlOnTemplate']), intval($hash['errorDocNoLogin']), intval($hash['errorDocNoAccess']), intval($hash['mode']), makeArrayFromCSV($hash['specificCustomers']), $f, makeArrayFromCSV($hash['whiteList']), makeArrayFromCSV($hash['blackList'])
+			intval($hash['id']), intval($hash['modelId']), $hash['modelType'], $hash['modelTable'], intval($hash['accessControlOnTemplate']), intval($hash['errorDocNoLogin']), intval($hash['errorDocNoAccess']), intval($hash['mode']), makeArrayFromCSV($hash['specificCustomers']), is_array($f) ? $f : array(), makeArrayFromCSV($hash['whiteList']), makeArrayFromCSV($hash['blackList'])
 		);
 	}
 

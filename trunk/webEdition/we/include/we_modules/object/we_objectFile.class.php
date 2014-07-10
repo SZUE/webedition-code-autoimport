@@ -2804,27 +2804,34 @@ class we_objectFile extends we_document{
 
 	function i_getDocument($includepath = ''){
 		extract($GLOBALS, EXTR_SKIP); // globalen Namensraum herstellen.
+		if(isset($GLOBALS['we_doc'])){
+			$backupdoc = $GLOBALS['we_doc'];
+		}
 
-		$we_doc = new we_webEditionDocument();
-		$we_doc->elements = $this->elements;
-		$we_doc->Templates = $this->Templates;
-		$we_doc->ExtraTemplates = $this->ExtraTemplates;
-		$we_doc->TableID = $this->TableID;
-		$we_doc->CreatorID = $this->CreatorID;
-		$we_doc->ModifierID = $this->ModifierID;
-		$we_doc->RestrictOwners = $this->RestrictOwners;
-		$we_doc->Owners = $this->Owners;
-		$we_doc->OwnersReadOnly = $this->OwnersReadOnly;
-		$we_doc->Category = $this->Category;
-		$we_doc->ObjectID = $this->ObjectID;
-		$we_doc->OF_ID = $this->ID;
+		$GLOBALS['we_doc'] = new we_webEditionDocument();
+		$GLOBALS['we_doc']->elements = $this->elements;
+		$GLOBALS['we_doc']->Templates = $this->Templates;
+		$GLOBALS['we_doc']->ExtraTemplates = $this->ExtraTemplates;
+		$GLOBALS['we_doc']->TableID = $this->TableID;
+		$GLOBALS['we_doc']->CreatorID = $this->CreatorID;
+		$GLOBALS['we_doc']->ModifierID = $this->ModifierID;
+		$GLOBALS['we_doc']->RestrictOwners = $this->RestrictOwners;
+		$GLOBALS['we_doc']->Owners = $this->Owners;
+		$GLOBALS['we_doc']->OwnersReadOnly = $this->OwnersReadOnly;
+		$GLOBALS['we_doc']->Category = $this->Category;
+		$GLOBALS['we_doc']->ObjectID = $this->ObjectID;
+		$GLOBALS['we_doc']->OF_ID = $this->ID;
 
-		$we_doc->InWebEdition = false;
-		$we_include = $includepath ? $includepath : $we_doc->TemplatePath;
+		$GLOBALS['we_doc']->InWebEdition = false;
+		$we_include = $includepath ? $includepath : $GLOBALS['we_doc']->TemplatePath;
 		ob_start();
 		include($we_include);
 		$contents = ob_get_contents();
 		ob_end_clean();
+		if(isset($backupdoc)){
+			$GLOBALS['we_doc'] = $backupdoc;
+		}
+
 		return $contents;
 	}
 
