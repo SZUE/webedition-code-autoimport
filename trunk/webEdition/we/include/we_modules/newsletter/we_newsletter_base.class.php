@@ -170,7 +170,7 @@ class we_newsletter_base{
 		return false;
 	}
 
-	function getEmailsFromList($emails, $emails_only = 0, $group = 0, $blocks = array()){
+	function getEmailsFromList($emails, $emails_only = 0, $group = 0,array $blocks = array()){
 		$arr = explode("\n", $emails);
 		if(!$arr){
 			return array();
@@ -192,7 +192,7 @@ class we_newsletter_base{
 		return $ret;
 	}
 
-	function getEmailsFromExtern($files, $emails_only = 0, $group = 0, $blocks = array()){
+	function getEmailsFromExtern($files, $emails_only = 0, $group = 0, array $blocks = array()){
 		$arr = makeArrayFromCSV($files);
 		if(!$arr){
 			return array();
