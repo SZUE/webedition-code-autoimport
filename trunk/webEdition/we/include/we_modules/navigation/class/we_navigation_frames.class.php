@@ -78,7 +78,7 @@ class we_navigation_frames extends weModuleFrames{
 		$tab = we_base_request::_(we_base_request::STRING, 'tab');
 		$sid = we_base_request::_(we_base_request::STRING, 'sid', false);
 		$extraUrlParams = ($tab !== false ? '&tab=' . $tab : '' ) . ($sid !== false ? '&sid=' . $sid : '');
-		
+
 		return parent::getHTMLFrameset($extraHead, $extraUrlParams);
 	}
 
@@ -984,7 +984,7 @@ function showPreview() {
 	}
 
 	function getHTMLProperties($preselect = ''){
-		$tabNr = we_base_request::_(we_base_request::INT, 'tabnr', 1);
+		$tabNr = we_base_request::_(we_base_request::STRING, 'tabnr', 1); //FIXME: due to preview - fix this as a better tab-name; replace 1-3 with consts
 
 		if($this->Model->IsFolder == 0 && $tabNr != 1 && $tabNr != 3){
 			$tabNr = 1;
