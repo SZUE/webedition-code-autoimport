@@ -80,4 +80,3 @@ if(isset($we_alerttext)){
 		</form></center>
 </body>
 </html>
-s
