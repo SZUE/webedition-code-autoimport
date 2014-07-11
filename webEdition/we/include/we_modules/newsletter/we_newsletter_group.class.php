@@ -29,7 +29,7 @@
  */
 class we_newsletter_group extends we_newsletter_base{
 
-	// properties start
+// properties start
 	var $ID = 0;
 	var $NewsletterID = 0;
 	var $Emails = '';
@@ -38,7 +38,7 @@ class we_newsletter_group extends we_newsletter_base{
 	var $SendAll = 1;
 	public $Filter = ''; //due to processVariables
 	var $settings;
-	// properties end
+// properties end
 
 	private $aFilter = array();
 
@@ -58,7 +58,7 @@ class we_newsletter_group extends we_newsletter_base{
 			'Extern' => we_base_request::FILELIST,
 			'Customers' => we_base_request::RAW,
 			'SendAll' => we_base_request::BOOL,
-			'Filter' => we_base_request::RAW
+			'Filter' => we_base_request::SERIALIZED_KEEP
 		);
 
 		$this->settings = self::getSettings();
@@ -87,7 +87,26 @@ class we_newsletter_group extends we_newsletter_base{
 	 * *************************************** */
 
 	public function preserveFilter(){
-		$this->Filter = serialize($this->aFilter);
+		//make some fields up to date
+		if(is_array($this->aFilter)){
+			foreach($this->aFilter as &$v){
+				switch(isset($v['fieldname']) ? $v['fieldname'] : ''){
+					case "MemberSince":
+					case "LastAccess":
+					case "LastLogin":
+						if(isset($v['fieldvalue']) && $v['fieldvalue'] != ""){
+							if(stristr($v['fieldvalue'], '.')){
+								$date = explode(".", $v['fieldvalue']);
+								$v['fieldvalue'] = mktime($v['hours'], $v['minutes'], 0, $date[1], $date[0], $date[2]);
+							} else {
+								$v['fieldvalue'] = $v['fieldvalue'];
+							}
+						}
+				}
+			}
+
+			$this->Filter = serialize($this->aFilter);
+		}
 	}
 
 	function save(){
@@ -96,13 +115,12 @@ class we_newsletter_group extends we_newsletter_base{
 		return true;
 	}
 
-	public function getFilter(){
+	function getFilter(){
 		if($this->aFilter){
 			return $this->aFilter;
-		} else {
-			$this->aFilter = unserialize($this->Filter);
-			return $this->aFilter;
 		}
+		$this->aFilter = unserialize($this->Filter);
+		return $this->aFilter;
 	}
 
 	/*	 * **************************************
@@ -168,7 +186,7 @@ class we_newsletter_group extends we_newsletter_base{
 		$this->aFilter = array();
 	}
 
-	//---------------------------------- STATIC FUNCTIONS -------------------------------
+//---------------------------------- STATIC FUNCTIONS -------------------------------
 
 	/*	 * ****************************************************
 	 * return all newsletter blocks for given newsletter id

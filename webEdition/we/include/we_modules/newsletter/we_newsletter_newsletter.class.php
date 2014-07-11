@@ -89,7 +89,7 @@ class we_newsletter_newsletter extends we_newsletter_base{
 			'Test' => we_base_request::EMAIL,
 			'Step' => we_base_request::RAW,
 			'Offset' => we_base_request::RAW,
-			'IsFolder' => we_base_request::RAW,
+			'IsFolder' => we_base_request::BOOL,
 			'Charset' => we_base_request::RAW,
 			'isEmbedImages' => we_base_request::RAW,
 		);
