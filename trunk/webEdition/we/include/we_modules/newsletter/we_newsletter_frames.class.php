@@ -2374,7 +2374,7 @@ self.focus();
 		// total number of emails
 		$ecount = we_base_request::_(we_base_request::INT, "ecount", 0);
 		// counter
-		$ecs = we_base_request::_(we_base_request::RAW, "ecs", 0);
+		$ecs = we_base_request::_(we_base_request::INT, "ecs", 0);
 		//-----------------------------------
 
 		$blockcache = we_base_request::_(we_base_request::RAW, "blockcache", 0);
@@ -2613,8 +2613,8 @@ self.focus();');
 				$content_plain = $content_plainDefault;
 			}
 
-			$content_plain = str_replace('###EMAIL###', $email, $content_plain);
-			$content = str_replace('###EMAIL###', $email, $content);
+			$content_plain = str_replace(we_newsletter_base::EMAIL_REPLACE_TEXT, $email, $content_plain);
+			$content = str_replace(we_newsletter_base::EMAIL_REPLACE_TEXT, $email, $content);
 
 			// damd: Newsletter Platzhalter ersetzten
 			$this->replacePlaceholder($content, $content_plain, $emails[$j]);

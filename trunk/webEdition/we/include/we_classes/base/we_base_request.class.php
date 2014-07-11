@@ -45,16 +45,16 @@ class we_base_request{
 	const FILELIST = 'filelist';
 	const URL = 'url';
 	const STRING = 'string';
-	const STRINGC = 'stringC';
 	const HTML = 'html';
 	const EMAIL = 'email';
+//only temporary
+	const STRINGC = 'stringC';
+	const RAW_CHECKED = 'rawC';
+//remove these types!!!
 	const JS = 'js';
 	const RAW = 'raw';
-
-	/**
-	 * @internal
-	 */
-	const RAW_CHECKED = 'rawC';
+	const SERIALIZED = 'serial';
+	const SERIALIZED_KEEP = 'serialK';
 
 	/** Helper for Filtering variables (callback of array_walk)
 	 *
@@ -74,6 +74,12 @@ class we_base_request{
 				return;
 			case self::INTLIST:
 				$var = implode(',', array_map('intval', explode(',', trim($var, ','))));
+				return;
+			case self::SERIALIZED:
+				$var = unserialize($var);
+				return;
+			case self::SERIALIZED_KEEP:
+				$var = serialize(unserialize($var));
 				return;
 			case self::CMD:
 				$var = strpos($var, 'WECMDENC_') !== false ?

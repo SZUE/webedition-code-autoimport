@@ -36,6 +36,7 @@ class we_newsletter_base{
 	const STATUS_CONFIRM_FAILED = 3;
 	const FEMALE_SALUTATION_FIELD = 'female_salutation';
 	const MALE_SALUTATION_FIELD = 'male_salutation';
+	const EMAIL_REPLACE_TEXT = '###EMAIL###';
 
 	var $db;
 	var $table;
@@ -81,41 +82,14 @@ class we_newsletter_base{
 	function save(){
 		$sets = $wheres = array();
 		foreach(array_keys($this->persistents) as $val){
-			switch($val){
-				case "ID":
-					$wheres[] = 'ID=' . intval($this->$val);
-					break;
-				case "Filter":
-					$value = unserialize($this->$val);
-					if(is_array($value)){
-						foreach($value as &$v){
-							switch(isset($v['fieldname']) ? $v['fieldname'] : ''){
-								case "MemberSince":
-								case "LastAccess":
-								case "LastLogin":
-									if(isset($v['fieldvalue']) && $v['fieldvalue'] != ""){
-										if(stristr($v['fieldvalue'], '.')){
-											$date = explode(".", $v['fieldvalue']);
-											$v['fieldvalue'] = mktime($v['hours'], $v['minutes'], 0, $date[1], $date[0], $date[2]);
-										} else {
-											$v['fieldvalue'] = $v['fieldvalue'];
-										}
-
-										$this->$val = serialize($value);
-									}
-							}
-						}
-					}
-					break;
-			}
-
 			$sets[$val] = $this->$val;
 		}
-		$where = implode(',', $wheres);
+
+		unset($sets['ID']);
 		$set = we_database_base::arraySetter($sets);
 
 		if($this->ID){
-			$this->db->query('UPDATE ' . $this->db->escape($this->table) . ' SET ' . $set . ' WHERE ' . $where);
+			$this->db->query('UPDATE ' . $this->db->escape($this->table) . ' SET ' . $set . ' WHERE ID=' . intval($this->ID));
 		} else {
 			$this->db->query('INSERT INTO ' . $this->db->escape($this->table) . ' SET ' . $set);
 			# get ID #
@@ -170,7 +144,7 @@ class we_newsletter_base{
 		return false;
 	}
 
-	function getEmailsFromList($emails, $emails_only = 0, $group = 0,array $blocks = array()){
+	function getEmailsFromList($emails, $emails_only = 0, $group = 0, array $blocks = array()){
 		$arr = explode("\n", $emails);
 		if(!$arr){
 			return array();
