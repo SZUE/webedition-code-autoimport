@@ -118,7 +118,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 			unset($_SESSION['weS']['seemForOpenDelSelector']['Table']);
 		}
 		$_cmd = 'top.we_cmd("openDelSelector","","' . $openTable . '","","","","","","",1);';
-		echo "setTimeout('$_cmd',50)";
+		echo "setTimeout('" . $_cmd . "',50)";
 		break;
 
 	case "export_documents":

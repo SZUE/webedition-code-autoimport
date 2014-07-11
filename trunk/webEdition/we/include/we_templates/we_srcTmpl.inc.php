@@ -186,7 +186,7 @@ switch($_SESSION['prefs']['editorMode']){
 								hlLine = editor.addLineClass(cur, "background", "activeline");
 							}
 						});
-		<?php } else { //FIX for CM which doesn't display lines beyond 27 if this line is missing....                   ?>
+		<?php } else { //FIX for CM which doesn't display lines beyond 27 if this line is missing....                    ?>
 						hlLine = editor.addLineClass(0, "background", "");
 
 		<?php } ?>
@@ -1026,14 +1026,14 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 			$znr = 1;
 		}
 		echo we_html_multiIconBox::getJS() .
-			'<div id="bodydiv"' . ($_SESSION['prefs']['editorMode'] == 'java' ? '' : 'style="display:none;"') . '>' . we_html_multiIconBox::getHTML("weTMPLDocEdit", "100%", $parts, 20, "", $znr, g_l('weClass', "[showTagwizard]"), g_l('weClass', "[hideTagwizard]"), ($wepos == "down"), "", 'toggleTagWizard();') . '</div>';
+		'<div id="bodydiv"' . ($_SESSION['prefs']['editorMode'] == 'java' ? '' : 'style="display:none;"') . '>' . we_html_multiIconBox::getHTML("weTMPLDocEdit", "100%", $parts, 20, "", $znr, g_l('weClass', "[showTagwizard]"), g_l('weClass', "[hideTagwizard]"), ($wepos == "down"), "", 'toggleTagWizard();') . '</div>';
 		?>
 		<input type="hidden" name="we_complete_request" value="1"/>
 	</form></body>
 
 <?php
 if(isset($selectedGroup)){
-	echo we_html_element::jsElement("selectTagGroup('$selectedGroup');");
+	echo we_html_element::jsElement("selectTagGroup('" . $selectedGroup . "');");
 }
 ?>
 </html>

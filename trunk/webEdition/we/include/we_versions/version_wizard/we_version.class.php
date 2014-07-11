@@ -279,7 +279,7 @@ class we_version{
 						$_template_query, 0, strlen($_template_query) - 3);
 					$_template_query = '(' . $_template_query . ')';
 				} else {
-					$_template_query = "( TemplateID='$templateID' )";
+					$_template_query = "( TemplateID='" . $templateID . "' )";
 				}
 			}
 
