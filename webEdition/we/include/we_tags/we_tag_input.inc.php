@@ -134,8 +134,8 @@ function we_tag_input($attribs, $content){
 					$vals = explode($seperator, $values);
 
 					$onChange = ($mode == 'add' ?
-							"this.form.elements['$tagname'].value += ((this.form.elements['$tagname'].value ? ' ' : '')+this.options[this.selectedIndex].text);" :
-							"this.form.elements['$tagname'].value = this.options[this.selectedIndex].text;") .
+							"this.form.elements['".$tagname."'].value += ((this.form.elements['".$tagname."'].value ? ' ' : '')+this.options[this.selectedIndex].text);" :
+							"this.form.elements['".$tagname."'].value = this.options[this.selectedIndex].text;") .
 						($reload ? 'setScrollTo();top.we_cmd(\'reload_editpage\');' : '');
 
 					$sel = '<select  class="defaultfont" name="we_choice_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" size="1" onchange="' . $onChange . ';this.selectedIndex=0;_EditorFrame.setEditorIsHot(true);"><option></option>' .

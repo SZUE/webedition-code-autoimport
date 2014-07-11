@@ -57,7 +57,7 @@ class MultiFileChooser extends MultiDirChooser{
 				$trash = null;
 
 				if($this->isEditable() && $this->cmd_edit){
-					$edit = we_html_button::create_button("image:btn_edit_edit", "javascript:if(typeof(_EditorFrame)!='undefined') _EditorFrame.setEditorIsHot(true);we_cmd('" . $this->cmd_edit . "','$id');");
+					$edit = we_html_button::create_button("image:btn_edit_edit", "javascript:if(typeof(_EditorFrame)!='undefined') _EditorFrame.setEditorIsHot(true);we_cmd('" . $this->cmd_edit . "','" . $id . "');");
 				}
 
 				if(($this->isEditable() && $this->cmd_del) || $this->CanDelete){
@@ -65,18 +65,18 @@ class MultiFileChooser extends MultiDirChooser{
 					if($this->disabledDelItems){
 						$DisArr = $this->disabledDelItems;
 						if(in_array($id, $DisArr)){
-							$trash = we_html_button::create_button("image:btn_function_trash", "javascript:if(typeof(_EditorFrame)!='undefined')_EditorFrame.setEditorIsHot(true);" . ($this->extraDelFn ? $this->extraDelFn : "") . ";we_cmd('" . $this->cmd_del . "','$id');", true, 100, 22, "", "", true);
+							$trash = we_html_button::create_button("image:btn_function_trash", "javascript:if(typeof(_EditorFrame)!='undefined')_EditorFrame.setEditorIsHot(true);" . ($this->extraDelFn ? $this->extraDelFn : "") . ";we_cmd('" . $this->cmd_del . "','" . $id . "');", true, 100, 22, "", "", true);
 
 							$table->setCol($c, 0, array("title" => $this->disabledDelReason), we_html_element::htmlImg(array("src" => ICON_DIR . (@is_dir($id) ? "folder" : "link") . ".gif", "width" => 16, "height" => 18)));
 							$table->setCol($c, 1, array("class" => $this->css, "title" => $this->disabledDelReason), $id);
 						} else {
-							$trash = we_html_button::create_button("image:btn_function_trash", "javascript:if(typeof(_EditorFrame)!='undefined')_EditorFrame.setEditorIsHot(true);" . ($this->extraDelFn ? $this->extraDelFn : "") . ";we_cmd('" . $this->cmd_del . "','$id');");
+							$trash = we_html_button::create_button("image:btn_function_trash", "javascript:if(typeof(_EditorFrame)!='undefined')_EditorFrame.setEditorIsHot(true);" . ($this->extraDelFn ? $this->extraDelFn : "") . ";we_cmd('" . $this->cmd_del . "','" . $id . "');");
 
 							$table->setCol($c, 0, array(), we_html_element::htmlImg(array("src" => ICON_DIR . (@is_dir($id) ? "folder" : "link") . ".gif", "width" => 16, "height" => 18)));
 							$table->setCol($c, 1, array("class" => $this->css), $id);
 						}
 					} else {
-						$trash = we_html_button::create_button("image:btn_function_trash", "javascript:if(typeof(_EditorFrame)!='undefined')_EditorFrame.setEditorIsHot(true);" . ($this->extraDelFn ? $this->extraDelFn : "") . ";we_cmd('" . $this->cmd_del . "','$id');");
+						$trash = we_html_button::create_button("image:btn_function_trash", "javascript:if(typeof(_EditorFrame)!='undefined')_EditorFrame.setEditorIsHot(true);" . ($this->extraDelFn ? $this->extraDelFn : "") . ";we_cmd('" . $this->cmd_del . "','" . $id . "');");
 
 						$table->setCol($c, 0, array(), we_html_element::htmlImg(array("src" => ICON_DIR . (@is_dir($id) ? "folder" : "link") . ".gif", "width" => 16, "height" => 18)));
 						$table->setCol($c, 1, array("class" => $this->css), $id);
