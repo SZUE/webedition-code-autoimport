@@ -851,7 +851,7 @@ class doclistView{
 
 					$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['searchParentID[" . $i . "]'].value");
 					$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['search[" . $i . "]'].value");
-					$_cmd = "javascript:we_cmd('openDocselector',document.we_form.elements['searchParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "','$_rootDirID','','" . we_base_ContentTypes::TEMPLATE . "')";
+					$_cmd = "javascript:we_cmd('openDocselector',document.we_form.elements['searchParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "','" . $_rootDirID . "','','" . we_base_ContentTypes::TEMPLATE . "')";
 					$_button = we_html_button::create_button('select', $_cmd, true, 70, 22, '', '', false);
 					$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('search[' . $i . ']', 58, $_linkPath, '', 'readonly ', 'text', 190, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(array('name' => 'searchParentID[' . $i . ']', "value" => "")), we_html_tools::getPixel(5, 4), $_button);
 
@@ -862,7 +862,7 @@ class doclistView{
 
 					$_rootDirID = 0;
 
-					$_cmd = "javascript:we_cmd('openCatselector',document.we_form.elements['searchParentID[" . $i . "]'].value,'" . CATEGORY_TABLE . "','document.we_form.elements[\\'searchParentID[" . $i . "]\\'].value','document.we_form.elements[\\'search[" . $i . "]\\'].value','','" . session_id() . "','$_rootDirID','','')";
+					$_cmd = "javascript:we_cmd('openCatselector',document.we_form.elements['searchParentID[" . $i . "]'].value,'" . CATEGORY_TABLE . "','document.we_form.elements[\\'searchParentID[" . $i . "]\\'].value','document.we_form.elements[\\'search[" . $i . "]\\'].value','','" . session_id() . "','" . $_rootDirID . "','','')";
 					$_button = we_html_button::create_button('select', $_cmd, true, 70, 22, '', '', false);
 					$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('search[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 190, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(array('name' => 'searchParentID[' . $i . ']', "value" => "")), we_html_tools::getPixel(5, 4), $_button);
 
@@ -905,11 +905,8 @@ class doclistView{
 	function searchProperties(){
 
 		$DB_WE = new DB_WE();
-		$content = array();
 		$foundItems = 0;
-		$_result = array();
-		$saveArrayIds = array();
-		$searchText = array();
+		$content = $_result = $saveArrayIds = $searchText = array();
 		$_SESSION['weS']['weSearch']['foundItems'] = 0;
 
 		foreach($_REQUEST['we_cmd'] as $k => $v){
@@ -1148,21 +1145,21 @@ class doclistView{
 						$imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $_result [$f]["Path"]);
 						if(file_exists(WE_THUMB_PREVIEW_PATH . $_result [$f]["docID"] . "_'.$smallSize.'_'.$smallSize.'" . strtolower($_result [$f]["Extension"]))){
 							$thumbpath = WE_THUMB_PREVIEW_DIR . $_result [$f]["docID"] . "_'.$smallSize.'_'.$smallSize.'" . strtolower($_result [$f]["Extension"]);
-							$imageView = "<img src='$thumbpath' border='0' /></a>";
+							$imageView = "<img src='" . $thumbpath . "' border='0' /></a>";
 						} else {
 							$imageView = "<img src='" . WEBEDITION_DIR . "thumbnail.php?id=" . $_result [$f]["docID"] . "&size=" . $smallSize . "&path=" . $_result [$f]["Path"] . "&extension=" . $_result [$f]["Extension"] . "' border='0' /></a>";
 						}
 						if(file_exists(WE_THUMB_PREVIEW_PATH . $_result [$f]["docID"] . "_'.$bigSize.'_'.$bigSize.'" . strtolower($_result [$f]["Extension"]))){
 							$thumbpathPopup = WE_THUMB_PREVIEW_DIR . $_result [$f]["docID"] . "_'.$bigSize.'_'.$bigSize.'" . strtolower($_result [$f]["Extension"]);
-							$imageViewPopup = "<img src='$thumbpathPopup' border='0' /></a>";
+							$imageViewPopup = "<img src='" . $thumbpathPopup . "' border='0' /></a>";
 						} else {
 							$imageViewPopup = "<img src='" . WEBEDITION_DIR . "thumbnail.php?id=" . $_result [$f]["docID"] . "&size=" . $bigSize . "&path=" . $_result [$f]["Path"] . "&extension=" . $_result [$f]["Extension"] . "' border='0' /></a>";
 						}
 					} else {
 						$imagesize = array(0, 0);
 						$thumbpath = IMAGE_DIR . 'icons/doclist/' . we_base_ContentTypes::IMAGE_ICON;
-						$imageView = "<img src='$thumbpath' border='0' />";
-						$imageViewPopup = "<img src='$thumbpath' border='0' />";
+						$imageView = "<img src='" . $thumbpath . "' border='0' />";
+						$imageViewPopup = "<img src='" . $thumbpath . "' border='0' />";
 					}
 				} else {
 					$imagesize = array(0, 0);

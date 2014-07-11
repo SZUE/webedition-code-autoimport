@@ -114,7 +114,7 @@ abstract class we_customer_add{
 				$sort_table->setCol($row_num, 1, array("class" => "defaultfont"), $field->getHtml());
 				$sort_table->setCol($row_num, 2, array("class" => "defaultfont"), $function->getHtml());
 				$sort_table->setCol($row_num, 3, array("class" => "defaultfont"), $order->getHtml());
-				$sort_table->setCol($row_num, 4, array("class" => "defaultfont"), we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('del_sort_field','$k',$fcounter)", true, 30));
+				$sort_table->setCol($row_num, 4, array("class" => "defaultfont"), we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('del_sort_field','" . $k . "',$fcounter)", true, 30));
 
 				$fcounter++;
 			}
@@ -136,7 +136,7 @@ abstract class we_customer_add{
 
 			$_htmlCode = $pob->getHTMLBox(we_html_element::htmlInput(array("name" => "sort_" . $counter, "value" => $k, "size" => 40)), g_l('modules_customer', '[name]'), 100, 50, 25, 0, 0, 50) .
 				$sort_table->getHtml() .
-				we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('del_sort','$k')");
+				we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('del_sort','" . $k . "')");
 
 			$_parts[] = array('html' => $_htmlCode, 'headline' => $k);
 

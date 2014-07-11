@@ -83,35 +83,36 @@ class we_banner_banner extends we_banner_base{
 		parent::__construct();
 		$this->table = BANNER_TABLE;
 
-		$this->persistents = array("ID",
-			"Text",
-			"ParentID",
-			"bannerID",
-			"bannerUrl",
-			"bannerIntID",
-			"maxShow",
-			"maxClicks",
-			"IsDefault",
-			"clickPrice",
-			"showPrice",
-			"IsFolder",
-			"Icon",
-			"Path",
-			"IntHref",
-			"FileIDs",
-			"FolderIDs",
-			"CategoryIDs",
-			"DoctypeIDs",
-			"StartDate",
-			"EndDate",
-			"StartOk",
-			"EndOk",
-			"IsActive",
-			"clicks",
-			"views",
-			"Customers",
-			"TagName",
-			"weight"
+		$this->persistents = array(
+			"ID" => we_base_request::INT,
+			"Text" => we_base_request::STRING,
+			"ParentID" => we_base_request::INT,
+			"bannerID" => we_base_request::INT,
+			"bannerUrl" => we_base_request::URL,
+			"bannerIntID" => we_base_request::INT,
+			"maxShow" => we_base_request::INT,
+			"maxClicks" => we_base_request::INT,
+			"IsDefault" => we_base_request::RAW,
+			"clickPrice" => we_base_request::RAW,
+			"showPrice" => we_base_request::RAW,
+			"IsFolder" => we_base_request::BOOL,
+			"Icon" => we_base_request::RAW,
+			"Path" => we_base_request::FILE,
+			"IntHref" => we_base_request::RAW,
+			"FileIDs" => we_base_request::INTLIST,
+			"FolderIDs" => we_base_request::INTLIST,
+			"CategoryIDs" => we_base_request::INTLIST,
+			"DoctypeIDs" => we_base_request::INTLIST,
+			"StartDate" => we_base_request::INT,
+			"EndDate" => we_base_request::INT,
+			"StartOk" => we_base_request::BOOL,
+			"EndOk" => we_base_request::BOOL,
+			"IsActive" => we_base_request::BOOL,
+			"clicks" => we_base_request::INT,
+			"views" => we_base_request::INT,
+			"Customers" => we_base_request::RAW,
+			"TagName" => we_base_request::RAW,
+			"weight" => we_base_request::RAW,
 		);
 
 		$this->IsFolder = $IsFolder;
@@ -299,7 +300,7 @@ class we_banner_banner extends we_banner_base{
 				if(isset($attsImage['longdescid'])){
 					unset($attsImage['longdescid']);
 				}
-			}else {
+			} else {
 				$bannersrc = $getbanner . "?" . ($nocount ? 'nocount=' . $nocount . '&amp;' : '') . "u=$uniq&amp;bannername=" . rawurlencode($bannername) . "&amp;id=" . $id . "&amp;bid=" . $bannerID . "&amp;did=" . $did;
 				$showlink = false;
 			}

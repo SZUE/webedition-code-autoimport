@@ -98,10 +98,10 @@ class we_base_preferences{
 		foreach($values as $define => $value){
 			if(!preg_match('/define\(["\']' . $define . '["\'],/', $content)){
 				// Add needed variable
-				$content = self::changeSourceCode('add', $content, $define, $value[2], true, $value[0]);
+				$content = self::changeSourceCode('add', $content, $define, $value[2], true, $value[1]);
 				//define it in running session
 				if(!defined($define)){
-					define($define, $value[2]);
+					define($define, $value[1]);
 				}
 			}
 		}

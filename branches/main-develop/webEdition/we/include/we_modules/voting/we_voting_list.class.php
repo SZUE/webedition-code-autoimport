@@ -40,15 +40,16 @@ class we_voting_list{
 	 * Default Constructor
 	 * Can load or create new Newsletter depends of parameter
 	 */
-	function we_voting_list($name, $groupid, $version = 0, $rows = 0, $offset = 0, $desc = false, $order = 'PublishDate', $subgroup = false){
+	function __construct($name, $groupid, $version = 0, $rows = 0, $offset = 0, $desc = false, $order = 'PublishDate', $subgroup = false){
 
 		$this->Name = $name;
 		$this->Version = $version;
 		$this->Offset = $offset;
 		$this->Rows = $rows;
 		$this->Start = (isset($_REQUEST["_we_vl_start_" . $this->Name]) && $_REQUEST["_we_vl_start_" . $this->Name]) ? abs($_REQUEST["_we_vl_start_" . $this->Name]) : 0;
-		if($this->Start == 0)
+		if($this->Start == 0){
 			$this->Start += $offset;
+		}
 
 		$childs_query = '';
 		if($groupid != 0){
@@ -62,7 +63,7 @@ class we_voting_list{
 		}
 
 		$limit = ($rows || $this->Start ?
-						' LIMIT ' . $this->Start . ',' . ($rows == 0 ? 9999999 : $rows) : '');
+				' LIMIT ' . $this->Start . ',' . ($rows == 0 ? 9999999 : $rows) : '');
 
 		if($order != ""){
 			$order_sql = ' ORDER BY ' . $order;
@@ -76,8 +77,8 @@ class we_voting_list{
 		$this->db = new DB_WE();
 
 
-		$this->CountAll = f('SELECT count(ID) as CountAll FROM ' . VOTING_TABLE . ' WHERE IsFolder=0 ' . (!empty($childs_query) ? ' AND ' . $childs_query : '') . $order_sql . ';', 'CountAll', $this->db);
-		$_we_voting_query = 'SELECT ID FROM ' . VOTING_TABLE . ' WHERE IsFolder=0 ' . (!empty($childs_query) ? ' AND ' . $childs_query : '') . $order_sql . $limit . ';';
+		$this->CountAll = f('SELECT count(ID) as CountAll FROM ' . VOTING_TABLE . ' WHERE IsFolder=0 ' . (!empty($childs_query) ? ' AND ' . $childs_query : '') . $order_sql, '', $this->db);
+		$_we_voting_query = 'SELECT ID FROM ' . VOTING_TABLE . ' WHERE IsFolder=0 ' . (!empty($childs_query) ? ' AND ' . $childs_query : '') . $order_sql . $limit;
 
 		$this->db->query($_we_voting_query);
 	}
@@ -100,9 +101,8 @@ class we_voting_list{
 			$attribs['rel'] = 'next';
 
 			return getHtmlTag("a", $attribs, "", false, true);
-		} else {
-			return "";
 		}
+		return "";
 	}
 
 	function hasNextPage(){
@@ -117,9 +117,8 @@ class we_voting_list{
 			$attribs['rel'] = 'prev';
 
 			return getHtmlTag("a", $attribs, "", false, true);
-		} else {
-			return "";
 		}
+		return "";
 	}
 
 	function hasPrevPage(){

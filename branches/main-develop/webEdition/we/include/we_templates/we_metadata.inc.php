@@ -28,5 +28,5 @@ $parts = array(
 //array("icon"=>"meta.gif", "headline"=>g_l('weClass',"[metainfo]"),"html"=>$GLOBALS['we_doc']->formMetaInfos(),"space"=>140)
 	array("icon" => "meta.gif", "headline" => g_l('weClass', "[metadata]"), "html" => $GLOBALS['we_doc']->formMetaInfos() . $GLOBALS['we_doc']->formMetaData(), "space" => 140),
 );
-print we_html_multiIconBox::getJS() .
+echo we_html_multiIconBox::getJS() .
 	we_html_multiIconBox::getHTML("weImgProp", "100%", $parts, 20);

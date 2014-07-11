@@ -192,41 +192,48 @@ function we_cmd() {
 	}
 
 	function getWizBody($type = '', $step = 0, $mode = 0){
-		if($this->fileUploader){
-			$this->fileUploader->processFileRequest();
+		//FIXME: delete condition and else branch when new uploader is stable
+		$continue = true;
+		if(!we_fileupload_include::USE_LEGACY_FOR_WEIMPORT){
+			if($this->fileUploader){
+				$continue = $this->fileUploader->processFileRequest();
+			}
 		}
 
-		$a = array(
-			'name' => 'we_form'
-		);
-		if($type == we_import_functions::TYPE_GENERIC_XML && $step == 1){
-			$a["onsubmit"] = 'return false;';
-		}
-		if($step == 1){
-			$a["enctype"] = 'multipart/form-data';
-		}
-		$_step = 'get' . $type . 'Step' . $step;
-		list($js, $content) = $this->$_step();
-		$doOnLoad = !we_base_request::_(we_base_request::BOOL, 'noload');
-		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-				we_html_element::htmlHead(
-					STYLESHEET .
-					($this->fileUploader ? $this->fileUploader->getCss() . $this->fileUploader->getJs() : '') .
-					we_html_element::jsScript(JS_DIR . "windows.js") .
-					we_html_element::jsElement($js)) .
-				we_html_element::htmlBody(array(
-					"class" => "weDialogBody",
-					"onload" => $doOnLoad ? "parent.wiz_next('wizbusy', '" . $this->path . "?pnt=wizbusy&mode=" . $mode . "&type=" . (we_base_request::_(we_base_request::RAW, 'type', '')) . "'); self.focus();" : "if(set_button_state) set_button_state();"
-					), we_html_element::htmlForm($a, we_html_element::htmlHidden(array("name" => "pnt", "value" => "wizbody")) .
-						we_html_element::htmlHidden(array("name" => "type", "value" => $type)) .
-						we_html_element::htmlHidden(array("name" => "v[type]", "value" => $type)) .
-						we_html_element::htmlHidden(array("name" => "step", "value" => $step)) .
-						we_html_element::htmlHidden(array("name" => "mode", "value" => $mode)) .
-						we_html_element::htmlHidden(array("name" => "button_state", "value" => 0)) .
-						$content
+		if($continue){
+			$a = array(
+				'name' => 'we_form'
+			);
+			if($type == we_import_functions::TYPE_GENERIC_XML && $step == 1){
+				$a["onsubmit"] = 'return false;';
+			}
+			if($step == 1){
+				$a["enctype"] = 'multipart/form-data';
+			}
+			$_step = 'get' . $type . 'Step' . $step;
+			list($js, $content) = $this->$_step();
+			$doOnLoad = !we_base_request::_(we_base_request::BOOL, 'noload');
+			return we_html_element::htmlDocType() . we_html_element::htmlHtml(
+					we_html_element::htmlHead(
+						STYLESHEET .
+						//FIXME: delete condition and else branch when new uploader is stable
+						(!we_fileupload_include::USE_LEGACY_FOR_WEIMPORT && $this->fileUploader ? $this->fileUploader->getCss() . $this->fileUploader->getJs() : '') .
+						we_html_element::jsScript(JS_DIR . "windows.js") .
+						we_html_element::jsElement($js)) .
+					we_html_element::htmlBody(array(
+						"class" => "weDialogBody",
+						"onload" => $doOnLoad ? "parent.wiz_next('wizbusy', '" . $this->path . "?pnt=wizbusy&mode=" . $mode . "&type=" . (we_base_request::_(we_base_request::RAW, 'type', '')) . "'); self.focus();" : "if(set_button_state) set_button_state();"
+						), we_html_element::htmlForm($a, we_html_element::htmlHidden(array("name" => "pnt", "value" => "wizbody")) .
+							we_html_element::htmlHidden(array("name" => "type", "value" => $type)) .
+							we_html_element::htmlHidden(array("name" => "v[type]", "value" => $type)) .
+							we_html_element::htmlHidden(array("name" => "step", "value" => $step)) .
+							we_html_element::htmlHidden(array("name" => "mode", "value" => $mode)) .
+							we_html_element::htmlHidden(array("name" => "button_state", "value" => 0)) .
+							$content
+						)
 					)
-				)
-		);
+			);
+		}
 	}
 
 	function getWizBusy(){

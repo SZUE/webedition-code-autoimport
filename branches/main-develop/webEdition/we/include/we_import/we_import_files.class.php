@@ -612,10 +612,10 @@ function setApplet() {
 
 		// create Second Screen ##############################################################################
 
-		$uploader = new we_fileupload_uploader_importfile('we_File');
+		$uploader = new we_fileupload_importFiles('we_File');
 		$uploader->getCss();
 		$maxUploadSizeB = $uploader->getMaxUploadSize();
-		//TODO: get more parts of setp2 from we_fileupload_uploader_base / we_fileupload_uploader_importfile
+		//FIXME: get more parts of setp2 from we_fileupload_base / we_fileupload_importFiles
 
 		$content = we_html_tools::hidden('we_cmd[0]', 'import_files') .
 			we_html_tools::hidden('cmd', 'content') . we_html_tools::hidden('step', 2) .
@@ -944,7 +944,7 @@ function next() {
 }";
 
 		$js = we_html_element::jsElement($js);
-		$we_uploader = new we_fileupload_uploader_importfile('we_File');
+		$we_uploader = new we_fileupload_importFiles('we_File');
 		$js .= $we_uploader->getJs(true, false, true);
 	
 

@@ -83,7 +83,7 @@ abstract class we_voting_treeLoader{
 			$items[] = array_merge($fileds, $typ);
 		}
 
-		$total = f("SELECT COUNT(1) as total FROM " . $db->escape($table) . ' ' . $where, 'total', $db);
+		$total = f('SELECT COUNT(1) FROM ' . $db->escape($table) . ' ' . $where, '', $db);
 		$nextoffset = $offset + $segment;
 		if($segment && ($total > $nextoffset)){
 			$items[] = array(

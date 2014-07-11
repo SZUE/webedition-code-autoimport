@@ -91,7 +91,7 @@ class we_voting_voting extends weModelBase{
 			$this->load($votingID);
 		}
 
-		if(empty($this->QASet)){
+		if(!($this->QASet)){
 			$this->QASet = array(
 				0 => array(
 					'question' => '',
@@ -102,7 +102,7 @@ class we_voting_voting extends weModelBase{
 				)
 			);
 		}
-		if(empty($this->QASetAdditions)){
+		if(!($this->QASetAdditions)){
 			$this->QASetAdditions = array(
 				0 => array('imageID' => '', 'mediaID' => '', 'successorID' => '')
 			);
@@ -116,7 +116,7 @@ class we_voting_voting extends weModelBase{
 			$this->Active = 0;
 		}
 
-		if(empty($this->Scores)){
+		if(!($this->Scores)){
 			$this->Scores = array();
 		}
 
@@ -243,7 +243,7 @@ class we_voting_voting extends weModelBase{
 	}
 
 	function setPath(){
-		$this->Path = f('SELECT Path FROM ' . VOTING_TABLE . ' WHERE ID=' . intval($this->ParentID), 'Path', $this->db) . '/' . $this->Text;
+		$this->Path = f('SELECT Path FROM ' . VOTING_TABLE . ' WHERE ID=' . intval($this->ParentID), '', $this->db) . '/' . $this->Text;
 	}
 
 	function pathExists($path){
@@ -282,8 +282,9 @@ class we_voting_voting extends weModelBase{
 	}
 
 	function clearSessionVars(){
-		if(isset($_SESSION['weS']['voting_session']))
+		if(isset($_SESSION['weS']['voting_session'])){
 			unset($_SESSION['weS']['voting_session']);
+		}
 	}
 
 	function filenameNotValid($text){
@@ -320,12 +321,13 @@ class we_voting_voting extends weModelBase{
 				break;
 			case 'count':
 			default:
-				if($this->answerCount >= 0 && isset($this->Scores[$this->answerCount]))
+				if($this->answerCount >= 0 && isset($this->Scores[$this->answerCount])){
 					$result = $this->Scores[$this->answerCount];
+				}
 				break;
 		}
 
-		if(!empty($num_format)){
+		if($num_format){
 			$result = we_util_Strings::formatNumber($result, $num_format, $precision);
 		}
 		return $result;
@@ -479,13 +481,11 @@ class we_voting_voting extends weModelBase{
 		if($mySuccessorID <= 0){
 			$mySuccessorID = '';
 		}
-		if(is_array($addfields) && !empty($addfields)){
-			$addfieldsdata = serialize($addfields);
-		} else {
-			$addfieldsdata = '';
-		}
-		if($this->Log)
+		$addfieldsdata = (is_array($addfields) && $addfields ? serialize($addfields) : '');
+
+		if($this->Log){
 			$this->logVoting($ret, $votingsession, $answerID, $answertext, $mySuccessorID, $addfieldsdata);
+		}
 
 		return $ret;
 	}
@@ -562,7 +562,7 @@ class we_voting_voting extends weModelBase{
 		} else {
 			$testtime = ($this->RevoteTime < 0 ? 0 : time() - $this->RevoteTime);
 
-			if(f('SELECT 1 FROM `' . VOTING_LOG_TABLE . '` WHERE `' . VOTING_LOG_TABLE . '`.`voting` = ' . intval($this->ID) . ' AND `' . VOTING_LOG_TABLE . '`.`userid` = ' . intval($userid) . ' AND `' . VOTING_LOG_TABLE . '`.`time` > ' . intval($testtime) .' LIMIT 1', '', $this->db)){
+			if(f('SELECT 1 FROM `' . VOTING_LOG_TABLE . '` WHERE `' . VOTING_LOG_TABLE . '`.`voting` = ' . intval($this->ID) . ' AND `' . VOTING_LOG_TABLE . '`.`userid` = ' . intval($userid) . ' AND `' . VOTING_LOG_TABLE . '`.`time` > ' . intval($testtime) . ' LIMIT 1', '', $this->db)){
 				return self::ERROR_REVOTE;
 			}
 			return self::SUCCESS;
@@ -570,12 +570,15 @@ class we_voting_voting extends weModelBase{
 	}
 
 	function isActive(){
-		if(!$this->Active)
+		if(!$this->Active){
 			return false;
-		if($this->ActiveTime == 0)
+		}
+		if($this->ActiveTime == 0){
 			return true;
-		if(time() > $this->Valid)
+		}
+		if(time() > $this->Valid){
 			return false;
+		}
 		return true;
 	}
 
@@ -670,11 +673,10 @@ class we_voting_voting extends weModelBase{
 	 */
 	function loadDB($id = '0'){
 
-		if($this->IsFolder){
-			$logQuery = 'SELECT A.*, B.* FROM `' . VOTING_TABLE . '` A, `' . VOTING_LOG_TABLE . "` B WHERE A.Path LIKE '" . $this->db->escape($this->Path) . "%' AND A.IsFolder = '0' AND A.ID = B.voting ORDER BY B.time";
-		} else {
-			$logQuery = 'SELECT * FROM `' . VOTING_LOG_TABLE . '` WHERE `' . VOTING_LOG_TABLE . '`.`voting` = ' . intval($id) . ' ORDER BY time';
-		}
+		$logQuery = ($this->IsFolder ?
+				'SELECT A.*, B.* FROM `' . VOTING_TABLE . '` A, `' . VOTING_LOG_TABLE . "` B WHERE A.Path LIKE '" . $this->db->escape($this->Path) . "%' AND A.IsFolder = '0' AND A.ID = B.voting ORDER BY B.time" :
+				'SELECT * FROM `' . VOTING_LOG_TABLE . '` WHERE `' . VOTING_LOG_TABLE . '`.`voting` = ' . intval($id) . ' ORDER BY time'
+			);
 
 		$this->db->query($logQuery);
 		$this->LogData = array();
@@ -703,18 +705,24 @@ class we_voting_voting extends weModelBase{
 	 * @since 5.1.1.2 - 02.05.2008
 	 */
 	function logVotingDB($status = NULL, $votingsession = NULL, $answer = NULL, $answertext = NULL, $successor = NULL, $additionalfields = NULL){
-		if(is_null($status))
+		if(is_null($status)){
 			$status = 0;
-		if(is_null($votingsession))
+		}
+		if(is_null($votingsession)){
 			$votingsession = 0;
-		if(is_null($answer))
+		}
+		if(is_null($answer)){
 			$answer = -1;
-		if(is_null($answertext))
+		}
+		if(is_null($answertext)){
 			$answertext = '';
-		if(is_null($successor))
+		}
+		if(is_null($successor)){
 			$successor = '';
-		if(is_null($additionalfields))
+		}
+		if(is_null($additionalfields)){
 			$additionalfields = '';
+		}
 		$_cookieStatus = $this->cookieDisabled() ? 0 : 1;
 		$userid = (defined("CUSTOMER_TABLE") && isset($_SESSION["webuser"]["registered"]) && isset($_SESSION["webuser"]["ID"]) && $_SESSION["webuser"]["registered"] && $_SESSION["webuser"]["ID"] ?
 				$_SESSION["webuser"]["ID"] : 0);
@@ -744,7 +752,7 @@ class we_voting_voting extends weModelBase{
 	 * @since 5.1.1.2 - 02.05.2008
 	 */
 	function deleteLogDataDB(){
-		$this->db->query('DELETE FROM `' . VOTING_LOG_TABLE . '` WHERE `' . VOTING_LOG_TABLE . '`.`voting` = ' . intval($this->ID));
+		$this->db->query('DELETE FROM `' . VOTING_LOG_TABLE . '` WHERE `' . VOTING_LOG_TABLE . '`.`voting`=' . intval($this->ID));
 		return true;
 	}
 

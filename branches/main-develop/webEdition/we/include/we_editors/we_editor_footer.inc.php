@@ -182,7 +182,7 @@ if(defined("WORKFLOW_TABLE")){
 				we_cmd('save_document','','','','',0,0,1);
 			}
 		}else {
-			top.we_cmd('workflow_isIn','$we_transaction'," . ( ($we_doc->IsTextContentDoc && $haspermNew && (!inWorkflow($we_doc))) ? "( _EditorFrame.getEditorMakeSameDoc() ? 1 : 0 )" : "0" ) . ");
+			top.we_cmd('workflow_isIn','" . $we_transaction . "'," . ( ($we_doc->IsTextContentDoc && $haspermNew && (!inWorkflow($we_doc))) ? "( _EditorFrame.getEditorMakeSameDoc() ? 1 : 0 )" : "0" ) . ");
 		}
 	}
 

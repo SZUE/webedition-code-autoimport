@@ -42,18 +42,19 @@ class we_base_request{
 	const TOGGLE = 'toggle';
 	const TABLE = 'table';
 	const FILE = 'file';
+	const FILELIST = 'filelist';
 	const URL = 'url';
 	const STRING = 'string';
-	const STRINGC = 'stringC';
 	const HTML = 'html';
 	const EMAIL = 'email';
+//only temporary
+	const STRINGC = 'stringC';
+	const RAW_CHECKED = 'rawC';
+//remove these types!!!
 	const JS = 'js';
 	const RAW = 'raw';
-
-	/**
-	 * @internal
-	 */
-	const RAW_CHECKED = 'rawC';
+	const SERIALIZED = 'serial';
+	const SERIALIZED_KEEP = 'serialK';
 
 	/** Helper for Filtering variables (callback of array_walk)
 	 *
@@ -71,9 +72,14 @@ class we_base_request{
 			case self::INTLISTA:
 				$var = array_map('intval', explode(',', trim($var, ',')));
 				return;
-
 			case self::INTLIST:
 				$var = implode(',', array_map('intval', explode(',', trim($var, ','))));
+				return;
+			case self::SERIALIZED:
+				$var = unserialize($var);
+				return;
+			case self::SERIALIZED_KEEP:
+				$var = serialize(unserialize($var));
 				return;
 			case self::CMD:
 				$var = strpos($var, 'WECMDENC_') !== false ?
@@ -122,6 +128,13 @@ class we_base_request{
 				  }
 				  return (filter_var($email, FILTER_VALIDATE_EMAIL) !== false); */
 				$var = filter_var(str_replace(we_base_link::TYPE_MAIL_PREFIX, '', $var), FILTER_SANITIZE_EMAIL);
+				return;
+			case self::FILELIST:
+				$var = explode(',', trim(str_replace(array('../', '//'), array('', '/'), $var), ','));
+				foreach($var as &$cur){
+					$cur = filter_var($cur, FILTER_SANITIZE_URL);
+				}
+				$var = implode(',', $var);
 				return;
 			case self::FILE:
 				$var = str_replace(array('../', '//'), array('', '/'), filter_var($var, FILTER_SANITIZE_URL));
@@ -184,7 +197,7 @@ class we_base_request{
 		/* end fix */
 		unset($args[0], $args[2]);
 		foreach($args as $arg){
-			if(!isset($var[$arg])){
+			if(is_string($var) || !is_array($var) || !isset($var[$arg])){
 				return $default;
 			}
 			$var = $var[$arg];
@@ -206,6 +219,7 @@ class we_base_request{
 				case self::CMD://this must change&is ok!
 				case self::RAW_CHECKED:
 				case self::STRINGC:
+				case self::INTLISTA:
 					//we didn't change anything.
 					return $var;
 				case self::INTLIST:

@@ -125,15 +125,15 @@ function save_all_values(){
 	if(permissionhandler::hasPerm('ADMINISTRATOR')){
 		$setArray = array('Date' => sql_function('UNIX_TIMESTAMP()'));
 		// Update settings
-		remember_value($setArray, we_base_request::_(we_base_request::RAW, 'thumbnail_name', null), 'Name');
+		remember_value($setArray, we_base_request::_(we_base_request::STRING, 'thumbnail_name', null), 'Name');
 		remember_value($setArray, we_base_request::_(we_base_request::INT, 'thumbnail_width', null), 'Width');
 		remember_value($setArray, we_base_request::_(we_base_request::INT, 'thumbnail_height', null), 'Height');
-		remember_value($setArray, we_base_request::_(we_base_request::RAW, 'thumbnail_quality', null), 'Quality');
-		remember_value($setArray, we_base_request::_(we_base_request::RAW, 'Ratio', null), 'Ratio');
-		remember_value($setArray, we_base_request::_(we_base_request::RAW, 'Maxsize', null), 'Maxsize');
-		remember_value($setArray, we_base_request::_(we_base_request::RAW, 'Interlace', null), 'Interlace');
-		remember_value($setArray, we_base_request::_(we_base_request::RAW, 'Fitinside', null), 'Fitinside');
-		remember_value($setArray, we_base_request::_(we_base_request::RAW, 'Format', null), 'Format');
+		remember_value($setArray, we_base_request::_(we_base_request::INT, 'thumbnail_quality', null), 'Quality');
+		remember_value($setArray, we_base_request::_(we_base_request::BOOL, 'Ratio', null), 'Ratio');
+		remember_value($setArray, we_base_request::_(we_base_request::BOOL, 'Maxsize', null), 'Maxsize');
+		remember_value($setArray, we_base_request::_(we_base_request::BOOL, 'Interlace', null), 'Interlace');
+		remember_value($setArray, we_base_request::_(we_base_request::BOOL, 'Fitinside', null), 'Fitinside');
+		remember_value($setArray, we_base_request::_(we_base_request::STRING, 'Format', null), 'Format');
 
 		$DB_WE->query('UPDATE ' . THUMBNAILS_TABLE . ' SET ' . we_database_base::arraySetter($setArray) . ' WHERE ID=' . we_base_request::_(we_base_request::INT, 'edited_id', 0));
 	}
@@ -167,17 +167,17 @@ function build_dialog($selected_setting = 'ui'){
 
 			// Generate needed JS
 			$_needed_JavaScript_Source = '
-					function in_array(haystack, needle) {
-						for (var i = 0; i < haystack.length; i++) {
-							if (haystack[i] == needle) {
-								return true;
-							}
-						}
+function in_array(haystack, needle) {
+	for (var i = 0; i < haystack.length; i++) {
+		if (haystack[i] == needle) {
+			return true;
+		}
+	}
 
-						return false;
-					}
+	return false;
+}
 
-					function add_thumbnail() {';
+function add_thumbnail() {';
 
 			// Detect thumbnail names
 			$_thumbnail_names = '';
@@ -191,55 +191,55 @@ function build_dialog($selected_setting = 'ui'){
 			$_thumbnail_names = rtrim($_thumbnail_names, ',');
 
 			$_needed_JavaScript_Source .= "
-						var thumbnail_names = new Array(" . $_thumbnail_names . ");
-						var name = prompt('" . g_l('thumbnails', "[new]") . "', '');
+	var thumbnail_names = new Array(" . $_thumbnail_names . ");
+	var name = prompt('" . g_l('thumbnails', "[new]") . "', '');
 
-						if (name != null) {
-							if((name.indexOf('<') != -1) || (name.indexOf('>') != -1)) {
-								" . we_message_reporting::getShowMessageCall(g_l('alert', "[name_nok]"), we_message_reporting::WE_MESSAGE_ERROR) . "
-								return;
-							}
+	if (name != null) {
+		if((name.indexOf('<') != -1) || (name.indexOf('>') != -1)) {
+			" . we_message_reporting::getShowMessageCall(g_l('alert', "[name_nok]"), we_message_reporting::WE_MESSAGE_ERROR) . "
+			return;
+		}
 
-							if (name.indexOf(\"'\") != -1 || name.indexOf(\",\") != -1) {
-								" . we_message_reporting::getShowMessageCall(g_l('alert', '[thumbnail_hochkomma]'), we_message_reporting::WE_MESSAGE_ERROR) . "
-							} else if (name == '') {
-								" . we_message_reporting::getShowMessageCall(g_l('alert', '[thumbnail_empty]'), we_message_reporting::WE_MESSAGE_ERROR) . "
-							} else if (in_array(thumbnail_names, name)) {
-								" . we_message_reporting::getShowMessageCall(g_l('alert', '[thumbnail_exists]'), we_message_reporting::WE_MESSAGE_ERROR) . "
-							} else {
-								self.location = '" . $GLOBALS['reloadUrl'] . "&newthumbnail=' + escape(name);
-							}
-						}
-					}
+		if (name.indexOf(\"'\") != -1 || name.indexOf(\",\") != -1) {
+			" . we_message_reporting::getShowMessageCall(g_l('alert', '[thumbnail_hochkomma]'), we_message_reporting::WE_MESSAGE_ERROR) . "
+		} else if (name == '') {
+			" . we_message_reporting::getShowMessageCall(g_l('alert', '[thumbnail_empty]'), we_message_reporting::WE_MESSAGE_ERROR) . "
+		} else if (in_array(thumbnail_names, name)) {
+			" . we_message_reporting::getShowMessageCall(g_l('alert', '[thumbnail_exists]'), we_message_reporting::WE_MESSAGE_ERROR) . "
+		} else {
+			self.location = '" . $GLOBALS['reloadUrl'] . "&newthumbnail=' + escape(name);
+		}
+	}
+}
 
-					function delete_thumbnail() {" .
-				((permissionhandler::hasPerm('ADMINISTRATOR')) ?
-					"var deletion = confirm('" . sprintf(g_l('thumbnails', '[delete_prompt]'), f('SELECT Name FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . we_base_request::_(we_base_request::INT, 'id', 0))) . "');
+function delete_thumbnail() {" .
+((permissionhandler::hasPerm('ADMINISTRATOR')) ?
+"var deletion = confirm('" . sprintf(g_l('thumbnails', '[delete_prompt]'), f('SELECT Name FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . we_base_request::_(we_base_request::INT, 'id', 0))) . "');
 
-							if (deletion == true) {
-								self.location = '" . $GLOBALS['reloadUrl'] . "&deletethumbnail=" . we_base_request::_(we_base_request::INT, 'id') . "';
-							}" :
-					"") . "
-					}
+		if (deletion == true) {
+			self.location = '" . $GLOBALS['reloadUrl'] . "&deletethumbnail=" . we_base_request::_(we_base_request::INT, 'id') . "';
+		}" :
+"") . "
+}
 
-					function change_thumbnail() {
-						var url = '" . $GLOBALS['reloadUrl'] . "&id=' + arguments[0];
-						self.location = url;
-					}
+function change_thumbnail() {
+	var url = '" . $GLOBALS['reloadUrl'] . "&id=' + arguments[0];
+	self.location = url;
+}
 
-					function changeFormat() {
-						if(document.getElementById('Format').value == 'jpg' || document.getElementById('Format').value == 'none') {
-							document.getElementById('thumbnail_quality_text_cell').style.display='';
-							document.getElementById('thumbnail_quality_value_cell').style.display='';
-						} else {
-							document.getElementById('thumbnail_quality_text_cell').style.display='none';
-							document.getElementById('thumbnail_quality_value_cell').style.display='none';
-						}
-					}
+function changeFormat() {
+	if(document.getElementById('Format').value == 'jpg' || document.getElementById('Format').value == 'none') {
+		document.getElementById('thumbnail_quality_text_cell').style.display='';
+		document.getElementById('thumbnail_quality_value_cell').style.display='';
+	} else {
+		document.getElementById('thumbnail_quality_text_cell').style.display='none';
+		document.getElementById('thumbnail_quality_value_cell').style.display='none';
+	}
+}
 
-					function init() {
-						changeFormat();
-					}";
+function init() {
+	changeFormat();
+}";
 
 			$_needed_JavaScript = we_html_element::jsElement($_needed_JavaScript_Source) .
 				we_html_element::jsScript(JS_DIR . 'keyListener.js');
@@ -255,7 +255,7 @@ function build_dialog($selected_setting = 'ui'){
 			$id = we_base_request::_(we_base_request::INT, 'id', -1);
 			while($DB_WE->next_record()){
 				$_enabled_buttons = true;
-				$_thumbnail_counter = $DB_WE->f('ID');
+				//$_thumbnail_counter = $DB_WE->f('ID');
 
 				$_thumbnails->addOption($DB_WE->f('ID'), $DB_WE->f('Name'));
 
@@ -457,5 +457,5 @@ function saveOnKeyBoard() {
 			'space' => 0
 		)
 	);
-	print we_html_multiIconBox::getHTML('thumbnails', '100%', $parts, 30, '', -1, '', '', false, g_l('thumbnails', '[thumbnails]'));
+	echo we_html_multiIconBox::getHTML('thumbnails', '100%', $parts, 30, '', -1, '', '', false, g_l('thumbnails', '[thumbnails]'));
 }

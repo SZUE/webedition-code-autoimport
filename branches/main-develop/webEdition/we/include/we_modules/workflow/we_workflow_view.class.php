@@ -100,7 +100,7 @@ class we_workflow_view extends we_workflow_base{
 	function workflowHiddens(){
 		$out = '';
 		foreach($this->hiddens as $val){
-			$out.=$this->htmlHidden($this->uid . '_' . $val, (in_array($val, $this->workflowDef->persistents) ? $this->workflowDef->$val : $this->$val));
+			$out.=$this->htmlHidden($this->uid . '_' . $val, (isset($this->workflowDef->persistents[$val]) ? $this->workflowDef->$val : $this->$val));
 		}
 		return $out;
 	}
@@ -426,7 +426,7 @@ class we_workflow_view extends we_workflow_base{
 			$vals[$v] = $t;
 		}
 		return we_html_tools::htmlFormElementTable(
-				we_html_tools::htmlSelect($this->uid . '_MYDocType[]', $vals, 6, $this->workflowDef->DocType, true, array('onchange' => "top.content.setHot();"), "value", $width, "defaultfont"), g_l('modules_workflow', '[doctype]'));
+				we_html_tools::htmlSelect($this->uid . '_DocType[]', $vals, 6, $this->workflowDef->DocType, true, array('onchange' => "top.content.setHot();"), "value", $width, "defaultfont"), g_l('modules_workflow', '[doctype]'));
 	}
 
 	function htmlHidden($name, $value = ''){
@@ -438,11 +438,11 @@ class we_workflow_view extends we_workflow_base{
 	function formDirChooser($width = '', $rootDirID = 0, $table = FILE_TABLE, $Pathname = 'ParentPath', $Pathvalue = '', $IDName = 'ParentID', $IDValue = '', $cmd = ''){
 		$table = FILE_TABLE;
 
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['$IDName'].value");
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['$Pathname'].value");
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");
+		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $Pathname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
 
-		$button = we_html_button::create_button('select', "javascript:we_cmd('openDirselector',document.we_form.elements['$IDName'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$rootDirID')");
+		$button = we_html_button::create_button('select', "javascript:we_cmd('openDirselector',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','" . $rootDirID . "')");
 		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, '', 'onchange="top.content.setHot();" readonly', "text", $width, 0), "", "left", "defaultfont", $this->htmlHidden($IDName, $IDValue), we_html_tools::getPixel(20, 4), $button);
 	}
 
@@ -973,9 +973,9 @@ function checkData(){
 					$childs = '';
 					$this->workflowDef->loadDocuments();
 					foreach($this->workflowDef->documents as $k => $v){
-						$childs.="top.content.deleteEntry(" . $v["ID"] . ",'file');\n";
+						$childs.="top.content.deleteEntry(" . $v["ID"] . ",'file');";
 					}
-					if(($dts = we_base_request::_(we_base_request::INT, $_REQUEST[$this->uid . '_MYDocType'])) !== false){
+					if(($dts = we_base_request::_(we_base_request::INT, $this->uid . '_DocType')) !== false){
 						$this->workflowDef->DocType = makeCSVFromArray($dts, true);
 					}
 
@@ -1040,11 +1040,11 @@ function checkData(){
 		if(isset($_REQUEST['wname'])){
 			$this->uid = $_REQUEST['wname'];
 		}
-		foreach($this->workflowDef->persistents as $val){
+		foreach($this->workflowDef->persistents as $val => $type){
 			$varname = $this->uid . '_' . $val;
-			if(isset($_REQUEST[$varname])){
-				$_REQUEST[$varname] = escape_sql_query($_REQUEST[$varname]);
-				$this->workflowDef->$val = $_REQUEST[$varname];
+			if(($tmp = we_base_request::_($type, $varname)) !== false){
+				//$_REQUEST[$varname] = escape_sql_query($_REQUEST[$varname]);
+				$this->workflowDef->$val = $tmp;
 			}
 		}
 

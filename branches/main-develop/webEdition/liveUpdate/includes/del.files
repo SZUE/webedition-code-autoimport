@@ -230,7 +230,6 @@ we/include/we_modules/schedule/we_schedpro_defines.inc.php
 we/include/we_modules/schedule/we_schedpro.inc.php
 we/include/we_modules/object/we_searchobject_class.inc.php
 we/include/we_modules/object/we_objecttag.inc.php
-we/include/we_modules/object/we_object_createTemplate.inc.php
 we/include/we_modules/object/we_objectFile.inc.php
 we/include/we_modules/object/we_objectEx.inc.php
 we/include/we_modules/object/we_object.inc.php
@@ -2357,7 +2356,6 @@ apps/toolfactory/pattern/hook/custom_hooks/weCustomHook_TOOLNAME_save.inc.php
 apps/toolfactory/pattern/hook/custom_hooks/weCustomHook_TOOLNAME_publish.inc.php
 apps/toolfactory/pattern/hook/custom_hooks/weCustomHook_TOOLNAME_delete.inc.php
 apps/toolfactory/hook/custom_hooks/weCustomHook_toolfactory_save.inc.php
-we/include/we_modules/voting/we_votingDirSelect.class.php
 we/include/java_menu/modules/module_menu_shop.inc.php
 we/include/java_menu/modules/module_menu_workflow.inc.php
 we/include/java_menu/modules/module_menu_newsletter.inc.php
@@ -2393,3 +2391,6 @@ lib/we/ui-samples/WeWysiwygEditor.php
 lib/we/ui-samples/Checkbox.php
 lib/we/ui-samples/Table.php
 lib/we/ui-samples
+we/include/we_modules/shop/we_editor_variants_webEditionDocument.inc.php
+we/include/we_modules/shop/show_variant.inc.php
+we/include/we_modules/shop/we_editor_variants_objectFile.inc.php

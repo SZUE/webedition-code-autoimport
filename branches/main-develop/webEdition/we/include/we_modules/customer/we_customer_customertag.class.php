@@ -50,6 +50,10 @@ class we_customer_customertag{
 		return ($this->id ? $this->object->getDBf($key) : '');
 	}
 
+	public function getDBRecord(){
+		return ($this->id ? $this->object->getDBRecord() : array());
+	}
+
 	public function f($key){
 		return ($this->id ? $this->object->f($key) : '');
 	}

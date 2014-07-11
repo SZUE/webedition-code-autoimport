@@ -305,19 +305,18 @@ class we_object_listview extends listviewBase{
 			if(!is_numeric($_key) && $_val){
 				switch($_key){
 					case 'DefaultDesc':
-						$_selFields .= OBJECT_X_TABLE . $classID . '.' . $_val . ' AS we_Description,';
+						$_selFields .= '`' . OBJECT_X_TABLE . $classID . '`.`' . $_val . '` AS we_Description,';
 						break;
 					case 'DefaultTitle':
-						$_selFields .= OBJECT_X_TABLE . $classID . '.' . $_val . ' AS we_Title,';
+						$_selFields .= '`' . OBJECT_X_TABLE . $classID . '`.`' . $_val . '` AS we_Title,';
 						break;
 					case 'DefaultKeywords':
-						$_selFields .= OBJECT_X_TABLE . $classID . '.' . $_val . ' AS we_Keywords,';
+						$_selFields .= '`' . OBJECT_X_TABLE . $classID . '`.`' . $_val . '` AS we_Keywords,';
 						break;
 				}
 			}
 		}
-		$_selFields .= OBJECT_X_TABLE . $classID . '.OF_Published' . ' AS we_wedoc_Published,';
-		$f = OBJECT_X_TABLE . $classID . '.ID AS ID,' . OBJECT_X_TABLE . $classID . '.OF_Templates AS OF_Templates,' . OBJECT_X_TABLE . $classID . '.OF_ID AS OF_ID,' . OBJECT_X_TABLE . $classID . '.OF_Category AS OF_Category,' . OBJECT_X_TABLE . $classID . ".OF_Text AS OF_Text," . OBJECT_X_TABLE . $classID . ".OF_Url AS OF_Url," . OBJECT_X_TABLE . $classID . ".OF_TriggerID AS OF_TriggerID," . OBJECT_X_TABLE . $classID . '.OF_WebUserID AS OF_WebUserID,' . OBJECT_X_TABLE . $classID . '.OF_Language AS OF_Language,' . $_selFields;
+		$f = '`' . OBJECT_X_TABLE . $classID . '`.ID AS ID,`' . OBJECT_X_TABLE . $classID . '`.OF_Templates AS OF_Templates,`' . OBJECT_X_TABLE . $classID . '`.OF_ID AS OF_ID,`' . OBJECT_X_TABLE . $classID . '`.OF_Category AS OF_Category,`' . OBJECT_X_TABLE . $classID . '`.OF_Text AS OF_Text,`' . OBJECT_X_TABLE . $classID . '`.OF_Url AS OF_Url,`' . OBJECT_X_TABLE . $classID . '`.OF_TriggerID AS OF_TriggerID,`' . OBJECT_X_TABLE . $classID . '`.OF_WebUserID AS OF_WebUserID,`' . OBJECT_X_TABLE . $classID . '`.OF_Language AS OF_Language,`' . OBJECT_X_TABLE . $classID . '`.`OF_Published`' . ' AS we_wedoc_Published,' . $_selFields;
 		foreach($matrix as $n => $p){
 			$n2 = $n;
 			if(strpos($n, 'we_object_') === 0){
@@ -343,7 +342,7 @@ class we_object_listview extends listviewBase{
 			case 'we_published':
 				$_tmporder = str_replace(array(
 					'we_id', 'we_filename', 'we_published'), array(
-					OBJECT_X_TABLE . $classID . '.OF_ID', OBJECT_X_TABLE . $classID . '.OF_Text', OBJECT_X_TABLE . $classID . '.OF_Published'), $_tmporder);
+					'`' . OBJECT_X_TABLE . $classID . '`.OF_ID', '`' . OBJECT_X_TABLE . $classID . '`.OF_Text', '`' . OBJECT_X_TABLE . $classID . '`.OF_Published'), $_tmporder);
 				$order = ' ORDER BY ' . $_tmporder . ($this->desc ? ' DESC' : '');
 				break;
 			case 'random()':
@@ -357,14 +356,11 @@ class we_object_listview extends listviewBase{
 				break;
 		}
 
-		$tb = array();
-		$from = array_unique($from);
-		foreach($from as $val){
-			$tb[] = $val;
-		}
+		$tb = array_unique($from);
 
 		$publ_cond = array();
-		foreach($tb as $t){
+		foreach($tb as &$t){
+			$t = '`' . $t . '`';
 			$publ_cond [] = '(' . $t . '.OF_Published>0 OR ' . $t . '.OF_ID=0)';
 		}
 
@@ -372,7 +368,7 @@ class we_object_listview extends listviewBase{
 			'fields' => rtrim($f, ',') . ($order == ' ORDER BY RANDOM ' ? ', RAND() AS RANDOM ' : ''),
 			'order' => $order,
 			'tables' => makeCSVFromArray($tb),
-			'groupBy' => (count($tb) > 1) ? ' GROUP BY ' . OBJECT_X_TABLE . $classID . '.ID ' : '',
+			'groupBy' => (count($tb) > 1) ? ' GROUP BY `' . OBJECT_X_TABLE . $classID . '`.ID ' : '',
 			'publ_cond' => $publ_cond ? ' ( ' . implode(' AND ', $publ_cond) . ' ) ' : '',
 			'cond' => trim($cond)
 		);

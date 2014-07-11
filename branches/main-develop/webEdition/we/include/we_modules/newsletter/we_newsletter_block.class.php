@@ -48,14 +48,15 @@ class we_newsletter_block extends we_newsletter_base{
 	const URL = 7;
 
 	//properties
-	var $ID;
-	var $NewsletterID;
-	var $Groups;
-	var $Type;
-	var $LinkID;
-	var $Field;
-	var $Source;
-	var $Html;
+	var $ID = 0;
+	var $NewsletterID = 0;
+	var $Groups = '';
+	var $Type = self::DOCUMENT;
+	var $LinkID = 0;
+	var $Field = '';
+	var $Source = '';
+	var $Html = '';
+	public $Pack = '';
 
 	/*	 * *****************************************************
 	 * Default Constructor
@@ -63,29 +64,18 @@ class we_newsletter_block extends we_newsletter_base{
 	 * ****************************************************** */
 
 	function __construct($newsletterID = 0){
-
 		parent::__construct();
 		$this->table = NEWSLETTER_BLOCK_TABLE;
-
-		$this->persistents[] = 'NewsletterID';
-		$this->persistents[] = 'Groups';
-		$this->persistents[] = 'Type';
-		$this->persistents[] = 'LinkID';
-		$this->persistents[] = 'Field';
-		$this->persistents[] = 'Source';
-		$this->persistents[] = 'Html';
-		$this->persistents[] = 'Pack';
-
-		$this->ID = 0;
-		$this->NewsletterID = 0;
-		$this->Groups = '';
-		$this->Type = self::DOCUMENT;
-		$this->LinkID = 0;
-		$this->Field = '';
-		$this->Source = '';
-		$this->Html = '';
-		$this->Pack = '';
-
+		$this->persistents = array(
+			'NewsletterID' => we_base_request::INT,
+			'Groups' => we_base_request::INTLIST,
+			'Type' => we_base_request::INT,
+			'LinkID' => we_base_request::INT,
+			'Field' => we_base_request::STRING,
+			'Source' => we_base_request::RAW,
+			'Html' => we_base_request::RAW,
+			'Pack' => we_base_request::RAW,
+		);
 
 		if($newsletterID){
 			$this->ID = $newsletterID;

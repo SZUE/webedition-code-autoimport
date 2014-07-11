@@ -56,7 +56,14 @@ class we_workflow_documentStep extends we_workflow_base{
 		$this->table = WORKFLOW_DOC_STEP_TABLE;
 		$this->ClassName = __CLASS__;
 
-		array_psuh($this->persistents, "ID", "workflowDocID", "workflowStepID", "startDate", "finishDate", "Status");
+		$this->persistents = array(
+			"ID" => we_base_request::INT,
+			"workflowDocID" => we_base_request::INT,
+			"workflowStepID" => we_base_request::INT,
+			"startDate" => we_base_request::INT,
+			"finishDate" => we_base_request::INT,
+			"Status" => we_base_request::RAW,
+		);
 
 		if($wfDocumentStep){
 			$this->ID = $wfDocumentStep;

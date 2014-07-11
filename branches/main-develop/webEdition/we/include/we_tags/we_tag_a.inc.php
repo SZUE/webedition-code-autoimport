@@ -234,7 +234,7 @@ function we_tag_a($attribs, $content){
 	if($button){ //	show button
 		$attribs['type'] = 'button';
 		$attribs['value'] = oldHtmlspecialchars($content);
-		$attribs['onclick'] = ($target ? ("var wind=window.open('','$target');wind") : 'self') . ".document.location='$url" . oldHtmlspecialchars((empty($param) ? '' : '?' . implode('&', $param))) . "';";
+		$attribs['onclick'] = ($target ? ("var wind=window.open('','" . $target . "');wind") : 'self') . ".document.location='$url" . oldHtmlspecialchars((empty($param) ? '' : '?' . implode('&', $param))) . "';";
 
 		$attribs = removeAttribs($attribs, array('target')); //	not html - valid
 

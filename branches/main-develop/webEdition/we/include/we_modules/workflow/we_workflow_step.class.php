@@ -26,7 +26,7 @@
 /**
  * General Definition of WebEdition Workflow Step
  */
-class we_workflow_step extends we_workflow_base {
+class we_workflow_step extends we_workflow_base{
 
 	var $ID = 0;
 	var $workflowID = 0;
@@ -45,7 +45,13 @@ class we_workflow_step extends we_workflow_base {
 		parent::__construct();
 		$this->table = WORKFLOW_STEP_TABLE;
 
-		array_push($this->persistents, "ID", "Worktime", "timeAction", "stepCondition", "workflowID");
+		$this->persistents = array(
+			"ID" => we_base_request::INT,
+			"Worktime" => we_base_request::FLOAT,
+			"timeAction" => we_base_request::RAW,
+			"stepCondition" => we_base_request::RAW,
+			"workflowID" => we_base_request::INT,
+		);
 
 		if($stepID > 0){
 			$this->ID = $stepID;

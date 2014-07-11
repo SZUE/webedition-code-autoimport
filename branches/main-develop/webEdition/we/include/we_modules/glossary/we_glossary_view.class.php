@@ -163,14 +163,11 @@ class we_glossary_view{
 	//------------------------------------------------
 
 	function getCommonHiddens($cmds = array()){
-
-		$out = $this->htmlHidden("cmd", (isset($cmds["cmd"]) ? $cmds["cmd"] : ""))
-			. $this->htmlHidden("cmdid", (isset($cmds["cmdid"]) ? $cmds["cmdid"] : ""))
-			. $this->htmlHidden("pnt", (isset($cmds["pnt"]) ? $cmds["pnt"] : ""))
-			. $this->htmlHidden("tabnr", (isset($cmds["tabnr"]) ? $cmds["tabnr"] : ""))
-			. $this->htmlHidden("IsFolder", (isset($this->Glossary->IsFolder) ? $this->Glossary->IsFolder : '0'));
-
-		return $out;
+		return $this->htmlHidden("cmd", (isset($cmds["cmd"]) ? $cmds["cmd"] : "")) .
+			$this->htmlHidden("cmdid", (isset($cmds["cmdid"]) ? $cmds["cmdid"] : "")) .
+			$this->htmlHidden("pnt", (isset($cmds["pnt"]) ? $cmds["pnt"] : "")) .
+			$this->htmlHidden("tabnr", (isset($cmds["tabnr"]) ? $cmds["tabnr"] : "")) .
+			$this->htmlHidden("IsFolder", (isset($this->Glossary->IsFolder) ? $this->Glossary->IsFolder : '0'));
 	}
 
 	function getJSTop(){
@@ -437,7 +434,7 @@ function we_cmd() {
 					break;
 				}
 				$this->Glossary = new we_glossary_glossary();
-				$this->Glossary->Type = array_pop(explode("_", we_base_request::_(we_base_request::STRING, "cmd", '', 4)));
+				$this->Glossary->Type = array_pop(explode('_', $cmd, 4));
 
 				echo we_html_element::jsElement('
 							' . $this->TopFrame . '.editor.edheader.location="' . $this->FrameSet . '?pnt=edheader&text=' . urlencode($this->Glossary->Text) . '";

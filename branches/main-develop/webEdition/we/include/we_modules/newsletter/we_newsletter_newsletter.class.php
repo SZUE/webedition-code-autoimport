@@ -77,7 +77,22 @@ class we_newsletter_newsletter extends we_newsletter_base{
 		parent::__construct();
 
 		$this->table = NEWSLETTER_TABLE;
-		array_push($this->persistents, 'ID', 'ParentID', 'Text', 'Path', 'Icon', 'Subject', 'Sender', 'Reply', 'Test', 'Step', 'Offset', 'IsFolder', 'Charset', 'isEmbedImages');
+		$this->persistents = array(
+			'ID' => we_base_request::INT,
+			'ParentID' => we_base_request::INT,
+			'Text' => we_base_request::STRING,
+			'Path' => we_base_request::FILE,
+			'Icon' => we_base_request::STRING,
+			'Subject' => we_base_request::STRING,
+			'Sender' => we_base_request::EMAIL,
+			'Reply' => we_base_request::EMAIL,
+			'Test' => we_base_request::EMAIL,
+			'Step' => we_base_request::RAW,
+			'Offset' => we_base_request::RAW,
+			'IsFolder' => we_base_request::BOOL,
+			'Charset' => we_base_request::RAW,
+			'isEmbedImages' => we_base_request::RAW,
+		);
 		$this->Charset = $GLOBALS['WE_BACKENDCHARSET'];
 
 		$this->addBlock();
@@ -101,9 +116,7 @@ class we_newsletter_newsletter extends we_newsletter_base{
 		$this->Subject = stripslashes($this->Subject);
 		$this->groups = we_newsletter_group::__getAllGroups($newsletterID, $this->db);
 		$this->blocks = we_newsletter_block::__getAllBlocks($newsletterID, $this->db);
-		if(empty($this->Charset)){
-			$this->Charset = $GLOBALS['WE_BACKENDCHARSET'];
-		}
+		$this->Charset = $this->Charset ? $this->Charset : $GLOBALS['WE_BACKENDCHARSET'];
 	}
 
 	/**
@@ -227,13 +240,14 @@ class we_newsletter_newsletter extends we_newsletter_base{
 			} else {
 				$temp = array();
 				foreach($this->blocks as $k => $v){
-					if($k == $where)
+					if($k == $where){
 						$temp[] = new we_newsletter_block();
+					}
 					$temp[] = $v;
 				}
 				$this->blocks = $temp;
 			}
-		}else {
+		} else {
 			$this->blocks[] = new we_newsletter_block();
 		}
 	}

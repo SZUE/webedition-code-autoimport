@@ -47,7 +47,13 @@ class we_workflow_document extends we_workflow_base{
 		parent::__construct();
 		$this->table = WORKFLOW_DOC_TABLE;
 		$this->ClassName = __CLASS__;
-		array_push($this->persistents, "ID", "workflowID", "documentID", "userID", "Status");
+		$this->persistents = array(
+			"ID" => we_base_request::INT,
+			"workflowID" => we_base_request::INT,
+			"documentID" => we_base_request::INT,
+			"userID" => we_base_request::INT,
+			"Status" => we_base_request::INT,
+		);
 
 
 		if($wfDocument){

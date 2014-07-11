@@ -48,10 +48,10 @@ class we_voting_frames extends weModuleFrames{
 			case "reset_logdata":
 				return $this->getHTMLResetLogData();
 			case "show_log":
-				if($this->View->voting->LogDB){
-					return $this->getHTMLShowLogNew();
-				}
-				return $this->getHTMLShowLogOld();
+				return ($this->View->voting->LogDB ?
+						$this->getHTMLShowLogNew() :
+						$this->getHTMLShowLogOld()
+					);
 			case "delete_log":
 				return $this->getHTMLDeleteLog();
 			default:
@@ -82,8 +82,9 @@ class we_voting_frames extends weModuleFrames{
 			$we_tabs->addTab(new we_tab("#", g_l('modules_voting', '[inquiry]'), '((' . $this->topFrame . '.activ_tab==2) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('2');", array("id" => "tab_2")));
 			$we_tabs->addTab(new we_tab("#", g_l('modules_voting', '[options]'), '((' . $this->topFrame . '.activ_tab==3) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('3');", array("id" => "tab_3")));
 
-			if($this->View->voting->ID)
+			if($this->View->voting->ID){
 				$we_tabs->addTab(new we_tab("#", g_l('modules_voting', '[result]'), '((' . $this->topFrame . '.activ_tab==4) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('4');", array("id" => "tab_4")));
+			}
 		}
 
 		$we_tabs->onResize();
@@ -310,12 +311,12 @@ class we_voting_frames extends weModuleFrames{
 		$table->setColContent(1, 1, we_html_element::htmlDiv(array('id' => 'owners', 'class' => 'blockWrapper', 'style' => 'width: ' . ($this->_width_size - 10) . 'px; height: 60px; border: #AAAAAA solid 1px;')));
 		$idname = 'owner_id';
 		$textname = 'owner_text';
-		$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['$idname'].value");
-		$wecmdenc2 = we_base_request::encCmd("document.forms['we_form'].elements['$textname'].value");
+		$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['" . $idname . "'].value");
+		$wecmdenc2 = we_base_request::encCmd("document.forms['we_form'].elements['" . $textname . "'].value");
 		$wecmdenc5 = we_base_request::encCmd("fillIDs();opener.we_cmd('users_add_owner',top.allPaths,top.allIsFolder);");
 		$table->setCol(2, 0, array('colspan' => 2, 'align' => 'right'), we_html_element::htmlHidden(array('name' => $idname, 'value' => '')) .
 			we_html_element::htmlHidden(array('name' => $textname, 'value' => '')) .
-			we_html_button::create_button("add", "javascript:top.content.setHot(); we_cmd('browse_users','" . $wecmdenc1 . "','" . $wecmdenc2 . "','',document.forms[0].elements['$idname'].value,'" . $wecmdenc5 . "','','',1);")
+			we_html_button::create_button("add", "javascript:top.content.setHot(); we_cmd('browse_users','" . $wecmdenc1 . "','" . $wecmdenc2 . "','',document.forms[0].elements['" . $idname . "'].value,'" . $wecmdenc5 . "','','',1);")
 		);
 
 		$parts[] = array(
@@ -582,47 +583,46 @@ class we_voting_frames extends weModuleFrames{
 		$parts[] = array(
 			'headline' => '',
 			'html' => we_html_element::jsElement('
+function removeAll(){
+	for(var i=0;i<iptable_label.itemCount+1;i++){
+		iptable_label.delItem(i);
+	}
+}
 
-							function removeAll(){
-								for(var i=0;i<iptable_label.itemCount+1;i++){
-									iptable_label.delItem(i);
-								}
-							}
-
-							function newIp(){
-								var ip = prompt("' . g_l('modules_voting', '[new_ip_add]') . '","");
+function newIp(){
+	var ip = prompt("' . g_l('modules_voting', '[new_ip_add]') . '","");
 
 
-								var re = new RegExp("[a-zA-Z|,]");
-								var m = ip.match(re);
-								if(m != null){
-									' . we_message_reporting::getShowMessageCall(g_l('modules_voting', '[not_valid_ip]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-									return;
-								}
+	var re = new RegExp("[a-zA-Z|,]");
+	var m = ip.match(re);
+	if(m != null){
+		' . we_message_reporting::getShowMessageCall(g_l('modules_voting', '[not_valid_ip]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+		return;
+	}
 
-								var re = new RegExp("^(([0-2|\*]?[0-9|\*]{1,2}\.){3}[0-2|\*]?[0-9|\*]{1,2})");
+	var re = new RegExp("^(([0-2|\*]?[0-9|\*]{1,2}\.){3}[0-2|\*]?[0-9|\*]{1,2})");
 
-								var m = ip.match(re);
+	var m = ip.match(re);
 
-								if(m != null){
+	if(m != null){
 
-									var p = ip.split(".");
-									for (var i = 0; i < p.length; i++) {
-								      var t = p[i];
-								      t.replace("*","");
-								      if(parseInt(t)>255) {
-								      	' . we_message_reporting::getShowMessageCall(g_l('modules_voting', '[not_valid_ip]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-								      	return false;
-								      }
-								    }
+		var p = ip.split(".");
+		for (var i = 0; i < p.length; i++) {
+				var t = p[i];
+				t.replace("*","");
+				if(parseInt(t)>255) {
+					' . we_message_reporting::getShowMessageCall(g_l('modules_voting', '[not_valid_ip]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+					return false;
+				}
+			}
 
-									iptable_label.addItem();
-									iptable_label.setItem(0,(iptable_label.itemCount-1),ip);
-									iptable_label.showVariant(0);
-								} else {
-									' . we_message_reporting::getShowMessageCall(g_l('modules_voting', '[not_valid_ip]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-								}
-							}
+		iptable_label.addItem();
+		iptable_label.setItem(0,(iptable_label.itemCount-1),ip);
+		iptable_label.showVariant(0);
+	} else {
+		' . we_message_reporting::getShowMessageCall(g_l('modules_voting', '[not_valid_ip]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+	}
+}
 					') . $table->getHtml(),
 			'space' => $this->_space_size
 		);
@@ -915,8 +915,8 @@ class we_voting_frames extends weModuleFrames{
 	}
 
 	function formFileChooser($width = "", $IDName = "ParentID", $IDValue = "/", $cmd = "", $filter = ""){
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['$IDName'].value");
-		$button = we_html_button::create_button("select", "javascript:we_cmd('browse_server','" . $wecmdenc1 . "','$filter',document.we_form.elements['$IDName'].value);");
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");
+		$button = we_html_button::create_button("select", "javascript:we_cmd('browse_server','" . $wecmdenc1 . "','" . $filter . "',document.we_form.elements['" . $IDName . "'].value);");
 
 		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 30, $IDValue, "", 'readonly onchange="top.content.setHot();"', "text", $width, 0), "", "left", "defaultfont", "", we_html_tools::getPixel(20, 4), permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
 	}
