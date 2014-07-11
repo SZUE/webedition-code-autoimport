@@ -380,7 +380,7 @@ class we_messaging_todo extends we_messaging_proto{
 			$in_folder = '';
 			//FIXME: Put this out of the loop (the select statement)
 			if(($userid = $this->username_to_userid($rcpt, $db)) == -1){
-				$results['err'][] = "Username '$rcpt' existiert nicht'";
+				$results['err'][] = "Username '" . $rcpt . "' existiert nicht'";
 				$results['failed'][] = $rcpt;
 				continue;
 			}

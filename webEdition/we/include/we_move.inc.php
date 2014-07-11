@@ -319,11 +319,11 @@ $yuiSuggest->setWidth(250);
 $yuiSuggest->setContainerWidth(360);
 $wecmdenc1 = we_base_request::encCmd('top.rframe.treeheader.document.we_form.elements.' . $idname . '.value');
 $wecmdenc2 = we_base_request::encCmd('top.rframe.treeheader.document.we_form.elements.' . $textname . '.value');
-$yuiSuggest->setSelectButton(we_html_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "',0)"), 10);
+$yuiSuggest->setSelectButton(we_html_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "',0)"), 10);
 
 $weAcSelector = $yuiSuggest->getHTML();
 
-$_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "javascript:press_ok_move();"), "", we_html_button::create_button("quit_move", "javascript:we_cmd('exit_move','','$table')"), 10, "left");
+$_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "javascript:press_ok_move();"), "", we_html_button::create_button("quit_move", "javascript:we_cmd('exit_move','','" . $table . "')"), 10, "left");
 
 
 print

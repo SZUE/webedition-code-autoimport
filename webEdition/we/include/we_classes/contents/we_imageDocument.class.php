@@ -625,7 +625,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 		$_metaTitleField = 'we_' . $this->Name . '_txt[Title]';
 		$useMetaTitle = 'we_' . $this->Name . '_txt[useMetaTitle]';
 		//	disable field 'title' when checked or not.   on checked true: document.forms[0]['$_titleField'].value='$this->getElement('Title')' and  onchecked false: document.forms[0]['$_titleField'].value='' added to fix bug #5814
-		$_content->setCol(6, 4, array('valign' => 'bottom'), we_html_forms::checkboxWithHidden($this->getElement('useMetaTitle'), $useMetaTitle, g_l('weClass', '[use_meta_title]'), false, 'defaultfont', "if(this.checked){ document.forms[0]['$_titleField'].setAttribute('readonly', 'readonly', 'false'); document.forms[0]['$_titleField'].value = '" . $this->getElement('Title') . "'; }else{ document.forms[0]['$_titleField'].removeAttribute('readonly', 'false'); document.forms[0]['$_titleField'].value='';}_EditorFrame.setEditorIsHot(true);"));
+		$_content->setCol(6, 4, array('valign' => 'bottom'), we_html_forms::checkboxWithHidden($this->getElement('useMetaTitle'), $useMetaTitle, g_l('weClass', '[use_meta_title]'), false, 'defaultfont', "if(this.checked){ document.forms[0]['" . $_titleField . "'].setAttribute('readonly', 'readonly', 'false'); document.forms[0]['" . $_titleField . "'].value = '" . $this->getElement('Title') . "'; }else{ document.forms[0]['" . $_titleField . "'].removeAttribute('readonly', 'false'); document.forms[0]['" . $_titleField . "'].value='';}_EditorFrame.setEditorIsHot(true);"));
 
 		//  longdesc should be available in images.
 		//    check if longdesc is set and get path
@@ -644,12 +644,12 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 		$yuiSuggest->setResult($longdesc_id_name, $longdesc_id);
 		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setWidth(328);
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['$longdesc_id_name'].value");
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['$longdesc_text_name'].value");
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $longdesc_id_name . "'].value");
+		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $longdesc_text_name . "'].value");
 		$wecmdenc3 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd('reload_editpage');");
 
-		$yuiSuggest->setSelectButton(we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['$longdesc_id_name'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','" . we_base_ContentTypes::WEDOCUMENT . "," . we_base_ContentTypes::TEXT . "," . we_base_ContentTypes::HTML . "',1)"));
-		$yuiSuggest->setTrashButton(we_html_button::create_button('image:btn_function_trash', "javascript:document.we_form.elements['$longdesc_id_name'].value='-1';document.we_form.elements['$longdesc_text_name'].value='';_EditorFrame.setEditorIsHot(true); YAHOO.autocoml.setValidById('" . $yuiSuggest->getInputId() . "')"));
+		$yuiSuggest->setSelectButton(we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['" . $longdesc_id_name . "'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','" . we_base_ContentTypes::WEDOCUMENT . "," . we_base_ContentTypes::TEXT . "," . we_base_ContentTypes::HTML . "',1)"));
+		$yuiSuggest->setTrashButton(we_html_button::create_button('image:btn_function_trash', "javascript:document.we_form.elements['" . $longdesc_id_name . "'].value='-1';document.we_form.elements['" . $longdesc_text_name . "'].value='';_EditorFrame.setEditorIsHot(true); YAHOO.autocoml.setValidById('" . $yuiSuggest->getInputId() . "')"));
 		$_content->setCol(7, 0, array('colspan' => 5), we_html_tools::getPixel(1, 5));
 		$_content->setCol(8, 0, array('valign' => 'bottom', 'colspan' => 5), weSuggest::getYuiFiles() . $yuiSuggest->getHTML() . $yuiSuggest->getYuiCode());
 
@@ -779,29 +779,29 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 
 		$checkFlagName = 'check_' . $this->Name . '_RollOverFlag';
 
-		$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['$idname'].value");
-		$wecmdenc2 = we_base_request::encCmd("document.forms['we_form'].elements['$textname'].value");
+		$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['" . $idname . "'].value");
+		$wecmdenc2 = we_base_request::encCmd("document.forms['we_form'].elements['" . $textname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements['we_" . $this->Name . "_txt[LinkType]'][2].checked=true;");
-		$but1 = we_html_button::create_button('select', "javascript:we_cmd('openDocselector', document.forms['we_form'].elements['$idname'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0,''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
+		$but1 = we_html_button::create_button('select', "javascript:we_cmd('openDocselector', document.forms['we_form'].elements['" . $idname . "'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0,''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 
-		$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['$RollOverIDName'].value");
-		$wecmdenc2 = we_base_request::encCmd("document.forms['we_form'].elements['$RollOverPathname'].value");
-		$wecmdenc3 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements['$RollOverFlagName'].value=1;opener.document.we_form.elements['$checkFlagName'].checked=true;");
-		$but2 = we_html_button::create_button('select', "javascript:we_cmd('openDocselector', document.forms['we_form'].elements['$RollOverIDName'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0,'" . we_base_ContentTypes::IMAGE . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
+		$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['" . $RollOverIDName . "'].value");
+		$wecmdenc2 = we_base_request::encCmd("document.forms['we_form'].elements['" . $RollOverPathname . "'].value");
+		$wecmdenc3 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements['" . $RollOverFlagName . "'].value=1;opener.document.we_form.elements['" . $checkFlagName . "'].checked=true;");
+		$but2 = we_html_button::create_button('select', "javascript:we_cmd('openDocselector', document.forms['we_form'].elements['" . $RollOverIDName . "'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0,'" . we_base_ContentTypes::IMAGE . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 
-		$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['$extname'].value");
+		$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['" . $extname . "'].value");
 		$wecmdenc4 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements['we_" . $this->Name . "_txt[LinkType]'][1].checked=true;");
 		$butExt = permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES') ?
-			we_html_button::create_button('select', "javascript:we_cmd('browse_server','" . $wecmdenc1 . "','',document.forms['we_form'].elements['$extname'].value,'" . $wecmdenc4 . "')") : "";
+			we_html_button::create_button('select', "javascript:we_cmd('browse_server','" . $wecmdenc1 . "','',document.forms['we_form'].elements['" . $extname . "'].value,'" . $wecmdenc4 . "')") : "";
 
 		if(defined('OBJECT_TABLE')){
 			$objidname = 'we_' . $this->Name . '_txt[ObjID]';
 			$objtextname = 'we_' . $this->Name . '_txt[ObjPath]';
 			$objPath = f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID = ' . intval($this->getElement('ObjID')), '', $this->DB_WE);
-			$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['$objidname'].value");
-			$wecmdenc2 = we_base_request::encCmd("document.forms['we_form'].elements['$objtextname'].value");
+			$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['" . $objidname . "'].value");
+			$wecmdenc2 = we_base_request::encCmd("document.forms['we_form'].elements['" . $objtextname . "'].value");
 			$wecmdenc3 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements['we_" . $this->Name . "_txt[LinkType]'][3].checked=true;");
-			$butObj = we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$objidname'].value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");");
+			$butObj = we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.forms['we_form'].elements['" . $objidname . "'].value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");");
 		}
 
 		// Create table
@@ -896,7 +896,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 		$yuiSuggest->setLabel('href');
 		$_rollover = $yuiSuggest->getHTML();
 
-		$_content->setCol((defined('OBJECT_TABLE') ? 10 : 8), 0, array('valign' => 'top'), we_html_forms::checkbox(1, $RollOverFlag, $checkFlagName, 'Roll Over', false, 'defaultfont', "_EditorFrame.setEditorIsHot(true); this.form.elements['$RollOverFlagName'].value = (this.checked ? 1 : 0); ") . $this->htmlHidden($RollOverFlagName, $RollOverFlag));
+		$_content->setCol((defined('OBJECT_TABLE') ? 10 : 8), 0, array('valign' => 'top'), we_html_forms::checkbox(1, $RollOverFlag, $checkFlagName, 'Roll Over', false, 'defaultfont', "_EditorFrame.setEditorIsHot(true); this.form.elements['" . $RollOverFlagName . "'].value = (this.checked ? 1 : 0); ") . $this->htmlHidden($RollOverFlagName, $RollOverFlag));
 		$_content->setCol((defined('OBJECT_TABLE') ? 10 : 8), 1, array('class' => 'defaultfont', 'valign' => 'top'), $_rollover);
 
 		return $_content->getHtml();

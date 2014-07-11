@@ -331,7 +331,7 @@ function handle_event(evt) {
 			top.location.href='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import&we_cmd[1]=" . we_import_functions::TYPE_WE_XML . "';
 			break;
 		case 'next':
-			" . ($this->fileUploader ? $this->fileUploader->getJsSubmitCall("handle_eventNext()") : 
+			" . ($this->fileUploader ? $this->fileUploader->getJsSubmitCall("handle_eventNext()") :
 					"handle_eventNext();") . "
 			break;
 		case 'cancel':
@@ -630,7 +630,7 @@ handle_event("previous");');
 			$wecmdenc2 = we_base_request::encCmd("self.wizbody.document.forms['we_form'].elements['v[doc_dir]'].value");
 			$wecmdenc3 = '';
 
-			$btnDocDir = we_html_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['v[doc_dir]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','$rootDirID')");
+			$btnDocDir = we_html_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['v[doc_dir]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $rootDirID . "')");
 			$yuiSuggest = & weSuggest::getInstance();
 			$yuiSuggest->setAcId("DocPath");
 			$yuiSuggest->setContentType("folder");
@@ -666,7 +666,7 @@ handle_event("previous");');
 			$wecmdenc1 = we_base_request::encCmd("self.wizbody.document.forms['we_form'].elements['v[tpl_dir_id]'].value");
 			$wecmdenc2 = we_base_request::encCmd("self.wizbody.document.forms['we_form'].elements['v[tpl_dir]'].value");
 			$wecmdenc3 = '';
-			$btnDocDir = we_html_button::create_button('select', "javascript:we_cmd('openDirselector',document.we_form.elements['v[tpl_dir]'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','$rootDirID')");
+			$btnDocDir = we_html_button::create_button('select', "javascript:we_cmd('openDirselector',document.we_form.elements['v[tpl_dir]'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $rootDirID . "')");
 
 			$yuiSuggest->setAcId('TemplPath');
 			$yuiSuggest->setContentType('folder');
@@ -958,7 +958,7 @@ function handle_event(evt) {
 			top.location.href='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import&we_cmd[1]=" . we_import_functions::TYPE_GENERIC_XML . "';
 			break;
 		case 'next':
-			" . ($this->fileUploader ? $this->fileUploader->getJsSubmitCall("handle_eventNext()") : 
+			" . ($this->fileUploader ? $this->fileUploader->getJsSubmitCall("handle_eventNext()") :
 					"handle_eventNext();") . "
 			break;
 		case 'cancel':
@@ -1209,7 +1209,7 @@ HTS;
 			$displayNoDocType = 'display:block';
 		}
 
-		$templateElement = "<div id='docTypeLayer' style='$displayDocType'>" . we_html_tools::htmlFormElementTable($TPLselect->getHTML(), g_l('import', '[template]'), "left", "defaultfont") . "</div>";
+		$templateElement = "<div id='docTypeLayer' style='" . $displayDocType . "'>" . we_html_tools::htmlFormElementTable($TPLselect->getHTML(), g_l('import', '[template]'), "left", "defaultfont") . "</div>";
 
 		$yuiSuggest->setAcId('TmplPath');
 		$yuiSuggest->setContentType('folder,' . we_base_ContentTypes::TEMPLATE);
@@ -1223,7 +1223,7 @@ HTS;
 		$yuiSuggest->setSelectButton($button, 10);
 		$yuiSuggest->setLabel(g_l('import', '[template]'));
 
-		$templateElement .= "<div id='noDocTypeLayer' style='$displayNoDocType'>" . $yuiSuggest->getHTML() . "</div>";
+		$templateElement .= "<div id='noDocTypeLayer' style='" . $displayNoDocType . "'>" . $yuiSuggest->getHTML() . "</div>";
 
 
 		$docCategories = $this->formCategory2('doc', isset($v['docCategories']) ? $v['docCategories'] : '');
@@ -1350,7 +1350,7 @@ HTS;
 		if($v['rdofloc'] == 'lLocal' && (isset($_FILES['uploaded_xml_file']) and $_FILES['uploaded_xml_file']['size'])){
 
 			//FIXME: delete condition and else branch when new uploader is stable
-			if(!we_fileupload_include::USE_LEGACY_FOR_WEIMPORT){			
+			if(!we_fileupload_include::USE_LEGACY_FOR_WEIMPORT){
 				if($this->fileUploader && $this->fileUploader->processFileRequest()){
 					$v['import_from'] = $this->getFileNameTemp();
 				} else {
@@ -1801,7 +1801,7 @@ function handle_event(evt) {
 			top.location.href='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import&we_cmd[1]=" . we_import_functions::TYPE_CSV . "';
 			break;
 		case 'next':
-			" . ($this->fileUploader ? $this->fileUploader->getJsSubmitCall("handle_eventNext()") : 
+			" . ($this->fileUploader ? $this->fileUploader->getJsSubmitCall("handle_eventNext()") :
 					"handle_eventNext();") . "
 			break;
 		case 'cancel':
@@ -1903,7 +1903,7 @@ function handle_event(evt) {
 			$maxsize = getUploadMaxFilesize(false);
 			$importLocs->setCol($_tblRow++, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('import', '[filesize_local]'), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 410));
 		}
-			
+
 		$importLocs->setCol($_tblRow++, 0, array(), we_html_tools::getPixel(1, 2));
 		$importLocs->setCol($_tblRow++, 0, array(), $importFromLocal);
 		/*		 * *************************************************************************************************************** */
@@ -2264,8 +2264,8 @@ HTS;
 		$yuiSuggest->setSelectButton($button, 10);
 		$yuiSuggest->setLabel(g_l('import', "[template]"));
 
-		$templateElement = "<div id='docTypeLayer' style='$displayDocType'>" . we_html_tools::htmlFormElementTable($TPLselect->getHTML(), g_l('import', '[template]'), "left", "defaultfont") . "</div>
-<div id='noDocTypeLayer' style='$displayNoDocType'>" . $yuiSuggest->getHTML() . "</div>";
+		$templateElement = "<div id='docTypeLayer' style='" . $displayDocType . "'>" . we_html_tools::htmlFormElementTable($TPLselect->getHTML(), g_l('import', '[template]'), "left", "defaultfont") . "</div>
+<div id='noDocTypeLayer' style='" . $displayNoDocType . "'>" . $yuiSuggest->getHTML() . "</div>";
 
 		$yuiSuggest->setAcId("DirPath");
 		$yuiSuggest->setContentType("folder");
@@ -2714,7 +2714,7 @@ function handle_event(evt) {
 
 	function formWeChooser($table = FILE_TABLE, $width = '', $rootDirID = 0, $IDName = 'ID', $IDValue = 0, $Pathname = 'Path', $Pathvalue = '/', $cmd = ''){
 		$Pathvalue = (empty($Pathvalue) ? f('SELECT Path FROM ' . escape_sql_query($table) . ' WHERE ID=' . intval($IDValue), 'Path', new DB_WE()) : $Pathvalue);
-		$button = we_html_button::create_button('select', "javascript:we_cmd('openSelector',document.we_form.elements['$IDName'].value,'$table','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','" . $cmd . "','" . session_id() . "','$rootDirID')");
+		$button = we_html_button::create_button('select', "javascript:we_cmd('openSelector',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','document.we_form.elements[\\'".$IDName."\\'].value','document.we_form.elements[\\'".$Pathname."\\'].value','" . $cmd . "','" . session_id() . "','" . $rootDirID . "')");
 		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, '', 'readonly', 'text', $width, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(array('name' => $IDName, 'value' => $IDValue)), we_html_tools::getPixel(20, 4), $button);
 	}
 

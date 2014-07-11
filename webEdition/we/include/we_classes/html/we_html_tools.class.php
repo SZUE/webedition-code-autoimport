@@ -100,7 +100,7 @@ abstract class we_html_tools{
 			'class' => 'weSelect',
 			'name' => 'sel_' . $name,
 			'onfocus' => "change$jsvarname=1;",
-			'onchange' => "if(change$jsvarname) this.form.elements['$name'].value = this.options[this.selectedIndex].text; change$jsvarname=0; this.selectedIndex = 0;" . $onChange,
+			'onchange' => "if(change$jsvarname) this.form.elements['" . $name . "'].value = this.options[this.selectedIndex].text; change$jsvarname=0; this.selectedIndex = 0;" . $onChange,
 			'style' => (($selectboxWidth != '') ? ('width: ' . $selectboxWidth . 'px;') : '')
 		);
 

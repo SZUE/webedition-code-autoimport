@@ -870,7 +870,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 					$parentPath = implode('/', $tmp);
 					$path = $parentPath . '/' . $category;
 				}
-				$js = "top.frames['fsvalues'].document.we_form.elements['FolderID'].value = '$parentid';top.frames['fsvalues'].document.we_form.elements['FolderIDPath'].value = '$parentPath';";
+				$js = "top.frames['fsvalues'].document.we_form.elements['FolderID'].value = '" . $parentid . "';top.frames['fsvalues'].document.we_form.elements['FolderIDPath'].value = '" . $parentPath . "';";
 			} else {
 				$path = ($parentid ? $targetPath : '') . '/' . $category;
 			}
