@@ -1560,9 +1560,9 @@ class we_customer_EIWizard{
 				}
 		');
 
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['$IDName'].value");
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");
 		$wecmdenc4 = we_base_request::encCmd(str_replace('\\', '', $cmd));
-		$button = we_html_button::create_button("select", "javascript:formFileChooser('browse_server','" . $wecmdenc1 . "','$filter',document.we_form.elements['$IDName'].value,'" . $wecmdenc4 . "');");
+		$button = we_html_button::create_button("select", "javascript:formFileChooser('browse_server','" . $wecmdenc1 . "','" . $filter . "',document.we_form.elements['" . $IDName . "'].value,'" . $wecmdenc4 . "');");
 
 		return $js . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 30, $IDValue, "", ' readonly', "text", $width, 0), "", "left", "defaultfont", "", we_html_tools::getPixel(20, 4), permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
 	}
@@ -1585,10 +1585,10 @@ class we_customer_EIWizard{
 				}
 		');
 
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['$IDName'].value");
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['$Pathname'].value");
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");
+		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $Pathname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
-		$button = we_html_button::create_button("select", "javascript:formDirChooser('openDirselector',document.we_form.elements['$IDName'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$rootDirID')");
+		$button = we_html_button::create_button("select", "javascript:formDirChooser('openDirselector',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','" . $rootDirID . "')");
 		return $js . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, "", ' readonly', "text", $width, 0), "", "left", "defaultfont", we_html_element::htmlHidden(array("name" => $IDName, "value" => $IDValue)), we_html_tools::getPixel(20, 4), $button);
 	}
 
@@ -1664,10 +1664,10 @@ class we_customer_EIWizard{
 			$Pathvalue = f("SELECT Path FROM " . $this->db->escape($table) . " WHERE ID=" . intval($IDValue) . ";", "Path", $this->db);
 		}
 
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['$IDName'].value");
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['$Pathname'].value");
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");
+		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $Pathname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
-		$button = we_html_button::create_button("select", "javascript:selector_cmd('openSelector',document.we_form.elements['$IDName'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$rootDirID')");
+		$button = we_html_button::create_button("select", "javascript:selector_cmd('openSelector',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','" . $rootDirID . "')");
 
 		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, "", 'readonly', "text", $width, 0), "", "left", "defaultfont", we_html_element::htmlHidden(array("name" => $IDName, "value" => $IDValue)), we_html_tools::getPixel(20, 4), $button);
 	}

@@ -50,7 +50,7 @@ class we_tool_treeDataSource{
 	function getQueryParents($path){
 		$out = array();
 		while($path != '/' && $path != '\\' && $path){
-			$out[] = "Path='$path'";
+			$out[] = 'Path="' . $path . '"';
 			$path = dirname($path);
 		}
 		return implode(' OR ', $out);

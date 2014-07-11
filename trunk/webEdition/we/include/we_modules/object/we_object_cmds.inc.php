@@ -37,15 +37,15 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 		$wsid = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 3);
 		$wsPath = id_to_path($wsid, FILE_TABLE, $DB_WE);
 		$tableID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 4);
-		$ofID = f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE ObjectID='$oid' AND TableID=" . intval($tableID), "ID", $DB_WE);
-		$foo = f("SELECT OF_ExtraWorkspacesSelected FROM " . OBJECT_X_TABLE . intval($tableID) . " WHERE ID='" . $oid . "'", "OF_ExtraWorkspacesSelected", $DB_WE);
-		if(strstr($foo, "," . $wsid . ",")){
-			$ews = str_replace("," . $wsid, ",", "", $foo);
-			if($ews == ",")
-				$ews = "";
+		$ofID = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE ObjectID=' . intval($oid) . ' AND TableID=' . intval($tableID), "", $DB_WE);
+		$foo = f('SELECT OF_ExtraWorkspacesSelected FROM ' . OBJECT_X_TABLE . intval($tableID) . ' WHERE ID=' . intval($oid), "", $DB_WE);
+		if(strstr($foo, ',' . $wsid . ',')){
+			$ews = str_replace(',' . $wsid, ',', '', $foo);
+			if($ews == ','){
+				$ews = '';
+			}
 			$check = 0;
-		}
-		else {
+		} else {
 			$ews = ($foo ? $foo : ",") . $wsid . ",";
 			$check = 1;
 		}

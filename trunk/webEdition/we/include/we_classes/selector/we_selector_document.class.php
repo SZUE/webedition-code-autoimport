@@ -651,11 +651,11 @@ top.parentID = "' . $this->values["ParentID"] . '";
 				if($fs === 0){
 					$_imagesize = array(0, 0);
 					$_thumbpath = IMAGE_DIR . 'icons/no_image.gif';
-					$_imagepreview = "<img src='$_thumbpath' border='0' id='previewpic'><p>" . g_l('fileselector', "[image_not_uploaded]") . "</p>";
+					$_imagepreview = "<img src='" . $_thumbpath . "' border='0' id='previewpic'><p>" . g_l('fileselector', "[image_not_uploaded]") . "</p>";
 				} else {
 					$_imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $result['Path']);
 					$_thumbpath = WEBEDITION_DIR . 'thumbnail.php?id=' . $this->id . '&size=150&path=' . str_replace($_SERVER['DOCUMENT_ROOT'], '', $result['Path']) . '&extension=' . $result['Extension'] . '&size2=200';
-					$_imagepreview = "<a href='" . $result['Path'] . "' target='_blank' align='center'><img src='$_thumbpath' border='0' id='previewpic'></a>";
+					$_imagepreview = "<a href='" . $result['Path'] . "' target='_blank' align='center'><img src='" . $_thumbpath . "' border='0' id='previewpic'></a>";
 				}
 			}
 
@@ -829,7 +829,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 					$out .= "<tr><td colspan='2' class='headline'>" . $_part["headline"] . "</td></tr>";
 					foreach($_part["data"] as $z => $_row){
 						$_class = (($z % 2) == 0) ? "odd" : "even";
-						$out .= "<tr class='$_class'><td>" . $_row['caption'] . ": </td><td>" . $_row['content'] . "</td></tr>";
+						$out .= "<tr class='" . $_class . "'><td>" . $_row['caption'] . ": </td><td>" . $_row['content'] . "</td></tr>";
 					}
 				}
 			}

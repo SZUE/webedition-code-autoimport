@@ -387,9 +387,9 @@ abstract class we_backup_base{
 		$this->backup_db->query('SHOW FIELDS FROM ' . $this->backup_db->escape($table));
 		while($this->backup_db->next_record()){
 			$row = $this->backup_db->Record;
-			$foo .= "   $row[Field] $row[Type]";
+			$foo .= ' ' . $row['Field'] . ' ' . $row['Type'];
 			if(isset($row["Default"]) && (($row["Default"]) || $row["Default"] == '0')){
-				$foo .= " DEFAULT '$row[Default]'";
+				$foo .= ' DEFAULT "' . $row['Default'] . '"';
 			}
 			if($row["Null"] != "YES"){
 				$foo .= " NOT NULL";

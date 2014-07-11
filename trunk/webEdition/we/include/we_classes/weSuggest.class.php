@@ -225,7 +225,7 @@ HTS;
 			}
 HTS;
 
-			$fildsById .= "	yuiAcFieldsById['" . $this->inputfields[$i] . "']={'index':'$i','set':'set_$i'};";
+			$fildsById .= "	yuiAcFieldsById['" . $this->inputfields[$i] . "']={'index':'" . $i . "','set':'set_$i'};";
 			$fildsObj .=
 				($i > 0 ? ',' : '') . "'set_$i': {
 			'id' : '" . $this->inputfields[$i] . "',
@@ -321,7 +321,7 @@ HTS;
 
 				}
 			} else {
-				document.getElementById('$weErrorMarkId').style.visibility = 'hidden';
+				document.getElementById('" . $weErrorMarkId . "').style.visibility = 'hidden';
 				if(parent && parent.weAutoCompetionFields) parent.weAutoCompetionFields[$i].valid = true;
 			}
 			yuiAcFields.set_$i.run = false;

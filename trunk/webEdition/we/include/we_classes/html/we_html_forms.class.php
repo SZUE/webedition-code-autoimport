@@ -71,7 +71,7 @@ abstract class we_html_forms{
 	 * @return     string
 	 */
 	static function checkboxWithHidden($checked, $name, $text, $uniqid = false, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = we_html_tools::TYPE_NONE, $width = 0){
-		$onClick = "this.form.elements['$name'].value=this.checked ? 1 : 0;" . $onClick;
+		$onClick = "this.form.elements['" . $name . "'].value=this.checked ? 1 : 0;" . $onClick;
 		return '<input type="hidden" name="' . $name . '" value="' . ($checked ? 1 : 0) . '" />' . self::checkbox(1, $checked, 'check_' . $name, $text, $uniqid, $class, $onClick, $disabled, $description, $type, $width);
 	}
 

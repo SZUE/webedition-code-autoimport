@@ -388,7 +388,7 @@ function disableLangDefault(allnames, allvalues, deselect) {
 		$cancelbut = we_html_button::create_button("close", "javascript:self.close();if(top.opener.we_cmd){top.opener.we_cmd('switch_edit_page',0);}");
 
 		$buttons = ($we_doc->ID ?
-				we_html_button::position_yes_no_cancel(we_html_button::create_button("save", "javascript:we_cmd('save_docType', '$we_transaction')"), "", $cancelbut) :
+				we_html_button::position_yes_no_cancel(we_html_button::create_button("save", "javascript:we_cmd('save_docType', '" . $we_transaction . "')"), "", $cancelbut) :
 				'<div align="right">' . $cancelbut . '</div>');
 
 

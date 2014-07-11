@@ -438,11 +438,11 @@ class we_workflow_view extends we_workflow_base{
 	function formDirChooser($width = '', $rootDirID = 0, $table = FILE_TABLE, $Pathname = 'ParentPath', $Pathvalue = '', $IDName = 'ParentID', $IDValue = '', $cmd = ''){
 		$table = FILE_TABLE;
 
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['$IDName'].value");
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['$Pathname'].value");
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");
+		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $Pathname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
 
-		$button = we_html_button::create_button('select', "javascript:we_cmd('openDirselector',document.we_form.elements['$IDName'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$rootDirID')");
+		$button = we_html_button::create_button('select', "javascript:we_cmd('openDirselector',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','" . $rootDirID . "')");
 		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, '', 'onchange="top.content.setHot();" readonly', "text", $width, 0), "", "left", "defaultfont", $this->htmlHidden($IDName, $IDValue), we_html_tools::getPixel(20, 4), $button);
 	}
 

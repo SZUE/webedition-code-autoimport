@@ -118,7 +118,7 @@ class we_customer_frames extends weModuleFrames{
 		$this->jsOut_fieldTypesByName = 'var fieldTypesByName = new Array();';
 		foreach($fields_names as $val){
 			$tmp = $this->View->getFieldProperties($val);
-			$this->jsOut_fieldTypesByName .= "fieldTypesByName['$val'] = '" . (isset($tmp['type']) ? $tmp['type'] : '') . "';";
+			$this->jsOut_fieldTypesByName .= "fieldTypesByName['" . $val . "'] = '" . (isset($tmp['type']) ? $tmp['type'] : '') . "';";
 		}
 		if(is_array($fields_names)){
 			foreach($fields_names as $k => $field){
@@ -305,7 +305,7 @@ function populateDate_' . $field . '(){
 	</tr>
 	<tr>
 		<td class="weEditmodeStyle" colspan="2" align="center">' .
-					we_html_button::create_button_table(array(we_html_button::create_button('image:btn_select_image', "javascript:we_cmd('openDocselector', '" . $imgId . "', '" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "', '', '" . we_base_ContentTypes::IMAGE . "', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true), we_html_button::create_button('image:btn_function_trash', "javascript:document.we_form.elements['$field'].value='';refreshForm();", true)), 5) .
+					we_html_button::create_button_table(array(we_html_button::create_button('image:btn_select_image', "javascript:we_cmd('openDocselector', '" . $imgId . "', '" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "', '', '" . we_base_ContentTypes::IMAGE . "', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true), we_html_button::create_button('image:btn_function_trash', "javascript:document.we_form.elements['" . $field . "'].value='';refreshForm();", true)), 5) .
 					'</td>
 	</tr>
 </table>';

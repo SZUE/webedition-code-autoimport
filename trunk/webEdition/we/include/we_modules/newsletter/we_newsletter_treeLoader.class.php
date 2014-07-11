@@ -31,7 +31,7 @@ class we_newsletter_treeLoader{
 	static function getQueryParents($path){
 		$out = '';
 		while($path != '/' && $path != '\\' && $path){
-			$out .= "Path='$path' OR ";
+			$out .= 'Path="' . $path . '" OR ';
 			$path = dirname($path);
 		}
 		return ($out ? substr($out, 0, strlen($out) - 3) : '');
@@ -47,7 +47,7 @@ class we_newsletter_treeLoader{
 		if(($ws = get_ws($table))){
 			$wsPathArray = id_to_path($ws, $table, $db, false, true);
 			foreach($wsPathArray as $path){
-				$_aWsQuery[] = " Path LIKE '$path/%' OR " . self::getQueryParents($path);
+				$_aWsQuery[] = ' Path LIKE "' . $path . '/%" OR ' . self::getQueryParents($path);
 				while($path != "/" && $path != "\\" && $path){
 					$parentpaths[] = $path;
 					$path = dirname($path);

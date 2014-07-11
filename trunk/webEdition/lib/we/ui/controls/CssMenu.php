@@ -44,6 +44,7 @@ class we_ui_controls_CssMenu extends we_ui_abstract_AbstractElement{
 	var $menuaction = "";
 
 	function __construct($entries, $lcmdFrame = "top.load", $menuaction = 'parent.'){
+		parent::__construct();
 		$this->menuaction = $menuaction;
 		if($entries){
 			$this->entries = $entries;
