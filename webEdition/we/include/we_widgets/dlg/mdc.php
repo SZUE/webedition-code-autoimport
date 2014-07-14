@@ -69,12 +69,10 @@ function getHTMLDirSelector($_selType){
 	$folderID = 0;
 	$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['FolderID'].value");
 	$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['FolderPath'].value");
-	$_button_doc = we_html_button::create_button(
-			"select", "javascript:we_cmd('openDirselector',document.we_form.elements['FolderID'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "','" . $rootDirID . "')");
+	$_button_doc = we_html_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['FolderID'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "','" . $rootDirID . "')");
 	$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['FolderID'].value");
 	$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['FolderPath'].value");
-	$_button_obj = defined('OBJECT_TABLE') ? we_html_button::create_button(
-			"select", "javascript:we_cmd('openDirselector',document.we_form.elements['FolderID'].value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "','" . $rootDirID . "')") : '';
+	$_button_obj = defined('OBJECT_TABLE') ? we_html_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['FolderID'].value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "','" . $rootDirID . "')") : '';
 
 	$_buttons = '<div id="docFolder" style="display: ' . (!$_selType ? "inline" : "none") . '">' . $_button_doc . "</div>" . '<div id="objFolder" style="display: ' . ($_selType ? "inline" : "none") . '">' . $_button_obj . "</div>";
 	$_path = id_to_path($folderID, (!$_selType ? FILE_TABLE : (defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : "")));

@@ -67,7 +67,7 @@ function makeIDsFromPathCVS($paths, $table = FILE_TABLE){
 	if(strlen($paths) == 0 || strlen($table) == 0){
 		return '';
 	}
-	$foo = exlplode(',', $paths);
+	$foo = is_array($paths) ? $paths : explode(',', $paths);
 	$db = new DB_WE();
 //cleanup paths
 	foreach($foo as &$path){

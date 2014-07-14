@@ -88,7 +88,6 @@ class weModelBase{
 	 */
 	function save($force_new = false){
 		$sets = array();
-		$wheres = array();
 		if($force_new){
 			$this->isnew = true;
 		}

@@ -124,9 +124,9 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 	case "export_documents":
 		$_tbl = FILE_TABLE;
 	case "export_templates":
-		$_tbl = (!isset($_tbl) ? $_tbl : TEMPLATES_TABLE);
+		$_tbl = (isset($_tbl) ? $_tbl : TEMPLATES_TABLE);
 	case "export_objects":
-		$_tbl = (!isset($_tbl) ? $_tbl : OBJECT_FILES_TABLE);
+		$_tbl = (isset($_tbl) ? $_tbl : OBJECT_FILES_TABLE);
 
 
 
@@ -136,7 +136,8 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 			$dt = $regs[1];
 			echo 'top.we_cmd("new","' . FILE_TABLE . '","","' . we_base_ContentTypes::WEDOCUMENT . '","' . $dt . '");';
 			break;
-		} else if(preg_match('/^new_ClObjectFile(.+)$/', $_REQUEST['we_cmd'][0], $regs)){
+		}
+		if(preg_match('/^new_ClObjectFile(.+)$/', $_REQUEST['we_cmd'][0], $regs)){
 			$clID = $regs[1];
 			echo 'top.we_cmd("new","' . OBJECT_FILES_TABLE . '","","objectFile","' . $clID . '");';
 			break;

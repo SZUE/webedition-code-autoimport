@@ -967,7 +967,7 @@ function weInputInArray(arr, val) {
 	//setter
 
 	function setAcId($val, $rootDir = ""){
-		$this->acId = $val;
+		$this->acId = str_replace('-', '_', $val);
 		$this->rootDir = $rootDir;
 	}
 

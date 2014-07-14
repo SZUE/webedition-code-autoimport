@@ -161,10 +161,6 @@ class we_objectFile extends we_document{
 		}
 		if(isset($_REQUEST['we_ui_' . $formname . '_categories'])){
 			$cats = $_REQUEST['we_ui_' . $formname . '_categories'];
-			// Bug Fix #750
-			if(is_array($cats)){
-				$cats = implode(',', $cats);
-			}
 			$cats = makeIDsFromPathCVS($cats, CATEGORY_TABLE);
 			$GLOBALS['we_object'][$formname]->Category = $cats;
 		}
