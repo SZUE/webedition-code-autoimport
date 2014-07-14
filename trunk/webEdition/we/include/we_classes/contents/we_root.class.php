@@ -246,7 +246,7 @@ abstract class we_root extends we_class{
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $idname . "'].value");
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);" . $_parentPathChanged . str_replace('\\', '', $cmd));
-		$button = we_html_button::create_button('select', "javascript:we_cmd('openDirselector',document.we_form.elements['" . $idname . "'].value,'".$table."','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','" . $rootDirID . "')");
+		$button = we_html_button::create_button('select', "javascript:we_cmd('openDirselector',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','" . $rootDirID . "')");
 
 		$yuiSuggest->setAcId('Path', id_to_path(array($rootDirID), $table));
 		$yuiSuggest->setContentType('folder,class_folder');
@@ -302,10 +302,10 @@ abstract class we_root extends we_class{
 
 			$inputFeld = $this->htmlTextInput($textname, 24, $creator, '', $attribs, '', $width);
 			$idfield = $this->htmlHidden($idname, $this->CreatorID);
-			$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['".$idname."'].value");
-			$wecmdenc2 = we_base_request::encCmd("document.forms['we_form'].elements['".$textname."'].value");
+			$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['" . $idname . "'].value");
+			$wecmdenc2 = we_base_request::encCmd("document.forms['we_form'].elements['" . $textname . "'].value");
 			$wecmdenc5 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);");
-			$button = we_html_button::create_button('edit', "javascript:we_cmd('browse_users','" . $wecmdenc1 . "','" . $wecmdenc2 . "','user',document.forms[0].elements['".$idname."'].value,'" . $wecmdenc5 . "')");
+			$button = we_html_button::create_button('edit', "javascript:we_cmd('browse_users','" . $wecmdenc1 . "','" . $wecmdenc2 . "','user',document.forms[0].elements['" . $idname . "'].value,'" . $wecmdenc5 . "')");
 
 			$out = we_html_tools::htmlFormElementTable($inputFeld, g_l('weClass', '[maincreator]'), 'left', 'defaultfont', $idfield, we_html_tools::getPixel(20, 4), $button);
 		} else {
@@ -347,11 +347,11 @@ abstract class we_root extends we_class{
 		$textname = 'OwnerNameTmp';
 		$idname = 'OwnerIDTmp';
 		$delallbut = we_html_button::create_button('delete_all', "javascript:we_cmd('users_del_all_owners','')", true, 0, 0, "", "", $this->Owners ? false : true);
-		$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['".$idname."'].value");
-		$wecmdenc2 = we_base_request::encCmd("document.forms['we_form'].elements['".$textname."'].value");
+		$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['" . $idname . "'].value");
+		$wecmdenc2 = we_base_request::encCmd("document.forms['we_form'].elements['" . $textname . "'].value");
 		$wecmdenc5 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.setScrollTo();fillIDs();opener.we_cmd('users_add_owner',top.allIDs);");
 		$addbut = $canChange ?
-			$this->htmlHidden($idname, '') . $this->htmlHidden($textname, '') . we_html_button::create_button('add', "javascript:we_cmd('browse_users','" . $wecmdenc1 . "','" . $wecmdenc2 . "','',document.forms[0].elements['".$idname."'].value,'" . $wecmdenc5 . "','','',1);") : "";
+			$this->htmlHidden($idname, '') . $this->htmlHidden($textname, '') . we_html_button::create_button('add', "javascript:we_cmd('browse_users','" . $wecmdenc1 . "','" . $wecmdenc2 . "','',document.forms[0].elements['" . $idname . "'].value,'" . $wecmdenc5 . "','','',1);") : "";
 
 		$content = '<table style="border-spacing: 0px;border-style:none;width:500px;" cellpadding="0">
 <tr><td><div class="multichooser">' . $content . '</div></td></tr>
@@ -903,16 +903,14 @@ abstract class we_root extends we_class{
 
 			if($type == 'formfield'){ // Artjom garbage fix!
 				$this->elements[$Name] = unserialize($this->DB_WE->f('Dat'));
-			} else {
-				if($this->i_isElement($Name)){
-					foreach($this->DB_WE->Record as $k => $v){
-						if(!in_array($k, $filter) && !is_numeric($k)){
-							$k = strtolower($k);
-							$this->elements[$Name][$k] = $v;
-						}
+			} elseif($this->i_isElement($Name)){
+				foreach($this->DB_WE->Record as $k => $v){
+					if(!in_array($k, $filter) && !is_numeric($k)){
+						$k = strtolower($k);
+						$this->elements[$Name][$k] = $v;
 					}
-					$this->elements[$Name]['table'] = CONTENT_TABLE;
 				}
+				$this->elements[$Name]['table'] = CONTENT_TABLE;
 			}
 		}
 	}

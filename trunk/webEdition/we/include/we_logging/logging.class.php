@@ -70,9 +70,7 @@ abstract class logging{
 	}
 
 	function saveLog(){
-
-		$keys = array();
-		$values = array();
+		$keys = $values = array();
 
 		foreach($this->persistent_slots as $key => $val){
 

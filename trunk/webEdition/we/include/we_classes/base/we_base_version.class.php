@@ -34,7 +34,7 @@ class we_base_version{
 	var $ClassName = __CLASS__;
 	var $Pseudo = 'weVersion';
 	var $attribute_slots = array();
-	var $persistent_slots = array();
+	var $persistent_slots = array("ID", "ClassName", "Path", "Data", "SeqN");
 	var $ID = 0;
 	var $Path = '';
 	var $Data = '';
@@ -42,7 +42,6 @@ class we_base_version{
 	var $linkData = true;
 
 	function __construct($id = 0){
-		$this->persistent_slots = array("ID", "ClassName", "Path", "Data", "SeqN");
 		foreach($this->persistent_slots as $slot){
 			$this->$slot = "";
 		}

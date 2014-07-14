@@ -31,7 +31,7 @@ $typeDoc = we_base_request::_(we_base_request::STRING, 'type', 'document');
 $actPage = we_base_request::_(we_base_request::INT, 'actPage', 0);
 
 function orderBy($a, $b){
-	return ($a[$_REQUEST['orderBy']] >= $b[$_REQUEST['orderBy']] ? (isset($_REQUEST['orderDesc']) ? false : true) : (isset($_REQUEST['orderDesc']) ? true : false));
+	return ($a[$_REQUEST['orderBy']] >= $b[$_REQUEST['orderBy']] ? !we_base_request::_(we_base_request::BOOL, 'orderDesc') : we_base_request::_(we_base_request::BOOL, 'orderDesc'));
 }
 
 function getTitleLinkObj($text, $orderKey){
@@ -41,9 +41,9 @@ function getTitleLinkObj($text, $orderKey){
 		'&orderBy=' . $orderKey .
 		'&ViewClass=' . $GLOBALS['classid'] .
 		'&actPage=' . $GLOBALS['actPage'] .
-		( ($GLOBALS['orderBy'] == $orderKey && !isset($_REQUEST['orderDesc'])) ? '&orderDesc=true' : '' );
+		( ($GLOBALS['orderBy'] == $orderKey && !we_base_request::_(we_base_request::BOOL, 'orderDesc')) ? '&orderDesc=1' : '' );
 
-	return '<a href="' . $_href . '">' . $text . '</a>' . ($GLOBALS['orderBy'] == $orderKey ? ' <img src="' . IMAGE_DIR . 'arrow_sort_' . (isset($_REQUEST['orderDesc']) ? 'desc' : 'asc') . '.gif" />' : '');
+	return '<a href="' . $_href . '">' . $text . '</a>' . ($GLOBALS['orderBy'] == $orderKey ? ' <img src="' . IMAGE_DIR . 'arrow_sort_' . (we_base_request::_(we_base_request::BOOL, 'orderDesc') ? 'desc' : 'asc') . '.gif" />' : '');
 }
 
 function getPagerLinkObj(){
@@ -53,7 +53,7 @@ function getPagerLinkObj(){
 		'&orderBy=' . $GLOBALS['orderBy'] .
 		'&ViewClass=' . $GLOBALS['classid'] .
 		'&actPage=' . $GLOBALS['actPage'] .
-		(isset($_REQUEST['orderdesc']) ? '&orderDesc=true' : '' );
+		(isset($_REQUEST['orderdesc']) ? '&orderDesc=1' : '' );
 }
 
 function getTitleLinkDoc($text, $orderKey){
@@ -62,13 +62,13 @@ function getTitleLinkDoc($text, $orderKey){
 		'?typ=' . $GLOBALS['typeDoc'] .
 		'&orderBy=' . $orderKey .
 		'&actPage=' . $GLOBALS['actPage'] .
-		( ($GLOBALS['orderBy'] == $orderKey && !isset($_REQUEST['orderDesc'])) ? '&orderDesc=true' : '' );
+		( ($GLOBALS['orderBy'] == $orderKey && !we_base_request::_(we_base_request::BOOL, 'orderDesc')) ? '&orderDesc=1' : '' );
 
 	$arrow = '';
 
 	if($GLOBALS['orderBy'] == $orderKey){
 
-		if(isset($_REQUEST['orderDesc'])){
+		if(we_base_request::_(we_base_request::BOOL, 'orderDesc')){
 			$arrow = ' <img src="' . IMAGE_DIR . 'arrow_sort_desc.gif" />';
 		} else {
 			$arrow = ' &darr; ';
@@ -85,7 +85,7 @@ function getPagerLinkDoc(){
 		'?typ=' . $GLOBALS['typeDoc'] .
 		'&orderBy=' . $GLOBALS['orderBy'] .
 		'&actPage=' . $GLOBALS['actPage'] .
-		(isset($_REQUEST['orderdesc']) ? '&orderDesc=true' : '' );
+		(isset($_REQUEST['orderdesc']) ? '&orderDesc=1' : '' );
 }
 
 /* * ************ fuction for orders  ************** */
@@ -237,7 +237,7 @@ if(isset($daten)){
 			if($entries != 0){ // Pager: Number of records not empty?
 				$topInfo = ($entries > 0 ? $entries : g_l('modules_shop', '[noRecord]'));
 
-				$classid = abs(we_base_request::_(we_base_request::INT,"ViewClass")); // gets the value from the selectbox;
+				$classid = abs(we_base_request::_(we_base_request::INT, "ViewClass")); // gets the value from the selectbox;
 
 				$classSelectTable .= '<table cellpadding="2" cellspacing="0" width="600" border="0">
     <tr>
@@ -285,7 +285,7 @@ if(isset($daten)){
 
 				// we need functionalitty to order these
 
-				if(we_base_request::_(we_base_request::BOOL,'orderBy')){
+				if(we_base_request::_(we_base_request::BOOL, 'orderBy')){
 					usort($orderRows, 'orderBy');
 				}
 
@@ -388,7 +388,7 @@ if(isset($daten)){
 
 				// we need functionalitty to order these
 
-				if(we_base_request::_(we_base_request::BOOL,'orderBy')){
+				if(we_base_request::_(we_base_request::BOOL, 'orderBy')){
 					usort($orderRows, 'orderBy');
 				}
 

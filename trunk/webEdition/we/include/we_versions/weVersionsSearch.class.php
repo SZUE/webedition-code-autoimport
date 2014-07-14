@@ -88,16 +88,16 @@ class weVersionsSearch{
 					switch($v){
 						case "modifierID":
 							if(isset($_REQUEST['search'][$k])){
-								$where .= " AND " . $v . " = '" . escape_sql_query($_REQUEST['search'][$k]) . "'";
+								$where .= " AND " . $v . "='" . escape_sql_query($_REQUEST['search'][$k]) . "'";
 							}
 							break;
 						case "status":
 							if(isset($_REQUEST['search'][$k])){
-								$where .= " AND " . $v . " = '" . escape_sql_query($_REQUEST['search'][$k]) . "'";
+								$where .= " AND " . $v . "='" . escape_sql_query($_REQUEST['search'][$k]) . "'";
 							}
 							break;
 						case "timestamp":
-							if($_REQUEST['location'][$k] && isset($_REQUEST['search'][$k]) && $_REQUEST['search'][$k] != ""){
+							if(($loc = we_base_request::_(we_base_request::RAW, 'location', '', $k)) && isset($_REQUEST['search'][$k]) && $_REQUEST['search'][$k] != ""){
 
 								$date = explode(".", $_REQUEST['search'][$k]);
 								$day = $date[0];
@@ -106,21 +106,21 @@ class weVersionsSearch{
 								$timestampStart = mktime(0, 0, 0, $month, $day, $year);
 								$timestampEnd = mktime(23, 59, 59, $month, $day, $year);
 
-								switch(we_base_request::_(we_base_request::RAW, 'location', '', $k)){
+								switch($loc){
 									case "IS":
 										$where .= " AND " . $v . " BETWEEN " . intval($timestampStart) . " AND " . intval($timestampEnd);
 										break;
 									case "<":
-										$where .= " AND " . $v . $_REQUEST['location'][$k] . ' ' . intval($timestampStart);
+										$where .= " AND " . $v . $loc . ' ' . intval($timestampStart);
 										break;
 									case "<=":
-										$where .= " AND " . $v . $_REQUEST['location'][$k] . ' ' . intval($timestampEnd);
+										$where .= " AND " . $v . $loc . ' ' . intval($timestampEnd);
 										break;
 									case ">":
-										$where .= " AND " . $v . $_REQUEST['location'][$k] . ' ' . intval($timestampEnd);
+										$where .= " AND " . $v . $loc . ' ' . intval($timestampEnd);
 										break;
 									case ">=":
-										$where .= " AND " . $v . $_REQUEST['location'][$k] . ' ' . intval($timestampStart);
+										$where .= " AND " . $v . $loc . ' ' . intval($timestampStart);
 										break;
 								}
 							}

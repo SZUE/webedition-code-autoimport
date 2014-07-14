@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 $GLOBALS['show_stylesheet'] = true;
-define('NO_SESS', 1);//no need for a session
+define('NO_SESS', 1); //no need for a session
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 //no protect, since login dialog is shown bad
 
