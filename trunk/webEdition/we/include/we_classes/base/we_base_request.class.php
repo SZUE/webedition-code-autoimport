@@ -207,9 +207,6 @@ class we_base_request{
 			$oldVar = $var;
 			array_walk($var, 'we_base_request::_weRequest', array($type, $default));
 			if($oldVar != $var){
-				if(REQUEST_SIMULATION){
-					t_e('array changed', $type, $args, $oldVar, $var);
-				}
 			}
 		} else {
 			$oldVar = $var;
@@ -276,9 +273,6 @@ class we_base_request{
 
 				t_e('changed values', $type, $args, $oldVar, $var);
 				//don't break we
-				if(REQUEST_SIMULATION){
-					return $oldVar;
-				}
 			}
 		}
 		return $var;

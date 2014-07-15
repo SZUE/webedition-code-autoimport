@@ -105,7 +105,6 @@ define('SETTINGS_TABLE', TBL_PREFIX . 'tblSettings');
 //NOTE: you have to register the tables at we.inc!
 
 define('SESSION_NAME', 'WESESSION');
-define('REQUEST_SIMULATION', 0);
 
 /**
  * Fix the none existing $_SERVER['REQUEST_URI'] on IIS
