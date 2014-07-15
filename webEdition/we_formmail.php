@@ -339,7 +339,7 @@ if($recipient){
 		}
 	}
 
-	if(!empty($recipientsList)){
+	if($recipientsList){
 		foreach($_FILES as $file){
 			if(isset($file['tmp_name']) && $file['tmp_name']){
 				$tempName = TEMP_PATH . $file['name'];
