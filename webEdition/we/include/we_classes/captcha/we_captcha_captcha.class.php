@@ -67,7 +67,7 @@ abstract class we_captcha_captcha{
 		}
 		$db = new DB_WE();
 		self::cleanup($db);
-		$db->query('DELETE FROM ' . CAPTCHA_TABLE . ' WHERE IP=x\'' . bin2hex(inet_pton(strstr($_SERVER['REMOTE_ADDR'], ':') ? $_SERVER['REMOTE_ADDR'] : '::ffff:' . $_SERVER['REMOTE_ADDR'])) . '\' AND BINARY code="' . $db->escape($captcha) . '" AND agent="' . $db->escape($_SERVER['HTTP_USER_AGENT']) . '"', '', $db);
+		$db->query('DELETE FROM ' . CAPTCHA_TABLE . ' WHERE IP=x\'' . bin2hex(inet_pton(strstr($_SERVER['REMOTE_ADDR'], ':') ? $_SERVER['REMOTE_ADDR'] : '::ffff:' . $_SERVER['REMOTE_ADDR'])) . '\' AND BINARY code="' . $db->escape($captcha) . '" AND agent="' . md5($_SERVER['HTTP_USER_AGENT']) . '"', '', $db);
 
 		if($db->affected_rows()){
 			$valid[$captcha] = true;
@@ -92,7 +92,7 @@ abstract class we_captcha_captcha{
 
 		$db->query('REPLACE INTO ' . CAPTCHA_TABLE . ' SET ' . we_database_base::arraySetter(array(
 				'IP' => inet_pton(strstr($_SERVER['REMOTE_ADDR'], ':') ? $_SERVER['REMOTE_ADDR'] : '::ffff:' . $_SERVER['REMOTE_ADDR']),
-				'agent' => $_SERVER['HTTP_USER_AGENT'],
+				'agent' => md5($_SERVER['HTTP_USER_AGENT']),
 				'code' => $captcha,
 
 		)));
