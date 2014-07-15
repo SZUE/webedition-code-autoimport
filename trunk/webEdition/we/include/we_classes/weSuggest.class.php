@@ -88,7 +88,7 @@ class weSuggest{
 	var $rootDir = "";
 	var $selectButton = "";
 	var $selectButtonSpace = "";
-	var $selector = "Dir";
+	var $selector = "Dir";//FIXME: self::DirSelector???
 	var $trashButton = "";
 	var $trashButtonSpace = "";
 	var $openButton = "";
@@ -946,7 +946,7 @@ function weInputInArray(arr, val) {
 		$this->resultId = "";
 		$this->selectButton = "";
 		$this->selectButtonSpace = "";
-		$this->selector = "Dir";
+		$this->selector = "Dir"; //FIXME:self::Dirselector??
 		$this->trashButton = "";
 		$this->trashButtonSpace = "";
 		$this->openButton = "";
