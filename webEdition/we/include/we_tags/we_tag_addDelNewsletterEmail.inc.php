@@ -376,9 +376,9 @@ function we_tag_addDelNewsletterEmail($attribs){
 					$hook = new weHook('customer_preSave', '', array('customer' => &$fields, 'from' => 'tag', 'type' => (!$uid ? 'new' : 'modify'), 'tagname' => 'addDelNewsletterEmail', 'isSubscribe' => $isSubscribe, 'isUnsubscribe' => $isUnsubscribe));
 					$ret = $hook->executeHook();
 
-					$__db->query(($uid ?
+					$__db->query($uid ?
 							'UPDATE ' . CUSTOMER_TABLE . ' SET ' . we_database_base::arraySetter($fields) . ' WHERE ID=' . $uid :
-							'INSERT INTO ' . CUSTOMER_TABLE . ' SET ' . we_database_base::arraySetter($fields)));
+							'INSERT INTO ' . CUSTOMER_TABLE . ' SET ' . we_database_base::arraySetter($fields));
 
 
 
