@@ -1815,7 +1815,7 @@ self.focus();
 					self.focus();
 		');
 
-		$maxsize = getUploadMaxFilesize(true);
+		$maxsize = getUploadMaxFilesize(true, $GLOBALS['DB_WE']);
 
 		$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 4, 1);
 		if($maxsize){

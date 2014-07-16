@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_fileupload_include extends we_fileupload_base{
-
 	protected $callback = '';
 	protected $formFrame = '';
 	protected $drop = true;
@@ -67,7 +66,6 @@ class we_fileupload_include extends we_fileupload_base{
 	const FORCE_DOC_ROOT = true;
 	const MISSING_DOC_ROOT = true;
 	const USE_FILENAME_FROM_UPLOAD = true;
-
 	const USE_LEGACY_FOR_BACKUP = true;
 	const USE_LEGACY_FOR_WEIMPORT = true;
 
@@ -199,7 +197,8 @@ class we_fileupload_include extends we_fileupload_base{
 
 	private function _makeFileNameTemp($type = 0, $forceDocRoot = false){
 		$docRoot = $forceDocRoot && $this->fileNameTempParts['missingDocRoot'] ? $_SERVER['DOCUMENT_ROOT'] : '';
-		$filename = !$this->fileNameTempParts['useFilenameFromUpload'] ? $this->fileNameTempParts['prefix'] . we_base_file::getUniqueId() . $this->fileNameTempParts['postfix'] :
+		$filename = !$this->fileNameTempParts['useFilenameFromUpload'] ? $this->fileNameTempParts['prefix'] . we_base_file::getUniqueId() . $this->fileNameTempParts['postfix']
+				:
 			($_FILES[$this->name] && $_FILES[$this->name]['name'] ? $_FILES[$this->name]['name'] : we_base_request::_(we_base_request::STRING, 'weFileName', ''));
 
 		if(!$filename){
@@ -610,7 +609,7 @@ weFU.reset = function(){
 					$tempPath = $this->_makeFileNameTemp(self::GET_PATH_ONLY, self::FORCE_DOC_ROOT);
 
 					$error = !$tempName ? 'no_filename_error' : '';
-					$error = $error ? $error : ($partNum > $this->maxChunkCount ? 'oversized_error' : '');
+					$error = $error ? $error : ($this->maxChunkCount && $partNum > $this->maxChunkCount ? 'oversized_error' : '');
 					$error = $error ? $error : (!@move_uploaded_file($_FILES[$this->name]["tmp_name"], $tempPath . $tempName) ? 'move_file_error' : '');
 
 					//check mime type integrity when receiving first chunk
@@ -636,7 +635,8 @@ weFU.reset = function(){
 							file_put_contents($tempPath . $fileNameTemp, file_get_contents($tempPath . $tempName), FILE_APPEND);
 							unlink($tempPath . $tempName);
 						}
-						$response = array('status' => ($partNum == $partCount ? 'success' : 'continue'), 'fileNameTemp' => $fileNameTemp, 'mimePhp' => (isset($mime) && $mime ? $mime : $fileCt), 'message' => '', 'completed' => ($partNum == $partCount ? 1 : 0), 'finished' => '');
+						$response = array('status' => ($partNum == $partCount ? 'success' : 'continue'), 'fileNameTemp' => $fileNameTemp, 'mimePhp' => (isset($mime) && $mime ? $mime
+									: $fileCt), 'message' => '', 'completed' => ($partNum == $partCount ? 1 : 0), 'finished' => '');
 					}
 
 					echo json_encode($response);

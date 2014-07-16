@@ -49,7 +49,7 @@ class we_import_files{
 	private $showErrorAtChunkNr = 0; //Trigger an Error at n-th chunk of 100KB to demonstrate error response. TODO: Use this construct to abort on Max_FILE_SIZE!!
 
 	const CHUNK_SIZE = 256;
-	
+
 	function __construct(){
 		if(($cats = we_base_request::_(we_base_request::STRING, 'categories'))){
 			$_catarray = makeArrayFromCSV($cats);
@@ -81,7 +81,7 @@ class we_import_files{
 		$this->partNum = we_base_request::_(we_base_request::INT, "wePartNum", 0);
 		$this->partCount = we_base_request::_(we_base_request::INT, "wePartCount", 0);
 		$this->fileNameTmp = we_base_request::_(we_base_request::RAW, "weFileNameTmp", '');
-		$this->maxUploadSizeMB = defined('FILE_UPLOAD_MAX_UPLOAD_SIZE') ? FILE_UPLOAD_MAX_UPLOAD_SIZE : 8;
+		$this->maxUploadSizeMB = defined('FILE_UPLOAD_MAX_UPLOAD_SIZE') ? FILE_UPLOAD_MAX_UPLOAD_SIZE : 8;//FIMXE: 8???
 		$this->maxUploadSizeB = $this->maxUploadSizeMB * 1048576;
 		$this->useLegacyUpload = defined('FILE_UPLOAD_USE_LEGACY') ? FILE_UPLOAD_USE_LEGACY : false;
 		$this->useJsUpload = !USE_JUPLOAD && $this->jsRequirementsOk && !$this->useLegacyUpload;
@@ -946,7 +946,7 @@ function next() {
 		$js = we_html_element::jsElement($js);
 		$we_uploader = new we_fileupload_importFiles('we_File');
 		$js .= $we_uploader->getJs(true, false, true);
-	
+
 
 		$prevButton = we_html_button::create_button("back", "javascript:back();", true, 0, 0, "", "", false);
 		$prevButton2 = we_html_button::create_button("back", "javascript:back();", true, 0, 0, "", "", false, false);

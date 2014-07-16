@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -29,7 +28,6 @@ define("CSV_FIELDS", 0);
 define("THE_CHARSET", "UTF-8");
 
 class we_customer_EIWizard{
-
 	var $frameset;
 	var $db;
 	var $topFrame = "top";
@@ -582,7 +580,8 @@ class we_customer_EIWizard{
 				');
 
 		$tmptable = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 4, 1);
-		$tmptable->setCol(0, 0, array("valign" => "middle"), $this->formFileChooser(250, "source", $source, "opener." . $this->bodyFrame . ".document.we_form.import_from[0].checked=true;", ($type == we_import_functions::TYPE_GENERIC_XML ? we_base_ContentTypes::XML : "")));
+		$tmptable->setCol(0, 0, array("valign" => "middle"), $this->formFileChooser(250, "source", $source, "opener." . $this->bodyFrame . ".document.we_form.import_from[0].checked=true;", ($type == we_import_functions::TYPE_GENERIC_XML
+						? we_base_ContentTypes::XML : "")));
 		$tmptable->setCol(1, 0, array(), we_html_tools::getPixel(2, 5));
 
 		$table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 4, 2);
@@ -598,7 +597,7 @@ class we_customer_EIWizard{
 		);
 
 		//upload table
-		$maxsize = getUploadMaxFilesize(true);
+		$maxsize = getUploadMaxFilesize(true, $GLOBALS['DB_WE']);
 		if($maxsize){
 			$tmptable->setCol(0, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('newFile', "[max_possible_size]"), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 430));
 			$tmptable->setCol(1, 0, array(), we_html_tools::getPixel(2, 5));
@@ -768,12 +767,15 @@ class we_customer_EIWizard{
 					$tblSelect->setCol(0, 1, array(), $rcdSelect->getHtml());
 					$tblSelect->setCol(0, 2, array("width" => 20));
 					$tblSelect->setCol(0, 3, array("class" => "defaultfont"), g_l('modules_customer', '[num_data_sets]'));
-					$tblSelect->setCol(0, 4, array(), we_html_tools::htmlTextInput("xml_from", 4, 1, 5, "align=right", "text", 30, "", "", ($isSingleNode && ($firstOptVal == 1)) ? 1 : 0));
+					$tblSelect->setCol(0, 4, array(), we_html_tools::htmlTextInput("xml_from", 4, 1, 5, "align=right", "text", 30, "", "", ($isSingleNode && ($firstOptVal == 1))
+									? 1 : 0));
 					$tblSelect->setCol(0, 5, array("class" => "defaultfont"), g_l('modules_customer', '[to]'));
-					$tblSelect->setCol(0, 6, array(), we_html_tools::htmlTextInput("xml_to", 4, $firstOptVal, 5, "align=right", "text", 30, "", "", ($isSingleNode && ($firstOptVal == 1)) ? 1 : 0));
+					$tblSelect->setCol(0, 6, array(), we_html_tools::htmlTextInput("xml_to", 4, $firstOptVal, 5, "align=right", "text", 30, "", "", ($isSingleNode && ($firstOptVal == 1))
+									? 1 : 0));
 
 					$tblFrame = new we_html_table(array(), 3, 2);
-					$tblFrame->setCol(0, 0, array("colspan" => 2, "class" => "defaultfont"), ($isSingleNode) ? we_html_tools::htmlAlertAttentionBox(g_l('modules_customer', '[well_formed]') . " " . g_l('modules_customer', '[select_elements]'), we_html_tools::TYPE_INFO, 570) :
+					$tblFrame->setCol(0, 0, array("colspan" => 2, "class" => "defaultfont"), ($isSingleNode) ? we_html_tools::htmlAlertAttentionBox(g_l('modules_customer', '[well_formed]') . " " . g_l('modules_customer', '[select_elements]'), we_html_tools::TYPE_INFO, 570)
+								:
 							we_html_tools::htmlAlertAttentionBox(g_l('modules_customer', '[xml_valid_1]') . " $optid " . g_l('modules_customer', '[xml_valid_m2]'), we_html_tools::TYPE_INFO, 570));
 					$tblFrame->setCol(1, 0, array("colspan" => 2));
 					$tblFrame->setCol(2, 1, array(), $tblSelect->getHtml());
@@ -1181,7 +1183,8 @@ class we_customer_EIWizard{
 
 					foreach($filter_fieldname as $k => $v){
 						$op = $this->getOperator($filter_operator[$k]);
-						$filterarr[] = ($k ? (" " . $filter_logic[$k] . " ") : "") . $filter_fieldname[$k] . " " . $op . " '" . (is_numeric($filter_fieldvalue[$k]) ? $filter_fieldvalue[$k] : $this->db->escape($filter_fieldvalue[$k])) . "'";
+						$filterarr[] = ($k ? (" " . $filter_logic[$k] . " ") : "") . $filter_fieldname[$k] . " " . $op . " '" . (is_numeric($filter_fieldvalue[$k]) ? $filter_fieldvalue[$k]
+									: $this->db->escape($filter_fieldvalue[$k])) . "'";
 					}
 
 					$filtersql = implode(" ", $filterarr);
@@ -1564,7 +1567,8 @@ class we_customer_EIWizard{
 		$wecmdenc4 = we_base_request::encCmd(str_replace('\\', '', $cmd));
 		$button = we_html_button::create_button("select", "javascript:formFileChooser('browse_server','" . $wecmdenc1 . "','" . $filter . "',document.we_form.elements['" . $IDName . "'].value,'" . $wecmdenc4 . "');");
 
-		return $js . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 30, $IDValue, "", ' readonly', "text", $width, 0), "", "left", "defaultfont", "", we_html_tools::getPixel(20, 4), permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
+		return $js . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 30, $IDValue, "", ' readonly', "text", $width, 0), "", "left", "defaultfont", "", we_html_tools::getPixel(20, 4), permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES")
+						? $button : "");
 	}
 
 	/* creates the DirectoryChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
@@ -1649,7 +1653,8 @@ class we_customer_EIWizard{
 			we_html_element::htmlHidden(array("name" => "cus", "value" => we_base_request::_(we_base_request::RAW, "cus", "")));
 
 
-		$delallbut = we_html_button::create_button("delete_all", "javascript:selector_cmd('del_all_customers')", true, 0, 0, "", "", (we_base_request::_(we_base_request::STRING, "customers") ? false : true));
+		$delallbut = we_html_button::create_button("delete_all", "javascript:selector_cmd('del_all_customers')", true, 0, 0, "", "", (we_base_request::_(we_base_request::STRING, "customers")
+						? false : true));
 		$addbut = we_html_button::create_button("add", "javascript:selector_cmd('openSelector','','" . CUSTOMER_TABLE . "','','','fillIDs();opener." . $this->bodyFrame . ".selector_cmd(\\'add_customer\\',top.allIDs);')");
 		$custs = new MultiDirChooser(400, $customers, "del_customer", we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", CUSTOMER_TABLE);
 
