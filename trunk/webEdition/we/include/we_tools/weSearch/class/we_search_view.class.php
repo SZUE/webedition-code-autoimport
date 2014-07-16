@@ -2731,7 +2731,7 @@ class we_search_view extends we_tool_view{
 
 		$out .= '</tr></table>' .
 			//FIXME: realize with tbody?
-			'<div id="scrollContent_' . $whichSearch . '" style="overflow-y:auto;background-color:#fff;width:100%">' .
+			'<div id="scrollContent_' . $whichSearch . '" style="overflow-y:auto;background-color:#fff;width:100%;height:100%;">' .
 			$this->tabListContent($view, $content, $class, $whichSearch) .
 			'</div>';
 
