@@ -23,14 +23,13 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_voting_frames extends weModuleFrames{
-
 	var $View;
 	var $_space_size = 150;
 	var $_text_size = 75;
 	var $_width_size = 535;
 	public $module = "voting";
 
-	function __construct(){
+	public function __construct(){
 		parent::__construct(WE_VOTING_MODULE_DIR . "edit_voting_frameset.php");
 		$this->Tree = new we_voting_tree();
 		$this->View = new we_voting_view(WE_VOTING_MODULE_DIR . "edit_voting_frameset.php", "top.content");
@@ -45,8 +44,8 @@ class we_voting_frames extends weModuleFrames{
 				return $this->getHTMLExportGroupCsvMessage();
 			case "reset_ipdata":
 				return $this->getHTMLResetIPData();
-			case "reset_logdata":
-				return $this->getHTMLResetLogData();
+			/*case "reset_logdata":
+				return $this->getHTMLResetLogData();*/
 			case "show_log":
 				return ($this->View->voting->LogDB ?
 						$this->getHTMLShowLogNew() :
@@ -112,7 +111,8 @@ class we_voting_frames extends weModuleFrames{
 		);
 
 		$extraJS = 'document.getElementById("tab_"+top.content.activ_tab).className="tabActive";';
-		$body = we_html_element::htmlBody(array("onresize" => "setFrameSize()", "onload" => "setFrameSize()", "bgcolor" => "#C8D8EC", "background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif", "marginwidth" => 0, "marginheight" => 0, "leftmargin" => 0, "topmargin" => 0), '<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . str_replace(" ", "&nbsp;", ($this->View->voting->IsFolder ? g_l('modules_voting', '[group]') : g_l('modules_voting', '[voting]'))) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", $this->View->voting->Path) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) .
+		$body = we_html_element::htmlBody(array("onresize" => "setFrameSize()", "onload" => "setFrameSize()", "bgcolor" => "#C8D8EC", "background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif", "marginwidth" => 0, "marginheight" => 0, "leftmargin" => 0, "topmargin" => 0), '<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . str_replace(" ", "&nbsp;", ($this->View->voting->IsFolder
+							? g_l('modules_voting', '[group]') : g_l('modules_voting', '[voting]'))) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", $this->View->voting->Path) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) .
 				$we_tabs->getHTML() .
 				'</div>' . we_html_element::jsElement($extraJS)
 		);
@@ -294,7 +294,8 @@ class we_voting_frames extends weModuleFrames{
 				$this->getHTMLDirChooser() .
 				weSuggest::getYuiJsFiles() . $yuiSuggest->getYuiCss() . $yuiSuggest->getYuiJs() .
 				we_html_element::htmlBr() .
-				(!$this->View->voting->IsFolder ? we_html_tools::htmlFormElementTable(we_html_tools::getDateInput2('PublishDate%s', $this->View->voting->PublishDate, false, '', 'top.content.setHot();'), g_l('modules_voting', '[headline_publish_date]')) : ''),
+				(!$this->View->voting->IsFolder ? we_html_tools::htmlFormElementTable(we_html_tools::getDateInput2('PublishDate%s', $this->View->voting->PublishDate, false, '', 'top.content.setHot();'), g_l('modules_voting', '[headline_publish_date]'))
+						: ''),
 				'space' => $this->_space_size,
 				'noline' => 1),
 			array(
@@ -412,7 +413,8 @@ class we_voting_frames extends weModuleFrames{
 		$table->setColContent(2, 1, we_html_element::htmlDiv(array('id' => 'activetime', 'style' => 'display: ' . ($this->View->voting->Active ? 'block' : 'none') . ';'), $activeTime->getHtml()
 			)
 		);
-		$table->setColContent(3, 1, we_html_element::htmlDiv(array('id' => 'valid', 'style' => 'display: ' . ($this->View->voting->Active && $this->View->voting->ActiveTime ? 'block' : 'none') . ';'), we_html_tools::htmlFormElementTable(we_html_tools::getDateInput2('Valid%s', $this->View->voting->Valid, false, '', 'top.content.setHot();'), "")
+		$table->setColContent(3, 1, we_html_element::htmlDiv(array('id' => 'valid', 'style' => 'display: ' . ($this->View->voting->Active && $this->View->voting->ActiveTime
+						? 'block' : 'none') . ';'), we_html_tools::htmlFormElementTable(we_html_tools::getDateInput2('Valid%s', $this->View->voting->Valid, false, '', 'top.content.setHot();'), "")
 			)
 		);
 
@@ -670,43 +672,43 @@ function newIp(){
 		$butt = we_html_button::create_button("reset_score", "javascript:top.content.setHot();resetScores();");
 
 		$js = we_html_element::jsElement('
-	function resetScores(){
-		if(confirm("' . g_l('modules_voting', '[result_delete_alert]') . '")) {
-			for(var i=0;i<' . ($i - 1) . ';i++){
-				document.we_form.elements["scores_"+i].value = 0;
-			}
-			document.we_form.scores_changed.value=1;
-			refreshTotal();
-		} else {}
+function resetScores(){
+	if(confirm("' . g_l('modules_voting', '[result_delete_alert]') . '")) {
+		for(var i=0;i<' . ($i - 1) . ';i++){
+			document.we_form.elements["scores_"+i].value = 0;
+		}
+		document.we_form.scores_changed.value=1;
+		refreshTotal();
+	} else {}
+}
+
+function refreshTotal(){
+	var total=0;
+	for(var i=0;i<' . ($i - 1) . ';i++){
+		total += parseInt(document.we_form.elements["scores_"+i].value);
 	}
 
-	function refreshTotal(){
-		var total=0;
-		for(var i=0;i<' . ($i - 1) . ';i++){
-			total += parseInt(document.we_form.elements["scores_"+i].value);
+	var t = document.getElementById("total");
+	t.innerHTML = total;
+
+	for(var i=0;i<' . ($i - 1) . ';i++){
+		if(total!=0){
+			percent = Math.round((parseInt(document.we_form.elements["scores_"+i].value)/total) * 100);
 		}
-
-		var t = document.getElementById("total");
-		t.innerHTML = total;
-
-		for(var i=0;i<' . ($i - 1) . ';i++){
-			if(total!=0){
-				percent = Math.round((parseInt(document.we_form.elements["scores_"+i].value)/total) * 100);
-			}
-			else percent = 0;
-			eval("setProgressitem"+i+"("+percent+");");
-		}
-
+		else percent = 0;
+		eval("setProgressitem"+i+"("+percent+");");
 	}
 
-	function refreshTexts(){
-		var t = document.getElementById("question_score");
-		eval("t.innerHTML = document.we_form."+question_edit.name+"_item0.value");
-		for(i=0;i<answers_edit.itemCount;i++){
-			var t = document.getElementById("answers_score_"+i);
-			eval("t.innerHTML = document.we_form."+answers_edit.name+"_item"+i+".value");
-		}
-	}');
+}
+
+function refreshTexts(){
+	var t = document.getElementById("question_score");
+	eval("t.innerHTML = document.we_form."+question_edit.name+"_item0.value");
+	for(i=0;i<answers_edit.itemCount;i++){
+		var t = document.getElementById("answers_score_"+i);
+		eval("t.innerHTML = document.we_form."+answers_edit.name+"_item"+i+".value");
+	}
+}');
 
 		$parts[] = array(
 			"headline" => g_l('modules_voting', '[inquiry]'),
@@ -854,7 +856,7 @@ function newIp(){
 		);
 	}
 
-	function getHTMLExportCsvMessage($mode = 0){
+	private function getHTMLExportCsvMessage(){
 		if(!isset($_REQUEST["lnk"])){
 			return;
 		}
@@ -885,7 +887,7 @@ function newIp(){
 		return $this->getHTMLDocument($body);
 	}
 
-	function getHTMLExportGroupCsvMessage($mode = 0){
+	private function getHTMLExportGroupCsvMessage(){
 		if(!isset($_REQUEST["lnk"])){
 			return;
 		}
@@ -918,10 +920,11 @@ function newIp(){
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");
 		$button = we_html_button::create_button("select", "javascript:we_cmd('browse_server','" . $wecmdenc1 . "','" . $filter . "',document.we_form.elements['" . $IDName . "'].value);");
 
-		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 30, $IDValue, "", 'readonly onchange="top.content.setHot();"', "text", $width, 0), "", "left", "defaultfont", "", we_html_tools::getPixel(20, 4), permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
+		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 30, $IDValue, "", 'readonly onchange="top.content.setHot();"', "text", $width, 0), "", "left", "defaultfont", "", we_html_tools::getPixel(20, 4), permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES")
+						? $button : "");
 	}
 
-	function getHTMLResetIPData(){
+	private function getHTMLResetIPData(){
 		$this->View->voting->resetIpData();
 
 		$close = we_html_button::create_button("close", "javascript:self.close();");
@@ -934,7 +937,7 @@ function newIp(){
 		return $this->getHTMLDocument($body);
 	}
 
-	function getHTMLDeleteLog(){
+	private function getHTMLDeleteLog(){
 		$this->View->voting->deleteLogData();
 
 		$close = we_html_button::create_button("close", "javascript:self.close();");
@@ -947,7 +950,7 @@ function newIp(){
 		return $this->getHTMLDocument($body);
 	}
 
-	function getHTMLShowLogOld(){
+	private function getHTMLShowLogOld(){
 		$close = we_html_button::create_button("close", "javascript:self.close();");
 		$refresh = we_html_button::create_button("refresh", "javascript:location.reload();");
 
@@ -1070,7 +1073,7 @@ function newIp(){
 		return $this->getHTMLDocument($body);
 	}
 
-	function getHTMLShowLogNew(){
+	private function getHTMLShowLogNew(){
 		$close = we_html_button::create_button("close", "javascript:self.close();");
 		$refresh = we_html_button::create_button("refresh", "javascript:location.reload();");
 
@@ -1207,13 +1210,12 @@ function newIp(){
 		return $this->getHTMLDocument($body);
 	}
 
-	function getHTMLShowGroupLog(){
+	function getHTMLShowGroupLog(){//FIXME: unused??
 		$close = we_html_button::create_button("close", "javascript:self.close();");
 		$refresh = we_html_button::create_button("refresh", "javascript:location.reload();");
 
 		$voting = new we_voting_voting();
 		$voting->load($this->View->voting->ID);
-		$log = array();
 		$log = $voting->loadDB($voting->ID);
 
 
