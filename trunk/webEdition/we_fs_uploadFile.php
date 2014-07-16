@@ -214,7 +214,7 @@ if($inputTypeFile->processFileRequest()){
 	<body class="weDialogBody" onload="self.focus();" ><center>
 			<form method="post" enctype="multipart/form-data">
 				<input type="hidden" name="table" value="<?php echo $_REQUEST["tab"]; ?>" />
-				<input type="hidden" name="pid" value="<?php echo $_REQUEST["dir"]; ?>" />
+				<input type="hidden" name="pid" value="<?php echo $_REQUEST["pid"]; ?>" />
 				<input type="hidden" name="ct" value="<?php echo $we_ContentType; ?>" />
 				<?php echo we_html_multiIconBox::getHTML("", "100%", $parts, 30, $buttons, -1, "", "", false, g_l('newFile', "[import_File_from_hd_title]"), "", 620); ?>
 			</form></center>
