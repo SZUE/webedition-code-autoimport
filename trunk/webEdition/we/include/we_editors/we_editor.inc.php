@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -300,7 +299,17 @@ if((($cmd0 != 'save_document' && $cmd0 != 'publish' && $cmd0 != 'unpublish') && 
 				str_replace('</head>', $_insertReloadFooter . '</head>', $contents) :
 				$_insertReloadFooter . $contents);
 	}
-	$we_ext = ($we_doc->Extension == '.js' || $we_doc->Extension == '.css' || $we_doc->Extension == '.wml' || $we_doc->Extension == '.xml') ? '.html' : $we_doc->Extension;
+	switch($we_doc->Extension){
+		case '.js':
+		case '.css':
+		case '.wml':
+		case '.xml':
+			$we_ext = '.html';
+			break;
+		default:
+			$we_ext = $we_doc->Extension;
+	}
+
 	$tempName = TEMP_DIR . we_base_file::getUniqueId() . $we_ext;
 	$fullName = $_SERVER['DOCUMENT_ROOT'] . $tempName;
 	we_util_File::insertIntoCleanUp($fullName, time());
@@ -310,7 +319,6 @@ if((($cmd0 != 'save_document' && $cmd0 != 'publish' && $cmd0 != 'unpublish') && 
 	eval('?>' . str_replace('<?xml', '<?php print \'<?xml\'; ?>', $contents));
 	$contents = ob_get_contents();
 	ob_end_clean();
-
 //
 // --> Glossary Replacement
 //
@@ -319,6 +327,26 @@ if((($cmd0 != 'save_document' && $cmd0 != 'publish' && $cmd0 != 'unpublish') && 
 		$contents = we_glossary_replace::replace($contents, $we_doc->Language);
 	}
 
+	if($GLOBALS['we_editmode']){
+		$matches = array();
+		preg_match_all('|<(/)?form( name="we_form")?([^>]*)|i', $contents, $matches, PREG_PATTERN_ORDER);
+		if($matches && count($matches[0])/* >2 */){
+			//find the number of we-forms
+			$all = count($matches[2]) / 2;
+			$no = count(array_filter($matches[2])) / 2;
+			if($no > 1){
+				//sth very bad must have happend to have 2 we forms in one page
+				$warn = $no . ' webEdition Forms are found inside this template. This will cause trouble. Expect this document not to be saved correctly.';
+				t_e($warn, str_replace('.html', '.tmpl', $we_doc->Path));
+				$contents = preg_replace('|<form|', '<p style="background-color:red;color:white;font-weight:bold;">' . $warn . '</p><form', $contents, 1);
+			}
+			if($all - $no){
+				$warn = $no . ' standard html-form-tags are found inside this template. This will cause trouble. Expect this document not to be saved correctly.';
+				t_e($warn, str_replace('.html', '.tmpl', $we_doc->Path));
+				$contents = preg_replace('|<form|', '<p style="background-color:red;color:white;font-weight:bold;">' . $warn . '</p><form', $contents, 1);
+			}
+		}
+	}
 
 	we_util_File::saveFile($fullName, $contents);
 
@@ -572,7 +600,8 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 						switch($_SESSION['weS']['we_mode']){
 							case we_base_constants::MODE_SEE:
 								$_showAlert = true; //	don't show confirm box in editor_save.inc
-								$GLOBALS['we_responseJS'] = 'top.we_cmd("switch_edit_page","' . (permissionhandler::hasPerm('CAN_SEE_PROPERTIES') ? we_base_constants::WE_EDITPAGE_PROPERTIES : $we_doc->EditPageNr) . '","' . $we_transaction . '");';
+								$GLOBALS['we_responseJS'] = 'top.we_cmd("switch_edit_page","' . (permissionhandler::hasPerm('CAN_SEE_PROPERTIES') ? we_base_constants::WE_EDITPAGE_PROPERTIES
+											: $we_doc->EditPageNr) . '","' . $we_transaction . '");';
 								break;
 							case we_base_constants::MODE_NORMAL:
 								$GLOBALS['we_responseJS'] = 'top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");';
