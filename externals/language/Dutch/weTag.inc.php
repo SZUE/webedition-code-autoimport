@@ -599,6 +599,9 @@ $l_weTag=array(
 	'newsletterSalutation'=>array(
 		'description'=>'Deze tag wordt gebruikt om aanhef-velden weer te geven.',
 	),
+	'newsletterSwitch'=>array(
+		'description'=>'This tag generates a switch with which you can shift between HTML und text preview of a newsletter while in edit-mode. If you have used the &lt;we:ifHtmlMail&gt; and &lt;we:ifNotHtmlMail&gt; tags, this tag allows you to see the different views and and to keep control of the layout.',
+	),
 	'newsletterUnsubscribeLink'=>array(
 		'description'=>'Creëert een koppeling voor uitschrijving van een nieuwsbrief lijst. Deze tag kan alleen gebruikt worden in e-mail sjablonen!',
 	),

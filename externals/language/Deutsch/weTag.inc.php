@@ -599,6 +599,9 @@ $l_weTag=array(
 	'newsletterSalutation'=>array(
 		'description'=>'Mit diesem Tag kann man Anrede-Felder anzeigen.',
 	),
+	'newsletterSwitch'=>array(
+		'description'=>'Dieses Tag erzeugt im Edit-Mode einen Umschalter, mit dem man zwischen zwischen der HTML- und Text-Vorschau des Newsletters umschalten kann. Das ist sinnvoll bei der Verwendung der Tags &lt;we:ifHtmlMail&gt; und &lt;we:ifNotHtmlMail&gt;, um die verschiedenen Ansichten zu überprüfen und volle Sicherheit über das Layout zu haben.',
+	),
 	'newsletterUnsubscribeLink'=>array(
 		'description'=>'Das we:newsletterUnsubscribeLink-Tag erzeugt ein HTML-Link-Tag zum Austragen aus der Newsletterliste. Dieses Tag kann nur in E-Mail Vorlagen benutzt werden!',
 	),

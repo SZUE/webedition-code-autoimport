@@ -599,6 +599,9 @@ $l_weTag=array(
 	'newsletterSalutation'=>array(
 		'description'=>'Tätä tagia käytetään näytettäessä `puhuttelu``-kenttiä.',
 	),
+	'newsletterSwitch'=>array(
+		'description'=>'This tag generates a switch with which you can shift between HTML und text preview of a newsletter while in edit-mode. If you have used the &lt;we:ifHtmlMail&gt; and &lt;we:ifNotHtmlMail&gt; tags, this tag allows you to see the different views and and to keep control of the layout.',
+	),
 	'newsletterUnsubscribeLink'=>array(
 		'description'=>'Luo linkin uutiskirjeen perumiseen. Tagia voidaan käyttää ainoastaan `sähköposti` sivupohjissa!',
 	),
