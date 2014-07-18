@@ -19,13 +19,22 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package none
+ * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifNotHtmlMail(){
-	if((isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']) || (isset($GLOBALS['we_doc']->InWebEdition) && $GLOBALS['we_doc']->InWebEdition)){
-		return true;
+	switch (true){
+		case ((isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])): //editmode always true
+			return true;
+			break;
+		case ((isset($GLOBALS['we_editmode']) && !$GLOBALS['we_editmode']) && $GLOBALS['we_doc']->InWebEdition && isset($_SESSION['weS']['we_set_newsletterFormat'])): //for tag <we:newsletterSwitch/>
+			return (bool) (!$_SESSION['weS']['we_set_newsletterFormat']);
+			break;
+		case (isset($GLOBALS['WE_HTMLMAIL'])):
+			return (bool) (!$GLOBALS['WE_HTMLMAIL']);
+			break;
+		default:
+			return false; //per default E-Mail-Type is HTML
+			break;
 	}
-
-	return (isset($GLOBALS['WE_HTMLMAIL']) && (!$GLOBALS['WE_HTMLMAIL']));
 }
