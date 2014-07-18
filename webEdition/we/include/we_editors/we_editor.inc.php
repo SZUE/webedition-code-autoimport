@@ -329,11 +329,11 @@ if((($cmd0 != 'save_document' && $cmd0 != 'publish' && $cmd0 != 'unpublish') && 
 
 	if($GLOBALS['we_editmode']){
 		$matches = array();
-		preg_match_all('|<(/)?form( name="we_form")?([^>]*)|i', $contents, $matches, PREG_PATTERN_ORDER);
+		preg_match_all('|<form( name="we_form"))|i', $contents, $matches, PREG_PATTERN_ORDER);
 		if($matches && count($matches[0])/* >2 */){
 			//find the number of we-forms
-			$all = count($matches[2]) / 2;
-			$no = count(array_filter($matches[2]));
+			$all = count($matches[0]);
+			$no = count(array_filter($matches[1]));
 			if($no > 1){
 				//sth very bad must have happend to have 2 we forms in one page
 				$warn = $no . ' webEdition Forms are found inside this template. This will cause trouble. Expect this document not to be saved correctly.';
