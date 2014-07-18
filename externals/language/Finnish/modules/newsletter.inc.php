@@ -147,6 +147,8 @@ $l_modules_newsletter=array(
 	'new_newsletter'=>'Uusi uutiskirje',
 	'new_newsletter_group'=>'Uusi ryhmä',
 	'newsletter'=>'Uutiskirje',
+		'preview'=>'Newsletter preview',
+	),
 	'newsletter_content'=>'Uutiskirjeen sisältö',
 	'newsletter_test'=>'Testi',
 	'newsletter_type_0'=>'Dokumenttipohjainen',
