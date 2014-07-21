@@ -203,6 +203,7 @@ abstract class we_util_File extends we_base_file{
 		sort($DirFileObjectsArray);
 		$tar_object = new Archive_Tar($destinationfile, true);
 		if(method_exists($tar_object, 'setErrorHandling')){
+			//only if orignal pear was used
 			$tar_object->setErrorHandling(PEAR_ERROR_TRIGGER, E_USER_WARNING);
 		}
 		$tar_object->createModify($DirFileObjectsArray, '', $directoy);
