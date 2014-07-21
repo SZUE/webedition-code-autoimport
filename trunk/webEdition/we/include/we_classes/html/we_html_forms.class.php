@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -52,9 +51,11 @@ abstract class we_html_forms{
 			<table cellpadding="0" style="border-spacing: 0px;border-style:none;' . $style . '">
 				<tr>
 					<td' . ($description ? ' valign="top"' : '') . '>
-						<input type="checkbox" name="' . $name . '" id="' . $_id . '" value="' . $value . '" style="cursor: pointer; outline: 0px;" ' . ($checked ? " checked=\"checked\"" : "") . ($onClick ? " onclick=\"$onClick\"" : "") . ($disabled ? " disabled=\"disabled\"" : "") . ' /></td>
+						<input type="checkbox" name="' . $name . '" id="' . $_id . '" value="' . $value . '" style="cursor: pointer; outline: 0px;" ' . ($checked ? " checked=\"checked\""
+					: "") . ($onClick ? " onclick=\"$onClick\"" : "") . ($disabled ? " disabled=\"disabled\"" : "") . ' /></td>
 					<td>' . we_html_tools::getPixel(4, 2) . '</td>
-					<td class="' . $class . '" style="white-space:nowrap;"><label id="label_' . $_id . '" for="' . $_id . '" style="' . ($disabled ? 'color: grey; ' : 'cursor: pointer;') . 'outline: 0px;">' . $text . '</label>' . ($description ? "<br/>" . we_html_tools::getPixel(1, 3) . "<br/>" . we_html_tools::htmlAlertAttentionBox($description, $type, $width) : "") . ($html ? $html : "") . '</td>
+					<td class="' . $class . '" style="white-space:nowrap;"><label id="label_' . $_id . '" for="' . $_id . '" style="' . ($disabled ? 'color: grey; ' : 'cursor: pointer;') . 'outline: 0px;">' . $text . '</label>' . ($description
+					? "<br/>" . we_html_tools::getPixel(1, 3) . "<br/>" . we_html_tools::htmlAlertAttentionBox($description, $type, $width) : "") . ($html ? $html : "") . '</td>
 				</tr>
 			</table>';
 	}
@@ -95,9 +96,14 @@ abstract class we_html_forms{
 		return '
 			<table style="border-spacing: 0px;border-style:none" cellpadding="0">
 				<tr>
-					<td class="weEditmodeStyle"' . ($description ? ' valign="top"' : '') . '><input type="radio" name="' . $name . '" id="' . $_id . '" value="' . $value . '" style="cursor: pointer;outline: 0px;" ' . ($checked ? ' checked="checked"' : '') . ($onMouseUp ? ' onmouseup="' . $onMouseUp . '"' : '') . ($onClick ? ' onclick="' . $onClick . '"' : "") . ($disabled ? ' disabled="disabled"' : '') . ' /></td>
+					<td class="weEditmodeStyle"' . ($description ? ' valign="top"' : '') . '><input type="radio" name="' . $name . '" id="' . $_id . '" value="' . $value . '" style="cursor: pointer;outline: 0px;" ' . ($checked
+					? ' checked="checked"' : '') . ($onMouseUp ? ' onmouseup="' . $onMouseUp . '"' : '') . ($onClick ? ' onclick="' . $onClick . '"' : "") . ($disabled ? ' disabled="disabled"'
+					: '') . ' /></td>
 					<td class="weEditmodeStyle">' . we_html_tools::getPixel(4, 2) . '</td>
-					<td class="weEditmodeStyle ' . $class . '" style="white-space:nowrap;"><label id="label_' . $_id . '" for="' . $_id . '" style="' . ($disabled ? 'color: grey; ' : 'cursor: pointer;') . 'outline: 0px;" ' . ($onMouseUp ? ' onmouseup="' . str_replace('this.', "document.getElementById('" . $_id . "').", $onMouseUp) . '"' : '') . '>' . $text . '</label>' . ($description ? we_html_element::htmlBr() . we_html_tools::getPixel(1, 3) . we_html_element::htmlBr() . we_html_tools::htmlAlertAttentionBox($description, $type, $width) : "") .
+					<td class="weEditmodeStyle ' . $class . '" style="white-space:nowrap;"><label id="label_' . $_id . '" for="' . $_id . '" style="' . ($disabled ? 'color: grey; '
+					: 'cursor: pointer;') . 'outline: 0px;" ' . ($onMouseUp ? ' onmouseup="' . str_replace('this.', "document.getElementById('" . $_id . "').", $onMouseUp) . '"'
+					: '') . '>' . $text . '</label>' . ($description ? we_html_element::htmlBr() . we_html_tools::getPixel(1, 3) . we_html_element::htmlBr() . we_html_tools::htmlAlertAttentionBox($description, $type, $width)
+					: "") .
 			($extra_content ? (we_html_element::htmlBr() . we_html_tools::getPixel(1, 3) . we_html_element::htmlBr() . $extra_content) : "") . '</td>
 				</tr>
 			</table>';
@@ -142,7 +148,7 @@ abstract class we_html_forms{
 		$hideautobr = weTag_getAttribute('hideautobr', $attribs, false, true);
 		$class = weTag_getAttribute('class', $attribs);
 		$style = weTag_getAttribute('style', $attribs);
-		$id = weTag_getAttribute('id', $attribs);
+		$id = weTag_getAttribute('id', $attribs, weTag_getAttribute('pass_id', $attribs));
 		$tabindex = weTag_getAttribute('tabindex', $attribs);
 		$oldHtmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, true);
 		$ignoredocumentcss = weTag_getAttribute('ignoredocumentcss', $attribs, false, true);
@@ -152,10 +158,12 @@ abstract class we_html_forms{
 		$buttonBottom = false;
 
 		//first prepare stylesheets from textarea-attribute editorcss (templates) or class-css (classes): csv of ids. then (if document) get document-css, defined by we:css
-		$contentCss = (isset($GLOBALS['we_doc']) && (($GLOBALS['we_doc'] instanceof we_objectFile) || ($GLOBALS['we_doc'] instanceof we_object))) ? $GLOBALS['we_doc']->CSS :
+		$contentCss = (isset($GLOBALS['we_doc']) && (($GLOBALS['we_doc'] instanceof we_objectFile) || ($GLOBALS['we_doc'] instanceof we_object))) ? $GLOBALS['we_doc']->CSS
+				:
 			((isset($GLOBALS['we_doc']) && ($GLOBALS['we_doc'] instanceof we_webEditionDocument)) ? weTag_getAttribute('editorcss', $attribs) : '');
 		$contentCss = $contentCss ? implode('?' . time() . ',', id_to_path(trim($contentCss, ', '), FILE_TABLE, null, false, true)) . '?' . time() : '';
-		$contentCss = (isset($GLOBALS['we_doc']) && ($GLOBALS['we_doc'] instanceof we_webEditionDocument) && !$ignoredocumentcss) ? trim($GLOBALS['we_doc']->getDocumentCss() . ',' . $contentCss, ',') :
+		$contentCss = (isset($GLOBALS['we_doc']) && ($GLOBALS['we_doc'] instanceof we_webEditionDocument) && !$ignoredocumentcss) ? trim($GLOBALS['we_doc']->getDocumentCss() . ',' . $contentCss, ',')
+				:
 			$contentCss;
 
 		if($buttonpos){
@@ -179,16 +187,13 @@ abstract class we_html_forms{
 		$style = ($style ? explode(';', trim(preg_replace(array('/width:[^;"]+[;"]?/i', '/height:[^;"]+[;"]?/i'), '', $style), ' ;')) : array());
 
 		$fontnames = weTag_getAttribute('fontnames', $attribs);
-		$showmenues = weTag_getAttribute('showmenus', $attribs, true, true);
-		if(isset($attribs['showMenues'])){ // old style compatibility
-			if($attribs['showMenues'] == 'off' || $attribs['showMenues'] == 'false'){
-				$showmenues = false;
-			}
-		} else if(isset($attribs['showmenues'])){ // old style compatibility
-			if($attribs['showmenues'] == 'off' || $attribs['showmenues'] == 'false'){
-				$showmenues = false;
-			}
-		}
+		$showmenues = (
+			isset($attribs['showMenues']) ?
+				weTag_getAttribute('showMenues', $attribs, true, true) :
+				(isset($attribs['showmenues']) ?
+					weTag_getAttribute('showmenues', $attribs, true, true) :
+					weTag_getAttribute('showmenus', $attribs, true, true)));
+
 		$importrtf = weTag_getAttribute('importrtf', $attribs, false, true);
 		$doc = (isset($GLOBALS['we_doc']) && $GLOBALS['we_doc'] != '' && ($GLOBALS['we_doc'] instanceof we_objectFile) ? 'we_doc' : 'WE_MAIN_DOC');
 		$inwebedition = ($forceinwebedition ? $forceinwebedition : (isset($GLOBALS[$doc]->InWebEdition) && $GLOBALS[$doc]->InWebEdition));
@@ -221,46 +226,58 @@ abstract class we_html_forms{
 
 			if($inlineedit){
 				$e = new we_wysiwyg_editor($name, $width, $height, $value, $commands, $bgcolor, '', $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $_lang, '', $showSpell, $isFrontendEdit, $buttonpos, $oldHtmlspecialchars, $contentCss, $origName, $tinyParams, $contextmenu, false, $templates);
-				$out .= $e->getHTML();
-			} else {
-				$e = new we_wysiwyg_editor($name, $width, $height, '', $commands, $bgcolor, '', $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $_lang, '', $showSpell, $isFrontendEdit, $buttonpos, $oldHtmlspecialchars, $contentCss, $origName, $tinyParams, $contextmenu, false, $templates);
 
-				if(stripos($name, "we_ui") === false){//we are in backend
-					$hiddenTextareaContent = str_replace(array("##|r##", "##|n##"), array("\r", "\n"), $e->parseInternalImageSrc($value));
-					$previewDivContent = str_replace(array("##|r##", "##|n##"), array("\r", "\n"), (
-						isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->ClassName != 'we_objectFile' && $GLOBALS['we_doc']->ClassName != 'we_object' ?
-							$GLOBALS['we_doc']->getField($attribs) :
-							we_document::parseInternalLinks($value, 0)
-						)
-					);
-				} else {//we are in frontend
-					$hiddenTextareaContent = str_replace(array("##|r##", "##|n##"), array("\r", "\n"), we_document::parseInternalLinks($value, 0));
-					$previewDivContent = $hiddenTextareaContent;
-				}
-
-				$fieldName = preg_match('|^.+\[.+\]$|i', $name) ? preg_replace('/^.+\[(.+)\]$/', '\1', $name) : '';
-
-				$out .= we_html_element::htmlTextArea(array('name' => $name, 'id' => $name, 'onchange' => '_EditorFrame.setEditorIsHot(true);', 'style' => 'display: none'), $hiddenTextareaContent);
-				$out .= ($fieldName ? we_html_element::jsElement('tinyEditors["' . $fieldName . '"] = "' . $name . '";') : '') .
-					($buttonTop ? '<div class="tbButtonWysiwygBorder" style="width:25px;border-bottom:0px;background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">' . $e->getHTML(we_wysiwyg_editor::$editorType == 'tinyMCE' ? '' : $hiddenTextareaContent) . '</div>' : '') . '<div class="tbButtonWysiwygBorder ' . (empty($class) ? "" : $class . " ") . 'wetextarea tiny-wetextarea wetextarea-' . $origName . '" id="div_wysiwyg_' . $name . '">' . $previewDivContent . '</div>' . ($buttonBottom ? '<div class="tbButtonWysiwygBorder" style="width:25px;border-top:0px;background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">' . $e->getHTML(we_wysiwyg_editor::$editorType == 'tinyMCE' ? '' : $hiddenTextareaContent) . '</div>' : '');
+				return $out . $e->getHTML();
 			}
-		} else {
-			if($width){
-				$style[] = 'width:' . $width . 'px;';
-			}
-			if($height){
-				$style[] = 'height:' . $height . 'px;';
+			
+			$e = new we_wysiwyg_editor($name, $width, $height, '', $commands, $bgcolor, '', $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $_lang, '', $showSpell, $isFrontendEdit, $buttonpos, $oldHtmlspecialchars, $contentCss, $origName, $tinyParams, $contextmenu, false, $templates);
+
+			if(stripos($name, "we_ui") === false){//we are in backend
+				$hiddenTextareaContent = str_replace(array("##|r##", "##|n##"), array("\r", "\n"), $e->parseInternalImageSrc($value));
+				$previewDivContent = str_replace(array("##|r##", "##|n##"), array("\r", "\n"), (
+					isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->ClassName != 'we_objectFile' && $GLOBALS['we_doc']->ClassName != 'we_object' ?
+						$GLOBALS['we_doc']->getField($attribs) :
+						we_document::parseInternalLinks($value, 0)
+					)
+				);
+			} else {//we are in frontend
+				$hiddenTextareaContent = strtr(we_document::parseInternalLinks($value, 0), array('##|r##' => "\r", '##|n##' => "\n"));
+				$previewDivContent = $hiddenTextareaContent;
 			}
 
-			if($showAutobr || $showSpell){
-				$clearval = $value;
-				$value = str_replace(array('<?', '<script', '</script', '\\', "\n", "\r", '"'), array('##|lt;?##', '<##scr#ipt##', '</##scr#ipt##', '\\\\', '\n', '\r', '\\"'), $value);
-				$out .= we_html_element::jsElement('new we_textarea("' . $name . '","' . $value . '","' . $cols . '","' . $rows . '","","","' . $autobr . '","' . $autobrName . '",' . ($showAutobr ? ($hideautobr ? "false" : "true") : "false") . ',' . ($importrtf ? "true" : "false") . ',"' . $GLOBALS["WE_LANGUAGE"] . '","' . $class . '","' . implode(';', $style) . '","' . $wrap . '","onkeydown","' . ($xml ? "true" : "false") . '","' . $id . '",' . ((defined('SPELLCHECKER') && $showSpell) ? "true" : "false") . ',"' . $origName . '");') .
-					'<noscript><textarea name="' . $name . '"' . ($tabindex ? ' tabindex="' . $tabindex . '"' : '') . ($cols ? ' cols="' . $cols . '"' : '') . ($rows ? ' rows="' . $rows . '"' : '') . (!empty($style) ? ' style="' . implode(';', $style) . '"' : '') . ' class="' . ($class ? $class . " " : "") . 'wetextarea wetextarea-' . $origName . '"' . ($id ? ' id="' . $id . '"' : '') . '>' . oldHtmlspecialchars($clearval) . '</textarea></noscript>';
-			} else {
-				$out .= '<textarea name="' . $name . '"' . ($tabindex ? ' tabindex="' . $tabindex . '"' : '') . ($cols ? ' cols="' . $cols . '"' : '') . ($rows ? ' rows="' . $rows . '"' : '') . (!empty($style) ? ' style="' . implode(';', $style) . '"' : '') . ' class="' . ($class ? $class . " " : "") . 'wetextarea wetextarea-' . $origName . '"' . ($id ? ' id="' . $id . '"' : '') . '>' . oldHtmlspecialchars($value) . '</textarea>';
-			}
+			$fieldName = preg_match('|^.+\[.+\]$|i', $name) ? preg_replace('/^.+\[(.+)\]$/', '\1', $name) : '';
+
+			return $out .
+				we_html_element::htmlTextArea(array('name' => $name, 'id' => $name, 'onchange' => '_EditorFrame.setEditorIsHot(true);', 'style' => 'display: none'), $hiddenTextareaContent) .
+				($fieldName ? we_html_element::jsElement('tinyEditors["' . $fieldName . '"] = "' . $name . '";') : '') .
+				($buttonTop ? '<div class="tbButtonWysiwygBorder" style="width:25px;border-bottom:0px;background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">' . $e->getHTML(we_wysiwyg_editor::$editorType == 'tinyMCE'
+								? '' : $hiddenTextareaContent) . '</div>' : '') . '<div class="tbButtonWysiwygBorder ' . (empty($class) ? "" : $class . " ") . 'wetextarea tiny-wetextarea wetextarea-' . $origName . '" id="div_wysiwyg_' . $name . '">' . $previewDivContent . '</div>' . ($buttonBottom
+						? '<div class="tbButtonWysiwygBorder" style="width:25px;border-top:0px;background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">' . $e->getHTML(we_wysiwyg_editor::$editorType == 'tinyMCE'
+								? '' : $hiddenTextareaContent) . '</div>' : '');
 		}
+		if($width){
+			$style[] = 'width:' . $width . 'px;';
+		}
+		if($height){
+			$style[] = 'height:' . $height . 'px;';
+		}
+
+		if($showAutobr || $showSpell){
+			$clearval = $value;
+			$value = str_replace(array('<?', '<script', '</script', '\\', "\n", "\r", '"'), array('##|lt;?##', '<##scr#ipt##', '</##scr#ipt##', '\\\\', '\n', '\r',
+				'\\"'), $value);
+			$out .= we_html_element::jsElement('new we_textarea("' . $name . '","' . $value . '","' . $cols . '","' . $rows . '","","","' . $autobr . '","' . $autobrName . '",' . ($showAutobr
+							? ($hideautobr ? "false" : "true") : "false") . ',' . ($importrtf ? "true" : "false") . ',"' . $GLOBALS["WE_LANGUAGE"] . '","' . $class . '","' . implode(';', $style) . '","' . $wrap . '","onkeydown","' . ($xml
+							? "true" : "false") . '","' . $id . '",' . ((defined('SPELLCHECKER') && $showSpell) ? "true" : "false") . ',"' . $origName . '");') .
+				'<noscript><textarea name="' . $name . '"' . ($tabindex ? ' tabindex="' . $tabindex . '"' : '') . ($cols ? ' cols="' . $cols . '"' : '') . ($rows ? ' rows="' . $rows . '"'
+						: '') . ($style ? ' style="' . implode(';', $style) . '"' : '') . ' class="' . ($class ? $class . " " : "") . 'wetextarea wetextarea-' . $origName . '"' . ($id
+						? ' id="' . $id . '"' : '') . '>' . oldHtmlspecialchars($clearval) . '</textarea></noscript>';
+		} else {
+			$out .= '<textarea name="' . $name . '"' . ($tabindex ? ' tabindex="' . $tabindex . '"' : '') . ($cols ? ' cols="' . $cols . '"' : '') . ($rows ? ' rows="' . $rows . '"'
+						: '') . ($style ? ' style="' . implode(';', $style) . '"' : '') . ' class="' . ($class ? $class . " " : "") . 'wetextarea wetextarea-' . $origName . '"' . ($id
+						? ' id="' . $id . '"' : '') . '>' . oldHtmlspecialchars($value) . '</textarea>';
+		}
+
 		return $out;
 	}
 

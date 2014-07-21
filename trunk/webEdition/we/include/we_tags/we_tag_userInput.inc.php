@@ -480,8 +480,9 @@ function we_tag_userInput($attribs, $content){
 				));
 				return we_getTextareaField($fieldname, $content, $atts);
 			}
-			echo we_html_element::jsElement('weFrontpageEdit=true;');
-			require_once (JS_PATH . 'we_textarea_include.inc.php');
+			echo we_html_element::jsElement('weFrontpageEdit=true;') .
+			we_html_element::jsScript(JS_DIR . 'we_textarea.js') .
+			we_html_element::jsScript(JS_DIR . 'windows.js');
 
 			if(!$inlineedit){
 				//TODO: move js function open_wysiwyg_win to separate js file
