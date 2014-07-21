@@ -133,10 +133,10 @@ function we_tag_sendMail($attribs, $content){
 			if(isset($includeimages)){
 				$phpmail->setIsEmbedImages($includeimages);
 			}
-			if(!empty($we_recipientCC)){
+			if(($we_recipientCC)){
 				$phpmail->setCC($we_recipientCC);
 			}
-			if(!empty($we_recipientBCC)){
+			if(($we_recipientBCC)){
 				$phpmail->setBCC($we_recipientBCC);
 			}
 			if(isset($useBaseHref)){
