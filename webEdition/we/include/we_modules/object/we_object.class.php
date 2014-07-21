@@ -2220,7 +2220,7 @@ class we_object extends we_document{
 				$empty = array('int' => 1, 'intID' => '', 'intPath' => '', 'extPath' => '');
 				$hrefs = $match = array();
 				foreach($_REQUEST['we_' . $this->Name . '_' . we_objectFile::TYPE_HREF] as $k => $val){
-					if(preg_match('|^(.+)_' . we_objectFile::HREF_INFIX . '_(.+)$|', $k, $match)){
+					if(preg_match('|^(.+)' . we_base_link::MAGIC_INFIX . '(.+)$|', $k, $match)){
 						$hrefs[$match[1]][$match[2]] = $val;
 					}
 				}

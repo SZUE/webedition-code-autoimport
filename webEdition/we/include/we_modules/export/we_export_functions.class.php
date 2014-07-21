@@ -151,7 +151,8 @@ abstract class we_export_functions{
 				break;
 		}
 
-		return array("file" => $_file, "filename" => ($_SERVER['DOCUMENT_ROOT'] . ($path == "###temp###" ? TEMP_DIR : $path) . $filename), "doctype" => ((isset($doctype) && $doctype != null) ? $_doctype : ""), "tableid" => ($tableid ? $tableid : ""));
+		return array("file" => $_file, "filename" => ($_SERVER['DOCUMENT_ROOT'] . ($path == "###temp###" ? TEMP_DIR : $path) . $filename), "doctype" => ((isset($doctype) && $doctype != null)
+					? $_doctype : ""), "tableid" => ($tableid ? $tableid : ""));
 	}
 
 	/**
@@ -484,76 +485,77 @@ abstract class we_export_functions{
 
 			$hrefs = array();
 
-			$_file_values = self::fileInit($format, $filename, $path, ((isset($we_doc->DocType) && ($we_doc->DocType != "") && ($we_doc->DocType != 0)) ? $we_doc->DocType : "document"));
+			$_file_values = self::fileInit($format, $filename, $path, ((isset($we_doc->DocType) && ($we_doc->DocType != "") && ($we_doc->DocType != 0)) ? $we_doc->DocType
+							: "document"));
 
 			$_file = $_file_values["file"];
 			$_file_name = $_file_values["filename"];
 			$_doctype = $_file_values["doctype"];
 
 			$_tag_counter = 0;
+			$regs = array();
 
 			foreach($we_doc->elements as $k => $v){
 				$_tag_counter++;
 
-				if(isset($v["type"])){
-					switch($v["type"]){
-						case "date": // is a date field
-							$_tag_name = self::correctTagname($k, "date", $_tag_counter);
-							$_file .= self::formatOutput($_tag_name, abs($we_doc->elements[$k]["dat"]), $format, 2, $cdata);
+				switch(isset($v["type"]) ? $v["type"] : ''){
+					case "date": // is a date field
+						$_tag_name = self::correctTagname($k, "date", $_tag_counter);
+						$_file .= self::formatOutput($_tag_name, abs($we_doc->elements[$k]["dat"]), $format, 2, $cdata);
+
+						// Remove tagname from array
+						if(isset($_records)){
+							$_records = self::remove_from_check_array($_records, $_tag_name);
+						}
+
+						break;
+					case "txt":
+						if(preg_match('|(.+)' . we_base_link::MAGIC_INFIX . '(.+)|', $k, $regs)){ // is a we:href field
+							if(!in_array($regs[1], $hrefs)){
+								$hrefs[] = $regs[1];
+
+								$_int = ((!isset($we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK]["dat"])) || $we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK]["dat"] == "")
+										? 0 : $we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK]["dat"];
+
+								if($_int){
+									$_intID = $we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK_ID]["dat"];
+
+									$_tag_name = self::correctTagname($k, "link", $_tag_counter);
+									$_file .= self::formatOutput($_tag_name, id_to_path($_intID, FILE_TABLE, $DB_WE), $format, 2, $cdata);
+
+									// Remove tagname from array
+									if(isset($_records)){
+										$_records = self::remove_from_check_array($_records, $_tag_name);
+									}
+								} else {
+									$_tag_name = self::correctTagname($k, "link", $_tag_counter);
+									$_file .= self::formatOutput($_tag_name, $we_doc->elements[$regs[1]]["dat"], $format, 2, $cdata);
+
+									// Remove tagname from array
+									if(isset($_records)){
+										$_records = self::remove_from_check_array($_records, $_tag_name);
+									}
+								}
+							}
+						} else if(substr($we_doc->elements[$k]["dat"], 0, 2) == "a:" && is_array(unserialize($we_doc->elements[$k]["dat"]))){ // is a we:link field
+							$_tag_name = self::correctTagname($k, "link", $_tag_counter);
+							$_file .= self::formatOutput($_tag_name, self::formatOutput("", $we_doc->getFieldByVal($we_doc->elements[$k]["dat"], "link"), "cdata"), $format, 2, $cdata);
 
 							// Remove tagname from array
 							if(isset($_records)){
 								$_records = self::remove_from_check_array($_records, $_tag_name);
 							}
+						} else { // is a normal text field
+							$_tag_name = self::correctTagname($k, 'text', $_tag_counter);
+							$_file .= self::formatOutput($_tag_name, we_document::parseInternalLinks($we_doc->elements[$k]["dat"], $we_doc->ParentID, '', false), $format, 2, $cdata, $format == we_import_functions::TYPE_GENERIC_XML);
 
-							break;
-						case "txt":
-							if(preg_match('|(.+)_we_jkhdsf_(.+)|', $k, $regs)){ // is a we:href field
-								if(!in_array($regs[1], $hrefs)){
-									$hrefs[] = $regs[1];
-
-									$_int = ((!isset($we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK]["dat"])) || $we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK]["dat"] == "") ? 0 : $we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK]["dat"];
-
-									if($_int){
-										$_intID = $we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK_ID]["dat"];
-
-										$_tag_name = self::correctTagname($k, "link", $_tag_counter);
-										$_file .= self::formatOutput($_tag_name, id_to_path($_intID, FILE_TABLE, $DB_WE), $format, 2, $cdata);
-
-										// Remove tagname from array
-										if(isset($_records)){
-											$_records = self::remove_from_check_array($_records, $_tag_name);
-										}
-									} else {
-										$_tag_name = self::correctTagname($k, "link", $_tag_counter);
-										$_file .= self::formatOutput($_tag_name, $we_doc->elements[$regs[1]]["dat"], $format, 2, $cdata);
-
-										// Remove tagname from array
-										if(isset($_records)){
-											$_records = self::remove_from_check_array($_records, $_tag_name);
-										}
-									}
-								}
-							} else if(substr($we_doc->elements[$k]["dat"], 0, 2) == "a:" && is_array(unserialize($we_doc->elements[$k]["dat"]))){ // is a we:link field
-								$_tag_name = self::correctTagname($k, "link", $_tag_counter);
-								$_file .= self::formatOutput($_tag_name, self::formatOutput("", $we_doc->getFieldByVal($we_doc->elements[$k]["dat"], "link"), "cdata"), $format, 2, $cdata);
-
-								// Remove tagname from array
-								if(isset($_records)){
-									$_records = self::remove_from_check_array($_records, $_tag_name);
-								}
-							} else { // is a normal text field
-								$_tag_name = self::correctTagname($k, 'text', $_tag_counter);
-								$_file .= self::formatOutput($_tag_name, we_document::parseInternalLinks($we_doc->elements[$k]["dat"], $we_doc->ParentID, '', false), $format, 2, $cdata, $format == we_import_functions::TYPE_GENERIC_XML);
-
-								// Remove tagname from array
-								if(isset($_records)){
-									$_records = self::remove_from_check_array($_records, $_tag_name);
-								}
+							// Remove tagname from array
+							if(isset($_records)){
+								$_records = self::remove_from_check_array($_records, $_tag_name);
 							}
+						}
 
-							break;
-					}
+						break;
 				}
 			}
 
