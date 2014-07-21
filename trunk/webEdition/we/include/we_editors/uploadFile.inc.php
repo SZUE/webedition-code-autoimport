@@ -162,4 +162,4 @@ if($inputTypeFile->processFileRequest()){
 	</body>
 
 	</html>
-<?php } ?>
+<?php }

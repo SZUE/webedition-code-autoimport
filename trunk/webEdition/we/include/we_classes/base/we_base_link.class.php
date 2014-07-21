@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_base_link{
-
+	const MAGIC_INFIX = '_we_jkhdsf_';
 	const MAGIC_INT_LINK = '_we_jkhdsf_int';
 	const MAGIC_INT_LINK_ID = '_we_jkhdsf_intID';
 	const MAGIC_INT_LINK_PATH = '_we_jkhdsf_intPath';

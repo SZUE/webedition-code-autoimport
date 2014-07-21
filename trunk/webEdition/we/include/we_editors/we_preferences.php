@@ -1197,7 +1197,7 @@ function build_dialog($selected_setting = 'ui'){
 			setlocale(LC_ALL, $oldLocale);
 			$countries_top = explode(',', get_value('WE_COUNTRIES_TOP'));
 			$countries_shown = explode(',', get_value('WE_COUNTRIES_SHOWN'));
-			$tabC = new we_html_table(array('border' => 1, 'cellpadding' => 2, 'cellspacing' => 0), $rows_num = 1, $cols_num = 4);
+			$tabC = new we_html_table(array('border' => 1, 'cellpadding' => 2, 'cellspacing' => 0), 1, 4);
 			$i = 0;
 			$tabC->setCol($i, 0, array('class' => 'defaultfont', 'style' => 'font-weight:bold', 'nowrap' => 'nowrap'), g_l('prefs', '[countries_country]'));
 			$tabC->setCol($i, 1, array('class' => 'defaultfont', 'style' => 'font-weight:bold', 'nowrap' => 'nowrap'), g_l('prefs', '[countries_top]'));
@@ -1228,142 +1228,138 @@ function build_dialog($selected_setting = 'ui'){
 			$locales = get_value('locale_locales');
 
 			$preJs = we_html_element::jsElement("
-	function addLocale() {
-		var LanguageIndex = document.getElementById('locale_language').selectedIndex;
-		var LanguageValue = document.getElementById('locale_language').options[LanguageIndex].value;
-		var LanguageText = document.getElementById('locale_language').options[LanguageIndex].text;
+function addLocale() {
+	var LanguageIndex = document.getElementById('locale_language').selectedIndex;
+	var LanguageValue = document.getElementById('locale_language').options[LanguageIndex].value;
+	var LanguageText = document.getElementById('locale_language').options[LanguageIndex].text;
 
-		var CountryIndex = document.getElementById('locale_country').selectedIndex;
-		var CountryValue = document.getElementById('locale_country').options[CountryIndex].value;
-		var CountryText = document.getElementById('locale_country').options[CountryIndex].text;
+	var CountryIndex = document.getElementById('locale_country').selectedIndex;
+	var CountryValue = document.getElementById('locale_country').options[CountryIndex].value;
+	var CountryText = document.getElementById('locale_country').options[CountryIndex].text;
 
-		if(LanguageValue.substr(0, 1) == \"~\") {
-			LanguageValue = LanguageValue.substr(1);
-		}
-		if(LanguageValue == \"\") {
-			return;
-		}
+	if(LanguageValue.substr(0, 1) == \"~\") {
+		LanguageValue = LanguageValue.substr(1);
+	}
+	if(LanguageValue == \"\") {
+		return;
+	}
 
-		if(CountryValue.substr(0, 1) == \"~\") {
-			CountryValue = CountryValue.substr(1);
+	if(CountryValue.substr(0, 1) == \"~\") {
+		CountryValue = CountryValue.substr(1);
+	}
+	if(CountryValue != \"\") {
+		var LocaleValue = LanguageValue + '_' + CountryValue;
+		var LocaleText = LanguageText + ' (' + CountryText + ')';
+	} else {
+		var LocaleValue = LanguageValue;
+		var LocaleText = LanguageText;
+	}
+
+	var found = false;
+	for(i = 0; i < document.getElementById('locale_temp_locales').options.length; i++) {
+		if(document.getElementById('locale_temp_locales').options[i].value == LocaleValue) {
+			found = true;
 		}
-		if(CountryValue != \"\") {
-			var LocaleValue = LanguageValue + '_' + CountryValue;
-			var LocaleText = LanguageText + ' (' + CountryText + ')';
+	}
+
+	if(found == true) {
+		" . we_message_reporting::getShowMessageCall(g_l('prefs', '[language_already_exists]'), we_message_reporting::WE_MESSAGE_ERROR) . "
+	} else {
+		if (CountryValue == \"\") {
+			" . we_message_reporting::getShowMessageCall(g_l('prefs', '[language_country_missing]'), we_message_reporting::WE_MESSAGE_ERROR) . "
 		} else {
-			var LocaleValue = LanguageValue;
-			var LocaleText = LanguageText;
-		}
 
-		var found = false;
-		for(i = 0; i < document.getElementById('locale_temp_locales').options.length; i++) {
-			if(document.getElementById('locale_temp_locales').options[i].value == LocaleValue) {
-				found = true;
+			var option = new Option(LocaleText, LocaleValue, false, false);
+			document.getElementById('locale_temp_locales').options[document.getElementById('locale_temp_locales').options.length] = option
+
+			if(document.getElementById('locale_temp_locales').options.length == 1) {
+				setDefaultLocale(LocaleValue);
 			}
-		}
-
-		if(found == true) {
-			" . we_message_reporting::getShowMessageCall(g_l('prefs', '[language_already_exists]'), we_message_reporting::WE_MESSAGE_ERROR) . "
-		} else {
-			if (CountryValue == \"\") {
-				" . we_message_reporting::getShowMessageCall(g_l('prefs', '[language_country_missing]'), we_message_reporting::WE_MESSAGE_ERROR) . "
-			} else {
-
-				var option = new Option(LocaleText, LocaleValue, false, false);
-				document.getElementById('locale_temp_locales').options[document.getElementById('locale_temp_locales').options.length] = option
-
-				if(document.getElementById('locale_temp_locales').options.length == 1) {
-					setDefaultLocale(LocaleValue);
-				}
-" . (defined('SPELLCHECKER') ?
-						"
-
-				// Wörterbuch hinzufügen
-				if(confirm('{" . g_l('prefs', '[add_dictionary_question]') . "}')) {
-					top.opener.top.we_cmd('spellchecker_edit_ifthere');
-				}
+" . (defined('SPELLCHECKER') ?					"
+			// Wörterbuch hinzufügen
+			if(confirm('{" . g_l('prefs', '[add_dictionary_question]') . "}')) {
+				top.opener.top.we_cmd('spellchecker_edit_ifthere');
+			}
 " : '') . "
-
-			}
 		}
-		resetLocales();
-
 	}
+	resetLocales();
 
-	function deleteLocale() {
+}
 
-		if(document.getElementById('locale_temp_locales').selectedIndex > -1) {
-			var LocaleIndex = document.getElementById('locale_temp_locales').selectedIndex;
-			var LocaleValue =  document.getElementById('locale_temp_locales').options[LocaleIndex].value;
+function deleteLocale() {
 
-			if(LocaleValue == document.getElementById('locale_default').value) {
-				" . we_message_reporting::getShowMessageCall(g_l('prefs', '[cannot_delete_default_language]'), we_message_reporting::WE_MESSAGE_ERROR) . "
-			} else {
-				document.getElementById('locale_temp_locales').options[LocaleIndex] = null;
-			}
-			resetLocales();
-		}
+	if(document.getElementById('locale_temp_locales').selectedIndex > -1) {
+		var LocaleIndex = document.getElementById('locale_temp_locales').selectedIndex;
+		var LocaleValue =  document.getElementById('locale_temp_locales').options[LocaleIndex].value;
 
-	}
-
-	function defaultLocale() {
-
-		if(document.getElementById('locale_temp_locales').selectedIndex > -1) {
-			var LocaleIndex = document.getElementById('locale_temp_locales').selectedIndex;
-			var LocaleValue =  document.getElementById('locale_temp_locales').options[LocaleIndex].value;
-
-			setDefaultLocale(LocaleValue);
-		}
-
-	}
-
-	function setDefaultLocale(Value) {
-
-		if(document.getElementById('locale_temp_locales').options.length > 0) {
-			Index = 0;
-			for(i = 0; i < document.getElementById('locale_temp_locales').options.length; i++) {
-				if(document.getElementById('locale_temp_locales').options[i].value == Value) {
-					Index = i;
-				}
-				document.getElementById('locale_temp_locales').options[i].style.background = '#ffffff';
-			}
-			document.getElementById('locale_temp_locales').options[Index].style.background = '#cccccc';
-			document.getElementById('locale_temp_locales').options[Index].selected = false;
-			document.getElementById('locale_default').value = Value;
-		}
-
-	}
-
-	function resetLocales() {
-
-		if(document.getElementById('locale_temp_locales').options.length > 0) {
-			var temp = new Array(document.getElementById('locale_temp_locales').options.length);
-			for(i = 0; i < document.getElementById('locale_temp_locales').options.length; i++) {
-				temp[i] = document.getElementById('locale_temp_locales').options[i].value;
-			}
-			document.getElementById('locale_locales').value = temp.join(\",\");
-		}
-
-	}
-
-	function initLocale(Locale) {
-		if(Locale != \"\") {
-			setDefaultLocale(Locale);
+		if(LocaleValue == document.getElementById('locale_default').value) {
+			" . we_message_reporting::getShowMessageCall(g_l('prefs', '[cannot_delete_default_language]'), we_message_reporting::WE_MESSAGE_ERROR) . "
+		} else {
+			document.getElementById('locale_temp_locales').options[LocaleIndex] = null;
 		}
 		resetLocales();
 	}
 
-	Array.prototype.contains = function(obj) {
-		var i, listed = false;
-		for (i=0; i<this.length; i++) {
-			if (this[i] === obj) {
-				listed = true;
-				break;
-			}
-		}
-		return listed;
+}
+
+function defaultLocale() {
+
+	if(document.getElementById('locale_temp_locales').selectedIndex > -1) {
+		var LocaleIndex = document.getElementById('locale_temp_locales').selectedIndex;
+		var LocaleValue =  document.getElementById('locale_temp_locales').options[LocaleIndex].value;
+
+		setDefaultLocale(LocaleValue);
 	}
-");
+
+}
+
+function setDefaultLocale(Value) {
+
+	if(document.getElementById('locale_temp_locales').options.length > 0) {
+		Index = 0;
+		for(i = 0; i < document.getElementById('locale_temp_locales').options.length; i++) {
+			if(document.getElementById('locale_temp_locales').options[i].value == Value) {
+				Index = i;
+			}
+			document.getElementById('locale_temp_locales').options[i].style.background = '#ffffff';
+		}
+		document.getElementById('locale_temp_locales').options[Index].style.background = '#cccccc';
+		document.getElementById('locale_temp_locales').options[Index].selected = false;
+		document.getElementById('locale_default').value = Value;
+	}
+
+}
+
+function resetLocales() {
+
+	if(document.getElementById('locale_temp_locales').options.length > 0) {
+		var temp = new Array(document.getElementById('locale_temp_locales').options.length);
+		for(i = 0; i < document.getElementById('locale_temp_locales').options.length; i++) {
+			temp[i] = document.getElementById('locale_temp_locales').options[i].value;
+		}
+		document.getElementById('locale_locales').value = temp.join(\",\");
+	}
+
+}
+
+function initLocale(Locale) {
+	if(Locale != \"\") {
+		setDefaultLocale(Locale);
+	}
+	resetLocales();
+}
+
+Array.prototype.contains = function(obj) {
+	var i, listed = false;
+	for (i=0; i<this.length; i++) {
+		if (this[i] === obj) {
+			listed = true;
+			break;
+		}
+	}
+	return listed;
+}");
 
 			$postJs = we_html_element::jsElement('initLocale("' . $default . '");');
 
