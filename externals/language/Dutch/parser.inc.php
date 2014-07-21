@@ -11,6 +11,11 @@ $l_parser=array(
 	'else_start'=>'Er is een &lt;we:else/&gt; tag zonder &lt;we:if...&gt; een begin tag!',
 	'error_in_template'=>'sjabloon fout!',
 	'field_not_in_lv'=>'De  &lt;we:field&gt;-tag moet omsloten worden door &gt;&lt;we:listview&gt; of &lt;we:object&gt; begin- en eindtag!',
+	
+	'form'=>array(
+		'duplicate'=>'',
+		'we'=>'',
+	),
 	'html_tags'=>'Het sjabloon moet of HTML tags bevatten &lt;html&gt; &lt;head&gt; &lt;body&gt; of geen van deze tags. Anders functioneert de parser niet correct!',
 	'incompleteTag'=>'The tag %s is incomplete! The closing character > is missing!',
 	'invalid_chars'=>'De naam van de tag &lt;we:%s&gt; bevat ongeldige karakters. Alleen alphabetische karakters, nummers, `-` en `_` zijn toegestaan!',

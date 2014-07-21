@@ -11,6 +11,11 @@ $l_parser=array(
 	'else_start'=>'Для тега &lt;we:else/&gt; не задан начальный тег &lt;we:if...&gt;!',
 	'error_in_template'=>'Ошибка шаблона',
 	'field_not_in_lv'=>'Тег &lt;we:field&gt; должен находиться между начальным и конечным тегом  &lt;we:listview&gt; или &lt;we:object&gt;!',
+	
+	'form'=>array(
+		'duplicate'=>'',
+		'we'=>'',
+	),
 	'html_tags'=>'Шаблон должен содержать либо все нижеследующие теги HTML &lt;html&gt; &lt;head&gt; &lt;body&gt; либо ни одного из них. В противном случае не обеспечивается корректная работа парсера!',
 	'incompleteTag'=>'The tag %s is incomplete! The closing character > is missing!',
 	'invalid_chars'=>'Имя тега &lt;we:%s&gt; содержит недопустимые символы. Допустимыми символами являются буквы латинского алфавита, цифры, символы: `-` и `_`!',

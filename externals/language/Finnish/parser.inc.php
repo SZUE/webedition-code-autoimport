@@ -11,6 +11,11 @@ $l_parser=array(
 	'else_start'=>'Tagi &lt;we:else/&gt; on  &lt;we:if...&gt; ilman aloitustagia!',
 	'error_in_template'=>'Sivupohjavirhe!',
 	'field_not_in_lv'=>'Tagi  &lt;we:field&gt;-on suljettava &lt;we:listview&gt; tai &lt;we:object&gt; aloitus -ja lopetustagilla!',
+	
+	'form'=>array(
+		'duplicate'=>'',
+		'we'=>'',
+	),
 	'html_tags'=>'Sivupohja voi sisältää vain HTML -tageja &lt;html&gt; &lt;head&gt; &lt;body&gt; tai ei tageja ollenkaan. Muutoin, parseri ei toimi oikein!',
 	'incompleteTag'=>'The tag %s is incomplete! The closing character > is missing!',
 	'invalid_chars'=>'The name of the tag &lt;we:%s&gt; virheellisiä kirjaimia. Vain alfa-numeeriset, kirjaimet/numero, `-` ja `_` ovat sallittuja!',

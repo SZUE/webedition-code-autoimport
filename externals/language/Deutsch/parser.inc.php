@@ -11,6 +11,11 @@ $l_parser=array(
 	'else_start'=>'Bei einem &lt;we:else/&gt; Tag fehlt das dazugehörige &lt;we:if...&gt; Starttag!',
 	'error_in_template'=>'Fehler in der Vorlage',
 	'field_not_in_lv'=>'Das Tag &lt;we:field&gt; muss sich innerhalb eines &lt;we:listview&gt; oder &lt;we:object&gt; Start- und Endtags befinden!',
+	
+	'form'=>array(
+		'duplicate'=>'',
+		'we'=>'',
+	),
 	'html_tags'=>'Die Vorlage muß entweder die HTML-Tags &lt;html&gt; &lt;head&gt; &lt;body&gt; enthalten oder keine dieser Tags, damit der Parser korrekt arbeitet!',
 	'incompleteTag'=>'Das Tag %s ist nicht vollständig! Es fehlt das schließende >!',
 	'invalid_chars'=>'Der Name des Tags &lt;we:%s&gt; enthält ungültige Zeichen. Erlaubt sind nur Buchstaben, Zahlen, `-` und `_`!',

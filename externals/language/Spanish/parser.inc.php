@@ -11,6 +11,11 @@ $l_parser=array(
 	'else_start'=>'Hay un rótulo <código>&lt;we:else/&gt;</código> sin un rótulo inicio <código>&lt;we:if...&gt;</código> !',
 	'error_in_template'=>'Error de plantilla!',
 	'field_not_in_lv'=>'La etiqueta &lt;we:field&gt;-  tiene que estar encerrada por un &lt;we:listview&gt; o &lt;we:object&gt; comienzo- y fin de etiqueta!',
+	
+	'form'=>array(
+		'duplicate'=>'',
+		'we'=>'',
+	),
 	'html_tags'=>'La plantilla debe, o incluir los rótulos HTML <código>&lt;html&gt; &lt;head&gt; &lt;body&gt;</código> o ninguno de estos rótulos. De lo contrario, el programa analizador sintáctico no podrá trabajar correctamente!',
 	'incompleteTag'=>'The tag %s is incomplete! The closing character > is missing!',
 	'invalid_chars'=>'El nombre del rótulo <código>&lt;we:%s&gt;</código> contiene carácteres no válidos. Solamente son permitidos los carácteres alfabéticos, números, `-` y `_`!',

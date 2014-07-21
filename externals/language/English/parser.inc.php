@@ -11,6 +11,11 @@ $l_parser=array(
 	'else_start'=>'There is a &lt;we:else/&gt; tag without &lt;we:if...&gt; a start tag!',
 	'error_in_template'=>'Template error!',
 	'field_not_in_lv'=>'The  &lt;we:field&gt;-tag has to be enclosed by a &lt;we:listview&gt; or &lt;we:object&gt; start- and endtag!',
+	
+	'form'=>array(
+		'duplicate'=>'',
+		'we'=>'',
+	),
 	'html_tags'=>'The template must either include the HTML tags &lt;html&gt; &lt;head&gt; &lt;body&gt; or none of these tags. Otherwise, the parser cannot work correctly!',
 	'incompleteTag'=>'The tag %s is incomplete! The closing character > is missing!',
 	'invalid_chars'=>'The name of the tag &lt;we:%s&gt; contains invalid characters. Only alphabetic characters, numbers, `-` and `_` are allowed!',

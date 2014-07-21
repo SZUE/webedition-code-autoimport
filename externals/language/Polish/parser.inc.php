@@ -11,6 +11,11 @@ $l_parser=array(
 	'else_start'=>'W &lt;we:else/&gt; brakuje wymaganego tagu startowego &lt;we:if...&gt;!',
 	'error_in_template'=>'Błąd w szablonie',
 	'field_not_in_lv'=>'Tag &lt;we:field&gt; musi znajdować się w obrębie &lt;we:listview&gt; lub &lt;we:object&gt; tagu startowego i końcowego!',
+	
+	'form'=>array(
+		'duplicate'=>'',
+		'we'=>'',
+	),
 	'html_tags'=>'Szablon musi zawierać tagi HTML &lt;html&gt; &lt;head&gt; &lt;body&gt; albo żadnych, tak aby fraza była poprawna!',
 	'incompleteTag'=>'The tag %s is incomplete! The closing character > is missing!',
 	'invalid_chars'=>'Nazwa tagu&lt;we:%s&gt; zawiera niedozwolone znaki. Dozwolone są jedynie litery, cyfry, `-` i `_`!',
