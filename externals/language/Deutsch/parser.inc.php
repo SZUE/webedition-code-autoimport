@@ -13,8 +13,9 @@ $l_parser=array(
 	'field_not_in_lv'=>'Das Tag &lt;we:field&gt; muss sich innerhalb eines &lt;we:listview&gt; oder &lt;we:object&gt; Start- und Endtags befinden!',
 	
 	'form'=>array(
-		'duplicate'=>'',
-		'we'=>'',
+		'duplicate'=>'Standard HTML <form> Tag wurden in der Vorlage dieses Dokumentes gefunden.
+Das Dokument wird sich nicht korrekt speichern lassen und es kann Datenverlust entstehen. Benutzen Sie anstelle von <form> besser <we:form>, oder kapseln Sie das HTML <from> Tag in ein <we:ifNotEditmode></we:ifNotEditmode> bzw. <we:ifNotWebEdition></we:ifNotWebEdition>.',
+		'we'=>'webEdition Formular-Tags wurden in der Vorlage gefunden. Das Dokument wird sich nicht korrekt speichern lassen und es kann Datenverlust entstehen.',
 	),
 	'html_tags'=>'Die Vorlage muß entweder die HTML-Tags &lt;html&gt; &lt;head&gt; &lt;body&gt; enthalten oder keine dieser Tags, damit der Parser korrekt arbeitet!',
 	'incompleteTag'=>'Das Tag %s ist nicht vollständig! Es fehlt das schließende >!',

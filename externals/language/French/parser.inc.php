@@ -13,8 +13,10 @@ $l_parser=array(
 	'field_not_in_lv'=>'Le Tag &lt;we:field&gt; doit être entre des rèperes d`ouverture et de fermeture de &lt;we:listview&gt; ou &lt;we:object&gt;!',
 	
 	'form'=>array(
-		'duplicate'=>'',
-		'we'=>'',
+		'duplicate'=>'Standard HTML <form> tags are found within the template used by this document.
+This will cause problems. Expect this document not to be saved correctly. Use
+<we:form> Tags instead or enclose HTML <from> tags with <we:ifNotEditmode></we:ifNotEditmode>',
+		'we'=>'webEdition forms tags are found inside this template. Expect this document not to be saved correctly.',
 	),
 	'html_tags'=>'Le modèle doit ou contenir les Tags-HTML &lt;html&gt; &lt;head&gt; &lt;body&gt; ou aucun de ces Tags, pour que l`nalyseur syntaxique travaille correctement!',
 	'incompleteTag'=>'Le tag %s n`est pas complet ! Il manque le > fermant !',

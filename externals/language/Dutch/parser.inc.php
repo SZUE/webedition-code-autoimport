@@ -13,8 +13,10 @@ $l_parser=array(
 	'field_not_in_lv'=>'De  &lt;we:field&gt;-tag moet omsloten worden door &gt;&lt;we:listview&gt; of &lt;we:object&gt; begin- en eindtag!',
 	
 	'form'=>array(
-		'duplicate'=>'',
-		'we'=>'',
+		'duplicate'=>'Standard HTML <form> tags are found within the template used by this document.
+This will cause problems. Expect this document not to be saved correctly. Use
+<we:form> Tags instead or enclose HTML <from> tags with <we:ifNotEditmode></we:ifNotEditmode>',
+		'we'=>'webEdition forms tags are found inside this template. Expect this document not to be saved correctly.',
 	),
 	'html_tags'=>'Het sjabloon moet of HTML tags bevatten &lt;html&gt; &lt;head&gt; &lt;body&gt; of geen van deze tags. Anders functioneert de parser niet correct!',
 	'incompleteTag'=>'The tag %s is incomplete! The closing character > is missing!',

@@ -13,8 +13,10 @@ $l_parser=array(
 	'field_not_in_lv'=>'La etiqueta &lt;we:field&gt;-  tiene que estar encerrada por un &lt;we:listview&gt; o &lt;we:object&gt; comienzo- y fin de etiqueta!',
 	
 	'form'=>array(
-		'duplicate'=>'',
-		'we'=>'',
+		'duplicate'=>'Standard HTML <form> tags are found within the template used by this document.
+This will cause problems. Expect this document not to be saved correctly. Use
+<we:form> Tags instead or enclose HTML <from> tags with <we:ifNotEditmode></we:ifNotEditmode>',
+		'we'=>'webEdition forms tags are found inside this template. Expect this document not to be saved correctly.',
 	),
 	'html_tags'=>'La plantilla debe, o incluir los rótulos HTML <código>&lt;html&gt; &lt;head&gt; &lt;body&gt;</código> o ninguno de estos rótulos. De lo contrario, el programa analizador sintáctico no podrá trabajar correctamente!',
 	'incompleteTag'=>'The tag %s is incomplete! The closing character > is missing!',

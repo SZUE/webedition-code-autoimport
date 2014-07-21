@@ -13,8 +13,10 @@ $l_parser=array(
 	'field_not_in_lv'=>'Тег &lt;we:field&gt; должен находиться между начальным и конечным тегом  &lt;we:listview&gt; или &lt;we:object&gt;!',
 	
 	'form'=>array(
-		'duplicate'=>'',
-		'we'=>'',
+		'duplicate'=>'Standard HTML <form> tags are found within the template used by this document.
+This will cause problems. Expect this document not to be saved correctly. Use
+<we:form> Tags instead or enclose HTML <from> tags with <we:ifNotEditmode></we:ifNotEditmode>',
+		'we'=>'webEdition forms tags are found inside this template. Expect this document not to be saved correctly.',
 	),
 	'html_tags'=>'Шаблон должен содержать либо все нижеследующие теги HTML &lt;html&gt; &lt;head&gt; &lt;body&gt; либо ни одного из них. В противном случае не обеспечивается корректная работа парсера!',
 	'incompleteTag'=>'The tag %s is incomplete! The closing character > is missing!',

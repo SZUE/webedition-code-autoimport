@@ -13,8 +13,10 @@ $l_parser=array(
 	'field_not_in_lv'=>'Tagi  &lt;we:field&gt;-on suljettava &lt;we:listview&gt; tai &lt;we:object&gt; aloitus -ja lopetustagilla!',
 	
 	'form'=>array(
-		'duplicate'=>'',
-		'we'=>'',
+		'duplicate'=>'Standard HTML <form> tags are found within the template used by this document.
+This will cause problems. Expect this document not to be saved correctly. Use
+<we:form> Tags instead or enclose HTML <from> tags with <we:ifNotEditmode></we:ifNotEditmode>',
+		'we'=>'webEdition forms tags are found inside this template. Expect this document not to be saved correctly.',
 	),
 	'html_tags'=>'Sivupohja voi sisältää vain HTML -tageja &lt;html&gt; &lt;head&gt; &lt;body&gt; tai ei tageja ollenkaan. Muutoin, parseri ei toimi oikein!',
 	'incompleteTag'=>'The tag %s is incomplete! The closing character > is missing!',

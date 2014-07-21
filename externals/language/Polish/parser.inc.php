@@ -13,8 +13,10 @@ $l_parser=array(
 	'field_not_in_lv'=>'Tag &lt;we:field&gt; musi znajdować się w obrębie &lt;we:listview&gt; lub &lt;we:object&gt; tagu startowego i końcowego!',
 	
 	'form'=>array(
-		'duplicate'=>'',
-		'we'=>'',
+		'duplicate'=>'Standard HTML <form> tags are found within the template used by this document.
+This will cause problems. Expect this document not to be saved correctly. Use
+<we:form> Tags instead or enclose HTML <from> tags with <we:ifNotEditmode></we:ifNotEditmode>',
+		'we'=>'webEdition forms tags are found inside this template. Expect this document not to be saved correctly.',
 	),
 	'html_tags'=>'Szablon musi zawierać tagi HTML &lt;html&gt; &lt;head&gt; &lt;body&gt; albo żadnych, tak aby fraza była poprawna!',
 	'incompleteTag'=>'The tag %s is incomplete! The closing character > is missing!',
