@@ -348,7 +348,7 @@ if((($cmd0 != 'save_document' && $cmd0 != 'publish' && $cmd0 != 'unpublish') && 
 		}
 	}
 
-	we_util_File::saveFile($fullName, $contents);
+	we_base_file::save($fullName, $contents);
 
 	header('Location: ' . WEBEDITION_DIR . 'showTempFile.php?file=' . $tempName);
 } else {

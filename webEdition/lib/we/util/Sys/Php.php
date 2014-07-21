@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition SDK
  *
@@ -68,7 +67,7 @@ class we_util_Sys_Php{
 	 * @return boolean
 	 */
 	public static function extension($ext = ""){
-		return (empty($ext) ? false : (in_array($ext, @get_loaded_extensions(true))));
+		return ($ext ? extension_loaded($ext) : false);
 	}
 
 	/**

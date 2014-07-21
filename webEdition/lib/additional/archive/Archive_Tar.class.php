@@ -14,7 +14,8 @@
  *
  *
  */
-class altArchive_Tar {
+
+class Archive_Tar {
   /**
    * @var string Name of the Tar
    */

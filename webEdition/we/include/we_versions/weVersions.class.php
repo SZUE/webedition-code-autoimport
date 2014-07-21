@@ -1195,12 +1195,12 @@ class weVersions{
 						$this->writePreviewDynFile($document['ID'], $siteFile, $_SERVER['DOCUMENT_ROOT'] . $binaryPath, $documentObj);
 					} elseif(file_exists($siteFile) && $document['Extension'] == '.php' && ($document['ContentType'] == we_base_ContentTypes::WEDOCUMENT || $document['ContentType'] == we_base_ContentTypes::HTML)){
 
-						we_util_File::saveFile($_SERVER['DOCUMENT_ROOT'] . $binaryPath, gzencode(file_get_contents($siteFile), 9));
+						we_base_file::save($_SERVER['DOCUMENT_ROOT'] . $binaryPath, gzencode(file_get_contents($siteFile), 9));
 					} elseif(isset($document['TemplatePath']) && $document['TemplatePath'] && substr($document['TemplatePath'], -18) != '/' . we_template::NO_TEMPLATE_INC && $document['ContentType'] == we_base_ContentTypes::WEDOCUMENT){
 						$includeTemplate = preg_replace('/.tmpl$/i', '.php', $document['TemplatePath']);
 						$this->writePreviewDynFile($document['ID'], $includeTemplate, $_SERVER['DOCUMENT_ROOT'] . $binaryPath, $documentObj);
 					} else {
-						we_util_File::saveFile($_SERVER['DOCUMENT_ROOT'] . $binaryPath, gzencode(file_get_contents($siteFile), 9));
+						we_base_file::save($_SERVER['DOCUMENT_ROOT'] . $binaryPath, gzencode(file_get_contents($siteFile), 9));
 					}
 					$usepath = $_SERVER['DOCUMENT_ROOT'] . $binaryPath;
 					if(file_exists($usepath) && is_file($usepath)){
@@ -1707,7 +1707,7 @@ class weVersions{
 			$tableInfo = $db->metadata(VERSIONS_TABLE);
 
 			$we_transaction = we_base_request::_(we_base_request::TRANSACTION, "we_transaction", 0);
-			
+
 			foreach($tableInfo as $cur){
 				$tblFields[] = $cur["name"];
 			}
