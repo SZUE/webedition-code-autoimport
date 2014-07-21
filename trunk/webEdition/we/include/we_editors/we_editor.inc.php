@@ -336,14 +336,14 @@ if((($cmd0 != 'save_document' && $cmd0 != 'publish' && $cmd0 != 'unpublish') && 
 			$no = count(array_filter($matches[1]));
 			if($no > 1){
 				//sth very bad must have happend to have 2 we forms in one page
-				$warn = $no . ' webEdition Forms are found inside this template. This will cause trouble. Expect this document not to be saved correctly.';
+				$warn = $no . ' ' . g_l('parser', '[form][we]');
 				t_e($warn, str_replace('.html', '.tmpl', $we_doc->Path));
-				$contents = preg_replace('|<form|', '<p style="background-color:red;color:white;font-weight:bold;">' . $warn . '</p><form', $contents, 1);
+				$contents = preg_replace('|<form|', '<p style="background-color:red;color:white;font-weight:bold;">' . htmlentities($warn) . '</p><form', $contents, 1);
 			}
 			if($all - $no){
-				$warn = $no . ' standard html-form-tags are found inside this template. This will cause trouble. Expect this document not to be saved correctly.';
+				$warn = $no . ' ' . g_l('parser', '[form][duplicate]');
 				t_e($warn, str_replace('.html', '.tmpl', $we_doc->Path));
-				$contents = preg_replace('|<form|', '<p style="background-color:red;color:white;font-weight:bold;">' . $warn . '</p><form', $contents, 1);
+				$contents = preg_replace('|<form|', '<p style="background-color:red;color:white;font-weight:bold;">' . htmlentities($warn) . '</p><form', $contents, 1);
 			}
 		}
 	}
