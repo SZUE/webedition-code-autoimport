@@ -20,7 +20,7 @@ class we_base_sessionHandler{
 			$this->execTime = get_cfg_var('max_execution_time');
 			$this->execTime = ($this->execTime > 60 ? 60 : $this->execTime); //time might be wrong (1&1)
 			$this->id = uniqid('', true);
-			if(!(in_array('suhosin', get_loaded_extensions()) && ini_get('suhosin.session.encrypt'))){//make it possible to keep users when switching
+			if(!(extension_loaded('suhosin') && ini_get('suhosin.session.encrypt'))){//make it possible to keep users when switching
 				$this->crypt = hash('haval224,4', $_SERVER['DOCUMENT_ROOT'] . $_SERVER['HTTP_USER_AGENT'] . $_SERVER['HTTP_ACCEPT_LANGUAGE'] . $_SERVER['HTTP_ACCEPT_ENCODING'], true);
 				$this->crypt .=$this->crypt;
 			}

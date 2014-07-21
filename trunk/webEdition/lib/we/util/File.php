@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition SDK
  *
@@ -196,22 +195,17 @@ abstract class we_util_File extends we_base_file{
 		}
 		$DirFileObjectsArray = array();
 		$DirFileObjects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directoy));
-		foreach($DirFileObjects as $name => $object){
+		foreach(array_keys($DirFileObjects) as $name){
 			if(substr($name, -2) != '/.' && substr($name, -3) != '/..'){
 				$DirFileObjectsArray[] = $name;
 			}
 		}
 		sort($DirFileObjectsArray);
-		if(class_exists('Archive_Tar', true)){
-			$tar_object = new Archive_Tar($destinationfile, true);
+		$tar_object = new Archive_Tar($destinationfile, true);
+		if(method_exists($tar_object, 'setErrorHandling')){
 			$tar_object->setErrorHandling(PEAR_ERROR_TRIGGER, E_USER_WARNING);
-			$tar_object->createModify($DirFileObjectsArray, '', $directoy);
-		} else {
-//FIXME: remove include
-			include(WE_LIB_PATH . 'additional/archive/altArchive_Tar.class.php');
-			$tar_object = new altArchive_Tar($gzfile, true);
-			$tar_object->createModify($DirFileObjectsArray, '', $directoy);
 		}
+		$tar_object->createModify($DirFileObjectsArray, '', $directoy);
 		return true;
 	}
 

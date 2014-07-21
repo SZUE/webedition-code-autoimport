@@ -132,7 +132,7 @@ class we_util_Mailer extends Zend_Mail{
 			case 'php':
 				//this should set return-path
 				$safeMode = ini_get('safe_mode');
-				$suhosin = in_array('suhosin', get_loaded_extensions());
+				$suhosin = extension_loaded('suhosin');
 				if(!empty($reply) && !$safeMode && !$suhosin){
 					$_reply = $this->parseEmailUser($reply);
 					$tr = new Zend_Mail_Transport_Sendmail('-f' . $_reply['email']);

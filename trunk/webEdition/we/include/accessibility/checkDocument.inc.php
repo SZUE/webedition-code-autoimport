@@ -69,7 +69,7 @@ if(($we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_trans
 
 		//  save file - submit URL to service
 		$tmpFile = $_SERVER['DOCUMENT_ROOT'] . $filename;
-		we_util_File::saveFile($tmpFile, $content);
+		we_base_file::save($tmpFile, $content);
 		we_base_file::insertIntoCleanUp($tmpFile, time());
 
 		$url = getServerUrl() . $filename;

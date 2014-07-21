@@ -98,12 +98,12 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 			case we_base_constants::WE_EDITPAGE_PREVIEW:
 				$GLOBALS["we_editmode"] = true;
 				$GLOBALS["we_file_to_delete_after_include"] = TEMP_PATH . we_base_file::getUniqueId();
-				we_util_File::saveFile($GLOBALS["we_file_to_delete_after_include"], $this->i_getDocument());
+				we_base_file::save($GLOBALS["we_file_to_delete_after_include"], $this->i_getDocument());
 				return $GLOBALS["we_file_to_delete_after_include"];
 			case we_base_constants::WE_EDITPAGE_PREVIEW_TEMPLATE:
 				$GLOBALS["we_editmode"] = false;
 				$GLOBALS["we_file_to_delete_after_include"] = TEMP_PATH . we_base_file::getUniqueId();
-				we_util_File::saveFile($GLOBALS["we_file_to_delete_after_include"], $this->i_getDocument());
+				we_base_file::save($GLOBALS["we_file_to_delete_after_include"], $this->i_getDocument());
 				return $GLOBALS["we_file_to_delete_after_include"];
 			case we_base_constants::WE_EDITPAGE_VARIANTS:
 				$GLOBALS["we_editmode"] = true;
@@ -338,7 +338,7 @@ we_templateInit();?>';
 		if($this->isMoved()){
 			we_util_File::deleteLocalFile($this->getRealPath(true));
 		}
-		return we_util_File::saveFile($this->getRealPath(), $doc);
+		return we_base_file::save($this->getRealPath(), $doc);
 	}
 
 	function i_filenameNotAllowed(){

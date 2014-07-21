@@ -200,7 +200,7 @@ if(count($phpextensions) > 3){
 	$phpExtensionsDetectable = false;
 	$phpextensionsSDK_DB = 'unkown';
 }
-if(in_array('suhosin', get_loaded_extensions())){
+if(extension_loaded('suhosin')){
 	if(ini_get_bool('suhosin.simulation')){
 		$SuhosinText = getOK('', g_l('sysinfo', '[suhosin simulation]'));
 	} else {

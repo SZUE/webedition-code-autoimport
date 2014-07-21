@@ -31,7 +31,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 //Check some critical PHP Setings #7243
 //FIXME: implement class sysinfo.class, for not analysing the same php settings twice (here and in sysinfo.php)
 if(permissionhandler::hasPerm('ADMINISTRATOR')){
-	$suhosinMsg = (in_array('suhosin', get_loaded_extensions()) && !in_array(ini_get('suhosin.simulation'), array(1, 'on', 'yes', 'true', true))) ? 'suhosin=on\n' : '';
+	$suhosinMsg = (extension_loaded('suhosin') && !in_array(ini_get('suhosin.simulation'), array(1, 'on', 'yes', 'true', true))) ? 'suhosin=on\n' : '';
 
 	$maxInputMsg = (version_compare(PHP_VERSION, '5.3.0', '>=') ? !ini_get('max_input_vars') ? 'max_input_vars = 1000 (PHP default value)' :
 				(ini_get('max_input_vars') < 2000 ? 'max_input_vars = ' . ini_get('max_input_vars') : '') : '');

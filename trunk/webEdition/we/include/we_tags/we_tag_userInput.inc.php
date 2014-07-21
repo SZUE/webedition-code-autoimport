@@ -93,53 +93,52 @@ function we_tag_userInput($attribs, $content){
 			'type' => 'hidden', 'name' => $fieldname, 'value' => oldHtmlspecialchars($orgVal), 'xml' => $xml
 		));
 		return (($type != 'hidden') ? $content : '') . $_hidden;
-	} else {
-		switch($type){
-			case 'img' :
+	}
+	switch($type){
+		case 'img' :
+			$_imgDataId = we_base_request::_(we_base_request::RAW, 'WE_UI_IMG_DATA_ID_' . $name, md5(uniqid(__FUNCTION__, true)));
 
-				$_imgDataId = we_base_request::_(we_base_request::RAW, 'WE_UI_IMG_DATA_ID_' . $name, md5(uniqid(__FUNCTION__, true)));
+			if($editable){
+				if(($foo = attributFehltError($attribs, 'parentid', __FUNCTION__))){
+					return $foo;
+				}
 
-				if($editable){
-					if(($foo = attributFehltError($attribs, 'parentid', __FUNCTION__))){
-						return $foo;
-					}
+				if(!isset($_SESSION[$_imgDataId])){
+					$_SESSION[$_imgDataId] = array();
+				}
+				$_SESSION[$_imgDataId]['parentid'] = weTag_getAttribute('parentid', $attribs, 0);
+				//$_SESSION[$_imgDataId]['maxfilesize'] = weTag_getAttribute('maxfilesize',$attribs);
+				$_SESSION[$_imgDataId]['width'] = weTag_getAttribute('width', $attribs, 0);
+				$_SESSION[$_imgDataId]['height'] = weTag_getAttribute('height', $attribs, 0);
+				$_SESSION[$_imgDataId]['quality'] = weTag_getAttribute('quality', $attribs, 8);
+				$_SESSION[$_imgDataId]['keepratio'] = weTag_getAttribute('keepratio', $attribs, true, true);
+				$_SESSION[$_imgDataId]['maximize'] = weTag_getAttribute('maximize', $attribs, false, true);
+				$_SESSION[$_imgDataId]['id'] = $orgVal ? $orgVal : '';
 
-					if(!isset($_SESSION[$_imgDataId])){
-						$_SESSION[$_imgDataId] = array();
-					}
-					$_SESSION[$_imgDataId]['parentid'] = weTag_getAttribute('parentid', $attribs, 0);
-					//$_SESSION[$_imgDataId]['maxfilesize'] = weTag_getAttribute('maxfilesize',$attribs);
-					$_SESSION[$_imgDataId]['width'] = weTag_getAttribute('width', $attribs, 0);
-					$_SESSION[$_imgDataId]['height'] = weTag_getAttribute('height', $attribs, 0);
-					$_SESSION[$_imgDataId]['quality'] = weTag_getAttribute('quality', $attribs, 8);
-					$_SESSION[$_imgDataId]['keepratio'] = weTag_getAttribute('keepratio', $attribs, true, true);
-					$_SESSION[$_imgDataId]['maximize'] = weTag_getAttribute('maximize', $attribs, false, true);
-					$_SESSION[$_imgDataId]['id'] = $orgVal ? $orgVal : '';
+				$bordercolor = weTag_getAttribute('bordercolor', $attribs, '#006DB8');
+				$checkboxstyle = weTag_getAttribute('checkboxstyle', $attribs);
+				$inputstyle = weTag_getAttribute('inputstyle', $attribs);
+				$checkboxclass = weTag_getAttribute('checkboxclass', $attribs);
+				$inputclass = weTag_getAttribute('inputclass', $attribs);
+				$checkboxtext = weTag_getAttribute('checkboxtext', $attribs, g_l('parser', '[delete]'));
 
-					$bordercolor = weTag_getAttribute('bordercolor', $attribs, '#006DB8');
-					$checkboxstyle = weTag_getAttribute('checkboxstyle', $attribs);
-					$inputstyle = weTag_getAttribute('inputstyle', $attribs);
-					$checkboxclass = weTag_getAttribute('checkboxclass', $attribs);
-					$inputclass = weTag_getAttribute('inputclass', $attribs);
-					$checkboxtext = weTag_getAttribute('checkboxtext', $attribs, g_l('parser', '[delete]'));
+				if($_SESSION[$_imgDataId]['id']){
+					$attribs['id'] = $_SESSION[$_imgDataId]['id'];
+				}
 
-					if($_SESSION[$_imgDataId]['id']){
-						$attribs['id'] = $_SESSION[$_imgDataId]['id'];
-					}
+				if(isset($_SESSION[$_imgDataId]['serverPath']) && strpos($_SESSION[$_imgDataId]['serverPath'], TEMP_PATH) === false){
+					$src = '/' . ltrim(substr($_SESSION[$_imgDataId]['serverPath'], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
 
-					if(isset($_SESSION[$_imgDataId]['serverPath']) && strpos($_SESSION[$_imgDataId]['serverPath'], TEMP_PATH) === false){
-						$src = '/' . ltrim(substr($_SESSION[$_imgDataId]['serverPath'], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
+					$imgTag = '<img src="' . $src . '" alt="" width="' . $_SESSION[$_imgDataId]["imgwidth"] . '" height="' . $_SESSION[$_imgDataId]["imgheight"] . '" />';
+				} else {
+					unset($attribs['width']);
+					unset($attribs['height']);
+					$imgTag = $GLOBALS['we_doc']->getField($attribs, 'img');
+				}
 
-						$imgTag = '<img src="' . $src . '" alt="" width="' . $_SESSION[$_imgDataId]["imgwidth"] . '" height="' . $_SESSION[$_imgDataId]["imgheight"] . '" />';
-					} else {
-						unset($attribs['width']);
-						unset($attribs['height']);
-						$imgTag = $GLOBALS['we_doc']->getField($attribs, 'img');
-					}
+				$checked = (isset($_SESSION[$_imgDataId]['doDelete']) && $_SESSION[$_imgDataId]['doDelete']) ? ' checked' : '';
 
-					$checked = (isset($_SESSION[$_imgDataId]['doDelete']) && $_SESSION[$_imgDataId]['doDelete']) ? ' checked' : '';
-
-					return '<table class="weEditTable padding2 spacing2" style="border: solid ' . $bordercolor . ' 1px;">
+				return '<table class="weEditTable padding2 spacing2" style="border: solid ' . $bordercolor . ' 1px;">
 	<tr>
 		<td class="weEditmodeStyle" colspan="2" align="center">' . $imgTag . '
 			<input type="hidden" name="WE_UI_IMG_DATA_ID_' . $name . '" value="' . $_imgDataId . '" /></td>
@@ -147,180 +146,168 @@ function we_tag_userInput($attribs, $content){
 	<tr>
 		<td class="weEditmodeStyle" colspan="2" align="left">
 			<input' . ($size ? ' size="' . $size . '"' : '') . ' name="' . $fieldname . '" type="file" accept="' . we_base_imageEdit::IMAGE_CONTENT_TYPES . '"' . ($inputstyle
-								? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/>
+							? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/>
 		</td>
 	</tr>
 	<tr>
 		<td class="weEditmodeStyle" colspan="2" align="left">
 			<table class="weEditTable padding0 spacing0 border0">
 				<tr>
-					<td style="padding-right: 5px;">
-						<input style="border:0px solid black;" type="checkbox" id="WE_UI_DEL_CHECKBOX_' . $name . '" name="WE_UI_DEL_CHECKBOX_' . $name . '" value="1" ' . $checked . '/>
-					</td>
-					<td>
-						<label for="WE_UI_DEL_CHECKBOX_' . $name . '"' . ($checkboxstyle ? (' style="' . $checkboxstyle . '"') : '') . ($checkboxclass ? (' class="' . $checkboxclass . '"')
-								: '') . '>' . $checkboxtext . '</label>
-					</td>
+					<td style="padding-right: 5px;"><input style="border:0px solid black;" type="checkbox" id="WE_UI_DEL_CHECKBOX_' . $name . '" name="WE_UI_DEL_CHECKBOX_' . $name . '" value="1" ' . $checked . '/></td>
+					<td><label for="WE_UI_DEL_CHECKBOX_' . $name . '"' . ($checkboxstyle ? (' style="' . $checkboxstyle . '"') : '') . ($checkboxclass ? (' class="' . $checkboxclass . '"')
+							: '') . '>' . $checkboxtext . '</label></td>
 				</tr>
 			</table>
 		</td>
 	</tr>
 </table>';
-				} else {
-					$hidden = '<input type="hidden" name="WE_UI_IMG_DATA_ID_' . $name . '" value="' . $_imgDataId . '" />';
+			}
+			$hidden = '<input type="hidden" name="WE_UI_IMG_DATA_ID_' . $name . '" value="' . $_imgDataId . '" />';
 
-					if(isset($_SESSION[$_imgDataId]['serverPath'])){
-						$src = '/' . ltrim(substr($_SESSION[$_imgDataId]['serverPath'], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
+			if(isset($_SESSION[$_imgDataId]['serverPath'])){
+				$src = '/' . ltrim(substr($_SESSION[$_imgDataId]['serverPath'], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
 
-						return '<img src="' . $src . '" alt="" width="' . $_SESSION[$_imgDataId]["imgwidth"] . '" height="' . $_SESSION[$_imgDataId]["imgheight"] . '" />' . $hidden;
-					} elseif(isset($_SESSION[$_imgDataId]['id']) && $_SESSION[$_imgDataId]['id']){
-
-						if(isset($_SESSION[$_imgDataId]['doDelete']) && $_SESSION[$_imgDataId]['doDelete']){
-							return $hidden;
-						}
-
-						unset($attribs['width']);
-						unset($attribs['height']);
-						$attribs['id'] = $_SESSION[$_imgDataId]['id'];
-						return $GLOBALS['we_doc']->getField($attribs, 'img') . $hidden;
-					} else {
-						return '';
-					}
+				return '<img src="' . $src . '" alt="" width="' . $_SESSION[$_imgDataId]["imgwidth"] . '" height="' . $_SESSION[$_imgDataId]["imgheight"] . '" />' . $hidden;
+			}
+			if(isset($_SESSION[$_imgDataId]['id']) && $_SESSION[$_imgDataId]['id']){
+				if(isset($_SESSION[$_imgDataId]['doDelete']) && $_SESSION[$_imgDataId]['doDelete']){
+					return $hidden;
 				}
-			case 'flashmovie' :
-				$_flashmovieDataId = we_base_request::_(we_base_request::RAW, 'WE_UI_FLASHMOVIE_DATA_ID_' . $name, md5(uniqid(__FUNCTION__, true)));
 
-				if($editable){
-					if(($foo = attributFehltError($attribs, 'parentid', __FUNCTION__))){
-						return $foo;
-					}
+				unset($attribs['width']);
+				unset($attribs['height']);
+				$attribs['id'] = $_SESSION[$_imgDataId]['id'];
+				return $GLOBALS['we_doc']->getField($attribs, 'img') . $hidden;
+			}
+			return '';
 
-					if(!isset($_SESSION[$_flashmovieDataId])){
-						$_SESSION[$_flashmovieDataId] = array();
-					}
-					$_SESSION[$_flashmovieDataId]['parentid'] = weTag_getAttribute('parentid', $attribs, 0);
-					//$_SESSION[$_imgDataId]['maxfilesize'] = weTag_getAttribute('maxfilesize',$attribs);
-					$_SESSION[$_flashmovieDataId]['width'] = weTag_getAttribute('width', $attribs, 0);
-					$_SESSION[$_flashmovieDataId]['height'] = weTag_getAttribute('height', $attribs, 0);
-					$_SESSION[$_flashmovieDataId]['id'] = $orgVal ? $orgVal : '';
+		case 'flashmovie' :
+			$_flashmovieDataId = we_base_request::_(we_base_request::RAW, 'WE_UI_FLASHMOVIE_DATA_ID_' . $name, md5(uniqid(__FUNCTION__, true)));
 
-					$bordercolor = weTag_getAttribute('bordercolor', $attribs, '#006DB8');
-					$checkboxstyle = weTag_getAttribute('checkboxstyle', $attribs);
-					$inputstyle = weTag_getAttribute('inputstyle', $attribs);
-					$checkboxclass = weTag_getAttribute('checkboxclass', $attribs);
-					$inputclass = weTag_getAttribute('inputclass', $attribs);
-					$checkboxtext = weTag_getAttribute('checkboxtext', $attribs, g_l('parser', '[delete]'));
-
-					if($_SESSION[$_flashmovieDataId]['id']){
-						$attribs['id'] = $_SESSION[$_flashmovieDataId]['id'];
-					}
-
-					if(isset($_SESSION[$_flashmovieDataId]['serverPath'])){
-						$src = '/' . ltrim(substr($_SESSION[$_flashmovieDataId]['serverPath'], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
-						$flashmovieTag = '';
-					} else {
-						unset($attribs['width']);
-						unset($attribs['height']);
-
-						// Include Flash class
-						$flashmovieTag = (isset($attribs['id']) && $attribs['id'] ?
-								$GLOBALS['we_doc']->getField($attribs, 'flashmovie') :
-								'<img src="' . IMAGE_DIR . 'icons/no_flashmovie.gif" alt="" width="64" height="64" />');
-					}
-
-					$checked = (isset($_SESSION[$_flashmovieDataId]['doDelete']) && $_SESSION[$_flashmovieDataId]['doDelete'] ? ' checked' : '');
-
-					return '<table class="weEditTable padding2 spacing2" style="border: solid ' . $bordercolor . ' 1px;">
-						<tr>
-							<td class="weEditmodeStyle" colspan="2" align="center">' . $flashmovieTag . '
-								<input type="hidden" name="WE_UI_FLASHMOVIE_DATA_ID_' . $name . '" value="' . $_flashmovieDataId . '" /></td>
-						</tr>
-						<tr>
-							<td class="weEditmodeStyle" colspan="2" align="left">
-								<input' . ($size ? ' size="' . $size . '"' : '') . ' name="' . $fieldname . '" type="file" accept="application/x-shockwave-flash"' . ($inputstyle ? (' style="' . $inputstyle . '"')
-								: '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/>
-							</td>
-						</tr>
-						<tr>
-							<td class="weEditmodeStyle" colspan="2" align="left">
-								<table class="weEditTable padding0 spacing0 border0">
-									<tr>
-										<td style="padding-right: 5px;">
-											<input style="border:0px solid black;" type="checkbox" id="WE_UI_DEL_CHECKBOX_' . $name . '" name="WE_UI_DEL_CHECKBOX_' . $name . '" value="1" ' . $checked . '/>
-										</td>
-										<td>
-											<label for="WE_UI_DEL_CHECKBOX_' . $name . '"' . ($checkboxstyle ? (' style="' . $checkboxstyle . '"') : '') . ($checkboxclass ? (' class="' . $checkboxclass . '"')
-								: '') . '>' . $checkboxtext . '</label>
-										</td>
-									</tr>
-								</table>
-							</td>
-						</tr>
-					</table>';
-				} else {
-					$hidden = '<input type="hidden" name="WE_UI_FLASHMOVIE_DATA_ID_' . $name . '" value="' . $_flashmovieDataId . '" />';
-
-					if(isset($_SESSION[$_flashmovieDataId]['serverPath'])){
-						$src = '/' . ltrim(substr($_SESSION[$_flashmovieDataId]['serverPath'], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
-
-						return $hidden;
-					} elseif(isset($_SESSION[$_flashmovieDataId]['id']) && $_SESSION[$_flashmovieDataId]['id']){
-
-						if(isset($_SESSION[$_flashmovieDataId]['doDelete']) && $_SESSION[$_flashmovieDataId]['doDelete']){
-							return $hidden;
-						}
-
-						unset($attribs['width']);
-						unset($attribs['height']);
-						$attribs['id'] = $_SESSION[$_flashmovieDataId]['id'];
-						return $GLOBALS['we_doc']->getField($attribs, 'flashmovie') . $hidden;
-					} else {
-						return '';
-					}
+			if($editable){
+				if(($foo = attributFehltError($attribs, 'parentid', __FUNCTION__))){
+					return $foo;
 				}
-			case 'quicktime' :
-				$_quicktimeDataId = we_base_request::_(we_base_request::RAW, 'WE_UI_QUICKTIME_DATA_ID_' . $name, md5(uniqid(__FUNCTION__, true)));
+
+				if(!isset($_SESSION[$_flashmovieDataId])){
+					$_SESSION[$_flashmovieDataId] = array();
+				}
+				$_SESSION[$_flashmovieDataId]['parentid'] = weTag_getAttribute('parentid', $attribs, 0);
+				//$_SESSION[$_imgDataId]['maxfilesize'] = weTag_getAttribute('maxfilesize',$attribs);
+				$_SESSION[$_flashmovieDataId]['width'] = weTag_getAttribute('width', $attribs, 0);
+				$_SESSION[$_flashmovieDataId]['height'] = weTag_getAttribute('height', $attribs, 0);
+				$_SESSION[$_flashmovieDataId]['id'] = $orgVal ? $orgVal : '';
+
+				$bordercolor = weTag_getAttribute('bordercolor', $attribs, '#006DB8');
+				$checkboxstyle = weTag_getAttribute('checkboxstyle', $attribs);
+				$inputstyle = weTag_getAttribute('inputstyle', $attribs);
+				$checkboxclass = weTag_getAttribute('checkboxclass', $attribs);
+				$inputclass = weTag_getAttribute('inputclass', $attribs);
+				$checkboxtext = weTag_getAttribute('checkboxtext', $attribs, g_l('parser', '[delete]'));
+
+				if($_SESSION[$_flashmovieDataId]['id']){
+					$attribs['id'] = $_SESSION[$_flashmovieDataId]['id'];
+				}
+
+				if(isset($_SESSION[$_flashmovieDataId]['serverPath'])){
+					$src = '/' . ltrim(substr($_SESSION[$_flashmovieDataId]['serverPath'], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
+					$flashmovieTag = '';
+				} else {
+					unset($attribs['width']);
+					unset($attribs['height']);
+
+					// Include Flash class
+					$flashmovieTag = (isset($attribs['id']) && $attribs['id'] ?
+							$GLOBALS['we_doc']->getField($attribs, 'flashmovie') :
+							'<img src="' . IMAGE_DIR . 'icons/no_flashmovie.gif" alt="" width="64" height="64" />');
+				}
+
+				$checked = (isset($_SESSION[$_flashmovieDataId]['doDelete']) && $_SESSION[$_flashmovieDataId]['doDelete'] ? ' checked' : '');
+
+				return '<table class="weEditTable padding2 spacing2" style="border: solid ' . $bordercolor . ' 1px;">
+	<tr>
+		<td class="weEditmodeStyle" colspan="2" align="center">' . $flashmovieTag . '<input type="hidden" name="WE_UI_FLASHMOVIE_DATA_ID_' . $name . '" value="' . $_flashmovieDataId . '" /></td>
+	</tr>
+	<tr>
+		<td class="weEditmodeStyle" colspan="2" align="left"><input' . ($size ? ' size="' . $size . '"' : '') . ' name="' . $fieldname . '" type="file" accept="application/x-shockwave-flash"' . ($inputstyle
+							? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/></td>
+	</tr>
+	<tr>
+		<td class="weEditmodeStyle" colspan="2" align="left">
+			<table class="weEditTable padding0 spacing0 border0">
+				<tr>
+					<td style="padding-right: 5px;"><input style="border:0px solid black;" type="checkbox" id="WE_UI_DEL_CHECKBOX_' . $name . '" name="WE_UI_DEL_CHECKBOX_' . $name . '" value="1" ' . $checked . '/></td>
+					<td><label for="WE_UI_DEL_CHECKBOX_' . $name . '"' . ($checkboxstyle ? (' style="' . $checkboxstyle . '"') : '') . ($checkboxclass ? (' class="' . $checkboxclass . '"')
+							: '') . '>' . $checkboxtext . '</label></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>';
+			}
+			$hidden = '<input type="hidden" name="WE_UI_FLASHMOVIE_DATA_ID_' . $name . '" value="' . $_flashmovieDataId . '" />';
+
+			if(isset($_SESSION[$_flashmovieDataId]['serverPath'])){
+				$src = '/' . ltrim(substr($_SESSION[$_flashmovieDataId]['serverPath'], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
+
+				return $hidden;
+			}
+			if(isset($_SESSION[$_flashmovieDataId]['id']) && $_SESSION[$_flashmovieDataId]['id']){
+
+				if(isset($_SESSION[$_flashmovieDataId]['doDelete']) && $_SESSION[$_flashmovieDataId]['doDelete']){
+					return $hidden;
+				}
+
+				unset($attribs['width']);
+				unset($attribs['height']);
+				$attribs['id'] = $_SESSION[$_flashmovieDataId]['id'];
+				return $GLOBALS['we_doc']->getField($attribs, 'flashmovie') . $hidden;
+			}
+
+			return '';
+		case 'quicktime' :
+			$_quicktimeDataId = we_base_request::_(we_base_request::RAW, 'WE_UI_QUICKTIME_DATA_ID_' . $name, md5(uniqid(__FUNCTION__, true)));
 
 
-				if($editable){
-					if(($foo = attributFehltError($attribs, 'parentid', __FUNCTION__))){
-						return $foo;
-					}
+			if($editable){
+				if(($foo = attributFehltError($attribs, 'parentid', __FUNCTION__))){
+					return $foo;
+				}
 
-					if(!isset($_SESSION[$_quicktimeDataId])){
-						$_SESSION[$_quicktimeDataId] = array();
-					}
-					$_SESSION[$_quicktimeDataId]['parentid'] = weTag_getAttribute('parentid', $attribs, 0);
-					//$_SESSION[$_quicktimeDataId]['maxfilesize'] = weTag_getAttribute('maxfilesize',$attribs);
-					$_SESSION[$_quicktimeDataId]['width'] = weTag_getAttribute('width', $attribs, 0);
-					$_SESSION[$_quicktimeDataId]['height'] = weTag_getAttribute('height', $attribs, 0);
-					$_SESSION[$_quicktimeDataId]['id'] = $orgVal ? $orgVal : '';
+				if(!isset($_SESSION[$_quicktimeDataId])){
+					$_SESSION[$_quicktimeDataId] = array();
+				}
+				$_SESSION[$_quicktimeDataId]['parentid'] = weTag_getAttribute('parentid', $attribs, 0);
+				//$_SESSION[$_quicktimeDataId]['maxfilesize'] = weTag_getAttribute('maxfilesize',$attribs);
+				$_SESSION[$_quicktimeDataId]['width'] = weTag_getAttribute('width', $attribs, 0);
+				$_SESSION[$_quicktimeDataId]['height'] = weTag_getAttribute('height', $attribs, 0);
+				$_SESSION[$_quicktimeDataId]['id'] = $orgVal ? $orgVal : '';
 
-					$bordercolor = weTag_getAttribute('bordercolor', $attribs, '#006DB8');
-					$checkboxstyle = weTag_getAttribute('checkboxstyle', $attribs);
-					$inputstyle = weTag_getAttribute('inputstyle', $attribs);
-					$checkboxclass = weTag_getAttribute('checkboxclass', $attribs);
-					$inputclass = weTag_getAttribute('inputclass', $attribs);
-					$checkboxtext = weTag_getAttribute('checkboxtext', $attribs, g_l('parser', '[delete]'));
+				$bordercolor = weTag_getAttribute('bordercolor', $attribs, '#006DB8');
+				$checkboxstyle = weTag_getAttribute('checkboxstyle', $attribs);
+				$inputstyle = weTag_getAttribute('inputstyle', $attribs);
+				$checkboxclass = weTag_getAttribute('checkboxclass', $attribs);
+				$inputclass = weTag_getAttribute('inputclass', $attribs);
+				$checkboxtext = weTag_getAttribute('checkboxtext', $attribs, g_l('parser', '[delete]'));
 
-					if($_SESSION[$_quicktimeDataId]['id']){
-						$attribs['id'] = $_SESSION[$_quicktimeDataId]['id'];
-					}
+				if($_SESSION[$_quicktimeDataId]['id']){
+					$attribs['id'] = $_SESSION[$_quicktimeDataId]['id'];
+				}
 
-					if(isset($_SESSION[$_quicktimeDataId]['serverPath'])){
-						$src = '/' . ltrim(substr($_SESSION[$_quicktimeDataId]['serverPath'], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
-						$quicktimeTag = '';
-					} else {
-						unset($attribs['width']);
-						unset($attribs['height']);
-						$quicktimeTag = (isset($attribs['id']) && $attribs['id'] ?
-								$GLOBALS['we_doc']->getField($attribs, 'quicktime') :
-								'<img src="' . IMAGE_DIR . 'icons/no_quicktime.gif" alt="" width="64" height="64" />');
-					}
+				if(isset($_SESSION[$_quicktimeDataId]['serverPath'])){
+					$src = '/' . ltrim(substr($_SESSION[$_quicktimeDataId]['serverPath'], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
+					$quicktimeTag = '';
+				} else {
+					unset($attribs['width']);
+					unset($attribs['height']);
+					$quicktimeTag = (isset($attribs['id']) && $attribs['id'] ?
+							$GLOBALS['we_doc']->getField($attribs, 'quicktime') :
+							'<img src="' . IMAGE_DIR . 'icons/no_quicktime.gif" alt="" width="64" height="64" />');
+				}
 
-					$checked = (isset($_SESSION[$_quicktimeDataId]["doDelete"]) && $_SESSION[$_quicktimeDataId]["doDelete"] ? ' checked' : '');
+				$checked = (isset($_SESSION[$_quicktimeDataId]["doDelete"]) && $_SESSION[$_quicktimeDataId]["doDelete"] ? ' checked' : '');
 
-					return '<table class="weEditTable padding2 spacing2" style="border: solid ' . $bordercolor . ' 1px;">
+				return '<table class="weEditTable padding2 spacing2" style="border: solid ' . $bordercolor . ' 1px;">
 						<tr>
 							<td class="weEditmodeStyle" colspan="2" align="center">' . $quicktimeTag . '
 								<input type="hidden" name="WE_UI_QUICKTIME_DATA_ID_' . $name . '" value="' . $_quicktimeDataId . '" /></td>
@@ -328,7 +315,7 @@ function we_tag_userInput($attribs, $content){
 						<tr>
 							<td class="weEditmodeStyle" colspan="2" align="left">
 								<input' . ($size ? ' size="' . $size . '"' : '') . ' name="' . $fieldname . '" type="file" accept="video/quicktime"' . ($inputstyle ? (' style="' . $inputstyle . '"')
-								: '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/>
+							: '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/>
 							</td>
 						</tr>
 						<tr>
@@ -340,75 +327,75 @@ function we_tag_userInput($attribs, $content){
 										</td>
 										<td>
 											<label for="WE_UI_DEL_CHECKBOX_' . $name . '"' . ($checkboxstyle ? (' style="' . $checkboxstyle . '"') : '') . ($checkboxclass ? (' class="' . $checkboxclass . '"')
-								: '') . '>' . $checkboxtext . '</label>
+							: '') . '>' . $checkboxtext . '</label>
 										</td>
 									</tr>
 								</table>
 							</td>
 						</tr>
 					</table>';
-				} else {
-					$hidden = '<input type="hidden" name="WE_UI_QUICKTIME_DATA_ID_' . $name . '" value="' . $_quicktimeDataId . '" />';
+			}
+			$hidden = '<input type="hidden" name="WE_UI_QUICKTIME_DATA_ID_' . $name . '" value="' . $_quicktimeDataId . '" />';
 
-					if(isset($_SESSION[$_quicktimeDataId]['serverPath'])){
-						$src = '/' . ltrim(substr($_SESSION[$_quicktimeDataId]['serverPath'], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
-						return $hidden;
-					}
-					if(isset($_SESSION[$_quicktimeDataId]['id']) && $_SESSION[$_quicktimeDataId]['id']){
+			if(isset($_SESSION[$_quicktimeDataId]['serverPath'])){
+				$src = '/' . ltrim(substr($_SESSION[$_quicktimeDataId]['serverPath'], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
+				return $hidden;
+			}
+			if(isset($_SESSION[$_quicktimeDataId]['id']) && $_SESSION[$_quicktimeDataId]['id']){
 
-						if(isset($_SESSION[$_quicktimeDataId]['doDelete']) && $_SESSION[$_quicktimeDataId]['doDelete']){
-							return $hidden;
-						}
-
-						unset($attribs['width']);
-						unset($attribs['height']);
-						$attribs['id'] = $_SESSION[$_quicktimeDataId]['id'];
-						return $GLOBALS['we_doc']->getField($attribs, 'quicktime') . $hidden;
-					}
-					return '';
+				if(isset($_SESSION[$_quicktimeDataId]['doDelete']) && $_SESSION[$_quicktimeDataId]['doDelete']){
+					return $hidden;
 				}
-			case 'binary' :
-				$_binaryDataId = we_base_request::_(we_base_request::RAW, 'WE_UI_BINARY_DATA_ID_' . $name, md5(uniqid(__FUNCTION__, true)));
 
-				if($editable){
-					if(($foo = attributFehltError($attribs, 'parentid', __FUNCTION__))){
-						return $foo;
-					}
+				unset($attribs['width']);
+				unset($attribs['height']);
+				$attribs['id'] = $_SESSION[$_quicktimeDataId]['id'];
+				return $GLOBALS['we_doc']->getField($attribs, 'quicktime') . $hidden;
+			}
+			return '';
 
-					if(!isset($_SESSION[$_binaryDataId])){
-						$_SESSION[$_binaryDataId] = array();
-					}
-					$_SESSION[$_binaryDataId]['parentid'] = weTag_getAttribute('parentid', $attribs, 0);
-					//$_SESSION[$_binaryDataId]['maxfilesize'] = weTag_getAttribute('maxfilesize',$attribs);
+		case 'binary' :
+			$_binaryDataId = we_base_request::_(we_base_request::RAW, 'WE_UI_BINARY_DATA_ID_' . $name, md5(uniqid(__FUNCTION__, true)));
 
-					$_SESSION[$_binaryDataId]['id'] = $orgVal ? $orgVal : '';
+			if($editable){
+				if(($foo = attributFehltError($attribs, 'parentid', __FUNCTION__))){
+					return $foo;
+				}
 
-					$bordercolor = weTag_getAttribute('bordercolor', $attribs, '#006DB8');
-					$checkboxstyle = weTag_getAttribute('checkboxstyle', $attribs);
-					$inputstyle = weTag_getAttribute('inputstyle', $attribs);
-					$checkboxclass = weTag_getAttribute('checkboxclass', $attribs);
-					$inputclass = weTag_getAttribute('inputclass', $attribs);
-					$checkboxtext = weTag_getAttribute('checkboxtext', $attribs, g_l('parser', '[delete]'));
+				if(!isset($_SESSION[$_binaryDataId])){
+					$_SESSION[$_binaryDataId] = array();
+				}
+				$_SESSION[$_binaryDataId]['parentid'] = weTag_getAttribute('parentid', $attribs, 0);
+				//$_SESSION[$_binaryDataId]['maxfilesize'] = weTag_getAttribute('maxfilesize',$attribs);
 
-					if($_SESSION[$_binaryDataId]['id']){
-						$attribs['id'] = $_SESSION[$_binaryDataId]['id'];
-					}
+				$_SESSION[$_binaryDataId]['id'] = $orgVal ? $orgVal : '';
 
-					if(isset($_SESSION[$_binaryDataId]['serverPath'])){
-						$src = '/' . ltrim(substr($_SESSION[$_binaryDataId]['serverPath'], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
-						$imgTag = 'imgTag';
-					} else {
-						$binaryTag = $GLOBALS['we_doc']->getField($attribs, 'binary');
-						$t = explode('_', $binaryTag[0]);
-						unset($t[1]);
-						unset($t[0]);
-						$fn = implode('_', $t);
-						$imgTag = '<a href="' . $binaryTag[1] . '" target="_blank">' . $fn . '</a>';
-					}
+				$bordercolor = weTag_getAttribute('bordercolor', $attribs, '#006DB8');
+				$checkboxstyle = weTag_getAttribute('checkboxstyle', $attribs);
+				$inputstyle = weTag_getAttribute('inputstyle', $attribs);
+				$checkboxclass = weTag_getAttribute('checkboxclass', $attribs);
+				$inputclass = weTag_getAttribute('inputclass', $attribs);
+				$checkboxtext = weTag_getAttribute('checkboxtext', $attribs, g_l('parser', '[delete]'));
 
-					$checked = (isset($_SESSION[$_binaryDataId]['doDelete']) && $_SESSION[$_binaryDataId]['doDelete'] ? ' checked' : '');
+				if($_SESSION[$_binaryDataId]['id']){
+					$attribs['id'] = $_SESSION[$_binaryDataId]['id'];
+				}
 
-					return '<table class="weEditTable padding2 spacing2" style="border: solid ' . $bordercolor . ' 1px;">
+				if(isset($_SESSION[$_binaryDataId]['serverPath'])){
+					$src = '/' . ltrim(substr($_SESSION[$_binaryDataId]['serverPath'], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
+					$imgTag = 'imgTag';
+				} else {
+					$binaryTag = $GLOBALS['we_doc']->getField($attribs, 'binary');
+					$t = explode('_', $binaryTag[0]);
+					unset($t[1]);
+					unset($t[0]);
+					$fn = implode('_', $t);
+					$imgTag = '<a href="' . $binaryTag[1] . '" target="_blank">' . $fn . '</a>';
+				}
+
+				$checked = (isset($_SESSION[$_binaryDataId]['doDelete']) && $_SESSION[$_binaryDataId]['doDelete'] ? ' checked' : '');
+
+				return '<table class="weEditTable padding2 spacing2" style="border: solid ' . $bordercolor . ' 1px;">
 						<tr>
 							<td class="weEditmodeStyle" colspan="2" align="center">' . $imgTag . '
 								<input type="hidden" name="WE_UI_BINARY_DATA_ID_' . $name . '" value="' . $_binaryDataId . '" /></td>
@@ -416,7 +403,7 @@ function we_tag_userInput($attribs, $content){
 						<tr>
 							<td class="weEditmodeStyle" colspan="2" align="left">
 								<input' . ($size ? ' size="' . $size . '"' : '') . ' name="' . $fieldname . '" type="file" accept="application/*"' . ($inputstyle ? (' style="' . $inputstyle . '"')
-								: '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/>
+							: '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/>
 							</td>
 						</tr>
 						<tr>
@@ -425,84 +412,82 @@ function we_tag_userInput($attribs, $content){
 									<tr>
 										<td style="padding-right: 5px;"><input style="border:0px solid black;" type="checkbox" id="WE_UI_DEL_CHECKBOX_' . $name . '" name="WE_UI_DEL_CHECKBOX_' . $name . '" value="1" ' . $checked . '/></td>
 										<td><label for="WE_UI_DEL_CHECKBOX_' . $name . '"' . ($checkboxstyle ? (' style="' . $checkboxstyle . '"') : '') . ($checkboxclass ? (' class="' . $checkboxclass . '"')
-								: '') . '>' . $checkboxtext . '</label></td>
+							: '') . '>' . $checkboxtext . '</label></td>
 									</tr>
 								</table>
 							</td>
 						</tr>
 					</table>';
-				} else {
-					if(!isset($_SESSION[$_binaryDataId])){
-						$_SESSION[$_binaryDataId] = array();
-					}
-					$_SESSION[$_binaryDataId]['id'] = $orgVal ? $orgVal : '';
-					if($_SESSION[$_binaryDataId]['id']){
-						$attribs['id'] = $_SESSION[$_binaryDataId]['id'];
-					}
-					$hidden = '<input type="hidden" name="WE_UI_BINARY_DATA_ID_' . $name . '" value="' . $_binaryDataId . '" />';
+			}
+			if(!isset($_SESSION[$_binaryDataId])){
+				$_SESSION[$_binaryDataId] = array();
+			}
+			$_SESSION[$_binaryDataId]['id'] = $orgVal ? $orgVal : '';
+			if($_SESSION[$_binaryDataId]['id']){
+				$attribs['id'] = $_SESSION[$_binaryDataId]['id'];
+			}
+			$hidden = '<input type="hidden" name="WE_UI_BINARY_DATA_ID_' . $name . '" value="' . $_binaryDataId . '" />';
 
-					if(isset($_SESSION[$_binaryDataId]["serverPath"])){
-						$src = '/' . ltrim(substr($_SESSION[$_binaryDataId]["serverPath"], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
-						return $hidden;
-					} else {
-						if(isset($_SESSION[$_binaryDataId]["id"]) && $_SESSION[$_binaryDataId]["id"]){
-							if(isset($_SESSION[$_binaryDataId]["doDelete"]) && $_SESSION[$_binaryDataId]["doDelete"]){
-								return $hidden;
-							}
-
-
-							$attribs["id"] = $_SESSION[$_binaryDataId]["id"];
-							$binaryTag = $GLOBALS['we_doc']->getField($attribs, "binary");
-							$t = explode('_', $binaryTag[0]);
-							unset($t[1]);
-							unset($t[0]);
-							$fn = implode('_', $t);
-							$imgTag = '<a href="' . $binaryTag[1] . '" target="_blank">' . $fn . '</a>';
-							return $imgTag . $hidden;
-						} else {
-							return '';
-						}
-					}
-					return '';
+			if(isset($_SESSION[$_binaryDataId]["serverPath"])){
+				$src = '/' . ltrim(substr($_SESSION[$_binaryDataId]["serverPath"], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
+				return $hidden;
+			}
+			if(isset($_SESSION[$_binaryDataId]["id"]) && $_SESSION[$_binaryDataId]["id"]){
+				if(isset($_SESSION[$_binaryDataId]["doDelete"]) && $_SESSION[$_binaryDataId]["doDelete"]){
+					return $hidden;
 				}
-			case 'textarea' :
-				//$attribs['inlineedit'] = "true"; // bugfix: 7276
-				$pure = weTag_getAttribute("pure", $attribs, false, true);
-				if($pure){
-					$atts = removeAttribs($attribs, array(
-						'wysiwyg',
-						'commands',
-						'pure',
-						'type',
-						'value',
-						'checked',
-						'autobr',
-						'name',
-						'values',
-						'hidden',
-						'editable',
-						'format',
-						'property',
-						'size',
-						'maxlength',
-						'width',
-						'height',
-						'fontnames',
-						'bgcolor',
-						'editorcss',
-						'ignoredocumentcss',
-						'buttonpos'
-					));
-					return we_getTextareaField($fieldname, $content, $atts);
-				} else {
-					echo we_html_element::jsElement('weFrontpageEdit=true;');
-					require_once (JS_PATH . 'we_textarea_include.inc.php');
 
-					if(!$inlineedit){
-						//TODO: move js function open_wysiwyg_win to separate js file
-						echo we_html_element::jsScript(JS_DIR . 'weButton.js') .
-						we_html_element::jsScript(JS_DIR . 'weTinyMceDialogs.js') .
-						we_html_element::jsElement('
+
+				$attribs["id"] = $_SESSION[$_binaryDataId]["id"];
+				$binaryTag = $GLOBALS['we_doc']->getField($attribs, "binary");
+				$t = explode('_', $binaryTag[0]);
+				unset($t[1]);
+				unset($t[0]);
+				$fn = implode('_', $t);
+				$imgTag = '<a href="' . $binaryTag[1] . '" target="_blank">' . $fn . '</a>';
+				return $imgTag . $hidden;
+			}
+
+			return '';
+
+		case 'textarea' :
+			//$attribs['inlineedit'] = "true"; // bugfix: 7276
+			$pure = weTag_getAttribute("pure", $attribs, false, true);
+			if($pure){
+				$atts = removeAttribs($attribs, array(
+					'wysiwyg',
+					'commands',
+					'pure',
+					'type',
+					'value',
+					'checked',
+					'autobr',
+					'name',
+					'values',
+					'hidden',
+					'editable',
+					'format',
+					'property',
+					'size',
+					'maxlength',
+					'width',
+					'height',
+					'fontnames',
+					'bgcolor',
+					'editorcss',
+					'ignoredocumentcss',
+					'buttonpos'
+				));
+				return we_getTextareaField($fieldname, $content, $atts);
+			}
+			echo we_html_element::jsElement('weFrontpageEdit=true;');
+			require_once (JS_PATH . 'we_textarea_include.inc.php');
+
+			if(!$inlineedit){
+				//TODO: move js function open_wysiwyg_win to separate js file
+				echo we_html_element::jsScript(JS_DIR . 'weButton.js') .
+				we_html_element::jsScript(JS_DIR . 'weTinyMceDialogs.js') .
+				we_html_element::jsElement('
 function open_wysiwyg_win(){
 	//var url = "' . WEBEDITION_DIR . 'we_cmd.php?";
 	var url = "' . WEBEDITION_DIR . 'we_cmd_frontend.php?";
@@ -536,338 +521,336 @@ function open_wysiwyg_win(){
 	new jsWindow(url,"we_wysiwygWin",-1,-1,Math.max(220,wyw+(document.all ? 0 : ((navigator.userAgent.toLowerCase().indexOf(\'safari\') > -1) ? 20 : 4))),Math.max(100,wyh+60),true,false,true);
 	//doPostCmd(arguments,"we_wysiwygWin");
 }');
-					}
-					$autobr = $autobrAttr ? 'on' : 'off';
-					$showAutobr = isset($attribs['autobr']);
-					$charset = weTag_getAttribute('charset', $attribs, 'iso-8859-1');
-					//FIXME: currently we use a separate preference-option for frontend editor (where tinyMCE is labelled beta)
-					$tmp = we_wysiwyg_editor::$editorType;
-					we_wysiwyg_editor::$editorType = WYSIWYG_TYPE_FRONTEND == 'tinyMCE' ? 'tinyMCE' : 'default';
-					$ret = we_html_forms::weTextarea($fieldname, $content, $attribs, $autobr, 'autobr', $showAutobr, $GLOBALS['we_doc']->getHttpPath(), false, false, $xml, $removeFirstParagraph, $charset, false, true, $name);
-					we_wysiwyg_editor::$editorType = $tmp;
-					return $ret;
-				}
-			case 'checkbox' :
-				$atts = removeAttribs($attribs, array(
-					'wysiwyg',
-					'commands',
-					'pure',
-					'type',
-					'value',
-					'checked',
-					'autobr',
-					'name',
-					'values',
-					'hidden',
-					'editable',
-					'format',
-					'property',
-					'cols',
-					'rows',
-					'width',
-					'height',
-					'bgcolor',
-					'fontnames'
-				));
-				if((!$isset) && $checked){
-					$content = 1;
-				}
-				return we_getInputCheckboxField($fieldname, $content, $atts);
-			case 'date' :
-				$currentdate = weTag_getAttribute('currentdate', $attribs, false, true);
-				if($orgVal == 0 || $currentdate){
-					$orgVal = time();
-				}
-				if($hidden){
-					$attsHidden = array(
-						'type' => 'hidden',
-						'name' => $fieldname,
-						'value' => $orgVal ? $orgVal : time(),
-						'xml' => $xml
-					);
-					return getHtmlTag('input', $attsHidden);
-				} else {
-					$year = date('Y');
-					$minyear = weTag_getAttribute('minyear', $attribs);
-					switch($minyear ? $minyear{0} : ''){
-						case '+':
-							$minyear = $year + intval(substr($minyear, 1));
-							break;
-						case '-':
-							$minyear = $year - intval(substr($minyear, 1));
-							break;
-						default:
-							$minyear = intval($minyear);
-							break;
-					}
-					$maxyear = weTag_getAttribute('maxyear', $attribs);
-					switch($maxyear ? $maxyear{0} : ''){
-						case '+':
-							$maxyear = $year + intval(substr($maxyear, 1));
-							break;
-						case '-':
-							$maxyear = $year - intval(substr($maxyear, 1));
-							break;
-						default:
-							$maxyear = intval($maxyear);
-							break;
-					}
-					return we_html_tools::getDateInput2('we_ui_' . (isset($GLOBALS['WE_FORM']) ? $GLOBALS['WE_FORM'] : '') . '[we_date_' . $name . ']', ($orgVal ? $orgVal : time()), false, $format, '', '', $xml, $minyear, $maxyear);
-				}
-			case 'country':
-				$newAtts = removeAttribs($attribs, array('wysiwyg', 'commands', 'pure', 'type', 'value', 'checked', 'autobr', 'name', 'values', 'hidden', 'editable', 'format', 'property', 'rows', 'cols', 'fontnames', 'bgcolor', 'width', 'height', 'maxlength'));
-				$docAttr = weTag_getAttribute('doc', $attribs, 'self');
+			}
+			$autobr = $autobrAttr ? 'on' : 'off';
+			$showAutobr = isset($attribs['autobr']);
+			$charset = weTag_getAttribute('charset', $attribs, 'iso-8859-1');
+			//FIXME: currently we use a separate preference-option for frontend editor (where tinyMCE is labelled beta)
+			$tmp = we_wysiwyg_editor::$editorType;
+			we_wysiwyg_editor::$editorType = WYSIWYG_TYPE_FRONTEND == 'tinyMCE' ? 'tinyMCE' : 'default';
+			$ret = we_html_forms::weTextarea($fieldname, $content, $attribs, $autobr, 'autobr', $showAutobr, $GLOBALS['we_doc']->getHttpPath(), false, false, $xml, $removeFirstParagraph, $charset, false, true, $name);
+			we_wysiwyg_editor::$editorType = $tmp;
+			return $ret;
 
-				$doc = we_getDocForTag($docAttr);
-				$lang = $doc->Language;
-				$langcode = ($lang ?
-						substr($lang, 0, 2) :
-						we_core_Local::weLangToLocale($GLOBALS['WE_LANGUAGE']));
-
-				if(!Zend_Locale::hasCache()){
-					Zend_Locale::setCache(getWEZendCache());
-				}
-
-				//$zendsupported = Zend_Locale::getTranslationList('territory', $langcode, 2);
-				$topCountries = array_flip(explode(',', WE_COUNTRIES_TOP));
-				foreach($topCountries as $countrykey => &$countryvalue){
-					$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
-				}
-				unset($countryvalue);
-				$shownCountries = array_flip(explode(',', WE_COUNTRIES_SHOWN));
-				foreach($shownCountries as $countrykey => &$countryvalue){
-					$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
-				}
-				unset($countryvalue);
-				$oldLocale = setlocale(LC_ALL, NULL);
-				setlocale(LC_ALL, $lang . '.UTF-8');
-				asort($topCountries, SORT_LOCALE_STRING);
-				asort($shownCountries, SORT_LOCALE_STRING);
-				setlocale(LC_ALL, $oldLocale);
-
-				$options = '';
-				if(WE_COUNTRIES_DEFAULT != ''){
-					$options.='<option value="--" ' . ($orgVal == '--' ? ' selected="selected">' : '>') . WE_COUNTRIES_DEFAULT . '</option>';
-				}
-				foreach($topCountries as $countrykey => &$countryvalue){
-					$options.='<option value="' . $countrykey . '" ' . ($orgVal == $countrykey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue) . '</option>';
-				}
-				unset($countryvalue);
-				if(!empty($topCountries) && !empty($shownCountries)){
-					$options.='<option value="-" disabled="disabled">----</option>';
-				}
-				foreach($shownCountries as $countrykey2 => &$countryvalue2){
-					$options.='<option value="' . $countrykey2 . '" ' . ($orgVal == $countrykey2 ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue2) . '</option>';
-				}
-				unset($countryvalue2);
-				$newAtts['size'] = (isset($atts['size']) ? $atts['size'] : 1);
-				$newAtts['name'] = $fieldname;
-				return getHtmlTag('select', $newAtts, $options, true);
-			case 'language':
-				$newAtts = removeAttribs($attribs, array('wysiwyg', 'commands', 'pure', 'type', 'value', 'checked', 'autobr', 'name', 'values', 'hidden', 'editable', 'format', 'property', 'rows', 'cols', 'fontnames', 'bgcolor', 'width', 'height', 'maxlength'));
-
-				$docAttr = weTag_getAttribute('doc', $attribs, 'self');
-				$doc = we_getDocForTag($docAttr);
-				$lang = $doc->Language;
-				if($lang != ''){
-					$langcode = substr($lang, 0, 2);
-				} else {
-					$langcode = we_core_Local::weLangToLocale($GLOBALS['WE_LANGUAGE']);
-				}
-				$frontendL = $GLOBALS['weFrontendLanguages'];
-				foreach($frontendL as &$lcvalue){
-					$lccode = explode('_', $lcvalue);
-					$lcvalue = $lccode[0];
-				}
-				if(!Zend_Locale::hasCache()){
-					Zend_Locale::setCache(getWEZendCache());
-				}
-				$frontendLL = array();
-				foreach($frontendL as &$lcvalue){
-					$frontendLL[$lcvalue] = Zend_Locale::getTranslation($lcvalue, 'language', $langcode);
-				}
-
-				$oldLocale = setlocale(LC_ALL, NULL);
-				setlocale(LC_ALL, $lang . '.UTF-8');
-				asort($frontendLL, SORT_LOCALE_STRING);
-				setlocale(LC_ALL, $oldLocale);
-				$options = '';
-				foreach($frontendLL as $langkey => &$langvalue){
-					$options.='<option value="' . $langkey . '" ' . ($orgVal == $langkey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($langvalue) . '</option>' . "\n";
-				}
-				unset($langvalue);
-				$newAtts['size'] = (isset($atts['size']) ? $atts['size'] : 1);
-				$newAtts['name'] = $fieldname;
-				return getHtmlTag('select', $newAtts, $options, true);
-			case 'select' :
-				$options = '';
-				$atts = removeAttribs($attribs, array(
-					'wysiwyg',
-					'commands',
-					'pure',
-					'type',
-					'value',
-					'checked',
-					'autobr',
-					'name',
-					'values',
-					'hidden',
-					'editable',
-					'format',
-					'property',
-					'rows',
-					'cols',
-					'fontnames',
-					'bgcolor',
-					'width',
-					'height',
-					'maxlength'
-				));
-				if($values){
-
-					$values = explode(',', $values);
-
-					foreach($values as $txt){
-
-						$attsOption = ($txt == $orgVal ?
-								array(
-								'selected' => 'selected'
-								) :
-								array());
-
-						$options .= getHtmlTag('option', $attsOption, trim($txt), true);
-					}
-				} elseif($objekt && isset($objekt->DefArray["meta_" . $name])){
-					foreach($objekt->DefArray["meta_" . $name]["meta"] as $key => $val){
-
-						if($orgVal == $key){
-							$atts2 = array(
-								'value' => $key, 'selected' => 'selected'
-							);
-						} else {
-							$atts2 = array(
-								'value' => $key
-							);
-						}
-						$attsOption = array_merge($atts, $atts2);
-						$attsOption = removeAttribs($attsOption, array('class'));
-						$options .= getHtmlTag('option', $attsOption, $val, true);
-					}
-				}
-				$atts['size'] = (isset($atts['size']) ? $atts['size'] : 1);
-				$atts['name'] = $fieldname;
-				return getHtmlTag('select', $atts, $options, true);
-			case 'radio' :
-				$atts = removeAttribs($attribs, array(
-					'wysiwyg',
-					'commands',
-					'pure',
-					'type',
-					'value',
-					'checked',
-					'autobr',
-					'name',
-					'values',
-					'hidden',
-					'editable',
-					'format',
-					'property',
-					'rows',
-					'cols',
-					'width',
-					'height',
-					'bgcolor',
-					'fontnames'
-				));
-				return (!$isset ?
-						we_getInputRadioField($fieldname, ($checked ? $value : $value . 'dummy'), $value, $atts) :
-						we_getInputRadioField($fieldname, $content, $orgVal, $atts));
-
-			case 'hidden':
-				return getHtmlTag('input', array(
+		case 'checkbox' :
+			$atts = removeAttribs($attribs, array(
+				'wysiwyg',
+				'commands',
+				'pure',
+				'type',
+				'value',
+				'checked',
+				'autobr',
+				'name',
+				'values',
+				'hidden',
+				'editable',
+				'format',
+				'property',
+				'cols',
+				'rows',
+				'width',
+				'height',
+				'bgcolor',
+				'fontnames'
+			));
+			if((!$isset) && $checked){
+				$content = 1;
+			}
+			return we_getInputCheckboxField($fieldname, $content, $atts);
+		case 'date' :
+			$currentdate = weTag_getAttribute('currentdate', $attribs, false, true);
+			if($orgVal == 0 || $currentdate){
+				$orgVal = time();
+			}
+			if($hidden){
+				$attsHidden = array(
 					'type' => 'hidden',
 					'name' => $fieldname,
-					'value' => oldHtmlspecialchars($content),
-					'xml' => $xml,
-				));
-			case 'print' :
-				return $orgVal;
-			case 'choice' :
-				$atts = removeAttribs($attribs, array(
-					'wysiwyg',
-					'commands',
-					'pure',
-					'type',
-					'value',
-					'checked',
-					'autobr',
-					'name',
-					'values',
-					'hidden',
-					'editable',
-					'format',
-					'property',
-					'cols',
-					'rows',
-					'width',
-					'height',
-					'bgcolor',
-					'fontnames',
-					'maxlength'
-				));
-				$mode = weTag_getAttribute('mode', $attribs);
-				return we_html_tools::htmlInputChoiceField($fieldname, $orgVal, $values, $atts, $mode);
-			case 'password':
-				$atts = removeAttribs($attribs, array(
-					'wysiwyg',
-					'commands',
-					'pure',
-					'type',
-					'value',
-					'checked',
-					'autobr',
-					'name',
-					'values',
-					'hidden',
-					'editable',
-					'format',
-					'property',
-					'cols',
-					'rows',
-					'width',
-					'height',
-					'bgcolor',
-					'fontnames'
-				));
-				$atts['type'] = 'password';
-				$atts['name'] = $fieldname;
-				$atts['value'] = oldHtmlspecialchars($orgVal);
+					'value' => $orgVal ? $orgVal : time(),
+					'xml' => $xml
+				);
+				return getHtmlTag('input', $attsHidden);
+			}
+			$year = date('Y');
+			$minyear = weTag_getAttribute('minyear', $attribs);
+			switch($minyear ? $minyear{0} : ''){
+				case '+':
+					$minyear = $year + intval(substr($minyear, 1));
+					break;
+				case '-':
+					$minyear = $year - intval(substr($minyear, 1));
+					break;
+				default:
+					$minyear = intval($minyear);
+					break;
+			}
+			$maxyear = weTag_getAttribute('maxyear', $attribs);
+			switch($maxyear ? $maxyear{0} : ''){
+				case '+':
+					$maxyear = $year + intval(substr($maxyear, 1));
+					break;
+				case '-':
+					$maxyear = $year - intval(substr($maxyear, 1));
+					break;
+				default:
+					$maxyear = intval($maxyear);
+					break;
+			}
+			return we_html_tools::getDateInput2('we_ui_' . (isset($GLOBALS['WE_FORM']) ? $GLOBALS['WE_FORM'] : '') . '[we_date_' . $name . ']', ($orgVal ? $orgVal : time()), false, $format, '', '', $xml, $minyear, $maxyear);
 
-				return getHtmlTag('input', $atts);
-			case 'textinput':
-			default :
-				$atts = removeAttribs($attribs, array(
-					'wysiwyg',
-					'commands',
-					'pure',
-					'type',
-					'value',
-					'checked',
-					'autobr',
-					'name',
-					'values',
-					'hidden',
-					'editable',
-					'format',
-					'property',
-					'cols',
-					'rows',
-					'width',
-					'height',
-					'bgcolor',
-					'fontnames'
-				));
-				return we_getInputTextInputField($fieldname, $orgVal, $atts);
-		}
+		case 'country':
+			$newAtts = removeAttribs($attribs, array('wysiwyg', 'commands', 'pure', 'type', 'value', 'checked', 'autobr', 'name', 'values', 'hidden', 'editable', 'format', 'property', 'rows', 'cols', 'fontnames', 'bgcolor', 'width', 'height', 'maxlength'));
+			$docAttr = weTag_getAttribute('doc', $attribs, 'self');
+
+			$doc = we_getDocForTag($docAttr);
+			$lang = $doc->Language;
+			$langcode = ($lang ?
+					substr($lang, 0, 2) :
+					we_core_Local::weLangToLocale($GLOBALS['WE_LANGUAGE']));
+
+			if(!Zend_Locale::hasCache()){
+				Zend_Locale::setCache(getWEZendCache());
+			}
+
+			//$zendsupported = Zend_Locale::getTranslationList('territory', $langcode, 2);
+			$topCountries = array_flip(explode(',', WE_COUNTRIES_TOP));
+			foreach($topCountries as $countrykey => &$countryvalue){
+				$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
+			}
+			unset($countryvalue);
+			$shownCountries = array_flip(explode(',', WE_COUNTRIES_SHOWN));
+			foreach($shownCountries as $countrykey => &$countryvalue){
+				$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
+			}
+			unset($countryvalue);
+			$oldLocale = setlocale(LC_ALL, NULL);
+			setlocale(LC_ALL, $lang . '.UTF-8');
+			asort($topCountries, SORT_LOCALE_STRING);
+			asort($shownCountries, SORT_LOCALE_STRING);
+			setlocale(LC_ALL, $oldLocale);
+
+			$options = '';
+			if(WE_COUNTRIES_DEFAULT != ''){
+				$options.='<option value="--" ' . ($orgVal == '--' ? ' selected="selected">' : '>') . WE_COUNTRIES_DEFAULT . '</option>';
+			}
+			foreach($topCountries as $countrykey => &$countryvalue){
+				$options.='<option value="' . $countrykey . '" ' . ($orgVal == $countrykey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue) . '</option>';
+			}
+			unset($countryvalue);
+			if(!empty($topCountries) && !empty($shownCountries)){
+				$options.='<option value="-" disabled="disabled">----</option>';
+			}
+			foreach($shownCountries as $countrykey2 => &$countryvalue2){
+				$options.='<option value="' . $countrykey2 . '" ' . ($orgVal == $countrykey2 ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue2) . '</option>';
+			}
+			unset($countryvalue2);
+			$newAtts['size'] = (isset($atts['size']) ? $atts['size'] : 1);
+			$newAtts['name'] = $fieldname;
+			return getHtmlTag('select', $newAtts, $options, true);
+		case 'language':
+			$newAtts = removeAttribs($attribs, array('wysiwyg', 'commands', 'pure', 'type', 'value', 'checked', 'autobr', 'name', 'values', 'hidden', 'editable', 'format', 'property', 'rows', 'cols', 'fontnames', 'bgcolor', 'width', 'height', 'maxlength'));
+
+			$docAttr = weTag_getAttribute('doc', $attribs, 'self');
+			$doc = we_getDocForTag($docAttr);
+			$lang = $doc->Language;
+			if($lang != ''){
+				$langcode = substr($lang, 0, 2);
+			} else {
+				$langcode = we_core_Local::weLangToLocale($GLOBALS['WE_LANGUAGE']);
+			}
+			$frontendL = $GLOBALS['weFrontendLanguages'];
+			foreach($frontendL as &$lcvalue){
+				$lccode = explode('_', $lcvalue);
+				$lcvalue = $lccode[0];
+			}
+			if(!Zend_Locale::hasCache()){
+				Zend_Locale::setCache(getWEZendCache());
+			}
+			$frontendLL = array();
+			foreach($frontendL as &$lcvalue){
+				$frontendLL[$lcvalue] = Zend_Locale::getTranslation($lcvalue, 'language', $langcode);
+			}
+
+			$oldLocale = setlocale(LC_ALL, NULL);
+			setlocale(LC_ALL, $lang . '.UTF-8');
+			asort($frontendLL, SORT_LOCALE_STRING);
+			setlocale(LC_ALL, $oldLocale);
+			$options = '';
+			foreach($frontendLL as $langkey => &$langvalue){
+				$options.='<option value="' . $langkey . '" ' . ($orgVal == $langkey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($langvalue) . '</option>';
+			}
+			unset($langvalue);
+			$newAtts['size'] = (isset($atts['size']) ? $atts['size'] : 1);
+			$newAtts['name'] = $fieldname;
+			return getHtmlTag('select', $newAtts, $options, true);
+		case 'select' :
+			$options = '';
+			$atts = removeAttribs($attribs, array(
+				'wysiwyg',
+				'commands',
+				'pure',
+				'type',
+				'value',
+				'checked',
+				'autobr',
+				'name',
+				'values',
+				'hidden',
+				'editable',
+				'format',
+				'property',
+				'rows',
+				'cols',
+				'fontnames',
+				'bgcolor',
+				'width',
+				'height',
+				'maxlength'
+			));
+			if($values){
+
+				$values = explode(',', $values);
+
+				foreach($values as $txt){
+
+					$attsOption = ($txt == $orgVal ?
+							array(
+							'selected' => 'selected'
+							) :
+							array());
+
+					$options .= getHtmlTag('option', $attsOption, trim($txt), true);
+				}
+			} elseif($objekt && isset($objekt->DefArray["meta_" . $name])){
+				foreach($objekt->DefArray["meta_" . $name]["meta"] as $key => $val){
+
+					if($orgVal == $key){
+						$atts2 = array(
+							'value' => $key, 'selected' => 'selected'
+						);
+					} else {
+						$atts2 = array(
+							'value' => $key
+						);
+					}
+					$attsOption = removeAttribs(array_merge($atts, $atts2), array('class'));
+					$options .= getHtmlTag('option', $attsOption, $val, true);
+				}
+			}
+			$atts['size'] = (isset($atts['size']) ? $atts['size'] : 1);
+			$atts['name'] = $fieldname;
+			return getHtmlTag('select', $atts, $options, true);
+		case 'radio' :
+			$atts = removeAttribs($attribs, array(
+				'wysiwyg',
+				'commands',
+				'pure',
+				'type',
+				'value',
+				'checked',
+				'autobr',
+				'name',
+				'values',
+				'hidden',
+				'editable',
+				'format',
+				'property',
+				'rows',
+				'cols',
+				'width',
+				'height',
+				'bgcolor',
+				'fontnames'
+			));
+			return (!$isset ?
+					we_getInputRadioField($fieldname, ($checked ? $value : $value . 'dummy'), $value, $atts) :
+					we_getInputRadioField($fieldname, $content, $orgVal, $atts));
+
+		case 'hidden':
+			return getHtmlTag('input', array(
+				'type' => 'hidden',
+				'name' => $fieldname,
+				'value' => oldHtmlspecialchars($content),
+				'xml' => $xml,
+			));
+		case 'print' :
+			return $orgVal;
+		case 'choice' :
+			$atts = removeAttribs($attribs, array(
+				'wysiwyg',
+				'commands',
+				'pure',
+				'type',
+				'value',
+				'checked',
+				'autobr',
+				'name',
+				'values',
+				'hidden',
+				'editable',
+				'format',
+				'property',
+				'cols',
+				'rows',
+				'width',
+				'height',
+				'bgcolor',
+				'fontnames',
+				'maxlength'
+			));
+			$mode = weTag_getAttribute('mode', $attribs);
+			return we_html_tools::htmlInputChoiceField($fieldname, $orgVal, $values, $atts, $mode);
+		case 'password':
+			$atts = removeAttribs($attribs, array(
+				'wysiwyg',
+				'commands',
+				'pure',
+				'type',
+				'value',
+				'checked',
+				'autobr',
+				'name',
+				'values',
+				'hidden',
+				'editable',
+				'format',
+				'property',
+				'cols',
+				'rows',
+				'width',
+				'height',
+				'bgcolor',
+				'fontnames'
+			));
+			$atts['type'] = 'password';
+			$atts['name'] = $fieldname;
+			$atts['value'] = oldHtmlspecialchars($orgVal);
+
+			return getHtmlTag('input', $atts);
+		case 'textinput':
+		default :
+			$atts = removeAttribs($attribs, array(
+				'wysiwyg',
+				'commands',
+				'pure',
+				'type',
+				'value',
+				'checked',
+				'autobr',
+				'name',
+				'values',
+				'hidden',
+				'editable',
+				'format',
+				'property',
+				'cols',
+				'rows',
+				'width',
+				'height',
+				'bgcolor',
+				'fontnames'
+			));
+			return we_getInputTextInputField($fieldname, $orgVal, $atts);
 	}
 }
