@@ -573,7 +573,7 @@ function toggle(name){
 				return $_return;
 			}
 		}
-		
+
 		$_import_file = $_SERVER['DOCUMENT_ROOT'] . $v['import_from'];
 		if(we_backup_util::getFormat($_import_file) != 'xml'){
 			$_return[1] = we_html_element::jsElement($functions . ' ' .
@@ -632,11 +632,11 @@ handle_event("previous");');
 			$wecmdenc2 = we_base_request::encCmd("self.wizbody.document.forms['we_form'].elements['v[doc_dir]'].value");
 			$wecmdenc3 = '';
 
-			$btnDocDir = we_html_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['v[doc_dir]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $rootDirID . "')");
+			$btnDocDir = we_html_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['v[doc_dir_id]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $rootDirID . "')");
 			$yuiSuggest = & weSuggest::getInstance();
 			$yuiSuggest->setAcId("DocPath");
 			$yuiSuggest->setContentType("folder");
-			$yuiSuggest->setInput("v[doc_dir]", (isset($v["doc_dir"]) ? $v["doc_dir"] : id_to_path($rootDirID)), array("onFocus" => "self.document.forms['we_form'].elements['_v[restore_doc_path]'].checked=false;"));
+			$yuiSuggest->setInput("v[doc_dir]", (isset($v["doc_dir"]) ? $v["doc_dir"] : id_to_path($rootDirID)), array("onfocus" => "self.document.forms['we_form'].elements['_v[restore_doc_path]'].checked=false;"));
 			$yuiSuggest->setMaxResults(10);
 			$yuiSuggest->setMayBeEmpty(0);
 			$yuiSuggest->setResult("v[doc_dir_id]", (isset($v["doc_dir_id"]) ? $v["doc_dir_id"] : $rootDirID));
@@ -657,14 +657,14 @@ handle_event("previous");');
 			$dir_table->setCol(0, 0, null, we_html_tools::getPixel(20, 1));
 			$dir_table->setCol(0, 1, null, we_html_tools::htmlAlertAttentionBox(g_l('import', '[documents_desc]'), we_html_tools::TYPE_ALERT, 390, true, 50));
 			$dir_table->setCol(1, 1, null, $docPath);
-			$dir_table->setCol(2, 1, null, we_html_forms::checkboxWithHidden((isset($v['restore_doc_path']) && $v['restore_doc_path']) ? true : false, 'v[restore_doc_path]', g_l('import', "[maintain_paths]"), false, "defaultfont", "self.document.forms['we_form'].elements['v[doc_dir]'].value='/';"));
+			$dir_table->setCol(2, 1, null, we_html_forms::checkboxWithHidden((isset($v['restore_doc_path']) && $v['restore_doc_path']), 'v[restore_doc_path]', g_l('import', "[maintain_paths]"), false, "defaultfont", "self.document.forms['we_form'].elements['v[doc_dir]'].value='/';"));
 
 			$tbl_extra->setCol(1, 0, null, $dir_table->getHtml());
 
 			// --------------
 			// import templates
 			$rootDirID = get_def_ws(TEMPLATES_TABLE);
-			$tbl_extra->setCol(2, 0, array('colspan' => 2), we_html_forms::checkboxWithHidden((isset($v['import_templ']) && $v['import_templ']) ? true : false, 'v[import_templ]', g_l('import', '[import_templ]'), false, 'defaultfont', "toggle('tpl_table')"));
+			$tbl_extra->setCol(2, 0, array('colspan' => 2), we_html_forms::checkboxWithHidden((isset($v['import_templ']) && $v['import_templ']), 'v[import_templ]', g_l('import', '[import_templ]'), false, 'defaultfont', "toggle('tpl_table')"));
 			$wecmdenc1 = we_base_request::encCmd("self.wizbody.document.forms['we_form'].elements['v[tpl_dir_id]'].value");
 			$wecmdenc2 = we_base_request::encCmd("self.wizbody.document.forms['we_form'].elements['v[tpl_dir]'].value");
 			$wecmdenc3 = '';
