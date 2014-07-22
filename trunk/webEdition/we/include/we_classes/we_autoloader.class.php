@@ -80,6 +80,8 @@ abstract class we_autoloader{
 		'Image_Transform_Driver_GD' => 'lib/additional/pear/Image_Transform_Driver_GD.class.php',
 		'Image_Transform' => 'lib/additional/pear/Image_Transform.class.php',
 		'Image_IPTC' => 'lib/additional/pear/Image_IPTC.class.php',
+		'XML_Parser_Error' => 'lib/additional/pear/XML_Parser.class.php',
+		'XML_Parser' => 'lib/additional/pear/XML_Parser.class.php',
 	);
 	private static $classes = array(
 		'we_classes/contents' => array(
@@ -134,8 +136,6 @@ abstract class we_autoloader{
 			'weTree' => 'weTree.inc.php',
 			'we_updater' => 'we_updater.inc.php',
 			'we_widget' => 'we_widget.inc.php',
-			'XML_Parser_Error' => 'Parser.php',
-			'XML_Parser' => 'Parser.php',
 			'weToolLookup' => 'tools/we_tool_lookup.class.php',
 		),
 		'we_modules' => array(

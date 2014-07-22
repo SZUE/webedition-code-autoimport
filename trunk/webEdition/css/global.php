@@ -597,3 +597,12 @@ font-size: <?php echo (we_base_browserDetect::isMAC()) ? 13 : ((we_base_browserD
 font-family: <?php echo g_l('css', '[font_family]'); ?>;
 font-weight: bold;
 }
+
+div.le_widget{
+margin-top:1ex;
+margin-right:1em;
+}
+
+div.le_widget:first-child{
+margin-top:0px;
+}

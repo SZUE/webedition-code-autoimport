@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -24,7 +23,6 @@
  */
 we_base_moduleInfo::isActive('shop');
 
-
 /**
  * This function writes the shop data (order) to the database
  *
@@ -47,7 +45,7 @@ function we_tag_writeShopData($attribs){
 	$shopname = weTag_getAttribute('shopname', $attribs);
 	$shopname = $shopname ? $shopname : $name;
 	$pricename = weTag_getAttribute('pricename', $attribs);
-	$shipping = floatval(str_replace(',', '.', weTag_getAttribute('shipping', $attribs)));
+	$shipping = weTag_getAttribute('shipping', $attribs);
 	$shippingIsNet = weTag_getAttribute('shippingisnet', $attribs, false, true);
 	$shippingVatRate = weTag_getAttribute('shippingvatrate', $attribs);
 	$netprices = weTag_getAttribute('netprices', $attribs, true, true);
@@ -154,7 +152,7 @@ function we_tag_writeShopData($attribs){
 				'vatRate' => $weShippingControl->vatRate
 				) :
 				array(
-				'costs' => $shipping,
+				'costs' => floatval(str_replace(',', '.', $shipping)),
 				'isNet' => $shippingIsNet,
 				'vatRate' => $shippingVatRate
 				)),
@@ -166,7 +164,6 @@ function we_tag_writeShopData($attribs){
 		}
 
 		if(!$DB_WE->query('UPDATE ' . SHOP_TABLE . ' set strSerialOrder="' . $DB_WE->escape(serialize($cartField)) . '" WHERE intOrderID="' . $orderID . '"')){
-			echo "Data Insert Failed";
 			return;
 		}
 		//}
