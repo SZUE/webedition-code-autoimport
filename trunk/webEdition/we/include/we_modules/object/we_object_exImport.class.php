@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_object_exImport extends we_object{
-
 	private $_ObjectBaseElements = array(
 		'ID', 'OF_ID', 'OF_ParentID', 'OF_Text', 'OF_Path', 'OF_Url', 'OF_TriggerID', 'OF_Workspaces', 'OF_ExtraWorkspaces', 'OF_ExtraWorkspacesSelected',
 		'OF_Templates', 'OF_ExtraTemplates', 'OF_Category', 'OF_Published', 'OF_IsSearchable', 'OF_Charset', 'OF_WebUserID', 'OF_Language', 'variant_weInternVariantElement'
@@ -349,9 +348,8 @@ class we_object_exImport extends we_object{
 		}
 		if(isset($this->isAddFieldNoSave) && $this->isAddFieldNoSave){
 			return true;
-		} else {
-			return $this->saveToDB(true);
 		}
+		return $this->saveToDB(true);
 	}
 
 	function dropField($name, $type = ''){

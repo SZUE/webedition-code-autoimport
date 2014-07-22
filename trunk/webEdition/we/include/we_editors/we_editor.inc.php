@@ -329,7 +329,7 @@ if((($cmd0 != 'save_document' && $cmd0 != 'publish' && $cmd0 != 'unpublish') && 
 
 	if($GLOBALS['we_editmode']){
 		$matches = array();
-		preg_match_all('|<form( name="we_form"))|i', $contents, $matches, PREG_PATTERN_ORDER);
+		preg_match_all('|<form( name="we_form")|i', $contents, $matches, PREG_PATTERN_ORDER);
 		if($matches && count($matches[0])/* >2 */){
 			//find the number of we-forms
 			$all = count($matches[0]);
