@@ -105,7 +105,7 @@ class we_export_export extends weModelBase{
 		$this->Icon = ($this->IsFolder == 1 ? we_base_ContentTypes::FOLDER_ICON : we_base_ContentTypes::LINK_ICON);
 		$sets = array();
 		$wheres = array();
-		foreach($this->persistent_slots as $key => $val){
+		foreach($this->persistent_slots as $val){
 			//if(!in_array($val,$this->keys))
 			if(isset($this->{$val})){
 				$sets[] = '`' . $this->db->escape($val) . '`="' . $this->db->escape($this->{$val}) . '"';
@@ -132,8 +132,9 @@ class we_export_export extends weModelBase{
 
 	function delete(){
 		//if (!$this->ID) return false;
-		if($this->IsFolder)
+		if($this->IsFolder){
 			$this->deleteChilds();
+		}
 		parent::delete();
 		return true;
 	}
