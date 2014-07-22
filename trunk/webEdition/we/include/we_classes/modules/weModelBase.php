@@ -44,7 +44,7 @@ class weModelBase{
 		$this->loadPresistents();
 	}
 
-	function loadPresistents(){
+	function loadPresistents(){//fixme: set datatype from db
 		$this->persistent_slots = array();
 		$tableInfo = $this->db->metadata($this->table);
 		foreach($tableInfo as $info){
