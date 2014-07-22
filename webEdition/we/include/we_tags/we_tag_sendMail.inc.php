@@ -124,7 +124,7 @@ function we_tag_sendMail($attribs, $content){
 				new we_base_sessionHandler();
 			}
 			$_SESSION['WE_SendMail'] = true;
-			$codes = ($id > 0) && we_base_file::isWeFile($id, FILE_TABLE, $GLOBALS['DB_WE']) ? we_getDocumentByID($id) : '';
+			$codes = ($id > 0) && we_base_file::isWeFile($id, FILE_TABLE, $GLOBALS['DB_WE']) ? we_getDocumentByID($id, '', $GLOBALS['DB_WE']) : '';
 			unset($_SESSION['WE_SendMail']);
 			if(!$codes){
 				t_e('Document to send via we:sendMail is empty ID: ' . $id);
@@ -144,7 +144,7 @@ function we_tag_sendMail($attribs, $content){
 			}
 			$phpmail->setCharSet($charset);
 			if($mimetype != 'text/html'){
-				$phpmail->addTextPart(strip_tags(str_replace("&nbsp;", " ", str_replace("<br />", "\n", str_replace("<br/>", "\n", $codes)))));
+				$phpmail->addTextPart(strip_tags(strtr($codes, array("&nbsp;" => " ", "<br />" => "\n", "<br/>" => "\n"))));
 			} else {
 				$phpmail->addHTMLPart($codes);
 			}

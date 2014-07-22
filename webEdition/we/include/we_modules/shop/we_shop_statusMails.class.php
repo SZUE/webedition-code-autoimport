@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_shop_statusMails{
-
 	var $FieldsHidden; //an array of statusfield names not to be shown in order
 	var $FieldsHiddenCOV; //an array of statusfield names not to be shown in order
 	var $FieldsText; //an array with keys equal to name of statusfield, and value = text to be shown
@@ -226,7 +225,8 @@ class we_shop_statusMails{
 				$docID = $this->FieldsDocuments[$pagelang]['Date' . $was];
 				$field = 1;
 			} else {
-				$docID = (isset($this->FieldsDocuments[$cdata[$this->LanguageData['languageField']]]) && isset($this->FieldsDocuments[$cdata[$this->LanguageData['languageField']]]['Date' . $was]) ?
+				$docID = (isset($this->FieldsDocuments[$cdata[$this->LanguageData['languageField']]]) && isset($this->FieldsDocuments[$cdata[$this->LanguageData['languageField']]]['Date' . $was])
+							?
 						$this->FieldsDocuments[$cdata[$this->LanguageData['languageField']]]['Date' . $was] :
 						$this->FieldsDocuments['default']['Date' . $was]);
 				$field = 2;
@@ -250,7 +250,7 @@ class we_shop_statusMails{
 			$_REQUEST['we_userlanguage'] = $UserLang;
 			$_REQUEST['we_shopstatus'] = $was;
 
-			$codes = we_getDocumentByID($docID);
+			$codes = we_getDocumentByID($docID, '', $DB_WE);
 			$maildoc = new we_webEditionDocument();
 			$maildoc->initByID($docID);
 
@@ -270,7 +270,8 @@ class we_shop_statusMails{
 			$subject = 'no subject given';
 		}
 		if($recipientOK && $this->EMailData['address'] != '' && we_check_email($this->EMailData['address'])){
-			$from = (!isset($this->EMailData['name']) || $this->EMailData['name'] === '' || $this->EMailData['name'] === null || $this->EMailData['name'] === $this->EMailData['address'] ?
+			$from = (!isset($this->EMailData['name']) || $this->EMailData['name'] === '' || $this->EMailData['name'] === null || $this->EMailData['name'] === $this->EMailData['address']
+						?
 					$this->EMailData['address'] :
 					array('email' => $this->EMailData['address'], 'name' => $this->EMailData['name'])
 				);
@@ -280,7 +281,8 @@ class we_shop_statusMails{
 
 			$phpmail->addHTMLPart($codes);
 			$phpmail->addTextPart(strip_tags(strtr($codes, array('&nbsp;' => ' ', '<br />' => "\n", '<br/>' => "\n"))));
-			$phpmail->addTo($cdata[$this->EMailData['emailField']], ( (isset($this->EMailData['titleField']) && $this->EMailData['titleField'] != '' && isset($cdata[$this->EMailData['titleField']]) && $cdata[$this->EMailData['titleField']] != '' ) ? $cdata[$this->EMailData['titleField']] . ' ' : '') . $cdata['Forename'] . ' ' . $cdata['Surname']);
+			$phpmail->addTo($cdata[$this->EMailData['emailField']], ( (isset($this->EMailData['titleField']) && $this->EMailData['titleField'] != '' && isset($cdata[$this->EMailData['titleField']]) && $cdata[$this->EMailData['titleField']] != '' )
+						? $cdata[$this->EMailData['titleField']] . ' ' : '') . $cdata['Forename'] . ' ' . $cdata['Surname']);
 			if(isset($this->EMailData['bcc']) && $this->EMailData['bcc'] != ''){
 				$bccArray = explode(',', $this->EMailData['bcc']);
 				$phpmail->setBCC($bccArray);
