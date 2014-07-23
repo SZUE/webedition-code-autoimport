@@ -1382,9 +1382,9 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 		ed.onNodeChange.add(function(ed, cm, n) {
 			var td = ed.dom.getParent(n, "td");
 			if(typeof td === "object" && td && td.getElementsByTagName("p").length === 1){
-				var inner = td.getElementsByTagName("p")[0].innerHTML;
+				var inner = td.innerHTML;//td.getElementsByTagName("p")[0].innerHTML;
 				td.innerHTML = "";
-				ed.selection.setContent(inner)
+				ed.selection.setContent(inner);
 			}
 		});
 
