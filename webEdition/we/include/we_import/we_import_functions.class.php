@@ -44,7 +44,7 @@ abstract class we_import_functions{
 	 * @param boolean $IsSearchable
 	 * @desc imports a document into webedition
 	 */
-	static function importDocument($parentID, $templateID, $fields, $doctypeID, $categories, $filename, $isDynamic, $extension, $publish, $IsSearchable, $charset, $conflict = 'rename'){
+	public static function importDocument($parentID, $templateID, $fields, $doctypeID, $categories, $filename, $isDynamic, $extension, $publish, $IsSearchable, $charset, $conflict = 'rename'){
 
 		// erzeugen eines neuen webEdition-Dokument-Objekts
 		$GLOBALS['we_doc'] = new we_webEditionDocument();
@@ -115,7 +115,7 @@ abstract class we_import_functions{
 	 * @param boolean $publish
 	 * @desc imports an object into webEdition
 	 */
-	static function importObject($classID, $fields, $categories, $filename, $publish, $issearchable, $parentID, $charset, $conflict = 'rename'){
+	public static function importObject($classID, $fields, $categories, $filename, $publish, $issearchable, $parentID, $charset, $conflict = 'rename'){
 
 		// INIT OBJECT
 		$object = new we_objectFile();
