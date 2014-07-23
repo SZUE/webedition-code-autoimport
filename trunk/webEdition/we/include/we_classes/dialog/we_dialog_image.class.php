@@ -71,7 +71,7 @@ class we_dialog_image extends we_dialog_base{
 					$_fileScr = id_to_path($id);
 				}
 			}
-			
+
 			if($id){
 				$this->args["type"] = we_base_link::TYPE_INT;
 				$this->args["extSrc"] = "";
@@ -148,7 +148,6 @@ class we_dialog_image extends we_dialog_base{
 	function initByHttp(){
 		we_dialog_base::initByHttp();
 		$src = $this->getHttpVar(we_base_request::URL, 'src');
-		t_e($src);
 		$width = $this->getHttpVar(we_base_request::INT, 'width');
 		$height = $this->getHttpVar(we_base_request::INT, 'height');
 		$hspace = $this->getHttpVar(we_base_request::INT, 'hspace');
