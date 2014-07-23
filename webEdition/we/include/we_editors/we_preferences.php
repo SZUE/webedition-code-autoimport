@@ -3172,7 +3172,7 @@ if(we_base_request::_(we_base_request::BOOL, 'save_settings')){
 		}
 	}
 	// check doc for error on none existing objects
-	if(we_base_request::_(we_base_request::STRING, 'error_document_no_objectfile_text')){
+	if(we_base_request::_(we_base_request::FILE, 'error_document_no_objectfile_text')){
 		$acResponse = $acQuery->getItemById(we_base_request::_(we_base_request::INT, 'newconf', 0, 'ERROR_DOCUMENT_NO_OBJECTFILE'), FILE_TABLE, array('IsFolder'));
 		if(!$acResponse || $acResponse[0]['IsFolder'] == 1){
 			$acError = true;
