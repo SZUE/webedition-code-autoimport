@@ -748,7 +748,7 @@ abstract class we_root extends we_class{
 	}
 
 	function we_initSessDat($sessDat){
-		we_class::we_initSessDat($sessDat);
+		parent::we_initSessDat($sessDat);
 		if(is_array($sessDat)){
 			foreach($this->persistent_slots as $cur){
 				if(isset($sessDat[0][$cur])){
@@ -976,8 +976,6 @@ abstract class we_root extends we_class{
 		}
 
 		if(($replace = implode(',', $replace))){
-			/* 			t_e($replace,$this);
-			  exit(); */
 			$this->DB_WE->query('DELETE FROM ' . LINK_TABLE . ' WHERE DocumentTable="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) . '" AND CID IN(' . $replace . ')');
 			$this->DB_WE->query('DELETE FROM ' . CONTENT_TABLE . ' WHERE ID IN (' . $replace . ')');
 		}
