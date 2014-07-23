@@ -1003,7 +1003,7 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 						'm_' . $iCurrId, $aProps[0], $oTblCont, $aLang, $aProps[1], $aProps[2], $aProps[3], $iWidth, $aPrefs[$aProps[0]]["height"], $aPrefs[$aProps[0]]["isResizable"]);
 				$s2 .= we_html_element::htmlDiv(
 						array(
-						"id" => "m_" . $iCurrId, "class" => "le_widget", "style" => "position:relative;"
+						"id" => "m_" . $iCurrId, "class" => "le_widget", "style" => "position:relative;top:0px;left:0px;"
 						), $$aProps[0]->getHtml()) .
 					we_html_element::jsElement("initWidget('" . 'm_' . $iCurrId . "');");
 			}
@@ -1119,7 +1119,7 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 				array(
 				"class" => "defaultfont errorMessage", "style" => "width: 400px;"
 				), (permissionhandler::hasPerm("CHANGE_START_DOCUMENT") && permissionhandler::hasPerm("EDIT_SETTINGS") ? we_html_tools::htmlAlertAttentionBox(
-						"<strong>" . g_l('SEEM', "[question_change_startdocument]") . "</strong><br /><br />" . we_html_button::create_button(
+						"<strong>" . g_l('SEEM', "[question_change_startdocument]") . "</strong><br/><br/>" . we_html_button::create_button(
 							"preferences", "javascript:top.we_cmd('openPreferences');"), we_html_tools::TYPE_ALERT, 0, false) : we_html_tools::htmlAlertAttentionBox(
 						"<strong>" . g_l('SEEM', "[start_with_SEEM_no_startdocument]") . "</strong>", we_html_tools::TYPE_ALERT, 0, false))));
 }

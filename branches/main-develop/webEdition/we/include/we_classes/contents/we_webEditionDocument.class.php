@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_webEditionDocument extends we_textContentDocument{
-
 	// ID of the templates that is used from the document
 	var $TemplateID = 0;
 	// ID of the template that is used from the parked document (Bug Fix #6615)
@@ -108,7 +107,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			$GLOBALS['we_document'][$formname]->setElement('we_returnpage', $ret);
 		}
 		if(isset($_REQUEST['we_ui_' . $formname]) && is_array($_REQUEST['we_ui_' . $formname])){
-			we_base_util::convertDateInRequest($_REQUEST['we_ui_' . $formname], true);//FIXME: this can't be we_base_request at the moment
+			we_base_util::convertDateInRequest($_REQUEST['we_ui_' . $formname], true); //FIXME: this can't be we_base_request at the moment
 			foreach($_REQUEST['we_ui_' . $formname] as $n => $v){
 				$v = we_base_util::rmPhp($v);
 				$GLOBALS['we_document'][$formname]->setElement($n, $v);
@@ -348,7 +347,8 @@ class we_webEditionDocument extends we_textContentDocument{
 			$TID = $this->TemplateID;
 		}
 
-		$openButton = (permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ? we_html_button::create_button('edit', 'javascript:goTemplate(document.we_form.elements[\'' . $fieldname . '\'].options[document.we_form.elements[\'' . $fieldname . '\'].selectedIndex].value)') : '');
+		$openButton = (permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ? we_html_button::create_button('edit', 'javascript:goTemplate(document.we_form.elements[\'' . $fieldname . '\'].options[document.we_form.elements[\'' . $fieldname . '\'].selectedIndex].value)')
+					: '');
 
 		if(!empty($tlist)){
 			$foo = array();
@@ -514,7 +514,8 @@ class we_webEditionDocument extends we_textContentDocument{
 	 * @desc this function returns the code of the template this document bases on
 	 */
 	function getTemplateCode($completeCode = true){
-		return f('SELECT c.Dat FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON c.ID=l.CID WHERE l.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND l.DID=' . intval($this->TemplateID) . ' AND l.Name="' . ($completeCode ? 'completeData' : 'data') . '"', '', $this->DB_WE);
+		return f('SELECT c.Dat FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON c.ID=l.CID WHERE l.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND l.DID=' . intval($this->TemplateID) . ' AND l.Name="' . ($completeCode
+					? 'completeData' : 'data') . '"', '', $this->DB_WE);
 	}
 
 	function getFieldTypes($templateCode, $useTextarea = false){

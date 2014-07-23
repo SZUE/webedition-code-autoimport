@@ -435,7 +435,7 @@ self.focus();
 				if(!we_fileupload_include::USE_LEGACY_FOR_BACKUP){
 					if($this->fileUploader){
 						$fileUploaderHead = $this->fileUploader->getCss() . $this->fileUploader->getJs();
-						$alertMaxSize = $this->fileUploader->getMaxtUploadSizeText();
+						$alertMaxSize = $this->fileUploader->getMaxUploadSizeText();
 						$inputTypeFile = $this->fileUploader->getHTML();
 					} else {
 						$alertMaxSize = sprintf(g_l('newFile', "[max_possible_size]"), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB));

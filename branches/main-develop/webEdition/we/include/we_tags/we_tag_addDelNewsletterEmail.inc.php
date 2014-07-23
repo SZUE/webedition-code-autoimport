@@ -99,7 +99,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 	if($isSubscribe){
 		$GLOBALS['WE_WRITENEWSLETTER_STATUS'] = we_newsletter_base::STATUS_SUCCESS;
 		$err = we_newsletter_base::STATUS_SUCCESS;
-		$f = getNewsletterFields($_REQUEST, we_base_request::_(we_base_request::INT, 'confirmID', 0), $err, we_base_request::_(we_base_request::RAW, 'mail', ''));
+		$f = getNewsletterFields($_REQUEST, we_base_request::_(we_base_request::STRING, 'confirmID', 0), $err, we_base_request::_(we_base_request::RAW, 'mail', ''));
 		// Setting Globals FOR WE-Tags
 		$GLOBALS['WE_NEWSLETTER_EMAIL'] = isset($f['subscribe_mail']) ? $f['subscribe_mail'] : '';
 		$GLOBALS['WE_SALUTATION'] = isset($f['subscribe_salutation']) ? $f['subscribe_salutation'] : '';
@@ -224,7 +224,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 						$mywedoc = $GLOBALS['we_doc'];
 						unset($GLOBALS['we_doc']);
 					}
-					$mailtextHTML = ($mailid > 0) && we_base_file::isWeFile($mailid, FILE_TABLE, $GLOBALS['DB_WE']) ? we_getDocumentByID($mailid) : '';
+					$mailtextHTML = ($mailid > 0) && we_base_file::isWeFile($mailid, FILE_TABLE, $GLOBALS['DB_WE']) ? we_getDocumentByID($mailid, '', $GLOBALS['DB_WE']) : '';
 					if($f['subscribe_title']){
 						$mailtextHTML = preg_replace('%([^ ])###TITLE###%', '\1 ' . $f['subscribe_title'], $mailtextHTML);
 					}
@@ -376,9 +376,9 @@ function we_tag_addDelNewsletterEmail($attribs){
 					$hook = new weHook('customer_preSave', '', array('customer' => &$fields, 'from' => 'tag', 'type' => (!$uid ? 'new' : 'modify'), 'tagname' => 'addDelNewsletterEmail', 'isSubscribe' => $isSubscribe, 'isUnsubscribe' => $isUnsubscribe));
 					$ret = $hook->executeHook();
 
-					$__db->query((!$uid ?
+					$__db->query($uid ?
 							'UPDATE ' . CUSTOMER_TABLE . ' SET ' . we_database_base::arraySetter($fields) . ' WHERE ID=' . $uid :
-							'INSERT INTO ' . CUSTOMER_TABLE . ' SET ' . we_database_base::arraySetter($fields)));
+							'INSERT INTO ' . CUSTOMER_TABLE . ' SET ' . we_database_base::arraySetter($fields));
 
 
 
@@ -412,7 +412,8 @@ function we_tag_addDelNewsletterEmail($attribs){
 
 						if(!$__db->isColExist(CUSTOMER_TABLE, $abo)){
 							$__db->addCol(CUSTOMER_TABLE, $abo, 'VARCHAR(200) DEFAULT "' . $__db->escape($setDefault) . '"');
-							$fieldDefault = array('default' => isset($customerFields['Newsletter_Ok']['default']) && !empty($customerFields['Newsletter_Ok']['default']) ? $customerFields['Newsletter_Ok']['default'] : ',1');
+							$fieldDefault = array('default' => isset($customerFields['Newsletter_Ok']['default']) && !empty($customerFields['Newsletter_Ok']['default']) ? $customerFields['Newsletter_Ok']['default']
+										: ',1');
 							$customerFields[$abo] = $fieldDefault;
 							$updateCustomerFields = true;
 						}
@@ -589,7 +590,7 @@ function we_unsubscribeNL($db, $customer, $_customerFieldPrefs, $abos, $paths){
 function getNewsletterFields($request, $confirmid, &$errorcode, $mail = ''){
 	$errorcode = we_newsletter_base::STATUS_SUCCESS;
 	if($confirmid){
-		$_h = getHash('SELECT * FROM ' . NEWSLETTER_CONFIRM_TABLE . ' WHERE confirmID = "' . $GLOBALS['DB_WE']->escape($confirmid) . '" AND LOWER(subscribe_mail)="' . $GLOBALS['DB_WE']->escape(strtolower($mail)) . '"');
+		$_h = getHash('SELECT * FROM ' . NEWSLETTER_CONFIRM_TABLE . ' WHERE confirmID="' . $GLOBALS['DB_WE']->escape($confirmid) . '" AND LOWER(subscribe_mail)="' . $GLOBALS['DB_WE']->escape(strtolower($mail)) . '"');
 		if(!$_h){
 			$errorcode = we_newsletter_base::STATUS_CONFIRM_FAILED;
 		}
@@ -610,7 +611,8 @@ function getNewsletterFields($request, $confirmid, &$errorcode, $mail = ''){
 	return array(
 		'subscribe_mail' => trim($subscribe_mail),
 		'subscribe_html' => trim((isset($request['we_subscribe_html__']) ? filterXss($request['we_subscribe_html__']) : 0)),
-		'subscribe_salutation' => trim((isset($request['we_subscribe_salutation__']) ? preg_replace("|[\r\n,]|", '', filterXss($request['we_subscribe_salutation__'])) : '')),
+		'subscribe_salutation' => trim((isset($request['we_subscribe_salutation__']) ? preg_replace("|[\r\n,]|", '', filterXss($request['we_subscribe_salutation__']))
+					: '')),
 		'subscribe_title' => trim((isset($request['we_subscribe_title__']) ? preg_replace("|[\r\n,]|", '', filterXss($request['we_subscribe_title__'])) : '')),
 		'subscribe_firstname' => trim((isset($request['we_subscribe_firstname__']) ? preg_replace("|[\r\n,]|", '', filterXss($request['we_subscribe_firstname__'])) : '')),
 		'subscribe_lastname' => trim((isset($request['we_subscribe_lastname__']) ? preg_replace("|[\r\n,]|", '', filterXss($request['we_subscribe_lastname__'])) : ''))

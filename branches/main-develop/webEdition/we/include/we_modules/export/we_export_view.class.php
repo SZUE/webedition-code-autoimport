@@ -568,7 +568,7 @@ class we_export_view{
 		$_SESSION['weS']['ExportSession'] = $this->export;
 	}
 
-	function processVariables(){
+	function processVariables(){//FIXME use table datatypes
 
 		if(isset($_SESSION['weS']['ExportSession'])){
 			$this->export = $_SESSION['weS']['ExportSession'];
@@ -580,7 +580,7 @@ class we_export_view{
 
 		if(is_array($this->export->persistent_slots)){
 			foreach($this->export->persistent_slots as $varname){
-				if(($v = we_base_request::_(we_base_request::STRING, $varname))){
+				if(($v = we_base_request::_(we_base_request::STRINGC, $varname))){//FIXME: this is quiet for now....
 					$this->export->{$varname} = $v;
 				}
 			}

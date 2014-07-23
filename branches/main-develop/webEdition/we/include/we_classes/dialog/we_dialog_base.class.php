@@ -26,7 +26,6 @@ class we_dialog_base{
 	/*	 * ***********************************************************************
 	 * VARIABLES
 	 * *********************************************************************** */
-
 	var $db = '';
 	var $what = '';
 	var $args = array();
@@ -112,9 +111,8 @@ class we_dialog_base{
 
 		if($this->cmdFN){
 			return $fn($send);
-		} else {
-			return $this->cmdFunction($send);
 		}
+		return $this->cmdFunction($send);
 	}
 
 	function cmdFunction($args){
@@ -190,7 +188,8 @@ class we_dialog_base{
 		if($this->pageNr == $this->numPages && $this->JsOnly == false){
 			$okBut = ($back = $this->getBackBut() ) ? we_html_button::create_button_table(array($back, we_html_button::create_button('ok', 'form:we_form'))) : we_html_button::create_button('ok', 'form:we_form');
 		} else if($this->pageNr < $this->numPages){
-			$okBut = (($back = $this->getBackBut()) && ($next = $this->getNextBut())) ? we_html_button::create_button_table(array($back, $next)) : (($back == '') ? $next : $back);
+			$okBut = (($back = $this->getBackBut()) && ($next = $this->getNextBut())) ? we_html_button::create_button_table(array($back, $next)) : (($back == '') ? $next
+						: $back);
 		} else {
 			$okBut = (($back = $this->getBackBut()) && ($ok = $this->getOkBut()) ) ? we_html_button::create_button_table(array($back, $ok)) : (($back == '') ? $ok : $back);
 		}
@@ -335,8 +334,8 @@ self.focus();');
 		return '</body></html>';
 	}
 
-	function getHttpVar($name, $alt = ""){
-		return we_base_request::_(we_base_request::RAW, "we_dialog_args", $alt, $name);
+	function getHttpVar($type, $name, $alt = ""){
+		return we_base_request::_($type, "we_dialog_args", $alt, $name);
 	}
 
 	function getLangField($name, $title, $width){

@@ -34,7 +34,7 @@ class weBinary{
 	var $ClassName = __CLASS__;
 	var $Pseudo = "weBinary";
 	var $attribute_slots = array();
-	var $persistent_slots = array();
+	var $persistent_slots = array('ID', 'ClassName', 'Path', 'Data', 'SeqN');
 	var $ID = 0;
 	var $Path = "";
 	var $Data = "";
@@ -42,7 +42,6 @@ class weBinary{
 	var $linkData = true;
 
 	function __construct($id = 0){
-		$this->persistent_slots = array('ID', 'ClassName', 'Path', 'Data', 'SeqN');
 		$this->db = new DB_WE();
 		if($id){
 			$this->load($id);

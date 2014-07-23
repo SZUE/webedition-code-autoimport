@@ -105,7 +105,7 @@ function we_tag_formfield($attribs){
 		<td class="weEditmodeStyle" width="161">' . $tmp_select . '</td>
 	</tr>';
 
-		if(!empty($ff)){
+		if($ff){
 			$tbl .= '	<tr>
 		<td class="weEditmodeStyle" width="62" style="color: black; font-size: 12px; font-family: Verdana, sans-serif" align="right"><nobr>' . g_l('global', "[attributes]") . ':&nbsp;</nobr></td>
 		<td class="weEditmodeStyle" width="161">

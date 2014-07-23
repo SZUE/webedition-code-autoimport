@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -93,7 +92,8 @@ class DB_WE extends we_database_base{
 					$Host = 'p:' . $Host;
 				case 'mysqli_connect':
 					$this->Query_ID = null;
-					$this->Link_ID = new mysqli($Host, $User, $Password, $Database);
+					$this->Link_ID = @new mysqli($Host, $User, $Password, $Database);
+					//need the @ operator, since can't catch mysqli warning on reconnect pconnection
 					if($this->Link_ID->connect_error){
 						$this->Link_ID = null;
 						$this->halt("mysqli_(p)connect($Host, $User) failed.");

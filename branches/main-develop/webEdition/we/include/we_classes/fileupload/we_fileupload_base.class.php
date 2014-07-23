@@ -79,7 +79,7 @@ abstract class we_fileupload_base {
 	public function setUseLegacy($useLegacy = true){
 		$this->useLegacy = $useLegacy;
 	}
-	
+
 	public function getName(){
 		return $this->name;
 	}
@@ -88,9 +88,9 @@ abstract class we_fileupload_base {
 		return $this->useLegacy ? getUploadMaxFilesize(false) : $this->maxUploadSizeBytes;
 	}
 
-	public function getMaxtUploadSizeText(){
+	public function getMaxUploadSizeText(){
 		$field = $this->useLegacy ? '[max_possible_size]' : ($this->getMaxUploadSize()? '[size_limit_set_to]' : '[no_size_limit]');
-		return $field == '[no_size_limit]' ? g_l('newFile', $field) : 
+		return $field == '[no_size_limit]' ? g_l('newFile', $field) :
 			sprintf(g_l('newFile', $field), we_base_file::getHumanFileSize($this->getMaxUploadSize(), we_base_file::SZ_MB));
 	}
 
@@ -105,7 +105,7 @@ abstract class we_fileupload_base {
 				we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[fallback_text]'), we_html_tools::TYPE_ALERT, $width, false, 9) .
 			'</div>
 			<div id="div_' . $this->name . '_alert">' .
-				we_html_tools::htmlAlertAttentionBox($this->getMaxtUploadSizeText(), $type, $width) .
+				we_html_tools::htmlAlertAttentionBox($this->getMaxUploadSizeText(), $type, $width) .
 			'</div>';
 
 	}
@@ -161,7 +161,7 @@ abstract class we_fileupload_base {
 	}
 
 	public function getJs($init = true, $selector = true, $sender = true){
-		return ($init ? $this->_getInitJS() : '') . 
+		return ($init ? $this->_getInitJS() : '') .
 				($selector ? $this->_getSelectorJS() : '').
 				($sender ? $this->_getSenderJS_core() . $this->_getSenderJS_additional() : '');
 	}
@@ -225,7 +225,7 @@ weFU.sendNextChunk = function(split){
 			blob = new Blob([cur.dataArray.subarray(pos, cur.currentPos)]);
 
 			weFU.sendChunk(
-				blob, 
+				blob,
 				file.name,
 				(cur.mimePHP !== "none" ? cur.mimePHP : file.type),
 				(cur.partNum === cur.totalParts ? cur.lastChunkSize : weFU.chunkSize),

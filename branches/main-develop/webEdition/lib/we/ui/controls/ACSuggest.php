@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition SDK
  *
@@ -30,7 +29,6 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_ui_controls_ACSuggest{
-
 	/**
 	 * inputfields attribute
 	 *
@@ -400,8 +398,10 @@ class we_ui_controls_ACSuggest{
 		 * 			4. ?
 		 * 			5. id
 		 */
-		$weSelfContentType = (isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']->ContentType)) ? $GLOBALS['we_doc']->ContentType : '';
-		$weSelfID = (isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']->ID)) ? $GLOBALS['we_doc']->ID : '';
+		$weSelfContentType = (isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']->ContentType))
+				? $GLOBALS['we_doc']->ContentType : '';
+		$weSelfID = (isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']->ID)) ? $GLOBALS['we_doc']->ID
+				: '';
 
 		if(is_array($this->inputfields) && empty($this->inputfields)){
 			return;
@@ -964,7 +964,8 @@ $doAjax
 
 YAHOO.util.Event.addListener(this,'load',YAHOO.autocoml.init);
 {$this->preCheck}
-" . ($client->getBrowser() == we_ui_Client::kBrowserWebkit ? $safariEventListener : "") . "
+" . ($client->getBrowser() == we_ui_Client::kBrowserWebkit ? $safariEventListener
+					: "") . "
 
 function weInputAppendClass(inp, cls) {
 	if (inp.className) {
@@ -1018,8 +1019,8 @@ function weInputInArray(arr, val) {
 //-->
 </script>
 ";
-/*
- * *******************************************************
+		/*
+		 * *******************************************************
 		  var weShowDebug = true;
 		  var debugsizeW=145;
 		  var debugsizeH='100%';
@@ -1051,7 +1052,7 @@ function weInputInArray(arr, val) {
 		  <div align='center'><button onclick='document.getElementById(\"debug\").innerHTML=\"\"'>clear</button><button id='DebugResizeW' onclick='doDebugResizeW()'>&gt;</button><button id='DebugResizeH' onclick='doDebugResizeH()'>A</button></div><hr>
 		  <div id='debug'></div>
 		  </div>
- */
+		 */
 
 		return $out;
 	}
@@ -1221,7 +1222,8 @@ function weInputInArray(arr, val) {
 
 		$client = we_ui_Client::getInstance();
 
-		$this->setAutocompleteField($inputId, "yuiAcContainer" . $this->acId, $this->table, $this->contentType, $this->selector, $this->maxResults, 0, "yuiAcLayer" . $this->acId, array($resultId), $this->checkFieldValue, ($client->getBrowser() == we_ui_Client::kBrowserIE ? $containerWidth : ($containerWidth - 8)), $this->mayBeEmpty);
+		$this->setAutocompleteField($inputId, "yuiAcContainer" . $this->acId, $this->table, $this->contentType, $this->selector, $this->maxResults, 0, "yuiAcLayer" . $this->acId, array($resultId), $this->checkFieldValue, ($client->getBrowser() == we_ui_Client::kBrowserIE
+					? $containerWidth : ($containerWidth - 8)), $this->mayBeEmpty);
 
 		$input = new we_ui_controls_TextField();
 		$input->setId($inputId);
@@ -1289,7 +1291,7 @@ function weInputInArray(arr, val) {
 	 * @param string $rootDir
 	 */
 	function setAcId($val, $rootDir = ""){
-		$this->acId = $val;
+		$this->acId = str_replace('-', '_', $val);
 		$this->rootDir = $rootDir;
 	}
 

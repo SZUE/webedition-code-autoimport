@@ -27,7 +27,7 @@ function we_tag_sessionField($attribs, $content){
 		return $foo;
 	}
 
-	$name = weTag_getAttribute('name', $attribs);
+	$name = weTag_getAttribute('_name_orig', $attribs);
 	$xml = weTag_getAttribute('xml', $attribs, false, true);
 	$removeFirstParagraph = weTag_getAttribute("removefirstparagraph", $attribs, defined("REMOVEFIRSTPARAGRAPH_DEFAULT") ? REMOVEFIRSTPARAGRAPH_DEFAULT : true, true);
 	$autobrAttr = weTag_getAttribute('autobr', $attribs, false, true);
@@ -188,13 +188,14 @@ function we_tag_sessionField($attribs, $content){
 			if($pure){
 				$attribs = removeAttribs($attribs, array('checked', 'type', 'options', 'selected', 'onchange', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'size', 'wysiwyg'));
 				return we_getTextareaField('s[' . $name . ']', $orgVal, $attribs);
-			} else {
-				echo we_html_element::jsElement('weFrontpageEdit=true;');
-				require_once(JS_PATH . 'we_textarea_include.inc.php');
-				$autobr = $autobrAttr ? 'on' : 'off';
-				$showAutobr = isset($attribs['autobr']);
-				return we_html_forms::weTextarea('s[' . $name . ']', $orgVal, $attribs, $autobr, 'autobr', $showAutobr, $GLOBALS['we_doc']->getHttpPath(), false, false, $xml, $removeFirstParagraph, '');
 			}
+			echo we_html_element::jsElement('weFrontpageEdit=true;') .
+			we_html_element::jsScript(JS_DIR . 'we_textarea.js') .
+			we_html_element::jsScript(JS_DIR . 'windows.js');
+			$autobr = $autobrAttr ? 'on' : 'off';
+			$showAutobr = isset($attribs['autobr']);
+			return we_html_forms::weTextarea('s[' . $name . ']', $orgVal, $attribs, $autobr, 'autobr', $showAutobr, $GLOBALS['we_doc']->getHttpPath(), false, false, $xml, $removeFirstParagraph, '');
+
 		case 'radio':
 			if((!isset($_SESSION['webuser'][$name])) && $checked){
 				$orgVal = $value;
@@ -323,7 +324,8 @@ function we_tag_sessionField($attribs, $content){
 	</tr>
 	<tr>
 		<td class="weEditmodeStyle" colspan="2" align="left">
-			<input' . ($size ? ' size="' . $size . '"' : '') . ' name="WE_SF_IMG_DATA[' . $name . ']" type="file" accept="' . we_base_imageEdit::IMAGE_CONTENT_TYPES . '"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . ' />
+			<input' . ($size ? ' size="' . $size . '"' : '') . ' name="WE_SF_IMG_DATA[' . $name . ']" type="file" accept="' . we_base_imageEdit::IMAGE_CONTENT_TYPES . '"' . ($inputstyle
+							? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . ' />
 		</td>
 	</tr>
 	<tr>
@@ -334,7 +336,8 @@ function we_tag_sessionField($attribs, $content){
 						<input style="border:0px solid black;" type="checkbox" id="WE_SF_DEL_CHECKBOX_' . $name . '" name="WE_SF_DEL_CHECKBOX_' . $name . '" value="1" ' . $checked . '/>
 					</td>
 					<td>
-						<label for="WE_SF_DEL_CHECKBOX_' . $name . '"' . ($checkboxstyle ? (' style="' . $checkboxstyle . '"') : '') . ($checkboxclass ? (' class="' . $checkboxclass . '"') : '') . '>' . $checkboxtext . '</label>
+						<label for="WE_SF_DEL_CHECKBOX_' . $name . '"' . ($checkboxstyle ? (' style="' . $checkboxstyle . '"') : '') . ($checkboxclass ? (' class="' . $checkboxclass . '"')
+							: '') . '>' . $checkboxtext . '</label>
 					</td>
 				</tr>
 			</table>

@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 $GLOBALS['show_stylesheet'] = true;
-define('NO_SESS', 1);//no need for a session
+define('NO_SESS', 1); //no need for a session
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 //no protect, since login dialog is shown bad
 
@@ -596,4 +596,13 @@ color: #6078A2;
 font-size: <?php echo (we_base_browserDetect::isMAC()) ? 13 : ((we_base_browserDetect::isUNIX()) ? 15 : 14); ?>px;
 font-family: <?php echo g_l('css', '[font_family]'); ?>;
 font-weight: bold;
+}
+
+div.le_widget{
+margin-top:1ex;
+margin-right:1em;
+}
+
+div.le_widget:first-child{
+margin-top:0px;
 }

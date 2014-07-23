@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -49,7 +48,6 @@
  * echo $yuiSuggest->getYuiCode																											// Generieter CSS- und JS-Code
  */
 class weSuggest{
-
 	const DocSelector = 'docSelector';
 	const DirSelector = 'dirSelector';
 
@@ -90,7 +88,7 @@ class weSuggest{
 	var $rootDir = "";
 	var $selectButton = "";
 	var $selectButtonSpace = "";
-	var $selector = "Dir";
+	var $selector = "Dir";//FIXME: self::DirSelector???
 	var $trashButton = "";
 	var $trashButtonSpace = "";
 	var $openButton = "";
@@ -114,7 +112,8 @@ class weSuggest{
 
 	function getErrorMarkPlaceHolder($id = "errormark", $space = 3, $w = 4, $h = 20){
 		$s = $w + $space;
-		return '<img id="' . $id . '" src="' . IMAGE_DIR . 'icons/errormark.gif" width="' . $w . '" height="' . $h . '" border="0" style="position:relative; left:-' . $s . 'px; visibility: hidden;' . (we_base_browserDetect::isIE() ? 'top:4px; z-index:1000000' : '') . '" />';
+		return '<img id="' . $id . '" src="' . IMAGE_DIR . 'icons/errormark.gif" width="' . $w . '" height="' . $h . '" border="0" style="position:relative; left:-' . $s . 'px; visibility: hidden;' . (we_base_browserDetect::isIE()
+					? 'top:4px; z-index:1000000' : '') . '" />';
 	}
 
 	static function getYuiFiles(){
@@ -164,8 +163,10 @@ class weSuggest{
 		 * 			4. ?
 		 * 			5. id
 		 */
-		$weSelfContentType = (isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']->ContentType)) ? $GLOBALS['we_doc']->ContentType : '';
-		$weSelfID = (isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']->ID)) ? $GLOBALS['we_doc']->ID : '';
+		$weSelfContentType = (isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']->ContentType))
+				? $GLOBALS['we_doc']->ContentType : '';
+		$weSelfID = (isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']->ID)) ? $GLOBALS['we_doc']->ID
+				: '';
 
 		if(is_array($this->inputfields) && empty($this->inputfields)){
 			return;
@@ -352,8 +353,8 @@ HTS;
 				$additionalFields = "";
 				if(isset($this->setOnSelectFields[$i]) && is_array($this->setOnSelectFields[$i])){
 					for($j = 0; $j < count($this->setOnSelectFields[$i]); $j++){
-						$initVars .= "	var old_" . $this->setOnSelectFields[$i][$j] . ";";
-						$additionalFields .= ($j > 0 ? "," : "") . $this->setOnSelectFields[$i][$j];
+						$initVars .= "	var old_" . str_replace('-', '_', $this->setOnSelectFields[$i][$j]) . ";";
+						$additionalFields .= ($j > 0 ? "," : "") . str_replace('-', '_', $this->setOnSelectFields[$i][$j]);
 					}
 				}
 				$onBlur .= <<<HTS
@@ -850,7 +851,8 @@ function weInputInArray(arr, val) {
 		for($i = 0; $i < count($this->inputfields); $i++){
 			$inputfields .= ($i > 0 ? ", " : "") . "#" . $this->inputfields[$i];
 			$containerfields .= ($i > 0 ? ", " : "") . "#" . $this->containerfields[$i];
-			$yuiAcContent .= "#" . $this->containerfields[$i] . " .yui-ac-content {position:absolute;left:0px;width:" . (we_base_browserDetect::isIE() ? $this->containerwidth[$i] : ($this->containerwidth[$i] + 4)) . "px;border:1px solid #404040;background:#fff;overflow:hidden;z-index:9050; margin-top:-10px}";
+			$yuiAcContent .= "#" . $this->containerfields[$i] . " .yui-ac-content {position:absolute;left:0px;width:" . (we_base_browserDetect::isIE()
+						? $this->containerwidth[$i] : ($this->containerwidth[$i] + 4)) . "px;border:1px solid #404040;background:#fff;overflow:hidden;z-index:9050; margin-top:-10px}";
 			$ysearchquery .= ($i > 0 ? ", " : "") . "#" . $this->containerfields[$i] . " .ysearchquery";
 			$yuiAcShadow .= ($i > 0 ? ", " : "") . "#" . $this->containerfields[$i] . " .yui-ac-shadow";
 			$ul .= ($i > 0 ? ", " : "") . "#" . $this->containerfields[$i] . " ul";
@@ -901,7 +903,8 @@ function weInputInArray(arr, val) {
 		$resultId = $this->resultId ? $this->resultId : 'yuiAcResult' . $this->acId;
 		$containerWidth = $this->containerWidth ? $this->containerWidth : $this->width;
 
-		$this->setAutocompleteField($inputId, "yuiAcContainer" . $this->acId, $this->table, $this->contentType, $this->selector, $this->maxResults, 0, "yuiAcLayer" . $this->acId, array($resultId), $this->checkFieldValue, (we_base_browserDetect::isIE() ? $containerWidth : ($containerWidth - 8)), $this->mayBeEmpty, $this->rootDir);
+		$this->setAutocompleteField($inputId, "yuiAcContainer" . $this->acId, $this->table, $this->contentType, $this->selector, $this->maxResults, 0, "yuiAcLayer" . $this->acId, array($resultId), $this->checkFieldValue, (we_base_browserDetect::isIE()
+					? $containerWidth : ($containerWidth - 8)), $this->mayBeEmpty, $this->rootDir);
 		$inputField = $this->_htmlTextInput($this->inputName, 30, $this->inputValue, "", 'id="' . $inputId . '" ' . $this->inputAttribs, "text", $this->width, 0, "", $this->inputDisabled);
 		$resultField = we_html_tools::hidden($this->resultName, $this->resultValue, array('id' => $resultId));
 		$autoSuggest = '<div id="yuiAcLayer' . $this->acId . '" class="yuiAcLayer">' . $inputField . '<div id="yuiAcContainer' . $this->acId . '"></div></div>';
@@ -909,11 +912,13 @@ function weInputInArray(arr, val) {
 
 		$html = we_html_tools::htmlFormElementTable(
 				array(
-				"text" => $resultField . $autoSuggest . ($this->selectButton ? we_html_tools::getPixel(intval($selectButtonSpace), 4) : ''),
+				"text" => $resultField . $autoSuggest . ($this->selectButton ? we_html_tools::getPixel(intval($selectButtonSpace), 4)
+						: ''),
 				"valign" => "top",
 				"style" => "height:10px"), $this->label, 'left', 'defaultfont', (
 				$this->selectButton ?
-					array("text" => "<div style=''>" . $this->selectButton . "</div>", "valign" => "top") :
+					array("text" => "<div style=''>" . $this->selectButton . "</div>", "valign" => "top")
+						:
 					''
 				), we_html_tools::getPixel(intval($this->trashButtonSpace), 4), (
 				empty($this->trashButton) ?
@@ -941,7 +946,7 @@ function weInputInArray(arr, val) {
 		$this->resultId = "";
 		$this->selectButton = "";
 		$this->selectButtonSpace = "";
-		$this->selector = "Dir";
+		$this->selector = "Dir"; //FIXME:self::Dirselector??
 		$this->trashButton = "";
 		$this->trashButtonSpace = "";
 		$this->openButton = "";
@@ -960,14 +965,17 @@ function weInputInArray(arr, val) {
 	}
 
 	function _htmlTextInput($name, $size = 20, $value = "", $maxlength = "", $attribs = "", $type = "text", $width = 0, $height = 0, $markHot = "", $disabled = false){
-		$style = ($width || $height) ? (' style="' . ($width ? ('width: ' . $width . ((strpos($width, "px") || strpos($width, "%")) ? "" : "px") . ';') : '') . ($height ? ('height: ' . $height . ((strpos($height, "px") || strpos($height, "%")) ? "" : "px") . ';') : '') . '"') : '';
-		return '<input type="' . trim($type) . '" name="' . trim($name) . '" size="' . abs($size) . '" value="' . oldHtmlspecialchars($value) . '" ' . ($maxlength ? (' maxlength="' . abs($maxlength) . '"') : '') . $attribs . $style . ' />';
+		$style = ($width || $height) ? (' style="' . ($width ? ('width: ' . $width . ((strpos($width, "px") || strpos($width, "%"))
+						? "" : "px") . ';') : '') . ($height ? ('height: ' . $height . ((strpos($height, "px") || strpos($height, "%"))
+						? "" : "px") . ';') : '') . '"') : '';
+		return '<input type="' . trim($type) . '" name="' . trim($name) . '" size="' . abs($size) . '" value="' . oldHtmlspecialchars($value) . '" ' . ($maxlength
+					? (' maxlength="' . abs($maxlength) . '"') : '') . $attribs . $style . ' />';
 	}
 
 	//setter
 
 	function setAcId($val, $rootDir = ""){
-		$this->acId = $val;
+		$this->acId = str_replace('-', '_', $val);
 		$this->rootDir = $rootDir;
 	}
 
@@ -1029,7 +1037,8 @@ function weInputInArray(arr, val) {
 						break;
 					case "onchange":
 						$_onchange = 1;
-						$this->inputAttribs .= $key . '="' . ($markHot ? 'if(_EditorFrame){_EditorFrame.setEditorIsHot(true);hot=1}' : '') . $val . '" ';
+						$this->inputAttribs .= $key . '="' . ($markHot ? 'if(_EditorFrame){_EditorFrame.setEditorIsHot(true);hot=1}'
+									: '') . $val . '" ';
 						break;
 					case "class":
 						$_class = 1;
@@ -1044,10 +1053,12 @@ function weInputInArray(arr, val) {
 				$this->inputAttribs .= 'class="wetextinput" ';
 			}
 			if(!isset($_onchange)){
-				$this->inputAttribs .= ' onchange="' . ($markHot ? 'if(_EditorFrame){_EditorFrame.setEditorIsHot(true);hot=1}; ' : '') . '" ';
+				$this->inputAttribs .= ' onchange="' . ($markHot ? 'if(_EditorFrame){_EditorFrame.setEditorIsHot(true);hot=1}; '
+							: '') . '" ';
 			}
 		} else {
-			$this->inputAttribs = 'class="wetextinput" onchange="' . ($markHot ? 'if(_EditorFrame){_EditorFrame.setEditorIsHot(true);hot=1;}' : '') . '" ';
+			$this->inputAttribs = 'class="wetextinput" onchange="' . ($markHot ? 'if(_EditorFrame){_EditorFrame.setEditorIsHot(true);hot=1;}'
+						: '') . '" ';
 		}
 		if($this->inputId == ''){
 			$this->setInputId();

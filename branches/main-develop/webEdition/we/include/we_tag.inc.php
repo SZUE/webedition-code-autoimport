@@ -217,7 +217,6 @@ function getArrayValue($var, $name, $arrayIndex){
 	if($name !== null){
 		$arr_matches[0] = $name;
 	}
-	//$arr_matches = reg_match_all('/\[([^\]]*)\]/', $arrayIndex);
 	foreach($arr_matches as $cur){
 		if(!isset($var[$cur])){
 			return '';

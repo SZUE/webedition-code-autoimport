@@ -45,7 +45,7 @@ class rpcDeleteVersionsWizardCmd extends rpcCmd{
 		if(isset($_SESSION['weS']['versions']['deleteWizardbinaryPath']) && is_array($_SESSION['weS']['versions']['deleteWizardbinaryPath']) && !empty($_SESSION['weS']['versions']['deleteWizardbinaryPath'])){
 			foreach($_SESSION['weS']['versions']['deleteWizardbinaryPath'] as $k => $v){
 				$binaryPath = $_SERVER['DOCUMENT_ROOT'] . $v;
-				$binaryPathUsed = f('SELECT binaryPath FROM ' . VERSIONS_TABLE . " WHERE binaryPath='" . $db->escape($v) . "' LIMIT 1", "binaryPath", $db);
+				$binaryPathUsed = f('SELECT binaryPath FROM ' . VERSIONS_TABLE . " WHERE binaryPath='" . $db->escape($v) . "' LIMIT 1", '', $db);
 
 				if(file_exists($binaryPath) && $binaryPathUsed == ""){
 					@unlink($binaryPath);

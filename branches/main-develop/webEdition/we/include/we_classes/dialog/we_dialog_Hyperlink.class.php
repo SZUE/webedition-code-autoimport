@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_dialog_Hyperlink extends we_dialog_base{
-
 	var $ClassName = __CLASS__;
 	var $changeableArgs = array(
 		'type', 'extHref', 'fileID', 'href', 'fileHref', 'objID', 'objHref', 'mailHref', 'target', 'class',
@@ -38,11 +37,14 @@ class we_dialog_Hyperlink extends we_dialog_base{
 
 	function getDialogButtons(){
 		if($this->pageNr == $this->numPages && $this->JsOnly == false){
-			$okBut = ($this->getBackBut() != "") ? we_html_button::create_button_table(array($this->getBackBut(), we_html_button::create_button("ok", "javascript:weCheckAcFields()"))) : we_html_button::create_button("ok", "javascript:weCheckAcFields()");
+			$okBut = ($this->getBackBut() != "") ? we_html_button::create_button_table(array($this->getBackBut(), we_html_button::create_button("ok", "javascript:weCheckAcFields()")))
+					: we_html_button::create_button("ok", "javascript:weCheckAcFields()");
 		} else if($this->pageNr < $this->numPages){
-			$okBut = (($this->getBackBut() != "") && ($this->getNextBut()) != "") ? we_html_button::create_button_table(array($this->getBackBut(), $this->getNextBut())) : (($this->getBackBut() == "") ? $this->getNextBut() : $this->getBackBut());
+			$okBut = (($this->getBackBut() != "") && ($this->getNextBut()) != "") ? we_html_button::create_button_table(array($this->getBackBut(), $this->getNextBut())) : (($this->getBackBut() == "")
+						? $this->getNextBut() : $this->getBackBut());
 		} else {
-			$okBut = (($this->getBackBut() != "") && ($this->getOkBut()) != "") ? we_html_button::create_button_table(array($this->getBackBut(), $this->getOkBut())) : (($this->getBackBut() == "") ? $this->getOkBut() : $this->getBackBut());
+			$okBut = (($this->getBackBut() != "") && ($this->getOkBut()) != "") ? we_html_button::create_button_table(array($this->getBackBut(), $this->getOkBut())) : (($this->getBackBut() == "")
+						? $this->getOkBut() : $this->getBackBut());
 		}
 
 		return we_html_button::position_yes_no_cancel($okBut, '', we_html_button::create_button('cancel', "javascript:top.close();"));
@@ -214,17 +216,17 @@ class we_dialog_Hyperlink extends we_dialog_base{
 
 	function initByHttp(){
 		parent::initByHttp();
-		$href = $this->getHttpVar('href');
-		$target = $this->getHttpVar('target');
-		$param = $this->getHttpVar('param');
-		$anchor = $this->getHttpVar('anchor');
-		$lang = $this->getHttpVar('lang');
-		$hreflang = $this->getHttpVar('hreflang');
-		$title = $this->getHttpVar('title');
-		$accesskey = $this->getHttpVar('accesskey');
-		$tabindex = $this->getHttpVar('tabindex');
-		$rel = $this->getHttpVar('rel');
-		$rev = $this->getHttpVar('rev');
+		$href = $this->getHttpVar(we_base_request::URL, 'href');
+		$target = $this->getHttpVar(we_base_request::STRING, 'target');
+		$param = $this->getHttpVar(we_base_request::STRING, 'param');
+		$anchor = $this->getHttpVar(we_base_request::STRING, 'anchor');
+		$lang = $this->getHttpVar(we_base_request::STRING, 'lang');
+		$hreflang = $this->getHttpVar(we_base_request::STRING, 'hreflang');
+		$title = $this->getHttpVar(we_base_request::STRING, 'title');
+		$accesskey = $this->getHttpVar(we_base_request::STRING, 'accesskey');
+		$tabindex = $this->getHttpVar(we_base_request::INT, 'tabindex');
+		$rel = $this->getHttpVar(we_base_request::STRING, 'rel');
+		$rev = $this->getHttpVar(we_base_request::STRING, 'rev');
 
 		if($href && (strpos($href, "?") !== false || strpos($href, "#") !== false)){
 			$urlparts = parse_url($href);
@@ -237,16 +239,16 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			}
 		}
 
-		$class = $this->getHttpVar("class");
-		$type = $this->getHttpVar("type");
+		$class = $this->getHttpVar(we_base_request::STRING, "class");
+		$type = $this->getHttpVar(we_base_request::STRING, "type");
 		if($href){
 			$this->initByHref($href, $target, $class, $param, $anchor, $lang, $hreflang, $title, $accesskey, $tabindex, $rel, $rev);
 		} else if($type){
-			$fileID = $this->getHttpVar("fileID", 0);
-			$objID = $this->getHttpVar("objID", 0);
+			$fileID = $this->getHttpVar(we_base_request::INT, "fileID", 0);
+			$objID = $this->getHttpVar(we_base_request::INT, "objID", 0);
 			switch($type){
 				case we_base_link::TYPE_EXT:
-					$extHref = $this->getHttpVar('extHref', '#');
+					$extHref = $this->getHttpVar(we_base_request::STRING, 'extHref', '#');
 					$this->initByHref($extHref, $target, $class, $param, $anchor, $lang, $hreflang, $title, $accesskey, $tabindex, $rel, $rev);
 					break;
 				case we_base_link::TYPE_INT:
@@ -256,7 +258,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 					$this->initByObjectID($objID, $target, $class, $param, $anchor, $lang, $hreflang, $title, $accesskey, $tabindex, $rel, $rev);
 					break;
 				case we_base_link::TYPE_MAIL:
-					$mailhref = $this->getHttpVar('mailHref');
+					$mailhref = $this->getHttpVar(we_base_request::STRING, 'mailHref');//FIXME mail?
 					$this->initByMailHref($mailhref, $target, $class, $param, $anchor, $lang, $hreflang, $title, $accesskey, $tabindex, $rel, $rev);
 					break;
 			}
@@ -309,15 +311,18 @@ class we_dialog_Hyperlink extends we_dialog_base{
 <option value="' . we_base_link::TYPE_INT . '"' . (($this->args["type"] == we_base_link::TYPE_INT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[internal_link]") . '</option>
 <option value="' . we_base_link::TYPE_MAIL . '"' . (($this->args["type"] == we_base_link::TYPE_MAIL) ? ' selected="selected"' : '') . '>' . g_l('wysiwyg', "[emaillink]") . '</option>' .
 				((defined("OBJECT_TABLE") && ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL || permissionhandler::hasPerm("CAN_SEE_OBJECTFILES"))) ?
-					'<option value="' . we_base_link::TYPE_OBJ . '"' . (($this->args["type"] == we_base_link::TYPE_OBJ) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[objectFile]") . '</option>' :
+					'<option value="' . we_base_link::TYPE_OBJ . '"' . (($this->args["type"] == we_base_link::TYPE_OBJ) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[objectFile]") . '</option>'
+						:
 					''
 				);
 
 			// EXTERNAL LINK
 			$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['we_dialog_args[extHref]'].value");
-			$_external_select_button = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button("select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', '', document.we_form.elements['we_dialog_args[extHref]'].value, '')") : "";
+			$_external_select_button = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button("select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', '', document.we_form.elements['we_dialog_args[extHref]'].value, '')")
+					: "";
 
-			$_external_link = "<div style='margin-top:1px'>" . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extHref]", 30, $extHref ? $extHref : we_base_link::EMPTY_EXT, '', 'onchange="if(this.value==\'\'){
+			$_external_link = "<div style='margin-top:1px'>" . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extHref]", 30, $extHref ? $extHref
+								: we_base_link::EMPTY_EXT, '', 'onchange="if(this.value==\'\'){
 					this.value=\'http://\';
 }else{
 	var x=this.value.match(/(.*:\/\/[^#?]*)(\?([^?#]*))?(#([^?#]*))?/);
@@ -333,7 +338,8 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			// INTERNAL LINK
 			$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['we_dialog_args[fileID]'].value");
 			$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['we_dialog_args[fileHref]'].value");
-			$_internal_select_button = we_html_button::create_button("select", "javascript:we_cmd('openDocselector', document.we_form.elements['we_dialog_args[fileID]'].value, '" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','',0, '', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
+			$_internal_select_button = we_html_button::create_button("select", "javascript:we_cmd('openDocselector', document.we_form.elements['we_dialog_args[fileID]'].value, '" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','',0, '', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES")
+							? 0 : 1) . ");");
 
 			$yuiSuggest->setAcId("Path");
 			$yuiSuggest->setContentType(implode(',', array('folder', we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::JS, we_base_ContentTypes::CSS, we_base_ContentTypes::HTML, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::QUICKTIME)));
@@ -355,7 +361,8 @@ class we_dialog_Hyperlink extends we_dialog_base{
 				$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['we_dialog_args[objID]'].value");
 				$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['we_dialog_args[objHref]'].value");
 				$wecmdenc3 = we_base_request::encCmd("top.opener._EditorFrame.setEditorIsHot(true);");
-				$_object_select_button = we_html_button::create_button("select", "javascript:we_cmd('openDocselector', document.we_form.elements['we_dialog_args[objID]'].value, '" . OBJECT_FILES_TABLE . "', '" . $wecmdenc1 . "','" . $wecmdenc2 . "', '', '', '', 'objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");", false, 100, 22, "", "", !permissionhandler::hasPerm("CAN_SEE_OBJECTFILES"));
+				$_object_select_button = we_html_button::create_button("select", "javascript:we_cmd('openDocselector', document.we_form.elements['we_dialog_args[objID]'].value, '" . OBJECT_FILES_TABLE . "', '" . $wecmdenc1 . "','" . $wecmdenc2 . "', '', '', '', 'objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS")
+								? 0 : 1) . ");", false, 100, 22, "", "", !permissionhandler::hasPerm("CAN_SEE_OBJECTFILES"));
 
 				$yuiSuggest->setAcId("Obj");
 				$yuiSuggest->setContentType("folder,objectFile");
@@ -440,7 +447,8 @@ function weonsubmit() {
 				$yuiSuggest->getYuiJs()
 			),
 			array('html' => '<table cellpadding="0" cellspacing="0" border="0">
-	<tr class="we_change ' . we_base_link::TYPE_INT . ' ' . we_base_link::TYPE_EXT . ' ' . we_base_link::TYPE_OBJ . '" style="display:' . (($this->args["type"] != we_base_link::TYPE_MAIL) ? "table-row" : "none") . ';">
+	<tr class="we_change ' . we_base_link::TYPE_INT . ' ' . we_base_link::TYPE_EXT . ' ' . we_base_link::TYPE_OBJ . '" style="display:' . (($this->args["type"] != we_base_link::TYPE_MAIL)
+						? "table-row" : "none") . ';">
 		<td class="defaultgray" valign="top" width="100">' . g_l('wysiwyg', '[anchor]') . '</td>
 		<td>' . $_anchor . '</td>
 	</tr>
@@ -450,7 +458,8 @@ function weonsubmit() {
 	</tr>
 
 	<tr><td colspan="2">' . we_html_tools::getPixel(110, 10) . '</td></tr>
-	<tr class="we_change ' . we_base_link::TYPE_INT . ' ' . we_base_link::TYPE_EXT . ' ' . we_base_link::TYPE_OBJ . '" style="display:' . (($this->args["type"] != we_base_link::TYPE_MAIL) ? "table-row" : "none") . ';">
+	<tr class="we_change ' . we_base_link::TYPE_INT . ' ' . we_base_link::TYPE_EXT . ' ' . we_base_link::TYPE_OBJ . '" style="display:' . (($this->args["type"] != we_base_link::TYPE_MAIL)
+						? "table-row" : "none") . ';">
 		<td class="defaultgray" valign="top" width="100">' . g_l('linklistEdit', '[link_params]') . '</td>
 		<td>' . $_param . '</td>
 	</tr>
@@ -459,7 +468,8 @@ function weonsubmit() {
 		<td>' . we_html_tools::htmlTextInput("we_dialog_args[mail_cc]", 30, $this->args["mailcc"], "", "", "text", 300) . '</td>
 	</tr>
 	<tr><td colspan="2">' . we_html_tools::getPixel(110, 10) . '</td></tr>
-	<tr class="we_change ' . we_base_link::TYPE_INT . ' ' . we_base_link::TYPE_EXT . ' ' . we_base_link::TYPE_OBJ . '" style="display:' . (($this->args["type"] != we_base_link::TYPE_MAIL) ? "table-row" : "none") . ';">
+	<tr class="we_change ' . we_base_link::TYPE_INT . ' ' . we_base_link::TYPE_EXT . ' ' . we_base_link::TYPE_OBJ . '" style="display:' . (($this->args["type"] != we_base_link::TYPE_MAIL)
+						? "table-row" : "none") . ';">
 		<td class="defaultgray" valign="top" width="100">' . g_l('linklistEdit', '[link_target]') . '</td>
 		<td>' . we_html_tools::targetBox('we_dialog_args[target]', 29, 300, 'we_dialog_args[target]', $this->args['target'], '', 10, 100) . '</td>
 	</tr>

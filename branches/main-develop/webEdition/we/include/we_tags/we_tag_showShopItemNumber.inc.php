@@ -42,7 +42,7 @@ function we_tag_showShopItemNumber($attribs){
 		return parseError(sprintf(g_l('parser', '[missing_createShop]'), 'showShopItemNumber'));
 	}
 
-	$attr = removeAttribs($attribs, array('option', 'inputfield', 'type', 'start', 'stop', 'shopname', 'nameto', 'to', 'floatquantities', '$num_format'));
+	$attr = removeAttribs($attribs, array('option', 'inputfield', 'type', 'start', 'stop', 'shopname', 'nameto', 'to', 'floatquantities', 'num_format'));
 
 	// $type of the field
 	$articleType = (isset($GLOBALS['lv']->Record['OF_ID']) ? we_shop_shop::OBJECT : we_shop_shop::DOCUMENT);

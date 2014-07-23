@@ -768,14 +768,14 @@ class we_document extends we_root{
 		if($this->isMoved()){
 			we_util_File::deleteLocalFile($this->getSitePath(true));
 		}
-		return we_util_File::saveFile($this->getSitePath(), $doc);
+		return we_base_file::save($this->getSitePath(), $doc);
 	}
 
 	protected function i_writeMainDir($doc){
 		if($this->isMoved()){
 			we_util_File::deleteLocalFile($this->getRealPath(true));
 		}
-		return we_util_File::saveFile($this->getRealPath(), $doc);
+		return we_base_file::save($this->getRealPath(), $doc);
 	}
 
 	protected function i_writeDocument(){
@@ -1006,7 +1006,7 @@ class we_document extends we_root{
 						return '';
 					}
 					if($classID){
-						$defVals = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($classID), 'DefaultValues', $db);
+						$defVals = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($classID), '', $db);
 						if($defVals){
 							$arr = unserialize($defVals);
 							return isset($arr['meta_' . $attribs['name']]['meta'][$val]) ? $arr['meta_' . $attribs['name']]['meta'][$val] : '';

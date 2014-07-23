@@ -58,7 +58,7 @@ class rpcCopyNavigationFolderCmd extends rpcCmd{
 							$querySet .= ', ' . intval(isset($mapedId[$val]) ? $mapedId[$val] : 0);
 							break;
 						default :
-							$querySet .= ", '$val'";
+							$querySet .= ", '" . $val . "'";
 					}
 				}
 				$querySet .= ')';

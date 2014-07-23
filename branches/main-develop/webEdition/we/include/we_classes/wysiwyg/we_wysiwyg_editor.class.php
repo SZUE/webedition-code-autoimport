@@ -25,7 +25,6 @@
 //make sure we know which browser is used
 
 class we_wysiwyg_editor{
-
 	var $name = '';
 	private $origName = '';
 	private $fieldName = '';
@@ -738,7 +737,7 @@ function weWysiwygSetHiddenText(arg) {
 		//if legacy editor throw conditional seperators out
 		if(self::$editorType != 'tinyMCE'){
 			for($i = 0; $i < count($this->elements); $i++){
-				if($this->elements[$i]->classname == 'we_wysiwyg_ToolbarSeparator'&& $this->elements[$i]->conditional){
+				if($this->elements[$i]->classname == 'we_wysiwyg_ToolbarSeparator' && $this->elements[$i]->conditional){
 					unset($this->elements[$i]);
 				}
 			}
@@ -799,12 +798,14 @@ function weWysiwygSetHiddenText(arg) {
 	}
 
 	function parseInternalImageSrc($value){
+		static $t = 0;
+		$t = ($t ? $t : time());
 		$editValue = $value;
 		$regs = array();
 		if(preg_match_all('/src="' . we_base_link::TYPE_INT_PREFIX . '(\\d+)/i', $editValue, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
-				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($reg[1]), 'Path', $GLOBALS['DB_WE']);
-				$editValue = str_ireplace('src="' . we_base_link::TYPE_INT_PREFIX . $reg[1], 'src="' . $path . "?id=" . $reg[1], $editValue);
+				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($reg[1]));
+				$editValue = str_ireplace('src="' . we_base_link::TYPE_INT_PREFIX . $reg[1], 'src="' . $path . "?id=" . $reg[1] . '&time=' . $t, $editValue);
 			}
 		}
 		if(preg_match_all('/src="' . we_base_link::TYPE_THUMB_PREFIX . '([^" ]+)/i', $editValue, $regs, PREG_SET_ORDER)){
@@ -812,7 +813,7 @@ function weWysiwygSetHiddenText(arg) {
 				list($imgID, $thumbID) = explode(',', $reg[1]);
 				$thumbObj = new we_thumbnail();
 				$thumbObj->initByImageIDAndThumbID($imgID, $thumbID);
-				$editValue = str_ireplace('src="' . we_base_link::TYPE_THUMB_PREFIX . $reg[1], 'src="' . $thumbObj->getOutputPath() . "?thumb=" . $reg[1], $editValue);
+				$editValue = str_ireplace('src="' . we_base_link::TYPE_THUMB_PREFIX . $reg[1], 'src="' . $thumbObj->getOutputPath() . "?thumb=" . $reg[1] . '&time=' . $t, $editValue);
 				unset($thumbObj);
 			}
 		}
@@ -887,7 +888,8 @@ function weWysiwygSetHiddenText(arg) {
 		}
 		$ret = '';
 		foreach($this->filteredElements as $elem){
-			$ret .= $elem->classname == 'we_wysiwyg_ToolbarButton' && $elem->showMeInContextmenu && self::wysiwygCmdToTiny($elem->cmd) ? '"' . self::wysiwygCmdToTiny($elem->cmd) . '":true,' : '';
+			$ret .= $elem->classname == 'we_wysiwyg_ToolbarButton' && $elem->showMeInContextmenu && self::wysiwygCmdToTiny($elem->cmd) ? '"' . self::wysiwygCmdToTiny($elem->cmd) . '":true,'
+					: '';
 		}
 		return trim($ret, ',') !== '' ? '{' . trim($ret, ',') . '}' : 'false';
 	}
@@ -1001,7 +1003,8 @@ function weWysiwygSetHiddenText(arg) {
 			$tmplDoc = new we_document();
 			$tmplDoc->initByID(intval($tmplArr[$i]));
 			if(($tmplDoc->ContentType == we_base_ContentTypes::APPLICATION && ($tmplDoc->Extension == '.html' || $tmplDoc->Extension == '.htm')) || $tmplDoc->ContentType == we_base_ContentTypes::WEDOCUMENT){
-				$templates .= '{title: "' . (isset($tmplDoc->elements['Title']['dat']) && $tmplDoc->elements['Title']['dat'] ? $tmplDoc->elements['Title']['dat'] : "no title " . ($i + 1)) . '", src : "' . $tmplDoc->Path . '", description: "' . (isset($tmplDoc->elements['Description']['dat']) && $tmplDoc->elements['Description']['dat'] ? $tmplDoc->elements['Description']['dat'] : "no description " . ($i + 1)) . '"},';
+				$templates .= '{title: "' . (isset($tmplDoc->elements['Title']['dat']) && $tmplDoc->elements['Title']['dat'] ? $tmplDoc->elements['Title']['dat'] : "no title " . ($i + 1)) . '", src : "' . $tmplDoc->Path . '", description: "' . (isset($tmplDoc->elements['Description']['dat']) && $tmplDoc->elements['Description']['dat']
+							? $tmplDoc->elements['Description']['dat'] : "no description " . ($i + 1)) . '"},';
 			}
 		}
 
@@ -1327,7 +1330,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 				}
 			}
 			o.content = c.innerHTML;
-		});' .($this->isFrontendEdit ? '' : '
+		});' . ($this->isFrontendEdit ? '' : '
 
 		/* set EditorFrame.setEditorIsHot(true) */
 
@@ -1379,9 +1382,9 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 		ed.onNodeChange.add(function(ed, cm, n) {
 			var td = ed.dom.getParent(n, "td");
 			if(typeof td === "object" && td && td.getElementsByTagName("p").length === 1){
-				var inner = td.getElementsByTagName("p")[0].innerHTML;
+				var inner = td.innerHTML;//td.getElementsByTagName("p")[0].innerHTML;
 				td.innerHTML = "";
-				ed.selection.setContent(inner)
+				ed.selection.setContent(inner);
 			}
 		});
 
@@ -1439,7 +1442,8 @@ tinyMCE.init(tinyMceConfObject__' . $this->fieldName_clean . ');
 					}
 					$min_w = max($min_w, $row_w);
 					$row_w = 0;
-					$out .= '</tr></table></td></tr>' . (($r < count($rows) - 1) ? $linerow : $pixelrow) . '<tr><td ' . (($r < (count($rows) - 1)) ? (' style="background-image:url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);"') : '') . ' class="tbButtonWysiwygDefaultStyle' . (($r < (count($rows) - 1)) ? ' tbButtonWysiwygBackground' : '') . '">';
+					$out .= '</tr></table></td></tr>' . (($r < count($rows) - 1) ? $linerow : $pixelrow) . '<tr><td ' . (($r < (count($rows) - 1)) ? (' style="background-image:url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);"')
+								: '') . ' class="tbButtonWysiwygDefaultStyle' . (($r < (count($rows) - 1)) ? ' tbButtonWysiwygBackground' : '') . '">';
 				}
 
 				$realWidth = max($min_w, $this->width);
@@ -1450,7 +1454,9 @@ tinyMCE.init(tinyMceConfObject__' . $this->fieldName_clean . ');
 </table></td></tr></table><input type="hidden" id="' . $this->name . '" name="' . $this->name . '" value="' . oldHtmlspecialchars($this->hiddenValue) . '" /><div id="' . $this->ref . 'edit_buffer" style="display: none;"></div>
 ' . we_html_element::jsElement('
 var ' . $this->ref . 'Obj = null;
-' . $this->ref . 'Obj = new weWysiwyg("' . $this->ref . 'edit","' . $this->name . '","' . str_replace("\"", "\\\"", $this->value) . '","' . str_replace("\"", "\\\"", $editValue) . '",\'' . $this->fullscreen . '\',\'' . $this->className . '\',\'' . $this->propstring . '\',\'' . $this->bgcol . '\',' . ($this->outsideWE ? "true" : "false") . ',"' . $this->baseHref . '","' . $this->xml . '","' . $this->removeFirstParagraph . '","' . $this->charset . '","' . $this->cssClasses . '","' . $this->Language . '", "' . ($this->isFrontendEdit ? 1 : 0) . '");
+' . $this->ref . 'Obj = new weWysiwyg("' . $this->ref . 'edit","' . $this->name . '","' . str_replace("\"", "\\\"", $this->value) . '","' . str_replace("\"", "\\\"", $editValue) . '",\'' . $this->fullscreen . '\',\'' . $this->className . '\',\'' . $this->propstring . '\',\'' . $this->bgcol . '\',' . ($this->outsideWE
+								? "true" : "false") . ',"' . $this->baseHref . '","' . $this->xml . '","' . $this->removeFirstParagraph . '","' . $this->charset . '","' . $this->cssClasses . '","' . $this->Language . '", "' . ($this->isFrontendEdit
+								? 1 : 0) . '");
 we_wysiwygs[we_wysiwygs.length] = ' . $this->ref . 'Obj;
 
 function ' . $this->ref . 'editShowContextMenu(event){

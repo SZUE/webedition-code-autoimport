@@ -32,7 +32,6 @@
  */
 
 abstract class we_autoloader{
-
 	private static $domains = array(
 		'backup' => 'we_exim/backup',
 		'banner' => 'we_modules/banner',
@@ -70,6 +69,20 @@ abstract class we_autoloader{
 		'wysiwyg' => 'we_classes/wysiwyg',
 		'xml' => 'we_classes/xml',
 	);
+	//fallback classes if local classes do not exist - mostly pear
+	private static $fallBack = array(
+		'Archive_Tar' => 'lib/additional/archive/Archive_Tar.class.php',
+		'PEAR5' => 'lib/additional/pear/PEAR5.php',
+		'PEAR_Error' => 'lib/additional/pear/PEAR.php',
+		'PEAR' => 'lib/additional/pear/PEAR.php',
+		'Services_JSON_Error' => 'lib/additional/pear/Services_JSON.class.php',
+		'Services_JSON' => 'lib/additional/pear/Services_JSON.class.php',
+		'Image_Transform_Driver_GD' => 'lib/additional/pear/Image_Transform_Driver_GD.class.php',
+		'Image_Transform' => 'lib/additional/pear/Image_Transform.class.php',
+		'Image_IPTC' => 'lib/additional/pear/Image_IPTC.class.php',
+		'XML_Parser_Error' => 'lib/additional/pear/XML_Parser.class.php',
+		'XML_Parser' => 'lib/additional/pear/XML_Parser.class.php',
+	);
 	private static $classes = array(
 		'we_classes/contents' => array(
 			'we_binaryDocument' => 'we_binaryDocument.class.php',
@@ -94,17 +107,9 @@ abstract class we_autoloader{
 			'copyFolderFinishFrag' => 'we_copyFolderFinishFrag.class.php',
 			'copyFolderFrag' => 'we_copyFolderFrag.class.php',
 			'DB_WE' => 'database/DB_WE.inc.php', //pseudo-element which loads a wrapper, doesn't contain a real class!
-			'Image_IPTC' => 'weMetaData/lib/PEAR_IPTC.php',
-			'Image_Transform_Driver_GD' => 'Transform/Driver/GD.php',
-			'Image_Transform' => 'Transform.php',
 			'listviewBase' => 'listview/listviewBase.class.php',
 			'metadatatag' => 'listview/metadatatag.class.php',
-			'PEAR5' => 'PEAR5.php',
-			'PEAR_Error' => 'PEAR.php',
-			'PEAR' => 'PEAR.php',
 			'permissionhandler' => 'permissionhandler/permissionhandler.class.php',
-			'Services_JSON_Error' => 'JSON.php',
-			'Services_JSON' => 'JSON.php',
 			'taskFragment' => 'taskFragment.class.php',
 			'weBinary' => 'weBinary.class.php',
 			'we_category' => 'we_category.class.php',
@@ -131,8 +136,6 @@ abstract class we_autoloader{
 			'weTree' => 'weTree.inc.php',
 			'we_updater' => 'we_updater.inc.php',
 			'we_widget' => 'we_widget.inc.php',
-			'XML_Parser_Error' => 'Parser.php',
-			'XML_Parser' => 'Parser.php',
 			'weToolLookup' => 'tools/we_tool_lookup.class.php',
 		),
 		'we_modules' => array(
@@ -259,7 +262,13 @@ abstract class we_autoloader{
 	 * @param type $class_name
 	 */
 	public static function finalLoad($class_name){
-		t_e('info', 'we_autoloader: class ' . $class_name . ' not found');
+		if(isset(self::$fallBack[$class_name])){
+			include(WEBEDITION_PATH . self::$fallBack[$class_name]);
+
+			return true;
+		} else {
+			t_e('info', 'we_autoloader: class ' . $class_name . ' not found');
+		}
 	}
 
 }
