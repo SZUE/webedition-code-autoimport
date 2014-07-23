@@ -274,12 +274,11 @@ if($_userID != 0 && $_userID != $_SESSION['user']['ID'] && $we_doc->ID){ // docu
  * This is only done when the IsDynamic - PersistantSlot is false.
  */
 $cmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
-if((($cmd0 != 'save_document' && $cmd0 != 'publish' && $cmd0 != 'unpublish') && (($we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT) && ($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW || $we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT )) || ($we_doc->ContentType == we_base_ContentTypes::HTML && $we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW && $cmd != 'save_document')) && (!$we_doc->IsDynamic)){
+if((($cmd0 != 'save_document' && $cmd0 != 'publish' && $cmd0 != 'unpublish') && (($we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT) && ($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW || $we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT )) || ($we_doc->ContentType == we_base_ContentTypes::HTML && $we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW && $cmd0 != 'save_document')) && (!$we_doc->IsDynamic)){
 	$we_include = $we_doc->editor();
 	if(isset($_POST) && $_POST && !we_base_request::_(we_base_request::BOOL, 'we_complete_request')){
 		t_e('missing completed request', $_POST);
 	}
-	$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
 	ob_start();
 	if($we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT){
 //remove all already parsed names
@@ -290,6 +289,8 @@ if((($cmd0 != 'save_document' && $cmd0 != 'publish' && $cmd0 != 'unpublish') && 
 		$we_include);
 	$contents = ob_get_contents();
 	ob_end_clean();
+	//usedElementNames is set after include
+	$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
 //  SEEM the file
 //  but only, if we are not in the template-editor
 	if($we_doc->ContentType != we_base_ContentTypes::TEMPLATE){

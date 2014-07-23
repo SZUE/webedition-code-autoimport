@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_dialog_image extends we_dialog_base{
-
 	var $ClassName = __CLASS__;
 	var $changeableArgs = array("type",
 		"extSrc",
@@ -139,7 +138,7 @@ class we_dialog_image extends we_dialog_base{
 				unset($thumbObj);
 			} else {
 				$this->args['thumbnail'] = '';
-				$this->args['fileSrc'] = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->args['fileID']), 'Path', $this->db);
+				$this->args['fileSrc'] = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->args['fileID']), '', $this->db);
 				$this->args['src'] = $this->args['fileSrc'] . '?id=' . $fileID;
 			}
 			$this->args['ratio'] = 1;
@@ -149,36 +148,36 @@ class we_dialog_image extends we_dialog_base{
 
 	function initByHttp(){
 		we_dialog_base::initByHttp();
-		$src = $this->getHttpVar('src');
-		$width = $this->getHttpVar('width');
-		$height = $this->getHttpVar('height');
-		$hspace = $this->getHttpVar('hspace');
-		$vspace = $this->getHttpVar('vspace');
-		$class = $this->getHttpVar('class');
-		$title = $this->getHttpVar('title');
-		$longdescsrc = $this->getHttpVar('longdescsrc');
-		$longdescid = $this->getHttpVar('longdescid');
+		$src = $this->getHttpVar(we_base_request::URL, 'src');
+		$width = $this->getHttpVar(we_base_request::INT, 'width');
+		$height = $this->getHttpVar(we_base_request::INT, 'height');
+		$hspace = $this->getHttpVar(we_base_request::INT, 'hspace');
+		$vspace = $this->getHttpVar(we_base_request::INT, 'vspace');
+		$class = $this->getHttpVar(we_base_request::STRING, 'class');
+		$title = $this->getHttpVar(we_base_request::STRING, 'title');
+		$longdescsrc = $this->getHttpVar(we_base_request::URL, 'longdescsrc');
+		$longdescid = $this->getHttpVar(we_base_request::INT, 'longdescid');
 		if($longdescsrc && $longdescid){
 			$longdesc = $longdescsrc . '?id=' . $longdescid;
 		} else {
-			$longdesc = $this->getHttpVar('longdesc');
+			$longdesc = $this->getHttpVar(we_base_request::STRING, 'longdesc');
 		}
-		$border = $this->getHttpVar('border');
-		$alt = $this->getHttpVar('alt');
-		$align = $this->getHttpVar('align');
-		$name = $this->getHttpVar('name');
-		$type = $this->getHttpVar('type');
-		$thumbnail = $this->getHttpVar('thumbnail');
+		$border = $this->getHttpVar(we_base_request::STRING, 'border');
+		$alt = $this->getHttpVar(we_base_request::STRING, 'alt');
+		$align = $this->getHttpVar(we_base_request::STRING, 'align');
+		$name = $this->getHttpVar(we_base_request::STRING, 'name');
+		$type = $this->getHttpVar(we_base_request::STRING, 'type');
+		$thumbnail = $this->getHttpVar(we_base_request::INT, 'thumbnail');
 
 		$type = ($type ? $type : we_base_link::TYPE_EXT);
 		if($src && !$thumbnail){
 			$this->initBySrc($src, $width, $height, $hspace, $vspace, $border, $alt, $align, $name, $class, $title, $longdesc);
 		} else if($type){
-			$fileID = $this->getHttpVar('fileID');
+			$fileID = $this->getHttpVar(we_base_request::INT, 'fileID');
 
 			switch($type){
 				case we_base_link::TYPE_EXT:
-					$extSrc = $this->getHttpVar('extSrc', '');
+					$extSrc = $this->getHttpVar(we_base_request::URL, 'extSrc', '');
 					$this->initBySrc($extSrc, $width, $height, $hspace, $vspace, $border, $alt, $align, $name, $class, $title, $longdesc);
 					break;
 				case we_base_link::TYPE_INT:
@@ -197,7 +196,8 @@ class we_dialog_image extends we_dialog_base{
 						$name = $preserveData ? $name : $imgObj->getElement('name');
 						$align = $preserveData ? $align : $imgObj->getElement('align');
 						$border = $preserveData ? $border : $imgObj->getElement('border');
-						$longdesc = $preserveData ? $longdesc : ($imgObj->getElement('longdescid') ? (id_to_path($imgObj->getElement('longdescid')) . '?id=' . $imgObj->getElement('longdescid')) : $longdesc);
+						$longdesc = $preserveData ? $longdesc : ($imgObj->getElement('longdescid') ? (id_to_path($imgObj->getElement('longdescid')) . '?id=' . $imgObj->getElement('longdescid'))
+									: $longdesc);
 						$alt = $preserveData ? $alt : f('SELECT c.Dat as Dat FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON c.ID=l.CID WHERE l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND l.DID=' . intval($fileID) . ' AND l.Name="alt"', '', $this->db);
 					}
 					$this->initByFileID($fileID, $width, $height, $hspace, $vspace, $border, $alt, $align, $name, $thumbnail, $class, $title, $longdesc);
@@ -236,11 +236,13 @@ class we_dialog_image extends we_dialog_base{
 	function getDialogContentHTML(){
 		$yuiSuggest = & weSuggest::getInstance();
 		if($this->noInternals || (isset($this->args['outsideWE']) && $this->args['outsideWE'] == 1)){
-			$extSrc = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extSrc]", 30, (isset($this->args["extSrc"]) ? $this->args["extSrc"] : ""), "", "", "text", 410), "", "left", "defaultfont", we_html_tools::getPixel(10, 2), "", "", "", "", 0);
+			$extSrc = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extSrc]", 30, (isset($this->args["extSrc"]) ? $this->args["extSrc"]
+								: ""), "", "", "text", 410), "", "left", "defaultfont", we_html_tools::getPixel(10, 2), "", "", "", "", 0);
 			$intSrc = '';
 			$thumbnails = '';
 
-			$_longdesc = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('we_dialog_args[longdesc]', 30, str_replace('"', '&quot;', (isset($this->args["longdesc"]) ? $this->args["longdesc"] : "")), "", '', "text", 520), g_l('weClass', "[longdesc_text]"));
+			$_longdesc = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('we_dialog_args[longdesc]', 30, str_replace('"', '&quot;', (isset($this->args["longdesc"])
+									? $this->args["longdesc"] : "")), "", '', "text", 520), g_l('weClass', "[longdesc_text]"));
 		} else {
 			$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['we_dialog_args[extSrc]'].value");
 			$wecmdenc4 = we_base_request::encCmd("opener.document.we_form.elements['we_dialog_args[type]'][0].checked=true;opener.imageChanged();");
@@ -251,13 +253,15 @@ class we_dialog_image extends we_dialog_base{
 			$radioBut = we_html_forms::radiobutton(we_base_link::TYPE_EXT, (isset($this->args["type"]) && $this->args["type"] == we_base_link::TYPE_EXT), "we_dialog_args[type]", g_l('wysiwyg', "[external_image]"), true, "defaultfont", "imageChanged();"
 			);
 
-			$extSrc = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extSrc]", 30, (isset($this->args["extSrc"]) ? $this->args["extSrc"] : ""), "", ' onfocus="if(this.form.elements[\'we_dialog_args[type]\'][1].checked) { this.form.elements[\'we_dialog_args[type]\'][0].checked=true;imageChanged();}" onchange="this.form.elements[\'we_dialog_args[type]\'][0].checked=true;imageChanged();"', "text", 300), $radioBut, "left", "defaultfont", we_html_tools::getPixel(20, 2), $but, "", "", "", 0
+			$extSrc = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extSrc]", 30, (isset($this->args["extSrc"]) ? $this->args["extSrc"]
+								: ""), "", ' onfocus="if(this.form.elements[\'we_dialog_args[type]\'][1].checked) { this.form.elements[\'we_dialog_args[type]\'][0].checked=true;imageChanged();}" onchange="this.form.elements[\'we_dialog_args[type]\'][0].checked=true;imageChanged();"', "text", 300), $radioBut, "left", "defaultfont", we_html_tools::getPixel(20, 2), $but, "", "", "", 0
 			);
 			$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['we_dialog_args[fileID]'].value");
 			$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['we_dialog_args[fileSrc]'].value");
 			$wecmdenc3 = we_base_request::encCmd("opener.document.we_form.elements['we_dialog_args[type]'][1].checked=true;opener.imageChanged();");
 
-			$but = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['we_dialog_args[fileID]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . we_base_ContentTypes::IMAGE . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");"
+			$but = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['we_dialog_args[fileID]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . we_base_ContentTypes::IMAGE . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES")
+							? 0 : 1) . ");"
 			);
 
 			$radioBut = we_html_forms::radiobutton(we_base_link::TYPE_INT, (isset($this->args["type"]) && $this->args["type"] == we_base_link::TYPE_INT), "we_dialog_args[type]", g_l('wysiwyg', "[internal_image]"), true, "defaultfont", "imageChanged();");
@@ -293,7 +297,8 @@ class we_dialog_image extends we_dialog_base{
 			$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['we_dialog_args[longdescid]'].value");
 			$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['we_dialog_args[longdescsrc]'].value");
 
-			$but = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['we_dialog_args[longdescid]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','',''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
+			$but = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['we_dialog_args[longdescid]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','',''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES")
+							? 0 : 1) . ");");
 			$but2 = we_html_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['we_dialog_args[longdescid]'].value='';document.we_form.elements['we_dialog_args[longdescsrc]'].value='';");
 
 			$yuiSuggest->setAcId("Longdesc");
@@ -401,7 +406,8 @@ class we_dialog_image extends we_dialog_base{
 		$extension = count($tmp) > 1 ? '.' . $tmp[count($tmp) - 1] : '';
 		unset($_p);
 
-		return (we_base_imageEdit::gd_version() > 0 && we_base_imageEdit::is_imagetype_supported(isset(we_base_imageEdit::$GDIMAGE_TYPE[strtolower($extension)]) ? we_base_imageEdit::$GDIMAGE_TYPE[strtolower($extension)] : "") && isset($this->args["type"]) && $this->args["type"] == we_base_link::TYPE_INT) ? "block" : "none";
+		return (we_base_imageEdit::gd_version() > 0 && we_base_imageEdit::is_imagetype_supported(isset(we_base_imageEdit::$GDIMAGE_TYPE[strtolower($extension)]) ? we_base_imageEdit::$GDIMAGE_TYPE[strtolower($extension)]
+						: "") && isset($this->args["type"]) && $this->args["type"] == we_base_link::TYPE_INT) ? "block" : "none";
 	}
 
 	function cmdFunction($args){

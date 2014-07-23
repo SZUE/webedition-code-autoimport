@@ -1006,7 +1006,7 @@ class we_document extends we_root{
 						return '';
 					}
 					if($classID){
-						$defVals = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($classID), 'DefaultValues', $db);
+						$defVals = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($classID), '', $db);
 						if($defVals){
 							$arr = unserialize($defVals);
 							return isset($arr['meta_' . $attribs['name']]['meta'][$val]) ? $arr['meta_' . $attribs['name']]['meta'][$val] : '';
