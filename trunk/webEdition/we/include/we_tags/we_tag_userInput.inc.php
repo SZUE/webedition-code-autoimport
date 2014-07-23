@@ -27,6 +27,7 @@ function we_tag_userInput($attribs, $content){
 		return $foo;
 	}
 
+
 	$name = weTag_getAttribute('name', $attribs);
 	$type = weTag_getAttribute('type', $attribs);
 	$property = weTag_getAttribute('property', $attribs, false, true);
@@ -478,7 +479,7 @@ function we_tag_userInput($attribs, $content){
 					'ignoredocumentcss',
 					'buttonpos'
 				));
-				return we_getTextareaField($fieldname, $content, $atts);
+				return we_getTextareaField($fieldname, ($content ? $content : $value), $atts);
 			}
 			echo we_html_element::jsElement('weFrontpageEdit=true;') .
 			we_html_element::jsScript(JS_DIR . 'we_textarea.js') .
@@ -529,7 +530,7 @@ function open_wysiwyg_win(){
 			//FIXME: currently we use a separate preference-option for frontend editor (where tinyMCE is labelled beta)
 			$tmp = we_wysiwyg_editor::$editorType;
 			we_wysiwyg_editor::$editorType = WYSIWYG_TYPE_FRONTEND == 'tinyMCE' ? 'tinyMCE' : 'default';
-			$ret = we_html_forms::weTextarea($fieldname, $content, $attribs, $autobr, 'autobr', $showAutobr, $GLOBALS['we_doc']->getHttpPath(), false, false, $xml, $removeFirstParagraph, $charset, false, true, $name);
+			$ret = we_html_forms::weTextarea($fieldname, ($content ? $content : $value), $attribs, $autobr, 'autobr', $showAutobr, $GLOBALS['we_doc']->getHttpPath(), false, false, $xml, $removeFirstParagraph, $charset, false, true, $name);
 			we_wysiwyg_editor::$editorType = $tmp;
 			return $ret;
 
