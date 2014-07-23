@@ -124,6 +124,7 @@ var ImageDialog = {
 
 	analyseSrc : function(src) {
 		src_vars = Array();
+		alert(src);
 		if(src.split('?id=',2)[1] || src.split('document:',2)[1]){//internal Document, no thumbnail
 			src_vars[0] = false; // type = ext
 			src_vars[1] = ''; // external src

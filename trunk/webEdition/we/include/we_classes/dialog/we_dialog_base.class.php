@@ -111,9 +111,8 @@ class we_dialog_base{
 
 		if($this->cmdFN){
 			return $fn($send);
-		} else {
-			return $this->cmdFunction($send);
 		}
+		return $this->cmdFunction($send);
 	}
 
 	function cmdFunction($args){
