@@ -122,6 +122,7 @@ var ImageDialog = {
 		*/
 	},
 
+	/*unused
 	analyseSrc : function(src) {
 		src_vars = Array();
 		if(src.split('?id=',2)[1] || src.split('document:',2)[1]){//internal Document, no thumbnail
@@ -152,7 +153,7 @@ var ImageDialog = {
 		}
 		return src_vars;
 	},
-
+*/
 	selectOptionByValue : function(form, selName, val){
 		if(typeof(form)=='undefined' || typeof(form.elements[selName]) == 'undefined' && typeof(val) == 'undefined'){
 			return;
