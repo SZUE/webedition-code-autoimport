@@ -156,15 +156,13 @@ abstract class we_html_forms{
 		$cssClasses = weTag_getAttribute('classes', $attribs);
 		$buttonTop = false;
 		$buttonBottom = false;
+		$editorcss=  id_to_path(weTag_getAttribute('editorcss', $attribs),FILE_TABLE, null, false, true);
 
 		//first prepare stylesheets from textarea-attribute editorcss (templates) or class-css (classes): csv of ids. then (if document) get document-css, defined by we:css
-		$contentCss = (isset($GLOBALS['we_doc']) && (($GLOBALS['we_doc'] instanceof we_objectFile) || ($GLOBALS['we_doc'] instanceof we_object))) ? $GLOBALS['we_doc']->CSS
-				:
-			((isset($GLOBALS['we_doc']) && ($GLOBALS['we_doc'] instanceof we_webEditionDocument)) ? weTag_getAttribute('editorcss', $attribs) : '');
-		$contentCss = $contentCss ? implode('?' . time() . ',', id_to_path(trim($contentCss, ', '), FILE_TABLE, null, false, true)) . '?' . time() : '';
-		$contentCss = (isset($GLOBALS['we_doc']) && ($GLOBALS['we_doc'] instanceof we_webEditionDocument) && !$ignoredocumentcss) ? trim($GLOBALS['we_doc']->getDocumentCss() . ',' . $contentCss, ',')
-				:
-			$contentCss;
+
+		$contentCss = array_filter(array_merge((isset($GLOBALS['we_doc']) && !$ignoredocumentcss ? $GLOBALS['we_doc']->getDocumentCss() : array()),
+		$editorcss));
+		$contentCss = ($contentCss ? implode('?' . time() . ',', $contentCss) . '?' . time() : '');
 
 		if($buttonpos){
 			$foo = makeArrayFromCSV($buttonpos);
@@ -229,7 +227,7 @@ abstract class we_html_forms{
 
 				return $out . $e->getHTML();
 			}
-			
+
 			$e = new we_wysiwyg_editor($name, $width, $height, '', $commands, $bgcolor, '', $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $_lang, '', $showSpell, $isFrontendEdit, $buttonpos, $oldHtmlspecialchars, $contentCss, $origName, $tinyParams, $contextmenu, false, $templates);
 
 			if(stripos($name, "we_ui") === false){//we are in backend

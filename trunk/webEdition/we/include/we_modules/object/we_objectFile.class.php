@@ -51,7 +51,6 @@ class we_objectFile extends we_document{
 	var $ExtraWorkspacesSelected = '';
 	var $AllowedWorkspaces = array();
 	var $AllowedClasses = '';
-	var $CSS = '';
 	var $Charset = '';
 	var $Language = '';
 	var $Templates = '';

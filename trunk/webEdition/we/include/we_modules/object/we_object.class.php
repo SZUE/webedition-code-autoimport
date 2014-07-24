@@ -43,7 +43,7 @@ class we_object extends we_document{
 	var $WorkspaceFlag = 1;
 	var $Templates = '';
 	var $SerializedArray = array(); // #3931
-	var $CSS = '';
+
 
 	function __construct(){
 		parent::__construct();
