@@ -146,8 +146,10 @@ $l_modules_newsletter=array(
 	'new'=>'Neu',
 	'new_newsletter'=>'Neuer Newsletter',
 	'new_newsletter_group'=>'Neue Gruppe',
-	'newsletter'=>'Newsletter',
+	
+	'newsletter'=>array(
 		'preview'=>'Newslettervorschau',
+		'text'=>'Newsletter',
 	),
 	'newsletter_content'=>'Inhalt des Newsletters',
 	'newsletter_test'=>'Test',

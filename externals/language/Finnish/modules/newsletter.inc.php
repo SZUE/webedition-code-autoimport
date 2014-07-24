@@ -146,8 +146,10 @@ $l_modules_newsletter=array(
 	'new'=>'Uusi',
 	'new_newsletter'=>'Uusi uutiskirje',
 	'new_newsletter_group'=>'Uusi ryhmä',
-	'newsletter'=>'Uutiskirje',
+	
+	'newsletter'=>array(
 		'preview'=>'Newsletter preview',
+		'text'=>'Uutiskirje',
 	),
 	'newsletter_content'=>'Uutiskirjeen sisältö',
 	'newsletter_test'=>'Testi',
