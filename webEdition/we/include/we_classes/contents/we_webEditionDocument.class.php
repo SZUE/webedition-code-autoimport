@@ -34,8 +34,6 @@ class we_webEditionDocument extends we_textContentDocument{
 	// Path from the template
 	var $TemplatePath = '';
 	var $hasVariants = null;
-	// Paths to stylesheets from we:css-tags that are user by tinyMCE
-	private $DocumentCss = '';
 	protected $usedElementNames = array();
 
 	/**
@@ -1052,14 +1050,6 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 		$db->query('UPDATE ' . LANGLINK_TABLE . ' SET DLocale="' . $db->escape($lang) . '" WHERE DID=' . intval($id) . ' AND DocumentTable="' . $db->escape($type) . '"');
 		//drop invalid entries => is this safe???
 		$db->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DID=' . intval($id) . ' AND DocumentTable="' . $db->escape($type) . '" AND DLocale!="' . $db->escape($lang) . '"');
-	}
-
-	public function addDocumentCss($stylesheet = ''){
-		$this->DocumentCss .= ($this->DocumentCss ? ',' : '') . $stylesheet;
-	}
-
-	public function getDocumentCss(){
-		return $this->DocumentCss;
 	}
 
 	public function resetUsedElements(){

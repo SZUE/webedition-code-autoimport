@@ -43,7 +43,7 @@ function we_tag_css($attribs){
 				case '':
 				case 'screen':
 				case 'all':
-					$GLOBALS['we_doc']->addDocumentCss($row['Path'] . '?' . time());
+					$GLOBALS['we_doc']->addDocumentCss($row['Path']);
 					break;
 			}
 			break;
