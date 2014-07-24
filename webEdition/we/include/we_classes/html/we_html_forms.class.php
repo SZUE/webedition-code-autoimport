@@ -156,7 +156,8 @@ abstract class we_html_forms{
 		$cssClasses = weTag_getAttribute('classes', $attribs);
 		$buttonTop = false;
 		$buttonBottom = false;
-		$editorcss = id_to_path(weTag_getAttribute('editorcss', $attribs), FILE_TABLE, null, false, true);
+		$editorcss = weTag_getAttribute('editorcss', $attribs);
+		$editorcss = $editorcss ? id_to_path($editorcss, FILE_TABLE, null, false, true) : array();
 
 		//first prepare stylesheets from textarea-attribute editorcss (templates) or class-css (classes): csv of ids. then (if document) get document-css, defined by we:css
 
