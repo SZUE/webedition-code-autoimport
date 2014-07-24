@@ -24,7 +24,6 @@
  */
 /* a class for handling templates */
 class we_object extends we_document{
-
 	const ELEMENT_LENGHT = 'length';
 	const ELEMENT_TYPE = 'dtype';
 	const ELEMENT_WIDTH = 'width';
@@ -44,7 +43,6 @@ class we_object extends we_document{
 	var $Templates = '';
 	var $SerializedArray = array(); // #3931
 
-
 	function __construct(){
 		parent::__construct();
 		array_push($this->persistent_slots, 'WorkspaceFlag', 'RestrictUsers', 'UsersReadOnly', 'Text', 'SerializedArray', 'Templates', 'Workspaces', 'DefaultWorkspaces', 'ID', 'Users', 'strOrder', 'Category', 'DefaultCategory', 'DefaultText', 'DefaultValues', 'DefaultTitle', 'DefaultKeywords', 'DefaultUrl', 'DefaultUrlfield0', 'DefaultUrlfield1', 'DefaultUrlfield2', 'DefaultUrlfield3', 'DefaultTriggerID', 'DefaultDesc', 'CSS');
@@ -56,6 +54,7 @@ class we_object extends we_document{
 		$this->Table = OBJECT_TABLE;
 		$this->Published = 1;
 		$this->ClassName = 'we_object'; //for we_object_Eximport, otherwise ist will save its own classname, or needs its own constructor
+		$this->CSS = '';
 	}
 
 	// setter for runtime variable isInApp which allows to construct Classes from within Apps
@@ -122,7 +121,8 @@ class we_object extends we_document{
 				$was = 'DefaultText_' . $i;
 				if($this->elements[$was]['dat'] != ''){ //&& in_array($this->elements[$was]["dat"],$var_flip)
 					if(stristr($this->elements[$was]['dat'], 'unique')){
-						$this->elements[$was]['dat'] = '%' . str_replace('%', '', $this->elements[$was]['dat']) . (($this->elements['unique_' . $i]['dat'] > 0) ? $this->elements['unique_' . $i]['dat'] : '16') . '%';
+						$this->elements[$was]['dat'] = '%' . str_replace('%', '', $this->elements[$was]['dat']) . (($this->elements['unique_' . $i]['dat'] > 0) ? $this->elements['unique_' . $i]['dat']
+									: '16') . '%';
 						//echo $this->elements[$was]['dat'];
 					}
 					$this->DefaultText .= $this->elements[$was]['dat'];
@@ -136,16 +136,20 @@ class we_object extends we_document{
 				$was = 'DefaultUrl_' . $i;
 				if($this->elements[$was]['dat'] != ''){ //&& in_array($this->elements[$was]['dat'],$var_flip)
 					if(stristr($this->elements[$was]['dat'], 'urlunique')){
-						$this->elements[$was]['dat'] = '%' . str_replace('%', '', $this->elements[$was]['dat']) . (($this->elements['urlunique_' . $i]['dat'] > 0) ? $this->elements['urlunique_' . $i]['dat'] : '16') . '%';
+						$this->elements[$was]['dat'] = '%' . str_replace('%', '', $this->elements[$was]['dat']) . (($this->elements['urlunique_' . $i]['dat'] > 0) ? $this->elements['urlunique_' . $i]['dat']
+									: '16') . '%';
 					}
 					if(stristr($this->elements[$was]['dat'], 'urlfield1')){
-						$this->elements[$was]['dat'] = '%' . str_replace('%', '', $this->elements[$was]['dat']) . (($this->elements['urlfield1_' . $i]['dat'] > 0) ? $this->elements['urlfield1_' . $i]['dat'] : '64') . '%';
+						$this->elements[$was]['dat'] = '%' . str_replace('%', '', $this->elements[$was]['dat']) . (($this->elements['urlfield1_' . $i]['dat'] > 0) ? $this->elements['urlfield1_' . $i]['dat']
+									: '64') . '%';
 					}
 					if(stristr($this->elements[$was]['dat'], 'urlfield2')){
-						$this->elements[$was]['dat'] = '%' . str_replace('%', '', $this->elements[$was]['dat']) . (($this->elements['urlfield2_' . $i]['dat'] > 0) ? $this->elements['urlfield2_' . $i]['dat'] : '64') . '%';
+						$this->elements[$was]['dat'] = '%' . str_replace('%', '', $this->elements[$was]['dat']) . (($this->elements['urlfield2_' . $i]['dat'] > 0) ? $this->elements['urlfield2_' . $i]['dat']
+									: '64') . '%';
 					}
 					if(stristr($this->elements[$was]['dat'], 'urlfield3')){
-						$this->elements[$was]['dat'] = '%' . str_replace('%', '', $this->elements[$was]['dat']) . (($this->elements['urlfield3_' . $i]['dat'] > 0) ? $this->elements['urlfield3_' . $i]['dat'] : '64') . '%';
+						$this->elements[$was]['dat'] = '%' . str_replace('%', '', $this->elements[$was]['dat']) . (($this->elements['urlfield3_' . $i]['dat'] > 0) ? $this->elements['urlfield3_' . $i]['dat']
+									: '64') . '%';
 					}
 					$this->DefaultUrl .= $this->elements[$was]['dat'];
 				}
@@ -235,7 +239,8 @@ class we_object extends we_document{
 
 						//  First time a field is added
 						for($f = 0; $f <= ( isset($this->elements[$cur . 'count']['dat']) ? $this->elements[$cur . 'count']['dat'] : 0 ); $f++){
-							$_val = (isset($this->elements[$cur . 'defaultvalue' . $f]['dat']) && $this->elements[$cur . 'defaultvalue' . $f]['dat'] != $cur . 'defaultvalue' . $f) ? $this->elements[$cur . 'defaultvalue' . $f]['dat'] : '';
+							$_val = (isset($this->elements[$cur . 'defaultvalue' . $f]['dat']) && $this->elements[$cur . 'defaultvalue' . $f]['dat'] != $cur . 'defaultvalue' . $f) ? $this->elements[$cur . 'defaultvalue' . $f]['dat']
+									: '';
 							if(substr($name, 0, 12) == we_objectFile::TYPE_MULTIOBJECT . '_'){
 								$arrt[$name]['meta'][] = $_val;
 							} else {
@@ -257,16 +262,24 @@ class we_object extends we_document{
 			$arrt['WE_CSS_FOR_CLASS'] = $this->CSS;
 			$this->DefaultValues = serialize($arrt);
 
-			$this->DefaultTitle = isset($this->elements['title']['dat']) ? $this->getElement($this->elements['title']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['title']['dat'], 'dat') : '_';
-			$this->DefaultDesc = isset($this->elements['desc']['dat']) ? $this->getElement($this->elements['desc']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['desc']['dat'], 'dat') : '_';
-			$this->DefaultKeywords = isset($this->elements['keywords']['dat']) ? $this->getElement($this->elements['keywords']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['keywords']['dat'], 'dat') : '_';
+			$this->DefaultTitle = isset($this->elements['title']['dat']) ? $this->getElement($this->elements['title']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['title']['dat'], 'dat')
+					: '_';
+			$this->DefaultDesc = isset($this->elements['desc']['dat']) ? $this->getElement($this->elements['desc']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['desc']['dat'], 'dat')
+					: '_';
+			$this->DefaultKeywords = isset($this->elements['keywords']['dat']) ? $this->getElement($this->elements['keywords']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['keywords']['dat'], 'dat')
+					: '_';
 
 
-			$this->DefaultUrlfield0 = isset($this->elements['urlfield0']['dat']) ? $this->getElement($this->elements['urlfield0']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['urlfield0']['dat'], 'dat') : '_';
-			$this->DefaultUrlfield1 = isset($this->elements['urlfield1']['dat']) ? $this->getElement($this->elements['urlfield1']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['urlfield1']['dat'], 'dat') : '_';
-			$this->DefaultUrlfield2 = isset($this->elements['urlfield2']['dat']) ? $this->getElement($this->elements['urlfield2']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['urlfield2']['dat'], 'dat') : '_';
-			$this->DefaultUrlfield3 = isset($this->elements['urlfield3']['dat']) ? $this->getElement($this->elements['urlfield3']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['urlfield3']['dat'], 'dat') : '_';
-			$this->DefaultTriggerID = isset($this->elements['triggerid']['dat']) ? $this->getElement($this->elements['triggerid']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['triggerid']['dat'], 'dat') : '0';
+			$this->DefaultUrlfield0 = isset($this->elements['urlfield0']['dat']) ? $this->getElement($this->elements['urlfield0']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['urlfield0']['dat'], 'dat')
+					: '_';
+			$this->DefaultUrlfield1 = isset($this->elements['urlfield1']['dat']) ? $this->getElement($this->elements['urlfield1']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['urlfield1']['dat'], 'dat')
+					: '_';
+			$this->DefaultUrlfield2 = isset($this->elements['urlfield2']['dat']) ? $this->getElement($this->elements['urlfield2']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['urlfield2']['dat'], 'dat')
+					: '_';
+			$this->DefaultUrlfield3 = isset($this->elements['urlfield3']['dat']) ? $this->getElement($this->elements['urlfield3']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['urlfield3']['dat'], 'dat')
+					: '_';
+			$this->DefaultTriggerID = isset($this->elements['triggerid']['dat']) ? $this->getElement($this->elements['triggerid']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['triggerid']['dat'], 'dat')
+					: '0';
 
 
 			$this->strOrder = implode(',', $this->getElement('we_sort'));
@@ -358,7 +371,8 @@ class we_object extends we_document{
 										if((!isset($arrt[$nam]['meta'])) || (!is_array($arrt[$nam]['meta']))){
 											$arrt[$nam]['meta'] = array();
 										}
-										$_val = (isset($this->elements[$info['name'] . 'defaultvalue' . $f]) && $this->elements[$info['name'] . 'defaultvalue' . $f] != $info['name'] . 'defaultvalue' . $f ) ? $this->elements[$info['name'] . 'defaultvalue' . $f]['dat'] : '';
+										$_val = (isset($this->elements[$info['name'] . 'defaultvalue' . $f]) && $this->elements[$info['name'] . 'defaultvalue' . $f] != $info['name'] . 'defaultvalue' . $f )
+												? $this->elements[$info['name'] . 'defaultvalue' . $f]['dat'] : '';
 										if(substr($nam, 0, 12) == we_objectFile::TYPE_MULTIOBJECT . '_'){
 											$arrt[$nam]['meta'][] = $_val;
 										} else {
@@ -449,10 +463,14 @@ class we_object extends we_document{
 			$this->DefaultKeywords = $this->getElement($this->elements['keywords']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['keywords']['dat'], 'dat');
 
 
-			$this->DefaultUrlfield0 = isset($this->elements['urlfield0']['dat']) ? $this->getElement($this->elements['urlfield0']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['urlfield0']['dat'], 'dat') : '_';
-			$this->DefaultUrlfield1 = isset($this->elements['urlfield1']['dat']) ? $this->getElement($this->elements['urlfield1']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['urlfield1']['dat'], 'dat') : '_';
-			$this->DefaultUrlfield2 = isset($this->elements['urlfield2']['dat']) ? $this->getElement($this->elements['urlfield2']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['urlfield2']['dat'], 'dat') : '_';
-			$this->DefaultUrlfield3 = isset($this->elements['urlfield3']['dat']) ? $this->getElement($this->elements['urlfield3']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['urlfield3']['dat'], 'dat') : '_';
+			$this->DefaultUrlfield0 = isset($this->elements['urlfield0']['dat']) ? $this->getElement($this->elements['urlfield0']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['urlfield0']['dat'], 'dat')
+					: '_';
+			$this->DefaultUrlfield1 = isset($this->elements['urlfield1']['dat']) ? $this->getElement($this->elements['urlfield1']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['urlfield1']['dat'], 'dat')
+					: '_';
+			$this->DefaultUrlfield2 = isset($this->elements['urlfield2']['dat']) ? $this->getElement($this->elements['urlfield2']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['urlfield2']['dat'], 'dat')
+					: '_';
+			$this->DefaultUrlfield3 = isset($this->elements['urlfield3']['dat']) ? $this->getElement($this->elements['urlfield3']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['urlfield3']['dat'], 'dat')
+					: '_';
 			//$this->DefaultTriggerID = isset($this->elements['triggerid']['dat']) ? $this->getElement($this->elements['triggerid']['dat'].'dtype','dat').'_'.$this->getElement($this->elements['urlfield3']['dat'],'dat') : '0';
 
 			$arrt['WE_CSS_FOR_CLASS'] = $this->CSS;
@@ -500,11 +518,13 @@ class we_object extends we_document{
 	function switchtypes($name){
 		switch($this->getElement($name . self::ELEMENT_TYPE, 'dat')){
 			case we_objectFile::TYPE_META:
-				return ' VARCHAR(' . (($this->getElement($name . 'length', 'dat') > 0 && ($this->getElement($name . 'length', 'dat') < 255)) ? $this->getElement($name . 'length', 'dat') : 255) . ') NOT NULL ';
+				return ' VARCHAR(' . (($this->getElement($name . 'length', 'dat') > 0 && ($this->getElement($name . 'length', 'dat') < 255)) ? $this->getElement($name . 'length', 'dat')
+							: 255) . ') NOT NULL ';
 			case we_objectFile::TYPE_DATE:
 				return ' INT(11) NOT NULL ';
 			case we_objectFile::TYPE_INPUT:
-				return ' VARCHAR(' . (($this->getElement($name . 'length', 'dat') > 0 && ($this->getElement($name . 'length', 'dat') < 4096)) ? $this->getElement($name . 'length', 'dat') : 255) . ') NOT NULL ';
+				return ' VARCHAR(' . (($this->getElement($name . 'length', 'dat') > 0 && ($this->getElement($name . 'length', 'dat') < 4096)) ? $this->getElement($name . 'length', 'dat')
+							: 255) . ') NOT NULL ';
 			case we_objectFile::TYPE_COUNTRY:
 			case we_objectFile::TYPE_LANGUAGE:
 				return ' VARCHAR(2) NOT NULL ';
@@ -522,7 +542,8 @@ class we_object extends we_document{
 			case we_objectFile::TYPE_CHECKBOX:
 				return ' INT(1) DEFAULT "' . ($this->getElement($name . 'default', 'dat') == 1 ? '1' : '0') . '" NOT NULL ';
 			case we_objectFile::TYPE_INT:
-				return ' INT(' . (($this->getElement($name . 'length', 'dat') > 0 && ($this->getElement($name . 'length', 'dat') < 256)) ? $this->getElement($name . 'length', 'dat') : '11') . ') DEFAULT NULL ';
+				return ' INT(' . (($this->getElement($name . 'length', 'dat') > 0 && ($this->getElement($name . 'length', 'dat') < 256)) ? $this->getElement($name . 'length', 'dat')
+							: '11') . ') DEFAULT NULL ';
 			case we_objectFile::TYPE_FLOAT:
 				return ' DOUBLE DEFAULT NULL ';
 			case we_objectFile::TYPE_OBJECT:
@@ -909,7 +930,8 @@ class we_object extends we_document{
 				$maxLengthVal = $type == we_objectFile::TYPE_INT ? 10 : 1023;
 				$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin"  valign="top">' . g_l('modules_object', '[length]') . '</td>' .
 					'<td width="170" class="defaultfont">' .
-					$this->htmlTextInput("we_" . $this->Name . "_input[" . $name . self::ELEMENT_LENGHT . ']', 10, ($this->getElement($name . "length", "dat") > 0 && ($this->getElement($name . "length", "dat") < ($maxLengthVal + 1)) ? $this->getElement($name . "length", "dat") : $maxLengthVal), ($type == we_objectFile::TYPE_INT ? 2 : 4), 'onchange="_EditorFrame.setEditorIsHot(true);" weType="weObject_' . $type . '_length"', "text", 388) .
+					$this->htmlTextInput("we_" . $this->Name . "_input[" . $name . self::ELEMENT_LENGHT . ']', 10, ($this->getElement($name . "length", "dat") > 0 && ($this->getElement($name . "length", "dat") < ($maxLengthVal + 1))
+								? $this->getElement($name . "length", "dat") : $maxLengthVal), ($type == we_objectFile::TYPE_INT ? 2 : 4), 'onchange="_EditorFrame.setEditorIsHot(true);" weType="weObject_' . $type . '_length"', "text", 388) .
 					'</td></tr>';
 		}
 
@@ -1153,7 +1175,8 @@ class we_object extends we_document{
 
 				$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[default]') . '</td>' .
 					'<td width="170" class="defaultfont">' .
-					$this->htmlTextInput("we_" . $this->Name . "_input[" . $name . "default]", 40, $this->getElement($name . "default", "dat"), ($type == we_objectFile::TYPE_INT ? 10 : ($type == we_objectFile::TYPE_FLOAT ? 19 : 255)), 'onchange="_EditorFrame.setEditorIsHot(true);" weType="' . $type . '"', "text", 388) .
+					$this->htmlTextInput("we_" . $this->Name . "_input[" . $name . "default]", 40, $this->getElement($name . "default", "dat"), ($type == we_objectFile::TYPE_INT
+								? 10 : ($type == we_objectFile::TYPE_FLOAT ? 19 : 255)), 'onchange="_EditorFrame.setEditorIsHot(true);" weType="' . $type . '"', "text", 388) .
 					'</td></tr>';
 				break;
 		}
@@ -1320,7 +1343,8 @@ class we_object extends we_document{
 		$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['" . $idname . "'].value");
 		$wecmdenc2 = we_base_request::encCmd("document.forms['we_form'].elements['" . $textname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd("top.opener._EditorFrame.setEditorIsHot(true);");
-		$button = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.forms['we_form'].elements['" . $idname . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','" . $rootDir . "','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")");
+		$button = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.forms['we_form'].elements['" . $idname . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','" . $rootDir . "','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS")
+						? 0 : 1) . ")");
 		$delbutton = we_html_button::create_button("image:btn_function_trash", "javascript:document.forms['we_form'].elements['" . $idname . "'].value='';document.forms['we_form'].elements['" . $textname . "'].value=''");
 		/*
 		  DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch erzeugt das
@@ -1340,7 +1364,8 @@ class we_object extends we_document{
 
 		  return weSuggest::getYuiFiles().$yuiSuggest->getHTML().$yuiSuggest->getYuiCode();
 		 */
-		return we_html_tools::htmlFormElementTable($this->htmlTextInput($textname, 30, $path, "", ' readonly', "text", 246, 0), "", "left", "defaultfont", $this->htmlHidden($idname, $myid), we_html_tools::getPixel(10, 4), $button, we_html_tools::getPixel(5, 4), $delbutton) . ($DoubleNames ? '<span style="color:red" >' . sprintf(g_l('modules_object', '[incObject_sameFieldname]'), implode(', ', $DoubleNames)) . '</span>' : '');
+		return we_html_tools::htmlFormElementTable($this->htmlTextInput($textname, 30, $path, "", ' readonly', "text", 246, 0), "", "left", "defaultfont", $this->htmlHidden($idname, $myid), we_html_tools::getPixel(10, 4), $button, we_html_tools::getPixel(5, 4), $delbutton) . ($DoubleNames
+					? '<span style="color:red" >' . sprintf(g_l('modules_object', '[incObject_sameFieldname]'), implode(', ', $DoubleNames)) . '</span>' : '');
 	}
 
 	function getMultiObjectFieldHTML($name, $i, $f){
@@ -1361,7 +1386,8 @@ class we_object extends we_document{
 		$wecmdenc2 = we_base_request::encCmd("document.forms['we_form'].elements['" . $textname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd("top.opener._EditorFrame.setEditorIsHot(true);");
 
-		$selectObject = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.forms['we_form'].elements['" . $idname . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','" . $rootDir . "','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")");
+		$selectObject = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.forms['we_form'].elements['" . $idname . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','" . $rootDir . "','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS")
+						? 0 : 1) . ")");
 
 		return '<tr>' .
 			'<td>' . $this->htmlTextInput($textname, 30, $path, 255, 'onchange="_EditorFrame.setEditorIsHot(true);" readonly ', "text", 146) . '</td>' .
@@ -1370,19 +1396,23 @@ class we_object extends we_document{
 				$selectObject,
 				$this->htmlHidden($idname, $myid),
 				(($this->elements[$name . "count"]["dat"] + 1 < $this->getElement($name . "max") || $this->getElement($name . "max") == "") ?
-					we_html_button::create_button("image:btn_add_listelement", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_insert_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($i) . "','" . $name . "','" . ($f) . "')", true, 40, 22) :
+					we_html_button::create_button("image:btn_add_listelement", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_insert_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($i) . "','" . $name . "','" . ($f) . "')", true, 40, 22)
+						:
 					we_html_button::create_button("image:btn_add_listelement", "#", true, 21, 22, "", "", true)
 				),
 				(($f > 0) ?
-					we_html_button::create_button("image:btn_direction_up", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_up_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($i) . "','" . $name . "','" . ($f) . "')", true, 21, 22) :
+					we_html_button::create_button("image:btn_direction_up", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_up_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($i) . "','" . $name . "','" . ($f) . "')", true, 21, 22)
+						:
 					we_html_button::create_button("image:btn_direction_up", "#", true, 21, 22, "", "", true)
 				),
 				(($f < ($this->elements[$name . "count"]["dat"])) ?
-					we_html_button::create_button("image:btn_direction_down", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_down_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($i) . "','" . $name . "','" . ($f) . "')", true, 21, 22) :
+					we_html_button::create_button("image:btn_direction_down", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_down_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($i) . "','" . $name . "','" . ($f) . "')", true, 21, 22)
+						:
 					we_html_button::create_button("image:btn_direction_down", "#", true, 21, 22, "", "", true)
 				),
 				($this->elements[$name . "count"]["dat"] >= 1 ?
-					we_html_button::create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_delete_meta_class','" . $GLOBALS['we_transaction'] . "','" . ($i) . "','" . $name . "','" . ($f) . "')", true, 27, 22) :
+					we_html_button::create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_delete_meta_class','" . $GLOBALS['we_transaction'] . "','" . ($i) . "','" . $name . "','" . ($f) . "')", true, 27, 22)
+						:
 					we_html_button::create_button("image:btn_function_trash", "#", true, 27, 22, "", "", true)
 				)
 				), 5
@@ -1397,7 +1427,8 @@ class we_object extends we_document{
 
 	function getWysiwygArea($name){
 		$rmfp = isset($this->elements[$name . "removefirstparagraph"]["dat"]) &&
-			($this->elements[$name . "removefirstparagraph"]["dat"] == 'on' || $this->elements[$name . "removefirstparagraph"]["dat"] == 'off') ? ($this->elements[$name . "removefirstparagraph"]["dat"] == 'on' ? true : false) :
+			($this->elements[$name . "removefirstparagraph"]["dat"] == 'on' || $this->elements[$name . "removefirstparagraph"]["dat"] == 'off') ? ($this->elements[$name . "removefirstparagraph"]["dat"] == 'on'
+					? true : false) :
 			(defined("REMOVEFIRSTPARAGRAPH_DEFAULT") ? REMOVEFIRSTPARAGRAPH_DEFAULT : true);
 		$commands = isset($this->elements[$name . "commands"]["dat"]) && $this->elements[$name . "commands"]["dat"] ? $this->elements[$name . "commands"]["dat"] :
 			(defined("COMMANDS_DEFAULT") ? COMMANDS_DEFAULT : '');
@@ -1427,7 +1458,8 @@ class we_object extends we_document{
 		$autobrName = 'we_' . $this->Name . '_input[' . $name . 'autobr]';
 
 		$value = $this->getElement($name . "default", "dat");
-		return we_html_forms::weTextarea("we_" . $this->Name . "_input[" . $name . "default]", $value, $attribs, $autobr, $autobrName, true, "", (($this->CSS || $attribs["classes"]) ? false : true), false, false, $rmfp, "");
+		return we_html_forms::weTextarea("we_" . $this->Name . "_input[" . $name . "default]", $value, $attribs, $autobr, $autobrName, true, "", (($this->CSS || $attribs["classes"])
+						? false : true), false, false, $rmfp, "");
 	}
 
 	function add_user_to_field($id, $name){
@@ -1455,15 +1487,17 @@ class we_object extends we_document{
 		} else {
 			for($i = 1; $i < (count($users) - 1); $i++){
 				$foo = getHash('SELECT Path,Icon FROM ' . USER_TABLE . ' WHERE ID=' . intval($users[$i]), $this->DB_WE);
-				$content .= '<tr><td>' . (empty($foo) ? '' : '<img src="' . ICON_DIR . $foo["Icon"] . '" width="16" height="18" />') . '</td><td class="defaultfont">' . (empty($foo) ? 'Unknown' : $foo["Path"]) . '</td><td>' . we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('object_del_user_from_field','" . $GLOBALS['we_transaction'] . "','" . $nr . "'," . $users[$i] . ",'" . $name . "');") . '</td></tr>';
+				$content .= '<tr><td>' . (empty($foo) ? '' : '<img src="' . ICON_DIR . $foo["Icon"] . '" width="16" height="18" />') . '</td><td class="defaultfont">' . (empty($foo)
+							? 'Unknown' : $foo["Path"]) . '</td><td>' . we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('object_del_user_from_field','" . $GLOBALS['we_transaction'] . "','" . $nr . "'," . $users[$i] . ",'" . $name . "');") . '</td></tr>';
 			}
 		}
 		$content .= '<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(324, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr></table>';
 
 		$textname = "we_" . $this->Name . "_input[" . $name . "usertext]";
 		$idname = "we_" . $this->Name . "_input[" . $name . "userid]";
-		$delallbut = we_html_button::create_button("delete_all", "javascript:we_cmd('object_del_all_users','" . $GLOBALS['we_transaction'] . "','" . $nr . "','" . $name . "')", true, 0, 0, "", "", count($users) ? false : true);
-		$addbut = $this->htmlHidden($idname, 0) . $this->htmlHidden($textname, "") . we_html_button::create_button("add", "javascript:we_cmd('browse_users','document.forms[\\'we_form\\'].elements[\\'".$idname."\\'].value','document.forms[\\'we_form\\'].elements[\\'".$textname."\\'].value','',document.forms['we_form'].elements['" . $idname . "'].value,'fillIDs();opener.we_cmd(\\'object_add_user_to_field\\',\\'" . $GLOBALS['we_transaction'] . "\\',\\'" . $nr . "\\', top.allIDs,\\'" . $name . "\\')','','',1)");
+		$delallbut = we_html_button::create_button("delete_all", "javascript:we_cmd('object_del_all_users','" . $GLOBALS['we_transaction'] . "','" . $nr . "','" . $name . "')", true, 0, 0, "", "", count($users)
+						? false : true);
+		$addbut = $this->htmlHidden($idname, 0) . $this->htmlHidden($textname, "") . we_html_button::create_button("add", "javascript:we_cmd('browse_users','document.forms[\\'we_form\\'].elements[\\'" . $idname . "\\'].value','document.forms[\\'we_form\\'].elements[\\'" . $textname . "\\'].value','',document.forms['we_form'].elements['" . $idname . "'].value,'fillIDs();opener.we_cmd(\\'object_add_user_to_field\\',\\'" . $GLOBALS['we_transaction'] . "\\',\\'" . $nr . "\\', top.allIDs,\\'" . $name . "\\')','','',1)");
 
 		return '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' .
 			'<div style="width:388px;" class="multichooser">' . $content . '</div></td></tr><tr><td align="right">' . we_html_tools::getPixel(2, 4) . we_html_button::create_button_table(array($delallbut, $addbut)) . '</td></tr></table>';
@@ -1480,10 +1514,14 @@ class we_object extends we_document{
 			$this->DB_WE->query('SELECT ID,Path,Icon FROM ' . USER_TABLE . ' WHERE ID IN(' . implode(',', $users) . ')');
 			$allUsers = $this->DB_WE->getAllFirst();
 			foreach($users as $user){
-				$content .= '<tr><td>' . (isset($allUsers[$user]) ? '<img src="' . ICON_DIR . $allUsers[$user]["Icon"] . '" width="16" height="18" />' : '') . '</td><td class="defaultfont">' . (isset($allUsers[$user]) ? $allUsers[$user]["Path"] : 'Unknown' ) . '</td><td>' .
+				$content .= '<tr><td>' . (isset($allUsers[$user]) ? '<img src="' . ICON_DIR . $allUsers[$user]["Icon"] . '" width="16" height="18" />' : '') . '</td><td class="defaultfont">' . (isset($allUsers[$user])
+							? $allUsers[$user]["Path"] : 'Unknown' ) . '</td><td>' .
 					($canChange ?
-						$this->htmlHidden('we_users_read_only[' . $user . ']', (isset($usersReadOnly[$user]) && $usersReadOnly[$user]) ? $usersReadOnly[$user] : "" ) . '<input type="checkbox" value="1" name="wetmp_users_read_only[' . $user . ']"' . ( (isset($usersReadOnly[$user]) && $usersReadOnly[$user] ) ? ' checked' : '') . ' onclick="this.form.elements[\'we_users_read_only[' . $user . ']\'].value=(this.checked ? 1 : 0);_EditorFrame.setEditorIsHot(true);" />' :
-						'<img src="' . TREE_IMAGE_DIR . ($usersReadOnly[$user] ? 'check1_disabled.gif' : 'check0_disabled.gif') . '" />') . '</td><td class="defaultfont">' . g_l('weClass', "[readOnly]") . '</td><td>' . ($canChange ? we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('users_del_user','" . $user . "');_EditorFrame.setEditorIsHot(true);") : "") . '</td></tr>';
+						$this->htmlHidden('we_users_read_only[' . $user . ']', (isset($usersReadOnly[$user]) && $usersReadOnly[$user]) ? $usersReadOnly[$user] : "" ) . '<input type="checkbox" value="1" name="wetmp_users_read_only[' . $user . ']"' . ( (isset($usersReadOnly[$user]) && $usersReadOnly[$user] )
+								? ' checked' : '') . ' onclick="this.form.elements[\'we_users_read_only[' . $user . ']\'].value=(this.checked ? 1 : 0);_EditorFrame.setEditorIsHot(true);" />'
+							:
+						'<img src="' . TREE_IMAGE_DIR . ($usersReadOnly[$user] ? 'check1_disabled.gif' : 'check0_disabled.gif') . '" />') . '</td><td class="defaultfont">' . g_l('weClass', "[readOnly]") . '</td><td>' . ($canChange
+							? we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('users_del_user','" . $user . "');_EditorFrame.setEditorIsHot(true);") : "") . '</td></tr>';
 			}
 		} else {
 			$content .= '<tr><td><img src="' . ICON_DIR . 'user.gif" width="16" height="18" /></td><td class="defaultfont">' . g_l('weClass', "[onlyOwner]") . '</td><td></td></tr>';
@@ -1497,11 +1535,13 @@ class we_object extends we_document{
 		$wecmdenc2 = we_base_request::encCmd("document.forms['we_form'].elements['" . $textname . "'].value");
 		$wecmdenc5 = we_base_request::encCmd("fillIDs();opener.we_cmd('users_add_user',top.allIDs)");
 		$addbut = $canChange ?
-			$this->htmlHidden($idname, "") . $this->htmlHidden($textname, "") . we_html_button::create_button("add", "javascript:we_cmd('browse_users','" . $wecmdenc1 . "','" . $wecmdenc2 . "','',document.forms[0].elements['" . $idname . "'].value,'" . $wecmdenc5 . "','','',1)") : '';
+			$this->htmlHidden($idname, "") . $this->htmlHidden($textname, "") . we_html_button::create_button("add", "javascript:we_cmd('browse_users','" . $wecmdenc1 . "','" . $wecmdenc2 . "','',document.forms[0].elements['" . $idname . "'].value,'" . $wecmdenc5 . "','','',1)")
+				: '';
 
 		$content = '<table border="0" cellpadding="0" cellspacing="0">
 <tr><td><div style="width:506px;" class="multichooser">' . $content . '</div></td></tr>' .
-			($canChange ? '<tr><td align="right">' . we_html_tools::getPixel(2, 6) . '<br/>' . we_html_button::create_button_table(array($delallbut, $addbut)) . '</td></tr>' : "") . '</table>';
+			($canChange ? '<tr><td align="right">' . we_html_tools::getPixel(2, 6) . '<br/>' . we_html_button::create_button_table(array($delallbut, $addbut)) . '</td></tr>'
+					: "") . '</table>';
 
 		return we_html_tools::htmlFormElementTable($content, g_l('weClass', "[otherowners]"), "left", "defaultfont");
 	}
@@ -1537,23 +1577,18 @@ class we_object extends we_document{
 	}
 
 	function add_css($id){
-		$css = makeArrayFromCSV($this->CSS);
-		$ids = makeArrayFromCSV($id);
-		foreach($ids as $id){
-			if($id && (!in_array($id, $css))){
-				$css[] = $id;
-			}
-		}
-		$this->CSS = makeCSVFromArray($css, true);
+		$this->CSS = implode(',', array_filter(
+				array_unique(
+					array_merge(
+						explode(',', $this->CSS), explode(',', $id))
+			))
+		);
 	}
 
 	function del_css($id){
 		$css = makeArrayFromCSV($this->CSS);
-		if(in_array($id, $css)){
-			$pos = array_search($id, $css);
-			if($pos !== false || $pos == '0'){
-				array_splice($css, $pos, 1);
-			}
+		if(($pos = array_search($id, $css)) !== false){
+			unset($css[$pos]);
 		}
 		$this->CSS = makeCSVFromArray($css, true);
 	}
@@ -1586,7 +1621,8 @@ class we_object extends we_document{
 		if(!empty($thumbList)){
 			$content .= "<br />" . g_l('modules_object', '[use_thumbnail_preview]') . ":<br />";
 			array_unshift($thumbList, '-');
-			$currentSelection = (isset($this->elements["" . $name . "Thumb"]) && isset($this->elements["" . $name . "Thumb"]["dat"]) && isset($thumbList[$this->elements["" . $name . "Thumb"]["dat"]]) ?
+			$currentSelection = (isset($this->elements["" . $name . "Thumb"]) && isset($this->elements["" . $name . "Thumb"]["dat"]) && isset($thumbList[$this->elements["" . $name . "Thumb"]["dat"]])
+						?
 					$this->elements["" . $name . "Thumb"]["dat"] :
 					'');
 
@@ -1665,7 +1701,8 @@ class we_object extends we_document{
 				$was = "DefaultText_" . $i;
 				if($this->elements[$was]["dat"] != ""){
 					if(stristr($this->elements[$was]["dat"], 'unique')){
-						$this->elements[$was]["dat"] = "%" . str_replace("%", "", $this->elements[$was]["dat"]) . (( isset($this->elements["unique_" . $i]["dat"]) && $this->elements["unique_" . $i]["dat"] > 0 ) ? $this->elements["unique_" . $i]["dat"] : 16) . "%";
+						$this->elements[$was]["dat"] = "%" . str_replace("%", "", $this->elements[$was]["dat"]) . (( isset($this->elements["unique_" . $i]["dat"]) && $this->elements["unique_" . $i]["dat"] > 0 )
+									? $this->elements["unique_" . $i]["dat"] : 16) . "%";
 					}
 					$this->DefaultText .= $this->elements[$was]["dat"];
 				}
@@ -1714,16 +1751,20 @@ class we_object extends we_document{
 				$was = "DefaultUrl_" . $i;
 				if($this->elements[$was]["dat"] != ""){ //&& in_array($this->elements[$was]["dat"],$var_flip)
 					if(stristr($this->elements[$was]["dat"], 'urlunique')){
-						$this->elements[$was]["dat"] = "%" . str_replace("%", "", $this->elements[$was]["dat"]) . (( isset($this->elements["urlunique_" . $i]["dat"]) && $this->elements["urlunique_" . $i]["dat"] > 0 ) ? $this->elements["urlunique_" . $i]["dat"] : 16) . "%";
+						$this->elements[$was]["dat"] = "%" . str_replace("%", "", $this->elements[$was]["dat"]) . (( isset($this->elements["urlunique_" . $i]["dat"]) && $this->elements["urlunique_" . $i]["dat"] > 0 )
+									? $this->elements["urlunique_" . $i]["dat"] : 16) . "%";
 					}
 					if(stristr($this->elements[$was]["dat"], 'urlfield1')){
-						$this->elements[$was]["dat"] = "%" . str_replace("%", "", $this->elements[$was]["dat"]) . (( isset($this->elements["urlfield1_" . $i]["dat"]) && $this->elements["urlfield1_" . $i]["dat"] > 0 ) ? $this->elements["urlfield1_" . $i]["dat"] : 64) . "%";
+						$this->elements[$was]["dat"] = "%" . str_replace("%", "", $this->elements[$was]["dat"]) . (( isset($this->elements["urlfield1_" . $i]["dat"]) && $this->elements["urlfield1_" . $i]["dat"] > 0 )
+									? $this->elements["urlfield1_" . $i]["dat"] : 64) . "%";
 					}
 					if(stristr($this->elements[$was]["dat"], 'urlfield2')){
-						$this->elements[$was]["dat"] = "%" . str_replace("%", "", $this->elements[$was]["dat"]) . (( isset($this->elements["urlfield2_" . $i]["dat"]) && $this->elements["urlfield2_" . $i]["dat"] > 0 ) ? $this->elements["urlfield2_" . $i]["dat"] : 64) . "%";
+						$this->elements[$was]["dat"] = "%" . str_replace("%", "", $this->elements[$was]["dat"]) . (( isset($this->elements["urlfield2_" . $i]["dat"]) && $this->elements["urlfield2_" . $i]["dat"] > 0 )
+									? $this->elements["urlfield2_" . $i]["dat"] : 64) . "%";
 					}
 					if(stristr($this->elements[$was]["dat"], 'urlfield3')){
-						$this->elements[$was]["dat"] = "%" . str_replace("%", "", $this->elements[$was]["dat"]) . (( isset($this->elements["urlfield3_" . $i]["dat"]) && $this->elements["urlfield3_" . $i]["dat"] > 0 ) ? $this->elements["urlfield3_" . $i]["dat"] : 64) . "%";
+						$this->elements[$was]["dat"] = "%" . str_replace("%", "", $this->elements[$was]["dat"]) . (( isset($this->elements["urlfield3_" . $i]["dat"]) && $this->elements["urlfield3_" . $i]["dat"] > 0 )
+									? $this->elements["urlfield3_" . $i]["dat"] : 64) . "%";
 					}
 					$this->DefaultUrl .= $this->elements[$was]["dat"];
 				}
@@ -1977,7 +2018,8 @@ class we_object extends we_document{
 
 	function we_initSessDat($sessDat){
 		//	charset must be in other namespace -> for header !!!
-		$this->elements["Charset"]["dat"] = (isset($sessDat["0"]["SerializedArray"]["elements"]["Charset"]) ? $sessDat["0"]["SerializedArray"]["elements"]["Charset"]["dat"] : "");
+		$this->elements["Charset"]["dat"] = (isset($sessDat["0"]["SerializedArray"]["elements"]["Charset"]) ? $sessDat["0"]["SerializedArray"]["elements"]["Charset"]["dat"]
+					: "");
 		parent::we_initSessDat($sessDat);
 		$this->setSort();
 	}
