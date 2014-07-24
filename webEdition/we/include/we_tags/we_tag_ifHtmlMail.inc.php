@@ -26,15 +26,11 @@ function we_tag_ifHtmlMail(){
 	switch (true){
 		case ((isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])): //editmode always true
 			return true;
-			break;
 		case ((isset($GLOBALS['we_editmode']) && !$GLOBALS['we_editmode']) && $GLOBALS['we_doc']->InWebEdition && isset($_SESSION['weS']['we_set_newsletterFormat'])): //for tag <we:newsletterSwitch/>
 			return (bool) (!$_SESSION['weS']['we_set_newsletterFormat']);
-			break;
 		case (isset($GLOBALS['WE_HTMLMAIL'])):
-			return (bool) (!$GLOBALS['WE_HTMLMAIL']);
-			break;
+			return (bool) ($GLOBALS['WE_HTMLMAIL']);
 		default:
 			return false; //per default E-Mail-Type is HTML
-			break;
 	}
 }
