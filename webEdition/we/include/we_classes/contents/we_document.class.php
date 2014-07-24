@@ -45,7 +45,7 @@ class we_document extends we_root{
 	public $parseFile = 1;
 	// persistent in we_object*, since saved in class
 	// temporary in document, holds Paths to stylesheets from we:css-tags that are user by tinyMCE
-	var $CSS = '';
+	var $CSS = array();
 
 	function __construct(){
 		parent::__construct();

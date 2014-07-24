@@ -84,6 +84,7 @@ class we_objectFile extends we_document{
 			}
 			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_INFO, we_base_constants::WE_EDITPAGE_CONTENT, we_base_constants::WE_EDITPAGE_WORKSPACE, we_base_constants::WE_EDITPAGE_PREVIEW, we_base_constants::WE_EDITPAGE_VARIANTS, we_base_constants::WE_EDITPAGE_VERSIONS, we_base_constants::WE_EDITPAGE_SCHEDULER);
 		}
+		$this->CSS = '';
 	}
 
 	public static function initObject($classID, $formname = 'we_global_form', $categories = '', $parentid = 0, $wewrite = false){
