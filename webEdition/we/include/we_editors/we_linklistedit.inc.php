@@ -155,7 +155,7 @@ if(we_base_request::_(we_base_request::BOOL, 'ok')){
 		'img_title' => we_base_request::_(we_base_request::STRING, 'img_title'),
 	);
 
-	if(($linklist = we_base_request::_(we_base_request::RAW, 'linklist')) !== false){
+	if(($linklist = we_base_request::_(we_base_request::SERIALIZED_KEEP, 'linklist')) !== false){
 		//  set $nr to global, because it is used everywhere;
 		$nr = we_base_request::_(we_base_request::INT, 'nr', 0);
 		$ll = new we_base_linklist($linklist);
