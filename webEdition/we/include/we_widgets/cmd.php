@@ -24,7 +24,7 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
-$cmd1 = we_base_request::_(we_base_request::RAW_CHECKED, 'we_cmd', '', 1);
+$cmd1 = we_base_request::_(we_base_request::RAW_CHECKED, 'we_cmd', '', 1); 
 $cmd2 = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 2);
 switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 	case 'save' :
