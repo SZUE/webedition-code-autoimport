@@ -122,9 +122,9 @@ function insertTable() {
 			elm.style.borderColor = bordercolor;
 			elm.style.borderStyle = elm.style.borderStyle == "" ? "solid" : elm.style.borderStyle;
 			elm.style.borderWidth = border == "" ? "1px" : border;
-		} else
+		} else{
 			elm.style.borderColor = '';
-
+			}
 		elm.style.backgroundColor = bgcolor;
 		elm.style.height = getCSSSize(height);
 

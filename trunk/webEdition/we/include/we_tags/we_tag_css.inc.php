@@ -27,7 +27,7 @@ function we_tag_css($attribs){
 		return $foo;
 	}
 
-	$row = getHash('SELECT Path,IsFolder,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval(weTag_getAttribute('id', $attribs)));
+	$row = getHash('SELECT Path,IsFolder FROM ' . FILE_TABLE . ' WHERE ID=' . intval(weTag_getAttribute('id', $attribs)));
 	if(!$row){
 		return '';
 	}
@@ -39,9 +39,12 @@ function we_tag_css($attribs){
 		case 'wysiwyg' :
 			$nolink = true;
 		case 'all' :
-			$media = weTag_getAttribute('media', $attribs);
-			if($media == "" || $media == "screen" || $media == "all"){
-				$GLOBALS['we_doc']->addDocumentCss($attribs['href'] . '?' . time());
+			switch(weTag_getAttribute('media', $attribs)){
+				case '':
+				case 'screen':
+				case 'all':
+					$GLOBALS['we_doc']->addDocumentCss($row['Path'] . '?' . time());
+					break;
 			}
 			break;
 	}
