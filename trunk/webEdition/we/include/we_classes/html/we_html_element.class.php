@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -409,7 +408,7 @@ abstract class we_html_element{
 		return $url . (strstr($url, '?') ? '&amp;' : '?') . $cache;
 	}
 
-	public static function htmlIFrame($name, $src, $style, $iframestyle = ''){
+	public static function htmlIFrame($name, $src, $style = '', $iframestyle = ''){
 		$iframestyle = empty($iframestyle) ? 'border:0px;width:100%;height:100%;overflow: ' . (we_base_browserDetect::isFF() ? 'auto' : 'hidden') . ';' : $iframestyle;
 		return self::htmlDiv(array('style' => $style, 'name' => $name . 'Div', 'id' => $name . 'Div')
 				, we_html_baseElement::getHtmlCode(

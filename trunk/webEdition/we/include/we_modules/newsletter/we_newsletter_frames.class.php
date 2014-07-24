@@ -142,7 +142,7 @@ class we_newsletter_frames extends weModuleFrames{
 		$page = ($group ? 0 : we_base_request::_(we_base_request::INT, "page", 0));
 
 
-		$textPre = g_l('modules_newsletter', ($group ? '[group]' : '[newsletter]'));
+		$textPre = g_l('modules_newsletter', ($group ? '[group]' : '[newsletter][text]'));
 
 		$textPost = we_base_request::_(we_base_request::STRING, "txt", g_l('modules_newsletter', ($group ? '[new_newsletter_group]' : '[new_newsletter]')));
 
@@ -1250,7 +1250,7 @@ window.onload=extraInit;');
 
 			$table->setCol(8, 0, array(), we_html_tools::htmlFormElementTable($_embedImagesHid . $_embedImagesChk . "&nbsp;" . $_embedImagesLab, ""));
 
-			$parts[] = array("headline" => g_l('modules_newsletter', '[newsletter]'), "html" => $table->getHtml(), "space" => 140);
+			$parts[] = array("headline" => g_l('modules_newsletter', '[newsletter][text]'), "html" => $table->getHtml(), "space" => 140);
 			$parts[] = array("headline" => g_l('modules_newsletter', '[charset]'), "html" => $this->getHTMLCharsetTable(), "space" => 140);
 			$parts[] = array("headline" => g_l('modules_newsletter', '[copy_newsletter]'), "html" => $this->getHTMLCopy(), "space" => 140, "noline" => 1);
 		}
