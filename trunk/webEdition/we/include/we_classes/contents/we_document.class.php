@@ -1561,7 +1561,7 @@ class we_document extends we_root{
 	 * get styles for textarea or object
 	 * @return type
 	 */
-	public function getDocumentCss($asArray = false){
+	public function getDocumentCss(){
 		return $this->CSS;
 	}
 
@@ -1569,7 +1569,7 @@ class we_document extends we_root{
 	 * get styles for textarea or object
 	 * @return type
 	 */
-	public function addDocumentCss($stylesheet = ''){
+	public function addDocumentCss($stylesheet){
 		$this->CSS[] = $stylesheet;
 	}
 
