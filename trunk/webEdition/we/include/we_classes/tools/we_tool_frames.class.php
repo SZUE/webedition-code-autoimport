@@ -326,7 +326,7 @@ function we_save() {
 			'pnt' => 'edbody',
 			'tabnr' => $tabNr,
 			'vernr' => we_base_request::_(we_base_request::INT, 'vernr', 0),
-			'delayParam' => we_base_request::_(we_base_request::RAW, 'delayParam', '')
+			'delayParam' => we_base_request::_(we_base_request::INT, 'delayParam', '')
 		);
 
 		return $this->View->getCommonHiddens($hiddens) .
@@ -392,7 +392,7 @@ function we_save() {
 	}
 
 	function getHTMLExitQuestion(){
-		if(($dp = we_base_request::_(we_base_request::RAW, 'delayParam'))){
+		if(($dp = we_base_request::_(we_base_request::INT, 'delayParam'))){
 
 			$_frame = 'opener.' . $this->topFrame;
 			$_form = $_frame . '.document.we_form';
