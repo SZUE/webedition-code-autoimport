@@ -23,6 +23,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifRegisteredUser($attribs){
+	if(isset($GLOBALS['WE_MAIN_DOC_REF']) && $GLOBALS['WE_MAIN_DOC_REF']->InWebEdition){
+		return (bool) $GLOBALS['WE_MAIN_DOC_REF']->getEditorPersistent('registered');
+	}
 
 	$permission = weTag_getAttribute('permission', $attribs);
 	$match = makeArrayFromCSV(weTag_getAttribute('match', $attribs));
@@ -30,10 +33,6 @@ function we_tag_ifRegisteredUser($attribs){
 	$allowNoFilter = weTag_getAttribute('allowNoFilter', $attribs, false, true);
 	$userid = makeArrayFromCSV(weTag_getAttribute('userid', $attribs));
 	$matchType = weTag_getAttribute('matchType', $attribs, 'one');
-
-	if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->InWebEdition || isset($GLOBALS['WE_MAIN_DOC']) && $GLOBALS['WE_MAIN_DOC']->InWebEdition){
-		return isset($_SESSION['weS']['we_set_registered']) && $_SESSION['weS']['we_set_registered'];
-	}
 
 	//return true only on registered users - or if cfilter is set to "no filter"
 	if(isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered']){
