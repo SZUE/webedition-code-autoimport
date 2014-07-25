@@ -24,7 +24,6 @@
  */
 /* the parent class for tree-objects */
 abstract class we_root extends we_class{
-
 	const USER_HASACCESS = 1;
 	const FILE_LOCKED = -3;
 	const USER_NO_PERM = -2;
@@ -32,7 +31,6 @@ abstract class we_root extends we_class{
 	const FILE_NOT_IN_USER_WORKSPACE = -1;
 
 	/* ParentID of the object (ID of the Parent-Folder of the Object) */
-
 	var $ParentID = 0;
 
 	/* Parent Path of the object (Path of the Parent-Folder of the Object) */
@@ -179,7 +177,7 @@ abstract class we_root extends we_class{
 			$bb = isset($this->{$slot}) ? $this->{$slot} : '';
 			if(!is_object($bb)){
 				$save[0][$slot] = $bb;
-			} else {
+			} else {//FIXME: will this ever be restored???
 				$save[0][$slot . '_class'] = serialize($bb);
 			}
 		}
@@ -320,7 +318,8 @@ abstract class we_root extends we_class{
 			$v = $this->RestrictOwners ? true : false;
 			return we_html_forms::checkboxWithHidden($v ? true : false, $n, g_l('weClass', '[limitedAccess]'), false, 'defaultfont', "setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('reload_editpage');");
 		} else {
-			return '<table style="border-spacing: 0px;border-style:none;" cellpadding="0"><tr><td><img src="' . TREE_IMAGE_DIR . ($this->RestrictOwners ? 'check1_disabled.gif' : 'check0_disabled.gif') . '" /></td><td class="defaultfont">&nbsp;' . g_l('weClass', "[limitedAccess]") . '</td></tr></table>';
+			return '<table style="border-spacing: 0px;border-style:none;" cellpadding="0"><tr><td><img src="' . TREE_IMAGE_DIR . ($this->RestrictOwners ? 'check1_disabled.gif'
+						: 'check0_disabled.gif') . '" /></td><td class="defaultfont">&nbsp;' . g_l('weClass', "[limitedAccess]") . '</td></tr></table>';
 		}
 	}
 
@@ -337,7 +336,8 @@ abstract class we_root extends we_class{
 				$_path = isset($foo['Path']) ? $foo['Path'] : '';
 				$content .= '<tr><td><img src="' . $icon . '" width="16" height="18" /></td><td class="defaultfont">' . $_path . '</td><td>' .
 					we_html_forms::checkboxWithHidden(isset($ownersReadOnly[$owner]) ? $ownersReadOnly[$owner] : '', 'we_owners_read_only[' . $owner . ']', g_l('weClass', '[readOnly]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);', !$canChange) .
-					'</td><td>' . ($canChange ? we_html_button::create_button('image:btn_function_trash', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('users_del_owner','" . $owner . "');") : '') . '</td></tr>';
+					'</td><td>' . ($canChange ? we_html_button::create_button('image:btn_function_trash', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('users_del_owner','" . $owner . "');")
+							: '') . '</td></tr>';
 			}
 		} else {
 			$content .= '<tr><td><img src="' . ICON_DIR . "user.gif" . '" width="16" height="18" /></td><td class="defaultfont">' . g_l('weClass', '[onlyOwner]') . '</td><td></td><td></td></tr>';
@@ -351,11 +351,13 @@ abstract class we_root extends we_class{
 		$wecmdenc2 = we_base_request::encCmd("document.forms['we_form'].elements['" . $textname . "'].value");
 		$wecmdenc5 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.setScrollTo();fillIDs();opener.we_cmd('users_add_owner',top.allIDs);");
 		$addbut = $canChange ?
-			$this->htmlHidden($idname, '') . $this->htmlHidden($textname, '') . we_html_button::create_button('add', "javascript:we_cmd('browse_users','" . $wecmdenc1 . "','" . $wecmdenc2 . "','',document.forms[0].elements['" . $idname . "'].value,'" . $wecmdenc5 . "','','',1);") : "";
+			$this->htmlHidden($idname, '') . $this->htmlHidden($textname, '') . we_html_button::create_button('add', "javascript:we_cmd('browse_users','" . $wecmdenc1 . "','" . $wecmdenc2 . "','',document.forms[0].elements['" . $idname . "'].value,'" . $wecmdenc5 . "','','',1);")
+				: "";
 
 		$content = '<table style="border-spacing: 0px;border-style:none;width:500px;" cellpadding="0">
 <tr><td><div class="multichooser">' . $content . '</div></td></tr>
-' . ($canChange ? '<tr><td align="right">' . we_html_tools::getPixel(2, 8) . '<br/>' . we_html_button::create_button_table(array($delallbut, $addbut)) . '</td></tr>' : "") . '</table>';
+' . ($canChange ? '<tr><td align="right">' . we_html_tools::getPixel(2, 8) . '<br/>' . we_html_button::create_button_table(array($delallbut, $addbut)) . '</td></tr>'
+					: "") . '</table>';
 
 		return we_html_tools::htmlFormElementTable($content, g_l('weClass', '[otherowners]'), 'left', 'defaultfont');
 	}
@@ -747,7 +749,7 @@ abstract class we_root extends we_class{
 		return f('SELECT MAX(ID) FROM ' . $this->DB_WE->escape($this->Table), '', $this->DB_WE) + 1;
 	}
 
-	function we_initSessDat($sessDat){
+	function we_initSessDat($sessDat){//FIXME: use __wakeup
 		parent::we_initSessDat($sessDat);
 		if(is_array($sessDat)){
 			foreach($this->persistent_slots as $cur){
@@ -1082,7 +1084,8 @@ abstract class we_root extends we_class{
 
 	function i_correctDoublePath(){
 		if($this->Filename){
-			if(f('SELECT ID  FROM  ' . $this->DB_WE->escape($this->Table) . '  WHERE ID!=' . intval($this->ID) . ' AND Text="' . $this->DB_WE->escape($this->Filename . (isset($this->Extension) ? $this->Extension : '')) . '" AND ParentID=' . intval($this->ParentID), 'ID', $this->DB_WE)){
+			if(f('SELECT ID  FROM  ' . $this->DB_WE->escape($this->Table) . '  WHERE ID!=' . intval($this->ID) . ' AND Text="' . $this->DB_WE->escape($this->Filename . (isset($this->Extension)
+								? $this->Extension : '')) . '" AND ParentID=' . intval($this->ParentID), 'ID', $this->DB_WE)){
 				$z = 0;
 				$footext = $this->Filename . '_' . $z . (isset($this->Extension) ? $this->Extension : '');
 				while(f('SELECT ID FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID!=' . intval($this->ID) . ' AND Text="' . $this->DB_WE->escape($footext) . '" AND ParentID=' . intval($this->ParentID), 'ID', $this->DB_WE)){
@@ -1228,7 +1231,8 @@ abstract class we_root extends we_class{
 	 */
 	protected function getNavigationFoldersForDoc(){
 		if($this->Table == FILE_TABLE){
-			$category = property_exists($this, 'Category') ? array_map('escape_sql_query', array_unique(array_filter(array_merge(explode(',', $this->Category), explode(',', $this->oldCategory))))) : '';
+			$category = property_exists($this, 'Category') ? array_map('escape_sql_query', array_unique(array_filter(array_merge(explode(',', $this->Category), explode(',', $this->oldCategory)))))
+					: '';
 			$queries = array('(((Selection="' . we_navigation_navigation::SELECTION_STATIC . '" AND SelectionType="' . we_navigation_navigation::STPYE_DOCLINK . '") OR (IsFolder=1 AND FolderSelection="' . we_navigation_navigation::STPYE_DOCLINK . '")) AND LinkID=' . intval($this->ID) . ')',
 			);
 			if(isset($this->DocType)){

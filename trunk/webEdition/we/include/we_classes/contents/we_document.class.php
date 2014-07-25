@@ -46,10 +46,12 @@ class we_document extends we_root{
 	// persistent in we_object*, since saved in class
 	// temporary in document, holds Paths to stylesheets from we:css-tags that are user by tinyMCE
 	var $CSS = array();
+	/* this array is used, to store document specific data for a page */
+	protected $editorSaves = array();
 
 	function __construct(){
 		parent::__construct();
-		array_push($this->persistent_slots, 'Extension', 'IsDynamic', 'Published', 'Category', 'IsSearchable', 'InGlossar', 'Language', 'schedArr', 'parseFile');
+		array_push($this->persistent_slots, 'Extension', 'IsDynamic', 'Published', 'Category', 'IsSearchable', 'InGlossar', 'Language', 'schedArr', 'parseFile', 'editorSaves');
 		$this->Table = FILE_TABLE;
 		if(defined('WE_SIDEBAR')){
 			$this->InWebEdition = true;
@@ -1664,6 +1666,24 @@ class we_document extends we_root{
 		) .
 		'</html>';
 		exit();
+	}
+
+	/**
+	 * Get data which was saved persistent in this session by the editor
+	 * @param string $name name of the variable to save
+	 * @return mixed false if not found, data if found
+	 */
+	public function getEditorPersistent($name){
+		return isset($this->editorSaves[$name]) ? $this->editorSaves[$name] : false;
+	}
+
+	/**
+	 * Save data in editor persistent in session
+	 * @param string $name name of the variable to save
+	 * @param mixed $value the data to save. Don't save objects! Just data & arrays.
+	 */
+	public function setEditorPersistent($name, $value){
+		$this->editorSaves[$name] = $value;
 	}
 
 }

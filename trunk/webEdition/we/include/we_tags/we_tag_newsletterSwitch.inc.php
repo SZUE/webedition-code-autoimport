@@ -23,26 +23,25 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_newsletterSwitch(){
+	if(!$GLOBALS["we_editmode"]){
+		return '';
+	}
+//html=false, text=true
+	
+	if(isset($_REQUEST['we_set_newsletterFormat']) && $GLOBALS['we_doc']->InWebEdition){
+		$GLOBALS['we_doc']->setEditorPersistent('newsletterFormat', (bool) $_REQUEST['we_set_newsletterFormat']);
+	}
 
-	$_SESSION['weS']['we_set_newsletterFormat'] = (isset($_REQUEST['we_set_newsletterFormat']) && $GLOBALS['we_doc']->InWebEdition ?
-			$_REQUEST['we_set_newsletterFormat'] :
-			(isset($_SESSION['weS']['we_set_newsletterFormat']) ?
-				$_SESSION['weS']['we_set_newsletterFormat'] :
-				true
-			)
-		);
+	$val = (bool) $GLOBALS['we_doc']->getEditorPersistent('newsletterFormat');
 
 
-	return($GLOBALS["we_editmode"] ? '
+	return '
 <table style="padding:5px;border:0px;background-color:silver;background-image:none;" class="weEditTable">
 	<tr><td><b>' . g_l('modules_newsletter', '[newsletter][preview]') . '</b>&nbsp;</td>
-	<td><input id="set_newsletterHtml" type="radio" name="we_set_newsletterFormat" value="1" onclick="top.we_cmd(\'reload_editpage\');"' . ($_SESSION['weS']['we_set_newsletterFormat']
-					? ' checked' : '') . ' /></td>
+	<td><input id="set_newsletterHtml" type="radio" name="we_set_newsletterFormat" value="0" onclick="top.we_cmd(\'reload_editpage\');"' . (!$val ? ' checked' : '') . ' /></td>
 	<td>&nbsp;<label for="set_newsletterHtml">HTML&nbsp;' . g_l('modules_newsletter', '[email]') . '</label>&nbsp;&nbsp;&nbsp;</td>
-	<td><input id="set_newsletterText" type="radio" name="we_set_newsletterFormat" value="0" onclick="top.we_cmd(\'reload_editpage\');"' . (!$_SESSION['weS']['we_set_newsletterFormat']
-					? ' checked' : '') . ' /></td>
+	<td><input id="set_newsletterText" type="radio" name="we_set_newsletterFormat" value="1" onclick="top.we_cmd(\'reload_editpage\');"' . ($val ? ' checked' : '') . ' /></td>
 	<td>&nbsp;<label for="set_newsletterText">' . g_l('modules_newsletter', '[type_text]') . '&nbsp;' . g_l('modules_newsletter', '[email]') . '</label></td>
 	</tr>
-</table>' :
-			'');
+</table>';
 }
