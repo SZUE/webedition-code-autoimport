@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifHtmlMail(){
-	switch (true){
+	switch(true){
 		case ((isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])): //editmode always true
 			return true;
 		case ((isset($GLOBALS['we_editmode']) && !$GLOBALS['we_editmode']) && (isset($GLOBALS['we_doc']->InWebEdition) && $GLOBALS['we_doc']->InWebEdition) && isset($_SESSION['weS']['we_set_newsletterFormat'])): //for tag <we:newsletterSwitch/>
