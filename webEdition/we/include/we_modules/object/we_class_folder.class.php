@@ -33,7 +33,7 @@ class we_class_folder extends we_folder{
 	var $ClassID = ''; //#4076
 	var $RootfolderID = ''; //#4076
 	var $searchclass;
-	var $searchclass_class;
+	protected $searchclass_class;
 	var $GreenOnly = 0;
 	var $Order = 'OF_Path';
 	var $Search = '';
