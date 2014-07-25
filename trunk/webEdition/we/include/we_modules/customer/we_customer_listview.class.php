@@ -81,7 +81,7 @@ class we_customer_listview extends listviewBase{
 
 		$where = $this->condition ? (' WHERE ' . $this->condition) : '';
 
-		$this->anz_all = f('SELECT COUNT(1) AS cnt FROM ' . CUSTOMER_TABLE . $where, 'cnt', $this->DB_WE);
+		$this->anz_all = f('SELECT COUNT(1) FROM ' . CUSTOMER_TABLE . $where, '', $this->DB_WE);
 
 		$this->DB_WE->query('SELECT * ' . $extra . ' FROM ' . CUSTOMER_TABLE . $where . ' ' . $orderstring . ' ' . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . $this->maxItemsPerPage) : ''));
 		$this->anz = $this->DB_WE->num_rows();
