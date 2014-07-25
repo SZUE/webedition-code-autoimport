@@ -24,12 +24,12 @@
  */
 function we_tag_ifNotHtmlMail(){
 	switch (true){
-		case ((isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])): //editmode always true
-			return true;
-		case ((isset($GLOBALS['we_editmode']) && !$GLOBALS['we_editmode']) && $GLOBALS['we_doc']->InWebEdition && isset($_SESSION['weS']['we_set_newsletterFormat'])): //for tag <we:newsletterSwitch/>
-			return (bool) (!$_SESSION['weS']['we_set_newsletterFormat']);
+		case ((isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])): //editmode always HTML Mode
+			return false;
+		case ((isset($GLOBALS['we_editmode']) && !$GLOBALS['we_editmode']) && (isset($GLOBALS['we_doc']->InWebEdition) && $GLOBALS['we_doc']->InWebEdition) && isset($_SESSION['weS']['we_set_newsletterFormat'])): //for tag <we:newsletterSwitch/>
+			return !((bool) $_SESSION['weS']['we_set_newsletterFormat']);
 		case (isset($GLOBALS['WE_HTMLMAIL'])):
-			return (bool) (!$GLOBALS['WE_HTMLMAIL']);
+			return !((bool) $GLOBALS['WE_HTMLMAIL']);
 		default:
 			return false; //per default E-Mail-Type is HTML
 	}
