@@ -25,7 +25,6 @@
 /* the parent class of storagable webEdition classes */
 
 class we_customer_view extends weModuleView{
-
 	var $customer;
 	var $settings;
 
@@ -541,7 +540,7 @@ self.focus();' . $this->getJSSubmitFunction("customer_settings");
 				}
 
 				if($this->customer->filenameNotValid()){
-					print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_customer', '[we_filename_notValid]'), we_message_reporting::WE_MESSAGE_ERROR));
+					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_customer', '[we_filename_notValid]'), we_message_reporting::WE_MESSAGE_ERROR));
 					break;
 				}
 
@@ -550,10 +549,10 @@ self.focus();' . $this->getJSSubmitFunction("customer_settings");
 					$newone = false;
 				}
 
-				$exists = f('SELECT ID FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $this->db->escape($this->customer->Username) . '"' . ($newone ? '' : ' AND ID!=' . $this->customer->ID), 'ID', $this->db);
+				$exists = f('SELECT ID FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $this->db->escape($this->customer->Username) . '"' . ($newone ? '' : ' AND ID!=' . $this->customer->ID), '', $this->db);
 				if($exists){
-					print we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer', '[username_exists]'), $this->customer->Username), we_message_reporting::WE_MESSAGE_ERROR)
+					echo we_html_element::jsElement(
+						we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer', '[username_exists]'), $this->customer->Username), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 					break;
 				}
@@ -582,9 +581,9 @@ attribs["tooltip"]="' . (($this->customer->Forename != "" || $this->customer->Su
 				}
 
 
-				print we_html_element::jsElement(
-						$js .
-						we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer', '[customer_saved_ok]'), addslashes($this->customer->Text)), we_message_reporting::WE_MESSAGE_NOTICE)
+				echo we_html_element::jsElement(
+					$js .
+					we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer', '[customer_saved_ok]'), addslashes($this->customer->Text)), we_message_reporting::WE_MESSAGE_NOTICE)
 				);
 				break;
 			case 'delete_customer':
@@ -946,7 +945,7 @@ self.close();';
 						}
 						break;
 					default:
-						if(($v = we_base_request::_(we_base_request::STRINGC, $varname))){
+						if(($v = we_base_request::_(we_base_request::STRINGC, $varname)) !== false){
 							$this->customer->{$val} = $v;
 						}
 				}
@@ -1080,7 +1079,8 @@ self.close();';
 				$banche = '';
 				$fieldname = $this->customer->transFieldName($k, $banche);
 				if($banche == $old_branch && $fieldname != ''){
-					$this->db->query('ALTER TABLE ' . $this->customer->table . ' CHANGE ' . $k . ' ' . $new_branch . '_' . $fieldname . ' ' . $v['Type'] . (!empty($v["Default"]) ? " DEFAULT '" . $v["Default"] . "'" : '') . ' NOT NULL');
+					$this->db->query('ALTER TABLE ' . $this->customer->table . ' CHANGE ' . $k . ' ' . $new_branch . '_' . $fieldname . ' ' . $v['Type'] . (!empty($v["Default"])
+								? " DEFAULT '" . $v["Default"] . "'" : '') . ' NOT NULL');
 				}
 			}
 		}
@@ -1136,7 +1136,8 @@ self.close();';
 			}
 		}
 
-		$this->db->query('SELECT ID, CONCAT(Username, " (",Forename," ",Surname,")") AS user FROM ' . $this->db->escape($this->customer->table) . ($condition ? ' WHERE ' . $condition : '') . ' ORDER BY Username' . " LIMIT 0,$res_num");
+		$this->db->query('SELECT ID, CONCAT(Username, " (",Forename," ",Surname,")") AS user FROM ' . $this->db->escape($this->customer->table) . ($condition ? ' WHERE ' . $condition
+					: '') . ' ORDER BY Username' . " LIMIT 0,$res_num");
 		return array_map('oldHtmlspecialchars', $this->db->getAllFirst(false));
 	}
 
