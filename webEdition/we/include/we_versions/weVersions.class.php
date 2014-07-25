@@ -842,17 +842,14 @@ class weVersions{
 	 * @abstract count versions
 	 */
 	public function countVersions($id, $contentType){
-		return f("SELECT COUNT(1) AS Count FROM " . VERSIONS_TABLE . " WHERE documentId = " . intval($id) . " AND ContentType = '" . escape_sql_query($contentType) . "'", 'Count', new DB_WE());
+		return f('SELECT COUNT(1) FROM ' . VERSIONS_TABLE . ' WHERE documentId=' . intval($id) . " AND ContentType = '" . escape_sql_query($contentType) . "'", '', new DB_WE());
 	}
 
 	/**
 	 * @abstract looks if versions exist for the document
 	 */
 	public static function versionsExist($id, $contentType){
-		if(self::countVersions($id, $contentType) == 0){
-			return false;
-		}
-		return true;
+		return (self::countVersions($id, $contentType) > 0);
 	}
 
 	/**
@@ -1114,7 +1111,7 @@ class weVersions{
 					}
 				}
 
-				if(!empty($set) && $mods){
+				if($set && $mods){
 					$theSet = we_database_base::arraySetter($set);
 					$db->query('INSERT INTO ' . VERSIONS_TABLE . ' SET ' . $theSet);
 					$vers = (isset($document["version"]) ? $document["version"] : $this->version);

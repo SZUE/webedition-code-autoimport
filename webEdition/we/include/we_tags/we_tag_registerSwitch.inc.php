@@ -23,15 +23,23 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_registerSwitch(){
+	if(!$GLOBALS["we_editmode"]){
+		return '';
+	}
 
-	return($GLOBALS["we_editmode"] ? '
+	if(isset($_REQUEST['we_set_registeredUser']) && $GLOBALS['WE_MAIN_DOC_REF']->InWebEdition){
+		$GLOBALS['WE_MAIN_DOC_REF']->setEditorPersistent('registered', (bool) $_REQUEST['we_set_registeredUser']);
+	}
+
+	$val = (bool) $GLOBALS['WE_MAIN_DOC_REF']->getEditorPersistent('registered');
+
+	return '
 <table style="padding:5px;border:0px;background-color:silver;background-image:none;" class="weEditTable">
 	<tr><td><b>' . g_l('modules_customer', '[view]') . ':</b>&nbsp;</td>
-	<td><input id="set_registered" type="radio" name="we_set_registeredUser" value="1" onclick="top.we_cmd(\'reload_editpage\');"' . ((isset($_SESSION['weS']['we_set_registered']) && $_SESSION['weS']['we_set_registered']) ? ' checked' : '') . ' /></td>
+	<td><input id="set_registered" type="radio" name="we_set_registeredUser" value="1" onclick="top.we_cmd(\'reload_editpage\');"' . ($val ? ' checked' : '') . ' /></td>
 	<td>&nbsp;<label for="set_registered">' . g_l('modules_customer', '[registered_user]') . '</label>&nbsp;&nbsp;&nbsp;</td>
-	<td><input id="set_unregistered" type="radio" name="we_set_registeredUser" value="0" onclick="top.we_cmd(\'reload_editpage\');"' . ((!isset($_SESSION['weS']['we_set_registered']) || !$_SESSION['weS']['we_set_registered']) ? ' checked' : '') . ' /></td>
+	<td><input id="set_unregistered" type="radio" name="we_set_registeredUser" value="0" onclick="top.we_cmd(\'reload_editpage\');"' . (!$val ? ' checked' : '') . ' /></td>
 	<td>&nbsp;<label for="set_unregistered">' . g_l('modules_customer', '[unregistered_user]') . '</label></td>
 	</tr>
-</table>' :
-			'');
+</table>';
 }
