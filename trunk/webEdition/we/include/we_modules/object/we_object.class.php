@@ -2396,4 +2396,8 @@ class we_object extends we_document{
 		return $id && f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . ' WHERE TableID=' . intval($id) . ' LIMIT 1');
 	}
 
+	public function getDocumentCss(){
+		return array();
+	}
+
 }

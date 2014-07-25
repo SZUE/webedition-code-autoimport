@@ -3215,4 +3215,7 @@ class we_objectFile extends we_document{
 		$this->setElement($name, serialize($_SESSION['weS']['WE_LINK']));
 	}
 
+	public function getDocumentCss(){
+		return array();
+	}
 }
