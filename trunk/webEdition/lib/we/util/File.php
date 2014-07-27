@@ -214,16 +214,12 @@ abstract class we_util_File extends we_base_file{
 		if(!is_file($gzfile)){
 			return false;
 		}
-		if(class_exists('Archive_Tar', true)){
-			$tar_object = new Archive_Tar($gzfile, true);
+		$tar_object = new Archive_Tar($gzfile, true);
+		if(method_exists($tar_object, 'setErrorHandling')){
 			$tar_object->setErrorHandling(PEAR_ERROR_TRIGGER, E_USER_WARNING);
-			$tar_object->extractModify($destination, '');
-		} else {
-//FIXME: remove include
-			include(WE_LIB_PATH . 'additional/archive/altArchive_Tar.class.php');
-			$tar_object = new altArchive_Tar($gzfile, true);
-			$tar_object->extractModify($destination, '');
 		}
+		$tar_object->extractModify($destination, '');
+
 		return true;
 	}
 
