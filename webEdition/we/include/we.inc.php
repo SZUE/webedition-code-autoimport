@@ -133,9 +133,6 @@ if(!isset($GLOBALS['WE_IS_DYN'])){ //only true on dynamic frontend pages
 			$_SESSION['prefs']['BackendCharset'] : 'UTF-8');
 
 	include_once (WE_INCLUDES_PATH . 'define_styles.inc.php');
-	//FIXME: needed by liveupdate, calls old protect directly remove in 6.4
-	require_once (WE_INCLUDES_PATH . 'we_perms.inc.php');
-
 
 	//send header?
 	switch(isset($_REQUEST['we_cmd']) && !is_array($_REQUEST['we_cmd']) ? we_base_request::_(we_base_request::STRING, 'we_cmd', '__default__') : ''){
