@@ -97,7 +97,7 @@ function deleteEntry(){
 }');
 	}
 
-	function printFramesetJSDoClickFn(){
+	protected function printFramesetJSDoClickFn(){
 		return we_html_element::jsElement('
 function doClick(id,ct){
 	if(ct==1){

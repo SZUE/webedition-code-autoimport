@@ -29,7 +29,7 @@ class we_banner_selector extends we_selector_multiple{
 		$this->title = g_l('fileselector', '[bannerSelector][title]');
 	}
 
-	function printFramesetJSDoClickFn(){
+	protected function printFramesetJSDoClickFn(){
 		return we_html_element::jsElement('
 function doClick(id,ct){
 	if(ct==1){

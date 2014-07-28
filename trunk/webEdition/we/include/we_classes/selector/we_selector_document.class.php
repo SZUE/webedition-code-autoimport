@@ -139,7 +139,7 @@ function exit_open() {
 }');
 	}
 
-	function setDefaultDirAndID($setLastDir){
+	protected function setDefaultDirAndID($setLastDir){
 		$this->dir = $setLastDir && isset($_SESSION['weS']['we_fs_lastDir'][$this->table]) ? intval($_SESSION['weS']['we_fs_lastDir'][$this->table]) : 0;
 		if($this->rootDirID){
 			if(!in_parentID($this->dir, $this->rootDirID, $this->table, $this->db)){
@@ -885,7 +885,7 @@ function selectFile(id){
 }');
 	}
 
-	function printFramesetJSDoClickFn(){
+	protected function printFramesetJSDoClickFn(){
 		return we_html_element::jsElement('
 function doClick(id,ct){
 	top.fspreview.document.body.innerHTML = "";
