@@ -33,7 +33,7 @@ class we_users_selector extends we_selector_multiple{
 		//$GLOBALS["l_fileselector"]["filename"] = ($this->filter == "group") ? g_l('fileselector',"[groupname]") : g_l('fileselector',"[username]");
 	}
 
-	function setDefaultDirAndID($setLastDir){
+	protected function setDefaultDirAndID($setLastDir){
 		$this->dir = $setLastDir ? (isset($_SESSION['weS']['we_fs_lastDir'][$this->table]) ? intval($_SESSION['weS']['we_fs_lastDir'][$this->table]) : 0 ) : 0;
 		$foo = getHash('SELECT IsFolder,Text,Path FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->dir), $this->db);
 		if(isset($foo['IsFolder']) && $foo['IsFolder'] && $this->dir){

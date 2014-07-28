@@ -409,9 +409,9 @@ function setOnload(){
 }
 ?>
 </head><?php
- /*if($GLOBALS['we_transaction'] != $we_transaction){
+ if($GLOBALS['we_transaction'] != $we_transaction){
   t_e('changed transaction', $GLOBALS['we_transaction'], $we_transaction);
-  }*/
+  }
 $we_doc->saveInSession($_SESSION['weS']['we_data'][$GLOBALS['we_transaction']]);
 $fid = we_base_request::_(we_base_request::STRING, "frameId");
 switch($_SESSION['weS']['we_mode']){
