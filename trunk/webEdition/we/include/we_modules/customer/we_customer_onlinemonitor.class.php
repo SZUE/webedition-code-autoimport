@@ -30,12 +30,11 @@
  */
 class we_customer_onlinemonitor extends listviewBase{
 
-	var $condition = '';
-	var $Path = '';
-	var $docID = 0;
-	var $lastaccesslimit = '';
-	var $lastloginlimit = '';
-	var $hidedirindex = false;
+	private $condition = '';
+	private $Path = '';
+	private $docID = 0;
+	private $lastaccesslimit = '';
+	private $lastloginlimit = '';
 
 	/**
 	 * @desc    constructor of class
@@ -73,8 +72,7 @@ class we_customer_onlinemonitor extends listviewBase{
 		}
 
 		$orderstring = ($this->order ? ' ORDER BY ' . $this->order . ' ' : '');
-		$laStr = '';
-		$llStr = '';
+		$laStr = 	$llStr = '';
 		if($this->lastloginlimit != ''){
 			$llStr = 'LastLogin > DATE_SUB(NOW(), INTERVAL ' . $this->lastloginlimit . ' SECOND) ';
 		}
