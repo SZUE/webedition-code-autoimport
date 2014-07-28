@@ -207,6 +207,7 @@ function we_tag_listview($attribs){
 			break;
 		case 'onlinemonitor':
 			if(defined('CUSTOMER_SESSION_TABLE')){
+				$id = we_base_request::_(we_base_request::INT, 'we_omid', 0);
 				$GLOBALS['lv'] = new we_customer_onlinemonitor($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $cond, $cols, $docid, $lastaccesslimit, $lastloginlimit, $hidedirindex);
 				break;
 			}
@@ -271,7 +272,8 @@ function we_tag_listview($attribs){
 			$parentidname = weTag_getAttribute('parentidname', $attribs);
 //$categoryids="' . $categoryids . '";
 //$parentid="' . $parentid . '";
-			$GLOBALS['lv'] = new we_catListview($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $parentid, $categoryids, 'default', $cols, ($parentidname ? $parentidname : ''), $hidedirindex);
+			$GLOBALS['lv'] = new we_catListview($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $parentid, $categoryids, 'default', $cols, ($parentidname ? $parentidname
+						: ''), $hidedirindex);
 			break;
 		default:
 	}

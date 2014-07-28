@@ -53,7 +53,7 @@ abstract class listviewBase{
 	var $customerFilterType = 'false'; // shall we control customer-filter?
 	var $calendar_struct = array();
 	var $id = 0;
-	var $hidedirindex = false;
+	protected $hidedirindex = false;
 
 	/**
 	 * listviewBase()
