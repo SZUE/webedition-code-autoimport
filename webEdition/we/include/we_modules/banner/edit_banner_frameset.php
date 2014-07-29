@@ -32,6 +32,5 @@ $mode = we_base_request::_(we_base_request::INT, "art", 0);
 
 $weFrame = new we_banner_frames(WEBEDITION_DIR . 'we/include/we_modules/banner/edit_banner_frameset.php');
 echo $weFrame->getHTMLDocumentHeader();
-$weFrame->View->processVariables();
-$weFrame->View->processCommands();
+$weFrame->process();
 echo $weFrame->getHTML($what, $mode);

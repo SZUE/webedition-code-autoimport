@@ -36,6 +36,5 @@ $transaction = $what == 'frameset' ? $we_transaction : we_base_request::_(we_bas
 
 $weFrame = new we_messaging_frames(WE_MESSAGING_MODULE_DIR . 'edit_messaging_frameset.php', we_base_request::_(we_base_request::STRING, "viewclass", 'message'), we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 'no_request'), $we_transaction);
 echo $weFrame->getHTMLDocumentHeader();
-$weFrame->View->processVariables();
-$weFrame->View->processCommands();
+$weFrame->process();
 echo $weFrame->getHTML($what);

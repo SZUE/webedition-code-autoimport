@@ -246,10 +246,8 @@ class we_messaging_view extends weModuleView{
 				$aid = $this->messaging->Folder_ID;
 				$idx = we_messaging_messaging::array_ksearch('ID', $aid, $this->messaging->available_folders);
 				if($idx > -1){
-					$js_out .= '
-					aid = ' . $aid . ';
-					top.content.updateEntry(aid, -1, "' . $this->messaging->available_folders[$idx]['Name'] . ' - (' . $this->messaging->get_message_count($aid, '') . ')", -1, 1);
-					';
+					$js_out .= 'aid = ' . $aid . ';
+					top.content.updateEntry(aid, -1, "' . $this->messaging->available_folders[$idx]['Name'] . ' - (' . $this->messaging->get_message_count($aid, '') . ')", -1, 1);';
 				}
 
 				return we_html_element::jsElement($js_out) . $this->update_treeview();
@@ -350,9 +348,7 @@ top.content.menuDaten.add(new top.content.self.rootEntry(0,"root","root"));';
 						}
 
 						$this->messaging->saveInSession($_SESSION['weS']['we_data'][$this->transaction]);
-						$js_out .= '
-top.content.drawEintraege();
-						';
+						$js_out .= 'top.content.drawEintraege();';
 
 						$out .= we_html_element::jsElement($js_out);
 					}

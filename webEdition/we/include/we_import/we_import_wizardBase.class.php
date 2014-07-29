@@ -22,16 +22,28 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_import_wizardBase{
-
+abstract class we_import_wizardBase{
 	var $path = '';
 	public $fileUploader = null;
 
-	function __construct(){
+	protected function __construct(){
 		$this->path = WE_INCLUDES_DIR . 'we_import/we_wiz_frameset.php';
 	}
 
-	function getWizFrameset(){
+	public function getHTML($what, $type, $step, $mode){
+		switch($what){
+			case "wizframeset":
+				return $this->getWizFrameset();
+			case "wizbody":
+				return $this->getWizBody($type, $step, $mode);
+			case "wizbusy":
+				return $this->getWizBusy();
+			case "wizcmd":
+				return $this->getWizCmd();
+		}
+	}
+
+	private function getWizFrameset(){
 		$args = "pnt=wizbody";
 		if(($cmd1 = we_base_request::_(we_base_request::STRING, 'we_cmd', false, 1))){
 			$args .= "&we_cmd[1]=" . $cmd1;
@@ -191,7 +203,7 @@ function we_cmd() {
 		);
 	}
 
-	function getWizBody($type = '', $step = 0, $mode = 0){
+	private function getWizBody($type = '', $step = 0, $mode = 0){
 		//FIXME: delete condition and else branch when new uploader is stable
 		$continue = true;
 		if(!we_fileupload_include::USE_LEGACY_FOR_WEIMPORT){
@@ -222,7 +234,8 @@ function we_cmd() {
 						we_html_element::jsElement($js)) .
 					we_html_element::htmlBody(array(
 						"class" => "weDialogBody",
-						"onload" => $doOnLoad ? "parent.wiz_next('wizbusy', '" . $this->path . "?pnt=wizbusy&mode=" . $mode . "&type=" . (we_base_request::_(we_base_request::RAW, 'type', '')) . "'); self.focus();" : "if(set_button_state) set_button_state();"
+						"onload" => $doOnLoad ? "parent.wiz_next('wizbusy', '" . $this->path . "?pnt=wizbusy&mode=" . $mode . "&type=" . (we_base_request::_(we_base_request::RAW, 'type', '')) . "'); self.focus();"
+								: "if(set_button_state) set_button_state();"
 						), we_html_element::htmlForm($a, we_html_element::htmlHidden(array("name" => "pnt", "value" => "wizbody")) .
 							we_html_element::htmlHidden(array("name" => "type", "value" => $type)) .
 							we_html_element::htmlHidden(array("name" => "v[type]", "value" => $type)) .
@@ -236,7 +249,7 @@ function we_cmd() {
 		}
 	}
 
-	function getWizBusy(){
+	private function getWizBusy(){
 		$pb = $js = '';
 		if(we_base_request::_(we_base_request::INT, "mode") == 1){
 			$WE_PB = new we_progressBar(0, 0, true);
@@ -278,7 +291,7 @@ top.wizcmd.we_import(1,-2' . ((we_base_request::_(we_base_request::STRING, 'type
 <div id="closeDiv" style="display:none;">' . $closeButton . '</div>'
 		);
 
-		print we_html_element::htmlDocType() . we_html_element::htmlHtml(
+		echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(
 					STYLESHEET .
 					we_html_button::create_state_changer()) .
@@ -291,7 +304,7 @@ top.wizcmd.we_import(1,-2' . ((we_base_request::_(we_base_request::STRING, 'type
 		);
 	}
 
-	function getWizCmd($type = 'normal'){
+	private function getWizCmd($type = 'normal'){
 		$out = '';
 		$mode = we_base_request::_(we_base_request::INT, 'mode', 0);
 		$v = we_base_request::_(we_base_request::STRING, 'v');
@@ -672,14 +685,17 @@ top.wizbusy.setProgress(Math.floor(((" . $v['cid'] . "+1)/" . (int) (2 * $v["num
 						$rcd_name = ($v['pfx_fn'] == 1) ? $v['rcd_pfx'] : $v['asoc_prefix'];
 						switch($v['import_type']){
 							case 'documents':
-								$IsSearchable = $v["docType"] > 0 ? (isset($v['doc_search']) && $v['doc_search']) || f('SELECT IsSearchable FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($v["docType"]), '', new DB_WE()) : false;
-								if(!we_import_functions::importDocument($v["store_to_id"], $v["we_TemplateID"], $fields, $v["docType"], $v["docCategories"], $rcd_name, $v["is_dynamic"], $v["we_Extension"], isset($v['doc_publish']) ? $v['doc_publish'] : true, $IsSearchable, isset($v['encoding']) ? DEFAULT_CHARSET : '' //if charset is set, we know csv was converted to defaultcharset
+								$IsSearchable = $v["docType"] > 0 ? (isset($v['doc_search']) && $v['doc_search']) || f('SELECT IsSearchable FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($v["docType"]), '', new DB_WE())
+										: false;
+								if(!we_import_functions::importDocument($v["store_to_id"], $v["we_TemplateID"], $fields, $v["docType"], $v["docCategories"], $rcd_name, $v["is_dynamic"], $v["we_Extension"], isset($v['doc_publish'])
+												? $v['doc_publish'] : true, $IsSearchable, isset($v['encoding']) ? DEFAULT_CHARSET : '' //if charset is set, we know csv was converted to defaultcharset
 										, $v['collision'])){
 									t_e('warning', 'import of entry failed', $fields);
 								}
 								break;
 							case 'objects':
-								if(!we_import_functions::importObject($v["classID"], $fields, $v["objCategories"], $rcd_name, isset($v['obj_publish']) ? $v['obj_publish'] : true, isset($v['obj_search']) ? $v['obj_search'] : true, isset($v['obj_path_id']) ? $v['obj_path_id'] : 0, isset($v['encoding']) ? DEFAULT_CHARSET : '' //if charset is set, we know csv was converted to defaultcharset
+								if(!we_import_functions::importObject($v["classID"], $fields, $v["objCategories"], $rcd_name, isset($v['obj_publish']) ? $v['obj_publish'] : true, isset($v['obj_search'])
+												? $v['obj_search'] : true, isset($v['obj_path_id']) ? $v['obj_path_id'] : 0, isset($v['encoding']) ? DEFAULT_CHARSET : '' //if charset is set, we know csv was converted to defaultcharset
 										, $v['collision'])){
 									t_e('warning', 'import of entry failed', $fields);
 								}

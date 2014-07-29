@@ -1088,7 +1088,7 @@ class we_customer_EIWizard{
 			//------------------------ Export commands --------------------------------------------------------------
 			case "load":
 				if(($pid = we_base_request::_(we_base_request::INT, "pid"))){
-					$out = we_html_element::jsElement("self.location='" . WE_EXPORT_MODULE_DIR . "exportLoadTree.php?we_cmd[1]=" . we_base_request::_(we_base_request::INT, "tab") . "&we_cmd[2]=" . $pid . "&we_cmd[3]=" . we_base_request::_(we_base_request::STRING, "openFolders") . "'");
+					$out = we_html_element::jsElement("self.location='" . WE_EXPORT_MODULE_DIR . "exportLoadTree.php?we_cmd[1]=" . we_base_request::_(we_base_request::TABLE, "tab") . "&we_cmd[2]=" . $pid . "&we_cmd[3]=" . we_base_request::_(we_base_request::STRING, "openFolders") . "'");
 				}
 				break;
 			case "export_next":
@@ -1681,7 +1681,7 @@ class we_customer_EIWizard{
 		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, "", 'readonly', "text", $width, 0), "", "left", "defaultfont", we_html_element::htmlHidden(array("name" => $IDName, "value" => $IDValue)), we_html_tools::getPixel(20, 4), $button);
 	}
 
-	function getHTMLChooser($name, $value, $values, $title){
+	private function getHTMLChooser($name, $value, $values, $title){
 
 		$input_size = 5;
 
