@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_base_file{
-
 	const SZ_HUMAN = 0;
 	const SZ_BYTE = 1;
 	const SZ_KB = 2;
@@ -651,6 +650,10 @@ abstract class we_base_file{
 
 	public static function clearPath($path){
 		return preg_replace('#/+#', '/', str_replace('\\', '/', $path));
+	}
+
+	public static function replaceInFile($string1, $string2, $file){
+		self::save($file, preg_replace('/' . preg_quote($string1, '/') . '/i', $string2, self::load($file, 'r')), 'w');
 	}
 
 }

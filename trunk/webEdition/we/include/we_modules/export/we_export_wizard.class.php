@@ -23,14 +23,14 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_export_wizard{
-	var $frameset;
-	var $db;
-	var $Tree;
-	var $topFrame = "top";
-	var $headerFrame = "top.header";
-	var $loadFrame = "top.load";
-	var $bodyFrame = "top.body";
-	var $footerFrame = "top.footer";
+	private $frameset;
+	private $db;
+	private $Tree;
+	private $topFrame = "top";
+	private $headerFrame = "top.header";
+	private $loadFrame = "top.load";
+	private $bodyFrame = "top.body";
+	private $footerFrame = "top.footer";
 	private $exportVars = array(
 		"extype" => "",
 		"selection" => "auto",
@@ -72,7 +72,7 @@ class we_export_wizard{
 		"export_depth" => 1
 	);
 
-	function __construct($frameset = ""){
+	public function __construct($frameset = ""){
 		$this->setFrameset($frameset);
 		$this->db = new DB_WE();
 
@@ -89,17 +89,35 @@ class we_export_wizard{
 		}
 	}
 
-	function setFrameset($frameset){
+	public function getHTML($what, $step){
+		switch($what){
+
+			case "frameset" :
+				return $this->getHTMLFrameset();
+			case "header" :
+				return $this->getHTMLHeader($step);
+			case "body" :
+				return $this->getHTMLStep($step);
+			case "footer" :
+				return $this->getHTMLFooter($step);
+			case "load" :
+				return $this->getHTMLCmd();
+			default :
+				die("Unknown command: " . $what . "\n");
+		}
+	}
+
+	private function setFrameset($frameset){
 		$this->frameset = $frameset;
 	}
 
-	function getJSTop(){
+	private function getJSTop(){
 		return we_html_element::jsElement('
  			var table="' . FILE_TABLE . '";
  		');
 	}
 
-	function getExportVars(){
+	private function getExportVars(){
 		if(isset($_SESSION['weS']['exportVars'])){
 			$this->exportVars = $_SESSION['weS']['exportVars'];
 		}
@@ -112,7 +130,7 @@ class we_export_wizard{
 		$_SESSION['weS']['exportVars'] = $this->exportVars;
 	}
 
-	function getHTMLFrameset(){
+	private function getHTMLFrameset(){
 		$args = "";
 		$_SESSION['weS']['exportVars'] = array();
 		if(($cmd1 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1))){
@@ -175,7 +193,7 @@ class we_export_wizard{
 		);
 	}
 
-	function getHTMLStep($step = 0){
+	private function getHTMLStep($step = 0){
 		$this->getExportVars();
 		$function = "getHTMLStep" . intval($step);
 		return (method_exists($this, $function) ?
@@ -183,7 +201,7 @@ class we_export_wizard{
 				$this->getHTMLStep0());
 	}
 
-	function getHTMLStep0(){
+	private function getHTMLStep0(){
 		$wexpotEnabled = (permissionhandler::hasPerm('NEW_EXPORT') || permissionhandler::hasPerm('DELETE_EXPORT') || permissionhandler::hasPerm('EDIT_EXPORT') || permissionhandler::hasPerm('MAKE_EXPORT'));
 
 		$extype = $this->exportVars["extype"];
@@ -245,7 +263,7 @@ class we_export_wizard{
 		);
 	}
 
-	function getHTMLStep1(){
+	private function getHTMLStep1(){
 		$extype = $this->exportVars["extype"];
 
 		if($extype == we_import_functions::TYPE_WE_XML){
@@ -299,10 +317,11 @@ function we_submit(){
 		);
 	}
 
-	function getHTMLStep2(){
+	private function getHTMLStep2(){
 		if($this->exportVars["selection"] == "auto"){
 			return $this->getHTMLStep2a();
-		} else if($this->exportVars["selection"] == "manual"){
+		}
+		if($this->exportVars["selection"] == "manual"){
 			/* if($this->exportVars["extype"]==we_import_functions::TYPE_WE_XML) return $this->getHTMLStep3();
 			  else */
 			return ($this->exportVars["extype"] == "csv" ?
@@ -311,7 +330,7 @@ function we_submit(){
 		}
 	}
 
-	function getHTMLStep2a(){
+	private function getHTMLStep2a(){
 		$yuiSuggest = & weSuggest::getInstance();
 
 		$_space = 10;
@@ -378,7 +397,7 @@ function we_cmd(){
 		);
 	}
 
-	function getHTMLStep2b(){
+	private function getHTMLStep2b(){
 		$_space = 10;
 		$art = $this->exportVars["art"];
 		$js = we_html_element::jsElement(
@@ -399,14 +418,14 @@ function we_cmd(){
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET . $js) .
 				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
-						//we_html_element::htmlInput(array("type" => "text","name" => "selectedItems")).
+//we_html_element::htmlInput(array("type" => "text","name" => "selectedItems")).
 						we_html_multiIconBox::getHTML("weExportWizard", "100%", $parts, 30, "", -1, "", "", false, g_l('export', "[step2]"))
 					)
 				)
 		);
 	}
 
-	function getHTMLStep3(){
+	private function getHTMLStep3(){
 		$art = $this->exportVars["art"];
 
 		$js = ($art == "objects" && defined("OBJECT_FILES_TABLE") ?
@@ -523,17 +542,17 @@ function we_submit(){
 		);
 	}
 
-	function getHTMLStep4(){
-		//	define different parts of the export wizard
+	private function getHTMLStep4(){
+//	define different parts of the export wizard
 		$_space = 100;
 		$parts = array();
 
 		$extype = $this->exportVars["extype"];
 		$filename = $this->exportVars["filename"];
-		//$export_to = $this->exportVars["export_to"];
-		//$cdata = $this->exportVars["cdata"];
-		//$path = $this->exportVars["path"];
-		//$art = $this->exportVars["art"];
+//$export_to = $this->exportVars["export_to"];
+//$cdata = $this->exportVars["cdata"];
+//$path = $this->exportVars["path"];
+//$art = $this->exportVars["art"];
 
 		$handle_def_templates = $this->exportVars["handle_def_templates"];
 		$handle_document_includes = $this->exportVars["handle_document_includes"];
@@ -556,7 +575,7 @@ function we_submit(){
 		$filename = $filename ? $filename : "weExport_" . time() . ($extype == we_import_functions::TYPE_GENERIC_XML ? ".xml" : ".csv");
 
 
-		//set variables in top frame
+//set variables in top frame
 		$js = we_html_element::jsElement('
 function setLabelState(l,disable){
 	if(disable){
@@ -612,7 +631,7 @@ function setState(a) {
 		$formattable = new we_html_table(array("cellpadding" => 2, "cellspacing" => 2, "border" => 0), 3, 1);
 		$formattable->setCol(0, 0, array("colspan" => 2), we_html_forms::checkboxWithHidden(($handle_def_classes ? true : false), "handle_def_classes", g_l('export', "[handle_def_classes]")));
 		$formattable->setCol(1, 0, null, we_html_forms::checkboxWithHidden(($handle_object_embeds ? true : false), "handle_object_embeds", g_l('export', "[handle_object_embeds]")));
-		//$formattable->setCol(2,0,null,we_html_forms::checkboxWithHidden(($handle_class_defs ? true : false),"handle_class_defs",g_l('export',"[handle_class_defs]")));
+//$formattable->setCol(2,0,null,we_html_forms::checkboxWithHidden(($handle_class_defs ? true : false),"handle_class_defs",g_l('export',"[handle_class_defs]")));
 
 		$parts[] = array("headline" => g_l('export', "[handle_object_options]") . we_html_element::htmlBr() . g_l('export', "[handle_classes_options]"), "html" => $formattable->getHtml(), "space" => $_space);
 
@@ -634,8 +653,8 @@ function setState(a) {
 		);
 	}
 
-	function getHTMLStep7(){
-		//	define different parts of the export wizard
+	private function getHTMLStep7(){
+//	define different parts of the export wizard
 		$_space = 130;
 		$_input_size = 42;
 
@@ -644,17 +663,17 @@ function setState(a) {
 		$export_to = $this->exportVars["export_to"];
 		$cdata = $this->exportVars["cdata"];
 		$path = $this->exportVars["path"];
-		//$art = $this->exportVars["art"];
+//$art = $this->exportVars["art"];
 		$csv_delimiter = $this->exportVars["csv_delimiter"];
 		$csv_enclose = $this->exportVars["csv_enclose"];
 		$csv_lineend = $this->exportVars["csv_lineend"];
-		//$csv_fields = $this->exportVars["csv_fields"];
+//$csv_fields = $this->exportVars["csv_fields"];
 
 		if($filename == ""){
 			$filename = "weExport_" . date('d_m_Y_H_i') . ($extype == we_import_functions::TYPE_GENERIC_XML ? ".xml" : ".csv");
 		}
 
-		//set variables in top frame
+//set variables in top frame
 		$js = we_html_element::jsElement(
 				$this->headerFrame . '.location="' . $this->frameset . '?pnt=header&step=7";' .
 				$this->footerFrame . '.location="' . $this->frameset . '?pnt=footer&step=7";');
@@ -663,10 +682,10 @@ function setState(a) {
 			array("headline" => g_l('export', "[filename]"), "html" => we_html_tools::getPixel(5, 5) . we_html_tools::htmlTextInput("filename", $_input_size, $filename, "", "", "text", 260), "space" => $_space)
 		);
 
-		//	Filetype
+//	Filetype
 		switch($extype){
 			case "csv":
-				//$csv_input_size = 3;
+//$csv_input_size = 3;
 
 				$fileformattable = new we_html_table(array("cellpadding" => 2, "cellspacing" => 2, "border" => 0), 4, 1);
 
@@ -716,7 +735,7 @@ function setState(a) {
 		);
 	}
 
-	function getHTMLStep10(){
+	private function getHTMLStep10(){
 		$filename = urldecode(we_base_request::_(we_base_request::FILE, "file_name"));
 
 		$message = we_html_element::htmlSpan(array("class" => "defaultfont"), g_l('export', "[backup_finished]") . "<br/><br/>" .
@@ -733,7 +752,7 @@ function setState(a) {
 		);
 	}
 
-	function getHTMLStep50(){
+	private function getHTMLStep50(){
 		$preurl = getServerUrl();
 		if(we_base_request::_(we_base_request::BOOL, "exportfile")){
 			$_filename = basename(urldecode(we_base_request::_(we_base_request::RAW, "exportfile")));
@@ -771,7 +790,7 @@ function setState(a) {
 		}
 	}
 
-	function getHTMLStep99(){
+	private function getHTMLStep99(){
 		$errortype = we_base_request::_(we_base_request::STRING, "error", "unknown");
 
 		switch($errortype){
@@ -806,12 +825,12 @@ function setState(a) {
 		);
 	}
 
-	function getHTMLHeader($step = 0){
+	private function getHTMLHeader($step = 0){
 		$art = $this->exportVars["art"];
-		//$selection = $this->exportVars["selection"];
+//$selection = $this->exportVars["selection"];
 
 		$table = new we_html_table(array("width" => '100%', "cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
-		//print $step;
+//print $step;
 
 		switch($step){
 			case 3:
@@ -887,25 +906,12 @@ var we_tabs = new Array();
 				$table->setCol(2, 0, array("nowrap" => "nowrap"), we_html_element::jsElement('setTimeout("we_tabInit()",500);')
 				);
 				break;
+
 			case 1:
 			case 2:
 			case 4:
-				$js = '';
-				$js2 = we_html_element::jsElement('
-				if (parent.frames.length > 0) {
-					var frmRows = parent.document.body.rows;
-					var rows = frmRows.split(",");
+				$js = $js2 = '';
 
-					var newFrmRows = 1;
-					for (var i=1; i<rows.length; i++) {
-						newFrmRows += ","+rows[i];
-					}
-
-					if (frmRows != newFrmRows) {
-						parent.document.body.rows = newFrmRows;
-					}
-				}
-		');
 				break;
 			default:
 				$js = $js2 = '';
@@ -925,10 +931,10 @@ var we_tabs = new Array();
 		);
 	}
 
-	function getHTMLFooter($step = 0){
+	private function getHTMLFooter($step = 0){
 		$this->getExportVars();
 		$errortype = we_base_request::_(we_base_request::STRING, "error", "no_error");
-		//$selection = we_base_request::_(we_base_request::RAW, "selection", "auto");
+//$selection = we_base_request::_(we_base_request::RAW, "selection", "auto");
 		$show_controls = false;
 		switch($errortype){
 			case "no_object_module":
@@ -1029,30 +1035,30 @@ var we_tabs = new Array();
 		);
 	}
 
-	function getHTMLCmd(){
+	private function getHTMLCmd(){
 		$out = "";
 		$this->getExportVars();
 		switch(we_base_request::_(we_base_request::STRING, "cmd")){
 			case "load":
-				if(($pid = we_base_request::_(we_base_request::INT, "pid"))){
-					return we_html_element::jsElement("self.location='" . WE_EXPORT_MODULE_DIR . "exportLoadTree.php?we_cmd[1]=" . we_base_request::_(we_base_request::INT, "tab") . "&we_cmd[2]=" . $pid . "&we_cmd[3]=" . we_base_request::_(we_base_request::INTLIST, "openFolders", "") . "'");
+				if(($pid = we_base_request::_(we_base_request::INT, "pid")) !== false){
+					return we_html_element::jsElement("self.location='" . WE_EXPORT_MODULE_DIR . "exportLoadTree.php?we_cmd[1]=" . we_base_request::_(we_base_request::TABLE, "tab") . "&we_cmd[2]=" . $pid . "&we_cmd[3]=" . we_base_request::_(we_base_request::INTLIST, "openFolders", "") . "'");
 				}
 				break;
 			case "export":
 				$xmlExIm = new we_exim_XMLExIm();
 
 				$file_format = we_base_request::_(we_base_request::STRING, "file_format", "");
-				//$export_to = we_base_request::_(we_base_request::RAW, "export_to", "");
+//$export_to = we_base_request::_(we_base_request::RAW, "export_to", "");
 				$path = we_base_request::_(we_base_request::FILE, "path", '') . '/';
-				//$csv_delimiter = we_base_request::_(we_base_request::RAW, "csv_delimiter", "");
-				//$csv_enclose = we_base_request::_(we_base_request::RAW, "csv_enclose", "");
-				//$csv_lineend = we_base_request::_(we_base_request::RAW, "csv_lineend", "");
-				//$csv_fieldnames = we_base_request::_(we_base_request::RAW, "csv_fieldnames", "");
-				//$cdata = we_base_request::_(we_base_request::BOOL, "cdata");
+//$csv_delimiter = we_base_request::_(we_base_request::RAW, "csv_delimiter", "");
+//$csv_enclose = we_base_request::_(we_base_request::RAW, "csv_enclose", "");
+//$csv_lineend = we_base_request::_(we_base_request::RAW, "csv_lineend", "");
+//$csv_fieldnames = we_base_request::_(we_base_request::RAW, "csv_fieldnames", "");
+//$cdata = we_base_request::_(we_base_request::BOOL, "cdata");
 
 				$extype = $this->exportVars["extype"];
 				$filename = $this->exportVars["filename"];
-				//$export_to = $this->exportVars["export_to"];
+//$export_to = $this->exportVars["export_to"];
 				$path = $this->exportVars["path"];
 				$csv_delimiter = $this->exportVars["csv_delimiter"];
 				$csv_enclose = $this->exportVars["csv_enclose"];
@@ -1072,18 +1078,18 @@ var we_tabs = new Array();
 				$_SESSION['weS']['exportVars']["finalObjs"] = $finalObjs;
 				$_SESSION['weS']['exportVars']["finalClasses"] = $finalClasses;
 
-				// Description of the variables:
-				//  $finalDocs - contains documents IDs that need to be exported
-				//  $finalObjs - contains objects IDs that need to be exported
-				//  $file_format - export format; possible values are "xml","csv"
-				//  $file_name - name of the file that contains exported docs and objects
-				//  $export_to - where the file should be stored; possible values are "server","local"
-				//  $path - if the file will be stored on server then this variable contains the server path
-				//  $csv_delimiter - non-empty if csv file has been specified
-				//  $csv_enclose - non-empty if csv file has been specified
-				//  $csv_lineend - non-empty if csv file has been specified
-				//  $csv_fieldnames - non-empty if first row conains field names
-				//  $cdata - non-empty if xml file has been specified - coding of file
+// Description of the variables:
+//  $finalDocs - contains documents IDs that need to be exported
+//  $finalObjs - contains objects IDs that need to be exported
+//  $file_format - export format; possible values are "xml","csv"
+//  $file_name - name of the file that contains exported docs and objects
+//  $export_to - where the file should be stored; possible values are "server","local"
+//  $path - if the file will be stored on server then this variable contains the server path
+//  $csv_delimiter - non-empty if csv file has been specified
+//  $csv_enclose - non-empty if csv file has been specified
+//  $csv_lineend - non-empty if csv file has been specified
+//  $csv_fieldnames - non-empty if first row conains field names
+//  $cdata - non-empty if xml file has been specified - coding of file
 
 				$start_export = false;
 
@@ -1271,8 +1277,8 @@ if (top.footer.setProgress){
 					$all = count($xmlExIm->RefTable);
 					$exports = 0;
 					$_SESSION['weS']['exportVars']["filename"] = ($export_local ? TEMP_PATH . $filename : $_SERVER['DOCUMENT_ROOT'] . $path . $filename);
-					//FIXME set export type in getHeader
-					$ret = we_base_file::save($_SESSION['weS']['exportVars']["filename"], we_exim_XMLExIm::getHeader(), "wb");
+//FIXME set export type in getHeader
+					we_base_file::save($_SESSION['weS']['exportVars']["filename"], we_exim_XMLExIm::getHeader(), "wb");
 				} else {
 					$xmlExIm->RefTable->Array2RefTable($this->exportVars["RefTable"]);
 					$xmlExIm->RefTable->current = $this->exportVars["CurrentRef"];
@@ -1294,7 +1300,6 @@ if (top.footer.setProgress){
 				} else if($percent > 100){
 					$percent = 100;
 				}
-				$_progress_update = we_html_element::jsElement('if (top.footer.setProgress) top.footer.setProgress(' . $percent . ');');
 				$_SESSION['weS']['exportVars']["CurrentRef"] = $xmlExIm->RefTable->current;
 
 				$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "load")) .
@@ -1306,16 +1311,17 @@ if (top.footer.setProgress){
 				if($all > $exports){
 					return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 							we_html_element::htmlHead($head) .
-							we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => 5, "marginheight" => 5, "leftmargin" => 5, "topmargin" => 5, "onload" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "load", "action" => $this->frameset), $hiddens) . $_progress_update
+							we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => 5, "marginheight" => 5, "leftmargin" => 5, "topmargin" => 5, "onload" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "load", "action" => $this->frameset), $hiddens) .
+								we_html_element::jsElement('if (top.footer.setProgress) top.footer.setProgress(' . $percent . ');')
 							)
 					);
 				}
 				if(is_writable($filename)){
 					we_base_file::save($filename, we_exim_XMLExIm::getFooter(), "ab");
 				}
-				$_progress_update = we_html_element::jsElement('if (top.footer.setProgress) top.footer.setProgress(100);');
+
 				return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-						we_html_element::htmlHead($head . $_progress_update) .
+						we_html_element::htmlHead($head . we_html_element::jsElement('if (top.footer.setProgress) top.footer.setProgress(100);')) .
 						we_html_element::htmlBody(
 							array(
 								"bgcolor" => "#ffffff",
@@ -1332,9 +1338,11 @@ if (top.footer.setProgress){
 
 	/* creates the FileChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
 
-	function formFileChooser($width = "", $IDName = "ParentID", $IDValue = "/", $cmd = "", $filter = ""){
+	private function formFileChooser($width = "", $IDName = "ParentID", $IDValue = "/", $cmd = "", $filter = ""){
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");
+		$button = we_html_button::create_button("select", "javascript:formFileChooser('browse_server','" . $wecmdenc1 . "','" . $filter . "',document.we_form.elements['" . $IDName . "'].value);");
 
-		$js = we_html_element::jsScript(JS_DIR . "windows.js") .
+		return we_html_element::jsScript(JS_DIR . "windows.js") .
 			we_html_element::jsElement('
 				function formFileChooser() {
 					var args = "";
@@ -1345,19 +1353,13 @@ if (top.footer.setProgress){
 						break;
 					}
 				}
-		');
-
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");
-
-		$button = we_html_button::create_button("select", "javascript:formFileChooser('browse_server','" . $wecmdenc1 . "','" . $filter . "',document.we_form.elements['" . $IDName . "'].value);");
-
-		return $js . we_html_tools::htmlFormElementTable(we_html_tools::getPixel(5, 5) . we_html_tools::htmlTextInput($IDName, 42, $IDValue, "", ' readonly', "text", $width, 0), "", "left", "defaultfont", "", we_html_tools::getPixel(20, 4), permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES")
+		') . we_html_tools::htmlFormElementTable(we_html_tools::getPixel(5, 5) . we_html_tools::htmlTextInput($IDName, 42, $IDValue, "", ' readonly', "text", $width, 0), "", "left", "defaultfont", "", we_html_tools::getPixel(20, 4), permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES")
 						? $button : "");
 	}
 
 	/* creates the DirectoryChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
 
-	function formDirChooser($width = "", $rootDirID = 0, $table = FILE_TABLE, $Pathname = "ParentPath", $Pathvalue = "", $IDName = "ParentID", $IDValue = "", $cmd = ""){
+	private function formDirChooser($width = "", $rootDirID = 0, $table = FILE_TABLE, $Pathname = "ParentPath", $Pathvalue = "", $IDName = "ParentID", $IDValue = "", $cmd = ""){
 		$table = FILE_TABLE;
 
 		$js = we_html_element::jsScript(JS_DIR . "windows.js") .
@@ -1380,7 +1382,7 @@ if (top.footer.setProgress){
 		return $js . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, "", ' readonly', "text", $width, 0), "", "left", "defaultfont", we_html_element::htmlHidden(array("name" => $IDName, "value" => $IDValue)), we_html_tools::getPixel(20, 4), $button);
 	}
 
-	function getHTMLDocType($width = 350){
+	private function getHTMLDocType($width = 350){
 		$this->db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . we_docTypes::getDoctypeQuery($this->db));
 		$select = new we_html_select(array("name" => "doctype", "size" => 1, "class" => "weSelect", "style" => "{width: $width;}", "onchange" => ""));
 		$first = "";
@@ -1415,7 +1417,7 @@ if (top.footer.setProgress){
 		);
 	}
 
-	function getHTMLObjectType($width = 350, $showdocs = false){
+	private function getHTMLObjectType($width = 350, $showdocs = false){
 		if(defined("OBJECT_FILES_TABLE")){
 			$this->db->query("SELECT ID,Text FROM " . OBJECT_TABLE);
 			$select = new we_html_select(array("name" => "classname", "class" => "weSelect", "size" => 1, "style" => "{width: $width}", "onchange" => $this->topFrame . ".classname=document.we_form.classname.options[document.we_form.classname.selectedIndex].value;"));
@@ -1442,7 +1444,7 @@ if (top.footer.setProgress){
 		return null;
 	}
 
-	function getHTMLCategory(){
+	private function getHTMLCategory(){
 		switch(we_base_request::_(we_base_request::STRING, "wcmd")){
 			case "add_cat":
 				$arr = makeArrayFromCSV($this->exportVars["categories"]);
@@ -1491,7 +1493,7 @@ if (top.footer.setProgress){
 			'</td></tr></table>';
 	}
 
-	function formWeChooser($table = FILE_TABLE, $width = "", $rootDirID = 0, $IDName = "ID", $IDValue = 0, $Pathname = "Path", $Pathvalue = "/", $cmd = ""){
+	private function formWeChooser($table = FILE_TABLE, $width = "", $rootDirID = 0, $IDName = "ID", $IDValue = 0, $Pathname = "Path", $Pathvalue = "/", $cmd = ""){
 		$yuiSuggest = & weSuggest::getInstance();
 		if($Pathvalue == ""){
 			$Pathvalue = f('SELECT Path FROM ' . $this->db->escape($table) . ' WHERE ID=' . intval($IDValue), "Path", $this->db);
@@ -1515,7 +1517,7 @@ if (top.footer.setProgress){
 		return $yuiSuggest->getHTML();
 	}
 
-	function getHTMLChooser($name, $value, $values, $title){
+	private function getHTMLChooser($name, $value, $values, $title){
 		$input_size = 5;
 
 		$select = new we_html_select(array("name" => $name . "_select", "class" => "weSelect", "onchange" => "document.we_form." . $name . ".value=this.options[this.selectedIndex].value;this.selectedIndex=0", "style" => "width:200;"));

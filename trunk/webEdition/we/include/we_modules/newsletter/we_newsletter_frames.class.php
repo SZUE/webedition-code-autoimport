@@ -37,7 +37,7 @@ class we_newsletter_frames extends weModuleFrames{
 		$this->weAutoCompleter = &weSuggest::getInstance();
 	}
 
-	function getHTMLDocumentHeader($what = '', $mode = ''){
+	public function getHTMLDocumentHeader($what = '', $mode = ''){
 		switch($what){
 			case 'send':
 			case 'send_body':

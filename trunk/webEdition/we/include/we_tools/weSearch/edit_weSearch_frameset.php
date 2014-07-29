@@ -31,6 +31,5 @@ $what = we_base_request::_(we_base_request::STRING, "pnt", "frameset");
 
 $weFrame = new we_search_frames();
 
-$weFrame->View->processVariables();
-$weFrame->View->processCommands();
+$weFrame->process();
 echo $weFrame->getHTML($what);

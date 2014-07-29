@@ -41,7 +41,7 @@ if(!we_fileupload_include::USE_LEGACY_FOR_WEIMPORT){
 		switch($type){
 			case we_import_functions::TYPE_GENERIC_XML:
 				$fileNameTempGxml = array('prefix' => 'we_xml_', 'postfix' => '.xml', 'path' => TEMP_DIR, 'missingDocRoot' => we_fileupload_include::MISSING_DOC_ROOT);
-			case we_import_functions::TYPE_WE_XML: 
+			case we_import_functions::TYPE_WE_XML:
 				$name = 'uploaded_xml_file';
 				$acceptedMime = 'text/xml';
 				$acceptedExt = 'xml';
@@ -63,17 +63,4 @@ if(!we_fileupload_include::USE_LEGACY_FOR_WEIMPORT){
 	}
 }
 
-switch($what){
-	case "wizframeset":
-		print $wizard->getWizFrameset();
-		break;
-	case "wizbody":
-		print $wizard->getWizBody($type, $step, $mode);
-		break;
-	case "wizbusy":
-		print $wizard->getWizBusy();
-		break;
-	case "wizcmd":
-		print $wizard->getWizCmd();
-		break;
-}
+echo $wizard->getHTML($what,$type, $step, $mode);

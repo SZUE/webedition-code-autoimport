@@ -32,6 +32,5 @@ $type = we_base_request::_(we_base_request::RAW, 'type', 0);
 
 $weFrame = new we_workflow_frames();
 echo $weFrame->getHTMLDocumentHeader();
-$weFrame->View->processVariables();
-$weFrame->View->processCommands();
+$weFrame->process();
 echo $weFrame->getHTML($what, $mode, $type);

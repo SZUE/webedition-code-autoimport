@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -23,38 +22,13 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+we_html_tools::protect();
 
 $frames = new we_export_wizard(WE_EXPORT_MODULE_DIR . "export_frameset.php");
-we_html_tools::protect();
 //	Starting output .
 
 $what = we_base_request::_(we_base_request::STRING, "pnt", "frameset");
 $step = we_base_request::_(we_base_request::INT, "step", 0);
 
 
-switch($what){
-
-	case "frameset" :
-		print $frames->getHTMLFrameset();
-		break;
-
-	case "header" :
-		print $frames->getHTMLHeader($step);
-		break;
-
-	case "body" :
-		print $frames->getHTMLStep($step);
-		break;
-
-	case "footer" :
-		print $frames->getHTMLFooter($step);
-		break;
-
-	case "load" :
-		print $frames->getHTMLCmd();
-		break;
-
-	default :
-		die("Unknown command: " . $what . "\n");
-		break;
-}
+echo $frames->getHTML($what, $step);

@@ -186,7 +186,7 @@ abstract class we_customer_EI{
 			$recs = array();
 
 			if($lineend == 'mac'){
-				self::massReplace("\r", "\n", $csvFile);
+				we_base_file::replaceInFile("\r", "\n", $csvFile);
 			}
 
 			$cp = new we_import_CSV;
@@ -210,12 +210,6 @@ abstract class we_customer_EI{
 		}
 
 		return $nodes;
-	}
-
-	function massReplace($string1, $string2, $file){
-		$contents = we_base_file::load($file, 'r');
-		$replacement = preg_replace('/' . preg_quote($string1, '/') . '/i', $string2, $contents);
-		we_base_file::save($file, $contents, 'w');
 	}
 
 	function getUniqueId(){

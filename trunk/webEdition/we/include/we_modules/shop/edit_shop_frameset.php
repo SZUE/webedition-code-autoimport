@@ -29,7 +29,7 @@ we_html_tools::protect($protect);
 $what = we_base_request::_(we_base_request::STRING,"pnt","frameset");
 
 $weFrame = new we_shop_frames(WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php');
-echo $weFrame->getHTMLDocumentHeader();
-print STYLESHEET;
+echo $weFrame->getHTMLDocumentHeader().
+	STYLESHEET;
 $weFrame->View->processCommands();
 echo $weFrame->getHTML($what);

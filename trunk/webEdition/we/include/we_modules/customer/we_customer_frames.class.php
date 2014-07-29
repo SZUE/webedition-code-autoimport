@@ -38,7 +38,7 @@ class we_customer_frames extends weModuleFrames{
 		$this->View = new we_customer_view(WE_CUSTOMER_MODULE_DIR . "edit_customer_frameset.php", "top.content");
 	}
 
-	function getHTMLDocumentHeader($what = '', $mode = ''){
+	public function getHTMLDocumentHeader($what = '', $mode = ''){
 		//We need to set this (and in corresponding frames, since the data in database is formated this way
 		if(!($mode == 'export' && we_base_request::_(we_base_request::INT, "step") == 5)){
 			return we_html_tools::headerCtCharset('text/html', DEFAULT_CHARSET) .

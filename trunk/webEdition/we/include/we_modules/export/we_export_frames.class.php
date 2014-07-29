@@ -44,7 +44,7 @@ class we_export_frames extends weModuleFrames{
 		$this->editorBodyFrame = $this->topFrame . '.editor.edbody';
 	}
 
-	function getHTMLDocumentHeader($what = '', $mode = ''){
+	public function getHTMLDocumentHeader($what = '', $mode = ''){
 		if($what != "cmd" && $what != "load" && !we_base_request::_(we_base_request::FILE, "exportfile")){
 			return parent::getHTMLDocumentHeader();
 		}
@@ -753,8 +753,10 @@ function closeAllType(){
 	/* creates the FileChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
 
 	function formFileChooser($width = "", $IDName = "ParentID", $IDValue = "/", $cmd = "", $filter = ""){
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");
+		$button = we_html_button::create_button("select", "javascript:top.content.setHot();formFileChooser('browse_server','" . $wecmdenc1 . "','" . $filter . "',document.we_form.elements['" . $IDName . "'].value);");
 
-		$js = we_html_element::jsScript(JS_DIR . "windows.js") .
+		return we_html_element::jsScript(JS_DIR . "windows.js") .
 			we_html_element::jsElement('
 				function formFileChooser() {
 					var args = "";
@@ -765,16 +767,11 @@ function closeAllType(){
 						break;
 					}
 				}
-		');
-
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");
-		$button = we_html_button::create_button("select", "javascript:top.content.setHot();formFileChooser('browse_server','" . $wecmdenc1 . "','" . $filter . "',document.we_form.elements['" . $IDName . "'].value);");
-
-		return $js . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 42, $IDValue, "", ' readonly onchange="' . $this->topFrame . '.hot=1;"', "text", $width, 0), "", "left", "defaultfont", "", we_html_tools::getPixel(20, 4), permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
+		') . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 42, $IDValue, "", ' readonly onchange="' . $this->topFrame . '.hot=1;"', "text", $width, 0), "", "left", "defaultfont", "", we_html_tools::getPixel(20, 4), permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
 	}
 
 	function formWeChooser($table = FILE_TABLE, $width = '', $rootDirID = 0, $IDName = 'ID', $IDValue = 0, $Pathname = 'Path', $Pathvalue = '/', $cmd = ''){
-		$Pathvalue = (empty($Pathvalue) ? f('SELECT Path FROM ' . $this->db->escape($table) . ' WHERE ID=' . intval($IDValue) . ";", "Path", $this->db) : $Pathvalue);
+		$Pathvalue = (empty($Pathvalue) ? f('SELECT Path FROM ' . $this->db->escape($table) . ' WHERE ID=' . intval($IDValue), "", $this->db) : $Pathvalue);
 
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $Pathname . "'].value");
