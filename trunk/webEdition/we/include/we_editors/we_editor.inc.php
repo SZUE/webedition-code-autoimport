@@ -328,7 +328,7 @@ if((($cmd0 != 'save_document' && $cmd0 != 'publish' && $cmd0 != 'unpublish') && 
 		$contents = we_glossary_replace::replace($contents, $we_doc->Language);
 	}
 
-	if($GLOBALS['we_editmode']){
+	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']){
 		$matches = array();
 		preg_match_all('|<form( name="we_form")|i', $contents, $matches, PREG_PATTERN_ORDER);
 		if($matches && count($matches[0])/* >2 */){

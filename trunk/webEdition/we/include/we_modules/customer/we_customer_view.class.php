@@ -873,7 +873,7 @@ self.close();';
 				break;
 			case 'show_search':
 				echo we_html_element::jsScript(JS_DIR . "windows.js") .
-				we_html_element::jsElement('url ="' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=search&search=1&keyword=' . we_base_request::_(we_base_request::STRING, "keyword") . '";
+				we_html_element::jsElement('url ="' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=search&search=1&keyword=' . we_base_request::_(we_base_request::STRINGC, "keyword") . '";
 						new jsWindow(url,"search",-1,-1,650,600,true,true,true,false);');
 				break;
 			case 'show_customer_settings':
