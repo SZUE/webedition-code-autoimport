@@ -2546,7 +2546,7 @@ top.content.hloaded=1;') .
 
 	static function removeOldWESession(){
 		if(session_name() == SESSION_NAME){
-			session_unset();
+			session_destroy();
 			return;
 		}
 		unset($_SESSION['user']);

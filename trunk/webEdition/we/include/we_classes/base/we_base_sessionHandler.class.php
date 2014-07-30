@@ -1,7 +1,6 @@
 <?php
 
 class we_base_sessionHandler{
-
 	//prevent crashed or killed sessions to stay
 	private $execTime;
 	private $sessionName;
@@ -61,7 +60,7 @@ class we_base_sessionHandler{
 			return $data;
 		}
 		//if we don't find valid data, generate a new ID because of session stealing
-		self::getSessionID($sessID);
+		self::getSessionID(0);
 		return '';
 	}
 
@@ -75,6 +74,7 @@ class we_base_sessionHandler{
 		$this->DB->query('REPLACE INTO ' . SESSION_TABLE . ' SET ' . we_database_base::arraySetter(array(
 				'session_id' => sql_function('x\'' . $sessID . '\''),
 				'session_data' => gzcompress($sessData, 9),
+				//'tmp' => serialize($_SESSION),
 				'sessionName' => $this->sessionName
 		)));
 		return true;
@@ -92,10 +92,10 @@ class we_base_sessionHandler{
 	}
 
 	private static function getSessionID($sessID){
-		if(preg_match('|^([a-f0-9]){32,40}$|i', $sessID)){
+		if($sessID && preg_match('|^([a-f0-9]){32,40}$|i', $sessID)){
 			return $sessID;
 		}
-	//		return $sessID;
+		//		return $sessID;
 
 		$cnt = ini_get('session.hash_bits_per_character');
 		if($cnt == 4){
