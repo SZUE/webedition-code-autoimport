@@ -839,7 +839,7 @@ failure: function(o) {
 		if($mode){
 			we_customer_add::getHTMLSearch($this, $search, $select);
 		} else {
-			$search->setCol(1, 0, array(), we_html_tools::htmlTextInput('keyword', 80, we_base_request::_(we_base_request::RAW, 'keyword', ''), '', 'onchange=""', 'text', '550px')
+			$search->setCol(1, 0, array(), we_html_tools::htmlTextInput('keyword', 80, we_base_request::_(we_base_request::STRINGC, 'keyword', ''), '', 'onchange=""', 'text', '550px')
 			);
 
 			$sw = we_html_button::create_button('image:btn_direction_right', "javascript:we_cmd('switchToAdvance')");
@@ -857,7 +857,7 @@ failure: function(o) {
 
 			$max_res = $this->View->settings->getMaxSearchResults();
 			$result = array();
-			if(($k = we_base_request::_(we_base_request::STRING, 'keyword')) && we_base_request::_(we_base_request::BOOL, 'search')){
+			if(($k = we_base_request::_(we_base_request::STRINGC, 'keyword')) && we_base_request::_(we_base_request::BOOL, 'search')){
 				$result = $this->View->getSearchResults($k, $max_res);
 			}
 			foreach($result as $id => $text){
