@@ -131,7 +131,7 @@ class we_customer_customer extends weModelBase{
 	 */
 	function delete($recursive = true){
 		if(weModelBase::delete() && $recursive){
-			we_customer_documentFilter::deleteWebUser($this);
+			we_customer_documentFilter::deleteWebUser($this->ID);
 			return true;
 		}
 		return false;

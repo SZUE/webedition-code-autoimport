@@ -91,7 +91,7 @@ abstract class we_customer_abstractFilter{
 	 * @param array $filter
 	 * @return we_customer_abstractFilter
 	 */
-	function __construct($mode = self::OFF, array $specificCustomers = array(), array $blackList = array(), array $whiteList = array(), array $filter = array()){
+	protected function __construct($mode = self::OFF, array $specificCustomers = array(), array $blackList = array(), array $whiteList = array(), array $filter = array()){
 		$this->setMode($mode);
 		$this->setSpecificCustomers($specificCustomers);
 		$this->setBlackList($blackList);
@@ -405,7 +405,7 @@ abstract class we_customer_abstractFilter{
 	/**
 	 * mutator method for $this->_specificCustomers
 	 *
-	 * @param array $mode
+	 * @param array $specificCustomers
 	 */
 	public function setSpecificCustomers($specificCustomers){
 		$this->_specificCustomers = $specificCustomers;
@@ -423,7 +423,7 @@ abstract class we_customer_abstractFilter{
 	/**
 	 * mutator method for $this->_blackList
 	 *
-	 * @param array $mode
+	 * @param array $blackList
 	 */
 	public function setBlackList($blackList){
 		$this->_blackList = $blackList;
@@ -441,7 +441,7 @@ abstract class we_customer_abstractFilter{
 	/**
 	 * mutator method for $this->_whiteList
 	 *
-	 * @param array $mode
+	 * @param array $whiteList
 	 */
 	public function setWhiteList($whiteList){
 		$this->_whiteList = $whiteList;
@@ -459,7 +459,7 @@ abstract class we_customer_abstractFilter{
 	/**
 	 * mutator method for $this->_filter
 	 *
-	 * @param array $mode
+	 * @param array $filter
 	 */
 	public function setFilter($filter){
 		$this->_filter = $filter;
