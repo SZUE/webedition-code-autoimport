@@ -591,7 +591,7 @@ class liveUpdateFunctions {
 		$success = true;
 
 		foreach ($queries as $query) {
-			if((strpos($query,'###UPDATEONLY###')!==false)||(strpos($query,'###UPDATEDROPCOL')!==false)){
+			if((strpos($query,'###UPDATEONLY###')!==false)||(strpos($query,'###UPDATEDROPCOL')!==false)||(strpos($query,'###UPDATEDROPKEY')!==false)){
 				continue;
 			}
 				$query=str_replace('###INSTALLONLY###', '', $query);
