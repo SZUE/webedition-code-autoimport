@@ -174,8 +174,7 @@ function we_tag_include($attribs){//FIXME: include doesn't work in editmode - ch
 			$filter = we_customer_documentFilter::getFilterByIdAndTable($id, FILE_TABLE);
 
 			if(is_object($filter)){
-				$obj = (object) array('ID' => $id, 'ContentType' => $ct);
-				if($filter->accessForVisitor($obj, array(), true) != we_customer_documentFilter::ACCESS){
+				if($filter->accessForVisitor($intID, $ct, true) != we_customer_documentFilter::ACCESS){
 					return '';
 				}
 			}

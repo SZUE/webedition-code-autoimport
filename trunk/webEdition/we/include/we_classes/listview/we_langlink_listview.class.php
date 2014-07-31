@@ -38,7 +38,7 @@ class we_langlink_listview extends listviewBase{
 	var $searchable = true;
 	var $condition = ''; /* condition string (like SQL) */
 	var $defaultCondition = '';
-	var $customerFilterType = 'false'; // shall we control customer-filter?
+	var $customerFilterType = false; // shall we control customer-filter?
 	var $subfolders = true; // regard subfolders
 	var $customers = "";
 	var $languages = ""; //string of Languages, separated by ,

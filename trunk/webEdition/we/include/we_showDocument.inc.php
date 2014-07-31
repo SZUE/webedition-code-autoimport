@@ -72,7 +72,7 @@ if(isset($_REQUEST['vers_we_obj'])){
 		new we_base_sessionHandler();
 	}
 
-	if(($_visitorHasAccess = $we_doc->documentCustomerFilter->accessForVisitor($we_doc))){
+	if(($_visitorHasAccess = $we_doc->documentCustomerFilter->accessForVisitor($we_doc->ID, $we_doc->ContentType))){
 
 		if(!($_visitorHasAccess == we_customer_documentFilter::ACCESS || $_visitorHasAccess == we_customer_documentFilter::CONTROLONTEMPLATE)){
 			// user has NO ACCESS => show errordocument

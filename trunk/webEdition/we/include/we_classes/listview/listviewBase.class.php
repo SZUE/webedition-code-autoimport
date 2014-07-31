@@ -50,7 +50,7 @@ abstract class listviewBase{
 	var $Record = array(); /* array to store results */
 	var $ClassName = __CLASS__; /* Name of class */
 	private $close_a = true; /* close </a> when endtag used */
-	var $customerFilterType = 'false'; // shall we control customer-filter?
+	var $customerFilterType = false; // shall we control customer-filter?
 	var $calendar_struct = array();
 	var $id = 0;
 	protected $hidedirindex = false;
