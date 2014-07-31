@@ -98,7 +98,7 @@ abstract class we_root extends we_class{
 		array_push($this->persistent_slots, 'OwnersReadOnly', 'ParentID', 'ParentPath', 'Text', 'Filename', 'Path', 'Filehash', 'OldPath', 'CreationDate', 'ModDate', 'RebuildDate', 'IsFolder', 'ContentType', 'Icon', 'elements', 'EditPageNr', 'CopyID', 'Owners', 'CreatorID', 'ModifierID', 'RestrictOwners', 'WebUserID', 'LockUser');
 	}
 
-	function makeSameNew(){
+	public function makeSameNew(){
 		$ParentID = $this->ParentID;
 		$ParentPath = $this->ParentPath;
 		$EditPageNr = $this->EditPageNr;

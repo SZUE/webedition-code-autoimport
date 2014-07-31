@@ -136,7 +136,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		return $GLOBALS['we_document'][$formname];
 	}
 
-	function makeSameNew(){
+	public function makeSameNew(){
 		$TemplateID = $this->TemplateID;
 		$TemplatePath = $this->TemplatePath;
 		$IsDynamic = $this->IsDynamic;
@@ -192,9 +192,8 @@ class we_webEditionDocument extends we_textContentDocument{
 						($this->ID ? '}' : '') : '') .
 					'}'
 			);
-		} else {
-			return we_html_forms::checkboxWithHidden($v ? true : false, '', g_l('weClass', "[IsDynamic]"), false, "defaultfont", "", true);
 		}
+		return we_html_forms::checkboxWithHidden($v ? true : false, '', g_l('weClass', "[IsDynamic]"), false, "defaultfont", "", true);
 	}
 
 	function formDocTypeTempl(){
@@ -382,8 +381,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		<td>' . we_html_tools::getPixel(2, 4) . '</td>
 	</tr>
 	<tr>
-		<td colspan="2">' .
-			$this->formInputField("txt", "Description", g_l('weClass', "[Description]"), 40, 508, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+		<td colspan="2">' . $this->formInputField("txt", "Description", g_l('weClass', "[Description]"), 40, 508, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
 	</tr>
 	<tr>
 		<td>' . we_html_tools::getPixel(2, 4) . '</td>
@@ -400,7 +398,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	 * This function returns the selector of the charset.
 	 * @return string
 	 */
-	function getCharsetSelect(){
+	private function getCharsetSelect(){
 		$_charsetHandler = new we_base_charsetHandler();
 
 		if(isset($GLOBALS["meta"]["Charset"])){ //	charset-tag available

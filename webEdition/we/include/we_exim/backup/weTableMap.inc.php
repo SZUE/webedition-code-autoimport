@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -68,6 +67,7 @@ if(defined('OBJECT_TABLE')){
 		strtolower(stripTblPrefix(OBJECT_TABLE)) => OBJECT_TABLE,
 		strtolower(stripTblPrefix(OBJECT_FILES_TABLE)) => OBJECT_FILES_TABLE,
 		strtolower(stripTblPrefix(OBJECT_X_TABLE)) => OBJECT_X_TABLE,
+		strtolower(stripTblPrefix(OBJECTLINK_TABLE)) => OBJECTLINK_TABLE,
 	);
 }
 

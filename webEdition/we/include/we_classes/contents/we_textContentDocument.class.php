@@ -52,7 +52,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		}
 	}
 
-	function makeSameNew(){
+	public function makeSameNew(){
 		$Category = $this->Category;
 		$ContentType = $this->ContentType;
 		$DocType = $this->DocType;

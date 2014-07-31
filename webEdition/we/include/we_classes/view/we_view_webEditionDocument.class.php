@@ -1,10 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
  *
- * $Rev$
- * $Author$
- * $Date$
+ * $Rev: 7705 $
+ * $Author: mokraemer $
+ * $Date: 2014-06-10 21:46:56 +0200 (Di, 10. Jun 2014) $
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -21,16 +22,11 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-define('OBJECT_TABLE', TBL_PREFIX . 'tblObject');
-define('OBJECT_FILES_TABLE', TBL_PREFIX . 'tblObjectFiles');
-define('OBJECT_X_TABLE', TBL_PREFIX . 'tblObject_');
-define('OBJECTLINK_TABLE', TBL_PREFIX . 'tblObjectLink');
 
+class we_view_webEditionDocument extends we_view_base{
 
-define('WE_OBJECT_MODULE_DIR', WE_MODULES_DIR . 'object/');
-define('WE_OBJECT_MODULE_PATH', WE_MODULES_PATH . 'object/');
+	public function __construct(){
+		$this->doc = new we_webEditionDocument();
+	}
 
-// Number of displayed objects in the left navigation
-define('OBJECT_FILES_TREE_COUNT', 20);
-
-we_base_request::registerTables(array(OBJECT_TABLE, OBJECT_FILES_TABLE, OBJECTLINK_TABLE));
+}

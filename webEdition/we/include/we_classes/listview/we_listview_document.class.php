@@ -78,8 +78,8 @@ class we_listview_document extends we_listview_base{
 		$this->customers = $customers;
 		$this->customerArray = array();
 
-		$calendar_select = '';
-		$calendar_where = '';
+		$calendar_select = $calendar_where = '';
+
 		if($calendar != ''){
 			$this->fetchCalendar($condition, $calendar_select, $calendar_where);
 		}
@@ -87,13 +87,10 @@ class we_listview_document extends we_listview_base{
 		$this->defaultCondition = $condition;
 		$this->condition = $condition ? $condition : (isset($GLOBALS['we_lv_condition']) ? $GLOBALS['we_lv_condition'] : '');
 
-		$cond_where = ''; // #3763
-		if($this->condition != ''){
-			$condition_sql = $this->makeConditionSql($this->condition);
-			if(!empty($condition_sql)){
-				$cond_where .= ' AND (' . $condition_sql . ')';
-			}
-		}
+		$cond_where = // #3763
+			($this->condition != '' && ($condition_sql = $this->makeConditionSql($this->condition)) ?
+				' AND (' . $condition_sql . ')' :
+				'');
 
 		$this->languages = $languages ? $languages : (isset($GLOBALS['we_lv_languages']) ? $GLOBALS['we_lv_languages'] : '');
 
@@ -182,22 +179,17 @@ class we_listview_document extends we_listview_base{
 		}
 
 		if($this->customers && $this->customers !== '*'){
-			$custArr = makeArrayFromCSV($this->customers);
-
-			$_wsql = ' ' . FILE_TABLE . '.WebUserID IN(' . $this->customers . ') ';
-
-			foreach($custArr as $cid){
+			foreach(explode(',',$this->customers) as $cid){
 				$customerData = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($cid), $this->DB_WE);
 				$this->customerArray['cid_' . $customerData['ID']] = $customerData;
 			}
 
-			$sql_tail .= ' AND (' . $_wsql . ') ';
+			$sql_tail .= ' AND (' . FILE_TABLE . '.WebUserID IN(' . $this->customers . ')) ';
 		}
 
 		$sql_tail .= $this->getIdQuery(FILE_TABLE . '.ID');
 
 		if($this->search){
-
 			if($this->workspaceID != ''){
 				$workspaces = makeArrayFromCSV($this->workspaceID);
 				$cond = array();
@@ -250,14 +242,9 @@ class we_listview_document extends we_listview_base{
 
 			$bedingung_sql = (isset($bedingung_sql1) ? $bedingung_sql1 : $bedingung_sql2);
 
-
-			$q = 'SELECT ' . FILE_TABLE . '.ID as ID, ' . FILE_TABLE . '.WebUserID as WebUserID,' . ($random ? 'RAND() as RANDOM ' : $ranking . ' AS ranking ') . $calendar_select . ' FROM ' .
-				FILE_TABLE . ' LEFT JOIN ' . LINK_TABLE . ' ON ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID LEFT JOIN ' . CONTENT_TABLE . ' ON ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID LEFT JOIN ' . INDEX_TABLE . ' ON ' . INDEX_TABLE . '.DID=' . FILE_TABLE . '.ID ' . $joinstring .
-				' WHERE ' . $orderwhereString . ($this->searchable ? ' ' . FILE_TABLE . '.IsSearchable=1' : 1) . ' ' . $where_lang . ' ' . $cond_where . ' ' . $ws_where . ' AND ' . FILE_TABLE . '.IsFolder=0 AND ' . FILE_TABLE . '.Published > 0 AND ' . LINK_TABLE . '.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND ' . $bedingung_sql . (($dt != "#NODOCTYPE#")
-						? (" AND " . FILE_TABLE . '.DocType=' . intval($dt)) : '') . ' ' . $sql_tail . $calendar_where . ' GROUP BY ID ' . $orderstring . (($this->maxItemsPerPage > 0)
-						? (' LIMIT ' . abs($this->start) . ',' . abs($this->maxItemsPerPage)) : '');
+			$extraSelect = ($random ? ', RAND() as RANDOM ' : $ranking . ' AS ranking ') . $calendar_select;
+			$limit = (($this->maxItemsPerPage > 0) ? (' LIMIT ' . abs($this->start) . ',' . abs($this->maxItemsPerPage)) : '');
 		} else {
-
 			if($this->workspaceID != ''){
 				$workspaces = makeArrayFromCSV($this->workspaceID);
 				$cond = array();
@@ -272,18 +259,28 @@ class we_listview_document extends we_listview_base{
 					$ws_where = ' AND (' . implode(' OR ', $cond) . ')';
 				}
 			}
-			$q = 'SELECT ' . FILE_TABLE . '.ID as ID, ' . FILE_TABLE . '.WebUserID as WebUserID' . ($random ? ', RAND() as RANDOM' : '') . ' ' . 'FROM ' .
-				FILE_TABLE . ' LEFT JOIN ' . LINK_TABLE . ' ON ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID LEFT JOIN ' . CONTENT_TABLE . ' ON ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID ' . $joinstring .
-				' WHERE ' . $orderwhereString . ($this->searchable ? ' ' . FILE_TABLE . '.IsSearchable=1' : '1') . " $where_lang $cond_where $ws_where AND " . FILE_TABLE . ".IsFolder=0 AND " . FILE_TABLE . ".Published > 0 AND " . LINK_TABLE . ".DocumentTable='" . stripTblPrefix(FILE_TABLE) . "'" . (($dt != "#NODOCTYPE#")
-						? (' AND ' . FILE_TABLE . '.DocType=' . intval($dt)) : '') . ' ' . $sql_tail . $calendar_where . ' GROUP BY ID ' . $orderstring . (($rows > 0) ? (' LIMIT ' . abs($this->start) . ',' . abs($this->maxItemsPerPage))
-						: "");
+			$extraSelect = ($random ? ', RAND() as RANDOM' : '');
+			$limit = (($rows > 0) ? (' LIMIT ' . abs($this->start) . ',' . abs($this->maxItemsPerPage)) : "");
 		}
-		$this->DB_WE->query($q);
+
+		$this->DB_WE->query(
+			'SELECT ' . FILE_TABLE . '.ID as ID, ' . FILE_TABLE . '.WebUserID as WebUserID' . $extraSelect .
+			'FROM ' . FILE_TABLE . ' JOIN ' . LINK_TABLE . ' ON ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID JOIN ' . CONTENT_TABLE . ' ON ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID ' . $joinstring .
+			' WHERE ' . $orderwhereString .
+			($this->searchable ? ' ' . FILE_TABLE . '.IsSearchable=1' : 1) . ' ' .
+			$where_lang . ' ' .
+			$cond_where . ' ' .
+			$ws_where . ' AND ' .
+			FILE_TABLE . '.IsFolder=0 AND ' . FILE_TABLE . '.Published>0 AND ' . LINK_TABLE . '.DocumentTable="' . stripTblPrefix(FILE_TABLE) . "'" .
+			(isset($bedingung_sql) ? ' AND ' . $bedingung_sql : '') .
+			(($dt != "#NODOCTYPE#") ? (" AND " . FILE_TABLE . '.DocType=' . intval($dt)) : '') .
+			' ' . $sql_tail . $calendar_where . ' GROUP BY ID ' . $orderstring .
+			$limit
+		);
+
 		$this->anz = $this->DB_WE->num_rows();
 
-		if($this->customers === '*'){
-			$_idListArray = array();
-		}
+		$_idListArray = array();
 
 		while($this->DB_WE->next_record()){
 			$this->IDs[] = $this->DB_WE->f('ID');
@@ -294,32 +291,42 @@ class we_listview_document extends we_listview_base{
 				$_idListArray[] = $this->DB_WE->f('WebUserID');
 			}
 		}
-		if($this->customers === '*'){
-			if(!empty($_idListArray)){
-				$_idListArray = array_unique($_idListArray);
-				$_idlist = implode(',', $_idListArray);
-				$this->DB_WE->query('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID IN(' . $_idlist . ')');
-				while($this->DB_WE->next_record(MYSQL_ASSOC)){
-					$this->customerArray['cid_' . $this->DB_WE->f('ID')] = $this->DB_WE->getRecord();
-				}
+		if($this->customers === '*' && $_idListArray){
+			$_idListArray = array_unique($_idListArray);
+			$_idlist = implode(',', $_idListArray);
+			$this->DB_WE->query('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID IN(' . $_idlist . ')');
+			while($this->DB_WE->next_record(MYSQL_ASSOC)){
+				$this->customerArray['cid_' . $this->DB_WE->f('ID')] = $this->DB_WE->getRecord();
 			}
 			unset($_idListArray);
 		}
-		$q = 'SELECT ' . FILE_TABLE . '.ID as ID, ' . FILE_TABLE . '.WebUserID as WebUserID' . ($random ? ',RAND() as RANDOM' : ($this->search ? ',' . $ranking . ' AS ranking'
-						: '')) . ' FROM ' .
-			FILE_TABLE . ' LEFT JOIN ' . LINK_TABLE . ' ON ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID LEFT JOIN ' . CONTENT_TABLE . ' ON ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID' .
-			($this->search ? ' LEFT JOIN ' . INDEX_TABLE . ' ON ' . INDEX_TABLE . '.DID=' . FILE_TABLE . '.ID' : '') . $joinstring .
-			' WHERE ' . $orderwhereString . ($this->searchable ? ' ' . FILE_TABLE . '.IsSearchable=1' : '1') . ' ' . $where_lang . ' ' . $cond_where . ' ' . $ws_where . ' AND ' . FILE_TABLE . '.IsFolder=0 AND ' . FILE_TABLE . '.Published>0 AND ' . LINK_TABLE . '.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"' .
+
+		$this->DB_WE->query(
+			'SELECT ' . FILE_TABLE . '.ID as ID, ' . FILE_TABLE . '.WebUserID as WebUserID' .
+			($random ? ',RAND() as RANDOM' : ($this->search ? ',' . $ranking . ' AS ranking' : '')) .
+			' FROM ' . FILE_TABLE . ' JOIN ' . LINK_TABLE . ' ON ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID JOIN ' . CONTENT_TABLE . ' ON ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID' .
+			($this->search ? ' LEFT JOIN ' . INDEX_TABLE . ' ON ' . INDEX_TABLE . '.DID=' . FILE_TABLE . '.ID' : '') .
+			$joinstring .
+			' WHERE ' .
+			$orderwhereString .
+			($this->searchable ? ' ' . FILE_TABLE . '.IsSearchable=1' : '1') . ' ' .
+			$where_lang . ' ' .
+			$cond_where . ' ' .
+			$ws_where .
+			' AND ' . FILE_TABLE . '.IsFolder=0 AND ' . FILE_TABLE . '.Published>0 AND ' . LINK_TABLE . '.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"' .
 			($this->search ? ' AND ' . $bedingung_sql : '') .
-			(($dt != '#NODOCTYPE#') ? (' AND ' . FILE_TABLE . '.DocType=' . intval($dt)) : '') . ' ' . $sql_tail . $calendar_where . ' GROUP BY ID ' . $orderstring;
-		$this->DB_WE->query($q);
+			(($dt != '#NODOCTYPE#') ? (' AND ' . FILE_TABLE . '.DocType=' . intval($dt)) : '') . ' ' .
+			$sql_tail .
+			$calendar_where .
+			' GROUP BY ID ' . $orderstring);
+
 		$this->anz_all = $this->DB_WE->num_rows();
 		if($calendar != ''){
 			$this->postFetchCalendar();
 		}
 	}
 
-	function next_record(){
+	public function next_record(){
 		if($this->count < $this->anz){
 			$count = $this->count;
 			$fetch = false;

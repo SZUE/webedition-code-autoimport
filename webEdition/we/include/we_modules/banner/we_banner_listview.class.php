@@ -125,7 +125,7 @@ class we_banner_listview extends we_listview_base{
 		$this->anz = min($this->rows, $this->anz_all - $this->start);
 	}
 
-	function next_record(){
+	public function next_record(){
 		if($this->count >= min($this->start + $this->rows, $this->anz_all)){
 			return false;
 		}

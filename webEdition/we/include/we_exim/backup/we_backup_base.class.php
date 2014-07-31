@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -31,7 +30,6 @@ define('BACKUP_TABLE', TBL_PREFIX . 'tblbackup');
 
 //FIXME: try to remove this class
 abstract class we_backup_base{
-
 	const COMPRESSION = 'gzip';
 	const NO_COMPRESSION = 'none';
 
@@ -129,6 +127,7 @@ abstract class we_backup_base{
 			$this->table_map = array_merge($this->table_map, array(
 				'tblobject' => OBJECT_TABLE,
 				'tblobjectfiles' => OBJECT_FILES_TABLE,
+				'tblobjectlink' => OBJECTLINK_TABLE,
 				'tblobject_' => OBJECT_X_TABLE));
 		}
 
@@ -854,7 +853,8 @@ abstract class we_backup_base{
 			$this->backup_db->query('SHOW COLUMNS FROM ' . $this->backup_db->escape($tab));
 			while($this->backup_db->next_record()){
 				if(!in_array(strtolower($this->backup_db->f("Field")), $fnames)){
-					$fupdate[] = "ALTER TABLE " . $this->backup_db->escape($tab) . ' ADD ' . $this->backup_db->f("Field") . ' ' . $this->backup_db->f("Type") . " DEFAULT '" . $this->backup_db->f("Default") . "'" . ($this->backup_db->f("Null") == "YES" ? " NOT NULL" : '');
+					$fupdate[] = "ALTER TABLE " . $this->backup_db->escape($tab) . ' ADD ' . $this->backup_db->f("Field") . ' ' . $this->backup_db->f("Type") . " DEFAULT '" . $this->backup_db->f("Default") . "'" . ($this->backup_db->f("Null") == "YES"
+								? " NOT NULL" : '');
 				}
 			}
 		}

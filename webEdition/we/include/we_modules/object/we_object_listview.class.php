@@ -129,7 +129,7 @@ class we_object_listview extends we_listview_base{
 					: '');
 
 		$weDocumentCustomerFilter_tail = (defined('CUSTOMER_FILTER_TABLE') ?
-				we_customer_documentFilter::getConditionForListviewQuery($this->customerFilterType,$this->ClassName,$this->classID) :
+				we_customer_documentFilter::getConditionForListviewQuery($this->customerFilterType, $this->ClassName, $this->classID) :
 				'');
 
 		$webUserID_tail = '';
@@ -446,17 +446,16 @@ class we_object_listview extends we_listview_base{
 
 				$this->count++;
 				return true;
-			} else {
-				$this->stop_next_row = $this->shouldPrintEndTR();
-				if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
-					$this->DB_WE->Record = array(
-						'WE_PATH' => '',
-						'WE_TEXT' => '',
-						'WE_ID' => '',
-					);
-					$this->count++;
-					return true;
-				}
+			}
+			$this->stop_next_row = $this->shouldPrintEndTR();
+			if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
+				$this->DB_WE->Record = array(
+					'WE_PATH' => '',
+					'WE_TEXT' => '',
+					'WE_ID' => '',
+				);
+				$this->count++;
+				return true;
 			}
 		}
 

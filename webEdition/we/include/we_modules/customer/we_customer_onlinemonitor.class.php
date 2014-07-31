@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -29,7 +28,6 @@
  *
  */
 class we_customer_onlinemonitor extends we_listview_base{
-
 	private $condition = '';
 	private $Path = '';
 	private $docID = 0;
@@ -72,7 +70,7 @@ class we_customer_onlinemonitor extends we_listview_base{
 		}
 
 		$orderstring = ($this->order ? ' ORDER BY ' . $this->order . ' ' : '');
-		$laStr = 	$llStr = '';
+		$laStr = $llStr = '';
 		if($this->lastloginlimit != ''){
 			$llStr = 'LastLogin > DATE_SUB(NOW(), INTERVAL ' . $this->lastloginlimit . ' SECOND) ';
 		}
@@ -91,11 +89,12 @@ class we_customer_onlinemonitor extends we_listview_base{
 
 		$this->anz_all = f('SELECT COUNT(1) FROM ' . CUSTOMER_SESSION_TABLE . $where, '', $this->DB_WE);
 
-		$this->DB_WE->query('SELECT SessionID,SessionIp,WebUserID,WebUserGroup,WebUserDescription,Browser,Referrer,UNIX_TIMESTAMP(LastLogin) AS LastLogin,UNIX_TIMESTAMP(LastAccess) AS LastAccess,PageID,ObjectID,SessionAutologin FROM ' . CUSTOMER_SESSION_TABLE . $where . ' ' . $orderstring . ' ' . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . $this->maxItemsPerPage) : ''));
+		$this->DB_WE->query('SELECT SessionID,SessionIp,WebUserID,WebUserGroup,WebUserDescription,Browser,Referrer,UNIX_TIMESTAMP(LastLogin) AS LastLogin,UNIX_TIMESTAMP(LastAccess) AS LastAccess,PageID,ObjectID,SessionAutologin FROM ' . CUSTOMER_SESSION_TABLE . $where . ' ' . $orderstring . ' ' . (($this->maxItemsPerPage > 0)
+					? (' LIMIT ' . $this->start . ',' . $this->maxItemsPerPage) : ''));
 		$this->anz = $this->DB_WE->num_rows();
 	}
 
-	function next_record(){
+	public function next_record(){
 		$ret = $this->DB_WE->next_record();
 		if($ret){
 			$this->DB_WE->Record['we_cid'] = $this->DB_WE->Record['WebUserID'];
@@ -106,17 +105,16 @@ class we_customer_onlinemonitor extends we_listview_base{
 			$this->DB_WE->Record['we_wedoc_lastPath'] = $this->LastDocPath . '?we_omid=' . $this->DB_WE->Record['SessionID'];
 			$this->count++;
 			return true;
-		} else {
-			$this->stop_next_row = $this->shouldPrintEndTR();
-			if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
-				$this->DB_WE->Record = array(
-					'WE_PATH' => '',
-					'WE_TEXT' => '',
-					'WE_ID' => '',
-				);
-				$this->count++;
-				return true;
-			}
+		}
+		$this->stop_next_row = $this->shouldPrintEndTR();
+		if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
+			$this->DB_WE->Record = array(
+				'WE_PATH' => '',
+				'WE_TEXT' => '',
+				'WE_ID' => '',
+			);
+			$this->count++;
+			return true;
 		}
 
 		return false;
