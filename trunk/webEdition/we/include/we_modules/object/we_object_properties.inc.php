@@ -71,5 +71,5 @@ if($we_doc->EditPageNr != we_base_constants::WE_EDITPAGE_WORKSPACE){
 		)
 	);
 }
-print we_html_multiIconBox::getJS() .
+echo we_html_multiIconBox::getJS() .
 	we_html_multiIconBox::getHTML('', '100%', $parts, 30, '', -1, '', '', false);

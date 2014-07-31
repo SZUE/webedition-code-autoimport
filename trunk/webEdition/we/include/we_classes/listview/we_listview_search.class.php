@@ -216,7 +216,7 @@ class we_listview_search extends we_listview_base{
 		$this->anz = $this->DB_WE->num_rows();
 	}
 
-	function next_record(){
+	public function next_record(){
 		$ret = $this->DB_WE->next_record();
 		if($ret){
 			if($this->DB_WE->Record['OID'] && $this->objectseourls && show_SeoLinks()){
@@ -254,19 +254,19 @@ class we_listview_search extends we_listview_base{
 						? $this->DB_WE->Record["OID"] : 0);
 			$this->count++;
 			return true;
-		} else {
-			$this->stop_next_row = $this->shouldPrintEndTR();
-			if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
-				$this->DB_WE->Record = array(
-					"WE_LANGUAGE" => '',
-					"WE_PATH" => '',
-					"WE_TEXT" => '',
-					"WE_ID" => '',
-				);
-				$this->count++;
-				return true;
-			}
 		}
+		$this->stop_next_row = $this->shouldPrintEndTR();
+		if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
+			$this->DB_WE->Record = array(
+				"WE_LANGUAGE" => '',
+				"WE_PATH" => '',
+				"WE_TEXT" => '',
+				"WE_ID" => '',
+			);
+			$this->count++;
+			return true;
+		}
+
 		return false;
 	}
 

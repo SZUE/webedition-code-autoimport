@@ -596,9 +596,9 @@ class we_objectFile extends we_document{
 		$GLOBALS["we_JavaScript"] = "_EditorFrame.setEditorDocumentId(" . $this->ID . ");" . $this->getUpdateTreeScript();
 	}
 
-	function formPath(){
+	public function formPath(){
 		$rootDirId = self::getObjectRootPathOfObjectWorkspace($this->RootDirPath, $this->rootDirID, $this->DB_WE);
-		if($this->ParentID == ""){
+		if(!$this->ParentID){
 			$this->ParentID = $rootDirId;
 			$this->ParentPath = id_to_path($rootDirId, OBJECT_FILES_TABLE);
 		}
@@ -622,7 +622,7 @@ class we_objectFile extends we_document{
 </table>';
 	}
 
-	function formIsSearchable(){
+	public function formIsSearchable(){
 		return we_html_forms::checkboxWithHidden($this->IsSearchable, 'we_' . $this->Name . '_IsSearchable', g_l('weClass', '[IsSearchable]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);');
 	}
 
@@ -652,14 +652,14 @@ class we_objectFile extends we_document{
 			</table>';
 	}
 
-	function formClass(){
+	public function formClass(){
 		return ($this->ID ?
 				'<span class="defaultfont">' . f('SELECT Text FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE) . '</span>' :
 				$this->formSelect2(388, 'TableID', OBJECT_TABLE, 'ID', 'Text', '', 'WHERE IsFolder=0' . ($this->AllowedClasses ? ' AND ID IN(' . $this->AllowedClasses . ')'
 							: '') . ' ORDER BY Path ', 1, $this->TableID, false, "if(_EditorFrame.getEditorDocumentId() != 0){we_cmd('reload_editpage');}else{we_cmd('restore_defaults');};_EditorFrame.setEditorIsHot(true);"));
 	}
 
-	function formClassId(){
+	public function formClassId(){
 		return '<span class="defaultfont">' . $this->TableID . '</span>';
 	}
 
@@ -785,7 +785,7 @@ class we_objectFile extends we_document{
 		}
 	}
 
-	function getElementByType($name, $type, $attribs){
+	public function getElementByType($name, $type, $attribs){
 		switch($type){
 			case self::TYPE_TEXT:
 			case self::TYPE_INPUT:
@@ -856,7 +856,7 @@ class we_objectFile extends we_document{
 		return $asString ? $c : $parts;
 	}
 
-	function getMetaFieldHTML($name, $attribs, $editable = true, $variant = false){
+	private function getMetaFieldHTML($name, $attribs, $editable = true, $variant = false){
 		$vals = ($variant ? $attribs['meta'] : $this->DefArray['meta_' . $name]['meta']);
 		$element = $this->getElement($name);
 		if(!$editable){
@@ -868,7 +868,7 @@ class we_objectFile extends we_document{
 							? '<div class="objectDescription">' . str_replace("\n", we_html_element::htmlBr(), $this->DefArray["meta_$name"]['editdescription']) . '</div>' : we_html_element::htmlBr()), 1, false, array('onchange' => '_EditorFrame.setEditorIsHot(true);')));
 	}
 
-	function getObjectFieldHTML($ObjectID, $attribs, $editable = true){
+	private function getObjectFieldHTML($ObjectID, $attribs, $editable = true){
 		$db = new DB_WE();
 		$foo = getHash('SELECT o.Text,of.ID FROM ' . OBJECT_TABLE . ' o,' . OBJECT_FILES_TABLE . ' of WHERE of.Path=o.Path AND o.ID=' . intval($ObjectID), $db);
 		$name = isset($foo['Text']) ? $foo['Text'] : '';
@@ -961,7 +961,7 @@ class we_objectFile extends we_document{
 			$objectpreview;
 	}
 
-	function getMultiObjectFieldHTML($name, $attribs, $editable = true){
+	private function getMultiObjectFieldHTML($name, $attribs, $editable = true){
 		$temp = unserialize($this->getElement($name, 'dat'));
 		$objects = isset($temp['objects']) ? $temp['objects'] : array();
 		$max = intval($this->DefArray[self::TYPE_MULTIOBJECT . '_' . $name]['max']);
@@ -1112,7 +1112,7 @@ class we_objectFile extends we_document{
 		return $content;
 	}
 
-	function getShopVatFieldHtml($name, $attribs, $we_editmode = true){
+	private function getShopVatFieldHtml($name, $attribs, $we_editmode = true){
 		if($we_editmode){
 
 			$shopVats = we_shop_vats::getAllShopVATs();
@@ -1140,7 +1140,7 @@ class we_objectFile extends we_document{
 		return $this->getPreviewView($name, $weShopVat->vat);
 	}
 
-	function getHrefFieldHTML($n, $attribs, $we_editmode = true, $variant = false){
+	private function getHrefFieldHTML($n, $attribs, $we_editmode = true, $variant = false){
 		$hrefArr = $this->getElement($n) ? unserialize($this->getElement($n)) : array();
 		if(!is_array($hrefArr)){
 			$hrefArr = array();
@@ -1227,7 +1227,7 @@ class we_objectFile extends we_document{
 </tr>';
 	}
 
-	function htmlLinkInput($n, $attribs, $we_editmode = true, $headline = true){
+	private function htmlLinkInput($n, $attribs, $we_editmode = true, $headline = true){
 		$attribs["name"] = $n;
 		$link = $this->getElement($n) ? unserialize($this->getElement($n)) : array();
 		$link = $link ? $link : array("ctype" => "text", "type" => we_base_link::TYPE_EXT, "href" => "#", "text" => g_l('global', "[new_link]"));
@@ -1251,12 +1251,12 @@ class we_objectFile extends we_document{
 				'') . ($startTag ? $startTag . $content . '</a>' : $content) . ($we_editmode ? ($buttons) : "");
 	}
 
-	function getPreviewView($name, $content){
+	private function getPreviewView($name, $content){
 		return '<div class="weObjectPreviewHeadline">' . $name . '</div>' .
 			( ($content !== '') ? '<div class="defaultfont">' . $content . '</div>' : '');
 	}
 
-	function getInputFieldHTML($name, $attribs, $editable = true, $variant = false){
+	private function getInputFieldHTML($name, $attribs, $editable = true, $variant = false){
 		if(!$editable){
 			return $this->getPreviewView($name, $this->getElement($name));
 		}
@@ -1269,7 +1269,7 @@ class we_objectFile extends we_document{
 			$this->htmlTextInput("we_" . $this->Name . "_input[$name]", 40, $this->getElement($name), $this->getElement($name, "len"), 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 620);
 	}
 
-	function getCountryFieldHTML($name, $attribs, $editable = true, $variant = false){
+	private function getCountryFieldHTML($name, $attribs, $editable = true, $variant = false){
 		if(!Zend_Locale::hasCache()){
 			Zend_Locale::setCache(getWEZendCache());
 		}
@@ -1330,7 +1330,7 @@ class we_objectFile extends we_document{
 			$countryselect->getHtml();
 	}
 
-	function getLanguageFieldHTML($name, $attribs, $editable = true, $variant = false){
+	private function getLanguageFieldHTML($name, $attribs, $editable = true, $variant = false){
 		if(!$editable){
 			return '<div class="weObjectPreviewHeadline">' . $name . '</div>' .
 				($this->getElement($name) != '--' || $this->getElement($name) ? '<div class="defaultfont">' . CheckAndConvertISObackend(Zend_Locale::getTranslation($this->getElement($name), 'language', we_core_Local::weLangToLocale($GLOBALS['WE_LANGUAGE']))) . '</div>'
@@ -1361,7 +1361,7 @@ class we_objectFile extends we_document{
 			) . $languageselect->getHtml();
 	}
 
-	function getCheckboxFieldHTML($name, $attribs, $editable = true){
+	private function getCheckboxFieldHTML($name, $attribs, $editable = true){
 		if(!$editable){
 			return $this->getPreviewView($name, ($this->getElement($name) ? g_l('global', "[yes]") : g_l('global', "[no]")));
 		}
@@ -1370,7 +1370,7 @@ class we_objectFile extends we_document{
 			we_html_forms::checkboxWithHidden(($this->getElement($name) ? true : false), "we_" . $this->Name . "_checkbox[$name]", "", false, "defaultfont", "_EditorFrame.setEditorIsHot(true);");
 	}
 
-	function getIntFieldHTML($name, $attribs, $editable = true, $variant = false){
+	private function getIntFieldHTML($name, $attribs, $editable = true, $variant = false){
 		if(!$editable){
 			return $this->getPreviewView($name, (strlen($this->getElement($name)) ? $this->getElement($name) : ''));
 		}
@@ -1380,7 +1380,7 @@ class we_objectFile extends we_document{
 			$this->htmlTextInput("we_" . $this->Name . "_int[$name]", 40, $this->getElement($name), $this->getElement($name, "len"), 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 620);
 	}
 
-	function getFloatFieldHTML($name, $attribs, $editable = true, $variant = false){
+	private function getFloatFieldHTML($name, $attribs, $editable = true, $variant = false){
 		if(!$editable){
 			return $this->getPreviewView($name, $this->getElement($name));
 		}
@@ -1393,7 +1393,7 @@ class we_objectFile extends we_document{
 			$this->htmlTextInput("we_" . $this->Name . "_float[$name]", 40, strlen($this->getElement($name)) ? $this->getElement($name) : "", $this->getElement($name, "len"), 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 620);
 	}
 
-	function getDateFieldHTML($name, $attribs, $editable = true, $variant = false){
+	private function getDateFieldHTML($name, $attribs, $editable = true, $variant = false){
 		if(!$editable){
 			return $this->getPreviewView($name, date(g_l('date', '[format][default]'), abs($this->getElement($name))));
 		}
@@ -1406,7 +1406,7 @@ class we_objectFile extends we_document{
 			we_html_tools::getDateInput2("we_" . $this->Name . '_date[' . $name . ']', ($d ? $d : time()), true);
 	}
 
-	function getTextareaHTML($name, $attribs, $editable = true, $variant = false){
+	private function getTextareaHTML($name, $attribs, $editable = true, $variant = false){
 		if(!$editable){
 			return $this->getPreviewView($name, $this->getFieldByVal($this->getElement($name), "txt", $attribs));
 		}
@@ -1440,7 +1440,7 @@ class we_objectFile extends we_document{
 			) . $textarea;
 	}
 
-	function getImageHTML($name, $attribs, $editable = true, $variant = false){
+	private function getImageHTML($name, $attribs, $editable = true, $variant = false){
 		$img = new we_imageDocument();
 		$id = $this->getElement($name);
 		if(!id_to_path($id)){
@@ -1498,7 +1498,7 @@ class we_objectFile extends we_document{
 				we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('object_remove_image_at_object','" . $GLOBALS['we_transaction'] . "','img_" . $name . "');setScrollTo();")));
 	}
 
-	function getBinaryHTML($name, $attribs, $editable = true){
+	private function getBinaryHTML($name, $attribs, $editable = true){
 		$img = new we_otherDocument();
 		$id = $this->getElement($name);
 		$img->initByID($id, FILE_TABLE, false);
@@ -1521,7 +1521,7 @@ class we_objectFile extends we_document{
 					? '<div class="objectDescription">' . str_replace("\n", we_html_element::htmlBr(), $this->DefArray["binary_$name"]['editdescription']) . '</div>' : we_html_element::htmlBr()) . $content;
 	}
 
-	function getFlashmovieHTML($name, $attribs, $editable = true){
+	private function getFlashmovieHTML($name, $attribs, $editable = true){
 		$img = new we_flashDocument();
 		$id = $this->getElement($name);
 		$img->initByID($id, FILE_TABLE, false);
@@ -1543,7 +1543,7 @@ class we_objectFile extends we_document{
 					? '<div class="objectDescription">' . str_replace("\n", we_html_element::htmlBr(), $this->DefArray["flashmovie_$name"]['editdescription']) . '</div>' : we_html_element::htmlBr()) . $content;
 	}
 
-	function getQuicktimeHTML($name, $attribs, $editable = true){
+	private function getQuicktimeHTML($name, $attribs, $editable = true){
 		$img = new we_quicktimeDocument();
 		$id = $this->getElement($name);
 		$img->initByID($id, FILE_TABLE, false);
@@ -1564,7 +1564,7 @@ class we_objectFile extends we_document{
 				we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('object_remove_image_at_object','" . $GLOBALS['we_transaction'] . "',quicktime_" . $name . "')")));
 	}
 
-	function getDefaultValueArray(){
+	public function getDefaultValueArray(){
 		if($this->TableID){
 			$foo = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE);
 			return $foo ? unserialize($foo) : array();
@@ -1573,7 +1573,7 @@ class we_objectFile extends we_document{
 		t_e('error', 'error no tableID!');
 	}
 
-	function getContentData(/* $loadBinary = 0 */){
+	function getContentData(/* $loadBinary = 0 */){//FIXME: unused?
 		if(!$this->TableID){
 			return;
 		}
@@ -1607,7 +1607,7 @@ class we_objectFile extends we_document{
 		}
 	}
 
-	function canMakeNew(){
+	public function canMakeNew(){
 		if(permissionhandler::hasPerm('ADMINISTRATOR')){
 			return true;
 		}
@@ -1615,7 +1615,7 @@ class we_objectFile extends we_document{
 		return count($ac);
 	}
 
-	function getPossibleWorkspaces($ClassWs, $all = false){
+	public function getPossibleWorkspaces($ClassWs, $all = false){
 		if(!$ClassWs){
 			$ClassWs = f('SELECT Workspaces FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE);
 		}
@@ -3218,4 +3218,5 @@ class we_objectFile extends we_document{
 	public function getDocumentCss(){
 		return array();
 	}
+
 }

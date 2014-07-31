@@ -53,5 +53,5 @@ if(count($parts) == 1){
 	$znr = -1;
 }
 
-print we_html_multiIconBox::getJS() .
+echo we_html_multiIconBox::getJS() .
 	we_html_multiIconBox::getHTML('weDirProp', '100%', $parts, 20);

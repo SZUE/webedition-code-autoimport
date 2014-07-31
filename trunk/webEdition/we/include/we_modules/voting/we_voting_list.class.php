@@ -40,7 +40,7 @@ class we_voting_list{
 	 * Default Constructor
 	 * Can load or create new Newsletter depends of parameter
 	 */
-	function __construct($name, $groupid, $version = 0, $rows = 0, $offset = 0, $desc = false, $order = 'PublishDate', $subgroup = false){
+	public function __construct($name, $groupid, $version = 0, $rows = 0, $offset = 0, $desc = false, $order = 'PublishDate', $subgroup = false){
 
 		$this->Name = $name;
 		$this->Version = $version;
@@ -83,7 +83,7 @@ class we_voting_list{
 		$this->db->query($_we_voting_query);
 	}
 
-	function getNext(){
+	public function getNext(){
 
 		if($this->db->next_record()){
 			$GLOBALS['_we_voting'] = new we_voting_voting($this->db->f('ID'));
@@ -93,7 +93,7 @@ class we_voting_list{
 		return false;
 	}
 
-	function getNextLink($attribs){
+	public function getNextLink($attribs){
 		if($this->hasNextPage()){
 			$urlID = weTag_getAttribute("id", $attribs);
 			$foo = $this->Start + $this->Rows;
@@ -105,11 +105,11 @@ class we_voting_list{
 		return "";
 	}
 
-	function hasNextPage(){
+	public function hasNextPage(){
 		return (($this->Start + $this->Rows) < $this->CountAll);
 	}
 
-	function getBackLink($attribs){
+	public function getBackLink($attribs){
 		if($this->hasPrevPage()){
 			$urlID = weTag_getAttribute("id", $attribs);
 			$foo = $this->Start - $this->Rows;

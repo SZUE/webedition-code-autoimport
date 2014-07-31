@@ -65,6 +65,7 @@ abstract class we_autoloader{
 		'shop' => 'we_modules/shop',
 		'tag' => 'we_classes/tag',
 		'tool' => 'we_classes/tools',
+		'view' => 'we_classes/view',
 		'voting' => 'we_modules/voting',
 		'workflow' => 'we_modules/workflow',
 		'wysiwyg' => 'we_classes/wysiwyg',

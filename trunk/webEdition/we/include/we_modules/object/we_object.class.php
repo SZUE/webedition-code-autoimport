@@ -1296,7 +1296,7 @@ class we_object extends we_document{
 		return '<table border="0" cellpadding="0" cellspacing="0">' . $out . '</table>';
 	}
 
-	function htmlLinkInput($n, $i){
+	private function htmlLinkInput($n, $i){
 		$n .= 'default';
 
 		$attribs = array(
@@ -1325,7 +1325,7 @@ class we_object extends we_document{
 					</table>";
 	}
 
-	function getObjectFieldHTML($ObjectID, $attribs, $editable = true){
+	private function getObjectFieldHTML($ObjectID, $attribs, $editable = true){
 		$pid = intval($this->getElement($ObjectID, "dat"));
 		if(!$editable){
 			return '';
@@ -1368,7 +1368,7 @@ class we_object extends we_document{
 					? '<span style="color:red" >' . sprintf(g_l('modules_object', '[incObject_sameFieldname]'), implode(', ', $DoubleNames)) . '</span>' : '');
 	}
 
-	function getMultiObjectFieldHTML($name, $i, $f){
+	private function getMultiObjectFieldHTML($name, $i, $f){
 		$pid = $this->getElement($name . "class", "dat");
 
 		$db = new DB_WE();
@@ -1593,7 +1593,7 @@ class we_object extends we_document{
 		$this->CSS = makeCSVFromArray($css, true);
 	}
 
-	function getImageHTML($name, $defaultname, $i = 0){
+	private function getImageHTML($name, $defaultname, $i = 0){
 		$img = new we_imageDocument();
 		$id = $defaultname; //$this->getElement($defaultname);
 		if($id){
@@ -1631,7 +1631,7 @@ class we_object extends we_document{
 		return $content;
 	}
 
-	function getFlashmovieHTML($name, $defaultname, $i = 0){
+	private function getFlashmovieHTML($name, $defaultname, $i = 0){
 		$img = new we_flashDocument();
 		$id = $defaultname; //$this->getElement($defaultname);
 		if($id){
@@ -1653,7 +1653,7 @@ class we_object extends we_document{
 			'<br/>' . $img->getHtml();
 	}
 
-	function getQuicktimeHTML($name, $defaultname, $i = 0){
+	private function getQuicktimeHTML($name, $defaultname, $i = 0){
 		$img = new we_quicktimeDocument();
 		$id = $defaultname; //$this->getElement($defaultname);
 		if($id){
@@ -1675,7 +1675,7 @@ class we_object extends we_document{
 			'<br/>' . $img->getHtml();
 	}
 
-	function getBinaryHTML($name, $defaultname, $i = 0){
+	private function getBinaryHTML($name, $defaultname, $i = 0){
 		$other = new we_otherDocument();
 		$id = $defaultname; //$this->getElement($defaultname);
 		$other->initByID($id, FILE_TABLE, false);

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -29,7 +28,6 @@
  *
  */
 class we_shop_listviewOrder extends we_listview_base{
-
 	var $ClassName = __CLASS__;
 	var $condition = '';
 	var $Path = '';
@@ -111,7 +109,8 @@ class we_shop_listviewOrder extends we_listview_base{
 			$format[] = 'UNIX_TIMESTAMP(' . $field . ') AS ' . $field;
 		}
 
-		$this->DB_WE->query('SELECT IntOrderID as OrderID, IntCustomerID as CustomerID, IntPayment_Type as Payment_Type, strSerialOrder,' . implode(',', $format) . ' FROM ' . SHOP_TABLE . $where . ' ' . $orderstring . ' ' . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . $this->maxItemsPerPage) : ''));
+		$this->DB_WE->query('SELECT IntOrderID as OrderID, IntCustomerID as CustomerID, IntPayment_Type as Payment_Type, strSerialOrder,' . implode(',', $format) . ' FROM ' . SHOP_TABLE . $where . ' ' . $orderstring . ' ' . (($this->maxItemsPerPage > 0)
+					? (' LIMIT ' . $this->start . ',' . $this->maxItemsPerPage) : ''));
 		$this->anz = $this->DB_WE->num_rows();
 	}
 
@@ -163,16 +162,15 @@ class we_shop_listviewOrder extends we_listview_base{
 			$this->DB_WE->Record["we_wedoc_lastPath"] = $this->LastDocPath . "?we_orderid=" . $this->DB_WE->Record["OrderID"];
 			$this->count++;
 			return true;
-		} else {
-			$this->stop_next_row = $this->shouldPrintEndTR();
-			if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
-				$this->DB_WE->Record = array();
-				$this->DB_WE->Record["WE_PATH"] = "";
-				$this->DB_WE->Record["WE_TEXT"] = "";
-				$this->DB_WE->Record["WE_ID"] = "";
-				$this->count++;
-				return true;
-			}
+		}
+		$this->stop_next_row = $this->shouldPrintEndTR();
+		if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
+			$this->DB_WE->Record = array();
+			$this->DB_WE->Record["WE_PATH"] = "";
+			$this->DB_WE->Record["WE_TEXT"] = "";
+			$this->DB_WE->Record["WE_ID"] = "";
+			$this->count++;
+			return true;
 		}
 
 		return false;
