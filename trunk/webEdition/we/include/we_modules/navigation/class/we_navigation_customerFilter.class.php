@@ -29,6 +29,10 @@
 class we_navigation_customerFilter extends we_customer_abstractFilter{
 	var $_useDocumentFilter = true;
 
+	public function __construct(){
+		parent::__construct();
+	}
+
 	/**
 	 * initialize object with a naviagtion model
 	 *
