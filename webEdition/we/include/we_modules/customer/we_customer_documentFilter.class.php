@@ -369,7 +369,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 		$_cid = isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
 		$_filesWithRestrictionsForCustomer = array();
 
-		$listQuery = ' (mode=' . we_customer_abstractFilter::FILTER . " AND FIND_IN_SET($_cid,blackList) AND !FIND_IN_SET($_cid,whiteList) ) ";
+		$listQuery = ' (mode=' . we_customer_abstractFilter::FILTER . " AND !FIND_IN_SET($_cid,whiteList) ) ";//FIND_IN_SET($_cid,blackList) AND 
 		$_specificCustomersQuery = ' (mode=' . we_customer_abstractFilter::SPECIFIC . " AND !FIND_IN_SET($_cid,specificCustomers)) ";
 
 		// detect all files/objects with restrictions
