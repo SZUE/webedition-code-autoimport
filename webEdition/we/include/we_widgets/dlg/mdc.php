@@ -43,7 +43,7 @@ $_selTable = FILE_TABLE;
 
 if($_selection){
 	$selType = ($_selType) ? "selObjs" : "selDocs";
-	if(defined("OBJECT_FILES_TABLE")){
+	if(defined('OBJECT_FILES_TABLE')){
 		$_selTable = ($_selType) ? OBJECT_FILES_TABLE : FILE_TABLE;
 	}
 
@@ -75,7 +75,7 @@ function getHTMLDirSelector($_selType){
 	$_button_obj = defined('OBJECT_TABLE') ? we_html_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['FolderID'].value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "','" . $rootDirID . "')") : '';
 
 	$_buttons = '<div id="docFolder" style="display: ' . (!$_selType ? "inline" : "none") . '">' . $_button_doc . "</div>" . '<div id="objFolder" style="display: ' . ($_selType ? "inline" : "none") . '">' . $_button_obj . "</div>";
-	$_path = id_to_path($folderID, (!$_selType ? FILE_TABLE : (defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : "")));
+	$_path = id_to_path($folderID, (!$_selType ? FILE_TABLE : (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : "")));
 
 	return we_html_element::htmlDiv(
 			array(
@@ -390,7 +390,7 @@ $captions = array();
 if(permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
 	$captions[FILE_TABLE] = g_l('export', "[documents]");
 }
-if(defined("OBJECT_FILES_TABLE") && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")){
+if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")){
 	$captions[OBJECT_FILES_TABLE] = g_l('export', "[objects]");
 }
 

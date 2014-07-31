@@ -2050,7 +2050,7 @@ self.close();');
 					}
 
 					$url = parse_url($block->Field);
-					$content = getHTTP($url["host"], (isset($url["path"]) ? $url["path"] : ""), "", defined("HTTP_USERNAME") ? HTTP_USERNAME : "", defined("HTTP_PASSWORD") ? HTTP_PASSWORD
+					$content = getHTTP($url["host"], (isset($url["path"]) ? $url["path"] : ""), "", defined('HTTP_USERNAME') ? HTTP_USERNAME : "", defined('HTTP_PASSWORD') ? HTTP_PASSWORD
 								: "");
 
 					$trenner = "[\040|\n|\t|\r]*";

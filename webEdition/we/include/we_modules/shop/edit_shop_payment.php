@@ -53,7 +53,7 @@ $_row = 0;
 //hier
 $Parts = array();
 
-if(defined("CUSTOMER_TABLE")){
+if(defined('CUSTOMER_TABLE')){
 	$_htmlTable = new we_html_table(array('border' => 0,
 		'cellpadding' => 0,
 		'cellspacing' => 0,

@@ -642,7 +642,7 @@ function setDir(id){
 		if(f('SELECT 1  FROM ' . FILE_TABLE . " WHERE Category LIKE '%," . intval($id) . ",%' OR temp_category like '%," . intval($id) . ",%' LIMIT 1", '', $db)){
 			return true;
 		}
-		if(defined("OBJECT_TABLE") && f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . " WHERE Category LIKE '%," . intval($id) . ",%' LIMIT 1", '', $db)){
+		if(defined('OBJECT_TABLE') && f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . " WHERE Category LIKE '%," . intval($id) . ",%' LIMIT 1", '', $db)){
 			return true;
 		}
 

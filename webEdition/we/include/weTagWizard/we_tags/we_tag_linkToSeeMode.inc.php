@@ -11,10 +11,10 @@ $this->Attributes[] = new weTagData_textAttribute('value', true, '');
 $this->Attributes[] = new weTagData_selectAttribute('doc', array(new weTagDataOption('top'),
 	new weTagDataOption('self'),
 	), false, '');
-if(defined("FILE_TABLE")){
+if(defined('FILE_TABLE')){
 	$this->Attributes[] = new weTagData_selectorAttribute('id', FILE_TABLE, 'text/webedition', false, '');
 }
-if(defined("OBJECT_FILES_TABLE")){
+if(defined('OBJECT_FILES_TABLE')){
 	$this->Attributes[] = new weTagData_selectorAttribute('oid', OBJECT_FILES_TABLE, 'objectFile', false, '');
 }
 $this->Attributes[] = new weTagData_selectAttribute('xml', weTagData_selectAttribute::getTrueFalse(), false, '');

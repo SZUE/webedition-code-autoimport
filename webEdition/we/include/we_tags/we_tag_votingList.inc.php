@@ -32,7 +32,7 @@ function we_parse_tag_votingList($a, $content, array $attribs){
 }
 
 function we_tag_votingList($attribs){
-	if(!defined("VOTING_TABLE")){
+	if(!defined('VOTING_TABLE')){
 		print modulFehltError('Voting', __FUNCTION__);
 		return;
 	}

@@ -180,7 +180,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 					$pathids = array();
 					$_old_pid = $object->ParentID;
 					$owner = ($this->options['owners_overwrite'] && $this->options['owners_overwrite_id']) ? $this->options['owners_overwrite_id'] : 0;
-					if(defined("OBJECT_TABLE") && $object->ClassName == 'we_objectFile'){
+					if(defined('OBJECT_TABLE') && $object->ClassName == 'we_objectFile'){
 						//dont create Path in objects if the class doesn't exist
 						$match = array();
 						preg_match('|(/+[a-zA-Z0-9_+-\.]*)|', $object->Path, $match);
@@ -246,7 +246,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 				}
 			}
 
-			if(defined("OBJECT_TABLE") && $object->ClassName == 'we_objectFile'){
+			if(defined('OBJECT_TABLE') && $object->ClassName == 'we_objectFile'){
 				$ref = $this->RefTable->getRef(
 					array(
 						'OldID' => $object->TableID,
@@ -377,12 +377,12 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 						$this->nodehierarchy[] = $noddata;
 						switch($noddata){
 							case "we_object":
-								if(defined("OBJECT_TABLE")){
+								if(defined('OBJECT_TABLE')){
 									$object = new we_object_exImport();
 								}
 								break;
 							case "we_objectFile":
-								if(defined("OBJECT_FILES_TABLE")){
+								if(defined('OBJECT_FILES_TABLE')){
 									$object = new we_objectFile();
 								}
 								break;

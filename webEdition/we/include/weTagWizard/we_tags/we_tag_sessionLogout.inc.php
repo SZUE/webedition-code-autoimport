@@ -6,7 +6,7 @@ $this->NeedsEndTag = true;
 $this->Module = 'customer';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-if(defined("FILE_TABLE")){
+if(defined('FILE_TABLE')){
 	$this->Attributes[] = new weTagData_selectorAttribute('id', FILE_TABLE, 'text/webedition', true, '');
 }
 $this->Attributes[] = new weTagData_choiceAttribute('target', array(new weTagDataOption('_top'),

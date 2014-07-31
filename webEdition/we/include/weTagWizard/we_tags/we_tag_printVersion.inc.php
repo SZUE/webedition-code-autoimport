@@ -7,7 +7,7 @@ $this->NeedsEndTag = true;
 //$this->Module = '';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-if(defined("TEMPLATES_TABLE")){
+if(defined('TEMPLATES_TABLE')){
 	$this->Attributes[] = new weTagData_selectorAttribute('tid', TEMPLATES_TABLE, 'text/weTmpl', true, '');
 }
 $this->Attributes[] = new weTagData_choiceAttribute('target', array(new weTagDataOption('_top'),
@@ -19,6 +19,6 @@ $this->Attributes[] = new weTagData_selectAttribute('link', weTagData_selectAttr
 $this->Attributes[] = new weTagData_selectAttribute('doc', array(new weTagDataOption('top'),
 	new weTagDataOption('self'),
 	), false, '');
-if(defined("FILE_TABLE")){
+if(defined('FILE_TABLE')){
 	$this->Attributes[] = new weTagData_selectorAttribute('triggerid', FILE_TABLE, 'text/webedition', false, '');
 }

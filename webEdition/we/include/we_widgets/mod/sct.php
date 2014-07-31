@@ -59,7 +59,7 @@ if(permissionhandler::hasPerm("NEW_WEBEDITIONSITE")){
 }
 
 $_disableObjects = false;
-if(defined("OBJECT_TABLE")){
+if(defined('OBJECT_TABLE')){
 	$allClasses = we_users_util::getAllowedClasses();
 	if(empty($allClasses)){
 		$_disableObjects = true;

@@ -205,7 +205,7 @@ class we_search_listview extends listviewBase{
 			$ws_where = '';
 		}
 
-		$weDocumentCustomerFilter_tail = (defined("CUSTOMER_FILTER_TABLE") ?
+		$weDocumentCustomerFilter_tail = (defined('CUSTOMER_FILTER_TABLE') ?
 				we_customer_documentFilter::getConditionForListviewQuery($this) :
 				'');
 

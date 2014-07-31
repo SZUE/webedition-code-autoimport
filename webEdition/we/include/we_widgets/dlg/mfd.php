@@ -209,13 +209,13 @@ $oChbxDocs = (permissionhandler::hasPerm('CAN_SEE_DOCUMENTS') ?
 		we_html_forms::checkbox(1, $sType{0}, "chbx_type", g_l('cockpit', '[documents]'), true, "defaultfont", "", !(defined('FILE_TABLE') && permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")), '', 0, 0) :
 		'');
 $oChbxTmpl = (permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE ?
-		we_html_forms::checkbox(1, $sType{1}, "chbx_type", g_l('cockpit', '[templates]'), true, "defaultfont", "", !(defined("TEMPLATES_TABLE") && permissionhandler::hasPerm('CAN_SEE_TEMPLATES')), "", 0, 0) :
+		we_html_forms::checkbox(1, $sType{1}, "chbx_type", g_l('cockpit', '[templates]'), true, "defaultfont", "", !(defined('TEMPLATES_TABLE') && permissionhandler::hasPerm('CAN_SEE_TEMPLATES')), "", 0, 0) :
 		'');
 $oChbxObjs = (permissionhandler::hasPerm('CAN_SEE_OBJECTS') ?
-		we_html_forms::checkbox(1, $sType{2}, "chbx_type", g_l('cockpit', '[objects]'), true, "defaultfont", "", !(defined("OBJECT_FILES_TABLE") && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES')), "", 0, 0) :
+		we_html_forms::checkbox(1, $sType{2}, "chbx_type", g_l('cockpit', '[objects]'), true, "defaultfont", "", !(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES')), "", 0, 0) :
 		'');
 $oChbxCls = (permissionhandler::hasPerm('CAN_SEE_CLASSES') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE ?
-		we_html_forms::checkbox(1, $sType{3}, "chbx_type", g_l('cockpit', '[classes]'), true, "defaultfont", "", !(defined("OBJECT_TABLE") && permissionhandler::hasPerm('CAN_SEE_OBJECTS')), "", 0, 0) :
+		we_html_forms::checkbox(1, $sType{3}, "chbx_type", g_l('cockpit', '[classes]'), true, "defaultfont", "", !(defined('OBJECT_TABLE') && permissionhandler::hasPerm('CAN_SEE_OBJECTS')), "", 0, 0) :
 		'');
 
 $oDbTableType = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 1, 3);

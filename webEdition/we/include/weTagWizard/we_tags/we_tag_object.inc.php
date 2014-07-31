@@ -9,14 +9,14 @@ $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
 $this->Attributes[] = new weTagData_textAttribute('name', false, '');
 $this->Attributes[] = new weTagData_textAttribute('text', false, '');
-if(defined("OBJECT_TABLE")){
+if(defined('OBJECT_TABLE')){
 	$this->Attributes[] = new weTagData_selectorAttribute('classid', OBJECT_TABLE, 'object', false, '');
 }
-if(defined("OBJECT_FILES_TABLE")){
+if(defined('OBJECT_FILES_TABLE')){
 	$this->Attributes[] = new weTagData_selectorAttribute('id', OBJECT_FILES_TABLE, 'objectFile', false, '');
 }
 $this->Attributes[] = new weTagData_textAttribute('size', false, '');
-if(defined("FILE_TABLE")){
+if(defined('FILE_TABLE')){
 	$this->Attributes[] = new weTagData_selectorAttribute('triggerid', FILE_TABLE, 'text/webedition', false, '');
 }
 $this->Attributes[] = new weTagData_selectAttribute('hidedirindex', weTagData_selectAttribute::getTrueFalse(), false, '');

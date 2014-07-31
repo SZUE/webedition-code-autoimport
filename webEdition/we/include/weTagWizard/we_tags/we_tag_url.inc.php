@@ -8,7 +8,7 @@ $this->NeedsEndTag = false;
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
 $id_document = new weTagData_selectorAttribute('id', FILE_TABLE, 'text/webedition,image/*,text/css,text/js,application/*', true, '');
-$id_object = (defined("OBJECT_FILES_TABLE") ? new weTagData_selectorAttribute('id', OBJECT_FILES_TABLE, 'objectFile', true, '') : null);
+$id_object = (defined('OBJECT_FILES_TABLE') ? new weTagData_selectorAttribute('id', OBJECT_FILES_TABLE, 'objectFile', true, '') : null);
 $triggerid = new weTagData_selectorAttribute('triggerid', FILE_TABLE, 'text/webedition', false, '');
 $hidedirindex = new weTagData_selectAttribute('hidedirindex', weTagData_selectAttribute::getTrueFalse(), false, '');
 $objectseourls = new weTagData_selectAttribute('objectseourls', weTagData_selectAttribute::getTrueFalse(), false, '');

@@ -120,7 +120,7 @@ class we_banner_view extends we_banner_base{
 					);
 					$znr = 2;
 				}
-				if(defined("CUSTOMER_TABLE")){
+				if(defined('CUSTOMER_TABLE')){
 					$parts[] = array(
 						"headline" => g_l('modules_banner', '[customers]'),
 						"html" => $this->formCustomer(),

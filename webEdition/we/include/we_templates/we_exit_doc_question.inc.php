@@ -56,12 +56,12 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2)){
 		$_documentTable = TEMPLATES_TABLE;
 		break;
 	case "object":
-		if(defined("OBJECT_TABLE")){
+		if(defined('OBJECT_TABLE')){
 			$_documentTable = OBJECT_TABLE;
 		}
 		break;
 	case "objectFile":
-		if(defined("OBJECT_FILES_TABLE")){
+		if(defined('OBJECT_FILES_TABLE')){
 			$_documentTable = OBJECT_FILES_TABLE;
 		}
 		break;

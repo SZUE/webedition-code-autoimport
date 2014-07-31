@@ -126,9 +126,9 @@ function doClick(opt) {
 					' . we_message_reporting::getShowMessageCall(g_l('backup', "[" . $mode . "_schedule_dep]"), we_message_reporting::WE_MESSAGE_NOTICE) . '
 				}
 			break;
-		' . ((defined("SHOP_TABLE")) ? ('
+		' . ((defined('SHOP_TABLE')) ? ('
 			case 30:
-				' . ((defined("CUSTOMER_TABLE")) ? ('
+				' . ((defined('CUSTOMER_TABLE')) ? ('
 				if(!document.we_form.handle_customer.checked) {
 					document.we_form.handle_customer.value=1;
 					document.we_form.handle_customer.checked=true;
@@ -137,7 +137,7 @@ function doClick(opt) {
 			') : ('')) . '
 				break;
 		') : '') .
-				((defined("WORKFLOW_TABLE")) ? ('
+				((defined('WORKFLOW_TABLE')) ? ('
 			case 35:
 				if(!document.we_form.handle_user.checked || !document.we_form.handle_core.checked) {
 					document.we_form.handle_core.value=1;
@@ -148,7 +148,7 @@ function doClick(opt) {
 				}
 				break;
 		') : '') .
-				((defined("MESSAGING_SYSTEM")) ? ('
+				((defined('MESSAGING_SYSTEM')) ? ('
 			case 40:
 				if(!document.we_form.handle_user.checked) {
 					document.we_form.handle_user.value=1;
@@ -157,9 +157,9 @@ function doClick(opt) {
 				}
 				break;
 		') : '') .
-				((defined("NEWSLETTER_TABLE")) ? ('
+				((defined('NEWSLETTER_TABLE')) ? ('
 			case 45:
-				' . ((defined("CUSTOMER_TABLE")) ? ('
+				' . ((defined('CUSTOMER_TABLE')) ? ('
 				if(!document.we_form.handle_customer.checked || !document.we_form.handle_core.checked || !document.we_form.handle_object.checked){
 					document.we_form.handle_core.value=1;
 					document.we_form.handle_core.checked=true;
@@ -172,7 +172,7 @@ function doClick(opt) {
 			') : ('')) . '
 				break;
 		') : '') .
-				((defined("BANNER_TABLE")) ? ('
+				((defined('BANNER_TABLE')) ? ('
 			case 50:
 				if(!document.we_form.handle_core.checked){
 					document.we_form.handle_core.value=1;
@@ -187,19 +187,19 @@ function doClick(opt) {
 		var mess="";
 		switch(opt) {
 			case 10:
-			' . ((defined("WORKFLOW_TABLE")) ? ('
+			' . ((defined('WORKFLOW_TABLE')) ? ('
 			if(document.forms["we_form"].elements["handle_workflow"].checked){
 				document.forms["we_form"].elements["handle_workflow"].checked=false;
 				mess+="\n-' . g_l('backup', "[" . $mode . "_workflow_data]") . '";
 			}
 			') : ('')) . '
-			' . ((defined("NEWSLETTER_TABLE")) ? ('
+			' . ((defined('NEWSLETTER_TABLE')) ? ('
 			if(document.forms["we_form"].elements["handle_newsletter"].checked){
 				document.forms["we_form"].elements["handle_newsletter"].checked=false;
 				mess+="\n-' . g_l('backup', "[" . $mode . "_newsletter_data]") . '";
 			}
 			') : ('')) . '
-			' . ((defined("BANNER_TABLE")) ? ('
+			' . ((defined('BANNER_TABLE')) ? ('
 			if(document.forms["we_form"].elements["handle_banner"].checked){
 				document.forms["we_form"].elements["handle_banner"].checked=false;
 				mess+="\n-' . g_l('backup', "[" . $mode . "_banner_data]") . '";
@@ -234,7 +234,7 @@ function doClick(opt) {
 			}
 			break;
 
-			' . ((defined("OBJECT_TABLE")) ? ('
+			' . ((defined('OBJECT_TABLE')) ? ('
 			case 11:
 				' . (we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) ? ('
 				if(document.forms["we_form"].elements["handle_schedule"].checked){
@@ -275,12 +275,12 @@ function doClick(opt) {
 				}
 			break;
 			case 20:
-				' . ((defined("WORKFLOW_TABLE")) ? ('
+				' . ((defined('WORKFLOW_TABLE')) ? ('
 				if(document.forms["we_form"].elements["handle_workflow"].checked){
 					document.forms["we_form"].elements["handle_workflow"].checked=false;
 					mess+="\n-' . g_l('backup', "[" . $mode . "_workflow_data]") . '";
 				}
-			' . ((defined("MESSAGING_SYSTEM")) ? ('
+			' . ((defined('MESSAGING_SYSTEM')) ? ('
 				if(document.forms["we_form"].elements["handle_todo"].checked){
 					document.forms["we_form"].elements["handle_todo"].checked=false;
 					mess+="\n-' . g_l('backup', "[" . $mode . "_todo_data]") . '";
@@ -292,15 +292,15 @@ function doClick(opt) {
 			}
 			break;
 			') : ('')) . '
-			' . ((defined("CUSTOMER_TABLE")) ? ('
+			' . ((defined('CUSTOMER_TABLE')) ? ('
 			case 25:
-				' . ((defined("SHOP_TABLE")) ? ('
+				' . ((defined('SHOP_TABLE')) ? ('
 				if(document.forms["we_form"].elements["handle_shop"].checked){
 					document.forms["we_form"].elements["handle_shop"].checked=false;
 					mess+="\n-' . g_l('backup', "[" . $mode . "_shop_data]") . '";
 				}
 			') : ('')) . '
-			' . ((defined("NEWSLETTER_TABLE")) ? ('
+			' . ((defined('NEWSLETTER_TABLE')) ? ('
 				if(document.forms["we_form"].elements["handle_newsletter"].checked){
 					document.forms["we_form"].elements["handle_newsletter"].checked=false;
 					mess+="\n-' . g_l('backup', "[" . $mode . "_newsletter_data]") . '";
@@ -563,22 +563,22 @@ extra_files_desc=new Array();';
 
 		$form_properties = array(
 			10 => "handle_core",
-			11 => defined("OBJECT_TABLE") ? 'handle_object' : '',
+			11 => defined('OBJECT_TABLE') ? 'handle_object' : '',
 			12 => "handle_versions",
 			13 => "handle_versions_binarys",
 			14 => "handle_binary",
 			20 => "handle_user",
-			25 => defined("CUSTOMER_TABLE") ? "handle_customer" : '',
-			30 => defined("SHOP_TABLE") ? "handle_shop" : '',
-			35 => defined("WORKFLOW_TABLE") ? "handle_workflow" : '',
-			40 => defined("MESSAGING_SYSTEM") ? "handle_todo" : '',
-			45 => defined("NEWSLETTER_TABLE") ? "handle_newsletter" : '',
-			50 => defined("BANNER_TABLE") ? "handle_banner" : '',
+			25 => defined('CUSTOMER_TABLE') ? "handle_customer" : '',
+			30 => defined('SHOP_TABLE') ? "handle_shop" : '',
+			35 => defined('WORKFLOW_TABLE') ? "handle_workflow" : '',
+			40 => defined('MESSAGING_SYSTEM') ? "handle_todo" : '',
+			45 => defined('NEWSLETTER_TABLE') ? "handle_newsletter" : '',
+			50 => defined('BANNER_TABLE') ? "handle_banner" : '',
 			55 => we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) ? "handle_schedule" : '',
 			60 => we_base_moduleInfo::isActive(we_base_moduleInfo::EXPORT) ? "handle_export" : '',
-			65 => defined("VOTING_TABLE") ? "handle_voting" : '',
-			70 => defined("SPELLCHECKER") ? "handle_spellchecker" : '',
-			75 => defined("GLOSSARY_TABLE") ? "handle_glossary" : '',
+			65 => defined('VOTING_TABLE') ? "handle_voting" : '',
+			70 => defined('SPELLCHECKER') ? "handle_spellchecker" : '',
+			75 => defined('GLOSSARY_TABLE') ? "handle_glossary" : '',
 			100 => "handle_settings",
 			101 => "handle_temporary",
 			102 => "handle_history",
@@ -826,26 +826,26 @@ self.focus();');
 			320 => "backup_log"
 		);
 
-		if(defined("OBJECT_TABLE")){
+		if(defined('OBJECT_TABLE')){
 			$form_properties[11] = "handle_object";
 		}
 		$form_properties[20] = "handle_user";
-		if(defined("CUSTOMER_TABLE")){
+		if(defined('CUSTOMER_TABLE')){
 			$form_properties[25] = "handle_customer";
 		}
-		if(defined("SHOP_TABLE")){
+		if(defined('SHOP_TABLE')){
 			$form_properties[30] = "handle_shop";
 		}
-		if(defined("WORKFLOW_TABLE")){
+		if(defined('WORKFLOW_TABLE')){
 			$form_properties[35] = "handle_workflow";
 		}
-		if(defined("MESSAGING_SYSTEM")){
+		if(defined('MESSAGING_SYSTEM')){
 			$form_properties[40] = "handle_todo";
 		}
-		if(defined("NEWSLETTER_TABLE")){
+		if(defined('NEWSLETTER_TABLE')){
 			$form_properties[45] = "handle_newsletter";
 		}
-		if(defined("BANNER_TABLE")){
+		if(defined('BANNER_TABLE')){
 			$form_properties[50] = "handle_banner";
 		}
 		if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
@@ -854,13 +854,13 @@ self.focus();');
 		if(we_base_moduleInfo::isActive(we_base_moduleInfo::EXPORT)){
 			$form_properties[60] = "handle_export";
 		}
-		if(defined("VOTING_TABLE")){
+		if(defined('VOTING_TABLE')){
 			$form_properties[65] = "handle_voting";
 		}
-		if(defined("SPELLCHECKER")){
+		if(defined('SPELLCHECKER')){
 			$form_properties[70] = "handle_spellchecker";
 		}
-		if(defined("GLOSSARY_TABLE")){
+		if(defined('GLOSSARY_TABLE')){
 			$form_properties[75] = "handle_glossary";
 		}
 		$form_properties[12] = "handle_versions";
@@ -1240,16 +1240,16 @@ function press_yes() {
 					//FIXME: delete condition when new uploader is stable
 					if(!we_fileupload_include::USE_LEGACY_FOR_BACKUP){
 						$startImportCall = $this->fileUploader ? $this->fileUploader->getJsSubmitCall("top.body.startImport(true)") : "top.body.startImport();";
-						if(defined("WORKFLOW_TABLE")){
-							$nextbut = (count(we_workflow_utility::getAllWorkflowDocs(FILE_TABLE)) > 0 || (defined("OBJECT_FILES_TABLE") && count(we_workflow_utility::getAllWorkflowDocs(OBJECT_FILES_TABLE)) > 0) ?
+						if(defined('WORKFLOW_TABLE')){
+							$nextbut = (count(we_workflow_utility::getAllWorkflowDocs(FILE_TABLE)) > 0 || (defined('OBJECT_FILES_TABLE') && count(we_workflow_utility::getAllWorkflowDocs(OBJECT_FILES_TABLE)) > 0) ?
 									we_html_button::create_button("restore_backup", "javascript:if(confirm('" . g_l('modules_workflow', '[ask_before_recover]') . "')) " . $startImportCall . ";") :
 									we_html_button::create_button("restore_backup", "javascript:" . $startImportCall));
 						} else {
 							$nextbut = we_html_button::create_button("restore_backup", "javascript:" . $startImportCall);
 						}
 					} else {
-						if(defined("WORKFLOW_TABLE")){
-							$nextbut = (count(we_workflow_utility::getAllWorkflowDocs(FILE_TABLE)) > 0 || (defined("OBJECT_FILES_TABLE") && count(we_workflow_utility::getAllWorkflowDocs(OBJECT_FILES_TABLE)) > 0) ?
+						if(defined('WORKFLOW_TABLE')){
+							$nextbut = (count(we_workflow_utility::getAllWorkflowDocs(FILE_TABLE)) > 0 || (defined('OBJECT_FILES_TABLE') && count(we_workflow_utility::getAllWorkflowDocs(OBJECT_FILES_TABLE)) > 0) ?
 									we_html_button::create_button("restore_backup", "javascript:if(confirm('" . g_l('modules_workflow', '[ask_before_recover]') . "')) top.body.startImport();") :
 									we_html_button::create_button("restore_backup", "javascript:top.body.startImport();"));
 						} else {

@@ -42,7 +42,7 @@ class weOrderContainer{
 	function getJS($jsPath){
 
 		$src = '';
-		if(!defined("weOrderContainer_JS_loaded")){
+		if(!defined('weOrderContainer_JS_loaded')){
 			$src = we_html_element::jsScript($jsPath . '/weOrderContainer.js?t=' . time());
 			define("weOrderContainer_JS_loaded", true);
 		}

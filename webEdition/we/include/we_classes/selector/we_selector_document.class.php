@@ -34,7 +34,7 @@ class we_selector_document extends we_selector_directory{
 
 	function __construct($id, $table = '', $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $sessionID = '', $we_editDirID = '', $FolderText = '', $filter = '', $rootDirID = 0, $open_doc = false, $multiple = false, $canSelectDir = false){
 		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, 0, $we_editDirID, $FolderText, $rootDirID, $multiple, $filter);
-		$this->fields.=',ModDate,RestrictOwners,Owners,OwnersReadOnly,CreatorID' . ($this->table == FILE_TABLE || (defined("OBJECT_FILES_TABLE") && $this->table == OBJECT_FILES_TABLE) ? ',Published' : '');
+		$this->fields.=',ModDate,RestrictOwners,Owners,OwnersReadOnly,CreatorID' . ($this->table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE) ? ',Published' : '');
 		$this->canSelectDir = $canSelectDir;
 
 		$this->title = g_l('fileselector', '[docSelector][title]');
@@ -64,7 +64,7 @@ class we_selector_document extends we_selector_directory{
 			$wsQuery = '';
 			if(get_ws($this->table)){
 				$wsQuery = getWsQueryForSelector($this->table);
-			} else if(defined("OBJECT_FILES_TABLE") && $this->table == OBJECT_FILES_TABLE && (!permissionhandler::hasPerm("ADMINISTRATOR"))){
+			} else if(defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE && (!permissionhandler::hasPerm("ADMINISTRATOR"))){
 				$ac = we_users_util::getAllowedClasses($this->db);
 				foreach($ac as $cid){
 					$path = id_to_path($cid, OBJECT_TABLE);
@@ -316,7 +316,7 @@ function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 				$title = isset($this->titles[$this->f("ID")]) ? $this->titles[$this->f("ID")] : '&nbsp;';
 				$title = strip_tags(str_replace(array('\\', '"', "\n",), array('\\\\', '\"', ' '), $title));
 				$title = $title == '&nbsp;' ? '-' : oldHtmlspecialchars($title);
-				$published = ($this->table == FILE_TABLE || (defined("OBJECT_FILES_TABLE") && $this->table == OBJECT_FILES_TABLE) ? $this->f("Published") : 1);
+				$published = ($this->table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE) ? $this->f("Published") : 1);
 				$ret.= 'addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . addcslashes($this->f("Text"), '"') . '",' . $this->f("IsFolder") . ',"' . addcslashes($this->f("Path"), '"') . '","' . date(g_l('date', '[format][default]'), $this->f("ModDate")) . '","' . $this->f("ContentType") . '","' . $published . '","' . addcslashes($title, '"') . '");';
 			}
 		}
@@ -505,7 +505,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 
 	function getFrameset(){
 		return '
-<frameset rows="' . (((!defined("OBJECT_TABLE")) || $this->table != OBJECT_TABLE) ? '67' : '16') . ',*,' . (!$this->filter ? 90 : 65) . ',20,0" border="0"  onunload="if(top.opener && top.opener.top && top.opener.top.toggleBusy){top.opener.top.toggleBusy();}">
+<frameset rows="' . (((!defined('OBJECT_TABLE')) || $this->table != OBJECT_TABLE) ? '67' : '16') . ',*,' . (!$this->filter ? 90 : 65) . ',20,0" border="0"  onunload="if(top.opener && top.opener.top && top.opener.top.toggleBusy){top.opener.top.toggleBusy();}">
 	<frame src="' . $this->getFsQueryString(we_selector_file::HEADER) . '" name="fsheader" noresize scrolling="no">
 	<frameset cols="605,*" border="1">
 		<frame src="' . $this->getFsQueryString(we_selector_file::BODY) . '" name="fsbody" noresize scrolling="auto">

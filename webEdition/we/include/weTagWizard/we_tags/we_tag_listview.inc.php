@@ -75,7 +75,7 @@ $desc = new weTagData_selectAttribute('desc', array(new weTagDataOption('true'),
 	), false, '');
 $offset = new weTagData_textAttribute('offset', false, '');
 $casesensitive = new weTagData_selectAttribute('casesensitive', weTagData_selectAttribute::getTrueFalse(), false, '');
-$classid = (defined("OBJECT_TABLE") ? new weTagData_selectorAttribute('classid', OBJECT_TABLE, 'object', false, '') : null);
+$classid = (defined('OBJECT_TABLE') ? new weTagData_selectorAttribute('classid', OBJECT_TABLE, 'object', false, '') : null);
 $condition = new weTagData_textAttribute('condition', false, '');
 $triggerid = new weTagData_selectorAttribute('triggerid', FILE_TABLE, 'text/webedition', false, '');
 $seeMode = new weTagData_selectAttribute('seeMode', weTagData_selectAttribute::getTrueFalse(), false, '');
@@ -100,7 +100,7 @@ $contenttypes = new weTagData_choiceAttribute('contenttypes', array(new weTagDat
 $searchable = new weTagData_selectAttribute('searchable', weTagData_selectAttribute::getTrueFalse(), false, '');
 $defaultname = new weTagData_textAttribute('defaultname', false, '');
 $documentid = new weTagData_selectorAttribute('documentid', FILE_TABLE, 'text/webedition', false, '');
-$objectid = (defined("OBJECT_FILES_TABLE") ? new weTagData_selectorAttribute('objectid', OBJECT_FILES_TABLE, 'objectFile', false, '') : null);
+$objectid = (defined('OBJECT_FILES_TABLE') ? new weTagData_selectorAttribute('objectid', OBJECT_FILES_TABLE, 'objectFile', false, '') : null);
 $calendar = new weTagData_selectAttribute('calendar', array(new weTagDataOption('year'),
 	new weTagDataOption('month'),
 	new weTagDataOption('month_table'),

@@ -39,7 +39,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) == "closeFolder"
 	$openDirs = array_keys($openDirs);
 	$_SESSION["prefs"]["openFolders_" . stripTblPrefix($table)] = makeCSVFromArray($openDirs);
 } else {
-	$GLOBALS["OBJECT_FILES_TREE_COUNT"] = defined("OBJECT_FILES_TREE_COUNT") ? OBJECT_FILES_TREE_COUNT : 20;
+	$GLOBALS["OBJECT_FILES_TREE_COUNT"] = defined('OBJECT_FILES_TREE_COUNT') ? OBJECT_FILES_TREE_COUNT : 20;
 
 	$counts = array();
 	$parents = array();
@@ -91,10 +91,10 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) == "closeFolder"
 		$where = ' WHERE  ID!=' . intval($ParentID) . ' AND ParentID IN(' . implode(',', $tmp) . ') AND ((1' . we_users_util::makeOwnersSql() . ') ' . $wsQuery . ')';
 
 		$elem = "ID,ParentID,Path,Text,IsFolder,Icon,ModDate" .
-			(($table == FILE_TABLE || (defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE)) ? ",Published" : "") .
-			((defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE) ? ",IsClassFolder,IsNotEditable" : "") .
+			(($table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE)) ? ",Published" : "") .
+			((defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE) ? ",IsClassFolder,IsNotEditable" : "") .
 			($table == FILE_TABLE || $table == TEMPLATES_TABLE ? ",Extension" : '') .
-			($table == FILE_TABLE || $table == TEMPLATES_TABLE || (defined("OBJECT_TABLE") && $table == OBJECT_TABLE) || (defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE) ? ",ContentType" : '');
+			($table == FILE_TABLE || $table == TEMPLATES_TABLE || (defined('OBJECT_TABLE') && $table == OBJECT_TABLE) || (defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE) ? ",ContentType" : '');
 
 		$DB_WE->query('SELECT ' . $elem . ', LOWER(Text) AS lowtext, ABS(REPLACE(Text,"info","")) AS Nr, (Text REGEXP "^[0-9]") AS isNr FROM ' . $table . ' ' . $where . ' ORDER BY IsFolder DESC,isNr DESC,Nr,lowtext' . ($segment ? ' LIMIT ' . $offset . ',' . $segment : ''));
 		$ct = we_base_ContentTypes::inst();
@@ -105,7 +105,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) == "closeFolder"
 			$ID = $DB_WE->f("ID");
 			$Path = $DB_WE->f("Path");
 			$ContentType = $DB_WE->f("ContentType");
-			$published = ($table == FILE_TABLE || (defined("OBJECT_FILES_TABLE") && ($table == OBJECT_FILES_TABLE)) ?
+			$published = ($table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && ($table == OBJECT_FILES_TABLE)) ?
 					(($DB_WE->f("Published") != 0) && ($DB_WE->f("Published") < $DB_WE->f("ModDate")) ?
 						-1 :
 						$DB_WE->f("Published")) :
@@ -167,7 +167,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) == "closeFolder"
 				$path = dirname($path);
 			}
 		}
-	} elseif(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE && (!permissionhandler::hasPerm("ADMINISTRATOR"))){
+	} elseif(defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE && (!permissionhandler::hasPerm("ADMINISTRATOR"))){
 		$ac = we_users_util::getAllowedClasses($DB_WE);
 		foreach($ac as $cid){
 			$path = id_to_path($cid, OBJECT_TABLE);

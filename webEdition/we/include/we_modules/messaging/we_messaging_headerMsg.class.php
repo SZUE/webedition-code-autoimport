@@ -72,7 +72,7 @@ class we_messaging_headerMsg{
 				}
 			}
 		<?php
-		if(defined("MESSAGING_SYSTEM")){
+		if(defined('MESSAGING_SYSTEM')){
 			$newmsg_count = self::$messaging->used_msgobjs['we_message']->get_newmsg_count();
 			$newtodo_count = self::$messaging->used_msgobjs['we_todo']->get_newmsg_count();
 			?>

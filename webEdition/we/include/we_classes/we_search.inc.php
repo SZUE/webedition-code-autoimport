@@ -288,7 +288,7 @@ function setOrder(order){
 		$page = ceil($this->searchstart / $this->anzahl) * $this->anzahl;
 
 		$select = we_html_tools::htmlSelect("page", $pages, 1, $page, false, array("onchange" => "this.form.elements['SearchStart'].value = this.value;we_cmd('reload_editpage');"));
-		if(!defined("SearchStart")){
+		if(!defined('SearchStart')){
 			define("SearchStart", true);
 			$out .= we_html_tools::hidden("SearchStart", $this->searchstart);
 		}

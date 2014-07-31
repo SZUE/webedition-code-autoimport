@@ -774,7 +774,7 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 			we_navigation_navigation::STPYE_DOCTYPE => g_l('navigation', '[documents]')
 		);
 
-		if(defined("OBJECT_TABLE")){
+		if(defined('OBJECT_TABLE')){
 			$_seltype[we_navigation_navigation::STPYE_CLASS] = g_l('navigation', '[objects]');
 		}
 
@@ -1026,7 +1026,7 @@ function onSelectionTypeChangeJS(value) {
 	if(document.we_form.elements[\'Selection\'].value=="' . we_navigation_navigation::SELECTION_STATIC . '"){
 		onFolderSelectionChangeJS(value);
 	} else {
-		var objects = ' . defined("OBJECT_FILES_TABLE") . ';
+		var objects = ' . defined('OBJECT_FILES_TABLE') . ';
 		if(objects == 1 && value=="' . we_navigation_navigation::STPYE_CLASS . '"){
 			document.we_form.elements[\'ClassID\'].selectedIndex = 0;
 			onSelectionClassChangeJS(document.we_form.elements[\'ClassID\'].options[0].value);

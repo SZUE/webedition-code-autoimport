@@ -186,7 +186,7 @@ if(!$wfchk){
 					}
 				}
 
-				if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE){
+				if(defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE){
 
 					$users = we_users_util::getUsersForDocWorkspace($GLOBALS['DB_WE'], $selectedItem, "workSpaceObj");
 					if(!empty($users)){
@@ -204,7 +204,7 @@ if(!$wfchk){
 						break;
 					}
 				}
-				if(defined("OBJECT_FILES_TABLE") && $table == FILE_TABLE){
+				if(defined('OBJECT_FILES_TABLE') && $table == FILE_TABLE){
 					$objects = getObjectsForDocWorkspace($selectedItem, $GLOBALS['DB_WE']);
 					if(!empty($objects)){
 						$retVal = -3;
@@ -276,7 +276,7 @@ if(!$wfchk){
 					}
 
 					if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){ //	only update tree when in normal mode
-						$script .= weTree::deleteTreeEntries(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE);
+						$script .= weTree::deleteTreeEntries(defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE);
 					}
 
 					if(!empty($deletedItems)){
@@ -284,7 +284,7 @@ if(!$wfchk){
 						$class_condition = '';
 						$deleted_objects = array();
 
-						if(defined("OBJECT_TABLE") && $table == OBJECT_TABLE){ // close all open objects, if a class is deleted
+						if(defined('OBJECT_TABLE') && $table == OBJECT_TABLE){ // close all open objects, if a class is deleted
 							$_deletedItems = array();
 
 							// if its deleted and not selected, it must be an object
@@ -299,10 +299,10 @@ if(!$wfchk){
 							$class_condition = ' || (_usedEditors[frameId].getEditorEditorTable() == "' . OBJECT_FILES_TABLE . '" && (_delete_objects.indexOf( "," + _usedEditors[frameId].getEditorDocumentId() + "," ) != -1) ) ';
 						}
 
-						if(defined("CUSTOMER_TABLE")){ // delete the customerfilters
+						if(defined('CUSTOMER_TABLE')){ // delete the customerfilters
 							we_customer_documentFilter::deleteModel(
 								$deletedItems, $table);
-							if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_TABLE){
+							if(defined('OBJECT_FILES_TABLE') && $table == OBJECT_TABLE){
 								if(!empty($deleted_objects)){
 									we_customer_documentFilter::deleteModel(
 										$deleted_objects, OBJECT_FILES_TABLE);
@@ -312,7 +312,7 @@ if(!$wfchk){
 
 						we_history::deleteFromHistory(
 							$deletedItems, $table);
-						if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_TABLE){
+						if(defined('OBJECT_FILES_TABLE') && $table == OBJECT_TABLE){
 							if(!empty($deleted_objects)){
 								we_history::deleteFromHistory(
 									$deleted_objects, OBJECT_FILES_TABLE);
@@ -409,7 +409,7 @@ if($wecmd0 != "delete_single_document"){ // no select mode in delete_single_docu
 				print 'top.treeData.setstate(top.treeData.tree_states["selectitem"]);';
 			}
 			break;
-		case (defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : 1):
+		case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 1):
 			if(permissionhandler::hasPerm("DELETE_OBJECTFILE")){
 				print 'top.treeData.setstate(top.treeData.tree_states["select"]);';
 			}

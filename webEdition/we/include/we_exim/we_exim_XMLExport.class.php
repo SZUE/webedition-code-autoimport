@@ -74,8 +74,8 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 
 		switch($classname){
 			case "we_backup_table":
-				if((defined("OBJECT_X_TABLE") && strtolower(substr($doc->table, 0, 10)) == strtolower(stripTblPrefix(OBJECT_X_TABLE))) ||
-					defined("CUSTOMER_TABLE")){
+				if((defined('OBJECT_X_TABLE') && strtolower(substr($doc->table, 0, 10)) == strtolower(stripTblPrefix(OBJECT_X_TABLE))) ||
+					defined('CUSTOMER_TABLE')){
 					$doc->getColumns();
 				}
 				break;
@@ -109,15 +109,15 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 				if($extype == we_import_functions::TYPE_WE_XML){
 					$selDocs = array_unique($this->getIDs($selDocs, FILE_TABLE, false));
 					$selTempl = array_unique($this->getIDs($selTempl, TEMPLATES_TABLE, false));
-					$selObjs = defined("OBJECT_FILES_TABLE") ? array_unique($this->getIDs($selObjs, OBJECT_FILES_TABLE, false)) : "";
-					$selClasses = defined("OBJECT_FILES_TABLE") ? array_unique($this->getIDs($selClasses, OBJECT_TABLE, false)) : "";
+					$selObjs = defined('OBJECT_FILES_TABLE') ? array_unique($this->getIDs($selObjs, OBJECT_FILES_TABLE, false)) : "";
+					$selClasses = defined('OBJECT_FILES_TABLE') ? array_unique($this->getIDs($selClasses, OBJECT_TABLE, false)) : "";
 				} else {
 					switch($art){
 						case "docs":
 							$selDocs = $this->getIDs($selDocs, FILE_TABLE);
 							break;
 						case "objects":
-							$selObjs = defined("OBJECT_FILES_TABLE") ? $this->getIDs($selObjs, OBJECT_FILES_TABLE) : "";
+							$selObjs = defined('OBJECT_FILES_TABLE') ? $this->getIDs($selObjs, OBJECT_FILES_TABLE) : "";
 							break;
 					}
 				}
@@ -135,7 +135,7 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 				$selDocs = $this->db->getAll(true);
 				break;
 			default:
-				if(defined("OBJECT_FILES_TABLE")){
+				if(defined('OBJECT_FILES_TABLE')){
 					$where = $this->queryForAllowed(OBJECT_FILES_TABLE);
 					$cat_sql = ' ' . ($categories ? we_category::getCatSQLTail('', OBJECT_FILES_TABLE, true, $db, 'Category', true, $categories) : '');
 
@@ -198,7 +198,7 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 					$path = dirname($path);
 				}
 			}
-		} else if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE && (!permissionhandler::hasPerm("ADMINISTRATOR"))){
+		} else if(defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE && (!permissionhandler::hasPerm("ADMINISTRATOR"))){
 			$ac = we_users_util::getAllowedClasses($db);
 			foreach($ac as $cid){
 				$path = id_to_path($cid, OBJECT_TABLE);

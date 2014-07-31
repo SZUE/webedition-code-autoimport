@@ -807,7 +807,7 @@ if ( !_multiEditorreload ) {
 
 		for (frameId in _usedEditors) {
 
-			if ( (_usedEditors[frameId].getEditorEditorTable() == \"" . TEMPLATES_TABLE . "\" || " . (defined("OBJECT_TABLE") ? " _usedEditors[frameId].getEditorEditorTable() == \"" . OBJECT_FILES_TABLE . "\" || " : "") . " _usedEditors[frameId].getEditorEditorTable() == \"" . FILE_TABLE . "\") &&
+			if ( (_usedEditors[frameId].getEditorEditorTable() == \"" . TEMPLATES_TABLE . "\" || " . (defined('OBJECT_TABLE') ? " _usedEditors[frameId].getEditorEditorTable() == \"" . OBJECT_FILES_TABLE . "\" || " : "") . " _usedEditors[frameId].getEditorEditorTable() == \"" . FILE_TABLE . "\") &&
 				_usedEditors[frameId].getEditorEditPageNr() == " . we_base_constants::WE_EDITPAGE_CONTENT . " ) {
 
 				if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
@@ -852,7 +852,7 @@ if ( !_multiEditorreload ) {
 
 		for (frameId in _usedEditors) {
 
-			if ( (_usedEditors[frameId].getEditorEditorTable() == \"" . TEMPLATES_TABLE . "\" || " . (defined("OBJECT_TABLE") ? " _usedEditors[frameId].getEditorEditorTable() == \"" . OBJECT_FILES_TABLE . "\" || " : "") . " _usedEditors[frameId].getEditorEditorTable() == \"" . FILE_TABLE . "\") &&
+			if ( (_usedEditors[frameId].getEditorEditorTable() == \"" . TEMPLATES_TABLE . "\" || " . (defined('OBJECT_TABLE') ? " _usedEditors[frameId].getEditorEditorTable() == \"" . OBJECT_FILES_TABLE . "\" || " : "") . " _usedEditors[frameId].getEditorEditorTable() == \"" . FILE_TABLE . "\") &&
 				_usedEditors[frameId].getEditorEditPageNr() == " . we_base_constants::WE_EDITPAGE_CONTENT . " ) {
 
 				if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
@@ -914,7 +914,7 @@ if ( !_multiEditorreload ) {
 
 		for (frameId in _usedEditors) {
 
-			if ( (_usedEditors[frameId].getEditorEditorTable() == \"" . TEMPLATES_TABLE . "\" || " . (defined("OBJECT_TABLE") ? " _usedEditors[frameId].getEditorEditorTable() == \"" . OBJECT_FILES_TABLE . "\" || " : "") . " _usedEditors[frameId].getEditorEditorTable() == \"" . FILE_TABLE . "\") &&
+			if ( (_usedEditors[frameId].getEditorEditorTable() == \"" . TEMPLATES_TABLE . "\" || " . (defined('OBJECT_TABLE') ? " _usedEditors[frameId].getEditorEditorTable() == \"" . OBJECT_FILES_TABLE . "\" || " : "") . " _usedEditors[frameId].getEditorEditorTable() == \"" . FILE_TABLE . "\") &&
 				_usedEditors[frameId].getEditorEditPageNr() == " . we_base_constants::WE_EDITPAGE_CONTENT . " ) {
 
 				if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
@@ -1842,7 +1842,7 @@ function select_seem_start() {
 	}
 
 	if(document.getElementById('seem_start_type').value == 'object') {
-		top.opener.top.we_cmd('openDocselector', document.forms[0].elements['seem_start_object'].value, '" . (defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : "") . "', myWindStr + '.document.forms[0].elements[\'seem_start_object\'].value', myWindStr + '.document.forms[0].elements[\'seem_start_object_name\'].value', '', '" . session_id() . "', '', 'objectFile','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");
+		top.opener.top.we_cmd('openDocselector', document.forms[0].elements['seem_start_object'].value, '" . (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : "") . "', myWindStr + '.document.forms[0].elements[\'seem_start_object\'].value', myWindStr + '.document.forms[0].elements[\'seem_start_object_name\'].value', '', '" . session_id() . "', '', 'objectFile','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");
 	} else {
 		top.opener.top.we_cmd('openDocselector', document.forms[0].elements['seem_start_document'].value, '" . FILE_TABLE . "', myWindStr + '.document.forms[0].elements[\'seem_start_document\'].value', myWindStr + '.document.forms[0].elements[\'seem_start_document_name\'].value', '', '" . session_id() . "', '', '" . we_base_ContentTypes::WEDOCUMENT . "','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");
 	}

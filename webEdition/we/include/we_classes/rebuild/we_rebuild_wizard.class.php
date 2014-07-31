@@ -139,7 +139,7 @@ abstract class we_rebuild_wizard{
 
 		} elseif(permissionhandler::hasPerm("REBUILD_ALL") || permissionhandler::hasPerm("REBUILD_FILTERD")){
 			$type = "rebuild_documents";
-		} else if(defined("OBJECT_FILES_TABLE") && permissionhandler::hasPerm("REBUILD_OBJECTS")){
+		} else if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm("REBUILD_OBJECTS")){
 			$type = "rebuild_objects";
 		} else if(permissionhandler::hasPerm("REBUILD_INDEX")){
 			$type = "rebuild_index";
@@ -163,7 +163,7 @@ abstract class we_rebuild_wizard{
 			)
 		);
 
-		if(defined("OBJECT_FILES_TABLE")){
+		if(defined('OBJECT_FILES_TABLE')){
 
 			$parts[] = array(
 				"headline" => "",
