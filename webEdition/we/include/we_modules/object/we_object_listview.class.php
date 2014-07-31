@@ -30,13 +30,13 @@
 class we_object_listview extends listviewBase{
 	var $classID; /* ID of a class */
 	var $triggerID; /* ID of a document which to use for displaying thr detail page */
-	var $condition = ""; /* condition string (like SQL) */
+	var $condition = ''; /* condition string (like SQL) */
 	var $ClassName = __CLASS__;
 	var $Path; /* internal: Path of document which to use for displaying thr detail page */
 	var $IDs = array();
 	var $searchable = true;
 	var $customerFilterType = false;
-	var $customers = "";
+	var $customers = '';
 	var $we_predefinedSQL = '';
 	var $languages = ''; //string of Languages, separated by ,
 	var $objectseourls = false;
@@ -129,7 +129,7 @@ class we_object_listview extends listviewBase{
 					: '');
 
 		$weDocumentCustomerFilter_tail = (defined('CUSTOMER_FILTER_TABLE') ?
-				we_customer_documentFilter::getConditionForListviewQuery($this) :
+				we_customer_documentFilter::getConditionForListviewQuery($this->customerFilterType,$this->ClassName,$this->classID) :
 				'');
 
 		$webUserID_tail = '';

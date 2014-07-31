@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,7 +27,6 @@
  *
  */
 class we_navigation_customerFilter extends we_customer_abstractFilter{
-
 	var $_useDocumentFilter = true;
 
 	/**
@@ -47,15 +45,16 @@ class we_navigation_customerFilter extends we_customer_abstractFilter{
 		$_specCust = (isset($navModel->Customers) && is_array($navModel->Customers)) ? $navModel->Customers : array();
 
 		$_mode = we_customer_abstractFilter::OFF;
-
-		if($navModel->LimitAccess == 2){
-			$_mode = we_customer_abstractFilter::NONE;
-		} else if($navModel->LimitAccess == 1 && $navModel->ApplyFilter){
-			$_mode = we_customer_abstractFilter::FILTER;
-		} else if($navModel->LimitAccess && $navModel->AllCustomers == 1){
-			$_mode = we_customer_abstractFilter::ALL;
-		} else if($navModel->LimitAccess && count($_specCust) > 0){
-			$_mode = we_customer_abstractFilter::SPECIFIC;
+		if($navModel->LimitAccess){
+			if($navModel->LimitAccess == 2){
+				$_mode = we_customer_abstractFilter::NONE;
+			} else if($navModel->LimitAccess == 1 && $navModel->ApplyFilter){
+				$_mode = we_customer_abstractFilter::FILTER;
+			} else if($navModel->AllCustomers == 1){
+				$_mode = we_customer_abstractFilter::ALL;
+			} else if(count($_specCust) > 0){
+				$_mode = we_customer_abstractFilter::SPECIFIC;
+			}
 		}
 
 		// end convert data

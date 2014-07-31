@@ -169,27 +169,35 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	/**
 	 * get additional condition for listviews
 	 *
-	 * @param we_listview $listview
 	 * @return string
 	 */
-	function getConditionForListviewQuery($listview, $filter){
+	function getConditionForListviewQuery($filter, $classname, $classID = 0){
 		if($filter === 'off' || $filter === 'false' || $filter === false || $filter === 'all'){
 			return '';
 		}
+		if(!self::customerIsLogedIn()){ //we don't show any documents with an customerfilter
+			if($classname == 'we_search_listview'){ // search
+				return ' AND DID NOT IN(SELECT modelId FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="' . stripTblPrefix(FILE_TABLE) . '")' .
+					' AND OID NOT IN(SELECT modelId FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="' . stripTblPrefix(OBJECT_FILES_TABLE) . '")';
+			}
+			return ($classID ?
+					' AND ' . OBJECT_X_TABLE . $classID . '.OF_ID NOT IN(SELECT modelId FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="' . stripTblPrefix(OBJECT_FILES_TABLE) . '")'
+						:
+					' AND ' . FILE_TABLE . '.ID NOT IN(SELECT modelId FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="' . stripTblPrefix(FILE_TABLE) . '")'
+				);
+		}
+
 		$_queryTail = '';
-		$_allowedCTs = array(we_base_ContentTypes::WEDOCUMENT, 'objectFile');
 
 		// if customer is not logged in, all documents/objects with filters must be hidden
-		$_restrictedFilesForCustomer = self::_getFilesWithRestrictionsOfCustomer($listview->ClassName, $filter);
+		$_restrictedFilesForCustomer = self::_getFilesWithRestrictionsOfCustomer($classname, $filter, $classID);
 
-		if($listview instanceof we_search_listview){ // search
+		if($classname == 'we_search_listview'){ // search
 			// build query from restricted files, regard search and normal listview
 			foreach($_restrictedFilesForCustomer as $ct => $_fileArray){
-				if(in_array($ct, $_allowedCTs)){
+				if($_fileArray){
 					$_idField = ($ct == we_base_ContentTypes::WEDOCUMENT ? 'DID' : 'OID');
-					if($_fileArray){
-						$_queryTail .= ' AND ' . $_idField . ' NOT IN(' . implode(', ', $_fileArray) . ')';
-					}
+					$_queryTail .= ' AND ' . $_idField . ' NOT IN(' . implode(', ', $_fileArray) . ')';
 				}
 			}
 			return $_queryTail;
@@ -197,16 +205,12 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 		$_fileArray = array();
 		// build query from restricted files, regard search and normal listview
 		foreach($_restrictedFilesForCustomer as $ct => $_fileArray){
-
-			if(in_array($ct, $_allowedCTs)){
-
+			if($_fileArray){
 				$_idField = ($ct == we_base_ContentTypes::WEDOCUMENT ?
 						FILE_TABLE . '.ID' :
-						OBJECT_X_TABLE . $listview->classID . '.OF_ID');
+						OBJECT_X_TABLE . $classID . '.OF_ID');
+				$_queryTail .= ' AND ' . $_idField . ' NOT IN(' . implode(', ', $_fileArray) . ')';
 			}
-		}
-		if($_fileArray){
-			$_queryTail = ' AND ' . $_idField . ' NOT IN(' . implode(', ', $_fileArray) . ')';
 		}
 
 		return $_queryTail;
@@ -368,66 +372,56 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	 * @param we_listview $listview
 	 * @return array
 	 */
-	private static function _getFilesWithRestrictionsOfCustomer($classname, $filter){
+	private static function _getFilesWithRestrictionsOfCustomer($classname, $filter, $classID){
 		//FIXME: this will query ALL documents with restrictions - this is definately not what we want!
 		$_db = new DB_WE();
 		$_cid = isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
 		$_filesWithRestrictionsForCustomer = array();
-		$_defaultQuery = !self::customerIsLogedIn() ? '(mode=' . we_customer_abstractFilter::ALL . ') OR ' : '';
 
-		$_blacklistQuery = ' (mode=' . we_customer_abstractFilter::FILTER . " AND blackList LIKE '%,$_cid,%') ";
-		$_whiteLlistQuery = ' (mode=' . we_customer_abstractFilter::FILTER . " AND whiteList NOT LIKE '%,$_cid,%') ";
-		$_specificCustomersQuery = ' (mode=' . we_customer_abstractFilter::SPECIFIC . " AND specificCustomers NOT LIKE '%,$_cid,%') ";
-
-		//FIXME: is this really what we want, why do we show documents with filters, which the customer has no access??? in listviews??
-		$_accessControlOnTemplateQuery = (($filter !== 'all' && $filter !== 'true' && $filter !== true) ? ' AND (accessControlOnTemplate = 0) ' : '' );
+		$listQuery = ' (mode=' . we_customer_abstractFilter::FILTER . " AND (FIND_IN_SET($_cid,blackList) AND !FIND_IN_SET($_cid,whiteList) ) ";
+		$_specificCustomersQuery = ' (mode=' . we_customer_abstractFilter::SPECIFIC . " AND !FIND_IN_SET($_cid,specificCustomers) ";
 
 		// detect all files/objects with restrictions
 		switch($classname){
 			case 'we_search_listview':
-				$_queryForIds = 'SELECT * FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE ' . $_defaultQuery . ' ' . $_blacklistQuery . ' OR ( (' . $_specificCustomersQuery . ' OR ' . $_whiteLlistQuery . ') ' . $_accessControlOnTemplateQuery . ')';
+				$_queryForIds = 'FROM ' . CUSTOMER_FILTER_TABLE . ' f WHERE modelType IN("objectFile","text/webedition") AND (' . $listQuery . ' OR ' . $_specificCustomersQuery . ')';
 				break;
 			case 'we_listview': // type="document"
-				$_queryForIds = 'SELECT * FROM ' . CUSTOMER_FILTER_TABLE . " WHERE modelTable='" . stripTblPrefix(FILE_TABLE) . "'  AND ($_defaultQuery $_blacklistQuery OR ( ($_specificCustomersQuery OR $_whiteLlistQuery) $_accessControlOnTemplateQuery))";
+				$_queryForIds = 'FROM ' . CUSTOMER_FILTER_TABLE . " f WHERE modelTable='" . stripTblPrefix(FILE_TABLE) . "' AND ($listQuery OR $_specificCustomersQuery )";
 				break;
 			case 'we_object_listview':
 			case 'we_object_listviewMultiobject': // type="object"
-				$_queryForIds = 'SELECT * FROM ' . CUSTOMER_FILTER_TABLE . " WHERE modelTable='" . stripTblPrefix(OBJECT_FILES_TABLE) . "' AND ($_defaultQuery $_blacklistQuery OR ( ($_specificCustomersQuery OR $_whiteLlistQuery) $_accessControlOnTemplateQuery))";
+				//at least check only documents of the specified class
+				$_queryForIds = 'FROM ' . CUSTOMER_FILTER_TABLE . ' f JOIN ' . OBJECT_X_TABLE . $classID . ' ON (modelId=OF_ID AND modelTable="' . stripTblPrefix(OBJECT_FILES_TABLE) . '") WHERE (' . $listQuery . ' OR ' . $_specificCustomersQuery . ')';
 				break;
 		}
 		// if customer is not logged in=> return NO_LOGIN
 		// else return correct filter
 		// execute the query (get all existing filters)
-		$_db->query($_queryForIds);
 
-		if(self::customerIsLogedIn()){ // visitor is not logged in
+
+		$_db->query('SELECT f.* ' . $_queryForIds);
 // visitor is logged in
-			$_filters = array();
-			while($_db->next_record()){
-				$_filters[] = self::getFilterByDbHash($_db->getRecord());
-			}
-
-			foreach($_filters as $filter){
-				$_perm = $filter->accessForVisitor($filter->getModelId(), $filter->getModelType(), false, true);
-				switch($_perm){
-					case self::NO_ACCESS:
-					case self::NO_LOGIN:
-						$_filesWithRestrictionsForCustomer[$filter->getModelType()][] = $filter->getModelId();
-						break;
-					case self::CONTROLONTEMPLATE:
-						if($filter === 'all' || $filter === 'true' || $filter === true){
-							$_filesWithRestrictionsForCustomer[$filter->getModelType()][] = $filter->getModelId();
-						}
-						break;
-				}
-			}
-
-			return $_filesWithRestrictionsForCustomer;
-		}
-		// Vistior is not logged in => Visitor has no Access to files with filters!
+		$_filters = array();
 		while($_db->next_record()){
-			$_filesWithRestrictionsForCustomer[$_db->f("modelType")][] = $_db->f("modelId");
+			$_filters[] = self::getFilterByDbHash($_db->getRecord());
 		}
+
+		foreach($_filters as $filter){
+			$_perm = $filter->accessForVisitor($filter->getModelId(), $filter->getModelType(), false, true);
+			switch($_perm){
+				case self::NO_ACCESS:
+				case self::NO_LOGIN:
+					$_filesWithRestrictionsForCustomer[$filter->getModelType()][] = $filter->getModelId();
+					break;
+				case self::CONTROLONTEMPLATE:
+					if($filter === 'all' || $filter === 'true' || $filter === true){
+						$_filesWithRestrictionsForCustomer[$filter->getModelType()][] = $filter->getModelId();
+					}
+					break;
+			}
+		}
+
 		return $_filesWithRestrictionsForCustomer;
 	}
 

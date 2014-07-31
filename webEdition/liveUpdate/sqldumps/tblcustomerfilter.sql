@@ -4,8 +4,6 @@
 /* query separator */
 ###UPDATEDROPKEY(modelIdN,###TBLPREFIX###tblcustomerfilter)###
 /* query separator */
-###UPDATEDROPKEY(mode,###TBLPREFIX###tblcustomerfilter)###
-/* query separator */
 
 CREATE TABLE ###TBLPREFIX###tblcustomerfilter (
   `modelId` bigint(20) unsigned NOT NULL,
@@ -20,5 +18,6 @@ CREATE TABLE ###TBLPREFIX###tblcustomerfilter (
   `whiteList` text NOT NULL,
   `blackList` text NOT NULL,
   PRIMARY KEY  (`modelId`,`modelTable`),
-  KEY modelType (modelType,accessControlOnTemplate)
+  KEY modelType (modelType,accessControlOnTemplate),
+	KEY mode(mode)
 ) ENGINE=MyISAM;

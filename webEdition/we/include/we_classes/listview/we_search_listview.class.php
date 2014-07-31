@@ -205,7 +205,7 @@ class we_search_listview extends listviewBase{
 		}
 
 		$weDocumentCustomerFilter_tail = (defined('CUSTOMER_FILTER_TABLE') ?
-				we_customer_documentFilter::getConditionForListviewQuery($this, $this->customerFilterType) :
+				we_customer_documentFilter::getConditionForListviewQuery($this->customerFilterType, $this->ClassName) :
 				'');
 
 		$this->anz_all = f('SELECT COUNT(1) FROM ' . INDEX_TABLE . " WHERE $bedingung_sql $dtcl_query $cat_tail $ws_where $where_lang $weDocumentCustomerFilter_tail", '', $this->DB_WE);
