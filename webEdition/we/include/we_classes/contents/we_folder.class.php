@@ -78,7 +78,7 @@ class we_folder extends we_root{
 				$this->initLanguageFromParent();
 			}
 			if(we_base_request::_(we_base_request::BOOL, 'we_edit_weDocumentCustomerFilter')){
-				$this->documentCustomerFilter = we_customer_documentFilter::getCustomerFilterFromRequest($this);
+				$this->documentCustomerFilter = we_customer_documentFilter::getCustomerFilterFromRequest($this->ID, $this->ContentType, $this->Table);
 			} else if(isset($sessDat[3])){ // init webUser from session
 				$this->documentCustomerFilter = unserialize($sessDat[3]);
 			}

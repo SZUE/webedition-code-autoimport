@@ -744,7 +744,7 @@ class we_document extends we_root{
 
 
 		if(we_base_request::_(we_base_request::INT, 'wecf_mode') !== false){
-			$this->documentCustomerFilter = we_customer_documentFilter::getCustomerFilterFromRequest($this);
+			$this->documentCustomerFilter = we_customer_documentFilter::getCustomerFilterFromRequest($this->ID, $this->ContentType, $this->Table);
 		} else if(isset($sessDat[3])){ // init webUser from session
 			$this->documentCustomerFilter = unserialize($sessDat[3]);
 		}

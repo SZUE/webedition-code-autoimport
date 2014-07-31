@@ -178,7 +178,7 @@ class we_listview extends listviewBase{
 			}
 		}
 		if(defined('CUSTOMER_FILTER_TABLE')){
-			$sql_tail .= we_customer_documentFilter::getConditionForListviewQuery($this);
+			$sql_tail .= we_customer_documentFilter::getConditionForListviewQuery($this, $this->customerFilterType);
 		}
 
 		if($this->customers && $this->customers !== '*'){

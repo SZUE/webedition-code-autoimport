@@ -166,7 +166,7 @@ class we_navigation_navigation extends weModelBase{
 		$this->ContentType = 'weNavigation';
 	}
 
-	function _getFilterOfDocument(){
+	private function _getFilterOfDocument(){
 		switch(($this->IsFolder ? $this->FolderSelection : $this->SelectionType)){
 			case self::STPYE_OBJLINK:
 				$_table = OBJECT_FILES_TABLE;

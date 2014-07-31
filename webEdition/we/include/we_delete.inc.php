@@ -21,7 +21,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 we_html_tools::protect();
 echo we_html_tools::getHtmlTop() .
  STYLESHEET;
@@ -87,7 +86,8 @@ if(!$wfchk){
 			if(!$idInfos){
 				t_e('ID ' . $selectedItems[0] . ' not present in table ' . $table);
 			} elseif($idInfos['IsFolder']){
-				$idInfos['hasFiles'] = f('SELECT ID FROM ' . $GLOBALS['DB_WE']->escape($table) . ' WHERE ParentID=' . intval($selectedItems[0]) . " AND  IsFolder = 0 AND Path LIKE '" . $GLOBALS['DB_WE']->escape($idInfos['Path']) . "%'", 'ID', $GLOBALS['DB_WE']) > 0 ? 1 : 0;
+				$idInfos['hasFiles'] = f('SELECT ID FROM ' . $GLOBALS['DB_WE']->escape($table) . ' WHERE ParentID=' . intval($selectedItems[0]) . " AND  IsFolder = 0 AND Path LIKE '" . $GLOBALS['DB_WE']->escape($idInfos['Path']) . "%'", 'ID', $GLOBALS['DB_WE']) > 0
+						? 1 : 0;
 			}
 		}
 
@@ -300,12 +300,10 @@ if(!$wfchk){
 						}
 
 						if(defined('CUSTOMER_TABLE')){ // delete the customerfilters
-							we_customer_documentFilter::deleteModel(
-								$deletedItems, $table);
+							we_customer_documentFilter::deleteModel($deletedItems, $table);
 							if(defined('OBJECT_FILES_TABLE') && $table == OBJECT_TABLE){
 								if(!empty($deleted_objects)){
-									we_customer_documentFilter::deleteModel(
-										$deleted_objects, OBJECT_FILES_TABLE);
+									we_customer_documentFilter::deleteModel($deleted_objects, OBJECT_FILES_TABLE);
 								}
 							}
 						}
@@ -385,7 +383,8 @@ if(!$wfchk){
 if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 	print we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead(we_html_element::jsElement(
 					($retVal ? //	document deleted -> go to seeMode startPage
-						we_message_reporting::getShowMessageCall(g_l('alert', '[delete_single][return_to_start]'), we_message_reporting::WE_MESSAGE_NOTICE) . "top.we_cmd('start_multi_editor');" :
+						we_message_reporting::getShowMessageCall(g_l('alert', '[delete_single][return_to_start]'), we_message_reporting::WE_MESSAGE_NOTICE) . "top.we_cmd('start_multi_editor');"
+							:
 						we_message_reporting::getShowMessageCall(g_l('alert', '[delete_single][no_delete]'), we_message_reporting::WE_MESSAGE_ERROR))
 	)));
 	exit();
