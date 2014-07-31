@@ -69,7 +69,7 @@ class we_fileupload_include extends we_fileupload_base{
 	const USE_LEGACY_FOR_BACKUP = true;
 	const USE_LEGACY_FOR_WEIMPORT = true;
 
-	function __construct($name, $formFrame = 'top', $onclick = '', $width = 400, $drop = true, $progress = true, $acceptedMime = '', $acceptedExt = '', $forbiddenMime = '', $forbiddenExt = '', $externalProgress = array(), $maxUploadSize = -1){
+	public function __construct($name, $formFrame = 'top', $onclick = '', $width = 400, $drop = true, $progress = true, $acceptedMime = '', $acceptedExt = '', $forbiddenMime = '', $forbiddenExt = '', $externalProgress = array(), $maxUploadSize = -1){
 		parent::__construct($name, $width, $maxUploadSize);
 
 		$this->formFrame = $formFrame;
@@ -129,11 +129,9 @@ class we_fileupload_include extends we_fileupload_base{
 
 	//TODO: split and move selector to base
 	public function getHTML(){
-		$butBrowse = we_html_button::create_button('browse_harddisk', 'javascript:alert("clicked")', true, ($this->dimensions['width'] - 103), 22);
-		$butBrowse = str_replace("\n", " ", str_replace("\r", " ", $butBrowse));
+		$butBrowse = str_replace(array("\n", "\r"), ' ', we_html_button::create_button('browse_harddisk', 'javascript:alert("clicked")', true, ($this->dimensions['width'] - 103), 22));
 
-		$butReset = we_html_button::create_button('reset', 'javascript:weFU.reset()', true, 100, 22, '', '', false);
-		$butReset = str_replace("\n", " ", str_replace("\r", " ", $butReset));
+		$butReset = str_replace(array("\n", "\r"), " ", we_html_button::create_button('reset', 'javascript:weFU.reset()', true, 100, 22, '', '', false));
 
 		$fileInput = we_html_element::htmlInput(array(
 				'class' => 'fileInput fileInputHidden',
@@ -477,7 +475,7 @@ weFU.setProgressCompleted = function(success){
 		return parent::_getSenderJS_core();
 	}
 
-	function _getSenderJS_additional(){
+	protected function _getSenderJS_additional(){
 		return we_html_element::jsElement('
 weFU.prepareUpload = function(){
 	//will do some of fileSelectHandlers job
@@ -608,9 +606,16 @@ weFU.reset = function(){
 					$tempName = $partNum == 1 ? $this->_makeFileNameTemp(self::GET_NAME_ONLY) : we_base_file::getUniqueId();
 					$tempPath = $this->_makeFileNameTemp(self::GET_PATH_ONLY, self::FORCE_DOC_ROOT);
 
-					$error = !$tempName ? 'no_filename_error' : '';
-					$error = $error ? $error : ($this->maxChunkCount && $partNum > $this->maxChunkCount ? 'oversized_error' : '');
-					$error = $error ? $error : (!@move_uploaded_file($_FILES[$this->name]["tmp_name"], $tempPath . $tempName) ? 'move_file_error' : '');
+					$error = (!$tempName ?
+							'no_filename_error' :
+							($this->maxChunkCount && $partNum > $this->maxChunkCount ?
+								'oversized_error' :
+								(!@move_uploaded_file($_FILES[$this->name]["tmp_name"], $tempPath . $tempName) ?
+									'move_file_error' :
+									''
+								)
+							)
+						);
 
 					//check mime type integrity when receiving first chunk
 					if($partNum == 1 && !$error){

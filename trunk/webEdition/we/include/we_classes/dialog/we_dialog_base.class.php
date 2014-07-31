@@ -188,10 +188,13 @@ class we_dialog_base{
 		if($this->pageNr == $this->numPages && $this->JsOnly == false){
 			$okBut = ($back = $this->getBackBut() ) ? we_html_button::create_button_table(array($back, we_html_button::create_button('ok', 'form:we_form'))) : we_html_button::create_button('ok', 'form:we_form');
 		} else if($this->pageNr < $this->numPages){
-			$okBut = (($back = $this->getBackBut()) && ($next = $this->getNextBut())) ? we_html_button::create_button_table(array($back, $next)) : (($back == '') ? $next
-						: $back);
+			$back = $this->getBackBut();
+			$next = $this->getNextBut();
+			$okBut = ($back && $next ) ? we_html_button::create_button_table(array($back, $next)) : (($back == '') ? $next : $back);
 		} else {
-			$okBut = (($back = $this->getBackBut()) && ($ok = $this->getOkBut()) ) ? we_html_button::create_button_table(array($back, $ok)) : (($back == '') ? $ok : $back);
+			$back = $this->getBackBut();
+			$ok = $this->getOkBut();
+			$okBut = ($back && $ok ) ? we_html_button::create_button_table(array($back, $ok)) : (($back == '') ? $ok : $back);
 		}
 		return we_html_button::position_yes_no_cancel($okBut, '', $this->getCancelBut());
 	}
