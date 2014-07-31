@@ -23,11 +23,11 @@
  */
 
 /**
- * class    we_listview
+ * class
  * @desc    class for tag <we:listview>
  *
  */
-class we_listview extends listviewBase{
+class we_listview_document extends we_listview_base{
 	var $docType = ''; /* doctype string */
 	var $IDs = array(); /* array of ids with pages which are found */
 	var $casesensitive = false; /* set to true when a search should be case sensitive */
@@ -43,7 +43,7 @@ class we_listview extends listviewBase{
 	public $triggerID = 0;
 
 	/**
-	 * we_listview()
+	 *
 	 * constructor of class
 	 *
 	 * @param   name          string  - name of listview
@@ -65,7 +65,7 @@ class we_listview extends listviewBase{
 	 * @param unknown_type $date
 	 * @param unknown_type $weekstart
 	 * @param string $categoryids
-	 * @return we_listview
+	 * @return we_listview_document
 	 */
 	function __construct($name, $rows, $offset, $order, $desc, $docType, $cats, $catOr, $casesensitive, $workspaceID, $contentTypes, $cols, $searchable, $condition, $calendar, $datefield, $date, $weekstart, $categoryids, $customerFilterType, $subfolders, $customers, $id, $languages, $numorder, $hidedirindex, $triggerID){
 		parent::__construct($name, $rows, $offset, $order, $desc, $cats, $catOr, $workspaceID, $cols, $calendar, $datefield, $date, $weekstart, $categoryids, $customerFilterType, $id);

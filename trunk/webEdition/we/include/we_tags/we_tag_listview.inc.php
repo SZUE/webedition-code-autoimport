@@ -151,10 +151,10 @@ function we_tag_listview($attribs){
 
 	switch($type){
 		case 'document':
-			$GLOBALS['lv'] = new we_listview($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $doctype, $we_lv_cats, $we_lv_catOr, $casesensitive, $we_lv_ws, $we_lv_ct, $cols, $we_lv_se, $cond, $we_lv_calendar, $we_lv_datefield, $we_lv_date, $we_lv_weekstart, $we_lv_categoryids, $cfilter, $we_lv_subfolders, $customers, $id, $we_lv_languages, $we_lv_numorder, $hidedirindex, $triggerid);
+			$GLOBALS['lv'] = new we_listview_document($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $doctype, $we_lv_cats, $we_lv_catOr, $casesensitive, $we_lv_ws, $we_lv_ct, $cols, $we_lv_se, $cond, $we_lv_calendar, $we_lv_datefield, $we_lv_date, $we_lv_weekstart, $we_lv_categoryids, $cfilter, $we_lv_subfolders, $customers, $id, $we_lv_languages, $we_lv_numorder, $hidedirindex, $triggerid);
 			break;
 		case 'search':
-			$GLOBALS['lv'] = new we_search_listview($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $doctype, $class, $we_lv_cats, $we_lv_catOr, $casesensitive, $we_lv_ws, $triggerid, $cols, $cfilter, $we_lv_languages, $hidedirindex, $objectseourls);
+			$GLOBALS['lv'] = new we_listview_search($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $doctype, $class, $we_lv_cats, $we_lv_catOr, $casesensitive, $we_lv_ws, $triggerid, $cols, $cfilter, $we_lv_languages, $hidedirindex, $objectseourls);
 			break;
 		case 'object':
 			if(!defined('OBJECT_TABLE')){
@@ -196,7 +196,7 @@ function we_tag_listview($attribs){
 			}
 			unset($we_lv_langguagesdoc);
 
-			$GLOBALS['lv'] = new we_langlink_listview($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $we_lv_linktype, $cols, $showself, $we_lv_pageID, $we_lv_pagelanguage, $we_lv_ownlanguage, $hidedirindex, $objectseourls, $we_lv_subfolders);
+			$GLOBALS['lv'] = new we_listview_langlink($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $we_lv_linktype, $cols, $showself, $we_lv_pageID, $we_lv_pagelanguage, $we_lv_ownlanguage, $hidedirindex, $objectseourls, $we_lv_subfolders);
 			break;
 		case 'customer':
 			if(!defined('CUSTOMER_TABLE')){
@@ -272,7 +272,7 @@ function we_tag_listview($attribs){
 			$parentidname = weTag_getAttribute('parentidname', $attribs);
 //$categoryids="' . $categoryids . '";
 //$parentid="' . $parentid . '";
-			$GLOBALS['lv'] = new we_catListview($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $parentid, $categoryids, 'default', $cols, ($parentidname ? $parentidname
+			$GLOBALS['lv'] = new we_listview_category($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $parentid, $categoryids, 'default', $cols, ($parentidname ? $parentidname
 						: ''), $hidedirindex);
 			break;
 		default:

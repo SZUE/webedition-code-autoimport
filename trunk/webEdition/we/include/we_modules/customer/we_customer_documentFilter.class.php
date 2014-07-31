@@ -167,7 +167,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 			return '';
 		}
 		if(!self::customerIsLogedIn()){ //we don't show any documents with an customerfilter
-			if($classname == 'we_search_listview'){ // search
+			if($classname == 'we_listview_search'){ // search
 				return ' AND DID NOT IN(SELECT modelId FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="' . stripTblPrefix(FILE_TABLE) . '")' .
 					' AND OID NOT IN(SELECT modelId FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="' . stripTblPrefix(OBJECT_FILES_TABLE) . '")';
 			}
@@ -183,7 +183,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 		// if customer is not logged in, all documents/objects with filters must be hidden
 		$_restrictedFilesForCustomer = self::_getFilesWithRestrictionsOfCustomer($classname, $filter, $classID);
 
-		if($classname == 'we_search_listview'){ // search
+		if($classname == 'we_listview_search'){ // search
 			// build query from restricted files, regard search and normal listview
 			foreach($_restrictedFilesForCustomer as $ct => $_fileArray){
 				if($_fileArray){
@@ -360,7 +360,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	/**
 	 * private function. gets all file ids which customer can not accesss
 	 *
-	 * @param we_listview $listview
+	 * @param we_listview_document $listview
 	 * @return array
 	 */
 	private static function _getFilesWithRestrictionsOfCustomer($classname, $filter, $classID){
@@ -369,15 +369,15 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 		$_cid = isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
 		$_filesWithRestrictionsForCustomer = array();
 
-		$listQuery = ' (mode=' . we_customer_abstractFilter::FILTER . " AND !FIND_IN_SET($_cid,whiteList) ) ";//FIND_IN_SET($_cid,blackList) AND 
+		$listQuery = ' (mode=' . we_customer_abstractFilter::FILTER . " AND !FIND_IN_SET($_cid,whiteList) ) ";//FIND_IN_SET($_cid,blackList) AND
 		$_specificCustomersQuery = ' (mode=' . we_customer_abstractFilter::SPECIFIC . " AND !FIND_IN_SET($_cid,specificCustomers)) ";
 
 		// detect all files/objects with restrictions
 		switch($classname){
-			case 'we_search_listview':
+			case 'we_listview_search':
 				$_queryForIds = 'FROM ' . CUSTOMER_FILTER_TABLE . ' f WHERE modelType IN("objectFile","text/webedition") AND (' . $listQuery . ' OR ' . $_specificCustomersQuery . ')';
 				break;
-			case 'we_listview': // type="document"
+			case 'we_listview_document': // type="document"
 				$_queryForIds = 'FROM ' . CUSTOMER_FILTER_TABLE . " f WHERE modelTable='" . stripTblPrefix(FILE_TABLE) . "' AND ($listQuery OR $_specificCustomersQuery )";
 				break;
 			case 'we_object_listview':

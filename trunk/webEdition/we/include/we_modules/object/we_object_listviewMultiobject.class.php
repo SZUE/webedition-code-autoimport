@@ -28,7 +28,7 @@
  *
  */
 //FIXME: is this class not ~ listview_object? why is this not the base class???
-class we_object_listviewMultiobject extends listviewBase{
+class we_object_listviewMultiobject extends we_listview_base{
 	var $classID = ''; /* ID of a class */
 	var $objects = ''; /* Comma sepearated list of all objetcs to show in this listview */
 	var $triggerID = 0; /* ID of a document which to use for displaying thr detail page */

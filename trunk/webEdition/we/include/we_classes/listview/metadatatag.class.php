@@ -55,7 +55,7 @@ class metadatatag{
 			if(!$this->id){
 				return;
 			}
-			$this->object = new we_listview($unique, 1, 0, "", false, "", "", false, false, 0, "", "", false, "", "", "", "", "", "", "off", true, "", $this->id, '', false, false, 0);
+			$this->object = new we_listview_document($unique, 1, 0, "", false, "", "", false, false, 0, "", "", false, "", "", "", "", "", "", "off", true, "", $this->id, '', false, false, 0);
 			$this->avail = ($this->object->next_record());
 		}
 	}

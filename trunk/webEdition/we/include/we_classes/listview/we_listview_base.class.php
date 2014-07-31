@@ -28,7 +28,7 @@
  * @desc    This is the base class for all webEdition listviews.
  *
  */
-abstract class listviewBase{
+abstract class we_listview_base{
 
 	var $DB_WE; /* Main DB Object */
 	var $name; /* name of listview */
@@ -282,10 +282,10 @@ abstract class listviewBase{
 			$attribs['href'] .=(strpos($attribs['href'], '?') === false ? '?' : '&');
 			$attribs['rel'] = 'prev';
 
-			$tmp_href = oldHtmlspecialchars(listviewBase::we_makeQueryString('we_lv_calendar_' . $this->name . '=' . $this->calendar_struct['calendar'] . '&we_lv_datefield_' . $this->name . '=' . $this->calendar_struct['datefield'] . '&we_lv_date_' . $this->name . '=' . $newdate));
+			$tmp_href = oldHtmlspecialchars(we_listview_base::we_makeQueryString('we_lv_calendar_' . $this->name . '=' . $this->calendar_struct['calendar'] . '&we_lv_datefield_' . $this->name . '=' . $this->calendar_struct['datefield'] . '&we_lv_date_' . $this->name . '=' . $newdate));
 		} else if($this->hasPrevPage()){
 			$foo = $this->start - $this->maxItemsPerPage;
-			$tmp_href = oldHtmlspecialchars(listviewBase::we_makeQueryString('we_lv_start_' . $this->name . '=' . $foo));
+			$tmp_href = oldHtmlspecialchars(we_listview_base::we_makeQueryString('we_lv_start_' . $this->name . '=' . $foo));
 		} else {
 			return '';
 		}
@@ -385,11 +385,11 @@ abstract class listviewBase{
 					break;
 			}
 			$newdate = $year . '-' . $month . '-' . $day;
-			$tmp_href = oldHtmlspecialchars(listviewBase::we_makeQueryString('we_lv_calendar_' . $this->name . '=' . $this->calendar_struct['calendar'] . '&we_lv_datefield_' . $this->name . '=' . $this->calendar_struct['datefield'] . '&we_lv_date_' . $this->name . '=' . $newdate));
+			$tmp_href = oldHtmlspecialchars(we_listview_base::we_makeQueryString('we_lv_calendar_' . $this->name . '=' . $this->calendar_struct['calendar'] . '&we_lv_datefield_' . $this->name . '=' . $this->calendar_struct['datefield'] . '&we_lv_date_' . $this->name . '=' . $newdate));
 		} else if($this->hasNextPage()){
 
 			$foo = $this->start + $this->maxItemsPerPage;
-			$tmp_href = oldHtmlspecialchars(listviewBase::we_makeQueryString('we_lv_start_' . $this->name . '=' . $foo));
+			$tmp_href = oldHtmlspecialchars(we_listview_base::we_makeQueryString('we_lv_start_' . $this->name . '=' . $foo));
 		} else {
 			return '';
 		}

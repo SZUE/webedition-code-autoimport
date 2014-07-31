@@ -23,14 +23,14 @@
  */
 
 /**
- * class    we_search_listview
+ * class
  * @desc    class for tag <we:listview type="search">
  *          the difference to the normal listview is, that you can only
  *          display the fields from the index table (tblIndex) which are
  *          Title, Description we_text, we_path
  *
  */
-class we_search_listview extends listviewBase{
+class we_listview_search extends we_listview_base{
 	var $docType = ''; /* doctype string */
 	var $class = 0; /* ID of a class. Search only in Objects of this class */
 	var $triggerID = 0; /* ID of a document which to use for displaying thr detail page */
@@ -41,7 +41,7 @@ class we_search_listview extends listviewBase{
 	var $hidedirindex = false;
 
 	/**
-	 * we_search_listview()
+	 *
 	 * @desc    constructor of class
 	 *
 	 * @param   name         string - name of listview

@@ -24,11 +24,11 @@
  */
 
 /**
- * class    we_listview
+ * class
  * @desc    class for tag <we:listview>
  *
  */
-class we_langlink_listview extends listviewBase{
+class we_listview_langlink extends we_listview_base{
 
 	var $docType = ""; /* doctype string */
 	var $IDs = array(); /* array of ids with pages which are found */
@@ -52,7 +52,7 @@ class we_langlink_listview extends listviewBase{
 	var $recursive = true; // #7023: search for default corresponding language link-up in parent folders
 
 	/**
-	 * we_listview()
+	 * ()
 	 * constructor of class
 	 *
 	 * @param   name          string  - name of listview
@@ -64,7 +64,7 @@ class we_langlink_listview extends listviewBase{
 	 * @param   contentTypes  string  - contenttypes of documents (image,text ...)
 	 * @param   cols   		  integer - to display a table this is the number of cols
 	 * @param   searchable 	  boolean - if false then show also documents which are not marked as searchable
-	 * @return we_listview
+	 * @return we_listview_document
 	 */
 
 	function __construct($name, $rows, $offset, $order, $desc, $linkType, $cols, $showself, $id, $pagelanguage, $ownlanguage, $hidedirindex, $objectseourls, $recursive){

@@ -42,7 +42,7 @@ function we_tag_ifSelf($attribs){
 			switch(get_class($GLOBALS['lv'])){
 				case 'we_object_listview':
 					return in_array($GLOBALS['lv']->getDBf('OF_ID'), $ids);
-				case 'we_search_listview':
+				case 'we_listview_search':
 					return in_array($GLOBALS['lv']->getDBf('WE_ID'), $ids);
 				case 'we_shop_listviewShopVariants':
 					reset($GLOBALS['lv']->Record);
@@ -58,14 +58,13 @@ function we_tag_ifSelf($attribs){
 		case 'self' :
 			if(isset($GLOBALS['we']['ll'])){
 				return $GLOBALS['we']['ll']->getID() == $GLOBALS['we_doc']->ID;
-			} else {
-				return in_array($GLOBALS['we_doc']->ID, $ids);
 			}
+			return in_array($GLOBALS['we_doc']->ID, $ids);
+
 		default :
 			if(isset($GLOBALS['we']['ll'])){
 				return $GLOBALS['we']['ll']->getID() == $GLOBALS['WE_MAIN_DOC']->ID;
-			} else {
-				return in_array($GLOBALS['WE_MAIN_DOC']->ID, $ids);
 			}
+			return in_array($GLOBALS['WE_MAIN_DOC']->ID, $ids);
 	}
 }

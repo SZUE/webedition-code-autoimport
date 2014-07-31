@@ -27,7 +27,7 @@
  * @desc    class for tag <we:listview type="object">
  *
  */
-class we_object_listview extends listviewBase{
+class we_object_listview extends we_listview_base{
 	var $classID; /* ID of a class */
 	var $triggerID; /* ID of a document which to use for displaying thr detail page */
 	var $condition = ''; /* condition string (like SQL) */
@@ -382,7 +382,7 @@ class we_object_listview extends listviewBase{
 		$fetch = false;
 		if($this->calendar_struct['calendar']){
 			if($this->count < $this->anz){
-				listviewBase::next_record();
+				we_listview_base::next_record();
 				$count = $this->calendar_struct['count'];
 				$fetch = $this->calendar_struct['forceFetch'];
 				$this->DB_WE->Record = array();

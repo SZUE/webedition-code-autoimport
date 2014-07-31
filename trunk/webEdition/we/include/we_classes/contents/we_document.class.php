@@ -852,7 +852,7 @@ class we_document extends we_root{
 							$altField = (WE_SHOP_VARIANTS_PREFIX . $GLOBALS['lv']->Position . '_' . $altField);
 							$titleField = (WE_SHOP_VARIANTS_PREFIX . $GLOBALS['lv']->Position . '_' . $titleField);
 							break;
-						case 'we_listview':
+						case 'we_listview_document':
 							$alt = $GLOBALS['lv']->f($altField) ? $GLOBALS['lv']->f($altField) : '';
 							$title = $GLOBALS['lv']->f($titleField) ? $GLOBALS['lv']->f($titleField) : '';
 						case 'we_object_listview':

@@ -74,7 +74,7 @@ function we_isFieldNotEmpty($attribs){
 			}
 			return false;
 		case 'object' : //Bug 3837: erstmal die Klasse rausfinden um auf den Eintrag we_we_object_X zu kommen
-			if($GLOBALS['lv'] instanceof we_listview){ // listview/document with objects included using we:object
+			if($GLOBALS['lv'] instanceof we_listview_document){ // listview/document with objects included using we:object
 				return (bool) $GLOBALS['lv']->f($match);
 			}
 			$match = strpos($orig_match, '/') === false ? $orig_match : substr(strrchr($orig_match, '/'), 1);

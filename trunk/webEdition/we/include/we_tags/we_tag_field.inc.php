@@ -239,7 +239,7 @@ function we_tag_field($attribs){
 		case 'year' :
 		case 'hour' :
 		case 'week' :
-			$out = listviewBase::getCalendarField($GLOBALS['lv']->calendar_struct['calendar'], $type);
+			$out = we_listview_base::getCalendarField($GLOBALS['lv']->calendar_struct['calendar'], $type);
 			break;
 
 		case 'multiobject':
@@ -294,7 +294,7 @@ function we_tag_field($attribs){
 		case 'href' ://#6329: fixed for lv type=document. check later for other types! #6421: field type=href in we:block
 			if(isset($GLOBALS['lv'])){
 				switch(get_class($GLOBALS['lv'])){
-					case 'we_listview':
+					case 'we_listview_document':
 						$hrefArr = array(
 							'int' => $GLOBALS['lv']->f($name . we_base_link::MAGIC_INT_LINK) ? $GLOBALS['lv']->f($name . we_base_link::MAGIC_INT_LINK) : $GLOBALS['lv']->f(we_tag_getPostName($name) . we_base_link::MAGIC_INT_LINK),
 							'intID' => $GLOBALS['lv']->f($name . we_base_link::MAGIC_INT_LINK_ID) ? $GLOBALS['lv']->f($name . we_base_link::MAGIC_INT_LINK_ID) : $GLOBALS['lv']->f(we_tag_getPostName($name) . we_base_link::MAGIC_INT_LINK_ID),
@@ -316,7 +316,7 @@ function we_tag_field($attribs){
 			}
 		default : // FIXME: treat type="select" as separate case, and clean up the mess with all this little fixes
 
-			if($name == 'WE_PATH' && $triggerid && in_array(get_class($GLOBALS['lv']), array('we_search_listview', 'we_object_listview', 'we_object_listviewMultiobject', 'we_object_tag'))){
+			if($name == 'WE_PATH' && $triggerid && in_array(get_class($GLOBALS['lv']), array('we_listview_search', 'we_object_listview', 'we_object_listviewMultiobject', 'we_object_tag'))){
 				$triggerpath = id_to_path($triggerid);
 				$triggerpath_parts = pathinfo($triggerpath);
 				$normVal = ($triggerpath_parts['dirname'] != '/' ? $triggerpath_parts['dirname'] : '') . '/' .
@@ -511,7 +511,7 @@ function we_tag_field($attribs){
 					$GLOBALS['lv']->tid = $tid;
 				}
 
-				if(($GLOBALS['lv'] instanceof we_search_listview) && $GLOBALS['lv']->f('OID')){
+				if(($GLOBALS['lv'] instanceof we_listview_search) && $GLOBALS['lv']->f('OID')){
 					$tail = ($tid ? '&amp;we_objectTID=' . $tid : '');
 
 					$path_parts = pathinfo($_SERVER['SCRIPT_NAME']);
@@ -543,7 +543,7 @@ function we_tag_field($attribs){
 							$_linkAttribs['href'] :
 							getHtmlTag('a', $_linkAttribs, $out, true) //  output of link-tag
 						);
-				} elseif(($GLOBALS['lv'] instanceof we_catListview) && we_tag('ifHasChildren')){
+				} elseif(($GLOBALS['lv'] instanceof we_listview_category) && we_tag('ifHasChildren')){
 					$parentidname = weTag_getAttribute('parentidname', $attribs, 'we_parentid');
 					$_linkAttribs['href'] = $_SERVER['SCRIPT_NAME'] . '?' . $parentidname . '=' . $GLOBALS['lv']->f('ID');
 
@@ -554,11 +554,11 @@ function we_tag_field($attribs){
 				} else {
 					$showlink = false;
 					switch(get_class($GLOBALS['lv'])){
-						case 'we_listview':
+						case 'we_listview_document':
 							$triggerid = $triggerid ? $triggerid : $GLOBALS['lv']->triggerID;
 							$tailOwnId = '?we_documentID=' . $GLOBALS['lv']->f('wedoc_ID');
 						case '':
-						case 'we_search_listview':
+						case 'we_listview_search':
 						case 'we_shop_listviewShopVariants':
 						case 'we_shop_shop':
 						case 'we_customertag':
@@ -602,7 +602,7 @@ function we_tag_field($attribs){
 								  (!$GLOBALS['WE_MAIN_DOC']->InWebEdition && NAVIGATION_DIRECTORYINDEX_NAMES && isset($GLOBALS['lv']->hidedirindex) && $GLOBALS['lv']->hidedirindex && in_array($triggerpath_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
 								  '' : $triggerpath_parts['filename'] . '/'
 								  ) . $GLOBALS['lv']->f('WE_URL') . $tail;
-								  
+
 								  fix by lukas
 								  $_linkAttribs['href'] = (!$GLOBALS['WE_MAIN_DOC']->InWebEdition && NAVIGATION_DIRECTORYINDEX_NAMES && isset($GLOBALS['lv']->hidedirindex) && $GLOBALS['lv']->hidedirindex && in_array($triggerpath_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))) ?
 									($triggerpath_parts['dirname'] != '/' ? $triggerpath_parts['dirname'] : '') . '/' . $GLOBALS['lv']->f('WE_URL') . $tail :
@@ -615,7 +615,7 @@ function we_tag_field($attribs){
 									($triggerpath_parts['dirname'] != '/' ? $triggerpath_parts['dirname'] : '') . '/' . $GLOBALS['lv']->f('WE_URL') . $tail : //Fix #8708 do not hidedirindex of triggerID
 									($triggerpath_parts['dirname'] != '/' ? $triggerpath_parts['dirname'] : '') . '/'.$triggerpath_parts['filename'].'/'.$GLOBALS['lv']->f('WE_URL') . $tail) : //objectseourls=false or not set
 									$triggerpath . $tailOwnId . $tail;
-									
+
 								/* End Fix '7771 */
 							} else {
 								$_linkAttribs['href'] = (show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && isset($GLOBALS['lv']->hidedirindex) && $GLOBALS['lv']->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?

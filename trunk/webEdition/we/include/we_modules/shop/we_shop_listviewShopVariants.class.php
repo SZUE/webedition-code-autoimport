@@ -27,7 +27,7 @@
  * @desc    class for tag <we:listview type="shopVariants">
  *
  */
-class we_shop_listviewShopVariants extends listviewBase{
+class we_shop_listviewShopVariants extends we_listview_base{
 
 	var $Record = array();
 	var $ClassName = __CLASS__;
