@@ -24,11 +24,11 @@
  */
 
 /**
- * class    we_listview
+ * class
  * @desc    class for tag <we:listview>
  *
  */
-class we_catListview extends listviewBase{
+class we_listview_category extends we_listview_base{
 
 	var $parentID = 0;
 	var $catID = 0;
@@ -37,7 +37,6 @@ class we_catListview extends listviewBase{
 	var $hidedirindex = false;
 
 	/**
-	 * we_listview()
 	 * constructor of class
 	 *
 	 * @param   name          string  - name of listview

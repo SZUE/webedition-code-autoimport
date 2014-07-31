@@ -40,7 +40,7 @@ function we_tag_author($attribs){
 				case 'we_object_tag'://we:object
 					$objID = $GLOBALS['lv']->id;
 					break;
-				case 'we_search_listview'://listview type=search
+				case 'we_listview_search'://listview type=search
 					$oid = f('SELECT OID FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($GLOBALS['lv']->getDBf('WE_ID')) . ' OR OID=' . intval($GLOBALS['lv']->getDBf('WE_ID')), 'OID', $GLOBALS['DB_WE']);
 					if($oid > 0){//object
 						$objID = $GLOBALS['lv']->getDBf('WE_ID');

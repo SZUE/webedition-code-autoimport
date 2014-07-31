@@ -28,7 +28,7 @@
  * @desc    class for tag
  *
  */
-class we_customer_onlinemonitor extends listviewBase{
+class we_customer_onlinemonitor extends we_listview_base{
 
 	private $condition = '';
 	private $Path = '';

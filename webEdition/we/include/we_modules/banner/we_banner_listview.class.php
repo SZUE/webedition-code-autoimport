@@ -28,7 +28,7 @@
  * @desc    class for tag <we:listview type="banner">
  *
  */
-class we_banner_listview extends listviewBase{
+class we_banner_listview extends we_listview_base{
 
 	var $ClassName = __CLASS__;
 	var $allviews = 0;

@@ -85,7 +85,7 @@ function we_tag_setVar($attribs){
 				$valueFrom = isset($_SESSION['webuser'][$nameFrom]) ? $_SESSION['webuser'][$nameFrom] : '';
 				break;
 			case 'calendar' :
-				$valueFrom = listviewBase::getCalendarFieldValue($GLOBALS['lv']->calendar_struct, $nameFrom);
+				$valueFrom = we_listview_base::getCalendarFieldValue($GLOBALS['lv']->calendar_struct, $nameFrom);
 				break;
 			case 'listview' :
 				if(!isset($GLOBALS['lv'])){
