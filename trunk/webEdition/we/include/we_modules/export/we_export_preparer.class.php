@@ -312,7 +312,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 			if($this->options["handle_document_includes"]){
 				$this->getDocumentIncludes($_data, $level);
 			}
-			if($this->options["handle_object_includes"] && defined("OBJECT_FILES_TABLE")){
+			if($this->options["handle_object_includes"] && defined('OBJECT_FILES_TABLE')){
 				$this->getObjectIncludes($_data, $level);
 			}
 			if($this->options["handle_document_linked"]){

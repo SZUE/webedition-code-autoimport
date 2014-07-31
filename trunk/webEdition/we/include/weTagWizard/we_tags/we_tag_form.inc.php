@@ -38,9 +38,9 @@ $preconfirm = new weTagData_textAttribute('preconfirm', false, '');
 $postconfirm = new weTagData_textAttribute('postconfirm', false, '');
 $doctype = new weTagData_sqlRowAttribute('doctype', DOC_TYPES_TABLE, true, 'DocType', '', '', '');
 $categories = new weTagData_multiSelectorAttribute('categories', CATEGORY_TABLE, '', 'Path', false, '');
-$tid = (defined("TEMPLATES_TABLE") ? new weTagData_selectorAttribute('tid', TEMPLATES_TABLE, 'text/weTmpl', false, '') : null);
-$classid = (defined("OBJECT_TABLE") ? new weTagData_selectorAttribute('classid', OBJECT_TABLE, 'object', false, 'object') : null);
-$parentid = (defined("OBJECT_FILES_TABLE") ? new weTagData_selectorAttribute('parentid', OBJECT_FILES_TABLE, weTagData_selectorAttribute::FOLDER, false, '') : null);
+$tid = (defined('TEMPLATES_TABLE') ? new weTagData_selectorAttribute('tid', TEMPLATES_TABLE, 'text/weTmpl', false, '') : null);
+$classid = (defined('OBJECT_TABLE') ? new weTagData_selectorAttribute('classid', OBJECT_TABLE, 'object', false, 'object') : null);
+$parentid = (defined('OBJECT_FILES_TABLE') ? new weTagData_selectorAttribute('parentid', OBJECT_FILES_TABLE, weTagData_selectorAttribute::FOLDER, false, '') : null);
 $xml = new weTagData_selectAttribute('xml', weTagData_selectAttribute::getTrueFalse(), false, '');
 $enctype = new weTagData_selectAttribute('enctype', array(new weTagDataOption('application/x-www-form-urlencoded'),
 	new weTagDataOption('multipart/form-data'),

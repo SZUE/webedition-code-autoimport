@@ -530,7 +530,7 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 			$out.=we_html_element::htmlBr() .
 				we_html_element::htmlDiv(array("class" => "defaultfont"), $tab1 . we_html_element::htmlB(sprintf(g_l('modules_newsletter', '[mailing_list]'), $k)));
 			$gc = 0;
-			if(defined("CUSTOMER_TABLE")){
+			if(defined('CUSTOMER_TABLE')){
 				$out.=we_html_element::htmlDiv(array("class" => "defaultfont"), $tab2 . g_l('modules_newsletter', '[customers]'));
 				$emails = $this->View->getEmails($k, we_newsletter_view::MAILS_CUSTOMER, 1);
 
@@ -759,7 +759,7 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 			we_newsletter_block::DOCUMENT_FIELD => g_l('modules_newsletter', '[newsletter_type_1]'),
 		);
 
-		if(defined("OBJECT_TABLE")){
+		if(defined('OBJECT_TABLE')){
 			$values[we_newsletter_block::OBJECT] = g_l('modules_newsletter', '[newsletter_type_2]');
 			$values[we_newsletter_block::OBJECT_FIELD] = g_l('modules_newsletter', '[newsletter_type_3]');
 		}
@@ -1189,7 +1189,7 @@ window.onload=extraInit;');
 		for($i = 0; $i < $count; $i++){
 			$parts = array();
 
-			if(defined("CUSTOMER_TABLE")){
+			if(defined('CUSTOMER_TABLE')){
 				$parts[] = array("headline" => g_l('modules_newsletter', '[customers]'), "html" => $this->getHTMLCustomer($i), "space" => 140);
 			}
 

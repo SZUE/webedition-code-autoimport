@@ -33,7 +33,7 @@ function we_tag_css($attribs){
 	}
 
 	$nolink = false;
-	switch(weTag_getAttribute('applyto', $attribs, defined("CSSAPPLYTO_DEFAULT") ? CSSAPPLYTO_DEFAULT : 'around')){
+	switch(weTag_getAttribute('applyto', $attribs, defined('CSSAPPLYTO_DEFAULT') ? CSSAPPLYTO_DEFAULT : 'around')){
 		case 'around' :
 			break;
 		case 'wysiwyg' :

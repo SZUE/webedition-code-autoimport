@@ -1021,10 +1021,10 @@ class doclistView{
 					case FILE_TABLE:
 						$whereQuery .= " AND ((RestrictOwners='0' OR RestrictOwners= '" . intval($_SESSION["user"]["ID"]) . "') OR (Owners LIKE '%," . intval($_SESSION["user"]["ID"]) . ",%'))";
 						break;
-					case (defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
+					case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 						$whereQuery .= " AND ((RestrictOwners='0' OR RestrictOwners= '" . intval($_SESSION["user"]["ID"]) . "') OR (Owners LIKE '%," . intval($_SESSION["user"]["ID"]) . ",%'))";
 						break;
-					case (defined("OBJECT_TABLE") ? OBJECT_TABLE : OBJECT_TABLE):
+					case (defined('OBJECT_TABLE') ? OBJECT_TABLE : OBJECT_TABLE):
 						$whereQuery .= "AND ((RestrictUsers='0' OR RestrictUsers= '" . intval($_SESSION["user"]["ID"]) . "') OR (Users LIKE '%," . intval($_SESSION["user"]["ID"]) . ",%')) ";
 						break;
 				}
@@ -1332,7 +1332,7 @@ class doclistView{
 		$select = we_html_tools::htmlSelect("page", $pages, 1, $page, false, array("onchange" => "this.form.elements['searchstart'].value = this.value; search(false);"));
 
 		if(!we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 'setInputSearchstart')){
-			if(!defined("searchstart")){
+			if(!defined('searchstart')){
 				define("searchstart", true);
 				$out .= we_html_tools::hidden("searchstart", $searchstart);
 			}

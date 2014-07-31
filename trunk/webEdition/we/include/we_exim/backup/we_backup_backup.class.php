@@ -149,8 +149,8 @@ class we_backup_backup extends we_backup_base{
 			}
 
 			if(
-				((defined("OBJECT_TABLE") && $object->table == OBJECT_TABLE) ||
-				(defined("OBJECT_FILES_TABLE") && $object->table == OBJECT_FILES_TABLE)) && $this->old_objects_deleted == 0){
+				((defined('OBJECT_TABLE') && $object->table == OBJECT_TABLE) ||
+				(defined('OBJECT_FILES_TABLE') && $object->table == OBJECT_FILES_TABLE)) && $this->old_objects_deleted == 0){
 				$this->delOldTables();
 				$this->old_objects_deleted = 1;
 			}
@@ -448,7 +448,7 @@ class we_backup_backup extends we_backup_base{
 	 * Description: This function checks if a table name has its correct value.
 	 */
 	function isFixed($tab){
-		if(defined("OBJECT_X_TABLE")){
+		if(defined('OBJECT_X_TABLE')){
 			if(stripos($tab, OBJECT_X_TABLE) !== false){
 				return !(isset($this->handle_options["object"]) && $this->handle_options["object"]);
 			}
@@ -616,7 +616,7 @@ $this->file_list=' . var_export($this->file_list, true) . ';';
 	}
 
 	function delOldTables(){
-		if(!defined("OBJECT_X_TABLE") || !isset($this->handle_options["object"]) || !$this->handle_options["object"]){
+		if(!defined('OBJECT_X_TABLE') || !isset($this->handle_options["object"]) || !$this->handle_options["object"]){
 			return;
 		}
 		$this->backup_db->query("SHOW TABLE STATUS");

@@ -27,7 +27,7 @@ function we_parse_tag_voting($attribs, $content){
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_voting($attribs){
-	if(!defined("VOTING_TABLE")){
+	if(!defined('VOTING_TABLE')){
 		return modulFehltError('Voting', __FUNCTION__);
 	}
 	$id = weTag_getAttribute("id", $attribs, 0);

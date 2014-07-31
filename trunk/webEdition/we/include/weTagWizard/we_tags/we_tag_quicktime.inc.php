@@ -10,10 +10,10 @@ $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 $this->Attributes[] = new weTagData_textAttribute('name', true, '');
 $this->Attributes[] = new weTagData_textAttribute('width', false, '');
 $this->Attributes[] = new weTagData_textAttribute('height', false, '');
-if(defined("FILE_TABLE")){
+if(defined('FILE_TABLE')){
 	$this->Attributes[] = new weTagData_selectorAttribute('startid', FILE_TABLE, weTagData_selectorAttribute::FOLDER, false, '');
 }
-if(defined("FILE_TABLE")){
+if(defined('FILE_TABLE')){
 	$this->Attributes[] = new weTagData_selectorAttribute('parentid', FILE_TABLE, weTagData_selectorAttribute::FOLDER, false, '');
 }
 $this->Attributes[] = new weTagData_selectAttribute('showcontrol', weTagData_selectAttribute::getTrueFalse(), false, '');

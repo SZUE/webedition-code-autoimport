@@ -29,7 +29,7 @@ function we_tag_sessionField($attribs, $content){
 
 	$name = weTag_getAttribute('_name_orig', $attribs);
 	$xml = weTag_getAttribute('xml', $attribs, false, true);
-	$removeFirstParagraph = weTag_getAttribute("removefirstparagraph", $attribs, defined("REMOVEFIRSTPARAGRAPH_DEFAULT") ? REMOVEFIRSTPARAGRAPH_DEFAULT : true, true);
+	$removeFirstParagraph = weTag_getAttribute("removefirstparagraph", $attribs, defined('REMOVEFIRSTPARAGRAPH_DEFAULT') ? REMOVEFIRSTPARAGRAPH_DEFAULT : true, true);
 	$autobrAttr = weTag_getAttribute('autobr', $attribs, false, true);
 	$checked = weTag_getAttribute('checked', $attribs, false, true);
 	$values = weTag_getAttribute('values', $attribs);

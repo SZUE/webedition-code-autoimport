@@ -65,7 +65,7 @@ echo we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
 							}
 						}
 					}
-<?php if(defined("MESSAGING_SYSTEM")){ ?>
+<?php if(defined('MESSAGING_SYSTEM')){ ?>
 						if (top.header_msg_update) {
 							var newmsg_count = result.DataArray.newmsg_count;
 							var newtodo_count = result.DataArray.newtodo_count;

@@ -186,7 +186,7 @@ if(in_array(' . $this->topFrame . '.SelectedItems[attribs["table"]],"' . $item["
 
 			var SelectedItems= new Array();
 			SelectedItems["' . FILE_TABLE . '"]=new Array();' .
-				(defined("OBJECT_FILES_TABLE") ? (
+				(defined('OBJECT_FILES_TABLE') ? (
 					'SelectedItems["' . OBJECT_FILES_TABLE . '"]=new Array();
 				SelectedItems["' . OBJECT_TABLE . '"]=new Array();
 				') : '') . '
@@ -195,7 +195,7 @@ if(in_array(' . $this->topFrame . '.SelectedItems[attribs["table"]],"' . $item["
 
 			var openFolders= new Array();
 			openFolders["' . FILE_TABLE . '"]="";' .
-				(defined("OBJECT_FILES_TABLE") ? ('
+				(defined('OBJECT_FILES_TABLE') ? ('
 			openFolders["' . OBJECT_FILES_TABLE . '"]="";
 			openFolders["' . OBJECT_TABLE . '"]="";
 			') : '') . '
@@ -223,10 +223,10 @@ if(in_array(' . $this->topFrame . '.SelectedItems[attribs["table"]],"' . $item["
 		if(permissionhandler::hasPerm("CAN_SEE_TEMPLATES")){
 			$captions[TEMPLATES_TABLE] = g_l('export', "[templates]");
 		}
-		if(defined("OBJECT_FILES_TABLE") && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")){
+		if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")){
 			$captions[OBJECT_FILES_TABLE] = g_l('export', "[objects]");
 		}
-		if(defined("OBJECT_TABLE") && permissionhandler::hasPerm("CAN_SEE_OBJECTS")){
+		if(defined('OBJECT_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTS")){
 			$captions[OBJECT_TABLE] = g_l('export', "[classes]");
 		}
 
@@ -251,14 +251,14 @@ if(in_array(' . $this->topFrame . '.SelectedItems[attribs["table"]],"' . $item["
 		$DB_WE = new DB_WE();
 		$where = ' WHERE  ParentID=' . intval($ParentID) . ' AND((1' . we_users_util::makeOwnersSql() . ')' . $GLOBALS['wsQuery'] . ')';
 		//if($GLOBALS['table']==FILE_TABLE) $where .= " AND (ClassName='we_webEditionDocument' OR ClassName='we_folder')";
-		$elem = 'ID,ParentID,Path,Text,Icon,IsFolder,ModDate' . (($table == FILE_TABLE || (defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE))
-					? ",Published" : "") . ((defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE) ? ",IsClassFolder,IsNotEditable" : "");
+		$elem = 'ID,ParentID,Path,Text,Icon,IsFolder,ModDate' . (($table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE))
+					? ",Published" : "") . ((defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE) ? ",IsClassFolder,IsNotEditable" : "");
 
 		switch($table){
 			case FILE_TABLE :
 			case TEMPLATES_TABLE:
-			case (defined("OBJECT_TABLE") ? OBJECT_TABLE : 'OBJECT_TABLE'):
-			case (defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
+			case (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'):
+			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 				$elem .= ',ContentType';
 		}
 
@@ -283,7 +283,7 @@ if(in_array(' . $this->topFrame . '.SelectedItems[attribs["table"]],"' . $item["
 						$checked = 1;
 					}
 					break;
-				case (defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
+				case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 					$published = (($DB_WE->f("Published") != 0) && ($DB_WE->f("Published") < $DB_WE->f("ModDate"))) ? -1 : $DB_WE->f("Published");
 					if(isset($_SESSION['weS']['exportVars']["selObjs"]) && in_array($ID, makeArrayFromCSV($_SESSION['weS']['exportVars']["selObjs"]))){
 						$checked = 1;
@@ -335,7 +335,7 @@ if(in_array(' . $this->topFrame . '.SelectedItems[attribs["table"]],"' . $item["
 					$path = dirname($path);
 				}
 			}
-		} else if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE && (!permissionhandler::hasPerm("ADMINISTRATOR"))){
+		} else if(defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE && (!permissionhandler::hasPerm("ADMINISTRATOR"))){
 			$ac = we_users_util::getAllowedClasses($GLOBALS['DB_WE']);
 			foreach($ac as $cid){
 				$path = id_to_path($cid, OBJECT_TABLE);

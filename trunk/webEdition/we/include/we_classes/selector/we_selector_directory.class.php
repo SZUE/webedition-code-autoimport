@@ -344,7 +344,7 @@ function enableNewFolderBut(){
 	}
 
 	protected function userCanMakeNewDir(){
-		if(defined("OBJECT_FILES_TABLE") && ($this->table == OBJECT_FILES_TABLE) && (!$this->dir)){
+		if(defined('OBJECT_FILES_TABLE') && ($this->table == OBJECT_FILES_TABLE) && (!$this->dir)){
 			return false;
 		}
 		if(permissionhandler::hasPerm('ADMINISTRATOR')){
@@ -380,7 +380,7 @@ function enableNewFolderBut(){
 					return false;
 				}
 				break;
-			case (defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
+			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 				if(!permissionhandler::hasPerm("NEW_OBJECTFILE_FOLDER")){
 					return false;
 				}
@@ -436,7 +436,7 @@ top.fsheader.selectIt();';
 		<td><select name="lookin" class="weSelect" size="1" onchange="top.setDir(this.options[this.selectedIndex].value);" class="defaultfont" style="width:100%">' .
 			$this->printHeaderOptions() . '
 			</select>' .
-			((!defined("OBJECT_TABLE")) || $this->table != OBJECT_TABLE ? '
+			((!defined('OBJECT_TABLE')) || $this->table != OBJECT_TABLE ? '
 		</td>
 		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
 		<td width="40">' . we_html_button::create_button("root_dir", "javascript:if(rootDirButsState){top.setRootDir();}", true, 0, 0, "", "", $this->dir == intval($this->rootDirID), false) . '</td>

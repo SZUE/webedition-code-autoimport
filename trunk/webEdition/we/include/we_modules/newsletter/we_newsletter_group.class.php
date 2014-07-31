@@ -140,7 +140,7 @@ class we_newsletter_group extends we_newsletter_base{
 
 	function checkEmails($group, &$malformed){
 
-		if(defined("CUSTOMER_TABLE")){
+		if(defined('CUSTOMER_TABLE')){
 			if(empty($this->settings["customer_email_field"])){
 				t_e('empty setting for customer email field');
 			} else {

@@ -57,7 +57,7 @@ abstract class we_import_wizardBase{
 		));
 
 
-		$addJS = (defined("OBJECT_TABLE")) ?
+		$addJS = (defined('OBJECT_TABLE')) ?
 			"			self.wizbody.document.forms['we_form'].elements['v[import_type]'][0].checked=true;" : "";
 
 		$ajaxJS = <<<HTS

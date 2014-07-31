@@ -857,7 +857,7 @@ function delRow(id) {
 		$select = we_html_tools::htmlSelect('page', $pages, 1, $page, false, array('id' => 'pageselect', 'onchange' => 'this.form.elements[\'searchstart\'].value=this.value;search(false);'));
 
 		if(!isset($GLOBALS['setInputSearchstart'])){
-			if(!defined("searchstart")){
+			if(!defined('searchstart')){
 				define('searchstart', true);
 				$out .= we_html_tools::hidden("searchstart", $searchstart);
 			}

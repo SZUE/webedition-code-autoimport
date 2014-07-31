@@ -78,11 +78,11 @@ if($tool == "weSearch"){
 			$tab = 2;
 			$_SESSION['weS']['weSearch']["checkWhich"] = 2;
 			break;
-		case (defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
+		case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 			$tab = 3;
 			$_SESSION['weS']['weSearch']["checkWhich"] = 3;
 			break;
-		case (defined("OBJECT_TABLE") ? OBJECT_TABLE : 'OBJECT_TABLE'):
+		case (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'):
 			$tab = 3;
 			$_SESSION['weS']['weSearch']["checkWhich"] = 4;
 			break;

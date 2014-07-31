@@ -1429,9 +1429,9 @@ class we_object extends we_document{
 		$rmfp = isset($this->elements[$name . "removefirstparagraph"]["dat"]) &&
 			($this->elements[$name . "removefirstparagraph"]["dat"] == 'on' || $this->elements[$name . "removefirstparagraph"]["dat"] == 'off') ? ($this->elements[$name . "removefirstparagraph"]["dat"] == 'on'
 					? true : false) :
-			(defined("REMOVEFIRSTPARAGRAPH_DEFAULT") ? REMOVEFIRSTPARAGRAPH_DEFAULT : true);
+			(defined('REMOVEFIRSTPARAGRAPH_DEFAULT') ? REMOVEFIRSTPARAGRAPH_DEFAULT : true);
 		$commands = isset($this->elements[$name . "commands"]["dat"]) && $this->elements[$name . "commands"]["dat"] ? $this->elements[$name . "commands"]["dat"] :
-			(defined("COMMANDS_DEFAULT") ? COMMANDS_DEFAULT : '');
+			(defined('COMMANDS_DEFAULT') ? COMMANDS_DEFAULT : '');
 		$attribs = array(
 			"removefirstparagraph" => $rmfp,
 			"xml" => isset($this->elements[$name . "xml"]["dat"]) ? $this->elements[$name . "xml"]["dat"] : "",

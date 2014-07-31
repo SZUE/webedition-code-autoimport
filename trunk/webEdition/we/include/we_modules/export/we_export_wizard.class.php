@@ -160,7 +160,7 @@ class we_export_wizard{
 
 			var SelectedItems= new Array();
 			SelectedItems["' . FILE_TABLE . '"]=new Array();' .
-				(defined("OBJECT_FILES_TABLE") ? (
+				(defined('OBJECT_FILES_TABLE') ? (
 					'SelectedItems["' . OBJECT_FILES_TABLE . '"]=new Array();
 				SelectedItems["' . OBJECT_TABLE . '"]=new Array();
 				') : '') . '
@@ -169,7 +169,7 @@ class we_export_wizard{
 
 			var openFolders= new Array();
 			openFolders["' . FILE_TABLE . '"]="";' .
-				(defined("OBJECT_FILES_TABLE") ? ('
+				(defined('OBJECT_FILES_TABLE') ? ('
 			openFolders["' . OBJECT_FILES_TABLE . '"]="";
 			openFolders["' . OBJECT_TABLE . '"]="";
 			') : '') . '
@@ -366,7 +366,7 @@ function we_cmd(){
 			$doc_type = $this->getHTMLDocType();
 			$showdocs = true;
 			$_tmp = array("headline" => "", "html" => $doc_type, "space" => $_space);
-			if(defined("OBJECT_FILES_TABLE")){
+			if(defined('OBJECT_FILES_TABLE')){
 				$_tmp["noline"] = 1;
 			}
 			$parts[] = $_tmp;
@@ -378,7 +378,7 @@ function we_cmd(){
 		$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "body")) .
 			we_html_element::htmlHidden(array("name" => "type", "value" => ($showdocs ? "doctype" : "classname"))) .
 			we_html_element::htmlHidden(array("name" => "step", "value" => 4));
-		if(defined("OBJECT_FILES_TABLE")){
+		if(defined('OBJECT_FILES_TABLE')){
 			$classname = $this->getHTMLObjectType(350, $showdocs);
 
 			$parts[] = array("headline" => "", "html" => $classname, "space" => $_space);
@@ -407,7 +407,7 @@ function we_cmd(){
 		$parts = array(
 			array("headline" => "", "html" => we_html_forms::radiobutton("docs", ($art == "docs" ? true : ($art != "objects" ? true : false)), "art", g_l('export', "[documents]"), true, "defaultfont", $this->topFrame . ".art='docs'"), "space" => $_space, "noline" => 1)
 		);
-		if(defined("OBJECT_FILES_TABLE")){
+		if(defined('OBJECT_FILES_TABLE')){
 			$parts[] = array("headline" => "", "html" => we_html_forms::radiobutton("objects", ($art == "objects" ? true : ($art != "docs" ? true : false)), "art", g_l('export', "[objects]"), true, "defaultfont", $this->topFrame . ".art='objects'"), "space" => $_space, "noline" => 1);
 		}
 
@@ -428,7 +428,7 @@ function we_cmd(){
 	private function getHTMLStep3(){
 		$art = $this->exportVars["art"];
 
-		$js = ($art == "objects" && defined("OBJECT_FILES_TABLE") ?
+		$js = ($art == "objects" && defined('OBJECT_FILES_TABLE') ?
 				we_html_element::jsElement($this->topFrame . '.table="' . OBJECT_FILES_TABLE . '";') :
 				($art == "docs" ?
 					we_html_element::jsElement($this->topFrame . '.table="' . FILE_TABLE . '";') :
@@ -442,7 +442,7 @@ function we_cmd(){
 
 function populate(id,table){
 	//if(table=="' . FILE_TABLE . '") document.we_form.selDocs.value+=","+id;
-//' . (defined("OBJECT_FILES_TABLE") ? 'else if(table=="' . OBJECT_FILES_TABLE . '") document.we_form.selObjs.value+=","+id;' : "") . '
+//' . (defined('OBJECT_FILES_TABLE') ? 'else if(table=="' . OBJECT_FILES_TABLE . '") document.we_form.selObjs.value+=","+id;' : "") . '
 }
 
 function setHead(tab){
@@ -465,12 +465,12 @@ function setHead(tab){
 		case 1:
 			' . $this->topFrame . '.table="' . TEMPLATES_TABLE . '";
 		break;
-		' . (defined("OBJECT_FILES_TABLE") ? '
+		' . (defined('OBJECT_FILES_TABLE') ? '
 		case 2:
 			' . $this->topFrame . '.table="' . OBJECT_FILES_TABLE . '";
 		break;
 		' : '') .
-				(defined("OBJECT_TABLE") ? '
+				(defined('OBJECT_TABLE') ? '
 		case 3:
 			' . $this->topFrame . '.table="' . OBJECT_TABLE . '";
 		break;
@@ -480,20 +480,20 @@ function setHead(tab){
 	setTimeout("' . $this->topFrame . '.startTree()",100);
 	document.getElementById("' . FILE_TABLE . '").style.backgroundColor=c0;
 	document.getElementById("' . TEMPLATES_TABLE . '").style.backgroundColor=c1;' .
-				(defined("OBJECT_FILES_TABLE") ? 'document.getElementById("' . OBJECT_FILES_TABLE . '").style.backgroundColor=c2;' : '' ) .
-				(defined("OBJECT_TABLE") ? 'document.getElementById("' . OBJECT_TABLE . '").style.backgroundColor=c3;' : '') . '
+				(defined('OBJECT_FILES_TABLE') ? 'document.getElementById("' . OBJECT_FILES_TABLE . '").style.backgroundColor=c2;' : '' ) .
+				(defined('OBJECT_TABLE') ? 'document.getElementById("' . OBJECT_TABLE . '").style.backgroundColor=c3;' : '') . '
 
 	document.getElementById("' . FILE_TABLE . '").style.fontWeight=fw0;
 	document.getElementById("' . TEMPLATES_TABLE . '").style.fontWeight=fw1;' .
-				(defined("OBJECT_FILES_TABLE") ? 'document.getElementById("' . OBJECT_FILES_TABLE . '").style.fontWeight=fw2;' : '' ) .
-				(defined("OBJECT_TABLE") ? 'document.getElementById("' . OBJECT_TABLE . '").style.fontWeight=fw3;' : '') . '
+				(defined('OBJECT_FILES_TABLE') ? 'document.getElementById("' . OBJECT_FILES_TABLE . '").style.fontWeight=fw2;' : '' ) .
+				(defined('OBJECT_TABLE') ? 'document.getElementById("' . OBJECT_TABLE . '").style.fontWeight=fw3;' : '') . '
 }
 
 function we_submit(){
 	document.we_form.selDocs.value=' . $this->topFrame . '.SelectedItems["' . FILE_TABLE . '"].join(",");
 	document.we_form.selTempl.value=' . $this->topFrame . '.SelectedItems["' . TEMPLATES_TABLE . '"].join(",");' .
-				(defined("OBJECT_FILES_TABLE") ? 'document.we_form.selObjs.value=' . $this->topFrame . '.SelectedItems["' . OBJECT_FILES_TABLE . '"].join(",");' : '') .
-				(defined("OBJECT_TABLE") ? 'document.we_form.selClasses.value=' . $this->topFrame . '.SelectedItems["' . OBJECT_TABLE . '"].join(",");' : '') . '
+				(defined('OBJECT_FILES_TABLE') ? 'document.we_form.selObjs.value=' . $this->topFrame . '.SelectedItems["' . OBJECT_FILES_TABLE . '"].join(",");' : '') .
+				(defined('OBJECT_TABLE') ? 'document.we_form.selClasses.value=' . $this->topFrame . '.SelectedItems["' . OBJECT_TABLE . '"].join(",");' : '') . '
 	document.we_form.submit();
 }');
 
@@ -869,7 +869,7 @@ function setTab(tab) {
 		case 0:
 			top.table="' . FILE_TABLE . '";
 		break;' .
-						(defined("OBJECT_FILES_TABLE") ? ('
+						(defined('OBJECT_FILES_TABLE') ? ('
 		case 1:
 			top.table="' . OBJECT_FILES_TABLE . '";
 		break;') : '') . '
@@ -897,7 +897,7 @@ var winHeight = getWindowHeight(window);
 var we_tabs = new Array();
 ' . ($art == "docs" ? ('we_tabs.push(new We_Tab("#","' . g_l('export', "[documents]") . '",(' . $this->topFrame . '.table=="' . FILE_TABLE . '" ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . '),"self.setTab(0);"));')
 								: '') . '
-' . ($art == "objects" && defined("OBJECT_FILES_TABLE") ? ('we_tabs.push(new We_Tab("#","' . g_l('export', "[objects]") . '",(' . $this->topFrame . '.table=="' . OBJECT_FILES_TABLE . '" ? ' . we_tab::ACTIVE . ': ' . we_tab::NORMAL . '),"self.setTab(1);"));')
+' . ($art == "objects" && defined('OBJECT_FILES_TABLE') ? ('we_tabs.push(new We_Tab("#","' . g_l('export', "[objects]") . '",(' . $this->topFrame . '.table=="' . OBJECT_FILES_TABLE . '" ? ' . we_tab::ACTIVE . ': ' . we_tab::NORMAL . '),"self.setTab(1);"));')
 								: ''));
 
 
@@ -1105,7 +1105,7 @@ var we_tabs = new Array();
 					/* } else if ((count($finalTempl) > 0 && $extype==we_import_functions::TYPE_WE_XML) || (count($finalClasses) > 0  && $extype==we_import_functions::TYPE_WE_XML)) {
 					  $start_export = true; */
 				} else {
-					$export_error = (defined("OBJECT_TABLE") ? "nothing_selected_objs" : "nothing_selected_docs");
+					$export_error = (defined('OBJECT_TABLE') ? "nothing_selected_objs" : "nothing_selected_docs");
 				}
 
 				if($start_export){
@@ -1158,7 +1158,7 @@ if (top.footer.setProgress){
 
 					we_export_functions::exportDocument($remaining_docs[0], $file_format, $filename, ($export_local ? "###temp###" : $path), $file_create, $file_complete, $cdata);
 				} else if(isset($remaining_objs) && !empty($remaining_objs)){
-					if(defined("OBJECT_FILES_TABLE")){
+					if(defined('OBJECT_FILES_TABLE')){
 						$exports = count($remaining_objs);
 						we_export_functions::exportObject($remaining_objs[0], $file_format, $filename, ($export_local ? "###temp###" : $path), ($exports == $all), $exports == 1, $cdata, $csv_delimiter, $csv_enclose, $csv_lineend, ($csv_fieldnames == 1) && ($all == $exports));
 					}
@@ -1404,10 +1404,10 @@ if (top.footer.setProgress){
 
 		$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 3, 2);
 		$table->setColContent(0, 1, $select->getHtml());
-		$table->setColContent(1, 0, we_html_tools::getPixel(defined("OBJECT_FILES_TABLE") ? 25 : 0, 5));
+		$table->setColContent(1, 0, we_html_tools::getPixel(defined('OBJECT_FILES_TABLE') ? 25 : 0, 5));
 		$table->setColContent(2, 1, $dir);
 
-		$headline = defined("OBJECT_FILES_TABLE") ?
+		$headline = defined('OBJECT_FILES_TABLE') ?
 			we_html_forms::radiobutton("doctype", ($type == "doctype" ? true : ($type != "classname" ? true : false)), "type", g_l('export', "[doctypename]"), true, "defaultfont", $this->topFrame . ".type='doctype'")
 				:
 			we_html_element::htmlSpan(array("class" => "defaultfont"), g_l('export', "[doctypename]"));
@@ -1418,7 +1418,7 @@ if (top.footer.setProgress){
 	}
 
 	private function getHTMLObjectType($width = 350, $showdocs = false){
-		if(defined("OBJECT_FILES_TABLE")){
+		if(defined('OBJECT_FILES_TABLE')){
 			$this->db->query("SELECT ID,Text FROM " . OBJECT_TABLE);
 			$select = new we_html_select(array("name" => "classname", "class" => "weSelect", "size" => 1, "style" => "{width: $width}", "onchange" => $this->topFrame . ".classname=document.we_form.classname.options[document.we_form.classname.selectedIndex].value;"));
 			$first = "";
@@ -1488,7 +1488,7 @@ if (top.footer.setProgress){
 		if(!permissionhandler::hasPerm("EDIT_KATEGORIE")){
 			$cats->isEditable = false;
 		}
-		return '<table border="0"  cellpadding="0" cellspacing="0"><tr><td>' . (defined("OBJECT_FILES_TABLE") ? we_html_tools::getPixel(25, 2) : "") . '</td><td>' .
+		return '<table border="0"  cellpadding="0" cellspacing="0"><tr><td>' . (defined('OBJECT_FILES_TABLE') ? we_html_tools::getPixel(25, 2) : "") . '</td><td>' .
 			$hiddens . we_html_tools::htmlFormElementTable($cats->get(), g_l('export', "[categories]"), "left", "defaultfont") .
 			'</td></tr></table>';
 	}

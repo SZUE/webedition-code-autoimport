@@ -38,7 +38,7 @@ abstract class we_SEEM{
 		//	here are all variables.
 		/* if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
 		  $vtabSrcDocs = "top.Vtabs.we_cmd('loadVTab','" . FILE_TABLE . "',0);top.we_cmd('exit_delete');";
-		  if(defined("OBJECT_FILES_TABLE")){
+		  if(defined('OBJECT_FILES_TABLE')){
 		  $vtabSrcObjs = (permissionhandler::hasPerm("CAN_SEE_OBJECTFILES") ?
 		  "top.Vtabs.we_cmd('loadVTab','" . OBJECT_FILES_TABLE . "',0);top.we_cmd('exit_delete');" :
 		  "top.we_cmd('exit_delete');");
@@ -105,11 +105,11 @@ abstract class we_SEEM{
 
 		$allForms = self::getAllForms($code);
 		//  if in editMode, remove all forms but the "we_form"
-		if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT && !defined("WE_SIDEBAR")){
+		if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT && !defined('WE_SIDEBAR')){
 			return self::parseFormsForEditMode($code, $allForms);
 		}
 		//  we are in preview mode or open an extern document - parse all found forms
-		if(!isset($GLOBALS['we_doc']) || $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW || defined("WE_SIDEBAR")){
+		if(!isset($GLOBALS['we_doc']) || $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW || defined('WE_SIDEBAR')){
 			return self::parseFormsForPreviewMode($code, $allForms);
 		}
 

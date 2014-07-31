@@ -540,7 +540,7 @@ class we_search_search extends we_search{
 				}
 
 				return (!empty($contents) ? "  " . $table . '.ID IN (' . makeCSVFromArray($contents) . ')' : '');
-			case (defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
+			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 				$Ids = array();
 				$regs = array();
 

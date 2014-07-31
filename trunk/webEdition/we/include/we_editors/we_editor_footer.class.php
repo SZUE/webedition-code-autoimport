@@ -159,7 +159,7 @@ abstract class we_editor_footer{
 			}
 		}
 
-		if(defined("WORKFLOW_TABLE") && $we_doc->IsTextContentDoc && $we_doc->ID){
+		if(defined('WORKFLOW_TABLE') && $we_doc->IsTextContentDoc && $we_doc->ID){
 
 			//	Workflow button
 			$_ctrlElem = getControlElement('button', 'workflow'); //	look tag we:controlElement for details
@@ -231,7 +231,7 @@ abstract class we_editor_footer{
 			//}
 		}
 		if($we_doc->ContentType == we_base_ContentTypes::TEMPLATE){
-			if(defined("VERSIONING_TEXT_WETMPL") && defined("VERSIONS_CREATE_TMPL") && VERSIONS_CREATE_TMPL && VERSIONING_TEXT_WETMPL){
+			if(defined('VERSIONING_TEXT_WETMPL') && defined('VERSIONS_CREATE_TMPL') && VERSIONS_CREATE_TMPL && VERSIONING_TEXT_WETMPL){
 				$_normalTable->addCol(2);
 				$_normalTable->setColContent(0, $_pos++, we_html_button::create_button("saveversion", "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
 				$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
@@ -353,7 +353,7 @@ abstract class we_editor_footer{
 
 		//	Button put in workflow
 		if(/* $GLOBALS['we_doc']->EditPageNr != we_base_constants::WE_EDITPAGE_PROPERTIES && */ $GLOBALS['we_doc']->EditPageNr != we_base_constants::WE_EDITPAGE_SCHEDULER && // then button "workflow"
-			defined("WORKFLOW_TABLE") && $we_doc->IsTextContentDoc && $we_doc->ID){
+			defined('WORKFLOW_TABLE') && $we_doc->IsTextContentDoc && $we_doc->ID){
 
 			$_ctrlElem = getControlElement('button', 'workflow'); //	look tag we:controlElement for details
 

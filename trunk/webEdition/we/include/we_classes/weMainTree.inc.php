@@ -113,7 +113,7 @@ function doClick(id){
 	var ct=node.contenttype;
 	var table=node.table;
 	setScrollY();
-	if(' . $this->topFrame . '.wasdblclick && ct != \'folder\' && table!=\'' . TEMPLATES_TABLE . '\'' . (defined("OBJECT_TABLE") ? ' && table!=\'' . OBJECT_TABLE . '\' && table!=\'' . OBJECT_FILES_TABLE . '\'' : '' ) . '){
+	if(' . $this->topFrame . '.wasdblclick && ct != \'folder\' && table!=\'' . TEMPLATES_TABLE . '\'' . (defined('OBJECT_TABLE') ? ' && table!=\'' . OBJECT_TABLE . '\' && table!=\'' . OBJECT_FILES_TABLE . '\'' : '' ) . '){
 		top.openBrowser(id);
 		setTimeout(\'wasdblclick=0;\',400);
 	} else {
@@ -290,7 +290,7 @@ function makeNewEntry(icon,id,pid,txt,open,ct,tab){
 		return weTree::getJSIncludeFunctions() . '
 we_scrollY["' . FILE_TABLE . '"] = 0;
 we_scrollY["' . TEMPLATES_TABLE . '"] = 0;' .
-			(defined("OBJECT_TABLE") ? '
+			(defined('OBJECT_TABLE') ? '
 we_scrollY["' . OBJECT_TABLE . '"] = 0;
 we_scrollY["' . OBJECT_FILES_TABLE . '"] = 0;' :
 				'') . '

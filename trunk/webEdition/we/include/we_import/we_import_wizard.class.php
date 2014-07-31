@@ -985,7 +985,7 @@ function handle_eventNext(){
 		" . we_message_reporting::getShowMessageCall(g_l('import', '[select_source_file]'), we_message_reporting::WE_MESSAGE_ERROR) . " return;
 	}
 	if(!f.elements['v[we_TemplateID]'].value ) f.elements['v[we_TemplateID]'].value =f.elements['noDocTypeTemplateId'].value;" .
-				(defined("OBJECT_TABLE") ?
+				(defined('OBJECT_TABLE') ?
 					"if((f.elements['v[import_type]'][0].checked == true && f.elements['v[we_TemplateID]'].value != 0) || (f.elements['v[import_type]'][1].checked == true)) {\n"
 						:
 					"if(f.elements['v[we_TemplateID]'].value!=0) {\n"
@@ -1028,7 +1028,7 @@ function handle_event(evt) {
 				" . we_message_reporting::getShowMessageCall(g_l('import', '[select_source_file]'), we_message_reporting::WE_MESSAGE_ERROR) . "break;
 			}
 			if(!f.elements['v[we_TemplateID]'].value ) f.elements['v[we_TemplateID]'].value =f.elements['noDocTypeTemplateId'].value;" .
-				(defined("OBJECT_TABLE") ?
+				(defined('OBJECT_TABLE') ?
 					"if((f.elements['v[import_type]'][0].checked == true && f.elements['v[we_TemplateID]'].value != 0) || (f.elements['v[import_type]'][1].checked == true)) {\n"
 						:
 					"if(f.elements['v[we_TemplateID]'].value!=0) {\n"
@@ -1251,7 +1251,7 @@ HTS;
 		$storeTo = $yuiSuggest->getHTML();
 
 		$radioDocs = we_html_forms::radiobutton('documents', ($v['import_type'] == 'documents'), 'v[import_type]', g_l('import', '[documents]'));
-		$radioObjs = we_html_forms::radiobutton('objects', ($v['import_type'] == 'objects'), 'v[import_type]', g_l('import', '[objects]'), true, 'defaultfont', "self.document.forms['we_form'].elements['v[store_to_path]'].value='/'; YAHOO.autocoml.setValidById(self.document.forms['we_form'].elements['v[store_to_path]'].id); if(!!self.document.forms['we_form'].elements['v[we_TemplateName]']) { self.document.forms['we_form'].elements['v[we_TemplateName]'].value=''; YAHOO.autocoml.setValidById(self.document.forms['we_form'].elements['v[we_TemplateName]'].id); }", (defined("OBJECT_TABLE")
+		$radioObjs = we_html_forms::radiobutton('objects', ($v['import_type'] == 'objects'), 'v[import_type]', g_l('import', '[objects]'), true, 'defaultfont', "self.document.forms['we_form'].elements['v[store_to_path]'].value='/'; YAHOO.autocoml.setValidById(self.document.forms['we_form'].elements['v[store_to_path]'].id); if(!!self.document.forms['we_form'].elements['v[we_TemplateName]']) { self.document.forms['we_form'].elements['v[we_TemplateName]'].value=''; YAHOO.autocoml.setValidById(self.document.forms['we_form'].elements['v[we_TemplateName]'].id); }", (defined('OBJECT_TABLE')
 						? false : true));
 
 		$v['classID'] = isset($v['classID']) ? $v['classID'] : -1;
@@ -2117,7 +2117,7 @@ function handle_event(evt) {
 		case 'next':
 			if(f.elements['v[import_type]']== 'documents'){
 					if(!f.elements['v[we_TemplateID]'].value ) f.elements['v[we_TemplateID]'].value =f.elements['DocTypeTemplateId'].value;
-					}" . (defined("OBJECT_TABLE") ?
+					}" . (defined('OBJECT_TABLE') ?
 				"			if(f.elements['v[import_from]'].value != '/' && ((f.elements['v[import_type]'][0].checked == true && f.elements['v[we_TemplateID]'].value != 0) || (f.elements['v[import_type]'][1].checked == true)))"
 					:
 				"			if(f.elements['v[import_from]'].value != '/' && f.elements['v[we_TemplateID]'].value != 0)") . "
@@ -2126,7 +2126,7 @@ function handle_event(evt) {
 				we_submit_form(f, 'wizbody', '" . $this->path . "');
 			}else {
 				if(f.elements['v[import_from]'].value == '/') " . we_message_reporting::getShowMessageCall(g_l('import', "[select_source_file]"), we_message_reporting::WE_MESSAGE_ERROR) .
-			(defined("OBJECT_TABLE") ?
+			(defined('OBJECT_TABLE') ?
 				"				else if(f.elements['v[import_type]'][0].checked == true) " . we_message_reporting::getShowMessageCall(g_l('import', "[select_docType]"), we_message_reporting::WE_MESSAGE_ERROR)
 					:
 				"				else " . we_message_reporting::getShowMessageCall(g_l('import', "[select_docType]"), we_message_reporting::WE_MESSAGE_ERROR)) . "
@@ -2301,11 +2301,11 @@ HTS;
 		$docCats->setCol(1, 1, array(), we_html_tools::getPixel(150, 1));
 
 		$radioDocs = we_html_forms::radiobutton("documents", ($v["import_type"] == "documents"), "v[import_type]", g_l('import', "[documents]"));
-		$radioObjs = we_html_forms::radiobutton("objects", ($v["import_type"] == "objects"), "v[import_type]", g_l('import', "[objects]"), true, "defaultfont", "self.document.forms['we_form'].elements['v[store_to_path]'].value='/'; YAHOO.autocoml.setValidById(self.document.forms['we_form'].elements['v[store_to_path]'].id); if(!!self.document.forms['we_form'].elements['v[we_TemplateName]']) { self.document.forms['we_form'].elements['v[we_TemplateName]'].value=''; YAHOO.autocoml.setValidById(self.document.forms['we_form'].elements['v[we_TemplateName]'].id); }", (defined("OBJECT_TABLE")
+		$radioObjs = we_html_forms::radiobutton("objects", ($v["import_type"] == "objects"), "v[import_type]", g_l('import', "[objects]"), true, "defaultfont", "self.document.forms['we_form'].elements['v[store_to_path]'].value='/'; YAHOO.autocoml.setValidById(self.document.forms['we_form'].elements['v[store_to_path]'].id); if(!!self.document.forms['we_form'].elements['v[we_TemplateName]']) { self.document.forms['we_form'].elements['v[we_TemplateName]'].value=''; YAHOO.autocoml.setValidById(self.document.forms['we_form'].elements['v[we_TemplateName]'].id); }", (defined('OBJECT_TABLE')
 						? false : true));
 
 		$optid = 0;
-		if(defined("OBJECT_TABLE")){
+		if(defined('OBJECT_TABLE')){
 			$v["classID"] = isset($v["classID"]) ? $v["classID"] : -1;
 			$CLselect = new we_html_select(array(
 				'id' => 'classID',
@@ -2389,7 +2389,7 @@ HTS;
 		if((file_exists($_SERVER['DOCUMENT_ROOT'] . $v["import_from"]) && is_readable($_SERVER['DOCUMENT_ROOT'] . $v["import_from"]))){
 			$parts = array(
 				array(
-					"headline" => (defined("OBJECT_TABLE")) ? $radioDocs : g_l('import', "[documents]"),
+					"headline" => (defined('OBJECT_TABLE')) ? $radioDocs : g_l('import', "[documents]"),
 					"html" => weSuggest::getYuiFiles() .
 					$doctypeElement . we_html_tools::getPixel(1, 4) .
 					$templateElement . we_html_tools::getPixel(1, 4) .
@@ -2397,12 +2397,12 @@ HTS;
 					$specifyDoc->getHTML() . we_html_tools::getPixel(1, 4) .
 					$seaPu->getHtml() . we_html_tools::getPixel(1, 4) .
 					we_html_tools::htmlFormElementTable($docCategories, g_l('import', "[categories]"), "left", "defaultfont") .
-					(defined("OBJECT_TABLE") ? '' : $yuiSuggest->getYuiCode()),
+					(defined('OBJECT_TABLE') ? '' : $yuiSuggest->getYuiCode()),
 					"space" => 120,
 					"noline" => 1
 				)
 			);
-			if(defined("OBJECT_TABLE")){
+			if(defined('OBJECT_TABLE')){
 				$parts[] = array(
 					"headline" => $radioObjs,
 					"html" => we_html_tools::htmlFormElementTable($CLselect->getHTML(), g_l('import', "[class]"), "left", "defaultfont") . we_html_tools::getPixel(1, 4) .

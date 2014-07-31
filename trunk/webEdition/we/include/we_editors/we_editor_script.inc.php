@@ -231,7 +231,7 @@ if(isset($GLOBALS['we_doc'])){
 				_filepath += _filetext;
 				parent.frames[0].we_setPath(_filepath, _filetext, -1);
 	<?php
-	if(defined("CUSTOMER_TABLE") && in_array(we_base_constants::WE_EDITPAGE_WEBUSER, $GLOBALS['we_doc']->EditPageNrs) && isset($GLOBALS['we_doc']->documentCustomerFilter)){
+	if(defined('CUSTOMER_TABLE') && in_array(we_base_constants::WE_EDITPAGE_WEBUSER, $GLOBALS['we_doc']->EditPageNrs) && isset($GLOBALS['we_doc']->documentCustomerFilter)){
 		// only use this when customer filters are possible
 		?>
 					updateCustomerFilterIfNeeded();
@@ -394,7 +394,7 @@ if(isset($GLOBALS['we_doc'])){
 				break;
 
 
-<?php if(defined("GLOSSARY_TABLE") && isset($we_doc) && ($we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT || $we_doc->ContentType == "objectFile")){ ?>
+<?php if(defined('GLOSSARY_TABLE') && isset($we_doc) && ($we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT || $we_doc->ContentType == "objectFile")){ ?>
 				case "glossary_check":
 					new jsWindow(url, "glossary_check", -1, -1, 730, 400, true, false, true);
 					break;
@@ -447,10 +447,10 @@ if(isset($we_doc) && $we_doc->ContentType == we_base_ContentTypes::IMAGE){
 
 <?php } ?>
 			case "image_crop":
-<?php if(defined("WE_EDIT_IMAGE") && $GLOBALS['we_doc']->gd_support()){ ?>
+<?php if(defined('WE_EDIT_IMAGE') && $GLOBALS['we_doc']->gd_support()){ ?>
 					CropTool.crop();
 	<?php
-} else if(defined("WE_EDIT_IMAGE")){
+} else if(defined('WE_EDIT_IMAGE')){
 
 	echo we_message_reporting::getShowMessageCall(sprintf(g_l('weClass', "[type_not_supported_hint]"), g_l('weClass', '[convert_' . $GLOBALS['we_doc']->getGDType() . ']')), we_message_reporting::WE_MESSAGE_ERROR);
 }

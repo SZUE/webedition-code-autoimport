@@ -109,11 +109,11 @@ class we_xml_browser extends we_xml_parser{
 
 		switch($url){
 			case 'fopen':
-				if(defined("WE_PROXYHOST")){
-					$proxyhost = defined("WE_PROXYHOST") ? WE_PROXYHOST : "";
-					$proxyport = (defined("WE_PROXYPORT") && WE_PROXYPORT) ? WE_PROXYPORT : "80";
-					$proxy_user = defined("WE_PROXYUSER") ? WE_PROXYUSER : "";
-					$proxy_pass = defined("WE_PROXYPASSWORD") ? WE_PROXYPASSWORD : "";
+				if(defined('WE_PROXYHOST')){
+					$proxyhost = defined('WE_PROXYHOST') ? WE_PROXYHOST : "";
+					$proxyport = (defined('WE_PROXYPORT') && WE_PROXYPORT) ? WE_PROXYPORT : "80";
+					$proxy_user = defined('WE_PROXYUSER') ? WE_PROXYUSER : "";
+					$proxy_pass = defined('WE_PROXYPASSWORD') ? WE_PROXYPASSWORD : "";
 
 					$content = $this->getFileThroughProxy($file, $proxyhost, $proxyport, $proxy_user, $proxy_pass);
 					break;

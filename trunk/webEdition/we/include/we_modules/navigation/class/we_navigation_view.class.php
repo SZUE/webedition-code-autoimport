@@ -478,14 +478,14 @@ function closeAllSelection(){
 
 function closeAllType(){
 	setVisible("doctype",false);
-	' . (defined("OBJECT_TABLE") ? '
+	' . (defined('OBJECT_TABLE') ? '
 	setVisible("classname",false);
 	' : '') . '
 }
 
 function closeAllStats(){
 	setVisible("docLink",false);
-	' . (defined("OBJECT_TABLE") ? '
+	' . (defined('OBJECT_TABLE') ? '
 	setVisible("objLink",false);
 	setVisible("objLinkWorkspace",false);
 	' : '') . '

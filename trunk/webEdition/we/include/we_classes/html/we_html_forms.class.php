@@ -141,7 +141,7 @@ abstract class we_html_forms{
 		$rows = weTag_getAttribute('rows', $attribs);
 		$width = weTag_getAttribute('width', $attribs);
 		$height = weTag_getAttribute('height', $attribs);
-		$commands = preg_replace('/ *, */', ',', weTag_getAttribute('commands', $attribs, defined("COMMANDS_DEFAULT") ? COMMANDS_DEFAULT : ''));
+		$commands = preg_replace('/ *, */', ',', weTag_getAttribute('commands', $attribs, defined('COMMANDS_DEFAULT') ? COMMANDS_DEFAULT : ''));
 		$contextmenu = preg_replace('/ *, */', ',', weTag_getAttribute('contextmenu', $attribs));
 		$bgcolor = weTag_getAttribute('bgcolor', $attribs);
 		$wrap = weTag_getAttribute('wrap', $attribs);
@@ -302,7 +302,7 @@ abstract class we_html_forms{
 				}
 			}
 		}
-		if(defined("OBJECT_TABLE")){
+		if(defined('OBJECT_TABLE')){
 			if(preg_match_all('/href="' . we_base_link::TYPE_OBJ_PREFIX . '(\\d+)[^" \?#]+\??/i', $text, $regs, PREG_SET_ORDER)){
 				foreach($regs as $reg){
 					if(!id_to_path($reg[1], OBJECT_FILES_TABLE)){ // if object doesn't exists, remove the link

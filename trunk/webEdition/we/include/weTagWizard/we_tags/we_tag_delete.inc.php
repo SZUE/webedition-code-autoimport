@@ -9,9 +9,9 @@ $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
 $id = new weTagData_textAttribute('id', false, '');
 $doctype = new weTagData_sqlRowAttribute('doctype', DOC_TYPES_TABLE, false, 'DocType', 'DocType', 'DocType', '');
-$classid = (defined("OBJECT_TABLE") ? new weTagData_selectorAttribute('classid', OBJECT_TABLE, 'object', false, '') : null);
+$classid = (defined('OBJECT_TABLE') ? new weTagData_selectorAttribute('classid', OBJECT_TABLE, 'object', false, '') : null);
 $pid = new weTagData_selectorAttribute('pid', FILE_TABLE, weTagData_selectorAttribute::FOLDER, false, '');
-$pidO = (defined("OBJECT_FILES_TABLE") ? new weTagData_selectorAttribute('pid', OBJECT_FILES_TABLE, weTagData_selectorAttribute::FOLDER, false, '') : null);
+$pidO = (defined('OBJECT_FILES_TABLE') ? new weTagData_selectorAttribute('pid', OBJECT_FILES_TABLE, weTagData_selectorAttribute::FOLDER, false, '') : null);
 $protected = new weTagData_selectAttribute('protected', weTagData_selectAttribute::getTrueFalse(), false, '');
 $admin = new weTagData_textAttribute('admin', false, '');
 $forceedit = new weTagData_selectAttribute('forceedit', weTagData_selectAttribute::getTrueFalse(), false, '');

@@ -553,7 +553,7 @@ function selectIt(){
 </head>
 	<body background="' . IMAGE_DIR . 'backgrounds/radient.gif" LINK="#000000" ALINK="#000000" VLINK="#000000" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
 		<form name="we_form" method="post">' .
-		((!defined("OBJECT_TABLE")) || $this->table != OBJECT_TABLE ?
+		((!defined('OBJECT_TABLE')) || $this->table != OBJECT_TABLE ?
 			$this->printHeaderTable() .
 			$this->printHeaderLine() : '') .
 		$this->printHeaderHeadlines() .
@@ -779,7 +779,7 @@ function press_ok_button() {
 
 	function setTableLayoutInfos(){
 		switch($this->table){
-			case (defined("OBJECT_TABLE") ? OBJECT_TABLE : 'OBJECT_TABLE'):
+			case (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'):
 			case TEMPLATES_TABLE:
 				$this->col2js = "entries[i].ID";
 				$this->tableSizer = "<td>" . we_html_tools::getPixel(25, 1) . "</td><td>" . we_html_tools::getPixel(350, 1) . "</td><td>" . we_html_tools::getPixel(70, 1) . "</td><td>" . we_html_tools::getPixel(150, 1) . "</td>";

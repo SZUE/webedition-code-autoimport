@@ -37,7 +37,7 @@ if(!(
 }
 $noInternals = $noInternals || !isset($_SESSION['user']) || !isset($_SESSION['user']['Username']) || $_SESSION['user']['Username'] == '';
 
-if(defined("GLOSSARY_TABLE") && we_base_request::_(we_base_request::BOOL, 'weSaveToGlossary') && !$noInternals){
+if(defined('GLOSSARY_TABLE') && we_base_request::_(we_base_request::BOOL, 'weSaveToGlossary') && !$noInternals){
 	$Glossary = new we_glossary_glossary();
 	$Glossary->Language = we_base_request::_(we_base_request::STRING, 'language');
 	$Glossary->Type = we_glossary_glossary::TYPE_ACRONYM;

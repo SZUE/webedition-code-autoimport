@@ -140,7 +140,7 @@ weSidebar._open(obj);
 }
 
 <?php
-if(defined("OBJECT_FILES_TABLE")){
+if(defined('OBJECT_FILES_TABLE')){
 	?>
 	weSidebar.openObject = function(obj) {
 	obj['table'] = "<?php echo OBJECT_FILES_TABLE; ?>";

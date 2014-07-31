@@ -445,7 +445,7 @@ class we_search_view extends we_tool_view{
 				$anzahl = 0;
 		}
 
-		$objectFilesTable = defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : "";
+		$objectFilesTable = defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : "";
 
 		$tab = we_base_request::_(we_base_request::INT, 'tab', we_base_request::_(we_base_request::INT, 'tabnr', 1));
 
@@ -1499,13 +1499,13 @@ class we_search_view extends we_tool_view{
 						$this->Model->search_tables_advSearch[TEMPLATES_TABLE] = $v;
 					}
 					if($k == "tblObjectFiles"){
-						if(defined("OBJECT_FILES_TABLE")){
+						if(defined('OBJECT_FILES_TABLE')){
 							unset($this->Model->search_tables_advSearch[$k]);
 							$this->Model->search_tables_advSearch[OBJECT_FILES_TABLE] = $v;
 						}
 					}
 					if($k == "tblObject"){
-						if(defined("OBJECT_TABLE")){
+						if(defined('OBJECT_TABLE')){
 							unset($this->Model->search_tables_advSearch[$k]);
 							$this->Model->search_tables_advSearch[OBJECT_TABLE] = $v;
 						}
@@ -1559,11 +1559,11 @@ class we_search_view extends we_tool_view{
 			$this->Model->search_tables_advSearch[TEMPLATES_TABLE] = 0;
 		}
 
-		if(!permissionhandler::hasPerm('CAN_SEE_OBJECTFILES') && defined("OBJECT_FILES_TABLE")){
+		if(!permissionhandler::hasPerm('CAN_SEE_OBJECTFILES') && defined('OBJECT_FILES_TABLE')){
 			$this->Model->search_tables_advSearch[OBJECT_FILES_TABLE] = 0;
 		}
 
-		if(!permissionhandler::hasPerm('CAN_SEE_OBJECTS') && defined("OBJECT_TABLE")){
+		if(!permissionhandler::hasPerm('CAN_SEE_OBJECTS') && defined('OBJECT_TABLE')){
 			$this->Model->search_tables_advSearch[OBJECT_TABLE] = 0;
 		}
 
@@ -1789,8 +1789,8 @@ class we_search_view extends we_tool_view{
 					}
 					break;
 				default:
-					$objectFilesTable = defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : '--';
-					$objectTable = defined("OBJECT_TABLE") ? OBJECT_TABLE : '--';
+					$objectFilesTable = defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : '--';
+					$objectTable = defined('OBJECT_TABLE') ? OBJECT_TABLE : '--';
 
 					foreach(we_base_request::_(we_base_request::STRING, 'we_cmd') as $k => $v){
 						if(is_string($v) && $v == 1){
@@ -2042,7 +2042,7 @@ class we_search_view extends we_tool_view{
 
 					if($_table == VERSIONS_TABLE){
 						$workspacesTblFile = makeArrayFromCSV(get_ws(FILE_TABLE, true));
-						if(defined("OBJECT_FILES_TABLE")){
+						if(defined('OBJECT_FILES_TABLE')){
 							$workspacesObjFile = makeArrayFromCSV(get_ws(OBJECT_FILES_TABLE, true));
 						}
 					}
@@ -2061,20 +2061,20 @@ class we_search_view extends we_tool_view{
 							$whereQuery .= $restrictUserQuery;
 							break;
 
-						case (defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : -1):
+						case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : -1):
 							$whereQuery .= $restrictUserQuery;
 							break;
 
-						case (defined("OBJECT_TABLE") ? OBJECT_TABLE : -2):
+						case (defined('OBJECT_TABLE') ? OBJECT_TABLE : -2):
 							$whereQuery .= ' AND ((' . $this->db->escape($_table) . '.RestrictUsers=0 OR ' . $this->db->escape($_table) . ".RestrictUsers=" . intval($_SESSION["user"]["ID"]) . ") OR (" . $this->db->escape($_table) . ".Users LIKE '%," . intval($_SESSION["user"]["ID"]) . ",%')) ";
 							break;
 						case VERSIONS_TABLE:
 							if(isset($GLOBALS['we_cmd_obj'])){
 								$isCheckedFileTable = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'search_tables_advSearch', FILE_TABLE);
-								$isCheckedObjFileTable = (defined("OBJECT_FILES_TABLE")) ? we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'search_tables_advSearch', OBJECT_FILES_TABLE) : 1;
+								$isCheckedObjFileTable = (defined('OBJECT_FILES_TABLE')) ? we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'search_tables_advSearch', OBJECT_FILES_TABLE) : 1;
 							} else {
 								$isCheckedFileTable = $this->Model->search_tables_advSearch[FILE_TABLE];
-								$isCheckedObjFileTable = (defined("OBJECT_FILES_TABLE")) ? $this->Model->search_tables_advSearch[OBJECT_FILES_TABLE] : 1;
+								$isCheckedObjFileTable = (defined('OBJECT_FILES_TABLE')) ? $this->Model->search_tables_advSearch[OBJECT_FILES_TABLE] : 1;
 							}
 							$_SESSION['weS']['weSearch']['onlyObjects'] = true;
 							$_SESSION['weS']['weSearch']['onlyDocs'] = true;

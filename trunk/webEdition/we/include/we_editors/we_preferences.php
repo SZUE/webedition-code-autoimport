@@ -761,7 +761,7 @@ function build_dialog($selected_setting = 'ui'){
 								if(document.getElementById('seem_start_type').value == 'object') {
 								" .
 						//FIXME frames['content'] will probably not work here
-						(defined("OBJECT_FILES_TABLE") ?
+						(defined('OBJECT_FILES_TABLE') ?
 							"parent.opener.top.we_cmd('openDocselector', document.getElementsByName('seem_start_object')[0].value, '" . OBJECT_FILES_TABLE . "', myWindStr + '.content.document.getElementsByName(\'seem_start_object\')[0].value', myWindStr + '.content.document.getElementsByName(\'seem_start_object_name\')[0].value', '', '" . session_id() . "', '', 'objectFile',1);"
 								: '') .
 						"} else {
