@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -51,7 +50,7 @@ $parts[] = array(
 
 
 echo we_html_tools::getHtmlTop() .
-	STYLESHEET;
+ STYLESHEET;
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 print we_html_element::cssElement('
 .paddingLeft {
@@ -71,17 +70,16 @@ print we_html_element::jsScript(JS_DIR . 'windows.js') .
 	'</head><body class="weEditorBody"><form name="we_form" onsubmit="return false">' .
 	we_class::hiddenTrans() .
 	($we_doc->ClassName != 'we_imageDocument' && permissionhandler::hasPerm('CAN_EDIT_CUSTOMERFILTER') ?
-		we_html_tools::hidden('we_edit_weDocumentCustomerFilter', 1) .
-		we_html_tools::hidden('weDocumentCustomerFilter_id', $_filter->getId()) : '') .
+		we_html_tools::hidden('we_edit_weDocumentCustomerFilter', 1) : '') .
 	we_html_multiIconBox::getHTML('weDocProp', '100%', $parts, 20, '', -1, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]')) .
 	'<input type="hidden" name="we_complete_request" value="1"/></form>
 </body>
 </html>';
 
 function formWebuser($canChange, $width = 388){
-	if(!$GLOBALS['we_doc']->WebUserID)
+	if(!$GLOBALS['we_doc']->WebUserID){
 		$GLOBALS['we_doc']->WebUserID = 0;
-
+	}
 	$webuser = ""; //g_l('weClass',"[nobody]");
 
 	if($GLOBALS['we_doc']->WebUserID != 0){
@@ -102,7 +100,7 @@ function formWebuser($canChange, $width = 388){
 	//$inputFeld=$GLOBALS['we_doc']->htmlTextInput($textname,24,$webuser,"",$attribs,"",$width);
 	//$idfield = $GLOBALS['we_doc']->htmlHidden($idname,$GLOBALS['we_doc']->WebUserID);
 
-	$button = we_html_button::create_button("select", "javascript:we_cmd('openSelector',document.we_form.elements['" . $idname . "'].value,'" . CUSTOMER_TABLE . "','document.we_form.elements[\\'".$idname."\\'].value','document.we_form.elements[\\'".$textname."\\'].value')");
+	$button = we_html_button::create_button("select", "javascript:we_cmd('openSelector',document.we_form.elements['" . $idname . "'].value,'" . CUSTOMER_TABLE . "','document.we_form.elements[\\'" . $idname . "\\'].value','document.we_form.elements[\\'" . $textname . "\\'].value')");
 
 	$_trashBut = we_html_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['" . $idname . "'].value=0;document.we_form.elements['" . $textname . "'].value='';_EditorFrame.setEditorIsHot(true);");
 	/*

@@ -33,13 +33,6 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	const NO_LOGIN = 'f_4';
 
 	/**
-	 * db-id of filter
-	 *
-	 * @var integer
-	 */
-	private $_id = 0;
-
-	/**
 	 * Id of model (document or object)
 	 *
 	 * @var integer
@@ -98,9 +91,9 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	 * @param array $blackList
 	 * @return we_customer_documentFilter
 	 */
-	public function __construct($id = 0, $modelId = 0, $modelType = '', $modelTable = '', $accessControlOnTemplate = true, $errorDocNoLogin = 0, $errorDocNoAccess = 0, $mode = we_customer_abstractFilter::OFF, array $specificCustomers = array(), array $filter = array(), array $whiteList = array(), array $blackList = array()){
+	public function __construct($modelId = 0, $modelType = '', $modelTable = '', $accessControlOnTemplate = true, $errorDocNoLogin = 0, $errorDocNoAccess = 0, $mode = we_customer_abstractFilter::OFF, array $specificCustomers = array(), array $filter = array(), array $whiteList = array(), array $blackList = array()){
 		parent::__construct($mode, $specificCustomers, $blackList, $whiteList, $filter);
-		$this->setId($id);
+
 		$this->setModelId($modelId);
 		$this->setModelType($modelType);
 		$this->setModelTable($modelTable);
@@ -118,7 +111,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	private static function getFilterByDbHash($hash){
 		$f = $hash['filter'] ? unserialize($hash['filter']) : array();
 		return new self(
-			intval($hash['id']), intval($hash['modelId']), $hash['modelType'], $hash['modelTable'], intval($hash['accessControlOnTemplate']), intval($hash['errorDocNoLogin']), intval($hash['errorDocNoAccess']), intval($hash['mode']), makeArrayFromCSV($hash['specificCustomers']), is_array($f)
+			intval($hash['modelId']), $hash['modelType'], $hash['modelTable'], intval($hash['accessControlOnTemplate']), intval($hash['errorDocNoLogin']), intval($hash['errorDocNoAccess']), intval($hash['mode']), makeArrayFromCSV($hash['specificCustomers']), is_array($f)
 					? $f : array(), makeArrayFromCSV($hash['whiteList']), makeArrayFromCSV($hash['blackList'])
 		);
 	}
@@ -134,9 +127,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 		return
 			(we_base_request::_(we_base_request::INT, 'wecf_mode') === we_customer_abstractFilter::OFF ?
 				self::getEmptyDocumentCustomerFilter() :
-				new self(
-				we_base_request::_(we_base_request::INT, 'weDocumentCustomerFilter_id', 0), intval($id), $ct, $table, (we_base_request::_(we_base_request::STRING, 'wecf_accessControlOnTemplate') == "onTemplate")
-						? 1 : 0, we_base_request::_(we_base_request::INT, 'wecf_noLoginId', 0), we_base_request::_(we_base_request::INT, 'wecf_noAccessId', 0), we_base_request::_(we_base_request::INT, 'wecf_mode', 0), self::getSpecificCustomersFromRequest(), self::getFilterFromRequest(), self::getWhiteListFromRequest(), self::getBlackListFromRequest()
+				new self(intval($id), $ct, $table, (we_base_request::_(we_base_request::STRING, 'wecf_accessControlOnTemplate') == "onTemplate") ? 1 : 0, we_base_request::_(we_base_request::INT, 'wecf_noLoginId', 0), we_base_request::_(we_base_request::INT, 'wecf_noAccessId', 0), we_base_request::_(we_base_request::INT, 'wecf_mode', 0), self::getSpecificCustomersFromRequest(), self::getFilterFromRequest(), self::getWhiteListFromRequest(), self::getBlackListFromRequest()
 				)
 			);
 	}
@@ -378,8 +369,8 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 		$_cid = isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
 		$_filesWithRestrictionsForCustomer = array();
 
-		$listQuery = ' (mode=' . we_customer_abstractFilter::FILTER . " AND (FIND_IN_SET($_cid,blackList) AND !FIND_IN_SET($_cid,whiteList) ) ";
-		$_specificCustomersQuery = ' (mode=' . we_customer_abstractFilter::SPECIFIC . " AND !FIND_IN_SET($_cid,specificCustomers) ";
+		$listQuery = ' (mode=' . we_customer_abstractFilter::FILTER . " AND FIND_IN_SET($_cid,blackList) AND !FIND_IN_SET($_cid,whiteList) ) ";
+		$_specificCustomersQuery = ' (mode=' . we_customer_abstractFilter::SPECIFIC . " AND !FIND_IN_SET($_cid,specificCustomers)) ";
 
 		// detect all files/objects with restrictions
 		switch($classname){
@@ -455,22 +446,10 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	/* ############################ Accessors and Mutators ################################### */
 
 	/**
-	 * Mutator method for $this->_id
-	 *
-	 * @param integer $id
-	 */
-	function setId($id){
-		$this->_id = $id;
-	}
-
-	/**
 	 * Accessor method for $this->_id
 	 *
 	 * @return integer
 	 */
-	function getId(){
-		return $this->_id;
-	}
 
 	/**
 	 * Mutator method for $this->_modelId
