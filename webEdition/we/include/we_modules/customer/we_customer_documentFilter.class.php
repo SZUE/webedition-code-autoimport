@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,7 +27,6 @@
  *
  */
 class we_customer_documentFilter extends we_customer_abstractFilter{
-
 	const ACCESS = 'f_1';
 	const CONTROLONTEMPLATE = 'f_2';
 	const NO_ACCESS = 'f_3';
@@ -117,10 +115,11 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	 * @param we_db $db
 	 * @return we_customer_documentFilter
 	 */
-	function getFilterByDbHash(&$hash){
+	private static function getFilterByDbHash(&$hash){
 		$f = $hash['filter'] ? unserialize($hash['filter']) : array();
 		return new self(
-			intval($hash['id']), intval($hash['modelId']), $hash['modelType'], $hash['modelTable'], intval($hash['accessControlOnTemplate']), intval($hash['errorDocNoLogin']), intval($hash['errorDocNoAccess']), intval($hash['mode']), makeArrayFromCSV($hash['specificCustomers']), is_array($f) ? $f : array(), makeArrayFromCSV($hash['whiteList']), makeArrayFromCSV($hash['blackList'])
+			intval($hash['id']), intval($hash['modelId']), $hash['modelType'], $hash['modelTable'], intval($hash['accessControlOnTemplate']), intval($hash['errorDocNoLogin']), intval($hash['errorDocNoAccess']), intval($hash['mode']), makeArrayFromCSV($hash['specificCustomers']), is_array($f)
+					? $f : array(), makeArrayFromCSV($hash['whiteList']), makeArrayFromCSV($hash['blackList'])
 		);
 	}
 
@@ -136,7 +135,8 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 			(we_base_request::_(we_base_request::INT, 'wecf_mode') === we_customer_abstractFilter::OFF ?
 				self::getEmptyDocumentCustomerFilter() :
 				new self(
-				we_base_request::_(we_base_request::INT, 'weDocumentCustomerFilter_id', 0), intval($model->ID), $model->ContentType, $model->Table, (we_base_request::_(we_base_request::STRING, 'wecf_accessControlOnTemplate') == "onTemplate") ? 1 : 0, we_base_request::_(we_base_request::INT, 'wecf_noLoginId', 0), we_base_request::_(we_base_request::INT, 'wecf_noAccessId', 0), we_base_request::_(we_base_request::INT, 'wecf_mode', 0), self::getSpecificCustomersFromRequest(), self::getFilterFromRequest(), self::getWhiteListFromRequest(), self::getBlackListFromRequest()
+				we_base_request::_(we_base_request::INT, 'weDocumentCustomerFilter_id', 0), intval($model->ID), $model->ContentType, $model->Table, (we_base_request::_(we_base_request::STRING, 'wecf_accessControlOnTemplate') == "onTemplate")
+						? 1 : 0, we_base_request::_(we_base_request::INT, 'wecf_noLoginId', 0), we_base_request::_(we_base_request::INT, 'wecf_noAccessId', 0), we_base_request::_(we_base_request::INT, 'wecf_mode', 0), self::getSpecificCustomersFromRequest(), self::getFilterFromRequest(), self::getWhiteListFromRequest(), self::getBlackListFromRequest()
 				)
 			);
 	}
@@ -173,7 +173,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	 * @return string
 	 */
 	function getConditionForListviewQuery(&$listview){
-		if($listview->customerFilterType === 'off' || $listview->customerFilterType === 'false'){
+		if($listview->customerFilterType === 'off' || $listview->customerFilterType === 'false' || $listview->customerFilterType === false || $listview->customerFilterType === 'all'){
 			return '';
 		}
 		$_queryTail = '';
@@ -185,32 +185,30 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 		if($listview instanceof we_search_listview){ // search
 			// build query from restricted files, regard search and normal listview
 			foreach($_restrictedFilesForCustomer as $ct => $_fileArray){
-
 				if(in_array($ct, $_allowedCTs)){
-
 					$_idField = ($ct == we_base_ContentTypes::WEDOCUMENT ? 'DID' : 'OID');
-					if(!empty($_fileArray)){
+					if($_fileArray){
 						$_queryTail .= ' AND ' . $_idField . ' NOT IN(' . implode(', ', $_fileArray) . ')';
 					}
 				}
 			}
-		} else {
+			return $_queryTail;
+		}
+		$_fileArray = array();
+		// build query from restricted files, regard search and normal listview
+		foreach($_restrictedFilesForCustomer as $ct => $_fileArray){
 
-			$_fileArray = array();
-			// build query from restricted files, regard search and normal listview
-			foreach($_restrictedFilesForCustomer as $ct => $_fileArray){
+			if(in_array($ct, $_allowedCTs)){
 
-				if(in_array($ct, $_allowedCTs)){
-
-					$_idField = ($ct == we_base_ContentTypes::WEDOCUMENT ?
-							FILE_TABLE . '.ID' :
-							OBJECT_X_TABLE . $listview->classID . '.OF_ID');
-				}
-			}
-			if(!empty($_fileArray)){
-				$_queryTail = ' AND ' . $_idField . ' NOT IN(' . implode(', ', $_fileArray) . ')';
+				$_idField = ($ct == we_base_ContentTypes::WEDOCUMENT ?
+						FILE_TABLE . '.ID' :
+						OBJECT_X_TABLE . $listview->classID . '.OF_ID');
 			}
 		}
+		if($_fileArray){
+			$_queryTail = ' AND ' . $_idField . ' NOT IN(' . implode(', ', $_fileArray) . ')';
+		}
+
 		return $_queryTail;
 	}
 
@@ -337,7 +335,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	function deleteForModel(&$model, we_database_base $db = null){
 		if($model->ID){
 			$_db = ($db ? $db : new DB_WE());
-			$_db->query('DELETE FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelId=' . intval($model->ID) . ' AND modelType="' . $db->escape($model->ContentType) . '" AND modelTable="' . stripTblPrefix($model->Table) . '"');
+			$_db->query('DELETE FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelId=' . intval($model->ID) . ' AND modelTable="' . stripTblPrefix($model->Table) . '"');
 		}
 	}
 
@@ -365,11 +363,11 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	 * call this, when several models are deleted
 	 */
 	function deleteModel(array $modelIds, $table){
-		if(!empty($modelIds)){
-			$_db = new DB_WE();
-			$_db->query('DELETE FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE	modelId IN (' . implode(', ', $modelIds) . ')	AND modelTable = "' . $_db->escape($table) . '"');
-			unset($_db);
+		if(!$modelIds){
+			return;
 		}
+		$_db = new DB_WE();
+		$_db->query('DELETE FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelId IN (' . implode(', ', $modelIds) . ')	AND modelTable = "' . $_db->escape($table) . '"');
 	}
 
 	/**
@@ -379,6 +377,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	 * @return array
 	 */
 	function _getFilesWithRestrictionsOfCustomer(&$listview){
+		//FIXME: this will query ALL documents with restrictions - this is definately not what we want!
 		$_db = new DB_WE();
 		$_cid = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
 		$_filesWithRestrictionsForCustomer = array();
@@ -388,19 +387,21 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 		$_whiteLlistQuery = ' (mode=' . we_customer_abstractFilter::FILTER . " AND whiteList NOT LIKE '%,$_cid,%') ";
 		$_specificCustomersQuery = ' (mode=' . we_customer_abstractFilter::SPECIFIC . " AND specificCustomers NOT LIKE '%,$_cid,%') ";
 
-		$_accessControlOnTemplateQuery = ( ($listview->customerFilterType != 'all' && $listview->customerFilterType != 'true') ? ' AND (accessControlOnTemplate = 0) ' : '' );
+		//FIXME: is this really what we want, why do we show documents with filters, which the customer has no access??? in listviews??
+		$_accessControlOnTemplateQuery = (($listview->customerFilterType !== 'all' && $listview->customerFilterType !== 'true' && $listview->customerFilterType !== true)
+					? ' AND (accessControlOnTemplate = 0) ' : '' );
 
 		// detect all files/objects with restrictions
 		switch($listview->ClassName){
 			case 'we_search_listview':
-				$_queryForIds = 'SELECT * FROM ' . CUSTOMER_FILTER_TABLE . " WHERE $_defaultQuery $_blacklistQuery OR ( ($_specificCustomersQuery OR $_whiteLlistQuery) $_accessControlOnTemplateQuery)";
+				$_queryForIds = 'SELECT * FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE ' . $_defaultQuery . ' ' . $_blacklistQuery . ' OR ( (' . $_specificCustomersQuery . ' OR ' . $_whiteLlistQuery . ') ' . $_accessControlOnTemplateQuery . ')';
 				break;
 			case 'we_listview': // type="document"
-				$_queryForIds = 'SELECT * FROM ' . CUSTOMER_FILTER_TABLE . " WHERE modelType='" . we_base_ContentTypes::WEDOCUMENT . "'  AND ($_defaultQuery $_blacklistQuery OR ( ($_specificCustomersQuery OR $_whiteLlistQuery) $_accessControlOnTemplateQuery))";
+				$_queryForIds = 'SELECT * FROM ' . CUSTOMER_FILTER_TABLE . " WHERE modelTable='" . stripTblPrefix(FILE_TABLE) . "'  AND ($_defaultQuery $_blacklistQuery OR ( ($_specificCustomersQuery OR $_whiteLlistQuery) $_accessControlOnTemplateQuery))";
 				break;
 			case 'we_object_listview':
 			case 'we_object_listviewMultiobject': // type="object"
-				$_queryForIds = 'SELECT * FROM ' . CUSTOMER_FILTER_TABLE . " WHERE modelType='objectFile' AND ($_defaultQuery $_blacklistQuery OR ( ($_specificCustomersQuery OR $_whiteLlistQuery) $_accessControlOnTemplateQuery))";
+				$_queryForIds = 'SELECT * FROM ' . CUSTOMER_FILTER_TABLE . " WHERE modelTable='" . stripTblPrefix(OBJECT_FILES_TABLE) . "' AND ($_defaultQuery $_blacklistQuery OR ( ($_specificCustomersQuery OR $_whiteLlistQuery) $_accessControlOnTemplateQuery))";
 				break;
 		}
 		// if customer is not logged in=> return NO_LOGIN
@@ -408,35 +409,34 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 		// execute the query (get all existing filters)
 		$_db->query($_queryForIds);
 
-		if(!self::customerIsLogedIn()){ // visitor is not logged in
-			// Vistior is not logged in => Visitor has no Access to files with filters!
-			while($_db->next_record()){
-				$_filesWithRestrictionsForCustomer[$_db->f("modelType")][] = $_db->f("modelId");
-			}
-		} else { // visitor has logged in
+		if(self::customerIsLogedIn()){ // visitor is not logged in
+// visitor is logged in
 			$_filters = array();
 			while($_db->next_record()){
-				$_filters[] = self::getFilterByDbHash($_db->Record);
+				$_filters[] = self::getFilterByDbHash($_db->getRecord());
 			}
 
-			$__tmp = array();
-
 			foreach($_filters as $filter){
-				$_perm = $filter->accessForVisitor($__tmp, array("id" => $filter->getModelId(), "contentType" => $filter->getModelType()), false, true);
+				$_perm = $filter->accessForVisitor($filter->getModelId(),$filter->getModelType(), false, true);
 				switch($_perm){
 					case self::NO_ACCESS:
 					case self::NO_LOGIN:
 						$_filesWithRestrictionsForCustomer[$filter->getModelType()][] = $filter->getModelId();
 						break;
 					case self::CONTROLONTEMPLATE:
-						if($listview->customerFilterType == 'all' || $listview->customerFilterType == 'true'){
+						if($listview->customerFilterType === 'all' || $listview->customerFilterType === 'true' || $listview->customerFilterType === true){
 							$_filesWithRestrictionsForCustomer[$filter->getModelType()][] = $filter->getModelId();
 						}
 						break;
 				}
 			}
+
+			return $_filesWithRestrictionsForCustomer;
 		}
-		unset($_db);
+		// Vistior is not logged in => Visitor has no Access to files with filters!
+		while($_db->next_record()){
+			$_filesWithRestrictionsForCustomer[$_db->f("modelType")][] = $_db->f("modelId");
+		}
 		return $_filesWithRestrictionsForCustomer;
 	}
 
@@ -448,12 +448,8 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	 * @param boolean $_fromIfRegisteredUser
 	 * @return string
 	 */
-	function accessForVisitor(&$model, $modelHash = array(), $_fromIfRegisteredUser = false, $_fromListviewCheck = false){
-		if(!empty($model)){
-			$modelHash["id"] = $model->ID;
-			$modelHash["contentType"] = $model->ContentType;
-		}
-		if($modelHash["id"] == $this->getModelId() && $modelHash["contentType"] == $this->getModelType()){ // model is correct
+	function accessForVisitor($id, $ct, $_fromIfRegisteredUser = false, $_fromListviewCheck = false){
+		if($id == $this->getModelId() && $ct == $this->getModelType()){ // model is correct
 			if(!$_fromListviewCheck && $this->getAccessControlOnTemplate() && !$_fromIfRegisteredUser){
 				// access control is on template (for we:ifregisteredUser)
 				return self::CONTROLONTEMPLATE;

@@ -594,6 +594,10 @@ class liveUpdateFunctions {
 			$db->query('SHOW COLUMNS FROM ' . $db->escape($matches[2]) . ' WHERE Field="' . $matches[1] . '"');
 			$query = ($db->num_rows() ? 'ALTER TABLE ' . $db->escape($matches[2]) . ' DROP COLUMN ' . $db->escape($matches[1]) : '');
 		}
+		if(preg_match('/###UPDATEDROPKEY\((.*),(.*)\)###/', $query, $matches)){
+			$db->query('SHOW COLUMNS FROM ' . $db->escape($matches[2]) . ' WHERE Key_name="' . $matches[1] . '"');
+			$query = ($db->num_rows() ? 'ALTER TABLE ' . $db->escape($matches[2]) . ' DROP KEY ' . $db->escape($matches[1]) : '');
+		}
 		/* if (LIVEUPDATE_TABLE_PREFIX && strpos($query,'###TBLPREFIX###')===false) {
 
 		  $query = preg_replace("/^INSERT INTO /", "INSERT INTO " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
