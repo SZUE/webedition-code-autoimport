@@ -45,7 +45,7 @@ abstract class we_fileupload_base {
 	const ON_ERROR_RETURN = true;
 	const ON_ERROR_DIE = true;
 
-	function __construct($name, $width = 400, $maxUploadSize = -1) {
+	protected function __construct($name, $width = 400, $maxUploadSize = -1) {
 		$this->name = $name;
 		$this->dimensions['width'] = $width;
 		$this->maxUploadSizeMBytes = intval($maxUploadSize != -1 ? $maxUploadSize : (defined('FILE_UPLOAD_MAX_UPLOAD_SIZE') ? FILE_UPLOAD_MAX_UPLOAD_SIZE : 0));

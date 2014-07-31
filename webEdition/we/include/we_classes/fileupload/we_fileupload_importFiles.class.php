@@ -27,7 +27,7 @@ class we_fileupload_importFiles extends we_fileupload_base {
 
 	private $jsRequirementsOk = false;
 
-	function __construct($name) {
+	public function __construct($name) {
 		parent::__construct($name);
 		$this->jsRequirementsOk = we_base_request::_(we_base_request::BOOL, "jsRequirementsOk", false);
 		$this->setDimensions(array('width' => 400, 'dragHeight' => 44));
@@ -133,7 +133,7 @@ weFU.appendMoreData = function(fd){
 	var cf = top.imgimportcontent,
 		sf = cf.document.we_startform,
 		cur = weFU.currentFile;
-		
+
 	fd.append("weFormNum", cur.fileNum+1);
 	fd.append("weFormCount", weFU.totalFiles);
 
@@ -181,7 +181,7 @@ weFU.repaintGUI = function(arg){
 				i = weFU.mapFiles[cur.fileNum],
 				digits = cur.totalParts > 1000 ? 2 : (cur.totalParts > 100 ? 1 : 0);
 				fileProg = (100/cur.file.size) * cur.currentWeightFile;
-				totalProg = (100/weFU.totalWeight) * weFU.currentWeight; 
+				totalProg = (100/weFU.totalWeight) * weFU.currentWeight;
 			//per file progress
 			cf._setProgress_uploader(i, fileProg.toFixed(digits));
 			//cummulated progress
@@ -221,7 +221,7 @@ weFU.repaintGUI = function(arg){
 
 weFU.processError = function(arg){
 	switch(arg.from){
-		case "gui": 
+		case "gui":
 			top.we_showMessage(arg.msg, 4, window);
 		case "request":
 			//weFU.repaintGUI({"what" : "fileNOK"});
@@ -233,7 +233,7 @@ weFU.reset = function(){
 	var cf = top.imgimportcontent,
 		l = cf.weUploadFiles.length;
 
-	
+
 	for(var i = 0; i < l; i++){
 		cf.weUploadFiles[i] = null;
 		weFU.preparedFiles[i] = null;
