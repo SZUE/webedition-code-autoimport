@@ -247,7 +247,7 @@ abstract class we_backup_preparer{
 		return $tables;
 	}
 
-	static function getBackupFile(){
+	private static function getBackupFile(){
 		if(($backup_select = we_base_request::_(we_base_request::FILE, 'backup_select'))){
 			return $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . $backup_select;
 		}
@@ -297,7 +297,7 @@ abstract class we_backup_preparer{
 		return $list;
 	}
 
-	static function getFileLists(){
+	static function getFileLists(){//FIXME:unused??
 		$list = array();
 		self::getFileList($list, TEMPLATES_PATH, true, false);
 		self::getFileList($list, $_SERVER['DOCUMENT_ROOT'] . we_navigation_cache::CACHEDIR, true, false);
@@ -305,7 +305,7 @@ abstract class we_backup_preparer{
 		return $list;
 	}
 
-	static function getFileList(array &$list, $dir = '', $with_dirs = false, $rem_doc_root = true){
+	private static function getFileList(array &$list, $dir = '', $with_dirs = false, $rem_doc_root = true){
 		$dir = ($dir == '' ? $_SERVER['DOCUMENT_ROOT'] : $dir);
 		if(!is_readable($dir) || !is_dir($dir)){
 			return false;

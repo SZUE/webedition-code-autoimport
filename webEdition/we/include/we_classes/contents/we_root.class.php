@@ -1058,13 +1058,13 @@ abstract class we_root extends we_class{
 				$_pathFirstPart = substr($this->getParentPath(), -1) == '/' ? '' : '/';
 				$tail = '';
 				switch($doctype->SubDir){
-					case we_class::SUB_DIR_YEAR:
+					case self::SUB_DIR_YEAR:
 						$tail = $_pathFirstPart . date('Y');
 						break;
-					case we_class::SUB_DIR_YEAR_MONTH:
+					case self::SUB_DIR_YEAR_MONTH:
 						$tail = $_pathFirstPart . date('Y') . '/' . date('m');
 						break;
-					case we_class::SUB_DIR_YEAR_MONTH_DAY:
+					case self::SUB_DIR_YEAR_MONTH_DAY:
 						$tail = $_pathFirstPart . date('Y') . '/' . date('m') . '/' . date('d');
 						break;
 				}

@@ -57,11 +57,13 @@ class we_base_sessionHandler{
 		if($data){
 			$data = gzuncompress($data);
 			$data = $data && $data[0] == '$' && $this->crypt ? we_customer_customer::decryptData($data, $this->crypt) : $data;
-			return $data;
+			if($data){
+				return $data;
+			}//else we need a new sessionid; if decrypt failed we might else destroy an existing valid session
 		}
 		//if we don't find valid data, generate a new ID because of session stealing
 		self::getSessionID(0);
-		return '';
+		return array('__we__new_sess' => 1); //keep a new generated session, otherwise write will kill this
 	}
 
 	function write($sessID, $sessData){
@@ -74,7 +76,6 @@ class we_base_sessionHandler{
 		$this->DB->query('REPLACE INTO ' . SESSION_TABLE . ' SET ' . we_database_base::arraySetter(array(
 				'session_id' => sql_function('x\'' . $sessID . '\''),
 				'session_data' => gzcompress($sessData, 9),
-				//'tmp' => serialize($_SESSION),
 				'sessionName' => $this->sessionName
 		)));
 		return true;
@@ -98,7 +99,7 @@ class we_base_sessionHandler{
 		//		return $sessID;
 
 		$cnt = ini_get('session.hash_bits_per_character');
-		if($cnt == 4){
+		if($cnt == 4){//this is easy, since this is set as hex
 			//a 4 bit value didn't match, we neeed a new id
 			session_regenerate_id();
 			return session_id();
@@ -117,7 +118,6 @@ class we_base_sessionHandler{
 				$tmp = 0;
 			}
 		}
-
 		session_id(str_pad($newID, 40, $newID));
 		//note: id in cookie will still be delivered in 5/6 bits!
 		return session_id();
