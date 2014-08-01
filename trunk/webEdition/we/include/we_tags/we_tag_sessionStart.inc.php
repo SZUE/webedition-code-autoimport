@@ -44,6 +44,9 @@ function we_tag_sessionStart($attribs){
 		}
 		$GLOBALS['WE_LOGOUT'] = true;
 		unset($_SESSION['s'], $_REQUEST['s']);
+		if(SECURITY_DELETE_SESSION){
+			session_regenerate_id(true);
+		}
 		$_SESSION['webuser'] = array('registered' => false);
 	} else {
 		if(isset($_REQUEST['we_set_registeredUser']) && $GLOBALS['we_doc']->InWebEdition){

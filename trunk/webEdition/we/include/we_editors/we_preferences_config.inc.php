@@ -175,6 +175,7 @@ $GLOBALS['configs'] = array(
 		'VERSIONS_TIME_YEARS_TMPL' => array('Versioning Number of Years', we_base_request::INT, -1),
 		'VERSIONS_ANZAHL_TMPL' => array('Versioning Number of Versions', we_base_request::INT, 5),
 //security
+		'SECURITY_DELETE_SESSION' => array('whether to delte a session on logout of a customer', we_base_request::BOOL, true),
 		'SECURITY_LIMIT_CUSTOMER_IP' => array('Limit # of failed logins comming from the same IP', we_base_request::INT, 10),
 		'SECURITY_LIMIT_CUSTOMER_IP_HOURS' => array('Limit failed logins comming from same IP connections per # hours', we_base_request::INT, 3),
 		'SECURITY_LIMIT_CUSTOMER_NAME' => array('Limit # of failed logins with same username', we_base_request::INT, 4),

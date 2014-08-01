@@ -182,13 +182,13 @@ abstract class we_textContentDocument extends we_textDocument{
 				$this->Language = $rec['Language'];
 				$_pathFirstPart = substr($this->ParentPath, -1) == '/' ? '' : '/';
 				switch($rec['SubDir']){
-					case we_class::SUB_DIR_YEAR:
+					case self::SUB_DIR_YEAR:
 						$this->ParentPath .= $_pathFirstPart . date('Y');
 						break;
-					case we_class::SUB_DIR_YEAR_MONTH:
+					case self::SUB_DIR_YEAR_MONTH:
 						$this->ParentPath .= $_pathFirstPart . date('Y') . '/' . date('m');
 						break;
-					case we_class::SUB_DIR_YEAR_MONTH_DAY:
+					case self::SUB_DIR_YEAR_MONTH_DAY:
 						$this->ParentPath .= $_pathFirstPart . date('Y') . '/' . date('m') . '/' . date('d');
 						break;
 				}

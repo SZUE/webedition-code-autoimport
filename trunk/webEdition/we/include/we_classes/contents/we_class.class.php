@@ -308,7 +308,7 @@ abstract class we_class{
 		$this->documentCustomerFilter = we_customer_documentFilter::getFilterOfDocument($this);
 	}
 
-	public function we_load(/* $from = we_class::LOAD_MAID_DB */){
+	public function we_load(/* $from = self::LOAD_MAID_DB */){
 		$this->i_getPersistentSlotsFromDB();
 	}
 
