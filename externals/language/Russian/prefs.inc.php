@@ -253,6 +253,7 @@ $l_prefs=array(
 	
 	'security'=>array(
 		'customer'=>array(
+			'deleteSession'=>'Delete session on logout',
 			'disableLogins'=>'limit login attemps',
 			'errorPage'=>'Error page',
 			'sameIP'=>'from same IP',

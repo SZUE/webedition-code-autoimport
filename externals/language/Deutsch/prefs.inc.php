@@ -254,6 +254,7 @@ Zur Umstellung auf den Standard "nein" ersetzen Sie in allen Vorlagen einfach in
 	
 	'security'=>array(
 		'customer'=>array(
+			'deleteSession'=>'Bei Logout Sitzung löschen',
 			'disableLogins'=>'Loginversuche limitieren',
 			'errorPage'=>'Fehlerseite',
 			'sameIP'=>'von gleicher IP',
