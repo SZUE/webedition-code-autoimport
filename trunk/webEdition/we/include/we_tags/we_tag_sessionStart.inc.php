@@ -49,6 +49,8 @@ function we_tag_sessionStart($attribs){
 				session_regenerate_id(true);
 				//we need a new lock on the generated id, since partial data is sent to the browser, subsequent calls with the new sessionid might happen
 				session_write_close();
+				//update the cookie:
+				$_COOKIE[session_name()] = session_id();
 				session_start();
 			}
 			$_SESSION['webuser'] = array('registered' => false);
@@ -82,8 +84,8 @@ function we_tag_sessionStart($attribs){
 					wetagsessionHandleFailedLogin();
 				}
 			}
-			//FIXME: make this a performance entry in prefs
-			if(/* (isset($GLOBALS['WE_LOGIN']) && $GLOBALS['WE_LOGIN'])&& */isset($_SESSION['webuser']['registered']) && isset($_SESSION['webuser']['ID']) && isset($_SESSION['webuser']['Username']) && $_SESSION['webuser']['registered'] && $_SESSION['webuser']['ID'] && $_SESSION['webuser']['Username'] != ''){
+
+			if(isset($_SESSION['webuser']['registered']) && isset($_SESSION['webuser']['ID']) && isset($_SESSION['webuser']['Username']) && $_SESSION['webuser']['registered'] && $_SESSION['webuser']['ID'] && $_SESSION['webuser']['Username'] != ''){
 				if($_SESSION['webuser']['LastAccess'] + 60 < time()){
 					$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET LastAccess=UNIX_TIMESTAMP() WHERE ID=' . intval($_SESSION['webuser']['ID']));
 					$_SESSION['webuser']['LastAccess'] = time();
