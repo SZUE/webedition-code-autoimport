@@ -61,12 +61,14 @@ class we_base_sessionHandler{
 				return $data;
 			}//else we need a new sessionid; if decrypt failed we might else destroy an existing valid session
 		}
+
+		$data = array('__we__new_sess' => 1); //keep a new generated session, otherwise we will get a new ID every time
 		//if we don't find valid data, generate a new ID because of session stealing
-		self::getSessionID(0);
-		return array('__we__new_sess' => 1); //keep a new generated session, otherwise write will kill this
+		$this->write(self::getSessionID(0), $data, true);//we need a new locked session
+		return $data;
 	}
 
-	function write($sessID, $sessData){
+	function write($sessID, $sessData, $lock = false){
 		if(!$sessData){
 			return $this->destroy($sessID);
 		}
@@ -76,7 +78,9 @@ class we_base_sessionHandler{
 		$this->DB->query('REPLACE INTO ' . SESSION_TABLE . ' SET ' . we_database_base::arraySetter(array(
 				'session_id' => sql_function('x\'' . $sessID . '\''),
 				'session_data' => gzcompress($sessData, 9),
-				'sessionName' => $this->sessionName
+				'sessionName' => $this->sessionName,
+				'lockid' => $lock ? $this->id : '',
+				'lockTime' => sql_function($lock ? 'NOW()' : 'NULL'),
 		)));
 		return true;
 	}
@@ -98,10 +102,10 @@ class we_base_sessionHandler{
 		}
 		//		return $sessID;
 
+		session_regenerate_id();
 		$cnt = ini_get('session.hash_bits_per_character');
 		if($cnt == 4){//this is easy, since this is set as hex
 			//a 4 bit value didn't match, we neeed a new id
-			session_regenerate_id();
 			return session_id();
 		}
 		//we have to deal with bad php settings

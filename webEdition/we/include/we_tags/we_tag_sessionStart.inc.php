@@ -47,6 +47,9 @@ function we_tag_sessionStart($attribs){
 			unset($_SESSION['s'], $_REQUEST['s']);
 			if(SECURITY_DELETE_SESSION){
 				session_regenerate_id(true);
+				//we need a new lock on the generated id, since partial data is sent to the browser, subsequent calls with the new sessionid might happen
+				session_write_close();
+				session_start();
 			}
 			$_SESSION['webuser'] = array('registered' => false);
 		}
