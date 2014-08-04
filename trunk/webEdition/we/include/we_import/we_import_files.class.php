@@ -1071,8 +1071,7 @@ function next() {
 	function importFile(){
 		if(isset($_FILES['we_File']) && strlen($_FILES['we_File']["tmp_name"])){
 			$we_ContentType = getContentTypeFromFile($_FILES['we_File']["name"]);
-			if(!permissionhandler::hasPerm(we_base_ContentTypes::inst()->getPermission($we_ContentType)) || $this->partNum == $this->showErrorAtChunkNr){
-				//if(!permissionhandler::hasPerm(we_base_ContentTypes::inst()->getPermission($we_ContentType))){
+			if(!permissionhandler::hasPerm(we_base_ContentTypes::inst()->getPermission($we_ContentType)) || ($this->useJsUpload && $this->partNum == $this->showErrorAtChunkNr)){
 
 				return array(
 					'filename' => $_FILES['we_File']['name'], 'error' => 'no_perms'
