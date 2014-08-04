@@ -100,8 +100,6 @@ class we_base_sessionHandler{
 		if($sessID && preg_match('|^([a-f0-9]){32,40}$|i', $sessID)){
 			return $sessID;
 		}
-		//		return $sessID;
-
 		session_regenerate_id();
 		$cnt = ini_get('session.hash_bits_per_character');
 		if($cnt == 4){//this is easy, since this is set as hex
