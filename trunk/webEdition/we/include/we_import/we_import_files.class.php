@@ -42,7 +42,7 @@ class we_import_files{
 	private $useJsUpload = false;
 	private $maxUploadSizeMB = 8;
 	private $maxUploadSizeB = 0;
-	private $fileNameTmp = '';
+	private $fileNameTemp = '';
 	private $partNum = 0;
 	private $partCount = 0;
 	private $showErrorAtChunkNr = 0; //Trigger an Error at n-th chunk of 100KB to demonstrate error response. TODO: Use this construct to abort on Max_FILE_SIZE!!
@@ -79,7 +79,7 @@ class we_import_files{
 		$this->jsRequirementsOk = we_base_request::_(we_base_request::BOOL, "jsRequirementsOk", false);
 		$this->partNum = we_base_request::_(we_base_request::INT, "wePartNum", 0);
 		$this->partCount = we_base_request::_(we_base_request::INT, "wePartCount", 0);
-		$this->fileNameTmp = we_base_request::_(we_base_request::RAW, "weFileNameTmp", '');
+		$this->fileNameTemp = we_base_request::_(we_base_request::RAW, "weFileNameTemp", '');
 		$this->maxUploadSizeMB = defined('FILE_UPLOAD_MAX_UPLOAD_SIZE') ? FILE_UPLOAD_MAX_UPLOAD_SIZE : 8; //FIMXE: 8???
 		$this->maxUploadSizeB = $this->maxUploadSizeMB * 1048576;
 		$this->useLegacyUpload = defined('FILE_UPLOAD_USE_LEGACY') ? FILE_UPLOAD_USE_LEGACY : false;
@@ -869,7 +869,7 @@ function setApplet() {
 		}
 
 		if($formcount && $this->useJsUpload){
-			$response = array('status' => '', 'fileNameTmp' => '', 'mimePhp' => 'none', 'message' => '', 'completed' => '');
+			$response = array('status' => '', 'fileNameTemp' => '', 'mimePhp' => 'none', 'message' => '', 'completed' => '');
 
 			if($this->partNum == $this->partCount){
 				//actual file completed
@@ -890,7 +890,7 @@ function setApplet() {
 					}
 				}
 			} else {
-				$response['fileNameTmp'] = $this->fileNameTmp;
+				$response['fileNameTemp'] = $this->fileNameTemp;
 				//TODO: if we have a message here, we can stop uloading chunks of this file!
 				$response['status'] = empty($error) ? 'continue' : 'failure';
 				$response['message'] = empty($error) ? '' : g_l('importFiles', "[" . $error['error'] . "]");
@@ -1092,16 +1092,16 @@ function next() {
 
 			if($this->partCount > 1){
 				if($this->partNum == 1){
-					$this->fileNameTmp = $tm;
+					$this->fileNameTemp = $tm;
 				} else {
-					file_put_contents(TEMP_PATH . $this->fileNameTmp, file_get_contents($tempName), FILE_APPEND);
+					file_put_contents(TEMP_PATH . $this->fileNameTemp, file_get_contents($tempName), FILE_APPEND);
 					unlink($tempName);
 				}
 			}
 
 			if($this->partCount == 1 || ($this->partCount == $this->partNum)){
-				$tempName = $this->partCount > 1 ? TEMP_PATH . $this->fileNameTmp : $tempName;
-				$this->fileNameTmp = '';
+				$tempName = $this->partCount > 1 ? TEMP_PATH . $this->fileNameTemp : $tempName;
+				$this->fileNameTemp = '';
 				$fileSize = we_base_request::_(we_base_request::INT, "weFileSize", $_FILES['we_File']['size']);
 
 				// setting Filename, Path ...
