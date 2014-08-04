@@ -391,7 +391,7 @@ weFU.fileSelectHandler = function(e){
 	}
 
 	tmpFileType = newFile.file.type ? newFile.file.type : "text/plain";
-	fileSizeOk = newFile.file.size <= ' . $this->maxUploadSizeBytes . ';
+	fileSizeOk = newFile.file.size <= ' . $this->maxUploadSizeBytes . ' || !' . $this->maxUploadSizeBytes . ';
 	fileTypeOk = weFU.checkFileType(tmpFileType, newFile.file.name);
 
 	sizeText = fileSizeOk ? weFU.gl.sizeTextOk + weFU.weComputeSize(newFile.file.size) + ", ":
