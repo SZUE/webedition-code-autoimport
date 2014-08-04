@@ -62,13 +62,13 @@ $userdata = getHash('SELECT UseSalt, passwd, username, LoginDenied, ID FROM ' . 
 
 // only if username exists !!
 if(!$userdata || (!we_users_user::comparePasswords($userdata['UseSalt'], $_POST['username'], $userdata['passwd'], $_POST['password']))){
-	$_SESSION['user']['Username'] = '';
-	we_users_user::removeOldWESession();
+	session_destroy();
 	return;
 }
 
 if($userdata['LoginDenied']){ // userlogin is denied
 	$GLOBALS['userLoginDenied'] = true;
+	session_destroy();
 	return;
 }
 
@@ -93,5 +93,5 @@ if($_SESSION['user']['Username'] && $_SESSION['user']['ID']){
 	we_users_user::setEffectiveWorkspaces($_SESSION['user']['ID'], $GLOBALS['DB_WE']);
 }
 $_SESSION['user']['isWeSession'] = true; // for pageLogger, to know that it is really a webEdition session
-//FIMXE make this a function to remove uneeded vars from global
 unset($userdata);
+we_base_sessionHandler::makeNewID();
