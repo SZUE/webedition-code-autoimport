@@ -64,7 +64,7 @@ class we_base_sessionHandler{
 
 		$data = ' '; //keep a new generated session, otherwise we will get a new ID every time
 		//if we don't find valid data, generate a new ID because of session stealing
-		$this->write(self::getSessionID(0), $data, true);//we need a new locked session
+		$this->write(self::getSessionID(0), $data, true); //we need a new locked session
 		return $data;
 	}
 
@@ -123,6 +123,15 @@ class we_base_sessionHandler{
 		session_id(str_pad($newID, 40, $newID));
 		//note: id in cookie will still be delivered in 5/6 bits!
 		return session_id();
+	}
+
+	static function makeNewID(){
+		session_regenerate_id(true);
+		//we need a new lock on the generated id, since partial data is sent to the browser, subsequent calls with the new sessionid might happen
+		session_write_close();
+		//update the cookie:
+		$_COOKIE[session_name()] = session_id();
+		session_start();
 	}
 
 }
