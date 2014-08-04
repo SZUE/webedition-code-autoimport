@@ -220,6 +220,7 @@ function FileSelectHandler(e) {
 	}
 	if(added){
 		bf.next_enabled = bf.switch_button_state("next", "next_enabled", "enabled");
+		bf.weFU.isCancelled = false;
 	}
 }
 
@@ -899,8 +900,8 @@ function setApplet() {
 			exit();
 		}
 
-		$cancelButton = '<div id="div_cancelButton">' . we_html_button::create_button("cancel", "javascript:top.close()") . '</div>';
-		$closeButton = we_html_button::create_button("close", "javascript:top.close()");
+		$cancelButton = '<div id="div_cancelButton">' . we_html_button::create_button("cancel", "javascript:cancel()") . '</div>';
+		$closeButton = we_html_button::create_button("close", "javascript:cancel()");
 		$progressbar = '';
 
 		$js = we_html_button::create_state_changer(false) . '
@@ -944,7 +945,17 @@ function next() {
 	} else {
 		upload();
 	}
-}";
+}
+
+function cancel() {
+	var bf = top.imgimportbuttons;
+	if(typeof bf.weFU !== 'undefined' && bf.weFU.isUploading){
+		weFU.cancelUpload();
+	} else {
+		top.close();
+	}
+}
+";
 
 		$js = we_html_element::jsElement($js);
 		$we_uploader = new we_fileupload_importFiles('we_File');

@@ -322,6 +322,9 @@ function weFU(){
 
 weFU();
 
+weFU.isUploading = false;
+weFU.isCancelled = false;
+
 weFU.gl = {
 	dropText : "' . g_l('importFiles', "[dragdrop_text]") . '",
 	sizeTextOk: "' . g_l('newFile', '[file_size]') . ': ",

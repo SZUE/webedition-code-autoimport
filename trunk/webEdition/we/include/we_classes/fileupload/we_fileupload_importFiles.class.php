@@ -51,6 +51,9 @@ weFU();
 
 		') . we_html_element::jsElement("
 
+weFU.isUploading = false;
+weFU.isCancelled = false;
+
 //FIXME: move this vars into namespace weFU and get rid of v1 code + adapter to v2
 var weUploadFilesClean = new Array(),
 	weMapFiles = new Array(),
@@ -125,6 +128,14 @@ function upload(){
 
 	protected function _getSenderJS_additional(){
 		return we_html_element::jsElement('
+weFU.cancelUpload = function(){
+	weFU.isCancelled = true;
+	weFU.isUploading = false;
+	weFU.repaintGUI({"what" : "cancelUpload"});
+	weFU.postProcess("", true);
+	top.we_showMessage("Der Import wurde abgebrochen!", 1, window);
+};
+
 weFU.appendMoreData = function(fd){
 	var cf = top.imgimportcontent,
 		sf = cf.document.we_startform,
@@ -156,14 +167,19 @@ weFU.appendMoreData = function(fd){
 	return fd;
 }
 
-weFU.postProcess = function(resp){
-	setProgress(100);
-	setProgressText("progress_title", "");
+weFU.postProcess = function(resp, isCancelled){
+	var cancelled = isCancelled || false;
+
+	if(!cancelled){
+		setProgress(100);
+		setProgressText("progress_title", "");
+		eval(resp.completed);
+	}
 	top.opener.top.we_cmd("load","' . FILE_TABLE . '");
-	eval(resp.completed);
 
 	//reinitialize some vars to add and upload more files
 	weFU.reset();
+	weFU.isUploading = false;
 	weFU.setCancelButtonText("close");
 };
 
@@ -211,6 +227,18 @@ weFU.repaintGUI = function(arg){
 
 			//scroll to top of files list
 			cf.document.getElementById("div_upload_files").scrollTop = 0;
+			break;
+		case "cancelUpload":
+			var cur = weFU.currentFile,
+				i = weFU.mapFiles[cur.fileNum];
+
+			cf._setProgressCompleted_uploader(false, weFU.mapFiles[cur.fileNum], "cancelled");
+			cf.document.getElementById("div_upload_files").scrollTop = cf.document.getElementById("div_uploadFiles_" + i).offsetTop - 200;
+
+			for(var j = 0; j < weFU.preparedFiles.length; j++){
+				cur = weFU.preparedFiles[j];
+				cf._setProgressCompleted_uploader(false, weFU.mapFiles[cur.fileNum], "cancelled");
+			}
 			break;
 	}
 }
