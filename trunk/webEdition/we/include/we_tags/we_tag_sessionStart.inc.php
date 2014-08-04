@@ -46,12 +46,7 @@ function we_tag_sessionStart($attribs){
 			$GLOBALS['WE_LOGOUT'] = true;
 			unset($_SESSION['s'], $_REQUEST['s']);
 			if(SECURITY_DELETE_SESSION){
-				session_regenerate_id(true);
-				//we need a new lock on the generated id, since partial data is sent to the browser, subsequent calls with the new sessionid might happen
-				session_write_close();
-				//update the cookie:
-				$_COOKIE[session_name()] = session_id();
-				session_start();
+				wetagsessionStartNewSessID();
 			}
 			$_SESSION['webuser'] = array('registered' => false);
 		}
@@ -74,6 +69,8 @@ function we_tag_sessionStart($attribs){
 					wetagsessionHandleFailedLogin();
 				} else {
 					$GLOBALS['DB_WE']->query('UPDATE ' . FAILED_LOGINS_TABLE . ' SET isValid="false" WHERE UserTable="tblWebUser" AND Username="' . $GLOBALS['DB_WE']->escape($_REQUEST['s']['Username']) . '"');
+					//change session ID to prevent session
+					wetagsessionStartNewSessID();
 					$hook = new weHook('customer_Login', '', array('customer' => &$_SESSION['webuser'], 'type' => 'normal', 'tagname' => 'sessionStart'));
 					$hook->executeHook();
 				}
@@ -82,6 +79,8 @@ function we_tag_sessionStart($attribs){
 			if($persistentlogins && ((isset($_SESSION['webuser']['registered']) && !$_SESSION['webuser']['registered']) || !isset($_SESSION['webuser']['registered']) ) && isset($_COOKIE['_we_autologin'])){
 				if(!wetagsessionStartdoAutoLogin()){
 					wetagsessionHandleFailedLogin();
+				} else {
+					wetagsessionStartNewSessID();
 				}
 			}
 
@@ -229,4 +228,13 @@ function wetagsessionStartdoAutoLogin(){
 	}
 
 	return false;
+}
+
+function wetagsessionStartNewSessID(){
+	session_regenerate_id(true);
+	//we need a new lock on the generated id, since partial data is sent to the browser, subsequent calls with the new sessionid might happen
+	session_write_close();
+	//update the cookie:
+	$_COOKIE[session_name()] = session_id();
+	session_start();
 }

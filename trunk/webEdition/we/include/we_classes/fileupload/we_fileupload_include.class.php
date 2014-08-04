@@ -471,10 +471,6 @@ weFU.setProgressCompleted = function(success){
 		');
 	}
 
-	protected function _getSenderJS_core(){
-		return parent::_getSenderJS_core();
-	}
-
 	protected function _getSenderJS_additional(){
 		return we_html_element::jsElement('
 weFU.prepareUpload = function(){
@@ -743,7 +739,7 @@ weFU.reset = function(){
 		return $this->checkFileType('', $fileName, 'ext');
 	}
 
-	private function isFileMimeOk($mime){
+	private function isFileMimeOk($mime){//FIXME:unused!
 		return $this->checkFileType($mime, '', 'mime');
 	}
 
