@@ -174,6 +174,7 @@ weFU.sendNextFile = function(){
 	if(cur = weFU.preparedFiles.shift()){
 		weFU.currentFile = cur;
 		if(cur.uploadConditionsOk){
+			weFU.isUploading = true;
 			weFU.repaintGUI({"what" : "startSendFile"});
 
 			if(cur.file.size <= weFU.chunkSize){
@@ -206,11 +207,17 @@ weFU.sendNextFile = function(){
 
 	} else {
 		//all uploads done
+		weFU.isUploading = false;
 		weFU.postProcess();
 	}
 };
 
 weFU.sendNextChunk = function(split){
+	if(weFU.isCancelled){
+		weFU.isCancelled = false;
+		return;
+	}
+
 	var cur = weFU.currentFile,
 		resp = "";
 
@@ -272,38 +279,40 @@ weFU.sendChunk = function(part, fileName, fileCt, partSize, partNum, totalParts,
 };
 
 weFU.processResponse = function(resp, args){
-	var cur = weFU.currentFile;
+	if(!weFU.isCancelled){
+		var cur = weFU.currentFile;
 
-	cur.fileNameTemp = resp.fileNameTemp;
-	cur.mimePHP = resp.mimePhp;
-	cur.currentWeightFile += args.partSize;
-	weFU.currentWeight += args.partSize;
+		cur.fileNameTemp = resp.fileNameTemp;
+		cur.mimePHP = resp.mimePhp;
+		cur.currentWeightFile += args.partSize;
+		weFU.currentWeight += args.partSize;
 
-	switch(resp.status){
-		case "continue":
-			weFU.repaintGUI({"what" : "chunkOK"});
-			weFU.sendNextChunk(true);
-			break;
-		case "success":
-			weFU.currentWeightTag = weFU.currentWeight;
-			weFU.repaintGUI({"what" : "chunkOK"});
-			weFU.repaintGUI({"what" : "fileOK"});
-			if(weFU.preparedFiles.length !== 0){
-				weFU.sendNextFile();
-			} else {
-				weFU.postProcess(resp);
-			}
-			break;
-		case "failure":
-			weFU.currentWeight = weFU.currentWeightTag + cur.file.size;
-			weFU.currentWeightTag = weFU.currentWeight;
-			weFU.repaintGUI({"what" : "chunkNOK", "message" : resp.message});
-			if(weFU.preparedFiles.length !== 0){
-				weFU.sendNextFile();
-			} else {
-				weFU.postProcess(resp);
-			}
-			break;
+		switch(resp.status){
+			case "continue":
+				weFU.repaintGUI({"what" : "chunkOK"});
+				weFU.sendNextChunk(true);
+				break;
+			case "success":
+				weFU.currentWeightTag = weFU.currentWeight;
+				weFU.repaintGUI({"what" : "chunkOK"});
+				weFU.repaintGUI({"what" : "fileOK"});
+				if(weFU.preparedFiles.length !== 0){
+					weFU.sendNextFile();
+				} else {
+					weFU.postProcess(resp);
+				}
+				break;
+			case "failure":
+				weFU.currentWeight = weFU.currentWeightTag + cur.file.size;
+				weFU.currentWeightTag = weFU.currentWeight;
+				weFU.repaintGUI({"what" : "chunkNOK", "message" : resp.message});
+				if(weFU.preparedFiles.length !== 0){
+					weFU.sendNextFile();
+				} else {
+					weFU.postProcess(resp);
+				}
+				break;
+		}
 	}
 };
 		');
