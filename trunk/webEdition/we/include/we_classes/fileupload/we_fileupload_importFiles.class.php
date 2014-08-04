@@ -87,8 +87,8 @@ function upload(){
 
 		//adapt uploader's state to send logic of weFU allready insertet here
 		weFU.preparedFiles = Array();
-		for(var i = 0, fileSizeOk = false; i < weUploadFilesClean.length; i++){console.log(weUploadFilesClean[i].size + ' | ' + " . $this->maxUploadSizeBytes . ");
-			fileSizeOk = weUploadFilesClean[i].size <= " . $this->maxUploadSizeBytes . ";
+		for(var i = 0, fileSizeOk = false; i < weUploadFilesClean.length; i++){
+			fileSizeOk = weUploadFilesClean[i].size <= " . $this->maxUploadSizeBytes . " || !" . $this->maxUploadSizeBytes . ";
 			weFU.preparedFiles.push({
 				file: weUploadFilesClean[i],
 				fileNum: i,
