@@ -62,7 +62,7 @@ class we_base_sessionHandler{
 			}//else we need a new sessionid; if decrypt failed we might else destroy an existing valid session
 		}
 
-		$data = array('__we__new_sess' => 1); //keep a new generated session, otherwise we will get a new ID every time
+		$data = ' '; //keep a new generated session, otherwise we will get a new ID every time
 		//if we don't find valid data, generate a new ID because of session stealing
 		$this->write(self::getSessionID(0), $data, true);//we need a new locked session
 		return $data;
