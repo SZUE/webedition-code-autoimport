@@ -164,7 +164,7 @@ class we_fileupload_include extends we_fileupload_base{
 	</div>
 </div>
 ' .
-			we_html_tools::hidden('weFileNameTmp', '') .
+			we_html_tools::hidden('weFileNameTemp', '') .
 			we_html_tools::hidden('weFileName', '') .
 			we_html_tools::hidden('weFileCt', '') .
 			we_html_tools::hidden('weIsUploadComplete', 0) .
@@ -505,7 +505,7 @@ weFU.postProcess = function(){
 		callback = weFU.callback,
 		cur = weFU.currentFile;
 
-	form.elements["weFileNameTmp"].value = cur.fileNameTemp;
+	form.elements["weFileNameTemp"].value = cur.fileNameTemp;
 	form.elements["weFileCt"].value = cur.mimePHP;
 	form.elements["weFileName"].value = cur.file.name;
 	form.elements["weIsUploadComplete"].value = 1;
@@ -590,7 +590,7 @@ weFU.reset = function(){
 	public function processFileRequest($retFalseOnFinalError = false){
 		$partNum = we_base_request::_(we_base_request::INT, 'wePartNum', 0);
 		$partCount = we_base_request::_(we_base_request::INT, 'wePartCount', 0);
-		$fileNameTemp = we_base_request::_(we_base_request::STRING, 'weFileNameTmp', '');
+		$fileNameTemp = we_base_request::_(we_base_request::STRING, 'weFileNameTemp', '');
 		$fileName = we_base_request::_(we_base_request::STRING, 'weFileName', '');
 		$fileCt = we_base_request::_(we_base_request::STRING, 'weFileCt', '');
 

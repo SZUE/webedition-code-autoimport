@@ -258,10 +258,9 @@ weFU.sendChunk = function(part, fileName, fileCt, partSize, partNum, totalParts,
 	fd.append("uploadParts", 1);
 	fd.append("wePartNum", partNum);
 	fd.append("wePartCount", totalParts);
-	fd.append("weFileNameTmp", fileNameTemp);
+	fd.append("weFileNameTemp", fileNameTemp);
 	fd.append("weFileName", fileName);
 	fd.append("weFileCt", fileCt);
-	fd.append("weFileNameTmp", fileNameTemp);
 	fd.append("' . $this->name . '", part, fileName);
 	fd.append("weIsUploading", 1);
 
