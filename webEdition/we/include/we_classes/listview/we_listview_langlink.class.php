@@ -27,6 +27,7 @@
  * @desc    class for tag <we:listview>
  *
  */
+
 class we_listview_langlink extends we_listview_base{
 	var $docType = ""; /* doctype string */
 	var $IDs = array(); /* array of ids with pages which are found */
