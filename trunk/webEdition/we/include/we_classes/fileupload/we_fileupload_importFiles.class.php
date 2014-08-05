@@ -133,7 +133,7 @@ weFU.cancelUpload = function(){
 	weFU.isUploading = false;
 	weFU.repaintGUI({"what" : "cancelUpload"});
 	weFU.postProcess("", true);
-	top.we_showMessage("Der Import wurde abgebrochen!", 1, window);
+	top.we_showMessage("' . g_l('importFiles', "[upload_cancelled]") . '", 1, window);
 };
 
 weFU.appendMoreData = function(fd){
@@ -232,7 +232,7 @@ weFU.repaintGUI = function(arg){
 			var cur = weFU.currentFile,
 				i = weFU.mapFiles[cur.fileNum];
 
-			cf._setProgressCompleted_uploader(false, weFU.mapFiles[cur.fileNum], "cancelled");
+			cf._setProgressCompleted_uploader(false, weFU.mapFiles[cur.fileNum], "' . g_l('importFiles', "[cancelled]") . '");
 			cf.document.getElementById("div_upload_files").scrollTop = cf.document.getElementById("div_uploadFiles_" + i).offsetTop - 200;
 
 			for(var j = 0; j < weFU.preparedFiles.length; j++){
