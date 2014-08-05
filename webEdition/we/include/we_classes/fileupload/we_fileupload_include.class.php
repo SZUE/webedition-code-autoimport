@@ -427,7 +427,7 @@ weFU.inArray = function(needle, haystack) {
 };
 
 weFU.checkFileType = function(type, name){
-	var ext = name.split(".").pop(),
+	var ext = name.split(".").pop().toLowerCase(),
 		tc = weFU.typeCondition,
 		typeGroup = type.split("/").shift() + "/*";
 

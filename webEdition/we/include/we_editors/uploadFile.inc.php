@@ -41,6 +41,7 @@ if(isset($_SESSION['weS']['we_data'][$we_transaction])){
 switch($contentType){
 	case we_base_ContentTypes::IMAGE;
 		$allowedContentTypes = we_base_imageEdit::IMAGE_CONTENT_TYPES;
+		$allowedExtensions = we_base_imageEdit::IMAGE_EXTENSIONS;
 		break;
 	case we_base_ContentTypes::APPLICATION;
 		$allowedContentTypes = '';
@@ -49,7 +50,7 @@ switch($contentType){
 		$allowedContentTypes = $contentType;
 }
 
-$inputTypeFile = new we_fileupload_include('we_File', 'top', '', 330, true, false, $allowedContentTypes, '', '', '', array(), -1);
+$inputTypeFile = new we_fileupload_include('we_File', 'top', '', 330, true, false, $allowedContentTypes, $allowedExtensions, '', '', array(), -1);
 $inputTypeFile->setExternalProgressbar(true, 'progressbar', true, 'top.', 120, '');
 
 if($inputTypeFile->processFileRequest()){
