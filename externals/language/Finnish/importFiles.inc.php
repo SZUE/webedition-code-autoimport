@@ -2,6 +2,7 @@
 /** Generated language file of webEdition CMS */
 $l_importFiles=array(
 	'add_description_nogdlib'=>'GD -kirjasto pitää olla asennettuna palvelimelle, jotta voit käyttää kuvatoimintoja!',
+	'cancelled'=>'File upload aborted. To import this file you must reselect it.',
 	'destination_dir'=>'Kohdehakemisto',
 	'do_import'=>'Importing file',
 	'dragdrop_text'=>'... or drop files here!',
@@ -44,4 +45,5 @@ Click on "Browse" to select files from your harddrive or drag and drop them to t
 	'step2'=>'Tuo paikallisia tiedostoja - Vaihe 2 / 3',
 	'step3'=>'Tuo paikallisia tiedostoja - Vaihe 3 / 3',
 	'thumbnails'=>'Esikatselukuvat',
+	'upload_cancelled'=>'File upload aborted!',
 );

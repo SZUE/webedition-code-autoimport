@@ -2,6 +2,7 @@
 /** Generated language file of webEdition CMS */
 $l_importFiles=array(
 	'add_description_nogdlib'=>'Damit Ihnen die Grafikfunktionen zur Verfügung stehen, muß die GD Library auf Ihrem Server installiert sein!',
+	'cancelled'=>'Upload abgebrochen. Um die Datei dennoch zu importieren, muss sie neu ausgewählt werden.',
 	'destination_dir'=>'Zielverzeichnis',
 	'do_import'=>'Importiere Datei',
 	'dragdrop_text'=>'... oder ziehen Sie die Dateien hierher!',
@@ -42,4 +43,5 @@ $l_importFiles=array(
 	'step2'=>'Lokale Dateien importieren - Schritt 2 von 3',
 	'step3'=>'Lokale Dateien importieren - Schritt 3 von 3',
 	'thumbnails'=>'Miniaturansichten',
+	'upload_cancelled'=>'Der Import wurde abgebrochen!',
 );

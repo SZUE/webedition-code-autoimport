@@ -2,6 +2,7 @@
 /** Generated language file of webEdition CMS */
 $l_importFiles=array(
 	'add_description_nogdlib'=>'De GD Bibliotheek moet geïnstalleerd worden op uw server om de afbeeldings functies goed te laten functioneren.!',
+	'cancelled'=>'File upload aborted. To import this file you must reselect it.',
 	'destination_dir'=>'Doel directorie',
 	'do_import'=>'Importing file',
 	'dragdrop_text'=>'... or drop files here!',
@@ -44,4 +45,5 @@ Click on "Browse" to select files from your harddrive or drag and drop them to t
 	'step2'=>'Importeer lokale bestanden - Stap 2 van 2',
 	'step3'=>'Importeer lokale bestanden - Stap 3 van 3',
 	'thumbnails'=>'Thumbnails',
+	'upload_cancelled'=>'File upload aborted!',
 );

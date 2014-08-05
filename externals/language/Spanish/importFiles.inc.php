@@ -2,6 +2,7 @@
 /** Generated language file of webEdition CMS */
 $l_importFiles=array(
 	'add_description_nogdlib'=>'Para tener las funciónes gráficas a su disposición tiene que instalar la `GD Library` en el servidor!',
+	'cancelled'=>'File upload aborted. To import this file you must reselect it.',
 	'destination_dir'=>'Destination directory',
 	'do_import'=>'Importing file',
 	'dragdrop_text'=>'... or drop files here!',
@@ -44,4 +45,5 @@ Click on "Browse" to select files from your harddrive or drag and drop them to t
 	'step2'=>'Importar archivos locales - Paso 2 de 2',
 	'step3'=>'Import local files - Step 3 of 3',
 	'thumbnails'=>'Imagenes en miniatura',
+	'upload_cancelled'=>'File upload aborted!',
 );
