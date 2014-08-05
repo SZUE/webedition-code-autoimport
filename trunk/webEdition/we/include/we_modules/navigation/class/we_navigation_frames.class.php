@@ -936,8 +936,6 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 	}
 
 	function getHTMLEditorPreview(){
-
-		$defaultPreviewCode = str_replace(array("\r\n", "\n"), '\n', addslashes($this->Model->defaultPreviewCode));
 		// build the page
 		$out = '<table border="0" class="defaultfont" cellpadding="0" cellspacing="0">
 		<tr>
@@ -962,7 +960,7 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 				array(
 					we_html_button::create_button('refresh', 'javascript: showPreview();'),
 					we_html_button::create_button(
-						'reset', 'javascript: document.getElementById("previewCode").value = "' . $defaultPreviewCode . '"; showPreview();')
+						'reset', 'javascript: document.getElementById("previewCode").value = "' . str_replace(array("\r\n", "\n"), '\n', addslashes(we_navigation_navigation::defaultPreviewCode)) . '"; showPreview();')
 				)//,we_button::create_button('new_template', 'javascript: '.$this->topFrame.'.we_cmd("create_template");')
 			) . '</td>
 		</tr>
