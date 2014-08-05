@@ -271,7 +271,7 @@ class we_listview_document extends we_listview_base{
 			$where_lang . ' ' .
 			$cond_where . ' ' .
 			$ws_where . ' AND ' .
-			FILE_TABLE . '.IsFolder=0 AND ' . FILE_TABLE . '.Published>0 AND ' . LINK_TABLE . '.DocumentTable="' . stripTblPrefix(FILE_TABLE) . "'" .
+			FILE_TABLE . '.IsFolder=0 AND ' . FILE_TABLE . '.Published>0 AND ' . LINK_TABLE . '.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"' .
 			(isset($bedingung_sql) ? ' AND ' . $bedingung_sql : '') .
 			(($dt != "#NODOCTYPE#") ? (" AND " . FILE_TABLE . '.DocType=' . intval($dt)) : '') .
 			' ' . $sql_tail . $calendar_where . ' GROUP BY ID ' . $orderstring .
