@@ -147,8 +147,8 @@ class we_listview_document extends we_listview_base{
 					break;
 				default:
 					$cnt = count($order);
-					$joins[] = ' LEFT JOIN ' . LINK_TABLE . ' ll' . $cnt . ' ON ll' . $cnt . '.DID = ' . FILE_TABLE . '.ID LEFT JOIN ' . CONTENT_TABLE . ' cc' . $cnt . ' ON ll' . $cnt . '.CID = cc' . $cnt . '.ID';
-					$orderWhere[] = 'll' . $cnt . '.DocumentTable = "' . stripTblPrefix(FILE_TABLE) . '" AND ll' . $cnt . '.Name = "' . $this->DB_WE->escape($ord) . '"';
+					$joins[] = ' LEFT JOIN ' . LINK_TABLE . ' ll' . $cnt . ' ON ll' . $cnt . '.DID=' . FILE_TABLE . '.ID LEFT JOIN ' . CONTENT_TABLE . ' cc' . $cnt . ' ON ll' . $cnt . '.CID=cc' . $cnt . '.ID';
+					$orderWhere[] = 'll' . $cnt . '.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND ll' . $cnt . '.Name="' . $this->DB_WE->escape($ord) . '"';
 					if($this->search){
 						$order[] = 'ranking';
 					}
@@ -271,7 +271,7 @@ class we_listview_document extends we_listview_base{
 			$where_lang . ' ' .
 			$cond_where . ' ' .
 			$ws_where . ' AND ' .
-			FILE_TABLE . '.IsFolder=0 AND ' . FILE_TABLE . '.Published>0 AND ' . LINK_TABLE . '.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"' .
+			FILE_TABLE . '.IsFolder=0 AND ' . FILE_TABLE . '.Published>0 AND ' . LINK_TABLE . '.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"' . 
 			(isset($bedingung_sql) ? ' AND ' . $bedingung_sql : '') .
 			(($dt != "#NODOCTYPE#") ? (" AND " . FILE_TABLE . '.DocType=' . intval($dt)) : '') .
 			' ' . $sql_tail . $calendar_where . ' GROUP BY ID ' . $orderstring .

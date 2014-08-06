@@ -1404,8 +1404,8 @@ class we_search_view extends we_tool_view{
 		$page = ceil($searchstart / $anzahl) * $anzahl;
 
 		$select = we_html_tools::htmlSelect("page", $pages, 1, $page, false, array("onchange" => "this.form.elements['searchstart" . $whichSearch . "'].value = this.value;search(false);"));
-		if(!isset($GLOBALS['setInputSearchstart']) && !defined('searchstart') && $isTop){
-			define('searchstart', true);
+		if(!isset($GLOBALS['setInputSearchstart']) && !defined('searchstart'. $whichSearch) && $isTop){
+			define('searchstart'. $whichSearch, true);
 			$out .= we_html_tools::hidden("searchstart" . $whichSearch, $searchstart);
 		}
 		$out .= $select .
