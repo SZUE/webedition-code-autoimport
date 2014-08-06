@@ -251,7 +251,7 @@ function weFU(){
 		preparedFiles = null,
 		currentFile = null; //will PreparedFile object, elem of peraparedFiles
 
-	window.addEventListener("load", function () {
+	function onLoad(){
 		var xhrTestObj = new XMLHttpRequest(),
 			xhrTest = xhrTestObj && xhrTestObj.upload ? true : false;
 		if (xhrTest && window.File && window.FileReader && window.FileList && window.Blob) {
@@ -277,6 +277,9 @@ function weFU(){
 			//FIXME: change state of hidden fiels weIsFileInLegacy and weIsUploading
 		}
 	});
+
+' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? '
+	window.addEventListener("load",onLoad);' : 'document.onload = onLoad;') . '
 
 	function _init(){
 		weFU.typeCondition = JSON.parse(\'' . $this->typeConditionJson . '\');

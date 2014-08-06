@@ -22,9 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-abstract class we_fileupload_base {
-
+abstract class we_fileupload_base{
 	protected $name = 'weFileSelect';
 	protected $dimensions = array(
 		'width' => 400,
@@ -45,7 +43,7 @@ abstract class we_fileupload_base {
 	const ON_ERROR_RETURN = true;
 	const ON_ERROR_DIE = true;
 
-	protected function __construct($name, $width = 400, $maxUploadSize = -1) {
+	protected function __construct($name, $width = 400, $maxUploadSize = -1){
 		$this->name = $name;
 		$this->dimensions['width'] = $width;
 		$this->maxUploadSizeMBytes = intval($maxUploadSize != -1 ? $maxUploadSize : (defined('FILE_UPLOAD_MAX_UPLOAD_SIZE') ? FILE_UPLOAD_MAX_UPLOAD_SIZE : 0));
@@ -89,7 +87,7 @@ abstract class we_fileupload_base {
 	}
 
 	public function getMaxUploadSizeText(){
-		$field = $this->useLegacy ? '[max_possible_size]' : ($this->getMaxUploadSize()? '[size_limit_set_to]' : '[no_size_limit]');
+		$field = $this->useLegacy ? '[max_possible_size]' : ($this->getMaxUploadSize() ? '[size_limit_set_to]' : '[no_size_limit]');
 		return $field == '[no_size_limit]' ? g_l('newFile', $field) :
 			sprintf(g_l('newFile', $field), we_base_file::getHumanFileSize($this->getMaxUploadSize(), we_base_file::SZ_MB));
 	}
@@ -100,14 +98,13 @@ abstract class we_fileupload_base {
 
 		return '
 			<div id="div_' . $this->name . '_alert_legacy" style="display:none">' .
-				we_html_tools::htmlAlertAttentionBox(sprintf(g_l('newFile', '[max_possible_size]'), we_base_file::getHumanFileSize(getUploadMaxFilesize(false), we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, $width) .
-				'<div style="margin-top: 4px"></div>' .
-				we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[fallback_text]'), we_html_tools::TYPE_ALERT, $width, false, 9) .
+			we_html_tools::htmlAlertAttentionBox(sprintf(g_l('newFile', '[max_possible_size]'), we_base_file::getHumanFileSize(getUploadMaxFilesize(false), we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, $width) .
+			'<div style="margin-top: 4px"></div>' .
+			we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[fallback_text]'), we_html_tools::TYPE_ALERT, $width, false, 9) .
 			'</div>
 			<div id="div_' . $this->name . '_alert">' .
-				we_html_tools::htmlAlertAttentionBox($this->getMaxUploadSizeText(), $type, $width) .
+			we_html_tools::htmlAlertAttentionBox($this->getMaxUploadSizeText(), $type, $width) .
 			'</div>';
-
 	}
 
 	public function getCss(){
@@ -117,7 +114,7 @@ abstract class we_fileupload_base {
 				font-weight: normal;
 				font-size: 12px;
 				text-align: center;
-				padding-top: ' . (($this->dimensions['dragHeight']-10)/2) . 'px;
+				padding-top: ' . (($this->dimensions['dragHeight'] - 10) / 2) . 'px;
 				margin: 1em 0;
 				color: #555;
 				border: 2px dashed #555;
@@ -161,11 +158,10 @@ abstract class we_fileupload_base {
 	}
 
 	public function getJs($init = true, $selector = true, $sender = true){
-		return ($init ? $this->_getInitJS() : '') .
-				($selector ? $this->_getSelectorJS() : '').
-				($sender ? $this->_getSenderJS_core() . $this->_getSenderJS_additional() : '');
+		return implodeJS(($init ? $this->_getInitJS() : '') .
+			($selector ? $this->_getSelectorJS() : '') .
+			($sender ? $this->_getSenderJS_core() . $this->_getSenderJS_additional() : ''));
 	}
-
 
 	protected function _getSenderJS_core(){
 		return we_html_element::jsElement('
@@ -317,4 +313,5 @@ weFU.processResponse = function(resp, args){
 };
 		');
 	}
+
 }
