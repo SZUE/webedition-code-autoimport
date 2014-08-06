@@ -38,6 +38,4 @@ div.we_fileInputWrapper{
 .fileInputHidden {
 	/*Opacity settings for all browsers*/
 	opacity: 0;
-	-moz-opacity: 0;
-	filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0)
 }

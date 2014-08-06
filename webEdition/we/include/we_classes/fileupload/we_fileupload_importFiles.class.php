@@ -36,16 +36,16 @@ class we_fileupload_importFiles extends we_fileupload_base {
 	protected function _getInitJS(){
 		return we_html_element::jsElement('
 function weFU(){
-	var preparedFiles,
-		mapFiles,
-		totalFiles = 0,
-		totalWeight = 0,
-		currentWeight,
-		currentWeightTag,
-		currentFile = null,
-		elems,
-		chunkSize,
-		action;
+	this.preparedFiles=null;
+		this.mapFiles=null;
+		this.totalFiles = 0;
+		this.totalWeight = 0;
+		this.currentWeight=null;
+		this.currentWeightTag=null;
+		this.currentFile = null;
+		this.elems=null;
+		this.chunkSize=null;
+		this.action=null;
 };
 weFU();
 
@@ -53,6 +53,7 @@ weFU();
 
 weFU.isUploading = false;
 weFU.isCancelled = false;
+weFU.preparedFiles = new Array();
 
 //FIXME: move this vars into namespace weFU and get rid of v1 code + adapter to v2
 var weUploadFilesClean = new Array(),
