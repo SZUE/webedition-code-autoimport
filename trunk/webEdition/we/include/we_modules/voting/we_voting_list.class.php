@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,7 +27,6 @@
  *
  */
 class we_voting_list{
-
 	//properties
 	var $Name;
 	var $Version;
@@ -40,13 +38,13 @@ class we_voting_list{
 	 * Default Constructor
 	 * Can load or create new Newsletter depends of parameter
 	 */
-	public function __construct($name, $groupid, $version = 0, $rows = 0, $offset = 0, $desc = false, $order = 'PublishDate', $subgroup = false){
+	public function __construct($name, $groupid, $version, $rows, $offset, $desc, $order, $subgroup, $start){
 
 		$this->Name = $name;
 		$this->Version = $version;
 		$this->Offset = $offset;
 		$this->Rows = $rows;
-		$this->Start = (isset($_REQUEST["_we_vl_start_" . $this->Name]) && $_REQUEST["_we_vl_start_" . $this->Name]) ? abs($_REQUEST["_we_vl_start_" . $this->Name]) : 0;
+		$this->Start = $start;
 		if($this->Start == 0){
 			$this->Start += $offset;
 		}

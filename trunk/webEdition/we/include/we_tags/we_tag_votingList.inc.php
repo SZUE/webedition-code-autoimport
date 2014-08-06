@@ -44,11 +44,12 @@ function we_tag_votingList($attribs){
 	$subgroup = weTag_getAttribute("subgroup", $attribs, false, true);
 	$version = weTag_getAttribute("version", $attribs, 1);
 	$offset = weTag_getAttribute("offset", $attribs, 0);
-
 	$_type = weTag_getAttribute('_type', $attribs);
+	$start = (isset($_REQUEST['_we_vl_start_' . $name]) && $_REQUEST['_we_vl_start_' . $name]) ? abs($_REQUEST['_we_vl_start_' . $name]) : 0;
+
 	switch($_type){
 		case 'start':
-			$GLOBALS['_we_voting_list'] = new we_voting_list($name, $groupid, ($version > 0 ? ($version - 1) : 0), $rows, $offset, $desc, $order, $subgroup);
+			$GLOBALS['_we_voting_list'] = new we_voting_list($name, $groupid, ($version > 0 ? ($version - 1) : 0), $rows, $offset, $desc, $order, $subgroup, $start);
 			break;
 		case 'stop':
 			unset($GLOBALS['_we_voting_list']);
