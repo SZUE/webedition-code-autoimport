@@ -24,7 +24,6 @@
  */
 /* the parent class of storagable webEdition classes */
 class we_voting_view extends weModuleView{
-
 	var $voting;
 	var $editorBodyFrame;
 	var $editorBodyForm;
@@ -363,8 +362,8 @@ function we_cmd(){
 					break;
 				}
 				$this->voting = new we_voting_voting();
-				$this->voting->IsFolder = $_REQUEST["cmd"] == 'new_voting_group' ? 1 : 0;
-				print we_html_element::jsElement('
+				$this->voting->IsFolder = we_base_request::_(we_base_request::STRING, "cmd") == 'new_voting_group' ? 1 : 0;
+				echo we_html_element::jsElement('
 								' . $this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->voting->Text) . '";
 								' . $this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
 					');
@@ -379,7 +378,7 @@ function we_cmd(){
 					break;
 				}
 
-				$this->voting = new we_voting_voting($_REQUEST["cmdid"]);
+				$this->voting = new we_voting_voting(we_base_request::_(we_base_request::STRING, "cmdid"));
 
 				if(!$this->voting->isAllowedForUser()){
 					echo we_html_element::jsElement(
@@ -492,7 +491,7 @@ function we_cmd(){
 				if(!$error){
 					$newone = ($this->voting->ID == 0);
 
-					$this->voting->save((isset($_REQUEST['scores_changed']) && $_REQUEST['scores_changed']) ? true : false);
+					$this->voting->save(we_base_request::_(we_base_request::BOOL, 'scores_changed'));
 
 					if($this->voting->IsFolder && $oldpath != '' && $oldpath != '/' && $oldpath != $this->voting->Path){
 						$db_tmp = new DB_WE();
@@ -536,7 +535,7 @@ function we_cmd(){
 			case "switchPage":
 				break;
 			case "export_csv":
-				$fname = ($_REQUEST["csv_dir"] == '/' ? '' : $_REQUEST['csv_dir']) . '/voting_' . $this->voting->ID . '_export_' . time() . '.csv';
+				$fname = rtrim(we_base_request::_(we_base_request::FILE, 'csv_dir'), '/') . '/voting_' . $this->voting->ID . '_export_' . time() . '.csv';
 
 				$enclose = isset($_REQUEST['csv_enclose']) ? ($_REQUEST['csv_enclose'] == 0 ? '"' : '\'') : '"';
 				$delimiter = isset($_REQUEST['csv_delimiter']) ? ($_REQUEST['csv_delimiter'] == '\t' ? "\t" : $_REQUEST['csv_delimiter']) : ';';
@@ -586,7 +585,7 @@ function we_cmd(){
 				}
 
 				$allData = $this->voting->loadDB();
-				$CSV_Charset = (isset($_REQUEST['the_charset']) && $_REQUEST['the_charset'] ? $_REQUEST['the_charset'] : 'UTF-8');
+				$CSV_Charset = we_base_request::_(we_base_request::STRING, 'the_charset', 'UTF-8');
 				$content = array(
 					$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(g_l('modules_voting', '[voting-session]'))) . $enclose . $delimiter .
 					$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(g_l('modules_voting', '[voting-id]'))) . $enclose . $delimiter .

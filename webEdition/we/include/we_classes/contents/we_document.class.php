@@ -1387,7 +1387,7 @@ class we_document extends we_root{
 		if($_REQUEST){
 			$dates = $regs = array();
 			foreach($_REQUEST as $n => $v){
-				if(preg_match('/^we_schedule_([^\[]+)$/', $n, $regs)){
+				if(preg_match('/^we_schedule_([^\[]+)$/', $n, $regs)){//make this an array
 					$rest = $regs[1];
 					$sw = explode('_', $rest);
 					$nr = end($sw);

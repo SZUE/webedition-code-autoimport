@@ -38,7 +38,7 @@ if(we_base_request::_(we_base_request::STRING, "cmd") == "save"){
 	if(($data = we_base_request::_(we_base_request::RAW_CHECKED, "editFile")) !== false){
 		we_base_file::save($id, $data);
 	}
-	$we_fileData = stripslashes($_REQUEST["editFile"]);
+	$we_fileData = stripslashes(we_base_request::_(we_base_request::RAW,"editFile"));
 } else if($id){
 
 	$id = str_replace("//", "/", $id);
