@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -144,7 +143,7 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 	//	mode-table
 	$_modetable = new we_html_table(array("style" => 'border-style:none; padding:0px;border-spacing:0px;', "width" => $_middlePart), 1, 3);
 
-	$loginButton = we_html_button::create_button("login", "javascript:document.loginForm.submit();").'<input style="display:none;" type="submit"/>';
+	$loginButton = we_html_button::create_button("login", "javascript:document.loginForm.submit();") . '<input style="visibility: hidden;" type="submit"/>';
 	if(!WE_SEEM){ //	deactivate See-Mode
 		if(WE_LOGIN_WEWINDOW){
 			$_modetable->setCol(0, 0, array(), '');
