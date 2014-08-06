@@ -43,6 +43,12 @@ abstract class we_fileupload_base{
 	const ON_ERROR_RETURN = true;
 	const ON_ERROR_DIE = true;
 
+	abstract protected function _getSenderJS_additional();
+
+	abstract protected function _getInitJS();
+
+	abstract protected function _getSelectorJS();
+
 	protected function __construct($name, $width = 400, $maxUploadSize = -1){
 		$this->name = $name;
 		$this->dimensions['width'] = $width;
@@ -51,8 +57,6 @@ abstract class we_fileupload_base{
 		$this->maxChunkCount = $this->maxUploadSizeMBytes * 1024 / self::CHUNK_SIZE;
 		$this->useLegacy = defined('FILE_UPLOAD_USE_LEGACY') ? FILE_UPLOAD_USE_LEGACY : false;
 	}
-
-	abstract protected function _getSenderJS_additional();
 
 	public function setAction($action){
 		$this->action = $action;
@@ -118,7 +122,8 @@ abstract class we_fileupload_base{
 	public function getJs($init = true, $selector = true, $sender = true){
 		return implodeJS(($init ? $this->_getInitJS() : '') .
 			($selector ? $this->_getSelectorJS() : '') .
-			($sender ? $this->_getSenderJS_core() . $this->_getSenderJS_additional() : ''));
+			($sender ? $this->_getSenderJS_core() . $this->_getSenderJS_additional() : '')
+		);
 	}
 
 	protected function _getSenderJS_core(){

@@ -143,7 +143,7 @@ class we_fileupload_include extends we_fileupload_base{
 
 		return !$this->useLegacy ? ('
 <div id="div_' . $this->name . '_legacy" style="display:none">' . we_html_element::htmlInput(array('type' => 'file', 'name' => $this->name . '_legacy', 'id' => $this->name . '_legacy')) . '</div>
-<div id="div_' . $this->name . '" style="float:left;margin-top:' . $this->dimensions['marginTop'] . 'px;margin-bottomp:' . $this->dimensions['marginBottom'] . 'px;">
+<div id="div_' . $this->name . '" style="float:left;margin-top:' . $this->dimensions['marginTop'] . 'px;margin-bottom:' . $this->dimensions['marginBottom'] . 'px;">
 	<div>
 		<div class="we_fileInputWrapper" id="div_' . $this->name . '_fileInputWrapper" style="vertical-align:top;display:inline-block;height:22px; ">
 			' . $fileInput . '
@@ -195,8 +195,7 @@ class we_fileupload_include extends we_fileupload_base{
 
 	private function _makeFileNameTemp($type = 0, $forceDocRoot = false){
 		$docRoot = $forceDocRoot && $this->fileNameTempParts['missingDocRoot'] ? $_SERVER['DOCUMENT_ROOT'] : '';
-		$filename = !$this->fileNameTempParts['useFilenameFromUpload'] ? $this->fileNameTempParts['prefix'] . we_base_file::getUniqueId() . $this->fileNameTempParts['postfix']
-				:
+		$filename = !$this->fileNameTempParts['useFilenameFromUpload'] ? $this->fileNameTempParts['prefix'] . we_base_file::getUniqueId() . $this->fileNameTempParts['postfix'] :
 			($_FILES[$this->name] && $_FILES[$this->name]['name'] ? $_FILES[$this->name]['name'] : we_base_request::_(we_base_request::STRING, 'weFileName', ''));
 
 		if(!$filename){
@@ -234,22 +233,22 @@ weFU.legacyMode = true;
 		return we_html_element::jsElement('
 function weFU(){
 	//vars to be set oninit
-	var legacyMode = true,
-		typeCondition = null,
-		maxUploadSize = 0,
-		useFileDrag = false,
-		isExternalProgress = false,
-		elems = {},
-		chunkSize = 0,
-		form = null,
-		action = "' . $this->action . '",
-		callback = null,
-		error = "";
+	 this.legacyMode = true;
+		this.typeCondition = null;
+		this.maxUploadSize = 0;
+		this.useFileDrag = false;
+		this.isExternalProgress = false;
+		this.elems = {};
+		this.chunkSize = 0;
+		this.form = null;
+		this.action = "' . $this->action . '";
+		this.callback = null;
+		this.error = "";
 
 	//vars to be set when using updater
-	var originalFiles = null,
-		preparedFiles = null,
-		currentFile = null; //will PreparedFile object, elem of peraparedFiles
+	this.originalFiles = null;
+		this.preparedFiles = null;
+		this.currentFile = null; //will PreparedFile object, elem of peraparedFiles
 
 	function onLoad(){
 		var xhrTestObj = new XMLHttpRequest(),
@@ -316,7 +315,7 @@ function weFU(){
 			weFU.elems.externalProgressDiv = externalProgressDocument.getElementById("' . $this->externalProgress['parentElemId'] . '");
 			weFU.elems.externalProgressDiv.innerHTML = \'' . str_replace("\n", " ", str_replace("\r", " ", $pb->getHTML())) . '\';
 			weFU.isExternalProgress = true;
-		}' : '') .'
+		}' : '') . '
 	}
 
 };
@@ -325,6 +324,8 @@ weFU();
 
 weFU.isUploading = false;
 weFU.isCancelled = false;
+weFU.isCancelled = false;
+weFU.legacyMode = true;
 
 weFU.gl = {
 	dropText : "' . g_l('importFiles', "[dragdrop_text]") . '",
@@ -640,8 +641,7 @@ weFU.reset = function(){
 							file_put_contents($tempPath . $fileNameTemp, file_get_contents($tempPath . $tempName), FILE_APPEND);
 							unlink($tempPath . $tempName);
 						}
-						$response = array('status' => ($partNum == $partCount ? 'success' : 'continue'), 'fileNameTemp' => $fileNameTemp, 'mimePhp' => (isset($mime) && $mime ? $mime
-									: $fileCt), 'message' => '', 'completed' => ($partNum == $partCount ? 1 : 0), 'finished' => '');
+						$response = array('status' => ($partNum == $partCount ? 'success' : 'continue'), 'fileNameTemp' => $fileNameTemp, 'mimePhp' => (isset($mime) && $mime ? $mime : $fileCt), 'message' => '', 'completed' => ($partNum == $partCount ? 1 : 0), 'finished' => '');
 					}
 
 					echo json_encode($response);
