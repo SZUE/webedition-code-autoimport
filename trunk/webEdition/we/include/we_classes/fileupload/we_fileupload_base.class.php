@@ -108,53 +108,11 @@ abstract class we_fileupload_base{
 	}
 
 	public function getCss(){
-		return $this->useLegacy ? '' : we_html_element::cssElement('
-			#div_' . $this->name . '_fileDrag{
-				display: none;
-				font-weight: normal;
-				font-size: 12px;
-				text-align: center;
+		return $this->useLegacy ? '' : we_html_element::cssLink(CSS_DIR . 'we_fileupload.css') . we_html_element::cssElement('
+			div.we_file_drag{
 				padding-top: ' . (($this->dimensions['dragHeight'] - 10) / 2) . 'px;
-				margin: 1em 0;
-				color: #555;
-				border: 2px dashed #555;
-				border-radius: 7px;
-				cursor: default;
 				height: ' . $this->dimensions['dragHeight'] . 'px;
-				background-color: white;
-			}
-			#div_' . $this->name . '_fileDrag.hover{
-				color: #00cc00;
-				border-color: #00cc00;
-				border-style: solid;
-				box-shadow: inset 0 3px 4px #888;
-				background-color: rgb(243, 247, 255);
-			}
-			#div_' . $this->name . '_fileInputWrapper {
-				overflow: hidden;
-				position: relative;
-				cursor: pointer;
-				/*Using a background color, but you can use a background image to represent a button*/
-				background-color: #DDF;
-			}
-			.fileInput {
-				cursor: pointer;
-				height: 100%;
-				position:absolute;
-				top: 0;
-				right: 0;
-				width: 286px;
-				height: 22px;
-				/*This makes the button huge so that it can be clicked on*/
-				/*font-size:50px;*/
-			}
-			.fileInputHidden {
-				/*Opacity settings for all browsers*/
-				opacity: 0;
-				-moz-opacity: 0;
-				filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0)
-			}
-		');
+			}');
 	}
 
 	public function getJs($init = true, $selector = true, $sender = true){
