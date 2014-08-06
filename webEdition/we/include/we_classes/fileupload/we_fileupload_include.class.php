@@ -145,14 +145,14 @@ class we_fileupload_include extends we_fileupload_base{
 <div id="div_' . $this->name . '_legacy" style="display:none">' . we_html_element::htmlInput(array('type' => 'file', 'name' => $this->name . '_legacy', 'id' => $this->name . '_legacy')) . '</div>
 <div id="div_' . $this->name . '" style="float:left;margin-top:' . $this->dimensions['marginTop'] . 'px;margin-bottomp:' . $this->dimensions['marginBottom'] . 'px;">
 	<div>
-		<div id="div_' . $this->name . '_fileInputWrapper" style="vertical-align:top;display:inline-block;height:22px; ">
+		<div class="we_fileInputWrapper" id="div_' . $this->name . '_fileInputWrapper" style="vertical-align:top;display:inline-block;height:22px; ">
 			' . $fileInput . '
 			' . $butBrowse . '
 		</div>
 		<div style="vertical-align: top; display: inline-block; height: 22px">
 			' . $butReset . '
 		</div>
-		' . ($this->drop ? '<div id="div_' . $this->name . '_fileDrag">' . g_l('importFiles', "[dragdrop_text]") . '</div>' : '
+		' . ($this->drop ? '<div class="we_file_drag" id="div_' . $this->name . '_fileDrag">' . g_l('importFiles', "[dragdrop_text]") . '</div>' : '
 			<div id="div_' . $this->name . '_fileName" style="height:26px;padding-top:10px;display:none"></div>
 		') . '
 		<div style="display:block;">
@@ -316,9 +316,7 @@ function weFU(){
 			weFU.elems.externalProgressDiv = externalProgressDocument.getElementById("' . $this->externalProgress['parentElemId'] . '");
 			weFU.elems.externalProgressDiv.innerHTML = \'' . str_replace("\n", " ", str_replace("\r", " ", $pb->getHTML())) . '\';
 			weFU.isExternalProgress = true;
-		}
-				' : '') .
-				'
+		}' : '') .'
 	}
 
 };
