@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -1102,6 +1101,7 @@ class doclistView{
 		$we_PathLength = 30;
 
 		$resultCount = count($_result);
+		$content = array();
 
 		for($f = 0; $f < $resultCount; $f++){
 			$fontColor = "black";
@@ -1184,7 +1184,7 @@ class doclistView{
 						}
 					}
 				} else {
-					$templateText = "";
+					$templateText = '';
 				}
 
 				$_defined_fields = we_metadata_metaData::getDefinedMetaDataFields();
@@ -1250,27 +1250,18 @@ class doclistView{
 			we_html_tools::hidden("mode", $mode) .
 			we_html_tools::hidden("setView", $setView) .
 			'<table border="0" cellpadding="0" cellspacing="0">
-         <tr>
-          <td>' . we_html_tools::getPixel(19, 12) . '</td>
-          <td style="font-size:12px;width:125px;">' . g_l('searchtool', "[eintraege_pro_seite]") . ':</td>
-          <td class="defaultgray" style="width:60px;">' . we_html_tools::htmlSelect("anzahl", $anzahl, 1, $_anzahl, "", array('onchange' => 'this.form.elements[\'searchstart\'].value=0;search(false);')) . '
-          </td>
-          <td>' . $this->getNextPrev($foundItems) . '</td>
-          <td>' . we_html_tools::getPixel(10, 12) . '</td>
-          <td style="width:50px;">
-          ' . we_html_button::create_button("image:btn_new_dir", "javascript:top.we_cmd('new_document','" . FILE_TABLE . "','','folder','','" . $id . "')", true, 40, "", "", "", false) . '
-          </td>
-          <td>
-          ' . we_html_button::create_button("image:iconview", "javascript:setview(1);", true, 40, "", "", "", false) . '
-          </td>
-          <td>
-          ' . we_html_button::create_button("image:listview", "javascript:setview(0);", true, 40, "", "", "", false) . '
-          </td>
-        </tr>
-        <tr>
-          <td colspan="12">' . we_html_tools::getPixel(1, 12) . '</td>
-        </tr>
-        </table>';
+	<tr>
+		<td>' . we_html_tools::getPixel(19, 12) . '</td>
+		<td style="font-size:12px;width:125px;">' . g_l('searchtool', "[eintraege_pro_seite]") . ':</td>
+		<td class="defaultgray" style="width:60px;">' . we_html_tools::htmlSelect("anzahl", $anzahl, 1, $_anzahl, "", array('onchange' => 'this.form.elements[\'searchstart\'].value=0;search(false);')) . '</td>
+		<td>' . $this->getNextPrev($foundItems) . '</td>
+		<td>' . we_html_tools::getPixel(10, 12) . '</td>
+		<td style="width:50px;">' . we_html_button::create_button("image:btn_new_dir", "javascript:top.we_cmd('new_document','" . FILE_TABLE . "','','folder','','" . $id . "')", true, 40, "", "", "", false) . '</td>
+		<td>' . we_html_button::create_button("image:iconview", "javascript:setview(1);", true, 40, "", "", "", false) . '</td>
+		<td>' . we_html_button::create_button("image:listview", "javascript:setview(0);", true, 40, "", "", "", false) . '</td>
+	</tr>
+	<tr><td colspan="12">' . we_html_tools::getPixel(1, 12) . '</td></tr>
+</table>';
 	}
 
 	function getSearchParameterBottom($foundItems){
@@ -1284,13 +1275,13 @@ class doclistView{
 
 		return
 			'<table border="0" cellpadding="0" cellspacing="0" style="margin-top:20px;">
-         <tr>
-          <td>' . $publishButtonCheckboxAll . '</td>
-          <td style="font-size:12px;width:125px;">' . $publishButton . '</td>
-          <td class="defaultgray" style="width:60px;" id="resetBusy">' . we_html_tools::getPixel(30, 12) . '</td>
-          <td style="width:370px;">' . $this->getNextPrev($foundItems) . '</td>
-        </tr>
-        </table>';
+	<tr>
+	 <td>' . $publishButtonCheckboxAll . '</td>
+	 <td style="font-size:12px;width:125px;">' . $publishButton . '</td>
+	 <td class="defaultgray" style="width:60px;" id="resetBusy">' . we_html_tools::getPixel(30, 12) . '</td>
+	 <td style="width:370px;">' . $this->getNextPrev($foundItems) . '</td>
+	</tr>
+</table>';
 	}
 
 	/**
