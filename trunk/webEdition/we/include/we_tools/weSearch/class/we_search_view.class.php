@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_search_view extends we_tool_view{
-
 	var $searchclass;
 	var $searchclassExp;
 
@@ -1352,7 +1351,7 @@ class we_search_view extends we_tool_view{
 		return $_js;
 	}
 
-	function getNextPrev($we_search_anzahl, $whichSearch){
+	function getNextPrev($we_search_anzahl, $whichSearch, $isTop = true){
 		$anzahl = 1;
 		$searchstart = 0;
 
@@ -1379,33 +1378,23 @@ class we_search_view extends we_tool_view{
 			}
 		}
 
-		$out = '<table cellpadding="0" cellspacing="0" border="0"><tr><td>';
-		if($searchstart){
-			$out .= we_html_button::create_button("back", "javascript:back(" . $anzahl . ");");
-		} else {
-
-			$out .= we_html_button::create_button("back", "", true, 100, 22, "", "", true);
-		}
-
-		$out .= '</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td class="defaultfont"><b>' . (($we_search_anzahl) ? $searchstart + 1 : 0) . '-';
-
-		if(($we_search_anzahl - $searchstart) < $anzahl){
-			$out .= $we_search_anzahl;
-		} else {
-
-			$out .= $searchstart + $anzahl;
-		}
-
-		$out .= ' ' . g_l('global', "[from]") . ' ' . $we_search_anzahl . '</b></td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>';
-
-		if(($searchstart + $anzahl) < $we_search_anzahl){
-			//bt_back
-			$out .= we_html_button::create_button("next", "javascript:next(" . $anzahl . ");");
-		} else {
-
-			$out .= we_html_button::create_button("next", "", true, 100, 22, "", "", true);
-		}
-		$out .= '</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>';
+		$out = '<table cellpadding="0" cellspacing="0" border="0"><tr><td>' .
+			($searchstart ?
+				we_html_button::create_button("back", "javascript:back(" . $anzahl . ");") :
+				we_html_button::create_button("back", "", true, 100, 22, "", "", true)
+			) .
+			'</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td class="defaultfont"><b>' . (($we_search_anzahl) ? $searchstart + 1 : 0) . '-' .
+			(($we_search_anzahl - $searchstart) < $anzahl ?
+				$we_search_anzahl :
+				$searchstart + $anzahl
+			) .
+			' ' . g_l('global', "[from]") . ' ' . $we_search_anzahl . '</b></td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>' .
+			(($searchstart + $anzahl) < $we_search_anzahl ?
+				//bt_back
+				we_html_button::create_button("next", "javascript:next(" . $anzahl . ");") :
+				we_html_button::create_button("next", "", true, 100, 22, "", "", true)
+			) .
+			'</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>';
 
 		$pages = array();
 		for($i = 0; $i < ceil($we_search_anzahl / $anzahl); $i++){
@@ -1414,16 +1403,13 @@ class we_search_view extends we_tool_view{
 
 		$page = ceil($searchstart / $anzahl) * $anzahl;
 
-		$select = we_html_tools::htmlSelect(
-				"page", $pages, 1, $page, false, array("onchange" => "this.form.elements['searchstart" . $whichSearch . "'].value = this.value;search(false);"));
-		if(!isset($GLOBALS['setInputSearchstart'])){
-			if(!defined("searchstart" . $whichSearch)){
-				define("searchstart" . $whichSearch, true);
-				$out .= we_html_tools::hidden("searchstart" . $whichSearch, $searchstart);
-			}
+		$select = we_html_tools::htmlSelect("page", $pages, 1, $page, false, array("onchange" => "this.form.elements['searchstart" . $whichSearch . "'].value = this.value;search(false);"));
+		if(!isset($GLOBALS['setInputSearchstart']) && !defined('searchstart') && $isTop){
+			define('searchstart', true);
+			$out .= we_html_tools::hidden("searchstart" . $whichSearch, $searchstart);
 		}
-		$out .= $select;
-		$out .= '</td></tr></table>';
+		$out .= $select .
+			'</td></tr></table>';
 		return $out;
 	}
 
@@ -2436,19 +2422,11 @@ class we_search_view extends we_tool_view{
    <td>' . we_html_tools::getPixel(30, 12) . '</td>
    <td style="font-size:12px;width:125px;">' . g_l('searchtool', "[eintraege_pro_seite]") . ':</td>
    <td class="defaultgray" style="width:60px;">
-   ' . we_html_tools::htmlSelect(
-				$anzahl, $values, 1, $_anzahl, "", array('onchange' => 'this.form.elements["' . $searchstart . '"].value=0;search(false);')) . '
-	 </td>
+   ' . we_html_tools::htmlSelect($anzahl, $values, 1, $_anzahl, "", array('onchange' => 'this.form.elements["' . $searchstart . '"].value=0;search(false);')) . '</td>
    <td style="width:400px;">' . $this->getNextPrev(
 				$foundItems, $whichSearch) . '</td>
-   <td style="width:35px;">
-   ' . we_html_button::create_button(
-				"image:iconview", "javascript:setView(1);", true, "", "", "", "", false) . '
-   </td>
-   <td>
-   ' . we_html_button::create_button(
-				"image:listview", "javascript:setView(0);", true, "", "", "", "", false) . '
-   </td>
+   <td style="width:35px;">' . we_html_button::create_button("image:iconview", "javascript:setView(1);", true, "", "", "", "", false) . '</td>
+   <td>' . we_html_button::create_button("image:listview", "javascript:setView(0);", true, "", "", "", "", false) . '</td>
    </tr>
    <tr>
     <td colspan="12">' . we_html_tools::getPixel(1, 12) . '</td>
@@ -2483,8 +2461,7 @@ class we_search_view extends we_tool_view{
      <td>' . we_html_tools::getPixel(19, 12) . '</td>
      <td style="font-size:12px;width:140px;">' . we_html_tools::getPixel(30, 12) . '</td>
      <td class="defaultgray" style="width:60px;">' . we_html_tools::getPixel(30, 12) . '</td>
-     <td style="width:400px;">' . $this->getNextPrev(
-				$foundItems, $whichSearch) . '</td>
+     <td style="width:400px;">' . $this->getNextPrev($foundItems, $whichSearch, false) . '</td>
     </tr>
     </table>';
 	}

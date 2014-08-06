@@ -57,6 +57,7 @@ $_parts = array(
 );
 
 echo doclistView::getHTMLforDoclist($_parts) . '
+<input type="hidden" name="obj" value="1"/>
 <input type="hidden" name="we_complete_request" value="1"/>
 </form>
 </body>

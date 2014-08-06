@@ -1239,7 +1239,7 @@ class doclistView{
 		$order = we_base_request::_(we_base_request::STRING, 'we_cmd', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->searchclassFolder->order : '', 'order');
 		$mode = we_base_request::_(we_base_request::RAW, 'we_cmd', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->searchclassFolder->mode : '', 'mode');
 		$setView = we_base_request::_(we_base_request::RAW, 'we_cmd', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->searchclassFolder->setView : '', 'setView');
-		$_anzahl = we_base_request::_(we_base_request::RAW, 'we_cmd', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->searchclassFolder->anzahl : '', 'anzahl');
+		$_anzahl = we_base_request::_(we_base_request::INT, 'we_cmd', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->searchclassFolder->anzahl : '', 'anzahl');
 		$id = we_base_request::_(we_base_request::INT, 'id', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->ID : '');
 		$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', (isset($GLOBALS ['we_transaction']) ? $GLOBALS ['we_transaction'] : 0));
 
@@ -1279,7 +1279,7 @@ class doclistView{
 	 <td>' . $publishButtonCheckboxAll . '</td>
 	 <td style="font-size:12px;width:125px;">' . $publishButton . '</td>
 	 <td class="defaultgray" style="width:60px;" id="resetBusy">' . we_html_tools::getPixel(30, 12) . '</td>
-	 <td style="width:370px;">' . $this->getNextPrev($foundItems) . '</td>
+	 <td style="width:370px;">' . $this->getNextPrev($foundItems, false) . '</td>
 	</tr>
 </table>';
 	}
@@ -1288,12 +1288,12 @@ class doclistView{
 	 * @abstract generates html for paging GUI
 	 * @return string, html for paging GUI
 	 */
-	function getNextPrev($we_search_anzahl){
+	function getNextPrev($we_search_anzahl, $isTop = true){
 		if(($obj = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 'obj'))){
 			$anzahl = $_SESSION['weS']['weSearch']['anzahl'];
 			$searchstart = $_SESSION['weS']['weSearch']['searchstart'];
 		} else {
-			$obj = $GLOBALS ['we_doc'];
+			$obj = $GLOBALS['we_doc'];
 			$anzahl = $obj->searchclassFolder->anzahl;
 			$searchstart = $obj->searchclassFolder->searchstart;
 		}
@@ -1324,11 +1324,9 @@ class doclistView{
 
 		$select = we_html_tools::htmlSelect("page", $pages, 1, $page, false, array("onchange" => "this.form.elements['searchstart'].value = this.value; search(false);"));
 
-		if(!we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 'setInputSearchstart')){
-			if(!defined('searchstart')){
-				define("searchstart", true);
-				$out .= we_html_tools::hidden("searchstart", $searchstart);
-			}
+		if(!we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 'setInputSearchstart') && !defined('searchstart') && $isTop){
+			define("searchstart", true);
+			$out .= we_html_tools::hidden("searchstart", $searchstart);
 		}
 
 		$out .= $select .
