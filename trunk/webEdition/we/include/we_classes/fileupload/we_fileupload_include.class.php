@@ -276,7 +276,7 @@ function weFU(){
 			' . $this->formFrame . '.document.forms[0].weIsUploading.value = 0;
 			//FIXME: change state of hidden fiels weIsFileInLegacy and weIsUploading
 		}
-	});
+	}
 
 ' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? '
 	window.addEventListener("load",onLoad);' : 'document.onload = onLoad;') . '
