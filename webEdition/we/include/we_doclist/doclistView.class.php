@@ -1314,11 +1314,13 @@ class doclistView{
 			'</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>';
 
 		$pages = array();
-		for($i = 0; $i < ceil($we_search_anzahl / $anzahl); $i++){
-			$pages [($i * $anzahl)] = ($i + 1);
+		if($anzahl){
+			for($i = 0; $i < ceil($we_search_anzahl / $anzahl); $i++){
+				$pages [($i * $anzahl)] = ($i + 1);
+			}
 		}
 
-		$page = ceil($searchstart / $anzahl) * $anzahl;
+		$page = ($anzahl ? ceil($searchstart / $anzahl) * $anzahl : 0);
 
 		$select = we_html_tools::htmlSelect("page", $pages, 1, $page, false, array("onchange" => "this.form.elements['searchstart'].value = this.value; search(false);"));
 
