@@ -27,7 +27,6 @@
  * @desc    class for tag <we:listview>
  *
  */
-
 class we_listview_langlink extends we_listview_base{
 	var $docType = ""; /* doctype string */
 	var $IDs = array(); /* array of ids with pages which are found */
@@ -103,16 +102,21 @@ class we_listview_langlink extends we_listview_base{
 		}
 
 		if($this->id && ($this->linkType == 'tblFile' || $this->linkType == 'tblObjectFile')){
-			foreach($_languages as $langkey => $lang){
+			foreach(array_keys($_languages) as $langkey){
 				if($this->linkType == 'tblFile'){
-					$q = 'SELECT ' . LANGLINK_TABLE . '.DID as DID, ' . LANGLINK_TABLE . '.DLocale as DLocale, ' . LANGLINK_TABLE . '.LDID as LDID, ' . LANGLINK_TABLE . '.Locale as Locale, ' . LANGLINK_TABLE . '.IsFolder as IsFolder, ' . LANGLINK_TABLE . ".IsObject as IsObject, " . LANGLINK_TABLE . ".DocumentTable as DocumentTable, " . FILE_TABLE . ".Path as Path, " . FILE_TABLE . ".ParentID as ParentID  FROM " . LANGLINK_TABLE . "," . FILE_TABLE . " WHERE " . LANGLINK_TABLE . ".Locale='" . $langkey . "' AND " . LANGLINK_TABLE . ".LDID = " . FILE_TABLE . '.ID AND ' . FILE_TABLE . ".Published >0 AND " . LANGLINK_TABLE . ".DocumentTable='" . $this->linkType . "' AND " . LANGLINK_TABLE . '.DID=' . $this->id;
 					$this->dirsearchtable = FILE_TABLE;
+					$extraSelect = ',' . $this->dirsearchtable . '.ParentID ';
 				} else {
-					$q = "SELECT " . LANGLINK_TABLE . ".DID as DID, " . LANGLINK_TABLE . ".DLocale as DLocale, " . LANGLINK_TABLE . ".LDID as LDID, " . LANGLINK_TABLE . ".Locale as Locale, " . LANGLINK_TABLE . ".IsFolder as IsFolder, " . LANGLINK_TABLE . ".IsObject as IsObject, " . LANGLINK_TABLE . ".DocumentTable as DocumentTable, " . OBJECT_FILES_TABLE . ".Path as Path, " . OBJECT_FILES_TABLE . ".Url as Url, " . OBJECT_FILES_TABLE . ".TriggerID as TriggerID  FROM " . LANGLINK_TABLE . "," . OBJECT_FILES_TABLE . " WHERE " . LANGLINK_TABLE . ".Locale='" . $langkey . "' AND " . LANGLINK_TABLE . ".LDID = " . OBJECT_FILES_TABLE . ".ID AND " . OBJECT_FILES_TABLE . ".Published >0 AND " . LANGLINK_TABLE . ".DocumentTable='" . $this->linkType . "' AND " . LANGLINK_TABLE . '.DID=' . $this->id;
 					$this->dirsearchtable = OBJECT_FILES_TABLE;
+					$extraSelect = ', ' . $this->dirsearchtable . '.Url, ' . $this->dirsearchtable . '.TriggerID ';
 				}
 
-				$this->DB_WE->query($q);
+				$this->DB_WE->query(
+					'SELECT ' . LANGLINK_TABLE . '.DID, ' . LANGLINK_TABLE . '.DLocale, ' . LANGLINK_TABLE . '.LDID, ' . LANGLINK_TABLE . '.Locale, ' . LANGLINK_TABLE . '.IsFolder, ' . LANGLINK_TABLE . '.IsObject, ' . LANGLINK_TABLE . '.DocumentTable, ' . $this->dirsearchtable . '.Path' .
+					$extraSelect .
+					'FROM ' . LANGLINK_TABLE . ',' . $this->dirsearchtable .
+					' WHERE ' . LANGLINK_TABLE . '.Locale="' . $langkey . '" AND ' . LANGLINK_TABLE . '.LDID=' . $this->dirsearchtable . '.ID AND ' . $this->dirsearchtable . '.Published>0 AND ' . LANGLINK_TABLE . '.DocumentTable="' . $this->linkType . '" AND ' . LANGLINK_TABLE . '.DID=' . $this->id
+				);
 				$found = $this->DB_WE->num_rows();
 				if($found){
 					$this->DB_WE->next_record();
@@ -127,8 +131,7 @@ class we_listview_langlink extends we_listview_base{
 			// if($this->showself == true)
 			// if($this->showself == false && $this->pagelanguage != $this->ownlanguage)
 			if($this->showself || (!$this->showself && $this->pagelanguage != $this->ownlanguage)){
-				$dt = array('DID' => $this->id, 'DLocale' => $this->ownlanguage, 'LDID' => $this->id, 'Locale' => $this->ownlanguage, 'DocumentTable' => (($this->linkType == 'tblFile')
-							? 'tblFile' : 'tblObjectFile'), 'IsObject' => (($this->linkType == 'tblFile') ? 0 : 1), 'IsFolder' => 0);
+				$dt = array('DID' => $this->id, 'DLocale' => $this->ownlanguage, 'LDID' => $this->id, 'Locale' => $this->ownlanguage, 'DocumentTable' => (($this->linkType == 'tblFile') ? 'tblFile' : 'tblObjectFile'), 'IsObject' => (($this->linkType == 'tblFile') ? 0 : 1), 'IsFolder' => 0);
 				if($this->linkType == 'tblFile'){
 					$dt['Path'] = id_to_path($this->id, FILE_TABLE);
 				} else {
@@ -185,16 +188,19 @@ class we_listview_langlink extends we_listview_base{
 
 	// Links to documents/objects themselves never use this method: so we do not need to fix the showself-problem in this section
 	function getParentData($myid, $langkey){
-		$pid = f('SELECT ParentID FROM ' . $this->dirsearchtable . ' WHERE ID=' . intval($myid), 'ParentID', $this->DB_WE);
+		$pid = f('SELECT ParentID FROM ' . $this->dirsearchtable . ' WHERE ID=' . intval($myid), '', $this->DB_WE);
 
 		if($pid){
-			//FIXME: this query is identical - what should that be good for?!
-			$q = ($this->linkType == 'tblFile' ?
-					"SELECT " . LANGLINK_TABLE . ".DID as DID, " . LANGLINK_TABLE . ".DLocale as DLocale, " . LANGLINK_TABLE . ".LDID as LDID, " . LANGLINK_TABLE . ".Locale as Locale, " . LANGLINK_TABLE . ".IsFolder as IsFolder, " . LANGLINK_TABLE . ".IsObject as IsObject, " . LANGLINK_TABLE . ".DocumentTable as DocumentTable, " . FILE_TABLE . ".Path as Path, " . FILE_TABLE . ".ParentID as ParentID  FROM " . LANGLINK_TABLE . "," . FILE_TABLE . " WHERE " . LANGLINK_TABLE . ".Locale='" . $langkey . "' AND " . LANGLINK_TABLE . ".LDID = " . FILE_TABLE . ".ID AND " . FILE_TABLE . ".Published >0 AND " . LANGLINK_TABLE . ".DocumentTable='tblFile' AND " . LANGLINK_TABLE . ".DID='" . $pid . "'"
-						:
-					"SELECT " . LANGLINK_TABLE . ".DID as DID, " . LANGLINK_TABLE . ".DLocale as DLocale, " . LANGLINK_TABLE . ".LDID as LDID, " . LANGLINK_TABLE . ".Locale as Locale, " . LANGLINK_TABLE . ".IsFolder as IsFolder, " . LANGLINK_TABLE . ".IsObject as IsObject, " . LANGLINK_TABLE . ".DocumentTable as DocumentTable, " . FILE_TABLE . ".Path as Path, " . FILE_TABLE . ".ParentID as ParentID  FROM " . LANGLINK_TABLE . "," . FILE_TABLE . " WHERE " . LANGLINK_TABLE . ".Locale='" . $langkey . "' AND " . LANGLINK_TABLE . ".LDID = " . FILE_TABLE . ".ID AND " . FILE_TABLE . ".Published >0 AND " . LANGLINK_TABLE . ".DocumentTable='tblFile' AND " . LANGLINK_TABLE . ".DID='" . $pid . "'");
+			$extraSelect = ($this->linkType == 'tblFile' ?
+					',' . $this->dirsearchtable . '.ParentID ' :
+					', ' . $this->dirsearchtable . '.Url, ' . $this->dirsearchtable . '.TriggerID ');
 
-			$this->DB_WE->query($q);
+			$this->DB_WE->query(
+				'SELECT ' . LANGLINK_TABLE . '.DID, ' . LANGLINK_TABLE . '.DLocale, ' . LANGLINK_TABLE . '.LDID, ' . LANGLINK_TABLE . '.Locale, ' . LANGLINK_TABLE . '.IsFolder, ' . LANGLINK_TABLE . '.IsObject, ' . LANGLINK_TABLE . '.DocumentTable, ' . $this->dirsearchtable . '.Path as Path' .
+				$extraSelect .
+				' FROM ' . LANGLINK_TABLE . "," . $this->dirsearchtable .
+				' WHERE ' . LANGLINK_TABLE . '.Locale="' . $langkey . '" AND ' . LANGLINK_TABLE . '.LDID = ' . $this->dirsearchtable . '.ID AND ' . $this->dirsearchtable . '.Published >0 AND ' . LANGLINK_TABLE . '.DocumentTable="' . $this->linkType . '" AND ' . LANGLINK_TABLE . '.DID=' . intval($pid)
+			);
 			$found = $this->DB_WE->num_rows();
 			if($found){
 				$this->DB_WE->next_record();
@@ -220,10 +226,8 @@ class we_listview_langlink extends we_listview_base{
 			$this->Record["WE_TARGETLANGUAGE"] = isset($Locale[0]) ? $Locale[0] : '';
 
 			//added for #7084
-			$this->Record['WE_TARGETLANGUAGE_NAME'] = $this->Record["WE_TARGETLANGUAGE"] ? Zend_Locale::getTranslation($this->Record["WE_TARGETLANGUAGE"], 'language', $this->Record["WE_TARGETLANGUAGE"])
-					: '';
-			$this->Record['WE_TARGETCOUNTRY_NAME'] = $this->Record["WE_TARGETLANGUAGE"] ? Zend_Locale::getTranslation($this->Record["WE_TARGETCOUNTRY"], 'country', $this->Record["WE_TARGETCOUNTRY"])
-					: '';
+			$this->Record['WE_TARGETLANGUAGE_NAME'] = $this->Record["WE_TARGETLANGUAGE"] ? Zend_Locale::getTranslation($this->Record["WE_TARGETLANGUAGE"], 'language', $this->Record["WE_TARGETLANGUAGE"]) : '';
+			$this->Record['WE_TARGETCOUNTRY_NAME'] = $this->Record["WE_TARGETLANGUAGE"] ? Zend_Locale::getTranslation($this->Record["WE_TARGETCOUNTRY"], 'country', $this->Record["WE_TARGETCOUNTRY"]) : '';
 
 			if($this->foundlinks[$count]['DocumentTable'] == 'tblFile'){
 				$this->Record["WE_PATH"] = $this->foundlinks[$count]["Path"];
