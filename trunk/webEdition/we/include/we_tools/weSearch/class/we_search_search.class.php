@@ -259,7 +259,7 @@ class we_search_search extends we_search{
 			}
 		}
 
-		return (!empty($titles) ? ' ' . $table . '.ID IN (' . makeCSVFromArray($titles) . ')' : '');
+		return ($titles ? ' ' . $table . '.ID IN (' . makeCSVFromArray($titles) . ')' : '');
 	}
 
 	function searchCategory($keyword, $table){
@@ -454,7 +454,7 @@ class we_search_search extends we_search{
 
 		$modConst[] = $versions->modFields[$text]['const'];
 
-		if(!empty($modConst)){
+		if($modConst){
 			$modifications = $ids = $_ids = array();
 			$db->query('SELECT ID, modifications FROM ' . VERSIONS_TABLE . ' WHERE modifications!=""');
 
@@ -476,7 +476,7 @@ class we_search_search extends we_search{
 					$_ids[] = $val;
 				}
 				$arr = array();
-				if(!empty($_ids[0])){
+				if($_ids[0]){
 					//more then one field
 					$mtof = false;
 					foreach($_ids as $k => $v){
@@ -493,7 +493,7 @@ class we_search_search extends we_search{
 					}
 					$where .= ' AND ' . ($mtof ?
 							$table . '.ID IN (' . makeCSVFromArray($arr) . ') ' :
-							(!empty($_ids[0]) ?
+							($_ids[0] ?
 								$table . '.ID IN (' . makeCSVFromArray($_ids[0]) . ') ' :
 								' 0'));
 				}
@@ -597,7 +597,7 @@ class we_search_search extends we_search{
 					$Ids[] = $_db->f('DocumentID');
 				}
 
-				return (!empty($Ids) ? '  ' . OBJECT_FILES_TABLE . '.ID IN (' . makeCSVFromArray($Ids) . ')' : '');
+				return ($Ids ? '  ' . OBJECT_FILES_TABLE . '.ID IN (' . makeCSVFromArray($Ids) . ')' : '');
 		}
 
 		return '';
@@ -652,7 +652,7 @@ class we_search_search extends we_search{
 						$titles[$this->db->f('DocumentID')] = $tempDoc[0]['elements']['Title']['dat'];
 					}
 				}
-				if(is_array($titles) && !empty($titles)){
+				if(is_array($titles) && $titles){
 					foreach($titles as $k => $v){
 						if($v != ""){
 							$this->db->query('UPDATE SEARCH_TEMP_TABLE  SET `SiteTitle` = "' . $this->db->escape($v) . '" WHERE docID = ' . intval($k) . ' AND DocTable = "' . FILE_TABLE . '" LIMIT 1');
