@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -279,6 +278,11 @@ function getVariableMax($var, we_database_base $db = null){
 }
 
 function log_error_message($type, $message, $file, $_line, $skipBT = false){
+	static $max = 500;
+	if(--$max < 0){
+		//don't log more messages per request
+		return;
+	}
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_db_tools.inc.php');
 	$_detailedError = $_caller = '-';
 	if($skipBT === false){
@@ -346,6 +350,11 @@ function log_error_message($type, $message, $file, $_line, $skipBT = false){
 }
 
 function mail_error_message($type, $message, $file, $line, $skipBT = false, $insertID = false){
+	static $max = 15;
+	if(--$max < 0){
+		//don't mail more than this
+		return;
+	}
 	$detailedError = $_caller = '-';
 	if($skipBT === false){
 		list($detailedError, $_caller, $file, $line) = getBacktrace(($type == E_SQL ? array('error_showDevice', 'trigger_error', 'error_handler', 'getBacktrace', 'mail_error_message') : array('error_showDevice', 'error_handler', 'getBacktrace', 'mail_error_message')));
