@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,8 +27,7 @@
  * @desc    This is the base class for all webEdition listviews.
  *
  */
-abstract class listviewBase{
-
+abstract class we_listview_base{
 	var $DB_WE; /* Main DB Object */
 	var $name; /* name of listview */
 	var $rows = -1; /* Number of rows */
@@ -50,10 +48,10 @@ abstract class listviewBase{
 	var $Record = array(); /* array to store results */
 	var $ClassName = __CLASS__; /* Name of class */
 	private $close_a = true; /* close </a> when endtag used */
-	var $customerFilterType = 'false'; // shall we control customer-filter?
+	var $customerFilterType = false; // shall we control customer-filter?
 	var $calendar_struct = array();
 	var $id = 0;
-	var $hidedirindex = false;
+	protected $hidedirindex = false;
 
 	/**
 	 * listviewBase()
@@ -74,7 +72,8 @@ abstract class listviewBase{
 
 		$this->name = $name;
 		//? strange setting - comes from we_tag_search
-		$this->search = (!($val = we_base_request::_(we_base_request::STRING, 'we_lv_search_' . $this->name, '')) && we_base_request::_(we_base_request::BOOL, 'we_from_search_' . $this->name)) ? -1 : $val;
+		$this->search = (!($val = we_base_request::_(we_base_request::STRING, 'we_lv_search_' . $this->name, '')) && we_base_request::_(we_base_request::BOOL, 'we_from_search_' . $this->name))
+				? -1 : $val;
 		$this->search = trim(str_replace(array('"', '\\"'), '', $this->search));
 		$this->DB_WE = new DB_WE();
 		$this->rows = $rows;
@@ -121,7 +120,7 @@ abstract class listviewBase{
 		}
 	}
 
-	function getIdQuery($fieldname){
+	protected function getIdQuery($fieldname){
 		return ($this->id ? ' AND ' . $fieldname . ' IN(' . $this->id . ') ' : '');
 	}
 
@@ -131,7 +130,7 @@ abstract class listviewBase{
 	 *
 	 *
 	 */
-	function next_record(){
+	public function next_record(){
 		// overwrite
 		if($this->calendar_struct['calendar'] != ''){
 			$this->calendar_struct['calendarCount'] ++;
@@ -209,7 +208,7 @@ abstract class listviewBase{
 	 * @param   name  string - name of listview
 	 *
 	 */
-	function hasNextPage($parentEnd = false){
+	public function hasNextPage($parentEnd = false){
 		if(isset($this->calendar_struct['calendar']) && $this->calendar_struct['calendar'] != ''){
 			return true;
 		}
@@ -226,7 +225,7 @@ abstract class listviewBase{
 	 * @param   name  string - name of listview
 	 *
 	 */
-	function hasPrevPage($parentStart = false){
+	public function hasPrevPage($parentStart = false){
 		if(isset($this->calendar_struct['calendar']) && $this->calendar_struct['calendar'] != ''){
 			return true;
 		}
@@ -243,7 +242,7 @@ abstract class listviewBase{
 	 * @param   attribs  array - array with HTML attributes
 	 *
 	 */
-	function getBackLink($attribs){
+	public function getBackLink($attribs){
 		$only = weTag_getAttribute('only', $attribs);
 		$urlID = weTag_getAttribute('id', $attribs);
 		if(isset($this->calendar_struct['calendar']) && $this->calendar_struct['calendar'] != ''){
@@ -282,10 +281,10 @@ abstract class listviewBase{
 			$attribs['href'] .=(strpos($attribs['href'], '?') === false ? '?' : '&');
 			$attribs['rel'] = 'prev';
 
-			$tmp_href = oldHtmlspecialchars(listviewBase::we_makeQueryString('we_lv_calendar_' . $this->name . '=' . $this->calendar_struct['calendar'] . '&we_lv_datefield_' . $this->name . '=' . $this->calendar_struct['datefield'] . '&we_lv_date_' . $this->name . '=' . $newdate));
+			$tmp_href = oldHtmlspecialchars(we_listview_base::we_makeQueryString('we_lv_calendar_' . $this->name . '=' . $this->calendar_struct['calendar'] . '&we_lv_datefield_' . $this->name . '=' . $this->calendar_struct['datefield'] . '&we_lv_date_' . $this->name . '=' . $newdate));
 		} else if($this->hasPrevPage()){
 			$foo = $this->start - $this->maxItemsPerPage;
-			$tmp_href = oldHtmlspecialchars(listviewBase::we_makeQueryString('we_lv_start_' . $this->name . '=' . $foo));
+			$tmp_href = oldHtmlspecialchars(we_listview_base::we_makeQueryString('we_lv_start_' . $this->name . '=' . $foo));
 		} else {
 			return '';
 		}
@@ -350,7 +349,7 @@ abstract class listviewBase{
 	 * @param   attribs  array - array with HTML attributes
 	 *
 	 */
-	function getNextLink($attribs){
+	public function getNextLink($attribs){
 		$only = weTag_getAttribute('only', $attribs);
 		$urlID = weTag_getAttribute('id', $attribs);
 		if(isset($this->calendar_struct['calendar']) && $this->calendar_struct['calendar'] != ''){
@@ -385,11 +384,11 @@ abstract class listviewBase{
 					break;
 			}
 			$newdate = $year . '-' . $month . '-' . $day;
-			$tmp_href = oldHtmlspecialchars(listviewBase::we_makeQueryString('we_lv_calendar_' . $this->name . '=' . $this->calendar_struct['calendar'] . '&we_lv_datefield_' . $this->name . '=' . $this->calendar_struct['datefield'] . '&we_lv_date_' . $this->name . '=' . $newdate));
+			$tmp_href = oldHtmlspecialchars(we_listview_base::we_makeQueryString('we_lv_calendar_' . $this->name . '=' . $this->calendar_struct['calendar'] . '&we_lv_datefield_' . $this->name . '=' . $this->calendar_struct['datefield'] . '&we_lv_date_' . $this->name . '=' . $newdate));
 		} else if($this->hasNextPage()){
 
 			$foo = $this->start + $this->maxItemsPerPage;
-			$tmp_href = oldHtmlspecialchars(listviewBase::we_makeQueryString('we_lv_start_' . $this->name . '=' . $foo));
+			$tmp_href = oldHtmlspecialchars(we_listview_base::we_makeQueryString('we_lv_start_' . $this->name . '=' . $foo));
 		} else {
 			return '';
 		}
@@ -400,24 +399,23 @@ abstract class listviewBase{
 		if($only){
 			$this->close_a = false;
 			return (isset($attribs[$only]) ? $attribs[$only] : '');
-		} else {
-			return getHtmlTag('a', $attribs, '', false, true);
 		}
+		return getHtmlTag('a', $attribs, '', false, true);
 	}
 
-	function shouldPrintEndTR(){
+	public function shouldPrintEndTR(){
 		return ($this->cols ? (($this->count % $this->cols) == 0) : false);
 	}
 
-	function shouldPrintStartTR(){
+	public function shouldPrintStartTR(){
 		return ($this->cols ? (($this->count - 1) % $this->cols) == 0 : false);
 	}
 
-	function tdEmpty(){
+	public function tdEmpty(){
 		return ($this->count > $this->anz);
 	}
 
-	static function getCalendarField($calendar, $type){
+	public static function getCalendarField($calendar, $type){
 		switch($type){
 			case 'day':
 				if($calendar == 'day'){
@@ -448,7 +446,7 @@ abstract class listviewBase{
 		}
 	}
 
-	static function getCalendarFieldValue($calendar, $name){
+	public static function getCalendarFieldValue($calendar, $name){
 		switch($name){
 			case 'day':
 				return date('j', ($calendar['date'] > 0 ? $calendar['date'] : $calendar['defaultDate']));
@@ -482,11 +480,11 @@ abstract class listviewBase{
 		return '';
 	}
 
-	function isCalendarField($type){
+	public function isCalendarField($type){
 		return in_array($type, array('day', 'dayname', 'dayname_long', 'dayname_short', 'month', 'monthname', 'monthname_long', 'monthname_short', 'year', 'hour'));
 	}
 
-	function fetchCalendar(&$condition, &$calendar_select, &$calendar_where, $matrix = array()){
+	protected function fetchCalendar(&$condition, &$calendar_select, &$calendar_where, $matrix = array()){
 		if($this->calendar_struct['calendar'] != ''){
 			$calendar = $this->calendar_struct['calendar'];
 			$day = date('j', $this->calendar_struct['defaultDate']);
@@ -525,7 +523,8 @@ abstract class listviewBase{
 				$calendar_where = ' AND (' . FILE_TABLE . '.Published>=' . $start_date . ' AND ' . FILE_TABLE . '.Published<=' . $end_date . ') ';
 			} else {
 				$field = (!empty($matrix) && in_array($this->calendar_struct['datefield'], array_keys($matrix))) ?
-					$matrix[$this->calendar_struct['datefield']]['table'] . '.' . $matrix[$this->calendar_struct['datefield']]['type'] . '_' . $this->calendar_struct['datefield'] :
+					$matrix[$this->calendar_struct['datefield']]['table'] . '.' . $matrix[$this->calendar_struct['datefield']]['type'] . '_' . $this->calendar_struct['datefield']
+						:
 					CONTENT_TABLE . '.Dat';
 
 				$calendar_select = ',' . $field . ' AS Calendar ';

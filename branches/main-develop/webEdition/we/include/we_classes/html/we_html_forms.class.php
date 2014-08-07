@@ -141,7 +141,7 @@ abstract class we_html_forms{
 		$rows = weTag_getAttribute('rows', $attribs);
 		$width = weTag_getAttribute('width', $attribs);
 		$height = weTag_getAttribute('height', $attribs);
-		$commands = preg_replace('/ *, */', ',', weTag_getAttribute('commands', $attribs, defined("COMMANDS_DEFAULT") ? COMMANDS_DEFAULT : ''));
+		$commands = preg_replace('/ *, */', ',', weTag_getAttribute('commands', $attribs, defined('COMMANDS_DEFAULT') ? COMMANDS_DEFAULT : ''));
 		$contextmenu = preg_replace('/ *, */', ',', weTag_getAttribute('contextmenu', $attribs));
 		$bgcolor = weTag_getAttribute('bgcolor', $attribs);
 		$wrap = weTag_getAttribute('wrap', $attribs);
@@ -156,15 +156,13 @@ abstract class we_html_forms{
 		$cssClasses = weTag_getAttribute('classes', $attribs);
 		$buttonTop = false;
 		$buttonBottom = false;
+		$editorcss = weTag_getAttribute('editorcss', $attribs);
+		$editorcss = $editorcss ? id_to_path($editorcss, FILE_TABLE, null, false, true) : array();
 
 		//first prepare stylesheets from textarea-attribute editorcss (templates) or class-css (classes): csv of ids. then (if document) get document-css, defined by we:css
-		$contentCss = (isset($GLOBALS['we_doc']) && (($GLOBALS['we_doc'] instanceof we_objectFile) || ($GLOBALS['we_doc'] instanceof we_object))) ? $GLOBALS['we_doc']->CSS
-				:
-			((isset($GLOBALS['we_doc']) && ($GLOBALS['we_doc'] instanceof we_webEditionDocument)) ? weTag_getAttribute('editorcss', $attribs) : '');
-		$contentCss = $contentCss ? implode('?' . time() . ',', id_to_path(trim($contentCss, ', '), FILE_TABLE, null, false, true)) . '?' . time() : '';
-		$contentCss = (isset($GLOBALS['we_doc']) && ($GLOBALS['we_doc'] instanceof we_webEditionDocument) && !$ignoredocumentcss) ? trim($GLOBALS['we_doc']->getDocumentCss() . ',' . $contentCss, ',')
-				:
-			$contentCss;
+
+		$contentCss = array_filter(array_merge((isset($GLOBALS['we_doc']) && !$ignoredocumentcss ? $GLOBALS['we_doc']->getDocumentCss() : array()), $editorcss));
+		$contentCss = ($contentCss ? implode('?' . time() . ',', $contentCss) . '?' . time() : '');
 
 		if($buttonpos){
 			$foo = makeArrayFromCSV($buttonpos);
@@ -229,7 +227,7 @@ abstract class we_html_forms{
 
 				return $out . $e->getHTML();
 			}
-			
+
 			$e = new we_wysiwyg_editor($name, $width, $height, '', $commands, $bgcolor, '', $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $_lang, '', $showSpell, $isFrontendEdit, $buttonpos, $oldHtmlspecialchars, $contentCss, $origName, $tinyParams, $contextmenu, false, $templates);
 
 			if(stripos($name, "we_ui") === false){//we are in backend
@@ -304,7 +302,7 @@ abstract class we_html_forms{
 				}
 			}
 		}
-		if(defined("OBJECT_TABLE")){
+		if(defined('OBJECT_TABLE')){
 			if(preg_match_all('/href="' . we_base_link::TYPE_OBJ_PREFIX . '(\\d+)[^" \?#]+\??/i', $text, $regs, PREG_SET_ORDER)){
 				foreach($regs as $reg){
 					if(!id_to_path($reg[1], OBJECT_FILES_TABLE)){ // if object doesn't exists, remove the link

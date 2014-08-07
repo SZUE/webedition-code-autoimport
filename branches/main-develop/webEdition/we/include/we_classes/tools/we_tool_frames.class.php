@@ -326,7 +326,7 @@ function we_save() {
 			'pnt' => 'edbody',
 			'tabnr' => $tabNr,
 			'vernr' => we_base_request::_(we_base_request::INT, 'vernr', 0),
-			'delayParam' => we_base_request::_(we_base_request::RAW, 'delayParam', '')
+			'delayParam' => we_base_request::_(we_base_request::INT, 'delayParam', '')
 		);
 
 		return $this->View->getCommonHiddens($hiddens) .
@@ -392,10 +392,10 @@ function we_save() {
 	}
 
 	function getHTMLExitQuestion(){
-		if(($dp = we_base_request::_(we_base_request::RAW, 'delayParam'))){
+		if(($dp = we_base_request::_(we_base_request::INT, 'delayParam'))){
 
 			$_frame = 'opener.' . $this->topFrame;
-			$_form = $_frame . '.document.we_form';
+//			$_form = $_frame . '.document.we_form';
 
 			$_yes = $_frame . '.hot=0;' . $_frame . '.we_cmd("tool_' . $this->toolName . '_save");self.close();';
 			$_no = $_frame . '.hot=0;' . $_frame . '.we_cmd("' . we_base_request::_(we_base_request::RAW, 'delayCmd') . '","' . $dp . '");self.close();';
@@ -424,7 +424,7 @@ function we_save() {
 		);
 	}
 
-	function getHTMLChooser($title, $table = FILE_TABLE, $rootDirID = 0, $IDName = 'ID', $IDValue = 0, $PathName = 'Path', $cmd = '', $filter = we_base_ContentTypes::WEDOCUMENT, $disabled = false, $showtrash = false){
+	private function getHTMLChooser($title, $table = FILE_TABLE, $rootDirID = 0, $IDName = 'ID', $IDValue = 0, $PathName = 'Path', $cmd = '', $filter = we_base_ContentTypes::WEDOCUMENT, $disabled = false, $showtrash = false){
 		$_path = id_to_path($this->Model->$IDName, $table);
 		$_cmd = "javascript:we_cmd('open" . $this->toolName . "Dirselector',document.we_form.elements['" . $IDName . "'].value,'document.we_form." . $IDName . ".value','document.we_form." . $PathName . ".value','" . $cmd . "')";
 

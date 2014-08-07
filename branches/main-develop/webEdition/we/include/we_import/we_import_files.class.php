@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_import_files{
-
 	var $importToID = 0;
 	var $step = 0;
 	var $sameName = "overwrite";
@@ -43,7 +42,7 @@ class we_import_files{
 	private $useJsUpload = false;
 	private $maxUploadSizeMB = 8;
 	private $maxUploadSizeB = 0;
-	private $fileNameTmp = '';
+	private $fileNameTemp = '';
 	private $partNum = 0;
 	private $partCount = 0;
 	private $showErrorAtChunkNr = 0; //Trigger an Error at n-th chunk of 100KB to demonstrate error response. TODO: Use this construct to abort on Max_FILE_SIZE!!
@@ -80,8 +79,8 @@ class we_import_files{
 		$this->jsRequirementsOk = we_base_request::_(we_base_request::BOOL, "jsRequirementsOk", false);
 		$this->partNum = we_base_request::_(we_base_request::INT, "wePartNum", 0);
 		$this->partCount = we_base_request::_(we_base_request::INT, "wePartCount", 0);
-		$this->fileNameTmp = we_base_request::_(we_base_request::RAW, "weFileNameTmp", '');
-		$this->maxUploadSizeMB = defined('FILE_UPLOAD_MAX_UPLOAD_SIZE') ? FILE_UPLOAD_MAX_UPLOAD_SIZE : 8;//FIMXE: 8???
+		$this->fileNameTemp = we_base_request::_(we_base_request::RAW, "weFileNameTemp", '');
+		$this->maxUploadSizeMB = defined('FILE_UPLOAD_MAX_UPLOAD_SIZE') ? FILE_UPLOAD_MAX_UPLOAD_SIZE : 8; //FIMXE: 8???
 		$this->maxUploadSizeB = $this->maxUploadSizeMB * 1048576;
 		$this->useLegacyUpload = defined('FILE_UPLOAD_USE_LEGACY') ? FILE_UPLOAD_USE_LEGACY : false;
 		$this->useJsUpload = !USE_JUPLOAD && $this->jsRequirementsOk && !$this->useLegacyUpload;
@@ -221,6 +220,7 @@ function FileSelectHandler(e) {
 	}
 	if(added){
 		bf.next_enabled = bf.switch_button_state("next", "next_enabled", "enabled");
+		bf.weFU.isCancelled = false;
 	}
 }
 
@@ -635,14 +635,14 @@ function setApplet() {
 		<div style="float:left;">
 		<form id="filechooser" action="" method="" enctype="multipart/form-data">
 			<div style="">
-				<div id="div_' . $uploader->getName() . '_fileInputWrapper" style="vertical-align: top; display: inline-block; height: 22px;">
+				<div class="we_fileInputWrapper" id="div_' . $uploader->getName() . '_fileInputWrapper" style="vertical-align: top; display: inline-block; height: 22px;">
 					<input class="fileInput fileInputHidden" type="file" id="fileselect" name="fileselect[]" multiple="multiple" />
 					' . $butBrowse . '
 				</div>
 				<div style="vertical-align: top; display: inline-block; height: 22px">
 					' . $butReset . '
 				</div>
-				<div id="div_' . $uploader->getName() . '_fileDrag">' . g_l('importFiles', "[dragdrop_text]") . '</div>
+				<div class="we_file_drag" id="div_' . $uploader->getName() . '_fileDrag">' . g_l('importFiles', "[dragdrop_text]") . '</div>
 			</div>
 		</form>
 		</div>
@@ -866,7 +866,7 @@ function setApplet() {
 		}
 
 		if($formcount && $this->useJsUpload){
-			$response = array('status' => '', 'fileNameTmp' => '', 'mimePhp' => 'none', 'message' => '', 'completed' => '');
+			$response = array('status' => '', 'fileNameTemp' => '', 'mimePhp' => 'none', 'message' => '', 'completed' => '');
 
 			if($this->partNum == $this->partCount){
 				//actual file completed
@@ -887,7 +887,7 @@ function setApplet() {
 					}
 				}
 			} else {
-				$response['fileNameTmp'] = $this->fileNameTmp;
+				$response['fileNameTemp'] = $this->fileNameTemp;
 				//TODO: if we have a message here, we can stop uloading chunks of this file!
 				$response['status'] = empty($error) ? 'continue' : 'failure';
 				$response['message'] = empty($error) ? '' : g_l('importFiles', "[" . $error['error'] . "]");
@@ -896,8 +896,8 @@ function setApplet() {
 			exit();
 		}
 
-		$cancelButton = '<div id="div_cancelButton">' . we_html_button::create_button("cancel", "javascript:top.close()") . '</div>';
-		$closeButton = we_html_button::create_button("close", "javascript:top.close()");
+		$cancelButton = '<div id="div_cancelButton">' . we_html_button::create_button("cancel", "javascript:cancel()") . '</div>';
+		$closeButton = we_html_button::create_button("close", "javascript:cancel()");
 		$progressbar = '';
 
 		$js = we_html_button::create_state_changer(false) . '
@@ -941,7 +941,17 @@ function next() {
 	} else {
 		upload();
 	}
-}";
+}
+
+function cancel() {
+	var bf = top.imgimportbuttons;
+	if(typeof bf.weFU !== 'undefined' && bf.weFU.isUploading){
+		weFU.cancelUpload();
+	} else {
+		top.close();
+	}
+}
+";
 
 		$js = we_html_element::jsElement($js);
 		$we_uploader = new we_fileupload_importFiles('we_File');
@@ -1068,8 +1078,7 @@ function next() {
 	function importFile(){
 		if(isset($_FILES['we_File']) && strlen($_FILES['we_File']["tmp_name"])){
 			$we_ContentType = getContentTypeFromFile($_FILES['we_File']["name"]);
-			if(!permissionhandler::hasPerm(we_base_ContentTypes::inst()->getPermission($we_ContentType)) || $this->partNum == $this->showErrorAtChunkNr){
-				//if(!permissionhandler::hasPerm(we_base_ContentTypes::inst()->getPermission($we_ContentType))){
+			if(!permissionhandler::hasPerm(we_base_ContentTypes::inst()->getPermission($we_ContentType)) || ($this->useJsUpload && $this->partNum == $this->showErrorAtChunkNr)){
 
 				return array(
 					'filename' => $_FILES['we_File']['name'], 'error' => 'no_perms'
@@ -1089,16 +1098,16 @@ function next() {
 
 			if($this->partCount > 1){
 				if($this->partNum == 1){
-					$this->fileNameTmp = $tm;
+					$this->fileNameTemp = $tm;
 				} else {
-					file_put_contents(TEMP_PATH . $this->fileNameTmp, file_get_contents($tempName), FILE_APPEND);
+					file_put_contents(TEMP_PATH . $this->fileNameTemp, file_get_contents($tempName), FILE_APPEND);
 					unlink($tempName);
 				}
 			}
 
 			if($this->partCount == 1 || ($this->partCount == $this->partNum)){
-				$tempName = $this->partCount > 1 ? TEMP_PATH . $this->fileNameTmp : $tempName;
-				$this->fileNameTmp = '';
+				$tempName = $this->partCount > 1 ? TEMP_PATH . $this->fileNameTemp : $tempName;
+				$this->fileNameTemp = '';
 				$fileSize = we_base_request::_(we_base_request::INT, "weFileSize", $_FILES['we_File']['size']);
 
 				// setting Filename, Path ...
@@ -1266,8 +1275,7 @@ function next() {
 	function getHTMLCategory(){
 		$_width_size = 300;
 
-		$addbut = we_html_button::create_button(
-				"add", "javascript:we_cmd('openCatselector',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);')");
+		$addbut = we_html_button::create_button("add", "javascript:we_cmd('openCatselector',-1,'" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);')");
 		$del_but = addslashes(
 			we_html_element::htmlImg(
 				array(

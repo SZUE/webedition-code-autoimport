@@ -16,7 +16,7 @@ $width = new weTagData_textAttribute('width', false, '');
 $height = new weTagData_textAttribute('height', false, '');
 $bgcolor = new weTagData_textAttribute('bgcolor', false, '');
 $class = new weTagData_textAttribute('class', false, '');
-if(defined("FILE_TABLE")){
+if(defined('FILE_TABLE')){
 	$editorcss = new weTagData_selectorAttribute('editorcss', FILE_TABLE, 'text/css', false, '');
 }
 $ignoredocumentcss = new weTagData_selectAttribute('ignoredocumentcss', weTagData_selectAttribute::getTrueFalse(), false, '');

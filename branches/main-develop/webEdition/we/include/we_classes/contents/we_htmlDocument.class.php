@@ -49,7 +49,7 @@ class we_htmlDocument extends we_textContentDocument{
 		return parent::i_saveContentDataInDB();
 	}
 
-	function makeSameNew(){
+	public function makeSameNew(){
 		parent::makeSameNew();
 		$this->Icon = 'prog.gif';
 	}

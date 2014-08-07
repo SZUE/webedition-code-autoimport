@@ -1380,11 +1380,17 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 		});
 
 		ed.onNodeChange.add(function(ed, cm, n) {
-			var td = ed.dom.getParent(n, "td");
+			var pc, tmp, td = ed.dom.getParent(n, "td");
+
 			if(typeof td === "object" && td && td.getElementsByTagName("p").length === 1){
-				var inner = td.innerHTML;//td.getElementsByTagName("p")[0].innerHTML;
-				td.innerHTML = "";
-				ed.selection.setContent(inner);
+				pc = td.getElementsByTagName("p")[0].cloneNode(true);
+				tmp = document.createElement("div");
+				tmp.appendChild(pc);
+
+				if(tmp.innerHTML === td.innerHTML){
+					td.innerHTML = "";
+					ed.selection.setContent(pc.innerHTML);
+				}
 			}
 		});
 

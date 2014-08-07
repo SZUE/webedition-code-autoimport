@@ -24,7 +24,7 @@
  */
 $we_menu_newsletter = array(
 	'000100' => array(
-		'text' => g_l('modules_newsletter', '[newsletter]'),
+		'text' => g_l('modules_newsletter', '[newsletter][text]'),
 		'parent' => '000000',
 		'enabled' => 1,
 	),
@@ -34,7 +34,7 @@ $we_menu_newsletter = array(
 		'enabled' => 0,
 	),
 	array(
-		'text' => g_l('modules_newsletter', '[newsletter]'),
+		'text' => g_l('modules_newsletter', '[newsletter][text]'),
 		'cmd' => 'new_newsletter',
 		'perm' => 'NEW_NEWSLETTER || ADMINISTRATOR',
 		'parent' => '000200',

@@ -80,10 +80,10 @@ class we_backup_tableItem extends weModelBase{
 		$tables = array();
 		$tables[CONTENT_TABLE] = array('Dat');
 
-		if(defined("OBJECT_TABLE")){
+		if(defined('OBJECT_TABLE')){
 			$tables[OBJECT_FILES_TABLE] = array('Category');
 		}
-		if(defined("SHOP_TABLE")){
+		if(defined('SHOP_TABLE')){
 			$tables[WE_SHOP_PREFS_TABLE] = array('strDateiname', 'strFelder');
 			$tables[SHOP_TABLE] = array('strSerial', 'strSerialOrder');
 		}
@@ -94,7 +94,7 @@ class we_backup_tableItem extends weModelBase{
 		$tables = array();
 		$table = $this->table;
 		$tables[NAVIGATION_TABLE] = array('Charset');
-		if(defined("OBJECT_TABLE")){
+		if(defined('OBJECT_TABLE')){
 			$tables[OBJECT_FILES_TABLE] = array('Charset');
 			$tables[OBJECT_X_TABLE] = array('OF_Charset');
 			if($this->isObjectXTable($table)){
@@ -102,7 +102,7 @@ class we_backup_tableItem extends weModelBase{
 				$was = $this->getFieldType($was);
 			}
 		}
-		if(defined("NEWSLETTER_TABLE")){
+		if(defined('NEWSLETTER_TABLE')){
 			$tables[NEWSLETTER_TABLE] = array('Charset');
 		}
 
@@ -138,7 +138,7 @@ class we_backup_tableItem extends weModelBase{
 
 	function doCorrectSerializedExactCharsetString($was){
 		$tables = array();
-		if(defined("OBJECT_TABLE")){
+		if(defined('OBJECT_TABLE')){
 			$tables[OBJECT_TABLE] = array('DefaultValues');
 		}
 

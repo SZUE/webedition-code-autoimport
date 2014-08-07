@@ -3,9 +3,9 @@
 /**
  * webEdition CMS
  *
- * $Rev$
- * $Author$
- * $Date$
+ * $Rev: 7705 $
+ * $Author: mokraemer $
+ * $Date: 2014-06-10 21:46:56 +0200 (Di, 10. Jun 2014) $
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -22,10 +22,11 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-//FIXME: remove in 6.4
-function protect(){
-	t_e('deprecated', 'old protect called! remove this!');
-	we_html_tools::protect();
+class we_view_webEditionDocument extends we_view_base{
+
+	public function __construct(){
+		$this->doc = new we_webEditionDocument();
+	}
+
 }

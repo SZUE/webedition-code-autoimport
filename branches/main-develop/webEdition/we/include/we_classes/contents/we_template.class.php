@@ -25,7 +25,6 @@
 /* a class for handling templates */
 
 class we_template extends we_document{
-
 	var $MasterTemplateID = 0;
 	var $TagWizardCode; // bugfix 1502
 	var $TagWizardSelection; // bugfix 1502
@@ -312,12 +311,10 @@ we_templateInit();?>';
 		//get clean variants
 		$regs = array();
 		foreach($_REQUEST as $n => $v){
-			if(preg_match('|^we_' . $this->Name . '_variant|', $n, $regs)){
-				if(is_array($v)){
-					foreach($v as $n2 => $v2){
-						if(isset($this->elements[$n2]) && $this->elements[$n2]['type'] == 'variant' && $v2 == 0){
-							unset($this->elements[$n2]);
-						}
+			if(is_array($v) && preg_match('|^we_' . $this->Name . '_variant|', $n, $regs)){
+				foreach($v as $n2 => $v2){
+					if(isset($this->elements[$n2]) && $this->elements[$n2]['type'] == 'variant' && $v2 == 0){
+						unset($this->elements[$n2]);
 					}
 				}
 			}
@@ -327,7 +324,7 @@ we_templateInit();?>';
 	function i_getDocument(){
 		$this->_updateCompleteCode();
 		/* remove unwanted/-needed start/stop parser tags (?><php) */
-		return preg_replace("/(:|;|{|})(\r|\n| |\t)*\?>(\r|\n|\t)*<\?php ?/si", "\\1\n\\2", $this->parseTemplate());
+		return preg_replace(array("/(:|;|{|})(\r|\n| |\t)*\?>(\r|\n|\t)*<\?= ?/si","/(:|;|{|})(\r|\n| |\t)*\?>(\r|\n|\t)*<\?php ?/si"),array( "\\1\n\\2 echo ","\\1\n\\2"), $this->parseTemplate());
 	}
 
 	protected function i_writeSiteDir(){
@@ -456,7 +453,7 @@ we_templateInit();?>';
 							$spacer = "[\040|\n|\t|\r]*";
 							$selregs = array();
 							//FIXME: this regex is not correct [^name] will not match any of those chars
-							if(preg_match('-(<we:select [^name]*name' . $spacer . '[\=\"|\=\'|\=\\\\|\=]*' . $spacer . preg_quote($att['name'],'-') . '[\'\"]*[^>]*>)(.*)<' . $spacer . '/' . $spacer . 'we:select' . $spacer . '>-i', $templateCode, $selregs)){
+							if(preg_match('-(<we:select [^name]*name' . $spacer . '[\=\"|\=\'|\=\\\\|\=]*' . $spacer . preg_quote($att['name'], '-') . '[\'\"]*[^>]*>)(.*)<' . $spacer . '/' . $spacer . 'we:select' . $spacer . '>-i', $templateCode, $selregs)){
 								$out[$name]['content'] = $selregs[2];
 							}
 						}

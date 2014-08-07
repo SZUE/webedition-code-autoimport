@@ -36,7 +36,7 @@ echo we_html_tools::getHtmlTop();
 	//	When pressing a link in edit-mode this functionality
 	//	is needed to reopen the document (if possible) with webEdition
 
-	print we_html_element::jsElement(we_SEEM::getJavaScriptCommandForOneLink("<a href=\"" . str_replace(" ", "+", $action) . "\">"));
+	echo we_html_element::jsElement(we_SEEM::getJavaScriptCommandForOneLink("<a href=\"" . str_replace(" ", "+", $action) . "\">"));
 	?>
 </body>
 </html>

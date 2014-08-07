@@ -23,18 +23,16 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifNotHtmlMail(){
-	switch (true){
-		case ((isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])): //editmode always true
-			return true;
-			break;
-		case ((isset($GLOBALS['we_editmode']) && !$GLOBALS['we_editmode']) && $GLOBALS['we_doc']->InWebEdition && isset($_SESSION['weS']['we_set_newsletterFormat'])): //for tag <we:newsletterSwitch/>
-			return (bool) (!$_SESSION['weS']['we_set_newsletterFormat']);
-			break;
-		case (isset($GLOBALS['WE_HTMLMAIL'])):
-			return (bool) (!$GLOBALS['WE_HTMLMAIL']);
-			break;
-		default:
-			return false; //per default E-Mail-Type is HTML
-			break;
+	if(isset($GLOBALS['WE_HTMLMAIL'])){
+		return !((bool) $GLOBALS['WE_HTMLMAIL']);
 	}
+	//html=false, text=true
+
+	if(isset($GLOBALS['we_editmode'])){
+		return ($GLOBALS['we_editmode'] ? //editmode always HTML Mode
+				false :
+				($GLOBALS['we_doc']->InWebEdition && $GLOBALS['we_doc']->getEditorPersistent('newsletterFormat'))
+			);
+	}
+	return false;
 }

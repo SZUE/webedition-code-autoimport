@@ -239,7 +239,8 @@ if($we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT){
 
 // get default code
 if(!isset($we_doc->elements['data']['dat'])){
-	$we_doc->elements['data']['dat'] = ($we_doc->ContentType == we_base_ContentTypes::TEMPLATE && ($cmd10 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 10)) ?
+	$we_doc->elements['data']['dat'] = ($we_doc->ContentType == we_base_ContentTypes::TEMPLATE && ($cmd10 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 10))
+				?
 			base64_decode($cmd10) :
 			we_base_ContentTypes::inst()->getDefaultCode($we_doc->ContentType));
 }
@@ -429,9 +430,11 @@ function setOnload($extonly = false){
 	}
 }
 ?>
-</head>
-<?php
-$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
+</head><?php
+$we_doc->saveInSession($_SESSION['weS']['we_data'][$GLOBALS['we_transaction']]);
+if(empty($_SESSION['weS']['we_data'][$GLOBALS['we_transaction']])){
+	t_e($GLOBALS['we_transaction'], $we_doc);
+}
 $fid = we_base_request::_(we_base_request::STRING, "frameId");
 switch($_SESSION['weS']['we_mode']){
 	case we_base_constants::MODE_SEE:
@@ -440,7 +443,7 @@ switch($_SESSION['weS']['we_mode']){
 		<frame src="<?php echo we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_edit_header"); ?>" name="editHeader" noresize scrolling="no"/>
 		<frame <?php echo setOnload(); ?> src="<?php echo we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_editor") . (isset($parastr) ? '&' . $parastr : ''); ?>&we_complete_request=1" name="editor_<?php echo $fid; ?>" noresize/>
 			<frame <?php echo setOnload(true); ?> src="about:blank" name="contenteditor_<?php echo $fid; ?>" noresize/>
-		<frame src="<?php echo we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_edit_footer"); ?>&SEEM_edit_include=<?php echo (we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include') ? "true" : "false") ?>" name="editFooter" scrolling=no noresize/>
+		<frame src="<?php echo we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_edit_footer"); ?>&SEEM_edit_include=<?php echo (we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include') ? "true" : "false"); ?>" name="editFooter" scrolling=no noresize/>
 	</frameset><noframes></noframes>
 		<?php
 		break;

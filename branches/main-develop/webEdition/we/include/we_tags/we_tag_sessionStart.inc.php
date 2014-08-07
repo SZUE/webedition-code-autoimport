@@ -38,13 +38,19 @@ function we_tag_sessionStart($attribs){
 	$SessionAutologin = 0;
 	if(isset($_REQUEST['we_webUser_logout']) && $_REQUEST['we_webUser_logout']){
 
-		if(isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] && isset($_SESSION['webuser']['ID']) && $_SESSION['webuser']['ID'] && ( (isset($_REQUEST['s']['AutoLogin']) && !$_REQUEST['s']['AutoLogin']) || (isset($_SESSION['webuser']['AutoLogin']) && !$_SESSION['webuser']['AutoLogin'])) && isset($_SESSION['webuser']['AutoLoginID'])){
-			$GLOBALS['DB_WE']->query('DELETE FROM ' . CUSTOMER_AUTOLOGIN_TABLE . ' WHERE AutoLoginID="' . $GLOBALS['DB_WE']->escape(sha1($_SESSION['webuser']['AutoLoginID'])) . '"');
-			setcookie('_we_autologin', '', (time() - 3600), '/');
+		if(isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] && isset($_SESSION['webuser']['ID']) && $_SESSION['webuser']['ID']){
+			if(( (isset($_REQUEST['s']['AutoLogin']) && !$_REQUEST['s']['AutoLogin']) || (isset($_SESSION['webuser']['AutoLogin']) && !$_SESSION['webuser']['AutoLogin'])) && isset($_SESSION['webuser']['AutoLoginID'])){
+				$GLOBALS['DB_WE']->query('DELETE FROM ' . CUSTOMER_AUTOLOGIN_TABLE . ' WHERE AutoLoginID="' . $GLOBALS['DB_WE']->escape(sha1($_SESSION['webuser']['AutoLoginID'])) . '"');
+				setcookie('_we_autologin', '', (time() - 3600), '/');
+			}
+			$GLOBALS['WE_LOGOUT'] = true;
+			unset($_SESSION['s'], $_REQUEST['s']);
+			if(SECURITY_DELETE_SESSION){
+				session_destroy();
+				we_base_sessionHandler::makeNewID();
+			}
+			$_SESSION['webuser'] = array('registered' => false);
 		}
-		$GLOBALS['WE_LOGOUT'] = true;
-		unset($_SESSION['s'], $_REQUEST['s']);
-		$_SESSION['webuser'] = array('registered' => false);
 	} else {
 		if(isset($_REQUEST['we_set_registeredUser']) && $GLOBALS['we_doc']->InWebEdition){
 			$_SESSION['weS']['we_set_registered'] = $_REQUEST['we_set_registeredUser'];
@@ -64,6 +70,8 @@ function we_tag_sessionStart($attribs){
 					wetagsessionHandleFailedLogin();
 				} else {
 					$GLOBALS['DB_WE']->query('UPDATE ' . FAILED_LOGINS_TABLE . ' SET isValid="false" WHERE UserTable="tblWebUser" AND Username="' . $GLOBALS['DB_WE']->escape($_REQUEST['s']['Username']) . '"');
+					//change session ID to prevent session
+					we_base_sessionHandler::makeNewID();
 					$hook = new weHook('customer_Login', '', array('customer' => &$_SESSION['webuser'], 'type' => 'normal', 'tagname' => 'sessionStart'));
 					$hook->executeHook();
 				}
@@ -72,10 +80,12 @@ function we_tag_sessionStart($attribs){
 			if($persistentlogins && ((isset($_SESSION['webuser']['registered']) && !$_SESSION['webuser']['registered']) || !isset($_SESSION['webuser']['registered']) ) && isset($_COOKIE['_we_autologin'])){
 				if(!wetagsessionStartdoAutoLogin()){
 					wetagsessionHandleFailedLogin();
+				} else {
+					we_base_sessionHandler::makeNewID();
 				}
 			}
-			//FIXME: make this a performance entry in prefs
-			if(/* (isset($GLOBALS['WE_LOGIN']) && $GLOBALS['WE_LOGIN'])&& */isset($_SESSION['webuser']['registered']) && isset($_SESSION['webuser']['ID']) && isset($_SESSION['webuser']['Username']) && $_SESSION['webuser']['registered'] && $_SESSION['webuser']['ID'] && $_SESSION['webuser']['Username'] != ''){
+
+			if(isset($_SESSION['webuser']['registered']) && isset($_SESSION['webuser']['ID']) && isset($_SESSION['webuser']['Username']) && $_SESSION['webuser']['registered'] && $_SESSION['webuser']['ID'] && $_SESSION['webuser']['Username'] != ''){
 				if($_SESSION['webuser']['LastAccess'] + 60 < time()){
 					$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET LastAccess=UNIX_TIMESTAMP() WHERE ID=' . intval($_SESSION['webuser']['ID']));
 					$_SESSION['webuser']['LastAccess'] = time();

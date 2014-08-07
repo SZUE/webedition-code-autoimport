@@ -199,14 +199,14 @@ class we_export_tree extends weMainTree{
 			}
 
 			var SelectedItems= new Array();
-			SelectedItems["' . FILE_TABLE . '"]=new Array();' . (defined("OBJECT_FILES_TABLE") ? ('SelectedItems["' . OBJECT_FILES_TABLE . '"]=new Array();
+			SelectedItems["' . FILE_TABLE . '"]=new Array();' . (defined('OBJECT_FILES_TABLE') ? ('SelectedItems["' . OBJECT_FILES_TABLE . '"]=new Array();
 				SelectedItems["' . OBJECT_TABLE . '"]=new Array();
 				') : '') . '
 
 			SelectedItems["' . TEMPLATES_TABLE . '"]=new Array();
 
 			var openFolders= new Array();
-			openFolders["' . FILE_TABLE . '"]="";' . (defined("OBJECT_FILES_TABLE") ? ('
+			openFolders["' . FILE_TABLE . '"]="";' . (defined('OBJECT_FILES_TABLE') ? ('
 			openFolders["' . OBJECT_FILES_TABLE . '"]="";
 			openFolders["' . OBJECT_TABLE . '"]="";
 			') : '') . '
@@ -238,10 +238,10 @@ class we_export_tree extends weMainTree{
 		if(permissionhandler::hasPerm("CAN_SEE_TEMPLATES")){
 			$captions[TEMPLATES_TABLE] = g_l('export', "[templates]");
 		}
-		if(defined("OBJECT_FILES_TABLE") && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")){
+		if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")){
 			$captions[OBJECT_FILES_TABLE] = g_l('export', "[objects]");
 		}
-		if(defined("OBJECT_TABLE") && permissionhandler::hasPerm("CAN_SEE_OBJECTS")){
+		if(defined('OBJECT_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTS")){
 			$captions[OBJECT_TABLE] = g_l('export', "[classes]");
 		}
 

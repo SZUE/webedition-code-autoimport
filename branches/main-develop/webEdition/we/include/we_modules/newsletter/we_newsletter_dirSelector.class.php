@@ -286,23 +286,23 @@ top.unselectAllFiles();') . '
 		<?php
 	}
 
-	function userCanSeeDir($showAll = false){
+	protected function userCanSeeDir($showAll = false){
 		return true;
 	}
 
-	function userCanRenameFolder(){
+	protected function userCanRenameFolder(){
 		return permissionhandler::hasPerm('EDIT_NEWSLETTER');
 	}
 
-	function userCanMakeNewDir(){
+	protected function userCanMakeNewDir(){
 		return permissionhandler::hasPerm('NEW_NEWSLETTER');
 	}
 
-	function userHasRenameFolderPerms(){
+	protected function userHasRenameFolderPerms(){
 		return permissionhandler::hasPerm('EDIT_NEWSLETTER');
 	}
 
-	function userHasFolderPerms(){
+	protected function userHasFolderPerms(){
 		return permissionhandler::hasPerm('NEW_NEWSLETTER');
 	}
 

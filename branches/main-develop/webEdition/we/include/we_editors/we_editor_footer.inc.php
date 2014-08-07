@@ -155,7 +155,7 @@ if($we_doc->userCanSave()){
 
 	// publish for templates to save in version
 	$pass_publish = $showPubl ? " _EditorFrame.getEditorPublishWhenSave() " : "''";
-	if($we_doc->ContentType == we_base_ContentTypes::TEMPLATE && defined("VERSIONING_TEXT_WETMPL") && defined("VERSIONS_CREATE_TMPL") && VERSIONS_CREATE_TMPL && VERSIONING_TEXT_WETMPL){
+	if($we_doc->ContentType == we_base_ContentTypes::TEMPLATE && defined('VERSIONING_TEXT_WETMPL') && defined('VERSIONS_CREATE_TMPL') && VERSIONS_CREATE_TMPL && VERSIONING_TEXT_WETMPL){
 		$pass_publish = " _EditorFrame.getEditorPublishWhenSave() ";
 	}
 
@@ -172,7 +172,7 @@ $_js_we_save_document .= '
 
 //	########################	function for workflow	###########################################
 $_js_workflow_functions = "";
-if(defined("WORKFLOW_TABLE")){
+if(defined('WORKFLOW_TABLE')){
 
 	$_js_workflow_functions = "
 	function put_in_workflow() {
@@ -210,7 +210,7 @@ if($_ctrlElem && $_ctrlElem['hide']){
 }
 
 
-if(defined("WORKFLOW_TABLE") && inWorkflow($we_doc)){
+if(defined('WORKFLOW_TABLE') && inWorkflow($we_doc)){
 	if(!we_workflow_utility::canUserEditDoc($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"])){
 		$_js_weCanSave .= 'weCanSave=false;';
 	}

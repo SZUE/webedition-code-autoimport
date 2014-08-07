@@ -65,7 +65,7 @@ echo we_html_tools::getHtmlTop($title) .
 ');
 
 if($tool == "weSearch"){
-	if(($cmd1 = we_base_request::_(we_base_request::STRING, 'we_cmd', false, 1))){
+	if(($cmd1 = we_base_request::_(we_base_request::STRINGC, 'we_cmd', false, 1))){
 		$_SESSION['weS']['weSearch']["keyword"] = $cmd1;
 	}
 	//look which search is activ
@@ -78,11 +78,11 @@ if($tool == "weSearch"){
 			$tab = 2;
 			$_SESSION['weS']['weSearch']["checkWhich"] = 2;
 			break;
-		case (defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
+		case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 			$tab = 3;
 			$_SESSION['weS']['weSearch']["checkWhich"] = 3;
 			break;
-		case (defined("OBJECT_TABLE") ? OBJECT_TABLE : 'OBJECT_TABLE'):
+		case (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'):
 			$tab = 3;
 			$_SESSION['weS']['weSearch']["checkWhich"] = 4;
 			break;

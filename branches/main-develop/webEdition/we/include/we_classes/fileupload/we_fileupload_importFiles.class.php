@@ -3,9 +3,9 @@
 /**
  * webEdition CMS
  *
- * $Rev: 7705 $
- * $Author: mokraemer $
- * $Date: 2014-06-10 21:46:56 +0200 (Di, 10 Jun 2014) $
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -27,7 +27,7 @@ class we_fileupload_importFiles extends we_fileupload_base {
 
 	private $jsRequirementsOk = false;
 
-	function __construct($name) {
+	public function __construct($name) {
 		parent::__construct($name);
 		$this->jsRequirementsOk = we_base_request::_(we_base_request::BOOL, "jsRequirementsOk", false);
 		$this->setDimensions(array('width' => 400, 'dragHeight' => 44));
@@ -36,20 +36,24 @@ class we_fileupload_importFiles extends we_fileupload_base {
 	protected function _getInitJS(){
 		return we_html_element::jsElement('
 function weFU(){
-	var preparedFiles,
-		mapFiles,
-		totalFiles = 0,
-		totalWeight = 0,
-		currentWeight,
-		currentWeightTag,
-		currentFile = null,
-		elems,
-		chunkSize,
-		action;
+	this.preparedFiles=null;
+		this.mapFiles=null;
+		this.totalFiles = 0;
+		this.totalWeight = 0;
+		this.currentWeight=null;
+		this.currentWeightTag=null;
+		this.currentFile = null;
+		this.elems=null;
+		this.chunkSize=null;
+		this.action=null;
 };
 weFU();
 
 		') . we_html_element::jsElement("
+
+weFU.isUploading = false;
+weFU.isCancelled = false;
+weFU.preparedFiles = new Array();
 
 //FIXME: move this vars into namespace weFU and get rid of v1 code + adapter to v2
 var weUploadFilesClean = new Array(),
@@ -84,8 +88,8 @@ function upload(){
 
 		//adapt uploader's state to send logic of weFU allready insertet here
 		weFU.preparedFiles = Array();
-		for(var i = 0, fileSizeOk = false; i < weUploadFilesClean.length; i++){console.log(weUploadFilesClean[i].size + ' | ' + " . $this->maxUploadSizeBytes . ");
-			fileSizeOk = weUploadFilesClean[i].size <= " . $this->maxUploadSizeBytes . ";
+		for(var i = 0, fileSizeOk = false; i < weUploadFilesClean.length; i++){
+			fileSizeOk = weUploadFilesClean[i].size <= " . $this->maxUploadSizeBytes . " || !" . $this->maxUploadSizeBytes . ";
 			weFU.preparedFiles.push({
 				file: weUploadFilesClean[i],
 				fileNum: i,
@@ -123,17 +127,21 @@ function upload(){
 		return '';
 	}
 
-	protected function _getSenderJS_core(){
-		return parent::_getSenderJS_core();
-	}
-
 	protected function _getSenderJS_additional(){
 		return we_html_element::jsElement('
+weFU.cancelUpload = function(){
+	weFU.isCancelled = true;
+	weFU.isUploading = false;
+	weFU.repaintGUI({"what" : "cancelUpload"});
+	weFU.postProcess("", true);
+	top.we_showMessage("' . g_l('importFiles', "[upload_cancelled]") . '", 1, window);
+};
+
 weFU.appendMoreData = function(fd){
 	var cf = top.imgimportcontent,
 		sf = cf.document.we_startform,
 		cur = weFU.currentFile;
-		
+
 	fd.append("weFormNum", cur.fileNum+1);
 	fd.append("weFormCount", weFU.totalFiles);
 
@@ -160,14 +168,19 @@ weFU.appendMoreData = function(fd){
 	return fd;
 }
 
-weFU.postProcess = function(resp){
-	setProgress(100);
-	setProgressText("progress_title", "");
+weFU.postProcess = function(resp, isCancelled){
+	var cancelled = isCancelled || false;
+
+	if(!cancelled){
+		setProgress(100);
+		setProgressText("progress_title", "");
+		eval(resp.completed);
+	}
 	top.opener.top.we_cmd("load","' . FILE_TABLE . '");
-	eval(resp.completed);
 
 	//reinitialize some vars to add and upload more files
 	weFU.reset();
+	weFU.isUploading = false;
 	weFU.setCancelButtonText("close");
 };
 
@@ -181,7 +194,7 @@ weFU.repaintGUI = function(arg){
 				i = weFU.mapFiles[cur.fileNum],
 				digits = cur.totalParts > 1000 ? 2 : (cur.totalParts > 100 ? 1 : 0);
 				fileProg = (100/cur.file.size) * cur.currentWeightFile;
-				totalProg = (100/weFU.totalWeight) * weFU.currentWeight; 
+				totalProg = (100/weFU.totalWeight) * weFU.currentWeight;
 			//per file progress
 			cf._setProgress_uploader(i, fileProg.toFixed(digits));
 			//cummulated progress
@@ -216,12 +229,24 @@ weFU.repaintGUI = function(arg){
 			//scroll to top of files list
 			cf.document.getElementById("div_upload_files").scrollTop = 0;
 			break;
+		case "cancelUpload":
+			var cur = weFU.currentFile,
+				i = weFU.mapFiles[cur.fileNum];
+
+			cf._setProgressCompleted_uploader(false, weFU.mapFiles[cur.fileNum], "' . g_l('importFiles', "[cancelled]") . '");
+			cf.document.getElementById("div_upload_files").scrollTop = cf.document.getElementById("div_uploadFiles_" + i).offsetTop - 200;
+
+			for(var j = 0; j < weFU.preparedFiles.length; j++){
+				cur = weFU.preparedFiles[j];
+				cf._setProgressCompleted_uploader(false, weFU.mapFiles[cur.fileNum], "cancelled");
+			}
+			break;
 	}
 }
 
 weFU.processError = function(arg){
 	switch(arg.from){
-		case "gui": 
+		case "gui":
 			top.we_showMessage(arg.msg, 4, window);
 		case "request":
 			//weFU.repaintGUI({"what" : "fileNOK"});
@@ -233,7 +258,7 @@ weFU.reset = function(){
 	var cf = top.imgimportcontent,
 		l = cf.weUploadFiles.length;
 
-	
+
 	for(var i = 0; i < l; i++){
 		cf.weUploadFiles[i] = null;
 		weFU.preparedFiles[i] = null;

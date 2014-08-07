@@ -16,12 +16,12 @@ $this->Attributes[] = new weTagData_textAttribute('shipping', false, '');
 $this->Attributes[] = new weTagData_textAttribute('shippingisnet', false, '');
 $this->Attributes[] = new weTagData_textAttribute('shippingvatrate', false, '');
 
-if(defined("FILE_TABLE")){
+if(defined('FILE_TABLE')){
 	$this->Attributes[] = new weTagData_selectorAttribute('434', 'onsuccess', FILE_TABLE, 'text/webedition', false, '');
 }
-if(defined("FILE_TABLE")){
+if(defined('FILE_TABLE')){
 	$this->Attributes[] = new weTagData_selectorAttribute('435', 'onfailure', FILE_TABLE, 'text/webedition', false, '');
 }
-if(defined("FILE_TABLE")){
+if(defined('FILE_TABLE')){
 	$this->Attributes[] = new weTagData_selectorAttribute('436', 'onabortion', FILE_TABLE, 'text/webedition', false, '');
 }

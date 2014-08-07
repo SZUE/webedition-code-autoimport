@@ -37,7 +37,7 @@ class we_newsletter_frames extends weModuleFrames{
 		$this->weAutoCompleter = &weSuggest::getInstance();
 	}
 
-	function getHTMLDocumentHeader($what = '', $mode = ''){
+	public function getHTMLDocumentHeader($what = '', $mode = ''){
 		switch($what){
 			case 'send':
 			case 'send_body':
@@ -142,7 +142,7 @@ class we_newsletter_frames extends weModuleFrames{
 		$page = ($group ? 0 : we_base_request::_(we_base_request::INT, "page", 0));
 
 
-		$textPre = g_l('modules_newsletter', ($group ? '[group]' : '[newsletter]'));
+		$textPre = g_l('modules_newsletter', ($group ? '[group]' : '[newsletter][text]'));
 
 		$textPost = we_base_request::_(we_base_request::STRING, "txt", g_l('modules_newsletter', ($group ? '[new_newsletter_group]' : '[new_newsletter]')));
 
@@ -530,7 +530,7 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 			$out.=we_html_element::htmlBr() .
 				we_html_element::htmlDiv(array("class" => "defaultfont"), $tab1 . we_html_element::htmlB(sprintf(g_l('modules_newsletter', '[mailing_list]'), $k)));
 			$gc = 0;
-			if(defined("CUSTOMER_TABLE")){
+			if(defined('CUSTOMER_TABLE')){
 				$out.=we_html_element::htmlDiv(array("class" => "defaultfont"), $tab2 . g_l('modules_newsletter', '[customers]'));
 				$emails = $this->View->getEmails($k, we_newsletter_view::MAILS_CUSTOMER, 1);
 
@@ -759,7 +759,7 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 			we_newsletter_block::DOCUMENT_FIELD => g_l('modules_newsletter', '[newsletter_type_1]'),
 		);
 
-		if(defined("OBJECT_TABLE")){
+		if(defined('OBJECT_TABLE')){
 			$values[we_newsletter_block::OBJECT] = g_l('modules_newsletter', '[newsletter_type_2]');
 			$values[we_newsletter_block::OBJECT_FIELD] = g_l('modules_newsletter', '[newsletter_type_3]');
 		}
@@ -1189,7 +1189,7 @@ window.onload=extraInit;');
 		for($i = 0; $i < $count; $i++){
 			$parts = array();
 
-			if(defined("CUSTOMER_TABLE")){
+			if(defined('CUSTOMER_TABLE')){
 				$parts[] = array("headline" => g_l('modules_newsletter', '[customers]'), "html" => $this->getHTMLCustomer($i), "space" => 140);
 			}
 
@@ -1250,7 +1250,7 @@ window.onload=extraInit;');
 
 			$table->setCol(8, 0, array(), we_html_tools::htmlFormElementTable($_embedImagesHid . $_embedImagesChk . "&nbsp;" . $_embedImagesLab, ""));
 
-			$parts[] = array("headline" => g_l('modules_newsletter', '[newsletter]'), "html" => $table->getHtml(), "space" => 140);
+			$parts[] = array("headline" => g_l('modules_newsletter', '[newsletter][text]'), "html" => $table->getHtml(), "space" => 140);
 			$parts[] = array("headline" => g_l('modules_newsletter', '[charset]'), "html" => $this->getHTMLCharsetTable(), "space" => 140);
 			$parts[] = array("headline" => g_l('modules_newsletter', '[copy_newsletter]'), "html" => $this->getHTMLCopy(), "space" => 140, "noline" => 1);
 		}

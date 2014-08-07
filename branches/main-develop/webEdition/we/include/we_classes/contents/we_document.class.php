@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -27,7 +26,6 @@ require_once(WE_INCLUDES_PATH . 'we_tag.inc.php');
 /* the parent class for documents */
 
 class we_document extends we_root{
-
 	//Extension of the document
 	var $Extension = '';
 	//Array of possible filename extensions for the document
@@ -45,10 +43,15 @@ class we_document extends we_root{
 	//var $NavigationItems = '';
 	private $DocStream = '';
 	public $parseFile = 1;
+	// persistent in we_object*, since saved in class
+	// temporary in document, holds Paths to stylesheets from we:css-tags that are user by tinyMCE
+	var $CSS = array();
+	/* this array is used, to store document specific data for a page */
+	protected $editorSaves = array();
 
 	function __construct(){
 		parent::__construct();
-		array_push($this->persistent_slots, 'Extension', 'IsDynamic', 'Published', 'Category', 'IsSearchable', 'InGlossar', 'Language', 'schedArr', 'parseFile');
+		array_push($this->persistent_slots, 'Extension', 'IsDynamic', 'Published', 'Category', 'IsSearchable', 'InGlossar', 'Language', 'schedArr', 'parseFile', 'editorSaves');
 		$this->Table = FILE_TABLE;
 		if(defined('WE_SIDEBAR')){
 			$this->InWebEdition = true;
@@ -194,7 +197,8 @@ class we_document extends we_root{
 
 	function formInGlossar(){
 		return (we_base_moduleInfo::we_getModuleNameByContentType('glossary') == 'glossary' ?
-				we_html_forms::checkboxWithHidden((bool) $this->InGlossar, 'we_' . $this->Name . '_InGlossar', g_l('weClass', '[InGlossar]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);') :
+				we_html_forms::checkboxWithHidden((bool) $this->InGlossar, 'we_' . $this->Name . '_InGlossar', g_l('weClass', '[InGlossar]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);')
+					:
 				'');
 	}
 
@@ -261,7 +265,7 @@ class we_document extends we_root{
 
 	function formCategory(){
 		$delallbut = we_html_button::create_button('delete_all', "javascript:we_cmd('delete_all_cats')", true, 0, 0, '', '', $this->Category ? false : true);
-		$addbut = we_html_button::create_button('add', "javascript:we_cmd('openCatselector',0,'" . CATEGORY_TABLE . "','','','opener.setScrollTo();fillIDs();opener.top.we_cmd(\\'add_cat\\',top.allIDs);')");
+		$addbut = we_html_button::create_button('add', "javascript:we_cmd('openCatselector',-1,'" . CATEGORY_TABLE . "','','','opener.setScrollTo();fillIDs();opener.top.we_cmd(\\'add_cat\\',top.allIDs);')");
 		$cats = new MultiDirChooser(508, $this->Category, 'delete_cat', we_html_button::create_button_table(array($delallbut, $addbut)), '', 'Icon,Path', CATEGORY_TABLE);
 		$cats->extraDelFn = 'setScrollTo();';
 		return $cats->get();
@@ -270,10 +274,12 @@ class we_document extends we_root{
 	function formNavigation(){
 		$isSee = $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE;
 		$navItems = $this->getNavigationItems();
-		$addbut = we_html_button::create_button('add', "javascript:we_cmd('module_navigation_edit_navi',0)", true, 100, 22, '', '', (permissionhandler::hasPerm('EDIT_NAVIGATION') && $this->ID && $this->Published) ? false : true, false);
+		$addbut = we_html_button::create_button('add', "javascript:we_cmd('module_navigation_edit_navi',0)", true, 100, 22, '', '', (permissionhandler::hasPerm('EDIT_NAVIGATION') && $this->ID && $this->Published)
+						? false : true, false);
 
 		if(permissionhandler::hasPerm('EDIT_NAVIGATION') && $isSee){
-			$delallbut = we_html_button::create_button('delete_all', "javascript:if(confirm('" . g_l('navigation', '[dellall_question]') . "')) we_cmd('delete_all_navi')", true, 0, 0, "", "", (permissionhandler::hasPerm('EDIT_NAVIGATION') && $navItems) ? false : true);
+			$delallbut = we_html_button::create_button('delete_all', "javascript:if(confirm('" . g_l('navigation', '[dellall_question]') . "')) we_cmd('delete_all_navi')", true, 0, 0, "", "", (permissionhandler::hasPerm('EDIT_NAVIGATION') && $navItems)
+							? false : true);
 		} else {
 			$delallbut = '';
 		}
@@ -712,10 +718,10 @@ class we_document extends we_root{
 	}
 
 	// reverse function to we_init_sessDat
-	/*function saveInSession(&$save){
-		parent::saveInSession($save);
-		//$save[2] = $this->NavigationItems;
-	}*/
+	/* function saveInSession(&$save){
+	  parent::saveInSession($save);
+	  //$save[2] = $this->NavigationItems;
+	  } */
 
 	// reverse function to saveInSession !!!
 	function we_initSessDat($sessDat){
@@ -738,7 +744,7 @@ class we_document extends we_root{
 
 
 		if(we_base_request::_(we_base_request::INT, 'wecf_mode') !== false){
-			$this->documentCustomerFilter = we_customer_documentFilter::getCustomerFilterFromRequest($this);
+			$this->documentCustomerFilter = we_customer_documentFilter::getCustomerFilterFromRequest($this->ID, $this->ContentType, $this->Table);
 		} else if(isset($sessDat[3])){ // init webUser from session
 			$this->documentCustomerFilter = unserialize($sessDat[3]);
 		}
@@ -846,13 +852,14 @@ class we_document extends we_root{
 							$altField = (WE_SHOP_VARIANTS_PREFIX . $GLOBALS['lv']->Position . '_' . $altField);
 							$titleField = (WE_SHOP_VARIANTS_PREFIX . $GLOBALS['lv']->Position . '_' . $titleField);
 							break;
-						case 'we_listview':
+						case 'we_listview_document':
 							$alt = $GLOBALS['lv']->f($altField) ? $GLOBALS['lv']->f($altField) : '';
 							$title = $GLOBALS['lv']->f($titleField) ? $GLOBALS['lv']->f($titleField) : '';
 						case 'we_object_listview':
 						case 'we_object_listviewMultiobject':
 							$attribs['alt'] = isset($alt) && $alt ? $alt : ($img->getElement('alt') ? $img->getElement('alt') : (isset($attribs['alt']) ? $attribs['alt'] : ''));
-							$attribs['title'] = isset($title) && $title ? $title : ($img->getElement('title') ? $img->getElement('title') : (isset($attribs['title']) ? $attribs['title'] : ''));
+							$attribs['title'] = isset($title) && $title ? $title : ($img->getElement('title') ? $img->getElement('title') : (isset($attribs['title']) ? $attribs['title']
+											: ''));
 							break;
 					}
 				}
@@ -897,7 +904,8 @@ class we_document extends we_root{
 					$val = $attribs['id'];
 				}
 				$bin->initByID($val, FILE_TABLE);
-				return array($bin->Text, $bin->Path, $bin->ParentPath, $bin->Filename, $bin->Extension, (isset($bin->elements['filesize']) ? $bin->elements['filesize']['dat'] : ''));
+				return array($bin->Text, $bin->Path, $bin->ParentPath, $bin->Filename, $bin->Extension, (isset($bin->elements['filesize']) ? $bin->elements['filesize']['dat']
+							: ''));
 			case 'flashmovie':
 				$fl = new we_flashDocument();
 				if(isset($attribs['name'])){
@@ -1045,7 +1053,8 @@ class we_document extends we_root{
 				}
 				if(weTag_getAttribute('win2iso', $attribs, false, true)){
 
-					$charset = ( isset($GLOBALS['WE_MAIN_DOC']) && isset($GLOBALS['WE_MAIN_DOC']->elements['Charset']['dat'])) ? $GLOBALS['WE_MAIN_DOC']->elements['Charset']['dat'] : '';
+					$charset = ( isset($GLOBALS['WE_MAIN_DOC']) && isset($GLOBALS['WE_MAIN_DOC']->elements['Charset']['dat'])) ? $GLOBALS['WE_MAIN_DOC']->elements['Charset']['dat']
+							: '';
 					if(trim(strtolower(substr($charset, 0, 3))) == 'iso' || $charset == ''){
 						$retval = strtr($retval, array(
 							chr(128) => '&#8364;',
@@ -1112,7 +1121,9 @@ class we_document extends we_root{
 				$val = $this->getElement(isset($attribs['name']) ? $attribs['name'] : '');
 		}
 
-		return $this->getFieldByVal($val, $type, $attribs, $pathOnly, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->ParentID : $this->ParentID, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->Path : $this->Path, $this->DB_WE, (isset($attribs['classid']) && isset($attribs['type']) && $attribs['type'] == 'select') ? $attribs['classid'] : (isset($this->TableID) ? $this->TableID : ''));
+		return $this->getFieldByVal($val, $type, $attribs, $pathOnly, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->ParentID : $this->ParentID, isset($GLOBALS['WE_MAIN_DOC'])
+						? $GLOBALS['WE_MAIN_DOC']->Path : $this->Path, $this->DB_WE, (isset($attribs['classid']) && isset($attribs['type']) && $attribs['type'] == 'select') ? $attribs['classid']
+						: (isset($this->TableID) ? $this->TableID : ''));
 	}
 
 	private function getValFromSrc($fn, $name){
@@ -1202,7 +1213,8 @@ class we_document extends we_root{
 				$img = ($img ? $img : new we_imageDocument());
 				$img->initByID($link['img_id']);
 
-				$img_attribs = array('width' => $link['width'], 'height' => $link['height'], 'border' => $link['border'], 'hspace' => $link['hspace'], 'vspace' => $link['vspace'], 'align' => $link['align'], 'alt' => $link['alt'], 'title' => (isset($link['img_title']) ? $link['img_title'] : ''));
+				$img_attribs = array('width' => $link['width'], 'height' => $link['height'], 'border' => $link['border'], 'hspace' => $link['hspace'], 'vspace' => $link['vspace'], 'align' => $link['align'], 'alt' => $link['alt'], 'title' => (isset($link['img_title'])
+							? $link['img_title'] : ''));
 
 				if($_useName){ //	rollover with links ...
 					$img_attribs['name'] = $_useName;
@@ -1337,7 +1349,8 @@ class we_document extends we_root{
 					(isset($_popUpCtrl["jswidth"]) && $_popUpCtrl["jswidth"] ?
 						'we_winOpts += (we_winOpts ? \',\' : \'\')+\'width=' . $_popUpCtrl["jswidth"] . '\';' : '') .
 					(isset($_popUpCtrl["jsheight"]) && $_popUpCtrl["jsheight"] ?
-						'we_winOpts += (we_winOpts ? \',\' : \'\')+\'height=' . $_popUpCtrl["jsheight"] . '\';' : '') . 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'status=' . (isset($_popUpCtrl["jsstatus"]) && $_popUpCtrl["jsstatus"] ? 'yes' : 'no') . '\';' .
+						'we_winOpts += (we_winOpts ? \',\' : \'\')+\'height=' . $_popUpCtrl["jsheight"] . '\';' : '') . 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'status=' . (isset($_popUpCtrl["jsstatus"]) && $_popUpCtrl["jsstatus"]
+							? 'yes' : 'no') . '\';' .
 					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'scrollbars=' . (isset($_popUpCtrl["jsscrollbars"]) && $_popUpCtrl["jsscrollbars"] ? 'yes' : 'no') . '\';' .
 					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'menubar=' . (isset($_popUpCtrl["jsmenubar"]) && $_popUpCtrl["jsmenubar"] ? 'yes' : 'no') . '\';' .
 					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'resizable=' . (isset($_popUpCtrl["jsresizable"]) && $_popUpCtrl["jsresizable"] ? 'yes' : 'no') . '\';' .
@@ -1374,7 +1387,7 @@ class we_document extends we_root{
 		if($_REQUEST){
 			$dates = $regs = array();
 			foreach($_REQUEST as $n => $v){
-				if(preg_match('/^we_schedule_([^\[]+)$/', $n, $regs)){
+				if(preg_match('/^we_schedule_([^\[]+)$/', $n, $regs)){//make this an array
 					$rest = $regs[1];
 					$sw = explode('_', $rest);
 					$nr = end($sw);
@@ -1547,14 +1560,19 @@ class we_document extends we_root{
 	}
 
 	/**
-	 * @return '': this method is overwritten in we_webEditionDocument
+	 * get styles for textarea or object
+	 * @return type
 	 */
 	public function getDocumentCss(){
-		return '';
+		return $this->CSS;
 	}
 
-	public function addDocumentCss($stylesheet = ''){
-		// this method is overwritten in we_webEditionDocument
+	/**
+	 * get styles for textarea or object
+	 * @return type
+	 */
+	public function addDocumentCss($stylesheet){
+		$this->CSS[] = $stylesheet;
 	}
 
 	protected function update_filehash(){
@@ -1580,14 +1598,16 @@ class we_document extends we_root{
 		$regs = array();
 		if(preg_match_all('/(href|src)="' . we_base_link::TYPE_INT_PREFIX . '(\\d+)(&amp;|&)?("|[^"]+")/i', $text, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
-				$foo = getHash('SELECT Path,(ContentType="' . we_base_ContentTypes::IMAGE . '") AS isImage  FROM ' . FILE_TABLE . ' WHERE ID=' . intval($reg[2]) . (isset($GLOBALS['we_doc']->InWebEdition) && $GLOBALS['we_doc']->InWebEdition ? '' : ' AND Published>0'), $DB_WE);
+				$foo = getHash('SELECT Path,(ContentType="' . we_base_ContentTypes::IMAGE . '") AS isImage  FROM ' . FILE_TABLE . ' WHERE ID=' . intval($reg[2]) . (isset($GLOBALS['we_doc']->InWebEdition) && $GLOBALS['we_doc']->InWebEdition
+							? '' : ' AND Published>0'), $DB_WE);
 
 				if($foo && $foo['Path']){
 					$path_parts = pathinfo($foo['Path']);
 					if(show_SeoLinks() && WYSIWYGLINKS_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 						$foo['Path'] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 					}
-					$text = str_replace($reg[1] . '="' . we_base_link::TYPE_INT_PREFIX . $reg[2] . $reg[3] . $reg[4], $reg[1] . '="' . ($doBaseReplace && $foo['isImage'] ? BASE_IMG : '') . $foo['Path'] . ($reg[3] ? '?' : '') . $reg[4], $text);
+					$text = str_replace($reg[1] . '="' . we_base_link::TYPE_INT_PREFIX . $reg[2] . $reg[3] . $reg[4], $reg[1] . '="' . ($doBaseReplace && $foo['isImage'] ? BASE_IMG
+								: '') . $foo['Path'] . ($reg[3] ? '?' : '') . $reg[4], $text);
 				} else {
 					$text = preg_replace(array(
 						'|<a [^>]*href="' . we_base_link::TYPE_INT_PREFIX . $reg[2] . '"[^>]*>(.*)</a>|Ui', '|<a [^>]*href="' . we_base_link::TYPE_INT_PREFIX . $reg[2] . '"[^>]*>|Ui', '|<img [^>]*src="' . we_base_link::TYPE_INT_PREFIX . $reg[2] . '"[^>]*>|Ui'), array(
@@ -1646,6 +1666,24 @@ class we_document extends we_root{
 		) .
 		'</html>';
 		exit();
+	}
+
+	/**
+	 * Get data which was saved persistent in this session by the editor
+	 * @param string $name name of the variable to save
+	 * @return mixed false if not found, data if found
+	 */
+	public function getEditorPersistent($name){
+		return isset($this->editorSaves[$name]) ? $this->editorSaves[$name] : false;
+	}
+
+	/**
+	 * Save data in editor persistent in session
+	 * @param string $name name of the variable to save
+	 * @param mixed $value the data to save. Don't save objects! Just data & arrays.
+	 */
+	public function setEditorPersistent($name, $value){
+		$this->editorSaves[$name] = $value;
 	}
 
 }

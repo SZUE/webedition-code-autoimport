@@ -77,7 +77,7 @@ $parts[] = array("headline" => "",
 );
 
 
-if(defined("WORKFLOW_TABLE")){
+if(defined('WORKFLOW_TABLE')){
 	$anzeige = (we_workflow_utility::inWorkflow($GLOBALS['we_doc']->ID, $GLOBALS['we_doc']->Table) ?
 			we_workflow_utility::getDocumentStatusInfo($GLOBALS['we_doc']->ID, $GLOBALS['we_doc']->Table) :
 			we_workflow_utility::getLogButton($GLOBALS['we_doc']->ID, $GLOBALS['we_doc']->Table));

@@ -389,7 +389,7 @@ class we_version{
 					"it" => 1
 				);
 			}
-			if(defined("OBJECT_FILES_TABLE")){
+			if(defined('OBJECT_FILES_TABLE')){
 				$GLOBALS['DB_WE']->query("SELECT ID,ClassName,Path FROM " . OBJECT_FILES_TABLE . " WHERE Published > 0 ORDER BY ID");
 				while($GLOBALS['DB_WE']->next_record()){
 

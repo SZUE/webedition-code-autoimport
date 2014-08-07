@@ -24,7 +24,7 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-if(defined("MESSAGING_SYSTEM")){
+if(defined('MESSAGING_SYSTEM')){
 
 	$_SESSION['weS']['we_data'][$_transact] = array();
 

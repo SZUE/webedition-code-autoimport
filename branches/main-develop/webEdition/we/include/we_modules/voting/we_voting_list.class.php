@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,7 +27,6 @@
  *
  */
 class we_voting_list{
-
 	//properties
 	var $Name;
 	var $Version;
@@ -40,13 +38,13 @@ class we_voting_list{
 	 * Default Constructor
 	 * Can load or create new Newsletter depends of parameter
 	 */
-	function __construct($name, $groupid, $version = 0, $rows = 0, $offset = 0, $desc = false, $order = 'PublishDate', $subgroup = false){
+	public function __construct($name, $groupid, $version, $rows, $offset, $desc, $order, $subgroup, $start){
 
 		$this->Name = $name;
 		$this->Version = $version;
 		$this->Offset = $offset;
 		$this->Rows = $rows;
-		$this->Start = (isset($_REQUEST["_we_vl_start_" . $this->Name]) && $_REQUEST["_we_vl_start_" . $this->Name]) ? abs($_REQUEST["_we_vl_start_" . $this->Name]) : 0;
+		$this->Start = $start;
 		if($this->Start == 0){
 			$this->Start += $offset;
 		}
@@ -83,7 +81,7 @@ class we_voting_list{
 		$this->db->query($_we_voting_query);
 	}
 
-	function getNext(){
+	public function getNext(){
 
 		if($this->db->next_record()){
 			$GLOBALS['_we_voting'] = new we_voting_voting($this->db->f('ID'));
@@ -93,11 +91,11 @@ class we_voting_list{
 		return false;
 	}
 
-	function getNextLink($attribs){
+	public function getNextLink($attribs){
 		if($this->hasNextPage()){
 			$urlID = weTag_getAttribute("id", $attribs);
 			$foo = $this->Start + $this->Rows;
-			$attribs["href"] = we_tag('url', array('id' => ($urlID ? $urlID : 'self'), 'hidedirindex' => 'false')) . '?' . oldHtmlspecialchars(listviewBase::we_makeQueryString("_we_vl_start_" . $this->Name . "=$foo"));
+			$attribs["href"] = we_tag('url', array('id' => ($urlID ? $urlID : 'self'), 'hidedirindex' => 'false')) . '?' . oldHtmlspecialchars(we_listview_base::we_makeQueryString("_we_vl_start_" . $this->Name . "=$foo"));
 			$attribs['rel'] = 'next';
 
 			return getHtmlTag("a", $attribs, "", false, true);
@@ -105,15 +103,15 @@ class we_voting_list{
 		return "";
 	}
 
-	function hasNextPage(){
+	public function hasNextPage(){
 		return (($this->Start + $this->Rows) < $this->CountAll);
 	}
 
-	function getBackLink($attribs){
+	public function getBackLink($attribs){
 		if($this->hasPrevPage()){
 			$urlID = weTag_getAttribute("id", $attribs);
 			$foo = $this->Start - $this->Rows;
-			$attribs["href"] = we_tag('url', array('id' => ($urlID ? $urlID : 'self'), 'hidedirindex' => 'false')) . '?' . oldHtmlspecialchars(listviewBase::we_makeQueryString("_we_vl_start_" . $this->Name . "=$foo"));
+			$attribs["href"] = we_tag('url', array('id' => ($urlID ? $urlID : 'self'), 'hidedirindex' => 'false')) . '?' . oldHtmlspecialchars(we_listview_base::we_makeQueryString("_we_vl_start_" . $this->Name . "=$foo"));
 			$attribs['rel'] = 'prev';
 
 			return getHtmlTag("a", $attribs, "", false, true);

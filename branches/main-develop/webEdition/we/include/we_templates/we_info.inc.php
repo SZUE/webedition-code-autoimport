@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -39,8 +38,8 @@ $we_version = '';
 if(!isset($GLOBALS['loginpage'])){
 	$we_version .= ((defined('WE_VERSION_NAME') && WE_VERSION_NAME != '') ? WE_VERSION_NAME : WE_VERSION) . ' (' . WE_VERSION .
 		((defined('WE_SVNREV') && WE_SVNREV != '0000') ? ', SVN-Revision: ' . WE_SVNREV : '') . ')' .
-		((defined("WE_VERSION_SUPP") && WE_VERSION_SUPP != '') ? ' ' . g_l('global', '[' . WE_VERSION_SUPP . ']') : '') .
-		((defined("WE_VERSION_SUPP_VERSION") && WE_VERSION_SUPP_VERSION != 0) ? WE_VERSION_SUPP_VERSION : '');
+		((defined('WE_VERSION_SUPP') && WE_VERSION_SUPP != '') ? ' ' . g_l('global', '[' . WE_VERSION_SUPP . ']') : '') .
+		((defined('WE_VERSION_SUPP_VERSION') && WE_VERSION_SUPP_VERSION != 0) ? WE_VERSION_SUPP_VERSION : '');
 }
 
 if(isset($GLOBALS['loginpage']) && WE_LOGIN_HIDEWESTATUS){
@@ -144,7 +143,7 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 	//	mode-table
 	$_modetable = new we_html_table(array("style" => 'border-style:none; padding:0px;border-spacing:0px;', "width" => $_middlePart), 1, 3);
 
-	$loginButton = we_html_button::create_button("login", "javascript:document.loginForm.submit();").'<input style="display:none;" type="submit"/>';
+	$loginButton = we_html_button::create_button("login", "javascript:document.loginForm.submit();") . '<input style="visibility: hidden;" type="submit"/>';
 	if(!WE_SEEM){ //	deactivate See-Mode
 		if(WE_LOGIN_WEWINDOW){
 			$_modetable->setCol(0, 0, array(), '');

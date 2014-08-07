@@ -89,7 +89,7 @@ print STYLESHEET;
 				print $frame;
 				print '
 						<input type="hidden" name="cmd" value="ok" />
-						<input type="hidden" name="we_cmd[0]" value="' . $_REQUEST['we_cmd'][0] . '" />
+						<input type="hidden" name="we_cmd[0]" value="' . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) . '" />
 						<input type="hidden" name="we_cmd[1]" value="' . $we_transaction . '" />';
 				?>
 			</form>

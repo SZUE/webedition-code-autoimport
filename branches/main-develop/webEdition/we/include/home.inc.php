@@ -905,7 +905,7 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 	}
 	$_transact = md5(uniqid(__FILE__, true));
 
-	echo "function newMessage(username){" . ( defined("WE_MESSAGING_MODULE_DIR") ?
+	echo "function newMessage(username){" . ( defined('WE_MESSAGING_MODULE_DIR') ?
 		"	new jsWindow('" . WE_MESSAGING_MODULE_DIR . "messaging_newmessage.php?we_transaction=" . $_transact . "&mode=u_'+escape(username),'messaging_new_message',-1,-1,670,530,true,false,true,false);" : ''
 	) . "}";
 	?>

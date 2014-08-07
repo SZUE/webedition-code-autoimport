@@ -44,7 +44,7 @@ class we_export_frames extends weModuleFrames{
 		$this->editorBodyFrame = $this->topFrame . '.editor.edbody';
 	}
 
-	function getHTMLDocumentHeader($what = '', $mode = ''){
+	public function getHTMLDocumentHeader($what = '', $mode = ''){
 		if($what != "cmd" && $what != "load" && !we_base_request::_(we_base_request::FILE, "exportfile")){
 			return parent::getHTMLDocumentHeader();
 		}
@@ -281,7 +281,7 @@ function closeAllSelection(){
 function closeAllType(){
 	var elem = document.getElementById("doctype");
 	elem.style.display = "none";
-	' . (defined("OBJECT_TABLE") ? '
+	' . (defined('OBJECT_TABLE') ? '
 	elem = document.getElementById("classname");
 	elem.style.display = "none";' : '') . '
 }');
@@ -299,7 +299,7 @@ function closeAllType(){
 		$table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 5, 1);
 
 		$seltype = array('doctype' => g_l('export', "[doctypename]"));
-		if(defined("OBJECT_TABLE")){
+		if(defined('OBJECT_TABLE')){
 			$seltype['classname'] = g_l('export', '[classname]');
 		}
 
@@ -308,7 +308,7 @@ function closeAllType(){
 		$table->setCol(2, 0, array("id" => "doctype", "style" => ($this->View->export->SelectionType == 'doctype' ? 'display:block' : 'display: none')), we_html_tools::htmlSelect('DocType', $docTypes, 1, $this->View->export->DocType, false, array('onchange' => $this->topFrame . '.hot=1;'), 'value', $this->_width_size) .
 			we_html_tools::htmlFormElementTable($this->formWeChooser(FILE_TABLE, ($this->_width_size - 120), 0, 'Folder', $this->View->export->Folder, 'FolderPath', $FolderPath), g_l('export', '[dir]'))
 		);
-		if(defined("OBJECT_TABLE")){
+		if(defined('OBJECT_TABLE')){
 			$table->setCol(3, 0, array("id" => "classname", "style" => ($this->View->export->SelectionType == "classname" ? "display:block" : "display: none")), we_html_tools::htmlSelect('ClassName', $classNames, 1, $this->View->export->ClassName, false, array('onchange' => $this->topFrame . '.hot=1;'), 'value', $this->_width_size)
 			);
 		}
@@ -341,7 +341,7 @@ function closeAllType(){
 		$formattable = new we_html_table(array("cellpadding" => 2, "cellspacing" => 2, "border" => 0), 5, 1);
 		$formattable->setCol(0, 0, null, we_html_forms::checkboxWithHidden($this->View->export->HandleDefTemplates, "HandleDefTemplates", g_l('export', "[handle_def_templates]"), false, 'defaultfont', $this->topFrame . '.hot=1;'));
 		$formattable->setCol(1, 0, null, we_html_forms::checkboxWithHidden(($this->View->export->HandleDocIncludes ? true : false), "HandleDocIncludes", g_l('export', "[handle_document_includes]"), false, 'defaultfont', $this->topFrame . '.hot=1;'));
-		if(defined("OBJECT_TABLE")){
+		if(defined('OBJECT_TABLE')){
 			$formattable->setCol(2, 0, null, we_html_forms::checkboxWithHidden(($this->View->export->HandleObjIncludes ? true : false), "HandleObjIncludes", g_l('export', "[handle_object_includes]"), false, 'defaultfont', $this->topFrame . '.hot=1;'));
 		}
 		$formattable->setCol(3, 0, null, we_html_forms::checkboxWithHidden(($this->View->export->HandleDocLinked ? true : false), "HandleDocLinked", g_l('export', "[handle_document_linked]"), false, 'defaultfont', $this->topFrame . '.hot=1;'));
@@ -354,7 +354,7 @@ function closeAllType(){
 				"space" => $this->_space_size)
 		);
 
-		if(defined("OBJECT_TABLE")){
+		if(defined('OBJECT_TABLE')){
 			$formattable = new we_html_table(array("cellpadding" => 2, "cellspacing" => 2, "border" => 0), 3, 1);
 			$formattable->setCol(0, 0, array("colspan" => 2), we_html_forms::checkboxWithHidden(($this->View->export->HandleDefClasses ? true : false), "HandleDefClasses", g_l('export', "[handle_def_classes]"), false, 'defaultfont', $this->topFrame . '.hot=1;'));
 			$formattable->setCol(1, 0, null, we_html_forms::checkboxWithHidden(($this->View->export->HandleObjEmbeds ? true : false), "HandleObjEmbeds", g_l('export', "[handle_object_embeds]"), false, 'defaultfont', $this->topFrame . '.hot=1;'));
@@ -753,8 +753,10 @@ function closeAllType(){
 	/* creates the FileChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
 
 	function formFileChooser($width = "", $IDName = "ParentID", $IDValue = "/", $cmd = "", $filter = ""){
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");
+		$button = we_html_button::create_button("select", "javascript:top.content.setHot();formFileChooser('browse_server','" . $wecmdenc1 . "','" . $filter . "',document.we_form.elements['" . $IDName . "'].value);");
 
-		$js = we_html_element::jsScript(JS_DIR . "windows.js") .
+		return we_html_element::jsScript(JS_DIR . "windows.js") .
 			we_html_element::jsElement('
 				function formFileChooser() {
 					var args = "";
@@ -765,16 +767,11 @@ function closeAllType(){
 						break;
 					}
 				}
-		');
-
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");
-		$button = we_html_button::create_button("select", "javascript:top.content.setHot();formFileChooser('browse_server','" . $wecmdenc1 . "','" . $filter . "',document.we_form.elements['" . $IDName . "'].value);");
-
-		return $js . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 42, $IDValue, "", ' readonly onchange="' . $this->topFrame . '.hot=1;"', "text", $width, 0), "", "left", "defaultfont", "", we_html_tools::getPixel(20, 4), permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
+		') . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 42, $IDValue, "", ' readonly onchange="' . $this->topFrame . '.hot=1;"', "text", $width, 0), "", "left", "defaultfont", "", we_html_tools::getPixel(20, 4), permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
 	}
 
 	function formWeChooser($table = FILE_TABLE, $width = '', $rootDirID = 0, $IDName = 'ID', $IDValue = 0, $Pathname = 'Path', $Pathvalue = '/', $cmd = ''){
-		$Pathvalue = (empty($Pathvalue) ? f('SELECT Path FROM ' . $this->db->escape($table) . ' WHERE ID=' . intval($IDValue) . ";", "Path", $this->db) : $Pathvalue);
+		$Pathvalue = (empty($Pathvalue) ? f('SELECT Path FROM ' . $this->db->escape($table) . ' WHERE ID=' . intval($IDValue), "", $this->db) : $Pathvalue);
 
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $Pathname . "'].value");

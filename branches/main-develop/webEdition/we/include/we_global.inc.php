@@ -332,7 +332,7 @@ function path_to_id_ct($path, $table, &$contentType){
 
 function id_to_path($IDs, $table = FILE_TABLE, we_database_base $db = null, $prePostKomma = false, $asArray = false, $endslash = false, $isPublished = false){
 	if(!is_array($IDs) && !$IDs){
-		return '/';
+		return ($asArray ? array('/') : '/');
 	}
 
 	$db = $db ? $db : new DB_WE();

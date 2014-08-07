@@ -145,25 +145,21 @@ function _cutText($text, $l){
 
 			$arDir = $arFile = $ordDir = $ordFile = $final = array();
 
-			$org = ($_REQUEST["dir"] ? $_REQUEST["dir"] : '/');
+			$org = we_base_request::_(we_base_request::FILE, "dir", '/');
 
 
-			$dir = $_SERVER['DOCUMENT_ROOT'] . $_REQUEST["dir"];
-			if($dir != "/"){
-				$dir = rtrim($dir, '/');
-			}
-			if(!isset($_REQUEST["ord"])){
-				$_REQUEST["ord"] = 10;
-			}
+			$dir = rtrim($_SERVER['DOCUMENT_ROOT'] . $org, '/');
 			@chdir($dir);
 			$dir_obj = @dir($dir);
+
+			$ord = we_base_request::_(we_base_request::INT, "ord", 10);
 
 			if($dir_obj){
 				while(false !== ($entry = $dir_obj->read())){
 					if($entry != '.' && $entry != '..'){
 						if(is_link($dir . '/' . $entry) || is_dir($dir . '/' . $entry)){
 							$arDir[] = $entry;
-							switch(we_base_request::_(we_base_request::INT, "ord")){
+							switch($ord){
 								case 10:
 								case 11:
 									$ordDir[] = $entry;
@@ -183,7 +179,7 @@ function _cutText($text, $l){
 							}
 						} else {
 							$arFile[] = $entry;
-							switch(we_base_request::_(we_base_request::INT, "ord")){
+							switch($ord){
 								case 10:
 								case 11:
 									$ordFile[] = $entry;
@@ -209,7 +205,7 @@ function _cutText($text, $l){
 				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR)) . '<br/><br/><div class="middlefontgray" align="center">-- ' . g_l('alert', "[access_denied]") . ' --</div>';
 			}
 
-			switch(we_base_request::_(we_base_request::INT, "ord")){
+			switch($ord){
 				case 10:
 				case 20:
 				case 30:
@@ -235,14 +231,12 @@ function _cutText($text, $l){
 				$final[] = $arFile[$key];
 			}
 
-			echo '<script type="text/javascript"><!--
-top.allentries = new Array();
-var i = 0;
-';
+			$js = 'top.allentries = new Array();
+var i = 0;';
 			foreach($final as $key => $entry){
-				echo 'top.allentries[i++] = "' . $entry . '";';
+				$js.='top.allentries[i++] = "' . $entry . '";';
 			}
-			print '//--></script>';
+			echo we_html_element::jsElement($js);
 			$set_rename = false;
 
 			if($nf == "new_folder"){
@@ -367,7 +361,7 @@ var i = 0;
 				document.forms["we_form"].elements["oldtxt"].value = document.forms["we_form"].elements["txt"].value;
 	<?php } ?>
 			document.forms["we_form"].elements["pat"].value = top.currentDir;
-	//-->
+			//-->
 		</script>
 		<?php
 	}

@@ -83,10 +83,10 @@ class we_exim_XMLExIm{
 		$this->destination[strtolower(FILE_TABLE)] = 0;
 		$this->destination[strtolower(TEMPLATES_TABLE)] = 0;
 		$this->destination[strtolower(DOC_TYPES_TABLE)] = 0;
-		if(defined("OBJECT_TABLE")){
+		if(defined('OBJECT_TABLE')){
 			$this->destination[strtolower(OBJECT_TABLE)] = 0;
 		}
-		if(defined("OBJECT_FILES_TABLE")){
+		if(defined('OBJECT_FILES_TABLE')){
 			$this->destination[strtolower(OBJECT_FILES_TABLE)] = 0;
 		}
 	}
@@ -143,11 +143,11 @@ class we_exim_XMLExIm{
 			case "category":
 				return CATEGORY_TABLE;
 			case "object":
-				return (defined("OBJECT_TABLE")) ? OBJECT_TABLE : null;
+				return (defined('OBJECT_TABLE')) ? OBJECT_TABLE : null;
 			case we_base_ContentTypes::TEMPLATE:
 				return TEMPLATES_TABLE;
 			case "objectFile":
-				return (defined("OBJECT_FILES_TABLE")) ? OBJECT_FILES_TABLE : null;
+				return (defined('OBJECT_FILES_TABLE')) ? OBJECT_FILES_TABLE : null;
 			case "weBinary":
 				return null;
 			case "weNavigation":
@@ -273,7 +273,7 @@ class we_exim_XMLExIm{
 					$path = dirname($path);
 				}
 			}
-		} else if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE && (!permissionhandler::hasPerm("ADMINISTRATOR"))){
+		} else if(defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE && (!permissionhandler::hasPerm("ADMINISTRATOR"))){
 			$ac = we_users_util::getAllowedClasses($db);
 			foreach($ac as $cid){
 				$path = id_to_path($cid, OBJECT_TABLE);
@@ -290,15 +290,15 @@ class we_exim_XMLExIm{
 			if($extype == we_import_functions::TYPE_WE_XML){
 				$selDocs = $this->getIDs($selDocs, FILE_TABLE, false);
 				$selTempl = $this->getIDs($selTempl, TEMPLATES_TABLE, false);
-				$selObjs = defined("OBJECT_FILES_TABLE") ? $this->getIDs($selObjs, OBJECT_FILES_TABLE, false) : '';
-				$selClasses = defined("OBJECT_FILES_TABLE") ? $this->getIDs($selClasses, OBJECT_TABLE, false) : '';
+				$selObjs = defined('OBJECT_FILES_TABLE') ? $this->getIDs($selObjs, OBJECT_FILES_TABLE, false) : '';
+				$selClasses = defined('OBJECT_FILES_TABLE') ? $this->getIDs($selClasses, OBJECT_TABLE, false) : '';
 			} else {
 				switch($art){
 					case "docs":
 						$selDocs = $this->getIDs($selDocs, FILE_TABLE);
 						break;
 					case "objects":
-						$selObjs = defined("OBJECT_FILES_TABLE") ? $this->getIDs($selObjs, OBJECT_FILES_TABLE) : "";
+						$selObjs = defined('OBJECT_FILES_TABLE') ? $this->getIDs($selObjs, OBJECT_FILES_TABLE) : "";
 						break;
 				}
 			}

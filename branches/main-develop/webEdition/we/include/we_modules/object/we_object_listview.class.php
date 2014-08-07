@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,17 +27,16 @@
  * @desc    class for tag <we:listview type="object">
  *
  */
-class we_object_listview extends listviewBase{
-
+class we_object_listview extends we_listview_base{
 	var $classID; /* ID of a class */
 	var $triggerID; /* ID of a document which to use for displaying thr detail page */
-	var $condition = ""; /* condition string (like SQL) */
+	var $condition = ''; /* condition string (like SQL) */
 	var $ClassName = __CLASS__;
 	var $Path; /* internal: Path of document which to use for displaying thr detail page */
 	var $IDs = array();
 	var $searchable = true;
-	var $customerFilterType = 'false';
-	var $customers = "";
+	var $customerFilterType = false;
+	var $customers = '';
 	var $we_predefinedSQL = '';
 	var $languages = ''; //string of Languages, separated by ,
 	var $objectseourls = false;
@@ -127,12 +125,12 @@ class we_object_listview extends listviewBase{
 
 		$pid_tail = (isset($GLOBALS['we_doc']) ? makePIDTail($GLOBALS['we_doc']->ParentID, $this->classID, $this->DB_WE, $GLOBALS['we_doc']->Table) : '1');
 
-		$cat_tail = ($this->cats || $this->categoryids ? we_category::getCatSQLTail($this->cats, $_obxTable, $this->catOr, $this->DB_WE, "OF_Category", true, $this->categoryids) : '');
+		$cat_tail = ($this->cats || $this->categoryids ? we_category::getCatSQLTail($this->cats, $_obxTable, $this->catOr, $this->DB_WE, "OF_Category", true, $this->categoryids)
+					: '');
 
-		$weDocumentCustomerFilter_tail = '';
-		if($this->customerFilterType != 'false' && defined("CUSTOMER_FILTER_TABLE")){
-			$weDocumentCustomerFilter_tail = we_customer_documentFilter::getConditionForListviewQuery($this);
-		}
+		$weDocumentCustomerFilter_tail = (defined('CUSTOMER_FILTER_TABLE') ?
+				we_customer_documentFilter::getConditionForListviewQuery($this->customerFilterType, $this->ClassName, $this->classID) :
+				'');
 
 		$webUserID_tail = '';
 		if($this->customers && $this->customers !== "*"){
@@ -167,7 +165,9 @@ class we_object_listview extends listviewBase{
 				} else {
 					$ws_tail = '';
 				}
-				$this->DB_WE->query('SELECT ' . $_obxTable . '.ID AS ID ' . $calendar_select . ' FROM ' . $sqlParts["tables"] . ' WHERE ' . ($this->searchable ? " " . $_obxTable . ".OF_IsSearchable=1 AND" : "") . " " . $pid_tail . ' AND ' . $_obxTable . '.OF_ID!=0 ' . $where_lang . ($join ? " AND ($join) " : "") . $cat_tail . " " . ($sqlParts["publ_cond"] ? (" AND " . $sqlParts["publ_cond"]) : "") . " " . ($sqlParts["cond"] ? (" AND (" . $sqlParts["cond"] . ") ") : "") . $calendar_where . $ws_tail . $weDocumentCustomerFilter_tail . $webUserID_tail . $_idTail . $sqlParts['groupBy']);
+				$this->DB_WE->query('SELECT ' . $_obxTable . '.ID AS ID ' . $calendar_select . ' FROM ' . $sqlParts["tables"] . ' WHERE ' . ($this->searchable ? " " . $_obxTable . ".OF_IsSearchable=1 AND"
+							: "") . " " . $pid_tail . ' AND ' . $_obxTable . '.OF_ID!=0 ' . $where_lang . ($join ? " AND ($join) " : "") . $cat_tail . " " . ($sqlParts["publ_cond"] ? (" AND " . $sqlParts["publ_cond"])
+							: "") . " " . ($sqlParts["cond"] ? (" AND (" . $sqlParts["cond"] . ") ") : "") . $calendar_where . $ws_tail . $weDocumentCustomerFilter_tail . $webUserID_tail . $_idTail . $sqlParts['groupBy']);
 				$this->anz_all = $this->DB_WE->num_rows();
 				if($calendar != ""){
 					while($this->DB_WE->next_record()){
@@ -177,7 +177,10 @@ class we_object_listview extends listviewBase{
 						}
 					}
 				}
-				$q = 'SELECT ' . $sqlParts["fields"] . $calendar_select . ' FROM ' . $sqlParts['tables'] . ' WHERE ' . ($this->searchable ? ' ' . $_obxTable . '.OF_IsSearchable=1 AND' : '') . ' ' . $pid_tail . ' AND ' . $_obxTable . '.OF_ID!=0 ' . $where_lang . ($join ? " AND ($join) " : "") . $cat_tail . " " . ($sqlParts["publ_cond"] ? (' AND ' . $sqlParts["publ_cond"]) : '') . ' ' . ($sqlParts["cond"] ? (' AND (' . $sqlParts['cond'] . ') ') : '') . $calendar_where . $ws_tail . $weDocumentCustomerFilter_tail . $webUserID_tail . $_idTail . $sqlParts['groupBy'] . $sqlParts["order"] . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . $this->maxItemsPerPage) : '');
+				$q = 'SELECT ' . $sqlParts["fields"] . $calendar_select . ' FROM ' . $sqlParts['tables'] . ' WHERE ' . ($this->searchable ? ' ' . $_obxTable . '.OF_IsSearchable=1 AND'
+							: '') . ' ' . $pid_tail . ' AND ' . $_obxTable . '.OF_ID!=0 ' . $where_lang . ($join ? " AND ($join) " : "") . $cat_tail . " " . ($sqlParts["publ_cond"] ? (' AND ' . $sqlParts["publ_cond"])
+							: '') . ' ' . ($sqlParts["cond"] ? (' AND (' . $sqlParts['cond'] . ') ') : '') . $calendar_where . $ws_tail . $weDocumentCustomerFilter_tail . $webUserID_tail . $_idTail . $sqlParts['groupBy'] . $sqlParts["order"] . (($this->maxItemsPerPage > 0)
+							? (' LIMIT ' . $this->start . ',' . $this->maxItemsPerPage) : '');
 			}
 			//t_e($q);
 			$this->DB_WE->query($q);
@@ -379,7 +382,7 @@ class we_object_listview extends listviewBase{
 		$fetch = false;
 		if($this->calendar_struct['calendar']){
 			if($this->count < $this->anz){
-				listviewBase::next_record();
+				we_listview_base::next_record();
 				$count = $this->calendar_struct['count'];
 				$fetch = $this->calendar_struct['forceFetch'];
 				$this->DB_WE->Record = array();
@@ -407,7 +410,8 @@ class we_object_listview extends listviewBase{
 						$path_parts = pathinfo(id_to_path($this->DB_WE->f('OF_TriggerID')));
 					}
 					$this->DB_WE->Record['we_WE_PATH'] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
-						(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
+						(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))
+								?
 							'' :
 							$path_parts['filename'] . '/' ) .
 						$this->DB_WE->Record['OF_Url'];
@@ -442,17 +446,16 @@ class we_object_listview extends listviewBase{
 
 				$this->count++;
 				return true;
-			} else {
-				$this->stop_next_row = $this->shouldPrintEndTR();
-				if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
-					$this->DB_WE->Record = array(
-						'WE_PATH' => '',
-						'WE_TEXT' => '',
-						'WE_ID' => '',
-					);
-					$this->count++;
-					return true;
-				}
+			}
+			$this->stop_next_row = $this->shouldPrintEndTR();
+			if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
+				$this->DB_WE->Record = array(
+					'WE_PATH' => '',
+					'WE_TEXT' => '',
+					'WE_ID' => '',
+				);
+				$this->count++;
+				return true;
 			}
 		}
 

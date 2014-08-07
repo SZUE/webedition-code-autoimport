@@ -842,17 +842,14 @@ class weVersions{
 	 * @abstract count versions
 	 */
 	public function countVersions($id, $contentType){
-		return f("SELECT COUNT(1) AS Count FROM " . VERSIONS_TABLE . " WHERE documentId = " . intval($id) . " AND ContentType = '" . escape_sql_query($contentType) . "'", 'Count', new DB_WE());
+		return f('SELECT COUNT(1) FROM ' . VERSIONS_TABLE . ' WHERE documentId=' . intval($id) . " AND ContentType = '" . escape_sql_query($contentType) . "'", '', new DB_WE());
 	}
 
 	/**
 	 * @abstract looks if versions exist for the document
 	 */
 	public static function versionsExist($id, $contentType){
-		if(self::countVersions($id, $contentType) == 0){
-			return false;
-		}
-		return true;
+		return (self::countVersions($id, $contentType) > 0);
 	}
 
 	/**
@@ -1061,7 +1058,7 @@ class weVersions{
 				$status = "published";
 			}
 
-			if($document["ContentType"] != "objectFile" && $document["ContentType"] != we_base_ContentTypes::WEDOCUMENT && $document["ContentType"] != we_base_ContentTypes::HTML && !($document["ContentType"] == we_base_ContentTypes::TEMPLATE && defined("VERSIONS_CREATE_TMPL") && VERSIONS_CREATE_TMPL)){
+			if($document["ContentType"] != "objectFile" && $document["ContentType"] != we_base_ContentTypes::WEDOCUMENT && $document["ContentType"] != we_base_ContentTypes::HTML && !($document["ContentType"] == we_base_ContentTypes::TEMPLATE && defined('VERSIONS_CREATE_TMPL') && VERSIONS_CREATE_TMPL)){
 				$status = "saved";
 			}
 
@@ -1073,11 +1070,11 @@ class weVersions{
 				$status = "published";
 			}
 
-			if($document["ContentType"] == "objectFile" || $document["ContentType"] == we_base_ContentTypes::WEDOCUMENT || $document["ContentType"] == we_base_ContentTypes::HTML || ($document["ContentType"] == we_base_ContentTypes::TEMPLATE && defined("VERSIONS_CREATE_TMPL") && VERSIONS_CREATE_TMPL)){
-				if($document["ContentType"] != we_base_ContentTypes::TEMPLATE && (defined("VERSIONS_CREATE") && VERSIONS_CREATE) && $status != "published" && !we_base_request::_(we_base_request::BOOL, 'we_cmd', true, 5)){
+			if($document["ContentType"] == "objectFile" || $document["ContentType"] == we_base_ContentTypes::WEDOCUMENT || $document["ContentType"] == we_base_ContentTypes::HTML || ($document["ContentType"] == we_base_ContentTypes::TEMPLATE && defined('VERSIONS_CREATE_TMPL') && VERSIONS_CREATE_TMPL)){
+				if($document["ContentType"] != we_base_ContentTypes::TEMPLATE && (defined('VERSIONS_CREATE') && VERSIONS_CREATE) && $status != "published" && !we_base_request::_(we_base_request::BOOL, 'we_cmd', true, 5)){
 					$writeVersion = false;
 				}
-				if($document["ContentType"] == we_base_ContentTypes::TEMPLATE && (defined("VERSIONS_CREATE_TMPL") && VERSIONS_CREATE_TMPL) && $status != "published" && !we_base_request::_(we_base_request::BOOL, 'we_cmd', true, 5)){
+				if($document["ContentType"] == we_base_ContentTypes::TEMPLATE && (defined('VERSIONS_CREATE_TMPL') && VERSIONS_CREATE_TMPL) && $status != "published" && !we_base_request::_(we_base_request::BOOL, 'we_cmd', true, 5)){
 					$writeVersion = false;
 				}
 			}
@@ -1114,7 +1111,7 @@ class weVersions{
 					}
 				}
 
-				if(!empty($set) && $mods){
+				if($set && $mods){
 					$theSet = we_database_base::arraySetter($set);
 					$db->query('INSERT INTO ' . VERSIONS_TABLE . ' SET ' . $theSet);
 					$vers = (isset($document["version"]) ? $document["version"] : $this->version);
@@ -1643,7 +1640,7 @@ class weVersions{
 			}
 
 
-			if(defined("VERSIONS_CREATE") && VERSIONS_CREATE){
+			if(defined('VERSIONS_CREATE') && VERSIONS_CREATE){
 				$doDelete = false;
 			}
 
@@ -1880,7 +1877,7 @@ class weVersions{
 					$resetDoc->we_publish();
 				}
 
-				if(defined("WORKFLOW_TABLE") && $resetDoc->ContentType == we_base_ContentTypes::WEDOCUMENT){
+				if(defined('WORKFLOW_TABLE') && $resetDoc->ContentType == we_base_ContentTypes::WEDOCUMENT){
 					if(we_workflow_utility::inWorkflow($resetDoc->ID, $resetDoc->Table)){
 						we_workflow_utility::removeDocFromWorkflow($resetDoc->ID, $resetDoc->Table, $_SESSION["user"]["ID"], "");
 					}

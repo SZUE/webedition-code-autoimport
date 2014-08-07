@@ -55,7 +55,7 @@ class we_dialog_abbr extends we_dialog_base{
 	function getJs(){
 
 		return parent::getJs() .
-			(defined("GLOSSARY_TABLE") ? we_html_element::jsElement('
+			(defined('GLOSSARY_TABLE') ? we_html_element::jsElement('
 					function weSaveToGlossaryFn() {alert("go");
 						if(typeof(isTinyMCE) != "undefined" && isTinyMCE === true){
 							document.we_form.elements[\'weSaveToGlossary\'].value = 1;
@@ -83,7 +83,7 @@ class we_dialog_abbr extends we_dialog_base{
 <tr><td>' . we_html_tools::getPixel(225, 10) . '</td></tr>
 <tr><td>' . $lang . '</td></tr>
 </table>';
-		if(defined("GLOSSARY_TABLE") && permissionhandler::hasPerm("NEW_GLOSSARY")){
+		if(defined('GLOSSARY_TABLE') && permissionhandler::hasPerm("NEW_GLOSSARY")){
 			$table .= we_html_tools::hidden("weSaveToGlossary", 0) .
 				we_html_tools::hidden("language", we_base_request::_(we_base_request::STRING, 'language', $GLOBALS['weDefaultFrontendLanguage'])) .
 				we_html_tools::hidden("text", "");
@@ -99,7 +99,7 @@ class we_dialog_abbr extends we_dialog_base{
 			$trashbut
 		);
 
-		if(defined("GLOSSARY_TABLE") && permissionhandler::hasPerm("NEW_GLOSSARY") && !$this->noInternals){
+		if(defined('GLOSSARY_TABLE') && permissionhandler::hasPerm("NEW_GLOSSARY") && !$this->noInternals){
 			$glossarybut = we_html_button::create_button("to_glossary", "javascript:weSaveToGlossaryFn();", true, 100);
 			$buttons[] = $glossarybut;
 		}

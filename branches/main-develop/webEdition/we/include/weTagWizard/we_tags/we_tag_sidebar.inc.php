@@ -8,7 +8,7 @@ $this->NeedsEndTag = true;
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 $this->DefaultValue = g_l('weTag', '[' . $tagName . '][defaultvalue]', true);
 
-if(defined("FILE_TABLE")){
+if(defined('FILE_TABLE')){
 	$this->Attributes[] = new weTagData_selectorAttribute('id', FILE_TABLE, '', false, '');
 }
 $this->Attributes[] = new weTagData_textAttribute('file', false, '');

@@ -57,7 +57,7 @@ if($inputTypeFile->processFileRequest()){
 		// initializing $we_doc
 		include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
-		$overwrite = $_REQUEST['overwrite'];
+		$overwrite = we_base_request::_(we_base_request::STRING, 'overwrite');
 		$overwritten = false;
 
 		if(!$tempName){
@@ -182,22 +182,22 @@ if($inputTypeFile->processFileRequest()){
 			//echo 'this.close();';
 		}
 	}
-	if(isset($_FILES['we_uploadedFile']) && (!$we_alerttext) ){
+	if(isset($_FILES['we_uploadedFile']) && (!$we_alerttext)){
 		if($we_doc->ID){
 			if(!$overwritten){
-			?>
-			var ref;
-			if (opener.top.opener && opener.top.opener.top.makeNewEntry) {
+				?>
+				var ref;
+				if (opener.top.opener && opener.top.opener.top.makeNewEntry) {
 				ref = opener.top.opener.top;
-			} else if (opener.top.opener && opener.top.opener.top.opener && opener.top.opener.top.opener.top.makeNewEntry) {
+				} else if (opener.top.opener && opener.top.opener.top.opener && opener.top.opener.top.opener.top.makeNewEntry) {
 				ref = opener.top.opener.top.opener.top;
-			} else if (opener.top.opener && opener.top.opener.top.opener && opener.top.opener.top.opener.top.opener && opener.top.opener.top.opener.top.opener.top.makeNewEntry) {
+				} else if (opener.top.opener && opener.top.opener.top.opener && opener.top.opener.top.opener.top.opener && opener.top.opener.top.opener.top.opener.top.makeNewEntry) {
 				ref = opener.top.opener.top.opener.top.opener.top;
-			}
-			if (ref.makeNewEntry) {
+				}
+				if (ref.makeNewEntry) {
 				ref.makeNewEntry(<?php echo '"' . $we_doc->Icon . '", "' . $we_doc->ID . '", "' . $we_doc->ParentID . '", "' . $we_doc->Text . '", 1, "' . $we_doc->ContentType . '", "' . $we_doc->Table . '"'; ?>);
-			}
-			<?php
+				}
+				<?php
 			}
 			?>
 			opener.top.reloadDir();

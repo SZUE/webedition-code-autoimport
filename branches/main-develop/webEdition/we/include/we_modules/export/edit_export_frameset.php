@@ -30,6 +30,5 @@ $what = we_base_request::_(we_base_request::STRING, "pnt", "frameset");
 
 $weFrame = new we_export_frames();
 $weFrame->getHTMLDocumentHeader($what);
-$weFrame->View->processVariables();
-$weFrame->View->processCommands();
+$weFrame->process();
 echo $weFrame->getHTML($what);

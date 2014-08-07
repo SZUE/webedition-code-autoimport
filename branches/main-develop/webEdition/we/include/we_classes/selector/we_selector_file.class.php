@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_selector_file{
-
 	const FRAMESET = 0;
 	const HEADER = 1;
 	const FOOTER = 2;
@@ -87,13 +86,13 @@ class we_selector_file{
 		$this->setTableLayoutInfos();
 	}
 
-	function setDirAndID(){
+	protected function setDirAndID(){
 		$id = $this->id;
-		if($id == 0 && strlen($id)){
+		if($id === 0){
 			$this->setDefaultDirAndID(false);
 			return;
 		}
-		if($id != ''){
+		if($id > 0){
 			// get default Directory
 			$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($id));
 
@@ -114,7 +113,7 @@ class we_selector_file{
 		}
 	}
 
-	function setDefaultDirAndID($setLastDir){
+	protected function setDefaultDirAndID($setLastDir){
 		$this->dir = $setLastDir ? ( isset($_SESSION['weS']['we_fs_lastDir'][$this->table]) ? intval($_SESSION['weS']['we_fs_lastDir'][$this->table]) : 0 ) : 0;
 		$this->id = $this->dir;
 
@@ -145,7 +144,8 @@ class we_selector_file{
 	function query(){
 		$wsQuery = $this->table == NAVIGATION_TABLE && get_ws($this->table) ? ' ' . getWsQueryForSelector($this->table) : '';
 		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->dir) . ' ' .
-			( ($this->filter ? ($this->table == CATEGORY_TABLE ? 'AND IsFolder = "' . $this->db->escape($this->filter) . '" ' : 'AND ContentType = "' . $this->db->escape($this->filter) . '" ') : '' ) . $wsQuery ) .
+			( ($this->filter ? ($this->table == CATEGORY_TABLE ? 'AND IsFolder = "' . $this->db->escape($this->filter) . '" ' : 'AND ContentType = "' . $this->db->escape($this->filter) . '" ')
+					: '' ) . $wsQuery ) .
 			($this->order ? (' ORDER BY IsFolder DESC,' . $this->order) : ''));
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
 	}
@@ -182,7 +182,7 @@ class we_selector_file{
 		// overwrite
 	}
 
-	function printFramesetRootDirFn(){
+	protected function printFramesetRootDirFn(){
 		return we_html_element::jsElement('function setRootDir(){	setDir(0);}');
 	}
 
@@ -198,7 +198,7 @@ function exit_close(){
 }');
 	}
 
-	function getJS_keyListenerFunctions(){
+	private function getJS_keyListenerFunctions(){
 		return we_html_element::jsElement('
 function applyOnEnter(evt) {
 	_elemName = "target";
@@ -418,7 +418,7 @@ function exit_open(){alert("exit_open ext on fileselector");
 }';
 	}	
 
-	function printFramesetJSDoClickFn(){
+	protected function printFramesetJSDoClickFn(){
 		return we_html_element::jsElement('
 function doClick(id,ct){
 	if(ct==1){
@@ -546,7 +546,7 @@ function clearEntries(){
 	}
 
 	function printBodyHTML(){
-		print we_html_element::htmlDocType() . '<html><head></head>
+		echo we_html_element::htmlDocType() . '<html><head></head>
 				<body bgcolor="white" onload="top.writeBody(self.document);"></body></html>';
 	}
 
@@ -578,7 +578,7 @@ function selectIt(){
 </head>
 	<body background="' . IMAGE_DIR . 'backgrounds/radient.gif" LINK="#000000" ALINK="#000000" VLINK="#000000" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
 		<form name="we_form" method="post">' .
-		((!defined("OBJECT_TABLE")) || $this->table != OBJECT_TABLE ?
+		((!defined('OBJECT_TABLE')) || $this->table != OBJECT_TABLE ?
 			$this->printHeaderTable() .
 			$this->printHeaderLine() : '') .
 		$this->printHeaderHeadlines() .
@@ -804,7 +804,7 @@ function press_ok_button() {
 
 	function setTableLayoutInfos(){
 		switch($this->table){
-			case (defined("OBJECT_TABLE") ? OBJECT_TABLE : 'OBJECT_TABLE'):
+			case (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'):
 			case TEMPLATES_TABLE:
 				$this->col2js = "entries[i].ID";
 				$this->tableSizer = "<td>" . we_html_tools::getPixel(25, 1) . "</td><td>" . we_html_tools::getPixel(350, 1) . "</td><td>" . we_html_tools::getPixel(70, 1) . "</td><td>" . we_html_tools::getPixel(150, 1) . "</td>";

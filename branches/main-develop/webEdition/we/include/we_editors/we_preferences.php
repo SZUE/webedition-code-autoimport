@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -54,16 +53,22 @@ $tabname = we_base_request::_(we_base_request::STRING, 'tabname', 'setting_ui');
  *
  * @return         string
  */
-function create_dialog($name, $title, array $content, $expand = -1, $show_text = '', $hide_text = '', $cookie = false, $JS = ''){
+function create_dialog($name, array $content, $expand = -1, $show_text = '', $hide_text = '', $JS = ''){
 	$_output = ($JS ? $JS : '') .
 		($expand != -1 ? we_html_multiIconBox::getJS() : '');
 
 	// Return HTML code of dialog
-	return $_output . we_html_multiIconBox::getHTML($name, '100%', $content, 30, '', $expand, $show_text, $hide_text, $cookie != false ? ($cookie == 'down') : $cookie);
+	return $_output . we_html_multiIconBox::getHTML($name, '100%', $content, 30, '', $expand, $show_text, $hide_text);
 }
 
 function getColorInput($name, $value, $disabled = false, $width = 20, $height = 20){
-	return we_html_tools::hidden($name, $value) . '<table cellpadding="0" cellspacing="0" style="border:1px solid grey;margin:2px 0;"><tr><td' . ($disabled ? ' class="disabled"' : '') . ' id="color_' . $name . '" ' . ($value ? (' style="background-color:' . $value . ';"') : '') . '><a style="cursor:' . ($disabled ? "default" : "pointer") . ';" href="javascript:if(document.getElementById(&quot;color_' . $name . '&quot;).getAttribute(&quot;class&quot;)!=&quot;disabled&quot;) {we_cmd(\'openColorChooser\',\'' . $name . '\',document.we_form.elements[\'' . $name . '\'].value,&quot;opener.setColorField(\'' . $name . '\');&quot;);}">' . we_html_tools::getPixel($width, $height) . '</a></td></tr></table>';
+	return we_html_tools::hidden($name, $value) . '<table cellpadding="0" cellspacing="0" style="border:1px solid grey;margin:2px 0;"><tr><td' .
+		($disabled ? ' class="disabled"' : '') .
+		' id="color_' . $name . '" ' .
+		($value ? (' style="background-color:' . $value . ';"') : '') .
+		'><a style="cursor:' .
+		($disabled ? "default" : "pointer") .
+		';" href="javascript:if(document.getElementById(&quot;color_' . $name . '&quot;).getAttribute(&quot;class&quot;)!=&quot;disabled&quot;) {we_cmd(\'openColorChooser\',\'' . $name . '\',document.we_form.elements[\'' . $name . '\'].value,&quot;opener.setColorField(\'' . $name . '\');&quot;);}">' . we_html_tools::getPixel($width, $height) . '</a></td></tr></table>';
 }
 
 /**
@@ -610,12 +615,12 @@ function build_dialog($selected_setting = 'ui'){
 	switch($selected_setting){
 		case 'save':
 
-			return create_dialog('', g_l('prefs', '[save_wait]'), array(
+			return create_dialog('', /* g_l('prefs', '[save_wait]'), */ array(
 				array('headline' => '', 'html' => g_l('prefs', '[save]'), 'space' => 0)
 			));
 
 		case 'saved'://SAVED SUCCESSFULLY DIALOG
-			return create_dialog('', g_l('prefs', '[saved_successfully]'), array(
+			return create_dialog('', /* g_l('prefs', '[saved_successfully]'), */ array(
 				array('headline' => '', 'html' => g_l('prefs', '[saved]'), 'space' => 0)
 			));
 
@@ -734,7 +739,8 @@ function build_dialog($selected_setting = 'ui'){
 										break;
 									}
 								}
-								parent.opener.top.we_cmd('openDocselector',document.getElementsByName('newconf[SIDEBAR_DEFAULT_DOCUMENT]').value,'" . FILE_TABLE . "',myWindStr + '.content.document.getElementsByName(\'newconf[SIDEBAR_DEFAULT_DOCUMENT]\')[0].value',myWindStr + '.content.document.getElementsByName(\'ui_sidebar_file_name\')[0].value','','" . session_id() . "', '', '" . we_base_ContentTypes::WEDOCUMENT . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");
+								parent.opener.top.we_cmd('openDocselector',document.getElementsByName('newconf[SIDEBAR_DEFAULT_DOCUMENT]').value,'" . FILE_TABLE . "',myWindStr + '.content.document.getElementsByName(\'newconf[SIDEBAR_DEFAULT_DOCUMENT]\')[0].value',myWindStr + '.content.document.getElementsByName(\'ui_sidebar_file_name\')[0].value','','" . session_id() . "', '', '" . we_base_ContentTypes::WEDOCUMENT . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES")
+								? 0 : 1) . ");
 							}
 
 							function select_seem_start() {
@@ -755,10 +761,12 @@ function build_dialog($selected_setting = 'ui'){
 								if(document.getElementById('seem_start_type').value == 'object') {
 								" .
 						//FIXME frames['content'] will probably not work here
-						(defined("OBJECT_FILES_TABLE") ?
-							"parent.opener.top.we_cmd('openDocselector', document.getElementsByName('seem_start_object')[0].value, '" . OBJECT_FILES_TABLE . "', myWindStr + '.content.document.getElementsByName(\'seem_start_object\')[0].value', myWindStr + '.content.document.getElementsByName(\'seem_start_object_name\')[0].value', '', '" . session_id() . "', '', 'objectFile',1);" : '') .
+						(defined('OBJECT_FILES_TABLE') ?
+							"parent.opener.top.we_cmd('openDocselector', document.getElementsByName('seem_start_object')[0].value, '" . OBJECT_FILES_TABLE . "', myWindStr + '.content.document.getElementsByName(\'seem_start_object\')[0].value', myWindStr + '.content.document.getElementsByName(\'seem_start_object_name\')[0].value', '', '" . session_id() . "', '', 'objectFile',1);"
+								: '') .
 						"} else {
-									parent.opener.top.we_cmd('openDocselector', document.getElementsByName('seem_start_document')[0].value, '" . FILE_TABLE . "', myWindStr + '.content.document.getElementsByName(\'seem_start_document\')[0].value', myWindStr + '.content.document.getElementsByName(\'seem_start_document_name\')[0].value', '', '" . session_id() . "', '', '" . we_base_ContentTypes::WEDOCUMENT . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");
+									parent.opener.top.we_cmd('openDocselector', document.getElementsByName('seem_start_document')[0].value, '" . FILE_TABLE . "', myWindStr + '.content.document.getElementsByName(\'seem_start_document\')[0].value', myWindStr + '.content.document.getElementsByName(\'seem_start_document_name\')[0].value', '', '" . session_id() . "', '', '" . we_base_ContentTypes::WEDOCUMENT . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES")
+								? 0 : 1) . ");
 								}
 							}
 							function show_seem_chooser(val) {
@@ -1040,7 +1048,7 @@ function build_dialog($selected_setting = 'ui'){
 				$_file_tree_count->selectOption($_tree_count);
 			}
 
-			$_settings[] = array('headline' => g_l('prefs', '[tree_title]'), 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[tree_count_description]'), we_html_tools::TYPE_INFO, 200) . '<br/>' . $_file_tree_count->getHtml(), 'space' => 200);
+			$_settings[] = array('headline' => g_l('prefs', '[tree_title]'), 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[tree_count_description]'), we_html_tools::TYPE_INFO, 450) . '<br/>' . $_file_tree_count->getHtml(), 'space' => 200);
 
 
 			//WINDOW DIMENSIONS
@@ -1073,14 +1081,18 @@ function build_dialog($selected_setting = 'ui'){
 			$_window_specify_table->setCol(1, 2, null, we_html_tools::getPixel(10, 1));
 			$_window_specify_table->setCol(3, 2, null, we_html_tools::getPixel(10, 1));
 
-			$_window_specify_table->setCol(1, 3, null, we_html_tools::htmlTextInput('newconf[weWidth]', 6, (get_value('sizeOpt') ? get_value('weWidth') : ''), 4, (get_value('sizeOpt') == 0 ? "disabled=\"disabled\"" : ""), "number", 60));
-			$_window_specify_table->setCol(3, 3, null, we_html_tools::htmlTextInput('newconf[weHeight]', 6, (get_value('sizeOpt') ? get_value('weHeight') : ''), 4, (get_value('sizeOpt') == 0 ? "disabled=\"disabled\"" : ""), "number", 60));
+			$_window_specify_table->setCol(1, 3, null, we_html_tools::htmlTextInput('newconf[weWidth]', 6, (get_value('sizeOpt') ? get_value('weWidth') : ''), 4, (get_value('sizeOpt') == 0
+							? "disabled=\"disabled\"" : ""), "number", 60));
+			$_window_specify_table->setCol(3, 3, null, we_html_tools::htmlTextInput('newconf[weHeight]', 6, (get_value('sizeOpt') ? get_value('weHeight') : ''), 4, (get_value('sizeOpt') == 0
+							? "disabled=\"disabled\"" : ""), "number", 60));
 
 			// Build apply current window dimension
 			$_window_current_dimension_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 1, 2);
 
 			$_window_current_dimension_table->setCol(0, 0, null, we_html_tools::getPixel(50, 1));
-			$_window_current_dimension_table->setCol(0, 1, null, we_html_button::create_button('apply_current_dimension', "javascript:document.getElementsByName('newconf[sizeOpt]')[1].checked = true;document.getElementsByName('newconf[weWidth]')[0].disabled = false;document.getElementsByName('newconf[weHeight]')[0].disabled = false;document.getElementsByName('newconf[weWidth]')[0].value = " . (we_base_browserDetect::isIE() ? "parent.opener.top.document.body.clientWidth" : "parent.opener.top.window.outerWidth") . ";document.getElementsByName('newconf[weHeight]')[0].value = " . (we_base_browserDetect::isIE() ? "parent.opener.top.document.body.clientHeight;" : "parent.opener.top.window.outerHeight;"), true));
+			$_window_current_dimension_table->setCol(0, 1, null, we_html_button::create_button('apply_current_dimension', "javascript:document.getElementsByName('newconf[sizeOpt]')[1].checked = true;document.getElementsByName('newconf[weWidth]')[0].disabled = false;document.getElementsByName('newconf[weHeight]')[0].disabled = false;document.getElementsByName('newconf[weWidth]')[0].value = " . (we_base_browserDetect::isIE()
+							? "parent.opener.top.document.body.clientWidth" : "parent.opener.top.window.outerWidth") . ";document.getElementsByName('newconf[weHeight]')[0].value = " . (we_base_browserDetect::isIE()
+							? "parent.opener.top.document.body.clientHeight;" : "parent.opener.top.window.outerHeight;"), true));
 
 			// Build final HTML code
 			$_window_html = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 5, 1);
@@ -1092,7 +1104,7 @@ function build_dialog($selected_setting = 'ui'){
 
 			// Build dialog
 			$_settings[] = array('headline' => g_l('prefs', '[dimension]'), 'html' => $_window_html->getHtml(), 'space' => 200);
-			return create_dialog('', g_l('prefs', '[tab][ui]'), $_settings, -1, '', '', '', (isset($_needed_JavaScript) ? $_needed_JavaScript : ''));
+			return create_dialog('', /* g_l('prefs', '[tab][ui]'), */ $_settings, -1, '', '', (isset($_needed_JavaScript) ? $_needed_JavaScript : ''));
 
 		case 'defaultAttribs':
 			if(!permissionhandler::hasPerm('ADMINISTRATOR')){
@@ -1175,7 +1187,8 @@ function build_dialog($selected_setting = 'ui'){
 			);
 
 
-			return create_dialog('', 'we:tag Standards'/* g_l('prefs', '[tab][defaultAttribs]') */, $_settings, -1, '', '', '', (isset($_needed_JavaScript) ? $_needed_JavaScript : ''));
+			return create_dialog(''/* , 'we:tag Standards' g_l('prefs', '[tab][defaultAttribs]') */, $_settings, -1, '', '', (isset($_needed_JavaScript) ? $_needed_JavaScript
+						: ''));
 
 		case 'countries':
 			if(!we_base_preferences::userIsAllowed('WE_COUNTRIES_DEFAULT')){
@@ -1207,9 +1220,12 @@ function build_dialog($selected_setting = 'ui'){
 				$i++;
 				$tabC->addRow();
 				$tabC->setCol($i, 0, array('class' => 'defaultfont'), CheckAndConvertISObackend($country));
-				$tabC->setCol($i, 1, array('class' => 'defaultfont'), '<input type="radio" name="newconf[countries][' . $countrycode . ']" value="2" ' . (in_array($countrycode, $countries_top) ? 'checked' : '') . ' > ');
-				$tabC->setCol($i, 2, array('class' => 'defaultfont'), '<input type="radio" name="newconf[countries][' . $countrycode . ']" value="1" ' . (in_array($countrycode, $countries_shown) ? 'checked' : '') . ' > ');
-				$tabC->setCol($i, 3, array('class' => 'defaultfont'), '<input type="radio" name="newconf[countries][' . $countrycode . ']" value="0" ' . (!in_array($countrycode, $countries_top) && !in_array($countrycode, $countries_shown) ? 'checked' : '') . ' > ');
+				$tabC->setCol($i, 1, array('class' => 'defaultfont'), '<input type="radio" name="newconf[countries][' . $countrycode . ']" value="2" ' . (in_array($countrycode, $countries_top)
+							? 'checked' : '') . ' > ');
+				$tabC->setCol($i, 2, array('class' => 'defaultfont'), '<input type="radio" name="newconf[countries][' . $countrycode . ']" value="1" ' . (in_array($countrycode, $countries_shown)
+							? 'checked' : '') . ' > ');
+				$tabC->setCol($i, 3, array('class' => 'defaultfont'), '<input type="radio" name="newconf[countries][' . $countrycode . ']" value="0" ' . (!in_array($countrycode, $countries_top) && !in_array($countrycode, $countries_shown)
+							? 'checked' : '') . ' > ');
 			}
 
 			$_settings = array(
@@ -1218,7 +1234,7 @@ function build_dialog($selected_setting = 'ui'){
 				array('headline' => '', 'html' => $tabC->getHtml(), 'space' => 0, 'noline' => 1),
 			);
 			// Build dialog element if user has permission
-			return create_dialog('', g_l('prefs', '[tab][countries]'), $_settings);
+			return create_dialog(''/* , g_l('prefs', '[tab][countries]') */, $_settings);
 
 		case 'language':
 			if(!we_base_preferences::userIsAllowed('locale_default') && we_base_preferences::userIsAllowed('locale_locales')){
@@ -1275,7 +1291,7 @@ function addLocale() {
 			if(document.getElementById('locale_temp_locales').options.length == 1) {
 				setDefaultLocale(LocaleValue);
 			}
-" . (defined('SPELLCHECKER') ?					"
+" . (defined('SPELLCHECKER') ? "
 			// Wörterbuch hinzufügen
 			if(confirm('{" . g_l('prefs', '[add_dictionary_question]') . "}')) {
 				top.opener.top.we_cmd('spellchecker_edit_ifthere');
@@ -1458,7 +1474,7 @@ Array.prototype.contains = function(obj) {
 				array('headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[langlink_abandoned_options]'), we_html_tools::TYPE_INFO, 450, false), 'space' => 0, 'noline' => 1),
 			);
 
-			return $preJs . create_dialog('', g_l('prefs', '[tab][language]'), $_settings) . $postJs;
+			return $preJs . create_dialog('', /* g_l('prefs', '[tab][language]'), */ $_settings) . $postJs;
 
 		case 'extensions':
 			//FILE EXTENSIONS
@@ -1499,7 +1515,7 @@ Array.prototype.contains = function(obj) {
 				array('headline' => g_l('prefs', '[html_extensions]'), 'html' => $_html_extensions_html, 'space' => 200, 'noline' => 1)
 			);
 
-			return create_dialog('', g_l('prefs', '[tab][extensions]'), $_settings);
+			return create_dialog('', /* g_l('prefs', '[tab][extensions]'), */ $_settings);
 
 		case 'editor':
 			//EDITOR PLUGIN
@@ -1602,7 +1618,8 @@ if(window.onload) {
 			// Build specify font
 			$_template_editor_font_specify_code = we_html_forms::checkbox(1, $_template_editor_font_specify, 'newconf[editorFont]', g_l('prefs', '[specify]'), true, 'defaultfont', "if (document.getElementsByName('newconf[editorFont]')[0].checked) { document.getElementsByName('newconf[editorFontname]')[0].disabled = false;document.getElementsByName('newconf[editorFontsize]')[0].disabled = false; } else { document.getElementsByName('newconf[editorFontname]')[0].disabled = true;document.getElementsByName('newconf[editorFontsize]')[0].disabled = true; }");
 
-			$_template_editor_font_select_box = new we_html_select(array('class' => 'weSelect', 'name' => 'newconf[editorFontname]', 'size' => 1, 'style' => 'width: 135px;', ($_template_editor_font_specify ? 'enabled' : 'disabled') => ($_template_editor_font_specify ? 'enabled' : 'disabled')));
+			$_template_editor_font_select_box = new we_html_select(array('class' => 'weSelect', 'name' => 'newconf[editorFontname]', 'size' => 1, 'style' => 'width: 135px;', ($_template_editor_font_specify
+						? 'enabled' : 'disabled') => ($_template_editor_font_specify ? 'enabled' : 'disabled')));
 
 			$_colorsDisabled = get_value('specify_jeditor_colors') == 0 || (get_value('editorMode') != 'java');
 
@@ -1619,7 +1636,8 @@ if(window.onload) {
 			}
 			$_template_editor_font_select_box->selectOption($_template_editor_font_specify ? get_value('editorFontname') : 'Courier New');
 
-			$_template_editor_font_sizes_select_box = new we_html_select(array('class' => 'weSelect', 'name' => 'newconf[editorFontsize]', 'size' => 1, 'style' => 'width: 135px;', ($_template_editor_font_size_specify ? 'enabled' : 'disabled') => ($_template_editor_font_size_specify ? 'enabled' : 'disabled')));
+			$_template_editor_font_sizes_select_box = new we_html_select(array('class' => 'weSelect', 'name' => 'newconf[editorFontsize]', 'size' => 1, 'style' => 'width: 135px;', ($_template_editor_font_size_specify
+						? 'enabled' : 'disabled') => ($_template_editor_font_size_specify ? 'enabled' : 'disabled')));
 			foreach($_template_font_sizes as $key => $sz){
 				$_template_editor_font_sizes_select_box->addOption($sz, $sz);
 			}
@@ -1694,14 +1712,16 @@ if(window.onload) {
 			// Build specify font
 			$_template_editor_tooltip_font_specify_code = we_html_forms::checkbox(1, $_template_editor_tooltip_font_specify, 'newconf[editorTooltipFont]', g_l('prefs', '[specify]'), true, 'defaultfont', 'if (document.getElementsByName(\'newconf[editorTooltipFont]\')[0].checked) { document.getElementsByName(\'newconf[editorTooltipFontname]\')[0].disabled = false;document.getElementsByName(\'newconf[editorTooltipFontsize]\')[0].disabled = false; } else { document.getElementsByName(\'newconf[editorTooltipFontname]\')[0].disabled = true;document.getElementsByName(\'newconf[editorTooltipFontsize]\')[0].disabled = true; }');
 
-			$_template_editor_tooltip_font_select_box = new we_html_select(array('class' => 'weSelect', 'name' => 'newconf[editorTooltipFontname]', 'size' => 1, 'style' => 'width: 135px;', ($_template_editor_tooltip_font_specify ? 'enabled' : 'disabled') => ($_template_editor_tooltip_font_specify ? 'enabled' : 'disabled')));
+			$_template_editor_tooltip_font_select_box = new we_html_select(array('class' => 'weSelect', 'name' => 'newconf[editorTooltipFontname]', 'size' => 1, 'style' => 'width: 135px;', ($_template_editor_tooltip_font_specify
+						? 'enabled' : 'disabled') => ($_template_editor_tooltip_font_specify ? 'enabled' : 'disabled')));
 
 			foreach($_template_fonts as $font){
 				$_template_editor_tooltip_font_select_box->addOption($font, $font);
 			}
 			$_template_editor_tooltip_font_select_box->selectOption($_template_editor_tooltip_font_specify ? get_value('editorTooltipFontname') : 'Tahoma');
 
-			$_template_editor_tooltip_font_sizes_select_box = new we_html_select(array('class' => 'weSelect editor editor_codemirror2', 'name' => 'newconf[editorTooltipFontsize]', 'size' => 1, 'style' => 'width: 135px;', ($_template_editor_tooltip_font_size_specify ? 'enabled' : 'disabled') => ($_template_editor_tooltip_font_size_specify ? 'enabled' : 'disabled')));
+			$_template_editor_tooltip_font_sizes_select_box = new we_html_select(array('class' => 'weSelect editor editor_codemirror2', 'name' => 'newconf[editorTooltipFontsize]', 'size' => 1, 'style' => 'width: 135px;', ($_template_editor_tooltip_font_size_specify
+						? 'enabled' : 'disabled') => ($_template_editor_tooltip_font_size_specify ? 'enabled' : 'disabled')));
 			$template_toolfont_sizes = array(10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20);
 			foreach($template_toolfont_sizes as $sz){
 				$_template_editor_tooltip_font_sizes_select_box->addOption($sz, $sz);
@@ -1744,9 +1764,7 @@ for(i=0;i<elements.length; ++i){
 				//array('class'=>'editor editor_codemirror2','headline' => g_l('prefs', '[editor_docuclick]'), 'html' => $_template_editor_docuintegration_code, 'space' => 150),
 			);
 
-			$_settings_cookie = weGetCookieVariable("but_settings_editor_predefined");
-
-			return create_dialog("settings_editor_predefined", g_l('prefs', '[tab][editor]'), $_settings, count($_settings), g_l('prefs', '[show_predefined]'), g_l('prefs', '[hide_predefined]'), $_settings_cookie, $_needed_JavaScript);
+			return create_dialog("settings_editor_predefined", /* g_l('prefs', '[tab][editor]'), */ $_settings, count($_settings), g_l('prefs', '[show_predefined]'), g_l('prefs', '[hide_predefined]'), $_needed_JavaScript);
 
 		case "recipients":
 			if(!we_base_preferences::userIsAllowed('FORMMAIL_VIAWEDOC')){
@@ -2090,7 +2108,7 @@ function formmailBlockOnOff() {
 				$_settings[] = array('html' => $_formmail_blocktime->getHtml(), "space" => 250, "headline" => g_l('prefs', '[blockFor]'), "noline" => 1);
 			}
 
-			return create_dialog("", g_l('prefs', '[formmail_recipients]'), $_settings, -1, "", "", false, $_needed_JavaScript);
+			return create_dialog("", /* g_l('prefs', '[formmail_recipients]'), */ $_settings, -1, "", "", $_needed_JavaScript);
 
 		case "modules":
 			if(!we_base_preferences::userIsAllowed('active_integrated_modules')){
@@ -2111,7 +2129,8 @@ function formmailBlockOnOff() {
 				if(!empty($_modInfo["dependson"])){
 					$onclick = "if(this.checked){document.getElementById('newconf[active_integrated_modules][" . $_modInfo["dependson"] . "]').checked=true;}";
 				}
-				$_html .= we_html_forms::checkbox($_modKey, $_modInfo["alwaysActive"] || we_base_moduleInfo::isActive($_modKey), "newconf[active_integrated_modules][$_modKey]", $_modInfo["text"], false, "defaultfont", $onclick, $_modInfo["alwaysActive"]) . ($_modInfo["alwaysActive"] ? "<input type=\"hidden\" name=\"newconf[active_integrated_modules][$_modKey]\" value=\"$_modKey\" />" : "" ) . "<br />";
+				$_html .= we_html_forms::checkbox($_modKey, $_modInfo["alwaysActive"] || we_base_moduleInfo::isActive($_modKey), "newconf[active_integrated_modules][$_modKey]", $_modInfo["text"], false, "defaultfont", $onclick, $_modInfo["alwaysActive"]) . ($_modInfo["alwaysActive"]
+							? "<input type=\"hidden\" name=\"newconf[active_integrated_modules][$_modKey]\" value=\"$_modKey\" />" : "" ) . "<br />";
 			}
 
 			$_settings = array(
@@ -2119,7 +2138,7 @@ function formmailBlockOnOff() {
 				array('headline' => g_l('prefs', '[module_activation][headline]'), "html" => $_html, "space" => 200)
 			);
 
-			return create_dialog('', g_l('prefs', '[module_activation][headline]'), $_settings, -1);
+			return create_dialog('', /* g_l('prefs', '[module_activation][headline]'), */ $_settings, -1);
 
 		case 'proxy':
 			if(!we_base_preferences::userIsAllowed('useproxy')){
@@ -2164,7 +2183,7 @@ function formmailBlockOnOff() {
 				array("headline" => g_l('prefs', '[proxypass]'), "html" => $_proxypass, "space" => 200, "noline" => 1),
 			);
 			// Build dialog element if user has permission
-			return create_dialog("", g_l('prefs', '[tab][proxy]'), $_settings, -1, "", "", false, $_needed_JavaScript);
+			return create_dialog("", /* g_l('prefs', '[tab][proxy]'), */ $_settings, -1, "", "", $_needed_JavaScript);
 
 
 		case "advanced":
@@ -2222,7 +2241,7 @@ function formmailBlockOnOff() {
 				$_Schedtrigger_setting->addOption(SCHEDULER_TRIGGER_POSTDOC, g_l('prefs', '[we_scheduler_trigger][postDoc]')); //post
 				$_Schedtrigger_setting->addOption(SCHEDULER_TRIGGER_CRON, g_l('prefs', '[we_scheduler_trigger][cron]')); //cron
 				$_Schedtrigger_setting->selectOption(get_value("SCHEDULER_TRIGGER"));
-				$tmp = $_Schedtrigger_setting->getHtml() .'<br style="clear:both;"/>' . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[we_scheduler_trigger][description]'), we_html_tools::TYPE_INFO, 430, false);
+				$tmp = $_Schedtrigger_setting->getHtml() . '<br style="clear:both;"/>' . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[we_scheduler_trigger][description]'), we_html_tools::TYPE_INFO, 450, false);
 				$_settings[] = array("headline" => g_l('prefs', '[we_scheduler_trigger][head]'), "html" => $tmp, "space" => 200);
 			}
 			// Build select box
@@ -2240,7 +2259,7 @@ function formmailBlockOnOff() {
 			$NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH->selectOption(get_value("NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH") ? 1 : 0);
 			$_settings[] = array("headline" => g_l('prefs', '[navigation_rules_continue]'), "html" => $NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH->getHtml(), "space" => 200);
 
-			return create_dialog("", g_l('prefs', '[tab][advanced]'), $_settings, -1, '', '', null, isset($_needed_JavaScript) ? $_needed_JavaScript : '');
+			return create_dialog("", /* g_l('prefs', '[tab][advanced]'), */ $_settings, -1, '', '', isset($_needed_JavaScript) ? $_needed_JavaScript : '');
 
 		case "system":
 			if(!permissionhandler::hasPerm("ADMINISTRATOR")){
@@ -2267,7 +2286,8 @@ function formmailBlockOnOff() {
 			$_fileuploader_html1->setCol(0, 0, array('colspan' => 3, 'height' => 10), g_l('prefs', '[upload][jupload]'));
 			$_fileuploader_html1->setCol(1, 0, null, $_fileuploader_use_jupload);
 
-			$_fileuploader_html2 = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0, 'id' => 'file_upload_options', 'style' => 'display: ' . (get_value('USE_JUPLOAD') ? 'none' : 'block')), 5, 3);
+			$_fileuploader_html2 = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0, 'id' => 'file_upload_options', 'style' => 'display: ' . (get_value('USE_JUPLOAD')
+						? 'none' : 'block')), 5, 3);
 			$_fileuploader_html2->setCol(0, 0, array('colspan' => 3, 'height' => 25), '');
 			$_fileuploader_html2->setCol(1, 0, array('colspan' => 3, 'height' => 10), $_fileuploader_use_legacy);
 			$_fileuploader_html2->setCol(2, 0, array('colspan' => 3, 'height' => 15), '');
@@ -2294,8 +2314,8 @@ function formmailBlockOnOff() {
 			$_db_connect->selectOption(DB_CONNECT);
 
 			// Build db charset select box
-			$html_db_charset_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[db_set_charset_information]'), we_html_tools::TYPE_INFO, 240, false, 40) . "<br/>";
-			$html_db_charset_warning = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[db_set_charset_warning]'), we_html_tools::TYPE_ALERT, 240, false, 40) . "<br/>";
+			$html_db_charset_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[db_set_charset_information]'), we_html_tools::TYPE_INFO, 450, false, 60) . "<br/>";
+			$html_db_charset_warning = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[db_set_charset_warning]'), we_html_tools::TYPE_ALERT, 450, false, 60) . "<br/>";
 
 			$_db_set_charset = new we_html_select(array('name' => 'newconf[DB_SET_CHARSET]', 'class' => 'weSelect'));
 
@@ -2355,7 +2375,8 @@ function formmailBlockOnOff() {
 			if(we_base_imageEdit::gd_version() > 0){ //  gd lib ist installiert
 				$wecmdenc1 = we_base_request::encCmd("document.forms[0].elements['newconf[WE_THUMBNAIL_DIRECTORY]'].value");
 				$wecmdenc4 = '';
-				$_but = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button("select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', 'folder', document.forms[0].elements['newconf[WE_THUMBNAIL_DIRECTORY]'].value, '')") : "";
+				$_but = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button("select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', 'folder', document.forms[0].elements['newconf[WE_THUMBNAIL_DIRECTORY]'].value, '')")
+						: "";
 				$_inp = we_html_tools::htmlTextInput("newconf[WE_THUMBNAIL_DIRECTORY]", 12, get_value("WE_THUMBNAIL_DIRECTORY"), "", "", "text", 125);
 				$_thumbnail_dir = we_html_button::create_button_table(array($_inp, $_but));
 			} else { //  gd lib ist nicht installiert
@@ -2369,7 +2390,8 @@ function formmailBlockOnOff() {
 			 */
 			$wecmdenc1 = we_base_request::encCmd("document.forms[0].elements['newconf[WE_TRACKER_DIR]'].value");
 			$wecmdenc4 = '';
-			$_but = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button("select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', 'folder', document.forms[0].elements['newconf[WE_TRACKER_DIR]'].value, '')") : "";
+			$_but = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button("select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', 'folder', document.forms[0].elements['newconf[WE_TRACKER_DIR]'].value, '')")
+					: "";
 			$_inp = we_html_tools::htmlTextInput("newconf[WE_TRACKER_DIR]", 12, get_value("WE_TRACKER_DIR"), "", "", "text", 125);
 			$_we_tracker_dir = we_html_button::create_button_table(array($_inp, $_but));
 
@@ -2381,7 +2403,7 @@ function formmailBlockOnOff() {
 
 			$EXECUTE_HOOKS->selectOption(get_value("EXECUTE_HOOKS") ? 1 : 0);
 
-			$hooksHtml = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[hooks_information]'), we_html_tools::TYPE_INFO, 240, false) . '<br/>' .
+			$hooksHtml = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[hooks_information]'), we_html_tools::TYPE_INFO, 450, false) . '<br/>' .
 				$EXECUTE_HOOKS->getHtml();
 
 			$useSession = new we_html_select(array("name" => "newconf[SYSTEM_WE_SESSION]", "class" => "weSelect"));
@@ -2397,7 +2419,7 @@ function formmailBlockOnOff() {
 			$cryptSession->addOption(1, g_l('prefs', '[yes]'));
 			$cryptSession->selectOption(get_value('SYSTEM_WE_SESSION_CRYPT') ? 1 : 0);
 
-			$sessionHtml = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[session][information]'), we_html_tools::TYPE_INFO, 240, false) . '<br/>' .
+			$sessionHtml = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[session][information]'), we_html_tools::TYPE_INFO, 450, false) . '<br/>' .
 				$useSession->getHtml();
 
 
@@ -2418,7 +2440,7 @@ function formmailBlockOnOff() {
 				array("headline" => g_l('prefs', '[session][crypt]'), "html" => $cryptSession->getHtml(), "space" => 200),
 			);
 			// Build dialog element if user has permission
-			return create_dialog("", g_l('prefs', '[tab][system]'), $_settings, -1, "", "", null, $_needed_JavaScript);
+			return create_dialog("", /* g_l('prefs', '[tab][system]'), */ $_settings, -1, "", "", $_needed_JavaScript);
 
 		case "seolinks":
 			/*			 * *******************************************************************
@@ -2527,7 +2549,7 @@ function formmailBlockOnOff() {
 			$SUPPRESS404CODE->selectOption(get_value('SUPPRESS404CODE'));
 			$_settings[] = array('headline' => g_l('prefs', '[suppress404code]'), 'html' => $SUPPRESS404CODE->getHtml(), 'space' => 200, 'noline' => 0);
 
-			return create_dialog('', g_l('prefs', '[tab][seolinks]'), $_settings, -1, '', '', null, $_needed_JavaScript);
+			return create_dialog('', /* g_l('prefs', '[tab][seolinks]'), */ $_settings, -1, '', '', null, $_needed_JavaScript);
 
 		case 'error_handling':
 			if(!permissionhandler::hasPerm('ADMINISTRATOR')){
@@ -2618,7 +2640,8 @@ function formmailBlockOnOff() {
 			$_error_mail_specify_table->setCol(0, 1, array('class' => 'defaultfont'), g_l('prefs', '[error_mail_address]') . ':');
 			$_error_mail_specify_table->setCol(0, 2, null, we_html_tools::getPixel(6, 1));
 
-			$_error_mail_specify_table->setCol(0, 3, array('align' => 'left'), we_html_tools::htmlTextInput('newconf[WE_ERROR_MAIL_ADDRESS]', 6, (get_value('WE_ERROR_MAIL') ? get_value('WE_ERROR_MAIL_ADDRESS') : ''), 100, 'placeholder="mail@example"', 'email', 195));
+			$_error_mail_specify_table->setCol(0, 3, array('align' => 'left'), we_html_tools::htmlTextInput('newconf[WE_ERROR_MAIL_ADDRESS]', 6, (get_value('WE_ERROR_MAIL')
+							? get_value('WE_ERROR_MAIL_ADDRESS') : ''), 100, 'placeholder="mail@example"', 'email', 195));
 
 			$_error_display_table->setCol(6, 0, null, we_html_tools::getPixel(1, 10));
 			$_error_display_table->setCol(7, 0, null, $_error_mail_specify_table->getHtml());
@@ -2630,9 +2653,7 @@ function formmailBlockOnOff() {
 				array('headline' => g_l('prefs', '[error_displaying]'), 'html' => $_error_display_table->getHtml(), 'space' => 200),
 			);
 
-			$_settings_cookie = weGetCookieVariable('but_settings_error_expert');
-
-			return create_dialog('settings_error_expert', g_l('prefs', '[tab][error_handling]'), $_settings, $_foldAt, g_l('prefs', '[show_expert]'), g_l('prefs', '[hide_expert]'), $_settings_cookie, $_needed_JavaScript);
+			return create_dialog('settings_error_expert', /* g_l('prefs', '[tab][error_handling]'), */ $_settings, $_foldAt, g_l('prefs', '[show_expert]'), g_l('prefs', '[hide_expert]'), $_needed_JavaScript);
 
 		/*		 * *******************************************************************
 		 * Validation (XHTML)
@@ -2665,7 +2686,7 @@ function formmailBlockOnOff() {
 				array('headline' => g_l('prefs', '[message_reporting][headline]'), 'html' => $_html, 'space' => 200),
 			);
 
-			return create_dialog('settings_message_reporting', g_l('prefs', '[tab][message_reporting]'), $_settings, -1, '', '', false, $_js);
+			return create_dialog('settings_message_reporting', /* g_l('prefs', '[tab][message_reporting]'), */ $_settings, -1, '', '', $_js);
 
 		/*		 * *******************************************************************
 		 * Validation (XHTML)
@@ -2734,30 +2755,31 @@ function formmailBlockOnOff() {
 				array('html' => $_xhtml_show_wrong_error_log, 'space' => 220, 'noline' => 1),
 			);
 
-			return create_dialog('', g_l('prefs', '[tab][validation]'), $_settings, -1, '', '', null, $js);
+			return create_dialog('', /* g_l('prefs', '[tab][validation]'), */ $_settings, -1, '', '', $js);
 
 		case 'security':
 			if(!permissionhandler::hasPerm('ADMINISTRATOR')){
 				return;
 			}
+			$row = 0;
 			$customer_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0, 'id' => 'customer_table'), 9, 10);
-			$customer_table->setCol(0, 0, array('class' => 'defaultfont', 'width' => '20px'), '');
-			$customer_table->setCol(0, 1, array('class' => 'defaultfont', 'colspan' => 5), g_l('prefs', '[security][customer][disableLogins]') . ':');
-			$customer_table->setCol(0, 6, array('width' => 300));
-			$customer_table->setCol(1, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][sameIP]'));
-			$customer_table->setCol(1, 2, array('width' => '20px'));
-			$customer_table->setCol(1, 3, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_IP]', 3, get_value('SECURITY_LIMIT_CUSTOMER_IP'), 3, '', 'number', 50));
-			$customer_table->setCol(1, 4, array('class' => 'defaultfont', 'style' => 'width:2em;text-align:center'), '/');
-			$customer_table->setCol(1, 5, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_IP_HOURS]', 3, get_value('SECURITY_LIMIT_CUSTOMER_IP_HOURS'), 3, '', 'number', 50));
-			$customer_table->setCol(1, 6, array('class' => 'defaultfont'), 'h');
+			$customer_table->setCol($row, 0, array('class' => 'defaultfont', 'width' => '20px'), '');
+			$customer_table->setCol($row, 1, array('class' => 'defaultfont', 'colspan' => 5), g_l('prefs', '[security][customer][disableLogins]') . ':');
+			$customer_table->setCol($row, 6, array('width' => 300));
+			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][sameIP]'));
+			$customer_table->setCol($row, 2, array('width' => '20px'));
+			$customer_table->setCol($row, 3, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_IP]', 3, get_value('SECURITY_LIMIT_CUSTOMER_IP'), 3, '', 'number', 50));
+			$customer_table->setCol($row, 4, array('class' => 'defaultfont', 'style' => 'width:2em;text-align:center'), '/');
+			$customer_table->setCol($row, 5, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_IP_HOURS]', 3, get_value('SECURITY_LIMIT_CUSTOMER_IP_HOURS'), 3, '', 'number', 50));
+			$customer_table->setCol($row, 6, array('class' => 'defaultfont'), 'h');
 
-			$customer_table->setCol(2, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][sameUser]'));
-			$customer_table->setCol(2, 3, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_NAME]', 3, get_value('SECURITY_LIMIT_CUSTOMER_NAME'), 3, '', 'number', 50));
-			$customer_table->setCol(2, 4, array('class' => 'defaultfont', 'style' => 'text-align:center;'), '/');
-			$customer_table->setCol(2, 5, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_NAME_HOURS]', 3, get_value('SECURITY_LIMIT_CUSTOMER_NAME_HOURS'), 3, '', 'number', 50));
-			$customer_table->setCol(2, 6, array('class' => 'defaultfont'), 'h');
+			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][sameUser]'));
+			$customer_table->setCol($row, 3, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_NAME]', 3, get_value('SECURITY_LIMIT_CUSTOMER_NAME'), 3, '', 'number', 50));
+			$customer_table->setCol($row, 4, array('class' => 'defaultfont', 'style' => 'text-align:center;'), '/');
+			$customer_table->setCol($row, 5, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_NAME_HOURS]', 3, get_value('SECURITY_LIMIT_CUSTOMER_NAME_HOURS'), 3, '', 'number', 50));
+			$customer_table->setCol($row, 6, array('class' => 'defaultfont'), 'h');
 
-			$customer_table->setCol(4, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][errorPage]'));
+			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][errorPage]'));
 
 			$wecmdenc1 = we_base_request::encCmd("document.forms[0].elements['newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]'].value");
 			$wecmdenc2 = we_base_request::encCmd("document.forms[0].elements['SECURITY_LIMIT_CUSTOMER_REDIRECT_text'].value");
@@ -2773,14 +2795,15 @@ function formmailBlockOnOff() {
 			$yuiSuggest->setSelectButton(we_html_button::create_button('select', "javascript:we_cmd('openDocselector', document.forms[0].elements['newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]'].value, '" . FILE_TABLE . "', '" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "','', '" . we_base_ContentTypes::WEDOCUMENT . "," . we_base_ContentTypes::HTML . "', 1)"), 10);
 			$yuiSuggest->setTrashButton(we_html_button::create_button('image:btn_function_trash', 'javascript:document.forms[0].elements[\'newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]\'].value = 0;document.forms[0].elements[\'SECURITY_LIMIT_CUSTOMER_REDIRECT_text\'].value = \'\''), 4);
 
-			$customer_table->setCol(4, 3, array('class' => 'defaultfont', 'colspan' => 5), $yuiSuggest->getHTML());
+			$customer_table->setCol($row, 3, array('class' => 'defaultfont', 'colspan' => 5), $yuiSuggest->getHTML());
 
+			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][slowDownLogin]'));
+			$customer_table->setCol($row, 3, array(), we_html_tools::htmlTextInput('newconf[SECURITY_DELAY_FAILED_LOGIN]', 3, get_value('SECURITY_DELAY_FAILED_LOGIN'), 3, '', 'number', 50));
+			$customer_table->setCol($row, 4, array(), 's');
 
-
-			$customer_table->setCol(5, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][slowDownLogin]'));
-			$customer_table->setCol(5, 3, array(), we_html_tools::htmlTextInput('newconf[SECURITY_DELAY_FAILED_LOGIN]', 3, get_value('SECURITY_DELAY_FAILED_LOGIN'), 3, '', 'number', 50));
-			$customer_table->setCol(5, 4, array(), 's');
-
+			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][deleteSession]'));
+			
+			$customer_table->setCol($row, 3, array(), we_html_tools::htmlSelect('newconf[SECURITY_DELETE_SESSION]', array(g_l('prefs', '[no]'), g_l('prefs', '[yes]')), 1, get_value('SECURITY_DELETE_SESSION')));
 
 			$encryption = new we_html_select(array('name' => 'newconf[SECURITY_ENCRYPTION_TYPE_PASSWORD]', 'class' => 'weSelect'));
 			$encryption->addOption(we_customer_customer::ENCRYPT_NONE, g_l('prefs', '[security][encryption][type][0]'));
@@ -2791,7 +2814,7 @@ function formmailBlockOnOff() {
 			$encryption->addOption(we_customer_customer::ENCRYPT_HASH, g_l('prefs', '[security][encryption][type][2]'));
 			$encryption->selectOption(get_value('SECURITY_ENCRYPTION_TYPE_PASSWORD'));
 
-			$encryptinfo = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[security][encryption][hint]'), we_html_tools::TYPE_ALERT, 240, false, 40) . '<br/>';
+			$encryptinfo = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[security][encryption][hint]'), we_html_tools::TYPE_ALERT, 450, false, 60) . '<br/>';
 			$cryptkey = get_value('SECURITY_ENCRYPTION_KEY');
 			$encryptionKey = we_html_tools::htmlTextInput('newconf[SECURITY_ENCRYPTION_KEY]', 30, ($cryptkey ? $cryptkey : bin2hex(we_customer_customer::cryptGetIV(56))), 112) . ' (hex)'; //+Button vorhandene Passwörter convertieren
 
@@ -2808,7 +2831,7 @@ function formmailBlockOnOff() {
 				array('headline' => g_l('prefs', '[security][encryption][symmetricKey]'), 'html' => $encryptionKey, 'space' => 120),
 				array('headline' => g_l('prefs', '[security][storeSessionPassword][title]'), 'html' => $storeSessionPassword->getHtml(), 'space' => 120),
 			);
-			return create_dialog('settings_security', g_l('prefs', '[tab][security]'), $settings);
+			return create_dialog('settings_security', /* g_l('prefs', '[tab][security]'), */ $settings);
 
 		case 'email':
 			/**
@@ -2821,7 +2844,8 @@ function formmailBlockOnOff() {
 			if(permissionhandler::hasPerm('ADMINISTRATOR')){
 				$_emailSelect = we_html_tools::htmlSelect('newconf[WE_MAILER]', array('php' => g_l('prefs', '[mailer_php]'), 'smtp' => g_l('prefs', '[mailer_smtp]')), 1, get_value('WE_MAILER'), false, array("onchange" => "var el = document.getElementById('smtp_table').style; if(this.value=='smtp') el.display='block'; else el.display='none';"), 'value', 300, 'defaultfont');
 
-				$_smtp_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0, 'id' => 'smtp_table', 'width' => 300, 'style' => 'display: ' . ((get_value('WE_MAILER') == 'php') ? 'none' : 'block') . ';'), 9, 3);
+				$_smtp_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0, 'id' => 'smtp_table', 'width' => 300, 'style' => 'display: ' . ((get_value('WE_MAILER') == 'php')
+							? 'none' : 'block') . ';'), 9, 3);
 				$_smtp_table->setCol(0, 0, array('class' => 'defaultfont'), g_l('prefs', '[smtp_server]'));
 				$_smtp_table->setCol(0, 1, array('class' => 'defaultfont'), we_html_tools::getPixel(10, 5));
 				$_smtp_table->setCol(0, 2, array('align' => 'right'), we_html_tools::htmlTextInput('newconf[SMTP_SERVER]', 24, get_value('SMTP_SERVER'), 180, '', 'text', 180));
@@ -2837,7 +2861,8 @@ function formmailBlockOnOff() {
 				$_smtp_table->setCol(4, 2, array('align' => 'left'), $_encryptSelect);
 
 
-				$_auth_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0, 'id' => 'auth_table', 'width' => 200, 'style' => 'display: ' . ((get_value('SMTP_AUTH') == 1) ? 'block' : 'none') . ';'), 4, 3);
+				$_auth_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0, 'id' => 'auth_table', 'width' => 200, 'style' => 'display: ' . ((get_value('SMTP_AUTH') == 1)
+							? 'block' : 'none') . ';'), 4, 3);
 				$_auth_table->setCol(0, 0, array('class' => 'defaultfont'), g_l('prefs', '[smtp_username]'));
 				$_auth_table->setCol(0, 1, array('class' => 'defaultfont'), we_html_tools::getPixel(10, 10));
 				$_auth_table->setCol(0, 2, array('align' => 'right'), we_html_tools::htmlTextInput('newconf[SMTP_USERNAME]', 14, get_value('SMTP_USERNAME'), 105, '', 'text', 105));
@@ -2854,7 +2879,7 @@ function formmailBlockOnOff() {
 				$_settings[] = array('headline' => '', 'html' => $_smtp_table->getHtml(), 'space' => 120, 'noline' => 1);
 			}
 
-			return create_dialog('settings_email', g_l('prefs', '[email]'), $_settings);
+			return create_dialog('settings_email', /* g_l('prefs', '[email]'), */ $_settings);
 
 		case 'versions':
 			if(!permissionhandler::hasPerm('ADMINISTRATOR')){
@@ -3092,7 +3117,7 @@ function openVersionWizard() {
 				),
 			);
 
-			return create_dialog('', g_l('prefs', '[tab][validation]'), $_settings, -1, '', '', null, $js);
+			return create_dialog('', /* g_l('prefs', '[tab][validation]'), */ $_settings, -1, '', '', $js);
 	}
 
 	return 'No rights.';
@@ -3251,7 +3276,8 @@ setTimeout(function(){
 
 function setColorField(name) {
 	document.getElementById("color_" + name).style.backgroundColor=document.we_form.elements[name].value;
-}' . ($acError ? we_message_reporting::getShowMessageCall(g_l('alert', '[field_in_tab_notvalid_pre]') . "\\n\\n" . $acErrorMsg . "\\n" . g_l('alert', '[field_in_tab_notvalid_post]'), we_message_reporting::WE_MESSAGE_ERROR) : ""));
+}' . ($acError ? we_message_reporting::getShowMessageCall(g_l('alert', '[field_in_tab_notvalid_pre]') . "\\n\\n" . $acErrorMsg . "\\n" . g_l('alert', '[field_in_tab_notvalid_post]'), we_message_reporting::WE_MESSAGE_ERROR)
+					: ""));
 
 
 	echo STYLESHEET .

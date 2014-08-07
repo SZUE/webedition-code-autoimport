@@ -30,7 +30,7 @@ $script = '';
 
 if(($table == TEMPLATES_TABLE && !permissionhandler::hasPerm("MOVE_TEMPLATE")) ||
 	($table == FILE_TABLE && !permissionhandler::hasPerm("MOVE_DOCUMENT")) ||
-	(defined("OBJECT_TABLE") && $table == OBJECT_TABLE && !permissionhandler::hasPerm("MOVE_OBJECTFILES"))){
+	(defined('OBJECT_TABLE') && $table == OBJECT_TABLE && !permissionhandler::hasPerm("MOVE_OBJECTFILES"))){
 	require_once (WE_USERS_MODULE_PATH . 'we_users_permmessage.inc.php');
 	exit();
 }
@@ -221,7 +221,7 @@ switch($table){
 	case TEMPLATES_TABLE:
 		$_type = g_l('global', "[templates]");
 		break;
-	case defined("OBJECT_TABLE") ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE':
+	case defined('OBJECT_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE':
 		$_type = g_l('global', "[objects]");
 		break;
 	default:

@@ -40,8 +40,8 @@ if(we_base_request::_(we_base_request::BOOL, "ok")){
 	$we_doc->elements[$name . 'xml']['dat'] = we_base_request::_(we_base_request::TOGGLE, 'xml');
 	$we_doc->elements[$name . 'dhtmledit']['dat'] = we_base_request::_(we_base_request::TOGGLE, 'dhtmledit');
 	$we_doc->elements[$name . 'showmenus']['dat'] = we_base_request::_(we_base_request::TOGGLE, 'showmenus');
-	$we_doc->elements[$name . 'commands']['dat'] = we_base_request::_(we_base_request::RAW, 'commands');
-	$we_doc->elements[$name . 'contextmenu']['dat'] = we_base_request::_(we_base_request::RAW, 'contextmenu');
+	$we_doc->elements[$name . 'commands']['dat'] = we_base_request::_(we_base_request::STRINGC, 'commands');
+	$we_doc->elements[$name . 'contextmenu']['dat'] = we_base_request::_(we_base_request::STRINGC, 'contextmenu');
 	$we_doc->elements[$name . 'height']['dat'] = we_base_request::_(we_base_request::INT, 'height', 50);
 	$we_doc->elements[$name . 'width']['dat'] = we_base_request::_(we_base_request::INT, 'width', 200);
 	$we_doc->elements[$name . 'bgcolor']['dat'] = we_base_request::_(we_base_request::STRING, 'bgcolor', '');

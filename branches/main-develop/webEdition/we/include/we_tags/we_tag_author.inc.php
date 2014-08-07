@@ -40,8 +40,8 @@ function we_tag_author($attribs){
 				case 'we_object_tag'://we:object
 					$objID = $GLOBALS['lv']->id;
 					break;
-				case 'we_search_listview'://listview type=search
-					$oid = f('SELECT OID FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($GLOBALS['lv']->getDBf('WE_ID')) . ' OR OID=' . intval($GLOBALS['lv']->getDBf('WE_ID')), 'OID', $GLOBALS['DB_WE']);
+				case 'we_listview_search'://listview type=search
+					$oid = f('SELECT OID FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($GLOBALS['lv']->getDBf('WE_ID')) . ' OR OID=' . intval($GLOBALS['lv']->getDBf('WE_ID')));
 					if($oid > 0){//object
 						$objID = $GLOBALS['lv']->getDBf('WE_ID');
 					} else {//document
@@ -53,10 +53,10 @@ function we_tag_author($attribs){
 					$authorID = $GLOBALS['lv']->f($author);
 			}
 
-			if(empty($authorID)){
+			if(!$authorID){
 				$authorID = (isset($objID) && $objID > 0 ?
-						f('SELECT ' . $author . ' FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($objID), $author, $GLOBALS['DB_WE']) :
-						f('SELECT ' . $author . ' FROM ' . FILE_TABLE . ' WHERE ID=' . intval($docID), $author, $GLOBALS['DB_WE']));
+						f('SELECT ' . $author . ' FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($objID)) :
+						f('SELECT ' . $author . ' FROM ' . FILE_TABLE . ' WHERE ID=' . intval($docID)));
 			}
 
 			break;

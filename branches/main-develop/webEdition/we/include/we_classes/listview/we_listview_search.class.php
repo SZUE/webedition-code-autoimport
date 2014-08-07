@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -24,15 +23,14 @@
  */
 
 /**
- * class    we_search_listview
+ * class
  * @desc    class for tag <we:listview type="search">
  *          the difference to the normal listview is, that you can only
  *          display the fields from the index table (tblIndex) which are
  *          Title, Description we_text, we_path
  *
  */
-class we_search_listview extends listviewBase{
-
+class we_listview_search extends we_listview_base{
 	var $docType = ''; /* doctype string */
 	var $class = 0; /* ID of a class. Search only in Objects of this class */
 	var $triggerID = 0; /* ID of a document which to use for displaying thr detail page */
@@ -43,7 +41,7 @@ class we_search_listview extends listviewBase{
 	var $hidedirindex = false;
 
 	/**
-	 * we_search_listview()
+	 *
 	 * @desc    constructor of class
 	 *
 	 * @param   name         string - name of listview
@@ -61,9 +59,8 @@ class we_search_listview extends listviewBase{
 	 *
 	 */
 	function __construct($name, $rows, $offset, $order, $desc, $docType, $class, $cats, $catOr, $casesensitive, $workspaceID, $triggerID, $cols, $customerFilterType, $languages, $hidedirindex, $objectseourls){
-		parent::__construct($name, $rows, $offset, $order, $desc, $cats, $catOr, $workspaceID, $cols);
+		parent::__construct($name, $rows, $offset, $order, $desc, $cats, $catOr, $workspaceID, $cols, '', '', '', '', '', $customerFilterType);
 
-		$this->customerFilterType = $customerFilterType;
 		$this->triggerID = $triggerID;
 		$this->objectseourls = $objectseourls;
 		$this->hidedirindex = $hidedirindex;
@@ -181,9 +178,11 @@ class we_search_listview extends listviewBase{
 		}
 
 		if(isset($bedingungen_sql) && count($bedingungen_sql) > 0){
-			$bedingung_sql1 = " ( " . implode($bedingungen_sql, " AND ") . (isset($bedingungen3_sql) && count($bedingungen3_sql) ? (" AND " . implode($bedingungen3_sql, " AND ")) : "") . " ) ";
+			$bedingung_sql1 = " ( " . implode($bedingungen_sql, " AND ") . (isset($bedingungen3_sql) && count($bedingungen3_sql) ? (" AND " . implode($bedingungen3_sql, " AND "))
+						: "") . " ) ";
 		} else if(isset($bedingungen2_sql) && count($bedingungen2_sql) > 0){
-			$bedingung_sql2 = " ( ( " . implode($bedingungen2_sql, " OR ") . (isset($bedingungen3_sql) && count($bedingungen3_sql) ? (" ) AND " . implode($bedingungen3_sql, " AND ")) : " ) ") . " ) ";
+			$bedingung_sql2 = " ( ( " . implode($bedingungen2_sql, " OR ") . (isset($bedingungen3_sql) && count($bedingungen3_sql) ? (" ) AND " . implode($bedingungen3_sql, " AND "))
+						: " ) ") . " ) ";
 		} else if(isset($bedingungen3_sql) && count($bedingungen3_sql) > 0){
 			$bedingung_sql2 = implode($bedingungen3_sql, " AND ");
 		}
@@ -205,18 +204,19 @@ class we_search_listview extends listviewBase{
 			$ws_where = '';
 		}
 
-		$weDocumentCustomerFilter_tail = '';
-		if($this->customerFilterType != 'false' && defined("CUSTOMER_FILTER_TABLE")){
-			$weDocumentCustomerFilter_tail = we_customer_documentFilter::getConditionForListviewQuery($this);
-		}
+		$weDocumentCustomerFilter_tail = (defined('CUSTOMER_FILTER_TABLE') ?
+				we_customer_documentFilter::getConditionForListviewQuery($this->customerFilterType, $this->ClassName) :
+				'');
 
 		$this->anz_all = f('SELECT COUNT(1) FROM ' . INDEX_TABLE . " WHERE $bedingung_sql $dtcl_query $cat_tail $ws_where $where_lang $weDocumentCustomerFilter_tail", '', $this->DB_WE);
 
-		$this->DB_WE->query('SELECT ' . INDEX_TABLE . ".Category as Category, " . INDEX_TABLE . ".DID as DID," . INDEX_TABLE . ".OID as OID," . INDEX_TABLE . ".ClassID as ClassID," . INDEX_TABLE . ".Text as Text," . INDEX_TABLE . ".Workspace as Workspace," . INDEX_TABLE . ".WorkspaceID as WorkspaceID," . INDEX_TABLE . ".Title as Title," . INDEX_TABLE . ".Description as Description," . INDEX_TABLE . ".Path as Path," . INDEX_TABLE . '.Language as Language, ' . ($random ? 'RAND() ' : $ranking) . ' AS ranking FROM ' . INDEX_TABLE . " WHERE $bedingung_sql $dtcl_query $cat_tail $ws_where $where_lang $weDocumentCustomerFilter_tail ORDER BY ranking" . ($this->order ? ("," . $this->order) : "") . (($this->maxItemsPerPage > 0) ? (" LIMIT " . intval($this->start) . ',' . intval($this->maxItemsPerPage)) : ""));
+		$this->DB_WE->query('SELECT ' . INDEX_TABLE . ".Category as Category, " . INDEX_TABLE . ".DID as DID," . INDEX_TABLE . ".OID as OID," . INDEX_TABLE . ".ClassID as ClassID," . INDEX_TABLE . ".Text as Text," . INDEX_TABLE . ".Workspace as Workspace," . INDEX_TABLE . ".WorkspaceID as WorkspaceID," . INDEX_TABLE . ".Title as Title," . INDEX_TABLE . ".Description as Description," . INDEX_TABLE . ".Path as Path," . INDEX_TABLE . '.Language as Language, ' . ($random
+					? 'RAND() ' : $ranking) . ' AS ranking FROM ' . INDEX_TABLE . " WHERE $bedingung_sql $dtcl_query $cat_tail $ws_where $where_lang $weDocumentCustomerFilter_tail ORDER BY ranking" . ($this->order
+					? ("," . $this->order) : "") . (($this->maxItemsPerPage > 0) ? (" LIMIT " . intval($this->start) . ',' . intval($this->maxItemsPerPage)) : ""));
 		$this->anz = $this->DB_WE->num_rows();
 	}
 
-	function next_record(){
+	public function next_record(){
 		$ret = $this->DB_WE->next_record();
 		if($ret){
 			if($this->DB_WE->Record['OID'] && $this->objectseourls && show_SeoLinks()){
@@ -250,22 +250,23 @@ class we_search_listview extends listviewBase{
 			$this->DB_WE->Record["WE_LANGUAGE"] = $this->DB_WE->Record["Language"];
 			$this->DB_WE->Record["WE_TEXT"] = $this->DB_WE->Record["Text"];
 			$this->DB_WE->Record["wedoc_Category"] = $this->DB_WE->Record["Category"];
-			$this->DB_WE->Record["WE_ID"] = (isset($this->DB_WE->Record["DID"]) && $this->DB_WE->Record["DID"]) ? $this->DB_WE->Record["DID"] : (isset($this->DB_WE->Record["OID"]) ? $this->DB_WE->Record["OID"] : 0);
+			$this->DB_WE->Record["WE_ID"] = (isset($this->DB_WE->Record["DID"]) && $this->DB_WE->Record["DID"]) ? $this->DB_WE->Record["DID"] : (isset($this->DB_WE->Record["OID"])
+						? $this->DB_WE->Record["OID"] : 0);
 			$this->count++;
 			return true;
-		} else {
-			$this->stop_next_row = $this->shouldPrintEndTR();
-			if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
-				$this->DB_WE->Record = array(
-					"WE_LANGUAGE" => '',
-					"WE_PATH" => '',
-					"WE_TEXT" => '',
-					"WE_ID" => '',
-				);
-				$this->count++;
-				return true;
-			}
 		}
+		$this->stop_next_row = $this->shouldPrintEndTR();
+		if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
+			$this->DB_WE->Record = array(
+				"WE_LANGUAGE" => '',
+				"WE_PATH" => '',
+				"WE_TEXT" => '',
+				"WE_ID" => '',
+			);
+			$this->count++;
+			return true;
+		}
+
 		return false;
 	}
 

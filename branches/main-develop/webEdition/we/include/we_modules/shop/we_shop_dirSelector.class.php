@@ -29,7 +29,7 @@ class we_shop_dirSelector extends we_selector_multiple{
 		$this->title = g_l('fileselector', '[shopDirSelector][title]');
 	}
 
-	function printFramesetJSDoClickFn(){
+	protected function printFramesetJSDoClickFn(){
 		return we_html_element::jsElement('
 function doClick(id,ct){
 	if(ct==1){

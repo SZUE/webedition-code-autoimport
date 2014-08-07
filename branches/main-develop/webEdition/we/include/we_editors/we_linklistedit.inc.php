@@ -155,7 +155,7 @@ if(we_base_request::_(we_base_request::BOOL, 'ok')){
 		'img_title' => we_base_request::_(we_base_request::STRING, 'img_title'),
 	);
 
-	if(($linklist = we_base_request::_(we_base_request::RAW, 'linklist')) !== false){
+	if(($linklist = we_base_request::_(we_base_request::SERIALIZED_KEEP, 'linklist')) !== false){
 		//  set $nr to global, because it is used everywhere;
 		$nr = we_base_request::_(we_base_request::INT, 'nr', 0);
 		$ll = new we_base_linklist($linklist);
@@ -514,7 +514,7 @@ if($ok && $cmd == "edit_link_at_class"){
 <option value="' . we_base_link::TYPE_EXT . '"' . (($type == we_base_link::TYPE_EXT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[external_link]") . '</option>
 <option value="' . we_base_link::TYPE_INT . '"' . (($type == we_base_link::TYPE_INT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[internal_link]") . '</option>
 <option value="' . we_base_link::TYPE_MAIL . '"' . (($type == we_base_link::TYPE_MAIL) ? ' selected="selected"' : '') . '>' . g_l('wysiwyg', "[emaillink]") . '</option>
-' . (defined("OBJECT_TABLE") ? '
+' . (defined('OBJECT_TABLE') ? '
 <option value="' . we_base_link::TYPE_OBJ . '"' . (($type == we_base_link::TYPE_OBJ) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[objectFile]") . '</option>' : '') . '
 </select>';
 
@@ -542,7 +542,7 @@ if($ok && $cmd == "edit_link_at_class"){
 		$yuiSuggest->setSelectButton($but, 10);
 
 		$intLink = $yuiSuggest->getHTML();
-		if(defined("OBJECT_TABLE")){
+		if(defined('OBJECT_TABLE')){
 			$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['obj_id'].value");
 			$wecmdenc2 = we_base_request::encCmd("document.forms['we_form'].elements['href_obj'].value");
 			$but = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.forms[0].obj_id.value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "','','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");");
@@ -729,7 +729,7 @@ if($ok && $cmd == "edit_link_at_class"){
 	<tr id="mail_tr" style="display:' . (($type == we_base_link::TYPE_MAIL) ? "table-row" : "none") . ';">
 		<td height="35" valign="top"><div style="margin-top:2px;">' . $emailLink . '</div></td>
 	</tr>
-' . (defined("OBJECT_TABLE") ? '
+' . (defined('OBJECT_TABLE') ? '
 	<tr id="obj_tr" style="display:' . (($type == we_base_link::TYPE_OBJ) ? "table-row" : "none") . ';">
 		<td height="35" valign="top">' . $objLink . '</td>
 	</tr>

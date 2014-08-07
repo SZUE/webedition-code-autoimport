@@ -708,7 +708,7 @@ function fsubmit(e) {
 
 	function formCreateCategoryChooser(){
 
-		$addbut = we_html_button::create_button("add", "javascript:we_cmd('openCatselector',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);')");
+		$addbut = we_html_button::create_button("add", "javascript:we_cmd('openCatselector',-1,'" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);')");
 		$del_but = addslashes(
 			we_html_element::htmlImg(
 				array(

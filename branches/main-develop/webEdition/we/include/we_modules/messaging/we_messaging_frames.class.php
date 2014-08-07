@@ -818,7 +818,6 @@ function msg_start() {
 	}
 
 	function getHTMLCmd(){
-
 		return $this->getHTMLDocument(we_html_element::htmlBody(array(), ''), $this->View->processCommands());
 	}
 

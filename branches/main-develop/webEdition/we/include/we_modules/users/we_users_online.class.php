@@ -50,7 +50,7 @@ class we_users_online{
 			}
 			$_row .= '<tr><td width="30"><img src="' . IMAGE_DIR . 'pd/usr/user_' . $colors[( ++$i) % $colorCount] . '.gif" width="24" height="29" /></td>' .
 				'<td valign="middle" class="middlefont" style="font-weight:' . $_fontWeight . ';">' . $DB_WE->f("username") . '</td>';
-			if(defined("MESSAGES_TABLE")){
+			if(defined('MESSAGES_TABLE')){
 				$_row .= '<td valign="middle" width="24"><a href="javascript:newMessage(\'' . $DB_WE->f("username") . '\');">' .
 					'<img src="' . IMAGE_DIR . 'pd/usr/user_mail.gif" border="0" width="24" height="20" alt="" /></a><td>';
 			}

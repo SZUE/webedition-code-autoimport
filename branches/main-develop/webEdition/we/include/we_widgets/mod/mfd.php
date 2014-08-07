@@ -104,7 +104,7 @@ if(defined('FILE_TABLE') && $bTypeDoc && permissionhandler::hasPerm('CAN_SEE_DOC
 	}
 	$workspace[FILE_TABLE] = implode(' OR ', $paths);
 }
-if(defined("OBJECT_FILES_TABLE") && $bTypeObj && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES')){
+if(defined('OBJECT_FILES_TABLE') && $bTypeObj && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES')){
 	$doctable[] = '"' . stripTblPrefix(OBJECT_FILES_TABLE) . '"';
 	$paths = array();
 	foreach(makeArrayFromCSV(get_ws(OBJECT_FILES_TABLE)) as $id){
@@ -112,10 +112,10 @@ if(defined("OBJECT_FILES_TABLE") && $bTypeObj && permissionhandler::hasPerm('CAN
 	}
 	$workspace[OBJECT_FILES_TABLE] = implode(' OR ', $paths);
 }
-if(defined("TEMPLATES_TABLE") && $bTypeTpl && permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
+if(defined('TEMPLATES_TABLE') && $bTypeTpl && permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
 	$doctable[] = '"' . stripTblPrefix(TEMPLATES_TABLE) . '"';
 }
-if(defined("OBJECT_TABLE") && $bTypeCls && permissionhandler::hasPerm('CAN_SEE_OBJECTS') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
+if(defined('OBJECT_TABLE') && $bTypeCls && permissionhandler::hasPerm('CAN_SEE_OBJECTS') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
 	$doctable[] = '"' . stripTblPrefix(OBJECT_TABLE) . '"';
 }
 

@@ -24,7 +24,7 @@
  */
 class we_customer_selector extends we_users_selector{
 
-	function __construct($id, $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $rootDirID = 0, $filter = '', $multiple = true){
+	public function __construct($id, $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $rootDirID = 0, $filter = '', $multiple = true){
 		$mid = (is_numeric($id) ? $id : 0);
 
 		parent::__construct($mid, CUSTOMER_TABLE, $JSIDName, $JSTextName, $JSCommand, $order, $rootDirID, $multiple, $filter);
@@ -38,13 +38,13 @@ class we_customer_selector extends we_users_selector{
 		}
 	}
 
-	function setDirAndID(){
+	protected function setDirAndID(){
 		if(!$this->dir){
 			parent::setDirAndID();
 		}
 	}
 
-	function setDefaultDirAndID($setLastDir){
+	protected function setDefaultDirAndID($setLastDir){
 		if($setLastDir){
 			$this->dir = $_SESSION['weS']['we_fs_lastDir'][$this->table];
 			if($this->dir == ''){

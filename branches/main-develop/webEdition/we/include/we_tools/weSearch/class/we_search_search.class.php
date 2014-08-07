@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_search_search extends we_search{
-
 	//for doclist!
 	/**
 	 * @var integer: number of searchfield-rows
@@ -260,7 +259,7 @@ class we_search_search extends we_search{
 			}
 		}
 
-		return (!empty($titles) ? ' ' . $table . '.ID IN (' . makeCSVFromArray($titles) . ')' : '');
+		return ($titles ? ' ' . $table . '.ID IN (' . makeCSVFromArray($titles) . ')' : '');
 	}
 
 	function searchCategory($keyword, $table){
@@ -455,7 +454,7 @@ class we_search_search extends we_search{
 
 		$modConst[] = $versions->modFields[$text]['const'];
 
-		if(!empty($modConst)){
+		if($modConst){
 			$modifications = $ids = $_ids = array();
 			$db->query('SELECT ID, modifications FROM ' . VERSIONS_TABLE . ' WHERE modifications!=""');
 
@@ -477,7 +476,7 @@ class we_search_search extends we_search{
 					$_ids[] = $val;
 				}
 				$arr = array();
-				if(!empty($_ids[0])){
+				if($_ids[0]){
 					//more then one field
 					$mtof = false;
 					foreach($_ids as $k => $v){
@@ -494,7 +493,7 @@ class we_search_search extends we_search{
 					}
 					$where .= ' AND ' . ($mtof ?
 							$table . '.ID IN (' . makeCSVFromArray($arr) . ') ' :
-							(!empty($_ids[0]) ?
+							($_ids[0] ?
 								$table . '.ID IN (' . makeCSVFromArray($_ids[0]) . ') ' :
 								' 0'));
 				}
@@ -517,30 +516,38 @@ class we_search_search extends we_search{
 				}
 
 				if($table == FILE_TABLE){
-					$_db->query('SELECT DocumentID, DocumentObject  FROM ' . TEMPORARY_DOC_TABLE . " WHERE DocumentObject LIKE '%" . $_db->escape(trim($keyword)) . "%' AND DocTable = '" . $this->db->escape(stripTblPrefix($table)) . "' AND Active = 1");
+					$_db->query('SELECT DocumentID, DocumentObject  FROM ' . TEMPORARY_DOC_TABLE . " WHERE DocumentObject LIKE '%" . $_db->escape(trim($keyword)) . "%' AND DocTable='" . $this->db->escape(stripTblPrefix($table)) . "' AND Active = 1");
 					while($_db->next_record()){
 						$contents[] = $_db->f('DocumentID');
 					}
 				}
 
-				return (!empty($contents) ? ' ' . $table . '.ID IN (' . makeCSVFromArray($contents) . ')' : '');
+				return ($contents ? ' ' . $table . '.ID IN (' . makeCSVFromArray($contents) . ')' : '');
 			case VERSIONS_TABLE:
-				$_db->query('SELECT ID, documentElements  FROM ' . VERSIONS_TABLE);
+				$_db->query('SELECT ID,documentElements  FROM ' . VERSIONS_TABLE);
 				while($_db->next_record()){
-					$tempDoc[0]['elements'] = unserialize(html_entity_decode(urldecode($_db->f('documentElements')), ENT_QUOTES));
+					$elements = unserialize((substr_compare($_db->f('documentElements'), 'a%3A', 0, 4) == 0 ?
+							html_entity_decode(urldecode($_db->f('documentElements')), ENT_QUOTES) :
+							gzuncompress($_db->f('documentElements')))
+					);
 
-					foreach($tempDoc[0]['elements'] as $k => $v){
-						if($k != "Title" &&
-							$k != "Charset" &&
-							isset($tempDoc[0]['elements'][$k]['dat']) &&
-							stristr($tempDoc[0]['elements'][$k]['dat'], $keyword)){
-							$contents[] = $_db->f('ID');
+					if(is_array($elements)){
+						foreach($elements as $k => $v){
+							switch($k){
+								case 'Title':
+								case 'Charset':
+									break;
+								default:
+									if(isset($elements[$k]['dat']) &&
+										stristr($elements[$k]['dat'], $keyword)){
+										$contents[] = $_db->f('ID');
+									}
+							}
 						}
 					}
 				}
-
-				return (!empty($contents) ? "  " . $table . '.ID IN (' . makeCSVFromArray($contents) . ')' : '');
-			case (defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
+				return ($contents ? "  " . $table . '.ID IN (' . makeCSVFromArray($contents) . ')' : '');
+			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 				$Ids = array();
 				$regs = array();
 
@@ -590,7 +597,7 @@ class we_search_search extends we_search{
 					$Ids[] = $_db->f('DocumentID');
 				}
 
-				return (!empty($Ids) ? '  ' . OBJECT_FILES_TABLE . '.ID IN (' . makeCSVFromArray($Ids) . ')' : '');
+				return ($Ids ? '  ' . OBJECT_FILES_TABLE . '.ID IN (' . makeCSVFromArray($Ids) . ')' : '');
 		}
 
 		return '';
@@ -645,7 +652,7 @@ class we_search_search extends we_search{
 						$titles[$this->db->f('DocumentID')] = $tempDoc[0]['elements']['Title']['dat'];
 					}
 				}
-				if(is_array($titles) && !empty($titles)){
+				if(is_array($titles) && $titles){
 					foreach($titles as $k => $v){
 						if($v != ""){
 							$this->db->query('UPDATE SEARCH_TEMP_TABLE  SET `SiteTitle` = "' . $this->db->escape($v) . '" WHERE docID = ' . intval($k) . ' AND DocTable = "' . FILE_TABLE . '" LIMIT 1');

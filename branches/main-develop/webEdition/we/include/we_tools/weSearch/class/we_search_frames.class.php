@@ -265,7 +265,7 @@ class we_search_frames extends we_tool_frames{
 			'pnt' => 'edbody',
 			'tabnr' => $tabNr,
 			'vernr' => we_base_request::_(we_base_request::INT, 'vernr', 0),
-			'delayParam' => we_base_request::_(we_base_request::RAW, 'delayParam', '')
+			'delayParam' => we_base_request::_(we_base_request::INT, 'delayParam', '')
 		);
 
 		return $this->View->getCommonHiddens($hiddens) .

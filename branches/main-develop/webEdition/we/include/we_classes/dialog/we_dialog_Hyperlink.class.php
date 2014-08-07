@@ -248,7 +248,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			$objID = $this->getHttpVar(we_base_request::INT, "objID", 0);
 			switch($type){
 				case we_base_link::TYPE_EXT:
-					$extHref = $this->getHttpVar(we_base_request::STRING, 'extHref', '#');
+					$extHref = $this->getHttpVar(we_base_request::URL, 'extHref', '#');
 					$this->initByHref($extHref, $target, $class, $param, $anchor, $lang, $hreflang, $title, $accesskey, $tabindex, $rel, $rev);
 					break;
 				case we_base_link::TYPE_INT:
@@ -310,7 +310,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			$_select_type = '<option value="' . we_base_link::TYPE_EXT . '"' . (($this->args["type"] == we_base_link::TYPE_EXT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[external_link]") . '</option>
 <option value="' . we_base_link::TYPE_INT . '"' . (($this->args["type"] == we_base_link::TYPE_INT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[internal_link]") . '</option>
 <option value="' . we_base_link::TYPE_MAIL . '"' . (($this->args["type"] == we_base_link::TYPE_MAIL) ? ' selected="selected"' : '') . '>' . g_l('wysiwyg', "[emaillink]") . '</option>' .
-				((defined("OBJECT_TABLE") && ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL || permissionhandler::hasPerm("CAN_SEE_OBJECTFILES"))) ?
+				((defined('OBJECT_TABLE') && ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL || permissionhandler::hasPerm("CAN_SEE_OBJECTFILES"))) ?
 					'<option value="' . we_base_link::TYPE_OBJ . '"' . (($this->args["type"] == we_base_link::TYPE_OBJ) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[objectFile]") . '</option>'
 						:
 					''
@@ -357,7 +357,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			$_email_link = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[mailHref]", 30, $this->args["mailHref"], "", '', "email", 300), "", "left", "defaultfont", "", "", "", "", "", 0);
 
 			// OBJECT LINK
-			if(defined("OBJECT_TABLE") && ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL || permissionhandler::hasPerm("CAN_SEE_OBJECTFILES"))){
+			if(defined('OBJECT_TABLE') && ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL || permissionhandler::hasPerm("CAN_SEE_OBJECTFILES"))){
 				$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['we_dialog_args[objID]'].value");
 				$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['we_dialog_args[objHref]'].value");
 				$wecmdenc3 = we_base_request::encCmd("top.opener._EditorFrame.setEditorIsHot(true);");
@@ -435,7 +435,7 @@ function weonsubmit() {
 		<td valign="top">
 			' . $_email_link . '</td>
 	</tr>' .
-				(defined("OBJECT_TABLE") && isset($_object_link) ? '
+				(defined('OBJECT_TABLE') && isset($_object_link) ? '
 	<tr class="we_change ' . we_base_link::TYPE_OBJ . '" style="display:' . (($this->args["type"] == we_base_link::TYPE_OBJ) ? "table-row" : "none") . ';">
 		<td class="defaultgray" valign="top" width="100" height="0">' . g_l('contentTypes', '[objectFile]') . '</td>
 		<td valign="top">

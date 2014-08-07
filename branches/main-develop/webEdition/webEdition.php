@@ -526,7 +526,7 @@ echo 'new jsWindow(url,"module_info",-1,-1,380,250,true,true,true);
 						case "<?php echo TEMPLATES_TABLE; ?>":
 							hasPerm = <?php echo (permissionhandler::hasPerm('DELETE_TEMP_FOLDER') ? 'true' : 'false'); ?>;
 							break;
-						case "<?php echo defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : -1; ?>":
+						case "<?php echo defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : -1; ?>":
 							hasPerm = <?php echo (permissionhandler::hasPerm('DELETE_OBJECTFILE') ? 'true' : 'false'); ?>;
 							break;
 						default:
@@ -585,7 +585,7 @@ echo 'new jsWindow(url,"module_info",-1,-1,380,250,true,true,true);
 						case "<?php echo TEMPLATES_TABLE; ?>":
 							hasPerm = <?php echo (permissionhandler::hasPerm('DELETE_TEMP_FOLDER') ? 'true' : 'false'); ?>;
 							break;
-						case "<?php echo defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : -1; ?>":
+						case "<?php echo defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : -1; ?>":
 							hasPerm = <?php echo (permissionhandler::hasPerm('DELETE_OBJECTFILE') ? 'true' : 'false'); ?>;
 							break;
 						default:
@@ -1250,7 +1250,7 @@ echo 'new jsWindow(url,"module_info",-1,-1,380,250,true,true,true);
 				break;
 			case "edit_settings_shop":
 <?php
-if(defined("WE_SHOP_MODULE_DIR")){
+if(defined('WE_SHOP_MODULE_DIR')){
 	?>
 					new jsWindow("<?php echo WE_SHOP_MODULE_DIR; ?>edit_shop_pref.php", "shoppref", -1, -1, 470, 600, true, false, true);
 	<?php
@@ -1259,7 +1259,7 @@ if(defined("WE_SHOP_MODULE_DIR")){
 				break;
 			case "edit_settings_messaging":
 <?php
-if(defined("WE_MESSAGING_MODULE_DIR")){
+if(defined('WE_MESSAGING_MODULE_DIR')){
 	?>
 					new jsWindow("<?php echo WE_MESSAGING_MODULE_DIR; ?>messaging_settings.php?mode=1", "messaging_settings", -1, -1, 280, 200, true, false, true);
 	<?php
@@ -1392,9 +1392,9 @@ if(permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
 	$_table_to_load = FILE_TABLE;
 } else if(permissionhandler::hasPerm("CAN_SEE_TEMPLATES")){
 	$_table_to_load = TEMPLATES_TABLE;
-} else if(defined("OBJECT_FILES_TABLE") && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")){
+} else if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")){
 	$_table_to_load = OBJECT_FILES_TABLE;
-} else if(defined("OBJECT_TABLE") && permissionhandler::hasPerm("CAN_SEE_OBJECTS")){
+} else if(defined('OBJECT_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTS")){
 	$_table_to_load = OBJECT_TABLE;
 }
 

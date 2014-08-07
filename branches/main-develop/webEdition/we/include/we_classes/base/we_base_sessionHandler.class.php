@@ -1,7 +1,6 @@
 <?php
 
 class we_base_sessionHandler{
-
 	//prevent crashed or killed sessions to stay
 	private $execTime;
 	private $sessionName;
@@ -22,6 +21,7 @@ class we_base_sessionHandler{
 			$this->id = uniqid('', true);
 			if(!(extension_loaded('suhosin') && ini_get('suhosin.session.encrypt'))){//make it possible to keep users when switching
 				$this->crypt = hash('haval224,4', $_SERVER['DOCUMENT_ROOT'] . $_SERVER['HTTP_USER_AGENT'] . $_SERVER['HTTP_ACCEPT_LANGUAGE'] . $_SERVER['HTTP_ACCEPT_ENCODING'], true);
+				//double key size is needed
 				$this->crypt .=$this->crypt;
 			}
 		}
@@ -57,14 +57,18 @@ class we_base_sessionHandler{
 		if($data){
 			$data = gzuncompress($data);
 			$data = $data && $data[0] == '$' && $this->crypt ? we_customer_customer::decryptData($data, $this->crypt) : $data;
-			return $data;
+			if($data){
+				return $data;
+			}//else we need a new sessionid; if decrypt failed we might else destroy an existing valid session
 		}
+
+		$data = ' '; //keep a new generated session, otherwise we will get a new ID every time
 		//if we don't find valid data, generate a new ID because of session stealing
-		self::getSessionID($sessID);
-		return '';
+		$this->write(self::getSessionID(0), $data, true); //we need a new locked session
+		return $data;
 	}
 
-	function write($sessID, $sessData){
+	function write($sessID, $sessData, $lock = false){
 		if(!$sessData){
 			return $this->destroy($sessID);
 		}
@@ -74,7 +78,9 @@ class we_base_sessionHandler{
 		$this->DB->query('REPLACE INTO ' . SESSION_TABLE . ' SET ' . we_database_base::arraySetter(array(
 				'session_id' => sql_function('x\'' . $sessID . '\''),
 				'session_data' => gzcompress($sessData, 9),
-				'sessionName' => $this->sessionName
+				'sessionName' => $this->sessionName,
+				'lockid' => $lock ? $this->id : '',
+				'lockTime' => sql_function($lock ? 'NOW()' : 'NULL'),
 		)));
 		return true;
 	}
@@ -91,15 +97,13 @@ class we_base_sessionHandler{
 	}
 
 	private static function getSessionID($sessID){
-		if(preg_match('|^([a-f0-9]){32,40}$|i', $sessID)){
+		if($sessID && preg_match('|^([a-f0-9]){32,40}$|i', $sessID)){
 			return $sessID;
 		}
-	//		return $sessID;
-
+		session_regenerate_id();
 		$cnt = ini_get('session.hash_bits_per_character');
-		if($cnt == 4){
+		if($cnt == 4){//this is easy, since this is set as hex
 			//a 4 bit value didn't match, we neeed a new id
-			session_regenerate_id();
 			return session_id();
 		}
 		//we have to deal with bad php settings
@@ -116,10 +120,18 @@ class we_base_sessionHandler{
 				$tmp = 0;
 			}
 		}
-
 		session_id(str_pad($newID, 40, $newID));
 		//note: id in cookie will still be delivered in 5/6 bits!
 		return session_id();
+	}
+
+	static function makeNewID(){
+		session_regenerate_id(true);
+		//we need a new lock on the generated id, since partial data is sent to the browser, subsequent calls with the new sessionid might happen
+		session_write_close();
+		//update the cookie:
+		$_COOKIE[session_name()] = session_id();
+		session_start();
 	}
 
 }

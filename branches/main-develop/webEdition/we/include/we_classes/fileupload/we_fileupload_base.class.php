@@ -3,9 +3,9 @@
 /**
  * webEdition CMS
  *
- * $Rev: 7705 $
- * $Author: mokraemer $
- * $Date: 2014-06-10 21:46:56 +0200 (Di, 10 Jun 2014) $
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -22,9 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-abstract class we_fileupload_base {
-
+abstract class we_fileupload_base{
 	protected $name = 'weFileSelect';
 	protected $dimensions = array(
 		'width' => 400,
@@ -45,7 +43,13 @@ abstract class we_fileupload_base {
 	const ON_ERROR_RETURN = true;
 	const ON_ERROR_DIE = true;
 
-	function __construct($name, $width = 400, $maxUploadSize = -1) {
+	abstract protected function _getSenderJS_additional();
+
+	abstract protected function _getInitJS();
+
+	abstract protected function _getSelectorJS();
+
+	protected function __construct($name, $width = 400, $maxUploadSize = -1){
 		$this->name = $name;
 		$this->dimensions['width'] = $width;
 		$this->maxUploadSizeMBytes = intval($maxUploadSize != -1 ? $maxUploadSize : (defined('FILE_UPLOAD_MAX_UPLOAD_SIZE') ? FILE_UPLOAD_MAX_UPLOAD_SIZE : 0));
@@ -53,8 +57,6 @@ abstract class we_fileupload_base {
 		$this->maxChunkCount = $this->maxUploadSizeMBytes * 1024 / self::CHUNK_SIZE;
 		$this->useLegacy = defined('FILE_UPLOAD_USE_LEGACY') ? FILE_UPLOAD_USE_LEGACY : false;
 	}
-
-	abstract protected function _getSenderJS_additional();
 
 	public function setAction($action){
 		$this->action = $action;
@@ -89,7 +91,7 @@ abstract class we_fileupload_base {
 	}
 
 	public function getMaxUploadSizeText(){
-		$field = $this->useLegacy ? '[max_possible_size]' : ($this->getMaxUploadSize()? '[size_limit_set_to]' : '[no_size_limit]');
+		$field = $this->useLegacy ? '[max_possible_size]' : ($this->getMaxUploadSize() ? '[size_limit_set_to]' : '[no_size_limit]');
 		return $field == '[no_size_limit]' ? g_l('newFile', $field) :
 			sprintf(g_l('newFile', $field), we_base_file::getHumanFileSize($this->getMaxUploadSize(), we_base_file::SZ_MB));
 	}
@@ -100,72 +102,29 @@ abstract class we_fileupload_base {
 
 		return '
 			<div id="div_' . $this->name . '_alert_legacy" style="display:none">' .
-				we_html_tools::htmlAlertAttentionBox(sprintf(g_l('newFile', '[max_possible_size]'), we_base_file::getHumanFileSize(getUploadMaxFilesize(false), we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, $width) .
-				'<div style="margin-top: 4px"></div>' .
-				we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[fallback_text]'), we_html_tools::TYPE_ALERT, $width, false, 9) .
+			we_html_tools::htmlAlertAttentionBox(sprintf(g_l('newFile', '[max_possible_size]'), we_base_file::getHumanFileSize(getUploadMaxFilesize(false), we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, $width) .
+			'<div style="margin-top: 4px"></div>' .
+			we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[fallback_text]'), we_html_tools::TYPE_ALERT, $width, false, 9) .
 			'</div>
 			<div id="div_' . $this->name . '_alert">' .
-				we_html_tools::htmlAlertAttentionBox($this->getMaxUploadSizeText(), $type, $width) .
+			we_html_tools::htmlAlertAttentionBox($this->getMaxUploadSizeText(), $type, $width) .
 			'</div>';
-
 	}
 
 	public function getCss(){
-		return $this->useLegacy ? '' : we_html_element::cssElement('
-			#div_' . $this->name . '_fileDrag{
-				display: none;
-				font-weight: normal;
-				font-size: 12px;
-				text-align: center;
-				padding-top: ' . (($this->dimensions['dragHeight']-10)/2) . 'px;
-				margin: 1em 0;
-				color: #555;
-				border: 2px dashed #555;
-				border-radius: 7px;
-				cursor: default;
+		return $this->useLegacy ? '' : we_html_element::cssLink(CSS_DIR . 'we_fileupload.css') . we_html_element::cssElement('
+			div.we_file_drag{
+				padding-top: ' . (($this->dimensions['dragHeight'] - 10) / 2) . 'px;
 				height: ' . $this->dimensions['dragHeight'] . 'px;
-				background-color: white;
-			}
-			#div_' . $this->name . '_fileDrag.hover{
-				color: #00cc00;
-				border-color: #00cc00;
-				border-style: solid;
-				box-shadow: inset 0 3px 4px #888;
-				background-color: rgb(243, 247, 255);
-			}
-			#div_' . $this->name . '_fileInputWrapper {
-				overflow: hidden;
-				position: relative;
-				cursor: pointer;
-				/*Using a background color, but you can use a background image to represent a button*/
-				background-color: #DDF;
-			}
-			.fileInput {
-				cursor: pointer;
-				height: 100%;
-				position:absolute;
-				top: 0;
-				right: 0;
-				width: 286px;
-				height: 22px;
-				/*This makes the button huge so that it can be clicked on*/
-				/*font-size:50px;*/
-			}
-			.fileInputHidden {
-				/*Opacity settings for all browsers*/
-				opacity: 0;
-				-moz-opacity: 0;
-				filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0)
-			}
-		');
+			}');
 	}
 
 	public function getJs($init = true, $selector = true, $sender = true){
-		return ($init ? $this->_getInitJS() : '') .
-				($selector ? $this->_getSelectorJS() : '').
-				($sender ? $this->_getSenderJS_core() . $this->_getSenderJS_additional() : '');
+		return implodeJS(($init ? $this->_getInitJS() : '') .
+			($selector ? $this->_getSelectorJS() : '') .
+			($sender ? $this->_getSenderJS_core() . $this->_getSenderJS_additional() : '')
+		);
 	}
-
 
 	protected function _getSenderJS_core(){
 		return we_html_element::jsElement('
@@ -174,6 +133,7 @@ weFU.sendNextFile = function(){
 	if(cur = weFU.preparedFiles.shift()){
 		weFU.currentFile = cur;
 		if(cur.uploadConditionsOk){
+			weFU.isUploading = true;
 			weFU.repaintGUI({"what" : "startSendFile"});
 
 			if(cur.file.size <= weFU.chunkSize){
@@ -206,11 +166,17 @@ weFU.sendNextFile = function(){
 
 	} else {
 		//all uploads done
+		weFU.isUploading = false;
 		weFU.postProcess();
 	}
 };
 
 weFU.sendNextChunk = function(split){
+	if(weFU.isCancelled){
+		weFU.isCancelled = false;
+		return;
+	}
+
 	var cur = weFU.currentFile,
 		resp = "";
 
@@ -258,10 +224,9 @@ weFU.sendChunk = function(part, fileName, fileCt, partSize, partNum, totalParts,
 	fd.append("uploadParts", 1);
 	fd.append("wePartNum", partNum);
 	fd.append("wePartCount", totalParts);
-	fd.append("weFileNameTmp", fileNameTemp);
+	fd.append("weFileNameTemp", fileNameTemp);
 	fd.append("weFileName", fileName);
 	fd.append("weFileCt", fileCt);
-	fd.append("weFileNameTmp", fileNameTemp);
 	fd.append("' . $this->name . '", part, fileName);
 	fd.append("weIsUploading", 1);
 
@@ -273,40 +238,43 @@ weFU.sendChunk = function(part, fileName, fileCt, partSize, partNum, totalParts,
 };
 
 weFU.processResponse = function(resp, args){
-	var cur = weFU.currentFile;
+	if(!weFU.isCancelled){
+		var cur = weFU.currentFile;
 
-	cur.fileNameTemp = resp.fileNameTemp;
-	cur.mimePHP = resp.mimePhp;
-	cur.currentWeightFile += args.partSize;
-	weFU.currentWeight += args.partSize;
+		cur.fileNameTemp = resp.fileNameTemp;
+		cur.mimePHP = resp.mimePhp;
+		cur.currentWeightFile += args.partSize;
+		weFU.currentWeight += args.partSize;
 
-	switch(resp.status){
-		case "continue":
-			weFU.repaintGUI({"what" : "chunkOK"});
-			weFU.sendNextChunk(true);
-			break;
-		case "success":
-			weFU.currentWeightTag = weFU.currentWeight;
-			weFU.repaintGUI({"what" : "chunkOK"});
-			weFU.repaintGUI({"what" : "fileOK"});
-			if(weFU.preparedFiles.length !== 0){
-				weFU.sendNextFile();
-			} else {
-				weFU.postProcess(resp);
-			}
-			break;
-		case "failure":
-			weFU.currentWeight = weFU.currentWeightTag + cur.file.size;
-			weFU.currentWeightTag = weFU.currentWeight;
-			weFU.repaintGUI({"what" : "chunkNOK", "message" : resp.message});
-			if(weFU.preparedFiles.length !== 0){
-				weFU.sendNextFile();
-			} else {
-				weFU.postProcess(resp);
-			}
-			break;
+		switch(resp.status){
+			case "continue":
+				weFU.repaintGUI({"what" : "chunkOK"});
+				weFU.sendNextChunk(true);
+				break;
+			case "success":
+				weFU.currentWeightTag = weFU.currentWeight;
+				weFU.repaintGUI({"what" : "chunkOK"});
+				weFU.repaintGUI({"what" : "fileOK"});
+				if(weFU.preparedFiles.length !== 0){
+					weFU.sendNextFile();
+				} else {
+					weFU.postProcess(resp);
+				}
+				break;
+			case "failure":
+				weFU.currentWeight = weFU.currentWeightTag + cur.file.size;
+				weFU.currentWeightTag = weFU.currentWeight;
+				weFU.repaintGUI({"what" : "chunkNOK", "message" : resp.message});
+				if(weFU.preparedFiles.length !== 0){
+					weFU.sendNextFile();
+				} else {
+					weFU.postProcess(resp);
+				}
+				break;
+		}
 	}
 };
 		');
 	}
+
 }

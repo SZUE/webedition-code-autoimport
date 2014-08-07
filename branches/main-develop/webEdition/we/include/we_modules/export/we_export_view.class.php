@@ -200,13 +200,13 @@ class we_export_view{
 										if(' . $this->editorBodyForm . '.IsFolder.value!=1){
 											' . $this->editorBodyForm . '.selDocs.value=' . $this->editorBodyFrame . '.SelectedItems["' . FILE_TABLE . '"].join(",");
 											' . $this->editorBodyForm . '.selTempl.value=' . $this->editorBodyFrame . '.SelectedItems["' . TEMPLATES_TABLE . '"].join(",");
-											' . (defined("OBJECT_FILES_TABLE") ? $this->editorBodyForm . '.selObjs.value=' . $this->editorBodyFrame . '.SelectedItems["' . OBJECT_FILES_TABLE . '"].join(",");' : '') . '
-											' . (defined("OBJECT_TABLE") ? $this->editorBodyForm . '.selClasses.value=' . $this->editorBodyFrame . '.SelectedItems["' . OBJECT_TABLE . '"].join(",");' : '') . '
+											' . (defined('OBJECT_FILES_TABLE') ? $this->editorBodyForm . '.selObjs.value=' . $this->editorBodyFrame . '.SelectedItems["' . OBJECT_FILES_TABLE . '"].join(",");' : '') . '
+											' . (defined('OBJECT_TABLE') ? $this->editorBodyForm . '.selClasses.value=' . $this->editorBodyFrame . '.SelectedItems["' . OBJECT_TABLE . '"].join(",");' : '') . '
 
 											' . $this->editorBodyForm . '.selDocs_open.value=' . $this->editorBodyFrame . '.openFolders["' . FILE_TABLE . '"];
 											' . $this->editorBodyForm . '.selTempl_open.value=' . $this->editorBodyFrame . '.openFolders["' . TEMPLATES_TABLE . '"];
-											' . (defined("OBJECT_FILES_TABLE") ? $this->editorBodyForm . '.selObjs_open.value=' . $this->editorBodyFrame . '.openFolders["' . OBJECT_FILES_TABLE . '"];' : '') . '
-											' . (defined("OBJECT_TABLE") ? $this->editorBodyForm . '.selClasses_open.value=' . $this->editorBodyFrame . '.openFolders["' . OBJECT_TABLE . '"];' : '') . '
+											' . (defined('OBJECT_FILES_TABLE') ? $this->editorBodyForm . '.selObjs_open.value=' . $this->editorBodyFrame . '.openFolders["' . OBJECT_FILES_TABLE . '"];' : '') . '
+											' . (defined('OBJECT_TABLE') ? $this->editorBodyForm . '.selClasses_open.value=' . $this->editorBodyFrame . '.openFolders["' . OBJECT_TABLE . '"];' : '') . '
 										}
 
 										' . $this->editorBodyFrame . '.submitForm(arguments[0]=="start_export" ? "cmd" : "edbody");
@@ -310,7 +310,7 @@ class we_export_view{
 		$selected = '';
 		$opened = '';
 		$arr = array(FILE_TABLE => "selDocs", TEMPLATES_TABLE => "selTempl");
-		if(defined("OBJECT_TABLE")){
+		if(defined('OBJECT_TABLE')){
 			$arr[OBJECT_FILES_TABLE] = "selObjs";
 			$arr[OBJECT_TABLE] = "selClasses";
 		}

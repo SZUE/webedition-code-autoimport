@@ -90,7 +90,7 @@ class we_util_Sys_Server extends we_util_Sys{
 	 * @return bool true/false
 	 */
 	public static function isIIS(){
-		return (defined("IIS_RUNNING") && IIS_RUNNING === true);
+		return (defined('IIS_RUNNING') && IIS_RUNNING === true);
 	}
 
 	/**

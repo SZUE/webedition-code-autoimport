@@ -87,7 +87,7 @@ $defaultVat = ($feldnamen[1]) ? ($feldnamen[1]) : 0;
 
 $amountCustomers = $amountOrders = $amountArticles = 0;
 
-if(defined("WE_SHOP_MODULE_DIR") && permissionhandler::hasPerm("CAN_SEE_SHOP")){
+if(defined('WE_SHOP_MODULE_DIR') && permissionhandler::hasPerm("CAN_SEE_SHOP")){
 	$queryShop = ' FROM ' . SHOP_TABLE . '	WHERE ' . $queryShopDateCondtion;
 
 	$total = $payed = $unpayed = $timestampDatePayment = 0;
@@ -161,7 +161,7 @@ if(defined("WE_SHOP_MODULE_DIR") && permissionhandler::hasPerm("CAN_SEE_SHOP")){
 	}
 }
 
-if(defined("CUSTOMER_TABLE") && permissionhandler::hasPerm("CAN_SEE_CUSTOMER")){
+if(defined('CUSTOMER_TABLE') && permissionhandler::hasPerm("CAN_SEE_CUSTOMER")){
 	$queryCustomer = ' FROM ' . CUSTOMER_TABLE . '	WHERE ' . $timestampCustomer;
 
 	if(($maxRowsCustomer = f('SELECT COUNT(1) ' . $queryCustomer))){

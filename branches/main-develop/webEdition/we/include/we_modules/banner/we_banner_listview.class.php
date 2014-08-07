@@ -28,7 +28,7 @@
  * @desc    class for tag <we:listview type="banner">
  *
  */
-class we_banner_listview extends listviewBase{
+class we_banner_listview extends we_listview_base{
 
 	var $ClassName = __CLASS__;
 	var $allviews = 0;
@@ -125,7 +125,7 @@ class we_banner_listview extends listviewBase{
 		$this->anz = min($this->rows, $this->anz_all - $this->start);
 	}
 
-	function next_record(){
+	public function next_record(){
 		if($this->count >= min($this->start + $this->rows, $this->anz_all)){
 			return false;
 		}

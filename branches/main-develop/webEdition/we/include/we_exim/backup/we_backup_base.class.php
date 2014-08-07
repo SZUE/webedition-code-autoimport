@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -31,7 +30,6 @@ define('BACKUP_TABLE', TBL_PREFIX . 'tblbackup');
 
 //FIXME: try to remove this class
 abstract class we_backup_base{
-
 	const COMPRESSION = 'gzip';
 	const NO_COMPRESSION = 'none';
 
@@ -129,6 +127,7 @@ abstract class we_backup_base{
 			$this->table_map = array_merge($this->table_map, array(
 				'tblobject' => OBJECT_TABLE,
 				'tblobjectfiles' => OBJECT_FILES_TABLE,
+				'tblobjectlink' => OBJECTLINK_TABLE,
 				'tblobject_' => OBJECT_X_TABLE));
 		}
 
@@ -683,7 +682,7 @@ abstract class we_backup_base{
 			@fclose($fh_temp);
 		}
 		@fclose($fh);
-		if(defined("WORKFLOW_TABLE")){
+		if(defined('WORKFLOW_TABLE')){
 			$this->backup_db->query('TRUNCATE TABLE' . WORKFLOW_DOC_TABLE);
 			$this->backup_db->query('TRUNCATE TABLE' . WORKFLOW_DOC_STEP_TABLE);
 			$this->backup_db->query('TRUNCATE TABLE' . WORKFLOW_DOC_TASK_TABLE);
@@ -737,14 +736,14 @@ abstract class we_backup_base{
 									if(trim($clear_name) != ""){
 										$buff = str_replace($ctbl . $itbl, $clear_name, $buff);
 										if(($ctbl != "") && (strtolower(substr($buff, 0, 6)) == "create")){
-											if(defined("OBJECT_X_TABLE") && substr(strtolower($ctbl), 0, 10) != strtolower(OBJECT_X_TABLE)){
+											if(defined('OBJECT_X_TABLE') && substr(strtolower($ctbl), 0, 10) != strtolower(OBJECT_X_TABLE)){
 												$this->getDiff($buff, $clear_name, $upd);
 											}
 											$this->backup_db->query("DROP TABLE IF EXISTS " . $this->backup_db->escape($clear_name) . ";");
 											$this->backup_db->query($buff);
 										}
 										if(($itbl != "") && (strtolower(substr($buff, 0, 6)) == "insert")){
-											if(defined("OBJECT_X_TABLE") && substr(strtolower($itbl), 0, 10) == strtolower(OBJECT_X_TABLE)){
+											if(defined('OBJECT_X_TABLE') && substr(strtolower($itbl), 0, 10) == strtolower(OBJECT_X_TABLE)){
 												if(preg_match("|VALUES[[:space:]]*\([[:space:]]*\'?0\'?[[:space:]]*,[[:space:]]*\'?0\'?[[:space:]]*,|i", $buff)){
 													$this->dummy[] = $buff;
 												} else {
@@ -854,7 +853,8 @@ abstract class we_backup_base{
 			$this->backup_db->query('SHOW COLUMNS FROM ' . $this->backup_db->escape($tab));
 			while($this->backup_db->next_record()){
 				if(!in_array(strtolower($this->backup_db->f("Field")), $fnames)){
-					$fupdate[] = "ALTER TABLE " . $this->backup_db->escape($tab) . ' ADD ' . $this->backup_db->f("Field") . ' ' . $this->backup_db->f("Type") . " DEFAULT '" . $this->backup_db->f("Default") . "'" . ($this->backup_db->f("Null") == "YES" ? " NOT NULL" : '');
+					$fupdate[] = "ALTER TABLE " . $this->backup_db->escape($tab) . ' ADD ' . $this->backup_db->f("Field") . ' ' . $this->backup_db->f("Type") . " DEFAULT '" . $this->backup_db->f("Default") . "'" . ($this->backup_db->f("Null") == "YES"
+								? " NOT NULL" : '');
 				}
 			}
 		}
@@ -896,7 +896,7 @@ abstract class we_backup_base{
 	function fixTableName($tabname){
 		$tabname = strtolower($tabname);
 
-		if(substr($tabname, 0, 10) == "tblobject_" && defined("OBJECT_X_TABLE")){
+		if(substr($tabname, 0, 10) == "tblobject_" && defined('OBJECT_X_TABLE')){
 			return str_ireplace("tblobject_", OBJECT_X_TABLE, $tabname);
 		}
 
@@ -917,7 +917,7 @@ abstract class we_backup_base{
 	 */
 	function getDefaultTableName($tabname){
 		$tabname = strtolower($tabname);
-		if(defined("OBJECT_X_TABLE") && stripos($tabname, OBJECT_X_TABLE) !== false){
+		if(defined('OBJECT_X_TABLE') && stripos($tabname, OBJECT_X_TABLE) !== false){
 			return str_ireplace(OBJECT_X_TABLE, "tblobject_", $tabname);
 		}
 
@@ -940,7 +940,7 @@ abstract class we_backup_base{
 		if(in_array(strtolower($tabname), array_keys($this->table_map))){
 			return true;
 		}
-		if(defined("OBJECT_X_TABLE")){
+		if(defined('OBJECT_X_TABLE')){
 			$object_x_table = stripTblPrefix(OBJECT_X_TABLE);
 
 			return stripos($tabname, $object_x_table) !== false;

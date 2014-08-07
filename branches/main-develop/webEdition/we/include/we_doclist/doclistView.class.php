@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -1021,10 +1020,10 @@ class doclistView{
 					case FILE_TABLE:
 						$whereQuery .= " AND ((RestrictOwners='0' OR RestrictOwners= '" . intval($_SESSION["user"]["ID"]) . "') OR (Owners LIKE '%," . intval($_SESSION["user"]["ID"]) . ",%'))";
 						break;
-					case (defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
+					case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 						$whereQuery .= " AND ((RestrictOwners='0' OR RestrictOwners= '" . intval($_SESSION["user"]["ID"]) . "') OR (Owners LIKE '%," . intval($_SESSION["user"]["ID"]) . ",%'))";
 						break;
-					case (defined("OBJECT_TABLE") ? OBJECT_TABLE : OBJECT_TABLE):
+					case (defined('OBJECT_TABLE') ? OBJECT_TABLE : OBJECT_TABLE):
 						$whereQuery .= "AND ((RestrictUsers='0' OR RestrictUsers= '" . intval($_SESSION["user"]["ID"]) . "') OR (Users LIKE '%," . intval($_SESSION["user"]["ID"]) . ",%')) ";
 						break;
 				}
@@ -1102,6 +1101,7 @@ class doclistView{
 		$we_PathLength = 30;
 
 		$resultCount = count($_result);
+		$content = array();
 
 		for($f = 0; $f < $resultCount; $f++){
 			$fontColor = "black";
@@ -1184,7 +1184,7 @@ class doclistView{
 						}
 					}
 				} else {
-					$templateText = "";
+					$templateText = '';
 				}
 
 				$_defined_fields = we_metadata_metaData::getDefinedMetaDataFields();
@@ -1239,7 +1239,7 @@ class doclistView{
 		$order = we_base_request::_(we_base_request::STRING, 'we_cmd', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->searchclassFolder->order : '', 'order');
 		$mode = we_base_request::_(we_base_request::RAW, 'we_cmd', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->searchclassFolder->mode : '', 'mode');
 		$setView = we_base_request::_(we_base_request::RAW, 'we_cmd', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->searchclassFolder->setView : '', 'setView');
-		$_anzahl = we_base_request::_(we_base_request::RAW, 'we_cmd', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->searchclassFolder->anzahl : '', 'anzahl');
+		$_anzahl = we_base_request::_(we_base_request::INT, 'we_cmd', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->searchclassFolder->anzahl : '', 'anzahl');
 		$id = we_base_request::_(we_base_request::INT, 'id', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->ID : '');
 		$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', (isset($GLOBALS ['we_transaction']) ? $GLOBALS ['we_transaction'] : 0));
 
@@ -1250,27 +1250,18 @@ class doclistView{
 			we_html_tools::hidden("mode", $mode) .
 			we_html_tools::hidden("setView", $setView) .
 			'<table border="0" cellpadding="0" cellspacing="0">
-         <tr>
-          <td>' . we_html_tools::getPixel(19, 12) . '</td>
-          <td style="font-size:12px;width:125px;">' . g_l('searchtool', "[eintraege_pro_seite]") . ':</td>
-          <td class="defaultgray" style="width:60px;">' . we_html_tools::htmlSelect("anzahl", $anzahl, 1, $_anzahl, "", array('onchange' => 'this.form.elements[\'searchstart\'].value=0;search(false);')) . '
-          </td>
-          <td>' . $this->getNextPrev($foundItems) . '</td>
-          <td>' . we_html_tools::getPixel(10, 12) . '</td>
-          <td style="width:50px;">
-          ' . we_html_button::create_button("image:btn_new_dir", "javascript:top.we_cmd('new_document','" . FILE_TABLE . "','','folder','','" . $id . "')", true, 40, "", "", "", false) . '
-          </td>
-          <td>
-          ' . we_html_button::create_button("image:iconview", "javascript:setview(1);", true, 40, "", "", "", false) . '
-          </td>
-          <td>
-          ' . we_html_button::create_button("image:listview", "javascript:setview(0);", true, 40, "", "", "", false) . '
-          </td>
-        </tr>
-        <tr>
-          <td colspan="12">' . we_html_tools::getPixel(1, 12) . '</td>
-        </tr>
-        </table>';
+	<tr>
+		<td>' . we_html_tools::getPixel(19, 12) . '</td>
+		<td style="font-size:12px;width:125px;">' . g_l('searchtool', "[eintraege_pro_seite]") . ':</td>
+		<td class="defaultgray" style="width:60px;">' . we_html_tools::htmlSelect("anzahl", $anzahl, 1, $_anzahl, "", array('onchange' => 'this.form.elements[\'searchstart\'].value=0;search(false);')) . '</td>
+		<td>' . $this->getNextPrev($foundItems) . '</td>
+		<td>' . we_html_tools::getPixel(10, 12) . '</td>
+		<td style="width:50px;">' . we_html_button::create_button("image:btn_new_dir", "javascript:top.we_cmd('new_document','" . FILE_TABLE . "','','folder','','" . $id . "')", true, 40, "", "", "", false) . '</td>
+		<td>' . we_html_button::create_button("image:iconview", "javascript:setview(1);", true, 40, "", "", "", false) . '</td>
+		<td>' . we_html_button::create_button("image:listview", "javascript:setview(0);", true, 40, "", "", "", false) . '</td>
+	</tr>
+	<tr><td colspan="12">' . we_html_tools::getPixel(1, 12) . '</td></tr>
+</table>';
 	}
 
 	function getSearchParameterBottom($foundItems){
@@ -1284,25 +1275,25 @@ class doclistView{
 
 		return
 			'<table border="0" cellpadding="0" cellspacing="0" style="margin-top:20px;">
-         <tr>
-          <td>' . $publishButtonCheckboxAll . '</td>
-          <td style="font-size:12px;width:125px;">' . $publishButton . '</td>
-          <td class="defaultgray" style="width:60px;" id="resetBusy">' . we_html_tools::getPixel(30, 12) . '</td>
-          <td style="width:370px;">' . $this->getNextPrev($foundItems) . '</td>
-        </tr>
-        </table>';
+	<tr>
+	 <td>' . $publishButtonCheckboxAll . '</td>
+	 <td style="font-size:12px;width:125px;">' . $publishButton . '</td>
+	 <td class="defaultgray" style="width:60px;" id="resetBusy">' . we_html_tools::getPixel(30, 12) . '</td>
+	 <td style="width:370px;">' . $this->getNextPrev($foundItems, false) . '</td>
+	</tr>
+</table>';
 	}
 
 	/**
 	 * @abstract generates html for paging GUI
 	 * @return string, html for paging GUI
 	 */
-	function getNextPrev($we_search_anzahl){
+	function getNextPrev($we_search_anzahl, $isTop = true){
 		if(($obj = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 'obj'))){
 			$anzahl = $_SESSION['weS']['weSearch']['anzahl'];
 			$searchstart = $_SESSION['weS']['weSearch']['searchstart'];
 		} else {
-			$obj = $GLOBALS ['we_doc'];
+			$obj = $GLOBALS['we_doc'];
 			$anzahl = $obj->searchclassFolder->anzahl;
 			$searchstart = $obj->searchclassFolder->searchstart;
 		}
@@ -1323,19 +1314,19 @@ class doclistView{
 			'</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>';
 
 		$pages = array();
-		for($i = 0; $i < ceil($we_search_anzahl / $anzahl); $i++){
-			$pages [($i * $anzahl)] = ($i + 1);
+		if($anzahl){
+			for($i = 0; $i < ceil($we_search_anzahl / $anzahl); $i++){
+				$pages [($i * $anzahl)] = ($i + 1);
+			}
 		}
 
-		$page = ceil($searchstart / $anzahl) * $anzahl;
+		$page = ($anzahl ? ceil($searchstart / $anzahl) * $anzahl : 0);
 
 		$select = we_html_tools::htmlSelect("page", $pages, 1, $page, false, array("onchange" => "this.form.elements['searchstart'].value = this.value; search(false);"));
 
-		if(!we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 'setInputSearchstart')){
-			if(!defined("searchstart")){
-				define("searchstart", true);
-				$out .= we_html_tools::hidden("searchstart", $searchstart);
-			}
+		if(!we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 'setInputSearchstart') && !defined('searchstart') && $isTop){
+			define("searchstart", true);
+			$out .= we_html_tools::hidden("searchstart", $searchstart);
 		}
 
 		$out .= $select .

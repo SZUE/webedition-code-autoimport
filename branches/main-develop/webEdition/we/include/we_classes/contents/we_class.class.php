@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -25,7 +24,6 @@
 
 /** the parent class of storagable webEdition classes */
 abstract class we_class{
-
 	//constants for retrieving data from DB
 
 	const LOAD_MAID_DB = 0;
@@ -39,7 +37,6 @@ abstract class we_class{
 	const SUB_DIR_YEAR_MONTH_DAY = 3;
 
 	/* Name of the class => important for reconstructing the class from outside the class */
-
 	var $ClassName = __CLASS__;
 	/* In this array are all storagable class variables */
 	var $persistent_slots = array('ClassName', 'Name', 'ID', 'Table', 'wasUpdate', 'InWebEdition');
@@ -305,7 +302,7 @@ abstract class we_class{
 		$this->documentCustomerFilter = we_customer_documentFilter::getFilterOfDocument($this);
 	}
 
-	public function we_load(/* $from = we_class::LOAD_MAID_DB */){
+	public function we_load(/* $from = self::LOAD_MAID_DB */){
 		$this->i_getPersistentSlotsFromDB();
 	}
 
@@ -340,7 +337,7 @@ abstract class we_class{
 			}
 			$regs = array();
 			foreach($_REQUEST as $n => $v){
-				if(preg_match('#^we_' . $this->Name . '_([^\[]+)$#', $n, $regs) && in_array($regs[1], $this->persistent_slots)){
+				if(preg_match('#^we_' . preg_quote($this->Name, '#') . '_([^\[]+)$#', $n, $regs) && in_array($regs[1], $this->persistent_slots)){
 					$this->$regs[1] = $v;
 				}
 			}

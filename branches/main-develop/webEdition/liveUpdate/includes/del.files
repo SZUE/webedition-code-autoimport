@@ -151,6 +151,8 @@ we/include/we_tools/cache/weCache.class.php
 we/include/we_tools/cache
 we/include/we_templates/we_quicktime_properties.inc.php
 we/include/we_templates/we_editor_live.inc.php
+we/include/we_tags/we_tag_redirectObjectSeoUrls.inc.php
+we/include/we_tags/we_tag_onlinemonitor.inc.php
 we/include/we_tags/we_tag_makeMail.inc.php
 we/include/we_tags/we_tag_list.inc.php
 we/include/we_tags/we_tag_ifVotingFieldNotEmpty.inc.php
@@ -166,6 +168,7 @@ we/include/we_tags/we_tag_ifNotHasShopVariants.inc.php
 we/include/we_tags/we_tag_econda.inc.php
 we/include/we_tag_elements.inc.php
 we/include/we_tagParser.inc.php
+we/include/we_perms.inc.php
 we/include/we_modules/workflow/we_workflow_doc_footer.inc.php
 we/include/we_modules/workflow/weWorkflowView.php
 we/include/we_modules/workflow/weWorkflowUtility.php
@@ -2006,6 +2009,10 @@ we/include/we_classes/smtp.class.php
 we/include/we_classes/rebuild/we_rebuild_wizard.inc.php
 we/include/we_classes/rebuild/we_rebuild.class.php
 we/include/we_classes/rebuild/rebuildFragment.inc.php
+we/include/we_classes/listview/we_search_listview.class.php
+we/include/we_classes/listview/we_listview.class.php
+we/include/we_classes/listview/we_catListview.class.php
+we/include/we_classes/listview/listviewBase.class.php
 we/include/we_classes/leWizard/liveUpdateTemplatesWizard.class.php
 we/include/we_classes/leWizard/liveUpdateTemplates.class.php
 we/include/we_classes/leWizard/liveUpdateResponse.class.php
@@ -2095,6 +2102,7 @@ we/include/weTracking/econda/weEcondaImplementHeader.inc.php
 we/include/weTracking/econda/weEcondaImplement.inc.php
 we/include/weTracking/econda
 we/include/weTracking
+we/include/weTagWizard/we_tags/we_tag_redirectObjectSeoUrls.inc.php
 we/include/weTagWizard/we_tags/we_tag_makeMail.inc.php
 we/include/weTagWizard/we_tags/we_tag_list.inc.php
 we/include/weTagWizard/data/we_tag_groups.inc.php

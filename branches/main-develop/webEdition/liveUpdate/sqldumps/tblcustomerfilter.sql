@@ -1,8 +1,11 @@
 ###UPDATEONLY###DELETE FROM ###TBLPREFIX###tblcustomerfilter WHERE modelTable="";
 /* query separator */
+###UPDATEDROPCOL(id,###TBLPREFIX###tblcustomerfilter)###
+/* query separator */
+###UPDATEDROPKEY(modelIdN,###TBLPREFIX###tblcustomerfilter)###
+/* query separator */
 
 CREATE TABLE ###TBLPREFIX###tblcustomerfilter (
-  `id` bigint(20) unsigned NOT NULL auto_increment,
   `modelId` bigint(20) unsigned NOT NULL,
   `modelType` enum('folder','objectFile','text/webedition')  NOT NULL,
   `modelTable` enum('tblFile','tblObjectFiles') NOT NULL,
@@ -14,8 +17,7 @@ CREATE TABLE ###TBLPREFIX###tblcustomerfilter (
   `filter` text NOT NULL,
   `whiteList` text NOT NULL,
   `blackList` text NOT NULL,
-  PRIMARY KEY  (`id`),
-  KEY `mode` (`mode`),
-  UNIQUE KEY `modelIdN` (`modelId`,`modelType`,`modelTable`),
-  KEY modelType (modelType,accessControlOnTemplate)
+  PRIMARY KEY  (`modelId`,`modelTable`),
+  KEY modelType (modelType,accessControlOnTemplate),
+	KEY mode(mode)
 ) ENGINE=MyISAM;

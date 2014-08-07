@@ -39,7 +39,7 @@ $num_format = new weTagData_choiceAttribute('num_format', array(new weTagDataOpt
 	new weTagDataOption('swiss'),
 	), false, false, '');
 $thumbnail = new weTagData_sqlRowAttribute('thumbnail', THUMBNAILS_TABLE, false, 'Name', '', '', '');
-$id = (defined("FILE_TABLE") ? new weTagData_selectorAttribute('id', FILE_TABLE, 'text/webedition', false, '') : null);
+$id = (defined('FILE_TABLE') ? new weTagData_selectorAttribute('id', FILE_TABLE, 'text/webedition', false, '') : null);
 $parentidname = new weTagData_textAttribute('parentidname', false, '');
 $winprops = new weTagData_textAttribute('winprops', false, '');
 $alt = new weTagData_textAttribute('alt', false, '');
@@ -90,7 +90,7 @@ $outputlanguage = new weTagData_textAttribute('outputlanguage', false, '');
 $doc = new weTagData_selectAttribute('doc', array(new weTagDataOption('self'),
 	new weTagDataOption('top'),
 	), false, '');
-$triggerid = (defined("FILE_TABLE") ? new weTagData_selectorAttribute('triggerid', FILE_TABLE, 'text/webedition', false, '') : null);
+$triggerid = (defined('FILE_TABLE') ? new weTagData_selectorAttribute('triggerid', FILE_TABLE, 'text/webedition', false, '') : null);
 $usekey = new weTagData_selectAttribute('usekey', weTagData_selectAttribute::getTrueFalse(), false, '');
 
 $this->TypeAttribute = new weTagData_typeAttribute('type', array(

@@ -38,7 +38,7 @@ $_path = (isset($_SESSION['weS']['SEEM']['startId']) ? // logout from webEdition
 		$_SESSION['weS']['SEEM']['startPath'] :
 		WEBEDITION_DIR);
 
-we_users_user::removeOldWESession();
+session_destroy();
 
 if(!isset($GLOBALS['isIncluded']) || !$GLOBALS['isIncluded']){
 	echo we_html_element::jsElement('

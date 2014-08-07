@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_users_user{
-
 	const TYPE_USER = 0;
 	const TYPE_USER_GROUP = 1;
 	const TYPE_ALIAS = 2;
@@ -261,7 +260,8 @@ class we_users_user{
 				}
 			}
 		}
-		$this->DB_WE->query(($this->ID ? 'UPDATE ' : 'INSERT INTO ') . $this->DB_WE->escape($this->Table) . ' SET ' . we_database_base::arraySetter($updt) . ($this->ID ? ' WHERE ID=' . intval($this->ID) : ''));
+		$this->DB_WE->query(($this->ID ? 'UPDATE ' : 'INSERT INTO ') . $this->DB_WE->escape($this->Table) . ' SET ' . we_database_base::arraySetter($updt) . ($this->ID
+					? ' WHERE ID=' . intval($this->ID) : ''));
 		if(!$this->ID){
 			$this->ID = $this->DB_WE->getInsertId();
 		}
@@ -807,7 +807,8 @@ if ( !_multiEditorreload ) {
 
 		for (frameId in _usedEditors) {
 
-			if ( (_usedEditors[frameId].getEditorEditorTable() == \"" . TEMPLATES_TABLE . "\" || " . (defined("OBJECT_TABLE") ? " _usedEditors[frameId].getEditorEditorTable() == \"" . OBJECT_FILES_TABLE . "\" || " : "") . " _usedEditors[frameId].getEditorEditorTable() == \"" . FILE_TABLE . "\") &&
+			if ( (_usedEditors[frameId].getEditorEditorTable() == \"" . TEMPLATES_TABLE . "\" || " . (defined('OBJECT_TABLE') ? " _usedEditors[frameId].getEditorEditorTable() == \"" . OBJECT_FILES_TABLE . "\" || "
+								: "") . " _usedEditors[frameId].getEditorEditorTable() == \"" . FILE_TABLE . "\") &&
 				_usedEditors[frameId].getEditorEditPageNr() == " . we_base_constants::WE_EDITPAGE_CONTENT . " ) {
 
 				if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
@@ -852,7 +853,8 @@ if ( !_multiEditorreload ) {
 
 		for (frameId in _usedEditors) {
 
-			if ( (_usedEditors[frameId].getEditorEditorTable() == \"" . TEMPLATES_TABLE . "\" || " . (defined("OBJECT_TABLE") ? " _usedEditors[frameId].getEditorEditorTable() == \"" . OBJECT_FILES_TABLE . "\" || " : "") . " _usedEditors[frameId].getEditorEditorTable() == \"" . FILE_TABLE . "\") &&
+			if ( (_usedEditors[frameId].getEditorEditorTable() == \"" . TEMPLATES_TABLE . "\" || " . (defined('OBJECT_TABLE') ? " _usedEditors[frameId].getEditorEditorTable() == \"" . OBJECT_FILES_TABLE . "\" || "
+									: "") . " _usedEditors[frameId].getEditorEditorTable() == \"" . FILE_TABLE . "\") &&
 				_usedEditors[frameId].getEditorEditPageNr() == " . we_base_constants::WE_EDITPAGE_CONTENT . " ) {
 
 				if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
@@ -914,7 +916,8 @@ if ( !_multiEditorreload ) {
 
 		for (frameId in _usedEditors) {
 
-			if ( (_usedEditors[frameId].getEditorEditorTable() == \"" . TEMPLATES_TABLE . "\" || " . (defined("OBJECT_TABLE") ? " _usedEditors[frameId].getEditorEditorTable() == \"" . OBJECT_FILES_TABLE . "\" || " : "") . " _usedEditors[frameId].getEditorEditorTable() == \"" . FILE_TABLE . "\") &&
+			if ( (_usedEditors[frameId].getEditorEditorTable() == \"" . TEMPLATES_TABLE . "\" || " . (defined('OBJECT_TABLE') ? " _usedEditors[frameId].getEditorEditorTable() == \"" . OBJECT_FILES_TABLE . "\" || "
+								: "") . " _usedEditors[frameId].getEditorEditorTable() == \"" . FILE_TABLE . "\") &&
 				_usedEditors[frameId].getEditorEditPageNr() == " . we_base_constants::WE_EDITPAGE_CONTENT . " ) {
 
 				if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
@@ -1119,7 +1122,7 @@ _multiEditorreload = true;";
 		if($exist){
 			return false;
 		} else {
-			if(($id = intval(f('SELECT ID FROM ' . USER_TABLE . " WHERE Permissions LIKE ('%\"ADMINISTRATOR\";s:1:\"1\";%') AND ID!=" . $this->ID, 'ID', $this->DB_WE)))){
+			if(($id = intval(f('SELECT ID FROM ' . USER_TABLE . " WHERE Permissions LIKE ('%\"ADMINISTRATOR\";s:1:\"1\";%') AND ID!=" . $this->ID, '', $this->DB_WE)))){
 				print $id . we_html_element::htmlBr();
 				return false;
 			}
@@ -1152,7 +1155,8 @@ _multiEditorreload = true;";
 
 		$db = $GLOBALS['DB_WE'];
 		$db_tmp = new DB_WE();
-		$db->query('SELECT ParentID,' . ($onlyParent ? '1 AS ' : '') . ' ParentPerms,' . ($onlyParent ? '"a:0:{}" AS ' : '') . 'Permissions,Alias FROM ' . USER_TABLE . ' WHERE ID=' . intval($uid) . ($onlyParent ? '' : ' OR Alias=' . intval($uid)));
+		$db->query('SELECT ParentID,' . ($onlyParent ? '1 AS ' : '') . ' ParentPerms,' . ($onlyParent ? '"a:0:{}" AS ' : '') . 'Permissions,Alias FROM ' . USER_TABLE . ' WHERE ID=' . intval($uid) . ($onlyParent
+					? '' : ' OR Alias=' . intval($uid)));
 		while($db->next_record(MYSQL_ASSOC)){
 			if($db->f('Alias') != $uid){
 				$group_permissions = unserialize($db->f('Permissions'));
@@ -1293,7 +1297,8 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 		if($this->ID){
 			$this->DB_WE->query('SELECT ID,username,Text,Type FROM ' . USER_TABLE . ' WHERE Type IN (0,2) AND ParentID=' . intval($this->ID));
 			while($this->DB_WE->next_record()){
-				$content.='<option value="' . $this->DB_WE->f('ID') . '">' . (($this->DB_WE->f("Type") == 2) ? "[" : "") . $this->DB_WE->f("Text") . (($this->DB_WE->f("Type") == 2) ? "]" : "");
+				$content.='<option value="' . $this->DB_WE->f('ID') . '">' . (($this->DB_WE->f("Type") == 2) ? "[" : "") . $this->DB_WE->f("Text") . (($this->DB_WE->f("Type") == 2)
+							? "]" : "");
 			}
 		}
 
@@ -1320,7 +1325,7 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 		if($noNull && !$val){
 			$val = '';
 		}
-		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($this->Name . '_' . $name, 20, $val, $maxlen, 'onchange="top.content.setHot()" ' . (empty($attribs) ? '' : $attribs), $type, 240), g_l('modules_users', "[$lngkey]"));
+		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($this->Name . '_' . $name, 20, $val, $maxlen, 'onchange="top.content.setHot()" ' . $attribs, $type, 240), g_l('modules_users', "[$lngkey]"));
 	}
 
 	function formUserData(){
@@ -1368,7 +1373,7 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 				'****************' :
 				'<input type="hidden" name="' . $this->Name . '_clearpasswd" value="' . $this->clearpasswd . '" />' . we_html_tools::htmlTextInput('input_pass', 20, "", 255, 'onchange="top.content.setHot()" autocomplete="off"', 'password', 240));
 
-		$parent_name = f('SELECT Path FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->ParentID), 'Path', $this->DB_WE);
+		$parent_name = f('SELECT Path FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->ParentID), '', $this->DB_WE);
 		$parent_name = $parent_name ? $parent_name : '/';
 
 		$yuiSuggest = & weSuggest::getInstance();
@@ -1415,9 +1420,11 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 			$ModifierIDtext = '-';
 		}
 		$_tableObj->setCol(6, 0, array('class' => 'defaultfont'), g_l('modules_users', '[CreatorID]') . ' ' . $CreatorIDtext);
-		$_tableObj->setCol(6, 1, array('class' => 'defaultfont'), g_l('modules_users', '[CreateDate]') . ' ' . (($this->CreateDate) ? date('d.m.Y H:i:s', $this->CreateDate) : '-'));
+		$_tableObj->setCol(6, 1, array('class' => 'defaultfont'), g_l('modules_users', '[CreateDate]') . ' ' . (($this->CreateDate) ? date('d.m.Y H:i:s', $this->CreateDate)
+					: '-'));
 		$_tableObj->setCol(7, 0, array('class' => 'defaultfont'), g_l('modules_users', '[ModifierID]') . ' ' . $ModifierIDtext);
-		$_tableObj->setCol(7, 1, array('class' => 'defaultfont'), g_l('modules_users', '[ModifyDate]') . ' ' . (($this->ModifyDate) ? date('d.m.Y H:i:s', $this->ModifyDate) : '-'));
+		$_tableObj->setCol(7, 1, array('class' => 'defaultfont'), g_l('modules_users', '[ModifyDate]') . ' ' . (($this->ModifyDate) ? date('d.m.Y H:i:s', $this->ModifyDate)
+					: '-'));
 		$parts[] = array(
 			'headline' => g_l('modules_users', '[user_data]'),
 			'html' => $_tableObj->getHtml(),
@@ -1498,7 +1505,8 @@ function toggleRebuildPerm(disabledOnly) {';
 				if($pname != 'ADMINISTRATOR'){
 					$uncheckjs .= 'document.we_form.' . $this->Name . '_Permission_' . $pname . '.checked = false;top.content.setHot();';
 					$checkjs .= 'document.we_form.' . $this->Name . '_Permission_' . $pname . '.checked = true;top.content.setHot();';
-					$defaultjs.='document.we_form.' . $this->Name . '_Permission_' . $pname . '.checked = ' . (isset($this->permissions_defaults[$gname][$pname]) && $this->permissions_defaults[$gname][$pname] ? 'true' : 'false') . ';top.content.setHot();';
+					$defaultjs.='document.we_form.' . $this->Name . '_Permission_' . $pname . '.checked = ' . (isset($this->permissions_defaults[$gname][$pname]) && $this->permissions_defaults[$gname][$pname]
+								? 'true' : 'false') . ';top.content.setHot();';
 				}
 			}
 		}
@@ -1518,7 +1526,8 @@ function toggleRebuildPerm(disabledOnly) {';
 				$content = '
 <table cellpadding="0" cellspacing="0" border="0" width="500">
 	<tr><td>' . we_html_tools::getPixel(1, 5) . '</td></tr>
-	<tr><td>' . we_html_forms::checkbox(1, $v, $this->Name . "_Permission_" . $k, $this->permissions_titles['administrator'][$k], false, 'defaultfont', ($k == 'REBUILD' ? 'setRebuidPerms();top.content.setHot();' : 'top.content.setHot();')) . '</td></tr>
+	<tr><td>' . we_html_forms::checkbox(1, $v, $this->Name . "_Permission_" . $k, $this->permissions_titles['administrator'][$k], false, 'defaultfont', ($k == 'REBUILD'
+								? 'setRebuidPerms();top.content.setHot();' : 'top.content.setHot();')) . '</td></tr>
 </table>';
 			}
 			$parts[] = array(
@@ -1568,31 +1577,36 @@ function delElement(elvalues,elem) {
 					$title = g_l('modules_users', '[workspace_templates]');
 					$setValue = 'TEMPLATES_TABLE';
 					$showParent = $this->ParentWst;
-					$content1 = $this->ParentID ? $this->formInherits('_ParentWst', $this->ParentWst, g_l('modules_users', '[inherit_wst]'), 'document.getElementById(\'info' . $setValue . '\').style.display=(this.checked?\'inline\':\'none\');') : '';
+					$content1 = $this->ParentID ? $this->formInherits('_ParentWst', $this->ParentWst, g_l('modules_users', '[inherit_wst]'), 'document.getElementById(\'info' . $setValue . '\').style.display=(this.checked?\'inline\':\'none\');')
+							: '';
 					break;
 				case NAVIGATION_TABLE:
 					$title = g_l('modules_users', '[workspace_navigations]');
 					$setValue = 'NAVIGATION_TABLE';
 					$showParent = $this->ParentWsn;
-					$content1 = $this->ParentID ? $this->formInherits('_ParentWsn', $this->ParentWsn, g_l('modules_users', '[inherit_wsn]'), 'document.getElementById(\'info' . $setValue . '\').style.display=(this.checked?\'inline\':\'none\');') : '';
+					$content1 = $this->ParentID ? $this->formInherits('_ParentWsn', $this->ParentWsn, g_l('modules_users', '[inherit_wsn]'), 'document.getElementById(\'info' . $setValue . '\').style.display=(this.checked?\'inline\':\'none\');')
+							: '';
 					break;
 				case (defined('NEWSLETTER_TABLE') ? NEWSLETTER_TABLE : 'NEWSLETTER_TABLE'):
 					$title = g_l('modules_users', '[workspace_newsletter]');
 					$setValue = 'NEWSLETTER_TABLE';
 					$showParent = $this->ParentWsnl;
-					$content1 = $this->ParentID ? $this->formInherits('_ParentWsnl', $this->ParentWsnl, g_l('modules_users', '[inherit_wsnl]'), 'document.getElementById(\'info' . $setValue . '\').style.display=(this.checked?\'inline\':\'none\');') : '';
+					$content1 = $this->ParentID ? $this->formInherits('_ParentWsnl', $this->ParentWsnl, g_l('modules_users', '[inherit_wsnl]'), 'document.getElementById(\'info' . $setValue . '\').style.display=(this.checked?\'inline\':\'none\');')
+							: '';
 					break;
 				case (defined('OBJECT_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 					$title = g_l('modules_users', '[workspace_objects]');
 					$setValue = 'OBJECT_TABLE';
 					$showParent = $this->ParentWso;
-					$content1 = $this->ParentID ? $this->formInherits('_ParentWso', $this->ParentWso, g_l('modules_users', '[inherit_wso]'), 'document.getElementById(\'info' . $setValue . '\').style.display=(this.checked?\'inline\':\'none\');') : '';
+					$content1 = $this->ParentID ? $this->formInherits('_ParentWso', $this->ParentWso, g_l('modules_users', '[inherit_wso]'), 'document.getElementById(\'info' . $setValue . '\').style.display=(this.checked?\'inline\':\'none\');')
+							: '';
 					break;
 				case FILE_TABLE:
 					$title = g_l('modules_users', '[workspace_documents]');
 					$setValue = 'FILE_TABLE';
 					$showParent = $this->ParentWs;
-					$content1 = $this->ParentID ? $this->formInherits('_ParentWs', $this->ParentWs, g_l('modules_users', '[inherit_ws]'), 'document.getElementById(\'info' . $setValue . '\').style.display=(this.checked?\'inline\':\'none\');') : '';
+					$content1 = $this->ParentID ? $this->formInherits('_ParentWs', $this->ParentWs, g_l('modules_users', '[inherit_ws]'), 'document.getElementById(\'info' . $setValue . '\').style.display=(this.checked?\'inline\':\'none\');')
+							: '';
 					break;
 				default:
 					continue 2;
@@ -1654,7 +1668,8 @@ function delElement(elvalues,elem) {
 <tr><td colspan="2">' . $weAcSelector . '</td>
 	<td><div style="position:relative; top:-1px">' . we_html_button::create_button("image:btn_function_trash", "javascript:delElement(document.we_form." . $obj_values . "," . $key . ");switchPage(" . self::TAB_WORKSPACES . ");", true) . '</td></div>' .
 					($k == FILE_TABLE ?
-						'<td class="defaultfont">' . we_html_forms::checkbox(1, $default, $obj_def_names . "[$key]", g_l('modules_users', "[make_def_ws]"), true, "defaultfont", 'top.content.setHot();') . '</td>' :
+						'<td class="defaultfont">' . we_html_forms::checkbox(1, $default, $obj_def_names . "[$key]", g_l('modules_users', "[make_def_ws]"), true, "defaultfont", 'top.content.setHot();') . '</td>'
+							:
 						'<td>' . we_html_tools::getPixel(5, 5) . '</td>') . '
 </tr>';
 			}
@@ -1678,7 +1693,8 @@ function delElement(elvalues,elem) {
 
 			$parts[] = array(
 				'headline' => $title,
-				'html' => ($this->ParentID ? '<div id="info' . $setValue . '" style="' . ($showParent ? '' : 'display:none;') . '">' . we_html_tools::htmlAlertAttentionBox($parent, we_html_tools::TYPE_INFO, 600, false) . '</div>' : '') . $content1,
+				'html' => ($this->ParentID ? '<div id="info' . $setValue . '" style="' . ($showParent ? '' : 'display:none;') . '">' . we_html_tools::htmlAlertAttentionBox($parent, we_html_tools::TYPE_INFO, 600, false) . '</div>'
+						: '') . $content1,
 				'space' => 200
 			);
 		}
@@ -1702,7 +1718,8 @@ function delElement(elvalues,elem) {
 				'headline' => g_l('modules_users', '[workspace_customer]'),
 				'html' => ($this->ParentID ?
 					'<div id="infoCUSTOMER" style="' . ($this->ParentWsCust ? '' : 'display:none;') . '">' . we_html_tools::htmlAlertAttentionBox($parent, we_html_tools::TYPE_INFO, 600) . '</div>' .
-					$this->formInherits('_ParentWsCust', $this->ParentWsCust, g_l('modules_users', '[inherit_cust]'), 'document.getElementById(\'infoCUSTOMER\').style.display=(this.checked?\'inline\':\'none\');') : '') . $view->getFilterCustomers(),
+					$this->formInherits('_ParentWsCust', $this->ParentWsCust, g_l('modules_users', '[inherit_cust]'), 'document.getElementById(\'infoCUSTOMER\').style.display=(this.checked?\'inline\':\'none\');')
+						: '') . $view->getFilterCustomers(),
 				'space' => 200
 			);
 		}
@@ -1842,9 +1859,11 @@ function select_seem_start() {
 	}
 
 	if(document.getElementById('seem_start_type').value == 'object') {
-		top.opener.top.we_cmd('openDocselector', document.forms[0].elements['seem_start_object'].value, '" . (defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : "") . "', myWindStr + '.document.forms[0].elements[\'seem_start_object\'].value', myWindStr + '.document.forms[0].elements[\'seem_start_object_name\'].value', '', '" . session_id() . "', '', 'objectFile','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");
+		top.opener.top.we_cmd('openDocselector', document.forms[0].elements['seem_start_object'].value, '" . (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : "") . "', myWindStr + '.document.forms[0].elements[\'seem_start_object\'].value', myWindStr + '.document.forms[0].elements[\'seem_start_object_name\'].value', '', '" . session_id() . "', '', 'objectFile','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS")
+						? 0 : 1) . ");
 	} else {
-		top.opener.top.we_cmd('openDocselector', document.forms[0].elements['seem_start_document'].value, '" . FILE_TABLE . "', myWindStr + '.document.forms[0].elements[\'seem_start_document\'].value', myWindStr + '.document.forms[0].elements[\'seem_start_document_name\'].value', '', '" . session_id() . "', '', '" . we_base_ContentTypes::WEDOCUMENT . "','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");
+		top.opener.top.we_cmd('openDocselector', document.forms[0].elements['seem_start_document'].value, '" . FILE_TABLE . "', myWindStr + '.document.forms[0].elements[\'seem_start_document\'].value', myWindStr + '.document.forms[0].elements[\'seem_start_document_name\'].value', '', '" . session_id() . "', '', '" . we_base_ContentTypes::WEDOCUMENT . "','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES")
+						? 0 : 1) . ");
 	}
 }
 
@@ -2065,14 +2084,18 @@ function show_seem_chooser(val) {
 		$_window_specify_table->setCol(1, 2, null, we_html_tools::getPixel(10, 1));
 		$_window_specify_table->setCol(3, 2, null, we_html_tools::getPixel(10, 1));
 
-		$_window_specify_table->setCol(1, 3, null, we_html_tools::htmlTextInput($this->Name . '_Preference_weWidth', 6, ($this->Preferences['weWidth'] != '' && $this->Preferences['weWidth'] != '0' ? $this->Preferences['weWidth'] : 800), 4, ($this->Preferences['sizeOpt'] == 0 ? "disabled=\"disabled\"" : "") . "onchange='top.content.setHot();'", "text", 60));
-		$_window_specify_table->setCol(3, 3, null, we_html_tools::htmlTextInput($this->Name . "_Preference_weHeight", 6, ( ($this->Preferences['weHeight'] != '' && $this->Preferences['weHeight'] != '0') ? $this->Preferences['weHeight'] : 600), 4, ($this->Preferences['sizeOpt'] == 0 ? "disabled=\"disabled\"" : "") . "onchange='top.content.setHot();'", "text", 60));
+		$_window_specify_table->setCol(1, 3, null, we_html_tools::htmlTextInput($this->Name . '_Preference_weWidth', 6, ($this->Preferences['weWidth'] != '' && $this->Preferences['weWidth'] != '0'
+						? $this->Preferences['weWidth'] : 800), 4, ($this->Preferences['sizeOpt'] == 0 ? "disabled=\"disabled\"" : "") . "onchange='top.content.setHot();'", "text", 60));
+		$_window_specify_table->setCol(3, 3, null, we_html_tools::htmlTextInput($this->Name . "_Preference_weHeight", 6, ( ($this->Preferences['weHeight'] != '' && $this->Preferences['weHeight'] != '0')
+						? $this->Preferences['weHeight'] : 600), 4, ($this->Preferences['sizeOpt'] == 0 ? "disabled=\"disabled\"" : "") . "onchange='top.content.setHot();'", "text", 60));
 
 		// Build apply current window dimension
 		$_window_current_dimension_table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 1, 2);
 
 		$_window_current_dimension_table->setCol(0, 0, null, we_html_tools::getPixel(90, 1));
-		$_window_current_dimension_table->setCol(0, 1, null, we_html_button::create_button("apply_current_dimension", "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = " . (we_base_browserDetect::isIE() ? "top.opener.top.document.body.clientWidth" : "top.opener.top.window.outerWidth") . ";document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = " . (we_base_browserDetect::isIE() ? "top.opener.top.document.body.clientHeight;" : "top.opener.top.window.outerHeight;"), true, 210));
+		$_window_current_dimension_table->setCol(0, 1, null, we_html_button::create_button("apply_current_dimension", "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = " . (we_base_browserDetect::isIE()
+						? "top.opener.top.document.body.clientWidth" : "top.opener.top.window.outerWidth") . ";document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = " . (we_base_browserDetect::isIE()
+						? "top.opener.top.document.body.clientHeight;" : "top.opener.top.window.outerHeight;"), true, 210));
 
 		// Build final HTML code
 		$_window_html = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 5, 1);
@@ -2143,7 +2166,8 @@ function show_seem_chooser(val) {
 		$_template_editor_font_specify_table->setCol(1, 2, null, we_html_tools::getPixel(10, 1));
 		$_template_editor_font_specify_table->setCol(3, 2, null, we_html_tools::getPixel(10, 1));
 
-		$_template_editor_font_select_box = new we_html_select(array("class" => "weSelect", "name" => $this->Name . "_Preference_editorFontname", "size" => 1, "style" => "width: 90px;", ($_template_editor_font_specify ? "enabled" : "disabled") => ($_template_editor_font_specify ? "enabled" : "disabled"), "onchange" => "top.content.setHot();"));
+		$_template_editor_font_select_box = new we_html_select(array("class" => "weSelect", "name" => $this->Name . "_Preference_editorFontname", "size" => 1, "style" => "width: 90px;", ($_template_editor_font_specify
+					? "enabled" : "disabled") => ($_template_editor_font_specify ? "enabled" : "disabled"), "onchange" => "top.content.setHot();"));
 
 		foreach($_template_fonts as $tf){
 			$_template_editor_font_select_box->addOption($tf, $tf);
@@ -2159,7 +2183,8 @@ function show_seem_chooser(val) {
 			}
 		}
 
-		$_template_editor_font_sizes_select_box = new we_html_select(array('class' => 'weSelect', 'name' => $this->Name . '_Preference_editorFontsize', "size" => 1, "style" => "width: 90px;", ($_template_editor_font_size_specify ? "enabled" : "disabled") => ($_template_editor_font_size_specify ? "enabled" : "disabled"), "onchange" => "top.content.setHot();"));
+		$_template_editor_font_sizes_select_box = new we_html_select(array('class' => 'weSelect', 'name' => $this->Name . '_Preference_editorFontsize', "size" => 1, "style" => "width: 90px;", ($_template_editor_font_size_specify
+					? "enabled" : "disabled") => ($_template_editor_font_size_specify ? "enabled" : "disabled"), "onchange" => "top.content.setHot();"));
 
 		foreach($_template_font_sizes as $tf){
 			$_template_editor_font_sizes_select_box->addOption($tf, $tf);
@@ -2333,7 +2358,8 @@ function resetTabs(){
 
 top.content.hloaded=1;') .
 			$tab_header .
-			'<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . str_replace(" ", "&nbsp;", $headline1) . '&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", ($this->Path ? $this->Path : $this->getPath($this->ParentID))) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) . $we_tabs->getHTML() . '</div>';
+			'<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . str_replace(" ", "&nbsp;", $headline1) . '&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", ($this->Path
+						? $this->Path : $this->getPath($this->ParentID))) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) . $we_tabs->getHTML() . '</div>';
 	}
 
 	public static function getUsername($id, we_database_base $db = null){
@@ -2541,22 +2567,6 @@ top.content.hloaded=1;') .
 		}
 		if(!empty($upd)){
 			$db->query('REPLACE INTO ' . PREFS_TABLE . ' (`userID`,`key`,`value`) VALUES ' . implode(',', $upd));
-		}
-	}
-
-	static function removeOldWESession(){
-		if(session_name() == SESSION_NAME){
-			session_unset();
-			return;
-		}
-		unset($_SESSION['user']);
-		unset($_SESSION['perms']);
-		unset($_SESSION['prefs']);
-		if(isset($_SESSION['weS'])){
-			unset($_SESSION['weS']);
-		}
-		if(isset($_SESSION['apps'])){
-			unset($_SESSION['apps']);
 		}
 	}
 

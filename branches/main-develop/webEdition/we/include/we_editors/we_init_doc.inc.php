@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -33,6 +32,7 @@ if((!isset($we_ContentType)) && ((!isset($we_dt)) || (!is_array($we_dt)) || (!$w
 	$we_ContentType = f('SELECT ContentType FROM ' . $GLOBALS['DB_WE']->escape($we_Table) . ' WHERE ID=' . intval($we_ID));
 }
 
+$showDoc = isset($GLOBALS['FROM_WE_SHOW_DOC']) && $GLOBALS['FROM_WE_SHOW_DOC'];
 switch(isset($we_ContentType) ? $we_ContentType : ''){
 	case we_base_ContentTypes::FLASH:
 		$we_doc = new we_flashDocument();
@@ -53,7 +53,7 @@ switch(isset($we_ContentType) ? $we_ContentType : ''){
 		$we_doc = new we_template();
 		break;
 	case we_base_ContentTypes::WEDOCUMENT:
-		$we_doc = new we_webEditionDocument();
+			$we_doc = new we_webEditionDocument(); //($showDoc ? new we_webEditionDocument() : new we_view_webEditionDocument());
 		break;
 	case we_base_ContentTypes::HTML:
 		$we_doc = new we_htmlDocument();
@@ -84,7 +84,8 @@ switch(isset($we_ContentType) ? $we_ContentType : ''){
 }
 
 if(isset($we_ID) && $we_ID){
-	$we_doc->initByID($we_ID, $we_Table, ( (isset($GLOBALS['FROM_WE_SHOW_DOC']) && $GLOBALS['FROM_WE_SHOW_DOC']) || (isset($GLOBALS['WE_RESAVE']) && $GLOBALS['WE_RESAVE']) ) ? we_class::LOAD_MAID_DB : we_class::LOAD_TEMP_DB);
+	$we_doc->initByID($we_ID, $we_Table, ( (isset($GLOBALS['FROM_WE_SHOW_DOC']) && $GLOBALS['FROM_WE_SHOW_DOC']) || (isset($GLOBALS['WE_RESAVE']) && $GLOBALS['WE_RESAVE']) )
+				? we_class::LOAD_MAID_DB : we_class::LOAD_TEMP_DB);
 } else if(isset($we_dt)){
 	$we_doc->we_initSessDat($we_dt);
 

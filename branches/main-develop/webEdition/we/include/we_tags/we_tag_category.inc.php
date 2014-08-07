@@ -55,7 +55,7 @@ function we_tag_category($attribs){
 			case 'we_object_listview' :
 				$catIDs = $GLOBALS['lv']->f('wedoc_Category');
 				break;
-			case 'we_search_listview':
+			case 'we_listview_search':
 				$catIDs = $GLOBALS['lv']->f('wedoc_Category');
 				break;
 			default :

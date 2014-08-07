@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_customer_frames extends weModuleFrames{
-
 	var $View;
 	var $jsOut_fieldTypesByName;
 	public $module = 'customer';
@@ -38,7 +37,7 @@ class we_customer_frames extends weModuleFrames{
 		$this->View = new we_customer_view(WE_CUSTOMER_MODULE_DIR . "edit_customer_frameset.php", "top.content");
 	}
 
-	function getHTMLDocumentHeader($what = '', $mode = ''){
+	public function getHTMLDocumentHeader($what = '', $mode = ''){
 		//We need to set this (and in corresponding frames, since the data in database is formated this way
 		if(!($mode == 'export' && we_base_request::_(we_base_request::INT, "step") == 5)){
 			return we_html_tools::headerCtCharset('text/html', DEFAULT_CHARSET) .
@@ -239,13 +238,12 @@ class we_customer_frames extends weModuleFrames{
 				return 'no FrontendLanguages defined';
 
 			case 'select':
-
 				$defs = explode(',', $props['default']);
-				if(!in_array($value, $defs)){
+				if($this->View->customer->ID && !in_array($value, $defs)){
 					$defs = array_merge(array($value), $defs);
 				}
 
-				$select = new we_html_select(array("name" => $field, "size" => 1, "style" => "width:240px;", "class" => "wetextinput", "id" => ($field == "Gruppe" ? "yuiAcInputPathGroupX" : ''), "onchange" => ($field == "Gruppe" ? "top.content.setHot();" : "top.content.setHot();")));
+				$select = new we_html_select(array("name" => $field, "size" => 1, "style" => "width:240px;", "class" => "wetextinput", "id" => ($field == "Gruppe" ? "yuiAcInputPathGroupX" : ''), "onchange" => "top.content.setHot();"));
 				foreach($defs as $def){
 					$select->addOption($def, $def);
 				}
@@ -839,7 +837,7 @@ failure: function(o) {
 		if($mode){
 			we_customer_add::getHTMLSearch($this, $search, $select);
 		} else {
-			$search->setCol(1, 0, array(), we_html_tools::htmlTextInput('keyword', 80, we_base_request::_(we_base_request::RAW, 'keyword', ''), '', 'onchange=""', 'text', '550px')
+			$search->setCol(1, 0, array(), we_html_tools::htmlTextInput('keyword', 80, we_base_request::_(we_base_request::STRINGC, 'keyword', ''), '', 'onchange=""', 'text', '550px')
 			);
 
 			$sw = we_html_button::create_button('image:btn_direction_right', "javascript:we_cmd('switchToAdvance')");
@@ -857,7 +855,7 @@ failure: function(o) {
 
 			$max_res = $this->View->settings->getMaxSearchResults();
 			$result = array();
-			if(($k = we_base_request::_(we_base_request::STRING, 'keyword')) && we_base_request::_(we_base_request::BOOL, 'search')){
+			if(($k = we_base_request::_(we_base_request::STRINGC, 'keyword')) && we_base_request::_(we_base_request::BOOL, 'search')){
 				$result = $this->View->getSearchResults($k, $max_res);
 			}
 			foreach($result as $id => $text){
@@ -957,11 +955,11 @@ failure: function(o) {
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array("class" => "defaultfont"), $default_sort_view_select->getHtml());
 
-		$table->setCol( ++$cur, 0, array("class" => "defaultfont"), g_l('modules_customer', '[start_year]') . ":&nbsp;");
+		$table->setCol(++$cur, 0, array("class" => "defaultfont"), g_l('modules_customer', '[start_year]') . ":&nbsp;");
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array("class" => "defaultfont"), we_html_tools::htmlTextInput("start_year", 32, $this->View->settings->getSettings('start_year'), ''));
 
-		$table->setCol( ++$cur, 0, array("class" => "defaultfont"), g_l('modules_customer', '[treetext_format]') . ":&nbsp;");
+		$table->setCol(++$cur, 0, array("class" => "defaultfont"), g_l('modules_customer', '[treetext_format]') . ":&nbsp;");
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array("class" => "defaultfont"), we_html_tools::htmlTextInput("treetext_format", 32, $this->View->settings->getSettings('treetext_format'), ''));
 
@@ -974,7 +972,7 @@ failure: function(o) {
 		}
 		$default_order->selectOption($this->View->settings->getSettings('default_order'));
 
-		$table->setCol( ++$cur, 0, array('class' => 'defaultfont'), g_l('modules_customer', '[default_order]') . ':&nbsp;');
+		$table->setCol(++$cur, 0, array('class' => 'defaultfont'), g_l('modules_customer', '[default_order]') . ':&nbsp;');
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array('class' => 'defaultfont'), $default_order->getHtml());
 
@@ -983,7 +981,7 @@ failure: function(o) {
 		$default_saveRegisteredUser_register->addOption('true', 'true');
 		$default_saveRegisteredUser_register->selectOption($this->View->settings->getPref('default_saveRegisteredUser_register'));
 
-		$table->setCol( ++$cur, 0, array('class' => 'defaultfont'), '&lt;we:saveRegisteredUser register=&quot;');
+		$table->setCol(++$cur, 0, array('class' => 'defaultfont'), '&lt;we:saveRegisteredUser register=&quot;');
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array('class' => 'defaultfont'), $default_saveRegisteredUser_register->getHtml() . '&quot;/>');
 

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,18 +27,10 @@
  *
  */
 class we_customer_documentFilter extends we_customer_abstractFilter{
-
 	const ACCESS = 'f_1';
 	const CONTROLONTEMPLATE = 'f_2';
 	const NO_ACCESS = 'f_3';
 	const NO_LOGIN = 'f_4';
-
-	/**
-	 * db-id of filter
-	 *
-	 * @var integer
-	 */
-	private $_id = 0;
 
 	/**
 	 * Id of model (document or object)
@@ -100,9 +91,9 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	 * @param array $blackList
 	 * @return we_customer_documentFilter
 	 */
-	function __construct($id = 0, $modelId = 0, $modelType = '', $modelTable = '', $accessControlOnTemplate = true, $errorDocNoLogin = 0, $errorDocNoAccess = 0, $mode = we_customer_abstractFilter::OFF, array $specificCustomers = array(), array $filter = array(), array $whiteList = array(), array $blackList = array()){
+	public function __construct($modelId = 0, $modelType = '', $modelTable = '', $accessControlOnTemplate = true, $errorDocNoLogin = 0, $errorDocNoAccess = 0, $mode = we_customer_abstractFilter::OFF, array $specificCustomers = array(), array $filter = array(), array $whiteList = array(), array $blackList = array()){
 		parent::__construct($mode, $specificCustomers, $blackList, $whiteList, $filter);
-		$this->setId($id);
+
 		$this->setModelId($modelId);
 		$this->setModelType($modelType);
 		$this->setModelTable($modelTable);
@@ -117,10 +108,11 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	 * @param we_db $db
 	 * @return we_customer_documentFilter
 	 */
-	function getFilterByDbHash(&$hash){
+	private static function getFilterByDbHash($hash){
 		$f = $hash['filter'] ? unserialize($hash['filter']) : array();
 		return new self(
-			intval($hash['id']), intval($hash['modelId']), $hash['modelType'], $hash['modelTable'], intval($hash['accessControlOnTemplate']), intval($hash['errorDocNoLogin']), intval($hash['errorDocNoAccess']), intval($hash['mode']), makeArrayFromCSV($hash['specificCustomers']), is_array($f) ? $f : array(), makeArrayFromCSV($hash['whiteList']), makeArrayFromCSV($hash['blackList'])
+			intval($hash['modelId']), $hash['modelType'], $hash['modelTable'], intval($hash['accessControlOnTemplate']), intval($hash['errorDocNoLogin']), intval($hash['errorDocNoAccess']), intval($hash['mode']), makeArrayFromCSV($hash['specificCustomers']), is_array($f)
+					? $f : array(), makeArrayFromCSV($hash['whiteList']), makeArrayFromCSV($hash['blackList'])
 		);
 	}
 
@@ -131,12 +123,11 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	 * @param mixed $model
 	 * @return we_customer_documentFilter
 	 */
-	static function getCustomerFilterFromRequest(&$model){
+	static function getCustomerFilterFromRequest($id, $ct, $table){
 		return
 			(we_base_request::_(we_base_request::INT, 'wecf_mode') === we_customer_abstractFilter::OFF ?
 				self::getEmptyDocumentCustomerFilter() :
-				new self(
-				we_base_request::_(we_base_request::INT, 'weDocumentCustomerFilter_id', 0), intval($model->ID), $model->ContentType, $model->Table, (we_base_request::_(we_base_request::STRING, 'wecf_accessControlOnTemplate') == "onTemplate") ? 1 : 0, we_base_request::_(we_base_request::INT, 'wecf_noLoginId', 0), we_base_request::_(we_base_request::INT, 'wecf_noAccessId', 0), we_base_request::_(we_base_request::INT, 'wecf_mode', 0), self::getSpecificCustomersFromRequest(), self::getFilterFromRequest(), self::getWhiteListFromRequest(), self::getBlackListFromRequest()
+				new self(intval($id), $ct, $table, (we_base_request::_(we_base_request::STRING, 'wecf_accessControlOnTemplate') == "onTemplate") ? 1 : 0, we_base_request::_(we_base_request::INT, 'wecf_noLoginId', 0), we_base_request::_(we_base_request::INT, 'wecf_noAccessId', 0), we_base_request::_(we_base_request::INT, 'wecf_mode', 0), self::getSpecificCustomersFromRequest(), self::getFilterFromRequest(), self::getWhiteListFromRequest(), self::getBlackListFromRequest()
 				)
 			);
 	}
@@ -147,7 +138,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	 * @param mixed $model
 	 * @return we_customer_documentFilter
 	 */
-	static function getFilterOfDocument(&$model, we_database_base $db = null){
+	public static function getFilterOfDocument($model, we_database_base $db = null){
 		return self::getFilterByIdAndTable($model->ID, $model->Table, $db);
 	}
 
@@ -169,48 +160,50 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	/**
 	 * get additional condition for listviews
 	 *
-	 * @param we_listview $listview
 	 * @return string
 	 */
-	function getConditionForListviewQuery(&$listview){
-		if($listview->customerFilterType === 'off' || $listview->customerFilterType === 'false'){
+	function getConditionForListviewQuery($filter, $classname, $classID = 0){
+		if($filter === 'off' || $filter === 'false' || $filter === false || $filter === 'all'){
 			return '';
 		}
+		if(!self::customerIsLogedIn()){ //we don't show any documents with an customerfilter
+			if($classname == 'we_listview_search'){ // search
+				return ' AND DID NOT IN(SELECT modelId FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="' . stripTblPrefix(FILE_TABLE) . '")' .
+					' AND OID NOT IN(SELECT modelId FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="' . stripTblPrefix(OBJECT_FILES_TABLE) . '")';
+			}
+			return ($classID ?
+					' AND ' . OBJECT_X_TABLE . $classID . '.OF_ID NOT IN(SELECT modelId FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="' . stripTblPrefix(OBJECT_FILES_TABLE) . '")'
+						:
+					' AND ' . FILE_TABLE . '.ID NOT IN(SELECT modelId FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="' . stripTblPrefix(FILE_TABLE) . '")'
+				);
+		}
+
 		$_queryTail = '';
-		$_allowedCTs = array(we_base_ContentTypes::WEDOCUMENT, 'objectFile');
 
 		// if customer is not logged in, all documents/objects with filters must be hidden
-		$_restrictedFilesForCustomer = self::_getFilesWithRestrictionsOfCustomer($listview);
+		$_restrictedFilesForCustomer = self::_getFilesWithRestrictionsOfCustomer($classname, $filter, $classID);
 
-		if($listview instanceof we_search_listview){ // search
+		if($classname == 'we_listview_search'){ // search
 			// build query from restricted files, regard search and normal listview
 			foreach($_restrictedFilesForCustomer as $ct => $_fileArray){
-
-				if(in_array($ct, $_allowedCTs)){
-
+				if($_fileArray){
 					$_idField = ($ct == we_base_ContentTypes::WEDOCUMENT ? 'DID' : 'OID');
-					if(!empty($_fileArray)){
-						$_queryTail .= ' AND ' . $_idField . ' NOT IN(' . implode(', ', $_fileArray) . ')';
-					}
+					$_queryTail .= ' AND ' . $_idField . ' NOT IN(' . implode(', ', $_fileArray) . ')';
 				}
 			}
-		} else {
-
-			$_fileArray = array();
-			// build query from restricted files, regard search and normal listview
-			foreach($_restrictedFilesForCustomer as $ct => $_fileArray){
-
-				if(in_array($ct, $_allowedCTs)){
-
-					$_idField = ($ct == we_base_ContentTypes::WEDOCUMENT ?
-							FILE_TABLE . '.ID' :
-							OBJECT_X_TABLE . $listview->classID . '.OF_ID');
-				}
-			}
-			if(!empty($_fileArray)){
-				$_queryTail = ' AND ' . $_idField . ' NOT IN(' . implode(', ', $_fileArray) . ')';
+			return $_queryTail;
+		}
+		$_fileArray = array();
+		// build query from restricted files, regard search and normal listview
+		foreach($_restrictedFilesForCustomer as $ct => $_fileArray){
+			if($_fileArray){
+				$_idField = ($ct == we_base_ContentTypes::WEDOCUMENT ?
+						FILE_TABLE . '.ID' :
+						OBJECT_X_TABLE . $classID . '.OF_ID');
+				$_queryTail .= ' AND ' . $_idField . ' NOT IN(' . implode(', ', $_fileArray) . ')';
 			}
 		}
+
 		return $_queryTail;
 	}
 
@@ -291,22 +284,18 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 
 		// check if there were any changes?
 		$_docCustomerFilter = $model->documentCustomerFilter; // filter of document
-		$_tmp = self::getFilterOfDocument($model, $_db); // filter stored in Database
+		$_tmp = self::getFilterByIdAndTable($model->ID, $model->Table, $_db); // filter stored in Database
 
 		if(!self::filterAreQual($_docCustomerFilter, $_tmp)){ // the filter changed
 			self::deleteForModel($model, $_db);
 
 			if($_docCustomerFilter->getMode() != we_customer_abstractFilter::OFF && $model->ID){ // only save if its is active
 				$_filter = $_docCustomerFilter->getFilter();
-				$_filter = !empty($_filter) ? serialize($_filter) : '';
 				$_specificCustomers = $_docCustomerFilter->getSpecificCustomers();
-				$_specificCustomers = !empty($_specificCustomers) ? makeCSVFromArray($_specificCustomers, true) : '';
 				$_blackList = $_docCustomerFilter->getBlackList();
-				$_blackList = !empty($_blackList) ? makeCSVFromArray($_blackList, true) : '';
 				$_whiteList = $_docCustomerFilter->getWhiteList();
-				$_whiteList = !empty($_whiteList) ? makeCSVFromArray($_whiteList, true) : '';
 
-				$_query = 'REPLACE INTO ' . CUSTOMER_FILTER_TABLE . ' SET ' . we_database_base::arraySetter(array(
+				$_db->query('REPLACE INTO ' . CUSTOMER_FILTER_TABLE . ' SET ' . we_database_base::arraySetter(array(
 						'modelId' => $model->ID,
 						'modelType' => $model->ContentType,
 						'modelTable' => stripTblPrefix($model->Table),
@@ -314,17 +303,14 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 						'errorDocNoLogin' => $_docCustomerFilter->getErrorDocNoLogin(),
 						'errorDocNoAccess' => $_docCustomerFilter->getErrorDocNoAccess(),
 						'mode' => $_docCustomerFilter->getMode(),
-						'specificCustomers' => $_specificCustomers,
-						'filter' => $_filter,
-						'whiteList' => $_whiteList,
-						'blackList' => $_blackList
-				));
-
-
-				$_db->query($_query);
+						'specificCustomers' => ($_specificCustomers ? makeCSVFromArray($_specificCustomers, true) : ''),
+						'filter' => ($_filter ? serialize($_filter) : ''),
+						'whiteList' => ($_whiteList ? makeCSVFromArray($_whiteList, true) : ''),
+						'blackList' => ($_blackList ? makeCSVFromArray($_blackList, true) : ''),
+					))
+				);
 			}
 		}
-		unset($_db);
 	}
 
 	/**
@@ -337,7 +323,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	function deleteForModel(&$model, we_database_base $db = null){
 		if($model->ID){
 			$_db = ($db ? $db : new DB_WE());
-			$_db->query('DELETE FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelId=' . intval($model->ID) . ' AND modelType="' . $db->escape($model->ContentType) . '" AND modelTable="' . stripTblPrefix($model->Table) . '"');
+			$_db->query('DELETE FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelId=' . intval($model->ID) . ' AND modelTable="' . stripTblPrefix($model->Table) . '"');
 		}
 	}
 
@@ -346,97 +332,87 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	 *
 	 * @param we_customer_customer $webUser
 	 */
-	function deleteWebUser(&$webUser){
-
-		if($webUser->ID){
-			$_db = new DB_WE();
-			$_db->query('UPDATE ' . CUSTOMER_FILTER_TABLE . ' SET specificCustomers=REPLACE(specificCustomers,",' . intval($webUser->ID) . ',",",") WHERE specificCustomers LIKE "%,' . intval($webUser->ID) . ',%"');
-			$_db->query('UPDATE ' . CUSTOMER_FILTER_TABLE . ' SET specificCustomers="" WHERE specificCustomers=","');
-			$_db->query('UPDATE ' . CUSTOMER_FILTER_TABLE . ' SET whiteList=REPLACE(whiteList,",' . intval($webUser->ID) . ',",",") WHERE whiteList LIKE "%,' . intval($webUser->ID) . ',%"');
-			$_db->query('UPDATE ' . CUSTOMER_FILTER_TABLE . ' SET whiteList="" WHERE whiteList=","');
-			$_db->query('UPDATE ' . CUSTOMER_FILTER_TABLE . ' SET blackList=REPLACE(blackList,",' . intval($webUser->ID) . ',",",") WHERE blackList LIKE "%,' . intval($webUser->ID) . ',%"');
-			$_db->query('UPDATE ' . CUSTOMER_FILTER_TABLE . ' SET blackList="" WHERE blackList=","');
-			unset($_db);
+	public static function deleteWebUser($webUser){
+		if(!$webUser){
+			return;
 		}
+		$_db = new DB_WE();
+		$_db->query('UPDATE ' . CUSTOMER_FILTER_TABLE . ' SET specificCustomers=REPLACE(specificCustomers,",' . intval($webUser) . ',",",") WHERE specificCustomers LIKE "%,' . intval($webUser) . ',%"');
+		$_db->query('UPDATE ' . CUSTOMER_FILTER_TABLE . ' SET specificCustomers="" WHERE specificCustomers=","');
+		$_db->query('UPDATE ' . CUSTOMER_FILTER_TABLE . ' SET whiteList=REPLACE(whiteList,",' . intval($webUser) . ',",",") WHERE whiteList LIKE "%,' . intval($webUser) . ',%"');
+		$_db->query('UPDATE ' . CUSTOMER_FILTER_TABLE . ' SET whiteList="" WHERE whiteList=","');
+		$_db->query('UPDATE ' . CUSTOMER_FILTER_TABLE . ' SET blackList=REPLACE(blackList,",' . intval($webUser) . ',",",") WHERE blackList LIKE "%,' . intval($webUser) . ',%"');
+		$_db->query('UPDATE ' . CUSTOMER_FILTER_TABLE . ' SET blackList="" WHERE blackList=","');
 	}
 
 	/**
 	 * Deletes all filters for given modelIds of table
 	 * call this, when several models are deleted
 	 */
-	function deleteModel(array $modelIds, $table){
-		if(!empty($modelIds)){
-			$_db = new DB_WE();
-			$_db->query('DELETE FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE	modelId IN (' . implode(', ', $modelIds) . ')	AND modelTable = "' . $_db->escape($table) . '"');
-			unset($_db);
+	public static function deleteModel(array $modelIds, $table){
+		if(!$modelIds){
+			return;
 		}
+		$_db = new DB_WE();
+		$_db->query('DELETE FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelId IN (' . implode(', ', $modelIds) . ') AND modelTable="' . $_db->escape(stripTblPrefix($table)) . '"');
 	}
 
 	/**
 	 * private function. gets all file ids which customer can not accesss
 	 *
-	 * @param we_listview $listview
+	 * @param we_listview_document $listview
 	 * @return array
 	 */
-	function _getFilesWithRestrictionsOfCustomer(&$listview){
+	private static function _getFilesWithRestrictionsOfCustomer($classname, $filter, $classID){
+		//FIXME: this will query ALL documents with restrictions - this is definately not what we want!
 		$_db = new DB_WE();
-		$_cid = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
+		$_cid = isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
 		$_filesWithRestrictionsForCustomer = array();
-		$_defaultQuery = !self::customerIsLogedIn() ? '(mode=' . we_customer_abstractFilter::ALL . ') OR ' : '';
 
-		$_blacklistQuery = ' (mode=' . we_customer_abstractFilter::FILTER . " AND blackList LIKE '%,$_cid,%') ";
-		$_whiteLlistQuery = ' (mode=' . we_customer_abstractFilter::FILTER . " AND whiteList NOT LIKE '%,$_cid,%') ";
-		$_specificCustomersQuery = ' (mode=' . we_customer_abstractFilter::SPECIFIC . " AND specificCustomers NOT LIKE '%,$_cid,%') ";
-
-		$_accessControlOnTemplateQuery = ( ($listview->customerFilterType != 'all' && $listview->customerFilterType != 'true') ? ' AND (accessControlOnTemplate = 0) ' : '' );
+		$listQuery = ' (mode=' . we_customer_abstractFilter::FILTER . " AND !FIND_IN_SET($_cid,whiteList) ) ";//FIND_IN_SET($_cid,blackList) AND
+		$_specificCustomersQuery = ' (mode=' . we_customer_abstractFilter::SPECIFIC . " AND !FIND_IN_SET($_cid,specificCustomers)) ";
 
 		// detect all files/objects with restrictions
-		switch($listview->ClassName){
-			case 'we_search_listview':
-				$_queryForIds = 'SELECT * FROM ' . CUSTOMER_FILTER_TABLE . " WHERE $_defaultQuery $_blacklistQuery OR ( ($_specificCustomersQuery OR $_whiteLlistQuery) $_accessControlOnTemplateQuery)";
+		switch($classname){
+			case 'we_listview_search':
+				$_queryForIds = 'FROM ' . CUSTOMER_FILTER_TABLE . ' f WHERE modelType IN("objectFile","text/webedition") AND (' . $listQuery . ' OR ' . $_specificCustomersQuery . ')';
 				break;
-			case 'we_listview': // type="document"
-				$_queryForIds = 'SELECT * FROM ' . CUSTOMER_FILTER_TABLE . " WHERE modelType='" . we_base_ContentTypes::WEDOCUMENT . "'  AND ($_defaultQuery $_blacklistQuery OR ( ($_specificCustomersQuery OR $_whiteLlistQuery) $_accessControlOnTemplateQuery))";
+			case 'we_listview_document': // type="document"
+				$_queryForIds = 'FROM ' . CUSTOMER_FILTER_TABLE . " f WHERE modelTable='" . stripTblPrefix(FILE_TABLE) . "' AND ($listQuery OR $_specificCustomersQuery )";
 				break;
 			case 'we_object_listview':
 			case 'we_object_listviewMultiobject': // type="object"
-				$_queryForIds = 'SELECT * FROM ' . CUSTOMER_FILTER_TABLE . " WHERE modelType='objectFile' AND ($_defaultQuery $_blacklistQuery OR ( ($_specificCustomersQuery OR $_whiteLlistQuery) $_accessControlOnTemplateQuery))";
+				//at least check only documents of the specified class
+				$_queryForIds = 'FROM ' . CUSTOMER_FILTER_TABLE . ' f JOIN ' . OBJECT_X_TABLE . $classID . ' ON (modelId=OF_ID AND modelTable="' . stripTblPrefix(OBJECT_FILES_TABLE) . '") WHERE (' . $listQuery . ' OR ' . $_specificCustomersQuery . ')';
 				break;
 		}
 		// if customer is not logged in=> return NO_LOGIN
 		// else return correct filter
 		// execute the query (get all existing filters)
-		$_db->query($_queryForIds);
 
-		if(!self::customerIsLogedIn()){ // visitor is not logged in
-			// Vistior is not logged in => Visitor has no Access to files with filters!
-			while($_db->next_record()){
-				$_filesWithRestrictionsForCustomer[$_db->f("modelType")][] = $_db->f("modelId");
-			}
-		} else { // visitor has logged in
-			$_filters = array();
-			while($_db->next_record()){
-				$_filters[] = self::getFilterByDbHash($_db->Record);
-			}
 
-			$__tmp = array();
+		$_db->query('SELECT f.* ' . $_queryForIds);
+// visitor is logged in
+		$_filters = array();
+		while($_db->next_record()){
+			$_filters[] = self::getFilterByDbHash($_db->getRecord());
+		}
 
-			foreach($_filters as $filter){
-				$_perm = $filter->accessForVisitor($__tmp, array("id" => $filter->getModelId(), "contentType" => $filter->getModelType()), false, true);
-				switch($_perm){
-					case self::NO_ACCESS:
-					case self::NO_LOGIN:
+		foreach($_filters as $filter){
+			$_perm = $filter->accessForVisitor($filter->getModelId(), $filter->getModelType(), false, true);
+			switch($_perm){
+				case self::NO_ACCESS:
+				case self::NO_LOGIN:
+					$_filesWithRestrictionsForCustomer[$filter->getModelType()][] = $filter->getModelId();
+					break;
+				case self::CONTROLONTEMPLATE:
+					if($filter === 'all' || $filter === 'true' || $filter === true){
 						$_filesWithRestrictionsForCustomer[$filter->getModelType()][] = $filter->getModelId();
-						break;
-					case self::CONTROLONTEMPLATE:
-						if($listview->customerFilterType == 'all' || $listview->customerFilterType == 'true'){
-							$_filesWithRestrictionsForCustomer[$filter->getModelType()][] = $filter->getModelId();
-						}
-						break;
-				}
+					}
+					break;
 			}
 		}
-		unset($_db);
+
 		return $_filesWithRestrictionsForCustomer;
 	}
 
@@ -448,12 +424,8 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	 * @param boolean $_fromIfRegisteredUser
 	 * @return string
 	 */
-	function accessForVisitor(&$model, $modelHash = array(), $_fromIfRegisteredUser = false, $_fromListviewCheck = false){
-		if(!empty($model)){
-			$modelHash["id"] = $model->ID;
-			$modelHash["contentType"] = $model->ContentType;
-		}
-		if($modelHash["id"] == $this->getModelId() && $modelHash["contentType"] == $this->getModelType()){ // model is correct
+	function accessForVisitor($id, $ct, $_fromIfRegisteredUser = false, $_fromListviewCheck = false){
+		if($id == $this->getModelId() && $ct == $this->getModelType()){ // model is correct
 			if(!$_fromListviewCheck && $this->getAccessControlOnTemplate() && !$_fromIfRegisteredUser){
 				// access control is on template (for we:ifregisteredUser)
 				return self::CONTROLONTEMPLATE;
@@ -474,22 +446,10 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	/* ############################ Accessors and Mutators ################################### */
 
 	/**
-	 * Mutator method for $this->_id
-	 *
-	 * @param integer $id
-	 */
-	function setId($id){
-		$this->_id = $id;
-	}
-
-	/**
 	 * Accessor method for $this->_id
 	 *
 	 * @return integer
 	 */
-	function getId(){
-		return $this->_id;
-	}
 
 	/**
 	 * Mutator method for $this->_modelId

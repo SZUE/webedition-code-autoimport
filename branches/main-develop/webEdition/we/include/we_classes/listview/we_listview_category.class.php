@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -24,12 +23,11 @@
  */
 
 /**
- * class    we_listview
+ * class
  * @desc    class for tag <we:listview>
  *
  */
-class we_catListview extends listviewBase{
-
+class we_listview_category extends we_listview_base{
 	var $parentID = 0;
 	var $catID = 0;
 	var $variant = 'default';
@@ -37,7 +35,6 @@ class we_catListview extends listviewBase{
 	var $hidedirindex = false;
 
 	/**
-	 * we_listview()
 	 * constructor of class
 	 *
 	 * @param   name          string  - name of listview
@@ -81,7 +78,8 @@ class we_catListview extends listviewBase{
 
 		$this->anz_all = f('SELECT COUNT(1) AS max FROM ' . CATEGORY_TABLE . ' WHERE ' . $tail, 'max', $this->DB_WE);
 
-		$this->DB_WE->query('SELECT *' . ($this->order == 'random()' ? ', RAND() as RANDOM' : '') . ' FROM ' . CATEGORY_TABLE . ' WHERE ' . $tail . ' ' . ($this->order == 'random()' ? 'ORDER BY RANDOM' : $orderstring) . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . $this->maxItemsPerPage) : ''));
+		$this->DB_WE->query('SELECT *' . ($this->order == 'random()' ? ', RAND() as RANDOM' : '') . ' FROM ' . CATEGORY_TABLE . ' WHERE ' . $tail . ' ' . ($this->order == 'random()'
+					? 'ORDER BY RANDOM' : $orderstring) . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . $this->maxItemsPerPage) : ''));
 		$this->anz = $this->DB_WE->num_rows();
 
 		$this->count = 0;
@@ -106,17 +104,16 @@ class we_catListview extends listviewBase{
 
 			$this->count++;
 			return true;
-		} else {
-			$this->stop_next_row = $this->shouldPrintEndTR();
-			if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
-				$this->Record = array();
-				$this->DB_WE->Record = array();
-				$this->DB_WE->Record["WE_PATH"] = "";
-				$this->DB_WE->Record["WE_TEXT"] = "";
-				$this->DB_WE->Record["WE_ID"] = "";
-				$this->count++;
-				return true;
-			}
+		}
+		$this->stop_next_row = $this->shouldPrintEndTR();
+		if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
+			$this->Record = array();
+			$this->DB_WE->Record = array();
+			$this->DB_WE->Record["WE_PATH"] = "";
+			$this->DB_WE->Record["WE_TEXT"] = "";
+			$this->DB_WE->Record["WE_ID"] = "";
+			$this->count++;
+			return true;
 		}
 		return false;
 	}

@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_search_view extends we_tool_view{
-
 	var $searchclass;
 	var $searchclassExp;
 
@@ -445,7 +444,7 @@ class we_search_view extends we_tool_view{
 				$anzahl = 0;
 		}
 
-		$objectFilesTable = defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : "";
+		$objectFilesTable = defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : "";
 
 		$tab = we_base_request::_(we_base_request::INT, 'tab', we_base_request::_(we_base_request::INT, 'tabnr', 1));
 
@@ -1352,7 +1351,7 @@ class we_search_view extends we_tool_view{
 		return $_js;
 	}
 
-	function getNextPrev($we_search_anzahl, $whichSearch){
+	function getNextPrev($we_search_anzahl, $whichSearch, $isTop = true){
 		$anzahl = 1;
 		$searchstart = 0;
 
@@ -1379,33 +1378,23 @@ class we_search_view extends we_tool_view{
 			}
 		}
 
-		$out = '<table cellpadding="0" cellspacing="0" border="0"><tr><td>';
-		if($searchstart){
-			$out .= we_html_button::create_button("back", "javascript:back(" . $anzahl . ");");
-		} else {
-
-			$out .= we_html_button::create_button("back", "", true, 100, 22, "", "", true);
-		}
-
-		$out .= '</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td class="defaultfont"><b>' . (($we_search_anzahl) ? $searchstart + 1 : 0) . '-';
-
-		if(($we_search_anzahl - $searchstart) < $anzahl){
-			$out .= $we_search_anzahl;
-		} else {
-
-			$out .= $searchstart + $anzahl;
-		}
-
-		$out .= ' ' . g_l('global', "[from]") . ' ' . $we_search_anzahl . '</b></td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>';
-
-		if(($searchstart + $anzahl) < $we_search_anzahl){
-			//bt_back
-			$out .= we_html_button::create_button("next", "javascript:next(" . $anzahl . ");");
-		} else {
-
-			$out .= we_html_button::create_button("next", "", true, 100, 22, "", "", true);
-		}
-		$out .= '</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>';
+		$out = '<table cellpadding="0" cellspacing="0" border="0"><tr><td>' .
+			($searchstart ?
+				we_html_button::create_button("back", "javascript:back(" . $anzahl . ");") :
+				we_html_button::create_button("back", "", true, 100, 22, "", "", true)
+			) .
+			'</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td class="defaultfont"><b>' . (($we_search_anzahl) ? $searchstart + 1 : 0) . '-' .
+			(($we_search_anzahl - $searchstart) < $anzahl ?
+				$we_search_anzahl :
+				$searchstart + $anzahl
+			) .
+			' ' . g_l('global', "[from]") . ' ' . $we_search_anzahl . '</b></td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>' .
+			(($searchstart + $anzahl) < $we_search_anzahl ?
+				//bt_back
+				we_html_button::create_button("next", "javascript:next(" . $anzahl . ");") :
+				we_html_button::create_button("next", "", true, 100, 22, "", "", true)
+			) .
+			'</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>';
 
 		$pages = array();
 		for($i = 0; $i < ceil($we_search_anzahl / $anzahl); $i++){
@@ -1414,16 +1403,13 @@ class we_search_view extends we_tool_view{
 
 		$page = ceil($searchstart / $anzahl) * $anzahl;
 
-		$select = we_html_tools::htmlSelect(
-				"page", $pages, 1, $page, false, array("onchange" => "this.form.elements['searchstart" . $whichSearch . "'].value = this.value;search(false);"));
-		if(!isset($GLOBALS['setInputSearchstart'])){
-			if(!defined("searchstart" . $whichSearch)){
-				define("searchstart" . $whichSearch, true);
-				$out .= we_html_tools::hidden("searchstart" . $whichSearch, $searchstart);
-			}
+		$select = we_html_tools::htmlSelect("page", $pages, 1, $page, false, array("onchange" => "this.form.elements['searchstart" . $whichSearch . "'].value = this.value;search(false);"));
+		if(!isset($GLOBALS['setInputSearchstart']) && !defined('searchstart'. $whichSearch) && $isTop){
+			define('searchstart'. $whichSearch, true);
+			$out .= we_html_tools::hidden("searchstart" . $whichSearch, $searchstart);
 		}
-		$out .= $select;
-		$out .= '</td></tr></table>';
+		$out .= $select .
+			'</td></tr></table>';
 		return $out;
 	}
 
@@ -1499,13 +1485,13 @@ class we_search_view extends we_tool_view{
 						$this->Model->search_tables_advSearch[TEMPLATES_TABLE] = $v;
 					}
 					if($k == "tblObjectFiles"){
-						if(defined("OBJECT_FILES_TABLE")){
+						if(defined('OBJECT_FILES_TABLE')){
 							unset($this->Model->search_tables_advSearch[$k]);
 							$this->Model->search_tables_advSearch[OBJECT_FILES_TABLE] = $v;
 						}
 					}
 					if($k == "tblObject"){
-						if(defined("OBJECT_TABLE")){
+						if(defined('OBJECT_TABLE')){
 							unset($this->Model->search_tables_advSearch[$k]);
 							$this->Model->search_tables_advSearch[OBJECT_TABLE] = $v;
 						}
@@ -1559,11 +1545,11 @@ class we_search_view extends we_tool_view{
 			$this->Model->search_tables_advSearch[TEMPLATES_TABLE] = 0;
 		}
 
-		if(!permissionhandler::hasPerm('CAN_SEE_OBJECTFILES') && defined("OBJECT_FILES_TABLE")){
+		if(!permissionhandler::hasPerm('CAN_SEE_OBJECTFILES') && defined('OBJECT_FILES_TABLE')){
 			$this->Model->search_tables_advSearch[OBJECT_FILES_TABLE] = 0;
 		}
 
-		if(!permissionhandler::hasPerm('CAN_SEE_OBJECTS') && defined("OBJECT_TABLE")){
+		if(!permissionhandler::hasPerm('CAN_SEE_OBJECTS') && defined('OBJECT_TABLE')){
 			$this->Model->search_tables_advSearch[OBJECT_TABLE] = 0;
 		}
 
@@ -1789,8 +1775,8 @@ class we_search_view extends we_tool_view{
 					}
 					break;
 				default:
-					$objectFilesTable = defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : '--';
-					$objectTable = defined("OBJECT_TABLE") ? OBJECT_TABLE : '--';
+					$objectFilesTable = defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : '--';
+					$objectTable = defined('OBJECT_TABLE') ? OBJECT_TABLE : '--';
 
 					foreach(we_base_request::_(we_base_request::STRING, 'we_cmd') as $k => $v){
 						if(is_string($v) && $v == 1){
@@ -2042,7 +2028,7 @@ class we_search_view extends we_tool_view{
 
 					if($_table == VERSIONS_TABLE){
 						$workspacesTblFile = makeArrayFromCSV(get_ws(FILE_TABLE, true));
-						if(defined("OBJECT_FILES_TABLE")){
+						if(defined('OBJECT_FILES_TABLE')){
 							$workspacesObjFile = makeArrayFromCSV(get_ws(OBJECT_FILES_TABLE, true));
 						}
 					}
@@ -2061,20 +2047,20 @@ class we_search_view extends we_tool_view{
 							$whereQuery .= $restrictUserQuery;
 							break;
 
-						case (defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : -1):
+						case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : -1):
 							$whereQuery .= $restrictUserQuery;
 							break;
 
-						case (defined("OBJECT_TABLE") ? OBJECT_TABLE : -2):
+						case (defined('OBJECT_TABLE') ? OBJECT_TABLE : -2):
 							$whereQuery .= ' AND ((' . $this->db->escape($_table) . '.RestrictUsers=0 OR ' . $this->db->escape($_table) . ".RestrictUsers=" . intval($_SESSION["user"]["ID"]) . ") OR (" . $this->db->escape($_table) . ".Users LIKE '%," . intval($_SESSION["user"]["ID"]) . ",%')) ";
 							break;
 						case VERSIONS_TABLE:
 							if(isset($GLOBALS['we_cmd_obj'])){
 								$isCheckedFileTable = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'search_tables_advSearch', FILE_TABLE);
-								$isCheckedObjFileTable = (defined("OBJECT_FILES_TABLE")) ? we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'search_tables_advSearch', OBJECT_FILES_TABLE) : 1;
+								$isCheckedObjFileTable = (defined('OBJECT_FILES_TABLE')) ? we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'search_tables_advSearch', OBJECT_FILES_TABLE) : 1;
 							} else {
 								$isCheckedFileTable = $this->Model->search_tables_advSearch[FILE_TABLE];
-								$isCheckedObjFileTable = (defined("OBJECT_FILES_TABLE")) ? $this->Model->search_tables_advSearch[OBJECT_FILES_TABLE] : 1;
+								$isCheckedObjFileTable = (defined('OBJECT_FILES_TABLE')) ? $this->Model->search_tables_advSearch[OBJECT_FILES_TABLE] : 1;
 							}
 							$_SESSION['weS']['weSearch']['onlyObjects'] = true;
 							$_SESSION['weS']['weSearch']['onlyDocs'] = true;
@@ -2157,7 +2143,7 @@ class we_search_view extends we_tool_view{
 		foreach($_result as $k => $v){
 			$_result[$k]["Description"] = '';
 			if($_result[$k]['docTable'] == FILE_TABLE && $_result[$k]['Published'] >= $_result[$k]['ModDate'] && $_result[$k]['Published'] != 0){
-				$DB_WE->query('SELECT l.DID, c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE f.ID=' . intval($_result[$k]["docID"]) . ' AND l.Name="Description" AND l.DocumentTable="' . FILE_TABLE . '"');
+				$DB_WE->query('SELECT l.DID, c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.DID=' . intval($_result[$k]["docID"]) . ' AND l.Name="Description" AND l.DocumentTable="' . FILE_TABLE . '"');
 				while($DB_WE->next_record()){
 					$_result[$k]["Description"] = $DB_WE->f('Dat');
 				}
@@ -2436,19 +2422,11 @@ class we_search_view extends we_tool_view{
    <td>' . we_html_tools::getPixel(30, 12) . '</td>
    <td style="font-size:12px;width:125px;">' . g_l('searchtool', "[eintraege_pro_seite]") . ':</td>
    <td class="defaultgray" style="width:60px;">
-   ' . we_html_tools::htmlSelect(
-				$anzahl, $values, 1, $_anzahl, "", array('onchange' => 'this.form.elements["' . $searchstart . '"].value=0;search(false);')) . '
-	 </td>
+   ' . we_html_tools::htmlSelect($anzahl, $values, 1, $_anzahl, "", array('onchange' => 'this.form.elements["' . $searchstart . '"].value=0;search(false);')) . '</td>
    <td style="width:400px;">' . $this->getNextPrev(
 				$foundItems, $whichSearch) . '</td>
-   <td style="width:35px;">
-   ' . we_html_button::create_button(
-				"image:iconview", "javascript:setView(1);", true, "", "", "", "", false) . '
-   </td>
-   <td>
-   ' . we_html_button::create_button(
-				"image:listview", "javascript:setView(0);", true, "", "", "", "", false) . '
-   </td>
+   <td style="width:35px;">' . we_html_button::create_button("image:iconview", "javascript:setView(1);", true, "", "", "", "", false) . '</td>
+   <td>' . we_html_button::create_button("image:listview", "javascript:setView(0);", true, "", "", "", "", false) . '</td>
    </tr>
    <tr>
     <td colspan="12">' . we_html_tools::getPixel(1, 12) . '</td>
@@ -2483,8 +2461,7 @@ class we_search_view extends we_tool_view{
      <td>' . we_html_tools::getPixel(19, 12) . '</td>
      <td style="font-size:12px;width:140px;">' . we_html_tools::getPixel(30, 12) . '</td>
      <td class="defaultgray" style="width:60px;">' . we_html_tools::getPixel(30, 12) . '</td>
-     <td style="width:400px;">' . $this->getNextPrev(
-				$foundItems, $whichSearch) . '</td>
+     <td style="width:400px;">' . $this->getNextPrev($foundItems, $whichSearch, false) . '</td>
     </tr>
     </table>';
 	}

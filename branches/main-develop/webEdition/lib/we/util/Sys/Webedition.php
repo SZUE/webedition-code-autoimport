@@ -45,7 +45,7 @@ class we_util_Sys_Webedition extends we_util_Sys{
 	 * @return version string without dots (i.e. "5501") or false, if the version could not be identified.
 	 */
 	public static function version(){
-		if(!defined("WE_VERSION")){
+		if(!defined('WE_VERSION')){
 			return false;
 		}
 		return WE_VERSION;

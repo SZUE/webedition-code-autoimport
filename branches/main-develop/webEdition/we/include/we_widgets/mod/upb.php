@@ -27,22 +27,22 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 $bTypeDoc = (bool) $aProps[3]{0};
 $bTypeObj = (bool) $aProps[3]{1};
-$_objectFilesTable = defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : "";
+$_objectFilesTable = defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : "";
 $numRows = 25;
 
 $tbls = array();
 if($bTypeDoc && $bTypeObj){
-	if(defined("FILE_TABLE")){
+	if(defined('FILE_TABLE')){
 		$tbls[] = FILE_TABLE;
 	}
-	if(defined("OBJECT_FILES_TABLE") && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")){
+	if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")){
 		$tbls[] = OBJECT_FILES_TABLE;
 	}
 } else {
-	if($bTypeDoc && defined("FILE_TABLE")){
+	if($bTypeDoc && defined('FILE_TABLE')){
 		$tbls[] = FILE_TABLE;
 	}
-	if($bTypeObj && defined("OBJECT_FILES_TABLE") && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")){
+	if($bTypeObj && defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")){
 		$tbls[] = OBJECT_FILES_TABLE;
 	}
 }
@@ -117,7 +117,7 @@ foreach($tbls as $table){
 			  array("dat" => $db->f("Modified")),
 			  array("dat" => $db->f("Published")), */
 		);
-		if(defined("WORKFLOW_TABLE")){
+		if(defined('WORKFLOW_TABLE')){
 			if($db->f("wforder")){
 				$step = we_workflow_utility::findLastActiveStep($db->f("ID"), $table) + 1;
 				$steps = count(we_workflow_utility::getNumberOfSteps($db->f("ID"), $table));
