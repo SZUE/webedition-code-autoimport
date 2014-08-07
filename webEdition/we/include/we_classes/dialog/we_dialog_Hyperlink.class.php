@@ -248,7 +248,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			$objID = $this->getHttpVar(we_base_request::INT, "objID", 0);
 			switch($type){
 				case we_base_link::TYPE_EXT:
-					$extHref = $this->getHttpVar(we_base_request::STRING, 'extHref', '#');
+					$extHref = $this->getHttpVar(we_base_request::URL, 'extHref', '#');
 					$this->initByHref($extHref, $target, $class, $param, $anchor, $lang, $hreflang, $title, $accesskey, $tabindex, $rel, $rev);
 					break;
 				case we_base_link::TYPE_INT:
