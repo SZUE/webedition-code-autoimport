@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_search_search extends we_search{
-
 	//for doclist!
 	/**
 	 * @var integer: number of searchfield-rows
@@ -517,29 +516,37 @@ class we_search_search extends we_search{
 				}
 
 				if($table == FILE_TABLE){
-					$_db->query('SELECT DocumentID, DocumentObject  FROM ' . TEMPORARY_DOC_TABLE . " WHERE DocumentObject LIKE '%" . $_db->escape(trim($keyword)) . "%' AND DocTable = '" . $this->db->escape(stripTblPrefix($table)) . "' AND Active = 1");
+					$_db->query('SELECT DocumentID, DocumentObject  FROM ' . TEMPORARY_DOC_TABLE . " WHERE DocumentObject LIKE '%" . $_db->escape(trim($keyword)) . "%' AND DocTable='" . $this->db->escape(stripTblPrefix($table)) . "' AND Active = 1");
 					while($_db->next_record()){
 						$contents[] = $_db->f('DocumentID');
 					}
 				}
 
-				return (!empty($contents) ? ' ' . $table . '.ID IN (' . makeCSVFromArray($contents) . ')' : '');
+				return ($contents ? ' ' . $table . '.ID IN (' . makeCSVFromArray($contents) . ')' : '');
 			case VERSIONS_TABLE:
-				$_db->query('SELECT ID, documentElements  FROM ' . VERSIONS_TABLE);
+				$_db->query('SELECT ID,documentElements  FROM ' . VERSIONS_TABLE);
 				while($_db->next_record()){
-					$tempDoc[0]['elements'] = unserialize(html_entity_decode(urldecode($_db->f('documentElements')), ENT_QUOTES));
+					$elements = unserialize((substr_compare($_db->f('documentElements'), 'a%3A', 0, 4) == 0 ?
+							html_entity_decode(urldecode($_db->f('documentElements')), ENT_QUOTES) :
+							gzuncompress($_db->f('documentElements')))
+					);
 
-					foreach($tempDoc[0]['elements'] as $k => $v){
-						if($k != "Title" &&
-							$k != "Charset" &&
-							isset($tempDoc[0]['elements'][$k]['dat']) &&
-							stristr($tempDoc[0]['elements'][$k]['dat'], $keyword)){
-							$contents[] = $_db->f('ID');
+					if(is_array($elements)){
+						foreach($elements as $k => $v){
+							switch($k){
+								case 'Title':
+								case 'Charset':
+									break;
+								default:
+									if(isset($elements[$k]['dat']) &&
+										stristr($elements[$k]['dat'], $keyword)){
+										$contents[] = $_db->f('ID');
+									}
+							}
 						}
 					}
 				}
-
-				return (!empty($contents) ? "  " . $table . '.ID IN (' . makeCSVFromArray($contents) . ')' : '');
+				return ($contents ? "  " . $table . '.ID IN (' . makeCSVFromArray($contents) . ')' : '');
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 				$Ids = array();
 				$regs = array();
