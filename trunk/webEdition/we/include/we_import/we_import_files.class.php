@@ -165,7 +165,6 @@ function initFileUpload() {
 	filedrag.addEventListener("dragover", FileDragHover, false);
 	filedrag.addEventListener("dragleave", FileDragHover, false);
 	filedrag.addEventListener("drop", FileSelectHandler, false);
-	filedrag.style.display = "block";
 	bf.document.getElementById("next").getElementsByTagName("td")[1].innerHTML = "' . g_l('button', "[upload][value]") . '";
 	bf.next_enabled = bf.switch_button_state("next", "next_enabled", "disabled");
 }
@@ -173,7 +172,7 @@ function initFileUpload() {
 function FileDragHover(e) {
 	e.stopPropagation();
 	e.preventDefault();
-	e.target.className = (e.type == "dragover" ? "hover" : "");
+	e.target.className = (e.type == "dragover" ? "we_file_drag we_file_drag_hover" : "we_file_drag");
 }
 
 function FileSelectHandler(e) {
@@ -625,24 +624,23 @@ function setApplet() {
 			array("headline" => "", "html" => $content, "space" => 0)
 		);
 
-		$butBrowse = we_html_button::create_button('browse_harddisk', 'javascript:void(0)', true, 286, 22);
-		$butBrowse = str_replace("\n", " ", str_replace("\r", " ", $butBrowse));
+		$butBrowse = str_replace(array("\n", "\r"), ' ', we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11 ? we_html_button::create_button('browse', 'javascript:void(0)', true, 84, 22) :
+			we_html_button::create_button('browse_harddisk', 'javascript:void(0)', true, 286, 22));
 
-		$butReset = we_html_button::create_button('reset', 'javascript:weClearFileList()', true, 100, 22, '', '', false);
-		$butReset = str_replace("\n", " ", str_replace("\r", " ", $butReset));
+		$butReset = str_replace(array("\n", "\r"), ' ', we_html_button::create_button('reset', 'javascript:weClearFileList()', true, (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11 ? 84 : 100), 22, '', '', false));
 
 		$fileselect = '
 		<div style="float:left;">
 		<form id="filechooser" action="" method="" enctype="multipart/form-data">
 			<div style="">
 				<div class="we_fileInputWrapper" id="div_' . $uploader->getName() . '_fileInputWrapper" style="vertical-align: top; display: inline-block; height: 22px;">
-					<input class="fileInput fileInputHidden" type="file" id="fileselect" name="fileselect[]" multiple="multiple" />
+					<input class="fileInput fileInputHidden' . (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11 ? ' fileInputIE10' : '') . '" type="file" id="fileselect" name="fileselect[]" multiple="multiple" />
 					' . $butBrowse . '
 				</div>
 				<div style="vertical-align: top; display: inline-block; height: 22px">
 					' . $butReset . '
 				</div>
-				<div class="we_file_drag" id="div_' . $uploader->getName() . '_fileDrag">' . g_l('importFiles', "[dragdrop_text]") . '</div>
+				<div class="we_file_drag" id="div_' . $uploader->getName() . '_fileDrag" ' . ((we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11) || we_base_browserDetect::isOpera() ? 'style="display:none;"' : 'style="display:block;"') . '>' . g_l('importFiles', "[dragdrop_text]") . '</div>
 			</div>
 		</form>
 		</div>
@@ -650,14 +648,10 @@ function setApplet() {
 
 		$topParts[] = array("headline" => g_l('importFiles', "[select_files]"), "html" => $fileselect, "space" => 130);
 
-		$butEdit = we_html_button::create_button(
-				we_html_button::WE_IMAGE_BUTTON_IDENTIFY . 'edit_edit', 'javascript:void(0)'
-		);
+		$butEdit = we_html_button::create_button(we_html_button::WE_IMAGE_BUTTON_IDENTIFY . 'edit_edit', 'javascript:void(0)');
 		$butEdit = str_replace("\n", " ", str_replace("\r", " ", $butEdit));
 
-		$butTrash = we_html_button::create_button(
-				we_html_button::WE_IMAGE_BUTTON_IDENTIFY . 'btn_function_trash', "javascript:_weDeleteRow(WEFORMNUM,this);"
-		);
+		$butTrash = we_html_button::create_button(we_html_button::WE_IMAGE_BUTTON_IDENTIFY . 'btn_function_trash', "javascript:_weDeleteRow(WEFORMNUM,this);");
 		$butTrash = str_replace("\n", " ", str_replace("\r", " ", $butTrash));
 
 		$fileinput = '
@@ -673,7 +667,7 @@ function setApplet() {
 								<td width="20" valign="bottom" align="middle"><img style="visibility:hidden;" width="14" height="18" src="/webEdition/images/fileUpload/alert.gif" id="notice_img_WEFORMNUM" title=""></td>
 								<td valign="bottom" width="27" height="22">
 									<div class="fileInputWrapper" style="vertical-align: bottom; display: inline-block; height: 22px; width: 27px;">
-										<input class="fileInput fileInputHidden" type="file" id="fileInput_uploadFiles_WEFORMNUM" name="" />
+										<input class="fileInput fileInputList fileInputHidden" type="file" id="fileInput_uploadFiles_WEFORMNUM" name="" />
 										' . $butEdit . '
 									</div>
 								</td>
