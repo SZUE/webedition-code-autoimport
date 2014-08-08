@@ -74,7 +74,7 @@ class we_fileupload_include extends we_fileupload_base{
 
 		$this->formFrame = $formFrame;
 		$this->onclick = $onclick;
-		$this->drop = $drop;
+		$this->drop = (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() == 10) || we_base_browserDetect::isOpera() ? false : $drop;
 		$this->progress = $progress;
 		$this->setTypeCondition('accepted', $acceptedMime, $acceptedExt);
 		$this->setTypeCondition('forbidden', $forbiddenMime, $forbiddenExt);
@@ -129,12 +129,13 @@ class we_fileupload_include extends we_fileupload_base{
 
 	//TODO: split and move selector to base
 	public function getHTML(){
-		$butBrowse = str_replace(array("\n", "\r"), ' ', we_html_button::create_button('browse_harddisk', 'javascript:alert("clicked")', true, ($this->dimensions['width'] - 103), 22));
+		$butBrowse = str_replace(array("\n", "\r"), ' ', we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11 ? we_html_button::create_button('browse', 'javascript:void(0)', true, 84, 22) :
+			we_html_button::create_button('browse_harddisk', 'javascript:void(0)', true, ($this->dimensions['width'] - 103), 22));
 
-		$butReset = str_replace(array("\n", "\r"), " ", we_html_button::create_button('reset', 'javascript:weFU.reset()', true, 100, 22, '', '', false));
+		$butReset = str_replace(array("\n", "\r"), ' ', we_html_button::create_button('reset', 'javascript:weFU.reset()', true, (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11 ? 84 : 100), 22, '', '', false));
 
 		$fileInput = we_html_element::htmlInput(array(
-				'class' => 'fileInput fileInputHidden',
+				'class' => 'fileInput fileInputHidden' . (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11 ? ' fileInputIE10' : ''),
 				'type' => 'file',
 				'name' => $this->name,
 				'id' => $this->name,
@@ -229,11 +230,10 @@ weFU.legacyMode = true;
 			$pb->setStudLen($this->externalProgress['width']);
 		}
 
-		//return we_html_element::jsScript(JS_DIR . 'utils/spark-md5.js') . we_html_element::jsElement('
 		return we_html_element::jsElement('
 function weFU(){
 	//vars to be set oninit
-	 this.legacyMode = true;
+	this.legacyMode = true;
 		this.typeCondition = null;
 		this.maxUploadSize = 0;
 		this.useFileDrag = false;
@@ -277,8 +277,8 @@ function weFU(){
 		}
 	}
 
-' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? '
-	window.addEventListener("load",onLoad);' : 'document.onload = onLoad;') . '
+	//we do not need variant document.onload anymore because new uploader is for use in IE>9 only
+	window.addEventListener("load",onLoad);
 
 	function _init(){
 		weFU.typeCondition = JSON.parse(\'' . $this->typeConditionJson . '\');
@@ -305,7 +305,7 @@ function weFU(){
 			weFU.elems.fileDrag.addEventListener("dragover", weFU.fileDragHover, false);
 			weFU.elems.fileDrag.addEventListener("dragleave", weFU.fileDragHover, false);
 			weFU.elems.fileDrag.addEventListener("drop", weFU.fileSelectHandler, false);
-			weFU.elems.fileDrag.style.display = "block";
+			weFU.elems.fileDrag.style.display = "' . ($this->drop ? "block" : "none") . '";
 		}
 
 		' . ($createExternalProgress ?
@@ -323,7 +323,6 @@ function weFU(){
 weFU();
 
 weFU.isUploading = false;
-weFU.isCancelled = false;
 weFU.isCancelled = false;
 weFU.legacyMode = true;
 
@@ -361,55 +360,56 @@ weFU.fileSelectHandler = function(e){
 
 	//the following code is specific for single file upload:
 	//FIXME: pack it to an extra function and call this with weFU.files as aparam!
-
-	newFile = {
-		file: files[0],
-		fileNum: 0,
-		uploadConditionsOk: false,
-		error: "",
-		dataArray: null,
-		currentPos: 0,
-		partNum: 0,
-		totalParts: 0,
-		lastChunkSize: 0,
-		currentWeightFile: 0,
-		mimePHP: "none",
-		fileNameTemp: ""
-	}
-
-	weFU.preparedFiles.push(newFile);
-	weFU.totalWeight += newFile.size;
-
-	if(weFU.useFileDrag){
-		if(e.type == "drop"){
-			e.stopPropagation();
-			e.preventDefault();
-			e.target.className = "";
+	if(files[0]){
+		newFile = {
+			file: files[0],
+			fileNum: 0,
+			uploadConditionsOk: false,
+			error: "",
+			dataArray: null,
+			currentPos: 0,
+			partNum: 0,
+			totalParts: 0,
+			lastChunkSize: 0,
+			currentWeightFile: 0,
+			mimePHP: "none",
+			fileNameTemp: ""
 		}
-		weFU.elems.fileDrag.innerHTML = newFile.file.name;
-	} else {
-		weFU.elems.fileName.innerHTML = newFile.file.name;
-		weFU.elems.fileName.style.display = "";
+
+		weFU.preparedFiles.push(newFile);
+		weFU.totalWeight += newFile.size;
+
+		if(weFU.useFileDrag){
+			if(e.type == "drop"){
+				e.stopPropagation();
+				e.preventDefault();
+				e.target.className = "we_file_drag";
+			}
+			weFU.elems.fileDrag.innerHTML = newFile.file.name;
+		} else {
+			weFU.elems.fileName.innerHTML = newFile.file.name;
+			weFU.elems.fileName.style.display = "";
+		}
+
+		tmpFileType = newFile.file.type ? newFile.file.type : "text/plain";
+		fileSizeOk = newFile.file.size <= ' . $this->maxUploadSizeBytes . ' || !' . $this->maxUploadSizeBytes . ';
+		fileTypeOk = weFU.checkFileType(tmpFileType, newFile.file.name);
+
+		sizeText = fileSizeOk ? weFU.gl.sizeTextOk + weFU.weComputeSize(newFile.file.size) + ", ":
+			\'<span style="color:red;">\' + weFU.gl.sizeTextNok + \'</span>\';
+		typeText = fileTypeOk ? weFU.gl.typeTextOk + tmpFileType :
+			\'<span style="color:red;">\' + weFU.gl.typeTextNok + tmpFileType + \'</span>\';
+
+		weFU.elems.message.innerHTML = sizeText + typeText;
+		newFile.uploadConditionsOk = fileSizeOk && fileTypeOk;
+		newFile.error = errorMsg[fileSizeOk && fileTypeOk ? 0 : (!fileSizeOk && fileTypeOk ? 1 : (fileSizeOk && !fileTypeOk ? 2 : 3))];
 	}
-
-	tmpFileType = newFile.file.type ? newFile.file.type : "text/plain";
-	fileSizeOk = newFile.file.size <= ' . $this->maxUploadSizeBytes . ' || !' . $this->maxUploadSizeBytes . ';
-	fileTypeOk = weFU.checkFileType(tmpFileType, newFile.file.name);
-
-	sizeText = fileSizeOk ? weFU.gl.sizeTextOk + weFU.weComputeSize(newFile.file.size) + ", ":
-		\'<span style="color:red;">\' + weFU.gl.sizeTextNok + \'</span>\';
-	typeText = fileTypeOk ? weFU.gl.typeTextOk + tmpFileType :
-		\'<span style="color:red;">\' + weFU.gl.typeTextNok + tmpFileType + \'</span>\';
-
-	weFU.elems.message.innerHTML = sizeText + typeText;
-	newFile.uploadConditionsOk = fileSizeOk && fileTypeOk;
-	newFile.error = errorMsg[fileSizeOk && fileTypeOk ? 0 : (!fileSizeOk && fileTypeOk ? 1 : (fileSizeOk && !fileTypeOk ? 2 : 3))];
 };
 
 weFU.fileDragHover = function(e){
 	e.stopPropagation();
 	e.preventDefault();
-	e.target.className = (e.type == "dragover" ? "hover" : "");
+	e.target.className = (e.type == "dragover" ? "we_file_drag we_file_drag_hover" : "we_file_drag");
 	' . $this->onclick . '
 };
 
