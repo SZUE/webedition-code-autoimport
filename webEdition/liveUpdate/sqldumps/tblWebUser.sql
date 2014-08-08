@@ -5,8 +5,6 @@ CREATE TABLE ###TBLPREFIX###tblWebUser (
   ID bigint(20) unsigned NOT NULL auto_increment,
   Username varchar(255) NOT NULL default '',
   `Password` varchar(255) NOT NULL default '',
-  `Anrede_Anrede` enum('','Herr','Frau') NOT NULL,
-  Anrede_Titel varchar(200) NOT NULL default '',
   Forename varchar(128) NOT NULL default '',
   Surname varchar(128) NOT NULL default '',
   LoginDenied tinyint(1) unsigned NOT NULL default '0',
@@ -23,7 +21,6 @@ CREATE TABLE ###TBLPREFIX###tblWebUser (
   Icon ENUM('customer.gif') NOT NULL default 'customer.gif',
   `Text` varchar(255) default NULL,
   `Newsletter_Ok` enum('','ja','0','1','2') NOT NULL,
-  `Newsletter_HTMLNewsletter` enum('','ja','0','1','2') NOT NULL,
   PRIMARY KEY  (ID),
   UNIQUE KEY `Username` (`Username`),
   KEY Surname (Surname(3))
