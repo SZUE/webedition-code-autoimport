@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,7 +27,6 @@
  *
  */
 class we_workflow_workflow extends we_workflow_base{
-
 	const STATE_INACTIVE = 0;
 	const STATE_ACTIVE = 1;
 // Document-Type/Category based Workflow Type
@@ -266,8 +264,8 @@ class we_workflow_workflow extends we_workflow_base{
 			}
 		}
 
-		return ($workflowID? // when we have found a document type-based workflow we can return
-				: ($tmp = self::findWfIdForFolder($folder, $db) ? $tmp : false));
+		return ($workflowID ? $workflowID // when we have found a document type-based workflow we can return
+				: (($tmp = self::findWfIdForFolder($folder, $db)) ? $tmp : false));
 	}
 
 	function findWfIdForFolder($folderID, we_database_base $db){
