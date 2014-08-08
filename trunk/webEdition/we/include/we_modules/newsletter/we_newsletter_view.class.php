@@ -183,8 +183,7 @@ class we_newsletter_view{
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $Pathname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
-		$button = we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['" . $IDName . "'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','" . $rootDirID . "',''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES")
-						? 0 : 1) . ")");
+		$button = we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['" . $IDName . "'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','" . $rootDirID . "',''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")");
 
 		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, '', ' readonly', 'text', $width, 0), '', 'left', 'defaultfont', $this->htmlHidden($IDName, $IDValue), we_html_tools::getPixel(20, 4), $button);
 	}
@@ -195,8 +194,7 @@ class we_newsletter_view{
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");
 		$button = we_html_button::create_button('select', "javascript:we_cmd('browse_server','" . $wecmdenc1 . "','" . $filter . "',document.we_form.elements['" . $IDName . "'].value);");
 
-		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 30, $IDValue, '', 'readonly', 'text', $width, 0), '', 'left', 'defaultfont', '', we_html_tools::getPixel(20, 4), permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES')
-						? $button : '');
+		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 30, $IDValue, '', 'readonly', 'text', $width, 0), '', 'left', 'defaultfont', '', we_html_tools::getPixel(20, 4), permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES') ? $button : '');
 	}
 
 	function formWeChooser($table = FILE_TABLE, $width = '', $rootDirID = 0, $IDName = 'ID', $IDValue = 0, $Pathname = 'Path', $Pathvalue = '/', $cmd = '', $open_doc = '', $acObject = null, $contentType = ''){
@@ -236,8 +234,7 @@ class we_newsletter_view{
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $Pathname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
 
-		$button = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','" . $rootDirID . "','" . $filter . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES")
-						? 0 : 1) . ")");
+		$button = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','" . $rootDirID . "','" . $filter . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")");
 		if(is_object($acObject)){
 
 			$yuiSuggest = $acObject;
@@ -1236,8 +1233,7 @@ function set_state_edit_delete_recipient(control) {
 				$this->newsletter->isEmbedImages = $this->settings['isEmbedImages'];
 
 				echo we_html_element::jsElement('
-							top.content.editor.edheader.location="' . $this->frameset . '?pnt=edheader' . (($page = we_base_request::_(we_base_request::INT, "page")) !== false ? "&page=" . $page
-							: "") . '";
+							top.content.editor.edheader.location="' . $this->frameset . '?pnt=edheader' . (($page = we_base_request::_(we_base_request::INT, "page")) !== false ? "&page=" . $page : "") . '";
 							top.content.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
 					');
 				break;
@@ -1325,8 +1321,7 @@ function set_state_edit_delete_recipient(control) {
 
 			case "reload":
 				print we_html_element::jsElement('
-							top.content.editor.edheader.location="' . $this->frameset . '?pnt=edheader&page=' . $this->page . '&txt=' . urlencode($this->newsletter->Text) . ($this->newsletter->IsFolder
-								? '&group=1' : '') . '";
+							top.content.editor.edheader.location="' . $this->frameset . '?pnt=edheader&page=' . $this->page . '&txt=' . urlencode($this->newsletter->Text) . ($this->newsletter->IsFolder ? '&group=1' : '') . '";
 							top.content.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter' . ($this->newsletter->IsFolder ? '&group=1' : '') . '";
 					');
 				break;
@@ -1488,8 +1483,7 @@ function set_state_edit_delete_recipient(control) {
 						break;
 					case 0:
 						$jsmess = ($newone ?
-								$this->topFrame . '.makeNewEntry(\'' . $this->newsletter->Icon . '\',\'' . $this->newsletter->ID . '\',\'' . $this->newsletter->ParentID . '\',\'' . $this->newsletter->Text . '\',0,\'' . ($this->newsletter->IsFolder
-										? 'folder' : 'item') . '\',\'' . NEWSLETTER_TABLE . '\');' :
+								$this->topFrame . '.makeNewEntry(\'' . $this->newsletter->Icon . '\',\'' . $this->newsletter->ID . '\',\'' . $this->newsletter->ParentID . '\',\'' . $this->newsletter->Text . '\',0,\'' . ($this->newsletter->IsFolder ? 'folder' : 'item') . '\',\'' . NEWSLETTER_TABLE . '\');' :
 								$this->topFrame . '.updateEntry("' . $this->newsletter->ID . '","' . $this->newsletter->Text . '","' . $this->newsletter->ParentID . '");') .
 							$this->topFrame . '.drawTree();' .
 							we_message_reporting::getShowMessageCall(($this->newsletter->IsFolder == 1 ? g_l('modules_newsletter', '[save_group_ok]') : g_l('modules_newsletter', '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE) .
@@ -1521,8 +1515,7 @@ function set_state_edit_delete_recipient(control) {
 							$this->newsletter = new we_newsletter_newsletter();
 							echo we_html_element::jsElement('
 										top.content.deleteEntry(' . $nid . ',"file");
-										setTimeout(\'' . we_message_reporting::getShowMessageCall((we_base_request::_(we_base_request::BOOL, "IsFolder") ? g_l('modules_newsletter', '[delete_group_ok]')
-											: g_l('modules_newsletter', '[delete_ok]')), we_message_reporting::WE_MESSAGE_NOTICE) . '\',500);
+										setTimeout(\'' . we_message_reporting::getShowMessageCall((we_base_request::_(we_base_request::BOOL, "IsFolder") ? g_l('modules_newsletter', '[delete_group_ok]') : g_l('modules_newsletter', '[delete_ok]')), we_message_reporting::WE_MESSAGE_NOTICE) . '\',500);
 								');
 							$_REQUEST['home'] = 1;
 							$_REQUEST['pnt'] = 'edbody';
@@ -2050,8 +2043,7 @@ self.close();');
 					}
 
 					$url = parse_url($block->Field);
-					$content = getHTTP($url["host"], (isset($url["path"]) ? $url["path"] : ""), "", defined('HTTP_USERNAME') ? HTTP_USERNAME : "", defined('HTTP_PASSWORD') ? HTTP_PASSWORD
-								: "");
+					$content = getHTTP($url["host"], (isset($url["path"]) ? $url["path"] : ""), "", defined('HTTP_USERNAME') ? HTTP_USERNAME : "", defined('HTTP_PASSWORD') ? HTTP_PASSWORD : "");
 
 					$trenner = "[\040|\n|\t|\r]*";
 					$patterns[] = "/<(img" . $trenner . "[^>]+src" . $trenner . "[\=\"|\=\'|\=\\\\|\=]*" . $trenner . ")([^\'\">\040? \\\]*)([^\"\'\040\\\\>]*)(" . $trenner . "[^>]*)>/sie";
@@ -2204,8 +2196,7 @@ self.close();');
 	function getAttachments($group){
 		$atts = array();
 		$dbtmp = new DB_WE();
-		$this->db->query('SELECT LinkID FROM ' . NEWSLETTER_BLOCK_TABLE . ' WHERE NewsletterID=' . $this->newsletter->ID . ' AND Type=' . we_newsletter_block::ATTACHMENT . ($group
-					? " AND Groups LIKE '%," . $this->db->escape($group) . ",%'" : ''));
+		$this->db->query('SELECT LinkID FROM ' . NEWSLETTER_BLOCK_TABLE . ' WHERE NewsletterID=' . $this->newsletter->ID . ' AND Type=' . we_newsletter_block::ATTACHMENT . ($group ? " AND Groups LIKE '%," . $this->db->escape($group) . ",%'" : ''));
 
 		while($this->db->next_record()){
 			if($this->db->f("LinkID")){
@@ -2330,15 +2321,13 @@ self.close();');
 		update_time_limit(0);
 		update_mem_limit(128);
 
-		$extern = ($select == self::MAILS_ALL || $select == self::MAILS_FILE) ? we_newsletter_base::getEmailsFromExtern($this->newsletter->groups[$group - 1]->Extern, $emails_only, $group, $this->getGroupBlocks($group))
-				: array();
+		$extern = ($select == self::MAILS_ALL || $select == self::MAILS_FILE) ? we_newsletter_base::getEmailsFromExtern($this->newsletter->groups[$group - 1]->Extern, $emails_only, $group, $this->getGroupBlocks($group)) : array();
 
 		if($select == self::MAILS_FILE){
 			return $extern;
 		}
 
-		$list = ($select == self::MAILS_ALL || $select == self::MAILS_EMAILS) ? we_newsletter_base::getEmailsFromList($this->newsletter->groups[$group - 1]->Emails, $emails_only, $group, $this->getGroupBlocks($group))
-				: array();
+		$list = ($select == self::MAILS_ALL || $select == self::MAILS_EMAILS) ? we_newsletter_base::getEmailsFromList($this->newsletter->groups[$group - 1]->Emails, $emails_only, $group, $this->getGroupBlocks($group)) : array();
 
 		if($select == self::MAILS_EMAILS){
 			return $list;
@@ -2378,9 +2367,9 @@ self.close();');
 					if($emails_only){
 						$customer_mail[] = $email;
 					} else {
-						$htmlmail = (trim($this->db->f($this->settings["customer_html_field"])) != '') ? trim($this->db->f($this->settings["customer_html_field"])) : $_default_html;
-						$salutation = $this->db->f($this->settings["customer_salutation_field"]);
-						$title = $this->db->f($this->settings["customer_title_field"]);
+						$htmlmail = ($this->settings["customer_html_field"] != 'ID' && trim($this->db->f($this->settings["customer_html_field"])) != '') ? trim($this->db->f($this->settings["customer_html_field"])) : $_default_html;
+						$salutation = $this->settings["customer_salutation_field"] != 'ID' ? $this->db->f($this->settings["customer_salutation_field"]) : '';
+						$title = $this->settings["customer_title_field"] != 'ID' ? $this->db->f($this->settings["customer_title_field"]) : '';
 						$firstname = $this->db->f($this->settings["customer_firstname_field"]);
 						$lastname = $this->db->f($this->settings["customer_lastname_field"]);
 
@@ -2416,10 +2405,10 @@ self.close();');
 			'black_list' => '',
 			'customer_email_field' => 'Kontakt_Email',
 			'customer_firstname_field' => 'Forename',
-			'customer_html_field' => 'Newsletter_HTMLNewsletter',
+			'customer_html_field' => 'ID',
 			'customer_lastname_field' => 'Surname',
-			'customer_salutation_field' => 'Anrede_Anrede',
-			'customer_title_field' => 'Anrede_Titel',
+			'customer_salutation_field' => '',
+			'customer_title_field' => '',
 			'default_htmlmail' => 0,
 			'isEmbedImages' => 0,
 			'default_reply' => 'replay@' . $_domainName,

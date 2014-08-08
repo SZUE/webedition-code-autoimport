@@ -618,7 +618,7 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 
 		$closeflag = false;
 
-		if(we_base_request::_(we_base_request::STRING, "ncmd") == "save_settings"){
+		if(we_base_request::_(we_base_request::STRING, "ncmd") == 'save_settings'){
 			$this->View->processCommands();
 			$closeflag = true;
 		}

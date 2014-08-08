@@ -412,8 +412,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 
 						if(!$__db->isColExist(CUSTOMER_TABLE, $abo)){
 							$__db->addCol(CUSTOMER_TABLE, $abo, 'VARCHAR(200) DEFAULT "' . $__db->escape($setDefault) . '"');
-							$fieldDefault = array('default' => isset($customerFields['Newsletter_Ok']['default']) && !empty($customerFields['Newsletter_Ok']['default']) ? $customerFields['Newsletter_Ok']['default']
-										: ',1');
+							$fieldDefault = array('default' => isset($customerFields['Newsletter_Ok']['default']) && !empty($customerFields['Newsletter_Ok']['default']) ? $customerFields['Newsletter_Ok']['default'] : ',1');
 							$customerFields[$abo] = $fieldDefault;
 							$updateCustomerFields = true;
 						}
@@ -424,7 +423,9 @@ function we_tag_addDelNewsletterEmail($attribs){
 						$__db->query('UPDATE ' . CUSTOMER_ADMIN_TABLE . ' SET Value="' . $__db->escape(serialize($customerFields)) . '" WHERE Name="FieldAdds"');
 					}
 
-					$set .= $_customerFieldPrefs['customer_html_field'] . '= "' . $__db->escape($f["subscribe_html"]) . '"';
+					if($_customerFieldPrefs['customer_html_field'] != 'ID'){
+						$set .= $_customerFieldPrefs['customer_html_field'] . '= "' . $__db->escape($f["subscribe_html"]) . '"';
+					}
 					$__db->query('UPDATE ' . CUSTOMER_TABLE . ' SET ' . $set . ' WHERE ' . $_customerFieldPrefs['customer_email_field'] . '="' . $__db->escape($f["subscribe_mail"]) . '"');
 					break;
 				case 'emailonly':
@@ -611,8 +612,7 @@ function getNewsletterFields($request, $confirmid, &$errorcode, $mail = ''){
 	return array(
 		'subscribe_mail' => trim($subscribe_mail),
 		'subscribe_html' => trim((isset($request['we_subscribe_html__']) ? filterXss($request['we_subscribe_html__']) : 0)),
-		'subscribe_salutation' => trim((isset($request['we_subscribe_salutation__']) ? preg_replace("|[\r\n,]|", '', filterXss($request['we_subscribe_salutation__']))
-					: '')),
+		'subscribe_salutation' => trim((isset($request['we_subscribe_salutation__']) ? preg_replace("|[\r\n,]|", '', filterXss($request['we_subscribe_salutation__'])) : '')),
 		'subscribe_title' => trim((isset($request['we_subscribe_title__']) ? preg_replace("|[\r\n,]|", '', filterXss($request['we_subscribe_title__'])) : '')),
 		'subscribe_firstname' => trim((isset($request['we_subscribe_firstname__']) ? preg_replace("|[\r\n,]|", '', filterXss($request['we_subscribe_firstname__'])) : '')),
 		'subscribe_lastname' => trim((isset($request['we_subscribe_lastname__']) ? preg_replace("|[\r\n,]|", '', filterXss($request['we_subscribe_lastname__'])) : ''))
