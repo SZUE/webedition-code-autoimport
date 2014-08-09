@@ -562,7 +562,7 @@ function closeAllType(){
 					} else {
 
 						$percent = ($all ? (($xmlExIm->RefTable->current / $all) * 100) : 0);
-						$percent = ($percent < 0 ? 0 : ($percent > 100 ? 100 : $percent));
+						$percent = max(min($percent, 100), 0);
 
 						$_progress_update = we_html_element::jsElement('
 									if (' . $this->topFrame . '.editor.edfooter.doProgress) ' . $this->topFrame . '.editor.edfooter.doProgress("' . $percent . '");
@@ -640,7 +640,7 @@ function closeAllType(){
 					}
 
 					$percent = ($all ? intval(($exports / $all) * 100) : 0);
-					$percent = ($percent < 0 ? 0 : ($percent > 100 ? 100 : $percent));
+					$percent = max(min($percent, 100), 0);
 
 					$_progress_update .= "\n" .
 						we_html_element::jsElement('

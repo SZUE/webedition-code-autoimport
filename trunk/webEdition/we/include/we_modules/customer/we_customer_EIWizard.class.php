@@ -1299,7 +1299,7 @@ class we_customer_EIWizard{
 
 				$exports = count($customers);
 				$percent = ($all ? (int) ((($all - $exports + 2) / $all) * 100) : 0);
-				$percent = ($percent < 0 ? 0 : ($percent > 100 ? 100 : $percent));
+				$percent = max(min($percent, 100), 0);
 
 
 				$progressjs = we_html_element::jsElement('if (top.footer.setProgress) top.footer.setProgress(' . $percent . ');');
