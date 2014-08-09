@@ -78,10 +78,10 @@ class we_export_view{
 		$out.=$this->htmlHidden("selObjs", (isset($this->export->selObjs) ? $this->export->selObjs : ''));
 		$out.=$this->htmlHidden("selClasses", (isset($this->export->selClasses) ? $this->export->selClasses : ''));
 
-		$out.=$this->htmlHidden("selDocs_open", we_base_request::_(we_base_request::RAW, "selDocs_open", ''));
-		$out.=$this->htmlHidden("selTempl_open", we_base_request::_(we_base_request::RAW, "selTempl_open", ''));
-		$out.=$this->htmlHidden("selObjs_open", we_base_request::_(we_base_request::RAW, "selObjs_open", ''));
-		$out.=$this->htmlHidden("selClasses_open", we_base_request::_(we_base_request::RAW, "selClasses_open", ''));
+		$out.=$this->htmlHidden("selDocs_open", we_base_request::_(we_base_request::INTLIST, "selDocs_open", ''));
+		$out.=$this->htmlHidden("selTempl_open", we_base_request::_(we_base_request::INTLIST, "selTempl_open", ''));
+		$out.=$this->htmlHidden("selObjs_open", we_base_request::_(we_base_request::INTLIST, "selObjs_open", ''));
+		$out.=$this->htmlHidden("selClasses_open", we_base_request::_(we_base_request::INTLIST, "selClasses_open", ''));
 
 		return $out;
 	}

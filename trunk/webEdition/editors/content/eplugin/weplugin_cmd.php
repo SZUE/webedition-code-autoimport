@@ -26,7 +26,6 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
 $out = '';
-
 switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 	case '':
 		exit();
@@ -59,7 +58,7 @@ filename = "' . addslashes($_filename) . '";
 ct = "' . $_ct . '";
 source = "' . base64_encode($_source) . '";
 if (top.plugin.isLoaded && (typeof top.plugin.document.WePlugin.editSource == "function") ) {
-	top.plugin.document.WePlugin.editSource(session,transaction,filename,source,ct,"true","' . $charset . '");
+	top.plugin.document.WePlugin.editSource(session,"' . session_name() . '",transaction,filename,source,ct,"true","' . $charset . '");
 }');
 
 		break;
@@ -83,8 +82,8 @@ if (top.plugin.isLoaded && (typeof top.plugin.document.WePlugin.editSource == "f
 			t_e("$_tmp_file not exists in " . __FILE__ . " on line " . __LINE__);
 		}
 
-		$out = we_html_element::jsElement(//FIXME: sessionname
-				'top.plugin.document.WePlugin.editFile("' . session_id() . '","' . $_we_transaction . '","' . addslashes($_filename) . '","' . getServerUrl(true) . WEBEDITION_DIR . 'showTempFile.php?file=' . $_tmp_file . '","' . $we_ContentType . '");');
+		$out = we_html_element::jsElement(
+				'top.plugin.document.WePlugin.editFile("' . session_id() . '","' . session_name() . '","' . $_SERVER['HTTP_USER_AGENT'] . '","' . $_SERVER['HTTP_ACCEPT_LANGUAGE'] . '","' . $_SERVER['HTTP_ACCEPT_ENCODING'] . '","' . $_we_transaction . '","' . addslashes($_filename) . '","' . getServerUrl(true) . WEBEDITION_DIR . 'showTempFile.php?file=' . $_tmp_file . '","' . $we_ContentType . '");');
 
 		break;
 	case "setSource":
@@ -132,7 +131,6 @@ if (
 
 
 			$we_doc->we_initSessDat($we_dt);
-
 			if($we_ContentType == we_base_ContentTypes::IMAGE){
 				$we_doc->setElement('data', $tempName, 'image');
 				$_dim = we_thumbnail::getimagesize($tempName);
