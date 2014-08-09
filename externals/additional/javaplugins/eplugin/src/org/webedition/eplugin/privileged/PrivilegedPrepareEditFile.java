@@ -17,18 +17,22 @@ package org.webedition.eplugin.privileged;
 import java.io.File;
 import java.net.URL;
 import java.security.PrivilegedAction;
+import java.util.HashMap;
 import org.webedition.eplugin.util.CopyUtility;
 
 public class PrivilegedPrepareEditFile implements PrivilegedAction<String> {
 
-	private URL SourceUrl;
-	private String DestinationFilename;
+	private final URL SourceUrl;
+	private final String DestinationFilename;
+	private final HashMap<String, String> request;
 
-	public PrivilegedPrepareEditFile(URL url, String filename) {
+	public PrivilegedPrepareEditFile(URL url, String filename, HashMap<String, String> request) {
 		SourceUrl = url;
 		DestinationFilename = filename;
+		this.request = request;
 	}
 
+	@Override
 	public String run() {
 		try {
 			File d = new File(DestinationFilename).getParentFile();
@@ -36,11 +40,11 @@ public class PrivilegedPrepareEditFile implements PrivilegedAction<String> {
 				d.mkdirs();
 			}
 
-			CopyUtility.copy(SourceUrl, DestinationFilename);
+			CopyUtility.copy(SourceUrl, DestinationFilename, request);
 
 			return DestinationFilename;
 
-		} catch (Exception e) {
+		} catch (java.io.IOException e) {
 		}
 
 		return "";

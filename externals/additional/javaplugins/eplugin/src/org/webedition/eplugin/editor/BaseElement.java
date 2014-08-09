@@ -26,7 +26,7 @@ abstract class BaseElement{
 
 	public BaseElement(){
 		//System.out.println("enter base element");
-		persistents = new Vector();
+		persistents = new Vector<String>();
 	}
 
 	public String object2xml(){

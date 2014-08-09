@@ -17,8 +17,11 @@ package org.webedition.eplugin.util;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Vector;
 import java.util.zip.CRC32;
 import java.util.zip.ZipEntry;
@@ -90,10 +93,16 @@ public class CopyUtility {
 		return out.getEncoding();
 	}
 
-	public static void copy(URL url, String filename) throws IOException {
+	public static void copy(URL url, String filename, HashMap<String, String> request) throws IOException {
 		try {
 			try {
-				InputStream is = url.openStream();
+				URLConnection con = url.openConnection();
+				for (Entry<String, String> ent : request.entrySet()) {
+					con.setRequestProperty(ent.getKey(), ent.getValue());
+				}
+				con.setUseCaches(false);
+
+				InputStream is = con.getInputStream();
 				CopyUtility.copy(is, filename);
 
 			} catch (IOException ix) {
@@ -110,7 +119,7 @@ public class CopyUtility {
 	}
 
 	public static Vector extract(ZipInputStream zipFile, String base) throws IOException {
-		Vector entries = new Vector();
+		Vector<String> entries = new Vector<String>();
 		try {
 			ZipEntry ze = zipFile.getNextEntry();
 			while (ze != null) {
@@ -157,10 +166,8 @@ public class CopyUtility {
 			//int len;
 			//int buffersize = 2048;
 			//char[] buffer = new char[buffersize];
-
 			BufferedReader input = new BufferedReader(new InputStreamReader(new FileInputStream(from), fromEnc));
 			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new DataOutputStream(new FileOutputStream(to)), toEnc));
-
 
 			String s;
 
@@ -224,7 +231,6 @@ public class CopyUtility {
 				fis.close();
 				zos.closeEntry();
 
-
 			}
 			zos.flush();
 			zos.close();
@@ -232,7 +238,6 @@ public class CopyUtility {
 		} catch (Exception fn) {
 			fn.printStackTrace();
 		}
-
 
 	}
 

@@ -39,7 +39,7 @@ public class MacRegistry implements Registry {
 			try {
 
 				url = new URL(sUrl);
-				CopyUtility.copy(url, registryTool);
+				//CopyUtility.copy(url, registryTool);
 				CmdProxy.executeCmd("chmod +x " + registryTool);
 
 			} catch (Exception e) {
@@ -54,7 +54,7 @@ public class MacRegistry implements Registry {
 
 	public Vector getAppList(String extension) {
 
-		Vector out = new Vector();
+		Vector<String> out = new Vector<String>();
 
 		String stout = CmdProxy.executeCmd(registryTool + " " + extension + " " + editorOnly);
 

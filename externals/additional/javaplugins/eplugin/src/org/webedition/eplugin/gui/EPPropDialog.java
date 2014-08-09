@@ -41,9 +41,9 @@ public class EPPropDialog extends JFrame implements ActionListener {
 	private JButton cancelButton;
 	private JButton saveButton;
 	private JButton pathButton;
-	private JComboBox contentTypeBox;
-	private JComboBox defaultForBox;
-	private JComboBox encodingBox;
+	private JComboBox<String> contentTypeBox;
+	private JComboBox<String> defaultForBox;
+	private JComboBox<String> encodingBox;
 	private EPEditorDialog parentFrame;
 
 	public EPPropDialog(WeSettings wesettings, WeEditor editor, EPEditorDialog parent) {
@@ -53,14 +53,12 @@ public class EPPropDialog extends JFrame implements ActionListener {
 		parentFrame = parent;
 
 // WeSettings.getDefaultEncoding();
-
 		String Name = editor.Name;
 		String Path = editor.Path;
 		String Args = editor.Args;
 		String ContentType = (editor.ContentType == null) ? weSettings.lastContentType : editor.ContentType;
 		String DefaultFor = editor.DefaultFor;
 		String Encoding = editor.Encoding;
-
 
 		EmptyBorder eb = new EmptyBorder(10, 10, 10, 10);
 		//BevelBorder bb = new BevelBorder(BevelBorder.RAISED);
@@ -81,7 +79,6 @@ public class EPPropDialog extends JFrame implements ActionListener {
 		argsText = new JTextField(Args, textFieldSize);
 		JLabel argsLabel = new JLabel(weSettings.getParam("lan_args"));
 
-
 		JPanel namePane = new JPanel();
 		namePane.setLayout(new BoxLayout(namePane, BoxLayout.X_AXIS));
 		namePane.add(nameText);
@@ -95,15 +92,13 @@ public class EPPropDialog extends JFrame implements ActionListener {
 		argsPane.setLayout(new BoxLayout(argsPane, BoxLayout.X_AXIS));
 		argsPane.add(argsText);
 
-
 		// Content types
-
 		Vector<String> contentTypes = weSettings.getContentTypes();
 		contentTypes.insertElementAt("", 0);
 
 		contentTypeText = new JTextField(ContentType, textFieldSize);
 		contentTypeText.setText(ContentType);
-		contentTypeBox = new JComboBox(contentTypes);
+		contentTypeBox = new JComboBox<String>(contentTypes);
 		contentTypeBox.setPreferredSize(new Dimension(200, 10));
 		contentTypeBox.addActionListener(this);
 		JLabel contentTypeLabel = new JLabel(weSettings.getParam("lan_contenttypes"));
@@ -116,7 +111,7 @@ public class EPPropDialog extends JFrame implements ActionListener {
 
 		// Default editor for content type
 		defaultForText = new JTextField(DefaultFor, textFieldSize);
-		defaultForBox = new JComboBox();
+		defaultForBox = new JComboBox<String>();
 		defaultForBox.setPreferredSize(new Dimension(200, 10));
 		addItems(defaultForBox, "," + ContentType);
 		defaultForBox.addActionListener(this);
@@ -129,11 +124,10 @@ public class EPPropDialog extends JFrame implements ActionListener {
 		defaultForPane.add(defaultForBox);
 
 		// Encoding panel
-		encodingBox = new JComboBox();
-		encodingBox.setPreferredSize(new Dimension(200, 10));
-		Vector supportedEnc = new Vector(Charset.availableCharsets().values());
+		Vector<String> supportedEnc = new Vector(Charset.availableCharsets().values());
 		supportedEnc.insertElementAt("", 0);
-		encodingBox = new JComboBox(supportedEnc);
+		encodingBox = new JComboBox<String>(supportedEnc);
+		encodingBox.setPreferredSize(new Dimension(200, 10));
 
 		String s = "";
 		int count = -1;
@@ -150,7 +144,6 @@ public class EPPropDialog extends JFrame implements ActionListener {
 		encodingPane.setLayout(new BoxLayout(encodingPane, BoxLayout.X_AXIS));
 		encodingPane.add(encodingBox);
 		JLabel encodingLabel = new JLabel(weSettings.getParam("lan_encoding"));
-
 
 		// Main panel
 		JPanel mainPane = new JPanel();
@@ -194,7 +187,6 @@ public class EPPropDialog extends JFrame implements ActionListener {
 		centerPane.add(encodingLabel);
 		centerPane.add(encodingPane);
 
-
 		mainPane.add(centerPane, BorderLayout.CENTER);
 
 		cancelButton = new JButton(weSettings.getParam("lan_close_button"));
@@ -228,7 +220,7 @@ public class EPPropDialog extends JFrame implements ActionListener {
 
 	}
 
-	private void addItems(JComboBox combo, String items) {
+	private void addItems(JComboBox<String> combo, String items) {
 
 		String arr[] = items.split(",");
 		String it;
@@ -340,7 +332,6 @@ public class EPPropDialog extends JFrame implements ActionListener {
 			this.dispose();
 			parentFrame.reloadEditorList();
 		}
-
 
 	}
 }

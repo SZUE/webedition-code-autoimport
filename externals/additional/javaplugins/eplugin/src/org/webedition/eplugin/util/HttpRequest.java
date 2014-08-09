@@ -21,28 +21,24 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 public class HttpRequest {
 
 	protected String FilePath;
-	protected Hashtable RequestProperties;
-	protected Hashtable Variables;
-	protected Hashtable Files;
-	protected String ContentBoundary = "boundary";
+	protected HashMap<String, String> RequestProperties;
+	protected HashMap<String, String> Variables;
+	protected HashMap<String, String> Files;
+	protected String ContentBoundary = "----------NFD3nEd4J9z0Wedx9oM36r";
 
-	public HttpRequest() {
+	public HttpRequest(HashMap<String, String> RequestProperties) {
 
-		Variables = new Hashtable();
-		Files = new Hashtable();
+		Variables = new HashMap<String, String>();
+		Files = new HashMap<String, String>();
 
-		RequestProperties = new Hashtable();
-		RequestProperties.put("Content-Type", "multipart/form-data; boundary=" + ContentBoundary);
-		RequestProperties.put("User-Agent", "Mozilla/4.7 [en] (WinNT; U)");
-		RequestProperties.put("Accept", "image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, application/vnd.ms-excel, application/msword, application/vnd.ms-powerpoint, application/pdf, application/x-comet, */*");
-		RequestProperties.put("Accept-Encoding", "gzip, deflate");
-		RequestProperties.put("Accept-Language", "en");
-		RequestProperties.put("Cache-Control", "no-cache");
+		this.RequestProperties = RequestProperties;
+		this.RequestProperties.put("Content-Type", "multipart/form-data; boundary=" + ContentBoundary);
 
 	}
 
@@ -74,49 +70,43 @@ public class HttpRequest {
 			 * if(Files.size()>0) {
 			 * RequestProperties.put("Content-Type","multipart/form-data; boundary=" +
 			 * ContentBoundary);
-			}
+			 }
 			 */
-
-			for (Enumeration e = RequestProperties.keys(); e.hasMoreElements();) {
-				name = (String) e.nextElement();
-				connection.setRequestProperty(name, (String) RequestProperties.get(name));
+			for (Entry<String, String> ent : RequestProperties.entrySet()) {
+				connection.setRequestProperty(ent.getKey(), ent.getValue());
 			}
+			connection.setUseCaches(false);
 
 			output = connection.getOutputStream();
 
 			String startStr = "--" + ContentBoundary + "\r\n";
 			String endStr = "\r\n--" + ContentBoundary + "--\r\n";
-
-			for (Enumeration e = Variables.keys(); e.hasMoreElements();) {
-				name = (String) e.nextElement();
+			for (Entry<String, String> ent : Variables.entrySet()) {
+				name = ent.getKey();
 				output.write((startStr + "Content-Disposition: form-data; name=\"" + name + "\";\r\nContent-Type: text/plain\r\n\r\n").getBytes());
-				output.write(((String) (String) Variables.get(name)).getBytes());
+				output.write(((String) ent.getValue()).getBytes());
 				output.write(endStr.getBytes());
 			}
 
 			int readByte = -1;
+			for (Entry<String, String> ent : Files.entrySet()) {
+				name = ent.getKey();
 
-			for (Enumeration e = Files.keys(); e.hasMoreElements();) {
+				output.write((startStr + "Content-Disposition: form-data; name=\"" + name + "\"; filename=\"" + ent.getValue() + "\"\r\nContent-Type: application/octet-stream\r\n\r\n").getBytes());
 
-				name = (String) e.nextElement();
-
-				output.write(("--" + ContentBoundary + "\r\n" + "Content-Disposition: form-data; name=\"" + name + "\"; filename=\"" + (String) Files.get(name) + "\"\r\nContent-Type: text/plain\r\n\r\n").getBytes());
-
-				fileInputStream = new FileInputStream(new File(Files.get(name).toString()));
+				fileInputStream = new FileInputStream(new File(ent.getValue()));
 
 				byte[] fileBuffer = new byte[512];
 				int totalByte = 0;
-				readByte = fileInputStream.read(fileBuffer, 0, 512);
-				while (readByte != -1) {
+				while ((readByte = fileInputStream.read(fileBuffer, 0, 512)) != -1) {
 					totalByte += readByte;
 					output.write(fileBuffer, 0, readByte);
-					readByte = fileInputStream.read(fileBuffer, 0, 512);
 				}
-				//System.out.println("wrote " + totalByte);
+				System.out.println("wrote " + totalByte);
 				fileInputStream.close();
 				fileInputStream = null;
-				output.write(("\r\n--" + ContentBoundary + "--\r\n").getBytes());
-
+				output.write((endStr).getBytes());
+				output.flush();
 			}
 
 			input = connection.getInputStream();
@@ -127,13 +117,12 @@ public class HttpRequest {
 			 * while (readByte != -1) { Reponse += new String(buffer,0,readByte);
 			 * readByte = input.read(buffer, 0, 512); }
 			 */
-
 			StreamWrapper reader = new StreamWrapper(input);
 			reader.start();
 			reader.join();
 			Reponse = reader.getResult();
 
-			System.out.println(Reponse);
+			//System.out.println(Reponse);
 
 			input.close();
 			input = null;

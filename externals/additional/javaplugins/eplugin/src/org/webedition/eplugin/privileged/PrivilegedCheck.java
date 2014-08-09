@@ -17,7 +17,7 @@ package org.webedition.eplugin.privileged;
 import java.io.File;
 import java.security.PrivilegedAction;
 
-public class PrivilegedCheck implements PrivilegedAction {
+public class PrivilegedCheck implements PrivilegedAction<Object> {
 
 	String path;
 	public long LastChange = 0;

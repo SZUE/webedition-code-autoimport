@@ -45,9 +45,9 @@ public class EPEditorDialog extends JFrame implements ActionListener {
 	private WeSettings weSettings;
 	//private String sourceFile;
 	//private String contentType;
-	private JList editorList;
-	private DefaultListModel listModel = new DefaultListModel();
-	private Vector<WeEditor> listVector = new Vector();
+	private JList<DefaultListModel<Integer>> editorList;
+	private DefaultListModel<Integer> listModel = new DefaultListModel<Integer>();
+	private Vector<WeEditor> listVector = new Vector<WeEditor>();
 	protected EPDocument epDoc;
 	protected WeEditor.MODES mode = WeEditor.MODES.EDITOR;
 	protected WeEditor selectedEditor;

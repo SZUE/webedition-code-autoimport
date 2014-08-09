@@ -41,7 +41,7 @@ public class WeEditor extends BaseElement implements Serializable {
 	public String Encoding;
 
 	public WeEditor() {
-		persistents = new Vector();
+		persistents = new Vector<String>();
 		persistents.add("Name");
 		persistents.add("Path");
 		persistents.add("Args");

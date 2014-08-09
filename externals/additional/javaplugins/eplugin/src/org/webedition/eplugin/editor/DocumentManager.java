@@ -20,13 +20,13 @@ import java.util.Vector;
 
 public class DocumentManager {
 
-	protected static Hashtable Documents = new Hashtable();
+	protected static Hashtable<String,EPDocument> Documents = new Hashtable<String,EPDocument>();
 	protected static int Current = 0;
 	protected static String Last = null;
 	protected static Vector<String> Keys = null;
 
 	private DocumentManager() {
-		Documents = new Hashtable();
+		Documents = new Hashtable<String,EPDocument>();
 	}
 
 	private static class SingletonHolder {
@@ -46,7 +46,7 @@ public class DocumentManager {
 	}
 
 	protected static void generateKeys() {
-		Keys = new Vector();
+		Keys = new Vector<String>();
 		Enumeration en = Documents.keys();
 		while (en.hasMoreElements()) {
 			String s = (String) en.nextElement();

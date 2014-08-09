@@ -43,12 +43,12 @@ public class WeSettings {
 	private String settingsFile;
 	public String cacheDir;
 	public String lastContentType = "";
-	private Hashtable<String, String> ParamList = new Hashtable();
-	private Hashtable<String, String> Settings = new Hashtable();
+	private Hashtable<String, String> ParamList = new Hashtable<String, String>();
+	private Hashtable<String, String> Settings = new Hashtable<String, String>();
 	//private Vector EditorList=new Vector();
-	private Vector<WeEditor> DefaultEditorList = new Vector();
-	private Vector<WeEditor> SystemEditorList = new Vector();
-	private Vector<String> ContentTypes = new Vector();
+	private Vector<WeEditor> DefaultEditorList = new Vector<WeEditor>();
+	private Vector<WeEditor> SystemEditorList = new Vector<WeEditor>();
+	private Vector<String> ContentTypes = new Vector<String>();
 	//private Vector ContentTypeIcons = new Vector();
 	private URL HostUrl;
 	private Properties PluginProperties;
@@ -362,7 +362,7 @@ public class WeSettings {
 			Node node;
 			//NamedNodeMap map;
 
-			DefaultEditorList = new Vector();
+			DefaultEditorList = new Vector<WeEditor>();
 
 			for (int i = 0; i < childCount; i++) {
 				node = childs.item(i);
@@ -472,13 +472,13 @@ public class WeSettings {
 	 */
 	public void clearList() {
 		DefaultEditorList.removeAllElements();
-		DefaultEditorList = new Vector();
+		DefaultEditorList = new Vector<WeEditor>();
 		saveDefaultEditorList();
 	}
 
-	public Vector getEditorList(String ct) {
+	public Vector<WeEditor> getEditorList(String ct) {
 
-		Vector<WeEditor> edList = new Vector();
+		Vector<WeEditor> edList = new Vector<WeEditor>();
 		for (WeEditor ed : DefaultEditorList) {
 			if (!ed.Path.equals("") && hasContentType(ed.ContentType, ct)) {
 				addEditor(ed, edList);

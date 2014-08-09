@@ -21,7 +21,7 @@ import java.io.OutputStreamWriter;
 import java.security.PrivilegedAction;
 import org.webedition.eplugin.editor.WeSettings;
 
-public class PrivilegedSave implements PrivilegedAction {
+public class PrivilegedSave implements PrivilegedAction<Object> {
 
 	String path;
 	String content;

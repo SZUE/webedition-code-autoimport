@@ -41,11 +41,11 @@ public class EPlugin extends JApplet {
 	protected String startDialog = "";
 	protected String cmdEntry = "";
 	private UIMonitor monUI = new UIMonitor();
-	private CacheMonitor monCache = new CacheMonitor();
+	private final CacheMonitor monCache = new CacheMonitor();
 	protected boolean runThreads = true;
 	protected final int threadTick = 300;
 	protected boolean debug = true;
-	protected Vector<String> Messages = new Vector();
+	protected Vector<String> Messages = new Vector<String>();
 	protected WeEditor.MODES runDialog = WeEditor.MODES.INACTIVE;
 	public boolean isLive = true;
 
@@ -82,11 +82,10 @@ public class EPlugin extends JApplet {
 	@Override
 	public void init() {
 		URL codeBase = getCodeBase();
-		String SERVER_NAME = codeBase.getHost();
-		int port = (getDocumentBase()).getPort();
-		String protocol = (getDocumentBase()).getProtocol();
+		/*String SERVER_NAME = codeBase.getHost();
+		 int port = (getDocumentBase()).getPort();
+		 String protocol = (getDocumentBase()).getProtocol();*/
 		String url = codeBase.toString() + "initPlugin.html";
-
 
 		try {
 			this.getAppletContext().showDocument(new URL(url), "load");
@@ -99,25 +98,23 @@ public class EPlugin extends JApplet {
 		try {
 
 			String[] plist = getParameter("param_list").split(",");
-			for (int i = 0; i < plist.length; i++) {
-				weSettings.setParam(plist[i], getParameter(plist[i]));
+			for (String plist1 : plist) {
+				weSettings.setParam(plist1, getParameter(plist1));
 			}
 
-			weSettings.setUrl(getParameter("host").toString());
+			weSettings.setUrl(getParameter("host"));
 
 			weSettings.createCache();
 
 			cmdEntry = getParameter("cmdentry");
 
-
 		} catch (NullPointerException e) {
 			System.out.print(e);
 		}
 
-		Messages = new Vector();
+		Messages = new Vector<String>();
 
 		monUI.start();
-
 
 	}
 
@@ -151,16 +148,13 @@ public class EPlugin extends JApplet {
 
 		String fn = weSettings.registryDir + "/installation.js";
 
-
 		PrivilegedSave ps = new PrivilegedSave(fn, content);
 		AccessController.doPrivileged(ps);
 
 		String path = doc.getCacheFilename();
 
 		//path = path.replaceAll("\\", "\\\\");
-
 		path = EPlugin.replace(path, "\\", "\\\\");
-
 
 		content = "transactions = new Object();\n"
 						+ "transactions[\"" + path + "\"] = \"" + doc.getTransaction() + "\";\n";
@@ -169,7 +163,6 @@ public class EPlugin extends JApplet {
 
 		ps = new PrivilegedSave(fn, content);
 		AccessController.doPrivileged(ps);
-
 
 	}
 
@@ -199,14 +192,14 @@ public class EPlugin extends JApplet {
 		return out;
 	}
 
-	public void editSource(String sess, String trans, String filename, String code,
+	public void editSource(String sess, String sessName, String trans, String filename, String code,
 					String contenttype, String encoded, String charset) {
 
 		weSettings.lastContentType = contenttype;
 		String cachefn = clearPath(weSettings.cacheDir + (contenttype.equals("text/weTmpl") ? "template" : "document") + System.getProperty("file.separator") + filename);
 
 		System.out.println("contenttype:" + contenttype);
-		EPDocument document = new EPDocument(sess, trans, cachefn, contenttype, cmdEntry);
+		EPDocument document = new EPDocument(sess, sessName, trans, cachefn, contenttype, cmdEntry);
 
 		if (encoded.equals("true")) {
 			code = Base64Coder.decode(code, charset);
@@ -215,18 +208,18 @@ public class EPlugin extends JApplet {
 		document.setSource(code);
 
 		//document.saveSource();
-
 		saveDwFiles(document);
 
 		invokeEditor(document);
 
 	}
 
-	public void editFile(String sess, String trans, String path, String url, String contenttype) {
+	public void editFile(String sess, String sessName, String UA, String UAlang, String UAenc, String trans, String path, String url, String contenttype) {
 
 		String cachefn = clearPath(weSettings.cacheDir + (contenttype.equals("text/weTmpl") ? "template" : "document") + System.getProperty("file.separator") + path);
 
-		EPDocument document = new EPDocument(sess, trans, cachefn, contenttype, cmdEntry);
+		EPDocument document = new EPDocument(sess, sessName, trans, cachefn, contenttype, cmdEntry);
+		document.setUA(UA, UAlang, UAenc);
 
 		document.copyFromUrl(url);
 
@@ -287,7 +280,7 @@ public class EPlugin extends JApplet {
 	private void gotoBed(int ms) {
 		try {
 			Thread.sleep(ms);
-		} catch (Exception e) {
+		} catch (InterruptedException e) {
 			e.printStackTrace();
 			System.exit(1);
 		}

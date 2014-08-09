@@ -17,6 +17,7 @@ package org.webedition.eplugin.editor;
 import java.io.*;
 import java.net.URL;
 import java.security.AccessController;
+import java.util.HashMap;
 import org.webedition.eplugin.privileged.PrivilegedCheck;
 import org.webedition.eplugin.privileged.PrivilegedMkDirs;
 import org.webedition.eplugin.privileged.PrivilegedPrepareEditFile;
@@ -26,31 +27,29 @@ import org.webedition.eplugin.util.HttpRequest;
 public class EPDocument {
 
 	protected WeEditor Editor;
-	protected String CacheFilename;
-	protected String ContentType;
-	protected String Transaction;
-	protected String SessionId;
+	protected String CacheFilename = "";
+	protected String ContentType = "";
+	protected String Transaction = "";
+	protected String SessionId = "";
+	protected String SessionName = "";
 	protected long CacheLastSave = 0;
 	protected String Source;
-	protected String CmdEntry;
-	protected String Encoding;
+	protected String CmdEntry = "";
+	protected String Encoding = WeSettings.getDefaultEncoding();
 	protected boolean Check = false;
+	protected String UA = "";
+	protected String UAlang = "";
+	protected String UAenc = "";
 
 	public EPDocument() {
-		CacheFilename = "";
-		ContentType = "";
-		Transaction = "";
-		SessionId = "";
-		CmdEntry = "";
-		Encoding = WeSettings.getDefaultEncoding();
-
 	}
 
-	public EPDocument(String session, String trans, String filename, String ct, String cmd) {
+	public EPDocument(String session, String SessionName, String trans, String filename, String ct, String cmd) {
 		CacheFilename = filename;
 		ContentType = ct;
 		Transaction = trans;
 		SessionId = session;
+		this.SessionName = SessionName;
 		CmdEntry = cmd;
 		Encoding = WeSettings.getDefaultEncoding();
 
@@ -123,7 +122,6 @@ public class EPDocument {
 							? new BufferedReader(new InputStreamReader(new FileInputStream(CacheFilename), Encoding))
 							: new BufferedReader(new InputStreamReader(new FileInputStream(CacheFilename))));
 
-
 			String str;
 			StringBuilder buf = new StringBuilder();
 			while ((str = in.readLine()) != null) {
@@ -138,9 +136,27 @@ public class EPDocument {
 
 	}
 
+	public void setUA(String UA, String UAlang, String UAenc) {
+		this.UA = UA;
+		this.UAlang = UAlang;
+		this.UAenc = UAenc;
+	}
+
+	private HashMap<String, String> getRequestProperties() {
+		HashMap<String, String> request = new HashMap<String, String>();
+		//FIXME:todo
+		request.put("User-Agent", this.UA);
+		request.put("Accept", "image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, application/vnd.ms-excel, application/msword, application/vnd.ms-powerpoint, application/pdf, application/x-comet, */*");
+		request.put("Accept-Encoding", this.UAenc);
+		request.put("Accept-Language", this.UAlang);
+		request.put("Cache-Control", "no-cache");
+		request.put("Cookie", this.SessionName + "=" + SessionId);
+		return request;
+	}
+
 	public void copyFromUrl(String url) {
 		try {
-			PrivilegedPrepareEditFile pcopy = new PrivilegedPrepareEditFile(new URL(url), CacheFilename);
+			PrivilegedPrepareEditFile pcopy = new PrivilegedPrepareEditFile(new URL(url), CacheFilename, this.getRequestProperties());
 			AccessController.doPrivileged(pcopy);
 			CacheLastSave = getLastSave();
 		} catch (IOException e) {
@@ -163,10 +179,9 @@ public class EPDocument {
 	public void uploadFile() {
 		try {
 
-			HttpRequest fu = new HttpRequest();
+			HttpRequest fu = new HttpRequest(getRequestProperties());
 
 			fu.addVariable("we_cmd[0]", "setBinary");
-			//fu.addVariable("PHPSESSID",SessionId);
 			fu.addVariable("we_transaction", Transaction);
 			fu.addVariable("contenttype", ContentType);
 			fu.addFile("uploadfile", CacheFilename);
@@ -210,7 +225,7 @@ public class EPDocument {
 	}
 
 	public boolean isText() {
-		return (getContentType().indexOf("text/") != -1);
+		return (getContentType().contains("text/"));
 	}
 
 	public boolean getCheck() {

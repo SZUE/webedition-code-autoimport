@@ -23,7 +23,7 @@ public class WinRegistry implements Registry {
 
 	private final String REGQUERY_UTIL = "reg query ";
 	private final String REGSTR_TOKEN = "REG_SZ";
-	private Vector OpenWithList = new Vector();
+	private Vector<String> OpenWithList = new Vector<String>();
 
 	public void addNewApp(String app) {
 
@@ -115,7 +115,7 @@ public class WinRegistry implements Registry {
 
 	public Vector findApplications(Vector appList) {
 
-		Vector newList = new Vector();
+		Vector<String> newList = new Vector<String>();
 		String s = "";
 		String result = "";
 

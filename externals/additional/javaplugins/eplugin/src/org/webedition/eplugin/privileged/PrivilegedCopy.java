@@ -18,7 +18,7 @@ import java.net.URL;
 import java.security.PrivilegedAction;
 import org.webedition.eplugin.util.CopyUtility;
 
-public class PrivilegedCopy implements PrivilegedAction<String> {
+/*public class PrivilegedCopy implements PrivilegedAction<String> {
 
 	private URL SourceUrl;
 	private String DestinationFilename;
@@ -41,4 +41,4 @@ public class PrivilegedCopy implements PrivilegedAction<String> {
 		return "";
 
 	}
-}
+}*/
