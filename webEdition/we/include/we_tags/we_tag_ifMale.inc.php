@@ -26,11 +26,12 @@ function we_tag_ifMale(){
 	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']){
 		return true;
 	}
+	static $maleSalutation = '';
 	if(isset($GLOBALS['WE_SALUTATION']) && $GLOBALS['WE_SALUTATION']){
-		$maleSalutation = f('SELECT pref_value FROM ' . NEWSLETTER_PREFS_TABLE . ' WHERE pref_name="' . we_newsletter_newsletter::MALE_SALUTATION_FIELD . '"', 'pref_value', $GLOBALS['DB_WE']);
-		if($maleSalutation == ''){
-			$maleSalutation = g_l('modules_newsletter', '[default][male]');
-		}
+		$maleSalutation = $maleSalutation ? $maleSalutation : f('SELECT pref_value FROM ' . NEWSLETTER_PREFS_TABLE . ' WHERE pref_name="' . we_newsletter_newsletter::MALE_SALUTATION_FIELD . '"');
+
+		$maleSalutation = $maleSalutation ? $maleSalutation : g_l('modules_newsletter', '[default][male]');
+
 		return ($GLOBALS['WE_SALUTATION'] == $maleSalutation);
 	}
 	return false;
