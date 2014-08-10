@@ -1168,7 +1168,7 @@ function next() {
 					}
 					fclose($fh);
 				} else {
-					//FIXME: fopen uses less memory then gd: gd can fail (and returns 500) even if $fh = true!
+					//fopen uses less memory then gd: gd can fail (and returns 500) even if $fh = true!
 					return array('filename' => $_FILES['we_File']['name'], 'error' => g_l('importFiles', '[read_file_error]'));
 				}
 

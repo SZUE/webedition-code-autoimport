@@ -82,7 +82,7 @@ class we_search_frames extends we_tool_frames{
 		return $this->getHTMLDocument($out);
 	}
 
-	function getHTMLEditorHeader(){
+	protected function getHTMLEditorHeader(){
 
 		$we_tabs = new we_tabs();
 
@@ -167,7 +167,7 @@ class we_search_frames extends we_tool_frames{
 		return $this->getHTMLDocument($body, $tabsHead);
 	}
 
-	function getHTMLEditorBody(){
+	protected function getHTMLEditorBody(){
 		$body = we_html_element::htmlBody(
 				array(
 				'class' => 'weEditorBody',
@@ -231,7 +231,7 @@ class we_search_frames extends we_tool_frames{
 		return we_base_request::_(we_base_request::INT, 'tabnr', 1);
 	}
 
-	function getHTMLEditorFooter(){
+	protected function getHTMLEditorFooter(){
 		$_but_table = we_html_button::create_button_table(
 				array(
 				we_html_button::create_button(

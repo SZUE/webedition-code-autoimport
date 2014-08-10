@@ -78,16 +78,8 @@ class we_messaging_message extends we_messaging_proto{
 		}
 	}
 
-	//FIXME: put following 2 methods out of the class (same goes for we_todo.inc.php)
-	function username_to_userid($username){
-		$id = f('SELECT ID FROM ' . USER_TABLE . ' WHERE username="' . $this->DB_WE->escape($username) . '"', '', new DB_WE());
-		return ($id === '' ? -1 : $id);
-	}
-
-	/* Getters And Setters */
-
 	function clipboard_cut($items, $target_fid){
-		if(empty($items)){
+		if(!$items){
 			return;
 		}
 		foreach($items as $key => $val){
@@ -142,24 +134,25 @@ class we_messaging_message extends we_messaging_proto{
 		return 1;
 	}
 
-	function &send(&$rcpts, &$data){
-		$results = array();
-		$results['err'] = array();
-		$results['ok'] = array();
-		$results['failed'] = array();
+	function send(&$rcpts, &$data){
+		$results = array(
+		'err' => array(),
+		'ok' => array(),
+		'failed' => array(),
+			);
+		$db=new DB_WE();
 
 		foreach($rcpts as $rcpt){
-			$in_folder = '';
 			//FIXME: Put this out of the loop
-			if(($userid = $this->username_to_userid($rcpt)) == -1){
+			if(($userid = we_users_user::getUserID($rcpt, $db)) == -1){
 				$results['err'][] = g_l('modules_messaging', '[no_inbox_folder]');
 				$results['failed'][] = $rcpt;
 				continue;
 			}
 
 			/* FIXME: replace this by default_folders[inbox] or something */
-			$in_folder = f('SELECT ID FROM ' . $this->DB_WE->escape($this->folder_tbl) . ' WHERE obj_type = ' . we_messaging_proto::FOLDER_INBOX . ' AND msg_type = ' . intval($this->sql_class_nr) . ' AND UserID = ' . intval($userid), 'ID', $this->DB_WE);
-			if(!isset($in_folder) || $in_folder == ''){
+			$in_folder = f('SELECT ID FROM ' . $this->DB_WE->escape($this->folder_tbl) . ' WHERE obj_type = ' . we_messaging_proto::FOLDER_INBOX . ' AND msg_type = ' . intval($this->sql_class_nr) . ' AND UserID = ' . intval($userid), '', $this->DB_WE);
+			if($in_folder == ''){
 				/* Create default Folders for target user */
 				if(we_messaging_messaging::createFolders($userid) == 1){
 					$this->DB_WE->query('SELECT ID FROM ' . $this->DB_WE->escape($this->folder_tbl) . ' WHERE obj_type = ' . we_messaging_proto::FOLDER_INBOX . ' AND msg_type = ' . intval($this->sql_class_nr) . ' AND UserID = ' . intval($userid));
@@ -281,8 +274,9 @@ class we_messaging_message extends we_messaging_proto{
 		$read_ids = array();
 
 		while($this->DB_WE->next_record()){
-			if(!($this->DB_WE->f('seenStatus') & we_messaging_proto::STATUS_READ))
+			if(!($this->DB_WE->f('seenStatus') & we_messaging_proto::STATUS_READ)){
 				$read_ids[] = $this->DB_WE->f('ID');
+			}
 
 			$ret[] = array('ID' => $i++,
 				'hdrs' => array('Date' => $this->DB_WE->f('headerDate'),

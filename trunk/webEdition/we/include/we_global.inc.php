@@ -768,7 +768,7 @@ function getServerUrl($useUserPwd = false){
 }
 
 function we_check_email($email){ // Zend validates only the pure address
-	if(($pos = strpos($email, '<'))){// format "xxx xx" <test@test.de>
+	if(($pos = strpos($email, '<'))){//format is "xxx xx" <test@test.de>
 		++$pos;
 		$email = substr($email, $pos, strrpos($email, '>') - $pos);
 	}
@@ -1033,7 +1033,6 @@ function we_templateInit(){
 			$GLOBALS['WE_MAIN_ID'] = $GLOBALS['we_doc']->ID;
 		}
 		if(!isset($GLOBALS['WE_MAIN_DOC'])){
-			//FIXME: remove? does this really have ever worked?
 			$GLOBALS['WE_MAIN_DOC'] = clone($GLOBALS['we_doc']);
 		}
 		if(!isset($GLOBALS['WE_MAIN_DOC_REF'])){

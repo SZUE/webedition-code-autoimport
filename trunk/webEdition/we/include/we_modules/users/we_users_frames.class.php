@@ -334,7 +334,7 @@ self.focus();';
 	 *
 	 */
 
-	function getHTMLTreeFooter(){//TODO: js an customer anpassen oder umgekehrt!
+	protected function getHTMLTreeFooter(){//TODO: js an customer anpassen oder umgekehrt!
 		$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "cmd")) .
 			we_html_element::htmlHidden(array("name" => "cmd", "value" => "show_search"));
 
@@ -352,7 +352,7 @@ self.focus();';
 		return we_html_element::htmlForm(array("name" => "we_form_treefooter"), $table->getHtml());
 	}
 
-	function getHTMLEditor(){//TODO: Throw out the the exeption for properties/edbody and use parent
+	protected function getHTMLEditor(){//TODO: Throw out the the exeption for properties/edbody and use parent
 		$body = we_html_element::htmlBody(array('style' => 'position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; border: 0px none;'), we_html_element::htmlIFrame('edheader', $this->frameset . '?pnt=edheader&home=1', 'position: absolute; top: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;') .
 				we_html_element::htmlIFrame('edbody', WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=mod_home&mod=users', 'position: absolute; top: 40px; bottom: 40px; left: 0px; right: 0px; overflow: auto;', 'border:0px;width:100%;height:100%;overflow: auto;') .
 				we_html_element::htmlIFrame('edfooter', $this->frameset . '?pnt=edfooter&home=1' . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : '&home=1'), 'position: absolute; bottom: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;')
@@ -361,17 +361,17 @@ self.focus();';
 		return $this->getHTMLDocument($body);
 	}
 
-	function getHTMLEditorHeader(){
+	protected function getHTMLEditorHeader(){
 		if(isset($_REQUEST['home'])){//FIXME: find one working condition
-			print we_html_element::htmlBody(array('style' => 'background-color:#F0EFF0;'), '');
+			echo we_html_element::htmlBody(array('style' => 'background-color:#F0EFF0;'), '');
 		} else {
 			$user_object = new we_users_user();
 			$user_object->setState($_SESSION["user_session_data"]);
-			print we_html_element::htmlBody(array('onresize' => 'setFrameSize()', 'onload' => 'setFrameSize()', 'style' => 'background:white url(' . IMAGE_DIR . 'backgrounds/header_with_black_line.gif); margin-top: 0; margin-left: 0;'), $user_object->formHeader(we_base_request::_(we_base_request::INT, "tab", 0)));
+			echo we_html_element::htmlBody(array('onresize' => 'setFrameSize()', 'onload' => 'setFrameSize()', 'style' => 'background:white url(' . IMAGE_DIR . 'backgrounds/header_with_black_line.gif); margin-top: 0; margin-left: 0;'), $user_object->formHeader(we_base_request::_(we_base_request::INT, "tab", 0)));
 		}
 	}
 
-	function getHTMLEditorBody(){
+	protected function getHTMLEditorBody(){
 		$yuiSuggest = & weSuggest::getInstance();
 		$user_object = new we_users_user();
 		if(isset($_SESSION["user_session_data"])){
@@ -392,7 +392,7 @@ self.focus();';
 
 		if($user_object){
 			if(isset($_REQUEST['oldtab']) && isset($_REQUEST['old_perm_branch'])){
-				
+
 				$user_object->preserveState($_REQUEST['oldtab'], $_REQUEST['old_perm_branch']);
 				$_SESSION["user_session_data"] = $user_object->getState();
 			}
@@ -414,7 +414,7 @@ self.focus();';
 		echo we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'loaded=1;', 'onunload' => 'doUnload()'), $_form);
 	}
 
-	function getHTMLEditorFooter(){
+	protected function getHTMLEditorFooter(){
 		if(isset($_SESSION["user_session_data"])){
 			$user_object = new we_users_user();
 			$user_object->setState($_SESSION["user_session_data"]);

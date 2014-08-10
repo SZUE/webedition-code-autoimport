@@ -354,33 +354,19 @@ echo we_html_tools::getHtmlTop() .
 		menuDaten.clear();
 
 <?php
-/* function readChilds($pid){
-  $db_temp = new DB_WE();
-  $db_temp->query('SELECT ID,username,ParentID,Type,Permissions FROM ' . USER_TABLE . ' WHERE  ParentID=' . intval($pid) . ' ORDER BY username ASC');
-  //FIXME: use ->getAllFirst(true); => this uses to many db connections
-  while($db_temp->next_record()){
-  $GLOBALS['entries'][$db_temp->f("ID")]["username"] = $db_temp->f("username");
-  $GLOBALS['entries'][$db_temp->f("ID")]["ParentID"] = $db_temp->f("ParentID");
-  $GLOBALS['entries'][$db_temp->f("ID")]["Type"] = $db_temp->f("Type");
-  $GLOBALS['entries'][$db_temp->f("ID")]["Permissions"] = substr($db_temp->f("Permissions"), 0, 1);
-  if($db_temp->f("Type") == "1"){
-  readChilds($db_temp->f("ID"));
-  }
-  }
-  } */
 
 $entries = array();
 $DB_WE->query("SELECT ID,ParentID,username,Permissions,Type FROM " . USER_TABLE . " ORDER BY username ASC");
-print "startloc=0 ;\n";
-print "menuDaten.add(new self.rootEntry('0','root','root'));\n";
+echo "startloc=0 ;
+menuDaten.add(new self.rootEntry('0','root','root'));";
 while($DB_WE->next_record()){
-	if($DB_WE->f("Type") == 1){
-		print "  menuDaten.add(new dirEntry('folder'," . $DB_WE->f("ID") . "," . $DB_WE->f("ParentID") . ",'" . $DB_WE->f("username") . "',false,'user','" . USER_TABLE . "','" . $p[0] . "'));";
+	if($DB_WE->f('Type') == 1){
+		echo "  menuDaten.add(new dirEntry('folder'," . $DB_WE->f("ID") . "," . $DB_WE->f("ParentID") . ",'" . $DB_WE->f("username") . "',false,'user','" . USER_TABLE . "','" . $p[0] . "'));";
 	} else {
 		$p = $DB_WE->f("Permissions");
 
-		print "checked = (user_array_search(\"" . $DB_WE->f('ID') . "\", opener.current_sel, \"1\", 'we_message') != -1) ? 1 : 0;";
-		print "  menuDaten.add(new urlEntry('user.gif'," . $DB_WE->f("ID") . "," . $DB_WE->f("ParentID") . ",'" . $DB_WE->f("username") . "','user','" . USER_TABLE . "','" . $p[0] . "', checked));";
+		echo "checked = (user_array_search(\"" . $DB_WE->f('ID') . "\", opener.current_sel, \"1\", 'we_message') != -1) ? 1 : 0;" .
+		"menuDaten.add(new urlEntry('user.gif'," . $DB_WE->f("ID") . "," . $DB_WE->f("ParentID") . ",'" . $DB_WE->f("username") . "','user','" . USER_TABLE . "','" . $p[0] . "', checked));";
 	}
 }
 ?>
@@ -415,8 +401,9 @@ while($DB_WE->next_record()){
 		var i;
 
 		for (i = 0; i < haystack.length; i++) {
-			if (needle == haystack[i])
+			if (needle == haystack[i]){
 				return i;
+			}
 		}
 
 		return -1;
@@ -431,10 +418,10 @@ while($DB_WE->next_record()){
 
 <?php
 echo we_html_element::htmlBody(array('style' => 'background-color:#bfbfbf;background-repeat:repeat;background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;')
-		, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-				, we_html_element::htmlIFrame('messaging_usel_main', HTML_DIR . 'white.html', 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: auto;', 'border:0px;width:100%;height:100%;overflow: auto;') .
-				we_html_element::htmlDiv(array('style' => 'position:absolute;height:20px;bottom:0px;left:0px;right:0px;overflow: hidden;padding:10px;background-repeat:repeat;background-image: url(' . IMAGE_DIR . 'edit/editfooterback.gif);'), we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "javascript:do_selupdate();"), "", we_html_button::create_button("cancel", "javascript:close();")
-				))
+	, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
+		, we_html_element::htmlIFrame('messaging_usel_main', HTML_DIR . 'white.html', 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: auto;', 'border:0px;width:100%;height:100%;overflow: auto;') .
+		we_html_element::htmlDiv(array('style' => 'position:absolute;height:20px;bottom:0px;left:0px;right:0px;overflow: hidden;padding:10px;background-repeat:repeat;background-image: url(' . IMAGE_DIR . 'edit/editfooterback.gif);'), we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "javascript:do_selupdate();"), "", we_html_button::create_button("cancel", "javascript:close();")
+		))
 ));
 ?>
 

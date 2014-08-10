@@ -49,7 +49,7 @@ class we_glossary_frames extends weModuleFrames{
 		);
 	}
 
-	function getHTMLEditorHeader(){
+	protected function getHTMLEditorHeader(){
 		if(we_base_request::_(we_base_request::BOOL, "home")){
 			return we_glossary_frameEditorHome::Header($this);
 		}
@@ -74,7 +74,7 @@ class we_glossary_frames extends weModuleFrames{
 		}
 	}
 
-	function getHTMLEditorBody(){
+	protected function getHTMLEditorBody(){
 		if(we_base_request::_(we_base_request::BOOL, "home")){
 			return we_glossary_frameEditorHome::Body($this);
 		}
@@ -99,7 +99,7 @@ class we_glossary_frames extends weModuleFrames{
 		}
 	}
 
-	function getHTMLEditorFooter(){
+	protected function getHTMLEditorFooter(){
 		if(we_base_request::_(we_base_request::BOOL, "home")){
 			return we_glossary_frameEditorHome::Footer($this);
 		}
@@ -124,11 +124,11 @@ class we_glossary_frames extends weModuleFrames{
 		}
 	}
 
-	function getHTMLTreeHeader(){
+	protected function getHTMLTreeHeader(){
 		return "";
 	}
 
-	function getHTMLTreeFooter(){
+	protected function getHTMLTreeFooter(){
 		return $this->getHTMLDocument(
 				we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif", "marginwidth" => 5, "marginheight" => 0, "leftmargin" => 5, "topmargin" => 0), ""
 				)

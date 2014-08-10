@@ -61,7 +61,7 @@ class we_customer_frames extends weModuleFrames{
 			case 'field_editor':
 				return $this->getHTMLFieldEditor('field', $mode);
 			case 'sort_admin':
-				return $this->getHTMLSortEditor();
+				return we_customer_add::getHTMLSortEditor($this);
 			case 'search':
 				return $this->getHTMLSearch();
 			case 'settings':
@@ -88,28 +88,7 @@ class we_customer_frames extends weModuleFrames{
 		return $this->View->getJSTop();
 	}
 
-	//TODO: move editor-body relatetd stuff to weCustomerView!
-	function getHTMLBranchSelect($with_common = true, $with_other = true){
-		$branches_names = $this->View->customer->getBranchesNames();
-
-		$select = new we_html_select(array('name' => 'branch'));
-
-		if($with_common){
-			$select->addOption(g_l('modules_customer', '[common]'), g_l('modules_customer', '[common]'));
-		}
-
-		if($with_other){
-			$select->addOption(g_l('modules_customer', '[other]'), g_l('modules_customer', '[other]'));
-		}
-
-		foreach($branches_names as $branch){
-			$select->addOption($branch, $branch);
-		}
-
-		return $select;
-	}
-
-	//TODO: move editor-body relatetd stuff to weCustomerView!
+	//TODO: move editor-body relatetd stuff to weCustomerView! => note dependencies on jsOut_fieldTypesByName
 	function getHTMLFieldsSelect($branch){
 		$select = new we_html_select(array('name' => 'branch'));
 
@@ -131,189 +110,7 @@ class we_customer_frames extends weModuleFrames{
 		return $select;
 	}
 
-	//TODO: move editor-body relatetd stuff to weCustomerView!
-	function getHTMLSortSelect($include_no_sort = true){
-		$sort = new we_html_select(array('name' => 'sort', 'class' => 'weSelect'));
-
-		$sort_names = array_keys($this->View->settings->SortView);
-
-		if($include_no_sort)
-			$sort->addOption(g_l('modules_customer', '[no_sort]'), g_l('modules_customer', '[no_sort]'));
-
-		foreach($sort_names as $v){
-			$sort->addOption(oldHtmlspecialchars($v), oldHtmlspecialchars($v));
-		}
-
-		return $sort;
-	}
-
-	//TODO: move editor-body relatetd stuff to weCustomerView!
-	function getHTMLFieldControl($field, $value = null){ //Code used, when data is in session, not intial/DB
-		$props = $this->View->getFieldProperties($field);
-		if(!($props['type'] == 'select' || $props['type'] == 'multiselect') && !$this->View->customer->ID && $value == null){
-			$value = $props['default'];
-		}
-
-		switch($props['type']){
-			case 'input':
-				return we_html_tools::htmlTextInput($field, 32, $value, '', "onchange=\"top.content.setHot();\" style='width:240px;'");
-			case 'number':
-				return we_html_tools::htmlTextInput($field, 32, intval($value), '', "onchange=\"top.content.setHot();\" style='width:240px;'", 'number');
-			case 'multiselect':
-				$out = we_html_element::htmlHidden(array('name' => $field, 'value' => $value));
-				$values = explode(',', $value);
-				$defs = explode(',', $props['default']);
-				$cnt = count($defs);
-				$i = 0;
-				foreach($defs as $def){
-					$attribs = array('type' => 'checkbox', 'name' => $field . '_multi_' . ($i++), 'value' => $def, (we_base_browserDetect::isIE() ? 'onclick' : 'onchange') => 'setMultiSelectData(\'' . $field . '\',' . $cnt . ');');
-					if(in_array($def, $values)){
-						$attribs['checked'] = 'checked';
-					}
-					$out .= we_html_element::htmlInput($attribs) . $def . we_html_element::htmlBr();
-				}
-
-				return we_html_element::htmlDiv(array('style' => 'height: 80px;overflow: auto;width: 220px;border: 1px solid #000;padding: 3px;background: #FFFFFF;'), $out); //we_html_element::htmlB('not yet implemented');
-			case 'country':
-				$langcode = we_core_Local::weLangToLocale($GLOBALS["WE_LANGUAGE"]);
-
-				$countrycode = array_search($langcode, getWECountries());
-				$countryselect = new we_html_select(array('name' => $field, 'size' => 1, 'style' => 'width:240px;', 'class' => 'wetextinput', 'id' => ($field == 'Gruppe' ? 'yuiAcInputPathGroupX' : ''), 'onchange' => ($field == 'Gruppe' ? 'top.content.setHot();' : 'top.content.setHot();')));
-
-				$topCountries = array_flip(explode(',', WE_COUNTRIES_TOP));
-
-				if(!Zend_Locale::hasCache()){
-					Zend_Locale::setCache(getWEZendCache());
-				}
-				foreach($topCountries as $countrykey => &$countryvalue){
-					$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
-				}
-				unset($countryvalue);
-				$shownCountries = array_flip(explode(',', WE_COUNTRIES_SHOWN));
-				foreach($shownCountries as $countrykey => &$countryvalue){
-					$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
-				}
-				unset($countryvalue);
-				$oldLocale = setlocale(LC_ALL, NULL);
-				setlocale(LC_ALL, $langcode . '_' . $countrycode . '.UTF-8');
-				asort($topCountries, SORT_LOCALE_STRING);
-				asort($shownCountries, SORT_LOCALE_STRING);
-				setlocale(LC_ALL, $oldLocale);
-
-				if(WE_COUNTRIES_DEFAULT != ''){
-					$countryselect->addOption('--', CheckAndConvertISObackend(WE_COUNTRIES_DEFAULT));
-				}
-				foreach($topCountries as $countrykey => &$countryvalue){
-					$countryselect->addOption($countrykey, CheckAndConvertISObackend($countryvalue));
-				}
-				unset($countryvalue);
-				if(!empty($topCountries) && !empty($shownCountries)){
-					$countryselect->addOption('-', '----', array('disabled' => 'disabled'));
-				}
-
-				foreach($shownCountries as $countrykey => &$countryvalue){
-					$countryselect->addOption($countrykey, CheckAndConvertISObackend($countryvalue));
-				}
-				unset($countryvalue);
-				$countryselect->selectOption($value);
-				return $countryselect->getHtml();
-
-			case 'language':
-				if(isset($GLOBALS['weFrontendLanguages']) && is_array($GLOBALS['weFrontendLanguages'])){
-					$frontendL = $GLOBALS['weFrontendLanguages'];
-					foreach($frontendL as $lc => &$lcvalue){
-						$lccode = explode('_', $lcvalue);
-						$lcvalue = $lccode[0];
-					}
-					unset($lcvalue);
-					$languageselect = new we_html_select(array('name' => $field, 'size' => 1, 'style' => 'width:240px;', 'class' => 'wetextinput', "id" => ($field == "Gruppe" ? "yuiAcInputPathGroupX" : ''), "onchange" => ($field == "Gruppe" ? "top.content.setHot();" : "top.content.setHot();")));
-					foreach(g_l('languages', '') as $languagekey => $languagevalue){
-						if(in_array($languagekey, $frontendL)){
-							$languageselect->addOption($languagekey, $languagevalue);
-						}
-					}
-					$languageselect->selectOption($value);
-					return $languageselect->getHtml();
-				}
-				return 'no FrontendLanguages defined';
-
-			case 'select':
-				$defs = explode(',', $props['default']);
-				if($this->View->customer->ID && !in_array($value, $defs)){
-					$defs = array_merge(array($value), $defs);
-				}
-
-				$select = new we_html_select(array("name" => $field, "size" => 1, "style" => "width:240px;", "class" => "wetextinput", "id" => ($field == "Gruppe" ? "yuiAcInputPathGroupX" : ''), "onchange" => "top.content.setHot();"));
-				foreach($defs as $def){
-					$select->addOption($def, $def);
-				}
-				$select->selectOption($value);
-				return $select->getHtml();
-			case 'textarea':
-				return we_html_element::htmlTextArea(array("name" => $field, "style" => "width:240px;", "class" => "wetextarea"), $value);
-			case 'date':
-				$date_format = DATE_ONLY_FORMAT;
-				$format = g_l('weEditorInfo', '[date_only_format]');
-			case 'dateTime':
-				$out = we_html_element::htmlHidden(array('name' => $field, 'value' => $value));
-
-				if(empty($value)){
-					$value = $this->View->settings->getSettings('start_year') . '-01-01';
-				}
-				$date_format = (isset($date_format) ? $date_format : DATE_FORMAT);
-				$value = $this->View->settings->getDate($value, $date_format);
-				$format = (isset($format) ? $format : g_l('weEditorInfo', '[date_format]'));
-				$out.=we_html_element::jsElement('
-function populateDate_' . $field . '(){
-	var year=document.we_form.' . $field . '_select_year.options[document.we_form.' . $field . '_select_year.selectedIndex].text;
-	var month=document.we_form.' . $field . '_select_month.options[document.we_form.' . $field . '_select_month.selectedIndex].text;
-	var day=document.we_form.' . $field . '_select_day.options[document.we_form.' . $field . '_select_day.selectedIndex].text;
-
-	var datevar=new Date();
-	datevar.setFullYear(year);
-	datevar.setDate(day);
-	datevar.setMonth(month-1);
-
-	' . (we_html_tools::we_getHourPos($format) != -1 ?
-							'datevar.setHours(document.we_form.' . $field . '_select_hour.options[document.we_form.' . $field . '_select_hour.selectedIndex].text);' :
-							'')
-						. (we_html_tools::we_getMinutePos($format) != -1 ?
-							'datevar.setMinutes(document.we_form.' . $field . '_select_minute.options[document.we_form.' . $field . '_select_minute.selectedIndex].text);' :
-							'')
-						. '
-	document.we_form.' . $field . '.value=formatDate(datevar,\'' . addslashes($date_format) . '\');
-}
-				');
-				$out.=we_html_tools::getPixel(5, 5) . $this->getDateInput2($field . "_select%s", $value, false, $format, "populateDate_$field()", "defaultfont", $this->View->settings->getSettings('start_year')) . we_html_tools::getPixel(5, 5);
-				return $out;
-			case 'password':
-				return we_html_tools::htmlTextInput($field, 32, $value, 32, 'onchange="top.content.setHot();" style="width:240px;" autocomplete="off" ', 'password');
-			case 'img':
-				$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['" . $field . "'].value");
-				$wecmdenc3 = we_base_request::encCmd("opener.refreshForm()");
-				$imgId = intval($value);
-				$img = new we_imageDocument();
-
-				$img->initByID($imgId, FILE_TABLE);
-				return '
-<table cellpadding="2" cellspacing="2" style="border: solid #006DB8 1px;background-image:url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">
-	<tr>
-		<td class="weEditmodeStyle" colspan="2" align="center">' . $img->getHtml() . '
-			<input type="hidden" name="' . $field . '" value="' . $imgId . '" /></td>
-	</tr>
-	<tr>
-		<td class="weEditmodeStyle" colspan="2" align="center">' .
-					we_html_button::create_button_table(array(we_html_button::create_button('image:btn_select_image', "javascript:we_cmd('openDocselector', '" . $imgId . "', '" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "', '', '" . we_base_ContentTypes::IMAGE . "', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true), we_html_button::create_button('image:btn_function_trash', "javascript:document.we_form.elements['" . $field . "'].value='';refreshForm();", true)), 5) .
-					'</td>
-	</tr>
-</table>';
-			default:
-				return we_html_tools::htmlTextInput($field, 32, $value, '', "onchange=\"top.content.setHot();\" style='width:240px;'");
-		}
-		return null;
-	}
-
-	function getHTMLEditorHeader(){
+	protected function getHTMLEditorHeader(){
 		$extraJS = 'var aTabs=new Array;';
 
 		if(we_base_request::_(we_base_request::BOOL, 'home')){
@@ -391,7 +188,7 @@ top.content.hloaded = 1;');
 		return $this->getHTMLDocument($body, $tabsHead);
 	}
 
-	function getHTMLEditorBody(){
+	protected function getHTMLEditorBody(){
 		$hiddens = array('cmd' => 'customer_edit', 'pnt' => 'edbody', 'activ_sort' => 0);
 
 		if(we_base_request::_(we_base_request::BOOL, 'home')){
@@ -409,238 +206,17 @@ top.content.hloaded = 1;');
 
 		$branch = we_base_request::_(we_base_request::STRING, 'branch', g_l('modules_customer', '[common]'));
 
-		$body = we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'loaded=1', 'onunload' => 'doUnload()'), we_html_element::htmlForm(array('name' => 'we_form', 'autocomplete' => 'off'), $this->View->getCommonHiddens($hiddens) . $this->getHTMLProperties($branch)));
-
-		return $this->getHTMLDocument($body, $this->View->getJSProperty());
+		return $this->getHTMLDocument(we_html_element::htmlBody(
+					array('class' => 'weEditorBody', 'onload' => 'loaded=1', 'onunload' => 'doUnload()'), we_html_element::htmlForm(
+						array('name' => 'we_form', 'autocomplete' => 'off'), $this->View->getCommonHiddens($hiddens) .
+						$this->View->getHTMLProperties($branch))), $this->View->getJSProperty());
 	}
 
-	function getHTMLProperties($preselect = ''){// TODO: move to weCustomerView
-		$other = $parts = $branches = array();
-		$common = array(
-			'ID' => $this->View->customer->ID,
-		);
-
-		$this->View->customer->getBranches($branches, $common, $other, $this->View->settings->getEditSort());
-
-		$common['failedLogins'] = f('SELECT COUNT(1) FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND Username="' . $GLOBALS['DB_WE']->escape($this->View->customer->Username) . '" AND isValid="true" AND LoginDate >DATE_SUB(NOW(), INTERVAL ' . intval(SECURITY_LIMIT_CUSTOMER_NAME_HOURS) . ' hour)');
-		if($common['failedLogins'] >= intval(SECURITY_LIMIT_CUSTOMER_NAME)){
-			$common['resetFailed'] = '';
-		}
-
-		switch($preselect){
-			case g_l('modules_customer', '[all]'):
-			case g_l('modules_customer', '[common]'):
-				$table = new we_html_table(array('width' => 300, 'height' => 50, 'cellpadding' => 10, 'cellspacing' => 0, 'border' => 0), 1, 2);
-				$r = 0;
-				$c = 0;
-				$table->setRow(0, array('valign' => 'top'));
-				foreach($common as $pk => $pv){
-					if($this->View->customer->isInfoDate($pk)){
-						$pv = ($pv == '' || !is_numeric($pv)) ? 0 : $pv;
-						$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(($pv ? we_html_element::htmlDiv(array('class' => 'defaultgray'), date(g_l('weEditorInfo', '[date_format]'), $pv)) : '-' . we_html_tools::getPixel(100, 5)), $this->View->settings->getPropertyTitle($pk)));
-					} else {
-						switch($pk){
-							case 'ID':
-								$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(($pv ? we_html_element::htmlDiv(array('class' => 'defaultgray'), $pv) : '-' . we_html_tools::getPixel(100, 5)), $this->View->settings->getPropertyTitle($pk)));
-								++$c;
-								$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), '');
-								break;
-							case 'LoginDenied':
-								$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('class' => 'defaultgray'), we_html_forms::checkbox(1, $pv, 'LoginDenied', g_l('modules_customer', '[login_denied]'), false, 'defaultfont', 'top.content.setHot();')), $this->View->settings->getPropertyTitle($pk)));
-								break;
-							case 'AutoLoginDenied':
-								$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('class' => 'defaultgray'), we_html_forms::checkbox(1, $pv, 'AutoLoginDenied', g_l('modules_customer', '[login_denied]'), false, 'defaultfont', 'top.content.setHot();')), $this->View->settings->getPropertyTitle($pk)));
-								break;
-							case 'AutoLogin':
-								$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('class' => 'defaultgray'), we_html_forms::checkbox(1, $pv, 'AutoLogin', g_l('modules_customer', '[autologin_request]'), false, 'defaultfont', 'top.content.setHot();')), $this->View->settings->getPropertyTitle($pk)));
-								break;
-							case 'Password':
-								$table->setCol($c / 2, $c % 2, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($pk, 32, ($this->View->customer->ID ? we_customer_customer::NOPWD_CHANGE : ''), '', 'onchange="top.content.setHot();" autocomplete="off" ', 'password', "240px"), $this->View->settings->getPropertyTitle($pk)));
-								break;
-							case 'Username':
-								$inputattribs = ' id="yuiAcInputPathName" onblur="parent.edheader.setPathName(this.value); parent.edheader.setTitlePath()"';
-								$table->setCol($c / 2, $c % 2, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($pk, 32, $pv, '', 'onchange="top.content.setHot();" ' . $inputattribs, "text", "240px"), $this->View->settings->getPropertyTitle($pk)));
-								break;
-							case 'failedLogins':
-								$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('class' => 'defaultgray', 'id' => 'FailedCustomerLogins'), intval($common['failedLogins']) . ' / ' . SECURITY_LIMIT_CUSTOMER_NAME), sprintf(g_l('modules_customer', '[failedLogins]'), SECURITY_LIMIT_CUSTOMER_NAME_HOURS)));
-								break;
-							case 'resetFailed':
-								$tmp = 'YAHOO.util.Connect.asyncRequest( "GET", "' . WEBEDITION_DIR . 'rpc/rpc.php?cmd=ResetFailedCustomerLogins&cns=customer&custid=' . $this->View->customer->ID . '", ajaxCallbackResetLogins );';
-								$but = we_html_element::jsElement('
-var ajaxCallbackResetLogins = {
-success: function(o) {
-	if(typeof(o.responseText) != undefined && o.responseText != "") {
-		var weResponse = false;
-		try {
-			eval( "var weResponse = "+o.responseText );
-			if ( weResponse ) {
-				if (weResponse["DataArray"]["data"] == "true") {
-
-					document.getElementById("FailedCustomerLogins").innerText=weResponse["DataArray"]["value"];
-				}
-			}
-		} catch (exc){}
-	}
-},
-failure: function(o) {
-
-}}') . we_html_button::create_button('reset', 'javascript:' . $tmp);
-								$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('class' => 'defaultgray'), $but), ''));
-								break;
-							default:
-								$inputattribs = '';
-								$table->setCol($c / 2, $c % 2, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($pk, 32, $pv, '', "onchange=\"top.content.setHot();\" " . $inputattribs, "text", "240px"), $this->View->settings->getPropertyTitle($pk)));
-						}
-					}
-					if(++$c % 2 == 0){
-						$table->addRow();
-						$table->setRow($c / 2, array('valign' => 'top'));
-					}
-				}
-				$parts[] = array(
-					'headline' => ($preselect == g_l('modules_customer', '[all]') ? g_l('modules_customer', '[common]') : g_l('modules_customer', '[data]')),
-					'html' => $table->getHtml(),
-					'space' => 120
-				);
-				if($preselect != g_l('modules_customer', '[all]')){
-					break;
-				}
-			case g_l('modules_customer', '[other]'):
-
-				$table = new we_html_table(array('width' => 500, 'height' => 50, 'cellpadding' => 10, 'cellspacing' => 0, 'border' => 0), 1, 2);
-				$r = 0;
-				$c = 0;
-				$table->setRow(0, array('valign' => 'top'));
-				foreach($other as $k => $v){
-					$control = $this->getHTMLFieldControl($k, $v);
-					if($control != ''){
-						$table->setCol($r, $c, array(), we_html_tools::htmlFormElementTable($control, $k));
-						$c++;
-						if($c > 1){
-							++$r;
-							$table->addRow();
-							$table->setRow($r, array('valign' => 'top'));
-						}
-						if($c > 1){
-							$c = 0;
-						}
-					}
-				}
-				$parts[] = array(
-					'headline' => ($preselect == g_l('modules_customer', '[all]') ? g_l('modules_customer', '[other]') : g_l('modules_customer', '[data]')),
-					'html' => $table->getHtml(),
-					'space' => 120
-				);
-				break;
-			case g_l('modules_customer', '[orderTab]'):
-				$orderStr = we_shop_functions::getCustomersOrderList($this->View->customer->ID, false);
-
-				$parts[] = array(
-					'html' => $orderStr,
-					'space' => 0
-				);
-				break;
-
-			case g_l('modules_customer', '[objectTab]'):
-				$DB_WE = new DB_WE();
-				$DB_WE->query('SELECT ID,ContentType, Path,Text,ModDate,Published FROM ' . OBJECT_FILES_TABLE . ' WHERE ' . OBJECT_FILES_TABLE . '.WebUserID = ' . $this->View->customer->ID . ' ORDER BY ' . OBJECT_FILES_TABLE . '.Path');
-				$objectStr = '';
-				if($DB_WE->num_rows()){
-					$objectStr.='<table class="defaultfont" width="600">' .
-						'<tr><td>&nbsp;</td> <td><b>' . g_l('modules_customer', '[ID]') . '</b></td><td><b>' . g_l('modules_customer', '[filename]') . '</b></td><td><b>' . g_l('modules_customer', '[Aenderungsdatum]') . '</b></td>';
-					while($DB_WE->next_record()){
-						$objectStr.='<tr>
-	<td>' . we_html_button::create_button('image:btn_edit_edit', "javascript: if(top.opener.top.doClickDirect){top.opener.top.doClickDirect(" . $DB_WE->f('ID') . ",'" . $DB_WE->f('ContentType') . "','" . OBJECT_FILES_TABLE . "'); }") . '</td>
-	<td>' . $DB_WE->f('ID') . '</td>
-	<td title="' . $DB_WE->f('Path') . '">' . $DB_WE->f('Text') . '</td>
-	<td class="' . ($DB_WE->f('Published') ? ($DB_WE->f('ModDate') > $DB_WE->f('Published') ? 'changeddefaultfont' : 'defaultfont') : 'npdefaultfont') . '">' . date('d.m.Y H:i', $DB_WE->f('ModDate')) . '</td>
-</tr>';
-					}
-					$objectStr.='</table>';
-				} else {
-					$objectStr = g_l('modules_customer', '[NoObjects]');
-				}
-				//$objectStr = getCustomersObjectList($this->View->customer->ID, false);
-
-				$parts[] = array(
-					"html" => $objectStr,
-					"space" => 0
-				);
-				break;
-			case g_l('modules_customer', '[documentTab]'):
-				$DB_WE = new DB_WE();
-				$DB_WE->query('SELECT ID,Path,ContentType,Text,Published,ModDate,' .
-					'(SELECT c.Dat  FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE l.Name="Title" AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND l.DID=f.ID) AS title,' .
-					' (SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID  WHERE l.Name="Description" AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND l.DID=f.ID) AS description' .
-					' FROM ' . FILE_TABLE . ' f WHERE f.WebUserID = ' . $this->View->customer->ID . ' ORDER BY f.Path');
-				$documentStr = '';
-				if($DB_WE->num_rows()){
-					$documentStr.='<table class="defaultfont" width="600">' .
-						'<tr><td>&nbsp;</td> <td><b>' . g_l('modules_customer', '[ID]') . '</b></td><td><b>' . g_l('modules_customer', '[filename]') . '</b></td><td><b>' . g_l('modules_customer', '[Aenderungsdatum]') . '</b></td><td><b>' . g_l('modules_customer', '[Titel]') . '</b></td>' .
-						'</tr>';
-					while($DB_WE->next_record()){
-						$documentStr.='<tr>' .
-							'<td>' . we_html_button::create_button('image:btn_edit_edit', "javascript: if(top.opener.top.doClickDirect){top.opener.top.doClickDirect(" . $DB_WE->f('ID') . ",'" . $DB_WE->f('ContentType') . "','" . FILE_TABLE . "'); }") . '</td>' .
-							'<td>' . $DB_WE->f('ID') . '</td>' .
-							'<td title="' . $DB_WE->f('Path') . '">' . $DB_WE->f('Text') . '</td>' .
-							'<td class="' .
-							($DB_WE->f('Published') ? ($DB_WE->f('ModDate') > $DB_WE->f('Published') ? 'changeddefaultfont' : 'defaultfont') : 'npdefaultfont')
-							. '">' . date('d.m.Y H:i', $DB_WE->f('ModDate')) . '</td>' .
-							'<td title="' . $DB_WE->f('description') . '">' . $DB_WE->f('title') . '</td>' .
-							'</tr>';
-					}
-					$documentStr.='</table>';
-				} else {
-					$documentStr = g_l('modules_customer', '[NoDocuments]');
-				}
-				//$documentStr = getCustomersDocumentList($this->View->customer->ID, false);
-
-				$parts[] = array(
-					"html" => $documentStr,
-					"space" => 0
-				);
-		}
-
-		foreach($branches as $bk => $branch){
-			if($preselect != '' && $preselect != g_l('modules_customer', '[all]')){
-				if($bk != $preselect){
-					continue;
-				}
-			}
-			$table = new we_html_table(array("width" => 500, "height" => 50, "cellpadding" => 10, "cellspacing" => 0, "border" => 0), 1, 2);
-			$r = 0;
-			$c = 0;
-			$table->setRow(0, array("valign" => "top"));
-			foreach($branch as $k => $v){
-				$control = $this->getHTMLFieldControl($bk . "_" . $k, $v);
-				if($control != ''){
-
-					$table->setCol($r, $c, array(), we_html_tools::htmlFormElementTable($control, $k));
-
-					++$c;
-					if($c > 1){
-						$r++;
-						$table->addRow();
-						$table->setRow($r, array("valign" => "top"));
-					}
-					if($c > 1)
-						$c = 0;
-				}
-			}
-			$parts[] = array(
-				"headline" => ($preselect == g_l('modules_customer', '[all]') ? $bk : g_l('modules_customer', '[data]')),
-				"html" => $table->getHtml(),
-				"space" => 120
-			);
-		}
-		return we_html_multiIconBox::getHTML('', 680, $parts, 30);
-	}
-
-	function getHTMLTreeHeader(){
+	protected function getHTMLTreeHeader(){
 		return we_customer_add::getHTMLTreeHeader($this);
 	}
 
-	function getHTMLTreeFooter(){
+	protected function getHTMLTreeFooter(){
 		$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "cmd")) .
 			we_html_element::htmlHidden(array("name" => "cmd", "value" => "show_search"));
 
@@ -662,13 +238,13 @@ failure: function(o) {
 		$branch = we_base_request::_(we_base_request::STRING, "branch", g_l('modules_customer', '[other]'));
 		$branch_select = we_base_request::_(we_base_request::STRING, "branch", g_l('modules_customer', '[other]'));
 
-		$select = $this->getHTMLBranchSelect(false);
+		$select = $this->View->getHTMLBranchSelect(false);
 		$select->setAttributes(array("name" => "branch_select", "class" => 'weSelect', 'onchange' => "selectBranch()", "style" => "width:150px;"));
 		$select->selectOption($branch_select);
 
 		$fields = $this->getHTMLFieldsSelect($branch);
 		$fields->setAttributes(array("name" => "fields_select", "size" => 15, "onchange" => '', "style" => "width:350px;height:250px;"));
-		$hiddens = we_html_element::htmlHidden(array("name" => "field", "value" => ''));
+		//$hiddens = we_html_element::htmlHidden(array("name" => "field", "value" => ''));
 
 		$buttons_table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 12, 1);
 		$buttons_table->setCol(0, 0, array(), we_html_button::create_button("add", "javascript:we_cmd('open_add_field')"));
@@ -737,9 +313,9 @@ failure: function(o) {
 
 			$types = new we_html_select(array("name" => "field_type", "class" => "weSelect", "style" => "width:200px;"));
 			$types->addOptions(count($this->View->settings->field_types), array_keys($this->View->settings->field_types), array_keys($this->View->settings->field_types));
-			if(isset($field_props["type"]))
+			if(isset($field_props["type"])){
 				$types->selectOption($field_props["type"]);
-
+			}
 			$hiddens.=we_html_element::htmlHidden(array("name" => "pnt", "value" => "field_editor"));
 
 			$edit = new we_html_table(array("border" => 0, "cellpadding" => 3, "cellspacing" => 3, "width" => 300), 4, 2);
@@ -812,10 +388,6 @@ failure: function(o) {
 		);
 	}
 
-	function getHTMLSortEditor(){
-		return we_customer_add::getHTMLSortEditor($this);
-	}
-
 	function getHTMLSearch(){//TODO: this is popup search editor: make separate frameset for popups!
 		$colspan = 4;
 
@@ -874,8 +446,9 @@ failure: function(o) {
 					we_html_element::jsScript(JS_DIR . 'jscalendar/calendar.js') .
 					we_html_element::jsScript(JS_DIR . 'jscalendar/calendar-setup.js') .
 					we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS['WE_LANGUAGE'] . '/calendar.js') .
-					we_html_element::jsElement($this->View->getJSSearch()) .
-					we_html_element::jsElement("$this->jsOut_fieldTypesByName
+					we_html_element::jsElement(
+						$this->View->getJSSearch() .
+						$this->jsOut_fieldTypesByName . "
 	var date_format_dateonly = '" . g_l('date', '[format][mysqlDate]') . "';
 	var fieldDate = new weDate(date_format_dateonly);
 
@@ -945,7 +518,7 @@ failure: function(o) {
 			$closeflag = false;
 		}
 
-		$default_sort_view_select = $this->getHTMLSortSelect();
+		$default_sort_view_select = $this->View->getHTMLSortSelect();
 		$default_sort_view_select->setAttributes(array("name" => "default_sort_view", "style", "width:200px;"));
 		$default_sort_view_select->selectOption($this->View->settings->getSettings('default_sort_view'));
 
@@ -955,11 +528,11 @@ failure: function(o) {
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array("class" => "defaultfont"), $default_sort_view_select->getHtml());
 
-		$table->setCol(++$cur, 0, array("class" => "defaultfont"), g_l('modules_customer', '[start_year]') . ":&nbsp;");
+		$table->setCol( ++$cur, 0, array("class" => "defaultfont"), g_l('modules_customer', '[start_year]') . ":&nbsp;");
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array("class" => "defaultfont"), we_html_tools::htmlTextInput("start_year", 32, $this->View->settings->getSettings('start_year'), ''));
 
-		$table->setCol(++$cur, 0, array("class" => "defaultfont"), g_l('modules_customer', '[treetext_format]') . ":&nbsp;");
+		$table->setCol( ++$cur, 0, array("class" => "defaultfont"), g_l('modules_customer', '[treetext_format]') . ":&nbsp;");
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array("class" => "defaultfont"), we_html_tools::htmlTextInput("treetext_format", 32, $this->View->settings->getSettings('treetext_format'), ''));
 
@@ -972,7 +545,7 @@ failure: function(o) {
 		}
 		$default_order->selectOption($this->View->settings->getSettings('default_order'));
 
-		$table->setCol(++$cur, 0, array('class' => 'defaultfont'), g_l('modules_customer', '[default_order]') . ':&nbsp;');
+		$table->setCol( ++$cur, 0, array('class' => 'defaultfont'), g_l('modules_customer', '[default_order]') . ':&nbsp;');
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array('class' => 'defaultfont'), $default_order->getHtml());
 
@@ -981,7 +554,7 @@ failure: function(o) {
 		$default_saveRegisteredUser_register->addOption('true', 'true');
 		$default_saveRegisteredUser_register->selectOption($this->View->settings->getPref('default_saveRegisteredUser_register'));
 
-		$table->setCol(++$cur, 0, array('class' => 'defaultfont'), '&lt;we:saveRegisteredUser register=&quot;');
+		$table->setCol( ++$cur, 0, array('class' => 'defaultfont'), '&lt;we:saveRegisteredUser register=&quot;');
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array('class' => 'defaultfont'), $default_saveRegisteredUser_register->getHtml() . '&quot;/>');
 
@@ -999,95 +572,6 @@ failure: function(o) {
 		);
 
 		return $this->getHTMLDocument($body, we_html_element::jsElement($this->View->getJSSettings()));
-	}
-
-	function getDateInput2($name, $time = '', $setHot = false, $format = '', $onchange = '', $class = "defaultfont", $from_year = 1970){
-		// removed attribute setHot
-//FIXME: replace by we_html_tools::getDateInput2
-		if(is_array($time)){
-			$day = isset($time["day"]) ? $time["day"] : date("d");
-			$month = isset($time["month"]) ? $time["month"] : date("m");
-			$year = isset($time["year"]) ? $time["year"] : date("Y");
-			$hour = isset($time["hours"]) ? $time["hours"] : date("H");
-			$minute = isset($time["minutes"]) ? $time["minutes"] : date("i");
-		} else {
-			return '';
-		}
-
-		$name = preg_replace('|^(.+)]$|', '\1%s]', $name);
-		if(($format == '') || we_html_tools::we_getDayPos($format) != -1){
-			$daySelect = '<select class="weSelect" name="' . sprintf($name, "_day") . '" size="1" onchange="' . $onchange . '">';
-			for($i = 1; $i <= 31; $i++){
-				$daySelect .= '<option' . ($time ? (($day == $i) ? ' selected="selected"' : '') : '') . '>' . sprintf("%02d", $i) . '</option>';
-			}
-			$daySelect .= '</select>';
-		} else {
-			$daySelect = '';
-		}
-
-		if(($format == '') || we_html_tools::we_getMonthPos($format) != -1){
-			$monthSelect = '<select class="weSelect" name="' . sprintf($name, "_month") . '" size="1" onchange="' . $onchange . '">';
-			for($i = 1; $i <= 12; $i++){
-				$monthSelect .= '<option' . ($time ? (($month == $i) ? ' selected="selected"' : '') : '') . '>' . sprintf("%02d", $i) . '</option>';
-			}
-			$monthSelect .= '</select>';
-		} else {
-			$monthSelect = '';
-		}
-
-		if(($format == '') || we_html_tools::we_getYearPos($format) != -1){
-			$yearSelect = '<select class="weSelect" name="' . sprintf($name, "_year") . '" size="1" onchange="' . $onchange . '">';
-			for($i = $from_year; $i <= intval(date("Y") + 100); $i++){ //Temp-Fix 5471
-				$yearSelect .= '<option' . ($time ? (($year == $i) ? ' selected="selected"' : '') : '') . '>' . sprintf("%04d", $i) . '</option>';
-			}
-			$yearSelect .= '</select>';
-		} else {
-			$yearSelect = '';
-		}
-
-		if(($format == '') || we_html_tools::we_getHourPos($format) != -1){
-			$hourSelect = '<select class="weSelect" name="' . sprintf($name, "_hour") . '" size="1" onchange="' . $onchange . '">';
-			for($i = 0; $i <= 23; $i++){
-				$hourSelect .= '<option' . ($time ? (($hour == $i) ? ' selected="selected"' : '') : '') . '>' . sprintf("%02d", $i) . '</option>';
-			}
-			$hourSelect .= '</select>';
-		} else {
-			$hourSelect = '';
-		}
-
-		if(($format == '') || we_html_tools::we_getMinutePos($format) != -1){
-			$minSelect = '<select class="weSelect" name="' . sprintf($name, "_minute") . '" size="1" onchange="' . $onchange . '">';
-			for($i = 0; $i <= 59; $i++){
-				$minSelect .= '<option' . ($time ? (($minute == $i) ? ' selected="selected"' : '') : '') . '>' . sprintf("%02d", $i) . '</option>';
-			}
-			$minSelect .= '</select>';
-		} else {
-			$minSelect = '';
-		}
-
-
-		$retVal = '<table cellpadding=0 cellspacing=0 border=0>';
-		if($daySelect || $monthSelect || $yearSelect){
-			$retVal .= '<tr><td>' .
-				($daySelect ? $daySelect . "&nbsp;" : we_html_tools::hidden(sprintf($name, "_day"), $day)) .
-				($monthSelect ? $monthSelect . "&nbsp;" : we_html_tools::hidden(sprintf($name, "_month"), $month)) .
-				($yearSelect ? $yearSelect . "&nbsp;" : we_html_tools::hidden(sprintf($name, "_year"), $year)) .
-				'</td></tr>';
-		} else {
-			$retVal .= we_html_tools::hidden(sprintf($name, "_day"), $day) .
-				we_html_tools::hidden(sprintf($name, "_month"), $month) .
-				we_html_tools::hidden(sprintf($name, "_year"), $year);
-		}
-		if($hourSelect || $minSelect){
-			$retVal .= '<tr><td>' .
-				($hourSelect ? $hourSelect . "&nbsp;" : we_html_tools::hidden(sprintf($name, "_hour"), $hour)) .
-				($minSelect ? $minSelect . "&nbsp;" : we_html_tools::hidden(sprintf($name, "_minute"), $minute)) .
-				'</td></tr>';
-		} else {
-			$retVal .= we_html_tools::hidden(sprintf($name, "_hour"), (isset($hour) ? $hour : 0)) .
-				we_html_tools::hidden(sprintf($name, "_minute"), (isset($minute) ? $minute : 0));
-		}
-		return $retVal . '</table>';
 	}
 
 }

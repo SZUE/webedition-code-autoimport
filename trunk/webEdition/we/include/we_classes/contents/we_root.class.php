@@ -168,6 +168,7 @@ abstract class we_root extends we_class{
 		return true;
 	}
 
+	//FIXME: make this __sleep
 	function saveInSession(&$save){
 		$save = array(
 			array(),
@@ -764,6 +765,7 @@ abstract class we_root extends we_class{
 		$this->i_setElementsFromHTTP();
 	}
 
+	//FIXME: make this __wakeup
 	protected function i_initSerializedDat($sessDat){
 		if(!is_array($sessDat)){
 			$this->Name = md5(uniqid(__FUNCTION__, true));

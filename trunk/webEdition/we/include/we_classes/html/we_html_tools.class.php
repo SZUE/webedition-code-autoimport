@@ -446,7 +446,7 @@ abstract class we_html_tools{
 		return -1;
 	}
 
-	static function getDateInput2($name, $time = 0, $setHot = false, $format = '', $onchange = '', $class = 'weSelect', $xml = false, $minyear = 0, $maxyear = 0, $style = ''){
+	public static function getDateInput2($name, $time = 0, $setHot = false, $format = '', $onchange = '', $class = 'weSelect', $xml = false, $minyear = 0, $maxyear = 0, $style = ''){
 		$_attsSelect = $_attsOption = $_attsHidden = $xml ? array('xml' => $xml) : array();
 
 		if($class){

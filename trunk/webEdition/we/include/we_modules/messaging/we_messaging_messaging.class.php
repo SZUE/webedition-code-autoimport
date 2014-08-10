@@ -200,7 +200,7 @@ class we_messaging_messaging extends we_class{
 
 	function check_folders(){
 		/* FIXME: Use defines for folder constants, instead of class variables in we_msg_proto.inc.php */
-		return intval(f('SELECT count(ID) as c FROM ' . MSG_FOLDERS_TABLE . ' WHERE UserID=' . intval($this->userid) . ' AND (obj_type=3 OR obj_type=5 OR obj_type=9 OR obj_type=11 OR obj_type=13)', 'c', $this->DB_WE)) >= 5;
+		return intval(f('SELECT COUNT(ID) FROM ' . MSG_FOLDERS_TABLE . ' WHERE UserID=' . intval($this->userid) . ' AND (obj_type=3 OR obj_type=5 OR obj_type=9 OR obj_type=11 OR obj_type=13)', '', $this->DB_WE)) >= 5;
 	}
 
 	public static function array_ksearch($key, $val, &$arr, $pos = 0){

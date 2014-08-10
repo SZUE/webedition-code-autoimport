@@ -61,6 +61,7 @@ function getMultiObjectTags($name){
 	$content = '<table cellpadding="2" cellspacing="0" border="1" width="400">';
 
 	//FIXME: causes internal server error
+	$regs=array();
 	foreach($tableInfo as $cur){
 		if(preg_match('/(.+?)_(.*)/', $cur["name"], $regs)){
 //			$content .= getTmplTableRow($regs[1], $regs[2], true);

@@ -27,8 +27,8 @@ we_html_tools::protect();
 $cmd = we_base_request::_(we_base_request::RAW, "cmd", "");
 $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_base_request::_(we_base_request::TRANSACTION, "we_transaction", 0), 1);
 
-$wf_select = we_base_request::_(we_base_request::RAW, "wf_select", "");
-$wf_text = we_base_request::_(we_base_request::RAW, "wf_text", "");
+$wf_select = we_base_request::_(we_base_request::INT, 'wf_select', 0);
+$wf_text = we_base_request::_(we_base_request::STRING, 'wf_text', '');
 
 ###### init document #########
 $we_dt = $_SESSION['weS']['we_data'][$we_transaction];

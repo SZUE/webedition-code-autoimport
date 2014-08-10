@@ -77,7 +77,7 @@ class we_export_frames extends weModuleFrames{
 		);
 	}
 
-	function getHTMLEditorHeader(){
+	protected function getHTMLEditorHeader(){
 		if(we_base_request::_(we_base_request::BOOL, "home")){
 			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#F0EFF0"), ""));
 		}
@@ -135,7 +135,7 @@ class we_export_frames extends weModuleFrames{
 		return $this->getHTMLDocument($body, $tabsHead);
 	}
 
-	function getHTMLEditorBody(){
+	protected function getHTMLEditorBody(){
 
 		$hiddens = array('cmd' => 'export_edit', 'pnt' => 'edbody');
 
@@ -158,7 +158,7 @@ class we_export_frames extends weModuleFrames{
 		return $this->getHTMLDocument($body, $this->View->getJSProperty());
 	}
 
-	function getHTMLEditorFooter(){
+	protected function getHTMLEditorFooter(){
 		if(we_base_request::_(we_base_request::BOOL, "home")){
 			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#EFF0EF"), ""));
 		}
@@ -435,11 +435,11 @@ function closeAllType(){
 	 *
 	 */
 
-	function getHTMLTreeHeader(){
+	protected function getHTMLTreeHeader(){
 		return '';
 	}
 
-	function getHTMLTreeFooter(){
+	protected function getHTMLTreeFooter(){
 
 		$body = we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif", "marginwidth" => 5, "marginheight" => 0, "leftmargin" => 5, "topmargin" => 0), ""
 		);

@@ -225,9 +225,9 @@ class we_workflow_document extends we_workflow_base{
 			return false;
 		}
 		parent::save();
-		for($i = 0; $i < count($this->steps); $i++){
-			$this->steps[$i]->workflowDocID = $this->ID;
-			$this->steps[$i]->save();
+		foreach($this->steps as &$cur){
+			$cur->workflowDocID = $this->ID;
+			$cur->save();
 		}
 		return true;
 	}
