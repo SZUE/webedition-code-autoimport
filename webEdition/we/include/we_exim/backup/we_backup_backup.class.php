@@ -55,18 +55,8 @@ class we_backup_backup extends we_backup_base{
 			self::weXmlExImHead . ' version="' . WE_VERSION . '" type="backup" xmlns:we="we-namespace">' . $this->nl;
 		$this->footer = $this->nl . self::weXmlExImFooter;
 
-		$this->properties[] = 'mode';
-		$this->properties[] = 'filename';
-		$this->properties[] = 'compress';
-		$this->properties[] = 'backup_binary';
-		$this->properties[] = 'rebuild';
-		$this->properties[] = 'file_counter';
-		$this->properties[] = 'file_end';
-		$this->properties[] = 'row_count';
-		$this->properties[] = 'file_list_count';
-		$this->properties[] = 'old_objects_deleted';
+		$this->properties = array_push($this->properties, 'mode', 'filename', 'compress', 'backup_binary', 'rebuild', 'file_counter', 'file_end', 'row_count', 'file_list_count', 'old_objects_deleted');
 
-		//FIXME: never call parent not in first place
 		parent::__construct($handle_options);
 
 		$this->tables['core'] = array('tblfile', 'tbllink', 'tbltemplates', 'tblindex', 'tblcontent', 'tblcategorys', 'tbldoctypes', 'tblthumbnails');

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -30,7 +29,6 @@ define('DATE_FORMAT', 'Y-m-d H:i:s');
 define('DATE_ONLY_FORMAT', 'Y-m-d');
 
 class we_customer_settings{
-
 	private $db;
 	private $table = CUSTOMER_ADMIN_TABLE;
 	public $customer;
@@ -323,82 +321,11 @@ class we_customer_settings{
 		}
 	}
 
-
 	function getMaxSearchResults(){
 		return $this->MaxSearchResults;
 	}
 
-	/*
-	  The function returns an associative array containing the date information from given string
-	  for dates before 1970. The date string should be in given format.
-	  Equivalent to getdate(strtotime($date) for dates after 1970
-	 */
-
-	function getDate($date, $format = DATE_FORMAT){
-		$order = array();
-
-		$date_format = array(
-			'd' => 'day',
-			'm' => 'month',
-			'n' => 'month',
-			'y' => 'year',
-			'Y' => 'year',
-			'H' => 'hour',
-			'i' => 'minute',
-			's' => 'second'
-		);
-		$date_format_table = array(
-			'm' => '([0-9]{2})',
-			'n' => '([0-9]{1,2})',
-			'd' => '([0-9]{2})',
-			'j' => '([0-9]{1,2})',
-			'y' => '([0-9]{2})',
-			'Y' => '([0-9]{4})',
-			'H' => '([0-9]{2})',
-			'i' => '([0-9]{2})',
-			's' => '([0-9]{2})'
-		);
-
-
-
-		$new = $format;
-		foreach($date_format_table as $k => $v){
-			$pos = strpos($new, $k);
-			if($pos !== false){
-				$order[$k] = $pos;
-				$new = str_replace($k, $v, $new);
-			}
-		}
-
-		$regex = array();
-		if(preg_match('|' . $new . '|', $date, $regex)){
-			asort($order);
-			$c = 1;
-			foreach($order as $ok => $ov){
-				$order[$ok] = $c;
-				$c++;
-			}
-
-			$ret = array(
-				'day' => 0,
-				'month' => 0,
-				'year' => 0,
-				'hour' => 0,
-				'minute' => 0,
-				'second' => 0
-			);
-			foreach($date_format as $key => $val){
-				if(isset($order[$key]))
-					$ret[$val] = $regex[$order[$key]];
-			}
-
-			return $ret;
-		}
-
-		return array();
-	}
-
-	function isReserved($field){
+		function isReserved($field){
 		return in_array(trim(strtolower($field)), $this->reservedWords);
 	}
 

@@ -50,7 +50,7 @@ class we_banner_frames extends weModuleFrames{
 		return parent::getHTMLFrameset($extraHead);
 	}
 
-	function getHTMLEditor(){
+	protected function getHTMLEditor(){
 		return parent::getHTMLEditor('&home=1');
 	}
 
@@ -343,7 +343,7 @@ class we_banner_frames extends weModuleFrames{
 		print $this->View->getJSTopCode();
 	}
 
-	function getHTMLEditorHeader($mode = 0){
+	protected function getHTMLEditorHeader($mode = 0){
 		if(we_base_request::_(we_base_request::BOOL, "home")){
 			return $this->getHTMLDocument(we_html_element::htmlBody(array('bgcolor' => '#F0EFF0'), ''));
 		}
@@ -398,7 +398,7 @@ class we_banner_frames extends weModuleFrames{
 		return $this->getHTMLDocument($body, $extraHead);
 	}
 
-	function getHTMLEditorFooter($mode = 0){
+	protected function getHTMLEditorFooter($mode = 0){
 		if(we_base_request::_(we_base_request::BOOL, 'home')){
 			return $this->getHTMLDocument(we_html_element::htmlBody(array('bgcolor' => '#F0EFF0'), ''));
 		}

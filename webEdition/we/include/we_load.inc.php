@@ -24,10 +24,6 @@
  */
 we_html_tools::protect();
 
-/*if(isset($_REQUEST['we_cmd'][5])){//FIXME:???
-	$_SESSION["prefs"]["FileFilter"] = $_REQUEST['we_cmd'][5];
-}*/
-
 $table = we_base_request::_(we_base_request::TABLE, 'we_cmd', FILE_TABLE, 1);
 $parentFolder = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2);
 $offset = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 6);

@@ -466,7 +466,7 @@ function we_cmd() {
 		return $this->getHTMLDocument($body);
 	}
 
-	function getHTMLEditor(){//TODO: maybe abandon the split between former Top- and other editor files
+	protected function getHTMLEditor(){//TODO: maybe abandon the split between former Top- and other editor files
 		if(we_base_request::_(we_base_request::BOOL, 'top')){//doing what have been done in edit_shop_editorFramesetTop before
 			return $this->getHTMLEditorTop();
 		}
@@ -545,7 +545,7 @@ function we_cmd() {
 		return $this->getHTMLDocument($body);
 	}
 
-	function getHTMLEditorHeader(){
+	protected function getHTMLEditorHeader(){
 		$DB_WE = $this->db;
 		if(we_base_request::_(we_base_request::BOOL, 'home')){
 			return $this->getHTMLDocument('<body bgcolor="#F0EFF0"></body></html>');

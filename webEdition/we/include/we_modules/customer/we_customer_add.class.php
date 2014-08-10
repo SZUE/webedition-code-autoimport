@@ -25,8 +25,8 @@
 abstract class we_customer_add{
 	static $operators = array('=', '<>', '<', '<=', '>', '>=', 'LIKE');
 
-	static function getHTMLSortEditor(&$pob){
-		$branch = $pob->getHTMLBranchSelect();
+	static function getHTMLSortEditor(we_customer_frames &$pob){
+		$branch = $pob->View->getHTMLBranchSelect();
 		$branch->setOptionVT(1, g_l('modules_customer', '[other]'), g_l('modules_customer', '[other]'));
 
 
@@ -305,7 +305,7 @@ function we_cmd(){
 
 
 		$advsearch = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 3), 1, 4);
-		$branch = $pob->getHTMLBranchSelect();
+		$branch = $pob->View->getHTMLBranchSelect();
 		$branch->setOptionVT(1, g_l('modules_customer', '[other]'), g_l('modules_customer', '[other]'));
 
 		$field = $pob->getHTMLFieldsSelect(g_l('modules_customer', '[common]'));
@@ -396,7 +396,7 @@ function we_cmd(){
 	}
 
 	static function getHTMLTreeHeader(&$pob){
-		$select = $pob->getHTMLSortSelect();
+		$select = $pob->View->getHTMLSortSelect();
 		$select->setAttributes(array('onchange' => 'applySort();', 'style' => 'width:150px'));
 		$select->selectOption($pob->View->settings->getSettings('default_sort_view'));
 

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,7 +27,6 @@
  *
  */
 class we_glossary_glossary extends weModelBase{
-
 	const TYPE_LINK = 'link';
 	const TYPE_ACRONYM = 'acronym';
 	const TYPE_ABBREVATION = 'abbreviation';
@@ -356,13 +354,11 @@ class we_glossary_glossary extends weModelBase{
 	 *
 	 * @return boolean
 	 */
-	function isSelf(){
-		$Text = self::escapeChars($this->Text);
-		return strpos(htmlentities(we_base_file::clearPath(dirname($this->Path)) . '/'), '/' . $Text . '/') !== false;
+	public function isSelf(){
+		return strpos(htmlentities(we_base_file::clearPath(dirname($this->Path)) . '/'), '/' . self::escapeChars($this->Text) . '/') !== false;
 	}
 
-	//FIXME: some signs are broken due to utf-8
-	function escapeChars($Text){
+	private static function escapeChars($Text){
 		$Text = quotemeta($Text); // escape . \ + * ? [ ^ ] ( $ )
 
 		$escape = array('{', '&', '/', '\'', '"', '%');
@@ -385,7 +381,7 @@ class we_glossary_glossary extends weModelBase{
 	 */
 	function saveField($Name){
 		$value = (in_array($Name, $this->_Serialized) ? unserialize($this->$Name) : $this->$Name);
-		$this->db->query('UPDATE ' . $this->db->escape($this->table) . ' SET ' . $this->db->escape($Name) . "='" . $this->db->escape($value) . "' WHERE ID=" . intval($this->ID));
+		$this->db->query('UPDATE ' . $this->db->escape($this->table) . ' SET ' . $this->db->escape($Name) . '="' . $this->db->escape($value) . '" WHERE ID=' . intval($this->ID));
 
 		return $this->db->affected_rows();
 	}
@@ -407,9 +403,8 @@ class we_glossary_glossary extends weModelBase{
 
 		$items = self::getException($language);
 		$items[] = $entry;
-		$items = implode("\n", $items);
 
-		return self::editException($language, $items);
+		return self::editException($language, implode("\n", $items));
 	}
 
 	function editException($language, $entries){

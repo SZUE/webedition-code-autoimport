@@ -347,11 +347,11 @@ class we_workflow_frames extends weModuleFrames {
 		echo $this->View->getJSTopCode();
 	}
 
-	function getHTMLEditor(){
+	protected function getHTMLEditor(){
 		return parent::getHTMLEditor('&home=1');
 	}
 
-	function getHTMLEditorHeader($mode = 0){
+	protected function getHTMLEditorHeader($mode = 0){
 		if(isset($_REQUEST["home"])){
 			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "F0EFF0"), ""));
 		}
@@ -414,7 +414,7 @@ top.content.hloaded=1;
 		return $this->getHTMLDocument($body, $extraHead);
 	}
 
-	function getHTMLEditorFooter($mode = 0){
+	protected function getHTMLEditorFooter($mode = 0){
 		if(isset($_REQUEST["home"])){
 			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#EFF0EF"), ""));
 		}

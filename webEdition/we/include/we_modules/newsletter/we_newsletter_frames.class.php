@@ -132,7 +132,7 @@ class we_newsletter_frames extends weModuleFrames{
 	 * @param Integer $mode
 	 * @return String
 	 */
-	function getHTMLEditorHeader($mode = 0){
+	protected function getHTMLEditorHeader($mode = 0){
 		if(we_base_request::_(we_base_request::BOOL, "home")){
 			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#F0EFF0"), ""));
 		}
@@ -198,7 +198,7 @@ top.content.hloaded = 1;
 	 * @subpackage Newsletter
 	 * @return String
 	 */
-	function getHTMLEditorBody(){
+	protected function getHTMLEditorBody(){
 		return $this->getHTMLProperties();
 	}
 
@@ -210,7 +210,7 @@ top.content.hloaded = 1;
 	 * @param Integer $mode
 	 * @return String
 	 */
-	function getHTMLEditorFooter($mode = 0){
+	protected function getHTMLEditorFooter($mode = 0){
 		if(we_base_request::_(we_base_request::BOOL, 'home')){
 			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#EFF0EF"), ""));
 		}

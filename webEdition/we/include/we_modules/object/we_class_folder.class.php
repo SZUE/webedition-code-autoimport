@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -27,7 +26,6 @@ $yuiSuggest = & weSuggest::getInstance();
 /* a class for handling templates */
 
 class we_class_folder extends we_folder{
-
 	var $IsClassFolder = '1';
 	var $ClassPath = ''; //#4076
 	var $ClassID = ''; //#4076
@@ -224,7 +222,7 @@ class we_class_folder extends we_folder{
 
 		$this->searchclass->Order = we_base_request::_(we_base_request::STRING, 'Order', (isset($this->Order) ? $this->Order : 'ModDate DESC'));
 
-		$this->Order = we_base_request::_(we_base_request::STRING,'Order');
+		$this->Order = we_base_request::_(we_base_request::STRING, 'Order');
 
 		if(($start = we_base_request::_(we_base_request::INT, 'SearchStart'))){
 			$this->searchclass->searchstart = $start;
@@ -356,7 +354,7 @@ class we_class_folder extends we_folder{
 		// get Class
 		$classArray = getHash('SELECT * FROM ' . OBJECT_TABLE . ' WHERE Path="' . $DB_WE->escape($this->ClassPath) . '"', $DB_WE);
 
-		if(we_base_request::_(we_base_request::STRING,"do") == 'delete'){
+		if(we_base_request::_(we_base_request::STRING, "do") == 'delete'){
 			foreach(array_keys($_REQUEST) as $f){
 				if(substr($f, 0, 3) == "weg"){
 					//$this->query("");
@@ -895,7 +893,7 @@ function del(pos){
 
 function changeit(f){
 EOF;
-		$objID = f("SELECT ID FROM " . OBJECT_TABLE . " WHERE Path='" . $DB_WE->escape($this->Path) . "'", "ID", $DB_WE);
+		$objID = f('SELECT ID FROM ' . OBJECT_TABLE . ' WHERE Path="' . $DB_WE->escape($this->Path) . '"', '', $DB_WE);
 		if($objID){
 			$tableInfo = $DB_WE->metadata(OBJECT_X_TABLE . $objID);
 
