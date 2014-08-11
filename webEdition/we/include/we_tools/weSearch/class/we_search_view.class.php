@@ -1404,8 +1404,8 @@ class we_search_view extends we_tool_view{
 		$page = ceil($searchstart / $anzahl) * $anzahl;
 
 		$select = we_html_tools::htmlSelect("page", $pages, 1, $page, false, array("onchange" => "this.form.elements['searchstart" . $whichSearch . "'].value = this.value;search(false);"));
-		if(!isset($GLOBALS['setInputSearchstart']) && !defined('searchstart'. $whichSearch) && $isTop){
-			define('searchstart'. $whichSearch, true);
+		if(!isset($GLOBALS['setInputSearchstart']) && !defined('searchstart' . $whichSearch) && $isTop){
+			define('searchstart' . $whichSearch, true);
 			$out .= we_html_tools::hidden("searchstart" . $whichSearch, $searchstart);
 		}
 		$out .= $select .
@@ -1777,22 +1777,7 @@ class we_search_view extends we_tool_view{
 				default:
 					$objectFilesTable = defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : '--';
 					$objectTable = defined('OBJECT_TABLE') ? OBJECT_TABLE : '--';
-
-					foreach(we_base_request::_(we_base_request::STRING, 'we_cmd') as $k => $v){
-						if(is_string($v) && $v == 1){
-							if(stristr($k, 'search_tables_advSearch[' . FILE_TABLE) && $k{0} != "_"){
-								$_tables[] = FILE_TABLE;
-							} elseif(stristr($k, 'search_tables_advSearch[' . VERSIONS_TABLE) && $k{0} != "_"){
-								$_tables[] = VERSIONS_TABLE;
-							} elseif(stristr($k, 'search_tables_advSearch[' . TEMPLATES_TABLE) && $k{0} != "_"){
-								$_tables[] = TEMPLATES_TABLE;
-							} elseif(stristr($k, 'search_tables_advSearch[' . $objectFilesTable) && $k{0} != "_"){
-								$_tables[] = $objectFilesTable;
-							} elseif(stristr($k, 'search_tables_advSearch[' . $objectTable) && $k{0} != "_"){
-								$_tables[] = $objectTable;
-							}
-						}
-					}
+					$_tables = array_keys(array_filter($obj->search_tables_advSearch));
 					break;
 			}
 
@@ -1854,13 +1839,7 @@ class we_search_view extends we_tool_view{
 					$_searchstart = $obj->searchstartAdvSearch;
 					$_anzahl = $obj->anzahlAdvSearch;
 
-					$_tables = array();
-					foreach($obj->search_tables_advSearch as $_tablename => $value){
-						if($value == 1){
-							$_tables[] = $_tablename;
-						}
-					}
-
+					$_tables = array_keys(array_filter($obj->search_tables_advSearch));
 					break;
 			}
 			if(stripos($GLOBALS['WE_LANGUAGE'], '_UTF-8') !== false){ //was #3849
@@ -1907,7 +1886,6 @@ class we_search_view extends we_tool_view{
 			}
 			$this->searchclass->createTempTable();
 			$op = ($whichSearch == "AdvSearch" ? ' AND ' : ' OR ');
-
 			foreach($_tables as $_table){
 				$where = '';
 				$this->searchclass->settable($_table);

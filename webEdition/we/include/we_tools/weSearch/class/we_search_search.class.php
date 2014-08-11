@@ -524,8 +524,12 @@ class we_search_search extends we_search{
 
 				return ($contents ? ' ' . $table . '.ID IN (' . makeCSVFromArray($contents) . ')' : '');
 			case VERSIONS_TABLE:
+				//FIXME: versions are searched even if the field is not checked!
 				$_db->query('SELECT ID,documentElements  FROM ' . VERSIONS_TABLE);
 				while($_db->next_record()){
+					if(!$_db->f('documentElements')){
+						continue;
+					}
 					$elements = unserialize((substr_compare($_db->f('documentElements'), 'a%3A', 0, 4) == 0 ?
 							html_entity_decode(urldecode($_db->f('documentElements')), ENT_QUOTES) :
 							gzuncompress($_db->f('documentElements')))
@@ -538,14 +542,15 @@ class we_search_search extends we_search{
 								case 'Charset':
 									break;
 								default:
-									if(isset($elements[$k]['dat']) &&
-										stristr($elements[$k]['dat'], $keyword)){
+									if(isset($v['dat']) &&
+										stristr((is_array($v['dat']) ? serialize($v['dat']) : $v['dat']), $keyword)){
 										$contents[] = $_db->f('ID');
 									}
 							}
 						}
 					}
 				}
+
 				return ($contents ? "  " . $table . '.ID IN (' . makeCSVFromArray($contents) . ')' : '');
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 				$Ids = array();
