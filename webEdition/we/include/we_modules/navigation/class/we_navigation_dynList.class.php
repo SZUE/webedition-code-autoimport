@@ -250,7 +250,7 @@ abstract class we_navigation_dynList{
 		$_id = f('SELECT ID FROM ' . FILE_TABLE . ' WHERE ParentID=' . intval($id) . ' AND IsFolder=0 AND IsDynamic=1 AND Published!=0;', '', $db);
 		if(!$_id){
 			$_path = id_to_path($id);
-			$_id = f('SELECT ID FROM ' . FILE_TABLE . ' WHERE Path LIKE "' . $_db->escape($_path) . '%" AND IsFolder=0 AND IsDynamic=1 AND Published!=0;', '', $db);
+			$_id = f('SELECT ID FROM ' . FILE_TABLE . ' WHERE Path LIKE "' . $db->escape($_path) . '%" AND IsFolder=0 AND IsDynamic=1 AND Published!=0;', '', $db);
 		}
 		return $_id;
 	}
