@@ -362,7 +362,7 @@ self.focus();';
 	}
 
 	protected function getHTMLEditorHeader(){
-		if(isset($_REQUEST['home'])){//FIXME: find one working condition
+		if(we_base_request::_(we_base_request::BOOL, 'home')){//FIXME: find one working condition
 			echo we_html_element::htmlBody(array('style' => 'background-color:#F0EFF0;'), '');
 		} else {
 			$user_object = new we_users_user();
@@ -378,17 +378,18 @@ self.focus();';
 			$user_object->setState($_SESSION["user_session_data"]);
 		}
 		echo $this->View->getJSProperty();
-
-		$_content = we_html_element::htmlHidden($attribs = array("name" => "ucmd", "value" => "",)) .
-			we_html_element::htmlHidden($attribs = array("name" => "tab", "value" => we_base_request::_(we_base_request::INT, 'tab', 0))) .
-			we_html_element::htmlHidden($attribs = array("name" => "oldtab", "value" => we_base_request::_(we_base_request::INT, 'tab', 0))) .
-			we_html_element::htmlHidden($attribs = array("name" => "perm_branch", "value" => (isset($_REQUEST["perm_branch"]) && $_REQUEST["perm_branch"]) ? oldHtmlspecialchars($_REQUEST["perm_branch"]) : 0,)) .
-			we_html_element::htmlHidden($attribs = array("name" => "old_perm_branch", "value" => (isset($_REQUEST["perm_branch"]) && $_REQUEST["perm_branch"]) ? oldHtmlspecialchars($_REQUEST["perm_branch"]) : 0,)) .
-			we_html_element::htmlHidden($attribs = array("name" => "obj_name", "value" => $user_object->Name,)) .
-			we_html_element::htmlHidden($attribs = array("name" => "uid", "value" => $user_object->ID,)) .
-			we_html_element::htmlHidden($attribs = array("name" => "ctype", "value" => isset($_REQUEST["ctype"]) ? oldHtmlspecialchars($_REQUEST["ctype"]) : "",)) .
-			we_html_element::htmlHidden($attribs = array("name" => "ctable", "value" => isset($_REQUEST["ctable"]) ? oldHtmlspecialchars($_REQUEST["ctable"]) : "",)) .
-			we_html_element::htmlHidden($attribs = array("name" => "sd", "value" => 0,));
+		$tab = we_base_request::_(we_base_request::INT, 'tab', 0);
+		$permBranch = oldHtmlspecialchars(we_base_request::_(we_base_request::STRING, "perm_branch", 0));
+		$_content = we_html_element::htmlHidden(array("name" => "ucmd", "value" => "",)) .
+			we_html_element::htmlHidden(array("name" => "tab", "value" => $tab)) .
+			we_html_element::htmlHidden(array("name" => "oldtab", "value" => $tab)) .
+			we_html_element::htmlHidden(array("name" => "perm_branch", "value" => $permBranch)) .
+			we_html_element::htmlHidden(array("name" => "old_perm_branch", "value" => $permBranch)) .
+			we_html_element::htmlHidden(array("name" => "obj_name", "value" => $user_object->Name,)) .
+			we_html_element::htmlHidden(array("name" => "uid", "value" => $user_object->ID,)) .
+			we_html_element::htmlHidden(array("name" => "ctype", "value" => oldHtmlspecialchars(we_base_request::_(we_base_request::STRING, "ctype", '')))) .
+			we_html_element::htmlHidden(array("name" => "ctable", "value" => oldHtmlspecialchars(we_base_request::_(we_base_request::STRING, "ctable", '')))) .
+			we_html_element::htmlHidden(array("name" => "sd", "value" => 0,));
 
 		if($user_object){
 			if(isset($_REQUEST['oldtab']) && isset($_REQUEST['old_perm_branch'])){

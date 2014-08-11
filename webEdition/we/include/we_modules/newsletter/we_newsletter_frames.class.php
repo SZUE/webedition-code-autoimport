@@ -1424,21 +1424,15 @@ function changeFieldValue(val,valueField) {
 	}
 
 	function getHTMLEmailEdit(){
-		$vars = array("grp" => "group", "email" => "email", "htmlmail" => "htmlmail", "salutation" => "salutation", "title" => "title", "firstname" => "firstname", "lastname" => "lastname", "etyp" => "type", "eid" => "id");
-
-		foreach($vars as $k => $v){//note: this initializes the vars above
-			$$v = (isset($_REQUEST[$k]) ?
-					$_REQUEST[$k] :
-					($v == "htmlmail" ?
-						f('SELECT pref_value FROM ' . NEWSLETTER_PREFS_TABLE . " WHERE pref_name='default_htmlmail'", '', $this->db) :
-						''));
-		}
-
-		$salutation = rawurldecode(str_replace('[:plus:]', '+', $salutation));
-		$title = rawurldecode(str_replace('[:plus:]', '+', $title));
-		$firstname = rawurldecode(str_replace('[:plus:]', '+', $firstname));
-		$lastname = rawurldecode(str_replace('[:plus:]', '+', $lastname));
-
+		$type = we_base_request::_(we_base_request::INT, 'etyp', 0);
+		$htmlmail = we_base_request::_(we_base_request::RAW, 'htmlmail', f('SELECT pref_value FROM ' . NEWSLETTER_PREFS_TABLE . " WHERE pref_name='default_htmlmail'", '', $this->db));
+		$id = we_base_request::_(we_base_request::INT, 'eid', 0);
+		$email = we_base_request::_(we_base_request::EMAIL, 'email', '');
+		$group = we_base_request::_(we_base_request::STRING, 'grp', '');
+		$salutation = rawurldecode(str_replace('[:plus:]', '+', we_base_request::_(we_base_request::STRING, 'salutation', '')));
+		$title = rawurldecode(str_replace('[:plus:]', '+', we_base_request::_(we_base_request::STRING, 'title', '')));
+		$firstname = rawurldecode(str_replace('[:plus:]', '+', we_base_request::_(we_base_request::STRING, 'firstname', '')));
+		$lastname = rawurldecode(str_replace('[:plus:]', '+', we_base_request::_(we_base_request::STRING, 'lastname', '')));
 
 		switch($type){
 			case 2:
@@ -1799,11 +1793,11 @@ self.focus();
 			$table->setCol(0, 0, array(), we_html_tools::getPixel(2, 10));
 		}
 		$table->setCol(1, 0, array(), we_html_tools::getPixel(2, 10));
-		$table->setCol(2, 0, array("valign" => "middle"), we_html_element::htmlInput(array("name" => "we_File", "TYPE" => "file", "size" => 35)));
+		$table->setCol(2, 0, array("valign" => "middle"), we_html_element::htmlInput(array('name' => 'we_File', 'TYPE' => 'file', 'size' => 35)));
 
 		$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "enctype" => "multipart/form-data"), we_html_element::htmlCenter(
 						$this->View->getHiddens() .
-						(isset($_REQUEST["grp"]) ? $this->View->htmlHidden("group", $_REQUEST["grp"]) : "") .
+						(($grp = we_base_request::_(we_base_request::STRING, 'grp')) !== false ? $this->View->htmlHidden("group", $grp) : '') .
 						$this->View->htmlHidden("MAX_FILE_SIZE", 8388608) .
 						we_html_tools::htmlDialogLayout($table->getHtml(), g_l('modules_newsletter', '[csv_upload]'), $buttons, "100%", 30, "", "hidden")
 					)
