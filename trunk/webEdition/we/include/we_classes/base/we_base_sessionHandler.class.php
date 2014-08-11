@@ -125,12 +125,14 @@ class we_base_sessionHandler{
 		return session_id();
 	}
 
-	static function makeNewID(){
+	static function makeNewID($destroy = false){
 		session_regenerate_id(true);
-		//we need a new lock on the generated id, since partial data is sent to the browser, subsequent calls with the new sessionid might happen
-		session_write_close();
-		//update the cookie:
-		$_COOKIE[session_name()] = session_id();
+		if($destroy){
+			session_destroy();
+		} else {
+			//we need a new lock on the generated id, since partial data is sent to the browser, subsequent calls with the new sessionid might happen
+			session_write_close();
+		}
 		session_start();
 	}
 
