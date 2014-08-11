@@ -1775,9 +1775,28 @@ class we_search_view extends we_tool_view{
 					}
 					break;
 				default:
-					$objectFilesTable = defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : '--';
-					$objectTable = defined('OBJECT_TABLE') ? OBJECT_TABLE : '--';
-					$_tables = array_keys(array_filter($obj->search_tables_advSearch));
+					foreach(we_base_request::_(we_base_request::STRING, 'we_cmd') as $k => $v){
+						if($v){
+							switch($k){
+								case 'search_tables_advSearch[' . FILE_TABLE:
+									$_tables[] = FILE_TABLE;
+									break;
+								case 'search_tables_advSearch[' . (defined('TEMPLATES_TABLE') ? TEMPLATES_TABLE : 'TEMPLATES_TABLE'):
+									$_tables[] = TEMPLATES_TABLE;
+									break;
+								case 'search_tables_advSearch[' . (defined('VERSIONS_TABLE') ? VERSIONS_TABLE : 'VERSIONS_TABLE'):
+									$_tables[] = VERSIONS_TABLE;
+									break;
+								case 'search_tables_advSearch[' . (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
+									$_tables[] = OBJECT_FILES_TABLE;
+									break;
+								case 'search_tables_advSearch[' . (defined('OBJECT_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_TABLE'):
+									$_tables[] = OBJECT_TABLE;
+									break;
+							}
+						}
+					}
+
 					break;
 			}
 
@@ -1886,6 +1905,7 @@ class we_search_view extends we_tool_view{
 			}
 			$this->searchclass->createTempTable();
 			$op = ($whichSearch == "AdvSearch" ? ' AND ' : ' OR ');
+
 			foreach($_tables as $_table){
 				$where = '';
 				$this->searchclass->settable($_table);
