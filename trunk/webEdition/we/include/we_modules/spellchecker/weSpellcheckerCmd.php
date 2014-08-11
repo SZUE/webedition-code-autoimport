@@ -29,9 +29,10 @@ function saveSettings($default, $active, $langs = array()){
 	$_SESSION['weS']['dictLang'] = $default;
 }
 
+$cmd1 = we_base_request::_(we_base_request::STRING, 'cmd', false, 1);
 switch(we_base_request::_(we_base_request::STRING, 'cmd', '', 0)){
 	case 'addWord' :
-		if(isset($_REQUEST['cmd'][1])){
+		if($cmd1 !== false){
 
 			$_username = $_SESSION['user']['Username'];
 			$_replacement = array('\\', '/', ':', '*', '?', '<', '>', '|', '"');
@@ -40,14 +41,14 @@ switch(we_base_request::_(we_base_request::STRING, 'cmd', '', 0)){
 			}
 
 			$_userDict = WE_SPELLCHECKER_MODULE_PATH . '/dict/' . $_username . '@' . $_SERVER['SERVER_NAME'] . '.dict';
-			we_base_file::save($_userDict, $_REQUEST['cmd'][1] . "\n", 'ab');
+			we_base_file::save($_userDict, $cmd1 . "\n", 'ab');
 		}
 		break;
 	case 'addWords' :
-		if(isset($_REQUEST['cmd'][1])){
+		if($cmd1 !== false){
 
 			$_words = array();
-			$_str = explode(',', $_REQUEST['cmd'][1]);
+			$_str = explode(',', $cmd1);
 			foreach($_str as $_s){
 				if(!empty($_s)){
 					$_words[] = $_s;
@@ -65,18 +66,18 @@ switch(we_base_request::_(we_base_request::STRING, 'cmd', '', 0)){
 		}
 		break;
 	case 'setLangDict' :
-		if(isset($_REQUEST['cmd'][1])){
-			$_SESSION['weS']['dictLang'] = $_REQUEST['cmd'][1];
+		if($cmd1 !== false){
+			$_SESSION['weS']['dictLang'] = $cmd1;
 		}
-		print we_html_element::jsElement('
+		echo we_html_element::jsElement('
 				top.document.we_form.submit();
 			');
 		break;
 
 	case 'removeDictFile':
-		if(strpos($_REQUEST['cmd'][1], '..') === false){
+		if(strpos($cmd1, '..') === false){
 
-			@unlink(WE_SPELLCHECKER_MODULE_PATH . 'dict/' . $_REQUEST['cmd'][1]);
+			@unlink(WE_SPELLCHECKER_MODULE_PATH . 'dict/' . $cmd1);
 		}
 		break;
 	case 'uploadPart':
@@ -88,10 +89,11 @@ switch(we_base_request::_(we_base_request::STRING, 'cmd', '', 0)){
 			$_content = we_base_file::load(WE_SPELLCHECKER_MODULE_PATH . 'chunk');
 			$_checksum = crc32($_content);
 
-			if(sprintf("%u", $_checksum) != $_REQUEST['cmd'][2])
+			if(sprintf("%u", $_checksum) != we_base_request::_(we_base_request::STRING, 'cmd', '', 2)){
 				t_e('Corrupt!!!');
+			}
 
-			we_base_file::save(WE_SPELLCHECKER_MODULE_PATH . 'dict/' . $_REQUEST['cmd'][1], $_content, 'ab');
+			we_base_file::save(WE_SPELLCHECKER_MODULE_PATH . 'dict/' . $cmd1, $_content, 'ab');
 
 			unlink(WE_SPELLCHECKER_MODULE_PATH . 'chunk');
 		} else {
@@ -129,17 +131,17 @@ switch(we_base_request::_(we_base_request::STRING, 'cmd', '', 0)){
 		break;
 
 	case 'deleteDict':
-		if(strpos($_REQUEST['cmd'][1], "..") === false){
-			unlink(WE_SPELLCHECKER_MODULE_PATH . 'dict/' . $_REQUEST['cmd'][1] . '.zip');
+		if(strpos($cmd1, "..") === false){
+			unlink(WE_SPELLCHECKER_MODULE_PATH . 'dict/' . $cmd1 . '.zip');
 			$_mess = g_l('modules_spellchecker', '[dict_removed]');
 			$_messType = we_message_reporting::WE_MESSAGE_NOTICE;
 
-			if($GLOBALS['spellcheckerConf']['default'] == $_REQUEST['cmd'][1]){ // if the default dict has been deleted
+			if($GLOBALS['spellcheckerConf']['default'] == $cmd1){ // if the default dict has been deleted
 				if(!empty($GLOBALS['spellcheckerConf']['active']) && isset($GLOBALS['spellcheckerConf']['active'][0])){
 					// take the firts active dictionary
 					$_new_ac = array();
 					foreach($GLOBALS['spellcheckerConf']['active'] as $ac){
-						if($ac != $_REQUEST['cmd'][1]){
+						if($ac != $cmd1){
 							$_new_ac[] = $ac;
 						}
 					}
@@ -151,9 +153,9 @@ switch(we_base_request::_(we_base_request::STRING, 'cmd', '', 0)){
 			$_messType = we_message_reporting::WE_MESSAGE_ERROR;
 		}
 
-		print we_html_element::jsElement(
-				we_message_reporting::getShowMessageCall($_mess, $_messType) .
-				'parent.loadTable();
+		echo we_html_element::jsElement(
+			we_message_reporting::getShowMessageCall($_mess, $_messType) .
+			'parent.loadTable();
 				');
 		break;
 
