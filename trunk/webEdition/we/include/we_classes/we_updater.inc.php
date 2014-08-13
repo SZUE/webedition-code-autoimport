@@ -269,6 +269,7 @@ class we_updater{
 					$GLOBALS['DB_WE']->query('DELETE FROM ' . $_table . ' WHERE OF_ID=0');
 					$GLOBALS['DB_WE']->addKey($_table, $key);
 					if(!$GLOBALS['DB_WE']->isKeyExistAtAll($_table, 'OF_ID')){
+						t_e('duplicates found',$_table);
 						//we have duplicates in this table - we must clean up
 						$GLOBALS['DB_WE']->query('SELECT DISTINCT o.ID FROM ' . $_table . ' o join ' . $_table . ' oo ON o.OF_ID=oo.OF_ID WHERE o.ID<oo.ID');
 						$ids = $GLOBALS['DB_WE']->getAll(true);

@@ -17,7 +17,7 @@ CREATE TABLE ###TBLPREFIX###tblWebUser (
   `ModifiedBy` enum('','backend','frontend','external') NOT NULL default'',
   ParentID tinyint(0) unsigned NOT NULL default '0',
   Path varchar(255) default NULL,
-  IsFolder tinyint(1) unsigned NOT default '0',
+  IsFolder tinyint(1) unsigned NOT NULL default '0',
   Icon ENUM('customer.gif') NOT NULL default 'customer.gif',
   `Text` varchar(255) default NULL,
   `Newsletter_Ok` enum('','ja','0','1','2') NOT NULL,
