@@ -83,7 +83,7 @@ if (top.plugin.isLoaded && (typeof top.plugin.document.WePlugin.editSource == "f
 		}
 
 		$out = we_html_element::jsElement(
-				'top.plugin.document.WePlugin.editFile("' . session_id() . '","' . session_name() . '","' . $_SERVER['HTTP_USER_AGENT'] . '","' . $_SERVER['HTTP_ACCEPT_LANGUAGE'] . '","' . $_SERVER['HTTP_ACCEPT_ENCODING'] . '","' . $_we_transaction . '","' . addslashes($_filename) . '","' . getServerUrl(true) . WEBEDITION_DIR . 'showTempFile.php?file=' . $_tmp_file . '","' . $we_ContentType . '");');
+				'top.plugin.document.WePlugin.editFile("' . session_id() . '","' . session_name() . '","' . $_SERVER['HTTP_USER_AGENT'] . '","' . (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : '') . '","' . (isset($_SERVER['HTTP_ACCEPT_ENCODING']) ? $_SERVER['HTTP_ACCEPT_ENCODING'] : '') . '","' . $_we_transaction . '","' . addslashes($_filename) . '","' . getServerUrl(true) . WEBEDITION_DIR . 'showTempFile.php?file=' . $_tmp_file . '","' . $we_ContentType . '");');
 
 		break;
 	case "setSource":
