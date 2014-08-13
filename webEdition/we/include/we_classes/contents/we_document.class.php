@@ -934,6 +934,7 @@ class we_document extends we_root{
 				return $pathOnly ? $fl->Path : $fl->getHtml();
 			case 'link':
 				$link = $val ? unserialize($val) : array();
+
 				$only = weTag_getAttribute('only', $attribs);
 
 				$hidedirindex = weTag_getAttribute('hidedirindex', $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, true);
