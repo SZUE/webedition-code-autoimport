@@ -27,7 +27,7 @@ class MultiDirChooser2 extends MultiDirChooser{
 	var $rowPrefix = '';
 	var $catField = '';
 
-	function __construct($width = "", $ids = "", $cmd_del = "", $addbut = "", $ws = "", $fields = "Icon,Path", $table = FILE_TABLE, $css = "defaultfont", $thirdDelPar = "", $extraDelFn = ""){
+	public function __construct($width = "", $ids = "", $cmd_del = "", $addbut = "", $ws = "", $fields = "Icon,Path", $table = FILE_TABLE, $css = "defaultfont", $thirdDelPar = "", $extraDelFn = ""){
 		parent::__construct($width, $ids, $cmd_del, $addbut, $ws, $fields, $table, $css, $thirdDelPar, $extraDelFn);
 	}
 

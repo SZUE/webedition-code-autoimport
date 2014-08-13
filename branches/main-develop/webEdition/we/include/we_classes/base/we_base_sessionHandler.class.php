@@ -55,12 +55,15 @@ class we_base_sessionHandler implements SessionHandlerInterface{
 			usleep(100000);
 		}
 		if($data){
+			$oldData = substr($data, 0, 30);
 			$data = ($data[0] == '$' && $this->crypt ? we_customer_customer::decryptData($data, $this->crypt) : $data);
 			if($data){
 				$tmp = gzuncompress($data);
-				if(!$tmp){
-					t_e($data);
-				}
+				/*if(!$tmp){
+					$x = getHash('SELECT uid,tmp FROM ' . SESSION_TABLE . ' WHERE session_id=x\'' . $sessID . '\'');
+					t_e($oldData, $sessID, $_SERVER['HTTP_USER_AGENT'] . (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : '') . (isset($_SERVER['HTTP_ACCEPT_ENCODING']) ? $_SERVER['HTTP_ACCEPT_ENCODING'] : ''), $x, $data
+					);
+				}*/
 				return $tmp;
 			}//else we need a new sessionid; if decrypt failed we might else destroy an existing valid session
 		}
@@ -80,12 +83,11 @@ class we_base_sessionHandler implements SessionHandlerInterface{
 
 		$this->DB->query('REPLACE INTO ' . SESSION_TABLE . ' SET ' . we_database_base::arraySetter(array(
 				'session_id' => sql_function('x\'' . $sessID . '\''),
-				'session_data' => $sessData,
+				'session_data' => sql_function('x\'' . bin2hex($sessData) . '\''),
 				'sessionName' => $this->sessionName,
 				'lockid' => $lock ? $this->id : '',
 				'lockTime' => sql_function($lock ? 'NOW()' : 'NULL'),
-				/*
-				'uid' => isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : (isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0),
+				/*'uid' => isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : (isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0),
 				'tmp' => serialize($_SESSION),*/
 		)));
 		return true;

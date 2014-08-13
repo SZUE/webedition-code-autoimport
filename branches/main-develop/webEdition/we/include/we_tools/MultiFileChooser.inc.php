@@ -27,7 +27,7 @@ class MultiFileChooser extends MultiDirChooser{
 	private $disabledDelItems = array();
 	private $disabledDelReason = '';
 
-	function __construct($width, $ids, $cmd_del, $addbut, $cmd_edit){
+	public function __construct($width, $ids, $cmd_del, $addbut, $cmd_edit){
 		parent::__construct($width, $ids, $cmd_del, $addbut);
 		$this->cmd_edit = $cmd_edit;
 	}

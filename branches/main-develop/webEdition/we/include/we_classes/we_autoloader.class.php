@@ -192,7 +192,6 @@ abstract class we_autoloader{
 		),
 		'we_versions' => array(
 			'versionFragment' => 'version_wizard/versionFragment.class.php',
-			'we_version' => 'version_wizard/we_version.class.php',
 			'we_versions_wizard' => 'version_wizard/we_versions_wizard.inc.php',
 			'weVersions' => 'weVersions.class.php',
 			'weVersionsSearch' => 'weVersionsSearch.class.php',

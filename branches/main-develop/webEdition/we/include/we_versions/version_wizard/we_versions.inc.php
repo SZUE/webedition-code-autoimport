@@ -24,8 +24,6 @@
  */
 we_html_tools::protect();
 
-require_once (WE_INCLUDES_PATH . 'we_versions/version_wizard/we_versions_wizard.inc.php');
-
 switch(we_base_request::_(we_base_request::STRING, "fr", '')){
 	case "body" :
 		echo we_versions_wizard::getBody();
