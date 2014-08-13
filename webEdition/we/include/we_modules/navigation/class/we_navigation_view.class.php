@@ -840,7 +840,7 @@ function submitForm() {
 
 				if(we_base_request::_(we_base_request::BOOL, 'delayCmd')){
 					$js .= we_html_element::jsElement(
-							$this->topFrame . '.we_cmd("' . we_base_request::_(we_base_request::JS, 'delayCmd') . '"' . (($dp = we_base_request::_(we_base_request::RAW, 'delayParam')) ? ',"' . $dp . '"' : '' ) . ');
+							$this->topFrame . '.we_cmd("' . we_base_request::_(we_base_request::JS, 'delayCmd') . '"' . (($dp = we_base_request::_(we_base_request::INT, 'delayParam')) ? ',"' . $dp . '"' : '' ) . ');
 							'
 					);
 					$_REQUEST['delayCmd'] = '';

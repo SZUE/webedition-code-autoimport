@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -181,14 +180,14 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems){
 			$version = new weVersions();
 			if(in_array($row['ContentType'], $version->contentTypes)){
 				$object = we_exim_contentProvider::getInstance($row['ContentType'], $id, $table);
-				$version_exists = $version->getLastEntry($id, $table);
+				$version_exists = weVersions::versionExists($id, $table);
 				$tempOldParentID = $object->ParentID;
 				$tempNewParentID = $parentID;
 				$tempOldPath = $object->Path;
 				$tempNewPath = $newPath . '/' . $fileName;
 				$object->Path = $tempNewPath;
 				$object->ParentID = $tempNewParentID;
-				if(empty($version_exists)){
+				if(!$version_exists){
 					$object->Path = $tempOldPath;
 					$object->ParentID = $tempOldParentID;
 					$version->saveVersion($object);
@@ -224,14 +223,14 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems){
 			$version = new weVersions();
 			if(in_array($row['ContentType'], $version->contentTypes)){
 				$object = we_exim_contentProvider::getInstance($row['ContentType'], $id, $table);
-				$version_exists = $version->getLastEntry($id, $table);
+				$version_exists = weVersions::versionExists($id, $table);
 				$tempOldParentID = $object->ParentID;
 				$tempNewParentID = $parentID;
 				$tempOldPath = $object->Path;
 				$tempNewPath = $newPath . '/' . $fileName;
 				$object->Path = $tempNewPath;
 				$object->ParentID = $tempNewParentID;
-				if(empty($version_exists)){
+				if(!$version_exists){
 					$object->Path = $tempOldPath;
 					$object->ParentID = $tempOldParentID;
 					$version->saveVersion($object);

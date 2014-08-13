@@ -47,7 +47,7 @@ CREATE TABLE ###TBLPREFIX###tblnavigation (
   CustomerFilter text NOT NULL,
   BlackList text NOT NULL,
   WhiteList text NOT NULL,
-  UseDocumentFilter tinyint(4) unsigned NOT NULL default '0',
+  UseDocumentFilter tinyint(1) unsigned NOT NULL default '0',
   PRIMARY KEY  (ID),
   KEY ParentID (ParentID),
   KEY LinkID (LinkID),

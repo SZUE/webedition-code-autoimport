@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -36,7 +35,6 @@ Zend_Loader::loadClass('we_ui_abstract_AbstractElement');
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_ui_controls_CssMenu extends we_ui_abstract_AbstractElement{
-
 	var $entries;
 	var $lcmdFrame = "";
 	var $width = 350;
@@ -71,8 +69,7 @@ class we_ui_controls_CssMenu extends we_ui_abstract_AbstractElement{
 
 	//remove cmdTarget in 6.4 after Java Menu is removed
 	function getHTMLMenu($old = true, $cmdTarget = ''){
-		$showAltMenu = (isset($_SESSION['weS']['weShowAltMenu']) && $_SESSION['weS']['weShowAltMenu']) || we_base_request::_(we_base_request::BOOL, 'showAltMenu');
-		$_SESSION['weS']['weShowAltMenu'] = $showAltMenu;
+
 		// On Mozilla OSX, when the Java Menu is loaded, it is not possible to make any text input (java steels focus from input fields or e.g) so we dont show the applet.
 		if(!$old){
 			$out = '<span class="preload1"></span><span class="preload2"></span><span class="preload3"></span><span class="preload4"></span>' .
@@ -104,47 +101,47 @@ class we_ui_controls_CssMenu extends we_ui_abstract_AbstractElement{
 			return $out;
 		}
 		$out = '';
-		if(!$showAltMenu){
-			$i = 0;
-			foreach($this->entries as $id => $m){
-				if(permissionhandler::hasPerm('ADMINISTRATOR')){
-					$m['enabled'] = 1;
-				}
-				if(!permissionhandler::hasPerm('ADMINISTRATOR') && (isset($m["perm"]) && $m["perm"]) != ""){
-					$set = array();
-					$or = explode("||", $m["perm"]);
-					foreach($or as $k => $v){
-						$and = explode("&&", $v);
-						$one = true;
-						foreach($and as $key => $val){
-							$set[] = 'isset($_SESSION["perms"]["' . trim($val) . '"])';
-							//$and[$key]='$_SESSION["perms"]["'.trim($val).'"]';
-							$and[$key] = '(isset($_SESSION["perms"]["' . trim($val) . '"]) && $_SESSION["perms"]["' . trim($val) . '"])';
-							$one = false;
-						}
-						$or[$k] = implode(" && ", $and);
-						if($one && !in_array('isset($_SESSION["perms"]["' . trim($v) . '"])', $set)){
-							$set[] = 'isset($_SESSION["perms"]["' . trim($v) . '"])';
-						}
-					}
-					$set_str = implode(" || ", $set);
-					$condition_str = implode(" || ", $or);
-					eval('if(' . $set_str . '){ if(' . $condition_str . ') $m["enabled"]=1; else $m["enabled"]=0;}');
-				}
-				$mtext = (isset($m["text"]) && is_array($m["text"]) ?
-						($m["text"][$GLOBALS["WE_LANGUAGE"]] ? $m["text"][$GLOBALS["WE_LANGUAGE"]] : "#") :
-						(isset($m["text"]) ? $m["text"] : "#"));
 
-				if(!isset($m["cmd"])){
-					$m["cmd"] = "#";
-				}
-				$out .= (isset($m["enabled"]) && $m["enabled"] ?
-						'<param name="entry' . $i . '" value="' . $id . ',' . $m["parent"] . ',' . $m["cmd"] . ',' . $mtext . ',' . ( (isset($m["enabled"]) && $m["enabled"] ) ? $m["enabled"] : 0) . '">' :
-						'<param name="entry' . $i . '" value="' . $id . ',' . $m["parent"] . ',0,' . $mtext . ',0"/>');
-
-				$i++;
+		$i = 0;
+		foreach($this->entries as $id => $m){
+			if(permissionhandler::hasPerm('ADMINISTRATOR')){
+				$m['enabled'] = 1;
 			}
+			if(!permissionhandler::hasPerm('ADMINISTRATOR') && (isset($m["perm"]) && $m["perm"]) != ""){
+				$set = array();
+				$or = explode("||", $m["perm"]);
+				foreach($or as $k => $v){
+					$and = explode("&&", $v);
+					$one = true;
+					foreach($and as $key => $val){
+						$set[] = 'isset($_SESSION["perms"]["' . trim($val) . '"])';
+						//$and[$key]='$_SESSION["perms"]["'.trim($val).'"]';
+						$and[$key] = '(isset($_SESSION["perms"]["' . trim($val) . '"]) && $_SESSION["perms"]["' . trim($val) . '"])';
+						$one = false;
+					}
+					$or[$k] = implode(" && ", $and);
+					if($one && !in_array('isset($_SESSION["perms"]["' . trim($v) . '"])', $set)){
+						$set[] = 'isset($_SESSION["perms"]["' . trim($v) . '"])';
+					}
+				}
+				$set_str = implode(" || ", $set);
+				$condition_str = implode(" || ", $or);
+				eval('if(' . $set_str . '){ if(' . $condition_str . ') $m["enabled"]=1; else $m["enabled"]=0;}');
+			}
+			$mtext = (isset($m["text"]) && is_array($m["text"]) ?
+					($m["text"][$GLOBALS["WE_LANGUAGE"]] ? $m["text"][$GLOBALS["WE_LANGUAGE"]] : "#") :
+					(isset($m["text"]) ? $m["text"] : "#"));
+
+			if(!isset($m["cmd"])){
+				$m["cmd"] = "#";
+			}
+			$out .= (isset($m["enabled"]) && $m["enabled"] ?
+					'<param name="entry' . $i . '" value="' . $id . ',' . $m["parent"] . ',' . $m["cmd"] . ',' . $mtext . ',' . ( (isset($m["enabled"]) && $m["enabled"] ) ? $m["enabled"] : 0) . '">' :
+					'<param name="entry' . $i . '" value="' . $id . ',' . $m["parent"] . ',0,' . $mtext . ',0"/>');
+
+			$i++;
 		}
+
 
 		$menus = array();
 
@@ -192,21 +189,19 @@ class we_ui_controls_CssMenu extends we_ui_abstract_AbstractElement{
 			}') : '' ) . '
 			</form>';
 
-		if(!$showAltMenu){
-			return '<div id="divForSelectMenu"></div>' .
-				we_html_element::htmlApplet(array(
-					'name' => "weJavaMenuApplet",
-					'code' => "menuapplet",
-					'archive' => "JavaMenu.jar",
-					'codebase' => we_util_Sys_Server::getHostUri(LIB_DIR . 'we/ui/controls'),
-					'align' => "baseline",
-					'width' => $this->width,
-					'height' => $this->height,), '
+
+		return '<div id="divForSelectMenu"></div>' .
+			we_html_element::htmlApplet(array(
+				'name' => "weJavaMenuApplet",
+				'code' => "menuapplet",
+				'archive' => "JavaMenu.jar",
+				'codebase' => we_util_Sys_Server::getHostUri(LIB_DIR . 'we/ui/controls'),
+				'align' => "baseline",
+				'width' => $this->width,
+				'height' => $this->height,), '
 <param name="phpext" value=".php"/>' . ($cmdTarget ? '
 <param name="cmdTarget" value="' . $cmdTarget . '"/>' : '') .
-					$out);
-		}
-		return $out;
+				$out);
 	}
 
 	function h_search($men, $p){

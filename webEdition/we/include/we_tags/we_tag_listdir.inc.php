@@ -77,8 +77,8 @@ function we_tag_listdir($attribs){
 				'ID' => $db->f('ID'),
 				'Path' => $db->f('Path'),
 				'Text' => $db->f('Text'),
-				'sort' => _listdir_getSortField($sort, $id, $db->f('Text')),
-				'name' => _listdir_getNameField($dirfield, $id, $db->f('Text'))
+				'sort' => _listdir_getField($sort, $id, $db->f('Text')),
+				'name' => _listdir_getField($dirfield, $id, $db->f('Text'))
 			);
 		}
 	}
@@ -92,22 +92,13 @@ function we_tag_listdir($attribs){
 	$GLOBALS['we_lv_array'][] = null;
 }
 
-function _listdir_getSortField($sort, $id, $text){
-	if($sort){
-		$db = $GLOBALS['DB_WE'];
-		$dat = f('SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON c.ID=l.CID WHERE l.DID=' . intval($id) . ' AND l.Name="' . $db->escape($sort) . '"', '', $db);
-		return $dat ? $dat : $text;
+function _listdir_getField($field, $id, $text){
+	if(!$field){
+		return $text;
 	}
-	return $text;
-}
-
-function _listdir_getNameField($dirfield, $id, $text){
-	if($dirfield){
-		$db = $GLOBALS['DB_WE'];
-		$dat = f('SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON c.ID=l.CID WHERE l.DID=' . intval($id) . ' AND l.Name="' . $db->escape($dirfield) . '"', '', $db);
-		return $dat ? $dat : $text;
-	}
-	return $text;
+	$db = $GLOBALS['DB_WE'];
+	$dat = f('SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON c.ID=l.CID WHERE l.DID=' . intval($id) . ' AND l.Name="' . $db->escape($field) . '"', '', $db);
+	return $dat ? $dat : $text;
 }
 
 function we_cmpText($a, $b){

@@ -623,7 +623,7 @@ attribs["tooltip"]="' . (($this->customer->Forename != "" || $this->customer->Su
 				$field = we_base_request::_(we_base_request::STRING, 'field');
 				$field_name = we_base_request::_(we_base_request::STRING, 'name');
 				$field_type = we_base_request::_(we_base_request::STRING, 'field_type');
-				$field_default = we_base_request::_(we_base_request::STRING, 'field_default');
+				$field_default = we_base_request::_(we_base_request::STRINGC, 'field_default');
 
 				$saveret = $this->saveField($field, $branch, $field_name, $field_type, $field_default);
 
