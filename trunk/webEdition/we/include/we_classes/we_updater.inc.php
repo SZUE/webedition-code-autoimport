@@ -266,9 +266,17 @@ class we_updater{
 				}
 				$key = 'UNIQUE KEY OF_ID (OF_ID)';
 				if(!$GLOBALS['DB_WE']->isKeyExistAtAll($_table, 'OF_ID')){
-					$GLOBALS['DB_WE']->query('DELETE FROM '.$_table.' WHERE OF_ID=0');
+					$GLOBALS['DB_WE']->query('DELETE FROM ' . $_table . ' WHERE OF_ID=0');
 					$GLOBALS['DB_WE']->addKey($_table, $key);
-					$GLOBALS['DB_WE']->query('REPLACE INTO '.$_table.' SET OF_ID=0');
+					if(!$GLOBALS['DB_WE']->isKeyExistAtAll($_table, 'OF_ID')){
+						//we have duplicates in this table - we must clean up
+						$GLOBALS['DB_WE']->query('SELECT DISTINCT o.ID FROM ' . $_table . ' o join ' . $_table . ' oo ON o.OF_ID=oo.OF_ID WHERE o.ID<oo.ID');
+						$ids = $GLOBALS['DB_WE']->getAll(true);
+						$GLOBALS['DB_WE']->query('DELETE FROM ' . $_table . ' WHERE ID IN(' . $ids . ')');
+						//retry to add key
+						$GLOBALS['DB_WE']->addKey($_table, $key);
+					}
+					$GLOBALS['DB_WE']->query('REPLACE INTO ' . $_table . ' SET OF_ID=0');
 				}
 			}
 		}
@@ -420,4 +428,3 @@ class we_updater{
 	}
 
 }
-
