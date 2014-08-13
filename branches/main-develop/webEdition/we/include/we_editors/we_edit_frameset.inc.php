@@ -432,9 +432,6 @@ function setOnload($extonly = false){
 ?>
 </head><?php
 $we_doc->saveInSession($_SESSION['weS']['we_data'][$GLOBALS['we_transaction']]);
-if(empty($_SESSION['weS']['we_data'][$GLOBALS['we_transaction']])){
-	t_e($GLOBALS['we_transaction'], $we_doc);
-}
 $fid = we_base_request::_(we_base_request::STRING, "frameId");
 switch($_SESSION['weS']['we_mode']){
 	case we_base_constants::MODE_SEE:
@@ -445,6 +442,7 @@ switch($_SESSION['weS']['we_mode']){
 			<frame <?php echo setOnload(true); ?> src="about:blank" name="contenteditor_<?php echo $fid; ?>" noresize/>
 		<frame src="<?php echo we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_edit_footer"); ?>&SEEM_edit_include=<?php echo (we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include') ? "true" : "false"); ?>" name="editFooter" scrolling=no noresize/>
 	</frameset><noframes></noframes>
+
 		<?php
 		break;
 	case we_base_constants::MODE_NORMAL:

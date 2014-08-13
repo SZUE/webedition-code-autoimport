@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -53,7 +52,6 @@ if(isset($_SERVER['HTTP_HOST']) && $_SERVER['SERVER_NAME'] != $_SERVER['HTTP_HOS
 //@ini_set("arg_separator.output","&");
 //fix insecure cookies
 $cookie = session_get_cookie_params();
-//FIXME: how to handle secure connections - do we allow session upgrades?
 session_set_cookie_params($cookie['lifetime'], $cookie['path'], $cookie['domain'], $cookie['secure'], true);
 
 
@@ -91,7 +89,6 @@ include_once (WE_INCLUDES_PATH . 'conf/we_active_integrated_modules.inc.php');
 if(empty($GLOBALS['_we_active_integrated_modules']) || !in_array('users', $GLOBALS['_we_active_integrated_modules'])){
 	include_once (WE_INCLUDES_PATH . 'conf/we_active_integrated_modules.inc.php.default');
 }
-//$GLOBALS['_we_active_integrated_modules'][] = 'navigation';//TODO: remove when navigation is completely implemented as a module
 //FIXME: don't include all confs!
 foreach($GLOBALS['_we_active_integrated_modules'] as $active){
 	we_base_moduleInfo::isActive($active);
@@ -101,13 +98,13 @@ if(!isset($GLOBALS['DB_WE'])){
 	$GLOBALS['DB_WE'] = new DB_WE();
 }
 
-if(!defined('NO_SESS') && !isset($GLOBALS['FROM_WE_SHOW_DOC'])){
+if(!(defined('NO_SESS') || isset($GLOBALS['FROM_WE_SHOW_DOC']))){
 	$GLOBALS['WE_BACKENDCHARSET'] = 'UTF-8'; //Bug 5771 schon in der Session wird ein vorläufiges Backendcharset benötigt
 	require_once (WE_INCLUDES_PATH . 'we_session.inc.php');
 	$_tooldefines = we_tool_lookup::getDefineInclude();
-	if(!empty($_tooldefines)){
+	if($_tooldefines){
 		foreach($_tooldefines as $_tooldefine){
-			@include_once ($_tooldefine);
+			@include_once($_tooldefine);
 		}
 	}
 }

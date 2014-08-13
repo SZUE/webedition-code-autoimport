@@ -55,7 +55,8 @@ abstract class we_fileupload_base{
 		$this->maxUploadSizeMBytes = intval($maxUploadSize != -1 ? $maxUploadSize : (defined('FILE_UPLOAD_MAX_UPLOAD_SIZE') ? FILE_UPLOAD_MAX_UPLOAD_SIZE : 0));
 		$this->maxUploadSizeBytes = $this->maxUploadSizeMBytes * 1048576;
 		$this->maxChunkCount = $this->maxUploadSizeMBytes * 1024 / self::CHUNK_SIZE;
-		$this->useLegacy = defined('FILE_UPLOAD_USE_LEGACY') ? FILE_UPLOAD_USE_LEGACY : false;
+		$this->useLegacy = we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 10 ? true :
+				(defined('FILE_UPLOAD_USE_LEGACY') ? FILE_UPLOAD_USE_LEGACY : false);
 	}
 
 	public function setAction($action){
@@ -229,11 +230,10 @@ weFU.sendChunk = function(part, fileName, fileCt, partSize, partNum, totalParts,
 	fd.append("weFileCt", fileCt);
 	fd.append("' . $this->name . '", part, fileName);
 	fd.append("weIsUploading", 1);
-
 	if(typeof weFU.appendMoreData === "function"){
 		fd = weFU.appendMoreData(fd);
 	}
-	xhr.open("POST", weFU.action, true);
+	xhr.open("POST", weFU.action ? weFU.action : window.location.href, true);
 	xhr.send(fd);
 };
 

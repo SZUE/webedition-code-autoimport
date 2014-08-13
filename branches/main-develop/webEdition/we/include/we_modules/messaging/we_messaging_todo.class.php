@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -27,7 +26,6 @@ we_base_moduleInfo::isActive('messaging');
 
 class we_messaging_todo extends we_messaging_proto{
 	/* Flag which is set when the file is not new */
-
 	var $selected_message = array();
 	var $selected_set = array();
 	var $search_fields = array('m.headerSubject', 'm.headerCreator', 'm.MessageText');
@@ -103,14 +101,6 @@ class we_messaging_todo extends we_messaging_proto{
 			$save[0][$pers] = $this->{$pers};
 		}
 		$save[1] = isset($this->elements) ? $this->elements : "";
-	}
-
-	/* Methods dealing with USER_TABLE and other userstuff */
-
-	function username_to_userid($username, we_database_base $db = null){
-		$db = $db ? $db : new DB_WE();
-		$id = f('SELECT ID FROM ' . USER_TABLE . ' WHERE username="' . $db->escape($username) . '"', 'ID', $db);
-		return $id ? $id : -1;
 	}
 
 	/* Getters And Setters */
@@ -263,7 +253,7 @@ class we_messaging_todo extends we_messaging_proto{
 
 		$rcpt = $rcpts[0];
 
-		if(($userid = $this->username_to_userid($rcpt, $this->DB_WE)) == -1){
+		if(($userid = we_users_user::getUserID($rcpt, $this->DB_WE)) == -1){
 			$results['err'][] = g_l('modules_messaging', '[username_not_found]');
 			$results['failed'][] = $rcpt;
 			return $results;
@@ -379,7 +369,7 @@ class we_messaging_todo extends we_messaging_proto{
 		foreach($rcpts as $rcpt){
 			$in_folder = '';
 			//FIXME: Put this out of the loop (the select statement)
-			if(($userid = $this->username_to_userid($rcpt, $db)) == -1){
+			if(($userid = we_users_user::getUserID($rcpt, $db)) == -1){
 				$results['err'][] = "Username '" . $rcpt . "' existiert nicht'";
 				$results['failed'][] = $rcpt;
 				continue;

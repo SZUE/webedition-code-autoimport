@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -30,7 +29,6 @@
  *
  */
 class we_workflow_documentTask extends we_workflow_base{
-
 	const STATUS_UNKNOWN = 0;
 	const STATUS_APPROVED = 1;
 	const STATUS_CANCELED = 2;
@@ -123,13 +121,13 @@ class we_workflow_documentTask extends we_workflow_base{
 	 * creates all tasks for workflow step
 	 *
 	 */
-	static function __createAllTasks($workflowStepID){
+	public static function createAllTasks($workflowStepID){
 		$db = new DB_WE();
 
-		$db->query('SELECT ID FROM ' . WORKFLOW_TASK_TABLE . " WHERE stepID=" . intval($workflowStepID) . ' ORDER BY ID');
+		$db->query('SELECT ID FROM ' . WORKFLOW_TASK_TABLE . ' WHERE stepID=' . intval($workflowStepID) . ' ORDER BY ID');
 		$docTasks = array();
 		while($db->next_record()){
-			$docTasks[] = self::__createTask($db->f("ID"));
+			$docTasks[] = self::createTask($db->f("ID"));
 		}
 		return $docTasks;
 	}
@@ -137,23 +135,9 @@ class we_workflow_documentTask extends we_workflow_base{
 	/**
 	 * Create task
 	 */
-	private static function __createTask($WorkflowTask){
-		if(is_array($WorkflowTask)){
-			return self::__createTaskFromHash($WorkflowTask);
-		}
-
-		$db = new DB_WE();
-
-		$hash = getHash('SELECT * FROM ' . WORKFLOW_TASK_TABLE . ' WHERE ID=' . intval($WorkflowTask), $db);
-		return $hash ? false : self::__createTaskFromHash($hash);
-	}
-
-	/**
-	 * Create task from hash
-	 */
-	private static function __createTaskFromHash($WorkflowTaskArray){
+	private static function createTask($id){
 		$docTask = new we_workflow_documentTask();
-		$docTask->workflowTaskID = $WorkflowTaskArray["ID"];
+		$docTask->workflowTaskID = $id;
 		return $docTask;
 	}
 

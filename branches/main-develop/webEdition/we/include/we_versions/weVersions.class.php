@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class weVersions{
-
 	protected $ID;
 	protected $documentID;
 	protected $documentTable;
@@ -815,7 +814,7 @@ class weVersions{
 		$contentTypes[] = 'all';
 		$ct = we_base_ContentTypes::inst();
 		foreach($ct->getContentTypes() as $k){
-			//if($k != "object" && $k != "text/weTmpl" && $k != "folder") { vor #4120
+//if($k != "object" && $k != "text/weTmpl" && $k != "folder") { vor #4120
 			if($k != "object" && $k != "folder" && $k != "class_folder"){
 				$contentTypes[] = $k;
 			}
@@ -828,10 +827,10 @@ class weVersions{
 	 * for contentType = text/webedition
 	 */
 	public function setInitialDocObject($obj){
-		if(is_object($obj)){
-			$index = $obj->ID . '_' . $obj->Table;
-			$_SESSION['weS']['versions']['versionToCompare'][$index] = serialize($obj);
-			if(in_array($obj->ContentType, self::getContentTypesVersioning()) && $obj->ID != 0 && !$this->versionsExist($obj->ID, $obj->ContentType)){
+		if(is_object($obj) && $obj->ID && in_array($obj->ContentType, self::getContentTypesVersioning())){
+			$_SESSION['weS']['versions']['versionToCompare'][$obj->Table][$obj->ID] = self::getHashValue(self::removeUnneededCompareFields(self::objectToArray($obj)));
+
+			if(!$this->versionsExist($obj->ID, $obj->ContentType)){
 				$_SESSION['weS']['versions']['initialVersions'] = true;
 				$this->save($obj);
 			}
@@ -861,7 +860,7 @@ class weVersions{
 		$versionArr = array();
 		$versionArray = array();
 		$db = new DB_WE();
-		$tblFields = weVersions::getFieldsFromTable(VERSIONS_TABLE);
+		$tblFields = self::getFieldsFromTable(VERSIONS_TABLE, $db);
 
 		$db->query('SELECT * FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($id) . ' AND documentTable="' . $db->escape($table) . '" ' . $where . ' ORDER BY version ASC');
 		while($db->next_record()){
@@ -882,7 +881,7 @@ class weVersions{
 	function loadVersion($where = "1"){
 		$versionArray = array();
 		$db = new DB_WE();
-		$tblFields = weVersions::getFieldsFromTable(VERSIONS_TABLE);
+		$tblFields = self::getFieldsFromTable(VERSIONS_TABLE, $db);
 
 		$db->query('SELECT * FROM ' . VERSIONS_TABLE . ' ' . $where);
 		while($db->next_record()){
@@ -906,7 +905,7 @@ class weVersions{
 
 			$cmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
 			$cmd = we_base_request::_(we_base_request::STRING, 'cmd');
-			//import
+//import
 			if(we_base_request::_(we_base_request::BOOL, "jupl")){
 				$_SESSION['weS']['versions']['fromImport'] = 1;
 				$this->saveVersion($docObj);
@@ -941,14 +940,14 @@ class weVersions{
 	 */
 	function CheckPreferencesCtypes($ct){
 
-		//if folder was saved don' make versions (if path was changed of folder)
+//if folder was saved don' make versions (if path was changed of folder)
 		if(isset($GLOBALS['we_doc']->ClassName)){
 			if(($GLOBALS['we_doc'] instanceof we_folder) || ($GLOBALS['we_doc'] instanceof we_class_folder)){
 				return false;
 			}
 		}
 
-		//apply content types in preferences
+//apply content types in preferences
 
 		switch($ct){
 			case we_base_ContentTypes::WEDOCUMENT:
@@ -987,9 +986,9 @@ class weVersions{
 		$db = new DB_WE();
 
 		if($docTable == TEMPLATES_TABLE){
-			$prefTimeDays = (VERSIONS_TIME_DAYS_TMPL != "-1") ? VERSIONS_TIME_DAYS_TMPL : "";
-			$prefTimeWeeks = (VERSIONS_TIME_WEEKS_TMPL != "-1") ? VERSIONS_TIME_WEEKS_TMPL : "";
-			$prefTimeYears = (VERSIONS_TIME_YEARS_TMPL != "-1") ? VERSIONS_TIME_YEARS_TMPL : "";
+			$prefTimeDays = (VERSIONS_TIME_DAYS_TMPL != '-1') ? VERSIONS_TIME_DAYS_TMPL : "";
+			$prefTimeWeeks = (VERSIONS_TIME_WEEKS_TMPL != '-1') ? VERSIONS_TIME_WEEKS_TMPL : "";
+			$prefTimeYears = (VERSIONS_TIME_YEARS_TMPL != '-1') ? VERSIONS_TIME_YEARS_TMPL : "";
 		} else {
 			$prefTimeDays = (VERSIONS_TIME_DAYS != "-1") ? VERSIONS_TIME_DAYS : "";
 			$prefTimeWeeks = (VERSIONS_TIME_WEEKS != "-1") ? VERSIONS_TIME_WEEKS : "";
@@ -1009,18 +1008,18 @@ class weVersions{
 
 		if($prefTime != 0){
 			$deletetime = time() - $prefTime;
-			//initial version always stays
-			$where = " timestamp < " . $deletetime . " AND CreationDate!=timestamp ";
-			$this->deleteVersion("", $where);
+//initial version always stays
+			$where = ' timestamp < ' . $deletetime . ' AND CreationDate!=timestamp ';
+			$this->deleteVersion('', $where);
 		}
 		$prefAnzahl = intval($docTable == TEMPLATES_TABLE ? VERSIONS_ANZAHL_TMPL : VERSIONS_ANZAHL);
 
-		$anzahl = f("SELECT COUNT(1) AS Count FROM " . VERSIONS_TABLE . " WHERE documentId = " . intval($docID) . " AND documentTable = '" . $db->escape($docTable) . "'", "Count", $db);
+		$anzahl = f('SELECT COUNT(1) FROM ' . VERSIONS_TABLE . " WHERE documentId=" . intval($docID) . " AND documentTable='" . $db->escape($docTable) . "'", "", $db);
 
 		if($anzahl > $prefAnzahl && $prefAnzahl != ""){
 			$toDelete = $anzahl - $prefAnzahl;
 			$m = 0;
-			$db->query("SELECT ID, version FROM " . VERSIONS_TABLE . " WHERE documentId = " . intval($docID) . " AND documentTable = '" . $db->escape($docTable) . "' ORDER BY version ASC LIMIT " . intval($toDelete));
+			$db->query('SELECT ID, version FROM ' . VERSIONS_TABLE . " WHERE documentId=" . intval($docID) . " AND documentTable='" . $db->escape($docTable) . "' ORDER BY version ASC LIMIT " . intval($toDelete));
 			while($db->next_record()){
 				if($m < $toDelete){
 					$this->deleteVersion($db->f('ID'), '');
@@ -1034,94 +1033,93 @@ class weVersions{
 	 * @abstract make new version-entry in DB
 	 */
 	function saveVersion($document, $status = "saved"){
-		if(isset($_SESSION["user"]["ID"])){
-			$documentObj = "";
-			$db = new DB_WE();
-			if(is_object($document)){
-				$documentObj = $document;
-				$document = $this->objectToArray($document);
-			}
+		if(!isset($_SESSION["user"]["ID"])){
+			return;
+		}
+		$documentObj = "";
+		$db = new DB_WE();
+		if(is_object($document)){
+			$documentObj = $document;
+			$document = self::objectToArray($document);
+		}
 
-			if(isset($document["documentCustomerFilter"]) && is_object($document["documentCustomerFilter"])){
-				$document["documentCustomerFilter"] = $this->objectToArray($document["documentCustomerFilter"]);
-			}
+		if(isset($document["documentCustomerFilter"]) && is_object($document["documentCustomerFilter"])){
+			$document["documentCustomerFilter"] = self::objectToArray($document["documentCustomerFilter"]);
+		}
 
-			$writeVersion = true;
+		$writeVersion = true;
 
-			//preferences
-			if(!$this->CheckPreferencesCtypes($document["ContentType"])){
+//preferences
+		if(!$this->CheckPreferencesCtypes($document["ContentType"])){
+			$writeVersion = false;
+		}
+
+		if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) == "save_document" &&
+			we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 5)){
+			$status = "published";
+		}
+
+		if($document["ContentType"] != "objectFile" && $document["ContentType"] != we_base_ContentTypes::WEDOCUMENT && $document["ContentType"] != we_base_ContentTypes::HTML && !($document["ContentType"] == we_base_ContentTypes::TEMPLATE && defined('VERSIONS_CREATE_TMPL') && VERSIONS_CREATE_TMPL)){
+			$status = "saved";
+		}
+
+		if($this->IsScheduler() && $status != "unpublished" && $status != "deleted"){
+			$status = "published";
+		}
+
+		if(isset($_SESSION['weS']['versions']['doPublish']) && $_SESSION['weS']['versions']['doPublish']){
+			$status = "published";
+		}
+
+		if($document["ContentType"] == "objectFile" || $document["ContentType"] == we_base_ContentTypes::WEDOCUMENT || $document["ContentType"] == we_base_ContentTypes::HTML || ($document["ContentType"] == we_base_ContentTypes::TEMPLATE && defined('VERSIONS_CREATE_TMPL') && VERSIONS_CREATE_TMPL)){
+			if($document["ContentType"] != we_base_ContentTypes::TEMPLATE && (defined('VERSIONS_CREATE') && VERSIONS_CREATE) && $status != "published" && !we_base_request::_(we_base_request::BOOL, 'we_cmd', true, 5)){
 				$writeVersion = false;
 			}
-
-			if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) == "save_document" &&
-				we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 5)){
-				$status = "published";
+			if($document["ContentType"] == we_base_ContentTypes::TEMPLATE && (defined('VERSIONS_CREATE_TMPL') && VERSIONS_CREATE_TMPL) && $status != "published" && !we_base_request::_(we_base_request::BOOL, 'we_cmd', true, 5)){
+				$writeVersion = false;
 			}
+		}
 
-			if($document["ContentType"] != "objectFile" && $document["ContentType"] != we_base_ContentTypes::WEDOCUMENT && $document["ContentType"] != we_base_ContentTypes::HTML && !($document["ContentType"] == we_base_ContentTypes::TEMPLATE && defined('VERSIONS_CREATE_TMPL') && VERSIONS_CREATE_TMPL)){
-				$status = "saved";
+//look if there were made changes
+		if(isset($_SESSION['weS']['versions']['versionToCompare'][$document["Table"]][$document["ID"]]) && $_SESSION['weS']['versions']['versionToCompare'][$document["Table"]][$document["ID"]] != ''){
+			$lastEntry = $_SESSION['weS']['versions']['versionToCompare'][$document["Table"]][$document["ID"]];
+
+			$diffExists = (is_array($document) && $lastEntry ?
+					(self::getHashValue(self::removeUnneededCompareFields($document)) != $lastEntry) :
+					false);
+
+			$lastEntry = self::getLastEntry($document["ID"], $document["Table"], $db);
+
+			if((($status == 'published' || $status == 'saved') && isset($lastEntry['status']) && $status == $lastEntry['status']) && !$diffExists && $this->versionsExist($document["ID"], $document["ContentType"])){
+				$writeVersion = false;
 			}
+		}
 
-			if($this->IsScheduler() && $status != "unpublished" && $status != "deleted"){
-				$status = "published";
-			}
+		if($writeVersion){
+			$mods = true;
+			$tblversionsFields = self::getFieldsFromTable(VERSIONS_TABLE, $db);
 
-			if(isset($_SESSION['weS']['versions']['doPublish']) && $_SESSION['weS']['versions']['doPublish']){
-				$status = "published";
-			}
+			$set = array();
 
-			if($document["ContentType"] == "objectFile" || $document["ContentType"] == we_base_ContentTypes::WEDOCUMENT || $document["ContentType"] == we_base_ContentTypes::HTML || ($document["ContentType"] == we_base_ContentTypes::TEMPLATE && defined('VERSIONS_CREATE_TMPL') && VERSIONS_CREATE_TMPL)){
-				if($document["ContentType"] != we_base_ContentTypes::TEMPLATE && (defined('VERSIONS_CREATE') && VERSIONS_CREATE) && $status != "published" && !we_base_request::_(we_base_request::BOOL, 'we_cmd', true, 5)){
-					$writeVersion = false;
-				}
-				if($document["ContentType"] == we_base_ContentTypes::TEMPLATE && (defined('VERSIONS_CREATE_TMPL') && VERSIONS_CREATE_TMPL) && $status != "published" && !we_base_request::_(we_base_request::BOOL, 'we_cmd', true, 5)){
-					$writeVersion = false;
-				}
-			}
-
-			//look if there were made changes
-			if(isset($_SESSION['weS']['versions']['versionToCompare'][$document["ID"] . '_' . $document["Table"]]) && $_SESSION['weS']['versions']['versionToCompare'][$document["ID"] . '_' . $document["Table"]] != ''){
-				$lastEntry = unserialize($_SESSION['weS']['versions']['versionToCompare'][$document["ID"] . '_' . $document["Table"]]);
-				$lastEntry = $this->objectToArray($lastEntry);
-
-				$diffExists = array();
-				if(is_array($document) && is_array($lastEntry)){
-					$diffExists = $this->array_diff_values($document, $lastEntry);
-				}
-				$lastEntry = $this->getLastEntry($document["ID"], $document["Table"]);
-
-				if((($status == 'published' || $status == 'saved') && isset($lastEntry['status']) && $status == $lastEntry['status']) && empty($diffExists) && $this->versionsExist($document["ID"], $document["ContentType"])){
-					$writeVersion = false;
-				}
-			}
-
-			if($writeVersion){
-				$mods = true;
-				$tblversionsFields = $this->getFieldsFromTable(VERSIONS_TABLE);
-
-				$set = array();
-
-				foreach($tblversionsFields as $fieldName){
-					if($fieldName != 'ID'){
-						if(isset($document[$fieldName])){
-							$set[$fieldName] = $document[$fieldName];
-						} else {
-							$set[$fieldName] = $this->makePersistentEntry($fieldName, $status, $document, $documentObj);
-						}
+			foreach($tblversionsFields as $fieldName){
+				if($fieldName != 'ID'){
+					if(isset($document[$fieldName])){
+						$set[$fieldName] = $document[$fieldName];
+					} else {
+						$set[$fieldName] = $this->makePersistentEntry($fieldName, $status, $document, $documentObj);
 					}
 				}
-
-				if($set && $mods){
-					$theSet = we_database_base::arraySetter($set);
-					$db->query('INSERT INTO ' . VERSIONS_TABLE . ' SET ' . $theSet);
-					$vers = (isset($document["version"]) ? $document["version"] : $this->version);
-					$db->query('UPDATE ' . VERSIONS_TABLE . ' SET active = 0 WHERE documentID = ' . intval($document['ID']) . ' AND documentTable = "' . $db->escape($document["Table"]) . '" AND version != ' . intval($vers));
-					$_SESSION['weS']['versions']['versionToCompare'][$document["ID"] . '_' . $document["Table"]] = serialize($documentObj);
-				}
 			}
 
-			$this->CheckPreferencesTime($document["ID"], $document["Table"]);
+			if($set && $mods){
+				$db->query('INSERT INTO ' . VERSIONS_TABLE . ' SET ' . we_database_base::arraySetter($set));
+				$vers = (isset($document["version"]) ? $document["version"] : $this->version);
+				$db->query('UPDATE ' . VERSIONS_TABLE . ' SET active=0 WHERE documentID=' . intval($document['ID']) . ' AND documentTable="' . $db->escape($document["Table"]) . '" AND version!=' . intval($vers));
+				$_SESSION['weS']['versions']['versionToCompare'][$document["Table"]][$document["ID"]] = self::getHashValue(self::removeUnneededCompareFields($document));
+			}
 		}
+
+		$this->CheckPreferencesTime($document["ID"], $document["Table"]);
 	}
 
 	/**
@@ -1212,7 +1210,7 @@ class weVersions{
 				$modifications = array();
 
 				/* get fields which can be changed */
-				$fields = $this->getFieldsFromTable(VERSIONS_TABLE);
+				$fields = self::getFieldsFromTable(VERSIONS_TABLE, $db);
 
 				$vals = getHash('SELECT ' . implode(',', $fields) . ' FROM ' . VERSIONS_TABLE . ' WHERE version <' . intval($this->version) . " AND status != 'deleted' AND documentID=" . intval($document["ID"]) . " AND documentTable='" . $db->escape($document["Table"]) . "' ORDER BY version DESC LIMIT 1");
 				foreach($fields as $val){
@@ -1237,7 +1235,7 @@ class weVersions{
 							if($document[$val] != $lastEntryField){
 								$modifications[] = $val;
 							} elseif(($lastEntryField == '' && $document[$val] == '') || ($lastEntryField == $document[$val])){
-								// do nothing
+// do nothing
 							} else {
 								$modifications[] = $val;
 							}
@@ -1256,7 +1254,7 @@ class weVersions{
 								}
 								switch($val){
 									case 'documentElements':
-										//TODO: imi: check if we need next-level information from nested arrays
+//TODO: imi: check if we need next-level information from nested arrays
 										if(!empty($document["elements"])){
 											$newData = $document["elements"];
 											foreach($newData as $k => $vl){
@@ -1276,7 +1274,7 @@ class weVersions{
 										}
 										break;
 									case 'documentScheduler':
-										//TODO: imi: check if count() is ok (do we allways have two arrays?)
+//TODO: imi: check if count() is ok (do we allways have two arrays?)
 										if(count($document["schedArr"]) != count($lastEntryField)){
 											$diff['schedArr'] = true;
 										} elseif(!empty($document["schedArr"])){
@@ -1300,7 +1298,7 @@ class weVersions{
 										}
 										break;
 									case 'documentCustomFilter':
-										//TODO: imi: check if we need both foreach
+//TODO: imi: check if we need both foreach
 										if(isset($document["documentCustomerFilter"]) && is_array($document["documentCustomerFilter"]) && is_array($lastEntryField)){
 											$_tmpArr1 = array();
 											$_tmpArr2 = array();
@@ -1381,145 +1379,37 @@ class weVersions{
 
 	/**
 	 * @abstract get differences between two arrays
-	 * @return array with difference
+	 * @return true if they differ, false if not
 	 */
-	function array_diff_values($newArr, $oldArr){
-
-		$diff = array();
-
-		if(!is_array($newArr)){
-			$newArr = array();
-		}
-		if(!is_array($oldArr)){
-			$oldArr = array();
-		}
-		if(empty($newArr) && empty($oldArr)){
-
-		} elseif(!empty($newArr) && !empty($oldArr)){
-			$newTestArr = $newArr; // bug #7191
-			$oldTestArr = $oldArr;
-			foreach($newTestArr as $tk => $tv){
-				if(is_array($tv)){
-					//TODO: imi: maybe we should serialize instead of unset: to prevent loss of information
-					unset($newTestArr[$tk]);
-					unset($oldTestArr[$tk]);
-				}
-			}
-			foreach($oldTestArr as $tk => $tv){
-				if(is_array($tv)){
-					unset($newTestArr[$tk]);
-					unset($oldTestArr[$tk]);
-				}
-			}
-
-			$_diff = array_diff_assoc($newTestArr, $oldTestArr);
-			if(isset($_diff['Published'])){
-				unset($_diff['Published']);
-			}
-			if(isset($_diff['ModDate'])){
-				unset($_diff['ModDate']);
-			}
-			if(isset($_diff['EditPageNr'])){
-				unset($_diff['EditPageNr']);
-			}
-			if(isset($_diff['DocStream'])){
-				unset($_diff['DocStream']);
-			}
-			if(isset($_diff['DB_WE'])){
-				unset($_diff['DB_WE']);
-			}
-			if(!empty($_diff)){
-				$diff = $_diff;
-			}
-
-			foreach($newArr as $k => $v){
-				if(is_array($v)){
-					if($k == 'schedArr'){
-						//TODO: imi: check if count() is ok (do we allways have two arrays?)
-						if(count($v) != count($oldArr['schedArr'])){
-							$diff['schedArr'] = true;
-						} else {
-							foreach($v as $key => $val){
-								if(isset($oldArr['schedArr'][$key]) && is_array($oldArr['schedArr'][$key]) && is_array($val)){
-									$_tmpArr1 = array();
-									$_tmpArr2 = array();
-									foreach($val as $_k => $_v){
-										$_tmpArr1[$_k] = is_array($_v) ? serialize($_v) : $_v;
-									}
-									foreach($oldArr['schedArr'][$key] as $_k => $_v){
-										$_tmpArr2[$_k] = is_array($_v) ? serialize($_v) : $_v;
-									}
-									$_diff = array_diff_assoc($_tmpArr1, $_tmpArr2);
-									if(!empty($_diff)){
-										$diff['schedArr'][$key] = $_diff;
-									}
-								}
-							}
-						}
-					} elseif($k == 'elements'){
-						foreach($v as $key => $val){
-							//TODO: imi: should we serialize inside the foreachs instead of simulating the array to string conversion?
-							if(isset($oldArr['elements'][$key]) && is_array($oldArr['elements'][$key]) && is_array($val)){
-								if(isset($val['dat']) && is_array($val['dat']) && isset($oldArr['elements'][$key]['dat']) && is_array($oldArr['elements'][$key]['dat'])){
-									$_tmpArr1 = array();
-									$_tmpArr2 = array();
-
-									foreach($val['dat'] as $_k => $_v){
-										//$valDat[$index] = is_array($value) ? serialize($value) : $value;
-										$_tmpArr1[$_k] = is_array($_v) ? 'Array' : $_v;
-									}
-
-									foreach($oldArr['elements'][$key]['dat'] as $_k => $_v){
-										//$oldArrDat[$index] = is_array($value) ? serialize($value) : $value;
-										$_tmpArr2[$_k] = is_array($_v) ? 'Array' : $_v;
-									}
-
-									$_diff = array_diff_assoc($_tmpArr1, $_tmpArr2);
-									unset($val['dat']);
-									unset($oldArr['elements'][$key]['dat']);
-									$diff['elements'][$key] = $_diff;
-								} else {
-									if(isset($val['dat']) && is_array($val['dat'])){
-										$val['dat'] = serialize($val['dat']);
-									}
-									if(isset($oldArr['elements'][$key]['dat']) && is_array($oldArr['elements'][$key]['dat'])){
-										$oldArr['elements'][$key]['dat'] = serialize($oldArr['elements'][$key]['dat']);
-									}
-								}
-
-								$_diff = array_diff_assoc($val, $oldArr['elements'][$key]);
-								if(!empty($_diff) && isset($_diff['dat'])){
-									$diff['elements'][$key] = $_diff;
-								}
-							}
-						}
-					} elseif($k == 'documentCustomerFilter'){
-						//TODO: imi: check if we need the information of serialized arrays instead of array to string = Array
-						if(is_array($v) && isset($oldArr['documentCustomerFilter']) && is_array($oldArr['documentCustomerFilter'])){
-
-							$_tmpArr1 = array();
-							$_tmpArr2 = array();
-							foreach($v as $_k => $_v){
-								$_tmpArr1[$_k] = is_array($_v) ? serialize($_v) : $_v;
-								//$vContent[$index] = is_array($value) ? 'Array' : $value;
-							}
-							foreach($oldArr['documentCustomerFilter'] as $_k => $_v){
-								$_tmpArr2[$_k] = is_array($_v) ? serialize($_v) : $_v;
-								//$oldArrContent[$index] = is_array($value) ? 'Array' : $value;
-							}
-							$_diff = array_diff_assoc($_tmpArr1, $_tmpArr2);
-							if(!empty($_diff)){
-								$diff['documentCustomerFilter'] = $_diff;
-							}
-						}
-					}
-				} else {
-
-				}
-			}
-		}
-		return $diff;
-	}
+	/*
+	  private static function array_diff_values(array $newArr, array $oldArr){
+	  if(empty($newArr) && empty($oldArr)){
+	  return false;
+	  }
+	  //we can't use serialize, since the data in the array might be different
+	  //$ret = array();
+	  $keys = array_merge(array_keys($newArr), array_keys($oldArr));
+	  foreach($keys as $k){
+	  if(!isset($newArr[$k]) || !isset($oldArr[$k])){
+	  //$ret[] = $k;
+	  return true;
+	  } elseif(is_array($newArr[$k]) && !is_array($oldArr[$k]) || !is_array($newArr[$k]) && is_array($oldArr[$k])){
+	  //$ret[] = $k;
+	  return true;
+	  } elseif(is_array($newArr[$k])){
+	  $tmp = self::array_diff_values($newArr[$k], $oldArr[$k]);
+	  if($tmp){
+	  //$ret[] = array($k => $tmp);
+	  return true;
+	  }
+	  } elseif($newArr[$k] != $oldArr[$k]){
+	  //$ret[] = $k;
+	  return true;
+	  }
+	  }
+	  return false;
+	  }
+	 */
 
 	/**
 	 * @abstract create file to preview dynamic documents
@@ -1541,7 +1431,7 @@ class weVersions{
 
 		$isdyn = !isset($GLOBALS['WE_IS_DYN']) ? 'notSet' : $GLOBALS['WE_IS_DYN'];
 
-		//usually the site file always exists
+//usually the site file always exists
 		if($includepath != '' && file_exists($includepath)){
 
 			$_opt = getHttpOption();
@@ -1608,50 +1498,48 @@ class weVersions{
 	 * @abstract save version-entry in DB which is marked as deleted
 	 */
 	function setVersionOnDelete($docID, $docTable, $ct, we_database_base $db){
-
-		if(isset($_SESSION["user"]["ID"])){
-			$lastEntry = $this->getLastEntry($docID, $docTable);
-
-			$lastEntry['timestamp'] = time();
-			$lastEntry['status'] = "deleted";
-			$lastEntry['version'] = (isset($lastEntry['version'])) ? $lastEntry['version'] + 1 : 1;
-			$lastEntry['modifications'] = 1;
-			$lastEntry['modifierID'] = $_SESSION["user"]["ID"];
-			$lastEntry['IP'] = $_SERVER['REMOTE_ADDR'];
-			$lastEntry['Browser'] = $_SERVER['HTTP_USER_AGENT'];
-			$lastEntry['active'] = 1;
-			$lastEntry['fromScheduler'] = $this->IsScheduler();
-
-			$keys = array();
-			$vals = array();
-			$db = new DB_WE();
-
-			foreach($lastEntry as $k => $v){
-				if($k != "ID"){
-					$keys[] = $db->escape($k);
-					$vals[] = '"' . $db->escape($v) . '"';
-				}
-			}
-
-			$doDelete = true;
-			//preferences
-			if(!$this->CheckPreferencesCtypes($ct)){
-				$doDelete = false;
-			}
-
-
-			if(defined('VERSIONS_CREATE') && VERSIONS_CREATE){
-				$doDelete = false;
-			}
-
-
-			if(!empty($keys) && !empty($vals) && $doDelete){
-				$db->query('INSERT INTO ' . VERSIONS_TABLE . ' (' . implode(',', $keys) . ') VALUES(' . implode(',', $vals) . ')');
-				$db->query('UPDATE ' . VERSIONS_TABLE . ' SET active=0 WHERE documentID=' . intval($docID) . " AND documentTable = '" . $db->escape($docTable) . "' AND version!=" . intval($lastEntry['version']));
-			}
-
-			$this->CheckPreferencesTime($docID, $docTable);
+		if(!isset($_SESSION["user"]["ID"])){
+			return;
 		}
+		$lastEntry = self::getLastEntry($docID, $docTable, $db);
+
+		$lastEntry['timestamp'] = time();
+		$lastEntry['status'] = "deleted";
+		$lastEntry['version'] = (isset($lastEntry['version'])) ? $lastEntry['version'] + 1 : 1;
+		$lastEntry['modifications'] = 1;
+		$lastEntry['modifierID'] = $_SESSION["user"]["ID"];
+		$lastEntry['IP'] = $_SERVER['REMOTE_ADDR'];
+		$lastEntry['Browser'] = $_SERVER['HTTP_USER_AGENT'];
+		$lastEntry['active'] = 1;
+		$lastEntry['fromScheduler'] = $this->IsScheduler();
+
+		$keys = array();
+		$vals = array();
+		$db = new DB_WE();
+
+		foreach($lastEntry as $k => $v){
+			if($k != "ID"){
+				$keys[] = $db->escape($k);
+				$vals[] = '"' . $db->escape($v) . '"';
+			}
+		}
+
+		$doDelete = true;
+//preferences
+		if(!$this->CheckPreferencesCtypes($ct)){
+			$doDelete = false;
+		}
+
+		if(defined('VERSIONS_CREATE') && VERSIONS_CREATE){
+			$doDelete = false;
+		}
+
+		if($keys && $vals && $doDelete){
+			$db->query('INSERT INTO ' . VERSIONS_TABLE . ' (' . implode(',', $keys) . ') VALUES(' . implode(',', $vals) . ')');
+			$db->query('UPDATE ' . VERSIONS_TABLE . ' SET active=0 WHERE documentID=' . intval($docID) . " AND documentTable = '" . $db->escape($docTable) . "' AND version!=" . intval($lastEntry['version']));
+		}
+
+		$this->CheckPreferencesTime($docID, $docTable);
 	}
 
 	/**
@@ -1777,10 +1665,10 @@ class weVersions{
 				$resetDoc->EditPageNr = $_SESSION['weS']['EditPageNr'];
 
 				$existsInFileTable = f('SELECT ID FROM ' . $db->escape($resetArray["documentTable"]) . ' WHERE ID=' . intval($resetDoc->ID), "", $db);
-				//if document was deleted
+//if document was deleted
 
 				if(!$existsInFileTable){
-					//save this id and contenttype to turn the id for the versions
+//save this id and contenttype to turn the id for the versions
 					$oldId = $resetDoc->ID;
 					$oldCt = $resetDoc->ContentType;
 					$resetDoc->ID = 0;
@@ -1789,11 +1677,11 @@ class weVersions{
 				}
 
 				if($resetArray["ParentID"] != 0){
-					//if folder was deleted
+//if folder was deleted
 					$existsPath = f('SELECT 1 FROM ' . $db->escape($resetArray["documentTable"]) . ' WHERE ID=' . intval($resetArray["ParentID"]) . ' AND IsFolder=1', '', $db);
 
 					if(!$existsPath){
-						// create old folder if it does not exists
+// create old folder if it does not exists
 
 						$folders = explode('/', $resetArray["Path"]);
 						foreach($folders as $k => $v){
@@ -1855,7 +1743,7 @@ class weVersions{
 
 
 				we_temporaryDocument::delete($resetDoc->ID, $resetDoc->Table, $db);
-				//$resetDoc->initByID($resetDoc->ID);
+//$resetDoc->initByID($resetDoc->ID);
 				$resetDoc->ModDate = time();
 				$resetDoc->Published = $resetArray["timestamp"];
 
@@ -1889,7 +1777,7 @@ class weVersions{
 				$_SESSION['weS']['versions']['logResetIds'][$resetArray['ID']]['Version'] = $resetArray['version'];
 				$_SESSION['weS']['versions']['logResetIds'][$resetArray['ID']]['documentID'] = $resetArray['documentID'];
 
-				//update versions if id or path were changed
+//update versions if id or path were changed
 				if(!$existsInFileTable){
 					$db->query('UPDATE ' . VERSIONS_TABLE . ' SET documentID=' . intval($resetDoc->ID) . ',ParentID=' . intval($resetDoc->ParentID) . ',active=0 WHERE documentID=' . intval($oldId) . " AND ContentType='" . $db->escape($oldCt) . "'");
 				}
@@ -2078,7 +1966,7 @@ class weVersions{
 					}
 				}
 				return $fieldValueText . '<br/>';
-			//Scheduler
+//Scheduler
 			case 'task':
 				return ($v ? g_l('versions', '[' . $k . '_' . $v . ']') : '');
 			case 'type':
@@ -2138,7 +2026,7 @@ class weVersions{
 					}
 				}
 				return $fieldValueText;
-			//Customer Filter
+//Customer Filter
 			case '_id':
 				return ($v == "") ? 0 : $v;
 			case '_accessControlOnTemplate':
@@ -2215,11 +2103,8 @@ class weVersions{
 	 * @abstract get array of fieldnames from $table
 	 * @return array of fieldnames
 	 */
-	function getFieldsFromTable($table){
-
+	private static function getFieldsFromTable($table, we_database_base $db){
 		$fieldNames = array();
-
-		$db = new DB_WE();
 
 		$tableInfo = $db->metadata($table);
 		foreach($tableInfo as $cur){
@@ -2233,37 +2118,44 @@ class weVersions{
 	 * @abstract convert object to array
 	 * @return array
 	 */
-	function objectToArray($obj){
-
+	private static function objectToArray($obj){
 		$arr = array();
 		$_arr = is_object($obj) ? get_object_vars($obj) : $obj;
 
 		foreach($_arr as $key => $val){
-			$val = (is_array($val) || is_object($val)) ? $this->objectToArray($val) : $val;
-			$arr[$key] = $val;
+			//$val = (is_array($val) || is_object($val)) ? self::objectToArray($val) : $val;
+			$arr[$key] = (is_array($val) ? self::objectToArray($val) : (is_object($val) ? serialize($val) : $val));
 		}
 
 		return $arr;
+	}
+
+	private static function removeUnneededCompareFields(&$doc){
+		unset($doc['Published'], $doc['ModDate'], $doc['RebuildDate'], $doc['EditPageNr'], $doc['DocStream'], $doc['DB_WE'], $doc['Filehash'], $doc['usedElementNames'], $doc['hasVariants'], $doc['editorSaves']);
+		return $doc;
+	}
+
+	private static function getHashValue(array $a, $inner = false){
+		$tmp = '';
+		$keys = array_keys($a);
+		sort($keys);
+		foreach($keys as $key){
+			$tmp.=$key . (is_array($a[$key]) ? self::getHashValue($a[$key], true) : $a[$key]);
+		}
+		return ($inner ? $tmp : md5($tmp));
 	}
 
 	/**
 	 * @abstract get last record of $docID which was saved or published
 	 * @return array with fields and values
 	 */
-	function getLastEntry($docID, $docTable){
+	private static function getLastEntry($docID, $docTable, we_database_base $db){
+		return getHash('SELECT * FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($docID) . " AND documentTable='" . $db->escape($docTable) . "' AND status IN ('saved','published','unpublished','deleted') ORDER BY version DESC LIMIT 1", $db, MYSQL_ASSOC);
+	}
 
-		$modArray = array();
+	public static function versionExists($docID, $docTable){
 		$db = new DB_WE();
-		$tblFields = $this->getFieldsFromTable(VERSIONS_TABLE);
-
-		$db->query('SELECT * FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($docID) . " AND documentTable='" . $db->escape($docTable) . "' AND status IN ('saved','published','unpublished','deleted') ORDER BY version DESC LIMIT 1");
-		if($db->next_record()){
-			foreach($tblFields as $k => $v){
-				$modArray[$v] = $db->f("" . $v);
-			}
-		}
-
-		return $modArray;
+		return f('SELECT 1 FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($docID) . " AND documentTable='" . $db->escape($docTable) . "' AND status IN ('saved','published','unpublished','deleted') LIMIT 1", $db);
 	}
 
 	/**

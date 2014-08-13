@@ -33,6 +33,11 @@ $queries = array();
 
 if($_transaction){ // clean session
 	if(isset($_SESSION['weS']['we_data'][$_transaction])){
+		$doc = $_SESSION['weS']['we_data'][$_transaction][0];
+		if(isset($_SESSION['weS']['versions']['versionToCompare'][$doc['Table']][$doc['ID']])){
+			unset($_SESSION['weS']['versions']['versionToCompare'][$doc['Table']][$doc['ID']]);
+		}
+
 		unset($_SESSION['weS']['we_data'][$_transaction]); // we_transaction is resetted here
 	}
 }
@@ -45,6 +50,6 @@ for($i = 0; $i < count($_ids); $i++){
 
 foreach($queries as $table => $ids){
 	//don't clean all locks! - is this really a needed statement???
-	$DB_WE->query('DELETE FROM ' . LOCK_TABLE . ' WHERE tbl ="' . $DB_WE->escape(stripTblPrefix($table)) . '" AND ID IN (' . implode(', ', $ids) . ') AND sessionID="' . session_id() . '" AND UserID=' . we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2));
+	$DB_WE->query('DELETE FROM ' . LOCK_TABLE . ' WHERE tbl="' . $DB_WE->escape(stripTblPrefix($table)) . '" AND ID IN (' . implode(', ', $ids) . ') AND sessionID="' . session_id() . '" AND UserID=' . we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2));
 }
 ?>UNLOCKED

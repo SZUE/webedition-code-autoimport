@@ -81,7 +81,7 @@ class we_navigation_frames extends weModuleFrames{
 		return parent::getHTMLFrameset($extraHead, $extraUrlParams);
 	}
 
-	function getHTMLTreeFooter(){
+	protected function getHTMLTreeFooter(){
 		return '<div id="infoField" style="margin:5px; display: none;" class="defaultfont"></div>';
 	}
 
@@ -125,7 +125,7 @@ class we_navigation_frames extends weModuleFrames{
 	 *
 	 * @return string
 	 */
-	function getHTMLEditorHeader(){
+	protected function getHTMLEditorHeader(){
 		if(we_base_request::_(we_base_request::BOOL, 'home')){
 			return $this->getHTMLDocument(
 					we_html_element::htmlBody(
@@ -229,7 +229,7 @@ function setTab(tab) {
 		return $this->getHTMLDocument($body, $tabsHead);
 	}
 
-	function getHTMLEditorBody(){
+	protected function getHTMLEditorBody(){
 
 		$hiddens = array('cmd' => 'tool_' . $this->toolName . '_edit', 'pnt' => 'edbody', 'vernr' => we_base_request::_(we_base_request::INT, 'vernr', 0));
 
@@ -1786,7 +1786,7 @@ function ' . $prefix . 'setLinkSelection(value){
 		));
 	}
 
-	function getHTMLEditorFooter(){
+	protected function getHTMLEditorFooter(){
 		if(we_base_request::_(we_base_request::BOOL, "home")){
 			return $this->getHTMLDocument(we_html_element::htmlBody(array(
 						"bgcolor" => "#F0EFF0"

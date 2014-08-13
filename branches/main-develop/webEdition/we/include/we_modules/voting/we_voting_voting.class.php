@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,7 +27,6 @@
  *
  */
 class we_voting_voting extends weModelBase{
-
 //voting status codes
 
 	const SUCCESS = 1;
@@ -173,12 +171,13 @@ class we_voting_voting extends weModelBase{
 		}
 
 		$this->ParentID = $this->ParentID ? $this->ParentID : 0;
-		if(isset($_SESSION['user']['ID']) && ($this->RestrictOwners && empty($this->Owners) || !in_array($_SESSION['user']['ID'], $this->Owners)))
+		if(isset($_SESSION['user']['ID']) && ($this->RestrictOwners && empty($this->Owners) || !in_array($_SESSION['user']['ID'], $this->Owners))){
 			$this->Owners[] = $_SESSION['user']['ID'];
+		}
 
-		$_old_QASet = f('SELECT QASet FROM ' . VOTING_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($this->Text) . "'", "QASet", $GLOBALS['DB_WE']);
+		/*$_old_QASet = f('SELECT QASet FROM ' . VOTING_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($this->Text) . "'");
 		$_new_QASet = $this->QASet;
-
+*/
 		$this->QASet = serialize($this->QASet);
 		if($with_scores || $this->ID == 0){
 			$this->Scores = serialize($this->Scores);
@@ -277,7 +276,7 @@ class we_voting_voting extends weModelBase{
 	}
 
 	function initByName($name){
-		$id = f('SELECT ID FROM ' . VOTING_TABLE . ' WHERE Text="' . $this->db->escape($name) . '"', 'ID', $this->db);
+		$id = f('SELECT ID FROM ' . VOTING_TABLE . ' WHERE Text="' . $this->db->escape($name) . '"', '', $this->db);
 		return $this->load($id);
 	}
 
@@ -527,8 +526,9 @@ class we_voting_voting extends weModelBase{
 	function canVoteIP(){
 
 		$this->Revote = unserialize($this->Revote);
-		if(!is_array($this->Revote))
+		if(!is_array($this->Revote)){
 			$this->Revote = array();
+		}
 
 		$revotetime = ($this->RevoteTime < 0 ? time() + 5 : $this->RevoteTime);
 

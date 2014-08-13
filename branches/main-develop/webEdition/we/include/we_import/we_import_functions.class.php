@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_import_functions{
-
 	const TYPE_CSV = 'CSVImport';
 	const TYPE_GENERIC_XML = 'GXMLImport';
 	const TYPE_WE_XML = 'WXMLImport';
@@ -180,14 +179,14 @@ abstract class we_import_functions{
 	 * @param string $filename
 	 * @desc corrects the filename if it contains invalid chars
 	 */
-	//FIXME: make these Rules global!
 	static function correctFilename($filename, $allowPath = false){
 		$filename = strtr($filename, array(' ' => '-', 'ä' => 'ae', 'ö' => 'oe', 'ü' => 'ue', 'Ä' => 'Ae', 'Ö' => 'Oe', 'Ü' => 'Ue', 'ß' => 'ss'));
 		$filename = preg_replace('%[^a-z0-9\._+\-@' . ($allowPath ? '/' : '') . ']%i', '', $filename);
 		if(!$allowPath && strlen($filename) > 100){
 			$filename = substr($filename, 0, 100);
 		}
-		return empty($filename) ? 'newfile' : trim($filename, '/');
+		$filename = trim($filename, '/');
+		return $filename ? $filename : 'newfile';
 	}
 
 	/**

@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_backup_wizard{
-
 	const BACKUP = 1;
 	const RECOVER = 2;
 
@@ -335,14 +334,13 @@ function doClick(opt) {
 	}
 
 	function getHTMLStep($step){
-
-		if($this->mode == self::BACKUP){
-			$step = 'getHTMLBackupStep' . $step;
-			return $this->{$step}();
-		}
-		if($this->mode == self::RECOVER){
-			$step = 'getHTMLRecoverStep' . $step;
-			return $this->{$step}();
+		switch($this->mode){
+			case self::BACKUP:
+				$step = 'getHTMLBackupStep' . $step;
+				return $this->{$step}();
+			case self::RECOVER:
+				$step = 'getHTMLRecoverStep' . $step;
+				return $this->{$step}();
 		}
 	}
 
@@ -447,7 +445,7 @@ self.focus();
 						$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[defaultcharset_warning]"), we_html_tools::TYPE_ALERT, 600, false), "space" => 0, "noline" => 1);
 					}
 					$parts[] = array("headline" => "", "html" => ($this->fileUploader ? $this->fileUploader->getHtmlMaxUploadSizeAlert(600) :
-						we_html_tools::htmlAlertAttentionBox($alertMaxSize, we_html_tools::TYPE_ALERT, 600)), "space" => 0, "noline" => 1);
+							we_html_tools::htmlAlertAttentionBox($alertMaxSize, we_html_tools::TYPE_ALERT, 600)), "space" => 0, "noline" => 1);
 					$parts[] = array("headline" => "", "html" => $inputTypeFile, "space" => 0, "noline" => 1);
 					$parts[] = array("headline" => "", "html" => we_html_tools::getPixel(1, 1), "space" => 0, "noline" => 1);
 				} else {
@@ -1127,21 +1125,16 @@ function startStep(){
 	}
 
 	function getHTMLBusy(){
-		$head = //FIXME: missing title
-			we_html_tools::getHtmlInnerHead() . STYLESHEET;
+		$head = we_html_tools::getHtmlInnerHead(g_l('backup', "[wizard_title]")) . STYLESHEET;
 		$body = '';
 
 		$table = new we_html_table(array("border" => 0, "align" => "right", "cellpadding" => 0, "cellspacing" => 0), 2, 4);
 		$table->setCol(0, 0, null, we_html_tools::getPixel(15, 5));
 
 		if(we_base_request::_(we_base_request::STRING, "operation_mode") == "busy"){
-
 			$text = we_base_request::_(we_base_request::BOOL, "current_description", g_l('backup', "[working]"));
 
-			$progress = we_base_request::_(we_base_request::INT, "percent", 0);
-
-
-			$progress = new we_progressBar($progress);
+			$progress = new we_progressBar(we_base_request::_(we_base_request::INT, "percent", 0));
 			$progress->setStudLen(200);
 			$progress->addText($text, 0, "current_description");
 			$head.=$progress->getJSCode();
@@ -1153,10 +1146,11 @@ function startStep(){
 
 		$step = we_base_request::_(we_base_request::INT, "step", 0);
 
-		if($this->mode == 1){
-			switch($step){
-				case 1:
-					$head.=we_html_element::jsElement('
+		switch($this->mode){
+			case self::BACKUP:
+				switch($step){
+					case 1:
+						$head.=we_html_element::jsElement('
 function setLocation(loc){
 	location.href=loc;
 }
@@ -1169,34 +1163,33 @@ function doExport() {
 		top.body.we_submitForm("cmd","' . WE_INCLUDES_DIR . 'we_editors/we_backup_cmd.php");
 	}
 }');
-					$table->setCol(0, 2, null, we_html_tools::getPixel(355, 5));
-					$table->setCol(0, 3, null, we_html_button::position_yes_no_cancel(we_html_button::create_button("make_backup", "javascript:doExport();"), null, we_html_button::create_button("cancel", "javascript:top.close();")));
-					break;
-				case 2:
-					$table->setCol(0, 2, null, we_html_tools::getPixel(265, 5));
-					$table->setCol(0, 3, null, we_html_button::create_button("cancel", "javascript:top.close();"));
-					break;
-				case 3:
-					if(we_base_request::_(we_base_request::BOOL, "do_import_after_backup")){
-						$body = we_html_button::create_button("next", "javascript:top.body.location='" . WE_INCLUDES_DIR . "we_editors/we_recover_backup.php?pnt=body&step=2';top.busy.location='" . WE_INCLUDES_DIR . "we_editors/we_recover_backup.php?pnt=cmd';top.cmd.location='" . WE_INCLUDES_DIR . "we_editors/we_recover_backup.php?pnt=busy';");
-					} else if(isset($_SESSION['weS']['inbackup']) && $_SESSION['weS']['inbackup']){
-						$body = we_html_button::create_button("next", "javascript:top.opener.weiter();top.close();");
-						unset($_SESSION['weS']['inbackup']);
-					} else {
-						$head.=we_html_element::jsElement("top.opener.top.afterBackup=true;");
-						$body = we_html_button::create_button("close", "javascript:top.close();");
-					}
-					$table->setCol(0, 2, null, we_html_tools::getPixel(495, 5));
-					$table->setCol(0, 3, null, $body);
-					break;
-				default:
-			}
-		}
-
-		if($this->mode == 2){
-			switch($step){
-				case 1:
-					$head .= we_html_element::jsElement('
+						$table->setCol(0, 2, null, we_html_tools::getPixel(355, 5));
+						$table->setCol(0, 3, null, we_html_button::position_yes_no_cancel(we_html_button::create_button("make_backup", "javascript:doExport();"), null, we_html_button::create_button("cancel", "javascript:top.close();")));
+						break;
+					case 2:
+						$table->setCol(0, 2, null, we_html_tools::getPixel(265, 5));
+						$table->setCol(0, 3, null, we_html_button::create_button("cancel", "javascript:top.close();"));
+						break;
+					case 3:
+						if(we_base_request::_(we_base_request::BOOL, "do_import_after_backup")){
+							$body = we_html_button::create_button("next", "javascript:top.body.location='" . WE_INCLUDES_DIR . "we_editors/we_recover_backup.php?pnt=body&step=2';top.busy.location='" . WE_INCLUDES_DIR . "we_editors/we_recover_backup.php?pnt=cmd';top.cmd.location='" . WE_INCLUDES_DIR . "we_editors/we_recover_backup.php?pnt=busy';");
+						} else if(isset($_SESSION['weS']['inbackup']) && $_SESSION['weS']['inbackup']){
+							$body = we_html_button::create_button("next", "javascript:top.opener.weiter();top.close();");
+							unset($_SESSION['weS']['inbackup']);
+						} else {
+							$head.=we_html_element::jsElement("top.opener.top.afterBackup=true;");
+							$body = we_html_button::create_button("close", "javascript:top.close();");
+						}
+						$table->setCol(0, 2, null, we_html_tools::getPixel(495, 5));
+						$table->setCol(0, 3, null, $body);
+						break;
+					default:
+				}
+				break;
+			case self::RECOVER:
+				switch($step){
+					case 1:
+						$head .= we_html_element::jsElement('
 function setLocation(loc){
 	location.href=loc;
 }
@@ -1219,63 +1212,64 @@ function press_yes() {
 	}
 
 }");
-					$buttons = we_html_button::position_yes_no_cancel(
-							we_html_button::create_button("yes", "javascript:press_yes();"), we_html_button::create_button("no", "javascript:top.body.location='" . $this->frameset . "?pnt=body&step=2';"), we_html_button::create_button("cancel", "javascript:top.close();")
-					);
-					$table->setCol(0, 2, null, we_html_tools::getPixel(290, 5));
-					$table->setCol(0, 3, null, $buttons);
-					break;
-				case 2:
+						$buttons = we_html_button::position_yes_no_cancel(
+								we_html_button::create_button("yes", "javascript:press_yes();"), we_html_button::create_button("no", "javascript:top.body.location='" . $this->frameset . "?pnt=body&step=2';"), we_html_button::create_button("cancel", "javascript:top.close();")
+						);
+						$table->setCol(0, 2, null, we_html_tools::getPixel(290, 5));
+						$table->setCol(0, 3, null, $buttons);
+						break;
+					case 2:
 
-					$nextbuts = we_html_button::create_button_table(array(
-							we_html_button::create_button("back", "javascript:top.body.location='" . $this->frameset . "?pnt=body&step=1'", true),
-							we_html_button::create_button("next", "javascript:top.body.we_submitForm('body','" . $this->frameset . "');")));
+						$nextbuts = we_html_button::create_button_table(array(
+								we_html_button::create_button("back", "javascript:top.body.location='" . $this->frameset . "?pnt=body&step=1'", true),
+								we_html_button::create_button("next", "javascript:top.body.we_submitForm('body','" . $this->frameset . "');")));
 
-					$buttons = we_html_button::position_yes_no_cancel($nextbuts, null, we_html_button::create_button("cancel", "javascript:top.close();"));
+						$buttons = we_html_button::position_yes_no_cancel($nextbuts, null, we_html_button::create_button("cancel", "javascript:top.close();"));
 
-					$table->setCol(0, 2, null, we_html_tools::getPixel(290, 5));
-					$table->setCol(0, 3, null, $buttons);
-					break;
-				case 3:
-					//FIXME: delete condition when new uploader is stable
-					if(!we_fileupload_include::USE_LEGACY_FOR_BACKUP){
-						$startImportCall = $this->fileUploader ? $this->fileUploader->getJsSubmitCall("top.body.startImport(true)") : "top.body.startImport();";
-						if(defined('WORKFLOW_TABLE')){
-							$nextbut = (count(we_workflow_utility::getAllWorkflowDocs(FILE_TABLE)) > 0 || (defined('OBJECT_FILES_TABLE') && count(we_workflow_utility::getAllWorkflowDocs(OBJECT_FILES_TABLE)) > 0) ?
-									we_html_button::create_button("restore_backup", "javascript:if(confirm('" . g_l('modules_workflow', '[ask_before_recover]') . "')) " . $startImportCall . ";") :
-									we_html_button::create_button("restore_backup", "javascript:" . $startImportCall));
+						$table->setCol(0, 2, null, we_html_tools::getPixel(290, 5));
+						$table->setCol(0, 3, null, $buttons);
+						break;
+					case 3:
+						//FIXME: delete condition when new uploader is stable
+						if(!we_fileupload_include::USE_LEGACY_FOR_BACKUP){
+							$startImportCall = $this->fileUploader ? $this->fileUploader->getJsSubmitCall("top.body.startImport(true)") : "top.body.startImport();";
+							if(defined('WORKFLOW_TABLE')){
+								$nextbut = (count(we_workflow_utility::getAllWorkflowDocs(FILE_TABLE)) > 0 || (defined('OBJECT_FILES_TABLE') && count(we_workflow_utility::getAllWorkflowDocs(OBJECT_FILES_TABLE)) > 0) ?
+										we_html_button::create_button("restore_backup", "javascript:if(confirm('" . g_l('modules_workflow', '[ask_before_recover]') . "')) " . $startImportCall . ";") :
+										we_html_button::create_button("restore_backup", "javascript:" . $startImportCall));
+							} else {
+								$nextbut = we_html_button::create_button("restore_backup", "javascript:" . $startImportCall);
+							}
 						} else {
-							$nextbut = we_html_button::create_button("restore_backup", "javascript:" . $startImportCall);
+							if(defined('WORKFLOW_TABLE')){
+								$nextbut = (count(we_workflow_utility::getAllWorkflowDocs(FILE_TABLE)) > 0 || (defined('OBJECT_FILES_TABLE') && count(we_workflow_utility::getAllWorkflowDocs(OBJECT_FILES_TABLE)) > 0) ?
+										we_html_button::create_button("restore_backup", "javascript:if(confirm('" . g_l('modules_workflow', '[ask_before_recover]') . "')) top.body.startImport();") :
+										we_html_button::create_button("restore_backup", "javascript:top.body.startImport();"));
+							} else {
+								$nextbut = we_html_button::create_button("restore_backup", "javascript:top.body.startImport();");
+							}
 						}
-					} else {
-						if(defined('WORKFLOW_TABLE')){
-							$nextbut = (count(we_workflow_utility::getAllWorkflowDocs(FILE_TABLE)) > 0 || (defined('OBJECT_FILES_TABLE') && count(we_workflow_utility::getAllWorkflowDocs(OBJECT_FILES_TABLE)) > 0) ?
-									we_html_button::create_button("restore_backup", "javascript:if(confirm('" . g_l('modules_workflow', '[ask_before_recover]') . "')) top.body.startImport();") :
-									we_html_button::create_button("restore_backup", "javascript:top.body.startImport();"));
-						} else {
-							$nextbut = we_html_button::create_button("restore_backup", "javascript:top.body.startImport();");
-						}
-					}
 
-					$nextprevbuts = we_html_button::create_button_table(array(
-							we_html_button::create_button("back", "javascript:top.body.location='" . $this->frameset . "?pnt=body&step=2';"),
-							$nextbut));
-					$buttons = we_html_button::position_yes_no_cancel($nextprevbuts, null, we_html_button::create_button("cancel", "javascript:top.close();"));
+						$nextprevbuts = we_html_button::create_button_table(array(
+								we_html_button::create_button("back", "javascript:top.body.location='" . $this->frameset . "?pnt=body&step=2';"),
+								$nextbut));
+						$buttons = we_html_button::position_yes_no_cancel($nextprevbuts, null, we_html_button::create_button("cancel", "javascript:top.close();"));
 
 
-					$table->setCol(0, 2, null, we_html_tools::getPixel(240, 5));
-					$table->setCol(0, 3, null, $buttons);
-					break;
-				case 4:
-					$table->setCol(0, 2, null, we_html_tools::getPixel(260, 5));
-					$table->setCol(0, 3, null, we_html_button::create_button("cancel", "javascript:top.close();"));
-					break;
-				case 5:
-					$table->setCol(0, 2, null, we_html_tools::getPixel(490, 5));
-					$table->setCol(0, 3, null, we_html_button::create_button("close", "javascript:top.close();"));
-					break;
-				default:
-			}
+						$table->setCol(0, 2, null, we_html_tools::getPixel(240, 5));
+						$table->setCol(0, 3, null, $buttons);
+						break;
+					case 4:
+						$table->setCol(0, 2, null, we_html_tools::getPixel(260, 5));
+						$table->setCol(0, 3, null, we_html_button::create_button("cancel", "javascript:top.close();"));
+						break;
+					case 5:
+						$table->setCol(0, 2, null, we_html_tools::getPixel(490, 5));
+						$table->setCol(0, 3, null, we_html_button::create_button("close", "javascript:top.close();"));
+						break;
+					default:
+				}
+				break;
 		}
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
@@ -1442,7 +1436,7 @@ top.busy.location="' . $this->frameset . '?pnt=busy";' .
 								$we_backup_obj->filename = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . $_FILES['we_upload_file']['name'];
 								if(!move_uploaded_file($_FILES["we_upload_file"]["tmp_name"], $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp/" . $_FILES["we_upload_file"]["name"])){
 									print we_html_element::jsElement('top.busy.location="' . $this->frameset . '?pnt=busy";' .
-										we_message_reporting::getShowMessageCall(sprintf(g_l('backup', "[cannot_save_tmpfile]"), BACKUP_DIR), we_message_reporting::WE_MESSAGE_ERROR));
+											we_message_reporting::getShowMessageCall(sprintf(g_l('backup', "[cannot_save_tmpfile]"), BACKUP_DIR), we_message_reporting::WE_MESSAGE_ERROR));
 									return '';
 								}
 								we_base_file::insertIntoCleanUp($we_backup_obj->filename, time());

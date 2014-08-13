@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -33,7 +32,6 @@
  * @static
  */
 abstract class we_base_util{
-	
 	const MIME_BY_EXTENSION = 1;
 	const MIME_BY_HEAD = 2;
 	const MIME_BY_HEAD_THEN_EXTENSION = 0;
@@ -71,7 +69,7 @@ abstract class we_base_util{
 		'dxr' => 'application/x-director',
 		'dvi' => 'application/x-dvi',
 		'gtar' => 'application/x-gtar',
-		'php' => 'application/x-httpd-php',//in WE this is text/html?
+		'php' => 'application/x-httpd-php', //in WE this is text/html?
 		'php4' => 'application/x-httpd-php',
 		'php3' => 'application/x-httpd-php',
 		'phtml' => 'application/x-httpd-php',
@@ -128,7 +126,6 @@ abstract class we_base_util{
 		'word' => 'application/msword',
 		'xl' => 'application/excel',
 		'eml' => 'message/rfc822',
-
 		'svg' => 'image/svg+xml',
 		'svgz' => 'image/svg+xml',
 		'shtm' => 'text/html'
@@ -352,7 +349,7 @@ abstract class we_base_util{
 		return $_response;
 	}
 
-	function convertDateInRequest(array &$req, $asInt){
+	function convertDateInRequest(array &$req, $asInt = false){
 		$dates = $regs = array();
 
 		foreach($req as $key => $value){
@@ -362,9 +359,12 @@ abstract class we_base_util{
 			}
 		}
 		foreach($dates as $k => $vv){
+			if($vv['year'] == 0){
+				$vv['month'] = $vv['day'] = $vv['hour'] = $vv['minute'] = 0;
+			}
 			$req[$k] = ($asInt ?
 					mktime($vv['hour'], $vv['minute'], 0, $vv['month'], $vv['day'], $vv['year']) :
-					sprintf('%02d-%02d-%02d %02d:%02d:00', $vv['year'], $vv['month'], $vv['day'], $vv['hour'], $vv['minute']));
+					sprintf('%04d-%02d-%02d %02d:%02d:00', $vv['year'], $vv['month'], $vv['day'], $vv['hour'], $vv['minute']));
 		}
 	}
 
@@ -444,4 +444,5 @@ abstract class we_base_util{
 
 		return strpos(self::$mimetypes[$ext], $mime) === false ? false : true;
 	}
+
 }

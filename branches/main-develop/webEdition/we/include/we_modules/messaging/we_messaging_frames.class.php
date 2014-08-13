@@ -25,7 +25,6 @@
 //TODO: make weMessagingIconbar.class with weMsgIcobnbar.class and weTodoIconbar.class
 
 class we_messaging_frames extends weModuleFrames{
-
 	var $db;
 	var $View;
 	var $frameset;
@@ -38,7 +37,7 @@ class we_messaging_frames extends weModuleFrames{
 	protected $useMainTree = false;
 	protected $treeDefaultWidth = 204;
 
-	function __construct($frameset, $viewclass = 'message', $reqTransaction, &$weTransaction){
+	public function __construct($viewclass, $reqTransaction, &$weTransaction){
 		parent::__construct(WE_MESSAGING_MODULE_DIR . "edit_messaging_frameset.php");
 
 		$this->transaction = $reqTransaction;
@@ -48,22 +47,20 @@ class we_messaging_frames extends weModuleFrames{
 	}
 
 	function getHTML($what){
-		if(!in_array($what, array('frameset', 'cmd', 'msg_fv_headers', 'usel_browse')) &&
-			!preg_match('|^([a-f0-9]){32}$|', $this->transaction)){
-			exit();
-		}
 		switch($what){
 			case "msg_fv_headers":
 				return $this->getHTMLFvHeaders();
-			default:
+			case 'frameset':
+			case 'cmd':
+			case 'msg_fv_headers':
+			case 'usel_browse':
 				return parent::getHTML($what);
 		}
+		exit();
 	}
 
 	function getJSCmdCode(){
-
 		return $this->View->getJSTop_tmp();
-		//. we_html_element::jsElement($this->Tree->getJSMakeNewEntry());
 	}
 
 	function getJSTreeCode(){ //TODO: move to new class weUsersTree (extends weModulesTree)
@@ -825,7 +822,7 @@ function msg_start() {
 
 	}
 
-	function getHTMLEditor(){
+	protected function getHTMLEditor(){
 		$body = we_html_element::htmlBody(array('style' => 'position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; border: 0px none;'), we_html_element::htmlIFrame('edheader', $this->frameset . '?pnt=edheader&we_transaction=' . $this->transaction, 'position: absolute; top: 0px; left: 0px; right: 0px; height: 35px; overflow: hidden;', 'width: 100%; overflow: hidden') .
 				we_html_element::htmlIFrame('edbody', $this->frameset . '?pnt=edbody&we_transaction=' . $this->transaction, 'position: absolute; top: 35px; bottom: 0px; left: 0px; right: 0px; overflow: auto;', 'border:0px;width:100%;height:100%;overflow: auto;')
 		);
@@ -833,7 +830,7 @@ function msg_start() {
 		return $this->getHTMLDocument($body);
 	}
 
-	function getHTMLEditorHeader(){
+	protected function getHTMLEditorHeader(){
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 		$extraHead = we_html_element::jsElement('
@@ -874,7 +871,7 @@ function msg_start() {
 		return $this->getHTMLDocument(we_html_element::htmlBody($attribs = array('background' => IMAGE_DIR . 'msg_white_bg.gif'), we_html_element::htmlNobr($form)), $extraHead);
 	}
 
-	function getHTMLEditorBody(){
+	protected function getHTMLEditorBody(){
 
 		$frameset = new we_html_frameset(array("framespacing" => 0, "border" => 0, "frameborder" => "no"));
 		$frameset->setAttributes(array("rows" => "26,1,*", 'framespacing' => 0, 'border' => 0, 'frameborder' => 'NO'));
@@ -929,7 +926,7 @@ function msg_start() {
 		return $this->getHTMLDocument(we_html_element::htmlBody($attribs = array('background' => IMAGE_DIR . 'backgrounds/header_with_black_line.gif'), $table->getHTML()), $extraHead);
 	}
 
-	function getHTMLEditorFooter(){
+	protected function getHTMLEditorFooter(){
 
 	}
 

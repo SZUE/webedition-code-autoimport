@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -44,12 +43,11 @@ if(permissionhandler::hasPerm('administrator')){
 	$content = array();
 
 	$count = 15;
-	$start = we_base_request::_(we_base_request::INT, 'start', 0);
-	$start = $start < 0 ? 0 : $start;
+	$start = max(we_base_request::_(we_base_request::INT, 'start', 0), 0);
 
 	$nextprev = "";
 
-	$num_all = f('SELECT count(1) FROM ' . FORMMAIL_LOG_TABLE);
+	$num_all = f('SELECT COUNT(1) FROM ' . FORMMAIL_LOG_TABLE);
 
 	$GLOBALS['DB_WE']->query('SELECT ip,DATE_FORMAT(unixTime,"' . g_l('weEditorInfo', '[mysql_date_format]') . '") AS unixTime FROM ' . FORMMAIL_LOG_TABLE . ' ORDER BY unixTime DESC LIMIT ' . abs($start) . ',' . abs($count));
 	$num_rows = $GLOBALS['DB_WE']->num_rows();

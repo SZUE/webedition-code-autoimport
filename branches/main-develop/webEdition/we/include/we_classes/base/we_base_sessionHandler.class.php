@@ -1,6 +1,6 @@
 <?php
 
-class we_base_sessionHandler{
+class we_base_sessionHandler implements SessionHandlerInterface{
 	//prevent crashed or killed sessions to stay
 	private $execTime;
 	private $sessionName;
@@ -20,7 +20,7 @@ class we_base_sessionHandler{
 			$this->execTime = ($this->execTime > 60 ? 60 : $this->execTime); //time might be wrong (1&1)
 			$this->id = uniqid('', true);
 			if(!(extension_loaded('suhosin') && ini_get('suhosin.session.encrypt'))){//make it possible to keep users when switching
-				$this->crypt = hash('haval224,4', $_SERVER['DOCUMENT_ROOT'] . $_SERVER['HTTP_USER_AGENT'] . $_SERVER['HTTP_ACCEPT_LANGUAGE'] . $_SERVER['HTTP_ACCEPT_ENCODING'], true);
+				$this->crypt = hash('haval224,4', $_SERVER['DOCUMENT_ROOT'] . $_SERVER['HTTP_USER_AGENT'] . (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : '') . (isset($_SERVER['HTTP_ACCEPT_ENCODING']) ? $_SERVER['HTTP_ACCEPT_ENCODING'] : ''));
 				//double key size is needed
 				$this->crypt .=$this->crypt;
 			}
@@ -55,32 +55,38 @@ class we_base_sessionHandler{
 			usleep(100000);
 		}
 		if($data){
-			$data = gzuncompress($data);
-			$data = $data && $data[0] == '$' && $this->crypt ? we_customer_customer::decryptData($data, $this->crypt) : $data;
+			$data = ($data[0] == '$' && $this->crypt ? we_customer_customer::decryptData($data, $this->crypt) : $data);
 			if($data){
-				return $data;
+				$tmp = gzuncompress($data);
+				if(!$tmp){
+					t_e($data);
+				}
+				return $tmp;
 			}//else we need a new sessionid; if decrypt failed we might else destroy an existing valid session
 		}
 
-		$data = ' '; //keep a new generated session, otherwise we will get a new ID every time
 		//if we don't find valid data, generate a new ID because of session stealing
 		$this->write(self::getSessionID(0), $data, true); //we need a new locked session
-		return $data;
+		return '';
 	}
 
 	function write($sessID, $sessData, $lock = false){
-		if(!$sessData){
+		if(!$sessData && !$lock){
 			return $this->destroy($sessID);
 		}
-		$sessData = SYSTEM_WE_SESSION_CRYPT && $this->crypt ? we_customer_customer::cryptData($sessData, $this->crypt) : $sessData;
+
+		$sessData = SYSTEM_WE_SESSION_CRYPT && $this->crypt ? we_customer_customer::cryptData(gzcompress($sessData, 4), $this->crypt, true) : gzcompress($sessData, 4);
 		$sessID = self::getSessionID($sessID);
 
 		$this->DB->query('REPLACE INTO ' . SESSION_TABLE . ' SET ' . we_database_base::arraySetter(array(
 				'session_id' => sql_function('x\'' . $sessID . '\''),
-				'session_data' => gzcompress($sessData, 9),
+				'session_data' => $sessData,
 				'sessionName' => $this->sessionName,
 				'lockid' => $lock ? $this->id : '',
 				'lockTime' => sql_function($lock ? 'NOW()' : 'NULL'),
+				/*
+				'uid' => isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : (isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0),
+				'tmp' => serialize($_SESSION),*/
 		)));
 		return true;
 	}
@@ -93,6 +99,7 @@ class we_base_sessionHandler{
 
 	function gc($sessMaxLifeTime){
 		$this->DB->query('DELETE FROM ' . SESSION_TABLE . ' WHERE touch<NOW()-INTERVAL ' . SYSTEM_WE_SESSION_TIME . ' second');
+		$this->DB->query('OPTIMIZE TABLE ' . SESSION_TABLE);
 		return true;
 	}
 
@@ -111,6 +118,7 @@ class we_base_sessionHandler{
 			5 => '0123456789abcdefghijklmnopqrstuv',
 			6 => '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-,',
 		);
+		$sessID = session_id();
 		$newID = '';
 		$tmp = '';
 		for($pos = 0; $pos < strlen($sessID); $pos++){
@@ -125,12 +133,14 @@ class we_base_sessionHandler{
 		return session_id();
 	}
 
-	static function makeNewID(){
+	static function makeNewID($destroy = false){
 		session_regenerate_id(true);
-		//we need a new lock on the generated id, since partial data is sent to the browser, subsequent calls with the new sessionid might happen
-		session_write_close();
-		//update the cookie:
-		$_COOKIE[session_name()] = session_id();
+		if($destroy){
+			session_destroy();
+		} else {
+			//we need a new lock on the generated id, since partial data is sent to the browser, subsequent calls with the new sessionid might happen
+			session_write_close();
+		}
 		session_start();
 	}
 

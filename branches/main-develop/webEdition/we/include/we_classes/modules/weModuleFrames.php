@@ -191,7 +191,7 @@ class weModuleFrames{
 	}
 
 	//TODO: we do not abandon the two tree types because trees will be re-implemented anyway
-	function getHTMLTree(){
+	protected function getHTMLTree(){
 		if($this->useMainTree){
 			$Tree = new weMainTree('webEdition.php', 'top', 'top', 'top.load'); //IMI: FOR MODULES WE NEED top.tree NOT top.left.tree!!!
 
@@ -211,17 +211,17 @@ class weModuleFrames{
 		return $this->getHTMLDocument(we_html_element::htmlBody(array('bgcolor' => '#F3F7FF')));
 	}
 
-	function getHTMLTreeheader(){
+	protected function getHTMLTreeheader(){
 		return '';
 		//to be overridden
 	}
 
-	function getHTMLTreefooter(){
+	protected function getHTMLTreefooter(){
 		return '';
 		//to be overridden
 	}
 
-	function getHTMLEditor($extraUrlParams = '', $extraHead = ''){
+	protected function getHTMLEditor($extraUrlParams = '', $extraHead = ''){
 		$sid = we_base_request::_(we_base_request::STRING, 'sid');
 		$body = we_html_element::htmlBody(array('style' => 'position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; border: 0px none;'), we_html_element::htmlIFrame('edheader', $this->frameset . '?pnt=edheader' . ($sid !== false
 							? '&sid=' . $sid : '&home=1') . $extraUrlParams, 'position: absolute; top: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;', 'width: 100%; overflow: hidden') .
@@ -232,15 +232,15 @@ class weModuleFrames{
 		return $this->getHTMLDocument($body, $extraHead = '');
 	}
 
-	function getHTMLEditorHeader(){
+	protected function getHTMLEditorHeader(){
 		// to be overridden
 	}
 
-	function getHTMLEditorBody(){
+	protected function getHTMLEditorBody(){
 		return $this->View->getProperties();
 	}
 
-	function getHTMLEditorFooter($btn_cmd, $extraHead = ''){
+	protected function getHTMLEditorFooter($btn_cmd, $extraHead = ''){
 		if(we_base_request::_(we_base_request::BOOL, 'home')){
 			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#EFf0EF"), ""));
 		}

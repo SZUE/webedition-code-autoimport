@@ -44,8 +44,8 @@ class we_voting_frames extends weModuleFrames{
 				return $this->getHTMLExportGroupCsvMessage();
 			case "reset_ipdata":
 				return $this->getHTMLResetIPData();
-			/*case "reset_logdata":
-				return $this->getHTMLResetLogData();*/
+			/* case "reset_logdata":
+			  return $this->getHTMLResetLogData(); */
 			case "show_log":
 				return ($this->View->voting->LogDB ?
 						$this->getHTMLShowLogNew() :
@@ -69,7 +69,7 @@ class we_voting_frames extends weModuleFrames{
 		return $this->View->getJSTop() . we_html_element::jsElement($this->Tree->getJSMakeNewEntry());
 	}
 
-	function getHTMLEditorHeader(){
+	protected function getHTMLEditorHeader(){
 		if(isset($_REQUEST["home"])){
 			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#F0EFF0"), ""));
 		}
@@ -111,8 +111,7 @@ class we_voting_frames extends weModuleFrames{
 		);
 
 		$extraJS = 'document.getElementById("tab_"+top.content.activ_tab).className="tabActive";';
-		$body = we_html_element::htmlBody(array("onresize" => "setFrameSize()", "onload" => "setFrameSize()", "bgcolor" => "#C8D8EC", "background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif", "marginwidth" => 0, "marginheight" => 0, "leftmargin" => 0, "topmargin" => 0), '<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . str_replace(" ", "&nbsp;", ($this->View->voting->IsFolder
-							? g_l('modules_voting', '[group]') : g_l('modules_voting', '[voting]'))) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", $this->View->voting->Path) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) .
+		$body = we_html_element::htmlBody(array("onresize" => "setFrameSize()", "onload" => "setFrameSize()", "bgcolor" => "#C8D8EC", "background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif", "marginwidth" => 0, "marginheight" => 0, "leftmargin" => 0, "topmargin" => 0), '<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . str_replace(" ", "&nbsp;", ($this->View->voting->IsFolder ? g_l('modules_voting', '[group]') : g_l('modules_voting', '[voting]'))) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", $this->View->voting->Path) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) .
 				$we_tabs->getHTML() .
 				'</div>' . we_html_element::jsElement($extraJS)
 		);
@@ -120,7 +119,7 @@ class we_voting_frames extends weModuleFrames{
 		return $this->getHTMLDocument($body, $tabsHead);
 	}
 
-	function getHTMLEditorBody(){
+	protected function getHTMLEditorBody(){
 
 		$hiddens = array('cmd' => 'voting_edit', 'pnt' => 'edbody', 'vernr' => we_base_request::_(we_base_request::INT, 'vernr', 0));
 
@@ -147,7 +146,7 @@ class we_voting_frames extends weModuleFrames{
 		return $this->getHTMLDocument($body, $this->View->getJSProperty());
 	}
 
-	function getHTMLEditorFooter(){
+	protected function getHTMLEditorFooter(){
 
 		if(isset($_REQUEST["home"])){
 			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#EFF0EF"), ""));
@@ -294,8 +293,7 @@ class we_voting_frames extends weModuleFrames{
 				$this->getHTMLDirChooser() .
 				weSuggest::getYuiJsFiles() . $yuiSuggest->getYuiCss() . $yuiSuggest->getYuiJs() .
 				we_html_element::htmlBr() .
-				(!$this->View->voting->IsFolder ? we_html_tools::htmlFormElementTable(we_html_tools::getDateInput2('PublishDate%s', $this->View->voting->PublishDate, false, '', 'top.content.setHot();'), g_l('modules_voting', '[headline_publish_date]'))
-						: ''),
+				(!$this->View->voting->IsFolder ? we_html_tools::htmlFormElementTable(we_html_tools::getDateInput2('PublishDate%s', $this->View->voting->PublishDate, false, '', 'top.content.setHot();'), g_l('modules_voting', '[headline_publish_date]')) : ''),
 				'space' => $this->_space_size,
 				'noline' => 1),
 			array(
@@ -413,8 +411,7 @@ class we_voting_frames extends weModuleFrames{
 		$table->setColContent(2, 1, we_html_element::htmlDiv(array('id' => 'activetime', 'style' => 'display: ' . ($this->View->voting->Active ? 'block' : 'none') . ';'), $activeTime->getHtml()
 			)
 		);
-		$table->setColContent(3, 1, we_html_element::htmlDiv(array('id' => 'valid', 'style' => 'display: ' . ($this->View->voting->Active && $this->View->voting->ActiveTime
-						? 'block' : 'none') . ';'), we_html_tools::htmlFormElementTable(we_html_tools::getDateInput2('Valid%s', $this->View->voting->Valid, false, '', 'top.content.setHot();'), "")
+		$table->setColContent(3, 1, we_html_element::htmlDiv(array('id' => 'valid', 'style' => 'display: ' . ($this->View->voting->Active && $this->View->voting->ActiveTime ? 'block' : 'none') . ';'), we_html_tools::htmlFormElementTable(we_html_tools::getDateInput2('Valid%s', $this->View->voting->Valid, false, '', 'top.content.setHot();'), "")
 			)
 		);
 
@@ -821,11 +818,11 @@ function refreshTexts(){
 		return $yuiSuggest->getHTML();
 	}
 
-	function getHTMLTreeHeader(){
+	protected function getHTMLTreeHeader(){
 		return '';
 	}
 
-	function getHTMLTreeFooter(){
+	protected function getHTMLTreeFooter(){
 		return $this->getHTMLDocument(
 				we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif", "marginwidth" => 5, "marginheight" => 0, "leftmargin" => 5, "topmargin" => 0), "")
 		);
@@ -920,8 +917,7 @@ function refreshTexts(){
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");
 		$button = we_html_button::create_button("select", "javascript:we_cmd('browse_server','" . $wecmdenc1 . "','" . $filter . "',document.we_form.elements['" . $IDName . "'].value);");
 
-		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 30, $IDValue, "", 'readonly onchange="top.content.setHot();"', "text", $width, 0), "", "left", "defaultfont", "", we_html_tools::getPixel(20, 4), permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES")
-						? $button : "");
+		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 30, $IDValue, "", 'readonly onchange="top.content.setHot();"', "text", $width, 0), "", "left", "defaultfont", "", we_html_tools::getPixel(20, 4), permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
 	}
 
 	private function getHTMLResetIPData(){
@@ -984,15 +980,9 @@ function refreshTexts(){
 
 		if($size > 0){
 			$size--;
-			$start = we_base_request::_(we_base_request::INT, 'start', $size);
-			$start = $start < 0 ? 0 : $start;
-			$start = $start > $size ? $size : $start;
-
-			$back = $start + $count;
-			$back = $back > $size ? $size : $back;
-
-			$next = $start - $count;
-			$next = $next < 0 ? -1 : $next;
+			$start = min(max(we_base_request::_(we_base_request::INT, 'start', $size), 0), $size);
+			$back = min($start + $count, $size);
+			$next = max($start - $count, -1);
 
 			for($i = $start; $i > $next; $i--){
 				if($i < 0){
@@ -1106,16 +1096,9 @@ function refreshTexts(){
 
 		if($size > 0){
 			$size--;
-			$start = we_base_request::_(we_base_request::INT, 'start', $size);
-			$start = $start < 0 ? 0 : $start;
-			$start = $start > $size ? $size : $start;
-
-			$back = $start + $count;
-			$back = $back > $size ? $size : $back;
-
-			$next = $start - $count;
-			$next = $next < 0 ? -1 : $next;
-
+			$start = min(max(we_base_request::_(we_base_request::INT, 'start', $size), 0), $size);
+			$back = min($start + $count, $size);
+			$next = max($start - $count, -1);
 
 			for($i = $start; $i > $next; $i--){
 				if($i < 0){
@@ -1239,15 +1222,9 @@ function refreshTexts(){
 
 		if($size > 0){
 			$size--;
-			$start = we_base_request::_(we_base_request::INT, 'start', $size);
-			$start = $start < 0 ? 0 : $start;
-			$start = $start > $size ? $size : $start;
-
-			$back = $start + $count;
-			$back = $back > $size ? $size : $back;
-
-			$next = $start - $count;
-			$next = $next < 0 ? -1 : $next;
+			$start = min(max(we_base_request::_(we_base_request::INT, 'start', $size), 0), $size);
+			$back = min($start + $count, $size);
+			$next = max($start - $count, -1);
 
 			for($i = $start; $i > $next; $i--){
 				if($i < 0){

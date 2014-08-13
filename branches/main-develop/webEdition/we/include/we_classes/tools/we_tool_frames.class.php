@@ -134,7 +134,7 @@ class we_tool_frames extends weModuleFrames{
 		return $this->getHTMLDocument($body);
 	}
 
-	function getHTMLEditor(){
+	protected function getHTMLEditor(){
 		$tab = we_base_request::_(we_base_request::INT, 'tab');
 		$sid = we_base_request::_(we_base_request::STRING, 'sid');
 		$frameset = new we_html_frameset(array("framespacing" => 0, "border" => 0, "frameborder" => "no"));
@@ -184,7 +184,7 @@ class we_tool_frames extends weModuleFrames{
 	 *
 	 * @return string
 	 */
-	function getHTMLEditorHeader(){
+	protected function getHTMLEditorHeader(){
 		if(we_base_request::_(we_base_request::BOOL, 'home')){
 			return $this->getHTMLDocument(we_html_element::htmlBody(array('bgcolor' => '#F0EFF0'), ''));
 		}
@@ -243,7 +243,7 @@ function setTab(tab) {
 		return $this->getHTMLDocument($body, $tabsHead);
 	}
 
-	function getHTMLEditorBody(){
+	protected function getHTMLEditorBody(){
 
 		$hiddens = array('cmd' => 'tool_' . $this->toolName . '_edit', 'pnt' => 'edbody', 'vernr' => we_base_request::_(we_base_request::INT, 'vernr', 0));
 
@@ -272,7 +272,7 @@ function setTab(tab) {
 		return $this->getHTMLDocument($body, STYLESHEET . $this->View->getJSProperty());
 	}
 
-	function getHTMLEditorFooter(){
+	protected function getHTMLEditorFooter(){
 
 		if(we_base_request::_(we_base_request::BOOL, "home")){
 			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#F0EFF0"), ""));
@@ -348,11 +348,11 @@ function we_save() {
 		return $this->getHTMLDocument($body);
 	}
 
-	function getHTMLTreeHeader(){
+	protected function getHTMLTreeHeader(){
 		return '';
 	}
 
-	function getHTMLTreeFooter(){
+	protected function getHTMLTreeFooter(){
 		return $this->getHTMLDocument(
 				we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif", "marginwidth" => 5, "marginheight" => 0, "leftmargin" => 5, "topmargin" => 0), '<div id="infoField" style="margin:5px; display: none;" class="defaultfont"></div>')
 		);

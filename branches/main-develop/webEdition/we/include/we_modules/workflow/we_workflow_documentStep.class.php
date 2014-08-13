@@ -134,7 +134,7 @@ class we_workflow_documentStep extends we_workflow_base{
 	 * create all tasks for step
 	 */
 	function createAllTasks(){
-		$this->tasks = we_workflow_documentTask::__createAllTasks($this->workflowStepID);
+		$this->tasks = we_workflow_documentTask::createAllTasks($this->workflowStepID);
 		return true;
 	}
 
@@ -354,7 +354,7 @@ class we_workflow_documentStep extends we_workflow_base{
 		$docStep->startDate = 0;
 		$docStep->finishDate = 0;
 		$docStep->Status = self::STATUS_UNKNOWN;
-		$docStep->tasks = we_workflow_documentTask::__createAllTasks($docStep->workflowStepID);
+		$docStep->tasks = we_workflow_documentTask::createAllTasks($docStep->workflowStepID);
 		return $docStep;
 	}
 

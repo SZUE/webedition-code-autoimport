@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -27,7 +26,6 @@
  * class for handling image documents
  */
 class we_imageDocument extends we_binaryDocument{
-
 	const ALT_FIELD = '_img_custom_alt';
 	const TITLE_FIELD = '_img_custom_title';
 	const THUMB_FIELD = '_img_custom_thumb';
@@ -292,7 +290,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 		if(!is_numeric($quality)){
 			return false;
 		}
-		$quality = ($quality > 10 ? 10 : ($quality < 0 ? 0 : $quality)) * 10;
+		$quality = ($quality > 10 ? 10 : max($quality, 0)) * 10;
 		$dataPath = TEMP_PATH . we_base_file::getUniqueId();
 		$_resized_image = we_base_imageEdit::edit_image($this->getElement('data'), $this->getGDType(), $dataPath, $quality, $width, $height, $ratio);
 		if(!$_resized_image[0]){

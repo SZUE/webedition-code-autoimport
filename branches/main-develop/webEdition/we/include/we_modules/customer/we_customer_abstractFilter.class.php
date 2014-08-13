@@ -80,7 +80,7 @@ abstract class we_customer_abstractFilter{
 	 *
 	 * @var array
 	 */
-	var $_filter = array();
+	private $_filter = array();
 
 	/**
 	 *
@@ -161,7 +161,8 @@ abstract class we_customer_abstractFilter{
 	private function customerHasFilterAccess(){
 		if(in_array($_SESSION['webuser']['ID'], $this->_blackList)){
 			return false;
-		} else if(in_array($_SESSION['webuser']['ID'], $this->_whiteList)){
+		}
+		if(in_array($_SESSION['webuser']['ID'], $this->_whiteList)){
 			return true;
 		}
 

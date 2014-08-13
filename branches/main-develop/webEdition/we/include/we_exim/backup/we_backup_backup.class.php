@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -29,7 +28,6 @@
  * Provides functions for exporting and importing backups. Extends we_backup.
  */
 class we_backup_backup extends we_backup_base{
-
 	const backupMarker = '<!-- webackup -->';
 	const weXmlExImHead = '<webEdition';
 	const weXmlExImFooter = '</webEdition>';
@@ -57,18 +55,8 @@ class we_backup_backup extends we_backup_base{
 			self::weXmlExImHead . ' version="' . WE_VERSION . '" type="backup" xmlns:we="we-namespace">' . $this->nl;
 		$this->footer = $this->nl . self::weXmlExImFooter;
 
-		$this->properties[] = 'mode';
-		$this->properties[] = 'filename';
-		$this->properties[] = 'compress';
-		$this->properties[] = 'backup_binary';
-		$this->properties[] = 'rebuild';
-		$this->properties[] = 'file_counter';
-		$this->properties[] = 'file_end';
-		$this->properties[] = 'row_count';
-		$this->properties[] = 'file_list_count';
-		$this->properties[] = 'old_objects_deleted';
+		$this->properties = array_push($this->properties, 'mode', 'filename', 'compress', 'backup_binary', 'rebuild', 'file_counter', 'file_end', 'row_count', 'file_list_count', 'old_objects_deleted');
 
-		//FIXME: never call parent not in first place
 		parent::__construct($handle_options);
 
 		$this->tables['core'] = array('tblfile', 'tbllink', 'tbltemplates', 'tblindex', 'tblcontent', 'tblcategorys', 'tbldoctypes', 'tblthumbnails');
@@ -588,13 +576,13 @@ $this->file_list=' . var_export($this->file_list, true) . ';';
 		$all+=(int) $this->file_list_count;
 		$done = ((int) $this->row_count) + ((int) $ex_files);
 		$percent = (int) (($done / $all) * 100);
-		return ($percent < 0 ? 0 : ($percent > 100 ? 100 : $percent));
+		return max(min($percent, 100), 0);
 	}
 
 	function getImportPercent(){
 		$file_list_count = (int) ($this->file_list_count - count($this->file_list)) / 100;
 		$percent = (int) ((($this->file_counter + $file_list_count) / (($this->file_list_count / 100) + $this->file_end)) * 100);
-		return ($percent > 100 ? 100 : ($percent < 0 ? 0 : $percent));
+		return max(min($percent, 100), 0);
 	}
 
 	function exportGlobalPrefs(){

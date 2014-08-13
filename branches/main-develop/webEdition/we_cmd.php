@@ -104,7 +104,7 @@ function findInclude($cmd){
 		case 'open_extern_document'; // wird ben�tigt um ein externes Dokument aufzurufen
 			return 'we_seem/we_SEEM_openExtDoc_frameset.php';
 		case 'edit_document_with_parameters':
-			$GLOBALS['parastr'] = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 4);
+			$GLOBALS['parastr'] = we_base_request::_(we_base_request::RAW_CHECKED, 'we_cmd', '', 4);
 		case 'edit_document':
 		case 'new_document':
 		case 'new_folder':

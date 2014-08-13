@@ -46,8 +46,7 @@ function we_tag_sessionStart($attribs){
 			$GLOBALS['WE_LOGOUT'] = true;
 			unset($_SESSION['s'], $_REQUEST['s']);
 			if(SECURITY_DELETE_SESSION){
-				session_destroy();
-				we_base_sessionHandler::makeNewID();
+				we_base_sessionHandler::makeNewID(true);
 			}
 			$_SESSION['webuser'] = array('registered' => false);
 		}

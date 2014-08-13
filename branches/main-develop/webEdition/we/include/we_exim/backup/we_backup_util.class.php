@@ -120,7 +120,7 @@ abstract class we_backup_util{
 			(intval($_SESSION['weS']['weBackupVars']['offset'] + $rest1) /
 			intval($_SESSION['weS']['weBackupVars']['offset_end'] + $rest2))) * 100, 2);
 
-		return (intval($percent) > 100 ? 100 : (intval($percent) < 0 ? 0 : $percent));
+		return max(min($percent, 100), 0);
 	}
 
 	static function getProgressJS($percent, $description){
@@ -141,7 +141,7 @@ abstract class we_backup_util{
 		}
 
 		$percent = round(($done / $all) * 100, ($all > 50000 ? 2 : 1));
-		return (intval($percent) < 0 ? 0 : (intval($percent) > 100 ? 100 : $percent));
+		return max(min($percent, 100), 0);
 	}
 
 	static function canImportBinary($id, $path){

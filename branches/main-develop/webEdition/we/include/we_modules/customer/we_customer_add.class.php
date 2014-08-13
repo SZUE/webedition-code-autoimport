@@ -23,11 +23,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_customer_add{
-
 	static $operators = array('=', '<>', '<', '<=', '>', '>=', 'LIKE');
 
-	static function getHTMLSortEditor(&$pob){
-		$branch = $pob->getHTMLBranchSelect();
+	static function getHTMLSortEditor(we_customer_frames &$pob){
+		$branch = $pob->View->getHTMLBranchSelect();
 		$branch->setOptionVT(1, g_l('modules_customer', '[other]'), g_l('modules_customer', '[other]'));
 
 
@@ -295,17 +294,18 @@ function we_cmd(){
 		$colspan = 4;
 
 		for($i = 0; $i < $count; $i++){
-			if(($logic = we_base_request::_(we_base_request::STRING, 'logic_' . $i))){
-				$search_arr['logic_' . $i] = $logic;
+			if(($branch = we_base_request::_(we_base_request::STRING, 'branch_' . $i))){
+				$search_arr['logic_' . $i] = we_base_request::_(we_base_request::STRING, 'logic_' . $i);
 				$search_arr['branch_' . $i] = we_base_request::_(we_base_request::STRING, 'branch_' . $i);
 				$search_arr['field_' . $i] = we_base_request::_(we_base_request::STRING, 'field_' . $i);
-				$search_arr['operator_' . $i] = we_base_request::_(we_base_request::STRING, 'operator_' . $i);
-				$search_arr['value_' . $i] = we_base_request::_(we_base_request::STRING, 'value_' . $i);
+				$search_arr['operator_' . $i] = we_base_request::_(we_base_request::INT, 'operator_' . $i);
+				$search_arr['value_' . $i] = we_base_request::_(we_base_request::STRINGC, 'value_' . $i);
 			}
 		}
 
+
 		$advsearch = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 3), 1, 4);
-		$branch = $pob->getHTMLBranchSelect();
+		$branch = $pob->View->getHTMLBranchSelect();
 		$branch->setOptionVT(1, g_l('modules_customer', '[other]'), g_l('modules_customer', '[other]'));
 
 		$field = $pob->getHTMLFieldsSelect(g_l('modules_customer', '[common]'));
@@ -348,7 +348,7 @@ function we_cmd(){
 		$advsearch->setCol($c, 0, array("colspan" => $colspan), we_html_tools::getPixel(5, 5));
 
 		$advsearch->addRow();
-		$advsearch->setCol(++$c, 0, array("colspan" => $colspan), we_html_button::create_button_table(array(
+		$advsearch->setCol( ++$c, 0, array("colspan" => $colspan), we_html_button::create_button_table(array(
 				we_html_button::create_button("image:btn_function_plus", "javascript:we_cmd('add_search')"),
 				we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('del_search')")
 				)
@@ -368,7 +368,7 @@ function we_cmd(){
 			) . '</td><td>&nbsp;</td></tr></table>'
 		);
 		$max_res = $pob->View->settings->getMaxSearchResults();
-		$result = ($search_arr && we_base_request::_(we_base_request::BOOL,'search') ? self::getAdvSearchResults($pob->db, $search_arr, $count, $max_res) : array());
+		$result = ($search_arr && we_base_request::_(we_base_request::BOOL, 'search') ? self::getAdvSearchResults($pob->db, $search_arr, $count, $max_res) : array());
 
 		foreach($result as $id => $text){
 			$select->addOption($id, $text);
@@ -396,7 +396,7 @@ function we_cmd(){
 	}
 
 	static function getHTMLTreeHeader(&$pob){
-		$select = $pob->getHTMLSortSelect();
+		$select = $pob->View->getHTMLSortSelect();
 		$select->setAttributes(array('onchange' => 'applySort();', 'style' => 'width:150px'));
 		$select->selectOption($pob->View->settings->getSettings('default_sort_view'));
 
