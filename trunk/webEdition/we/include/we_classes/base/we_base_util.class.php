@@ -359,9 +359,12 @@ abstract class we_base_util{
 			}
 		}
 		foreach($dates as $k => $vv){
+			if($vv['year'] == 0){
+				$vv['month'] = $vv['day'] = $vv['hour'] = $vv['minute'] = 0;
+			}
 			$req[$k] = ($asInt ?
 					mktime($vv['hour'], $vv['minute'], 0, $vv['month'], $vv['day'], $vv['year']) :
-					sprintf('%02d-%02d-%02d %02d:%02d:00', $vv['year'], $vv['month'], $vv['day'], $vv['hour'], $vv['minute']));
+					sprintf('%04d-%02d-%02d %02d:%02d:00', $vv['year'], $vv['month'], $vv['day'], $vv['hour'], $vv['minute']));
 		}
 	}
 

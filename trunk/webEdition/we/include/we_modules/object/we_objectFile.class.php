@@ -3213,6 +3213,7 @@ class we_objectFile extends we_document{
 	//FIMXE: remove, but needed, since objects still serialize links
 	function changeLink($name){
 		$this->setElement($name, serialize($_SESSION['weS']['WE_LINK']));
+		unset($_SESSION['weS']['WE_LINK']);
 	}
 
 	public function getDocumentCss(){

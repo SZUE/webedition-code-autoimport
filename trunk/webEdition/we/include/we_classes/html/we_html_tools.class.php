@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_html_tools{
-
 	const OPTGROUP = '<!--we_optgroup-->';
 	const TYPE_NONE = 0;
 	const TYPE_ALERT = 1;
@@ -158,7 +157,7 @@ abstract class we_html_tools{
 			($height ? ('height: ' . $height . (is_numeric($height) ? 'px' : '') . ';') : '') . '"') : '';
 		return '<input' . ($markHot ? ' onchange="if(_EditorFrame){_EditorFrame.setEditorIsHot(true);}' . $markHot . '.hot=1;"' : '') .
 			(strstr($attribs, "class=") ? "" : ' class="wetextinput"') . ' type="' . trim($type) . '" name="' . trim($name) .
-			'" size="' . intval($size) . '" value="' . oldHtmlspecialchars($value) . '"' . ($maxlength ? (' maxlength="' . intval($maxlength) . '"') : '') . ($attribs ? ' '. $attribs : '') . $style . ($disabled ? (' disabled="true"') : '') . ' />';
+			'" size="' . intval($size) . '" value="' . oldHtmlspecialchars($value) . '"' . ($maxlength ? (' maxlength="' . intval($maxlength) . '"') : '') . ($attribs ? ' ' . $attribs : '') . $style . ($disabled ? (' disabled="true"') : '') . ' />';
 	}
 
 	static function htmlMessageBox($w, $h, $content, $headline = '', $buttons = ''){
@@ -490,7 +489,7 @@ abstract class we_html_tools{
 
 		$name = preg_replace('/^(.+)]$/', '\1%s]', $name);
 		if(!$format || $_dayPos > -1){
-			$days = '';
+			$days = getHtmlTag('option', array_merge($_attsOption, array('value' => 0)), '--');;
 			for($i = 1; $i <= 31; $i++){
 				$_atts2 = ($time && $day == $i) ? array('selected' => 'selected') : array();
 				$days .= getHtmlTag('option', array_merge($_attsOption, $_atts2), sprintf('%02d', $i));
@@ -510,7 +509,7 @@ abstract class we_html_tools{
 		}
 
 		if(!$format || $_monthPos > -1){
-			$months = '';
+			$months = getHtmlTag('option', array_merge($_attsOption, array('value' => 0)), '--');;
 			$monthType = (strpos($format, 'F') ? 'F' : (strpos($format, 'M') ? 'M' : 0));
 			for($i = 1; $i <= 12; $i++){
 				switch($monthType){//Bug #4095
@@ -540,7 +539,7 @@ abstract class we_html_tools{
 			$_showMonth = false;
 		}
 		if(!$format || $_yearPos > -1){
-			$years = '';
+			$years = getHtmlTag('option', array_merge($_attsOption, array('value' => 0)), '--');
 			if(!$minyear){
 				$minyear = 1970;
 			}

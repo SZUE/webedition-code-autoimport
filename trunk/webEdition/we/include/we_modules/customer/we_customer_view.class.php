@@ -597,12 +597,12 @@ attribs["tooltip"]="' . (($this->customer->Forename != "" || $this->customer->Su
 				$this->customer->delete();
 				$this->customer = new we_customer_customer();
 
-				print we_html_element::jsElement(
-						we_message_reporting::getShowMessageCall(g_l('modules_customer', '[customer_deleted]'), we_message_reporting::WE_MESSAGE_NOTICE) .
-						$this->topFrame . '.deleteEntry("' . $oldid . '"); ' .
-						$this->topFrame . '.editor.edheader.location="' . $this->frameset . '?home=1&pnt=edheader"; ' .
-						$this->topFrame . '.editor.edbody.location="' . $this->frameset . '?home=1&pnt=edbody"; ' .
-						$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?home=1&pnt=edfooter";'
+				echo we_html_element::jsElement(
+					we_message_reporting::getShowMessageCall(g_l('modules_customer', '[customer_deleted]'), we_message_reporting::WE_MESSAGE_NOTICE) .
+					$this->topFrame . '.deleteEntry("' . $oldid . '"); ' .
+					$this->topFrame . '.editor.edheader.location="' . $this->frameset . '?home=1&pnt=edheader"; ' .
+					$this->topFrame . '.editor.edbody.location="' . $this->frameset . '?home=1&pnt=edbody"; ' .
+					$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?home=1&pnt=edfooter";'
 				);
 
 				break;
@@ -611,12 +611,11 @@ attribs["tooltip"]="' . (($this->customer->Forename != "" || $this->customer->Su
 				break;
 
 			case 'show_admin':
-				$js = '
+				echo we_html_element::jsScript(JS_DIR . "windows.js") .
+				we_html_element::jsElement('
 						url ="' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=customer_admin";
 						new jsWindow(url,"customer_admin",-1,-1,600,420,true,true,true,false);
-					';
-				print we_html_element::jsScript(JS_DIR . "windows.js") .
-					we_html_element::jsElement($js);
+					');
 				break;
 			case 'save_field':
 				$branch = we_base_request::_(we_base_request::STRING, 'branch');
@@ -673,7 +672,7 @@ attribs["tooltip"]="' . (($this->customer->Forename != "" || $this->customer->Su
 							opener.opener.refreshForm();
 							close();';
 				}
-				print we_html_element::jsElement($js);
+				echo we_html_element::jsElement($js);
 
 				break;
 			case 'delete_field':
@@ -707,10 +706,10 @@ attribs["tooltip"]="' . (($this->customer->Forename != "" || $this->customer->Su
 				$this->deleteField(($ber == '' && preg_match('%' . g_l('modules_customer', '[other]') . '%i', $field) ? $fname : $field));
 
 				$this->customer->loadPresistents();
-				$js = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer', '[field_deleted]'), $fname, $ber), we_message_reporting::WE_MESSAGE_NOTICE) .
-					'opener.refreshForm();';
-				print we_html_element::jsElement($js);
-
+				echo we_html_element::jsElement(
+					we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer', '[field_deleted]'), $fname, $ber), we_message_reporting::WE_MESSAGE_NOTICE) .
+					'opener.refreshForm();'
+				);
 				break;
 			case 'reset_edit_order':
 				$orderedarray = $this->customer->persistent_slots;
@@ -744,8 +743,7 @@ attribs["tooltip"]="' . (($this->customer->Forename != "" || $this->customer->Su
 					$this->settings->save();
 					$this->customer->loadPresistents();
 				}
-				$js = 'opener.refreshForm();';
-				print we_html_element::jsElement($js);
+				echo we_html_element::jsElement('opener.refreshForm();');
 
 				break;
 			case 'move_field_down':
@@ -773,8 +771,7 @@ attribs["tooltip"]="' . (($this->customer->Forename != "" || $this->customer->Su
 					$this->settings->save();
 					$this->customer->loadPresistents();
 				}
-				$js = 'opener.refreshForm();';
-				print we_html_element::jsElement($js);
+				echo we_html_element::jsElement('opener.refreshForm();');
 
 				break;
 			case 'save_branch':
@@ -782,8 +779,8 @@ attribs["tooltip"]="' . (($this->customer->Forename != "" || $this->customer->Su
 				$branch_old = we_base_request::_(we_base_request::STRING, 'branch', '');
 
 				if($branch_new == g_l('modules_customer', '[common]') || $branch_new == g_l('modules_customer', '[other]') || $branch_new == g_l('modules_customer', '[all]')){
-					print we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(g_l('modules_customer', '[branch_no_edit]'), we_message_reporting::WE_MESSAGE_ERROR)
+					echo we_html_element::jsElement(
+						we_message_reporting::getShowMessageCall(g_l('modules_customer', '[branch_no_edit]'), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 					return;
 				}
@@ -792,42 +789,42 @@ attribs["tooltip"]="' . (($this->customer->Forename != "" || $this->customer->Su
 					$arr = $this->customer->getBranchesNames();
 
 					if(in_array($branch_new, $arr)){
-						print we_html_element::jsElement(
-								we_message_reporting::getShowMessageCall(g_l('modules_customer', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR)
+						echo we_html_element::jsElement(
+							we_message_reporting::getShowMessageCall(g_l('modules_customer', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR)
 						);
 						return;
 					}
 				}
 
 				if($this->saveBranch($branch_old, $branch_new) == -5){
-					we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer', '[cannot_save_property]'), $field), we_message_reporting::WE_MESSAGE_ERROR);
+					echo we_html_element::jsElement(
+						we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer', '[cannot_save_property]'), $field), we_message_reporting::WE_MESSAGE_ERROR)
+					);
 				} else {
 					$this->customer->loadPresistents();
-					$js = '
+					echo we_html_element::jsElement('
 opener.document.we_form.branch.value="' . g_l('modules_customer', '[other]') . '";
 opener.submitForm();
 opener.opener.document.we_form.branch.value="' . g_l('modules_customer', '[common]') . '";
 opener.opener.refreshForm();
-close();';
+close();');
 				}
-				print we_html_element::jsElement($js);
 
 				break;
 			case 'show_sort_admin':
-				$js = '
-url ="' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=sort_admin";
-new jsWindow(url,"sort_admin",-1,-1,750,500,true,true,true,true);';
-				print we_html_element::jsScript(JS_DIR . 'windows.js');
-				print we_html_element::jsElement($js);
+				echo we_html_element::jsScript(JS_DIR . 'windows.js') .
+				we_html_element::jsElement('url ="' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=sort_admin";
+new jsWindow(url,"sort_admin",-1,-1,750,500,true,true,true,true);');
 
 				break;
 			case 'add_sort':
 				$cout = 0;
 				$found = false;
-				while(!$found){
+				while(!$found){//FIXME: might be an endless loop
 					$cname = g_l('modules_customer', '[sort_name]') . $cout;
-					if(!in_array($cname, array_keys($this->settings->SortView)))
+					if(!in_array($cname, array_keys($this->settings->SortView))){
 						$found = true;
+					}
 					$cout++;
 				}
 				$this->settings->SortView[$cname] = array();
@@ -858,7 +855,8 @@ new jsWindow(url,"sort_admin",-1,-1,750,500,true,true,true,true);';
 					$_sorting .= 'opener.' . $this->topFrame . '.addSorting("' . $_sort . '");' . "\n";
 				}
 
-				$js = we_message_reporting::getShowMessageCall(g_l('modules_customer', '[sort_saved]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
+				echo we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
+				we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_customer', '[sort_saved]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
 var selected = opener.' . $this->topFrame . '.document.we_form_treeheader.sort.selectedIndex;
 opener.' . $this->topFrame . '.document.we_form_treeheader.sort.options.length=0;
 ' . $_sorting . '
@@ -870,9 +868,7 @@ if(selected<opener.' . $this->topFrame . '.document.we_form_treeheader.sort.opti
 }
 
 opener.' . $this->topFrame . '.applySort();
-self.close();';
-				echo we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
-				we_html_element::jsElement($js);
+self.close();');
 				break;
 			case 'applySort':
 				echo we_html_element::jsElement($this->topFrame . '.clearTree();');
@@ -921,7 +917,7 @@ self.close();';
 			default:
 		}
 
-
+//FIXME: this data is not deleted on close - fix this!
 		$_SESSION['weS']['customer_session'] = serialize($this->customer);
 	}
 
@@ -967,7 +963,6 @@ self.close();';
 				$this->settings->SortView = array();
 
 				for($i = 0; $i < $counter; $i++){
-
 					$sort_name = we_base_request::_(we_base_request::STRING, 'sort_' . $i);
 					$sort_name = $sort_name ? $sort_name : g_l('modules_customer', '[sort_name]') . '_' . $i;
 
@@ -1294,7 +1289,8 @@ self.close();';
 				$format = g_l('weEditorInfo', '[date_only_format]');
 			case 'dateTime':
 				//$out = we_html_element::htmlHidden(array('name' => $field, 'value' => $value));
-				$value = new DateTime($value ? $value : $this->settings->getSettings('start_year') . '-01-01');
+
+				$value = $value && $value != '0000-00-00' ? new DateTime($value /* ? $value : $this->settings->getSettings('start_year') . '-01-01' */) : 0;
 				$date_format = (isset($date_format) ? $date_format : DATE_FORMAT);
 
 				$format = (isset($format) ? $format : g_l('weEditorInfo', '[date_format]'));
