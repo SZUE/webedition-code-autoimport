@@ -1237,8 +1237,8 @@ class we_objectFile extends we_document{
 
 		$startTag = $this->getLinkStartTag($link, array(), $this->ParentID, $this->Path, $GLOBALS['DB_WE'], $img);
 
-		$editbut = we_html_button::create_button("edit", "javascript:we_cmd('edit_link_at_object','" . $n . "')");
-		$delbut = we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('object_delete_link_at_object','" . $GLOBALS['we_transaction'] . "', 'link_" . $n . "')");
+		$editbut = we_html_button::create_button('edit', "javascript:we_cmd('edit_link_at_object','" . $n . "')");
+		$delbut = we_html_button::create_button('image:btn_function_trash', "javascript:we_cmd('object_delete_link_at_object','" . $GLOBALS['we_transaction'] . "', 'link_" . $n . "')");
 		$buttons = we_html_button::create_button_table(array($editbut, $delbut));
 		if(!$content){
 			$content = g_l('global', "[new_link]");
