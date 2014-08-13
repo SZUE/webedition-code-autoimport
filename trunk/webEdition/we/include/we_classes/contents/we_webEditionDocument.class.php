@@ -344,8 +344,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			$TID = $this->TemplateID;
 		}
 
-		$openButton = (permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ? we_html_button::create_button('edit', 'javascript:goTemplate(document.we_form.elements[\'' . $fieldname . '\'].options[document.we_form.elements[\'' . $fieldname . '\'].selectedIndex].value)')
-					: '');
+		$openButton = (permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ? we_html_button::create_button('edit', 'javascript:goTemplate(document.we_form.elements[\'' . $fieldname . '\'].options[document.we_form.elements[\'' . $fieldname . '\'].selectedIndex].value)') : '');
 
 		if(!empty($tlist)){
 			$foo = array();
@@ -510,8 +509,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	 * @desc this function returns the code of the template this document bases on
 	 */
 	function getTemplateCode($completeCode = true){
-		return f('SELECT c.Dat FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON c.ID=l.CID WHERE l.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND l.DID=' . intval($this->TemplateID) . ' AND l.Name="' . ($completeCode
-					? 'completeData' : 'data') . '"', '', $this->DB_WE);
+		return f('SELECT c.Dat FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON c.ID=l.CID WHERE l.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND l.DID=' . intval($this->TemplateID) . ' AND l.Name="' . ($completeCode ? 'completeData' : 'data') . '"', '', $this->DB_WE);
 	}
 
 	function getFieldTypes($templateCode, $useTextarea = false){
@@ -1055,22 +1053,20 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	}
 
 	public function addUsedElement($type, $name){
+		$type = self::getFieldType($type, '', true);
 		if(!isset($this->usedElementNames[$type])){
 			$this->usedElementNames[$type] = array($name);
 		} else {
-			$this->usedElementNames[$type][] = $name;
+			if(array_search($name, $this->usedElementNames[$type]) === false){
+				$this->usedElementNames[$type][] = $name;
+			}
 		}
 	}
 
 	public function getUsedElements($txtNamesOnly = false){
 		if($txtNamesOnly){
-			$ret = array();
-			foreach($this->usedElementNames as $tag => $val){
-				if(self::getFieldType($tag, '', false) == 'txt'){
-					$ret = array_merge($ret, $val);
-				}
-			}
-			return array_unique($ret);
+			return array_unique(array_merge(
+					(isset($this->usedElementNames['txt']) ? $this->usedElementNames['txt'] : array()), isset($this->usedElementNames['textarea']) ? $this->usedElementNames['textarea'] : array()));
 		}
 		return $this->usedElementNames;
 	}

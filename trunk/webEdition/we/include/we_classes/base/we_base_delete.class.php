@@ -225,8 +225,7 @@ abstract class we_base_delete{
 			}
 			if(in_array($row['ContentType'], $ct)){
 				$version = new weVersions();
-				$version_exists = $version->getLastEntry($id, $table);
-				if(empty($version_exists)){
+				if(!weVersions::versionExists($id, $table)){
 					$version->saveVersion($object);
 				}
 

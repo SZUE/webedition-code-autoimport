@@ -149,7 +149,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	 * @param string $contentType
 	 * @return we_customer_documentFilter
 	 */
-	static function getFilterByIdAndTable($id, $table, we_database_base $db = null){
+	public static function getFilterByIdAndTable($id, $table, we_database_base $db = null){
 		$db = ($db ? $db : new DB_WE());
 		$hash = getHash('SELECT * FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="' . $db->escape(stripTblPrefix($table)) . '" AND modelId = ' . intval($id), $db);
 		return ($hash ?

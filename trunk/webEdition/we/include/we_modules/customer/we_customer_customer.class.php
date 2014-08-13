@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,7 +27,6 @@
  *
  */
 class we_customer_customer extends weModelBase{
-
 	const NOPWD_CHANGE = '__WE__PWD_NO_CHANGE';
 	const ENCRYPT_NONE = 0;
 	const ENCRYPT_SYMMETRIC = 1;
@@ -348,7 +346,7 @@ class we_customer_customer extends weModelBase{
 		if($storedPassword == '' || $clearPassword == ''){
 			return false;
 		}
-		if(!preg_match('|^\$([^$]*)\$([^$]*)\$(.*)$|', $storedPassword, $matches)){
+		if(!preg_match('|^\$([^$]{2,4})\$([^$]*)\$(.*)$|', $storedPassword, $matches)){
 			return $storedPassword === $clearPassword;
 		}
 		switch($matches[1]){
@@ -367,28 +365,31 @@ class we_customer_customer extends weModelBase{
 		return mcrypt_create_iv($len, (runAtWin() ? MCRYPT_RAND : MCRYPT_DEV_URANDOM));
 	}
 
-	public static function cryptData($data, $key = SECURITY_ENCRYPTION_KEY){//Note we need 4 Bytes prefix + 16 Byte IV + 1$ = 21 Bytes. The rest is avail for data, which is hex'ed, so "half" of length is available
+	public static function cryptData($data, $key = SECURITY_ENCRYPTION_KEY, $keepBin = false){//Note we need 4 Bytes prefix + 16 Byte IV + 1$ = 21 Bytes. The rest is avail for data, which is hex'ed, so "half" of length is available
 		if(function_exists('mcrypt_module_open') && ($res = mcrypt_module_open(MCRYPT_BLOWFISH, '', MCRYPT_MODE_OFB, ''))){
 			$iv = self::cryptGetIV();
-			mcrypt_generic_init($res, $key, $iv);
+			mcrypt_generic_init($res, hex2bin($key), $iv);
 			$data = mcrypt_generic($res, $data);
 			mcrypt_generic_deinit($res);
 			mcrypt_module_close($res);
-			return '$-1$' . bin2hex($iv) . '$' . bin2hex($data);
+			return '$-1' . ($keepBin ? 'a' : '') . '$' . bin2hex($iv) . '$' . ($keepBin ? $data : bin2hex($data));
 		}
 		return $data;
 	}
 
 	public static function decryptData($data, $key = SECURITY_ENCRYPTION_KEY){
 		$matches = array();
-		if(!preg_match('|^\$([^$]*)\$([^$]*)\$(.*)$|', $data, $matches)){
+		if(!preg_match('|^\$([^$]{2,4})\$([a-f0-9]{16,32})\$|', $data, $matches)){
 			return '';
 		}
+		$data = substr($data, strlen($matches[0]));
 		switch($matches[1]){
 			case '-1':
+				$matches[3] = hex2bin($data);
+			case '-1a':
 				if(function_exists('mcrypt_module_open') && ($res = mcrypt_module_open(MCRYPT_BLOWFISH, '', MCRYPT_MODE_OFB, ''))){
-					mcrypt_generic_init($res, $key, hex2bin($matches[2]));
-					$data = mdecrypt_generic($res, hex2bin($matches[3]));
+					mcrypt_generic_init($res, hex2bin($key), hex2bin($matches[2]));
+					$data = mdecrypt_generic($res, $data);
 					mcrypt_generic_deinit($res);
 					mcrypt_module_close($res);
 					return $data;
