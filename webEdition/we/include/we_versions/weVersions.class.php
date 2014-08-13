@@ -1127,7 +1127,7 @@ class weVersions{
 	 * persistent fieldnames are fields which are not in tblfile or tblobjectsfile and are always saved
 	 * @return value of field
 	 */
-	function makePersistentEntry($fieldName, $status, $document, $documentObj){
+	private function makePersistentEntry($fieldName, $status, $document, $documentObj){
 		$entry = '';
 		$db = new DB_WE();
 
@@ -1136,21 +1136,21 @@ class weVersions{
 				$entry = $document["ID"];
 				break;
 			case 'documentTable':
-				$entry = $document['Table'];
+				$entry = $document['Table'];//FIXME: check if this is tblFile or Prefixed version
 				break;
 			case 'documentElements':
 				if(!empty($document['elements']) && is_array($document['elements'])){
-					$entry = gzcompress(serialize($document["elements"]), 9);
+					$entry = sql_function('x\'' . bin2hex(gzcompress(serialize($document["elements"]), 9)) . '\'');
 				}
 				break;
 			case 'documentScheduler':
 				if(!empty($document['schedArr']) && is_array($document['schedArr'])){
-					$entry = gzcompress(serialize($document["schedArr"]), 9);
+					$entry = sql_function('x\'' . bin2hex(gzcompress(serialize($document["schedArr"]), 9)) . '\'');
 				}
 				break;
 			case "documentCustomFilter":
 				if(!empty($document["documentCustomerFilter"]) && is_array($document["documentCustomerFilter"])){
-					$entry = gzcompress(serialize($document["documentCustomerFilter"]), 9);
+					$entry = sql_function('x\'' . bin2hex(gzcompress(serialize($document["documentCustomerFilter"]), 9)) . '\'');
 				}
 				break;
 			case 'timestamp':
