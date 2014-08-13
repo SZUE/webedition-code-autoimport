@@ -55,9 +55,13 @@ class we_base_sessionHandler implements SessionHandlerInterface{
 			usleep(100000);
 		}
 		if($data){
-			$data = $data[0] == '$' && $this->crypt ? we_customer_customer::decryptData($data, $this->crypt) : $data;
+			$data = ($data[0] == '$' && $this->crypt ? we_customer_customer::decryptData($data, $this->crypt) : $data);
 			if($data){
-				return gzuncompress($data);
+				$tmp = gzuncompress($data);
+				if(!$tmp){
+					t_e($data);
+				}
+				return $tmp;
 			}//else we need a new sessionid; if decrypt failed we might else destroy an existing valid session
 		}
 
@@ -70,7 +74,6 @@ class we_base_sessionHandler implements SessionHandlerInterface{
 		if(!$sessData && !$lock){
 			return $this->destroy($sessID);
 		}
-		//$len = strlen($sessData);
 
 		$sessData = SYSTEM_WE_SESSION_CRYPT && $this->crypt ? we_customer_customer::cryptData(gzcompress($sessData, 4), $this->crypt, true) : gzcompress($sessData, 4);
 		$sessID = self::getSessionID($sessID);
@@ -81,9 +84,9 @@ class we_base_sessionHandler implements SessionHandlerInterface{
 				'sessionName' => $this->sessionName,
 				'lockid' => $lock ? $this->id : '',
 				'lockTime' => sql_function($lock ? 'NOW()' : 'NULL'),
-				/* 'len' => $len,
-				  'uid' => isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : (isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0),
-				  'tmp' => serialize($_SESSION), */
+				/*
+				'uid' => isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : (isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0),
+				'tmp' => serialize($_SESSION),*/
 		)));
 		return true;
 	}
