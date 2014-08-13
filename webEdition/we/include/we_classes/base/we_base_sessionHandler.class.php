@@ -20,7 +20,7 @@ class we_base_sessionHandler implements SessionHandlerInterface{
 			$this->execTime = ($this->execTime > 60 ? 60 : $this->execTime); //time might be wrong (1&1)
 			$this->id = uniqid('', true);
 			if(!(extension_loaded('suhosin') && ini_get('suhosin.session.encrypt'))){//make it possible to keep users when switching
-				$this->crypt = hash('haval224,4', $_SERVER['DOCUMENT_ROOT'] . $_SERVER['HTTP_USER_AGENT'] . (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : '') . $_SERVER['HTTP_ACCEPT_ENCODING']);
+				$this->crypt = hash('haval224,4', $_SERVER['DOCUMENT_ROOT'] . $_SERVER['HTTP_USER_AGENT'] . (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : '') . (isset($_SERVER['HTTP_ACCEPT_ENCODING']) ? $_SERVER['HTTP_ACCEPT_ENCODING'] : ''));
 				//double key size is needed
 				$this->crypt .=$this->crypt;
 			}
@@ -96,6 +96,7 @@ class we_base_sessionHandler implements SessionHandlerInterface{
 
 	function gc($sessMaxLifeTime){
 		$this->DB->query('DELETE FROM ' . SESSION_TABLE . ' WHERE touch<NOW()-INTERVAL ' . SYSTEM_WE_SESSION_TIME . ' second');
+		$this->DB->query('OPTIMIZE TABLE ' . SESSION_TABLE);
 		return true;
 	}
 

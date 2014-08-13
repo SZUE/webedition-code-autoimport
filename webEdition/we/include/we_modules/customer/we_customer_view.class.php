@@ -1299,9 +1299,8 @@ self.close();';
 
 				$format = (isset($format) ? $format : g_l('weEditorInfo', '[date_format]'));
 
-				we_html_tools::getDateInput2('we_date_' . $field . '%s', $value, false, $format, '', "weSelect", false, $this->settings->getSettings('start_year')) .
+				return we_html_tools::getDateInput2('we_date_' . $field . '%s', $value, false, $format, '', "weSelect", false, $this->settings->getSettings('start_year')) .
 					we_html_tools::getPixel(5, 5);
-
 			case 'password':
 				return we_html_tools::htmlTextInput($field, 32, $value, 32, 'onchange="top.content.setHot();" style="width:240px;" autocomplete="off" ', 'password');
 			case 'img':
@@ -1527,7 +1526,7 @@ failure: function(o) {
 			$c = 0;
 			$table->setRow(0, array("valign" => "top"));
 			foreach($branch as $k => $v){
-				$control = $this->getHTMLFieldControl($bk . "_" . $k, $v);
+				$control = $this->getHTMLFieldControl($bk . '_' . $k, $v);
 				if($control != ''){
 
 					$table->setCol($r, $c, array(), we_html_tools::htmlFormElementTable($control, $k));

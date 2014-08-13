@@ -18,7 +18,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-define('NO_SESS',1);
+define('NO_SESS',2);
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 //remove all paramters in case some functions might hear to them
 unset($_REQUEST, $_GET, $_POST);
