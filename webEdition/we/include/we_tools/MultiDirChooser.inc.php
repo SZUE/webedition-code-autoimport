@@ -43,7 +43,7 @@ class MultiDirChooser{
 	var $thirdDelPar = '';
 	protected $Record = array();
 
-	function __construct($width, $ids, $cmd_del, $addbut, $ws = "", $fields = "Icon,Path", $table = FILE_TABLE, $css = "defaultfont", $thirdDelPar = "", $extraDelFn = ""){
+	public function __construct($width, $ids, $cmd_del, $addbut, $ws = "", $fields = "Icon,Path", $table = FILE_TABLE, $css = "defaultfont", $thirdDelPar = "", $extraDelFn = ""){
 		$this->db = new DB_WE();
 		$this->width = $width;
 		$this->ids = $ids;

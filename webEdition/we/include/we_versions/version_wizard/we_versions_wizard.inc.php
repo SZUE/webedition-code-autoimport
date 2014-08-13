@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -29,7 +28,6 @@
  * @static
  */
 abstract class we_versions_wizard{
-
 	const DELETE_VERSIONS = 'delete_versions';
 	const RESET_VERSIONS = 'reset_versions';
 
@@ -776,10 +774,10 @@ set_button_state(false);';
 		if(!(file_exists($taskFilename) && $currentTask)){
 			switch($type){
 				case self::DELETE_VERSIONS:
-					$data = we_version::getDocuments($type, $version_delete);
+					$data = versionFragment::getDocuments($type, $version_delete);
 					break;
 				case self::RESET_VERSIONS:
-					$data = we_version::getDocuments($type, $version_reset);
+					$data = versionFragment::getDocuments($type, $version_reset);
 					break;
 			}
 			if(count($data)){
@@ -935,8 +933,6 @@ set_button_state(false);';
 	}
 
 	static function getReset2(){
-		$version = new weVersions();
-
 		$type = we_base_request::_(we_base_request::RAW, "type", self::RESET_VERSIONS);
 
 		$_SESSION['weS']['versions']['logResetIds'] = array();
@@ -948,15 +944,13 @@ set_button_state(false);';
 			'reset_seconds' => we_base_request::_(we_base_request::RAW, "reset_seconds", 0),
 		);
 
-		foreach($version->contentTypes as $k){
+		foreach(weVersions::getContentTypesVersioning() as $k){
 			$version_reset[$k] = we_base_request::_(we_base_request::BOOL, "version_reset_" . $k);
 		}
 
 		$def = (we_base_request::_(we_base_request::STRING, 'type') == 'reset_versions');
 		$version_reset['reset_doPublish'] = we_base_request::_(we_base_request::BOOL, 'reset_doPublish', $def);
 
-		$timestamp = "";
-		$timestampWhere = 1;
 		if($version_reset['reset_date'] != ""){
 			$date = explode(".", we_base_request::_(we_base_request::STRING, "reset_date"));
 			$day = intval($date[0]);
@@ -966,38 +960,41 @@ set_button_state(false);';
 			$minutes = $version_reset['reset_minutes'];
 			$seconds = $version_reset['reset_seconds'];
 			$timestamp = mktime($hour, $minutes, $seconds, $month, $day, $year);
-
 			$timestampWhere = " timestamp< '" . intval($timestamp) . "' ";
+		} else {
+			$timestamp = "";
+			$timestampWhere = 1;
 		}
 
 
-		$w = "";
+		$w = array();
 		foreach($version_reset as $k => $v){
-
-			if($k != "all" && $k != "reset_date" && $k != "reset_hours" && $k != "reset_minutes" && $k != "reset_seconds" && $k != "reset_doPublish"){
-				if($v){
-					if($w != ""){
-						$w .= " || ";
+			switch($k){
+				case "all":
+				case "reset_date":
+				case "reset_hours":
+				case "reset_minutes":
+				case "reset_seconds":
+				case "reset_doPublish":
+					break;
+				case we_base_ContentTypes::WEDOCUMENT:
+				case we_base_ContentTypes::HTML:
+				case "objectFile":
+					if($v){
+						$w[] = '(ContentType="' . $k . '" AND status="published" )';
 					}
-					$wHelp = " ContentType = '" . $k . "' ";
-					switch($k){
-						case we_base_ContentTypes::WEDOCUMENT:
-						case we_base_ContentTypes::HTML:
-						case "objectFile":
-							$wHelp = $wHelp . " AND status='published' ";
-						default:
-							;
+					break;
+				default:
+					if($v){
+						$w[] = ' ContentType="' . $k . '" ';
 					}
-					$w .= "(" . $wHelp . ")";
-				}
+					break;
 			}
 		}
-		$w = (empty($w) ? '1' : "(" . $w . ") ");
 
-		$cont = array();
-		$docIds = array();
+		$cont = $docIds = array();
 
-		$_SESSION['weS']['versions']['query'] = 'SELECT ID,documentID,documentTable,Text,Path,ContentType,timestamp,MAX(version) as version FROM ' . VERSIONS_TABLE . ' WHERE timestamp<=' . intval($timestamp) . ' AND ' . $w . ' GROUP BY documentTable,documentID ORDER BY version DESC';
+		$_SESSION['weS']['versions']['query'] = 'SELECT ID,documentID,documentTable,Text,Path,ContentType,timestamp,MAX(version) as version FROM ' . VERSIONS_TABLE . ' WHERE timestamp<=' . intval($timestamp) . ($w ? ' AND (' . implode(' OR ', $w) . ') ' : '') . ' GROUP BY documentTable,documentID ORDER BY version DESC';
 		$GLOBALS['DB_WE']->query($_SESSION['weS']['versions']['query']);
 		while($GLOBALS['DB_WE']->next_record()){
 			if(!in_array($GLOBALS['DB_WE']->f("documentID"), $docIds)){
@@ -1017,10 +1014,9 @@ set_button_state(false);';
 			);
 		}
 
-		$date = date("d.m.y - H:i:s", $timestamp);
-
+//FIXME: date format should be obtained from g_l
 		$out = '
-<div style="width:520px;">' . sprintf(g_l('versions', '[step2_txt_reset]'), $date) . '</div>
+<div style="width:520px;">' . sprintf(g_l('versions', '[step2_txt_reset]'), date("d.m.y - H:i:s", $timestamp)) . '</div>
 <div style="background-color:#fff;width:520px;margin-top:20px;">
 	<table border="0" cellpadding="2" cellspacing="0" width="100%">
 	<tr class="defaultfont" style="height:30px;">
@@ -1030,11 +1026,12 @@ set_button_state(false);';
 	</tr>';
 
 		foreach($docIds as $k => $v){
-			$out .= '<tr class="defaultfont">
-				<td align="center">' . $k . '</td>
-				<td align="center">' . we_util_Strings::shortenPath($v['Path'], 55) . '</td>
-				<td align="center">' . $v['ContentType'] . '</td>
-			</tr>';
+			$out .= '
+<tr class="defaultfont">
+	<td align="center">' . $k . '</td>
+	<td align="center">' . we_util_Strings::shortenPath($v['Path'], 55) . '</td>
+	<td align="center">' . $v['ContentType'] . '</td>
+</tr>';
 		}
 		$out .= '</table>
 			</div>';

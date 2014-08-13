@@ -1771,11 +1771,13 @@ class weVersions{
 					}
 				}
 
-				$_SESSION['weS']['versions']['logResetIds'][$resetArray['ID']]['Text'] = $resetArray['Text'];
-				$_SESSION['weS']['versions']['logResetIds'][$resetArray['ID']]['ContentType'] = $resetArray['ContentType'];
-				$_SESSION['weS']['versions']['logResetIds'][$resetArray['ID']]['Path'] = $resetArray['Path'];
-				$_SESSION['weS']['versions']['logResetIds'][$resetArray['ID']]['Version'] = $resetArray['version'];
-				$_SESSION['weS']['versions']['logResetIds'][$resetArray['ID']]['documentID'] = $resetArray['documentID'];
+				$_SESSION['weS']['versions']['logResetIds'][$resetArray['ID']] = array(
+					'Text' => $resetArray['Text'],
+					'ContentType' => $resetArray['ContentType'],
+					'Path' => $resetArray['Path'],
+					'Version' => $resetArray['version'],
+					'documentID' => $resetArray['documentID'],
+				);
 
 //update versions if id or path were changed
 				if(!$existsInFileTable){
@@ -2155,7 +2157,7 @@ class weVersions{
 
 	public static function versionExists($docID, $docTable){
 		$db = new DB_WE();
-		return f('SELECT 1 FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($docID) . " AND documentTable='" . $db->escape($docTable) . "' AND status IN ('saved','published','unpublished','deleted') LIMIT 1", $db);
+		return f('SELECT 1 FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($docID) . " AND documentTable='" . $db->escape($docTable) . "' AND status IN ('saved','published','unpublished','deleted') LIMIT 1", '', $db);
 	}
 
 	/**
@@ -2173,6 +2175,43 @@ class weVersions{
 		}
 
 		return makeCSVFromArray($const);
+	}
+
+	public static function todo($data, $printIt = true){
+		if($printIt){
+			$_newLine = count($_SERVER['argv']) ? "\n" : "<br/>\n";
+		}
+
+		switch($data["type"]){
+			case 'version_delete':
+				/* FIXME: why is this not active???
+
+				  weVersions::deleteVersion($data["ID"]);
+				  $_SESSION['weS']['versions']['logDeleteIds'][$data["ID"]]['Version'] = $data["version"];
+				  $_SESSION['weS']['versions']['logDeleteIds'][$data["ID"]]['Text'] = $data["text"];
+				  $_SESSION['weS']['versions']['logDeleteIds'][$data["ID"]]['ContentType'] = $data["contenttype"];
+				  $_SESSION['weS']['versions']['logDeleteIds'][$data["ID"]]['Path'] = $data["path"];
+				  $_SESSION['weS']['versions']['logDeleteIds'][$data["ID"]]['documentID'] = $data["documentID"];
+				 */
+				break;
+			case "version_reset" :
+				$publish = we_base_request::_(we_base_request::BOOL, 'reset_doPublish');
+				self::resetVersion($data["ID"], $data["version"], $publish);
+
+				//FIXME: isn't this already set in resetVersion
+				$_SESSION['weS']['versions']['logResetIds'][$data["ID"]] = array(
+					'Text' => $data["text"],
+					'ContentType' => $data["contenttype"],
+					'Path' => $data["path"],
+					'Version' => $data["version"],
+					'documentID' => $data["documentID"],
+				);
+
+				break;
+
+			default :
+				return false;
+		}
 	}
 
 }
