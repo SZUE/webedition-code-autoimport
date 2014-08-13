@@ -28,7 +28,7 @@
  *
  * Provides functions for exporting and importing backups.
  */
-class we_base_version{
+class we_backup_version{
 
 	var $db;
 	var $ClassName = __CLASS__;
@@ -41,7 +41,7 @@ class we_base_version{
 	var $SeqN = 0;
 	var $linkData = true;
 
-	function __construct($id = 0){
+	public function __construct($id = 0){
 		foreach($this->persistent_slots as $slot){
 			$this->$slot = "";
 		}
@@ -54,7 +54,7 @@ class we_base_version{
 
 	function load($id, $loadData = true){
 		$this->ID = $id;
-		$this->Path = f('SELECT binaryPath FROM ' . VERSIONS_TABLE . ' WHERE ID=' . intval($id), 'binaryPath', $this->db);
+		$this->Path = f('SELECT binaryPath FROM ' . VERSIONS_TABLE . ' WHERE ID=' . intval($id), '', $this->db);
 		return ($this->Path && $loadData ? $this->loadFile($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $this->Path) : false);
 	}
 

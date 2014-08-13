@@ -1139,17 +1139,17 @@ class weVersions{
 				$entry = $document['Table'];//FIXME: check if this is tblFile or Prefixed version
 				break;
 			case 'documentElements':
-				if(!empty($document['elements']) && is_array($document['elements'])){
+				if(isset($document['elements']) && is_array($document['elements'])){
 					$entry = sql_function('x\'' . bin2hex(gzcompress(serialize($document["elements"]), 9)) . '\'');
 				}
 				break;
 			case 'documentScheduler':
-				if(!empty($document['schedArr']) && is_array($document['schedArr'])){
+				if(isset($document['schedArr']) && is_array($document['schedArr'])){
 					$entry = sql_function('x\'' . bin2hex(gzcompress(serialize($document["schedArr"]), 9)) . '\'');
 				}
 				break;
 			case "documentCustomFilter":
-				if(!empty($document["documentCustomerFilter"]) && is_array($document["documentCustomerFilter"])){
+				if(isset($document["documentCustomerFilter"]) && is_array($document["documentCustomerFilter"])){
 					$entry = sql_function('x\'' . bin2hex(gzcompress(serialize($document["documentCustomerFilter"]), 9)) . '\'');
 				}
 				break;
@@ -1206,13 +1206,12 @@ class weVersions{
 				$entry = $binaryPath;
 				break;
 			case 'modifications':
-
 				$modifications = array();
 
 				/* get fields which can be changed */
 				$fields = self::getFieldsFromTable(VERSIONS_TABLE, $db);
 
-				$vals = getHash('SELECT ' . implode(',', $fields) . ' FROM ' . VERSIONS_TABLE . ' WHERE version <' . intval($this->version) . " AND status != 'deleted' AND documentID=" . intval($document["ID"]) . " AND documentTable='" . $db->escape($document["Table"]) . "' ORDER BY version DESC LIMIT 1");
+				$vals = getHash('SELECT ' . implode(',', $fields) . ' FROM ' . VERSIONS_TABLE . ' WHERE version<' . intval($this->version) . " AND status != 'deleted' AND documentID=" . intval($document["ID"]) . " AND documentTable='" . $db->escape($document["Table"]) . "' ORDER BY version DESC LIMIT 1");
 				foreach($fields as $val){
 					if(isset($this->modFields[$val]) && isset($vals[$val])){
 						$lastEntryField = isset($vals[$val]) ? $vals[$val] : '';
@@ -2165,10 +2164,8 @@ class weVersions{
 	 * @return array with fields and values
 	 */
 	function getConstantsOfMod($modArray){
-
 		$const = array();
-
-		foreach($modArray as $k => $v){
+		foreach($modArray as $v){
 			if(isset($this->modFields[$v])){
 				$const[] = $this->modFields[$v];
 			}
