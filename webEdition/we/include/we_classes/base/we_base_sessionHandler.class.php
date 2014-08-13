@@ -1,6 +1,6 @@
 <?php
 
-class we_base_sessionHandler{
+class we_base_sessionHandler implements SessionHandlerInterface{
 	//prevent crashed or killed sessions to stay
 	private $execTime;
 	private $sessionName;
@@ -20,7 +20,7 @@ class we_base_sessionHandler{
 			$this->execTime = ($this->execTime > 60 ? 60 : $this->execTime); //time might be wrong (1&1)
 			$this->id = uniqid('', true);
 			if(!(extension_loaded('suhosin') && ini_get('suhosin.session.encrypt'))){//make it possible to keep users when switching
-				$this->crypt = hash('haval224,4', $_SERVER['DOCUMENT_ROOT'] . $_SERVER['HTTP_USER_AGENT'] . $_SERVER['HTTP_ACCEPT_LANGUAGE'] . $_SERVER['HTTP_ACCEPT_ENCODING']);
+				$this->crypt = hash('haval224,4', $_SERVER['DOCUMENT_ROOT'] . $_SERVER['HTTP_USER_AGENT'] . (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : '') . $_SERVER['HTTP_ACCEPT_ENCODING']);
 				//double key size is needed
 				$this->crypt .=$this->crypt;
 			}
@@ -63,27 +63,27 @@ class we_base_sessionHandler{
 
 		//if we don't find valid data, generate a new ID because of session stealing
 		$this->write(self::getSessionID(0), $data, true); //we need a new locked session
-		return $data;
+		return '';
 	}
 
 	function write($sessID, $sessData, $lock = false){
 		if(!$sessData && !$lock){
 			return $this->destroy($sessID);
 		}
-		$len = strlen($sessData);
+		//$len = strlen($sessData);
 
-		$sessData = SYSTEM_WE_SESSION_CRYPT && $this->crypt ? we_customer_customer::cryptData(gzcompress($sessData, 4), $this->crypt,true) : gzcompress($sessData, 4);
+		$sessData = SYSTEM_WE_SESSION_CRYPT && $this->crypt ? we_customer_customer::cryptData(gzcompress($sessData, 4), $this->crypt, true) : gzcompress($sessData, 4);
 		$sessID = self::getSessionID($sessID);
 
 		$this->DB->query('REPLACE INTO ' . SESSION_TABLE . ' SET ' . we_database_base::arraySetter(array(
 				'session_id' => sql_function('x\'' . $sessID . '\''),
 				'session_data' => $sessData,
-				'sessionName' => $this->sessionName, //FIXME: compress before crypt!
+				'sessionName' => $this->sessionName,
 				'lockid' => $lock ? $this->id : '',
 				'lockTime' => sql_function($lock ? 'NOW()' : 'NULL'),
-				/*'len' => $len,
-				'uid' => isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : (isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0),
-				'tmp' => serialize($_SESSION),*/
+				/* 'len' => $len,
+				  'uid' => isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : (isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0),
+				  'tmp' => serialize($_SESSION), */
 		)));
 		return true;
 	}
