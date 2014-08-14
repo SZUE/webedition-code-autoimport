@@ -15,6 +15,7 @@ $l_searchtool=array(
 	'EDIT_SUCHE'=>'De gebruiker is bevoegd om zoek onderdelen te wijzigen',
 	'END'=>'eindigt op',
 	'ID'=>'ID van invoer',
+	'IN'=>'one of (list)',
 	'IS'=>'gelijk aan (=)',
 	'MasterTemplateID'=>'Hoofdsjabloon',
 	'ModDate'=>'Datum van modificatie',

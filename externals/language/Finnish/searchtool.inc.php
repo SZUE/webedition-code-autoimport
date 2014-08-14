@@ -15,6 +15,7 @@ $l_searchtool=array(
 	'EDIT_SUCHE'=>'Käyttäjä voi muokata hakukohteita',
 	'END'=>'loppuu',
 	'ID'=>'kohteen ID-numero',
+	'IN'=>'one of (list)',
 	'IS'=>'yhtä kuin (=)',
 	'MasterTemplateID'=>'Pääsivupohja',
 	'ModDate'=>'Muokkauspäivämäärä',

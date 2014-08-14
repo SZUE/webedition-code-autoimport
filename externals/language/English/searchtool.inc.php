@@ -15,6 +15,7 @@ $l_searchtool=array(
 	'EDIT_SUCHE'=>'The user is allowed to edit items in the search',
 	'END'=>'ends with',
 	'ID'=>'ID of entry',
+	'IN'=>'one of (list)',
 	'IS'=>'equal (=)',
 	'MasterTemplateID'=>'Mastertemplate',
 	'ModDate'=>'Date of modification',
