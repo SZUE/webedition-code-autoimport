@@ -96,8 +96,7 @@ class we_object_exImport extends we_object{
 			}
 
 			////// resave the line O to O.....
-			$this->DB_WE->query('DELETE FROM ' . $ctable . ' WHERE OF_ID=0 OR ID=0');
-			$this->DB_WE->query('INSERT INTO ' . $ctable . ' SET OF_ID=0');
+			$this->DB_WE->query('REPLACE INTO ' . $ctable . ' SET OF_ID=0');
 			////// resave the line O to O.....
 		} else {
 			$this->SerializedArray = unserialize($this->DefaultValues);

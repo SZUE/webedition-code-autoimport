@@ -60,8 +60,13 @@ function we_tag_sessionField($attribs, $content){
 			if($currentdate){
 				$orgVal = time();
 			}
+			try{
+				$date = ($orgVal ? new DateTime((is_numeric($orgVal) ? '@' : '') . $orgVal) : 0);
+			} catch (Exception $e){
+				$date = new DateTime('now');
+			}
 			return we_html_tools::getDateInput2(
-					"s[we_date_" . $name . "]", ($orgVal ? new DateTime((is_numeric($orgVal) ? '@' : '') . $orgVal) : 0), false, $format, '', '', $xml, $minyear, $maxyear);
+					"s[we_date_" . $name . "]", $date, false, $format, '', '', $xml, $minyear, $maxyear);
 
 		case 'country':
 			$newAtts = removeAttribs($attribs, array('checked', 'type', 'options', 'selected', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'rows', 'cols', 'maxlength', 'wysiwyg'));
@@ -236,11 +241,11 @@ function we_tag_sessionField($attribs, $content){
 				return ($ascountry && $orgVal == '--' ? '' : CheckAndConvertISOfrontend(Zend_Locale::getTranslation($orgVal, ($ascountry ? 'territory' : 'language'), $langcode)));
 			}
 			if($dateformat){
-				if(is_numeric($orgVal)){
-					return date($dateformat, $orgVal);
-				}
-				if(($weTimestemp = new DateTime($orgVal))){
-					return $weTimestemp->format($dateformat);
+				try{
+					$date = new DateTime((is_numeric($orgVal) ? '@' : '') . $orgVal);
+					return $date->format($dateformat);
+				} catch (Exception $e){
+					//fallback to default return
 				}
 			}
 			return weTag_getAttribute('htmlspecialchars', $attribs, false, true) ? oldHtmlspecialchars($orgVal) : $orgVal;
@@ -324,8 +329,7 @@ function we_tag_sessionField($attribs, $content){
 	</tr>
 	<tr>
 		<td class="weEditmodeStyle" colspan="2" align="left">
-			<input' . ($size ? ' size="' . $size . '"' : '') . ' name="WE_SF_IMG_DATA[' . $name . ']" type="file" accept="' . we_base_imageEdit::IMAGE_CONTENT_TYPES . '"' . ($inputstyle
-							? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . ' />
+			<input' . ($size ? ' size="' . $size . '"' : '') . ' name="WE_SF_IMG_DATA[' . $name . ']" type="file" accept="' . we_base_imageEdit::IMAGE_CONTENT_TYPES . '"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . ' />
 		</td>
 	</tr>
 	<tr>
@@ -336,8 +340,7 @@ function we_tag_sessionField($attribs, $content){
 						<input style="border:0px solid black;" type="checkbox" id="WE_SF_DEL_CHECKBOX_' . $name . '" name="WE_SF_DEL_CHECKBOX_' . $name . '" value="1" ' . $checked . '/>
 					</td>
 					<td>
-						<label for="WE_SF_DEL_CHECKBOX_' . $name . '"' . ($checkboxstyle ? (' style="' . $checkboxstyle . '"') : '') . ($checkboxclass ? (' class="' . $checkboxclass . '"')
-							: '') . '>' . $checkboxtext . '</label>
+						<label for="WE_SF_DEL_CHECKBOX_' . $name . '"' . ($checkboxstyle ? (' style="' . $checkboxstyle . '"') : '') . ($checkboxclass ? (' class="' . $checkboxclass . '"') : '') . '>' . $checkboxtext . '</label>
 					</td>
 				</tr>
 			</table>

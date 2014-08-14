@@ -133,7 +133,7 @@ function we_tag_write($attribs){
 				if(defined('OBJECT_FILES_TABLE') && $type == 'object'){
 					if($GLOBALS['we_' . $type][$name]->Text == ''){
 						if($objname == ''){
-							$objname = 1 + intval(f('SELECT MAX(ID) AS ID FROM ' . OBJECT_FILES_TABLE, 'ID', $GLOBALS['DB_WE']));
+							$objname = 1 + intval(f('SELECT MAX(ID) AS ID FROM ' . OBJECT_FILES_TABLE));
 						}
 					} else {
 						switch($onpredefinedname){
@@ -150,7 +150,7 @@ function we_tag_write($attribs){
 								break;
 						}
 					}
-					$objexists = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' . $GLOBALS['DB_WE']->escape(str_replace('//', '/', $GLOBALS['we_' . $type][$name]->Path . '/' . $objname)) . '"', 'ID', $GLOBALS['DB_WE']);
+					$objexists = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' . $GLOBALS['DB_WE']->escape(str_replace('//', '/', $GLOBALS['we_' . $type][$name]->Path . '/' . $objname)) . '"');
 					if($objexists == ''){
 						$GLOBALS['we_' . $type][$name]->Text = $objname;
 						$GLOBALS['we_' . $type][$name]->Path = str_replace('//', '/', $GLOBALS['we_' . $type][$name]->Path . '/' . $objname);
@@ -168,7 +168,7 @@ function we_tag_write($attribs){
 							case 'increment':
 								$z = 1;
 								$footext = $objname . '_' . $z;
-								while(f('SELECT ID FROM ' . OBJECT_FILES_TABLE . " WHERE Path='" . $GLOBALS['DB_WE']->escape(str_replace('//', '/', $GLOBALS['we_' . $type][$name]->Path . "/" . $footext)) . "'", 'ID', $GLOBALS['DB_WE'])){
+								while(f('SELECT ID FROM ' . OBJECT_FILES_TABLE . " WHERE Path='" . $GLOBALS['DB_WE']->escape(str_replace('//', '/', $GLOBALS['we_' . $type][$name]->Path . "/" . $footext)) . "'")){
 									$z++;
 									$footext = $objname . '_' . $z;
 								}
@@ -224,7 +224,7 @@ function we_tag_write($attribs){
 					$path = $GLOBALS['we_' . $type][$name]->Path;
 					switch($type){
 						case 'object':
-							$classname = f('SELECT Text FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($classid), 'Text', $GLOBALS['DB_WE']);
+							$classname = f('SELECT Text FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($classid));
 							$mailtext = sprintf(g_l('global', '[std_mailtext_newObj]'), $path, $classname) . "\n" . ($triggerid ? getServerUrl() . id_to_path($triggerid) . '?we_objectID=' : 'ObjectID: ') . $GLOBALS['we_object'][$name]->ID;
 							$subject = g_l('global', '[std_subject_newObj]');
 							break;
