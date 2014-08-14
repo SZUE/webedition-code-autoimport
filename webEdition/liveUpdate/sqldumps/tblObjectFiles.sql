@@ -1,3 +1,5 @@
+###UPDATEDROPCOL(ObjectID,###TBLPREFIX###tblObjectFiles)###
+/* query separator */
 CREATE TABLE ###TBLPREFIX###tblObjectFiles (
   ID int(11) unsigned NOT NULL auto_increment,
   ParentID int(11) unsigned NOT NULL default '0',
@@ -21,7 +23,6 @@ CREATE TABLE ###TBLPREFIX###tblObjectFiles (
   Templates varchar(255) NOT NULL default '',
   ExtraTemplates varchar(255) NOT NULL default '',
   TableID int(11) unsigned NOT NULL default '0',
-  ObjectID bigint(20) unsigned NOT NULL default '0',
   Category text NOT NULL,
   ClassName enum('we_class_folder','we_objectFile') NOT NULL,
   IsClassFolder tinyint(1) unsigned NOT NULL default '0',

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -27,7 +26,6 @@
  * simplified representation of the navigation item
  */
 class we_navigation_item{
-
 	var $id;
 	var $icon;
 	var $docid;
@@ -212,7 +210,7 @@ class we_navigation_item{
 				}
 				break;
 			case FILE_TABLE:
-				if(isset($GLOBALS['WE_MAIN_DOC']) && (!isset($GLOBALS['WE_MAIN_DOC']->TableID))){
+				if(isset($GLOBALS['WE_MAIN_DOC']) && (!($GLOBALS['WE_MAIN_DOC'] instanceof we_objectFile))){
 					$id = $GLOBALS['WE_MAIN_DOC']->ID;
 				}
 				break;

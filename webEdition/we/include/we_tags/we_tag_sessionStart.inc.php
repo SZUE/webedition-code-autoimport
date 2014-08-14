@@ -111,7 +111,6 @@ function we_tag_sessionStart($attribs){
 					'Referrer' => $_SERVER['HTTP_REFERER'] ? oldHtmlspecialchars((string) $_SERVER['HTTP_REFERER']) : '',
 					'LastLogin' => sql_function('NOW()'),
 					'PageID' => $doc->ID,
-					'ObjectID' => 0,
 					'SessionAutologin' => $SessionAutologin
 				)) . ' ON DUPLICATE KEY UPDATE ' . we_database_base::arraySetter(array(
 					'PageID' => $doc->ID,

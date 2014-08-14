@@ -436,11 +436,10 @@ class we_backup_backup extends we_backup_base{
 	 * Description: This function checks if a table name has its correct value.
 	 */
 	function isFixed($tab){
-		if(defined('OBJECT_X_TABLE')){
-			if(stripos($tab, OBJECT_X_TABLE) !== false){
-				return !(isset($this->handle_options["object"]) && $this->handle_options["object"]);
-			}
-		} else if(stripos($tab, "tblobject") !== false){
+		if(defined('OBJECT_X_TABLE') && stripos($tab, OBJECT_X_TABLE) !== false){
+			return !(isset($this->handle_options["object"]) && $this->handle_options["object"]);
+		}
+		if(stripos($tab, "tblobject") !== false){
 			return true;
 		}
 		return parent::isFixed($tab) || !$this->isWeTable($tab);

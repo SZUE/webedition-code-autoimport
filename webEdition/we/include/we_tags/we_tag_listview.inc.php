@@ -186,7 +186,7 @@ function we_tag_listview($attribs){
 				default:
 					$we_lv_pagelanguage = $we_lv_pagelanguage == 'self' || $we_lv_pagelanguage == 'top' ? $we_lv_ownlanguage : we_getDocForTag($docAttr)->Language;
 
-					if(isset($we_lv_langguagesdoc->TableID) && $we_lv_langguagesdoc->TableID){
+					if($we_lv_langguagesdoc instanceof we_objectFile){
 						$we_lv_pageID = $we_lv_langguagesdoc->OF_ID;
 						$we_lv_linktype = 'tblObjectFile';
 					} else {
@@ -272,8 +272,7 @@ function we_tag_listview($attribs){
 			$parentidname = weTag_getAttribute('parentidname', $attribs);
 //$categoryids="' . $categoryids . '";
 //$parentid="' . $parentid . '";
-			$GLOBALS['lv'] = new we_listview_category($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $parentid, $categoryids, 'default', $cols, ($parentidname ? $parentidname
-						: ''), $hidedirindex);
+			$GLOBALS['lv'] = new we_listview_category($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $parentid, $categoryids, 'default', $cols, ($parentidname ? $parentidname : ''), $hidedirindex);
 			break;
 		default:
 	}

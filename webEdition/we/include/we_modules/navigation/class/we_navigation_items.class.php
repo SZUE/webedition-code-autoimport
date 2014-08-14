@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -27,7 +26,6 @@
  * collection of the navigation items
  */
 class we_navigation_items{
-
 	const TEMPLATE_DEFAULT_CURRENT = 'defaultCurrent';
 	const TEMPLATE_DEFAULT_POSITION = 'defaultPosition';
 	const TEMPLATE_DEFAULT_LEVEL = 'defaultLevel';
@@ -292,7 +290,7 @@ class we_navigation_items{
 		$_curr_len = 0;
 		$_ponder = 0;
 
-		$_isObject = (isset($GLOBALS['we_obj']) && isset($GLOBALS['WE_MAIN_DOC']->TableID) && $GLOBALS['WE_MAIN_DOC']->TableID);
+		$_isObject = (isset($GLOBALS['we_obj']) && ($GLOBALS['WE_MAIN_DOC'] instanceof we_objectFile) && !$GLOBALS['WE_MAIN_DOC']->IsFolder);
 
 		foreach($this->currentRules as $_rule){
 			$_ponder = 4;
@@ -318,7 +316,7 @@ class we_navigation_items{
 
 				case we_navigation_navigation::STPYE_CLASS:
 					if($_rule->ClassID){
-						if(isset($GLOBALS['WE_MAIN_DOC']->TableID) && ($GLOBALS["WE_MAIN_DOC"]->TableID == $_rule->ClassID)){
+						if(($GLOBALS['WE_MAIN_DOC'] instanceof we_objectFile) && !$GLOBALS["WE_MAIN_DOC"]->IsFolder && ($GLOBALS["WE_MAIN_DOC"]->TableID == $_rule->ClassID)){
 							$_ponder--;
 						} else {
 							$_ponder = 999; // remove from selection

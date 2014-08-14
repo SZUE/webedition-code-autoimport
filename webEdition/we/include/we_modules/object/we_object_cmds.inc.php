@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -37,8 +36,9 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 		$wsid = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 3);
 		$wsPath = id_to_path($wsid, FILE_TABLE, $DB_WE);
 		$tableID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 4);
-		$ofID = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE ObjectID=' . intval($oid) . ' AND TableID=' . intval($tableID), "", $DB_WE);
-		$foo = f('SELECT OF_ExtraWorkspacesSelected FROM ' . OBJECT_X_TABLE . intval($tableID) . ' WHERE ID=' . intval($oid), "", $DB_WE);
+		$hash = getHash('SELECT OF_ID,OF_ExtraWorkspacesSelected FROM ' . OBJECT_X_TABLE . intval($tableID) . ' WHERE OF_ID=' . intval($oid), $DB_WE);
+		$ofID = $hash['OF_ID'];
+		$foo = $hash['OF_ExtraWorkspacesSelected'];
 		if(strstr($foo, ',' . $wsid . ',')){
 			$ews = str_replace(',' . $wsid, ',', '', $foo);
 			if($ews == ','){
@@ -49,12 +49,12 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 			$ews = ($foo ? $foo : ",") . $wsid . ",";
 			$check = 1;
 		}
-		$DB_WE->query("UPDATE " . OBJECT_X_TABLE . intval($tableID) . " SET OF_ExtraWorkspacesSelected='" . $DB_WE->escape($ews) . "' WHERE ID=" . intval($oid));
-		$DB_WE->query("UPDATE " . OBJECT_FILES_TABLE . " SET ExtraWorkspacesSelected='" . $DB_WE->escape($ews) . "' WHERE ID=" . intval($ofID));
+		$DB_WE->query('UPDATE ' . OBJECT_X_TABLE . intval($tableID) . ' SET OF_ExtraWorkspacesSelected="' . $DB_WE->escape($ews) . '" WHERE OF_ID=' . intval($oid));
+		$DB_WE->query('UPDATE ' . OBJECT_FILES_TABLE . ' SET ExtraWorkspacesSelected="' . $DB_WE->escape($ews) . '" WHERE ID=' . intval($ofID));
 		$of = new we_objectFile();
 		$of->initByID($ofID, OBJECT_FILES_TABLE);
 		$of->insertAtIndex();
-		print we_html_element::jsElement('top.we_cmd("reload_editpage");');
+		echo we_html_element::jsElement('top.we_cmd("reload_editpage");');
 		break;
 	case "object_obj_search":
 		$we_doc->Search = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2);

@@ -65,7 +65,7 @@ class weVersions{
 	protected $ExtraTemplates;
 	protected $MasterTemplateID;
 	protected $TableID;
-	protected $ObjectID;
+	protected $ObjectID;//FIXME: remove??
 	protected $IsClassFolder;
 	protected $IsNotEditable;
 	protected $Charset;
@@ -700,8 +700,9 @@ class weVersions{
 
 	/**
 	 * @param unknown_type $ObjectID
+	 *
 	 */
-	public function setObjectID($objectID){
+	public function setObjectID($objectID){//FIXME:remove?
 		$this->objectID = $objectID;
 	}
 
@@ -752,14 +753,14 @@ class weVersions{
 	}
 
 	/**
-	 * @param unknown_type $TableID
+	 * @param unknown_type $tableID
 	 */
 	public function setTableID($tableID){
 		$this->tableID = $tableID;
 	}
 
 	/**
-	 * @param unknown_type $TemplateID
+	 * @param unknown_type $templateID
 	 */
 	public function setTemplateID($templateID){
 		$this->templateID = $templateID;
@@ -900,38 +901,42 @@ class weVersions{
 	 * 3. if document / object is saved, published or unpublished
 	 */
 	public function save($docObj, $status = "saved"){
-		if(isset($_SESSION["user"]["ID"])){
-			$_SESSION['weS']['versions']['fromImport'] = 0;
+		if(!isset($_SESSION["user"]["ID"])){
+			return;
+		}
+		$_SESSION['weS']['versions']['fromImport'] = 0;
 
-			$cmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
-			$cmd = we_base_request::_(we_base_request::STRING, 'cmd');
+		$cmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
+		$cmd = we_base_request::_(we_base_request::STRING, 'cmd');
 //import
-			if(we_base_request::_(we_base_request::BOOL, "jupl")){
-				$_SESSION['weS']['versions']['fromImport'] = 1;
-				$this->saveVersion($docObj);
-			} elseif(we_base_request::_(we_base_request::STRING, "pnt") == "wizcmd"){
-				if($_REQUEST["v"]["type"] == we_import_functions::TYPE_CSV || we_base_request::_(we_base_request::STRING, "v", '', "type") == we_import_functions::TYPE_GENERIC_XML){
+		if(we_base_request::_(we_base_request::BOOL, "jupl")){
+			$_SESSION['weS']['versions']['fromImport'] = 1;
+			$this->saveVersion($docObj);
+		} elseif(we_base_request::_(we_base_request::STRING, "pnt") == "wizcmd"){
+			switch(we_base_request::_(we_base_request::STRING, "v", '', "type")){
+				case we_import_functions::TYPE_CSV:
+				case we_import_functions::TYPE_GENERIC_XML:
 					$_SESSION['weS']['versions']['fromImport'] = 1;
 					$this->saveVersion($docObj);
-				} elseif(isset($_SESSION['weS']['ExImRefTable'])){
-					foreach($_SESSION['weS']['ExImRefTable'] as $k => $v){
-						if($v["ID"] == $docObj->ID){
-							$_SESSION['weS']['versions']['fromImport'] = 1;
-							$this->saveVersion($docObj);
+					break;
+				default :
+					if(isset($_SESSION['weS']['ExImRefTable'])){
+						foreach($_SESSION['weS']['ExImRefTable'] as $v){
+							if($v["ID"] == $docObj->ID){
+								$_SESSION['weS']['versions']['fromImport'] = 1;
+								$this->saveVersion($docObj);
+							}
 						}
 					}
-				}
-			} elseif($cmd0 == "siteImport" || $cmd0 == "import_files"){
-				$_SESSION['weS']['versions']['fromImport'] = 1;
-				$this->saveVersion($docObj);
-			} else {
-				if((isset($_SESSION['weS']['versions']['fromScheduler']) && $_SESSION['weS']['versions']['fromScheduler']) || ($cmd0 == "save_document" || $cmd0 == "unpublish" || $cmd0 == "revert_published") || $cmd == "ResetVersion" || $cmd == "PublishDocs" || $cmd == "ResetVersionsWizard" || (we_base_request::_(we_base_request::STRING, "type") == "reset_versions") || (isset($_SESSION['weS']['versions']['initialVersions']) && $_SESSION['weS']['versions']['initialVersions'])){
-					if(isset($_SESSION['weS']['versions']['initialVersions'])){
-						unset($_SESSION['weS']['versions']['initialVersions']);
-					}
-					$this->saveVersion($docObj, $status);
-				}
 			}
+		} elseif($cmd0 == "siteImport" || $cmd0 == "import_files"){
+			$_SESSION['weS']['versions']['fromImport'] = 1;
+			$this->saveVersion($docObj);
+		} elseif((isset($_SESSION['weS']['versions']['fromScheduler']) && $_SESSION['weS']['versions']['fromScheduler']) || ($cmd0 == "save_document" || $cmd0 == "unpublish" || $cmd0 == "revert_published") || $cmd == "ResetVersion" || $cmd == "PublishDocs" || $cmd == "ResetVersionsWizard" || (we_base_request::_(we_base_request::STRING, "type") == "reset_versions") || (isset($_SESSION['weS']['versions']['initialVersions']) && $_SESSION['weS']['versions']['initialVersions'])){
+			if(isset($_SESSION['weS']['versions']['initialVersions'])){
+				unset($_SESSION['weS']['versions']['initialVersions']);
+			}
+			$this->saveVersion($docObj, $status);
 		}
 	}
 
@@ -1136,7 +1141,7 @@ class weVersions{
 				$entry = $document["ID"];
 				break;
 			case 'documentTable':
-				$entry = $document['Table'];//FIXME: check if this is tblFile or Prefixed version
+				$entry = $document['Table']; //FIXME: check if this is tblFile or Prefixed version
 				break;
 			case 'documentElements':
 				if(isset($document['elements']) && is_array($document['elements'])){

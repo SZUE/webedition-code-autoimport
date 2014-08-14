@@ -1113,7 +1113,7 @@ class we_document extends we_root{
 				break;
 			case 'href':
 				$val = $this->getElement(isset($attribs['name']) ? $attribs['name'] : '');
-				if((isset($this->TableID) && $this->TableID) || ($this instanceof we_objectFile)){
+				if($this instanceof we_objectFile){
 					$hrefArr = $val ? unserialize($val) : array();
 					return (is_array($hrefArr) ? self::getHrefByArray($hrefArr) : '');
 				}
@@ -1122,7 +1122,7 @@ class we_document extends we_root{
 				$val = $this->getElement(isset($attribs['name']) ? $attribs['name'] : '');
 		}
 
-		return $this->getFieldByVal($val, $type, $attribs, $pathOnly, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->ParentID : $this->ParentID, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->Path : $this->Path, $this->DB_WE, (isset($attribs['classid']) && isset($attribs['type']) && $attribs['type'] == 'select') ? $attribs['classid'] : (isset($this->TableID) ? $this->TableID : ''));
+		return $this->getFieldByVal($val, $type, $attribs, $pathOnly, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->ParentID : $this->ParentID, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->Path : $this->Path, $this->DB_WE, (isset($attribs['classid']) && isset($attribs['type']) && $attribs['type'] == 'select') ? $attribs['classid'] : ($this instanceof we_objectFile ? $this->TableID : ''));
 	}
 
 	private function getValFromSrc($fn, $name){

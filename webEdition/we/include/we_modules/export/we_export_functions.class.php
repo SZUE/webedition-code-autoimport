@@ -613,7 +613,7 @@ abstract class we_export_functions{
 
 		$DB_WE = new DB_WE();
 
-		$dv = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($we_obj->TableID), 'DefaultValues', $DB_WE);
+		$dv = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($we_obj->TableID), '', $DB_WE);
 		$dv = $dv ? unserialize($dv) : array();
 		if(!is_array($dv)){
 			$dv = array();

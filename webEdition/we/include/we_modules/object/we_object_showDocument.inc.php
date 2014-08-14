@@ -147,7 +147,6 @@ if(($_userID && $_userID != $_SESSION['user']['ID']) || (we_base_request::_(we_b
 	$GLOBALS['we_doc']->Owners = $GLOBALS['we_obj']->Owners;
 	$GLOBALS['we_doc']->OwnersReadOnly = $GLOBALS['we_obj']->OwnersReadOnly;
 	$GLOBALS['we_doc']->Category = $GLOBALS['we_obj']->Category;
-	$GLOBALS['we_doc']->ObjectID = $GLOBALS['we_obj']->ObjectID;
 	$GLOBALS['we_doc']->OF_ID = $GLOBALS['we_obj']->ID;
 	$GLOBALS['we_doc']->Charset = $GLOBALS['we_obj']->Charset;
 	$GLOBALS['we_doc']->Language = $GLOBALS['we_obj']->Language;

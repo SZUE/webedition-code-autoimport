@@ -224,13 +224,13 @@ class we_shop_Basket{
 				}
 				break;
 			case we_shop_shop::OBJECT:
-				$classArray = getHash('SELECT TableID,ObjectID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id), $DB_WE);
-				if(!$classArray){
+				$classID = f('SELECT TableID FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=0 AND ID=' . intval($id), '',$DB_WE);
+				if(!$classID){
 					t_e('fatal shop error', $id, $_REQUEST);
 					return array();
 				}
 
-				$olv = new we_object_listview(0, 1, 0, '', false, $classArray['TableID'], '', '', ' ' . OBJECT_X_TABLE . $classArray['TableID'] . '.ID=' . $classArray['ObjectID'], 0, 0, true, false, '', '', '', '', '', '', '', 0, '', '', '', '', TAGLINKS_DIRECTORYINDEX_HIDE, TAGLINKS_OBJECTSEOURLS);
+				$olv = new we_object_listview(0, 1, 0, '', false, $classID, '', '', ' ' . OBJECT_X_TABLE . $classID . '.OF_ID=' . $id, 0, 0, true, false, '', '', '', '', '', '', '', 0, '', '', '', '', TAGLINKS_DIRECTORYINDEX_HIDE, TAGLINKS_OBJECTSEOURLS);
 				$olv->next_record();
 
 				$Record = $olv->getDBRecord();
