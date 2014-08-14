@@ -155,8 +155,11 @@ function correctDateFormat($format, $t = 0){
 	if(!$t){
 		$t = time();
 	}
+	try{
 	$dt = is_object($t) ? $t : new DateTime((is_numeric($t) ? '@' : '') . $t);
-
+	}catch(Exception $e){
+		$dt = new DateTime('now');
+	}
 	$escapes = array('d' => '\\d', 'D' => '\\D', 'j' => '\\j', 'l' => '\\l', 'N' => '\\N', 'S' => '\\S', 'w' => '\\w', 'z' => '\\z',
 		'W' => '\\W', 'F' => '\\F', 'M' => '\\M', 'm' => '\\m', 'n' => '\\n', 't' => '\\t', 'L' => '\\L', 'o' => '\\o', 'Y' => '\\Y',
 		'y' => '\\y', 'a' => '\\a', 'A' => '\\A', 'B' => '\\B', 'g' => '\\g', 'G' => '\\G', 'h' => '\\h', 'H' => '\\H', 'i' => '\\i', 's' => '\\s',

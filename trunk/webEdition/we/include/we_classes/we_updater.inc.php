@@ -214,7 +214,7 @@ class we_updater{
 
 			$_table = OBJECT_FILES_TABLE;
 
-			$_db->query('SHOW TABLES LIKE "' . OBJECT_X_TABLE . '%"'); //note: _% ignores _, so escaping _ with \_ does the job
+			$_db->query('SHOW TABLES LIKE "' . str_replace('_', '', OBJECT_X_TABLE) . '\_%"'); //note: _% ignores _, so escaping _ with \_ does the job
 			$allTab = $_db->getAll(true);
 			foreach($allTab as $_table){
 				if($_table == OBJECT_FILES_TABLE){
@@ -269,11 +269,11 @@ class we_updater{
 					$GLOBALS['DB_WE']->query('DELETE FROM ' . $_table . ' WHERE OF_ID=0');
 					$GLOBALS['DB_WE']->addKey($_table, $key);
 					if(!$GLOBALS['DB_WE']->isKeyExistAtAll($_table, 'OF_ID')){
-						t_e('duplicates found',$_table);
 						//we have duplicates in this table - we must clean up
-						$GLOBALS['DB_WE']->query('SELECT DISTINCT o.ID FROM ' . $_table . ' o join ' . $_table . ' oo ON o.OF_ID=oo.OF_ID WHERE o.ID<oo.ID');
+						//should we add an index first?
+						$GLOBALS['DB_WE']->query('SELECT DISTINCT o.ID FROM ' . $_table . ' o JOIN ' . $_table . ' oo ON o.OF_ID=oo.OF_ID WHERE o.ID<oo.ID');
 						$ids = $GLOBALS['DB_WE']->getAll(true);
-						$GLOBALS['DB_WE']->query('DELETE FROM ' . $_table . ' WHERE ID IN(' . $ids . ')');
+						$GLOBALS['DB_WE']->query('DELETE FROM ' . $_table . ' WHERE ID IN(' . implode(',', $ids) . ')');
 						//retry to add key
 						$GLOBALS['DB_WE']->addKey($_table, $key);
 					}
@@ -412,7 +412,7 @@ class we_updater{
 		}
 	}
 
-	function doUpdate(){
+	public function doUpdate(){
 		self::replayUpdateDB();
 
 		self::updateTables();

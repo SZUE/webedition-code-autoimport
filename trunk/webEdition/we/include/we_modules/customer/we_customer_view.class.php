@@ -1289,8 +1289,11 @@ self.close();');
 				$format = g_l('weEditorInfo', '[date_only_format]');
 			case 'dateTime':
 				//$out = we_html_element::htmlHidden(array('name' => $field, 'value' => $value));
-
-				$value = $value && $value != '0000-00-00' ? new DateTime($value /* ? $value : $this->settings->getSettings('start_year') . '-01-01' */) : 0;
+				try{
+					$value = $value && $value != '0000-00-00' ? new DateTime($value /* ? $value : $this->settings->getSettings('start_year') . '-01-01' */) : 0;
+				} catch (Exception $e){
+					$value = 0;
+				}
 				$date_format = (isset($date_format) ? $date_format : DATE_FORMAT);
 
 				$format = (isset($format) ? $format : g_l('weEditorInfo', '[date_format]'));
