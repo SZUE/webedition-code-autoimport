@@ -137,7 +137,7 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 			default:
 				if(defined('OBJECT_FILES_TABLE')){
 					$where = $this->queryForAllowed(OBJECT_FILES_TABLE);
-					$cat_sql = ' ' . ($categories ? we_category::getCatSQLTail('', OBJECT_FILES_TABLE, true, $db, 'Category', true, $categories) : '');
+					$cat_sql = ' ' . ($categories ? we_category::getCatSQLTail('', OBJECT_FILES_TABLE, true, $this->db, 'Category', true, $categories) : '');
 
 					$this->db->query('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=0 AND TableID=' . intval($classname) . $cat_sql . $where);
 					$selObjs = $this->db->getAll(true);

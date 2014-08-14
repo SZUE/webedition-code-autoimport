@@ -36,7 +36,7 @@ function we_isNotEmpty($attribs){
 		case 'flashmovie' :
 			return (bool) $doc->getElement($match, 'bdid');
 		case 'href' :
-			if(isset($doc->TableID) && $doc->TableID){
+			if($doc instanceof we_objectFile){
 				$hreftmp = $doc->getElement($match);
 				$hreftmp = $hreftmp ? $hreftmp : '';
 				if(!is_array($hreftmp)){

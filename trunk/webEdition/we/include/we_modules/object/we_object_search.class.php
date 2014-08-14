@@ -53,7 +53,7 @@ class we_object_search extends we_search{
 
 	function getFields($name = 'obj_searchField', $size = 1, $select = "", $Path, $multi = ""){
 
-		$objID = f('SELECT ID FROM ' . OBJECT_TABLE . " WHERE Path='" . $GLOBALS['DB_WE']->escape($Path) . "'", "ID", $GLOBALS['DB_WE']);
+		$objID = f('SELECT ID FROM ' . OBJECT_TABLE . " WHERE Path='" . $GLOBALS['DB_WE']->escape($Path) . "'");
 		$opts = '';
 		$tableInfo = $GLOBALS['DB_WE']->metadata(OBJECT_X_TABLE . $objID);
 		$all = "";

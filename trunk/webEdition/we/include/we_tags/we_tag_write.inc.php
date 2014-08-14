@@ -225,7 +225,9 @@ function we_tag_write($attribs){
 					switch($type){
 						case 'object':
 							$classname = f('SELECT Text FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($classid));
-							$mailtext = sprintf(g_l('global', '[std_mailtext_newObj]'), $path, $classname) . "\n" . ($triggerid ? getServerUrl() . id_to_path($triggerid) . '?we_objectID=' : 'ObjectID: ') . $GLOBALS['we_object'][$name]->ID;
+							$mailtext = sprintf(g_l('global', '[std_mailtext_newObj]'), $path, $classname) . "\n" .
+								($triggerid ? getServerUrl() . id_to_path($triggerid) . '?we_objectID=' : 'ObjectID: ') .
+								$GLOBALS['we_object'][$name]->OF_ID;
 							$subject = g_l('global', '[std_subject_newObj]');
 							break;
 						default:

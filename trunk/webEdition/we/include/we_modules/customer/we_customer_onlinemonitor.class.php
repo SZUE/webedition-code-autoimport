@@ -89,7 +89,7 @@ class we_customer_onlinemonitor extends we_listview_base{
 
 		$this->anz_all = f('SELECT COUNT(1) FROM ' . CUSTOMER_SESSION_TABLE . $where, '', $this->DB_WE);
 
-		$this->DB_WE->query('SELECT SessionID,SessionIp,WebUserID,WebUserGroup,WebUserDescription,Browser,Referrer,UNIX_TIMESTAMP(LastLogin) AS LastLogin,UNIX_TIMESTAMP(LastAccess) AS LastAccess,PageID,ObjectID,SessionAutologin FROM ' . CUSTOMER_SESSION_TABLE . $where . ' ' . $orderstring . ' ' . (($this->maxItemsPerPage > 0)
+		$this->DB_WE->query('SELECT SessionID,SessionIp,WebUserID,WebUserGroup,WebUserDescription,Browser,Referrer,UNIX_TIMESTAMP(LastLogin) AS LastLogin,UNIX_TIMESTAMP(LastAccess) AS LastAccess,PageID,SessionAutologin FROM ' . CUSTOMER_SESSION_TABLE . $where . ' ' . $orderstring . ' ' . (($this->maxItemsPerPage > 0)
 					? (' LIMIT ' . $this->start . ',' . $this->maxItemsPerPage) : ''));
 		$this->anz = $this->DB_WE->num_rows();
 	}

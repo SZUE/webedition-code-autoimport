@@ -206,19 +206,22 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems){
 		case (defined('OBJECT_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 
 			// get information about the object which has to be moved
-			$row = getHash('SELECT TableID,Path,Text,IsFolder,Icon,ContentType FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), $DB_WE);
+			$row = getHash('SELECT TableID,Path,Text,IsFolder,Icon,ContentType FROM ' . $DB_WE->escape($table) . ' WHERE IsClassFolder=0 AND ID=' . intval($id), $DB_WE);
+
+			if(!$row || $isFolder){
+				$notMovedItems[] = array(
+					'ID' => $id,
+					'Text' => ($row ? $row['Text'] : ''),
+					'Path' => ($row ? $row['Path'] : ''),
+					'Icon' => ($row ? $row['Icon'] : '')
+				);
+				return false;
+			}
 			$tableID = $row['TableID'];
 			$oldPath = $row['Path'];
 			$fileName = $row['Text'];
 			$isFolder = $row['IsFolder'] == 1;
 			$icon = $row['Icon'];
-			$item = array(
-				'ID' => $id, 'Text' => $fileName, 'Path' => $oldPath, 'Icon' => $icon
-			);
-			if(!$row || $isFolder){
-				$notMovedItems[] = $item;
-				return false;
-			}
 
 			$version = new weVersions();
 			if(in_array($row['ContentType'], $version->contentTypes)){

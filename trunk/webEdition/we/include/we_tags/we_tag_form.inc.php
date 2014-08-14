@@ -77,10 +77,19 @@ function we_tag_form($attribs){
 			if(!isset($GLOBALS['we_editmode']) || !$GLOBALS['we_editmode']){
 				$ret = getHtmlTag('form', $formAttribs, '', false, true) .
 					getHtmlTag('input', array('xml' => $xml, 'type' => 'hidden', 'name' => 'type',
-						'value' => ( isset($GLOBALS['lv']->classID) ? we_shop_shop::OBJECT : (isset($GLOBALS['lv']->ID) ? we_shop_shop::DOCUMENT : (isset($GLOBALS['we_doc']->ClassID) || isset($GLOBALS['we_doc']->ObjectID)) ? we_shop_shop::OBJECT : we_shop_shop::DOCUMENT )),
+						'value' => (
+						isset($GLOBALS['lv']->classID) ?
+							we_shop_shop::OBJECT :
+							(isset($GLOBALS['lv']->ID) ?
+								we_shop_shop::DOCUMENT :
+								($GLOBALS['we_doc'] instanceof we_objectFile) ?
+									we_shop_shop::OBJECT :
+									we_shop_shop::DOCUMENT
+							)
+						),
 					)) .
 					getHtmlTag('input', array('xml' => $xml, 'type' => 'hidden', 'name' => 'shop_artikelid',
-						'value' => (isset($GLOBALS['lv']->classID) || isset($GLOBALS['we_doc']->ClassID) || isset($GLOBALS['we_doc']->ObjectID) ?
+						'value' => (isset($GLOBALS['lv']->classID) || isset($GLOBALS['we_doc']->ClassID)) ?
 							((isset($GLOBALS['lv']) && $GLOBALS['lv']->getDBf('OF_ID') != '') ?
 								$GLOBALS['lv']->getDBf('OF_ID') :
 								($GLOBALS['we_doc']->getDBf('OF_ID') ?

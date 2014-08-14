@@ -250,19 +250,19 @@ if(isset($daten)){
 				);
 
 				// :: then do the query for objects
-				$queryCondition = OBJECT_X_TABLE . "$classid.OF_ID = " . OBJECT_FILES_TABLE . ".ID AND " . OBJECT_X_TABLE . "$classid.ID = " . OBJECT_FILES_TABLE . ".ObjectID";
-				$queryFrom = OBJECT_X_TABLE . $classid . ',' . OBJECT_FILES_TABLE . ' ';
-				$DB_WE->query('SELECT ' . OBJECT_X_TABLE . $classid . '.input_' . WE_SHOP_TITLE_FIELD_NAME . ' AS obTitle,' . OBJECT_X_TABLE . $classid . '.OF_ID AS obID,' . OBJECT_FILES_TABLE . '.CreationDate AS cDate,' . OBJECT_FILES_TABLE . '.Published AS cPub,' . OBJECT_FILES_TABLE . '.ModDate AS cMob
-                    FROM ' . $queryFrom . '
-                    WHERE ' . $queryCondition . '
-                    ORDER BY obID'); // get the shop-objects from DB;
+
+//FIXME: is there any reason, why we load the whole table?!
+				$DB_WE->query('SELECT o.input_' . WE_SHOP_TITLE_FIELD_NAME . ' AS obTitle,o.OF_ID AS obID,of.CreationDate AS cDate,of.Published AS cPub,of.ModDate AS cMob
+                    FROM ' . OBJECT_X_TABLE . $classid . ' o JOIN ' . OBJECT_FILES_TABLE . ' of ON o.OF_ID=of.ID
+                    WHERE IsFolder=0
+                    ORDER BY o.OF_ID'); // get the shop-objects from DB;
 				// build the table
 				$orderRows = array();
 
 				while($DB_WE->next_record()){
 					// for the articlelist, we need also all these article, so sve them in array
 					$orderRows[] = array(
-						'articleArray' => unserialize($DB_WE->f('strSerial')),
+						'articleArray' => array(),//unserialize($DB_WE->f('strSerial')),
 						// save all data in array
 						'obTitle' => $DB_WE->f('obTitle'), // also for ordering
 						'obID' => $DB_WE->f('obID'), // also for ordering
@@ -324,7 +324,7 @@ if(isset($daten)){
 				);
 
 
-				print we_html_multiIconBox::getHTML("revenues", "100%", $parts, 30, "", -1, "", "", false, sprintf(g_l('tabs', '[module][artList]'), $topInfo));
+				echo we_html_multiIconBox::getHTML("revenues", "100%", $parts, 30, "", -1, "", "", false, sprintf(g_l('tabs', '[module][artList]'), $topInfo));
 			} else { // if there is an empty result form the object table
 				$parts = array(
 					array(
@@ -337,7 +337,7 @@ if(isset($daten)){
 				);
 
 
-				print we_html_multiIconBox::getHTML("revenues", "100%", $parts, 30, "", -1, "", "", false, sprintf(g_l('tabs', '[module][artList]'), g_l('modules_shop', '[noRecord]')));
+				echo we_html_multiIconBox::getHTML("revenues", "100%", $parts, 30, "", -1, "", "", false, sprintf(g_l('tabs', '[module][artList]'), g_l('modules_shop', '[noRecord]')));
 			}
 
 			/*			 * ******** END PROCESS THE OUTPUT IF OPTED FOR AN OBJECT *********** */
@@ -355,16 +355,16 @@ if(isset($daten)){
 			if($entries){ // Pager: Number of records not empty?
 				$topInfo = ($entries ? $entries : g_l('modules_shop', '[noRecord]'));
 				// :: then do the query for documents
-				$queryCondition = FILE_TABLE . '.ID = ' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID = ' . CONTENT_TABLE . '.ID AND ' . LINK_TABLE . '.Name = "' . WE_SHOP_TITLE_FIELD_NAME . '" ';
-				$queryFrom = CONTENT_TABLE . ', ' . LINK_TABLE . ',' . FILE_TABLE . ' ';
-				$DB_WE->query('SELECT ' . CONTENT_TABLE . '.dat AS sqlDat, ' . LINK_TABLE . '.DID AS dd, ' . FILE_TABLE . '.CreationDate AS dDate,' . FILE_TABLE . '.Published AS dPub,' . FILE_TABLE . '.ModDate AS dMod
-            FROM ' . $queryFrom . ' WHERE ' . $queryCondition . ' ORDER BY dd'); // get the shop-documents from DB;
+				$DB_WE->query(
+					'SELECT c.dat AS sqlDat,l.DID AS dd,f.CreationDate AS dDate,f.Published AS dPub,f.ModDate AS dMod
+            FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID JOIN ' . FILE_TABLE . ' f ON f.ID=l.DID' .
+					' WHERE  l.Name="' . WE_SHOP_TITLE_FIELD_NAME . '" ORDER BY dd'); // get the shop-documents from DB;
 				// build the table
 				$orderRows = array();
 				while($DB_WE->next_record()){
 					// for the articlelist, we need also all these article, so sve them in array
 					$orderRows[] = array(
-						'articleArray' => unserialize($DB_WE->f('strSerial')),
+						'articleArray' => array(),//unserialize($DB_WE->f('strSerial')),
 						// save all data in array
 						'sql' => $DB_WE->f('sqlDat'), // also for ordering
 						'dd' => $DB_WE->f('dd'), // also for ordering

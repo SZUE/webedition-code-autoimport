@@ -25,7 +25,6 @@
 /* a class for handling directories */
 class we_folder extends we_root{
 	/* Flag which is set, when the file is a folder  */
-
 	var $IsFolder = 1;
 	var $IsClassFolder = 0;
 	var $IsNotEditable = 0;
@@ -377,11 +376,9 @@ class we_folder extends we_root{
 			// Klasse feststellen
 			$ClassPathArray = explode('/', $this->Path);
 			$ClassPath = '/' . $ClassPathArray[1];
-			$q = 'SELECT ID FROM ' . OBJECT_TABLE . ' WHERE Path = "' . $DB_WE->escape($ClassPath) . '"';
-			$cid = $pid = f($q, 'ID', $DB_WE);
-			$_obxTable = OBJECT_X_TABLE . $cid;
+			$cid = $pid = f('SELECT ID FROM ' . OBJECT_TABLE . ' WHERE Path = "' . $DB_WE->escape($ClassPath) . '"', '', $DB_WE);
 
-			if(!$DB_WE->query('UPDATE ' . $DB_WE->escape($_obxTable) . ' SET OF_Language = "' . $DB_WE->escape($this->Language) . '" WHERE OF_Path LIKE "' . $DB_WE->escape($this->Path) . '/%" ')){
+			if(!$DB_WE->query('UPDATE ' . $DB_WE->escape(OBJECT_X_TABLE . $cid) . ' SET OF_Language="' . $DB_WE->escape($this->Language) . '" WHERE OF_Path LIKE "' . $DB_WE->escape($this->Path) . '/%" ')){
 				return false;
 			}
 		}
@@ -423,9 +420,8 @@ class we_folder extends we_root{
 			// Klasse feststellen
 			list(, $ClassPath) = explode('/', $this->Path);
 			$cid = $pid = f('SELECT ID FROM ' . OBJECT_TABLE . ' WHERE Path = "/' . $DB_WE->escape($ClassPath) . '"', 'ID', $DB_WE);
-			$_obxTable = OBJECT_X_TABLE . $cid;
 
-			if(!$DB_WE->query('UPDATE ' . $DB_WE->escape($_obxTable) . ' SET OF_TriggerID = ' . intval($this->TriggerID) . ' WHERE OF_Path LIKE "' . $DB_WE->escape($this->Path) . '/%" ')){
+			if(!$DB_WE->query('UPDATE ' . $DB_WE->escape(OBJECT_X_TABLE . $cid) . ' SET OF_TriggerID = ' . intval($this->TriggerID) . ' WHERE OF_Path LIKE "' . $DB_WE->escape($this->Path) . '/%" ')){
 				return false;
 			}
 		}
@@ -562,7 +558,7 @@ class we_folder extends we_root{
 		we_getParentIDs(FILE_TABLE, $this->ID, $parents);
 		$ParentsCSV = makeCSVFromArray($parents, true);
 		$_disabledNote = ($this->ID ? '' : ' ' . g_l('weClass', '[availableAfterSave]'));
-		$wecmdenc1 =we_base_request::encCmd("document.forms['we_form'].elements['" . $idname . "'].value");
+		$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['" . $idname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd("var parents = '" . $ParentsCSV . "';if(parents.indexOf(',' WE_PLUS currentID WE_PLUS ',') > -1){" . we_message_reporting::getShowMessageCall(g_l('alert', '[copy_folder_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR) . "}else{opener.top.we_cmd('copyFolder', currentID," . $this->ID . ",1,'" . $this->Table . "');}");
 		$but = we_html_button::create_button("select", ($this->ID ?
 					"javascript:we_cmd('openDirselector', document.forms['we_form'].elements['" . $idname . "'].value, '" . $this->Table . "', '" . $wecmdenc1 . "', '', '" . $wecmdenc3 . "')" :

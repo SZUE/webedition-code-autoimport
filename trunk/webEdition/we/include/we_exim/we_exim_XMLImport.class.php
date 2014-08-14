@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_exim_XMLImport extends we_exim_XMLExIm{
-
 	var $nodehierarchy = array();
 
 	function __construct(){
@@ -246,7 +245,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 				}
 			}
 
-			if(defined('OBJECT_TABLE') && $object->ClassName == 'we_objectFile'){
+			if(defined('OBJECT_TABLE') && ($object->ClassName == 'we_objectFile' || $object->ClassName == 'we_class_folder')){
 				$ref = $this->RefTable->getRef(
 					array(
 						'OldID' => $object->TableID,

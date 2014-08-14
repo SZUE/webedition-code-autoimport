@@ -77,7 +77,7 @@ function we_tag_userInput($attribs, $content){
 		}
 		$object_pid = $objekt->ParentID;
 		$object_path = $objekt->Path;
-		$object_tableID = isset($objekt->TableID) ? $objekt->TableID : '';
+		$object_tableID = $objekt instanceof we_objectFile ? $objekt->TableID : '';
 		$content = $objekt->getFieldByVal($orgVal, $type, $attribs, true, $object_pid, $object_path, $GLOBALS['DB_WE'], $object_tableID);
 	} else {
 		$orgVal = $value;
@@ -146,8 +146,7 @@ function we_tag_userInput($attribs, $content){
 	</tr>
 	<tr>
 		<td class="weEditmodeStyle" colspan="2" align="left">
-			<input' . ($size ? ' size="' . $size . '"' : '') . ' name="' . $fieldname . '" type="file" accept="' . we_base_imageEdit::IMAGE_CONTENT_TYPES . '"' . ($inputstyle
-							? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/>
+			<input' . ($size ? ' size="' . $size . '"' : '') . ' name="' . $fieldname . '" type="file" accept="' . we_base_imageEdit::IMAGE_CONTENT_TYPES . '"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/>
 		</td>
 	</tr>
 	<tr>
@@ -155,8 +154,7 @@ function we_tag_userInput($attribs, $content){
 			<table class="weEditTable padding0 spacing0 border0">
 				<tr>
 					<td style="padding-right: 5px;"><input style="border:0px solid black;" type="checkbox" id="WE_UI_DEL_CHECKBOX_' . $name . '" name="WE_UI_DEL_CHECKBOX_' . $name . '" value="1" ' . $checked . '/></td>
-					<td><label for="WE_UI_DEL_CHECKBOX_' . $name . '"' . ($checkboxstyle ? (' style="' . $checkboxstyle . '"') : '') . ($checkboxclass ? (' class="' . $checkboxclass . '"')
-							: '') . '>' . $checkboxtext . '</label></td>
+					<td><label for="WE_UI_DEL_CHECKBOX_' . $name . '"' . ($checkboxstyle ? (' style="' . $checkboxstyle . '"') : '') . ($checkboxclass ? (' class="' . $checkboxclass . '"') : '') . '>' . $checkboxtext . '</label></td>
 				</tr>
 			</table>
 		</td>
@@ -230,16 +228,14 @@ function we_tag_userInput($attribs, $content){
 		<td class="weEditmodeStyle" colspan="2" align="center">' . $flashmovieTag . '<input type="hidden" name="WE_UI_FLASHMOVIE_DATA_ID_' . $name . '" value="' . $_flashmovieDataId . '" /></td>
 	</tr>
 	<tr>
-		<td class="weEditmodeStyle" colspan="2" align="left"><input' . ($size ? ' size="' . $size . '"' : '') . ' name="' . $fieldname . '" type="file" accept="application/x-shockwave-flash"' . ($inputstyle
-							? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/></td>
+		<td class="weEditmodeStyle" colspan="2" align="left"><input' . ($size ? ' size="' . $size . '"' : '') . ' name="' . $fieldname . '" type="file" accept="application/x-shockwave-flash"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/></td>
 	</tr>
 	<tr>
 		<td class="weEditmodeStyle" colspan="2" align="left">
 			<table class="weEditTable padding0 spacing0 border0">
 				<tr>
 					<td style="padding-right: 5px;"><input style="border:0px solid black;" type="checkbox" id="WE_UI_DEL_CHECKBOX_' . $name . '" name="WE_UI_DEL_CHECKBOX_' . $name . '" value="1" ' . $checked . '/></td>
-					<td><label for="WE_UI_DEL_CHECKBOX_' . $name . '"' . ($checkboxstyle ? (' style="' . $checkboxstyle . '"') : '') . ($checkboxclass ? (' class="' . $checkboxclass . '"')
-							: '') . '>' . $checkboxtext . '</label></td>
+					<td><label for="WE_UI_DEL_CHECKBOX_' . $name . '"' . ($checkboxstyle ? (' style="' . $checkboxstyle . '"') : '') . ($checkboxclass ? (' class="' . $checkboxclass . '"') : '') . '>' . $checkboxtext . '</label></td>
 				</tr>
 			</table>
 		</td>
@@ -315,8 +311,7 @@ function we_tag_userInput($attribs, $content){
 						</tr>
 						<tr>
 							<td class="weEditmodeStyle" colspan="2" align="left">
-								<input' . ($size ? ' size="' . $size . '"' : '') . ' name="' . $fieldname . '" type="file" accept="video/quicktime"' . ($inputstyle ? (' style="' . $inputstyle . '"')
-							: '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/>
+								<input' . ($size ? ' size="' . $size . '"' : '') . ' name="' . $fieldname . '" type="file" accept="video/quicktime"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/>
 							</td>
 						</tr>
 						<tr>
@@ -327,8 +322,7 @@ function we_tag_userInput($attribs, $content){
 											<input style="border:0px solid black;" type="checkbox" id="WE_UI_DEL_CHECKBOX_' . $name . '" name="WE_UI_DEL_CHECKBOX_' . $name . '" value="1" ' . $checked . '/>
 										</td>
 										<td>
-											<label for="WE_UI_DEL_CHECKBOX_' . $name . '"' . ($checkboxstyle ? (' style="' . $checkboxstyle . '"') : '') . ($checkboxclass ? (' class="' . $checkboxclass . '"')
-							: '') . '>' . $checkboxtext . '</label>
+											<label for="WE_UI_DEL_CHECKBOX_' . $name . '"' . ($checkboxstyle ? (' style="' . $checkboxstyle . '"') : '') . ($checkboxclass ? (' class="' . $checkboxclass . '"') : '') . '>' . $checkboxtext . '</label>
 										</td>
 									</tr>
 								</table>
@@ -403,8 +397,7 @@ function we_tag_userInput($attribs, $content){
 						</tr>
 						<tr>
 							<td class="weEditmodeStyle" colspan="2" align="left">
-								<input' . ($size ? ' size="' . $size . '"' : '') . ' name="' . $fieldname . '" type="file" accept="application/*"' . ($inputstyle ? (' style="' . $inputstyle . '"')
-							: '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/>
+								<input' . ($size ? ' size="' . $size . '"' : '') . ' name="' . $fieldname . '" type="file" accept="application/*"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/>
 							</td>
 						</tr>
 						<tr>
@@ -412,8 +405,7 @@ function we_tag_userInput($attribs, $content){
 								<table class="weEditTable padding0 spacing0 border0">
 									<tr>
 										<td style="padding-right: 5px;"><input style="border:0px solid black;" type="checkbox" id="WE_UI_DEL_CHECKBOX_' . $name . '" name="WE_UI_DEL_CHECKBOX_' . $name . '" value="1" ' . $checked . '/></td>
-										<td><label for="WE_UI_DEL_CHECKBOX_' . $name . '"' . ($checkboxstyle ? (' style="' . $checkboxstyle . '"') : '') . ($checkboxclass ? (' class="' . $checkboxclass . '"')
-							: '') . '>' . $checkboxtext . '</label></td>
+										<td><label for="WE_UI_DEL_CHECKBOX_' . $name . '"' . ($checkboxstyle ? (' style="' . $checkboxstyle . '"') : '') . ($checkboxclass ? (' class="' . $checkboxclass . '"') : '') . '>' . $checkboxtext . '</label></td>
 									</tr>
 								</table>
 							</td>
