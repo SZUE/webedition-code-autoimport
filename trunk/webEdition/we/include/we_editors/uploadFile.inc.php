@@ -50,7 +50,7 @@ switch($contentType){
 		$allowedContentTypes = $contentType;
 }
 
-$inputTypeFile = new we_fileupload_include('we_File', 'top', '', 330, true, false, $allowedContentTypes, $allowedExtensions, '', '', array(), -1);
+$inputTypeFile = new we_fileupload_include('we_File', 'top', '', 330, true, false, $allowedContentTypes, /*$allowedExtensions*/'', '', '', array(), -1);
 $inputTypeFile->setExternalProgressbar(true, 'progressbar', true, 'top.', 120, '');
 
 if($inputTypeFile->processFileRequest()){
