@@ -308,7 +308,7 @@ $textname = 'we_targetname';
 $idname = 'we_target';
 
 $yuiSuggest->setAcId('Dir');
-$yuiSuggest->setContentType('folder');
+$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
 $yuiSuggest->setInput($textname, $ws_path);
 $yuiSuggest->setMaxResults(4);
 $yuiSuggest->setMayBeEmpty(false);

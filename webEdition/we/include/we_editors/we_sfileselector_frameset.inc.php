@@ -40,13 +40,13 @@ $currentDir = str_replace('\\', '/', ( $url ?
 				$url :
 				dirname($url))) :
 		''));
-$currentName = ($filter != 'folder' ? basename($url) : '');
+$currentName = ($filter != we_base_ContentTypes::FOLDER ? basename($url) : '');
 if(!file_exists($docroot . $currentDir . '/' . $currentName)){
 	$currentDir = '';
 	$currentName = '';
 }
 
-$currentID = $docroot . $currentDir . ($filter == 'folder' || $filter == 'filefolder' ? '' : (($currentDir != '') ? '/' : '') . $currentName);
+$currentID = $docroot . $currentDir . ($filter == we_base_ContentTypes::FOLDER || $filter == 'filefolder' ? '' : (($currentDir != '') ? '/' : '') . $currentName);
 
 $currentID = str_replace('\\', '/', $currentID);
 
@@ -61,7 +61,7 @@ $rootDir = we_base_request::_(we_base_request::FILE, 'we_cmd', '', 5);
 	var filter = '<?php echo $filter; ?>';
 	var browseServer = <?php echo $cmd1 ? 'false' : 'true'; ?>
 
-	var currentType = "<?php echo ($filter == 'folder') ? 'folder' : ''; ?>";
+	var currentType = "<?php echo ($filter == we_base_ContentTypes::FOLDER) ? we_base_ContentTypes::FOLDER : ''; ?>";
 	var sitepath = "<?php echo $docroot; ?>";
 	var dirsel = 1;
 	var scrollToVal = 0;

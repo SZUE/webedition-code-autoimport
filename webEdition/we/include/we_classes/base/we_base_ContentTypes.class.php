@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_base_ContentTypes{
-
 	const CLASS_FOLDER_ICON = 'class_folder.gif';
 	const FOLDER_ICON = 'folder.gif';
 	const IMAGE_ICON = 'image.gif';
@@ -40,6 +39,7 @@ class we_base_ContentTypes{
 	const FLASH = 'application/x-shockwave-flash';
 	const QUICKTIME = 'video/quicktime';
 	const APPLICATION = 'application/*';
+	const FOLDER = 'folder';
 
 	private $ct;
 

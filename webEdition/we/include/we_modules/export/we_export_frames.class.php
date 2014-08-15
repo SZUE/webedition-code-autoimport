@@ -779,7 +779,7 @@ function closeAllType(){
 		$button = we_html_button::create_button("select", "javascript:top.content.setHot();we_cmd('openDirselector',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','" . $rootDirID . "')");
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId('SelPath');
-		$yuiSuggest->setContentType('folder');
+		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
 		$yuiSuggest->setInput($Pathname, $Pathvalue, array("onchange" => $this->topFrame . '.hot=1;'));
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(true);

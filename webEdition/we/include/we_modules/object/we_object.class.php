@@ -295,7 +295,7 @@ class we_object extends we_document{
 			// folder in object schreiben
 			if(!($this->OldPath && ($this->OldPath != $this->Path))){
 				$fold = new we_class_folder();
-				$fold->initByPath($this->getPath(), OBJECT_FILES_TABLE, 1, 0, 1);
+				$fold->initByPath($this->getPath(), OBJECT_FILES_TABLE);
 			}
 		} else {
 			$ctable = OBJECT_X_TABLE . intval($this->ID);

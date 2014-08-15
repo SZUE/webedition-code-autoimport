@@ -37,17 +37,16 @@ class we_search_treeDataSource extends we_tool_treeDataSource{
 
 		if(isset($_SESSION['weS']['weSearch']["modelidForTree"])){
 			$id = $_SESSION['weS']['weSearch']["modelidForTree"];
-			$pid = f("SELECT ParentID FROM " . $db->escape($table) . " WHERE ID=" . intval($id), "ParentID", $db);
+			$pid = f('SELECT ParentID FROM ' . $db->escape($table) . ' WHERE ID=' . intval($id), "", $db);
 			$openFolders[] = $pid;
 			while($pid > 0){
-				$pid = f("SELECT ParentID FROM " . $db->escape($table) . " WHERE ID=" . intval($pid), "ParentID", $db);
+				$pid = f('SELECT ParentID FROM ' . $db->escape($table) . ' WHERE ID=' . intval($pid), "", $db);
 				$openFolders[] = $pid;
 			}
 		}
 
 		$wsQuery = '';
-		$prevoffset = $offset - $segment;
-		$prevoffset = ($prevoffset < 0) ? 0 : $prevoffset;
+		$prevoffset = max(0,$offset - $segment);
 		if($offset && $segment){
 			$this->treeItems[] = array(
 				'icon' => 'arrowup.gif',

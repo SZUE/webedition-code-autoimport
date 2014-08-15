@@ -803,8 +803,8 @@ function submitForm() {
 					}
 				}
 				$js = ($newone ?
-						$this->topFrame . '.makeNewEntry(\'' . $this->Model->Icon . '\',\'' . $this->Model->ID . '\',\'' . $this->Model->ParentID . '\',\'' . addslashes($this->Model->Text) . '\',0,\'' . ($this->Model->IsFolder ? 'folder' : 'item') . '\',\'' . NAVIGATION_TABLE . '\',0,' . $this->Model->Ordn . ');' :
-						$this->topFrame . '.updateEntry(\'' . $this->Model->ID . '\',\'' . addslashes($this->Model->Text) . '\',\'' . $this->Model->ParentID . '\',\'' . $this->Model->Depended . '\',0,\'' . ($this->Model->IsFolder ? 'folder' : 'item') . '\',\'' . NAVIGATION_TABLE . '\',' . $this->Model->Depended . ',' . $this->Model->Ordn . ');');
+						$this->topFrame . '.makeNewEntry(\'' . $this->Model->Icon . '\',\'' . $this->Model->ID . '\',\'' . $this->Model->ParentID . '\',\'' . addslashes($this->Model->Text) . '\',0,\'' . ($this->Model->IsFolder ? we_base_ContentTypes::FOLDER : 'item') . '\',\'' . NAVIGATION_TABLE . '\',0,' . $this->Model->Ordn . ');' :
+						$this->topFrame . '.updateEntry(\'' . $this->Model->ID . '\',\'' . addslashes($this->Model->Text) . '\',\'' . $this->Model->ParentID . '\',\'' . $this->Model->Depended . '\',0,\'' . ($this->Model->IsFolder ? we_base_ContentTypes::FOLDER : 'item') . '\',\'' . NAVIGATION_TABLE . '\',' . $this->Model->Depended . ',' . $this->Model->Ordn . ');');
 
 				if($this->Model->IsFolder && $this->Model->Selection == we_navigation_navigation::SELECTION_DYNAMIC){
 					$_old_items = array();

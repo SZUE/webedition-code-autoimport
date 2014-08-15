@@ -1275,7 +1275,7 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId('PathGroup');
-		$yuiSuggest->setContentType('folder');
+		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
 		$yuiSuggest->setInput($this->Name . '_ParentID_Text', $parent_name, array('onchange' => 'top.content.setHot()'));
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(false);
@@ -1378,7 +1378,7 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId('PathGroup');
-		$yuiSuggest->setContentType('folder');
+		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
 		$yuiSuggest->setInput($this->Name . '_ParentID_Text', $parent_name, array('onchange' => 'top.content.setHot()'));
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(true);
@@ -1651,7 +1651,7 @@ function delElement(elvalues,elem) {
 				}
 
 				$yuiSuggest->setAcId('WS' . $k . $key);
-				$yuiSuggest->setContentType('folder');
+				$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
 				$yuiSuggest->setInput($obj_names . '[Text][' . $key . ']', $path);
 				$yuiSuggest->setMaxResults(10);
 				$yuiSuggest->setMayBeEmpty(true);
@@ -1971,7 +1971,7 @@ function show_seem_chooser(val) {
 		// Build SEEM select start document chooser
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId('Doc');
-		$yuiSuggest->setContentType(implode(',', array('folder', we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::JS, we_base_ContentTypes::CSS, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::QUICKTIME)));
+		$yuiSuggest->setContentType(implode(',', array(we_base_ContentTypes::FOLDER, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::JS, we_base_ContentTypes::CSS, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::QUICKTIME)));
 		$yuiSuggest->setInput('seem_start_document_name', $_document_path);
 		$yuiSuggest->setMaxResults(20);
 		$yuiSuggest->setMayBeEmpty(true);

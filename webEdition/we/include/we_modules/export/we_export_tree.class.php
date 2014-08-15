@@ -252,7 +252,7 @@ if(in_array(' . $this->topFrame . '.SelectedItems[attribs["table"]],"' . $item["
 		$where = ' WHERE  ParentID=' . intval($ParentID) . ' AND((1' . we_users_util::makeOwnersSql() . ')' . $GLOBALS['wsQuery'] . ')';
 		//if($GLOBALS['table']==FILE_TABLE) $where .= " AND (ClassName='we_webEditionDocument' OR ClassName='we_folder')";
 		$elem = 'ID,ParentID,Path,Text,Icon,IsFolder,ModDate' . (($table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE))
-					? ",Published" : "") . ((defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE) ? ",IsClassFolder,IsNotEditable" : "");
+					? ",Published" : "") . ((defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE) ? ",IsClassFolder" : "");
 
 		switch($table){
 			case FILE_TABLE :
@@ -273,7 +273,6 @@ if(in_array(' . $this->topFrame . '.SelectedItems[attribs["table"]],"' . $item["
 			$ContentType = $DB_WE->f("ContentType");
 			$Icon = $DB_WE->f("Icon");
 			$IsClassFolder = $DB_WE->f("IsClassFolder");
-			$IsNotEditable = $DB_WE->f("IsNotEditable");
 
 			$checked = 0;
 			switch($table){
@@ -306,7 +305,6 @@ if(in_array(' . $this->topFrame . '.SelectedItems[attribs["table"]],"' . $item["
 				"text" => $Text,
 				"contenttype" => $ContentType,
 				"isclassfolder" => $IsClassFolder,
-				"isnoteditable" => $IsNotEditable,
 				"table" => $table,
 				"checked" => $checked,
 				"typ" => $typ,

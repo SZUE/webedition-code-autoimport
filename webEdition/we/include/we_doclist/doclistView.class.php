@@ -1256,7 +1256,7 @@ class doclistView{
 		<td class="defaultgray" style="width:60px;">' . we_html_tools::htmlSelect("anzahl", $anzahl, 1, $_anzahl, "", array('onchange' => 'this.form.elements[\'searchstart\'].value=0;search(false);')) . '</td>
 		<td>' . $this->getNextPrev($foundItems) . '</td>
 		<td>' . we_html_tools::getPixel(10, 12) . '</td>
-		<td style="width:50px;">' . we_html_button::create_button("image:btn_new_dir", "javascript:top.we_cmd('new_document','" . FILE_TABLE . "','','folder','','" . $id . "')", true, 40, "", "", "", false) . '</td>
+		<td style="width:50px;">' . we_html_button::create_button("image:btn_new_dir", "javascript:top.we_cmd('new_document','" . FILE_TABLE . "','','".we_base_ContentTypes::FOLDER."','','" . $id . "')", true, 40, "", "", "", false) . '</td>
 		<td>' . we_html_button::create_button("image:iconview", "javascript:setview(1);", true, 40, "", "", "", false) . '</td>
 		<td>' . we_html_button::create_button("image:listview", "javascript:setview(0);", true, 40, "", "", "", false) . '</td>
 	</tr>

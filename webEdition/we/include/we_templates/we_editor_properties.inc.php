@@ -42,7 +42,7 @@ echo STYLESHEET;
 		echo we_class::hiddenTrans();
 		$implementYuiAC = false;
 		switch($we_doc->ContentType){
-			case 'folder':
+			case we_base_ContentTypes::FOLDER:
 				include(WE_INCLUDES_PATH . 'we_templates/we_folder_properties.inc.php');
 				$implementYuiAC = true;
 				break;
