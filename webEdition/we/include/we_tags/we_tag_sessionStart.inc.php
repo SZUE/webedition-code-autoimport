@@ -140,11 +140,14 @@ function wetagsessionHandleFailedLogin(){
 		if(SECURITY_LIMIT_CUSTOMER_REDIRECT){
 			$_SESSION['webuser']['loginfailed'] = we_users_user::MAX_LOGIN_COUNT_REACHED;
 			unset($_REQUEST['s']);
-			@include($_SERVER['DOCUMENT_ROOT'] . id_to_path(SECURITY_LIMIT_CUSTOMER_REDIRECT, FILE_TABLE));
-		} else {
-			echo CheckAndConvertISOfrontend('Dear customer, our service is currently not available. Please try again later. Thank you.<br/>' .
-				'Sehr geehrter Kunde, aus Sicherheitsgründen ist ein Login derzeit nicht möglich! Bitte probieren Sie es später noch ein mal. Vielen Dank');
+			if(($path = id_to_path(SECURITY_LIMIT_CUSTOMER_REDIRECT, FILE_TABLE))){
+				include($_SERVER['DOCUMENT_ROOT'] . $path);
+				exit();
+			}
 		}
+		echo CheckAndConvertISOfrontend('Dear customer, our service is currently not available. Please try again later. Thank you.<br/>' .
+			'Sehr geehrter Kunde, aus Sicherheitsgründen ist ein Login derzeit nicht möglich! Bitte probieren Sie es später noch ein mal. Vielen Dank');
+
 		exit();
 	}
 }
