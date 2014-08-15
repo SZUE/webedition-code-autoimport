@@ -239,7 +239,7 @@ class we_newsletter_view{
 
 			$yuiSuggest = $acObject;
 			$yuiSuggest->setAcId($IDName);
-			$yuiSuggest->setContentType(implode(',', array('folder', we_base_ContentTypes::XML, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::FLASH, we_base_ContentTypes::QUICKTIME)));
+			$yuiSuggest->setContentType(implode(',', array(we_base_ContentTypes::FOLDER, we_base_ContentTypes::XML, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::FLASH, we_base_ContentTypes::QUICKTIME)));
 			$yuiSuggest->setInput($Pathname, $Pathvalue);
 			$yuiSuggest->setMaxResults(10);
 			$yuiSuggest->setMayBeEmpty(true);
@@ -268,7 +268,7 @@ class we_newsletter_view{
 		if(is_object($acObject)){
 			$yuiSuggest = $acObject;
 			$yuiSuggest->setAcId('PathGroup');
-			$yuiSuggest->setContentType('folder');
+			$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
 			$yuiSuggest->setInput($Pathname, str_replace('\\', '/', $Pathvalue));
 			$yuiSuggest->setMaxResults(10);
 			$yuiSuggest->setMayBeEmpty(true);
@@ -1483,7 +1483,7 @@ function set_state_edit_delete_recipient(control) {
 						break;
 					case 0:
 						$jsmess = ($newone ?
-								$this->topFrame . '.makeNewEntry(\'' . $this->newsletter->Icon . '\',\'' . $this->newsletter->ID . '\',\'' . $this->newsletter->ParentID . '\',\'' . $this->newsletter->Text . '\',0,\'' . ($this->newsletter->IsFolder ? 'folder' : 'item') . '\',\'' . NEWSLETTER_TABLE . '\');' :
+								$this->topFrame . '.makeNewEntry(\'' . $this->newsletter->Icon . '\',\'' . $this->newsletter->ID . '\',\'' . $this->newsletter->ParentID . '\',\'' . $this->newsletter->Text . '\',0,\'' . ($this->newsletter->IsFolder ? we_base_ContentTypes::FOLDER : 'item') . '\',\'' . NEWSLETTER_TABLE . '\');' :
 								$this->topFrame . '.updateEntry("' . $this->newsletter->ID . '","' . $this->newsletter->Text . '","' . $this->newsletter->ParentID . '");') .
 							$this->topFrame . '.drawTree();' .
 							we_message_reporting::getShowMessageCall(($this->newsletter->IsFolder == 1 ? g_l('modules_newsletter', '[save_group_ok]') : g_l('modules_newsletter', '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE) .

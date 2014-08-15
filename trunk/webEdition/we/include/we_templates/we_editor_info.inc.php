@@ -72,7 +72,7 @@ echo we_html_tools::getHtmlTop() .
 		)
 	);
 
-	if($GLOBALS['we_doc']->ContentType != 'folder'){
+	if($GLOBALS['we_doc']->ContentType != we_base_ContentTypes::FOLDER){
 		$_html = '
 <div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', "[creation_date]") . '</div>
 <div style="margin-bottom:10px;">' . date(g_l('weEditorInfo', "[date_format]"), $GLOBALS['we_doc']->CreationDate) . '</div>';

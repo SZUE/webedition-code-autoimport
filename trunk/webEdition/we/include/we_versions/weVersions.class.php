@@ -67,7 +67,7 @@ class weVersions{
 	protected $TableID;
 	protected $ObjectID;//FIXME: remove??
 	protected $IsClassFolder;
-	protected $IsNotEditable;
+	protected $IsNotEditable;//FIXME: remove??
 	protected $Charset;
 	protected $active;
 	protected $fromScheduler;
@@ -322,7 +322,7 @@ class weVersions{
 	/**
 	 * @return unknown
 	 */
-	public function getIsNotEditable(){
+	public function getIsNotEditable(){//fixme:remove
 		return $this->isNotEditable;
 	}
 
@@ -666,7 +666,7 @@ class weVersions{
 	/**
 	 * @param unknown_type $IsNotEditable
 	 */
-	public function setIsNotEditable($isNotEditable){
+	public function setIsNotEditable($isNotEditable){//FIXME:remove?
 		$this->isNotEditable = $isNotEditable;
 	}
 

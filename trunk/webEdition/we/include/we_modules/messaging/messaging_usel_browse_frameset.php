@@ -213,12 +213,13 @@ echo we_html_tools::getHtmlTop() .
 	function updateEntry(id, pid, text, pub) {
 		var ai = 1;
 		while (ai <= menuDaten.laenge) {
-			if ((menuDaten[ai].typ === 'folder') || (menuDaten[ai].typ === 'user'))
+			if ((menuDaten[ai].typ === 'folder') || (menuDaten[ai].typ === 'user')){
 				if (menuDaten[ai].name == id) {
 					menuDaten[ai].vorfahr = pid;
 					menuDaten[ai].text = text;
 					menuDaten[ai].published = pub;
 				}
+			}
 			ai++;
 		}
 		drawEintraege();
@@ -264,9 +265,11 @@ echo we_html_tools::getHtmlTop() .
 	function indexOfEntry(name) {
 		var ai = 1;
 		while (ai <= menuDaten.laenge) {
-			if ((menuDaten[ai].typ == 'root') || (menuDaten[ai].typ == 'folder'))
-				if (menuDaten[ai].name == name)
+			if ((menuDaten[ai].typ == 'root') || (menuDaten[ai].typ == 'folder')){
+				if (menuDaten[ai].name == name){
 					return ai;
+				}
+			}
 			ai++;
 		}
 		return -1;
@@ -276,9 +279,11 @@ echo we_html_tools::getHtmlTop() .
 		var nf = new container();
 		var ai = 1;
 		while (ai <= menuDaten.laenge) {
-			if ((menuDaten[ai].typ == 'folder') || (menuDaten[ai].typ == 'user'))
-				if (menuDaten[ai].vorfahr == eintrag)
+			if ((menuDaten[ai].typ == 'folder') || (menuDaten[ai].typ == 'user')){
+				if (menuDaten[ai].vorfahr == eintrag){
 					nf.add(menuDaten[ai]);
+				}
+			}
 			ai++;
 		}
 		return nf;

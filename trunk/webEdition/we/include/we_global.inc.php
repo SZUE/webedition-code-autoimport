@@ -660,7 +660,7 @@ function getContentTypeFromFile($dat){
 		return 'link';
 	}
 	if(is_dir($dat)){
-		return 'folder';
+		return we_base_ContentTypes::FOLDER;
 	}
 	$ext = strtolower(preg_replace('#^.*(\..+)$#', '\1', $dat));
 	if($ext){

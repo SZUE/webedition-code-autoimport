@@ -937,7 +937,7 @@ function weInputInArray(arr, val) {
 		$this->acId = '';
 		$this->containerWidth = '';
 		$this->containerWidthForAll = 0;
-		$this->contentType = 'folder';
+		$this->contentType = we_base_ContentTypes::FOLDER;
 		$this->label = '';
 		$this->maxResults = 20;
 		$this->mayBeEmpty = 1;

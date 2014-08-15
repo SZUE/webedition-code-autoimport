@@ -87,7 +87,7 @@ class we_exim_contentProvider{
 			// fix ends ------------------------------------------------
 			default:
 				switch($we_ContentType){
-					case 'folder':
+					case we_base_ContentTypes::FOLDER:
 						$we_Table = $table ? $table : FILE_TABLE;
 						break;
 					case we_base_ContentTypes::TEMPLATE:

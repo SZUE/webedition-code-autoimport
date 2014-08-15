@@ -456,7 +456,7 @@ function setApplet() {
 		$button = we_html_button::create_button('select', "javascript:we_cmd('openDirselector',document.we_startform.importToID.value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','0')");
 
 		$yuiSuggest->setAcId('Dir');
-		$yuiSuggest->setContentType('folder');
+		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
 		$yuiSuggest->setInput('egal', $path);
 		$yuiSuggest->setLabel(g_l('weClass', '[path]'));
 		$yuiSuggest->setMaxResults(20);

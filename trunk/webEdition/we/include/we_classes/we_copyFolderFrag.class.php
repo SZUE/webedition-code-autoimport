@@ -170,7 +170,7 @@ class copyFolderFrag extends taskFragment{
 		$this->copyToPath = id_to_path($this->data['CopyToId'], OBJECT_FILES_TABLE);
 		$path = preg_replace('|^' . $this->data['CopyFromPath'] . '/|', $this->copyToPath . '/', $this->data['Path']);
 		if($this->data['IsFolder']){
-			$GLOBALS['we_doc']->initByPath($path, OBJECT_FILES_TABLE, 1, 0);
+			$GLOBALS['we_doc']->initByPath($path, OBJECT_FILES_TABLE);
 			if(!$GLOBALS['we_doc']->we_save()){
 				return false;
 			}
@@ -222,7 +222,7 @@ class copyFolderFrag extends taskFragment{
 
 	function getObjectFile(){
 		switch($this->data['ContentType']){
-			case 'folder':
+			case we_base_ContentTypes::FOLDER:
 				$we_ContentType = $this->data['ContentType'];
 				return new we_class_folder();
 			case 'objectFile':
@@ -689,7 +689,7 @@ function fsubmit(e) {
 
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId('Template');
-		$yuiSuggest->setContentType('folder');
+		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
 		$yuiSuggest->setInput('foo', $path, '', 1);
 		$yuiSuggest->setLabel(g_l('copyFolder', '[destdir]'));
 		$yuiSuggest->setMaxResults(10);

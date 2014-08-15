@@ -144,7 +144,7 @@ function we_tag_href($attribs){
 						? "opener.document.we_form.elements[\'" . $int_elem_Name . "\'][1].checked = true;" : '') . "','" . $rootdir . "')") : '';
 	} else {
 		$but = we_html_button::create_button(we_html_button::WE_IMAGE_BUTTON_IDENTIFY . 'edit_link', "javascript:we_cmd('openDirselector', document.forms[0].elements['" . $intID_elem_Name . "'].value, '" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "', '" . $rootdirid . "');");
-		$but2 = permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES') ? we_html_button::create_button(we_html_button::WE_IMAGE_BUTTON_IDENTIFY . 'edit_link', "javascript:we_cmd('browse_server', 'document.forms[0].elements[\\'" . $ext_elem_Name . "\\'].value', 'folder', document.forms[0].elements['" . $ext_elem_Name . "'].value, 'opener._EditorFrame.setEditorIsHot(true);" . ($type == we_base_link::TYPE_ALL
+		$but2 = permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES') ? we_html_button::create_button(we_html_button::WE_IMAGE_BUTTON_IDENTIFY . 'edit_link', "javascript:we_cmd('browse_server', 'document.forms[0].elements[\\'" . $ext_elem_Name . "\\'].value', '".we_base_ContentTypes::FOLDER."', document.forms[0].elements['" . $ext_elem_Name . "'].value, 'opener._EditorFrame.setEditorIsHot(true);" . ($type == we_base_link::TYPE_ALL
 						? " opener.document.we_form.elements[\'" . $int_elem_Name . "\'][1].checked = true;" : '') . "','" . $rootdir . "')") : '';
 	}
 	$open = we_html_button::create_button(we_html_button::WE_IMAGE_BUTTON_IDENTIFY . 'function_view', "javascript:if(document.forms[0].elements['" . $intID_elem_Name . "'].value){top.weEditorFrameController.openDocument('" . FILE_TABLE . "', document.forms[0].elements['" . $intID_elem_Name . "'].value,'');}");
@@ -152,7 +152,7 @@ function we_tag_href($attribs){
 	if($type == we_base_link::TYPE_ALL || $type == we_base_link::TYPE_INT){
 		$yuiSuggest = &weSuggest::getInstance();
 		$yuiSuggest->setAcId($name . we_base_file::getUniqueId(), $rootdir);
-		$yuiSuggest->setContentType(implode(',', array('folder', we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::JS, we_base_ContentTypes::CSS, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::QUICKTIME)));
+		$yuiSuggest->setContentType(implode(',', array(we_base_ContentTypes::FOLDER, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::JS, we_base_ContentTypes::CSS, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::QUICKTIME)));
 		$yuiSuggest->setInput($intPath_elem_Name, $intPath);
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(1);

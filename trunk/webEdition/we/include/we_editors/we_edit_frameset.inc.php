@@ -125,7 +125,7 @@ if(($tid = we_base_request::_(we_base_request::INT, 'we_cmd', false, 10)) !== fa
 
 //predefine ParentPath
 if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) == 'new_document' && ($pid = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 5)) && $we_doc->ParentID == 0){
-	if($we_doc->ContentType == 'folder'){
+	if($we_doc->ContentType == we_base_ContentTypes::FOLDER){
 		$we_doc->setParentID($pid);
 	}
 }
@@ -147,7 +147,7 @@ if($we_doc->ID){
 		if(!(in_workspace($we_doc->ID, $ws, $we_Table, $DB_WE))){
 			switch($we_Table){
 				case TEMPLATES_TABLE: //	different workspace. for template
-					$we_message = g_l('alert', '[' . ($we_ContentType == 'folder') ? 'folder' : $we_Table . '][not_im_ws]');
+					$we_message = g_l('alert', '[' . ($we_ContentType == we_base_ContentTypes::FOLDER) ? 'folder' : $we_Table . '][not_im_ws]');
 					include(WE_USERS_MODULE_PATH . 'we_users_permmessage.inc.php');
 					exit();
 				case FILE_TABLE: //	only preview mode allowed for docs
@@ -186,7 +186,7 @@ if($we_doc->ID == 0){
 			getFirstValidEditPageNr($we_doc, we_base_constants::WE_EDITPAGE_CONTENT));
 }
 
-if($we_Table == FILE_TABLE && $we_ContentType == 'folder' && $we_ID){
+if($we_Table == FILE_TABLE && $we_ContentType == we_base_ContentTypes::FOLDER && $we_ID){
 	$we_doc->EditPageNr = we_base_constants::WE_EDITPAGE_DOCLIST;
 	$_SESSION['weS']['EditPageNr'] = getTabs($we_doc->ClassName, 16);
 }

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -78,7 +77,7 @@ if(defined('TEMPLATES_TABLE') && permissionhandler::hasPerm("NEW_TEMPLATE") && $
 	$js["new_template"] = "top.we_cmd('new','" . TEMPLATES_TABLE . "','','" . we_base_ContentTypes::TEMPLATE . "');";
 }
 if(permissionhandler::hasPerm("NEW_DOC_FOLDER")){
-	$js["new_directory"] = "top.we_cmd('new','" . FILE_TABLE . "','','folder')";
+	$js["new_directory"] = "top.we_cmd('new','" . FILE_TABLE . "','','" . we_base_ContentTypes::FOLDER . "')";
 }
 if(defined('FILE_TABLE') && permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
 	$js["unpublished_pages"] = "top.we_cmd('openUnpublishedPages');";

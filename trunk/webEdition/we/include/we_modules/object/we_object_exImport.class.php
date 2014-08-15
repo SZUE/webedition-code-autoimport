@@ -92,7 +92,7 @@ class we_object_exImport extends we_object{
 			// folder in object schreiben
 			if(!($this->OldPath && ($this->OldPath != $this->Path))){
 				$fold = new we_class_folder();
-				$fold->initByPath($this->getPath(), OBJECT_FILES_TABLE, 1, 0);
+				$fold->initByPath($this->getPath(), OBJECT_FILES_TABLE);
 			}
 
 			////// resave the line O to O.....

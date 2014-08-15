@@ -651,14 +651,14 @@ top.clearEntries();';
 			$this->db->query('SELECT ID FROM ' . $this->table . ' WHERE Path="' . $folder->Path . '"');
 			if($this->db->next_record()){
 				$we_responseText = sprintf(g_l('weEditor', '[folder][response_path_exists]'), $folder->Path);
-				print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
+				echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 			} else {
 				if(preg_match('-[<>?":|\\/*]-', $folder->Filename)){
 					$we_responseText = sprintf(g_l('weEditor', '[folder][we_filename_notValid]'), $folder->Path);
-					print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
+					echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 				} else {
 					$folder->we_save();
-					print 'var ref;
+					echo 'var ref;
 if(top.opener.top.makeNewEntry){
 	ref = top.opener.top;
 }else if(top.opener.top.opener){
@@ -861,7 +861,7 @@ top.selectFile(top.currentID);
 				if($this->table == FILE_TABLE && $result['ContentType'] != "folder"){
 					$query = $this->db->query('SELECT l.Name, c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.DID=' . intval($this->id) . ' AND l.DocumentTable!="tblTemplates"');
 					$metainfos = $this->db->getAllFirst(false);
-				} elseif($this->table == FILE_TABLE && $result['ContentType'] = 'folder'){
+				} elseif($this->table == FILE_TABLE && $result['ContentType'] = we_base_ContentTypes::FOLDER){
 					$query = $this->db->query('SELECT ID, Text, IsFolder FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->id));
 					$folderFolders = array();
 					$folderFiles = array();

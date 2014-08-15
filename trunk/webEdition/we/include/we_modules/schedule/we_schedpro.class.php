@@ -236,7 +236,7 @@ function checkFooter(){
 
 				$yuiSuggest = & weSuggest::getInstance();
 				$yuiSuggest->setAcId('WsDir');
-				$yuiSuggest->setContentType('folder');
+				$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
 				$yuiSuggest->setInput($textname, $path);
 				$yuiSuggest->setMaxResults(20);
 				$yuiSuggest->setMayBeEmpty(0);

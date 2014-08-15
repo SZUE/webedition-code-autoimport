@@ -1187,7 +1187,7 @@ class we_objectFile extends we_document{
 			$wecmdenc1 = we_base_request::encCmd("document.forms[0].elements['" . $Path_elem_Name . "'].value");
 			$wecmdenc4 = we_base_request::encCmd("if (opener.opener != null){opener.opener._EditorFrame.setEditorIsHot(true);}else{opener._EditorFrame.setEditorIsHot(true);}" . ($showRadio ? "opener.document.we_form.elements['" . $int_elem_Name . "'][1].checked=true;" : ""));
 			$but = (!permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES') ? '' : (
-					we_html_button::create_button('select', "javascript:we_cmd('browse_server','" . $wecmdenc1 . "','" . (($directory && $file) ? 'filefolder' : ($file ? '' : 'folder')) . "',document.forms[0].elements['" . $Path_elem_Name . "'].value,'" . $wecmdenc4 . "')")
+					we_html_button::create_button('select', "javascript:we_cmd('browse_server','" . $wecmdenc1 . "','" . (($directory && $file) ? 'filefolder' : ($file ? '' : we_base_ContentTypes::FOLDER)) . "',document.forms[0].elements['" . $Path_elem_Name . "'].value,'" . $wecmdenc4 . "')")
 					));
 		}
 

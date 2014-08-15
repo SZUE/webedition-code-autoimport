@@ -211,8 +211,16 @@ class we_updater{
 	static function updateObjectFilesX(){
 		if(defined('OBJECT_X_TABLE')){
 			$_db = new DB_WE();
-
+			//correct folder properties
+			$_db->query('UPDATE ' . OBJECT_FILES_TABLE . ' f SET IsClassFolder=IF(ParentID=0,1,0)');
+			
+			//all files should have a tableid
 			$_db->query('UPDATE ' . OBJECT_FILES_TABLE . ' f SET TableID=(SELECT ID FROM ' . OBJECT_TABLE . ' WHERE Path=f.Path) WHERE IsClassFolder=1 AND TableID=0');
+			$_db->query('UPDATE ' . OBJECT_FILES_TABLE . ' f SET TableID=(SELECT ID FROM ' . OBJECT_TABLE . ' WHERE f.Path LIKE CONCAT(Path,"/%") ) WHERE IsClassFolder=0 AND IsFolder=1 AND TableID=0');
+
+			//all files without a tableID can be deleted
+			$_db->query('DELETE FROM ' . OBJECT_FILES_TABLE . ' WHERE TableID=0');
+
 
 			$_db->query('SHOW TABLES LIKE "' . str_replace('_', '', OBJECT_X_TABLE) . '\_%"'); //note: _% ignores _, so escaping _ with \_ does the job
 			$allTab = $_db->getAll(true);

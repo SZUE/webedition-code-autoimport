@@ -342,7 +342,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 							? 0 : 1) . ");");
 
 			$yuiSuggest->setAcId("Path");
-			$yuiSuggest->setContentType(implode(',', array('folder', we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::JS, we_base_ContentTypes::CSS, we_base_ContentTypes::HTML, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::QUICKTIME)));
+			$yuiSuggest->setContentType(implode(',', array(we_base_ContentTypes::FOLDER, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::JS, we_base_ContentTypes::CSS, we_base_ContentTypes::HTML, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::QUICKTIME)));
 			$yuiSuggest->setInput("we_dialog_args[fileHref]", $this->args["fileHref"]);
 			$yuiSuggest->setMaxResults(20);
 			$yuiSuggest->setMayBeEmpty(0);

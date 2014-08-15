@@ -47,11 +47,10 @@ class we_navigation_treeDataSource extends we_tool_treeDataSource{
 					$path = dirname($path);
 				}
 			}
-			$wsQuery = !empty($_aWsQuery) ? '(' . implode(' OR ', $_aWsQuery) . ') AND ' : '';
+			$wsQuery = $_aWsQuery ? '(' . implode(' OR ', $_aWsQuery) . ') AND ' : '';
 		}
 
-		$prevoffset = $offset - $segment;
-		$prevoffset = ($prevoffset < 0) ? 0 : $prevoffset;
+		$prevoffset = max(0,$offset - $segment);
 		if($offset && $segment){
 			$items[] = array(
 				'icon' => 'arrowup.gif',

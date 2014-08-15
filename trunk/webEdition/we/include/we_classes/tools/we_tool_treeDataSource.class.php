@@ -79,8 +79,7 @@ class we_tool_treeDataSource{
 			$wsQuery = !empty($_aWsQuery) ? '(' . implode(' OR ', $_aWsQuery) . ') AND ' : '';
 		}
 
-		$prevoffset = $offset - $segment;
-		$prevoffset = ($prevoffset < 0) ? 0 : $prevoffset;
+		$prevoffset = max(0,$offset - $segment);
 		if($offset && $segment){
 			$items[] = array(
 				'icon' => 'arrowup.gif',

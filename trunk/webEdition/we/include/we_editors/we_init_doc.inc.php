@@ -43,7 +43,7 @@ switch(isset($we_ContentType) ? $we_ContentType : ''){
 	case we_base_ContentTypes::IMAGE:
 		$we_doc = new we_imageDocument();
 		break;
-	case 'folder':
+	case we_base_ContentTypes::FOLDER:
 		$we_doc = new we_folder();
 		break;
 	case 'class_folder':
