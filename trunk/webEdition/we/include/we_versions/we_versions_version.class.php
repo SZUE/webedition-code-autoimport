@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weVersions{
+class we_versions_version{
 	protected $ID;
 	protected $documentID;
 	protected $documentTable;

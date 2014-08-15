@@ -102,6 +102,6 @@ $GLOBALS['we_doc'] = clone($we_doc);
 
 //if document opens get initial object for versioning if no versions exist
 if(in_array(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0), array('load_edit_footer', 'switch_edit_page'))){
-	$version = new weVersions();
+	$version = new we_versions_version();
 	$version->setInitialDocObject($GLOBALS['we_doc']);
 }

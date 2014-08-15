@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weVersionsView{
+class we_versions_view{
 
 	public $db;
 	public $version;
@@ -34,8 +34,8 @@ class weVersionsView{
 	function __construct(){
 
 		$this->db = new DB_WE();
-		$this->version = new weVersions();
-		$this->searchclass = new weVersionsSearch();
+		$this->version = new we_versions_version();
+		$this->searchclass = new we_versions_search();
 		$this->searchclass->initData();
 	}
 

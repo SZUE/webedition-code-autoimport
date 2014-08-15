@@ -2251,7 +2251,7 @@ class we_objectFile extends we_document{
 		$a = $this->i_saveTmp();
 // version
 		if($this->ContentType == 'objectFile' && defined('VERSIONING_OBJECT') && VERSIONING_OBJECT){
-			$version = new weVersions();
+			$version = new we_versions_version();
 			$version->save($this);
 		}
 		if(LANGLINK_SUPPORT && ($docid = we_base_request::_(we_base_request::INT, "we_" . $this->Name . "_LanguageDocID"))){
@@ -2442,7 +2442,7 @@ class we_objectFile extends we_document{
 
 		/* version */
 		if($this->ContentType == 'objectFile' && defined('VERSIONING_OBJECT') && VERSIONING_OBJECT){
-			$version = new weVersions();
+			$version = new we_versions_version();
 			$version->save($this, 'unpublished');
 		}
 		/* hook */

@@ -51,7 +51,7 @@ class rpcResetVersionCmd extends rpcCmd{
 				$version = f('SELECT version FROM ' . VERSIONS_TABLE . ' WHERE ID=' . intval($id));
 			}
 
-			weVersions::resetVersion($id, $version, $publish);
+			we_versions_version::resetVersion($id, $version, $publish);
 		}
 
 		if(!empty($_SESSION['weS']['versions']['logResetIds'])){
