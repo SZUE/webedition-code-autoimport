@@ -37,7 +37,7 @@ function findInclude($cmd){
 		case 'versions_preview':
 			return 'we_versions/weVersionsPreview.inc.php';
 		case 'versions_wizard':
-			return 'we_versions/version_wizard/we_versions.inc.php';
+			return 'we_versions/we_versions.inc.php';
 		case 'versioning_log':
 			return 'we_logging/versions/versionsLog.inc.php';
 		case 'import_files':

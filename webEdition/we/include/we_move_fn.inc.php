@@ -177,10 +177,10 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems){
 				}
 			}
 
-			$version = new weVersions();
+			$version = new we_versions_version();
 			if(in_array($row['ContentType'], $version->contentTypes)){
 				$object = we_exim_contentProvider::getInstance($row['ContentType'], $id, $table);
-				$version_exists = weVersions::versionExists($id, $table);
+				$version_exists = we_versions_version::versionExists($id, $table);
 				$tempOldParentID = $object->ParentID;
 				$tempNewParentID = $parentID;
 				$tempOldPath = $object->Path;
@@ -223,10 +223,10 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems){
 			$isFolder = $row['IsFolder'] == 1;
 			$icon = $row['Icon'];
 
-			$version = new weVersions();
+			$version = new we_versions_version();
 			if(in_array($row['ContentType'], $version->contentTypes)){
 				$object = we_exim_contentProvider::getInstance($row['ContentType'], $id, $table);
-				$version_exists = weVersions::versionExists($id, $table);
+				$version_exists = we_versions_version::versionExists($id, $table);
 				$tempOldParentID = $object->ParentID;
 				$tempNewParentID = $parentID;
 				$tempOldPath = $object->Path;

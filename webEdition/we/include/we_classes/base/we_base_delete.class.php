@@ -218,14 +218,14 @@ abstract class we_base_delete{
 				$GLOBALS['deletedItems'][] = $id;
 				return;
 			}
-			$ct = weVersions::getContentTypesVersioning();
+			$ct = we_versions_version::getContentTypesVersioning();
 			//no need to init doc, if no version is needed or hook is executed
 			if(in_array($row['ContentType'], $ct) || !$skipHook){
 				$object = we_exim_contentProvider::getInstance($row['ContentType'], $id, $table);
 			}
 			if(in_array($row['ContentType'], $ct)){
-				$version = new weVersions();
-				if(!weVersions::versionExists($id, $table)){
+				$version = new we_versions_version();
+				if(!we_versions_version::versionExists($id, $table)){
 					$version->saveVersion($object);
 				}
 

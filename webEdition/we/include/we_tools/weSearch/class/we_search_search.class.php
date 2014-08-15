@@ -99,7 +99,7 @@ class we_search_search extends we_search{
 
 	function getModFields(){
 		$modFields = array();
-		$versions = new weVersions();
+		$versions = new we_versions_version();
 		foreach($versions->modFields as $k => $v){
 			if($k != 'status'){
 				$modFields[$k] = $k;
@@ -454,7 +454,7 @@ class we_search_search extends we_search{
 	function searchModFields($text, $table){
 		$where = "";
 		$db = new DB_WE();
-		$versions = new weVersions();
+		$versions = new we_versions_version();
 
 		$modConst[] = $versions->modFields[$text]['const'];
 

@@ -678,7 +678,7 @@ class we_document extends we_root{
 		}
 
 		if($this->isVersioned()){
-			$version = new weVersions();
+			$version = new we_versions_version();
 			$version->save($this);
 		}
 

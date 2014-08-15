@@ -22,14 +22,14 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class versionFragment extends taskFragment{
+class we_versions_fragment extends taskFragment{
 
-	function __construct($name, $taskPerFragment, $pause = 0, $bodyAttributes = "", $initdata = ""){
+	public function __construct($name, $taskPerFragment, $pause = 0, $bodyAttributes = "", $initdata = ""){
 		parent::__construct($name, $taskPerFragment, $pause, $bodyAttributes, $initdata);
 	}
 
 	function doTask(){
-		weVersions::todo($this->data);
+		we_versions_version::todo($this->data);
 		$this->updateProgressBar();
 	}
 

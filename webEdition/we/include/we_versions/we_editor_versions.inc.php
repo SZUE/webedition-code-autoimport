@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 we_html_tools::protect();
-$_view = new weVersionsView();
+$_view = new we_versions_view();
 
 echo we_html_tools::getHtmlTop() .
  we_html_element::jsScript(JS_DIR . 'windows.js') .
