@@ -175,7 +175,7 @@ class we_object_listviewMultiobject extends we_listview_base{
 				'');
 
 		if($sqlParts["tables"]){
-			$this->DB_WE->query('SELECT ' . $this->DB_WE->escape($_obxTable) . '.ID as ID ' . $calendar_select . ' FROM ' . $sqlParts['tables'] . ' WHERE ' . (!empty($this->objects)
+			$this->DB_WE->query('SELECT ' . $this->DB_WE->escape($_obxTable) . '.OF_ID as ID ' . $calendar_select . ' FROM ' . $sqlParts['tables'] . ' WHERE ' . (!empty($this->objects)
 						? OBJECT_X_TABLE . $this->classID . '.OF_ID IN (' . implode(',', $this->objects) . ') AND ' : '') . ($this->searchable ? ' ' . OBJECT_X_TABLE . $this->classID . '.OF_IsSearchable=1 AND'
 						: '') . ' ' . $pid_tail . $where_lang . ' AND ' . OBJECT_X_TABLE . $this->classID . '.OF_ID!=0 ' . ($join ? ' AND (' . $join . ') ' : '') . $cat_tail . ' ' . ($sqlParts["publ_cond"]
 						? (' AND ' . $sqlParts["publ_cond"]) : '') . ' ' . ($sqlParts["cond"] ? (' AND (' . $sqlParts["cond"] . ') ') : '') . $calendar_where . $weDocumentCustomerFilter_tail . $sqlParts['groupBy']);
