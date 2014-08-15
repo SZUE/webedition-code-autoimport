@@ -175,11 +175,6 @@ abstract class we_autoloader{
 		'we_doclist' => array(
 			'doclistView' => 'doclistView.class.php',
 		),
-		'we_logging' => array(
-			'logging' => 'logging.class.php',
-			'versionsLog' => 'versions/versionsLog.class.php',
-			'versionsLogView' => 'versions/versionsLogView.class.php',
-		),
 		'we_message_reporting' => array(
 			'we_message_reporting' => 'we_message_reporting.class.php',
 		),

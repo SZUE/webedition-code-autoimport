@@ -39,7 +39,7 @@ function findInclude($cmd){
 		case 'versions_wizard':
 			return 'we_versions/we_versions.inc.php';
 		case 'versioning_log':
-			return 'we_logging/versions/versionsLog.inc.php';
+			return 'we_versions/versionsLog.inc.php';
 		case 'import_files':
 			return 'we_import_files.inc.php';
 		case 'reset_home':

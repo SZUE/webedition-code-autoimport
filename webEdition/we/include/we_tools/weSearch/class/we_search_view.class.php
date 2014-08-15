@@ -26,7 +26,8 @@ class we_search_view extends we_tool_view{
 	var $searchclass;
 	var $searchclassExp;
 
-	function __construct($frameset = '', $topframe = 'top'){
+	public function __construct($frameset = '', $topframe = 'top'){
+		parent::__construct($frameset, $topframe);
 		$this->toolName = 'weSearch';
 		$this->db = new DB_WE();
 		$this->setFramesetName($frameset);

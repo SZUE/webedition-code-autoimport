@@ -77,6 +77,7 @@ we/include/we_versions/version_wizard/we_version.class.php
 we/include/we_versions/version_wizard/versionFragment.inc.php
 we/include/we_versions/version_wizard/versionFragment.class.php
 we/include/we_versions/version_wizard
+we/include/we_versions/version_wizard
 we/include/we_tools/weSearch/class/searchtoolView.class.php
 we/include/we_tools/weSearch/class/searchtoolTreeDataSource.class.php
 we/include/we_tools/weSearch/class/searchtoolTree.class.php
@@ -346,7 +347,13 @@ we/include/we_modules/banner/weBannerFrames.php
 we/include/we_modules/banner/weBannerBase.php
 we/include/we_modules/banner/weBanner.php
 we/include/we_modules/banner/edit_banner_header.php
+we/include/we_logging/versions/versionsLogView.class.php
 we/include/we_logging/versions/versionsLog.php
+we/include/we_logging/versions/versionsLog.inc.php
+we/include/we_logging/versions/versionsLog.class.php
+we/include/we_logging/versions
+we/include/we_logging/logging.class.php
+we/include/we_logging
 we/include/we_live_tools.inc.php
 we/include/we_linklist.inc.php
 we/include/we_language/Spanish_UTF-8/wysiwyg_js.inc.php

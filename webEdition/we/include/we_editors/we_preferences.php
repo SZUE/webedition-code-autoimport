@@ -586,8 +586,8 @@ function save_all_values(){
 		}
 
 		if(($_SESSION['weS']['versions']['logPrefsChanged'])){
-			$versionslog = new versionsLog();
-			$versionslog->saveVersionsLog($_SESSION['weS']['versions']['logPrefsChanged'], versionsLog::VERSIONS_PREFS);
+			$versionslog = new we_versions_log();
+			$versionslog->saveVersionsLog($_SESSION['weS']['versions']['logPrefsChanged'], we_versions_log::VERSIONS_PREFS);
 		}
 		unset($_SESSION['weS']['versions']['logPrefs']);
 		unset($_SESSION['weS']['versions']['logPrefsChanged']);

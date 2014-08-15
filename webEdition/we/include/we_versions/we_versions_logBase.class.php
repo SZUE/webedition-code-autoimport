@@ -22,8 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-abstract class logging{
-
+abstract class we_versions_logBase{
 	public $db;
 	public $table;
 	public $userID;
@@ -45,8 +44,9 @@ abstract class logging{
 		foreach($tableInfo as $t){
 			$columnName = $t["name"];
 			$this->persistent_slots[] = $columnName;
-			if(!isset($this->$columnName))
+			if(!isset($this->$columnName)){
 				$this->$columnName = "";
+			}
 		}
 	}
 
