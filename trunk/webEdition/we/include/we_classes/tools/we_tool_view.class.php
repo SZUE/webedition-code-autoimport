@@ -25,7 +25,7 @@
 /* the parent class of storagable webEdition classes */
 
 
-class we_tool_view{
+abstract class we_tool_view{
 
 	var $Model;
 	var $toolName;
@@ -43,7 +43,7 @@ class we_tool_view{
 	var $group_pattern = '';
 	var $page = 1;
 
-	function __construct($frameset = '', $topframe = 'top'){
+	protected function __construct($frameset = '', $topframe = 'top'){
 
 	}
 

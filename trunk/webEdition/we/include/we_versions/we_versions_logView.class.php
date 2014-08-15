@@ -22,14 +22,14 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class versionsLogView{
+class we_versions_logView{
 
 	public $actionView;
 	public $versionPerPage = 10;
 	private $Model;
 
 	function __construct(){
-		$this->Model = new versionsLog();
+		$this->Model = new we_versions_log();
 	}
 
 	function getJS(){
@@ -250,13 +250,13 @@ class versionsLogView{
 
 	function showLog($action, $logID){
 		switch($action){
-			case versionsLog::VERSIONS_DELETE:
+			case we_versions_log::VERSIONS_DELETE:
 				$title = g_l('logging', '[versions]') . " " . g_l('logging', '[deleted]');
 				break;
-			case versionsLog::VERSIONS_RESET:
+			case we_versions_log::VERSIONS_RESET:
 				$title = g_l('logging', '[versions]') . " " . g_l('logging', '[reset]');
 				break;
-			case versionsLog::VERSIONS_PREFS:
+			case we_versions_log::VERSIONS_PREFS:
 				$title = g_l('logging', '[prefsVersionChanged]');
 				break;
 		}
@@ -271,7 +271,7 @@ class versionsLogView{
 
 		$out = '';
 
-		if($action == versionsLog::VERSIONS_DELETE || $action == versionsLog::VERSIONS_RESET){
+		if($action == we_versions_log::VERSIONS_DELETE || $action == we_versions_log::VERSIONS_RESET){
 
 			$out .= '<table cellpadding="3" cellspacing="0" border="0" style="width:100%;border:1px solid #BBBAB9;" class="middlefont">' .
 				'<thead><tr style="background-color:#dddddd;font-weight:bold;"><td>' .
@@ -317,7 +317,7 @@ class versionsLogView{
 				(($anzGesamt > $this->versionPerPage) ? '<span style="margin-right:5px;"><a title="' . g_l('logging', '[next]') . '" href="#" onclick="next(' . $logId . ');"><img src=\'' . IMAGE_DIR . 'navigation/button_arrow_right.gif\' id="next_' . $logId . '" style="border:2px solid #DDD;" /></a></span>' : '') .
 				we_html_tools::hidden("start_" . $logId, $start) . '</td></tr>
 				</table>';
-		} elseif($action == versionsLog::VERSIONS_PREFS){
+		} elseif($action == we_versions_log::VERSIONS_PREFS){
 
 			$secondsDay = 86400;
 			$secondsWeek = 604800;

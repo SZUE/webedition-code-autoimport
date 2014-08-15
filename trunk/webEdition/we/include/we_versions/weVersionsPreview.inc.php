@@ -23,7 +23,7 @@
  */
 @include_once('Text/Diff.php');
 @include_once('Text/Diff/Renderer/inline.php');
-
+//FIXME make this a class
 $_db = $GLOBALS['DB_WE'];
 
 $ID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1);

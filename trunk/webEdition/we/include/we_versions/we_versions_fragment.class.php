@@ -43,8 +43,8 @@ class we_versions_fragment extends taskFragment{
 
 	function finish(){
 		if(!empty($_SESSION['weS']['versions']['logResetIds'])){
-			$versionslog = new versionsLog();
-			$versionslog->saveVersionsLog($_SESSION['weS']['versions']['logResetIds'], versionsLog::VERSIONS_RESET);
+			$versionslog = new we_versions_log();
+			$versionslog->saveVersionsLog($_SESSION['weS']['versions']['logResetIds'], we_versions_log::VERSIONS_RESET);
 		}
 		unset($_SESSION['weS']['versions']['logResetIds']);
 		$responseText = we_base_request::_(we_base_request::STRING, "responseText", "");

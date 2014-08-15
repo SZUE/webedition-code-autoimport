@@ -39,7 +39,7 @@ class we_versions_search{
 	/**
 	 *  Constructor for class 'weVersionsSearch'
 	 */
-	function __construct(){
+	public function __construct(){
 
 		$this->db = new DB_WE();
 		$this->version = new we_versions_version();

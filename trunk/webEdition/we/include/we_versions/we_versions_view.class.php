@@ -331,8 +331,6 @@ function resetVersion(id, documentID, version, table) {
 
 function previewVersion(ID) {
 	top.we_cmd("versions_preview", ID, 0);
-	//new jsWindow("' . WEBEDITION_DIR . 'we/include/we_versions/weVersionsPreview.php?ID="+ID+"", "version_preview",-1,-1,1000,750,true,true,true,true);
-
 }
 
 function switchSearch(mode) {

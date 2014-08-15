@@ -27,7 +27,7 @@ class rpcGetLogVersionDetailsCmd extends rpcCmd{
 	function execute(){
 		$resp = new rpcResponse();
 		$id = we_base_request::_(we_base_request::INT, 'id', 0);
-		$code = versionsLogView::handleData($id);
+		$code = we_versions_logView::handleData($id);
 		$resp->setData("data", $code);
 		return $resp;
 	}

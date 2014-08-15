@@ -21,7 +21,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$versionsLogView = new versionsLogView();
+$versionsLogView = new we_versions_logView();
 $out = $versionsLogView->printContent();
 
 echo we_html_tools::getHtmlTop(g_l('versions', '[versions_log]')) .

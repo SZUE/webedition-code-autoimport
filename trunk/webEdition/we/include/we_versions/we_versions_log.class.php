@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class versionsLog extends logging{
+class we_versions_log extends we_versions_logBase{
 
 	const VERSIONS_DELETE = 1;
 	const VERSIONS_RESET = 2;
