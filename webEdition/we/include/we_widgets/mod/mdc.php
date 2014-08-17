@@ -34,7 +34,7 @@ $_binary = $aCsv[1];
 $_table = ($_binary{1}) ? OBJECT_FILES_TABLE : FILE_TABLE;
 $_csv = $aCsv[2];
 
-if($csv){
+if($_csv){
 	if($_binary{0}){
 		$_ids = explode(",", $_csv);
 		$_paths = makeArrayFromCSV(id_to_path($_ids, $_table));
