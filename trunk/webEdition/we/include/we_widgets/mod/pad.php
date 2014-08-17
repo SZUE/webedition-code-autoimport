@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -30,14 +29,14 @@ we_html_tools::protect();
  * Table with the notes
  * @var string
  */
-$_sInitProps = substr(we_base_request::_(we_base_request::RAW_CHECKED, 'we_cmd', '', 0), -5);
+$_sInitProps = substr(we_base_request::_(we_base_request::INT, 'we_cmd', '', 0), -5);
 $bSort = $_sInitProps{0};
 $bDisplay = $_sInitProps{1};
 $bDate = $_sInitProps{2};
 $bPrio = $_sInitProps{3};
 $bValid = $_sInitProps{4};
 $q_Csv = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 1);
-$_title = base64_decode(we_base_request::_(we_base_request::RAW, 'we_cmd', '', 4));
+$title = base64_decode(we_base_request::_(we_base_request::RAW, 'we_cmd', '', 4));
 $type = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 6);
 
 switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2)){
@@ -72,7 +71,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2)){
 		$entTitle = str_replace(array("'", '"'), array('&#039;', '&quot;'), base64_decode($q_Title));
 		$entText = str_replace(array("'", '"'), array('&#039;', '&quot;'), base64_decode($q_Text));
 		$DB_WE->query('INSERT INTO ' . NOTEPAD_TABLE . ' SET ' . we_database_base::arraySetter(array(
-				'WidgetName' => $_title,
+				'WidgetName' => $title,
 				'UserID' => intval($_SESSION['user']['ID']),
 				'CreationDate' => sql_function('CURRENT_DATE()'),
 				'Title' => $entTitle,
@@ -104,12 +103,12 @@ switch($bSort){
 
 if(!$bDisplay){
 	$_sql = 'SELECT * FROM ' . NOTEPAD_TABLE . " WHERE
-		WidgetName = '" . $GLOBALS['DB_WE']->escape($_title) . "' AND
+		WidgetName = '" . $GLOBALS['DB_WE']->escape($title) . "' AND
 		UserID = " . intval($_SESSION['user']['ID']) . "
 		ORDER BY " . $q_sort;
 } else {
 	$_sql = 'SELECT * FROM ' . NOTEPAD_TABLE . " WHERE
-		WidgetName = '" . $GLOBALS['DB_WE']->escape($_title) . "' AND
+		WidgetName = '" . $GLOBALS['DB_WE']->escape($title) . "' AND
 		UserID = " . intval($_SESSION['user']['ID']) . " AND (
 			Valid = 'always' OR (
 				Valid = 'date' AND ValidFrom <= DATE_FORMAT(NOW(), \"%Y-%m-%d\")
@@ -141,9 +140,9 @@ $oTblPeriod->setCol(0, 1, array(
 	), $oTblValidity->getHTML());
 
 // Edit note prio settings
-$rdoPrio[0] = we_html_forms::radiobutton($value = 0, $checked = 0, $name = "rdo_prio", $text = g_l('cockpit', '[high]'), $uniqid = true, $class = "middlefont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
-$rdoPrio[1] = we_html_forms::radiobutton($value = 1, $checked = 0, $name = "rdo_prio", $text = g_l('cockpit', '[medium]'), $uniqid = true, $class = "middlefont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
-$rdoPrio[2] = we_html_forms::radiobutton($value = 2, $checked = 1, $name = "rdo_prio", $text = g_l('cockpit', '[low]'), $uniqid = true, $class = "middlefont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
+$rdoPrio[0] = we_html_forms::radiobutton(0, 0, "rdo_prio", g_l('cockpit', '[high]'), true, "middlefont", "", false, "", 0, "");
+$rdoPrio[1] = we_html_forms::radiobutton(1, 0, "rdo_prio", g_l('cockpit', '[medium]'), true, "middlefont", "", false, "", 0, "");
+$rdoPrio[2] = we_html_forms::radiobutton(2, 1, "rdo_prio", g_l('cockpit', '[low]'), true, "middlefont", "", false, "", 0, "");
 $oTblPrio = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 8);
 $oTblPrio->setCol(0, 0, null, $rdoPrio[0]);
 $oTblPrio->setCol(0, 1, null, we_html_element::htmlImg(
@@ -201,7 +200,7 @@ $oTblProps->setCol(4, 0, array(
 	), g_l('cockpit', '[title]'));
 $oTblProps->setCol(
 	4, 1, null, we_html_tools::htmlTextInput(
-		$name = "props_title", $size = 255, $value = "", $maxlength = 255, $attribs = "", $type = "text", $width = "100%", $height = 0));
+		 "props_title",  255,  "",  255,  "", "text", "100%",  0));
 $oTblProps->setCol(5, 0, null, we_html_tools::getPixel(1, 8));
 $oTblProps->setCol(6, 0, array(
 	"class" => "middlefont", "valign" => "top"
@@ -307,13 +306,13 @@ print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 			var _sObjId='" . we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 5) . "';
 			var _sCls_=parent.gel(_sObjId+'_cls').value;
 			var _sType='pad';
-			var _sTb='" . g_l('cockpit', '[notes]') . " - " . $_title . "';
+			var _sTb='" . g_l('cockpit', '[notes]') . " - " . $title . "';
 			function init(){
 				parent.rpcHandleResponse(_sType,_sObjId,document.getElementById(_sType),_sTb);
 			}
 			" : "
 			var _sObjId='m_" . we_base_request::_(we_base_request::INT, 'we_cmd', 0, 5) . "';
-			var _sTb='" . $_title . "';
+			var _sTb='" . $title . "';
 			var _sInitProps='" . $_sInitProps . "';") . "
 			var _ttlB64Esc='';
 			if(typeof parent.base64_encode=='function')_ttlB64Esc=escape(parent.base64_encode(_sTb));
