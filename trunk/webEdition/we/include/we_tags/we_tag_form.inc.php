@@ -99,7 +99,7 @@ function we_tag_form($attribs){
 										$GLOBALS['we_doc']->ID))) :
 							((isset($GLOBALS['lv']) && isset($GLOBALS['lv']->IDs[$GLOBALS['lv']->count - 1]) && $GLOBALS['lv']->IDs[$GLOBALS['lv']->count - 1] != '') ?
 								$GLOBALS['lv']->IDs[$GLOBALS['lv']->count - 1] :
-								$GLOBALS['we_doc']->ID) ),
+								$GLOBALS['we_doc']->ID)
 					)) .
 					getHtmlTag('input', array(
 						'xml' => $xml,
