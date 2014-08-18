@@ -91,10 +91,10 @@ class we_navigation_cache{
 		return false;
 	}
 
-	static function getCachedRule(){
+	static function getCachedRule(){//FIXME: this file is never written!
 		$_cache = $_SERVER['DOCUMENT_ROOT'] . self::CACHEDIR . 'rules.php';
 		if(file_exists($_cache)){
-			return $navigationRulesStorage = we_base_file::load($_cache);
+			return we_base_file::load($_cache);
 		}
 		return false;
 	}

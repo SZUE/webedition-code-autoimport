@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_shop_frames extends weModuleFrames{
-
 	var $db;
 	var $View;
 	var $frameset;
@@ -165,7 +164,7 @@ class we_shop_frames extends weModuleFrames{
 			function updateEntry(id, text, pub) {
 				var ai = 1;
 				while (ai <= menuDaten.laenge) {
-					if ((menuDaten[ai].typ === 'folder') || (menuDaten[ai].typ === 'shop')){
+					if ((menuDaten[ai].typ === 'folder') || (menuDaten[ai].typ === 'shop')) {
 						if (menuDaten[ai].name == id) {
 							menuDaten[ai].text = text;
 							menuDaten[ai].published = pub;
@@ -180,7 +179,7 @@ class we_shop_frames extends weModuleFrames{
 				var ai = 1;
 				var ind = 0;
 				while (ai <= menuDaten.laenge) {
-					if ((menuDaten[ai].typ === 'folder') || (menuDaten[ai].typ === 'shop')){
+					if ((menuDaten[ai].typ === 'folder') || (menuDaten[ai].typ === 'shop')) {
 						if (menuDaten[ai].name == id) {
 							ind = ai;
 							break;
@@ -217,7 +216,7 @@ class we_shop_frames extends weModuleFrames{
 			function indexOfEntry(name) {
 				var ai = 1;
 				while (ai <= menuDaten.laenge) {
-					if ((menuDaten[ai].typ === 'root') || (menuDaten[ai].typ === 'folder')){
+					if ((menuDaten[ai].typ === 'root') || (menuDaten[ai].typ === 'folder')) {
 						if (menuDaten[ai].name == name) {
 							return ai;
 						}
@@ -231,7 +230,7 @@ class we_shop_frames extends weModuleFrames{
 				var nf = new container();
 				var ai = 1;
 				while (ai <= menuDaten.laenge) {
-					if ((menuDaten[ai].typ === 'folder') || (menuDaten[ai].typ === 'shop')){
+					if ((menuDaten[ai].typ === 'folder') || (menuDaten[ai].typ === 'shop')) {
 						if (menuDaten[ai].vorfahr == eintrag) {
 							nf.add(menuDaten[ai]);
 						}
@@ -378,7 +377,7 @@ class we_shop_frames extends weModuleFrames{
 
 	function getHTMLFrameset(){
 		$extraHead = $this->getJSTreeCode();
-		$extraUrlParams = isset($_REQUEST['bid']) ? '&bid=' . $_REQUEST['bid'] : '&top=1&home=1';
+		$extraUrlParams = ($bid = we_base_request::_(we_base_request::INT, 'bid')) ? '&bid=' . $bid : '&top=1&home=1';
 
 		return parent::getHTMLFrameset($extraHead, $extraUrlParams);
 	}
@@ -561,7 +560,7 @@ function we_cmd() {
 
 		$bid = we_base_request::_(we_base_request::INT, 'bid', 0);
 
-		$hash = getHash('SELECT IntCustomerID,DATE_FORMAT(DateOrder,"' . g_l('date', '[format][mysqlDate]') . '") AS d FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . intval($bid), $DB_WE);
+		$hash = getHash('SELECT IntCustomerID,DATE_FORMAT(DateOrder,"' . g_l('date', '[format][mysqlDate]') . '") AS d FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . $bid, $DB_WE);
 		$cid = $hash['IntCustomerID'];
 		$cdat = $hash['d'];
 		$order = getHash('SELECT IntOrderID,DATE_FORMAT(DateOrder,"' . g_l('date', '[format][mysqlDate]') . '") as orddate FROM ' . SHOP_TABLE . ' GROUP BY IntOrderID ORDER BY IntID DESC LIMIT 1', $DB_WE);
@@ -576,8 +575,8 @@ function we_cmd() {
 			$we_tabs->addTab(new we_tab("#", g_l('tabs', '[module][orderlist]'), we_tab::NORMAL, "setTab(1);"));
 		}
 
-		$textPre = isset($_REQUEST['bid']) && $_REQUEST['bid'] > 0 ? g_l('modules_shop', '[orderList][order]') : g_l('modules_shop', '[order_view]');
-		$textPost = isset($_REQUEST['mid']) && $_REQUEST['mid'] > 0 ? (strlen($_REQUEST['mid']) > 5 ? g_l('modules_shop', '[month][' . substr($_REQUEST['mid'], 0, -5) . ']') . " " . substr($_REQUEST['mid'], -5, 4) : substr($_REQUEST['mid'], 1)) : ($bid ? sprintf(g_l('modules_shop', '[orderNo]'), $_REQUEST['bid'], $cdat) : '');
+		$textPre = $bid > 0 ? g_l('modules_shop', '[orderList][order]') : g_l('modules_shop', '[order_view]');
+		$textPost = isset($_REQUEST['mid']) && $_REQUEST['mid'] > 0 ? (strlen($_REQUEST['mid']) > 5 ? g_l('modules_shop', '[month][' . substr($_REQUEST['mid'], 0, -5) . ']') . " " . substr($_REQUEST['mid'], -5, 4) : substr($_REQUEST['mid'], 1)) : ($bid ? sprintf(g_l('modules_shop', '[orderNo]'), $bid, $cdat) : '');
 		$we_tabs->onResize();
 
 		$tab_head = $we_tabs->getHeader() . we_html_element::jsElement('

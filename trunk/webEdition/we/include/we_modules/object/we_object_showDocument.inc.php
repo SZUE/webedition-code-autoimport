@@ -110,11 +110,9 @@ if(($_userID && $_userID != $_SESSION['user']['ID']) || (we_base_request::_(we_b
 		showContent();
 		exit;
 	}
-} else if(isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3]){
+} else if(($we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', '', 3))){
 
-	$tid = $_REQUEST['we_cmd'][2];
-	$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', '', 3);
-
+	$tid = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2);
 	// init document
 	$we_dt = $_SESSION['weS']['we_data'][$we_transaction];
 	include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');

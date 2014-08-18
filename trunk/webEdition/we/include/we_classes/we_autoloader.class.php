@@ -44,6 +44,7 @@ abstract class we_autoloader{
 		'exim' => 'we_exim',
 		'export' => 'we_modules/export',
 		'fileupload' => 'we_classes/fileupload',
+		'fragment' => 'we_classes/fragment',
 		'glossary' => 'we_modules/glossary',
 		'helpers' => 'we_classes/helpers',
 		'html' => 'we_classes/html',
@@ -107,12 +108,9 @@ abstract class we_autoloader{
 		),
 		'we_classes' => array(
 			'Console_Getopt' => 'Getopt.php',
-			'copyFolderFinishFrag' => 'we_copyFolderFinishFrag.class.php',
-			'copyFolderFrag' => 'we_copyFolderFrag.class.php',
 			'DB_WE' => 'database/DB_WE.inc.php', //pseudo-element which loads a wrapper, doesn't contain a real class!
 			'metadatatag' => 'listview/metadatatag.class.php',
 			'permissionhandler' => 'permissionhandler/permissionhandler.class.php',
-			'taskFragment' => 'taskFragment.class.php',
 			'weBinary' => 'weBinary.class.php',
 			'we_category' => 'we_category.class.php',
 			'we_docTypes' => 'we_docTypes.class.php',

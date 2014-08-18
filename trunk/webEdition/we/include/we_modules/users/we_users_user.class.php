@@ -40,7 +40,7 @@ class we_users_user{
 	// Name of the class => important for reconstructing the class from outside the class
 	var $ClassName = __CLASS__;
 	// In this array are all storagable class variables
-	var $persistent_slots = array(
+	private $persistent_slots = array(
 		'ID' => we_base_request::INT,
 		'Type' => we_base_request::INT,
 		'ParentID' => we_base_request::INT,
@@ -709,7 +709,7 @@ if (top.content.editor.edheader) {
 
 // Editor Module User
 if (top.content.editor.edbody) {
-	top.content.editor.edbody.location = top.content.editor.edbody.location +'?tab=" . abs($_REQUEST['tab']) . "&perm_branch='+top.content.editor.edbody.opened_group;
+	top.content.editor.edbody.location = top.content.editor.edbody.location +'?tab=" . we_base_request::_(we_base_request::INT, 'tab', 0) . "&perm_branch='+top.content.editor.edbody.opened_group;
 }
 
 // Save Module User
@@ -757,7 +757,7 @@ if (top.content.editor.edheader) {
 
 // Editor Module User
 if (top.content.editor.edbody) {
-	top.content.editor.edbody.location = top.content.editor.edbody.location +'?tab=" . abs($_REQUEST['tab']) . "&perm_branch='+top.content.editor.edbody.opened_group;
+	top.content.editor.edbody.location = top.content.editor.edbody.location +'?tab=" . we_base_request::_(we_base_request::INT, 'tab', 0) . "&perm_branch='+top.content.editor.edbody.opened_group;
 }
 
 // Save Module User
@@ -792,11 +792,11 @@ _multiEditorreload = true;";
 							$_SESSION['prefs']['seem_start_type'] = 'cockpit';
 							break;
 						case 'object':
-							$_SESSION['prefs']['seem_start_file'] = $_REQUEST['seem_start_object'];
+							$_SESSION['prefs']['seem_start_file'] = we_base_request::_(we_base_request::INT, 'seem_start_object', 0);
 							$_SESSION['prefs']['seem_start_type'] = 'object';
 							break;
 						case 'weapp':
-							$_SESSION['prefs']['seem_start_weapp'] = $_REQUEST['seem_start_weapp'];
+							$_SESSION['prefs']['seem_start_weapp'] = we_base_request::_(we_base_request::STRING, 'seem_start_weapp');
 							$_SESSION['prefs']['seem_start_type'] = 'weapp';
 							break;
 						default:
@@ -1084,15 +1084,15 @@ _multiEditorreload = true;";
 						$this->setPreference('seem_start_type', 'cockpit');
 						break;
 					case 'object':
-						$this->setPreference('seem_start_file', $_REQUEST['seem_start_object']);
+						$this->setPreference('seem_start_file', we_base_request::_(we_base_request::INT, 'seem_start_object'));
 						$this->setPreference('seem_start_type', 'object');
 						break;
 					case 'weapp':
-						$this->setPreference('seem_start_weapp', $_REQUEST['seem_start_weapp']);
+						$this->setPreference('seem_start_weapp', we_base_request::_(we_base_request::STRING, 'seem_start_weapp'));
 						$this->setPreference('seem_start_type', 'weapp');
 						break;
 					default:
-						$this->setPreference('seem_start_file', $_REQUEST['seem_start_document']);
+						$this->setPreference('seem_start_file', we_base_request::_(we_base_request::INT, 'seem_start_document'));
 						$this->setPreference('seem_start_type', 'document');
 				}
 				break;

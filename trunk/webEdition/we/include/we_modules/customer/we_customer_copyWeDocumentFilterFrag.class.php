@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_customer_copyWeDocumentFilterFrag extends taskFragment{
+class we_customer_copyWeDocumentFilterFrag extends we_fragment_base{
 
 	function init(){
 

@@ -1,6 +1,6 @@
 <?php
 
-class we_base_sessionHandler{//implements SessionHandlerInterface
+class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 	//prevent crashed or killed sessions to stay
 	private $execTime;
 	private $sessionName;

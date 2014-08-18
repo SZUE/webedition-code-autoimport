@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -31,7 +30,7 @@ echo we_html_tools::getHtmlTop() .
 
 switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 	case 'saveVat':
-		$weShopVat = new we_shop_vat($_REQUEST['weShopVatId'], $_REQUEST['weShopVatText'], $_REQUEST['weShopVatVat'], $_REQUEST['weShopVatStandard']);
+		$weShopVat = new we_shop_vat(we_base_request::_(we_base_request::INT, 'weShopVatId'), we_base_request::_(we_base_request::STRING, 'weShopVatText'), we_base_request::_(we_base_request::RAW, 'weShopVatVat'), we_base_request::_(we_base_request::RAW, 'weShopVatStandard'));
 
 		if(($newId = we_shop_vats::saveWeShopVAT($weShopVat))){
 			$weShopVat->id = $newId;
@@ -46,7 +45,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 		break;
 
 	case 'deleteVat':
-		if(we_shop_vats::deleteVatById($_REQUEST['weShopVatId'])){
+		if(we_shop_vats::deleteVatById(we_base_request::_(we_base_request::INT, 'weShopVatId'))){
 			$jsMessage = g_l('modules_shop', '[vat][delete_success]');
 			$jsMessageType = we_message_reporting::WE_MESSAGE_NOTICE;
 		} else {

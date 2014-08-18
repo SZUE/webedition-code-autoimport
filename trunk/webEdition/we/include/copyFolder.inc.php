@@ -152,12 +152,12 @@ if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 3)){
 			we_html_forms::checkbox(1, 0, 'CreateDoctypes', g_l('copyFolder', "[create_new_doctypes]")) .
 			'</td></tr>
 					<tr><td colspan="2">' . we_html_tools::getPixel(2, 5) . '</td></tr>
-					<tr><td colspan="2">' . copyFolderFrag::formCreateTemplateDirChooser() . '</td></tr>
-					<tr><td colspan="2">' . we_html_tools::getPixel(2, 5) . we_html_element::htmlBr() . copyFolderFrag::formCreateCategoryChooser() .
+					<tr><td colspan="2">' . we_fragment_copyFolder::formCreateTemplateDirChooser() . '</td></tr>
+					<tr><td colspan="2">' . we_html_tools::getPixel(2, 5) . we_html_element::htmlBr() . we_fragment_copyFolder::formCreateCategoryChooser() .
 			$hidden .
 			'</td></tr></table>';
 	}
-	copyFolderFrag::printHeader();
+	we_fragment_copyFolder::printHeader();
 	echo
 	'<body class="weDialogBody">' . $js .
 	'<form onsubmit="return fsubmit(this)" name="we_form" target="pbUpdateFrame" method="get">' .
@@ -180,7 +180,7 @@ if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 3)){
 		"topmargin" => 10
 	);
 	$fr = (we_base_request::_(we_base_request::BOOL, 'finish') ?
-			new copyFolderFinishFrag("we_copyFolderFinish", 1, 0, $bodyAttribs) :
-			new copyFolderFrag("we_copyFolder", 1, 0, $bodyAttribs)
+			new we_fragment_copyFolderFinish("we_copyFolderFinish", 1, 0, $bodyAttribs) :
+			new we_fragment_copyFolder("we_copyFolder", 1, 0, $bodyAttribs)
 		);
 }

@@ -44,7 +44,7 @@ class we_shop_statusMails{
 		$this->FieldsDocuments = $FieldsDocuments;
 	}
 
-	function initByRequest(&$req){
+	public static function initByRequest($req){
 
 		return new self(
 			$req['FieldsHidden'], $req['FieldsHiddenCOV'], $req['FieldsText'], $req['FieldsMails'], $req['EMailData'], $req['LanguageData'], $req['FieldsDocuments']
@@ -225,8 +225,7 @@ class we_shop_statusMails{
 				$docID = $this->FieldsDocuments[$pagelang]['Date' . $was];
 				$field = 1;
 			} else {
-				$docID = (isset($this->FieldsDocuments[$cdata[$this->LanguageData['languageField']]]) && isset($this->FieldsDocuments[$cdata[$this->LanguageData['languageField']]]['Date' . $was])
-							?
+				$docID = (isset($this->FieldsDocuments[$cdata[$this->LanguageData['languageField']]]) && isset($this->FieldsDocuments[$cdata[$this->LanguageData['languageField']]]['Date' . $was]) ?
 						$this->FieldsDocuments[$cdata[$this->LanguageData['languageField']]]['Date' . $was] :
 						$this->FieldsDocuments['default']['Date' . $was]);
 				$field = 2;
@@ -270,8 +269,7 @@ class we_shop_statusMails{
 			$subject = 'no subject given';
 		}
 		if($recipientOK && $this->EMailData['address'] != '' && we_check_email($this->EMailData['address'])){
-			$from = (!isset($this->EMailData['name']) || $this->EMailData['name'] === '' || $this->EMailData['name'] === null || $this->EMailData['name'] === $this->EMailData['address']
-						?
+			$from = (!isset($this->EMailData['name']) || $this->EMailData['name'] === '' || $this->EMailData['name'] === null || $this->EMailData['name'] === $this->EMailData['address'] ?
 					$this->EMailData['address'] :
 					array('email' => $this->EMailData['address'], 'name' => $this->EMailData['name'])
 				);
@@ -281,8 +279,7 @@ class we_shop_statusMails{
 
 			$phpmail->addHTMLPart($codes);
 			$phpmail->addTextPart(strip_tags(strtr($codes, array('&nbsp;' => ' ', '<br />' => "\n", '<br/>' => "\n"))));
-			$phpmail->addTo($cdata[$this->EMailData['emailField']], ( (isset($this->EMailData['titleField']) && $this->EMailData['titleField'] != '' && isset($cdata[$this->EMailData['titleField']]) && $cdata[$this->EMailData['titleField']] != '' )
-						? $cdata[$this->EMailData['titleField']] . ' ' : '') . $cdata['Forename'] . ' ' . $cdata['Surname']);
+			$phpmail->addTo($cdata[$this->EMailData['emailField']], ( (isset($this->EMailData['titleField']) && $this->EMailData['titleField'] != '' && isset($cdata[$this->EMailData['titleField']]) && $cdata[$this->EMailData['titleField']] != '' ) ? $cdata[$this->EMailData['titleField']] . ' ' : '') . $cdata['Forename'] . ' ' . $cdata['Surname']);
 			if(isset($this->EMailData['bcc']) && $this->EMailData['bcc'] != ''){
 				$bccArray = explode(',', $this->EMailData['bcc']);
 				$phpmail->setBCC($bccArray);
@@ -325,8 +322,9 @@ class we_shop_statusMails{
 		$datetimeform = "00.00.0000 00:00";
 		$dateform = "00.00.0000";
 		$EMailhandler = '<table cellpadding="0" cellspacing="0" border="0" width="99%" class="defaultfont"><tr><td class="defaultfont">' . g_l('modules_shop', '[statusmails][EMail]') . ': </td>';
-		if($_REQUEST["Mail" . $was] != $datetimeform && $_REQUEST["Mail" . $was] != ''){
-			$EMailhandler .= '<td class="defaultfont" width="150">' . $_REQUEST["Mail" . $was] . '</td>';
+
+		if(($m = we_base_request::_(we_base_request::STRING, "Mail" . $was)) && $m != $datetimeform){
+			$EMailhandler .= '<td class="defaultfont" width="150">' . $m . '</td>';
 			$but = we_html_button::create_button("image:/mail_resend", "javascript:check=confirm('" . g_l('modules_shop', '[statusmails][resent]') . "'); if (check){SendMail('" . $was . "');}");
 		} else {
 			$EMailhandler .= '<td class="defaultfont" width="150">&nbsp;</td>';

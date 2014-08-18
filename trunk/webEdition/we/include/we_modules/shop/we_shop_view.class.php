@@ -391,21 +391,16 @@ function we_cmd() {
 				$this->db->query('UPDATE ' . SHOP_TABLE . ' SET Price=' . abs($preis) . ' WHERE IntID=' . $article);
 			} else if(($anz = we_base_request::_(we_base_request::FLOAT, 'anzahl')) !== false){
 				$this->db->query('UPDATE ' . SHOP_TABLE . ' SET IntQuantity=' . abs($anz) . ' WHERE IntID=' . $article);
-			} else if(isset($_REQUEST['vat'])){
+			} else if(($vat = $m = we_base_request::_(we_base_request::STRING, 'vat')) !== false){
 
-				$this->db->query('SELECT strSerial FROM ' . SHOP_TABLE . ' WHERE IntID=' . $article);
+				$strSerial = f('SELECT strSerial FROM ' . SHOP_TABLE . ' WHERE IntID=' . $article, '', $this->db);
 
-				if($this->db->num_rows() == 1){
-					$this->db->next_record();
-
-					$strSerial = $this->db->f('strSerial');
-					$tmpDoc = @unserialize($strSerial);
-					$tmpDoc[WE_SHOP_VAT_FIELD_NAME] = $_REQUEST['vat'];
-
+				if($strSerial){
+					$tmpDoc = unserialize($strSerial);
+					$tmpDoc[WE_SHOP_VAT_FIELD_NAME] = $vat;
 
 					$this->db->query('UPDATE ' . SHOP_TABLE . ' SET strSerial="' . $this->db->escape(serialize($tmpDoc)) . '" WHERE IntID=' . $article);
-					unset($strSerial);
-					unset($tmpDoc);
+					unset($strSerial, $tmpDoc);
 				}
 			}
 		}
