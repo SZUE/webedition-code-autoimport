@@ -7,7 +7,6 @@ class we_base_sessionHandler implements SessionHandlerInterface{
 	private $DB;
 	private $id = 0;
 	private $crypt = false;
-	private $crypt2 = false;
 
 	function __construct(){
 		if(defined('SYSTEM_WE_SESSION') && SYSTEM_WE_SESSION && !$this->id){
@@ -21,15 +20,10 @@ class we_base_sessionHandler implements SessionHandlerInterface{
 			$this->execTime = ($this->execTime > 60 ? 60 : $this->execTime); //time might be wrong (1&1)
 			$this->id = uniqid('', true);
 			if(!(extension_loaded('suhosin') && ini_get('suhosin.session.encrypt'))){//make it possible to keep users when switching
-				$extra = (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : '') . (isset($_SERVER['HTTP_ACCEPT_ENCODING']) ? $_SERVER['HTTP_ACCEPT_ENCODING'] : '');
 				// due to IE we can't use HTTP_ACCEPT_LANGUAGE, HTTP_ACCEPT_ENCODING - they change the string on each request
-
-				$this->crypt = hash('haval224,4', $_SERVER['DOCUMENT_ROOT'] . $_SERVER['HTTP_USER_AGENT']);
+				$this->crypt = hash('haval224,4', $_SERVER['DOCUMENT_ROOT'] . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : 'HTTP_USER_AGENT'));
 				//double key size is needed
 				$this->crypt .=$this->crypt;
-				$this->crypt2 = hash('haval224,4', $_SERVER['DOCUMENT_ROOT'] . $_SERVER['HTTP_USER_AGENT'] . $extra);
-				//double key size is needed
-				$this->crypt2 .=$this->crypt2;
 			}
 		}
 		session_start();
