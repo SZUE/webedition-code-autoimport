@@ -186,9 +186,6 @@ class we_navigation_items{
 		$navigationRulesStorage = we_navigation_cache::getCachedRule();
 		if($navigationRulesStorage !== false){
 			$this->currentRules = unserialize($navigationRulesStorage);
-			foreach($this->currentRules as &$rule){ //#Bug 4142
-				$rule->renewDB();
-			}
 		}
 		unset($navigationRulesStorage);
 

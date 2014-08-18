@@ -103,7 +103,7 @@ switch(we_base_request::_(we_base_request::STRING, 'cmd', '', 0)){
 
 	case 'saveSettings':
 
-		$_default = $_REQUEST['default'];
+		$_default = we_base_request::_(we_base_request::STRING, 'default');
 		$_active = array();
 		foreach($_REQUEST as $_key => $_value){
 			if(strpos($_key, 'enable_') === 0 && $_value == 1){
@@ -115,14 +115,12 @@ switch(we_base_request::_(we_base_request::STRING, 'cmd', '', 0)){
 			$_active[] = $_default;
 		}
 
-		$_active = array_unique($_active);
 
-		$_langs = (isset($_REQUEST['lang']) && is_array($_REQUEST['lang'])) ? $_REQUEST['lang'] : array();
+		$_langs = we_base_request::_(we_base_request::STRING, 'lang');
 
-		saveSettings($_default, $_active, $_langs);
+		saveSettings($_default, array_unique($_active), is_array($_langs) ? $_langs : array());
 
-		$_content = $_REQUEST['defaultDict'];
-		we_base_file::save(WE_SPELLCHECKER_MODULE_PATH . 'dict/default.inc.php', $_content);
+		we_base_file::save(WE_SPELLCHECKER_MODULE_PATH . 'dict/default.inc.php', we_base_request::_(we_base_request::STRING, 'defaultDict'));
 
 		echo we_html_element::jsElement(
 			we_message_reporting::getShowMessageCall(g_l('modules_spellchecker', '[save_settings]'), we_message_reporting::WE_MESSAGE_NOTICE)

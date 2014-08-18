@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_glossary_view{
-
 	/**
 	 * Database Instance
 	 *
@@ -84,33 +83,9 @@ class we_glossary_view{
 	 * @param string $FrameSet
 	 * @param string $TopFrame
 	 */
-	function __construct($FrameSet = "", $TopFrame = "top.content"){
+	public function __construct($FrameSet = "", $TopFrame = "top.content"){
 		$this->Db = new DB_WE();
 		$this->Glossary = new we_glossary_glossary();
-
-		switch(we_base_request::_(we_base_request::STRING, 'cmd')){
-			case 'new_glossary_abbreviation':
-				$this->Glossary->Type = we_glossary_glossary::TYPE_ABBREVATION;
-				break;
-
-			case 'new_glossary_acronym':
-				$this->Glossary->Type = we_glossary_glossary::TYPE_ACRONYM;
-				break;
-
-			case 'new_glossary_foreignword':
-				$this->Glossary->Type = we_glossary_glossary::TYPE_FOREIGNWORD;
-				break;
-
-			case 'new_glossary_link':
-				$this->Glossary->Type = we_glossary_glossary::TYPE_LINK;
-				break;
-
-			case 'new_glossary_textreplacement':
-				$this->Glossary->Type = we_glossary_glossary::TYPE_TEXTREPLACE;
-				break;
-			default:
-				$this->Glossary->Type = we_base_request::_(we_base_request::STRING, 'type', $this->Glossary->Type);
-		}
 
 		$this->setFramesetName($FrameSet);
 		$this->setTopFrame($TopFrame);

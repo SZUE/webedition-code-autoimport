@@ -236,7 +236,7 @@ abstract class we_customer_abstractFilter{
 	}
 
 	/**
-	 * Creates and returns the filter array from $_REQUEST
+	 * Creates and returns the filter array from request
 	 *
 	 * @static
 	 * @return array
@@ -312,7 +312,7 @@ abstract class we_customer_abstractFilter{
 	}
 
 	/**
-	 * Creates and returns the white list array from $_REQUEST
+	 * Creates and returns the white list array from request
 	 *
 	 * @static
 	 * @return array

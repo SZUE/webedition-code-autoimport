@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class copyFolderFinishFrag extends copyFolderFrag{
+class we_fragment_copyFolderFinish extends we_fragment_copyFolder{
 
 	function init(){
 		if(isset($_SESSION['weS']['WE_CREATE_TEMPLATE'])){

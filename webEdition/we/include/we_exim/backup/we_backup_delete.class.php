@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_backup_delete extends taskFragment{
+class we_backup_delete extends we_fragment_base{
 
 	private $db;
 

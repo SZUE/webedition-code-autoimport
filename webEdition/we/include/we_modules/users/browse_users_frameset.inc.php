@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -22,14 +21,14 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$_REQUEST['id'] = $_REQUEST['we_cmd'][4];
+$_REQUEST['id'] = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 4);
 $_REQUEST['table'] = USER_TABLE;
 
 $_REQUEST['JSIDName'] = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 1);
 $_REQUEST['JSTextName'] = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 2);
 $_REQUEST['JSCommand'] = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 5);
 $_REQUEST['rootDirID'] = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 7);
-$_REQUEST['filter'] = $_REQUEST['we_cmd'][3];
+$_REQUEST['filter'] =  we_base_request::_(we_base_request::RAW, 'we_cmd', 0, 3);;
 $_REQUEST['multiple'] = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 8);
 
 require_once(WE_USERS_MODULE_PATH . "we_usersSelect.php");

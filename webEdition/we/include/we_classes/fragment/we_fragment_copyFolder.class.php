@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class copyFolderFrag extends taskFragment{
+class we_fragment_copyFolder extends we_fragment_base{
 	var $copyToPath = "";
 
 	function init(){

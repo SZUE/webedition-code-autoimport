@@ -1107,7 +1107,7 @@ function submitForm() {
 		}
 
 		if(is_array($this->Model->persistent_slots)){
-			foreach($this->Model->persistent_slots as $key => $val){
+			foreach($this->Model->persistent_slots as $val){
 				if(isset($_REQUEST[$val])){
 					$this->Model->$val = $_REQUEST[$val];
 				}

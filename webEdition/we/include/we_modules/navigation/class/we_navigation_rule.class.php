@@ -23,8 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_navigation_rule extends weModelBase{
-
-	var $table = NAVIGATION_RULE_TABLE;
 	var $Table = NAVIGATION_RULE_TABLE;
 	var $ContentType = 'weNavigationRule';
 	var $ClassName = __CLASS__;
@@ -51,11 +49,9 @@ class we_navigation_rule extends weModelBase{
 		'WorkspaceID'
 	);
 
-	function __construct($useDB = true, $persData = array()){
-		if($useDB){
-			$this->db = new DB_WE();
-		}
-		if(!empty($persData)){
+	public function __construct($persData = array()){
+		parent::__construct(NAVIGATION_RULE_TABLE, null, false);
+		if($persData){
 			foreach($this->persistent_slots as $val){
 				if(isset($persData[$val])){
 					$this->$val = $persData[$val];
@@ -70,7 +66,7 @@ class we_navigation_rule extends weModelBase{
 
 	static function getWeNavigationRule($navigationName, $navigationId, $selectionType, $folderId, $doctype, $classId, $categories, $workspaceId, $href = '', $selfCurrent = true){
 
-		$_navigation = new we_navigation_rule(false);
+		$_navigation = new self();
 		$_navigation->NavigationName = $navigationName;
 		$_navigation->NavigationID = $navigationId;
 		$_navigation->SelectionType = $selectionType;
@@ -94,15 +90,36 @@ class we_navigation_rule extends weModelBase{
 		parent::save($this->ID ? false : true);
 	}
 
-	// beide folgenden f�r Bug #4142
-	function deleteDB(){
-		if(isset($this->db)){
-			unset($this->db);
+	function processVariables(){
+		if(($name = we_base_request::_(we_base_request::STRING, 'CategoriesControl')) && ($cnt = we_base_request::_(we_base_request::INT, 'CategoriesCount')) !== false){
+			$_categories = array();
+
+			for($i = 0; $i < $cnt; $i++){
+				if(($cat = we_base_request::_(we_base_request::STRING, $name . '_variant0_' . $name . '_item' . $i)) !== false){
+					$_categories[] = $cat;
+				}
+			}
+
+			$categoryIds = array();
+
+			foreach($_categories as $cat){
+				if(($path = path_to_id($cat, CATEGORY_TABLE))){
+					$categoryIds[] = $path;
+				}
+			}
+			$categoryIds = array_unique($categoryIds);
+
+			$this->Categories = ($categoryIds ? ',' . implode(',', $categoryIds) . ',' : '');
 		}
-	}
 
-	function renewDB(){
-		$this->db = new DB_WE();
-	}
+		if(is_array($this->persistent_slots)){
+			foreach($this->persistent_slots as $val){
+				if(($tmp = we_base_request::_(we_base_request::RAW, $val)) !== false){
+					$this->$val = $tmp;
+				}
+			}
+		}
 
+		$this->isnew = ($this->ID == 0);
+	}
 }

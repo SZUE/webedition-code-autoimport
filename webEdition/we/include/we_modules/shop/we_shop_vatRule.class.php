@@ -1,7 +1,6 @@
 <?php
 
 class we_shop_vatRule{
-
 	var $stateField;
 	var $stateFieldIsISO;
 	var $liableToVat;
@@ -61,17 +60,17 @@ class we_shop_vatRule{
 		return ($this->defaultValue == 'true' ? true : false);
 	}
 
-	function initByRequest(&$req){
+	public static function initByRequest(&$req){
 
 		return new we_shop_vatRule(
-				$req['defaultValue'], $req['stateField'], we_shop_vatRule::makeArrayFromReq($req['liableToVat']), we_shop_vatRule::makeArrayFromReq($req['notLiableToVat']), we_shop_vatRule::makeArrayFromConditionField($req), $req['stateFieldIsISO']
+			$req['defaultValue'], $req['stateField'], self::makeArrayFromReq($req['liableToVat']), self::makeArrayFromReq($req['notLiableToVat']), self::makeArrayFromConditionField($req), $req['stateFieldIsISO']
 		);
 	}
 
 	function getShopVatRule(){
 		if(($strFelder = f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="weShopVatRule"'))){
 			//FIX old class names
-			return unserialize(strtr($strFelder,array('O:13:"weShopVatRule":' => 'O:15:"we_shop_vatRule":')));
+			return unserialize(strtr($strFelder, array('O:13:"weShopVatRule":' => 'O:15:"we_shop_vatRule":')));
 		} else {
 			return new we_shop_vatRule('true', '', array(), array(), array(
 				array(
@@ -80,17 +79,17 @@ class we_shop_vatRule{
 					'condition' => '',
 					'returnValue' => 1
 				)
-					), 0
+				), 0
 			);
 		}
 	}
 
-	function makeArrayFromConditionField($req){
+	private static function makeArrayFromConditionField($req){
 		$retArr = array();
 
 		for($i = 0; $i < count($req['conditionalStates']); $i++){
 			$retArr[] = array(
-				'states' => we_shop_vatRule::makeArrayFromReq($req['conditionalStates'][$i]),
+				'states' => self::makeArrayFromReq($req['conditionalStates'][$i]),
 				'customerField' => $req['conditionalCustomerField'][$i],
 				'condition' => $req['conditionalCondition'][$i],
 				'returnValue' => $req['conditionalReturn'][$i],
@@ -99,18 +98,8 @@ class we_shop_vatRule{
 		return $retArr;
 	}
 
-	function makeArrayFromReq($req){
-
-		$entries = explode("\n", $req);
-		$retArr = array();
-
-		foreach($entries as $entry){
-			if(trim($entry)){
-				$retArr[] = trim($entry);
-			}
-		}
-		array_unique($retArr);
-		return $retArr;
+	public static function makeArrayFromReq($req){
+		return array_unique(array_filter(array_map('trim', explode("\n", $req))));
 	}
 
 	function save(){

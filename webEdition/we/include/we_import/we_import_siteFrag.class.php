@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_import_siteFrag extends taskFragment{
+class we_import_siteFrag extends we_fragment_base{
 
 	var $_obj = null;
 
