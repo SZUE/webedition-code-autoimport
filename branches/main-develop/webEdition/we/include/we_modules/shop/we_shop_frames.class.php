@@ -165,11 +165,12 @@ class we_shop_frames extends weModuleFrames{
 			function updateEntry(id, text, pub) {
 				var ai = 1;
 				while (ai <= menuDaten.laenge) {
-					if ((menuDaten[ai].typ === 'folder') || (menuDaten[ai].typ === 'shop'))
+					if ((menuDaten[ai].typ === 'folder') || (menuDaten[ai].typ === 'shop')){
 						if (menuDaten[ai].name == id) {
 							menuDaten[ai].text = text;
 							menuDaten[ai].published = pub;
 						}
+					}
 					ai++;
 				}
 				drawEintraege();
@@ -179,11 +180,12 @@ class we_shop_frames extends weModuleFrames{
 				var ai = 1;
 				var ind = 0;
 				while (ai <= menuDaten.laenge) {
-					if ((menuDaten[ai].typ === 'folder') || (menuDaten[ai].typ === 'shop'))
+					if ((menuDaten[ai].typ === 'folder') || (menuDaten[ai].typ === 'shop')){
 						if (menuDaten[ai].name == id) {
 							ind = ai;
 							break;
 						}
+					}
 					ai++;
 				}
 				if (ind !== 0) {
@@ -215,10 +217,11 @@ class we_shop_frames extends weModuleFrames{
 			function indexOfEntry(name) {
 				var ai = 1;
 				while (ai <= menuDaten.laenge) {
-					if ((menuDaten[ai].typ === 'root') || (menuDaten[ai].typ === 'folder'))
+					if ((menuDaten[ai].typ === 'root') || (menuDaten[ai].typ === 'folder')){
 						if (menuDaten[ai].name == name) {
 							return ai;
 						}
+					}
 					ai++;
 				}
 				return -1;
@@ -228,10 +231,11 @@ class we_shop_frames extends weModuleFrames{
 				var nf = new container();
 				var ai = 1;
 				while (ai <= menuDaten.laenge) {
-					if ((menuDaten[ai].typ === 'folder') || (menuDaten[ai].typ === 'shop'))
+					if ((menuDaten[ai].typ === 'folder') || (menuDaten[ai].typ === 'shop')){
 						if (menuDaten[ai].vorfahr == eintrag) {
 							nf.add(menuDaten[ai]);
 						}
+					}
 					ai++;
 				}
 				return nf;

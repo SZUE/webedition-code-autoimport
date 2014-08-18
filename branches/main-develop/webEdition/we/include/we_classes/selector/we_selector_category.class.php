@@ -922,7 +922,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 			$yuiSuggest = &weSuggest::getInstance();
 			$yuiSuggest->setAcId('Doc');
 			$yuiSuggest->setTable(CATEGORY_TABLE);
-			$yuiSuggest->setContentType('folder');
+			$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
 			$yuiSuggest->setInput('FolderIDPath', $path);
 			$yuiSuggest->setMaxResults(20);
 			$yuiSuggest->setMayBeEmpty(false);

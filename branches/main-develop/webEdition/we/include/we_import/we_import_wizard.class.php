@@ -660,7 +660,7 @@ handle_event("previous");');
 			$btnDocDir = we_html_button::create_button('select', "javascript:we_cmd('openDirselector',document.we_form.elements['v[tpl_dir]'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $rootDirID . "')");
 
 			$yuiSuggest->setAcId('TemplPath');
-			$yuiSuggest->setContentType('folder');
+			$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
 			$yuiSuggest->setInput('v[tpl_dir]', (isset($v['tpl_dir']) ? $v['tpl_dir'] : id_to_path($rootDirID, TEMPLATES_TABLE)), array('onFocus' => "self.document.forms['we_form'].elements['_v[restore_tpl_path]'].checked=false;"));
 			$yuiSuggest->setMaxResults(10);
 			$yuiSuggest->setMayBeEmpty(0);
@@ -1238,7 +1238,7 @@ HTS;
 		);
 
 		$yuiSuggest->setAcId('DirPath');
-		$yuiSuggest->setContentType('folder');
+		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
 		$yuiSuggest->setInput('v[store_to_path]', (isset($v['store_to_path']) ? $v['store_to_path'] : '/'), array('onFocus' => "self.document.forms['we_form'].elements['v[import_type]'][0].checked=true;"));
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(0);

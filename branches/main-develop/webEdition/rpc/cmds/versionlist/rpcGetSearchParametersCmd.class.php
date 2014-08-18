@@ -36,7 +36,7 @@ class rpcGetSearchParametersCmd extends rpcCmd{
 		$_SESSION['weS']['versions']['searchstart'] = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'searchstart');
 
 		$GLOBALS['we_cmd_obj'] = 1;
-		$vview = new weVersionsView();
+		$vview = new we_versions_view();
 		if($pos == "top"){
 			$code = $vview->getParameterTop($foundItems);
 		}

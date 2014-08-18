@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weVersionsView{
+class we_versions_view{
 
 	public $db;
 	public $version;
@@ -34,8 +34,8 @@ class weVersionsView{
 	function __construct(){
 
 		$this->db = new DB_WE();
-		$this->version = new weVersions();
-		$this->searchclass = new weVersionsSearch();
+		$this->version = new we_versions_version();
+		$this->searchclass = new we_versions_search();
 		$this->searchclass->initData();
 	}
 
@@ -331,8 +331,6 @@ function resetVersion(id, documentID, version, table) {
 
 function previewVersion(ID) {
 	top.we_cmd("versions_preview", ID, 0);
-	//new jsWindow("' . WEBEDITION_DIR . 'we/include/we_versions/weVersionsPreview.php?ID="+ID+"", "version_preview",-1,-1,1000,750,true,true,true,true);
-
 }
 
 function switchSearch(mode) {

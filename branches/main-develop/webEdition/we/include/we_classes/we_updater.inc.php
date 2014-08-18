@@ -211,10 +211,18 @@ class we_updater{
 	static function updateObjectFilesX(){
 		if(defined('OBJECT_X_TABLE')){
 			$_db = new DB_WE();
+			//correct folder properties
+			$_db->query('UPDATE ' . OBJECT_FILES_TABLE . ' f SET IsClassFolder=IF(ParentID=0,1,0)');
+			
+			//all files should have a tableid
+			$_db->query('UPDATE ' . OBJECT_FILES_TABLE . ' f SET TableID=(SELECT ID FROM ' . OBJECT_TABLE . ' WHERE Path=f.Path) WHERE IsClassFolder=1 AND TableID=0');
+			$_db->query('UPDATE ' . OBJECT_FILES_TABLE . ' f SET TableID=(SELECT ID FROM ' . OBJECT_TABLE . ' WHERE f.Path LIKE CONCAT(Path,"/%") ) WHERE IsClassFolder=0 AND IsFolder=1 AND TableID=0');
 
-			$_table = OBJECT_FILES_TABLE;
+			//all files without a tableID can be deleted
+			$_db->query('DELETE FROM ' . OBJECT_FILES_TABLE . ' WHERE TableID=0');
 
-			$_db->query('SHOW TABLES LIKE "' . OBJECT_X_TABLE . '%"'); //note: _% ignores _, so escaping _ with \_ does the job
+
+			$_db->query('SHOW TABLES LIKE "' . str_replace('_', '', OBJECT_X_TABLE) . '\_%"'); //note: _% ignores _, so escaping _ with \_ does the job
 			$allTab = $_db->getAll(true);
 			foreach($allTab as $_table){
 				if($_table == OBJECT_FILES_TABLE){
@@ -264,11 +272,28 @@ class we_updater{
 				if(!$GLOBALS['DB_WE']->isKeyExistAtAll($_table, 'OF_IsSearchable')){
 					$GLOBALS['DB_WE']->addKey($_table, $key);
 				}
-				$key = 'UNIQUE KEY OF_ID (OF_ID)';
-				if(!$GLOBALS['DB_WE']->isKeyExistAtAll($_table, 'OF_ID')){
-					$GLOBALS['DB_WE']->query('DELETE FROM '.$_table.' WHERE OF_ID=0');
-					$GLOBALS['DB_WE']->addKey($_table, $key);
-					$GLOBALS['DB_WE']->query('REPLACE INTO '.$_table.' SET OF_ID=0');
+				if($GLOBALS['DB_WE']->isColExist($_table, 'ID')){
+
+					$key = 'UNIQUE KEY OF_ID (OF_ID)';
+					if(!$GLOBALS['DB_WE']->isKeyExistAtAll($_table, 'OF_ID')){
+						$GLOBALS['DB_WE']->query('DELETE FROM ' . $_table . ' WHERE OF_ID=0');
+						$GLOBALS['DB_WE']->addKey($_table, $key);
+						if(!$GLOBALS['DB_WE']->isKeyExistAtAll($_table, 'OF_ID')){
+							//we have duplicates in this table - we must clean up
+							//should we add an index first?
+							$GLOBALS['DB_WE']->query('SELECT DISTINCT o.ID FROM ' . $_table . ' o JOIN ' . $_table . ' oo ON o.OF_ID=oo.OF_ID WHERE o.ID<oo.ID');
+							$ids = $GLOBALS['DB_WE']->getAll(true);
+							$GLOBALS['DB_WE']->query('DELETE FROM ' . $_table . ' WHERE ID IN(' . implode(',', $ids) . ')');
+							//retry to add key
+							$GLOBALS['DB_WE']->addKey($_table, $key);
+						}
+						$GLOBALS['DB_WE']->query('REPLACE INTO ' . $_table . ' SET OF_ID=0');
+					}
+					//remove col id, set OF_ID=primary
+					$GLOBALS['DB_WE']->delCol($_table, 'ID');
+					$GLOBALS['DB_WE']->addKey($_table, 'PRIMARY KEY (OF_ID)');
+					//no need for this index
+					$GLOBALS['DB_WE']->delKey($_table, 'OF_ID');
 				}
 			}
 		}
@@ -403,7 +428,7 @@ class we_updater{
 		}
 	}
 
-	function doUpdate(){
+	public function doUpdate(){
 		self::replayUpdateDB();
 
 		self::updateTables();
@@ -420,4 +445,3 @@ class we_updater{
 	}
 
 }
-

@@ -428,7 +428,7 @@ class we_ui_controls_ACFileSelector extends we_ui_abstract_AbstractFormElement{
 		$contentTypesString = $this->getContentType();
 		$contentTypesArray = explode(",", $contentTypesString);
 		$countCTs = count($contentTypesArray);
-		if($countCTs === 1 && $contentTypesArray[0] === 'folder'){
+		if($countCTs === 1 && $contentTypesArray[0] === we_base_ContentTypes::FOLDER){
 			$this->setSelector(weSuggest::DirSelector);
 			$selector = '"openDirselector"';
 		} else {

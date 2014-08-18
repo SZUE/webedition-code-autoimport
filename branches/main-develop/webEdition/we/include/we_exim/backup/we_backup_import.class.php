@@ -204,7 +204,7 @@ class we_backup_import{
 				return true;
 
 			case 'we:version':
-				$object = new we_base_version();
+				$object = new we_backup_version();
 				$classname = 'weVersion';
 				return true;
 

@@ -26,25 +26,25 @@ require_once(WE_INCLUDES_PATH . 'we_tag.inc.php');
 /* the parent class for documents */
 
 class we_document extends we_root{
-	//Extension of the document
+//Extension of the document
 	var $Extension = '';
-	//Array of possible filename extensions for the document
+//Array of possible filename extensions for the document
 	var $Extensions;
 	var $Published = 0;
 	var $Language = '';
-	//If the file should only be saved in the db
+//If the file should only be saved in the db
 	var $IsDynamic = 0;
 	var $schedArr = array();
-	//Categories of the document
+//Categories of the document
 	var $Category = '';
 	protected $oldCategory = '';
 	var $IsSearchable = 0;
 	var $InGlossar = 0;
-	//var $NavigationItems = '';
+//var $NavigationItems = '';
 	private $DocStream = '';
 	public $parseFile = 1;
-	// persistent in we_object*, since saved in class
-	// temporary in document, holds Paths to stylesheets from we:css-tags that are user by tinyMCE
+// persistent in we_object*, since saved in class
+// temporary in document, holds Paths to stylesheets from we:css-tags that are user by tinyMCE
 	var $CSS = array();
 	/* this array is used, to store document specific data for a page */
 	protected $editorSaves = array();
@@ -102,7 +102,7 @@ class we_document extends we_root{
 		return strlen($this->elements['data']['dat']);
 	}
 
-	// returns the whole document Alias - don't remove
+// returns the whole document Alias - don't remove
 	function getDocument($we_editmode = 0, $baseHref = 0, $we_transaction = ''){
 		return $this->i_getDocument();
 	}
@@ -130,17 +130,17 @@ class we_document extends we_root{
 	}
 
 	function getDefaultLanguage(){
-		// get interface language of user
+// get interface language of user
 		list($_userLanguage) = explode('_', isset($_SESSION['prefs']['Language']) ? $_SESSION['prefs']['Language'] : '');
 
-		// trying to get locale string out of interface language
+// trying to get locale string out of interface language
 		$_key = array_search($_userLanguage, getWELangs());
 
 		$_defLang = $GLOBALS['weDefaultFrontendLanguage'];
 
-		// if default language is not equal with frontend language
+// if default language is not equal with frontend language
 		if(substr($_defLang, 0, strlen($_key)) !== $_key){
-			// get first language that fits
+// get first language that fits
 			foreach(getWeFrontendLanguagesForBackend() as $_k => $_v){
 				$_parts = explode('_', $_k);
 				if($_parts[0] === $_key){
@@ -329,7 +329,7 @@ class we_document extends we_root{
 	function addNavi($id, $text, $parentid, $ordn){
 		$text = urldecode($text); //Bug #3769
 		if($this->ID){
-			//$navis = $this->getNavigationItems();
+//$navis = $this->getNavigationItems();
 
 			if(is_numeric($ordn)){
 				$ordn--;
@@ -368,7 +368,7 @@ class we_document extends we_root{
 
 			$_naviItem->save();
 			$_naviItem->setOrdn($_ord);
-			// replace or set new item in the multi selector
+// replace or set new item in the multi selector
 			/* if($id && !$rename){
 			  foreach($navis as $_k => $_v){
 			  if($_old_path == $_v){
@@ -397,7 +397,7 @@ class we_document extends we_root{
 				}
 			}
 		}
-		//$this->NavigationItems = makeCSVFromArray($navis, true);
+//$this->NavigationItems = makeCSVFromArray($navis, true);
 	}
 
 	function delAllNavi(){
@@ -414,7 +414,7 @@ class we_document extends we_root{
 			}
 		}
 
-		//	$this->NavigationItems = makeCSVFromArray($navis, true);
+//	$this->NavigationItems = makeCSVFromArray($navis, true);
 	}
 
 	/*
@@ -436,7 +436,7 @@ class we_document extends we_root{
 			$content = $this->getElement($name, 'content');
 			$new_nr = $this->getMaxListArrayNr($listarray) + 1;
 
-			// clear value
+// clear value
 			$names = $this->getNamesFromContent($content);
 
 			foreach($names as $_name){
@@ -467,7 +467,7 @@ class we_document extends we_root{
 
 			$content = $this->getElement($name, 'content');
 			$new_nr = $this->getMaxListArrayNr($listarray) + 1;
-			// clear value
+// clear value
 			$names = $this->getNamesFromContent($content);
 			foreach($names as $cur){
 				$this->setElement($cur . '_' . $new_nr, '');
@@ -657,7 +657,7 @@ class we_document extends we_root{
 		if(!$skipHook){
 			$hook = new weHook('preSave', '', array($this, 'resave' => $resave));
 			$ret = $hook->executeHook();
-			//check if doc should be saved
+//check if doc should be saved
 			if($ret === false){
 				$this->errMsg = $hook->getErrorString();
 				return false;
@@ -678,7 +678,7 @@ class we_document extends we_root{
 		}
 
 		if($this->isVersioned()){
-			$version = new weVersions();
+			$version = new we_versions_version();
 			$version->save($this);
 		}
 
@@ -686,7 +686,7 @@ class we_document extends we_root{
 		if(!$skipHook){
 			$hook = new weHook('save', '', array($this, 'resave' => $resave));
 			$ret = $hook->executeHook();
-			//check if doc should be saved
+//check if doc should be saved
 			if($ret === false){
 				$this->errMsg = $hook->getErrorString();
 				return false;
@@ -703,7 +703,7 @@ class we_document extends we_root{
 
 	public function we_load($from = we_class::LOAD_MAID_DB){
 		parent::we_load($from);
-		// Navigation items
+// Navigation items
 		$this->i_setExtensions();
 	}
 
@@ -716,13 +716,13 @@ class we_document extends we_root{
 		$this->documentCustomerFilter = we_customer_documentFilter::getFilterOfDocument($this);
 	}
 
-	// reverse function to we_init_sessDat
+// reverse function to we_init_sessDat
 	/* function saveInSession(&$save){
 	  parent::saveInSession($save);
 	  //$save[2] = $this->NavigationItems;
 	  } */
 
-	// reverse function to saveInSession !!!
+// reverse function to saveInSession !!!
 	function we_initSessDat($sessDat){
 		parent::we_initSessDat($sessDat);
 		if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
@@ -818,7 +818,7 @@ class we_document extends we_root{
 	}
 
 //FIXME: parameter $attribt should be: array $attribs=array()
-	//FIXME: check if we can rid of this function, since it causes problems every change of tags since it also uses the given attribs array!
+//FIXME: check if we can rid of this function, since it causes problems every change of tags since it also uses the given attribs array!
 	public function getFieldByVal($val, $type, $attribs = '', $pathOnly = false, $parentID = 0, $path = '', we_database_base $db = null, $classID = '', $fn = 'this'){
 		$attribs = is_array($attribs) ? $attribs : array();
 		if(isset($attribs['_name_orig'])){
@@ -874,7 +874,7 @@ class we_document extends we_root{
 					}
 				}
 
-				//	when width or height are given, then let the browser adjust the image
+//	when width or height are given, then let the browser adjust the image
 				if(isset($attribs['width'])){
 					unset($img->elements['width']);
 				}
@@ -949,7 +949,7 @@ class we_document extends we_root{
 
 				if(is_array($link)){
 					$img = new we_imageDocument();
-					//	set name of image for rollover ...
+//	set name of image for rollover ...
 					$_useName = '';
 
 					if(isset($attribs['name'])){ //	here we must change the name for a rollover-image
@@ -974,8 +974,8 @@ class we_document extends we_root{
 				}
 				return '';
 			case 'date':
-				// it is a date field from the customer module
-				//2010-12-12 00:00:00
+// it is a date field from the customer module
+//2010-12-12 00:00:00
 				if($val && !is_numeric($val)){
 					$len = strlen($val);
 					if($len == 19 || $len == 10){
@@ -997,13 +997,17 @@ class we_document extends we_root{
 				$val = $val ? $val : time();
 
 				$format = isset($attribs['format']) ? $attribs['format'] : g_l('date', '[format][default]');
-				//FIXME: zend part doesn't use correctDateFormat & won't work on new Dates
+//FIXME: zend part doesn't use correctDateFormat & won't work on new Dates
 				if(isset($GLOBALS['WE_MAIN_DOC']) && $GLOBALS['WE_MAIN_DOC']->Language != 'de_DE' && is_numeric($val)){
 					$zdate = new Zend_Date($val, Zend_Date::TIMESTAMP);
 					return $zdate->toString($format, 'php', $GLOBALS['WE_MAIN_DOC']->Language);
 				}
 				require_once(WE_INCLUDES_PATH . 'we_tags/we_tag_date.inc.php');
-				$dt = new DateTime((is_numeric($val) ? '@' : '') . $val);
+				try{
+					$dt = new DateTime((is_numeric($val) ? '@' : '') . $val);
+				} catch (Exception $e){
+					$dt = new DateTime('now');
+				}
 				$dt->setTimeZone(new DateTimeZone(@date_default_timezone_get())); //Bug #6335
 				return $dt->format(correctDateFormat($format, $dt));
 			case 'select':
@@ -1109,7 +1113,7 @@ class we_document extends we_root{
 				break;
 			case 'href':
 				$val = $this->getElement(isset($attribs['name']) ? $attribs['name'] : '');
-				if((isset($this->TableID) && $this->TableID) || ($this instanceof we_objectFile)){
+				if($this instanceof we_objectFile){
 					$hrefArr = $val ? unserialize($val) : array();
 					return (is_array($hrefArr) ? self::getHrefByArray($hrefArr) : '');
 				}
@@ -1118,7 +1122,7 @@ class we_document extends we_root{
 				$val = $this->getElement(isset($attribs['name']) ? $attribs['name'] : '');
 		}
 
-		return $this->getFieldByVal($val, $type, $attribs, $pathOnly, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->ParentID : $this->ParentID, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->Path : $this->Path, $this->DB_WE, (isset($attribs['classid']) && isset($attribs['type']) && $attribs['type'] == 'select') ? $attribs['classid'] : (isset($this->TableID) ? $this->TableID : ''));
+		return $this->getFieldByVal($val, $type, $attribs, $pathOnly, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->ParentID : $this->ParentID, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->Path : $this->Path, $this->DB_WE, (isset($attribs['classid']) && isset($attribs['type']) && $attribs['type'] == 'select') ? $attribs['classid'] : ($this instanceof we_objectFile ? $this->TableID : ''));
 	}
 
 	private function getValFromSrc($fn, $name){
@@ -1153,11 +1157,11 @@ class we_document extends we_root{
 	function getLinkHref($link, $parentID, $path, we_database_base $db = null, $hidedirindex = false, $objectseourls = false){
 		$db = ($db ? $db : new DB_WE());
 
-		// Bug Fix 8170&& 8166
+// Bug Fix 8170&& 8166
 		if(isset($link['href']) && strpos($link['href'], we_base_link::TYPE_MAIL_PREFIX) === 0){
 			$link['type'] = we_base_link::TYPE_MAIL;
 
-			//added for #7269
+//added for #7269
 			if(isset($link['subject']) && $link['subject'] != ''){
 				$link['href'] = $link['href'] . "?subject=" . $link['subject'];
 			}
@@ -1223,7 +1227,7 @@ class we_document extends we_root{
 
 				return $img->getHtml(false, false);
 			case we_base_link::CONTENT_EXT:
-				//  set default atts
+//  set default atts
 				$img_attribs = array('src' => $link['img_src'],
 					'alt' => '',
 					'xml' => $xml
@@ -1231,7 +1235,7 @@ class we_document extends we_root{
 				if(isset($link['img_title'])){
 					$img_attribs['title'] = $link['img_title'];
 				}
-				//  deal with all remaining attribs
+//  deal with all remaining attribs
 				$img_attList = array('width', 'height', 'border', 'hspace', 'vspace', 'align', 'alt', 'name');
 				foreach($img_attList as $k){
 					if(isset($link[$k]) && $link[$k] != ''){
@@ -1240,7 +1244,7 @@ class we_document extends we_root{
 				}
 				return getHtmlTag('img', $img_attribs);
 			case we_base_link::CONTENT_TEXT:
-				// Workarround => We have to find another solution
+// Workarround => We have to find another solution
 				return (($xml || $htmlspecialchars) ?
 						oldHtmlspecialchars(html_entity_decode($link['text'])) : $link['text']);
 		}
@@ -1248,24 +1252,24 @@ class we_document extends we_root{
 
 	function getLinkStartTag($link, $attribs, $parentID = 0, $path = '', we_database_base $db = null, $img = '', $_useName = '', $hidedirindex = false, $objectseourls = false){
 		if(($l_href = self::getLinkHref($link, $parentID, $path, $db, $hidedirindex, $objectseourls))){
-			//    define some arrays to order the attribs to image, link or js-window ...
+//    define some arrays to order the attribs to image, link or js-window ...
 			$_popUpAtts = array('jswin', 'jscenter', 'jswidth', 'jsheight', 'jsposx', 'jsposy', 'jsstatus', 'jsscrollbars', 'jsmenubar', 'jstoolbar', 'jsresizable', 'jslocation');
 
-			//    attribs only for image - these are already handled
+//    attribs only for image - these are already handled
 			$_imgAtts = array('img_id', 'width', 'height', 'border', 'hspace', 'vspace', 'align', 'alt', 'img_title');
 
-			//    these are handled separately
+//    these are handled separately
 			$_dontUse = array('img_id', 'obj_id', 'ctype', 'anchor', 'params', 'attribs', 'img_src', 'text', 'type', 'only');
 
-			//    these are already handled dont get them in output
+//    these are already handled dont get them in output
 			$_we_linkAtts = array('id');
 
 			$_linkAttribs = array();
 
-			// define image-if necessary - handle with image-attribs
+// define image-if necessary - handle with image-attribs
 			$img = ($img ? $img : new we_imageDocument());
 
-			//   image attribs
+//   image attribs
 			foreach($_imgAtts as $att){ //  take all attribs belonging to image inside content
 				$img_attribs[$att] = isset($link[$att]) ? $link[$att] : '';
 			}
@@ -1275,7 +1279,7 @@ class we_document extends we_root{
 
 
 			if($link['ctype'] == we_base_link::TYPE_INT){
-				//	set name of image dynamically
+//	set name of image dynamically
 				if($_useName){ //	we must set the name of the image -> rollover
 					$img->setElement('name', $_useName, 'dat');
 				}
@@ -1286,31 +1290,31 @@ class we_document extends we_root{
 				$rollOverAttribsArr = array();
 			}
 
-			// Link-Attribs
-			//   1st attribs-string from link dialog ! These are already used in content ...
+// Link-Attribs
+//   1st attribs-string from link dialog ! These are already used in content ...
 			if(isset($link['attribs'])){
 				$_linkAttribs = array_merge(we_tag_tagParser::makeArrayFromAttribs($link['attribs']), $_linkAttribs);
 			}
 
-			//   2nd take all atts given in link-array - from function we_tag_link()
+//   2nd take all atts given in link-array - from function we_tag_link()
 			foreach($link as $k => $v){ //   define all attribs - later we can remove/overwrite them
 				if($v != '' && !in_array($k, $_we_linkAtts) && !in_array($k, $_imgAtts) && !in_array($k, $_popUpAtts) && !in_array($k, $_dontUse)){
 					$_linkAttribs[$k] = $v;
 				}
 			}
 
-			//   3rd we take attribs given from we:link,
+//   3rd we take attribs given from we:link,
 			foreach($attribs as $k => $v){ //   define all attribs - later we can remove/overwrite them
 				if($v != '' && !in_array($k, $_imgAtts) && !in_array($k, $_popUpAtts) && !in_array($k, $_dontUse)){
 					$_linkAttribs[$k] = $v;
 				}
 			}
 
-			//   4th use Rollover attributes
+//   4th use Rollover attributes
 			foreach($rollOverAttribsArr as $n => $v){
 				$_linkAttribs[$n] = $v;
 			}
-			//   override the href at last important !!
+//   override the href at last important !!
 
 			$linkAdds = (isset($link['params']) ? $link['params'] : '' ) . (isset($link['anchor']) ? $link['anchor'] : '' );
 			if(strpos($linkAdds, '?') === false && strpos($linkAdds, '&') !== false && strpos($linkAdds, '&') == 0){//Bug #5478
@@ -1318,7 +1322,7 @@ class we_document extends we_root{
 			}
 			$_linkAttribs['href'] = $l_href . str_replace('&', '&amp;', $linkAdds);
 
-			// The pop-up-window                              */
+// The pop-up-window                              */
 			$_popUpCtrl = array();
 			foreach($_popUpAtts as $n){
 				if(isset($link[$n])){
@@ -1453,7 +1457,7 @@ class we_document extends we_root{
 		$this->schedArr[$nr]['CategoryIDs'] = makeCSVFromArray($cats, true);
 	}
 
-	// returns the next date when the document gets published
+// returns the next date when the document gets published
 	function getNextPublishDate(){
 		$times = array();
 		foreach($this->schedArr as $s){
@@ -1521,7 +1525,7 @@ class we_document extends we_root{
 	 * @return boolean
 	 */
 	function canHaveVariants($checkFields = false){
-		// overwrite
+// overwrite
 		return false;
 	}
 
@@ -1530,7 +1534,7 @@ class we_document extends we_root{
 	 * @param	none
 	 */
 	function getVariantFields(){
-		// overwrite
+// overwrite
 		return array();
 	}
 

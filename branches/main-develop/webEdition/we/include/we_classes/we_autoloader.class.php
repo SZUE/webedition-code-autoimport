@@ -65,6 +65,7 @@ abstract class we_autoloader{
 		'shop' => 'we_modules/shop',
 		'tag' => 'we_classes/tag',
 		'tool' => 'we_classes/tools',
+		'versions' => 'we_versions',
 		'view' => 'we_classes/view',
 		'voting' => 'we_modules/voting',
 		'workflow' => 'we_modules/workflow',
@@ -174,11 +175,6 @@ abstract class we_autoloader{
 		'we_doclist' => array(
 			'doclistView' => 'doclistView.class.php',
 		),
-		'we_logging' => array(
-			'logging' => 'logging.class.php',
-			'versionsLog' => 'versions/versionsLog.class.php',
-			'versionsLogView' => 'versions/versionsLogView.class.php',
-		),
 		'we_message_reporting' => array(
 			'we_message_reporting' => 'we_message_reporting.class.php',
 		),
@@ -189,13 +185,6 @@ abstract class we_autoloader{
 			'MultiDirTemplateAndDefaultChooser' => 'MultiDirTemplateAndDefaultChooser.inc.php',
 			'MultiFileChooser' => 'MultiFileChooser.inc.php',
 			'treePopup' => 'treePopup.inc.php',
-		),
-		'we_versions' => array(
-			'versionFragment' => 'version_wizard/versionFragment.class.php',
-			'we_versions_wizard' => 'version_wizard/we_versions_wizard.inc.php',
-			'weVersions' => 'weVersions.class.php',
-			'weVersionsSearch' => 'weVersionsSearch.class.php',
-			'weVersionsView' => 'weVersionsView.class.php',
 		),
 		'we_widgets/dlg' => array(
 			'weExportTree' => 'tree.inc.php',

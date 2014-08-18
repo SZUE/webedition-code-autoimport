@@ -155,7 +155,7 @@ abstract class we_base_delete{
 				break;
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 				$DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE OID=' . intval($id));
-				$tableID = f('SELECT TableID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id), '', $DB_WE);
+				$tableID = f('SELECT TableID FROM ' . OBJECT_FILES_TABLE . ' WHERE IsClassFolder=0 AND ID=' . intval($id), '', $DB_WE);
 				if($tableID){
 					$DB_WE->query('DELETE FROM ' . OBJECT_X_TABLE . intval($tableID) . ' WHERE OF_ID=' . intval($id));
 					//Bug 2892
@@ -218,14 +218,14 @@ abstract class we_base_delete{
 				$GLOBALS['deletedItems'][] = $id;
 				return;
 			}
-			$ct = weVersions::getContentTypesVersioning();
+			$ct = we_versions_version::getContentTypesVersioning();
 			//no need to init doc, if no version is needed or hook is executed
 			if(in_array($row['ContentType'], $ct) || !$skipHook){
 				$object = we_exim_contentProvider::getInstance($row['ContentType'], $id, $table);
 			}
 			if(in_array($row['ContentType'], $ct)){
-				$version = new weVersions();
-				if(!weVersions::versionExists($id, $table)){
+				$version = new we_versions_version();
+				if(!we_versions_version::versionExists($id, $table)){
 					$version->saveVersion($object);
 				}
 

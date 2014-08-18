@@ -22,14 +22,14 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class versionFragment extends taskFragment{
+class we_versions_fragment extends taskFragment{
 
-	function __construct($name, $taskPerFragment, $pause = 0, $bodyAttributes = "", $initdata = ""){
+	public function __construct($name, $taskPerFragment, $pause = 0, $bodyAttributes = "", $initdata = ""){
 		parent::__construct($name, $taskPerFragment, $pause, $bodyAttributes, $initdata);
 	}
 
 	function doTask(){
-		weVersions::todo($this->data);
+		we_versions_version::todo($this->data);
 		$this->updateProgressBar();
 	}
 
@@ -43,8 +43,8 @@ class versionFragment extends taskFragment{
 
 	function finish(){
 		if(!empty($_SESSION['weS']['versions']['logResetIds'])){
-			$versionslog = new versionsLog();
-			$versionslog->saveVersionsLog($_SESSION['weS']['versions']['logResetIds'], versionsLog::VERSIONS_RESET);
+			$versionslog = new we_versions_log();
+			$versionslog->saveVersionsLog($_SESSION['weS']['versions']['logResetIds'], we_versions_log::VERSIONS_RESET);
 		}
 		unset($_SESSION['weS']['versions']['logResetIds']);
 		$responseText = we_base_request::_(we_base_request::STRING, "responseText", "");

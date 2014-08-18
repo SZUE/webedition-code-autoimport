@@ -298,7 +298,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		}
 
 		/* version */
-		$version = new weVersions();
+		$version = new we_versions_version();
 
 		// allways store in temp-table
 		$ret = $this->i_saveTmp(!$resave);
@@ -359,7 +359,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		$this->rewriteNavigation();
 		//	}
 		if(isset($_SESSION['weS']['versions']['fromScheduler']) && $_SESSION['weS']['versions']['fromScheduler'] && (($this->ContentType == we_base_ContentTypes::WEDOCUMENT && defined('VERSIONING_TEXT_WEBEDITION') && VERSIONING_TEXT_WEBEDITION) || ($this->ContentType == we_base_ContentTypes::HTML && defined('VERSIONING_TEXT_HTML') && VERSIONING_TEXT_HTML))){
-			$version = new weVersions();
+			$version = new we_versions_version();
 			$version->save($this, 'published');
 		}
 		/* hook */
@@ -394,7 +394,7 @@ abstract class we_textContentDocument extends we_textDocument{
 
 		/* version */
 		if((VERSIONING_TEXT_WEBEDITION && $this->ContentType == we_base_ContentTypes::WEDOCUMENT ) || (VERSIONING_TEXT_HTML && $this->ContentType == we_base_ContentTypes::HTML)){
-			$version = new weVersions();
+			$version = new we_versions_version();
 			$version->save($this, 'unpublished');
 		}
 		/* hook */

@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weVersionsSearch{
+class we_versions_search{
 
 	public $db;
 	public $searchFields = array();
@@ -39,10 +39,10 @@ class weVersionsSearch{
 	/**
 	 *  Constructor for class 'weVersionsSearch'
 	 */
-	function __construct(){
+	public function __construct(){
 
 		$this->db = new DB_WE();
-		$this->version = new weVersions();
+		$this->version = new we_versions_version();
 	}
 
 	/**

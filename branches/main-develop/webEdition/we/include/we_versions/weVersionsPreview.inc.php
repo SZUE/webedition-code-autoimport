@@ -23,15 +23,15 @@
  */
 @include_once('Text/Diff.php');
 @include_once('Text/Diff/Renderer/inline.php');
-
+//FIXME make this a class
 $_db = $GLOBALS['DB_WE'];
 
 $ID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1);
 
-$newDoc = weVersions::loadVersion(' WHERE ID=' . intval($ID));
+$newDoc = we_versions_version::loadVersion(' WHERE ID=' . intval($ID));
 
 $compareID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2);
-$oldDoc = weVersions::loadVersion(($compareID ?
+$oldDoc = we_versions_version::loadVersion(($compareID ?
 			' WHERE ID=' . $compareID :
 			' WHERE version<' . intval($newDoc['version']) . ' AND documentTable="' . $_db->escape($newDoc['documentTable']) . '" AND documentID=' . intval($newDoc['documentID']) . ' ORDER BY version DESC LIMIT 1'));
 
@@ -211,7 +211,7 @@ foreach($newDoc as $k => $v){
 		$oldVersion = true;
 		$newVal = ($k == "ParentID" ?
 				$newDoc['Path'] :
-				weVersions::showValue($k, $newDoc[$k], $newDoc['documentTable'])
+				we_versions_version::showValue($k, $newDoc[$k], $newDoc['documentTable'])
 			);
 
 		if($k == "Owners" && $newDoc[$k] == ""){
@@ -222,7 +222,7 @@ foreach($newDoc as $k => $v){
 		if(!empty($oldDoc)){
 			$oldVal = ($k == "ParentID" ?
 					$oldDoc['Path'] :
-					weVersions::showValue($k, $oldDoc[$k], $oldDoc['documentTable']));
+					we_versions_version::showValue($k, $oldDoc[$k], $oldDoc['documentTable']));
 
 			if($k == "Owners" && $oldDoc[$k] == ""){
 				$oldVal = g_l('versions', '[CreatorID]');
@@ -281,7 +281,7 @@ if($newDocElements){
 		}
 
 		$newVal = ($k == 'weInternVariantElement' ?
-				weVersions::showValue($k, $newDocElements[$k]['dat']) :
+				we_versions_version::showValue($k, $newDocElements[$k]['dat']) :
 				(isset($v['dat']) && $v['dat'] != "" ? $v['dat'] : we_html_tools::getPixel(1, 1))
 			);
 
@@ -289,7 +289,7 @@ if($newDocElements){
 		if($oldDoc){
 
 			if($k == 'weInternVariantElement' && isset($oldDocElements[$k]['dat'])){
-				$oldVal = weVersions::showValue($k, $oldDocElements[$k]['dat']);
+				$oldVal = we_versions_version::showValue($k, $oldDocElements[$k]['dat']);
 			} elseif(isset($oldDocElements[$k]['dat']) && $oldDocElements[$k]['dat'] != ""){
 				$oldVal = $oldDocElements[$k]['dat'];
 			} else {
@@ -404,10 +404,10 @@ if(empty($newDocScheduler) && empty($oldDocScheduler)){
 			$name = g_l('versions', '[' . $key . ']');
 			$newVal = we_html_tools::getPixel(1, 1);
 			if(!is_array($val)){
-				$oldVal = weVersions::showValue($key, $val, $oldDoc['documentTable']);
+				$oldVal = we_versions_version::showValue($key, $val, $oldDoc['documentTable']);
 			} else {
 				$oldVal = (is_array($val) ?
-						weVersions::showValue($key, $val, $oldDoc['documentTable']) :
+						we_versions_version::showValue($key, $val, $oldDoc['documentTable']) :
 						we_html_tools::getPixel(1, 1));
 			}
 
@@ -435,11 +435,11 @@ if(empty($newDocScheduler) && empty($oldDocScheduler)){
 			$name = g_l('versions', '[' . $key . ']');
 
 			if(!is_array($val)){
-				$newVal = weVersions::showValue($key, $val, $newDoc['documentTable']);
+				$newVal = we_versions_version::showValue($key, $val, $newDoc['documentTable']);
 
 				if(!empty($oldDocScheduler)){
 					$oldVal = (isset($oldDocScheduler[$k][$key]) && !is_array($oldDocScheduler[$k][$key]) ?
-							weVersions::showValue($key, $oldDocScheduler[$k][$key], $oldDoc['documentTable']) :
+							we_versions_version::showValue($key, $oldDocScheduler[$k][$key], $oldDoc['documentTable']) :
 							we_html_tools::getPixel(1, 1));
 
 					if($newVal != $oldVal){
@@ -449,10 +449,10 @@ if(empty($newDocScheduler) && empty($oldDocScheduler)){
 					$oldVal = we_html_tools::getPixel(1, 1);
 				}
 			} else {
-				$newVal = weVersions::showValue($key, $val, $newDoc['documentTable']);
+				$newVal = we_versions_version::showValue($key, $val, $newDoc['documentTable']);
 				if(!empty($oldDocScheduler)){
 					$oldVal = (isset($oldDocScheduler[$k][$key]) && is_array($oldDocScheduler[$k][$key]) ?
-							weVersions::showValue($key, $oldDocScheduler[$k][$key], $oldDoc['documentTable']) :
+							we_versions_version::showValue($key, $oldDocScheduler[$k][$key], $oldDoc['documentTable']) :
 							we_html_tools::getPixel(1, 1));
 
 					if($newVal != $oldVal){
@@ -509,10 +509,10 @@ if(empty($newCustomFilter) && empty($oldCustomFilter)){
 		$name = g_l('versions', '[' . $key . ']');
 		$newVal = we_html_tools::getPixel(1, 1);
 		if(!is_array($val)){
-			$oldVal = weVersions::showValue($key, $val, $oldDoc['documentTable']);
+			$oldVal = we_versions_version::showValue($key, $val, $oldDoc['documentTable']);
 		} else {
 			$oldVal = (is_array($val) ?
-					weVersions::showValue($key, $val, $oldDoc['documentTable']) :
+					we_versions_version::showValue($key, $val, $oldDoc['documentTable']) :
 					we_html_tools::getPixel(1, 1));
 		}
 
@@ -530,10 +530,10 @@ if(empty($newCustomFilter) && empty($oldCustomFilter)){
 		$mark = "border-bottom:1px solid #B8B8B7; ";
 
 		if(!is_array($val)){
-			$newVal = weVersions::showValue($key, $val, $newDoc['documentTable']);
+			$newVal = we_versions_version::showValue($key, $val, $newDoc['documentTable']);
 			if(!empty($oldCustomFilter)){
 				$oldVal = (!is_array($oldCustomFilter[$key]) ?
-						weVersions::showValue($key, $oldCustomFilter[$key], $oldDoc['documentTable']) :
+						we_versions_version::showValue($key, $oldCustomFilter[$key], $oldDoc['documentTable']) :
 						we_html_tools::getPixel(1, 1));
 
 				if($newVal != $oldVal){
@@ -543,10 +543,10 @@ if(empty($newCustomFilter) && empty($oldCustomFilter)){
 				$oldVal = we_html_tools::getPixel(1, 1);
 			}
 		} else {
-			$newVal = weVersions::showValue($key, $val, $newDoc['documentTable']);
+			$newVal = we_versions_version::showValue($key, $val, $newDoc['documentTable']);
 			if(!empty($oldCustomFilter)){
 				$oldVal = (isset($oldCustomFilter[$key]) && is_array($oldCustomFilter[$key]) ?
-						weVersions::showValue($key, $oldCustomFilter[$key], $oldDoc['documentTable']) :
+						we_versions_version::showValue($key, $oldCustomFilter[$key], $oldDoc['documentTable']) :
 						we_html_tools::getPixel(1, 1));
 
 				if($newVal != $oldVal){

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -29,7 +28,7 @@ class rpcGetRssCmd extends rpcCmd{
 	function execute(){
 
 		$sRssUri = we_base_request::_(we_base_request::URL, 'we_cmd', '', 0);
-		$sCfgBinary = we_base_request::_(we_base_request::RAW_CHECKED, 'we_cmd', '', 1);
+		$sCfgBinary = we_base_request::_(we_base_request::INT, 'we_cmd', '', 1);
 		$bCfgTitle = (bool) $sCfgBinary{0};
 		$bCfgLink = (bool) $sCfgBinary{1};
 		$bCfgDesc = (bool) $sCfgBinary{2};
@@ -51,7 +50,7 @@ class rpcGetRssCmd extends rpcCmd{
 				$iNumItems = 50;
 				break;
 		}
-		$sTbBinary = we_base_request::_(we_base_request::STRINGC, 'we_cmd', '', 3);
+		$sTbBinary = we_base_request::_(we_base_request::INT, 'we_cmd', '', 3);
 		$bTbLabel = (bool) $sTbBinary{0};
 		$bTbTitel = (bool) $sTbBinary{1};
 		$bTbDesc = (bool) $sTbBinary{2};
@@ -78,19 +77,19 @@ class rpcGetRssCmd extends rpcCmd{
 
 		$iCurrItem = 0;
 		foreach($oRssParser->getItems() as $item){
-			$bShowTitle = ($bCfgTitle && isset($item['title'])) ? true : false;
-			$bShowLink = ($bCfgLink && isset($item['link'])) ? true : false;
-			$bShowDesc = ($bCfgDesc && isset($item['description'])) ? true : false;
-			$bShowContEnc = ($bCfgContEnc && isset($item['content:encoded'])) ? true : false;
-			$bShowPubdate = ($bCfgPubDate && isset($item['pubdate'])) ? true : false;
-			$bShowCategory = ($bCfgCategory && isset($item['category'])) ? true : false;
+			$bShowTitle = ($bCfgTitle && isset($item['title']));
+			$bShowLink = ($bCfgLink && isset($item['link']));
+			$bShowDesc = ($bCfgDesc && isset($item['description']));
+			$bShowContEnc = ($bCfgContEnc && isset($item['content:encoded']));
+			$bShowPubdate = ($bCfgPubDate && isset($item['pubdate']));
+			$bShowCategory = ($bCfgCategory && isset($item['category']));
 			if($bShowTitle){
 				$sRssOut .= ($bShowLink) ? we_html_element::htmlA(array("href" => $item['link'], "target" => "_blank"), we_html_element::htmlB($item['title'])) :
 					we_html_element::htmlB($item['title']) .
 					we_html_element::htmlBr() . we_html_tools::getPixel(1, 5) . (($bShowDesc || $bShowContEnc) ? we_html_element::htmlBr() : '');
 			}
 			if($bShowPubdate){
-				$sRssOut .= g_l('cockpit', "[published]") . ': ' . date(g_l('date', '[format][default]'), strtotime($item['pubdate']));
+				$sRssOut .= ($bShowTitle ? we_html_element::htmlBr() : '') . g_l('cockpit', "[published]") . ': ' . date(g_l('date', '[format][default]'), strtotime($item['pubdate']));
 			}
 			if($bShowCategory){
 				$sRssOut .= ($bShowPubdate ? we_html_element::htmlBr() . we_html_tools::getPixel(1, 2) . we_html_element::htmlBr() : "") .

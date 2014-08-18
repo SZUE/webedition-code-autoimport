@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -27,7 +26,7 @@ we_html_tools::protect();
 
 switch(we_base_request::_(we_base_request::STRING, "cmd")){
 	case "load" :
-		if(($pid = we_base_request::_(we_base_request::INT, "pid"))){
+		if(($pid = we_base_request::_(we_base_request::INT, "pid")) !== false){
 			echo
 			we_html_element::jsElement(
 				"self.location='" . WE_EXPORT_MODULE_DIR . "exportLoadTree.php?we_cmd[1]=" . we_base_request::_(we_base_request::TABLE, "tab") . "&we_cmd[2]=" . $pid . "&we_cmd[3]=" . (($of = we_base_request::_(we_base_request::STRING, 'openFolders')) ? $of : "") . "&we_cmd[4]=top'");

@@ -50,13 +50,11 @@ class we_object_tag{
 		$this->triggerID = $triggerID;
 		$unique = md5(uniqid(__FUNCTION__, true));
 
-		$foo = getHash('SELECT TableID,ObjectID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->id), $this->DB_WE);
+		$foo = f('SELECT TableID FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=0 AND ID=' . intval($this->id), '',$this->DB_WE);
 		if(!$foo){
 			return;
 		}
-		//FIXME: fix regex in listview_object and listview_multiobject, then restore type int for ID
-		//$this->object = new we_object_listview($unique, 1, 0, '', 0, $foo['TableID'], '', '', '(' . OBJECT_X_TABLE . $foo['TableID'] . '.ID=' . intval($foo['ObjectID']) . ')' . ($condition ? ' AND '.$condition : ''), $this->triggerID, '', '', $searchable, '', '', '', '', '', '', '', 0, '', '', '', '', $hidedirindex, $objectseourls);
-		$this->object = new we_object_listview($unique, 1, 0, '', 0, $foo['TableID'], '', '', '(' . OBJECT_X_TABLE . $foo['TableID'] . '.ID="' . intval($foo['ObjectID']) . '")' . ($condition ? ' AND ' . $condition : ''), $this->triggerID, '', '', $searchable, '', '', '', '', '', '', '', 0, '', '', '', '', $hidedirindex, $objectseourls);
+		$this->object = new we_object_listview($unique, 1, 0, '', 0, $foo, '', '', '(' . OBJECT_X_TABLE . $foo . '.OF_ID="' . intval($this->id) . '")' . ($condition ? ' AND ' . $condition : ''), $this->triggerID, '', '', $searchable, '', '', '', '', '', '', '', 0, '', '', '', '', $hidedirindex, $objectseourls);
 		$this->avail = $this->object->next_record();
 	}
 

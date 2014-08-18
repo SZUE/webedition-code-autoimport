@@ -74,7 +74,7 @@ class we_exim_contentProvider{
 				$we_doc->load($ID, false);
 				break;
 			case 'weVersion':
-				$we_doc = new we_base_version();
+				$we_doc = new we_backup_version();
 				$we_doc->load($ID, false);
 				break;
 			// fix for classes
@@ -87,7 +87,7 @@ class we_exim_contentProvider{
 			// fix ends ------------------------------------------------
 			default:
 				switch($we_ContentType){
-					case 'folder':
+					case we_base_ContentTypes::FOLDER:
 						$we_Table = $table ? $table : FILE_TABLE;
 						break;
 					case we_base_ContentTypes::TEMPLATE:

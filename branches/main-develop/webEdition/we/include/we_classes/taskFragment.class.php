@@ -90,7 +90,7 @@ class taskFragment{
 	 * @param      int $bodyAttributes
 	 * @param      array $initdata
 	 */
-	function __construct($name, $taskPerFragment, $pause = 1, $bodyAttributes = "", $initdata = ""){
+	protected function __construct($name, $taskPerFragment, $pause = 1, $bodyAttributes = "", $initdata = ""){
 		$this->name = $name;
 		$this->taskPerFragment = $taskPerFragment;
 		$this->pause = $pause;

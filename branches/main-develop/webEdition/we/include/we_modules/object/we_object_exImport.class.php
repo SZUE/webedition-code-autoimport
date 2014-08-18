@@ -36,7 +36,6 @@ class we_object_exImport extends we_object{
 
 		if(!$this->wasUpdate){
 			$qarr = array(
-				'ID BIGINT NOT NULL AUTO_INCREMENT',
 				'OF_ID BIGINT NOT NULL',
 				'OF_ParentID BIGINT NOT NULL',
 				'OF_Text VARCHAR(255) NOT NULL',
@@ -56,7 +55,8 @@ class we_object_exImport extends we_object{
 				'OF_Language VARCHAR(5) default "NULL"',
 			);
 
-			$indexe = array('PRIMARY KEY (ID)',
+			$indexe = array(
+				'PRIMARY KEY (OF_ID)',
 				'KEY OF_WebUserID (OF_WebUserID)',
 				'KEY `published` (`OF_ID`,`OF_Published`,`OF_IsSearchable`)',
 				'KEY `OF_IsSearchable` (`OF_IsSearchable`)'
@@ -83,7 +83,7 @@ class we_object_exImport extends we_object{
 			$q = implode(',', $qarr);
 
 			$this->DB_WE->query('DROP TABLE IF EXISTS ' . $ctable);
-			$this->DB_WE->query('CREATE TABLE ' . $ctable . ' (' . $q . ',' . implode(',', $indexe) . ') ENGINE = MYISAM ' . we_database_base::getCharsetCollation());
+			$this->DB_WE->query('CREATE TABLE ' . $ctable . ' (' . $q . ',' . implode(',', $indexe) . ') ENGINE=MYISAM ' . we_database_base::getCharsetCollation());
 
 			//dummy eintrag schreiben
 			$this->DB_WE->query('INSERT INTO ' . $ctable . ' SET OF_ID=0');
@@ -92,12 +92,11 @@ class we_object_exImport extends we_object{
 			// folder in object schreiben
 			if(!($this->OldPath && ($this->OldPath != $this->Path))){
 				$fold = new we_class_folder();
-				$fold->initByPath($this->getPath(), OBJECT_FILES_TABLE, 1, 0);
+				$fold->initByPath($this->getPath(), OBJECT_FILES_TABLE);
 			}
 
 			////// resave the line O to O.....
-			$this->DB_WE->query('DELETE FROM ' . $ctable . ' WHERE OF_ID=0 OR ID=0');
-			$this->DB_WE->query('INSERT INTO ' . $ctable . ' SET OF_ID=0');
+			$this->DB_WE->query('REPLACE INTO ' . $ctable . ' SET OF_ID=0');
 			////// resave the line O to O.....
 		} else {
 			$this->SerializedArray = unserialize($this->DefaultValues);

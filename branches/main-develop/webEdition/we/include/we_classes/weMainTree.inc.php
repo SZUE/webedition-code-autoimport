@@ -184,7 +184,6 @@ if(weWindow.treeData){
 				attribs["icon"]=\'' . $doc->Icon . '\';
 				attribs["contenttype"]=\'' . $doc->ContentType . '\';
 				attribs["isclassfolder"]=\'' . (isset($doc->IsClassFolder) ? $doc->IsClassFolder : false) . '\';
-				attribs["isnoteditable"]=\'' . (isset($doc->IsNotEditable) ? $doc->IsNotEditable : false) . '\';
 				attribs["checked"]=\'0\';
 				attribs["typ"]=\'' . ($doc->IsFolder ? "group" : "item") . '\';
 				attribs["open"]=\'0\';

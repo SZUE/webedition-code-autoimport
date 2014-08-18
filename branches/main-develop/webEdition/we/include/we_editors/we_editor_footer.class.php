@@ -187,7 +187,7 @@ abstract class we_editor_footer{
 			case we_base_ContentTypes::WEDOCUMENT:
 			case 'object':
 			case 'objectFile':
-			case 'folder':
+			case we_base_ContentTypes::FOLDER:
 			case 'class_folder':
 				break;
 			default:

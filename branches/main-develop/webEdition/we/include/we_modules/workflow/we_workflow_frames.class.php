@@ -168,12 +168,13 @@ class we_workflow_frames extends weModuleFrames {
 			function updateEntry(id, pid, text, pub) {
 				var ai = 1;
 				while (ai <= menuDaten.laenge) {
-					if ((menuDaten[ai].typ == 'folder'))
+					if ((menuDaten[ai].typ == 'folder')){
 						if (menuDaten[ai].name == id) {
 							menuDaten[ai].vorfahr = pid;
 							menuDaten[ai].text = text;
 							menuDaten[ai].published = pub;
 						}
+					}
 					ai++;
 				}
 				drawEintraege();
@@ -234,9 +235,11 @@ class we_workflow_frames extends weModuleFrames {
 				var nf = new container();
 				var ai = 1;
 				while (ai <= menuDaten.laenge) {
-					if ((menuDaten[ai].typ == 'folder') || (menuDaten[ai].typ == 'file'))
-						if (menuDaten[ai].vorfahr == eintrag)
+					if ((menuDaten[ai].typ == 'folder') || (menuDaten[ai].typ == 'file')){
+						if (menuDaten[ai].vorfahr == eintrag){
 							nf.add(menuDaten[ai]);
+						}
+					}
 					ai++;
 				}
 				return nf;

@@ -121,8 +121,7 @@ abstract class we_glossary_treeLoader{
 
 		$Where = " WHERE Language='" . $Db->escape($Language) . "' AND Type='" . $Db->escape($Type) . "'";
 
-		$PrevOffset = $Offset - $Segment;
-		$PrevOffset = ($PrevOffset < 0) ? 0 : $PrevOffset;
+		$PrevOffset = max(0,$Offset - $Segment);
 
 		if($Offset && $Segment){
 			$Item = array(

@@ -165,7 +165,7 @@ class we_object_listview extends we_listview_base{
 				} else {
 					$ws_tail = '';
 				}
-				$this->DB_WE->query('SELECT ' . $_obxTable . '.ID AS ID ' . $calendar_select . ' FROM ' . $sqlParts["tables"] . ' WHERE ' . ($this->searchable ? " " . $_obxTable . ".OF_IsSearchable=1 AND"
+				$this->DB_WE->query('SELECT ' . $_obxTable . '.OF_ID AS ID ' . $calendar_select . ' FROM ' . $sqlParts["tables"] . ' WHERE ' . ($this->searchable ? " " . $_obxTable . ".OF_IsSearchable=1 AND"
 							: "") . " " . $pid_tail . ' AND ' . $_obxTable . '.OF_ID!=0 ' . $where_lang . ($join ? " AND ($join) " : "") . $cat_tail . " " . ($sqlParts["publ_cond"] ? (" AND " . $sqlParts["publ_cond"])
 							: "") . " " . ($sqlParts["cond"] ? (" AND (" . $sqlParts["cond"] . ") ") : "") . $calendar_where . $ws_tail . $weDocumentCustomerFilter_tail . $webUserID_tail . $_idTail . $sqlParts['groupBy']);
 				$this->anz_all = $this->DB_WE->num_rows();
@@ -319,7 +319,7 @@ class we_object_listview extends we_listview_base{
 				}
 			}
 		}
-		$f = '`' . OBJECT_X_TABLE . $classID . '`.ID AS ID,`' . OBJECT_X_TABLE . $classID . '`.OF_Templates AS OF_Templates,`' . OBJECT_X_TABLE . $classID . '`.OF_ID AS OF_ID,`' . OBJECT_X_TABLE . $classID . '`.OF_Category AS OF_Category,`' . OBJECT_X_TABLE . $classID . '`.OF_Text AS OF_Text,`' . OBJECT_X_TABLE . $classID . '`.OF_Url AS OF_Url,`' . OBJECT_X_TABLE . $classID . '`.OF_TriggerID AS OF_TriggerID,`' . OBJECT_X_TABLE . $classID . '`.OF_WebUserID AS OF_WebUserID,`' . OBJECT_X_TABLE . $classID . '`.OF_Language AS OF_Language,`' . OBJECT_X_TABLE . $classID . '`.`OF_Published`' . ' AS we_wedoc_Published,' . $_selFields;
+		$f = '`' . OBJECT_X_TABLE . $classID . '`.OF_ID AS ID,`' . OBJECT_X_TABLE . $classID . '`.OF_Templates AS OF_Templates,`' . OBJECT_X_TABLE . $classID . '`.OF_ID AS OF_ID,`' . OBJECT_X_TABLE . $classID . '`.OF_Category AS OF_Category,`' . OBJECT_X_TABLE . $classID . '`.OF_Text AS OF_Text,`' . OBJECT_X_TABLE . $classID . '`.OF_Url AS OF_Url,`' . OBJECT_X_TABLE . $classID . '`.OF_TriggerID AS OF_TriggerID,`' . OBJECT_X_TABLE . $classID . '`.OF_WebUserID AS OF_WebUserID,`' . OBJECT_X_TABLE . $classID . '`.OF_Language AS OF_Language,`' . OBJECT_X_TABLE . $classID . '`.`OF_Published`' . ' AS we_wedoc_Published,' . $_selFields;
 		foreach($matrix as $n => $p){
 			$n2 = $n;
 			if(strpos($n, 'we_object_') === 0){
@@ -371,7 +371,7 @@ class we_object_listview extends we_listview_base{
 			'fields' => rtrim($f, ',') . ($order == ' ORDER BY RANDOM ' ? ', RAND() AS RANDOM ' : ''),
 			'order' => $order,
 			'tables' => makeCSVFromArray($tb),
-			'groupBy' => (count($tb) > 1) ? ' GROUP BY `' . OBJECT_X_TABLE . $classID . '`.ID ' : '',
+			'groupBy' => (count($tb) > 1) ? ' GROUP BY `' . OBJECT_X_TABLE . $classID . '`.OF_ID ' : '',
 			'publ_cond' => $publ_cond ? ' ( ' . implode(' AND ', $publ_cond) . ' ) ' : '',
 			'cond' => trim($cond)
 		);

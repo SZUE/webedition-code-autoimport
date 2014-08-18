@@ -27,7 +27,7 @@
  * rebuild dialog and the rebuild function
  * @static
  */
-abstract class we_versions_wizard{
+abstract class we_versions_wizard{ 
 	const DELETE_VERSIONS = 'delete_versions';
 	const RESET_VERSIONS = 'reset_versions';
 
@@ -123,7 +123,7 @@ abstract class we_versions_wizard{
 	 * @return string
 	 */
 	static function getStep0(){
-		$version = new weVersions();
+		$version = new we_versions_version();
 		$type = we_base_request::_(we_base_request::STRING, "type", self::DELETE_VERSIONS);
 
 		$version_delete = array(
@@ -248,7 +248,7 @@ set_button_state(false);';
 	}
 
 	static function getDelete1(){
-		$version = new weVersions();
+		$version = new we_versions_version();
 		$type = we_base_request::_(we_base_request::RAW, "type", self::DELETE_VERSIONS);
 
 		$versions_delete_all = we_base_request::_(we_base_request::BOOL, "version_delete_all");
@@ -474,7 +474,7 @@ set_button_state(false);';
 	}
 
 	static function getReset1(){
-		$version = new weVersions();
+		$version = new we_versions_version();
 		$type = we_base_request::_(we_base_request::RAW, "type", self::RESET_VERSIONS);
 
 		$version_reset_date = we_base_request::_(we_base_request::RAW, "reset_date", "");
@@ -741,7 +741,7 @@ set_button_state(false);';
 	}
 
 	static function getStep3(){
-		$version = new weVersions();
+		$version = new we_versions_version();
 
 		$type = we_base_request::_(we_base_request::STRING, "type", self::DELETE_VERSIONS);
 
@@ -774,14 +774,14 @@ set_button_state(false);';
 		if(!(file_exists($taskFilename) && $currentTask)){
 			switch($type){
 				case self::DELETE_VERSIONS:
-					$data = versionFragment::getDocuments($type, $version_delete);
+					$data = we_versions_fragment::getDocuments($type, $version_delete);
 					break;
 				case self::RESET_VERSIONS:
-					$data = versionFragment::getDocuments($type, $version_reset);
+					$data = we_versions_fragment::getDocuments($type, $version_reset);
 					break;
 			}
 			if(count($data)){
-				$fr = new versionFragment($taskname, 1, 0, array(), $data);
+				$fr = new we_versions_fragment($taskname, 1, 0, array(), $data);
 
 				return array();
 			} else {
@@ -791,7 +791,7 @@ set_button_state(false);';
 				);
 			}
 		} else {
-			$fr = new versionFragment($taskname, 1, 0, array());
+			$fr = new we_versions_fragment($taskname, 1, 0, array());
 			return array();
 		}
 	}
@@ -802,7 +802,7 @@ set_button_state(false);';
 	 * @return array
 	 */
 	static function getDelete2(){
-		$version = new weVersions();
+		$version = new we_versions_version();
 
 		$type = we_base_request::_(we_base_request::RAW, "type", self::DELETE_VERSIONS);
 
@@ -944,7 +944,7 @@ set_button_state(false);';
 			'reset_seconds' => we_base_request::_(we_base_request::RAW, "reset_seconds", 0),
 		);
 
-		foreach(weVersions::getContentTypesVersioning() as $k){
+		foreach(we_versions_version::getContentTypesVersioning() as $k){
 			$version_reset[$k] = we_base_request::_(we_base_request::BOOL, "version_reset_" . $k);
 		}
 

@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_search{
-
 	protected $db;
 	var $rows = -1;
 	var $start = 0;
@@ -99,11 +98,14 @@ class we_search{
 						case 'START':
 							$searching = " LIKE '" . $this->db->escape($searchname[$i]) . "%' ";
 							$sql .= $this->sqlwhere($searchfield[$i], $searching, null);
-							//$sql .= " �".$val["field"]."� LIKE �".$val["search"]."%� ";
 							break;
-
+						case 'IN':
+							$tmp = array_map('trim', explode(',', $searchname[$i]));
+							$searching = ' IN ("' . implode('","', $tmp) . '") ';
+							$sql .= $this->sqlwhere($searchfield[$i], $searching, null);
+							break;
 						case 'IS':
-							$searching = " = '" . $this->db->escape($searchname[$i]) . "' ";
+							$searching = "='" . $this->db->escape($searchname[$i]) . "' ";
 							$sql .= $this->sqlwhere($searchfield[$i], $searching, null);
 							break;
 						case '<':
@@ -152,7 +154,7 @@ class we_search{
 
 		if($this->table){
 			$this->where = ($where ? $where : ($this->where ? $this->where : '1'));
-			return f('SELECT COUNT(1) as Count FROM ' . $this->db->escape($this->table) . ' WHERE ' . $this->where, 'Count', $this->db);
+			return f('SELECT COUNT(1) FROM ' . $this->db->escape($this->table) . ' WHERE ' . $this->where, '', $this->db);
 		}
 		return -1;
 	}

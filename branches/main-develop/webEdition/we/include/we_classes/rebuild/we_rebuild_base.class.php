@@ -434,7 +434,7 @@ abstract class we_rebuild_base{
 					'path' => $GLOBALS['DB_WE']->f('Path'),
 					'it' => 0);
 			}
-			$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ClassName = "we_folder" ORDER BY ID');
+			$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=1 ORDER BY ID');
 			while($GLOBALS['DB_WE']->next_record()){
 				$data[] = array(
 					'id' => $GLOBALS['DB_WE']->f('ID'),

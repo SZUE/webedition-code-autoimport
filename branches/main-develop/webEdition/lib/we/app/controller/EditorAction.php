@@ -50,9 +50,9 @@ class we_app_controller_EditorAction extends Zend_Controller_Action{
 	 */
 	public function indexAction(){
 		$this->_setupModel(true);
-		if($this->getRequest()->getParam('folder') == 1){
+		if($this->getRequest()->getParam(we_base_ContentTypes::FOLDER) == 1){
 			$this->_model->IsFolder = 1;
-			$this->_model->ContentType = 'folder';
+			$this->_model->ContentType = we_base_ContentTypes::FOLDER;
 		}
 		$this->_renderDefaultView('editor/index.php');
 	}

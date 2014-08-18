@@ -1164,13 +1164,11 @@ function submitForm() {
 
 				if(defined('OBJECT_TABLE')){
 					// now get all shop objects
-					foreach($classIds as $_classId){
+					foreach($classIds as $_classId){//FIXME: $classIds is not used!
 						$_classId = intval($_classId);
-						$this->db->query('SELECT  ' . OBJECT_X_TABLE . $_classId . '.input_' . WE_SHOP_TITLE_FIELD_NAME . ' AS shopTitle, ' . OBJECT_X_TABLE . $_classId . '.OF_ID as objectId
-								FROM ' . OBJECT_X_TABLE . $_classId . ', ' . OBJECT_FILES_TABLE . '
-								WHERE ' . OBJECT_X_TABLE . $_classId . '.OF_ID = ' . OBJECT_FILES_TABLE . '.ID
-									AND ' . OBJECT_X_TABLE . $_classId . '.ID = ' . OBJECT_FILES_TABLE . '.ObjectID ' .
-							(we_base_request::_(we_base_request::BOOL, 'searchArticle') ?
+						$this->db->query('SELECT o.input_' . WE_SHOP_TITLE_FIELD_NAME . ' AS shopTitle, o.OF_ID as objectId
+								FROM ' . OBJECT_X_TABLE . $_classId . ' o JOIN ' . OBJECT_FILES_TABLE . ' of ON o.OF_ID=of.ID
+								WHERE ' . (we_base_request::_(we_base_request::BOOL, 'searchArticle') ?
 								' AND ' . OBJECT_X_TABLE . $_classId . '.input_' . WE_SHOP_TITLE_FIELD_NAME . '  LIKE "%' . $this->db->escape($searchArticle) . '%"' :
 								'')
 						);

@@ -1147,10 +1147,10 @@ function checkData(){
 				'headline' => g_l('weEditorInfo', '[content_type]'),
 				'html' => g_l('weEditorInfo', '[' . $this->documentDef->document->ContentType . ']'),
 				'space' => $_space,
-				'noline' => (($this->documentDef->document->ContentType != 'folder' && $this->documentDef->workflow->Type != we_workflow_workflow::OBJECT) ? 1 : 0)
+				'noline' => (($this->documentDef->document->ContentType != we_base_ContentTypes::FOLDER && $this->documentDef->workflow->Type != we_workflow_workflow::OBJECT) ? 1 : 0)
 			)
 		);
-		if($this->documentDef->document->ContentType != 'folder' && $this->documentDef->workflow->Type != we_workflow_workflow::OBJECT){
+		if($this->documentDef->document->ContentType != we_base_ContentTypes::FOLDER && $this->documentDef->workflow->Type != we_workflow_workflow::OBJECT){
 			$GLOBALS['we_doc'] = $this->documentDef->document;
 			$fs = $this->documentDef->document->getFilesize($this->documentDef->document->Path);
 			$_parts[] = array(

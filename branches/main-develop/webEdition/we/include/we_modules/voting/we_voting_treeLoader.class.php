@@ -36,8 +36,7 @@ abstract class we_voting_treeLoader{
 
 		$owners_sql = we_voting_voting::getOwnersSql();
 
-		$prevoffset = $offset - $segment;
-		$prevoffset = ($prevoffset < 0) ? 0 : $prevoffset;
+		$prevoffset = max(0,$offset - $segment);
 		if($offset && $segment){
 			$items[] = array(
 				"icon" => "arrowup.gif",

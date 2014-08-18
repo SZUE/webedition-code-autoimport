@@ -541,7 +541,7 @@ class we_navigation_navigation extends weModelBase{
 						'docid' => $_nav->LinkID,
 						'table' => $_nav->IsFolder ? ($_nav->FolderSelection == self::STPYE_OBJLINK ? OBJECT_FILES_TABLE : FILE_TABLE) : (($_nav->SelectionType == self::STPYE_CLASS || $_nav->SelectionType == self::STPYE_OBJLINK ? OBJECT_FILES_TABLE : FILE_TABLE)),
 						'href' => $_nav->getHref($storage['ids']),
-						'type' => $_nav->IsFolder ? 'folder' : 'item',
+						'type' => $_nav->IsFolder ? we_base_ContentTypes::FOLDER : 'item',
 						'parentid' => $_nav->ParentID,
 						'workspaceid' => $_nav->WorkspaceID,
 						'icon' => isset($storage['ids'][$_nav->IconID]) ? $storage['ids'][$_nav->IconID] : id_to_path($_nav->IconID),

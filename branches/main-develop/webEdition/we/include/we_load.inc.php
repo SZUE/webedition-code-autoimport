@@ -63,8 +63,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) == "closeFolder"
 		if(($table == TEMPLATES_TABLE && !permissionhandler::hasPerm("CAN_SEE_TEMPLATES")) || ($table == FILE_TABLE && !permissionhandler::hasPerm("CAN_SEE_DOCUMENTS"))){
 			return 0;
 		}
-		$prevoffset = $offset - $segment;
-		$prevoffset = ($prevoffset < 0) ? 0 : $prevoffset;
+		$prevoffset = max(0,$offset - $segment);
 
 		//IMPORTANT: tree segments are not yet implemented for ext
 		if(!$loadExtTree && $offset && $segment){
@@ -75,7 +74,6 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) == "closeFolder"
 				"text" => "display (" . $prevoffset . "-" . $offset . ")",
 				"contenttype" => "arrowup",
 				"isclassfolder" => 0,
-				"isnoteditable" => 0,
 				"table" => $table,
 				"checked" => 0,
 				"typ" => "threedots",
@@ -94,8 +92,8 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) == "closeFolder"
 		$where = ' WHERE  ID!=' . intval($ParentID) . ' AND ParentID IN(' . implode(',', $tmp) . ') AND ((1' . we_users_util::makeOwnersSql() . ') ' . $wsQuery . ')';
 
 		$elem = "ID,ParentID,Path,Text,IsFolder,Icon,ModDate" .
-			(($table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE)) ? ",Published" : "") .
-			((defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE) ? ",IsClassFolder,IsNotEditable" : "") .
+			(($table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE)) ? ',Published' : '') .
+			((defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE) ? ',IsClassFolder' : '') .
 			($table == FILE_TABLE || $table == TEMPLATES_TABLE ? ",Extension" : '') .
 			($table == FILE_TABLE || $table == TEMPLATES_TABLE || (defined('OBJECT_TABLE') && $table == OBJECT_TABLE) || (defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE) ? ",ContentType" : '');
 
@@ -126,7 +124,6 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) == "closeFolder"
 					'text' => $DB_WE->f('Text'),
 					'ct' => $ContentType,
 					//"isclassfolder" => $DB_WE->f("IsClassFolder"),
-					//"isnoteditable" => $DB_WE->f("IsNotEditable"),
 					'table' => $table,
 					//'isTblFile' => $table == FILE_TABLE ? true : false,
 					'qtip' => $ID,
@@ -151,7 +148,6 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) == "closeFolder"
 					"text" => $DB_WE->f("Text"),
 					"contenttype" => $ContentType,
 					"isclassfolder" => $DB_WE->f("IsClassFolder"),
-					"isnoteditable" => $DB_WE->f("IsNotEditable"),
 					"table" => $table,
 					"checked" => 0,
 					"typ" => ($DB_WE->f("IsFolder") ? "group" : "item"),
@@ -162,6 +158,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) == "closeFolder"
 					"offset" => $offset
 				);
 			}
+
 
 			/* if($typ == "group" && $OpenCloseStatus == 1){
 			  getItems($ID, 0, $segment);
@@ -177,7 +174,6 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) == "closeFolder"
 				"text" => "display (" . $nextoffset . "-" . ($nextoffset + $segment) . ")",
 				"contenttype" => "arrowdown",
 				"isclassfolder" => 0,
-				"isnoteditable" => 0,
 				"table" => $table,
 				"checked" => 0,
 				"typ" => "threedots",

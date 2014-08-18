@@ -159,7 +159,7 @@ function we_tag_field($attribs){
 			(isset($GLOBALS['lv']) ? (($GLOBALS['lv'] instanceof we_object_tag) && method_exists($GLOBALS['lv'], 'getObject') && isset($GLOBALS['lv']->getObject()->classID) ? $GLOBALS['lv']->getObject()->classID :
 					(method_exists($GLOBALS['lv'], 'getObject') && isset($GLOBALS['lv']->getObject()->classID) ? $GLOBALS['lv']->getObject()->classID :
 						(isset($GLOBALS['lv']->classID) ? $GLOBALS['lv']->classID : ''))) :
-				(isset($GLOBALS['we_doc']->TableID) ?
+				($GLOBALS['we_doc'] instanceof we_objectFile ?
 					$GLOBALS['we_doc']->TableID :
 					0)));
 
@@ -604,15 +604,15 @@ function we_tag_field($attribs){
 
 								  fix by lukas
 								  $_linkAttribs['href'] = (!$GLOBALS['WE_MAIN_DOC']->InWebEdition && NAVIGATION_DIRECTORYINDEX_NAMES && isset($GLOBALS['lv']->hidedirindex) && $GLOBALS['lv']->hidedirindex && in_array($triggerpath_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))) ?
-									($triggerpath_parts['dirname'] != '/' ? $triggerpath_parts['dirname'] : '') . '/' . $GLOBALS['lv']->f('WE_URL') . $tail :
-									$triggerpath . $tailOwnId . $tail;
+								  ($triggerpath_parts['dirname'] != '/' ? $triggerpath_parts['dirname'] : '') . '/' . $GLOBALS['lv']->f('WE_URL') . $tail :
+								  $triggerpath . $tailOwnId . $tail;
 								 *
 								 */
 
 								$_linkAttribs['href'] = (isset($GLOBALS['lv']->objectseourls) && $GLOBALS['lv']->objectseourls) ? // objectseourls=true
 									((!$GLOBALS['WE_MAIN_DOC']->InWebEdition && NAVIGATION_DIRECTORYINDEX_NAMES && isset($GLOBALS['lv']->hidedirindex) && $GLOBALS['lv']->hidedirindex && in_array($triggerpath_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))) ? //hidedirindex of triggerID
-									($triggerpath_parts['dirname'] != '/' ? $triggerpath_parts['dirname'] : '') . '/' . $GLOBALS['lv']->f('WE_URL') . $tail : //Fix #8708 do not hidedirindex of triggerID
-									($triggerpath_parts['dirname'] != '/' ? $triggerpath_parts['dirname'] : '') . '/'.$triggerpath_parts['filename'].'/'.$GLOBALS['lv']->f('WE_URL') . $tail) : //objectseourls=false or not set
+										($triggerpath_parts['dirname'] != '/' ? $triggerpath_parts['dirname'] : '') . '/' . $GLOBALS['lv']->f('WE_URL') . $tail : //Fix #8708 do not hidedirindex of triggerID
+										($triggerpath_parts['dirname'] != '/' ? $triggerpath_parts['dirname'] : '') . '/' . $triggerpath_parts['filename'] . '/' . $GLOBALS['lv']->f('WE_URL') . $tail) : //objectseourls=false or not set
 									$triggerpath . $tailOwnId . $tail;
 
 								/* End Fix '7771 */

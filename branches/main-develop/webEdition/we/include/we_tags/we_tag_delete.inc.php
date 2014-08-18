@@ -61,7 +61,7 @@ function we_tag_delete($attribs){
 			$doc = new we_objectFile();
 			$doc->initByID($docID, OBJECT_FILES_TABLE);
 			$table = OBJECT_FILES_TABLE;
-			if($classid && $doc->TableID != $classid){
+			if($classid && $doc->TableID != $classid){//FIXME: IsClassFolder
 				$GLOBALS["we_" . $type . "_delete_ok"] = false;
 				return "";
 			}

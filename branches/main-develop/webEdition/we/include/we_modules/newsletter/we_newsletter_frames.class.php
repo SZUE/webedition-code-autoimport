@@ -1132,7 +1132,7 @@ window.onload=extraInit;');
 					break;
 
 				case we_newsletter_block::ATTACHMENT:
-					$content.=we_html_tools::htmlFormElementTable($this->View->formWeChooser(FILE_TABLE, 320, 0, "block" . $counter . "_LinkID", $block->LinkID, "block" . $counter . "_LinkPath", "", "", "", $this->weAutoCompleter, implode(',', array('folder', we_base_ContentTypes::XML, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::FLASH, we_base_ContentTypes::QUICKTIME))), g_l('modules_newsletter', '[block_attachment]'));
+					$content.=we_html_tools::htmlFormElementTable($this->View->formWeChooser(FILE_TABLE, 320, 0, "block" . $counter . "_LinkID", $block->LinkID, "block" . $counter . "_LinkPath", "", "", "", $this->weAutoCompleter, implode(',', array(we_base_ContentTypes::FOLDER, we_base_ContentTypes::XML, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::FLASH, we_base_ContentTypes::QUICKTIME))), g_l('modules_newsletter', '[block_attachment]'));
 					break;
 
 				case we_newsletter_block::URL:

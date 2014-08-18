@@ -99,7 +99,7 @@ class we_search_search extends we_search{
 
 	function getModFields(){
 		$modFields = array();
-		$versions = new weVersions();
+		$versions = new we_versions_version();
 		foreach($versions->modFields as $k => $v){
 			if($k != 'status'){
 				$modFields[$k] = $k;
@@ -220,7 +220,8 @@ class we_search_search extends we_search{
 					'<' => g_l('searchtool', '[<]'),
 					'<=' => g_l('searchtool', '[<=]'),
 					'>=' => g_l('searchtool', '[>=]'),
-					'>' => g_l('searchtool', '[>]')
+					'>' => g_l('searchtool', '[>]'),
+					'IN' => g_l('searchtool', '[IN]'),
 				);
 			case 'date':
 				return array(
@@ -373,6 +374,9 @@ class we_search_search extends we_search{
 				case 'IS' :
 					$searching = " = '" . $_db->escape($keyword) . "' ";
 					break;
+				case 'IN':
+					$searching = ' IN ("' . implode('","', array_map('trim', explode(',', $keyword))) . '") ';
+					break;
 				case '<' :
 				case '<=' :
 				case '>' :
@@ -450,7 +454,7 @@ class we_search_search extends we_search{
 	function searchModFields($text, $table){
 		$where = "";
 		$db = new DB_WE();
-		$versions = new weVersions();
+		$versions = new we_versions_version();
 
 		$modConst[] = $versions->modFields[$text]['const'];
 
@@ -668,14 +672,16 @@ class we_search_search extends we_search{
 
 			case VERSIONS_TABLE:
 				if($_SESSION['weS']['weSearch']['onlyDocs'] || $_SESSION['weS']['weSearch']['ObjectsAndDocs']){
-					$query = "INSERT INTO  SEARCH_TEMP_TABLE SELECT ''," . VERSIONS_TABLE . ".documentID," . VERSIONS_TABLE . ".documentTable," . VERSIONS_TABLE . ".Text," . VERSIONS_TABLE . ".Path," . VERSIONS_TABLE . ".ParentID,'',''," . VERSIONS_TABLE . ".TemplateID," . VERSIONS_TABLE . ".ContentType,''," . VERSIONS_TABLE . ".timestamp," . VERSIONS_TABLE . ".modifierID,'',''," . VERSIONS_TABLE . ".Extension," . VERSIONS_TABLE . ".TableID," . VERSIONS_TABLE . ".ID FROM " . VERSIONS_TABLE . " LEFT JOIN " . FILE_TABLE . " ON " . VERSIONS_TABLE . ".documentID = " . FILE_TABLE . ".ID " . $this->where . " " . $_SESSION['weS']['weSearch']['onlyDocsRestrUsersWhere'] . " ";
+					$query = "INSERT INTO  SEARCH_TEMP_TABLE SELECT '',v.documentID,v.documentTable,v.Text,v.Path,v.ParentID,'','',v.TemplateID,v.ContentType,'',v.timestamp,v.modifierID,'','',v.Extension,v.TableID,v.ID " .
+						'FROM ' . VERSIONS_TABLE . ' v LEFT JOIN ' . FILE_TABLE . ' f ON v.documentID=f.ID ' . $this->where . ' ' . $_SESSION['weS']['weSearch']['onlyDocsRestrUsersWhere'];
 					if(stristr($query, VERSIONS_TABLE . ".status='deleted'")){
 						$query = str_replace(FILE_TABLE . ".", VERSIONS_TABLE . ".", $query);
 					}
 					$this->db->query($query);
 				}
 				if(defined('OBJECT_FILES_TABLE') && ($_SESSION['weS']['weSearch']['onlyObjects'] || $_SESSION['weS']['weSearch']['ObjectsAndDocs'])){
-					$query = "INSERT INTO SEARCH_TEMP_TABLE SELECT ''," . VERSIONS_TABLE . ".documentID," . VERSIONS_TABLE . ".documentTable," . VERSIONS_TABLE . ".Text," . VERSIONS_TABLE . ".Path," . VERSIONS_TABLE . ".ParentID,'',''," . VERSIONS_TABLE . ".TemplateID," . VERSIONS_TABLE . ".ContentType,''," . VERSIONS_TABLE . ".timestamp," . VERSIONS_TABLE . ".modifierID,'',''," . VERSIONS_TABLE . ".Extension," . VERSIONS_TABLE . ".TableID," . VERSIONS_TABLE . ".ID FROM " . VERSIONS_TABLE . " LEFT JOIN " . OBJECT_FILES_TABLE . " ON " . VERSIONS_TABLE . ".documentID = " . OBJECT_FILES_TABLE . ".ID " . $this->where . " " . $_SESSION['weS']['weSearch']['onlyObjectsRestrUsersWhere'] . " ";
+					$query = "INSERT INTO SEARCH_TEMP_TABLE SELECT '',v.documentID,v.documentTable,v.Text,v.Path,v.ParentID,'','',v.TemplateID,v.ContentType,'',v.timestamp,v.modifierID,'','',v.Extension,v.TableID,v.ID "
+						. 'FROM ' . VERSIONS_TABLE . ' v LEFT JOIN ' . OBJECT_FILES_TABLE . ' f ON v.documentID=f.ID ' . $this->where . " " . $_SESSION['weS']['weSearch']['onlyObjectsRestrUsersWhere'];
 					if(stristr($query, VERSIONS_TABLE . ".status='deleted'")){
 						$query = str_replace(OBJECT_FILES_TABLE . ".", VERSIONS_TABLE . ".", $query);
 					}
@@ -851,6 +857,10 @@ UNIQUE KEY k (docID,docTable)
 								break;
 							case 'START':
 								$searching = " LIKE '" . $this->db->escape($searchname) . "%' ";
+								$sql .= $this->sqlwhere($searchfield, $searching, $operator);
+								break;
+							case 'IN':
+								$searching = ' IN ("' . implode('","', array_map('trim', explode(',', $searchname))) . '") ';
 								$sql .= $this->sqlwhere($searchfield, $searching, $operator);
 								break;
 							case 'IS':

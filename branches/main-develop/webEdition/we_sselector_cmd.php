@@ -60,7 +60,7 @@ if(!$cmd || $cmd != "save_last"){
 				}
 	<?php
 	switch(we_base_request::_(we_base_request::STRING, 'filter')){
-		case 'folder':
+		case we_base_ContentTypes::FOLDER:
 		case 'filefolder':
 			echo 'selectFile(dir);';
 	}

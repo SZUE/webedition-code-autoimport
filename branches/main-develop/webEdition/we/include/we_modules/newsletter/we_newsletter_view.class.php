@@ -239,7 +239,7 @@ class we_newsletter_view{
 
 			$yuiSuggest = $acObject;
 			$yuiSuggest->setAcId($IDName);
-			$yuiSuggest->setContentType(implode(',', array('folder', we_base_ContentTypes::XML, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::FLASH, we_base_ContentTypes::QUICKTIME)));
+			$yuiSuggest->setContentType(implode(',', array(we_base_ContentTypes::FOLDER, we_base_ContentTypes::XML, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::FLASH, we_base_ContentTypes::QUICKTIME)));
 			$yuiSuggest->setInput($Pathname, $Pathvalue);
 			$yuiSuggest->setMaxResults(10);
 			$yuiSuggest->setMayBeEmpty(true);
@@ -268,7 +268,7 @@ class we_newsletter_view{
 		if(is_object($acObject)){
 			$yuiSuggest = $acObject;
 			$yuiSuggest->setAcId('PathGroup');
-			$yuiSuggest->setContentType('folder');
+			$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
 			$yuiSuggest->setInput($Pathname, str_replace('\\', '/', $Pathvalue));
 			$yuiSuggest->setMaxResults(10);
 			$yuiSuggest->setMayBeEmpty(true);
@@ -1483,7 +1483,7 @@ function set_state_edit_delete_recipient(control) {
 						break;
 					case 0:
 						$jsmess = ($newone ?
-								$this->topFrame . '.makeNewEntry(\'' . $this->newsletter->Icon . '\',\'' . $this->newsletter->ID . '\',\'' . $this->newsletter->ParentID . '\',\'' . $this->newsletter->Text . '\',0,\'' . ($this->newsletter->IsFolder ? 'folder' : 'item') . '\',\'' . NEWSLETTER_TABLE . '\');' :
+								$this->topFrame . '.makeNewEntry(\'' . $this->newsletter->Icon . '\',\'' . $this->newsletter->ID . '\',\'' . $this->newsletter->ParentID . '\',\'' . $this->newsletter->Text . '\',0,\'' . ($this->newsletter->IsFolder ? we_base_ContentTypes::FOLDER : 'item') . '\',\'' . NEWSLETTER_TABLE . '\');' :
 								$this->topFrame . '.updateEntry("' . $this->newsletter->ID . '","' . $this->newsletter->Text . '","' . $this->newsletter->ParentID . '");') .
 							$this->topFrame . '.drawTree();' .
 							we_message_reporting::getShowMessageCall(($this->newsletter->IsFolder == 1 ? g_l('modules_newsletter', '[save_group_ok]') : g_l('modules_newsletter', '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE) .
@@ -1907,12 +1907,12 @@ self.close();');
 	/**
 	 * Newsletter printing functions
 	 */
-	function initDocByObject(&$we_doc, $we_objectID){
+	private function initDocByObject($we_objectID){
 
 		$we_obj = new we_objectFile();
 		$we_obj->initByID($we_objectID, OBJECT_FILES_TABLE);
 
-		$this->initDoc($we_doc);
+		$we_doc = $this->initDoc();
 		$we_doc->elements = $we_obj->elements;
 		$we_doc->Templates = $we_obj->Templates;
 		$we_doc->ExtraTemplates = $we_obj->ExtraTemplates;
@@ -1923,19 +1923,21 @@ self.close();');
 		$we_doc->Owners = $we_obj->Owners;
 		$we_doc->OwnersReadOnly = $we_obj->OwnersReadOnly;
 		$we_doc->Category = $we_obj->Category;
-		$we_doc->ObjectID = $we_obj->ObjectID;
 		$we_doc->OF_ID = $we_obj->ID;
+
+		return $we_doc;
 	}
 
-	function initDoc(&$we_doc, $id = 0){
+	private function initDoc($id = 0){
 		$we_doc = new we_webEditionDocument();
 
 		if($id){
 			$we_doc->initByID($id);
 		}
+		return $we_doc;
 	}
 
-	function we_includeEntity(&$we_doc, $tmpid){
+	function we_includeEntity(&$we_doc, $tmpid){//FIXME: unused
 		if($tmpid != "" && $tmpid != 0){
 			$path = id_to_path($tmpid, TEMPLATES_TABLE);
 		}
@@ -1987,8 +1989,7 @@ self.close();');
 				break;
 			case we_newsletter_block::DOCUMENT_FIELD:
 				if($block->LinkID){
-					$we_doc = '';
-					$this->initDoc($we_doc, $block->LinkID);
+					$we_doc = $this->initDoc($block->LinkID);
 					$content = $we_doc->getElement($block->Field);
 				}
 				break;
@@ -2003,13 +2004,14 @@ self.close();');
 				break;
 			case we_newsletter_block::OBJECT_FIELD:
 				if($block->LinkID){
-					$this->initDocByObject($we_doc, $block->LinkID);
+					$we_doc = $this->initDocByObject($block->LinkID);
 					$content = $we_doc->getElement($block->Field);
 				}
 				break;
 			case we_newsletter_block::TEXT:
-				$blockHtml = $block->Html ? preg_replace('/(href=")(\\\\*&quot;)*(.+?)(\\\\*&quot;)*(")/', '$1$3$5', stripslashes($block->Html)) : '';
-				$blockHtml = $blockHtml ? preg_replace('/(src=")(\\\\*&quot;)*(.+?)(\\\\*&quot;)*(")/', '$1$3$5', stripslashes($blockHtml)) : '';
+				$blockHtml = $block->Html ? preg_replace(array(
+						'/(href=")(\\\\*&quot;)*(.+?)(\\\\*&quot;)*(")/',
+						'/(src=")(\\\\*&quot;)*(.+?)(\\\\*&quot;)*(")/'), '$1$3$5', stripslashes($block->Html)) : '';
 
 				if($hm){
 					$content = $blockHtml ?
@@ -2023,12 +2025,13 @@ self.close();');
 							"\n" => '<br/>',
 							"\t" => '&nbsp;&nbsp;&nbsp;',
 					));
-				} else {
-					$content = ($block->Source ?
-							$block->Source :
-							str_ireplace(array('&nbsp;', '&lt;', "&gt;", "&quot;", "&amp;",), array(' ', "<", ">", '"', "&",), preg_replace("|&nbsp;(&nbsp;)+|i", "\t", trim(strip_tags(preg_replace("|<br\s*/?\s*>|i", "\n", $blockHtml))))));
-					//TODO: we should preserve img- and link-pathes: "text text linktext (path) text"
+					break;
 				}
+				$content = ($block->Source ?
+						$block->Source :
+						str_ireplace(array('&nbsp;', '&lt;', "&gt;", "&quot;", "&amp;",), array(' ', "<", ">", '"', "&",), preg_replace("|&nbsp;(&nbsp;)+|i", "\t", trim(strip_tags(preg_replace("|<br\s*/?\s*>|i", "\n", $blockHtml))))));
+				//TODO: we should preserve img- and link-pathes: "text text linktext (path) text"
+
 				break;
 			case we_newsletter_block::FILE:
 				$content = we_base_file::load($_SERVER['DOCUMENT_ROOT'] . $block->Field);

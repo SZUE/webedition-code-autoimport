@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_import_site{
-
 	var $step = 0;
 	var $cmd = '';
 	var $from = '/';
@@ -593,7 +592,7 @@ class we_import_site{
 		// Suorce Directory
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['from'].value");
 		$_from_button = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button(
-				"select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "','folder',document.we_form.elements['from'].value)") : "";
+				"select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "','" . we_base_ContentTypes::FOLDER . "',document.we_form.elements['from'].value)") : "";
 
 		$_input = we_html_tools::htmlTextInput("from", 30, $this->from, "", "readonly", "text", 300);
 

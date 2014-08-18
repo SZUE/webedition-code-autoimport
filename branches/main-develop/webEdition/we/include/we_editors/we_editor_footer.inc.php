@@ -236,7 +236,7 @@ $_js_we_cmd = "
 if($we_doc->Table == TEMPLATES_TABLE){ //	Its a template
 	$_js_we_cmd .= '
 		case "save_document":	// its a folder
-	' . ( $we_doc->ContentType == 'folder' ?
+	' . ( $we_doc->ContentType == we_base_ContentTypes::FOLDER ?
 			"
 			top.we_cmd(\"save_document\",'" . $we_transaction . "',0,1,'','',arguments[6] ? arguments[6] : '',arguments[7] ? arguments[7] : '');" : "
 			top.we_cmd(\"save_document\",'" . $we_transaction . "',0,0,'',arguments[5] ? arguments[5] : '',arguments[6] ? arguments[6] : '',arguments[7] ? arguments[7] : '');

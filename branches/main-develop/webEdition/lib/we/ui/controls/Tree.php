@@ -309,7 +309,7 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement{
 				$out .= $this->getNodeObject($v['ID'], $v['Text'], $v['Published'], $v['Status']) .
 					'var tmpNode = new YAHOO.widget.TextNode(myobj, root, false);' .
 					'tmpNode.labelStyle = "' . $this->getTreeIconClass($v['ContentType']) . '";' .
-					($this->getTreeIconClass($v['ContentType']) !== 'folder' ? 'tmpNode.isLeaf = true;' : '');
+					($this->getTreeIconClass($v['ContentType']) !== we_base_ContentTypes::FOLDER ? 'tmpNode.isLeaf = true;' : '');
 
 				$session = new we_sdk_namespace($this->_sessionName);
 				if(in_array($v['ID'], $session->openNodes) && $v['IsFolder']){

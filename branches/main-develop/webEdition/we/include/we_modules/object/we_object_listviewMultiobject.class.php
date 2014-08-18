@@ -175,7 +175,7 @@ class we_object_listviewMultiobject extends we_listview_base{
 				'');
 
 		if($sqlParts["tables"]){
-			$this->DB_WE->query('SELECT ' . $this->DB_WE->escape($_obxTable) . '.ID as ID ' . $calendar_select . ' FROM ' . $sqlParts['tables'] . ' WHERE ' . (!empty($this->objects)
+			$this->DB_WE->query('SELECT ' . $this->DB_WE->escape($_obxTable) . '.OF_ID as ID ' . $calendar_select . ' FROM ' . $sqlParts['tables'] . ' WHERE ' . (!empty($this->objects)
 						? OBJECT_X_TABLE . $this->classID . '.OF_ID IN (' . implode(',', $this->objects) . ') AND ' : '') . ($this->searchable ? ' ' . OBJECT_X_TABLE . $this->classID . '.OF_IsSearchable=1 AND'
 						: '') . ' ' . $pid_tail . $where_lang . ' AND ' . OBJECT_X_TABLE . $this->classID . '.OF_ID!=0 ' . ($join ? ' AND (' . $join . ') ' : '') . $cat_tail . ' ' . ($sqlParts["publ_cond"]
 						? (' AND ' . $sqlParts["publ_cond"]) : '') . ' ' . ($sqlParts["cond"] ? (' AND (' . $sqlParts["cond"] . ') ') : '') . $calendar_where . $weDocumentCustomerFilter_tail . $sqlParts['groupBy']);
@@ -320,7 +320,7 @@ class we_object_listviewMultiobject extends we_listview_base{
 			}
 		}
 		$_selFields .= OBJECT_X_TABLE . $classID . '.OF_Published' . ' AS we_wedoc_Published,';
-		$f = OBJECT_X_TABLE . $classID . '.ID as ID,' . OBJECT_X_TABLE . $classID . '.OF_Templates as OF_Templates,' . OBJECT_X_TABLE . $classID . ".OF_ID as OF_ID," . OBJECT_X_TABLE . $classID . ".OF_Category as OF_Category," . OBJECT_X_TABLE . $classID . ".OF_Text as OF_Text," . OBJECT_X_TABLE . $classID . ".OF_Url as OF_Url," . OBJECT_X_TABLE . $classID . ".OF_TriggerID as OF_TriggerID," . OBJECT_X_TABLE . $classID . ".OF_WebUserID as OF_WebUserID," . OBJECT_X_TABLE . $classID . ".OF_Language as OF_Language," . $_selFields;
+		$f = OBJECT_X_TABLE . $classID . '.OF_ID as ID,' . OBJECT_X_TABLE . $classID . '.OF_Templates as OF_Templates,' . OBJECT_X_TABLE . $classID . ".OF_ID as OF_ID," . OBJECT_X_TABLE . $classID . ".OF_Category as OF_Category," . OBJECT_X_TABLE . $classID . ".OF_Text as OF_Text," . OBJECT_X_TABLE . $classID . ".OF_Url as OF_Url," . OBJECT_X_TABLE . $classID . ".OF_TriggerID as OF_TriggerID," . OBJECT_X_TABLE . $classID . ".OF_WebUserID as OF_WebUserID," . OBJECT_X_TABLE . $classID . ".OF_Language as OF_Language," . $_selFields;
 		foreach($matrix as $n => $p){
 			$n2 = $n;
 			if(substr($n, 0, 10) == 'we_object_'){
@@ -368,7 +368,7 @@ class we_object_listviewMultiobject extends we_listview_base{
 		$out = array(
 			"order" => $order,
 			"tables" => makeCSVFromArray($tb),
-			"groupBy" => (count($tb) > 1) ? ' GROUP BY ' . OBJECT_X_TABLE . $classID . '.ID ' : '',
+			"groupBy" => (count($tb) > 1) ? ' GROUP BY ' . OBJECT_X_TABLE . $classID . '.OF_ID ' : '',
 			"cond" => trim($cond),
 			"fields" => rtrim($f, ','),
 			"publ_cond" => array(),

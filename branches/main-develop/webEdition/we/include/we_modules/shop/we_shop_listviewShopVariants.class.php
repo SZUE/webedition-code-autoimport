@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,7 +27,6 @@
  *
  */
 class we_shop_listviewShopVariants extends we_listview_base{
-
 	var $Record = array();
 	var $ClassName = __CLASS__;
 	var $VariantData = array();
@@ -67,8 +65,8 @@ class we_shop_listviewShopVariants extends we_listview_base{
 		} else {
 
 			// check if its a document or a objectFile
-			if(isset($GLOBALS['we_doc']->ObjectID)){ // is an objectFile
-				$this->Id = isset($GLOBALS['we_doc']->OF_ID) ? $GLOBALS['we_doc']->OF_ID : $GLOBALS['we_doc']->ID;
+			if($GLOBALS['we_doc'] instanceof we_objectFile){ // is an objectFile
+				$this->Id = $GLOBALS['we_doc']->OF_ID;
 				$this->IsObjectFile = true;
 
 				$doc = new we_objectFile();

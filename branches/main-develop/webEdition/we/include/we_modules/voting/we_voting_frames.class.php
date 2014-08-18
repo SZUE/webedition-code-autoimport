@@ -346,7 +346,7 @@ class we_voting_frames extends weModuleFrames{
 			$export_box = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 12, 1);
 
 			$export_box->setCol(0, 0, array(), we_html_tools::getPixel(10, 10));
-			$export_box->setCol(1, 0, array(), we_html_tools::htmlFormElementTable($this->formFileChooser($this->_width_size - 130, 'csv_dir', '/', '', 'folder'), g_l('export', '[dir]')));
+			$export_box->setCol(1, 0, array(), we_html_tools::htmlFormElementTable($this->formFileChooser($this->_width_size - 130, 'csv_dir', '/', '', we_base_ContentTypes::FOLDER), g_l('export', '[dir]')));
 			$export_box->setCol(2, 0, array(), we_html_tools::getPixel(5, 5));
 
 			$lineend = new we_html_select(array('name' => 'csv_lineend', 'size' => 1, 'class' => 'defaultfont', 'style' => 'width: ' . $this->_width_size . 'px'));
@@ -722,7 +722,7 @@ function refreshTexts(){
 		$export_box = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 10, 1);
 
 		$export_box->setCol(0, 0, array(), we_html_tools::getPixel(10, 10));
-		$export_box->setCol(1, 0, array(), we_html_tools::htmlFormElementTable($this->formFileChooser($this->_width_size - 130, 'csv_dir', '/', '', 'folder'), g_l('export', '[dir]')));
+		$export_box->setCol(1, 0, array(), we_html_tools::htmlFormElementTable($this->formFileChooser($this->_width_size - 130, 'csv_dir', '/', '', we_base_ContentTypes::FOLDER), g_l('export', '[dir]')));
 		$export_box->setCol(2, 0, array(), we_html_tools::getPixel(5, 5));
 
 		$lineend = new we_html_select(array('name' => 'csv_lineend', 'size' => 1, 'class' => 'defaultfont', 'style' => 'width: ' . $this->_width_size . 'px'));

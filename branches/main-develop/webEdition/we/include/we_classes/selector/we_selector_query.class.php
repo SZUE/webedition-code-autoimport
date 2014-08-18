@@ -91,7 +91,7 @@ class we_selector_query{
 		$q = array();
 		foreach($types as $type){
 			$type = str_replace(" ", "", $type);
-			if($type == 'folder'){
+			if($type == we_base_ContentTypes::FOLDER){
 				$q[] = 'IsFolder=1';
 			} elseif(isset($typeField) && $typeField){
 				$q[] = $typeField . '="' . $this->db->escape($type) . '"';
@@ -164,7 +164,7 @@ class we_selector_query{
 		$q = array();
 		foreach($types as $type){
 			$type = str_replace(" ", "", $type);
-			if($type == 'folder'){
+			if($type == we_base_ContentTypes::FOLDER){
 				$q[] = 'IsFolder=1';
 			} elseif(isset($typeField) && $typeField){
 				$q[] = $typeField . '="' . $this->db->escape($type) . '"';

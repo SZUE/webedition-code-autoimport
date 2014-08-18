@@ -73,8 +73,8 @@ foreach($tbls as $table){
 			foreach($wsArr as $i){
 				$parents[] = $i;
 				$childs[] = $i;
-				we_readParents($i, $parents, $table, 'ContentType', 'folder', $db);
-				we_readChilds($i, $childs, $table, true, '', 'ContentType', 'folder', $db);
+				we_readParents($i, $parents, $table, 'ContentType', we_base_ContentTypes::FOLDER, $db);
+				we_readChilds($i, $childs, $table, true, '', 'ContentType', we_base_ContentTypes::FOLDER, $db);
 			}
 			$childlist = makeCSVFromArray($childs);
 			$parentlist = makeCSVFromArray($parents);

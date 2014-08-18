@@ -51,7 +51,7 @@ function we_tag_printVersion($attribs, $content){
 		}
 	}
 
-	if(isset($doc->TableID)){
+	if($doc instanceof we_objectFile){
 		//objects are always shown by a dynamic page
 		$_query_string['we_objectID'] = $id;
 		$_query_string['tid'] = $tid;

@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_selector_document extends we_selector_directory{
-
 	protected $userCanMakeNewFile = true;
 	protected $open_doc = 0;
 	protected $titles = array();
@@ -329,7 +328,7 @@ function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 		$this->query();
 		while($this->next_record()){
 
-			$title = strip_tags(str_replace(array('"', "\n\r", "\n", "\\", '°',), array('\"', ' ', ' ', "\\\\", '&deg;'), (isset($this->titles[$this->f("ID")]) ? oldHtmlspecialchars($this->titles[$this->f("ID")] ):'-')));
+			$title = strip_tags(str_replace(array('"', "\n\r", "\n", "\\", '°',), array('\"', ' ', ' ', "\\\\", '&deg;'), (isset($this->titles[$this->f("ID")]) ? oldHtmlspecialchars($this->titles[$this->f("ID")]) : '-')));
 
 			$published = $this->table == FILE_TABLE ? $this->f("Published") : 1;
 			$ret.='top.addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . $this->f("Text") . '",' . $this->f("IsFolder") . ',"' . $this->f("Path") . '","' . date(g_l('date', '[format][default]'), $this->f("ModDate")) . '","' . $this->f("ContentType") . '","' . $published . '","' . $title . '");';
@@ -441,8 +440,8 @@ function enableNewFileBut() {
 	function printSetDirHTML(){
 		echo '<script type="text/javascript"><!--
 top.clearEntries();' .
-			$this->printCmdAddEntriesHTML() .
-			$this->printCMDWriteAndFillSelectorHTML() . '
+		$this->printCmdAddEntriesHTML() .
+		$this->printCMDWriteAndFillSelectorHTML() . '
 top.fsheader.' . (intval($this->dir) == 0 ? 'disable' : 'enable') . 'RootDirButs();
 top.currentDir = "' . $this->dir . '";
 top.parentID = "' . $this->values["ParentID"] . '";
@@ -601,32 +600,26 @@ top.parentID = "' . $this->values["ParentID"] . '";
 						$metainfos = $this->db->getAllFirst(false);
 						break;
 					case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-						$_fieldnames = getHash('SELECT DefaultDesc,DefaultTitle,DefaultKeywords FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($result["TableID"]), $this->db, MYSQL_ASSOC);
-						$_selFields = "";
+						$_fieldnames = getHash('SELECT DefaultDesc,DefaultTitle,DefaultKeywords FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($result['TableID']), $this->db, MYSQL_ASSOC);
+						$_selFields = array();
 						foreach($_fieldnames as $_key => $_val){
-							if(empty($_val) || $_val == '_'){ // bug #4657
+							if(!$_val || $_val == '_'){ // bug #4657
 								continue;
 							}
-							if($_val == '_'){
-								$_val = '';
-							}
-							if($_val){
-								switch($_key){
-									case "DefaultDesc":
-										$_selFields .= $_val . " as Description,";
-										break;
-									case "DefaultTitle":
-										$_selFields .= $_val . " as Title,";
-										break;
-									case "DefaultKeywords":
-										$_selFields .= $_val . " as Keywords,";
-										break;
-								}
+							switch($_key){
+								case "DefaultDesc":
+									$_selFields[] = $_val . ' AS Description';
+									break;
+								case "DefaultTitle":
+									$_selFields[] = $_val . ' AS Title';
+									break;
+								case "DefaultKeywords":
+									$_selFields[] = $_val . ' AS Keywords';
+									break;
 							}
 						}
 						if($_selFields){
-							$_selFields = substr($_selFields, 0, strlen($_selFields) - 1);
-							$metainfos = getHash('SELECT ' . $_selFields . ' FROM ' . OBJECT_X_TABLE . intval($result['TableID']) . ' WHERE OF_ID=' . intval($result["ID"]), $this->db);
+							$metainfos = getHash('SELECT ' . implode(',', $_selFields) . ' FROM ' . OBJECT_X_TABLE . intval($result['TableID']) . ' WHERE OF_ID=' . intval($result["ID"]), $this->db);
 						}
 				}
 			}

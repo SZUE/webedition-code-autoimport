@@ -43,7 +43,7 @@ switch(isset($we_ContentType) ? $we_ContentType : ''){
 	case we_base_ContentTypes::IMAGE:
 		$we_doc = new we_imageDocument();
 		break;
-	case 'folder':
+	case we_base_ContentTypes::FOLDER:
 		$we_doc = new we_folder();
 		break;
 	case 'class_folder':
@@ -102,6 +102,6 @@ $GLOBALS['we_doc'] = clone($we_doc);
 
 //if document opens get initial object for versioning if no versions exist
 if(in_array(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0), array('load_edit_footer', 'switch_edit_page'))){
-	$version = new weVersions();
+	$version = new we_versions_version();
 	$version->setInitialDocObject($GLOBALS['we_doc']);
 }

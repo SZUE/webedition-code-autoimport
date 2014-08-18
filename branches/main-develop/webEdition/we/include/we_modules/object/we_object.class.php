@@ -33,7 +33,6 @@ class we_object extends we_document{
 	const ELEMENT_DEFAULT = 'default';
 	const QUERY_PREFIX = 'object_';
 
-	var $ObjectID = 0;
 	var $Users = ''; // Default Owners
 	var $UsersReadOnly = ''; // For DefaultOwners
 	var $RestrictUsers = '';
@@ -158,7 +157,6 @@ class we_object extends we_document{
 
 		if(!$this->wasUpdate){
 			$q = array(
-				'ID BIGINT NOT NULL AUTO_INCREMENT',
 				'OF_ID BIGINT NOT NULL',
 				'OF_ParentID BIGINT NOT NULL',
 				'OF_Text VARCHAR(255) NOT NULL',
@@ -179,8 +177,7 @@ class we_object extends we_document{
 			);
 
 			$indexe = array(
-				'PRIMARY KEY (ID)',
-				'UNIQUE KEY OF_ID (OF_ID)',
+				'PRIMARY KEY (OF_ID)',
 				'KEY (OF_WebUserID)',
 				'KEY `published` (`OF_ID`,`OF_Published`,`OF_IsSearchable`)',
 				'KEY (`OF_IsSearchable`)',
@@ -298,7 +295,7 @@ class we_object extends we_document{
 			// folder in object schreiben
 			if(!($this->OldPath && ($this->OldPath != $this->Path))){
 				$fold = new we_class_folder();
-				$fold->initByPath($this->getPath(), OBJECT_FILES_TABLE, 1, 0, 1);
+				$fold->initByPath($this->getPath(), OBJECT_FILES_TABLE);
 			}
 		} else {
 			$ctable = OBJECT_X_TABLE . intval($this->ID);
@@ -1929,7 +1926,6 @@ class we_object extends we_document{
 				foreach($this->persistent_slots as $cur){
 					$this->{$cur} = isset($doc->{$cur}) ? $doc->{$cur} : '';
 				}
-				$this->ObjectID = 0;
 				$this->CreationDate = time();
 				$this->CreatorID = $_SESSION["user"]["ID"];
 				$this->ID = 0;
@@ -1973,7 +1969,7 @@ class we_object extends we_document{
 	}
 
 	function del_workspace($id){
-		if(f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . ' WHERE TableID=' . intval($this->ID) . " AND (Workspaces LIKE '," . intval($id) . ",' OR ExtraWorkspaces LIKE '," . intval($id) . ",') LIMIT 1", '', $this->DB_WE)){
+		if(f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=0 AND TableID=' . intval($this->ID) . " AND (Workspaces LIKE '," . intval($id) . ",' OR ExtraWorkspaces LIKE '," . intval($id) . ",') LIMIT 1", '', $this->DB_WE)){
 			$GLOBALS['WE_DEL_WORKSPACE_ERROR'] = true;
 			return;
 		}
@@ -2393,7 +2389,7 @@ class we_object extends we_document{
 	}
 
 	static function isUsedByObjectFile($id){
-		return $id && f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . ' WHERE TableID=' . intval($id) . ' LIMIT 1');
+		return $id && f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . ' WHERE IsClassFolder=0 AND TableID=' . intval($id) . ' LIMIT 1');
 	}
 
 	public function getDocumentCss(){

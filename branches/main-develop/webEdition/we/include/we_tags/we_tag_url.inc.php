@@ -43,7 +43,7 @@ function we_tag_url($attribs){
 			$doc = we_getDocForTag($id, true); // check if we should use the top document or the  included document
 			$testid = $doc->ID;
 			if($id == 'top'){//check for object
-				if(isset($GLOBALS['WE_MAIN_DOC']->TableID)){//ein object
+				if($GLOBALS['WE_MAIN_DOC'] instanceof we_objectFile){//ein object
 					$triggerid = ($triggerid ? $triggerid : $GLOBALS['WE_MAIN_DOC']->ID);
 
 					$path_parts = pathinfo(id_to_path($triggerid));

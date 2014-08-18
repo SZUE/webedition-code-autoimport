@@ -20,7 +20,8 @@ class we_base_sessionHandler implements SessionHandlerInterface{
 			$this->execTime = ($this->execTime > 60 ? 60 : $this->execTime); //time might be wrong (1&1)
 			$this->id = uniqid('', true);
 			if(!(extension_loaded('suhosin') && ini_get('suhosin.session.encrypt'))){//make it possible to keep users when switching
-				$this->crypt = hash('haval224,4', $_SERVER['DOCUMENT_ROOT'] . $_SERVER['HTTP_USER_AGENT'] . (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : '') . (isset($_SERVER['HTTP_ACCEPT_ENCODING']) ? $_SERVER['HTTP_ACCEPT_ENCODING'] : ''));
+				// due to IE we can't use HTTP_ACCEPT_LANGUAGE, HTTP_ACCEPT_ENCODING - they change the string on each request
+				$this->crypt = hash('haval224,4', $_SERVER['DOCUMENT_ROOT'] . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : 'HTTP_USER_AGENT'));
 				//double key size is needed
 				$this->crypt .=$this->crypt;
 			}
@@ -55,16 +56,10 @@ class we_base_sessionHandler implements SessionHandlerInterface{
 			usleep(100000);
 		}
 		if($data){
-			$oldData = substr($data, 0, 30);
 			$data = ($data[0] == '$' && $this->crypt ? we_customer_customer::decryptData($data, $this->crypt) : $data);
-			if($data){
-				$tmp = gzuncompress($data);
-				/*if(!$tmp){
-					$x = getHash('SELECT uid,tmp FROM ' . SESSION_TABLE . ' WHERE session_id=x\'' . $sessID . '\'');
-					t_e($oldData, $sessID, $_SERVER['HTTP_USER_AGENT'] . (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : '') . (isset($_SERVER['HTTP_ACCEPT_ENCODING']) ? $_SERVER['HTTP_ACCEPT_ENCODING'] : ''), $x, $data
-					);
-				}*/
-				return $tmp;
+			if($data && $data[0] == 'x'){
+				//valid gzip
+				return gzuncompress($data);
 			}//else we need a new sessionid; if decrypt failed we might else destroy an existing valid session
 		}
 
@@ -87,8 +82,8 @@ class we_base_sessionHandler implements SessionHandlerInterface{
 				'sessionName' => $this->sessionName,
 				'lockid' => $lock ? $this->id : '',
 				'lockTime' => sql_function($lock ? 'NOW()' : 'NULL'),
-				/*'uid' => isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : (isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0),
-				'tmp' => serialize($_SESSION),*/
+				/* 'uid' => isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : (isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0),
+				  -				'tmp' => serialize($_SESSION), */
 		)));
 		return true;
 	}
