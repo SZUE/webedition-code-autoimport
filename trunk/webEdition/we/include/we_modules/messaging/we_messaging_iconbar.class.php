@@ -25,7 +25,6 @@
 //TODO: make weModuleIconbar.class for all Iconbars and let weMessagingIconbar inherit from it
 
 class we_messaging_iconbar{
-
 	private $parentFrameset;
 	private $weTransaction;
 	private $viewclass;
@@ -52,14 +51,13 @@ class we_messaging_iconbar{
 		array("image:btn_task_messages", "javascript:launch_msg()", false)
 	);
 
-	function __construct($parentFrameset){
-
+	public function __construct($parentFrameset){
 		$this->parentFrameset = $parentFrameset;
 		$this->weTransaction = $this->parentFrameset->weTransaction;
 		$this->viewclass = $this->parentFrameset->viewclass;
 	}
 
-	function getHTML(){
+	public function getHTML(){
 		return $this->parentFrameset->getHTMLDocument($this->getHTMLBody(), $this->getJSCode());
 	}
 
@@ -195,8 +193,6 @@ class we_messaging_iconbar{
 		}
 
 		return we_html_element::htmlBody($attribs = array('background' => IMAGE_DIR . 'backgrounds/iconbarBack.gif'), $table->getHTML());
-
-		//<body marginwidth="0" topmargin="5" marginheight="5" leftmargin="0">
 	}
 
 }

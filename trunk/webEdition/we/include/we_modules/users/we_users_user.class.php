@@ -1772,7 +1772,7 @@ function delElement(elvalues,elem) {
 		$groups = array(
 			'glossary' => g_l('prefs', '[tab_glossary]'),
 			'ui' => g_l('prefs', '[tab][ui]'),
-			'editor' => g_l('prefs', '[tab][editor]'),
+			//'editor' => g_l('prefs', '[tab][editor]'),
 		);
 
 		$titles = $groups;
@@ -1780,7 +1780,7 @@ function delElement(elvalues,elem) {
 		$multiboxes = array(
 			'glossary' => $this->formPreferencesGlossary(),
 			'ui' => $this->formPreferencesUI(),
-			'editor' => $this->formPreferencesEditor(),
+			//'editor' => $this->formPreferencesEditor(),
 		);
 
 		return we_html_multiIconBox::getHTML('', '100%', array(
