@@ -63,8 +63,7 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 		$aTrf = we_base_preferences::getUserPref('cockpit_rss');
 		$aDat = $aDatTblPref ? @unserialize($aDatTblPref) : $aCfgProps; //
 		$aDat = $aDat ? $aDat : $aCfgProps;
-		$aTrf = empty($aTrf) ? array_pop($aDat) : @unserialize($aTrf);
-		$aTrf = $aTrf ? $aTrf : $aTopRssFeeds;
+		$aTrf = $aTrf ? @unserialize($aTrf) : $aTopRssFeeds;
 		if(count($aDat) > $iLayoutCols){
 			while(count($aDat) > $iLayoutCols){
 				$aDelCol = array_pop($aDat);
