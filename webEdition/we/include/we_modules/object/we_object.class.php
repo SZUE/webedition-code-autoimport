@@ -1275,7 +1275,8 @@ class we_object extends we_document{
 		$attribs = array(
 			'name' => $n
 		);
-		$link = $this->getElement($n) ? unserialize($this->getElement($n)) : array();
+		$elem = $this->getElement($n);
+		$link = $elem ? (is_array($elem) ? $elem : unserialize($elem)) : array();
 		if(!is_array($link)){
 			$link = array();
 		}
