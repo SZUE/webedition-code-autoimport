@@ -1905,7 +1905,7 @@ self.focus();
 		$offset = max(we_base_request::_(we_base_request::INT, "offset", 0), 0);
 		$numRows = we_base_request::_(we_base_request::INT, "numRows", 15);
 		$anz = count($emails);
-		$endRow = min($offset + $numRows, anz);
+		$endRow = min($offset + $numRows, $anz);
 
 		function cmp0($a, $b){
 			return strnatcasecmp($a[0], $b[0]);

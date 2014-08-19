@@ -28,6 +28,15 @@ we_html_tools::protect($protect);
 $what = we_base_request::_(we_base_request::STRING, 'pnt', 'frameset');
 
 $newsletterFrame = new we_newsletter_frames();
+switch($what){
+	case 'edit_file':
+		$mode = we_base_request::_(we_base_request::FILE, 'art');
+	break;
+	default:
+		$mode = we_base_request::_(we_base_request::INT, 'art', 0);
+		break;
+}
+
 echo $newsletterFrame->getHTMLDocumentHeader($what, $mode);
 
 if(($id = we_base_request::_(we_base_request::INT, 'inid')) !== false){
@@ -56,11 +65,7 @@ switch($what){
 	case 'qsend':
 	case 'eedit':
 	case 'black_list':
-		$mode = we_base_request::_(we_base_request::INT, 'art', 0);
 		break;
-	case 'edit_file':
-		$mode = we_base_request::_(we_base_request::FILE, 'art');
-	//no break;
 	default:
 		$mode = isset($mode) ? $mode : we_base_request::_(we_base_request::INT, 'art', 0);
 		$newsletterFrame->View->processCommands();
