@@ -406,7 +406,7 @@ class we_messaging_todo extends we_messaging_proto{
 					'MessageText' => $data['body'],
 					'seenStatus' => 0,
 					'Priority' => $data['priority'] ? $data['priority'] : sql_function('NULL'),
-					'Content_Type' => $data['Content_Type'] ? $data['Content_Type'] : sql_function('NULL')
+					'Content_Type' => isset($data['Content_Type']) && $data['Content_Type'] ? $data['Content_Type'] : sql_function('NULL')
 			)));
 
 			$results['id'] = $this->DB_WE->getInsertId();

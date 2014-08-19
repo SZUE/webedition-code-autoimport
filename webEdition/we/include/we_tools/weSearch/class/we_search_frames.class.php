@@ -43,7 +43,7 @@ class we_search_frames extends we_tool_frames{
 	}
 
 	function getHTMLCmd(){
-		if(($pid = we_base_request::_(we_base_request::STRING, 'pid')) === false){
+		if(($pid = we_base_request::_(we_base_request::INT, 'pid')) === false){
 			exit();
 		}
 
@@ -218,7 +218,7 @@ class we_search_frames extends we_tool_frames{
 	}
 
 	function getTab(){
-		$cmdid = we_base_request::_(we_base_request::STRING, 'cmdid', '');
+		$cmdid = we_base_request::_(we_base_request::INT, 'cmdid', '');
 		if($cmdid != ''){
 			$_REQUEST['searchstartAdvSearch'] = 0;
 		}
@@ -341,18 +341,16 @@ class we_search_frames extends we_tool_frames{
 	}
 
 	function getHTMLTabTemplates(){
-		$innerSearch = 'TmplSearch';
-
-		$_searchDirChooser_block = '<div>' . $this->View->getDirSelector($innerSearch) . '</div>';
-		$_searchField_block = '<div>' . $this->View->getSearchDialog($innerSearch) . '</div>';
-		$_searchCheckboxes_block = '<div>' . $this->View->getSearchDialogCheckboxes($innerSearch) . '</div>';
-		$content = $this->View->searchProperties($innerSearch);
-		$headline = $this->View->makeHeadLines($innerSearch);
-		$foundItems = $_SESSION['weS']['weSearch']['foundItems' . $innerSearch . ''];
+		$_searchDirChooser_block = '<div>' . $this->View->getDirSelector('TmplSearch') . '</div>';
+		$_searchField_block = '<div>' . $this->View->getSearchDialog('TmplSearch') . '</div>';
+		$_searchCheckboxes_block = '<div>' . $this->View->getSearchDialogCheckboxes('TmplSearch') . '</div>';
+		$content = $this->View->searchProperties('TmplSearch');
+		$headline = $this->View->makeHeadLines('TmplSearch');
+		$foundItems = $_SESSION['weS']['weSearch']['foundItemsTmplSearch'];
 
 		$_searchResult_block = '<div>
-      <div id="parametersTop_' . $innerSearch . '">' . $this->View->getSearchParameterTop(
-				$foundItems, $innerSearch) . '</div>' . $this->View->tblList($content, $headline, $innerSearch) . '<div id="parametersBottom_' . $innerSearch . '">' . $this->View->getSearchParameterBottom($foundItems, $innerSearch) . '</div>
+      <div id="parametersTop_TmplSearch">' . $this->View->getSearchParameterTop(
+				$foundItems, 'TmplSearch') . '</div>' . $this->View->tblList($content, $headline, 'TmplSearch') . '<div id="parametersBottom_TmplSearch">' . $this->View->getSearchParameterBottom($foundItems, 'TmplSearch') . '</div>
       </div>';
 
 		return array(

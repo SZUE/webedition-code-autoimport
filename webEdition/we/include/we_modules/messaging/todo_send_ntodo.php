@@ -39,7 +39,11 @@ if(($hour = we_base_request::_(we_base_request::INT, 'td_deadline_hour')) !== fa
 
 switch(we_base_request::_(we_base_request::STRING, "mode")){
 	case 'forward':
-		$arr = array('rcpts_string' => we_base_request::_(we_base_request::STRING, 'rcpts_string'), 'deadline' => $deadline, 'body' => we_base_request::_(we_base_request::STRING, 'mn_body'));
+		$arr = array(
+			'rcpts_string' => we_base_request::_(we_base_request::STRING, 'rcpts_string'),
+			'deadline' => $deadline,
+			'body' => we_base_request::_(we_base_request::STRING, 'mn_body')
+		);
 		$res = $messaging->forward($arr);
 		$heading = g_l('modules_messaging', '[forwarding_todo]');
 		$action = g_l('modules_messaging', '[forwarded_to]');
@@ -47,7 +51,9 @@ switch(we_base_request::_(we_base_request::STRING, "mode")){
 		$n_action = g_l('modules_messaging', '[todo_n_forwarded]');
 		break;
 	case 'reject':
-		$arr = array('body' => we_base_request::_(we_base_request::STRING, 'mn_body'));
+		$arr = array(
+			'body' => we_base_request::_(we_base_request::STRING, 'mn_body')
+		);
 		$res = $messaging->reject($arr);
 		$heading = g_l('modules_messaging', '[rejecting_todo]');
 		$action = g_l('modules_messaging', '[rejected_to]');
@@ -55,7 +61,14 @@ switch(we_base_request::_(we_base_request::STRING, "mode")){
 		$n_action = g_l('modules_messaging', '[todo_n_rejected]');
 		break;
 	default:
-		$arr = array('rcpts_string' => we_base_request::_(we_base_request::STRING, 'rcpts_string'), 'subject' => we_base_request::_(we_base_request::STRING, 'mn_subject'), 'body' => we_base_request::_(we_base_request::STRING, 'mn_body'), 'deadline' => $deadline, 'status' => 0, 'priority' => we_base_request::_(we_base_request::INT, 'mn_priority'));
+		$arr = array(
+			'rcpts_string' => we_base_request::_(we_base_request::STRING, 'rcpts_string'),
+			'subject' => we_base_request::_(we_base_request::STRING, 'mn_subject'),
+			'body' => we_base_request::_(we_base_request::STRING, 'mn_body'),
+			'deadline' => $deadline,
+			'status' => 0,
+			'priority' => we_base_request::_(we_base_request::INT, 'mn_priority')
+		);
 		$res = $messaging->send($arr, "we_todo");
 		$heading = g_l('modules_messaging', '[creating_todo]');
 		$s_action = g_l('modules_messaging', '[todo_s_created]');
@@ -63,13 +76,13 @@ switch(we_base_request::_(we_base_request::STRING, "mode")){
 		break;
 }
 echo we_html_tools::getHtmlTop($heading) .
- STYLESHEET . we_html_element::jsElement('
-			top.opener.top.content.cmd.location = "' . WE_MESSAGING_MODULE_DIR . 'edit_messaging_frameset.php?pnt=cmd&mcmd=refresh_mwork&we_transaction=' . we_base_request::_(we_base_request::TRANSACTION, 'we_transaction') . '";');
-if(!empty($res['ok'])){
+ STYLESHEET .
+	we_html_element::jsElement('top.opener.top.content.cmd.location = "' . WE_MESSAGING_MODULE_DIR . 'edit_messaging_frameset.php?pnt=cmd&mcmd=refresh_mwork&we_transaction=' . we_base_request::_(we_base_request::TRANSACTION, 'we_transaction') . '";');
+if($res['ok']){
 	echo we_html_element::jsElement('
-        if (opener && opener.top && opener.top.content) {
-		    top.opener.top.content.update_messaging();
-        }');
+if (opener && opener.top && opener.top.content) {
+	top.opener.top.content.update_messaging();
+}');
 }
 ?>
 </head>

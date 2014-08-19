@@ -27,8 +27,8 @@ $protect = we_base_moduleInfo::isActive('workflow') && we_users_util::canEditMod
 we_html_tools::protect($protect);
 
 $what = we_base_request::_(we_base_request::RAW, 'pnt','frameset');
-$mode = we_base_request::_(we_base_request::RAW, 'art', 0);
-$type = we_base_request::_(we_base_request::RAW, 'type', 0);
+$mode = we_base_request::_(we_base_request::INT, 'art', 0);
+$type = we_base_request::_(we_base_request::INT, 'type', 0);
 
 $weFrame = new we_workflow_frames();
 echo $weFrame->getHTMLDocumentHeader();
