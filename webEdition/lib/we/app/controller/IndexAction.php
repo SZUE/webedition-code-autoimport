@@ -39,6 +39,11 @@ class we_app_controller_IndexAction extends Zend_Controller_Action{
 	 * @return void
 	 */
 	public function indexAction(){
+/*		we_html_tools::setHttpCode(307);
+		$tmp=  str_replace('index.php', '', $this->getFrontController()->getBaseUrl());
+		header('Location: '.$tmp.'redirect.php/frameset/index');
+ 
+ */
 		if(strpos($this->getFrontController()->getBaseUrl(), 'index.php') === false){
 			$this->_redirect('index.php/frameset/index');
 		} else {

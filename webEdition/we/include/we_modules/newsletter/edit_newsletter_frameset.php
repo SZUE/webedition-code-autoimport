@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -59,6 +58,9 @@ switch($what){
 	case 'eedit':
 	case 'black_list':
 		break;
+	case 'edit_file':
+		$mode = we_base_request::_(we_base_request::FILE, 'art');
+	//no break;
 	default:
 		$newsletterFrame->View->processCommands();
 }
