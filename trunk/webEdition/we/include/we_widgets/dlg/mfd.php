@@ -164,7 +164,6 @@ $idname = 'UserIDTmp';
 $users = makeArrayFromCSV($sUsers);
 
 $cmd0=we_base_request::_(we_base_request::STRING,'we_cmd','',0);
-$wecmdenc1 = we_base_request::encCmd("top.weEditorFrameController.getActiveDocumentReference()._propsDlg['" . $cmd0 . "'].document.forms[0].elements['UserIDTmp'].value");
 $wecmdenc2 = we_base_request::encCmd("top.weEditorFrameController.getActiveDocumentReference()._propsDlg['" . $cmd0 . "'].document.forms[0].elements['UserNameTmp'].value");
 $wecmdenc5 = we_base_request::encCmd("opener.top.weEditorFrameController.getActiveDocumentReference()._propsDlg['" . $cmd0 . "'].addUserToField();");
 
@@ -192,7 +191,7 @@ $sUsrContent = '<table border="0" cellpadding="0" cellspacing="0" width="300"><t
 	)) . '</td></tr>' . (permissionhandler::hasPerm('EDIT_MFD_USER') ? '<tr><td align="right">' . we_html_tools::getPixel(2, 8) . we_html_element::htmlBr() . we_html_button::create_button_table(
 			array(
 				we_html_button::create_button('delete_all', "javascript:delUser(-1)", true, -1, -1, "", "", (count($users)) ? false : true),
-				we_html_button::create_button('add', "javascript:opener.getUser('browse_users','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $wecmdenc5 . "','','',1);")
+				we_html_button::create_button('add', "javascript:opener.getUser('browse_users','top.weEditorFrameController.getActiveDocumentReference()._propsDlg['" . $cmd0 . "'].document.forms[0].elements['UserIDTmp'].value','" . $wecmdenc2 . "','','','" . $wecmdenc5 . "','','',1);")
 		)) . '</td></tr>' : '') . '</table>';
 
 $oShowUser = we_html_tools::htmlFormElementTable($sUsrContent, g_l('cockpit', '[following_users]'), "left", "defaultfont");

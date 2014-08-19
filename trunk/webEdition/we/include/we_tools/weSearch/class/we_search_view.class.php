@@ -1868,11 +1868,12 @@ class we_search_view extends we_tool_view{
 				}
 			}
 		}
-
-		foreach($searchText as &$cur){
-			$cur = trim($cur);
+		if(isset($searchText) && is_array($searchText)){
+			array_map('trim', $searchText);
+		} else {
+			$searchText = array();
 		}
-		unset($cur);
+
 		$tab = we_base_request::_(we_base_request::INT, 'tab', we_base_request::_(we_base_request::INT, 'tabnr', 1));
 
 		if(isset($searchText[0]) && substr($searchText[0], 0, 4) == 'exp:'){
@@ -1896,7 +1897,7 @@ class we_search_view extends we_tool_view{
 			}
 		} elseif(
 			($obj->IsFolder != 1 && ( ($whichSearch == 'DocSearch' && $tab == 1) || ($whichSearch == 'TmplSearch' && $tab == 2) || ($whichSearch == 'AdvSearch' && $tab == 3)) ) ||
-			(we_base_request::_(we_base_request::STRING, 'cmdid')) ||
+			(we_base_request::_(we_base_request::INT, 'cmdid')) ||
 			(($view = we_base_request::_(we_base_request::STRING, 'view')) == "GetSearchResult" || $view == "GetMouseOverDivs")
 		){
 
@@ -2489,7 +2490,7 @@ class we_search_view extends we_tool_view{
 		$this->searchclass->height = count($this->Model->searchFieldsAdvSearch);
 
 		$cmd = we_base_request::_(we_base_request::STRING, 'cmd');
-		$cmdid = we_base_request::_(we_base_request::STRING, 'cmdid');
+		$cmdid = we_base_request::_(we_base_request::INT, 'cmdid');
 
 		if(isset($_REQUEST["searchFieldsAdvSearch"])){
 			if($cmdid !== false){
@@ -2536,8 +2537,9 @@ class we_search_view extends we_tool_view{
 				$locationAdvSearch :
 				array_values($this->Model->locationAdvSearch));
 
-		$this->Model->searchAdvSearch = array_values($this->Model->searchAdvSearch);
-		$this->Model->searchFieldsAdvSearch = array_values($this->Model->searchFieldsAdvSearch);
+		$this->Model->searchAdvSearch = $this->Model->searchFieldsAdvSearch = is_array($this->Model->searchFieldsAdvSearch) ?
+			array_values($this->Model->searchFieldsAdvSearch) :
+			array();
 
 		for($i = 0; $i < $this->searchclass->height; $i++){
 			$button = we_html_button::create_button(

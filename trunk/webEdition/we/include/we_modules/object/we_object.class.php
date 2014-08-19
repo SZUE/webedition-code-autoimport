@@ -1489,11 +1489,10 @@ class we_object extends we_document{
 		$textname = 'userNameTmp';
 		$idname = 'userIDTmp';
 		$delallbut = we_html_button::create_button("delete_all", "javascript:we_cmd('object_del_all_users','')", true, 0, 0, "", "", $this->Users ? false : true);
-		$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['" . $idname . "'].value");
 		$wecmdenc2 = we_base_request::encCmd("document.forms['we_form'].elements['" . $textname . "'].value");
 		$wecmdenc5 = we_base_request::encCmd("fillIDs();opener.we_cmd('users_add_user',top.allIDs)");
 		$addbut = $canChange ?
-			$this->htmlHidden($idname, "") . $this->htmlHidden($textname, "") . we_html_button::create_button("add", "javascript:we_cmd('browse_users','" . $wecmdenc1 . "','" . $wecmdenc2 . "','',document.forms[0].elements['" . $idname . "'].value,'" . $wecmdenc5 . "','','',1)") : '';
+			$this->htmlHidden($idname, "") . $this->htmlHidden($textname, "") . we_html_button::create_button("add", "javascript:we_cmd('browse_users','document.forms['we_form'].elements['" . $idname . "'].value','" . $wecmdenc2 . "','',document.forms[0].elements['" . $idname . "'].value,'" . $wecmdenc5 . "','','',1)") : '';
 
 		$content = '<table border="0" cellpadding="0" cellspacing="0">
 <tr><td><div style="width:506px;" class="multichooser">' . $content . '</div></td></tr>' .

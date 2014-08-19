@@ -26,7 +26,6 @@
 
 class we_messaging_message extends we_messaging_proto{
 	/* Flag which is set when the file is not new */
-
 	var $selected_message = array();
 	var $selected_set = array();
 	var $search_fields = array('m.headerSubject', 'm.headerFrom', 'm.MessageText');
@@ -136,11 +135,11 @@ class we_messaging_message extends we_messaging_proto{
 
 	function send(&$rcpts, &$data){
 		$results = array(
-		'err' => array(),
-		'ok' => array(),
-		'failed' => array(),
-			);
-		$db=new DB_WE();
+			'err' => array(),
+			'ok' => array(),
+			'failed' => array(),
+		);
+		$db = new DB_WE();
 
 		foreach($rcpts as $rcpt){
 			//FIXME: Put this out of the loop
