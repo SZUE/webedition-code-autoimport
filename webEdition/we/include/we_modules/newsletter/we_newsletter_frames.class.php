@@ -803,7 +803,7 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 
 		return $this->View->htmlHidden('copyid', 0) .
 			$this->View->htmlHidden('copyid_text', "") .
-			we_html_button::create_button('select', "javascript:we_cmd('openSelector',document.we_form.elements['copyid'].value,'" . NEWSLETTER_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','" . get_ws(NEWSLETTER_TABLE) . "')");
+			we_html_button::create_button('select', "javascript:we_cmd('openSelector',document.we_form.elements['copyid'].value,'" . NEWSLETTER_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . get_ws(NEWSLETTER_TABLE) . "')");
 	}
 
 	function getHTMLCustomer($group){

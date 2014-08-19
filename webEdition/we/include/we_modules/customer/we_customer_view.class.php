@@ -1317,7 +1317,7 @@ self.close();');
 	</tr>
 	<tr>
 		<td class="weEditmodeStyle" colspan="2" align="center">' .
-					we_html_button::create_button_table(array(we_html_button::create_button('image:btn_select_image', "javascript:we_cmd('openDocselector', '" . $imgId . "', '" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "', '', '" . we_base_ContentTypes::IMAGE . "', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true), we_html_button::create_button('image:btn_function_trash', "javascript:document.we_form.elements['" . $field . "'].value='';refreshForm();", true)), 5) .
+					we_html_button::create_button_table(array(we_html_button::create_button('image:btn_select_image', "javascript:we_cmd('openDocselector', '" . $imgId . "', '" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','', '', '" . we_base_ContentTypes::IMAGE . "', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true), we_html_button::create_button('image:btn_function_trash', "javascript:document.we_form.elements['" . $field . "'].value='';refreshForm();", true)), 5) .
 					'</td>
 	</tr>
 </table>';

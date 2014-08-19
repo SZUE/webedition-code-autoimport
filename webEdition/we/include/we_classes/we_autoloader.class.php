@@ -223,6 +223,11 @@ abstract class we_autoloader{
 			case 'Horde':
 				include(WE_LIB_PATH . 'additional/' . str_replace('_', '/', $class_name) . '.php');
 				return true;
+			case 'PMA':
+				list(,$name)=explode('_', $class_name,2);
+				//t_e(WE_APPS_PATH.'wephpmyadmin/phpMyAdmin/libraries/'.$domain.'.class.php');
+				include(WE_APPS_PATH.'wephpmyadmin/phpMyAdmin/libraries/'.$name.'.class.php');
+				return true;
 			case 'Zend':
 				self::loadZend($class_name);
 				return false;
