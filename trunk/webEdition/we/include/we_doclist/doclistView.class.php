@@ -850,7 +850,7 @@ class doclistView{
 
 					$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['searchParentID[" . $i . "]'].value");
 					$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['search[" . $i . "]'].value");
-					$_cmd = "javascript:we_cmd('openDocselector',document.we_form.elements['searchParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "','" . $_rootDirID . "','','" . we_base_ContentTypes::TEMPLATE . "')";
+					$_cmd = "javascript:we_cmd('openDocselector',document.we_form.elements['searchParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $_rootDirID . "','','" . we_base_ContentTypes::TEMPLATE . "')";
 					$_button = we_html_button::create_button('select', $_cmd, true, 70, 22, '', '', false);
 					$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('search[' . $i . ']', 58, $_linkPath, '', 'readonly ', 'text', 190, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(array('name' => 'searchParentID[' . $i . ']', "value" => "")), we_html_tools::getPixel(5, 4), $_button);
 
@@ -861,7 +861,7 @@ class doclistView{
 
 					$_rootDirID = 0;
 
-					$_cmd = "javascript:we_cmd('openCatselector',document.we_form.elements['searchParentID[" . $i . "]'].value,'" . CATEGORY_TABLE . "','document.we_form.elements[\\'searchParentID[" . $i . "]\\'].value','document.we_form.elements[\\'search[" . $i . "]\\'].value','','" . session_id() . "','" . $_rootDirID . "','','')";
+					$_cmd = "javascript:we_cmd('openCatselector',document.we_form.elements['searchParentID[" . $i . "]'].value,'" . CATEGORY_TABLE . "','document.we_form.elements[\\'searchParentID[" . $i . "]\\'].value','document.we_form.elements[\\'search[" . $i . "]\\'].value','','','" . $_rootDirID . "','','')";
 					$_button = we_html_button::create_button('select', $_cmd, true, 70, 22, '', '', false);
 					$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('search[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 190, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(array('name' => 'searchParentID[' . $i . ']', "value" => "")), we_html_tools::getPixel(5, 4), $_button);
 

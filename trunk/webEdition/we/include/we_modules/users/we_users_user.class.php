@@ -1682,13 +1682,13 @@ function delElement(elvalues,elem) {
 
 				switch($k){
 					case (defined('NEWSLETTER_TABLE') ? NEWSLETTER_TABLE : 'NEWSLETTER_TABLE'):
-						$button = we_html_button::create_button('select', "javascript:we_cmd('openNewsletterDirselector',document.getElementsByName('" . $obj_names . "[id][" . $key . "]')[0].value,'document.getElementsByName(\'" . $obj_names . "[id][" . $key . "]\')[0].value','document.getElementsByName(\'" . $obj_names . "[Text][" . $key . "]\')[0].value','','" . session_id() . "','" . we_base_request::_(we_base_request::INT, "rootDirID", 0) . "' )");
+						$button = we_html_button::create_button('select', "javascript:we_cmd('openNewsletterDirselector',document.getElementsByName('" . $obj_names . "[id][" . $key . "]')[0].value,'document.getElementsByName(\'" . $obj_names . "[id][" . $key . "]\')[0].value','document.getElementsByName(\'" . $obj_names . "[Text][" . $key . "]\')[0].value','','','" . we_base_request::_(we_base_request::INT, "rootDirID", 0) . "' )");
 						break;
 					case NAVIGATION_TABLE:
-						$button = we_html_button::create_button('select', "javascript:we_cmd('openNavigationDirselector',document.getElementsByName('" . $obj_names . "[id][" . $key . "]')[0].value,'document.getElementsByName(\'" . $obj_names . "[id][" . $key . "]\')[0].value','document.getElementsByName(\'" . $obj_names . "[Text][" . $key . "]\')[0].value','','" . session_id() . "','" . we_base_request::_(we_base_request::INT, "rootDirID", 0) . "' )");
+						$button = we_html_button::create_button('select', "javascript:we_cmd('openNavigationDirselector',document.getElementsByName('" . $obj_names . "[id][" . $key . "]')[0].value,'document.getElementsByName(\'" . $obj_names . "[id][" . $key . "]\')[0].value','document.getElementsByName(\'" . $obj_names . "[Text][" . $key . "]\')[0].value','','','" . we_base_request::_(we_base_request::INT, "rootDirID", 0) . "' )");
 						break;
 					default:
-						$button = we_html_button::create_button('select', "javascript:we_cmd('openDirselector',document.getElementsByName('" . $obj_names . "[id][" . $key . "]')[0].value,'" . $k . "','document.getElementsByName(\'" . $obj_names . "[id][" . $key . "]\')[0].value','document.getElementsByName(\'" . $obj_names . "[Text][" . $key . "]\')[0].value','','" . session_id() . "','" . we_base_request::_(we_base_request::INT, "rootDirID", 0) . "' )");
+						$button = we_html_button::create_button('select', "javascript:we_cmd('openDirselector',document.getElementsByName('" . $obj_names . "[id][" . $key . "]')[0].value,'" . $k . "','document.getElementsByName(\'" . $obj_names . "[id][" . $key . "]\')[0].value','document.getElementsByName(\'" . $obj_names . "[Text][" . $key . "]\')[0].value','','','" . we_base_request::_(we_base_request::INT, "rootDirID", 0) . "' )");
 				}
 
 				$yuiSuggest->setAcId('WS' . $k . $key);
@@ -1897,9 +1897,9 @@ function select_seem_start() {
 	}
 
 	if(document.getElementById('seem_start_type').value == 'object') {
-		top.opener.top.we_cmd('openDocselector', document.forms[0].elements['seem_start_object'].value, '" . (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : "") . "', myWindStr + '.document.forms[0].elements[\'seem_start_object\'].value', myWindStr + '.document.forms[0].elements[\'seem_start_object_name\'].value', '', '" . session_id() . "', '', 'objectFile','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");
+		top.opener.top.we_cmd('openDocselector', document.forms[0].elements['seem_start_object'].value, '" . (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : "") . "', myWindStr + '.document.forms[0].elements[\'seem_start_object\'].value', myWindStr + '.document.forms[0].elements[\'seem_start_object_name\'].value', '', '', '', 'objectFile','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");
 	} else {
-		top.opener.top.we_cmd('openDocselector', document.forms[0].elements['seem_start_document'].value, '" . FILE_TABLE . "', myWindStr + '.document.forms[0].elements[\'seem_start_document\'].value', myWindStr + '.document.forms[0].elements[\'seem_start_document_name\'].value', '', '" . session_id() . "', '', '" . we_base_ContentTypes::WEDOCUMENT . "','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");
+		top.opener.top.we_cmd('openDocselector', document.forms[0].elements['seem_start_document'].value, '" . FILE_TABLE . "', myWindStr + '.document.forms[0].elements[\'seem_start_document\'].value', myWindStr + '.document.forms[0].elements[\'seem_start_document_name\'].value', '', '', '', '" . we_base_ContentTypes::WEDOCUMENT . "','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");
 	}
 }
 

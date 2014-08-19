@@ -1317,7 +1317,7 @@ class we_object extends we_document{
 		$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['" . $idname . "'].value");
 		$wecmdenc2 = we_base_request::encCmd("document.forms['we_form'].elements['" . $textname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd("top.opener._EditorFrame.setEditorIsHot(true);");
-		$button = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.forms['we_form'].elements['" . $idname . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','" . $rootDir . "','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")");
+		$button = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.forms['we_form'].elements['" . $idname . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDir . "','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")");
 		$delbutton = we_html_button::create_button("image:btn_function_trash", "javascript:document.forms['we_form'].elements['" . $idname . "'].value='';document.forms['we_form'].elements['" . $textname . "'].value=''");
 		/*
 		  DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch erzeugt das
@@ -1358,7 +1358,7 @@ class we_object extends we_document{
 		$wecmdenc2 = we_base_request::encCmd("document.forms['we_form'].elements['" . $textname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd("top.opener._EditorFrame.setEditorIsHot(true);");
 
-		$selectObject = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.forms['we_form'].elements['" . $idname . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','" . $rootDir . "','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")");
+		$selectObject = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.forms['we_form'].elements['" . $idname . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDir . "','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")");
 
 		return '<tr>' .
 			'<td>' . $this->htmlTextInput($textname, 30, $path, 255, 'onchange="_EditorFrame.setEditorIsHot(true);" readonly ', "text", 146) . '</td>' .
@@ -1564,7 +1564,7 @@ class we_object extends we_document{
 
 		$content = '<input type=hidden name="' . $fname . '" value="' . $defaultname . '" />' .
 			we_html_button::create_button_table(array(
-				we_html_button::create_button("edit", "javascript:we_cmd('openDocselector','" . $id . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "',0,'" . we_base_ContentTypes::IMAGE . "')"),
+				we_html_button::create_button("edit", "javascript:we_cmd('openDocselector','" . $id . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','',0,'" . we_base_ContentTypes::IMAGE . "')"),
 				we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('object_remove_image_at_class','" . $GLOBALS['we_transaction'] . "','" . $i . "','" . $name . "')")
 				)
 			) .
@@ -1601,7 +1601,7 @@ class we_object extends we_document{
 
 		return '<input type=hidden name="' . $fname . '" value="' . $defaultname . '" />' .
 			we_html_button::create_button_table(array(
-				we_html_button::create_button("edit", "javascript:we_cmd('openDocselector','" . $id . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "',0,'" . we_base_ContentTypes::FLASH . "')"),
+				we_html_button::create_button("edit", "javascript:we_cmd('openDocselector','" . $id . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','',0,'" . we_base_ContentTypes::FLASH . "')"),
 				we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('object_remove_image_at_class','" . $GLOBALS['we_transaction'] . "','" . $i . "','" . $name . "')")
 				)
 			) .
@@ -1623,7 +1623,7 @@ class we_object extends we_document{
 
 		return '<input type=hidden name="' . $fname . '" value="' . $defaultname . '" />' .
 			we_html_button::create_button_table(array(
-				we_html_button::create_button("edit", "javascript:we_cmd('openDocselector','" . $id . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "',0,'" . we_base_ContentTypes::QUICKTIME . "')"),
+				we_html_button::create_button("edit", "javascript:we_cmd('openDocselector','" . $id . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','',0,'" . we_base_ContentTypes::QUICKTIME . "')"),
 				we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('object_remove_image_at_class','" . $GLOBALS['we_transaction'] . "','" . $i . "','" . $name . "')")
 				)
 			) .
@@ -1640,7 +1640,7 @@ class we_object extends we_document{
 
 		return '<input type=hidden name="' . $fname . '" value="' . $defaultname . '" />' .
 			we_html_button::create_button_table(array(
-				we_html_button::create_button("select", "javascript:we_cmd('openDocselector','" . $id . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "',0,'" . we_base_ContentTypes::APPLICATION . "')"),
+				we_html_button::create_button("select", "javascript:we_cmd('openDocselector','" . $id . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','',0,'" . we_base_ContentTypes::APPLICATION . "')"),
 				we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('object_remove_image_at_class','" . $GLOBALS['we_transaction'] . "','" . $i . "','" . $name . "');")
 				)
 			) .
@@ -1867,7 +1867,7 @@ class we_object extends we_document{
 		$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['" . $idname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd('copyDocument',currentID);");
 
-		$but = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.forms[0].elements['" . $idname . "'].value,'" . $this->Table . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "','" . $rootDIrID . "','" . $this->ContentType . "');");
+		$but = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.forms[0].elements['" . $idname . "'].value,'" . $this->Table . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','','" . $rootDIrID . "','" . $this->ContentType . "');");
 		return $this->htmlHidden($idname, $this->CopyID) . $but;
 	}
 
@@ -2322,7 +2322,7 @@ class we_object extends we_document{
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $idname . "'].value");
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.pathOfDocumentChanged();" . str_replace('\\', '', $cmd));
-		$button = we_html_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','" . $rootDirID . "')");
+		$button = we_html_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "')");
 		return we_html_tools::htmlFormElementTable($this->htmlTextInput($textname, 30, $path, "", ' readonly', "text", $width, 0), "", "left", "defaultfont", $this->htmlHidden($idname, $pathID), we_html_tools::getPixel(20, 4), $button);
 	}
 

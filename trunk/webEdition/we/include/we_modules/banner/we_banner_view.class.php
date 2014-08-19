@@ -957,7 +957,7 @@ class we_banner_view extends we_banner_base{
 
 		return $this->htmlHidden($IDName, 0) .
 			$this->htmlHidden($Pathname, "") .
-			we_html_button::create_button("select", "javascript:top.content.setHot();we_cmd('openSelector',document.we_form.elements['" . $IDName . "'].value,'" . BANNER_TABLE . "','document.we_form.elements[\\'" . $IDName . "\\'].value','document.we_form.elements[\\'" . $Pathname . "\\'].value','opener.we_cmd(\\'copy_banner\\');','" . session_id() . "','" . $rootDirID . "')");
+			we_html_button::create_button("select", "javascript:top.content.setHot();we_cmd('openSelector',document.we_form.elements['" . $IDName . "'].value,'" . BANNER_TABLE . "','document.we_form.elements[\\'" . $IDName . "\\'].value','document.we_form.elements[\\'" . $Pathname . "\\'].value','opener.we_cmd(\\'copy_banner\\');','','" . $rootDirID . "')");
 	}
 
 	/* creates the DocumentChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */

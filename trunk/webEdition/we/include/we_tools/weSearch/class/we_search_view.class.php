@@ -2593,7 +2593,7 @@ class we_search_view extends we_tool_view{
 					$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value");
 					$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['searchAdvSearch[" . $i . "]'].value");
 					$wecmdenc3 = '';
-					$_cmd = "javascript:we_cmd('openDirselector',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "','" . $_rootDirID . "','','')";
+					$_cmd = "javascript:we_cmd('openDirselector',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $_rootDirID . "','','')";
 					$_button = we_html_button::create_button('select', $_cmd, true, 70, 22, '', '', false);
 					$selector = we_html_tools::htmlFormElementTable(
 							we_html_tools::htmlTextInput(
@@ -2611,7 +2611,7 @@ class we_search_view extends we_tool_view{
 					$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value");
 					$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['searchAdvSearch[" . $i . "]'].value");
 					$wecmdenc3 = '';
-					$_cmd = "javascript:we_cmd('openDocselector',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "','" . $_rootDirID . "','','" . we_base_ContentTypes::TEMPLATE . "')";
+					$_cmd = "javascript:we_cmd('openDocselector',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $_rootDirID . "','','" . we_base_ContentTypes::TEMPLATE . "')";
 					$_button = we_html_button::create_button('select', $_cmd, true, 70, 22, '', '', false);
 					$selector = we_html_tools::htmlFormElementTable(
 							we_html_tools::htmlTextInput(
@@ -2627,7 +2627,7 @@ class we_search_view extends we_tool_view{
 
 					$_rootDirID = 0;
 
-					$_cmd = "javascript:we_cmd('openCatselector',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . CATEGORY_TABLE . "','document.we_form.elements[\\'searchAdvSearchParentID[" . $i . "]\\'].value','document.we_form.elements[\\'searchAdvSearch[" . $i . "]\\'].value','','" . session_id() . "','" . $_rootDirID . "','','')";
+					$_cmd = "javascript:we_cmd('openCatselector',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . CATEGORY_TABLE . "','document.we_form.elements[\\'searchAdvSearchParentID[" . $i . "]\\'].value','document.we_form.elements[\\'searchAdvSearch[" . $i . "]\\'].value','','','" . $_rootDirID . "','','')";
 					$_button = we_html_button::create_button('select', $_cmd, true, 70, 22, '', '', false);
 					$selector = we_html_tools::htmlFormElementTable(
 							we_html_tools::htmlTextInput(

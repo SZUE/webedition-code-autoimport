@@ -63,7 +63,7 @@ class we_customer_documentFilterView extends we_customer_filterView{
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $selectorNoLoginId . "'].value");
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $selectorNoLoginText . "'].value");
 		$wecmdenc3 = we_base_request::encCmd("opener." . $this->getHotScript() . ";");
-		$selectorNoLoginButton = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['" . $selectorNoLoginId . "'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','" . we_base_ContentTypes::WEDOCUMENT . "',1)") . "<div id=\"wecf_container_noLoginId\"></div>";
+		$selectorNoLoginButton = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['" . $selectorNoLoginId . "'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . we_base_ContentTypes::WEDOCUMENT . "',1)") . "<div id=\"wecf_container_noLoginId\"></div>";
 
 		$yuiSuggest->setAcId("NoLogin");
 		$yuiSuggest->setContentType("folder," . we_base_ContentTypes::WEDOCUMENT);
@@ -91,7 +91,7 @@ class we_customer_documentFilterView extends we_customer_filterView{
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $selectorNoAccessId . "'].value");
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $selectorNoAccessText . "'].value");
 		$wecmdenc3 = we_base_request::encCmd("opener." . $this->getHotScript());
-		$selectorNoAccessButton = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['" . $selectorNoAccessId . "'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','" . we_base_ContentTypes::WEDOCUMENT . "',1)");
+		$selectorNoAccessButton = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['" . $selectorNoAccessId . "'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . we_base_ContentTypes::WEDOCUMENT . "',1)");
 
 		$yuiSuggest->setAcId("NoAccess");
 		$yuiSuggest->setContentType("folder," . we_base_ContentTypes::WEDOCUMENT);

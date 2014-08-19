@@ -24,5 +24,12 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
+$matches = array();
+//[REQUEST_URI] => /webEdition/apps/redirect.php/wephpmyadmin/index.php/frameset/index
+preg_match('|' . WE_APPS_DIR . 'redirect.php/([^/]+)/([^/]+)(/.*)?$|', $_SERVER['REQUEST_URI'], $matches);
+include_once($_SERVER['DOCUMENT_ROOT'] . WE_APPS_DIR . $matches[1] . '/' . ($matches[2] == 'index.php' ? 'index.php' : (isset($matches[3]) ? $matches[3] : '')));
+/*p_r($matches);
+p_r($_SERVER);
 
-//t_e($_REQUEST, $_SERVER);
+t_e($_REQUEST, $_SERVER);
+ */
