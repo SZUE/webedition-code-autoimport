@@ -679,4 +679,13 @@ top.content.hloaded = 1;
 		return $this->getHTMLDocument($tab_body, $tab_head);
 	}
 
+	public function getHTML($what = ''){
+		switch($what){
+			case 'iconbar':
+				return $this->getHTMLIconbar();
+			default:
+				return parent::getHTML($what);
+		}
+	}
+
 }

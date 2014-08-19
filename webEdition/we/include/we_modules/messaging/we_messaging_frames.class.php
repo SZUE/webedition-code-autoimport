@@ -48,13 +48,12 @@ class we_messaging_frames extends weModuleFrames{
 
 	function getHTML($what){
 		switch($what){
+			default:
+				return parent::getHTML($what);
 			case "msg_fv_headers":
 				return $this->getHTMLFvHeaders();
-			case 'frameset':
-			case 'cmd':
-			case 'msg_fv_headers':
-			case 'usel_browse':
-				return parent::getHTML($what);
+			case 'iconbar':
+				return $this->getHTMLIconbar();
 		}
 		exit();
 	}
@@ -171,10 +170,13 @@ function cb_incstate() {
 		';
 
 		if(($param = we_base_request::_(we_base_request::STRING, 'msg_param'))){
-			if($param == 'todo'){
-				$f = $this->messaging->get_inbox_folder('we_todo');
-			} else if($param == 'message'){
-				$f = $this->messaging->get_inbox_folder('we_message');
+			switch($param){
+				case 'todo':
+					$f = $this->messaging->get_inbox_folder('we_todo');
+					break;
+				case 'message':
+					$f = $this->messaging->get_inbox_folder('we_message');
+					break;
 			}
 			$jsOut .= '
 			r_tree_open(' . $f['ID'] . ');
@@ -809,7 +811,7 @@ function msg_start() {
 		return parent::getHTMLFrameset($extraHead, '&we_transaction=' . $this->transaction);
 	}
 
-	function getHTMLIconbar(){
+	private function getHTMLIconbar(){
 		$iconbar = new we_messaging_iconbar($this);
 		return $iconbar->getHTML();
 	}

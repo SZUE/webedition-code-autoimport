@@ -1008,7 +1008,7 @@ class we_document extends we_root{
 				} catch (Exception $e){
 					$dt = new DateTime('now');
 				}
-				$dt->setTimeZone(new DateTimeZone(@date_default_timezone_get())); //Bug #6335
+				$dt->setTimeZone(new DateTimeZone(date_default_timezone_get())); //Bug #6335
 				return $dt->format(correctDateFormat($format, $dt));
 			case 'select':
 				if(defined('OBJECT_TABLE')){
