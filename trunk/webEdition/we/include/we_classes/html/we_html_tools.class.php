@@ -489,7 +489,8 @@ abstract class we_html_tools{
 
 		$name = preg_replace('/^(.+)]$/', '\1%s]', $name);
 		if(!$format || $_dayPos > -1){
-			$days = getHtmlTag('option', array_merge($_attsOption, array('value' => 0)), '--');;
+			$days = getHtmlTag('option', array_merge($_attsOption, array('value' => 0)), '--');
+			;
 			for($i = 1; $i <= 31; $i++){
 				$_atts2 = ($time && $day == $i) ? array('selected' => 'selected') : array();
 				$days .= getHtmlTag('option', array_merge($_attsOption, $_atts2), sprintf('%02d', $i));
@@ -509,7 +510,8 @@ abstract class we_html_tools{
 		}
 
 		if(!$format || $_monthPos > -1){
-			$months = getHtmlTag('option', array_merge($_attsOption, array('value' => 0)), '--');;
+			$months = getHtmlTag('option', array_merge($_attsOption, array('value' => 0)), '--');
+			;
 			$monthType = (strpos($format, 'F') ? 'F' : (strpos($format, 'M') ? 'M' : 0));
 			for($i = 1; $i <= 12; $i++){
 				switch($monthType){//Bug #4095
@@ -810,6 +812,10 @@ abstract class we_html_tools{
 			case 303:
 				header('HTTP/1.1 ' . $status . ' See Other', true, $status);
 				header('Status: ' . $status . ' See Other', true, $status);
+				break;
+			case 307:
+				header('HTTP/1.1 ' . $status . ' Temporary Redirect', true, $status);
+				header('Status: ' . $status . ' Temporary Redirect', true, $status);
 				break;
 			case 400:
 				header('HTTP/1.1 ' . $status . ' Bad Request', true, $status);
