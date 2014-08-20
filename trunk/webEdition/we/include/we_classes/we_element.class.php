@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_element{
+class we_element{ 
 
 	var $ClassName = __CLASS__;
 	var $DID = 0;

@@ -101,7 +101,7 @@ class rpcChangeDocTypeCmd extends rpcCmd{
 	}
 
 	function getCategories($obj, $categories, $catField = ""){
-		$cats = new MultiDirChooser2(410, $categories, "delete_" . $obj . "Cat", "", "", "Icon,Path", CATEGORY_TABLE);
+		$cats = new we_chooser_multiDirExtended(410, $categories, "delete_" . $obj . "Cat", "", "", "Icon,Path", CATEGORY_TABLE);
 		$cats->setRowPrefix($obj);
 		$cats->setCatField($catField);
 		return $cats->getTableRows();

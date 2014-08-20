@@ -28,7 +28,7 @@
  * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_core_MessageReporting extends we_message_reporting{
+abstract class we_core_MessageReporting extends we_message_reporting{
 
 	// contansts for messaging!
 	// these are binray checked like permissions in unix, DON'T change indexes

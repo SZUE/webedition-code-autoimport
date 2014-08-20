@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class MultiDirChooser2 extends MultiDirChooser{
+class we_chooser_multiDirExtended extends we_chooser_multiDir{
 
 	var $rowPrefix = '';
 	var $catField = '';

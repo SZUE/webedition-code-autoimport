@@ -801,7 +801,7 @@ class we_banner_view extends we_banner_base{
 		$wecmdenc3 = we_base_request::encCmd("fillIDs();opener.we_cmd('add_file',top.allIDs);");
 		$addbut = we_html_button::create_button("add", "javascript:top.content.setHot(); we_cmd('openDocselector',0,'" . FILE_TABLE . "','','','" . $wecmdenc3 . "','','','" . we_base_ContentTypes::WEDOCUMENT . "','',1)");
 
-		$dirs = new MultiDirChooser(495, $this->banner->FileIDs, "del_file", we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", FILE_TABLE);
+		$dirs = new we_chooser_multiDir(495, $this->banner->FileIDs, "del_file", we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", FILE_TABLE);
 
 		return $dirs->get();
 	}
@@ -811,7 +811,7 @@ class we_banner_view extends we_banner_base{
 		$wecmdenc3 = we_base_request::encCmd("fillIDs();opener.we_cmd('add_folder',top.allIDs);");
 		$addbut = we_html_button::create_button("add", "javascript:top.content.setHot();we_cmd('openDirselector','','" . FILE_TABLE . "','','','" . $wecmdenc3 . "','','','',1)");
 
-		$dirs = new MultiDirChooser(495, $this->banner->FolderIDs, "del_folder", we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", FILE_TABLE);
+		$dirs = new we_chooser_multiDir(495, $this->banner->FolderIDs, "del_folder", we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", FILE_TABLE);
 
 		return $dirs->get();
 	}
@@ -820,7 +820,7 @@ class we_banner_view extends we_banner_base{
 		$delallbut = we_html_button::create_button("delete_all", "javascript:top.content.setHot();we_cmd('del_all_cats')");
 		$addbut = we_html_button::create_button("add", "javascript:top.content.setHot();we_cmd('openCatselector',-1,'" . CATEGORY_TABLE . "','','','fillIDs();opener.we_cmd(\'add_cat\',top.allIDs);')");
 
-		$cats = new MultiDirChooser(495, $this->banner->CategoryIDs, "del_cat", we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", CATEGORY_TABLE);
+		$cats = new we_chooser_multiDir(495, $this->banner->CategoryIDs, "del_cat", we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", CATEGORY_TABLE);
 
 		return $cats->get();
 	}
@@ -939,7 +939,7 @@ class we_banner_view extends we_banner_base{
 	function formCustomer(){
 		$delallbut = we_html_button::create_button("delete_all", "javascript:top.content.setHot();we_cmd('del_all_customers')");
 		$addbut = we_html_button::create_button("add", "javascript:top.content.setHot();we_cmd('openSelector','','" . CUSTOMER_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_customer\\',top.allIDs);','','','',1)");
-		$obj = new MultiDirChooser(508, $this->banner->Customers, "del_customer", we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", CUSTOMER_TABLE);
+		$obj = new we_chooser_multiDir(508, $this->banner->Customers, "del_customer", we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", CUSTOMER_TABLE);
 		return $obj->get();
 	}
 

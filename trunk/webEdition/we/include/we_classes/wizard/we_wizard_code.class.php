@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weCodeWizard{
+class we_wizard_code{
 
 	/**
 	 * Directory where the snippets are located
@@ -80,7 +80,7 @@ class weCodeWizard{
 				// get the snippets by file if extension is xml
 			} elseif(!is_dir($this->SnippetPath . $SnippetDir . "/" . $_entry) && substr_compare($_entry, ".xml", -4, 4, true) == 0){
 				// get the snippet
-				$_snippet = new weCodeWizardSnippet($this->SnippetPath . $SnippetDir . "/" . $_entry);
+				$_snippet = new we_wizard_codeSnippet($this->SnippetPath . $SnippetDir . "/" . $_entry);
 				$_item = array(
 					'type' => 'option',
 					'name' => $_snippet->getName(),
@@ -196,7 +196,6 @@ JS;
 /**
  * Code Sample
  *
- * $CodeWizard = new weCodeWizard();
  *
  * echo $CodeWizard->buildDialog();
  *

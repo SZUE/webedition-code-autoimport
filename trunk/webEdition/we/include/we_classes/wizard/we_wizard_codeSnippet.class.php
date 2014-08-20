@@ -30,7 +30,7 @@
  * @see dtd:http://docs.oasis-open.org/dita/v1.0.1/dtd/topic.dtd
  *
  */
-class weCodeWizardSnippet{
+class we_wizard_codeSnippet{
 
 	/**
 	 * Name of the Snippet

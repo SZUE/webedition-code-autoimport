@@ -1835,7 +1835,7 @@ class we_object extends we_document{
 
 		$addbut = $button;
 
-		$obj = new MultiDirTemplateAndDefaultChooser(450, $this->Workspaces, "object_del_workspace", $addbut, get_ws(FILE_TABLE), $this->Templates, "we_" . $this->Name . "_Templates", "", get_ws(TEMPLATES_TABLE), "we_" . $this->Name . "_DefaultWorkspaces", $this->DefaultWorkspaces);
+		$obj = new we_chooser_multiDirTemplateAndDefault(450, $this->Workspaces, "object_del_workspace", $addbut, get_ws(FILE_TABLE), $this->Templates, "we_" . $this->Name . "_Templates", "", get_ws(TEMPLATES_TABLE), "we_" . $this->Name . "_DefaultWorkspaces", $this->DefaultWorkspaces);
 		$obj->CanDelete = true;
 		$obj->create = 1;
 		$content = $obj->get();
@@ -1853,11 +1853,10 @@ class we_object extends we_document{
 	}
 
 	function formCSS(){
-		require_once(WE_INCLUDES_PATH . 'we_tools/MultiDirChooser.inc.php');
 		$wecmdenc3 = we_base_request::encCmd("fillIDs();opener.we_cmd('object_add_css', top.allIDs);");
 
 		$addbut = we_html_button::create_button("add", "javascript:we_cmd('openDocselector', 0, '" . FILE_TABLE . "','','','" . $wecmdenc3 . "','','','" . we_base_ContentTypes::CSS . "', 1,1)");
-		$css = new MultiDirChooser(510, $this->CSS, "object_del_css", $addbut, "", "Icon,Path", FILE_TABLE);
+		$css = new we_chooser_multiDir(510, $this->CSS, "object_del_css", $addbut, "", "Icon,Path", FILE_TABLE);
 		return $css->get();
 	}
 

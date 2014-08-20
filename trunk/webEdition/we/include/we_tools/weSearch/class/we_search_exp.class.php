@@ -26,7 +26,7 @@
   / only used for direct expression input ( exp: ) from old search of slavko
  */
 
-class we_search_exp extends we_search{
+class we_search_exp extends we_search_base{
 
 	var $Operators = array(
 		'!=' => '<>', '=' => '=', '<>' => '<>', '<' => '<', '>' => '>'
