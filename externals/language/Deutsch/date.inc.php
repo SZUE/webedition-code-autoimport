@@ -23,6 +23,7 @@ $l_date=array(
 	'format'=>array(
 		'default'=>'d.m.Y - H:i \U\h\r',
 		'mysqlDate'=>'%d.%m.%Y',
+		'mysql'=>'%d.%m.%Y %H:%i',
 	),
 	'month'=>array(
 		'long'=>array(
