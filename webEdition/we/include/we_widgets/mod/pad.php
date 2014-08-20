@@ -29,23 +29,21 @@ we_html_tools::protect();
  * Table with the notes
  * @var string
  */
-$_sInitProps = substr(we_base_request::_(we_base_request::INT, 'we_cmd', '', 0), -5);
+$_sInitProps = substr(we_base_request::_(we_base_request::STRINGC, 'we_cmd', '', 0), -5); //binary data
 $bSort = $_sInitProps{0};
 $bDisplay = $_sInitProps{1};
 $bDate = $_sInitProps{2};
 $bPrio = $_sInitProps{3};
 $bValid = $_sInitProps{4};
-$q_Csv = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 1);
 $title = base64_decode(we_base_request::_(we_base_request::RAW, 'we_cmd', '', 4));
 $type = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 6);
 
 switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2)){
 	case 'delete' :
-		$q_Csv = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1);
-		$DB_WE->query('DELETE FROM ' . NOTEPAD_TABLE . ' WHERE ID=' . $q_Csv);
+		$DB_WE->query('DELETE FROM ' . NOTEPAD_TABLE . ' WHERE ID=' . we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1));
 		break;
 	case 'update' :
-		list($q_ID, $q_Title, $q_Text, $q_Priority, $q_Valid, $q_ValidFrom, $q_ValidUntil) = explode(';', $q_Csv);
+		list($q_ID, $q_Title, $q_Text, $q_Priority, $q_Valid, $q_ValidFrom, $q_ValidUntil) = explode(';', we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1));
 		$entTitle = str_replace(array("'", '"'), array('&#039;', '&quot;'), base64_decode($q_Title));
 		$entText = str_replace(array("'", '"'), array('&#039;', '&quot;'), base64_decode($q_Text));
 		if($q_Valid == "always" || $q_Valid == "date"){
@@ -60,7 +58,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2)){
 				'ValidUntil' => $q_ValidUntil)) . ' WHERE ID = ' . intval($q_ID));
 		break;
 	case 'insert' :
-		list($q_Title, $q_Text, $q_Priority, $q_Valid, $q_ValidFrom, $q_ValidUntil) = explode(';', $q_Csv);
+		list($q_Title, $q_Text, $q_Priority, $q_Valid, $q_ValidFrom, $q_ValidUntil) = explode(';', we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1));
 		if($q_Valid == "always"){
 			$q_ValidUntil = "3000-01-01";
 			$q_ValidFrom = date("Y-m-d");
@@ -200,7 +198,7 @@ $oTblProps->setCol(4, 0, array(
 	), g_l('cockpit', '[title]'));
 $oTblProps->setCol(
 	4, 1, null, we_html_tools::htmlTextInput(
-		 "props_title",  255,  "",  255,  "", "text", "100%",  0));
+		"props_title", 255, "", 255, "", "text", "100%", 0));
 $oTblProps->setCol(5, 0, null, we_html_tools::getPixel(1, 8));
 $oTblProps->setCol(6, 0, array(
 	"class" => "middlefont", "valign" => "top"
