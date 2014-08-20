@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_base_request{
-
 	private static $allTables = array();
 
 	const TRANSACTION = 'transaction';
@@ -207,6 +206,7 @@ class we_base_request{
 			$oldVar = $var;
 			array_walk($var, 'we_base_request::_weRequest', array($type, $default));
 			if($oldVar != $var){
+
 			}
 		} else {
 			$oldVar = $var;
@@ -228,6 +228,10 @@ class we_base_request{
 						return $var;
 					}
 					$cmp = '' . $var;
+					break;
+				case self::FILELIST:
+					$cmp = '' . $var;
+					$oldVar = trim($oldVar, ',');
 					break;
 				case self::BOOL://bool is transfered as 0/1
 					if($oldVar === ''){//treat empty as 0
