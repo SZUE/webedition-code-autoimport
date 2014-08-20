@@ -24,7 +24,6 @@
  */
 /* the parent class of storagable webEdition classes */
 class we_workflow_view extends we_workflow_base{
-
 	// workflow array; format workflow[workflowID]=workflow_name
 	var $workflows = array();
 	//default workflow
@@ -319,7 +318,7 @@ class we_workflow_view extends we_workflow_base{
 				$button = we_html_button::create_button("select", "javascript:top.content.setHot();we_cmd('browse_users','document.we_form." . $this->uid . "_task_" . $counter . "_" . $counter1 . "_userid.value','" . $wecmdenc2 . "','','" . $wecmdenc5 . "');");
 
 				$yuiSuggest->setAcId('User_' . $counter . '_' . $counter1);
-				$yuiSuggest->setContentType('0,1');
+				$yuiSuggest->setContentType(we_users_user::TYPE_USER . ',' . we_users_user::TYPE_USER_GROUP);
 				$yuiSuggest->setInput($this->uid . '_task_' . $counter . '_' . $counter1 . '_usertext', $foo, array('onchange' => 'top.content.setHot();'));
 				$yuiSuggest->setMaxResults(10);
 				$yuiSuggest->setMayBeEmpty(false);
@@ -984,7 +983,7 @@ function checkData(){
 							'top.content.makeNewEntry("workflow_folder",' . $this->workflowDef->ID . ',0,"' . $this->workflowDef->Text . '",true,"folder","we_workflow_workflowDef","' . $this->workflowDef->Status . '");' :
 							'top.content.updateEntry(' . $this->workflowDef->ID . ',0,"' . $this->workflowDef->Text . '","' . $this->workflowDef->Status . '");'
 						) . $childs .
-						'top.content.editor.edheader.document.getElementById("headrow").innerHTML="' . we_html_element::htmlB(g_l('modules_workflow', '[workflow]') . ': ' . oldHtmlspecialchars($this->workflowDef->Text)) . '";' .
+						'top.content.editor.edheader.document.getElementById("headrow").innerHTML="' . addcslashes(we_html_element::htmlB(g_l('modules_workflow', '[workflow]') . ': ' . oldHtmlspecialchars($this->workflowDef->Text)), '"') . '";' .
 						we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[save_ok]'), we_message_reporting::WE_MESSAGE_NOTICE)
 					);
 				}
