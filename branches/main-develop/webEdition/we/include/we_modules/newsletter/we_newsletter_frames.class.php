@@ -814,7 +814,7 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 			$delallbut = we_html_button::create_button("delete_all", "javascript:we_cmd('del_all_customers'," . $group . ")");
 			$addbut = we_html_button::create_button("add", "javascript:we_cmd('openSelector','','" . CUSTOMER_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_customer\\',top.allIDs," . $group . ");','','','',1)");
 
-			$cats = new MultiDirChooser(self::def_width, $this->View->newsletter->groups[$group]->Customers, "del_customer", we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", CUSTOMER_TABLE);
+			$cats = new we_chooser_multiDir(self::def_width, $this->View->newsletter->groups[$group]->Customers, "del_customer", we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", CUSTOMER_TABLE);
 			$cats->extraDelFn = "document.we_form.ngroup.value=$group";
 			$out.=$cats->get();
 		}
@@ -833,7 +833,7 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 		$buttons = (permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES')) ?
 			array($delallbut, $addbut) :
 			array($delallbut);
-		$cats = new MultiFileChooser(self::def_width, $this->View->newsletter->groups[$group]->Extern, "del_file", we_html_button::create_button_table($buttons), "edit_file");
+		$cats = new we_chooser_multiFile(self::def_width, $this->View->newsletter->groups[$group]->Extern, "del_file", we_html_button::create_button_table($buttons), "edit_file");
 
 		$cats->extraDelFn = 'document.we_form.ngroup.value=' . $group;
 		return $this->View->htmlHidden('fileselect', '') .

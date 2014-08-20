@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class MultiDirAndTemplateChooser extends MultiDirChooser{
+class we_chooser_multiDirAndTemplate extends we_chooser_multiDir{
 
 	var $tmplcsv = "";
 	var $tmplSelectName = "";
@@ -71,7 +71,7 @@ class MultiDirAndTemplateChooser extends MultiDirChooser{
 	function getLine($lineNr){
 		switch($lineNr){
 			case 0:
-				return MultiDirChooser::getLine($lineNr);
+				return we_chooser_multiDir::getLine($lineNr);
 			case 1:
 				if($this->create){
 					$but = we_html_button::create_button("image:btn_add_template", "javascript:we_cmd('object_create_tmpfromClass','0','" . $this->nr . "','" . $GLOBALS["we_transaction"] . "')");

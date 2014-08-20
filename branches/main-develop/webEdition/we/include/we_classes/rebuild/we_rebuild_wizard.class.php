@@ -407,7 +407,7 @@ abstract class we_rebuild_wizard{
 		$butTable = we_html_button::create_button_table(array($delallbut, $addbut));
 		$upperTable = '<table border="0" cellpadding="0" cellspacing="0" width="495"><tr><td align="left">' . $catAndCheck . '</td><td align="right">' . $butTable . '</td></tr></table>';
 
-		$cats = new MultiDirChooser(495, $categories, "del_cat", $upperTable, '', 'Icon,Path', CATEGORY_TABLE);
+		$cats = new we_chooser_multiDir(495, $categories, "del_cat", $upperTable, '', 'Icon,Path', CATEGORY_TABLE);
 		return g_l('global', "[categorys]") . '<br/>' . we_html_tools::getPixel(1, 3) . '<br/>' . $cats->get();
 	}
 
@@ -442,7 +442,7 @@ abstract class we_rebuild_wizard{
 		$wecmdenc3 = we_base_request::encCmd("fillIDs();opener.we_cmd('add_folder',top.allIDs);");
 		$addbut = we_html_button::create_button("add", "javascript:" . ($thumnailpage ? "" : "document.we_form.btype[2].checked=true;") . "we_cmd('openDirselector','','" . FILE_TABLE . "','','','" . $wecmdenc3 . "','','','',1)");
 
-		$dirs = new MultiDirChooser($width, $folders, "del_folder", we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", FILE_TABLE);
+		$dirs = new we_chooser_multiDir($width, $folders, "del_folder", we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", FILE_TABLE);
 
 		return ($thumnailpage ? g_l('rebuild', "[thumbdirs]") : g_l('rebuild', "[dirs]")) . "<br/>" . we_html_tools::getPixel(1, 3) . "<br/>" . $dirs->get();
 	}

@@ -28,7 +28,7 @@
  *
  * Use this class to add a widget to the Cockpit.
  */
-abstract class we_widget{
+abstract class we_base_widget{
 
 	/**
 	 * To add a widget give a unique id ($iId). Currently supported widget types ($sType) are Shortcuts (sct), RSS Reader (rss),

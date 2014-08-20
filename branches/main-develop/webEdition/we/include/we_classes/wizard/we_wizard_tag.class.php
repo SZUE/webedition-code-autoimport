@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-abstract class weTagWizard{
+abstract class we_wizard_tag{
 
 	static function getExistingWeTags($useDeprecated = true){
 		$retTags = array();
@@ -66,7 +66,7 @@ abstract class weTagWizard{
 			}
 		}
 		//add applicationTags
-		$apptags = weTagWizard::getApplicationTags();
+		$apptags = we_wizard_tag::getApplicationTags();
 		if(!empty($apptags)){
 			$taggroups['apptags'] = $apptags;
 			$taggroups['alltags'] = array_merge($taggroups['alltags'], $taggroups['apptags']);
@@ -75,7 +75,7 @@ abstract class weTagWizard{
 
 		// 2nd add some taggroups to this array
 		if(empty($allTags)){
-			$allTags = weTagWizard::getExistingWeTags();
+			$allTags = we_wizard_tag::getExistingWeTags();
 		}
 		foreach($GLOBALS['tag_groups'] as $key => $tags){
 
@@ -87,7 +87,7 @@ abstract class weTagWizard{
 		}
 
 		// at last add custom tags.
-		$customTags = weTagWizard::getCustomTags();
+		$customTags = we_wizard_tag::getCustomTags();
 		if(!empty($customTags)){
 			$taggroups['custom'] = $customTags;
 			$taggroups['alltags'] = array_merge($taggroups['alltags'], $taggroups['custom']);

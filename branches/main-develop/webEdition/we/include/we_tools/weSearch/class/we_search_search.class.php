@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_search_search extends we_search{
+class we_search_search extends we_search_base{
 	//for doclist!
 	/**
 	 * @var integer: number of searchfield-rows

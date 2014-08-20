@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class MultiFileChooser extends MultiDirChooser{
+class we_chooser_multiFile extends we_chooser_multiDir{
 
 	private $disabledDelItems = array();
 	private $disabledDelReason = '';

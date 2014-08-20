@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_search{
+class we_search_base{
 	protected $db;
 	var $rows = -1;
 	var $start = 0;

@@ -998,7 +998,7 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 					$bExtendedCol = true;
 				}
 				include(WE_INCLUDES_PATH . 'we_widgets/inc/' . $aProps[0] . '.inc.php');
-				$$aProps[0] = we_widget::create(
+				$$aProps[0] = we_base_widget::create(
 						'm_' . $iCurrId, $aProps[0], $oTblCont, $aLang, $aProps[1], $aProps[2], $aProps[3], $iWidth, $aPrefs[$aProps[0]]["height"], $aPrefs[$aProps[0]]["isResizable"]);
 				$s2 .= we_html_element::htmlDiv(
 						array(
@@ -1037,7 +1037,7 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 			), '<table id="le_tblWidgets" cellspacing="0" border="0"><tr id="rowWidgets">' . $s1 . '</tr></table>'));
 
 	// this is the clone widget
-	$oClone = we_widget::create("clone", "_reCloneType_", null, array('', ''), "white", 0, "", 100, 60);
+	$oClone = we_base_widget::create("clone", "_reCloneType_", null, array('', ''), "white", 0, "", 100, 60);
 	//WEEXT: registerWeIframe
 	echo
 	we_html_element::htmlBody(
